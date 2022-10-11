@@ -6,15 +6,15 @@ Open-Zoxel is under the GPL license as I want any derivatives to stay open, to p
 
 Zoxel has a large scope as I have many ideas. It's game design is influenced from Minecraft, Warcraft and LitRPGs/Tabletops.
 
+![Le Old Zoxel](/screenshots/KEyHna.png?raw=false "Le Old Zoxel")
+
 ## Why The Change?
 
-Zoxel has been in development a long time, over many different engines. It is time for it to set sail again to a custom one, using FLECS for performance!
+Zoxel has been in development a long time (over a decade), over many different engines. It is time for it to set sail again to a custom one, using FLECS for performance!
 
 This was not an easy decision. Gotta go fast! Flecs has offered me a way out of the Unity IPO mess, and it offers greater levels of freedom over my development.
 
 There are 120k+ lines on the unity ecs codebase, so it will take some time for things to be ported.
-
-\image html /screenshots/KEyHna.png width=66%
 
 [Itch IO Old Zoxel](https://deus0.itch.io/zoxel) Developed from 2017 with Unitys ECS
 

@@ -10,7 +10,8 @@
 #include "Transforms2D/Transforms2D.h"
 #include "Physics2D/Physics2D.h"
 #include "Rendering/Rendering.h"
-// Settings
+// Settings 
+// \image html /screenshots/KEyHna.png width=50%
 const bool isRendering = true;
 
 void PrintSDLDebug()
