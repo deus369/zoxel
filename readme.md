@@ -8,6 +8,7 @@ Zoxel has a large scope as I have many ideas. It's game design is influenced fro
 
 ![Le Old Zoxel](/screenshots/KEyHna.png?raw=false "Le Old Zoxel")
 
+W41sdfh.png
 ## Why The Change?
 
 Zoxel has been in development a long time (over a decade), over many different engines. It is time for it to set sail again to a custom one, using FLECS for performance!
@@ -17,6 +18,12 @@ This was not an easy decision. Gotta go fast! Flecs has offered me a way out of 
 There are 120k+ lines on the unity ecs codebase, so it will take some time for things to be ported.
 
 [Itch IO Old Zoxel](https://deus0.itch.io/zoxel) Developed from 2017 with Unitys ECS
+
+## How far along is it?
+
+So far I am fleshing out basic systems while testing out Flecs useage. So far the performance has been promising!
+
+![El Libre Zoxel](/screenshots/W41sdfh.png?raw=false "El Libre Zoxel")
 
 ## Dependencies
 
