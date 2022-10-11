@@ -1,4 +1,4 @@
-#include "../../flecs/flecs.h"
+#include "../../Flecs/flecs.h"
 #include "../../Core/Core.h"
 #include "../Physics2D.h"
 #include "../../Transforms2D/Transforms2D.h"

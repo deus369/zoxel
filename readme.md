@@ -8,7 +8,6 @@ Zoxel has a large scope as I have many ideas. It's game design is influenced fro
 
 ![Le Old Zoxel](/screenshots/KEyHna.png?raw=false "Le Old Zoxel")
 
-W41sdfh.png
 ## Why The Change?
 
 Zoxel has been in development a long time (over a decade), over many different engines. It is time for it to set sail again to a custom one, using FLECS for performance!

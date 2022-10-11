@@ -1,1 +1,6 @@
-zoxel.x86
+
+# ignore builds
+*.x86
+
+#ignore scrap code
+scrap.c

@@ -1,6 +1,8 @@
 # Request POSIX Make behavior and disable any default suffix-based rules
-# .POSIX:
-# .SUFFIXES:
+
+# packages:
+#	libsdl2
+#	libsdl2-image-dev
 
 # Declare compiler tools and flags
 CC      = cc
@@ -12,11 +14,13 @@ CFLAGS += -fPIC -g
 # CFLAGS += -Wno-unused-parameter -Wno-unused-result -Wno-unused-function
 # CFLAGS += -Isrc/
 LDFLAGS =
-LDLIBS  = -lGL -lSDL2
-LDLIBS  += -D NDEBUG -O3 -flto
+LDLIBS = -lGL
+LDLIBS += -lSDL2
+LDLIBS += -lSDL2_image
+LDLIBS += -D NDEBUG -O3 -flto
 # flecs
-SRCS = src/flecs/flecs.c src/flecs/flecs.h
-OBJS = src/flecs/flecs.c
+SRCS = src/Flecs/flecs.c src/Flecs/flecs.h
+OBJS = src/Flecs/flecs.c
 # main
 SRCS += src/main.c
 OBJS += src/main.c

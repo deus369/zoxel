@@ -74,7 +74,7 @@ bool opengl_shader_link_program(GLuint program, GLuint vertex_shader, GLuint fra
     return false;
 }
 
-void OpenGLInitialize(bool vsync)
+void InitializeOpenGL(bool vsync)
 {
     printf("OpenGL Vendor:   %s\n", glGetString(GL_VENDOR));
     printf("OpenGL Renderer: %s\n", glGetString(GL_RENDERER));
@@ -144,14 +144,14 @@ void OpenGLInitialize(bool vsync)
 }
 
 //! Cleanup OpenGL resources
-void OpenGLEnded()
+void EndOpenGL()
 {
     glDeleteVertexArrays(1, &vao);
     glDeleteBuffers(1, &vbo);
     glDeleteProgram(prog);
 }
 
-void OpenGLBegin()
+void UpdateBeginOpenGL()
 {
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -173,7 +173,7 @@ void OpenGLRender(float positionX, float positionY, float angle, float scale, fl
     //glPopMatrix();
 }
 
-void OpenGLEnd()
+void UpdateEndOpenGL()
 {
     glBindVertexArray(0);
     glUseProgram(0);

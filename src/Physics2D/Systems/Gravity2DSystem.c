@@ -1,10 +1,11 @@
-#include "../../flecs/flecs.h"
+#include "../../Flecs/flecs.h"
 #include "../../Core/Core.h"
 #include "../Physics2D.h"
 #include "../../Transforms2D/Transforms2D.h"
 
 void Gravity2DSystem(ecs_iter_t *it)
 {
+    //! \todo Inject other entities in here and pull towards them. Eventually use a localized NearbyEntities component instead of everything.
     /*double deltaTime = (double) it->delta_time;
     Position2D *position2Ds = ecs_field(it, Position2D, 1);
     Velocity2D *velocity2Ds = ecs_field(it, Velocity2D, 2);

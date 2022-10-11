@@ -1,4 +1,4 @@
-#include "../../flecs/flecs.h"
+#include "../../Flecs/flecs.h"
 
 void RenderSystem(ecs_iter_t *it)
 {

@@ -1,4 +1,4 @@
-#include "../../flecs/flecs.h"
+#include "../../Flecs/flecs.h"
 #include "../../Transforms2D/Transforms2D.h"
 #ifndef M_PI
 #define M_PI 3.141592653589793
