@@ -11,11 +11,61 @@ bool fullscreen = false;
 bool vsync = false;
 bool profiler = false;
 
-//! Temporary, quick and dirty input.
-void UpdateInput()
+// Forward  Declares
+int ProcessArguments(int argc, char* argv[]);
+void PollSDLEvents();
+
+//! This is a mistaken function. Move along.
+int main(int argc, char* argv[])
 {
+    int didFail = ProcessArguments(argc, argv);
+    if (didFail == EXIT_FAILURE)
+    {
+        return EXIT_SUCCESS;
+    }
+    didFail = InitializeSDL();
+    if (didFail == EXIT_FAILURE)
+    {
+        return didFail;
+    }
+    didFail = SpawnWindowSDL(fullscreen);
+    if (didFail == EXIT_FAILURE)
+    {
+        return didFail;
+    }
+    InitializeOpenGL(vsync);
+    InitializeECS(argc, argv, profiler, isRendering);
+    deltaTimeSDL = 0;
+    //! Core Application Loop!
+    while (running)
+    {
+        UpdateBeginSDL();
+        PollSDLEvents();
+        if (isRendering)
+        {
+            UpdateBeginOpenGL();
+        }
+        if (deltaTimeSDL > 0)
+        {
+            UpdateECS();
+        }
+        if (isRendering)
+        {
+            UpdateEndOpenGL();
+        }
+        UpdateEndSDL(isRendering);
+    }
+    EndECS();
+    EndOpenGL();
+    EndSDL();
+    return EXIT_SUCCESS;
+}
+
+//! Temporary, quick and dirty events.
+void PollSDLEvents()
+{
+    BobArmySpawnFixer(world);   // until bug gets fixed
     ResetKeyboard(world);
-    SpawnIfSpawn(world);
     SDL_Event event  = { 0 };
     while (SDL_PollEvent(&event))
     {
@@ -31,16 +81,6 @@ void UpdateInput()
             if (key == SDLK_q || key == SDLK_ESCAPE) 
             {
                 running = false;
-            }
-            /*else if (key == SDLK_SPACE)
-            {
-                SpawnBobArmy();
-            }*/
-            else if (key == SDLK_p)
-            {
-                printf("Printing Debug\n");
-                PrintBobSpawnSystem(world);
-                // PrintKeyboard(world);
             }
         }
         else if (eventType == SDL_WINDOWEVENT) // SDL_WINDOWEVENT_RESIZED)
@@ -76,51 +116,5 @@ int ProcessArguments(int argc, char* argv[])
             profiler = true;
         }
     }
-    return EXIT_SUCCESS;
-}
-
-//! This is a mistaken function. Move along.
-int main(int argc, char* argv[])
-{
-    int didFail = ProcessArguments(argc, argv);
-    if (didFail == EXIT_FAILURE)
-    {
-        return EXIT_SUCCESS;
-    }
-    didFail = InitializeSDL();
-    if (didFail == EXIT_FAILURE)
-    {
-        return didFail;
-    }
-    didFail = SpawnWindowSDL(fullscreen);
-    if (didFail == EXIT_FAILURE)
-    {
-        return didFail;
-    }
-    InitializeOpenGL(vsync);
-    InitializeECS(argc, argv, profiler, isRendering);
-    deltaTimeSDL = 0;
-    //! Core Application Loop!
-    while (running)
-    {
-        UpdateBeginSDL();
-        UpdateInput();
-        if (isRendering)
-        {
-            UpdateBeginOpenGL();
-        }
-        if (deltaTimeSDL > 0)
-        {
-            UpdateECS();
-        }
-        if (isRendering)
-        {
-            UpdateEndOpenGL();
-        }
-        UpdateEndSDL(isRendering);
-    }
-    EndECS();
-    EndOpenGL();
-    EndSDL();
     return EXIT_SUCCESS;
 }

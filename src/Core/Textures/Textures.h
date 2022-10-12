@@ -4,11 +4,14 @@
 
 // rendering
 #include "Components/Texture.c"
+
+ECS_COMPONENT_DECLARE(Texture);
 // #include "Systems/TextureDirtySystem.c"  // if has material, update to material
 
-void InitializeTextures(ecs_world_t *world)
+void TexturesImport(ecs_world_t *world)
 {
-    ECS_COMPONENT(world, Texture);
+    ECS_MODULE(world, Textures);
+    ECS_COMPONENT_DEFINE(world, Texture);
     // ECS_SYSTEM(world, RenderSystem, EcsOnUpdate, Position2D, Rotation2D, Scale2D, Brightness);
 }
 

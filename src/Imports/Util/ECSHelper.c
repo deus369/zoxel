@@ -5,6 +5,7 @@
 #include "../../Core/Transforms2D/Transforms2D.h"
 #include "../../Space/Physics2D/Physics2D.h"
 #include "../../Core/Textures/Textures.h"
+#include "../../Core/Players/Players.h"
 // --- Space ---
 #include "../../Core/Rendering/Rendering.h"
 // --- Gameplay ---
@@ -16,16 +17,22 @@ void InitializeECS(int argc, char* argv[], bool profiler, bool isRendering)
 {
     world = ecs_init_w_args(argc, argv);
     // Core Modules
-    InitializeTransforms2D(world);
-    InitializeInputs(world);
+    ECS_IMPORT(world, Inputs);
+    ECS_IMPORT(world, Transforms2D);
     if (isRendering)
     {
-        InitializeRendering(world);
+        ECS_IMPORT(world, Rendering);
     }
-    InitializeTextures(world);
+    ECS_IMPORT(world, Textures);
+    ECS_IMPORT(world, Players);
     // Space Modules
-    InitializePhysics2D(world);
+    ECS_IMPORT(world, Physics2D);
     // Gameplay Modules
+
+    // Spawn things from Modules
+    ECS_IMPORT(world, Inputs);
+    ECS_IMPORT(world, Players);
+
     // Enable Profiler
     if (profiler)
     {

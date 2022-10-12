@@ -1,30 +1,69 @@
 // #include "../../../Imports/Flecs/flecs.h"
 
 ecs_entity_t keyboardEntity;
-
 // forward declarations
+bool wasPressedThisFrame = false;
+void SetKey(PhysicalButton *key, int eventType);
+void ResetKey(PhysicalButton *key);
 
-ecs_entity_t SpawnKeyboadEntity(ecs_world_t *world)
+void InitializeKeyboardExtractSystem(ecs_world_t *world)
 {
-    ECS_COMPONENT(world, Keyboard);
-    ecs_entity_t e = ecs_new_entity(world, "");
-    ecs_add(world, e, Keyboard);
-    keyboardEntity = e;
-    return e ;
-}
-
-void ResetKey(PhysicalButton *key)
-{
-    key->wasPressedThisFrame = false;
-    key->wasReleasedThisFrame = false;
+    keyboardEntity = ecs_new_entity(world, "keyboard");
+    ecs_add(world, keyboardEntity, Keyboard);
+    printf("Keyboard is ALIVE: %lu \n", keyboardEntity);
 }
 
 void ResetKeyboard(ecs_world_t *world)
 {
-    ECS_COMPONENT(world, Keyboard);
-    Keyboard *keyboard = ecs_get(world, keyboardEntity, Keyboard);
+    Keyboard *keyboard = ecs_get_mut(world, keyboardEntity, Keyboard);
     ResetKey(&keyboard->space);
     ResetKey(&keyboard->escape);
+    ResetKey(&keyboard->a);
+    ResetKey(&keyboard->d);
+    ResetKey(&keyboard->s);
+    ResetKey(&keyboard->p);
+    ResetKey(&keyboard->w);
+    ecs_modified(world, keyboardEntity, Keyboard);
+}
+
+//! Extract Key Events from SDL and set them on entities keyboad.
+void ExtractIntoKeyboard(ecs_world_t *world, SDL_Event event)
+{
+    int eventType = event.type;
+    if (eventType == SDL_KEYDOWN || eventType == SDL_KEYUP)
+    {
+        SDL_Keycode key = event.key.keysym.sym;
+        Keyboard *keyboard = ecs_get_mut(world, keyboardEntity, Keyboard);
+        if (key == SDLK_SPACE) 
+        {
+            SetKey(&keyboard->space, eventType);
+        }
+        else if (key == SDLK_ESCAPE)
+        {
+            SetKey(&keyboard->escape, eventType);
+        }
+        else if (key == SDLK_a)
+        {
+            SetKey(&keyboard->a, eventType);
+        }
+        else if (key == SDLK_d)
+        {
+            SetKey(&keyboard->d, eventType);
+        }
+        else if (key == SDLK_p)
+        {
+            SetKey(&keyboard->p, eventType);
+        }
+        else if (key == SDLK_s)
+        {
+            SetKey(&keyboard->s, eventType);
+        }
+        else if (key == SDLK_w)
+        {
+            SetKey(&keyboard->w, eventType);
+        }
+        ecs_modified(world, keyboardEntity, Keyboard);
+    }
 }
 
 void SetKey(PhysicalButton *key, int eventType)
@@ -43,48 +82,30 @@ void SetKey(PhysicalButton *key, int eventType)
     }
 }
 
-//! Extract Key Events from SDL and set them on entities keyboad.
-void ExtractIntoKeyboard(ecs_world_t *world, SDL_Event event)
+void ResetKey(PhysicalButton *key)
 {
-    ECS_COMPONENT(world, Keyboard);
-    int eventType = event.type;
-    if (eventType == SDL_KEYDOWN || eventType == SDL_KEYDOWN)
+    if (key->wasPressedThisFrame)
     {
-        Keyboard *keyboard = ecs_get(world, keyboardEntity, Keyboard);
-        SDL_Keycode key = event.key.keysym.sym;
-        if (key == SDLK_SPACE) 
-        {
-            SetKey(&keyboard->space, eventType);
-        }
-        else if (key == SDLK_ESCAPE)
-        {
-            SetKey(&keyboard->escape, eventType);
-        }
-        else if (key == SDLK_a)
-        {
-            SetKey(&keyboard->a, eventType);
-        }
-        else if (key == SDLK_d)
-        {
-            SetKey(&keyboard->d, eventType);
-        }
-        else if (key == SDLK_s)
-        {
-            SetKey(&keyboard->s, eventType);
-        }
-        else if (key == SDLK_w)
-        {
-            SetKey(&keyboard->w, eventType);
-        }
+        key->wasPressedThisFrame = false;
     }
+    if (key->wasReleasedThisFrame)
+    {
+        key->wasReleasedThisFrame = false;
+    }
+}
+
+void PrintKey(const PhysicalButton *key, char* name)
+{
+    printf("    key %s [%s - %s - %s]\n", name,
+        (key->wasPressedThisFrame ? "true" : "false"),
+        (key->isPressed ? "true" : "false"),
+        (key->wasReleasedThisFrame ? "true" : "false"));
 }
 
 void PrintKeyboard(ecs_world_t *world)
 {
-    ECS_COMPONENT(world, Keyboard);
     const Keyboard *keyboard = ecs_get(world, keyboardEntity, Keyboard);
-    printf("keyboard [%s - %s - %s]\n",
-        (keyboard->space.wasPressedThisFrame ? "true" : "false"),
-        (keyboard->space.isPressed ? "true" : "false"),
-        (keyboard->space.wasReleasedThisFrame ? "true" : "false"));
+    PrintKey(&keyboard->space, "space");
+    PrintKey(&keyboard->p, "p");
+    PrintKey(&keyboard->w, "w");
 }

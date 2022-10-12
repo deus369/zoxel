@@ -8,11 +8,14 @@
 #include "../../Imports/OpenGL/OpenGLHelpers.c"
 // Rendering
 #include "Components/Brightness.c"
+ECS_COMPONENT_DECLARE(Brightness);
+// Systems
 #include "Systems/RenderSystem.c"
 
-void InitializeRendering(ecs_world_t *world)
+void RenderingImport(ecs_world_t *world)
 {
-    ECS_COMPONENT(world, Brightness);
+    ECS_MODULE(world, Rendering);
+    ECS_COMPONENT_DEFINE(world, Brightness);
     ECS_SYSTEM(world, RenderSystem, EcsOnUpdate, Position2D, Rotation2D, Scale2D, Brightness);
 }
 

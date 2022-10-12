@@ -2,6 +2,9 @@
 # ignore builds
 *.x86
 
+#ignore zoxel build
+zoxel
+
 #ignore scrap code
 scrap.c
 

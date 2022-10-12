@@ -5,18 +5,20 @@
 #include "Data/PhysicalButton.c"
 #include "Components/Keyboard.c"
 #include "Tags/Device.c"
+// Declare Data
+ECS_COMPONENT_DECLARE(Keyboard);
 // Systems
 #include "Systems/KeyboardExtractSystem.c"
-#include "Systems/BobSpawnSystem.c"     // testing
 
-void InitializeInputs(ecs_world_t *world)
+void InputsImport(ecs_world_t *world)
 {
-    // Data
-    ECS_COMPONENT(world, Keyboard);
-    // Systems
-    SpawnKeyboadEntity(world);
-    InitializeBobSpawnSystem(world);
-    ECS_SYSTEM(world, BobSpawnSystem, EcsOnUpdate, Keyboard);
+    ECS_MODULE(world, Inputs);
+    ECS_COMPONENT_DEFINE(world, Keyboard);
+}
+
+void PostInitializeInputs(ecs_world_t *world)
+{
+    InitializeKeyboardExtractSystem(world);
 }
 
 #endif

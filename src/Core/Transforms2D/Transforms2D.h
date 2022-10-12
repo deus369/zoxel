@@ -7,11 +7,16 @@
 #include "Components/Rotation2D.c"
 #include "Components/Scale2D.c"
 
-void InitializeTransforms2D(ecs_world_t *world)
+ECS_COMPONENT_DECLARE(Position2D);
+ECS_COMPONENT_DECLARE(Rotation2D);
+ECS_COMPONENT_DECLARE(Scale2D);
+
+void Transforms2DImport(ecs_world_t *world)
 {
-    ECS_COMPONENT(world, Position2D);
-    ECS_COMPONENT(world, Rotation2D);
-    ECS_COMPONENT(world, Scale2D);
+    ECS_MODULE(world, Transforms2D);
+    ECS_COMPONENT_DEFINE(world, Position2D);
+    ECS_COMPONENT_DEFINE(world, Rotation2D);
+    ECS_COMPONENT_DEFINE(world, Scale2D);
 }
 
 #endif

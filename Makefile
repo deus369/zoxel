@@ -1,4 +1,7 @@
-# Request POSIX Make behavior and disable any default suffix-based rules
+# Zoxel Makefile!
+
+# ends up close to this but with optimizations
+# cc -std=c99 -o zoxel src/Imports/Flecs/flecs.c src/main.c -lGL -lSDL2 -lSDL2_image; valgrind --track-origins=true ./zoxel;
 
 # Declare compiler tools and flags
 CC      = cc
@@ -20,9 +23,10 @@ SRCS = src/Imports/Flecs/flecs.c src/Imports/Flecs/flecs.h
 OBJS = src/Imports/Flecs/flecs.c
 SRCS += src/main.c
 OBJS += src/main.c
+# Memory Testing with valgrind ./zoxel
 
 # Build the main executable 
-zoxel.x86: $(SRCS)
+zoxel: $(SRCS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
 
 # Helper target that cleans up build artifacts
