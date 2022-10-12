@@ -1,7 +1,7 @@
 #include "../../Imports/Flecs/flecs.h"
-#include "../../Core/Core.h"
-#include "../Physics2D.h"
-#include "../../Transforms2D/Transforms2D.h"
+// #include "../../Core/Core.h"
+// #include "../Space/Physics2D.h"
+// #include "../../Core/Transforms2D/Transforms2D.h"
 
 void Gravity2DSystem(ecs_iter_t *it)
 {

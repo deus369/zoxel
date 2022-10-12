@@ -1,7 +1,7 @@
-#include "../../Core/Core.h"
+#include "../../../Core/Core/Core.h"
 
 //! Velocity movement of a 2D Entity.
-typedef struct Velocity2D
+typedef struct
 {
     float2 value;
 } Velocity2D;

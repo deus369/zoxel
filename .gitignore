@@ -4,3 +4,6 @@
 
 #ignore scrap code
 scrap.c
+
+#ignore settings
+.vscode

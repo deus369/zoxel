@@ -3,9 +3,9 @@
 #define Zoxel_Rendering
 
 // OpenGL
-#include "../Imports/OpenGL/opengl.h"
-#include "../Imports/OpenGL/opengl.c"
-#include "../Imports/OpenGL/OpenGLHelpers.c"
+#include "../../Imports/OpenGL/opengl.h"
+#include "../../Imports/OpenGL/opengl.c"
+#include "../../Imports/OpenGL/OpenGLHelpers.c"
 // Rendering
 #include "Components/Brightness.c"
 #include "Systems/RenderSystem.c"

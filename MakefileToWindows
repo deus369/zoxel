@@ -14,6 +14,13 @@ LDLIBS += ./SDL2/lib/libSDL2main.a ./SDL2/lib/libSDL2.a
 LDLIBS += -lgdi32 -limm32 -lole32 -loleaut32
 LDLIBS += -lopengl32 -lsetupapi -lversion -lwinmm
 
+# x86_64-w64-mingw32-gcc -std=c99 -Isrc/ -I./SDL2/include -mwindows -o zoxel.exe src/Imports/Flecs/flecs.c src/main.c -lmingw32 ./SDL2/lib/libSDL2main.a ./SDL2/lib/libSDL2.a -lgdi32 -lopengl32
+
+SRCS = src/Imports/Flecs/flecs.c src/Imports/Flecs/flecs.h
+OBJS = src/Imports/Flecs/flecs.c
+SRCS += src/main.c
+OBJS += src/main.c
+
 # Build the main executable 
 zoxel.exe: $(SRCS)  ./SDL2/lib/libSDL2.a
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
@@ -24,11 +31,14 @@ zoxel.exe: $(SRCS)  ./SDL2/lib/libSDL2.a
 	wget https://www.libsdl.org/release/SDL2-devel-2.0.12-mingw.tar.gz
 	tar -xf SDL2-devel-2.0.12-mingw.tar.gz
 	mv SDL2-2.0.12/x86_64-w64-mingw32/ SDL2/
+	rm SDL2-devel-2.0.12-mingw.tar.gz
+	rm -rf SDL2-2.0.12
 
 # Helper target that cleans up build artifacts
 .PHONY: clean
 clean:
 	rm -fr zoxel zoxel.exe src/*.o
+	rm -rf SDL2
 
 # Default rule for compiling .c files to .o object files
 .SUFFIXES: .c .o

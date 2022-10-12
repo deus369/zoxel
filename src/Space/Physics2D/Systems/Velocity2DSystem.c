@@ -1,7 +1,7 @@
-#include "../../Imports/Flecs/flecs.h"
-#include "../../Core/Core.h"
+// #include "../../../Imports/Flecs/flecs.h"
 #include "../Physics2D.h"
-#include "../../Transforms2D/Transforms2D.h"
+#include "../../../Core/Core/Core.h"
+#include "../../../Core/Transforms2D/Transforms2D.h"
 
 void Velocity2DSystem(ecs_iter_t *it)
 {

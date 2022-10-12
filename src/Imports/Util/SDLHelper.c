@@ -2,7 +2,9 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
+#ifdef SDL_IMAGES
 #include <SDL2/SDL_image.h>
+#endif
 #ifndef M_PI
 #define M_PI 3.141592653589793
 #endif
@@ -14,10 +16,14 @@ SDL_Window* window;
 SDL_GLContext context;
 long framesPerSecond = 0;
 double currentTime = 0.0;
-extern double deltaTimeSDL = 0.0;
+double deltaTimeSDL = 0.0;
 double lastTime = 0;
 double lastPrinted = 0.0;
 unsigned long windowFlags;
+
+
+// forward declarations
+void LoadIconSDL(SDL_Window* window);
 
 //! Zoxel can also be a command tool... Wuut?!?!!
 void PrintHelpMenu(const char* arg0)
@@ -144,36 +150,14 @@ void EndSDL()
 //! Loads a Game Icon from the ui-icons folder.
 void LoadIconSDL(SDL_Window* window)
 {
+#ifdef SDL_IMAGES
     const char *iconFilename = "pixel-art/ui-icons/LogoutUI.png";
     SDL_Surface *surface = IMG_Load(iconFilename); // IMG_Load(buffer);
     // The icon is attached to the window pointer
     SDL_SetWindowIcon(window, surface);
     // ...and the surface containing the icon pixel data is no longer required.
     SDL_FreeSurface(surface);
-}
-
-void ResizeSDL(SDL_Event *event)
-{
-    //int screen_width = event->window->w;
-    //int screen_height = event->window.h;
-    int screen_width;
-    int screen_height;
-    SDL_GL_GetDrawableSize(window, &screen_width, &screen_height);
-    printf("Resizing Window [%i, %i]", screen_width, screen_height);
-    // SDL_SetVideoMode(screen_width, screen_height, 32, 0); // windowFlags); // SDL_OPENGL | SDL_RESIZABLE | SDL_DOUBLEBUF);
-    //SDL_RenderSetLogicalSize(window, screen_width, screen_height);
-
-    // int screen_width = 1920; // window.w;
-    // int screen_height = 1080; // window.h;
-    // SDL_SetVideoMode(screen_width, screen_height, 0, windowFlags); // SDL_OPENGL | SDL_RESIZABLE | SDL_DOUBLEBUF);
-    // glViewport(0, 0, screen_width, screen_height);
-    // glMatrixMode(GL_PROJECTION);
-    // glOrtho(0, screen_width, 0, screen_height, -1, 1);
-    // glLoadIdentity();
-    // glMatrixMode(GL_MODELVIEW);
-    // glLoadIdentity();
-    // glClear(GL_COLOR_BUFFER_BIT);
-    // glLoadIdentity();
+#endif
 }
 
 void ResizeOpenGL(int width, int height)
@@ -289,3 +273,13 @@ void ResizeOpenGL(int width, int height)
 //     0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff
 // };
 // surface = SDL_CreateRGBSurfaceFrom(pixels,16,16,16,16*2,0x0f00,0x00f0,0x000f,0xf000);
+
+// void ResizeSDL(SDL_Event *event)
+// {
+//     //int screen_width = event->window->w;
+//     //int screen_height = event->window.h;
+//     int screen_width;
+//     int screen_height;
+//     SDL_GL_GetDrawableSize(window, &screen_width, &screen_height);
+//     printf("Resizing Window [%i, %i]", screen_width, screen_height);
+// }

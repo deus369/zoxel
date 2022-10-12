@@ -1,7 +1,6 @@
-// STD
-// #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#define SDL_IMAGES
 #include "Imports/Util/SDLHelper.c"
 #include "Imports/Util/ECSHelper.c"
 
@@ -15,9 +14,12 @@ bool profiler = false;
 //! Temporary, quick and dirty input.
 void UpdateInput()
 {
+    ResetKeyboard(world);
+    SpawnIfSpawn(world);
     SDL_Event event  = { 0 };
     while (SDL_PollEvent(&event))
     {
+        ExtractIntoKeyboard(world, event);
         int eventType = event.type;
         if (eventType == SDL_QUIT)
         {
@@ -30,17 +32,19 @@ void UpdateInput()
             {
                 running = false;
             }
-            else if (key == SDLK_SPACE)
+            /*else if (key == SDLK_SPACE)
             {
                 SpawnBobArmy();
+            }*/
+            else if (key == SDLK_p)
+            {
+                printf("Printing Debug\n");
+                PrintBobSpawnSystem(world);
+                // PrintKeyboard(world);
             }
         }
         else if (eventType == SDL_WINDOWEVENT) // SDL_WINDOWEVENT_RESIZED)
         {
-            /*if (event.window.event == SDL_WINDOWEVENT_RESIZED)
-            {
-                ResizeSDL(&event);
-            }*/
             if(event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
             {
                 ResizeOpenGL(event.window.data1, event.window.data2);
@@ -95,6 +99,7 @@ int main(int argc, char* argv[])
     }
     InitializeOpenGL(vsync);
     InitializeECS(argc, argv, profiler, isRendering);
+    deltaTimeSDL = 0;
     //! Core Application Loop!
     while (running)
     {
@@ -104,7 +109,10 @@ int main(int argc, char* argv[])
         {
             UpdateBeginOpenGL();
         }
-        UpdateECS();
+        if (deltaTimeSDL > 0)
+        {
+            UpdateECS();
+        }
         if (isRendering)
         {
             UpdateEndOpenGL();

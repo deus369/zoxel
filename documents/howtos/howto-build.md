@@ -1,48 +1,45 @@
 How-To Building
 -----
 
+    This project is built using POSIX-compatible Make. For unix-like systems, it can be built natively.
+
+[Make](https://pubs.opengroup.org/onlinepubs/009695399/utilities/make.html)
+
+
 [Back](../../readme.md)
 
 -----
 
 ## Building
-This project is built using POSIX-compatible [make](https://pubs.opengroup.org/onlinepubs/009695399/utilities/make.html).
-For unix-like systems, it can be built natively.
 
 ### Linux
 
-Linux (Debian-based) [Native]
+This is for Debian based Linux systems.
+
+Linux [Native]
 ```
 sudo apt install make libsdl2-dev libsdl2-image-dev
 make
 ```
+
+### Windows [On Linux]
+
+[mingw-w64](http://mingw-w64.org/doku.php) is used to cross-compile the project from a unix-like system.
+
+```
+sudo apt install libsdl2-dev libsdl2-image-dev mingw-w64 make tar wget
+make -f MakefileToWindows
+```
+
+### Extra
 
 Parallel Make (x is the number of cores)
 ```
 make -jx
 ```
 
-### Windows [todo]
+### Windows [Native] [todo]
 
-[mingw-w64](http://mingw-w64.org/doku.php) is used to cross-compile the project from a unix-like system.
+### MacOS [On Linux] [todo]
 
-Linux
-```
-sudo apt install make wget tar mingw-w64
-make -f Makefile.mingw
-```
-
-
-### MacOS [todo]
-
-Linux
-```
-brew install make sdl2
-make -f Makefile.macos
-```
-
-MacOS [Native]
-```
-brew install make wget gnu-tar mingw-w64
-make -f Makefile.mingw
-```
+### MacOS [Native] [todo]

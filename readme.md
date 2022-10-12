@@ -10,7 +10,7 @@ Zoxel has a large scope as I have many ideas. It's game design is influenced fro
 
 ## How To Build
 
-[How To Build](documents/howtos/howto-build.md)
+[How To Build Guide](documents/howtos/howto-build.md)
 
 ## How far along is it?
 
