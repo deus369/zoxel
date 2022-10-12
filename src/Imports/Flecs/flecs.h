@@ -4392,7 +4392,7 @@ FLECS_API extern const ecs_entity_t EcsMonitor;
 
 /* Event. Triggers when an entity is deleted.
  * Also used as relationship for defining cleanup behavior, see: 
- * https://github.com/SanderMertens/Flecs/blob/master/docs/Relationships.md#cleanup-properties
+ * https://github.com/SanderMertens/Imports/Flecs/blob/master/docs/Relationships.md#cleanup-properties
  */
 FLECS_API extern const ecs_entity_t EcsOnDelete;
 
@@ -4410,7 +4410,7 @@ FLECS_API extern const ecs_entity_t EcsOnTableFill;
 
 /* Relationship used to define what should happen when a target entity (second
  * element of a pair) is deleted. For details see: 
- * https://github.com/SanderMertens/Flecs/blob/master/docs/Relationships.md#cleanup-properties
+ * https://github.com/SanderMertens/Imports/Flecs/blob/master/docs/Relationships.md#cleanup-properties
  */
 FLECS_API extern const ecs_entity_t EcsOnDeleteTarget;
 

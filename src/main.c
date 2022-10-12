@@ -2,8 +2,8 @@
 // #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include "Core/Util/SDLHelper.c"
-#include "Core/Util/ECSHelper.c"
+#include "Imports/Util/SDLHelper.c"
+#include "Imports/Util/ECSHelper.c"
 
 // Settings 
 bool running = true;

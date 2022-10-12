@@ -5,7 +5,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include "opengl.h"
-#include "../Core/Core.h"
+#include "../../Core/Core.h"
 
 GLuint prog;
 GLuint vbo;

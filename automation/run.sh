@@ -1,5 +1,5 @@
 #! /bin/bash
 
-make -B
+cd ..
 
 ./zoxel.x86
