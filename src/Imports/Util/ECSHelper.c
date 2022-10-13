@@ -3,12 +3,12 @@
 #include "../../Core/Core/Core.h"
 #include "../../Core/Inputs/Inputs.h"
 #include "../../Core/Transforms2D/Transforms2D.h"
-#include "../../Space/Physics2D/Physics2D.h"
 #include "../../Core/Textures/Textures.h"
-#include "../../Core/Players/Players.h"
-// --- Space ---
 #include "../../Core/Rendering/Rendering.h"
+// --- Space ---
+#include "../../Space/Physics2D/Physics2D.h"
 // --- Gameplay ---
+#include "../../Core/Players/Players.h"
 
 ecs_world_t *world;
 
@@ -24,14 +24,14 @@ void InitializeECS(int argc, char* argv[], bool profiler, bool isRendering)
         ECS_IMPORT(world, Rendering);
     }
     ECS_IMPORT(world, Textures);
-    ECS_IMPORT(world, Players);
     // Space Modules
     ECS_IMPORT(world, Physics2D);
     // Gameplay Modules
+    ECS_IMPORT(world, Players);
 
     // Spawn things from Modules
-    ECS_IMPORT(world, Inputs);
-    ECS_IMPORT(world, Players);
+    PostInitializeInputs(world);
+    PostInitializePlayers(world);
 
     // Enable Profiler
     if (profiler)

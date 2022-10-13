@@ -8,12 +8,7 @@ const bool isFixBulkSpawnCrashing = true;
 void PrintBobSpawnSystem(ecs_world_t *world);
 ecs_entity_t bobPrefab;
 ecs_entity_t bobPlayer;
-const int bobSpawnCount = 10000;
-const float2 positionBounds = { 0.4f, 4.4f };
-const float2 velocityBounds = { 0.2f, 4.4f };
-const float torqueBounds = 8.0f;
-const float2 scaleBounds = { 0.1f, 0.6f };
-const float2 brightnessBounds = { 0.1f, 0.7f };
+const int bobSpawnCount = 100; // 00;
 
 // forward declarations
 void InitializeBobSpawnSystem(ecs_world_t *world);
@@ -33,21 +28,21 @@ void InitializeBobSpawnSystem(ecs_world_t *world)
     ecs_add(world, bobPrefab, Torque2D);
     ecs_add(world, bobPrefab, Scale2D);
     ecs_add(world, bobPrefab, Brightness);
-    // ecs_set(world, bobPrefab, Rotation2D, { 0.5f });
-    // ecs_set(world, bobPrefab, Torque2D, { 0.1f });
-    // ecs_set(world, bobPrefab, Scale2D, { 0.5f });
-    // ecs_set(world, bobPrefab, Brightness, { 0.5f });
+    ecs_set(world, bobPrefab, Position2D, { 0, 0 });
+    ecs_set(world, bobPrefab, Velocity2D, { 0, 0 });
+    ecs_set(world, bobPrefab, Acceleration2D, { 0, 0 });
+    ecs_set(world, bobPrefab, Rotation2D, { 0 });
+    ecs_set(world, bobPrefab, Torque2D, { 0 });
 }
 
 void SpawnPlayer(ecs_world_t *world)
 {
-    ecs_entity_t bobPlayer = ecs_new_w_pair(world, EcsIsA, bobPrefab);
-    printf("Bob is ALIVE: %lu \n", bobPlayer);
+    bobPlayer = ecs_new_w_pair(world, EcsIsA, bobPrefab);
     ecs_add(world, bobPlayer, Bob); // Add Bob Tag
+    ecs_add(world, bobPlayer, Frictioned); // Add Bob Tag
     ecs_set(world, bobPlayer, Scale2D, { 0.6f });
     ecs_set(world, bobPlayer, Brightness, { 1.5f });
-    // ecs_set(world, bobPlayer, Rotation2D, { 0 });
-    // ecs_set(world, bobPlayer, Torque2D, { 0.01f });
+    printf("Bob is ALIVE: %lu \n", bobPlayer);
 }
 
 //! Called in ecs updates
@@ -58,9 +53,9 @@ void BobSpawnSystem(ecs_iter_t *it)
     for (int i = 0; i < it->count; i++)
     {
         const Keyboard *keyboard = &keyboards[i];
-        if (keyboard->space.wasPressedThisFrame)
+        if (keyboard->space.isPressed) // wasPressedThisFrame)
         {
-            printf("Firing the Bob Army.\n");
+            // printf("Firing the Bob Army.\n");
             if (isFixBulkSpawnCrashing)
             {
                 debugSpawnBobArmy = true;
@@ -82,6 +77,11 @@ void BobSpawnSystem(ecs_iter_t *it)
 //! Here for now, spawns a one man bobarmy.
 void SpawnBobArmy(ecs_world_t *world, ecs_entity_t bobPrefab, int bobSpawnCount)
 {
+    const float2 positionBounds = { 0.4f, 4.4f };
+    const float2 velocityBounds = { 0.2f, 4.4f };
+    const float torqueBounds = 8.0f;
+    const float2 scaleBounds = { 0.1f, 0.6f };
+    const float2 brightnessBounds = { 0.1f, 0.7f };
     // Create a SpaceShip prefab with a Defense component.
     Position2D *position2Ds = malloc(sizeof(Position2D) * bobSpawnCount);
     Velocity2D *velocity2Ds = malloc(sizeof(Velocity2D) * bobSpawnCount);

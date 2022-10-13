@@ -8,9 +8,10 @@
 #include "../../Imports/OpenGL/OpenGLHelpers.c"
 // Rendering
 #include "Components/Brightness.c"
-ECS_COMPONENT_DECLARE(Brightness);
 // Systems
 #include "Systems/RenderSystem.c"
+
+ECS_COMPONENT_DECLARE(Brightness);
 
 void RenderingImport(ecs_world_t *world)
 {

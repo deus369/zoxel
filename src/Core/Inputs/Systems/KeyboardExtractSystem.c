@@ -9,7 +9,8 @@ void ResetKey(PhysicalButton *key);
 void InitializeKeyboardExtractSystem(ecs_world_t *world)
 {
     keyboardEntity = ecs_new_entity(world, "keyboard");
-    ecs_add(world, keyboardEntity, Keyboard);
+    // ecs_add(world, keyboardEntity, Keyboard);
+    ecs_set(world, keyboardEntity, Keyboard, { });
     printf("Keyboard is ALIVE: %lu \n", keyboardEntity);
 }
 
@@ -34,33 +35,31 @@ void ExtractIntoKeyboard(ecs_world_t *world, SDL_Event event)
     {
         SDL_Keycode key = event.key.keysym.sym;
         Keyboard *keyboard = ecs_get_mut(world, keyboardEntity, Keyboard);
-        if (key == SDLK_SPACE) 
+        switch(key)
         {
-            SetKey(&keyboard->space, eventType);
-        }
-        else if (key == SDLK_ESCAPE)
-        {
-            SetKey(&keyboard->escape, eventType);
-        }
-        else if (key == SDLK_a)
-        {
-            SetKey(&keyboard->a, eventType);
-        }
-        else if (key == SDLK_d)
-        {
-            SetKey(&keyboard->d, eventType);
-        }
-        else if (key == SDLK_p)
-        {
-            SetKey(&keyboard->p, eventType);
-        }
-        else if (key == SDLK_s)
-        {
-            SetKey(&keyboard->s, eventType);
-        }
-        else if (key == SDLK_w)
-        {
-            SetKey(&keyboard->w, eventType);
+            case SDLK_SPACE:
+                SetKey(&keyboard->space, eventType);
+                break;
+            case SDLK_ESCAPE:
+                SetKey(&keyboard->escape, eventType);
+                break;
+            case SDLK_a:
+                SetKey(&keyboard->a, eventType);
+                break;
+            case SDLK_d:
+                SetKey(&keyboard->d, eventType);
+                break;
+            case SDLK_p:
+                SetKey(&keyboard->p, eventType);
+                break;
+            case SDLK_s:
+                SetKey(&keyboard->s, eventType);
+                break;
+            case SDLK_w:
+                SetKey(&keyboard->w, eventType);
+                break;
+            default:
+                return;
         }
         ecs_modified(world, keyboardEntity, Keyboard);
     }

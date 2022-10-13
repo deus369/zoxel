@@ -41,17 +41,17 @@ int main(int argc, char* argv[])
     {
         UpdateBeginSDL();
         PollSDLEvents();
-        if (isRendering)
-        {
-            UpdateBeginOpenGL();
-        }
         if (deltaTimeSDL > 0)
         {
+            if (isRendering)
+            {
+                UpdateBeginOpenGL();
+            }
             UpdateECS();
-        }
-        if (isRendering)
-        {
-            UpdateEndOpenGL();
+            if (isRendering)
+            {
+                UpdateEndOpenGL();
+            }
         }
         UpdateEndSDL(isRendering);
     }
