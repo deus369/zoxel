@@ -3,3 +3,4 @@ typedef struct
 {
     int value;
 } ID;
+ECS_COMPONENT_DECLARE(ID);

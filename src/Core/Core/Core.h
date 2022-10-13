@@ -1,10 +1,13 @@
 #ifndef Zoxel_Core
 #define Zoxel_Core
 
-#include "Components/ID.c"
+// Data
 #include "Data/float2.c"
-
-ECS_COMPONENT_DECLARE(ID);
+#include "Data/float3.c"
+#include "Data/float4.c"
+#include "Data/float4x4.c"
+// Components
+#include "Components/ID.c"
 
 void CoreImport(ecs_world_t *world)
 {

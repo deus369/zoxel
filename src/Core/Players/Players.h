@@ -1,53 +1,48 @@
 #ifndef Zoxel_Players
 #define Zoxel_Players
-
+//! Players Module
+/**
+ * \todo Use ECS_SYSTEM_DEFINE & DECLARE for MoveSystem, why does it crash?
+ * \todo Spawning Queries in Initialize function as they depend on other Modules.
+*/
 // you can assign anything to ctx, make a struct with multiple queries for injection
 
-ECS_DECLARE(Bob);
-
+// Tags
+ECS_DECLARE(Player);
+ECS_DECLARE(Player2D);
+ECS_DECLARE(DisableMovement);
+// Systems
 #include "Systems/BobSpawnSystem.c"
 #include "Systems/BobMoveSystem.c"
-ECS_SYSTEM_DECLARE(BobSpawnSystem);
-// ECS_SYSTEM_DECLARE(BobMoveSystem);
 
 void PlayersImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Players);
-    ECS_TAG_DEFINE(world, Bob);
+    ECS_TAG_DEFINE(world, Player);
+    ECS_TAG_DEFINE(world, Player2D);
+    ECS_TAG_DEFINE(world, DisableMovement);
     ECS_SYSTEM_DEFINE(world, BobSpawnSystem, EcsOnUpdate, Keyboard);
-    // ECS_SYSTEM_DEFINE(world, BobMoveSystem, EcsOnUpdate, Keyboard); // , Bob());
-    ECS_SYSTEM(world, BobMoveSystem, EcsOnUpdate, Keyboard); // , Bob());
-    ecs_query_t *bobQuery = ecs_query_init(world, &(ecs_query_desc_t){
-        .filter.terms = {
-            { ecs_id(Bob) },
-            { ecs_id(Acceleration2D) }
-        }
-    });
-    ecs_system(world, { .entity = BobMoveSystem, .ctx = bobQuery });
-    printf("Bob ID %lu\n", ecs_id(Bob));
-    printf("Acceleration2D ID %lu\n", ecs_id(Acceleration2D));
+    ECS_SYSTEM_DEFINE(world, BobMoveSystem, EcsOnUpdate, Keyboard);
+    printf("BobMoveSystem ID [%lu] [%lu]\n", ecs_id(BobMoveSystem), BobMoveSystem);
 }
 
-void PostInitializePlayers(ecs_world_t *world)
+void InitializePlayers(ecs_world_t *world)
 {
     InitializeBobSpawnSystem(world);
     SpawnPlayer(world);
-    /*bobQuery = ecs_query_init(world, &(ecs_query_desc_t){
+    #ifdef Zoxel_Physics2D
+    printf("BobMoveSystem ID 2 [%lu] [%lu]\n", ecs_id(BobMoveSystem), BobMoveSystem);
+    ecs_query_t *bobQuery = ecs_query_init(world, &(ecs_query_desc_t) {
         .filter.terms = {
-            { ecs_id(Bob) }
-            // { ecs_id(Velocity2D) }
+            { ecs_id(Player2D) },
+            { ecs_id(Acceleration2D) }
         }
     });
-    ecs_system(world, { .entity = BobMoveSystem, .ctx = bobQuery });*/
+    ecs_system(world, {
+        .entity = (ecs_entity_t) BobMoveSystem,    // (long unsigned int) 
+        .ctx = bobQuery,
+        // .no_staging = true
+    });
+    #endif
 }
-
-// { .id = ecs_id(Bob) } 
-// { .id = ecs_id(Velocity2D), .inout = EcsIn}
-/*ecs_query_t *bobQuery = ecs_query(world, {
-    .filter.terms = {
-        { .id = ecs_id(Velocity2D) }
-        // { .id = ecs_id(Bob) }
-    }
-});*/
-
 #endif

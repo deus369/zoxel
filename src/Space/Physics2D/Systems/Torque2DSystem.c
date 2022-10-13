@@ -1,8 +1,5 @@
 // #include "../../../Imports/Flecs/flecs.h"
-#include "../../../Core/Transforms2D/Transforms2D.h"
-#ifndef M_PI
-#define M_PI 3.141592653589793
-#endif
+// #include "../../../Core/Transforms2D/Transforms2D.h"
 
 void Torque2DSystem(ecs_iter_t *it)
 {
@@ -21,3 +18,4 @@ void Torque2DSystem(ecs_iter_t *it)
         // rotation2Ds = rotation2D;
     }
 }
+ECS_SYSTEM_DECLARE(Torque2DSystem);

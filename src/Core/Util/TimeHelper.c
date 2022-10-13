@@ -1,4 +1,4 @@
-// Move functions from SDLHelper.c
+// Move functions from SDLUtil.c
 
 // static class TimeHelper
 // {

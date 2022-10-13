@@ -31822,11 +31822,14 @@ ecs_entity_t ecs_system_init(
         ECS_INVALID_WHILE_READONLY, NULL);
 
     ecs_entity_t entity = desc->entity;
+    printf("ecs_system_init [%lu]\n", (long unsigned int) (entity));
     if (!entity) {
+        printf("!entity is true");
         entity = ecs_new(world, 0);
     }
     EcsPoly *poly = ecs_poly_bind(world, entity, ecs_system_t);
     if (!poly->poly) {
+        printf("Creating new System for our entity [%lu]\n", (long unsigned int) (entity));
         ecs_system_t *system = ecs_poly_new(ecs_system_t);
         ecs_assert(system != NULL, ECS_INTERNAL_ERROR, NULL);
         
@@ -31885,9 +31888,11 @@ ecs_entity_t ecs_system_init(
                 ecs_get_name(world, entity));
         }
 
-        ecs_defer_end(world);            
+        ecs_defer_end(world);  
+        //printf("Creating New System [%lu]\n", ecs_id(system));          
     } else {
         ecs_system_t *system = ecs_poly(poly->poly, ecs_system_t);
+        //printf("Hello world 2 [%lu]\n", ecs_id(system)); 
 
         if (desc->run) {
             system->run = desc->run;

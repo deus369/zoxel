@@ -12,7 +12,7 @@ void TexturesImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Textures);
     ECS_COMPONENT_DEFINE(world, Texture);
-    // ECS_SYSTEM(world, RenderSystem, EcsOnUpdate, Position2D, Rotation2D, Scale2D, Brightness);
+    // ECS_SYSTEM(world, Render2DSystem, EcsOnUpdate, Position2D, Rotation2D, Scale2D, Brightness);
 }
 
 #endif

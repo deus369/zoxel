@@ -1,8 +1,20 @@
 #include <stdbool.h>
 #include <string.h>
 #define SDL_IMAGES
-#include "Imports/Util/SDLHelper.c"
-#include "Imports/Util/ECSHelper.c"
+#include "Imports/Imports.h"
+// --- Core ---
+#include "Core/Core/Core.h"
+#include "Core/Inputs/Inputs.h"
+#include "Core/Transforms2D/Transforms2D.h"
+#include "Core/Transforms/Transforms.h"
+#include "Core/Rendering/Rendering.h"
+#include "Core/Cameras/Cameras.h"
+#include "Core/Textures/Textures.h"
+#include "Core/Voxels/Voxels.h"
+// --- Space ---
+#include "Space/Physics2D/Physics2D.h"
+// --- Gameplay ---
+#include "Core/Players/Players.h"
 
 // Settings 
 bool running = true;
@@ -14,6 +26,31 @@ bool profiler = false;
 // Forward  Declares
 int ProcessArguments(int argc, char* argv[]);
 void PollSDLEvents();
+
+void InitializeModules(ecs_world_t *world)
+{
+    // Core Modules
+    ECS_IMPORT(world, Inputs);
+    ECS_IMPORT(world, Transforms2D);
+    ECS_IMPORT(world, Transforms);
+    if (isRendering)
+    {
+        ECS_IMPORT(world, Rendering);
+    }
+    ECS_IMPORT(world, Cameras);
+    ECS_IMPORT(world, Textures);
+    ECS_IMPORT(world, Voxels);
+    // Space Modules
+    ECS_IMPORT(world, Physics2D);
+    // Gameplay Modules
+    ECS_IMPORT(world, Players);
+
+    // Spawn things from Modules
+    InitializeInputs(world);
+    InitializePlayers(world);
+    InitializeCameras(world);
+    // InitializeVoxels(world);
+}
 
 //! This is a mistaken function. Move along.
 int main(int argc, char* argv[])
@@ -34,7 +71,10 @@ int main(int argc, char* argv[])
         return didFail;
     }
     InitializeOpenGL(vsync);
-    InitializeECS(argc, argv, profiler, isRendering);
+    ecs_world_t *world = InitializeECS(argc, argv, profiler, isRendering);
+    // Import Modules Here!
+    InitializeModules(world);
+
     deltaTimeSDL = 0;
     //! Core Application Loop!
     while (running)

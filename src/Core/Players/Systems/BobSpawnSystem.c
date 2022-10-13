@@ -3,46 +3,60 @@
 #include "../../../Core/Rendering/Rendering.h"
 #include "../../../Space/Physics2D/Physics2D.h"
 
+void BobSpawnSystem(ecs_iter_t *it);
+ECS_SYSTEM_DECLARE(BobSpawnSystem);
+
 bool debugSpawnBobArmy = false;
-const bool isFixBulkSpawnCrashing = true;
+const bool isFixBulkSpawnCrashing = false;
 void PrintBobSpawnSystem(ecs_world_t *world);
-ecs_entity_t bobPrefab;
-ecs_entity_t bobPlayer;
-const int bobSpawnCount = 100; // 00;
+ecs_entity_t character2DPrefab;
+ecs_entity_t playerPrefab;
+const int bobSpawnCount = 10;
 
 // forward declarations
 void InitializeBobSpawnSystem(ecs_world_t *world);
 void BobSpawnSystem(ecs_iter_t *it);
-void SpawnBobArmy(ecs_world_t *world, ecs_entity_t bobPrefab, int bobSpawnCount);
+void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, int bobSpawnCount);
 void PrintBobSpawnSystem(ecs_world_t *world);
 void BobArmySpawnFixer(ecs_world_t *world);
 
 //! Initializes prefabs for bob.
 void InitializeBobSpawnSystem(ecs_world_t *world)
 {
-    bobPrefab = ecs_new_prefab(world, "");
-    ecs_add(world, bobPrefab, Position2D);
-    ecs_add(world, bobPrefab, Velocity2D);
-    ecs_add(world, bobPrefab, Acceleration2D);
-    ecs_add(world, bobPrefab, Rotation2D);
-    ecs_add(world, bobPrefab, Torque2D);
-    ecs_add(world, bobPrefab, Scale2D);
-    ecs_add(world, bobPrefab, Brightness);
-    ecs_set(world, bobPrefab, Position2D, { 0, 0 });
-    ecs_set(world, bobPrefab, Velocity2D, { 0, 0 });
-    ecs_set(world, bobPrefab, Acceleration2D, { 0, 0 });
-    ecs_set(world, bobPrefab, Rotation2D, { 0 });
-    ecs_set(world, bobPrefab, Torque2D, { 0 });
+    character2DPrefab = ecs_new_prefab(world, "Character2D");
+    ecs_set(world, character2DPrefab, Position2D, { 0, 0 });
+    ecs_set(world, character2DPrefab, Velocity2D, { 0, 0 });
+    ecs_set(world, character2DPrefab, Acceleration2D, { 0, 0 });
+    ecs_set(world, character2DPrefab, Rotation2D, { 0 });
+    ecs_set(world, character2DPrefab, Torque2D, { 0 });
+    ecs_add(world, character2DPrefab, Scale2D);
+    ecs_add(world, character2DPrefab, Brightness);
+    playerPrefab = ecs_new_w_pair(world, EcsChildOf, character2DPrefab);
+    ecs_set_name(world, playerPrefab, "Player2D");
+    ecs_add(world, playerPrefab, Player2D);
+    ecs_add(world, playerPrefab, Frictioned);
 }
 
+//! Spawn a Player character.
 void SpawnPlayer(ecs_world_t *world)
 {
-    bobPlayer = ecs_new_w_pair(world, EcsIsA, bobPrefab);
-    ecs_add(world, bobPlayer, Bob); // Add Bob Tag
-    ecs_add(world, bobPlayer, Frictioned); // Add Bob Tag
-    ecs_set(world, bobPlayer, Scale2D, { 0.6f });
-    ecs_set(world, bobPlayer, Brightness, { 1.5f });
-    printf("Bob is ALIVE: %lu \n", bobPlayer);
+    // child prefabs don't seem to inherit tags
+    ecs_entity_t bobPlayer = ecs_new_w_pair(world, EcsIsA, playerPrefab);
+    // ecs_entity_t bobPlayer = ecs_new_w_pair(world, EcsChildOf, playerPrefab);
+    // printf("Spawned Player + Character2D [%lu]\n", bobPlayer);
+    /*har *playerName = strcat("Player (Instance) [%lu]", bobPlayer);
+    ecs_set_name(world, bobPlayer, playerName);
+    free(playerName);*/
+    ecs_set(world, bobPlayer, Scale2D, { 0.4f + ((rand() % 101) / 100.0f) * 0.2f  });
+    ecs_set(world, bobPlayer, Brightness, { 0.8f + ((rand() % 101) / 100.0f) * 0.6f });
+    // Add this here until Automatic Override works https://flecs.docsforge.com/master/manual/#automatic-overriding
+    //ecs_add(world, bobPlayer, Player2D);
+    //ecs_add(world, bobPlayer, Frictioned);
+    ecs_set(world, bobPlayer, Position2D, { 0, 0 });
+    ecs_set(world, bobPlayer, Velocity2D, { 0, 0 });
+    ecs_set(world, bobPlayer, Acceleration2D, { 0, 0 });
+    ecs_set(world, bobPlayer, Rotation2D, { 0 });
+    ecs_set(world, bobPlayer, Torque2D, { 0 });
 }
 
 //! Called in ecs updates
@@ -62,7 +76,7 @@ void BobSpawnSystem(ecs_iter_t *it)
             }
             else
             {
-                SpawnBobArmy(world, bobPrefab, bobSpawnCount);
+                SpawnBobArmy(world, character2DPrefab, bobSpawnCount);
             }
         }
         else if (keyboard->p.wasPressedThisFrame)
@@ -71,11 +85,21 @@ void BobSpawnSystem(ecs_iter_t *it)
             PrintBobSpawnSystem(world);
             PrintKeyboard(world);
         }
+        else if (keyboard->z.wasPressedThisFrame)
+        {
+            printf("Spawning new Player.\n");
+            SpawnPlayer(world);
+        }
+    }
+    if (debugSpawnBobArmy)
+    {
+        debugSpawnBobArmy = false;
+        SpawnBobArmy(world, character2DPrefab, bobSpawnCount);
     }
 }
 
 //! Here for now, spawns a one man bobarmy.
-void SpawnBobArmy(ecs_world_t *world, ecs_entity_t bobPrefab, int bobSpawnCount)
+void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, int bobSpawnCount)
 {
     const float2 positionBounds = { 0.4f, 4.4f };
     const float2 velocityBounds = { 0.2f, 4.4f };
@@ -141,7 +165,7 @@ void SpawnBobArmy(ecs_world_t *world, ecs_entity_t bobPrefab, int bobSpawnCount)
         .count = bobSpawnCount,
         .ids =
         {
-            ecs_pair(EcsIsA, bobPrefab),
+            ecs_pair(EcsChildOf, character2DPrefab),     // EcsIsA
             ecs_id(Position2D),
             ecs_id(Velocity2D),
             ecs_id(Acceleration2D),
@@ -177,6 +201,19 @@ void BobArmySpawnFixer(ecs_world_t *world)
     if (debugSpawnBobArmy)
     {
         debugSpawnBobArmy = false;
-        SpawnBobArmy(world, bobPrefab, bobSpawnCount);
+        SpawnBobArmy(world, character2DPrefab, bobSpawnCount);
     }
 }
+
+    // ECS_ENTITY(world, character2DPrefab, Position2D, OVERRIDE | Position2D);
+
+    // ecs_set_id(world, character2DPrefab, ECS_OVERRIDE | ecs_id(Position2D), sizeof(Position2D), &(Position2D){ 0, 0 });
+    
+    // ecs_set(world, character2DPrefab, Position2D, ECS_OVERRIDE | Position2D);
+
+    /*ECS_ENTITY(world, character2DPrefab, Velocity2D, OVERRIDE | Velocity2D);
+    ECS_ENTITY(world, character2DPrefab, Acceleration2D, OVERRIDE | Acceleration2D);
+    ECS_ENTITY(world, character2DPrefab, Rotation2D, OVERRIDE | Rotation2D);
+    ECS_ENTITY(world, character2DPrefab, Torque2D, OVERRIDE | Torque2D);
+    ECS_ENTITY(world, character2DPrefab, Scale2D, OVERRIDE | Scale2D);
+    ECS_ENTITY(world, character2DPrefab, Brightness, OVERRIDE | Brightness);*/

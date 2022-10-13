@@ -24,6 +24,7 @@ void ResetKeyboard(ecs_world_t *world)
     ResetKey(&keyboard->s);
     ResetKey(&keyboard->p);
     ResetKey(&keyboard->w);
+    ResetKey(&keyboard->z);
     ecs_modified(world, keyboardEntity, Keyboard);
 }
 
@@ -57,6 +58,9 @@ void ExtractIntoKeyboard(ecs_world_t *world, SDL_Event event)
                 break;
             case SDLK_w:
                 SetKey(&keyboard->w, eventType);
+                break;
+            case SDLK_z:
+                SetKey(&keyboard->z, eventType);
                 break;
             default:
                 return;

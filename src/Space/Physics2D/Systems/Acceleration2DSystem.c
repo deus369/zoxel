@@ -1,7 +1,6 @@
 // #include "../../../Imports/Flecs/flecs.h"
-#include "../Physics2D.h"
-#include "../../../Core/Core/Core.h"
-
+// #include "../Physics2D.h"
+// #include "../../../Core/Core/Core.h"
 void Acceleration2DSystem(ecs_iter_t *it)
 {
     // double deltaTime = (double) it->delta_time;
@@ -21,3 +20,4 @@ void Acceleration2DSystem(ecs_iter_t *it)
         }
     }
 }
+ECS_SYSTEM_DECLARE(Acceleration2DSystem);

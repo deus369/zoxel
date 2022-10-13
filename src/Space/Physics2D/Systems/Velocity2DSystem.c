@@ -1,7 +1,7 @@
 // #include "../../../Imports/Flecs/flecs.h"
-#include "../Physics2D.h"
-#include "../../../Core/Core/Core.h"
-#include "../../../Core/Transforms2D/Transforms2D.h"
+// #include "../Physics2D.h"
+// #include "../../../Core/Core/Core.h"
+// #include "../../../Core/Transforms2D/Transforms2D.h"
 
 void Velocity2DSystem(ecs_iter_t *it)
 {
@@ -16,3 +16,4 @@ void Velocity2DSystem(ecs_iter_t *it)
         position2D->value.y += velocity2D->value.y * deltaTime;
     }
 }
+ECS_SYSTEM_DECLARE(Velocity2DSystem);

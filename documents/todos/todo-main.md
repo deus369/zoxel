@@ -5,6 +5,9 @@ To-Do Main
 
 -----
 
+`Documentation`
+- [ ] Look into docs forge (https://github.com/engine99team/engine99)
+
 `Flecs Testing`
 - [ ] Test out 'blitablearray' memory allocations
 - [ ] Test out OnDelete events to dispose of memory allocations
@@ -16,7 +19,7 @@ To-Do Main
 `ECS`
 - [ ] Find a better way to add new systems and components per module - organized
 - [ ] Try out prefabs and mass spawning / data setting
-- [ ] Make OpenGLHelpers one file
+- [ ] Make OpenGLUtil one file
 - [ ] Seperate out shaders from inlines
 - [ ] Spawn System
 - [ ] Inject data into another system

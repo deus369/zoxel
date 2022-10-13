@@ -1,23 +1,14 @@
-//! Rendering Module.
 #ifndef Zoxel_Rendering
 #define Zoxel_Rendering
+//! Rendering Module.
 
-// OpenGL
-#include "../../Imports/OpenGL/opengl.h"
-#include "../../Imports/OpenGL/opengl.c"
-#include "../../Imports/OpenGL/OpenGLHelpers.c"
-// Rendering
-#include "Components/Brightness.c"
-// Systems
-#include "Systems/RenderSystem.c"
-
-ECS_COMPONENT_DECLARE(Brightness);
+#include "Core/RenderingCore.h"
 
 void RenderingImport(ecs_world_t *world)
 {
+    // printf("Rendering Module Imported.");
     ECS_MODULE(world, Rendering);
-    ECS_COMPONENT_DEFINE(world, Brightness);
-    ECS_SYSTEM(world, RenderSystem, EcsOnUpdate, Position2D, Rotation2D, Scale2D, Brightness);
+    InitializeRenderingCore(world);
 }
 
 #endif

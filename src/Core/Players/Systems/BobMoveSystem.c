@@ -1,8 +1,6 @@
-#include "../../../Core/Inputs/Inputs.h"
-#include "../../../Core/Core/Core.h"
-#include "../../../Core/Transforms2D/Transforms2D.h"
-#include "../../../Core/Rendering/Rendering.h"
-#include "../../../Space/Physics2D/Physics2D.h"
+
+void BobMoveSystem(ecs_iter_t *it);
+ECS_SYSTEM_DECLARE(BobMoveSystem);
 
 //! Called in ecs updates
 void BobMoveSystem(ecs_iter_t *it)
@@ -10,14 +8,19 @@ void BobMoveSystem(ecs_iter_t *it)
     const float movementPower = 0.4f;
     double deltaTime = (double) it->delta_time;
     ecs_query_t *bobQuery = it->ctx;
+    if (!bobQuery)
+    {
+        printf("[404; bobQuery is void]\n");
+        return;
+    }
     ecs_iter_t bobIter = ecs_query_iter(it->world, bobQuery);
     ecs_query_next(&bobIter);
     if (bobIter.count == 0)
     {
-        printf("[404; Bob Not Found]\n");
+        // printf("[404; Bob Not Found]\n");
         return;
     }
-    // printf("bobs found: %i ", bobIter.count);
+    // printf("Bobs Found [%i]\n", bobIter.count);
     Keyboard *keyboards = ecs_field(it, Keyboard, 1);
     Acceleration2D *acceleration2Ds = ecs_field(&bobIter, Acceleration2D, 2);
     for (int i = 0; i < it->count; i++)

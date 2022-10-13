@@ -15,3 +15,4 @@ void Friction2DSystem(ecs_iter_t *it)
         }
     }
 }
+ECS_SYSTEM_DECLARE(Friction2DSystem);

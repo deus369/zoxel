@@ -21,7 +21,6 @@ double lastTime = 0;
 double lastPrinted = 0.0;
 unsigned long windowFlags;
 
-
 // forward declarations
 void LoadIconSDL(SDL_Window* window);
 
