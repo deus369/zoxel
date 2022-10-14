@@ -37,7 +37,23 @@ void ResetKeyboard(ecs_world_t *world)
 void ExtractIntoKeyboard(ecs_world_t *world, SDL_Event event)
 {
     int eventType = event.type;
-    if (eventType == SDL_KEYDOWN || eventType == SDL_KEYUP)
+    if (eventType == SDL_FINGERDOWN || eventType == SDL_FINGERUP)
+    {
+        Keyboard *keyboard = ecs_get_mut(world, keyboardEntity, Keyboard);
+        PhysicalButton *key = &keyboard->space;
+        key->wasPressedThisFrame = eventType == SDL_FINGERDOWN;
+        key->wasReleasedThisFrame = eventType == SDL_FINGERUP;
+        if (key->wasPressedThisFrame)
+        {
+            key->isPressed = true;
+        }
+        else if (key->wasReleasedThisFrame)
+        {
+            key->isPressed = false;
+        }
+        ecs_modified(world, keyboardEntity, Keyboard);
+    }
+    else if (eventType == SDL_KEYDOWN || eventType == SDL_KEYUP)
     {
         SDL_Keycode key = event.key.keysym.sym;
         Keyboard *keyboard = ecs_get_mut(world, keyboardEntity, Keyboard);
