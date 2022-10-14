@@ -17,10 +17,9 @@
 // Fuck this isn't going to work on other machines..
 // Convert shader files to .c files, add on \n's or something.. create a header file generated with includes
 // Get filepath of game, add that on!
-const char *shaderFilepath = "/home/deus/projects/open-zoxel/src/Shaders/BasicRender2D";
+const char *shaderFilepath = "Shaders/BasicRender2D";
 const char *vertExtension = ".vert";
 const char *fragExtension = ".frag";
-
 GLuint material;
 GLuint vbo;
 GLuint vao;
@@ -112,16 +111,24 @@ int LoadShader(const char* filepath, GLenum shaderType, GLuint* shader2)
         return -1;
     }
     printf("Loading Shader [%s] \n", filepath);
-    GLchar* buffer;
     GLint bufferSize;
     GetFileSize(filepath, &bufferSize);
+    /*GLchar* buffer;
     buffer = (GLchar*) malloc((bufferSize+1) * sizeof(GLchar));
     if (buffer == NULL)
     {
         printf("Can't allocate Shader buffer. \n");
         return -1;
     }
-    LoadShaderFile(filepath, buffer, bufferSize);
+    LoadShaderFile(filepath, buffer, bufferSize);*/
+    GLchar *buffer = (GLchar*) SDL_LoadFile(filepath, &bufferSize); // "rb");
+    if (!buffer)
+    {
+        printf("Loading shader returned null: %s\n", filepath);
+        return -1;
+    }
+    printf("Success Loading Shader Source [%i] \n", (int) bufferSize);
+    // const char *ext = SDL_strrchr(buffer, '.');
     GLuint shader = glCreateShader(shaderType);
     glShaderSource(shader, 1, (const GLchar**) &buffer, &bufferSize);
     glCompileShader(shader);
@@ -133,7 +140,7 @@ int LoadShader(const char* filepath, GLenum shaderType, GLuint* shader2)
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &info_log_length);
         GLchar* info_log = malloc(info_log_length);
         glGetShaderInfoLog(shader, info_log_length, NULL, info_log);
-        fprintf(stderr, "Failed to compile shader:\n%s\n", info_log);
+        fprintf(stderr, "Failed to Compile Shader:\n%s\n", info_log);
         free(info_log);
         return -1;
     }
@@ -154,16 +161,12 @@ bool LinkShaderProgram(GLuint program, GLuint vertex_shader, GLuint fragment_sha
     {
         GLint info_log_length;
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &info_log_length);
-
         GLchar* info_log = malloc(info_log_length);
         glGetProgramInfoLog(program, info_log_length, NULL, info_log);
-
         fprintf(stderr, "failed to link program:\n%s\n", info_log);
         free(info_log);
-
         glDetachShader(program, vertex_shader);
         glDetachShader(program, fragment_shader);
-
         return false;
     }
     glDetachShader(program, vertex_shader);
@@ -173,6 +176,7 @@ bool LinkShaderProgram(GLuint program, GLuint vertex_shader, GLuint fragment_sha
 
 void PrintOpenGL()
 {
+    // Load the modern OpenGL funcs
     printf("Initializing OpenGL");
     printf("OpenGL Vendor:   %s\n", glGetString(GL_VENDOR));
     printf("OpenGL Renderer: %s\n", glGetString(GL_RENDERER));
@@ -180,17 +184,8 @@ void PrintOpenGL()
     printf("GLSL Version:    %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 }
 
-void InitializeOpenGL(bool vsync)
+void LoadShaders()
 {
-    // Enable v-sync (set 1 to enable, 0 to disable)
-    SDL_GL_SetSwapInterval(vsync ? 1 : 0);
-    // Load the modern OpenGL funcs
-    opengl_load_functions();
-    // printf("basicRender2DVertEnd: %i\n", GetStringSize(basicRender2DVertEnd));
-    /*if (CompileShader(basicRender2DVertEnd, GL_VERTEX_SHADER, &vertShader) != 0)
-    {
-        printf("Error loading Shader Vert");
-    }*/
     GLuint vertShader;
     GLuint fragShader;
     int mallocSize = GetStringSize(shaderFilepath) + GetStringSize(vertExtension);
@@ -202,7 +197,7 @@ void InitializeOpenGL(bool vsync)
         strcat(vertFilename, vertExtension);
         if (LoadShader(vertFilename, GL_VERTEX_SHADER, &vertShader) != 0)
         {
-            printf("Error loading Shader Vert");
+            printf("Error loading Shader Vert\n");
         }
         free(vertFilename);
     }
@@ -213,7 +208,7 @@ void InitializeOpenGL(bool vsync)
         strcat(fragFilename, fragExtension);
         if (LoadShader(fragFilename, GL_FRAGMENT_SHADER, &fragShader) != 0)
         {
-            printf("Error loading Shader Frag");
+            printf("Error loading Shader Frag\n");
         }
         free(fragFilename);
     }
@@ -241,6 +236,20 @@ void InitializeOpenGL(bool vsync)
     // Clean up shaders
     glDeleteShader(fragShader);
     glDeleteShader(vertShader);
+}
+
+void InitializeOpenGL(bool vsync)
+{
+    // Enable v-sync (set 1 to enable, 0 to disable)
+    opengl_load_functions();
+    // PrintOpenGL();
+    // printf("basicRender2DVertEnd: %i\n", GetStringSize(basicRender2DVertEnd));
+    /*if (CompileShader(basicRender2DVertEnd, GL_VERTEX_SHADER, &vertShader) != 0)
+    {
+        printf("Error loading Shader Vert");
+    }*/
+    SDL_GL_SetSwapInterval(vsync ? 1 : 0);
+    LoadShaders();
 }
 
 //! Cleanup OpenGL resources

@@ -71,12 +71,12 @@ int main(int argc, char* argv[])
     int coreCount = 24;
     if (!headless)
     {
-        PrintSDLDebug();
-        PrintOpenGL();
         didFail = InitializeSDL();
+        PrintSDLDebug();
         if (didFail != EXIT_FAILURE)
         {
             didFail = SpawnWindowSDL(fullscreen);
+            PrintOpenGL();
             if (didFail != EXIT_FAILURE)
             {
                 // check open gl for failures?

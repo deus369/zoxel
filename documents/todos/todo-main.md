@@ -36,7 +36,7 @@ To-Do Main
 - [ ] Find a Library that supports multiple (keyboard or otherwise) devices
 
 `Application Side`
-- [ ] Support multiple Windows.
+- [ ] Support multiple Windows, one can be a FPS Debugger.
 
 `Done`
 

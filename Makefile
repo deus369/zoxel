@@ -50,8 +50,8 @@ OBJS += src/Imports/Flecs/flecs.c
 OBJS += src/main.c
 
 SHDS =
-SRCS += src/Shaders/BasicRender2D.vert
-SRCS += src/Shaders/BasicRender2D.frag
+SRCS += Shaders/BasicRender2D.vert
+SRCS += Shaders/BasicRender2D.frag
 
 #all make recursive calls
 # sub-make:

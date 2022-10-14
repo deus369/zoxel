@@ -16,6 +16,7 @@ const int defaultWindowSizeY = 480;
 SDL_Window* window;
 SDL_GLContext context;
 unsigned long windowFlags;
+const char *iconFilename = "Textures/GameIcon.png";
 
 // forward declarations
 void LoadIconSDL(SDL_Window* window);
@@ -58,7 +59,7 @@ int InitializeSDL()
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
-        fprintf(stderr, "failed to init SDL2: %s\n", SDL_GetError());
+        fprintf(stderr, "Failed to Initialize SDL2: %s\n", SDL_GetError());
         return EXIT_FAILURE;
     }
     // Request at least 32-bit color
@@ -67,11 +68,12 @@ int InitializeSDL()
     SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
     // Request a double-buffered, OpenGL 3.3 (or higher) core profile
-    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1); // 3);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    // SDL_RENDERER_SOFTWARE SDL_RENDERER_ACCELERATED
     return EXIT_SUCCESS;
 }
 
@@ -96,6 +98,7 @@ int SpawnWindowSDL(bool fullscreen)
     context = SDL_GL_CreateContext(window);
     if (context == NULL)
     {
+        // common error: EGL_BAD_MATCH
         SDL_DestroyWindow(window);
         SDL_Quit();
         fprintf(stderr, "Failed to Create OpenGL Context: %s\n", SDL_GetError());
@@ -128,7 +131,6 @@ void EndSDL()
 void LoadIconSDL(SDL_Window* window)
 {
 #ifdef SDL_IMAGES
-    const char *iconFilename = "pixel-art/ui-icons/LogoutUI.png";
     SDL_Surface *surface = IMG_Load(iconFilename); // IMG_Load(buffer);
     // The icon is attached to the window pointer
     SDL_SetWindowIcon(window, surface);
