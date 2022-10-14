@@ -1,11 +1,11 @@
-#version 330
+#version 300 es
 // Basic 2D Renderer
 
-in vec2 point;
-uniform float pointX;
-uniform float pointY;
-uniform float angle;
-uniform float scale;
+in lowp vec2 point;
+uniform lowp float pointX;
+uniform lowp float pointY;
+uniform lowp float angle;
+uniform lowp float scale;
 
 void main()
 {

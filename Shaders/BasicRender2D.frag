@@ -1,7 +1,7 @@
-#version 330
+#version 300 es
 
-uniform float brightness;
-out vec4 color;
+uniform lowp float brightness;
+out lowp vec4 color;
 
 void main()
 {
