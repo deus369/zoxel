@@ -71,6 +71,8 @@ int main(int argc, char* argv[])
     int coreCount = 24;
     if (!headless)
     {
+        PrintSDLDebug();
+        PrintOpenGL();
         didFail = InitializeSDL();
         if (didFail != EXIT_FAILURE)
         {

@@ -171,20 +171,21 @@ bool LinkShaderProgram(GLuint program, GLuint vertex_shader, GLuint fragment_sha
     return false;
 }
 
-void InitializeOpenGL(bool vsync)
+void PrintOpenGL()
 {
     printf("Initializing OpenGL");
     printf("OpenGL Vendor:   %s\n", glGetString(GL_VENDOR));
     printf("OpenGL Renderer: %s\n", glGetString(GL_RENDERER));
     printf("OpenGL Version:  %s\n", glGetString(GL_VERSION));
     printf("GLSL Version:    %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+}
 
+void InitializeOpenGL(bool vsync)
+{
     // Enable v-sync (set 1 to enable, 0 to disable)
     SDL_GL_SetSwapInterval(vsync ? 1 : 0);
-    
     // Load the modern OpenGL funcs
     opengl_load_functions();
-    
     // printf("basicRender2DVertEnd: %i\n", GetStringSize(basicRender2DVertEnd));
     /*if (CompileShader(basicRender2DVertEnd, GL_VERTEX_SHADER, &vertShader) != 0)
     {
