@@ -9,8 +9,10 @@
 #define M_PI 3.141592653589793
 #endif
 
-const int defaultWindowSizeX = 940;
-const int defaultWindowSizeY = 640;
+//const int defaultWindowSizeX = 940;
+c//onst int defaultWindowSizeY = 640;
+const int defaultWindowSizeX = 480;
+const int defaultWindowSizeY = 480;
 SDL_Window* window;
 SDL_GLContext context;
 unsigned long windowFlags;
@@ -87,7 +89,7 @@ int SpawnWindowSDL(bool fullscreen)
     if (window == NULL)
     {
         SDL_Quit();
-        fprintf(stderr, "Failed to create SDL2 Window: %s\n", SDL_GetError());
+        fprintf(stderr, "Failed to Create Window: %s\n", SDL_GetError());
         return EXIT_FAILURE;
     }
     // SDL_GLContext is an alias for "void*"
@@ -96,7 +98,7 @@ int SpawnWindowSDL(bool fullscreen)
     {
         SDL_DestroyWindow(window);
         SDL_Quit();
-        fprintf(stderr, "Failed to create OpenGL Context: %s\n", SDL_GetError());
+        fprintf(stderr, "Failed to Create OpenGL Context: %s\n", SDL_GetError());
         return EXIT_FAILURE;
     }
     /* This makes our buffer swap syncronized with the monitor's vertical refresh */

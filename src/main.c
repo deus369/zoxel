@@ -72,19 +72,23 @@ int main(int argc, char* argv[])
     if (!headless)
     {
         didFail = InitializeSDL();
+        if (didFail != EXIT_FAILURE)
+        {
+            didFail = SpawnWindowSDL(fullscreen);
+            if (didFail != EXIT_FAILURE)
+            {
+                // check open gl for failures?
+                InitializeOpenGL(vsync);
+                coreCount = SDL_GetCPUCount();
+            }
+        }
         if (didFail == EXIT_FAILURE)
         {
-            return didFail;
+            printf("Failed to Open Window. Setting to headless mode.");
+            headless = true;
         }
-        didFail = SpawnWindowSDL(fullscreen);
-        if (didFail == EXIT_FAILURE)
-        {
-            return didFail;
-        }
-        InitializeOpenGL(vsync);
-        coreCount = SDL_GetCPUCount();
     }
-    else
+    if (headless)
     {
         isRendering = false;
     }
