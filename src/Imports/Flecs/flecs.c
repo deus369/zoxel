@@ -18513,9 +18513,10 @@ void posix_time_setup(void) {
         mach_timebase_info(&posix_osx_timebase);
         posix_time_start = mach_absolute_time();
     #else
-        /*struct timespec ts;
+        int CLOCK_MONOTONIC = 0;
+        struct timespec ts;
         clock_gettime(CLOCK_MONOTONIC, &ts);
-        posix_time_start = (uint64_t)ts.tv_sec*1000000000 + (uint64_t)ts.tv_nsec; */
+        posix_time_start = (uint64_t)ts.tv_sec*1000000000 + (uint64_t)ts.tv_nsec;
     #endif
 }
 
@@ -18530,9 +18531,9 @@ void posix_sleep(
 
     sleepTime.tv_sec = sec;
     sleepTime.tv_nsec = nanosec;
-    /*if (nanosleep(&sleepTime, NULL)) {
+    if (nanosleep(&sleepTime, NULL)) {
         ecs_err("nanosleep failed");
-    }*/
+    }
 }
 
 /* prevent 64-bit overflow when computing relative timestamp
@@ -18561,9 +18562,10 @@ uint64_t posix_time_now(void) {
     #elif defined(__EMSCRIPTEN__)
         now = (long long)(emscripten_get_now() * 1000.0 * 1000);
     #else
-        /*struct timespec ts;
+        int CLOCK_MONOTONIC = 0;
+        struct timespec ts;
         clock_gettime(CLOCK_MONOTONIC, &ts);
-        now = ((uint64_t)ts.tv_sec * 1000 * 1000 * 1000 + (uint64_t)ts.tv_nsec);*/
+        now = ((uint64_t)ts.tv_sec * 1000 * 1000 * 1000 + (uint64_t)ts.tv_nsec);
     #endif
 
     return now;
@@ -31822,14 +31824,14 @@ ecs_entity_t ecs_system_init(
         ECS_INVALID_WHILE_READONLY, NULL);
 
     ecs_entity_t entity = desc->entity;
-    printf("ecs_system_init [%lu]\n", (long unsigned int) (entity));
+    // printf("ecs_system_init [%lu]\n", (long unsigned int) (entity));
     if (!entity) {
         printf("!entity is true");
         entity = ecs_new(world, 0);
     }
     EcsPoly *poly = ecs_poly_bind(world, entity, ecs_system_t);
     if (!poly->poly) {
-        printf("Creating new System for our entity [%lu]\n", (long unsigned int) (entity));
+        // printf("Creating new System for our entity [%lu]\n", (long unsigned int) (entity));
         ecs_system_t *system = ecs_poly_new(ecs_system_t);
         ecs_assert(system != NULL, ECS_INTERNAL_ERROR, NULL);
         
@@ -35274,7 +35276,7 @@ void http_sock_keep_alive(
     }
 }
 
-/*static
+static
 int http_getnameinfo(
     const struct sockaddr* addr,
     ecs_size_t addr_len,
@@ -35289,7 +35291,7 @@ int http_getnameinfo(
     ecs_assert(port_len > 0, ECS_INTERNAL_ERROR, NULL);
     return getnameinfo(addr, (uint32_t)addr_len, host, (uint32_t)host_len, 
         port, (uint32_t)port_len, flags);
-}*/
+}
 
 static
 int http_bind(
@@ -35871,14 +35873,16 @@ void http_init_connection(
     char *remote_port = conn->pub.port;
 
     /* Fetch name & port info */
-    /*if (http_getnameinfo((struct sockaddr*) remote_addr, remote_addr_len,
+    int NI_NUMERICHOST = 0;
+    int NI_NUMERICSERV = 0;
+    if (http_getnameinfo((struct sockaddr*) remote_addr, remote_addr_len,
         remote_host, ECS_SIZEOF(conn->pub.host),
         remote_port, ECS_SIZEOF(conn->pub.port),
             NI_NUMERICHOST | NI_NUMERICSERV))
     {
         ecs_os_strcpy(remote_host, "unknown");
         ecs_os_strcpy(remote_port, "unknown");
-    }*/
+    }
 
     ecs_dbg_2("http: connection established from '%s:%s'", 
         remote_host, remote_port);
@@ -35917,14 +35921,15 @@ void http_accept_connections(
 
     ecs_http_socket_t sock = HTTP_SOCKET_INVALID;
     ecs_assert(srv->sock == HTTP_SOCKET_INVALID, ECS_INTERNAL_ERROR, NULL);
-
-    /*if (http_getnameinfo(
+    int NI_NUMERICHOST = 0;
+    int NI_NUMERICSERV = 0;
+    if (http_getnameinfo(
         addr, addr_len, addr_host, ECS_SIZEOF(addr_host), addr_port, 
         ECS_SIZEOF(addr_port), NI_NUMERICHOST | NI_NUMERICSERV))
     {
         ecs_os_strcpy(addr_host, "unknown");
         ecs_os_strcpy(addr_port, "unknown");
-    }*/
+    }
 
     ecs_os_mutex_lock(srv->lock);
     if (srv->should_run) {

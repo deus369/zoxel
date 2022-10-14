@@ -9,16 +9,10 @@
 #define M_PI 3.141592653589793
 #endif
 
-const bool isPrintFPS = false;
 const int defaultWindowSizeX = 940;
 const int defaultWindowSizeY = 640;
 SDL_Window* window;
 SDL_GLContext context;
-long framesPerSecond = 0;
-double currentTime = 0.0;
-double deltaTimeSDL = 0.0;
-double lastTime = 0;
-double lastPrinted = 0.0;
 unsigned long windowFlags;
 
 // forward declarations
@@ -116,27 +110,11 @@ int SpawnWindowSDL(bool fullscreen)
 
 void UpdateBeginSDL()
 {
-    currentTime = SDL_GetTicks() / 1000.0;
-    deltaTimeSDL = currentTime - lastTime;
-    lastTime = currentTime;
 }
 
-void UpdateEndSDL(bool isRendering)
+void UpdateEndSDL()
 {
-    if (currentTime - lastPrinted >= 1.0)
-    {
-        lastPrinted = currentTime;
-        if (isPrintFPS)
-        {
-            printf("FPS [%ld]\n", framesPerSecond);
-        }
-        framesPerSecond = 0;
-    }
-    framesPerSecond++;
-    if (isRendering)
-    {
-        SDL_GL_SwapWindow(window);
-    }
+    SDL_GL_SwapWindow(window);
 }
 
 void EndSDL()

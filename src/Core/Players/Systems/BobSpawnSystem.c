@@ -11,7 +11,7 @@ const bool isFixBulkSpawnCrashing = false;
 void PrintBobSpawnSystem(ecs_world_t *world);
 ecs_entity_t character2DPrefab;
 ecs_entity_t playerPrefab;
-const int bobSpawnCount = 10;
+const int bobSpawnCount = 500;
 
 // forward declarations
 void InitializeBobSpawnSystem(ecs_world_t *world);
@@ -31,33 +31,32 @@ void InitializeBobSpawnSystem(ecs_world_t *world)
     ecs_set(world, character2DPrefab, Torque2D, { 0 });
     ecs_add(world, character2DPrefab, Scale2D);
     ecs_add(world, character2DPrefab, Brightness);
-    playerPrefab = ecs_new_w_pair(world, EcsChildOf, character2DPrefab);
+    ecs_override(world, character2DPrefab, Position2D);
+    ecs_override(world, character2DPrefab, Velocity2D);
+    ecs_override(world, character2DPrefab, Acceleration2D);
+    ecs_override(world, character2DPrefab, Rotation2D);
+    ecs_override(world, character2DPrefab, Torque2D);
+    ecs_override(world, character2DPrefab, Scale2D);
+    ecs_override(world, character2DPrefab, Brightness);
+    playerPrefab = ecs_new_w_pair(world, EcsIsA, character2DPrefab);
+    ecs_add_id(world, playerPrefab, EcsPrefab);
     ecs_set_name(world, playerPrefab, "Player2D");
     ecs_add(world, playerPrefab, Player2D);
     ecs_add(world, playerPrefab, Frictioned);
 }
 
 //! Spawn a Player character.
-void SpawnPlayer(ecs_world_t *world)
+ecs_entity_t SpawnPlayer(ecs_world_t *world)
 {
     // child prefabs don't seem to inherit tags
     ecs_entity_t bobPlayer = ecs_new_w_pair(world, EcsIsA, playerPrefab);
-    // ecs_entity_t bobPlayer = ecs_new_w_pair(world, EcsChildOf, playerPrefab);
-    // printf("Spawned Player + Character2D [%lu]\n", bobPlayer);
-    /*har *playerName = strcat("Player (Instance) [%lu]", bobPlayer);
-    ecs_set_name(world, bobPlayer, playerName);
-    free(playerName);*/
+    printf("Spawned Player + Character2D [%lu]\n", bobPlayer);
     ecs_set(world, bobPlayer, Scale2D, { 0.4f + ((rand() % 101) / 100.0f) * 0.2f  });
     ecs_set(world, bobPlayer, Brightness, { 0.8f + ((rand() % 101) / 100.0f) * 0.6f });
-    // Add this here until Automatic Override works https://flecs.docsforge.com/master/manual/#automatic-overriding
-    //ecs_add(world, bobPlayer, Player2D);
-    //ecs_add(world, bobPlayer, Frictioned);
-    ecs_set(world, bobPlayer, Position2D, { 0, 0 });
-    ecs_set(world, bobPlayer, Velocity2D, { 0, 0 });
-    ecs_set(world, bobPlayer, Acceleration2D, { 0, 0 });
-    ecs_set(world, bobPlayer, Rotation2D, { 0 });
-    ecs_set(world, bobPlayer, Torque2D, { 0 });
+    return bobPlayer;
 }
+
+    // Add this here until Automatic Override works https://flecs.docsforge.com/master/manual/#automatic-overriding
 
 //! Called in ecs updates
 void BobSpawnSystem(ecs_iter_t *it)
@@ -90,11 +89,6 @@ void BobSpawnSystem(ecs_iter_t *it)
             printf("Spawning new Player.\n");
             SpawnPlayer(world);
         }
-    }
-    if (debugSpawnBobArmy)
-    {
-        debugSpawnBobArmy = false;
-        SpawnBobArmy(world, character2DPrefab, bobSpawnCount);
     }
 }
 
@@ -165,7 +159,7 @@ void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, int bobSpa
         .count = bobSpawnCount,
         .ids =
         {
-            ecs_pair(EcsChildOf, character2DPrefab),     // EcsIsA
+            ecs_pair(EcsIsA, character2DPrefab),
             ecs_id(Position2D),
             ecs_id(Velocity2D),
             ecs_id(Acceleration2D),
@@ -189,10 +183,14 @@ void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, int bobSpa
     });
 }
 
+int GetBobCount()
+{
+    return ecs_count(world, Position2D);
+}
+
 void PrintBobSpawnSystem(ecs_world_t *world)
 {
-    int bobCount = ecs_count(world, Position2D);
-    printf("    Bobs Spawned [%i]\n", bobCount);
+    printf("    Bobs Spawned [%i]\n", GetBobCount());
 }
 
 //! Debug used for now, Called in main thread
@@ -217,3 +215,8 @@ void BobArmySpawnFixer(ecs_world_t *world)
     ECS_ENTITY(world, character2DPrefab, Torque2D, OVERRIDE | Torque2D);
     ECS_ENTITY(world, character2DPrefab, Scale2D, OVERRIDE | Scale2D);
     ECS_ENTITY(world, character2DPrefab, Brightness, OVERRIDE | Brightness);*/
+
+    // ecs_entity_t bobPlayer = ecs_new_w_pair(world, EcsChildOf, playerPrefab);
+    /*har *playerName = strcat("Player (Instance) [%lu]", bobPlayer);
+    ecs_set_name(world, bobPlayer, playerName);
+    free(playerName);*/

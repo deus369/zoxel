@@ -1,9 +1,11 @@
 #include <stdbool.h>
 #include <string.h>
 #define SDL_IMAGES
+// --- Core Core ---
+#include "Imports/Flecs/flecs.h"
+#include "Core/Core/Core.h"
 #include "Imports/Imports.h"
 // --- Core ---
-#include "Core/Core/Core.h"
 #include "Core/Inputs/Inputs.h"
 #include "Core/Transforms2D/Transforms2D.h"
 #include "Core/Transforms/Transforms.h"
@@ -18,25 +20,26 @@
 
 // Settings 
 bool running = true;
-const bool isRendering = true;
+bool isRendering = true;
+bool headless = false;
 bool fullscreen = false;
 bool vsync = false;
 bool profiler = false;
+int hasSpawnedPlayer = 0;
+ecs_entity_t localPlayer;
 
 // Forward  Declares
 int ProcessArguments(int argc, char* argv[]);
 void PollSDLEvents();
 
-void InitializeModules(ecs_world_t *world)
+void ImportModules(ecs_world_t *world)
 {
+    printf("Importing Modules.");
     // Core Modules
     ECS_IMPORT(world, Inputs);
     ECS_IMPORT(world, Transforms2D);
     ECS_IMPORT(world, Transforms);
-    if (isRendering)
-    {
-        ECS_IMPORT(world, Rendering);
-    }
+    ECS_IMPORT(world, Rendering);
     ECS_IMPORT(world, Cameras);
     ECS_IMPORT(world, Textures);
     ECS_IMPORT(world, Voxels);
@@ -44,7 +47,12 @@ void InitializeModules(ecs_world_t *world)
     ECS_IMPORT(world, Physics2D);
     // Gameplay Modules
     ECS_IMPORT(world, Players);
+}
 
+void InitializeModules(ecs_world_t *world)
+{
+    printf("Initializing Modules.");
+    UpdateBeginSDL();
     // Spawn things from Modules
     InitializeInputs(world);
     InitializePlayers(world);
@@ -60,44 +68,83 @@ int main(int argc, char* argv[])
     {
         return EXIT_SUCCESS;
     }
-    didFail = InitializeSDL();
-    if (didFail == EXIT_FAILURE)
+    int coreCount = 24;
+    if (!headless)
     {
-        return didFail;
+        didFail = InitializeSDL();
+        if (didFail == EXIT_FAILURE)
+        {
+            return didFail;
+        }
+        didFail = SpawnWindowSDL(fullscreen);
+        if (didFail == EXIT_FAILURE)
+        {
+            return didFail;
+        }
+        InitializeOpenGL(vsync);
+        coreCount = SDL_GetCPUCount();
     }
-    didFail = SpawnWindowSDL(fullscreen);
-    if (didFail == EXIT_FAILURE)
+    else
     {
-        return didFail;
+        isRendering = false;
     }
-    InitializeOpenGL(vsync);
-    ecs_world_t *world = InitializeECS(argc, argv, profiler, isRendering);
+    BeginTime();
+    InitializeECS(argc, argv, profiler, !isRendering, coreCount);
     // Import Modules Here!
+    ImportModules(world);
     InitializeModules(world);
-
-    deltaTimeSDL = 0;
+    // start game logic
+    if (!headless)
+    {
+        SpawnKeyboardEntity();
+    }
+    localPlayer = SpawnPlayer(world);
     //! Core Application Loop!
     while (running)
     {
-        UpdateBeginSDL();
-        PollSDLEvents();
+        UpdateBeginTime();
+        if (!headless)
+        {
+            UpdateBeginSDL();
+            PollSDLEvents();
+        }
         if (deltaTimeSDL > 0)
         {
             if (isRendering)
             {
                 UpdateBeginOpenGL();
             }
+            if (headless && GetBobCount() < 1000000)
+            {
+                SpawnBobArmy(world, character2DPrefab, 250);
+            }
             UpdateECS();
             if (isRendering)
             {
                 UpdateEndOpenGL();
+                UpdateEndSDL();
             }
         }
-        UpdateEndSDL(isRendering);
+        if (UpdateEndTime())
+        {
+            const Position2D *position2D = ecs_get(world, localPlayer, Position2D);
+            if (position2D)
+            {
+                printf("    Player position: [%fx%f]\n", position2D->value.x, position2D->value.y);
+            }
+            else
+            {
+                printf("Position2D is null.");
+            }
+            PrintBobSpawnSystem(world);
+        }
     }
     EndECS();
     EndOpenGL();
-    EndSDL();
+    if (!headless)
+    {
+        EndSDL();
+    }
     return EXIT_SUCCESS;
 }
 
@@ -154,6 +201,10 @@ int ProcessArguments(int argc, char* argv[])
         if (strcmp(argv[i], "-p") == 0 || strcmp(argv[i], "--profiler") == 0)
         {
             profiler = true;
+        }
+        if (strcmp(argv[i], "-z") == 0 || strcmp(argv[i], "--headless") == 0)
+        {
+            headless = true;
         }
     }
     return EXIT_SUCCESS;

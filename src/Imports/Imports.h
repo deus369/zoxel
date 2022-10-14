@@ -6,7 +6,6 @@
 #include "SDL/SDLUtil.c"
 
 // Helper files used for Flecs and SDL imports.
-#include "Flecs/flecs.h"
 #include "Flecs/FlecsUtil.c"
 
 // OpenGL

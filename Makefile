@@ -21,11 +21,11 @@ CFLAGS += -g
 LDLIBS = -lGL
 LDLIBS += -lSDL2
 LDLIBS += -lSDL2_image
-# Compiler Optimizations
-LDLIBS += -O3
-LDLIBS += -flto
-# Removes Debug Messages
-LDLIBS += -D NDEBUG
+# # Compiler Optimizations
+# LDLIBS += -O3
+# LDLIBS += -flto
+# # Removes Debug Messages
+# LDLIBS += -D NDEBUG
 
 # SRCS defines all the files that will be used in the game.
 SRCS = 

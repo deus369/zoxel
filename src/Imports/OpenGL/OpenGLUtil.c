@@ -173,6 +173,7 @@ bool LinkShaderProgram(GLuint program, GLuint vertex_shader, GLuint fragment_sha
 
 void InitializeOpenGL(bool vsync)
 {
+    printf("Initializing OpenGL");
     printf("OpenGL Vendor:   %s\n", glGetString(GL_VENDOR));
     printf("OpenGL Renderer: %s\n", glGetString(GL_RENDERER));
     printf("OpenGL Version:  %s\n", glGetString(GL_VERSION));
@@ -214,14 +215,6 @@ void InitializeOpenGL(bool vsync)
             printf("Error loading Shader Frag");
         }
         free(fragFilename);
-        /*if (LoadShaderAsBuffer(fragFilename, fragSource) != 0)
-        {
-            printf("Error loading Shader Vert");
-        }
-        free(fragFilename);
-        fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-        const GLchar *fragSource2 = fragSource;
-        CompileShader(fragShader, fragSource2);*/
     }
     material = glCreateProgram();
     LinkShaderProgram(material, vertShader, fragShader);

@@ -4,5 +4,6 @@
 */
 typedef struct
 {
+    int thing;
     // entity *value;
 } Chunk;

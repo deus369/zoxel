@@ -16,3 +16,9 @@ void Render2DSystem(ecs_iter_t *it)
     }
 }
 ECS_SYSTEM_DECLARE(Render2DSystem);
+
+void Render2DSystemMainThread()
+{
+    // render with queue here
+    
+}

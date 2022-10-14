@@ -5,7 +5,7 @@
  * \todo Use ECS_SYSTEM_DEFINE & DECLARE for MoveSystem, why does it crash?
  * \todo Spawning Queries in Initialize function as they depend on other Modules.
 */
-// you can assign anything to ctx, make a struct with multiple queries for injection
+// you can assign anything to ctx, make a struct with multiple queries for injection ecs_id(BobMoveSystem), 
 
 // Tags
 ECS_DECLARE(Player);
@@ -21,17 +21,15 @@ void PlayersImport(ecs_world_t *world)
     ECS_TAG_DEFINE(world, Player);
     ECS_TAG_DEFINE(world, Player2D);
     ECS_TAG_DEFINE(world, DisableMovement);
+    // ECS_SYSTEM(world, BobMoveSystem, EcsOnUpdate, Keyboard);
     ECS_SYSTEM_DEFINE(world, BobSpawnSystem, EcsOnUpdate, Keyboard);
     ECS_SYSTEM_DEFINE(world, BobMoveSystem, EcsOnUpdate, Keyboard);
-    printf("BobMoveSystem ID [%lu] [%lu]\n", ecs_id(BobMoveSystem), BobMoveSystem);
 }
 
 void InitializePlayers(ecs_world_t *world)
 {
     InitializeBobSpawnSystem(world);
-    SpawnPlayer(world);
     #ifdef Zoxel_Physics2D
-    printf("BobMoveSystem ID 2 [%lu] [%lu]\n", ecs_id(BobMoveSystem), BobMoveSystem);
     ecs_query_t *bobQuery = ecs_query_init(world, &(ecs_query_desc_t) {
         .filter.terms = {
             { ecs_id(Player2D) },
@@ -39,10 +37,14 @@ void InitializePlayers(ecs_world_t *world)
         }
     });
     ecs_system(world, {
-        .entity = (ecs_entity_t) BobMoveSystem,    // (long unsigned int) 
-        .ctx = bobQuery,
-        // .no_staging = true
+        .entity = ecs_id(BobSpawnSystem),
+        .no_staging = true
+    });
+    ecs_system(world, {
+        .entity = ecs_id(BobMoveSystem),
+        .ctx = bobQuery
     });
     #endif
 }
+
 #endif

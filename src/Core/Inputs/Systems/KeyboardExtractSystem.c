@@ -8,10 +8,15 @@ void ResetKey(PhysicalButton *key);
 
 void InitializeKeyboardExtractSystem(ecs_world_t *world)
 {
+}
+
+void SpawnKeyboardEntity()
+{
     keyboardEntity = ecs_new_entity(world, "keyboard");
     // ecs_add(world, keyboardEntity, Keyboard);
     ecs_set(world, keyboardEntity, Keyboard, { });
     printf("Keyboard is ALIVE: %lu \n", keyboardEntity);
+    // return keyboardEntity;
 }
 
 void ResetKeyboard(ecs_world_t *world)

@@ -3,27 +3,26 @@
 ecs_world_t *world;
 
 //! Initialize Flecs ECS and Modules.
-ecs_world_t* InitializeECS(int argc, char* argv[], bool profiler, bool isRendering)
+void InitializeECS(int argc, char* argv[], bool profiler, bool isThreading, int coreCount)
 {
-    ecs_world_t *world2 = ecs_init_w_args(argc, argv);
-
+    printf("Initializing ECS\n");
+    world = ecs_init_w_args(argc, argv);
+    // Enable Threads (if no rendering)
+    if (isThreading)
+    {
+        ecs_set_threads(world, coreCount);
+    }
     // Enable Profiler
     if (profiler)
     {
-        ECS_IMPORT(world2, FlecsMonitor); 
-        ecs_singleton_set(world2, EcsRest, {0});
+        ECS_IMPORT(world, FlecsMonitor); 
+        ecs_singleton_set(world, EcsRest, {0});
     }
-    // Enable Threads (if no rendering)
-    if (!isRendering)
-    {
-        ecs_set_threads(world2, SDL_GetCPUCount());
-    }
-    world = world2;
-    return world;
 }
 
 void UpdateECS()
 {
+    // ecs_progress(world, 0);
     ecs_progress(world, deltaTimeSDL);
 }
 

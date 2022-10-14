@@ -8,6 +8,8 @@
 #include "Data/float4x4.c"
 // Components
 #include "Components/ID.c"
+// Util
+#include "Util/TimeHelper.c"
 
 void CoreImport(ecs_world_t *world)
 {
