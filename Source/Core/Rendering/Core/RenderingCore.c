@@ -17,7 +17,7 @@ void InitializeRenderingCore(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, Mesh);
     if (isRendering)
     {
-        ECS_SYSTEM_DEFINE(world, Render2DSystem, 0, Position2D, Rotation2D, Scale2D, Brightness);
+        ECS_SYSTEM_DEFINE(world, Render2DSystem, 0, [in] Position2D, [in] Rotation2D, [in] Scale2D, [in] Brightness);
         /* ECS_SYSTEM_DEFINE(world, Render2DSystem, EcsOnStore, Position2D, Rotation2D, Scale2D, Brightness);
         ecs_system(world, {
             .entity = ecs_id(Render2DSystem),

@@ -52,11 +52,9 @@ void ViewMatrixSystem(ecs_iter_t *it)
 {
     if (!ecs_query_changed(NULL, it))
     {
-        // printf("Component has not changed.\n");
+        // printf("A Component has not changed.\n");
         return;
     }
-    // printf("Component has Changed.\n");
-    //printf("thing: %lu\n", it->)
     ScreenDimensions *screenDimensions = ecs_field(it, ScreenDimensions, 1);
     FieldOfView *fieldOfViews = ecs_field(it, FieldOfView, 2);
     ViewMatrix *viewMatrixs = ecs_field(it, ViewMatrix, 3);
@@ -80,16 +78,16 @@ void ViewMatrixSystem(ecs_iter_t *it)
 ECS_SYSTEM_DECLARE(ViewMatrixSystem);
 
 //! Sets the ViewMatrix as thing.
-void ViewMatrixSetSystem(ecs_iter_t *it)
+/*void ViewMatrixSetSystem(ecs_iter_t *it)
 {
     ViewMatrix *viewMatrixs = ecs_field(it, ViewMatrix, 1);
     for (int i = 0; i < it->count; i++)
     {
         const ViewMatrix *viewMatrix = &viewMatrixs[i];
         // set as thing
-        printf("View Matrix has updated. Setting Shader View Matrix variable.\n");
+        // printf("View Matrix has updated. Setting Shader View Matrix variable.\n");
         // gl_view_matrix is linked to each shader, can I have a global shader variable?
         // glUniformMatrix4fv(gl_view_matrix, 1, GL_FALSE, (const GLfloat*) viewMatrix);
     }
-}
+}*/
 // ECS_SYSTEM_DECLARE(ViewMatrixSetSystem);

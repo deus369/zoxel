@@ -24,9 +24,9 @@ void Physics2DImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, Torque2D);
     ECS_COMPONENT_DEFINE(world, Acceleration2D);
     ECS_TAG_DEFINE(world, Frictioned);
-    ECS_SYSTEM_DEFINE(world, Velocity2DSystem, EcsOnUpdate, Position2D, Velocity2D);
-    ECS_SYSTEM_DEFINE(world, Torque2DSystem, EcsOnUpdate, Rotation2D, Torque2D);
-    ECS_SYSTEM_DEFINE(world, Acceleration2DSystem, EcsOnUpdate, Velocity2D, Acceleration2D);
-    ECS_SYSTEM_DEFINE(world, Friction2DSystem, EcsOnUpdate, Frictioned, Velocity2D);
+    ECS_SYSTEM_DEFINE(world, Velocity2DSystem, EcsOnUpdate, [out] Position2D, [in] Velocity2D);
+    ECS_SYSTEM_DEFINE(world, Torque2DSystem, EcsOnUpdate, [out] Rotation2D, [in] Torque2D);
+    ECS_SYSTEM_DEFINE(world, Acceleration2DSystem, EcsOnUpdate, [out] Velocity2D, [out] Acceleration2D);
+    ECS_SYSTEM_DEFINE(world, Friction2DSystem, EcsOnUpdate, [none] Frictioned, [out] Velocity2D);
 }
 #endif

@@ -24,8 +24,8 @@ void PlayersImport(ecs_world_t *world)
     ECS_TAG_DEFINE(world, Player2D);
     ECS_TAG_DEFINE(world, DisableMovement);
     // ECS_SYSTEM(world, BobMoveSystem, EcsOnUpdate, Keyboard);
-    ECS_SYSTEM_DEFINE(world, BobSpawnSystem, EcsOnUpdate, Keyboard);
-    ECS_SYSTEM_DEFINE(world, BobMoveSystem, EcsOnUpdate, Keyboard);
+    ECS_SYSTEM_DEFINE(world, BobSpawnSystem, EcsOnUpdate, [in] Keyboard);
+    ECS_SYSTEM_DEFINE(world, BobMoveSystem, EcsOnUpdate, [in] Keyboard);
 }
 
 void InitializePlayers(ecs_world_t *world)
