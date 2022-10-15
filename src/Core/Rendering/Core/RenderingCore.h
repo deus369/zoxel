@@ -1,8 +1,6 @@
 // Rendering
 #include "Components/Brightness.c"
-ECS_COMPONENT_DECLARE(Brightness);
 #include "Components/Mesh.c"
-ECS_COMPONENT_DECLARE(Mesh);
 // Systems
 #include "Systems/Render2DSystem.c"
 

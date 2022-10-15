@@ -15,7 +15,6 @@ void Torque2DSystem(ecs_iter_t *it)
         {
             rotation2D->value -= 2 * M_PI;
         }
-        // rotation2Ds = rotation2D;
     }
 }
 ECS_SYSTEM_DECLARE(Torque2DSystem);

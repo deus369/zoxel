@@ -22,5 +22,5 @@ void SpawnCamera(ecs_world_t *world, float3 position, float4 rotation)
     ecs_set(world, newCamera, Rotation, { 0, 0, 0, 1 });
     // this part will be hard
     // ecs_set(world, newCamera, ViewMatrix, { 0 });
-    printf("Spawned Camera [%lu]\n", newCamera);
+    printf("Spawned Camera [%lu]\n", (long unsigned int) newCamera);
 }

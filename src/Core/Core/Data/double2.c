@@ -1,6 +1,6 @@
 //! A basic x2 building block.
 typedef struct
 {
-    float x;
-    float y;
-} float2;
+    double x;
+    double y;
+} double2;

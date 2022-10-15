@@ -3,17 +3,16 @@
 #include "../../../Core/Rendering/Rendering.h"
 #include "../../../Space/Physics2D/Physics2D.h"
 
-void BobSpawnSystem(ecs_iter_t *it);
-ECS_SYSTEM_DECLARE(BobSpawnSystem);
-
+const int bobSpawnCount = 100;
 bool debugSpawnBobArmy = false;
 const bool isFixBulkSpawnCrashing = false;
-void PrintBobSpawnSystem(ecs_world_t *world);
 ecs_entity_t character2DPrefab;
-ecs_entity_t playerPrefab;
-const int bobSpawnCount = 500;
+ecs_entity_t playerCharacter2DPrefab;
+ecs_entity_t particle2DPrefab;
 
 // forward declarations
+void BobSpawnSystem(ecs_iter_t *it);
+ECS_SYSTEM_DECLARE(BobSpawnSystem);
 void InitializeBobSpawnSystem(ecs_world_t *world);
 void BobSpawnSystem(ecs_iter_t *it);
 void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, int bobSpawnCount);
@@ -38,21 +37,26 @@ void InitializeBobSpawnSystem(ecs_world_t *world)
     ecs_override(world, character2DPrefab, Torque2D);
     ecs_override(world, character2DPrefab, Scale2D);
     ecs_override(world, character2DPrefab, Brightness);
-    playerPrefab = ecs_new_w_pair(world, EcsIsA, character2DPrefab);
-    ecs_add_id(world, playerPrefab, EcsPrefab);
-    ecs_set_name(world, playerPrefab, "Player2D");
-    ecs_add(world, playerPrefab, Player2D);
-    ecs_add(world, playerPrefab, Frictioned);
+    playerCharacter2DPrefab = ecs_new_w_pair(world, EcsIsA, character2DPrefab);
+    ecs_add_id(world, playerCharacter2DPrefab, EcsPrefab);
+    ecs_set_name(world, playerCharacter2DPrefab, "Player2D");
+    ecs_add(world, playerCharacter2DPrefab, Player2D);
+    ecs_add(world, playerCharacter2DPrefab, Frictioned);
+    ecs_remove(world, playerCharacter2DPrefab, DestroyInTime);
+    particle2DPrefab = ecs_new_w_pair(world, EcsIsA, character2DPrefab);
+    ecs_add_id(world, particle2DPrefab, EcsPrefab);
+    ecs_set_name(world, particle2DPrefab, "Particle2D");
+    ecs_add(world, particle2DPrefab, DestroyInTime);
 }
 
 //! Spawn a Player character.
 ecs_entity_t SpawnPlayer(ecs_world_t *world)
 {
     // child prefabs don't seem to inherit tags
-    ecs_entity_t bobPlayer = ecs_new_w_pair(world, EcsIsA, playerPrefab);
-    printf("Spawned Player + Character2D [%lu]\n", bobPlayer);
+    ecs_entity_t bobPlayer = ecs_new_w_pair(world, EcsIsA, playerCharacter2DPrefab);
     ecs_set(world, bobPlayer, Scale2D, { 0.4f + ((rand() % 101) / 100.0f) * 0.2f  });
     ecs_set(world, bobPlayer, Brightness, { 0.8f + ((rand() % 101) / 100.0f) * 0.6f });
+    printf("Spawned Player2D [%lu]\n", (long unsigned int) bobPlayer);
     return bobPlayer;
 }
 
@@ -100,6 +104,7 @@ void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, int bobSpa
     const float torqueBounds = 8.0f;
     const float2 scaleBounds = { 0.1f, 0.6f };
     const float2 brightnessBounds = { 0.1f, 0.7f };
+    const double2 lifeTime = { 0.5f, 8.0f };
     // Create a SpaceShip prefab with a Defense component.
     Position2D *position2Ds = malloc(sizeof(Position2D) * bobSpawnCount);
     Velocity2D *velocity2Ds = malloc(sizeof(Velocity2D) * bobSpawnCount);
@@ -108,6 +113,7 @@ void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, int bobSpa
     Torque2D *torque2Ds = malloc(sizeof(Torque2D) * bobSpawnCount);
     Scale2D *scale2Ds = malloc(sizeof(Scale2D) * bobSpawnCount);
     Brightness *brightnesses = malloc(sizeof(Brightness) * bobSpawnCount);
+    DestroyInTime *destroyInTimes = malloc(sizeof(DestroyInTime) * bobSpawnCount);
     for (int i = 0; i < bobSpawnCount; i++)
     {
         position2Ds[i].value = (float2) {
@@ -153,20 +159,22 @@ void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, int bobSpa
         torque2Ds[i].value = ((rand() % 101) / 100.0f) * torqueBounds - (torqueBounds / 2.0f);
         scale2Ds[i].value = scaleBounds.x + ((rand() % 101) / 100.0f) * (scaleBounds.y - scaleBounds.x);
         brightnesses[i].value = brightnessBounds.x + ((rand() % 101) / 100.0f) * (brightnessBounds.y - brightnessBounds.x);
+        destroyInTimes[i].value = lifeTime.x + ((rand() % 101) / 100.0f) *  (lifeTime.y - lifeTime.x);
     }
     const ecs_entity_t *bobArmy = ecs_bulk_init(world, &(ecs_bulk_desc_t)
     {
         .count = bobSpawnCount,
         .ids =
         {
-            ecs_pair(EcsIsA, character2DPrefab),
+            ecs_pair(EcsIsA, particle2DPrefab),
             ecs_id(Position2D),
             ecs_id(Velocity2D),
             ecs_id(Acceleration2D),
             ecs_id(Rotation2D),
             ecs_id(Torque2D),
             ecs_id(Scale2D),
-            ecs_id(Brightness)
+            ecs_id(Brightness),
+            ecs_id(DestroyInTime)
         },
         // provide data for each id
         .data = (void*[])
@@ -178,7 +186,8 @@ void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, int bobSpa
             NULL,           // Rotation2D
             torque2Ds,
             scale2Ds,
-            brightnesses
+            brightnesses,
+            destroyInTimes
         }
     });
 }
@@ -216,7 +225,7 @@ void BobArmySpawnFixer(ecs_world_t *world)
     ECS_ENTITY(world, character2DPrefab, Scale2D, OVERRIDE | Scale2D);
     ECS_ENTITY(world, character2DPrefab, Brightness, OVERRIDE | Brightness);*/
 
-    // ecs_entity_t bobPlayer = ecs_new_w_pair(world, EcsChildOf, playerPrefab);
+    // ecs_entity_t bobPlayer = ecs_new_w_pair(world, EcsChildOf, playerCharacter2DPrefab);
     /*har *playerName = strcat("Player (Instance) [%lu]", bobPlayer);
     ecs_set_name(world, bobPlayer, playerName);
     free(playerName);*/

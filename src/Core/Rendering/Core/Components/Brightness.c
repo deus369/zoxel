@@ -3,3 +3,4 @@ typedef struct
 {
     float value;
 } Brightness;
+ECS_COMPONENT_DECLARE(Brightness);

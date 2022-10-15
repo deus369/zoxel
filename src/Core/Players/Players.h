@@ -7,6 +7,8 @@
 */
 // you can assign anything to ctx, make a struct with multiple queries for injection ecs_id(BobMoveSystem), 
 
+// EcsOnDeleteTarget use this
+
 // Tags
 ECS_DECLARE(Player);
 ECS_DECLARE(Player2D);

@@ -9,3 +9,4 @@ typedef struct
     float3 *colors;
     float2 *uvs;
 } Mesh;
+ECS_COMPONENT_DECLARE(Mesh);

@@ -1,11 +1,20 @@
+// Add defines first
 #include <stdbool.h>
 #include <string.h>
 #define SDL_IMAGES
-// --- Core Core ---
+// =-= F LECS =-=
+// #define FLECS_C          /* C API convenience macros, always enabled */
+#define FLECS_CUSTOM_BUILD
+#define FLECS_MODULE        /* Module support */
+#define FLECS_SYSTEM        /* System support */
+#define FLECS_PIPELINE      /* Pipeline support */
 #include "Imports/Flecs/flecs.h"
+// =-= Modules =-=
+// --- Core Core ---
 #include "Core/Core/Core.h"
 #include "Imports/Imports.h"
 // --- Core ---
+#include "Core/Timing/Timing.c"
 #include "Core/Inputs/Inputs.h"
 #include "Core/Transforms2D/Transforms2D.h"
 #include "Core/Transforms/Transforms.h"
@@ -34,8 +43,8 @@ void PollSDLEvents();
 
 void ImportModules(ecs_world_t *world)
 {
-    printf("Importing Modules.");
     // Core Modules
+    ECS_IMPORT(world, Timing);
     ECS_IMPORT(world, Inputs);
     ECS_IMPORT(world, Transforms2D);
     ECS_IMPORT(world, Transforms);
@@ -51,7 +60,6 @@ void ImportModules(ecs_world_t *world)
 
 void InitializeModules(ecs_world_t *world)
 {
-    printf("Initializing Modules.");
     UpdateBeginSDL();
     // Spawn things from Modules
     InitializeInputs(world);
@@ -76,12 +84,12 @@ int main(int argc, char* argv[])
         if (didFail != EXIT_FAILURE)
         {
             didFail = SpawnWindowSDL(fullscreen);
+            coreCount = SDL_GetCPUCount();
             PrintOpenGL();
             if (didFail != EXIT_FAILURE)
             {
                 // check open gl for failures?
-                InitializeOpenGL(vsync);
-                coreCount = SDL_GetCPUCount();
+                didFail = InitializeOpenGL(vsync);
             }
         }
         if (didFail == EXIT_FAILURE)
@@ -103,9 +111,10 @@ int main(int argc, char* argv[])
     if (!headless)
     {
         SpawnKeyboardEntity();
+        localPlayer = SpawnPlayer(world);
     }
-    localPlayer = SpawnPlayer(world);
     //! Core Application Loop!
+    printf("Entering Core Loop.\n");
     while (running)
     {
         UpdateBeginTime();

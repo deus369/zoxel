@@ -5,19 +5,15 @@
 #ifdef SDL_IMAGES
 #include <SDL2/SDL_image.h>
 #endif
-#ifndef M_PI
-#define M_PI 3.141592653589793
-#endif
 
-//const int defaultWindowSizeX = 940;
-//const int defaultWindowSizeY = 640;
-const int defaultWindowSizeX = 480;
-const int defaultWindowSizeY = 480;
+const char *iconFilename = "Resources/Textures/GameIcon.png";
+int screenWidth = 480;
+int screenHeight = 480;
+float aspectRatio = 1;
+float fov = 60;
 SDL_Window* window;
 SDL_GLContext context;
 unsigned long windowFlags;
-const char *iconFilename = "Textures/GameIcon.png";
-
 // forward declarations
 void LoadIconSDL(SDL_Window* window);
 
@@ -87,7 +83,7 @@ int SpawnWindowSDL(bool fullscreen)
     }
     window = SDL_CreateWindow("Zoxel",
         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-        defaultWindowSizeX, defaultWindowSizeY, windowFlags);
+        screenWidth, screenHeight, windowFlags);
     if (window == NULL)
     {
         SDL_Quit();
@@ -139,6 +135,32 @@ void LoadIconSDL(SDL_Window* window)
 #endif
 }
 
+void ResizeOpenGL(int width, int height)
+{
+    screenWidth = width;
+    screenHeight = height;
+    if(screenHeight <= 0)
+    {
+        screenHeight = 1;
+    }
+    aspectRatio = ((float)screenWidth) / ((float)screenHeight);
+    printf("Updated Canvas: Screen Dimensions [%i x %i] Aspect Ratio [%f].\n", screenWidth, screenHeight, aspectRatio);
+    glViewport(0, 0, (GLsizei) screenWidth, (GLsizei) screenHeight);
+    GluPerspective(fov, aspectRatio, 1.0f, 100.0f);
+    /*glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    GluPerspective(fov, aspectRatio, 1.0f, 100.0f);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    printf("Aspect Ratio is now %f.\n", aspectRatio);*/
+}
+
+
+    // glOrtho( 0.0, width, height, 0.0, 1.0, -1.0 );
+    //  glViewport(0, 0, (GLsizei)width, (GLsizei)height);
+    // glOrtho(0, width, height, 0, -1.0, 1.0);
+    // glMatrixMode(GL_PROJECTION);
+
 /*void glhFrustumf2(float *matrix, float left, float right, float bottom, float top, float znear, float zfar)
 {
     float temp, temp2, temp3, temp4;
@@ -175,24 +197,6 @@ void glhPerspectivef2(float *matrix, float fovyInDegrees, float aspectRatio,
     xmax = ymax * aspectRatio;
     glhFrustumf2(matrix, -xmax, xmax, -ymax, ymax, znear, zfar);
 }*/
-
-void ResizeOpenGL(int width, int height)
-{
-    if(height <= 0)
-    {
-        height = 1;
-    }
-    float ratio = ((float)width) / ((float)height);
-
-    glViewport(0, 0, (GLsizei)width, (GLsizei)height);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    // glhPerspectivef2(60.0f, ratio, 1.0f, 100.0f);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-}
 
 // Matrix will receive the calculated perspective matrix.
 // You would have to upload to your shader

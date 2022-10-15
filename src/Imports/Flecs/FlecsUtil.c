@@ -15,8 +15,10 @@ void InitializeECS(int argc, char* argv[], bool profiler, bool isThreading, int 
     // Enable Profiler
     if (profiler)
     {
+        #ifdef FLECS_REST
         ECS_IMPORT(world, FlecsMonitor); 
         ecs_singleton_set(world, EcsRest, {0});
+        #endif
     }
 }
 

@@ -1,16 +1,5 @@
 # Zoxel Makefile!
 
-# ends up close to this but with optimizations
-# cc -std=c99 -o zoxel src/Imports/Flecs/flecs.c src/main.c -lGL -lSDL2 -lSDL2_image; valgrind --track-origins=true ./zoxel;
-
-# ended up as
-# cc -std=c99 -fPIC -g -o zoxel src/Imports/Flecs/flecs.c src/main.c -lGL -lSDL2 -lSDL2_image -O3 -flto -D NDEBUG
-
-# Memory Testing with valgrind ./zoxel
-
-# \todo Compile flecs first as a .o. Reduce flecs addons into a light weight version.
-# \todo Each module will have a seperate Makefile. These will compile a .o file. They will link to the previous .o files.
-
 # Declare compiler tools and flags
 CC = cc
 CFLAGS =
@@ -21,10 +10,10 @@ CFLAGS += -g
 LDLIBS = -lGL
 LDLIBS += -lSDL2
 LDLIBS += -lSDL2_image
-# Compiler Optimizations
+LDLIBS += -lm	# for math.h
+# Compiler Optimizations & Debug
 LDLIBS += -O3
 LDLIBS += -flto
-# Removes Debug Messages
 LDLIBS += -D NDEBUG
 
 # SRCS defines all the files that will be used in the game.
@@ -50,29 +39,8 @@ OBJS += src/Imports/Flecs/flecs.c
 OBJS += src/main.c
 
 SHDS =
-SRCS += Shaders/BasicRender2D.vert
-SRCS += Shaders/BasicRender2D.frag
-
-#all make recursive calls
-# sub-make:
-#     make -C src/Core/Rendering/MakeRendering
-
-# blob:
-#     .incbin $(SHDS)
+SRCS += Resources/Shaders/BasicRender2D.vert
+SRCS += Resources/Shaders/BasicRender2D.frag
 
 zoxel: $(SRCS)
 	$(CC) $(CFLAGS) $(SHDS) -o $@ $(OBJS) $(LDLIBS)
-
-
-# Helper target that cleans up build artifacts
-# .PHONY: clean
-
-# clean:
-#     rm -rf *.o zoxel
-	
-# rm -fr zoxel zoxel.exe src/*.o
-
-# Default rule for compiling .c files to .o object files
-# .SUFFIXES: .c .o
-# .c.o:
-# 	$(CFLAGS) -c -o $@ $<

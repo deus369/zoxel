@@ -25,6 +25,8 @@
 #include <limits.h>
 #include <stdio.h>
 
+int CLOCK_MONOTONIC = 0;
+
 /**
  * @file entity_index.h
  * @brief Entity index data structure.
@@ -18513,7 +18515,6 @@ void posix_time_setup(void) {
         mach_timebase_info(&posix_osx_timebase);
         posix_time_start = mach_absolute_time();
     #else
-        int CLOCK_MONOTONIC = 0;
         struct timespec ts;
         clock_gettime(CLOCK_MONOTONIC, &ts);
         posix_time_start = (uint64_t)ts.tv_sec*1000000000 + (uint64_t)ts.tv_nsec;
@@ -18562,7 +18563,6 @@ uint64_t posix_time_now(void) {
     #elif defined(__EMSCRIPTEN__)
         now = (long long)(emscripten_get_now() * 1000.0 * 1000);
     #else
-        int CLOCK_MONOTONIC = 0;
         struct timespec ts;
         clock_gettime(CLOCK_MONOTONIC, &ts);
         now = ((uint64_t)ts.tv_sec * 1000 * 1000 * 1000 + (uint64_t)ts.tv_nsec);

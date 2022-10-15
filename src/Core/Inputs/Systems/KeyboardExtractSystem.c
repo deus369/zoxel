@@ -15,7 +15,7 @@ void SpawnKeyboardEntity()
     keyboardEntity = ecs_new_entity(world, "keyboard");
     // ecs_add(world, keyboardEntity, Keyboard);
     ecs_set(world, keyboardEntity, Keyboard, { });
-    printf("Keyboard is ALIVE: %lu \n", keyboardEntity);
+    printf("Spawned Keyboard [%lu]\n", (long unsigned int) keyboardEntity);
     // return keyboardEntity;
 }
 

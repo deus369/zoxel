@@ -1,6 +1,10 @@
 #ifndef Zoxel_Physics2D
 #define Zoxel_Physics2D
 
+#ifndef M_PI
+#define M_PI 3.141592653589793
+#endif
+
 // Components
 #include "Components/Velocity2D.c"
 #include "Components/Torque2D.c"
@@ -12,10 +16,6 @@ ECS_DECLARE(Frictioned);
 #include "Systems/Acceleration2DSystem.c"
 #include "Systems/Torque2DSystem.c"
 #include "Systems/Friction2DSystem.c"
-
-#ifndef M_PI
-#define M_PI 3.141592653589793
-#endif
 
 void Physics2DImport(ecs_world_t *world)
 {
