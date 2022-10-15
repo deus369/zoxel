@@ -15,6 +15,10 @@ LDLIBS += -lm	# for math.h
 LDLIBS += -O3
 LDLIBS += -flto
 LDLIBS += -D NDEBUG
+# LDLIBS += -D_POSIX_C_SOURCE=199309L
+LDLIBS += -D_POSIX_C_SOURCE=200112L -D_DEFAULT_SOURCE
+# LDLIBS += -D_POSIX_C_SOURCE=200112L -D_BSD_SOURCE
+
 # SRCS defines all the files that will be used in the game.
 SRCS = 
 SRCS += Source/Imports/Flecs/flecs.c 

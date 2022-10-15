@@ -25,8 +25,6 @@
 #include <limits.h>
 #include <stdio.h>
 
-int CLOCK_MONOTONIC = 0;
-
 /**
  * @file entity_index.h
  * @brief Entity index data structure.
@@ -7169,7 +7167,8 @@ const ecs_entity_t* ecs_bulk_init(
     ecs_world_t *world,
     const ecs_bulk_desc_t *desc)
 {
-    ecs_check(world != NULL, ECS_INVALID_PARAMETER, NULL);
+    ecs_poly_assert(world, ecs_world_t);
+    ecs_assert(!(world->flags & EcsWorldReadonly), ECS_INTERNAL_ERROR, NULL);
     ecs_check(desc != NULL, ECS_INVALID_PARAMETER, NULL);
     ecs_check(desc->_canary == 0, ECS_INVALID_PARAMETER, NULL);
 
@@ -9699,9 +9698,8 @@ bool flecs_defer_purge(
 
             ecs_vec_clear(&commands);
             flecs_stack_reset(&stage->defer_stack);
+            flecs_sparse_clear(&stage->cmd_entries);
         }
-
-        flecs_sparse_clear(&stage->cmd_entries);
 
         return true;
     }
@@ -9751,7 +9749,7 @@ ecs_cmd_t* flecs_cmd_new(
                     last_op->next_for_entity *= -1;
                 }
             }
-        } else {
+        } else if (can_batch || is_delete) {
             entry = flecs_sparse_ensure(&stage->cmd_entries, 
                 ecs_cmd_entry_t, e);
             entry->first = cur;
@@ -11406,14 +11404,17 @@ void flecs_sparse_clear(
 {
     ecs_assert(sparse != NULL, ECS_INVALID_PARAMETER, NULL);
 
-    ecs_vector_each(sparse->chunks, chunk_t, chunk, {
-        flecs_sparse_chunk_free(sparse, chunk);
-    });
+    int32_t i, count = ecs_vector_count(sparse->chunks);
+    chunk_t *chunks = ecs_vector_first(sparse->chunks, chunk_t);
+    for (i = 0; i < count; i ++) {
+        int32_t *indices = chunks[i].sparse;
+        if (indices) {
+            ecs_os_memset_n(indices, 0, int32_t, FLECS_SPARSE_CHUNK_SIZE);
+        }
+    }
 
-    ecs_vector_free(sparse->chunks);
     ecs_vector_set_count(&sparse->dense, uint64_t, 1);
 
-    sparse->chunks = NULL;   
     sparse->count = 1;
     sparse->max_id_local = 0;
 }
@@ -11422,8 +11423,18 @@ void _flecs_sparse_fini(
     ecs_sparse_t *sparse)
 {
     ecs_assert(sparse != NULL, ECS_INTERNAL_ERROR, NULL);
-    flecs_sparse_clear(sparse);
+    
+    int32_t i, count = ecs_vector_count(sparse->chunks);
+    chunk_t *chunks = ecs_vector_first(sparse->chunks, chunk_t);
+    for (i = 0; i < count; i ++) {
+        flecs_sparse_chunk_free(sparse, &chunks[i]);
+    }
+
+    ecs_vector_free(sparse->chunks);
     ecs_vector_free(sparse->dense);
+
+    sparse->chunks = NULL;
+    sparse->dense = NULL;
 }
 
 void flecs_sparse_free(
@@ -18517,7 +18528,7 @@ void posix_time_setup(void) {
     #else
         struct timespec ts;
         clock_gettime(CLOCK_MONOTONIC, &ts);
-        posix_time_start = (uint64_t)ts.tv_sec*1000000000 + (uint64_t)ts.tv_nsec;
+        posix_time_start = (uint64_t)ts.tv_sec*1000000000 + (uint64_t)ts.tv_nsec; 
     #endif
 }
 
@@ -29678,6 +29689,7 @@ void ecs_world_stats_get(
     ecs_ftime_t delta_frame_count = 
     ECS_COUNTER_RECORD(&s->frame.frame_count, t, world->info.frame_count_total);
     ECS_COUNTER_RECORD(&s->frame.merge_count, t, world->info.merge_count_total);
+    ECS_COUNTER_RECORD(&s->frame.rematch_count, t, world->info.rematch_count_total);
     ECS_COUNTER_RECORD(&s->frame.pipeline_build_count, t, world->info.pipeline_build_count_total);
     ECS_COUNTER_RECORD(&s->frame.systems_ran, t, world->info.systems_ran_frame);
     ECS_COUNTER_RECORD(&s->frame.observers_ran, t, world->info.observers_ran_frame);
@@ -29690,6 +29702,7 @@ void ecs_world_stats_get(
     ECS_COUNTER_RECORD(&s->performance.system_time, t, world->info.system_time_total);
     ECS_COUNTER_RECORD(&s->performance.emit_time, t, world->info.emit_time_total);
     ECS_COUNTER_RECORD(&s->performance.merge_time, t, world->info.merge_time_total);
+    ECS_COUNTER_RECORD(&s->performance.rematch_time, t, world->info.rematch_time_total);
     ECS_GAUGE_RECORD(&s->performance.delta_time, t, delta_world_time);
     if (delta_world_time != 0 && delta_frame_count != 0) {
         ECS_GAUGE_RECORD(&s->performance.fps, t, (ecs_ftime_t)1 / (delta_world_time / (ecs_ftime_t)delta_frame_count));
@@ -31665,11 +31678,11 @@ ecs_entity_t ecs_run_intern(
         thread_ctx = stage->thread_ctx;
     }
 
-    ecs_defer_begin(thread_ctx);
-
     /* Prepare the query iterator */
     ecs_iter_t pit, wit, qit = ecs_query_iter(thread_ctx, system_data->query);
     ecs_iter_t *it = &qit;
+
+    ecs_defer_begin(thread_ctx);
 
     if (offset || limit) {
         pit = ecs_page_iter(it, offset, limit);
@@ -31824,14 +31837,11 @@ ecs_entity_t ecs_system_init(
         ECS_INVALID_WHILE_READONLY, NULL);
 
     ecs_entity_t entity = desc->entity;
-    // printf("ecs_system_init [%lu]\n", (long unsigned int) (entity));
     if (!entity) {
-        printf("!entity is true");
         entity = ecs_new(world, 0);
     }
     EcsPoly *poly = ecs_poly_bind(world, entity, ecs_system_t);
     if (!poly->poly) {
-        // printf("Creating new System for our entity [%lu]\n", (long unsigned int) (entity));
         ecs_system_t *system = ecs_poly_new(ecs_system_t);
         ecs_assert(system != NULL, ECS_INTERNAL_ERROR, NULL);
         
@@ -31890,11 +31900,9 @@ ecs_entity_t ecs_system_init(
                 ecs_get_name(world, entity));
         }
 
-        ecs_defer_end(world);  
-        //printf("Creating New System [%lu]\n", ecs_id(system));          
+        ecs_defer_end(world);            
     } else {
         ecs_system_t *system = ecs_poly(poly->poly, ecs_system_t);
-        //printf("Hello world 2 [%lu]\n", ecs_id(system)); 
 
         if (desc->run) {
             system->run = desc->run;
@@ -34460,12 +34468,13 @@ void flecs_world_stats_to_json(
     ECS_COUNTER_APPEND(reply, stats, performance.system_time, "Time spent on running systems in frame");
     ECS_COUNTER_APPEND(reply, stats, performance.emit_time, "Time spent on notifying observers in frame");
     ECS_COUNTER_APPEND(reply, stats, performance.merge_time, "Time spent on merging commands in frame");
+    ECS_COUNTER_APPEND(reply, stats, performance.rematch_time, "Time spent on revalidating query caches in frame");
 
     ECS_COUNTER_APPEND(reply, stats, commands.add_count, "Add commands executed");
     ECS_COUNTER_APPEND(reply, stats, commands.remove_count, "Remove commands executed");
     ECS_COUNTER_APPEND(reply, stats, commands.delete_count, "Delete commands executed");
     ECS_COUNTER_APPEND(reply, stats, commands.clear_count, "Clear commands executed");
-    ECS_COUNTER_APPEND(reply, stats, commands.set_count, "Set command executeds");
+    ECS_COUNTER_APPEND(reply, stats, commands.set_count, "Set commands executed");
     ECS_COUNTER_APPEND(reply, stats, commands.get_mut_count, "Get_mut commands executed");
     ECS_COUNTER_APPEND(reply, stats, commands.modified_count, "Modified commands executed");
     ECS_COUNTER_APPEND(reply, stats, commands.other_count, "Misc commands executed");
@@ -34474,10 +34483,11 @@ void flecs_world_stats_to_json(
     ECS_COUNTER_APPEND(reply, stats, commands.batched_count, "Number of commands batched");
 
     ECS_COUNTER_APPEND(reply, stats, frame.merge_count, "Number of merges (sync points)");
-    ECS_COUNTER_APPEND(reply, stats, frame.pipeline_build_count, "Pipeline rebuilds happen after systems activate or are enabled/disabled");
+    ECS_COUNTER_APPEND(reply, stats, frame.pipeline_build_count, "Pipeline rebuilds (happen when systems become active/enabled)");
     ECS_COUNTER_APPEND(reply, stats, frame.systems_ran, "Systems ran in frame");
     ECS_COUNTER_APPEND(reply, stats, frame.observers_ran, "Number of times an observer was invoked in frame");
     ECS_COUNTER_APPEND(reply, stats, frame.event_emit_count, "Events emitted in frame");
+    ECS_COUNTER_APPEND(reply, stats, frame.rematch_count, "Number of query cache revalidations");
 
     ECS_GAUGE_APPEND(reply, stats, tables.count, "Tables in the world (including empty)");
     ECS_GAUGE_APPEND(reply, stats, tables.empty_count, "Empty tables in the world");
@@ -35873,8 +35883,6 @@ void http_init_connection(
     char *remote_port = conn->pub.port;
 
     /* Fetch name & port info */
-    int NI_NUMERICHOST = 0;
-    int NI_NUMERICSERV = 0;
     if (http_getnameinfo((struct sockaddr*) remote_addr, remote_addr_len,
         remote_host, ECS_SIZEOF(conn->pub.host),
         remote_port, ECS_SIZEOF(conn->pub.port),
@@ -35921,8 +35929,7 @@ void http_accept_connections(
 
     ecs_http_socket_t sock = HTTP_SOCKET_INVALID;
     ecs_assert(srv->sock == HTTP_SOCKET_INVALID, ECS_INTERNAL_ERROR, NULL);
-    int NI_NUMERICHOST = 0;
-    int NI_NUMERICSERV = 0;
+
     if (http_getnameinfo(
         addr, addr_len, addr_host, ECS_SIZEOF(addr_host), addr_port, 
         ECS_SIZEOF(addr_port), NI_NUMERICHOST | NI_NUMERICSERV))
@@ -37570,14 +37577,16 @@ const char* parse_c_identifier(
 
     /* Ignore whitespaces */
     ptr = ecs_parse_eol_and_whitespace(ptr);
+    ch = *ptr;
 
-    if (!isalpha(*ptr)) {
-        ecs_meta_error(ctx, ptr, 
-            "invalid identifier (starts with '%c')", *ptr);
+    if (!isalpha(ch) && (ch != '_')) {
+        ecs_meta_error(ctx, ptr, "invalid identifier (starts with '%c')", ch);
         goto error;
     }
 
-    while ((ch = *ptr) && !isspace(ch) && ch != ';' && ch != ',' && ch != ')' && ch != '>' && ch != '}') {
+    while ((ch = *ptr) && !isspace(ch) && ch != ';' && ch != ',' && ch != ')' && 
+        ch != '>' && ch != '}' && ch != '*') 
+    {
         /* Type definitions can contain macros or templates */
         if (ch == '(' || ch == '<') {
             if (!params) {
@@ -40169,7 +40178,6 @@ void flecs_process_pending_tables(
             }
         }
         flecs_sparse_clear(pending_tables);
-
         ecs_defer_end(world);
 
         world->pending_buffer = pending_tables;
@@ -43862,6 +43870,7 @@ void flecs_uni_observer_builtin_run(
     ecs_observer_t *observer,
     ecs_iter_t *it)
 {
+    ecs_flags32_t flags = it->flags;
     ECS_BIT_COND(it->flags, EcsIterIsFilter, 
         observer->filter.terms[0].inout == EcsInOutNone);
 
@@ -43891,6 +43900,7 @@ void flecs_uni_observer_builtin_run(
 
     it->event = event;
     it->ptrs = ptrs;
+    it->flags = flags;
 }
 
 static
@@ -47020,7 +47030,13 @@ void flecs_query_rematch_tables(
     ECS_BIT_SET(it.flags, EcsIterIsFilter);
     ECS_BIT_SET(it.flags, EcsIterEntityOptional);
 
+    world->info.rematch_count_total ++;
     int32_t rematch_count = ++ query->rematch_count;
+
+    ecs_time_t t = {0};
+    if (world->flags & EcsWorldMeasureFrameTime) {
+        ecs_time_measure(&t);
+    }
 
     while (ecs_iter_next(&it)) {
         if ((table != it.table) || (!it.table && !qt)) {
@@ -47074,6 +47090,10 @@ void flecs_query_rematch_tables(
                 flecs_query_unmatch_table(query, qt->hdr.table);
             }
         }
+    }
+
+    if (world->flags & EcsWorldMeasureFrameTime) {
+        world->info.rematch_time_total += (ecs_ftime_t)ecs_time_measure(&t);
     }
 }
 
