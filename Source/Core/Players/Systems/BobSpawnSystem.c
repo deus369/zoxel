@@ -1,7 +1,7 @@
-#include "../../../Core/Core/Core.h"
-#include "../../../Core/Transforms2D/Transforms2D.h"
-#include "../../../Core/Rendering/Rendering.h"
-#include "../../../Space/Physics2D/Physics2D.h"
+//! Move bob spawn system to Character2Ds
+#include "../../../Core/Transforms2D/Transforms2D.c"
+#include "../../../Core/Rendering/Rendering.c"
+#include "../../../Space/Physics2D/Physics2D.c"
 
 const int bobSpawnCount = 100;
 bool debugSpawnBobArmy = false;

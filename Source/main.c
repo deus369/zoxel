@@ -11,21 +11,21 @@
 #include "Imports/Flecs/flecs.h"
 // =-= Modules =-=
 // --- Core Core ---
-#include "Core/Core/Core.h"
-#include "Imports/Imports.h"
+#include "Core/Core/Core.c"
+#include "Imports/Imports.c"
 // --- Core ---
 #include "Core/Timing/Timing.c"
-#include "Core/Inputs/Inputs.h"
-#include "Core/Transforms2D/Transforms2D.h"
-#include "Core/Transforms/Transforms.h"
-#include "Core/Rendering/Rendering.h"
-#include "Core/Cameras/Cameras.h"
-#include "Core/Textures/Textures.h"
-#include "Core/Voxels/Voxels.h"
+#include "Core/Inputs/Inputs.c"
+#include "Core/Transforms2D/Transforms2D.c"
+#include "Core/Transforms/Transforms.c"
+#include "Core/Rendering/Rendering.c"
+#include "Core/Cameras/Cameras.c"
+#include "Core/Textures/Textures.c"
+#include "Core/Voxels/Voxels.c"
 // --- Space ---
-#include "Space/Physics2D/Physics2D.h"
+#include "Space/Physics2D/Physics2D.c"
 // --- Gameplay ---
-#include "Core/Players/Players.h"
+#include "Core/Players/Players.c"   // for now until i move stuff to characters
 
 // Settings 
 bool running = true;

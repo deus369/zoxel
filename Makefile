@@ -23,14 +23,14 @@ SRCS += Source/main.c
 # Imports
 SRCS += Source/Imports/SDL/SDLUtil.c
 SRCS += Source/Imports/Flecs/FlecsUtil.c
-SRCS += Source/Imports/Imports.h
+SRCS += Source/Imports/Imports.c
 # Players
-SRCS += Source/Core/Players/Players.h
+SRCS += Source/Core/Players/Players.c
 SRCS += Source/Core/Players/Systems/BobSpawnSystem.c
 SRCS += Source/Core/Players/Systems/BobMoveSystem.c
 # Rendering
-SRCS += Source/Core/Rendering/Rendering.h
-SRCS += Source/Core/Rendering/Core/RenderingCore.h
+SRCS += Source/Core/Rendering/Rendering.c
+SRCS += Source/Core/Rendering/Core/RenderingCore.c
 
 # OBJS defines all the files used to compile Zoxel.
 OBJS = 

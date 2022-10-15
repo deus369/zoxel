@@ -2,7 +2,7 @@
 #define Zoxel_Rendering
 //! Rendering Module.
 
-#include "Core/RenderingCore.h"
+#include "Core/RenderingCore.c"
 
 void RenderingImport(ecs_world_t *world)
 {

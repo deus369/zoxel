@@ -1,8 +1,4 @@
-// #include "../../../Imports/Flecs/flecs.h"
-// #include "../Physics2D.h"
-// #include "../../../Core/Core/Core.h"
-// #include "../../../Core/Transforms2D/Transforms2D.h"
-
+//! Veloco Rapters!
 void Velocity2DSystem(ecs_iter_t *it)
 {
     double deltaTime = (double) it->delta_time;

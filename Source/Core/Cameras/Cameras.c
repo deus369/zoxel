@@ -3,7 +3,7 @@
 
 // Tags
 ECS_DECLARE(Camera);
-ECS_DECLARE(Camera);
+ECS_DECLARE(CameraFollower2D);  // a tag for a camera that follows a Character2D
 // Data
 #include "Components/ViewMatrix.c"
 #include "Components/ScreenDimensions.c"
@@ -47,7 +47,6 @@ ECS_COPY(ViewMatrix, dst, src, {
     }
 })
 
-
 //! Sets the ViewMatrix as thing
 /*void ViewMatrixDisposeSystem(ecs_iter_t *it)
 {
@@ -70,7 +69,7 @@ void CamerasImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, ViewMatrix);
     ECS_COMPONENT_DEFINE(world, ScreenDimensions);
     ECS_COMPONENT_DEFINE(world, FieldOfView);
-    ECS_SYSTEM_DEFINE(world, ViewMatrixSystem, EcsOnUpdate, ViewMatrix, ScreenDimensions, FieldOfView);
+    ECS_SYSTEM_DEFINE(world, ViewMatrixSystem, EcsOnUpdate, ScreenDimensions, FieldOfView, ViewMatrix);
     ecs_set_hooks(world, ViewMatrix, {
         // .on_remove = ViewMatrixDisposeSystem,
         .ctor = ecs_ctor(ViewMatrix),

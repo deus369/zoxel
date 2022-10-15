@@ -1,4 +1,4 @@
-// #include "../../../Imports/Flecs/flecs.h"
+//! Grabs keyboard data from SDL.
 
 ecs_entity_t keyboardEntity;
 // forward declarations

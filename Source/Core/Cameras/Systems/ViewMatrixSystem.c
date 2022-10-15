@@ -50,10 +50,16 @@ void CalculatePerspectiveViewMatrix(float *viewMatrix, float fovInDegrees, float
 */
 void ViewMatrixSystem(ecs_iter_t *it)
 {
+    if (!ecs_query_changed(NULL, it))
+    {
+        // printf("Component has not changed.\n");
+        return;
+    }
+    // printf("Component has Changed.\n");
     //printf("thing: %lu\n", it->)
-    ViewMatrix *viewMatrixs = ecs_field(it, ViewMatrix, 1);
-    ScreenDimensions *screenDimensions = ecs_field(it, ScreenDimensions, 2);
-    FieldOfView *fieldOfViews = ecs_field(it, FieldOfView, 3);
+    ScreenDimensions *screenDimensions = ecs_field(it, ScreenDimensions, 1);
+    FieldOfView *fieldOfViews = ecs_field(it, FieldOfView, 2);
+    ViewMatrix *viewMatrixs = ecs_field(it, ViewMatrix, 3);
     // ecs_query_changed(it->query, &it, ScreenDimensions) || ecs_query_changed(q_read, &it, ScreenDimensions)
     for (int i = 0; i < it->count; i++)
     {
@@ -68,7 +74,7 @@ void ViewMatrixSystem(ecs_iter_t *it)
         }
         float aspectRatio = ((float) screenWidth) / ((float) screenHeight);
         CalculatePerspectiveViewMatrix(viewMatrix->value, fieldOfView->value, aspectRatio, 1, 100);
-        // printf("CalculatePerspectiveViewMatrix [%ix%i]\n", screenWidth, screenHeight);
+        // printf("    Perspective Updated [%ix%i]\n", screenWidth, screenHeight);
     }
 }
 ECS_SYSTEM_DECLARE(ViewMatrixSystem);
