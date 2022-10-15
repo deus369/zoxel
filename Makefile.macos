@@ -15,14 +15,14 @@ LDLIBS  = -framework OpenGL -lSDL2
 
 
 # Build the main binary
-demo: src/main.c src/opengl.c src/opengl.h
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ src/main.c src/opengl.c $(LDLIBS)
+demo: Source/main.c Source/opengl.c Source/opengl.h
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ Source/main.c Source/opengl.c $(LDLIBS)
 
 
 # Helper target that cleans up build artifacts
 .PHONY: clean
 clean:
-	rm -fr demo demo.exe src/*.o
+	rm -fr demo demo.exe Source/*.o
 
 
 # Default rule for compiling .c files to .o object files

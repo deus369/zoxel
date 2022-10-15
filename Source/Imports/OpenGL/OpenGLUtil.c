@@ -13,27 +13,26 @@ int InitializeOpenGL(bool vsync)
     int failed = LoadShaders();
     if (failed != -1)
     {
-        GluPerspective(fov, aspectRatio, 1.0f, 100.0f);
+        // GluPerspective(fov, aspectRatio, 1.0f, 100.0f);
     }
     return failed;
 }
 
-void UpdateBeginOpenGL()
+void UpdateBeginOpenGL(const float* viewMatrix)
 {
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);       // Clears the buffer ?
-    // GluPerspective(fov, aspectRatio, 1.0f, 100.0f);
-    // glViewport(0, 0, (GLsizei) screenWidth, (GLsizei) screenHeight);
-    /*glMatrixMode( GL_PROJECTION );
-    glLoadIdentity();
-    // gluOrtho2D(-1.0 * aspectRatio, aspectRatio, -1.0, 1.0);
-    glMatrixMode( GL_MODELVIEW );
-    glLoadIdentity();*/
     //! This sets the materials actually, would be best to group entities per material here?
     glUseProgram(material);
-    // glBindVertexArray(vao);
     glBindVertexArray(vao);
-    glUniformMatrix4fv(gl_view_matrix, 1, GL_FALSE, (const GLfloat*) viewMatrix);
+    if (viewMatrix)
+    {
+        glUniformMatrix4fv(gl_view_matrix, 1, GL_FALSE, (const GLfloat*) viewMatrix);
+    }
+    else
+    {
+        printf("Camera View matrix broken.");
+    }
 }
 
 void RenderEntity2D(float2 position, float angle, float scale, float brightness)
@@ -67,11 +66,15 @@ void EndOpenGL()
     glDeleteVertexArrays(1, &vao);
     glDeleteBuffers(1, &vbo);
     glDeleteProgram(material);
-    if (viewMatrix)
-    {
-        free(viewMatrix);
-    }
 }
+
+// GluPerspective(fov, aspectRatio, 1.0f, 100.0f);
+// glViewport(0, 0, (GLsizei) screenWidth, (GLsizei) screenHeight);
+/*glMatrixMode( GL_PROJECTION );
+glLoadIdentity();
+// gluOrtho2D(-1.0 * aspectRatio, aspectRatio, -1.0, 1.0);
+glMatrixMode( GL_MODELVIEW );
+glLoadIdentity();*/
 
 // vert shader
 // const GLchar *vertSource =

@@ -7,6 +7,7 @@
 #include "Data/float4.c"
 #include "Data/float4x4.c"
 #include "Data/double2.c"
+#include "Data/int2.c"
 // Components
 #include "Components/ID.c"
 // Util

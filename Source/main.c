@@ -110,6 +110,7 @@ int main(int argc, char* argv[])
     // start game logic
     if (!headless)
     {
+        SpawnMainCamera(screenDimensions);
         SpawnKeyboardEntity();
         localPlayer = SpawnPlayer(world);
     }
@@ -127,7 +128,7 @@ int main(int argc, char* argv[])
         {
             if (isRendering)
             {
-                UpdateBeginOpenGL();
+                UpdateBeginOpenGL(GetMainCameraViewMatrix());
             }
             if (headless && GetBobCount() < 1000000)
             {
@@ -180,16 +181,21 @@ void PollSDLEvents()
         else if (eventType == SDL_KEYUP)
         {
             SDL_Keycode key = event.key.keysym.sym;
-            if (key == SDLK_q || key == SDLK_ESCAPE) 
+            if (key == SDLK_ESCAPE) 
             {
                 running = false;
+            }
+            else if (key == SDLK_q) 
+            {
+                DestroyMainCamera();
             }
         }
         else if (eventType == SDL_WINDOWEVENT) // SDL_WINDOWEVENT_RESIZED)
         {
             if(event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
             {
-                ResizeOpenGL(event.window.data1, event.window.data2);
+                ResizeOpenGLViewport(event.window.data1, event.window.data2);
+                ResizeCameras(event.window.data1, event.window.data2);
             }
         }
     }

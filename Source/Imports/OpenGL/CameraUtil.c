@@ -2,7 +2,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <SDL2/SDL_opengl.h>
-
+/*
 #ifndef M_PI
 #define M_PI 3.141592653589793
 #endif
@@ -53,4 +53,4 @@ void GluPerspective(float fovyInDegrees, float aspectRatio, float znear, float z
     }
     glhPerspectivef2(viewMatrix, fovyInDegrees, aspectRatio, znear, zfar);
     glMultMatrixf(viewMatrix);
-}
+}*/

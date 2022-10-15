@@ -1,3 +1,5 @@
+// Spawn a queue
+
 //! Render 2D entities.
 void Render2DSystem(ecs_iter_t *it)
 {
@@ -11,6 +13,7 @@ void Render2DSystem(ecs_iter_t *it)
         const Rotation2D *rotation2D = &rotation2Ds[i];
         const Scale2D *scale2D = &scale2Ds[i];
         const Brightness *brightness = &brightnesses[i];
+        // Add to Render Queue
         // printf("    Bob's Position2D is {%f, %f}\n", position.value.x, position.value.y);
         RenderEntity2D(position->value, rotation2D->value, scale2D->value, brightness->value);
     }

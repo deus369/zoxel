@@ -7,8 +7,7 @@
 #endif
 
 const char *iconFilename = "Resources/Textures/GameIcon.png";
-int screenWidth = 480;
-int screenHeight = 480;
+int2 screenDimensions = { 480, 480 };
 float aspectRatio = 1;
 float fov = 60;
 SDL_Window* window;
@@ -83,7 +82,7 @@ int SpawnWindowSDL(bool fullscreen)
     }
     window = SDL_CreateWindow("Zoxel",
         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-        screenWidth, screenHeight, windowFlags);
+        screenDimensions.x, screenDimensions.y, windowFlags);
     if (window == NULL)
     {
         SDL_Quit();
@@ -135,31 +134,38 @@ void LoadIconSDL(SDL_Window* window)
 #endif
 }
 
-void ResizeOpenGL(int width, int height)
+void ResizeOpenGLViewport(int screenWidth, int screenHeight)
 {
-    screenWidth = width;
-    screenHeight = height;
-    if(screenHeight <= 0)
+    screenDimensions.x = screenWidth;
+    screenDimensions.y = screenHeight;
+    if(screenDimensions.y <= 0)
     {
-        screenHeight = 1;
+        screenDimensions.y = 1;
     }
-    aspectRatio = ((float)screenWidth) / ((float)screenHeight);
-    printf("Updated Canvas: Screen Dimensions [%i x %i] Aspect Ratio [%f].\n", screenWidth, screenHeight, aspectRatio);
+    aspectRatio = ((float)screenDimensions.x) / ((float)screenDimensions.y);
+    // printf("Updated Canvas: Screen Dimensions [%i x %i] Aspect Ratio [%f].\n", screenWidth, screenHeight, aspectRatio);
+    // what does viewport do? oh well
     glViewport(0, 0, (GLsizei) screenWidth, (GLsizei) screenHeight);
-    GluPerspective(fov, aspectRatio, 1.0f, 100.0f);
-    /*glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    GluPerspective(fov, aspectRatio, 1.0f, 100.0f);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    printf("Aspect Ratio is now %f.\n", aspectRatio);*/
 }
 
+/*
+//! \todo Multiwindow support. A camera will be hooked up to a window. A window will contain camera links. Trigger those cameras to update screen dimensions there.
+printf("Updated Canvas: Screen Dimensions [%i x %i] Aspect Ratio [%f].\n", screenWidth, screenHeight, aspectRatio);
+glViewport(0, 0, (GLsizei) screenWidth, (GLsizei) screenHeight);
+GluPerspective(fov, aspectRatio, 1.0f, 100.0f);*/
 
-    // glOrtho( 0.0, width, height, 0.0, 1.0, -1.0 );
-    //  glViewport(0, 0, (GLsizei)width, (GLsizei)height);
-    // glOrtho(0, width, height, 0, -1.0, 1.0);
-    // glMatrixMode(GL_PROJECTION);
+/*glMatrixMode(GL_PROJECTION);
+glLoadIdentity();
+GluPerspective(fov, aspectRatio, 1.0f, 100.0f);
+glMatrixMode(GL_MODELVIEW);
+glLoadIdentity();
+printf("Aspect Ratio is now %f.\n", aspectRatio);*/
+
+
+// glOrtho( 0.0, width, height, 0.0, 1.0, -1.0 );
+//  glViewport(0, 0, (GLsizei)width, (GLsizei)height);
+// glOrtho(0, width, height, 0, -1.0, 1.0);
+// glMatrixMode(GL_PROJECTION);
 
 /*void glhFrustumf2(float *matrix, float left, float right, float bottom, float top, float znear, float zfar)
 {

@@ -1,6 +1,4 @@
-// #include "../../../Imports/Flecs/flecs.h"
-// #include "../Physics2D.h"
-// #include "../../../Core/Core/Core.h"
+//! Adds force to the velocity per frame.
 void Acceleration2DSystem(ecs_iter_t *it)
 {
     // double deltaTime = (double) it->delta_time;

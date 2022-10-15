@@ -28,7 +28,7 @@ zoxel.exe: $(SRCS)  ./SDL2/lib/libSDL2.a
 # Helper target that cleans up build artifacts
 .PHONY: clean
 clean:
-	rm -fr zoxel zoxel.exe src/*.o
+	rm -fr zoxel zoxel.exe Source/*.o
 
 # Default rule for compiling .c files to .o object files
 .SUFFIXES: .c .o
