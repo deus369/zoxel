@@ -50,9 +50,11 @@ void CalculatePerspectiveViewMatrix(float *viewMatrix, float fovInDegrees, float
 */
 void ViewMatrixSystem(ecs_iter_t *it)
 {
+    //printf("thing: %lu\n", it->)
     ViewMatrix *viewMatrixs = ecs_field(it, ViewMatrix, 1);
     ScreenDimensions *screenDimensions = ecs_field(it, ScreenDimensions, 2);
     FieldOfView *fieldOfViews = ecs_field(it, FieldOfView, 3);
+    // ecs_query_changed(it->query, &it, ScreenDimensions) || ecs_query_changed(q_read, &it, ScreenDimensions)
     for (int i = 0; i < it->count; i++)
     {
         ViewMatrix *viewMatrix = &viewMatrixs[i];
@@ -85,16 +87,3 @@ void ViewMatrixSetSystem(ecs_iter_t *it)
     }
 }
 // ECS_SYSTEM_DECLARE(ViewMatrixSetSystem);
-
-
-//! Sets the ViewMatrix as thing
-void ViewMatrixDisposeSystem(ecs_iter_t *it)
-{
-    ViewMatrix *viewMatrixs = ecs_field(it, ViewMatrix, 1);
-    for (int i = 0; i < it->count; i++)
-    {
-        printf("Disposing view matrix!\n");
-        ViewMatrix *viewMatrix = &viewMatrixs[i];
-        free(viewMatrix->value);
-    }
-}

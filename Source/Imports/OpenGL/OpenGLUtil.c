@@ -29,10 +29,10 @@ void UpdateBeginOpenGL(const float* viewMatrix)
     {
         glUniformMatrix4fv(gl_view_matrix, 1, GL_FALSE, (const GLfloat*) viewMatrix);
     }
-    else
-    {
-        printf("Camera View matrix broken.");
-    }
+    //else
+    //{
+        //printf("Camera View matrix broken.");
+    //}
 }
 
 void RenderEntity2D(float2 position, float angle, float scale, float brightness)

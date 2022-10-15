@@ -9,15 +9,16 @@ const bool isFixBulkSpawnCrashing = false;
 ecs_entity_t character2DPrefab;
 ecs_entity_t playerCharacter2DPrefab;
 ecs_entity_t particle2DPrefab;
+extern ecs_entity_t localPlayer;
 
 // forward declarations
 void BobSpawnSystem(ecs_iter_t *it);
 ECS_SYSTEM_DECLARE(BobSpawnSystem);
 void InitializeBobSpawnSystem(ecs_world_t *world);
 void BobSpawnSystem(ecs_iter_t *it);
-void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, int bobSpawnCount);
+void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, int bobSpawnCount, float2 offset);
 void PrintBobSpawnSystem(ecs_world_t *world);
-void BobArmySpawnFixer(ecs_world_t *world);
+// void BobArmySpawnFixer(ecs_world_t *world);
 
 //! Initializes prefabs for bob.
 void InitializeBobSpawnSystem(ecs_world_t *world)
@@ -60,12 +61,11 @@ ecs_entity_t SpawnPlayer(ecs_world_t *world)
     return bobPlayer;
 }
 
-    // Add this here until Automatic Override works https://flecs.docsforge.com/master/manual/#automatic-overriding
-
 //! Called in ecs updates
 void BobSpawnSystem(ecs_iter_t *it)
 {
     ecs_world_t *world = it->world;
+    const Position2D *bobPosition = ecs_get(world, localPlayer, Position2D);
     const Keyboard *keyboards = ecs_field(it, Keyboard, 1);
     for (int i = 0; i < it->count; i++)
     {
@@ -79,7 +79,7 @@ void BobSpawnSystem(ecs_iter_t *it)
             }
             else
             {
-                SpawnBobArmy(world, character2DPrefab, bobSpawnCount);
+                SpawnBobArmy(world, character2DPrefab, bobSpawnCount, bobPosition->value);
             }
         }
         else if (keyboard->p.wasPressedThisFrame)
@@ -97,13 +97,13 @@ void BobSpawnSystem(ecs_iter_t *it)
 }
 
 //! Here for now, spawns a one man bobarmy.
-void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, int bobSpawnCount)
+void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, int bobSpawnCount, float2 bobPosition)
 {
-    const float2 positionBounds = { 0.4f, 4.4f };
-    const float2 velocityBounds = { 0.2f, 4.4f };
-    const float torqueBounds = 8.0f;
-    const float2 scaleBounds = { 0.1f, 0.6f };
-    const float2 brightnessBounds = { 0.1f, 0.7f };
+    float2 positionBounds = { 0.1f, 0.5f };
+    const float2 velocityBounds = { 0.2f, 12.4f };
+    const float torqueBounds = 12.0f;
+    const float2 scaleBounds = { 0.1f, 0.23f };
+    const float2 brightnessBounds = { 0.1f, 0.4f };
     const double2 lifeTime = { 0.5f, 8.0f };
     // Create a SpaceShip prefab with a Defense component.
     Position2D *position2Ds = malloc(sizeof(Position2D) * bobSpawnCount);
@@ -136,6 +136,8 @@ void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, int bobSpa
         {
             position2Ds[i].value.y = positionBounds.x;
         }
+        position2Ds[i].value.x += bobPosition.x;
+        position2Ds[i].value.y += bobPosition.y;
         velocity2Ds[i].value = (float2) {
             ((rand() % 101) / 100.0f) * velocityBounds.y - (velocityBounds.y / 2.0f),
             ((rand() % 101) / 100.0f) * velocityBounds.y - (velocityBounds.y / 2.0f)
@@ -203,14 +205,14 @@ void PrintBobSpawnSystem(ecs_world_t *world)
 }
 
 //! Debug used for now, Called in main thread
-void BobArmySpawnFixer(ecs_world_t *world)
+/*void BobArmySpawnFixer(ecs_world_t *world)
 {
     if (debugSpawnBobArmy)
     {
         debugSpawnBobArmy = false;
         SpawnBobArmy(world, character2DPrefab, bobSpawnCount);
     }
-}
+}*/
 
     // ECS_ENTITY(world, character2DPrefab, Position2D, OVERRIDE | Position2D);
 
@@ -229,3 +231,4 @@ void BobArmySpawnFixer(ecs_world_t *world)
     /*har *playerName = strcat("Player (Instance) [%lu]", bobPlayer);
     ecs_set_name(world, bobPlayer, playerName);
     free(playerName);*/
+// Add this here until Automatic Override works https://flecs.docsforge.com/master/manual/#automatic-overriding

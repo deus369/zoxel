@@ -37,6 +37,16 @@ bool profiler = false;
 int hasSpawnedPlayer = 0;
 ecs_entity_t localPlayer;
 
+/*
+I would recommend some sections on the quick start guide to flecs:
+   An injection example for X x Y data reltionships, like many AIs linked to many Characters
+   Disposing of allocated data in components examples
+   Multithreading examples / section
+   Bulk Spawning in threads (and example codes)
+   A Simple Render system example, perhaps in a flecs.graphics module? This needs more thoughts
+   Web Build guide with emcc (this isn't entirely needed but a nice to have)
+*/
+
 // Forward  Declares
 int ProcessArguments(int argc, char* argv[]);
 void PollSDLEvents();
@@ -103,7 +113,7 @@ int main(int argc, char* argv[])
         isRendering = false;
     }
     BeginTime();
-    InitializeECS(argc, argv, profiler, !isRendering, coreCount);
+    InitializeECS(argc, argv, profiler, true, coreCount);
     // Import Modules Here!
     ImportModules(world);
     InitializeModules(world);
@@ -130,13 +140,14 @@ int main(int argc, char* argv[])
             {
                 UpdateBeginOpenGL(GetMainCameraViewMatrix());
             }
-            if (headless && GetBobCount() < 1000000)
+            /*if (headless && GetBobCount() < 1000000)
             {
                 SpawnBobArmy(world, character2DPrefab, 250);
-            }
+            }*/
             UpdateECS();
             if (isRendering)
             {
+                RunRendering(deltaTimeSDL);
                 UpdateEndOpenGL();
                 UpdateEndSDL();
             }
@@ -167,7 +178,7 @@ int main(int argc, char* argv[])
 //! Temporary, quick and dirty events.
 void PollSDLEvents()
 {
-    BobArmySpawnFixer(world);   // until bug gets fixed
+    // BobArmySpawnFixer(world);   // until bug gets fixed
     ResetKeyboard(world);
     SDL_Event event  = { 0 };
     while (SDL_PollEvent(&event))
