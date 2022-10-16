@@ -36,7 +36,7 @@ bool UpdateEndTime()
         framesPerSecond /= tickRate;
         if (isPrintFPS)
         {
-            printf("FPS [%ld]\n", framesPerSecond);
+            printf("DeltaTime [%f]ms - FPS [%ld]\n", (1000.0 * deltaTimeSDL), framesPerSecond);
         }
         framesPerSecond = 0;
         return true;

@@ -13,6 +13,11 @@
 // Util
 #include "Util/TimeHelper.c"
 
+void SetMultiThreaded(ecs_world_t *world, long int function)
+{
+    ecs_system_init(world, &(ecs_system_desc_t) { .entity = function, .multi_threaded = 1 } );
+}
+
 void CoreImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Core);

@@ -1,12 +1,22 @@
-
-void BobMoveSystem(ecs_iter_t *it);
-ECS_SYSTEM_DECLARE(BobMoveSystem);
+float math_abs(float input)
+{
+    if (input < 0)
+    {
+        return -input;
+    }
+    else
+    {
+        return input;
+    }
+}
 
 //! Called in ecs updates
-void BobMoveSystem(ecs_iter_t *it)
+void Player2DMoveSystem(ecs_iter_t *it)
 {
-    const float movementPower = 0.4f;
-    double deltaTime = (double) it->delta_time;
+    // double deltaTime = (double) (it->delta_time);
+    double movementPower = 0.6f; // * deltaTime;
+    const float2 maxVelocity = { 0.24f, 0.24f };
+    // printf("deltaTime! %f\n", deltaTime);
     ecs_query_t *bobQuery = it->ctx;
     if (!bobQuery)
     {
@@ -23,6 +33,7 @@ void BobMoveSystem(ecs_iter_t *it)
     // printf("Bobs Found [%i]\n", bobIter.count);
     Keyboard *keyboards = ecs_field(it, Keyboard, 1);
     Acceleration2D *acceleration2Ds = ecs_field(&bobIter, Acceleration2D, 2);
+    const Velocity2D *velocity2Ds = ecs_field(&bobIter, Velocity2D, 3);
     for (int i = 0; i < it->count; i++)
     {
         const Keyboard *keyboard = &keyboards[i];
@@ -47,18 +58,26 @@ void BobMoveSystem(ecs_iter_t *it)
         if (!(movement.x == 0 && movement.y == 0))
         {
             // printf("Bob Accel %f x %f \n", movement.x, movement.y);
-            movement.x *= deltaTime * movementPower;
-            movement.y *= deltaTime * movementPower;
+            movement.x *= movementPower;
+            movement.y *= movementPower;
             for (int j = 0; j < bobIter.count; j++)
             {
                 // printf("Bob Moving %lu \n", bobIter.entities[j]);
+                const Velocity2D *velocity2D = &velocity2Ds[j];
                 Acceleration2D *acceleration2D = &acceleration2Ds[j];
-                acceleration2D->value.x = movement.x;
-                acceleration2D->value.y = movement.y;
+                if (math_abs(velocity2D->value.x) < maxVelocity.x)
+                {
+                    acceleration2D->value.x += movement.x;
+                }
+                if (math_abs(velocity2D->value.y) < maxVelocity.y)
+                {
+                    acceleration2D->value.y += movement.y;
+                }
             }
         }
     }
 }
+ECS_SYSTEM_DECLARE(Player2DMoveSystem);
 
 
 /*printf("Bob is moving: %fx%f %lu \n", movement.x, movement.y, bobPlayer);

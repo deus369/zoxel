@@ -11,13 +11,11 @@ LDLIBS = -lGL
 LDLIBS += -lSDL2
 LDLIBS += -lSDL2_image
 LDLIBS += -lm	# for math.h
+LDLIBS += -D_POSIX_C_SOURCE=200112L -D_DEFAULT_SOURCE
 # Compiler Optimizations & Debug
 LDLIBS += -O3
 LDLIBS += -flto
 LDLIBS += -D NDEBUG
-# LDLIBS += -D_POSIX_C_SOURCE=199309L
-LDLIBS += -D_POSIX_C_SOURCE=200112L -D_DEFAULT_SOURCE
-# LDLIBS += -D_POSIX_C_SOURCE=200112L -D_BSD_SOURCE
 
 # SRCS defines all the files that will be used in the game.
 SRCS = 
@@ -28,10 +26,13 @@ SRCS += Source/main.c
 SRCS += Source/Imports/SDL/SDLUtil.c
 SRCS += Source/Imports/Flecs/FlecsUtil.c
 SRCS += Source/Imports/Imports.c
+# Gameplay
+# Characters2D
+SRCS += Source/Gameplay/Characters2D/Characters2D.c
+SRCS += Source/Gameplay/Characters2D/Systems/BobSpawnSystem.c
 # Players
-SRCS += Source/Core/Players/Players.c
-SRCS += Source/Core/Players/Systems/BobSpawnSystem.c
-SRCS += Source/Core/Players/Systems/BobMoveSystem.c
+SRCS += Source/Space/Players/Players.c
+SRCS += Source/Space/Players/Systems/Player2DMoveSystem.c
 # Rendering
 SRCS += Source/Core/Rendering/Rendering.c
 SRCS += Source/Core/Rendering/Core/RenderingCore.c

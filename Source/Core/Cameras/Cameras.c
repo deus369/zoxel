@@ -70,6 +70,7 @@ void CamerasImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, ScreenDimensions);
     ECS_COMPONENT_DEFINE(world, FieldOfView);
     ECS_SYSTEM_DEFINE(world, ViewMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [out] ViewMatrix);
+    // SetMultiThreaded(world, ecs_id(ViewMatrixSystem));
     ecs_set_hooks(world, ViewMatrix, {
         // .on_remove = ViewMatrixDisposeSystem,
         .ctor = ecs_ctor(ViewMatrix),

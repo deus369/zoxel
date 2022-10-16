@@ -18,14 +18,17 @@
 #include "Core/Inputs/Inputs.c"
 #include "Core/Transforms2D/Transforms2D.c"
 #include "Core/Transforms/Transforms.c"
+#include "Core/Physics2D/Physics2D.c"
+#include "Core/Physics/Physics.c"
 #include "Core/Rendering/Rendering.c"
 #include "Core/Cameras/Cameras.c"
 #include "Core/Textures/Textures.c"
 #include "Core/Voxels/Voxels.c"
-// --- Space ---
-#include "Space/Physics2D/Physics2D.c"
 // --- Gameplay ---
-#include "Core/Players/Players.c"   // for now until i move stuff to characters
+#include "Gameplay/Particles2D/Particles2D.c"
+#include "Gameplay/Characters2D/Characters2D.c"   // for now until i move stuff to characters
+// --- Space ---
+#include "Space/Players/Players.c"   // for now until i move stuff to characters
 
 // Settings 
 bool running = true;
@@ -62,9 +65,12 @@ void ImportModules(ecs_world_t *world)
     ECS_IMPORT(world, Cameras);
     ECS_IMPORT(world, Textures);
     ECS_IMPORT(world, Voxels);
-    // Space Modules
     ECS_IMPORT(world, Physics2D);
+    ECS_IMPORT(world, Physics);
     // Gameplay Modules
+    ECS_IMPORT(world, Particles2D);
+    ECS_IMPORT(world, Characters2D);
+    // Space Modules
     ECS_IMPORT(world, Players);
 }
 
@@ -73,10 +79,24 @@ void InitializeModules(ecs_world_t *world)
     UpdateBeginSDL();
     // Spawn things from Modules
     InitializeInputs(world);
-    InitializePlayers(world);
     InitializeCameras(world);
     // InitializeVoxels(world);
 }
+
+#define TICK_INTERVAL 60
+
+static Uint32 next_time;
+
+Uint32 time_left(void)
+{
+    Uint32 now;
+    now = SDL_GetTicks();
+    if(next_time <= now)
+        return 0;
+    else
+        return next_time - now;
+}
+
 
 //! This is a mistaken function. Move along.
 int main(int argc, char* argv[])
@@ -122,10 +142,11 @@ int main(int argc, char* argv[])
     {
         SpawnMainCamera(screenDimensions);
         SpawnKeyboardEntity();
-        localPlayer = SpawnPlayer(world);
+        localPlayer = SpawnPlayerCharacter2D(world);
     }
     //! Core Application Loop!
     printf("Entering Core Loop.\n");
+    next_time = SDL_GetTicks() + TICK_INTERVAL;
     while (running)
     {
         UpdateBeginTime();
@@ -138,7 +159,8 @@ int main(int argc, char* argv[])
         {
             if (isRendering)
             {
-                UpdateBeginOpenGL(GetMainCameraViewMatrix());
+                const float* viewMatrix = GetMainCameraViewMatrix();
+                UpdateBeginOpenGL(viewMatrix);
             }
             /*if (headless && GetBobCount() < 1000000)
             {
@@ -152,12 +174,16 @@ int main(int argc, char* argv[])
                 UpdateEndSDL();
             }
         }
+        // SDL_Delay(time_left());
+        // next_time += TICK_INTERVAL;
         if (UpdateEndTime())
         {
             const Position2D *position2D = ecs_get(world, localPlayer, Position2D);
+            const Velocity2D *velocity2D = ecs_get(world, localPlayer, Velocity2D);
             if (position2D)
             {
-                printf("    Player position: [%fx%f]\n", position2D->value.x, position2D->value.y);
+                printf("    Player Position2D: [%fx%f]\n", position2D->value.x, position2D->value.y);
+                printf("    Player Velocity2D: [%fx%f]\n", velocity2D->value.x, velocity2D->value.y);
             }
             else
             {

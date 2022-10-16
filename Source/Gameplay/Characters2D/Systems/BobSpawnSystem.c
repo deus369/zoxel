@@ -1,103 +1,20 @@
-//! Move bob spawn system to Character2Ds
-#include "../../../Core/Transforms2D/Transforms2D.c"
-#include "../../../Core/Rendering/Rendering.c"
-#include "../../../Space/Physics2D/Physics2D.c"
 
-const int bobSpawnCount = 100;
 bool debugSpawnBobArmy = false;
-const bool isFixBulkSpawnCrashing = false;
-ecs_entity_t character2DPrefab;
-ecs_entity_t playerCharacter2DPrefab;
-ecs_entity_t particle2DPrefab;
-extern ecs_entity_t localPlayer;
 
 // forward declarations
-void BobSpawnSystem(ecs_iter_t *it);
-ECS_SYSTEM_DECLARE(BobSpawnSystem);
-void InitializeBobSpawnSystem(ecs_world_t *world);
-void BobSpawnSystem(ecs_iter_t *it);
-void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, int bobSpawnCount, float2 offset);
-void PrintBobSpawnSystem(ecs_world_t *world);
-// void BobArmySpawnFixer(ecs_world_t *world);
 
-//! Initializes prefabs for bob.
-void InitializeBobSpawnSystem(ecs_world_t *world)
+int GetBobCount()
 {
-    character2DPrefab = ecs_new_prefab(world, "Character2D");
-    ecs_set(world, character2DPrefab, Position2D, { 0, 0 });
-    ecs_set(world, character2DPrefab, Velocity2D, { 0, 0 });
-    ecs_set(world, character2DPrefab, Acceleration2D, { 0, 0 });
-    ecs_set(world, character2DPrefab, Rotation2D, { 0 });
-    ecs_set(world, character2DPrefab, Torque2D, { 0 });
-    ecs_add(world, character2DPrefab, Scale2D);
-    ecs_add(world, character2DPrefab, Brightness);
-    ecs_override(world, character2DPrefab, Position2D);
-    ecs_override(world, character2DPrefab, Velocity2D);
-    ecs_override(world, character2DPrefab, Acceleration2D);
-    ecs_override(world, character2DPrefab, Rotation2D);
-    ecs_override(world, character2DPrefab, Torque2D);
-    ecs_override(world, character2DPrefab, Scale2D);
-    ecs_override(world, character2DPrefab, Brightness);
-    playerCharacter2DPrefab = ecs_new_w_pair(world, EcsIsA, character2DPrefab);
-    ecs_add_id(world, playerCharacter2DPrefab, EcsPrefab);
-    ecs_set_name(world, playerCharacter2DPrefab, "Player2D");
-    ecs_add(world, playerCharacter2DPrefab, Player2D);
-    ecs_add(world, playerCharacter2DPrefab, Frictioned);
-    ecs_remove(world, playerCharacter2DPrefab, DestroyInTime);
-    particle2DPrefab = ecs_new_w_pair(world, EcsIsA, character2DPrefab);
-    ecs_add_id(world, particle2DPrefab, EcsPrefab);
-    ecs_set_name(world, particle2DPrefab, "Particle2D");
-    ecs_add(world, particle2DPrefab, DestroyInTime);
+    return ecs_count(world, Position2D);
 }
 
-//! Spawn a Player character.
-ecs_entity_t SpawnPlayer(ecs_world_t *world)
+void PrintBobSpawnSystem(ecs_world_t *world)
 {
-    // child prefabs don't seem to inherit tags
-    ecs_entity_t bobPlayer = ecs_new_w_pair(world, EcsIsA, playerCharacter2DPrefab);
-    ecs_set(world, bobPlayer, Scale2D, { 0.4f + ((rand() % 101) / 100.0f) * 0.2f  });
-    ecs_set(world, bobPlayer, Brightness, { 0.8f + ((rand() % 101) / 100.0f) * 0.6f });
-    printf("Spawned Player2D [%lu]\n", (long unsigned int) bobPlayer);
-    return bobPlayer;
-}
-
-//! Called in ecs updates
-void BobSpawnSystem(ecs_iter_t *it)
-{
-    ecs_world_t *world = it->world;
-    const Position2D *bobPosition = ecs_get(world, localPlayer, Position2D);
-    const Keyboard *keyboards = ecs_field(it, Keyboard, 1);
-    for (int i = 0; i < it->count; i++)
-    {
-        const Keyboard *keyboard = &keyboards[i];
-        if (keyboard->space.isPressed) // wasPressedThisFrame)
-        {
-            // printf("Firing the Bob Army.\n");
-            if (isFixBulkSpawnCrashing)
-            {
-                debugSpawnBobArmy = true;
-            }
-            else
-            {
-                SpawnBobArmy(world, character2DPrefab, bobSpawnCount, bobPosition->value);
-            }
-        }
-        else if (keyboard->p.wasPressedThisFrame)
-        {
-            printf("[Printing Debug]\n");
-            PrintBobSpawnSystem(world);
-            PrintKeyboard(world);
-        }
-        else if (keyboard->z.wasPressedThisFrame)
-        {
-            printf("Spawning new Player.\n");
-            SpawnPlayer(world);
-        }
-    }
+    printf("    Bobs Spawned [%i]\n", GetBobCount());
 }
 
 //! Here for now, spawns a one man bobarmy.
-void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, int bobSpawnCount, float2 bobPosition)
+/*void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, float2 bobPosition, int bobSpawnCount)
 {
     float2 positionBounds = { 0.1f, 0.5f };
     const float2 velocityBounds = { 0.2f, 12.4f };
@@ -192,17 +109,7 @@ void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, int bobSpa
             destroyInTimes
         }
     });
-}
-
-int GetBobCount()
-{
-    return ecs_count(world, Position2D);
-}
-
-void PrintBobSpawnSystem(ecs_world_t *world)
-{
-    printf("    Bobs Spawned [%i]\n", GetBobCount());
-}
+}*/
 
 //! Debug used for now, Called in main thread
 /*void BobArmySpawnFixer(ecs_world_t *world)
