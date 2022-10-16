@@ -5,7 +5,6 @@ ecs_world_t *world;
 //! Initialize Flecs ECS and Modules.
 void InitializeECS(int argc, char* argv[], bool profiler, bool isThreading, int coreCount)
 {
-    printf("Initializing ECS\n");
     world = ecs_init_w_args(argc, argv);
     // Enable Threads (if no rendering)
     if (isThreading)

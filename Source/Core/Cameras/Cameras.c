@@ -78,11 +78,7 @@ void CamerasImport(ecs_world_t *world)
         .copy = ecs_copy(ViewMatrix),
         .dtor = ecs_dtor(ViewMatrix)
     });
-}
-
-void InitializeCameras(ecs_world_t *world)
-{
-    InitializeCameraSpawnSystem(world);
+    SpawnCameraPrefab(world);
 }
 
 void SpawnMainCamera(int2 screenDimensions)

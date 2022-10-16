@@ -74,30 +74,6 @@ void ImportModules(ecs_world_t *world)
     ECS_IMPORT(world, Players);
 }
 
-void InitializeModules(ecs_world_t *world)
-{
-    UpdateBeginSDL();
-    // Spawn things from Modules
-    InitializeInputs(world);
-    InitializeCameras(world);
-    // InitializeVoxels(world);
-}
-
-#define TICK_INTERVAL 60
-
-static Uint32 next_time;
-
-Uint32 time_left(void)
-{
-    Uint32 now;
-    now = SDL_GetTicks();
-    if(next_time <= now)
-        return 0;
-    else
-        return next_time - now;
-}
-
-
 //! This is a mistaken function. Move along.
 int main(int argc, char* argv[])
 {
@@ -136,7 +112,6 @@ int main(int argc, char* argv[])
     InitializeECS(argc, argv, profiler, true, coreCount);
     // Import Modules Here!
     ImportModules(world);
-    InitializeModules(world);
     // start game logic
     if (!headless)
     {
@@ -145,8 +120,6 @@ int main(int argc, char* argv[])
         localPlayer = SpawnPlayerCharacter2D(world);
     }
     //! Core Application Loop!
-    printf("Entering Core Loop.\n");
-    next_time = SDL_GetTicks() + TICK_INTERVAL;
     while (running)
     {
         UpdateBeginTime();
@@ -162,10 +135,6 @@ int main(int argc, char* argv[])
                 const float* viewMatrix = GetMainCameraViewMatrix();
                 UpdateBeginOpenGL(viewMatrix);
             }
-            /*if (headless && GetBobCount() < 1000000)
-            {
-                SpawnBobArmy(world, character2DPrefab, 250);
-            }*/
             UpdateECS();
             if (isRendering)
             {
@@ -174,16 +143,14 @@ int main(int argc, char* argv[])
                 UpdateEndSDL();
             }
         }
-        // SDL_Delay(time_left());
-        // next_time += TICK_INTERVAL;
         if (UpdateEndTime())
         {
             const Position2D *position2D = ecs_get(world, localPlayer, Position2D);
             const Velocity2D *velocity2D = ecs_get(world, localPlayer, Velocity2D);
             if (position2D)
             {
-                printf("    Player Position2D: [%fx%f]\n", position2D->value.x, position2D->value.y);
-                printf("    Player Velocity2D: [%fx%f]\n", velocity2D->value.x, velocity2D->value.y);
+                printf("    Player Position2D: [%fx%f] Velocity2D: [%fx%f]\n",
+                    position2D->value.x, position2D->value.y, velocity2D->value.x, velocity2D->value.y);
             }
             else
             {

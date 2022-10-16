@@ -16,9 +16,4 @@ void InputsImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, Keyboard);
 }
 
-void InitializeInputs(ecs_world_t *world)
-{
-    InitializeKeyboardExtractSystem(world);
-}
-
 #endif

@@ -6,10 +6,6 @@ bool wasPressedThisFrame = false;
 void SetKey(PhysicalButton *key, int eventType);
 void ResetKey(PhysicalButton *key);
 
-void InitializeKeyboardExtractSystem(ecs_world_t *world)
-{
-}
-
 void SpawnKeyboardEntity()
 {
     keyboardEntity = ecs_new_entity(world, "keyboard");

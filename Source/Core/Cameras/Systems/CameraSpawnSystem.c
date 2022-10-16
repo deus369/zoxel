@@ -7,7 +7,7 @@
 ecs_entity_t cameraPrefab;
 ecs_entity_t mainCamera;
 
-void InitializeCameraSpawnSystem(ecs_world_t *world)
+void SpawnCameraPrefab(ecs_world_t *world)
 {
     cameraPrefab = ecs_new_prefab(world, "Camera");
     ecs_add(world, cameraPrefab, Camera);
