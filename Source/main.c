@@ -108,8 +108,7 @@ int main(int argc, char* argv[])
     {
         isRendering = false;
     }
-    BeginTime();
-    InitializeECS(argc, argv, profiler, true, coreCount);
+    SpawnWorld(argc, argv, profiler, true, coreCount);
     // Import Modules Here!
     ImportModules(world);
     // start game logic
@@ -122,41 +121,23 @@ int main(int argc, char* argv[])
     //! Core Application Loop!
     while (running)
     {
-        UpdateBeginTime();
+        // UpdateBeginTime();
         if (!headless)
         {
             UpdateBeginSDL();
             PollSDLEvents();
         }
-        if (deltaTimeSDL > 0)
+        if (isRendering)
         {
-            if (isRendering)
-            {
-                const float* viewMatrix = GetMainCameraViewMatrix();
-                UpdateBeginOpenGL(viewMatrix);
-            }
-            UpdateECS();
-            if (isRendering)
-            {
-                RunRendering(deltaTimeSDL);
-                UpdateEndOpenGL();
-                UpdateEndSDL();
-            }
+            const float* viewMatrix = GetMainCameraViewMatrix();
+            UpdateBeginOpenGL(viewMatrix);
         }
-        if (UpdateEndTime())
+        UpdateECS();
+        if (isRendering)
         {
-            const Position2D *position2D = ecs_get(world, localPlayer, Position2D);
-            const Velocity2D *velocity2D = ecs_get(world, localPlayer, Velocity2D);
-            if (position2D)
-            {
-                printf("    Player Position2D: [%fx%f] Velocity2D: [%fx%f]\n",
-                    position2D->value.x, position2D->value.y, velocity2D->value.x, velocity2D->value.y);
-            }
-            else
-            {
-                printf("Position2D is null.");
-            }
-            PrintBobSpawnSystem(world);
+            RunRendering(0);
+            UpdateEndOpenGL();
+            UpdateEndSDL();
         }
     }
     EndECS();
@@ -234,3 +215,18 @@ int ProcessArguments(int argc, char* argv[])
     }
     return EXIT_SUCCESS;
 }
+        /*if (UpdateEndTime())
+        {
+            const Position2D *position2D = ecs_get(world, localPlayer, Position2D);
+            const Velocity2D *velocity2D = ecs_get(world, localPlayer, Velocity2D);
+            if (position2D)
+            {
+                printf("    Player Position2D: [%fx%f] Velocity2D: [%fx%f]\n",
+                    position2D->value.x, position2D->value.y, velocity2D->value.x, velocity2D->value.y);
+            }
+            else
+            {
+                printf("Position2D is null.");
+            }
+            PrintBobSpawnSystem(world);
+        }*/

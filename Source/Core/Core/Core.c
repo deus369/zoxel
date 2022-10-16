@@ -10,8 +10,6 @@
 #include "Data/int2.c"
 // Components
 #include "Components/ID.c"
-// Util
-#include "Util/TimeHelper.c"
 
 void SetMultiThreaded(ecs_world_t *world, long int function)
 {

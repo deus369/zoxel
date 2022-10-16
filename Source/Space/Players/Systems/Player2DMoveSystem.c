@@ -14,8 +14,9 @@ float math_abs(float input)
 void Player2DMoveSystem(ecs_iter_t *it)
 {
     // double deltaTime = (double) (it->delta_time);
-    double movementPower = 0.6f; // * deltaTime;
-    const float2 maxVelocity = { 0.24f, 0.24f };
+    double movementPower = 2.8f; // * deltaTime;
+    // const float2 maxVelocity = { 0.12f, 0.12f };
+    const float2 maxVelocity = { 12.6f, 12.6f };
     // printf("deltaTime! %f\n", deltaTime);
     ecs_query_t *bobQuery = it->ctx;
     if (!bobQuery)
@@ -65,11 +66,19 @@ void Player2DMoveSystem(ecs_iter_t *it)
                 // printf("Bob Moving %lu \n", bobIter.entities[j]);
                 const Velocity2D *velocity2D = &velocity2Ds[j];
                 Acceleration2D *acceleration2D = &acceleration2Ds[j];
-                if (math_abs(velocity2D->value.x) < maxVelocity.x)
+                if (movement.x > 0 && velocity2D->value.x < maxVelocity.x)
                 {
                     acceleration2D->value.x += movement.x;
                 }
-                if (math_abs(velocity2D->value.y) < maxVelocity.y)
+                else if (movement.x < 0 && velocity2D->value.x > -maxVelocity.x)
+                {
+                    acceleration2D->value.x += movement.x;
+                }
+                if (movement.y > 0 && velocity2D->value.y < maxVelocity.y)
+                {
+                    acceleration2D->value.y += movement.y;
+                }
+                else if (movement.y < 0 && velocity2D->value.y > -maxVelocity.y)
                 {
                     acceleration2D->value.y += movement.y;
                 }

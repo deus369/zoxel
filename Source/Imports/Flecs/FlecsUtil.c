@@ -3,7 +3,7 @@
 ecs_world_t *world;
 
 //! Initialize Flecs ECS and Modules.
-void InitializeECS(int argc, char* argv[], bool profiler, bool isThreading, int coreCount)
+void SpawnWorld(int argc, char* argv[], bool profiler, bool isThreading, int coreCount)
 {
     world = ecs_init_w_args(argc, argv);
     // Enable Threads (if no rendering)
@@ -23,8 +23,8 @@ void InitializeECS(int argc, char* argv[], bool profiler, bool isThreading, int 
 
 void UpdateECS()
 {
-    // ecs_progress(world, 0);
-    ecs_progress(world, deltaTimeSDL);
+    ecs_progress(world, 0);
+    // ecs_progress(world, deltaTimeSDL);
 }
 
 void EndECS()

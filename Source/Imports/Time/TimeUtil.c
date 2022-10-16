@@ -1,6 +1,6 @@
 // Move functions from SDLUtil.c
+/*#include <stdio.h>
 #include <time.h>
-#include <stdio.h>
 
 const bool isPrintFPS = true;
 const double tickRate = 5.0;
@@ -19,11 +19,21 @@ void BeginTime()
 
 void UpdateBeginTime()
 {
-    // currentTime = SDL_GetTicks();
-    currentTime = clock() / 1000000.0;
+    //clock_gettime(CLOCK_REALTIME, &currentTime);
+    //printf("CLOCK_REALTIME %f\n", CLOCK_REALTIME);
+    const double clocksPerSecond = 1000000.0;
+    currentTime = (clock() / clocksPerSecond); //  CLOCKS_PER_SEC);
     deltaTimeSDL = (currentTime - lastTime);
     lastTime = currentTime;
+    // deltaTimeSDL = (double) world->deltaTime;
     // printf("deltaTimeSDL: [%f] \n", deltaTimeSDL);
+
+    //deltaTimeSDL = clock.restart().asSeconds();
+    //currentTime += deltaTimeSDL;
+    // currentTime = SDL_GetTicks();
+    // currentTime = (clock() / CLOCKS_PER_SEC) * 1000.0; //  1000000.0;
+    // deltaTimeSDL = (currentTime - lastTime);
+
     // double currentTime2 = clock(); // * 1000.0;
     // printf("currentTime: [%f] [%f] \n", currentTime, currentTime2);
 }
@@ -43,4 +53,4 @@ bool UpdateEndTime()
     }
     framesPerSecond++;
     return false;
-}
+}*/

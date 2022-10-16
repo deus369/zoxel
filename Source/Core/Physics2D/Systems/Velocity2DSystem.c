@@ -3,7 +3,7 @@ void Velocity2DSystem(ecs_iter_t *it)
 {
     double deltaTime = (double) it->delta_time;
     Position2D *position2Ds = ecs_field(it, Position2D, 1);
-    Velocity2D *velocity2Ds = ecs_field(it, Velocity2D, 2);
+    const Velocity2D *velocity2Ds = ecs_field(it, Velocity2D, 2);
     for (int i = 0; i < it->count; i++)
     {
         const Velocity2D *velocity2D = &velocity2Ds[i];
