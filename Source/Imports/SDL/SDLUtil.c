@@ -50,7 +50,7 @@ void PrintSDLDebug()
 }
 
 //! Initialize SDL things, thingy things.
-int InitializeSDL()
+int SetSDLAttributes()
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
@@ -63,43 +63,59 @@ int InitializeSDL()
     SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
     // Request a double-buffered, OpenGL 3.3 (or higher) core profile
+#ifdef __EMSCRIPTEN__
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+#else
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+#endif
+   
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0); // 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     // SDL_RENDERER_SOFTWARE SDL_RENDERER_ACCELERATED
     return EXIT_SUCCESS;
 }
+SDL_Renderer *renderer;
 
 //! Spawn the SDL Window.
 int SpawnWindowSDL(bool fullscreen)
 {
-    windowFlags = SDL_WINDOW_OPENGL;
-    if (fullscreen) 
-    {
-        windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-    }
-    window = SDL_CreateWindow("Zoxel",
-        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-        screenDimensions.x, screenDimensions.y, windowFlags);
-    if (window == NULL)
-    {
-        SDL_Quit();
-        fprintf(stderr, "Failed to Create Window: %s\n", SDL_GetError());
-        return EXIT_FAILURE;
-    }
-    // SDL_GLContext is an alias for "void*"
+    /*windowFlags = SDL_WINDOW_OPENGL;
+    SDL_CreateWindow("Zoxel",
+         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+         screenDimensions.x, screenDimensions.y, windowFlags);
     context = SDL_GL_CreateContext(window);
     if (context == NULL)
     {
-        // common error: EGL_BAD_MATCH
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        fprintf(stderr, "Failed to Create OpenGL Context: %s\n", SDL_GetError());
-        return EXIT_FAILURE;
-    }
-    /* This makes our buffer swap syncronized with the monitor's vertical refresh */
+
+    }*/
+    SDL_CreateWindowAndRenderer(512, 512, 0, &window, &renderer);
+
+    // windowFlags = SDL_WINDOW_OPENGL;
+    // if (fullscreen) 
+    // {
+    //     windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+    // }
+    // window = SDL_CreateWindow("Zoxel",
+    //     SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+    //     screenDimensions.x, screenDimensions.y, windowFlags);
+    // if (window == NULL)
+    // {
+    //     SDL_Quit();
+    //     fprintf(stderr, "Failed to Create Window: %s\n", SDL_GetError());
+    //     return EXIT_FAILURE;
+    // }
+    // // SDL_GLContext is an alias for "void*"
+    // context = SDL_GL_CreateContext(window);
+    // if (context == NULL)
+    // {
+    //     // common error: EGL_BAD_MATCH
+    //     SDL_DestroyWindow(window);
+    //     SDL_Quit();
+    //     fprintf(stderr, "Failed to Create OpenGL Context: %s\n", SDL_GetError());
+    //     return EXIT_FAILURE;
+    // }
+    
     SDL_GL_SetSwapInterval(1);
     LoadIconSDL(window);
     SDL_SetWindowResizable(window, SDL_TRUE);
@@ -115,8 +131,11 @@ void UpdateEndSDL()
     SDL_GL_SwapWindow(window);
 }
 
+extern void EndOpenGL();
+
 void EndSDL()
 {
+    EndOpenGL();
     SDL_GL_DeleteContext(context);
     SDL_DestroyWindow(window);
     SDL_Quit();

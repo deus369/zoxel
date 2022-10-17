@@ -21,6 +21,16 @@ void SpawnWorld(int argc, char* argv[], bool profiler, bool isThreading, int cor
     }
 }
 
+void SpawnWorld2(bool isThreading, int coreCount)
+{
+    world = ecs_init_w_args(0, NULL);
+    // Enable Threads (if no rendering)
+    if (isThreading)
+    {
+        ecs_set_threads(world, coreCount);
+    }
+}
+
 void UpdateECS()
 {
     ecs_progress(world, 0);

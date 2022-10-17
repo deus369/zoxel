@@ -5,14 +5,24 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
+void PrintOpenGL()
+{
+    // Load the modern OpenGL funcs
+    printf("PrintOpenGL: OpenGL\n");
+    printf("    Vendor:   %s\n", glGetString(GL_VENDOR));
+    printf("    Renderer: %s\n", glGetString(GL_RENDERER));
+    printf("    Version:  %s\n", glGetString(GL_VERSION));
+    printf("    GLSL Version:    %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+}
+
 int InitializeOpenGL(bool vsync)
 {
-    // Enable v-sync (set 1 to enable, 0 to disable)
     opengl_load_functions();
     SDL_GL_SetSwapInterval(vsync ? 1 : 0);
     int failed = LoadShaders();
-    if (failed != -1)
+    if (failed == -1)
     {
+        printf("Failed loading shaders.");
         // GluPerspective(fov, aspectRatio, 1.0f, 100.0f);
     }
     return failed;
@@ -23,49 +33,45 @@ void UpdateBeginOpenGL(const float* viewMatrix)
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);       // Clears the buffer ?
     //! This sets the materials actually, would be best to group entities per material here?
+#ifdef USE_VERTEX_BUFFERS
     glUseProgram(material);
     glBindVertexArray(vao);
     if (viewMatrix)
     {
         glUniformMatrix4fv(gl_view_matrix, 1, GL_FALSE, (const GLfloat*) viewMatrix);
     }
-    //else
-    //{
-        //printf("Camera View matrix broken.");
-    //}
+#endif
 }
 
 void RenderEntity2D(float2 position, float angle, float scale, float brightness)
 {
-    // glPushMatrix();
-    // glMultMatrixf(mat44);
-    // glLoadMatrixf(mat44);
-    // glTranslatef(positionX, positionY, 0);
-    // glRotatef( 0, 0.0, 0.0, 1.0 );
-    // glScalef(scale, scale, scale);
-    // glTranslatef(positionX, positionY, 0);
     // set variables, can this be done using a filtered / system ?
+#ifdef USE_VERTEX_BUFFERS
     glUniform1f(gl_positionX, position.x);
     glUniform1f(gl_positionY, position.y);
     glUniform1f(gl_scale, scale);
     glUniform1f(gl_angle, angle);
     glUniform1f(gl_brightness, brightness);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(squareVerts) / sizeof(*squareVerts) / 2);
-    // glPopMatrix();
+#endif
 }
 
 void UpdateEndOpenGL()
 {
-    glBindVertexArray(0);
+#ifdef USE_VERTEX_BUFFERS
+    glBindVertexArray(vao);
     glUseProgram(0);
+#endif
 }
 
 //! Cleanup OpenGL resources
 void EndOpenGL()
 {
+#ifdef USE_VERTEX_BUFFERS
     glDeleteVertexArrays(1, &vao);
     glDeleteBuffers(1, &vbo);
     glDeleteProgram(material);
+#endif
 }
 
 // GluPerspective(fov, aspectRatio, 1.0f, 100.0f);
@@ -184,3 +190,11 @@ int LoadShaderFile(const char* filepath, GLchar* buffer, GLint size)
     {
         printf("Error loading Shader Vert");
     }*/
+    // glPushMatrix();
+    // glMultMatrixf(mat44);
+    // glLoadMatrixf(mat44);
+    // glTranslatef(positionX, positionY, 0);
+    // glRotatef( 0, 0.0, 0.0, 1.0 );
+    // glScalef(scale, scale, scale);
+    // glTranslatef(positionX, positionY, 0);
+    // glPopMatrix();

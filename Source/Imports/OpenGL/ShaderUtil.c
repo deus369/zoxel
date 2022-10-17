@@ -4,6 +4,9 @@
 #include <string.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
+
+// things
+const bool isForceDefaults = false;
 const char *shaderFilepath = "Resources/Shaders/BasicRender2D";
 const char *vertExtension = ".vert";
 const char *fragExtension = ".frag";
@@ -17,6 +20,23 @@ GLuint gl_angle;
 GLuint gl_scale;
 GLuint gl_brightness;
 
+void InitializeMesh()
+{
+#ifdef USE_VERTEX_BUFFERS
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(squareVerts), squareVerts, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+#endif
+}
+
 int LoadShader(char* filepath, GLenum shaderType, GLuint* shader2)
 {
     if (strlen(filepath) == 0)
@@ -25,8 +45,6 @@ int LoadShader(char* filepath, GLenum shaderType, GLuint* shader2)
         free(filepath);
         return -1;
     }
-    // printf("Loading Shader [%s] \n", filepath);
-    // size_t *bufferSize;
     GLchar *buffer = (GLchar*) SDL_LoadFile(filepath, NULL); // bufferSize);
     if (!buffer)
     {
@@ -35,10 +53,8 @@ int LoadShader(char* filepath, GLenum shaderType, GLuint* shader2)
         return -1;
     }
     free(filepath);
-    // printf("Success Loading Shader Source!"); //  [%i] \n", bufferSize);
-    // const char *ext = SDL_strrchr(buffer, '.');
     GLuint shader = glCreateShader(shaderType);
-    glShaderSource(shader, 1, (const GLchar**) &buffer, NULL); // &bufferSize);
+    glShaderSource(shader, 1, (const GLchar**) &buffer, NULL);
     glCompileShader(shader);
     GLint success;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
@@ -54,14 +70,13 @@ int LoadShader(char* filepath, GLenum shaderType, GLuint* shader2)
     }
     free(buffer);
     *shader2 = shader;
-    // printf("Success Loading Shader Source!"); //   [%i] \n", bufferSize);
     return 0;
 }
 
-bool LinkShaderProgram(GLuint program, GLuint vertex_shader, GLuint fragment_shader)
+bool LinkShaderProgram(GLuint program, GLuint vertShader, GLuint fragShader)
 {
-    glAttachShader(program, vertex_shader);
-    glAttachShader(program, fragment_shader);
+    glAttachShader(program, vertShader);
+    glAttachShader(program, fragShader);
     glLinkProgram(program);
     GLint success;
     glGetProgramiv(program, GL_LINK_STATUS, &success);
@@ -73,27 +88,71 @@ bool LinkShaderProgram(GLuint program, GLuint vertex_shader, GLuint fragment_sha
         glGetProgramInfoLog(program, info_log_length, NULL, info_log);
         fprintf(stderr, "failed to link program:\n%s\n", info_log);
         free(info_log);
-        glDetachShader(program, vertex_shader);
-        glDetachShader(program, fragment_shader);
+        glDetachShader(program, vertShader);
+        glDetachShader(program, fragShader);
         return false;
     }
-    glDetachShader(program, vertex_shader);
-    glDetachShader(program, fragment_shader);
+    glDetachShader(program, vertShader);
+    glDetachShader(program, fragShader);
+    // Clean up shaders
+    glDeleteShader(vertShader);
+    glDeleteShader(fragShader);
     return false;
 }
 
-void PrintOpenGL()
+int CompileShader(const GLchar* buffer, GLenum shaderType, GLuint* shader2)
 {
-    // Load the modern OpenGL funcs
-    printf("Initializing OpenGL");
-    printf("OpenGL Vendor:   %s\n", glGetString(GL_VENDOR));
-    printf("OpenGL Renderer: %s\n", glGetString(GL_RENDERER));
-    printf("OpenGL Version:  %s\n", glGetString(GL_VERSION));
-    printf("GLSL Version:    %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+    GLuint shader = glCreateShader(shaderType);
+    glShaderSource(shader, 1, (const GLchar **) &buffer, NULL);
+    glCompileShader(shader);
+    GLint success;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    if (success != GL_TRUE)
+    {
+        GLint info_log_length;
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &info_log_length);
+        GLchar* info_log = malloc(info_log_length);
+        glGetShaderInfoLog(shader, info_log_length, NULL, info_log);
+        fprintf(stderr, "Failed to Compile Shader:\n%s\n", info_log);
+        free(info_log);
+        return -1;
+    }
+    *shader2 = shader;
+    return 0;
+}
+
+//! Used incase external shaders are missing
+int LoadDefaultShaders()
+{
+    //ftransform();\n"
+    // "#version 300 es\n"
+    //"     color = vec4(0.8, 0.65, 0.15, 0);\n"
+    // "out lowp vec4 color;\n"
+    // gl_Position = gl_Vertex;
+    const GLchar *vertexShaderSource = \
+        "void main(void) {\n" \
+        "    gl_Position = vec4(0, 0, 0, 1);\n" \
+        "}\n";
+    const GLchar *fragShaderSource = \
+        "void main() {\n" \
+        "     gl_FragColor = vec4(0.8, 0.65, 0.15, 0);\n" \
+        "}\n";
+    GLuint vertShader;
+    GLuint fragShader;
+    CompileShader(vertexShaderSource, GL_VERTEX_SHADER, &vertShader);
+    CompileShader(fragShaderSource, GL_FRAGMENT_SHADER, &fragShader);
+    material = glCreateProgram();
+    LinkShaderProgram(material, vertShader, fragShader);
+    InitializeMesh();
+    return 0;
 }
 
 int LoadShaders()
 {
+    if (isForceDefaults)
+    {
+        return LoadDefaultShaders();
+    }
     GLuint vertShader;
     char *vertFilename = malloc(strlen(shaderFilepath) + strlen(vertExtension) + 1);
     strcpy(vertFilename, shaderFilepath);
@@ -103,7 +162,7 @@ int LoadShaders()
         if (LoadShader(vertFilename, GL_VERTEX_SHADER, &vertShader) != 0)
         {
             printf("Error loading Shader Vert.\n");
-            return -1;
+            return LoadDefaultShaders(); // -1;
         }
     }
     else
@@ -119,7 +178,7 @@ int LoadShaders()
         if (LoadShader(fragFilename, GL_FRAGMENT_SHADER, &fragShader) != 0)
         {
             printf("Error loading Shader Frag.\n");
-            return -1;
+            return LoadDefaultShaders(); // -1;
         }
     }
     else
@@ -128,38 +187,12 @@ int LoadShaders()
     }
     material = glCreateProgram();
     LinkShaderProgram(material, vertShader, fragShader);
-    // Keep a reference to the GPU data
+    InitializeMesh();
     gl_angle = glGetUniformLocation(material, "angle");
     gl_scale = glGetUniformLocation(material, "scale");
     gl_brightness = glGetUniformLocation(material, "brightness");
     gl_positionX = glGetUniformLocation(material, "positionX");
     gl_positionY = glGetUniformLocation(material, "positionY");
     gl_view_matrix = glGetUniformLocation(material, "viewMatrix");
-    // GLuint vbo;
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(squareVerts), squareVerts, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    // GLuint vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-    // Clean up shaders
-    glDeleteShader(fragShader);
-    glDeleteShader(vertShader);
     return 0;
 }
-
-/*int GetStringSize(const char* text)
-{
-    int count = 0;
-    while (text[count] != '\0')
-    {
-        count++;
-    }
-    return count;
-}*/

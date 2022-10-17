@@ -17,6 +17,10 @@ void SpawnKeyboardEntity()
 
 void ResetKeyboard(ecs_world_t *world)
 {
+    if (!keyboardEntity || !ecs_is_alive(world, keyboardEntity))
+    {
+        return;
+    }
     Keyboard *keyboard = ecs_get_mut(world, keyboardEntity, Keyboard);
     ResetKey(&keyboard->space);
     ResetKey(&keyboard->escape);
@@ -32,6 +36,10 @@ void ResetKeyboard(ecs_world_t *world)
 //! Extract Key Events from SDL and set them on entities keyboad.
 void ExtractIntoKeyboard(ecs_world_t *world, SDL_Event event)
 {
+    if (!keyboardEntity || !ecs_is_alive(world, keyboardEntity))
+    {
+        return;
+    }
     int eventType = event.type;
     if (eventType == SDL_FINGERDOWN || eventType == SDL_FINGERUP)
     {

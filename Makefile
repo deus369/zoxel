@@ -10,12 +10,12 @@ CFLAGS += -g
 LDLIBS = -lGL
 LDLIBS += -lSDL2
 LDLIBS += -lSDL2_image
+# LDLIBS += -SDL2_IMAGE_FORMATS='["png"]'
 LDLIBS += -lm	# for math.h
 LDLIBS += -D_POSIX_C_SOURCE=200112L -D_DEFAULT_SOURCE
 # Compiler Optimizations & Debug
 # LDLIBS += -D NDEBUG
 # LDLIBS += -O3
-# LDLIBS += -flto	# fuse linker plugin
 
 # SRCS defines all the files that will be used in the game.
 SRCS = 
@@ -48,3 +48,7 @@ SRCS += Resources/Shaders/BasicRender2D.frag
 
 zoxel: $(SRCS)
 	$(CC) $(CFLAGS) $(SHDS) -o $@ $(OBJS) $(LDLIBS)
+
+	
+# this causes errors
+# LDLIBS += -flto	# fuse linker plugin

@@ -19,7 +19,11 @@
 
 // Define all of the initally-NULL OpenGL functions.
 #define OPENGL_FUNCTION OPENGL_DEFINE
+#ifdef USE_VERTEX_BUFFERS
 OPENGL_FUNCTIONS
+#else
+OPENGL_FUNCTIONS2
+#endif
 #undef OPENGL_FUNCTION
 
 // Define a union that bridges the gap between object pointers
@@ -88,11 +92,19 @@ bool opengl_load_functions(void)
     // glCreateShader = (PFNGLCREATESHADERPROC)SDL_GL_GetProcAddress("glCreateShader");
 
     #define OPENGL_FUNCTION OPENGL_LOAD
-    OPENGL_FUNCTIONS
+#ifdef USE_VERTEX_BUFFERS
+OPENGL_FUNCTIONS
+#else
+OPENGL_FUNCTIONS2
+#endif
     #undef OPENGL_FUNCTION
 
     #define OPENGL_FUNCTION OPENGL_VALIDATE
-    OPENGL_FUNCTIONS
+#ifdef USE_VERTEX_BUFFERS
+OPENGL_FUNCTIONS
+#else
+OPENGL_FUNCTIONS2
+#endif
     #undef OPENGL_FUNCTION
 
     return true;

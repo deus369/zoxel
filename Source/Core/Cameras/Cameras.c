@@ -90,7 +90,7 @@ void SpawnMainCamera(int2 screenDimensions)
 
 void ResizeCameras(int width, int height)
 {
-    if (!ecs_is_alive(world, mainCamera))
+    if (!mainCamera || !ecs_is_alive(world, mainCamera))
     {
         return;
     }
@@ -102,7 +102,7 @@ void ResizeCameras(int width, int height)
 
 const float* GetMainCameraViewMatrix()
 {
-    if (!ecs_is_alive(world, mainCamera))
+    if (!mainCamera || !ecs_is_alive(world, mainCamera))
     {
         return NULL;
     }

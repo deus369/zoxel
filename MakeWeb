@@ -1,0 +1,71 @@
+# Zoxel Makefile! for Web
+# Build ~
+#	Make with make  -make -f MakeWeb
+# Run !
+#	emrun --browser firefox zoxel.html
+
+# remember to go to tools > console > multiprocess to get all errors
+# install emcc https://emscripten.org/docs/getting_started/downloads.html#installation-instructions-using-the-emsdk-recommended
+#zoxel.html:1237:21
+# source ~/emsdk/emsdk_env.sh
+
+# Declare compiler tools and flags
+CC = emcc
+CFLAGS =
+LDLIBS += -std=c99
+# LDLIBS += -s WASM=1
+# Add libraries
+LDLIBS += -lSDL
+LDLIBS += -s USE_SDL=2
+LDLIBS += -s USE_SDL_IMAGE=2
+# LDLIBS += -s SDL2_IMAGE_FORMATS='["png"]' # "bmp",
+# LDLIBS += -s FULL_ES2
+LDLIBS += -lGL
+LDLIBS += -s FULL_ES3=1
+#LDLIBS += -s USE_WEBGL2=1
+LDLIBS += -s MIN_WEBGL_VERSION=2
+LDLIBS += -s MAX_WEBGL_VERSION=2
+# LDLIBS += -s OFFSCREEN_FRAMEBUFFER=1
+#LDLIBS += -s USE_PTHREADS
+# LDLIBS += -s LEGACY_GL_EMULATION=1
+# LDLIBS += -s GL_UNSAFE_OPTS=1
+# LDLIBS += -s ERROR_ON_UNDEFINED_SYMBOLS=0
+# LDLIBS += -s ALLOW_MEMORY_GROWTH=1
+# LDLIBS += -EMCC_DEBUG=1
+LDLIBS += --preload-file Resources
+#LDLIBS += -s GL_DEBUG=1
+# LDLIBS += --preload-file Resources/Shaders/BasicRender2D.vert
+# LDLIBS += --preload-file Resources/Shaders/BasicRender2D.frag
+# Optimize
+# -O3
+
+# OBJS defines all the files used to compile Zoxel.
+OBJS =
+OBJS += Source/Imports/Flecs/flecs.c
+OBJS += Source/main.c
+
+# SRCS defines all the files that will be used in the game.
+SRCS = 
+SRCS += Source/Imports/Flecs/flecs.c 
+SRCS += Source/Imports/Flecs/flecs.h
+SRCS += Source/main.c
+# Imports
+SRCS += Source/Imports/SDL/SDLUtil.c
+SRCS += Source/Imports/Flecs/FlecsUtil.c
+SRCS += Source/Imports/Imports.c
+# Gameplay
+# Characters2D
+SRCS += Source/Gameplay/Characters2D/Characters2D.c
+SRCS += Source/Gameplay/Characters2D/Systems/BobSpawnSystem.c
+# Players
+SRCS += Source/Space/Players/Players.c
+SRCS += Source/Space/Players/Systems/Player2DMoveSystem.c
+# Rendering
+SRCS += Source/Core/Rendering/Rendering.c
+SRCS += Source/Core/Rendering/Core/RenderingCore.c
+
+SRCS += Resources/Shaders/BasicRender2D.vert
+SRCS += Resources/Shaders/BasicRender2D.frag
+
+zoxel.html: $(SRCS)
+	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDLIBS)
