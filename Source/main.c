@@ -1,9 +1,9 @@
 // Add defines first
+#include <stdbool.h>
+#include <string.h>
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
-#include <stdbool.h>
-#include <string.h>
 #define SDL_IMAGES
 #define USE_VERTEX_BUFFERS
 // =-= FLECS =-=
@@ -12,11 +12,12 @@
 #define FLECS_SYSTEM 
 #define FLECS_PIPELINE
 #include "Imports/Flecs/flecs.h"
+#include "Imports/Flecs/FlecsUtil.c"
 // =-= Modules =-=
 // --- Core Core ---
 #include "Core/Core/Core.c"
-#include "Imports/Imports.c"
 // --- Core ---
+#include "Core/App/App.c"
 #include "Core/Timing/Timing.c"
 #include "Core/Inputs/Inputs.c"
 #include "Core/Transforms2D/Transforms2D.c"
@@ -38,11 +39,10 @@ const bool isSpawnGameEntities = true;
 // Settings  2
 bool running = true;
 bool headless = false;
-bool fullscreen = false;
 int coreCount = 24;
-bool vsync = false;
 bool profiler = false;
 ecs_entity_t localPlayer;
+double lastPrinted;
 
 // Forward  Declares
 int ProcessArguments(int argc, char* argv[]);
@@ -55,7 +55,11 @@ void ImportModules(ecs_world_t *world)
     ECS_IMPORT(world, Inputs);
     ECS_IMPORT(world, Transforms2D);
     ECS_IMPORT(world, Transforms);
-    ECS_IMPORT(world, Rendering);
+    if (!headless)
+    {
+        ECS_IMPORT(world, App);
+        ECS_IMPORT(world, Rendering);
+    }
     ECS_IMPORT(world, Cameras);
     ECS_IMPORT(world, Textures);
     ECS_IMPORT(world, Voxels);
@@ -72,40 +76,32 @@ void UpdateLoop()
 {
     if (!headless)
     {
-        UpdateBeginSDL();
         PollSDLEvents();
-        const float* viewMatrix = GetMainCameraViewMatrix();
-        UpdateBeginOpenGL(viewMatrix);
     }
-    UpdateECS();
+    ecs_progress(world, 0);
     if (!headless)
     {
-        RunRendering(0);
+        UpdateBeginOpenGL(GetMainCameraViewMatrix());
+        ecs_run(world, ecs_id(Render2DSystem), 0, NULL);
         UpdateEndOpenGL();
-        UpdateEndSDL();
+        UpdateLoopSDL();
     }
-}
-
-void OpenWindow()
-{
-    int didFail = SetSDLAttributes();
-    PrintSDLDebug();
-    if (didFail != EXIT_FAILURE)
+    /*double time = clock() / 1000000.0;
+    if (time - lastPrinted >= 3)
     {
-        didFail = SpawnWindowSDL(fullscreen);
-        coreCount = SDL_GetCPUCount();
-        PrintOpenGL();
-        if (didFail != EXIT_FAILURE)
+        lastPrinted = time;
+        const Position2D *position2D = ecs_get(world, localPlayer, Position2D);
+        const Velocity2D *velocity2D = ecs_get(world, localPlayer, Velocity2D);
+        if (position2D)
         {
-            // check open gl for failures?
-            didFail = InitializeOpenGL(vsync);
+            printf("    Player Position2D: [%fx%f] Velocity2D: [%fx%f]\n",
+                position2D->value.x, position2D->value.y, velocity2D->value.x, velocity2D->value.y);
         }
-    }
-    if (didFail == EXIT_FAILURE)
-    {
-        printf("Failed to Open Window. Setting to headless mode.");
-        headless = true;
-    }
+        else
+        {
+            printf("Position2D is null.");
+        }
+    }*/
 }
 
 void SpawnGameEntities()
@@ -120,16 +116,6 @@ void SpawnGameEntities()
 
 int main(int argc, char** argv)
 {
-    // EmscriptenWebGLContextAttributes atrs;
-    // emscripten_webgl_init_context_attributes(&atrs);
-    // atrs.alpha = true;
-    // atrs.depth = true;
-    // atrs.stencil = false;
-    // atrs.majorVersion = 3;
-    // atrs.minorVersion = 0;
-    // emctx = emscripten_webgl_create_context(id, &atrs);
-    // emscripten_webgl_make_context_current(emctx);
-
     printf("Beginning ECS\n");
     SpawnWorld2(false, coreCount);
     printf("Importing Modules\n");
@@ -137,7 +123,7 @@ int main(int argc, char** argv)
     if (!headless)
     {
         printf("Spawning SDL Window\n");
-        OpenWindow();
+        // OpenWindow();
     }
     if (isSpawnGameEntities)
     {
@@ -145,13 +131,13 @@ int main(int argc, char** argv)
         SpawnGameEntities();
     }
     printf("UpdateLoop Begin~\n");
-    // emscripten_set_main_loop(UpdateLoop, 60, 1);
     emscripten_set_main_loop(UpdateLoop, 60, 1);
     printf("Ending ECS~\n");
     EndECS();
     if (!headless)
     {
-        // EndSDL();
+        // EndAppGraphics();
+        EndSDL();
     }
     printf("Ending Zoxel.\n");
     return 0;
@@ -168,13 +154,8 @@ int main(int argc, char* argv[])
     }
     SpawnWorld(argc, argv, profiler, true, coreCount);
     ImportModules(world);
-    if (!headless)
-    {
-        OpenWindow();
-    }
     if (isSpawnGameEntities)
     {
-        printf("Spawning GameEntities\n");
         SpawnGameEntities();
     }
     // while true, run main loop here
@@ -185,6 +166,7 @@ int main(int argc, char* argv[])
     EndECS();
     if (!headless)
     {
+        EndAppGraphics();
         EndSDL();
     }
     return 0;
@@ -195,7 +177,6 @@ int main(int argc, char* argv[])
 //! Temporary, quick and dirty events.
 void PollSDLEvents()
 {
-    // BobArmySpawnFixer(world);   // until bug gets fixed
     ResetKeyboard(world);
     SDL_Event event  = { 0 };
     while (SDL_PollEvent(&event))
@@ -259,19 +240,36 @@ int ProcessArguments(int argc, char* argv[])
     return EXIT_SUCCESS;
 }
 
+// void OpenWindow()
+// {
+//     int didFail = SetSDLAttributes(vsync);
+//     PrintSDLDebug();
+//     if (didFail == EXIT_FAILURE)
+//     {
+//         printf("Failed to SetSDLAttributes.");
+//         headless = true;
+//         return;
+//     }
+//     didFail = SpawnWindowSDL(fullscreen);
+//     coreCount = SDL_GetCPUCount();
+//     PrintOpenGL();
+//     if (didFail == EXIT_FAILURE)
+//     {
+//         printf("Failed to SpawnWindowSDL.");
+//         headless = true;
+//         return;
+//     }
+//     // check open gl for failures?
+//     didFail = LoadShaders();
+//     if (didFail == EXIT_FAILURE)
+//     {
+//         printf("Failed to InitializeOpenGL.");
+//         headless = true;
+//     }
+// }
+
 /*if (UpdateEndTime())
 {
-    const Position2D *position2D = ecs_get(world, localPlayer, Position2D);
-    const Velocity2D *velocity2D = ecs_get(world, localPlayer, Velocity2D);
-    if (position2D)
-    {
-        printf("    Player Position2D: [%fx%f] Velocity2D: [%fx%f]\n",
-            position2D->value.x, position2D->value.y, velocity2D->value.x, velocity2D->value.y);
-    }
-    else
-    {
-        printf("Position2D is null.");
-    }
     PrintBobSpawnSystem(world);
 }*/
 
@@ -284,3 +282,12 @@ I would recommend some sections on the quick start guide to flecs:
    A Simple Render system example, perhaps in a flecs.graphics module? This needs more thoughts
    Web Build guide with emcc (this isn't entirely needed but a nice to have)
 */
+    // EmscriptenWebGLContextAttributes atrs;
+    // emscripten_webgl_init_context_attributes(&atrs);
+    // atrs.alpha = true;
+    // atrs.depth = true;
+    // atrs.stencil = false;
+    // atrs.majorVersion = 3;
+    // atrs.minorVersion = 0;
+    // emctx = emscripten_webgl_create_context(id, &atrs);
+    // emscripten_webgl_make_context_current(emctx);

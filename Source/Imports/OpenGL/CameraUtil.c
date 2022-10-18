@@ -1,8 +1,8 @@
 
-#include <math.h>
+/*#include <math.h>
 #include <stdlib.h>
 #include <SDL2/SDL_opengl.h>
-/*
+
 #ifndef M_PI
 #define M_PI 3.141592653589793
 #endif

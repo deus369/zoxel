@@ -1,5 +1,7 @@
 // Spawn a queue
 
+extern void RenderEntity2D(float2 position, float angle, float scale, float brightness);
+
 //! Render 2D entities.
 void Render2DSystem(ecs_iter_t *it)
 {
@@ -19,9 +21,3 @@ void Render2DSystem(ecs_iter_t *it)
     }
 }
 ECS_SYSTEM_DECLARE(Render2DSystem);
-
-void Render2DSystemMainThread()
-{
-    // render with queue here
-    
-}

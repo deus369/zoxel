@@ -18,7 +18,6 @@ ECS_DECLARE(DisableMovement);
 #include "Systems/Player2DTestSystem.c"
 // prefabs
 ecs_entity_t playerCharacter2DPrefab;
-extern ecs_entity_t localPlayer;
 
 //! Spawn a Player character.
 ecs_entity_t SpawnPlayerCharacter2D(ecs_world_t *world)

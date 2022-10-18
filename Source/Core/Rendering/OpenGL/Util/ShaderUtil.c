@@ -2,57 +2,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
 // things
 const bool isForceDefaults = false;
-const char *shaderFilepath = "Resources/Shaders/BasicRender2D";
-const char *vertExtension = ".vert";
-const char *fragExtension = ".frag";
+const char* shaderVertFilepath = "Resources/Shaders/BasicRender2D.vert";
+const char* shaderFragFilepath = "Resources/Shaders/BasicRender2D.frag";
 GLuint material;
-GLuint vbo;
-GLuint vao;
-GLuint gl_positionX;
-GLuint gl_positionY;
-GLuint gl_view_matrix;
-GLuint gl_angle;
-GLuint gl_scale;
-GLuint gl_brightness;
+// const char *vertExtension = ".vert";
+// const char *fragExtension = ".frag";
+extern void InitializeMesh();
 
-void InitializeMesh()
-{
-#ifdef USE_VERTEX_BUFFERS
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(squareVerts), squareVerts, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-#endif
-}
-
-int LoadShader(char* filepath, GLenum shaderType, GLuint* shader2)
+int LoadShader(const char* filepath, GLenum shaderType, GLuint* shader2)
 {
     if (strlen(filepath) == 0)
     {
         printf("Shader Filepath is Empty.\n");
-        free(filepath);
         return -1;
     }
     GLchar *buffer = (GLchar*) SDL_LoadFile(filepath, NULL); // bufferSize);
     if (!buffer)
     {
         printf("Loading shader returned null: %s\n", filepath);
-        free(filepath);
         return -1;
     }
-    free(filepath);
+    // this is causing crashes...
     GLuint shader = glCreateShader(shaderType);
     glShaderSource(shader, 1, (const GLchar**) &buffer, NULL);
     glCompileShader(shader);
@@ -149,12 +125,29 @@ int LoadDefaultShaders()
 
 int LoadShaders()
 {
-    if (isForceDefaults)
+    GLuint vertShader;
+    GLuint fragShader;
+    if (LoadShader(shaderVertFilepath, GL_VERTEX_SHADER, &vertShader) != 0)
+    {
+        printf("Error loading Shader Vert.\n");
+        return -1;
+    }
+    if (LoadShader(shaderFragFilepath, GL_FRAGMENT_SHADER, &fragShader) != 0)
+    {
+        printf("Error loading Shader Frag.\n");
+        return -1;
+    }
+    material = glCreateProgram();
+    LinkShaderProgram(material, vertShader, fragShader);
+    InitializeMesh();
+    return 0;
+}
+    /*if (isForceDefaults)
     {
         return LoadDefaultShaders();
-    }
-    GLuint vertShader;
-    char *vertFilename = malloc(strlen(shaderFilepath) + strlen(vertExtension) + 1);
+    }*/
+
+    /*char *vertFilename = malloc(strlen(shaderFilepath) + strlen(vertExtension) + 1);
     strcpy(vertFilename, shaderFilepath);
     strcat(vertFilename, vertExtension);
     if (vertFilename)
@@ -168,9 +161,8 @@ int LoadShaders()
     else
     {
         return -1;
-    }
-    GLuint fragShader;
-    char *fragFilename = malloc(strlen(shaderFilepath) + strlen(vertExtension) + 1);
+    }*/
+    /*char *fragFilename = malloc(strlen(shaderFilepath) + strlen(vertExtension) + 1);
     strcpy(fragFilename, shaderFilepath);
     strcat(fragFilename, fragExtension);
     if (fragFilename)
@@ -184,15 +176,4 @@ int LoadShaders()
     else
     {
         return -1;
-    }
-    material = glCreateProgram();
-    LinkShaderProgram(material, vertShader, fragShader);
-    InitializeMesh();
-    gl_angle = glGetUniformLocation(material, "angle");
-    gl_scale = glGetUniformLocation(material, "scale");
-    gl_brightness = glGetUniformLocation(material, "brightness");
-    gl_positionX = glGetUniformLocation(material, "positionX");
-    gl_positionY = glGetUniformLocation(material, "positionY");
-    gl_view_matrix = glGetUniformLocation(material, "viewMatrix");
-    return 0;
-}
+    }*/

@@ -11,7 +11,8 @@
 //
 // More info about dynamic loading can be found here:
 // https://en.wikipedia.org/wiki/Dynamic_loading
-#define OPENGL_FUNCTIONS                                                            \
+
+#define OPENGL_FUNCTIONS                                      \
     OPENGL_FUNCTION(glCreateShader, PFNGLCREATESHADERPROC)                          \
     OPENGL_FUNCTION(glDeleteShader, PFNGLDELETESHADERPROC)                          \
     OPENGL_FUNCTION(glAttachShader, PFNGLATTACHSHADERPROC)                          \
@@ -36,12 +37,12 @@
     OPENGL_FUNCTION(glDeleteBuffers, PFNGLDELETEBUFFERSPROC)                        \
     OPENGL_FUNCTION(glBindBuffer, PFNGLBINDBUFFERPROC)                              \
     OPENGL_FUNCTION(glBufferData, PFNGLBUFFERDATAPROC)                              \
-    OPENGL_FUNCTION(glGenVertexArrays, PFNGLGENVERTEXARRAYSPROC)                    \
-    OPENGL_FUNCTION(glDeleteVertexArrays, PFNGLDELETEVERTEXARRAYSPROC)              \
-    OPENGL_FUNCTION(glBindVertexArray, PFNGLBINDVERTEXARRAYPROC)                    \
     OPENGL_FUNCTION(glVertexAttribPointer, PFNGLVERTEXATTRIBPOINTERPROC)            \
     OPENGL_FUNCTION(glEnableVertexAttribArray, PFNGLENABLEVERTEXATTRIBARRAYPROC)    \
-    OPENGL_FUNCTION(glDisableVertexAttribArray, PFNGLDISABLEVERTEXATTRIBARRAYPROC)
+    OPENGL_FUNCTION(glDisableVertexAttribArray, PFNGLDISABLEVERTEXATTRIBARRAYPROC)  \
+    OPENGL_FUNCTION(glBindVertexArray, PFNGLBINDVERTEXARRAYPROC)                    \
+    OPENGL_FUNCTION(glGenVertexArrays, PFNGLGENVERTEXARRAYSPROC)                    \
+    OPENGL_FUNCTION(glDeleteVertexArrays, PFNGLDELETEVERTEXARRAYSPROC)
 
 // Declare an OpenGL function. Other translation units that require
 // calling OpenGL functions will link against these declarations.

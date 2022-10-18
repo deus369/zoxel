@@ -19,11 +19,7 @@
 
 // Define all of the initally-NULL OpenGL functions.
 #define OPENGL_FUNCTION OPENGL_DEFINE
-#ifdef USE_VERTEX_BUFFERS
 OPENGL_FUNCTIONS
-#else
-OPENGL_FUNCTIONS2
-#endif
 #undef OPENGL_FUNCTION
 
 // Define a union that bridges the gap between object pointers
@@ -38,17 +34,6 @@ union bridge
     void (*function_ptr)(void);
 };
 
-// Load an OpenGL function by passing it through the union. Check
-// for errors and return from the load if something goes wrong. This
-// expansion uses a C99 designated initializer to cleanly instantiate
-// the union bridge. The OpenGL function pointer is then pulled out
-// and assigned to the the definition that was initially NULL.
-//
-// In short, the void* goes in and the OpenGL function comes out.
-// Using the union bridge is necesssary to keep the compilers happy
-// (-std=c99 -Wall -Wextra -Wpedantic).
-//
-// OPENGL_LOAD(glCreateShader, PFNGLCREATESHADERPROC)
 //
 //   becomes
 //
@@ -92,19 +77,11 @@ bool opengl_load_functions(void)
     // glCreateShader = (PFNGLCREATESHADERPROC)SDL_GL_GetProcAddress("glCreateShader");
 
     #define OPENGL_FUNCTION OPENGL_LOAD
-#ifdef USE_VERTEX_BUFFERS
 OPENGL_FUNCTIONS
-#else
-OPENGL_FUNCTIONS2
-#endif
     #undef OPENGL_FUNCTION
 
     #define OPENGL_FUNCTION OPENGL_VALIDATE
-#ifdef USE_VERTEX_BUFFERS
 OPENGL_FUNCTIONS
-#else
-OPENGL_FUNCTIONS2
-#endif
     #undef OPENGL_FUNCTION
 
     return true;

@@ -7,6 +7,8 @@
 # remember to go to tools > console > multiprocess to get all errors
 # install emcc https://emscripten.org/docs/getting_started/downloads.html#installation-instructions-using-the-emsdk-recommended
 #zoxel.html:1237:21
+
+# Error 127 - do this
 # source ~/emsdk/emsdk_env.sh
 
 # Declare compiler tools and flags
@@ -22,7 +24,7 @@ LDLIBS += -s USE_SDL_IMAGE=2
 # LDLIBS += -s FULL_ES2
 LDLIBS += -lGL
 LDLIBS += -s FULL_ES3=1
-#LDLIBS += -s USE_WEBGL2=1
+LDLIBS += -s USE_WEBGL2=1
 LDLIBS += -s MIN_WEBGL_VERSION=2
 LDLIBS += -s MAX_WEBGL_VERSION=2
 # LDLIBS += -s OFFSCREEN_FRAMEBUFFER=1
@@ -33,7 +35,7 @@ LDLIBS += -s MAX_WEBGL_VERSION=2
 # LDLIBS += -s ALLOW_MEMORY_GROWTH=1
 # LDLIBS += -EMCC_DEBUG=1
 LDLIBS += --preload-file Resources
-#LDLIBS += -s GL_DEBUG=1
+# LDLIBS += -s GL_DEBUG=1
 # LDLIBS += --preload-file Resources/Shaders/BasicRender2D.vert
 # LDLIBS += --preload-file Resources/Shaders/BasicRender2D.frag
 # Optimize
@@ -50,7 +52,7 @@ SRCS += Source/Imports/Flecs/flecs.c
 SRCS += Source/Imports/Flecs/flecs.h
 SRCS += Source/main.c
 # Imports
-SRCS += Source/Imports/SDL/SDLUtil.c
+# SRCS += Source/Imports/SDL/SDLUtil.c
 SRCS += Source/Imports/Flecs/FlecsUtil.c
 SRCS += Source/Imports/Imports.c
 # Gameplay

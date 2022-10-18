@@ -23,7 +23,7 @@ SRCS += Source/Imports/Flecs/flecs.c
 SRCS += Source/Imports/Flecs/flecs.h
 SRCS += Source/main.c
 # Imports
-SRCS += Source/Imports/SDL/SDLUtil.c
+SRCS += Source/Core/App/SDLUtil.c
 SRCS += Source/Imports/Flecs/FlecsUtil.c
 SRCS += Source/Imports/Imports.c
 # Gameplay

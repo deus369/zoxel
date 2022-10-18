@@ -33,7 +33,6 @@ void SpawnWorld2(bool isThreading, int coreCount)
 
 void UpdateECS()
 {
-    ecs_progress(world, 0);
     // ecs_progress(world, deltaTimeSDL);
 }
 

@@ -11,6 +11,7 @@ int2 screenDimensions = { 480, 480 };
 float aspectRatio = 1;
 float fov = 60;
 SDL_Window* window;
+SDL_Renderer *renderer;
 SDL_GLContext context;
 unsigned long windowFlags;
 // forward declarations
@@ -40,17 +41,17 @@ void PrintHelpMenu(const char* arg0)
 void PrintSDLDebug()
 {
     printf("Platform:        %s\n", SDL_GetPlatform());
-    printf("CPU Count:       %d\n", SDL_GetCPUCount());
-    printf("System RAM:      %d MB\n", SDL_GetSystemRAM());
-    printf("Supports SSE:    %s\n", SDL_HasSSE() ? "true" : "false");
-    printf("Supports SSE2:   %s\n", SDL_HasSSE2() ? "true" : "false");
-    printf("Supports SSE3:   %s\n", SDL_HasSSE3() ? "true" : "false");
-    printf("Supports SSE4.1: %s\n", SDL_HasSSE41() ? "true" : "false");
-    printf("Supports SSE4.2: %s\n", SDL_HasSSE42() ? "true" : "false");
+    printf("    CPU Count:       %d\n", SDL_GetCPUCount());
+    printf("    System RAM:      %d MB\n", SDL_GetSystemRAM());
+    printf("    Supports SSE:    %s\n", SDL_HasSSE() ? "true" : "false");
+    printf("    Supports SSE2:   %s\n", SDL_HasSSE2() ? "true" : "false");
+    printf("    Supports SSE3:   %s\n", SDL_HasSSE3() ? "true" : "false");
+    printf("    Supports SSE4.1: %s\n", SDL_HasSSE41() ? "true" : "false");
+    printf("    Supports SSE4.2: %s\n", SDL_HasSSE42() ? "true" : "false");
 }
 
 //! Initialize SDL things, thingy things.
-int SetSDLAttributes()
+int SetSDLAttributes(bool vsync)
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
@@ -63,23 +64,24 @@ int SetSDLAttributes()
     SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
     // Request a double-buffered, OpenGL 3.3 (or higher) core profile
-#ifdef __EMSCRIPTEN__
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-#else
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-#endif
-   
+// #ifdef __EMSCRIPTEN__
+//     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+// #else
+//     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+// #endif
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     // SDL_RENDERER_SOFTWARE SDL_RENDERER_ACCELERATED
+    SDL_GL_SetSwapInterval(vsync ? 1 : 0);
     return EXIT_SUCCESS;
 }
-SDL_Renderer *renderer;
 
 //! Spawn the SDL Window.
 int SpawnWindowSDL(bool fullscreen)
 {
+    // SDL_CreateWindowAndRenderer(screenDimensions.x, screenDimensions.y, 0, &window, &renderer);
     /*windowFlags = SDL_WINDOW_OPENGL;
     SDL_CreateWindow("Zoxel",
          SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -87,56 +89,54 @@ int SpawnWindowSDL(bool fullscreen)
     context = SDL_GL_CreateContext(window);
     if (context == NULL)
     {
-
+        return -1;
     }*/
-    SDL_CreateWindowAndRenderer(512, 512, 0, &window, &renderer);
-
-    // windowFlags = SDL_WINDOW_OPENGL;
-    // if (fullscreen) 
-    // {
-    //     windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-    // }
-    // window = SDL_CreateWindow("Zoxel",
-    //     SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-    //     screenDimensions.x, screenDimensions.y, windowFlags);
-    // if (window == NULL)
-    // {
-    //     SDL_Quit();
-    //     fprintf(stderr, "Failed to Create Window: %s\n", SDL_GetError());
-    //     return EXIT_FAILURE;
-    // }
-    // // SDL_GLContext is an alias for "void*"
-    // context = SDL_GL_CreateContext(window);
-    // if (context == NULL)
-    // {
-    //     // common error: EGL_BAD_MATCH
-    //     SDL_DestroyWindow(window);
-    //     SDL_Quit();
-    //     fprintf(stderr, "Failed to Create OpenGL Context: %s\n", SDL_GetError());
-    //     return EXIT_FAILURE;
-    // }
-    
+    windowFlags = SDL_WINDOW_OPENGL;
+    if (fullscreen) 
+    {
+        windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+    }
+    window = SDL_CreateWindow("Zoxel",
+        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+        screenDimensions.x, screenDimensions.y, windowFlags);
+    if (window == NULL)
+    {
+        SDL_Quit();
+        fprintf(stderr, "Failed to Create Window: %s\n", SDL_GetError());
+        return EXIT_FAILURE;
+    }
+    // SDL_GLContext is an alias for "void*"
+    context = SDL_GL_CreateContext(window);
+    if (context == NULL)
+    {
+        // common error: EGL_BAD_MATCH
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        fprintf(stderr, "Failed to Create OpenGL Context: %s\n", SDL_GetError());
+        return EXIT_FAILURE;
+    }
     SDL_GL_SetSwapInterval(1);
     LoadIconSDL(window);
     SDL_SetWindowResizable(window, SDL_TRUE);
-    /* Swap our buffer to display the current contents of buffer on screen */ 
     SDL_GL_SwapWindow(window);
     return EXIT_SUCCESS;
 }
 
-void UpdateBeginSDL() { }
-
-void UpdateEndSDL()
+void UpdateLoopSDL()
 {
     SDL_GL_SwapWindow(window);
 }
 
-extern void EndOpenGL();
-
 void EndSDL()
 {
-    EndOpenGL();
-    SDL_GL_DeleteContext(context);
+    if (renderer)
+    {
+        SDL_DestroyRenderer(renderer);
+    }
+    if (context)
+    {
+        SDL_GL_DeleteContext(context);
+    }
     SDL_DestroyWindow(window);
     SDL_Quit();
 }

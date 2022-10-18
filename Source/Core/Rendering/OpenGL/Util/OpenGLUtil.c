@@ -5,27 +5,57 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
-void PrintOpenGL()
+// Stored Shader Variables
+GLuint vbo;
+GLuint vao;
+GLuint gl_positionX;
+GLuint gl_positionY;
+GLuint gl_view_matrix;
+GLuint gl_angle;
+GLuint gl_scale;
+GLuint gl_brightness;
+
+void InitializeMesh()
 {
-    // Load the modern OpenGL funcs
-    printf("PrintOpenGL: OpenGL\n");
-    printf("    Vendor:   %s\n", glGetString(GL_VENDOR));
-    printf("    Renderer: %s\n", glGetString(GL_RENDERER));
-    printf("    Version:  %s\n", glGetString(GL_VERSION));
-    printf("    GLSL Version:    %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+    gl_angle = glGetUniformLocation(material, "angle");
+    gl_scale = glGetUniformLocation(material, "scale");
+    gl_brightness = glGetUniformLocation(material, "brightness");
+    gl_positionX = glGetUniformLocation(material, "positionX");
+    gl_positionY = glGetUniformLocation(material, "positionY");
+    gl_view_matrix = glGetUniformLocation(material, "viewMatrix");
+
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(squareVerts), squareVerts, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+#ifdef USE_VERTEX_BUFFERS
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+#else
+    // createVertexArray(1, &vao);
+    // bindVertexArray(vao);
+#endif
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+#ifdef USE_VERTEX_BUFFERS
+    glBindVertexArray(0);
+#else
+    // bindVertexArray(0);
+#endif
 }
 
-int InitializeOpenGL(bool vsync)
+//! Cleanup OpenGL resources
+void EndAppOpenGL()
 {
-    opengl_load_functions();
-    SDL_GL_SetSwapInterval(vsync ? 1 : 0);
-    int failed = LoadShaders();
-    if (failed == -1)
-    {
-        printf("Failed loading shaders.");
-        // GluPerspective(fov, aspectRatio, 1.0f, 100.0f);
-    }
-    return failed;
+#ifdef USE_VERTEX_BUFFERS
+    glDeleteVertexArrays(1, &vao);
+#else
+    // deleteVertexArray(1, &vao);
+#endif
+    glDeleteBuffers(1, &vbo);
+    glDeleteProgram(material);
 }
 
 void UpdateBeginOpenGL(const float* viewMatrix)
@@ -33,45 +63,50 @@ void UpdateBeginOpenGL(const float* viewMatrix)
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);       // Clears the buffer ?
     //! This sets the materials actually, would be best to group entities per material here?
-#ifdef USE_VERTEX_BUFFERS
     glUseProgram(material);
+#ifdef USE_VERTEX_BUFFERS
     glBindVertexArray(vao);
+#else
+    // bindVertexArray(vao);
+#endif
     if (viewMatrix)
     {
         glUniformMatrix4fv(gl_view_matrix, 1, GL_FALSE, (const GLfloat*) viewMatrix);
     }
-#endif
+    // glBegin(GL_TRIANGLES);
+    // glColor3f(0.1, 0.2, 0.3);
+    // glVertex3f(0, 0, 0);
+    // glVertex3f(1, 0, 0);
+    // glVertex3f(0, 1, 0);
+    // glEnd();
 }
 
 void RenderEntity2D(float2 position, float angle, float scale, float brightness)
 {
     // set variables, can this be done using a filtered / system ?
-#ifdef USE_VERTEX_BUFFERS
+//#ifdef USE_VERTEX_BUFFERS
     glUniform1f(gl_positionX, position.x);
     glUniform1f(gl_positionY, position.y);
     glUniform1f(gl_scale, scale);
     glUniform1f(gl_angle, angle);
     glUniform1f(gl_brightness, brightness);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(squareVerts) / sizeof(*squareVerts) / 2);
-#endif
+//#endif
 }
 
 void UpdateEndOpenGL()
 {
 #ifdef USE_VERTEX_BUFFERS
-    glBindVertexArray(vao);
-    glUseProgram(0);
+    glBindVertexArray(vao);   // vao or 0?
+#else
+    // bindVertexArray(vao);
 #endif
+    glUseProgram(0);
 }
 
-//! Cleanup OpenGL resources
-void EndOpenGL()
+void EndAppGraphics()
 {
-#ifdef USE_VERTEX_BUFFERS
-    glDeleteVertexArrays(1, &vao);
-    glDeleteBuffers(1, &vbo);
-    glDeleteProgram(material);
-#endif
+    //EndAppOpenGL();
 }
 
 // GluPerspective(fov, aspectRatio, 1.0f, 100.0f);
