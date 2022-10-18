@@ -1,5 +1,5 @@
 //! Here for now, spawns a one man bobarmy.
-void Particles2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int bobSpawnCount)
+void Particles2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCount)
 {
     float2 positionBounds = { 0.1f, 0.5f };
     const float2 velocityBounds = { 0.2f, 12.4f };
@@ -8,15 +8,15 @@ void Particles2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int bobSpawn
     const float2 brightnessBounds = { 0.1f, 0.4f };
     const double2 lifeTime = { 0.5f, 8.0f };
     // Create a SpaceShip prefab with a Defense component.
-    Position2D *position2Ds = malloc(sizeof(Position2D) * bobSpawnCount);
-    Velocity2D *velocity2Ds = malloc(sizeof(Velocity2D) * bobSpawnCount);
-    // Rotation2D *rotation2Ds = malloc(sizeof(Rotation2D) * bobSpawnCount);
-    // Acceleration2D *acceleration2Ds = malloc(sizeof(Acceleration2D) * bobSpawnCount);
-    Torque2D *torque2Ds = malloc(sizeof(Torque2D) * bobSpawnCount);
-    Scale2D *scale2Ds = malloc(sizeof(Scale2D) * bobSpawnCount);
-    Brightness *brightnesses = malloc(sizeof(Brightness) * bobSpawnCount);
-    DestroyInTime *destroyInTimes = malloc(sizeof(DestroyInTime) * bobSpawnCount);
-    for (int i = 0; i < bobSpawnCount; i++)
+    Position2D *position2Ds = malloc(sizeof(Position2D) * spawnCount);
+    Velocity2D *velocity2Ds = malloc(sizeof(Velocity2D) * spawnCount);
+    // Rotation2D *rotation2Ds = malloc(sizeof(Rotation2D) * spawnCount);
+    // Acceleration2D *acceleration2Ds = malloc(sizeof(Acceleration2D) * spawnCount);
+    Torque2D *torque2Ds = malloc(sizeof(Torque2D) * spawnCount);
+    Scale2D *scale2Ds = malloc(sizeof(Scale2D) * spawnCount);
+    Brightness *brightnesses = malloc(sizeof(Brightness) * spawnCount);
+    DestroyInTime *destroyInTimes = malloc(sizeof(DestroyInTime) * spawnCount);
+    for (int i = 0; i < spawnCount; i++)
     {
         position2Ds[i].value = (float2) {
             ((rand() % 101) / 100.0f) * positionBounds.y - (positionBounds.y / 2.0f),
@@ -67,7 +67,7 @@ void Particles2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int bobSpawn
     }
     const ecs_entity_t *bobArmy = ecs_bulk_init(world, &(ecs_bulk_desc_t)
     {
-        .count = bobSpawnCount,
+        .count = spawnCount,
         .ids =
         {
             ecs_pair(EcsIsA, particle2DPrefab),
@@ -96,3 +96,14 @@ void Particles2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int bobSpawn
     });
 }
 ECS_SYSTEM_DECLARE(Particles2DSpawnSystem);
+
+int GetParticles2DCount(ecs_world_t *world)
+{
+    // return ecs_count(world, Particle2D);
+    return ecs_count(world, Position2D);
+}
+
+void DebugParticlesSpawned(ecs_world_t *world)
+{
+    printf("    Particles Spawned [%i]\n", GetParticles2DCount(world));
+}

@@ -34,12 +34,14 @@
 // --- Space ---
 #include "Space/Players/Players.c"   // for now until i move stuff to characters
 
+
+#include <sys/sysinfo.h>
+
 // Settings 
 const bool isSpawnGameEntities = true;
 // Settings  2
 bool running = true;
 bool headless = false;
-int coreCount = 24;
 bool profiler = false;
 ecs_entity_t localPlayer;
 double lastPrinted;
@@ -72,20 +74,8 @@ void ImportModules(ecs_world_t *world)
     ECS_IMPORT(world, Players);
 }
 
-void UpdateLoop()
+void DebugPlayer()
 {
-    if (!headless)
-    {
-        PollSDLEvents();
-    }
-    ecs_progress(world, 0);
-    if (!headless)
-    {
-        UpdateBeginOpenGL(GetMainCameraViewMatrix());
-        ecs_run(world, ecs_id(Render2DSystem), 0, NULL);
-        UpdateEndOpenGL();
-        UpdateLoopSDL();
-    }
     /*double time = clock() / 1000000.0;
     if (time - lastPrinted >= 3)
     {
@@ -104,46 +94,37 @@ void UpdateLoop()
     }*/
 }
 
+void UpdateLoop()
+{
+    // App / Input events
+    if (!headless)
+    {
+        PollSDLEvents();
+    }
+    ecs_progress(world, 0);
+    // Render Loop
+    if (!headless)
+    {
+        UpdateBeginOpenGL(GetMainCameraViewMatrix());
+        ecs_run(world, ecs_id(Render2DSystem), 0, NULL);
+        UpdateEndOpenGL();
+        UpdateLoopSDL();
+    }
+    // DebugPlayer();
+// #ifdef __EMSCRIPTEN__
+//     if (!running)
+//     {
+//         emscripten_cancel_main_loop();
+//     }
+// #endif
+}
+
 void SpawnGameEntities()
 {
     SpawnMainCamera(screenDimensions);
     SpawnKeyboardEntity();
     localPlayer = SpawnPlayerCharacter2D(world);
 }
-
-//! This is a mistaken function. Move along.
-#ifdef __EMSCRIPTEN__
-
-int main(int argc, char** argv)
-{
-    printf("Beginning ECS\n");
-    SpawnWorld2(false, coreCount);
-    printf("Importing Modules\n");
-    ImportModules(world);
-    if (!headless)
-    {
-        printf("Spawning SDL Window\n");
-        // OpenWindow();
-    }
-    if (isSpawnGameEntities)
-    {
-        printf("Spawning GameEntities\n");
-        SpawnGameEntities();
-    }
-    printf("UpdateLoop Begin~\n");
-    emscripten_set_main_loop(UpdateLoop, 60, 1);
-    printf("Ending ECS~\n");
-    EndECS();
-    if (!headless)
-    {
-        // EndAppGraphics();
-        EndSDL();
-    }
-    printf("Ending Zoxel.\n");
-    return 0;
-}
-
-#else
 
 int main(int argc, char* argv[])
 {
@@ -152,27 +133,35 @@ int main(int argc, char* argv[])
     {
         return EXIT_SUCCESS;
     }
-    SpawnWorld(argc, argv, profiler, true, coreCount);
+    SpawnWorld(argc, argv, profiler);
     ImportModules(world);
+    int cpuCoreCount = get_nprocs();
+    int sdlCoreCount = SDL_GetCPUCount();
+    printf("This system has %d processors configured and "
+            "%d processors available. SDL Counts %i however.\n",
+            get_nprocs_conf(), cpuCoreCount, sdlCoreCount);
+    SetMultiThreading(cpuCoreCount);
     if (isSpawnGameEntities)
     {
         SpawnGameEntities();
     }
-    // while true, run main loop here
+#ifdef __EMSCRIPTEN__
+    emscripten_set_main_loop(UpdateLoop, 60, 1);
+#else
     while (running)
     {
         UpdateLoop();
     }
+#endif
     EndECS();
     if (!headless)
     {
         EndAppGraphics();
         EndSDL();
     }
+    printf("Ending Zoxel.\n");
     return 0;
 }
-
-#endif
 
 //! Temporary, quick and dirty events.
 void PollSDLEvents()
@@ -194,10 +183,10 @@ void PollSDLEvents()
             {
                 running = false;
             }
-            else if (key == SDLK_q) 
+            /*else if (key == SDLK_q) 
             {
                 DestroyMainCamera();
-            }
+            }*/
         }
         else if (eventType == SDL_WINDOWEVENT) // SDL_WINDOWEVENT_RESIZED)
         {

@@ -7,7 +7,7 @@
 #endif
 
 const char *iconFilename = "Resources/Textures/GameIcon.png";
-int2 screenDimensions = { 480, 480 };
+int2 screenDimensions = { 720, 480 };
 float aspectRatio = 1;
 float fov = 60;
 SDL_Window* window;

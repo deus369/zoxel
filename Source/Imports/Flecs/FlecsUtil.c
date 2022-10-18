@@ -3,14 +3,10 @@
 ecs_world_t *world;
 
 //! Initialize Flecs ECS and Modules.
-void SpawnWorld(int argc, char* argv[], bool profiler, bool isThreading, int coreCount)
+void SpawnWorld(int argc, char* argv[], bool profiler)
 {
     world = ecs_init_w_args(argc, argv);
     // Enable Threads (if no rendering)
-    if (isThreading)
-    {
-        ecs_set_threads(world, coreCount);
-    }
     // Enable Profiler
     if (profiler)
     {
@@ -21,13 +17,13 @@ void SpawnWorld(int argc, char* argv[], bool profiler, bool isThreading, int cor
     }
 }
 
-void SpawnWorld2(bool isThreading, int coreCount)
+// extern int SDL_GetCPUCount();
+
+void SetMultiThreading(int cpuCoreCount)
 {
-    world = ecs_init_w_args(0, NULL);
-    // Enable Threads (if no rendering)
-    if (isThreading)
+    if (cpuCoreCount > 1)
     {
-        ecs_set_threads(world, coreCount);
+        ecs_set_threads(world, cpuCoreCount);
     }
 }
 

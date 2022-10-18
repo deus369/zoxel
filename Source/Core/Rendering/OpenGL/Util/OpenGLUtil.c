@@ -7,7 +7,6 @@
 
 // Stored Shader Variables
 GLuint vbo;
-GLuint vao;
 GLuint gl_positionX;
 GLuint gl_positionY;
 GLuint gl_view_matrix;
@@ -23,37 +22,18 @@ void InitializeMesh()
     gl_positionX = glGetUniformLocation(material, "positionX");
     gl_positionY = glGetUniformLocation(material, "positionY");
     gl_view_matrix = glGetUniformLocation(material, "viewMatrix");
-
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(squareVerts), squareVerts, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-#ifdef USE_VERTEX_BUFFERS
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-#else
-    // createVertexArray(1, &vao);
-    // bindVertexArray(vao);
-#endif
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-#ifdef USE_VERTEX_BUFFERS
-    glBindVertexArray(0);
-#else
-    // bindVertexArray(0);
-#endif
 }
 
 //! Cleanup OpenGL resources
 void EndAppOpenGL()
 {
-#ifdef USE_VERTEX_BUFFERS
-    glDeleteVertexArrays(1, &vao);
-#else
-    // deleteVertexArray(1, &vao);
-#endif
+    // glDeleteVertexArrays(1, &vao);
     glDeleteBuffers(1, &vbo);
     glDeleteProgram(material);
 }
@@ -64,11 +44,6 @@ void UpdateBeginOpenGL(const float* viewMatrix)
     glClear(GL_COLOR_BUFFER_BIT);       // Clears the buffer ?
     //! This sets the materials actually, would be best to group entities per material here?
     glUseProgram(material);
-#ifdef USE_VERTEX_BUFFERS
-    glBindVertexArray(vao);
-#else
-    // bindVertexArray(vao);
-#endif
     if (viewMatrix)
     {
         glUniformMatrix4fv(gl_view_matrix, 1, GL_FALSE, (const GLfloat*) viewMatrix);
@@ -84,23 +59,16 @@ void UpdateBeginOpenGL(const float* viewMatrix)
 void RenderEntity2D(float2 position, float angle, float scale, float brightness)
 {
     // set variables, can this be done using a filtered / system ?
-//#ifdef USE_VERTEX_BUFFERS
     glUniform1f(gl_positionX, position.x);
     glUniform1f(gl_positionY, position.y);
     glUniform1f(gl_scale, scale);
     glUniform1f(gl_angle, angle);
     glUniform1f(gl_brightness, brightness);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(squareVerts) / sizeof(*squareVerts) / 2);
-//#endif
 }
 
 void UpdateEndOpenGL()
 {
-#ifdef USE_VERTEX_BUFFERS
-    glBindVertexArray(vao);   // vao or 0?
-#else
-    // bindVertexArray(vao);
-#endif
     glUseProgram(0);
 }
 

@@ -37,7 +37,6 @@ void SpawnPlayerCharacter2DPrefab(ecs_world_t *world)
     ecs_add_id(world, playerCharacter2DPrefab, EcsPrefab);
     ecs_set_name(world, playerCharacter2DPrefab, "PlayerCharacter2D2");
     ecs_add(world, playerCharacter2DPrefab, PlayerCharacter2D);
-    ecs_remove(world, playerCharacter2DPrefab, DestroyInTime);
 }
 
 void PlayersImport(ecs_world_t *world)

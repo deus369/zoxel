@@ -39,10 +39,11 @@
     OPENGL_FUNCTION(glBufferData, PFNGLBUFFERDATAPROC)                              \
     OPENGL_FUNCTION(glVertexAttribPointer, PFNGLVERTEXATTRIBPOINTERPROC)            \
     OPENGL_FUNCTION(glEnableVertexAttribArray, PFNGLENABLEVERTEXATTRIBARRAYPROC)    \
-    OPENGL_FUNCTION(glDisableVertexAttribArray, PFNGLDISABLEVERTEXATTRIBARRAYPROC)  \
-    OPENGL_FUNCTION(glBindVertexArray, PFNGLBINDVERTEXARRAYPROC)                    \
-    OPENGL_FUNCTION(glGenVertexArrays, PFNGLGENVERTEXARRAYSPROC)                    \
-    OPENGL_FUNCTION(glDeleteVertexArrays, PFNGLDELETEVERTEXARRAYSPROC)
+    OPENGL_FUNCTION(glDisableVertexAttribArray, PFNGLDISABLEVERTEXATTRIBARRAYPROC)
+
+    // OPENGL_FUNCTION(glBindVertexArray, PFNGLBINDVERTEXARRAYPROC)
+    // OPENGL_FUNCTION(glDeleteVertexArrays, PFNGLDELETEVERTEXARRAYSPROC)
+    // OPENGL_FUNCTION(glGenVertexArrays, PFNGLGENVERTEXARRAYSPROC)
 
 // Declare an OpenGL function. Other translation units that require
 // calling OpenGL functions will link against these declarations.

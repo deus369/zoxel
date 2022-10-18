@@ -14,8 +14,8 @@ LDLIBS += -lSDL2_image
 LDLIBS += -lm	# for math.h
 LDLIBS += -D_POSIX_C_SOURCE=200112L -D_DEFAULT_SOURCE
 # Compiler Optimizations & Debug
-# LDLIBS += -D NDEBUG
-# LDLIBS += -O3
+LDLIBS += -D NDEBUG
+LDLIBS += -O3
 
 # SRCS defines all the files that will be used in the game.
 SRCS = 
