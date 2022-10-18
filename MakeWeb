@@ -74,7 +74,7 @@ SRCS += Source/Core/Rendering/Core/RenderingCore.c
 SRCS += Resources/Shaders/BasicRender2D.vert
 SRCS += Resources/Shaders/BasicRender2D.frag
 
-zoxel.html: $(SRCS)
+web-demo/index.html: $(SRCS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDLIBS)
 
 
