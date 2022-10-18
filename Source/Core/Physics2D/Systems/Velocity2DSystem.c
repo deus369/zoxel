@@ -11,6 +11,7 @@ void Velocity2DSystem(ecs_iter_t *it)
         Position2D *position2D = &position2Ds[i];
         position2D->value.x += velocity2D->value.x * deltaTime;
         position2D->value.y += velocity2D->value.y * deltaTime;
+        // bounds! Used atm to keep player within the start area
         if (position2D->value.x >= bounds.x)
         {
             position2D->value.x -= bounds.x * 2.0f;

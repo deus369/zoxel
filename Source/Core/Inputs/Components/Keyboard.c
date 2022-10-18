@@ -31,6 +31,7 @@ typedef struct
     PhysicalButton o;
     PhysicalButton p;
     PhysicalButton q;
+    PhysicalButton r;
     PhysicalButton s;
     PhysicalButton t;
     PhysicalButton u;
@@ -45,4 +46,8 @@ typedef struct
     PhysicalButton _3;
     PhysicalButton _4;
     PhysicalButton _5;
+    PhysicalButton down;
+    PhysicalButton up;
+    PhysicalButton left;
+    PhysicalButton right;
 } Keyboard;

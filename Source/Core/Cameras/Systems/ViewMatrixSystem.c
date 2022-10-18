@@ -71,7 +71,7 @@ void ViewMatrixSystem(ecs_iter_t *it)
             return;
         }
         float aspectRatio = ((float) screenWidth) / ((float) screenHeight);
-        CalculatePerspectiveViewMatrix(viewMatrix->value, fieldOfView->value, aspectRatio, 1, 100);
+        CalculatePerspectiveViewMatrix(viewMatrix->value, fieldOfView->value, aspectRatio, 0.1f, 100);
         // printf("    Perspective Updated [%ix%i]\n", screenWidth, screenHeight);
     }
 }

@@ -16,6 +16,7 @@ ECS_DECLARE(DisableMovement);
 // Systems
 #include "Systems/Player2DMoveSystem.c"
 #include "Systems/Player2DTestSystem.c"
+#include "Systems/CameraMoveSystem.c"
 // prefabs
 ecs_entity_t playerCharacter2DPrefab;
 
@@ -72,5 +73,18 @@ void PlayersImport(ecs_world_t *world)
     //#endif
     SetMultiThreaded(world, ecs_id(Player2DMoveSystem));
     // SetMultiThreaded(world, ecs_id(Player2DTestSystem));
+    ECS_SYSTEM_DEFINE(world, CameraMoveSystem, EcsOnUpdate, [in] Keyboard);
+    ecs_query_t *cameraQuery = ecs_query_init(world, &(ecs_query_desc_t) {
+        .filter.terms = {
+            { ecs_id(Camera) },
+            { ecs_id(Position) }//,
+           // { ecs_id(Velocity2D) }
+        }
+    });
+    ecs_system(world, {
+        .entity = ecs_id(CameraMoveSystem),
+        .ctx = cameraQuery
+    });
+    SetMultiThreaded(world, ecs_id(CameraMoveSystem));
 }
 #endif

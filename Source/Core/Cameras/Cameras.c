@@ -111,6 +111,17 @@ const float* GetMainCameraViewMatrix()
     // glUniformMatrix4fv(gl_view_matrix, 1, GL_FALSE, (const GLfloat*) viewMatrix);
 }
 
+// float* GetMainCameraViewMatrix2()
+// {
+//     if (!mainCamera || !ecs_is_alive(world, mainCamera))
+//     {
+//         return NULL;
+//     }
+//     ViewMatrix *viewMatrix = ecs_get(world, mainCamera, ViewMatrix);
+//     return viewMatrix->value;
+//     // glUniformMatrix4fv(gl_view_matrix, 1, GL_FALSE, (const GLfloat*) viewMatrix);
+// }
+
     /*ecs_filter_t *Camera = ecs_filter(world, {
         .terms = {
             { ecs_id(Camera) }, 

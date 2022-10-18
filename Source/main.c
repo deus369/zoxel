@@ -1,6 +1,7 @@
 // Add defines first
 #include <stdbool.h>
 #include <string.h>
+#include <math.h>
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
@@ -91,7 +92,103 @@ void DebugPlayer()
         {
             printf("Position2D is null.");
         }
+        const Position *cameraPosition = ecs_get(world, mainCamera, Position);
+        // const Velocity2D *velocity2D = ecs_get(world, localPlayer, Velocity2D);
+        if (cameraPosition)
+        {
+            printf("    Camera Position: [%fx%fx%f]\n", cameraPosition->value.x, cameraPosition->value.y, cameraPosition->value.z);
+        }
+        else
+        {
+            printf("Position2D is null.");
+        }
     }*/
+}
+
+float* multiplyMatrix(float* a, const float* b)
+{
+    float* c = malloc(16 * 4);
+    /*int i, j;
+    for (i = 0; i < 4; ++i)
+    {
+        for (j = 0; j < 4; ++j)
+        {
+            c [i + j * 4]= a[i + 4 * j] + b[i + 4 * j];
+        }
+    }*/
+    for (unsigned j = 0; j < 16; j++) {
+        unsigned i = j % 4;
+        unsigned j4 = j & 12;  // j4 = j / 4 * 4;
+        c[j] = 
+            a[j4 + 0]*b[i + 0] + a[j4 + 1]*b[i + 4]
+            + a[j4 + 2]*b[i + 8] + a[j4 + 3]*b[i + 12];
+    }
+    return c;
+}
+
+void PrintMatrix(const float* matrix)
+{
+    printf("Matrix;\n  %f %f %f %f \n  %f %f %f %f \n %f %f %f %f  \n %f %f %f %f \n",
+        matrix[0], matrix[1], matrix[2], matrix[3],
+        matrix[4], matrix[5], matrix[6], matrix[7],
+        matrix[8], matrix[9], matrix[10], matrix[11],
+        matrix[12], matrix[13], matrix[14], matrix[15]);
+}
+
+float* CreateZeroMatrix()
+{
+    float* identity = malloc(16 * 4);
+    for (int i = 0; i < 16; i++)
+    {
+        identity[i] = 0;
+    }
+    return identity;
+}
+
+float* CreateIdentityMatrix()
+{
+    float* identity = CreateZeroMatrix();
+    identity[0] = 1;
+    identity[5] = 1;
+    identity[10] = 1;
+    identity[15] = 1;
+    return identity;
+}
+
+float3 normalize(float3 input)
+{
+    float length = sqrt(input.x * input.x + input.y * input.y + input.z * input.z);
+    return (float3) { input.x / length, input.y / length, input.z / length };
+}
+
+float3 cross(float3 a, float3 b)
+{
+    return (float3) { 
+        a.y * b.z - a.z * b.y,
+        a.y * b.x - a.x * b.z,
+        a.x * b.y - a.y * b.x
+     };
+}
+
+float* CalculateViewMatrix(float3 position, float3 forward, float3 up)
+{
+    float* matrix = CreateIdentityMatrix();
+    float3 side = { };
+    side = cross(forward, up);
+    side = normalize(side);
+    matrix[0] = side.x;
+    matrix[4] = side.y;
+    matrix[8] = side.z;
+    matrix[1] = up.x;
+    matrix[5] = up.y;
+    matrix[9] = up.z;
+    matrix[2] = -forward.x;
+    matrix[6] = -forward.y;
+    matrix[10] = -forward.z;
+    matrix[12] = -position.x;
+    matrix[13] = -position.y;
+    matrix[14] = -position.z;
+    return matrix;
 }
 
 void UpdateLoop()
@@ -105,12 +202,29 @@ void UpdateLoop()
     // Render Loop
     if (!headless)
     {
-        UpdateBeginOpenGL(GetMainCameraViewMatrix());
+        const Position *cameraPosition = ecs_get(world, mainCamera, Position);
+        float* cameraTransformMatrix = CalculateViewMatrix(
+            (float3) { cameraPosition->value.x, cameraPosition->value.y, cameraPosition->value.z },
+            (float3) { 0, 0, -1 },
+            (float3) { 0, 1, 0 }
+        ); // CreateIdentityMatrix();
+        // PrintMatrix(cameraTransformMatrix);
+        /*cameraTransformMatrix[2] = -1;
+        cameraTransformMatrix[5] = 1;
+        cameraTransformMatrix[8] = 1;
+        cameraTransformMatrix[15] = 1;*/
+        // cameraTransformMatrix[2] = cameraPosition->value.x;
+        // cameraTransformMatrix[11] = -cameraPosition->value.x;
+        const float* projectionMatrix = GetMainCameraViewMatrix();
+        float* mvp = multiplyMatrix(cameraTransformMatrix, projectionMatrix);
+        UpdateBeginOpenGL(mvp);
+        free(cameraTransformMatrix);
+        free(mvp);
         ecs_run(world, ecs_id(Render2DSystem), 0, NULL);
         UpdateEndOpenGL();
         UpdateLoopSDL();
     }
-    // DebugPlayer();
+    DebugPlayer();
 // #ifdef __EMSCRIPTEN__
 //     if (!running)
 //     {
@@ -118,6 +232,10 @@ void UpdateLoop()
 //     }
 // #endif
 }
+
+// cameraMatrix[5] += cameraPosition->value.y;
+// float* test = multiplyMatrix(cameraTransformMatrix, cameraTransformMatrix);
+// free(test);
 
 void SpawnGameEntities()
 {

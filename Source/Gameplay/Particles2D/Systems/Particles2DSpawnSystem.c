@@ -6,7 +6,7 @@ void Particles2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCou
     const float torqueBounds = 12.0f;
     const float2 scaleBounds = { 0.1f, 0.23f };
     const float2 brightnessBounds = { 0.1f, 0.4f };
-    const double2 lifeTime = { 0.5f, 8.0f };
+    const double2 lifeTime = { 0.5f, 24.0f };
     // Create a SpaceShip prefab with a Defense component.
     Position2D *position2Ds = malloc(sizeof(Position2D) * spawnCount);
     Velocity2D *velocity2Ds = malloc(sizeof(Velocity2D) * spawnCount);
@@ -97,13 +97,51 @@ void Particles2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCou
 }
 ECS_SYSTEM_DECLARE(Particles2DSpawnSystem);
 
+
+int32_t ecs_count_id_with_up(const ecs_world_t *world, ecs_entity_t id)
+{
+    ecs_check(world != NULL, ECS_INVALID_PARAMETER, NULL);
+    if (!id)
+    {
+        return 0;
+    }
+    ecs_iter_t it = ecs_term_iter(world, &(ecs_term_t) { 
+         .id = id,
+         .src.flags = EcsSelf | EcsUp
+    });
+    return ecs_iter_count(&it);
+error:
+    return 0;
+}
+
 int GetParticles2DCount(ecs_world_t *world)
 {
+    return ecs_count_id_with_up(world, ecs_id(Particle2D)); // count;
     // return ecs_count(world, Particle2D);
-    return ecs_count(world, Position2D);
+    // return ecs_count(world, Position2D);
 }
 
 void DebugParticlesSpawned(ecs_world_t *world)
 {
     printf("    Particles Spawned [%i]\n", GetParticles2DCount(world));
 }
+
+    /*cs_filter_t *filter = ecs_filter(world, {
+        .terms = {{ id }} // by default matches owned & inherited components
+    });
+    ecs_iter_t it = ecs_filter_iter(world, filter);*/
+    // ecs_filter_fini(filter);
+    // int32_t count = 0;
+    // ecs_iter_t it = ecs_term_iter(world, &(ecs_term_t) { 
+    //     .id = id,
+    //     .src.flags = EcsSelf
+    // });
+
+    // it.flags |= EcsIterIsFilter;
+    // it.flags |= EcsIterEvalTables;
+
+    // while (ecs_term_next(&it)) {
+    //     count += it.count;
+    // }
+
+    // return count;
