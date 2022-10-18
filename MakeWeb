@@ -27,12 +27,12 @@ LDLIBS += -s MIN_WEBGL_VERSION=2
 LDLIBS += -s MAX_WEBGL_VERSION=2
 LDLIBS += --preload-file Resources
 # Threadin
-# LDLIBS += -pthread
-LDLIBS += -s USE_PTHREADS=1
-LDLIBS += -s PTHREAD_POOL_SIZE=2
+# LDLIBS += -s USE_PTHREADS=1
+# LDLIBS += -s PTHREAD_POOL_SIZE=2
 LDLIBS += -s ALLOW_MEMORY_GROWTH
 # Optimize - Non Devv Build
 LDLIBS += -O3
+
 # Debug Info
 # LDLIBS += -s ASSERTIONS
 # Link Time Optimization
