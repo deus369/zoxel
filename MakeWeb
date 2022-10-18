@@ -16,6 +16,8 @@ CC = emcc
 CFLAGS =
 LDLIBS += -std=c99
 LDLIBS += -s WASM=1
+# Optimize - Non Devv Build
+LDLIBS += -O3
 # Add libraries
 LDLIBS += -lGL
 LDLIBS += -lSDL
@@ -29,9 +31,7 @@ LDLIBS += --preload-file Resources
 # Threadin
 # LDLIBS += -s USE_PTHREADS=1
 # LDLIBS += -s PTHREAD_POOL_SIZE=2
-LDLIBS += -s ALLOW_MEMORY_GROWTH
-# Optimize - Non Devv Build
-LDLIBS += -O3
+# LDLIBS += -s ALLOW_MEMORY_GROWTH
 
 # Debug Info
 # LDLIBS += -s ASSERTIONS
