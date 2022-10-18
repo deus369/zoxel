@@ -1,5 +1,7 @@
 # Libre Zoxel
 
+Play the Live Demo ([live webasm demo](https://deus369.github.io/open-zoxel/web-demo/)
+
 Open Source & Cross-platform + Performance is on Mushrooms~
 
 Open-Zoxel is under the GPL license as I want any derivatives to stay open, to protect the end users and keep information free.
