@@ -145,7 +145,7 @@ void UpdateLoopSDL()
     SDL_GL_SwapWindow(window);
 }
 
-void EndSDL()
+void EndAppSDL()
 {
     if (renderer)
     {

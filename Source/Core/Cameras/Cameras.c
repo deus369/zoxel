@@ -70,7 +70,7 @@ void CamerasImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, ScreenDimensions);
     ECS_COMPONENT_DEFINE(world, FieldOfView);
     ECS_SYSTEM_DEFINE(world, ViewMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [out] ViewMatrix);
-    // SetMultiThreaded(world, ecs_id(ViewMatrixSystem));
+    // ecs_system_enable_multithreading(world, ecs_id(ViewMatrixSystem));
     ecs_set_hooks(world, ViewMatrix, {
         // .on_remove = ViewMatrixDisposeSystem,
         .ctor = ecs_ctor(ViewMatrix),
@@ -109,6 +109,28 @@ const float* GetMainCameraViewMatrix()
     const ViewMatrix *viewMatrix = ecs_get(world, mainCamera, ViewMatrix);
     return viewMatrix->value;
     // glUniformMatrix4fv(gl_view_matrix, 1, GL_FALSE, (const GLfloat*) viewMatrix);
+}
+
+//! View Matrix multipled by projection and used to distort pixel magic.
+float* CalculateViewMatrix(float3 position, float3 forward, float3 up)
+{
+    float* matrix = CreateIdentityMatrix();
+    float3 side = { };
+    side = cross(forward, up);
+    side = normalize(side);
+    matrix[0] = side.x;
+    matrix[4] = side.y;
+    matrix[8] = side.z;
+    matrix[1] = up.x;
+    matrix[5] = up.y;
+    matrix[9] = up.z;
+    matrix[2] = -forward.x;
+    matrix[6] = -forward.y;
+    matrix[10] = -forward.z;
+    matrix[12] = -position.x;
+    matrix[13] = -position.y;
+    matrix[14] = -position.z;
+    return matrix;
 }
 
 // float* GetMainCameraViewMatrix2()

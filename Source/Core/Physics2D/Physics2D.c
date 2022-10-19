@@ -28,10 +28,10 @@ void Physics2DImport(ecs_world_t *world)
     ECS_SYSTEM_DEFINE(world, Acceleration2DSystem, EcsOnUpdate, [out] Velocity2D, [out] Acceleration2D);
     ECS_SYSTEM_DEFINE(world, Velocity2DSystem, EcsOnUpdate, [out] Position2D, [in] Velocity2D);
     ECS_SYSTEM_DEFINE(world, Torque2DSystem, EcsOnUpdate, [out] Rotation2D, [in] Torque2D);
-    SetMultiThreaded(world, ecs_id(Friction2DSystem));
-    SetMultiThreaded(world, ecs_id(Acceleration2DSystem));
-    SetMultiThreaded(world, ecs_id(Velocity2DSystem));
-    SetMultiThreaded(world, ecs_id(Torque2DSystem));
+    ecs_system_enable_multithreading(world, ecs_id(Friction2DSystem));
+    ecs_system_enable_multithreading(world, ecs_id(Acceleration2DSystem));
+    ecs_system_enable_multithreading(world, ecs_id(Velocity2DSystem));
+    ecs_system_enable_multithreading(world, ecs_id(Torque2DSystem));
 }
 
 /*ecs_system(world, {

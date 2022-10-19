@@ -1,9 +1,9 @@
 //! Helper file for Flecs!
-
+#include <sys/sysinfo.h>
 ecs_world_t *world;
 
 //! Initialize Flecs ECS and Modules.
-void SpawnWorld(int argc, char* argv[], bool profiler)
+void BeginAppECS(int argc, char* argv[], bool profiler)
 {
     world = ecs_init_w_args(argc, argv);
     // Enable Threads (if no rendering)
@@ -17,22 +17,20 @@ void SpawnWorld(int argc, char* argv[], bool profiler)
     }
 }
 
-// extern int SDL_GetCPUCount();
-
-void SetMultiThreading(int cpuCoreCount)
+void SetMultiThreading()
 {
+    int cpuCoreCount = get_nprocs();
+    int cpuCoreConfiguredCount = get_nprocs_conf();
+    int sdlCoreCount = SDL_GetCPUCount();
+    printf("System Found [%i processors configured] [%i processors] SDL Counts [%i]\n",
+            cpuCoreConfiguredCount, cpuCoreCount, sdlCoreCount);
     if (cpuCoreCount > 1)
     {
         ecs_set_threads(world, cpuCoreCount);
     }
 }
 
-void UpdateECS()
-{
-    // ecs_progress(world, deltaTimeSDL);
-}
-
-void EndECS()
+void EndAppECS()
 {
     ecs_fini(world);
 }

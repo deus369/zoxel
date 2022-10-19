@@ -6,7 +6,8 @@
 bool vsync = false;
 bool fullscreen = false;
 
-#include "SDLUtil.c"
+#include "Util/SDLUtil.c"
+#include "Util/FlecsUtil.c"
 
 void PrintOpenGL()
 {

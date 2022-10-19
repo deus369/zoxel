@@ -10,6 +10,6 @@ void TimingImport(ecs_world_t *world)
     ECS_MODULE(world, Timing);
     ECS_COMPONENT_DEFINE(world, DestroyInTime);
     ECS_SYSTEM_DEFINE(world, DestroyInTimeSystem, EcsOnUpdate, [out] DestroyInTime);
-    SetMultiThreaded(world, ecs_id(DestroyInTimeSystem));
+    ecs_system_enable_multithreading(world, ecs_id(DestroyInTimeSystem));
 }
 #endif

@@ -4,7 +4,6 @@
 /**
  * \todo ? idk
 */
-
 ecs_entity_t particle2DPrefab;
 // Tags
 ECS_DECLARE(Particle2D);

@@ -71,8 +71,8 @@ void PlayersImport(ecs_world_t *world)
         .no_staging = true  // with structural changes, does it at the end of the process..
     });
     //#endif
-    SetMultiThreaded(world, ecs_id(Player2DMoveSystem));
-    // SetMultiThreaded(world, ecs_id(Player2DTestSystem));
+    ecs_system_enable_multithreading(world, ecs_id(Player2DMoveSystem));
+    // ecs_system_enable_multithreading(world, ecs_id(Player2DTestSystem));
     ECS_SYSTEM_DEFINE(world, CameraMoveSystem, EcsOnUpdate, [in] Keyboard);
     ecs_query_t *cameraQuery = ecs_query_init(world, &(ecs_query_desc_t) {
         .filter.terms = {
@@ -85,6 +85,6 @@ void PlayersImport(ecs_world_t *world)
         .entity = ecs_id(CameraMoveSystem),
         .ctx = cameraQuery
     });
-    SetMultiThreaded(world, ecs_id(CameraMoveSystem));
+    ecs_system_enable_multithreading(world, ecs_id(CameraMoveSystem));
 }
 #endif

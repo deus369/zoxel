@@ -1,9 +1,9 @@
 
 # ignore builds
-*.x86
+# *.x86
 
 #ignore zoxel build
-zoxel
+# zoxel
 
 #ignore scrap code
 scrap.c
