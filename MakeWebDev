@@ -1,8 +1,8 @@
-# Zoxel Makefile! for Web
+# Zoxel Makefile Dev for Web
 # Build ~
-#	Make with make  -make -f MakeWeb
+#	Make with make  -make -f MakeWebDev
 # Run !
-#	emrun --browser firefox zoxel.html
+#	emrun --browser firefox web-demo-dev/zoxel-dev.html
 
 # remember to go to tools > console > multiprocess to get all errors
 # install emcc https://emscripten.org/docs/getting_started/downloads.html#installation-instructions-using-the-emsdk-recommended
@@ -75,20 +75,5 @@ SRCS += Source/Core/Rendering/Core/RenderingCore.c
 SRCS += Resources/Shaders/BasicRender2D.vert
 SRCS += Resources/Shaders/BasicRender2D.frag
 
-web-demo/zoxel.js: $(SRCS)
+web-demo-dev/zoxel-dev.html: $(SRCS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDLIBS)
-
-
-# LDLIBS += -s SDL2_IMAGE_FORMATS='["png"]' # "bmp",
-# LDLIBS += -s FULL_ES2
-# LDLIBS += -s OFFSCREEN_FRAMEBUFFER=1
-# LDLIBS += -s LEGACY_GL_EMULATION=1
-# LDLIBS += -s GL_UNSAFE_OPTS=1
-# LDLIBS += -s ERROR_ON_UNDEFINED_SYMBOLS=0
-# LDLIBS += -s ALLOW_MEMORY_GROWTH=1
-# LDLIBS += -EMCC_DEBUG=1
-# LDLIBS += -s GL_DEBUG=1
-# LDLIBS += --preload-file Resources/Shaders/BasicRender2D.vert
-# LDLIBS += --preload-file Resources/Shaders/BasicRender2D.frag
-# Optimize
-# -O3

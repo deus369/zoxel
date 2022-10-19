@@ -8,19 +8,19 @@ Open-Zoxel is under the GPL license as I want any derivatives to stay open, to p
 
 Zoxel has a large scope as I have many ideas. It's game design is influenced from Minecraft, Warcraft and LitRPGs/Tabletops.
 
-![Le Old Zoxel](/screenshots/KEyHna.png?raw=false "Le Old Zoxel")
+![Le Old Zoxel](/Screenshots/KEyHna.png?raw=false "Le Old Zoxel")
 
 ## How To Build
 
-[How To Build Guide](documents/howtos/howto-build.md)
+[How To Build Guide](Documents/howtos/howto-build.md)
 
 ## How far along is it?
 
 So far I am fleshing out basic systems while testing out Flecs useage. So far the performance has been promising!
 
-[Todo Lists](documents/todos/todo-main.md)
+[Todo Lists](Documents/todos/todo-main.md)
 
-![El Libre Zoxel](/screenshots/W41sdfh.png?raw=false "El Libre Zoxel")
+![El Libre Zoxel](/Screenshots/W41sdfh.png?raw=false "El Libre Zoxel")
 
 ## Dependencies
 

@@ -5,9 +5,15 @@
 #ifdef SDL_IMAGES
 #include <SDL2/SDL_image.h>
 #endif
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+EM_JS(int, get_canvas_width, (), { return window.innerWidth; });
+EM_JS(int, get_canvas_height, (), { return window.innerHeight; });
+#endif
 
 const char *iconFilename = "Resources/Textures/GameIcon.png";
 int2 screenDimensions = { 720, 480 };
+// int2 screenDimensions = { 1920, 800 };
 float aspectRatio = 1;
 float fov = 60;
 SDL_Window* window;
@@ -43,6 +49,18 @@ void PrintSDLDebug()
     printf("Platform:        %s\n", SDL_GetPlatform());
     printf("    CPU Count:       %d\n", SDL_GetCPUCount());
     printf("    System RAM:      %d MB\n", SDL_GetSystemRAM());
+    SDL_DisplayMode DM;
+    SDL_GetCurrentDisplayMode(0, &DM);
+    int screenWidth = DM.w;
+    int screenHeight = DM.h;
+    printf("    Screen Dimensions: %ix%i\n", screenWidth, screenHeight);
+#ifdef __EMSCRIPTEN__
+    int canvasWidth = get_canvas_width();
+    int canvasHeight = get_canvas_height();
+    printf("    Canvas Screen Dimensions: %ix%i\n", canvasWidth, canvasHeight);
+    screenDimensions.x = canvasWidth;
+    screenDimensions.y = canvasHeight;
+#endif
     printf("    Supports SSE:    %s\n", SDL_HasSSE() ? "true" : "false");
     printf("    Supports SSE2:   %s\n", SDL_HasSSE2() ? "true" : "false");
     printf("    Supports SSE3:   %s\n", SDL_HasSSE3() ? "true" : "false");
