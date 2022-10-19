@@ -1,4 +1,7 @@
 //! Textures Module.
+/**
+ * \todo Use ViewMatrix hooks here to handle texture memories.
+*/
 #ifndef Zoxel_Textures
 #define Zoxel_Textures
 

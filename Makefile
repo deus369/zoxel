@@ -14,8 +14,13 @@ LDLIBS += -lSDL2_image
 LDLIBS += -lm	# for math.h
 LDLIBS += -D_POSIX_C_SOURCE=200112L -D_DEFAULT_SOURCE
 # Compiler Optimizations & Debug
-LDLIBS += -D NDEBUG
 LDLIBS += -O3
+LDLIBS += -D NDEBUG
+# this causes errors
+LDLIBS += -flto=auto	# fuse linker plugin
+# LDLIBS += -flto-partition=none
+# https://stackoverflow.com/questions/66350310/link-time-optimizations-in-cuda-11-what-are-they-and-how-to-use-them
+# LDLIBS += -dlto	# Dynamic Link-Time Optimization
 
 # SRCS defines all the files that will be used in the game.
 SRCS = 
@@ -47,7 +52,3 @@ SRCS += Resources/Shaders/BasicRender2D.frag
 
 zoxel: $(SRCS)
 	$(CC) $(CFLAGS) $(SHDS) -o $@ $(OBJS) $(LDLIBS)
-
-	
-# this causes errors
-# LDLIBS += -flto	# fuse linker plugin

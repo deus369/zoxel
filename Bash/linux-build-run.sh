@@ -2,8 +2,8 @@
 
 cd ~/projects/open-zoxel
 
-sh Bash/linux-build.sh
+make -B -j24
 
-sh Bash/run.sh
+./zoxel
 
 sleep 30

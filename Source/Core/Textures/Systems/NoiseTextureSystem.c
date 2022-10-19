@@ -10,11 +10,8 @@ void NoiseTextureSystem(ecs_iter_t *it)
     EntityDirty *entityDirtys = ecs_field(it, EntityDirty, 3);
     Texture *textures = ecs_field(it, Texture, 4);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 5);
-    int i;
-    int j;
-    int k;
     int index;
-    for (i = 0; i < it->count; i++)
+    for (int i = 0; i < it->count; i++)
     {
         GenerateTexture *generateTexture = &generateTextures[i];
         EntityDirty *entityDirty = &entityDirtys[i];
@@ -28,9 +25,9 @@ void NoiseTextureSystem(ecs_iter_t *it)
         Texture *texture = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
         texture->value = malloc(textureSize->value.x * textureSize->value.y * 4);
-        for (j = 0; j < textureSize->value.x; j++)
+        for (int j = 0; j < textureSize->value.x; j++)
         {
-            for (k = 0; k < textureSize->value.y; k++)
+            for (int k = 0; k < textureSize->value.y; k++)
             {
                 index = j + k * textureSize->value.x;
                 texture->value[index].r = rand() % 256;
