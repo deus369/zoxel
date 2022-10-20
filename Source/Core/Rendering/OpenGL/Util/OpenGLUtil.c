@@ -38,16 +38,14 @@ void EndAppOpenGL()
     glDeleteProgram(material);
 }
 
-void UpdateBeginOpenGL(const float* viewMatrix)
+void UpdateBeginOpenGL(const float4x4 viewMatrix)
 {
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);       // Clears the buffer ?
     //! This sets the materials actually, would be best to group entities per material here?
     glUseProgram(material);
-    if (viewMatrix)
-    {
-        glUniformMatrix4fv(gl_view_matrix, 1, GL_FALSE, (const GLfloat*) viewMatrix);
-    }
+    float* viewMatrix2 = (float*) &viewMatrix;
+    glUniformMatrix4fv(gl_view_matrix, 1, GL_FALSE, (const GLfloat*) viewMatrix2);
     // glBegin(GL_TRIANGLES);
     // glColor3f(0.1, 0.2, 0.3);
     // glVertex3f(0, 0, 0);

@@ -65,7 +65,8 @@ void Particles2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCou
         brightnesses[i].value = brightnessBounds.x + ((rand() % 101) / 100.0f) * (brightnessBounds.y - brightnessBounds.x);
         destroyInTimes[i].value = lifeTime.x + ((rand() % 101) / 100.0f) *  (lifeTime.y - lifeTime.x);
     }
-    const ecs_entity_t *bobArmy = ecs_bulk_init(world, &(ecs_bulk_desc_t)
+    // const ecs_entity_t *particles2DArray = 
+    ecs_bulk_init(world, &(ecs_bulk_desc_t)
     {
         .count = spawnCount,
         .ids =

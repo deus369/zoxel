@@ -1,9 +1,9 @@
 #ifndef Zoxel_Physics
 #define Zoxel_Physics
 
-#ifndef M_PI
-#define M_PI 3.141592653589793
-#endif
+// #ifndef M_PI
+// #define M_PI 3.141592653589793
+// #endif
 
 // Components
 #include "Components/Velocity.c"

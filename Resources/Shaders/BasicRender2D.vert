@@ -24,7 +24,7 @@ void main()
     vec2 position = vec2(positionX, positionY);
     mat2 rotate = mat2(cos(angle), -sin(angle),
                        sin(angle), cos(angle));
-    gl_Position = viewMatrix * vec4(position + (rotate * positionOffset) * scale, -2.0, 1.0); // 
+    gl_Position = viewMatrix * vec4(position + (rotate * positionOffset) * scale, 0, 1.0); // 
 }
 
     //pos.x = pos.x + position.x;

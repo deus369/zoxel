@@ -1,5 +1,2 @@
 //! Scales in 2D!
-typedef struct
-{
-    // float4x4 value;
-} Matrix;
+ZOXEL_COMPONENT(Matrix, float4x4);

@@ -4,6 +4,7 @@
 /**
  * \todo ? idk
 */
+// Prefabs
 ecs_entity_t particle2DPrefab;
 // Tags
 ECS_DECLARE(Particle2D);
@@ -15,8 +16,8 @@ void SpawnPrefabParticle2D(ecs_world_t *world)
     particle2DPrefab = ecs_new_prefab(world, "Particle2D");
     ecs_add(world, particle2DPrefab, Particle2D);
     // ecs_override(world, particle2DPrefab, Particle2D);
-    ecs_set(world, particle2DPrefab, Position2D, { 0, 0 });
-    ecs_set(world, particle2DPrefab, Velocity2D, { 0, 0 });
+    ecs_set(world, particle2DPrefab, Position2D, { { 0, 0 } });
+    ecs_set(world, particle2DPrefab, Velocity2D, { { 0, 0 } });
     ecs_set(world, particle2DPrefab, Scale2D, { 1 });
     ecs_override(world, particle2DPrefab, Position2D);
     ecs_override(world, particle2DPrefab, Rotation2D);
@@ -26,7 +27,7 @@ void SpawnPrefabParticle2D(ecs_world_t *world)
     ecs_add(world, particle2DPrefab, DestroyInTime);
     ecs_override(world, particle2DPrefab, DestroyInTime);
     #ifdef Zoxel_Physics2D
-    ecs_set(world, particle2DPrefab, Acceleration2D, { 0, 0 });
+    ecs_set(world, particle2DPrefab, Acceleration2D, { { 0, 0 } });
     ecs_set(world, particle2DPrefab, Rotation2D, { 0 });
     ecs_set(world, particle2DPrefab, Torque2D, { 0 });
     ecs_override(world, particle2DPrefab, Velocity2D);

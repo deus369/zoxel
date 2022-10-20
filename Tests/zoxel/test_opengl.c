@@ -1,5 +1,5 @@
 // Test with
-//  cc -std=c99 -o test_opengl Source/Imports/Flecs/flecs.c Tests/zoxel/test_opengl.c -lGL -lSDL2 -lSDL2_image -lm -D_POSIX_C_SOURCE=200112L -D_DEFAULT_SOURCE
+//  cc -std=c99 -o test_opengl Imports/Flecs/flecs.c Tests/zoxel/test_opengl.c -lGL -lSDL2 -lSDL2_image -lm -D_POSIX_C_SOURCE=200112L -D_DEFAULT_SOURCE
 // Run with
 //  ./test_opengl
 // Add defines first
@@ -12,8 +12,8 @@
 #define FLECS_MODULE
 #define FLECS_SYSTEM 
 #define FLECS_PIPELINE
-#include "../../Source/Imports/Flecs/flecs.h"
-#include "../../Source/Imports/Flecs/FlecsUtil.c"
+#include "../../Imports/Flecs/flecs.h"
+#include "../../Imports/Flecs/FlecsUtil.c"
 #include "../../Source/Core/Core/Core.c"
 #include "../../Source/Core/App/App.c"
 #include "../../Source/Core/Transforms2D/Transforms2D.c"

@@ -6,8 +6,6 @@
 */
 // you can assign anything to ctx, make a struct with multiple queries for injection ecs_id(Player2DMoveSystem), 
 
-// EcsOnDeleteTarget use this
-ecs_entity_t SpawnPlayerCharacter2D(ecs_world_t *world);
 // Tags
 ECS_DECLARE(Player);
 ECS_DECLARE(Player2D);
@@ -47,9 +45,9 @@ void PlayersImport(ecs_world_t *world)
     ECS_TAG_DEFINE(world, Player2D);
     ECS_TAG_DEFINE(world, PlayerCharacter2D);
     ECS_TAG_DEFINE(world, DisableMovement);
-    SpawnPlayerCharacter2DPrefab(world);
-    ECS_SYSTEM_DEFINE(world, Player2DMoveSystem, EcsOnUpdate, [in] Keyboard);
+    ZOXEL_SYSTEM_MULTITHREADED(world, Player2DMoveSystem, EcsOnUpdate, [in] Keyboard);
     ECS_SYSTEM_DEFINE(world, Player2DTestSystem, EcsOnUpdate, [in] Keyboard);
+    SpawnPlayerCharacter2DPrefab(world);
     #ifdef Zoxel_Physics2D
     // \todo Add in out tags to this filter
     ecs_query_t *bobQuery = ecs_query_init(world, &(ecs_query_desc_t) {
@@ -71,9 +69,7 @@ void PlayersImport(ecs_world_t *world)
         .no_staging = true  // with structural changes, does it at the end of the process..
     });
     //#endif
-    ecs_system_enable_multithreading(world, ecs_id(Player2DMoveSystem));
-    // ecs_system_enable_multithreading(world, ecs_id(Player2DTestSystem));
-    ECS_SYSTEM_DEFINE(world, CameraMoveSystem, EcsOnUpdate, [in] Keyboard);
+    ZOXEL_SYSTEM_MULTITHREADED(world, CameraMoveSystem, EcsOnUpdate, [in] Keyboard);
     ecs_query_t *cameraQuery = ecs_query_init(world, &(ecs_query_desc_t) {
         .filter.terms = {
             { ecs_id(Camera) },
@@ -85,6 +81,8 @@ void PlayersImport(ecs_world_t *world)
         .entity = ecs_id(CameraMoveSystem),
         .ctx = cameraQuery
     });
-    ecs_system_enable_multithreading(world, ecs_id(CameraMoveSystem));
 }
+
+// EcsOnDeleteTarget use this
+// ecs_entity_t SpawnPlayerCharacter2D(ecs_world_t *world);
 #endif

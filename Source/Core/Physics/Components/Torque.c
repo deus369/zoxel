@@ -1,6 +1,2 @@
-//! Velocity movement of a 2D Entity.
-typedef struct
-{
-    float4 value;
-} Torque;
-ECS_COMPONENT_DECLARE(Torque);
+//! How fast Rotation moves over time.
+ZOXEL_COMPONENT(Torque, float4);

@@ -1,10 +1,10 @@
 # Linux Native
 
 # Build Debug
-# cc -std=c99 -fPIC -g -o zoxel Source/Imports/Flecs/flecs.c Source/main.c -lGL -lSDL2 -lSDL2_image
+# cc -std=c99 -fPIC -g -o zoxel Imports/Flecs/flecs.c Source/main.c -lGL -lSDL2 -lSDL2_image
 
 # Build
-# cc -std=c99 -fPIC -g -o zoxel Source/Imports/Flecs/flecs.c Source/main.c -lGL -lSDL2 -lSDL2_image -O3 -flto -D NDEBUG
+# cc -std=c99 -fPIC -g -o zoxel Imports/Flecs/flecs.c Source/main.c -lGL -lSDL2 -lSDL2_image -O3 -flto -D NDEBUG
 
 # Run
 # ./zoxel
@@ -14,7 +14,7 @@
 # clear; make -j24 -B; ./zoxel;
 
 # Web
-# emcc -o zoxel.html Source/Imports/Flecs/flecs.c Source/main.c -std=c99 -s USE_SDL=2 -s USE_SDL_IMAGE=2;
+# emcc -o zoxel.html Imports/Flecs/flecs.c Source/main.c -std=c99 -s USE_SDL=2 -s USE_SDL_IMAGE=2;
 # Run !
 # emrun --browser firefox zoxel.html
 # install emcc https://emscripten.org/docs/getting_started/downloads.html#installation-instructions-using-the-emsdk-recommended
@@ -30,27 +30,27 @@
 # scrap
 
 # ends up close to this but with optimizations
-# cc -std=c99 -o zoxel Source/Imports/Flecs/flecs.c Source/main.c -lGL -lSDL2 -lSDL2_image; valgrind --track-origins=true ./zoxel;
+# cc -std=c99 -o zoxel Imports/Flecs/flecs.c Source/main.c -lGL -lSDL2 -lSDL2_image; valgrind --track-origins=true ./zoxel;
 
 # ended up as
-# cc -std=c99 -fPIC -g -o zoxel Source/Imports/Flecs/flecs.c Source/main.c -lGL -lSDL2 -lSDL2_image -O3 -flto -D NDEBUG
+# cc -std=c99 -fPIC -g -o zoxel Imports/Flecs/flecs.c Source/main.c -lGL -lSDL2 -lSDL2_image -O3 -flto -D NDEBUG
 
 # Memory Testing with valgrind ./zoxel
 
 # \todo Compile flecs first as a .o. Reduce flecs addons into a light weight version.
 # \todo Each module will have a seperate Makefile. These will compile a .o file. They will link to the previous .o files.
-# \todo Make a build with emcc -s USE_SDL=2 Source/Imports/Flecs/flecs.c Source/main.c
+# \todo Make a build with emcc -s USE_SDL=2 Imports/Flecs/flecs.c Source/main.c
 
 # em build is   -01
-#  emcc -emrun -s USE_SDL=2 Source/Imports/Flecs/flecs.c Source/main.c -o zoxel.html
-#  emcc -s USE_SDL=2 Source/Imports/Flecs/flecs.c Source/main.c -o zoxel.html
+#  emcc -emrun -s USE_SDL=2 Imports/Flecs/flecs.c Source/main.c -o zoxel.html
+#  emcc -s USE_SDL=2 Imports/Flecs/flecs.c Source/main.c -o zoxel.html
 
-# emcc -o zoxel.html Source/Imports/Flecs/flecs.c Source/main.c -O3 -s ALLOW_MEMORY_GROWTH=1 -s USE_WEBGL2=1 -s WASM=1 -s NO_EXIT_RUNTIME=1 -std=c99
-# emcc -o zoxel.html Source/Imports/Flecs/flecs.c Source/main.c -s ALLOW_MEMORY_GROWTH=1 -s USE_WEBGL2=1 -s WASM=1 -std=c99
-# emcc -o zoxel.html Source/Imports/Flecs/flecs.c Source/main.c -O3 -std=c99 -s USE_SDL=2 -s ALLOW_MEMORY_GROWTH=1 -s USE_WEBGL2=1 -s WASM=1
-# emcc -o zoxel.html Source/Imports/Flecs/flecs.c Source/main.c -std=c99 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -sFULL_ES3
+# emcc -o zoxel.html Imports/Flecs/flecs.c Source/main.c -O3 -s ALLOW_MEMORY_GROWTH=1 -s USE_WEBGL2=1 -s WASM=1 -s NO_EXIT_RUNTIME=1 -std=c99
+# emcc -o zoxel.html Imports/Flecs/flecs.c Source/main.c -s ALLOW_MEMORY_GROWTH=1 -s USE_WEBGL2=1 -s WASM=1 -std=c99
+# emcc -o zoxel.html Imports/Flecs/flecs.c Source/main.c -O3 -std=c99 -s USE_SDL=2 -s ALLOW_MEMORY_GROWTH=1 -s USE_WEBGL2=1 -s WASM=1
+# emcc -o zoxel.html Imports/Flecs/flecs.c Source/main.c -std=c99 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -sFULL_ES3
 # -s SDL2_IMAGE_FORMATS='["png"]'
-# emcc -o zoxel.html Source/Imports/Flecs/flecs.c Source/main.c -std=c99 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -sMAX_WEBGL_VERSION=2
+# emcc -o zoxel.html Imports/Flecs/flecs.c Source/main.c -std=c99 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -sMAX_WEBGL_VERSION=2
 # 
-# emcc -o zoxel.html Source/Imports/Flecs/flecs.c Source/main.c -std=c99 -s USE_SDL=2 -s USE_SDL_IMAGE=2; emrun --browser firefox zoxel.html
-# emcc -o zoxel.html Source/Imports/Flecs/flecs.c Source/main.c -std=c99 -s USE_SDL=2 -s USE_SDL_IMAGE=2
+# emcc -o zoxel.html Imports/Flecs/flecs.c Source/main.c -std=c99 -s USE_SDL=2 -s USE_SDL_IMAGE=2; emrun --browser firefox zoxel.html
+# emcc -o zoxel.html Imports/Flecs/flecs.c Source/main.c -std=c99 -s USE_SDL=2 -s USE_SDL_IMAGE=2

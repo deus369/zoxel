@@ -21,11 +21,6 @@ void Player2DTestSystem(ecs_iter_t *it)
             DebugParticlesSpawned(world);
             // PrintKeyboard(world);
         }
-        else if (keyboard->z.wasPressedThisFrame)
-        {
-            printf("Spawning new Player.\n");
-            SpawnPlayerCharacter2D(world);
-        }
     }
 }
 ECS_SYSTEM_DECLARE(Player2DTestSystem);

@@ -2,7 +2,7 @@
 
 cd ~/projects/open-zoxel
 
-make -f MakeLinuxDev -B -j24
+make -f MakeDev -B -j24
 
 ./zoxel-dev
 

@@ -14,10 +14,10 @@ LDLIBS += ./SDL2/lib/libSDL2main.a ./SDL2/lib/libSDL2.a
 LDLIBS += -lgdi32 -limm32 -lole32 -loleaut32
 LDLIBS += -lopengl32 -lsetupapi -lversion -lwinmm
 
-# x86_64-w64-mingw32-gcc -std=c99 -Isrc/ -I./SDL2/include -mwindows -o zoxel.exe Source/Imports/Flecs/flecs.c Source/main.c -lmingw32 ./SDL2/lib/libSDL2main.a ./SDL2/lib/libSDL2.a -lgdi32 -lopengl32
+# x86_64-w64-mingw32-gcc -std=c99 -Isrc/ -I./SDL2/include -mwindows -o zoxel.exe Imports/Flecs/flecs.c Source/main.c -lmingw32 ./SDL2/lib/libSDL2main.a ./SDL2/lib/libSDL2.a -lgdi32 -lopengl32
 
-SRCS = Source/Imports/Flecs/flecs.c Source/Imports/Flecs/flecs.h
-OBJS = Source/Imports/Flecs/flecs.c
+SRCS = Imports/Flecs/flecs.c Imports/Flecs/flecs.h
+OBJS = Imports/Flecs/flecs.c
 SRCS += Source/main.c
 OBJS += Source/main.c
 

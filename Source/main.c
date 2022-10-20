@@ -29,7 +29,7 @@
 #define FLECS_MODULE
 #define FLECS_SYSTEM 
 #define FLECS_PIPELINE
-#include "Imports/Flecs/flecs.h"
+#include "../Imports/Flecs/flecs.h"
 // =-= Modules =-=
 #define SDL_IMAGES
 #define USE_VERTEX_BUFFERS
@@ -134,18 +134,31 @@ void UpdateLoop()
     if (!headless)
     {
         //! Temporary for now, calculate camera matrix here
+        // float4x4 cameraTransformMatrix = CreateZeroMatrix();
+        // float4x4 cameraTransformMatrix = CreateIdentityMatrix();
         const Position *cameraPosition = ecs_get(world, mainCamera, Position);
-        float* cameraTransformMatrix = CalculateViewMatrix(
-            (float3) { cameraPosition->value.x, cameraPosition->value.y, cameraPosition->value.z },
-            (float3) { 0, 0, -1 },
+        float3 position = cameraPosition->value;
+        float4x4 cameraTransformMatrix = CalculateViewMatrix(position,
+            (float3) { 0, 0, 1 },
             (float3) { 0, 1, 0 }
         );
-        // PrintMatrix(cameraTransformMatrix);
-        const float* projectionMatrix = GetMainCameraViewMatrix();
-        float* mvp = multiplyMatrix(cameraTransformMatrix, projectionMatrix);
+        // printf("-----\n");
+        // printMatrix(cameraTransformMatrix);
+        
+        const Rotation *cameraRotation = ecs_get(world, mainCamera, Rotation);
+        // print_float4(cameraRotation->value);
+        float4 rotation = cameraRotation->value;
+        // rotation = quaternion_conjugation(rotation);
+        float4x4 rotationMatrix = quaternion_to_matrix(rotation);
+        cameraTransformMatrix = multiplyMatrix(rotationMatrix, cameraTransformMatrix);
+        // RotateMatrix(&cameraTransformMatrix, cameraRotation->value);
+        // printMatrix(cameraTransformMatrix);
+
+        const float4x4 projectionMatrix = GetMainCameraViewMatrix();
+        float4x4 mvp = multiplyMatrix(cameraTransformMatrix, projectionMatrix);
         UpdateBeginOpenGL(mvp);
-        free(cameraTransformMatrix);
-        free(mvp);
+        // printMatrix(projectionMatrix);
+        // PrintMatrix(mvp);
         //! Run render system on main thread, until Flecs Threading issue is fixed
         ecs_run(world, ecs_id(Render2DSystem), 0, NULL);
         UpdateEndOpenGL();

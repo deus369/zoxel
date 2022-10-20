@@ -51,3 +51,4 @@ typedef struct
     PhysicalButton left;
     PhysicalButton right;
 } Keyboard;
+ECS_COMPONENT_DECLARE(Keyboard);

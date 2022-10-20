@@ -1,6 +1,2 @@
-//! Scales in 2D!
-typedef struct
-{
-    float3 value;
-} Scale;
-ECS_COMPONENT_DECLARE(Scale);
+//! A Non Uniform 3D Scale.
+ZOXEL_COMPONENT(Scale, float3);

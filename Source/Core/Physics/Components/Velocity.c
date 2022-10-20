@@ -1,6 +1,2 @@
-//! Velocity movement of a 2D Entity.
-typedef struct
-{
-    float3 value;
-} Velocity;
-ECS_COMPONENT_DECLARE(Velocity);
+//! Velocity movement of a 3D Entity.
+ZOXEL_COMPONENT(Velocity, float3);

@@ -4,7 +4,7 @@ void CameraMoveSystem(ecs_iter_t *it)
     // double deltaTime = (double) (it->delta_time);
     double movementPower = 0.016; // 2.8f; // * deltaTime;
     // const float2 maxVelocity = { 0.12f, 0.12f };
-    const float2 maxVelocity = { 12.6f, 12.6f };
+    // const float2 maxVelocity = { 12.6f, 12.6f };
     // printf("deltaTime! %f\n", deltaTime);
     ecs_query_t *bobQuery = it->ctx;
     if (!bobQuery)
@@ -65,25 +65,6 @@ void CameraMoveSystem(ecs_iter_t *it)
                 position->value.x += movement.x;
                 position->value.y += movement.y;
                 position->value.z += movement.z;
-                // printf("Bob Moving %lu \n", bobIter.entities[j]);
-                /*const Velocity *velocity2D = &velocitys[j];
-                Acceleration *acceleration = &accelerations[j];
-                if (movement.x > 0 && velocity2D->value.x < maxVelocity.x)
-                {
-                    acceleration->value.x += movement.x;
-                }
-                else if (movement.x < 0 && velocity2D->value.x > -maxVelocity.x)
-                {
-                    acceleration->value.x += movement.x;
-                }
-                if (movement.y > 0 && velocity2D->value.y < maxVelocity.y)
-                {
-                    acceleration->value.y += movement.y;
-                }
-                else if (movement.y < 0 && velocity2D->value.y > -maxVelocity.y)
-                {
-                    acceleration->value.y += movement.y;
-                }*/
             }
         }
     }
@@ -109,3 +90,23 @@ ecs_modified(it->world, bobPlayer, Acceleration2D);*/
 });*/
 /**/
 // ecs_entity_t bobPlayer = bobIt.entities[0];
+
+                // printf("Bob Moving %lu \n", bobIter.entities[j]);
+                /*const Velocity *velocity2D = &velocitys[j];
+                Acceleration *acceleration = &accelerations[j];
+                if (movement.x > 0 && velocity2D->value.x < maxVelocity.x)
+                {
+                    acceleration->value.x += movement.x;
+                }
+                else if (movement.x < 0 && velocity2D->value.x > -maxVelocity.x)
+                {
+                    acceleration->value.x += movement.x;
+                }
+                if (movement.y > 0 && velocity2D->value.y < maxVelocity.y)
+                {
+                    acceleration->value.y += movement.y;
+                }
+                else if (movement.y < 0 && velocity2D->value.y > -maxVelocity.y)
+                {
+                    acceleration->value.y += movement.y;
+                }*/

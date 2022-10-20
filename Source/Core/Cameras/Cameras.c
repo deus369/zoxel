@@ -14,54 +14,6 @@ ECS_DECLARE(CameraFollower2D);  // a tag for a camera that follows a Character2D
 
 // Remember it will destroy the prefab ones too... *facepalm*
 
-// The destructor should free resources.
-ECS_DTOR(ViewMatrix, ptr, {
-    if (ptr->value)
-    {
-        // printf("ECS_DTOR: Disposing view matrix [%f] \n", ptr->value[0]); // ecs_trace("Dtor");
-        free(ptr->value);
-    }
-})
-
-// The constructor should initialize the component value.
-ECS_CTOR(ViewMatrix, ptr, {
-    // ecs_trace("Ctor");
-    ptr->value = NULL;
-})
-
-ECS_MOVE(ViewMatrix, dst, src, {
-    // ecs_trace("Move");
-    free(dst->value);
-    dst->value = src->value;
-    src->value = NULL;
-})
-
-ECS_COPY(ViewMatrix, dst, src, {
-    if (src->value)
-    {
-        // printf("Copying ViewMatrix.");
-        free(dst->value);
-        dst->value = malloc(16 * 4);
-        if (dst->value == NULL) return;          // No memory
-        dst->value = memcpy(dst->value, src->value, 16 * 4);
-    }
-})
-
-//! Sets the ViewMatrix as thing
-/*void ViewMatrixDisposeSystem(ecs_iter_t *it)
-{
-    ViewMatrix *viewMatrixs = ecs_field(it, ViewMatrix, 1);
-    for (int i = 0; i < it->count; i++)
-    {
-        ViewMatrix *viewMatrix = &viewMatrixs[i];
-        if (viewMatrix->value)
-        {
-            printf("ViewMatrixDisposeSystem: [%f]\n", viewMatrix->value[0]);
-        }
-        //free(viewMatrix->value);
-    }
-}*/
-
 void CamerasImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Cameras);
@@ -70,21 +22,16 @@ void CamerasImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, ScreenDimensions);
     ECS_COMPONENT_DEFINE(world, FieldOfView);
     ECS_SYSTEM_DEFINE(world, ViewMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [out] ViewMatrix);
-    // ecs_system_enable_multithreading(world, ecs_id(ViewMatrixSystem));
-    ecs_set_hooks(world, ViewMatrix, {
-        // .on_remove = ViewMatrixDisposeSystem,
-        .ctor = ecs_ctor(ViewMatrix),
-        .move = ecs_move(ViewMatrix),
-        .copy = ecs_copy(ViewMatrix),
-        .dtor = ecs_dtor(ViewMatrix)
-    });
     SpawnCameraPrefab(world);
 }
 
 void SpawnMainCamera(int2 screenDimensions)
 {
-    float3 spawnPosition = { 0, 0, 0 };
-    float4 spawnRotation = { 0, 0, 0, 1 };
+    float3 spawnPosition = { 0, -0.08f, 2 };
+    // imagine this is a forward rotation
+    float4 flipRotation = quaternion_from_euler( (float3) { 0, 180 * degreesToRadians, 0 });
+    float4 spawnRotation = quaternion_from_euler( (float3) { 0 * degreesToRadians, 0 * degreesToRadians, -33 * degreesToRadians });
+    spawnRotation = quaternion_rotate(flipRotation, spawnRotation);
     SpawnCamera(world, spawnPosition, spawnRotation, screenDimensions);
 }
 
@@ -96,15 +43,15 @@ void ResizeCameras(int width, int height)
     }
     ScreenDimensions *screenDimensions = ecs_get_mut(world, mainCamera, ScreenDimensions);
     screenDimensions->value.x = width;
-    screenDimensions->value.y = height; //{ width, height };
+    screenDimensions->value.y = height;
     ecs_modified(world, mainCamera, ScreenDimensions);
 }
 
-const float* GetMainCameraViewMatrix()
+const float4x4 GetMainCameraViewMatrix()
 {
     if (!mainCamera || !ecs_is_alive(world, mainCamera))
     {
-        return NULL;
+        return CreateZeroMatrix();
     }
     const ViewMatrix *viewMatrix = ecs_get(world, mainCamera, ViewMatrix);
     return viewMatrix->value;
@@ -112,26 +59,56 @@ const float* GetMainCameraViewMatrix()
 }
 
 //! View Matrix multipled by projection and used to distort pixel magic.
-float* CalculateViewMatrix(float3 position, float3 forward, float3 up)
+float4x4 CalculateViewMatrix(float3 position, float3 forward, float3 up)
 {
-    float* matrix = CreateIdentityMatrix();
+    float4x4 matrix = CreateIdentityMatrix();
     float3 side = { };
     side = cross(forward, up);
     side = normalize(side);
-    matrix[0] = side.x;
-    matrix[4] = side.y;
-    matrix[8] = side.z;
-    matrix[1] = up.x;
-    matrix[5] = up.y;
-    matrix[9] = up.z;
-    matrix[2] = -forward.x;
-    matrix[6] = -forward.y;
-    matrix[10] = -forward.z;
-    matrix[12] = -position.x;
-    matrix[13] = -position.y;
-    matrix[14] = -position.z;
+    // float* matrix2 = (float*) &matrix;
+    matrix.x.x = side.x;
+    matrix.y.x = side.y;
+    matrix.z.x = side.z;
+    matrix.x.y = up.x;
+    matrix.y.y = up.y;
+    matrix.z.y = up.z;
+    matrix.x.z = -forward.x;
+    matrix.y.z = -forward.y;
+    matrix.z.z = -forward.z;
+    matrix.w.x = -position.x;
+    matrix.w.y = -position.y;
+    matrix.w.z = -position.z;
     return matrix;
 }
+
+void RotateMatrix(float4x4 *matrix, const float4 rotation)
+{
+    matrix->x.x *= rotation.x;
+    matrix->y.x *= rotation.x;
+    matrix->z.x *= rotation.x;
+    matrix->w.x *= rotation.x;
+    matrix->x.y *= rotation.y;
+    matrix->y.y *= rotation.y;
+    matrix->z.y *= rotation.y;
+    matrix->w.y *= rotation.y;
+    matrix->x.z *= rotation.z;
+    matrix->y.z *= rotation.z;
+    matrix->z.z *= rotation.z;
+    matrix->w.z *= rotation.z;
+    matrix->x.w *= rotation.w;
+    matrix->y.w *= rotation.w;
+    matrix->z.w *= rotation.w;
+    matrix->w.w *= rotation.w;
+}
+
+    // ecs_system_enable_multithreading(world, ecs_id(ViewMatrixSystem));
+    /*ecs_set_hooks(world, ViewMatrix, {
+        // .on_remove = ViewMatrixDisposeSystem,
+        .ctor = ecs_ctor(ViewMatrix),
+        .move = ecs_move(ViewMatrix),
+        .copy = ecs_copy(ViewMatrix),
+        .dtor = ecs_dtor(ViewMatrix)
+    });*/
 
 // float* GetMainCameraViewMatrix2()
 // {
@@ -173,5 +150,31 @@ float* CalculateViewMatrix(float3 position, float3 forward, float3 up)
     });*/
 
     // ecs_set_hooks(world, ViewMatrix, { .dtor = ecs_dtor(ViewMatrix) });
+
+//! Sets the ViewMatrix as thing
+/*void ViewMatrixDisposeSystem(ecs_iter_t *it)
+{
+    ViewMatrix *viewMatrixs = ecs_field(it, ViewMatrix, 1);
+    for (int i = 0; i < it->count; i++)
+    {
+        ViewMatrix *viewMatrix = &viewMatrixs[i];
+        if (viewMatrix->value)
+        {
+            printf("ViewMatrixDisposeSystem: [%f]\n", viewMatrix->value[0]);
+        }
+        //free(viewMatrix->value);
+    }
+}*/
+
+/*void ECS_COMPONENT_DEFINE_WITH_HOOKS(ecs_world_t *world, void* component)
+{
+    ECS_COMPONENT_DEFINE(world, component);
+    ecs_set_hooks(world, component, {
+        .ctor = ecs_ctor(component),
+        .move = ecs_move(component),
+        .copy = ecs_copy(component),
+        .dtor = ecs_dtor(component)
+    });
+}*/
 
 #endif

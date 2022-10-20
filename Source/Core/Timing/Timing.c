@@ -1,15 +1,16 @@
 #ifndef Zoxel_Timing
 #define Zoxel_Timing
-//! Timing Module.
 
+// Components
 #include "Components/DestroyInTime.c"
+// Systems
 #include "Systems/DestroyInTimeSystem.c"
 
+//! Timing Module.
 void TimingImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Timing);
     ECS_COMPONENT_DEFINE(world, DestroyInTime);
-    ECS_SYSTEM_DEFINE(world, DestroyInTimeSystem, EcsOnUpdate, [out] DestroyInTime);
-    ecs_system_enable_multithreading(world, ecs_id(DestroyInTimeSystem));
+    ZOXEL_SYSTEM_MULTITHREADED(world, DestroyInTimeSystem, EcsOnUpdate, [out] DestroyInTime);
 }
 #endif

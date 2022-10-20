@@ -67,7 +67,8 @@ void SpawnSystem(ecs_iter_t *it)
         // This line crashes it!
         if (!isFixCrash)
         {
-            const ecs_entity_t *bobArmy = ecs_bulk_init(it->world, &(ecs_bulk_desc_t)
+            // const ecs_entity_t *bobArmy = 
+            ecs_bulk_init(it->world, &(ecs_bulk_desc_t)
             {
                 .count = spawnCount,
                 .ids =

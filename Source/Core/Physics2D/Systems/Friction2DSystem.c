@@ -1,7 +1,7 @@
 //! Causes friction upon movement.
 void Friction2DSystem(ecs_iter_t *it)
 {
-    double deltaTime = (double) it->delta_time;
+    // double deltaTime = (double) it->delta_time;
     const float frictionValue = 2.0f;  // 0.002
     const Velocity2D *velocity2Ds = ecs_field(it, Velocity2D, 2);
     Acceleration2D *acceleration2Ds = ecs_field(it, Acceleration2D, 3);
