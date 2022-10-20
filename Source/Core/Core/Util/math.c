@@ -1,6 +1,7 @@
 #include <math.h> // for sqrt
 #include <stdlib.h>
 #include <stdio.h>
+// Find more math inspiration at https://gist.github.com/mattatz/86fff4b32d198d0928d0fa4ff32cf6fa
 #ifndef M_PI
 #define M_PI 3.141592653589793
 #endif
