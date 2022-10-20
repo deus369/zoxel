@@ -1,8 +1,9 @@
 //! Called in ecs updates
 void CameraMoveSystem(ecs_iter_t *it)
 {
-    // double deltaTime = (double) (it->delta_time);
-    double movementPower = 0.016; // 2.8f; // * deltaTime;
+    double deltaTime = (double) (it->delta_time);
+    double movementPower = 0.006 * 100 * deltaTime; // 2.8f; // * deltaTime;
+    float rotatePower = 0.25f * 100 * deltaTime;
     // const float2 maxVelocity = { 0.12f, 0.12f };
     // const float2 maxVelocity = { 12.6f, 12.6f };
     // printf("deltaTime! %f\n", deltaTime);
@@ -22,21 +23,13 @@ void CameraMoveSystem(ecs_iter_t *it)
     // printf("Bobs Found [%i]\n", bobIter.count);
     Keyboard *keyboards = ecs_field(it, Keyboard, 1);
     Position *positions = ecs_field(&bobIter, Position, 2);
+    Rotation *rotations = ecs_field(&bobIter, Rotation, 3);
     //Acceleration *accelerations = ecs_field(&bobIter, Acceleration, 2);
     //const Velocity *velocitys = ecs_field(&bobIter, Velocity, 3);
     for (int i = 0; i < it->count; i++)
     {
         const Keyboard *keyboard = &keyboards[i];
         float3 movement = { 0, 0, 0 };
-        // Move Bob Up!
-        if (keyboard->up.isPressed)
-        {
-            movement.y = 1;
-        }
-        if (keyboard->down.isPressed)
-        {
-            movement.y = -1;
-        }
         if (keyboard->left.isPressed)
         {
             movement.x = -1;
@@ -44,6 +37,14 @@ void CameraMoveSystem(ecs_iter_t *it)
         if (keyboard->right.isPressed)
         {
             movement.x = 1;
+        }
+        if (keyboard->up.isPressed)
+        {
+            movement.y = 1;
+        }
+        if (keyboard->down.isPressed)
+        {
+            movement.y = -1;
         }
         if (keyboard->q.isPressed)
         {
@@ -65,6 +66,49 @@ void CameraMoveSystem(ecs_iter_t *it)
                 position->value.x += movement.x;
                 position->value.y += movement.y;
                 position->value.z += movement.z;
+            }
+        }
+        float3 rotate = { 0, 0, 0 };
+        if (keyboard->j.isPressed)
+        {
+            rotate.x = -1;
+        }
+        if (keyboard->l.isPressed)
+        {
+            rotate.x = 1;
+        }
+        if (keyboard->i.isPressed)
+        {
+            rotate.y = 1;
+        }
+        if (keyboard->k.isPressed)
+        {
+            rotate.y = -1;
+        }
+        if (keyboard->u.isPressed)
+        {
+            rotate.z = -1;
+        }
+        if (keyboard->o.isPressed)
+        {
+            rotate.z = 1;
+        }
+        if (!(rotate.x == 0 && rotate.y == 0 && rotate.z == 0))
+        {
+            rotate.x *= rotatePower;
+            rotate.y *= rotatePower;
+            rotate.z *= rotatePower;
+            rotate.x *= degreesToRadians;
+            rotate.y *= degreesToRadians;
+            rotate.z *= degreesToRadians;
+            float3 rotate2 = { rotate.x, rotate.z, -rotate.y };
+            // rotate2.z is x
+            float4 rotate3 = quaternion_from_euler(rotate2);
+            // printf("rotate: %fx%f\n", rotate.x, rotate.y);
+            for (int j = 0; j < bobIter.count; j++)
+            {
+                Rotation *rotation = &rotations[j];
+                rotation->value = quaternion_rotate(rotate3, rotation->value);
             }
         }
     }

@@ -150,12 +150,12 @@ void UpdateLoop()
         float4 rotation = cameraRotation->value;
         // rotation = quaternion_conjugation(rotation);
         float4x4 rotationMatrix = quaternion_to_matrix(rotation);
-        cameraTransformMatrix = multiplyMatrix(rotationMatrix, cameraTransformMatrix);
+        cameraTransformMatrix = float4x4_multiply(rotationMatrix, cameraTransformMatrix);
         // RotateMatrix(&cameraTransformMatrix, cameraRotation->value);
         // printMatrix(cameraTransformMatrix);
 
         const float4x4 projectionMatrix = GetMainCameraViewMatrix();
-        float4x4 mvp = multiplyMatrix(cameraTransformMatrix, projectionMatrix);
+        float4x4 mvp = float4x4_multiply(cameraTransformMatrix, projectionMatrix);
         UpdateBeginOpenGL(mvp);
         // printMatrix(projectionMatrix);
         // PrintMatrix(mvp);

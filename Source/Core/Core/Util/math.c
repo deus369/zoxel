@@ -59,7 +59,7 @@ void print_float4(const float4 input)
     printf("Float4 [%f %f %f %f]\n", input.x, input.y, input.z, input.w);
 }
 
-float4x4 multiplyMatrix(float4x4 a, const float4x4 b)
+float4x4 float4x4_multiply(const float4x4 a, const float4x4 b)
 {
     float4x4 c = CreateZeroMatrix();
     float* a2 = (float*) &a;
@@ -185,7 +185,7 @@ for (i = 0; i < 4; ++i)
     }
 }*/
 
-// float* multiplyMatrix(float* a, const float* b)
+// float* float4x4_multiply(float* a, const float* b)
 // {
 //     float* c = malloc(16 * 4);
 //     for (unsigned j = 0; j < 16; j++)

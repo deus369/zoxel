@@ -73,7 +73,8 @@ void PlayersImport(ecs_world_t *world)
     ecs_query_t *cameraQuery = ecs_query_init(world, &(ecs_query_desc_t) {
         .filter.terms = {
             { ecs_id(Camera) },
-            { ecs_id(Position) }//,
+            { ecs_id(Position) },
+            { ecs_id(Rotation) },
            // { ecs_id(Velocity2D) }
         }
     });
