@@ -66,6 +66,7 @@ void PlayersImport(ecs_world_t *world)
     ECS_SYSTEM_DEFINE(world, Player2DTestSystem, EcsOnUpdate, [in] Keyboard);
     ecs_system(world, {
         .entity = ecs_id(Player2DTestSystem),
+        // rename to no_readonly
         .no_staging = true  // with structural changes, does it at the end of the process..
     });
     //#endif

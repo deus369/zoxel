@@ -24,9 +24,7 @@ void NoiseTextureSystem(ecs_iter_t *it)
         // printf("Noise was generated! %lu \n", (long int) it->entities[i]);
         Texture *texture = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
-        // texture->value = malloc(textureSize->value.x * textureSize->value.y * 4);
-        initialize_texture(texture, textureSize->value.x * textureSize->value.y);
-        // textureSize->value.x * textureSize->value.y * 4);
+        initialize_memory_component(texture, color, textureSize->value.x * textureSize->value.y);
         for (int j = 0; j < textureSize->value.x; j++)
         {
             for (int k = 0; k < textureSize->value.y; k++)

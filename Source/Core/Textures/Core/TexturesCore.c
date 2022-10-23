@@ -32,7 +32,7 @@ void TexturesCoreImport(ecs_world_t *world)
 {
     ECS_MODULE(world, TexturesCore);
     ECS_TAG_DEFINE(world, NoiseTexture);
-    ECS_COMPONENT_DEFINE(world, Texture);
+    ZOXEL_DEFINE_MEMORY_COMPONENT(world, Texture);
     ECS_COMPONENT_DEFINE(world, TextureSize);
     ECS_COMPONENT_DEFINE(world, GenerateTexture);
     ECS_SYSTEM_DEFINE(world, NoiseTextureSystem, EcsOnUpdate,
@@ -41,9 +41,24 @@ void TexturesCoreImport(ecs_world_t *world)
         [out] Texture, [in] TextureSize);
     ECS_SYSTEM_DEFINE(world, TextureDirtySystem, EcsOnValidate,
         [in] EntityDirty, [in] Texture, [in] TextureSize);
-    // Testing!
     InitializeNoiseTexturePrefab(world);
-    SpawnTexture(world, noiseTexturePrefab);
+}
+
+
+ecs_entity_t testTextureEntity;
+
+void TestDestroyTexture(ecs_world_t *world)
+{
+    if (testTextureEntity && ecs_is_alive(world, testTextureEntity))
+    {
+        printf("Deleting Texture.\n");
+        ecs_delete(world, testTextureEntity);
+    }
+    else
+    {
+        printf("Spawning Texture.\n");
+        testTextureEntity = SpawnTexture(world, noiseTexturePrefab);
+    }
 }
 
 #endif

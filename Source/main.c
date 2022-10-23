@@ -133,32 +133,20 @@ void UpdateLoop()
     // Render Loop
     if (!headless)
     {
-        //! Temporary for now, calculate camera matrix here
-        // float4x4 cameraTransformMatrix = CreateZeroMatrix();
-        // float4x4 cameraTransformMatrix = CreateIdentityMatrix();
+        //! Temporary for now, calculate camera matrix here.
+        //      - Move Transform Matrix calculations to Transform systems.
+        //      - Move  CameraViewMatrix to camera systems.
         const Position *cameraPosition = ecs_get(world, mainCamera, Position);
         float3 position = cameraPosition->value;
         float4x4 cameraTransformMatrix = CalculateViewMatrix(position,
-            (float3) { 0, 0, 1 },
-            (float3) { 0, 1, 0 }
-        );
-        // printf("-----\n");
-        // printMatrix(cameraTransformMatrix);
-        
+            (float3) { 0, 0, 1 }, (float3) { 0, 1, 0 } );
         const Rotation *cameraRotation = ecs_get(world, mainCamera, Rotation);
-        // print_float4(cameraRotation->value);
-        float4 rotation = cameraRotation->value;
-        // rotation = quaternion_conjugation(rotation);
-        float4x4 rotationMatrix = quaternion_to_matrix(rotation);
-        cameraTransformMatrix = float4x4_multiply(rotationMatrix, cameraTransformMatrix);
-        // RotateMatrix(&cameraTransformMatrix, cameraRotation->value);
-        // printMatrix(cameraTransformMatrix);
-
+        cameraTransformMatrix = float4x4_multiply(
+            quaternion_to_matrix(cameraRotation->value),
+            cameraTransformMatrix);
         const float4x4 projectionMatrix = GetMainCameraViewMatrix();
         float4x4 mvp = float4x4_multiply(cameraTransformMatrix, projectionMatrix);
         UpdateBeginOpenGL(mvp);
-        // printMatrix(projectionMatrix);
-        // PrintMatrix(mvp);
         //! Run render system on main thread, until Flecs Threading issue is fixed
         ecs_run(world, ecs_id(Render2DSystem), 0, NULL);
         UpdateEndOpenGL();
@@ -194,6 +182,11 @@ void PollSDLEvents()
             if (key == SDLK_ESCAPE) 
             {
                 running = false;
+            }
+            // test
+            else if (key == SDLK_z) 
+            {
+                TestDestroyTexture(world);
             }
         }
         else if (eventType == SDL_WINDOWEVENT) // SDL_WINDOWEVENT_RESIZED)
@@ -274,3 +267,15 @@ void DebugPrinter()
 //         emscripten_cancel_main_loop();
 //     }
 // #endif
+
+        // float4x4 cameraTransformMatrix = CreateZeroMatrix();
+        // float4x4 cameraTransformMatrix = CreateIdentityMatrix();
+        // printf("-----\n");
+        // printMatrix(cameraTransformMatrix);
+        // print_float4(cameraRotation->value);
+        // rotation = quaternion_conjugation(rotation);
+        // RotateMatrix(&cameraTransformMatrix, cameraRotation->value);
+        // printMatrix(cameraTransformMatrix);
+
+        // printMatrix(projectionMatrix);
+        // PrintMatrix(mvp);

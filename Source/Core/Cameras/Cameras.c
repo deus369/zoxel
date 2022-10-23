@@ -166,7 +166,7 @@ void RotateMatrix(float4x4 *matrix, const float4 rotation)
     }
 }*/
 
-/*void ECS_COMPONENT_DEFINE_WITH_HOOKS(ecs_world_t *world, void* component)
+/*void ZOXEL_DECLARE_MEMORY_COMPONENT(ecs_world_t *world, void* component)
 {
     ECS_COMPONENT_DEFINE(world, component);
     ecs_set_hooks(world, component, {

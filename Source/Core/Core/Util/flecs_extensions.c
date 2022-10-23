@@ -1,22 +1,78 @@
 //! My own flecs macros
 
-#define ECS_COMPONENT_DEFINE_WITH_HOOKS(world, component)\
+#define ZOXEL_COMPONENT(name, type)\
+typedef struct\
 {\
-    ECS_COMPONENT_DEFINE(world, component);\
-    ecs_set_hooks(world, component, {\
-        .ctor = ecs_ctor(component),\
-        .move = ecs_move(component),\
-        .copy = ecs_copy(component),\
-        .dtor = ecs_dtor(component)\
+    type value;\
+} name;\
+ECS_COMPONENT_DECLARE(name)
+
+
+//! ECS_CTOR The constructor should initialize the component value.
+//! ECS_DTOR The destructor should free resources.
+//! ECS_MOVE Copy a pointer from one component to another.
+//! ECS_COPY Copy one data block to another.
+
+#define ZOXEL_DEFINE_MEMORY_COMPONENT(world, ComponentName)\
+{\
+    ECS_COMPONENT_DEFINE(world, ComponentName);\
+    ecs_set_hooks(world, ComponentName, {\
+        .ctor = ecs_ctor(ComponentName),\
+        .move = ecs_move(ComponentName),\
+        .copy = ecs_copy(ComponentName),\
+        .dtor = ecs_dtor(ComponentName)\
     });\
 }
 
-#define ZOXEL_COMPONENT(componentName, valueType)\
+// sizeof(type);    // 4 color
+// sizeof(component->value); // 8, presumably pointer takes 4 more bytes?
+// printf("Stride %i\n", stride);
+
+#define initialize_memory_component(component, dataType, length_)\
+{\
+    int length = length_;\
+    const int stride = sizeof(dataType);\
+    component->length = length;\
+    component->value = malloc(length * stride);\
+}
+
+//! Define a Memory component, with an array of a single data type.
+#define ZOXEL_DECLARE_MEMORY_COMPONENT(name, type)\
 typedef struct\
 {\
-    valueType value;\
-} componentName;\
-ECS_COMPONENT_DECLARE(componentName)
+    int length;\
+    type *value;\
+} name;\
+ECS_COMPONENT_DECLARE(name);\
+ECS_CTOR(name, ptr,\
+{\
+    ptr->value = NULL;\
+})\
+ECS_DTOR(name, ptr,\
+{\
+    if (ptr->value)\
+    {\
+        free(ptr->value);\
+    }\
+})\
+ECS_MOVE(name, dst, src,\
+{\
+    free(dst->value);\
+    dst->value = src->value;\
+    src->value = NULL;\
+})\
+ECS_COPY(name, dst, src, {\
+    if (src->value)\
+    {\
+        int memoryLength = src->length;\
+        free(dst->value);\
+        dst->value = malloc(memoryLength);\
+        if (dst->value != NULL) \
+        {\
+            dst->value = memcpy(dst->value, src->value, memoryLength);\
+        }\
+    }\
+})
 
 //! Multithreaded System Definitions.
 #define ZOXEL_SYSTEM_MULTITHREADED(world, id_, phase, ...)\
@@ -35,8 +91,12 @@ ECS_COMPONENT_DECLARE(componentName)
     } \
     ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
+
 // ECS Helper functions
 // void ecs_system_enable_multithreading(ecs_world_t *world, long int function)
 // {
 //     ecs_system_init(world, &(ecs_system_desc_t) { .entity = function, .multi_threaded = 1 } );
 // }
+
+// can debug destruction
+// printf("Destroying name Memory.\n");
