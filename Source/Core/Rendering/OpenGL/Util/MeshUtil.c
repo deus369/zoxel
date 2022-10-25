@@ -41,7 +41,7 @@ const int squareTexturedIndicies[] =
 float squareTexturedVerts[] = {
     // positions                    // texture coords
     -squareSize, -squareSize,       0, 0,   // top right
-    -squareSize, squareSize * 2.0,        1, 0,   // bottom right
-    squareSize, squareSize,         1, 1,   // bottom left
+    -squareSize, squareSize * 1.4,        1, 0,   // bottom right
+    squareSize, squareSize * 1.4,         1, 1,   // bottom left
     squareSize,  -squareSize,       0, 1    // top left 
 };
