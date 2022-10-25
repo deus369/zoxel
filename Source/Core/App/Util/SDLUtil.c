@@ -163,12 +163,14 @@ void EndAppSDL()
 void LoadIconSDL(SDL_Window* window)
 {
 #ifdef SDL_IMAGES
+// #ifndef WEB_BUILD
     SDL_Surface *surface = IMG_Load(iconFilename); // IMG_Load(buffer);
     // The icon is attached to the window pointer
     SDL_SetWindowIcon(window, surface);
     // ...and the surface containing the icon pixel data is no longer required.
     SDL_FreeSurface(surface);
 #endif
+// #endif
 }
 
 void ResizeOpenGLViewport(int screenWidth, int screenHeight)

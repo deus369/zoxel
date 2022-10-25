@@ -1,6 +1,7 @@
 #version 300 es
 
-layout (location = 0) in lowp vec2 uv;
+// layout (location = 0)
+in lowp vec2 uv;
 uniform lowp float brightness;
 uniform sampler2D tex;
 out lowp vec4 color;
@@ -8,14 +9,17 @@ out lowp vec4 color;
 void main()
 {
     // color = vec4(1.0, 0.25, 0.15, 0) * brightness;
-    color = vec4(0.01, 0.0, 0.0, 0.0) * brightness;
-    color.w = 1.0;
-    color.y = uv.x;
-    color.z = uv.y;
-
-    //lowp vec3 color2 = texture(tex, uv).rgb * brightness;
-    //color = vec4(color2.x, color2.y, color2.z, 255.0);
-
+    // color = vec4(0.1, 0.1, 0.1, 0.0) * brightness;
+    // color.w = 1.0;
+    // color.y = uv.x;
+    // color.z = uv.y;
+    color = texture(tex, uv).rgba * brightness;
+    // if(gl_FrontFacing) 	color = texture(tex, uv).rgba; 	else discard;
+    // lowp vec4 color2 = texture(tex, uv).rgba * brightness;
+    // color.x = color2.x;
+    // color.y = color2.y;
+    // color.z = color2.z;
+    // color = vec4(color2.x + 0.1, color2.y, color2.z, 255.0);
     // color.w = 1.0;
     // color = vec4(1.0, 1.0, 0.5, 1.0);
     // color = vec4(uvOutput.x, uvOutput.y, 0, 1) * brightness;

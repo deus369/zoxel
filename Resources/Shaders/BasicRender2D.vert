@@ -1,7 +1,8 @@
 #version 300 es
 //! Basic 2D Renderer
 
-layout (location = 0) in lowp vec2 vertexPosition;
+// layout (location = 0)
+in lowp vec2 vertexPosition;
 uniform lowp mat4 viewMatrix;
 uniform lowp float positionX;
 uniform lowp float positionY;
