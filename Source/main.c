@@ -120,6 +120,8 @@ int main(int argc, char* argv[])
     return 0;
 }
 
+float4x4 mainCameraMatrix;
+
 //! Main Game Loop
 void UpdateLoop()
 {
@@ -145,11 +147,12 @@ void UpdateLoop()
             quaternion_to_matrix(cameraRotation->value),
             cameraTransformMatrix);
         const float4x4 projectionMatrix = GetMainCameraViewMatrix();
-        float4x4 mvp = float4x4_multiply(cameraTransformMatrix, projectionMatrix);
-        UpdateBeginOpenGL(mvp);
+        mainCameraMatrix = float4x4_multiply(cameraTransformMatrix, projectionMatrix);
+        UpdateBeginOpenGL(mainCameraMatrix);
         //! Run render system on main thread, until Flecs Threading issue is fixed
         ecs_run(world, ecs_id(Render2DSystem), 0, NULL);
         UpdateEndOpenGL();
+        ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);
         UpdateLoopSDL();
     }
 }

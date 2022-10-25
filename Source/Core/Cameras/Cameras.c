@@ -27,7 +27,7 @@ void CamerasImport(ecs_world_t *world)
 
 void SpawnMainCamera(int2 screenDimensions)
 {
-    float3 spawnPosition = { 0, -0.0f, 2 };
+    float3 spawnPosition = { 0, -0.0f, 0.8 };
     // imagine this is a forward rotation
     float4 flipRotation = quaternion_from_euler( (float3) { 0, 180 * degreesToRadians, 0 });
     float4 spawnRotation = quaternion_from_euler( (float3) { 0 * degreesToRadians, 0 * degreesToRadians, 0 * degreesToRadians });

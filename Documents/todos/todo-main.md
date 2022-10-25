@@ -11,7 +11,10 @@ Libraries
 - [ ] Find a Library that supports multiple (keyboard or otherwise) devices
 
 UI
-- [ ] Material Comonent - with a GLInt reference to a material
+- [x] Material Comonent - with a GLInt reference to a material
+- [ ] Push UV into Textured Material
+    - [ ] Use minimal example for drawing with uvs?
+
 - [ ] Mesh Component - for unique mesh (maybe later i can scale uis in shader?)
 - [ ] BasicRenderSystem - renders unique mesh / materials
 - [ ] Mouse Device + handling

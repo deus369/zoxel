@@ -1,17 +1,19 @@
 # Zoxel Makefile!
 
+# can add --num-callers=60 to valgrind
+
 # Declare compiler tools and flags
 TARGET = zoxel.x86
 CC = cc						# Defines the compiler, cc for C code
 CFLAGS = -std=c99			# Specificies c99 Standard
-# CFLAGS += -fPIC				# Position Independent Code https://stackoverflow.com/questions/5311515/gcc-fpic-option
+# CFLAGS += -fPIC			# Position Independent Code https://stackoverflow.com/questions/5311515/gcc-fpic-option
 CFLAGS += -D_DEFAULT_SOURCE	# Needed for a few functions, will be fixed in the future
 # Compiler Optimizations & Debug
-CFLAGS += -g				# Adds debugging info to executeable
 CFLAGS += -Wall				# For Warnings
-CFLAGS += -O3			# Optimization level 3
-CFLAGS += -flto=auto	# fuse linker plugin
-CFLAGS += -D NDEBUG		# No Debugging
+# CFLAGS += -g				# Adds debugging info to executeable
+# CFLAGS += -O3				# Optimization level 3
+# CFLAGS += -flto=auto		# fuse linker plugin
+# CFLAGS += -D NDEBUG		# No Debugging
 # Add libraries
 LDLIBS = -lGL				# OpenGL library
 LDLIBS += -lSDL2			# SDL2 Library

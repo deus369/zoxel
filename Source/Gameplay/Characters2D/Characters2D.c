@@ -11,6 +11,7 @@ ECS_DECLARE(Character2D);
 #include "Systems/BobSpawnSystem.c"
 // prefabs
 ecs_entity_t character2DPrefab;
+extern GLuint material2;
 
 void SpawnCharacter2DPrefab(ecs_world_t *world)
 {
@@ -21,8 +22,12 @@ void SpawnCharacter2DPrefab(ecs_world_t *world)
     ecs_override(world, character2DPrefab, Position2D);
     ecs_override(world, character2DPrefab, Rotation2D);
     ecs_override(world, character2DPrefab, Scale2D);
+    // Rendering
     ecs_add(world, character2DPrefab, Brightness);
     ecs_override(world, character2DPrefab, Brightness);
+    ecs_add(world, character2DPrefab, Material);
+    ecs_override(world, character2DPrefab, Material);
+    ecs_set(world, character2DPrefab, Material, { material2 });
     #ifdef Zoxel_Physics2D
     ecs_set(world, character2DPrefab, Acceleration2D, { { 0, 0 } });
     ecs_set(world, character2DPrefab, Rotation2D, { 0 });

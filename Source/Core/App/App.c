@@ -3,8 +3,8 @@
 #include <stdbool.h>
 //! App Module.
 
-bool vsync = false;
-bool fullscreen = false;
+bool vsync = true;
+bool fullscreen = true;
 
 #include "Util/SDLUtil.c"
 #include "Util/FlecsUtil.c"

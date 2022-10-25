@@ -1,7 +1,7 @@
 #version 300 es
 //! Basic 2D Renderer
 
-in lowp vec2 positionOffset;
+layout (location = 0) in lowp vec2 vertexPosition;
 uniform lowp mat4 viewMatrix;
 uniform lowp float positionX;
 uniform lowp float positionY;
@@ -24,7 +24,7 @@ void main()
     vec2 position = vec2(positionX, positionY);
     mat2 rotate = mat2(cos(angle), -sin(angle),
                        sin(angle), cos(angle));
-    gl_Position = viewMatrix * vec4(position + (rotate * positionOffset) * scale, 0, 1.0); // 
+    gl_Position = viewMatrix * vec4(position + (rotate * vertexPosition) * scale, 0, 1.0); // 
 }
 
     //pos.x = pos.x + position.x;

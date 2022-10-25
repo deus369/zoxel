@@ -22,8 +22,10 @@ void SpawnPrefabParticle2D(ecs_world_t *world)
     ecs_override(world, particle2DPrefab, Position2D);
     ecs_override(world, particle2DPrefab, Rotation2D);
     ecs_override(world, particle2DPrefab, Scale2D);
+    // rendering
     ecs_add(world, particle2DPrefab, Brightness);
     ecs_override(world, particle2DPrefab, Brightness);
+    // timing
     ecs_add(world, particle2DPrefab, DestroyInTime);
     ecs_override(world, particle2DPrefab, DestroyInTime);
     #ifdef Zoxel_Physics2D

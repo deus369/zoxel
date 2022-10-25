@@ -10,7 +10,10 @@
 const bool isForceDefaults = false;
 const char* shaderVertFilepath = "Resources/Shaders/BasicRender2D.vert";
 const char* shaderFragFilepath = "Resources/Shaders/BasicRender2D.frag";
+const char* texturedRender2DVertPath = "Resources/Shaders/TexturedRender2D.vert";
+const char* texturedRender2DFragPath = "Resources/Shaders/TexturedRender2D.frag";
 GLuint material;
+GLuint material2;
 // const char *vertExtension = ".vert";
 // const char *fragExtension = ".frag";
 extern void InitializeMesh();
@@ -123,6 +126,25 @@ int LoadDefaultShaders()
     return 0;
 }
 
+int LoadTextureRender2DShader()
+{
+    GLuint vertShader;
+    GLuint fragShader;
+    if (LoadShader(texturedRender2DVertPath, GL_VERTEX_SHADER, &vertShader) != 0)
+    {
+        printf("Error loading Shader Vert 2.\n");
+        return -1;
+    }
+    if (LoadShader(texturedRender2DFragPath, GL_FRAGMENT_SHADER, &fragShader) != 0)
+    {
+        printf("Error loading Shader Frag 2.\n");
+        return -1;
+    }
+    material2 = glCreateProgram();
+    LinkShaderProgram(material2, vertShader, fragShader);
+    return 0;
+}
+
 int LoadShaders()
 {
     GLuint vertShader;
@@ -139,7 +161,14 @@ int LoadShaders()
     }
     material = glCreateProgram();
     LinkShaderProgram(material, vertShader, fragShader);
+    if (LoadTextureRender2DShader() != 0)
+    {
+        printf("Error loading Texture Shader.\n");
+        return -1;
+    }
     InitializeMesh();
+    printf("Material A %i\n", material);
+    printf("Material B %i\n", material2);
     return 0;
 }
     /*if (isForceDefaults)
