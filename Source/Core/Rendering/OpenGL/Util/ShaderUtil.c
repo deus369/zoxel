@@ -173,38 +173,3 @@ int LoadShaders()
     //printf("Material B %i\n", material2);
     return 0;
 }
-    /*if (isForceDefaults)
-    {
-        return LoadDefaultShaders();
-    }*/
-
-    /*char *vertFilename = malloc(strlen(shaderFilepath) + strlen(vertExtension) + 1);
-    strcpy(vertFilename, shaderFilepath);
-    strcat(vertFilename, vertExtension);
-    if (vertFilename)
-    {
-        if (LoadShader(vertFilename, GL_VERTEX_SHADER, &vertShader) != 0)
-        {
-            printf("Error loading Shader Vert.\n");
-            return LoadDefaultShaders(); // -1;
-        }
-    }
-    else
-    {
-        return -1;
-    }*/
-    /*char *fragFilename = malloc(strlen(shaderFilepath) + strlen(vertExtension) + 1);
-    strcpy(fragFilename, shaderFilepath);
-    strcat(fragFilename, fragExtension);
-    if (fragFilename)
-    {
-        if (LoadShader(fragFilename, GL_FRAGMENT_SHADER, &fragShader) != 0)
-        {
-            printf("Error loading Shader Frag.\n");
-            return LoadDefaultShaders(); // -1;
-        }
-    }
-    else
-    {
-        return -1;
-    }*/
