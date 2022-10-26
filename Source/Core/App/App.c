@@ -3,7 +3,7 @@
 #include <stdbool.h>
 //! App Module.
 
-bool vsync = true;
+bool vsync = false;
 bool fullscreen = true;
 
 #include "Util/SDLUtil.c"

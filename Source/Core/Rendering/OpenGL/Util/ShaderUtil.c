@@ -147,13 +147,15 @@ int LoadTextureRender2DShader()
 
 int LoadShaders()
 {
+    printf("Loading Shader Vert: %s\n", shaderVertFilepath);
     GLuint vertShader;
-    GLuint fragShader;
     if (LoadShader(shaderVertFilepath, GL_VERTEX_SHADER, &vertShader) != 0)
     {
         printf("Error loading Shader Vert.\n");
         return -1;
     }
+    printf("Loading Shader Frag: %s\n", shaderFragFilepath);
+    GLuint fragShader;
     if (LoadShader(shaderFragFilepath, GL_FRAGMENT_SHADER, &fragShader) != 0)
     {
         printf("Error loading Shader Frag.\n");
@@ -167,8 +169,8 @@ int LoadShaders()
         return -1;
     }
     InitializeMesh();
-    printf("Material A %i\n", material);
-    printf("Material B %i\n", material2);
+    //printf("Material A %i\n", material);
+    //printf("Material B %i\n", material2);
     return 0;
 }
     /*if (isForceDefaults)

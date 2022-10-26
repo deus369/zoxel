@@ -6,6 +6,8 @@
 #include <SDL2/SDL_opengl.h>
 
 void CreateTexturedMesh();
+
+float3 backgroundColor = { 0.2, 0.2, 0.5 };
 // Stored Shader Variables
 GLuint squareModel;
 GLuint squareModelIndicies;
@@ -16,7 +18,9 @@ GLuint gl_positionY;
 GLuint gl_angle;
 GLuint gl_scale;
 GLuint gl_brightness;
-extern const char *outputTextureName;
+
+const char *playerCharacterTextureName = "Resources/Textures/Test.png";
+// extern const char *outputTextureName;
 GLuint tex_sampler_loc;
 GLuint squareTexturedModelVertices;
 GLuint squareTexturedModelUVs;
@@ -51,8 +55,8 @@ void InitializeMesh()
     // textured one
     //size_t vSize = sizeof(squareVerts);
     //size_t uvSize = sizeof(squareUVs);
-    printf("squareModelIndicies %i\n", squareModelIndicies);
-    printf("squareModel %i\n", squareModel);
+    // printf("squareModelIndicies %i\n", squareModelIndicies);
+    // printf("squareModel %i\n", squareModel);
     CreateTexturedMesh();
 }
 
@@ -79,56 +83,35 @@ void CreateTexturedMesh()
     // glVertexAttribPointer(attribVertexPosition, 2, GL_FLOAT, GL_FALSE, 0, 0);
     // glEnableVertexAttribArray(attribVertexPosition);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    
-    /*glBindBuffer(GL_ARRAY_BUFFER, squareTexturedModelVertices);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(squareVerts2), squareVerts2, GL_STATIC_DRAW); 
-    glVertexAttribPointer(attribVertexPosition, 2, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(attribVertexPosition);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);*/
-    // uvs
-    /*glBindBuffer(GL_ARRAY_BUFFER, squareTexturedModelUVs);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(squareUVs), squareUVs, GL_STATIC_DRAW);
-    glVertexAttribPointer(attribVertexTexCoord, 2, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(attribVertexTexCoord);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);*/
-
-    // (GL_ARRAY_BUFFER, squareTexturedModel); // bind VBO in order to use
-    //glBufferSubData(GL_ARRAY_BUFFER, 0, vSize, squareVerts);                  // copy verts at offset 0
-    //glBufferSubData(GL_ARRAY_BUFFER, vSize, uvSize, squareUVs);             // copy uvs after verts
-    // reset
-
-    printf("squareTexturedModelIndicies %i\n", squareTexturedModelIndicies);
-    printf("squareTexturedModelVertices %i\n", squareTexturedModelVertices);
-    printf("squareTexturedModelUVs %i\n", squareTexturedModelUVs);
-    //int sauwaw = sizeof(squareTexturedIndicies);
-    //printf("sizeof(squareTexturedIndicies) %i\n", sauwaw);
-
     // texture
-    // glEnable(GL_TEXTURE_2D);
-    SDL_Surface* surface = IMG_Load(outputTextureName);
+    SDL_Surface* surface = IMG_Load(playerCharacterTextureName);
+    printf("BytesPerPixel: %i - ", surface->format->BytesPerPixel);
+    printf("Loading Texture: [%s] of Size: %ix%i\n", playerCharacterTextureName, surface->w, surface->h);
+    
     glGenTextures(1, &textureID);
-    glActiveTexture(GL_TEXTURE0);
+    // glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureID);
-    int Mode = GL_RGB;
+    int colorMode = GL_RGB;
     if(surface->format->BytesPerPixel == 4)
     {
-        Mode = GL_RGBA;
+        colorMode = GL_RGBA;
     }
     int textureType = GL_NEAREST; // GL_LINEAR
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureType);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureType);
     // push data to gpu
-    glTexImage2D(GL_TEXTURE_2D, 0, Mode, surface->w, surface->h, 0, Mode, GL_UNSIGNED_BYTE, surface->pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, colorMode, surface->w, surface->h, 0, colorMode, GL_UNSIGNED_BYTE, surface->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
-    printf("LOaded texture: %ix%i\n", surface->w, surface->h);
 }
 
 void RenderEntityMaterial2D(const float4x4 viewMatrix, GLint material3, float2 position, float angle, float scale, float brightness)
 {
     // printf("Rendering %i\n", material);
     glUseProgram(material3);
-    glUniform1i( tex_sampler_loc, 0);  
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    // glEnable(GL_TEXTURE_2D);
+    glUniform1i(tex_sampler_loc, 0);  
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedModelIndicies);    // for indices
     glBindBuffer(GL_ARRAY_BUFFER, squareTexturedModelVertices);            // for vertex coordinates
     glEnableVertexAttribArray(attribVertexPosition);
@@ -137,16 +120,6 @@ void RenderEntityMaterial2D(const float4x4 viewMatrix, GLint material3, float2 p
     glVertexAttribPointer(attribVertexPosition, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)vertex_position_offset);
     GLintptr vertex_texcoord_offset = 2 * sizeof(float);
     glVertexAttribPointer(attribVertexTexCoord, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)vertex_texcoord_offset);
-    glBindTexture(GL_TEXTURE_2D, textureID);
-    glEnable(GL_TEXTURE_2D);
-    /*glBindBuffer(GL_ARRAY_BUFFER, squareTexturedModelUVs);
-    glEnableVertexAttribArray(attribVertexTexCoord);*/
-    /*glBindBuffer(GL_ARRAY_BUFFER, squareTexturedModelVertices);
-    glEnableVertexAttribArray(attribVertexTexCoord);*/
-    // glEnableVertexAttribArray(attribVertexPosition);
-    // glVertexAttribPointer(attribVertexPosition, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)(0)); // 0);
-    // glVertexAttribPointer(attribVertexTexCoord, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)sizeof(squareVerts));
-    // glActiveTexture(GL_TEXTURE0);
     glUniformMatrix4fv(gl_view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
     glUniform1f(gl_positionX, position.x);
     glUniform1f(gl_positionY, position.y);
@@ -160,27 +133,8 @@ void RenderEntityMaterial2D(const float4x4 viewMatrix, GLint material3, float2 p
     glDisableVertexAttribArray(attribVertexPosition);
     glDisableVertexAttribArray(attribVertexTexCoord);
     glBindTexture(GL_TEXTURE_2D, 0);
-    glDisable(GL_TEXTURE_2D);
+    // glDisable(GL_TEXTURE_2D);
     glUseProgram(0);
-
-    //glEnableVertexAttribArray(attribVertex);          // activate vertex position array
-    //glEnableVertexAttribArray(attribTexCoord);        // activate texture coords array
-    //glVertexAttribPointer(attribVertex, 2, GL_FLOAT, false, stride, 0);
-    //glVertexAttribPointer(attribTexCoord, 2, GL_FLOAT, false, stride, 2);
-    // glBindBuffer(GL_ARRAY_BUFFER, squareTexturedModel);            // for vertex coordinates
-    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedModel2);    // for indices
-    // glBindVertexArray(squareTexturedVerts);
-    // glDrawArrays(GL_TRIANGLE_STRIP, 0, count);
-    // glVertexPointer(4, GL_FLOAT, 0, &squareTexturedVerts);
-
-    // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    // glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(squareVerts) / sizeof(*squareVerts) / 2);
-    /*glBegin(GL_QUADS);
-        glTexCoord2f(squareUVs[0], squareUVs[1]); glVertex3f(squareVerts[0], squareVerts[1], 0);
-        glTexCoord2f(squareUVs[0], squareUVs[1]); glVertex3f(squareVerts[2], squareVerts[3], 0);
-        glTexCoord2f(squareUVs[0], squareUVs[1]); glVertex3f(squareVerts[4], squareVerts[5], 0);
-        glTexCoord2f(squareUVs[0], squareUVs[1]); glVertex3f(squareVerts[6], squareVerts[7], 0);
-    glEnd();*/
 }
 
 //! Cleanup OpenGL resources
@@ -197,7 +151,7 @@ void EndAppOpenGL()
 
 void UpdateBeginOpenGL(const float4x4 viewMatrix)
 {
-    glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
+    glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);       // Clears the buffer ?
     // glEnable(GL_DEPTH_TEST);
     //! This sets the materials actually, would be best to group entities per material here?
@@ -395,3 +349,55 @@ int LoadShaderFile(const char* filepath, GLchar* buffer, GLint size)
     // glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), &squareTexturedVerts + 2);        // uv
     // glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
     //  glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0); // (void*)(4 * sizeof(float)));
+
+    
+    /*glBindBuffer(GL_ARRAY_BUFFER, squareTexturedModelVertices);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(squareVerts2), squareVerts2, GL_STATIC_DRAW); 
+    glVertexAttribPointer(attribVertexPosition, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(attribVertexPosition);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);*/
+    // uvs
+    /*glBindBuffer(GL_ARRAY_BUFFER, squareTexturedModelUVs);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(squareUVs), squareUVs, GL_STATIC_DRAW);
+    glVertexAttribPointer(attribVertexTexCoord, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(attribVertexTexCoord);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);*/
+
+    // (GL_ARRAY_BUFFER, squareTexturedModel); // bind VBO in order to use
+    //glBufferSubData(GL_ARRAY_BUFFER, 0, vSize, squareVerts);                  // copy verts at offset 0
+    //glBufferSubData(GL_ARRAY_BUFFER, vSize, uvSize, squareUVs);             // copy uvs after verts
+    // reset
+
+    // printf("squareTexturedModelIndicies %i\n", squareTexturedModelIndicies);
+    // printf("squareTexturedModelVertices %i\n", squareTexturedModelVertices);
+    // printf("squareTexturedModelUVs %i\n", squareTexturedModelUVs);
+    //int sauwaw = sizeof(squareTexturedIndicies);
+    //printf("sizeof(squareTexturedIndicies) %i\n", sauwaw);
+
+
+    //glEnableVertexAttribArray(attribVertex);          // activate vertex position array
+    //glEnableVertexAttribArray(attribTexCoord);        // activate texture coords array
+    //glVertexAttribPointer(attribVertex, 2, GL_FLOAT, false, stride, 0);
+    //glVertexAttribPointer(attribTexCoord, 2, GL_FLOAT, false, stride, 2);
+    // glBindBuffer(GL_ARRAY_BUFFER, squareTexturedModel);            // for vertex coordinates
+    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedModel2);    // for indices
+    // glBindVertexArray(squareTexturedVerts);
+    // glDrawArrays(GL_TRIANGLE_STRIP, 0, count);
+    // glVertexPointer(4, GL_FLOAT, 0, &squareTexturedVerts);
+
+    // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    // glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(squareVerts) / sizeof(*squareVerts) / 2);
+    /*glBegin(GL_QUADS);
+        glTexCoord2f(squareUVs[0], squareUVs[1]); glVertex3f(squareVerts[0], squareVerts[1], 0);
+        glTexCoord2f(squareUVs[0], squareUVs[1]); glVertex3f(squareVerts[2], squareVerts[3], 0);
+        glTexCoord2f(squareUVs[0], squareUVs[1]); glVertex3f(squareVerts[4], squareVerts[5], 0);
+        glTexCoord2f(squareUVs[0], squareUVs[1]); glVertex3f(squareVerts[6], squareVerts[7], 0);
+    glEnd();*/
+    /*glBindBuffer(GL_ARRAY_BUFFER, squareTexturedModelUVs);
+    glEnableVertexAttribArray(attribVertexTexCoord);*/
+    /*glBindBuffer(GL_ARRAY_BUFFER, squareTexturedModelVertices);
+    glEnableVertexAttribArray(attribVertexTexCoord);*/
+    // glEnableVertexAttribArray(attribVertexPosition);
+    // glVertexAttribPointer(attribVertexPosition, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)(0)); // 0);
+    // glVertexAttribPointer(attribVertexTexCoord, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)sizeof(squareVerts));
+    // glActiveTexture(GL_TEXTURE0);

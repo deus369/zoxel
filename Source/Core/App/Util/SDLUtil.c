@@ -110,10 +110,12 @@ int SpawnWindowSDL(bool fullscreen)
         return -1;
     }*/
     windowFlags = SDL_WINDOW_OPENGL;
+    #ifndef __EMSCRIPTEN__
     if (fullscreen) 
     {
         windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
     }
+    #endif
     window = SDL_CreateWindow("Zoxel",
         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
         screenDimensions.x, screenDimensions.y, windowFlags);

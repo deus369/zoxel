@@ -34,6 +34,7 @@
 #define SDL_IMAGES
 #define USE_VERTEX_BUFFERS
 #define WEB_BUILD
+// #define DISABLE_TEXTURES
 // --- Core ---
 #include "Core/Core/Core.c"
 #include "Core/App/App.c"
@@ -117,7 +118,6 @@ int main(int argc, char* argv[])
         EndAppGraphics();
         EndAppSDL();
     }
-    printf("Ending Zoxel.\n");
     return 0;
 }
 

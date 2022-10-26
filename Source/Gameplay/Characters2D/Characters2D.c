@@ -27,7 +27,11 @@ void SpawnCharacter2DPrefab(ecs_world_t *world)
     ecs_override(world, character2DPrefab, Brightness);
     ecs_add(world, character2DPrefab, Material);
     ecs_override(world, character2DPrefab, Material);
+    #ifndef DISABLE_TEXTURES
     ecs_set(world, character2DPrefab, Material, { material2 });
+    #else
+    ecs_set(world, character2DPrefab, Material, { material });
+    #endif
     #ifdef Zoxel_Physics2D
     ecs_set(world, character2DPrefab, Acceleration2D, { { 0, 0 } });
     ecs_set(world, character2DPrefab, Rotation2D, { 0 });

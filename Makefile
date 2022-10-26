@@ -9,11 +9,12 @@ CFLAGS = -std=c99			# Specificies c99 Standard
 # CFLAGS += -fPIC			# Position Independent Code https://stackoverflow.com/questions/5311515/gcc-fpic-option
 CFLAGS += -D_DEFAULT_SOURCE	# Needed for a few functions, will be fixed in the future
 CFLAGS += -Wall				# For Warnings
-# Compiler Optimizations & Debug
-CFLAGS += -O3				# Optimization level 3
-CFLAGS += -flto=auto		# fuse linker plugin
-CFLAGS += -D NDEBUG			# No Debugging
-# CFLAGS += -g				# Adds debugging info to executeable
+# DEV MODE
+CFLAGS += -g				# Adds debugging info to executeable
+# FOR RELEASE
+# CFLAGS += -O3				# Optimization level 3
+# CFLAGS += -flto=auto		# fuse linker plugin
+# CFLAGS += -D NDEBUG		# No Debugging
 # Add libraries
 LDLIBS = -lGL				# OpenGL library
 LDLIBS += -lSDL2			# SDL2 Library

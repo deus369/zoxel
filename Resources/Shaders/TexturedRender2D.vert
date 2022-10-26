@@ -1,8 +1,6 @@
 #version 300 es
 
 //! Textured 2D Renderer
-// layout (location = 0)
-// layout (location = 1)
 in lowp vec2 vertexPosition;
 in lowp vec2 vertexUV;
 uniform lowp mat4 viewMatrix;
@@ -10,7 +8,7 @@ uniform lowp float positionX;
 uniform lowp float positionY;
 uniform lowp float angle;
 uniform lowp float scale;
-out vec2 uv;
+out lowp vec2 uv;
 
 void main()
 {

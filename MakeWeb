@@ -12,27 +12,27 @@
 # source ~/emsdk/emsdk_env.sh
 
 # Declare compiler tools and flags
-CC = emcc
-CFLAGS =
-LDLIBS += -std=c99
+CC = emcc  					# Defines the compiler, cc for C code
+CFLAGS = -std=c99			# Specificies c99 StandardX
+CFLAGS += --preload-file Resources
 # what does this do!
-LDLIBS += -s WASM=1
+CFLAGS += -s WASM=1
 # Optimize - Non Devv Build
-LDLIBS += -O3
+CFLAGS += -O3
 # Add libraries
-LDLIBS += -lGL
-LDLIBS += -lSDL
-LDLIBS += -s USE_SDL=2
-LDLIBS += -s USE_SDL_IMAGE=2
-LDLIBS += -s FULL_ES3=1
-LDLIBS += -s USE_WEBGL2=1
-LDLIBS += -s MIN_WEBGL_VERSION=2
-LDLIBS += -s MAX_WEBGL_VERSION=2
-LDLIBS += --preload-file Resources
-LDLIBS += -s ALLOW_MEMORY_GROWTH
+CFLAGS += -lGL
+CFLAGS += -lSDL
+CFLAGS += -s USE_SDL=2
+CFLAGS += -s USE_SDL_IMAGE=2
+CFLAGS += -s FULL_ES3=1
+CFLAGS += -s USE_WEBGL2=1
+CFLAGS += -s MIN_WEBGL_VERSION=2
+CFLAGS += -s MAX_WEBGL_VERSION=2
+CFLAGS += -s ALLOW_MEMORY_GROWTH
 # Threadin
 # LDLIBS += -s USE_PTHREADS=1
 # LDLIBS += -s PTHREAD_POOL_SIZE=2
+LDLIBS = 
 
 # Debug Info
 # LDLIBS += -s ASSERTIONS
