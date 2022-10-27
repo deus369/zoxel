@@ -60,7 +60,6 @@ bool headless = false;
 bool profiler = false;
 ecs_entity_t localPlayer;
 double lastPrinted;
-
 // Forward Declares
 void SpawnGameEntities();
 void UpdateLoop();

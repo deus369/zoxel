@@ -16,7 +16,8 @@ GLuint material;
 GLuint material2;
 // const char *vertExtension = ".vert";
 // const char *fragExtension = ".frag";
-extern void InitializeMesh();
+extern void InitializeMesh(GLuint material);
+extern void InitializeTexturedMesh(GLuint material);
 
 int LoadShader(const char* filepath, GLenum shaderType, GLuint* shader2)
 {
@@ -97,13 +98,13 @@ int CompileShader(const GLchar* buffer, GLenum shaderType, GLuint* shader2)
         free(info_log);
         return -1;
     }
-    glUseProgram(shader);
+    /*glUseProgram(shader);
     GLenum err = glGetError();
     if (err != GL_NO_ERROR)
     {
         printf("GL HAD ERROR with glUseProgram!");
         return -1;
-    }
+    }*/
     *shader2 = shader;
     return 0;
 }
@@ -125,7 +126,7 @@ int LoadDefaultShaders()
     CompileShader(fragShaderSource, GL_FRAGMENT_SHADER, &fragShader);
     material = glCreateProgram();
     LinkShaderProgram(material, vertShader, fragShader);
-    InitializeMesh();
+    InitializeMesh(material);
     return 0;
 }
 
@@ -171,7 +172,8 @@ int LoadShaders()
         printf("Error loading Texture Shader.\n");
         return -1;
     }
-    InitializeMesh();
+    InitializeMesh(material);
+    InitializeTexturedMesh(material2);
     //printf("Material A %i\n", material);
     //printf("Material B %i\n", material2);
     return 0;
