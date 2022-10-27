@@ -97,6 +97,9 @@ void CreateTexturedMesh()
     glGenTextures(1, &textureID);
     // glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureType);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureType);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);    // no mip maps
     // glUniform1i(tex_sampler_loc, 0);
     int textureType = GL_NEAREST; // GL_LINEAR
     // push data to gpu
@@ -124,9 +127,6 @@ void CreateTexturedMesh()
         unsigned char pixels[12] = { 0,0,0, 55,55,55, 125,125,125, 200,200,200 };
         glTexImage2D(GL_TEXTURE_2D, 0, colorMode, 2, 2, 0, colorMode, GL_UNSIGNED_BYTE, pixels);
     }
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureType);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureType);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);    // no mip maps
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(surface);
 }
