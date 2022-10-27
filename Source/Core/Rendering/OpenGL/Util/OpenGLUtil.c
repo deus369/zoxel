@@ -100,7 +100,7 @@ void CreateTexturedMesh()
     glBindTexture(GL_TEXTURE_2D, textureID);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureType);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureType);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);    // no mip maps
+    //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);    // no mip maps
     // glUniform1i(tex_sampler_loc, 0);
     // push data to gpu
     SDL_Surface* surface = IMG_Load(playerCharacterTextureName);
@@ -123,7 +123,7 @@ void CreateTexturedMesh()
     {
         printf("IMG_Load failed: %s\n", IMG_GetError());    // SDL_GetError
         // 2 x 2 x 3 = 12 bytes
-        printf("Loading Texture Test - 4 pixels.\n");
+        // printf("Loading Texture Test - 4 pixels.\n");
         unsigned char pixels[12] = { 0,0,0, 55,55,55, 125,125,125, 200,200,200 };
         glTexImage2D(GL_TEXTURE_2D, 0, colorMode, 2, 2, 0, colorMode, GL_UNSIGNED_BYTE, pixels);
     }
