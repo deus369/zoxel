@@ -66,8 +66,6 @@ void InitializeTexturedMesh(GLuint material)
     glBindTexture(GL_TEXTURE_2D, textureID);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureType);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureType);
-    // glActiveTexture(GL_TEXTURE0);
-    // glUniform1i(tex_sampler_loc, 0);
     // push data to gpu
     SDL_Surface* surface = IMG_Load(playerCharacterTextureName);
     if (surface != NULL && !disableTextureLoaded)
@@ -104,9 +102,6 @@ void RenderEntityMaterial2D(const float4x4 viewMatrix, GLint entityMaterial, flo
     // Texture
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, textureID);
-    // glActiveTexture(GL_TEXTURE0);
-    // glUniform1i(tex_sampler_loc, 0);
-    // glEnableTexture(tex_sampler_loc);
     // Bind Buffer + Indicies
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedModelIndicies);    // for indices
     glBindBuffer(GL_ARRAY_BUFFER, squareTexturedModelVertices);            // for vertex buffer data
@@ -126,6 +121,7 @@ void RenderEntityMaterial2D(const float4x4 viewMatrix, GLint entityMaterial, flo
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
     // Disables
     glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_TEXTURE_2D);
     glDisableVertexAttribArray(attribVertexPosition);
     glDisableVertexAttribArray(attribVertexTexCoord);
     glUseProgram(0);
@@ -219,3 +215,8 @@ Multiple Textures:
     glBindTexture(GL_TEXTURE_2D, texture2);
 
 */
+    // glActiveTexture(GL_TEXTURE0);
+    // glUniform1i(tex_sampler_loc, 0);
+    // glEnableTexture(tex_sampler_loc);
+    // glActiveTexture(GL_TEXTURE0);
+    // glUniform1i(tex_sampler_loc, 0);
