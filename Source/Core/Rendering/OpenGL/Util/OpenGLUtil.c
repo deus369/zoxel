@@ -139,11 +139,9 @@ void RenderEntityMaterial2D(const float4x4 viewMatrix, GLint entityMaterial, flo
     glUseProgram(entityMaterial);
     // Texture
     glEnable(GL_TEXTURE_2D);
-    //glDisable(GL_BLEND);
     glBindTexture(GL_TEXTURE_2D, 0); // textureID);
-
-    // glActiveTexture(GL_TEXTURE0);
-    // glUniform1i(tex_sampler_loc, 0);
+    glActiveTexture(GL_TEXTURE0);
+    glUniform1i(tex_sampler_loc, 0);
     // glEnableTexture(tex_sampler_loc);
     // Bind Buffer + Indicies
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedModelIndicies);    // for indices
