@@ -84,6 +84,7 @@ int CompileShader(const GLchar* buffer, GLenum shaderType, GLuint* shader2)
     GLuint shader = glCreateShader(shaderType);
     glShaderSource(shader, 1, (const GLchar **) &buffer, NULL);
     glCompileShader(shader);
+    glValidateProgram(shader);
     GLint success;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
     if (success != GL_TRUE)
@@ -96,6 +97,13 @@ int CompileShader(const GLchar* buffer, GLenum shaderType, GLuint* shader2)
         free(info_log);
         return -1;
     }
+    glUseProgram(shader);
+    GLenum err = glGetError();
+    if (err != GL_NO_ERROR)
+    {
+        printf("GL HAD ERROR with glUseProgram!");
+        return -1;
+    }
     *shader2 = shader;
     return 0;
 }
@@ -103,11 +111,6 @@ int CompileShader(const GLchar* buffer, GLenum shaderType, GLuint* shader2)
 //! Used incase external shaders are missing
 int LoadDefaultShaders()
 {
-    //ftransform();\n"
-    // "#version 300 es\n"
-    //"     color = vec4(0.8, 0.65, 0.15, 0);\n"
-    // "out lowp vec4 color;\n"
-    // gl_Position = gl_Vertex;
     const GLchar *vertexShaderSource = \
         "void main(void) {\n" \
         "    gl_Position = vec4(0, 0, 0, 1);\n" \

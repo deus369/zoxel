@@ -5,9 +5,14 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
+// texture issues
+//  https://www.reddit.com/r/opengl/comments/ydsqkn/textured_square_works_on_pinephone_pro_but_not_pc/
+//  https://github.com/edo9300/edopro/issues/151
+
 //! Creates materials for Textured and Default 2D Shaders.
 void CreateTexturedMesh();
 
+const bool disableTextureLoaded = false;
 float3 backgroundColor = { 0.2, 0.2, 0.5 };
 // Stored Shader Variables
 GLuint squareModel;
@@ -66,7 +71,6 @@ void CreateTexturedMesh()
     // get indexes
     attribVertexPosition = glGetAttribLocation(material2, "vertexPosition");
     attribVertexTexCoord = glGetAttribLocation(material2, "vertexUV");
-    tex_sampler_loc = glGetUniformLocation(material2, "tex");
     /*printf("material2 %i\n", material2);
     printf("attribVertexPosition %i\n", attribVertexPosition);
     printf("attribVertexTexCoord %i\n", attribVertexTexCoord);*/
@@ -85,43 +89,59 @@ void CreateTexturedMesh()
     // glEnableVertexAttribArray(attribVertexPosition);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     // texture
-    SDL_Surface* surface = IMG_Load(playerCharacterTextureName);
-    printf("BytesPerPixel: %i - ", surface->format->BytesPerPixel);
-    printf("Loading Texture: [%s] of Size: %ix%i\n", playerCharacterTextureName, surface->w, surface->h);
-    
+    int colorMode = GL_RGB;
+    tex_sampler_loc = glGetUniformLocation(material2, "tex");
     glGenTextures(1, &textureID);
     // glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureID);
-    int colorMode = GL_RGB;
-    if(surface->format->BytesPerPixel == 4)
-    {
-        colorMode = GL_RGBA;
-    }
+    // glUniform1i(tex_sampler_loc, 0);
     int textureType = GL_NEAREST; // GL_LINEAR
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureType);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureType);
     // push data to gpu
-    glTexImage2D(GL_TEXTURE_2D, 0, colorMode, surface->w, surface->h, 0, colorMode, GL_UNSIGNED_BYTE, surface->pixels);
+    SDL_Surface* surface = IMG_Load(playerCharacterTextureName);
+    if (surface != NULL && !disableTextureLoaded)
+    {
+        if(surface->format->BytesPerPixel == 4)
+        {
+            colorMode = GL_RGBA;
+        }
+        printf("BytesPerPixel: %i - ", surface->format->BytesPerPixel);
+        printf("Loading Texture: [%s] of Size: %ix%i\n", playerCharacterTextureName, surface->w, surface->h);
+        glTexImage2D(GL_TEXTURE_2D, 0, colorMode, surface->w, surface->h, 0, colorMode, GL_UNSIGNED_BYTE, surface->pixels);
+    }
+    else
+    {
+        printf("IMG_Load failed: %s\n", IMG_GetError());    // SDL_GetError
+        // 2 x 2 x 3 = 12 bytes
+        printf("Loading Texture Test - 4 pixels.\n");
+        unsigned char pixels[12] = { 0,0,0, 55,55,55, 125,125,125, 200,200,200 };
+        glTexImage2D(GL_TEXTURE_2D, 0, colorMode, 2, 2, 0, colorMode, GL_UNSIGNED_BYTE, pixels);
+    }
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(surface);
 }
 
-void RenderEntityMaterial2D(const float4x4 viewMatrix, GLint material3, float2 position, float angle, float scale, float brightness)
+void RenderEntityMaterial2D(const float4x4 viewMatrix, GLint entityMaterial, float2 position, float angle, float scale, float brightness)
 {
-    // printf("Rendering %i\n", material);
-    glUseProgram(material3);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textureID);
-    // glEnable(GL_TEXTURE_2D);
-    glUniform1i(tex_sampler_loc, 0);  
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedModelIndicies);    // for indices
-    glBindBuffer(GL_ARRAY_BUFFER, squareTexturedModelVertices);            // for vertex coordinates
-    glEnableVertexAttribArray(attribVertexPosition);
-    glEnableVertexAttribArray(attribVertexTexCoord);
     GLintptr vertex_position_offset = 0 * sizeof(float);
-    glVertexAttribPointer(attribVertexPosition, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)vertex_position_offset);
     GLintptr vertex_texcoord_offset = 2 * sizeof(float);
+    // printf("Rendering %i\n", material);
+    glUseProgram(entityMaterial);
+    // Texture
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    // glActiveTexture(GL_TEXTURE0);
+    // glUniform1i(tex_sampler_loc, 0);
+    // glEnableTexture(tex_sampler_loc);
+    // Bind Buffer + Indicies
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedModelIndicies);    // for indices
+    glBindBuffer(GL_ARRAY_BUFFER, squareTexturedModelVertices);            // for vertex buffer data
+    // enable the things
+    glEnableVertexAttribArray(attribVertexPosition);
+    glVertexAttribPointer(attribVertexPosition, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)vertex_position_offset);
+    glEnableVertexAttribArray(attribVertexTexCoord);
     glVertexAttribPointer(attribVertexTexCoord, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)vertex_texcoord_offset);
+    // Properties
     glUniformMatrix4fv(gl_view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
     glUniform1f(gl_positionX, position.x);
     glUniform1f(gl_positionY, position.y);
@@ -129,13 +149,11 @@ void RenderEntityMaterial2D(const float4x4 viewMatrix, GLint material3, float2 p
     glUniform1f(gl_angle, angle);
     glUniform1f(gl_brightness, brightness);
     // finally draw it
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL); // (void*)0);               // ptr to indices
-
-    // disable
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+    // Disables
+    glBindTexture(GL_TEXTURE_2D, 0);
     glDisableVertexAttribArray(attribVertexPosition);
     glDisableVertexAttribArray(attribVertexTexCoord);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    // glDisable(GL_TEXTURE_2D);
     glUseProgram(0);
 }
 
@@ -191,3 +209,15 @@ void EndAppGraphics()
 {
     //EndAppOpenGL();
 }
+
+/*
+Multiple Textures:
+
+    https://learnopengl.com/Getting-started/Textures
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture1);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, texture2);
+
+*/

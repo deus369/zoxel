@@ -83,6 +83,7 @@ int SetSDLAttributes(bool vsync)
     SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
     // Request a double-buffered, OpenGL 3.3 (or higher) core profile
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 // #ifdef __EMSCRIPTEN__
 //     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
 // #else

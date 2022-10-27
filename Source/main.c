@@ -33,7 +33,7 @@
 // =-= Modules =-=
 #define SDL_IMAGES
 #define USE_VERTEX_BUFFERS
-#define WEB_BUILD
+// #define WEB_BUILD
 // #define DISABLE_TEXTURES
 // --- Core ---
 #include "Core/Core/Core.c"

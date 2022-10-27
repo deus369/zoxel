@@ -22,7 +22,7 @@ LDLIBS += -lSDL2_image		# SDL2 Image Library
 # LDLIBS += -SDL2_IMAGE_FORMATS='["png"]'
 LDLIBS += -lm				# for math.h
 
-// CFLAGS += -fsanitize=undefined
+# dCFLAGS += -fsanitize=undefined
 
 # LDLIBS += -flto-partition=none ?
 # https://stackoverflow.com/questions/66350310/link-time-optimizations-in-cuda-11-what-are-they-and-how-to-use-them
