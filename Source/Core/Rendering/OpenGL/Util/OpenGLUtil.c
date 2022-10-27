@@ -71,6 +71,7 @@ void InitializeMesh()
 
 void CreateTexturedMesh()
 {
+    int textureType = GL_NEAREST; // GL_LINEAR
     // get indexes
     attribVertexPosition = glGetAttribLocation(material2, "vertexPosition");
     attribVertexTexCoord = glGetAttribLocation(material2, "vertexUV");
@@ -101,7 +102,6 @@ void CreateTexturedMesh()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureType);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);    // no mip maps
     // glUniform1i(tex_sampler_loc, 0);
-    int textureType = GL_NEAREST; // GL_LINEAR
     // push data to gpu
     SDL_Surface* surface = IMG_Load(playerCharacterTextureName);
     if (surface != NULL && !disableTextureLoaded)
