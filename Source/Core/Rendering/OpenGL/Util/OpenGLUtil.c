@@ -96,7 +96,7 @@ void CreateTexturedMesh()
     int colorMode = GL_RGB;
     tex_sampler_loc = glGetUniformLocation(material2, "tex");
     glGenTextures(1, &textureID);
-    // glActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureID);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureType);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureType);
@@ -183,7 +183,7 @@ void UpdateBeginOpenGL(const float4x4 viewMatrix)
 {
     glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);       // Clears the buffer ?
-    glDisable(GL_DEPTH_TEST);
+    // glDisable(GL_DEPTH_TEST);
     //! This sets the materials actually, would be best to group entities per material here?
     glUseProgram(material);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareModelIndicies);    // for indices
