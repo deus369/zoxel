@@ -44,6 +44,7 @@ void Particles2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCou
             ((rand() % 101) / 100.0f) * velocityBounds.y - (velocityBounds.y / 2.0f),
             ((rand() % 101) / 100.0f) * velocityBounds.y - (velocityBounds.y / 2.0f)
         };
+        velocity2Ds[i].value = normalize2D(velocity2Ds[i].value);
         if (velocity2Ds[i].value.x < - velocityBounds.x)
         {
             velocity2Ds[i].value.x = - velocityBounds.x;

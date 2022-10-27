@@ -13,7 +13,7 @@ const char* shaderFragFilepath = "Resources/Shaders/BasicRender2D.frag";
 const char* texturedRender2DVertPath = "Resources/Shaders/TexturedRender2D.vert";
 const char* texturedRender2DFragPath = "Resources/Shaders/TexturedRender2D.frag";
 GLuint material;
-GLuint material2;
+GLuint texturedMaterial;
 // const char *vertExtension = ".vert";
 // const char *fragExtension = ".frag";
 extern void InitializeMesh(GLuint material);
@@ -144,8 +144,8 @@ int LoadTextureRender2DShader()
         printf("Error loading Shader Frag 2.\n");
         return -1;
     }
-    material2 = glCreateProgram();
-    LinkShaderProgram(material2, vertShader, fragShader);
+    texturedMaterial = glCreateProgram();
+    LinkShaderProgram(texturedMaterial, vertShader, fragShader);
     return 0;
 }
 
@@ -173,8 +173,8 @@ int LoadShaders()
         return -1;
     }
     InitializeMesh(material);
-    InitializeTexturedMesh(material2);
+    InitializeTexturedMesh(texturedMaterial);
     //printf("Material A %i\n", material);
-    //printf("Material B %i\n", material2);
+    //printf("Material B %i\n", texturedMaterial);
     return 0;
 }

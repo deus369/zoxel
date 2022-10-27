@@ -115,7 +115,7 @@ int main(int argc, char* argv[])
     EndAppECS();
     if (!headless)
     {
-        EndAppGraphics();
+        EndAppOpenGL();
         EndAppSDL();
     }
     return 0;
@@ -151,9 +151,10 @@ void UpdateLoop()
             cameraTransformMatrix);
         const float4x4 projectionMatrix = GetMainCameraViewMatrix();
         mainCameraMatrix = float4x4_multiply(cameraTransformMatrix, projectionMatrix);
-        UpdateBeginOpenGL(mainCameraMatrix);
+        OpenGLClear();
+        OpenGLBeginInstancing(mainCameraMatrix);
         ecs_run(world, ecs_id(Render2DSystem), 0, NULL);
-        UpdateEndOpenGL();
+        OpenGLEndInstancing();
         ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);
         UpdateLoopSDL();
     }

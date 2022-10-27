@@ -5,18 +5,18 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
+// #define DEVBUILD
 // first, get working on pc
 //  then, move texture updating to the entity system
-
 // texture issues
 //  https://www.reddit.com/r/opengl/comments/ydsqkn/textured_square_works_on_pinephone_pro_but_not_pc/
 //  https://github.com/edo9300/edopro/issues/151
-
 //! Creates materials for Textured and Default 2D Shaders.
 void CreateTexturedMesh();
-
+const char *playerCharacterTextureName = "Resources/Textures/Test.png";
 const bool disableTextureLoaded = false;
 float3 backgroundColor = { 0.2, 0.2, 0.5 };
+int textureType = GL_NEAREST; // GL_LINEAR
 // Stored Shader Variables
 GLuint squareModel;
 GLuint squareModelIndicies;
@@ -27,10 +27,14 @@ GLuint gl_positionY;
 GLuint gl_angle;
 GLuint gl_scale;
 GLuint gl_brightness;
-
-const char *playerCharacterTextureName = "Resources/Textures/Test.png";
 // extern const char *outputTextureName;
 GLuint tex_sampler_loc;
+GLuint gl_view_matrix2;
+GLuint gl_positionX2;
+GLuint gl_positionY2;
+GLuint gl_angle2;
+GLuint gl_scale2;
+GLuint gl_brightness2;
 GLuint squareTexturedModelVertices;
 GLuint squareTexturedModelUVs;
 GLuint squareTexturedModelIndicies;
@@ -41,11 +45,16 @@ GLint attribVertexTexCoord;
 
 void InitializeTexturedMesh(GLuint material)
 {
-    int textureType = GL_NEAREST; // GL_LINEAR
     // get indexes
     attribVertexPosition = glGetAttribLocation(material, "vertexPosition");
     attribVertexTexCoord = glGetAttribLocation(material, "vertexUV");
     tex_sampler_loc = glGetUniformLocation(material, "tex");
+    gl_view_matrix2 = glGetUniformLocation(material, "viewMatrix");
+    gl_positionX2 = glGetUniformLocation(material, "positionX");
+    gl_positionY2 = glGetUniformLocation(material, "positionY");
+    gl_angle2 = glGetUniformLocation(material, "angle");
+    gl_scale2 = glGetUniformLocation(material, "scale");
+    gl_brightness2 = glGetUniformLocation(material, "brightness");
     // gen buffers
     glGenBuffers(1, &squareTexturedModelIndicies);
     glGenBuffers(1, &squareTexturedModelVertices);  // generate a new VBO and get the associated ID
@@ -77,11 +86,13 @@ void InitializeTexturedMesh(GLuint material)
         printf("Loading Texture: [%s] of Size: %ix%i - BytesPerPixel: %i\n",
             playerCharacterTextureName, surface->w, surface->h, surface->format->BytesPerPixel);
         glTexImage2D(GL_TEXTURE_2D, 0, colorMode, surface->w, surface->h, 0, colorMode, GL_UNSIGNED_BYTE, surface->pixels);
+#ifdef DEVBUILD
         GLenum err = glGetError();
         if (err != GL_NO_ERROR)
         {
             printf("GL HAD ERROR with glTexImage2D: %i\n", err);
         }
+#endif
     }
     else
     {
@@ -93,14 +104,27 @@ void InitializeTexturedMesh(GLuint material)
     }
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(surface);
+#ifdef DEVBUILD
+    GLenum err7 = glGetError();
+    if (err7 != GL_NO_ERROR)
+    {
+        printf("GL HAD ERROR with end of InitializeTexturedMesh: %i\n", err7);
+    }
+#endif
 }
 
 void RenderEntityMaterial2D(const float4x4 viewMatrix, GLint entityMaterial, float2 position, float angle, float scale, float brightness)
 {
-    // printf("Rendering %i\n", material);
-    glUseProgram(entityMaterial);
+    // Error 0x500/1280 means GL_INVALID_ENUM
+#ifdef DEVBUILD
+    if (!glIsProgram(entityMaterial))
+    {
+        printf("GL Is not program %i\n", entityMaterial);
+        return;
+    }
+#endif
+    glUseProgram(entityMaterial);   // invalid operation
     // Texture
-    glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, textureID);
     // Bind Buffer + Indicies
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedModelIndicies);    // for indices
@@ -111,20 +135,27 @@ void RenderEntityMaterial2D(const float4x4 viewMatrix, GLint entityMaterial, flo
     glEnableVertexAttribArray(attribVertexTexCoord);
     glVertexAttribPointer(attribVertexTexCoord, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(2 * sizeof(float)));
     // Properties
-    glUniformMatrix4fv(gl_view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
-    glUniform1f(gl_positionX, position.x);
-    glUniform1f(gl_positionY, position.y);
-    glUniform1f(gl_scale, scale);
-    glUniform1f(gl_angle, angle);
-    glUniform1f(gl_brightness, brightness);
+    glUniformMatrix4fv(gl_view_matrix2, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
+    glUniform1f(gl_positionX2, position.x);
+    glUniform1f(gl_positionY2, position.y);
+    glUniform1f(gl_angle2, angle);
+    glUniform1f(gl_scale2, scale);
+    glUniform1f(gl_brightness2, brightness);
     // finally draw it
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
     // Disables
     glBindTexture(GL_TEXTURE_2D, 0);
-    glDisable(GL_TEXTURE_2D);
     glDisableVertexAttribArray(attribVertexPosition);
     glDisableVertexAttribArray(attribVertexTexCoord);
     glUseProgram(0);
+#ifdef DEVBUILD
+    GLenum err66 = glGetError();
+    if (err66 != GL_NO_ERROR)
+    {
+        printf("GL HAD ERROR with End of RenderEntityMaterial2D: %i\n", err66);
+        return;
+    }
+#endif
 }
 
 void InitializeMesh(GLuint material)
@@ -149,13 +180,24 @@ void InitializeMesh(GLuint material)
     // reset
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+#ifdef DEVBUILD
+    GLenum err7 = glGetError();
+    if (err7 != GL_NO_ERROR)
+    {
+        printf("GL HAD ERROR with end of InitializeMesh: %i\n", err7);
+    }
+#endif
 }
 
-void UpdateBeginOpenGL(const float4x4 viewMatrix)
+void OpenGLClear()
 {
     glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);       // Clears the buffer ?
     // glDisable(GL_DEPTH_TEST);
+}
+
+void OpenGLBeginInstancing(const float4x4 viewMatrix)
+{
     //! This sets the materials actually, would be best to group entities per material here?
     glUseProgram(material);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareModelIndicies);    // for indices
@@ -179,17 +221,19 @@ void RenderEntity2D(float2 position, float angle, float scale, float brightness)
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL); // &squareTexturedIndicies);
 }
 
-void UpdateEndOpenGL()
+void OpenGLEndInstancing()
 {
     glDisableVertexAttribArray(attribVertexPosition);
     // glBindBuffer(GL_ARRAY_BUFFER, 0);
     // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glUseProgram(0);
-}
-
-void EndAppGraphics()
-{
-    //EndAppOpenGL();
+#ifdef DEVBUILD
+    GLenum err7 = glGetError();
+    if (err7 != GL_NO_ERROR)
+    {
+        printf("GL HAD ERROR with end of OpenGLEndInstancing: %i\n", err7);
+    }
+#endif
 }
 
 //! Cleanup OpenGL resources
@@ -200,8 +244,16 @@ void EndAppOpenGL()
     glDeleteBuffers(1, &squareTexturedModelVertices);
     glDeleteBuffers(1, &squareTexturedModelUVs);
     glDeleteBuffers(1, &squareTexturedModelIndicies);
+    glDeleteTextures(1, &textureID);
     glDeleteProgram(material);
-    glDeleteProgram(material2);
+    glDeleteProgram(texturedMaterial);
+#ifdef DEVBUILD
+    GLenum err7 = glGetError();
+    if (err7 != GL_NO_ERROR)
+    {
+        printf("GL HAD ERROR with end of EndAppOpenGL: %i\n", err7);
+    }
+#endif
 }
 
 /*

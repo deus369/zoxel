@@ -11,7 +11,7 @@ ECS_DECLARE(Character2D);
 #include "Systems/BobSpawnSystem.c"
 // prefabs
 ecs_entity_t character2DPrefab;
-extern GLuint material2;
+extern GLuint texturedMaterial;
 
 void SpawnCharacter2DPrefab(ecs_world_t *world)
 {
@@ -28,7 +28,7 @@ void SpawnCharacter2DPrefab(ecs_world_t *world)
     ecs_add(world, character2DPrefab, Material);
     ecs_override(world, character2DPrefab, Material);
     #ifndef DISABLE_TEXTURES
-    ecs_set(world, character2DPrefab, Material, { material2 });
+    ecs_set(world, character2DPrefab, Material, { texturedMaterial });
     #else
     ecs_set(world, character2DPrefab, Material, { material });
     #endif

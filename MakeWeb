@@ -2,7 +2,7 @@
 # Error 127 - do this
 # 	source ~/emsdk/emsdk_env.sh
 # Build ~
-#	Make with make  -make -f MakeWeb
+#	make -j24 -B -f MakeWeb
 # Run !
 #	emrun --browser firefox web-demo/index.html
 

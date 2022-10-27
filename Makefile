@@ -10,12 +10,12 @@ CFLAGS = -std=c99			# Specificies c99 Standard
 CFLAGS += -D_DEFAULT_SOURCE	# Needed for a few functions, will be fixed in the future
 CFLAGS += -Wall				# For Warnings
 # DEV MODE
-CFLAGS += -g				# Adds debugging info to executeable
+# CFLAGS += -g				# Adds debugging info to executeable
 # CFLAGS += -fsanitize=address	# detects memory leaks as well
 # FOR RELEASE
-# CFLAGS += -O3				# Optimization level 3
-# CFLAGS += -flto=auto		# fuse linker plugin
-# CFLAGS += -D NDEBUG		# No Debugging
+CFLAGS += -O3				# Optimization level 3
+CFLAGS += -flto=auto		# fuse linker plugin
+CFLAGS += -D NDEBUG		# No Debugging
 # Add libraries
 LDLIBS = -lGL				# OpenGL library
 LDLIBS += -lSDL2			# SDL2 Library

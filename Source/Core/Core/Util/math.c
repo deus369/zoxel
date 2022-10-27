@@ -8,6 +8,12 @@
 #define degreesToRadians (M_PI * 2) / 360.0f
 // const float degreesToRadians = (M_PI * 2) / 360.0f;
 
+float2 normalize2D(float2 input)
+{
+    float length = sqrt(input.x * input.x + input.y * input.y);
+    return (float2) { input.x / length, input.y / length };
+}
+
 float3 normalize(float3 input)
 {
     float length = sqrt(input.x * input.x + input.y * input.y + input.z * input.z);
