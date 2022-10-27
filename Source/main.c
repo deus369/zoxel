@@ -101,6 +101,7 @@ int main(int argc, char* argv[])
         return EXIT_SUCCESS;
     }
     BeginAppECS(argc, argv, profiler);
+    // ecs_log_set_level(1);    // use this for module debug
     ImportModules(world);
     SetMultiThreading();
     SpawnGameEntities();
@@ -131,11 +132,13 @@ void UpdateLoop()
     {
         PollSDLEvents();
     }
+    // ecs_log_set_level(1);    // use this to debug system pipelines
     ecs_progress(world, 0);
     DebugPrinter();
     // Render Loop
     if (!headless)
     {
+        //! Run render system on main thread, until Flecs Threading issue is fixed
         //! Temporary for now, calculate camera matrix here.
         //      - Move Transform Matrix calculations to Transform systems.
         //      - Move  CameraViewMatrix to camera systems.
@@ -150,7 +153,6 @@ void UpdateLoop()
         const float4x4 projectionMatrix = GetMainCameraViewMatrix();
         mainCameraMatrix = float4x4_multiply(cameraTransformMatrix, projectionMatrix);
         UpdateBeginOpenGL(mainCameraMatrix);
-        //! Run render system on main thread, until Flecs Threading issue is fixed
         ecs_run(world, ecs_id(Render2DSystem), 0, NULL);
         UpdateEndOpenGL();
         ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);

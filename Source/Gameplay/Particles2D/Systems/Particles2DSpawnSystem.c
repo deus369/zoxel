@@ -95,6 +95,12 @@ void Particles2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCou
             destroyInTimes
         }
     });
+    free(position2Ds);
+    free(velocity2Ds);
+    free(torque2Ds);
+    free(scale2Ds);
+    free(brightnesses);
+    free(destroyInTimes);
 }
 ECS_SYSTEM_DECLARE(Particles2DSpawnSystem);
 

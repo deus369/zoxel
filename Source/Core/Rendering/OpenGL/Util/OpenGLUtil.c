@@ -5,6 +5,9 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
+// first, get working on pc
+//  then, move texture updating to the entity system
+
 // texture issues
 //  https://www.reddit.com/r/opengl/comments/ydsqkn/textured_square_works_on_pinephone_pro_but_not_pc/
 //  https://github.com/edo9300/edopro/issues/151
@@ -96,8 +99,6 @@ void CreateTexturedMesh()
     glBindTexture(GL_TEXTURE_2D, textureID);
     // glUniform1i(tex_sampler_loc, 0);
     int textureType = GL_NEAREST; // GL_LINEAR
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureType);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureType);
     // push data to gpu
     SDL_Surface* surface = IMG_Load(playerCharacterTextureName);
     if (surface != NULL && !disableTextureLoaded)
@@ -106,9 +107,14 @@ void CreateTexturedMesh()
         {
             colorMode = GL_RGBA;
         }
-        printf("BytesPerPixel: %i - ", surface->format->BytesPerPixel);
-        printf("Loading Texture: [%s] of Size: %ix%i\n", playerCharacterTextureName, surface->w, surface->h);
+        printf("Loading Texture: [%s] of Size: %ix%i - BytesPerPixel: %i\n",
+            playerCharacterTextureName, surface->w, surface->h, surface->format->BytesPerPixel);
         glTexImage2D(GL_TEXTURE_2D, 0, colorMode, surface->w, surface->h, 0, colorMode, GL_UNSIGNED_BYTE, surface->pixels);
+        GLenum err = glGetError();
+        if (err != GL_NO_ERROR)
+        {
+            printf("GL HAD ERROR with glTexImage2D: %i\n", err);
+        }
     }
     else
     {
@@ -118,6 +124,9 @@ void CreateTexturedMesh()
         unsigned char pixels[12] = { 0,0,0, 55,55,55, 125,125,125, 200,200,200 };
         glTexImage2D(GL_TEXTURE_2D, 0, colorMode, 2, 2, 0, colorMode, GL_UNSIGNED_BYTE, pixels);
     }
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureType);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureType);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);    // no mip maps
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(surface);
 }
@@ -129,7 +138,10 @@ void RenderEntityMaterial2D(const float4x4 viewMatrix, GLint entityMaterial, flo
     // printf("Rendering %i\n", material);
     glUseProgram(entityMaterial);
     // Texture
-    glBindTexture(GL_TEXTURE_2D, textureID);
+    //glEnable(GL_TEXTURE_2D);
+    //glDisable(GL_BLEND);
+    glBindTexture(GL_TEXTURE_2D, 0); // textureID);
+
     // glActiveTexture(GL_TEXTURE0);
     // glUniform1i(tex_sampler_loc, 0);
     // glEnableTexture(tex_sampler_loc);

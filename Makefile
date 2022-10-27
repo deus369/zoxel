@@ -11,6 +11,7 @@ CFLAGS += -D_DEFAULT_SOURCE	# Needed for a few functions, will be fixed in the f
 CFLAGS += -Wall				# For Warnings
 # DEV MODE
 CFLAGS += -g				# Adds debugging info to executeable
+# CFLAGS += -fsanitize=address	# detects memory leaks as well
 # FOR RELEASE
 # CFLAGS += -O3				# Optimization level 3
 # CFLAGS += -flto=auto		# fuse linker plugin
