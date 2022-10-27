@@ -138,7 +138,7 @@ void RenderEntityMaterial2D(const float4x4 viewMatrix, GLint entityMaterial, flo
     // printf("Rendering %i\n", material);
     glUseProgram(entityMaterial);
     // Texture
-    //glEnable(GL_TEXTURE_2D);
+    glEnable(GL_TEXTURE_2D);
     //glDisable(GL_BLEND);
     glBindTexture(GL_TEXTURE_2D, 0); // textureID);
 
