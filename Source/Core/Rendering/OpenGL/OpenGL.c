@@ -9,9 +9,14 @@
 #include "Dynamic/opengl.h"
 #include "Dynamic/opengl.c"
 
+// Material Data
+#include "Data/MaterialTextured2D.c"
+
 // Util Functions
 #include "Util/MeshUtil.c"
 #include "Util/ShaderUtil.c"    // uses InitializeMesh
+#include "Util/InstancingUtil.c"
+#include "Util/TexturedMeshUtil.c"
 #include "Util/OpenGLUtil.c"
 
 //! The OpenGL Module.

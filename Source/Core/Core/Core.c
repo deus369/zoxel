@@ -32,7 +32,7 @@ void CoreImport(ecs_world_t *world)
     // ECS_SYSTEM(world, DetectCollisions, EcsOnValidate, Position);
     // Generic EntityDirty System - turns EntityDirty Value back to 0 after one frame.
     //! \todo Add ZOXEL_SYSTEM_MULTITHREADED after
-    ECS_SYSTEM_DEFINE(world, EntityDirtyResetSystem, EcsPostUpdate, [out] EntityDirty);
+    ZOXEL_SYSTEM_MULTITHREADED(world, EntityDirtyResetSystem, EcsPostUpdate, [out] EntityDirty);
 }
 
 #endif

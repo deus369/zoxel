@@ -7,7 +7,7 @@ const char *outputTextureName = "Resources/Textures/Test.png";
 */
 void TextureDirtySystem(ecs_iter_t *it)
 {
-    if (!ecs_query_changed(NULL, it))
+    /*if (!ecs_query_changed(NULL, it))
     {
         return;
     }
@@ -24,7 +24,7 @@ void TextureDirtySystem(ecs_iter_t *it)
         const Texture *texture = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
         SaveAsPNG(texture, textureSize, outputTextureName);
-        // printf("Texture was updated! %lu \n", (long int) it->entities[i]);
-    }
+        // printf("Saved Texture: %lu \n", (long int) it->entities[i]);
+    }*/
 }
 ECS_SYSTEM_DECLARE(TextureDirtySystem);

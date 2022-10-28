@@ -16,7 +16,7 @@ ECS_DECLARE(DisableMovement);
 #include "Systems/Player2DTestSystem.c"
 #include "Systems/CameraMoveSystem.c"
 // prefabs
-ecs_entity_t playerCharacter2DPrefab;
+#include "Prefabs/PlayerCharacter2D.c"
 
 //! Spawn a Player character.
 ecs_entity_t SpawnPlayerCharacter2D(ecs_world_t *world)
@@ -29,15 +29,6 @@ ecs_entity_t SpawnPlayerCharacter2D(ecs_world_t *world)
     return bobPlayer;
 }
 
-//! Initializes prefabs for bob.
-void SpawnPlayerCharacter2DPrefab(ecs_world_t *world)
-{
-    playerCharacter2DPrefab = ecs_new_w_pair(world, EcsIsA, character2DPrefab);
-    ecs_add_id(world, playerCharacter2DPrefab, EcsPrefab);
-    ecs_set_name(world, playerCharacter2DPrefab, "PlayerCharacter2D2");
-    ecs_add(world, playerCharacter2DPrefab, PlayerCharacter2D);
-}
-
 void PlayersImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Players);
@@ -47,7 +38,7 @@ void PlayersImport(ecs_world_t *world)
     ECS_TAG_DEFINE(world, DisableMovement);
     ZOXEL_SYSTEM_MULTITHREADED(world, Player2DMoveSystem, EcsOnUpdate, [in] Keyboard);
     ECS_SYSTEM_DEFINE(world, Player2DTestSystem, EcsOnUpdate, [in] Keyboard);
-    SpawnPlayerCharacter2DPrefab(world);
+    InitializePlayerCharacter2DPrefab(world);
     #ifdef Zoxel_Physics2D
     // \todo Add in out tags to this filter
     ecs_query_t *bobQuery = ecs_query_init(world, &(ecs_query_desc_t) {
@@ -66,8 +57,7 @@ void PlayersImport(ecs_world_t *world)
     ECS_SYSTEM_DEFINE(world, Player2DTestSystem, EcsOnUpdate, [in] Keyboard);
     ecs_system(world, {
         .entity = ecs_id(Player2DTestSystem),
-        // rename to no_readonly
-        .no_staging = true  // with structural changes, does it at the end of the process..
+        .no_staging = true  // rename to no_readonly - with structural changes, does it at the end of the process..
     });
     //#endif
     ZOXEL_SYSTEM_MULTITHREADED(world, CameraMoveSystem, EcsOnUpdate, [in] Keyboard);

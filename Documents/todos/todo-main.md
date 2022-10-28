@@ -9,6 +9,13 @@ To-Do Main
 
 Libraries
 - [ ] Find a Library that supports multiple (keyboard or otherwise) devices
+- [ ] Try out Glut and see if it reduces build size
+    - just need a light weight window app to replace SDL
+- [ ] Audio library for playing sounds - sending them to the sound buffer?
+- [ ] Image processing library - png sequencing from bytes
+
+Textures
+- [ ] Link texture data in material
 
 UI
 - [x] Material Comonent - with a GLInt reference to a material

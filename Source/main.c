@@ -116,6 +116,7 @@ int main(int argc, char* argv[])
     if (!headless)
     {
         EndAppOpenGL();
+        EndAppShaders();
         EndAppSDL();
     }
     return 0;
@@ -137,6 +138,7 @@ void UpdateLoop()
     // Render Loop
     if (!headless)
     {
+        TextureUpdateSystem2();
         //! Run render system on main thread, until Flecs Threading issue is fixed
         //! Temporary for now, calculate camera matrix here.
         //      - Move Transform Matrix calculations to Transform systems.
@@ -192,7 +194,9 @@ void PollSDLEvents()
             // test
             else if (key == SDLK_z) 
             {
-                TestDestroyTexture(world);
+                printf("Update Player Character Texture.\n");
+                ecs_set(world, localPlayer, GenerateTexture, { 1 });
+                // TestDestroyTexture(world);
             }
         }
         else if (eventType == SDL_WINDOWEVENT) // SDL_WINDOWEVENT_RESIZED)

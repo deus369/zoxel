@@ -5,23 +5,27 @@ void NoiseTextureSystem(ecs_iter_t *it)
     {
         return;
     }
+    const int2 redRange = { 55, 188 };
+    const int2 greenRange = { 15, 88 };
+    const int2 blueRange = { 15, 88 };
     // printf("Noise Texture System, Component Changed!!\n");
-    GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 2);
-    EntityDirty *entityDirtys = ecs_field(it, EntityDirty, 3);
-    Texture *textures = ecs_field(it, Texture, 4);
+    EntityDirty *entityDirtys = ecs_field(it, EntityDirty, 2);
+    Texture *textures = ecs_field(it, Texture, 3);
+    const GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 4);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 5);
     int index;
     for (int i = 0; i < it->count; i++)
     {
-        GenerateTexture *generateTexture = &generateTextures[i];
         EntityDirty *entityDirty = &entityDirtys[i];
-        if (generateTexture->value == 1 && entityDirty->value != 0)
+        const GenerateTexture *generateTexture = &generateTextures[i];
+        //! Only rebuild if GenerateTexture is set to true and EntityDirty is false.
+        if (generateTexture->value == 0 || entityDirty->value != 0)
         {
             continue;
         }
-        generateTexture->value = 0;
+        // generateTexture->value = 0;
         entityDirty->value = 1;
-        // printf("Noise was generated! %lu \n", (long int) it->entities[i]);
+        // printf("Noise Texture Generated! %lu \n", (long int) it->entities[i]);
         Texture *texture = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
         initialize_memory_component(texture, color, textureSize->value.x * textureSize->value.y);
@@ -30,9 +34,9 @@ void NoiseTextureSystem(ecs_iter_t *it)
             for (int k = 0; k < textureSize->value.y; k++)
             {
                 index = j + k * textureSize->value.x;
-                texture->value[index].r = rand() % 256;
-                texture->value[index].g = rand() % 256;
-                texture->value[index].b = rand() % 256;
+                texture->value[index].r = redRange.x + rand() % (redRange.y - redRange.x);
+                texture->value[index].g = greenRange.x + rand() % (greenRange.y - greenRange.x);
+                texture->value[index].b = blueRange.x + rand() % (blueRange.y - blueRange.x);
                 texture->value[index].a = rand() % 256;
                 // debug sides of texture, starts at top left
                 if (j == 0)

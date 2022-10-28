@@ -6,6 +6,7 @@
 #include "Components/Material.c"
 // Systems
 #include "Systems/Render2DSystem.c"
+#include "Systems/RenderMaterial2DSystem.c"
 
 //! The Rendering Core Sub Module.
 /**

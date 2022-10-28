@@ -1,9 +1,6 @@
 #ifndef Zoxel_TexturesCore
 #define Zoxel_TexturesCore
 //! Textures Module.
-/**
- * \todo Use ViewMatrix hooks here to handle texture memories.
-*/
 
 // Tags
 ECS_DECLARE(NoiseTexture);
@@ -12,21 +9,19 @@ ECS_DECLARE(GenerateNoiseTexture);
 #include "Components/Texture.c"
 #include "Components/TextureSize.c"
 #include "Components/GenerateTexture.c"
+#include "Components/AnimateTexture.c"
 // Prefabs
 #include "Prefabs/NoiseTexture.c"
 // Util
 #include "Util/TexturesSDL.c"
 // Systems
+#include "Systems/GenerateTextureResetSystem.c"
 #include "Systems/NoiseTextureSystem.c"
 #include "Systems/TextureDirtySystem.c"
-
-//! Spawn a Player character.
-ecs_entity_t SpawnTexture(ecs_world_t *world, ecs_entity_t prefab)
-{
-    ecs_entity_t textureEntity = ecs_new_w_pair(world, EcsIsA, prefab);
-    printf("Spawned Texture [%lu]\n", (long unsigned int) textureEntity);
-    return textureEntity;
-}
+#include "Systems/TextureUpdateSystem.c"
+#include "Systems/AnimateNoiseSystem.c"
+// Tests
+#include "Tests/TestTexture.c"
 
 void TexturesCoreImport(ecs_world_t *world)
 {
@@ -35,30 +30,13 @@ void TexturesCoreImport(ecs_world_t *world)
     ZOXEL_DEFINE_MEMORY_COMPONENT(world, Texture);
     ECS_COMPONENT_DEFINE(world, TextureSize);
     ECS_COMPONENT_DEFINE(world, GenerateTexture);
+    ECS_COMPONENT_DEFINE(world, AnimateTexture);
+    ZOXEL_SYSTEM_MULTITHREADED(world, GenerateTextureResetSystem, EcsPostUpdate, [out] GenerateTexture);
+    ZOXEL_SYSTEM_MULTITHREADED(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture);
     ECS_SYSTEM_DEFINE(world, NoiseTextureSystem, EcsOnUpdate,
-        [none] NoiseTexture,
-        [out] GenerateTexture, [out] EntityDirty,
-        [out] Texture, [in] TextureSize);
-    ECS_SYSTEM_DEFINE(world, TextureDirtySystem, EcsOnValidate,
-        [in] EntityDirty, [in] Texture, [in] TextureSize);
+        [none] NoiseTexture, [out] EntityDirty, [out] Texture, [in] GenerateTexture, [in] TextureSize);
+    ECS_SYSTEM_DEFINE(world, TextureDirtySystem, EcsOnValidate, [in] EntityDirty, [in] Texture, [in] TextureSize);
+    ECS_SYSTEM_DEFINE(world, TextureUpdateSystem, EcsOnValidate, [in] EntityDirty, [in] Texture, [in] TextureSize);
     InitializeNoiseTexturePrefab(world);
 }
-
-
-ecs_entity_t testTextureEntity;
-
-void TestDestroyTexture(ecs_world_t *world)
-{
-    if (testTextureEntity && ecs_is_alive(world, testTextureEntity))
-    {
-        printf("Deleting Texture.\n");
-        ecs_delete(world, testTextureEntity);
-    }
-    else
-    {
-        printf("Spawning Texture.\n");
-        testTextureEntity = SpawnTexture(world, noiseTexturePrefab);
-    }
-}
-
 #endif
