@@ -1,6 +1,10 @@
 #ifndef Zoxel_Core
 #define Zoxel_Core
 
+// #include "../../../Imports/Flecs/flecs.h"
+#include "Util/flecs_macros.c"
+#include "Util/flecs_extensions.c"
+
 // Data
 #include "Data/float2.c"
 #include "Data/float3.c"
@@ -11,7 +15,6 @@
 #include "Data/color.c"
 // Util
 #include "Util/math.c"
-#include "Util/flecs_extensions.c"
 // Components
 #include "Components/EntityDirty.c"
 #include "Components/ID.c"
@@ -32,7 +35,8 @@ void CoreImport(ecs_world_t *world)
     // ECS_SYSTEM(world, DetectCollisions, EcsOnValidate, Position);
     // Generic EntityDirty System - turns EntityDirty Value back to 0 after one frame.
     //! \todo Add ZOXEL_SYSTEM_MULTITHREADED after
-    ZOXEL_SYSTEM_MULTITHREADED(world, EntityDirtyResetSystem, EcsPostUpdate, [out] EntityDirty);
+    // ZOXEL_SYSTEM_MULTITHREADED(world, EntityDirtyResetSystem, EcsPostUpdate, [out] EntityDirty);
+    ECS_SYSTEM_DEFINE(world, EntityDirtyResetSystem, EcsPostUpdate, [out] EntityDirty);
 }
 
 #endif

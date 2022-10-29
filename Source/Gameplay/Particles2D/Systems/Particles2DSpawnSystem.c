@@ -4,7 +4,7 @@ void Particles2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCou
     float2 positionBounds = { 0.1f, 0.5f };
     const float2 velocityBounds = { 0.2f, 12.4f };
     const float torqueBounds = 12.0f;
-    const float2 scaleBounds = { 0.1f, 0.23f };
+    const float2 scaleBounds = { 0.02f, 0.13f };
     const float2 brightnessBounds = { 0.1f, 0.4f };
     const double2 lifeTime = { 0.5f, 12.0f };
     // Create a SpaceShip prefab with a Defense component.

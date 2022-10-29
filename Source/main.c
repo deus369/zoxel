@@ -194,8 +194,8 @@ void PollSDLEvents()
             // test
             else if (key == SDLK_z) 
             {
-                printf("Update Player Character Texture.\n");
-                ecs_set(world, localPlayer, GenerateTexture, { 1 });
+                // printf("Update Player Character Texture.\n");
+                // ecs_set(world, localPlayer, GenerateTexture, { 1 });
                 // TestDestroyTexture(world);
             }
         }

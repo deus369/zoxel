@@ -1,4 +1,5 @@
 extern GLuint textureID;
+//! Not a proper queue yet.
 int queueCount = 0;
 int queueTextureID;
 const Texture *queueTextures;
@@ -6,6 +7,7 @@ const TextureSize *queueTextureSizes;
 
 //! Generate random noise texture.
 /**
+ * Once main thread is fixed, update to gpu in this system.
  * \todo update to gpu here?
 */
 void TextureUpdateSystem(ecs_iter_t *it)
@@ -24,17 +26,19 @@ void TextureUpdateSystem(ecs_iter_t *it)
         {
             continue;
         }
+        // printf("Uploaded Texture to GPU: %lu - ID: %i \n", (long int) it->entities[i], textureID);
         const Texture *texture = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
-        // printf("Uploaded Texture to GPU: %lu - ID: %i \n", (long int) it->entities[i], textureID);
+        // add to queue
         queueTextures = texture;    // [queueCount]
         queueTextureSizes = textureSize;
         queueTextureID = textureID;
         queueCount++;
-        //glBindTexture(GL_TEXTURE_2D, textureID);
-        //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize->value.x, textureSize->value.y,
-        //    0, GL_RGBA, GL_UNSIGNED_BYTE, texture->value);
-        //glBindTexture(GL_TEXTURE_2D, 0);
+
+        /*glBindTexture(GL_TEXTURE_2D, textureID);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize->value.x, textureSize->value.y,
+            0, GL_RGBA, GL_UNSIGNED_BYTE, texture->value);
+        glBindTexture(GL_TEXTURE_2D, 0);*/
     }
 }
 ECS_SYSTEM_DECLARE(TextureUpdateSystem);
