@@ -3,11 +3,13 @@
 
 // Tags
 ECS_DECLARE(Camera);
-ECS_DECLARE(CameraFollower2D);  // a tag for a camera that follows a Character2D
+// ECS_DECLARE(CameraFollower2D);  // a tag for a camera that follows a Character2D
 // Data
 #include "Components/ViewMatrix.c"
 #include "Components/ScreenDimensions.c"
 #include "Components/FieldOfView.c"
+// Prefabs
+#include "Prefabs/Camera2D.c"
 // Systems
 #include "Systems/CameraSpawnSystem.c"
 #include "Systems/ViewMatrixSystem.c"
@@ -18,6 +20,8 @@ void CamerasImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Cameras);
     ECS_TAG_DEFINE(world, Camera);
+    // Until fix is found. \todo Fix this, readd it back here where it belongs.
+    // ECS_TAG_DEFINE(world, CameraFollower2D);
     ECS_COMPONENT_DEFINE(world, ViewMatrix);
     ECS_COMPONENT_DEFINE(world, ScreenDimensions);
     ECS_COMPONENT_DEFINE(world, FieldOfView);

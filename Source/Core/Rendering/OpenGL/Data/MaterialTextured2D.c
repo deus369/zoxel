@@ -1,8 +1,6 @@
-//! A basic x2 building block.
+//! Links to locations inside a base material.
 typedef struct
 {
-    GLuint material;    // link to created material
-    // links to locations
     GLint vertexPosition;
     GLint vertexUV;
     GLuint texture;

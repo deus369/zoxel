@@ -1,9 +1,12 @@
 extern GLuint textureID;
 //! Not a proper queue yet.
+#ifndef maxQueue
+#define maxQueue 512
+#endif
 int queueCount = 0;
-int queueTextureID;
-const Texture *queueTextures;
-const TextureSize *queueTextureSizes;
+int queueTextureIDs[maxQueue];
+const Texture* queueTextures[maxQueue];
+const TextureSize* queueTextureSizes[maxQueue];
 
 //! Generate random noise texture.
 /**
@@ -19,6 +22,8 @@ void TextureUpdateSystem(ecs_iter_t *it)
     const EntityDirty *entityDirtys = ecs_field(it, EntityDirty, 1);
     const Texture *textures = ecs_field(it, Texture, 2);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 3);
+    const TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 4);
+    // printf("TextureUpdateSystem [%i] \n", it->count);
     for (int i = 0; i < it->count; i++)
     {
         const EntityDirty *entityDirty = &entityDirtys[i];
@@ -26,15 +31,15 @@ void TextureUpdateSystem(ecs_iter_t *it)
         {
             continue;
         }
-        // printf("Uploaded Texture to GPU: %lu - ID: %i \n", (long int) it->entities[i], textureID);
         const Texture *texture = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
+        const TextureGPULink *textureGPULink = &textureGPULinks[i];
+        // printf("Uploaded Texture to GPU: %lu -TextureID [%i] \n", (long int) it->entities[i], textureGPULink->value);
         // add to queue
-        queueTextures = texture;    // [queueCount]
-        queueTextureSizes = textureSize;
-        queueTextureID = textureID;
+        queueTextures[queueCount] = texture;    // 
+        queueTextureSizes[queueCount] = textureSize;
+        queueTextureIDs[queueCount] = textureGPULink->value;
         queueCount++;
-
         /*glBindTexture(GL_TEXTURE_2D, textureID);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize->value.x, textureSize->value.y,
             0, GL_RGBA, GL_UNSIGNED_BYTE, texture->value);
@@ -53,14 +58,13 @@ void TextureUpdateSystem2()
     // printf("queueCount: %i \n", queueCount);
     for (int i = queueCount - 1; i >= 0; i--)
     {
-        const Texture *texture = queueTextures; // [i];
-        const TextureSize *textureSize = queueTextureSizes; // [i];
-        glBindTexture(GL_TEXTURE_2D, queueTextureID);
+        const Texture *texture = queueTextures[i];
+        const TextureSize *textureSize = queueTextureSizes[i];
+        glBindTexture(GL_TEXTURE_2D, queueTextureIDs[i]);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize->value.x, textureSize->value.y,
             0, GL_RGBA, GL_UNSIGNED_BYTE, texture->value);
         glBindTexture(GL_TEXTURE_2D, 0);
+        // printf("Updating TextureID [%i] with texture color.red [%i] \n", queueTextureIDs[i], texture->value[8 + 8 * 16].r);
     }
-    queueTextures = NULL;
-    queueTextureSizes = NULL;
     queueCount = 0;
 }

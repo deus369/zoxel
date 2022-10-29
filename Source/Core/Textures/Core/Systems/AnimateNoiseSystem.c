@@ -1,7 +1,7 @@
 //! Resets EntityDirty after one frame.
 void AnimateNoiseSystem(ecs_iter_t *it)
 {
-    const double timePerUpdate = 0.25;
+    const double timePerUpdate = 0.125;
     double deltaTime = it->delta_time;
     AnimateTexture *animateTextures = ecs_field(it, AnimateTexture, 1);
     GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 2);
@@ -18,7 +18,7 @@ void AnimateNoiseSystem(ecs_iter_t *it)
             {
                 generateTexture->value = 1;
                 changed = true;
-                // printf("AnimateNoiseSystem Updating!\n");
+                // printf("AnimateNoiseSystem, GenerateTexture Triggered: [%lu] on index [%i]\n", (long int)(it->entities[i]), i);
             }
         }
     }

@@ -24,14 +24,19 @@ GLuint gl_angle;
 GLuint gl_scale;
 GLuint gl_brightness;
 //! Material B
+GLuint texturedVertShader;
+GLuint texturedFragShader;
+GLuint texturedMaterial;
 MaterialTextured2D materialTextured2D;
 extern void InitializeMesh(GLuint material);
 extern void InitializeTexturedMesh(GLuint material);
 
 void EndAppShaders()
 {
+    glDeleteShader(texturedVertShader);
+    glDeleteShader(texturedFragShader);
     glDeleteProgram(material);
-    glDeleteProgram(materialTextured2D.material);
+    glDeleteProgram(texturedMaterial);
 #ifdef DEVBUILD
     GLenum err7 = glGetError();
     if (err7 != GL_NO_ERROR)
@@ -52,17 +57,17 @@ void InitializeMaterialPropertiesA(GLuint material)
     gl_vertexPositionA = glGetAttribLocation(material, "vertexPosition");
 }
 
-void InitializeMaterialPropertiesB(GLuint material)
+void InitializeMaterialPropertiesB(GLuint material, MaterialTextured2D *materialTextured2D)
 {
-    materialTextured2D.view_matrix = glGetUniformLocation(material, "viewMatrix");
-    materialTextured2D.positionX = glGetUniformLocation(material, "positionX");
-    materialTextured2D.positionY = glGetUniformLocation(material, "positionY");
-    materialTextured2D.angle = glGetUniformLocation(material, "angle");
-    materialTextured2D.scale = glGetUniformLocation(material, "scale");
-    materialTextured2D.brightness = glGetUniformLocation(material, "brightness");
-    materialTextured2D.vertexPosition = glGetAttribLocation(material, "vertexPosition");
-    materialTextured2D.vertexUV = glGetAttribLocation(material, "vertexUV");
-    materialTextured2D.texture = glGetUniformLocation(material, "tex");
+    materialTextured2D->view_matrix = glGetUniformLocation(material, "viewMatrix");
+    materialTextured2D->positionX = glGetUniformLocation(material, "positionX");
+    materialTextured2D->positionY = glGetUniformLocation(material, "positionY");
+    materialTextured2D->angle = glGetUniformLocation(material, "angle");
+    materialTextured2D->scale = glGetUniformLocation(material, "scale");
+    materialTextured2D->brightness = glGetUniformLocation(material, "brightness");
+    materialTextured2D->vertexPosition = glGetAttribLocation(material, "vertexPosition");
+    materialTextured2D->vertexUV = glGetAttribLocation(material, "vertexUV");
+    materialTextured2D->texture = glGetUniformLocation(material, "tex");
 }
 
 int LoadShader(const char* filepath, GLenum shaderType, GLuint* shader2)
@@ -120,9 +125,6 @@ bool LinkShaderProgram(GLuint program, GLuint vertShader, GLuint fragShader)
     }
     glDetachShader(program, vertShader);
     glDetachShader(program, fragShader);
-    // Clean up shaders
-    glDeleteShader(vertShader);
-    glDeleteShader(fragShader);
     return false;
 }
 
@@ -165,26 +167,33 @@ int LoadDefaultShaders()
     CompileShader(fragShaderSource, GL_FRAGMENT_SHADER, &fragShader);
     material = glCreateProgram();
     LinkShaderProgram(material, vertShader, fragShader);
+    // Clean up shaders
+    glDeleteShader(vertShader);
+    glDeleteShader(fragShader);
     InitializeMesh(material);
     return 0;
 }
 
+GLuint CreateTexturedMaterial2D()
+{
+    GLuint material = glCreateProgram();
+    LinkShaderProgram(material, texturedVertShader, texturedFragShader);
+    return material;
+}
+
 int LoadTextureRender2DShader()
 {
-    GLuint vertShader;
-    GLuint fragShader;
-    if (LoadShader(texturedRender2DVertPath, GL_VERTEX_SHADER, &vertShader) != 0)
+    if (LoadShader(texturedRender2DVertPath, GL_VERTEX_SHADER, &texturedVertShader) != 0)
     {
         printf("Error loading Shader Vert 2.\n");
         return -1;
     }
-    if (LoadShader(texturedRender2DFragPath, GL_FRAGMENT_SHADER, &fragShader) != 0)
+    if (LoadShader(texturedRender2DFragPath, GL_FRAGMENT_SHADER, &texturedFragShader) != 0)
     {
         printf("Error loading Shader Frag 2.\n");
         return -1;
     }
-    materialTextured2D.material = glCreateProgram();
-    LinkShaderProgram(materialTextured2D.material, vertShader, fragShader);
+    texturedMaterial = CreateTexturedMaterial2D();
     return 0;
 }
 
@@ -206,15 +215,19 @@ int LoadShaders()
     }
     material = glCreateProgram();
     LinkShaderProgram(material, vertShader, fragShader);
+    // Clean up shaders
+    glDeleteShader(vertShader);
+    glDeleteShader(fragShader);
+    InitializeMaterialPropertiesA(material);
+    InitializeMesh(material);
+    // static
     if (LoadTextureRender2DShader() != 0)
     {
         printf("Error loading Texture Shader.\n");
         return -1;
     }
-    InitializeMaterialPropertiesA(material);
-    InitializeMaterialPropertiesB(materialTextured2D.material);
-    InitializeMesh(material);
-    InitializeTexturedMesh(materialTextured2D.material);
+    InitializeMaterialPropertiesB(texturedMaterial, &materialTextured2D);
+    InitializeTexturedMesh(texturedMaterial);
     //printf("Material A %i\n", material);
     //printf("Material B %i\n", texturedMaterial);
     return 0;

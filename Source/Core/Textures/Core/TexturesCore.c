@@ -47,7 +47,7 @@ void TexturesCoreImport(ecs_world_t *world)
         .ctx = generateTextureQuery
     });
     ECS_SYSTEM_DEFINE(world, GenerateTextureResetSystem, EcsPostUpdate, [out] GenerateTexture);
-    ECS_SYSTEM_DEFINE(world, TextureUpdateSystem, EcsOnValidate, [in] EntityDirty, [in] Texture, [in] TextureSize);
+    ECS_SYSTEM_DEFINE(world, TextureUpdateSystem, EcsOnValidate, [in] EntityDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink);
     // ECS_SYSTEM_DEFINE(world, TextureDirtySystem, EcsOnValidate, [in] EntityDirty, [in] Texture, [in] TextureSize);
     // add change query to NoiseTextureSystem
     InitializeNoiseTexturePrefab(world);

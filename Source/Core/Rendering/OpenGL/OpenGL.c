@@ -8,10 +8,8 @@
 // #include <GLFW/glfw3.h>
 #include "Dynamic/opengl.h"
 #include "Dynamic/opengl.c"
-
 // Material Data
 #include "Data/MaterialTextured2D.c"
-
 // Util Functions
 #include "Util/MeshUtil.c"
 #include "Util/ShaderUtil.c"    // uses InitializeMesh

@@ -45,15 +45,13 @@ void ViewMatrixSystem(ecs_iter_t *it)
         // printf("A Component has not changed.\n");
         return;
     }
-    ScreenDimensions *screenDimensions = ecs_field(it, ScreenDimensions, 1);
-    FieldOfView *fieldOfViews = ecs_field(it, FieldOfView, 2);
+    const ScreenDimensions *screenDimensions = ecs_field(it, ScreenDimensions, 1);
+    const FieldOfView *fieldOfViews = ecs_field(it, FieldOfView, 2);
     ViewMatrix *viewMatrixs = ecs_field(it, ViewMatrix, 3);
     // ecs_query_changed(it->query, &it, ScreenDimensions) || ecs_query_changed(q_read, &it, ScreenDimensions)
     for (int i = 0; i < it->count; i++)
     {
-        ViewMatrix *viewMatrix = &viewMatrixs[i];
         const ScreenDimensions *screenDimensions2 = &screenDimensions[i];
-        const FieldOfView *fieldOfView = &fieldOfViews[i];
         int screenWidth = screenDimensions2->value.x;
         int screenHeight = screenDimensions2->value.y;
         if(screenHeight <= 0)
@@ -61,6 +59,8 @@ void ViewMatrixSystem(ecs_iter_t *it)
             return;
         }
         float aspectRatio = ((float) screenWidth) / ((float) screenHeight);
+        const FieldOfView *fieldOfView = &fieldOfViews[i];
+        ViewMatrix *viewMatrix = &viewMatrixs[i];
         CalculatePerspectiveViewMatrix(&viewMatrix->value, fieldOfView->value, aspectRatio, 0.1f, 100);
         // printMatrix(viewMatrix->value);
         // printf("    Perspective Updated [%ix%i]\n", screenWidth, screenHeight);

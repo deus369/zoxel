@@ -7,6 +7,14 @@ To-Do Main
 
 `Doing`
 
+Weird Things / Need
+- [ ] Find out why CameraFollower2D tag cannot be added in Players Module
+- [ ] Find out why NoiseTextureSystem filter for GenerateTexture only triggers one texture instead of all of them
+- [ ] Keep a property reference upon creating materials
+- [ ] Support for Unique Mesh / Square Mesh (instance vertex data)
+- [ ] When threading issue is fixed, replace Texture queue with mainthread updates `TextureUpdateSystem`
+- [x] Cleanup GPUMaterial and GPUTexture components after destroyed. Use DTOR hooks.
+
 Libraries
 - [ ] Find a Library that supports multiple (keyboard or otherwise) devices
 - [ ] Try out Glut and see if it reduces build size
@@ -15,7 +23,7 @@ Libraries
 - [ ] Image processing library - png sequencing from bytes
 
 Textures
-- [ ] Link texture data in material
+- [x] Link texture data in material
 
 UI
 - [x] Material Comonent - with a GLInt reference to a material

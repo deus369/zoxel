@@ -22,14 +22,15 @@ int textureType = GL_NEAREST; // GL_LINEAR
 GLuint squareTexturedModelIndicies;
 GLuint squareTexturedModelVertices;
 GLuint squareTexturedModelUVs;
-GLuint textureID;
+//! Texture ID
+// GLuint textureID;
 
 void DisposeTexturedMesh()
 {
     glDeleteBuffers(1, &squareTexturedModelIndicies);
     glDeleteBuffers(1, &squareTexturedModelVertices);
     glDeleteBuffers(1, &squareTexturedModelUVs);
-    glDeleteTextures(1, &textureID);
+    // glDeleteTextures(1, &textureID);
 }
 
 void InitializeTexturedMesh(GLuint material)
@@ -50,12 +51,6 @@ void InitializeTexturedMesh(GLuint material)
     glEnableVertexAttribArray(materialTextured2D.vertexPosition);
     glEnableVertexAttribArray(materialTextured2D.vertexUV);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    // texture
-    glGenTextures(1, &textureID);
-    glBindTexture(GL_TEXTURE_2D, textureID);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureType);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureType);
-    glBindTexture(GL_TEXTURE_2D, 0);
 #ifdef DEVBUILD
     GLenum err7 = glGetError();
     if (err7 != GL_NO_ERROR)
@@ -65,13 +60,29 @@ void InitializeTexturedMesh(GLuint material)
 #endif
 }
 
-void RenderEntityMaterial2D(const float4x4 viewMatrix, GLint entityMaterial, float2 position, float angle, float scale, float brightness)
+GLuint SpawnTextureGPU()
 {
-    glUseProgram(entityMaterial);   // invalid operation
+    GLuint textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureType);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureType);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    return textureID;
+}
+
+void RenderEntityMaterial2D(const float4x4 viewMatrix, GLuint material, GLuint texture,
+    float2 position, float angle, float scale, float brightness)
+{
+    //! Keep property reference in material, upon creation.
+    MaterialTextured2D materialTextured2D;
+    InitializeMaterialPropertiesB(material, &materialTextured2D);
+
+    glUseProgram(material);   // invalid operation
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     // Texture
-    glBindTexture(GL_TEXTURE_2D, textureID);
+    glBindTexture(GL_TEXTURE_2D, texture);
     // Bind Buffer + Indicies
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedModelIndicies);    // for indices
     glBindBuffer(GL_ARRAY_BUFFER, squareTexturedModelVertices);            // for vertex buffer data
