@@ -32,8 +32,8 @@ ecs_entity_t SpawnPlayerCharacter2D(ecs_world_t *world)
     return e;
 }
 
-// Why can't i use Cameras.CameraFollower2D tag instead?
-ECS_DECLARE(CameraFollower2D);
+
+ECS_DECLARE(CameraFollower2D);  // Why can't i use Cameras.CameraFollower2D tag instead?
 
 void PlayersImport(ecs_world_t *world)
 {
@@ -42,11 +42,9 @@ void PlayersImport(ecs_world_t *world)
     ECS_TAG_DEFINE(world, Player2D);
     ECS_TAG_DEFINE(world, PlayerCharacter2D);
     ECS_TAG_DEFINE(world, DisableMovement);
-    ECS_TAG_DEFINE(world, CameraFollower2D);
+    ECS_TAG_DEFINE(world, CameraFollower2D);    //! Add this here until tags in other modules can be used.
     ecs_add(world, cameraPrefab, CameraFollower2D);
-    // ECS_ENTITY_DEFINE(world, Camera, 0);
     // printf("Camera ECS ID [%lu]\n", (long unsigned int) ecs_id(Camera));
-    // ECS_SYSTEM_DEFINE(world, CameraFollow2DSystem, EcsOnUpdate, [none] Camera, [out] Position);
 
     #ifdef Zoxel_Physics2D
     // ECS_SYSTEM_DEFINE(world, CameraFollow2DSystem, EcsOnUpdate, [none] Camera, [out] Position);

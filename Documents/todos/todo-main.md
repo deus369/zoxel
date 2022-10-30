@@ -7,13 +7,21 @@ To-Do Main
 
 `Doing`
 
-Weird Things / Need
+Weird Things
 - [ ] Find out why CameraFollower2D tag cannot be added in Players Module
-- [ ] Find out why NoiseTextureSystem filter for GenerateTexture only triggers one texture instead of all of them
-- [ ] Keep a property reference upon creating materials
-- [ ] Support for Unique Mesh / Square Mesh (instance vertex data)
-- [ ] When threading issue is fixed, replace Texture queue with mainthread updates `TextureUpdateSystem`
+- [ ] Why does sprite mess up when updating flecs?? Investigate
+- [ ] When threading issue is fixed
+    - [ ] Replace Texture queue with mainthread updates `TextureUpdateSystem`
+    - [ ] Make render systems work in pipeline and remove from main.c
+- [x] Find out why NoiseTextureSystem filter for GenerateTexture only triggers one texture instead of all of them
 - [x] Cleanup GPUMaterial and GPUTexture components after destroyed. Use DTOR hooks.
+
+Fixes
+- [ ] Keep a property reference upon creating materials (atm its doing it per frame)
+- [ ] Web build doesn't resize canvas - fix this
+
+New Things
+- [ ] Support for Unique Mesh / Square Mesh (instance vertex data)
 
 Libraries
 - [ ] Find a Library that supports multiple (keyboard or otherwise) devices

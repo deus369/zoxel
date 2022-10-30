@@ -19,9 +19,7 @@ ECS_DECLARE(Camera);
 void CamerasImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Cameras);
-    ECS_TAG_DEFINE(world, Camera);
-    // Until fix is found. \todo Fix this, readd it back here where it belongs.
-    // ECS_TAG_DEFINE(world, CameraFollower2D);
+    // ECS_TAG_DEFINE(world, CameraFollower2D); // Until fix is found. \todo Fix this, readd it back here where it belongs.
     ECS_COMPONENT_DEFINE(world, ViewMatrix);
     ECS_COMPONENT_DEFINE(world, ScreenDimensions);
     ECS_COMPONENT_DEFINE(world, FieldOfView);

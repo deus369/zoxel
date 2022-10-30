@@ -60,11 +60,12 @@ void GenerateNoise(Texture* texture, const TextureSize *textureSize)
     }
 }
 
-//! Generate random noise texture.
 void NoiseTextureSystem(ecs_iter_t *it)
 {
     //! This breaks the updates. \todo Fix this. Find out why it doesn't work properly.
-    /*ecs_query_t *changeQuery = it->ctx;
+    //! This doesn't work because the table writes all changes in the first iteration which is for one entity.
+    //!     Possible fix: Make a second system that writes changes at the end of the loop
+    ecs_query_t *changeQuery = it->ctx;
     if (!changeQuery)
     {
         printf("[404; changeQuery is void]\n");
@@ -74,8 +75,8 @@ void NoiseTextureSystem(ecs_iter_t *it)
     {
         return;
     }
-    ecs_iter_t changeIterator = ecs_query_iter(it->world, changeQuery);
-    while (ecs_query_next(&changeIterator));*/
+    // ecs_iter_t changeIterator = ecs_query_iter(it->world, changeQuery);
+    // while (ecs_query_next(&changeIterator));
     // printf("NoiseTextureSystem: [GenerateTexture Changed]\n");
     EntityDirty *entityDirtys = ecs_field(it, EntityDirty, 2);
     Texture *textures = ecs_field(it, Texture, 3);
@@ -103,3 +104,21 @@ void NoiseTextureSystem(ecs_iter_t *it)
     }
 }
 ECS_SYSTEM_DECLARE(NoiseTextureSystem);
+
+
+//! Empty system to reset changes flagged in table
+// void NoiseTextureChangeResetter(ecs_iter_t *it) { } ECS_SYSTEM_DECLARE(NoiseTextureChangeResetter);
+
+
+    /*ecs_query_t *changeQuery = it->ctx;
+    if (!changeQuery)
+    {
+        printf("[404; changeQuery is void]\n");
+        return;
+    }
+    if (!ecs_query_changed(changeQuery, NULL))
+    {
+        return;
+    }
+    ecs_iter_t changeIterator = ecs_query_iter(it->world, changeQuery);
+    while (ecs_query_next(&changeIterator));*/
