@@ -4,8 +4,6 @@ void CameraMoveSystem(ecs_iter_t *it)
     double deltaTime = (double) (it->delta_time);
     double movementPower = 0.006 * 100 * deltaTime; // 2.8f; // * deltaTime;
     float rotatePower = 0.25f * 100 * deltaTime;
-    // const float2 maxVelocity = { 0.12f, 0.12f };
-    // const float2 maxVelocity = { 12.6f, 12.6f };
     // printf("deltaTime! %f\n", deltaTime);
     ecs_query_t *bobQuery = it->ctx;
     if (!bobQuery)

@@ -1,7 +1,6 @@
 #ifndef Zoxel_Core
 #define Zoxel_Core
 
-// #include "../../../Imports/Flecs/flecs.h"
 #include "Util/flecs_macros.c"
 #include "Util/flecs_extensions.c"
 

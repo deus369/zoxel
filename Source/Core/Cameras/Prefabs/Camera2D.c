@@ -3,7 +3,7 @@ ecs_entity_t cameraPrefab;
 
 void SpawnCameraPrefab(ecs_world_t *world)
 {
-    cameraPrefab = ecs_new_prefab(world, "Camera");
+    cameraPrefab = ecs_new_prefab(world, "Camera_Prefab");
     ecs_add(world, cameraPrefab, Camera);
     ecs_add(world, cameraPrefab, Position);
     ecs_add(world, cameraPrefab, Rotation);

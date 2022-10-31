@@ -1,8 +1,9 @@
 //! This script tests bulk spawning inside a system!
 
-// build line
+// Build:
 // cc -std=c99 -o test_bulk_spawn src/Imports/Flecs/flecs.c Tests/test_bulk_spawn.c; ./test_bulk_spawn;
-#include "../src/Imports/Flecs/flecs.h"
+
+#include "../../Imports/Flecs/flecs.h"
 #include "stdlib.h"
 #include "stdio.h"
 

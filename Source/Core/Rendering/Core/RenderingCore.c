@@ -8,6 +8,7 @@
 // Systems
 #include "Systems/Render2DSystem.c"
 #include "Systems/RenderMaterial2DSystem.c"
+#include "Systems/ParticleRenderSystem.c"
 
 //! The Rendering Core Sub Module.
 /**
@@ -21,6 +22,7 @@ void RenderingCoreImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, Mesh);
     ECS_COMPONENT_DEFINE(world, Material);
     ECS_COMPONENT_DEFINE(world, TextureGPULink);
+    // gpu destruction hooks
     ecs_set_hooks(world, Material, {
         .dtor = ecs_dtor(Material)
     });
@@ -29,5 +31,7 @@ void RenderingCoreImport(ecs_world_t *world)
     });
     ECS_SYSTEM_DEFINE(world, Render2DSystem, 0, [in] Position2D, [in] Rotation2D, [in] Scale2D, [in] Brightness, [none] !Material);
     ECS_SYSTEM_DEFINE(world, RenderMaterial2DSystem, 0, [in] Position2D, [in] Rotation2D, [in] Scale2D, [in] Brightness, [in] Material, [in] TextureGPULink);
+    ECS_SYSTEM_DEFINE(world, ParticleRenderSystem, 0,
+        [in] Position, [in] Rotation, [in] Scale2D, [in] Brightness, [none] !Material);
 }
 #endif

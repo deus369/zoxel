@@ -1,3 +1,4 @@
+//! Functions for handling Textured2DMaterial (SquareTextured2D)
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,27 +15,55 @@
 // const char *playerCharacterTextureName = "Resources/Textures/Test.png";
 const bool disableTextureLoaded = false;
 int textureType = GL_NEAREST; // GL_LINEAR
-
 //! \todo Move these references to Material
 //! \todo Update texture based on Player Entity texture updateing
-
+const char* texturedRender2DVertPath = "Resources/Shaders/2D/TexturedRender2D.vert";
+const char* texturedRender2DFragPath = "Resources/Shaders/2D/TexturedRender2D.frag";
+//! Shaders
+GLuint texturedVertShader;
+GLuint texturedFragShader;
+// Material and properties
+GLuint texturedMaterial;
 //! Mesh B - Buffers/Texture
 GLuint squareTexturedModelIndicies;
 GLuint squareTexturedModelVertices;
 GLuint squareTexturedModelUVs;
-//! Texture ID
-// GLuint textureID;
 
-void DisposeTexturedMesh()
+void DisposeTexturedMaterial2D()
 {
     glDeleteBuffers(1, &squareTexturedModelIndicies);
     glDeleteBuffers(1, &squareTexturedModelVertices);
     glDeleteBuffers(1, &squareTexturedModelUVs);
     // glDeleteTextures(1, &textureID);
+    glDeleteShader(texturedVertShader);
+    glDeleteShader(texturedFragShader);
+    glDeleteProgram(texturedMaterial);
+#ifdef DEVBUILD
+    GLenum err7 = glGetError();
+    if (err7 != GL_NO_ERROR)
+    {
+        printf("GL HAD ERROR with end of EndAppOpenGL: %i\n", err7);
+    }
+#endif
+}
+
+void InitializeMaterialPropertiesB(GLuint material, MaterialTextured2D *materialTextured2D)
+{
+    materialTextured2D->view_matrix = glGetUniformLocation(material, "viewMatrix");
+    materialTextured2D->positionX = glGetUniformLocation(material, "positionX");
+    materialTextured2D->positionY = glGetUniformLocation(material, "positionY");
+    materialTextured2D->angle = glGetUniformLocation(material, "angle");
+    materialTextured2D->scale = glGetUniformLocation(material, "scale");
+    materialTextured2D->brightness = glGetUniformLocation(material, "brightness");
+    materialTextured2D->vertexPosition = glGetAttribLocation(material, "vertexPosition");
+    materialTextured2D->vertexUV = glGetAttribLocation(material, "vertexUV");
+    materialTextured2D->texture = glGetUniformLocation(material, "tex");
 }
 
 void InitializeTexturedMesh(GLuint material)
 {
+    MaterialTextured2D materialTextured2D;
+    InitializeMaterialPropertiesB(material, &materialTextured2D);
     // gen buffers
     glGenBuffers(1, &squareTexturedModelIndicies);
     glGenBuffers(1, &squareTexturedModelVertices);  // generate a new VBO and get the associated ID
@@ -108,6 +137,37 @@ void RenderEntityMaterial2D(const float4x4 viewMatrix, GLuint material, GLuint t
     }
 #endif
 }
+
+GLuint CreateTexturedMaterial2D()
+{
+    GLuint material = glCreateProgram();
+    LinkShaderProgram(material, texturedVertShader, texturedFragShader);
+    return material;
+}
+
+int LoadTextureRender2DShader()
+{
+    if (LoadShader(texturedRender2DVertPath, GL_VERTEX_SHADER, &texturedVertShader) != 0)
+    {
+        printf("Error loading Shader Vert 2.\n");
+        return -1;
+    }
+    if (LoadShader(texturedRender2DFragPath, GL_FRAGMENT_SHADER, &texturedFragShader) != 0)
+    {
+        printf("Error loading Shader Frag 2.\n");
+        return -1;
+    }
+    texturedMaterial = CreateTexturedMaterial2D();
+    InitializeTexturedMesh(texturedMaterial);
+    return 0;
+}
+
+
+
+
+
+
+
 
     // Load texture from file and upload to gpu directlyy.
     // push data to gpu

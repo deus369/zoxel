@@ -1,16 +1,5 @@
-#ifndef Zoxel_Particles2D
-#define Zoxel_Particles2D
-//! Zoxel_Particles2D Module
-/**
- * \todo ? idk
-*/
-// Prefabs
 ecs_entity_t particle2DPrefab;
-// Tags
-ECS_DECLARE(Particle2D);
-// Systems
-#include "Systems/Particles2DSpawnSystem.c"
-
+//! Spawns a Particle2D Prefab.
 void SpawnPrefabParticle2D(ecs_world_t *world)
 {
     particle2DPrefab = ecs_new_prefab(world, "Particle2D");
@@ -37,11 +26,3 @@ void SpawnPrefabParticle2D(ecs_world_t *world)
     ecs_override(world, particle2DPrefab, Torque2D);
     #endif
 }
-
-void Particles2DImport(ecs_world_t *world)
-{
-    ECS_MODULE(world, Particles2D);
-    ECS_TAG_DEFINE(world, Particle2D);
-    SpawnPrefabParticle2D(world);
-}
-#endif

@@ -4,7 +4,7 @@
 //! App Module.
 
 bool vsync = false;
-bool fullscreen = true;
+bool fullscreen = false;
 
 #include "Util/SDLUtil.c"
 #include "Util/FlecsUtil.c"

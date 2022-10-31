@@ -32,9 +32,7 @@ ecs_entity_t SpawnPlayerCharacter2D(ecs_world_t *world)
     return e;
 }
 
-
-ECS_DECLARE(CameraFollower2D);  // Why can't i use Cameras.CameraFollower2D tag instead?
-
+// ECS_DECLARE(CameraFollower2D);  // Why can't i use Cameras.CameraFollower2D tag instead?
 void PlayersImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Players);
@@ -42,13 +40,13 @@ void PlayersImport(ecs_world_t *world)
     ECS_TAG_DEFINE(world, Player2D);
     ECS_TAG_DEFINE(world, PlayerCharacter2D);
     ECS_TAG_DEFINE(world, DisableMovement);
-    ECS_TAG_DEFINE(world, CameraFollower2D);    //! Add this here until tags in other modules can be used.
-    ecs_add(world, cameraPrefab, CameraFollower2D);
-    // printf("Camera ECS ID [%lu]\n", (long unsigned int) ecs_id(Camera));
-
+    // Remove these once bug is fixed: https://github.com/SanderMertens/flecs/issues/850
+    // ECS_TAG_DEFINE(world, CameraFollower2D);    //! Add this here until tags in other modules can be used.
+    // ecs_add(world, cameraPrefab, CameraFollower2D);
+    printf("Camera ECS ID [%lu]\n", (long unsigned int) ecs_id(CameraFollower2D));
+    ZOXEL_SYSTEM_MULTITHREADED(world, CameraFollow2DSystem, EcsOnUpdate, [none] cameras.CameraFollower2D, [out] Position);
     #ifdef Zoxel_Physics2D
     // ECS_SYSTEM_DEFINE(world, CameraFollow2DSystem, EcsOnUpdate, [none] Camera, [out] Position);
-    ZOXEL_SYSTEM_MULTITHREADED(world, CameraFollow2DSystem, EcsOnUpdate, [none] CameraFollower2D, [out] Position);
     ecs_query_t *playerCharacter2DQuery = ecs_query_init(world, &(ecs_query_desc_t) {
         .filter.terms = {
             { ecs_id(PlayerCharacter2D), .inout = EcsInOutNone },

@@ -8,67 +8,6 @@
 
 // things
 const bool isForceDefaults = false;
-const char* shaderVertFilepath = "Resources/Shaders/BasicRender2D.vert";
-const char* shaderFragFilepath = "Resources/Shaders/BasicRender2D.frag";
-const char* texturedRender2DVertPath = "Resources/Shaders/TexturedRender2D.vert";
-const char* texturedRender2DFragPath = "Resources/Shaders/TexturedRender2D.frag";
-// const char *vertExtension = ".vert";
-// const char *fragExtension = ".frag";
-GLuint material;
-//! Material A
-GLint gl_vertexPositionA;
-GLuint gl_view_matrix;
-GLuint gl_positionX;
-GLuint gl_positionY;
-GLuint gl_angle;
-GLuint gl_scale;
-GLuint gl_brightness;
-//! Material B
-GLuint texturedVertShader;
-GLuint texturedFragShader;
-GLuint texturedMaterial;
-MaterialTextured2D materialTextured2D;
-extern void InitializeMesh(GLuint material);
-extern void InitializeTexturedMesh(GLuint material);
-
-void EndAppShaders()
-{
-    glDeleteShader(texturedVertShader);
-    glDeleteShader(texturedFragShader);
-    glDeleteProgram(material);
-    glDeleteProgram(texturedMaterial);
-#ifdef DEVBUILD
-    GLenum err7 = glGetError();
-    if (err7 != GL_NO_ERROR)
-    {
-        printf("GL HAD ERROR with end of EndAppOpenGL: %i\n", err7);
-    }
-#endif
-}
-
-void InitializeMaterialPropertiesA(GLuint material)
-{
-    gl_view_matrix = glGetUniformLocation(material, "viewMatrix");
-    gl_angle = glGetUniformLocation(material, "angle");
-    gl_scale = glGetUniformLocation(material, "scale");
-    gl_brightness = glGetUniformLocation(material, "brightness");
-    gl_positionX = glGetUniformLocation(material, "positionX");
-    gl_positionY = glGetUniformLocation(material, "positionY");
-    gl_vertexPositionA = glGetAttribLocation(material, "vertexPosition");
-}
-
-void InitializeMaterialPropertiesB(GLuint material, MaterialTextured2D *materialTextured2D)
-{
-    materialTextured2D->view_matrix = glGetUniformLocation(material, "viewMatrix");
-    materialTextured2D->positionX = glGetUniformLocation(material, "positionX");
-    materialTextured2D->positionY = glGetUniformLocation(material, "positionY");
-    materialTextured2D->angle = glGetUniformLocation(material, "angle");
-    materialTextured2D->scale = glGetUniformLocation(material, "scale");
-    materialTextured2D->brightness = glGetUniformLocation(material, "brightness");
-    materialTextured2D->vertexPosition = glGetAttribLocation(material, "vertexPosition");
-    materialTextured2D->vertexUV = glGetAttribLocation(material, "vertexUV");
-    materialTextured2D->texture = glGetUniformLocation(material, "tex");
-}
 
 int LoadShader(const char* filepath, GLenum shaderType, GLuint* shader2)
 {
@@ -150,8 +89,30 @@ int CompileShader(const GLchar* buffer, GLenum shaderType, GLuint* shader2)
     return 0;
 }
 
+//! For when you only need one material, otherwise will need to return shaders too. Returns material reference.
+GLuint LoadMaterial(const char* vertFilepath, const char* fragFilepath)
+{
+    GLuint vertShader;
+    if (LoadShader(vertFilepath, GL_VERTEX_SHADER, &vertShader) != 0)
+    {
+        printf("Error loading Shader Vert [%s]\n", vertFilepath);
+        return 0;
+    }
+    GLuint fragShader;
+    if (LoadShader(fragFilepath, GL_FRAGMENT_SHADER, &fragShader) != 0)
+    {
+        printf("Error loading Shader Frag [%s]\n", fragFilepath);
+        return 0;
+    }
+    GLuint material = glCreateProgram();
+    LinkShaderProgram(material, vertShader, fragShader);
+    glDeleteShader(vertShader);
+    glDeleteShader(fragShader);
+    return material;
+}
+
 //! Used incase external shaders are missing
-int LoadDefaultShaders()
+/*int LoadDefaultShaders()
 {
     const GLchar *vertexShaderSource = \
         "void main(void) {\n" \
@@ -172,66 +133,7 @@ int LoadDefaultShaders()
     glDeleteShader(fragShader);
     InitializeMesh(material);
     return 0;
-}
-
-GLuint CreateTexturedMaterial2D()
-{
-    GLuint material = glCreateProgram();
-    LinkShaderProgram(material, texturedVertShader, texturedFragShader);
-    return material;
-}
-
-int LoadTextureRender2DShader()
-{
-    if (LoadShader(texturedRender2DVertPath, GL_VERTEX_SHADER, &texturedVertShader) != 0)
-    {
-        printf("Error loading Shader Vert 2.\n");
-        return -1;
-    }
-    if (LoadShader(texturedRender2DFragPath, GL_FRAGMENT_SHADER, &texturedFragShader) != 0)
-    {
-        printf("Error loading Shader Frag 2.\n");
-        return -1;
-    }
-    texturedMaterial = CreateTexturedMaterial2D();
-    return 0;
-}
-
-int LoadShaders()
-{
-    printf("Loading Shader Vert: %s\n", shaderVertFilepath);
-    GLuint vertShader;
-    if (LoadShader(shaderVertFilepath, GL_VERTEX_SHADER, &vertShader) != 0)
-    {
-        printf("Error loading Shader Vert.\n");
-        return -1;
-    }
-    printf("Loading Shader Frag: %s\n", shaderFragFilepath);
-    GLuint fragShader;
-    if (LoadShader(shaderFragFilepath, GL_FRAGMENT_SHADER, &fragShader) != 0)
-    {
-        printf("Error loading Shader Frag.\n");
-        return -1;
-    }
-    material = glCreateProgram();
-    LinkShaderProgram(material, vertShader, fragShader);
-    // Clean up shaders
-    glDeleteShader(vertShader);
-    glDeleteShader(fragShader);
-    InitializeMaterialPropertiesA(material);
-    InitializeMesh(material);
-    // static
-    if (LoadTextureRender2DShader() != 0)
-    {
-        printf("Error loading Texture Shader.\n");
-        return -1;
-    }
-    InitializeMaterialPropertiesB(texturedMaterial, &materialTextured2D);
-    InitializeTexturedMesh(texturedMaterial);
-    //printf("Material A %i\n", material);
-    //printf("Material B %i\n", texturedMaterial);
-    return 0;
-}
+}*/
 
 
     /*glUseProgram(shader);

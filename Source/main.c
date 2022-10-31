@@ -38,21 +38,29 @@
 // --- Core ---
 #include "Core/Core/Core.c"
 #include "Core/App/App.c"
-#include "Core/Timing/Timing.c"
 #include "Core/Inputs/Inputs.c"
+#include "Core/Timing/Timing.c"
 #include "Core/Transforms2D/Transforms2D.c"
 #include "Core/Transforms/Transforms.c"
-#include "Core/Physics2D/Physics2D.c"
-#include "Core/Physics/Physics.c"
 #include "Core/Rendering/Rendering.c"
 #include "Core/Cameras/Cameras.c"
-#include "Core/Textures/Textures.c"
-#include "Core/Voxels/Voxels.c"
+// --- Inner Core ---
+#include "InnerCore/Audios/Audios.c"
+#include "InnerCore/Textures/Textures.c"
+#include "InnerCore/Tiles/Tiles.c"
+#include "InnerCore/Voxels/Voxels.c"
+#include "InnerCore/Physics2D/Physics2D.c"
+#include "InnerCore/Physics/Physics.c"
+// --- Outer Core ---
+#include "OuterCore/Animations/Animations.c"
+#include "OuterCore/UI/UI.c"
+#include "OuterCore/Particles/Particles.c"
+#include "OuterCore/Particles2D/Particles2D.c"
 // --- Gameplay ---
-#include "Gameplay/Particles2D/Particles2D.c"
 #include "Gameplay/Characters2D/Characters2D.c"
 // --- Space ---
 #include "Space/Players/Players.c"
+#include "Space/Realms/Realms.c"
 
 // Settings 
 bool running = true;
@@ -67,28 +75,36 @@ int ProcessArguments(int argc, char* argv[]);
 void PollSDLEvents();
 void DebugPrinter();
 
+extern void setup_canvas_resize();
+
 void ImportModules(ecs_world_t *world)
 {
     // Core Modules
     ECS_IMPORT(world, Core);
-    ECS_IMPORT(world, Timing);
+    if (!headless)
+    {
+        ECS_IMPORT(world, App);
+    }
     ECS_IMPORT(world, Inputs);
+    ECS_IMPORT(world, Timing);
     ECS_IMPORT(world, Transforms2D);
     ECS_IMPORT(world, Transforms);
     if (!headless)
     {
-        ECS_IMPORT(world, App);
         ECS_IMPORT(world, Rendering);
     }
     ECS_IMPORT(world, Cameras);
+    // Inner Core
     ECS_IMPORT(world, Textures);
-    ECS_IMPORT(world, Voxels);
     ECS_IMPORT(world, Physics2D);
     ECS_IMPORT(world, Physics);
-    // Gameplay Modules
+    ECS_IMPORT(world, Voxels);
+    // Outer Core
+    ECS_IMPORT(world, Particles);
     ECS_IMPORT(world, Particles2D);
+    // Gameplay
     ECS_IMPORT(world, Characters2D);
-    // Space Modules
+    // Space
     ECS_IMPORT(world, Players);
 }
 
@@ -102,10 +118,14 @@ int main(int argc, char* argv[])
     BeginAppECS(argc, argv, profiler);
     // ecs_log_set_level(1);    // use this for module debug
     ImportModules(world);
+    #ifdef __EMSCRIPTEN__
+    setup_canvas_resize();
+    #endif
     SetMultiThreading();
     SpawnGameEntities();
 #ifdef __EMSCRIPTEN__
-    emscripten_set_main_loop(UpdateLoop, 60, 1);
+    // emscripten_set_main_loop(UpdateLoop, 60, 1);
+    emscripten_set_main_loop(&UpdateLoop, -1, 1);
 #else
     while (running)
     {
@@ -116,7 +136,6 @@ int main(int argc, char* argv[])
     if (!headless)
     {
         EndAppOpenGL();
-        EndAppShaders();
         EndAppSDL();
     }
     return 0;
@@ -131,6 +150,12 @@ void UpdateLoop()
     if (!headless)
     {
         PollSDLEvents();
+        #ifdef __EMSCRIPTEN__
+        if (UpdateWebCanvas())
+        {
+            return;
+        }
+        #endif
     }
     // ecs_log_set_level(1);    // use this to debug system pipelines
     ecs_progress(world, 0);
@@ -171,6 +196,14 @@ void SpawnGameEntities()
 
 // === Move these to App module ===
 
+void ExitApp()
+{
+    running = false;
+    #ifdef __EMSCRIPTEN__
+    emscripten_cancel_main_loop();
+    #endif
+}
+
 //! Temporary, quick and dirty events.
 void PollSDLEvents()
 {
@@ -182,26 +215,34 @@ void PollSDLEvents()
         int eventType = event.type;
         if (eventType == SDL_QUIT)
         {
-            running = false;
+            ExitApp();
         }
         else if (eventType == SDL_KEYUP)
         {
             SDL_Keycode key = event.key.keysym.sym;
             if (key == SDLK_ESCAPE) 
             {
-                running = false;
+                ExitApp();
             }
             // test
             else if (key == SDLK_z) 
             {
+                const ScreenDimensions *screenDimensions = ecs_get(world, mainCamera, ScreenDimensions);
+                printf("Camera Dimensions %ix%i\n", screenDimensions->value.x, screenDimensions->value.y);
                 // printf("Update Player Character Texture.\n");
                 // ecs_set(world, localPlayer, GenerateTexture, { 1 });
                 // TestDestroyTexture(world);
             }
         }
-        else if (eventType == SDL_WINDOWEVENT) // SDL_WINDOWEVENT_RESIZED)
+        else if (eventType == SDL_WINDOWEVENT)
         {
-            if(event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+            // printf("SDL_WINDOWEVENT Window Event!");
+            if(event.window.event == SDL_WINDOWEVENT_RESIZED)
+            {
+                ResizeOpenGLViewport(event.window.data1, event.window.data2);
+                ResizeCameras(event.window.data1, event.window.data2);
+            }
+            else if(event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
             {
                 ResizeOpenGLViewport(event.window.data1, event.window.data2);
                 ResizeCameras(event.window.data1, event.window.data2);

@@ -71,8 +71,8 @@ SRCS += Source/Space/Players/Systems/Player2DMoveSystem.c
 SRCS += Source/Core/Rendering/Rendering.c
 SRCS += Source/Core/Rendering/Core/RenderingCore.c
 
-SRCS += Resources/Shaders/BasicRender2D.vert
-SRCS += Resources/Shaders/BasicRender2D.frag
+# SRCS += Resources/Shaders/BasicRender2D.vert
+# SRCS += Resources/Shaders/BasicRender2D.frag
 
 web-demo-dev/zoxel-dev.html: $(SRCS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDLIBS)

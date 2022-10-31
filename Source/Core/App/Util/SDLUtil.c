@@ -7,8 +7,41 @@
 #endif
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
+// EM_JS(int2, get_canvas_size, (), { return new int2(window.innerWidth, window.innerHeight); })
+// (int2) { window.innerWidth, window.innerHeight }; });
+
 EM_JS(int, get_canvas_width, (), { return window.innerWidth; });
 EM_JS(int, get_canvas_height, (), { return window.innerHeight; });
+
+// bool isResizeCanvas = false;
+int2 get_canvas_size()
+{
+    return (int2) { get_canvas_width(), get_canvas_height() };
+}
+// EM_JS(int, get_canvas_width, (), { return canvas.width; });
+// EM_JS(int, get_canvas_height, (), { return canvas.height; });
+// Condensed
+void resize_canvas()
+{
+    printf("Resizing Canvas [%ix%i]", get_canvas_width(), get_canvas_height());
+}
+
+EM_JS(void, setup_canvas_resize, (), 
+{
+    window.addEventListener('resize', function(event)
+    {
+        // console.log("Resized Canvas Size: " + window.innerWidth + "x" + window.innerHeight);
+        // printf("Resizing Canvas [%ix%i]", get_canvas_width(), get_canvas_height());
+        /*var result = Module.ccall('resize_canvas', // name of C function
+            'void', // return type
+            [ ], // argument types
+            [ ]); // arguments
+        */
+        // resize_canvas();
+        // isResizeCanvas = true;
+    });
+});
+
 #endif
 
 const char *iconFilename = "Resources/Textures/GameIcon.png";
@@ -55,11 +88,9 @@ void PrintSDLDebug()
     int screenHeight = DM.h;
     printf("    Screen Dimensions: %ix%i\n", screenWidth, screenHeight);
 #ifdef __EMSCRIPTEN__
-    int canvasWidth = get_canvas_width();
-    int canvasHeight = get_canvas_height();
-    printf("    Canvas Screen Dimensions: %ix%i\n", canvasWidth, canvasHeight);
-    screenDimensions.x = canvasWidth;
-    screenDimensions.y = canvasHeight;
+    int2 canvas_size = get_canvas_size();
+    printf("    Canvas Screen Dimensions: %ix%i\n", canvas_size.x, canvas_size.y);
+    screenDimensions = canvas_size;
 #endif
     printf("    Supports SSE:    %s\n", SDL_HasSSE() ? "true" : "false");
     printf("    Supports SSE2:   %s\n", SDL_HasSSE2() ? "true" : "false");
@@ -143,11 +174,6 @@ int SpawnWindowSDL(bool fullscreen)
     return EXIT_SUCCESS;
 }
 
-void UpdateLoopSDL()
-{
-    SDL_GL_SwapWindow(window);
-}
-
 void EndAppSDL()
 {
     if (renderer)
@@ -187,7 +213,31 @@ void ResizeOpenGLViewport(int screenWidth, int screenHeight)
     aspectRatio = ((float)screenDimensions.x) / ((float)screenDimensions.y);
     // printf("Updated Canvas: Screen Dimensions [%i x %i] Aspect Ratio [%f].\n", screenWidth, screenHeight, aspectRatio);
     // what does viewport do? oh well
+#ifndef __EMSCRIPTEN__
     glViewport(0, 0, (GLsizei) screenWidth, (GLsizei) screenHeight);
+#endif
+}
+
+#ifdef __EMSCRIPTEN__
+extern void ResizeCameras(int width, int height);
+
+bool UpdateWebCanvas()
+{
+    int2 canvas_size = get_canvas_size();
+    if (screenDimensions.x != canvas_size.x || screenDimensions.y != canvas_size.y)
+    {
+        // printf("Canvas size has changed [%i x %i]\n", canvas_size.x, canvas_size.y);
+        ResizeOpenGLViewport(canvas_size.x, canvas_size.y);
+        ResizeCameras(canvas_size.x, canvas_size.y);
+        return true;
+    }
+    return false;
+}
+#endif
+
+void UpdateLoopSDL()
+{
+    SDL_GL_SwapWindow(window);
 }
 
 /*
