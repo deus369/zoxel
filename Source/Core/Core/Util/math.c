@@ -1,85 +1,51 @@
-#include <math.h> // for sqrt
-#include <stdlib.h>
-#include <stdio.h>
 // Find more math inspiration at https://gist.github.com/mattatz/86fff4b32d198d0928d0fa4ff32cf6fa
-#ifndef M_PI
-#define M_PI 3.141592653589793
-#endif
-#define degreesToRadians (M_PI * 2) / 360.0f
-// const float degreesToRadians = (M_PI * 2) / 360.0f;
 
-float2 normalize2D(float2 input)
+float4x4 float4x4_position(float3 position)
 {
-    float length = sqrt(input.x * input.x + input.y * input.y);
-    return (float2) { input.x / length, input.y / length };
+    float4x4 matrix = float4x4_identity();
+    matrix.w.x = position.x;
+    matrix.w.y = position.y;
+    matrix.w.z = position.z;
+    return matrix;
 }
 
-float3 normalize3D(float3 input)
+//! View Matrix multipled by projection and used to distort pixel magic.
+float4x4 float4x4_view_matrix(float3 position, float3 forward, float3 up)
 {
-    float length = sqrt(input.x * input.x + input.y * input.y + input.z * input.z);
-    return (float3) { input.x / length, input.y / length, input.z / length };
+    float4x4 matrix = float4x4_position(float3_multiply_float(position, -1.0f));
+    float3 side = { };
+    side = float3_cross(forward, up);
+    side = float3_normalize(side);
+    matrix.x.x = side.x;
+    matrix.y.x = side.y;
+    matrix.z.x = side.z;
+    matrix.x.y = up.x;
+    matrix.y.y = up.y;
+    matrix.z.y = up.z;
+    matrix.x.z = -forward.x;
+    matrix.y.z = -forward.y;
+    matrix.z.z = -forward.z;
+    return matrix;
 }
 
-float3 cross(float3 a, float3 b)
+void float4x4_rotate(float4x4 *matrix, const float4 rotation)
 {
-    return (float3) { 
-        a.y * b.z - a.z * b.y,
-        a.y * b.x - a.x * b.z,
-        a.x * b.y - a.y * b.x
-     };
-}
-
-float4x4 CreateZeroMatrix()
-{
-    float4x4 identity; // = malloc(16 * 4);
-    float* identity2 = (float*) &identity;
-    for (int i = 0; i < 16; i++)
-    {
-        identity2[i] = 0;
-    }
-    return identity;
-}
-
-float4x4 CreateIdentityMatrix()
-{
-    float4x4 identity = CreateZeroMatrix();
-    identity.x.x = 1;
-    identity.y.y = 1;
-    identity.z.z = 1;
-    identity.w.w = 1;
-    return identity;
-}
-
-void printMatrix(const float4x4 matrix)
-{
-    const float* matrix2 = (float*) &matrix;
-    printf("Matrix;\n\t[%f\t%f\t%f\t%f]\n\t[%f\t%f\t%f\t%f]\n\t[%f\t%f\t%f\t%f]\n\t[%f\t%f\t%f\t%f]\n",
-         matrix2[0], matrix2[1], matrix2[2], matrix2[3],
-         matrix2[4], matrix2[5], matrix2[6], matrix2[7],
-         matrix2[8], matrix2[9], matrix2[10], matrix2[11],
-         matrix2[12], matrix2[13], matrix2[14], matrix2[15]);
-}
-
-void print_float4(const float4 input)
-{
-    printf("Float4 [%f %f %f %f]\n", input.x, input.y, input.z, input.w);
-}
-
-float4x4 float4x4_multiply(const float4x4 a, const float4x4 b)
-{
-    float4x4 c = CreateZeroMatrix();
-    float* a2 = (float*) &a;
-    float* b2 = (float*) &b;
-    float* c2 = (float*) &c;
-    for (unsigned j = 0; j < 16; j++)
-    {
-        unsigned i = j % 4;
-        unsigned j4 = j & 12;
-        c2[j] = 
-            a2[j4 + 0] * b2[i + 0] + a2[j4 + 1] * b2[i + 4]
-            + a2[j4 + 2] * b2[i + 8] + a2[j4 + 3] * b2[i + 12];
-    }
-    return c;
+    matrix->x.x *= rotation.x;
+    matrix->y.x *= rotation.x;
+    matrix->z.x *= rotation.x;
+    matrix->w.x *= rotation.x;
+    matrix->x.y *= rotation.y;
+    matrix->y.y *= rotation.y;
+    matrix->z.y *= rotation.y;
+    matrix->w.y *= rotation.y;
+    matrix->x.z *= rotation.z;
+    matrix->y.z *= rotation.z;
+    matrix->z.z *= rotation.z;
+    matrix->w.z *= rotation.z;
+    matrix->x.w *= rotation.w;
+    matrix->y.w *= rotation.w;
+    matrix->z.w *= rotation.w;
+    matrix->w.w *= rotation.w;
 }
 
 float4 quaternion_rotate(float4 q1, float4 q2)
@@ -92,11 +58,6 @@ float4 quaternion_rotate(float4 q1, float4 q2)
     return qr;
 }
 
-float4 quaternion_conjugation(float4 rotation)
-{ 
-    return (float4) { -rotation.x, -rotation.y, -rotation.z, rotation.w }; 
-}
-
 void float4_divide(float4 *input, float division)
 {
     input->x /= division;
@@ -105,34 +66,28 @@ void float4_divide(float4 *input, float division)
     input->w /= division;
 }
 
-/*float4 quaternion_reverse(float4 q)
-{
-    return (float4) { -q.x, -q.y, -q.z, -q.w };
-}*/
-
 float4 quaternion_inverse(float4 q)
 {
     float sqr = sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
     float4 output;
-    output = quaternion_conjugation(q);
+    output = float4_reverse(q);
     float4_divide(&output, sqr);
     return output;
 }
             
-float3 rotateVector(float4 rotation, float3 vertex3)
+float3 float3_rotate_float4(float4 rotation, float3 vertex3)
 {
     // does this need conjugation(inverse(rot)) ?
     // Remove float4 use on vert
     float4 vertex = { vertex3.x, vertex3.y, vertex3.z, 0 };
     rotation = quaternion_inverse(rotation);
-    float4 output = quaternion_rotate(quaternion_conjugation(rotation), quaternion_rotate(vertex, rotation));
+    float4 output = quaternion_rotate(float4_reverse(rotation), quaternion_rotate(vertex, rotation));
     return (float3) { output.x, output.y, output.z };
 }
 
 float4x4 quaternion_to_matrix(float4 quat)
 {
-    float4x4 m = CreateIdentityMatrix(); // float4x4(float4(0, 0, 0, 0), float4(0, 0, 0, 0), float4(0, 0, 0, 0), float4(0, 0, 0, 0));
-
+    float4x4 m = float4x4_identity();
     float x = quat.x;
     float y = quat.y;
     float z = quat.z;
@@ -165,8 +120,30 @@ float4x4 quaternion_to_matrix(float4 quat)
     m.z.z = 1.0 - (xx + yy);
 
     m.w.w = 1.0;
-
     return m;
+}
+
+float3 quaternion_to_euler(float4 q)
+{
+    float3 euler = { };
+    // roll (x-axis rotation)
+    double sinr_cosp = 2 * (q.w * q.x + q.y * q.z);
+    double cosr_cosp = 1 - 2 * (q.x * q.x + q.y * q.y);
+    euler.x = atan2(sinr_cosp, cosr_cosp);
+    // pitch (y-axis rotation)
+    double sinp = 2 * (q.w * q.y - q.z * q.x);
+    if (abs(sinp) >= 1)
+        euler.y = copysign(M_PI / 2, sinp); // use 90 degrees if out of range
+    else
+        euler.y = asin(sinp);
+    // yaw (z-axis rotation)
+    double siny_cosp = 2 * (q.w * q.z + q.x * q.y);
+    double cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z);
+    euler.z = atan2(siny_cosp, cosy_cosp);
+    euler.x /= degreesToRadians;
+    euler.y /= degreesToRadians;
+    euler.z /= degreesToRadians;
+    return euler;
 }
 
 float4 quaternion_from_euler(float3 euler)

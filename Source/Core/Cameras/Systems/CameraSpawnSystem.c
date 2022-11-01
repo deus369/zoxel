@@ -11,7 +11,7 @@ ecs_entity_t SpawnCamera(ecs_world_t *world, float3 position, float4 rotation, i
     ecs_entity_t newCamera = ecs_new_w_pair(world, EcsIsA, cameraPrefab);
     ecs_set(world, newCamera, Position, { position });
     ecs_set(world, newCamera, Rotation, { rotation });
-    ecs_set(world, newCamera, ViewMatrix, { CreateZeroMatrix() });    // malloc(16 * 4)
+    ecs_set(world, newCamera, ViewMatrix, { float4x4_zero() });    // malloc(16 * 4)
     ecs_set(world, newCamera, ScreenDimensions, { { screenDimensions.x, screenDimensions.y } });
     ecs_set(world, newCamera, FieldOfView, { 60 });
     // this part will be hard

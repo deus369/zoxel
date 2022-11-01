@@ -62,7 +62,7 @@ void ViewMatrixSystem(ecs_iter_t *it)
         const FieldOfView *fieldOfView = &fieldOfViews[i];
         ViewMatrix *viewMatrix = &viewMatrixs[i];
         CalculatePerspectiveViewMatrix(&viewMatrix->value, fieldOfView->value, aspectRatio, 0.1f, 100);
-        // printMatrix(viewMatrix->value);
+        // float4x4_print(viewMatrix->value);
         // printf("    Perspective Updated [%ix%i]\n", screenWidth, screenHeight);
     }
 }

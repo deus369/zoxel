@@ -1,9 +1,19 @@
 #ifndef Zoxel_Core
 #define Zoxel_Core
 
+#ifndef M_PI
+#define M_PI 3.141592653589793
+#endif
+#ifndef degreesToRadians
+#define degreesToRadians (M_PI * 2) / 360.0f
+#endif
+// libraries
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h> // for sqrt
+// util
 #include "Util/flecs_macros.c"
 #include "Util/flecs_extensions.c"
-
 // Data
 #include "Data/float2.c"
 #include "Data/float3.c"

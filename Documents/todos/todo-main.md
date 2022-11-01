@@ -5,7 +5,17 @@ To-Do Main
 
 -----
 
+`Core`
+
+[Rendering](todo-rendering.md)
+
+`InnerCore`
+
 [User Interface](todo-ui.md)
+
+[Voxels](todo-voxels.md)
+
+`Extra`
 
 [Tools](todo-tools.md)
 
@@ -15,31 +25,36 @@ To-Do Main
 
 -----
 
+`Cameras`
+- [ ] Fix rotation of camera math - Transform Matrix
+    - should be rotating at point instead of around point
+    - [x] Debug it in euler / position
+- [ ] Free roam camera
+    - [ ] Using mouse to rotate it around
+
 `Current`
 - [ ] 3D Particles
     - [x] Particle3D with 2D mesh
     - [ ] Particle3D with 3D mesh
-- [ ] Character3D with a Cube, Textured
+- [ ] Character3Ds
+    - [ ] Physics 3D
+    - [ ] Jump ability
+    - [ ] Textured Cube - Drawing
 
-`Next`
-- [ ] GameUIs Module
-- [ ] Voxels Module
-- [ ] Stats Module
-- [ ] Audio Module
-- [ ] Tiles Module
-
-`Rendering`
-- [ ] Mesh Component - for unique mesh (maybe later i can scale uis in shader?)
-- [ ] BasicRenderSystem - renders unique mesh / materials
-- [ ] Support for Unique Mesh / Square Mesh (instance vertex data)
+`Input`
+- [ ] Mouse Device + handling
 
 `Lines`
 - [ ] Line2Ds
     - [ ] Line tag / module / prefab etc
 - [ ] Line 3Ds! Grid :D
 
-`Input`
-- [ ] Mouse Device + handling
+`Next Modules`
+- [ ] GameUIs Module
+- [ ] Voxels Module
+- [ ] Stats Module
+- [ ] Audio Module
+- [ ] Tiles Module
 
 `Game UIs`
 - [ ] Generic Main Menu

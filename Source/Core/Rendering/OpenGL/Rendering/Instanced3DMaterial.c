@@ -6,7 +6,6 @@ GLuint materialInstance3D;
 Material3D material3D;
 GLuint materialInstance3D_indicies;
 GLuint materialInstance3D_vertices;
-// MaterialInstance3D materialInstance3DProperties;
 
 void DisposeInstanced3DMaterial()
 {

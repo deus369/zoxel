@@ -30,7 +30,7 @@ void ParticleSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCount)
             ((rand() % 101) / 100.0f) * 1.0f - 0.5f,
             ((rand() % 101) / 100.0f) * 1.0f - 0.5f
         };
-        velocitys[i].value = normalize3D(velocitys[i].value);
+        velocitys[i].value = float3_normalize(velocitys[i].value);
         velocitys[i].value = float3_multiply_float(velocitys[i].value, (velocityBounds.y - velocityBounds.x));
         if (velocitys[i].value.x < 0)
         {

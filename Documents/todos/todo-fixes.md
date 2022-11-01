@@ -9,10 +9,6 @@ Things to just fix after. Technical Debt. Bugs. Etc.
 
 Fixes
 - [ ] Keep a property reference upon creating materials (atm its doing it per frame)
-- [x] Web build doesn't resize canvas - fix 
-
-Refactoring
-- [ ] Make opengl.c/h one file, it imports in functions
 
 Weird Things
 - [ ] Why does sprite mess up when updating flecs?? Investigate.

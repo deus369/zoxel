@@ -11,3 +11,9 @@ float2 float2_multiply_float(float2 input, float mul) // by-value param invokes 
     input.y *= mul;
     return input;
 }
+
+float2 normalize2D(float2 input)
+{
+    float length = sqrt(input.x * input.x + input.y * input.y);
+    return (float2) { input.x / length, input.y / length };
+}

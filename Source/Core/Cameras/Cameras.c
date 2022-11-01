@@ -39,6 +39,7 @@ void SpawnMainCamera(int2 screenDimensions)
     SpawnCamera(world, spawnPosition, spawnRotation, screenDimensions);
 }
 
+//! Uses ecs_get_mut to resize cameras. \todo Create a viewport resize event.
 void ResizeCameras(int width, int height)
 {
     if (!mainCamera || !ecs_is_alive(world, mainCamera))
@@ -55,54 +56,10 @@ const float4x4 GetMainCameraViewMatrix()
 {
     if (!mainCamera || !ecs_is_alive(world, mainCamera))
     {
-        return CreateZeroMatrix();
+        return float4x4_zero();
     }
     const ViewMatrix *viewMatrix = ecs_get(world, mainCamera, ViewMatrix);
     return viewMatrix->value;
-    // glUniformMatrix4fv(gl_view_matrix, 1, GL_FALSE, (const GLfloat*) viewMatrix);
-}
-
-//! View Matrix multipled by projection and used to distort pixel magic.
-float4x4 CalculateViewMatrix(float3 position, float3 forward, float3 up)
-{
-    float4x4 matrix = CreateIdentityMatrix();
-    float3 side = { };
-    side = cross(forward, up);
-    side = normalize3D(side);
-    // float* matrix2 = (float*) &matrix;
-    matrix.x.x = side.x;
-    matrix.y.x = side.y;
-    matrix.z.x = side.z;
-    matrix.x.y = up.x;
-    matrix.y.y = up.y;
-    matrix.z.y = up.z;
-    matrix.x.z = -forward.x;
-    matrix.y.z = -forward.y;
-    matrix.z.z = -forward.z;
-    matrix.w.x = -position.x;
-    matrix.w.y = -position.y;
-    matrix.w.z = -position.z;
-    return matrix;
-}
-
-void RotateMatrix(float4x4 *matrix, const float4 rotation)
-{
-    matrix->x.x *= rotation.x;
-    matrix->y.x *= rotation.x;
-    matrix->z.x *= rotation.x;
-    matrix->w.x *= rotation.x;
-    matrix->x.y *= rotation.y;
-    matrix->y.y *= rotation.y;
-    matrix->z.y *= rotation.y;
-    matrix->w.y *= rotation.y;
-    matrix->x.z *= rotation.z;
-    matrix->y.z *= rotation.z;
-    matrix->z.z *= rotation.z;
-    matrix->w.z *= rotation.z;
-    matrix->x.w *= rotation.w;
-    matrix->y.w *= rotation.w;
-    matrix->z.w *= rotation.w;
-    matrix->w.w *= rotation.w;
 }
 
     // ecs_system_enable_multithreading(world, ecs_id(ViewMatrixSystem));

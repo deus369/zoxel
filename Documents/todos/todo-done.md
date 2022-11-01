@@ -1,7 +1,7 @@
 To-Do Done
 -----
 
-Things that are done.
+Things that are done. A big ole list. To clean up other todo files.
 
 [Back](todo-main.md)
 
@@ -12,6 +12,7 @@ Things that are done.
     - [x] Use minimal example for drawing with uvs?
 - [x] Material Comonent - with a GLInt reference to a material
 - [x] Link texture data in material
+- [x] Web build doesn't resize canvas - fix 
 - [x] Convert SDL of keyboard into an entity
 - [x] Seperate out structs into component files
 - [x] DestroyEntity event and systems, with disposing of allocations (OnDelete events?)

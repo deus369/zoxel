@@ -141,6 +141,7 @@ int main(int argc, char* argv[])
     return 0;
 }
 
+// used globally in render systems
 float4x4 mainCameraMatrix;
 
 //! Main Game Loop
@@ -168,15 +169,15 @@ void UpdateLoop()
         //! Temporary for now, calculate camera matrix here.
         //      - Move Transform Matrix calculations to Transform systems.
         //      - Move  CameraViewMatrix to camera systems.
-        const Position *cameraPosition = ecs_get(world, mainCamera, Position);
-        float3 position = cameraPosition->value;
-        float4x4 cameraTransformMatrix = CalculateViewMatrix(position,
-            (float3) { 0, 0, 1 }, (float3) { 0, 1, 0 } );
-        const Rotation *cameraRotation = ecs_get(world, mainCamera, Rotation);
-        cameraTransformMatrix = float4x4_multiply(
-            quaternion_to_matrix(cameraRotation->value),
-            cameraTransformMatrix);
         const float4x4 projectionMatrix = GetMainCameraViewMatrix();
+        const Position *cameraPosition = ecs_get(world, mainCamera, Position);
+        const Rotation *cameraRotation = ecs_get(world, mainCamera, Rotation);
+        float3 position = cameraPosition->value;
+        float4x4 cameraTransformMatrix = float4x4_view_matrix(position, (float3) { 0, 0, 1 }, (float3) { 0, 1, 0 } );
+        // cameraTransformMatrix = float4x4_identity();
+        cameraTransformMatrix = float4x4_position(float3_multiply_float(position, -1.0f));
+        // rotate transform matrix
+        cameraTransformMatrix = float4x4_multiply(quaternion_to_matrix(cameraRotation->value), cameraTransformMatrix);
         mainCameraMatrix = float4x4_multiply(cameraTransformMatrix, projectionMatrix);
         OpenGLClear();
         OpenGLBeginInstancing(mainCameraMatrix);
@@ -233,7 +234,13 @@ void PollSDLEvents()
             else if (key == SDLK_z) 
             {
                 const ScreenDimensions *screenDimensions = ecs_get(world, mainCamera, ScreenDimensions);
-                printf("Camera Dimensions %ix%i\n", screenDimensions->value.x, screenDimensions->value.y);
+                const Position *cameraPosition = ecs_get(world, mainCamera, Position);
+                const Rotation *cameraRotation = ecs_get(world, mainCamera, Rotation);
+                float3 cameraEuler = quaternion_to_euler(cameraRotation->value);
+                printf("Le Camera\n");
+                printf("    - Dimensions %ix%i\n", screenDimensions->value.x, screenDimensions->value.y);
+                printf("    - Position [x:%f y:%f z:%f]\n", cameraPosition->value.x, cameraPosition->value.y, cameraPosition->value.z);
+                printf("    - Euler [x:%f y:%f z:%f]\n", cameraEuler.x, cameraEuler.y, cameraEuler.z);
                 // printf("Update Player Character Texture.\n");
                 // ecs_set(world, localPlayer, GenerateTexture, { 1 });
                 // TestDestroyTexture(world);
@@ -324,14 +331,14 @@ void DebugPrinter()
 //     }
 // #endif
 
-        // float4x4 cameraTransformMatrix = CreateZeroMatrix();
-        // float4x4 cameraTransformMatrix = CreateIdentityMatrix();
+        // float4x4 cameraTransformMatrix = float4x4_zero();
+        // float4x4 cameraTransformMatrix = float4x4_identity();
         // printf("-----\n");
-        // printMatrix(cameraTransformMatrix);
+        // float4x4_print(cameraTransformMatrix);
         // print_float4(cameraRotation->value);
-        // rotation = quaternion_conjugation(rotation);
-        // RotateMatrix(&cameraTransformMatrix, cameraRotation->value);
-        // printMatrix(cameraTransformMatrix);
+        // rotation = float4_reverse(rotation);
+        // float4x4_rotate(&cameraTransformMatrix, cameraRotation->value);
+        // float4x4_print(cameraTransformMatrix);
 
-        // printMatrix(projectionMatrix);
+        // float4x4_print(projectionMatrix);
         // PrintMatrix(mvp);
