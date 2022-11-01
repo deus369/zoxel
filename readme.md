@@ -14,7 +14,7 @@ So far I am fleshing out basic systems while testing out Flecs useage. So far th
 
 My Task list! [Todo Lists](Documents/todos/todo-main.md)
 
-https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4
+Check out my latest short dev log on YouTube!
 
 [![Open Zoxel](http://img.youtube.com/vi/Yb5DiXVt1k0/0.jpg)](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4 "Open Zoxel")
 
