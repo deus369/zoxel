@@ -8,11 +8,9 @@ Open-Zoxel is under the GPL license as I want any derivatives to stay open, to p
 
 Zoxel has a large scope as I have many ideas. It's game design is influenced from Minecraft, Warcraft and LitRPGs/Tabletops.
 
+Try Le old Zoxel ([here](https://deus0.itch.io/zoxel))
+
 ![Le Old Zoxel](/Screenshots/KEyHna.png?raw=false "Le Old Zoxel")
-
-## How To Build
-
-[How To Build Guide](Documents/howtos/howto-build.md)
 
 ## How far along is it?
 
@@ -20,22 +18,28 @@ So far I am fleshing out basic systems while testing out Flecs useage. So far th
 
 [Todo Lists](Documents/todos/todo-main.md)
 
-![El Libre Zoxel](/Screenshots/W41sdfh.png?raw=false "El Libre Zoxel")
-
-## Dependencies
-
-I am using these libraries due to their light weight and power -unlimited power-
-
-[SDL2](https://www.libsdl.org/index.php) Simple DirectMedia Layer (zlib)
-
-[Flecs](https://github.com/SanderMertens/flecs) Fast and lightweight Entity Component System
-
 ## Why The Change?
 
-Zoxel has been in development a long time (over a decade), over many different engines. It is time for it to set sail again to a custom one, using FLECS for performance!
+Zoxel has been in development a long time (over a decade), over many different engines. It is time for it to set sail again to a custom one, using FLECS for performance! The latest iteration was made from 2017 where I added Unitys ECS.
 
 This was not an easy decision. Gotta go fast! Flecs has offered me a way out of the Unity IPO mess, and it offers greater levels of freedom over my development.
 
 There are 120k+ lines on the unity ecs codebase, so it will take some time for things to be ported.
 
-[Itch IO Old Zoxel](https://deus0.itch.io/zoxel) Developed from 2017 with Unitys ECS
+## How To Build
+
+After you download the repo, you can use Make commands to build it!
+
+[How To Build Guide](Documents/howtos/howto-build.md)
+
+### Dependencies
+
+I am using these libraries due to their light weight and power -unlimited power-
+
+[Flecs](https://github.com/SanderMertens/flecs) Fast and lightweight Entity Component System
+
+[SDL2](https://www.libsdl.org/index.php) Simple DirectMedia Layer (zlib)
+
+[OpenGL](https://www.khronos.org/opengles/) OpenGL 3 ES
+
+I may switch to Glut in the future to reduce build size even more, instead of SDL. I may also try out Vulkan.
