@@ -16,12 +16,9 @@ Try Le old Zoxel ([here](https://deus0.itch.io/zoxel))
 
 So far I am fleshing out basic systems while testing out Flecs useage. So far the performance has been promising!
 
-[Todo Lists](Documents/todos/todo-main.md)
+My Task list! [Todo Lists](Documents/todos/todo-main.md)
 
-<video width="960" height="540" controls>
-  <source src="https://www.youtube.com/watch?v=Yb5DiXVt1k0">
-</video>
-
+https://www.youtube.com/watch?v=Yb5DiXVt1k0
 
 ## Why The Change?
 
