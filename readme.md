@@ -18,6 +18,11 @@ So far I am fleshing out basic systems while testing out Flecs useage. So far th
 
 [Todo Lists](Documents/todos/todo-main.md)
 
+<video width="960" height="540" controls>
+  <source src="https://www.youtube.com/watch?v=Yb5DiXVt1k0">
+</video>
+
+
 ## Why The Change?
 
 Zoxel has been in development a long time (over a decade), over many different engines. It is time for it to set sail again to a custom one, using FLECS for performance! The latest iteration was made from 2017 where I added Unitys ECS.
