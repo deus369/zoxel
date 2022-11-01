@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
     {
         ecs_progress(world, 0);
         UpdateBeginOpenGL(GetMainCameraViewMatrix());
-        ecs_run(world, ecs_id(Render2DSystem), 0, NULL);
+        ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
         UpdateEndOpenGL();
         UpdateLoopSDL();
     }

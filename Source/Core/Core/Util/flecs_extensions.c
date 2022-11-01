@@ -14,3 +14,19 @@ typedef struct
     ecs_query_t *query1;
     ecs_query_t *query2;
 } QueryContainer2;
+
+int32_t ecs_count_id_with_up(const ecs_world_t *world, ecs_entity_t id)
+{
+    ecs_check(world != NULL, ECS_INVALID_PARAMETER, NULL);
+    if (!id)
+    {
+        return 0;
+    }
+    ecs_iter_t it = ecs_term_iter(world, &(ecs_term_t) { 
+         .id = id,
+         .src.flags = EcsSelf | EcsUp
+    });
+    return ecs_iter_count(&it);
+error:
+    return 0;
+}

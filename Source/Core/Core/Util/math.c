@@ -14,7 +14,7 @@ float2 normalize2D(float2 input)
     return (float2) { input.x / length, input.y / length };
 }
 
-float3 normalize(float3 input)
+float3 normalize3D(float3 input)
 {
     float length = sqrt(input.x * input.x + input.y * input.y + input.z * input.z);
     return (float3) { input.x / length, input.y / length, input.z / length };

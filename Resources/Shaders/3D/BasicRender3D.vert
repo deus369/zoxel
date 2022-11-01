@@ -4,7 +4,7 @@
 in lowp vec3 vertexPosition;
 uniform lowp mat4 viewMatrix;
 uniform lowp vec3 position;
-// uniform lowp float angle;
+uniform lowp vec4 rotation;
 uniform lowp float scale;
 
 void main()

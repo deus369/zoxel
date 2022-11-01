@@ -28,7 +28,7 @@ void PrintBobSpawnSystem(ecs_world_t *world)
     // Rotation2D *rotation2Ds = malloc(sizeof(Rotation2D) * bobSpawnCount);
     // Acceleration2D *acceleration2Ds = malloc(sizeof(Acceleration2D) * bobSpawnCount);
     Torque2D *torque2Ds = malloc(sizeof(Torque2D) * bobSpawnCount);
-    Scale2D *scale2Ds = malloc(sizeof(Scale2D) * bobSpawnCount);
+    Scale1D *scale1Ds = malloc(sizeof(Scale1D) * bobSpawnCount);
     Brightness *brightnesses = malloc(sizeof(Brightness) * bobSpawnCount);
     DestroyInTime *destroyInTimes = malloc(sizeof(DestroyInTime) * bobSpawnCount);
     for (int i = 0; i < bobSpawnCount; i++)
@@ -76,7 +76,7 @@ void PrintBobSpawnSystem(ecs_world_t *world)
             velocity2Ds[i].value.y = velocityBounds.x;
         }
         torque2Ds[i].value = ((rand() % 101) / 100.0f) * torqueBounds - (torqueBounds / 2.0f);
-        scale2Ds[i].value = scaleBounds.x + ((rand() % 101) / 100.0f) * (scaleBounds.y - scaleBounds.x);
+        scale1Ds[i].value = scaleBounds.x + ((rand() % 101) / 100.0f) * (scaleBounds.y - scaleBounds.x);
         brightnesses[i].value = brightnessBounds.x + ((rand() % 101) / 100.0f) * (brightnessBounds.y - brightnessBounds.x);
         destroyInTimes[i].value = lifeTime.x + ((rand() % 101) / 100.0f) *  (lifeTime.y - lifeTime.x);
     }
@@ -91,7 +91,7 @@ void PrintBobSpawnSystem(ecs_world_t *world)
             ecs_id(Acceleration2D),
             ecs_id(Rotation2D),
             ecs_id(Torque2D),
-            ecs_id(Scale2D),
+            ecs_id(Scale1D),
             ecs_id(Brightness),
             ecs_id(DestroyInTime)
         },
@@ -104,7 +104,7 @@ void PrintBobSpawnSystem(ecs_world_t *world)
             NULL,           // Acceleration2D
             NULL,           // Rotation2D
             torque2Ds,
-            scale2Ds,
+            scale1Ds,
             brightnesses,
             destroyInTimes
         }
@@ -131,7 +131,7 @@ void PrintBobSpawnSystem(ecs_world_t *world)
     ECS_ENTITY(world, character2DPrefab, Acceleration2D, OVERRIDE | Acceleration2D);
     ECS_ENTITY(world, character2DPrefab, Rotation2D, OVERRIDE | Rotation2D);
     ECS_ENTITY(world, character2DPrefab, Torque2D, OVERRIDE | Torque2D);
-    ECS_ENTITY(world, character2DPrefab, Scale2D, OVERRIDE | Scale2D);
+    ECS_ENTITY(world, character2DPrefab, Scale1D, OVERRIDE | Scale1D);
     ECS_ENTITY(world, character2DPrefab, Brightness, OVERRIDE | Brightness);*/
 
     // ecs_entity_t bobPlayer = ecs_new_w_pair(world, EcsChildOf, playerCharacter2DPrefab);

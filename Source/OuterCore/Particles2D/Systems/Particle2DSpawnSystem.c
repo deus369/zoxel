@@ -1,19 +1,19 @@
 //! Here for now, spawns a one man bobarmy.
-void Particles2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCount)
+void Particle2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCount)
 {
-    float2 positionBounds = { 0.1f, 0.5f };
-    const float2 velocityBounds = { 0.2f, 12.4f };
+    float2 positionBounds = { 0.01f, 0.3f };
+    const float2 velocityBounds = { 0.03f, 0.2f };
     const float torqueBounds = 12.0f;
     const float2 scaleBounds = { 0.02f, 0.13f };
     const float2 brightnessBounds = { 0.1f, 0.4f };
-    const double2 lifeTime = { 0.5f, 12.0f };
+    const double2 lifeTime = { 0.1f, 2.0f };
     // Create a SpaceShip prefab with a Defense component.
     Position2D *position2Ds = malloc(sizeof(Position2D) * spawnCount);
     Velocity2D *velocity2Ds = malloc(sizeof(Velocity2D) * spawnCount);
     // Rotation2D *rotation2Ds = malloc(sizeof(Rotation2D) * spawnCount);
     // Acceleration2D *acceleration2Ds = malloc(sizeof(Acceleration2D) * spawnCount);
     Torque2D *torque2Ds = malloc(sizeof(Torque2D) * spawnCount);
-    Scale2D *scale2Ds = malloc(sizeof(Scale2D) * spawnCount);
+    Scale1D *scale1Ds = malloc(sizeof(Scale1D) * spawnCount);
     Brightness *brightnesses = malloc(sizeof(Brightness) * spawnCount);
     DestroyInTime *destroyInTimes = malloc(sizeof(DestroyInTime) * spawnCount);
     for (int i = 0; i < spawnCount; i++)
@@ -22,47 +22,29 @@ void Particles2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCou
             ((rand() % 101) / 100.0f) * positionBounds.y - (positionBounds.y / 2.0f),
             ((rand() % 101) / 100.0f) * positionBounds.y - (positionBounds.y / 2.0f)
         };
-        if (position2Ds[i].value.x < - positionBounds.x)
-        {
-            position2Ds[i].value.x = - positionBounds.x;
-        }
-        else if (position2Ds[i].value.x > positionBounds.x)
-        {
-            position2Ds[i].value.x = positionBounds.x;
-        }
-        if (position2Ds[i].value.y < - positionBounds.x)
-        {
-            position2Ds[i].value.y = - positionBounds.x;
-        }
-        else if (position2Ds[i].value.y > positionBounds.x)
-        {
-            position2Ds[i].value.y = positionBounds.x;
-        }
         position2Ds[i].value.x += bobPosition.x;
         position2Ds[i].value.y += bobPosition.y;
-        velocity2Ds[i].value = (float2) {
-            ((rand() % 101) / 100.0f) * velocityBounds.y - (velocityBounds.y / 2.0f),
-            ((rand() % 101) / 100.0f) * velocityBounds.y - (velocityBounds.y / 2.0f)
-        };
+        velocity2Ds[i].value = (float2) { ((rand() % 101) / 100.0f) * 1.0f - 0.5f, ((rand() % 101) / 100.0f) * 1.0f - 0.5f };
         velocity2Ds[i].value = normalize2D(velocity2Ds[i].value);
-        if (velocity2Ds[i].value.x < - velocityBounds.x)
+        velocity2Ds[i].value = float2_multiply_float(velocity2Ds[i].value, (velocityBounds.y - velocityBounds.x));
+        if (velocity2Ds[i].value.x < 0)
         {
-            velocity2Ds[i].value.x = - velocityBounds.x;
+            velocity2Ds[i].value.x -= velocityBounds.x;
         }
-        else if (velocity2Ds[i].value.x > velocityBounds.x)
+        else
         {
-            velocity2Ds[i].value.x = velocityBounds.x;
+            velocity2Ds[i].value.x += velocityBounds.x;
         }
-        if (velocity2Ds[i].value.y < - velocityBounds.x)
+        if (velocity2Ds[i].value.y < 0)
         {
-            velocity2Ds[i].value.y = - velocityBounds.x;
+            velocity2Ds[i].value.y -= velocityBounds.x;
         }
-        else if (velocity2Ds[i].value.y > velocityBounds.x)
+        else
         {
-            velocity2Ds[i].value.y = velocityBounds.x;
+            velocity2Ds[i].value.y += velocityBounds.x;
         }
         torque2Ds[i].value = ((rand() % 101) / 100.0f) * torqueBounds - (torqueBounds / 2.0f);
-        scale2Ds[i].value = scaleBounds.x + ((rand() % 101) / 100.0f) * (scaleBounds.y - scaleBounds.x);
+        scale1Ds[i].value = scaleBounds.x + ((rand() % 101) / 100.0f) * (scaleBounds.y - scaleBounds.x);
         brightnesses[i].value = brightnessBounds.x + ((rand() % 101) / 100.0f) * (brightnessBounds.y - brightnessBounds.x);
         destroyInTimes[i].value = lifeTime.x + ((rand() % 101) / 100.0f) *  (lifeTime.y - lifeTime.x);
     }
@@ -78,7 +60,7 @@ void Particles2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCou
             ecs_id(Acceleration2D),
             ecs_id(Rotation2D),
             ecs_id(Torque2D),
-            ecs_id(Scale2D),
+            ecs_id(Scale1D),
             ecs_id(Brightness),
             ecs_id(DestroyInTime)
         },
@@ -91,7 +73,7 @@ void Particles2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCou
             NULL,           // Acceleration2D
             NULL,           // Rotation2D
             torque2Ds,
-            scale2Ds,
+            scale1Ds,
             brightnesses,
             destroyInTimes
         }
@@ -99,28 +81,11 @@ void Particles2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCou
     free(position2Ds);
     free(velocity2Ds);
     free(torque2Ds);
-    free(scale2Ds);
+    free(scale1Ds);
     free(brightnesses);
     free(destroyInTimes);
 }
-ECS_SYSTEM_DECLARE(Particles2DSpawnSystem);
-
-
-int32_t ecs_count_id_with_up(const ecs_world_t *world, ecs_entity_t id)
-{
-    ecs_check(world != NULL, ECS_INVALID_PARAMETER, NULL);
-    if (!id)
-    {
-        return 0;
-    }
-    ecs_iter_t it = ecs_term_iter(world, &(ecs_term_t) { 
-         .id = id,
-         .src.flags = EcsSelf | EcsUp
-    });
-    return ecs_iter_count(&it);
-error:
-    return 0;
-}
+ECS_SYSTEM_DECLARE(Particle2DSpawnSystem);
 
 int GetParticles2DCount(ecs_world_t *world)
 {
@@ -153,3 +118,35 @@ void DebugParticlesSpawned(ecs_world_t *world)
     // }
 
     // return count;
+        /*if (velocity2Ds[i].value.x < - velocityBounds.x)
+        {
+            velocity2Ds[i].value.x = - velocityBounds.x;
+        }
+        else if (velocity2Ds[i].value.x > velocityBounds.x)
+        {
+            velocity2Ds[i].value.x = velocityBounds.x;
+        }
+        if (velocity2Ds[i].value.y < - velocityBounds.x)
+        {
+            velocity2Ds[i].value.y = - velocityBounds.x;
+        }
+        else if (velocity2Ds[i].value.y > velocityBounds.x)
+        {
+            velocity2Ds[i].value.y = velocityBounds.x;
+        }*/
+        /*if (position2Ds[i].value.x < - positionBounds.x)
+        {
+            position2Ds[i].value.x = - positionBounds.x;
+        }
+        else if (position2Ds[i].value.x > positionBounds.x)
+        {
+            position2Ds[i].value.x = positionBounds.x;
+        }
+        if (position2Ds[i].value.y < - positionBounds.x)
+        {
+            position2Ds[i].value.y = - positionBounds.x;
+        }
+        else if (position2Ds[i].value.y > positionBounds.x)
+        {
+            position2Ds[i].value.y = positionBounds.x;
+        }*/

@@ -26,17 +26,6 @@ void DisposeInstance2DMaterial()
     glDeleteProgram(square2DMaterial);
 }
 
-void InitializeMaterialPropertiesA(GLuint material)
-{
-    material2D.view_matrix = glGetUniformLocation(material, "viewMatrix");
-    material2D.angle = glGetUniformLocation(material, "angle");
-    material2D.scale = glGetUniformLocation(material, "scale");
-    material2D.brightness = glGetUniformLocation(material, "brightness");
-    material2D.positionX = glGetUniformLocation(material, "positionX");
-    material2D.positionY = glGetUniformLocation(material, "positionY");
-    material2D.vertexPosition = glGetAttribLocation(material, "vertexPosition");
-}
-
 void InitializeMesh(GLuint material)
 {
     // gen buffers
@@ -59,6 +48,17 @@ void InitializeMesh(GLuint material)
         printf("GL HAD ERROR with end of InitializeMesh: %i\n", err7);
     }
 #endif
+}
+
+void InitializeMaterialPropertiesA(GLuint material)
+{
+    material2D.view_matrix = glGetUniformLocation(material, "viewMatrix");
+    material2D.angle = glGetUniformLocation(material, "angle");
+    material2D.scale = glGetUniformLocation(material, "scale");
+    material2D.brightness = glGetUniformLocation(material, "brightness");
+    material2D.positionX = glGetUniformLocation(material, "positionX");
+    material2D.positionY = glGetUniformLocation(material, "positionY");
+    material2D.vertexPosition = glGetAttribLocation(material, "vertexPosition");
 }
 
 int LoadInstance2DMaterial()

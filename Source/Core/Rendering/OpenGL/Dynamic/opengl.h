@@ -31,6 +31,7 @@
     OPENGL_FUNCTION(glUniform1i, PFNGLUNIFORM1IPROC)                                \
     OPENGL_FUNCTION(glUniform1f, PFNGLUNIFORM1FPROC)                                \
     OPENGL_FUNCTION(glUniform3f, PFNGLUNIFORM3FPROC)                                \
+    OPENGL_FUNCTION(glUniform4f, PFNGLUNIFORM4FPROC)                                \
     OPENGL_FUNCTION(glUniformMatrix4fv, PFNGLUNIFORMMATRIX4FVPROC)                  \
     OPENGL_FUNCTION(glGetUniformLocation, PFNGLGETUNIFORMLOCATIONPROC)              \
     OPENGL_FUNCTION(glGenBuffers, PFNGLGENBUFFERSPROC)                              \

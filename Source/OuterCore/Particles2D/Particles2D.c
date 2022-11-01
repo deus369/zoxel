@@ -7,7 +7,7 @@ ECS_DECLARE(Particle2D);
 // Prefabs
 #include "Prefabs/Particle2D.c"
 // Systems
-#include "Systems/Particles2DSpawnSystem.c"
+#include "Systems/Particle2DSpawnSystem.c"
 
 void Particles2DImport(ecs_world_t *world)
 {

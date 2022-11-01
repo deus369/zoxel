@@ -11,6 +11,7 @@
 // Material Data
 #include "Data/Material2D.c"
 #include "Data/MaterialTextured2D.c"
+#include "Data/Material3D.c"
 // Util Functions
 #include "Util/MeshUtil.c"
 #include "Util/ShaderUtil.c"    // uses InitializeMesh

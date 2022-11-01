@@ -87,8 +87,8 @@ void ImportModules(ecs_world_t *world)
     }
     ECS_IMPORT(world, Inputs);
     ECS_IMPORT(world, Timing);
-    ECS_IMPORT(world, Transforms2D);
     ECS_IMPORT(world, Transforms);
+    ECS_IMPORT(world, Transforms2D);
     if (!headless)
     {
         ECS_IMPORT(world, Rendering);
@@ -96,8 +96,8 @@ void ImportModules(ecs_world_t *world)
     ECS_IMPORT(world, Cameras);
     // Inner Core
     ECS_IMPORT(world, Textures);
-    ECS_IMPORT(world, Physics2D);
     ECS_IMPORT(world, Physics);
+    ECS_IMPORT(world, Physics2D);
     ECS_IMPORT(world, Voxels);
     // Outer Core
     ECS_IMPORT(world, Particles);
@@ -180,9 +180,14 @@ void UpdateLoop()
         mainCameraMatrix = float4x4_multiply(cameraTransformMatrix, projectionMatrix);
         OpenGLClear();
         OpenGLBeginInstancing(mainCameraMatrix);
-        ecs_run(world, ecs_id(Render2DSystem), 0, NULL);
+        ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
         OpenGLEndInstancing();
+        // seperate materials 2D
         ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);
+        // 3D instancing
+        OpenGLBeginInstancing3D(mainCameraMatrix);
+        ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
+        OpenGLEndInstancing3D();
         UpdateLoopSDL();
     }
 }

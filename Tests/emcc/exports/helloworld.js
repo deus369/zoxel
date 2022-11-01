@@ -107,7 +107,7 @@ requireNodeFS = () => {
 
 read_ = function shell_read(filename, binary) {
   requireNodeFS();
-  filename = nodePath['normalize'](filename);
+  filename = nodePath['normalize3D'](filename);
   return fs.readFileSync(filename, binary ? undefined : 'utf8');
 };
 
@@ -122,7 +122,7 @@ readBinary = (filename) => {
 
 readAsync = (filename, onload, onerror) => {
   requireNodeFS();
-  filename = nodePath['normalize'](filename);
+  filename = nodePath['normalize3D'](filename);
   fs.readFile(filename, function(err, data) {
     if (err) onerror(err);
     else onload(data.buffer);

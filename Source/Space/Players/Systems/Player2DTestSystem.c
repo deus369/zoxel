@@ -10,10 +10,13 @@ void Player2DTestSystem(ecs_iter_t *it)
     for (int i = 0; i < it->count; i++)
     {
         const Keyboard *keyboard = &keyboards[i];
-        if (keyboard->space.isPressed) // wasPressedThisFrame)
+        if (keyboard->space.isPressed)
         {
-            // printf("Firing the Bob Army.\n");
-            Particles2DSpawnSystem(world, bobPosition->value, particleSpawnCount);
+            ParticleSpawnSystem(world, bobPosition->value, particleSpawnCount);
+        }
+        else if (keyboard->c.isPressed)
+        {
+            Particle2DSpawnSystem(world, bobPosition->value, particleSpawnCount);
         }
         else if (keyboard->p.wasPressedThisFrame)
         {

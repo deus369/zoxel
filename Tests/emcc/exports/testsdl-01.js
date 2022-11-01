@@ -109,7 +109,7 @@ if (typeof require === 'function') {
 }
 
 read_ = (filename, binary) => {
-  filename = nodePath['normalize'](filename);
+  filename = nodePath['normalize3D'](filename);
   return fs.readFileSync(filename, binary ? undefined : 'utf8');
 };
 
@@ -123,7 +123,7 @@ readBinary = (filename) => {
 };
 
 readAsync = (filename, onload, onerror) => {
-  filename = nodePath['normalize'](filename);
+  filename = nodePath['normalize3D'](filename);
   fs.readFile(filename, function(err, data) {
     if (err) onerror(err);
     else onload(data.buffer);
@@ -1340,7 +1340,7 @@ var ASM_CONSTS = {
           }
         }
         return parts;
-      },normalize:(path) => {
+      },normalize3D:(path) => {
         var isAbsolute = PATH.isAbs(path),
             trailingSlash = path.substr(-1) === '/';
         // Normalize the path
@@ -1368,16 +1368,16 @@ var ASM_CONSTS = {
       },basename:(path) => {
         // EMSCRIPTEN return '/'' for '/', not an empty string
         if (path === '/') return '/';
-        path = PATH.normalize(path);
+        path = PATH.normalize3D(path);
         path = path.replace(/\/$/, "");
         var lastSlash = path.lastIndexOf('/');
         if (lastSlash === -1) return path;
         return path.substr(lastSlash+1);
       },join:function() {
         var paths = Array.prototype.slice.call(arguments);
-        return PATH.normalize(paths.join('/'));
+        return PATH.normalize3D(paths.join('/'));
       },join2:(l, r) => {
-        return PATH.normalize(l + '/' + r);
+        return PATH.normalize3D(l + '/' + r);
       }};
   
   function getRandomDevice() {
@@ -2686,7 +2686,7 @@ var ASM_CONSTS = {
         if (typeof path == 'object') {
           node = path;
         } else {
-          path = PATH.normalize(path);
+          path = PATH.normalize3D(path);
           try {
             var lookup = FS.lookupPath(path, {
               follow: !(flags & 131072)
@@ -3517,7 +3517,7 @@ var ASM_CONSTS = {
       },mmapAlloc:() => {
         abort('FS.mmapAlloc has been replaced by the top level function mmapAlloc');
       },standardizePath:() => {
-        abort('FS.standardizePath has been removed; use PATH.normalize instead');
+        abort('FS.standardizePath has been removed; use PATH.normalize3D instead');
       }};
   var SYSCALLS = {DEFAULT_POLLMASK:5,calculateAt:function(dirfd, path, allowEmpty) {
         if (PATH.isAbs(path)) {
@@ -3542,7 +3542,7 @@ var ASM_CONSTS = {
         try {
           var stat = func(path);
         } catch (e) {
-          if (e && e.node && PATH.normalize(path) !== PATH.normalize(FS.getPath(e.node))) {
+          if (e && e.node && PATH.normalize3D(path) !== PATH.normalize3D(FS.getPath(e.node))) {
             // an error occurred while trying to look up the path; we should just report ENOTDIR
             return -54;
           }

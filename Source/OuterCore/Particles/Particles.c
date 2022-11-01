@@ -2,17 +2,17 @@
 #define Zoxel_Particles
 //! Zoxel_Particles Module
 
-// Prefabs
-// #include "Prefabs/Particle.c"
 // Tags
 ECS_DECLARE(Particle);
+// Prefabs
+#include "Prefabs/Particle.c"
 // Systems
-// #include "Systems/ParticlesSpawnSystem.c"
+#include "Systems/ParticleSpawnSystem.c"
 
 void ParticlesImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Particles);
     ECS_TAG_DEFINE(world, Particle);
-    // SpawnPrefabParticle(world);
+    SpawnPrefabParticle(world);
 }
 #endif

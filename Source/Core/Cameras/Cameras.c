@@ -68,7 +68,7 @@ float4x4 CalculateViewMatrix(float3 position, float3 forward, float3 up)
     float4x4 matrix = CreateIdentityMatrix();
     float3 side = { };
     side = cross(forward, up);
-    side = normalize(side);
+    side = normalize3D(side);
     // float* matrix2 = (float*) &matrix;
     matrix.x.x = side.x;
     matrix.y.x = side.y;
