@@ -8,10 +8,6 @@ Open-Zoxel is under the GPL license as I want any derivatives to stay open, to p
 
 Zoxel has a large scope as I have many ideas. It's game design is influenced from Minecraft, Warcraft and LitRPGs/Tabletops.
 
-Try Le old Zoxel ([here](https://deus0.itch.io/zoxel))
-
-![Le Old Zoxel](/Screenshots/KEyHna.png?raw=false "Le Old Zoxel")
-
 ## How far along is it?
 
 So far I am fleshing out basic systems while testing out Flecs useage. So far the performance has been promising!
@@ -20,6 +16,8 @@ My Task list! [Todo Lists](Documents/todos/todo-main.md)
 
 https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4
 
+![Open Zoxel](http://img.youtube.com/vi/Yb5DiXVt1k0/0.jpg)](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4 "Open Zoxel")
+
 ## Why The Change?
 
 Zoxel has been in development a long time (over a decade), over many different engines. It is time for it to set sail again to a custom one, using FLECS for performance! The latest iteration was made from 2017 where I added Unitys ECS.
@@ -27,6 +25,10 @@ Zoxel has been in development a long time (over a decade), over many different e
 This was not an easy decision. Gotta go fast! Flecs has offered me a way out of the Unity IPO mess, and it offers greater levels of freedom over my development.
 
 There are 120k+ lines on the unity ecs codebase, so it will take some time for things to be ported.
+
+Try Le old Zoxel ([here](https://deus0.itch.io/zoxel))
+
+![Le Old Zoxel](/Screenshots/KEyHna.png?raw=false "Le Old Zoxel")
 
 ## How To Build
 
