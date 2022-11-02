@@ -7,15 +7,15 @@ Things to just fix after. Technical Debt. Bugs. Etc.
 
 -----
 
-`Flecs`
-- [ ] Get ctx to input two queries for PlayerRoamSystem
-- [ ] Use entity link (character2DLink) in CameraFollow2DSystem
-- [ ] Why does sprite mess up when updating flecs?? Investigate.
-
 `Fixes`
 - [ ] Keep a property reference upon creating materials (atm its doing it per frame)
 - [ ] Disable rotation for first movement
 - [ ] Smooth camera rotations
+
+`Flecs`
+- [ ] Get ctx to input two queries for PlayerRoamSystem
+- [ ] Use entity link (character2DLink) in CameraFollow2DSystem
+- [ ] Why does sprite mess up when updating flecs?? Investigate.
 
 `Weird`
 - [ ] Bulk Spawning issues - Crashes
