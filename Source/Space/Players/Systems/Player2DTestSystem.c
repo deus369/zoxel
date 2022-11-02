@@ -14,7 +14,7 @@ void Player2DTestSystem(ecs_iter_t *it)
         {
             ParticleSpawnSystem(world, bobPosition->value, particleSpawnCount);
         }
-        else if (keyboard->c.isPressed)
+        else if (keyboard->f.isPressed)
         {
             Particle2DSpawnSystem(world, bobPosition->value, particleSpawnCount);
         }

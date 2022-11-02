@@ -48,42 +48,12 @@ void float4x4_rotate(float4x4 *matrix, const float4 rotation)
     matrix->w.w *= rotation.w;
 }
 
-float4 quaternion_rotate(float4 q1, float4 q2)
-{ 
-    float4 qr;
-    qr.x = (q1.w * q2.x) + (q1.x * q2.w) + (q1.y * q2.z) - (q1.z * q2.y);
-    qr.y = (q1.w * q2.y) - (q1.x * q2.z) + (q1.y * q2.w) + (q1.z * q2.x);
-    qr.z = (q1.w * q2.z) + (q1.x * q2.y) - (q1.y * q2.x) + (q1.z * q2.w);
-    qr.w = (q1.w * q2.w) - (q1.x * q2.x) - (q1.y * q2.y) - (q1.z * q2.z);
-    return qr;
-}
-
 void float4_divide(float4 *input, float division)
 {
     input->x /= division;
     input->y /= division;
     input->z /= division;
     input->w /= division;
-}
-
-float4 quaternion_inverse(float4 q)
-{
-    float sqr = sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
-    float4 output;
-    output = float4_reverse(q);
-    float4_divide(&output, sqr);
-    return output;
-}
-            
-float3 float4_rotate_float3(float4 rotation, float3 vertex3)
-{
-    // does this need conjugation(inverse(rot)) ?
-    // Remove float4 use on vert
-    float4 vertex = { vertex3.x, vertex3.y, vertex3.z, 0 };
-    // rotation = quaternion_inverse(rotation);
-    // float4 output = quaternion_rotate(float4_reverse(rotation), quaternion_rotate(vertex, rotation));
-    float4 output = quaternion_rotate(rotation, quaternion_rotate(vertex, rotation));
-    return (float3) { output.x, output.y, output.z };
 }
 
 float4x4 quaternion_to_matrix(float4 quat)
@@ -141,9 +111,9 @@ float3 quaternion_to_euler(float4 q)
     double siny_cosp = 2 * (q.w * q.z + q.x * q.y);
     double cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z);
     euler.z = atan2(siny_cosp, cosy_cosp);
-    euler.x /= degreesToRadians;
+    /*euler.x /= degreesToRadians;
     euler.y /= degreesToRadians;
-    euler.z /= degreesToRadians;
+    euler.z /= degreesToRadians;*/
     return euler;
 }
 
@@ -164,6 +134,21 @@ float4 quaternion_identity()
 {
     return (float4) { 0, 0, 0, 1 };
 }
+
+void float4_print_euler(float4 input)
+{
+    float3 euler = float3_divide_float(quaternion_to_euler(input), degreesToRadians);
+    printf("-> Euler [x:%f y:%f z:%f]\n", euler.x, euler.y, euler.z);
+}
+
+/*float4 quaternion_conjugate(float4 q)
+{
+    float sqr = sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
+    float4 output;
+    output = float4_inverse(q);
+    float4_divide(&output, sqr);
+    return output;
+}*/
 
 /*int i, j;
 for (i = 0; i < 4; ++i)
@@ -187,3 +172,19 @@ for (i = 0; i < 4; ++i)
 //     }
 //     return c;
 // }
+
+    // does this need conjugation(inverse(rot)) ?
+    // Remove float4 use on vert
+    // rotation = quaternion_conjugate(rotation);
+    // float4 output = quaternion_rotate(float4_inverse(rotation), quaternion_rotate(vertex, rotation));
+
+    /*float4 output = { point.x, point.y, point.z, 0 };
+    output = quaternion_rotate(rotation, output);
+    return (float3) { output.x, output.y, output.z };*/
+    
+    // float3 output = { point.x * sin(rotation.x), point.y * cos(rotation.y), point.z };
+    // float4 output = quaternion_rotate(rotation, quaternion_rotate(vertex, rotation));
+    // return output;
+    //vec3 t = 2 * cross(q.xyz, v)
+    //vec3(v + q.w * t + cross(q.xyz, t))
+    //return 

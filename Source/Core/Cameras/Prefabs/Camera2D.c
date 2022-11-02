@@ -14,4 +14,7 @@ void SpawnCameraPrefab(ecs_world_t *world)
     ecs_add(world, cameraPrefab, CameraFree);
     ecs_override(world, cameraPrefab, CameraFree);
     ecs_set(world, cameraPrefab, CameraFree, { false });
+    ecs_add(world, cameraPrefab, Euler);
+    ecs_override(world, cameraPrefab, Euler);
+    ecs_set(world, cameraPrefab, Euler, { { 0, 0, 0 } });
 }

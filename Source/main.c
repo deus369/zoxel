@@ -171,6 +171,10 @@ void UpdateLoop()
         ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
         OpenGLEndInstancing3D();
         UpdateLoopSDL();
+        /*if (cameraFree->value)
+        {
+            SDL_WarpMouseInWindow(window, screenDimensions.x / 2, screenDimensions.y / 2);
+        }*/
     }
 }
 
@@ -196,7 +200,6 @@ void ExitApp()
 void PollSDLEvents()
 {
     ResetDevices(world);
-    ExtractMouse(world);
     SDL_Event event  = { 0 };
     while (SDL_PollEvent(&event))
     {

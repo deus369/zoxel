@@ -56,9 +56,9 @@ void PlayersImport(ecs_world_t *world)
     ZOXEL_FILTER(playerCharacter2DQuery2, world, [none] PlayerCharacter2D, [out] Acceleration2D, [in] Velocity2D);
     ZOXEL_SYSTEM_MULTITHREADED_CTX(world, Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2, [in] Keyboard);
     #endif
-    ZOXEL_FILTER(cameraQuery, world, [none] cameras.Camera, [in] cameras.CameraFree, [out] Position, [in] Rotation);
+    ZOXEL_FILTER(cameraQuery, world, [none] cameras.Camera, [in] cameras.CameraFree, [out] Position, [out] Rotation);
     ZOXEL_SYSTEM_MULTITHREADED_CTX(world, CameraMoveSystem, EcsOnUpdate, cameraQuery, [in] Keyboard);
-    ZOXEL_FILTER(cameraQuery2, world, [none] cameras.Camera, [out] Rotation, [out] cameras.CameraFree);
+    ZOXEL_FILTER(cameraQuery2, world, [none] cameras.Camera, [out] Rotation, [out] cameras.CameraFree, [out] Euler);
     ZOXEL_SYSTEM_MULTITHREADED_CTX(world, CameraRotateSystem, EcsOnUpdate, cameraQuery2, [in] Mouse);
     //#if Zoxel_Particles2D
     ECS_SYSTEM_DEFINE(world, Player2DTestSystem, EcsOnUpdate, [in] Keyboard);
@@ -70,5 +70,77 @@ void PlayersImport(ecs_world_t *world)
     //#endif
     // Prefabs
     SpawnPlayerCharacter2DPrefab(world);
+
+    /*float4 leftRotation = quaternion_from_euler( (float3) { 0 * degreesToRadians, 90 * degreesToRadians, 0 * degreesToRadians });
+    float4 rightRotation = quaternion_from_euler( (float3) { 0 * degreesToRadians, -90 * degreesToRadians, 0 * degreesToRadians });
+    float4 downRotation = quaternion_from_euler( (float3) { 90 * degreesToRadians, 0 * degreesToRadians, 0 * degreesToRadians });
+    float4 upRotation = quaternion_from_euler( (float3) { -90 * degreesToRadians, 0 * degreesToRadians, 0 * degreesToRadians });
+    float4 leftDownRotation = quaternion_from_euler( (float3) { 90 * degreesToRadians, 90 * degreesToRadians, 0 * degreesToRadians });
+    float4 rightUpRotation = quaternion_from_euler( (float3) { -90 * degreesToRadians, -90 * degreesToRadians, 0 * degreesToRadians });
+    printf("Testing [quaternion_rotate] v1\n");
+    float4 rotation = float4_identity();
+    print_float4(rotation);
+    rotation = quaternion_rotate(leftRotation, rotation);
+    print_float4(rotation);
+    rotation = quaternion_rotate(rightRotation, rotation);
+    print_float4(rotation);
+    rotation = quaternion_rotate(rightRotation, rotation);
+    print_float4(rotation);
+    rotation = quaternion_rotate(leftRotation, rotation);
+    print_float4(rotation);
+    printf("End Testing [quaternion_rotate] v1\n");
+    printf("Testing [quaternion_rotate] v2\n");
+    rotation = float4_identity();
+    print_float4(rotation);
+    rotation = quaternion_rotate(downRotation, rotation);
+    print_float4(rotation);
+    rotation = quaternion_rotate(leftRotation, rotation);
+    print_float4(rotation);
+    rotation = quaternion_rotate(rightRotation, rotation);
+    print_float4(rotation);
+    rotation = quaternion_rotate(upRotation, rotation);
+    print_float4(rotation);
+    printf("End Testing [quaternion_rotate] v2\n");
+    printf("Testing [quaternion_rotate] v3\n");
+    rotation = float4_identity();
+    print_float4(rotation);
+    rotation = quaternion_rotate(leftDownRotation, rotation);
+    print_float4(rotation);
+    rotation = quaternion_rotate(rightUpRotation, rotation);
+    print_float4(rotation);
+    printf("End Testing [quaternion_rotate] v3\n");
+    printf("Testing [quaternion_rotate] v4\n");
+    rotation = float4_identity();
+    print_float4(rotation);
+    rotation = quaternion_rotate(leftRotation, rotation);
+    rotation = quaternion_rotate(downRotation, rotation);
+    print_float4(rotation);
+    rotation = quaternion_rotate(upRotation, rotation);
+    rotation = quaternion_rotate(rightRotation, rotation);
+    print_float4(rotation);
+    printf("End Testing [quaternion_rotate] v4\n");
+
+    printf("Testing [float4_rotate_float3]\n");
+    float3 forward = { 0, 0, 1 };
+    float3_print(forward);
+    forward = float4_rotate_float3(leftRotation, forward);
+    float3_print(forward);
+    forward = float4_rotate_float3(rightRotation, forward);
+    float3_print(forward);
+    forward = float4_rotate_float3(rightRotation, forward);
+    float3_print(forward);
+    forward = float4_rotate_float3(leftRotation, forward);
+    float3_print(forward);
+    printf("End Testing [float4_rotate_float3]\n");
+
+    printf("Testing [quaternion_to_euler]\n");
+    float3 leftRotation0 = { 0 * degreesToRadians, 90 * degreesToRadians, 0 * degreesToRadians };
+    float3_print(leftRotation0);
+    print_float4(leftRotation);
+    float3 leftRotation2 = quaternion_to_euler(leftRotation);
+    float3_print(leftRotation2);
+    float4 leftRotation3 = quaternion_from_euler(leftRotation2);
+    print_float4(leftRotation3);
+    printf("End Testing [quaternion_to_euler]\n");*/
 }
 #endif
