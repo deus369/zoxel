@@ -10,4 +10,8 @@ void SpawnCameraPrefab(ecs_world_t *world)
     ecs_add(world, cameraPrefab, ViewMatrix);
     ecs_add(world, cameraPrefab, ScreenDimensions);
     ecs_add(world, cameraPrefab, FieldOfView);
+    ecs_add(world, cameraPrefab, CameraFollower2D);
+    ecs_add(world, cameraPrefab, CameraFree);
+    ecs_override(world, cameraPrefab, CameraFree);
+    ecs_set(world, cameraPrefab, CameraFree, { false });
 }

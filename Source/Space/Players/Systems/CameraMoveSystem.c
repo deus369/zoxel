@@ -3,8 +3,6 @@ void CameraMoveSystem(ecs_iter_t *it)
 {
     double deltaTime = (double) (it->delta_time);
     double movementPower = 0.006 * 100 * deltaTime; // 2.8f; // * deltaTime;
-    float rotatePower = 0.25f * 100 * deltaTime;
-    // printf("deltaTime! %f\n", deltaTime);
     ecs_query_t *cameraQuery = it->ctx;
     if (!cameraQuery)
     {
@@ -20,37 +18,38 @@ void CameraMoveSystem(ecs_iter_t *it)
     }
     // printf("Bobs Found [%i]\n", bobIter.count);
     Keyboard *keyboards = ecs_field(it, Keyboard, 1);
-    Position *positions = ecs_field(&cameraIter, Position, 2);
-    Rotation *rotations = ecs_field(&cameraIter, Rotation, 3);
+    const CameraFree *cameraFrees = ecs_field(&cameraIter, CameraFree, 2);
+    Position *positions = ecs_field(&cameraIter, Position, 3);
+    const Rotation *rotations = ecs_field(&cameraIter, Rotation, 4);
     //Acceleration *accelerations = ecs_field(&bobIter, Acceleration, 2);
     //const Velocity *velocitys = ecs_field(&bobIter, Velocity, 3);
     for (int i = 0; i < it->count; i++)
     {
         const Keyboard *keyboard = &keyboards[i];
         float3 movement = { 0, 0, 0 };
-        if (keyboard->left.isPressed)
+        if (keyboard->a.isPressed)
         {
             movement.x = -1;
         }
-        if (keyboard->right.isPressed)
+        if (keyboard->d.isPressed)
         {
             movement.x = 1;
         }
-        if (keyboard->up.isPressed)
-        {
-            movement.y = 1;
-        }
-        if (keyboard->down.isPressed)
-        {
-            movement.y = -1;
-        }
-        if (keyboard->q.isPressed)
+        if (keyboard->w.isPressed)
         {
             movement.z = -1;
         }
-        if (keyboard->e.isPressed)
+        if (keyboard->s.isPressed)
         {
             movement.z = 1;
+        }
+        if (keyboard->q.isPressed)
+        {
+            movement.y = -1;
+        }
+        if (keyboard->e.isPressed)
+        {
+            movement.y = 1;
         }
         if (!(movement.x == 0 && movement.y == 0 && movement.z == 0))
         {
@@ -60,65 +59,15 @@ void CameraMoveSystem(ecs_iter_t *it)
             movement.z *= movementPower;
             for (int j = 0; j < cameraIter.count; j++)
             {
-                Position *position = &positions[j];
-                position->value.x += movement.x;
-                position->value.y += movement.y;
-                position->value.z += movement.z;
-            }
-        }
-        bool isResetRotation = false;
-        float3 rotate = { 0, 0, 0 };
-        if (keyboard->j.isPressed)
-        {
-            rotate.z = 1;
-        }
-        if (keyboard->l.isPressed)
-        {
-            rotate.z = -1;
-        }
-        if (keyboard->i.isPressed)
-        {
-            rotate.y = -1;
-        }
-        if (keyboard->k.isPressed)
-        {
-            rotate.y = 1;
-        }
-        if (keyboard->u.isPressed)
-        {
-            rotate.x = 1;
-        }
-        if (keyboard->o.isPressed)
-        {
-            rotate.x = -1;
-        }
-        if (keyboard->h.isPressed)
-        {
-            isResetRotation = true;
-            // printf("Resetting rotation.\n");
-        }
-        if (!(rotate.x == 0 && rotate.y == 0 && rotate.z == 0))
-        {
-            rotate.x *= rotatePower;
-            rotate.y *= rotatePower;
-            rotate.z *= rotatePower;
-            rotate.x *= degreesToRadians;
-            rotate.y *= degreesToRadians;
-            rotate.z *= degreesToRadians;
-            float3 rotate2 = { rotate.x, rotate.z, -rotate.y };
-            // rotate2.z is x
-            float4 rotate3 = quaternion_from_euler(rotate2);
-            // printf("rotate: %fx%f\n", rotate.x, rotate.y);
-            for (int j = 0; j < cameraIter.count; j++)
-            {
-                Rotation *rotation = &rotations[j];
-                if (isResetRotation)
+                const CameraFree *cameraFree = &cameraFrees[j];
+                if (cameraFree->value)
                 {
-                    rotation->value = quaternion_identity();
-                }
-                else
-                {
-                    rotation->value = quaternion_rotate(rotate3, rotation->value);
+                    const Rotation *rotation = &rotations[j];
+                    float3 rotatedMovement = float4_rotate_float3(rotation->value, movement);
+                    Position *position = &positions[j];
+                    position->value.x += rotatedMovement.x;
+                    position->value.y += rotatedMovement.y;
+                    position->value.z += rotatedMovement.z;
                 }
             }
         }

@@ -5,9 +5,11 @@
 ECS_DECLARE(Camera);
 ECS_DECLARE(CameraFollower2D);  // a tag for a camera that follows a Character2D
 // Data
+#include "Components/CameraLink.c"
 #include "Components/ViewMatrix.c"
 #include "Components/ScreenDimensions.c"
 #include "Components/FieldOfView.c"
+ZOXEL_COMPONENT(CameraFree, bool);
 // Prefabs
 #include "Prefabs/Camera2D.c"
 // Systems
@@ -21,12 +23,13 @@ void CamerasImport(ecs_world_t *world)
     ECS_MODULE(world, Cameras);
     ECS_TAG_DEFINE(world, Camera);
     ECS_TAG_DEFINE(world, CameraFollower2D); // Until fix is found. \todo Fix this, readd it back here where it belongs.
+    ECS_COMPONENT_DEFINE(world, CameraLink);
     ECS_COMPONENT_DEFINE(world, ViewMatrix);
     ECS_COMPONENT_DEFINE(world, ScreenDimensions);
     ECS_COMPONENT_DEFINE(world, FieldOfView);
+    ECS_COMPONENT_DEFINE(world, CameraFree);
     ECS_SYSTEM_DEFINE(world, ViewMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [out] ViewMatrix);
     SpawnCameraPrefab(world);
-    ecs_add(world, cameraPrefab, CameraFollower2D);
 }
 
 void SpawnMainCamera(int2 screenDimensions)

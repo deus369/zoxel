@@ -6,6 +6,7 @@ typedef struct
 {
     int2 position;
     int2 delta;
+    int2 wheel;
     PhysicalButton left;
     PhysicalButton middle;
     PhysicalButton right;

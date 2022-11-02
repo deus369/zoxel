@@ -149,6 +149,9 @@ void UpdateLoop()
         //! Temporary for now, calculate camera matrix here.
         //      - Move Transform Matrix calculations to Transform systems.
         //      - Move  CameraViewMatrix to camera systems.
+        //! Locks Main Mouse.
+        const CameraFree *cameraFree = ecs_get(world, mainCamera, CameraFree);
+        SDL_SetRelativeMouseMode(cameraFree->value);
         const float4x4 projectionMatrix = GetMainCameraViewMatrix();
         const Position *cameraPosition = ecs_get(world, mainCamera, Position);
         const Rotation *cameraRotation = ecs_get(world, mainCamera, Rotation);
@@ -197,7 +200,8 @@ void PollSDLEvents()
     SDL_Event event  = { 0 };
     while (SDL_PollEvent(&event))
     {
-        ExtractIntoKeyboard(world, event);
+        ExtractKeyboard(world, event);
+        ExtractMouseEvent(world, event);
         int eventType = event.type;
         if (eventType == SDL_QUIT)
         {

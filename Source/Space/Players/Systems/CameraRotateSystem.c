@@ -3,7 +3,10 @@ void CameraRotateSystem(ecs_iter_t *it)
 {
     // while right click only, and hide mouse!
     double deltaTime = (double) (it->delta_time);
-    float rotatePower = 0.08f * 100 * deltaTime;
+    float rotatePower = 0.12f * 100 * deltaTime;
+#ifdef __EMSCRIPTEN__
+    rotatePower /= 3.0f;
+#endif
     ecs_query_t *cameraQuery = it->ctx;
     if (!cameraQuery)
     {
@@ -18,30 +21,36 @@ void CameraRotateSystem(ecs_iter_t *it)
     }
     Mouse *mouses = ecs_field(it, Mouse, 1);
     Rotation *rotations = ecs_field(&cameraIter, Rotation, 2);
+    CameraFree *cameraFrees = ecs_field(&cameraIter, CameraFree, 3);
     for (int i = 0; i < it->count; i++)
     {
         const Mouse *mouse = &mouses[i];
-        if (!mouse->right.isPressed)
+        float3 rotate = { 0, -mouse->delta.x, -mouse->delta.y };
+        // if (!(rotate.x == 0 && rotate.y == 0 && rotate.z == 0))
         {
-            return;
-        }
-        float3 rotate = { 0, mouse->delta.y, -mouse->delta.x };
-        if (!(rotate.x == 0 && rotate.y == 0 && rotate.z == 0))
-        {
-            rotate.x *= rotatePower;
-            rotate.y *= rotatePower;
-            rotate.z *= rotatePower;
-            rotate.x *= degreesToRadians;
-            rotate.y *= degreesToRadians;
-            rotate.z *= degreesToRadians;
-            float3 rotate2 = { rotate.x, rotate.z, -rotate.y };
-            // rotate2.z is x
-            float4 rotate3 = quaternion_from_euler(rotate2);
+            rotate = float3_multiply_float(rotate, rotatePower * degreesToRadians);
+            float4 rotateQuaternion = quaternion_from_euler(rotate);
             // printf("rotate: %fx%f\n", rotate.x, rotate.y);
             for (int j = 0; j < cameraIter.count; j++)
             {
-                Rotation *rotation = &rotations[j];
-                rotation->value = quaternion_rotate(rotate3, rotation->value);
+                CameraFree *cameraFree = &cameraFrees[j];
+                if (mouse->left.wasPressedThisFrame)
+                {
+                    Rotation *rotation = &rotations[j];
+                    rotation->value = quaternion_identity();
+                    printf("Camera Rotation Reset.\n");
+                    return;
+                }
+                if (mouse->middle.wasPressedThisFrame)
+                {
+                    cameraFree->value = !cameraFree->value;
+                    printf("Camera Free Toggled [%s]\n", cameraFree->value ? "true" : "false");
+                }
+                if (mouse->right.isPressed || cameraFree->value)
+                {
+                    Rotation *rotation = &rotations[j];
+                    rotation->value = quaternion_rotate(rotateQuaternion, rotation->value);
+                }
             }
         }
     }

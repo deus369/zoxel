@@ -11,7 +11,6 @@ ECS_DECLARE(Player);
 ECS_DECLARE(Player2D);
 ECS_DECLARE(PlayerCharacter2D);
 ECS_DECLARE(DisableMovement);
-ZOXEL_COMPONENT(CameraFree, bool);
 // Systems
 #include "Systems/Player2DMoveSystem.c"
 #include "Systems/Player2DTestSystem.c"
@@ -20,6 +19,8 @@ ZOXEL_COMPONENT(CameraFree, bool);
 #include "Systems/CameraRotateSystem.c"
 // prefabs
 #include "Prefabs/PlayerCharacter2D.c"
+
+extern ecs_entity_t mainCamera;
 
 //! Spawn a Player character.
 ecs_entity_t SpawnPlayerCharacter2D(ecs_world_t *world)
@@ -31,6 +32,8 @@ ecs_entity_t SpawnPlayerCharacter2D(ecs_world_t *world)
     printf("Spawned Player2D [%lu]\n", (long unsigned int) e);
     SpawnGPUMaterial(world, e);
     SpawnGPUTexture(world, e);
+    // make sure to link
+    ecs_set(world, e, CameraLink, { mainCamera });
     return e;
 }
 
@@ -47,14 +50,15 @@ void PlayersImport(ecs_world_t *world)
     #ifdef Zoxel_Physics2D
     // ECS_SYSTEM_DEFINE(world, CameraFollow2DSystem, EcsOnUpdate, [none] Camera, [out] Position);
     ZOXEL_FILTER(playerCharacter2DQuery, world, [none] PlayerCharacter2D, [in] Position2D);
-    ZOXEL_SYSTEM_MULTITHREADED_CTX(world, CameraFollow2DSystem, EcsOnUpdate, playerCharacter2DQuery, [none] cameras.CameraFollower2D, [out] Position);
+    ZOXEL_SYSTEM_MULTITHREADED_CTX(world, CameraFollow2DSystem, EcsOnUpdate, playerCharacter2DQuery,
+        [none] cameras.CameraFollower2D, [in] cameras.CameraFree, [out] Position);
     // \todo Add in out tags to this filter
     ZOXEL_FILTER(playerCharacter2DQuery2, world, [none] PlayerCharacter2D, [out] Acceleration2D, [in] Velocity2D);
     ZOXEL_SYSTEM_MULTITHREADED_CTX(world, Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2, [in] Keyboard);
     #endif
-    ZOXEL_FILTER(cameraQuery, world, [none] cameras.Camera, [out] Position, [out] Rotation);
+    ZOXEL_FILTER(cameraQuery, world, [none] cameras.Camera, [in] cameras.CameraFree, [out] Position, [in] Rotation);
     ZOXEL_SYSTEM_MULTITHREADED_CTX(world, CameraMoveSystem, EcsOnUpdate, cameraQuery, [in] Keyboard);
-    ZOXEL_FILTER(cameraQuery2, world, [none] cameras.Camera, [out] Rotation);
+    ZOXEL_FILTER(cameraQuery2, world, [none] cameras.Camera, [out] Rotation, [out] cameras.CameraFree);
     ZOXEL_SYSTEM_MULTITHREADED_CTX(world, CameraRotateSystem, EcsOnUpdate, cameraQuery2, [in] Mouse);
     //#if Zoxel_Particles2D
     ECS_SYSTEM_DEFINE(world, Player2DTestSystem, EcsOnUpdate, [in] Keyboard);
@@ -65,6 +69,6 @@ void PlayersImport(ecs_world_t *world)
     });
     //#endif
     // Prefabs
-    InitializePlayerCharacter2DPrefab(world);
+    SpawnPlayerCharacter2DPrefab(world);
 }
 #endif

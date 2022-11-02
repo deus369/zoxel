@@ -75,13 +75,14 @@ float4 quaternion_inverse(float4 q)
     return output;
 }
             
-float3 float3_rotate_float4(float4 rotation, float3 vertex3)
+float3 float4_rotate_float3(float4 rotation, float3 vertex3)
 {
     // does this need conjugation(inverse(rot)) ?
     // Remove float4 use on vert
     float4 vertex = { vertex3.x, vertex3.y, vertex3.z, 0 };
-    rotation = quaternion_inverse(rotation);
-    float4 output = quaternion_rotate(float4_reverse(rotation), quaternion_rotate(vertex, rotation));
+    // rotation = quaternion_inverse(rotation);
+    // float4 output = quaternion_rotate(float4_reverse(rotation), quaternion_rotate(vertex, rotation));
+    float4 output = quaternion_rotate(rotation, quaternion_rotate(vertex, rotation));
     return (float3) { output.x, output.y, output.z };
 }
 

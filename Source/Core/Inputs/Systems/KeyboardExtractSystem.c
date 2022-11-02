@@ -58,7 +58,7 @@ void ResetKeyboard(ecs_world_t *world)
 }
 
 //! Extract Key Events from SDL and set them on entities keyboad.
-void ExtractIntoKeyboard(ecs_world_t *world, SDL_Event event)
+void ExtractKeyboard(ecs_world_t *world, SDL_Event event)
 {
     if (!keyboardEntity || !ecs_is_alive(world, keyboardEntity))
     {
