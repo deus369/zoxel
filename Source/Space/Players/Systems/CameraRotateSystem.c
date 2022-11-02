@@ -33,7 +33,7 @@ void CameraRotateSystem(ecs_iter_t *it)
             for (int j = 0; j < cameraIter.count; j++)
             {
                 const CameraFree *cameraFree = &cameraFrees[j];
-                if (mouse->left.isPressed || cameraFree->value)
+                if (cameraFree->value)  // mouse->left.isPressed || 
                 {
                     Euler *euler = &eulers[j];
                     euler->value = float3_add_float3(euler->value, eulerAddition);
