@@ -3,7 +3,7 @@
 //! Textures Module.
 
 // Settings
-const double noiseAnimationSpeed = 0.125;
+const double noiseAnimationSpeed = 0.25; // 0.125;
 
 // Tags
 ECS_DECLARE(NoiseTexture);
@@ -37,22 +37,13 @@ void TexturesCoreImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, GenerateTexture);
     ECS_COMPONENT_DEFINE(world, AnimateTexture);
     // Queries
-    ecs_query_t *generateTextureQuery = ecs_query_init(world, &(ecs_query_desc_t) {
-        .filter.terms = {
-            { ecs_id(NoiseTexture), .inout = EcsInOutNone },
-            { ecs_id(GenerateTexture), .inout = EcsIn }
-        }
-    });
     // Systems
     //! \todo Multithreaded change filters? ZOXEL_SYSTEM_MULTITHREADED
     ECS_SYSTEM_DEFINE(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture);
-    ECS_SYSTEM_DEFINE(world, NoiseTextureSystem, EcsOnUpdate,
-        [none] NoiseTexture, [out] EntityDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture);
     //! Use seperate filter for change query in NoiseTextureSystem.
-    ecs_system(world, {
-        .entity = ecs_id(NoiseTextureSystem),
-        .ctx = generateTextureQuery
-    });
+    ZOXEL_FILTER(generateTextureQuery, world, [none] NoiseTexture, [in] GenerateTexture);
+    ZOXEL_SYSTEM_MULTITHREADED_CTX(world, NoiseTextureSystem, EcsOnUpdate, generateTextureQuery,
+        [none] NoiseTexture, [out] EntityDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture);
     // ECS_SYSTEM_DEFINE(world, NoiseTextureChangeResetter, EcsPostUpdate, [none] NoiseTexture, [in] GenerateTexture);
     ECS_SYSTEM_DEFINE(world, GenerateTextureResetSystem, EcsPostUpdate, [out] GenerateTexture);
     ECS_SYSTEM_DEFINE(world, TextureUpdateSystem, EcsOnValidate, [in] EntityDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink);
@@ -61,3 +52,11 @@ void TexturesCoreImport(ecs_world_t *world)
     InitializeNoiseTexturePrefab(world);
 }
 #endif
+
+/*ecs_query_t *generateTextureQuery = ecs_query_init(world, &(ecs_query_desc_t) {
+    .filter.terms = {
+        { ecs_id(NoiseTexture), .inout = EcsInOutNone },
+        { ecs_id(GenerateTexture), .inout = EcsIn }
+    }
+});
+ECS_FILTER_INIT(world, generateTextureQuery, [none] NoiseTexture, [in] GenerateTexture);*/

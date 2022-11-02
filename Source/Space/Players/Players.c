@@ -36,65 +36,31 @@ ecs_entity_t SpawnPlayerCharacter2D(ecs_world_t *world)
 void PlayersImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Players);
+    // Tags
     ECS_TAG_DEFINE(world, Player);
     ECS_TAG_DEFINE(world, Player2D);
     ECS_TAG_DEFINE(world, PlayerCharacter2D);
     ECS_TAG_DEFINE(world, DisableMovement);
-    // Remove these once bug is fixed: https://github.com/SanderMertens/flecs/issues/850
-    // ECS_TAG_DEFINE(world, CameraFollower2D);    //! Add this here until tags in other modules can be used.
-    // ecs_add(world, cameraPrefab, CameraFollower2D);
-    printf("Camera ECS ID [%lu]\n", (long unsigned int) ecs_id(CameraFollower2D));
-    ZOXEL_SYSTEM_MULTITHREADED(world, CameraFollow2DSystem, EcsOnUpdate, [none] cameras.CameraFollower2D, [out] Position);
+    // Systems
     #ifdef Zoxel_Physics2D
     // ECS_SYSTEM_DEFINE(world, CameraFollow2DSystem, EcsOnUpdate, [none] Camera, [out] Position);
-    ecs_query_t *playerCharacter2DQuery = ecs_query_init(world, &(ecs_query_desc_t) {
-        .filter.terms = {
-            { ecs_id(PlayerCharacter2D), .inout = EcsInOutNone },
-            { ecs_id(Position2D), .inout = EcsIn }
-        }
-    });
-    ecs_system(world, {
-        .entity = ecs_id(CameraFollow2DSystem),
-        .ctx = playerCharacter2DQuery
-    });
+    ZOXEL_FILTER(playerCharacter2DQuery, world, [none] PlayerCharacter2D, [in] Position2D);
+    ZOXEL_SYSTEM_MULTITHREADED_CTX(world, CameraFollow2DSystem, EcsOnUpdate, playerCharacter2DQuery, [none] cameras.CameraFollower2D, [out] Position);
     // \todo Add in out tags to this filter
-    ZOXEL_SYSTEM_MULTITHREADED(world, Player2DMoveSystem, EcsOnUpdate, [in] Keyboard);
-    ecs_query_t *playerCharacter2DQuery2 = ecs_query_init(world, &(ecs_query_desc_t) {
-        .filter.terms = {
-            { ecs_id(PlayerCharacter2D), .inout = EcsInOutNone },
-            { ecs_id(Acceleration2D), .inout = EcsOut },
-            { ecs_id(Velocity2D), .inout = EcsIn }
-        }
-    });
-    ecs_system(world, {
-        .entity = ecs_id(Player2DMoveSystem),
-        .ctx = playerCharacter2DQuery2
-    });
+    ZOXEL_FILTER(playerCharacter2DQuery2, world, [none] PlayerCharacter2D, [out] Acceleration2D, [in] Velocity2D);
+    ZOXEL_SYSTEM_MULTITHREADED_CTX(world, Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2, [in] Keyboard);
     #endif
+    ZOXEL_FILTER(cameraQuery, world, [none] cameras.Camera, [out] Position, [out] Rotation);
+    ZOXEL_SYSTEM_MULTITHREADED_CTX(world, CameraMoveSystem, EcsOnUpdate, cameraQuery, [in] Keyboard);
     //#if Zoxel_Particles2D
     ECS_SYSTEM_DEFINE(world, Player2DTestSystem, EcsOnUpdate, [in] Keyboard);
+    //! Needed for bulk spawning. Still crashes.
     ecs_system(world, {
         .entity = ecs_id(Player2DTestSystem),
-        .no_staging = true  // rename to no_readonly - with structural changes, does it at the end of the process..
+        .no_staging = true
     });
     //#endif
-    ZOXEL_SYSTEM_MULTITHREADED(world, CameraMoveSystem, EcsOnUpdate, [in] Keyboard);
-    ecs_query_t *cameraQuery = ecs_query_init(world, &(ecs_query_desc_t) {
-        .filter.terms = {
-            { ecs_id(Camera) },
-            { ecs_id(Position) },
-            { ecs_id(Rotation) },
-           // { ecs_id(Velocity2D) }
-        }
-    });
-    ecs_system(world, {
-        .entity = ecs_id(CameraMoveSystem),
-        .ctx = cameraQuery
-    });
     // Prefabs
     InitializePlayerCharacter2DPrefab(world);
 }
-
-// EcsOnDeleteTarget use this
-// ecs_entity_t SpawnPlayerCharacter2D(ecs_world_t *world);
 #endif

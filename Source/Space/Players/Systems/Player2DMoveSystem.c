@@ -18,23 +18,23 @@ void Player2DMoveSystem(ecs_iter_t *it)
     // const float2 maxVelocity = { 0.12f, 0.12f };
     const float2 maxVelocity = { 12.6f, 12.6f };
     // printf("deltaTime! %f\n", deltaTime);
-    ecs_query_t *bobQuery = it->ctx;
-    if (!bobQuery)
+    ecs_query_t *playerQuery = it->ctx;
+    if (!playerQuery)
     {
-        printf("[404; bobQuery is void]\n");
+        printf("[Player2DMoveSystem; playerQuery is void]\n");
         return;
     }
-    ecs_iter_t bobIter = ecs_query_iter(it->world, bobQuery);
-    ecs_query_next(&bobIter);
-    if (bobIter.count == 0)
+    ecs_iter_t playerIter = ecs_query_iter(it->world, playerQuery);
+    ecs_query_next(&playerIter);
+    if (playerIter.count == 0)
     {
         // printf("[404; Bob Not Found]\n");
         return;
     }
-    // printf("Bobs Found [%i]\n", bobIter.count);
+    // printf("Bobs Found [%i]\n", playerIter.count);
     Keyboard *keyboards = ecs_field(it, Keyboard, 1);
-    Acceleration2D *acceleration2Ds = ecs_field(&bobIter, Acceleration2D, 2);
-    const Velocity2D *velocity2Ds = ecs_field(&bobIter, Velocity2D, 3);
+    Acceleration2D *acceleration2Ds = ecs_field(&playerIter, Acceleration2D, 2);
+    const Velocity2D *velocity2Ds = ecs_field(&playerIter, Velocity2D, 3);
     for (int i = 0; i < it->count; i++)
     {
         const Keyboard *keyboard = &keyboards[i];
@@ -61,7 +61,7 @@ void Player2DMoveSystem(ecs_iter_t *it)
             // printf("Bob Accel %f x %f \n", movement.x, movement.y);
             movement.x *= movementPower;
             movement.y *= movementPower;
-            for (int j = 0; j < bobIter.count; j++)
+            for (int j = 0; j < playerIter.count; j++)
             {
                 // printf("Bob Moving %lu \n", bobIter.entities[j]);
                 const Velocity2D *velocity2D = &velocity2Ds[j];
@@ -87,23 +87,3 @@ void Player2DMoveSystem(ecs_iter_t *it)
     }
 }
 ECS_SYSTEM_DECLARE(Player2DMoveSystem);
-
-
-/*printf("Bob is moving: %fx%f %lu \n", movement.x, movement.y, bobPlayer);
-Acceleration2D *acceleration2D = ecs_get_mut(it->world, bobPlayer, Acceleration2D);
-acceleration2D->value.x += movement.x * deltaTime * movementPower;
-acceleration2D->value.y += movement.y * deltaTime * movementPower;
-ecs_modified(it->world, bobPlayer, Acceleration2D);*/
-
-
-//ecs_entity_t *bobEntitys = ecs_field_id(bobIt, 1);
-//ecs_entity_t bobEntity = bobEntitys[0];
-// Acceleration2D *acceleration2Ds = ecs_field(it, Acceleration2D, 1);
-
-/*ecs_query_t *bobQuery = ecs_query(it->world, {
-    .filter.terms = {
-        { .id = ecs_id(Bob) }
-    }
-});*/
-/**/
-// ecs_entity_t bobPlayer = bobIt.entities[0];

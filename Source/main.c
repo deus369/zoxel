@@ -1,24 +1,4 @@
 //! Zoxel Main
-/**
- * Next Goals:
- * 
- * Textures
- *  - Spawn Texture Data
- *  - Export Generated Noise Texture (as test)
- *  - Set Texture on Player Character
- * 
- * Cameras
- *  - Free Roam Camera Controls
- *      - Move forward in camera direction
- *      - Mouse lock
- *      - Mouse movement to rotate camera
- * 
- *  Voxels
- *  - Nodes Octree Dataset
- *  - Push Octree data to shader
- *  - Render Voxels on Shader
- * 
-*/
 #include <stdbool.h>
 #include <string.h>
 #ifdef __EMSCRIPTEN__
@@ -175,7 +155,7 @@ void UpdateLoop()
         float3 position = cameraPosition->value;
         float4x4 cameraTransformMatrix = float4x4_view_matrix(position, (float3) { 0, 0, 1 }, (float3) { 0, 1, 0 } );
         // cameraTransformMatrix = float4x4_identity();
-        cameraTransformMatrix = float4x4_position(float3_multiply_float(position, -1.0f));
+        // cameraTransformMatrix = float4x4_position(float3_multiply_float(position, -1.0f));
         // rotate transform matrix
         cameraTransformMatrix = float4x4_multiply(quaternion_to_matrix(cameraRotation->value), cameraTransformMatrix);
         mainCameraMatrix = float4x4_multiply(cameraTransformMatrix, projectionMatrix);
@@ -330,15 +310,3 @@ void DebugPrinter()
 //         emscripten_cancel_main_loop();
 //     }
 // #endif
-
-        // float4x4 cameraTransformMatrix = float4x4_zero();
-        // float4x4 cameraTransformMatrix = float4x4_identity();
-        // printf("-----\n");
-        // float4x4_print(cameraTransformMatrix);
-        // print_float4(cameraRotation->value);
-        // rotation = float4_reverse(rotation);
-        // float4x4_rotate(&cameraTransformMatrix, cameraRotation->value);
-        // float4x4_print(cameraTransformMatrix);
-
-        // float4x4_print(projectionMatrix);
-        // PrintMatrix(mvp);

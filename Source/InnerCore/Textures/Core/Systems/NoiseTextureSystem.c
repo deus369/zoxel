@@ -104,21 +104,3 @@ void NoiseTextureSystem(ecs_iter_t *it)
     }
 }
 ECS_SYSTEM_DECLARE(NoiseTextureSystem);
-
-
-//! Empty system to reset changes flagged in table
-// void NoiseTextureChangeResetter(ecs_iter_t *it) { } ECS_SYSTEM_DECLARE(NoiseTextureChangeResetter);
-
-
-    /*ecs_query_t *changeQuery = it->ctx;
-    if (!changeQuery)
-    {
-        printf("[404; changeQuery is void]\n");
-        return;
-    }
-    if (!ecs_query_changed(changeQuery, NULL))
-    {
-        return;
-    }
-    ecs_iter_t changeIterator = ecs_query_iter(it->world, changeQuery);
-    while (ecs_query_next(&changeIterator));*/

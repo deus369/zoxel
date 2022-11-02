@@ -15,6 +15,7 @@
 #include "Util/flecs_macros.c"
 #include "Util/flecs_extensions.c"
 // Data
+// move this to math module?
 #include "Data/float2.c"
 #include "Data/float3.c"
 #include "Data/float4.c"

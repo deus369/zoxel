@@ -36,7 +36,7 @@ void TextureUpdateSystem(ecs_iter_t *it)
         const TextureGPULink *textureGPULink = &textureGPULinks[i];
         // printf("Uploaded Texture to GPU: %lu -TextureID [%i] \n", (long int) it->entities[i], textureGPULink->value);
         // add to queue
-        queueTextures[queueCount] = texture;    // 
+        queueTextures[queueCount] = texture;
         queueTextureSizes[queueCount] = textureSize;
         queueTextureIDs[queueCount] = textureGPULink->value;
         queueCount++;

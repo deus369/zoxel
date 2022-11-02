@@ -5,23 +5,23 @@ void CameraMoveSystem(ecs_iter_t *it)
     double movementPower = 0.006 * 100 * deltaTime; // 2.8f; // * deltaTime;
     float rotatePower = 0.25f * 100 * deltaTime;
     // printf("deltaTime! %f\n", deltaTime);
-    ecs_query_t *bobQuery = it->ctx;
-    if (!bobQuery)
+    ecs_query_t *cameraQuery = it->ctx;
+    if (!cameraQuery)
     {
-        printf("[404; bobQuery is void]\n");
+        printf("[CameraMoveSystem; cameraQuery is void]\n");
         return;
     }
-    ecs_iter_t bobIter = ecs_query_iter(it->world, bobQuery);
-    ecs_query_next(&bobIter);
-    if (bobIter.count == 0)
+    ecs_iter_t cameraIter = ecs_query_iter(it->world, cameraQuery);
+    ecs_query_next(&cameraIter);
+    if (cameraIter.count == 0)
     {
         // printf("[404; Bob Not Found]\n");
         return;
     }
     // printf("Bobs Found [%i]\n", bobIter.count);
     Keyboard *keyboards = ecs_field(it, Keyboard, 1);
-    Position *positions = ecs_field(&bobIter, Position, 2);
-    Rotation *rotations = ecs_field(&bobIter, Rotation, 3);
+    Position *positions = ecs_field(&cameraIter, Position, 2);
+    Rotation *rotations = ecs_field(&cameraIter, Rotation, 3);
     //Acceleration *accelerations = ecs_field(&bobIter, Acceleration, 2);
     //const Velocity *velocitys = ecs_field(&bobIter, Velocity, 3);
     for (int i = 0; i < it->count; i++)
@@ -58,7 +58,7 @@ void CameraMoveSystem(ecs_iter_t *it)
             movement.x *= movementPower;
             movement.y *= movementPower;
             movement.z *= movementPower;
-            for (int j = 0; j < bobIter.count; j++)
+            for (int j = 0; j < cameraIter.count; j++)
             {
                 Position *position = &positions[j];
                 position->value.x += movement.x;
@@ -103,7 +103,7 @@ void CameraMoveSystem(ecs_iter_t *it)
             // rotate2.z is x
             float4 rotate3 = quaternion_from_euler(rotate2);
             // printf("rotate: %fx%f\n", rotate.x, rotate.y);
-            for (int j = 0; j < bobIter.count; j++)
+            for (int j = 0; j < cameraIter.count; j++)
             {
                 Rotation *rotation = &rotations[j];
                 rotation->value = quaternion_rotate(rotate3, rotation->value);
@@ -112,43 +112,3 @@ void CameraMoveSystem(ecs_iter_t *it)
     }
 }
 ECS_SYSTEM_DECLARE(CameraMoveSystem);
-
-
-/*printf("Bob is moving: %fx%f %lu \n", movement.x, movement.y, bobPlayer);
-Acceleration2D *acceleration2D = ecs_get_mut(it->world, bobPlayer, Acceleration2D);
-acceleration2D->value.x += movement.x * deltaTime * movementPower;
-acceleration2D->value.y += movement.y * deltaTime * movementPower;
-ecs_modified(it->world, bobPlayer, Acceleration2D);*/
-
-
-//ecs_entity_t *bobEntitys = ecs_field_id(bobIt, 1);
-//ecs_entity_t bobEntity = bobEntitys[0];
-// Acceleration2D *acceleration2Ds = ecs_field(it, Acceleration2D, 1);
-
-/*ecs_query_t *bobQuery = ecs_query(it->world, {
-    .filter.terms = {
-        { .id = ecs_id(Bob) }
-    }
-});*/
-/**/
-// ecs_entity_t bobPlayer = bobIt.entities[0];
-
-                // printf("Bob Moving %lu \n", bobIter.entities[j]);
-                /*const Velocity *velocity2D = &velocitys[j];
-                Acceleration *acceleration = &accelerations[j];
-                if (movement.x > 0 && velocity2D->value.x < maxVelocity.x)
-                {
-                    acceleration->value.x += movement.x;
-                }
-                else if (movement.x < 0 && velocity2D->value.x > -maxVelocity.x)
-                {
-                    acceleration->value.x += movement.x;
-                }
-                if (movement.y > 0 && velocity2D->value.y < maxVelocity.y)
-                {
-                    acceleration->value.y += movement.y;
-                }
-                else if (movement.y < 0 && velocity2D->value.y > -maxVelocity.y)
-                {
-                    acceleration->value.y += movement.y;
-                }*/
