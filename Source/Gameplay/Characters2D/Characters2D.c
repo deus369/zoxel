@@ -4,6 +4,8 @@
 
 // Tags
 ECS_DECLARE(Character2D);
+// Components
+ZOXEL_COMPONENT(Character2DLink, ecs_entity_t);
 // Prefabs
 #include "Prefabs/Character2D.c"
 // Systems
@@ -25,6 +27,7 @@ void Characters2DImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Characters2D);
     ECS_TAG_DEFINE(world, Character2D);
+    ECS_COMPONENT_DEFINE(world, Character2DLink);
     InitializeCharacter2DPrefab(world);
     // testing, spawn more
     for (int i = 0; i < 100; i++)

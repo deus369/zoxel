@@ -68,7 +68,7 @@ void NoiseTextureSystem(ecs_iter_t *it)
     ecs_query_t *changeQuery = it->ctx;
     if (!changeQuery)
     {
-        printf("[404; changeQuery is void]\n");
+        printf("[404; changeQuery is null]\n");
         return;
     }
     if (!ecs_query_changed(changeQuery, NULL))

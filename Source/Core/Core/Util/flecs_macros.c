@@ -121,6 +121,24 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 } \
 ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
+#define ZOXEL_SYSTEM_MULTITHREADED_CTX2(world, id_, phase, ctx1, ctx2, ...)\
+{ \
+    ecs_system_desc_t desc = {0}; \
+    ecs_entity_desc_t edesc = {0}; \
+    edesc.id = ecs_id(id_);\
+    edesc.name = #id_;\
+    edesc.add[0] = ((phase) ? ecs_pair(EcsDependsOn, (phase)) : 0); \
+    edesc.add[1] = (phase); \
+    desc.entity = ecs_entity_init(world, &edesc);\
+    desc.query.filter.expr = #__VA_ARGS__; \
+    desc.callback = id_; \
+    desc.multi_threaded = 1; \
+    QueryContainer2 *queryContainer2 = & (QueryContainer2) { ctx1, ctx2 }; \
+    desc.ctx = queryContainer2; \
+    ecs_id(id_) = ecs_system_init(world, &desc); \
+} \
+ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
+
 
 #define ZOXEL_FILTER(name, world, ...)\
     ecs_query_t *name = ecs_query_init(world, &(ecs_query_desc_t) { \

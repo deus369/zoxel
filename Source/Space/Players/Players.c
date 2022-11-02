@@ -10,13 +10,14 @@
 ECS_DECLARE(Player);
 ECS_DECLARE(Player2D);
 ECS_DECLARE(PlayerCharacter2D);
-ECS_DECLARE(DisableMovement);
+ZOXEL_COMPONENT(DisableMovement, bool);
 // Systems
 #include "Systems/Player2DMoveSystem.c"
 #include "Systems/Player2DTestSystem.c"
 #include "Systems/CameraFollow2DSystem.c"
 #include "Systems/CameraMoveSystem.c"
 #include "Systems/CameraRotateSystem.c"
+#include "Systems/PlayerRoamSystem.c"
 // prefabs
 #include "Prefabs/PlayerCharacter2D.c"
 
@@ -32,8 +33,13 @@ ecs_entity_t SpawnPlayerCharacter2D(ecs_world_t *world)
     printf("Spawned Player2D [%lu]\n", (long unsigned int) e);
     SpawnGPUMaterial(world, e);
     SpawnGPUTexture(world, e);
+    // can be disabled
+    ecs_add(world, e, DisableMovement);
+    ecs_override(world, e, DisableMovement);
+    ecs_set(world, e, DisableMovement, { 0 });
     // make sure to link
     ecs_set(world, e, CameraLink, { mainCamera });
+    ecs_set(world, mainCamera, Character2DLink, { e });
     return e;
 }
 
@@ -45,21 +51,31 @@ void PlayersImport(ecs_world_t *world)
     ECS_TAG_DEFINE(world, Player);
     ECS_TAG_DEFINE(world, Player2D);
     ECS_TAG_DEFINE(world, PlayerCharacter2D);
-    ECS_TAG_DEFINE(world, DisableMovement);
+    ECS_COMPONENT_DEFINE(world, DisableMovement);
     // Systems
     #ifdef Zoxel_Physics2D
     // ECS_SYSTEM_DEFINE(world, CameraFollow2DSystem, EcsOnUpdate, [none] Camera, [out] Position);
+    // printf("Character2DLink %s", ecs_get_fullpath(world, Character2DLink));
+    // printf("Character2DLink %s", ecs_get_fullpath(world, ecs_id(Character2DLink)));
     ZOXEL_FILTER(playerCharacter2DQuery, world, [none] PlayerCharacter2D, [in] Position2D);
     ZOXEL_SYSTEM_MULTITHREADED_CTX(world, CameraFollow2DSystem, EcsOnUpdate, playerCharacter2DQuery,
-        [none] cameras.CameraFollower2D, [in] cameras.CameraFree, [out] Position);
+        [none] cameras.CameraFollower2D, [in] cameras.CameraFree, [in] characters2.d.Character2DLink, [out] Position, [out] Rotation);
     // \todo Add in out tags to this filter
-    ZOXEL_FILTER(playerCharacter2DQuery2, world, [none] PlayerCharacter2D, [out] Acceleration2D, [in] Velocity2D);
+    ZOXEL_FILTER(playerCharacter2DQuery2, world, [none] PlayerCharacter2D, [out] Acceleration2D, [in] Velocity2D, [in] DisableMovement);
     ZOXEL_SYSTEM_MULTITHREADED_CTX(world, Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2, [in] Keyboard);
     #endif
     ZOXEL_FILTER(cameraQuery, world, [none] cameras.Camera, [in] cameras.CameraFree, [out] Position, [out] Rotation);
     ZOXEL_SYSTEM_MULTITHREADED_CTX(world, CameraMoveSystem, EcsOnUpdate, cameraQuery, [in] Keyboard);
-    ZOXEL_FILTER(cameraQuery2, world, [none] cameras.Camera, [out] Rotation, [out] cameras.CameraFree, [out] Euler);
+    ZOXEL_FILTER(cameraQuery2, world, [none] cameras.Camera, [out] Rotation, [out] Euler, [in] cameras.CameraFree);
     ZOXEL_SYSTEM_MULTITHREADED_CTX(world, CameraRotateSystem, EcsOnUpdate, cameraQuery2, [in] Mouse);
+
+    ZOXEL_FILTER(cameraQuery3, world, [none] cameras.Camera, [out] cameras.CameraFree);
+    ZOXEL_FILTER(playerCharacter2DQuery3, world, [none] PlayerCharacter2D, [out] DisableMovement);
+    ZOXEL_SYSTEM_MULTITHREADED_CTX(world, PlayerRoamSystem, EcsOnUpdate, cameraQuery3, [in] Mouse);
+    ZOXEL_SYSTEM_MULTITHREADED_CTX(world, PlayerRoamSystem2, EcsOnUpdate, playerCharacter2DQuery3, [in] Mouse);
+    // ZOXEL_SYSTEM_MULTITHREADED_CTX2(world, PlayerRoamSystem, EcsOnUpdate, cameraQuery3, playerCharacter2DQuery3, [in] Mouse);
+    
+    
     //#if Zoxel_Particles2D
     ECS_SYSTEM_DEFINE(world, Player2DTestSystem, EcsOnUpdate, [in] Keyboard);
     //! Needed for bulk spawning. Still crashes.

@@ -21,7 +21,7 @@ void Player2DMoveSystem(ecs_iter_t *it)
     ecs_query_t *playerQuery = it->ctx;
     if (!playerQuery)
     {
-        printf("[Player2DMoveSystem; playerQuery is void]\n");
+        printf("[Player2DMoveSystem; playerQuery is null]\n");
         return;
     }
     ecs_iter_t playerIter = ecs_query_iter(it->world, playerQuery);
@@ -35,6 +35,7 @@ void Player2DMoveSystem(ecs_iter_t *it)
     Keyboard *keyboards = ecs_field(it, Keyboard, 1);
     Acceleration2D *acceleration2Ds = ecs_field(&playerIter, Acceleration2D, 2);
     const Velocity2D *velocity2Ds = ecs_field(&playerIter, Velocity2D, 3);
+    const DisableMovement *disableMovements = ecs_field(&playerIter, DisableMovement, 4);
     for (int i = 0; i < it->count; i++)
     {
         const Keyboard *keyboard = &keyboards[i];
@@ -64,6 +65,11 @@ void Player2DMoveSystem(ecs_iter_t *it)
             for (int j = 0; j < playerIter.count; j++)
             {
                 // printf("Bob Moving %lu \n", bobIter.entities[j]);
+                const DisableMovement *disableMovement = &disableMovements[j];
+                if (disableMovement->value)
+                {
+                    continue;
+                }
                 const Velocity2D *velocity2D = &velocity2Ds[j];
                 Acceleration2D *acceleration2D = &acceleration2Ds[j];
                 if (movement.x > 0 && velocity2D->value.x < maxVelocity.x)

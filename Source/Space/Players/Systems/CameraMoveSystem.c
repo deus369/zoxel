@@ -6,7 +6,7 @@ void CameraMoveSystem(ecs_iter_t *it)
     ecs_query_t *cameraQuery = it->ctx;
     if (!cameraQuery)
     {
-        printf("[CameraMoveSystem; cameraQuery is void]\n");
+        printf("[CameraMoveSystem; cameraQuery is null]\n");
         return;
     }
     ecs_iter_t cameraIter = ecs_query_iter(it->world, cameraQuery);
@@ -73,15 +73,7 @@ void CameraMoveSystem(ecs_iter_t *it)
                 }
             }
         }
-        if (keyboard->x.wasPressedThisFrame)
-        {
-            for (int j = 0; j < cameraIter.count; j++)
-            {
-                Rotation *rotation = &rotations[j];
-                rotation->value = quaternion_from_euler( (float3) { 0 * degreesToRadians, 90 * degreesToRadians, 0 * degreesToRadians });
-            }
-        }
-        if (keyboard->c.wasPressedThisFrame)
+        if (keyboard->r.wasPressedThisFrame)
         {
             for (int j = 0; j < cameraIter.count; j++)
             {
@@ -89,7 +81,15 @@ void CameraMoveSystem(ecs_iter_t *it)
                 rotation->value = quaternion_from_euler( (float3) { 0 * degreesToRadians, 0 * degreesToRadians, 0 * degreesToRadians });
             }
         }
-        if (keyboard->v.wasPressedThisFrame)
+        /*if (keyboard->x.wasPressedThisFrame)
+        {
+            for (int j = 0; j < cameraIter.count; j++)
+            {
+                Rotation *rotation = &rotations[j];
+                rotation->value = quaternion_from_euler( (float3) { 0 * degreesToRadians, 90 * degreesToRadians, 0 * degreesToRadians });
+            }
+        }*/
+        /*if (keyboard->v.wasPressedThisFrame)
         {
             for (int j = 0; j < cameraIter.count; j++)
             {
@@ -114,7 +114,7 @@ void CameraMoveSystem(ecs_iter_t *it)
                 Rotation *rotation = &rotations[j];
                 rotation->value = quaternion_from_euler( (float3) { 90 * degreesToRadians, 0 * degreesToRadians, 0 * degreesToRadians });
             }
-        }
+        }*/
     }
 }
 ECS_SYSTEM_DECLARE(CameraMoveSystem);

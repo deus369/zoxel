@@ -3,14 +3,14 @@ void CameraRotateSystem(ecs_iter_t *it)
 {
     // while right click only, and hide mouse!
     double deltaTime = (double) (it->delta_time);
-    float rotatePower = 0.92f * 100 * deltaTime * degreesToRadians;
+    float rotatePower = 0.62f * 100 * deltaTime * degreesToRadians;
 #ifdef __EMSCRIPTEN__
-    rotatePower /= 8.0f;
+    rotatePower /= 6.0f;
 #endif
     ecs_query_t *cameraQuery = it->ctx;
     if (!cameraQuery)
     {
-        printf("[CameraMoveSystem; cameraQuery is void]\n");
+        printf("[CameraMoveSystem; cameraQuery is null]\n");
         return;
     }
     ecs_iter_t cameraIter = ecs_query_iter(it->world, cameraQuery);
@@ -21,23 +21,18 @@ void CameraRotateSystem(ecs_iter_t *it)
     }
     Mouse *mouses = ecs_field(it, Mouse, 1);
     Rotation *rotations = ecs_field(&cameraIter, Rotation, 2);
-    CameraFree *cameraFrees = ecs_field(&cameraIter, CameraFree, 3);
-    Euler *eulers = ecs_field(&cameraIter, Euler, 4);
+    Euler *eulers = ecs_field(&cameraIter, Euler, 3);
+    const CameraFree *cameraFrees = ecs_field(&cameraIter, CameraFree, 4);
     for (int i = 0; i < it->count; i++)
     {
         const Mouse *mouse = &mouses[i];
         float3 eulerAddition = { 0, -mouse->delta.x, -mouse->delta.y };
         eulerAddition = float3_multiply_float(eulerAddition, rotatePower);
-        if (mouse->right.wasPressedThisFrame || !(eulerAddition.x == 0 && eulerAddition.y == 0 && eulerAddition.z == 0))
+        if (!(eulerAddition.x == 0 && eulerAddition.y == 0 && eulerAddition.z == 0))
         {
             for (int j = 0; j < cameraIter.count; j++)
             {
-                CameraFree *cameraFree = &cameraFrees[j];
-                if (mouse->right.wasPressedThisFrame)
-                {
-                    cameraFree->value = !cameraFree->value;
-                    printf("Camera Free Toggled [%s]\n", cameraFree->value ? "true" : "false");
-                }
+                const CameraFree *cameraFree = &cameraFrees[j];
                 if (mouse->left.isPressed || cameraFree->value)
                 {
                     Euler *euler = &eulers[j];
