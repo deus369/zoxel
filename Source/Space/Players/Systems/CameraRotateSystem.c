@@ -33,14 +33,19 @@ void CameraRotateSystem(ecs_iter_t *it)
             for (int j = 0; j < cameraIter.count; j++)
             {
                 const CameraFree *cameraFree = &cameraFrees[j];
+                Euler *euler = &eulers[j];
                 if (cameraFree->value)  // mouse->left.isPressed || 
                 {
-                    Euler *euler = &eulers[j];
+                    // printf("mouse->delta: %ix%i\n", mouse->delta.x, mouse->delta.y);
                     euler->value = float3_add_float3(euler->value, eulerAddition);
                     Rotation *rotation = &rotations[j];
                     // rotation->value = quaternion_rotate(quaternion_from_euler(eulerAddition), rotation->value);
                     rotation->value = quaternion_from_euler(euler->value);
                     // float3_print(euler->value);
+                }
+                else
+                {
+                    euler->value = (float3) { 0, 0, 0 };
                 }
             }
         }

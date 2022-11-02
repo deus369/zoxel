@@ -146,9 +146,6 @@ void UpdateLoop()
     {
         TextureUpdateSystem2();
         //! Run render system on main thread, until Flecs Threading issue is fixed
-        //! Temporary for now, calculate camera matrix here.
-        //      - Move Transform Matrix calculations to Transform systems.
-        //      - Move  CameraViewMatrix to camera systems.
         //! Locks Main Mouse.
         const CameraFree *cameraFree = ecs_get(world, mainCamera, CameraFree);
         SDL_SetRelativeMouseMode(cameraFree->value);
@@ -317,3 +314,7 @@ void DebugPrinter()
 //         emscripten_cancel_main_loop();
 //     }
 // #endif
+
+        //! Temporary for now, calculate camera matrix here.
+        //      - Move Transform Matrix calculations to Transform systems.
+        //      - Move  CameraViewMatrix to camera systems.
