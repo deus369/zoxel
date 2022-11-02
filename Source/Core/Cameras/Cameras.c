@@ -33,9 +33,10 @@ void SpawnMainCamera(int2 screenDimensions)
 {
     float3 spawnPosition = { 0, -0.0f, 1.2 };
     // imagine this is a forward rotation
-    float4 flipRotation = quaternion_from_euler( (float3) { 0, 180 * degreesToRadians, 0 });
-    float4 spawnRotation = quaternion_from_euler( (float3) { 0 * degreesToRadians, 0 * degreesToRadians, 0 * degreesToRadians });
-    spawnRotation = quaternion_rotate(flipRotation, spawnRotation);
+    // float4 flipRotation = quaternion_from_euler( (float3) { 0, 180 * degreesToRadians, 0 });
+    // float4 flipRotation = quaternion_from_euler( (float3) { 0, 0 * degreesToRadians, 0 });
+    float4 spawnRotation = quaternion_identity(); // quaternion_from_euler( (float3) { 0 * degreesToRadians, 0 * degreesToRadians, 0 * degreesToRadians });
+    // spawnRotation = quaternion_rotate(flipRotation, spawnRotation);
     SpawnCamera(world, spawnPosition, spawnRotation, screenDimensions);
 }
 

@@ -153,12 +153,10 @@ void UpdateLoop()
         const Position *cameraPosition = ecs_get(world, mainCamera, Position);
         const Rotation *cameraRotation = ecs_get(world, mainCamera, Rotation);
         float3 position = cameraPosition->value;
-        float4x4 cameraTransformMatrix = float4x4_view_matrix(position, (float3) { 0, 0, 1 }, (float3) { 0, 1, 0 } );
-        // cameraTransformMatrix = float4x4_identity();
-        // cameraTransformMatrix = float4x4_position(float3_multiply_float(position, -1.0f));
-        // rotate transform matrix
-        cameraTransformMatrix = float4x4_multiply(quaternion_to_matrix(cameraRotation->value), cameraTransformMatrix);
-        mainCameraMatrix = float4x4_multiply(cameraTransformMatrix, projectionMatrix);
+        // float4x4 cameraPositionMatrix = float4x4_view_matrix(position, (float3) { 0, 0, 1 }, (float3) { 0, 1, 0 } );
+        float4x4 cameraPositionMatrix = float4x4_position(float3_multiply_float(position, -1.0f));
+        float4x4 cameraViewMatrix = float4x4_multiply(cameraPositionMatrix, quaternion_to_matrix(cameraRotation->value));
+        mainCameraMatrix = float4x4_multiply(cameraViewMatrix, projectionMatrix);
         OpenGLClear();
         OpenGLBeginInstancing(mainCameraMatrix);
         ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);

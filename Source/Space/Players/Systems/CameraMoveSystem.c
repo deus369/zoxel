@@ -66,30 +66,36 @@ void CameraMoveSystem(ecs_iter_t *it)
                 position->value.z += movement.z;
             }
         }
+        bool isResetRotation = false;
         float3 rotate = { 0, 0, 0 };
         if (keyboard->j.isPressed)
         {
-            rotate.x = -1;
+            rotate.z = 1;
         }
         if (keyboard->l.isPressed)
         {
-            rotate.x = 1;
+            rotate.z = -1;
         }
         if (keyboard->i.isPressed)
         {
-            rotate.y = 1;
+            rotate.y = -1;
         }
         if (keyboard->k.isPressed)
         {
-            rotate.y = -1;
+            rotate.y = 1;
         }
         if (keyboard->u.isPressed)
         {
-            rotate.z = -1;
+            rotate.x = 1;
         }
         if (keyboard->o.isPressed)
         {
-            rotate.z = 1;
+            rotate.x = -1;
+        }
+        if (keyboard->h.isPressed)
+        {
+            isResetRotation = true;
+            // printf("Resetting rotation.\n");
         }
         if (!(rotate.x == 0 && rotate.y == 0 && rotate.z == 0))
         {
@@ -106,7 +112,14 @@ void CameraMoveSystem(ecs_iter_t *it)
             for (int j = 0; j < cameraIter.count; j++)
             {
                 Rotation *rotation = &rotations[j];
-                rotation->value = quaternion_rotate(rotate3, rotation->value);
+                if (isResetRotation)
+                {
+                    rotation->value = quaternion_identity();
+                }
+                else
+                {
+                    rotation->value = quaternion_rotate(rotate3, rotation->value);
+                }
             }
         }
     }

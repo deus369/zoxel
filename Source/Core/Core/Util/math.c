@@ -159,6 +159,11 @@ float4 quaternion_from_euler(float3 euler)
     return output;
 }
 
+float4 quaternion_identity()
+{
+    return (float4) { 0, 0, 0, 1 };
+}
+
 /*int i, j;
 for (i = 0; i < 4; ++i)
 {
