@@ -175,6 +175,7 @@ void SpawnGameEntities()
 {
     SpawnMainCamera(screenDimensions);
     SpawnKeyboardEntity();
+    SpawnMouseEntity();
     localPlayer = SpawnPlayerCharacter2D(world);
 }
 
@@ -191,7 +192,8 @@ void ExitApp()
 //! Temporary, quick and dirty events.
 void PollSDLEvents()
 {
-    ResetKeyboard(world);
+    ResetDevices(world);
+    ExtractMouse(world);
     SDL_Event event  = { 0 };
     while (SDL_PollEvent(&event))
     {

@@ -11,11 +11,13 @@ ECS_DECLARE(Player);
 ECS_DECLARE(Player2D);
 ECS_DECLARE(PlayerCharacter2D);
 ECS_DECLARE(DisableMovement);
+ZOXEL_COMPONENT(CameraFree, bool);
 // Systems
 #include "Systems/Player2DMoveSystem.c"
 #include "Systems/Player2DTestSystem.c"
-#include "Systems/CameraMoveSystem.c"
 #include "Systems/CameraFollow2DSystem.c"
+#include "Systems/CameraMoveSystem.c"
+#include "Systems/CameraRotateSystem.c"
 // prefabs
 #include "Prefabs/PlayerCharacter2D.c"
 
@@ -52,6 +54,8 @@ void PlayersImport(ecs_world_t *world)
     #endif
     ZOXEL_FILTER(cameraQuery, world, [none] cameras.Camera, [out] Position, [out] Rotation);
     ZOXEL_SYSTEM_MULTITHREADED_CTX(world, CameraMoveSystem, EcsOnUpdate, cameraQuery, [in] Keyboard);
+    ZOXEL_FILTER(cameraQuery2, world, [none] cameras.Camera, [out] Rotation);
+    ZOXEL_SYSTEM_MULTITHREADED_CTX(world, CameraRotateSystem, EcsOnUpdate, cameraQuery2, [in] Mouse);
     //#if Zoxel_Particles2D
     ECS_SYSTEM_DEFINE(world, Player2DTestSystem, EcsOnUpdate, [in] Keyboard);
     //! Needed for bulk spawning. Still crashes.
