@@ -1,10 +1,12 @@
 # Libre Zoxel
 
-Play Libre Zoxel ~ ([Web Build](https://deus369.github.io/open-zoxel/web-demo/)) ~
+Play Me --=([A Web Build](https://deus369.github.io/open-zoxel/web-demo/))=--
 
-Zoxel [Roadmap](Documents/todos/todo-main.md)
+The Future --[The Roadmap](Documents/todos/todo-main.md)--
 
-Code Counter! [CountCode](Documents/CodeCounter/results.md)
+Stats -[Code Counter](Documents/CodeCounter/results.md)-
+
+## What is Zoxel
 
 Is Open Source & Cross-platform + Performance is on Mushrooms~
 
