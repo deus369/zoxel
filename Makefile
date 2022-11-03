@@ -38,9 +38,6 @@ SRCS += Source/main.c
 SRCS += Source/Core/App/Util/SDLUtil.c
 SRCS += Source/Core/App/Util/FlecsUtil.c
 # Gameplay
-# Characters2D
-SRCS += Source/Gameplay/Characters2D/Characters2D.c
-SRCS += Source/Gameplay/Characters2D/Systems/BobSpawnSystem.c
 # Players
 SRCS += Source/Space/Players/Players.c
 SRCS += Source/Space/Players/Systems/Player2DMoveSystem.c

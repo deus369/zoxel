@@ -1,2 +1,2 @@
 //! Used to set the brightness of an entity.
-ZOXEL_COMPONENT(DestroyInTime, double);
+zoxel_component(DestroyInTime, double);

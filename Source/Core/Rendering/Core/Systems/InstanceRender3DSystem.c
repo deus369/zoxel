@@ -1,7 +1,7 @@
-// Spawn a queue
+//! External Render function.
 extern void RenderEntity3D(float3 position, float4 rotation, float scale1D, float brightness);
 
-//! Render 2D entities.
+//! Render 3D entities.
 void InstanceRender3DSystem(ecs_iter_t *it)
 {
     Position *positions = ecs_field(it, Position, 1);

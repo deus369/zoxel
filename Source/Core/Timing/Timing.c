@@ -11,6 +11,6 @@ void TimingImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Timing);
     ECS_COMPONENT_DEFINE(world, DestroyInTime);
-    ZOXEL_SYSTEM_MULTITHREADED(world, DestroyInTimeSystem, EcsOnUpdate, [out] DestroyInTime);
+    zoxel_system(world, DestroyInTimeSystem, EcsOnUpdate, [out] DestroyInTime);
 }
 #endif

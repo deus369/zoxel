@@ -8,6 +8,12 @@ Things that are done. A big ole list. To clean up other todo files.
 -----
 
 `Done`
+- [x] Fix rotation of camera math - Transform Matrix
+    - should be rotating at point instead of around point
+    - [x] Debug it in euler / position
+- [x] Free roam camera
+    - [x] Using mouse to rotate it around
+- [x] Mouse Device + handling
 - [x] Push UV into Textured Material
     - [x] Use minimal example for drawing with uvs?
 - [x] Material Comonent - with a GLInt reference to a material

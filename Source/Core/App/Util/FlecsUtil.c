@@ -1,5 +1,5 @@
 //! Helper file for Flecs!
-#include <sys/sysinfo.h>
+#include <sys/sysinfo.h>    //! Used for get_nprocs_conf
 ecs_world_t *world;
 
 //! Initialize Flecs ECS and Modules.
@@ -10,7 +10,7 @@ void BeginAppECS(int argc, char* argv[], bool profiler)
     // Enable Profiler
     if (profiler)
     {
-        #ifdef FLECS_REST
+        #if defined (FLECS_REST) && defined (FLECS_MONITOR)
         ECS_IMPORT(world, FlecsMonitor); 
         ecs_singleton_set(world, EcsRest, {0});
         #endif

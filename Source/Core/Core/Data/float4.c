@@ -43,16 +43,6 @@ float4 quaternion_rotate(float4 q1, float4 q2)
     return output;
 }
 
-/*float4 quaternion_rotate(float4 l, float4 r)
-{ 
-    float4 output;
-    output.w = l.w * r.w - l.x * r.x - l.y * r.y - l.z * r.z;
-    output.x = l.x * r.w + l.w * r.x + l.y * r.z - l.z * r.y;
-    output.y = l.y * r.w + l.w * r.y + l.z * r.x - l.x * r.z;
-    output.z = l.z * r.w + l.w * r.z + l.x * r.y - l.y * r.x;
-    return output;
-}*/
-
 //! Also called Conjugation in maths. Apparently x needs to be position still?
 /**
 *   Confirmed here https://www.youtube.com/watch?v=A6A0rpV9ElA
@@ -95,21 +85,3 @@ float3 float4_rotate_float3(float4 rotation, float3 value)
     float3 scaledT = float3_multiply_float(t, rotation.w);
     return float3_add_float3(value, float3_add_float3(scaledT, crossB));
 }
-
-// https://www.youtube.com/watch?v=MZuYmG1GBFk
-// https://stackoverflow.com/questions/57153855/unity-calculate-quaternion-relative-to-main-camera#57153883
-
-//! Rotate a float3 by a Quaternion (float4).
-/*float3 float4_rotate_float3(float4 rotation, float3 point)
-{
-    float4 point4 = (float4) { point.x, point.y, point.z, 0 };
-    float4 conjugated_rotation = float4_inverse(rotation);
-    float4 output = quaternion_rotate(rotation, quaternion_rotate(point4, conjugated_rotation));
-    return (float3) { output.x, output.y, output.z };
-}*/
-    // faster way found here https://blog.molecular-matters.com/2013/05/24/a-faster-quaternion-vector-multiplication/
-    /*float3 rotationXYZ = (float3) { rotation.x, rotation.y, rotation.z };
-    float3 t = float3_multiply_float(float3_cross(rotationXYZ, v), 2.0f);
-    float3 crossB = float3_cross(rotationXYZ, t);
-    float3 mul2 = float3_multiply_float(t, rotation.w);
-    return float3_add_float3(v, float3_add_float3(mul2, crossB));*/

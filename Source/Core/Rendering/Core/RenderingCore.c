@@ -3,7 +3,8 @@
 //! Rendering Core Module.
 
 // Rendering
-#include "Components/Brightness.c"
+//! Used to set the brightness of an entity.
+zoxel_component(Brightness, float);
 #include "Components/Mesh.c"
 #include "Components/Material.c"
 #include "Components/TextureGPULink.c"

@@ -49,7 +49,7 @@ void TextureUpdateSystem(ecs_iter_t *it)
 ECS_SYSTEM_DECLARE(TextureUpdateSystem);
 
 //! \todo Make proper queue.
-void TextureUpdateSystem2()
+void TextureUpdateMainThread()
 { 
     if (queueCount == 0)
     {

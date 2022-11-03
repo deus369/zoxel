@@ -4,6 +4,8 @@ Play Libre Zoxel ~ ([Web Build](https://deus369.github.io/open-zoxel/web-demo/))
 
 Zoxel [Roadmap](Documents/todos/todo-main.md)
 
+Code Counter! [CountCode](Documents/CodeCounter/results.md)
+
 Is Open Source & Cross-platform + Performance is on Mushrooms~
 
 Is under the GPL license! I want any derivatives to stay open, to protect the end users and keep information free.

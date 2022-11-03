@@ -1,5 +1,17 @@
 // Find more math inspiration at https://gist.github.com/mattatz/86fff4b32d198d0928d0fa4ff32cf6fa
 
+float math_abs(float input)
+{
+    if (input < 0)
+    {
+        return -input;
+    }
+    else
+    {
+        return input;
+    }
+}
+
 float4x4 float4x4_position(float3 position)
 {
     float4x4 matrix = float4x4_identity();
@@ -140,51 +152,3 @@ void float4_print_euler(float4 input)
     float3 euler = float3_divide_float(quaternion_to_euler(input), degreesToRadians);
     printf("-> Euler [x:%f y:%f z:%f]\n", euler.x, euler.y, euler.z);
 }
-
-/*float4 quaternion_conjugate(float4 q)
-{
-    float sqr = sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
-    float4 output;
-    output = float4_inverse(q);
-    float4_divide(&output, sqr);
-    return output;
-}*/
-
-/*int i, j;
-for (i = 0; i < 4; ++i)
-{
-    for (j = 0; j < 4; ++j)
-    {
-        c [i + j * 4]= a[i + 4 * j] + b[i + 4 * j];
-    }
-}*/
-
-// float* float4x4_multiply(float* a, const float* b)
-// {
-//     float* c = malloc(16 * 4);
-//     for (unsigned j = 0; j < 16; j++)
-//     {
-//         unsigned i = j % 4;
-//         unsigned j4 = j & 12;  // j4 = j / 4 * 4;
-//         c[j] = 
-//             a[j4 + 0]*b[i + 0] + a[j4 + 1]*b[i + 4]
-//             + a[j4 + 2]*b[i + 8] + a[j4 + 3]*b[i + 12];
-//     }
-//     return c;
-// }
-
-    // does this need conjugation(inverse(rot)) ?
-    // Remove float4 use on vert
-    // rotation = quaternion_conjugate(rotation);
-    // float4 output = quaternion_rotate(float4_inverse(rotation), quaternion_rotate(vertex, rotation));
-
-    /*float4 output = { point.x, point.y, point.z, 0 };
-    output = quaternion_rotate(rotation, output);
-    return (float3) { output.x, output.y, output.z };*/
-    
-    // float3 output = { point.x * sin(rotation.x), point.y * cos(rotation.y), point.z };
-    // float4 output = quaternion_rotate(rotation, quaternion_rotate(vertex, rotation));
-    // return output;
-    //vec3 t = 2 * cross(q.xyz, v)
-    //vec3(v + q.w * t + cross(q.xyz, t))
-    //return 

@@ -1,19 +1,13 @@
 //! My own flecs macros
 
-#define ZOXEL_COMPONENT(name, type)\
+#define zoxel_component(name, type)\
 typedef struct\
 {\
     type value;\
 } name;\
 ECS_COMPONENT_DECLARE(name)
 
-
-//! ECS_CTOR The constructor should initialize the component value.
-//! ECS_DTOR The destructor should free resources.
-//! ECS_MOVE Copy a pointer from one component to another.
-//! ECS_COPY Copy one data block to another.
-
-#define ZOXEL_DEFINE_MEMORY_COMPONENT(world, ComponentName)\
+#define zoxel_memory_component_define(world, ComponentName)\
 {\
     ECS_COMPONENT_DEFINE(world, ComponentName);\
     ecs_set_hooks(world, ComponentName, {\
@@ -47,8 +41,13 @@ ECS_COMPONENT_DECLARE(name)
     }\
 }
 
+//! ECS_CTOR The constructor should initialize the component value.
+//! ECS_DTOR The destructor should free resources.
+//! ECS_MOVE Copy a pointer from one component to another.
+//! ECS_COPY Copy one data block to another.
+
 //! Define a Memory component, with an array of a single data type.
-#define ZOXEL_DECLARE_MEMORY_COMPONENT(name, type)\
+#define zoxel_memory_component(name, type)\
 typedef struct\
 {\
     int length;\
@@ -86,7 +85,7 @@ ECS_COPY(name, dst, src, {\
 })
 
 //! Multithreaded System Definitions.
-#define ZOXEL_SYSTEM_MULTITHREADED(world, id_, phase, ...)\
+#define zoxel_system(world, id_, phase, ...)\
 { \
     ecs_system_desc_t desc = {0}; \
     ecs_entity_desc_t edesc = {0}; \
@@ -104,7 +103,7 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
 
 //! Multithreaded System Definitions.
-#define ZOXEL_SYSTEM_MULTITHREADED_CTX(world, id_, phase, ctx_, ...)\
+#define zoxel_system_ctx(world, id_, phase, ctx_, ...)\
 { \
     ecs_system_desc_t desc = {0}; \
     ecs_entity_desc_t edesc = {0}; \
@@ -139,7 +138,37 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 } \
 ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
-
-#define ZOXEL_FILTER(name, world, ...)\
+//! Creates a simple Filter with components.
+#define zoxel_filter(name, world, ...)\
     ecs_query_t *name = ecs_query_init(world, &(ecs_query_desc_t) { \
         .filter.expr = #__VA_ARGS__});
+
+// ecs_entity_t ecs_module_init(
+
+#define zoxel_module(world, id, moduleName)\
+ecs_entity_t ecs_id(id) = 0;\
+{\
+    ecs_component_desc_t desc = {0};\
+    desc.entity = ecs_id(id);\
+    ecs_id(id) = ecs_module_init(world, moduleName, &desc);\
+    ecs_set_scope(world, ecs_id(id));\
+}\
+(void)ecs_id(id);
+
+//! Adds a component but also adds override to an entity.
+#define zoxel_add_component(world, entity, T)\
+    ecs_add_id(world, entity, ecs_id(T));\
+    ecs_override_id(world, entity, ecs_id(T))
+
+//! Adds a component with data and also adds override to an entity.
+#define zoxel_set_component(world, entity, T, ...)\
+    ecs_set_id(world, entity, ecs_id(T), sizeof(T), &(T)__VA_ARGS__);\
+    ecs_override_id(world, entity, ecs_id(T))
+
+//! Adds a simple tag to an entity.
+#define zoxel_add_tag(world, entity, T)\
+    ecs_add_id(world, entity, ecs_id(T))
+
+
+
+// Remember it will destroy the prefab ones too... *facepalm*

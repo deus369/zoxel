@@ -1,16 +1,15 @@
-//! Used to store vertex data.
+//! Contains a link to the Material on the GPU.
 /**
+*   Materials are shader program instances.
 *   \todo Seperate mesh data into different files.
 */
-ZOXEL_COMPONENT(Material, GLuint);
+zoxel_component(Material, GLuint);
 
 extern GLuint CreateTexturedMaterial2D();
 
 void AddGPUMaterialComponents(ecs_world_t *world, ecs_entity_t prefab)
 {
-    ecs_add(world, prefab, Material);
-    ecs_override(world, prefab, Material);
-    ecs_set(world, prefab, Material, { 0 });
+    zoxel_set_component(world, prefab, Material, { 0 });
 }
 
 void SpawnGPUMaterial(ecs_world_t *world, ecs_entity_t e)

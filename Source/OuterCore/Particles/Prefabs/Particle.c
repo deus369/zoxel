@@ -2,28 +2,21 @@ ecs_entity_t particlePrefab;
 //! Spawns a Particle Prefab.
 void SpawnPrefabParticle(ecs_world_t *world)
 {
-    ecs_entity_t prefab = ecs_new_prefab(world, "Particle");
-    ecs_add(world, prefab, Particle);
+    ecs_entity_t e = ecs_new_prefab(world, "particle_prefab");
+    zoxel_add_tag(world, e, Particle);
     // ecs_override(world, prefab, Particle2D);
-    ecs_set(world, prefab, Position, { { 0, 0, 0 } });
-    ecs_override(world, prefab, Position);
-    ecs_set(world, prefab, Rotation, { { 0, 0, 0, 1 } });
-    ecs_override(world, prefab, Rotation);
-    ecs_set(world, prefab, Scale1D, { 1 });
-    ecs_override(world, prefab, Scale1D);
+    zoxel_set_component(world, e, Position, { { 0, 0, 0 } });
+    zoxel_set_component(world, e, Rotation, { { 0, 0, 0, 1 } });
+    zoxel_set_component(world, e, Scale1D, { 1 });
     // rendering
-    ecs_add(world, prefab, Brightness);
-    ecs_override(world, prefab, Brightness);
+    zoxel_add_component(world, e, Brightness);
     // timing
-    ecs_add(world, prefab, DestroyInTime);
-    ecs_override(world, prefab, DestroyInTime);
+    zoxel_add_component(world, e, DestroyInTime);
     #ifdef Zoxel_Physics
-    ecs_set(world, prefab, Velocity, { 0 });
-    ecs_override(world, prefab, Velocity);
-    ecs_set(world, prefab, Acceleration, { { 0, 0 } });
-    ecs_override(world, prefab, Acceleration);
+    zoxel_set_component(world, e, Velocity, { 0 });
+    zoxel_set_component(world, e, Acceleration, { { 0, 0 } });
     // ecs_set(world, prefab, Torque, { 0 });
     // ecs_override(world, prefab, Torque);
     #endif
-    particlePrefab = prefab;
+    particlePrefab = e;
 }

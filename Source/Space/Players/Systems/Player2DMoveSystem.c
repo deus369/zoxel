@@ -1,23 +1,8 @@
-float math_abs(float input)
-{
-    if (input < 0)
-    {
-        return -input;
-    }
-    else
-    {
-        return input;
-    }
-}
-
 //! Called in ecs updates
 void Player2DMoveSystem(ecs_iter_t *it)
 {
-    // double deltaTime = (double) (it->delta_time);
     double movementPower = 2.8f; // * deltaTime;
-    // const float2 maxVelocity = { 0.12f, 0.12f };
     const float2 maxVelocity = { 12.6f, 12.6f };
-    // printf("deltaTime! %f\n", deltaTime);
     ecs_query_t *playerQuery = it->ctx;
     if (!playerQuery)
     {

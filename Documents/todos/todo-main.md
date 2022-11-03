@@ -25,13 +25,6 @@ To-Do Main
 
 -----
 
-`Cameras`
-- [ ] Fix rotation of camera math - Transform Matrix
-    - should be rotating at point instead of around point
-    - [x] Debug it in euler / position
-- [ ] Free roam camera
-    - [ ] Using mouse to rotate it around
-
 `Current`
 - [ ] 3D Particles
     - [x] Particle3D with 2D mesh
@@ -41,8 +34,12 @@ To-Do Main
     - [ ] Jump ability
     - [ ] Textured Cube - Drawing
 
+`Cameras`
+- [ ] First person camera on character
+
 `Input`
-- [ ] Mouse Device + handling
+- [ ] Handle multiple devices
+- [ ] Virtual Joysticks for touchscreen - free roam
 
 `Lines`
 - [ ] Line2Ds
@@ -66,11 +63,6 @@ To-Do Main
     - [ ] Spawn 2nd camera
     - [ ] ViewUI connected to 2ND Camera
 - [ ] Moveable Windows - Drag by headers
-
-`Flecs Testing Limitations`
-- [ ] Binary serializer for data
-- [ ] Add variables to profiler (by reflecting them)
-    - https://github.com/SanderMertens/flecs/blob/master/examples/c/reflection/basics/Source/main.c
 
 `Application Side`
 - [ ] Support multiple Windows, one can be a FPS Debugger.

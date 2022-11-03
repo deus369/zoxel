@@ -1,6 +1,7 @@
 //! Zoxel Main
 #include <stdbool.h>
 #include <string.h>
+#include <time.h>
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
@@ -9,6 +10,8 @@
 #define FLECS_MODULE
 #define FLECS_SYSTEM 
 #define FLECS_PIPELINE
+#define FLECS_REST      // for profiler
+#define FLECS_MONITOR   // for profiler 2
 #include "../Imports/Flecs/flecs.h"
 // =-= Modules =-=
 #define SDL_IMAGES
@@ -20,7 +23,6 @@
 #include "Core/App/App.c"
 #include "Core/Inputs/Inputs.c"
 #include "Core/Timing/Timing.c"
-#include "Core/Transforms2D/Transforms2D.c"
 #include "Core/Transforms/Transforms.c"
 #include "Core/Rendering/Rendering.c"
 #include "Core/Cameras/Cameras.c"
@@ -29,7 +31,6 @@
 #include "InnerCore/Textures/Textures.c"
 #include "InnerCore/Tiles/Tiles.c"
 #include "InnerCore/Voxels/Voxels.c"
-#include "InnerCore/Physics2D/Physics2D.c"
 #include "InnerCore/Physics/Physics.c"
 // --- Outer Core ---
 #include "OuterCore/Animations/Animations.c"
@@ -37,7 +38,7 @@
 #include "OuterCore/Particles/Particles.c"
 #include "OuterCore/Particles2D/Particles2D.c"
 // --- Gameplay ---
-#include "Gameplay/Characters2D/Characters2D.c"
+#include "Gameplay/Characters/Characters.c"
 // --- Space ---
 #include "Space/Players/Players.c"
 #include "Space/Realms/Realms.c"
@@ -54,8 +55,7 @@ void UpdateLoop();
 int ProcessArguments(int argc, char* argv[]);
 void PollSDLEvents();
 void DebugPrinter();
-
-extern void setup_canvas_resize();
+void RenderLoop_ECSFix();
 
 void ImportModules(ecs_world_t *world)
 {
@@ -68,7 +68,6 @@ void ImportModules(ecs_world_t *world)
     ECS_IMPORT(world, Inputs);
     ECS_IMPORT(world, Timing);
     ECS_IMPORT(world, Transforms);
-    ECS_IMPORT(world, Transforms2D);
     if (!headless)
     {
         ECS_IMPORT(world, Rendering);
@@ -77,13 +76,12 @@ void ImportModules(ecs_world_t *world)
     // Inner Core
     ECS_IMPORT(world, Textures);
     ECS_IMPORT(world, Physics);
-    ECS_IMPORT(world, Physics2D);
     ECS_IMPORT(world, Voxels);
     // Outer Core
     ECS_IMPORT(world, Particles);
     ECS_IMPORT(world, Particles2D);
     // Gameplay
-    ECS_IMPORT(world, Characters2D);
+    ECS_IMPORT(world, Characters);
     // Space
     ECS_IMPORT(world, Players);
 }
@@ -98,9 +96,6 @@ int main(int argc, char* argv[])
     BeginAppECS(argc, argv, profiler);
     // ecs_log_set_level(1);    // use this for module debug
     ImportModules(world);
-    #ifdef __EMSCRIPTEN__
-    setup_canvas_resize();
-    #endif
     SetMultiThreading();
     SpawnGameEntities();
 #ifdef __EMSCRIPTEN__
@@ -121,9 +116,6 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-// used globally in render systems
-float4x4 mainCameraMatrix;
-
 //! Main Game Loop
 void UpdateLoop()
 {
@@ -139,40 +131,45 @@ void UpdateLoop()
         #endif
     }
     // ecs_log_set_level(1);    // use this to debug system pipelines
+    //clock_t t = clock();
     ecs_progress(world, 0);
     DebugPrinter();
+    //t = clock() - t;
+    //double timeTaken = ((double) 1000.0 * t)/CLOCKS_PER_SEC;
+    // printf("ECS Time [%fms]\n", timeTaken);
     // Render Loop
     if (!headless)
     {
-        TextureUpdateSystem2();
-        //! Run render system on main thread, until Flecs Threading issue is fixed
-        //! Locks Main Mouse.
-        const CameraFree *cameraFree = ecs_get(world, mainCamera, CameraFree);
-        SDL_SetRelativeMouseMode(cameraFree->value);
-        const float4x4 projectionMatrix = GetMainCameraViewMatrix();
-        const Position *cameraPosition = ecs_get(world, mainCamera, Position);
-        const Rotation *cameraRotation = ecs_get(world, mainCamera, Rotation);
-        float3 position = cameraPosition->value;
-        // float4x4 cameraPositionMatrix = float4x4_view_matrix(position, (float3) { 0, 0, 1 }, (float3) { 0, 1, 0 } );
-        float4x4 cameraPositionMatrix = float4x4_position(float3_multiply_float(position, -1.0f));
-        float4x4 cameraViewMatrix = float4x4_multiply(cameraPositionMatrix, quaternion_to_matrix(cameraRotation->value));
-        mainCameraMatrix = float4x4_multiply(cameraViewMatrix, projectionMatrix);
-        OpenGLClear();
-        OpenGLBeginInstancing(mainCameraMatrix);
-        ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
-        OpenGLEndInstancing();
-        // seperate materials 2D
-        ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);
-        // 3D instancing
-        OpenGLBeginInstancing3D(mainCameraMatrix);
-        ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
-        OpenGLEndInstancing3D();
-        UpdateLoopSDL();
-        /*if (cameraFree->value)
-        {
-            SDL_WarpMouseInWindow(window, screenDimensions.x / 2, screenDimensions.y / 2);
-        }*/
+        RenderLoop_ECSFix();
     }
+}
+
+// used globally in render systems
+float4x4 mainCameraMatrix;
+
+void RenderLoop_ECSFix()
+{
+    const FreeRoam *freeRoam = ecs_get(world, mainCamera, FreeRoam);
+    mainCameraMatrix = ecs_get(world, mainCamera, ViewMatrix)->value;
+    SDL_SetRelativeMouseMode(freeRoam->value);
+    //clock_t t = clock();
+    //! Run render system on main thread, until Flecs Threading issue is fixed
+    //! Locks Main Mouse.
+    TextureUpdateMainThread();
+    OpenGLClear();
+    OpenGLBeginInstancing(mainCameraMatrix);
+    ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
+    OpenGLEndInstancing();
+    // seperate materials 2D
+    ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);
+    // 3D instancing
+    OpenGLBeginInstancing3D(mainCameraMatrix);
+    ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
+    OpenGLEndInstancing3D();
+    UpdateLoopSDL();
+    //t = clock() - t;
+    //double timeTaken = ((double) 1000.0 * t)/CLOCKS_PER_SEC;
+    // printf("Render Time [%fms]\n", timeTaken);
 }
 
 void SpawnGameEntities()
@@ -314,7 +311,3 @@ void DebugPrinter()
 //         emscripten_cancel_main_loop();
 //     }
 // #endif
-
-        //! Temporary for now, calculate camera matrix here.
-        //      - Move Transform Matrix calculations to Transform systems.
-        //      - Move  CameraViewMatrix to camera systems.

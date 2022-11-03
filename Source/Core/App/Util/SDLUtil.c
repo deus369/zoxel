@@ -7,8 +7,6 @@
 #endif
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
-// EM_JS(int2, get_canvas_size, (), { return new int2(window.innerWidth, window.innerHeight); })
-// (int2) { window.innerWidth, window.innerHeight }; });
 
 EM_JS(int, get_canvas_width, (), { return window.innerWidth; });
 EM_JS(int, get_canvas_height, (), { return window.innerHeight; });
@@ -18,29 +16,12 @@ int2 get_canvas_size()
 {
     return (int2) { get_canvas_width(), get_canvas_height() };
 }
-// EM_JS(int, get_canvas_width, (), { return canvas.width; });
-// EM_JS(int, get_canvas_height, (), { return canvas.height; });
+
 // Condensed
 void resize_canvas()
 {
     printf("Resizing Canvas [%ix%i]", get_canvas_width(), get_canvas_height());
 }
-
-EM_JS(void, setup_canvas_resize, (), 
-{
-    window.addEventListener('resize', function(event)
-    {
-        // console.log("Resized Canvas Size: " + window.innerWidth + "x" + window.innerHeight);
-        // printf("Resizing Canvas [%ix%i]", get_canvas_width(), get_canvas_height());
-        /*var result = Module.ccall('resize_canvas', // name of C function
-            'void', // return type
-            [ ], // argument types
-            [ ]); // arguments
-        */
-        // resize_canvas();
-        // isResizeCanvas = true;
-    });
-});
 
 #endif
 
@@ -55,6 +36,11 @@ SDL_GLContext context;
 unsigned long windowFlags;
 // forward declarations
 void LoadIconSDL(SDL_Window* window);
+
+void UpdateLoopSDL()
+{
+    SDL_GL_SwapWindow(window);
+}
 
 //! Zoxel can also be a command tool... Wuut?!?!!
 void PrintHelpMenu(const char* arg0)
@@ -218,6 +204,34 @@ void ResizeOpenGLViewport(int screenWidth, int screenHeight)
 #endif
 }
 
+void PrintOpenGL()
+{
+    // Load the modern OpenGL funcs
+    printf("PrintOpenGL: OpenGL\n");
+    printf("    Vendor:   %s\n", glGetString(GL_VENDOR));
+    printf("    Renderer: %s\n", glGetString(GL_RENDERER));
+    printf("    Version:  %s\n", glGetString(GL_VERSION));
+    printf("    GLSL Version:    %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+}
+
+void OpenWindow()
+{
+    int didFail = SetSDLAttributes(vsync);
+    PrintSDLDebug();
+    if (didFail == EXIT_FAILURE)
+    {
+        printf("Failed to SetSDLAttributes.");
+        return;
+    }
+    didFail = SpawnWindowSDL(fullscreen);
+    PrintOpenGL();
+    if (didFail == EXIT_FAILURE)
+    {
+        printf("Failed to SpawnWindowSDL.");
+        return;
+    }
+}
+
 #ifdef __EMSCRIPTEN__
 extern void ResizeCameras(int width, int height);
 
@@ -234,170 +248,3 @@ bool UpdateWebCanvas()
     return false;
 }
 #endif
-
-void UpdateLoopSDL()
-{
-    SDL_GL_SwapWindow(window);
-}
-
-/*
-//! \todo Multiwindow support. A camera will be hooked up to a window. A window will contain camera links. Trigger those cameras to update screen dimensions there.
-printf("Updated Canvas: Screen Dimensions [%i x %i] Aspect Ratio [%f].\n", screenWidth, screenHeight, aspectRatio);
-glViewport(0, 0, (GLsizei) screenWidth, (GLsizei) screenHeight);
-GluPerspective(fov, aspectRatio, 1.0f, 100.0f);*/
-
-/*glMatrixMode(GL_PROJECTION);
-glLoadIdentity();
-GluPerspective(fov, aspectRatio, 1.0f, 100.0f);
-glMatrixMode(GL_MODELVIEW);
-glLoadIdentity();
-printf("Aspect Ratio is now %f.\n", aspectRatio);*/
-
-
-// glOrtho( 0.0, width, height, 0.0, 1.0, -1.0 );
-//  glViewport(0, 0, (GLsizei)width, (GLsizei)height);
-// glOrtho(0, width, height, 0, -1.0, 1.0);
-// glMatrixMode(GL_PROJECTION);
-
-/*void glhFrustumf2(float *matrix, float left, float right, float bottom, float top, float znear, float zfar)
-{
-    float temp, temp2, temp3, temp4;
-    temp = 2.0 * znear;
-    temp2 = right - left;
-    temp3 = top - bottom;
-    temp4 = zfar - znear;
-    matrix[0] = temp / temp2;
-    matrix[1] = 0.0;
-    matrix[2] = 0.0;
-    matrix[3] = 0.0;
-    matrix[4] = 0.0;
-    matrix[5] = temp / temp3;
-    matrix[6] = 0.0;
-    matrix[7] = 0.0;
-    matrix[8] = (right + left) / temp2;
-    matrix[9] = (top + bottom) / temp3;
-    matrix[10] = (-zfar - znear) / temp4;
-    matrix[11] = -1.0;
-    matrix[12] = 0.0;
-    matrix[13] = 0.0;
-    matrix[14] = (-temp * zfar) / temp4;
-    matrix[15] = 0.0;
-}
-
-void glhPerspectivef2(float *matrix, float fovyInDegrees, float aspectRatio,
-                      float znear, float zfar)
-{
-    float ymax, xmax;
-    float temp, temp2, temp3, temp4;
-    ymax = znear * tanf(fovyInDegrees * M_PI / 360.0);
-    // ymin = -ymax;
-    // xmin = -ymax * aspectRatio;
-    xmax = ymax * aspectRatio;
-    glhFrustumf2(matrix, -xmax, xmax, -ymax, ymax, znear, zfar);
-}*/
-
-// Matrix will receive the calculated perspective matrix.
-// You would have to upload to your shader
-// or use glLoadMatrixf if you aren't using shaders.
-// void glhPerspectivef2(float *matrix, float fovyInDegrees, float aspectRatio,
-//                       float znear, float zfar)
-// {
-//     float ymax, xmax;
-//     float temp, temp2, temp3, temp4;
-//     ymax = znear * tanf(fovyInDegrees * M_PI / 360.0);
-//     // ymin = -ymax;
-//     // xmin = -ymax * aspectRatio;
-//     xmax = ymax * aspectRatio;
-//     glhFrustumf2(matrix, -xmax, xmax, -ymax, ymax, znear, zfar);
-// }
-
-// void glhFrustumf2(float *matrix, float left, float right, float bottom, float top,
-//                   float znear, float zfar)
-// {
-//     float temp, temp2, temp3, temp4;
-//     temp = 2.0 * znear;
-//     temp2 = right - left;
-//     temp3 = top - bottom;
-//     temp4 = zfar - znear;
-//     matrix[0] = temp / temp2;
-//     matrix[1] = 0.0;
-//     matrix[2] = 0.0;
-//     matrix[3] = 0.0;
-//     matrix[4] = 0.0;
-//     matrix[5] = temp / temp3;
-//     matrix[6] = 0.0;
-//     matrix[7] = 0.0;
-//     matrix[8] = (right + left) / temp2;
-//     matrix[9] = (top + bottom) / temp3;
-//     matrix[10] = (-zfar - znear) / temp4;
-//     matrix[11] = -1.0;
-//     matrix[12] = 0.0;
-//     matrix[13] = 0.0;
-//     matrix[14] = (-temp * zfar) / temp4;
-//     matrix[15] = 0.0;
-// }
-
-
-// void ResizeWindow()
-// {
-//     int screen_width = event.resize.w;
-//     int screen_height = event.resize.h;
-//     SDL_SetVideoMode(screen_width, screen_height, bpp, SDL_OPENGL | SDL_RESIZABLE | SDL_DOUBLEBUF);
-//     glViewport(0, 0, screen_width, screen_height);
-//     glMatrixMode(GL_PROJECTION);
-//     glOrtho(0, screen_width, 0, screen_height, -1, 1);
-//     glLoadIdentity();
-//     glMatrixMode(GL_MODELVIEW);
-//     glLoadIdentity();
-//     glClear(GL_COLOR_BUFFER_BIT);
-//     glLoadIdentity();
-// }
-
-
-// SDL_Surface *IMG_Load(const char *file);
-// SDL_Surface *surface;     // Declare an SDL_Surface to be filled in with pixel data from an image file
-// Uint16 pixels[16*16] = {  // ...or with raw pixel data:
-//     0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff,
-//     0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff,
-//     0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff,
-//     0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff,
-//     0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff,
-//     0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff,
-//     0x0fff, 0x0aab, 0x0789, 0x0bcc, 0x0eee, 0x09aa, 0x099a, 0x0ddd,
-//     0x0fff, 0x0eee, 0x0899, 0x0fff, 0x0fff, 0x1fff, 0x0dde, 0x0dee,
-//     0x0fff, 0xabbc, 0xf779, 0x8cdd, 0x3fff, 0x9bbc, 0xaaab, 0x6fff,
-//     0x0fff, 0x3fff, 0xbaab, 0x0fff, 0x0fff, 0x6689, 0x6fff, 0x0dee,
-//     0xe678, 0xf134, 0x8abb, 0xf235, 0xf678, 0xf013, 0xf568, 0xf001,
-//     0xd889, 0x7abc, 0xf001, 0x0fff, 0x0fff, 0x0bcc, 0x9124, 0x5fff,
-//     0xf124, 0xf356, 0x3eee, 0x0fff, 0x7bbc, 0xf124, 0x0789, 0x2fff,
-//     0xf002, 0xd789, 0xf024, 0x0fff, 0x0fff, 0x0002, 0x0134, 0xd79a,
-//     0x1fff, 0xf023, 0xf000, 0xf124, 0xc99a, 0xf024, 0x0567, 0x0fff,
-//     0xf002, 0xe678, 0xf013, 0x0fff, 0x0ddd, 0x0fff, 0x0fff, 0xb689,
-//     0x8abb, 0x0fff, 0x0fff, 0xf001, 0xf235, 0xf013, 0x0fff, 0xd789,
-//     0xf002, 0x9899, 0xf001, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0xe789,
-//     0xf023, 0xf000, 0xf001, 0xe456, 0x8bcc, 0xf013, 0xf002, 0xf012,
-//     0x1767, 0x5aaa, 0xf013, 0xf001, 0xf000, 0x0fff, 0x7fff, 0xf124,
-//     0x0fff, 0x089a, 0x0578, 0x0fff, 0x089a, 0x0013, 0x0245, 0x0eff,
-//     0x0223, 0x0dde, 0x0135, 0x0789, 0x0ddd, 0xbbbc, 0xf346, 0x0467,
-//     0x0fff, 0x4eee, 0x3ddd, 0x0edd, 0x0dee, 0x0fff, 0x0fff, 0x0dee,
-//     0x0def, 0x08ab, 0x0fff, 0x7fff, 0xfabc, 0xf356, 0x0457, 0x0467,
-//     0x0fff, 0x0bcd, 0x4bde, 0x9bcc, 0x8dee, 0x8eff, 0x8fff, 0x9fff,
-//     0xadee, 0xeccd, 0xf689, 0xc357, 0x2356, 0x0356, 0x0467, 0x0467,
-//     0x0fff, 0x0ccd, 0x0bdd, 0x0cdd, 0x0aaa, 0x2234, 0x4135, 0x4346,
-//     0x5356, 0x2246, 0x0346, 0x0356, 0x0467, 0x0356, 0x0467, 0x0467,
-//     0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff,
-//     0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff,
-//     0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff,
-//     0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff, 0x0fff
-// };
-// surface = SDL_CreateRGBSurfaceFrom(pixels,16,16,16,16*2,0x0f00,0x00f0,0x000f,0xf000);
-
-// void ResizeSDL(SDL_Event *event)
-// {
-//     //int screen_width = event->window->w;
-//     //int screen_height = event->window.h;
-//     int screen_width;
-//     int screen_height;
-//     SDL_GL_GetDrawableSize(window, &screen_width, &screen_height);
-//     printf("Resizing Window [%i, %i]", screen_width, screen_height);
-// }

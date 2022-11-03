@@ -30,3 +30,4 @@ int32_t ecs_count_id_with_up(const ecs_world_t *world, ecs_entity_t id)
 error:
     return 0;
 }
+

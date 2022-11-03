@@ -11,6 +11,9 @@ scrap.c
 #ignore settings
 .vscode
 
+# Ignore Code Counter
+.VSCodeCounter
+
 #wasm build
 # zoxel.wasm
 # zoxel.js

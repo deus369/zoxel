@@ -1,3 +1,4 @@
+//! External data/function.
 extern float4x4 mainCameraMatrix;
 extern void RenderEntityMaterial2D(const float4x4 viewMatrix, GLuint material, GLuint texture, float2 position, float angle, float scale, float brightness);
 

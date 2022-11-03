@@ -7,15 +7,30 @@ Things to just fix after. Technical Debt. Bugs. Etc.
 
 -----
 
+- [ ] Add zoom - mouse scroll - for camera follower - with min/max setting
+
+- [ ] Name my modules properly
+    - https://github.com/SanderMertens/flecs/blob/master/include/flecs/addons/module.h
+
+- [ ] Use entity link (character2DLink) in CameraFollow2DSystem
+- [ ] Go through relationships, try it out for Camera?.... 
+    - [ ] This is going to be a mess omg... I need hash map components?
+    - https://github.com/flecs-hub/flecs-game/blob/main/src/world_cells.c
+    - https://github.com/SanderMertens/flecs/tree/master/examples/c/relationships
+    - https://github.com/SanderMertens/flecs/tree/master/examples/c/relationships
+    - https://www.flecs.dev/flecs/#/docs/Relationships
+
 `Fixes`
 - [ ] Keep a property reference upon creating materials (atm its doing it per frame)
 - [ ] Disable rotation for first movement
 - [ ] Smooth camera rotations
 
 `Flecs`
-- [ ] Get ctx to input two queries for PlayerRoamSystem
-- [ ] Use entity link (character2DLink) in CameraFollow2DSystem
+- [ ] Get ctx to input two queries for CameraFreeRoamToggleSystem
 - [ ] Why does sprite mess up when updating flecs?? Investigate.
+- [ ] Binary serializer for data
+- [ ] Add variables to profiler (by reflecting them)
+    - https://github.com/SanderMertens/flecs/blob/master/examples/c/reflection/basics/Source/main.c
 
 `Weird`
 - [ ] Bulk Spawning issues - Crashes

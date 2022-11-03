@@ -1,13 +1,11 @@
-//! Used to set the brightness of an entity.
-ZOXEL_COMPONENT(TextureGPULink, GLuint);
+//! Contains a link to the Texture on the GPU.
+zoxel_component(TextureGPULink, GLuint);
 
 extern GLuint SpawnTextureGPU();
 
 void AddGPUTextureComponents(ecs_world_t *world, ecs_entity_t prefab)
 {
-    ecs_add(world, prefab, TextureGPULink);
-    ecs_override(world, prefab, TextureGPULink);
-    ecs_set(world, prefab, TextureGPULink, { 0 });
+    zoxel_set_component(world, prefab, TextureGPULink, { 0 });
 }
 
 void SpawnGPUTexture(ecs_world_t *world, ecs_entity_t e)

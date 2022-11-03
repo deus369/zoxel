@@ -3,16 +3,20 @@
 //! Textures Module.
 
 // Settings
-const double noiseAnimationSpeed = 0.25; // 0.125;
-
+const double noiseAnimationSpeed = 0.125;
 // Tags
 ECS_DECLARE(NoiseTexture);
-ECS_DECLARE(GenerateNoiseTexture);
+// ECS_DECLARE(GenerateNoiseTexture);
 // Components
-#include "Components/Texture.c"
-#include "Components/TextureSize.c"
-#include "Components/GenerateTexture.c"
-#include "Components/AnimateTexture.c"
+//! A texture with pixels!
+zoxel_memory_component(Texture, color);
+// #include <cstdint> ? https://stackoverflow.com/questions/20024690/is-there-byte-data-type-in-c
+//! A texture with pixels!
+zoxel_component(TextureSize, int2);
+//! A state for generating textures.
+zoxel_component(GenerateTexture, unsigned char);
+//! A state for animating textures.
+zoxel_component(AnimateTexture, double);
 // Prefabs
 #include "Prefabs/NoiseTexture.c"
 // Util
@@ -29,34 +33,23 @@ ECS_DECLARE(GenerateNoiseTexture);
 void TexturesCoreImport(ecs_world_t *world)
 {
     ECS_MODULE(world, TexturesCore);
-    // Tags
     ECS_TAG_DEFINE(world, NoiseTexture);
-    // Components
-    ZOXEL_DEFINE_MEMORY_COMPONENT(world, Texture);
+    zoxel_memory_component_define(world, Texture);
     ECS_COMPONENT_DEFINE(world, TextureSize);
     ECS_COMPONENT_DEFINE(world, GenerateTexture);
     ECS_COMPONENT_DEFINE(world, AnimateTexture);
-    // Queries
     // Systems
-    //! \todo Multithreaded change filters? ZOXEL_SYSTEM_MULTITHREADED
+    //! \todo Multithreaded change filters? zoxel_system
     ECS_SYSTEM_DEFINE(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture);
     //! Use seperate filter for change query in NoiseTextureSystem.
-    ZOXEL_FILTER(generateTextureQuery, world, [none] NoiseTexture, [in] GenerateTexture);
-    ZOXEL_SYSTEM_MULTITHREADED_CTX(world, NoiseTextureSystem, EcsOnUpdate, generateTextureQuery,
+    zoxel_filter(generateTextureQuery, world, [none] NoiseTexture, [in] GenerateTexture);
+    zoxel_system_ctx(world, NoiseTextureSystem, EcsOnUpdate, generateTextureQuery,
         [none] NoiseTexture, [out] EntityDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture);
     // ECS_SYSTEM_DEFINE(world, NoiseTextureChangeResetter, EcsPostUpdate, [none] NoiseTexture, [in] GenerateTexture);
     ECS_SYSTEM_DEFINE(world, GenerateTextureResetSystem, EcsPostUpdate, [out] GenerateTexture);
     ECS_SYSTEM_DEFINE(world, TextureUpdateSystem, EcsOnValidate, [in] EntityDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink);
     // ECS_SYSTEM_DEFINE(world, TextureDirtySystem, EcsOnValidate, [in] EntityDirty, [in] Texture, [in] TextureSize);
     // add change query to NoiseTextureSystem
-    InitializeNoiseTexturePrefab(world);
+    SpawnTexturePrefab(world);
 }
 #endif
-
-/*ecs_query_t *generateTextureQuery = ecs_query_init(world, &(ecs_query_desc_t) {
-    .filter.terms = {
-        { ecs_id(NoiseTexture), .inout = EcsInOutNone },
-        { ecs_id(GenerateTexture), .inout = EcsIn }
-    }
-});
-ECS_FILTER_INIT(world, generateTextureQuery, [none] NoiseTexture, [in] GenerateTexture);*/
