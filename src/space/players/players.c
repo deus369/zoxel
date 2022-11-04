@@ -19,9 +19,9 @@ zoxel_component(DisableMovement, bool);
 #include "systems/FreeCameraRotateSystem.c"
 #include "systems/FreeCameraToggleSystem.c"
 // prefabs
-#include "prefabs/PlayerCharacter2D.c"
+#include "prefabs/player_character2D.c"
 // util
-#include "util/PlayerCharacter2D.c"
+#include "util/player_character2D.c"
 
 // ECS_DECLARE(CameraFollower2D);  // Why can't i use cameras.CameraFollower2D tag instead?
 void PlayersImport(ecs_world_t *world)
@@ -59,7 +59,7 @@ void PlayersImport(ecs_world_t *world)
     //! Needed for bulk spawning. Still crashes.
     ecs_system(world, {
         .entity = ecs_id(Player2DTestSystem),
-        .no_staging = true
+        .no_staging = true // no_staging - rename to no_readonly
     });
     //#endif
 }

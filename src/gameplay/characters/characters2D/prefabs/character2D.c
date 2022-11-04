@@ -1,10 +1,10 @@
 //! Basic noise texture.
 ecs_entity_t character2DPrefab;
 
-void InitializeCharacter2DPrefab(ecs_world_t *world)
+void SpawnCharacter2DPrefab(ecs_world_t *world, int2 textureSize)
 {
-    const int2 textureSize = { 16, 16 };
     ecs_entity_t e = ecs_new_prefab(world, "character2D_prefab");
+    printf("Spawned character2D_prefab [%lu].\n", (long int) (e));
     #ifdef Zoxel_Transforms2D
     AddTransforms2DComponents(world, e);
     #endif

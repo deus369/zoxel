@@ -18,6 +18,8 @@ Check out my latest short dev log on YouTube!
 
 [![Open Zoxel](http://img.youtube.com/vi/Yb5DiXVt1k0/0.jpg)](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4 "Open Zoxel")
 
+![Le New Zoxel](/screenshots/screenshot_2022-11-04_18-56-29.png?raw=false "Le New Zoxel")
+
 ## How To Build
 
 After you download the repo, you can use Make commands to build it! [How To Build Guide](documents/howtos/howto-build.md)

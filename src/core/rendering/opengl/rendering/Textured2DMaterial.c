@@ -6,6 +6,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
+//! Keep property reference in material, upon creation.
 // #define DEVBUILD
 // first, get working on pc
 //  then, move texture updating to the entity system
@@ -15,14 +16,14 @@
 // const char *playerCharacterTextureName = "resources/textures/Test.png";
 const bool disableTextureLoaded = false;
 int textureType = GL_NEAREST; // GL_LINEAR
-//! \todo Move these references to Material
+//! \todo Move these references to MaterialGPULink
 //! \todo Update texture based on Player Entity texture updateing
 const char* texturedRender2DVertPath = "resources/shaders/2D/TexturedRender2D.vert";
 const char* texturedRender2DFragPath = "resources/shaders/2D/TexturedRender2D.frag";
 //! shaders
 GLuint texturedVertShader;
 GLuint texturedFragShader;
-// Material and properties
+// MaterialGPULink and properties
 GLuint texturedMaterial;
 //! Mesh B - Buffers/Texture
 GLuint squareTexturedModelIndicies;
@@ -103,39 +104,41 @@ GLuint SpawnTextureGPU()
 void RenderEntityMaterial2D(const float4x4 viewMatrix, GLuint material, GLuint texture,
     float2 position, float angle, float scale, float brightness)
 {
-    //! Keep property reference in material, upon creation.
+    if (material == 0)
+    {
+        // printf("RenderEntityMaterial2D material is 0.\n");
+        return;
+    }
     MaterialTextured2D materialTextured2D;
     InitializeMaterialPropertiesB(material, &materialTextured2D);
-
     glUseProgram(material);   // invalid operation
+    /*GLenum err65 = glGetError();
+    if (err65 != GL_NO_ERROR)
+    {
+        printf("GLError [glUseProgram(material) %i]: %i\n", material, err65);
+        return;
+    }*/
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
-    // Texture
     glBindTexture(GL_TEXTURE_2D, texture);
-    // Bind Buffer + Indicies
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedModelIndicies);    // for indices
     glBindBuffer(GL_ARRAY_BUFFER, squareTexturedModelVertices);            // for vertex buffer data
-    // Properties
     glUniformMatrix4fv(materialTextured2D.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
     glUniform1f(materialTextured2D.positionX, position.x);
     glUniform1f(materialTextured2D.positionY, position.y);
     glUniform1f(materialTextured2D.angle, angle);
     glUniform1f(materialTextured2D.scale, scale);
     glUniform1f(materialTextured2D.brightness, brightness);
-    // finally draw it
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
-    // Disable the things
+    /*GLenum err66 = glGetError();
+    if (err66 != GL_NO_ERROR)
+    {
+        printf("GLError [RenderEntityMaterial2D]: %i\n", err66);
+        return;
+    }*/
     glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_BLEND);
     glUseProgram(0);
-#ifdef DEVBUILD
-    GLenum err66 = glGetError();
-    if (err66 != GL_NO_ERROR)
-    {
-        printf("GL HAD ERROR with End of RenderEntityMaterial2D: %i\n", err66);
-        return;
-    }
-#endif
 }
 
 GLuint CreateTexturedMaterial2D()
@@ -161,3 +164,12 @@ int LoadTextureRender2DShader()
     InitializeTexturedMesh(texturedMaterial);
     return 0;
 }
+
+// #ifdef DEVBUILD
+//     GLenum err66 = glGetError();
+//     if (err66 != GL_NO_ERROR)
+//     {
+//         printf("GL HAD ERROR with End of RenderEntityMaterial2D: %i\n", err66);
+//         return;
+//     }
+// #endif

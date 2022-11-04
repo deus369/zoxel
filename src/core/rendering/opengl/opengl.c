@@ -8,7 +8,7 @@
 // #include <GLFW/glfw3.h>
 #include "dynamic/opengl.h"
 #include "dynamic/opengl.c"
-// Material data
+// MaterialGPULink data
 #include "data/Material2D.c"
 #include "data/MaterialTextured2D.c"
 #include "data/Material3D.c"

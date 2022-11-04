@@ -23,10 +23,9 @@ void RenderLoop_ECSFix()
 {
     const FreeRoam *freeRoam = ecs_get(world, mainCamera, FreeRoam);
     mainCameraMatrix = ecs_get(world, mainCamera, ViewMatrix)->value;
-    SDL_SetRelativeMouseMode(freeRoam->value);
-    //clock_t t = clock();
-    //! Locks Main Mouse.
-    TextureUpdateMainThread();
+    SDL_SetRelativeMouseMode(freeRoam->value);  //! Locks Main Mouse.
+    TextureUpdateMainThread();  // uploads textures to gpu
+    // now render the things
     OpenGLClear();
     OpenGLBeginInstancing(mainCameraMatrix);
     ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
@@ -38,9 +37,6 @@ void RenderLoop_ECSFix()
     ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
     OpenGLEndInstancing3D();
     UpdateLoopSDL();
-    //t = clock() - t;
-    //double timeTaken = ((double) 1000.0 * t)/CLOCKS_PER_SEC;
-    // printf("Render Time [%fms]\n", timeTaken);
 }
 
 void SpawnGameEntities()

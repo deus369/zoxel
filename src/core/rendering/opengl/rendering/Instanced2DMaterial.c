@@ -76,6 +76,11 @@ int LoadInstance2DMaterial()
 
 void OpenGLBeginInstancing(const float4x4 viewMatrix)
 {
+    if (square2DMaterial == 0)
+    {
+        printf("OpenGLBeginInstancing square2DMaterial is 0.\n");
+        return;
+    }
     //! This sets the materials actually, would be best to group entities per material here?
     glUseProgram(square2DMaterial);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareModelIndicies);    // for indices
