@@ -16,7 +16,7 @@
 # Declare compiler tools and flags
 CC = emcc  					# Defines the compiler, cc for C code
 CFLAGS = -std=c99			# Specificies c99 StandardX
-CFLAGS += --preload-file Resources
+CFLAGS += --preload-file resources
 # what does this do!
 CFLAGS += -s WASM=1
 # Optimize - Non Devv Build
@@ -71,8 +71,8 @@ SRCS += src/space/players/systems/Player2DMoveSystem.c
 SRCS += src/core/rendering/rendering.c
 SRCS += src/core/rendering/core/rendering_core.c
 
-# SRCS += Resources/Shaders/BasicRender2D.vert
-# SRCS += Resources/Shaders/BasicRender2D.frag
+# SRCS += resources/shaders/BasicRender2D.vert
+# SRCS += resources/shaders/BasicRender2D.frag
 
 web-demo/zoxel.js: $(SRCS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDLIBS)
@@ -86,7 +86,7 @@ web-demo/zoxel.js: $(SRCS)
 # LDLIBS += -s ALLOW_MEMORY_GROWTH=1
 # LDLIBS += -EMCC_DEBUG=1
 # LDLIBS += -s GL_DEBUG=1
-# LDLIBS += --preload-file Resources/Shaders/BasicRender2D.vert
-# LDLIBS += --preload-file Resources/Shaders/BasicRender2D.frag
+# LDLIBS += --preload-file resources/shaders/BasicRender2D.vert
+# LDLIBS += --preload-file resources/shaders/BasicRender2D.frag
 # Optimize
 # -O3

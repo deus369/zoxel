@@ -30,7 +30,7 @@ Total : 136 files,  3657 codes, 1186 comments, 356 blanks, all 5199 lines
 | [Source/Core/Core/Data/float4x4.c](/Source/Core/Core/Data/float4x4.c) | C | 50 | 1 | 5 | 56 |
 | [Source/Core/Core/Data/int2.c](/Source/Core/Core/Data/int2.c) | C | 5 | 1 | 0 | 6 |
 | [Source/Core/Core/Systems/EntityDirtyResetSystem.c](/Source/Core/Core/Systems/EntityDirtyResetSystem.c) | C | 18 | 4 | 1 | 23 |
-| [Source/Core/Core/Tests/math_tests.c](/Source/Core/Core/Tests/math_tests.c) | C | 72 | 0 | 2 | 74 |
+| [Source/Core/Core/tests/math_tests.c](/Source/Core/Core/tests/math_tests.c) | C | 72 | 0 | 2 | 74 |
 | [Source/Core/Core/Util/flecs_extensions.c](/Source/Core/Core/Util/flecs_extensions.c) | C | 20 | 9 | 5 | 34 |
 | [Source/Core/Core/Util/flecs_macros.c](/Source/Core/Core/Util/flecs_macros.c) | C | 137 | 17 | 20 | 174 |
 | [Source/Core/Core/Util/math.c](/Source/Core/Core/Util/math.c) | C | 130 | 8 | 16 | 154 |
@@ -114,7 +114,7 @@ Total : 136 files,  3657 codes, 1186 comments, 356 blanks, all 5199 lines
 | [Source/InnerCore/Textures/Core/Systems/NoiseTextureSystem.c](/Source/InnerCore/Textures/Core/Systems/NoiseTextureSystem.c) | C | 92 | 12 | 2 | 106 |
 | [Source/InnerCore/Textures/Core/Systems/TextureDirtySystem.c](/Source/InnerCore/Textures/Core/Systems/TextureDirtySystem.c) | C | 5 | 24 | 1 | 30 |
 | [Source/InnerCore/Textures/Core/Systems/TextureUpdateSystem.c](/Source/InnerCore/Textures/Core/Systems/TextureUpdateSystem.c) | C | 52 | 16 | 2 | 70 |
-| [Source/InnerCore/Textures/Core/Tests/TestTexture.c](/Source/InnerCore/Textures/Core/Tests/TestTexture.c) | C | 20 | 1 | 4 | 25 |
+| [Source/InnerCore/Textures/Core/tests/TestTexture.c](/Source/InnerCore/Textures/Core/tests/TestTexture.c) | C | 20 | 1 | 4 | 25 |
 | [Source/InnerCore/Textures/Core/TexturesCore.c](/Source/InnerCore/Textures/Core/TexturesCore.c) | C | 33 | 20 | 2 | 55 |
 | [Source/InnerCore/Textures/Core/Util/TexturesSDL.c](/Source/InnerCore/Textures/Core/Util/TexturesSDL.c) | C | 25 | 20 | 4 | 49 |
 | [Source/InnerCore/Textures/Textures.c](/Source/InnerCore/Textures/Textures.c) | C | 9 | 6 | 3 | 18 |

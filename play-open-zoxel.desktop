@@ -2,5 +2,5 @@
 Type=Application
 Categories=Application
 Name=Play Zoxel
-Icon=/home/deus/projects/open-zoxel/Resources/textures/GameIcon.png
+Icon=/home/deus/projects/open-zoxel/resources/textures/GameIcon.png
 Exec=gnome-terminal -e "bash -c 'cd "/home/deus/projects/open-zoxel" && ./zoxel.x86'"

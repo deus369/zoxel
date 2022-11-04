@@ -12,8 +12,8 @@
 //  https://www.reddit.com/r/opengl/comments/ydsqkn/textured_square_works_on_pinephone_pro_but_not_pc/
 //  https://github.com/edo9300/edopro/issues/151
 //! Mesh A - Buffers
-const char* basicRender2DVertFilepath = "Resources/Shaders/2D/BasicRender2D.vert";
-const char* basicRender2DFragFilepath = "Resources/Shaders/2D/BasicRender2D.frag";
+const char* basicRender2DVertFilepath = "resources/shaders/2D/BasicRender2D.vert";
+const char* basicRender2DFragFilepath = "resources/shaders/2D/BasicRender2D.frag";
 GLuint square2DMaterial;
 Material2D material2D;
 GLuint squareModelIndicies;
@@ -66,7 +66,7 @@ int LoadInstance2DMaterial()
     square2DMaterial = LoadMaterial(basicRender2DVertFilepath, basicRender2DFragFilepath);
     if (square2DMaterial == 0)
     {
-        printf("Error loading Shaders for square2DMaterial.\n");
+        printf("Error loading shaders for square2DMaterial.\n");
         return -1;
     }
     InitializeMaterialPropertiesA(square2DMaterial);
@@ -106,22 +106,3 @@ void OpenGLEndInstancing()
     }
 #endif
 }
-    /*printf("Loading Shader Vert: %s\n", basicRender2DVertFilepath);
-    GLuint vertShader;
-    if (LoadShader(basicRender2DVertFilepath, GL_VERTEX_SHADER, &vertShader) != 0)
-    {
-        printf("Error loading Shader Vert.\n");
-        return -1;
-    }
-    printf("Loading Shader Frag: %s\n", basicRender2DFragFilepath);
-    GLuint fragShader;
-    if (LoadShader(basicRender2DFragFilepath, GL_FRAGMENT_SHADER, &fragShader) != 0)
-    {
-        printf("Error loading Shader Frag.\n");
-        return -1;
-    }
-    square2DMaterial = glCreateProgram();
-    LinkShaderProgram(square2DMaterial, vertShader, fragShader);
-    // Clean up shaders
-    glDeleteShader(vertShader);
-    glDeleteShader(fragShader);*/

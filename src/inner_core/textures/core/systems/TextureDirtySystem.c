@@ -1,5 +1,5 @@
 // For testing for now
-const char *outputTextureName = "Resources/textures/Test.png";
+const char *outputTextureName = "resources/textures/Test.png";
 
 //! Generate random noise texture.
 /**

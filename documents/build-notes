@@ -21,10 +21,10 @@
 # Special Notes:
 #	If emcc breaks, just remove and reinstall
 # open gl 3 -sFULL_ES2 or 3
-# --preload-file Resources/Shaders/BasicRender2D.vert
-# --preload-file Resources/Shaders/BasicRender2D.frag
-# --preload-file Resources/Shaders
-# --embed-file Resources/Shaders/BasicRender2D.vert
+# --preload-file resources/shaders/BasicRender2D.vert
+# --preload-file resources/shaders/BasicRender2D.frag
+# --preload-file resources/shaders
+# --embed-file resources/shaders/BasicRender2D.vert
 
 
 # scrap

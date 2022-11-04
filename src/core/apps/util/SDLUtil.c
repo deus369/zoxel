@@ -24,7 +24,7 @@ void resize_canvas()
 }
 #endif
 
-const char *iconFilename = "Resources/textures/GameIcon.png";
+const char *iconFilename = "resources/textures/GameIcon.png";
 int2 screenDimensions = { 720, 480 };
 // int2 screenDimensions = { 1920, 800 };
 float aspectRatio = 1;

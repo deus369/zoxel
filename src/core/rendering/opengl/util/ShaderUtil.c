@@ -16,10 +16,10 @@ int LoadShader(const char* filepath, GLenum shaderType, GLuint* shader2)
         printf("Shader Filepath is Empty.\n");
         return -1;
     }
-    GLchar *buffer = (GLchar*) SDL_LoadFile(filepath, NULL); // bufferSize);
+    GLchar *buffer = (GLchar*) SDL_LoadFile(filepath, NULL);
     if (!buffer)
     {
-        printf("Loading shader returned null: %s\n", filepath);
+        printf("Loading shader (SDL_LoadFile) returned null at [%s].\n", filepath);
         return -1;
     }
     // this is causing crashes...
@@ -34,7 +34,7 @@ int LoadShader(const char* filepath, GLenum shaderType, GLuint* shader2)
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &info_log_length);
         GLchar* info_log = malloc(info_log_length);
         glGetShaderInfoLog(shader, info_log_length, NULL, info_log);
-        fprintf(stderr, "Failed to Compile Shader:\n%s\n", info_log);
+        fprintf(stderr, " - failed to compile shader:\n%s\n", info_log);
         free(info_log);
         return -1;
     }
@@ -56,7 +56,7 @@ bool LinkShaderProgram(GLuint program, GLuint vertShader, GLuint fragShader)
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &info_log_length);
         GLchar* info_log = malloc(info_log_length);
         glGetProgramInfoLog(program, info_log_length, NULL, info_log);
-        fprintf(stderr, "failed to link program:\n%s\n", info_log);
+        fprintf(stderr, " - failed to link program:\n%s\n", info_log);
         free(info_log);
         glDetachShader(program, vertShader);
         glDetachShader(program, fragShader);
@@ -81,7 +81,7 @@ int CompileShader(const GLchar* buffer, GLenum shaderType, GLuint* shader2)
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &info_log_length);
         GLchar* info_log = malloc(info_log_length);
         glGetShaderInfoLog(shader, info_log_length, NULL, info_log);
-        fprintf(stderr, "Failed to Compile Shader:\n%s\n", info_log);
+        fprintf(stderr, "Failed to compile shader:\n%s\n", info_log);
         free(info_log);
         return -1;
     }
@@ -95,13 +95,13 @@ GLuint LoadMaterial(const char* vertFilepath, const char* fragFilepath)
     GLuint vertShader;
     if (LoadShader(vertFilepath, GL_VERTEX_SHADER, &vertShader) != 0)
     {
-        printf("Error loading Shader Vert [%s]\n", vertFilepath);
+        printf("Error loading shader vert [%s]\n", vertFilepath);
         return 0;
     }
     GLuint fragShader;
     if (LoadShader(fragFilepath, GL_FRAGMENT_SHADER, &fragShader) != 0)
     {
-        printf("Error loading Shader Frag [%s]\n", fragFilepath);
+        printf("Error loading shader frag [%s]\n", fragFilepath);
         return 0;
     }
     GLuint material = glCreateProgram();

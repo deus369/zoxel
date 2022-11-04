@@ -3,7 +3,11 @@
 # *.x86
 
 #ignore zoxel build
-# zoxel
+zoxel.x86
+zoxel-dev.x86
+
+#ignore web-dev build
+web-demo-dev
 
 #ignore scrap code
 scrap.c

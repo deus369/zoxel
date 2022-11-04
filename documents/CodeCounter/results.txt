@@ -26,7 +26,7 @@ Directories
 | Core/Core                                                                                          |         13 |        594 |         69 |         71 |        734 |
 | Core/Core/Data                                                                                     |          7 |        183 |         21 |         24 |        228 |
 | Core/Core/Systems                                                                                  |          1 |         18 |          4 |          1 |         23 |
-| Core/Core/Tests                                                                                    |          1 |         72 |          0 |          2 |         74 |
+| Core/Core/tests                                                                                    |          1 |         72 |          0 |          2 |         74 |
 | Core/Core/Util                                                                                     |          3 |        287 |         34 |         41 |        362 |
 | Core/Inputs                                                                                        |          9 |        384 |         21 |         19 |        424 |
 | Core/Inputs/Components                                                                             |          4 |         60 |          8 |          2 |         70 |
@@ -83,7 +83,7 @@ Directories
 | InnerCore/Textures/Core                                                                            |          9 |        303 |         98 |         19 |        420 |
 | InnerCore/Textures/Core/Prefabs                                                                    |          1 |         27 |          1 |          4 |         32 |
 | InnerCore/Textures/Core/Systems                                                                    |          5 |        198 |         56 |          5 |        259 |
-| InnerCore/Textures/Core/Tests                                                                      |          1 |         20 |          1 |          4 |         25 |
+| InnerCore/Textures/Core/tests                                                                      |          1 |         20 |          1 |          4 |         25 |
 | InnerCore/Textures/Core/Util                                                                       |          1 |         25 |         20 |          4 |         49 |
 | InnerCore/Tiles                                                                                    |          1 |          0 |          0 |          1 |          1 |
 | InnerCore/Voxels                                                                                   |          4 |         26 |         17 |          6 |         49 |
@@ -134,7 +134,7 @@ Files
 | /home/deus/projects/open-zoxel/Source/Core/Core/Data/float4x4.c                                    | C        |         50 |          1 |          5 |         56 |
 | /home/deus/projects/open-zoxel/Source/Core/Core/Data/int2.c                                        | C        |          5 |          1 |          0 |          6 |
 | /home/deus/projects/open-zoxel/Source/Core/Core/Systems/EntityDirtyResetSystem.c                   | C        |         18 |          4 |          1 |         23 |
-| /home/deus/projects/open-zoxel/Source/Core/Core/Tests/math_tests.c                                 | C        |         72 |          0 |          2 |         74 |
+| /home/deus/projects/open-zoxel/Source/Core/Core/tests/math_tests.c                                 | C        |         72 |          0 |          2 |         74 |
 | /home/deus/projects/open-zoxel/Source/Core/Core/Util/flecs_extensions.c                            | C        |         20 |          9 |          5 |         34 |
 | /home/deus/projects/open-zoxel/Source/Core/Core/Util/flecs_macros.c                                | C        |        137 |         17 |         20 |        174 |
 | /home/deus/projects/open-zoxel/Source/Core/Core/Util/math.c                                        | C        |        130 |          8 |         16 |        154 |
@@ -218,7 +218,7 @@ Files
 | /home/deus/projects/open-zoxel/Source/InnerCore/Textures/Core/Systems/NoiseTextureSystem.c         | C        |         92 |         12 |          2 |        106 |
 | /home/deus/projects/open-zoxel/Source/InnerCore/Textures/Core/Systems/TextureDirtySystem.c         | C        |          5 |         24 |          1 |         30 |
 | /home/deus/projects/open-zoxel/Source/InnerCore/Textures/Core/Systems/TextureUpdateSystem.c        | C        |         52 |         16 |          2 |         70 |
-| /home/deus/projects/open-zoxel/Source/InnerCore/Textures/Core/Tests/TestTexture.c                  | C        |         20 |          1 |          4 |         25 |
+| /home/deus/projects/open-zoxel/Source/InnerCore/Textures/Core/tests/TestTexture.c                  | C        |         20 |          1 |          4 |         25 |
 | /home/deus/projects/open-zoxel/Source/InnerCore/Textures/Core/TexturesCore.c                       | C        |         33 |         20 |          2 |         55 |
 | /home/deus/projects/open-zoxel/Source/InnerCore/Textures/Core/Util/TexturesSDL.c                   | C        |         25 |         20 |          4 |         49 |
 | /home/deus/projects/open-zoxel/Source/InnerCore/Textures/Textures.c                                | C        |          9 |          6 |          3 |         18 |

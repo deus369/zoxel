@@ -28,7 +28,7 @@ LDLIBS += -s FULL_ES3=1
 LDLIBS += -s USE_WEBGL2=1
 LDLIBS += -s MIN_WEBGL_VERSION=2
 LDLIBS += -s MAX_WEBGL_VERSION=2
-LDLIBS += --preload-file Resources
+LDLIBS += --preload-file resources
 # Threadin
 # LDLIBS += -s USE_PTHREADS=1
 # LDLIBS += -s PTHREAD_POOL_SIZE=2
@@ -68,8 +68,8 @@ SRCS += src/space/players/systems/Player2DMoveSystem.c
 SRCS += src/core/rendering/rendering.c
 SRCS += src/core/rendering/core/rendering_core.c
 
-# SRCS += Resources/Shaders/BasicRender2D.vert
-# SRCS += Resources/Shaders/BasicRender2D.frag
+# SRCS += resources/shaders/BasicRender2D.vert
+# SRCS += resources/shaders/BasicRender2D.frag
 
 web-demo-dev/zoxel-dev.html: $(SRCS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDLIBS)

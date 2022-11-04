@@ -18,7 +18,7 @@
 "/home/deus/projects/open-zoxel/Source/Core/Core/Data/float4x4.c", "C", 50, 0, 0, 1, 5, 56
 "/home/deus/projects/open-zoxel/Source/Core/Core/Data/int2.c", "C", 5, 0, 0, 1, 0, 6
 "/home/deus/projects/open-zoxel/Source/Core/Core/Systems/EntityDirtyResetSystem.c", "C", 18, 0, 0, 4, 1, 23
-"/home/deus/projects/open-zoxel/Source/Core/Core/Tests/math_tests.c", "C", 72, 0, 0, 0, 2, 74
+"/home/deus/projects/open-zoxel/Source/Core/Core/tests/math_tests.c", "C", 72, 0, 0, 0, 2, 74
 "/home/deus/projects/open-zoxel/Source/Core/Core/Util/flecs_extensions.c", "C", 20, 0, 0, 9, 5, 34
 "/home/deus/projects/open-zoxel/Source/Core/Core/Util/flecs_macros.c", "C", 137, 0, 0, 17, 20, 174
 "/home/deus/projects/open-zoxel/Source/Core/Core/Util/math.c", "C", 130, 0, 0, 8, 16, 154
@@ -102,7 +102,7 @@
 "/home/deus/projects/open-zoxel/Source/InnerCore/Textures/Core/Systems/NoiseTextureSystem.c", "C", 92, 0, 0, 12, 2, 106
 "/home/deus/projects/open-zoxel/Source/InnerCore/Textures/Core/Systems/TextureDirtySystem.c", "C", 5, 0, 0, 24, 1, 30
 "/home/deus/projects/open-zoxel/Source/InnerCore/Textures/Core/Systems/TextureUpdateSystem.c", "C", 52, 0, 0, 16, 2, 70
-"/home/deus/projects/open-zoxel/Source/InnerCore/Textures/Core/Tests/TestTexture.c", "C", 20, 0, 0, 1, 4, 25
+"/home/deus/projects/open-zoxel/Source/InnerCore/Textures/Core/tests/TestTexture.c", "C", 20, 0, 0, 1, 4, 25
 "/home/deus/projects/open-zoxel/Source/InnerCore/Textures/Core/TexturesCore.c", "C", 33, 0, 0, 20, 2, 55
 "/home/deus/projects/open-zoxel/Source/InnerCore/Textures/Core/Util/TexturesSDL.c", "C", 25, 0, 0, 20, 4, 49
 "/home/deus/projects/open-zoxel/Source/InnerCore/Textures/Textures.c", "C", 9, 0, 0, 6, 3, 18
