@@ -14,11 +14,9 @@ Is under the GPL license! I want any derivatives to stay open, to protect the en
 
 Has a large scope as I have many ideas. Game design is influenced from Minecraft, Warcraft and LitRPGs/Tabletops.
 
-Check out my latest short dev log on YouTube!
+![Le New Zoxel](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4 "Le New Zoxel")
 
-[![Open Zoxel](http://img.youtube.com/vi/Yb5DiXVt1k0/0.jpg)](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4 "Open Zoxel")
-
-![Le New Zoxel](/screenshots/screenshot_2022-11-04_18-56-29.png?raw=false "Le New Zoxel")
+Check out my latest dev log on YouTube! [[Dev Log](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
 
 ## How To Build
 
