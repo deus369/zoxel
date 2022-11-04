@@ -38,6 +38,6 @@ Things that are done. A big ole list. To clean up other todo files.
     - they are non c99 codes
 - [x] A single threaded system will not run on main thread
     - Follow this up
-    https://github.com/SanderMertens/imports/Flecs/issues/798
+    https://github.com/SanderMertens/imports/issues/798
 - [x] const ecs_field not available yet
     'You can assign it to a const, but I haven't yet added const checking to the C API'

@@ -1,10 +1,10 @@
-# Libre Zoxel
+# Zoxel (Libre Edition)
 
-Play Me --=([A Web Build](https://deus369.github.io/open-zoxel/web-demo/))=--
+Play ([A Web Build](https://deus369.github.io/open-zoxel/web-demo/))
 
-The Future --[The Roadmap](documents/todos/todo-main.md)--
+See [The Roadmap](documents/todos/todo-main.md)
 
-Stats -[Code Counter](documents/CodeCounter/results.md)-
+Numbers [Code Counter](documents/CodeCounter/results.md)
 
 ## What is Zoxel
 

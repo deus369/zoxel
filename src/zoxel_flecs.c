@@ -6,4 +6,4 @@
 //! Use these when profiling.
 // #define FLECS_REST      // for profiler
 // #define FLECS_MONITOR   // for profiler 2
-#include "../imports/Flecs/flecs.h"
+#include "../imports/flecs.h"

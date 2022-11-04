@@ -31,8 +31,8 @@ LDLIBS += -lm				# for math.h
 
 # SRCS defines all the files that will be used in the game.
 SRCS = 
-SRCS += imports/Flecs/flecs.c 
-SRCS += imports/Flecs/flecs.h
+SRCS += imports/flecs.c 
+SRCS += imports/flecs.h
 SRCS += src/main.c
 # imports
 SRCS += src/core/apps/util/SDLUtil.c
@@ -47,7 +47,7 @@ SRCS += src/core/rendering/core/rendering_core.c
 
 # OBJS defines all the files used to compile Zoxel.
 OBJS = 
-OBJS += imports/Flecs/flecs.c
+OBJS += imports/flecs.c
 OBJS += src/main.c
 
 all: $(TARGET)

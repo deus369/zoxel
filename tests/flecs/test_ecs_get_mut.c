@@ -1,8 +1,8 @@
 //! This script tests ecs_get_mut
 
 // build line
-// cc -std=c99 -o test_ecs_get_mut src/imports/Flecs/flecs.c tests/test_ecs_get_mut.c; ./test_ecs_get_mut;
-#include "../src/imports/Flecs/flecs.h"
+// cc -std=c99 -o test_ecs_get_mut src/imports/flecs.c tests/test_ecs_get_mut.c; ./test_ecs_get_mut;
+#include "../src/imports/flecs.h"
 #include "stdlib.h"
 #include "stdio.h"
 
