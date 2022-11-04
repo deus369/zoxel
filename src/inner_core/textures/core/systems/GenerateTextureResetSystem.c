@@ -18,3 +18,5 @@ void GenerateTextureResetSystem(ecs_iter_t *it)
     }
 }
 ECS_SYSTEM_DECLARE(GenerateTextureResetSystem);
+
+//! \todo MakeReset system a system_macro?

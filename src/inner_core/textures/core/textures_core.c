@@ -30,6 +30,8 @@ zoxel_component(AnimateTexture, double);
 // tests
 #include "tests/TestTexture.c"
 
+//! \todo Multithreaded change filters? zoxel_system
+
 void TexturesCoreImport(ecs_world_t *world)
 {
     ECS_MODULE(world, TexturesCore);
@@ -38,18 +40,13 @@ void TexturesCoreImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, TextureSize);
     ECS_COMPONENT_DEFINE(world, GenerateTexture);
     ECS_COMPONENT_DEFINE(world, AnimateTexture);
-    // systems
-    //! \todo Multithreaded change filters? zoxel_system
     ECS_SYSTEM_DEFINE(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture);
-    //! Use seperate filter for change query in NoiseTextureSystem.
     zoxel_filter(generateTextureQuery, world, [none] NoiseTexture, [in] GenerateTexture);
     zoxel_system_ctx(world, NoiseTextureSystem, EcsOnUpdate, generateTextureQuery,
         [none] NoiseTexture, [out] generic.EntityDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture);
-    // ECS_SYSTEM_DEFINE(world, NoiseTextureChangeResetter, EcsPostUpdate, [none] NoiseTexture, [in] GenerateTexture);
     ECS_SYSTEM_DEFINE(world, GenerateTextureResetSystem, EcsPostUpdate, [out] GenerateTexture);
     ECS_SYSTEM_DEFINE(world, TextureUpdateSystem, EcsOnValidate, [in] generic.EntityDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink);
     // ECS_SYSTEM_DEFINE(world, TextureDirtySystem, EcsOnValidate, [in] EntityDirty, [in] Texture, [in] TextureSize);
-    // add change query to NoiseTextureSystem
     SpawnTexturePrefab(world);
 }
 #endif

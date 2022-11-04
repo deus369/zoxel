@@ -1,15 +1,3 @@
-int abs_integer(int value)
-{
-    if (value < 0)
-    {
-        return -value;
-    }
-    else
-    {
-        return value;
-    }
-}
-
 //! Our function that creates a texture.
 void GenerateNoise(Texture* texture, const TextureSize *textureSize)
 {

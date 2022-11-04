@@ -14,10 +14,10 @@ void SpawnCharacter2DPrefab(ecs_world_t *world, int2 textureSize)
     #endif
     // rendering
     zoxel_add_component(world, e, Brightness);
+    add_seed(world, e, 444);
+    add_texture(world, e, textureSize);
+    add_noise_texture(world, e);
     AddGPUMaterialComponents(world, e);
-    AddSeedComponent(world, e, 444);
-    AddTextureComponents(world, e, textureSize);
-    AddTextureNoiseComponents(world, e);
     AddGPUTextureComponents(world, e);
     character2DPrefab = e;
 }

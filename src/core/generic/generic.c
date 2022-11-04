@@ -18,6 +18,8 @@ zoxel_component(ID, int);
 zoxel_component(Seed, long int);
 // systems
 #include "systems/EntityDirtyResetSystem.c"
+// util
+#include "util/generic_util.c"
 
 void GenericImport(ecs_world_t *world)
 {

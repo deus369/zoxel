@@ -1,0 +1,1 @@
+ecs_entity_t testChunkEntity;

@@ -19,8 +19,10 @@
 #include "data/float4x4.c"
 #include "data/double2.c"
 #include "data/int2.c"
+#include "data/int3.c"
 // util
 #include "util/math.c"
+#include "util/integer_util.c"
 
 void MathsImport(ecs_world_t *world)
 {
