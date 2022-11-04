@@ -1,4 +1,4 @@
-// build with emcc -o hellosdl.html Tests/emcc/hellosdl.c -s USE_SDL=2
+// build with emcc -o hellosdl.html tests/emcc/hellosdl.c -s USE_SDL=2
 #include <stdio.h>
 #if __EMSCRIPTEN__
 #include <emscripten/emscripten.h>

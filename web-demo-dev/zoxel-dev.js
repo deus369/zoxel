@@ -130,7 +130,7 @@ var REMOTE_PACKAGE_SIZE = metadata['remote_package_size'];
       }
 Module['FS_createPath']("/", "Resources", true, true);
 Module['FS_createPath']("/Resources", "Shaders", true, true);
-Module['FS_createPath']("/Resources", "Textures", true, true);
+Module['FS_createPath']("/Resources", "textures", true, true);
 
       /** @constructor */
       function DataRequest(start, end, audio) {
@@ -198,7 +198,7 @@ Module['FS_createPath']("/Resources", "Textures", true, true);
     }
 
     }
-    loadPackage({"files": [{"filename": "/Resources/Shaders/BasicRender2D.frag", "start": 0, "end": 136}, {"filename": "/Resources/Shaders/BasicRender2D.vert", "start": 136, "end": 1630}, {"filename": "/Resources/Textures/GameIcon.png", "start": 1630, "end": 4075}], "remote_package_size": 4075});
+    loadPackage({"files": [{"filename": "/Resources/Shaders/BasicRender2D.frag", "start": 0, "end": 136}, {"filename": "/Resources/Shaders/BasicRender2D.vert", "start": 136, "end": 1630}, {"filename": "/Resources/textures/GameIcon.png", "start": 1630, "end": 4075}], "remote_package_size": 4075});
 
   })();
 

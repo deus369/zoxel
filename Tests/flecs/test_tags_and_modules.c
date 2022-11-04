@@ -1,9 +1,9 @@
 //! This script tests using tags accross 2 seperate modules.
 
 // Build:
-// cc -std=c99 -D_DEFAULT_SOURCE -o Tests/flecs/test_tags_and_modules Imports/Flecs/flecs.c Tests/flecs/test_tags_and_modules.c; ./Tests/flecs/test_tags_and_modules;
+// cc -std=c99 -D_DEFAULT_SOURCE -o tests/flecs/test_tags_and_modules imports/Flecs/flecs.c tests/flecs/test_tags_and_modules.c; ./tests/flecs/test_tags_and_modules;
 
-#include "../../Imports/Flecs/flecs.h"
+#include "../../imports/Flecs/flecs.h"
 #include "stdlib.h"
 #include "stdio.h"
 

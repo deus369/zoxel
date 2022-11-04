@@ -1,5 +1,5 @@
 // Test with
-//  cc -std=c99 -o test_opengl Imports/Flecs/flecs.c Tests/zoxel/test_opengl.c -lGL -lSDL2 -lSDL2_image -lm -D_POSIX_C_SOURCE=200112L -D_DEFAULT_SOURCE
+//  cc -std=c99 -o test_opengl imports/Flecs/flecs.c tests/zoxel/test_opengl.c -lGL -lSDL2 -lSDL2_image -lm -D_POSIX_C_SOURCE=200112L -D_DEFAULT_SOURCE
 // Run with
 //  ./test_opengl
 // Add defines first
@@ -12,23 +12,23 @@
 #define FLECS_MODULE
 #define FLECS_SYSTEM 
 #define FLECS_PIPELINE
-#include "../../Imports/Flecs/flecs.h"
-#include "../../Imports/Flecs/FlecsUtil.c"
-#include "../../Source/Core/Core/Core.c"
-#include "../../Source/Core/App/App.c"
-#include "../../Source/Core/Transforms2D/Transforms2D.c"
-#include "../../Source/Core/Transforms/Transforms.c"
-#include "../../Source/Core/Rendering/Rendering.c"
-#include "../../Source/Core/Cameras/Cameras.c"
+#include "../../imports/Flecs/flecs.h"
+#include "../../imports/Flecs/FlecsUtil.c"
+#include "../../src/core/core/core.c"
+#include "../../src/core/apps/apps.c"
+#include "../../src/core/transforms2D/transforms2D.c"
+#include "../../src/core/transforms/transforms.c"
+#include "../../src/core/rendering/rendering.c"
+#include "../../src/core/cameras/cameras.c"
 
 int main(int argc, char* argv[])
 {
     SpawnWorld(argc, argv, false, true, 4);
-    ECS_IMPORT(world, App);
-    ECS_IMPORT(world, Transforms2D);
-    ECS_IMPORT(world, Transforms);
-    ECS_IMPORT(world, Cameras);
-    ECS_IMPORT(world, Rendering);
+    ECS_IMPORT(world, apps);
+    ECS_IMPORT(world, transforms2D);
+    ECS_IMPORT(world, transforms);
+    ECS_IMPORT(world, cameras);
+    ECS_IMPORT(world, rendering);
     SpawnMainCamera(screenDimensions);
     // SpawnKeyboardEntity();
     // SpawnPlayerCharacter2D(world);

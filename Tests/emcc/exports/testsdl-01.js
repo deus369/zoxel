@@ -4603,7 +4603,7 @@ var ASM_CONSTS = {
     }
 
   function __webgl_enable_ANGLE_instanced_arrays(ctx) {
-      // Extension available in WebGL 1 from Firefox 26 and Google Chrome 30 onwards. Core feature in WebGL 2.
+      // Extension available in WebGL 1 from Firefox 26 and Google Chrome 30 onwards. core feature in WebGL 2.
       var ext = ctx.getExtension('ANGLE_instanced_arrays');
       if (ext) {
         ctx['vertexAttribDivisor'] = function(index, divisor) { ext['vertexAttribDivisorANGLE'](index, divisor); };
@@ -4614,7 +4614,7 @@ var ASM_CONSTS = {
     }
   
   function __webgl_enable_OES_vertex_array_object(ctx) {
-      // Extension available in WebGL 1 from Firefox 25 and WebKit 536.28/desktop Safari 6.0.3 onwards. Core feature in WebGL 2.
+      // Extension available in WebGL 1 from Firefox 25 and WebKit 536.28/desktop Safari 6.0.3 onwards. core feature in WebGL 2.
       var ext = ctx.getExtension('OES_vertex_array_object');
       if (ext) {
         ctx['createVertexArray'] = function() { return ext['createVertexArrayOES'](); };
@@ -4626,7 +4626,7 @@ var ASM_CONSTS = {
     }
   
   function __webgl_enable_WEBGL_draw_buffers(ctx) {
-      // Extension available in WebGL 1 from Firefox 28 onwards. Core feature in WebGL 2.
+      // Extension available in WebGL 1 from Firefox 28 onwards. core feature in WebGL 2.
       var ext = ctx.getExtension('WEBGL_draw_buffers');
       if (ext) {
         ctx['drawBuffers'] = function(n, bufs) { ext['drawBuffersWEBGL'](n, bufs); };

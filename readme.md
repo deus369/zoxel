@@ -2,13 +2,13 @@
 
 Play Me --=([A Web Build](https://deus369.github.io/open-zoxel/web-demo/))=--
 
-The Future --[The Roadmap](Documents/todos/todo-main.md)--
+The Future --[The Roadmap](documents/todos/todo-main.md)--
 
-Stats -[Code Counter](Documents/CodeCounter/results.md)-
+Stats -[Code Counter](documents/CodeCounter/results.md)-
 
 ## What is Zoxel
 
-Is Open Source & Cross-platform + Performance is on Mushrooms~
+Is Open src & Cross-platform + Performance is on Mushrooms~
 
 Is under the GPL license! I want any derivatives to stay open, to protect the end users and keep information free.
 
@@ -20,7 +20,7 @@ Check out my latest short dev log on YouTube!
 
 ## How To Build
 
-After you download the repo, you can use Make commands to build it! [How To Build Guide](Documents/howtos/howto-build.md)
+After you download the repo, you can use Make commands to build it! [How To Build Guide](documents/howtos/howto-build.md)
 
 ### Dependencies
 
@@ -44,4 +44,4 @@ This was not an easy decision. Flecs has offered me a way out of the Unity IPO m
 
 Try Le old Zoxel ([here](https://deus0.itch.io/zoxel))
 
-![Le Old Zoxel](/Screenshots/KEyHna.png?raw=false "Le Old Zoxel")
+![Le Old Zoxel](/screenshots/KEyHna.png?raw=false "Le Old Zoxel")

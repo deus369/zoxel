@@ -1,13 +1,13 @@
 // just test the opengl SDL window
 
 // Build
-// clear; emcc -o Tests/emcc/exports/testsdl-01.html Tests/emcc/testsdl-01.c -s USE_SDL=2;
+// clear; emcc -o tests/emcc/exports/testsdl-01.html tests/emcc/testsdl-01.c -s USE_SDL=2;
 
 // Run
-// emrun --browser firefox Tests/emcc/exports/testsdl-01.html
+// emrun --browser firefox tests/emcc/exports/testsdl-01.html
 
 // build and run
-// clear; emcc -o Tests/emcc/exports/testsdl-01.html Tests/emcc/testsdl-01.c -s USE_SDL=2; emrun --browser firefox Tests/emcc/exports/testsdl-01.html
+// clear; emcc -o tests/emcc/exports/testsdl-01.html tests/emcc/testsdl-01.c -s USE_SDL=2; emrun --browser firefox tests/emcc/exports/testsdl-01.html
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
