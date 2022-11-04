@@ -1,4 +1,4 @@
-//! Basic noise texture.
+//! Basic Character 2D prefab.
 ecs_entity_t character2DPrefab;
 
 void SpawnCharacter2DPrefab(ecs_world_t *world, int2 textureSize)

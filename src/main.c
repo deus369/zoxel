@@ -1,13 +1,8 @@
-//! Zoxel Main
+//! =-= Zoxel =-=
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
-#ifdef __EMSCRIPTEN__
-#include <emscripten.h>
-#endif
-// =-= Zoxel =-=
 #define SDL_IMAGES
-#define USE_VERTEX_BUFFERS
 #include "zoxel_flecs.c"
 #include "zoxel.c"
 
@@ -15,12 +10,22 @@
 extern bool headless;
 extern bool running;
 extern bool profiler;
-ecs_entity_t localPlayer;
-//! Run render system on main thread, until Flecs Threading issue is fixed
 extern float4x4 mainCameraMatrix;  //! Used globally in render systems
+ecs_entity_t localPlayer;
 
-void RenderLoop_ECSFix()
+//! Spawns our first game entities.
+void spawn_game()
 {
+    SpawnMainCamera(screenDimensions);
+    SpawnKeyboardEntity();
+    SpawnMouseEntity();
+    localPlayer = SpawnPlayerCharacter2D(world);
+}
+
+//! Temporarily runs render things on main thread until flecs bug is fixed.
+void render_loop_temp()
+{
+    //clock_t t = clock();
     const FreeRoam *freeRoam = ecs_get(world, mainCamera, FreeRoam);
     mainCameraMatrix = ecs_get(world, mainCamera, ViewMatrix)->value;
     SDL_SetRelativeMouseMode(freeRoam->value);  //! Locks Main Mouse.
@@ -37,19 +42,12 @@ void RenderLoop_ECSFix()
     ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
     OpenGLEndInstancing3D();
     UpdateLoopSDL();
+    //t = clock() - t;
+    //printf("Render Time [%fms]\n", (((double) 1000.0 * t)/CLOCKS_PER_SEC));
 }
 
-void SpawnGameEntities()
-{
-    SpawnMainCamera(screenDimensions);
-    SpawnKeyboardEntity();
-    SpawnMouseEntity();
-    localPlayer = SpawnPlayerCharacter2D(world);
-}
-
-// === Move these to apps module ===
-
-void ExitApp()
+//! Quits the application from running indefinitely.
+void quit()
 {
     running = false;
     #ifdef __EMSCRIPTEN__
@@ -57,8 +55,8 @@ void ExitApp()
     #endif
 }
 
-//! Temporary, quick and dirty events.
-void PollSDLEvents()
+//! Polls SDL for input events. Also handles resize and window quit events.
+void poll_sdl()
 {
     ResetDevices(world);
     SDL_Event event  = { 0 };
@@ -69,14 +67,14 @@ void PollSDLEvents()
         int eventType = event.type;
         if (eventType == SDL_QUIT)
         {
-            ExitApp();
+            quit();
         }
         else if (eventType == SDL_KEYUP)
         {
             SDL_Keycode key = event.key.keysym.sym;
             if (key == SDLK_ESCAPE) 
             {
-                ExitApp();
+                quit();
             }
             // test
             else if (key == SDLK_z) 
@@ -111,8 +109,8 @@ void PollSDLEvents()
     }
 }
 
-//! Convert Args to Settings.
-int ProcessArguments(int argc, char* argv[])
+//! Convert starting arguments to Settings.
+int process_arguments(int argc, char* argv[])
 {
     for (int i = 1; i < argc; i++)
     {
@@ -141,13 +139,13 @@ int ProcessArguments(int argc, char* argv[])
     return EXIT_SUCCESS;
 }
 
-//! Main Game Loop
-void UpdateLoop()
+//! The main update loop.
+void update()
 {
     // apps / Input events
     if (!headless)
     {
-        PollSDLEvents();
+        poll_sdl();
         #ifdef __EMSCRIPTEN__
         if (UpdateWebCanvas())
         {
@@ -159,14 +157,14 @@ void UpdateLoop()
     ecs_progress(world, 0);
     if (!headless)
     {
-        RenderLoop_ECSFix();
+        render_loop_temp();
     }
 }
 
-//! Main Start
+//! Where it all begins and ends.
 int main(int argc, char* argv[])
 {
-    int didFail = ProcessArguments(argc, argv);
+    int didFail = process_arguments(argc, argv);
     if (didFail == EXIT_FAILURE)
     {
         return EXIT_SUCCESS;
@@ -175,13 +173,13 @@ int main(int argc, char* argv[])
     SetMultiThreading();
     // import game modules
     ECS_IMPORT(world, Zoxel);
-    SpawnGameEntities();
+    spawn_game();
 #ifdef __EMSCRIPTEN__
-    emscripten_set_main_loop(&UpdateLoop, -1, 1); // old - 60, 1);
+    emscripten_set_main_loop(&update, -1, 1); // old - 60, 1);
 #else
     while (running)
     {
-        UpdateLoop();
+        update();
     }
 #endif
     EndAppECS();
