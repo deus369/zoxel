@@ -8,12 +8,12 @@ zoxel_component(MaterialGPULink, GLuint);
 //! Grab from opengl part.
 extern GLuint CreateTexturedMaterial2D();
 
-void AddGPUMaterialComponents(ecs_world_t *world, ecs_entity_t prefab)
+void add_gpu_material(ecs_world_t *world, ecs_entity_t prefab)
 {
     zoxel_set_component(world, prefab, MaterialGPULink, { 0 });
 }
 
-void SpawnGPUMaterial(ecs_world_t *world, ecs_entity_t e)
+void spawn_gpu_material(ecs_world_t *world, ecs_entity_t e)
 {
     ecs_set(world, e, MaterialGPULink, { CreateTexturedMaterial2D() });
 }
@@ -25,4 +25,19 @@ ECS_DTOR(MaterialGPULink, ptr,
         // printf("Deleting MaterialGPULink [%i] on GPU.\n", ptr->value);
         glDeleteProgram(ptr->value);
     }
+})
+
+ECS_CTOR(MaterialGPULink, ptr,
+{
+    ptr->value = 0;
+})
+
+ECS_MOVE(MaterialGPULink, dst, src,
+{
+    if (dst->value)
+    {
+        glDeleteProgram(dst->value);
+    }
+    dst->value = src->value;
+    src->value = 0;
 })

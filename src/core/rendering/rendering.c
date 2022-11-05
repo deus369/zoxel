@@ -1,6 +1,8 @@
 #ifndef Zoxel_Rendering
 #define Zoxel_Rendering
 
+// data
+#include "data/GLuint2.c"
 // used atm for rendering
 float4x4 mainCameraMatrix; 
 #include "opengl/opengl.c"

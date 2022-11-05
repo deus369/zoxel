@@ -21,7 +21,7 @@ void SpawnManyCharacters()
     ecs_entity_t first_character;
     for (int i = 0; i < spawnCharacter2DsCount; i++)
     {
-        ecs_entity_t e = SpawnCharacter2D(world, character2DPrefab, (float2) { -0.5f + (rand() % 100) * 0.2f, -0.5f + (rand() % 100) * 0.2f });
+        ecs_entity_t e = spawn_character2D(world, character2DPrefab, (float2) { -0.5f + (rand() % 100) * 0.2f, -0.5f + (rand() % 100) * 0.2f });
         if (i == 0)
         {
             first_character = e;
@@ -37,7 +37,7 @@ void Characters2DImport(ecs_world_t *world)
     ECS_MODULE(world, Characters2D);
     ECS_TAG_DEFINE(world, Character2D);
     ECS_COMPONENT_DEFINE(world, Character2DLink);
-    SpawnCharacter2DPrefab(world, character2DTextureSize);
+    spawn_character2D_prefab(world, character2DTextureSize);
     SpawnManyCharacters();
 }
 #endif

@@ -1,7 +1,7 @@
 //! Basic Character 2D prefab.
 ecs_entity_t character2DPrefab;
 
-void SpawnCharacter2DPrefab(ecs_world_t *world, int2 textureSize)
+void spawn_character2D_prefab(ecs_world_t *world, int2 textureSize)
 {
     ecs_entity_t e = ecs_new_prefab(world, "character2D_prefab");
     printf("Spawned character2D_prefab [%lu].\n", (long int) (e));
@@ -17,7 +17,7 @@ void SpawnCharacter2DPrefab(ecs_world_t *world, int2 textureSize)
     add_seed(world, e, 444);
     add_texture(world, e, textureSize);
     add_noise_texture(world, e);
-    AddGPUMaterialComponents(world, e);
+    add_gpu_material(world, e);
     AddGPUTextureComponents(world, e);
     character2DPrefab = e;
 }

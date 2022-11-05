@@ -2,10 +2,11 @@
 #define Zoxel_RenderingCore
 //! rendering core Module.
 
-// rendering
+// components
 //! Used to set the brightness of an entity.
 zoxel_component(Brightness, float);
 #include "components/Mesh.c"
+#include "components/MeshGPULink.c"
 #include "components/MaterialGPULink.c"
 #include "components/TextureGPULink.c"
 // systems
@@ -25,9 +26,11 @@ void RenderingCoreImport(ecs_world_t *world)
     // components
     ECS_COMPONENT_DEFINE(world, Brightness);
     ECS_COMPONENT_DEFINE(world, Mesh);
+    ECS_COMPONENT_DEFINE(world, MeshGPULink);
     ECS_COMPONENT_DEFINE(world, MaterialGPULink);
     ECS_COMPONENT_DEFINE(world, TextureGPULink);
     // gpu destruction hooks
+    ecs_set_hooks(world, MeshGPULink, { .dtor = ecs_dtor(MeshGPULink) });
     ecs_set_hooks(world, MaterialGPULink, { .dtor = ecs_dtor(MaterialGPULink) });
     ecs_set_hooks(world, TextureGPULink, { .dtor = ecs_dtor(TextureGPULink) });
     // systems

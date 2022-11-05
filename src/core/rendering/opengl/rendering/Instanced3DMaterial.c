@@ -14,6 +14,28 @@ void DisposeInstanced3DMaterial()
     glDeleteProgram(materialInstance3D);
 }
 
+GLuint2 spawn_gpu_mesh()
+{
+    GLuint2 mesh;
+    glGenBuffers(1, &mesh.x);
+    glGenBuffers(1, &mesh.y);
+    return mesh;
+}
+
+void set_gpu_mesh(GLuint2 mesh, GLuint material, float verts[])
+{
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(squareTexturedIndicies), squareTexturedIndicies, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, mesh.y);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(verts), verts, GL_STATIC_DRAW);
+    // do i need this here?
+    GLint vertexPosition = glGetAttribLocation(material, "vertexPosition");
+    glEnableVertexAttribArray(vertexPosition);
+    glVertexAttribPointer(vertexPosition, 2, GL_FLOAT, GL_FALSE, 8, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 void InitializeCubeMesh(GLuint material)
 {
     glGenBuffers(1, &materialInstance3D_indicies);
