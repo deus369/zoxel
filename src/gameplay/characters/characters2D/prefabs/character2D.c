@@ -5,8 +5,8 @@ void spawn_character2D_prefab(ecs_world_t *world, int2 textureSize)
 {
     ecs_entity_t e = ecs_new_prefab(world, "character2D_prefab");
     printf("Spawned character2D_prefab [%lu].\n", (long int) (e));
-    #ifdef Zoxel_Transforms2D
-    AddTransforms2DComponents(world, e);
+    #ifdef zoxel_transforms2D
+    add_transform2Ds(world, e);
     #endif
     #ifdef Zoxel_Physics2D
     zoxel_add_tag(world, e, Frictioned);
@@ -18,6 +18,6 @@ void spawn_character2D_prefab(ecs_world_t *world, int2 textureSize)
     add_texture(world, e, textureSize);
     add_noise_texture(world, e);
     add_gpu_material(world, e);
-    AddGPUTextureComponents(world, e);
+    add_gpu_texture(world, e);
     character2DPrefab = e;
 }

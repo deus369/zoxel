@@ -1,5 +1,5 @@
-#ifndef Zoxel_Transforms3D
-#define Zoxel_Transforms3D
+#ifndef zoxel_transforms3D
+#define zoxel_transforms3D
 
 // components
 //! A 3D Position component.
@@ -14,6 +14,8 @@ zoxel_component(UniformScale, float);
 zoxel_component(Euler, float3);
 //! Scales in 2D!
 zoxel_component(Matrix, float4x4);
+// util
+#include "util/transform3d_util.c"
 // systems
 
 //! The transforms Module.

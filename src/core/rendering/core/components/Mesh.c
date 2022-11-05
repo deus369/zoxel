@@ -2,11 +2,22 @@
 /**
 *   \todo Seperate mesh data into different files.
 */
-typedef struct
+// zoxel_memory_component(MeshVertices, float3);
+
+/*typedef struct
 {
     float3 *vertices;
     float3 *normals;
     float3 *colors;
     float2 *uvs;
 } Mesh;
-ECS_COMPONENT_DECLARE(Mesh);
+ECS_COMPONENT_DECLARE(MeshVertices);*/
+
+/*typedef struct
+{
+    float3 *vertices;
+    float3 *normals;
+    float3 *colors;
+    float2 *uvs;
+} Mesh;
+ECS_COMPONENT_DECLARE(Mesh);*/

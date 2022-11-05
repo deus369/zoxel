@@ -9,6 +9,37 @@
 // things
 const bool isForceDefaults = false;
 
+bool LinkShaderProgram(GLuint program, GLuint vertShader, GLuint fragShader)
+{
+    glAttachShader(program, vertShader);
+    glAttachShader(program, fragShader);
+    glLinkProgram(program);
+    GLint success;
+    glGetProgramiv(program, GL_LINK_STATUS, &success);
+    if (success != GL_TRUE)
+    {
+        GLint info_log_length;
+        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &info_log_length);
+        GLchar* info_log = malloc(info_log_length);
+        glGetProgramInfoLog(program, info_log_length, NULL, info_log);
+        fprintf(stderr, " - failed to link program:\n%s\n", info_log);
+        free(info_log);
+        glDetachShader(program, vertShader);
+        glDetachShader(program, fragShader);
+        return false;
+    }
+    glDetachShader(program, vertShader);
+    glDetachShader(program, fragShader);
+    return false;
+}
+
+GLuint spawn_gpu_material_program(const GLuint2 shader)
+{
+    GLuint material = glCreateProgram();
+    LinkShaderProgram(material, shader.x, shader.y);
+    return material;
+}
+
 int LoadShader(const char* filepath, GLenum shaderType, GLuint* shader2)
 {
     if (strlen(filepath) == 0)
@@ -43,30 +74,6 @@ int LoadShader(const char* filepath, GLenum shaderType, GLuint* shader2)
     return 0;
 }
 
-bool LinkShaderProgram(GLuint program, GLuint vertShader, GLuint fragShader)
-{
-    glAttachShader(program, vertShader);
-    glAttachShader(program, fragShader);
-    glLinkProgram(program);
-    GLint success;
-    glGetProgramiv(program, GL_LINK_STATUS, &success);
-    if (success != GL_TRUE)
-    {
-        GLint info_log_length;
-        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &info_log_length);
-        GLchar* info_log = malloc(info_log_length);
-        glGetProgramInfoLog(program, info_log_length, NULL, info_log);
-        fprintf(stderr, " - failed to link program:\n%s\n", info_log);
-        free(info_log);
-        glDetachShader(program, vertShader);
-        glDetachShader(program, fragShader);
-        return false;
-    }
-    glDetachShader(program, vertShader);
-    glDetachShader(program, fragShader);
-    return false;
-}
-
 int CompileShader(const GLchar* buffer, GLenum shaderType, GLuint* shader2)
 {
     GLuint shader = glCreateShader(shaderType);
@@ -90,27 +97,29 @@ int CompileShader(const GLchar* buffer, GLenum shaderType, GLuint* shader2)
 }
 
 //! For when you only need one material, otherwise will need to return shaders too. Returns material reference.
-GLuint LoadMaterial(const char* vertFilepath, const char* fragFilepath)
+GLuint load_gpu_shader(GLuint2* shader, const char* vertFilepath, const char* fragFilepath)
 {
-    GLuint vertShader;
-    if (LoadShader(vertFilepath, GL_VERTEX_SHADER, &vertShader) != 0)
+    // GLuint vertShader;
+    if (LoadShader(vertFilepath, GL_VERTEX_SHADER, &shader->x) != 0)
     {
         printf("Error loading shader vert [%s]\n", vertFilepath);
         return 0;
     }
-    GLuint fragShader;
-    if (LoadShader(fragFilepath, GL_FRAGMENT_SHADER, &fragShader) != 0)
+    // GLuint fragShader;
+    if (LoadShader(fragFilepath, GL_FRAGMENT_SHADER, &shader->y) != 0)
     {
         printf("Error loading shader frag [%s]\n", fragFilepath);
         return 0;
     }
-    GLuint material = glCreateProgram();
-    LinkShaderProgram(material, vertShader, fragShader);
-    glDeleteShader(vertShader);
-    glDeleteShader(fragShader);
-    return material;
+    return spawn_gpu_material_program((const GLuint2) { shader->x, shader->y });
 }
 
+    /*GLuint material = glCreateProgram();
+    LinkShaderProgram(material, shader.x, shader.y);
+    // glDeleteShader(vertShader);
+    // glDeleteShader(fragShader);
+    return material;*/
+    
 //! Used incase external shaders are missing
 /*int LoadDefaultShaders()
 {

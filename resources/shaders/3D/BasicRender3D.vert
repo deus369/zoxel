@@ -7,12 +7,17 @@ uniform lowp vec3 position;
 uniform lowp vec4 rotation;
 uniform lowp float scale;
 
+
+vec3 float4_rotate_float3(vec4 rotation, vec3 value)
+{
+    vec3 rotationXYZ = rotation.xyz;
+    vec3 t = cross(rotationXYZ, value) * 2.0f;
+    vec3 crossB = cross(rotationXYZ, t);
+    vec3 scaledT = t * rotation.w;
+    return value + scaledT + crossB;
+}
+
 void main()
 {
-    //mat2 rotate = mat2(cos(angle), -sin(angle),
-    //                   sin(angle), cos(angle));
-    //gl_Position = viewMatrix * vec4(position + (rotate * vertexPosition) * scale, 0, 1.0);
-    
-    //! \todo Rotate the thing! Maybe just add in a transform matrix.
-    gl_Position = viewMatrix * vec4(position + (vertexPosition) * scale, 1.0);
+    gl_Position = viewMatrix * vec4(position + float4_rotate_float3(rotation, vertexPosition * scale), 1.0);
 }

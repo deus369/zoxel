@@ -26,12 +26,17 @@ To-Do Main
 -----
 
 `Current`
+
+- [ ] Create minimal example of setting a 'material' integer link as a test for the upgrade bug
+
 - [ ] Load Shaders as entities
     - Dispose of them when closing game
     - Keep generic enough to use, so I can just load a list of files from resources
+
 - [ ] 3D Particles
     - [x] Particle3D with 2D mesh
     - [ ] Particle3D with 3D mesh
+    
 - [ ] Character3Ds
     - [ ] Physics 3D
     - [ ] Jump ability

@@ -14,7 +14,6 @@ void InstanceRender3DSystem(ecs_iter_t *it)
         const Rotation *rotation = &rotations[i];
         const Scale1D *scale1D = &scale1Ds[i];
         const Brightness *brightness = &brightnesses[i];
-        // Add to Render Queue
         // printf("    Bob's Position2D is {%f, %f}\n", position.value.x, position.value.y);
         RenderEntity3D(position->value, rotation->value, scale1D->value, brightness->value);
     }

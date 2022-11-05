@@ -1,5 +1,5 @@
-#ifndef Zoxel_Transforms2D
-#define Zoxel_Transforms2D
+#ifndef zoxel_transforms2D
+#define zoxel_transforms2D
 
 // components
 //! A simple 2D position component.
@@ -9,7 +9,7 @@ zoxel_component(Rotation2D, float);
 //! Scales in 2D! - put this in core or TransformShared
 zoxel_component(Scale1D, float);
 // util
-#include "util/Transforms2DUtil.c"
+#include "util/transform2D_util.c"
 
 //! Used for 2D transforms positioning.
 void Transforms2DImport(ecs_world_t *world)

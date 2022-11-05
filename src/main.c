@@ -30,6 +30,7 @@ void render_loop_temp()
     mainCameraMatrix = ecs_get(world, mainCamera, ViewMatrix)->value;
     SDL_SetRelativeMouseMode(freeRoam->value);  //! Locks Main Mouse.
     TextureUpdateMainThread();  // uploads textures to gpu
+    MeshUpdateMainThread();
     // now render the things
     OpenGLClear();
     OpenGLBeginInstancing(mainCameraMatrix);
@@ -41,6 +42,8 @@ void render_loop_temp()
     OpenGLBeginInstancing3D(mainCameraMatrix);
     ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
     OpenGLEndInstancing3D();
+    // seperate materials 3D mesh
+    ecs_run(world, ecs_id(InstanceRender3D2System), 0, NULL);
     UpdateLoopSDL();
     //t = clock() - t;
     //printf("Render Time [%fms]\n", (((double) 1000.0 * t)/CLOCKS_PER_SEC));
@@ -90,6 +93,10 @@ void poll_sdl()
                 // printf("Update Player Character Texture.\n");
                 // ecs_set(world, localPlayer, GenerateTexture, { 1 });
                 // TestDestroyTexture(world);
+                const Rotation *test_mesh_rotation = ecs_get(world, test_mesh, Rotation);
+                float3 test_mesh_euler = quaternion_to_euler(test_mesh_rotation->value);
+                test_mesh_euler = float3_divide_float(test_mesh_euler, degreesToRadians);
+                printf("    - test_mesh_euler [x:%f y:%f z:%f]\n", test_mesh_euler.x, test_mesh_euler.y, test_mesh_euler.z);
             }
         }
         else if (eventType == SDL_WINDOWEVENT)

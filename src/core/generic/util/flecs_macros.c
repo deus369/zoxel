@@ -41,6 +41,17 @@ ECS_COMPONENT_DECLARE(name)
     }\
 }
 
+// printf("stride %i\n", stride);
+
+#define re_initialize_memory_component2(component, dataType, newLength)\
+    if (component.length != newLength)\
+    {\
+        free(component.value);\
+        const int stride = sizeof(dataType);\
+        component.length = newLength;\
+        component.value = malloc(newLength * stride);\
+    }\
+
 //! ECS_CTOR The constructor should initialize the component value.
 //! ECS_DTOR The destructor should free resources.
 //! ECS_MOVE Copy a pointer from one component to another.

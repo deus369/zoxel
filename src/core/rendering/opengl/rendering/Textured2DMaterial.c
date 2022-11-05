@@ -18,26 +18,23 @@ const bool disableTextureLoaded = false;
 int textureType = GL_NEAREST; // GL_LINEAR
 //! \todo Move these references to MaterialGPULink
 //! \todo Update texture based on Player Entity texture updateing
+GLuint2 textured2DShader;
 const char* texturedRender2DVertPath = "resources/shaders/2D/TexturedRender2D.vert";
 const char* texturedRender2DFragPath = "resources/shaders/2D/TexturedRender2D.frag";
-//! shaders
-GLuint texturedVertShader;
-GLuint texturedFragShader;
 // MaterialGPULink and properties
 GLuint texturedMaterial;
 //! Mesh B - Buffers/Texture
-GLuint squareTexturedModelIndicies;
-GLuint squareTexturedModelVertices;
+GLuint2 squareTexturedMesh;
 GLuint squareTexturedModelUVs;
 
 void DisposeTexturedMaterial2D()
 {
-    glDeleteBuffers(1, &squareTexturedModelIndicies);
-    glDeleteBuffers(1, &squareTexturedModelVertices);
+    glDeleteBuffers(1, &squareTexturedMesh.x);
+    glDeleteBuffers(1, &squareTexturedMesh.y);
     glDeleteBuffers(1, &squareTexturedModelUVs);
     // glDeleteTextures(1, &textureID);
-    glDeleteShader(texturedVertShader);
-    glDeleteShader(texturedFragShader);
+    glDeleteShader(textured2DShader.x);
+    glDeleteShader(textured2DShader.y);
     glDeleteProgram(texturedMaterial);
 #ifdef DEVBUILD
     GLenum err7 = glGetError();
@@ -66,20 +63,19 @@ void InitializeTexturedMesh(GLuint material)
     MaterialTextured2D materialTextured2D;
     InitializeMaterialPropertiesB(material, &materialTextured2D);
     // gen buffers
-    glGenBuffers(1, &squareTexturedModelIndicies);
-    glGenBuffers(1, &squareTexturedModelVertices);  // generate a new VBO and get the associated ID
+    glGenBuffers(1, &squareTexturedMesh.x);
+    glGenBuffers(1, &squareTexturedMesh.y);  // generate a new VBO and get the associated ID
     glGenBuffers(1, &squareTexturedModelUVs);  // generate a new VBO and get the associated ID
-    // indicies
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedModelIndicies);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(squareTexturedIndicies2), squareTexturedIndicies2, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    //verts
-    glBindBuffer(GL_ARRAY_BUFFER, squareTexturedModelVertices);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedMesh.x);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(squareIndicies), squareIndicies, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, squareTexturedMesh.y);
     glBufferData(GL_ARRAY_BUFFER, sizeof(squareTexturedVerts), squareTexturedVerts, GL_STATIC_DRAW); 
     glVertexAttribPointer(materialTextured2D.vertexPosition, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(0 * sizeof(float)));
     glVertexAttribPointer(materialTextured2D.vertexUV, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(2 * sizeof(float)));
     glEnableVertexAttribArray(materialTextured2D.vertexPosition);
     glEnableVertexAttribArray(materialTextured2D.vertexUV);
+    printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", squareTexturedMesh.x, squareTexturedMesh.y);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 #ifdef DEVBUILD
     GLenum err7 = glGetError();
@@ -121,8 +117,8 @@ void RenderEntityMaterial2D(const float4x4 viewMatrix, GLuint material, GLuint t
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     glBindTexture(GL_TEXTURE_2D, texture);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedModelIndicies);    // for indices
-    glBindBuffer(GL_ARRAY_BUFFER, squareTexturedModelVertices);            // for vertex buffer data
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedMesh.x);    // for indices
+    glBindBuffer(GL_ARRAY_BUFFER, squareTexturedMesh.y);            // for vertex buffer data
     glUniformMatrix4fv(materialTextured2D.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
     glUniform1f(materialTextured2D.positionX, position.x);
     glUniform1f(materialTextured2D.positionY, position.y);
@@ -141,26 +137,9 @@ void RenderEntityMaterial2D(const float4x4 viewMatrix, GLuint material, GLuint t
     glUseProgram(0);
 }
 
-GLuint CreateTexturedMaterial2D()
-{
-    GLuint material = glCreateProgram();
-    LinkShaderProgram(material, texturedVertShader, texturedFragShader);
-    return material;
-}
-
 int LoadTextureRender2DShader()
 {
-    if (LoadShader(texturedRender2DVertPath, GL_VERTEX_SHADER, &texturedVertShader) != 0)
-    {
-        printf("Error loading shader vert 2D.\n");
-        return -1;
-    }
-    if (LoadShader(texturedRender2DFragPath, GL_FRAGMENT_SHADER, &texturedFragShader) != 0)
-    {
-        printf("Error loading shader frag 2D.\n");
-        return -1;
-    }
-    texturedMaterial = CreateTexturedMaterial2D();
+    texturedMaterial = load_gpu_shader(&textured2DShader, texturedRender2DVertPath, texturedRender2DFragPath);
     InitializeTexturedMesh(texturedMaterial);
     return 0;
 }
@@ -173,3 +152,14 @@ int LoadTextureRender2DShader()
 //         return;
 //     }
 // #endif
+    /*if (LoadShader(texturedRender2DVertPath, GL_VERTEX_SHADER, &textured2DShader.x) != 0)
+    {
+        printf("Error loading shader vert 2D.\n");
+        return -1;
+    }
+    if (LoadShader(texturedRender2DFragPath, GL_FRAGMENT_SHADER, &textured2DShader.y) != 0)
+    {
+        printf("Error loading shader frag 2D.\n");
+        return -1;
+    }
+    texturedMaterial = spawn_gpu_material_program(textured2DShader);*/

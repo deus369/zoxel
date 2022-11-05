@@ -1,4 +1,3 @@
-extern GLuint textureID;
 //! Not a proper queue yet.
 #ifndef maxQueue
 #define maxQueue 512

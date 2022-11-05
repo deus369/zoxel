@@ -14,30 +14,34 @@
 //! Mesh A - Buffers
 const char* basicRender2DVertFilepath = "resources/shaders/2D/BasicRender2D.vert";
 const char* basicRender2DFragFilepath = "resources/shaders/2D/BasicRender2D.frag";
+GLuint2 instanceShader2D;
 GLuint square2DMaterial;
 Material2D material2D;
-GLuint squareModelIndicies;
-GLuint squareModelVertices;
+GLuint2 squareMesh;
 
 void DisposeInstance2DMaterial()
 {
-    glDeleteBuffers(1, &squareModelIndicies);
-    glDeleteBuffers(1, &squareModelVertices);
+    glDeleteShader(instanceShader2D.x);
+    glDeleteShader(instanceShader2D.y);
+    glDeleteBuffers(1, &squareMesh.x);
+    glDeleteBuffers(1, &squareMesh.y);
     glDeleteProgram(square2DMaterial);
 }
 
 void InitializeMesh(GLuint material)
 {
     // gen buffers
-    glGenBuffers(1, &squareModelIndicies);
-    glGenBuffers(1, &squareModelVertices);
+    glGenBuffers(1, &squareMesh.x);
+    glGenBuffers(1, &squareMesh.y);
     // set buffer data
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareModelIndicies);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(squareTexturedIndicies), squareTexturedIndicies, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, squareModelVertices);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareMesh.x);
+    glBindBuffer(GL_ARRAY_BUFFER, squareMesh.y);
+    // printf("A Binding Data %i %i\n", sizeof(squareIndicies), sizeof(squareVerts));
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(squareIndicies), squareIndicies, GL_STATIC_DRAW);
     glBufferData(GL_ARRAY_BUFFER, sizeof(squareVerts), squareVerts, GL_STATIC_DRAW);
     glEnableVertexAttribArray(material2D.vertexPosition);
     glVertexAttribPointer(material2D.vertexPosition, 2, GL_FLOAT, GL_FALSE, 8, 0);
+    // printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", squareMesh.x, squareMesh.y);
     // reset
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -48,6 +52,14 @@ void InitializeMesh(GLuint material)
         printf("GL HAD ERROR with end of InitializeMesh: %i\n", err7);
     }
 #endif
+    /*for (int j = 0; j < sizeof(squareIndicies) / 4; j++)
+    {
+        printf("    - Index [%i] is [%i]\n", j, squareIndicies[j]);
+    }
+    for (int j = 0; j < sizeof(squareVerts) / 4; j++)
+    {
+        printf("    - Vertex [%i] is [%f]\n", j, squareVerts[j]);
+    }*/
 }
 
 void InitializeMaterialPropertiesA(GLuint material)
@@ -63,7 +75,7 @@ void InitializeMaterialPropertiesA(GLuint material)
 
 int LoadInstance2DMaterial()
 {
-    square2DMaterial = LoadMaterial(basicRender2DVertFilepath, basicRender2DFragFilepath);
+    square2DMaterial = load_gpu_shader(&instanceShader2D, basicRender2DVertFilepath, basicRender2DFragFilepath);
     if (square2DMaterial == 0)
     {
         printf("Error loading shaders for square2DMaterial.\n");
@@ -83,8 +95,10 @@ void OpenGLBeginInstancing(const float4x4 viewMatrix)
     }
     //! This sets the materials actually, would be best to group entities per material here?
     glUseProgram(square2DMaterial);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareModelIndicies);    // for indices
-    glBindBuffer(GL_ARRAY_BUFFER, squareModelVertices);            // for vertex coordinates
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareMesh.x);    // for indices
+    glBindBuffer(GL_ARRAY_BUFFER, squareMesh.y);            // for vertex coordinates
+    glEnableVertexAttribArray(material2D.vertexPosition);
+    glVertexAttribPointer(material2D.vertexPosition, 2, GL_FLOAT, GL_FALSE, 8, 0);  // 2 * 4
     glUniformMatrix4fv(material2D.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
 }
 
@@ -97,7 +111,7 @@ void RenderEntity2D(float2 position, float angle, float scale, float brightness)
     glUniform1f(material2D.scale, scale);
     glUniform1f(material2D.angle, angle);
     glUniform1f(material2D.brightness, brightness);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL); // &squareTexturedIndicies);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL); // &squareIndicies);
 }
 
 void OpenGLEndInstancing()

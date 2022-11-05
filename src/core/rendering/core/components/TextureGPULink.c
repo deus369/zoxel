@@ -3,12 +3,12 @@ zoxel_component(TextureGPULink, GLuint);
 
 extern GLuint SpawnTextureGPU();
 
-void AddGPUTextureComponents(ecs_world_t *world, ecs_entity_t prefab)
+void add_gpu_texture(ecs_world_t *world, ecs_entity_t prefab)
 {
     zoxel_set_component(world, prefab, TextureGPULink, { 0 });
 }
 
-void SpawnGPUTexture(ecs_world_t *world, ecs_entity_t e)
+void spawn_gpu_texture(ecs_world_t *world, ecs_entity_t e)
 {
     ecs_set(world, e, TextureGPULink, { SpawnTextureGPU() });
 }
