@@ -14,5 +14,4 @@ void TexturesImport(ecs_world_t *world)
     ECS_MODULE(world, textures);
     ECS_IMPORT(world, TexturesCore);
 }
-
 #endif
