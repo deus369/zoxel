@@ -87,7 +87,15 @@ void NoiseTextureSystem(ecs_iter_t *it)
         // printf("Noise Texture Generated: [%lu] \n", (long int) it->entities[i]);
         Texture *texture = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
-        re_initialize_memory_component(texture, color, textureSize->value.x * textureSize->value.y);
+        int newLength = textureSize->value.x * textureSize->value.y;
+        /*if (texture->length == 0)
+        {
+            initialize_memory_component(texture, color, newLength);
+        }
+        else*/
+        {
+            re_initialize_memory_component(texture, color, newLength);
+        }
         GenerateNoise(texture, textureSize);
     }
 }

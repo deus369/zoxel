@@ -11,7 +11,7 @@
 // texture issues
 //  https://www.reddit.com/r/opengl/comments/ydsqkn/textured_square_works_on_pinephone_pro_but_not_pc/
 //  https://github.com/edo9300/edopro/issues/151
-float3 backgroundColor = { 0.2, 0.2, 0.5 };
+float3 backgroundColor = { 22.0f / 255.0f, 18.0f / 255.0f, 20.0f / 255.0f };
 
 void OpenGLClear()
 {

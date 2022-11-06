@@ -3,7 +3,8 @@ ecs_entity_t noiseTexturePrefab;
 
 void add_texture(ecs_world_t *world, ecs_entity_t prefab, int2 textureSize)
 {
-    zoxel_add_component(world, prefab, Texture);
+    //zoxel_add_component(world, prefab, Texture);
+    zoxel_set_component(world, prefab, Texture, { 0, NULL });
     zoxel_set_component(world, prefab, TextureSize, { textureSize });
 }
 

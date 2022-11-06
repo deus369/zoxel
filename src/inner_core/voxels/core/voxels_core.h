@@ -22,6 +22,36 @@ zoxel_memory_component(ChunkLinks, ecs_entity_t);
 #include "systems/GenerateChunkResetSystem.c"
 #include "systems/NoiseChunkSystem.c"
 
+ecs_entity_t voxel_prefab;
+
+void spawn_voxel_prefab(ecs_world_t *world)
+{
+    const int3 size = { 16, 16, 16 };
+    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, custom_mesh_prefab);
+    ecs_add_id(world, e, EcsPrefab);
+    ecs_set_name(world, e, "voxel_prefab");
+    // ecs_set(world, e, EntityDirty, { 0 });
+    add_seed(world, e, 666);
+    add_chunk(world, e, size);
+    add_noise_chunk(world, e);
+    voxel_prefab = e;
+}
+
+void spawn_voxel_chunk_mesh(ecs_world_t *world, float3 position)
+{
+    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, voxel_prefab);
+    ecs_set(world, e, Position, { position }); // {{ 0, 0.6f, 0 }});
+    ecs_set(world, e, Rotation, {{ 0, 0, 0, 1.0f }});
+    ecs_set(world, e, Scale1D, { 0.05f });
+    ecs_set(world, e, Brightness, { 1.4f });
+    // printf("Spawned Character2D [%lu]\n", (long unsigned int) e);
+    spawn_gpu_mesh(world, e);
+    set_mesh_indicies(world, e, cubeIndicies, 36);
+    set_mesh_vertices(world, e, cubeVertices, 24);
+    spawn_gpu_material(world, e, instanceShader3D);
+    custom_mesh = e;
+}
+
 //! The voxels core Sub Module.
 /**
 *   \todo First use a Point Render system to render voxel data.
@@ -44,6 +74,7 @@ void VoxelsCoreImport(ecs_world_t *world)
     ECS_SYSTEM_DEFINE(world, GenerateChunkResetSystem, EcsPostUpdate, [out] GenerateChunk);
     spawn_chunk_prefab(world);
     spawn_chunk(world);
+    // spawn_voxel_chunk_mesh(world, (float3) { 0, 0.5f, -0.5f });
 }
 
 // components

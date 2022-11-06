@@ -24,25 +24,28 @@ ECS_COMPONENT_DECLARE(name)
 
 #define initialize_memory_component(component, dataType, length_)\
 {\
-    int length = length_;\
     const int stride = sizeof(dataType);\
-    component->length = length;\
-    component->value = malloc(length * stride);\
+    component->length = length_;\
+    component->value = (dataType*) malloc(length_ * stride);\
 }
+    // memset(component->value, 0, length_ * stride);
 
-#define re_initialize_memory_component(component, dataType, newLength)\
+#define re_initialize_memory_component(component, dataType, length_)\
 {\
-    if (component->length != newLength)\
+    if (component->length != length_)\
     {\
-        free(component->value);\
         const int stride = sizeof(dataType);\
-        component->length = newLength;\
-        component->value = malloc(newLength * stride);\
+        if (component->length != 0)\
+        {\
+            free(component->value);\
+        }\
+        component->length = length_;\
+        component->value = (dataType*) malloc(length_ * stride);\
     }\
 }
 
 // printf("stride %i\n", stride);
-
+/*
 #define re_initialize_memory_component2(component, dataType, newLength)\
     if (component.length != newLength)\
     {\
@@ -50,7 +53,8 @@ ECS_COMPONENT_DECLARE(name)
         const int stride = sizeof(dataType);\
         component.length = newLength;\
         component.value = malloc(newLength * stride);\
-    }\
+    }
+*/
 
 //! ECS_CTOR The constructor should initialize the component value.
 //! ECS_DTOR The destructor should free resources.
@@ -67,6 +71,7 @@ typedef struct\
 ECS_COMPONENT_DECLARE(name);\
 ECS_CTOR(name, ptr,\
 {\
+    ptr->length = 0;\
     ptr->value = NULL;\
 })\
 ECS_DTOR(name, ptr,\
@@ -78,19 +83,27 @@ ECS_DTOR(name, ptr,\
 })\
 ECS_MOVE(name, dst, src,\
 {\
-    free(dst->value);\
+    if (dst->length != 0)\
+    {\
+        free(dst->value);\
+    }\
     dst->value = src->value;\
     src->value = NULL;\
+    dst->length = src->length;\
+    src->length = 0;\
 })\
 ECS_COPY(name, dst, src, {\
     if (src->value)\
     {\
-        int memoryLength = src->length;\
-        free(dst->value);\
-        dst->value = malloc(memoryLength);\
+        if (dst->length != 0)\
+        {\
+            free(dst->value);\
+        }\
+        dst->length = src->length;\
+        dst->value = malloc(src->length);\
         if (dst->value != NULL) \
         {\
-            dst->value = memcpy(dst->value, src->value, memoryLength);\
+            dst->value = memcpy(dst->value, src->value, src->length);\
         }\
     }\
 })

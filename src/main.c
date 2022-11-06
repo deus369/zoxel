@@ -93,7 +93,7 @@ void poll_sdl()
                 // printf("Update Player Character Texture.\n");
                 // ecs_set(world, localPlayer, GenerateTexture, { 1 });
                 // TestDestroyTexture(world);
-                const Rotation *test_mesh_rotation = ecs_get(world, test_mesh, Rotation);
+                const Rotation *test_mesh_rotation = ecs_get(world, custom_mesh, Rotation);
                 float3 test_mesh_euler = quaternion_to_euler(test_mesh_rotation->value);
                 test_mesh_euler = float3_divide_float(test_mesh_euler, degreesToRadians);
                 printf("    - test_mesh_euler [x:%f y:%f z:%f]\n", test_mesh_euler.x, test_mesh_euler.y, test_mesh_euler.z);
