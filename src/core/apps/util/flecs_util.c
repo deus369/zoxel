@@ -1,13 +1,12 @@
 //! Helper file for Flecs!
-// #include <sys/sysinfo.h>    //! Used for get_nprocs_conf
 ecs_world_t *world;
 
-//! Initialize Flecs ECS and Modules.
-void BeginAppECS(int argc, char* argv[], bool profiler)
+//! Initialize Flecs ECS by spawning a world and enabling threads.
+void open_ecs(int argc, char* argv[], bool profiler)
 {
+    // spawn ecs world
     world = ecs_init_w_args(argc, argv);
-    // Enable Threads (if no rendering)
-    // Enable Profiler
+    // enable Profiler
     if (profiler)
     {
         #if defined (FLECS_REST) && defined (FLECS_MONITOR)
@@ -15,12 +14,7 @@ void BeginAppECS(int argc, char* argv[], bool profiler)
         ecs_singleton_set(world, EcsRest, {0});
         #endif
     }
-}
-
-void SetMultiThreading()
-{
-    // int cpuCoreCount = get_nprocs();
-    // int cpuCoreConfiguredCount = get_nprocs_conf();
+    // enable multi threading
     int cpuCoreCount = SDL_GetCPUCount();
     printf("System Found [%i processors].\n", cpuCoreCount);
     if (cpuCoreCount > 1)
@@ -29,7 +23,7 @@ void SetMultiThreading()
     }
 }
 
-void EndAppECS()
+void close_ecs()
 {
     ecs_fini(world);
 }

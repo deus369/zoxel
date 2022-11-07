@@ -36,8 +36,8 @@ SRCS += imports/flecs.c
 SRCS += imports/flecs.h
 SRCS += src/main.c
 # imports
-SRCS += src/core/apps/util/SDLUtil.c
-SRCS += src/core/apps/util/FlecsUtil.c
+SRCS += src/core/apps/util/sdl_util.c
+SRCS += src/core/apps/util/flecs_util.c
 # gameplay
 # players
 SRCS += src/space/players/players.c

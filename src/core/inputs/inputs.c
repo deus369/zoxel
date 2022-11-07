@@ -15,6 +15,19 @@ ECS_DECLARE(Device);
 #include "systems/keyboard_extract_system.c"
 #include "systems/mouse_extract_system.c"
 
+
+void input_extract_from_sdl(ecs_world_t *world, SDL_Event event)
+{
+    ExtractKeyboard(world, event);
+    ExtractMouseEvent(world, event);
+}
+
+void reset_input_devices(ecs_world_t *world)
+{
+    ResetKeyboard(world);
+    ResetMouse(world);
+}
+
 void InputsImport(ecs_world_t *world)
 {
     ECS_MODULE(world, inputs);
@@ -24,11 +37,5 @@ void InputsImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, Mouse);
     ECS_COMPONENT_DEFINE(world, Touchscreen);
     //! \todo Add Extract systems to mainthread
-}
-
-void ResetDevices(ecs_world_t *world)
-{
-    ResetKeyboard(world);
-    ResetMouse(world);
 }
 #endif

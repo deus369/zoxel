@@ -61,12 +61,11 @@ void quit()
 //! Polls SDL for input events. Also handles resize and window quit events.
 void poll_sdl()
 {
-    ResetDevices(world);
+    reset_input_devices(world);
     SDL_Event event  = { 0 };
     while (SDL_PollEvent(&event))
     {
-        ExtractKeyboard(world, event);
-        ExtractMouseEvent(world, event);
+        input_extract_from_sdl(world, event);
         int eventType = event.type;
         if (eventType == SDL_QUIT)
         {
@@ -176,8 +175,7 @@ int main(int argc, char* argv[])
     {
         return EXIT_SUCCESS;
     }
-    BeginAppECS(argc, argv, profiler);
-    SetMultiThreading();
+    open_ecs(argc, argv, profiler);
     // import game modules
     ECS_IMPORT(world, Zoxel);
     spawn_game();
@@ -189,7 +187,7 @@ int main(int argc, char* argv[])
         update();
     }
 #endif
-    EndAppECS();
+    close_ecs();
     if (!headless)
     {
         EndAppOpenGL();
