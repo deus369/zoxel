@@ -30,7 +30,7 @@ void CamerasImport(ecs_world_t *world)
 {
     ECS_MODULE(world, cameras);
     // zoxel_module(world, cameras, nm_zoxel_cameras);
-    // -=- Tags -=-
+    // -=- tags -=-
     ECS_TAG_DEFINE(world, Camera);
     ECS_TAG_DEFINE(world, CameraFollower2D); // Until fix is found. \todo Fix this, readd it back here where it belongs.
     // -=- components -=-

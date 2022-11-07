@@ -44,7 +44,7 @@ ecs_entity_t spawn_camera(ecs_world_t *world, float3 position, float4 rotation, 
 
 void SpawnMainCamera(int2 screenDimensions)
 {
-    float3 spawnPosition = { 0, -0.0f, 0.52f };
+    float3 spawnPosition = { 0, -0.0f, 0.62f };
     // imagine this is a forward rotation
     // float4 flipRotation = quaternion_from_euler( (float3) { 0, 180 * degreesToRadians, 0 });
     // float4 flipRotation = quaternion_from_euler( (float3) { 0, 0 * degreesToRadians, 0 });
