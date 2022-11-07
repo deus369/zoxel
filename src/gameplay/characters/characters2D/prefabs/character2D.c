@@ -8,7 +8,7 @@ void spawn_character2D_prefab(ecs_world_t *world, int2 textureSize)
     #ifdef zoxel_transforms2D
     add_transform2Ds(world, e);
     #endif
-    #ifdef Zoxel_Physics2D
+    #ifdef zoxel_physics2D
     zoxel_add_tag(world, e, Frictioned);
     AddPhysics2DComponents(world, e);
     #endif

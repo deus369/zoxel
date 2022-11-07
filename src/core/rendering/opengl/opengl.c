@@ -1,5 +1,5 @@
-#ifndef Zoxel_OpenGL
-#define Zoxel_OpenGL
+#ifndef zoxel_opengl
+#define zoxel_opengl
 
 // #include <GL/gl.h>
 // https://www.khronos.org/opengl/wiki/Load_OpenGL_Functions

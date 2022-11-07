@@ -1,5 +1,5 @@
-#ifndef Zoxel_Inputs
-#define Zoxel_Inputs
+#ifndef zoxel_inputs
+#define zoxel_inputs
 
 // Tags
 ECS_DECLARE(Device);

@@ -1,5 +1,5 @@
-#ifndef Zoxel_Characters3D
-#define Zoxel_Characters3D
+#ifndef zoxel_characters3D
+#define zoxel_characters3D
 
 //! A module for 3 dimensional characters.
 void Characters3DImport(ecs_world_t *world)

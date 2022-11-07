@@ -1,5 +1,5 @@
-#ifndef Zoxel_Particles3D
-#define Zoxel_Particles3D
+#ifndef zoxel_particles3D
+#define zoxel_particles3D
 
 // Tags
 ECS_DECLARE(Particle);
@@ -8,7 +8,7 @@ ECS_DECLARE(Particle);
 // systems
 #include "systems/ParticleSpawnSystem.c"
 
-//! Zoxel_Particles 3D Module
+//! zoxel_particles 3D Module
 void Particles3DImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Particles3D);

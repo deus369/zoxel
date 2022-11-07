@@ -1,5 +1,5 @@
-#ifndef Zoxel_Voxels_Core
-#define Zoxel_Voxels_Core
+#ifndef zoxel_voxels_core
+#define zoxel_voxels_core
 
 const double noiseChunkAnimateSpeed = 0.25; // 1 / 8.0;
 const float overall_voxel_scale = 2.0f;

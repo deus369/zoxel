@@ -1,5 +1,5 @@
-#ifndef Zoxel_Characters2D
-#define Zoxel_Characters2D
+#ifndef zoxel_characters2D
+#define zoxel_characters2D
 //! players Module
 
 const int spawnCharacter2DsCount = 64;

@@ -1,7 +1,7 @@
 //! Basic noise texture.
 ecs_entity_t playerCharacter2DPrefab;
 
-void SpawnPlayerCharacter2DPrefab(ecs_world_t *world)
+void spawn_player_character2D_prefab(ecs_world_t *world)
 {
     playerCharacter2DPrefab = ecs_new_w_pair(world, EcsIsA, character2DPrefab);
     printf("Spawned player_character2D_prefab [%lu].\n", (long int) (playerCharacter2DPrefab));

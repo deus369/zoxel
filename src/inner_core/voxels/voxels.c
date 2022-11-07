@@ -1,5 +1,5 @@
-#ifndef Zoxel_Voxels
-#define Zoxel_Voxels
+#ifndef zoxel_voxels
+#define zoxel_voxels
 //! The voxels Module.
 
 // Sub Modules

@@ -9,7 +9,7 @@ void SpawnPrefabParticle2D(ecs_world_t *world)
     #ifdef zoxel_transforms2D
     add_transform2Ds(world, e);
     #endif
-    #ifdef Zoxel_Physics2D
+    #ifdef zoxel_physics2D
     AddPhysics2DComponents(world, e);
     #endif
     zoxel_add_component(world, e, Brightness);

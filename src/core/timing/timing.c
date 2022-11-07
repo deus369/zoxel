@@ -1,5 +1,5 @@
-#ifndef Zoxel_Timing
-#define Zoxel_Timing
+#ifndef zoxel_timing
+#define zoxel_timing
 
 // components
 //! Used to set the brightness of an entity.

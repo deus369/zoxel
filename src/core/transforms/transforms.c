@@ -1,5 +1,5 @@
-#ifndef Zoxel_Transforms
-#define Zoxel_Transforms
+#ifndef zoxel_transforms
+#define zoxel_transforms
 
 // Sub Modules
 #include "transforms2D/transforms2D.c"

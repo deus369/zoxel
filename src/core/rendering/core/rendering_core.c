@@ -1,5 +1,5 @@
-#ifndef Zoxel_RenderingCore
-#define Zoxel_RenderingCore
+#ifndef zoxel_rendering_core
+#define zoxel_rendering_core
 //! rendering core Module.
 
 //! \todo Create a Cube with unique mesh - for chunk - add these components and update mesh for voxel chunk.

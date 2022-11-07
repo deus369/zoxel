@@ -1,11 +1,11 @@
-#ifndef Zoxel_Particles
-#define Zoxel_Particles
+#ifndef zoxel_particles
+#define zoxel_particles
 
 // Sub Modules
 #include "particles2D/particles2D.c"
 #include "particles3D/particles3D.c"
 
-//! Zoxel_Particles Module
+//! zoxel_particles Module
 void ParticlesImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Particles);

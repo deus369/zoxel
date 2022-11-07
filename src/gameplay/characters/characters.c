@@ -1,5 +1,5 @@
-#ifndef Zoxel_Characters
-#define Zoxel_Characters
+#ifndef zoxel_characters
+#define zoxel_characters
 
 // Sub Modules
 #include "characters2D/characters2D.c"

@@ -1,6 +1,6 @@
-#ifndef Zoxel_Particles2D
-#define Zoxel_Particles2D
-//! Zoxel_Particles2D Module
+#ifndef zoxel_particles2D
+#define zoxel_particles2D
+//! zoxel_particles2D Module
 
 // Tags
 ECS_DECLARE(Particle2D);

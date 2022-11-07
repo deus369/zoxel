@@ -1,5 +1,5 @@
-#ifndef Zoxel_Textures
-#define Zoxel_Textures
+#ifndef zoxel_textures
+#define zoxel_textures
 //! textures Module.
 /**
  * \todo Blueprints (Nodes) + UI

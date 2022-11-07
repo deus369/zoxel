@@ -1,5 +1,5 @@
-#ifndef Zoxel_TexturesCore
-#define Zoxel_TexturesCore
+#ifndef zoxel_textures_core
+#define zoxel_textures_core
 //! textures Module.
 
 // Settings
@@ -18,9 +18,9 @@ zoxel_component(GenerateTexture, unsigned char);
 //! A state for animating textures.
 zoxel_component(AnimateTexture, double);
 // prefabs
-#include "prefabs/NoiseTexture.c"
+#include "prefabs/noise_texture.c"
 // util
-#include "util/TexturesSDL.c"
+#include "util/textures_util.c"
 // systems
 #include "systems/animate_noise_system.c"
 #include "systems/generate_texture_reset_system.c"

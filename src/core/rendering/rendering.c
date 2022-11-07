@@ -1,5 +1,5 @@
-#ifndef Zoxel_Rendering
-#define Zoxel_Rendering
+#ifndef zoxel_rendering
+#define zoxel_rendering
 
 // data
 #include "data/GLuint2.c"

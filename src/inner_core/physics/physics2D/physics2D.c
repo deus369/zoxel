@@ -1,5 +1,5 @@
-#ifndef Zoxel_Physics2D
-#define Zoxel_Physics2D
+#ifndef zoxel_physics2D
+#define zoxel_physics2D
 
 // components
 //! Velocity movement of a 2D Entity.

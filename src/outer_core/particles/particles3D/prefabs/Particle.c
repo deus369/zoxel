@@ -12,7 +12,7 @@ void SpawnPrefabParticle(ecs_world_t *world)
     zoxel_add_component(world, e, Brightness);
     // timing
     zoxel_add_component(world, e, DestroyInTime);
-    #ifdef Zoxel_Physics
+    #ifdef zoxel_physics
     zoxel_set_component(world, e, Velocity, { 0 });
     zoxel_set_component(world, e, Acceleration, { { 0, 0 } });
     // ecs_set(world, prefab, Torque, { 0 });

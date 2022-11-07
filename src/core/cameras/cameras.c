@@ -1,5 +1,5 @@
-#ifndef Zoxel_Cameras
-#define Zoxel_Cameras
+#ifndef zoxel_cameras
+#define zoxel_cameras
 
 // -=- Tags -=-
 ECS_DECLARE(Camera);
