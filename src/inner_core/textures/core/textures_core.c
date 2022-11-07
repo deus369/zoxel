@@ -3,7 +3,7 @@
 //! textures Module.
 
 // Settings
-const double noiseAnimationSpeed = 0.25;
+const double noiseAnimationSpeed = 0.5;
 // Tags
 ECS_DECLARE(NoiseTexture);
 // ECS_DECLARE(GenerateNoiseTexture);

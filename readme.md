@@ -6,33 +6,37 @@ See [[Roadmap](documents/todos/todo-main.md)]
 
 Numbers [[Code Counter](documents/CodeCounter/results.md)]
 
-## What is Zoxel
+## What is Zoxel?
 
-Is Open Source & Cross-platform~
+> See my latest dev log on youtube [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
 
-Performance is on Mushrooms~ thanks to data orientated design.
+- And Open Source, Cross-platform Voxel RPG
 
-Is under the GPL license! I want any derivatives to stay open, to protect the end users and keep information free.
+- With performance is on mushrooms thanks to data orientated design
 
-Has a large scope as I have many ideas. Game design is influenced from Minecraft, Warcraft and LitRPGs/Tabletops.
+- Under the GPL license! (I want any derivatives to stay open, to protect the end users and keep information free)
+
+- Has a huge roadmap for the future
+
+- Is inspired by Minecraft, Warcraft and LitRPGs/Tabletops
 
 ![Le New Zoxel](/screenshots/screenshot_2022-11-04_18-56-29.png?raw=false "Le New Zoxel")
 
-Check out my latest dev log on YouTube! [[Dev Log](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
-
 ## How To Build
 
-After you download the repo, you can use Make commands to build it! [How To Build Guide](documents/howtos/howto-build.md)
+> Download the code & use make commands to build it!
+
+Build Zoxel [How To Build?](documents/howtos/howto-build.md)
 
 ### Dependencies
 
 I am using these libraries due to their light weight and power -unlimited power-
 
-[Flecs](https://github.com/SanderMertens/flecs) Fast and lightweight Entity Component System
+- [Flecs](https://github.com/SanderMertens/flecs) Fast and lightweight Entity Component System
 
-[SDL2](https://www.libsdl.org/index.php) Simple DirectMedia Layer (zlib)
+- [SDL2](https://www.libsdl.org/index.php) Simple DirectMedia Layer (zlib)
 
-[OpenGL](https://www.khronos.org/opengles/) OpenGL 3 ES
+- [OpenGL](https://www.khronos.org/opengles/) OpenGL 3 ES
 
 I may switch to Glut in the future to reduce build size even more, instead of SDL. I may also try out Vulkan.
 
@@ -50,8 +54,8 @@ This was not an easy decision. Flecs has offered me a way out of the Unity IPO m
 
 There are 120k+ lines on the unity ecs codebase, so it will take some time for things to be ported.
 
-Try Le old Zoxel ([here](https://deus0.itch.io/zoxel))
+Try @ ItchIO [[Le Olde Zoxel](https://deus0.itch.io/zoxel)]
+
+Follow My Progress [[Link Tree](https://linktr.ee/lorddeus)]
 
 ![Le Old Zoxel](/screenshots/KEyHna.png?raw=false "Le Old Zoxel")
-
-I post on socials [[Link Tree](https://linktr.ee/lorddeus)]

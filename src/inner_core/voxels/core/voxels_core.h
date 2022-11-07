@@ -1,7 +1,7 @@
 #ifndef zoxel_voxels_core
 #define zoxel_voxels_core
 
-const double noiseChunkAnimateSpeed = 0.25; // 1 / 8.0;
+const double noiseChunkAnimateSpeed = 0.5; // 1 / 8.0;
 const float overall_voxel_scale = 2.0f;
 const int chunk_length = 32;
 const int dissapearChance = 92;
