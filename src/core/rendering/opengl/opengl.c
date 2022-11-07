@@ -13,9 +13,9 @@
 #include "data/MaterialTextured2D.c"
 #include "data/Material3D.c"
 // util Functions
-#include "util/MeshUtil.c"
-#include "util/ShaderUtil.c"    // uses InitializeMesh
-#include "util/OpenGLUtil.c"
+#include "util/primitive_mesh_util.c"
+#include "util/shaders_util.c"    // uses InitializeMesh
+#include "util/opengl_util.c"
 // rendering
 #include "rendering/Instanced2DMaterial.c"
 #include "rendering/Textured2DMaterial.c"

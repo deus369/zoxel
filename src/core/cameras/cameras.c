@@ -21,13 +21,13 @@ zoxel_component(CameraLink, ecs_entity_t);
 //! Used to free roam a camera.
 zoxel_component(FreeRoam, bool);
 // -=- prefabs -=-
-#include "prefabs/CameraBase.c"
-#include "prefabs/Camera2D.c"
+#include "prefabs/camera_base.c"
+#include "prefabs/camera2D.c"
 // -=- util -=-
-#include "util/MainCamera.c"
+#include "util/main_camera.c"
 // -=- systems -=-
-#include "systems/ProjectionMatrixSystem.c"
-#include "systems/ViewMatrixSystem.c"
+#include "systems/projection_matrix_system.c"
+#include "systems/view_matrix_system.c"
 
 void CamerasImport(ecs_world_t *world)
 {

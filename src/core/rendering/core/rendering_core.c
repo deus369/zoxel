@@ -20,96 +20,17 @@ zoxel_memory_component(MeshVertices, float);
 #include "components/MeshGPULink.c"
 #include "components/TextureCoordinatesGPULink.c"
 zoxel_component(EternalRotation, float4);
+// util
+#include "util/mesh_util.c"
+// prefabs
+#include "prefabs/custom_mesh.c"
 // systems
-#include "systems/InstanceRender2DSystem.c"
-#include "systems/RenderMaterial2DSystem.c"
-#include "systems/InstanceRender3DSystem.c"
-#include "systems/InstanceRender3D2System.c"
-#include "systems/MeshUpdateSystem.c"
-#include "systems/EternalRotationSystem.c"
-
-void set_mesh_indicies(MeshIndicies* meshIndicies, const int indicies[], int length)
-{
-    printf("2 - MeshIndicies: %i\n", meshIndicies->length);
-    re_initialize_memory_component(meshIndicies, int, length);
-    for (int i = 0; i < meshIndicies->length; i++)
-    {
-        meshIndicies->value[i] = indicies[i];
-    }
-}
-
-void set_mesh_vertices(MeshVertices* meshVertices, const float vertices[], int length)
-{
-    re_initialize_memory_component(meshVertices, float, length);
-    for (int i = 0; i < meshVertices->length; i++)
-    {
-        meshVertices->value[i] = vertices[i];
-    }
-}
-
-void set_mesh_indicies_world(ecs_world_t *world, ecs_entity_t e, const int indicies[], int length)
-{
-    // printf("set_mesh_indicies length %i\n", length);
-    MeshIndicies *meshIndicies = ecs_get_mut(world, e, MeshIndicies);
-    initialize_memory_component(meshIndicies, int, length);
-    for (int i = 0; i < meshIndicies->length; i++)
-    {
-        meshIndicies->value[i] = indicies[i];
-        // printf("Index [%i] is [%i]\n", i, indicies[i]);
-    }
-    ecs_modified(world, e, MeshIndicies);
-}
-
-void set_mesh_vertices_world(ecs_world_t *world, ecs_entity_t e, const float vertices[], int length)
-{
-    // printf("set_mesh_vertices length %i\n", length);
-    MeshVertices *meshVertices = ecs_get_mut(world, e, MeshVertices);
-    initialize_memory_component(meshVertices, float, length);
-    for (int i = 0; i < meshVertices->length; i++)
-    {
-        meshVertices->value[i] = vertices[i];
-        // printf("Vertex [%i] is [%fx%fx%f]\n", i, vertices[i].x,  vertices[i].y, vertices[i].z);
-    }
-    ecs_modified(world, e, MeshVertices);
-}
-
-ecs_entity_t custom_mesh;
-ecs_entity_t custom_mesh_prefab;
-
-void spawn_custom_mesh_prefab(ecs_world_t *world)
-{
-    // int2 textureSize = { 16, 16 };
-    custom_mesh_prefab = ecs_new_prefab(world, "test_custom_mesh");
-    // printf("Spawned test_custom_mesh [%lu].\n", (long int) (e));
-    #ifdef zoxel_transforms3D
-    add_transform3Ds(world, custom_mesh_prefab);
-    #endif
-    // add_seed(world, custom_mesh_prefab, 444);
-    zoxel_set_component(world, custom_mesh_prefab, EntityDirty, { 1 });
-    zoxel_add_component(world, custom_mesh_prefab, MeshIndicies);
-    zoxel_add_component(world, custom_mesh_prefab, MeshVertices);
-    add_gpu_mesh(world, custom_mesh_prefab);
-    add_gpu_material(world, custom_mesh_prefab);
-    float4 rotationer = quaternion_from_euler( (float3) { 0.1f * degreesToRadians, 0.2f * degreesToRadians, 0 });
-    zoxel_set_component(world, custom_mesh_prefab, EternalRotation, { rotationer });
-    zoxel_add_component(world, custom_mesh_prefab, Brightness);
-    // spawn prefab
-}
-
-void spawn_custom_mesh(ecs_world_t *world, ecs_entity_t prefab, float3 position)
-{
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, custom_mesh_prefab);
-    ecs_set(world, e, Position, { position }); // {{ 0, 0.6f, 0 }});
-    ecs_set(world, e, Rotation, {{ 0, 0, 0, 1.0f }});
-    ecs_set(world, e, Scale1D, { 0.05f });
-    ecs_set(world, e, Brightness, { 1.4f });
-    // printf("Spawned Character2D [%lu]\n", (long unsigned int) e);
-    spawn_gpu_mesh(world, e);
-    spawn_gpu_material(world, e, instanceShader3D);
-    set_mesh_indicies_world(world, e, cubeIndicies, 36);
-    set_mesh_vertices_world(world, e, cubeVertices, 24);
-    custom_mesh = e;
-}
+#include "systems/eternal_rotation_system.c"
+#include "systems/mesh_update_system.c"
+#include "systems/render2D_instance_system.c"
+#include "systems/render2D_system.c"
+#include "systems/render3D_instance_system.c"
+#include "systems/render3D_unique_system.c"
 
 //! The rendering core Sub Module.
 /**

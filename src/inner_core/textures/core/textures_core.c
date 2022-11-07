@@ -22,11 +22,11 @@ zoxel_component(AnimateTexture, double);
 // util
 #include "util/TexturesSDL.c"
 // systems
-#include "systems/GenerateTextureResetSystem.c"
-#include "systems/NoiseTextureSystem.c"
-#include "systems/TextureDirtySystem.c"
-#include "systems/TextureUpdateSystem.c"
-#include "systems/AnimateNoiseSystem.c"
+#include "systems/animate_noise_system.c"
+#include "systems/generate_texture_reset_system.c"
+#include "systems/noise_texture_system.c"
+#include "systems/texture_dirty_system.c"
+#include "systems/texture_update_system.c"
 // tests
 #include "tests/TestTexture.c"
 

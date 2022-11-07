@@ -23,15 +23,15 @@ zoxel_component(ChunkPosition, int3);
 zoxel_memory_component(ChunkLinks, ecs_entity_t);
 //! A state for animating textures.
 zoxel_component(AnimateChunk, double);
-// prefabs
-#include "prefabs/chunk.c"
 // util
 #include "util/chunk.c"
+// prefabs
+#include "prefabs/chunk.c"
 // systems
-#include "systems/GenerateChunkResetSystem.c"
-#include "systems/NoiseChunkSystem.c"
-#include "systems/ChunkBuildSystem.c"
-#include "systems/AnimateChunkSystem.c"
+#include "systems/generate_chunk_reset_system.c"
+#include "systems/noise_chunk_system.c"
+#include "systems/chunk_build_system.c"
+#include "systems/animate_chunk_system.c"
 
 void spawn_voxel_chunk_mesh_prefab(ecs_world_t *world)
 {
@@ -55,15 +55,9 @@ void spawn_voxel_chunk_mesh(ecs_world_t *world, float3 position)
     ecs_set(world, e, Scale1D, { 0.05f });
     ecs_set(world, e, Brightness, { 1.4f });
     ecs_set(world, e, AnimateChunk, { (((rand() % 100) / 100.0f) * noiseChunkAnimateSpeed) }); // 0.0 });
-    // printf("Spawned Character2D [%lu]\n", (long unsigned int) e);
     spawn_gpu_mesh(world, e);
     spawn_gpu_material(world, e, instanceShader3D);
-    // //! Initialize memory components
-    // zoxel_set_component(world, e, MeshIndicies, { 0, NULL });
-    // zoxel_set_component(world, e, MeshVertices, { 0, NULL });
-    // set_mesh_indicies(world, e, cubeIndicies, 36);
-    // set_mesh_vertices(world, e, cubeVertices, 24);
-    custom_mesh = e;
+    // printf("Spawned Character2D [%lu]\n", (long unsigned int) e);
 }
 
 //! The voxels core Sub Module.
