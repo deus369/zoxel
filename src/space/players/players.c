@@ -59,7 +59,7 @@ void PlayersImport(ecs_world_t *world)
     //! Needed for bulk spawning. Still crashes.
     ecs_system(world, {
         .entity = ecs_id(Player2DTestSystem),
-        .no_staging = true // no_staging - rename to no_readonly
+        .no_readonly = true // no_staging - rename to no_readonly
     });
     //#endif
 }
