@@ -1,7 +1,7 @@
 // Camera2D prefab
 ecs_entity_t baseCameraPrefab;
 
-void SpawnCameraBasePrefab(ecs_world_t *world)
+void spawn_camera_base_prefab(ecs_world_t *world)
 {
     ecs_entity_t e = ecs_new_prefab(world, "Base_Camera_Prefab");
     zoxel_add_tag(world, e, Camera);

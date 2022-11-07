@@ -1,7 +1,7 @@
 // Camera2D prefab
 ecs_entity_t cameraPrefab;
 
-void SpawnCameraPrefab(ecs_world_t *world)
+void spawn_camera_prefab(ecs_world_t *world)
 {
     cameraPrefab = ecs_new_w_pair(world, EcsIsA, baseCameraPrefab);
     ecs_add_id(world, cameraPrefab, EcsPrefab);

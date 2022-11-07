@@ -24,26 +24,28 @@ ECS_COMPONENT_DECLARE(name)
 
 #define initialize_memory_component(component, dataType, length_)\
 {\
-    const int stride = sizeof(dataType);\
     component->length = length_;\
-    component->value = (dataType*) malloc(length_ * stride);\
+    component->value = (dataType*) malloc(length_ * sizeof(dataType));\
 }
-    // memset(component->value, 0, length_ * stride);
+
+// memset(component->value, 0, length_ * stride);
+// printf("Freeing component %i.\n", component->length);
+// printf("Freeing memory_component at [%p] - [%i]\n", (void *)component, component->length);
 
 #define re_initialize_memory_component(component, dataType, length_)\
 {\
     if (component->length != length_)\
     {\
-        const int stride = sizeof(dataType);\
-        if (component->length != 0 && component->value != NULL)\
+        if (component->length != 0 && component->value)\
         {\
             free(component->value);\
         }\
         component->length = length_;\
-        component->value = (dataType*) malloc(length_ * stride);\
+        component->value = (dataType*) malloc(length_ * sizeof(dataType));\
     }\
 }
 
+            
 // printf("stride %i\n", stride);
 /*
 #define re_initialize_memory_component2(component, dataType, newLength)\
@@ -55,6 +57,8 @@ ECS_COMPONENT_DECLARE(name)
         component.value = malloc(newLength * stride);\
     }
 */
+
+// printf("Creating memory_component at [%p]\n", (void *)ptr);
 
 //! ECS_CTOR The constructor should initialize the component value.
 //! ECS_DTOR The destructor should free resources.

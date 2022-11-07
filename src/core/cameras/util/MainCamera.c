@@ -29,7 +29,7 @@ const float4x4 GetMainCameraViewMatrix()
     return viewMatrix->value;
 }
 
-ecs_entity_t SpawnCamera(ecs_world_t *world, float3 position, float4 rotation, int2 screenDimensions)
+ecs_entity_t spawn_camera(ecs_world_t *world, float3 position, float4 rotation, int2 screenDimensions)
 {
     ecs_entity_t newCamera = ecs_new_w_pair(world, EcsIsA, cameraPrefab);
     ecs_set(world, newCamera, Position, { position });
@@ -44,13 +44,13 @@ ecs_entity_t SpawnCamera(ecs_world_t *world, float3 position, float4 rotation, i
 
 void SpawnMainCamera(int2 screenDimensions)
 {
-    float3 spawnPosition = { 0, -0.0f, 1.2 };
+    float3 spawnPosition = { 0, -0.0f, 0.52f };
     // imagine this is a forward rotation
     // float4 flipRotation = quaternion_from_euler( (float3) { 0, 180 * degreesToRadians, 0 });
     // float4 flipRotation = quaternion_from_euler( (float3) { 0, 0 * degreesToRadians, 0 });
     float4 spawnRotation = quaternion_identity(); // quaternion_from_euler( (float3) { 0 * degreesToRadians, 0 * degreesToRadians, 0 * degreesToRadians });
     // spawnRotation = quaternion_rotate(flipRotation, spawnRotation);
-    mainCamera = SpawnCamera(world, spawnPosition, spawnRotation, screenDimensions);
+    mainCamera = spawn_camera(world, spawnPosition, spawnRotation, screenDimensions);
 }
 
 //! Used for testing cleanup

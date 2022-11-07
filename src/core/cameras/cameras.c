@@ -47,7 +47,7 @@ void CamerasImport(ecs_world_t *world)
     ECS_SYSTEM_DEFINE(world, ProjectionMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [out] ProjectionMatrix);
     zoxel_system(world, ViewMatrixSystem, EcsOnUpdate, [in] Position, [in] Rotation, [in] ProjectionMatrix, [out] ViewMatrix);
     // -=- prefabs -=-
-    SpawnCameraBasePrefab(world);
-    SpawnCameraPrefab(world);
+    spawn_camera_base_prefab(world);
+    spawn_camera_prefab(world);
 }
 #endif

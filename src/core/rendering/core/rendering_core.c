@@ -30,6 +30,7 @@ zoxel_component(EternalRotation, float4);
 
 void set_mesh_indicies(MeshIndicies* meshIndicies, const int indicies[], int length)
 {
+    printf("2 - MeshIndicies: %i\n", meshIndicies->length);
     re_initialize_memory_component(meshIndicies, int, length);
     for (int i = 0; i < meshIndicies->length; i++)
     {

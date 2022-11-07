@@ -17,7 +17,7 @@ void CameraFollow2DSystem(ecs_iter_t *it)
             Position *position = &positions[i];
             position->value.x = playerPosition2D->value.x;
             position->value.y = playerPosition2D->value.y;
-            position->value.z = 1.2f;
+            // position->value.z = 1.2f;
             Rotation *rosition = &rotations[i];
             rosition->value = float4_identity();
         }

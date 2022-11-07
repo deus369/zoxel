@@ -15,7 +15,7 @@ void GenerateChunkResetSystem(ecs_iter_t *it)
         if (generateChunk->value == 1)
         {
             generateChunk->value = 0;
-            printf("GenerateChunk Resetting [%lu]\n", (long int) it->entities[i]);
+            // printf("GenerateChunk Resetting [%lu]\n", (long int) it->entities[i]);
         }
     }
 }

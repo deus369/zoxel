@@ -1,26 +1,40 @@
 //! Our function that creates a chunk.
 void GenerateChunkNoise(Chunk* chunk, const ChunkSize *chunkSize)
 {
-    const int2 valueRange = { 0, 2 };   // < max
-    int index = 0;
+    // const int2 valueRange = { 0, 2 };   // < max
+    int array_index = 0;
     for (int j = 0; j < chunkSize->value.x; j++)
     {
         for (int k = 0; k < chunkSize->value.y; k++)
         {
-            for (int l = 0; l < chunkSize->value.y; l++)
+            for (int l = 0; l < chunkSize->value.z; l++)
             {
-                // int index = (j + k * chunkSize->value.x)  * chunkSize->value.y + l;
+                // int array_index = (j + k * chunkSize->value.x)  * chunkSize->value.y + l;
+
                 int distanceToMidX = abs_integer(chunkSize->value.x / 2 - j);
                 int distanceToMidY = abs_integer(chunkSize->value.y / 2 - k);
                 int distanceToMidZ = abs_integer(chunkSize->value.z / 2 - l);
-                if (distanceToMidX + distanceToMidY + distanceToMidZ >= chunkSize->value.x / 2)
+                if (distanceToMidX + distanceToMidY >= chunkSize->value.x / 2
+                    || distanceToMidX + distanceToMidZ >= chunkSize->value.x / 2
+                    || distanceToMidZ + distanceToMidY >= chunkSize->value.x / 2)
                 {
-                    chunk->value[index] = 0;
-                    index++;
+                    chunk->value[array_index] = 0;
+                    array_index++;
                     continue;
                 }
-                chunk->value[index] = valueRange.x + rand() % (valueRange.y - valueRange.x);
-                index++;
+                if (rand() % 100 <= dissapearChance)
+                {
+                    chunk->value[array_index] = 0;
+                    array_index++;
+                    continue;
+                }
+                chunk->value[array_index] = 1;
+                // valueRange.x + rand() % (valueRange.y - valueRange.x);
+                /*if (k == 0 && l == 0)
+                    chunk->value[array_index] = 1;
+                else
+                    chunk->value[array_index] = 0;*/
+                array_index++;
             }
         }
     }
@@ -55,7 +69,7 @@ void NoiseChunkSystem(ecs_iter_t *it)
         const ChunkSize *chunkSize = &chunkSizes[i];
         re_initialize_memory_component(chunk, unsigned char, chunkSize->value.x * chunkSize->value.y * chunkSize->value.z);
         GenerateChunkNoise(chunk, chunkSize);
-        printf("Noise Chunk Generated: [%lu] \n", (long int) it->entities[i]);
+        // printf("Noise Chunk Generated: [%lu] \n", (long int) it->entities[i]);
     }
 }
 ECS_SYSTEM_DECLARE(NoiseChunkSystem);
