@@ -27,7 +27,9 @@ To-Do Main
 
 `Current`
 
-- [ ] Create minimal example of setting a 'material' integer link as a test for the upgrade bug
+- [ ] Those queries still keep updating, they don't pass query checks
+
+- [x] Create minimal example of setting a 'material' integer link as a test for the upgrade bug
 
 - [ ] Load Shaders as entities
     - Dispose of them when closing game

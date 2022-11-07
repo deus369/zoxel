@@ -1,5 +1,5 @@
 //! Helper file for Flecs!
-#include <sys/sysinfo.h>    //! Used for get_nprocs_conf
+// #include <sys/sysinfo.h>    //! Used for get_nprocs_conf
 ecs_world_t *world;
 
 //! Initialize Flecs ECS and Modules.
@@ -19,11 +19,10 @@ void BeginAppECS(int argc, char* argv[], bool profiler)
 
 void SetMultiThreading()
 {
-    int cpuCoreCount = get_nprocs();
-    int cpuCoreConfiguredCount = get_nprocs_conf();
-    int sdlCoreCount = SDL_GetCPUCount();
-    printf("System Found [%i processors configured] [%i processors] SDL Counts [%i]\n",
-            cpuCoreConfiguredCount, cpuCoreCount, sdlCoreCount);
+    // int cpuCoreCount = get_nprocs();
+    // int cpuCoreConfiguredCount = get_nprocs_conf();
+    int cpuCoreCount = SDL_GetCPUCount();
+    printf("System Found [%i processors].\n", cpuCoreCount);
     if (cpuCoreCount > 1)
     {
         ecs_set_threads(world, cpuCoreCount);

@@ -44,7 +44,8 @@ void TexturesCoreImport(ecs_world_t *world)
     zoxel_filter(generateTextureQuery, world, [none] NoiseTexture, [in] GenerateTexture);
     zoxel_system_ctx(world, NoiseTextureSystem, EcsOnUpdate, generateTextureQuery,
         [none] NoiseTexture, [out] generic.EntityDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture);
-    ECS_SYSTEM_DEFINE(world, GenerateTextureResetSystem, EcsPostUpdate, [out] GenerateTexture);
+    // zoxel_filter(textureDirtyQuery, world, [none] NoiseTexture, [in] EntityDirty);
+    zoxel_system_main_thread(world, GenerateTextureResetSystem, EcsPostUpdate, [out] GenerateTexture);
     ECS_SYSTEM_DEFINE(world, TextureUpdateSystem, EcsOnValidate, [in] generic.EntityDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink);
     // ECS_SYSTEM_DEFINE(world, TextureDirtySystem, EcsOnValidate, [in] EntityDirty, [in] Texture, [in] TextureSize);
     SpawnTexturePrefab(world);

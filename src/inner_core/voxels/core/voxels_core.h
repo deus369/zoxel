@@ -21,10 +21,11 @@ zoxel_memory_component(ChunkLinks, ecs_entity_t);
 // systems
 #include "systems/GenerateChunkResetSystem.c"
 #include "systems/NoiseChunkSystem.c"
+#include "systems/ChunkBuildSystem.c"
 
 ecs_entity_t voxel_prefab;
 
-void spawn_voxel_prefab(ecs_world_t *world)
+void spawn_voxel_chunk_mesh_prefab(ecs_world_t *world)
 {
     const int3 size = { 16, 16, 16 };
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, custom_mesh_prefab);
@@ -46,9 +47,9 @@ void spawn_voxel_chunk_mesh(ecs_world_t *world, float3 position)
     ecs_set(world, e, Brightness, { 1.4f });
     // printf("Spawned Character2D [%lu]\n", (long unsigned int) e);
     spawn_gpu_mesh(world, e);
-    set_mesh_indicies(world, e, cubeIndicies, 36);
-    set_mesh_vertices(world, e, cubeVertices, 24);
     spawn_gpu_material(world, e, instanceShader3D);
+    // set_mesh_indicies(world, e, cubeIndicies, 36);
+    // set_mesh_vertices(world, e, cubeVertices, 24);
     custom_mesh = e;
 }
 
@@ -68,13 +69,20 @@ void VoxelsCoreImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, GenerateChunk);
     ECS_COMPONENT_DEFINE(world, ChunkPosition);
     zoxel_memory_component_define(world, ChunkLinks);
+    // filters
+    // zoxel_filter(generateChunkQuery, world, [none] NoiseChunk, [in] GenerateChunk);
     zoxel_filter(generateChunkQuery, world, [none] NoiseChunk, [in] GenerateChunk);
+    // zoxel_filter(chunkDirtyQuery, world, [none] NoiseChunk, [in] EntityDirty);
+    // systems
     zoxel_system_ctx(world, NoiseChunkSystem, EcsOnUpdate, generateChunkQuery,
         [none] NoiseChunk, [out] generic.EntityDirty, [out] Chunk, [in] ChunkSize, [in] GenerateChunk);
-    ECS_SYSTEM_DEFINE(world, GenerateChunkResetSystem, EcsPostUpdate, [out] GenerateChunk);
-    spawn_chunk_prefab(world);
-    spawn_chunk(world);
-    // spawn_voxel_chunk_mesh(world, (float3) { 0, 0.5f, -0.5f });
+    zoxel_system_ctx(world, ChunkBuildSystem, EcsOnUpdate, generateChunkQuery,
+        [in] generic.EntityDirty, [in] Chunk, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices);
+    zoxel_system_main_thread(world, GenerateChunkResetSystem, EcsPostUpdate, [out] GenerateChunk);
+    //spawn_chunk_prefab(world);
+    //spawn_chunk(world);
+    spawn_voxel_chunk_mesh_prefab(world);
+    spawn_voxel_chunk_mesh(world, (float3) { 0, 0, 0 });
 }
 
 // components

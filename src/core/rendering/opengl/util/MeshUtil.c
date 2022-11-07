@@ -1,7 +1,6 @@
 // mesh data
-
-const float squareSize = 0.1f;
-const float cubeSize = 0.5f;
+#define squareSize 0.1f
+#define cubeSize 0.5f
 
 const int cubeIndicies3[] =
 {
@@ -103,7 +102,7 @@ const float squareUVs[] =
     0, 1
 };
 
-float squareTexturedVerts[] = {
+const float squareTexturedVerts[] = {
     // positions                    // texture coords
     -squareSize, -squareSize,       0, 0,   // top right
     -squareSize, squareSize,        1, 0,   // bottom right

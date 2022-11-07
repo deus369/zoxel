@@ -28,7 +28,25 @@ zoxel_component(EternalRotation, float4);
 #include "systems/MeshUpdateSystem.c"
 #include "systems/EternalRotationSystem.c"
 
-void set_mesh_indicies(ecs_world_t *world, ecs_entity_t e, const int indicies[], int length)
+void set_mesh_indicies(MeshIndicies* meshIndicies, const int indicies[], int length)
+{
+    re_initialize_memory_component(meshIndicies, int, length);
+    for (int i = 0; i < meshIndicies->length; i++)
+    {
+        meshIndicies->value[i] = indicies[i];
+    }
+}
+
+void set_mesh_vertices(MeshVertices* meshVertices, const float vertices[], int length)
+{
+    re_initialize_memory_component(meshVertices, float, length);
+    for (int i = 0; i < meshVertices->length; i++)
+    {
+        meshVertices->value[i] = vertices[i];
+    }
+}
+
+void set_mesh_indicies_world(ecs_world_t *world, ecs_entity_t e, const int indicies[], int length)
 {
     // printf("set_mesh_indicies length %i\n", length);
     MeshIndicies *meshIndicies = ecs_get_mut(world, e, MeshIndicies);
@@ -41,7 +59,7 @@ void set_mesh_indicies(ecs_world_t *world, ecs_entity_t e, const int indicies[],
     ecs_modified(world, e, MeshIndicies);
 }
 
-void set_mesh_vertices(ecs_world_t *world, ecs_entity_t e, const float vertices[], int length)
+void set_mesh_vertices_world(ecs_world_t *world, ecs_entity_t e, const float vertices[], int length)
 {
     // printf("set_mesh_vertices length %i\n", length);
     MeshVertices *meshVertices = ecs_get_mut(world, e, MeshVertices);
@@ -86,9 +104,9 @@ void spawn_custom_mesh(ecs_world_t *world, ecs_entity_t prefab, float3 position)
     ecs_set(world, e, Brightness, { 1.4f });
     // printf("Spawned Character2D [%lu]\n", (long unsigned int) e);
     spawn_gpu_mesh(world, e);
-    set_mesh_indicies(world, e, cubeIndicies, 36);
-    set_mesh_vertices(world, e, cubeVertices, 24);
     spawn_gpu_material(world, e, instanceShader3D);
+    set_mesh_indicies_world(world, e, cubeIndicies, 36);
+    set_mesh_vertices_world(world, e, cubeVertices, 24);
     custom_mesh = e;
 }
 
