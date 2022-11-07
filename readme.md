@@ -1,32 +1,30 @@
 # Zoxel (Libre Edition)
 
-Play [[Web Build](https://deus369.github.io/open-zoxel/web-demo/)]
-
-See [[Roadmap](documents/todos/todo-main.md)]
-
-Numbers [[Code Counter](documents/CodeCounter/results.md)]
+~ Play Latest [[Web Build](https://deus369.github.io/open-zoxel/web-demo/)] ~
 
 ## What is Zoxel?
 
-> See my latest dev log on youtube [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
+> See my latest devlog! [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
 
-- And Open Source, Cross-platform Voxel RPG
+- An Open Source & Cross-platform Voxel RPG
 
-- With performance is on mushrooms thanks to data orientated design
+- Is inspired by Minecraft, Warcraft and LitRPGs/Tabletops
+
+- Has performance on mushrooms thanks to data orientated design
 
 - Under the GPL license! (I want any derivatives to stay open, to protect the end users and keep information free)
 
-- Has a huge roadmap for the future
-
-- Is inspired by Minecraft, Warcraft and LitRPGs/Tabletops
+- Has a huge roadmap for the future [[Roadmap](documents/todos/todo-main.md)]
 
 ![Le New Zoxel](/screenshots/screenshot_2022-11-04_18-56-29.png?raw=false "Le New Zoxel")
 
 ## How To Build
 
-> Download the code & use make commands to build it!
+> Download the code & use make commands to build it
 
-Build Zoxel [How To Build?](documents/howtos/howto-build.md)
+Build Zoxel! [[How To Build?](documents/howtos/howto-build.md)]
+
+See some statistics [[Code Counter](documents/CodeCounter/results.md)]
 
 ### Dependencies
 
@@ -48,14 +46,14 @@ I have remade it over many different engines, unreal, unity, unity ecs. The late
 
 It is time for it to set sail again to a custom one, using FLECS for performance!
 
-### ~Setting Sail~
+### ~= Setting Sail =~
 
 This was not an easy decision. Flecs has offered me a way out of the Unity IPO mess, and it offers greater levels of freedom over my development.
 
 There are 120k+ lines on the unity ecs codebase, so it will take some time for things to be ported.
 
-Try @ ItchIO [[Le Olde Zoxel](https://deus0.itch.io/zoxel)]
+Try @ itchio [[Le Olde Zoxel](https://deus0.itch.io/zoxel)]
 
-Follow My Progress [[Link Tree](https://linktr.ee/lorddeus)]
+Follow le progress [[Link Tree](https://linktr.ee/lorddeus)]
 
 ![Le Old Zoxel](/screenshots/KEyHna.png?raw=false "Le Old Zoxel")
