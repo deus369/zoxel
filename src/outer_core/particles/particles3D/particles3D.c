@@ -4,9 +4,9 @@
 // Tags
 ECS_DECLARE(Particle);
 // prefabs
-#include "prefabs/Particle.c"
+#include "prefabs/particle3D.c"
 // systems
-#include "systems/ParticleSpawnSystem.c"
+#include "systems/particle_spawn_system.c"
 
 //! zoxel_particles 3D Module
 void Particles3DImport(ecs_world_t *world)

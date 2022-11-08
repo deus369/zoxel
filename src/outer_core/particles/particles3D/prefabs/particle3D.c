@@ -1,4 +1,5 @@
-ecs_entity_t particlePrefab;
+ecs_entity_t particle3D_prefab;
+
 //! Spawns a Particle Prefab.
 void SpawnPrefabParticle(ecs_world_t *world)
 {
@@ -18,5 +19,5 @@ void SpawnPrefabParticle(ecs_world_t *world)
     // ecs_set(world, prefab, Torque, { 0 });
     // ecs_override(world, prefab, Torque);
     #endif
-    particlePrefab = e;
+    particle3D_prefab = e;
 }

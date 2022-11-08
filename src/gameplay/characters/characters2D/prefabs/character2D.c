@@ -12,12 +12,13 @@ void spawn_character2D_prefab(ecs_world_t *world, int2 textureSize)
     zoxel_add_tag(world, e, Frictioned);
     AddPhysics2DComponents(world, e);
     #endif
-    // rendering
-    zoxel_add_component(world, e, Brightness);
+    // Rendering2D
     add_seed(world, e, 444);
-    add_texture(world, e, textureSize);
-    add_noise_texture(world, e);
+    zoxel_add_component(world, e, Brightness);
+    add_dirty(world, e);
+    add_animated_noise_texture(world, e);
     add_gpu_material(world, e);
     add_gpu_texture(world, e);
+    add_texture(world, e, textureSize);
     character2DPrefab = e;
 }

@@ -4,7 +4,7 @@
 */
 void Player2DMoveSystem(ecs_iter_t *it)
 {
-    double movementPower = 2.8f;
+    const double movementPower = 2.8f;
     const float2 maxVelocity = { 12.6f, 12.6f };
     ecs_query_t *playerCharacterQuery = it->ctx;
     ecs_iter_t playerCharacterIterator = ecs_query_iter(it->world, playerCharacterQuery);

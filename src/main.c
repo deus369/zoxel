@@ -20,6 +20,12 @@ void spawn_game()
     SpawnKeyboardEntity();
     SpawnMouseEntity();
     localPlayer = SpawnPlayerCharacter2D(world);
+    // test ui
+    int2 testSize = { 16, 16 };
+    spawn_element(world, (int2) { -1, 0 }, testSize);
+    spawn_element(world, (int2) { 1, 0 }, testSize);
+    spawn_element(world, (int2) { 0, -1 }, testSize);
+    spawn_element(world, (int2) { 0, 1 }, testSize);
 }
 
 //! Temporarily runs render things on main thread until flecs bug is fixed.

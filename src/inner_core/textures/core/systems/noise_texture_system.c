@@ -54,12 +54,7 @@ void NoiseTextureSystem(ecs_iter_t *it)
     //! This doesn't work because the table writes all changes in the first iteration which is for one entity.
     //!     Possible fix: Make a second system that writes changes at the end of the loop
     ecs_query_t *changeQuery = it->ctx;
-    if (!changeQuery)
-    {
-        printf("[404; changeQuery is null]\n");
-        return;
-    }
-    if (!ecs_query_changed(changeQuery, NULL))
+    if (!changeQuery || !ecs_query_changed(changeQuery, NULL))
     {
         return;
     }
@@ -88,14 +83,7 @@ void NoiseTextureSystem(ecs_iter_t *it)
         Texture *texture = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
         int newLength = textureSize->value.x * textureSize->value.y;
-        /*if (texture->length == 0)
-        {
-            initialize_memory_component(texture, color, newLength);
-        }
-        else*/
-        {
-            re_initialize_memory_component(texture, color, newLength);
-        }
+        re_initialize_memory_component(texture, color, newLength);
         GenerateNoise(texture, textureSize);
     }
 }

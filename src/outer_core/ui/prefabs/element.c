@@ -1,35 +1,41 @@
 ecs_entity_t element_prefab;
 
-void spawn_element_prefab(ecs_world_t *world)
+void spawn_element_prefab(ecs_world_t *world, int2 size)
 {
-    element_prefab = ecs_new_prefab(world, "ui_element_prefab");
-    // printf("Spawned test_custom_mesh [%lu].\n", (long int) (e));
+    ecs_entity_t e = ecs_new_prefab(world, "ui_element_prefab");
+    // generic
+    add_seed(world, e, 444);
+    add_dirty(world, e);
+    // UI components
+    zoxel_add_tag(world, e, Element);
+    zoxel_add_component(world, e, PixelPosition);
+    zoxel_add_component(world, e, PixelSize);
     #ifdef zoxel_transforms2D
-    add_transform2Ds(world, custom_mesh_prefab);
+    add_transform2Ds(world, e);
     #endif
-    // add_seed(world, custom_mesh_prefab, 444);
-    /*zoxel_set_component(world, custom_mesh_prefab, EntityDirty, { 1 });
-    zoxel_add_component(world, custom_mesh_prefab, MeshIndicies);
-    zoxel_add_component(world, custom_mesh_prefab, MeshVertices);
-    add_gpu_mesh(world, custom_mesh_prefab);
-    add_gpu_material(world, custom_mesh_prefab);
-    float4 rotationer = quaternion_from_euler( (float3) { 0.1f * degreesToRadians, 0.2f * degreesToRadians, 0 });
-    zoxel_set_component(world, custom_mesh_prefab, EternalRotation, { rotationer });
-    zoxel_add_component(world, custom_mesh_prefab, Brightness);*/
-    // spawn prefab
+    // Rendering2D
+    add_texture(world, e, size);
+    add_texture_frame(world, e);
+    // gpu
+    add_gpu_material(world, e);
+    add_gpu_texture(world, e);
+    // add render properties, brightness? color? etc
+    zoxel_add_component(world, e, Brightness);
+    // printf("Spawned test_custom_mesh [%lu].\n", (long int) (e));
+    element_prefab = e;
 }
 
-ecs_entity_t spawn_element(ecs_world_t *world, ecs_entity_t prefab, float3 position)
+ecs_entity_t spawn_element(ecs_world_t *world, int2 position, int2 size)
 {
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, element_prefab);
-    ecs_set(world, e, Position, { position }); // {{ 0, 0.6f, 0 }});
-    ecs_set(world, e, Rotation, {{ 0, 0, 0, 1.0f }});
-    ecs_set(world, e, Scale1D, { 0.05f });
-    /*ecs_set(world, e, Brightness, { 1.4f });
+    // ui transform?
+    ecs_set(world, e, PixelPosition, { size });
+    ecs_set(world, e, PixelSize, { size });
+    ecs_set(world, e, Position2D, { { position.x, position.y } });
+    ecs_set(world, e, Scale1D, { 1.0f });
+    ecs_set(world, e, Brightness, { 1.4f });
+    spawn_gpu_material(world, e, textured2DShader);
+    spawn_gpu_texture(world, e);
     // printf("Spawned Character2D [%lu]\n", (long unsigned int) e);
-    spawn_gpu_mesh(world, e);
-    spawn_gpu_material(world, e, instanceShader3D);
-    set_mesh_indicies_world(world, e, cubeIndicies, 36);
-    set_mesh_vertices_world(world, e, cubeVertices, 24);*/
     return e;
 }

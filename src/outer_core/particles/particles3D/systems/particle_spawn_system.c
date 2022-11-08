@@ -67,7 +67,7 @@ void ParticleSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCount)
         .count = spawnCount,
         .ids =
         {
-            ecs_pair(EcsIsA, particlePrefab),
+            ecs_pair(EcsIsA, particle3D_prefab),
             ecs_id(Position),
             ecs_id(Velocity),
             ecs_id(Acceleration),

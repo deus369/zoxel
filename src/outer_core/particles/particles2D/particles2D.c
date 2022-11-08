@@ -1,14 +1,14 @@
 #ifndef zoxel_particles2D
 #define zoxel_particles2D
-//! zoxel_particles2D Module
 
 // Tags
 ECS_DECLARE(Particle2D);
 // prefabs
-#include "prefabs/Particle2D.c"
+#include "prefabs/particle2D.c"
 // systems
-#include "systems/Particle2DSpawnSystem.c"
+#include "systems/particle2D_spawn_system.c"
 
+//! Particle 2Ds Module.
 void Particles2DImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Particles2D);
