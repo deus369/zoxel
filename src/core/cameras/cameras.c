@@ -15,6 +15,8 @@ zoxel_component(ScreenDimensions, int2);
 zoxel_component(FieldOfView, float);
 //! A link to a Camera
 zoxel_component(CameraLink, ecs_entity_t);
+//! A link to a Camera Target entity.
+zoxel_component(CameraTarget, ecs_entity_t);
 //! Used to free roam a camera.
 zoxel_component(FreeRoam, bool);
 // -=- prefabs -=-
@@ -25,6 +27,7 @@ zoxel_component(FreeRoam, bool);
 // -=- systems -=-
 #include "systems/projection_matrix_system.c"
 #include "systems/view_matrix_system.c"
+#include "systems/camera2D_follow_system.c"
 
 void CamerasImport(ecs_world_t *world)
 {
@@ -35,6 +38,7 @@ void CamerasImport(ecs_world_t *world)
     ECS_TAG_DEFINE(world, CameraFollower2D); // Until fix is found. \todo Fix this, readd it back here where it belongs.
     // -=- components -=-
     ECS_COMPONENT_DEFINE(world, CameraLink);
+    ECS_COMPONENT_DEFINE(world, CameraTarget);
     ECS_COMPONENT_DEFINE(world, ProjectionMatrix);
     ECS_COMPONENT_DEFINE(world, ViewMatrix);
     ECS_COMPONENT_DEFINE(world, ScreenDimensions);
@@ -43,6 +47,8 @@ void CamerasImport(ecs_world_t *world)
     // -=- systems -=-
     ECS_SYSTEM_DEFINE(world, ProjectionMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [out] ProjectionMatrix);
     zoxel_system(world, ViewMatrixSystem, EcsOnUpdate, [in] Position, [in] Rotation, [in] ProjectionMatrix, [out] ViewMatrix);
+    zoxel_system(world, CameraFollow2DSystem, EcsOnUpdate,
+        [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position, [out] Rotation);
     // -=- prefabs -=-
     spawn_camera_base_prefab(world);
     spawn_camera_prefab(world);

@@ -14,6 +14,7 @@ ecs_entity_t SpawnPlayerCharacter2D(ecs_world_t *world)
     zoxel_set_component(world, e, DisableMovement, { 0 });
     // make sure to link
     ecs_set(world, e, CameraLink, { mainCamera });
+    ecs_set(world, mainCamera, CameraTarget, { e });
     ecs_set(world, mainCamera, Character2DLink, { e });
     // ecs_add_pair(world, e, CameraLink, mainCamera);
     // ecs_add_pair(world, mainCamera, Character2DLink, e);

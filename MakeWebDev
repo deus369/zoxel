@@ -63,7 +63,6 @@ SRCS += src/core/apps/util/flecs_util.c
 # gameplay
 # players
 SRCS += src/space/players/players.c
-SRCS += src/space/players/systems/Player2DMoveSystem.c
 # rendering
 SRCS += src/core/rendering/rendering.c
 SRCS += src/core/rendering/core/rendering_core.c

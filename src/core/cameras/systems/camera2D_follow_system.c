@@ -3,7 +3,7 @@ void CameraFollow2DSystem(ecs_iter_t *it)
 {
     // printf("PlayerCharacter2Ds [%i]\n", playerCharacterIterator.count);
     const FreeRoam *freeRoams = ecs_field(it, FreeRoam, 2);
-    const Character2DLink *character2DLinks = ecs_field(it, Character2DLink, 3);
+    const CameraTarget *cameraTargets = ecs_field(it, CameraTarget, 3);
     Position *positions = ecs_field(it, Position, 4);
     Rotation *rotations = ecs_field(it, Rotation, 5);
     // player positions
@@ -12,8 +12,8 @@ void CameraFollow2DSystem(ecs_iter_t *it)
         const FreeRoam *freeRoam = &freeRoams[i];
         if (!freeRoam->value)
         {
-            const Character2DLink *character2DLink = &character2DLinks[i];
-            const Position2D *playerPosition2D = ecs_get(it->world, character2DLink->value, Position2D);
+            const CameraTarget *cameraTarget = &cameraTargets[i];
+            const Position2D *playerPosition2D = ecs_get(it->world, cameraTarget->value, Position2D);
             Position *position = &positions[i];
             position->value.x = playerPosition2D->value.x;
             position->value.y = playerPosition2D->value.y;
