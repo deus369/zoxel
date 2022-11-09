@@ -41,8 +41,8 @@ ecs_entity_t spawn_element(ecs_world_t *world, int2 position, int2 size)
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, element_prefab);
     ecs_set(world, e, PixelPosition, { position });
     ecs_set(world, e, PixelSize, { size });
-    // ecs_set(world, e, TextureSize, { size });
-    ecs_set(world, e, TextureSize, { int2_multiply_float(size, 0.25f) });
+    ecs_set(world, e, TextureSize, { size });
+    // ecs_set(world, e, TextureSize, { int2_multiply_float(size, 0.25f) });
     ecs_set(world, e, Brightness, { 1.0f });
     ecs_set(world, e, CanvasLink, { canvas });
     ecs_set(world, e, Scale1D, { 1 });
@@ -52,7 +52,8 @@ ecs_entity_t spawn_element(ecs_world_t *world, int2 position, int2 size)
     spawn_gpu_texture(world, e);
     set_mesh_indicies_world(world, e, square_indicies, 6);
     set_mesh_vertices_world_scale2D(world, e, squareTexturedVerts2, 16, scaledSize2D);  // scale the mesh
-    //printf("UI Element Spawned - Position [%ix%i] - Size [%ix%i] - Position(Real) [%fx%f] - ScaledSize [%fx%f]\n",
-    //    position.x, position.y, size.x, size.y, position2D.x, position2D.y, scaledSize2D.x, scaledSize2D.y);
+    // printf("Texture ratio: %f - ScaleRatio: %f\n", (size.x / (float) size.y), (scaledSize2D.x / scaledSize2D.y));
+    printf("UI Element Spawned - Position [%ix%i] - Size [%ix%i] - Position(Real) [%fx%f] - ScaledSize [%fx%f]\n",
+        position.x, position.y, size.x, size.y, position2D.x, position2D.y, scaledSize2D.x, scaledSize2D.y);
     return e;
 }

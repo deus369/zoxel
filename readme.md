@@ -46,7 +46,7 @@ I have remade it over many different engines, unreal, unity, unity ecs. The late
 
 It is time for it to set sail again to a custom one, using FLECS for performance!
 
-### ~= Setting Sail =~
+### ~ = ~ Setting Sail ~ = ~
 
 This was not an easy decision. Flecs has offered me a way out of the Unity IPO mess, and it offers greater levels of freedom over my development.
 
@@ -57,3 +57,9 @@ Try @ itchio [[Le Olde Zoxel](https://deus0.itch.io/zoxel)]
 Follow le progress [[Link Tree](https://linktr.ee/lorddeus)]
 
 ![Le Old Zoxel](/screenshots/KEyHna.png?raw=false "Le Old Zoxel")
+
+### Notes
+
+Code is now on [[Codeberg](https://codeberg.org/deus/zoxel)]
+
+Also on [[Github](https://github.com/deus369/zoxel)] for visibility.

@@ -14,8 +14,6 @@ out lowp vec2 uv;
 void main()
 {
     vec2 position = vec2(positionX, positionY);
-    mat2 rotate = mat2(cos(angle), -sin(angle),
-                       sin(angle), cos(angle));
     if (scale == 0.0)
     {
         vec2 vertexPosition2 = vertexPosition;
@@ -26,6 +24,8 @@ void main()
     }
     else
     {
+        mat2 rotate = mat2(cos(angle), -sin(angle),
+                          sin(angle), cos(angle));
         gl_Position = viewMatrix * vec4(position + (rotate * vertexPosition) * scale, 0, 1.0);
         uv = vertexUV;
     }

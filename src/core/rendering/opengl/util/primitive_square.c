@@ -51,14 +51,14 @@ const float squareTexturedVerts[] = {
 
 const float squareTexturedVerts2[] = {
     // positions    // texture coords
-    /*-1, -1,         0, 0,   // top right
+    /*-1, -1,       0, 0,   // top right
     -1, 1,          1, 0,   // bottom right
     1, 1,           1, 1,   // bottom left
-    1, -1,         0, 1    // top left 
+    1, -1,          0, 1    // top left 
     */
 
     0, 0,         0, 0,   // top right
-    0, 1,          1, 0,   // bottom right
-    1, 1,           1, 1,   // bottom left
-    1, 0,         0, 1    // top left 
+    0, 1,         0, 1,   // bottom right
+    1, 1,         1, 1,   // bottom left
+    1, 0,         1, 0    // top left 
 };
