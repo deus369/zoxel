@@ -1,6 +1,6 @@
 # Zoxel (Libre Edition)
 
-~ Play Latest [[Web Build](https://deus369.github.io/open-zoxel/web-demo/)] ~
+~ Play Latest [[Web Build](https://deus369.github.io/zoxel/web-demo/)] ~
 
 ## What is Zoxel?
 

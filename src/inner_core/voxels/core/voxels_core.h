@@ -91,10 +91,12 @@ void VoxelsCoreImport(ecs_world_t *world)
     //spawn_chunk_prefab(world);
     //spawn_chunk(world);
     spawn_voxel_chunk_mesh_prefab(world);
+    #ifdef zoxel_test_voxels
     spawn_voxel_chunk_mesh(world, (float3) { 0, -spawnRange, 0 });
     spawn_voxel_chunk_mesh(world, (float3) { 0, spawnRange, 0 });
     spawn_voxel_chunk_mesh(world, (float3) { -spawnRange, 0, 0 });
     spawn_voxel_chunk_mesh(world, (float3) { spawnRange, 0, 0 });
+    #endif
 }
 
 // components

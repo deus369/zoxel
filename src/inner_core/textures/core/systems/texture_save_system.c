@@ -1,13 +1,13 @@
 // For testing for now
-const char *outputTextureName = "resources/textures/Test.png";
+const char *outputTextureName = "resources/textures/tester.png";
 
 //! Generate random noise texture.
 /**
  * \todo update to gpu here?
 */
-void TextureDirtySystem(ecs_iter_t *it)
+void TextureSaveSystem(ecs_iter_t *it)
 {
-    /*if (!ecs_query_changed(NULL, it))
+    if (!ecs_query_changed(NULL, it))
     {
         return;
     }
@@ -23,8 +23,8 @@ void TextureDirtySystem(ecs_iter_t *it)
         }
         const Texture *texture = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
-        SaveAsPNG(texture, textureSize, outputTextureName);
-        // printf("Saved Texture: %lu \n", (long int) it->entities[i]);
-    }*/
+        save_texture_png(texture, textureSize, outputTextureName);
+        printf("Saved Texture: %lu \n", (long int) it->entities[i]);
+    }
 }
-ECS_SYSTEM_DECLARE(TextureDirtySystem);
+ECS_SYSTEM_DECLARE(TextureSaveSystem);

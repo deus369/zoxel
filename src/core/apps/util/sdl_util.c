@@ -34,7 +34,7 @@ SDL_Renderer *renderer;
 SDL_GLContext context;
 unsigned long windowFlags;
 
-void UpdateLoopSDL()
+void finish_opengl_rendering()
 {
     SDL_GL_SwapWindow(window);
 }

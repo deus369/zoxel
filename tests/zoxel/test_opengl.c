@@ -29,9 +29,9 @@ int main(int argc, char* argv[])
     ECS_IMPORT(world, transforms);
     ECS_IMPORT(world, cameras);
     ECS_IMPORT(world, rendering);
-    SpawnMainCamera(screenDimensions);
+    spawn_main_camera(screenDimensions);
     // SpawnKeyboardEntity();
-    // SpawnPlayerCharacter2D(world);
+    // spawn_player_character2D(world);
     // while true, run main loop here
     bool running = true;
     while (running)
@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
         UpdateBeginOpenGL(GetMainCameraViewMatrix());
         ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
         UpdateEndOpenGL();
-        UpdateLoopSDL();
+        finish_opengl_rendering();
     }
     EndECS();
     EndAppGraphics();

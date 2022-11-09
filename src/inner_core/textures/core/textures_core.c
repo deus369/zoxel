@@ -7,6 +7,7 @@ const double noiseAnimationSpeed = 0.5;
 // Tags
 ECS_DECLARE(NoiseTexture);
 ECS_DECLARE(FrameTexture);
+ECS_DECLARE(SaveTexture);
 // ECS_DECLARE(GenerateNoiseTexture);
 // components
 //! A texture with pixels!
@@ -26,13 +27,13 @@ zoxel_component(AnimateTexture, double);
 // systems
 #include "systems/animate_noise_system.c"
 #include "systems/generate_texture_reset_system.c"
-#include "systems/texture_dirty_system.c"
 #include "systems/texture_update_system.c"
+#include "systems/texture_save_system.c"
 // texture generation systems
 #include "systems/noise_texture_system.c"
 #include "systems/frame_texture_system.c"
 // tests
-#include "tests/TestTexture.c"
+#include "tests/test_texture.c"
 
 #define add_texture_generation_system(texture_tag, system)\
 {\
@@ -47,6 +48,7 @@ void TexturesCoreImport(ecs_world_t *world)
     ECS_MODULE(world, TexturesCore);
     ECS_TAG_DEFINE(world, NoiseTexture);
     ECS_TAG_DEFINE(world, FrameTexture);
+    ECS_TAG_DEFINE(world, SaveTexture);
     zoxel_memory_component_define(world, Texture);
     ECS_COMPONENT_DEFINE(world, TextureSize);
     ECS_COMPONENT_DEFINE(world, GenerateTexture);
@@ -55,13 +57,8 @@ void TexturesCoreImport(ecs_world_t *world)
     add_texture_generation_system(NoiseTexture, NoiseTextureSystem);
     add_texture_generation_system(FrameTexture, FrameTextureSystem);
     zoxel_system_main_thread(world, GenerateTextureResetSystem, EcsPostUpdate, [out] GenerateTexture);
+    ECS_SYSTEM_DEFINE(world, TextureSaveSystem, EcsOnValidate, [in] EntityDirty, [in] Texture, [in] TextureSize, [none] SaveTexture);
     ECS_SYSTEM_DEFINE(world, TextureUpdateSystem, EcsOnValidate, [in] generic.EntityDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink);
     SpawnTexturePrefab(world);
 }
-
-/*zoxel_filter(generateTextureQuery, world, [none] NoiseTexture, [in] GenerateTexture);
-zoxel_system_ctx(world, NoiseTextureSystem, EcsOnUpdate, generateTextureQuery,
-    [none] NoiseTexture, [out] generic.EntityDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture);*/
-// zoxel_filter(textureDirtyQuery, world, [none] NoiseTexture, [in] EntityDirty);
-// ECS_SYSTEM_DEFINE(world, TextureDirtySystem, EcsOnValidate, [in] EntityDirty, [in] Texture, [in] TextureSize);
 #endif

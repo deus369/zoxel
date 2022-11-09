@@ -36,9 +36,9 @@ void InitializeMesh(GLuint material)
     // set buffer data
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareMesh.x);
     glBindBuffer(GL_ARRAY_BUFFER, squareMesh.y);
-    // printf("A Binding Data %i %i\n", sizeof(squareIndicies), sizeof(squareVerts));
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(squareIndicies), squareIndicies, GL_STATIC_DRAW);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(squareVerts), squareVerts, GL_STATIC_DRAW);
+    // printf("A Binding Data %i %i\n", sizeof(square_indicies), sizeof(square_vertices));
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(square_indicies), square_indicies, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(square_vertices), square_vertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(material2D.vertexPosition);
     glVertexAttribPointer(material2D.vertexPosition, 2, GL_FLOAT, GL_FALSE, 8, 0);
     // printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", squareMesh.x, squareMesh.y);
@@ -52,13 +52,13 @@ void InitializeMesh(GLuint material)
         printf("GL HAD ERROR with end of InitializeMesh: %i\n", err7);
     }
 #endif
-    /*for (int j = 0; j < sizeof(squareIndicies) / 4; j++)
+    /*for (int j = 0; j < sizeof(square_indicies) / 4; j++)
     {
-        printf("    - Index [%i] is [%i]\n", j, squareIndicies[j]);
+        printf("    - Index [%i] is [%i]\n", j, square_indicies[j]);
     }
-    for (int j = 0; j < sizeof(squareVerts) / 4; j++)
+    for (int j = 0; j < sizeof(square_vertices) / 4; j++)
     {
-        printf("    - Vertex [%i] is [%f]\n", j, squareVerts[j]);
+        printf("    - Vertex [%i] is [%f]\n", j, square_vertices[j]);
     }*/
 }
 
@@ -111,7 +111,7 @@ void RenderEntity2D(float2 position, float angle, float scale, float brightness)
     glUniform1f(material2D.scale, scale);
     glUniform1f(material2D.angle, angle);
     glUniform1f(material2D.brightness, brightness);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL); // &squareIndicies);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL); // &square_indicies);
 }
 
 void OpenGLEndInstancing()

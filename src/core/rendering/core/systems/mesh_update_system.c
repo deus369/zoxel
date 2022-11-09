@@ -65,14 +65,13 @@ void MeshUpdateMainThread()
         const MeshIndicies *meshIndicies = meshIndiciesQueue[i];
         const MeshVertices *meshVertices = meshVerticesQueue[i];
         set_gpu_mesh(meshGPULink, material, meshIndicies->value, meshIndicies->length, meshVertices->value, meshVertices->length);
-        /*printf("Updating Mesh [%i - %i] Material [%i] \n", meshGPULink.x, meshGPULink.y, material);
-        for (int j = 0; j < meshIndicies->length; j++)
+        // printf("Updating Mesh [%i - %i] Material [%i] \n", meshGPULink.x, meshGPULink.y, material);
+        /*for (int j = 0; j < meshIndicies->length; j++)
         {
             printf("        - Index [%i] is [%i]\n", j, meshIndicies->value[j]);
         }
         for (int j = 0; j < meshVertices->length; j++)
         {
-            // printf("        - Vertex [%i] is [%fx%fx%f]\n", j, meshVertices->value[j].x,  meshVertices->value[j].y, meshVertices->value[j].z);
             printf("        - Vertex [%i] is [%f]\n", j, meshVertices->value[j]);
         }*/
     }

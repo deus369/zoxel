@@ -21,12 +21,12 @@ void InitializeCubeMesh(GLuint material)
     glGenBuffers(1, &materialInstance3D_mesh.x);
     glGenBuffers(1, &materialInstance3D_mesh.y);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, materialInstance3D_mesh.x);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(squareIndicies), squareIndicies, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, materialInstance3D_mesh.y);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(squareVerts), squareVerts, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(square_indicies), square_indicies, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(square_vertices), square_vertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(material3D.vertexPosition);
     glVertexAttribPointer(material3D.vertexPosition, 2, GL_FLOAT, GL_FALSE, 8, 0);
-    printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", materialInstance3D_mesh.x, materialInstance3D_mesh.y);
+    // printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", materialInstance3D_mesh.x, materialInstance3D_mesh.y);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -55,6 +55,8 @@ void OpenGLBeginInstancing3D(const float4x4 viewMatrix)
     glUseProgram(materialInstance3D);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, materialInstance3D_mesh.x);    // for indices
     glBindBuffer(GL_ARRAY_BUFFER, materialInstance3D_mesh.y);            // for vertex coordinates
+    glEnableVertexAttribArray(material3D.vertexPosition);
+    glVertexAttribPointer(material3D.vertexPosition, 2, GL_FLOAT, GL_FALSE, 8, 0);
     glUniformMatrix4fv(material3D.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
 }
 
@@ -65,7 +67,7 @@ void RenderEntity3D(float3 position, float4 rotation, float scale1D, float brigh
     glUniform4f(material3D.rotation, rotation.x, rotation.y, rotation.z, rotation.w);
     glUniform1f(material3D.scale, scale1D);
     glUniform1f(material3D.brightness, brightness);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL); // &squareIndicies);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 }
 
 //! Spawns the buffers for a mesh indicies and verts on the gpu.
@@ -92,39 +94,6 @@ void set_gpu_mesh(GLuint2 mesh, GLuint material, const int *indicies, int indici
     // printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", mesh.x, mesh.y);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-extern void InitializeMaterialPropertiesB(GLuint material, MaterialTextured2D *materialTextured2D);
-// does this per material!
-void render_unique3D(const float4x4 viewMatrix, GLuint2 mesh, GLuint material, float3 position, float4 rotation, float scale, float brightness, int indicies_length)
-{
-    if (material == 0)
-    {
-        // printf("RenderEntityMaterial2D material is 0.\n");
-        return;
-    }
-    // printf("Rendering Cube [%ix%i]\n", mesh.x, mesh.y);
-    // printf("    - Rendering Cube [%ix%i]\n", squareTexturedMesh.x, squareTexturedMesh.y);
-    Material3D material3D;
-    InitializeInstanced3DProperties(material, &material3D);
-    glUseProgram(material);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);    // for indices
-    glBindBuffer(GL_ARRAY_BUFFER, mesh.y);            // for vertex coordinates
-    glEnableVertexAttribArray(material3D.vertexPosition);
-    glVertexAttribPointer(material3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 12, 0); // 4 * 3
-    glUniformMatrix4fv(material3D.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
-    glUniform3f(material3D.position, position.x, position.y, position.z);
-    glUniform4f(material3D.rotation, rotation.x, rotation.y, rotation.z, rotation.w);
-    glUniform1f(material3D.scale, scale);
-    glUniform1f(material3D.brightness, brightness);
-    glDrawElements(GL_TRIANGLES, indicies_length, GL_UNSIGNED_INT, NULL);
-    glUseProgram(0);
-    /*GLenum err65 = glGetError();
-    if (err65 != GL_NO_ERROR)
-    {
-        printf("render_unique3D GLError [%i]: %i\n", material, err65);
-        return;
-    }*/
 }
 
 void OpenGLEndInstancing3D()

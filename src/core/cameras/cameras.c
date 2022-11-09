@@ -1,6 +1,7 @@
 #ifndef zoxel_cameras
 #define zoxel_cameras
 
+ecs_entity_t cameras[2];
 // -=- Tags -=-
 ECS_DECLARE(Camera);
 ECS_DECLARE(CameraFollower2D);  // a tag for a camera that follows a Character2D
@@ -51,7 +52,7 @@ void CamerasImport(ecs_world_t *world)
         [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position, [out] Rotation);
     // -=- prefabs -=-
     spawn_camera_base_prefab(world);
-    spawn_camera_prefab(world);
+    spawn_camera2D_follower_prefab(world);
 }
 
 // Custom name for namespace?

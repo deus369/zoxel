@@ -27,7 +27,18 @@ To-Do Main
 
 `Current`
 
+- [ ] Scale textures of ui properly
+    - Use Unique Meshes - generated based on ui size
+- [x] Position perfectly
+- [ ] when resize viewport - resize uis there
+- [ ] UI Select events
+
+
 - [ ] Those queries still keep updating, they don't pass query checks
+
+- [ ] Create a render queue and sort system
+    - http://realtimecollisiondetection.net/blog/?p=86
+    - https://paroj.github.io/gltut/Positioning/Tut05%20Overlap%20and%20Depth%20Buffering.html
 
 - [x] Create minimal example of setting a 'material' integer link as a test for the upgrade bug
 

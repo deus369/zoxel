@@ -2,22 +2,20 @@ ecs_entity_t custom_mesh_prefab;
 
 void spawn_custom_mesh_prefab(ecs_world_t *world)
 {
-    // int2 textureSize = { 16, 16 };
-    custom_mesh_prefab = ecs_new_prefab(world, "test_custom_mesh");
+    ecs_entity_t e = ecs_new_prefab(world, "test_custom_mesh");
     // printf("Spawned test_custom_mesh [%lu].\n", (long int) (e));
     #ifdef zoxel_transforms3D
-    add_transform3Ds(world, custom_mesh_prefab);
+    add_transform3Ds(world, e);
     #endif
-    // add_seed(world, custom_mesh_prefab, 444);
-    zoxel_set_component(world, custom_mesh_prefab, EntityDirty, { 1 });
-    zoxel_add_component(world, custom_mesh_prefab, MeshIndicies);
-    zoxel_add_component(world, custom_mesh_prefab, MeshVertices);
-    add_gpu_mesh(world, custom_mesh_prefab);
-    add_gpu_material(world, custom_mesh_prefab);
+    zoxel_set_component(world, e, EntityDirty, { 1 });
+    zoxel_add_component(world, e, MeshIndicies);
+    zoxel_add_component(world, e, MeshVertices);
+    add_gpu_mesh(world, e);
+    add_gpu_material(world, e);
     float4 rotationer = quaternion_from_euler( (float3) { 0.1f * degreesToRadians, 0.2f * degreesToRadians, 0 });
-    zoxel_set_component(world, custom_mesh_prefab, EternalRotation, { rotationer });
-    zoxel_add_component(world, custom_mesh_prefab, Brightness);
-    // spawn prefab
+    zoxel_set_component(world, e, EternalRotation, { rotationer });
+    zoxel_add_component(world, e, Brightness);
+    custom_mesh_prefab = e;
 }
 
 void spawn_custom_mesh(ecs_world_t *world, ecs_entity_t prefab, float3 position)

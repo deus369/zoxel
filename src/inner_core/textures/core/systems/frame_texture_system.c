@@ -1,10 +1,12 @@
 //! Our function that creates a texture.
 void GenerateFrame(Texture* texture, const TextureSize *textureSize)
 {
+    const int frame_thickness = 0;
     const int2 redRange = { 15, 244 };
     const int2 greenRange = { 15, 122 };
     const int2 blueRange = { 15, 122 };
     const int2 alphaRange = { 144, 256 };
+    const int2 alphaRange2 = { 222, 256 };
     color base = { 
         redRange.x + rand() % (redRange.y - redRange.x),
         greenRange.x + rand() % (greenRange.y - greenRange.x),
@@ -15,14 +17,14 @@ void GenerateFrame(Texture* texture, const TextureSize *textureSize)
         redRange.x + rand() % (redRange.y - redRange.x),
         greenRange.x + rand() % (greenRange.y - greenRange.x),
         blueRange.x + rand() % (blueRange.y - blueRange.x),
-        alphaRange.x + rand() % (alphaRange.y - alphaRange.x)
+        alphaRange2.x + rand() % (alphaRange2.y - alphaRange2.x)
     };
     int index = 0;
-    for (int j = 0; j < textureSize->value.x; j++)
+    for (int k = 0; k < textureSize->value.y; k++)
     {
-        for (int k = 0; k < textureSize->value.y; k++)
+        for (int j = 0; j < textureSize->value.x; j++)
         {
-            if (j == 0 || k == 0 || j == textureSize->value.x - 1 || k == textureSize->value.y - 1)
+            if (j <= frame_thickness || k <= frame_thickness || j >= textureSize->value.x - 1 - frame_thickness || k >= textureSize->value.y - 1 - frame_thickness)
             {
                 texture->value[index] = darker;
             }

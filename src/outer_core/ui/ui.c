@@ -20,9 +20,9 @@ zoxel_component(PixelSize, int2);
 zoxel_component(Anchor, unsigned char);
 zoxel_component(CanvasLink, ecs_entity_t);
 // prefabs
+#include "prefabs/canvas.c"
 #include "prefabs/element.c"
 #include "prefabs/button.c"
-#include "prefabs/canvas.c"
 // systems
 #include "systems/element_raycast_system.c"
 
@@ -48,7 +48,9 @@ void UIImport(ecs_world_t *world)
     zoxel_system(world, ElementRaycastSystem, EcsOnUpdate, [none] ElementRaycaster);
     // prefabs
     int2 testSize = { 16, 16 };
+    spawn_canvas_prefab(world);
     spawn_element_prefab(world, testSize);
+    spawn_canvas(world, screenDimensions);
     // test, spawn canvas, element
     // spawn_element(world, (int2) { 0, 0 }, testSize);
 }

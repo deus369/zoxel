@@ -9,5 +9,6 @@ typedef struct
     GLuint positionY;
     GLuint angle;
     GLuint scale;
+    GLuint scale2;
     GLuint brightness;
 } MaterialTextured2D;

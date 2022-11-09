@@ -1,7 +1,7 @@
 //! Contains a link to the Texture on the GPU.
 zoxel_component(TextureGPULink, GLuint);
 
-extern GLuint SpawnTextureGPU();
+extern GLuint spawn_gpu_texture_buffers();
 
 void add_gpu_texture(ecs_world_t *world, ecs_entity_t prefab)
 {
@@ -10,7 +10,7 @@ void add_gpu_texture(ecs_world_t *world, ecs_entity_t prefab)
 
 void spawn_gpu_texture(ecs_world_t *world, ecs_entity_t e)
 {
-    ecs_set(world, e, TextureGPULink, { SpawnTextureGPU() });
+    ecs_set(world, e, TextureGPULink, { spawn_gpu_texture_buffers() });
 }
 
 ECS_DTOR(TextureGPULink, ptr,

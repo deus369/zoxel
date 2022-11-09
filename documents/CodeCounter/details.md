@@ -2,7 +2,7 @@
 
 Date : 2022-11-03 22:11:48
 
-Directory /home/deus/projects/open-zoxel/Source
+Directory /home/deus/projects/zoxel/Source
 
 Total : 136 files,  3657 codes, 1186 comments, 356 blanks, all 5199 lines
 

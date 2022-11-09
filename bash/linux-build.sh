@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ~/projects/open-zoxel
+cd ~/projects/zoxel
 
 echo Build Started.
 

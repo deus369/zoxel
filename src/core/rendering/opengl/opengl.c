@@ -13,13 +13,16 @@
 #include "data/MaterialTextured2D.c"
 #include "data/Material3D.c"
 // util Functions
+#include "util/primitive_square.c"
 #include "util/primitive_mesh_util.c"
 #include "util/shaders_util.c"    // uses InitializeMesh
 #include "util/opengl_util.c"
 // rendering
-#include "rendering/Instanced2DMaterial.c"
-#include "rendering/Textured2DMaterial.c"
-#include "rendering/Instanced3DMaterial.c"
+#include "rendering/instanced2D_material.c"
+#include "rendering/textured2D_material.c"
+#include "rendering/instanced3D_material.c"
+#include "rendering/unique3D_material.c"
+
 
 int LoadShaders()
 {

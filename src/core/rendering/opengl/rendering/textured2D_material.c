@@ -1,4 +1,4 @@
-//! Functions for handling Textured2DMaterial (SquareTextured2D)
+//! Functions for handling textured2D_material (SquareTextured2D)
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -52,6 +52,7 @@ void InitializeMaterialPropertiesB(GLuint material, MaterialTextured2D *material
     materialTextured2D->positionY = glGetUniformLocation(material, "positionY");
     materialTextured2D->angle = glGetUniformLocation(material, "angle");
     materialTextured2D->scale = glGetUniformLocation(material, "scale");
+    materialTextured2D->scale2 = glGetUniformLocation(material, "scale2");
     materialTextured2D->brightness = glGetUniformLocation(material, "brightness");
     materialTextured2D->vertexPosition = glGetAttribLocation(material, "vertexPosition");
     materialTextured2D->vertexUV = glGetAttribLocation(material, "vertexUV");
@@ -67,8 +68,8 @@ void InitializeTexturedMesh(GLuint material)
     glGenBuffers(1, &squareTexturedMesh.y);  // generate a new VBO and get the associated ID
     glGenBuffers(1, &squareTexturedModelUVs);  // generate a new VBO and get the associated ID
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedMesh.x);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(squareIndicies), squareIndicies, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, squareTexturedMesh.y);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(square_indicies), square_indicies, GL_STATIC_DRAW);
     glBufferData(GL_ARRAY_BUFFER, sizeof(squareTexturedVerts), squareTexturedVerts, GL_STATIC_DRAW); 
     glVertexAttribPointer(materialTextured2D.vertexPosition, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(0 * sizeof(float)));
     glVertexAttribPointer(materialTextured2D.vertexUV, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(2 * sizeof(float)));
@@ -86,23 +87,57 @@ void InitializeTexturedMesh(GLuint material)
 #endif
 }
 
-GLuint SpawnTextureGPU()
+GLuint spawn_gpu_texture_buffers()
 {
     GLuint textureID;
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureType);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureType);
     glBindTexture(GL_TEXTURE_2D, 0);
     return textureID;
 }
 
-void RenderEntityMaterial2D(const float4x4 viewMatrix, GLuint material, GLuint texture,
+void RenderEntityMaterial2D2(const float4x4 viewMatrix, GLuint material, GLuint texture,
+    float2 position, float angle, float2 scale, float brightness)
+{
+    if (material == 0)
+    {
+        // printf("render_entity_material2D material is 0.\n");
+        return;
+    }
+    MaterialTextured2D materialTextured2D;
+    InitializeMaterialPropertiesB(material, &materialTextured2D);
+    glUseProgram(material);   // invalid operation
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedMesh.x);    // for indices
+    glBindBuffer(GL_ARRAY_BUFFER, squareTexturedMesh.y);            // for vertex buffer data
+    glEnableVertexAttribArray(materialTextured2D.vertexPosition);
+    glEnableVertexAttribArray(materialTextured2D.vertexUV);
+    glVertexAttribPointer(materialTextured2D.vertexPosition, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(0 * sizeof(float)));
+    glVertexAttribPointer(materialTextured2D.vertexUV, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(2 * sizeof(float)));
+    glUniformMatrix4fv(materialTextured2D.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
+    glUniform1f(materialTextured2D.positionX, position.x);
+    glUniform1f(materialTextured2D.positionY, position.y);
+    glUniform1f(materialTextured2D.angle, angle);
+    glUniform2f(materialTextured2D.scale2, scale.x, scale.y);
+    glUniform1f(materialTextured2D.brightness, brightness);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_BLEND);
+    glUseProgram(0);
+}
+
+void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint texture,
     float2 position, float angle, float scale, float brightness)
 {
     if (material == 0)
     {
-        // printf("RenderEntityMaterial2D material is 0.\n");
+        // printf("render_entity_material2D material is 0.\n");
         return;
     }
     MaterialTextured2D materialTextured2D;
@@ -119,6 +154,10 @@ void RenderEntityMaterial2D(const float4x4 viewMatrix, GLuint material, GLuint t
     glBindTexture(GL_TEXTURE_2D, texture);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedMesh.x);    // for indices
     glBindBuffer(GL_ARRAY_BUFFER, squareTexturedMesh.y);            // for vertex buffer data
+    glEnableVertexAttribArray(materialTextured2D.vertexPosition);
+    glEnableVertexAttribArray(materialTextured2D.vertexUV);
+    glVertexAttribPointer(materialTextured2D.vertexPosition, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(0 * sizeof(float)));
+    glVertexAttribPointer(materialTextured2D.vertexUV, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(2 * sizeof(float)));
     glUniformMatrix4fv(materialTextured2D.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
     glUniform1f(materialTextured2D.positionX, position.x);
     glUniform1f(materialTextured2D.positionY, position.y);
@@ -129,7 +168,45 @@ void RenderEntityMaterial2D(const float4x4 viewMatrix, GLuint material, GLuint t
     /*GLenum err66 = glGetError();
     if (err66 != GL_NO_ERROR)
     {
-        printf("GLError [RenderEntityMaterial2D]: %i\n", err66);
+        printf("GLError [render_entity_material2D]: %i\n", err66);
+        return;
+    }*/
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_BLEND);
+    glUseProgram(0);
+}
+
+void render_entity_material2D_and_mesh(const float4x4 viewMatrix, GLuint2 mesh, GLuint material, GLuint texture,
+    float2 position, float angle, float scale, float brightness)
+{
+    if (material == 0)
+    {
+        // printf("render_entity_material2D material is 0.\n");
+        return;
+    }
+    MaterialTextured2D materialTextured2D;
+    InitializeMaterialPropertiesB(material, &materialTextured2D);
+    glUseProgram(material);   // invalid operation
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);    // for indices
+    glBindBuffer(GL_ARRAY_BUFFER, mesh.y);            // for vertex coordinates
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glEnableVertexAttribArray(materialTextured2D.vertexPosition);
+    glEnableVertexAttribArray(materialTextured2D.vertexUV);
+    glVertexAttribPointer(materialTextured2D.vertexPosition, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(0 * sizeof(float)));
+    glVertexAttribPointer(materialTextured2D.vertexUV, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(2 * sizeof(float)));
+    glUniformMatrix4fv(materialTextured2D.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
+    glUniform1f(materialTextured2D.positionX, position.x);
+    glUniform1f(materialTextured2D.positionY, position.y);
+    glUniform1f(materialTextured2D.angle, angle);
+    glUniform1f(materialTextured2D.scale, scale);
+    glUniform1f(materialTextured2D.brightness, brightness);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+    /*GLenum err66 = glGetError();
+    if (err66 != GL_NO_ERROR)
+    {
+        printf("GLError [render_entity_material2D]: %i\n", err66);
         return;
     }*/
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -148,7 +225,7 @@ int LoadTextureRender2DShader()
 //     GLenum err66 = glGetError();
 //     if (err66 != GL_NO_ERROR)
 //     {
-//         printf("GL HAD ERROR with End of RenderEntityMaterial2D: %i\n", err66);
+//         printf("GL HAD ERROR with End of render_entity_material2D: %i\n", err66);
 //         return;
 //     }
 // #endif

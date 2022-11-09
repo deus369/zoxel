@@ -12,7 +12,7 @@
 // More info about dynamic loading can be found here:
 // https://en.wikipedia.org/wiki/Dynamic_loading
 
-#define OPENGL_FUNCTIONS                                      \
+#define OPENGL_FUNCTIONS                                                            \
     OPENGL_FUNCTION(glCreateShader, PFNGLCREATESHADERPROC)                          \
     OPENGL_FUNCTION(glDeleteShader, PFNGLDELETESHADERPROC)                          \
     OPENGL_FUNCTION(glAttachShader, PFNGLATTACHSHADERPROC)                          \
@@ -30,6 +30,7 @@
     OPENGL_FUNCTION(glGetProgramInfoLog, PFNGLGETPROGRAMINFOLOGPROC)                \
     OPENGL_FUNCTION(glUniform1i, PFNGLUNIFORM1IPROC)                                \
     OPENGL_FUNCTION(glUniform1f, PFNGLUNIFORM1FPROC)                                \
+    OPENGL_FUNCTION(glUniform2f, PFNGLUNIFORM2FPROC)                                \
     OPENGL_FUNCTION(glUniform3f, PFNGLUNIFORM3FPROC)                                \
     OPENGL_FUNCTION(glUniform4f, PFNGLUNIFORM4FPROC)                                \
     OPENGL_FUNCTION(glUniformMatrix4fv, PFNGLUNIFORMMATRIX4FVPROC)                  \

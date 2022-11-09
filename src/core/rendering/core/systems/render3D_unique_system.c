@@ -1,9 +1,9 @@
 
 
-extern float4x4 mainCameraMatrix;
+extern float4x4 main_camera_matrix;
 extern void render_unique3D(const float4x4 viewMatrix, GLuint2 mesh, GLuint material, float3 position, float4 rotation, float scale1D, float brightness, int indicies_length);
 
-void InstanceRender3D2System(ecs_iter_t *it)
+void Render3DUniqueSystem(ecs_iter_t *it)
 {
     const Position *positions = ecs_field(it, Position, 1);
     const Rotation *rotations = ecs_field(it, Rotation, 2);
@@ -22,8 +22,8 @@ void InstanceRender3D2System(ecs_iter_t *it)
         const MaterialGPULink *materialGPULink = &materialGPULinks[i];
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         // printf(" - Rendering Cube\n");
-        render_unique3D(mainCameraMatrix, meshGPULink->value, materialGPULink->value,
+        render_unique3D(main_camera_matrix, meshGPULink->value, materialGPULink->value,
             position->value, rotation->value, scale1D->value, brightness->value, meshIndicies2->length);
     }
 }
-ECS_SYSTEM_DECLARE(InstanceRender3D2System);
+ECS_SYSTEM_DECLARE(Render3DUniqueSystem);

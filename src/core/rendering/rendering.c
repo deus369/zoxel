@@ -4,7 +4,8 @@
 // data
 #include "data/GLuint2.c"
 // used atm for rendering
-float4x4 mainCameraMatrix; 
+float4x4 main_camera_matrix; 
+float4x4 ui_camera_matrix; 
 #include "opengl/opengl.c"
 #include "core/rendering_core.c"
 
