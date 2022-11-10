@@ -15,17 +15,23 @@ ECS_DECLARE(Device);
 #include "systems/keyboard_extract_system.c"
 #include "systems/mouse_extract_system.c"
 
+void spawn_connected_devices(ecs_world_t *world)
+{
+    printf("Devices detected: 2\n");
+    spawn_keyboard_entity(world);
+    spawn_mouse_entity(world);
+}
 
 void input_extract_from_sdl(ecs_world_t *world, SDL_Event event)
 {
-    ExtractKeyboard(world, event);
-    ExtractMouseEvent(world, event);
+    extract_keyboard(world, event);
+    extract_mouse(world, event);
 }
 
 void reset_input_devices(ecs_world_t *world)
 {
-    ResetKeyboard(world);
-    ResetMouse(world);
+    reset_keyboard(world);
+    reset_mouse(world);
 }
 
 void InputsImport(ecs_world_t *world)

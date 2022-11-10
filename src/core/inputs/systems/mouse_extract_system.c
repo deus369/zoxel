@@ -2,7 +2,7 @@
 
 ecs_entity_t mouseEntity;
 
-void SpawnMouseEntity()
+void spawn_mouse_entity(ecs_world_t *world)
 {
     mouseEntity = ecs_new_entity(world, "mouse");
     ecs_set(world, mouseEntity, Mouse, { });
@@ -10,7 +10,7 @@ void SpawnMouseEntity()
     // return mouseEntity;
 }
 
-void ResetMouse(ecs_world_t *world)
+void reset_mouse(ecs_world_t *world)
 {
     if (!mouseEntity || !ecs_is_alive(world, mouseEntity))
     {
@@ -41,7 +41,7 @@ void SetMouseKey(PhysicalButton *key, int eventType)
     }
 }
 
-void ExtractMouseEvent(ecs_world_t *world, SDL_Event event)
+void extract_mouse(ecs_world_t *world, SDL_Event event)
 {
     if (!mouseEntity || !ecs_is_alive(world, mouseEntity))
     {

@@ -40,7 +40,7 @@ void DisposeTexturedMaterial2D()
     GLenum err7 = glGetError();
     if (err7 != GL_NO_ERROR)
     {
-        printf("GL HAD ERROR with end of EndAppOpenGL: %i\n", err7);
+        printf("GL HAD ERROR with end of dispose_opengl: %i\n", err7);
     }
 #endif
 }

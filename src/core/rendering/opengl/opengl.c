@@ -23,7 +23,6 @@
 #include "rendering/instanced3D_material.c"
 #include "rendering/unique3D_material.c"
 
-
 int LoadShaders()
 {
     if (LoadInstance2DMaterial() != 0)
@@ -42,18 +41,18 @@ int LoadShaders()
 }
 
 //! Cleanup Meshes VBOs
-void EndAppOpenGL()
+void dispose_opengl()
 {
     DisposeInstance2DMaterial();
     DisposeTexturedMaterial2D();
     DisposeInstanced3DMaterial();
-#ifdef DEVBUILD
-    GLenum err7 = glGetError();
-    if (err7 != GL_NO_ERROR)
-    {
-        printf("GL HAD ERROR with end of EndAppOpenGL: %i\n", err7);
-    }
-#endif
+// #ifdef DEVBUILD
+//     GLenum err7 = glGetError();
+//     if (err7 != GL_NO_ERROR)
+//     {
+//         printf("GL HAD ERROR with end of dispose_opengl: %i\n", err7);
+//     }
+// #endif
 }
 
 //! The OpenGL Module.

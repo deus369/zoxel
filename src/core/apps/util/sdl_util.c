@@ -1,12 +1,5 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
-#ifdef SDL_IMAGES
-#include <SDL2/SDL_image.h>
-#endif
+// emscripten app functions
 #ifdef __EMSCRIPTEN__
-#include <emscripten.h>
 
 EM_JS(int, get_canvas_width, (), { return window.innerWidth; });
 EM_JS(int, get_canvas_height, (), { return window.innerHeight; });
@@ -29,15 +22,7 @@ int2 screenDimensions = { 720, 480 };
 // int2 screenDimensions = { 1920, 800 };
 float aspectRatio = 1;
 float fov = 60;
-SDL_Window* window;
-SDL_Renderer *renderer;
-SDL_GLContext context;
 unsigned long windowFlags;
-
-void finish_opengl_rendering()
-{
-    SDL_GL_SwapWindow(window);
-}
 
 //! Zoxel can also be a command tool... Wuut?!?!!
 void PrintHelpMenu(const char* arg0)
@@ -73,9 +58,10 @@ void SetStartScreenSize()
 }
 
 //! Print debug info!
-void PrintSDLDebug()
+void print_sdl()
 {
-    printf("Platform:        %s\n", SDL_GetPlatform());
+    printf("SDL\n");
+    printf("    Platform:        %s\n", SDL_GetPlatform());
     printf("    CPU Count:       %d\n", SDL_GetCPUCount());
     printf("    System RAM:      %d MB\n", SDL_GetSystemRAM());
     printf("    Screen Dimensions: %ix%i\n", screenDimensions.x, screenDimensions.y);
@@ -84,6 +70,16 @@ void PrintSDLDebug()
     printf("    Supports SSE3:   %s\n", SDL_HasSSE3() ? "true" : "false");
     printf("    Supports SSE4.1: %s\n", SDL_HasSSE41() ? "true" : "false");
     printf("    Supports SSE4.2: %s\n", SDL_HasSSE42() ? "true" : "false");
+}
+
+void print_opengl()
+{
+    // Load the modern OpenGL funcs
+    printf("OpenGL Context\n");
+    printf("    Vendor:   %s\n", glGetString(GL_VENDOR));
+    printf("    Renderer: %s\n", glGetString(GL_RENDERER));
+    printf("    Version:  %s\n", glGetString(GL_VERSION));
+    printf("    GLSL Version:    %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 }
 
 //! Initialize SDL things, thingy things.
@@ -123,7 +119,7 @@ void LoadIconSDL(SDL_Window* window)
 
 
 //! Spawn the SDL Window.
-int SpawnWindowSDL(bool fullscreen)
+SDL_Window* SpawnWindowSDL(bool fullscreen)
 {
     windowFlags = SDL_WINDOW_OPENGL;
     #ifndef __EMSCRIPTEN__
@@ -132,46 +128,35 @@ int SpawnWindowSDL(bool fullscreen)
         windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
     }
     #endif
-    window = SDL_CreateWindow("Zoxel",
+    SDL_Window* window = SDL_CreateWindow("Zoxel",
         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
         screenDimensions.x, screenDimensions.y, windowFlags);
     if (window == NULL)
     {
         SDL_Quit();
         fprintf(stderr, "Failed to Create Window: %s\n", SDL_GetError());
-        return EXIT_FAILURE;
+        return window;
     }
     // SDL_GLContext is an alias for "void*"
-    context = SDL_GL_CreateContext(window);
-    if (context == NULL)
-    {
-        // common error: EGL_BAD_MATCH
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        fprintf(stderr, "Failed to Create OpenGL Context: %s\n", SDL_GetError());
-        return EXIT_FAILURE;
-    }
     SDL_GL_SetSwapInterval(1);
     LoadIconSDL(window);
     SDL_SetWindowResizable(window, SDL_TRUE);
     SDL_GL_SwapWindow(window);
-    return EXIT_SUCCESS;
+    return window;
 }
 
-void EndAppSDL()
+SDL_GLContext* create_sdl_context(SDL_Window* window)
 {
-    if (renderer)
+    SDL_GLContext* context = SDL_GL_CreateContext(window);
+    if (context == NULL)
     {
-        SDL_DestroyRenderer(renderer);
+        fprintf(stderr, "Failed to Create OpenGL Context: %s\n", SDL_GetError());
     }
-    if (context)
-    {
-        SDL_GL_DeleteContext(context);
-    }
-    SDL_DestroyWindow(window);
-    SDL_Quit();
+    print_opengl();
+    return context;
 }
-void ResizeOpenGLViewport(int screenWidth, int screenHeight)
+
+void resize_viewports(int screenWidth, int screenHeight)
 {
     screenDimensions.x = screenWidth;
     screenDimensions.y = screenHeight;
@@ -187,46 +172,35 @@ void ResizeOpenGLViewport(int screenWidth, int screenHeight)
 #endif
 }
 
-void PrintOpenGL()
-{
-    // Load the modern OpenGL funcs
-    printf("PrintOpenGL: OpenGL\n");
-    printf("    Vendor:   %s\n", glGetString(GL_VENDOR));
-    printf("    Renderer: %s\n", glGetString(GL_RENDERER));
-    printf("    Version:  %s\n", glGetString(GL_VERSION));
-    printf("    GLSL Version:    %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
-}
-
-void OpenWindow()
+SDL_Window* spawn_sdl_window()
 {
     int didFail = SetSDLAttributes(vsync);
     SetStartScreenSize();
-    PrintSDLDebug();
+    print_sdl();
     if (didFail == EXIT_FAILURE)
     {
         printf("Failed to SetSDLAttributes.");
-        return;
+        return NULL;
     }
-    didFail = SpawnWindowSDL(fullscreen);
-    PrintOpenGL();
-    if (didFail == EXIT_FAILURE)
-    {
-        printf("Failed to SpawnWindowSDL.");
-        return;
-    }
+    SDL_Window* window = SpawnWindowSDL(fullscreen);
+    return window;
+}
+
+void sdl_on_end()
+{
+    SDL_Quit();
 }
 
 #ifdef __EMSCRIPTEN__
-extern void ResizeCameras(int width, int height);
+extern void on_viewport_resized(int width, int height);
 
-bool UpdateWebCanvas()
+bool update_web_canvas()
 {
     int2 canvas_size = get_canvas_size();
     if (screenDimensions.x != canvas_size.x || screenDimensions.y != canvas_size.y)
     {
         // printf("Canvas size has changed [%i x %i]\n", canvas_size.x, canvas_size.y);
-        ResizeOpenGLViewport(canvas_size.x, canvas_size.y);
-        ResizeCameras(canvas_size.x, canvas_size.y);
+        on_viewport_resized(canvas_size.x, canvas_size.y);
         return true;
     }
     return false;

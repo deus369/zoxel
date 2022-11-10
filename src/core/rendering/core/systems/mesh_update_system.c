@@ -51,7 +51,7 @@ void MeshUpdateSystem(ecs_iter_t *it)
 ECS_SYSTEM_DECLARE(MeshUpdateSystem);
 
 //! \todo Make proper queue.
-void MeshUpdateMainThread()
+void mesh_update_main_thread()
 {
     if (meshUpdateQueueCount == 0)
     {

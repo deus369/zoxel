@@ -6,7 +6,7 @@ bool wasPressedThisFrame = false;
 void SetKey(PhysicalButton *key, int eventType);
 void ResetKey(PhysicalButton *key);
 
-void SpawnKeyboardEntity()
+void spawn_keyboard_entity(ecs_world_t *world)
 {
     keyboardEntity = ecs_new_entity(world, "keyboard");
     // ecs_add(world, keyboardEntity, Keyboard);
@@ -15,7 +15,7 @@ void SpawnKeyboardEntity()
     // return keyboardEntity;
 }
 
-void ResetKeyboard(ecs_world_t *world)
+void reset_keyboard(ecs_world_t *world)
 {
     if (!keyboardEntity || !ecs_is_alive(world, keyboardEntity))
     {
@@ -58,7 +58,7 @@ void ResetKeyboard(ecs_world_t *world)
 }
 
 //! Extract Key Events from SDL and set them on entities keyboad.
-void ExtractKeyboard(ecs_world_t *world, SDL_Event event)
+void extract_keyboard(ecs_world_t *world, SDL_Event event)
 {
     if (!keyboardEntity || !ecs_is_alive(world, keyboardEntity))
     {

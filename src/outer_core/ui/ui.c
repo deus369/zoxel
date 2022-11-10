@@ -1,6 +1,9 @@
 #ifndef zoxel_ui
 #define zoxel_ui
 
+//! \todo When resizing, reposition UIs.
+//      - should i use a resize event in the window?
+
 // completely 2D ui? 3D canvas + 3D transforms?
 // canvas: still uses 2D posti
 
@@ -17,7 +20,7 @@ ECS_DECLARE(Button);
 zoxel_component(PixelPosition, int2);
 zoxel_component(PixelSize, int2);
 //! An anchor, used to get base position using canvas
-zoxel_component(Anchor, unsigned char);
+zoxel_component(Anchor, float2);
 zoxel_component(CanvasLink, ecs_entity_t);
 // prefabs
 #include "prefabs/canvas.c"
@@ -25,6 +28,31 @@ zoxel_component(CanvasLink, ecs_entity_t);
 #include "prefabs/button.c"
 // systems
 #include "systems/element_raycast_system.c"
+// util
+#include "util/test_uis.c"
+
+//! Reposition uis after viewport resizes.
+void uis_on_viewport_resized(int width, int height)
+{
+    //printf("uis_on_viewport_resized\n");
+    float2 canvasSizef2 = { (float) width, (float) height };
+    float aspectRatio = canvasSizef2.x / canvasSizef2.y;
+    for (int i = 0; i < ui_entities_count; i++)
+    {
+        ecs_entity_t e = ui_entities[i];
+        //printf("    e [%i] - [%lu]\n", i, (long int) e);
+        const PixelPosition *pixelPosition = ecs_get(world, e, PixelPosition);
+        const Anchor *anchor = ecs_get(world, e, Anchor);
+        float2 position2D = {
+            ((pixelPosition->value.x  / canvasSizef2.x) - 0.5f + anchor->value.x) * aspectRatio,
+            ((pixelPosition->value.y  / canvasSizef2.y) - 0.5f + anchor->value.y) };
+        const PixelSize *pixelSize = ecs_get(world, e, PixelSize);
+        float2 scaledSize2D = (float2) { pixelSize->value.x / canvasSizef2.y, pixelSize->value.y / canvasSizef2.y };
+        set_mesh_vertices_world_scale2D(world, e, squareTexturedVerts2, 16, scaledSize2D);  // scale the mesh
+        ecs_set(world, e, Position2D, { position2D });
+        ecs_set(world, e, EntityDirty, { 1 });
+    }
+}
 
 //! The UI contains ways to interact with 2D objects.
 /**
@@ -50,8 +78,5 @@ void UIImport(ecs_world_t *world)
     int2 testSize = { 16, 16 };
     spawn_canvas_prefab(world);
     spawn_element_prefab(world, testSize);
-    spawn_canvas(world, screenDimensions);
-    // test, spawn canvas, element
-    // spawn_element(world, (int2) { 0, 0 }, testSize);
 }
 #endif

@@ -53,11 +53,7 @@ void RenderingCoreImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, TextureCoordinatesGPULink);
     ECS_COMPONENT_DEFINE(world, EternalRotation);
     // gpu destruction hooks
-    ecs_set_hooks(world, MaterialGPULink, {
-        .ctor = ecs_ctor(MaterialGPULink),
-        .move = ecs_move(MaterialGPULink),
-        .dtor = ecs_dtor(MaterialGPULink)
-    });
+    ecs_set_hooks(world, MaterialGPULink, { .dtor = ecs_dtor(MaterialGPULink) });
     ecs_set_hooks(world, TextureGPULink, { .dtor = ecs_dtor(TextureGPULink) });
     ecs_set_hooks(world, MeshGPULink, { .dtor = ecs_dtor(MeshGPULink) });
     ecs_set_hooks(world, TextureCoordinatesGPULink, { .dtor = ecs_dtor(TextureCoordinatesGPULink) });
@@ -72,7 +68,6 @@ void RenderingCoreImport(ecs_world_t *world)
         [in] Position2D, [in] Rotation2D, [in] Scale2D, [in] Brightness, [in] MaterialGPULink, [in] TextureGPULink, [none] !MeshGPULink);
     ECS_SYSTEM_DEFINE(world, RenderMeshMaterial2DSystem, 0,
         [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] MaterialGPULink, [in] TextureGPULink);
-
     ECS_SYSTEM_DEFINE(world, InstanceRender3DSystem, 0,
         [in] Position, [in] Rotation, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink);
     ECS_SYSTEM_DEFINE(world, Render3DUniqueSystem, 0,
@@ -106,5 +101,7 @@ const MeshVertices *meshVertices = ecs_get(world, e, MeshVertices);
 for (int j = 0; j < meshVertices->length; j++)
 {
     printf("    - (2) Vertex [%i] is [%fx%fx%f]\n", j, meshVertices->value[j].x, meshVertices->value[j].y, meshVertices->value[j].z);
-}*/
+}*///,
+        //.move = ecs_move(MaterialGPULink),
+        //.dtor = ecs_dtor(MaterialGPULink)
 #endif

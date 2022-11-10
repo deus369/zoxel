@@ -11,7 +11,7 @@ ecs_entity_t get_main_camera()
 }
 
 //! Uses ecs_get_mut to resize cameras. \todo Create a viewport resize event.
-void ResizeCameras(int width, int height)
+void resize_cameras(int width, int height)
 {
     for (int i = 0; i < 2; i++)
     {

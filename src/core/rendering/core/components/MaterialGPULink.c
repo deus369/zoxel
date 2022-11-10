@@ -27,6 +27,7 @@ ECS_DTOR(MaterialGPULink, ptr,
     }
 })
 
+/*
 ECS_CTOR(MaterialGPULink, ptr,
 {
     // printf("ECS_CTOR MaterialGPULink!\n");
@@ -42,4 +43,4 @@ ECS_MOVE(MaterialGPULink, dst, src,
     }
     dst->value = src->value;
     src->value = 0;
-})
+})*/

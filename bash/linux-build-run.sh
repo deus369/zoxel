@@ -1,6 +1,6 @@
 #! /bin/bash
 
-cd ~/projects/zoxel
+cd ~/zoxel
 
 make -B -j24
 
