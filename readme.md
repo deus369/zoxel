@@ -1,4 +1,4 @@
-# Zoxel (Libre Edition)
+# Zoxel El Libre
 
 ~ Play Latest [[Web Build](https://deus369.github.io/zoxel/web-demo/)] ~
 
@@ -16,7 +16,7 @@
 
 - Has a huge roadmap for the future [[Roadmap](documents/todos/todo-main.md)]
 
-![Le New Zoxel](/screenshots/screenshot_2022-11-04_18-56-29.png?raw=false "Le New Zoxel")
+![Le New Zoxel](/screenshots/screenshot_2022-11-10_12-03-01.png?raw=false "Le New Zoxel")
 
 ## How To Build
 
