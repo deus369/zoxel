@@ -10,7 +10,6 @@ void GenerateChunkNoise(Chunk* chunk, const ChunkSize *chunkSize)
             for (int l = 0; l < chunkSize->value.z; l++)
             {
                 // int array_index = (j + k * chunkSize->value.x)  * chunkSize->value.y + l;
-
                 int distanceToMidX = abs_integer(chunkSize->value.x / 2 - j);
                 int distanceToMidY = abs_integer(chunkSize->value.y / 2 - k);
                 int distanceToMidZ = abs_integer(chunkSize->value.z / 2 - l);

@@ -1,6 +1,8 @@
 #ifndef zoxel_apps
 #define zoxel_apps
 
+#define debug_viewport_resize
+
 //! Included Libraries for App
 #include <stdbool.h>
 #include <stdlib.h>
@@ -46,6 +48,9 @@ extern void uis_on_viewport_resized(int width, int height);
 
 void on_viewport_resized(int width, int height)
 {
+    #ifdef debug_viewport_resize
+    printf("Viewport was resized [%ix%i]\n", width, height);
+    #endif
     resize_viewports(width, height);
     resize_cameras(width, height);
     uis_on_viewport_resized(width, height);

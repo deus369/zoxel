@@ -23,7 +23,7 @@ ecs_entity_t spawn_zext(ecs_world_t *world, float2 position2D, const char* text)
     {
         // convert normal char here to unsigned char!
         zextData->value[i] = text[i];
-        printf("[%i]: %i\n", i, (int) zextData->value[i]);
+        // printf("[%i]: %i\n", i, (int) zextData->value[i]);
     }
     ecs_modified(world, e, ZextData);
     return e;
