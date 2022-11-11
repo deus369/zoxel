@@ -1,0 +1,1 @@
+// when ui text updates, spawn/destroy font entities

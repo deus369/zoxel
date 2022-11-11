@@ -17,5 +17,4 @@ void RenderingImport(ecs_world_t *world)
     ECS_IMPORT(world, OpenGL);
     ECS_IMPORT(world, RenderingCore);
 }
-
 #endif

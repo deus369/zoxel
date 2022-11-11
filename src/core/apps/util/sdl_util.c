@@ -37,6 +37,7 @@ void PrintHelpMenu(const char* arg0)
     printf("\n");
     printf("        -h --help        print this help\n");
     printf("        -f --fullscreen  fullscreen window\n");
+    printf("        -g --halfscreen  halfscreen window\n");
     printf("        -v --vsync       enable vsync\n");
     printf("        -p --profiler       enable profiler\n");
     printf("\n");
@@ -50,6 +51,11 @@ void SetStartScreenSize()
     SDL_GetCurrentDisplayMode(0, &displayMode);
     screenDimensions.x = displayMode.w;
     screenDimensions.y = displayMode.h;
+    if (halfscreen)
+    {
+        screenDimensions.x /= 2;
+        screenDimensions.y /= 2;
+    }
 #ifdef __EMSCRIPTEN__
     int2 canvas_size = get_canvas_size();
     printf("    Canvas Screen Dimensions: %ix%i\n", canvas_size.x, canvas_size.y);

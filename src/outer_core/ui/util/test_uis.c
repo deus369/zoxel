@@ -20,6 +20,17 @@ void spawn_test_uis(ecs_world_t *world)
     spawn_element(world, (int2) { 3 * testSize2.x / 2, 10 + actionbar_size4.y / 2 }, testSize2, (float2) { 0.5f, 0 });
     spawn_element(world, (int2) { - 6 * testSize2.x / 2, 10 + actionbar_size4.y / 2 }, testSize2, (float2) { 0.5f, 0 });
     spawn_element(world, (int2) { 6 * testSize2.x / 2, 10 + actionbar_size4.y / 2 }, testSize2, (float2) { 0.5f, 0 });
+    
+    int2 zigel_size = (int2) { 24, 24 };
+    ecs_entity_t z = spawn_zext(world, (float2) { }, "Hello World.");
+    for (int i = 0; i < 12; i++)
+    {
+        spawn_zigel(world, z, 0,
+            (int2) { (zigel_size.x * i) - zigel_size.x * 6, -zigel_size.y / 2 - 8 },
+            zigel_size,
+            (float2) { 0.5f, 1.0f });
+    }
+    
     // test horizontal by spawning one per bar
     /*int width_division = 2; // 16;
     int height_division = 32; // 16;
@@ -36,4 +47,5 @@ void spawn_test_uis(ecs_world_t *world)
                 (int2) { bar_width, bar_height });
         }
     }*/
+    // test, spawn one zext
 }

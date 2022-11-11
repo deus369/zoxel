@@ -17,6 +17,7 @@
 //! apps Module.
 bool vsync = false;
 bool fullscreen = false;
+bool halfscreen = false;
 // Tags
 ECS_DECLARE(App);
 // components
@@ -93,6 +94,10 @@ int process_arguments(int argc, char* argv[])
         if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--fullscreen") == 0)
         {
             fullscreen = true;
+        }
+        if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--halfscreen") == 0)
+        {
+            halfscreen = true;
         }
         if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--vsync") == 0)
         {

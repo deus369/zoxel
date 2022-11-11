@@ -28,6 +28,12 @@ ECS_COMPONENT_DECLARE(name)
     component->value = (dataType*) malloc(length_ * sizeof(dataType));\
 }
 
+#define initialize_memory_component_non_pointer(component, dataType, length_)\
+{\
+    component.length = length_;\
+    component.value = (dataType*) malloc(length_ * sizeof(dataType));\
+}
+
 // memset(component->value, 0, length_ * stride);
 // printf("Freeing component %i.\n", component->length);
 // printf("Freeing memory_component at [%p] - [%i]\n", (void *)component, component->length);

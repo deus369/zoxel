@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <math.h> // for sqrt
 // move this to math module?
+#include "data/byte2.c"
 #include "data/float2.c"
 #include "data/float3.c"
 #include "data/float4.c"
