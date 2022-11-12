@@ -4,6 +4,6 @@ cd ~/zoxel
 
 make -B -j24
 
-./zoxel.x86 --fullscreen
+./zoxel --fullscreen
 
 sleep 30

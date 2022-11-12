@@ -1,10 +1,10 @@
 # Zoxel Makefile!
-# clear; make -f MakefileDev -B -j24; ./zoxel-dev.x86
+# clear; make -f MakefileDev -B -j24; ./zoxel-dev
 
 # can add --num-callers=60 to valgrind
 
 # Declare compiler tools and flags
-TARGET = zoxel-dev.x86
+TARGET = zoxel-dev
 CC = cc						# Defines the compiler, cc for C code
 CFLAGS = -std=c99			# Specificies c99 Standard
 # CFLAGS += -fPIC			# Position Independent Code https://stackoverflow.com/questions/5311515/gcc-fpic-option

@@ -12,6 +12,8 @@ ECS_DECLARE(Zigel);
 ECS_DECLARE(FontTexture);
 //! Holds all the zigels.
 ECS_DECLARE(Zext);
+//! A Zext that animates.
+ECS_DECLARE(AnimatedZext);
 // components
 //! A character index per zigel.
 zoxel_component(ZigelIndex, unsigned char);
@@ -46,6 +48,7 @@ void TextsImport(ecs_world_t *world)
     ECS_TAG_DEFINE(world, FontTexture);
     ECS_TAG_DEFINE(world, Zext);
     ECS_TAG_DEFINE(world, FontStyle);
+    ECS_TAG_DEFINE(world, AnimatedZext);
     ECS_COMPONENT_DEFINE(world, ZigelIndex);
     zoxel_memory_component_define(world, FontData);
     zoxel_memory_component_define(world, ZextData);
@@ -55,14 +58,13 @@ void TextsImport(ecs_world_t *world)
     zoxel_system_ctx(world, FontTextureSystem, EcsOnUpdate, generateTextureQuery,
         [none] FontTexture, [out] generic.EntityDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture,
         [in] ZigelIndex);
-    
     zoxel_filter(zextDirtyQuery, world, [none] Zext, [in] ZextDirty);
     zoxel_system_ctx(world, ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery,
         [none] Zext, [out] ZextDirty, [in] ZextData, [out] Children);
-
     spawn_font_style_prefab(world);
     spawn_font_prefab(world);
     spawn_zigel_prefab(world);
     spawn_zext_prefab(world);
+    spawn_font_style(world);
 }
 #endif

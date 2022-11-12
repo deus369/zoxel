@@ -20,19 +20,9 @@ void spawn_test_uis(ecs_world_t *world)
     spawn_element(world, (int2) { 3 * testSize2.x / 2, 10 + actionbar_size4.y / 2 }, testSize2, (float2) { 0.5f, 0 });
     spawn_element(world, (int2) { - 6 * testSize2.x / 2, 10 + actionbar_size4.y / 2 }, testSize2, (float2) { 0.5f, 0 });
     spawn_element(world, (int2) { 6 * testSize2.x / 2, 10 + actionbar_size4.y / 2 }, testSize2, (float2) { 0.5f, 0 });
-    
-    spawn_font_style(world);
-    // spawn_zext(world, (float2) { }, "Hello World.");
+    // spawn_zext(world, (int2) { 0, 0}, (float2) { 0.5f, 0.5f }, "Hello World.");
     spawn_zext(world, (int2) { 0, - 8}, (float2) { 0.5f, 1.0f }, "abcdefghijklmnopqrstuvwxyz");
     spawn_zext(world, (int2) { 0, actionbar_size4.y + 48}, (float2) { 0.5f, 0.0f }, "greetings minion");
-    //int font_size = 32;
-    //int2 zigel_size = (int2) { font_size, font_size };
-    /*for (int i = 0; i < 12; i++)
-    {
-        spawn_zigel(world, z, 0,
-            (int2) { (zigel_size.x * i) - zigel_size.x * 6, -zigel_size.y / 2 - 8 },
-            zigel_size, (float2) { 0.5f, 1.0f });
-    }*/
 }
 
 void test_ui_pixel_positions(ecs_world_t *world)

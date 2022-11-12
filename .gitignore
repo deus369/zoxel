@@ -1,10 +1,6 @@
-
-# ignore builds
-# *.x86
-
 #ignore zoxel build
-zoxel.x86
-zoxel-dev.x86
+zoxel
+zoxel-dev
 
 #ignore web-dev build
 web-demo-dev

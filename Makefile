@@ -3,7 +3,7 @@
 # can add --num-callers=60 to valgrind
 
 # Declare compiler tools and flags
-TARGET = zoxel.x86
+TARGET = zoxel
 CC = cc						# Defines the compiler, cc for C code
 CFLAGS = -std=c99			# Specificies c99 Standard
 # CFLAGS += -fPIC			# Position Independent Code https://stackoverflow.com/questions/5311515/gcc-fpic-option
