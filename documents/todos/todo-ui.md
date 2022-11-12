@@ -7,35 +7,35 @@ To-Do UI
 
 `Current`
 
-- [ ] UI Core
+- [ ] UIRaycastSystem
     - [ ] UI Select events
     - [ ] UI Click events
     - [ ] UI Drag events
-    - [ ] Window Entities
-        - [ ] A header UI with text
-        - [ ] A close button
-        - [ ] A close window event
-             - closed / confirm / cancel
-        - [ ] Drag window around to reposition
-    - [ ] Scrollview + ListUI
-    - [ ] UI Windows Flow
-        - Using Close Events
+- [ ] Window Entities
+    - [ ] A header UI with text
+    - [ ] A close button
+    - [ ] A close window event
+            - closed / confirm / cancel
+    - [ ] Drag window around to reposition
+- [ ] Scrollview + ListUI
+- [ ] UI Windows Flow
+    - Using Close Events
+
+-----
 
 `UI Core`
 
-- [ ] Windows
-- [ ] Labels
-- [ ] Font
-    - [ ] Generate Font Texture
-- [ ] Texts
-    - [ ] Assemble from a Text data
-- [ ] Buttons
-- [ ] Raycasting
+- [ ] Finish fonts
+    - [ ] Use hashmap for ascii conversion to byte data
 
+- [ ] Text Font Editor
+    - [ ] Editor Grid with lines
+    - [ ] show where mouse is pointing in grid
+    - [ ] Load / Save a font file
+    - [ ] Load / Save a font style
+    - [ ] Preview Generation from the points editing
 
-- [ ] UIButton tag - prefab - instantiate one in the middle of screen
-- [ ] UIRaycastSystem
-    - [ ] Raycast events
-    - [ ] EntityClick events
-- [ ] Font Texture Generation
-- [ ] Frame Texture Generation
+- [ ] More Prefab Testing
+    - [ ] Labels
+    - [ ] Buttons
+    - [ ] Windows

@@ -5,27 +5,7 @@ To-Do Main
 
 -----
 
-`Core`
-
-[Rendering](todo-rendering.md)
-
-`InnerCore`
-
-[User Interface](todo-ui.md)
-
-[Voxels](todo-voxels.md)
-
-`Extra`
-
-[Tools](todo-tools.md)
-
-[Devops](todo-devops.md)
-
-[Fixes](todo-fixes.md)
-
------
-
-`Current`
+`Doing List`
 
 - [ ] Current [User Interface](todo-ui.md)
 
@@ -46,6 +26,32 @@ To-Do Main
 
 -----
 
+A record of what i've done since i've started libre zoxel > [Done List](todo-done.md)
+
+-----
+
+`Modules`
+
+Core
+
+[Rendering](todo-rendering.md)
+
+InnerCore
+
+[User Interface](todo-ui.md)
+
+[Voxels](todo-voxels.md)
+
+Extra
+
+[Tools](todo-tools.md)
+
+[Devops](todo-devops.md)
+
+[Fixes](todo-fixes.md)
+
+-----
+
 `Next`
 
 - [ ] Custom pixel art for mouse ui
@@ -53,7 +59,6 @@ To-Do Main
 - [ ] Create a render queue and sort system
     - http://realtimecollisiondetection.net/blog/?p=86
     - https://paroj.github.io/gltut/Positioning/Tut05%20Overlap%20and%20Depth%20Buffering.html
-
 
 - [ ] Load Shaders as entities
     - Dispose of them when closing game
@@ -73,24 +78,28 @@ To-Do Main
 - [ ] Character2Ds
     - [ ] Mouse scroll to zoom in / out on follower
 
-`Input`
-- [ ] Handle multiple mouse devices
-    - With IDs and Extraction
-- [ ] Player to have connected devices
-- [ ] Virtual Joysticks for touchscreen
-    - Use for free roam
-
 -----
 
 `After`
 
 - [ ] RenderTextures - connect a texture to a camera
 
+- [ ] Audio Module
+    - [ ] Play basic sound
+    - [ ] Import sounds
+    - [ ] Generate sounds
+
 - [ ] Flesh out modules
     - [ ] Voxels Module
     - [ ] Stats Module
-    - [ ] Audio Module
     - [ ] Tiles Module
+
+`Input`
+- [ ] Handle multiple mouse devices
+    - With IDs and Extraction
+- [ ] Player to have connected devices
+- [ ] Virtual Joysticks for touchscreen
+    - Use for free roam
 
 `Application Side`
 - [ ] Support multiple Windows, one can be a FPS Debugger.
@@ -99,3 +108,8 @@ To-Do Main
 
 `Flecs`
 - [ ] Those queries still keep updating, they don't pass query checks
+
+
+-----
+
+[Back](../../readme.md)

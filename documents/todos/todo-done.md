@@ -15,6 +15,13 @@ Things that are done. A big ole list. To clean up other todo files.
 - [x] Camera Renderer UI
     - [x] Spawn Cube - Rotating
     - [x] Spawn 2nd camera
+- [x] Font
+    - [x] Generate Font Texture
+- [x] Texts
+    - [x] Assemble from a Text data
+- [x] Font Texture Generation
+- [x] Frame Texture Generation
+- [x] UIButton tag - prefab - instantiate one in the middle of screen
 
 `Particles`
 - [x] Particle3D with 2D mesh
