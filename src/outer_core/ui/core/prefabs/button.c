@@ -5,16 +5,8 @@ ecs_entity_t spawn_prefab_button(ecs_world_t *world)
     ecs_entity_t e = ecs_new_prefab(world, "ui_prefab_button");
     zoxel_add_component(world, e, Children);
     zoxel_add_tag(world, e, Button);
-    // generic
-    add_seed(world, e, 666);
-    add_dirty(world, e);
-    add_texture(world, e, (int2) { });
-    add_texture_frame(world, e);
-    #ifdef zoxel_transforms2D
-    add_transform2Ds(world, e);
-    #endif
-    add_unique_mesh_components(world, e);
-    add_ui_components(world, e);
+    zoxel_add_tag(world, e, FrameTexture);
+    add_ui_plus_components(world, e);
     button_prefab = e;
     return e;
 }

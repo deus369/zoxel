@@ -333,6 +333,7 @@ const byte2 font_lower_d[] =
     { font_right_side, font_top_side }, { font_right_side, middleSideX }
 };
 
+const int font_upper_d_length = 6 * 2;
 const byte2 font_upper_d[] =
 {
     { font_left_side, font_top_side }, { font_left_side, font_bottom_side },
@@ -355,12 +356,13 @@ const byte2 font_lower_e[] =
     { font_right_side, font_bottom_side }, { font_right_side, font_bottom_side + 1 }
 };
 
+const int font_upper_e_length = 4 * 2;
 const byte2 font_upper_e[] =
 {
     { font_left_side, font_bottom_side }, { font_left_side, font_top_side },
     { font_left_side, font_bottom_side }, { font_right_side, font_bottom_side },
     { font_left_side, font_top_side }, { font_right_side, font_top_side },
-    { font_left_side, font_upperMiddleSideY }, { font_right_side - 3, font_upperMiddleSideY }
+    { font_left_side, font_upperMiddleSideY }, { font_right_side - curve, font_upperMiddleSideY }
 };
 
 const int font_lower_f_length = 4 * 2;
@@ -372,6 +374,7 @@ const byte2 font_lower_f[] =
     { font_left_side, middleSideX }, { font_right_side, middleSideX }
 };
 
+const int font_upper_f_length = 4 * 2;
 const byte2 font_upper_f[] =
 {
     { font_left_side, font_top_side }, { font_left_side, middleSideX },
@@ -391,6 +394,7 @@ const byte2 font_lower_g[] =
     { font_right_side, font_bottom_side }, { font_left_side, font_bottom_side }
 };
 
+const int font_upper_g_length = 8 * 2;
 const byte2 font_upper_g[] =
 {
     { font_right_side, font_top_side - curve }, { font_right_side - curve, font_top_side },
@@ -412,7 +416,8 @@ const byte2 font_lower_h[] =
     { font_right_side, middleSideX }, { font_right_side, font_bottom_side }
 };
 
-const byte2 font_upperH[] =
+const int font_upper_h_length = 5 * 2;
+const byte2 font_upper_h[] =
 {
     { font_left_side, font_top_side }, { font_left_side, middleSideX },
     { font_left_side, middleSideX }, { font_left_side, font_bottom_side },
@@ -428,7 +433,8 @@ const byte2 font_lower_i[] =
     { middleSideX, middleSideX + 4 }, { middleSideX, middleSideX + 6 }
 };
 
-const byte2 font_upperI[] =
+const int font_upper_i_length = 5 * 2;
+const byte2 font_upper_i[] =
 {
     { middleSideX, font_top_side }, { middleSideX, font_bottom_side },
     { font_left_side, font_top_side }, { middleSideX, font_top_side },
@@ -445,6 +451,7 @@ const byte2 font_lower_j[] =
     { middleSideX - 2, font_bottom_side }, { middleSideX - 3, font_bottom_side },
 };
 
+const int font_upper_j_length = 3 * 2;
 const byte2 font_upper_j[] =
 {
     { middleSideX, font_top_side }, { middleSideX, font_bottom_side + 2 },
@@ -461,6 +468,7 @@ const byte2 font_lower_k[] =
     { font_left_side, font_lowerMiddleSideY }, { font_right_side, font_bottom_side },
 };
 
+const int font_upper_k_length = 4 * 2;
 const byte2 font_upper_k[] =
 {
     { font_left_side, font_top_side }, { font_left_side, middleSideX },
@@ -477,6 +485,7 @@ const byte2 font_lower_l[] =
     { elStart + curve, font_bottom_side }, { elStart + curve, font_bottom_side + curve }
 };
 
+const int font_upper_l_length = 3 * 2;
 const byte2 font_upper_l[] =
 {
     { font_left_side, font_bottom_side }, { font_left_side, font_top_side },
@@ -494,6 +503,7 @@ const byte2 font_lower_m[] =
 };
 
 // copy of font_lowerM
+const int font_upper_m_length = 4 * 2;
 const byte2 font_upper_m[] =
 {
     { font_left_side, font_bottom_side }, { font_left_side, font_top_side },
@@ -511,6 +521,7 @@ const byte2 font_lower_n[] =
 };
 
 // copy of font_lowerN
+const int font_upper_n_length = 3 * 2;
 const byte2 font_upper_n[] =
 {
     { font_left_side, font_bottom_side }, { font_left_side, font_top_side },
@@ -528,6 +539,7 @@ const byte2 font_lower_o[] =
 };
 
 // copy of font_lowerO
+const int font_upper_o_length = 4 * 2;
 const byte2 font_upper_o[] =
 {
     { font_left_side, font_top_side }, { font_right_side, font_top_side },
@@ -547,6 +559,7 @@ const byte2 font_lower_p[] =
 };
 
 // copy of font_lowerP
+const int font_upper_p_length = 5 * 2;
 const byte2 font_upper_p[] =
 {
     { font_left_side, font_top_side }, { font_right_side, font_top_side },
@@ -566,9 +579,9 @@ const byte2 font_lower_q[] =
     { font_right_side, font_lowerMiddleSideY }, { font_right_side, font_bottom_side }
 };
 
+const int font_upper_q_length = 5 * 2;
 const byte2 font_upper_q[] =
 {
-    // top part
     { font_left_side, font_top_side }, { font_right_side, font_top_side },
     { font_right_side, font_top_side }, { font_right_side, middleSideX },
     { font_right_side, middleSideX }, { font_left_side, middleSideX },
@@ -584,6 +597,7 @@ const byte2 font_lower_r[] =
     { font_left_side + 3, middleSideX }, { font_right_side, middleSideX },
 };
 
+const int font_upper_r_length = 6 * 2;
 const byte2 font_upper_r[] =
 {
     { font_left_side, font_top_side }, { font_right_side, font_top_side },
@@ -604,6 +618,7 @@ const byte2 font_lower_s[] =
     { font_right_side, font_bottom_side }, { font_left_side, font_bottom_side },
 };
 
+const int font_upper_s_length = 5 * 2;
 const byte2 font_upper_s[] =
 {
     { font_left_side, font_top_side }, { font_right_side, font_top_side },
@@ -624,6 +639,7 @@ const byte2 font_lower_t[] =
     { middleSideX + 3, font_bottom_side }, { middleSideX + 3, font_bottom_side + 2 }
 };
 
+const int font_upper_t_length = 3 * 2;
 const byte2 font_upper_t[] =
 {
     { middleSideX, font_top_side }, { middleSideX, font_bottom_side },
@@ -641,6 +657,7 @@ const byte2 font_lower_u[] =
 };
 
 // copied font_lowerU
+const int font_upper_u_length = 3 * 2;
 const byte2 font_upper_u[] =
 {
     { font_left_side, font_top_side }, { font_left_side, font_bottom_side },
@@ -656,6 +673,7 @@ const byte2 font_lower_v[] =
 };
 
 // copied font_lowerV
+const int font_upper_v_length = 2 * 2;
 const byte2 font_upper_v[] =
 {
     { font_left_side, font_top_side }, { middleSideX, font_bottom_side },
@@ -672,6 +690,7 @@ const byte2 font_lower_w[] =
 };
 
 // copied font_lowerW
+const int font_upper_w_length = 4 * 2;
 const byte2 font_upper_w[] =
 {
     { font_left_side, font_bottom_side }, { font_left_side, font_top_side },

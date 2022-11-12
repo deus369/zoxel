@@ -13,8 +13,8 @@ To-Do UI
     - [ ] UI Drag events
 
 - [ ] Window Entities
-    - [ ] A header UI with text
-    - [ ] A close button
+    - [x] A header UI with text
+    - [x] A close button
     - [ ] A close window event
             - closed / confirm / cancel
     - [ ] Drag window around to reposition

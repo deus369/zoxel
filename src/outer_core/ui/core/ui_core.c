@@ -18,6 +18,8 @@ ECS_DECLARE(ElementRaycaster);
 ECS_DECLARE(Button);
 // A ui window!
 ECS_DECLARE(Window);
+// A ui window!
+ECS_DECLARE(Header);
 // components
 zoxel_component(PixelPosition, int2);
 zoxel_component(PixelSize, int2);
@@ -30,6 +32,7 @@ zoxel_component(CanvasLink, ecs_entity_t);
 #include "prefabs/canvas.c"
 #include "prefabs/element.c"
 #include "prefabs/button.c"
+#include "prefabs/header.c"
 #include "prefabs/window.c"
 // systems
 #include "systems/element_raycast_system.c"
@@ -49,6 +52,7 @@ void UICoreImport(ecs_world_t *world)
     ECS_TAG_DEFINE(world, ElementRaycaster);
     ECS_TAG_DEFINE(world, Button);
     ECS_TAG_DEFINE(world, Window);
+    ECS_TAG_DEFINE(world, Header);
     ECS_COMPONENT_DEFINE(world, PixelPosition);
     ECS_COMPONENT_DEFINE(world, PixelSize);
     ECS_COMPONENT_DEFINE(world, Anchor);

@@ -1,8 +1,8 @@
 //! =-= Zoxel =-=
 #define SDL_IMAGES
-// #define zoxel_test_character2Ds
-// #define zoxel_test_cubes
-// #define zoxel_test_voxels
+#define zoxel_test_character2Ds
+#define zoxel_test_cubes
+#define zoxel_test_voxels
 #define zoxel_test_uis
 #include "_includes.c"
 

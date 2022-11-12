@@ -47,9 +47,9 @@ void ZextUpdateSystem(ecs_iter_t *it)
                 free(component->value);
             }*/
         }
-        else
+        // else
         {
-            printf("Zext was updated and text remained the same size!\n");
+            // printf("Zext was updated and text remained the same size!\n");
         }
         //! for all old children, check if zigel index has changed.
 
