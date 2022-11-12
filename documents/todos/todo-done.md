@@ -7,19 +7,38 @@ Things that are done. A big ole list. To clean up other todo files.
 
 -----
 
-`Done`
+`UI`
+- [x] Scale textures of ui properly
+    - Use Unique Meshes - generated based on ui size
+- [x] Position perfectly
+- [x] when resize viewport - resize uis there
+- [x] Camera Renderer UI
+    - [x] Spawn Cube - Rotating
+    - [x] Spawn 2nd camera
+
+`Particles`
+- [x] Particle3D with 2D mesh
+
+`Cameras`
 - [x] Fix rotation of camera math - Transform Matrix
     - should be rotating at point instead of around point
     - [x] Debug it in euler / position
 - [x] Free roam camera
     - [x] Using mouse to rotate it around
+
+`Inputs`
 - [x] Mouse Device + handling
+- [x] Convert SDL of keyboard into an entity
+
+`Rendering`
 - [x] Push UV into Textured Material
     - [x] Use minimal example for drawing with uvs?
 - [x] Material Comonent - with a GLInt reference to a material
 - [x] Link texture data in material
+
+`Extra`
+- [x] Create minimal example of setting a 'material' integer link as a test for the upgrade bug
 - [x] Web build doesn't resize canvas - fix 
-- [x] Convert SDL of keyboard into an entity
 - [x] Seperate out structs into component files
 - [x] DestroyEntity event and systems, with disposing of allocations (OnDelete events?)
     - [x] DestroyInTimeSystem
@@ -29,7 +48,7 @@ Things that are done. A big ole list. To clean up other todo files.
     - [x] Spawn System
 - [x] Inject data into another system
 - [x] Seperate out shaders from inlines
-    - [ ] Find a way to package shaders into binary build
+    - [x] Find a way to package shaders into binary build
 - [x] Nativearray data structure
     - can just use malloc
 - [x] Customize flecs to remove some feaures to reduce build size

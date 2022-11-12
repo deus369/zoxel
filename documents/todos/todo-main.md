@@ -27,66 +27,75 @@ To-Do Main
 
 `Current`
 
-- [ ] Scale textures of ui properly
-    - Use Unique Meshes - generated based on ui size
-- [x] Position perfectly
-- [ ] when resize viewport - resize uis there
-- [ ] UI Select events
+- [ ] Current [User Interface](todo-ui.md)
 
+- [ ] Line2Ds
+    - [ ] Line tag / module / prefab etc
+    - [ ] Grid2Ds for testing
 
-- [ ] Those queries still keep updating, they don't pass query checks
+- [ ] GameUIs Module
+    - [ ] Generic Main Menus
+        - spawn_main_menu_prefab function
+        - game label
+        - play button
+        - options button
+        - exit button
+    - [ ] Generic Load/Save/New Game folders + uis
+        - load directory folder names into a list
+        - preview the selected file events (for example, show time played in that game folder)
+
+-----
+
+`Next`
+
+- [ ] Custom pixel art for mouse ui
 
 - [ ] Create a render queue and sort system
     - http://realtimecollisiondetection.net/blog/?p=86
     - https://paroj.github.io/gltut/Positioning/Tut05%20Overlap%20and%20Depth%20Buffering.html
 
-- [x] Create minimal example of setting a 'material' integer link as a test for the upgrade bug
 
 - [ ] Load Shaders as entities
     - Dispose of them when closing game
     - Keep generic enough to use, so I can just load a list of files from resources
 
 - [ ] 3D Particles
-    - [x] Particle3D with 2D mesh
     - [ ] Particle3D with 3D mesh
+
+- [ ] Line 3Ds! Grid3D :D
     
 - [ ] Character3Ds
     - [ ] Physics 3D
     - [ ] Jump ability
     - [ ] Textured Cube - Drawing
+    - [ ] First person camera on character3D
 
-`Cameras`
-- [ ] Mouse scroll to zoom in / out on follower
-- [ ] First person camera on character
+- [ ] Character2Ds
+    - [ ] Mouse scroll to zoom in / out on follower
 
 `Input`
-- [ ] Handle multiple devices
-- [ ] Virtual Joysticks for touchscreen - free roam
+- [ ] Handle multiple mouse devices
+    - With IDs and Extraction
+- [ ] Player to have connected devices
+- [ ] Virtual Joysticks for touchscreen
+    - Use for free roam
 
-`Lines`
-- [ ] Line2Ds
-    - [ ] Line tag / module / prefab etc
-- [ ] Line 3Ds! Grid :D
+-----
 
-`Next Modules`
-- [ ] GameUIs Module
-- [ ] Voxels Module
-- [ ] Stats Module
-- [ ] Audio Module
-- [ ] Tiles Module
+`After`
 
-`Game UIs`
-- [ ] Generic Main Menu
-- [ ] UI Windows Flow
-- [ ] Generic Load/Save/New Game folders + ui
-- [ ] Scrollview + ListUI
-- [ ] Camera Renderer UI
-    - [ ] Spawn Cube - Rotating
-    - [ ] Spawn 2nd camera
-    - [ ] ViewUI connected to 2ND Camera
-- [ ] Moveable Windows - Drag by headers
+- [ ] RenderTextures - connect a texture to a camera
+
+- [ ] Flesh out modules
+    - [ ] Voxels Module
+    - [ ] Stats Module
+    - [ ] Audio Module
+    - [ ] Tiles Module
 
 `Application Side`
 - [ ] Support multiple Windows, one can be a FPS Debugger.
     - [ ] One Entity per Window
     - [ ] Viewport Component
+
+`Flecs`
+- [ ] Those queries still keep updating, they don't pass query checks
