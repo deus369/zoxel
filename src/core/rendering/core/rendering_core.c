@@ -23,6 +23,7 @@ zoxel_memory_component(MeshVertices, float);
 zoxel_component(EternalRotation, float4);
 // util
 #include "util/mesh_util.c"
+#include "util/render_util.c"
 // prefabs
 #include "prefabs/custom_mesh.c"
 // systems
@@ -32,17 +33,6 @@ zoxel_component(EternalRotation, float4);
 #include "systems/render2D_system.c"
 #include "systems/render3D_instance_system.c"
 #include "systems/render3D_unique_system.c"
-
-void add_unique_mesh_components(ecs_world_t *world, ecs_entity_t e)
-{
-    zoxel_set_component(world, e, Brightness, { 1 });
-    add_gpu_mesh(world, e);
-    add_gpu_material(world, e);
-    add_gpu_texture(world, e);
-    //! \todo Fix: Causes a Flecs memory leak?!?! Temporarily commented out.
-    zoxel_add_component(world, e, MeshVertices);
-    zoxel_add_component(world, e, MeshIndicies);
-}
 
 //! The rendering core Sub Module.
 /**

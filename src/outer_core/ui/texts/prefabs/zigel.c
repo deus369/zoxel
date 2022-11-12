@@ -5,8 +5,7 @@ ecs_entity_t spawn_zigel_prefab(ecs_world_t *world)
 {
     ecs_entity_t e = ecs_new_prefab(world, "zigel_prefab");
     zoxel_add_tag(world, e, Zigel);
-    // zoxel_add_component(world, e, FontData);
-
+    zoxel_add_component(world, e, ZigelIndex);
     add_seed(world, e, 444);
     add_dirty(world, e);
     add_transform2Ds(world, e);
@@ -15,7 +14,6 @@ ecs_entity_t spawn_zigel_prefab(ecs_world_t *world)
     // add_texture_frame(world, e);
     add_unique_mesh_components(world, e);
     add_ui_components(world, e);    // replace texture components with zigel ones
-
     zigel_prefab = e;
     return e;
 }
@@ -24,6 +22,7 @@ ecs_entity_t spawn_zigel(ecs_world_t *world, ecs_entity_t zext, unsigned char in
     int2 position, int2 size, float2 anchor)
 {
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, zigel_prefab);
+    zoxel_set_component(world, e, ZigelIndex, { index });
     initialize_ui_components(world, e, position, size, anchor);
     // const ZextData *zextData = ecs_get(world, e, ZextData);
     return e;

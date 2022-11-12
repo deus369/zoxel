@@ -51,6 +51,15 @@ ECS_COMPONENT_DECLARE(name)
     }\
 }
 
+#define re_initialize_memory_component_no_free(component, dataType, length_)\
+{\
+    if (component->length != length_)\
+    {\
+        component->length = length_;\
+        component->value = (dataType*) malloc(length_ * sizeof(dataType));\
+    }\
+}
+
             
 // printf("stride %i\n", stride);
 /*

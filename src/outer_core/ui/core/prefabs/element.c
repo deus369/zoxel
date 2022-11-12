@@ -1,17 +1,4 @@
 ecs_entity_t element_prefab;
-// a quick & dirty lookup for uis
-ecs_entity_t ui_entities[128];
-int ui_entities_count = 0;
-
-void add_ui_components(ecs_world_t *world, ecs_entity_t e)
-{
-    zoxel_add_tag(world, e, Element);
-    zoxel_add_tag(world, e, ElementRender);
-    zoxel_add_component(world, e, PixelPosition);
-    zoxel_add_component(world, e, PixelSize);
-    zoxel_add_component(world, e, Anchor);
-    zoxel_add_component(world, e, CanvasLink);
-}
 
 void initialize_ui_components(ecs_world_t *world, ecs_entity_t e, int2 position, int2 size, float2 anchor)
 {
