@@ -33,9 +33,12 @@ void spawn_test_uis(ecs_world_t *world)
             (int2) { (zigel_size.x * i) - zigel_size.x * 6, -zigel_size.y / 2 - 8 },
             zigel_size, (float2) { 0.5f, 1.0f });
     }*/
-    
+}
+
+void test_ui_pixel_positions(ecs_world_t *world)
+{
     // test horizontal by spawning one per bar
-    /*int width_division = 2; // 16;
+    int width_division = 2; // 16;
     int height_division = 32; // 16;
     int bar_width = screenDimensions.x / width_division; // 64;
     int bar_height = screenDimensions.y / height_division; // 64;
@@ -47,8 +50,7 @@ void spawn_test_uis(ecs_world_t *world)
         {
             spawn_element(world,
                 (int2) { j * bar_width + bar_width / 2, i * bar_height + bar_height / 2 },
-                (int2) { bar_width, bar_height });
+                (int2) { bar_width, bar_height }, (float2) { 0, 0 });
         }
-    }*/
-    // test, spawn one zext
+    }
 }
