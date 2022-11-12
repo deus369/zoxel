@@ -1,7 +1,6 @@
 #ifndef zoxel_apps
 #define zoxel_apps
-
-#define debug_viewport_resize
+// #define debug_viewport_resize
 
 //! Included Libraries for App
 #include <stdbool.h>
@@ -44,7 +43,7 @@ void quit()
 
 extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event);
 extern void resize_cameras(int width, int height);
-extern void uis_on_viewport_resized(int width, int height);
+extern void uis_on_viewport_resized(ecs_world_t *world, int width, int height);
 
 void on_viewport_resized(int width, int height)
 {
@@ -53,7 +52,7 @@ void on_viewport_resized(int width, int height)
     #endif
     resize_viewports(width, height);
     resize_cameras(width, height);
-    uis_on_viewport_resized(width, height);
+    uis_on_viewport_resized(world, width, height);
 }
 
 //! Polls SDL for input events. Also handles resize and window quit events.
