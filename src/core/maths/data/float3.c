@@ -19,7 +19,7 @@ float3 float3_multiply_float(float3 input, float mul) // by-value param invokes 
     return input;
 }
 
-float3 float3_add_float3(float3 inputA, float3 inputB) // by-value param invokes class copy-ctor
+float3 float3_add(float3 inputA, float3 inputB) // by-value param invokes class copy-ctor
 {
     return (float3) { inputA.x + inputB.x, inputA.y + inputB.y, inputA.z + inputB.z };
 }

@@ -37,7 +37,7 @@ void FreeCameraRotateSystem(ecs_iter_t *it)
                 if (freeRoam->value)  // mouse->left.isPressed || 
                 {
                     // printf("mouse->delta: %ix%i\n", mouse->delta.x, mouse->delta.y);
-                    euler->value = float3_add_float3(euler->value, eulerAddition);
+                    euler->value = float3_add(euler->value, eulerAddition);
                     Rotation *rotation = &rotations[j];
                     // rotation->value = quaternion_rotate(quaternion_from_euler(eulerAddition), rotation->value);
                     rotation->value = quaternion_from_euler(euler->value);

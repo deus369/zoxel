@@ -85,8 +85,8 @@ void ChunkBuildSystem(ecs_iter_t *it)
                         {
                             float3 vertex_position = cubeVertices2[a]; // (float3) { cubeVertices[a + 0], cubeVertices[a + 1], cubeVertices[a + 2] };
                             vertex_position = float3_multiply_float(vertex_position, voxel_scale);          // scale vertex
-                            vertex_position = float3_add_float3(vertex_position, vertex_position_offset);   // offset vertex by voxel position in chunk
-                            vertex_position = float3_add_float3(vertex_position, center_mesh_offset);       // add total mesh offset
+                            vertex_position = float3_add(vertex_position, vertex_position_offset);   // offset vertex by voxel position in chunk
+                            vertex_position = float3_add(vertex_position, center_mesh_offset);       // add total mesh offset
                             meshVertices2->value[b + 0] = vertex_position.x;
                             meshVertices2->value[b + 1] = vertex_position.y;
                             meshVertices2->value[b + 2] = vertex_position.z;

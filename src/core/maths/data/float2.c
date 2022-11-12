@@ -40,7 +40,7 @@ float2 float2_normalize(float2 input)
     return float2_divide(input, length);
 }
 
-float2 float2_add_float2(float2 a, float2 b)
+float2 float2_add(float2 a, float2 b)
 {
     return (float2) { a.x + b.x, a.y + b.y };
 }

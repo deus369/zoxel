@@ -14,11 +14,12 @@ ecs_entity_t spawn_font_style_prefab(ecs_world_t *world)
 
 ecs_entity_t spawn_font_style(ecs_world_t *world)
 {
+    const int fonts_used = 56;
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, font_style_prefab);
     Children *children = ecs_get_mut(world, e, Children);
     initialize_memory_component(children, ecs_entity_t, font_styles_length);
     children->value[0] = spawn_font(world, font_question_mark, font_question_mark_length);
-    children->value[27] = spawn_font(world, font_space, font_space_length);
+    children->value[55] = spawn_font(world, font_space, font_space_length);
     children->value[1] = spawn_font(world, font_lower_a, font_lower_a_length);
     children->value[2] = spawn_font(world, font_lower_b, font_lower_b_length);
     children->value[3] = spawn_font(world, font_lower_c, font_lower_c_length);
@@ -45,8 +46,14 @@ ecs_entity_t spawn_font_style(ecs_world_t *world)
     children->value[24] = spawn_font(world, font_lower_x, font_lower_x_length);
     children->value[25] = spawn_font(world, font_lower_y, font_lower_y_length);
     children->value[26] = spawn_font(world, font_lower_z, font_lower_z_length);
+    children->value[27] = spawn_font(world, font_upper_a, font_upper_a_length);
+    children->value[27] = spawn_font(world, font_upper_b, font_upper_b_length);
+    children->value[27] = spawn_font(world, font_upper_c, font_upper_c_length);
+    children->value[52] = spawn_font(world, font_upper_x, font_upper_x_length);
+    children->value[53] = spawn_font(world, font_upper_y, font_upper_y_length);
+    children->value[54] = spawn_font(world, font_upper_z, font_upper_z_length);
     // children->value[5] = spawn_font(world, font_upper_z, font_upper_z_length);
-    for (int i = 28; i < font_styles_length; i++)
+    for (int i = fonts_used; i < font_styles_length; i++)
     {
         children->value[i] = spawn_font(world, font_question_mark, font_question_mark_length);
     }

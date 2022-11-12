@@ -83,5 +83,5 @@ float3 float4_rotate_float3(float4 rotation, float3 value)
     float3 t = float3_multiply_float(float3_cross(rotationXYZ, value), 2.0f);
     float3 crossB = float3_cross(rotationXYZ, t);
     float3 scaledT = float3_multiply_float(t, rotation.w);
-    return float3_add_float3(value, float3_add_float3(scaledT, crossB));
+    return float3_add(value, float3_add(scaledT, crossB));
 }

@@ -16,6 +16,8 @@ ECS_DECLARE(Canvas);
 ECS_DECLARE(ElementRaycaster);
 // UI extras, make extra ui module?
 ECS_DECLARE(Button);
+// A ui window!
+ECS_DECLARE(Window);
 // components
 zoxel_component(PixelPosition, int2);
 zoxel_component(PixelSize, int2);
@@ -28,6 +30,7 @@ zoxel_component(CanvasLink, ecs_entity_t);
 #include "prefabs/canvas.c"
 #include "prefabs/element.c"
 #include "prefabs/button.c"
+#include "prefabs/window.c"
 // systems
 #include "systems/element_raycast_system.c"
 
@@ -42,9 +45,10 @@ void UICoreImport(ecs_world_t *world)
     ECS_TAG_DEFINE(world, Element);
     ECS_TAG_DEFINE(world, Selectable);
     ECS_TAG_DEFINE(world, Clickable);
-    ECS_TAG_DEFINE(world, Button);
     ECS_TAG_DEFINE(world, Canvas);
     ECS_TAG_DEFINE(world, ElementRaycaster);
+    ECS_TAG_DEFINE(world, Button);
+    ECS_TAG_DEFINE(world, Window);
     ECS_COMPONENT_DEFINE(world, PixelPosition);
     ECS_COMPONENT_DEFINE(world, PixelSize);
     ECS_COMPONENT_DEFINE(world, Anchor);
@@ -52,8 +56,10 @@ void UICoreImport(ecs_world_t *world)
     // Systems
     zoxel_system(world, ElementRaycastSystem, EcsOnUpdate, [none] ElementRaycaster);
     // prefabs
-    int2 testSize = { 16, 16 };
-    spawn_canvas_prefab(world);
-    spawn_element_prefab(world, testSize);
+    spawn_prefab_canvas(world);
+    spawn_prefab_element(world);
+    spawn_prefab_window(world);
+    spawn_prefab_button(world);
+    spawn_canvas(world, screenDimensions);
 }
 #endif

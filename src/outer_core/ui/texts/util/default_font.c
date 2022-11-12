@@ -7,7 +7,7 @@ const int font_upperMiddleSideY = 8;
 const int font_lowerMiddleSideY = 5;
 const int font_lowerTopSide = 9;
 const int elStart = 6;
-const int curve = 4;
+const int curve = 3;
 const int font_lowerCurve = 2;
 const int middleSideX = 8;
 
@@ -253,18 +253,18 @@ const byte2 font_lower_a[] =
     { font_right_side, font_lowerTopSide }, { font_right_side, font_lowerTopSide - curve },
     { font_right_side, font_lowerTopSide - curve }, { font_right_side, font_bottom_side + curve },
     { font_right_side, font_bottom_side + curve }, { font_right_side, font_bottom_side },
-    // top part
-    { font_right_side, font_lowerTopSide - curve }, { font_right_side - curve, font_lowerTopSide },
-    { font_right_side - curve, font_lowerTopSide }, { font_left_side - curve, font_lowerTopSide },
-    //{ font_right_side, font_lowerTopSide }, { font_right_side, font_lowerTopSide - curve },
-    { font_left_side - curve, font_lowerTopSide }, { font_left_side, font_lowerTopSide - curve },
     // bottom
-    { font_left_side, font_lowerTopSide - curve }, { font_left_side, font_bottom_side + curve },
-    { font_left_side, font_bottom_side + curve }, { font_right_side - curve, font_bottom_side },
-    { font_right_side - curve, font_bottom_side }, { font_right_side, font_bottom_side + curve },
-};  
+    { font_right_side, font_bottom_side + curve }, { font_right_side - curve, font_bottom_side },
+    { font_right_side - curve, font_bottom_side }, { font_left_side + curve, font_bottom_side },
+    { font_left_side + curve, font_bottom_side }, { font_left_side, font_lowerTopSide - curve },
+    // top part
+    { font_left_side, font_lowerTopSide - curve }, { font_left_side + curve, font_lowerTopSide },
+    { font_left_side + curve, font_lowerTopSide }, { font_right_side - curve, font_lowerTopSide },
+    { font_right_side - curve, font_lowerTopSide }, { font_right_side, font_lowerTopSide - curve },
+};
 
-const byte2 font_upperA[] =
+const int font_upper_a_length = 3 * 2;
+const byte2 font_upper_a[] =
 {
     { font_left_side, font_bottom_side }, { middleSideX, font_top_side },
     { middleSideX, font_top_side }, { font_right_side, font_bottom_side },
@@ -281,7 +281,8 @@ const byte2 font_lower_b[] =
     { font_left_side, font_top_side }, { font_left_side, font_upperMiddleSideY }
 };
 
-const byte2 font_upperB[] =
+const int font_upper_b_length = 11 * 2;
+const byte2 font_upper_b[] =
 {
     { font_left_side, font_top_side }, { font_left_side, font_upperMiddleSideY },
     { font_left_side, font_upperMiddleSideY }, { font_left_side, font_bottom_side },
@@ -310,14 +311,13 @@ const byte2 font_lower_c[] =
     { font_right_side - font_lowerCurve, font_bottom_side }, { font_right_side, font_bottom_side + font_lowerCurve / 2 },
 };
 
-const byte2 font_upperC[] =
+const int font_upper_c_length = 7 * 2;
+const byte2 font_upper_c[] =
 {
     { font_right_side, font_top_side - curve }, { font_right_side - curve, font_top_side },
     { font_right_side - curve, font_top_side }, { font_left_side + curve, font_top_side },
-
     { font_left_side + curve, font_top_side }, { font_left_side, font_top_side - curve },
     { font_left_side, font_top_side - curve }, { font_left_side, font_bottom_side + curve },
-
     { font_left_side, font_bottom_side + curve }, { font_left_side + curve, font_bottom_side },
     { font_left_side + curve, font_bottom_side }, { font_right_side - curve, font_bottom_side },
     { font_right_side - curve, font_bottom_side }, { font_right_side, font_bottom_side + curve },
@@ -690,6 +690,7 @@ const byte2 font_lower_x[] =
 };
 
 // copied font_lowerX
+const int font_upper_x_length = 4 * 2;
 const byte2 font_upper_x[] =
 {
     { font_left_side, font_bottom_side }, { middleSideX, font_upperMiddleSideY },
@@ -710,6 +711,7 @@ const byte2 font_lower_y[] =
 };
 
 // copied font_lowerY
+const int font_upper_y_length = 6 * 2;
 const byte2 font_upper_y[] =
 {
     { font_left_side, font_top_side }, { font_left_side, font_upperMiddleSideY },

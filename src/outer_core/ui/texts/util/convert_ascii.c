@@ -7,7 +7,7 @@ unsigned char convert_ascii(char input)
     }
     else if (input == ' ')
     {
-        return 27;
+        return 55;
     }
     else if (input == 'a')
     {
@@ -112,6 +112,74 @@ unsigned char convert_ascii(char input)
     else if (input == 'z')
     {
         return 26;
+    }
+    else if (input == 'A')
+    {
+        return 27;
+    }
+    else if (input == 'B')
+    {
+        return 28;
+    }
+    else if (input == 'C')
+    {
+        return 29;
+    }
+    else if (input == 'D')
+    {
+        return 30;
+    }
+    else if (input == 'E')
+    {
+        return 31;
+    }
+    else if (input == 'F')
+    {
+        return 32;
+    }
+    else if (input == 'G')
+    {
+        return 33;
+    }
+    else if (input == 'H')
+    {
+        return 34;
+    }
+    else if (input == 'I')
+    {
+        return 35;
+    }
+    else if (input == 'J')
+    {
+        return 36;
+    }
+    else if (input == 'K')
+    {
+        return 37;
+    }
+    else if (input == 'L')
+    {
+        return 38;
+    }
+    else if (input == 'M')
+    {
+        return 39;
+    }
+    else if (input == 'N')
+    {
+        return 40;
+    }
+    else if (input == 'X')
+    {
+        return 52;
+    }
+    else if (input == 'Y')
+    {
+        return 53;
+    }
+    else if (input == 'Z')
+    {
+        return 54;
     }
     return 0;
 }

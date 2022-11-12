@@ -1,6 +1,6 @@
 
-//! Destroy SDL Window.
-ECS_DTOR(Window, ptr,
+//! Destroy SDLWindow.
+ECS_DTOR(SDLWindow, ptr,
 {
     if (ptr->value != 0)
     {

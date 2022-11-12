@@ -65,7 +65,7 @@ void FreeCameraMoveSystem(ecs_iter_t *it)
                     //    rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
                     float3 rotatedMovement = float4_rotate_float3(rotation->value, movement);
                     Position *position = &positions[j];
-                    position->value = float3_add_float3(position->value, rotatedMovement);
+                    position->value = float3_add(position->value, rotatedMovement);
                     // float4_print_euler(rotation->value);
                     // float3 rotatedMovement2 = float3_multiply_float(rotatedMovement, 10000);
                     // printf("Moving [%i x %i x %i]\n", (int) rotatedMovement2.x, (int) rotatedMovement2.y, (int) rotatedMovement2.z);

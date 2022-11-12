@@ -1,8 +1,9 @@
 //! =-= Zoxel =-=
 #define SDL_IMAGES
-#define zoxel_test_character2Ds
-#define zoxel_test_cubes
-#define zoxel_test_voxels
+// #define zoxel_test_character2Ds
+// #define zoxel_test_cubes
+// #define zoxel_test_voxels
+#define zoxel_test_uis
 #include "_includes.c"
 
 ecs_entity_t localPlayer;
@@ -18,7 +19,7 @@ void spawn_game(ecs_world_t *world)
     spawn_ui_camera(world, screenDimensions);
     spawn_connected_devices(world);
     localPlayer = spawn_player_character2D(world, main_camera);
-    spawn_test_uis(world);
+    spawn_main_menu(world, "Zoxel");
 }
 
 //! The main update loop.

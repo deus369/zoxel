@@ -1,7 +1,6 @@
 ecs_entity_t canvas_prefab;
-ecs_entity_t canvas;
 
-void spawn_canvas_prefab(ecs_world_t *world)
+void spawn_prefab_canvas(ecs_world_t *world)
 {
     ecs_entity_t e = ecs_new_prefab(world, "ui_canvas_prefab");
     zoxel_add_tag(world, e, Canvas);

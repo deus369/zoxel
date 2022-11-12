@@ -23,7 +23,7 @@ bool halfscreen = false;
 // Tags
 ECS_DECLARE(App);
 // components
-zoxel_component(Window, SDL_Window*);
+zoxel_component(SDLWindow, SDL_Window*);
 zoxel_component(Renderer, SDL_Renderer*);
 zoxel_component(Context, SDL_GLContext*);
 // prefabs
@@ -124,10 +124,10 @@ void AppsImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Apps);
     ECS_TAG_DEFINE(world, App);
-    ECS_COMPONENT_DEFINE(world, Window);
+    ECS_COMPONENT_DEFINE(world, SDLWindow);
     ECS_COMPONENT_DEFINE(world, Context);
     ECS_COMPONENT_DEFINE(world, Renderer);
-    ecs_set_hooks(world, Window, { .dtor = ecs_dtor(Window) });
+    ecs_set_hooks(world, SDLWindow, { .dtor = ecs_dtor(SDLWindow) });
     ecs_set_hooks(world, Context, { .dtor = ecs_dtor(Context) });
     ecs_set_hooks(world, Renderer, { .dtor = ecs_dtor(Renderer) });
     spawn_app_prefab(world);

@@ -124,7 +124,7 @@ void LoadIconSDL(SDL_Window* window)
 }
 
 
-//! Spawn the SDL Window.
+//! Spawn the SDLWindow.
 SDL_Window* SpawnWindowSDL(bool fullscreen)
 {
     windowFlags = SDL_WINDOW_OPENGL;
@@ -140,7 +140,7 @@ SDL_Window* SpawnWindowSDL(bool fullscreen)
     if (window == NULL)
     {
         SDL_Quit();
-        fprintf(stderr, "Failed to Create Window: %s\n", SDL_GetError());
+        fprintf(stderr, "Failed to Create SDLWindow: %s\n", SDL_GetError());
         return window;
     }
     // SDL_GLContext is an alias for "void*"

@@ -23,7 +23,6 @@ ecs_entity_t spawn_zigel(ecs_world_t *world, ecs_entity_t zext, unsigned char in
 {
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, zigel_prefab);
     zoxel_set_component(world, e, ZigelIndex, { index });
-    initialize_ui_components(world, e, position, size, anchor);
-    // const ZextData *zextData = ecs_get(world, e, ZextData);
+    initialize_ui_components(world, e, zext, position, size, anchor);
     return e;
 }
