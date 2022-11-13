@@ -19,7 +19,7 @@ zoxel_component(CameraLink, ecs_entity_t);
 //! A link to a Camera Target entity.
 zoxel_component(CameraTarget, ecs_entity_t);
 //! Used to free roam a camera.
-zoxel_component(FreeRoam, bool);
+zoxel_component(FreeRoam, unsigned char);
 // -=- prefabs -=-
 #include "prefabs/camera_base.c"
 #include "prefabs/camera2D.c"

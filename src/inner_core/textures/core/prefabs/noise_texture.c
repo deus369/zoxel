@@ -1,5 +1,5 @@
 //! Basic noise texture.
-ecs_entity_t noiseTexturePrefab;
+ecs_entity_t noise_texture_prefab;
 
 void add_noise_texture(ecs_world_t *world, ecs_entity_t e)
 {
@@ -12,14 +12,14 @@ void add_animated_noise_texture(ecs_world_t *world, ecs_entity_t e)
     zoxel_set_component(world, e, AnimateTexture, { 0.0 });
 }
 
-void SpawnTexturePrefab(ecs_world_t *world)
+void spawn_prefab_noise_texture(ecs_world_t *world)
 {
-    const int2 textureSize = { 16, 16 };
+    /*const int2 textureSize = { 16, 16 };
     ecs_entity_t e = ecs_new_prefab(world, "texture_prefab");
-    printf("Spawned character2D_prefab [%lu].\n", (long int) (e));
+    printf("Spawned texture_prefab [%lu].\n", (long int) (e));
     add_seed(world, e, 666);
     add_texture(world, e, textureSize);
     add_dirty(world, e);
     add_animated_noise_texture(world, e);
-    noiseTexturePrefab = e;
+    noise_texture_prefab = e;*/
 }

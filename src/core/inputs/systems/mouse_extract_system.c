@@ -1,28 +1,18 @@
 //! Grabs mouse data from SDL.
 
-ecs_entity_t mouseEntity;
-
-void spawn_mouse_entity(ecs_world_t *world)
-{
-    mouseEntity = ecs_new_entity(world, "mouse");
-    ecs_set(world, mouseEntity, Mouse, { });
-    printf("Spawned Mouse [%lu]\n", (long unsigned int) mouseEntity);
-    // return mouseEntity;
-}
-
 void reset_mouse(ecs_world_t *world)
 {
-    if (!mouseEntity || !ecs_is_alive(world, mouseEntity))
+    if (!mouse_entity || !ecs_is_alive(world, mouse_entity))
     {
         return;
     }
-    Mouse *mouse = ecs_get_mut(world, mouseEntity, Mouse);
-    ResetKey(&mouse->left);
-    ResetKey(&mouse->middle);
-    ResetKey(&mouse->right);
+    Mouse *mouse = ecs_get_mut(world, mouse_entity, Mouse);
+    reset_key(&mouse->left);
+    reset_key(&mouse->middle);
+    reset_key(&mouse->right);
     mouse->wheel = (int2) { 0, 0 };
     mouse->delta = (int2) { 0, 0 };
-    ecs_modified(world, mouseEntity, Mouse);
+    ecs_modified(world, mouse_entity, Mouse);
 }
 
 void SetMouseKey(PhysicalButton *key, int eventType)
@@ -43,7 +33,7 @@ void SetMouseKey(PhysicalButton *key, int eventType)
 
 void extract_mouse(ecs_world_t *world, SDL_Event event)
 {
-    if (!mouseEntity || !ecs_is_alive(world, mouseEntity))
+    if (!mouse_entity || !ecs_is_alive(world, mouse_entity))
     {
         return;
     }
@@ -51,11 +41,18 @@ void extract_mouse(ecs_world_t *world, SDL_Event event)
     if (eventType == SDL_MOUSEBUTTONDOWN || eventType == SDL_MOUSEBUTTONUP || eventType == SDL_MOUSEWHEEL || eventType == SDL_MOUSEMOTION)
     {
         // SDL_Keycode key = event.key.keysym.sym;
-        Mouse *mouse = ecs_get_mut(world, mouseEntity, Mouse);
+        Mouse *mouse = ecs_get_mut(world, mouse_entity, Mouse);
         if (eventType == SDL_MOUSEMOTION)
         {
             mouse->position = (int2) { event.motion.x, event.motion.y };
             mouse->delta = (int2) { event.motion.xrel, event.motion.yrel };
+            //! Reverse mouse position, so bottom is 0 and top is 1.
+            mouse->position.y = screenDimensions.y - mouse->position.y;
+#ifdef __EMSCRIPTEN__
+            //! Reverse position X in web
+            // mouse->position.x = screenDimensions.x - mouse->position.x;
+            printf("Mouse: %ix%i\n", mouse->position.x, mouse->position.y);
+#endif
         }
         else if (eventType == SDL_MOUSEBUTTONDOWN || eventType == SDL_MOUSEBUTTONUP)
         {
@@ -78,6 +75,6 @@ void extract_mouse(ecs_world_t *world, SDL_Event event)
         {
             mouse->wheel = (int2) { event.wheel.x, event.wheel.y };
         }
-        ecs_modified(world, mouseEntity, Mouse);
+        ecs_modified(world, mouse_entity, Mouse);
     }
 }

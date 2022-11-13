@@ -164,13 +164,6 @@ SDL_GLContext* create_sdl_context(SDL_Window* window)
 
 void resize_viewports(int screenWidth, int screenHeight)
 {
-    screenDimensions.x = screenWidth;
-    screenDimensions.y = screenHeight;
-    if(screenDimensions.y <= 0)
-    {
-        screenDimensions.y = 1;
-    }
-    aspectRatio = ((float)screenDimensions.x) / ((float)screenDimensions.y);
     // printf("Updated Canvas: Screen Dimensions [%i x %i] Aspect Ratio [%f].\n", screenWidth, screenHeight, aspectRatio);
     // what does viewport do? oh well
 #ifndef __EMSCRIPTEN__
@@ -205,7 +198,7 @@ bool update_web_canvas()
     int2 canvas_size = get_canvas_size();
     if (screenDimensions.x != canvas_size.x || screenDimensions.y != canvas_size.y)
     {
-        // printf("Canvas size has changed [%i x %i]\n", canvas_size.x, canvas_size.y);
+        printf("Canvas size has changed [%i x %i]\n", canvas_size.x, canvas_size.y);
         on_viewport_resized(canvas_size.x, canvas_size.y);
         return true;
     }

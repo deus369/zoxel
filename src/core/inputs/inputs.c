@@ -11,29 +11,19 @@ ECS_DECLARE(Device);
 #include "components/keyboard.c"
 #include "components/mouse.c"
 #include "components/touchscreen.c"
+// prefabs
+#include "prefabs/mouse.c"
 // systems
 #include "systems/keyboard_extract_system.c"
 #include "systems/mouse_extract_system.c"
+#include "systems/mouse_raycaster_system.c"
+// util
+#include "util/input_util.c"
 
-void spawn_connected_devices(ecs_world_t *world)
-{
-    printf("Devices detected: 2\n");
-    spawn_keyboard_entity(world);
-    spawn_mouse_entity(world);
-}
-
-void input_extract_from_sdl(ecs_world_t *world, SDL_Event event)
-{
-    extract_keyboard(world, event);
-    extract_mouse(world, event);
-}
-
-void reset_input_devices(ecs_world_t *world)
-{
-    reset_keyboard(world);
-    reset_mouse(world);
-}
-
+//! Inputs system handles virtual devices.
+/**
+*   \todo Add Extract systems to mainthread
+*/
 void InputsImport(ecs_world_t *world)
 {
     ECS_MODULE(world, inputs);
@@ -42,6 +32,7 @@ void InputsImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, Keyboard);
     ECS_COMPONENT_DEFINE(world, Mouse);
     ECS_COMPONENT_DEFINE(world, Touchscreen);
-    //! \todo Add Extract systems to mainthread
+    zoxel_system(world, MouseRaycasterSystem, EcsOnUpdate, [in] Mouse, [out] Raycaster);
+    spawn_prefab_mouse(world);
 }
 #endif

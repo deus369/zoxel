@@ -18,8 +18,9 @@ void spawn_game(ecs_world_t *world)
     ecs_entity_t main_camera = spawn_main_camera(world, screenDimensions);
     spawn_ui_camera(world, screenDimensions);
     spawn_connected_devices(world);
+    zoxel_add_component(world, mouse_entity, ElementRaycaster);
     localPlayer = spawn_player_character2D(world, main_camera);
-    spawn_main_menu(world, "Zoxel");
+    // spawn_main_menu(world, "Zoxel");
 }
 
 //! The main update loop.

@@ -12,6 +12,7 @@
 # source ~/emsdk/emsdk_env.sh
 
 # Declare compiler tools and flags
+TARGET = web-demo-dev/zoxel.js
 CC = emcc
 CFLAGS =
 LDLIBS += -std=c99
@@ -70,5 +71,10 @@ SRCS += src/core/rendering/core/rendering_core.c
 # SRCS += resources/shaders/BasicRender2D.vert
 # SRCS += resources/shaders/BasicRender2D.frag
 
-web-demo-dev/zoxel-dev.html: $(SRCS)
+all: $(TARGET)
+
+$(TARGET): $(SRCS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDLIBS)
+
+clear:
+	$(RM) $(TARGET)

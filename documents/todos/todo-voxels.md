@@ -12,6 +12,9 @@ First just generate a basic sphere. Next create streaming voxel world systems.
 Then generate simple noise in each chunk.
 
 `Voxels`
+- [ ] Stream in chunks - based on stream chunk positions
+    - [ ] if one changes position / load / unload chunks
+    - [ ] pool leftover chunks?
 - [ ] Create Octree Data set
     - [ ] Randomize data in chunks
     - [ ] Spawn chunks - 10k - test speed of spawning

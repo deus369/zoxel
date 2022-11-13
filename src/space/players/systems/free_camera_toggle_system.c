@@ -2,13 +2,8 @@
 void FreeCameraToggleSystem(ecs_iter_t *it)
 {
     // QueryContainer2 *queryContainer2 = (QueryContainer2*) it->ctx;
-    ecs_query_t *cameraQuery = it->ctx; // queryContainer2->query1;
-    if (!cameraQuery)
-    {
-        printf("[FreeCameraToggleSystem; cameraQuery is null]\n");
-        return;
-    }
-    ecs_iter_t cameraIter = ecs_query_iter(it->world, cameraQuery);
+    // ecs_query_t *cameraQuery = it->ctx; // queryContainer2->query1;
+    ecs_iter_t cameraIter = ecs_query_iter(it->world, it->ctx);
     ecs_query_next(&cameraIter);
     if (cameraIter.count == 0)
     {
@@ -25,7 +20,14 @@ void FreeCameraToggleSystem(ecs_iter_t *it)
             FreeRoam *freeRoam = &freeRoams[j];
             if (mouse->right.wasPressedThisFrame)
             {
-                freeRoam->value = !freeRoam->value;
+                if (freeRoam->value == 0)
+                {
+                    freeRoam->value = 1;
+                }
+                else
+                {
+                    freeRoam->value = 0;
+                }
                 // printf("Camera Free Toggled [%s]\n", freeRoam->value ? "true" : "false");
             }
         }
@@ -35,13 +37,7 @@ ECS_SYSTEM_DECLARE(FreeCameraToggleSystem);
 
 void FreeCameraDisableMovementSystem(ecs_iter_t *it)
 {
-    ecs_query_t *playerQuery = it->ctx;
-    if (!playerQuery)
-    {
-        printf("[FreeCameraDisableMovementSystem; playerQuery is null]\n");
-        return;
-    }
-    ecs_iter_t playerIter = ecs_query_iter(it->world, playerQuery);
+    ecs_iter_t playerIter = ecs_query_iter(it->world, it->ctx);
     ecs_query_next(&playerIter);
     if (playerIter.count == 0)
     {

@@ -10,7 +10,7 @@ void CameraFollow2DSystem(ecs_iter_t *it)
     for (int i = 0; i < it->count; i++)
     {
         const FreeRoam *freeRoam = &freeRoams[i];
-        if (!freeRoam->value)
+        if (freeRoam->value == 0)
         {
             const CameraTarget *cameraTarget = &cameraTargets[i];
             const Position2D *playerPosition2D = ecs_get(it->world, cameraTarget->value, Position2D);

@@ -19,6 +19,6 @@ void TestDestroyTexture(ecs_world_t *world)
     else
     {
         printf("Spawning Texture.\n");
-        testTextureEntity = SpawnTexture(world, noiseTexturePrefab);
+        testTextureEntity = SpawnTexture(world, noise_texture_prefab);
     }
 }

@@ -5,6 +5,8 @@
 //! Our function that creates a texture.
 void generate_font_texture(Texture* texture, const TextureSize *textureSize, const FontData *fontData)
 {
+    const bool is_background = false;
+    const color nothing = { 0, 0, 0, 0 };
     // use FontData byte2 data.
     const int frame_thickness = textureSize->value.x / 4;
     const int2 redRange = { 15, 244 };
@@ -29,7 +31,11 @@ void generate_font_texture(Texture* texture, const TextureSize *textureSize, con
     {
         for (int j = 0; j < textureSize->value.x; j++)
         {
-            if (j <= frame_thickness || k <= frame_thickness || j >= textureSize->value.x - 1 - frame_thickness || k >= textureSize->value.y - 1 - frame_thickness)
+            if (!is_background)
+            {
+                texture->value[index] = nothing;
+            }
+            else if (j <= frame_thickness || k <= frame_thickness || j >= textureSize->value.x - 1 - frame_thickness || k >= textureSize->value.y - 1 - frame_thickness)
             {
                 texture->value[index] = base;
             }

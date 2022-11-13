@@ -1,10 +1,10 @@
 //! Basic Character 2D prefab.
 ecs_entity_t character2DPrefab;
 
-void spawn_character2D_prefab(ecs_world_t *world, int2 textureSize)
+void spawn_prefab_character2D(ecs_world_t *world, int2 textureSize)
 {
     ecs_entity_t e = ecs_new_prefab(world, "character2D_prefab");
-    printf("Spawned character2D_prefab [%lu].\n", (long int) (e));
+    printf("spawn_prefab character2D [%lu].\n", (long int) (e));
     #ifdef zoxel_transforms2D
     add_transform2Ds(world, e);
     #endif

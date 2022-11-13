@@ -6,7 +6,7 @@ source ~/emsdk/emsdk_env.sh
 
 make -f MakeWebDev -B -j24
 
-emrun --browser firefox web-demo-dev/zoxel-dev.html
+emrun --browser firefox web-demo-dev/index.html
 
 echo Done
 

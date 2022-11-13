@@ -34,7 +34,7 @@ void FreeCameraRotateSystem(ecs_iter_t *it)
             {
                 const FreeRoam *freeRoam = &freeRoams[j];
                 Euler *euler = &eulers[j];
-                if (freeRoam->value)  // mouse->left.isPressed || 
+                if (freeRoam->value == 1)  // mouse->left.isPressed || 
                 {
                     // printf("mouse->delta: %ix%i\n", mouse->delta.x, mouse->delta.y);
                     euler->value = float3_add(euler->value, eulerAddition);

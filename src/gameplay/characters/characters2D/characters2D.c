@@ -37,7 +37,7 @@ void Characters2DImport(ecs_world_t *world)
     ECS_MODULE(world, Characters2D);
     ECS_TAG_DEFINE(world, Character2D);
     ECS_COMPONENT_DEFINE(world, Character2DLink);
-    spawn_character2D_prefab(world, character2DTextureSize);
+    spawn_prefab_character2D(world, character2DTextureSize);
     #ifdef zoxel_test_character2Ds
     SpawnManyCharacters();
     #endif

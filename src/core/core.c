@@ -6,8 +6,8 @@ bool headless = false;
 bool running = true;
 bool profiler = false;
 // --- core ---
-#include "generic/generic.c"
 #include "maths/maths.c"
+#include "generic/generic.c"
 #include "apps/apps.c"
 #include "inputs/inputs.c"
 #include "timing/timing.c"

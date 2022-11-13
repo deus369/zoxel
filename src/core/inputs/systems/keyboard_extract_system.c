@@ -4,9 +4,9 @@ ecs_entity_t keyboardEntity;
 // forward declarations
 bool wasPressedThisFrame = false;
 void SetKey(PhysicalButton *key, int eventType);
-void ResetKey(PhysicalButton *key);
+void reset_key(PhysicalButton *key);
 
-void spawn_keyboard_entity(ecs_world_t *world)
+void spawn_keyboard(ecs_world_t *world)
 {
     keyboardEntity = ecs_new_entity(world, "keyboard");
     // ecs_add(world, keyboardEntity, Keyboard);
@@ -22,38 +22,38 @@ void reset_keyboard(ecs_world_t *world)
         return;
     }
     Keyboard *keyboard = ecs_get_mut(world, keyboardEntity, Keyboard);
-    ResetKey(&keyboard->space);
-    ResetKey(&keyboard->escape);
-    ResetKey(&keyboard->a);
-    ResetKey(&keyboard->b);
-    ResetKey(&keyboard->r);
-    ResetKey(&keyboard->d);
-    ResetKey(&keyboard->e);
-    ResetKey(&keyboard->f);
-    ResetKey(&keyboard->g);
-    ResetKey(&keyboard->h);
-    ResetKey(&keyboard->i);
-    ResetKey(&keyboard->j);
-    ResetKey(&keyboard->k);
-    ResetKey(&keyboard->l);
-    ResetKey(&keyboard->m);
-    ResetKey(&keyboard->n);
-    ResetKey(&keyboard->o);
-    ResetKey(&keyboard->p);
-    ResetKey(&keyboard->q);
-    ResetKey(&keyboard->r);
-    ResetKey(&keyboard->s);
-    ResetKey(&keyboard->t);
-    ResetKey(&keyboard->u);
-    ResetKey(&keyboard->v);
-    ResetKey(&keyboard->w);
-    ResetKey(&keyboard->x);
-    ResetKey(&keyboard->y);
-    ResetKey(&keyboard->z);
-    ResetKey(&keyboard->down);
-    ResetKey(&keyboard->up);
-    ResetKey(&keyboard->left);
-    ResetKey(&keyboard->right);
+    reset_key(&keyboard->space);
+    reset_key(&keyboard->escape);
+    reset_key(&keyboard->a);
+    reset_key(&keyboard->b);
+    reset_key(&keyboard->r);
+    reset_key(&keyboard->d);
+    reset_key(&keyboard->e);
+    reset_key(&keyboard->f);
+    reset_key(&keyboard->g);
+    reset_key(&keyboard->h);
+    reset_key(&keyboard->i);
+    reset_key(&keyboard->j);
+    reset_key(&keyboard->k);
+    reset_key(&keyboard->l);
+    reset_key(&keyboard->m);
+    reset_key(&keyboard->n);
+    reset_key(&keyboard->o);
+    reset_key(&keyboard->p);
+    reset_key(&keyboard->q);
+    reset_key(&keyboard->r);
+    reset_key(&keyboard->s);
+    reset_key(&keyboard->t);
+    reset_key(&keyboard->u);
+    reset_key(&keyboard->v);
+    reset_key(&keyboard->w);
+    reset_key(&keyboard->x);
+    reset_key(&keyboard->y);
+    reset_key(&keyboard->z);
+    reset_key(&keyboard->down);
+    reset_key(&keyboard->up);
+    reset_key(&keyboard->left);
+    reset_key(&keyboard->right);
     ecs_modified(world, keyboardEntity, Keyboard);
 }
 
@@ -206,7 +206,7 @@ void SetKey(PhysicalButton *key, int eventType)
     }
 }
 
-void ResetKey(PhysicalButton *key)
+void reset_key(PhysicalButton *key)
 {
     if (key->wasPressedThisFrame)
     {

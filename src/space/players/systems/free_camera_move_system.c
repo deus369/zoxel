@@ -1,28 +1,19 @@
+const double movement_multiplier = 0.006 * 100;
+
 //! Called in ecs updates
 void FreeCameraMoveSystem(ecs_iter_t *it)
 {
-    double deltaTime = (double) (it->delta_time);
-    double movementPower = 0.006 * 100 * deltaTime;
-    ecs_query_t *cameraQuery = it->ctx;
-    if (!cameraQuery)
+    ecs_iter_t cameras_it = ecs_query_iter(it->world, it->ctx);
+    ecs_query_next(&cameras_it);
+    if (cameras_it.count == 0)
     {
-        printf("[FreeCameraMoveSystem; cameraQuery is null]\n");
         return;
     }
-    ecs_iter_t cameraIter = ecs_query_iter(it->world, cameraQuery);
-    ecs_query_next(&cameraIter);
-    if (cameraIter.count == 0)
-    {
-        // printf("[404; Bob Not Found]\n");
-        return;
-    }
-    // printf("Bobs Found [%i]\n", bobIter.count);
+    const FreeRoam *freeRoams = ecs_field(&cameras_it, FreeRoam, 2);
+    Position *positions = ecs_field(&cameras_it, Position, 3);
+    Rotation *rotations = ecs_field(&cameras_it, Rotation, 4);
+    double movement_power = (double) (it->delta_time) * movement_multiplier;
     Keyboard *keyboards = ecs_field(it, Keyboard, 1);
-    const FreeRoam *freeRoams = ecs_field(&cameraIter, FreeRoam, 2);
-    Position *positions = ecs_field(&cameraIter, Position, 3);
-    Rotation *rotations = ecs_field(&cameraIter, Rotation, 4);
-    //Acceleration *accelerations = ecs_field(&bobIter, Acceleration, 2);
-    //const Velocity *velocitys = ecs_field(&bobIter, Velocity, 3);
     for (int i = 0; i < it->count; i++)
     {
         const Keyboard *keyboard = &keyboards[i];
@@ -54,11 +45,11 @@ void FreeCameraMoveSystem(ecs_iter_t *it)
         if (!(movement.x == 0 && movement.y == 0 && movement.z == 0))
         {
             // printf("Bob Accel %f x %f \n", movement.x, movement.y);
-            movement = float3_multiply_float(movement, movementPower);
-            for (int j = 0; j < cameraIter.count; j++)
+            movement = float3_multiply_float(movement, movement_power);
+            for (int j = 0; j < cameras_it.count; j++)
             {
                 const FreeRoam *freeRoam = &freeRoams[j];
-                if (freeRoam->value)
+                if (freeRoam->value == 1)
                 {
                     const Rotation *rotation = &rotations[j];
                     //printf("Before Movement: %fx%fx%f - [%fx%fx%fx%f]\n", movement.x, movement.y, movement.z,
@@ -75,12 +66,16 @@ void FreeCameraMoveSystem(ecs_iter_t *it)
         }
         if (keyboard->r.wasPressedThisFrame)
         {
-            for (int j = 0; j < cameraIter.count; j++)
+            for (int j = 0; j < cameras_it.count; j++)
             {
                 Rotation *rotation = &rotations[j];
                 rotation->value = quaternion_from_euler( (float3) { 0 * degreesToRadians, 0 * degreesToRadians, 0 * degreesToRadians });
             }
         }
+    }
+}
+ECS_SYSTEM_DECLARE(FreeCameraMoveSystem);
+
         /*if (keyboard->x.wasPressedThisFrame)
         {
             for (int j = 0; j < cameraIter.count; j++)
@@ -115,6 +110,3 @@ void FreeCameraMoveSystem(ecs_iter_t *it)
                 rotation->value = quaternion_from_euler( (float3) { 90 * degreesToRadians, 0 * degreesToRadians, 0 * degreesToRadians });
             }
         }*/
-    }
-}
-ECS_SYSTEM_DECLARE(FreeCameraMoveSystem);
