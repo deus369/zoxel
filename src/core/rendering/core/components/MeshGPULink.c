@@ -5,17 +5,17 @@
 */
 zoxel_component(MeshGPULink, GLuint2);
 
-//! Grab from opengl part.
-extern GLuint2 spawn_gpu_mesh_buffers();
-
 void add_gpu_mesh(ecs_world_t *world, ecs_entity_t prefab)
 {
     zoxel_set_component(world, prefab, MeshGPULink, { 0 });
 }
 
+//! Grab from opengl part.
+extern GLuint2 spawn_gpu_mesh_buffers();
 void spawn_gpu_mesh(ecs_world_t *world, ecs_entity_t e)
 {
-    ecs_set(world, e, MeshGPULink, { spawn_gpu_mesh_buffers() });
+    GLuint2 mesh_buffers = spawn_gpu_mesh_buffers();
+    ecs_set(world, e, MeshGPULink, { mesh_buffers });
 }
 
 ECS_DTOR(MeshGPULink, ptr,

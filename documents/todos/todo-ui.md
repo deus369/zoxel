@@ -7,28 +7,30 @@ To-Do UI
 
 `Current`
 
-- [x] Fix fullscreen - hiding UI?!?!
-- [x] Raycast only child ui first, before parents. Don't raycast window when header is in front of it.
-    - Add layer component
-    - Cycle through all uis, and keep the top most one.
-- [ ] Text UI Update system
-    - [ ] animate text to a random word every 3 seconds! (for testing)
+- [x] Window not spawning with system
+    - added EntityInitialize component for generating buffers on main thread
+    - Position2D is gone after spawning window?
+    - Possible soluion: remove ecs_get from function and pass in parent info when spawning children.
+
+- [ ] FPS Display (top right)
+
+- [x] Generate Mesh - in an initialize system - instead of in main thread.
 
 - [ ] UIRaycastSystem
     - [x] UI Select events
-    - [ ] UI Click events
+    - [x] UI Click events
     - [ ] UI Drag events
 
 - [ ] Window Entities
     - [x] A header UI with text
     - [x] A close button
-    - [ ] A close window event
+    - [x] A close window event
             - closed / confirm / cancel
     - [ ] Drag window around to reposition
     - [ ] Drag window corner to resize it
 
 - [ ] UI Windows Flow
-    - Using Close Events
+    - [ ] Using Close Events, spawn a 2nd window
     
 - [ ] Scrollview + ListUI
 

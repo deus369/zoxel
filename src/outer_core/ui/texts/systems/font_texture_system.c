@@ -124,6 +124,9 @@ void FontTextureSystem(ecs_iter_t *it)
         {
             continue;
         }
+        #ifdef zoxel_debug_zigel_updates
+        printf("zigel font is updating [%lu]\n", (long int) it->entities[i]);
+        #endif
         EntityDirty *entityDirty = &entityDirtys[i];
         if (entityDirty->value != 0)
         {

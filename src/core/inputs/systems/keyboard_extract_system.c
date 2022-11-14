@@ -6,6 +6,11 @@ bool wasPressedThisFrame = false;
 void SetKey(PhysicalButton *key, int eventType);
 void reset_key(PhysicalButton *key);
 
+#define key_case(sdl_event, key)\
+            case sdl_event:\
+                SetKey(key, eventType);\
+                break;
+
 void spawn_keyboard(ecs_world_t *world)
 {
     ecs_entity_t e = ecs_new_entity(world, "keyboard");
@@ -69,6 +74,7 @@ void extract_keyboard(ecs_world_t *world, SDL_Event event)
         return;
     }
     int eventType = event.type;
+    //! Links touch events to space key press
     if (eventType == SDL_FINGERDOWN || eventType == SDL_FINGERUP)
     {
         Keyboard *keyboard = ecs_get_mut(world, keyboardEntity, Keyboard);
@@ -91,21 +97,11 @@ void extract_keyboard(ecs_world_t *world, SDL_Event event)
         Keyboard *keyboard = ecs_get_mut(world, keyboardEntity, Keyboard);
         switch(key)
         {
-            case SDLK_SPACE:
-                SetKey(&keyboard->space, eventType);
-                break;
-            case SDLK_ESCAPE:
-                SetKey(&keyboard->escape, eventType);
-                break;
-            case SDLK_RETURN:
-                SetKey(&keyboard->enter, eventType);
-                break;
-            case SDLK_LALT:
-                SetKey(&keyboard->left_alt, eventType);
-                break;
-            case SDLK_RALT:
-                SetKey(&keyboard->right_alt, eventType);
-                break;
+            key_case(SDLK_SPACE, &keyboard->space)
+            key_case(SDLK_ESCAPE, &keyboard->escape)
+            key_case(SDLK_RETURN, &keyboard->enter)
+            key_case(SDLK_LALT, &keyboard->left_alt)
+            key_case(SDLK_RALT, &keyboard->right_alt)
             case SDLK_a:
                 SetKey(&keyboard->a, eventType);
                 break;
@@ -207,16 +203,27 @@ void SetKey(PhysicalButton *key, int eventType)
 {
     bool keyDown = eventType == SDL_KEYDOWN;
     bool keyReleased = eventType == SDL_KEYUP;
-    key->wasPressedThisFrame = keyDown;
+    if (!key->isPressed && keyDown)
+    {
+        key->wasPressedThisFrame = true;
+    }
+    if (key->isPressed && keyReleased)
+    {
+        key->wasReleasedThisFrame = true;
+    }
+    key->isPressed = keyDown;
+    /*key->wasPressedThisFrame = keyDown;
     key->wasReleasedThisFrame = keyReleased;
     if (keyDown)
     {
+        printf("key pressed.\n");
         key->isPressed = true;
     }
     else if (keyReleased)
     {
+        printf("key released.\n");
         key->isPressed = false;
-    }
+    }*/
 }
 
 void reset_key(PhysicalButton *key)

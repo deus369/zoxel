@@ -1,4 +1,4 @@
-//! Every noiseAnimationSpeed it makes the texture update.
+//! Every noise_animation_speed it makes the texture update.
 void AnimateNoiseSystem(ecs_iter_t *it)
 {
     double deltaTime = it->delta_time;
@@ -11,8 +11,8 @@ void AnimateNoiseSystem(ecs_iter_t *it)
         animateTexture->value -= deltaTime;
         if (animateTexture->value <= 0.0)
         {
-            animateTexture->value += noiseAnimationSpeed;
-            if (animateTexture->value <= -noiseAnimationSpeed)
+            animateTexture->value += noise_animation_speed;
+            if (animateTexture->value <= -noise_animation_speed)
             {
                 animateTexture->value = 0;
             }

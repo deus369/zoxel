@@ -28,13 +28,15 @@ void ElementRaycastSystem(ecs_iter_t *it)
                 const CanvasPixelPosition *canvasPixelPosition2 = &canvasPixelPositions[j];
                 const PixelSize *pixelSize2 = &pixelSizes[j];
                 const ElementLayer *elementLayer = &elementLayers[j];
-                const int2 *canvasPixelPosition = &canvasPixelPosition2->value;
-                const int2 *pixelSize = &pixelSize2->value;
+                const int2 canvasPixelPosition = canvasPixelPosition2->value;
+                const int2 pixelSize = pixelSize2->value;
                 // printf("ui raycasting [%lu] - [%i]\n", (long int) uis_it.entities[j], elementLayer->value);
                 // centered
                 SelectableState *selectableState = &selectableStates[j];
-                bool was_raycasted = position.x >= canvasPixelPosition->x - pixelSize->x / 2 && position.x <= canvasPixelPosition->x + pixelSize->x / 2
-                    && position.y >= canvasPixelPosition->y - pixelSize->y / 2 && position.y <= canvasPixelPosition->y + pixelSize->y / 2;
+                bool was_raycasted = position.x >= canvasPixelPosition.x - pixelSize.x / 2
+                    && position.x <= canvasPixelPosition.x + pixelSize.x / 2
+                    && position.y >= canvasPixelPosition.y - pixelSize.y / 2
+                    && position.y <= canvasPixelPosition.y + pixelSize.y / 2;
                 if (was_raycasted && elementLayer->value > ui_layer)
                 {
                     ui_layer = elementLayer->value;
@@ -43,9 +45,9 @@ void ElementRaycastSystem(ecs_iter_t *it)
                     #ifdef zoxel_debug_element_raycasting
                     printf("ui [%lu] raycasting position [%ix%i] ray([%ix%i]) :: size [%ix%i] Hit? %s screenSize [%ix%i]\n",
                         (long int) uis_it.entities[j],
-                        canvasPixelPosition->x, canvasPixelPosition->y,
+                        canvasPixelPosition.x, canvasPixelPosition.y,
                         raycaster->value.x, raycaster->value.y,
-                        pixelSize->x, pixelSize->y, was_raycasted ? "true" : "false",
+                        pixelSize.x, pixelSize.y, was_raycasted ? "true" : "false",
                         screenDimensions.x, screenDimensions.y);
                     #endif
                 }

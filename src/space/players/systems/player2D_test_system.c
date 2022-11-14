@@ -31,3 +31,17 @@ void Player2DTestSystem(ecs_iter_t *it)
     }
 }
 ECS_SYSTEM_DECLARE(Player2DTestSystem);
+
+void Player2DTestMainThreadSystem(ecs_iter_t *it)
+{
+    const Keyboard *keyboards = ecs_field(it, Keyboard, 1);
+    for (int i = 0; i < it->count; i++)
+    {
+        const Keyboard *keyboard = &keyboards[i];
+        if (keyboard->z.wasPressedThisFrame)
+        {
+            spawn_zoxel_window(it->world);
+        }
+    }
+}
+ECS_SYSTEM_DECLARE(Player2DTestMainThreadSystem);

@@ -20,6 +20,14 @@ void OpenGLClear()
     // glDisable(GL_DEPTH_TEST);
 }
 
+//! Spawns the buffers for a mesh indicies and verts on the gpu.
+GLuint2 spawn_gpu_mesh_buffers()
+{
+    GLuint2 mesh;
+    glGenBuffers(1, &mesh.x);
+    glGenBuffers(1, &mesh.y);
+    return mesh;
+}
 
 /*
 Multiple textures:

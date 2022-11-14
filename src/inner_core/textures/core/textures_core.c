@@ -3,12 +3,11 @@
 //! textures Module.
 
 // Settings
-const double noiseAnimationSpeed = 0.5;
+const double noise_animation_speed = 0.5;
 // Tags
 ECS_DECLARE(NoiseTexture);
 ECS_DECLARE(FrameTexture);
 ECS_DECLARE(SaveTexture);
-// ECS_DECLARE(GenerateNoiseTexture);
 // components
 //! A texture with pixels!
 zoxel_memory_component(Texture, color);
@@ -26,21 +25,15 @@ zoxel_component(AnimateTexture, double);
 #include "prefabs/noise_texture.c"
 // systems
 #include "systems/animate_noise_system.c"
-#include "systems/generate_texture_reset_system.c"
+// #include "systems/generate_texture_reset_system.c"
 #include "systems/texture_update_system.c"
 #include "systems/texture_save_system.c"
 // texture generation systems
 #include "systems/noise_texture_system.c"
 #include "systems/frame_texture_system.c"
+zoxel_reset_system(GenerateTextureResetSystem, GenerateTexture)
 // tests
 #include "tests/test_texture.c"
-
-#define add_texture_generation_system(texture_tag, system)\
-{\
-    zoxel_filter(generateTextureQuery, world, [none] texture_tag, [in] GenerateTexture);\
-    zoxel_system_ctx(world, system, EcsOnUpdate, generateTextureQuery,\
-        [none] texture_tag, [out] generic.EntityDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture);\
-}
 
 //! \todo Multithreaded change filters? zoxel_system
 void TexturesCoreImport(ecs_world_t *world)
@@ -56,7 +49,7 @@ void TexturesCoreImport(ecs_world_t *world)
     ECS_SYSTEM_DEFINE(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture);
     add_texture_generation_system(NoiseTexture, NoiseTextureSystem);
     add_texture_generation_system(FrameTexture, FrameTextureSystem);
-    zoxel_system_main_thread(world, GenerateTextureResetSystem, EcsPostUpdate, [out] GenerateTexture);
+    zoxel_reset_system_define(GenerateTextureResetSystem, GenerateTexture);
     ECS_SYSTEM_DEFINE(world, TextureSaveSystem, EcsOnValidate, [in] EntityDirty, [in] Texture, [in] TextureSize, [none] SaveTexture);
     ECS_SYSTEM_DEFINE(world, TextureUpdateSystem, EcsOnValidate, [in] generic.EntityDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink);
     spawn_prefab_noise_texture(world);

@@ -70,15 +70,6 @@ void RenderEntity3D(float3 position, float4 rotation, float scale1D, float brigh
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 }
 
-//! Spawns the buffers for a mesh indicies and verts on the gpu.
-GLuint2 spawn_gpu_mesh_buffers()
-{
-    GLuint2 mesh;
-    glGenBuffers(1, &mesh.x);
-    glGenBuffers(1, &mesh.y);
-    return mesh;
-}
-
 //! Set the mesh on the gpu by uploading indicies and vert buffers.
 void set_gpu_mesh(GLuint2 mesh, GLuint material, const int *indicies, int indicies_length, const float *verts, int verts_length) // const float3 *verts)
 {

@@ -7,25 +7,23 @@ void add_ui_components(ecs_world_t *world, ecs_entity_t e)
 {
     zoxel_add_tag(world, e, Element);
     zoxel_add_tag(world, e, ElementRender);
-    zoxel_add_component(world, e, PixelPosition);
-    zoxel_add_component(world, e, PixelSize);
-    zoxel_add_component(world, e, Anchor);
+    zoxel_set_component(world, e, EntityInitialize, { 1 });
+    zoxel_set_component(world, e, PixelPosition, { { } });
+    zoxel_set_component(world, e, PixelSize, { { } });
+    zoxel_set_component(world, e, CanvasPixelPosition, { { } });
+    zoxel_set_component(world, e, Anchor, { { } });
     zoxel_set_component(world, e, CanvasLink, { });
-    zoxel_add_component(world, e, CanvasPixelPosition);
     zoxel_set_component(world, e, ElementLayer, { 0 });
 }
 
 void add_ui_plus_components(ecs_world_t *world, ecs_entity_t e)
 {
-    // generic
     add_seed(world, e, 666);
     add_dirty(world, e);
-    add_texture(world, e, (int2) { });
-    #ifdef zoxel_transforms2D
     add_transform2Ds(world, e);
-    #endif
-    add_unique_mesh_components(world, e);
     add_ui_components(world, e);
+    add_texture(world, e, (int2) { });
+    add_unique_mesh_components(world, e);
 }
 
 float2 get_ui_real_position2D(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, int2 local_pixel_position, float2 anchor)
@@ -45,21 +43,29 @@ float2 get_ui_real_position2D(ecs_world_t *world, ecs_entity_t e, ecs_entity_t p
     }
     else
     {
+        if (!ecs_has(world, parent, Position2D))
+        {
+            printf("Parent [%lu] has no Position2D component.\n", (long int) parent);
+            // return (float2) { 0, 0 };
+        }
         const Position2D *parent_position2D = ecs_get(world, parent, Position2D);
-        const PixelSize *parent_pixel_size = ecs_get(world, parent, PixelSize);
-        position2D = parent_position2D->value;
+        if (parent_position2D != NULL)
+        {
+            position2D = parent_position2D->value;
+        }
         position2D = float2_add(position2D, (float2) {
             (local_pixel_position.x  / canvasSizef.x) * aspectRatio,
             (local_pixel_position.y  / canvasSizef.y)});
-        float2 parent_pixel_ratio = (float2) {
-            parent_pixel_size->value.x / canvasSizef.y,
-            parent_pixel_size->value.y / canvasSizef.y };
-        position2D = float2_add(position2D, (float2) {
-            - parent_pixel_ratio.x / 2.0f,
-            - parent_pixel_ratio.y / 2.0f });
-        position2D = float2_add(position2D, (float2) {
-            parent_pixel_ratio.x * anchor.x,
-            parent_pixel_ratio.y * anchor.y });
+        const PixelSize *parent_pixel_size = ecs_get(world, parent, PixelSize);
+        if (parent_pixel_size != NULL)
+        {
+            float2 parent_pixel_ratio = (float2) {
+                parent_pixel_size->value.x / canvasSizef.y,
+                parent_pixel_size->value.y / canvasSizef.y };
+            position2D = float2_add(position2D, (float2) {
+                - (parent_pixel_ratio.x / 2.0f) + parent_pixel_ratio.x * anchor.x,
+                - (parent_pixel_ratio.y / 2.0f) + parent_pixel_ratio.y * anchor.y });
+        }
         #ifdef debug_ui_positioning
         printf("-> (parent) Position2D : %fx%f\n", position2D.x, position2D.y);
         #endif
@@ -67,7 +73,7 @@ float2 get_ui_real_position2D(ecs_world_t *world, ecs_entity_t e, ecs_entity_t p
     return position2D;
 }
 
-void initialize_ui_components(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent,
+float2 initialize_ui_components(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent,
     int2 local_pixel_position, int2 pixel_size, float2 anchor, unsigned char layer)
 {
     if (parent == canvas)
@@ -92,12 +98,12 @@ void initialize_ui_components(ecs_world_t *world, ecs_entity_t e, ecs_entity_t p
         ceil((position2D.x / aspectRatio + 0.5f) * canvasSizef.x),
         ((position2D.y + 0.5f) * canvasSizef.y) };
     ecs_set(world, e, CanvasPixelPosition, { global_pixel_position });
-    spawn_gpu_mesh(world, e);
-    spawn_gpu_material(world, e, textured2DShader);
-    spawn_gpu_texture(world, e);
-    set_mesh_indicies_world(world, e, square_indicies, 6);
-    float2 scaledSize2D = (float2) { pixel_size.x / canvasSizef.y, pixel_size.y / canvasSizef.y };
-    set_mesh_vertices_world_scale2D(world, e, squareTexturedVerts2, 16, scaledSize2D);  // scale the mesh
+    // spawn_gpu_mesh(world, e);
+    // spawn_gpu_material(world, e, textured2DShader);
+    // spawn_gpu_texture(world, e);
+    // set_mesh_indicies_world(world, e, square_indicies, 6);
+    // float2 scaledSize2D = (float2) { pixel_size.x / canvasSizef.y, pixel_size.y / canvasSizef.y };
+    // set_mesh_vertices_world_scale2D(world, e, squareTexturedVerts2, 16, scaledSize2D);  // scale the mesh
     #ifdef debug_ui_scaling
     printf("    -> Scaling: [%fx%f]\n", scaledSize2D.x, scaledSize2D.y);
     #endif
@@ -107,6 +113,78 @@ void initialize_ui_components(ecs_world_t *world, ecs_entity_t e, ecs_entity_t p
     //     size.x, size.y,
     //     position2D.x, position2D.y);
     // printf("> initialize_ui_components [%lu]\n", (long int) e);
+    return position2D;
+}
+
+
+
+float2 get_ui_real_position2D_2(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent,
+    int2 local_pixel_position, float2 anchor,
+    float2 parent_position2D, int2 parent_pixel_size)
+{
+    const PixelSize *canvasSize = ecs_get(world, canvas, PixelSize);
+    float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
+    float aspectRatio = canvasSizef.x / canvasSizef.y;
+    float2 position2D;
+    position2D = parent_position2D;
+    position2D = float2_add(position2D, (float2) {
+        (local_pixel_position.x  / canvasSizef.x) * aspectRatio,
+        (local_pixel_position.y  / canvasSizef.y)});
+    float2 parent_pixel_ratio = (float2) {
+        parent_pixel_size.x / canvasSizef.y,
+        parent_pixel_size.y / canvasSizef.y };
+    position2D = float2_add(position2D, (float2) {
+        - (parent_pixel_ratio.x / 2.0f) + parent_pixel_ratio.x * anchor.x,
+        - (parent_pixel_ratio.y / 2.0f) + parent_pixel_ratio.y * anchor.y });
+    #ifdef debug_ui_positioning
+    printf("-> (parent) Position2D : %fx%f\n", position2D.x, position2D.y);
+    #endif
+    return position2D;
+}
+
+float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent,
+    int2 local_pixel_position, int2 pixel_size, float2 anchor, unsigned char layer,
+    float2 parent_position2D, int2 parent_pixel_size)
+{
+    if (parent == canvas)
+    {
+        ui_entities[ui_entities_count] = e;
+        ui_entities_count++;
+    }
+    ecs_set(world, e, Anchor, { anchor });
+    ecs_set(world, e, PixelPosition, { local_pixel_position });
+    ecs_set(world, e, PixelSize, { pixel_size });
+    ecs_set(world, e, TextureSize, { pixel_size });
+    ecs_set(world, e, CanvasLink, { canvas });
+    ecs_set(world, e, ParentLink, { parent });
+    ecs_set(world, e, ElementLayer, { layer });
+    // set scale
+    const PixelSize *canvasSize = ecs_get(world, canvas, PixelSize);
+    float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
+    float aspectRatio = canvasSizef.x / canvasSizef.y;
+    float2 position2D = get_ui_real_position2D_2(world, e, parent, local_pixel_position, anchor,
+        parent_position2D, parent_pixel_size);
+    ecs_set(world, e, Position2D, { position2D });
+    int2 global_pixel_position = (int2) {
+        ceil((position2D.x / aspectRatio + 0.5f) * canvasSizef.x),
+        ((position2D.y + 0.5f) * canvasSizef.y) };
+    ecs_set(world, e, CanvasPixelPosition, { global_pixel_position });
+    // spawn_gpu_mesh(world, e);
+    // spawn_gpu_material(world, e, textured2DShader);
+    // spawn_gpu_texture(world, e);
+    // set_mesh_indicies_world(world, e, square_indicies, 6);
+    // float2 scaledSize2D = (float2) { pixel_size.x / canvasSizef.y, pixel_size.y / canvasSizef.y };
+    // set_mesh_vertices_world_scale2D(world, e, squareTexturedVerts2, 16, scaledSize2D);  // scale the mesh
+    #ifdef debug_ui_scaling
+    printf("    -> Scaling: [%fx%f]\n", scaledSize2D.x, scaledSize2D.y);
+    #endif
+    // printf("Layer: %i\n", layer);
+    // printf("> global_pixel_position [%ix%i] :: [%ix%i] -- [%fx%f]\n",
+    //     global_pixel_position.x, global_pixel_position.y,
+    //     size.x, size.y,
+    //     position2D.x, position2D.y);
+    // printf("> initialize_ui_components [%lu]\n", (long int) e);
+    return position2D;
 }
 
 // set children position as well

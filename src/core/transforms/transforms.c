@@ -4,8 +4,10 @@
 // shared components
 //! Scales an entities transform in 1D.
 zoxel_component(Scale1D, float);
-zoxel_memory_component(Children, ecs_entity_t);
+zoxel_memory_component(Children, ecs_entity_t); // _entities
 zoxel_component(ParentLink, ecs_entity_t);
+// util
+#include "util/hierarchy_util.c"
 // Sub Modules
 #include "transforms2D/transforms2D.c"
 #include "transforms3D/transforms3D.c"

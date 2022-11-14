@@ -49,6 +49,8 @@ void PlayersImport(ecs_world_t *world)
         .entity = ecs_id(Player2DTestSystem),
         .no_readonly = true // no_staging - rename to no_readonly
     });
+    // this has to update after reset systems (as gen is stuck on main thread, running before everything)
+    zoxel_system(world, Player2DTestMainThreadSystem, EcsOnStore, [in] Keyboard);
 }
 
 // ECS_SYSTEM_DEFINE(world, CameraFollow2DSystem, EcsOnUpdate, [none] Camera, [out] Position);

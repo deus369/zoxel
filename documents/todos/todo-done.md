@@ -8,6 +8,12 @@ Things that are done. A big ole list. To clean up other todo files.
 -----
 
 `UI`
+- [x] Fix fullscreen - hiding UI?!?!
+- [x] Raycast only child ui first, before parents. Don't raycast window when header is in front of it.
+    - Add layer component
+    - Cycle through all uis, and keep the top most one.
+- [x] Text UI Update system
+    - [x] animate text to a random word every 3 seconds! (for testing)
 - [x] Scale textures of ui properly
     - Use Unique Meshes - generated based on ui size
 - [x] Position perfectly

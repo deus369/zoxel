@@ -10,3 +10,16 @@ int abs_integer(int value)
         return value;
     }
 }
+
+
+int integer_min(int a, int b)
+{
+    if (a > b)
+    {
+        return b;
+    }
+    else
+    {
+        return a;
+    }
+}

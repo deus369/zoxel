@@ -28,7 +28,8 @@ zoxel_component(AnimateChunk, double);
 // prefabs
 #include "prefabs/chunk.c"
 // systems
-#include "systems/generate_chunk_reset_system.c"
+zoxel_reset_system(GenerateChunkResetSystem, GenerateChunk);
+// #include "systems/generate_chunk_reset_system.c"
 #include "systems/noise_chunk_system.c"
 #include "systems/chunk_build_system.c"
 #include "systems/animate_chunk_system.c"
@@ -87,7 +88,8 @@ void VoxelsCoreImport(ecs_world_t *world)
         [none] NoiseChunk, [out] generic.EntityDirty, [out] Chunk, [in] ChunkSize, [in] GenerateChunk);
     zoxel_system_ctx(world, ChunkBuildSystem, EcsOnUpdate, generateChunkQuery,
         [in] generic.EntityDirty, [in] Chunk, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices);
-    zoxel_system_main_thread(world, GenerateChunkResetSystem, EcsPostUpdate, [out] GenerateChunk);
+    // zoxel_system_main_thread(world, GenerateChunkResetSystem, EcsPostUpdate, [out] GenerateChunk);
+    zoxel_reset_system_define(GenerateChunkResetSystem, GenerateChunk);
     //spawn_chunk_prefab(world);
     //spawn_chunk(world);
     spawn_voxel_chunk_mesh_prefab(world);

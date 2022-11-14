@@ -51,7 +51,10 @@ void update()
         #endif
     }
     // ecs_log_set_level(1);    // use this to debug system pipelines
+    ecs_run(world, ecs_id(ElementMeshSystem), 0, NULL);
     ecs_progress(world, 0);
+    // main thread, generates gpu buffer
+    // ecs_run(world, ecs_id(Player2DTestMainThreadSystem), 0, NULL);
     if (!headless)
     {
         render_loop_temp();
