@@ -47,7 +47,9 @@ int LoadShader(const char* filepath, GLenum shaderType, GLuint* shader2)
         printf("Shader Filepath is Empty.\n");
         return -1;
     }
-    GLchar *buffer = (GLchar*) SDL_LoadFile(filepath, NULL);
+    char* fullpath = get_full_file_path(filepath);
+    GLchar *buffer = (GLchar*) SDL_LoadFile(fullpath, NULL); //filepath, NULL);
+    free(fullpath);
     if (!buffer)
     {
         printf("Loading shader (SDL_LoadFile) returned null at [%s].\n", filepath);

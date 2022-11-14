@@ -1,18 +1,20 @@
 //! =-= Zoxel =-=
 #define SDL_IMAGES
+// -- tests --
 #define zoxel_test_character2Ds
 #define zoxel_test_cubes
 #define zoxel_test_voxels
 #define zoxel_test_uis
 // -- debugs --
+// #define zoxel_debug_prefabs
 // #define zoxel_debug_sdl
 // #define zoxel_debug_opengl
-// #define zoxel_debug_prefabs
+// #define zoxel_debug_pathing
+// #define zoxel_catch_opengl_errors
 // #define debug_viewport_resize
+// #define zoxel_debug_element_raycasting
 // #define debug_ui_positioning
 // #define debug_ui_scaling
-// #define zoxel_catch_opengl_errors
-// #define zoxel_debug_element_raycasting
 #include "_includes.c"
 
 ecs_entity_t localPlayer;
@@ -42,7 +44,7 @@ void update()
         reset_input_devices(world);
         update_sdl(world);
         #ifdef __EMSCRIPTEN__
-        if (update_web_canvas())
+        if (update_web_canvas(world))
         {
             return;
         }

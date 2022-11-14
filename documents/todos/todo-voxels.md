@@ -7,6 +7,8 @@ Our worlds will be voxels.
 
 -----
 
+// Exec=gnome-terminal -e "bash -c 'cd "~/zoxel" && ./zoxel'"
+
 First just generate a basic sphere. Next create streaming voxel world systems.
 
 Then generate simple noise in each chunk.

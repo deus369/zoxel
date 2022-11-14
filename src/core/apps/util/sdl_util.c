@@ -1,3 +1,39 @@
+// sdl util things
+const char *iconFilename = "resources/textures/game_icon.png";
+int2 screenDimensions = { 720, 480 };
+// int2 screenDimensions = { 1920, 800 };
+float aspectRatio = 1;
+float fov = 60;
+unsigned long windowFlags;
+char *data_path = NULL;
+
+void set_data_path()
+{
+    char *base_path = SDL_GetBasePath();
+    if (base_path)
+    {
+        data_path = base_path;
+    }
+    else
+    {
+        data_path = SDL_strdup("./");
+    }
+    #ifdef zoxel_debug_pathing
+    printf("SDL data_path: %s\n", data_path);
+    #endif
+}
+
+char* get_full_file_path(const char* filepath)
+{
+    char* fullpath = malloc(strlen(data_path) + strlen(filepath) + 1);
+    strcpy(fullpath, data_path);
+    strcat(fullpath, filepath);
+    #ifdef zoxel_debug_pathing
+    printf("fullpath: %s\n", fullpath);
+    #endif
+    return fullpath;
+}
+
 // emscripten app functions
 #ifdef __EMSCRIPTEN__
 
@@ -16,13 +52,6 @@ void resize_canvas()
     printf("Resizing Canvas [%ix%i]", get_canvas_width(), get_canvas_height());
 }
 #endif
-
-const char *iconFilename = "resources/textures/GameIcon.png";
-int2 screenDimensions = { 720, 480 };
-// int2 screenDimensions = { 1920, 800 };
-float aspectRatio = 1;
-float fov = 60;
-unsigned long windowFlags;
 
 //! Zoxel can also be a command tool... Wuut?!?!!
 void PrintHelpMenu(const char* arg0)
@@ -127,7 +156,9 @@ int SetSDLAttributes(bool vsync)
 void LoadIconSDL(SDL_Window* window)
 {
 #ifdef SDL_IMAGES
+    char* fullpath = get_full_file_path(iconFilename);
     SDL_Surface *surface = IMG_Load(iconFilename); // IMG_Load(buffer);
+    free(fullpath);
     // The icon is attached to the window pointer
     SDL_SetWindowIcon(window, surface);
     // ...and the surface containing the icon pixel data is no longer required.
@@ -208,16 +239,110 @@ void sdl_on_end()
     SDL_Quit();
 }
 
-#ifdef __EMSCRIPTEN__
-extern void on_viewport_resized(int width, int height);
+//! Quits the application from running indefinitely.
+void quit()
+{
+    running = false;
+    #ifdef __EMSCRIPTEN__
+    emscripten_cancel_main_loop();
+    #endif
+}
 
-bool update_web_canvas()
+extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event);
+extern void resize_cameras(int width, int height);
+extern void uis_on_viewport_resized(ecs_world_t *world, int width, int height);
+
+void on_viewport_resized(ecs_world_t *world, int width, int height)
+{
+    #ifdef debug_viewport_resize
+    printf("Viewport was resized [%ix%i]\n", width, height);
+    #endif
+    screenDimensions.x = width;
+    screenDimensions.y = height;
+    if(screenDimensions.y <= 0)
+    {
+        screenDimensions.y = 1;
+    }
+    aspectRatio = ((float)screenDimensions.x) / ((float)screenDimensions.y);
+    resize_viewports(width, height);
+    resize_cameras(width, height);
+    uis_on_viewport_resized(world, width, height);
+}
+
+//! Polls SDL for input events. Also handles resize and window quit events.
+void update_sdl(ecs_world_t *world)
+{
+    SDL_Event event = { 0 };
+    while (SDL_PollEvent(&event))
+    {
+        input_extract_from_sdl(world, event);
+        int eventType = event.type;
+        if (eventType == SDL_QUIT)
+        {
+            quit();
+        }
+        else if (eventType == SDL_KEYUP)
+        {
+            SDL_Keycode key = event.key.keysym.sym;
+            if (key == SDLK_ESCAPE) 
+            {
+                quit();
+            }
+        }
+        else if (eventType == SDL_WINDOWEVENT)
+        {
+            if(event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+            {
+                on_viewport_resized(world, event.window.data1, event.window.data2);
+            }
+        }
+    }
+}
+
+//! Convert starting arguments to Settings.
+int process_arguments(int argc, char* argv[])
+{
+    for (int i = 1; i < argc; i++)
+    {
+        if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0)
+        {
+            PrintHelpMenu(argv[0]);
+            return EXIT_FAILURE;
+        }
+        if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--fullscreen") == 0)
+        {
+            fullscreen = true;
+        }
+        if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--halfscreen") == 0)
+        {
+            halfscreen = true;
+        }
+        if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--vsync") == 0)
+        {
+            vsync = true;
+        }
+        if (strcmp(argv[i], "-p") == 0 || strcmp(argv[i], "--profiler") == 0)
+        {
+            profiler = true;
+        }
+        if (strcmp(argv[i], "-z") == 0 || strcmp(argv[i], "--headless") == 0)
+        {
+            headless = true;
+        }
+    }
+    return EXIT_SUCCESS;
+}
+
+#ifdef __EMSCRIPTEN__
+// extern void on_viewport_resized(ecs_world_t *world, int width, int height);
+
+bool update_web_canvas(ecs_world_t *world)
 {
     int2 canvas_size = get_canvas_size();
     if (screenDimensions.x != canvas_size.x || screenDimensions.y != canvas_size.y)
     {
         printf("Canvas size has changed [%i x %i]\n", canvas_size.x, canvas_size.y);
-        on_viewport_resized(canvas_size.x, canvas_size.y);
+        on_viewport_resized(world, canvas_size.x, canvas_size.y);
         return true;
     }
     return false;
