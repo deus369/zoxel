@@ -8,10 +8,12 @@ typedef struct
     PhysicalButton space;
     PhysicalButton escape;
     PhysicalButton backspace;
-    PhysicalButton leftControl;
-    PhysicalButton rightControl;
-    PhysicalButton leftShift;
-    PhysicalButton rightShift;
+    PhysicalButton left_control;
+    PhysicalButton right_control;
+    PhysicalButton left_shift;
+    PhysicalButton right_shift;
+    PhysicalButton left_alt;
+    PhysicalButton right_alt;
     PhysicalButton tab;
     PhysicalButton capsLock;
     PhysicalButton a;
@@ -46,6 +48,10 @@ typedef struct
     PhysicalButton _3;
     PhysicalButton _4;
     PhysicalButton _5;
+    PhysicalButton _6;
+    PhysicalButton _7;
+    PhysicalButton _8;
+    PhysicalButton _9;
     PhysicalButton down;
     PhysicalButton up;
     PhysicalButton left;

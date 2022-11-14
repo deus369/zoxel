@@ -22,6 +22,10 @@ void render_loop_temp()
 {
     //clock_t t = clock();
     ecs_entity_t main_camera = get_main_camera();
+    if (!ecs_is_valid(world, main_camera))
+    {
+        return;
+    }
     const FreeRoam *freeRoam = ecs_get(world, main_camera, FreeRoam);
     main_camera_matrix = ecs_get(world, main_camera, ViewMatrix)->value;
     ui_camera_matrix = ecs_get(world, cameras[1], ViewMatrix)->value;

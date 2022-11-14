@@ -3,7 +3,9 @@ ecs_entity_t element_prefab;
 ecs_entity_t spawn_prefab_element(ecs_world_t *world)
 {
     ecs_entity_t e = ecs_new_prefab(world, "element_prefab");
+    #ifdef zoxel_debug_prefabs
     printf("spawn_prefab element [%lu].\n", (long int) (e));
+    #endif
     zoxel_add_tag(world, e, FrameTexture);
     zoxel_set_component(world, e, SelectableState, { 0 });
     add_ui_plus_components(world, e);

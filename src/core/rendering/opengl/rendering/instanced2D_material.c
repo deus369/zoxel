@@ -5,7 +5,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
-// #define DEVBUILD
+// #define zoxel_catch_opengl_errors
 // first, get working on pc
 //  then, move texture updating to the entity system
 // texture issues
@@ -45,7 +45,7 @@ void InitializeMesh(GLuint material)
     // reset
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-#ifdef DEVBUILD
+#ifdef zoxel_catch_opengl_errors
     GLenum err7 = glGetError();
     if (err7 != GL_NO_ERROR)
     {
@@ -117,7 +117,7 @@ void RenderEntity2D(float2 position, float angle, float scale, float brightness)
 void OpenGLEndInstancing()
 {
     glUseProgram(0);
-#ifdef DEVBUILD
+#ifdef zoxel_catch_opengl_errors
     GLenum err7 = glGetError();
     if (err7 != GL_NO_ERROR)
     {

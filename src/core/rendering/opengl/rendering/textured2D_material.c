@@ -7,7 +7,7 @@
 #include <SDL2/SDL_opengl.h>
 
 //! Keep property reference in material, upon creation.
-// #define DEVBUILD
+// #define zoxel_catch_opengl_errors
 // first, get working on pc
 //  then, move texture updating to the entity system
 // texture issues
@@ -36,7 +36,7 @@ void DisposeTexturedMaterial2D()
     glDeleteShader(textured2DShader.x);
     glDeleteShader(textured2DShader.y);
     glDeleteProgram(texturedMaterial);
-#ifdef DEVBUILD
+#ifdef zoxel_catch_opengl_errors
     GLenum err7 = glGetError();
     if (err7 != GL_NO_ERROR)
     {
@@ -75,10 +75,10 @@ void InitializeTexturedMesh(GLuint material)
     glVertexAttribPointer(materialTextured2D.vertexUV, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(2 * sizeof(float)));
     glEnableVertexAttribArray(materialTextured2D.vertexPosition);
     glEnableVertexAttribArray(materialTextured2D.vertexUV);
-    printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", squareTexturedMesh.x, squareTexturedMesh.y);
+    // printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", squareTexturedMesh.x, squareTexturedMesh.y);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-#ifdef DEVBUILD
+#ifdef zoxel_catch_opengl_errors
     GLenum err7 = glGetError();
     if (err7 != GL_NO_ERROR)
     {
@@ -221,7 +221,7 @@ int LoadTextureRender2DShader()
     return 0;
 }
 
-// #ifdef DEVBUILD
+// #ifdef zoxel_catch_opengl_errors
 //     GLenum err66 = glGetError();
 //     if (err66 != GL_NO_ERROR)
 //     {

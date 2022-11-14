@@ -46,7 +46,7 @@ void dispose_opengl()
     DisposeInstance2DMaterial();
     DisposeTexturedMaterial2D();
     DisposeInstanced3DMaterial();
-// #ifdef DEVBUILD
+// #ifdef zoxel_catch_opengl_errors
 //     GLenum err7 = glGetError();
 //     if (err7 != GL_NO_ERROR)
 //     {

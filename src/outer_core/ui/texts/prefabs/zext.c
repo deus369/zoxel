@@ -4,7 +4,9 @@ ecs_entity_t zext_prefab;
 ecs_entity_t spawn_zext_prefab(ecs_world_t *world)
 {
     ecs_entity_t e = ecs_new_prefab(world, "zext_prefab");
+    #ifdef zoxel_debug_prefabs
     printf("spawn_prefab zext [%lu].\n", (long int) (e));
+    #endif
     zoxel_add_tag(world, e, Zext);
     zoxel_add_component(world, e, ZextData);
     zoxel_add_component(world, e, ZextDirty);

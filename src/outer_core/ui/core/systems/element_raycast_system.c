@@ -40,12 +40,14 @@ void ElementRaycastSystem(ecs_iter_t *it)
                     ui_layer = elementLayer->value;
                     ui_selected = uis_it.entities[j];
                     ui_selected_selectableState = selectableState;
-                    /*printf("ui [%lu] raycasting position [%ix%i] ray([%ix%i]) :: size [%ix%i] Hit? %s screenSize [%ix%i]\n",
+                    #ifdef zoxel_debug_element_raycasting
+                    printf("ui [%lu] raycasting position [%ix%i] ray([%ix%i]) :: size [%ix%i] Hit? %s screenSize [%ix%i]\n",
                         (long int) uis_it.entities[j],
                         canvasPixelPosition->x, canvasPixelPosition->y,
                         raycaster->value.x, raycaster->value.y,
                         pixelSize->x, pixelSize->y, was_raycasted ? "true" : "false",
-                        screenDimensions.x, screenDimensions.y);*/
+                        screenDimensions.x, screenDimensions.y);
+                    #endif
                 }
                 /*if (was_raycasted)
                 {

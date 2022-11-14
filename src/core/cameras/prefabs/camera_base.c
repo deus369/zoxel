@@ -4,7 +4,9 @@ ecs_entity_t base_camera_prefab;
 void spawn_camera_base_prefab(ecs_world_t *world)
 {
     ecs_entity_t e = ecs_new_prefab(world, "base_camera_prefab");
+    #ifdef zoxel_debug_prefabs
     printf("spawn_prefab camera_base [%lu].\n", (long int) (e));
+    #endif
     zoxel_add_tag(world, e, Camera);
     zoxel_add_component(world, e, Position);
     zoxel_add_component(world, e, Rotation);

@@ -5,13 +5,13 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
-// #define DEVBUILD
+// #define zoxel_catch_opengl_errors
 // first, get working on pc
 //  then, move texture updating to the entity system
 // texture issues
 //  https://www.reddit.com/r/opengl/comments/ydsqkn/textured_square_works_on_pinephone_pro_but_not_pc/
 //  https://github.com/edo9300/edopro/issues/151
-float3 backgroundColor = { 32.0f / 255.0f, 64.0f / 255.0f, 48.0f / 255.0f };
+float3 backgroundColor = { 8.0f / 255.0f, 16.0f / 255.0f, 22.0f / 255.0f };
 
 void OpenGLClear()
 {
@@ -39,7 +39,7 @@ Multiple textures:
     // glUniform1i(texture, 0);
 
 /*
-#ifdef DEVBUILD
+#ifdef zoxel_catch_opengl_errors
     if (!glIsProgram(entityMaterial))
     {
         printf("GL Is not program %i\n", entityMaterial);

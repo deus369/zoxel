@@ -19,7 +19,9 @@ void spawn_chunk_prefab(ecs_world_t *world)
 {
     const int3 size = { 16, 16, 16 };
     ecs_entity_t e = ecs_new_prefab(world, "chunk_prefab");
+    #ifdef zoxel_debug_prefabs
     printf("spawn_prefab chunk_prefab [%lu].\n", (long int) (e));
+    #endif
     add_seed(world, e, 666);
     add_chunk(world, e, size);
     add_noise_chunk(world, e);

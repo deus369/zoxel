@@ -8,11 +8,12 @@ void reset_key(PhysicalButton *key);
 
 void spawn_keyboard(ecs_world_t *world)
 {
-    keyboardEntity = ecs_new_entity(world, "keyboard");
+    ecs_entity_t e = ecs_new_entity(world, "keyboard");
     // ecs_add(world, keyboardEntity, Keyboard);
-    ecs_set(world, keyboardEntity, Keyboard, { });
-    printf("Spawned Keyboard [%lu]\n", (long unsigned int) keyboardEntity);
+    ecs_set(world, e, Keyboard, { });
+    // printf("Spawned Keyboard [%lu]\n", (long unsigned int) keyboardEntity);
     // return keyboardEntity;
+    keyboardEntity = e;
 }
 
 void reset_keyboard(ecs_world_t *world)
@@ -24,6 +25,9 @@ void reset_keyboard(ecs_world_t *world)
     Keyboard *keyboard = ecs_get_mut(world, keyboardEntity, Keyboard);
     reset_key(&keyboard->space);
     reset_key(&keyboard->escape);
+    reset_key(&keyboard->enter);
+    reset_key(&keyboard->left_alt);
+    reset_key(&keyboard->right_alt);
     reset_key(&keyboard->a);
     reset_key(&keyboard->b);
     reset_key(&keyboard->r);
@@ -92,6 +96,15 @@ void extract_keyboard(ecs_world_t *world, SDL_Event event)
                 break;
             case SDLK_ESCAPE:
                 SetKey(&keyboard->escape, eventType);
+                break;
+            case SDLK_RETURN:
+                SetKey(&keyboard->enter, eventType);
+                break;
+            case SDLK_LALT:
+                SetKey(&keyboard->left_alt, eventType);
+                break;
+            case SDLK_RALT:
+                SetKey(&keyboard->right_alt, eventType);
                 break;
             case SDLK_a:
                 SetKey(&keyboard->a, eventType);

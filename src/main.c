@@ -4,6 +4,15 @@
 #define zoxel_test_cubes
 #define zoxel_test_voxels
 #define zoxel_test_uis
+// -- debugs --
+// #define zoxel_debug_sdl
+// #define zoxel_debug_opengl
+// #define zoxel_debug_prefabs
+// #define debug_viewport_resize
+// #define debug_ui_positioning
+// #define debug_ui_scaling
+// #define zoxel_catch_opengl_errors
+// #define zoxel_debug_element_raycasting
 #include "_includes.c"
 
 ecs_entity_t localPlayer;
@@ -18,8 +27,9 @@ void spawn_game(ecs_world_t *world)
     ecs_entity_t main_camera = spawn_main_camera(world, screenDimensions);
     spawn_ui_camera(world, screenDimensions);
     spawn_connected_devices(world);
-    zoxel_add_component(world, mouse_entity, ElementRaycaster);
     localPlayer = spawn_player_character2D(world, main_camera);
+    spawn_canvas(world, screenDimensions);
+    initialize_ui(world);   // spawns test ui
     // spawn_main_menu(world, "Zoxel");
 }
 
@@ -69,6 +79,7 @@ int main(int argc, char* argv[])
     }
     open_ecs(argc, argv, profiler); // begin ecs
     ECS_IMPORT(world, Zoxel);       // import game modules
+    update();                       // update once? so ui does its thing properly
     spawn_game(world);              // spawn game entities
     main_loop();
     close_ecs();

@@ -18,6 +18,10 @@ void Player2DTestSystem(ecs_iter_t *it)
         {
             Particle2DSpawnSystem(world, bobPosition->value, particleSpawnCount);
         }
+        else if ((keyboard->left_alt.isPressed || keyboard->right_alt.isPressed) && keyboard->enter.wasPressedThisFrame)
+        {
+            sdl_toggle_fullscreen(main_window);
+        }
         else if (keyboard->p.wasPressedThisFrame)
         {
             printf("[Printing Debug]\n");

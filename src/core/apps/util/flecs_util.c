@@ -16,7 +16,9 @@ void open_ecs(int argc, char* argv[], bool profiler)
     }
     // enable multi threading
     int cpuCoreCount = SDL_GetCPUCount();
+    #ifdef zoxel_debug_sdl
     printf("System Found [%i processors].\n", cpuCoreCount);
+    #endif
     if (cpuCoreCount > 1)
     {
         ecs_set_threads(world, cpuCoreCount);

@@ -30,13 +30,13 @@ void spawn_corner_uis(ecs_world_t *world)
 
 void spawn_test_uis(ecs_world_t *world)
 {
-    int2 testSize = { 32, 32 };
-    // spawn_element(world, canvas, (int2) { 0, 0 }, testSize, (float2) { 0.5f, 0.5f });
+    // crosshair
+    // spawn_element(world, canvas, (int2) { 0, 0 }, (int2) { 32, 32 }, (float2) { 0.5f, 0.5f });
     spawn_corner_uis(world);
     int2 test_window_size = { 240, 320 };
-    int2 test_window_position = { 0, test_window_size.y / 2 };
-    spawn_window(world, "Zoxel", test_window_position, test_window_size, (float2) { 0.5f, 0.0f });
-
+    int2 test_window_position = { - test_window_size.x / 2, test_window_size.y / 2 };
+    float2 test_window_anchor = { 1.0f, 0.0f };
+    spawn_window(world, "Zoxel", test_window_position, test_window_size, test_window_anchor);
     // test ui
     // test_action_bar(world);
     // spawn_element(world, canvas, (int2) { screenDimensions.x / 2, screenDimensions.y / 2 }, testSize);   // crosshair

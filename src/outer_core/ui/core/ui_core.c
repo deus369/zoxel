@@ -74,6 +74,5 @@ void UICoreImport(ecs_world_t *world)
     spawn_prefab_element(world);
     spawn_prefab_window(world);
     spawn_prefab_button(world);
-    spawn_canvas(world, screenDimensions);
 }
 #endif

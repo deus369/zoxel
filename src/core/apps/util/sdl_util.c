@@ -66,6 +66,7 @@ void SetStartScreenSize()
 //! Print debug info!
 void print_sdl()
 {
+    #ifdef zoxel_debug_sdl
     printf("SDL\n");
     printf("    Platform:        %s\n", SDL_GetPlatform());
     printf("    CPU Count:       %d\n", SDL_GetCPUCount());
@@ -76,16 +77,27 @@ void print_sdl()
     printf("    Supports SSE3:   %s\n", SDL_HasSSE3() ? "true" : "false");
     printf("    Supports SSE4.1: %s\n", SDL_HasSSE41() ? "true" : "false");
     printf("    Supports SSE4.2: %s\n", SDL_HasSSE42() ? "true" : "false");
+    #endif
 }
 
 void print_opengl()
 {
+    #ifdef zoxel_debug_opengl
     // Load the modern OpenGL funcs
     printf("OpenGL Context\n");
     printf("    Vendor:   %s\n", glGetString(GL_VENDOR));
     printf("    Renderer: %s\n", glGetString(GL_RENDERER));
     printf("    Version:  %s\n", glGetString(GL_VERSION));
     printf("    GLSL Version:    %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+    #endif
+}
+
+void sdl_toggle_fullscreen(SDL_Window* window)
+{
+    Uint32 FullscreenFlag = SDL_WINDOW_FULLSCREEN_DESKTOP; // SDL_WINDOW_FULLSCREEN;
+    bool isFullscreen = SDL_GetWindowFlags(window) & FullscreenFlag;
+    SDL_SetWindowFullscreen(window, isFullscreen ? 0 : FullscreenFlag);
+    // SDL_ShowCursor(isFullscreen);
 }
 
 //! Initialize SDL things, thingy things.
@@ -123,19 +135,25 @@ void LoadIconSDL(SDL_Window* window)
 #endif
 }
 
-
 //! Spawn the SDLWindow.
 SDL_Window* SpawnWindowSDL(bool fullscreen)
 {
     windowFlags = SDL_WINDOW_OPENGL;
     #ifndef __EMSCRIPTEN__
-    if (fullscreen) 
+    /*if (fullscreen) 
     {
         windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-    }
+    }*/
     #endif
+    // SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+    int2 app_position = (int2) { };
+    int displays = SDL_GetNumVideoDisplays();
+    if (displays > 1)
+    {
+        app_position.x = screenDimensions.x;
+    }
     SDL_Window* window = SDL_CreateWindow("Zoxel",
-        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+        app_position.x, app_position.y,
         screenDimensions.x, screenDimensions.y, windowFlags);
     if (window == NULL)
     {

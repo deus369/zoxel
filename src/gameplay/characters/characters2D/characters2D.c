@@ -18,17 +18,21 @@ zoxel_component(Character2DLink, ecs_entity_t);
 //! Testing, spawn more!
 void SpawnManyCharacters()
 {
-    ecs_entity_t first_character;
     for (int i = 0; i < spawnCharacter2DsCount; i++)
     {
-        ecs_entity_t e = spawn_character2D(world, character2DPrefab, (float2) { -0.5f + (rand() % 100) * 0.2f, -0.5f + (rand() % 100) * 0.2f });
-        if (i == 0)
-        {
-            first_character = e;
-            printf("Inside Loop - MaterialGPULink [%lu] : %i\n", (long int) first_character, ecs_get(world, first_character, MaterialGPULink)->value);
-        }
+        spawn_character2D(world, character2DPrefab, (float2) { -0.5f + (rand() % 100) * 0.2f, -0.5f + (rand() % 100) * 0.2f });
     }
-    printf("Outside Loop - MaterialGPULink [%lu] : %i\n", (long int) first_character, ecs_get(world, first_character, MaterialGPULink)->value);
+    // ecs_entity_t first_character;
+    // for (int i = 0; i < spawnCharacter2DsCount; i++)
+    // {
+    //     ecs_entity_t e = spawn_character2D(world, character2DPrefab, (float2) { -0.5f + (rand() % 100) * 0.2f, -0.5f + (rand() % 100) * 0.2f });
+    //     if (i == 0)
+    //     {
+    //         first_character = e;
+    //         printf("Inside Loop - MaterialGPULink [%lu] : %i\n", (long int) first_character, ecs_get(world, first_character, MaterialGPULink)->value);
+    //     }
+    // }
+    // printf("Outside Loop - MaterialGPULink [%lu] : %i\n", (long int) first_character, ecs_get(world, first_character, MaterialGPULink)->value);
 }
 
 //! A module for 2 dimensional characters.

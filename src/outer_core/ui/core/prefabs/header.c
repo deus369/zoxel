@@ -5,7 +5,9 @@ extern ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t parent, int2 pix
 ecs_entity_t spawn_prefab_header(ecs_world_t *world)
 {
     ecs_entity_t e = ecs_new_prefab(world, "header_prefab");
+    #ifdef zoxel_debug_prefabs
     printf("spawn_prefab header [%lu].\n", (long int) (e));
+    #endif
     zoxel_add_component(world, e, Children);
     zoxel_add_tag(world, e, Header);
     zoxel_add_tag(world, e, FrameTexture);

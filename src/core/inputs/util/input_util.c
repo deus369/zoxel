@@ -1,6 +1,6 @@
 void spawn_connected_devices(ecs_world_t *world)
 {
-    printf("Devices detected: 2\n");
+    // printf("Devices detected: 2\n");
     spawn_keyboard(world);
     spawn_mouse(world);
     // spawn_mouse(world); //! \todo Why?? Why does this only count systems with 1 count in iterators.

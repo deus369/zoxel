@@ -7,8 +7,7 @@ To-Do UI
 
 `Current`
 
-- [ ] Fix fullscreen - hiding UI?!?!
-
+- [x] Fix fullscreen - hiding UI?!?!
 - [x] Raycast only child ui first, before parents. Don't raycast window when header is in front of it.
     - Add layer component
     - Cycle through all uis, and keep the top most one.

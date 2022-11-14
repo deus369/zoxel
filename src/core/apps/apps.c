@@ -19,6 +19,7 @@
 bool vsync = false;
 bool fullscreen = false;
 bool halfscreen = false;
+SDL_Window* main_window;
 // Tags
 ECS_DECLARE(App);
 // components
@@ -141,5 +142,12 @@ void AppsImport(ecs_world_t *world)
     SDL_Window* window = spawn_sdl_window();
     SDL_GLContext* context = create_sdl_context(window);
     spawn_app(world, window, context);
+    main_window = window;
+    #ifndef __EMSCRIPTEN__
+    if (fullscreen) 
+    {
+        sdl_toggle_fullscreen(main_window);
+    }
+    #endif
 }
 #endif
