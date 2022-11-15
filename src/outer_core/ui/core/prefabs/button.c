@@ -9,12 +9,12 @@ ecs_entity_t spawn_prefab_button(ecs_world_t *world)
     #ifdef zoxel_debug_prefabs
     printf("spawn_prefab button [%lu].\n", (long int) (e));
     #endif
-    zoxel_add_component(world, e, Children);
+    zoxel_add(world, e, Children);
     zoxel_add_tag(world, e, Button);
     zoxel_add_tag(world, e, FrameTexture);
     add_ui_plus_components(world, e);
-    zoxel_set_component(world, e, SelectableState, { 0 });
-    zoxel_set_component(world, e, ClickableState, { 0 });
+    zoxel_set(world, e, SelectableState, { 0 });
+    zoxel_set(world, e, ClickableState, { 0 });
     button_prefab = e;
     return e;
 }

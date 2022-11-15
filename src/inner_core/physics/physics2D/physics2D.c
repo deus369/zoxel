@@ -11,13 +11,14 @@ zoxel_component(Torque2D, float);
 //! Velocity movement of a 2D Entity.
 zoxel_component(Bounds2D, float2);
 // util
-#include "util/Physics2DUtil.c"
+#include "util/physics2D_util.c"
 // systems
-#include "systems/Friction2DSystem.c"
-#include "systems/Acceleration2DSystem.c"
-#include "systems/Velocity2DSystem.c"
-#include "systems/Torque2DSystem.c"
-#include "systems/Bounds2DSystem.c"
+#include "systems/friction2D_system.c"
+#include "systems/acceleration2D_system.c"
+#include "systems/velocity2D_system.c"
+#include "systems/torque2D_system.c"
+#include "systems/bounds2D_system.c"
+#include "systems/gravity2D_system.c"
 
 void Physics2DImport(ecs_world_t *world)
 {

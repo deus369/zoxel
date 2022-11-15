@@ -16,23 +16,12 @@ zoxel_component(Character2DLink, ecs_entity_t);
 #include "systems/BobSpawnSystem.c"
 
 //! Testing, spawn more!
-void SpawnManyCharacters()
+void spawn_many_characters()
 {
     for (int i = 0; i < spawnCharacter2DsCount; i++)
     {
-        spawn_character2D(world, character2DPrefab, (float2) { -0.5f + (rand() % 100) * 0.2f, -0.5f + (rand() % 100) * 0.2f });
+        spawn_character2D(world, character2D_prefab, (float2) { -0.5f + (rand() % 100) * 0.2f, -0.5f + (rand() % 100) * 0.2f });
     }
-    // ecs_entity_t first_character;
-    // for (int i = 0; i < spawnCharacter2DsCount; i++)
-    // {
-    //     ecs_entity_t e = spawn_character2D(world, character2DPrefab, (float2) { -0.5f + (rand() % 100) * 0.2f, -0.5f + (rand() % 100) * 0.2f });
-    //     if (i == 0)
-    //     {
-    //         first_character = e;
-    //         printf("Inside Loop - MaterialGPULink [%lu] : %i\n", (long int) first_character, ecs_get(world, first_character, MaterialGPULink)->value);
-    //     }
-    // }
-    // printf("Outside Loop - MaterialGPULink [%lu] : %i\n", (long int) first_character, ecs_get(world, first_character, MaterialGPULink)->value);
 }
 
 //! A module for 2 dimensional characters.
@@ -43,7 +32,20 @@ void Characters2DImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, Character2DLink);
     spawn_prefab_character2D(world, character2DTextureSize);
     #ifdef zoxel_test_character2Ds
-    SpawnManyCharacters();
+    spawn_many_characters();
     #endif
 }
+
+// ecs_entity_t first_character;
+// for (int i = 0; i < spawnCharacter2DsCount; i++)
+// {
+//     ecs_entity_t e = spawn_character2D(world, character2D_prefab, (float2) { -0.5f + (rand() % 100) * 0.2f, -0.5f + (rand() % 100) * 0.2f });
+//     if (i == 0)
+//     {
+//         first_character = e;
+//         printf("Inside Loop - MaterialGPULink [%lu] : %i\n", (long int) first_character, ecs_get(world, first_character, MaterialGPULink)->value);
+//     }
+// }
+// printf("Outside Loop - MaterialGPULink [%lu] : %i\n", (long int) first_character, ecs_get(world, first_character, MaterialGPULink)->value);
+
 #endif

@@ -9,10 +9,10 @@ void spawn_camera2D_follower_prefab(ecs_world_t *world)
     #ifdef zoxel_debug_prefabs
     printf("spawn_prefab camera2D [%lu].\n", (long int) (e));
     #endif
-    zoxel_set_component(world, e, FieldOfView, { 60 });
+    zoxel_set(world, e, FieldOfView, { 60 });
     zoxel_add_tag(world, e, CameraFollower2D);
-    zoxel_add_component(world, e, CameraTarget);
-    zoxel_set_component(world, e, FreeRoam, { 0 });
+    zoxel_add(world, e, CameraTarget);
+    zoxel_set(world, e, FreeRoam, { 0 });
     camera2D_follower_prefab = e;
 }
 

@@ -132,12 +132,15 @@ ecs_entity_t ecs_id(id) = 0;\
 (void)ecs_id(id);
 
 //! Adds a component but also adds override to an entity.
-#define zoxel_add_component(world, entity, T)\
-    ecs_add_id(world, entity, ecs_id(T));\
-    ecs_override_id(world, entity, ecs_id(T))
+#define zoxel_add(world, entity, T)\
+    ecs_add(world, entity, T);\
+    ecs_override(world, entity, T)
+
+// ecs_add_id(world, entity, ecs_id(T));
+// ecs_override_id(world, entity, ecs_id(T))
 
 //! Adds a component with data and also adds override to an entity.
-#define zoxel_set_component(world, entity, T, ...)\
+#define zoxel_set(world, entity, T, ...)\
     ecs_set_id(world, entity, ecs_id(T), sizeof(T), &(T)__VA_ARGS__);\
     ecs_override_id(world, entity, ecs_id(T))
 

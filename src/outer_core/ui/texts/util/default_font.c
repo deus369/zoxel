@@ -64,16 +64,16 @@ const byte2 number_2[] =
 const int number_3_length = 9 * 2;
 const byte2 number_3[] =
 {
-    { font_left_side, font_top_side }, { font_right_side - 3, font_top_side },
-    { font_right_side - 3, font_top_side }, { font_right_side, font_top_side - 3 },
-    { font_right_side, font_top_side - 3 }, { font_right_side, font_upperMiddleSideY + 3 },
-    { font_right_side, font_upperMiddleSideY + 3 }, { font_right_side - 3, font_upperMiddleSideY },
-    { font_right_side - 3, font_upperMiddleSideY }, { font_left_side - 4, font_upperMiddleSideY },
-    { font_left_side - 4, font_upperMiddleSideY }, { font_right_side - 3, font_upperMiddleSideY },
-    { font_right_side - 3, font_upperMiddleSideY }, { font_right_side, font_upperMiddleSideY - 3 },
-    { font_right_side, font_upperMiddleSideY - 3 }, { font_right_side, font_bottom_side + 3 },
-    { font_right_side, font_bottom_side + 3 }, { font_right_side - 3, font_bottom_side },
-    { font_right_side - 3, font_bottom_side }, { font_left_side, font_bottom_side }
+    { font_left_side, font_top_side }, { font_right_side - curve, font_top_side },
+    { font_right_side - curve, font_top_side }, { font_right_side, font_top_side - curve },
+    { font_right_side, font_top_side - curve }, { font_right_side, font_upperMiddleSideY + curve },
+    { font_right_side, font_upperMiddleSideY + curve }, { font_right_side - curve, font_upperMiddleSideY },
+    { font_right_side - curve, font_upperMiddleSideY }, { font_left_side - curve, font_upperMiddleSideY },
+    { font_left_side - curve, font_upperMiddleSideY }, { font_right_side - curve, font_upperMiddleSideY },
+    { font_right_side - curve, font_upperMiddleSideY }, { font_right_side, font_upperMiddleSideY - curve },
+    { font_right_side, font_upperMiddleSideY - curve }, { font_right_side, font_bottom_side + curve },
+    { font_right_side, font_bottom_side + curve }, { font_right_side - curve, font_bottom_side },
+    { font_right_side - curve, font_bottom_side }, { font_left_side, font_bottom_side }
 };
 
 const int number_4_length = 3 * 2;

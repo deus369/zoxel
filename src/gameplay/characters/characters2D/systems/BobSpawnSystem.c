@@ -14,7 +14,7 @@ void PrintBobSpawnSystem(ecs_world_t *world)
 }
 
 //! Here for now, spawns a one man bobarmy.
-/*void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2DPrefab, float2 bobPosition, int bobSpawnCount)
+/*void SpawnBobArmy(ecs_world_t *world, ecs_entity_t character2D_prefab, float2 bobPosition, int bobSpawnCount)
 {
     float2 positionBounds = { 0.1f, 0.5f };
     const float2 velocityBounds = { 0.2f, 12.4f };
@@ -117,6 +117,6 @@ void PrintBobSpawnSystem(ecs_world_t *world)
     if (debugSpawnBobArmy)
     {
         debugSpawnBobArmy = false;
-        SpawnBobArmy(world, character2DPrefab, bobSpawnCount);
+        SpawnBobArmy(world, character2D_prefab, bobSpawnCount);
     }
 }*/

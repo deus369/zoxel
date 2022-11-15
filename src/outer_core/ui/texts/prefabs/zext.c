@@ -7,14 +7,13 @@ ecs_entity_t spawn_zext_prefab(ecs_world_t *world)
     printf("spawn_prefab zext [%lu].\n", (long int) (e));
     #endif
     zoxel_add_tag(world, e, Zext);
-    zoxel_add_component(world, e, ZextData);
-    zoxel_add_component(world, e, ZextSize);
-    zoxel_add_component(world, e, AnimateZext);
-    zoxel_add_component(world, e, ZextDirty);
-    zoxel_add_component(world, e, Children);
+    zoxel_add(world, e, ZextData);
+    zoxel_add(world, e, ZextSize);
+    zoxel_add(world, e, ZextDirty);
+    zoxel_add(world, e, Children);
     add_transform2Ds(world, e);
-    // add_ui_components(world, e);
     add_ui_plus_components(world, e);
+    // zoxel_add(world, e, AnimateZext);
     ecs_defer_end(world);
     return e;
 }
@@ -33,6 +32,7 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab,
     float2 position2D = initialize_ui_components_2(world, e,
         parent, position, zext_size, anchor, layer,
         parent_position2D, parent_pixel_size);
+    // zoxel_add(world, e, AnimateZext);
     ecs_defer_end(world);
     ZextData *zextData = ecs_get_mut(world, e, ZextData);
     initialize_memory_component(zextData, unsigned char, textLength);
@@ -49,3 +49,14 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab,
     ecs_modified(world, e, Children);
     return e;
 }
+
+/*
+
+Flecs Bug - A
+
+ecs_add(world, e, AnimateZext);
+ecs_override(world, e, AnimateZext);
+ecs_remove(world, e, AnimateZext);
+printf("Component exists? %s\n", ecs_has(world, e, AnimateZext) ? "Yes" : "No");
+    
+*/

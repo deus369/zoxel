@@ -68,22 +68,16 @@ void ChunkBuildSystem(ecs_iter_t *it)
                         int vertices_start = solid_voxels_count * verticies_per_voxel;
                         int indicies_start = solid_voxels_count * indicies_per_voxel;
                         float3 vertex_position_offset = float3_multiply_float((float3) { j, k, l }, voxel_scale);
-                        /*if (k == 0 && l == 0)
-                        {
-                            printf("Voxel [%i] - [%ix%ix%i]:\n", solid_voxels_count, j, k, l);
-                            printf("    vertex_position_offset [%fx%fx%f]\n",  vertex_position_offset.x, vertex_position_offset.y, vertex_position_offset.z);
-                            printf("    vertices_start [%i]\n", vertices_start);
-                        }*/
                         for (int a = 0, b = indicies_start; a < indicies_per_voxel; a++, b++)
                         {
-                            meshIndicies2->value[b] = cubeIndicies[a] + vertices_start / 3;
+                            meshIndicies2->value[b] = voxel_cube_indicies[a] + vertices_start / 3;
                             //if (k == 0 && l == 0)
                              //   printf("    - index at [%i:%i] is [%i] from base [%i]\n", a, b, meshIndicies2->value[b], cubeIndicies[a]);
                         }
                         // top face
                         for (int a = 0, b = vertices_start; a < verticies_per_voxel2; a++, b = b + 3)
                         {
-                            float3 vertex_position = cubeVertices2[a]; // (float3) { cubeVertices[a + 0], cubeVertices[a + 1], cubeVertices[a + 2] };
+                            float3 vertex_position = voxel_cube_vertices[a]; // (float3) { cubeVertices[a + 0], cubeVertices[a + 1], cubeVertices[a + 2] };
                             vertex_position = float3_multiply_float(vertex_position, voxel_scale);          // scale vertex
                             vertex_position = float3_add(vertex_position, vertex_position_offset);   // offset vertex by voxel position in chunk
                             vertex_position = float3_add(vertex_position, center_mesh_offset);       // add total mesh offset
@@ -109,3 +103,10 @@ ECS_SYSTEM_DECLARE(ChunkBuildSystem);
         set_mesh_indicies(meshIndicies2, cubeIndicies, 36);
         set_mesh_vertices(meshVertices2, cubeVertices, 24);*/
         // printf("Rebuilding Chunk Mesh with faces: [%i]\n", solid_voxels_count);
+
+                        /*if (k == 0 && l == 0)
+                        {
+                            printf("Voxel [%i] - [%ix%ix%i]:\n", solid_voxels_count, j, k, l);
+                            printf("    vertex_position_offset [%fx%fx%f]\n",  vertex_position_offset.x, vertex_position_offset.y, vertex_position_offset.z);
+                            printf("    vertices_start [%i]\n", vertices_start);
+                        }*/

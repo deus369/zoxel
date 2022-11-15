@@ -1,17 +1,17 @@
 //! Here for now, spawns a one man bobarmy.
-void ParticleSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCount)
+void Particle3DSpawnSystem(ecs_world_t *world, float3 bobPosition, int spawnCount)
 {
-    float2 positionBounds = { 0.1f, 0.5f };
+    float2 positionBounds = { 0.1f, 0.2f };
     const float2 velocityBounds = { 0.03f, 0.2f };
     const float2 scaleBounds = { 0.02f, 0.13f };
     const double2 lifeTime = { 0.1f, 2.0f };
     const float2 brightnessBounds = { 0.2f, 0.8f };
     // Create a SpaceShip prefab with a Defense component.
     Position *positions = malloc(sizeof(Position) * spawnCount);
-    Velocity *velocitys = malloc(sizeof(Velocity) * spawnCount);
+    Velocity3D *velocity3Ds = malloc(sizeof(Velocity3D) * spawnCount);
     // Rotation *rotations = malloc(sizeof(Rotation) * spawnCount);
     // Acceleration *accelerations = malloc(sizeof(Acceleration) * spawnCount);
-    // Torque *torques = malloc(sizeof(Torque) * spawnCount);
+    // Torque3D *torques = malloc(sizeof(Torque3D) * spawnCount);
     Scale1D *scale1Ds = malloc(sizeof(Scale1D) * spawnCount);
     Brightness *brightnesses = malloc(sizeof(Brightness) * spawnCount);
     DestroyInTime *destroyInTimes = malloc(sizeof(DestroyInTime) * spawnCount);
@@ -24,37 +24,38 @@ void ParticleSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCount)
         };
         positions[i].value.x += bobPosition.x;
         positions[i].value.y += bobPosition.y;
+        positions[i].value.z += bobPosition.z;
         // velocity
-        velocitys[i].value = (float3) {
+        velocity3Ds[i].value = (float3) {
             ((rand() % 101) / 100.0f) * 1.0f - 0.5f,
             ((rand() % 101) / 100.0f) * 1.0f - 0.5f,
             ((rand() % 101) / 100.0f) * 1.0f - 0.5f
         };
-        velocitys[i].value = float3_normalize(velocitys[i].value);
-        velocitys[i].value = float3_multiply_float(velocitys[i].value, (velocityBounds.y - velocityBounds.x));
-        if (velocitys[i].value.x < 0)
+        velocity3Ds[i].value = float3_normalize(velocity3Ds[i].value);
+        velocity3Ds[i].value = float3_multiply_float(velocity3Ds[i].value, (velocityBounds.y - velocityBounds.x));
+        if (velocity3Ds[i].value.x < 0)
         {
-            velocitys[i].value.x -= velocityBounds.x;
+            velocity3Ds[i].value.x -= velocityBounds.x;
         }
         else
         {
-            velocitys[i].value.x += velocityBounds.x;
+            velocity3Ds[i].value.x += velocityBounds.x;
         }
-        if (velocitys[i].value.y < 0)
+        if (velocity3Ds[i].value.y < 0)
         {
-            velocitys[i].value.y -= velocityBounds.x;
-        }
-        else
-        {
-            velocitys[i].value.y += velocityBounds.x;
-        }
-        if (velocitys[i].value.z < 0)
-        {
-            velocitys[i].value.z -= velocityBounds.x;
+            velocity3Ds[i].value.y -= velocityBounds.x;
         }
         else
         {
-            velocitys[i].value.z += velocityBounds.x;
+            velocity3Ds[i].value.y += velocityBounds.x;
+        }
+        if (velocity3Ds[i].value.z < 0)
+        {
+            velocity3Ds[i].value.z -= velocityBounds.x;
+        }
+        else
+        {
+            velocity3Ds[i].value.z += velocityBounds.x;
         }
         // torques[i].value = ((rand() % 101) / 100.0f) * torqueBounds - (torqueBounds / 2.0f);
         scale1Ds[i].value = scaleBounds.x + ((rand() % 101) / 100.0f) * (scaleBounds.y - scaleBounds.x);
@@ -69,10 +70,10 @@ void ParticleSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCount)
         {
             ecs_pair(EcsIsA, particle3D_prefab),
             ecs_id(Position),
-            ecs_id(Velocity),
-            ecs_id(Acceleration),
+            ecs_id(Velocity3D),
+            ecs_id(Acceleration3D),
             ecs_id(Rotation),
-            ecs_id(Torque),
+            ecs_id(Torque3D),
             ecs_id(Scale1D),
             ecs_id(Brightness),
             ecs_id(DestroyInTime)
@@ -82,20 +83,20 @@ void ParticleSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCount)
         {       
             NULL,           // Prefab pair, what is it used for?
             positions,
-            velocitys,
-            NULL,           // Acceleration
+            velocity3Ds,
+            NULL,           // Acceleration3D
             NULL,           // Rotation
-            NULL,           // Torque
+            NULL,           // Torque3D
             scale1Ds,
             brightnesses,
             destroyInTimes
         }
     });
     free(positions);
-    free(velocitys);
+    free(velocity3Ds);
     // free(torques);
     free(scale1Ds);
     free(brightnesses);
     free(destroyInTimes);
 }
-ECS_SYSTEM_DECLARE(ParticleSpawnSystem);
+ECS_SYSTEM_DECLARE(Particle3DSpawnSystem);

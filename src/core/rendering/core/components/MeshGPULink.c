@@ -7,7 +7,7 @@ zoxel_component(MeshGPULink, GLuint2);
 
 void add_gpu_mesh(ecs_world_t *world, ecs_entity_t prefab)
 {
-    zoxel_set_component(world, prefab, MeshGPULink, { 0 });
+    zoxel_set(world, prefab, MeshGPULink, { 0 });
 }
 
 //! Grab from opengl part.

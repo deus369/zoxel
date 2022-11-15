@@ -5,7 +5,7 @@ extern GLuint spawn_gpu_texture_buffers();
 
 void add_gpu_texture(ecs_world_t *world, ecs_entity_t prefab)
 {
-    zoxel_set_component(world, prefab, TextureGPULink, { 0 });
+    zoxel_set(world, prefab, TextureGPULink, { 0 });
 }
 
 void spawn_gpu_texture(ecs_world_t *world, ecs_entity_t e)

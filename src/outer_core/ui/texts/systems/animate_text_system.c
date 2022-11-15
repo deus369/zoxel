@@ -1,6 +1,7 @@
 //! Every noise_animation_speed it makes the texture update.
 void AnimateTextSystem(ecs_iter_t *it)
 {
+    // printf("AnimateZext: %i\n", it->count);
     double deltaTime = it->delta_time;
     AnimateZext *animateZexts = ecs_field(it, AnimateZext, 1);
     ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);

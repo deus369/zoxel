@@ -6,8 +6,8 @@ ecs_entity_t spawn_app_prefab(ecs_world_t *world)
     ecs_entity_t e = ecs_new_prefab(world, "app_prefab");
     zoxel_add_tag(world, e, App);
     // zoxel_add_tag(world, e, ViewPort);
-    zoxel_add_component(world, e, SDLWindow);
-    zoxel_add_component(world, e, Context);
+    zoxel_add(world, e, SDLWindow);
+    zoxel_add(world, e, Context);
     app_prefab = e;
     return e;
 }

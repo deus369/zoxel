@@ -8,12 +8,12 @@ void spawn_camera_base_prefab(ecs_world_t *world)
     printf("spawn_prefab camera_base [%lu].\n", (long int) (e));
     #endif
     zoxel_add_tag(world, e, Camera);
-    zoxel_add_component(world, e, Position);
-    zoxel_add_component(world, e, Rotation);
-    zoxel_set_component(world, e, Euler, { { 0, 0, 0 } });
-    zoxel_add_component(world, e, ProjectionMatrix);
-    zoxel_add_component(world, e, ViewMatrix);
-    zoxel_add_component(world, e, ScreenDimensions);
-    zoxel_add_component(world, e, FieldOfView);
+    zoxel_add(world, e, Position);
+    zoxel_add(world, e, Rotation);
+    zoxel_set(world, e, Euler, { { 0, 0, 0 } });
+    zoxel_add(world, e, ProjectionMatrix);
+    zoxel_add(world, e, ViewMatrix);
+    zoxel_add(world, e, ScreenDimensions);
+    zoxel_add(world, e, FieldOfView);
     base_camera_prefab = e;
 }

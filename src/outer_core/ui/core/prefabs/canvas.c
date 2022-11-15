@@ -7,7 +7,7 @@ void spawn_prefab_canvas(ecs_world_t *world)
     printf("spawn_prefab canvas [%lu].\n", (long int) (e));
     #endif
     zoxel_add_tag(world, e, Canvas);
-    zoxel_add_component(world, e, PixelSize);
+    zoxel_add(world, e, PixelSize);
     canvas_prefab = e;
 }
 

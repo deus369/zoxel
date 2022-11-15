@@ -13,8 +13,8 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world)
     add_ui_plus_components(world, e);
     zoxel_add_tag(world, e, Header);
     zoxel_add_tag(world, e, FrameTexture);
-    zoxel_set_component(world, e, SelectableState, { 0 });
-    zoxel_add_component(world, e, Children);
+    zoxel_set(world, e, SelectableState, { 0 });
+    zoxel_add(world, e, Children);
     header_prefab = e;
     return e;
 }

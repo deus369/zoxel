@@ -7,6 +7,9 @@ Any pending flecs issues, don't fix them constantly as it interupts main work.
 
 -----
 
+- [ ] Removing override components from prefabs doesn't work.
+    - It will keep the component there on a instantiated entity.
+
 - [ ] Query updates are being weird, check them out more.
     - [ ] Make a test that checks how change updates work with update components.
 

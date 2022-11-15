@@ -8,9 +8,9 @@ ecs_entity_t spawn_prefab_mouse(ecs_world_t *world)
     printf("spawn_prefab mouse [%lu].\n", (long int) (e));
     #endif
     zoxel_add_tag(world, e, Device);
-    zoxel_set_component(world, e, Mouse, { });
-    zoxel_set_component(world, e, Raycaster, { { } });
-    zoxel_set_component(world, e, RaycasterTarget, { 0 });
+    zoxel_set(world, e, Mouse, { });
+    zoxel_set(world, e, Raycaster, { { } });
+    zoxel_set(world, e, RaycasterTarget, { 0 });
     mouse_prefab = e;
     return e;
 }

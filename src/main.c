@@ -17,7 +17,7 @@
 // #define debug_ui_scaling
 #include "_includes.c"
 
-ecs_entity_t localPlayer;
+ecs_entity_t local_player;
 extern bool headless;
 extern bool running;
 extern bool profiler;
@@ -29,7 +29,7 @@ void spawn_game(ecs_world_t *world)
     ecs_entity_t main_camera = spawn_main_camera(world, screenDimensions);
     spawn_ui_camera(world, screenDimensions);
     spawn_connected_devices(world);
-    localPlayer = spawn_player_character2D(world, main_camera);
+    local_player = spawn_player_character3D(world, main_camera);
     ecs_entity_t canvas = spawn_canvas(world, screenDimensions);
     spawn_fps_display(world, canvas, 32);
     initialize_ui(world);   // spawns test ui

@@ -10,7 +10,7 @@ extern GLuint spawn_gpu_material_program(const GLuint2 shader);
 
 void add_gpu_material(ecs_world_t *world, ecs_entity_t prefab)
 {
-    zoxel_set_component(world, prefab, MaterialGPULink, { 0 });
+    zoxel_set(world, prefab, MaterialGPULink, { 0 });
 }
 
 void spawn_gpu_material(ecs_world_t *world, ecs_entity_t e, const GLuint2 shader)

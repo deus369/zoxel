@@ -7,22 +7,11 @@ To-Do Main
 
 `Doing List`
 
+- [ ] Current [Voxels](todo-voxels.md)
+
+- [ ] Current [Tiles](todo-tiles.md)
+
 - [ ] Current [User Interface](todo-ui.md)
-
-- [ ] Line2Ds
-    - [ ] Line tag / module / prefab etc
-    - [ ] Grid2Ds for testing
-
-- [ ] GameUIs Module
-    - [ ] Generic Main Menus
-        - spawn_main_menu_prefab function
-        - game label
-        - play button
-        - options button
-        - exit button
-    - [ ] Generic Load/Save/New Game folders + uis
-        - load directory folder names into a list
-        - preview the selected file events (for example, show time played in that game folder)
 
 -----
 
@@ -39,6 +28,8 @@ Core
 InnerCore
 
 [User Interface](todo-ui.md)
+
+[Tiles](todo-tiles.md)
 
 [Voxels](todo-voxels.md)
 
@@ -68,15 +59,16 @@ Extra
     - [ ] Particle3D with 3D mesh
 
 - [ ] Line 3Ds! Grid3D :D
+
+- [ ] Camera Follower
+    - [ ] Mouse scroll to zoom in / out on follower
     
 - [ ] Character3Ds
+    - [x] Basic Character 3D
     - [ ] Physics 3D
     - [ ] Jump ability
     - [ ] Textured Cube - Drawing
     - [ ] First person camera on character3D
-
-- [ ] Character2Ds
-    - [ ] Mouse scroll to zoom in / out on follower
 
 -----
 

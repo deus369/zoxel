@@ -13,9 +13,9 @@ void SpawnPrefabParticle2D(ecs_world_t *world)
     add_transform2Ds(world, e);
     #endif
     #ifdef zoxel_physics2D
-    AddPhysics2DComponents(world, e);
+    add_physics2D(world, e);
     #endif
-    zoxel_add_component(world, e, Brightness);
-    zoxel_add_component(world, e, DestroyInTime);
+    zoxel_add(world, e, Brightness);
+    zoxel_add(world, e, DestroyInTime);
     particle2DPrefab = e;
 }

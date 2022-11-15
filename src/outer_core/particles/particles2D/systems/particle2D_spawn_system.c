@@ -1,7 +1,7 @@
 //! Here for now, spawns a one man bobarmy.
 void Particle2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCount)
 {
-    float2 positionBounds = { 0.01f, 0.3f };
+    float2 positionBounds = { 0.01f, 0.1f };
     const float2 velocityBounds = { 0.03f, 0.2f };
     const float torqueBounds = 12.0f;
     const float2 scaleBounds = { 0.02f, 0.13f };

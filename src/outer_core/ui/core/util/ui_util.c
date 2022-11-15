@@ -7,13 +7,13 @@ void add_ui_components(ecs_world_t *world, ecs_entity_t e)
 {
     zoxel_add_tag(world, e, Element);
     zoxel_add_tag(world, e, ElementRender);
-    zoxel_set_component(world, e, EntityInitialize, { 1 });
-    zoxel_set_component(world, e, PixelPosition, { { } });
-    zoxel_set_component(world, e, PixelSize, { { } });
-    zoxel_set_component(world, e, CanvasPixelPosition, { { } });
-    zoxel_set_component(world, e, Anchor, { { } });
-    zoxel_set_component(world, e, CanvasLink, { });
-    zoxel_set_component(world, e, ElementLayer, { 0 });
+    zoxel_set(world, e, EntityInitialize, { 1 });
+    zoxel_set(world, e, PixelPosition, { { } });
+    zoxel_set(world, e, PixelSize, { { } });
+    zoxel_set(world, e, CanvasPixelPosition, { { } });
+    zoxel_set(world, e, Anchor, { { } });
+    zoxel_set(world, e, CanvasLink, { });
+    zoxel_set(world, e, ElementLayer, { 0 });
 }
 
 void add_ui_plus_components(ecs_world_t *world, ecs_entity_t e)

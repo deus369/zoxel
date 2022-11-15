@@ -7,16 +7,8 @@ To-Do UI
 
 `Current`
 
-- [ ] UIRaycastSystem
-    - [x] UI Select events
-    - [x] UI Click events
+- [ ] Draggable Windows
     - [ ] UI Drag events
-
-- [ ] Window Entities
-    - [x] A header UI with text
-    - [x] A close button
-    - [x] A close window event
-            - closed / confirm / cancel
     - [ ] Drag window around to reposition
     - [ ] Drag window corner to resize it
 
@@ -24,6 +16,30 @@ To-Do UI
     - [ ] Using Close Events, spawn a 2nd window
     
 - [ ] Scrollview + ListUI
+    - [ ] Toggle group to select one in list
+
+
+- [ ] GameUIs Module
+    - [ ] Generic Main Menus
+        - spawn_main_menu_prefab function
+        - game label
+        - play button
+        - options button
+        - exit button
+    - [ ] Generic Load/Save/New Game folders + uis
+        - load directory folder names into a list
+        - preview the selected file events (for example, show time played in that game folder)
+        
+- [ ] Generic Save Games
+    - [ ] Load list of folder names for games
+    - [ ] Load selected save game
+    - [ ] Show played time so far
+
+- [ ] Generic Pause Menu
+    - [ ] Resume
+    - [ ] Exit
+    - [ ] Pause game if, game can be paused
+    - [ ] Options
 
 - [ ] Taskbar - with windows  you can open (icons)
 

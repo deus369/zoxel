@@ -7,7 +7,7 @@ ecs_entity_t spawn_prefab_element(ecs_world_t *world)
     printf("spawn_prefab element [%lu].\n", (long int) (e));
     #endif
     zoxel_add_tag(world, e, FrameTexture);
-    zoxel_set_component(world, e, SelectableState, { 0 });
+    zoxel_set(world, e, SelectableState, { 0 });
     add_ui_plus_components(world, e);
     // printf("Spawned test_custom_mesh [%lu].\n", (long int) (e));
     // zoxel_add_tag(world, e, SaveTexture);

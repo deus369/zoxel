@@ -8,6 +8,14 @@ Things that are done. A big ole list. To clean up other todo files.
 -----
 
 `UI`
+- [x] UIRaycastSystem
+    - [x] UI Select events
+    - [x] UI Click events
+- [ ] Window Entities
+    - [x] A header UI with text
+    - [x] A close button
+    - [x] A close window event
+            - closed / confirm / cancel
 - [x] Window not spawning with system
     - added EntityInitialize component for generating buffers on main thread
     - Position2D is gone after spawning window?

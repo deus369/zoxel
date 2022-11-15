@@ -11,7 +11,7 @@ ecs_entity_t spawn_prefab_label(ecs_world_t *world)
     ecs_set_name(world, e, "prefab_label");
     zoxel_add_tag(world, e, Label);
     // ecs_entity_t e = ecs_new_prefab(world, "label_prefab");
-    // zoxel_add_component(world, e, Children);
+    // zoxel_add(world, e, Children);
     // zoxel_add_tag(world, e, FrameTexture);
     // add_ui_plus_components(world, e);
     ecs_defer_end(world);

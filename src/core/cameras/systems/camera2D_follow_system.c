@@ -13,10 +13,26 @@ void CameraFollow2DSystem(ecs_iter_t *it)
         if (freeRoam->value == 0)
         {
             const CameraTarget *cameraTarget = &cameraTargets[i];
-            const Position2D *playerPosition2D = ecs_get(it->world, cameraTarget->value, Position2D);
+            float3 target_position = { 0, 0, 0 };
+            if (ecs_has(it->world, cameraTarget->value, Position2D))
+            {
+                const Position2D *playerPosition2D = ecs_get(it->world, cameraTarget->value, Position2D);
+                target_position.x = playerPosition2D->value.x;
+                target_position.y = playerPosition2D->value.y;
+            }
+            else if (ecs_has(it->world, cameraTarget->value, Position))
+            {
+                const Position *playerPosition = ecs_get(it->world, cameraTarget->value, Position);
+                target_position.x = playerPosition->value.x;
+                target_position.y = playerPosition->value.y;
+            }
+            else
+            {
+                continue;
+            }
             Position *position = &positions[i];
-            position->value.x = playerPosition2D->value.x;
-            position->value.y = playerPosition2D->value.y;
+            position->value.x = target_position.x;
+            position->value.y = target_position.y;
             Rotation *rosition = &rotations[i];
             rosition->value = float4_identity();
         }

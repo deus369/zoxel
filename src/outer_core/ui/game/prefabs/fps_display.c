@@ -6,7 +6,7 @@ ecs_entity_t spawn_prefab_fps_display(ecs_world_t *world)
     ecs_add_id(world, e, EcsPrefab);
     ecs_set_name(world, e, "prefab_fps_display");
     zoxel_add_tag(world, e, FPSDisplay);
-    zoxel_set_component(world, e, FPSDisplayTicker, { 0 });
+    zoxel_set(world, e, FPSDisplayTicker, { 0 });
     ecs_remove(world, e, AnimateZext);
     fps_display_prefab = e;
     return e;

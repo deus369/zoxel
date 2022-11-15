@@ -10,7 +10,7 @@ zoxel_component(TextureCoordinatesGPULink, GLuint2);
 
 void add_gpu_texture_coordinates(ecs_world_t *world, ecs_entity_t prefab)
 {
-    zoxel_set_component(world, prefab, TextureCoordinatesGPULink, { 0 });
+    zoxel_set(world, prefab, TextureCoordinatesGPULink, { 0 });
 }
 
 void spawn_gpu_texture_coordinates(ecs_world_t *world, ecs_entity_t e)

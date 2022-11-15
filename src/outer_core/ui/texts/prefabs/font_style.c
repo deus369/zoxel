@@ -7,7 +7,7 @@ ecs_entity_t spawn_font_style_prefab(ecs_world_t *world)
 {
     ecs_entity_t e = ecs_new_prefab(world, "font_style_prefab");
     zoxel_add_tag(world, e, FontStyle);
-    zoxel_add_component(world, e, Children);
+    zoxel_add(world, e, Children);
     font_style_prefab = e;
     return e;
 }
