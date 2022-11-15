@@ -8,6 +8,12 @@ Things that are done. A big ole list. To clean up other todo files.
 -----
 
 `UI`
+- [x] Window not spawning with system
+    - added EntityInitialize component for generating buffers on main thread
+    - Position2D is gone after spawning window?
+    - Possible soluion: remove ecs_get from function and pass in parent info when spawning children.
+- [x] FPS Display (top right)
+- [x] Generate Mesh - in an initialize system - instead of in main thread.
 - [x] Fix fullscreen - hiding UI?!?!
 - [x] Raycast only child ui first, before parents. Don't raycast window when header is in front of it.
     - Add layer component

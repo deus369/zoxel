@@ -46,10 +46,10 @@ void spawn_zoxel_window(ecs_world_t *world)
 
 void spawn_test_uis(ecs_world_t *world)
 {
+    // spawn_corner_uis(world);
+    spawn_zoxel_window(world);
     // crosshair
     // spawn_element(world, canvas, (int2) { 0, 0 }, (int2) { 32, 32 }, (float2) { 0.5f, 0.5f });
-    spawn_corner_uis(world);
-    spawn_zoxel_window(world);
     // test ui
     // test_action_bar(world);
     // spawn_element(world, canvas, (int2) { screenDimensions.x / 2, screenDimensions.y / 2 }, testSize);   // crosshair

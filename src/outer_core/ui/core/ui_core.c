@@ -13,6 +13,7 @@ ECS_DECLARE(Element);
 ECS_DECLARE(Canvas);
 ECS_DECLARE(ElementRaycaster);
 // UI extras, make extra ui module?
+ECS_DECLARE(Label);
 ECS_DECLARE(Button);
 //! A ui window.
 ECS_DECLARE(Window);
@@ -79,14 +80,14 @@ void UICoreImport(ecs_world_t *world)
     // ClicableState - reset system
     // destroy window
     // children - destroy children - hook
+    // prefabs
+    spawn_prefab_canvas(world);
+    spawn_prefab_element(world);
+    spawn_prefab_button(world);
+    spawn_prefab_window(world);
+}
    
     //zoxel_system_ctx(world, ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster);
     //zoxel_system(world, ElementSelectedSystem, EcsOnUpdate, [out] Element, [in] ClickableState, [out] Brightness);
 
-    // prefabs
-    spawn_prefab_canvas(world);
-    spawn_prefab_element(world);
-    spawn_prefab_window(world);
-    spawn_prefab_button(world);
-}
 #endif

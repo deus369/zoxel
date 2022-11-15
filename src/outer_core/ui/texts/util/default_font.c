@@ -42,7 +42,8 @@ const byte2 number_0[] =
     { font_left_side, font_bottom_side }, { font_right_side, font_bottom_side }
 };
 
-const byte2 number1[] =
+const int number_1_length = 4 * 2;
+const byte2 number_1[] =
 {
     { middleSideX, font_bottom_side }, { middleSideX, font_top_side },
     { middleSideX, font_top_side }, { middleSideX - curve, font_top_side - curve },
@@ -50,7 +51,8 @@ const byte2 number1[] =
     { middleSideX, font_bottom_side }, { font_right_side - 1, font_bottom_side },
 };
 
-const byte2 number2[] =
+const int number_2_length = 5 * 2;
+const byte2 number_2[] =
 {
     { font_left_side, font_top_side - 3 }, { font_left_side, font_top_side },
     { font_left_side, font_top_side }, { font_right_side - 3, font_top_side },
@@ -59,14 +61,14 @@ const byte2 number2[] =
     { font_left_side, font_bottom_side }, { font_right_side, font_bottom_side }
 };
 
-const byte2 number3[] =
+const int number_3_length = 9 * 2;
+const byte2 number_3[] =
 {
     { font_left_side, font_top_side }, { font_right_side - 3, font_top_side },
     { font_right_side - 3, font_top_side }, { font_right_side, font_top_side - 3 },
     { font_right_side, font_top_side - 3 }, { font_right_side, font_upperMiddleSideY + 3 },
     { font_right_side, font_upperMiddleSideY + 3 }, { font_right_side - 3, font_upperMiddleSideY },
     { font_right_side - 3, font_upperMiddleSideY }, { font_left_side - 4, font_upperMiddleSideY },
-
     { font_left_side - 4, font_upperMiddleSideY }, { font_right_side - 3, font_upperMiddleSideY },
     { font_right_side - 3, font_upperMiddleSideY }, { font_right_side, font_upperMiddleSideY - 3 },
     { font_right_side, font_upperMiddleSideY - 3 }, { font_right_side, font_bottom_side + 3 },
@@ -74,14 +76,16 @@ const byte2 number3[] =
     { font_right_side - 3, font_bottom_side }, { font_left_side, font_bottom_side }
 };
 
-const byte2 number4[] =
+const int number_4_length = 3 * 2;
+const byte2 number_4[] =
 {
     { middleSideX, font_top_side }, { font_left_side, font_upperMiddleSideY },
     { middleSideX, font_top_side }, { font_upperMiddleSideY, font_bottom_side },
     { font_left_side, font_upperMiddleSideY }, { font_right_side, font_upperMiddleSideY }
 };
 
-const byte2 number5[] =
+const int number_5_length = 7 * 2;
+const byte2 number_5[] =
 {
     { font_left_side, font_top_side }, { font_right_side, font_top_side },
     { font_left_side, font_top_side }, { font_left_side, font_upperMiddleSideY },
@@ -92,7 +96,8 @@ const byte2 number5[] =
     { font_right_side - 3, font_bottom_side }, { font_left_side, font_bottom_side }
 };
 
-const byte2 number6[] =
+const int number_6_length = 10 * 2;
+const byte2 number_6[] =
 {
     { font_left_side, font_top_side }, { font_right_side, font_top_side },
     { font_right_side, font_top_side }, { font_right_side, font_top_side - 2 },
@@ -106,13 +111,15 @@ const byte2 number6[] =
     { font_left_side, font_bottom_side }, { font_left_side, font_upperMiddleSideY }
 };
 
-const byte2 number7[] =
+const int number_7_length = 2 * 2;
+const byte2 number_7[] =
 {
     { font_left_side, font_top_side }, { font_right_side, font_top_side },
     { font_right_side, font_top_side }, { font_left_side, font_bottom_side }
 };
 
-const byte2 number8[] =
+const int number_8_length = 5 * 2;
+const byte2 number_8[] =
 {
     { font_left_side, font_top_side }, { font_right_side, font_top_side },
     { font_left_side, font_upperMiddleSideY }, { font_right_side, font_upperMiddleSideY },
@@ -121,7 +128,8 @@ const byte2 number8[] =
     { font_right_side, font_top_side }, { font_right_side, font_bottom_side }
 };
 
-const byte2 number9[] =
+const int number_9_length = 5 * 2;
+const byte2 number_9[] =
 {
     { font_left_side, font_top_side }, { font_right_side, font_top_side },
     { font_left_side, font_upperMiddleSideY }, { font_right_side, font_upperMiddleSideY },

@@ -30,7 +30,8 @@ void spawn_game(ecs_world_t *world)
     spawn_ui_camera(world, screenDimensions);
     spawn_connected_devices(world);
     localPlayer = spawn_player_character2D(world, main_camera);
-    spawn_canvas(world, screenDimensions);
+    ecs_entity_t canvas = spawn_canvas(world, screenDimensions);
+    spawn_fps_display(world, canvas, 32);
     initialize_ui(world);   // spawns test ui
     // spawn_main_menu(world, "Zoxel");
 }
@@ -53,6 +54,7 @@ void update()
     // ecs_log_set_level(1);    // use this to debug system pipelines
     ecs_run(world, ecs_id(ElementMeshSystem), 0, NULL);
     ecs_progress(world, 0);
+    iterate_fps_time();
     // main thread, generates gpu buffer
     // ecs_run(world, ecs_id(Player2DTestMainThreadSystem), 0, NULL);
     if (!headless)

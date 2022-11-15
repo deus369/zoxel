@@ -1,5 +1,6 @@
 ecs_entity_t header_prefab;
-extern ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t parent, int2 pixel_position, float2 anchor,
+extern ecs_entity_t zext_prefab;
+extern ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t parent, int2 pixel_position, float2 anchor,
     const char* text, int font_size, unsigned char layer, float2 parent_position2D, int2 parent_pixel_size);
     
     
@@ -32,7 +33,7 @@ ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent,
     Children *children = ecs_get_mut(world, e, Children);
     initialize_memory_component(children, ecs_entity_t, 2);
     int string_length = strlen(text);
-    children->value[0] = spawn_zext(world, e,
+    children->value[0] = spawn_zext(world, zext_prefab, e,
         (int2) { ((font_size * string_length) / 2) + header_margins / 2, 0 },
         (float2) { 0, 0.5f },
         text, font_size, layer + 1,

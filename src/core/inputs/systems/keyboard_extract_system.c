@@ -212,18 +212,6 @@ void SetKey(PhysicalButton *key, int eventType)
         key->wasReleasedThisFrame = true;
     }
     key->isPressed = keyDown;
-    /*key->wasPressedThisFrame = keyDown;
-    key->wasReleasedThisFrame = keyReleased;
-    if (keyDown)
-    {
-        printf("key pressed.\n");
-        key->isPressed = true;
-    }
-    else if (keyReleased)
-    {
-        printf("key released.\n");
-        key->isPressed = false;
-    }*/
 }
 
 void reset_key(PhysicalButton *key)

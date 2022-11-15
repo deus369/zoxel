@@ -25,6 +25,7 @@ void ZextUpdateSystem(ecs_iter_t *it)
             continue;
         }
         zextDirty->value = 0;
+        // printf("ZextUpdateSystem: ZextDirty is has updated.\n");
         ecs_entity_t e = it->entities[i];
         const ZextData *zextData = &zextDatas[i];
         const ZextSize *zextSize = &zextSizes[i];

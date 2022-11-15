@@ -19,14 +19,15 @@ ecs_entity_t spawn_zext_prefab(ecs_world_t *world)
     return e;
 }
 
-ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t parent, int2 position, float2 anchor,
+ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab,
+    ecs_entity_t parent, int2 position, float2 anchor,
     const char* text, int font_size, unsigned char layer,
     float2 parent_position2D, int2 parent_pixel_size)
 {
     ecs_defer_begin(world);
     int textLength = strlen(text);
     int2 zext_size = (int2) { font_size * textLength, font_size };
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, zext_prefab);
+    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
     ecs_set(world, e, ZextSize, { font_size });
     ecs_set(world, e, ZextDirty, { 1 });
     float2 position2D = initialize_ui_components_2(world, e,

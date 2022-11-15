@@ -7,15 +7,6 @@ To-Do UI
 
 `Current`
 
-- [x] Window not spawning with system
-    - added EntityInitialize component for generating buffers on main thread
-    - Position2D is gone after spawning window?
-    - Possible soluion: remove ecs_get from function and pass in parent info when spawning children.
-
-- [ ] FPS Display (top right)
-
-- [x] Generate Mesh - in an initialize system - instead of in main thread.
-
 - [ ] UIRaycastSystem
     - [x] UI Select events
     - [x] UI Click events

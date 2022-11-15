@@ -6,6 +6,9 @@ void spawn_camera2D_follower_prefab(ecs_world_t *world)
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, base_camera_prefab);
     ecs_add_id(world, e, EcsPrefab);
     ecs_set_name(world, e, "camera2D_prefab");
+    #ifdef zoxel_debug_prefabs
+    printf("spawn_prefab camera2D [%lu].\n", (long int) (e));
+    #endif
     zoxel_set_component(world, e, FieldOfView, { 60 });
     zoxel_add_tag(world, e, CameraFollower2D);
     zoxel_add_component(world, e, CameraTarget);
