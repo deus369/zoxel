@@ -3,6 +3,7 @@ ecs_entity_t character2D_prefab;
 
 void spawn_prefab_character2D(ecs_world_t *world, int2 textureSize)
 {
+    ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "character2D_prefab");
     #ifdef zoxel_debug_prefabs
     printf("spawn_prefab character2D [%lu].\n", (long int) (e));
@@ -23,4 +24,5 @@ void spawn_prefab_character2D(ecs_world_t *world, int2 textureSize)
     add_gpu_texture(world, e);
     add_texture(world, e, textureSize);
     character2D_prefab = e;
+    ecs_defer_end(world);
 }

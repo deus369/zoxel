@@ -13,9 +13,17 @@ void ElementActivateSystem(ecs_iter_t *it)
         const Mouse *mouse = &mouses[i];
         if (mouse->left.wasPressedThisFrame)
         {
-            if (ecs_has(it->world, raycasterTarget->value, CloseButton))
-            // printf("Clicked UI: [%lu]\n", (long int) raycasterTarget->value);
-            ecs_set(it->world, raycasterTarget->value, ClickableState, { 1 });
+            // if (ecs_has(it->world, raycasterTarget->value, CloseButton))
+            //  printf("Clicked UI: [%lu]\n", (long int) raycasterTarget->value);
+            if (ecs_has(it->world, raycasterTarget->value, Clickable))
+            {
+                ecs_set(it->world, raycasterTarget->value, ClickableState, { 1 });
+            }
+            // how to do this best way?
+            if (ecs_has(it->world, raycasterTarget->value, Dragable))
+            {
+                ecs_set(it->world, raycasterTarget->value, DragableState, { 1 });
+            }
         }
     }
 }

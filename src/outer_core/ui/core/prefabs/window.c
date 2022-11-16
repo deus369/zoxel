@@ -2,6 +2,7 @@ ecs_entity_t window_prefab;
     
 ecs_entity_t spawn_prefab_window(ecs_world_t *world)
 {
+    ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "window_prefab");
     #ifdef zoxel_debug_prefabs
     printf("spawn_prefab window [%lu].\n", (long int) (e));
@@ -12,26 +13,17 @@ ecs_entity_t spawn_prefab_window(ecs_world_t *world)
     add_ui_plus_components(world, e);
     zoxel_add(world, e, Children);
     window_prefab = e;
+    ecs_defer_end(world);
     return e;
 }
 
 ecs_entity_t spawn_window(ecs_world_t *world, const char *header_label,
     int2 position, int2 pixel_size, float2 anchor)
 {
-    // ecs_defer_begin(world);
+    ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, window_prefab);
-    // #ifdef zoxel_debug_prefabs
-    // printf("spawn window [%lu].\n", (long int) (e));
-    // #endif
-    // if (!ecs_has(world, e, Position2D))
-    // {
-    //     printf("Window [%lu] has no Position2D component. Cannot spawn.\n", (long int) e);
-    //     ecs_delete(world, e);
-    //     // ecs_defer_end(world);
-    //     return 0;
-    // }
     float2 position2D = initialize_ui_components(world, e, canvas, position, pixel_size, anchor, 0);
-    // ecs_defer_end(world);
+    ecs_defer_end(world);
     Children *children = ecs_get_mut(world, e, Children);
     initialize_memory_component(children, ecs_entity_t, 1);
     // spawn child header
@@ -53,3 +45,15 @@ ecs_entity_t spawn_window(ecs_world_t *world, const char *header_label,
 
 // i'm getting prefab issues with a override component not appearing on the spawned entity, wondering if anyone else is geting this
 // (im thinking its something to do with deffered operations in ecs_set)
+
+
+    // #ifdef zoxel_debug_prefabs
+    // printf("spawn window [%lu].\n", (long int) (e));
+    // #endif
+    // if (!ecs_has(world, e, Position2D))
+    // {
+    //     printf("Window [%lu] has no Position2D component. Cannot spawn.\n", (long int) e);
+    //     ecs_delete(world, e);
+    //     // ecs_defer_end(world);
+    //     return 0;
+    // }

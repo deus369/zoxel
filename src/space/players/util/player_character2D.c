@@ -3,6 +3,7 @@
 //! Spawn a Player character.
 ecs_entity_t spawn_player_character2D(ecs_world_t *world, ecs_entity_t camera)
 {
+    ecs_defer_begin(world);
     // child prefabs don't seem to inherit tags
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, player_character2D_prefab);
     // printf("Spawned playerCharacter2D [%lu]\n", (long unsigned int) e);
@@ -18,5 +19,6 @@ ecs_entity_t spawn_player_character2D(ecs_world_t *world, ecs_entity_t camera)
     ecs_set(world, camera, Character2DLink, { e });
     // ecs_add_pair(world, e, CameraLink, mainCamera);
     // ecs_add_pair(world, mainCamera, Character2DLink, e);
+    ecs_defer_end(world);
     return e;
 }

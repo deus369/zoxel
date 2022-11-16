@@ -1,6 +1,7 @@
 //! Here for now, spawns a one man bobarmy.
 void Particle3DSpawnSystem(ecs_world_t *world, float3 bobPosition, int spawnCount)
 {
+    ecs_defer_begin(world);
     float2 positionBounds = { 0.1f, 0.2f };
     const float2 velocityBounds = { 0.03f, 0.2f };
     const float2 scaleBounds = { 0.02f, 0.13f };
@@ -98,5 +99,6 @@ void Particle3DSpawnSystem(ecs_world_t *world, float3 bobPosition, int spawnCoun
     free(scale1Ds);
     free(brightnesses);
     free(destroyInTimes);
+    ecs_defer_end(world);
 }
 ECS_SYSTEM_DECLARE(Particle3DSpawnSystem);

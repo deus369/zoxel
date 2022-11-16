@@ -7,7 +7,7 @@ ecs_entity_t spawn_zigel_prefab(ecs_world_t *world)
     printf("spawn_prefab zigel [%lu].\n", (long int) (e));
     #endif
     zoxel_add_tag(world, e, Zigel);
-    zoxel_add(world, e, ZigelIndex);
+    zoxel_set(world, e, ZigelIndex, { 0 });
     zoxel_add_tag(world, e, FontTexture);
     add_ui_plus_components(world, e);
     ecs_defer_end(world);

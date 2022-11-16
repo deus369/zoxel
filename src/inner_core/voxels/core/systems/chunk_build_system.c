@@ -97,16 +97,17 @@ void ChunkBuildSystem(ecs_iter_t *it)
 }
 ECS_SYSTEM_DECLARE(ChunkBuildSystem);
 
-        // invalid free?
-        // printf("Rebuilding Chunk Mesh: %i - %i\n", meshIndicies2->length, meshVertices2->length);
-        /*printf("1 - MeshIndicies: %i\n", meshIndicies2->length);
-        set_mesh_indicies(meshIndicies2, cubeIndicies, 36);
-        set_mesh_vertices(meshVertices2, cubeVertices, 24);*/
-        // printf("Rebuilding Chunk Mesh with faces: [%i]\n", solid_voxels_count);
 
-                        /*if (k == 0 && l == 0)
-                        {
-                            printf("Voxel [%i] - [%ix%ix%i]:\n", solid_voxels_count, j, k, l);
-                            printf("    vertex_position_offset [%fx%fx%f]\n",  vertex_position_offset.x, vertex_position_offset.y, vertex_position_offset.z);
-                            printf("    vertices_start [%i]\n", vertices_start);
-                        }*/
+// invalid free?
+// printf("Rebuilding Chunk Mesh: %i - %i\n", meshIndicies2->length, meshVertices2->length);
+/*printf("1 - MeshIndicies: %i\n", meshIndicies2->length);
+set_mesh_indicies(meshIndicies2, cubeIndicies, 36);
+set_mesh_vertices(meshVertices2, cubeVertices, 24);*/
+// printf("Rebuilding Chunk Mesh with faces: [%i]\n", solid_voxels_count);
+
+/*if (k == 0 && l == 0)
+{
+    printf("Voxel [%i] - [%ix%ix%i]:\n", solid_voxels_count, j, k, l);
+    printf("    vertex_position_offset [%fx%fx%f]\n",  vertex_position_offset.x, vertex_position_offset.y, vertex_position_offset.z);
+    printf("    vertices_start [%i]\n", vertices_start);
+}*/

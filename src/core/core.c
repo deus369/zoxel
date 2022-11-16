@@ -1,6 +1,11 @@
 #ifndef zoxel_core
 #define zoxel_core
 
+#ifdef zoxel_time_render_loop
+#include <time.h>
+const double min_render_loop_timing = 0;    // set to higher to check for spikes
+#endif
+
 // Settings for main
 bool headless = false;
 bool running = true;
@@ -20,7 +25,9 @@ extern void texture_update_main_thread();
 //! Temporarily runs render things on main thread until flecs bug is fixed.
 void render_loop_temp()
 {
-    //clock_t t = clock();
+    #ifdef zoxel_time_render_loop
+    clock_t t = clock();
+    #endif
     ecs_entity_t main_camera = get_main_camera();
     if (!ecs_is_valid(world, main_camera))
     {
@@ -51,8 +58,14 @@ void render_loop_temp()
     ecs_run(world, ecs_id(RenderMeshMaterial2DSystem), 0, NULL);
     
     finish_opengl_rendering(world);
-    //t = clock() - t;
-    //printf("Render Time [%fms]\n", (((double) 1000.0 * t)/CLOCKS_PER_SEC));
+    #ifdef zoxel_time_render_loop
+    t = clock() - t;
+    double t2 =  (((double) 1000.0 * t) / CLOCKS_PER_SEC);
+    if (t2 >= min_render_loop_timing)
+    {
+        printf("Render Time [%fms]\n", t2);
+    }
+    #endif
 }
 
 void CoreImport(ecs_world_t *world)

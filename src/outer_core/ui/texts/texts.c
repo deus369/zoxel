@@ -78,6 +78,5 @@ void TextsImport(ecs_world_t *world)
     spawn_font_prefab(world);
     zigel_prefab = spawn_zigel_prefab(world);
     zext_prefab = spawn_zext_prefab(world);
-    spawn_font_style(world);
 }
 #endif

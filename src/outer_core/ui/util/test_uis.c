@@ -46,8 +46,9 @@ void spawn_zoxel_window(ecs_world_t *world)
 
 void spawn_test_uis(ecs_world_t *world)
 {
+    #ifdef zoxel_test_uis
     // spawn_corner_uis(world);
-    spawn_zoxel_window(world);
+
     // crosshair
     // spawn_element(world, canvas, (int2) { 0, 0 }, (int2) { 32, 32 }, (float2) { 0.5f, 0.5f });
     // test ui
@@ -56,6 +57,7 @@ void spawn_test_uis(ecs_world_t *world)
     // spawn_zext(world, (int2) { 0, 0}, (float2) { 0.5f, 0.5f }, "Hello World.");
     // spawn_zext(world, (int2) { 0, - 8}, (float2) { 0.5f, 1.0f }, "abcdefghijklmnopqrstuvwxyz");
     // spawn_zext(world, (int2) { 0, actionbar_size4.y + 48}, (float2) { 0.5f, 0.0f }, "greetings minion");
+    #endif
 }
 
 void test_ui_pixel_positions(ecs_world_t *world)

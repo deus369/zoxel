@@ -144,7 +144,7 @@ void FontTextureSystem(ecs_iter_t *it)
             continue;
         }
         ecs_entity_t zigel_font_entity = font_style_children->value[zigelIndex->value];
-        // if (zigel_font_entity == 0) // !ecs_is_valid(world, zigel_font_entity)) //zigel_font_entity == NULL)
+        // if (zigel_font_entity == 0 || !ecs_is_valid(it->world, zigel_font_entity) || !ecs_is_alive(it->world, zigel_font_entity))
         // {
         //     continue;
         // }

@@ -18,11 +18,4 @@ void UIImport(ecs_world_t *world)
     ECS_IMPORT(world, UIElements);
     ECS_IMPORT(world, UIGame);
 }
-
-void initialize_ui(ecs_world_t *world)
-{
-    #ifdef zoxel_test_uis
-    spawn_test_uis(world);
-    #endif
-}
 #endif

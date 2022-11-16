@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 // the ui text entity that holds zigels.
 ecs_entity_t spawn_zext_prefab(ecs_world_t *world)
 {
@@ -13,6 +15,7 @@ ecs_entity_t spawn_zext_prefab(ecs_world_t *world)
     zoxel_add(world, e, Children);
     add_transform2Ds(world, e);
     add_ui_plus_components(world, e);
+    // zoxel_set(world, e, EntityDirty, { 0 });
     // zoxel_add(world, e, AnimateZext);
     ecs_defer_end(world);
     return e;
@@ -28,35 +31,24 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab,
     int2 zext_size = (int2) { font_size * textLength, font_size };
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
     ecs_set(world, e, ZextSize, { font_size });
-    ecs_set(world, e, ZextDirty, { 1 });
+    ecs_set(world, e, ZextDirty, { 0 });
     float2 position2D = initialize_ui_components_2(world, e,
         parent, position, zext_size, anchor, layer,
         parent_position2D, parent_pixel_size);
-    // zoxel_add(world, e, AnimateZext);
-    ecs_defer_end(world);
-    ZextData *zextData = ecs_get_mut(world, e, ZextData);
-    initialize_memory_component(zextData, unsigned char, textLength);
+    ZextData zextData = { };
+    Children children = { };
+    initialize_memory_component_non_pointer(zextData, unsigned char, textLength);
+    initialize_memory_component_non_pointer(children, ecs_entity_t, textLength);
     for (int i = 0; i < textLength; i++)
     {
         unsigned char zigel_index = convert_ascii(text[i]);
-        zextData->value[i] = zigel_index;
+        zextData.value[i] = zigel_index;
+        children.value[i] = spawn_zext_zigel(world, e, layer + 1, i, textLength,
+            zigel_index, font_size, position2D, zext_size);
+        // printf("Is %i [%lu] valid: %s\n", i, (long int) children.value[i], ecs_is_valid(world, children.value[i]) ? "Yes" : "No");
     }
-    ecs_modified(world, e, ZextData);
-    // childrens
-    Children *children = ecs_get_mut(world, e, Children);
-    spawn_zext_zigels(world, e, children, zextData, font_size, layer,
-        position2D, zext_size);
-    ecs_modified(world, e, Children);
+    ecs_set(world, e, ZextData, { zextData.length, zextData.value });
+    ecs_set(world, e, Children, { children.length, children.value });
+    ecs_defer_end(world);
     return e;
 }
-
-/*
-
-Flecs Bug - A
-
-ecs_add(world, e, AnimateZext);
-ecs_override(world, e, AnimateZext);
-ecs_remove(world, e, AnimateZext);
-printf("Component exists? %s\n", ecs_has(world, e, AnimateZext) ? "Yes" : "No");
-    
-*/

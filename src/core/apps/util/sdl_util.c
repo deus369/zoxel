@@ -6,6 +6,7 @@ float aspectRatio = 1;
 float fov = 60;
 unsigned long windowFlags;
 char *data_path = NULL;
+const int window_index = 3; // 1;
 
 void set_data_path()
 {
@@ -179,9 +180,9 @@ SDL_Window* SpawnWindowSDL(bool fullscreen)
     // SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
     int2 app_position = (int2) { };
     int displays = SDL_GetNumVideoDisplays();
-    if (displays > 1)
+    if (displays > 1 && window_index != -1 && window_index < displays)
     {
-        app_position.x = screenDimensions.x;
+        app_position.x = screenDimensions.x * window_index;
     }
     SDL_Window* window = SDL_CreateWindow("Zoxel",
         app_position.x, app_position.y,

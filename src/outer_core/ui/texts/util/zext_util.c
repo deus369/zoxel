@@ -1,10 +1,31 @@
+// #define zoxel_debug_zext_updates
+
+ecs_entity_t spawn_zext_zigel(ecs_world_t *world, ecs_entity_t zext, int layer,
+    int i, int new_children_length, unsigned char zigel_index, int font_size,
+    float2 parent_position2D, int2 parent_pixel_size)
+{
+    int2 zigel_size = (int2) { font_size, font_size };
+    float half_size = (zigel_size.x * new_children_length) / 2.0f;
+    ecs_entity_t zigel = spawn_zigel(
+        world,
+        zext,
+        zigel_index,
+        (int2) { (int) (((float) zigel_size.x * i) - half_size) + zigel_size.x / 2, 0 },
+        zigel_size,
+        (float2) { 0.5f, 0.5f },
+        layer,
+        parent_position2D,
+        parent_pixel_size);
+    return zigel;
+}
+
 //! Dynamically updates zext by spawning/destroying zigels and updating remaining.
 void spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children, const ZextData *zextData,
     int font_size, unsigned char layer,
     float2 parent_position2D, int2 parent_pixel_size)
 {
     ecs_defer_begin(world);
-    int2 zigel_size = (int2) { font_size, font_size };
+    // int2 zigel_size = (int2) { font_size, font_size };
     int reuse_count = integer_min(children->length, zextData->length);
     #ifdef zoxel_debug_zext_updates
     printf("spawn_zext_zigels :: [%i] -> [%i]; reuse [%i];\n",
@@ -36,7 +57,7 @@ void spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children
         {
             new_children[i] = old_children[i];
         }
-        float half_size =  (zigel_size.x * new_children_length) / 2.0f;
+        // float half_size = (zigel_size.x * new_children_length) / 2.0f;
         if (new_children_length > old_children_length)
         {
             #ifdef zoxel_debug_zext_updates
@@ -45,13 +66,8 @@ void spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children
             for (int i = old_children_length; i < new_children_length; i++)
             {
                 // convert normal char here to unsigned char!
-                int2 zigel_position = (int2) {
-                    (int) (((float) zigel_size.x * i) - half_size) + zigel_size.x / 2,
-                    0 };
-                new_children[i] = spawn_zigel(world, zext, zextData->value[i],
-                    zigel_position, zigel_size,
-                    (float2) { 0.5f, 0.5f }, layer + 1,
-                    parent_position2D, parent_pixel_size);
+                new_children[i] = spawn_zext_zigel(world, zext, layer + 1, i, new_children_length,
+                    zextData->value[i], font_size, parent_position2D, parent_pixel_size);
                 // printf("[%i]: %i\n", i, (int) zextData->value[i]);
             }
         }
@@ -84,3 +100,10 @@ void spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children
     #endif
     ecs_defer_end(world);
 }
+                /*int2 zigel_position = (int2) {
+                    (int) (((float) zigel_size.x * i) - half_size) + zigel_size.x / 2,
+                    0 };
+                new_children[i] = spawn_zigel(world, zext, zextData->value[i],
+                    zigel_position, zigel_size,
+                    (float2) { 0.5f, 0.5f }, layer + 1,
+                    parent_position2D, parent_pixel_size);*/

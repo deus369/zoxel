@@ -2,13 +2,17 @@ ecs_entity_t fps_display_prefab;
 
 ecs_entity_t spawn_prefab_fps_display(ecs_world_t *world)
 {
+    ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, label_prefab);
     ecs_add_id(world, e, EcsPrefab);
     ecs_set_name(world, e, "prefab_fps_display");
     zoxel_add_tag(world, e, FPSDisplay);
     zoxel_set(world, e, FPSDisplayTicker, { 0 });
-    ecs_remove(world, e, AnimateZext);
+    // ecs_remove(world, e, AnimateZext);
     fps_display_prefab = e;
+    // printf("Label has? %s\n", ecs_has(world, e, Label) ? "Yes" : "No");
+    // printf("Position2D has? %s\n", ecs_has(world, e, Position2D) ? "Yes" : "No");
+    ecs_defer_end(world);
     return e;
 }
 

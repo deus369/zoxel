@@ -15,6 +15,7 @@
 // #define zoxel_debug_element_raycasting
 // #define debug_ui_positioning
 // #define debug_ui_scaling
+// #define zoxel_time_render_loop
 #include "_includes.c"
 
 ecs_entity_t local_player;
@@ -30,9 +31,11 @@ void spawn_game(ecs_world_t *world)
     spawn_ui_camera(world, screenDimensions);
     spawn_connected_devices(world);
     local_player = spawn_player_character3D(world, main_camera);
+    spawn_font_style(world);
     ecs_entity_t canvas = spawn_canvas(world, screenDimensions);
     spawn_fps_display(world, canvas, 32);
-    initialize_ui(world);   // spawns test ui
+    spawn_zoxel_window(world);
+    spawn_test_uis(world);   // spawns test ui
     // spawn_main_menu(world, "Zoxel");
 }
 

@@ -11,7 +11,7 @@ Things that are done. A big ole list. To clean up other todo files.
 - [x] UIRaycastSystem
     - [x] UI Select events
     - [x] UI Click events
-- [ ] Window Entities
+- [x] Window Entities
     - [x] A header UI with text
     - [x] A close button
     - [x] A close window event

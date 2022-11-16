@@ -3,6 +3,7 @@ ecs_entity_t base_camera_prefab;
 
 void spawn_camera_base_prefab(ecs_world_t *world)
 {
+    ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "base_camera_prefab");
     #ifdef zoxel_debug_prefabs
     printf("spawn_prefab camera_base [%lu].\n", (long int) (e));
@@ -16,4 +17,5 @@ void spawn_camera_base_prefab(ecs_world_t *world)
     zoxel_add(world, e, ScreenDimensions);
     zoxel_add(world, e, FieldOfView);
     base_camera_prefab = e;
+    ecs_defer_end(world);
 }

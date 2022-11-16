@@ -29,10 +29,8 @@ ECS_COMPONENT_DECLARE(name)
 }
 
 #define initialize_memory_component_non_pointer(component, dataType, length_)\
-{\
     component.length = length_;\
-    component.value = (dataType*) malloc(length_ * sizeof(dataType));\
-}
+    component.value = (dataType*) malloc(length_ * sizeof(dataType));
 
 // memset(component->value, 0, length_ * stride);
 // printf("Freeing component %i.\n", component->length);
@@ -104,15 +102,27 @@ ECS_COPY(name, dst, src, {\
         {\
             free(dst->value);\
         }\
+        int memory_length = src->length * sizeof(type);\
         dst->length = src->length;\
-        dst->value = malloc(src->length);\
+        dst->value = malloc(memory_length);\
         if (dst->value != NULL) \
         {\
-            dst->value = memcpy(dst->value, src->value, src->length);\
+            dst->value = memcpy(dst->value, src->value, memory_length);\
         }\
     }\
 })
 
+/*
+        printf("Coping %i from %i.\n", dst->length, src->length);\
+        for (int i = 0; i < dst->length; i++)\
+        {\
+            dst->value[i] = src->value[i];\
+        }\
+        if (dst->value != NULL) \
+        {\
+            dst->value = memcpy(dst->value, src->value, src->length);\
+        }\
+*/
 
 //! Creates a simple Filter with components.
 #define zoxel_filter(name, world, ...)\

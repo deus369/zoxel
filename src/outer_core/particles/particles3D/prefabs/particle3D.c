@@ -3,6 +3,7 @@ ecs_entity_t particle3D_prefab;
 //! Spawns a Particle3D Prefab.
 void SpawnPrefabParticle(ecs_world_t *world)
 {
+    ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "particle_prefab");
     #ifdef zoxel_debug_prefabs
     printf("spawn_prefab particle3D_prefab [%lu].\n", (long int) (e));
@@ -23,4 +24,5 @@ void SpawnPrefabParticle(ecs_world_t *world)
     // ecs_override(world, prefab, Torque);
     #endif
     particle3D_prefab = e;
+    ecs_defer_end(world);
 }
