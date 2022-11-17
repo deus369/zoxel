@@ -7,17 +7,6 @@ typedef struct\
 } name;\
 ECS_COMPONENT_DECLARE(name)
 
-#define zoxel_memory_component_define(world, ComponentName)\
-{\
-    ECS_COMPONENT_DEFINE(world, ComponentName);\
-    ecs_set_hooks(world, ComponentName, {\
-        .ctor = ecs_ctor(ComponentName),\
-        .move = ecs_move(ComponentName),\
-        .copy = ecs_copy(ComponentName),\
-        .dtor = ecs_dtor(ComponentName)\
-    });\
-}
-
 // sizeof(type);    // 4 color
 // sizeof(component->value); // 8, presumably pointer takes 4 more bytes?
 // printf("Stride %i\n", stride);
@@ -63,6 +52,17 @@ ECS_COMPONENT_DECLARE(name)
 //! ECS_DTOR The destructor should free resources.
 //! ECS_MOVE Copy a pointer from one component to another.
 //! ECS_COPY Copy one data block to another.
+
+#define zoxel_memory_component_define(world, ComponentName)\
+{\
+    ECS_COMPONENT_DEFINE(world, ComponentName);\
+    ecs_set_hooks(world, ComponentName, {\
+        .ctor = ecs_ctor(ComponentName),\
+        .move = ecs_move(ComponentName),\
+        .copy = ecs_copy(ComponentName),\
+        .dtor = ecs_dtor(ComponentName)\
+    });\
+}
 
 //! Define a Memory component, with an array of a single data type.
 #define zoxel_memory_component(name, type)\

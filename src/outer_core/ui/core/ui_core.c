@@ -12,15 +12,6 @@
 ECS_DECLARE(Element);
 ECS_DECLARE(Canvas);
 ECS_DECLARE(ElementRaycaster);
-// UI extras, make extra ui module?
-ECS_DECLARE(Label);
-ECS_DECLARE(Button);
-//! A ui window.
-ECS_DECLARE(Window);
-//! A ui window header.
-ECS_DECLARE(Header);
-//! A ui window close button.
-ECS_DECLARE(CloseButton);
 // components
 zoxel_component(PixelPosition, int2);
 zoxel_component(PixelSize, int2);
@@ -36,14 +27,10 @@ zoxel_component(CanvasLink, ecs_entity_t);
 // prefabs
 #include "prefabs/canvas.c"
 #include "prefabs/element.c"
-#include "prefabs/button.c"
-#include "prefabs/header.c"
-#include "prefabs/window.c"
 // systems
 #include "systems/element_raycast_system.c"
 #include "systems/element_selected_system.c"
 #include "systems/element_activate_system.c"
-#include "systems/window_close_system.c"
 #include "systems/element_mesh_system.c"
 
 //! The UI contains ways to interact with 2D objects.
@@ -57,10 +44,6 @@ void UICoreImport(ecs_world_t *world)
     ECS_TAG_DEFINE(world, Element);
     ECS_TAG_DEFINE(world, Canvas);
     ECS_TAG_DEFINE(world, ElementRaycaster);
-    ECS_TAG_DEFINE(world, Button);
-    ECS_TAG_DEFINE(world, Window);
-    ECS_TAG_DEFINE(world, Header);
-    ECS_TAG_DEFINE(world, CloseButton);
     ECS_COMPONENT_DEFINE(world, PixelPosition);
     ECS_COMPONENT_DEFINE(world, PixelSize);
     ECS_COMPONENT_DEFINE(world, CanvasPixelPosition);
@@ -71,11 +54,8 @@ void UICoreImport(ecs_world_t *world)
     zoxel_filter(ui_query, world, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [in] ElementLayer, [out] SelectableState);
     zoxel_system_ctx(world, ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [out] RaycasterTarget);
     zoxel_system(world, ElementSelectedSystem, EcsOnUpdate, [out] Element, [in] SelectableState, [out] Brightness);
-   
     // make Activator?
     zoxel_system(world, ElementActivateSystem, EcsOnUpdate, [in] Mouse, [in] RaycasterTarget);
-    zoxel_system(world, WindowCloseSystem, EcsOnValidate, [none] CloseButton, [in] ClickableState);
-   
     zoxel_system(world, ElementMeshSystem, 0, [none] Element, [in] EntityInitialize, [in] PixelSize);
     // ClicableState - reset system
     // destroy window
@@ -83,11 +63,9 @@ void UICoreImport(ecs_world_t *world)
     // prefabs
     spawn_prefab_canvas(world);
     spawn_prefab_element(world);
-    spawn_prefab_button(world);
-    spawn_prefab_window(world);
 }
-   
-    //zoxel_system_ctx(world, ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster);
-    //zoxel_system(world, ElementSelectedSystem, EcsOnUpdate, [out] Element, [in] ClickableState, [out] Brightness);
+
+// zoxel_system_ctx(world, ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster);
+// zoxel_system(world, ElementSelectedSystem, EcsOnUpdate, [out] Element, [in] ClickableState, [out] Brightness);
 
 #endif

@@ -38,22 +38,6 @@ ecs_entity_t spawn_window(ecs_world_t *world, const char *header_label,
     ecs_modified(world, e, Children);
     return e;
 }
-    // if (!ecs_has(world, window_prefab, Position2D))
-    // {
-    //     printf("window_prefab [%lu] has no Position2D component.\n", (long int) window_prefab);
-    // }
 
 // i'm getting prefab issues with a override component not appearing on the spawned entity, wondering if anyone else is geting this
 // (im thinking its something to do with deffered operations in ecs_set)
-
-
-    // #ifdef zoxel_debug_prefabs
-    // printf("spawn window [%lu].\n", (long int) (e));
-    // #endif
-    // if (!ecs_has(world, e, Position2D))
-    // {
-    //     printf("Window [%lu] has no Position2D component. Cannot spawn.\n", (long int) e);
-    //     ecs_delete(world, e);
-    //     // ecs_defer_end(world);
-    //     return 0;
-    // }

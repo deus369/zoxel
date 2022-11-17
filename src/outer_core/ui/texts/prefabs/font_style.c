@@ -75,6 +75,13 @@ ecs_entity_t spawn_font_style(ecs_world_t *world)
     children.value[51] = spawn_font(world, font_upper_y, font_upper_y_length);
     children.value[52] = spawn_font(world, font_upper_z, font_upper_z_length);
     children.value[55] = spawn_font(world, font_space, font_space_length);
+    //! \todo these
+    children.value[53] = spawn_font(world, font_question_mark, font_question_mark_length);
+    children.value[54] = spawn_font(world, font_question_mark, font_question_mark_length);
+    children.value[56] = spawn_font(world, font_question_mark, font_question_mark_length);
+    children.value[57] = spawn_font(world, font_question_mark, font_question_mark_length);
+    children.value[58] = spawn_font(world, font_question_mark, font_question_mark_length);
+    children.value[59] = spawn_font(world, font_question_mark, font_question_mark_length);
     // do these
     children.value[60] = spawn_font(world, number_0, number_0_length);
     children.value[61] = spawn_font(world, number_1, number_1_length);

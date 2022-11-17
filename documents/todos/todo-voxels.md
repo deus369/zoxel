@@ -12,8 +12,6 @@ Our worlds will be voxels.
 - [ ] Cull voxel sides during mesh building step
 - [ ] Chunk Neighbors - use hashmap lookups to quickly get chunk neighbors during build step
     - use this to cull edge of chunks
-- [ ] 
-
 - [ ] Render Voxel chunks in grid - terrain
     - option for single layer chunks - 128 height, etc
     - options for 3D chunks of xyz size

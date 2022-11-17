@@ -30,6 +30,7 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab,
     int textLength = strlen(text);
     int2 zext_size = (int2) { font_size * textLength, font_size };
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
+    printf("Spawned zext [%lu]\n", (long int) e);
     ecs_set(world, e, ZextSize, { font_size });
     ecs_set(world, e, ZextDirty, { 0 });
     float2 position2D = initialize_ui_components_2(world, e,
