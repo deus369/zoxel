@@ -1,35 +1,21 @@
+const unsigned char terrain_noise = 3;  //2
+
 //! Our function that creates a chunk.
 void GenerateChunkTerrain(Chunk* chunk, const ChunkSize *chunkSize)
 {
     // const int2 valueRange = { 0, 2 };   // < max
-    unsigned char terrain_height = rand() % 16;
-    int array_index = 0;
-    for (int j = 0; j < chunkSize->value.x; j++)
+    unsigned char terrain_height = 4 + rand() % 12;
+    int3 local_position;
+    // precount our face data for initialization
+    for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++)
     {
-        for (int k = 0; k < chunkSize->value.y; k++)
+        for (local_position.z = 0; local_position.z < chunkSize->value.z; local_position.z++)
         {
-            for (int l = 0; l < chunkSize->value.z; l++)
+            unsigned char terrain_height2 = terrain_height + rand() % terrain_noise;
+            for (local_position.y = 0; local_position.y < chunkSize->value.y; local_position.y++)
             {
-                // int array_index = (j + k * chunkSize->value.x)  * chunkSize->value.y + l;
-                /*int distanceToMidX = abs_integer(chunkSize->value.x / 2 - j);
-                int distanceToMidY = abs_integer(chunkSize->value.y / 2 - k);
-                int distanceToMidZ = abs_integer(chunkSize->value.z / 2 - l);
-                if (distanceToMidX + distanceToMidY >= chunkSize->value.x / 2
-                    || distanceToMidX + distanceToMidZ >= chunkSize->value.x / 2
-                    || distanceToMidZ + distanceToMidY >= chunkSize->value.x / 2)
-                {
-                    chunk->value[array_index] = 0;
-                    array_index++;
-                    continue;
-                }
-                if (rand() % 100 <= dissapearChance)
-                {
-                    chunk->value[array_index] = 0;
-                    array_index++;
-                    continue;
-                }*/
-
-                if (k <= terrain_height + rand() % 3)
+                int array_index = int3_array_index(local_position, chunkSize->value);
+                if (local_position.y <= terrain_height2)
                 {
                     chunk->value[array_index] = 1;
                 }
@@ -42,7 +28,7 @@ void GenerateChunkTerrain(Chunk* chunk, const ChunkSize *chunkSize)
                     chunk->value[array_index] = 1;
                 else
                     chunk->value[array_index] = 0;*/
-                array_index++;
+                // array_index++;
             }
         }
     }

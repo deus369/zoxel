@@ -1,6 +1,226 @@
 // set_mesh_indicies(world, e, cubeIndicies, 36);
 // set_mesh_vertices(world, e, cubeVertices, 24);
 
+// #define disable_voxel_left
+// #define disable_voxel_right
+// #define disable_voxel_down
+// #define disable_voxel_up
+// #define disable_voxel_back
+// #define disable_voxel_front
+
+//! \todo Use a hashmap with bit map of side voxels, to generate voxel faces.
+//      for example, top and bottom, would be 001100, and would have 8 vertexes and 12 indicies.
+
+//! \todo combine vertices between voxel meshes.
+//      For example, to up faces next to each other, will only have 6 vertices and now 8.
+
+void add_voxel_face(MeshIndicies *meshIndicies2, MeshVertices *meshVertices2,
+    float3 vertex_position_offset, float3 center_mesh_offset, float voxel_scale,
+    int2 *start, int2 start2,
+    const int voxel_face_indicies[], int voxel_face_indicies_length,
+    const float3 voxel_face_vertices[], int voxel_face_vertices_length)
+{
+    int indicies_offset = start2.y / 3;
+    for (int a = 0, b = start2.x; a < voxel_face_indicies_length; a++, b++)
+    {
+        meshIndicies2->value[b] = indicies_offset + voxel_face_indicies[a];
+    }
+    // add verts
+    for (int a = 0, b = start2.y; a < voxel_face_vertices_length; a++, b = b + 3)
+    {
+        float3 vertex_position = voxel_face_vertices[a]; // (float3) { cubeVertices[a + 0], cubeVertices[a + 1], cubeVertices[a + 2] };
+        vertex_position = float3_multiply_float(vertex_position, voxel_scale);          // scale vertex
+        vertex_position = float3_add(vertex_position, vertex_position_offset);   // offset vertex by voxel position in chunk
+        vertex_position = float3_add(vertex_position, center_mesh_offset);       // add total mesh offset
+        meshVertices2->value[b + 0] = vertex_position.x;
+        meshVertices2->value[b + 1] = vertex_position.y;
+        meshVertices2->value[b + 2] = vertex_position.z;
+    }
+    start->x += voxel_face_indicies_up_length;
+    start->y += voxel_face_vertices_length * 3;
+}
+
+void build_chunk_mesh(const Chunk *chunk, const ChunkSize *chunkSize, MeshIndicies *meshIndicies2, MeshVertices *meshVertices2)
+{
+    // int indicies_per_voxel = voxel_face_indicies_up_length; // 6;     // 36;    // 6 * 6
+    // int verticies_per_voxel = voxel_face_vertices_up_length; // 4;    // 24;   // 8 * 3
+    // int verticies_per_voxel2 = voxel_face_vertices_up_length; // 8;   // per vertex 3
+    // go through and add a top face for each voxel position that is solid
+    int array_index = 0;
+    int indicies_count = 0;
+    int verticies_count = 0;
+    int3 local_position;
+    // precount our face data for initialization
+    for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++)
+    {
+        for (local_position.y = 0; local_position.y < chunkSize->value.y; local_position.y++)
+        {
+            for (local_position.z = 0; local_position.z < chunkSize->value.z; local_position.z++)
+            {
+                if (chunk->value[array_index] != 0)
+                {
+                    // add faces - based on neighbor voxels.
+                    #ifndef disable_voxel_left
+                        // left
+                        unsigned char voxel_left = local_position.x == 0 ?
+                            0 : chunk->value[int3_array_index(int3_left(local_position), chunkSize->value)];
+                        if (voxel_left == 0)
+                        {
+                            indicies_count += voxel_face_indicies_up_length;
+                            verticies_count += voxel_face_vertices_up_length * 3;
+                        }
+                    #endif
+                    #ifndef disable_voxel_right
+                        // right
+                        unsigned char voxel_right = local_position.x == chunkSize->value.x - 1 ?
+                            0 : chunk->value[int3_array_index(int3_right(local_position), chunkSize->value)];
+                        if (voxel_right == 0)
+                        {
+                            indicies_count += voxel_face_indicies_up_length;
+                            verticies_count += voxel_face_vertices_up_length * 3;
+                        }
+                    #endif
+                    #ifndef disable_voxel_down
+                        // down
+                        unsigned char voxel_down = local_position.y == 0 ?
+                            0 : chunk->value[int3_array_index(int3_down(local_position), chunkSize->value)];
+                        if (voxel_down == 0)
+                        {
+                            indicies_count += voxel_face_indicies_down_length;
+                            verticies_count += voxel_face_vertices_down_length * 3;
+                        }
+                    #endif
+                    #ifndef disable_voxel_up
+                        // up
+                        unsigned char voxel_up = local_position.y == chunkSize->value.y - 1 ?
+                            0 : chunk->value[int3_array_index(int3_up(local_position), chunkSize->value)];
+                        if (voxel_up == 0)
+                        {
+                            indicies_count += voxel_face_indicies_up_length;
+                            verticies_count += voxel_face_vertices_up_length * 3;
+                        }
+                    #endif
+                    #ifndef disable_voxel_back
+                        // back
+                        unsigned char voxel_back = local_position.z == 0 ?
+                            0 : chunk->value[int3_array_index(int3_back(local_position), chunkSize->value)];
+                        if (voxel_back == 0)
+                        {
+                            indicies_count += voxel_face_indicies_up_length;
+                            verticies_count += voxel_face_vertices_up_length * 3;
+                        }
+                    #endif
+                    #ifndef disable_voxel_front
+                        // front
+                        unsigned char voxel_front = local_position.z == chunkSize->value.z - 1 ?
+                            0 : chunk->value[int3_array_index(int3_front(local_position), chunkSize->value)];
+                        if (voxel_front == 0)
+                        {
+                            indicies_count += voxel_face_indicies_up_length;
+                            verticies_count += voxel_face_vertices_up_length * 3;
+                        }
+                    #endif
+                }
+                array_index++;
+            }
+        }
+    }
+    re_initialize_memory_component(meshIndicies2, int, indicies_count);
+    re_initialize_memory_component(meshVertices2, float, verticies_count);
+    float voxel_scale = overall_voxel_scale / ((float) chunkSize->value.x); // 16.0f;
+    float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
+    array_index = 0;
+    int2 start = { };
+    for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++)
+    {
+        for (local_position.y = 0; local_position.y < chunkSize->value.y; local_position.y++)
+        {
+            for (local_position.z = 0; local_position.z < chunkSize->value.z; local_position.z++)
+            {
+                if (chunk->value[array_index] != 0)
+                {
+                    float3 vertex_position_offset = float3_multiply_float(
+                        float3_from_int3(local_position), voxel_scale);
+                    #ifndef disable_voxel_left
+                        unsigned char voxel_left = local_position.x == 0 ?
+                            0 : chunk->value[int3_array_index(int3_left(local_position), chunkSize->value)];
+                        if (voxel_left == 0)
+                        {
+                            add_voxel_face(meshIndicies2, meshVertices2,
+                                vertex_position_offset, center_mesh_offset, voxel_scale,
+                                &start, start,
+                                voxel_face_indicies_left, voxel_face_indicies_left_length,
+                                voxel_face_vertices_left, voxel_face_vertices_left_length);
+                        }
+                    #endif
+                    #ifndef disable_voxel_right
+                        unsigned char voxel_right = local_position.x == chunkSize->value.x - 1 ?
+                            0 : chunk->value[int3_array_index(int3_right(local_position), chunkSize->value)];
+                        if (voxel_right == 0)
+                        {
+                            add_voxel_face(meshIndicies2, meshVertices2,
+                                vertex_position_offset, center_mesh_offset, voxel_scale,
+                                &start, start,
+                                voxel_face_indicies_right, voxel_face_indicies_right_length,
+                                voxel_face_vertices_right, voxel_face_vertices_right_length);
+                        }
+                    #endif
+                    #ifndef disable_voxel_down
+                        // get side voxels
+                        unsigned char voxel_down = local_position.y == 0 ?
+                            0 : chunk->value[int3_array_index(int3_down(local_position), chunkSize->value)];
+                        if (voxel_down == 0)
+                        {
+                            add_voxel_face(meshIndicies2, meshVertices2,
+                                vertex_position_offset, center_mesh_offset, voxel_scale,
+                                &start, start,
+                                voxel_face_indicies_down, voxel_face_indicies_down_length,
+                                voxel_face_vertices_down, voxel_face_vertices_down_length);
+                        }
+                    #endif
+                    #ifndef disable_voxel_up
+                        unsigned char voxel_up = local_position.y == chunkSize->value.y - 1 ?
+                            0 : chunk->value[int3_array_index(int3_up(local_position), chunkSize->value)];
+                        if (voxel_up == 0)
+                        {
+                            add_voxel_face(meshIndicies2, meshVertices2,
+                                vertex_position_offset, center_mesh_offset, voxel_scale,
+                                &start, start,
+                                voxel_face_indicies_up, voxel_face_indicies_up_length,
+                                voxel_face_vertices_up, voxel_face_vertices_up_length);
+                        }
+                    #endif
+                    #ifndef disable_voxel_back
+                        unsigned char voxel_back = local_position.z == 0 ?
+                            0 : chunk->value[int3_array_index(int3_back(local_position), chunkSize->value)];
+                        if (voxel_back == 0)
+                        {
+                            add_voxel_face(meshIndicies2, meshVertices2,
+                                vertex_position_offset, center_mesh_offset, voxel_scale,
+                                &start, start,
+                                voxel_face_indicies_back, voxel_face_indicies_back_length,
+                                voxel_face_vertices_back, voxel_face_vertices_back_length);
+                        }
+                    #endif
+                    #ifndef disable_voxel_front
+                        unsigned char voxel_front = local_position.z == chunkSize->value.z - 1 ?
+                            0 : chunk->value[int3_array_index(int3_front(local_position), chunkSize->value)];
+                        if (voxel_front == 0)
+                        {
+                            add_voxel_face(meshIndicies2, meshVertices2,
+                                vertex_position_offset, center_mesh_offset, voxel_scale,
+                                &start, start,
+                                voxel_face_indicies_front, voxel_face_indicies_front_length,
+                                voxel_face_vertices_front, voxel_face_vertices_front_length);
+                        }
+                    #endif
+                }
+                array_index++;
+            }
+        }
+    }
+}
+
 //! Builds a mesh data from the chunk!
 void ChunkBuildSystem(ecs_iter_t *it)
 {
@@ -27,72 +247,7 @@ void ChunkBuildSystem(ecs_iter_t *it)
         const ChunkSize *chunkSize = &chunkSizes[i];
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
-        // go through and add a top face for each voxel position that is solid
-        int array_index = 0;
-        int solid_voxels_count = 0;
-        for (int j = 0; j < chunkSize->value.x; j++)
-        {
-            for (int k = 0; k < chunkSize->value.y; k++)
-            {
-                for (int l = 0; l < chunkSize->value.y; l++)
-                {
-                    if (chunk->value[array_index] != 0)
-                    {
-                        // add faces - based on neighbor voxels.
-                        solid_voxels_count++;
-                    }
-                    array_index++;
-                }
-            }
-        }
-        int indicies_per_voxel = 36;    // 6 * 6
-        int verticies_per_voxel = 24;   // 8 * 3
-        int verticies_per_voxel2 = 8;   // per vertex 3
-        re_initialize_memory_component(meshIndicies2, int, solid_voxels_count * indicies_per_voxel);
-        re_initialize_memory_component(meshVertices2, float, solid_voxels_count * verticies_per_voxel);
-        float voxel_scale = overall_voxel_scale / ((float) chunkSize->value.x); // 16.0f;
-        float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
-        // printf("=== Voxel [%i] ===\n", solid_voxels_count);
-        solid_voxels_count = 0;
-        array_index = 0;
-        for (int j = 0; j < chunkSize->value.x; j++)
-        {
-            for (int k = 0; k < chunkSize->value.y; k++)
-            {
-                for (int l = 0; l < chunkSize->value.z; l++)
-                {
-                    if (chunk->value[array_index] != 0)
-                    {
-                        // printf("Adding Voxel Mesh for [%ix%ix%i]\n", j, k, l);
-                        // top face
-                        int vertices_start = solid_voxels_count * verticies_per_voxel;
-                        int indicies_start = solid_voxels_count * indicies_per_voxel;
-                        float3 vertex_position_offset = float3_multiply_float((float3) { j, k, l }, voxel_scale);
-                        for (int a = 0, b = indicies_start; a < indicies_per_voxel; a++, b++)
-                        {
-                            meshIndicies2->value[b] = voxel_cube_indicies[a] + vertices_start / 3;
-                            //if (k == 0 && l == 0)
-                             //   printf("    - index at [%i:%i] is [%i] from base [%i]\n", a, b, meshIndicies2->value[b], cubeIndicies[a]);
-                        }
-                        // top face
-                        for (int a = 0, b = vertices_start; a < verticies_per_voxel2; a++, b = b + 3)
-                        {
-                            float3 vertex_position = voxel_cube_vertices[a]; // (float3) { cubeVertices[a + 0], cubeVertices[a + 1], cubeVertices[a + 2] };
-                            vertex_position = float3_multiply_float(vertex_position, voxel_scale);          // scale vertex
-                            vertex_position = float3_add(vertex_position, vertex_position_offset);   // offset vertex by voxel position in chunk
-                            vertex_position = float3_add(vertex_position, center_mesh_offset);       // add total mesh offset
-                            meshVertices2->value[b + 0] = vertex_position.x;
-                            meshVertices2->value[b + 1] = vertex_position.y;
-                            meshVertices2->value[b + 2] = vertex_position.z;
-                            //if (k == 0 && l == 0)
-                            //    printf("    - vertex at [%i:%i] is [%fx%fx%f]\n", a, b, vertex_position.x, vertex_position.y, vertex_position.z);
-                        }
-                        solid_voxels_count++;
-                    }
-                    array_index++;
-                }
-            }
-        }
+        build_chunk_mesh(chunk, chunkSize, meshIndicies2, meshVertices2);
     }
 }
 ECS_SYSTEM_DECLARE(ChunkBuildSystem);
@@ -111,3 +266,32 @@ set_mesh_vertices(meshVertices2, cubeVertices, 24);*/
     printf("    vertex_position_offset [%fx%fx%f]\n",  vertex_position_offset.x, vertex_position_offset.y, vertex_position_offset.z);
     printf("    vertices_start [%i]\n", vertices_start);
 }*/
+
+                    // printf("Adding Voxel Mesh for [%ix%ix%i]\n", j, k, l);
+                    // top face
+                    /*int vertices_start = solid_voxels_count * verticies_per_voxel;
+                    int indicies_start = solid_voxels_count * indicies_per_voxel;
+                    float3 vertex_position_offset = float3_multiply_float(
+                        float3_from_int3(local_position), voxel_scale);
+                    for (int a = 0, b = indicies_start; a < indicies_per_voxel; a++, b++)
+                    {
+                        meshIndicies2->value[b] = voxel_cube_indicies[a] + vertices_start / 3;
+                        //if (k == 0 && l == 0)
+                            //   printf("    - index at [%i:%i] is [%i] from base [%i]\n", a, b, meshIndicies2->value[b], cubeIndicies[a]);
+                    }
+                    // top face
+                    for (int a = 0, b = vertices_start; a < verticies_per_voxel2; a++, b = b + 3)
+                    {
+                        float3 vertex_position = voxel_cube_vertices[a]; // (float3) { cubeVertices[a + 0], cubeVertices[a + 1], cubeVertices[a + 2] };
+                        vertex_position = float3_multiply_float(vertex_position, voxel_scale);          // scale vertex
+                        vertex_position = float3_add(vertex_position, vertex_position_offset);   // offset vertex by voxel position in chunk
+                        vertex_position = float3_add(vertex_position, center_mesh_offset);       // add total mesh offset
+                        meshVertices2->value[b + 0] = vertex_position.x;
+                        meshVertices2->value[b + 1] = vertex_position.y;
+                        meshVertices2->value[b + 2] = vertex_position.z;
+                        //if (k == 0 && l == 0)
+                        //    printf("    - vertex at [%i:%i] is [%fx%fx%f]\n", a, b, vertex_position.x, vertex_position.y, vertex_position.z);
+                    }
+                    solid_voxels_count++;*/
+                        // int vertices_start = solid_voxels_count * voxel_face_vertices_up_length * 3;
+                        // int indicies_start = solid_voxels_count * voxel_face_indicies_up_length;

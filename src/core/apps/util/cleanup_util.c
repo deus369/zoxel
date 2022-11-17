@@ -1,4 +1,3 @@
-
 //! Destroy SDLWindow.
 ECS_DTOR(SDLWindow, ptr,
 {
@@ -16,6 +15,7 @@ ECS_DTOR(Renderer, ptr,
         SDL_DestroyRenderer(ptr->value);
     }
 })
+
 //! Destroy SDL Context.
 ECS_DTOR(Context, ptr,
 {
