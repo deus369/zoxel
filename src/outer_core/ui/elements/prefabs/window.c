@@ -22,7 +22,7 @@ ecs_entity_t spawn_window(ecs_world_t *world, const char *header_label,
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, window_prefab);
-    float2 position2D = initialize_ui_components(world, e, canvas, position, pixel_size, anchor, 0);
+    float2 position2D = initialize_ui_components(world, e, main_canvas, position, pixel_size, anchor, 0);
     ecs_defer_end(world);
     Children *children = ecs_get_mut(world, e, Children);
     initialize_memory_component(children, ecs_entity_t, 1);
@@ -36,6 +36,9 @@ ecs_entity_t spawn_window(ecs_world_t *world, const char *header_label,
         header_label, font_size, header_margins, 1,
         position2D, pixel_size);
     ecs_modified(world, e, Children);
+    #ifdef zoxel_debug_spawns
+    printf("Spawned window [%lu]\n", (long int) e);
+    #endif
     return e;
 }
 

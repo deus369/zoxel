@@ -37,27 +37,24 @@ void render_loop_temp()
     main_camera_matrix = ecs_get(world, main_camera, ViewMatrix)->value;
     ui_camera_matrix = ecs_get(world, cameras[1], ViewMatrix)->value;
     SDL_SetRelativeMouseMode(freeRoam->value);  //! Locks Main Mouse.
+
     texture_update_main_thread();  // uploads textures to gpu
     mesh_update_main_thread();
     mesh_uvs_update_main_thread();
     // now render the things
-    OpenGLClear();
-    OpenGLBeginInstancing(main_camera_matrix);
-    ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
-    OpenGLEndInstancing();
-
-    // 3D instancing
+    opengl_clear();
+    // 3D renders
     OpenGLBeginInstancing3D(main_camera_matrix);
     ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
-    // seperate materials 3D mesh
-    ecs_run(world, ecs_id(Render3DUniqueSystem), 0, NULL);
+    opengl_disable_opengl_program();
+    ecs_run(world, ecs_id(Render3DSystem), 0, NULL);
     ecs_run(world, ecs_id(Render3DUvsSystem), 0, NULL);
-
-    // seperate materials 2D
+    // 2D renders
+    OpenGLBeginInstancing(main_camera_matrix);
+    ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
+    opengl_disable_opengl_program();
     ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);
-    // ecs_run(world, ecs_id(RenderMaterial2DScale2DSystem), 0, NULL);
     ecs_run(world, ecs_id(RenderMeshMaterial2DSystem), 0, NULL);
-    
     finish_opengl_rendering(world);
     #ifdef zoxel_time_render_loop
     t = clock() - t;

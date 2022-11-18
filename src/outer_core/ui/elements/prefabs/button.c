@@ -26,7 +26,6 @@ ecs_entity_t spawn_button(ecs_world_t *world, ecs_entity_t parent,
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, button_prefab);
-    printf("Spawned button [%lu]\n", (long int) e);
     float2 position2D = initialize_ui_components_2(world, e, parent, position, size, anchor, layer,
         parent_position2D, parent_pixel_size);
     Children children = { };
@@ -41,5 +40,8 @@ ecs_entity_t spawn_button(ecs_world_t *world, ecs_entity_t parent,
     // printf("Texture ratio: %f - ScaleRatio: %f\n", (size.x / (float) size.y), (scaledSize2D.x / scaledSize2D.y));
     // printf("UI Element Spawned - Position [%ix%i] - Size [%ix%i] - Position(Real) [%fx%f] - ScaledSize [%fx%f]\n",
     //    position.x, position.y, size.x, size.y, position2D.x, position2D.y, scaledSize2D.x, scaledSize2D.y);
+    #ifdef zoxel_debug_spawns
+    printf("Spawned button [%lu]\n", (long int) e);
+    #endif
     return e;
 }

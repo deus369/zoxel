@@ -1,12 +1,17 @@
 //! =-= Zoxel =-=
 #define SDL_IMAGES
+// game uis
 // -- tests --
 #define zoxel_test_character2Ds
 #define zoxel_test_cubes
+// #define zoxel_test_cubes_textured    // wip
+// #define zoxel_test_character3Ds      // todo
 #define zoxel_test_voxels
-#define zoxel_test_uis
+#define zoxel_test_voxels_terrain       // uvs - wip
+// #define zoxel_test_uis
 // -- debugs --
 // #define zoxel_debug_prefabs
+// #define zoxel_debug_spawns
 // #define zoxel_debug_sdl
 // #define zoxel_debug_opengl
 // #define zoxel_debug_pathing
@@ -18,25 +23,26 @@
 // #define zoxel_time_render_loop
 #include "_includes.c"
 
-ecs_entity_t local_player;
 extern bool headless;
 extern bool running;
 extern bool profiler;
-extern float4x4 main_camera_matrix;  //! Used globally in render systems
 
 //! Spawns our first game entities.
 void spawn_game(ecs_world_t *world)
 {
-    ecs_entity_t main_camera = spawn_main_camera(world, screenDimensions);
+    spawn_main_camera(world, screenDimensions);
     spawn_ui_camera(world, screenDimensions);
-    spawn_connected_devices(world);
-    local_player = spawn_player_character3D(world, main_camera);
     spawn_font_style(world);
-    ecs_entity_t canvas = spawn_canvas(world, screenDimensions);
-    spawn_fps_display(world, canvas, 32);
-    spawn_zoxel_window(world);
+    spawn_canvas(world, screenDimensions);
+    #ifdef zoxel_test_uis
     spawn_test_uis(world);   // spawns test ui
+    #endif
+    spawn_connected_devices(world);
+    spawn_player_character3D(world, get_main_camera());
+
     // spawn_main_menu(world, "Zoxel");
+    // spawn_fps_display(world, main_canvas, 32);
+    // spawn_zoxel_window(world);
 }
 
 //! The main update loop.

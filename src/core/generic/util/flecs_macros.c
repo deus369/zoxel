@@ -7,6 +7,9 @@ typedef struct\
 } name;\
 ECS_COMPONENT_DECLARE(name)
 
+#define zoxel_state_component(name)\
+zoxel_component(name, unsigned char)
+
 // sizeof(type);    // 4 color
 // sizeof(component->value); // 8, presumably pointer takes 4 more bytes?
 // printf("Stride %i\n", stride);
@@ -183,6 +186,9 @@ void system_name(ecs_iter_t *it)\
     }\
 }\
 ECS_SYSTEM_DECLARE(system_name);
+
+
+//    printf("Component has reset [%lu].\n", (long int) it->entities[i]);
 
 #define zoxel_reset_system_define(system_name, component_name)\
 zoxel_system_main_thread(world, system_name, EcsPostUpdate, [out] component_name);

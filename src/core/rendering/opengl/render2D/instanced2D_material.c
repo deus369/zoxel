@@ -102,15 +102,3 @@ void RenderEntity2D(float2 position, float angle, float scale, float brightness)
     glUniform1f(material2D.brightness, brightness);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL); // &square_indicies);
 }
-
-void OpenGLEndInstancing()
-{
-    glUseProgram(0);
-#ifdef zoxel_catch_opengl_errors
-    GLenum err7 = glGetError();
-    if (err7 != GL_NO_ERROR)
-    {
-        printf("GL HAD ERROR with end of OpenGLEndInstancing: %i\n", err7);
-    }
-#endif
-}

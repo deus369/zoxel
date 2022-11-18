@@ -46,7 +46,7 @@ void NoiseChunkSystem(ecs_iter_t *it)
     {
         return;
     }
-    ChunkDirty *entityDirtys = ecs_field(it, ChunkDirty, 2);
+    ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
     Chunk *chunks = ecs_field(it, Chunk, 3);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 4);
     const GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 5);
@@ -58,12 +58,12 @@ void NoiseChunkSystem(ecs_iter_t *it)
         {
             continue;
         }
-        ChunkDirty *entityDirty = &entityDirtys[i];
-        if (entityDirty->value != 0)
+        ChunkDirty *chunkDirty = &chunkDirtys[i];
+        if (chunkDirty->value != 0)
         {
             continue;
         }
-        entityDirty->value = 1;
+        chunkDirty->value = 1;
         Chunk *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
         re_initialize_memory_component(chunk, unsigned char, chunkSize->value.x * chunkSize->value.y * chunkSize->value.z);

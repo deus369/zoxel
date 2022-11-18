@@ -15,5 +15,6 @@ ecs_entity_t spawn_player_character3D(ecs_world_t *world, ecs_entity_t camera)
     spawn_gpu_material(world, e, instanceShader3D);
     ecs_defer_end(world);
     // spawn_gpu_texture(world, e);
+    local_player = e;
     return e;
 }

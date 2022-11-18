@@ -15,9 +15,10 @@ zoxel_memory_component(Texture, color);
 //! A texture with pixels!
 zoxel_component(TextureSize, int2);
 //! A state for generating textures.
-zoxel_component(GenerateTexture, unsigned char);
+zoxel_state_component(GenerateTexture);
 //! A state for animating textures.
 zoxel_component(AnimateTexture, double);
+zoxel_state_component(TextureDirty);
 // util
 #include "util/textures_sdl_util.c"
 #include "util/textures_util.c"
@@ -31,6 +32,7 @@ zoxel_component(AnimateTexture, double);
 // texture generation systems
 #include "systems/noise_texture_system.c"
 #include "systems/frame_texture_system.c"
+zoxel_reset_system(TextureDirtyResetSystem, TextureDirty)
 zoxel_reset_system(GenerateTextureResetSystem, GenerateTexture)
 // tests
 #include "tests/test_texture.c"
@@ -46,12 +48,16 @@ void TexturesCoreImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, TextureSize);
     ECS_COMPONENT_DEFINE(world, GenerateTexture);
     ECS_COMPONENT_DEFINE(world, AnimateTexture);
+    ECS_COMPONENT_DEFINE(world, TextureDirty);
     ECS_SYSTEM_DEFINE(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture);
-    add_texture_generation_system(NoiseTexture, NoiseTextureSystem);
-    add_texture_generation_system(FrameTexture, FrameTextureSystem);
+    define_texture_generation_system(NoiseTexture, NoiseTextureSystem);
+    define_texture_generation_system(FrameTexture, FrameTextureSystem);
+    ECS_SYSTEM_DEFINE(world, TextureSaveSystem, EcsOnValidate,
+        [in] TextureDirty, [in] Texture, [in] TextureSize, [none] SaveTexture);
+    ECS_SYSTEM_DEFINE(world, TextureUpdateSystem, EcsOnValidate,
+        [in] TextureDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink);
     zoxel_reset_system_define(GenerateTextureResetSystem, GenerateTexture);
-    ECS_SYSTEM_DEFINE(world, TextureSaveSystem, EcsOnValidate, [in] EntityDirty, [in] Texture, [in] TextureSize, [none] SaveTexture);
-    ECS_SYSTEM_DEFINE(world, TextureUpdateSystem, EcsOnValidate, [in] generic.EntityDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink);
+    zoxel_reset_system_define(TextureDirtyResetSystem, TextureDirty);
     spawn_prefab_noise_texture(world);
 }
 #endif

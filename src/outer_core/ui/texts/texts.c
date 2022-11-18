@@ -65,14 +65,14 @@ void TextsImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, ZextDirty);
     ECS_COMPONENT_DEFINE(world, AnimateZext);
     ECS_SYSTEM_DEFINE(world, AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData);
-    // add_texture_generation_system(FontTexture, FontTextureSystem);
+    // define_texture_generation_system(FontTexture, FontTextureSystem);
     zoxel_filter(zextDirtyQuery, world, [none] Zext, [in] ZextDirty);
     zoxel_system_ctx_single_thread(world, ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery,
         [none] Zext, [out] ZextDirty, [in] ZextData, [in] ZextSize, [in] ElementLayer,
         [in] Position2D, [in] PixelSize, [out] Children);
     zoxel_filter(generateTextureQuery, world, [none] FontTexture, [in] GenerateTexture);
     zoxel_system_ctx(world, FontTextureSystem, EcsOnUpdate, generateTextureQuery,
-        [none] FontTexture, [out] generic.EntityDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture,
+        [none] FontTexture, [out] TextureDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture,
         [in] ZigelIndex);
     spawn_font_style_prefab(world);
     spawn_font_prefab(world);

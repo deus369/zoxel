@@ -7,7 +7,6 @@
 //      - set data as cube and render
 //      - Animate rotate the cube - for testing
 
-const int custom_mesh_spawn_count = 64;
 // Tags
 ECS_DECLARE(Mesh);
 ECS_DECLARE(ElementRender);
@@ -17,6 +16,7 @@ zoxel_component(Brightness, float);
 zoxel_memory_component(MeshIndicies, int);
 zoxel_memory_component(MeshVertices, float);
 zoxel_memory_component(MeshUVs, float);
+zoxel_state_component(MeshDirty);
 #include "components/MaterialGPULink.c"
 #include "components/TextureGPULink.c"
 #include "components/mesh_gpu_link.c"
@@ -27,17 +27,21 @@ zoxel_component(EternalRotation, float4);
 #include "util/mesh_util.c"
 #include "util/render_util.c"
 // prefabs
-#include "prefabs/custom_mesh.c"
 // systems
+// animation systems
 #include "systems/eternal_rotation_system.c"
-#include "systems/render2D_instance_system.c"
-#include "systems/render2D_system.c"
-#include "systems/render3D_instance_system.c"
-#include "systems/render3D_unique_system.c"
+// update systems
 #include "systems/mesh_update_system.c"
-// uvs
-#include "systems/render3D_uvs_system.c"
 #include "systems/mesh_uvs_update_system.c"
+// render 2D systems
+#include "render2D_systems/render2D_system.c"
+#include "render2D_systems/render2D_mesh_system.c"
+#include "render2D_systems/render2D_instance_system.c"
+// render 3D systems
+#include "render3D_systems/render3D_system.c"
+#include "render3D_systems/render3D_uvs_system.c"
+#include "render3D_systems/render3D_instance_system.c"
+zoxel_reset_system(MeshDirtySystem, MeshDirty);
 
 //! The rendering core Sub Module.
 /**
@@ -54,6 +58,7 @@ void RenderingCoreImport(ecs_world_t *world)
     zoxel_memory_component_define(world, MeshIndicies);
     zoxel_memory_component_define(world, MeshVertices);
     zoxel_memory_component_define(world, MeshUVs);
+    ECS_COMPONENT_DEFINE(world, MeshDirty);
     ECS_COMPONENT_DEFINE(world, MaterialGPULink);
     ECS_COMPONENT_DEFINE(world, TextureGPULink);
     ECS_COMPONENT_DEFINE(world, MeshGPULink);
@@ -67,19 +72,18 @@ void RenderingCoreImport(ecs_world_t *world)
     ecs_set_hooks(world, UvsGPULink, { .dtor = ecs_dtor(UvsGPULink) });
     // move this to animations systems
     ECS_SYSTEM_DEFINE(world, EternalRotationSystem, EcsOnUpdate, [out] Rotation, [in] EternalRotation);
-    // systems
+    // render2D
     ECS_SYSTEM_DEFINE(world, InstanceRender2DSystem, 0,
-        [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink);
+        [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink,
+        [none] !MeshGPULink);
     ECS_SYSTEM_DEFINE(world, RenderMaterial2DSystem, 0,
-        [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MaterialGPULink, [in] TextureGPULink, [none] !MeshGPULink);
-    //ECS_SYSTEM_DEFINE(world, RenderMaterial2DScale2DSystem, 0,
-    //    [in] Position2D, [in] Rotation2D, [in] Scale2D, [in] Brightness, [in] MaterialGPULink, [in] TextureGPULink, [none] !MeshGPULink);
+        [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MaterialGPULink,
+        [in] TextureGPULink, [none] !MeshGPULink);
     ECS_SYSTEM_DEFINE(world, RenderMeshMaterial2DSystem, 0,
-        [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] MaterialGPULink, [in] TextureGPULink);
-    ECS_SYSTEM_DEFINE(world, InstanceRender3DSystem, 0,
-        [in] Position, [in] Rotation, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink);
-    // 3D
-    ECS_SYSTEM_DEFINE(world, Render3DUniqueSystem, 0,
+        [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MeshGPULink,
+        [in] MaterialGPULink, [in] TextureGPULink);
+    // render3D
+    ECS_SYSTEM_DEFINE(world, Render3DSystem, 0,
         [in] Position, [in] Rotation, [in] Scale1D, [in] Brightness,
         [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies,
         [none] !UvsGPULink);
@@ -87,27 +91,17 @@ void RenderingCoreImport(ecs_world_t *world)
         [in] Position, [in] Rotation, [in] Scale1D, [in] Brightness,
         [in] MeshGPULink, [in] MaterialGPULink, [in] UvsGPULink, [in] TextureGPULink,
         [in] MeshIndicies);
+    ECS_SYSTEM_DEFINE(world, InstanceRender3DSystem, 0,
+        [in] Position, [in] Rotation, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink);
     // updates
     ECS_SYSTEM_DEFINE(world, MeshUpdateSystem, EcsOnValidate,
-        [in] generic.EntityDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshGPULink, [in] MaterialGPULink,
+        [in] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshGPULink, [in] MaterialGPULink,
         [none] !MeshUVs);
     ECS_SYSTEM_DEFINE(world, MeshUvsUpdateSystem, EcsOnValidate,
-        [in] generic.EntityDirty,
+        [in] MeshDirty,
         [in] MeshIndicies, [in] MeshVertices, [in] MeshUVs,
         [in] MeshGPULink, [in] MaterialGPULink, [in] UvsGPULink);
-    // prefabs
-    spawn_custom_mesh_prefab(world);
-    //spawn_custom_mesh(world, custom_mesh_prefab, (float3) { 0, 0.6f, 0});
-    //spawn_custom_mesh(world, custom_mesh_prefab, (float3) { 0.2f, 0.6f, 0});
-    #ifdef zoxel_test_cubes
-    float2 spawnBounds = { 2.2f, 1.2f };
-    for (int i = 0; i < custom_mesh_spawn_count; i++)
-    {
-        spawn_custom_mesh(world, custom_mesh_prefab, (float3) {
-            -spawnBounds.x + (rand() % 100) * 0.02f * spawnBounds.x,
-            -spawnBounds.y + (rand() % 100) * 0.02f * spawnBounds.y, 0 });
-    }
-    #endif
+    zoxel_reset_system_define(MeshDirtySystem, MeshDirty);
 }
 
 //set_mesh_indicies(world, e, cubeIndicies3, 12);

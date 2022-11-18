@@ -85,11 +85,11 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 } \
 ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
-#define add_texture_generation_system(texture_tag, system)\
+#define define_texture_generation_system(texture_tag, system)\
 {\
     zoxel_filter(generateTextureQuery, world, [none] texture_tag, [in] GenerateTexture);\
     zoxel_system_ctx(world, system, EcsOnUpdate, generateTextureQuery,\
-        [none] texture_tag, [out] generic.EntityDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture);\
+        [none] texture_tag, [out] TextureDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture);\
 }
 
 // EcsPreFrame, EcsOnLoad, EcsPostLoad, EcsPreUpdate, EcsOnUpdate

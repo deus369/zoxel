@@ -44,7 +44,7 @@ void FrameTextureSystem(ecs_iter_t *it)
     {
         return;
     }
-    EntityDirty *entityDirtys = ecs_field(it, EntityDirty, 2);
+    TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 2);
     Texture *textures = ecs_field(it, Texture, 3);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 4);
     const GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 5);
@@ -56,12 +56,12 @@ void FrameTextureSystem(ecs_iter_t *it)
         {
             continue;
         }
-        EntityDirty *entityDirty = &entityDirtys[i];
-        if (entityDirty->value != 0)
+        TextureDirty *textureDirty = &textureDirtys[i];
+        if (textureDirty->value != 0)
         {
             continue;
         }
-        entityDirty->value = 1;
+        textureDirty->value = 1;
         Texture *texture = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
         int newLength = textureSize->value.x * textureSize->value.y;

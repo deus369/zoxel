@@ -11,13 +11,13 @@ void TextureSaveSystem(ecs_iter_t *it)
     {
         return;
     }
-    const EntityDirty *entityDirtys = ecs_field(it, EntityDirty, 1);
+    const TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 1);
     const Texture *textures = ecs_field(it, Texture, 2);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 3);
     for (int i = 0; i < it->count; i++)
     {
-        const EntityDirty *entityDirty = &entityDirtys[i];
-        if (entityDirty->value != 1)
+        const TextureDirty *textureDirty = &textureDirtys[i];
+        if (textureDirty->value != 1)
         {
             continue;
         }

@@ -19,7 +19,7 @@ void MeshUpdateSystem(ecs_iter_t *it)
     {
         return;
     }
-    const EntityDirty *entityDirtys = ecs_field(it, EntityDirty, 1);
+    const MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 1);
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 2);
     const MeshVertices *meshVertices = ecs_field(it, MeshVertices, 3);
     const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 4);
@@ -27,8 +27,8 @@ void MeshUpdateSystem(ecs_iter_t *it)
     // printf("TextureUpdateSystem [%i] \n", it->count);
     for (int i = 0; i < it->count; i++)
     {
-        const EntityDirty *entityDirty = &entityDirtys[i];
-        if (entityDirty->value != 1)
+        const MeshDirty *meshDirty = &meshDirtys[i];
+        if (meshDirty->value != 1)
         {
             continue;
         }

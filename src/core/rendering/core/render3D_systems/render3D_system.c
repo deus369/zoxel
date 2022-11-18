@@ -1,6 +1,6 @@
 extern float4x4 main_camera_matrix;
 
-void Render3DUniqueSystem(ecs_iter_t *it)
+void Render3DSystem(ecs_iter_t *it)
 {
     const Position *positions = ecs_field(it, Position, 1);
     const Rotation *rotations = ecs_field(it, Rotation, 2);
@@ -18,7 +18,7 @@ void Render3DUniqueSystem(ecs_iter_t *it)
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
         const MaterialGPULink *materialGPULink = &materialGPULinks[i];
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
-        // printf(" - Rendering Cube\n");
+        // printf(" - Rendering 3D Mesh [%lu]\n", (long int) it->entities[i]);
         if (opengl_set_material(materialGPULink->value))
         {
             opengl_set_mesh(meshGPULink->value);
@@ -26,7 +26,8 @@ void Render3DUniqueSystem(ecs_iter_t *it)
                 main_camera_matrix, position->value, rotation->value, scale1D->value, brightness->value);
             opengl_draw_triangles(meshIndicies2->length);
             opengl_disable_opengl_program();
+            // printf("Render3DSystem [%lu]\n", (long int) it->entities[i]);
         }
     }
 }
-ECS_SYSTEM_DECLARE(Render3DUniqueSystem);
+ECS_SYSTEM_DECLARE(Render3DSystem);

@@ -16,7 +16,7 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *menu_name) // int2 
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, main_menu_prefab);
-    // initialize_ui_components(world, e, canvas, position, size, anchor);
+    // initialize_ui_components(world, e, main_canvas, position, size, anchor);
     ecs_defer_end(world);
     return e;
 }

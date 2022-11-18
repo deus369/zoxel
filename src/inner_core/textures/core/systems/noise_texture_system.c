@@ -61,7 +61,7 @@ void NoiseTextureSystem(ecs_iter_t *it)
     // ecs_iter_t changeIterator = ecs_query_iter(it->world, changeQuery);
     // while (ecs_query_next(&changeIterator));
     // printf("NoiseTextureSystem: [GenerateTexture Changed]\n");
-    EntityDirty *entityDirtys = ecs_field(it, EntityDirty, 2);
+    TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 2);
     Texture *textures = ecs_field(it, Texture, 3);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 4);
     const GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 5);
@@ -73,18 +73,18 @@ void NoiseTextureSystem(ecs_iter_t *it)
         {
             continue;
         }
-        EntityDirty *entityDirty = &entityDirtys[i];
-        if (entityDirty->value != 0)
+        TextureDirty *textureDirty = &textureDirtys[i];
+        if (textureDirty->value != 0)
         {
             continue;
         }
-        entityDirty->value = 1;
-        // printf("Noise Texture Generated: [%lu] \n", (long int) it->entities[i]);
+        textureDirty->value = 1;
         Texture *texture = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
         int newLength = textureSize->value.x * textureSize->value.y;
         re_initialize_memory_component(texture, color, newLength);
         GenerateNoise(texture, textureSize);
+        // printf("Noise Texture Generated: [%lu] \n", (long int) it->entities[i]);
     }
 }
 ECS_SYSTEM_DECLARE(NoiseTextureSystem);

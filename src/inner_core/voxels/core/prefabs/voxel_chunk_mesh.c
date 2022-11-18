@@ -3,16 +3,27 @@ ecs_entity_t voxel_prefab;
 ecs_entity_t spawn_voxel_chunk_mesh_prefab(ecs_world_t *world)
 {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, custom_mesh_prefab);
-    ecs_add_id(world, e, EcsPrefab);
-    ecs_set_name(world, e, "voxel_prefab");
+    ecs_entity_t e = ecs_new_prefab(world, ""); // , "prefab_cube");
+    //ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_cube);
+    //ecs_add_id(world, e, EcsPrefab);
+    //ecs_set_name(world, e, "voxel_prefab");
+    // mesh3D entity components
+    #ifdef zoxel_transforms3D
+    add_transform3Ds(world, e);
+    zoxel_set(world, e, Scale1D, { 0.05f });
+    #endif
+    zoxel_set(world, e, MeshDirty, { 0 });
+    zoxel_set(world, e, Brightness, { 1.4f });
+    // zoxel_set(world, e, EntityDirty, { 1 });    // replace with MeshDirty
     add_seed(world, e, 666);
     add_chunk(world, e, chunk_size);
     add_generate_chunk(world, e);
-    ecs_set(world, e, Brightness, { 1.4f });
-    ecs_set(world, e, Scale1D, { 0.05f });
-    voxel_prefab = e;
+    zoxel_add(world, e, MeshIndicies);
+    zoxel_add(world, e, MeshVertices);
+    add_gpu_mesh(world, e);
+    add_gpu_material(world, e);
     ecs_defer_end(world);
+    voxel_prefab = e;
     return e;
 }
 
@@ -25,31 +36,5 @@ ecs_entity_t spawn_voxel_chunk_mesh(ecs_world_t *world, ecs_entity_t prefab, flo
     spawn_gpu_mesh(world, e);
     spawn_gpu_material(world, e, instanceShader3D);
     ecs_defer_end(world);
-    return e;
-}
-
-ecs_entity_t prefab_noise_chunk;
-
-ecs_entity_t spawn_prefab_noise_chunk(ecs_world_t *world)
-{
-    ecs_defer_begin(world);
-    
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, voxel_prefab);
-    ecs_add_id(world, e, EcsPrefab);
-    ecs_set_name(world, e, "prefab_noise_chunk");
-
-    ecs_add(world, e, NoiseChunk);
-    ecs_add(world, e, AnimateChunk);
-
-    prefab_noise_chunk = e;
-    ecs_defer_end(world);
-    return e;
-}
-
-
-ecs_entity_t spawn_voxel_noise_chunk_mesh(ecs_world_t *world, ecs_entity_t prefab, float3 position, float scale)
-{
-    ecs_entity_t e = spawn_voxel_chunk_mesh(world, prefab, position, scale);
-    zoxel_set(world, e, AnimateChunk, { (((rand() % 100) / 100.0f) * noiseChunkAnimateSpeed) }); // 0.0 });
     return e;
 }

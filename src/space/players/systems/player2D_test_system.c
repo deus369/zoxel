@@ -51,6 +51,8 @@ void Player2DTestSystem(ecs_iter_t *it)
 }
 ECS_SYSTEM_DECLARE(Player2DTestSystem);
 
+ecs_entity_t fps_display;
+
 void Player2DTestMainThreadSystem(ecs_iter_t *it)
 {
     const Keyboard *keyboards = ecs_field(it, Keyboard, 1);
@@ -60,6 +62,20 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it)
         if (keyboard->z.wasPressedThisFrame)
         {
             spawn_zoxel_window(it->world);
+        }
+        else if (keyboard->x.wasPressedThisFrame)
+        {
+            if (fps_display == 0)
+            {
+                printf("Showing fps display.\n");
+                fps_display = spawn_fps_display(it->world, main_canvas, 32);
+            }
+            else
+            {
+                printf("Hiding fps display.\n");
+                delete_hierarchy(it->world, fps_display);
+                fps_display = 0;
+            }
         }
     }
 }

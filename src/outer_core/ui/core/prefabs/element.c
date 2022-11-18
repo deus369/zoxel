@@ -26,5 +26,8 @@ ecs_entity_t spawn_element(ecs_world_t *world, ecs_entity_t parent, int2 positio
     //printf("UI Element Spawned - Position [%ix%i] - Size [%ix%i] - Position(Real) [%fx%f] - ScaledSize [%fx%f]\n",
     //    position.x, position.y, size.x, size.y, position2D.x, position2D.y, scaledSize2D.x, scaledSize2D.y);
     ecs_defer_end(world);
+    #ifdef zoxel_debug_spawns
+    printf("Spawned element [%lu]\n", (long int) e);
+    #endif
     return e;
 }

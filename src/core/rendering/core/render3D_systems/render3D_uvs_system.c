@@ -26,11 +26,12 @@ void Render3DUvsSystem(ecs_iter_t *it)
         {
             opengl_set_mesh(meshGPULink->value);
             // opengl_set_uvs(uvsGPULink->value);
-            // opengl_set_texture(textureGPULink->value);
+            // opengl_set_texture(textureGPULink->value);   // hides it atm
             opengl_set_material3D_properties(materialGPULink->value,
                 main_camera_matrix, position->value, rotation->value, scale1D->value, brightness->value);
             opengl_draw_triangles(meshIndicies2->length);
             opengl_disable_opengl_program();
+            // printf("Rendering mesh with texture: %i\n", textureGPULink->value);
         }
     }
 }

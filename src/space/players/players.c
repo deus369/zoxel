@@ -1,6 +1,7 @@
 #ifndef zoxel_players
 #define zoxel_players
 
+ecs_entity_t local_player;
 // Tags
 ECS_DECLARE(Player2D);
 ECS_DECLARE(Player3D);

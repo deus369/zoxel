@@ -230,6 +230,7 @@ void ChunkUVsBuildSystem(ecs_iter_t *it)
     MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 4);
     MeshVertices *meshVertices = ecs_field(it, MeshVertices, 5);
     MeshUVs *meshUVs = ecs_field(it, MeshUVs, 6);
+    MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 7);
     for (int i = 0; i < it->count; i++)
     {
         const ChunkDirty *entityDirty = &entityDirtys[i];
@@ -237,7 +238,13 @@ void ChunkUVsBuildSystem(ecs_iter_t *it)
         {
             continue;
         }
-        printf("Building Chunk UVs Mesh [%lu]\n", (long int) it->entities[i]);
+        MeshDirty *meshDirty = &meshDirtys[i];
+        if (meshDirty->value != 0)
+        {
+            continue;
+        }
+        meshDirty->value = 1;
+        // printf("Building Chunk UVs Mesh [%lu]\n", (long int) it->entities[i]);
         const Chunk *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
         MeshIndicies *meshIndicies2 = &meshIndicies[i];

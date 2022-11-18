@@ -6,7 +6,6 @@ float aspectRatio = 1;
 float fov = 60;
 unsigned long windowFlags;
 char *data_path = NULL;
-const int window_index = 3; // 1;
 
 void set_data_path()
 {

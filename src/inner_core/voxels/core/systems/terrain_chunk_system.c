@@ -63,7 +63,7 @@ void TerrainChunkSystem(ecs_iter_t *it)
         const ChunkSize *chunkSize = &chunkSizes[i];
         re_initialize_memory_component(chunk, unsigned char, chunkSize->value.x * chunkSize->value.y * chunkSize->value.z);
         GenerateChunkTerrain(chunk, chunkSize);
-        printf("Terrain Chunk Generated: [%lu] \n", (long int) it->entities[i]);
+        // printf("Terrain Chunk Generated: [%lu] \n", (long int) it->entities[i]);
     }
 }
 ECS_SYSTEM_DECLARE(TerrainChunkSystem);

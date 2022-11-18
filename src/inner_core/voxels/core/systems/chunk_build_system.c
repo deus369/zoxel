@@ -235,24 +235,32 @@ void ChunkBuildSystem(ecs_iter_t *it)
         return;
     }
     // printf("[ChunkBuildSystem] GenerateChunk was changed.\n");
-    const ChunkDirty *entityDirtys = ecs_field(it, ChunkDirty, 1);
+    const ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
     const Chunk *chunks = ecs_field(it, Chunk, 2);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 3);
     MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 4);
     MeshVertices *meshVertices = ecs_field(it, MeshVertices, 5);
+    MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 6);
     for (int i = 0; i < it->count; i++)
     {
-        const ChunkDirty *entityDirty = &entityDirtys[i];
-        if (entityDirty->value == 0)
+        const ChunkDirty *chunkDirty = &chunkDirtys[i];
+        if (chunkDirty->value == 0)
         {
             continue;
         }
-        // printf("Building Chunk Mesh [%lu]\n", (long int) it->entities[i]);
+        MeshDirty *meshDirty = &meshDirtys[i];
+        if (meshDirty->value != 0)
+        {
+            continue;
+        }
+        meshDirty->value = 1;
         const Chunk *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
         build_chunk_mesh(chunk, chunkSize, meshIndicies2, meshVertices2);
+        // printf("Building Chunk Mesh [%lu] - [%i] [%i]\n",
+        //    (long int) it->entities[i], meshIndicies2->length, meshVertices2->length);
     }
 }
 ECS_SYSTEM_DECLARE(ChunkBuildSystem);

@@ -11,11 +11,11 @@ ecs_entity_t spawn_zext_prefab(ecs_world_t *world)
     zoxel_add_tag(world, e, Zext);
     zoxel_add(world, e, ZextData);
     zoxel_add(world, e, ZextSize);
-    zoxel_add(world, e, ZextDirty);
+    zoxel_set(world, e, ZextDirty, { 0 });
     zoxel_add(world, e, Children);
     add_transform2Ds(world, e);
     add_ui_plus_components(world, e);
-    // zoxel_set(world, e, EntityDirty, { 0 });
+    zoxel_set(world, e, MeshDirty, { 0 });
     // zoxel_add(world, e, AnimateZext);
     ecs_defer_end(world);
     return e;
@@ -30,9 +30,11 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab,
     int textLength = strlen(text);
     int2 zext_size = (int2) { font_size * textLength, font_size };
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
+    #ifdef zoxel_debug_spawns
     printf("Spawned zext [%lu]\n", (long int) e);
+    #endif
     ecs_set(world, e, ZextSize, { font_size });
-    ecs_set(world, e, ZextDirty, { 0 });
+    // ecs_set(world, e, ZextDirty, { 0 });
     float2 position2D = initialize_ui_components_2(world, e,
         parent, position, zext_size, anchor, layer,
         parent_position2D, parent_pixel_size);

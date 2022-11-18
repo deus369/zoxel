@@ -1,5 +1,3 @@
-extern void initialize_material2D_textured(GLuint material, MaterialTextured2D *materialTextured2D);
-
 //! Sets material properties
 void opengl_set_material3D_properties(GLuint material,
     const float4x4 viewMatrix, float3 position, float4 rotation, float scale, float brightness)

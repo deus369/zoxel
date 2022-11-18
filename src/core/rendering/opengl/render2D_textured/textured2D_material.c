@@ -47,8 +47,7 @@ void DisposeTexturedMaterial2D()
 
 void InitializeTexturedMesh(GLuint material)
 {
-    MaterialTextured2D materialTextured2D;
-    initialize_material2D_textured(material, &materialTextured2D);
+    MaterialTextured2D materialTextured2D = initialize_material2D_textured(material);
     // gen buffers
     glGenBuffers(1, &squareTexturedMesh.x);
     glGenBuffers(1, &squareTexturedMesh.y);  // generate a new VBO and get the associated ID
@@ -94,8 +93,7 @@ void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint
         // printf("render_entity_material2D material is 0.\n");
         return;
     }
-    MaterialTextured2D materialTextured2D;
-    initialize_material2D_textured(material, &materialTextured2D);
+    MaterialTextured2D materialTextured2D = initialize_material2D_textured(material);
     glUseProgram(material);   // invalid operation
     /*GLenum err65 = glGetError();
     if (err65 != GL_NO_ERROR)
@@ -138,8 +136,7 @@ void render_entity_material2D_and_mesh(const float4x4 viewMatrix, GLuint2 mesh, 
         // printf("render_entity_material2D material is 0.\n");
         return;
     }
-    MaterialTextured2D materialTextured2D;
-    initialize_material2D_textured(material, &materialTextured2D);
+    MaterialTextured2D materialTextured2D = initialize_material2D_textured(material);
     glUseProgram(material);   // invalid operation
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);    // for indices
     glBindBuffer(GL_ARRAY_BUFFER, mesh.y);            // for vertex coordinates

@@ -1,12 +1,15 @@
 #ifndef zoxel_ui_core
 #define zoxel_ui_core
 
+// #define debug_ui_positioning
+
 //! \todo When resizing, reposition UIs.
 //      - should i use a resize event in the window?
 
 // completely 2D ui? 3D canvas + 3D transforms?
 // canvas: still uses 2D posti
 
+ecs_entity_t main_canvas;
 // tags
 //! A basic tag for a UI Element.
 ECS_DECLARE(Element);
