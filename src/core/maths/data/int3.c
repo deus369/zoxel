@@ -8,7 +8,9 @@ typedef struct
 
 int int3_array_index(int3 input, int3 size)
 {
-    return input.x + input.y * size.x + input.z * size.x * size.y;
+    // return input.x + input.y * size.x + input.z * size.x * size.y;
+    // return (position.z + size.z * (position.y + size.y * position.x));
+    return input.z + size.z * (input.y + size.y * input.x);
 }
 
 int3 int3_left(int3 input)

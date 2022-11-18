@@ -3,6 +3,8 @@
 *   Materials are shader program instances.
 *   \todo Seperate mesh data into different files.
 */
+
+/*
 zoxel_component(TextureCoordinatesGPULink, GLuint2);
 
 //! Grab from opengl part.
@@ -28,4 +30,4 @@ ECS_DTOR(TextureCoordinatesGPULink, ptr,
     {
         glDeleteBuffers(1, &ptr->value.y);
     }
-})
+})*/

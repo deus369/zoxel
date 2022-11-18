@@ -91,3 +91,5 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
     zoxel_system_ctx(world, system, EcsOnUpdate, generateTextureQuery,\
         [none] texture_tag, [out] generic.EntityDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture);\
 }
+
+// EcsPreFrame, EcsOnLoad, EcsPostLoad, EcsPreUpdate, EcsOnUpdate

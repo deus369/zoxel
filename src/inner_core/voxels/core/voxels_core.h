@@ -3,7 +3,7 @@
 
 const double noiseChunkAnimateSpeed = 0.5; // 1 / 8.0;
 const float overall_voxel_scale = 2.0f;
-const int chunk_length = 32;
+const int chunk_length = 16;
 const int dissapearChance = 92;
 const float spawnRange = 0.22f;
 const int3 chunk_size = { chunk_length, chunk_length, chunk_length };
@@ -13,6 +13,8 @@ const float chunk_real_size = 1.0f;   // size achunk takes up
 ECS_DECLARE(Vox);
 ECS_DECLARE(NoiseChunk);
 ECS_DECLARE(TerrainChunk);
+// components
+zoxel_component(ChunkDirty, unsigned char);
 //! A simple chunk with an array of voxels.
 zoxel_memory_component(Chunk, unsigned char);
 //! A simple chunk with an array of voxels.
@@ -31,13 +33,16 @@ zoxel_component(AnimateChunk, double);
 // prefabs
 #include "prefabs/chunk.c"
 #include "prefabs/voxel_chunk_mesh.c"
+#include "prefabs/terrain_chunk.c"
 // systems
 zoxel_reset_system(GenerateChunkResetSystem, GenerateChunk);
 // #include "systems/generate_chunk_reset_system.c"
 #include "systems/noise_chunk_system.c"
 #include "systems/terrain_chunk_system.c"
-#include "systems/chunk_build_system.c"
 #include "systems/animate_chunk_system.c"
+#include "systems/chunk_build_system.c"
+#include "systems/chunk_uvs_build_system.c"
+zoxel_reset_system(ChunkDirtyResetSystem, ChunkDirty)
 
 //! The voxels core Sub Module.
 /**
@@ -51,6 +56,7 @@ void VoxelsCoreImport(ecs_world_t *world)
     ECS_TAG_DEFINE(world, Vox);
     ECS_TAG_DEFINE(world, NoiseChunk);
     ECS_TAG_DEFINE(world, TerrainChunk);
+    ECS_COMPONENT_DEFINE(world, ChunkDirty);
     zoxel_memory_component_define(world, Chunk);
     ECS_COMPONENT_DEFINE(world, ChunkSize);
     ECS_COMPONENT_DEFINE(world, GenerateChunk);
@@ -65,32 +71,38 @@ void VoxelsCoreImport(ecs_world_t *world)
 
     zoxel_filter(generateNoiseChunkQuery, world, [none] NoiseChunk, [in] GenerateChunk);
     zoxel_system_ctx(world, NoiseChunkSystem, EcsOnUpdate, generateNoiseChunkQuery,
-        [none] NoiseChunk, [out] generic.EntityDirty, [out] Chunk, [in] ChunkSize, [in] GenerateChunk);
+        [none] NoiseChunk, [out] ChunkDirty, [out] Chunk, [in] ChunkSize, [in] GenerateChunk);
 
     zoxel_filter(generateTerrainChunkQuery, world, [none] TerrainChunk, [in] GenerateChunk);
     zoxel_system_ctx(world,TerrainChunkSystem, EcsOnUpdate, generateTerrainChunkQuery,
-        [none] TerrainChunk, [out] generic.EntityDirty, [out] Chunk, [in] ChunkSize, [in] GenerateChunk);
+        [none] TerrainChunk, [out] ChunkDirty, [out] Chunk, [in] ChunkSize, [in] GenerateChunk);
 
     zoxel_filter(generateChunkQuery, world, [in] GenerateChunk);
     zoxel_system_ctx(world, ChunkBuildSystem, EcsOnUpdate, generateChunkQuery,
-        [in] generic.EntityDirty, [in] Chunk, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices);
+        [in] ChunkDirty, [in] Chunk, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices, [none] !MeshUVs);
+    zoxel_system_ctx(world, ChunkUVsBuildSystem, EcsOnUpdate, generateChunkQuery,
+        [in] ChunkDirty, [in] Chunk, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs);
+
     // zoxel_system_main_thread(world, GenerateChunkResetSystem, EcsPostUpdate, [out] GenerateChunk);
     zoxel_reset_system_define(GenerateChunkResetSystem, GenerateChunk);
+    zoxel_reset_system_define(ChunkDirtyResetSystem, ChunkDirty);
     //spawn_chunk_prefab(world);
     //spawn_chunk(world);
     spawn_voxel_chunk_mesh_prefab(world);
+    spawn_prefab_noise_chunk(world);
+    spawn_prefab_terrain_chunk(world);
     #ifdef zoxel_test_voxels
-    spawn_voxel_noise_chunk_mesh(world, (float3) { 0, -spawnRange, 0 }, 0.05f);
-    spawn_voxel_noise_chunk_mesh(world, (float3) { 0, spawnRange, 0 }, 0.05f);
-    spawn_voxel_noise_chunk_mesh(world, (float3) { -spawnRange, 0, 0 }, 0.05f);
-    spawn_voxel_noise_chunk_mesh(world, (float3) { spawnRange, 0, 0 }, 0.05f);
+    // test character voxels
+    /*spawn_voxel_noise_chunk_mesh(world, prefab_noise_chunk, (float3) { 0, -spawnRange, 0 }, 0.05f);
+    spawn_voxel_noise_chunk_mesh(world, prefab_noise_chunk, (float3) { 0, spawnRange, 0 }, 0.05f);
+    spawn_voxel_noise_chunk_mesh(world, prefab_noise_chunk, (float3) { -spawnRange, 0, 0 }, 0.05f);
+    spawn_voxel_noise_chunk_mesh(world, prefab_noise_chunk, (float3) { spawnRange, 0, 0 }, 0.05f);*/
     for (int i = - terrain_rows; i <= terrain_rows; i++)
     {
         for (int j = - terrain_rows; j <= terrain_rows; j++)
         {
-            ecs_entity_t terrain_mesh = spawn_voxel_chunk_mesh(
-                world, (float3) { i * chunk_real_size, -1, j * chunk_real_size }, 0.5f);
-            zoxel_add_tag(world, terrain_mesh, TerrainChunk);
+            spawn_terrain_chunk(world, terrain_chunk_prefab,
+                (float3) { i * chunk_real_size, -1, j * chunk_real_size }, 0.5f);
         }
     }
     #endif

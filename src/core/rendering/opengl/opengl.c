@@ -9,9 +9,10 @@
 #include "dynamic/opengl.h"
 #include "dynamic/opengl.c"
 // MaterialGPULink data
-#include "data/Material2D.c"
-#include "data/MaterialTextured2D.c"
-#include "data/Material3D.c"
+#include "data/material2D.c"
+#include "data/material3D.c"
+#include "data/material2D_textured.c"
+#include "data/material3D_textured.c"
 // util Functions
 #include "util/primitive_square.c"
 #include "util/primitive_mesh_util.c"
@@ -22,6 +23,10 @@
 #include "rendering/textured2D_material.c"
 #include "rendering/instanced3D_material.c"
 #include "rendering/unique3D_material.c"
+#include "rendering/shader3D_textured.c"
+
+// #include "shaders/terrain.vert"
+// #include "shaders/terrain.frag"
 
 int LoadShaders()
 {
@@ -37,6 +42,10 @@ int LoadShaders()
     {
         printf("Error [LoadInstance3DMaterial]\n");
     }
+    if (load_shader3D_textured())
+    {
+        printf("Error [load_shader3D_textured]\n");
+    }
     return 0;
 }
 
@@ -46,6 +55,7 @@ void dispose_opengl()
     DisposeInstance2DMaterial();
     DisposeTexturedMaterial2D();
     DisposeInstanced3DMaterial();
+    dispose_shader3D_textured();
 // #ifdef zoxel_catch_opengl_errors
 //     GLenum err7 = glGetError();
 //     if (err7 != GL_NO_ERROR)

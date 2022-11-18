@@ -1,54 +1,40 @@
-// set_mesh_indicies(world, e, cubeIndicies, 36);
-// set_mesh_vertices(world, e, cubeVertices, 24);
-
-// #define disable_voxel_left
-// #define disable_voxel_right
-// #define disable_voxel_down
-// #define disable_voxel_up
-// #define disable_voxel_back
-// #define disable_voxel_front
-
-//! \todo Use a hashmap with bit map of side voxels, to generate voxel faces.
-//      for example, top and bottom, would be 001100, and would have 8 vertexes and 12 indicies.
-
-//! \todo combine vertices between voxel meshes.
-//      For example, to up faces next to each other, will only have 6 vertices and now 8.
-
-void add_voxel_face(MeshIndicies *meshIndicies2, MeshVertices *meshVertices2,
+void add_voxel_face_uvs(MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
     float3 vertex_position_offset, float3 center_mesh_offset, float voxel_scale,
     int2 *start, int2 start2,
     const int voxel_face_indicies[], int voxel_face_indicies_length,
-    const float3 voxel_face_vertices[], int voxel_face_vertices_length)
+    const float3 voxel_face_vertices[], int voxel_face_vertices_length,
+    const float2 voxel_face_uvs[])
 {
     int indicies_offset = start2.y / 3;
     for (int a = 0, b = start2.x; a < voxel_face_indicies_length; a++, b++)
     {
-        meshIndicies2->value[b] = indicies_offset + voxel_face_indicies[a];
+        meshIndicies->value[b] = indicies_offset + voxel_face_indicies[a];
     }
     // add verts
-    for (int a = 0, b = start2.y; a < voxel_face_vertices_length; a++, b = b + 3)
+    for (int a = 0, b = start2.y, c = 0; a < voxel_face_vertices_length; a++, b = b + 3, c = c + 2)
     {
         float3 vertex_position = voxel_face_vertices[a]; // (float3) { cubeVertices[a + 0], cubeVertices[a + 1], cubeVertices[a + 2] };
         vertex_position = float3_multiply_float(vertex_position, voxel_scale);          // scale vertex
         vertex_position = float3_add(vertex_position, vertex_position_offset);   // offset vertex by voxel position in chunk
         vertex_position = float3_add(vertex_position, center_mesh_offset);       // add total mesh offset
-        meshVertices2->value[b + 0] = vertex_position.x;
-        meshVertices2->value[b + 1] = vertex_position.y;
-        meshVertices2->value[b + 2] = vertex_position.z;
+        meshVertices->value[b + 0] = vertex_position.x;
+        meshVertices->value[b + 1] = vertex_position.y;
+        meshVertices->value[b + 2] = vertex_position.z;
+        float2 uv = voxel_face_uvs[a];
+        meshUVs->value[c] = uv.x;
+        meshUVs->value[c + 1] = uv.y;
     }
     start->x += voxel_face_indicies_up_length;
     start->y += voxel_face_vertices_length * 3;
 }
 
-void build_chunk_mesh(const Chunk *chunk, const ChunkSize *chunkSize, MeshIndicies *meshIndicies2, MeshVertices *meshVertices2)
+void build_chunk_mesh_uvs(const Chunk *chunk, const ChunkSize *chunkSize,
+    MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs)
 {
-    // int indicies_per_voxel = voxel_face_indicies_up_length; // 6;     // 36;    // 6 * 6
-    // int verticies_per_voxel = voxel_face_vertices_up_length; // 4;    // 24;   // 8 * 3
-    // int verticies_per_voxel2 = voxel_face_vertices_up_length; // 8;   // per vertex 3
-    // go through and add a top face for each voxel position that is solid
-    int array_index = 0;
+    // int array_index = 0;
     int indicies_count = 0;
     int verticies_count = 0;
+    int uvs_count = 0;
     int3 local_position;
     int2 start = { };
     float voxel_scale = overall_voxel_scale / ((float) chunkSize->value.x); // 16.0f;
@@ -63,11 +49,11 @@ void build_chunk_mesh(const Chunk *chunk, const ChunkSize *chunkSize, MeshIndici
         {
             for (local_position.z = 0; local_position.z < chunkSize->value.z; local_position.z++)
             {
-                array_index = int3_array_index(local_position, chunkSize->value);
+                int array_index = int3_array_index(local_position, chunkSize->value);
                 if (chunk->value[array_index] != 0)
                 {
                     // add faces - based on neighbor voxels.
-                    #ifndef disable_voxel_left
+                    /*#ifndef disable_voxel_left
                         // left
                         unsigned char voxel_left = local_position.x == 0 ?
                             0 : chunk->value[int3_array_index(int3_left(local_position), chunkSize->value)];
@@ -96,7 +82,7 @@ void build_chunk_mesh(const Chunk *chunk, const ChunkSize *chunkSize, MeshIndici
                             indicies_count += voxel_face_indicies_down_length;
                             verticies_count += voxel_face_vertices_down_length * 3;
                         }
-                    #endif
+                    #endif*/
                     #ifndef disable_voxel_up
                         // up
                         unsigned char voxel_up = local_position.y == chunkSize->value.y - 1 ?
@@ -105,9 +91,10 @@ void build_chunk_mesh(const Chunk *chunk, const ChunkSize *chunkSize, MeshIndici
                         {
                             indicies_count += voxel_face_indicies_up_length;
                             verticies_count += voxel_face_vertices_up_length * 3;
+                            uvs_count += voxel_face_vertices_up_length * 2;
                         }
                     #endif
-                    #ifndef disable_voxel_back
+                    /*#ifndef disable_voxel_back
                         // back
                         unsigned char voxel_back = local_position.z == 0 ?
                             0 : chunk->value[int3_array_index(int3_back(local_position), chunkSize->value)];
@@ -126,32 +113,33 @@ void build_chunk_mesh(const Chunk *chunk, const ChunkSize *chunkSize, MeshIndici
                             indicies_count += voxel_face_indicies_up_length;
                             verticies_count += voxel_face_vertices_up_length * 3;
                         }
-                    #endif
+                    #endif*/
                 }
                 // array_index++;
             }
         }
     }
-    re_initialize_memory_component(meshIndicies2, int, indicies_count);
-    re_initialize_memory_component(meshVertices2, float, verticies_count);
-    array_index = 0;
+    re_initialize_memory_component(meshIndicies, int, indicies_count);
+    re_initialize_memory_component(meshVertices, float, verticies_count);
+    re_initialize_memory_component(meshUVs, float, uvs_count);
+    // array_index = 0;
     for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++)
     {
         for (local_position.y = 0; local_position.y < chunkSize->value.y; local_position.y++)
         {
             for (local_position.z = 0; local_position.z < chunkSize->value.z; local_position.z++)
             {
-                array_index = int3_array_index(local_position, chunkSize->value);
+                int array_index = int3_array_index(local_position, chunkSize->value);
                 if (chunk->value[array_index] != 0)
                 {
                     float3 vertex_position_offset = float3_multiply_float(
                         float3_from_int3(local_position), voxel_scale);
-                    #ifndef disable_voxel_left
+                    /*#ifndef disable_voxel_left
                         unsigned char voxel_left = local_position.x == 0 ?
                             0 : chunk->value[int3_array_index(int3_left(local_position), chunkSize->value)];
                         if (voxel_left == 0)
                         {
-                            add_voxel_face(meshIndicies2, meshVertices2,
+                            add_voxel_face_uvs(meshIndicies, meshVertices, meshUVs,
                                 vertex_position_offset, center_mesh_offset, voxel_scale,
                                 &start, start,
                                 voxel_face_indicies_left, voxel_face_indicies_left_length,
@@ -163,7 +151,7 @@ void build_chunk_mesh(const Chunk *chunk, const ChunkSize *chunkSize, MeshIndici
                             0 : chunk->value[int3_array_index(int3_right(local_position), chunkSize->value)];
                         if (voxel_right == 0)
                         {
-                            add_voxel_face(meshIndicies2, meshVertices2,
+                            add_voxel_face_uvs(meshIndicies, meshVertices, meshUVs,
                                 vertex_position_offset, center_mesh_offset, voxel_scale,
                                 &start, start,
                                 voxel_face_indicies_right, voxel_face_indicies_right_length,
@@ -176,31 +164,32 @@ void build_chunk_mesh(const Chunk *chunk, const ChunkSize *chunkSize, MeshIndici
                             0 : chunk->value[int3_array_index(int3_down(local_position), chunkSize->value)];
                         if (voxel_down == 0)
                         {
-                            add_voxel_face(meshIndicies2, meshVertices2,
+                            add_voxel_face_uvs(meshIndicies, meshVertices, meshUVs,
                                 vertex_position_offset, center_mesh_offset, voxel_scale,
                                 &start, start,
                                 voxel_face_indicies_down, voxel_face_indicies_down_length,
                                 voxel_face_vertices_down, voxel_face_vertices_down_length);
                         }
-                    #endif
+                    #endif*/
                     #ifndef disable_voxel_up
                         unsigned char voxel_up = local_position.y == chunkSize->value.y - 1 ?
                             0 : chunk->value[int3_array_index(int3_up(local_position), chunkSize->value)];
                         if (voxel_up == 0)
                         {
-                            add_voxel_face(meshIndicies2, meshVertices2,
+                            add_voxel_face_uvs(meshIndicies, meshVertices, meshUVs,
                                 vertex_position_offset, center_mesh_offset, voxel_scale,
                                 &start, start,
                                 voxel_face_indicies_up, voxel_face_indicies_up_length,
-                                voxel_face_vertices_up, voxel_face_vertices_up_length);
+                                voxel_face_vertices_up, voxel_face_vertices_up_length,
+                                voxel_face_uvs_up);
                         }
                     #endif
-                    #ifndef disable_voxel_back
+                    /*#ifndef disable_voxel_back
                         unsigned char voxel_back = local_position.z == 0 ?
                             0 : chunk->value[int3_array_index(int3_back(local_position), chunkSize->value)];
                         if (voxel_back == 0)
                         {
-                            add_voxel_face(meshIndicies2, meshVertices2,
+                            add_voxel_face_uvs(meshIndicies, meshVertices, meshUVs,
                                 vertex_position_offset, center_mesh_offset, voxel_scale,
                                 &start, start,
                                 voxel_face_indicies_back, voxel_face_indicies_back_length,
@@ -212,13 +201,13 @@ void build_chunk_mesh(const Chunk *chunk, const ChunkSize *chunkSize, MeshIndici
                             0 : chunk->value[int3_array_index(int3_front(local_position), chunkSize->value)];
                         if (voxel_front == 0)
                         {
-                            add_voxel_face(meshIndicies2, meshVertices2,
+                            add_voxel_face_uvs(meshIndicies, meshVertices, meshUVs,
                                 vertex_position_offset, center_mesh_offset, voxel_scale,
                                 &start, start,
                                 voxel_face_indicies_front, voxel_face_indicies_front_length,
                                 voxel_face_vertices_front, voxel_face_vertices_front_length);
                         }
-                    #endif
+                    #endif*/
                 }
                 // array_index++;
             }
@@ -227,7 +216,7 @@ void build_chunk_mesh(const Chunk *chunk, const ChunkSize *chunkSize, MeshIndici
 }
 
 //! Builds a mesh data from the chunk!
-void ChunkBuildSystem(ecs_iter_t *it)
+void ChunkUVsBuildSystem(ecs_iter_t *it)
 {
     ecs_query_t *changeQuery = it->ctx;
     if (!changeQuery || !ecs_query_changed(changeQuery, NULL))
@@ -240,6 +229,7 @@ void ChunkBuildSystem(ecs_iter_t *it)
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 3);
     MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 4);
     MeshVertices *meshVertices = ecs_field(it, MeshVertices, 5);
+    MeshUVs *meshUVs = ecs_field(it, MeshUVs, 6);
     for (int i = 0; i < it->count; i++)
     {
         const ChunkDirty *entityDirty = &entityDirtys[i];
@@ -247,15 +237,16 @@ void ChunkBuildSystem(ecs_iter_t *it)
         {
             continue;
         }
-        // printf("Building Chunk Mesh [%lu]\n", (long int) it->entities[i]);
+        printf("Building Chunk UVs Mesh [%lu]\n", (long int) it->entities[i]);
         const Chunk *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
-        build_chunk_mesh(chunk, chunkSize, meshIndicies2, meshVertices2);
+        MeshUVs *meshUVs2 = &meshUVs[i];
+        build_chunk_mesh_uvs(chunk, chunkSize, meshIndicies2, meshVertices2, meshUVs2);
     }
 }
-ECS_SYSTEM_DECLARE(ChunkBuildSystem);
+ECS_SYSTEM_DECLARE(ChunkUVsBuildSystem);
 
 
 // invalid free?

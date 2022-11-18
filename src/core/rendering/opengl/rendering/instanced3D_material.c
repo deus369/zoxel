@@ -31,20 +31,10 @@ void InitializeCubeMesh(GLuint material)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void InitializeInstanced3DProperties(GLuint material, Material3D* material3D)
-{
-    material3D->view_matrix = glGetUniformLocation(material, "viewMatrix");
-    material3D->position = glGetUniformLocation(material, "position");
-    material3D->rotation = glGetUniformLocation(material, "rotation");
-    material3D->scale = glGetUniformLocation(material, "scale");
-    material3D->brightness = glGetUniformLocation(material, "brightness");
-    material3D->vertexPosition = glGetAttribLocation(material, "vertexPosition");
-}
-
 int LoadInstance3DMaterial()
 {
     materialInstance3D = load_gpu_shader(&instanceShader3D, basicRender3DVertFilepath, basicRender3DFragFilepath);
-    InitializeInstanced3DProperties(materialInstance3D, &material3D);
+    material3D = spawn_material3D_properties(materialInstance3D);
     InitializeCubeMesh(materialInstance3D);
     return 0;
 }
@@ -73,8 +63,7 @@ void RenderEntity3D(float3 position, float4 rotation, float scale1D, float brigh
 //! Set the mesh on the gpu by uploading indicies and vert buffers.
 void set_gpu_mesh(GLuint2 mesh, GLuint material, const int *indicies, int indicies_length, const float *verts, int verts_length) // const float3 *verts)
 {
-    Material3D material3D;
-    InitializeInstanced3DProperties(material, &material3D);
+    Material3D material3D = spawn_material3D_properties(material);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);
     glBindBuffer(GL_ARRAY_BUFFER, mesh.y);
     glEnableVertexAttribArray(material3D.vertexPosition);
@@ -85,9 +74,4 @@ void set_gpu_mesh(GLuint2 mesh, GLuint material, const int *indicies, int indici
     // printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", mesh.x, mesh.y);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-void OpenGLEndInstancing3D()
-{
-    // glUseProgram(0);
 }

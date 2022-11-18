@@ -85,6 +85,13 @@ const float3 voxel_face_vertices_up[] =
     { 0, 1.0f, 0 },         //2
     { 1.0f, 1.0f, 0}        //3
 };
+const float2 voxel_face_uvs_up[] =
+{
+    { 0, 1.0f },
+    { 1.0f, 1.0f },
+    { 1.0f, 0 },
+    { 0.0f, 0}
+};
 
 // back
 const int voxel_face_indicies_back_length = 6;

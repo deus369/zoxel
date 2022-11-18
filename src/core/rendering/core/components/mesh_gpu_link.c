@@ -23,9 +23,11 @@ ECS_DTOR(MeshGPULink, ptr,
     if (ptr->value.x != 0)
     {
         glDeleteBuffers(1, &ptr->value.x);
+        ptr->value.x = 0;
     }
     if (ptr->value.y != 0)
     {
         glDeleteBuffers(1, &ptr->value.y);
+        ptr->value.y = 0;
     }
 })

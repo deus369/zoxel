@@ -27,3 +27,6 @@ Any pending flecs issues, don't fix them constantly as it interupts main work.
 
 - [ ] Create custom Pipelines for systems to organize them better
     - create a diagram flow chart for that
+
+
+I guess i'm ultimately confused as to what is freeing the data before it gets to the dtor function.

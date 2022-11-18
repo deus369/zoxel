@@ -39,6 +39,7 @@ void render_loop_temp()
     SDL_SetRelativeMouseMode(freeRoam->value);  //! Locks Main Mouse.
     texture_update_main_thread();  // uploads textures to gpu
     mesh_update_main_thread();
+    mesh_uvs_update_main_thread();
     // now render the things
     OpenGLClear();
     OpenGLBeginInstancing(main_camera_matrix);
@@ -48,13 +49,13 @@ void render_loop_temp()
     // 3D instancing
     OpenGLBeginInstancing3D(main_camera_matrix);
     ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
-    OpenGLEndInstancing3D();
     // seperate materials 3D mesh
     ecs_run(world, ecs_id(Render3DUniqueSystem), 0, NULL);
+    ecs_run(world, ecs_id(Render3DUvsSystem), 0, NULL);
 
     // seperate materials 2D
     ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);
-    ecs_run(world, ecs_id(RenderMaterial2DScale2DSystem), 0, NULL);
+    // ecs_run(world, ecs_id(RenderMaterial2DScale2DSystem), 0, NULL);
     ecs_run(world, ecs_id(RenderMeshMaterial2DSystem), 0, NULL);
     
     finish_opengl_rendering(world);

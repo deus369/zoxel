@@ -1,10 +1,10 @@
-const unsigned char terrain_noise = 3;  //2
+const unsigned char terrain_noise = 2;
 
 //! Our function that creates a chunk.
 void GenerateChunkTerrain(Chunk* chunk, const ChunkSize *chunkSize)
 {
     // const int2 valueRange = { 0, 2 };   // < max
-    unsigned char terrain_height = 4 + rand() % 12;
+    unsigned char terrain_height = 0; // (chunkSize->value.y / 4) + rand() % ((int) (chunkSize->value.y * (3.0f / 4.0f)));
     int3 local_position;
     // precount our face data for initialization
     for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++)
@@ -41,7 +41,7 @@ void TerrainChunkSystem(ecs_iter_t *it)
     {
         return;
     }
-    EntityDirty *entityDirtys = ecs_field(it, EntityDirty, 2);
+    ChunkDirty *entityDirtys = ecs_field(it, ChunkDirty, 2);
     Chunk *chunks = ecs_field(it, Chunk, 3);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 4);
     const GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 5);
@@ -53,7 +53,7 @@ void TerrainChunkSystem(ecs_iter_t *it)
         {
             continue;
         }
-        EntityDirty *entityDirty = &entityDirtys[i];
+        ChunkDirty *entityDirty = &entityDirtys[i];
         if (entityDirty->value != 0)
         {
             continue;
@@ -63,7 +63,7 @@ void TerrainChunkSystem(ecs_iter_t *it)
         const ChunkSize *chunkSize = &chunkSizes[i];
         re_initialize_memory_component(chunk, unsigned char, chunkSize->value.x * chunkSize->value.y * chunkSize->value.z);
         GenerateChunkTerrain(chunk, chunkSize);
-        // printf("Terrain Chunk Generated: [%lu] \n", (long int) it->entities[i]);
+        printf("Terrain Chunk Generated: [%lu] \n", (long int) it->entities[i]);
     }
 }
 ECS_SYSTEM_DECLARE(TerrainChunkSystem);

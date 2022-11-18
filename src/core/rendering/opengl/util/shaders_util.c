@@ -98,6 +98,23 @@ int CompileShader(const GLchar* buffer, GLenum shaderType, GLuint* shader2)
     return 0;
 }
 
+GLuint2 spawn_gpu_shader(const char* vertFilepath, const char* fragFilepath)
+{
+    GLuint2 shader = { 0, 0 };
+    if (LoadShader(vertFilepath, GL_VERTEX_SHADER, &shader.x) != 0)
+    {
+        printf("Error loading shader vert [%s]\n", vertFilepath);
+        return shader;
+    }
+    // GLuint fragShader;
+    if (LoadShader(fragFilepath, GL_FRAGMENT_SHADER, &shader.y) != 0)
+    {
+        printf("Error loading shader frag [%s]\n", fragFilepath);
+        return shader;
+    }
+    return shader;
+}
+
 //! For when you only need one material, otherwise will need to return shaders too. Returns material reference.
 GLuint load_gpu_shader(GLuint2* shader, const char* vertFilepath, const char* fragFilepath)
 {

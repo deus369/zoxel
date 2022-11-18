@@ -29,6 +29,45 @@ GLuint2 spawn_gpu_mesh_buffers()
     return mesh;
 }
 
+GLuint spawn_gpu_uvs_buffers()
+{
+    GLuint uvs;
+    glGenBuffers(1, &uvs);
+    return uvs;
+}
+
+bool opengl_set_material(GLuint material)
+{
+    if (material == 0)
+    {
+        // printf("render_entity_material2D material is 0.\n");
+        return false;
+    }
+    glUseProgram(material);
+    return true;
+}
+
+void opengl_set_mesh(GLuint2 mesh)
+{
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);    // for indices
+    glBindBuffer(GL_ARRAY_BUFFER, mesh.y);            // for vertex coordinates
+}
+
+void opengl_set_uvs(GLuint uvs)
+{
+    glBindBuffer(GL_ARRAY_BUFFER, uvs);
+}
+
+void opengl_draw_triangles(int indicies_length)
+{
+    glDrawElements(GL_TRIANGLES, indicies_length, GL_UNSIGNED_INT, NULL);
+}
+
+void opengl_disable_opengl_program()
+{
+    glUseProgram(0);
+}
+
 /*
 Multiple textures:
 

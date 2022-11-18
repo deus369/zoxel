@@ -1,6 +1,6 @@
 extern float4x4 main_camera_matrix;
 
-void Render3DUniqueSystem(ecs_iter_t *it)
+void Render3DUvsSystem(ecs_iter_t *it)
 {
     const Position *positions = ecs_field(it, Position, 1);
     const Rotation *rotations = ecs_field(it, Rotation, 2);
@@ -8,7 +8,9 @@ void Render3DUniqueSystem(ecs_iter_t *it)
     const Brightness *brightnesses = ecs_field(it, Brightness, 4);
     const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 5);
     const MaterialGPULink *materialGPULinks = ecs_field(it, MaterialGPULink, 6);
-    const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 7);
+    const UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 7);
+    const TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 8);
+    const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 9);
     for (int i = 0; i < it->count; i++)
     {
         const Position *position = &positions[i];
@@ -17,11 +19,14 @@ void Render3DUniqueSystem(ecs_iter_t *it)
         const Brightness *brightness = &brightnesses[i];
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
         const MaterialGPULink *materialGPULink = &materialGPULinks[i];
+        const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
+        const TextureGPULink *textureGPULink = &textureGPULinks[i];
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
-        // printf(" - Rendering Cube\n");
         if (opengl_set_material(materialGPULink->value))
         {
             opengl_set_mesh(meshGPULink->value);
+            // opengl_set_uvs(uvsGPULink->value);
+            // opengl_set_texture(textureGPULink->value);
             opengl_set_material3D_properties(materialGPULink->value,
                 main_camera_matrix, position->value, rotation->value, scale1D->value, brightness->value);
             opengl_draw_triangles(meshIndicies2->length);
@@ -29,4 +34,4 @@ void Render3DUniqueSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(Render3DUniqueSystem);
+ECS_SYSTEM_DECLARE(Render3DUvsSystem);

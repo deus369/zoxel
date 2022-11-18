@@ -62,17 +62,6 @@ void InitializeMesh(GLuint material)
     }*/
 }
 
-void InitializeMaterialPropertiesA(GLuint material)
-{
-    material2D.view_matrix = glGetUniformLocation(material, "viewMatrix");
-    material2D.angle = glGetUniformLocation(material, "angle");
-    material2D.scale = glGetUniformLocation(material, "scale");
-    material2D.brightness = glGetUniformLocation(material, "brightness");
-    material2D.positionX = glGetUniformLocation(material, "positionX");
-    material2D.positionY = glGetUniformLocation(material, "positionY");
-    material2D.vertexPosition = glGetAttribLocation(material, "vertexPosition");
-}
-
 int LoadInstance2DMaterial()
 {
     square2DMaterial = load_gpu_shader(&instanceShader2D, basicRender2DVertFilepath, basicRender2DFragFilepath);
@@ -81,7 +70,7 @@ int LoadInstance2DMaterial()
         printf("Error loading shaders for square2DMaterial.\n");
         return -1;
     }
-    InitializeMaterialPropertiesA(square2DMaterial);
+    initialize_material2D_properties(&material2D, square2DMaterial);
     InitializeMesh(square2DMaterial);
     return 0;
 }
