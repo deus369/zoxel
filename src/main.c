@@ -2,13 +2,13 @@
 #define SDL_IMAGES
 // game uis
 // -- tests --
-// #define zoxel_test_character2Ds
-// #define zoxel_test_cubes
+#define zoxel_test_character2Ds
+#define zoxel_test_cubes
 // #define zoxel_test_cubes_textured    // wip
 // #define zoxel_test_character3Ds      // todo
 #define zoxel_test_voxels
 #define zoxel_test_voxels_terrain       // uvs - wip
-// #define zoxel_test_uis
+#define zoxel_test_uis
 // -- debugs --
 // #define zoxel_debug_prefabs
 // #define zoxel_debug_spawns
