@@ -1,24 +1,34 @@
 //! Our function that creates a texture.
-void GenerateNoise(Texture* texture, const TextureSize *textureSize)
+void GenerateNoise(Texture* texture, const TextureSize *textureSize, bool is_dirt)
 {
-    const int2 redRange = { 15, 244 };
-    const int2 greenRange = { 15, 122 };
-    const int2 blueRange = { 15, 122 };
-    const int2 alphaRange = { 144, 256 };
+    int2 redRange = { 15, 244 };
+    int2 greenRange = { 15, 122 };
+    int2 blueRange = { 15, 122 };
+    int2 alphaRange = { 144, 256 };
+    if (is_dirt)
+    {
+        redRange = (int2) { 53, 93 };  // 73
+        greenRange = (int2) { 37, 57 };  // 47
+        blueRange = (int2) { 7, 27 };  // 17
+        alphaRange = (int2) { 255, 256 };
+    }
     for (int j = 0; j < textureSize->value.x; j++)
     {
         for (int k = 0; k < textureSize->value.y; k++)
         {
             int index = j + k * textureSize->value.x;
-            int distanceToMidX = abs_integer(textureSize->value.x / 2 - j);
-            int distanceToMidY = abs_integer(textureSize->value.y / 2 - k);
-            if (distanceToMidX + distanceToMidY >= textureSize->value.x / 2)
+            if (!is_dirt)
             {
-                texture->value[index].r = 0;
-                texture->value[index].g = 0;
-                texture->value[index].b = 0;
-                texture->value[index].a = 0;
-                continue;
+                int distanceToMidX = abs_integer(textureSize->value.x / 2 - j);
+                int distanceToMidY = abs_integer(textureSize->value.y / 2 - k);
+                if (distanceToMidX + distanceToMidY >= textureSize->value.x / 2)
+                {
+                    texture->value[index].r = 0;
+                    texture->value[index].g = 0;
+                    texture->value[index].b = 0;
+                    texture->value[index].a = 0;
+                    continue;
+                }
             }
             texture->value[index].r = redRange.x + rand() % (redRange.y - redRange.x);
             texture->value[index].g = greenRange.x + rand() % (greenRange.y - greenRange.x);
@@ -26,22 +36,34 @@ void GenerateNoise(Texture* texture, const TextureSize *textureSize)
             texture->value[index].a = alphaRange.x + rand() % (alphaRange.y - alphaRange.x);
             // texture->value[index].a = rand() % 256;
             // debug sides of texture, starts at top left
-            if (j == 0)
+            if (!is_dirt)
             {
-                texture->value[index].r = 255;
+                if (j == 0)
+                {
+                    texture->value[index].r = 255;
+                }
+                else if (k == 0)
+                {
+                    texture->value[index].g = 255;
+                }
+                else if (j == textureSize->value.x - 1)
+                {
+                    texture->value[index].b = 255;
+                }
+                else if (k == textureSize->value.y - 1)
+                {
+                    texture->value[index].r = 255;
+                    texture->value[index].g = 255;
+                }
             }
-            else if (k == 0)
+            else
             {
-                texture->value[index].g = 255;
-            }
-            else if (j == textureSize->value.x - 1)
-            {
-                texture->value[index].b = 255;
-            }
-            else if (k == textureSize->value.y - 1)
-            {
-                texture->value[index].r = 255;
-                texture->value[index].g = 255;
+                if (j == 0 || k == 0 || j == textureSize->value.x - 1 || k == textureSize->value.y - 1)
+                {
+                    texture->value[index].r /= 2;
+                    texture->value[index].g /= 2;
+                    texture->value[index].b /= 2;
+                }
             }
             // printf("texture value: %i\n", texture->value[index].r);
         }
@@ -83,7 +105,8 @@ void NoiseTextureSystem(ecs_iter_t *it)
         const TextureSize *textureSize = &textureSizes[i];
         int newLength = textureSize->value.x * textureSize->value.y;
         re_initialize_memory_component(texture, color, newLength);
-        GenerateNoise(texture, textureSize);
+        bool is_dirt = ecs_has(it->world, it->entities[i], DirtTexture);
+        GenerateNoise(texture, textureSize, is_dirt);
         // printf("Noise Texture Generated: [%lu] \n", (long int) it->entities[i]);
     }
 }

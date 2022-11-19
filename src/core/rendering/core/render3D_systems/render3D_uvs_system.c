@@ -24,15 +24,19 @@ void Render3DUvsSystem(ecs_iter_t *it)
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         if (opengl_set_material(materialGPULink->value))
         {
+            opengl_set_texture(textureGPULink->value, false);   // hides it atm
             opengl_set_mesh(meshGPULink->value);
-            // opengl_set_uvs(uvsGPULink->value);
-            // opengl_set_texture(textureGPULink->value);   // hides it atm
-            opengl_set_material3D_properties(materialGPULink->value,
+            // opengl_set_vertex_attributes(materialGPULink->value);
+            opengl_set_material3D_uvs_properties(materialGPULink->value,
                 main_camera_matrix, position->value, rotation->value, scale1D->value, brightness->value);
             opengl_draw_triangles(meshIndicies2->length);
+            opengl_disable_texture(false);
             opengl_disable_opengl_program();
-            // printf("Rendering mesh with texture: %i\n", textureGPULink->value);
+            // printf("Rendering [%lu] mesh with texture: %i\n", (long int) it->entities[i], textureGPULink->value);
         }
     }
 }
 ECS_SYSTEM_DECLARE(Render3DUvsSystem);
+
+
+// opengl_set_uvs(uvsGPULink->value);

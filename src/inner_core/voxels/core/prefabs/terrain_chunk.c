@@ -11,6 +11,7 @@ ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world)
     add_gpu_uvs(world, e);
     add_texture(world, e, (int2) { 16, 16 });
     add_noise_texture(world, e);
+    zoxel_add_tag(world, e, DirtTexture);
     add_gpu_texture(world, e);
     // texture too
     ecs_defer_end(world);

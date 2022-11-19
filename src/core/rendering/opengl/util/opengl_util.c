@@ -53,10 +53,10 @@ void opengl_set_mesh(GLuint2 mesh)
     glBindBuffer(GL_ARRAY_BUFFER, mesh.y);            // for vertex coordinates
 }
 
-void opengl_set_uvs(GLuint uvs)
+/*void opengl_set_uvs(GLuint uvs)
 {
     glBindBuffer(GL_ARRAY_BUFFER, uvs);
-}
+}*/
 
 void opengl_draw_triangles(int indicies_length)
 {

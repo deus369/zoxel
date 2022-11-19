@@ -30,14 +30,15 @@ const float3 voxel_cube_vertices[] =
 const int voxel_face_indicies_left_length = 6;
 const int voxel_face_indicies_left[] =
 {
-    0, 1, 3,    0, 2, 3,
+    // 0, 1, 3,    0, 2, 3,
+    0, 1, 2,    2, 3, 0,
 };
 const int voxel_face_vertices_left_length = 4;
 const float3 voxel_face_vertices_left[] =
 {
+    { 0, 0, 0 },            //4
     { 0, 0, 1.0f },         //0
     { 0, 1.0f, 1.0f },      //2
-    { 0, 0, 0 },            //4
     { 0, 1.0f, 0 },         //6
 };
 
@@ -45,14 +46,15 @@ const float3 voxel_face_vertices_left[] =
 const int voxel_face_indicies_right_length = 6;
 const int voxel_face_indicies_right[] =
 {
-    0, 1, 3,    0, 2, 3,
+    // 0, 1, 3,    0, 2, 3,
+    0, 1, 2,    2, 3, 0,
 };
 const int voxel_face_vertices_right_length = 4;
 const float3 voxel_face_vertices_right[] =
 {
+    { 1.0f, 0, 0 },         //5
     { 1.0f, 0, 1.0f},       //1
     { 1.0f, 1.0f, 1.0f },   //3
-    { 1.0f, 0, 0 },         //5
     { 1.0f, 1.0f, 0}        //7
 };
 
@@ -75,50 +77,61 @@ const float3 voxel_face_vertices_down[] =
 const int voxel_face_indicies_up_length = 6;
 const int voxel_face_indicies_up[] =
 {
-    0, 2, 3,    0, 1, 3,
+    // 0, 2, 3,    0, 1, 3,
+    0, 1, 2,    2, 3, 0,
 };
 const int voxel_face_vertices_up_length = 4;
 const float3 voxel_face_vertices_up[] =
 {
+    { 0, 1.0f, 0 },         //2
     { 0, 1.0f, 1.0f },      //0
     { 1.0f, 1.0f, 1.0f },   //1
-    { 0, 1.0f, 0 },         //2
     { 1.0f, 1.0f, 0}        //3
 };
 const float2 voxel_face_uvs_up[] =
 {
-    { 0, 1.0f },
+    { 0, 0.0f },
+    { 0.0f, 1.0f },
     { 1.0f, 1.0f },
-    { 1.0f, 0 },
-    { 0.0f, 0}
+    { 1.0f, 0 }
 };
 
 // back
 const int voxel_face_indicies_back_length = 6;
 const int voxel_face_indicies_back[] =
 {
-    0, 2, 3,    0, 1, 3,
+    // 0, 2, 3,    0, 1, 3,
+    0, 1, 2,    2, 3, 0,
 };
 const int voxel_face_vertices_back_length = 4;
 const float3 voxel_face_vertices_back[] =
 {
-    { 0, 0, 0 },            //4
+    /*{ 0, 0, 0 },            //4
     { 1.0f, 0, 0 },         //5
     { 0, 1.0f, 0 },         //6
-    { 1.0f, 1.0f, 0}        //7
+    { 1.0f, 1.0f, 0}        //7*/
+    { 0, 0, 0.0f },
+    { 0.0f, 1.0f, 0.0f},
+    { 1.0f, 1.0f, 0.0f },
+    { 1.0f, 0.0f, 0.0f }
 };
 
 // front
 const int voxel_face_indicies_front_length = 6;
 const int voxel_face_indicies_front[] =
 {
-    0, 2, 3,    0, 1, 3
+    // 0, 2, 3,    0, 1, 3
+    0, 1, 2,    2, 3, 0,
 };
 const int voxel_face_vertices_front_length = 4;
 const float3 voxel_face_vertices_front[] =
 {
-    { 0, 0, 1.0f },         //0
+    /*{ 0, 0, 1.0f },         //0
     { 1.0f, 0, 1.0f},       //1
     { 0, 1.0f, 1.0f },      //2
-    { 1.0f, 1.0f, 1.0f }    //3
+    { 1.0f, 1.0f, 1.0f }    //3*/
+    { 0, 0, 1.0f },
+    { 0.0f, 1.0f, 1.0f},
+    { 1.0f, 1.0f, 1.0f },
+    { 1.0f, 0.0f, 1.0f }
 };

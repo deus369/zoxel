@@ -8,6 +8,7 @@ const double noise_animation_speed = 0.5;
 ECS_DECLARE(NoiseTexture);
 ECS_DECLARE(FrameTexture);
 ECS_DECLARE(SaveTexture);
+ECS_DECLARE(DirtTexture);
 // components
 //! A texture with pixels!
 zoxel_memory_component(Texture, color);
@@ -44,6 +45,7 @@ void TexturesCoreImport(ecs_world_t *world)
     ECS_TAG_DEFINE(world, NoiseTexture);
     ECS_TAG_DEFINE(world, FrameTexture);
     ECS_TAG_DEFINE(world, SaveTexture);
+    ECS_TAG_DEFINE(world, DirtTexture);
     zoxel_memory_component_define(world, Texture);
     ECS_COMPONENT_DEFINE(world, TextureSize);
     ECS_COMPONENT_DEFINE(world, GenerateTexture);

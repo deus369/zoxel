@@ -1,10 +1,11 @@
-const unsigned char terrain_noise = 2;
+const unsigned char terrain_height = 6;
+const unsigned char terrain_noise = 4;
 
 //! Our function that creates a chunk.
 void GenerateChunkTerrain(Chunk* chunk, const ChunkSize *chunkSize)
 {
     // const int2 valueRange = { 0, 2 };   // < max
-    unsigned char terrain_height = 0; // (chunkSize->value.y / 4) + rand() % ((int) (chunkSize->value.y * (3.0f / 4.0f)));
+     // (chunkSize->value.y / 4) + rand() % ((int) (chunkSize->value.y * (3.0f / 4.0f)));
     int3 local_position;
     // precount our face data for initialization
     for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++)

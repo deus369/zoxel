@@ -70,12 +70,12 @@ void mesh_uvs_update_main_thread()
     {
         const GLuint2 meshGPULink = meshUvsGPULinksQueue[i];
         const GLuint material = materialsUvsQueue[i];
+        // const GLuint uvs = uvsGPULinksQueue[i];
         const MeshIndicies *meshIndicies = meshUvsIndiciesQueue[i];
         const MeshVertices *meshVertices = meshUvsVerticesQueue[i];
-        const GLuint uvs = uvsGPULinksQueue[i];
         const MeshUVs *meshUVs = meshUvsQueue[i];
         opengl_upload_shader3D_textured(meshGPULink, material, meshIndicies->value, meshIndicies->length, meshVertices->value,
-            meshVertices->length, uvs, meshUVs->value, meshUVs->length);
+            meshVertices->length, meshUVs->value, meshUVs->length);
         
         // printf("Updating Mesh [%i - %i] Material [%i] \n", meshGPULink.x, meshGPULink.y, material);
         /*for (int j = 0; j < meshIndicies->length; j++)
