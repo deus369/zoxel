@@ -50,6 +50,7 @@ void render_loop_temp()
     ecs_run(world, ecs_id(Render3DSystem), 0, NULL);
     ecs_run(world, ecs_id(Render3DUvsSystem), 0, NULL);
     // 2D renders
+    glDisable(GL_DEPTH_TEST);
     OpenGLBeginInstancing(main_camera_matrix);
     ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
     opengl_disable_opengl_program();

@@ -2,6 +2,10 @@
 #define zoxel_rendering_core
 //! rendering core Module.
 
+#ifndef maxMeshQueue
+#define maxMeshQueue 1024
+#endif
+
 //! \todo Create a Cube with unique mesh - for chunk - add these components and update mesh for voxel chunk.
 //      - Test Mesh - simply create a test entity now with mesh and set to dirty
 //      - set data as cube and render

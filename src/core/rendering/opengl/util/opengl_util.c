@@ -17,6 +17,8 @@ void opengl_clear()
 {
     glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);       // Clears the buffer ?
+    glClear(GL_DEPTH_BUFFER_BIT);       // Clears the buffer ?
+    glEnable(GL_DEPTH_TEST);
     // glDisable(GL_DEPTH_TEST);
 }
 

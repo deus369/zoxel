@@ -42,3 +42,13 @@ int3 int3_front(int3 input)
 {
     return (int3) { input.x, input.y, input.z + 1 };
 }
+
+int3 int3_multiply_int3(int3 a, int3 b)
+{
+    return (int3) { a.x * b.x, a.y * b.y, a.z * b.z };
+}
+
+int3 int3_add_int3(int3 a, int3 b)
+{
+    return (int3) { a.x + b.x, a.y + b.y, a.z + b.z };
+}

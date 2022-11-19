@@ -7,7 +7,7 @@ const int chunk_length = 16;
 const int dissapearChance = 92;
 const float spawnRange = 0.96f;
 const int3 chunk_size = { chunk_length, chunk_length, chunk_length };
-const int terrain_rows = 2;
+const int terrain_rows = 12;
 const float chunk_real_size = 1.0f;   // size achunk takes up
 // tags
 ECS_DECLARE(Vox);
@@ -75,8 +75,8 @@ void VoxelsCoreImport(ecs_world_t *world)
         [none] NoiseChunk, [out] ChunkDirty, [out] Chunk, [in] ChunkSize, [in] GenerateChunk);
 
     zoxel_filter(generateTerrainChunkQuery, world, [none] TerrainChunk, [in] GenerateChunk);
-    zoxel_system_ctx(world,TerrainChunkSystem, EcsOnUpdate, generateTerrainChunkQuery,
-        [none] TerrainChunk, [out] ChunkDirty, [out] Chunk, [in] ChunkSize, [in] GenerateChunk);
+    zoxel_system_ctx(world, TerrainChunkSystem, EcsOnUpdate, generateTerrainChunkQuery,
+        [none] TerrainChunk, [out] ChunkDirty, [out] Chunk, [in] ChunkSize, [in] ChunkPosition, [in] GenerateChunk);
 
     zoxel_filter(generateChunkQuery, world, [in] GenerateChunk);
     zoxel_system_ctx(world, ChunkBuildSystem, EcsOnUpdate, generateChunkQuery,
@@ -104,6 +104,7 @@ void VoxelsCoreImport(ecs_world_t *world)
         for (int j = - terrain_rows; j <= terrain_rows; j++)
         {
             spawn_terrain_chunk(world, terrain_chunk_prefab,
+                (int3) { i, 0, j },
                 (float3) { i * chunk_real_size, 0, j * chunk_real_size }, 0.5f);
         }
     }

@@ -1,11 +1,8 @@
 //! Not a proper queue yet.
-#ifndef maxQueue
-#define maxQueue 512
-#endif
 int queueCount = 0;
-int queueTextureIDs[maxQueue];
-const Texture* queueTextures[maxQueue];
-const TextureSize* queueTextureSizes[maxQueue];
+int queueTextureIDs[maxTextureQueue];
+const Texture* queueTextures[maxTextureQueue];
+const TextureSize* queueTextureSizes[maxTextureQueue];
 
 //! Generate random noise texture.
 /**

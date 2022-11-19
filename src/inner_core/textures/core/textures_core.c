@@ -2,6 +2,11 @@
 #define zoxel_textures_core
 //! textures Module.
 
+
+#ifndef maxTextureQueue
+#define maxTextureQueue 1024
+#endif
+
 // Settings
 const double noise_animation_speed = 0.5;
 // Tags

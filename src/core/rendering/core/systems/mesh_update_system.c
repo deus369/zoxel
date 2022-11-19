@@ -1,12 +1,9 @@
 //! Not a proper queue yet.
-#ifndef maxQueue
-#define maxQueue 512
-#endif
 int meshUpdateQueueCount = 0;
-const MeshIndicies* meshIndiciesQueue[maxQueue];
-const MeshVertices* meshVerticesQueue[maxQueue];
-GLuint2 meshGPULinksQueue[maxQueue];
-GLuint materialsQueue[maxQueue];
+const MeshIndicies* meshIndiciesQueue[maxMeshQueue];
+const MeshVertices* meshVerticesQueue[maxMeshQueue];
+GLuint2 meshGPULinksQueue[maxMeshQueue];
+GLuint materialsQueue[maxMeshQueue];
 
 //! Generate random noise texture.
 /**
