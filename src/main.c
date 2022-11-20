@@ -1,26 +1,3 @@
-//! =-= Zoxel =-=
-#define SDL_IMAGES
-// game uis
-// -- tests --
-#define zoxel_test_character2Ds
-#define zoxel_test_cubes
-// #define zoxel_test_cubes_textured    // wip
-// #define zoxel_test_character3Ds      // todo
-#define zoxel_test_voxels
-#define zoxel_test_voxels_terrain       // uvs - wip
-#define zoxel_test_uis
-// -- debugs --
-// #define zoxel_debug_prefabs
-// #define zoxel_debug_spawns
-// #define zoxel_debug_sdl
-// #define zoxel_debug_opengl
-// #define zoxel_debug_pathing
-// #define zoxel_catch_opengl_errors
-// #define debug_viewport_resize
-// #define zoxel_debug_element_raycasting
-// #define debug_ui_positioning
-// #define debug_ui_scaling
-// #define zoxel_time_render_loop
 #include "_includes.c"
 
 extern bool headless;
@@ -39,9 +16,8 @@ void spawn_game(ecs_world_t *world)
     #endif
     spawn_connected_devices(world);
     spawn_player_character3D(world, get_main_camera());
-
     // spawn_main_menu(world, "Zoxel");
-    // spawn_fps_display(world, main_canvas, 32);
+    spawn_fps_display(world, main_canvas, 32);
     // spawn_zoxel_window(world);
 }
 
@@ -61,13 +37,14 @@ void update()
         #endif
     }
     // ecs_log_set_level(1);    // use this to debug system pipelines
-    ecs_run(world, ecs_id(ElementMeshSystem), 0, NULL);
+    ecs_run(world, ecs_id(ElementMeshSystem), 0, NULL); // creates opengl buffers
     ecs_progress(world, 0);
     iterate_fps_time();
     // main thread, generates gpu buffer
-    // ecs_run(world, ecs_id(Player2DTestMainThreadSystem), 0, NULL);
     if (!headless)
     {
+        set_mouse_mode();
+        texture_update_main_thread();  // uploads textures to gpu
         render_loop_temp();
     }
 }

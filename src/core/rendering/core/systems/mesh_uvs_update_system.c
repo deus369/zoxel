@@ -24,7 +24,7 @@ void MeshUvsUpdateSystem(ecs_iter_t *it)
     const MeshUVs *meshUVs = ecs_field(it, MeshUVs, 4);
     const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 5);
     const MaterialGPULink *materialGPULinks = ecs_field(it, MaterialGPULink, 6);
-    const UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 7);
+    // const UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 7);
     // printf("TextureUpdateSystem [%i] \n", it->count);
     for (int i = 0; i < it->count; i++)
     {
@@ -35,13 +35,13 @@ void MeshUvsUpdateSystem(ecs_iter_t *it)
         }
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
         const MaterialGPULink *materialGPULink = &materialGPULinks[i];
-        const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
+        // const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         const MeshVertices *meshVertices2 = &meshVertices[i];
         const MeshUVs *meshUVs2 = &meshUVs[i];
         meshUvsGPULinksQueue[meshUvsUpdateQueueCount] = meshGPULink->value;
         materialsUvsQueue[meshUvsUpdateQueueCount] = materialGPULink->value;
-        uvsGPULinksQueue[meshUvsUpdateQueueCount] = uvsGPULink->value;
+        // // [meshUvsUpdateQueueCount] = uvsGPULink->value;
         meshUvsIndiciesQueue[meshUvsUpdateQueueCount] = meshIndicies2;
         meshUvsVerticesQueue[meshUvsUpdateQueueCount] = meshVertices2;
         meshUvsQueue[meshUvsUpdateQueueCount] = meshUVs2;

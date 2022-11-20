@@ -1,6 +1,9 @@
 const unsigned char terrain_min_height = 1;
 const float terrain_noise = 6.0f;
 const float terrain_frequency = 0.02f;
+const float sqrtofthree = 1.73205080757f;   // sqrt(3.0f)
+const float trianglesToSquares = (sqrtofthree - 1.0f) / 2.0f;
+const float squaresToTriangles = (3.0f - sqrtofthree) / 6.0f;
 
 int int_floor(float input)
 {
@@ -24,9 +27,6 @@ float simplex_fun_1D(float3 point, float frequency)
     sample += simplex_fun_int_1D(point, ix + 1);
     return sample * 2.0f - 1.0f;
 }
-
-float trianglesToSquares = (sqrt(3.0f) - 1.0f) / 2.0f;
-float squaresToTriangles = (3.0f - sqrt(3.0f)) / 6.0f;
 
 float simplex_fun_int_2D(float3 point, int ix, int iy)
 {

@@ -46,6 +46,8 @@ zoxel_component(EternalRotation, float4);
 #include "render3D_systems/render3D_uvs_system.c"
 #include "render3D_systems/render3D_instance_system.c"
 zoxel_reset_system(MeshDirtySystem, MeshDirty);
+// util
+#include "util/render_loop.c"
 
 //! The rendering core Sub Module.
 /**
@@ -93,8 +95,8 @@ void RenderingCoreImport(ecs_world_t *world)
         [none] !UvsGPULink);
     ECS_SYSTEM_DEFINE(world, Render3DUvsSystem, 0,
         [in] Position, [in] Rotation, [in] Scale1D, [in] Brightness,
-        [in] MeshGPULink, [in] MaterialGPULink, [in] UvsGPULink, [in] TextureGPULink,
-        [in] MeshIndicies);
+        [in] MeshGPULink, [in] MaterialGPULink, [in] TextureGPULink, [in] MeshIndicies);
+        // [in] UvsGPULink, 
     ECS_SYSTEM_DEFINE(world, InstanceRender3DSystem, 0,
         [in] Position, [in] Rotation, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink);
     // updates
@@ -102,9 +104,8 @@ void RenderingCoreImport(ecs_world_t *world)
         [in] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshGPULink, [in] MaterialGPULink,
         [none] !MeshUVs);
     ECS_SYSTEM_DEFINE(world, MeshUvsUpdateSystem, EcsOnValidate,
-        [in] MeshDirty,
-        [in] MeshIndicies, [in] MeshVertices, [in] MeshUVs,
-        [in] MeshGPULink, [in] MaterialGPULink, [in] UvsGPULink);
+        [in] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshUVs,
+        [in] MeshGPULink, [in] MaterialGPULink);
     zoxel_reset_system_define(MeshDirtySystem, MeshDirty);
 }
 

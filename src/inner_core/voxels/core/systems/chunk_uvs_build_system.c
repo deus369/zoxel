@@ -1,6 +1,6 @@
 // #define disable_voxel_left
 // #define disable_voxel_right
-#define disable_voxel_down
+// #define disable_voxel_down
 // #define disable_voxel_up
 // #define disable_voxel_back
 // #define disable_voxel_front

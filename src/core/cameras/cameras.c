@@ -30,6 +30,17 @@ zoxel_component(FreeRoam, unsigned char);
 #include "systems/view_matrix_system.c"
 #include "systems/camera2D_follow_system.c"
 
+void set_mouse_mode()
+{
+    ecs_entity_t main_camera = get_main_camera();
+    if (!ecs_is_valid(world, main_camera))
+    {
+        return;
+    }
+    const FreeRoam *freeRoam = ecs_get(world, main_camera, FreeRoam);
+    SDL_SetRelativeMouseMode(freeRoam->value);  //! Locks Main Mouse.
+}
+
 void CamerasImport(ecs_world_t *world)
 {
     ECS_MODULE(world, cameras);

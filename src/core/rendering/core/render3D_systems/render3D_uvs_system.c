@@ -8,9 +8,9 @@ void Render3DUvsSystem(ecs_iter_t *it)
     const Brightness *brightnesses = ecs_field(it, Brightness, 4);
     const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 5);
     const MaterialGPULink *materialGPULinks = ecs_field(it, MaterialGPULink, 6);
-    const UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 7);
-    const TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 8);
-    const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 9);
+    // const UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 7);
+    const TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 7);
+    const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 8);
     for (int i = 0; i < it->count; i++)
     {
         const Position *position = &positions[i];
@@ -19,7 +19,7 @@ void Render3DUvsSystem(ecs_iter_t *it)
         const Brightness *brightness = &brightnesses[i];
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
         const MaterialGPULink *materialGPULink = &materialGPULinks[i];
-        const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
+        // const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
         const TextureGPULink *textureGPULink = &textureGPULinks[i];
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         if (opengl_set_material(materialGPULink->value))

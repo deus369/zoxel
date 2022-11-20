@@ -8,7 +8,6 @@ uniform lowp float positionX;
 uniform lowp float positionY;
 uniform lowp float angle;
 uniform lowp float scale;
-// uniform lowp vec2 scale2;
 out lowp vec2 uv;
 
 void main()

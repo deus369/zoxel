@@ -62,14 +62,15 @@ const float3 voxel_face_vertices_right[] =
 const int voxel_face_indicies_down_length = 6;
 const int voxel_face_indicies_down[] =
 {
-    0, 2, 3,    0, 1, 3,
+    // 0, 2, 3,    0, 1, 3,
+    0, 1, 2,    2, 3, 0,
 };
 const int voxel_face_vertices_down_length = 4;
 const float3 voxel_face_vertices_down[] =
 {
+    { 0, 0, 0 },            //4
     { 0, 0, 1.0f },         //0
     { 1.0f, 0, 1.0f},       //1
-    { 0, 0, 0 },            //4
     { 1.0f, 0, 0 },         //5
 };
 

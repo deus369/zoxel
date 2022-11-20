@@ -24,11 +24,13 @@ void save_texture_png(const Texture *texture, const TextureSize *textureSize, co
     int pitch = textureSize->value.x * 4;
     SDL_Surface* surface = SDL_CreateRGBSurfaceFrom((void*)texture->value, textureSize->value.x, textureSize->value.y,
         depth, pitch, rmask, gmask, bmask, amask);
+    #ifdef SDL_IMAGES
     if(IMG_SavePNG(surface, outputTextureName) != 0)
     {
         // Error saving bitmap
         printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
     }
+    #endif
     // when you don't need the surface anymore, free it..
     SDL_FreeSurface(surface);
 }
