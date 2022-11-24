@@ -9,7 +9,7 @@ Our worlds will be voxels.
 
 `Current`
 
-- [ ] Cull voxel sides during mesh building step
+- [x] Cull voxel sides during mesh building step
 - [ ] Chunk Neighbors - use hashmap lookups to quickly get chunk neighbors during build step
     - use this to cull edge of chunks
 - [ ] Render Voxel chunks in grid - terrain

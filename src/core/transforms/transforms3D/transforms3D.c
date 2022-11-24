@@ -1,6 +1,8 @@
 #ifndef zoxel_transforms3D
 #define zoxel_transforms3D
 
+// tags
+ECS_DECLARE(EulerOverride);
 // components
 //! A 3D Position component.
 zoxel_component(Position, float3);
@@ -17,6 +19,7 @@ zoxel_component(Matrix, float4x4);
 // util
 #include "util/transform3d_util.c"
 // systems
+#include "systems/euler_override_system.c"
 
 //! The transforms Module.
 /**
@@ -25,12 +28,14 @@ zoxel_component(Matrix, float4x4);
 void Transforms3DImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Transforms3D);
+    ECS_TAG_DEFINE(world, EulerOverride);
     ECS_COMPONENT_DEFINE(world, Position);
     ECS_COMPONENT_DEFINE(world, Rotation);
     ECS_COMPONENT_DEFINE(world, Scale);
     ECS_COMPONENT_DEFINE(world, UniformScale);
     ECS_COMPONENT_DEFINE(world, Euler);
     // Matrix System
+    zoxel_system(world, EulerOverrideSystem, EcsOnUpdate, [none] EulerOverride, [in] Euler, [out] Rotation);
 }
 
 #endif

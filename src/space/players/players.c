@@ -48,7 +48,7 @@ void PlayersImport(ecs_world_t *world)
     #endif
     zoxel_filter(cameraQuery, world, [none] cameras.Camera, [in] cameras.FreeRoam, [out] Position, [out] Rotation);
     zoxel_system_ctx(world, FreeCameraMoveSystem, EcsOnUpdate, cameraQuery, [in] Keyboard);
-    zoxel_filter(cameraQuery2, world, [none] cameras.Camera, [out] Rotation, [out] Euler, [in] cameras.FreeRoam);
+    zoxel_filter(cameraQuery2, world, [none] cameras.Camera, [in] cameras.FreeRoam, [out] Euler);
     zoxel_system_ctx(world, FreeCameraRotateSystem, EcsOnUpdate, cameraQuery2, [in] Mouse);
     zoxel_filter(cameraQuery3, world, [none] cameras.Camera, [out] cameras.FreeRoam);
     zoxel_filter(playerCharacter2DQuery3, world, [none] PlayerCharacter, [out] physics.DisableMovement);

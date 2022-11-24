@@ -13,6 +13,8 @@ To-Do Main
 
 - [ ] Current [User Interface](todo-ui.md)
 
+- [ ] Current [Cameras](todo-cameras.md)
+
 -----
 
 A record of what i've done since i've started libre zoxel > [Done List](todo-done.md)

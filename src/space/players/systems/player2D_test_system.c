@@ -16,7 +16,7 @@ void Player2DTestSystem(ecs_iter_t *it)
         }
         else if (keyboard->space.isPressed || keyboard->f.isPressed)
         {
-            if (ecs_has(world, local_player, Position2D))
+            if (local_player != 0 && ecs_has(world, local_player, Position2D))
             {
                 const Position2D *position2D = ecs_get(world, local_player, Position2D);
                 if (keyboard->space.isPressed)
@@ -28,7 +28,7 @@ void Player2DTestSystem(ecs_iter_t *it)
                     Particle2DSpawnSystem(world, position2D->value, particleSpawnCount);
                 }
             }
-            else if (ecs_has(world, local_player, Position))
+            else if (local_player != 0 && ecs_has(world, local_player, Position))
             {
                 const Position *position = ecs_get(world, local_player, Position);
                 if (keyboard->space.isPressed)

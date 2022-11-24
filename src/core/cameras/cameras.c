@@ -38,7 +38,21 @@ void set_mouse_mode()
         return;
     }
     const FreeRoam *freeRoam = ecs_get(world, main_camera, FreeRoam);
-    SDL_SetRelativeMouseMode(freeRoam->value);  //! Locks Main Mouse.
+    bool constrain_mouse;
+    if (freeRoam->value == 1)
+    {
+        constrain_mouse = true;
+    }
+    else
+    {
+        constrain_mouse = false;
+    }
+    SDL_SetRelativeMouseMode(constrain_mouse);  //! Locks Main Mouse.
+    if (constrain_mouse)
+    {
+        SDL_WarpMouseInWindow(main_window, screenDimensions.x / 2, screenDimensions.y / 2);
+    }
+    // SDL_SetWindowGrab(main_window, constrain_mouse);
 }
 
 void CamerasImport(ecs_world_t *world)

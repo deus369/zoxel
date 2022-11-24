@@ -38,6 +38,17 @@ Parallel Make (x is the number of cores)
 make -jx
 ```
 
+Use dev settings for testing
+```
+make -B -f MakefileDev; ./zoxel-dev
+```
+
+Use valgrind for debugging memory / stack tracing
+```
+valgrind ./zoxel-dev
+```
+
+
 ### Windows [Native] [todo]
 
 ### MacOS [On Linux] [todo]

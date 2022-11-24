@@ -15,9 +15,9 @@ void spawn_game(ecs_world_t *world)
     spawn_test_uis(world);   // spawns test ui
     #endif
     spawn_connected_devices(world);
-    spawn_player_character3D(world, get_main_camera());
+    // spawn_player_character3D(world, get_main_camera());
     // spawn_main_menu(world, "Zoxel");
-    spawn_fps_display(world, main_canvas, 32);
+    fps_display = spawn_fps_display(world, main_canvas, 32);
     // spawn_zoxel_window(world);
 }
 

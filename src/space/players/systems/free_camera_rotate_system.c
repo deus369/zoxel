@@ -20,9 +20,8 @@ void FreeCameraRotateSystem(ecs_iter_t *it)
         return;
     }
     Mouse *mouses = ecs_field(it, Mouse, 1);
-    Rotation *rotations = ecs_field(&cameraIter, Rotation, 2);
+    const FreeRoam *freeRoams = ecs_field(&cameraIter, FreeRoam, 2);
     Euler *eulers = ecs_field(&cameraIter, Euler, 3);
-    const FreeRoam *freeRoams = ecs_field(&cameraIter, FreeRoam, 4);
     for (int i = 0; i < it->count; i++)
     {
         const Mouse *mouse = &mouses[i];
@@ -38,15 +37,15 @@ void FreeCameraRotateSystem(ecs_iter_t *it)
                 {
                     // printf("mouse->delta: %ix%i\n", mouse->delta.x, mouse->delta.y);
                     euler->value = float3_add(euler->value, eulerAddition);
-                    Rotation *rotation = &rotations[j];
+                    // Rotation *rotation = &rotations[j];
                     // rotation->value = quaternion_rotate(quaternion_from_euler(eulerAddition), rotation->value);
-                    rotation->value = quaternion_from_euler(euler->value);
+                    // rotation->value = quaternion_from_euler(euler->value);
                     // float3_print(euler->value);
                 }
-                else
+                /*else
                 {
                     euler->value = (float3) { 0, 0, 0 };
-                }
+                }*/
             }
         }
     }
