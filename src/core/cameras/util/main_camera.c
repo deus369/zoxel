@@ -37,9 +37,9 @@ const float4x4 GetMainCameraViewMatrix()
     return viewMatrix->value;
 }
 
-ecs_entity_t spawn_main_camera(ecs_world_t *world, int2 screenDimensions)
+ecs_entity_t spawn_main_camera(ecs_world_t *world, int2 screenDimensions, float3 position)
 {
-    cameras[0] = spawn_camera(world, (float3) { 0, -0.0f, 0.62f }, quaternion_identity(), screenDimensions);
+    cameras[0] = spawn_camera(world, position, quaternion_identity(), screenDimensions);
     return cameras[0];
 }
 

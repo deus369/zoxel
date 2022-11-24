@@ -7,7 +7,9 @@ extern bool profiler;
 //! Spawns our first game entities.
 void spawn_game(ecs_world_t *world)
 {
-    spawn_main_camera(world, screenDimensions);
+    spawn_main_camera(world, screenDimensions,
+        //(float3) { 0, 3.6f, 0.62f });
+        (float3) { 0, 0, 0.62f });
     spawn_ui_camera(world, screenDimensions);
     spawn_font_style(world);
     spawn_canvas(world, screenDimensions);

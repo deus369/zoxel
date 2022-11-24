@@ -24,7 +24,8 @@ ecs_entity_t spawn_font(ecs_world_t *world, const byte2 points[], unsigned char 
     initialize_memory_component_non_pointer(fontData, byte2, length);
     for (int i = 0; i < length; i++)
     {
-        fontData.value[i] = byte2_multiply_int(points[i], 16);
+        fontData.value[i] = (byte2) { points[i].x, points[i].y }; // byte2_multiply_int(points[i], 16);
+        // fontData.value[i] = byte2_multiply_int(points[i], 1);
     }
     ecs_set(world, e, FontData, { fontData.length, fontData.value });
     ecs_defer_end(world);

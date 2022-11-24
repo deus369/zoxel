@@ -1,6 +1,6 @@
-const unsigned char terrain_min_height = 1;
-const float terrain_noise = 6.0f;
-const float terrain_frequency = 0.02f;
+const unsigned char terrain_min_height = 32;
+const float terrain_noise = 32.0f;
+const float terrain_frequency = 0.006f;
 const float sqrtofthree = 1.73205080757f;   // sqrt(3.0f)
 const float trianglesToSquares = (sqrtofthree - 1.0f) / 2.0f;
 const float squaresToTriangles = (3.0f - sqrtofthree) / 6.0f;
@@ -89,7 +89,7 @@ void GenerateChunkTerrain(Chunk* chunk, const int3 chunkSize, const int3 chunkPo
         for (local_position.z = 0; local_position.z < chunkSize.z; local_position.z++)
         {
             local_position.y = 0;
-            global_position = int3_add_int3(local_position, chunk_position_offset);
+            global_position = int3_add(local_position, chunk_position_offset);
             // printf("global_position [%ix%ix%i]\n", global_position.x, global_position.y, global_position.z);
             // printf("global_position: [%fx%fx%f]\n", global_position.x, global_position.y, global_position.z);
             int terrain_height2 = terrain_min_height +
@@ -128,7 +128,7 @@ void TerrainChunkSystem(ecs_iter_t *it)
     {
         return;
     }
-    ChunkDirty *entityDirtys = ecs_field(it, ChunkDirty, 2);
+    ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
     Chunk *chunks = ecs_field(it, Chunk, 3);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 4);
     const ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 5);
@@ -141,12 +141,12 @@ void TerrainChunkSystem(ecs_iter_t *it)
         {
             continue;
         }
-        ChunkDirty *entityDirty = &entityDirtys[i];
-        if (entityDirty->value != 0)
+        ChunkDirty *chunkDirty = &chunkDirtys[i];
+        if (chunkDirty->value != 0)
         {
             continue;
         }
-        entityDirty->value = 1;
+        chunkDirty->value = 1;
         Chunk *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
         const ChunkPosition *chunkPosition = &chunkPositions[i];

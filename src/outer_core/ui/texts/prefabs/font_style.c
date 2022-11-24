@@ -98,7 +98,7 @@ ecs_entity_t spawn_font_style(ecs_world_t *world)
         children.value[i] = spawn_font(world, font_question_mark, font_question_mark_length);
     }
     ecs_set(world, e, Children, { children.length, children.value });
-    font_style_entity = e;
     ecs_defer_end(world);
+    font_style_entity = e;
     return e;
 }

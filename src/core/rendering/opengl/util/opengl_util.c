@@ -20,6 +20,8 @@ void opengl_clear()
     glClear(GL_DEPTH_BUFFER_BIT);       // Clears the buffer ?
     glEnable(GL_DEPTH_TEST);
     // glDisable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    // glCullFace(GL_BACK);
 }
 
 //! Spawns the buffers for a mesh indicies and verts on the gpu.
