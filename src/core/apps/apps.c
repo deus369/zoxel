@@ -19,6 +19,7 @@ const int window_index = 1; // 1;
 bool vsync = false;
 bool fullscreen = false;
 bool halfscreen = false;
+bool is_split_screen = false;
 SDL_Window* main_window;
 // Tags
 ECS_DECLARE(App);

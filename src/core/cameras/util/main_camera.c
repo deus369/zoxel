@@ -5,28 +5,40 @@
  * Animate it moving a little upwards.
 */
 
-ecs_entity_t get_main_camera()
+void resize_camera(ecs_world_t *world, ecs_entity_t e, int2 new_screen_dimensions)
 {
-    return cameras[0];
+    if (e && ecs_is_alive(world, e))
+    {
+        ecs_set(world, e, ScreenDimensions, { new_screen_dimensions });
+    }
 }
 
 //! Uses ecs_get_mut to resize cameras. \todo Create a viewport resize event.
 void resize_cameras(int width, int height)
 {
-    for (int i = 0; i < 2; i++)
+    int2 new_screen_dimensions = (int2) { width, height };
+    for (int i = 0; i < main_cameras_count; i++)
     {
-        ecs_entity_t e = cameras[i];
-        if (e && ecs_is_alive(world, e))
-        {
-            ScreenDimensions *screenDimensions = ecs_get_mut(world, e, ScreenDimensions);
-            screenDimensions->value.x = width;
-            screenDimensions->value.y = height;
-            ecs_modified(world, e, ScreenDimensions);
-        }
+        resize_camera(world, main_cameras[i], new_screen_dimensions);
     }
+    resize_camera(world, ui_cameras[0], new_screen_dimensions);
 }
 
-const float4x4 GetMainCameraViewMatrix()
+/*ScreenDimensions *screenDimensions = ecs_get_mut(world, e, ScreenDimensions);
+screenDimensions->value.x = width;
+screenDimensions->value.y = height;
+ecs_modified(world, e, ScreenDimensions);*/
+
+/*ecs_entity_t e = cameras[i];
+if (e && ecs_is_alive(world, e))
+{
+    ScreenDimensions *screenDimensions = ecs_get_mut(world, e, ScreenDimensions);
+    screenDimensions->value.x = width;
+    screenDimensions->value.y = height;
+    ecs_modified(world, e, ScreenDimensions);
+}*/
+
+/*const float4x4 GetMainCameraViewMatrix()
 {
     ecs_entity_t main_camera = get_main_camera();
     if (!main_camera || !ecs_is_alive(world, main_camera))
@@ -35,13 +47,17 @@ const float4x4 GetMainCameraViewMatrix()
     }
     const ViewMatrix *viewMatrix = ecs_get(world, main_camera, ViewMatrix);
     return viewMatrix->value;
+}*/
+
+/*ecs_entity_t get_main_camera2()
+{
+    return main_cameras[1];
 }
 
-ecs_entity_t spawn_main_camera(ecs_world_t *world, int2 screenDimensions, float3 position)
+void set_main_camera2(ecs_entity_t camera)
 {
-    cameras[0] = spawn_camera(world, position, quaternion_identity(), screenDimensions);
-    return cameras[0];
-}
+    main_cameras[1] = camera;
+}*/
 
 //! Used for testing cleanup
 // void DestroyMainCamera()
@@ -55,3 +71,13 @@ ecs_entity_t spawn_main_camera(ecs_world_t *world, int2 screenDimensions, float3
 // float4 flipRotation = quaternion_from_euler( (float3) { 0, 0 * degreesToRadians, 0 });
 // ; // quaternion_from_euler( (float3) { 0 * degreesToRadians, 0 * degreesToRadians, 0 * degreesToRadians });
 // spawnRotation = quaternion_rotate(flipRotation, spawnRotation);
+
+/*void set_main_camera(ecs_entity_t camera)
+{
+    cameras[0] = camera;
+}*/
+
+/*ecs_entity_t get_main_camera()
+{
+    return cameras[0];
+}*/

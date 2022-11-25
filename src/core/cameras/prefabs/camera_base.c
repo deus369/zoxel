@@ -14,19 +14,35 @@ void spawn_camera_base_prefab(ecs_world_t *world)
     zoxel_set(world, e, Euler, { { 0, 0, 0 } });
     zoxel_add(world, e, ProjectionMatrix);
     zoxel_add(world, e, ViewMatrix);
-    zoxel_add(world, e, ScreenDimensions);
+    zoxel_set(world, e, ScreenDimensions, { { 0, 0 } });
+    zoxel_set(world, e, ScreenPosition, { { 0, 0 } });
     zoxel_set(world, e, FieldOfView, { 60 });
     ecs_defer_end(world);
     base_camera_prefab = e;
 }
 
-ecs_entity_t spawn_camera(ecs_world_t *world, float3 position, float4 rotation, int2 screenDimensions)
+ecs_entity_t spawn_base_camera(ecs_world_t *world, float3 position, float4 rotation,
+    int2 screen_dimensions, int2 screen_position)
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, base_camera_prefab);
     ecs_set(world, e, Position, { position });
     ecs_set(world, e, Rotation, { rotation });
-    ecs_set(world, e, ScreenDimensions, { { screenDimensions.x, screenDimensions.y } });
+    ecs_set(world, e, ScreenDimensions, { screen_dimensions });
+    ecs_set(world, e, ScreenPosition, { screen_position });
+    ecs_defer_end(world);
+    return e;
+}
+
+ecs_entity_t spawn_free_camera(ecs_world_t *world, float3 position, float4 rotation,
+    int2 screen_dimensions, int2 screen_position)
+{
+    ecs_defer_begin(world);
+    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, base_camera_prefab);
+    ecs_set(world, e, Position, { position });
+    ecs_set(world, e, Rotation, { rotation });
+    ecs_set(world, e, ScreenDimensions, { screen_dimensions });
+    ecs_set(world, e, ScreenPosition, { screen_position });
     zoxel_add_tag(world, e, EulerOverride);
     zoxel_set(world, e, FreeRoam, { 0 });
     // printf("Spawned Camera [%lu]\n", (long unsigned int) e);

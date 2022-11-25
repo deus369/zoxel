@@ -1,7 +1,6 @@
 // sdl util things
 const char *iconFilename = "resources/textures/game_icon.png";
-int2 screenDimensions = { 720, 480 };
-// int2 screenDimensions = { 1920, 800 };
+int2 screen_dimensions = { 720, 480 };
 float aspectRatio = 1;
 float fov = 60;
 unsigned long windowFlags;
@@ -67,6 +66,7 @@ void PrintHelpMenu(const char* arg0)
     printf("        -h --help        print this help\n");
     printf("        -f --fullscreen  fullscreen window\n");
     printf("        -g --halfscreen  halfscreen window\n");
+    printf("        -s --splitscreen split screen local coop\n");
     printf("        -v --vsync       enable vsync\n");
     printf("        -p --profiler       enable profiler\n");
     printf("\n");
@@ -78,17 +78,17 @@ void SetStartScreenSize()
 {
     SDL_DisplayMode displayMode;
     SDL_GetCurrentDisplayMode(0, &displayMode);
-    screenDimensions.x = displayMode.w;
-    screenDimensions.y = displayMode.h;
+    screen_dimensions.x = displayMode.w;
+    screen_dimensions.y = displayMode.h;
     if (halfscreen)
     {
-        screenDimensions.x /= 2;
-        screenDimensions.y /= 2;
+        screen_dimensions.x /= 2;
+        screen_dimensions.y /= 2;
     }
 #ifdef __EMSCRIPTEN__
     int2 canvas_size = get_canvas_size();
     printf("    Canvas Screen Dimensions: %ix%i\n", canvas_size.x, canvas_size.y);
-    screenDimensions = canvas_size;
+    screen_dimensions = canvas_size;
 #endif
 }
 
@@ -100,7 +100,7 @@ void print_sdl()
     printf("    Platform:        %s\n", SDL_GetPlatform());
     printf("    CPU Count:       %d\n", SDL_GetCPUCount());
     printf("    System RAM:      %d MB\n", SDL_GetSystemRAM());
-    printf("    Screen Dimensions: %ix%i\n", screenDimensions.x, screenDimensions.y);
+    printf("    Screen Dimensions: %ix%i\n", screen_dimensions.x, screen_dimensions.y);
     printf("    Supports SSE:    %s\n", SDL_HasSSE() ? "true" : "false");
     printf("    Supports SSE2:   %s\n", SDL_HasSSE2() ? "true" : "false");
     printf("    Supports SSE3:   %s\n", SDL_HasSSE3() ? "true" : "false");
@@ -181,11 +181,11 @@ SDL_Window* SpawnWindowSDL(bool fullscreen)
     int displays = SDL_GetNumVideoDisplays();
     if (displays > 1 && window_index != -1 && window_index < displays)
     {
-        app_position.x = screenDimensions.x * window_index;
+        app_position.x = screen_dimensions.x * window_index;
     }
     SDL_Window* window = SDL_CreateWindow("Zoxel",
         app_position.x, app_position.y,
-        screenDimensions.x, screenDimensions.y, windowFlags);
+        screen_dimensions.x, screen_dimensions.y, windowFlags);
     if (window == NULL)
     {
         SDL_Quit();
@@ -257,13 +257,13 @@ void on_viewport_resized(ecs_world_t *world, int width, int height)
     #ifdef debug_viewport_resize
     printf("Viewport was resized [%ix%i]\n", width, height);
     #endif
-    screenDimensions.x = width;
-    screenDimensions.y = height;
-    if(screenDimensions.y <= 0)
+    screen_dimensions.x = width;
+    screen_dimensions.y = height;
+    if(screen_dimensions.y <= 0)
     {
-        screenDimensions.y = 1;
+        screen_dimensions.y = 1;
     }
-    aspectRatio = ((float)screenDimensions.x) / ((float)screenDimensions.y);
+    aspectRatio = ((float)screen_dimensions.x) / ((float)screen_dimensions.y);
     resize_viewports(width, height);
     resize_cameras(width, height);
     uis_on_viewport_resized(world, width, height);
@@ -317,6 +317,10 @@ int process_arguments(int argc, char* argv[])
         {
             halfscreen = true;
         }
+        if (strcmp(argv[i], "-s") == 0 || strcmp(argv[i], "--splitscreen") == 0)
+        {
+            is_split_screen = true;
+        }
         if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--vsync") == 0)
         {
             vsync = true;
@@ -339,7 +343,7 @@ int process_arguments(int argc, char* argv[])
 bool update_web_canvas(ecs_world_t *world)
 {
     int2 canvas_size = get_canvas_size();
-    if (screenDimensions.x != canvas_size.x || screenDimensions.y != canvas_size.y)
+    if (screen_dimensions.x != canvas_size.x || screen_dimensions.y != canvas_size.y)
     {
         printf("Canvas size has changed [%i x %i]\n", canvas_size.x, canvas_size.y);
         on_viewport_resized(world, canvas_size.x, canvas_size.y);
@@ -348,19 +352,3 @@ bool update_web_canvas(ecs_world_t *world)
     return false;
 }
 #endif
-
-// old window code
-// SDL_CreateWindowAndRenderer(screenDimensions.x, screenDimensions.y, 0, &window, &renderer);
-/*windowFlags = SDL_WINDOW_OPENGL;
-SDL_CreateWindow("Zoxel", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenDimensions.x, screenDimensions.y, windowFlags);
-context = SDL_GL_CreateContext(window);
-if (context == NULL)
-{
-    return -1;
-}*/
-// SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-// #ifdef __EMSCRIPTEN__
-//     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-// #else
-//     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-// #endif

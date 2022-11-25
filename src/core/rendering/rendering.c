@@ -6,6 +6,7 @@
 // used atm for rendering
 float4x4 main_camera_matrix; 
 float4x4 ui_camera_matrix; 
+float4x4 main_camera_matrix2;
 // sub modules
 #include "opengl/opengl.c"
 #include "core/rendering_core.c"

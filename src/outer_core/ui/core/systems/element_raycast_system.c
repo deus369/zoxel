@@ -48,7 +48,7 @@ void ElementRaycastSystem(ecs_iter_t *it)
                         canvasPixelPosition.x, canvasPixelPosition.y,
                         raycaster->value.x, raycaster->value.y,
                         pixelSize.x, pixelSize.y, was_raycasted ? "true" : "false",
-                        screenDimensions.x, screenDimensions.y);
+                        screen_dimensions.x, screen_dimensions.y);
                     #endif
                 }
                 /*if (was_raycasted)

@@ -1,7 +1,9 @@
 #ifndef zoxel_cameras
 #define zoxel_cameras
 
-ecs_entity_t cameras[2];
+int main_cameras_count = 1;
+ecs_entity_t main_cameras[8];
+ecs_entity_t ui_cameras[1];
 // -=- Tags -=-
 ECS_DECLARE(Camera);
 ECS_DECLARE(CameraFollower2D);  // a tag for a camera that follows a Character2D
@@ -12,6 +14,7 @@ zoxel_component(ProjectionMatrix, float4x4);
 zoxel_component(ViewMatrix, float4x4);
 //! Has dimensions of the camera viewport screen. Used to calculate a camera frustrum.
 zoxel_component(ScreenDimensions, int2);
+zoxel_component(ScreenPosition, int2);
 //! Used to calculate a camera frustrum.
 zoxel_component(FieldOfView, float);
 //! A link to a Camera
@@ -30,9 +33,15 @@ zoxel_component(FreeRoam, unsigned char);
 #include "systems/view_matrix_system.c"
 #include "systems/camera2D_follow_system.c"
 
+void set_main_cameras(int new_count)
+{
+    main_cameras_count = new_count;
+    // main_cameras = ecs_entity_t[new_count];
+}
+
 void set_mouse_mode()
 {
-    ecs_entity_t main_camera = get_main_camera();
+    ecs_entity_t main_camera = main_cameras[0]; //  get_main_camera();
     if (!ecs_is_valid(world, main_camera))
     {
         return;
@@ -50,7 +59,7 @@ void set_mouse_mode()
     SDL_SetRelativeMouseMode(constrain_mouse);  //! Locks Main Mouse.
     if (constrain_mouse)
     {
-        SDL_WarpMouseInWindow(main_window, screenDimensions.x / 2, screenDimensions.y / 2);
+        SDL_WarpMouseInWindow(main_window, screen_dimensions.x / 2, screen_dimensions.y / 2);
     }
     // SDL_SetWindowGrab(main_window, constrain_mouse);
 }
@@ -68,6 +77,7 @@ void CamerasImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, ProjectionMatrix);
     ECS_COMPONENT_DEFINE(world, ViewMatrix);
     ECS_COMPONENT_DEFINE(world, ScreenDimensions);
+    ECS_COMPONENT_DEFINE(world, ScreenPosition);
     ECS_COMPONENT_DEFINE(world, FieldOfView);
     ECS_COMPONENT_DEFINE(world, FreeRoam);
     // -=- systems -=-

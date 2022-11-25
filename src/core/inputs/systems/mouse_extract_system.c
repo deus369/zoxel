@@ -47,7 +47,7 @@ void extract_mouse(ecs_world_t *world, SDL_Event event)
             mouse->position = (int2) { event.motion.x, event.motion.y };
             mouse->delta = (int2) { event.motion.xrel, event.motion.yrel };
             //! Reverse mouse position, so bottom is 0 and top is 1.
-            mouse->position.y = screenDimensions.y - mouse->position.y;
+            mouse->position.y = screen_dimensions.y - mouse->position.y;
 #ifdef __EMSCRIPTEN__
             //! Reverse position X in web
             // mouse->position.x = screenDimensions.x - mouse->position.x;

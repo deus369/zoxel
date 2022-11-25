@@ -22,7 +22,7 @@ ecs_entity_t spawn_camera2D_follower(ecs_world_t *world, float3 position, float4
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, camera2D_follower_prefab);
     ecs_set(world, e, Position, { position });
     ecs_set(world, e, Rotation, { rotation });
-    ecs_set(world, e, ScreenDimensions, { { screenDimensions.x, screenDimensions.y } });
+    ecs_set(world, e, ScreenDimensions, { screenDimensions });
     // printf("Spawned Camera [%lu]\n", (long unsigned int) e);
     ecs_defer_end(world);
     return e;
@@ -37,9 +37,9 @@ ecs_entity_t spawn_ui_camera(ecs_world_t *world, int2 screenDimensions)
     ecs_set(world, e, Position, { position });
     ecs_set(world, e, Rotation, { rotation });
     ecs_set(world, e, FieldOfView, { 53.2f });  // fudged this to get ui right... maybe not the best but it works xD
-    ecs_set(world, e, ScreenDimensions, { { screenDimensions.x, screenDimensions.y } });
+    ecs_set(world, e, ScreenDimensions, { screenDimensions });
     // printf("Spawned Camera [%lu]\n", (long unsigned int) e);
-    cameras[1] = e;
     ecs_defer_end(world);
+    ui_cameras[0] = e;
     return e;
 }
