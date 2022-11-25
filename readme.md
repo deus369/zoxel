@@ -48,9 +48,7 @@ It is time for it to set sail again to a custom one, using FLECS for performance
 
 ### ~ = ~ Setting Sail ~ = ~
 
-This was not an easy decision. Flecs has offered me a way out of the Unity IPO mess, and it offers greater levels of freedom over my development.
-
-There are 120k+ lines on the unity ecs codebase, so it will take some time for things to be ported.
+This was not an easy decision. Flecs has offered me a way out of the Unity IPO mess, and it offers greater levels of freedom over my development. There are 120k+ lines on the unity ecs codebase, so it will take some time for things to be ported. 11,093 lines have been written so far, with a great deal of macros to decrease line count.
 
 Try @ itchio [[Le Olde Zoxel](https://deus0.itch.io/zoxel)]
 
