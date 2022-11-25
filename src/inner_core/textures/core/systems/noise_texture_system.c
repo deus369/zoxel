@@ -56,7 +56,7 @@ void GenerateNoise(Texture* texture, const TextureSize *textureSize, bool is_dir
                     texture->value[index].g = 255;
                 }
             }
-            else
+            else if (is_texture_outlines)
             {
                 if (j == 0 || k == 0 || j == textureSize->value.x - 1 || k == textureSize->value.y - 1)
                 {

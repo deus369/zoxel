@@ -11,17 +11,17 @@
 // texture issues
 //  https://www.reddit.com/r/opengl/comments/ydsqkn/textured_square_works_on_pinephone_pro_but_not_pc/
 //  https://github.com/edo9300/edopro/issues/151
-float3 backgroundColor = { 16.0f / 255.0f, 24.0f / 255.0f, 32.0f / 255.0f };
+// float3 backgroundColor = { 16.0f / 255.0f, 24.0f / 255.0f, 32.0f / 255.0f };
+float3 backgroundColor = { 99.0f / 255.0f, 190.0f / 255.0f, 191.0f / 255.0f };
 
 void opengl_clear()
 {
     glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);       // Clears the buffer ?
     glClear(GL_DEPTH_BUFFER_BIT);       // Clears the buffer ?
-    glEnable(GL_DEPTH_TEST);
-    // glDisable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);        // cull for 3D things
     glEnable(GL_CULL_FACE);
-    // glCullFace(GL_BACK);
+    // glCullFace(GL_BACK); // defaults to this
 }
 
 //! Spawns the buffers for a mesh indicies and verts on the gpu.

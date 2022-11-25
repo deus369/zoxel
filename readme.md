@@ -58,8 +58,6 @@ Follow le progress [[Link Tree](https://linktr.ee/lorddeus)]
 
 ![Le Old Zoxel](/screenshots/KEyHna.png?raw=false "Le Old Zoxel")
 
-### Notes
+### Mirrored
 
-Code is now on [[Codeberg](https://codeberg.org/deus/zoxel)]
-
-Also on [[Github](https://github.com/deus369/zoxel)] for visibility.
+Code is on [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.com/deus369/zoxel)].

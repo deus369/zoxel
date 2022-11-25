@@ -50,7 +50,7 @@ void set_chunk_neighbors(ecs_world_t *world, ecs_entity_t e,
     ecs_set(world, e, ChunkNeighbors, { chunkNeighbors.length, chunkNeighbors.value });
 }
 
-    //ecs_entity_t chunk_down,
-    //ecs_entity_t chunk_up,
-    //chunkNeighbors.value[2] = chunk_down;
-    //chunkNeighbors.value[3] = chunk_up;
+//ecs_entity_t chunk_down,
+//ecs_entity_t chunk_up,
+//chunkNeighbors.value[2] = chunk_down;
+//chunkNeighbors.value[3] = chunk_up;

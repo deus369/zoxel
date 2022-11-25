@@ -14,7 +14,11 @@
 // SDL
 #define SDL_IMAGES
 
+
 // -- Tests / Options --
+// queue lengths
+#define maxMeshQueue 4096
+#define maxTextureQueue 4096
 // #define zoxel_test_character2Ds
 #define zoxel_test_cubes
 // #define zoxel_test_cubes_textured    // wip

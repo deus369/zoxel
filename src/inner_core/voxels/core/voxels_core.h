@@ -33,6 +33,8 @@ zoxel_component(AnimateChunk, double);
 // util
 #include "util/voxel_mesh_util.c"
 #include "util/chunk.c"
+#include "util/noise.c"
+#include "util/chunk_build_util.c"
 // prefabs
 #include "prefabs/chunk.c"
 #include "prefabs/voxel_chunk_mesh.c"
