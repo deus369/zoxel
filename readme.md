@@ -16,7 +16,7 @@
 
 - Has a huge roadmap for the future [[Roadmap](documents/todos/todo-main.md)]
 
-![Le New Zoxel](/screenshots/screenshot_2022-11-10_12-03-01.png?raw=false "Le New Zoxel")
+![Le New Zoxel](/screenshots/screen-2022-11-25-18-41-36.jpg?raw=false "Le New Zoxel")
 
 ## How To Build
 
