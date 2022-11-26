@@ -16,4 +16,11 @@ ssh-add $sshname
 
 echo "Agent added."
 
+echo "Testing connection."
+
+ssh -T git@github.com
+
+echo "Tested connection."
+
+
 sleep 10
