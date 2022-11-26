@@ -191,8 +191,9 @@ float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity
 void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, float2 canvasSizef, unsigned char layer)
 {
     float aspectRatio = canvasSizef.x / canvasSizef.y;
+    bool is_valid = ecs_is_valid(world, e);
     // reposition
-    if (ecs_has(world, e, PixelPosition))
+    if (is_valid && ecs_has(world, e, PixelPosition))
     {
         const PixelPosition *pixelPosition = ecs_get(world, e, PixelPosition);
         const Anchor *anchor = ecs_get(world, e, Anchor);
@@ -211,7 +212,7 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, f
         printf("UI doesn't have pixel position: %lu\n", (long int) e);
     }
     //! Resize (if visible)
-    if (ecs_has(world, e, MeshVertices))
+    if (is_valid && ecs_has(world, e, MeshVertices))
     {
         const PixelSize *pixelSize = ecs_get(world, e, PixelSize);
         float2 scaledSize2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
@@ -221,7 +222,7 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, f
         printf("    -> Scaling: [%fx%f]\n", scaledSize2D.x, scaledSize2D.y);
         #endif
     }
-    if (ecs_has(world, e, Children))
+    if (is_valid && ecs_has(world, e, Children))
     {
         layer++;
         const Children *children = ecs_get(world, e, Children);

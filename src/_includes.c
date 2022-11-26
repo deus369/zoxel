@@ -14,7 +14,6 @@
 // SDL
 #define SDL_IMAGES
 
-
 // -- Tests / Options --
 // queue lengths
 #define maxMeshQueue 4096

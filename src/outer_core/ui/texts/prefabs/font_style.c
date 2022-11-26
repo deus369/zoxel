@@ -7,10 +7,11 @@ ecs_entity_t spawn_font_style_prefab(ecs_world_t *world)
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "font_style_prefab");
+    set_unique_entity_name(world, e, "font_style_prefab");
     zoxel_add_tag(world, e, FontStyle);
     zoxel_add(world, e, Children);
-    font_style_prefab = e;
     ecs_defer_end(world);
+    font_style_prefab = e;
     return e;
 }
 
@@ -19,6 +20,7 @@ ecs_entity_t spawn_font_style(ecs_world_t *world)
     ecs_defer_begin(world);
     const int fonts_used = 70;
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, font_style_prefab);
+    set_unique_entity_name(world, e, "font_style");
     Children children = { };
     initialize_memory_component_non_pointer(children, ecs_entity_t, font_styles_length);
     children.value[0] = spawn_font(world, font_question_mark, font_question_mark_length);

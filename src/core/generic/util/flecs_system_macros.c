@@ -92,4 +92,7 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
         [none] texture_tag, [out] TextureDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture);\
 }
 
+#define zoxel_button_system(system, tag)\
+    zoxel_system(world, system, EcsOnValidate, [none] tag, [in] ClickableState);
+
 // EcsPreFrame, EcsOnLoad, EcsPostLoad, EcsPreUpdate, EcsOnUpdate

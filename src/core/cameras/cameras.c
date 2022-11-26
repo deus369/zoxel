@@ -1,8 +1,9 @@
 #ifndef zoxel_cameras
 #define zoxel_cameras
 
+#define max_cameras 16
 int main_cameras_count = 1;
-ecs_entity_t main_cameras[8];
+ecs_entity_t main_cameras[max_cameras];
 ecs_entity_t ui_cameras[1];
 // -=- Tags -=-
 ECS_DECLARE(Camera);
@@ -36,7 +37,6 @@ zoxel_component(FreeRoam, unsigned char);
 void set_main_cameras(int new_count)
 {
     main_cameras_count = new_count;
-    // main_cameras = ecs_entity_t[new_count];
 }
 
 void set_mouse_mode()
@@ -46,9 +46,9 @@ void set_mouse_mode()
     {
         return;
     }
-    const FreeRoam *freeRoam = ecs_get(world, main_camera, FreeRoam);
     bool constrain_mouse;
-    if (freeRoam->value == 1)
+    if (ecs_has(world, main_camera, FreeRoam) &&
+        ecs_get(world, main_camera, FreeRoam)->value == 1)
     {
         constrain_mouse = true;
     }

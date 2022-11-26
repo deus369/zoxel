@@ -5,6 +5,43 @@ To-Do Main
 
 -----
 
+`New Quick n' Dirty`
+
+- [ ] Move main menu stuff from window  into main menu / game ui module
+- [ ] Fix bug - repositioning ui on resize canvas broken
+- [ ] 3D lines
+    - grid as well XZ
+- [ ] Octree data for chunks
+    - generate terrain in octree, opening only some nodes
+    - debug nodes with lines
+    - Render systems for octree
+    - Start with 2x2x2 node
+- [ ] Decrease octree max division as you go further from center chunk
+    - highest definition around cameras
+    - update chunk detail definition event, will reproduce the mesh
+- [ ] Camera - ChunkStream - Move chunk event
+- [ ] Main Menu
+    - Play button - to delete the AI camera and create the free roam one
+    - Exit button - close game
+    - Press escape in game to go back to main menu
+    - Change sky? Camera Sky Color?
+- [ ] Generate multiple dirt textures and randomize the uvs per voxel
+- [ ] Test out smoothish like meshes for voxel grid
+- [ ] Fix Render Ordering of UI
+    - supporting layers (text over header, etc)
+- [ ] Per voxel material / texture support
+    - [ ] Support for Transparent Chunk Materials
+    - [ ] Fix Render Ordering of Transparent Chunk Materials
+- [ ] Raycast voxels
+    - left click to erase
+    - right click to place
+- [ ] Biomes
+- [ ] Overworld Dungeons
+- [ ] Overworld Towns
+- [ ] Cave Systems
+
+-----
+
 `Doing List`
 
 - [ ] Current [Voxels](todo-voxels.md)
@@ -53,12 +90,8 @@ Extra
     - http://realtimecollisiondetection.net/blog/?p=86
     - https://paroj.github.io/gltut/Positioning/Tut05%20Overlap%20and%20Depth%20Buffering.html
 
-- [ ] Load Shaders as entities
-    - Dispose of them when closing game
-    - Keep generic enough to use, so I can just load a list of files from resources
-
 - [ ] 3D Particles
-    - [ ] Particle3D with 3D mesh
+    - [ ] Particle3D with 3D cube mesh
 
 - [ ] Line 3Ds! Grid3D :D
 
@@ -71,6 +104,11 @@ Extra
     - [ ] Jump ability
     - [ ] Textured Cube - Drawing
     - [ ] First person camera on character3D
+
+- [ ] Load Shaders as entities
+    - load with filenames
+    - Dispose of them when closing game
+    - Keep generic enough to use, so I can just load a list of files from resources
 
 -----
 

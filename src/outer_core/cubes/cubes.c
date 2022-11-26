@@ -4,6 +4,8 @@
 const int custom_mesh_spawn_count = 64;
 const float2 spawnBounds = { 2.2f, 1.2f };
 // prefabs
+ecs_entity_t prefab_cube;
+ecs_entity_t prefab_cube_textured;
 #include "prefabs/cube.c"
 #include "prefabs/cube_textured.c"
 

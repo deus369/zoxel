@@ -15,7 +15,7 @@ void UIImport(ecs_world_t *world)
     ECS_MODULE(world, UI);
     ECS_IMPORT(world, UICore)
     ECS_IMPORT(world, Texts);
-    ECS_IMPORT(world, UIElements);
+    ECS_IMPORT(world, Elements);
     ECS_IMPORT(world, UIGame);
 }
 #endif

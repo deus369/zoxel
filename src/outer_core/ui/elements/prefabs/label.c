@@ -4,8 +4,8 @@ ecs_entity_t spawn_prefab_label(ecs_world_t *world)
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, zext_prefab);
+    // set_unique_entity_name(world, e, "prefab_label");
     ecs_add_id(world, e, EcsPrefab);
-    // ecs_set_name(world, e, "prefab_label");
     zoxel_add_tag(world, e, Label);
     #ifdef zoxel_debug_prefabs
     printf("spawn_prefab label [%lu].\n", (long int) (e));
@@ -23,5 +23,6 @@ ecs_entity_t spawn_label(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t p
         position, anchor,
         text, font_size, layer,
         parent_position2D, parent_pixel_size);
+    set_unique_entity_name(world, e, "label");
     return e;
 }

@@ -33,5 +33,4 @@ void CoreImport(ecs_world_t *world)
     }
     ECS_IMPORT(world, Cameras);
 }
-
 #endif

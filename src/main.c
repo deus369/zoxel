@@ -15,7 +15,7 @@ void spawn_game(ecs_world_t *world)
         screen_dimensions2.x /= 2;
         set_main_cameras(2);
     }
-    main_cameras[0] = spawn_free_camera(world, (float3) { 0, 3.6f, 0.62f },
+    main_cameras[0] = spawn_base_camera(world, (float3) { 0, 3.6f, 0.62f },
         quaternion_identity(), screen_dimensions2, (int2) { });
     if (is_split_screen)
     {
@@ -34,8 +34,8 @@ void spawn_game(ecs_world_t *world)
     #endif
     // spawn_player_character3D(world, get_main_camera());
     // spawn_main_menu(world, "Zoxel");
+    spawn_zoxel_window(world);
     fps_display = spawn_fps_display(world, main_canvas, 32);
-    // spawn_zoxel_window(world);
 }
 
 //! The main update loop.

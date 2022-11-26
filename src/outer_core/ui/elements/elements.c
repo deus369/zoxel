@@ -12,6 +12,8 @@ ECS_DECLARE(Window);
 ECS_DECLARE(Header);
 //! A ui window close button.
 ECS_DECLARE(CloseButton);
+ECS_DECLARE(PlayGameButton);
+ECS_DECLARE(ExitGameButton);
 // components
 // util
 // prefabs
@@ -23,14 +25,16 @@ ECS_DECLARE(CloseButton);
 #include "systems/window_close_system.c"
 
 //! The Elements contains various things I can use in my uis.
-void UIElementsImport(ecs_world_t *world)
+void ElementsImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, UIElements);
+    ECS_MODULE(world, Elements);
     ECS_TAG_DEFINE(world, Label);
     ECS_TAG_DEFINE(world, Button);
-    ECS_TAG_DEFINE(world, CloseButton);
     ECS_TAG_DEFINE(world, Window);
     ECS_TAG_DEFINE(world, Header);
+    ECS_TAG_DEFINE(world, CloseButton);
+    ECS_TAG_DEFINE(world, PlayGameButton);
+    ECS_TAG_DEFINE(world, ExitGameButton);
     // systems
     zoxel_system(world, WindowCloseSystem, EcsOnValidate, [none] CloseButton, [in] ClickableState);
     // prefabs

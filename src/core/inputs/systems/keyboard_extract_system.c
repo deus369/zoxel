@@ -102,96 +102,36 @@ void extract_keyboard(ecs_world_t *world, SDL_Event event)
             key_case(SDLK_RETURN, &keyboard->enter)
             key_case(SDLK_LALT, &keyboard->left_alt)
             key_case(SDLK_RALT, &keyboard->right_alt)
-            case SDLK_a:
-                SetKey(&keyboard->a, eventType);
-                break;
-            case SDLK_b:
-                SetKey(&keyboard->b, eventType);
-                break;
-            case SDLK_c:
-                SetKey(&keyboard->c, eventType);
-                break;
-            case SDLK_d:
-                SetKey(&keyboard->d, eventType);
-                break;
-            case SDLK_e:
-                SetKey(&keyboard->e, eventType);
-                break;
-            case SDLK_f:
-                SetKey(&keyboard->f, eventType);
-                break;
-            case SDLK_g:
-                SetKey(&keyboard->g, eventType);
-                break;
-            case SDLK_h:
-                SetKey(&keyboard->h, eventType);
-                break;
-            case SDLK_i:
-                SetKey(&keyboard->i, eventType);
-                break;
-            case SDLK_j:
-                SetKey(&keyboard->j, eventType);
-                break;
-            case SDLK_k:
-                SetKey(&keyboard->k, eventType);
-                break;
-            case SDLK_l:
-                SetKey(&keyboard->l, eventType);
-                break;
-            case SDLK_m:
-                SetKey(&keyboard->m, eventType);
-                break;
-            case SDLK_n:
-                SetKey(&keyboard->n, eventType);
-                break;
-            case SDLK_o:
-                SetKey(&keyboard->o, eventType);
-                break;
-            case SDLK_p:
-                SetKey(&keyboard->p, eventType);
-                break;
-            case SDLK_q:
-                SetKey(&keyboard->q, eventType);
-                break;
-            case SDLK_r:
-                SetKey(&keyboard->r, eventType);
-                break;
-            case SDLK_s:
-                SetKey(&keyboard->s, eventType);
-                break;
-            case SDLK_t:
-                SetKey(&keyboard->t, eventType);
-                break;
-            case SDLK_u:
-                SetKey(&keyboard->u, eventType);
-                break;
-            case SDLK_v:
-                SetKey(&keyboard->v, eventType);
-                break;
-            case SDLK_w:
-                SetKey(&keyboard->w, eventType);
-                break;
-            case SDLK_x:
-                SetKey(&keyboard->x, eventType);
-                break;
-            case SDLK_y:
-                SetKey(&keyboard->y, eventType);
-                break;
-            case SDLK_z:
-                SetKey(&keyboard->z, eventType);
-                break;
-            case SDLK_DOWN:
-                SetKey(&keyboard->down, eventType);
-                break;
-            case SDLK_UP:
-                SetKey(&keyboard->up, eventType);
-                break;
-            case SDLK_LEFT:
-                SetKey(&keyboard->left, eventType);
-                break;
-            case SDLK_RIGHT:
-                SetKey(&keyboard->right, eventType);
-                break;
+            key_case(SDLK_DOWN, &keyboard->down)
+            key_case(SDLK_UP, &keyboard->up)
+            key_case(SDLK_LEFT, &keyboard->left)
+            key_case(SDLK_RIGHT, &keyboard->right)
+            key_case(SDLK_a, &keyboard->a)
+            key_case(SDLK_b, &keyboard->b)
+            key_case(SDLK_c, &keyboard->c)
+            key_case(SDLK_d, &keyboard->d)
+            key_case(SDLK_e, &keyboard->e)
+            key_case(SDLK_f, &keyboard->f)
+            key_case(SDLK_g, &keyboard->g)
+            key_case(SDLK_h, &keyboard->h)
+            key_case(SDLK_i, &keyboard->i)
+            key_case(SDLK_j, &keyboard->j)
+            key_case(SDLK_k, &keyboard->k)
+            key_case(SDLK_l, &keyboard->l)
+            key_case(SDLK_m, &keyboard->m)
+            key_case(SDLK_n, &keyboard->n)
+            key_case(SDLK_o, &keyboard->o)
+            key_case(SDLK_p, &keyboard->p)
+            key_case(SDLK_q, &keyboard->q)
+            key_case(SDLK_r, &keyboard->r)
+            key_case(SDLK_s, &keyboard->s)
+            key_case(SDLK_t, &keyboard->t)
+            key_case(SDLK_u, &keyboard->u)
+            key_case(SDLK_v, &keyboard->v)
+            key_case(SDLK_w, &keyboard->w)
+            key_case(SDLK_x, &keyboard->x)
+            key_case(SDLK_y, &keyboard->y)
+            key_case(SDLK_z, &keyboard->z)
             default:
                 return;
         }

@@ -5,6 +5,7 @@ ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, int3 size)
     int2 texture_size = { 16, 16 };
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, voxel_prefab);
+    set_unique_entity_name(world, e, "prefab_terrain_chunk");
     ecs_add_id(world, e, EcsPrefab);
     ecs_set_name(world, e, "prefab_terrain_chunk");
     zoxel_set(world, e, ChunkSize, { size });
@@ -26,6 +27,7 @@ ecs_entity_t spawn_terrain_chunk(ecs_world_t *world, ecs_entity_t prefab,
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
+    set_unique_entity_name(world, e, "terrain_chunk");
     ecs_set(world, e, ChunkPosition, { chunk_position });
     ecs_set(world, e, Position, { position });
     ecs_set(world, e, Scale1D, { scale });

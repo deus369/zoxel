@@ -5,6 +5,7 @@ ecs_entity_t spawn_zext_prefab(ecs_world_t *world)
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "zext_prefab");
+    set_unique_entity_name(world, e, "zext_prefab");
     #ifdef zoxel_debug_prefabs
     printf("spawn_prefab zext [%lu].\n", (long int) (e));
     #endif
@@ -30,6 +31,7 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab,
     int textLength = strlen(text);
     int2 zext_size = (int2) { font_size * textLength, font_size };
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
+    set_unique_entity_name(world, e, "zext");
     #ifdef zoxel_debug_spawns
     printf("Spawned zext [%lu]\n", (long int) e);
     #endif

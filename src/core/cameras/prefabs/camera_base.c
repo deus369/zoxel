@@ -5,6 +5,7 @@ void spawn_camera_base_prefab(ecs_world_t *world)
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "base_camera_prefab");
+    set_unique_entity_name(world, e, "base_camera_prefab");
     #ifdef zoxel_debug_prefabs
     printf("spawn_prefab camera_base [%lu].\n", (long int) (e));
     #endif
@@ -26,6 +27,7 @@ ecs_entity_t spawn_base_camera(ecs_world_t *world, float3 position, float4 rotat
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, base_camera_prefab);
+    set_unique_entity_name(world, e, "base_camera");
     ecs_set(world, e, Position, { position });
     ecs_set(world, e, Rotation, { rotation });
     ecs_set(world, e, ScreenDimensions, { screen_dimensions });
@@ -39,6 +41,7 @@ ecs_entity_t spawn_free_camera(ecs_world_t *world, float3 position, float4 rotat
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, base_camera_prefab);
+    set_unique_entity_name(world, e, "free_camera");
     ecs_set(world, e, Position, { position });
     ecs_set(world, e, Rotation, { rotation });
     ecs_set(world, e, ScreenDimensions, { screen_dimensions });

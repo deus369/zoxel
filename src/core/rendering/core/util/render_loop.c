@@ -1,3 +1,4 @@
+// timing the render loop
 #ifdef zoxel_time_render_loop
 #include <time.h>
 const double min_render_loop_timing = 0;    // set to higher to check for spikes

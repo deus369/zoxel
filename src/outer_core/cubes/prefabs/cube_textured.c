@@ -1,5 +1,3 @@
-ecs_entity_t prefab_cube_textured;
-
 extern void add_texture(ecs_world_t *world, ecs_entity_t e, int2 textureSize);
 
 ecs_entity_t spawn_prefab_cube_textured(ecs_world_t *world)

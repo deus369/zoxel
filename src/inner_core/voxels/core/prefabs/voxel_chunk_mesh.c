@@ -4,10 +4,6 @@ ecs_entity_t spawn_voxel_chunk_mesh_prefab(ecs_world_t *world)
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, ""); // , "prefab_cube");
-    //ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_cube);
-    //ecs_add_id(world, e, EcsPrefab);
-    //ecs_set_name(world, e, "voxel_prefab");
-    // mesh3D entity components
     #ifdef zoxel_transforms3D
     add_transform3Ds(world, e);
     zoxel_set(world, e, Scale1D, { 0.05f });

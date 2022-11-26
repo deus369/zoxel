@@ -12,6 +12,8 @@ void open_ecs(int argc, char* argv[], bool profiler)
         #if defined (FLECS_REST) && defined (FLECS_MONITOR)
         ECS_IMPORT(world, FlecsMonitor); 
         ecs_singleton_set(world, EcsRest, {0});
+        #else
+        printf("Error: Cannot import FlecsMonitor. Make sure to define FLECS_REST & FLECS_MONITOR.\n");
         #endif
     }
     // enable multi threading
