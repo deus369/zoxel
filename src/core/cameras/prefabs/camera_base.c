@@ -33,6 +33,9 @@ ecs_entity_t spawn_base_camera(ecs_world_t *world, float3 position, float4 rotat
     ecs_set(world, e, ScreenDimensions, { screen_dimensions });
     ecs_set(world, e, ScreenPosition, { screen_position });
     ecs_defer_end(world);
+    #ifdef zoxel_debug_spawns
+    printf("Spawned base camera [%lu]\n", (long int) e);
+    #endif
     return e;
 }
 
@@ -48,7 +51,9 @@ ecs_entity_t spawn_free_camera(ecs_world_t *world, float3 position, float4 rotat
     ecs_set(world, e, ScreenPosition, { screen_position });
     zoxel_add_tag(world, e, EulerOverride);
     zoxel_set(world, e, FreeRoam, { 0 });
-    // printf("Spawned Camera [%lu]\n", (long unsigned int) e);
     ecs_defer_end(world);
+    #ifdef zoxel_debug_spawns
+    printf("Spawned Free Camera [%lu]\n", (long int) e);
+    #endif
     return e;
 }

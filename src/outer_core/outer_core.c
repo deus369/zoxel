@@ -7,6 +7,12 @@
 #include "particles/particles.c"
 #include "ui/ui.c"
 
+void update_outer_core()
+{
+    ecs_run(world, ecs_id(ElementMeshSystem), 0, NULL); // creates opengl buffers
+    iterate_fps_time();
+}
+
 void OuterCoreImport(ecs_world_t *world)
 {
     ECS_MODULE(world, OuterCore);

@@ -16,8 +16,6 @@ ECS_DECLARE(Element);
 ECS_DECLARE(Canvas);
 ECS_DECLARE(ElementRaycaster);
 // components
-zoxel_component(PixelPosition, int2);
-zoxel_component(PixelSize, int2);
 zoxel_component(CanvasPixelPosition, int2);
 //! A 2D Layer for a entity. (make generic 2D component instead of just UI)
 zoxel_component(ElementLayer, unsigned char);
@@ -34,6 +32,7 @@ zoxel_component(CanvasLink, ecs_entity_t);
 #include "systems/element_raycast_system.c"
 #include "systems/element_selected_system.c"
 #include "systems/element_activate_system.c"
+// render initialize systems
 #include "systems/element_mesh_system.c"
 
 //! The UI contains ways to interact with 2D objects.
@@ -47,8 +46,6 @@ void UICoreImport(ecs_world_t *world)
     ECS_TAG_DEFINE(world, Element);
     ECS_TAG_DEFINE(world, Canvas);
     ECS_TAG_DEFINE(world, ElementRaycaster);
-    ECS_COMPONENT_DEFINE(world, PixelPosition);
-    ECS_COMPONENT_DEFINE(world, PixelSize);
     ECS_COMPONENT_DEFINE(world, CanvasPixelPosition);
     ECS_COMPONENT_DEFINE(world, Anchor);
     ECS_COMPONENT_DEFINE(world, CanvasLink);

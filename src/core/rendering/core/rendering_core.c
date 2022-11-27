@@ -37,6 +37,7 @@ zoxel_component(EternalRotation, float4);
 // update systems
 #include "systems/mesh_update_system.c"
 #include "systems/mesh_uvs_update_system.c"
+zoxel_reset_system(MeshDirtySystem, MeshDirty);
 // render 2D systems
 #include "render2D_systems/render2D_system.c"
 #include "render2D_systems/render2D_mesh_system.c"
@@ -45,9 +46,10 @@ zoxel_component(EternalRotation, float4);
 #include "render3D_systems/render3D_system.c"
 #include "render3D_systems/render3D_uvs_system.c"
 #include "render3D_systems/render3D_instance_system.c"
-zoxel_reset_system(MeshDirtySystem, MeshDirty);
 // util
 #include "util/render_loop.c"
+
+
 
 //! The rendering core Sub Module.
 /**
