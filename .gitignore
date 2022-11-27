@@ -1,6 +1,6 @@
 #ignore zoxel build
-zoxel
-zoxel-dev
+/zoxel
+/zoxel-dev
 
 #ignore web-dev build
 web-demo-dev
