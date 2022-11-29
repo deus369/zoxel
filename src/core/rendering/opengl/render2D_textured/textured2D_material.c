@@ -1,11 +1,3 @@
-//! Functions for handling textured2D_material (SquareTextured2D)
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
-
 //! Keep property reference in material, upon creation.
 // #define zoxel_catch_opengl_errors
 // first, get working on pc

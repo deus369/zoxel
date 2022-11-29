@@ -1,10 +1,3 @@
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
-
 // #define zoxel_catch_opengl_errors
 // first, get working on pc
 //  then, move texture updating to the entity system

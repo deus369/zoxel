@@ -1,5 +1,3 @@
-#include <stdlib.h>
-
 // the ui text entity that holds zigels.
 ecs_entity_t spawn_zext_prefab(ecs_world_t *world)
 {

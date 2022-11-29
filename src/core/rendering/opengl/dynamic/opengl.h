@@ -1,7 +1,5 @@
 #ifndef DEMO_OPENGL_H_INCLUDED
 #define DEMO_OPENGL_H_INCLUDED
-#include <stdbool.h>
-#include <SDL2/SDL_opengl.h>
 
 // List of required OpenGL functions and their corresponding typedefs (defined
 // somewhere under <SDL2/SDL_opengl.h>. The "OPENGL_FUNCTIONS" macro will do

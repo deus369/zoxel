@@ -19,7 +19,7 @@ sh autogen.sh
 make
 make install
 
-if [[ $LD_LIBRARY_PATH =! /usr/local/lib ]]; then
+if [[ $LD_LIBRARY_PATH =~ /usr/local/lib ]]; then
 	echo Path [/usr/local/lib] already exists in LD_LIBRARY_PATH
 else
 	echo Adding Path [/usr/local/lib] to LD_LIBRARY_PATH

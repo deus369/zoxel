@@ -1,6 +1,21 @@
 #ifndef zoxel_core
 #define zoxel_core
 
+//! Included Libraries for App
+#include <stdlib.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
+#ifdef SDL_IMAGES
+#include <SDL2/SDL_image.h>
+#endif
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 // Settings for main
 bool headless = false;
 bool running = true;

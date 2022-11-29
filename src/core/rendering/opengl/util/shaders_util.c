@@ -1,10 +1,10 @@
-#include <stdbool.h>
+/*#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
+#include <SDL2/SDL_opengl.h>*/
 
 // things
 const bool isForceDefaults = false;
