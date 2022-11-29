@@ -18,7 +18,8 @@ This is for Debian based Linux systems.
 
 Linux [Native]
 ```
-sudo apt install make libsdl2-dev libsdl2-image-dev
+sudo apt install make libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev
+
 make
 ```
 
@@ -27,7 +28,7 @@ make
 [mingw-w64](http://mingw-w64.org/doku.php) is used to cross-compile the project from a unix-like system.
 
 ```
-sudo apt install libsdl2-dev libsdl2-image-dev mingw-w64 make tar wget
+sudo apt install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev mingw-w64 make tar wget
 make -f MakefileToWindows
 ```
 

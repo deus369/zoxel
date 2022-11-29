@@ -39,9 +39,6 @@ echo "Commit message is [$commitmsg]"
 # add all to changed list
 git add -A
 
-# for new files
-git add . 
-
 # create commit
 git commit -m "$commitmsg"
 

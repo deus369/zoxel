@@ -16,6 +16,7 @@ CFLAGS += -D NDEBUG		# No Debugging
 LDLIBS = -lGL				# OpenGL library
 LDLIBS += -lSDL2			# SDL2 Library
 LDLIBS += -lSDL2_image		# SDL2 Image Library
+LDLIBS += -lSDL2_mixer		# SDL2 Audio Library
 # LDLIBS += -SDL2_IMAGE_FORMATS='["png"]'
 LDLIBS += -lm				# for math.h
 # OBJS defines all the files used to compile the final Zoxel binary.
