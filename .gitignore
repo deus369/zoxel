@@ -1,6 +1,7 @@
 #ignore zoxel build
 /zoxel
 /zoxel-dev
+/sound_demo
 
 #ignore web-dev build
 web-demo-dev

@@ -1,21 +1,17 @@
 #! /bin/bash
 
+cd ~
 echo Installing latest sdl mixer library
-
 echo Removing any leftover files
-rm master.zip
-rm -r SDL_mixer-main
 
-wget github.com/libsdl-org/SDL_mixer/archive/master.zip
+# does git clone over top of old one?
+git clone https://github.com/libsdl-org/SDL_mixer
 
-echo unzipping
-unzip master.zip
-rm master.zip
-
-echo building sdl mixer
-cd SDL_mixer-main
+cd SDL_mixer
 sh autogen.sh
-./configure
+mkdir build
+cd build
+../configure
 make
 make install
 
@@ -26,9 +22,27 @@ else
 	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 fi
 
-echo Removing install folder SDL_mixer-main
-rm -r SDL_mixer-main
+# cd ~
+# echo Removing install folder SDL_mixer
+# rm -r SDL_mixer
 
 echo Finished installing latest sdl mixer library.
 
 sleep 20
+
+
+# rm master.zip
+# rm -r SDL_mixer-main
+
+# wget github.com/libsdl-org/SDL_mixer/archive/master.zip
+
+# echo unzipping
+# unzip master.zip
+# rm master.zip
+
+# echo building sdl mixer
+# cd SDL_mixer-main
+# sh autogen.sh
+# ./configure
+# make
+# make install
