@@ -1,20 +1,27 @@
 #! /bin/bash
 
+echo Cloning latest sdl mixer library to home
 cd ~
-echo Installing latest sdl mixer library
-echo Removing any leftover files
-
-# does git clone over top of old one?
 git clone https://github.com/libsdl-org/SDL_mixer
 
+echo Generating configuration files
 cd SDL_mixer
 sh autogen.sh
+
+echo Making build folder sub directory
 mkdir build
 cd build
+
+echo Configuring build folder
 ../configure
+
+echo Making SDL_mixer
 make
+
+echo Installing SDL_mixer
 make install
 
+echo Checking Pathing for static linking of SDL_mixer
 if [[ $LD_LIBRARY_PATH =~ /usr/local/lib ]]; then
 	echo Path [/usr/local/lib] already exists in LD_LIBRARY_PATH
 else
@@ -28,21 +35,4 @@ fi
 
 echo Finished installing latest sdl mixer library.
 
-sleep 20
-
-
-# rm master.zip
-# rm -r SDL_mixer-main
-
-# wget github.com/libsdl-org/SDL_mixer/archive/master.zip
-
-# echo unzipping
-# unzip master.zip
-# rm master.zip
-
-# echo building sdl mixer
-# cd SDL_mixer-main
-# sh autogen.sh
-# ./configure
-# make
-# make install
+# sleep 20
