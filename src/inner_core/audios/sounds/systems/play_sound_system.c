@@ -12,7 +12,7 @@ void PlaySoundSystem(ecs_iter_t *it)
         const PlaySound *playSound = &playSounds[i];
         if (playSound->value == 1)
         {
-            // play sound
+            printf("Played sound 0.\n");
             Mix_PlayChannel( -1, sounds[0], 0 );
         }
     }
