@@ -19,6 +19,11 @@ void update_inner_core()
     }
 }
 
+void close_inner_core()
+{
+    close_audio();
+}
+
 void InnerCoreImport(ecs_world_t *world)
 {
     ECS_MODULE(world, InnerCore);

@@ -77,6 +77,10 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it)
                 fps_display = 0;
             }
         }
+        else if (keyboard->c.wasPressedThisFrame)
+        {
+            spawn_sound(it->world);
+        }
     }
 }
 ECS_SYSTEM_DECLARE(Player2DTestMainThreadSystem);

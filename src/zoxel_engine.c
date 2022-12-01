@@ -16,6 +16,7 @@ int begin(int argc, char* argv[])
 void end()
 {
     close_core();
+    close_inner_core();
 }
 
 void update()

@@ -35,7 +35,7 @@ void reset_keyboard(ecs_world_t *world)
     reset_key(&keyboard->right_alt);
     reset_key(&keyboard->a);
     reset_key(&keyboard->b);
-    reset_key(&keyboard->r);
+    reset_key(&keyboard->c);
     reset_key(&keyboard->d);
     reset_key(&keyboard->e);
     reset_key(&keyboard->f);

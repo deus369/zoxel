@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include<unistd.h>
 
+bool quit = false;
 const int sounds_length = 4;
 const char *sound_file_names[] = {
 	"resources/sounds/scratch.wav",
@@ -14,7 +15,6 @@ const char *sound_file_names[] = {
 	"resources/sounds/medium.wav",
 	"resources/sounds/low.wav"
 };
-bool quit = false;
 Mix_Chunk *sounds[4];
 const char *music_file_name = "resources/musics/beat.wav";
 Mix_Music *gMusic = NULL;

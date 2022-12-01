@@ -186,11 +186,24 @@ void system_name(ecs_iter_t *it)\
     }\
 }\
 ECS_SYSTEM_DECLARE(system_name);
+// printf("Component has reset [%lu].\n", (long int) it->entities[i]);
+ 
+/**
+Chose one pipeline tag for each type of system.
+    EcsOnLoad
+    EcsPostLoad
+    EcsPreUpdate
+    EcsOnUpdate
+    EcsOnValidate
+    EcsPostUpdate
+    EcsPreStore
+    EcsOnStore
+*/
 
+//! Used to respond to first level events.
+#define zoxel_event_respond_system_main_thread(system_name, tag_name, event_component_name)\
+zoxel_system_main_thread(world, system_name, EcsPreStore, [out] tag_name, [in] event_component_name);
 
-//    printf("Component has reset [%lu].\n", (long int) it->entities[i]);
-
+//! Used at the end to reset systems.
 #define zoxel_reset_system_define(system_name, component_name)\
-zoxel_system_main_thread(world, system_name, EcsPostUpdate, [out] component_name);
-
-// EcsPostUpdate, EcsPreStore, EcsPostFrane
+zoxel_system_main_thread(world, system_name, EcsOnStore, [out] component_name);
