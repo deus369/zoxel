@@ -2,14 +2,15 @@
 #define zoxel_sounds
 
 // resources
-const int sounds_length = 4;
+#define static_sounds_length 5
 const char *sound_file_names[] = {
+    "resources/sounds/bloop.wav",
 	"resources/sounds/scratch.wav",
 	"resources/sounds/high.wav",
 	"resources/sounds/medium.wav",
 	"resources/sounds/low.wav"
 };
-Mix_Chunk *sounds[4];
+Mix_Chunk *sounds[static_sounds_length];
 // Tags
 ECS_DECLARE(Sound);
 // components
@@ -31,7 +32,7 @@ zoxel_reset_system(PlaySoundResetSystem, PlaySound)
 bool load_static_sounds()
 {
 	bool success = true;
-	for (int i = 0; i < sounds_length; i++)
+	for (int i = 0; i < static_sounds_length; i++)
 	{
 		sounds[i] = Mix_LoadWAV(sound_file_names[i]);
 		if(sounds[i] == NULL)
@@ -45,7 +46,7 @@ bool load_static_sounds()
 
 void dispose_static_sounds()
 {
-	for (int i = 0; i < sounds_length; i++)
+	for (int i = 0; i < static_sounds_length; i++)
 	{
 		Mix_FreeChunk(sounds[i]);
 	}
