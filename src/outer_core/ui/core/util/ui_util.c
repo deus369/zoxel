@@ -26,10 +26,18 @@ void add_ui_plus_components(ecs_world_t *world, ecs_entity_t e)
     add_ui_components(world, e);
 }
 
-float2 get_ui_real_position2D(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, int2 local_pixel_position, float2 anchor)
+void add_ui_plus_components_invisible(ecs_world_t *world, ecs_entity_t e)
 {
-    const PixelSize *canvasSize = ecs_get(world, main_canvas, PixelSize);
-    float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
+    add_seed(world, e, 666);
+    add_transform2Ds(world, e);
+    add_ui_components(world, e);
+}
+
+float2 get_ui_real_position2D(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent,
+    int2 local_pixel_position, float2 anchor, int2 canvas_size)
+{
+    // const PixelSize *canvasSize = ecs_get(world, main_canvas, PixelSize);
+    float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
     float aspectRatio = canvasSizef.x / canvasSizef.y;
     float2 position2D;
     if (parent == main_canvas)
@@ -74,7 +82,7 @@ float2 get_ui_real_position2D(ecs_world_t *world, ecs_entity_t e, ecs_entity_t p
 }
 
 float2 initialize_ui_components(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent,
-    int2 local_pixel_position, int2 pixel_size, float2 anchor, unsigned char layer)
+    int2 local_pixel_position, int2 pixel_size, float2 anchor, unsigned char layer, int2 canvas_size)
 {
     if (parent == main_canvas)
     {
@@ -82,10 +90,10 @@ float2 initialize_ui_components(ecs_world_t *world, ecs_entity_t e, ecs_entity_t
         ui_entities_count++;
     }
     // set scale
-    const PixelSize *canvasSize = ecs_get(world, main_canvas, PixelSize);
-    float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
+    // const PixelSize *canvasSize = ecs_get(world, main_canvas, PixelSize);
+    float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
     float aspectRatio = canvasSizef.x / canvasSizef.y;
-    float2 position2D = get_ui_real_position2D(world, e, parent, local_pixel_position, anchor);
+    float2 position2D = get_ui_real_position2D(world, e, parent, local_pixel_position, anchor, canvas_size);
     int2 global_pixel_position = (int2) {
         ceil((position2D.x / aspectRatio + 0.5f) * canvasSizef.x),
         ((position2D.y + 0.5f) * canvasSizef.y) };
@@ -110,20 +118,19 @@ float2 initialize_ui_components(ecs_world_t *world, ecs_entity_t e, ecs_entity_t
     //     size.x, size.y,
     //     position2D.x, position2D.y);
     // printf("> initialize_ui_components [%lu]\n", (long int) e);
-    #ifdef debug_ui_scaling
-    printf("    -> Scaling: [%fx%f]\n", scaledSize2D.x, scaledSize2D.y);
-    #endif
+    //#ifdef debug_ui_scaling
+    //printf("    -> Scaling: [%fx%f]\n", scaledSize2D.x, scaledSize2D.y);
+    //#endif
     return position2D;
 }
 
-
-
 float2 get_ui_real_position2D_2(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent,
     int2 local_pixel_position, float2 anchor,
-    float2 parent_position2D, int2 parent_pixel_size)
+    float2 parent_position2D, int2 parent_pixel_size,
+    int2 canvas_size)
 {
-    const PixelSize *canvasSize = ecs_get(world, main_canvas, PixelSize);
-    float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
+    // const PixelSize *canvasSize = ecs_get(world, main_canvas, PixelSize);
+    float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
     float aspectRatio = canvasSizef.x / canvasSizef.y;
     float2 position2D;
     position2D = parent_position2D;
@@ -144,7 +151,7 @@ float2 get_ui_real_position2D_2(ecs_world_t *world, ecs_entity_t e, ecs_entity_t
 
 float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent,
     int2 local_pixel_position, int2 pixel_size, float2 anchor, unsigned char layer,
-    float2 parent_position2D, int2 parent_pixel_size)
+    float2 parent_position2D, int2 parent_pixel_size, int2 canvas_size)
 {
     if (parent == main_canvas)
     {
@@ -159,11 +166,11 @@ float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity
     ecs_set(world, e, ParentLink, { parent });
     ecs_set(world, e, ElementLayer, { layer });
     // set scale
-    const PixelSize *canvasSize = ecs_get(world, main_canvas, PixelSize);
-    float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
+    // const PixelSize *canvasSize = ecs_get(world, main_canvas, PixelSize);
+    float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
     float aspectRatio = canvasSizef.x / canvasSizef.y;
     float2 position2D = get_ui_real_position2D_2(world, e, parent, local_pixel_position, anchor,
-        parent_position2D, parent_pixel_size);
+        parent_position2D, parent_pixel_size, canvas_size);
     ecs_set(world, e, Position2D, { position2D });
     int2 global_pixel_position = (int2) {
         ceil((position2D.x / aspectRatio + 0.5f) * canvasSizef.x),
@@ -175,9 +182,9 @@ float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity
     // set_mesh_indicies_world(world, e, square_indicies, 6);
     // float2 scaledSize2D = (float2) { pixel_size.x / canvasSizef.y, pixel_size.y / canvasSizef.y };
     // set_mesh_vertices_world_scale2D(world, e, squareTexturedVerts2, 16, scaledSize2D);  // scale the mesh
-    #ifdef debug_ui_scaling
-    printf("    -> Scaling: [%fx%f]\n", scaledSize2D.x, scaledSize2D.y);
-    #endif
+    //#ifdef debug_ui_scaling
+    //printf("    -> Scaling: [%fx%f]\n", scaledSize2D.x, scaledSize2D.y);
+    //#endif
     // printf("Layer: %i\n", layer);
     // printf("> global_pixel_position [%ix%i] :: [%ix%i] -- [%fx%f]\n",
     //     global_pixel_position.x, global_pixel_position.y,
@@ -188,8 +195,12 @@ float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity
 }
 
 // set children position as well
-void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, float2 canvasSizef, unsigned char layer)
+void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, unsigned char layer, int2 canvas_size)
 {
+    #ifdef debug_ui_scaling
+    printf("    - layer [%i] Repositioning entity [%lu]\n", layer, (long int) e);
+    #endif
+    float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
     float aspectRatio = canvasSizef.x / canvasSizef.y;
     bool is_valid = ecs_is_valid(world, e);
     // reposition
@@ -198,14 +209,15 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, f
         const PixelPosition *pixelPosition = ecs_get(world, e, PixelPosition);
         const Anchor *anchor = ecs_get(world, e, Anchor);
         int2 position = pixelPosition->value;
-        float2 position2D = get_ui_real_position2D(world, e, parent, position, anchor->value);
+        float2 position2D = get_ui_real_position2D(world, e, parent, position, anchor->value, canvas_size);
         ecs_set(world, e, Position2D, { position2D });
         int2 global_pixel_position = (int2) {
             ceil((position2D.x / aspectRatio + 0.5f) * canvasSizef.x),
             ((position2D.y + 0.5f) * canvasSizef.y) };
         ecs_set(world, e, CanvasPixelPosition, { global_pixel_position });
-        // ecs_set(world, e, ElementLayer, { layer });
-        // printf("Layer: %i\n", layer);
+        #ifdef debug_ui_scaling
+        printf("        -> to [%ix%i]\n", global_pixel_position.x, global_pixel_position.y);
+        #endif
     }
     else
     {
@@ -217,9 +229,9 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, f
         const PixelSize *pixelSize = ecs_get(world, e, PixelSize);
         float2 scaledSize2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
         set_mesh_vertices_world_scale2D(world, e, squareTexturedVerts2, 16, scaledSize2D);  // scale the mesh
-        ecs_set(world, e, EntityDirty, { 1 });
+        ecs_set(world, e, MeshDirty, { 1 });
         #ifdef debug_ui_scaling
-        printf("    -> Scaling: [%fx%f]\n", scaledSize2D.x, scaledSize2D.y);
+        printf("        -> Scaling: [%fx%f]\n", scaledSize2D.x, scaledSize2D.y);
         #endif
     }
     if (is_valid && ecs_has(world, e, Children))
@@ -229,7 +241,7 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, f
         for (int i = 0; i < children->length; i++)
         {
             ecs_entity_t child = children->value[i];
-            set_ui_transform(world, child, e, canvasSizef, layer);
+            set_ui_transform(world, child, e, layer, canvas_size);
         }
     }
 }
@@ -237,19 +249,18 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, f
 //! Reposition uis after viewport resizes.
 void uis_on_viewport_resized(ecs_world_t *world, int width, int height)
 {
-    ecs_set(world, main_canvas, PixelSize, { { width, height } });
-    float2 canvasSizef = { (float) width, (float) height };
-    #ifdef debug_viewport_resize
-    printf("Canvas [%lu] - [%fx%f]\n", (long int) canvas, canvasSizef.x, canvasSizef.y);
-    printf("    --> [%ix%i]\n", width, height);
-    #endif
+    int2 canvas_size = { width, height };
+    ecs_set(world, main_canvas, PixelSize, { canvas_size });
+    //#ifdef debug_viewport_resize
+    printf("Canvas [%lu] - [%ix%i]\n", (long int) main_canvas, canvas_size.x, canvas_size.y);
+    //#endif
     for (int i = 0; i < ui_entities_count; i++)
     {
         ecs_entity_t e = ui_entities[i];
         #ifdef debug_viewport_resize
         printf("    e [%i] - [%lu]\n", i, (long int) e);
         #endif
-        set_ui_transform(world, e, main_canvas, canvasSizef, 0);
+        set_ui_transform(world, e, main_canvas, 0, canvas_size);
     }
 }
 

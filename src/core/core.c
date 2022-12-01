@@ -41,7 +41,7 @@ void update_core()
         #ifdef __EMSCRIPTEN__
         if (update_web_canvas(world))
         {
-            return;
+            // return;
         }
         #endif
     }

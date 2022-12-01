@@ -207,3 +207,4 @@ zoxel_system_main_thread(world, system_name, EcsPreStore, [out] tag_name, [in] e
 //! Used at the end to reset systems.
 #define zoxel_reset_system_define(system_name, component_name)\
 zoxel_system_main_thread(world, system_name, EcsOnStore, [out] component_name);
+

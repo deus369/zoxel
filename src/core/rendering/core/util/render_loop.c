@@ -10,7 +10,9 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
 {
     main_camera_matrix = camera_matrix;
     // GL.Viewport(0, 0, window.Width / 2, window.Height);
+    #ifndef __EMSCRIPTEN__
     glViewport(position.x, position.y, size.x, size.y);
+    #endif
     // 3D renders
     OpenGLBeginInstancing3D(main_camera_matrix);
     ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);

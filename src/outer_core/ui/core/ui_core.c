@@ -64,8 +64,6 @@ void UICoreImport(ecs_world_t *world)
     spawn_prefab_canvas(world);
     spawn_prefab_element(world);
 }
-
 // zoxel_system_ctx(world, ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster);
 // zoxel_system(world, ElementSelectedSystem, EcsOnUpdate, [out] Element, [in] ClickableState, [out] Brightness);
-
 #endif

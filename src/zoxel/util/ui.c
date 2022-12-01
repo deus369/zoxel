@@ -2,7 +2,7 @@
 
 ecs_entity_t zoxel_main_menu;
 
-void spawn_zoxel_main_menu()
+void spawn_zoxel_main_menu(ecs_world_t *world)
 {
     if (zoxel_main_menu != 0 && ecs_is_alive(world, zoxel_main_menu))
     {

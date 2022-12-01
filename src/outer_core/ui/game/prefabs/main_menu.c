@@ -20,7 +20,8 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label,
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, main_menu_prefab);
     set_unique_entity_name(world, e, "main_menu");
-    float2 position2D = initialize_ui_components(world, e, main_canvas, position, window_size, anchor, 0);
+    float2 position2D = initialize_ui_components(world, e, main_canvas, position, window_size, anchor, 0,
+        ecs_get(world, main_canvas, PixelSize)->value);
     Children children = { };
     initialize_memory_component_non_pointer(children, ecs_entity_t, 4);
     children.value[0] = spawn_header(world, e, 

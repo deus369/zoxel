@@ -51,7 +51,7 @@ void extract_mouse(ecs_world_t *world, SDL_Event event)
 #ifdef __EMSCRIPTEN__
             //! Reverse position X in web
             // mouse->position.x = screenDimensions.x - mouse->position.x;
-            printf("Mouse: %ix%i\n", mouse->position.x, mouse->position.y);
+            // printf("Mouse: %ix%i\n", mouse->position.x, mouse->position.y);
 #endif
         }
         else if (eventType == SDL_MOUSEBUTTONDOWN || eventType == SDL_MOUSEBUTTONUP)

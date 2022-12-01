@@ -21,7 +21,8 @@ ecs_entity_t spawn_element(ecs_world_t *world, ecs_entity_t parent, int2 positio
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, element_prefab);
-    initialize_ui_components(world, e, parent, position, size, anchor, 0);
+    initialize_ui_components(world, e, parent, position, size, anchor, 0,
+        ecs_get(world, main_canvas, PixelSize)->value);
     // printf("Texture ratio: %f - ScaleRatio: %f\n", (size.x / (float) size.y), (scaledSize2D.x / scaledSize2D.y));
     //printf("UI Element Spawned - Position [%ix%i] - Size [%ix%i] - Position(Real) [%fx%f] - ScaledSize [%fx%f]\n",
     //    position.x, position.y, size.x, size.y, position2D.x, position2D.y, scaledSize2D.x, scaledSize2D.y);

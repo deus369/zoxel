@@ -29,7 +29,8 @@ ecs_entity_t spawn_button(ecs_world_t *world, ecs_entity_t parent,
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, button_prefab);
     set_unique_entity_name(world, e, "button");
     float2 position2D = initialize_ui_components_2(world, e, parent, position, size, anchor, layer,
-        parent_position2D, parent_pixel_size);
+        parent_position2D, parent_pixel_size,
+        ecs_get(world, main_canvas, PixelSize)->value);
     Children children = { };
     initialize_memory_component_non_pointer(children, ecs_entity_t, 1);
     children.value[0] = spawn_zext(world, zext_prefab, e,

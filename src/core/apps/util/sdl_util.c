@@ -211,14 +211,14 @@ SDL_GLContext* create_sdl_context(SDL_Window* window)
     return context;
 }
 
-void resize_viewports(int screenWidth, int screenHeight)
+/*void resize_viewports(int screenWidth, int screenHeight)
 {
     // printf("Updated Canvas: Screen Dimensions [%i x %i] Aspect Ratio [%f].\n", screenWidth, screenHeight, aspectRatio);
     // what does viewport do? oh well
-#ifndef __EMSCRIPTEN__
+//#ifndef __EMSCRIPTEN__
     glViewport(0, 0, (GLsizei) screenWidth, (GLsizei) screenHeight);
-#endif
-}
+//#endif
+}*/
 
 SDL_Window* spawn_sdl_window()
 {
@@ -264,7 +264,7 @@ void on_viewport_resized(ecs_world_t *world, int width, int height)
         screen_dimensions.y = 1;
     }
     aspectRatio = ((float)screen_dimensions.x) / ((float)screen_dimensions.y);
-    resize_viewports(width, height);
+    // resize_viewports(width, height);
     resize_cameras(width, height);
     uis_on_viewport_resized(world, width, height);
 }
@@ -338,14 +338,15 @@ int process_arguments(int argc, char* argv[])
 }
 
 #ifdef __EMSCRIPTEN__
-// extern void on_viewport_resized(ecs_world_t *world, int width, int height);
+
+#define debug_ui_scaling
 
 bool update_web_canvas(ecs_world_t *world)
 {
     int2 canvas_size = get_canvas_size();
     if (screen_dimensions.x != canvas_size.x || screen_dimensions.y != canvas_size.y)
     {
-        printf("Canvas size has changed [%i x %i]\n", canvas_size.x, canvas_size.y);
+        printf("update_web_canvas: Canvas size has changed [%i x %i]\n", canvas_size.x, canvas_size.y);
         on_viewport_resized(world, canvas_size.x, canvas_size.y);
         return true;
     }

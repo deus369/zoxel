@@ -8,7 +8,8 @@ ecs_entity_t spawn_zigel(ecs_world_t *world, ecs_entity_t zext, unsigned char in
     set_unique_entity_name(world, e, "zigel");
     zoxel_set(world, e, ZigelIndex, { index });
     initialize_ui_components_2(world, e, zext, position, size, anchor, layer,
-        parent_position2D, parent_pixel_size);
+        parent_position2D, parent_pixel_size,
+        ecs_get(world, main_canvas, PixelSize)->value);
     ecs_defer_end(world);
     return e;
 }

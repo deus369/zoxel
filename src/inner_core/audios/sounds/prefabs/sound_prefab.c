@@ -22,8 +22,8 @@ ecs_entity_t spawn_sound(ecs_world_t *world)
     set_unique_entity_name(world, e, "sound");
     // ecs_set(world, e, PixelSize, { size });
     ecs_defer_end(world);
-    //#ifdef zoxel_debug_spawns
+    #ifdef zoxel_debug_spawns
     printf("Spawned sound [%lu]\n", (long int) e);
-    //#endif
+    #endif
     return e;
 }

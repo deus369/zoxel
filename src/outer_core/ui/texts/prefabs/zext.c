@@ -13,8 +13,8 @@ ecs_entity_t spawn_zext_prefab(ecs_world_t *world)
     zoxel_set(world, e, ZextDirty, { 0 });
     zoxel_add(world, e, Children);
     add_transform2Ds(world, e);
-    add_ui_plus_components(world, e);
-    zoxel_set(world, e, MeshDirty, { 0 });
+    add_ui_plus_components_invisible(world, e);
+    // zoxel_set(world, e, MeshDirty, { 0 });
     // zoxel_add(world, e, AnimateZext);
     ecs_defer_end(world);
     return e;
@@ -37,7 +37,8 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab,
     // ecs_set(world, e, ZextDirty, { 0 });
     float2 position2D = initialize_ui_components_2(world, e,
         parent, position, zext_size, anchor, layer,
-        parent_position2D, parent_pixel_size);
+        parent_position2D, parent_pixel_size,
+        ecs_get(world, main_canvas, PixelSize)->value);
     ZextData zextData = { };
     Children children = { };
     initialize_memory_component_non_pointer(zextData, unsigned char, textLength);

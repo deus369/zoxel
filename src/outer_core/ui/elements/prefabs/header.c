@@ -18,18 +18,16 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world)
     return e;
 }
 
-ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent,
-    int2 position, int2 size, float2 anchor,
-    const char* text, int font_size, int header_margins,
-    unsigned char layer,
-    float2 parent_position2D, int2 parent_pixel_size,
-    bool is_close_button)
+ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, int2 position, int2 size, float2 anchor,
+    const char* text, int font_size, int header_margins, unsigned char layer,
+    float2 parent_position2D,int2 parent_pixel_size, bool is_close_button)
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, header_prefab);
     set_unique_entity_name(world, e, "header");
     float2 position2D = initialize_ui_components_2(world, e, parent, position, size, anchor, layer,
-        parent_position2D, parent_pixel_size);
+        parent_position2D, parent_pixel_size,
+        ecs_get(world, main_canvas, PixelSize)->value);
     int children_length = 1;
     if (is_close_button)
     {
