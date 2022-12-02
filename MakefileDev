@@ -26,9 +26,7 @@ SRCS = $(shell find src/ -type f -name *.c)
 SRCS += $(shell find src/ -type f -name *.h)
 
 # OBJS defines all the files used to compile Zoxel.
-OBJS = 
-OBJS += includes/flecs.c
-OBJS += src/main.c
+OBJS = include/flecs.c src/main.c
 
 all: $(TARGET)
 

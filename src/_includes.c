@@ -6,11 +6,12 @@
 //! Use these when profiling.
 // #define FLECS_REST
 // #define FLECS_MONITOR
-#include "../includes/flecs.h"
+#include "../include/flecs.h"
 
 // SDL
+// #define ANDROID_BUILD
 #define SDL_IMAGES
-// #define SDL_MIXER
+#define SDL_MIXER
 //#define USE_SDL_3
 
 // -- Tests / Options --

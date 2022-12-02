@@ -20,8 +20,7 @@ LDLIBS += -lSDL2_mixer		# SDL2 Audio Library
 # LDLIBS += -SDL2_IMAGE_FORMATS='["png"]'
 LDLIBS += -lm				# for math.h
 # OBJS defines all the files used to compile the final Zoxel binary.
-OBJS = includes/flecs.c
-OBJS += src/main.c
+OBJS = include/flecs.c src/main.c
 # This collects all c and h files in the directory
 SRCS = $(shell find src/ -type f -name *.c)
 SRCS += $(shell find src/ -type f -name *.h)
