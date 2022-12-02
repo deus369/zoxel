@@ -1,10 +1,13 @@
 #ifndef zoxel_audios
 #define zoxel_audios
 
+#ifdef SDL_MIXER
 #include <SDL2/SDL_mixer.h>
+#endif
 #include "sounds/sounds.c"
 #include "musics/musics.c"
 
+#ifdef SDL_MIXER
 bool load_audio()
 {
 	bool success = true;
@@ -25,6 +28,9 @@ void close_audio()
     dispose_static_sounds();
 	Mix_Quit(); // Close SDL subsystems
 }
+#else
+void close_audio() { }
+#endif
 
 //! textures Module.
 void AudiosImport(ecs_world_t *world)
@@ -32,6 +38,8 @@ void AudiosImport(ecs_world_t *world)
     ECS_MODULE(world, Audios);
     ECS_IMPORT(world, Sounds);
     ECS_IMPORT(world, Musics);
+#ifdef SDL_MIXER
     load_audio();
+#endif
 }
 #endif

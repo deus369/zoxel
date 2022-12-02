@@ -18,6 +18,7 @@ zoxel_component(ScreenDimensions, int2);
 zoxel_component(ScreenPosition, int2);
 //! Used to calculate a camera frustrum.
 zoxel_component(FieldOfView, float);
+zoxel_component(CameraNearDistance, float);
 //! A link to a Camera
 zoxel_component(CameraLink, ecs_entity_t);
 //! A link to a Camera Target entity.
@@ -79,9 +80,11 @@ void CamerasImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, ScreenDimensions);
     ECS_COMPONENT_DEFINE(world, ScreenPosition);
     ECS_COMPONENT_DEFINE(world, FieldOfView);
+    ECS_COMPONENT_DEFINE(world, CameraNearDistance);
     ECS_COMPONENT_DEFINE(world, FreeRoam);
     // -=- systems -=-
-    ECS_SYSTEM_DEFINE(world, ProjectionMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [out] ProjectionMatrix);
+    ECS_SYSTEM_DEFINE(world, ProjectionMatrixSystem, EcsOnUpdate,
+        [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix);
     zoxel_system(world, ViewMatrixSystem, EcsOnUpdate, [in] Position, [in] Rotation, [in] ProjectionMatrix, [out] ViewMatrix);
     zoxel_system(world, CameraFollow2DSystem, EcsOnUpdate,
         [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position, [out] Rotation);

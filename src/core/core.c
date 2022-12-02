@@ -7,8 +7,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#ifdef USE_SDL_3
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_opengl.h>
+#else
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
+#endif
 #ifdef SDL_IMAGES
 #include <SDL2/SDL_image.h>
 #endif

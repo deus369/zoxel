@@ -6,10 +6,12 @@
 //! Use these when profiling.
 // #define FLECS_REST
 // #define FLECS_MONITOR
-#include "../imports/flecs.h"
+#include "../includes/flecs.h"
 
 // SDL
 #define SDL_IMAGES
+#define SDL_MIXER
+//#define USE_SDL_3
 
 // -- Tests / Options --
 // queue lengths

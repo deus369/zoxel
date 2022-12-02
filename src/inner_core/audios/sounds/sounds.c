@@ -10,7 +10,9 @@ const char *sound_file_names[] = {
 	"resources/sounds/medium.wav",
 	"resources/sounds/low.wav"
 };
+#ifdef SDL_MIXER
 Mix_Chunk *sounds[static_sounds_length];
+#endif
 // Tags
 ECS_DECLARE(Sound);
 // components
@@ -27,30 +29,33 @@ zoxel_state_component(PlaySound);
 // util
 // systems
 zoxel_reset_system(PlaySoundResetSystem, PlaySound)
-#include "systems/play_sound_system.c"
 
-bool load_static_sounds()
-{
-	bool success = true;
-	for (int i = 0; i < static_sounds_length; i++)
+#ifdef SDL_MIXER
+	#include "systems/play_sound_system.c"
+
+	bool load_static_sounds()
 	{
-		sounds[i] = Mix_LoadWAV(sound_file_names[i]);
-		if(sounds[i] == NULL)
+		bool success = true;
+		for (int i = 0; i < static_sounds_length; i++)
 		{
-			printf( "Failed to load sound effect[%i]! SDL_mixer Error: %s\n", i, Mix_GetError() );
-			success = false;
+			sounds[i] = Mix_LoadWAV(sound_file_names[i]);
+			if(sounds[i] == NULL)
+			{
+				printf( "Failed to load sound effect[%i]! SDL_mixer Error: %s\n", i, Mix_GetError() );
+				success = false;
+			}
+		}
+		return success;
+	}
+
+	void dispose_static_sounds()
+	{
+		for (int i = 0; i < static_sounds_length; i++)
+		{
+			Mix_FreeChunk(sounds[i]);
 		}
 	}
-	return success;
-}
-
-void dispose_static_sounds()
-{
-	for (int i = 0; i < static_sounds_length; i++)
-	{
-		Mix_FreeChunk(sounds[i]);
-	}
-}
+#endif
 
 //! Sounds Module.
 void SoundsImport(ecs_world_t *world)
@@ -63,7 +68,9 @@ void SoundsImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, PlaySound);
     // systems
     zoxel_reset_system_define(PlaySoundResetSystem, PlaySound);
+#ifdef SDL_MIXER
     zoxel_event_respond_system_main_thread(PlaySoundSystem, Sound, PlaySound);
+#endif
     // prefabs
     spawn_prefab_sound(world);
     // SpawnSoundPrefab(world);
