@@ -10,7 +10,7 @@
 
 // SDL
 #define SDL_IMAGES
-#define SDL_MIXER
+// #define SDL_MIXER
 //#define USE_SDL_3
 
 // -- Tests / Options --
