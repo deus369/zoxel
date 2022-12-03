@@ -13,13 +13,13 @@ void open_ecs(int argc, char* argv[], bool profiler)
         ECS_IMPORT(world, FlecsMonitor); 
         ecs_singleton_set(world, EcsRest, {0});
         #else
-        printf("Error: Cannot import FlecsMonitor. Make sure to define FLECS_REST & FLECS_MONITOR.\n");
+        zoxel_log("Error: Cannot import FlecsMonitor. Make sure to define FLECS_REST & FLECS_MONITOR.\n");
         #endif
     }
     // enable multi threading
     int cpuCoreCount = SDL_GetCPUCount();
     #ifdef zoxel_debug_sdl
-    printf("System Found [%i processors].\n", cpuCoreCount);
+    zoxel_log_arg("System Found [%i processors].\n", cpuCoreCount);
     #endif
     if (cpuCoreCount > 1)
     {

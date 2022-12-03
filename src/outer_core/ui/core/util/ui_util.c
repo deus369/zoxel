@@ -107,7 +107,7 @@ float2 initialize_ui_components(ecs_world_t *world, ecs_entity_t e, ecs_entity_t
     ecs_set(world, e, Position2D, { position2D });
     ecs_set(world, e, CanvasPixelPosition, { global_pixel_position });
     // spawn_gpu_mesh(world, e);
-    // spawn_gpu_material(world, e, textured2DShader);
+    // spawn_gpu_material(world, e, shader2D_textured);
     // spawn_gpu_texture(world, e);
     // set_mesh_indicies_world(world, e, square_indicies, 6);
     // float2 scaledSize2D = (float2) { pixel_size.x / canvasSizef.y, pixel_size.y / canvasSizef.y };

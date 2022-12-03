@@ -1,8 +1,14 @@
 #!/bin/bash
 
-android_directory=$HOME/projects/android-project
-zoxel_directory=$HOME/zoxel
-# push latest source files to android-project directory
+# \todo Also copy files:
+#   - app/jni/CMakeLists.txt
+#   - app/jni/CMakeLists.txt
+#   - app/jni/src/Android.mk
+#   - app/src/main/AndroidManifest.xml
+#   - app/src/main/res
+#   - resources into app/src/main/resources/ & rename to android-resources sub folder
+
+source gradle_set_paths.sh
 
 old_source_directory1=$zoxel_directory/src
 old_source_directory2=$zoxel_directory/include
@@ -40,4 +46,6 @@ echo Copying $old_source_file2 to $new_source_file2
 cp $old_source_file2 $new_source_file2
 
 echo Finished copying source files
-# sleep 30
+# sleep 2
+echo Make sure to set AndroidBuild in include file at $new_source_directory0/src
+# sleep 1

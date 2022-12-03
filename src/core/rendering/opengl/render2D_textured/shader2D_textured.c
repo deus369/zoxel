@@ -10,34 +10,65 @@ const bool disableTextureLoaded = false;
 int textureType = GL_NEAREST; // GL_LINEAR
 //! \todo Move these references to MaterialGPULink
 //! \todo Update texture based on Player Entity texture updateing
-GLuint2 textured2DShader;
-const char* texturedRender2DVertPath = "resources/shaders/2D/TexturedRender2D.vert";
-const char* texturedRender2DFragPath = "resources/shaders/2D/TexturedRender2D.frag";
+GLuint2 shader2D_textured;
+const char* shader2D_textured_filepath_vert = resources_folder_name"shaders/2D/TexturedRender2D.vert";
+const char* shader2D_textured_filepath_frag = resources_folder_name"shaders/2D/TexturedRender2D.frag";
 // MaterialGPULink and properties
 GLuint texturedMaterial;
 //! Mesh B - Buffers/Texture
 GLuint2 squareTexturedMesh;
 GLuint squareTexturedModelUVs;
+const GLchar* shader2D_textured_vert_buffer = "\
+#version 300 es\n\
+in lowp vec2 vertexPosition;\
+in lowp vec2 vertexUV;\
+uniform lowp mat4 viewMatrix;\
+uniform lowp float positionX;\
+uniform lowp float positionY;\
+uniform lowp float angle;\
+uniform lowp float scale;\
+out lowp vec2 uv;\
+\
+void main()\
+{\
+    vec2 position = vec2(positionX, positionY);\
+    mat2 rotate = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));\
+    gl_Position = viewMatrix * vec4(position + (rotate * vertexPosition) * scale, 0, 1.0);\
+    uv = vertexUV;\
+}\
+";
+const GLchar* shader2D_textured_frag_buffer = "\
+#version 300 es\n\
+in lowp vec2 uv;\
+uniform lowp float brightness;\
+uniform sampler2D tex;\
+out lowp vec4 color;\
+\
+void main()\
+{\
+    color = texture(tex, uv) * brightness;\
+}\
+";
 
-void DisposeTexturedMaterial2D()
+void dispose_shader2D_textured()
 {
     glDeleteBuffers(1, &squareTexturedMesh.x);
     glDeleteBuffers(1, &squareTexturedMesh.y);
     glDeleteBuffers(1, &squareTexturedModelUVs);
     // glDeleteTextures(1, &textureID);
-    glDeleteShader(textured2DShader.x);
-    glDeleteShader(textured2DShader.y);
+    glDeleteShader(shader2D_textured.x);
+    glDeleteShader(shader2D_textured.y);
     glDeleteProgram(texturedMaterial);
 #ifdef zoxel_catch_opengl_errors
     GLenum err7 = glGetError();
     if (err7 != GL_NO_ERROR)
     {
-        printf("GL HAD ERROR with end of dispose_opengl: %i\n", err7);
+        printf("GL ERROR with end of dispose_opengl: %i\n", err7);
     }
 #endif
 }
 
-void InitializeTexturedMesh(GLuint material)
+void initialize_texture_mesh(GLuint material)
 {
     MaterialTextured2D materialTextured2D = initialize_material2D_textured(material);
     // gen buffers
@@ -59,9 +90,18 @@ void InitializeTexturedMesh(GLuint material)
     GLenum err7 = glGetError();
     if (err7 != GL_NO_ERROR)
     {
-        printf("GL HAD ERROR with end of InitializeTexturedMesh: %i\n", err7);
+        printf("GL ERROR with end of initialize_texture_mesh: %i\n", err7);
     }
 #endif
+}
+
+int load_shader2D_textured()
+{
+    shader2D_textured = spawn_gpu_shader_inline(shader2D_textured_vert_buffer, shader2D_textured_frag_buffer);
+    texturedMaterial = spawn_gpu_material_program((const GLuint2) { shader2D_textured.x, shader2D_textured.y });
+    // texturedMaterial = load_gpu_shader(&shader2D_textured, shader2D_textured_filepath_vert, shader2D_textured_filepath_frag);
+    initialize_texture_mesh(texturedMaterial);
+    return 0;
 }
 
 GLuint spawn_gpu_texture_buffers()
@@ -157,32 +197,25 @@ void render_entity_material2D_and_mesh(const float4x4 viewMatrix, GLuint2 mesh, 
     glUseProgram(0);
 }
 
-int LoadTextureRender2DShader()
-{
-    texturedMaterial = load_gpu_shader(&textured2DShader, texturedRender2DVertPath, texturedRender2DFragPath);
-    InitializeTexturedMesh(texturedMaterial);
-    return 0;
-}
-
 // #ifdef zoxel_catch_opengl_errors
 //     GLenum err66 = glGetError();
 //     if (err66 != GL_NO_ERROR)
 //     {
-//         printf("GL HAD ERROR with End of render_entity_material2D: %i\n", err66);
+//         printf("GL ERROR with End of render_entity_material2D: %i\n", err66);
 //         return;
 //     }
 // #endif
-    /*if (LoadShader(texturedRender2DVertPath, GL_VERTEX_SHADER, &textured2DShader.x) != 0)
+    /*if (load_shader(shader2D_textured_filepath_vert, GL_VERTEX_SHADER, &shader2D_textured.x) != 0)
     {
         printf("Error loading shader vert 2D.\n");
         return -1;
     }
-    if (LoadShader(texturedRender2DFragPath, GL_FRAGMENT_SHADER, &textured2DShader.y) != 0)
+    if (load_shader(shader2D_textured_filepath_frag, GL_FRAGMENT_SHADER, &shader2D_textured.y) != 0)
     {
         printf("Error loading shader frag 2D.\n");
         return -1;
     }
-    texturedMaterial = spawn_gpu_material_program(textured2DShader);*/
+    texturedMaterial = spawn_gpu_material_program(shader2D_textured);*/
 
 /*void RenderEntityMaterial2D2(const float4x4 viewMatrix, GLuint material, GLuint texture,
     float2 position, float angle, float2 scale, float brightness)

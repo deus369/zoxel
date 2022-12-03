@@ -28,14 +28,14 @@ ecs_entity_t spawn_chunk_prefab(ecs_world_t *world)
     ecs_defer_begin(world);
     const int3 size = { 16, 16, 16 };
     ecs_entity_t e = ecs_new_prefab(world, "chunk_prefab");
-    #ifdef zoxel_debug_prefabs
-    printf("spawn_prefab chunk_prefab [%lu].\n", (long int) (e));
-    #endif
     add_seed(world, e, 666);
     add_chunk(world, e, size);
     add_noise_chunk(world, e);
-    chunk_prefab = e;
     ecs_defer_end(world);
+    chunk_prefab = e;
+    #ifdef zoxel_debug_prefabs
+    zoxel_log_arg("spawn_prefab chunk_prefab [%lu].\n", (long int) (e));
+    #endif
     return e;
 }
 
@@ -45,7 +45,7 @@ ecs_entity_t spawn_chunk(ecs_world_t *world)
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, chunk_prefab);
     zoxel_add_tag(world, e, NoiseChunk);
-    printf("Spawned Texture [%lu]\n", (long unsigned int) e);
+    zoxel_log_arg("Spawned Texture [%lu]\n", (long unsigned int) e);
     ecs_defer_end(world);
     return e;
 }

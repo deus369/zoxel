@@ -18,7 +18,7 @@
 #include "render2D/instanced2D_material.c"
 // render2D textured
 #include "render2D_textured/material2D_textured.c"
-#include "render2D_textured/textured2D_material.c"
+#include "render2D_textured/shader2D_textured.c"
 // render3D
 #include "data/material3D.c"
 #include "rendering/instanced3D_material.c"
@@ -36,7 +36,7 @@ int load_all_shaders()
     {
         printf("Error loading Instance Shader.\n");
     }
-    if (LoadTextureRender2DShader() != 0)
+    if (load_shader2D_textured() != 0)
     {
         printf("Error loading Texture Shader.\n");
     }
@@ -55,14 +55,14 @@ int load_all_shaders()
 void dispose_opengl()
 {
     DisposeInstance2DMaterial();
-    DisposeTexturedMaterial2D();
+    dispose_shader2D_textured();
     DisposeInstanced3DMaterial();
     dispose_shader3D_textured();
 // #ifdef zoxel_catch_opengl_errors
 //     GLenum err7 = glGetError();
 //     if (err7 != GL_NO_ERROR)
 //     {
-//         printf("GL HAD ERROR with end of dispose_opengl: %i\n", err7);
+//         printf("GL ERROR with end of dispose_opengl: %i\n", err7);
 //     }
 // #endif
 }

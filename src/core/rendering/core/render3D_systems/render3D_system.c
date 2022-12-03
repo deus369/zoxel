@@ -22,8 +22,11 @@ void Render3DSystem(ecs_iter_t *it)
         if (opengl_set_material(materialGPULink->value))
         {
             opengl_set_mesh(meshGPULink->value);
-            opengl_set_material3D_properties(materialGPULink->value,
-                main_camera_matrix, position->value, rotation->value, scale1D->value, brightness->value);
+            if (opengl_set_material3D_properties(materialGPULink->value,
+                main_camera_matrix, position->value, rotation->value, scale1D->value, brightness->value) == -1)
+            {
+                return;
+            }
             opengl_draw_triangles(meshIndicies2->length);
             opengl_disable_opengl_program();
             // printf("Render3DSystem [%lu]\n", (long int) it->entities[i]);

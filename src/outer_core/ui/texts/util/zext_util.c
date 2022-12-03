@@ -100,10 +100,3 @@ void spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children
     #endif
     ecs_defer_end(world);
 }
-                /*int2 zigel_position = (int2) {
-                    (int) (((float) zigel_size.x * i) - half_size) + zigel_size.x / 2,
-                    0 };
-                new_children[i] = spawn_zigel(world, zext, zextData->value[i],
-                    zigel_position, zigel_size,
-                    (float2) { 0.5f, 0.5f }, layer + 1,
-                    parent_position2D, parent_pixel_size);*/

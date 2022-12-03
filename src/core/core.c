@@ -10,6 +10,16 @@
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
+#ifdef ANDROID_BUILD
+    #include <android/log.h>
+    #define APPNAME "Zoxel"
+    #define zoxel_log(debug_line) __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, debug_line);
+    #define zoxel_log_arg(debug_line, ...) __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, debug_line, __VA_ARGS__);
+    // #define zoxel_log_arg(debug_line, ...) __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, debug_line);
+#else
+    #define zoxel_log(debug_line) printf(debug_line);
+    #define zoxel_log_arg(debug_line, ...) printf(debug_line, __VA_ARGS__); // #
+#endif
 
 #ifdef USE_SDL_3
     #include <SDL3/SDL.h>

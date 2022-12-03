@@ -1,5 +1,5 @@
 //! Sets material properties
-void opengl_set_material3D_properties(GLuint material,
+int opengl_set_material3D_properties(GLuint material,
     const float4x4 viewMatrix, float3 position, float4 rotation, float scale, float brightness)
 {
     // printf("Rendering Cube [%ix%i]\n", mesh.x, mesh.y);
@@ -12,6 +12,15 @@ void opengl_set_material3D_properties(GLuint material,
     glUniform4f(material3D.rotation, rotation.x, rotation.y, rotation.z, rotation.w);
     glUniform1f(material3D.scale, scale);
     glUniform1f(material3D.brightness, brightness);
+    #ifdef zoxel_catch_opengl_errors
+        GLenum err = glGetError();
+        if (err != GL_NO_ERROR)
+        {
+            zoxel_log_arg("GL ERROR with opengl_set_material3D_properties [%i]\n", (int) err);
+            return -1;
+        }
+    #endif
+    return 0;
 }
 
 /*GLenum err65 = glGetError();

@@ -11,8 +11,11 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include
 # Add your application source files here...
 LOCAL_SRC_FILES := include/flecs.c src/main.c
 
-LOCAL_SHARED_LIBRARIES := SDL2 SDL2_image
+LOCAL_SHARED_LIBRARIES := SDL2 SDL2_image SDL2_mixer
 
 LOCAL_LDLIBS := -lGLESv1_CM -lGLESv2 -lOpenSLES -llog -landroid
+# LOCAL_LDLIBS := -lGLESv1_CM -lGLESv2 -lOpenSLES -llog -landroid
+# LOCAL_LDLIBS := -lGLESv2 -lOpenSLES -llog -landroid
+# LOCAL_LDLIBS := -lGLESv1_CM -lGLESv2 -lEGL3 -landroid -llog
 
 include $(BUILD_SHARED_LIBRARY)

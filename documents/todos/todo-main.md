@@ -7,8 +7,9 @@ To-Do Main
 
 `New Quick n' Dirty`
 
-- [ ] Move main menu stuff from window  into main menu / game ui module
-- [ ] Fix bug - repositioning ui on resize canvas broken
+- [x] Move main menu stuff from window  into main menu / game ui module
+- [x] Fix bug - repositioning ui on resize canvas broken
+    - [ ] Fix [resize_canvas] for web build
 - [ ] 3D lines
     - grid as well XZ
 - [ ] Octree data for chunks
@@ -51,6 +52,8 @@ To-Do Main
 - [ ] Current [User Interface](todo-ui.md)
 
 - [ ] Current [Cameras](todo-cameras.md)
+
+- [ ] Current [Android](todo-android.md)
 
 -----
 

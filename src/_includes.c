@@ -8,11 +8,15 @@
 // #define FLECS_MONITOR
 #include "../include/flecs.h"
 
+// Platforms
+#if defined(__unix__) && __ANDROID__
+    #define ANDROID_BUILD
+#endif
+
 // SDL
-// #define ANDROID_BUILD
 #define SDL_IMAGES
 #define SDL_MIXER
-//#define USE_SDL_3
+// #define USE_SDL_3
 
 // -- Tests / Options --
 // queue lengths
@@ -26,11 +30,12 @@
 #define zoxel_test_voxels_terrain       // uvs - wip
 // #define zoxel_test_uis
 // -- debugs --
+//! \todo Fix pathing for android, cannot get resources there.
+// #define zoxel_debug_pathing 
 // #define zoxel_debug_prefabs
 // #define zoxel_debug_spawns
 // #define zoxel_debug_sdl
 // #define zoxel_debug_opengl
-// #define zoxel_debug_pathing
 // #define zoxel_catch_opengl_errors
 // #define debug_viewport_resize
 // #define zoxel_debug_element_raycasting

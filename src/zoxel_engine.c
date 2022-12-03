@@ -21,6 +21,7 @@ void end()
 
 void update()
 {
+    // zoxel_log("core update loop\n");
     update_outer_core();
     update_core();
     update_inner_core();

@@ -5,8 +5,8 @@
 //  https://www.reddit.com/r/opengl/comments/ydsqkn/textured_square_works_on_pinephone_pro_but_not_pc/
 //  https://github.com/edo9300/edopro/issues/151
 //! Mesh A - Buffers
-const char* basicRender2DVertFilepath = "resources/shaders/2D/BasicRender2D.vert";
-const char* basicRender2DFragFilepath = "resources/shaders/2D/BasicRender2D.frag";
+const char* basicRender2DVertFilepath = resources_folder_name"shaders/2D/BasicRender2D.vert";
+const char* basicRender2DFragFilepath = resources_folder_name"shaders/2D/BasicRender2D.frag";
 GLuint2 instanceShader2D;
 GLuint square2DMaterial;
 Material2D material2D;
@@ -42,7 +42,7 @@ void InitializeMesh(GLuint material)
     GLenum err7 = glGetError();
     if (err7 != GL_NO_ERROR)
     {
-        printf("GL HAD ERROR with end of InitializeMesh: %i\n", err7);
+        printf("GL ERROR with end of InitializeMesh: %i\n", err7);
     }
 #endif
     /*for (int j = 0; j < sizeof(square_indicies) / 4; j++)
@@ -72,7 +72,7 @@ void OpenGLBeginInstancing(const float4x4 viewMatrix)
 {
     if (square2DMaterial == 0)
     {
-        printf("OpenGLBeginInstancing square2DMaterial is 0.\n");
+        // printf("OpenGLBeginInstancing square2DMaterial is 0.\n");
         return;
     }
     //! This sets the materials actually, would be best to group entities per material here?

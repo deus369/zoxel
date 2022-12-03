@@ -1,8 +1,44 @@
 // Shader3D Textured
-
 GLuint2 shader3D_textured;
-const char* shader3D_textured_filepath_vert = "resources/shaders/3D/shader3D_textured.vert";
-const char* shader3D_textured_filepath_frag = "resources/shaders/3D/shader3D_textured.frag";
+const char* shader3D_textured_filepath_vert = resources_folder_name"shaders/3D/shader3D_textured.vert";
+const char* shader3D_textured_filepath_frag = resources_folder_name"shaders/3D/shader3D_textured.frag";
+const GLchar* shader3D_textured_vert_buffer = "\
+#version 300 es\n\
+in lowp vec3 vertexPosition; \
+in lowp vec2 vertexUV; \
+uniform lowp mat4 viewMatrix; \
+uniform lowp vec3 position; \
+uniform lowp vec4 rotation; \
+uniform lowp float scale; \
+out lowp vec2 uv; \
+\
+vec3 float4_rotate_float3(vec4 rotation, vec3 value) \
+{ \
+    vec3 rotationXYZ = rotation.xyz; \
+    vec3 t = cross(rotationXYZ, value) * 2.0f; \
+    vec3 crossB = cross(rotationXYZ, t); \
+    vec3 scaledT = t * rotation.w; \
+    return value + scaledT + crossB; \
+} \
+\
+void main()\
+{\
+    gl_Position = viewMatrix * vec4(position + float4_rotate_float3(rotation, vertexPosition * scale), 1.0); \
+    uv = vertexUV;\
+}\
+";
+const GLchar* shader3D_textured_frag_buffer = "\
+#version 300 es\n\
+in lowp vec2 uv;\
+uniform lowp float brightness; \
+uniform sampler2D tex; \
+out lowp vec4 color; \
+ \
+void main() \
+{ \
+    color = texture(tex, uv) * brightness; \
+} \
+";
 
 void dispose_shader3D_textured()
 {
@@ -12,7 +48,8 @@ void dispose_shader3D_textured()
 
 int load_shader3D_textured()
 {
-    shader3D_textured = spawn_gpu_shader(shader3D_textured_filepath_vert, shader3D_textured_filepath_frag);
+    // shader3D_textured = spawn_gpu_shader(shader3D_textured_filepath_vert, shader3D_textured_filepath_frag);
+    shader3D_textured = spawn_gpu_shader_inline(shader3D_textured_vert_buffer, shader3D_textured_frag_buffer);
     return 0;
 }
 
@@ -82,7 +119,7 @@ void opengl_upload_shader3D_textured(GLuint2 mesh_buffer, GLuint material_buffer
     // printf("Binding Data %i %i\n", indicies_length, verts_length);
 }
 
-void opengl_set_material3D_uvs_properties(GLuint material,
+int opengl_set_material3D_uvs_properties(GLuint material,
     const float4x4 viewMatrix, float3 position, float4 rotation, float scale, float brightness)
 {
     // printf("Rendering Cube [%ix%i]\n", mesh.x, mesh.y);
@@ -102,4 +139,13 @@ void opengl_set_material3D_uvs_properties(GLuint material,
     glUniform4f(materialTextured3D.rotation, rotation.x, rotation.y, rotation.z, rotation.w);
     glUniform1f(materialTextured3D.scale, scale);
     glUniform1f(materialTextured3D.brightness, brightness);
+    #ifdef zoxel_catch_opengl_errors
+        GLenum err = glGetError();
+        if (err != GL_NO_ERROR)
+        {
+            zoxel_log_arg("GL ERROR with opengl_set_material3D_uvs_properties [%i]\n", (int) err);
+            return -1;
+        }
+    #endif
+    return 0;
 }

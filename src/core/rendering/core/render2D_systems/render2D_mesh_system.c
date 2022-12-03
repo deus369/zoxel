@@ -26,7 +26,7 @@ void RenderMeshMaterial2DSystem(ecs_iter_t *it)
         {
             if (isDebugRenderMaterial2DSystem)
             {
-                printf("RenderMaterial2DSystem Material Error: At [%i]. Entity [%lu].\n", i, (long int) (it->entities[i]));
+                zoxel_log_arg("RenderMaterial2DSystem Material Error: At [%i]. Entity [%lu].\n", i, (long int) (it->entities[i]));
             }
             continue;
         }
@@ -34,7 +34,7 @@ void RenderMeshMaterial2DSystem(ecs_iter_t *it)
         {
             if (isDebugRenderMaterial2DSystem)
             {
-                printf("RenderMaterial2DSystem Material: At [%i]. Entity [%lu].\n", i, (long int) (it->entities[i]));
+                zoxel_log_arg("RenderMaterial2DSystem Material: At [%i]. Entity [%lu].\n", i, (long int) (it->entities[i]));
             }
         }
         float4x4 viewMatrix;
@@ -48,7 +48,7 @@ void RenderMeshMaterial2DSystem(ecs_iter_t *it)
         }
         render_entity_material2D_and_mesh(viewMatrix, meshGPULink->value, materialGPULink->value, textureGPULink->value,
             position->value, rotation2D->value, scale1D->value, brightness->value);
-        // printf("Rendering 2D mesh material [%lu]\n", (long int) it->entities[i]);
+        // zoxel_log_arg("Rendering 2D mesh material [%lu]\n", (long int) it->entities[i]);
     }
 }
 ECS_SYSTEM_DECLARE(RenderMeshMaterial2DSystem);

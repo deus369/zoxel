@@ -4,11 +4,11 @@
 // resources
 #define static_sounds_length 5
 const char *sound_file_names[] = {
-    "resources/sounds/bloop.wav",
-	"resources/sounds/scratch.wav",
-	"resources/sounds/high.wav",
-	"resources/sounds/medium.wav",
-	"resources/sounds/low.wav"
+    resources_folder_name"sounds/bloop.wav",
+	resources_folder_name"sounds/scratch.wav",
+	resources_folder_name"sounds/high.wav",
+	resources_folder_name"sounds/medium.wav",
+	resources_folder_name"sounds/low.wav"
 };
 #ifdef SDL_MIXER
 Mix_Chunk *sounds[static_sounds_length];
@@ -41,7 +41,7 @@ zoxel_reset_system(PlaySoundResetSystem, PlaySound)
 			sounds[i] = Mix_LoadWAV(sound_file_names[i]);
 			if(sounds[i] == NULL)
 			{
-				printf( "Failed to load sound effect[%i]! SDL_mixer Error: %s\n", i, Mix_GetError() );
+				zoxel_log_arg( "Failed to load sound effect[%i]! SDL_mixer Error: %s\n", i, Mix_GetError() );
 				success = false;
 			}
 		}

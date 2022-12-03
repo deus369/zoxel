@@ -27,8 +27,11 @@ void Render3DUvsSystem(ecs_iter_t *it)
             opengl_set_texture(textureGPULink->value, false);   // hides it atm
             opengl_set_mesh(meshGPULink->value);
             // opengl_set_vertex_attributes(materialGPULink->value);
-            opengl_set_material3D_uvs_properties(materialGPULink->value,
-                main_camera_matrix, position->value, rotation->value, scale1D->value, brightness->value);
+            if (opengl_set_material3D_uvs_properties(materialGPULink->value,
+                main_camera_matrix, position->value, rotation->value, scale1D->value, brightness->value) == -1)
+            {
+                return;
+            }
             opengl_draw_triangles(meshIndicies2->length);
             opengl_disable_texture(false);
             opengl_disable_opengl_program();

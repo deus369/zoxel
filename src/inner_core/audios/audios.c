@@ -2,7 +2,11 @@
 #define zoxel_audios
 
 #ifdef SDL_MIXER
-#include <SDL2/SDL_mixer.h>
+    #ifdef ANDROID_BUILD
+		  #include <SDL_mixer.h>
+    #else
+		  #include <SDL2/SDL_mixer.h>
+    #endif
 #endif
 #include "sounds/sounds.c"
 #include "musics/musics.c"
@@ -13,7 +17,7 @@ bool load_audio()
 	bool success = true;
 	if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
 	{
-		printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+		zoxel_log_arg( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		success = false;
 	}
     if (!load_static_sounds())

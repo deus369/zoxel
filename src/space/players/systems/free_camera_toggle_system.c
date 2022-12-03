@@ -60,25 +60,3 @@ void FreeCameraDisableMovementSystem(ecs_iter_t *it)
     }
 }
 ECS_SYSTEM_DECLARE(FreeCameraDisableMovementSystem);
-
-
-// rotate = float3_multiply_float(rotate, rotatePower);
-// rotateQuaternion = float4_multiply_float(rotateQuaternion, rotatePower);
-/*float4 rotateY = quaternion_from_euler((float3) { 0, -mouse->delta.x * rotatePower, 0 });
-float4 rotateZ = quaternion_from_euler((float3) { 0, 0, -mouse->delta.y * rotatePower });
-float4 rotateQuaternion = { 0, 0, 0, 1 };
-rotateQuaternion = quaternion_rotate(rotateQuaternion, rotateY);
-rotateQuaternion = quaternion_rotate(rotateQuaternion, rotateZ);*/
-    // return;
-    /*ecs_query_t *playerQuery = queryContainer2->query2;
-    if (!playerQuery)
-    {
-        printf("[FreeCameraMoveSystem; playerQuery is null]\n");
-        return;
-    }
-    ecs_iter_t playerIter = ecs_query_iter(it->world, playerQuery);
-    ecs_query_next(&playerIter);
-    if (playerIter.count == 0)
-    {
-        return;
-    }*/

@@ -7,7 +7,7 @@ ecs_entity_t spawn_prefab_mouse(ecs_world_t *world)
     ecs_entity_t e = ecs_new_prefab(world, "mouse_prefab");
     set_unique_entity_name(world, e, "mouse_prefab");
     #ifdef zoxel_debug_prefabs
-    printf("spawn_prefab mouse [%lu].\n", (long int) (e));
+    zoxel_log_arg("spawn_prefab mouse [%lu].\n", (long int) (e));
     #endif
     zoxel_add_tag(world, e, Device);
     zoxel_set(world, e, Mouse, { });

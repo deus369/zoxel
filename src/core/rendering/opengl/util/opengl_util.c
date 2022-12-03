@@ -5,7 +5,8 @@
 //  https://www.reddit.com/r/opengl/comments/ydsqkn/textured_square_works_on_pinephone_pro_but_not_pc/
 //  https://github.com/edo9300/edopro/issues/151
 // float3 backgroundColor = { 16.0f / 255.0f, 24.0f / 255.0f, 32.0f / 255.0f };
-float3 backgroundColor = { 99.0f / 255.0f, 190.0f / 255.0f, 191.0f / 255.0f };
+// float3 backgroundColor = { 99.0f / 255.0f, 190.0f / 255.0f, 191.0f / 255.0f };
+float3 backgroundColor = { 9.0f / 255.0f, 70.0f / 255.0f, 75.0f / 255.0f };//
 
 void opengl_clear()
 {
@@ -41,6 +42,14 @@ bool opengl_set_material(GLuint material)
         return false;
     }
     glUseProgram(material);
+    #ifdef zoxel_catch_opengl_errors
+        GLenum err = glGetError();
+        if (err != GL_NO_ERROR)
+        {
+            zoxel_log_arg("GL ERROR with opengl_set_material [%i]\n", material);
+            return false;
+        }
+    #endif
     return true;
 }
 
@@ -50,14 +59,16 @@ void opengl_set_mesh(GLuint2 mesh)
     glBindBuffer(GL_ARRAY_BUFFER, mesh.y);            // for vertex coordinates
 }
 
-/*void opengl_set_uvs(GLuint uvs)
-{
-    glBindBuffer(GL_ARRAY_BUFFER, uvs);
-}*/
-
 void opengl_draw_triangles(int indicies_length)
 {
     glDrawElements(GL_TRIANGLES, indicies_length, GL_UNSIGNED_INT, NULL);
+    #ifdef zoxel_catch_opengl_errors
+        GLenum err = glGetError();
+        if (err != GL_NO_ERROR)
+        {
+            zoxel_log("GL ERROR with opengl_draw_triangles.\n");
+        }
+    #endif
 }
 
 void opengl_disable_opengl_program()

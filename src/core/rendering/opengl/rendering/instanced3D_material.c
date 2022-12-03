@@ -1,7 +1,7 @@
 // RenderParticle
 
-const char* basicRender3DVertFilepath = "resources/shaders/3D/BasicRender3D.vert";
-const char* basicRender3DFragFilepath = "resources/shaders/3D/BasicRender3D.frag";
+const char* basicRender3DVertFilepath = resources_folder_name"shaders/3D/BasicRender3D.vert";
+const char* basicRender3DFragFilepath = resources_folder_name"shaders/3D/BasicRender3D.frag";
 GLuint2 instanceShader3D;
 GLuint materialInstance3D;
 Material3D material3D;
