@@ -68,7 +68,8 @@ const float3 voxel_face_vertices_front[] =
 
 //! Create functions with macros to get voxels.
 #define zoxel_get_voxel_direction(direction, dimension, is_positive)\
-unsigned char get_voxel##_##direction(int3 local_position,\
+unsigned char get_voxel##_##direction(\
+    int3 local_position,\
     const Chunk *chunk,\
     const ChunkSize *chunkSize,\
     const Chunk *chunk_other)\

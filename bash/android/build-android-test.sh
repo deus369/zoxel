@@ -1,7 +1,7 @@
 #!/bin/bash
 
 zoxel_directory="$HOME/zoxel"
-sdl_directory="$HOME/projects/SDL"
+sdl_directory="$HOME/SDL/SDL2"
 ANDROID_NDK_HOME="$HOME/android/android-ndk-r10e"
 export ANDROID_NDK_HOME="$HOME/android/android-ndk-r10e"
 ANDROID_HOME="/usr/lib/android-sdk"

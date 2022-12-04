@@ -79,27 +79,26 @@ void RenderingCoreImport(ecs_world_t *world)
     ecs_set_hooks(world, MeshGPULink, { .dtor = ecs_dtor(MeshGPULink) });
     ecs_set_hooks(world, UvsGPULink, { .dtor = ecs_dtor(UvsGPULink) });
     // move this to animations systems
-    ECS_SYSTEM_DEFINE(world, EternalRotationSystem, EcsOnUpdate, [out] Rotation, [in] EternalRotation);
+    zoxel_system(world, EternalRotationSystem, EcsOnUpdate, [out] Rotation, [in] EternalRotation);  // _main_thread
     // render2D
-    ECS_SYSTEM_DEFINE(world, InstanceRender2DSystem, 0,
+    zoxel_system_main_thread(world, InstanceRender2DSystem, 0,
         [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink,
         [none] !MeshGPULink);
-    ECS_SYSTEM_DEFINE(world, RenderMaterial2DSystem, 0,
+    zoxel_system_main_thread(world, RenderMaterial2DSystem, 0,
         [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MaterialGPULink,
         [in] TextureGPULink, [none] !MeshGPULink);
-    ECS_SYSTEM_DEFINE(world, RenderMeshMaterial2DSystem, 0,
+    zoxel_system_main_thread(world, RenderMeshMaterial2DSystem, 0,
         [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MeshGPULink,
         [in] MaterialGPULink, [in] TextureGPULink);
     // render3D
-    ECS_SYSTEM_DEFINE(world, Render3DSystem, 0,
+    zoxel_system_main_thread(world, Render3DSystem, 0, // EcsOnStore,
         [in] Position, [in] Rotation, [in] Scale1D, [in] Brightness,
         [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies,
         [none] !UvsGPULink);
-    ECS_SYSTEM_DEFINE(world, Render3DUvsSystem, 0,
+    zoxel_system_main_thread(world, Render3DUvsSystem, 0, // EcsOnStore,
         [in] Position, [in] Rotation, [in] Scale1D, [in] Brightness,
         [in] MeshGPULink, [in] MaterialGPULink, [in] TextureGPULink, [in] MeshIndicies);
-        // [in] UvsGPULink, 
-    ECS_SYSTEM_DEFINE(world, InstanceRender3DSystem, 0,
+    zoxel_system_main_thread(world, InstanceRender3DSystem, 0,
         [in] Position, [in] Rotation, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink);
     // updates
     zoxel_system_main_thread(world, MeshUpdateSystem, EcsOnValidate,

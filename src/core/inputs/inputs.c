@@ -14,6 +14,7 @@ ECS_DECLARE(Device);
 // prefabs
 #include "prefabs/mouse.c"
 // systems
+#include "systems/keyboard_reset_system.c"
 #include "systems/keyboard_extract_system.c"
 #include "systems/mouse_extract_system.c"
 #include "systems/mouse_raycaster_system.c"

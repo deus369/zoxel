@@ -2,6 +2,7 @@
 GLuint2 shader3D_textured;
 const char* shader3D_textured_filepath_vert = resources_folder_name"shaders/3D/shader3D_textured.vert";
 const char* shader3D_textured_filepath_frag = resources_folder_name"shaders/3D/shader3D_textured.frag";
+//! inline shaders incase the shader files don't exist.
 const GLchar* shader3D_textured_vert_buffer = "\
 #version 300 es\n\
 in lowp vec3 vertexPosition; \
@@ -84,11 +85,11 @@ void opengl_upload_shader3D_textured(GLuint2 mesh_buffer, GLuint material_buffer
     Material3DTextured material3D = spawn_material3D_textured(material_buffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * 4, indicies, GL_STATIC_DRAW);
-    // need to combine positions and uvs?
     glBindBuffer(GL_ARRAY_BUFFER, mesh_buffer.y);
     // glEnableVertexAttribArray(material3D.vertexPosition);
     // glVertexAttribPointer(material3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 12, 0);
-
+    //! This recreates vertex data during upload
+    //! \todo Can I upload a non combined one? This isn't efficient.
     int floats_length = (verts_length / 3) * 5;
     float combined_verts[floats_length];
     for (int i = 0; i < floats_length / 5; i++)
@@ -104,37 +105,23 @@ void opengl_upload_shader3D_textured(GLuint2 mesh_buffer, GLuint material_buffer
     glVertexAttribPointer(material3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 20, (GLvoid*)(3 * sizeof(float)));
     glEnableVertexAttribArray(material3D.vertexPosition);
     glEnableVertexAttribArray(material3D.vertexUV);
-
-    /*glBufferData(GL_ARRAY_BUFFER, verts_length * 3, verts, GL_STATIC_DRAW);
-    // uvs - combine with verts... this won't work?
-    glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
-    glEnableVertexAttribArray(material3D.vertexUV);
-    glVertexAttribPointer(material3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 8, 0);*/
-    // glVertexAttribPointer(material3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 8, (GLvoid*)(3 * sizeof(float)));
-    // glBufferData(GL_ARRAY_BUFFER, uvs_length * 4, uvs, GL_STATIC_DRAW);
-    // printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", mesh.x, mesh.y);
-    // disable bindings
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     // printf("Binding Data %i %i\n", indicies_length, verts_length);
 }
 
 int opengl_set_material3D_uvs_properties(GLuint material,
-    const float4x4 viewMatrix, float3 position, float4 rotation, float scale, float brightness)
+    float3 position, float4 rotation, float scale, float brightness)
 {
     // printf("Rendering Cube [%ix%i]\n", mesh.x, mesh.y);
     // printf("    - Rendering Cube [%ix%i]\n", squareTexturedMesh.x, squareTexturedMesh.y);
     Material3DTextured materialTextured3D = spawn_material3D_textured(material);
-
     glEnableVertexAttribArray(materialTextured3D.vertexPosition);
     glEnableVertexAttribArray(materialTextured3D.vertexUV);
     glVertexAttribPointer(materialTextured3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 20, 0);
     glVertexAttribPointer(materialTextured3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 20, (GLvoid*)(12));
-
     //glEnableVertexAttribArray(materialTextured3D.vertexPosition);
     //glVertexAttribPointer(materialTextured3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 12, 0); // 4 * 3
-
-    glUniformMatrix4fv(materialTextured3D.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
     glUniform3f(materialTextured3D.position, position.x, position.y, position.z);
     glUniform4f(materialTextured3D.rotation, rotation.x, rotation.y, rotation.z, rotation.w);
     glUniform1f(materialTextured3D.scale, scale);
@@ -149,3 +136,13 @@ int opengl_set_material3D_uvs_properties(GLuint material,
     #endif
     return 0;
 }
+
+    /*glBufferData(GL_ARRAY_BUFFER, verts_length * 3, verts, GL_STATIC_DRAW);
+    // uvs - combine with verts... this won't work?
+    glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
+    glEnableVertexAttribArray(material3D.vertexUV);
+    glVertexAttribPointer(material3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 8, 0);*/
+    // glVertexAttribPointer(material3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 8, (GLvoid*)(3 * sizeof(float)));
+    // glBufferData(GL_ARRAY_BUFFER, uvs_length * 4, uvs, GL_STATIC_DRAW);
+    // printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", mesh.x, mesh.y);
+    // disable bindings

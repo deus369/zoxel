@@ -8,7 +8,7 @@ const int dissapearChance = 92;
 const float spawnRange = 0.96f;
 const int3 chunk_size = { chunk_length, chunk_length, chunk_length };
 const int3 terrain_chunk_size = { chunk_length, 8 * chunk_length, chunk_length };
-const int terrain_rows = 12;
+const int terrain_rows = 8;
 const float chunk_real_size = 1.0f;   // size achunk takes up
 // tags
 ECS_DECLARE(Vox);

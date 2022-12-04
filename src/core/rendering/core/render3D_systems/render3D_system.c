@@ -1,5 +1,6 @@
 extern float4x4 main_camera_matrix;
 
+//! Renders things like simple cubes
 void Render3DSystem(ecs_iter_t *it)
 {
     const Position *positions = ecs_field(it, Position, 1);
@@ -23,14 +24,27 @@ void Render3DSystem(ecs_iter_t *it)
         {
             opengl_set_mesh(meshGPULink->value);
             if (opengl_set_material3D_properties(materialGPULink->value,
-                main_camera_matrix, position->value, rotation->value, scale1D->value, brightness->value) == -1)
+                position->value, rotation->value, scale1D->value, brightness->value) == -1)
             {
                 return;
             }
+            opengl_set_camera_view_matrix(materialGPULink->value, main_camera_matrix);
             opengl_draw_triangles(meshIndicies2->length);
-            opengl_disable_opengl_program();
+            /*for (int j = 0; j < main_cameras_count; j++)
+            {
+                ecs_entity_t camera_entity = main_cameras[j];
+                if (!ecs_is_valid(world, camera_entity))
+                {
+                    continue;
+                }
+                // printf("Rendering! [%i]\n", j);
+                opengl_set_camera_view_matrix(materialGPULink->value,
+                    ecs_get(world, camera_entity, ViewMatrix)->value);
+                opengl_draw_triangles(meshIndicies2->length);
+            }*/
             // printf("Render3DSystem [%lu]\n", (long int) it->entities[i]);
         }
     }
+    opengl_disable_opengl_program();
 }
 ECS_SYSTEM_DECLARE(Render3DSystem);

@@ -4,12 +4,20 @@
 const double min_render_loop_timing = 0;    // set to higher to check for spikes
 #endif
 
-// extern ecs_entity_t get_main_camera();
+int render_queue_count = 0;
+// \todo Create a queue of 3D models to render, including materials, etc
+//  - each type of render queue has different data based on the shaders
+//  - inside ecs systems, can run multithread, add things to queues to render
+
+void render_pre_loop()
+{
+    opengl_clear(); // cannot just clear in a view port with opengl?
+    render_queue_count = 0;
+}
 
 void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, int2 size)
 {
     main_camera_matrix = camera_matrix;
-    // GL.Viewport(0, 0, window.Width / 2, window.Height);
     #ifndef __EMSCRIPTEN__
     glViewport(position.x, position.y, size.x, size.y);
     #endif
@@ -34,8 +42,6 @@ void render_loop_temp()
     #ifdef zoxel_time_render_loop
     clock_t t = clock();
     #endif
-    // now render the things
-    opengl_clear();
     // camera renders
     if (ecs_is_valid(world, ui_cameras[0]))
     {

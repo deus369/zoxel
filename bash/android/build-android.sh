@@ -4,7 +4,7 @@
 # cc -std=c99 -fPIC -D_DEFAULT_SOURCE -Wall -g -o zoxel-dev includes/flecs.c src/main.c -lGL -lSDL2 -lm
 
 zoxel_directory="$HOME/zoxel"
-sdl_directory="$HOME/projects/SDL"
+sdl_directory="$HOME/SDL/SDL2"
 ANDROID_NDK_HOME="$HOME/android/android-ndk-r10e"
 export ANDROID_NDK_HOME="$HOME/android/android-ndk-r10e"
 ANDROID_HOME="/usr/lib/android-sdk"

@@ -8,6 +8,7 @@ ecs_entity_t ui_cameras[1];
 // -=- Tags -=-
 ECS_DECLARE(Camera);
 ECS_DECLARE(CameraFollower2D);  // a tag for a camera that follows a Character2D
+ECS_DECLARE(UICamera);
 // -=- components -=-
 //! Used for the cameras frustrum.
 zoxel_component(ProjectionMatrix, float4x4);
@@ -28,6 +29,7 @@ zoxel_component(FreeRoam, unsigned char);
 // -=- prefabs -=-
 #include "prefabs/camera_base.c"
 #include "prefabs/camera2D.c"
+#include "prefabs/ui_camera.c"
 // -=- util -=-
 #include "util/main_camera.c"
 // -=- systems -=-
@@ -72,6 +74,7 @@ void CamerasImport(ecs_world_t *world)
     // -=- tags -=-
     ECS_TAG_DEFINE(world, Camera);
     ECS_TAG_DEFINE(world, CameraFollower2D); // Until fix is found. \todo Fix this, readd it back here where it belongs.
+    ECS_TAG_DEFINE(world, UICamera);
     // -=- components -=-
     ECS_COMPONENT_DEFINE(world, CameraLink);
     ECS_COMPONENT_DEFINE(world, CameraTarget);

@@ -1,5 +1,6 @@
 extern float4x4 main_camera_matrix;
 
+//! Renders for material material3D_textured
 void Render3DUvsSystem(ecs_iter_t *it)
 {
     const Position *positions = ecs_field(it, Position, 1);
@@ -24,22 +25,32 @@ void Render3DUvsSystem(ecs_iter_t *it)
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         if (opengl_set_material(materialGPULink->value))
         {
-            opengl_set_texture(textureGPULink->value, false);   // hides it atm
+            opengl_set_texture(textureGPULink->value, false);
             opengl_set_mesh(meshGPULink->value);
             // opengl_set_vertex_attributes(materialGPULink->value);
             if (opengl_set_material3D_uvs_properties(materialGPULink->value,
-                main_camera_matrix, position->value, rotation->value, scale1D->value, brightness->value) == -1)
+                position->value, rotation->value, scale1D->value, brightness->value) == -1)
             {
-                return;
+                continue;
             }
+            opengl_set_camera_view_matrix(materialGPULink->value, main_camera_matrix);
             opengl_draw_triangles(meshIndicies2->length);
-            opengl_disable_texture(false);
-            opengl_disable_opengl_program();
+            /*for (int j = 0; j < main_cameras_count; j++)
+            {
+                ecs_entity_t camera_entity = main_cameras[j];
+                if (!ecs_is_valid(world, camera_entity))
+                {
+                    continue;
+                }
+                // printf("Rendering! [%i]\n", j);
+                opengl_set_camera_view_matrix(materialGPULink->value,
+                    ecs_get(world, camera_entity, ViewMatrix)->value);
+                opengl_draw_triangles(meshIndicies2->length);
+            }*/
             // printf("Rendering [%lu] mesh with texture: %i\n", (long int) it->entities[i], textureGPULink->value);
         }
     }
+    opengl_disable_texture(false);
+    opengl_disable_opengl_program();
 }
 ECS_SYSTEM_DECLARE(Render3DUvsSystem);
-
-
-// opengl_set_uvs(uvsGPULink->value);

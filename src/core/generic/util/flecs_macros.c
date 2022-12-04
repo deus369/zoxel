@@ -1,4 +1,5 @@
 //! My own flecs macros
+// Remember it will destroy the prefab ones too... *facepalm*
 
 #define zoxel_component(name, type)\
 typedef struct\
@@ -160,13 +161,7 @@ ecs_entity_t ecs_id(id) = 0;\
 //! Adds a simple tag to an entity.
 #define zoxel_add_tag(world, entity, T)\
     ecs_add_id(world, entity, ecs_id(T))
-
-
-
-// Remember it will destroy the prefab ones too... *facepalm*
-
-
-
+    
 #define zoxel_reset_system(system_name, component_name)\
 void system_name(ecs_iter_t *it)\
 {\

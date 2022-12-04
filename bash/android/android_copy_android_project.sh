@@ -1,7 +1,7 @@
 #!/bin/bash
 
 zoxel_directory="$HOME/zoxel"
-sdl_directory="$HOME/projects/SDL2"
+sdl_directory="$HOME/SDL/SDL2"
 
 # copy android-project to home directory
 

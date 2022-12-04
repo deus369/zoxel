@@ -68,6 +68,7 @@ void update_core()
         #ifdef __EMSCRIPTEN__
         update_web_canvas(world);   // handles resize event
         #endif
+        render_pre_loop();
     }
     // ecs_log_set_level(1);    // use this to debug system pipelines
     ecs_progress(world, 0);

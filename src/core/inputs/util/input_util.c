@@ -14,6 +14,6 @@ void input_extract_from_sdl(ecs_world_t *world, SDL_Event event)
 
 void reset_input_devices(ecs_world_t *world)
 {
-    reset_keyboard(world);
+    reset_keyboard(world, keyboardEntity);
     reset_mouse(world);
 }

@@ -2,7 +2,7 @@
 
 source gradle_set_paths.sh
 
-cd ~/projects/android-project/
+cd ~/zoxel-android/
 
 gradle run # --debug-jvm
 

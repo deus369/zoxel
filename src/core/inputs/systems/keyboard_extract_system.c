@@ -1,15 +1,7 @@
 //! Grabs keyboard data from SDL.
 
 ecs_entity_t keyboardEntity;
-// forward declarations
-bool wasPressedThisFrame = false;
-void SetKey(PhysicalButton *key, int eventType);
-void reset_key(PhysicalButton *key);
-
-#define key_case(sdl_event, key)\
-            case sdl_event:\
-                SetKey(key, eventType);\
-                break;
+// bool wasPressedThisFrame = false;
 
 void spawn_keyboard(ecs_world_t *world)
 {
@@ -21,50 +13,25 @@ void spawn_keyboard(ecs_world_t *world)
     keyboardEntity = e;
 }
 
-void reset_keyboard(ecs_world_t *world)
+void set_key(PhysicalButton *key, int eventType)
 {
-    if (!keyboardEntity || !ecs_is_alive(world, keyboardEntity))
+    bool keyDown = eventType == SDL_KEYDOWN;
+    bool keyReleased = eventType == SDL_KEYUP;
+    if (!key->isPressed && keyDown)
     {
-        return;
+        key->wasPressedThisFrame = true;
     }
-    Keyboard *keyboard = ecs_get_mut(world, keyboardEntity, Keyboard);
-    reset_key(&keyboard->space);
-    reset_key(&keyboard->escape);
-    reset_key(&keyboard->enter);
-    reset_key(&keyboard->left_alt);
-    reset_key(&keyboard->right_alt);
-    reset_key(&keyboard->a);
-    reset_key(&keyboard->b);
-    reset_key(&keyboard->c);
-    reset_key(&keyboard->d);
-    reset_key(&keyboard->e);
-    reset_key(&keyboard->f);
-    reset_key(&keyboard->g);
-    reset_key(&keyboard->h);
-    reset_key(&keyboard->i);
-    reset_key(&keyboard->j);
-    reset_key(&keyboard->k);
-    reset_key(&keyboard->l);
-    reset_key(&keyboard->m);
-    reset_key(&keyboard->n);
-    reset_key(&keyboard->o);
-    reset_key(&keyboard->p);
-    reset_key(&keyboard->q);
-    reset_key(&keyboard->r);
-    reset_key(&keyboard->s);
-    reset_key(&keyboard->t);
-    reset_key(&keyboard->u);
-    reset_key(&keyboard->v);
-    reset_key(&keyboard->w);
-    reset_key(&keyboard->x);
-    reset_key(&keyboard->y);
-    reset_key(&keyboard->z);
-    reset_key(&keyboard->down);
-    reset_key(&keyboard->up);
-    reset_key(&keyboard->left);
-    reset_key(&keyboard->right);
-    ecs_modified(world, keyboardEntity, Keyboard);
+    if (key->isPressed && keyReleased)
+    {
+        key->wasReleasedThisFrame = true;
+    }
+    key->isPressed = keyDown;
 }
+
+#define key_case(sdl_event, key)\
+            case sdl_event:\
+                set_key(key, eventType);\
+                break;
 
 //! Extract Key Events from SDL and set them on entities keyboad.
 void extract_keyboard(ecs_world_t *world, SDL_Event event)
@@ -136,33 +103,6 @@ void extract_keyboard(ecs_world_t *world, SDL_Event event)
                 return;
         }
         ecs_modified(world, keyboardEntity, Keyboard);
-    }
-}
-
-void SetKey(PhysicalButton *key, int eventType)
-{
-    bool keyDown = eventType == SDL_KEYDOWN;
-    bool keyReleased = eventType == SDL_KEYUP;
-    if (!key->isPressed && keyDown)
-    {
-        key->wasPressedThisFrame = true;
-    }
-    if (key->isPressed && keyReleased)
-    {
-        key->wasReleasedThisFrame = true;
-    }
-    key->isPressed = keyDown;
-}
-
-void reset_key(PhysicalButton *key)
-{
-    if (key->wasPressedThisFrame)
-    {
-        key->wasPressedThisFrame = false;
-    }
-    if (key->wasReleasedThisFrame)
-    {
-        key->wasReleasedThisFrame = false;
     }
 }
 

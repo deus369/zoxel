@@ -16,8 +16,6 @@
 
 - Has a huge roadmap for the future [[Roadmap](documents/todos/todo-main.md)]
 
-![Le New Zoxel](/screenshots/screen-2022-11-25-18-41-36.jpg?raw=false "Le New Zoxel")
-
 ## How To Build
 
 > Download the code & use make commands to build it
@@ -54,8 +52,16 @@ Try @ itchio [[Le Olde Zoxel](https://deus0.itch.io/zoxel)]
 
 Follow le progress [[Link Tree](https://linktr.ee/lorddeus)]
 
-![Le Old Zoxel](/screenshots/KEyHna.png?raw=false "Le Old Zoxel")
-
 ### Mirrored
 
 Code is on [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.com/deus369/zoxel)].
+
+## Screenshots
+
+New Zoxel (C, FLECS, SDL)
+
+![Le New Zoxel](/screenshots/screen-2022-11-25-18-41-36.jpg?raw=false "Le New Zoxel")
+
+Old Zoxel (Unity Engine ECS)
+
+![Le Old Zoxel](/screenshots/KEyHna.png?raw=false "Le Old Zoxel")

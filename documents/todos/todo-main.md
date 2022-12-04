@@ -5,6 +5,76 @@ To-Do Main
 
 -----
 
+A record of what i've done since i've started libre zoxel > [Done List](todo-done.md)
+
+-----
+
+`Modules`
+
+Core
+
+[Rendering](todo-rendering.md)
+
+InnerCore
+
+[User Interface](todo-ui.md)
+
+[Tiles](todo-tiles.md)
+
+[Voxels](todo-voxels.md)
+
+Extra
+
+[Tools](todo-tools.md)
+
+[Devops](todo-devops.md)
+
+[Fixes](todo-fixes.md)
+
+-----
+
+`Doing List`
+
+- [ ] Current [Voxels](todo-voxels.md)
+
+- [ ] Current [Tiles](todo-tiles.md)
+
+- [ ] Current [User Interface](todo-ui.md)
+
+- [ ] Current [Cameras](todo-cameras.md)
+
+- [ ] Current [Android](todo-android.md)
+
+-----
+
+`General`
+
+- [ ] Remove use of delete_hierarchy and use a observer event to destroy hierarchy of anything with a child
+    - requires testing... *dread*
+- [ ] Press escape in game to go back to main menu
+- [ ] Fix Render Ordering of UI
+    - add a hashmap of render lists per layer (0, 1, etc), reset per frame
+    - supporting layers (text over header, etc)
+- [ ] Fix flashing when transfering cameras (from main menu camera to free roam one)
+- [ ] Spawn Game UI for player when game state changes
+    - [ ] Spawn a pause menu button (if touch screen)
+- [ ] Change sky color, implement CameraColor (per entity) for background clearing
+- [ ] Fix [resize_canvas] for web build
+- [ ] Sometimes crashes... from get_voxel_right macro in chunk builder (so on startup atm)
+    
+    `Process terminating with default action of signal 11 (SIGSEGV)`
+
+    `==15359==  Access not within mapped region at address 0x0`
+
+    `==15359==    at 0x1DB5B7: get_voxel_right (chunk_build_util.c:94)`
+
+    `==15359==    by 0x1DE449: build_chunk_mesh_uvs (chunk_uvs_build_system.c:68)`
+    
+    `==15359==    by 0x1DF094: ChunkUVsBuildSystem (chunk_uvs_build_system.c:170)`
+
+
+-----
+
 `Improved Voxels`
 
 - [ ] Test out smoothish like meshes for voxel grid
@@ -31,18 +101,6 @@ To-Do Main
 - [ ] Overworld Dungeons
 - [ ] Overworld Towns
 - [ ] Cave Systems
-
-`General`
-
-- [ ] Press escape in game to go back to main menu
-- [ ] Fix Render Ordering of UI
-    - add a hashmap of render lists per layer (0, 1, etc), reset per frame
-    - supporting layers (text over header, etc)
-- [ ] Fix flashing when transfering cameras (from main menu camera to free roam one)
-- [ ] Spawn Game UI for player when game state changes
-    - [ ] Spawn a pause menu button (if touch screen)
-- [ ] Change sky color, implement CameraColor (per entity) for background clearing
-- [ ] Fix [resize_canvas] for web build
 
 -----
 
@@ -74,48 +132,6 @@ To-Do Main
     - load with filenames
     - Dispose of them when closing game
     - Keep generic enough to use, so I can just load a list of files from resources
-
------
-
-`Doing List`
-
-- [ ] Current [Voxels](todo-voxels.md)
-
-- [ ] Current [Tiles](todo-tiles.md)
-
-- [ ] Current [User Interface](todo-ui.md)
-
-- [ ] Current [Cameras](todo-cameras.md)
-
-- [ ] Current [Android](todo-android.md)
-
------
-
-A record of what i've done since i've started libre zoxel > [Done List](todo-done.md)
-
------
-
-`Modules`
-
-Core
-
-[Rendering](todo-rendering.md)
-
-InnerCore
-
-[User Interface](todo-ui.md)
-
-[Tiles](todo-tiles.md)
-
-[Voxels](todo-voxels.md)
-
-Extra
-
-[Tools](todo-tools.md)
-
-[Devops](todo-devops.md)
-
-[Fixes](todo-fixes.md)
 
 -----
 

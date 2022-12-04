@@ -4,6 +4,8 @@
 
 current_directory="$HOME/zoxel/bash/android"
 
+# todo: install SDL folders into a directory with bash
+
 echo "Reinstalling Android builder from $current_directory"
 
 rm -R $HOME/zoxel-android

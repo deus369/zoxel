@@ -5,14 +5,14 @@
 source gradle_set_paths.sh
 
 # sdl - base
-sdl2_directory=$HOME/projects/SDL2
+sdl2_directory=$HOME/SDL/SDL2
 sdl2_1=$sdl2_directory/src
 sdl2_2=$sdl2_directory/include
 sdl2_3=$sdl2_directory/Android.mk
 # image
-sdl2_image_directory=$HOME/projects/SDL2_image
+sdl2_image_directory=$HOME/SDL/SDL2_image
 # mixer
-sdl2_mixer_directory=$HOME/projects/SDL2_mixer
+sdl2_mixer_directory=$HOME/SDL/SDL2_mixer
 sdl2_mixer_directory_src=$sdl2_mixer_directory/src
 sdl2_mixer_directory_include=$sdl2_mixer_directory/include
 # destination - where to copy to
