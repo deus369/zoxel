@@ -54,7 +54,7 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label,
     ecs_set(world, e, Children, { children.length, children.value });
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
-    printf("Spawned main menu [%lu]\n", (long int) e);
+    zoxel_log_arg("Spawned main menu [%lu]\n", (long int) e);
     #endif
     return e;
 }

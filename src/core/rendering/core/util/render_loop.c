@@ -34,9 +34,6 @@ void render_loop_temp()
     #ifdef zoxel_time_render_loop
     clock_t t = clock();
     #endif
-    // upload meshes to gpu
-    mesh_update_main_thread();
-    mesh_uvs_update_main_thread();
     // now render the things
     opengl_clear();
     // camera renders
@@ -61,7 +58,7 @@ void render_loop_temp()
     double t2 =  (((double) 1000.0 * t) / CLOCKS_PER_SEC);
     if (t2 >= min_render_loop_timing)
     {
-        printf("Render Time [%fms]\n", t2);
+        zoxel_log_arg("Render Time [%fms]\n", t2);
     }
     #endif
 }

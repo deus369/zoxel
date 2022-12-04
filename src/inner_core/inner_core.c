@@ -9,16 +9,6 @@
 #include "tiles/tiles.c"
 #include "voxels/voxels.c"
 
-extern bool headless;
-
-void update_inner_core()
-{
-    if (!headless)
-    {
-        texture_update_main_thread();  // uploads textures to gpu
-    }
-}
-
 void close_inner_core()
 {
     close_audio();

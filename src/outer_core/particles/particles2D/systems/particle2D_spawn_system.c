@@ -98,7 +98,7 @@ int GetParticles2DCount(ecs_world_t *world)
 
 void DebugParticlesSpawned(ecs_world_t *world)
 {
-    printf("    Particles Spawned [%i]\n", GetParticles2DCount(world));
+    zoxel_log_arg("    Particles Spawned [%i]\n", GetParticles2DCount(world));
 }
 
     /*cs_filter_t *filter = ecs_filter(world, {

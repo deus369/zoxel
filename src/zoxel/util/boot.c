@@ -4,7 +4,7 @@ extern bool is_split_screen;
 //! Spawns our first game entities.
 void boot_zoxel_game(ecs_world_t *world)
 {
-    printf("Booting [Zoxel]\n");
+    zoxel_log("Booting [Zoxel]\n");
     update();   // update once? so ui does its thing properly
     // spawn cameras first
     int2 screen_dimensions2 = screen_dimensions;

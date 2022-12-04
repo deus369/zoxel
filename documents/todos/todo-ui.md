@@ -71,3 +71,45 @@ To-Do UI
     - [ ] Labels
     - [ ] Buttons
     - [ ] Windows
+
+`UI Done`
+
+- [x] UIRaycastSystem
+    - [x] UI Select events
+    - [x] UI Click events
+- [x] Window Entities
+    - [x] A header UI with text
+    - [x] A close button
+    - [x] A close window event
+            - closed / confirm / cancel
+- [x] Window not spawning with system
+    - added EntityInitialize component for generating buffers on main thread
+    - Position2D is gone after spawning window?
+    - Possible soluion: remove ecs_get from function and pass in parent info when spawning children.
+- [x] FPS Display (top right)
+- [x] Generate Mesh - in an initialize system - instead of in main thread.
+- [x] Fix fullscreen - hiding UI?!?!
+- [x] Raycast only child ui first, before parents. Don't raycast window when header is in front of it.
+    - Add layer component
+    - Cycle through all uis, and keep the top most one.
+- [x] Text UI Update system
+    - [x] animate text to a random word every 3 seconds! (for testing)
+- [x] Scale textures of ui properly
+    - Use Unique Meshes - generated based on ui size
+- [x] Position perfectly
+- [x] when resize viewport - resize uis there
+- [x] Camera Renderer UI
+    - [x] Spawn Cube - Rotating
+    - [x] Spawn 2nd camera
+- [x] Font
+    - [x] Generate Font Texture
+- [x] Texts
+    - [x] Assemble from a Text data
+- [x] Font Texture Generation
+- [x] Frame Texture Generation
+- [x] UIButton tag - prefab - instantiate one in the middle of screen
+- [x] Move main menu stuff from window  into main menu / game ui module
+- [x] Fix bug - repositioning ui on resize canvas broken
+- [x] Main Menu
+    - Play button - to delete the AI camera and create the free roam one
+    - Exit button - close game

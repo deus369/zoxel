@@ -74,7 +74,7 @@ void spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children
         if (new_children_length < old_children_length)
         {
             #ifdef zoxel_debug_zext_updates
-            printf("    - deleting old_children [%i].\n", (old_children_length - new_children_length));
+            zoxel_log_arg("    - deleting old_children [%i].\n", (old_children_length - new_children_length));
             #endif
             for (int i = new_children_length; i < old_children_length; i++)
             {
@@ -85,7 +85,7 @@ void spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children
         if (old_children)
         {
             #ifdef zoxel_debug_zext_updates
-            printf("    - freeing old_children.\n");
+            zoxel_log("    - freeing old_children.\n");
             #endif
             free(old_children);
         }
@@ -95,7 +95,7 @@ void spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children
     #ifdef zoxel_debug_zext_updates
     else
     {
-        printf("    - zext remained the same [%i]\n", zextData->length);
+        zoxel_log_arg("    - zext remained the same [%i]\n", zextData->length);
     }
     #endif
     ecs_defer_end(world);

@@ -2,9 +2,9 @@
 #define zoxel_textures_core
 //! textures Module.
 
-#ifndef maxTextureQueue
+/*#ifndef maxTextureQueue
 #define maxTextureQueue 1024
-#endif
+#endif*/
 
 // Settings
 const double noise_animation_speed = 0.5;
@@ -56,12 +56,12 @@ void TexturesCoreImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, GenerateTexture);
     ECS_COMPONENT_DEFINE(world, AnimateTexture);
     ECS_COMPONENT_DEFINE(world, TextureDirty);
-    ECS_SYSTEM_DEFINE(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture);
+    zoxel_system_main_thread(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture);
     define_texture_generation_system(NoiseTexture, NoiseTextureSystem);
     define_texture_generation_system(FrameTexture, FrameTextureSystem);
     ECS_SYSTEM_DEFINE(world, TextureSaveSystem, EcsOnValidate,
         [in] TextureDirty, [in] Texture, [in] TextureSize, [none] SaveTexture);
-    ECS_SYSTEM_DEFINE(world, TextureUpdateSystem, EcsOnValidate,
+    zoxel_system_main_thread(world, TextureUpdateSystem, EcsOnValidate,
         [in] TextureDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink);
     zoxel_reset_system_define(GenerateTextureResetSystem, GenerateTexture);
     zoxel_reset_system_define(TextureDirtyResetSystem, TextureDirty);

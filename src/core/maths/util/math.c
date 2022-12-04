@@ -150,5 +150,5 @@ float4 quaternion_identity()
 void float4_print_euler(float4 input)
 {
     float3 euler = float3_divide_float(quaternion_to_euler(input), degreesToRadians);
-    printf("-> Euler [x:%f y:%f z:%f]\n", euler.x, euler.y, euler.z);
+    zoxel_log_arg("-> Euler [x:%f y:%f z:%f]\n", euler.x, euler.y, euler.z);
 }

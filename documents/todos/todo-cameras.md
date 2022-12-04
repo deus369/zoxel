@@ -7,7 +7,9 @@ To-Do Cameras
 
 `Current`
 
+- [ ] Hold shift to speed up camera roam movement
+
+`Done`
+
 - [x] Spawn as free roam camera
     - [x] right click will toggle it still
-
-- [ ] Hold shift to speed up camera roam movement

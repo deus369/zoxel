@@ -43,7 +43,7 @@ void Player2DTestSystem(ecs_iter_t *it)
         }
         else if (keyboard->p.wasPressedThisFrame)
         {
-            printf("[Printing Debug]\n");
+            zoxel_log("[Printing Debug]\n");
             DebugParticlesSpawned(world);
             // PrintKeyboard(world);
         }
@@ -67,12 +67,12 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it)
         {
             if (fps_display == 0)
             {
-                printf("Showing fps display.\n");
+                zoxel_log("Showing fps display.\n");
                 fps_display = spawn_fps_display(it->world, main_canvas, 32);
             }
             else
             {
-                printf("Hiding fps display.\n");
+                zoxel_log("Hiding fps display.\n");
                 delete_hierarchy(it->world, fps_display);
                 fps_display = 0;
             }

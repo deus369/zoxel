@@ -1,8 +1,8 @@
 //! Not a proper queue yet.
-int queueCount = 0;
+/*int queueCount = 0;
 int queueTextureIDs[maxTextureQueue];
 const Texture* queueTextures[maxTextureQueue];
-const TextureSize* queueTextureSizes[maxTextureQueue];
+const TextureSize* queueTextureSizes[maxTextureQueue];*/
 
 //! Generate random noise texture.
 /**
@@ -31,21 +31,18 @@ void TextureUpdateSystem(ecs_iter_t *it)
         const TextureSize *textureSize = &textureSizes[i];
         const TextureGPULink *textureGPULink = &textureGPULinks[i];
         // printf("Uploaded Texture to GPU: %lu -TextureID [%i] \n", (long int) it->entities[i], textureGPULink->value);
-        // add to queue
-        queueTextures[queueCount] = texture;
-        queueTextureSizes[queueCount] = textureSize;
-        queueTextureIDs[queueCount] = textureGPULink->value;
-        queueCount++;
-        /*glBindTexture(GL_TEXTURE_2D, textureID);
+        glBindTexture(GL_TEXTURE_2D, textureGPULink->value);
+        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize->value.x, textureSize->value.y,
             0, GL_RGBA, GL_UNSIGNED_BYTE, texture->value);
-        glBindTexture(GL_TEXTURE_2D, 0);*/
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 }
 ECS_SYSTEM_DECLARE(TextureUpdateSystem);
 
 //! \todo Make proper queue.
-void texture_update_main_thread()
+/*void texture_update_main_thread()
 { 
     if (queueCount == 0)
     {
@@ -65,4 +62,9 @@ void texture_update_main_thread()
         // printf("Updating TextureID [%i] with texture color.red [%i] \n", queueTextureIDs[i], texture->value[8 + 8 * 16].r);
     }
     queueCount = 0;
-}
+}*/
+        // add to queue
+        /*queueTextures[queueCount] = texture;
+        queueTextureSizes[queueCount] = textureSize;
+        queueTextureIDs[queueCount] = textureGPULink->value;
+        queueCount++;*/

@@ -2,9 +2,9 @@
 #define zoxel_rendering_core
 //! rendering core Module.
 
-#ifndef maxMeshQueue
+/*#ifndef maxMeshQueue
 #define maxMeshQueue 1024
-#endif
+#endif*/
 
 //! \todo Create a Cube with unique mesh - for chunk - add these components and update mesh for voxel chunk.
 //      - Test Mesh - simply create a test entity now with mesh and set to dirty
@@ -102,10 +102,12 @@ void RenderingCoreImport(ecs_world_t *world)
     ECS_SYSTEM_DEFINE(world, InstanceRender3DSystem, 0,
         [in] Position, [in] Rotation, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink);
     // updates
-    ECS_SYSTEM_DEFINE(world, MeshUpdateSystem, EcsOnValidate,
-        [in] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshGPULink, [in] MaterialGPULink,
+    zoxel_system_main_thread(world, MeshUpdateSystem, EcsOnValidate,
+        [in] MeshDirty,
+        [in] MeshIndicies,[in] MeshVertices,
+        [in] MeshGPULink, [in] MaterialGPULink,
         [none] !MeshUVs);
-    ECS_SYSTEM_DEFINE(world, MeshUvsUpdateSystem, EcsOnValidate,
+    zoxel_system_main_thread(world, MeshUvsUpdateSystem, EcsOnValidate,
         [in] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshUVs,
         [in] MeshGPULink, [in] MaterialGPULink);
     zoxel_reset_system_define(MeshDirtySystem, MeshDirty);

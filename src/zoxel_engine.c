@@ -24,7 +24,6 @@ void update()
     // zoxel_log("core update loop\n");
     update_outer_core();
     update_core();
-    update_inner_core();
 }
 
 //! Includes special case for emscripten.
@@ -42,7 +41,7 @@ void main_loop()
 
 void ZoxelEngineImport(ecs_world_t *world)
 {
-    printf("Importing [Zoxel Engine]\n");
+    zoxel_log("Importing [Zoxel Engine]\n");
     ECS_MODULE(world, ZoxelEngine);
     ECS_IMPORT(world, Core);
     ECS_IMPORT(world, InnerCore);

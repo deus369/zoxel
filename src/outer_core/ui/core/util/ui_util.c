@@ -46,14 +46,14 @@ float2 get_ui_real_position2D(ecs_world_t *world, ecs_entity_t e, ecs_entity_t p
             ((local_pixel_position.x  / canvasSizef.x) - 0.5f + anchor.x) * aspectRatio,
             ((local_pixel_position.y  / canvasSizef.y) - 0.5f + anchor.y) };
         #ifdef debug_ui_positioning
-        printf("-> (main_canvas) Position2D : %fx%f\n", position2D.x, position2D.y);
+        zoxel_log_arg("-> (main_canvas) Position2D : %fx%f\n", position2D.x, position2D.y);
         #endif
     }
     else
     {
         if (!ecs_has(world, parent, Position2D))
         {
-            printf("Parent [%lu] has no Position2D component.\n", (long int) parent);
+            zoxel_log_arg("Parent [%lu] has no Position2D component.\n", (long int) parent);
             // return (float2) { 0, 0 };
         }
         const Position2D *parent_position2D = ecs_get(world, parent, Position2D);
@@ -75,7 +75,7 @@ float2 get_ui_real_position2D(ecs_world_t *world, ecs_entity_t e, ecs_entity_t p
                 - (parent_pixel_ratio.y / 2.0f) + parent_pixel_ratio.y * anchor.y });
         }
         #ifdef debug_ui_positioning
-        printf("-> (parent) Position2D : %fx%f\n", position2D.x, position2D.y);
+        zoxel_log_arg("-> (parent) Position2D : %fx%f\n", position2D.x, position2D.y);
         #endif
     }
     return position2D;
@@ -144,7 +144,7 @@ float2 get_ui_real_position2D_2(ecs_world_t *world, ecs_entity_t e, ecs_entity_t
         - (parent_pixel_ratio.x / 2.0f) + parent_pixel_ratio.x * anchor.x,
         - (parent_pixel_ratio.y / 2.0f) + parent_pixel_ratio.y * anchor.y });
     #ifdef debug_ui_positioning
-    printf("-> (parent) Position2D : %fx%f\n", position2D.x, position2D.y);
+    zoxel_log_arg("-> (parent) Position2D : %fx%f\n", position2D.x, position2D.y);
     #endif
     return position2D;
 }
@@ -183,7 +183,7 @@ float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity
 void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, unsigned char layer, int2 canvas_size)
 {
     #ifdef debug_ui_scaling
-    printf("    - layer [%i] Repositioning entity [%lu]\n", layer, (long int) e);
+    zoxel_log_arg("    - layer [%i] Repositioning entity [%lu]\n", layer, (long int) e);
     #endif
     float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
     float aspectRatio = canvasSizef.x / canvasSizef.y;
@@ -201,12 +201,12 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
             ((position2D.y + 0.5f) * canvasSizef.y) };
         ecs_set(world, e, CanvasPixelPosition, { global_pixel_position });
         #ifdef debug_ui_scaling
-        printf("        -> to [%ix%i]\n", global_pixel_position.x, global_pixel_position.y);
+        zoxel_log_arg("        -> to [%ix%i]\n", global_pixel_position.x, global_pixel_position.y);
         #endif
     }
     else
     {
-        printf("UI doesn't have pixel position: %lu\n", (long int) e);
+        zoxel_log_arg("UI doesn't have pixel position: %lu\n", (long int) e);
     }
     //! Resize (if visible)
     if (is_valid && ecs_has(world, e, MeshVertices))
@@ -216,7 +216,7 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
         set_mesh_vertices_world_scale2D(world, e, squareTexturedVerts2, 16, scaledSize2D);  // scale the mesh
         ecs_set(world, e, MeshDirty, { 1 });
         #ifdef debug_ui_scaling
-        printf("        -> Scaling: [%fx%f]\n", scaledSize2D.x, scaledSize2D.y);
+        zoxel_log_arg("        -> Scaling: [%fx%f]\n", scaledSize2D.x, scaledSize2D.y);
         #endif
     }
     if (is_valid && ecs_has(world, e, Children))
@@ -237,13 +237,13 @@ void uis_on_viewport_resized(ecs_world_t *world, int width, int height)
     int2 canvas_size = { width, height };
     ecs_set(world, main_canvas, PixelSize, { canvas_size });
     //#ifdef debug_viewport_resize
-    printf("Canvas [%lu] - [%ix%i]\n", (long int) main_canvas, canvas_size.x, canvas_size.y);
+    zoxel_log_arg("Canvas [%lu] - [%ix%i]\n", (long int) main_canvas, canvas_size.x, canvas_size.y);
     //#endif
     for (int i = 0; i < ui_entities_count; i++)
     {
         ecs_entity_t e = ui_entities[i];
         #ifdef debug_viewport_resize
-        printf("    e [%i] - [%lu]\n", i, (long int) e);
+        zoxel_log_arg("    e [%i] - [%lu]\n", i, (long int) e);
         #endif
         set_ui_transform(world, e, main_canvas, 0, canvas_size);
     }

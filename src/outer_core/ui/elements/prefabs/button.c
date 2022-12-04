@@ -6,7 +6,7 @@ ecs_entity_t spawn_prefab_button(ecs_world_t *world)
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "prefab_button");
     #ifdef zoxel_debug_prefabs
-    printf("spawn_prefab button [%lu].\n", (long int) (e));
+    zoxel_log_arg("spawn_prefab button [%lu].\n", (long int) (e));
     #endif
     zoxel_add_tag(world, e, Button);
     zoxel_add_tag(world, e, FrameTexture);
@@ -44,7 +44,7 @@ ecs_entity_t spawn_button(ecs_world_t *world, ecs_entity_t parent,
     // printf("UI Element Spawned - Position [%ix%i] - Size [%ix%i] - Position(Real) [%fx%f] - ScaledSize [%fx%f]\n",
     //    position.x, position.y, size.x, size.y, position2D.x, position2D.y, scaledSize2D.x, scaledSize2D.y);
     #ifdef zoxel_debug_spawns
-    printf("Spawned button [%lu]\n", (long int) e);
+    zoxel_log_arg("Spawned button [%lu]\n", (long int) e);
     #endif
     return e;
 }

@@ -10,7 +10,7 @@ void FreeCameraRotateSystem(ecs_iter_t *it)
     ecs_query_t *cameraQuery = it->ctx;
     if (!cameraQuery)
     {
-        printf("[FreeCameraMoveSystem; cameraQuery is null]\n");
+        zoxel_log("[FreeCameraMoveSystem; cameraQuery is null]\n");
         return;
     }
     ecs_iter_t cameraIter = ecs_query_iter(it->world, cameraQuery);

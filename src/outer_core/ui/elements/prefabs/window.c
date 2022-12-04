@@ -9,7 +9,7 @@ ecs_entity_t spawn_prefab_window(ecs_world_t *world)
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "prefab_window");
     #ifdef zoxel_debug_prefabs
-    printf("spawn_prefab window [%lu].\n", (long int) (e));
+    zoxel_log_arg("spawn_prefab window [%lu].\n", (long int) (e));
     #endif
     zoxel_add_tag(world, e, Window);
     zoxel_add_tag(world, e, FrameTexture);
@@ -43,7 +43,7 @@ ecs_entity_t spawn_window(ecs_world_t *world, const char *header_label,
     ecs_set(world, e, Children, { children.length, children.value });
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
-    printf("Spawned window [%lu]\n", (long int) e);
+    zoxel_log_arg("Spawned window [%lu]\n", (long int) e);
     #endif
     return e;
 }

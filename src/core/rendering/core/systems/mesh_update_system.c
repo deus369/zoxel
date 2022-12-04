@@ -1,10 +1,3 @@
-//! Not a proper queue yet.
-int meshUpdateQueueCount = 0;
-const MeshIndicies* meshIndiciesQueue[maxMeshQueue];
-const MeshVertices* meshVerticesQueue[maxMeshQueue];
-GLuint2 meshGPULinksQueue[maxMeshQueue];
-GLuint materialsQueue[maxMeshQueue];
-
 //! Generate random noise texture.
 /**
  * Once main thread is fixed, update to gpu in this system.
@@ -33,36 +26,14 @@ void MeshUpdateSystem(ecs_iter_t *it)
         const MaterialGPULink *materialGPULink = &materialGPULinks[i];
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         const MeshVertices *meshVertices2 = &meshVertices[i];
-        meshGPULinksQueue[meshUpdateQueueCount] = meshGPULink->value;
-        materialsQueue[meshUpdateQueueCount] = materialGPULink->value;
-        meshIndiciesQueue[meshUpdateQueueCount] = meshIndicies2;
-        meshVerticesQueue[meshUpdateQueueCount] = meshVertices2;
+        set_gpu_mesh(meshGPULink->value,  materialGPULink->value,
+            meshIndicies2->value, meshIndicies2->length,
+            meshVertices2->value, meshVertices2->length);
         /*printf("MeshUpdateSystem [%i - %i] Material [%i] \n", meshGPULink->value.x, meshGPULink->value.y, materialGPULink->value);
         for (int j = 0; j < 8; j++)
         {
             printf("    - Vertex [%i] is [%fx%fx%f]\n", j, meshVertices2->value[j].x,  meshVertices2->value[j].y, meshVertices2->value[j].z);
         }*/
-        meshUpdateQueueCount++;
-    }
-}
-ECS_SYSTEM_DECLARE(MeshUpdateSystem);
-
-//! \todo Make proper queue.
-void mesh_update_main_thread()
-{
-    if (meshUpdateQueueCount == 0)
-    {
-        return;
-    }
-    // printf("queueCount: %i \n", queueCount);
-    for (int i = meshUpdateQueueCount - 1; i >= 0; i--)
-    {
-        const GLuint2 meshGPULink = meshGPULinksQueue[i];
-        const GLuint material = materialsQueue[i];
-        const MeshIndicies *meshIndicies = meshIndiciesQueue[i];
-        const MeshVertices *meshVertices = meshVerticesQueue[i];
-        set_gpu_mesh(meshGPULink, material, meshIndicies->value, meshIndicies->length, meshVertices->value, meshVertices->length);
-        // printf("Updating Mesh [%i - %i] Material [%i] \n", meshGPULink.x, meshGPULink.y, material);
         /*for (int j = 0; j < meshIndicies->length; j++)
         {
             printf("        - Index [%i] is [%i]\n", j, meshIndicies->value[j]);
@@ -71,6 +42,7 @@ void mesh_update_main_thread()
         {
             printf("        - Vertex [%i] is [%f]\n", j, meshVertices->value[j]);
         }*/
+        
     }
-    meshUpdateQueueCount = 0;
 }
+ECS_SYSTEM_DECLARE(MeshUpdateSystem);

@@ -66,10 +66,7 @@ void update_core()
         reset_input_devices(world);
         update_sdl(world);
         #ifdef __EMSCRIPTEN__
-        if (update_web_canvas(world))
-        {
-            // return;
-        }
+        update_web_canvas(world);   // handles resize event
         #endif
     }
     // ecs_log_set_level(1);    // use this to debug system pipelines

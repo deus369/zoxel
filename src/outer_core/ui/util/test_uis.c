@@ -26,7 +26,7 @@ void spawn_corner_uis(ecs_world_t *world)
     spawn_element(world, main_canvas, (int2) { - testSize.x / 2, testSize.y / 2 }, testSize, (float2) { 1.0f, 0.0 });      // bottom right
     spawn_element(world, main_canvas, (int2) { testSize.x / 2, - testSize.y / 2 }, testSize, (float2) { 0, 1.0f });        // top left
     spawn_element(world, main_canvas, (int2) { - testSize.x / 2, - testSize.y / 2 }, testSize, (float2) { 1.0f, 1.0f});
-    printf("Spawned 4 corner ui elements.\n");    // top right
+    zoxel_log("Spawned 4 corner ui elements.\n");    // top right
 }
 
 ecs_entity_t zoxel_window;
@@ -35,13 +35,13 @@ void spawn_zoxel_window(ecs_world_t *world)
 {
     if (zoxel_window != 0 && ecs_is_alive(world, zoxel_window))
     {
-        printf("Hiding zoxel window.\n");
+        zoxel_log("Hiding zoxel window.\n");
         delete_hierarchy(world, zoxel_window);
         // ecs_delete(world, zoxel_window);
         zoxel_window = 0;
         return;
     }
-    printf("Showing zoxel window.\n");
+    zoxel_log("Showing zoxel window.\n");
     int2 test_window_size = { 240, 320 };
     int2 test_window_position = { - test_window_size.x / 2, test_window_size.y / 2 };
     float2 test_window_anchor = { 1.0f, 0.0f };
