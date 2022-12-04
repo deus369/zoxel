@@ -7,6 +7,9 @@ To-Do Main
 
 `New Quick n' Dirty`
 
+- [ ] Fix flashing when transfering cameras (from main menu camera to free roam one)
+- [ ] Spawn Game UI for player when game state changes
+    - [ ] Spawn a pause menu button (if touch screen)
 - [x] Move main menu stuff from window  into main menu / game ui module
 - [x] Fix bug - repositioning ui on resize canvas broken
     - [ ] Fix [resize_canvas] for web build
@@ -21,10 +24,10 @@ To-Do Main
     - highest definition around cameras
     - update chunk detail definition event, will reproduce the mesh
 - [ ] Camera - ChunkStream - Move chunk event
-- [ ] Main Menu
+- [x] Main Menu
     - Play button - to delete the AI camera and create the free roam one
     - Exit button - close game
-    - Press escape in game to go back to main menu
+    - [ ] Press escape in game to go back to main menu
     - Change sky? Camera Sky Color?
 - [ ] Generate multiple dirt textures and randomize the uvs per voxel
 - [ ] Test out smoothish like meshes for voxel grid
