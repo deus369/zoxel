@@ -38,7 +38,7 @@ make -j$(nproc)
 make -f MakefileDev
 
 # Run Dev Build
-./zoxel-dev
+./builds/zoxel-dev
 ```
 
 Use valgrind for debugging memory / stack tracing
@@ -47,7 +47,7 @@ Use valgrind for debugging memory / stack tracing
 sudo apt-get install valgrind
 
 # use valgrind with a binary build
-valgrind ./zoxel-dev
+valgrind ./builds/zoxel-dev
 ```
 
 Download

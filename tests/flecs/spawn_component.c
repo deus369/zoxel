@@ -3,7 +3,7 @@
 // Build:
 // cc -std=c99 -D_DEFAULT_SOURCE -o tests/flecs/test_spawn_component imports/flecs.c tests/flecs/test_spawn_component.c; ./tests/flecs/test_spawn_component;
 
-#include "../../imports/flecs.h"
+#include "../../include/flecs.h"
 #include "stdlib.h"
 #include "stdio.h"
 
@@ -15,7 +15,6 @@ ECS_COMPONENT_DECLARE(Material);
 
 int main(int argc, char *argv[]) 
 {
-    printf("Testing [test_spawn_component]\n");
     ecs_world_t *world = ecs_init_w_args(argc, argv);
     ECS_COMPONENT_DEFINE(world, Material);
     // prefab
@@ -34,6 +33,7 @@ int main(int argc, char *argv[])
         }
     }
     printf("Outside Loop - Material [%lu] : %i\n", (long int) first_entity, ecs_get(world, first_entity, Material)->value);
-    printf("Ended Testing [test_spawn_component]\n");
+    
+    printf("RESULT: SUCCESS\n");
     return 0;
 }

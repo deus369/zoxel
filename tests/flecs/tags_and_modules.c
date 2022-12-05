@@ -3,7 +3,7 @@
 // Build:
 // cc -std=c99 -D_DEFAULT_SOURCE -o tests/flecs/test_tags_and_modules imports/flecs.c tests/flecs/test_tags_and_modules.c; ./tests/flecs/test_tags_and_modules;
 
-#include "../../imports/flecs.h"
+#include "../../include/flecs.h"
 #include "stdlib.h"
 #include "stdio.h"
 
@@ -28,10 +28,9 @@ void ModuleBImport(ecs_world_t *world)
 
 int main(int argc, char *argv[]) 
 {
-    printf("Testing [test_tags_and_modules]\n");
     ecs_world_t *world = ecs_init_w_args(argc, argv);
     ECS_IMPORT(world, ModuleA);
     ECS_IMPORT(world, ModuleB);
-    printf("End of Test [test_tags_and_modules]\n");
+    printf("RESULT: SUCCESS\n");
     return 0;
 }

@@ -1,11 +1,13 @@
 //! This script tests bulk spawning inside a system!
 
 // Build:
-// cc -std=c99 -o test_bulk_spawn src/imports/flecs.c tests/test_bulk_spawn.c; ./test_bulk_spawn;
+// cc -std=c99 -D_DEFAULT_SOURCE -o bulk_spawn include/flecs.c tests/flecs/test_bulk_spawn.c; ./bulk_spawn;
 
-#include "../../imports/flecs.h"
+#include "../../include/flecs.h"
 #include "stdlib.h"
 #include "stdio.h"
+#include <errno.h>
+#include <string.h>
 
 const bool isFixCrash = false;
 // components
@@ -20,37 +22,9 @@ typedef struct
 // forward declares
 ECS_COMPONENT_DECLARE(Spawner);
 ECS_COMPONENT_DECLARE(Position2D);
-void SpawnSystem(ecs_iter_t *it);
 // prefab and spawn settings
 ecs_entity_t bobPrefab;
 float positionBounds = 1;
-
-int main(int argc, char *argv[]) 
-{
-    // initialize world
-    ecs_world_t *world = ecs_init_w_args(argc, argv);
-    // initialize components
-    ECS_COMPONENT_DEFINE(world, Spawner);
-    ECS_COMPONENT_DEFINE(world, Position2D);
-    // prefab spawn
-    bobPrefab = ecs_new_prefab(world, "");
-    ecs_add(world, bobPrefab, Position2D);
-    // add system
-    ECS_SYSTEM(world, SpawnSystem, EcsOnUpdate, Spawner);
-    // add spawner
-    ecs_entity_t e1 = ecs_new_entity(world, "lespawner");
-    ecs_add(world, e1, Spawner);
-    // progress once
-    ecs_progress(world, 0.1);
-    int bobCount1 = ecs_count(world, Position2D);
-    printf("Spawned 1 [%i]\n", bobCount1);
-    // progress once more
-    ecs_progress(world, 0.2);
-    int bobCount2 = ecs_count(world, Position2D);
-    printf("Spawned 2 [%i]\n", bobCount2);
-    // le end
-    return ecs_fini(world);
-}
 
 void SpawnSystem(ecs_iter_t *it)
 {
@@ -86,4 +60,32 @@ void SpawnSystem(ecs_iter_t *it)
             });
         }
     }
+}
+
+int main(int argc, char *argv[]) 
+{
+    // initialize world
+    ecs_world_t *world = ecs_init_w_args(argc, argv);
+    // initialize components
+    ECS_COMPONENT_DEFINE(world, Spawner);
+    ECS_COMPONENT_DEFINE(world, Position2D);
+    // prefab spawn
+    bobPrefab = ecs_new_prefab(world, "");
+    ecs_add(world, bobPrefab, Position2D);
+    // add system
+    ECS_SYSTEM(world, SpawnSystem, EcsOnUpdate, Spawner);
+    // add spawner
+    ecs_entity_t e1 = ecs_new_entity(world, "lespawner");
+    ecs_add(world, e1, Spawner);
+    // progress once
+    ecs_progress(world, 0.1);
+    int bobCount1 = ecs_count(world, Position2D);
+    printf("Spawned 1 [%i]\n", bobCount1);
+    // progress once more
+    ecs_progress(world, 0.2);
+    int bobCount2 = ecs_count(world, Position2D);
+    printf("Spawned 2 [%i]\n", bobCount2);
+
+    printf("RESULT: SUCCESS\n");
+    return ecs_fini(world);
 }

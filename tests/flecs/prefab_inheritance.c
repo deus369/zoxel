@@ -3,7 +3,7 @@
 // Build:
 // cc -std=c99 -D_DEFAULT_SOURCE -o tests/flecs/test_prefab_inheritance imports/flecs.c tests/flecs/test_prefab_inheritance.c; ./tests/flecs/test_prefab_inheritance;
 
-#include "../../imports/flecs.h"
+#include "../../include/flecs.h"
 #include "stdlib.h"
 #include "stdio.h"
 
@@ -15,7 +15,6 @@ ECS_COMPONENT_DECLARE(Component);
 
 int main(int argc, char *argv[]) 
 {
-    printf("Testing [test_prefab_inheritance]\n");
     ecs_world_t *world = ecs_init_w_args(argc, argv);
     ECS_COMPONENT_DEFINE(world, Component);
     ecs_entity_t prefab_a = ecs_new_prefab(world, "prefab_a");
@@ -31,7 +30,8 @@ int main(int argc, char *argv[])
     printf("B Component exists before ecs_remove (with EcsDontInherit)? %s\n", ecs_has(world, entity_b, Component) ? "Yes" : "No");
     ecs_remove(world, entity_b, Component);
     printf("B Component exists after ecs_remove (with EcsDontInherit)? %s\n", ecs_has(world, entity_b, Component) ? "Yes" : "No");
-    printf("Ended Testing [test_prefab_inheritance]\n");
+    
+    printf("RESULT: SUCCESS\n");
     return 0;
 }
 

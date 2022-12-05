@@ -2,7 +2,8 @@
 
 // build line
 // cc -std=c99 -o test_ecs_get_mut src/imports/flecs.c tests/test_ecs_get_mut.c; ./test_ecs_get_mut;
-#include "../src/imports/flecs.h"
+
+#include "../../include/flecs.h"
 #include "stdlib.h"
 #include "stdio.h"
 
@@ -38,5 +39,6 @@ int main(int argc, char *argv[])
     printf("Spawned 2 [%i]\n", ecs_count(world, IsAwesome));
 
     // le end
+    printf("RESULT: SUCCESS\n");
     return ecs_fini(world);
 }

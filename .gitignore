@@ -1,8 +1,5 @@
 #ignore zoxel build
-/zoxel
-/zoxel-dev
-/sound_demo
-build
+builds
 
 #ignore web-dev build
 web-demo-dev
@@ -21,5 +18,3 @@ scrap.c
 # zoxel.wasm
 # zoxel.js
 # zoxel.html
-/show_image
-/basic_window

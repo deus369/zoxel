@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, int3 size)
     ecs_set_name(world, e, "prefab_terrain_chunk");
     zoxel_set(world, e, ChunkSize, { size });
     zoxel_add_tag(world, e, TerrainChunk);
-    zoxel_add(world, e, ChunkNeighbors);
+    zoxel_set(world, e, ChunkNeighbors, { 0, NULL});
     zoxel_add(world, e, MeshUVs);
     add_gpu_uvs(world, e);
     add_texture(world, e, texture_size);
@@ -40,8 +40,7 @@ ecs_entity_t spawn_terrain_chunk(ecs_world_t *world, ecs_entity_t prefab,
 }
 
 void set_chunk_neighbors(ecs_world_t *world, ecs_entity_t e,
-    ecs_entity_t chunk_left, ecs_entity_t chunk_right,
-    ecs_entity_t chunk_back, ecs_entity_t chunk_front)
+    ecs_entity_t chunk_left, ecs_entity_t chunk_right, ecs_entity_t chunk_back, ecs_entity_t chunk_front)
 {
     ChunkNeighbors chunkNeighbors = { };
     initialize_memory_component_non_pointer(chunkNeighbors, ecs_entity_t, 4);

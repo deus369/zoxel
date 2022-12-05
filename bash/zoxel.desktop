@@ -4,5 +4,5 @@ Comment=A Voxely Game
 Categories=Game;
 Terminal=false
 Type=Application
-Exec=/home/deus/zoxel/zoxel
-Icon=/home/deus/zoxel/resources/textures/game_icon.png
+Exec=/home/deus/zoxel/builds/zoxel
+Icon=/home/deus/zoxel/builds/resources/textures/game_icon.png

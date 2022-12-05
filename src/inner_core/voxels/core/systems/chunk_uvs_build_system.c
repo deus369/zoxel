@@ -122,6 +122,21 @@ void build_chunk_mesh_uvs(const Chunk *chunk, const ChunkSize *chunkSize,
     }
 }
 
+void test_other_chunk(const Chunk *chunk_other)
+{
+    if (chunk_other == NULL)
+    {
+        printf("chunk_other is NULL\n");
+    }
+    else
+    {
+        for (int j = 0; j < 16; j++) // chunk_other->length; j++)
+        {
+            printf("     [%i]\n", (int) chunk_other->value[j]);
+        }
+    }
+}
+
 //! Builds a mesh data from the chunk!
 void ChunkUVsBuildSystem(ecs_iter_t *it)
 {
@@ -169,6 +184,24 @@ void ChunkUVsBuildSystem(ecs_iter_t *it)
             NULL : ecs_get(it->world, chunkNeighbors2->value[3], Chunk);
         build_chunk_mesh_uvs(chunk, chunkSize, meshIndicies2, meshVertices2, meshUVs2,
             chunk_left, chunk_right, chunk_back, chunk_front);
+        /*const Chunk *chunk_left = !ecs_is_valid(it->world, chunkNeighbors2->value[0]) ?
+            NULL : ecs_get(it->world, chunkNeighbors2->value[0], Chunk);
+        const Chunk *chunk_right = !ecs_is_valid(it->world, chunkNeighbors2->value[1]) ?
+            NULL : ecs_get(it->world, chunkNeighbors2->value[1], Chunk);
+        const Chunk *chunk_back = !ecs_is_valid(it->world, chunkNeighbors2->value[2]) ?
+            NULL : ecs_get(it->world, chunkNeighbors2->value[2], Chunk);
+        const Chunk *chunk_front = !ecs_is_valid(it->world, chunkNeighbors2->value[3]) ?
+            NULL : ecs_get(it->world, chunkNeighbors2->value[3], Chunk);
+        test_other_chunk(chunk_left);
+        test_other_chunk(chunk_right);
+        test_other_chunk(chunk_back);
+        test_other_chunk(chunk_front);*/
     }
 }
 ECS_SYSTEM_DECLARE(ChunkUVsBuildSystem);
+
+
+        /*const Chunk *chunk_left = NULL;
+        const Chunk *chunk_right = NULL;
+        const Chunk *chunk_back = NULL;
+        const Chunk *chunk_front = NULL;*/

@@ -85,15 +85,5 @@ $(TARGET): $(SRCS)
 clear:
 	$(RM) $(TARGET)
 
-# LDLIBS += -s FULL_ES2
-# LDLIBS += -s OFFSCREEN_FRAMEBUFFER=1
-# LDLIBS += -s LEGACY_GL_EMULATION=1
-# LDLIBS += -s GL_UNSAFE_OPTS=1
-# LDLIBS += -s ERROR_ON_UNDEFINED_SYMBOLS=0
-# LDLIBS += -s ALLOW_MEMORY_GROWTH=1
-# LDLIBS += -EMCC_DEBUG=1
-# LDLIBS += -s GL_DEBUG=1
-# LDLIBS += --preload-file resources/shaders/BasicRender2D.vert
-# LDLIBS += --preload-file resources/shaders/BasicRender2D.frag
 # Optimize
 # -O3
