@@ -7,11 +7,6 @@
 #include "particles/particles.c"
 #include "ui/ui.c"
 
-void update_outer_core()
-{
-    iterate_fps_time();
-}
-
 void OuterCoreImport(ecs_world_t *world)
 {
     ECS_MODULE(world, OuterCore);

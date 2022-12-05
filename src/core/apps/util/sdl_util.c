@@ -323,7 +323,6 @@ void on_viewport_resized(ecs_world_t *world, int width, int height)
         screen_dimensions.y = 1;
     }
     aspectRatio = ((float)screen_dimensions.x) / ((float)screen_dimensions.y);
-    // resize_viewports(width, height);
     resize_cameras(width, height);
     uis_on_viewport_resized(world, width, height);
 }

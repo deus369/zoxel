@@ -2,10 +2,6 @@
 #define zoxel_rendering_core
 //! rendering core Module.
 
-/*#ifndef maxMeshQueue
-#define maxMeshQueue 1024
-#endif*/
-
 //! \todo Create a Cube with unique mesh - for chunk - add these components and update mesh for voxel chunk.
 //      - Test Mesh - simply create a test entity now with mesh and set to dirty
 //      - set data as cube and render
@@ -25,7 +21,6 @@ zoxel_state_component(MeshDirty);
 #include "components/TextureGPULink.c"
 #include "components/mesh_gpu_link.c"
 #include "components/uvs_gpu_link.c"
-// #include "components/TextureCoordinatesGPULink.c"
 zoxel_component(EternalRotation, float4);
 // util
 #include "util/mesh_util.c"
@@ -49,8 +44,6 @@ zoxel_reset_system(MeshDirtySystem, MeshDirty);
 // util
 #include "util/render_loop.c"
 
-
-
 //! The rendering core Sub Module.
 /**
 *   \todo CPU Meshes?
@@ -71,7 +64,6 @@ void RenderingCoreImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, TextureGPULink);
     ECS_COMPONENT_DEFINE(world, MeshGPULink);
     ECS_COMPONENT_DEFINE(world, UvsGPULink);
-    // ECS_COMPONENT_DEFINE(world, TextureCoordinatesGPULink);
     ECS_COMPONENT_DEFINE(world, EternalRotation);
     // gpu destruction hooks
     ecs_set_hooks(world, MaterialGPULink, { .dtor = ecs_dtor(MaterialGPULink) });
@@ -102,30 +94,11 @@ void RenderingCoreImport(ecs_world_t *world)
         [in] Position, [in] Rotation, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink);
     // updates
     zoxel_system_main_thread(world, MeshUpdateSystem, EcsOnValidate,
-        [in] MeshDirty,
-        [in] MeshIndicies,[in] MeshVertices,
-        [in] MeshGPULink, [in] MaterialGPULink,
-        [none] !MeshUVs);
+        [in] MeshDirty, [in] MeshIndicies,[in] MeshVertices,
+        [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs);
     zoxel_system_main_thread(world, MeshUvsUpdateSystem, EcsOnValidate,
         [in] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshUVs,
         [in] MeshGPULink, [in] MaterialGPULink);
     zoxel_reset_system_define(MeshDirtySystem, MeshDirty);
 }
-
-//set_mesh_indicies(world, e, cubeIndicies3, 12);
-//set_mesh_vertices(world, e, cubeVertices3, 24);
-
-// printf("instanceShader3D: %i %i\n", instanceShader3D.x, instanceShader3D.y);
-/*const MeshIndicies *meshIndicies = ecs_get(world, e, MeshIndicies);
-for (int j = 0; j < meshIndicies->length; j++)
-{
-    printf("    - (2) Index [%i] is [%i]\n", j, meshIndicies->value[j]);
-}
-const MeshVertices *meshVertices = ecs_get(world, e, MeshVertices);
-for (int j = 0; j < meshVertices->length; j++)
-{
-    printf("    - (2) Vertex [%i] is [%fx%fx%f]\n", j, meshVertices->value[j].x, meshVertices->value[j].y, meshVertices->value[j].z);
-}*///,
-        //.move = ecs_move(MaterialGPULink),
-        //.dtor = ecs_dtor(MaterialGPULink)
 #endif

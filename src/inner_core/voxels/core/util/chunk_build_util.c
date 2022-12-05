@@ -66,7 +66,13 @@ const float3 voxel_face_vertices_front[] =
     { 1.0f, 0.0f, 1.0f }
 };
 
+// printf("Error in get_voxel_direction (chunk_other->value == NULL) [%ix%ix%i]\n", local_position.x, local_position.y, local_position.z);
+// printf("Error in get_voxel_direction (chunk_other->length == 0) [%ix%ix%i]\n", local_position.x, local_position.y, local_position.z);
+
 //! Create functions with macros to get voxels.
+/**
+*   \todo chunk_other should never be non null and have value == null as all chunks should be built at once..
+*/
 #define zoxel_get_voxel_direction(direction, dimension, is_positive)\
 unsigned char get_voxel##_##direction(\
     int3 local_position,\
@@ -77,11 +83,7 @@ unsigned char get_voxel##_##direction(\
     if ((is_positive && local_position.dimension == chunkSize->value.dimension - 1)\
         || (!is_positive && local_position.dimension == 0))\
     {\
-        if (chunk_other == NULL)\
-        {\
-            return 0;\
-        }\
-        if (chunk_other->length == 0)\
+        if (chunk_other == NULL || chunk_other->value == NULL || chunk_other->length == 0)\
         {\
             return 0;\
         }\
@@ -95,27 +97,6 @@ unsigned char get_voxel##_##direction(\
     }\
 }
 
-/*unsigned char get_voxel_left(int3 local_position, const Chunk *chunk, const ChunkSize *chunkSize,
-    const Chunk *chunk_other)
-{
-    if (local_position.x == 0)
-    {
-        if (chunk_other == NULL)
-        {
-            return 0;
-        }
-        if (chunk_other->length == 0)
-        {
-            return 0;
-        }
-        return chunk_other->value[0];
-        // return chunk_other->value[int3_array_index(int3_reverse_left(local_position, chunkSize->value), chunkSize->value)];
-    }
-    else
-    {
-        return chunk->value[int3_array_index(int3_left(local_position), chunkSize->value)];
-    }
-}*/
 zoxel_get_voxel_direction(left, x, false)   // creates get_voxel_left
 zoxel_get_voxel_direction(right, x, true)   // creates get_voxel_right
 zoxel_get_voxel_direction(down, y, false)   // creates get_voxel_down

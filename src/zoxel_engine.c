@@ -21,8 +21,7 @@ void end()
 
 void update()
 {
-    // zoxel_log("core update loop\n");
-    update_outer_core();
+    iterate_fps_time();
     update_core();
 }
 
@@ -41,7 +40,7 @@ void main_loop()
 
 void ZoxelEngineImport(ecs_world_t *world)
 {
-    zoxel_log("Importing [Zoxel Engine]\n");
+    // zoxel_log("Importing [Zoxel Engine]\n");
     ECS_MODULE(world, ZoxelEngine);
     ECS_IMPORT(world, Core);
     ECS_IMPORT(world, InnerCore);

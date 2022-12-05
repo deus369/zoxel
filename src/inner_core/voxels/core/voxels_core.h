@@ -72,12 +72,7 @@ void define_voxels_core_components(ecs_world_t *world)
 
 void define_voxels_core_systems(ecs_world_t *world)
 {
-    // filters
-    // zoxel_filter(generateChunkQuery, world, [none] NoiseChunk, [in] GenerateChunk);
-    // zoxel_filter(chunkDirtyQuery, world, [none] NoiseChunk, [in] EntityDirty);
-    // systems
     ECS_SYSTEM_DEFINE(world, AnimateChunkSystem, EcsOnLoad, [out] AnimateChunk, [out] GenerateChunk);
-
     // Generate Systems
     zoxel_filter(generateTerrainChunkQuery, world, [none] TerrainChunk, [in] GenerateChunk);
     zoxel_system_ctx(world, TerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
@@ -85,7 +80,6 @@ void define_voxels_core_systems(ecs_world_t *world)
     zoxel_filter(generateNoiseChunkQuery, world, [none] NoiseChunk, [in] GenerateChunk);
     zoxel_system_ctx(world, NoiseChunkSystem, EcsPostLoad, generateNoiseChunkQuery,
         [none] NoiseChunk, [out] ChunkDirty, [out] Chunk, [in] ChunkSize, [in] GenerateChunk);
-
     // EcsOnValidate? why not working?
     zoxel_filter(generateChunkQuery, world, [in] GenerateChunk);
     zoxel_system_ctx(world, ChunkBuildSystem, EcsOnUpdate, generateChunkQuery,
@@ -93,7 +87,6 @@ void define_voxels_core_systems(ecs_world_t *world)
     zoxel_system_ctx(world, ChunkUVsBuildSystem, EcsOnUpdate, generateChunkQuery,
         [in] ChunkDirty, [in] Chunk, [in] ChunkSize, [in] ChunkNeighbors,
         [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty);
-    // zoxel_system_main_thread(world, GenerateChunkResetSystem, EcsPostUpdate, [out] GenerateChunk);
     zoxel_reset_system_define(GenerateChunkResetSystem, GenerateChunk);
     zoxel_reset_system_define(ChunkDirtyResetSystem, ChunkDirty);
 }
@@ -148,7 +141,6 @@ void VoxelsCoreImport(ecs_world_t *world)
         }
     }
     // now for all of them, set their neighbors
-    // ecs_defer_begin(world);
     for (int i = -terrain_rows; i <= terrain_rows; i++)
     {
         for (int j = -terrain_rows; j <= terrain_rows; j++)
@@ -164,12 +156,4 @@ void VoxelsCoreImport(ecs_world_t *world)
     ecs_defer_end(world);
     #endif
 }
-
-// components
-// #include "components/ChunkLinks.c"
-// ECS_COMPONENT_DECLARE(ChunkLinks);
-//! Stores voxels, in an oct tree.
-/**
-*   \todo Store Tree Nodes as entities. Each tree node can be open or closed.
-*/
 #endif

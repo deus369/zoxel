@@ -236,9 +236,9 @@ void uis_on_viewport_resized(ecs_world_t *world, int width, int height)
 {
     int2 canvas_size = { width, height };
     ecs_set(world, main_canvas, PixelSize, { canvas_size });
-    //#ifdef debug_viewport_resize
-    zoxel_log_arg("Canvas [%lu] - [%ix%i]\n", (long int) main_canvas, canvas_size.x, canvas_size.y);
-    //#endif
+    #ifdef debug_viewport_resize
+    zoxel_log_arg("On Viewport Resized to dimensions: [%ix%i]\n", canvas_size.x, canvas_size.y);
+    #endif
     for (int i = 0; i < ui_entities_count; i++)
     {
         ecs_entity_t e = ui_entities[i];
