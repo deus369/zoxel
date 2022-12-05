@@ -7,6 +7,8 @@
 #include "stdlib.h"
 #include "stdio.h"
 
+const int chunk_array_length = 16 * 128 * 16;
+
 // First define the macros I am using
 
 //! Define a Memory component, with an array of a single data type.
@@ -120,8 +122,8 @@ zoxel_component(ChunkDirty, unsigned char);
 void set_chunk_data(ecs_world_t *world, ecs_entity_t e)
 {
     Chunk chunk = { };
-    initialize_memory_component_non_pointer(chunk, unsigned char, 16);
-    for (int i = 0; i < 16; i++)
+    initialize_memory_component_non_pointer(chunk, unsigned char, chunk_array_length);
+    for (int i = 0; i < chunk_array_length; i++)
     {
         chunk.value[0] = rand() % 256;
     }
@@ -156,10 +158,15 @@ void ChunkGenerateSystem(ecs_iter_t *it)
         chunkGenerate->value = 0;
         chunkDirty->value = 1;
         Chunk *chunk = &chunks[i];
-        initialize_memory_component(chunk, unsigned char, 16);
-        for (int j = 0; j < 16; j++)
+        initialize_memory_component(chunk, unsigned char, chunk_array_length);
+        printf("Generating chunk [%lu]\n", (long int) it->entities[i]);
+        for (int j = 0; j < chunk_array_length; j++)
         {
             chunk->value[j] = rand() % 256;
+            if (j < 16)
+            {
+                printf("     [%i]\n", (int) chunk->value[j]);
+            }
         }
         printf("Generated chunk [%lu]\n", (long int) it->entities[i]);
     }
@@ -191,11 +198,11 @@ void ChunkBuildSystem(ecs_iter_t *it)
         printf("Building chunk [%lu]\n", (long int) it->entities[i]);
         if (chunk_other == NULL)
         {
-            printf("chunk_other is NULL\n");
+            printf("    -> chunk_other is NULL\n");
         }
         else
         {
-            for (int j = 0; j < chunk_other->length; j++)
+            for (int j = 0; j < 16; j++)
             {
                 printf("     [%i]\n", (int) chunk_other->value[j]);
             }
@@ -225,10 +232,10 @@ int main(int argc, char *argv[])
     ecs_progress(world, 0);
 
     ecs_entity_t e1 = ecs_new_w_pair(world, EcsIsA, chunk_prefab);
-    set_chunk_data(world, e1);
+    // set_chunk_data(world, e1);
     printf("Spawned chunk [%lu]\n", (long int) e1);
     ecs_entity_t e2 = ecs_new_w_pair(world, EcsIsA, chunk_prefab);
-    set_chunk_data(world, e2);
+    // set_chunk_data(world, e2);
     printf("Spawned chunk [%lu]\n", (long int) e2);
     // set link from one to another
     set_chunk_neighbors(world, e1, e2);

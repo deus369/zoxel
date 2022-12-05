@@ -81,6 +81,10 @@ unsigned char get_voxel##_##direction(\
         {\
             return 0;\
         }\
+        if (chunk_other->length == 0)\
+        {\
+            return 0;\
+        }\
         return chunk_other->value[int3_array_index(\
             int3_reverse##_##direction(local_position, chunkSize->value),\
             chunkSize->value)];\
@@ -91,12 +95,33 @@ unsigned char get_voxel##_##direction(\
     }\
 }
 
-zoxel_get_voxel_direction(left, x, false)
-zoxel_get_voxel_direction(right, x, true)
-zoxel_get_voxel_direction(down, y, false)
-zoxel_get_voxel_direction(up, y, true)
-zoxel_get_voxel_direction(back, z, false)
-zoxel_get_voxel_direction(front, z, true)
+/*unsigned char get_voxel_left(int3 local_position, const Chunk *chunk, const ChunkSize *chunkSize,
+    const Chunk *chunk_other)
+{
+    if (local_position.x == 0)
+    {
+        if (chunk_other == NULL)
+        {
+            return 0;
+        }
+        if (chunk_other->length == 0)
+        {
+            return 0;
+        }
+        return chunk_other->value[0];
+        // return chunk_other->value[int3_array_index(int3_reverse_left(local_position, chunkSize->value), chunkSize->value)];
+    }
+    else
+    {
+        return chunk->value[int3_array_index(int3_left(local_position), chunkSize->value)];
+    }
+}*/
+zoxel_get_voxel_direction(left, x, false)   // creates get_voxel_left
+zoxel_get_voxel_direction(right, x, true)   // creates get_voxel_right
+zoxel_get_voxel_direction(down, y, false)   // creates get_voxel_down
+zoxel_get_voxel_direction(up, y, true)      // creates get_voxel_up
+zoxel_get_voxel_direction(back, z, false)   // creates get_voxel_back
+zoxel_get_voxel_direction(front, z, true)   // creates get_voxel_front
 
 #define zoxel_check_faces_with_uvs(direction)\
 {\

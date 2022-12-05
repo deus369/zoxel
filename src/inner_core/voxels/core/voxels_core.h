@@ -1,6 +1,7 @@
 #ifndef zoxel_voxels_core
 #define zoxel_voxels_core
 
+const int terrain_rows = 6;
 const double noiseChunkAnimateSpeed = 0.5; // 1 / 8.0;
 const float overall_voxel_scale = 2.0f;
 const int chunk_length = 16;
@@ -8,28 +9,27 @@ const int dissapearChance = 92;
 const float spawnRange = 0.96f;
 const int3 chunk_size = { chunk_length, chunk_length, chunk_length };
 const int3 terrain_chunk_size = { chunk_length, 8 * chunk_length, chunk_length };
-const int terrain_rows = 8;
 const float chunk_real_size = 1.0f;   // size achunk takes up
 // tags
 ECS_DECLARE(Vox);
 ECS_DECLARE(NoiseChunk);
 ECS_DECLARE(TerrainChunk);
-// components
-zoxel_component(ChunkDirty, unsigned char);
 //! A simple chunk with an array of voxels.
 zoxel_memory_component(Chunk, unsigned char);
-//! A simple chunk with an array of voxels.
-zoxel_component(ChunkSize, int3);
-//! A state for generating chunks.
-zoxel_component(GenerateChunk, unsigned char);
-//! A local position of a chunk inside a Vox.
-zoxel_component(ChunkPosition, int3);
 //! A list to all chunks in a Vox model.
 zoxel_memory_component(ChunkLinks, ecs_entity_t);
 //! A list to all chunks in a Vox model.
 zoxel_memory_component(ChunkNeighbors, ecs_entity_t);
+//! A simple chunk with an array of voxels.
+zoxel_component(ChunkSize, int3);
+//! A local position of a chunk inside a Vox.
+zoxel_component(ChunkPosition, int3);
 //! A state for animating textures.
 zoxel_component(AnimateChunk, double);
+//! A state for generating chunks.
+zoxel_state_component(GenerateChunk);
+// components
+zoxel_state_component(ChunkDirty);
 // util
 #include "util/voxel_mesh_util.c"
 #include "util/chunk.c"
