@@ -1,5 +1,5 @@
 #ignore zoxel build
-builds
+builds/*
 
 #ignore web-dev build
 web-demo-dev
