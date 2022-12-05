@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ~/zoxel/bash/
+cd ~/zoxel/bash/install/
 
 filename=zoxel.desktop
 
