@@ -24,6 +24,7 @@ ECS_DECLARE(ExitGameButton);
 // systems
 #include "systems/button_click_sound_system.c"
 #include "systems/window_close_system.c"
+#include "systems/header_drag_system.c"
 
 //! The Elements contains various things I can use in my uis.
 void ElementsImport(ecs_world_t *world)
@@ -39,6 +40,8 @@ void ElementsImport(ecs_world_t *world)
     // systems
     zoxel_system(world, ButtonClickSoundSystem, EcsPostUpdate, [none] Button, [in] ClickableState);
     zoxel_system(world, WindowCloseSystem, EcsOnValidate, [none] CloseButton, [in] ClickableState);
+    zoxel_system(world, HeaderDragSystem, EcsOnValidate,
+        [none] Header, [in] DragableState, [in] DraggingDelta, [out] PixelPosition);
     // prefabs
     spawn_prefab_label(world);
     spawn_prefab_button(world);

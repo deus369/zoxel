@@ -11,10 +11,15 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world)
     add_ui_plus_components(world, e);
     zoxel_add_tag(world, e, Header);
     zoxel_add_tag(world, e, FrameTexture);
-    zoxel_set(world, e, SelectableState, { 0 });
     zoxel_add(world, e, Children);
-    header_prefab = e;
+    zoxel_add_tag(world, e, Selectable);
+    zoxel_set(world, e, SelectableState, { 0 });
+    zoxel_add_tag(world, e, Dragable);
+    zoxel_set(world, e, DragableState, { 0 });
+    zoxel_set(world, e, DraggerLink, { 0 });
+    zoxel_set(world, e, DraggingDelta, {{ 0, 0 }});
     ecs_defer_end(world);
+    header_prefab = e;
     return e;
 }
 

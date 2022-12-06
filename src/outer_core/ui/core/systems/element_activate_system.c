@@ -23,6 +23,7 @@ void ElementActivateSystem(ecs_iter_t *it)
             if (ecs_has(it->world, raycasterTarget->value, Dragable))
             {
                 ecs_set(it->world, raycasterTarget->value, DragableState, { 1 });
+                ecs_set(it->world, raycasterTarget->value, DraggerLink, { it->entities[i] });
             }
         }
     }
