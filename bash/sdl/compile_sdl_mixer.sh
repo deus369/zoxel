@@ -16,11 +16,10 @@ echo Configuring build folder
 ../configure
 
 echo Making SDL_mixer
-make
+make all
 
 echo Installing SDL_mixer
 make install
-
 
 source set_sdl_mixer_path.sh
 

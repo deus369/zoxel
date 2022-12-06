@@ -5,6 +5,7 @@ echo Checking Pathing for static linking of SDL_mixer
 if [[ $LD_LIBRARY_PATH == "" ]]; then
 	echo Adding New Path [/usr/local/lib] to LD_LIBRARY_PATH
 	export LD_LIBRARY_PATH="/usr/local/lib"
+	# echo  'export LD_LIBRARY_PATH=/usr/local/lib' >> ~/.bashrc 
 elif [[ $LD_LIBRARY_PATH =~ /usr/local/lib ]]; then
 	echo Path [/usr/local/lib] already exists in LD_LIBRARY_PATH
 else
