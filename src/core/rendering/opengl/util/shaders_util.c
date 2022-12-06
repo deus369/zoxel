@@ -28,6 +28,10 @@ bool LinkShaderProgram(GLuint program, GLuint vertShader, GLuint fragShader)
 
 GLuint spawn_gpu_material_program(const GLuint2 shader)
 {
+    if (shader.x == 0 || shader.y == 0)
+    {
+        return 0;
+    }
     GLuint material = glCreateProgram();
     LinkShaderProgram(material, shader.x, shader.y);
     return material;

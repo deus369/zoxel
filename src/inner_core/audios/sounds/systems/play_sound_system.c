@@ -15,7 +15,10 @@ void PlaySoundSystem(ecs_iter_t *it)
             //! \todo Link this to sound data
             //! \todo Destroy this sound upon played
             // printf("Played sound 0.\n");
-            Mix_PlayChannel( -1, sounds[0], 0 );
+            if (sounds[0] != NULL)
+            {
+                Mix_PlayChannel( -1, sounds[0], 0 );
+            }
         }
     }
 }
