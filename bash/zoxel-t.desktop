@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Zoxel
-GenericName=Zoxel
-Categories=Game;
-Comment=A Voxely Game
-Terminal=false
-Exec=gnome-terminal -e "bash -c 'cd "~/zoxel" && ./builds/zoxel'"
-Icon=~/zoxel/builds/resources/textures/game_icon.png
