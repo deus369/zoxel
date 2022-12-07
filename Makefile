@@ -69,20 +69,17 @@ uninstall: ## uninstalls zoxel into /usr/games directory
 	bash/install/uninstall.sh
 
 help:
-	@echo "Welcome to $(NAME)!"
-	@echo "---------- ---------- ---------- ---------- ---------- ----------"
-	@echo "Use 'make <target>':"
-	@echo "  just make		builds zoxel into builds directory"
-	@echo "  run			runs $(TARGET)"
-	@echo "  $(TARGET_DEV)	builds zoxel-dev"
-	@echo "  run-dev		runs $(TARGET_DEV)"
-	@echo "  run-dev-debug	runs valgrind $(TARGET_DEV)"
-	@echo "  install		installs zoxel into /usr/games directory"
-	@echo "  uninstall		removes zoxel from /usr/games directory"
-	@echo "  clean			removes zoxel from build directory"
-	@echo "---------- ---------- ---------- ---------- ---------- ----------"
-	@echo "--- zoxel at https://codeberg.org/deus/zoxel ---"
-	@echo ""
+	@echo "zoxel -> an open source voxel engine"
+	@echo "  make <target>:"
+	@echo "    run			runs $(TARGET)"
+	@echo "    $(TARGET_DEV)	builds zoxel-dev"
+	@echo "    run-dev		runs $(TARGET_DEV)"
+	@echo "    run-dev-debug	runs valgrind $(TARGET_DEV)"
+	@echo "    install		installs zoxel"
+	@echo "    uninstall		inuninstalls zoxel"
+	@echo "    clean		removes zoxel build"
+	@echo "    just make		builds zoxel"
+	@echo "latest -> https://codeberg.org/deus/zoxel"
 
 # CFLAGS += -D_POSIX_C_SOURCE=200112L
 # dCFLAGS += -fsanitize=undefined
