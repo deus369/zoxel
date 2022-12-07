@@ -1,6 +1,6 @@
 # Zoxel El Libre
 
-~ Play Latest [[Web Build](https://deus369.github.io/zoxel/web-demo/)] ~
+~ Play Latest [[Web Build](https://deus369.github.io/zoxel/web/)] ~
 
 ## What is Zoxel?
 

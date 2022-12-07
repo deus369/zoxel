@@ -1,6 +1,6 @@
 // Spawn a queue
 
-extern void RenderEntity2D(float2 position, float angle, float scale, float brightness);
+extern void render_instance2D(float2 position, float angle, float scale, float brightness);
 
 //! Render 2D entities.
 void InstanceRender2DSystem(ecs_iter_t *it)
@@ -17,7 +17,7 @@ void InstanceRender2DSystem(ecs_iter_t *it)
         const Brightness *brightness = &brightnesses[i];
         // Add to Render Queue
         // printf("    Bob's Position2D is {%f, %f}\n", position.value.x, position.value.y);
-        RenderEntity2D(position->value, rotation2D->value, scale1D->value, brightness->value);
+        render_instance2D(position->value, rotation2D->value, scale1D->value, brightness->value);
     }
 }
 ECS_SYSTEM_DECLARE(InstanceRender2DSystem);

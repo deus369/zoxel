@@ -2,11 +2,11 @@
 # Error 127 - do this
 # 	source ~/emsdk/emsdk_env.sh
 # Build ~
-#	make -j24 -B -f MakeWeb
+#	make -j$(nproc) -f MakeWeb
 # Run !
-#	emrun --browser firefox web-demo/index.html
+#	emrun --browser firefox web/index.html
 # All
-#	source ~/emsdk/emsdk_env.sh; make -j24 -B -f MakeWeb; emrun --browser firefox web-demo/index.html
+#	source ~/emsdk/emsdk_env.sh; make -j24 -B -f MakeWeb; emrun --browser firefox web/index.html
 
 
 # remember to go to tools > console > multiprocess to get all errors
@@ -14,31 +14,48 @@
 #zoxel.html:1237:21
 
 # Declare compiler tools and flags
-TARGET = web-demo/zoxel.js
+TARGET = web/zoxel.js
 CC = emcc  					# Defines the compiler, cc for C code
 CFLAGS = -std=c99			# Specificies c99 StandardX
 CFLAGS += --preload-file resources
 # what does this do!
-CFLAGS += -s WASM=1
 # Optimize - Non Devv Build
 CFLAGS += -O3
+CFLAGS += -s WASM=1
+CFLAGS += -s FULL_ES3=1
+CFLAGS += -s USE_WEBGL2=1
+CFLAGS += -s MIN_WEBGL_VERSION=2
+CFLAGS += -s MAX_WEBGL_VERSION=2
+CFLAGS += -s ALLOW_MEMORY_GROWTH
 # Add libraries
 CFLAGS += -lGL
 CFLAGS += -lSDL
 CFLAGS += -s USE_SDL=2
 CFLAGS += -s USE_SDL_IMAGE=2
 CFLAGS += -s SDL2_IMAGE_FORMATS='["png"]' # "bmp",
-CFLAGS += -s USE_SDL_MIXER=2		# SDL2 Audio Library
+CFLAGS += -s USE_SDL_MIXER=2
 # -s USE_OGG=1 -s USE_VORBIS=1 ?
-CFLAGS += -s FULL_ES3=1
-CFLAGS += -s USE_WEBGL2=1
-CFLAGS += -s MIN_WEBGL_VERSION=2
-CFLAGS += -s MAX_WEBGL_VERSION=2
-CFLAGS += -s ALLOW_MEMORY_GROWTH
 # Threadin
 # LDLIBS += -s USE_PTHREADS=1
 # LDLIBS += -s PTHREAD_POOL_SIZE=2
 LDLIBS = 
+
+# SRCS defines all the files that will be used in the game.
+SRCS = $(shell find src/ -type f -name *.c)
+SRCS += $(shell find src/ -type f -name *.h)
+# OBJS defines all the files used to compile Zoxel.
+OBJS = include/flecs.c src/main.c
+
+all: $(TARGET)
+
+$(TARGET): $(SRCS)
+	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDLIBS)
+
+clear:
+	$(RM) $(TARGET)
+
+# Optimize
+# -O3
 
 # Debug Info
 # LDLIBS += -s ASSERTIONS
@@ -52,38 +69,3 @@ LDLIBS =
 #--cpuprofiler
 #--memoryprofiler
 # LDLIBS += --threadprofiler
-
-# SRCS defines all the files that will be used in the game.
-SRCS = $(shell find src/ -type f -name *.c)
-SRCS += $(shell find src/ -type f -name *.h)
-
-# OBJS defines all the files used to compile Zoxel.
-OBJS =
-OBJS += imports/flecs.c
-OBJS += src/main.c
-
-# SRCS = 
-# SRCS += imports/flecs.c 
-# SRCS += imports/flecs.h
-# SRCS += src/main.c
-
-# imports
-# SRCS += imports/SDL/SDLUtil.c
-# SRCS += src/core/apps/util/flecs_util.c
-# # gameplay
-# # players
-# SRCS += src/space/players/players.c
-# # rendering
-# SRCS += src/core/rendering/rendering.c
-# SRCS += src/core/rendering/core/rendering_core.c
-
-all: $(TARGET)
-
-$(TARGET): $(SRCS)
-	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDLIBS)
-
-clear:
-	$(RM) $(TARGET)
-
-# Optimize
-# -O3

@@ -11,7 +11,7 @@
 // util Functions
 #include "util/primitive_square.c"
 #include "util/primitive_mesh_util.c"
-#include "util/shaders_util.c"    // uses InitializeMesh
+#include "util/shaders_util.c"    // uses initialize_mesh
 #include "util/opengl_util.c"
 // render2D
 #include "render2D/material2D.c"
@@ -32,7 +32,7 @@
 
 int load_all_shaders()
 {
-    if (LoadInstance2DMaterial() != 0)
+    if (load_instance2D_material() != 0)
     {
         printf("Error loading Instance Shader.\n");
     }
@@ -40,9 +40,9 @@ int load_all_shaders()
     {
         printf("Error loading Texture Shader.\n");
     }
-    if (LoadInstance3DMaterial() != 0)
+    if (load_shader3D_basic() != 0)
     {
-        printf("Error [LoadInstance3DMaterial]\n");
+        printf("Error [load_shader3D_basic]\n");
     }
     if (load_shader3D_textured())
     {

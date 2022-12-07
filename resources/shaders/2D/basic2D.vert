@@ -1,7 +1,4 @@
 #version 300 es
-//! Basic 2D Renderer
-
-// layout (location = 0)
 in lowp vec2 vertexPosition;
 uniform lowp mat4 viewMatrix;
 uniform lowp float positionX;
@@ -12,9 +9,8 @@ uniform lowp float scale;
 void main()
 {
     vec2 position = vec2(positionX, positionY);
-    mat2 rotate = mat2(cos(angle), -sin(angle),
-                       sin(angle), cos(angle));
-    gl_Position = viewMatrix * vec4(position + (rotate * vertexPosition) * scale, 0, 1.0); // 
+    mat2 rotate = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
+    gl_Position = viewMatrix * vec4(position + (rotate * vertexPosition) * scale, 0, 1.0);
 }
 
 // uniform lowp mat4 MVP; gl_ModelViewProjectionMatrix * 
@@ -41,3 +37,5 @@ void main()
 // gl_Position = vec4(offset + (rotate * position) * scale, 0.0, 1.0);
 // gl_Position = vec4(position + (rotate * scale), 0.0, 1.0);
 // gl_Position = CalculateMatrix(position, vec3(0.0, 0.0, 0.0)) * vec4(position, 1.0);
+
+// layout (location = 0)

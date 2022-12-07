@@ -28,7 +28,7 @@ void update()
 //! Includes special case for emscripten.
 void main_loop()
 {
-#ifdef __EMSCRIPTEN__
+#ifdef WEB_BUILD
     emscripten_set_main_loop(&update, -1, 1); // old - 60, 1);
 #else
     while (running)

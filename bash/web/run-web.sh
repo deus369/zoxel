@@ -4,7 +4,7 @@ cd ~/zoxel
 
 source ~/emsdk/emsdk_env.sh
 
-emrun --browser firefox web-demo/index.html
+emrun --browser firefox web/index.html
 
 echo Done
 

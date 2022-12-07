@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
-#ifdef __EMSCRIPTEN__
+#ifdef WEB_BUILD
 #include <emscripten.h>
 #endif
 #ifdef ANDROID_BUILD
@@ -65,7 +65,7 @@ void update_core()
     {
         reset_input_devices(world);
         update_sdl(world);
-        #ifdef __EMSCRIPTEN__
+        #ifdef WEB_BUILD
         update_web_canvas(world);   // handles resize event
         #endif
         render_pre_loop();

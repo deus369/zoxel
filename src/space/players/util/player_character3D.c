@@ -12,7 +12,7 @@ ecs_entity_t spawn_player_character3D(ecs_world_t *world, ecs_entity_t camera)
     ecs_set(world, e, Scale1D, { 0.06f + ((rand() % 101) / 100.0f) * 0.04f  });
     ecs_set(world, e, Brightness, { 0.8f + ((rand() % 101) / 100.0f) * 0.6f });
     spawn_gpu_mesh(world, e);
-    spawn_gpu_material(world, e, instanceShader3D);
+    spawn_gpu_material(world, e, shader3D_basic);
     ecs_defer_end(world);
     // spawn_gpu_texture(world, e);
     local_player = e;

@@ -12,6 +12,9 @@
 #if defined(__unix__) && __ANDROID__
     #define ANDROID_BUILD
 #endif
+#ifdef __EMSCRIPTEN__
+    #define WEB_BUILD
+#endif
 
 // SDL
 #define SDL_IMAGES
@@ -20,11 +23,11 @@
 
 // -- Tests / Options --
 // #define zoxel_test_character2Ds
-#define zoxel_test_cubes
+// #define zoxel_test_cubes             // Failing atm, gl error at opengl_draw_triangles
 // #define zoxel_test_cubes_textured    // wip
 // #define zoxel_test_character3Ds      // todo
 #define zoxel_test_voxels
-#define zoxel_test_voxels_terrain       // uvs - wip
+#define zoxel_test_voxels_terrain
 // #define zoxel_test_uis
 // -- debugs --
 //! \todo Fix pathing for android, cannot get resources there.

@@ -1,6 +1,4 @@
 #version 300 es
-//! Basic 3D Renderer
-
 in lowp vec3 vertexPosition;
 uniform lowp mat4 viewMatrix;
 uniform lowp vec3 position;

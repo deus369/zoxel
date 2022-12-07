@@ -5,7 +5,7 @@ zoxel_directory=$HOME/zoxel
 file_name=zoxel
 shortcut_file_name=zoxel.desktop
 # echo "Filename [$file_name]"
-binary_path=$zoxel_directory/builds/$file_name
+binary_path=$zoxel_directory/$file_name
 install_path=/usr/games/$file_name
 
 # In directory [$pwd] - 

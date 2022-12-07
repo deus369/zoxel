@@ -79,7 +79,8 @@ void opengl_disable_texture(bool isBlend)
 }
 
 void opengl_upload_shader3D_textured(GLuint2 mesh_buffer, GLuint material_buffer,
-    const int *indicies, int indicies_length, const float *verts, int verts_length,
+    const int *indicies, int indicies_length,
+    const float *verts, int verts_length,
     const float *uvs, int uvs_length)
 {
     Material3DTextured material3D = spawn_material3D_textured(material_buffer);
@@ -90,9 +91,15 @@ void opengl_upload_shader3D_textured(GLuint2 mesh_buffer, GLuint material_buffer
     // glVertexAttribPointer(material3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 12, 0);
     //! This recreates vertex data during upload
     //! \todo Can I upload a non combined one? This isn't efficient.
-    int floats_length = (verts_length / 3) * 5;
+    int proper_verts_length = (verts_length / 3);
+    int floats_length = proper_verts_length * 5;
+    // \todo Even this size of array crashed web build! stackSize > 655360
+    /*if (floats_length > 15536) // 6)
+    {
+        printf("floats_length greater than 65536 [%i]\n", floats_length);
+    }*/
     float combined_verts[floats_length];
-    for (int i = 0; i < floats_length / 5; i++)
+    for (int i = 0; i < proper_verts_length; i++)
     {
         combined_verts[i * 5 + 0] = verts[i * 3 + 0];
         combined_verts[i * 5 + 1] = verts[i * 3 + 1];

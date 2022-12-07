@@ -38,7 +38,7 @@ void AppsImport(ecs_world_t *world)
     SDL_GLContext* context = create_sdl_context(window);
     spawn_app(world, window, context);
     main_window = window;
-    #ifndef __EMSCRIPTEN__
+    #ifndef WEB_BUILD
     if (fullscreen) 
     {
         sdl_toggle_fullscreen(main_window);

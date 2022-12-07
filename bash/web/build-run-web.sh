@@ -6,7 +6,7 @@ source ~/emsdk/emsdk_env.sh
 
 make -f MakeWeb -j24
 
-emrun --browser firefox web-demo/index.html
+emrun --browser firefox web/index.html
 
 echo Done
 

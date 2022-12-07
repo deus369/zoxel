@@ -4,7 +4,7 @@ cd ~/zoxel
 
 echo Game Starting.
 
-./builds/zoxel
+./zoxel
 
 echo Game Ended.
 

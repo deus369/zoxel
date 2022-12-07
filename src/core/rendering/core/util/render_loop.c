@@ -18,7 +18,7 @@ void render_pre_loop()
 void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, int2 size)
 {
     main_camera_matrix = camera_matrix;
-    #ifndef __EMSCRIPTEN__
+    #ifndef WEB_BUILD
     glViewport(position.x, position.y, size.x, size.y);
     #endif
     // 3D renders
@@ -29,7 +29,7 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     ecs_run(world, ecs_id(Render3DUvsSystem), 0, NULL);
     // 2D renders
     glDisable(GL_DEPTH_TEST);
-    OpenGLBeginInstancing(main_camera_matrix);
+    shader2D_instance_begin(main_camera_matrix);
     ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
     opengl_disable_opengl_program();
     ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);

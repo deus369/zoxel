@@ -1,12 +1,9 @@
 #version 300 es
-//! Basic 3D Renderer
-
 in lowp vec3 vertexPosition;
 uniform lowp mat4 viewMatrix;
 uniform lowp vec3 position;
 uniform lowp vec4 rotation;
 uniform lowp float scale;
-
 
 vec3 float4_rotate_float3(vec4 rotation, vec3 value)
 {

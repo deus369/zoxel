@@ -1,5 +1,4 @@
 #version 300 es
-
 uniform lowp float brightness;
 out lowp vec4 color;
 

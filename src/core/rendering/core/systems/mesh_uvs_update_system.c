@@ -9,7 +9,7 @@ void MeshUvsUpdateSystem(ecs_iter_t *it)
     {
         return;
     }
-    const MeshDirty *entityDirtys = ecs_field(it, MeshDirty, 1);
+    const MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 1);
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 2);
     const MeshVertices *meshVertices = ecs_field(it, MeshVertices, 3);
     const MeshUVs *meshUVs = ecs_field(it, MeshUVs, 4);
@@ -19,8 +19,8 @@ void MeshUvsUpdateSystem(ecs_iter_t *it)
     // printf("TextureUpdateSystem [%i] \n", it->count);
     for (int i = 0; i < it->count; i++)
     {
-        const MeshDirty *entityDirty = &entityDirtys[i];
-        if (entityDirty->value != 1)
+        const MeshDirty *meshDirty = &meshDirtys[i];
+        if (meshDirty->value != 1)
         {
             continue;
         }
@@ -34,11 +34,12 @@ void MeshUvsUpdateSystem(ecs_iter_t *it)
             meshIndicies2->value, meshIndicies2->length,
             meshVertices2->value, meshVertices2->length,
             meshUVs2->value, meshUVs2->length);
-        // printf("MeshUvsUpdateSystem [%i - %i] Material [%i] \n", meshGPULink->value.x, meshGPULink->value.y, materialGPULink->value);
-        /*for (int j = 0; j < 8; j++)
-        {
-            printf("    - Vertex [%i] is [%fx%fx%f]\n", j, meshVertices2->value[j].x,  meshVertices2->value[j].y, meshVertices2->value[j].z);
-        }*/
     }
 }
 ECS_SYSTEM_DECLARE(MeshUvsUpdateSystem);
+
+// printf("MeshUvsUpdateSystem [%i - %i] Material [%i] \n", meshGPULink->value.x, meshGPULink->value.y, materialGPULink->value);
+/*for (int j = 0; j < 8; j++)
+{
+    printf("    - Vertex [%i] is [%fx%fx%f]\n", j, meshVertices2->value[j].x,  meshVertices2->value[j].y, meshVertices2->value[j].z);
+}*/

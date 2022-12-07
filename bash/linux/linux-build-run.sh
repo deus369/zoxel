@@ -4,6 +4,6 @@ cd ~/zoxel
 
 make -B -j$(nproc)
 
-./builds/zoxel --fullscreen
+./zoxel --fullscreen
 
 sleep 30

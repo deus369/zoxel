@@ -42,7 +42,7 @@ int compile_shader(GLenum shaderType, GLuint* shader2, const GLchar* buffer)
     GLuint shader = glCreateShader(shaderType);
     glShaderSource(shader, 1, (const GLchar **) &buffer, NULL);
     glCompileShader(shader);
-    glValidateProgram(shader);
+    // glValidateProgram(shader);
     GLint success;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
     if (success != GL_TRUE)
@@ -162,7 +162,7 @@ GLuint load_gpu_shader(GLuint2* shader, const char* vertFilepath, const char* fr
     // Clean up shaders
     glDeleteShader(vertShader);
     glDeleteShader(fragShader);
-    InitializeMesh(material);
+    initialize_mesh(material);
     return 0;
 }*/
 

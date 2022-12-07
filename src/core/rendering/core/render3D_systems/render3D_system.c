@@ -30,6 +30,12 @@ void Render3DSystem(ecs_iter_t *it)
             }
             opengl_set_camera_view_matrix(materialGPULink->value, main_camera_matrix);
             opengl_draw_triangles(meshIndicies2->length);
+        }
+    }
+    opengl_disable_opengl_program();
+}
+ECS_SYSTEM_DECLARE(Render3DSystem);
+
             /*for (int j = 0; j < main_cameras_count; j++)
             {
                 ecs_entity_t camera_entity = main_cameras[j];
@@ -43,8 +49,3 @@ void Render3DSystem(ecs_iter_t *it)
                 opengl_draw_triangles(meshIndicies2->length);
             }*/
             // printf("Render3DSystem [%lu]\n", (long int) it->entities[i]);
-        }
-    }
-    opengl_disable_opengl_program();
-}
-ECS_SYSTEM_DECLARE(Render3DSystem);

@@ -29,20 +29,21 @@ void MeshUpdateSystem(ecs_iter_t *it)
         set_gpu_mesh(meshGPULink->value,  materialGPULink->value,
             meshIndicies2->value, meshIndicies2->length,
             meshVertices2->value, meshVertices2->length);
-        /*printf("MeshUpdateSystem [%i - %i] Material [%i] \n", meshGPULink->value.x, meshGPULink->value.y, materialGPULink->value);
-        for (int j = 0; j < 8; j++)
-        {
-            printf("    - Vertex [%i] is [%fx%fx%f]\n", j, meshVertices2->value[j].x,  meshVertices2->value[j].y, meshVertices2->value[j].z);
-        }*/
-        /*for (int j = 0; j < meshIndicies->length; j++)
-        {
-            printf("        - Index [%i] is [%i]\n", j, meshIndicies->value[j]);
-        }
-        for (int j = 0; j < meshVertices->length; j++)
-        {
-            printf("        - Vertex [%i] is [%f]\n", j, meshVertices->value[j]);
-        }*/
         
     }
 }
 ECS_SYSTEM_DECLARE(MeshUpdateSystem);
+
+/*printf("MeshUpdateSystem [%i - %i] Material [%i] \n", meshGPULink->value.x, meshGPULink->value.y, materialGPULink->value);
+for (int j = 0; j < 8; j++)
+{
+    printf("    - Vertex [%i] is [%fx%fx%f]\n", j, meshVertices2->value[j].x,  meshVertices2->value[j].y, meshVertices2->value[j].z);
+}*/
+/*for (int j = 0; j < meshIndicies->length; j++)
+{
+    printf("        - Index [%i] is [%i]\n", j, meshIndicies->value[j]);
+}
+for (int j = 0; j < meshVertices->length; j++)
+{
+    printf("        - Vertex [%i] is [%f]\n", j, meshVertices->value[j]);
+}*/

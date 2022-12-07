@@ -93,7 +93,7 @@ char* get_full_file_path(const char* filepath)
 }
 
 // emscripten app functions
-#ifdef __EMSCRIPTEN__
+#ifdef WEB_BUILD
 
 EM_JS(int, get_canvas_width, (), { return window.innerWidth; });
 EM_JS(int, get_canvas_height, (), { return window.innerHeight; });
@@ -144,7 +144,7 @@ void SetStartScreenSize()
         screen_dimensions.x /= 2;
         screen_dimensions.y /= 2;
     }
-#ifdef __EMSCRIPTEN__
+#ifdef WEB_BUILD
     int2 canvas_size = get_canvas_size();
     zoxel_log_arg("    Canvas Screen Dimensions: %ix%i\n", canvas_size.x, canvas_size.y);
     screen_dimensions = canvas_size;
@@ -236,12 +236,13 @@ SDL_Window* SpawnWindowSDL(bool fullscreen)
     #ifdef ANDROID_BUILD
         windowFlags = SDL_WINDOW_FULLSCREEN;
     #endif
-    #ifndef __EMSCRIPTEN__
-    /*if (fullscreen) 
+    /*#ifndef WEB_BUILD
+    if (fullscreen) 
     {
+        printf("Setting fullscreen!\n");
         windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-    }*/
-    #endif
+    }
+    #endif*/
     // SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
     int2 app_position = (int2) { };
     int displays = SDL_GetNumVideoDisplays();
@@ -259,7 +260,6 @@ SDL_Window* SpawnWindowSDL(bool fullscreen)
         zoxel_log_arg("Failed to Create SDLWindow: %s\n", SDL_GetError());
         return window;
     }
-    // SDL_GLContext is an alias for "void*"
     SDL_GL_SetSwapInterval(1);
     LoadIconSDL(window);
     SDL_SetWindowResizable(window, SDL_TRUE);
@@ -302,7 +302,7 @@ void sdl_on_end()
 void quit()
 {
     running = false;
-    #ifdef __EMSCRIPTEN__
+    #ifdef WEB_BUILD
     emscripten_cancel_main_loop();
     #endif
 }
@@ -395,19 +395,19 @@ int process_arguments(int argc, char* argv[])
     return EXIT_SUCCESS;
 }
 
-#ifdef __EMSCRIPTEN__
+#ifdef WEB_BUILD
 
-#define debug_ui_scaling
+    #define debug_ui_scaling
 
-bool update_web_canvas(ecs_world_t *world)
-{
-    int2 canvas_size = get_canvas_size();
-    if (screen_dimensions.x != canvas_size.x || screen_dimensions.y != canvas_size.y)
+    bool update_web_canvas(ecs_world_t *world)
     {
-        zoxel_log_arg("update_web_canvas: Canvas size has changed [%i x %i]\n", canvas_size.x, canvas_size.y);
-        on_viewport_resized(world, canvas_size.x, canvas_size.y);
-        return true;
+        int2 canvas_size = get_canvas_size();
+        if (screen_dimensions.x != canvas_size.x || screen_dimensions.y != canvas_size.y)
+        {
+            zoxel_log_arg("update_web_canvas: Canvas size has changed [%i x %i]\n", canvas_size.x, canvas_size.y);
+            on_viewport_resized(world, canvas_size.x, canvas_size.y);
+            return true;
+        }
+        return false;
     }
-    return false;
-}
 #endif

@@ -55,7 +55,7 @@ void extract_mouse(ecs_world_t *world, SDL_Event event)
             //printf("Delta: %i x %i\n", mouse->delta.x, mouse->delta.y);
             //! Reverse mouse position, so bottom is 0 and top is 1.
             // mouse->position.y = screen_dimensions.y - mouse->position.y;
-#ifdef __EMSCRIPTEN__
+#ifdef WEB_BUILD
             //! Reverse position X in web
             // mouse->position.x = screenDimensions.x - mouse->position.x;
             // printf("Mouse: %ix%i\n", mouse->position.x, mouse->position.y);

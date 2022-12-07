@@ -1,22 +1,21 @@
 // RenderParticle
-
-const char* basicRender3DVertFilepath = resources_folder_name"shaders/3D/BasicRender3D.vert";
-const char* basicRender3DFragFilepath = resources_folder_name"shaders/3D/BasicRender3D.frag";
-GLuint2 instanceShader3D;
+const char* basicRender3DVertFilepath = resources_folder_name"shaders/3D/basic_3D.vert";
+const char* basicRender3DFragFilepath = resources_folder_name"shaders/3D/basic_3D.frag";
+GLuint2 shader3D_basic;
 GLuint materialInstance3D;
 Material3D material3D;
 GLuint2 materialInstance3D_mesh;
 
 void DisposeInstanced3DMaterial()
 {
-    glDeleteShader(instanceShader3D.x);
-    glDeleteShader(instanceShader3D.y);
+    glDeleteShader(shader3D_basic.x);
+    glDeleteShader(shader3D_basic.y);
     glDeleteBuffers(1, &materialInstance3D_mesh.x);
     glDeleteBuffers(1, &materialInstance3D_mesh.y);
     glDeleteProgram(materialInstance3D);
 }
 
-void InitializeCubeMesh(GLuint material)
+void initialize_cube_mesh(GLuint material)
 {
     glGenBuffers(1, &materialInstance3D_mesh.x);
     glGenBuffers(1, &materialInstance3D_mesh.y);
@@ -31,11 +30,11 @@ void InitializeCubeMesh(GLuint material)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-int LoadInstance3DMaterial()
+int load_shader3D_basic()
 {
-    materialInstance3D = load_gpu_shader(&instanceShader3D, basicRender3DVertFilepath, basicRender3DFragFilepath);
+    materialInstance3D = load_gpu_shader(&shader3D_basic, basicRender3DVertFilepath, basicRender3DFragFilepath);
     material3D = spawn_material3D_properties(materialInstance3D);
-    InitializeCubeMesh(materialInstance3D);
+    initialize_cube_mesh(materialInstance3D);
     return 0;
 }
 

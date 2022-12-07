@@ -11,8 +11,9 @@ int textureType = GL_NEAREST; // GL_LINEAR
 //! \todo Move these references to MaterialGPULink
 //! \todo Update texture based on Player Entity texture updateing
 GLuint2 shader2D_textured;
-const char* shader2D_textured_filepath_vert = resources_folder_name"shaders/2D/TexturedRender2D.vert";
-const char* shader2D_textured_filepath_frag = resources_folder_name"shaders/2D/TexturedRender2D.frag";
+// not used atm
+//const char* shader2D_textured_filepath_vert = resources_folder_name"shaders/2D/textured2D.vert";
+//const char* shader2D_textured_filepath_frag = resources_folder_name"shaders/2D/textured2D.frag";
 // MaterialGPULink and properties
 GLuint texturedMaterial;
 //! Mesh B - Buffers/Texture
@@ -63,7 +64,7 @@ void dispose_shader2D_textured()
     GLenum err7 = glGetError();
     if (err7 != GL_NO_ERROR)
     {
-        printf("GL ERROR with end of dispose_opengl: %i\n", err7);
+        printf("GL ERROR - dispose_opengl: %i\n", err7);
     }
 #endif
 }

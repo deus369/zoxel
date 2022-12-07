@@ -2,10 +2,6 @@
 
 cd ~/zoxel
 
-source ~/emsdk/emsdk_env.sh
-
-make -f MakeWeb -j24
+source ~/emsdk/emsdk_env.sh; make -j$(nproc) web/zoxel.js
 
 echo Done
-
-sleep 100
