@@ -19,6 +19,9 @@ LDLIBS += -lSDL2_image		# SDL2 Image Library
 LDLIBS += -lSDL2_mixer		# SDL2 Audio Library
 # LDLIBS += -SDL2_IMAGE_FORMATS='["png"]'
 LDLIBS += -lm				# for math.h
+# used for manual sdl compiling on systems that don't have sdl lib in their package managers
+LDLIBS += -L/usr/local/lib
+LDLIBS += -W1,-rpath /usr/local/lib
 # OBJS defines all the files used to compile the final Zoxel binary.
 OBJS = include/flecs.c src/main.c
 # This collects all c and h files in the directory
