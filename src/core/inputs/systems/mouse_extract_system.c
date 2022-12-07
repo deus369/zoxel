@@ -46,11 +46,11 @@ void extract_mouse(ecs_world_t *world, SDL_Event event)
         {
             int2 new_mouse_position = (int2) { event.motion.x, event.motion.y };
             new_mouse_position.y = screen_dimensions.y - new_mouse_position.y;
-            mouse->delta = (int2) {
+            /*mouse->delta = (int2) {
                 new_mouse_position.x - mouse->position.x ,
-                new_mouse_position.y - mouse->position.y };
+                new_mouse_position.y - mouse->position.y };*/
             mouse->position = new_mouse_position;
-            // mouse->delta = (int2) { event.motion.xrel, event.motion.yrel };
+            mouse->delta = (int2) { event.motion.xrel, event.motion.yrel };
             //printf("    position: %i x %i\n", mouse->position.x, mouse->position.y);
             //printf("Delta: %i x %i\n", mouse->delta.x, mouse->delta.y);
             //! Reverse mouse position, so bottom is 0 and top is 1.
