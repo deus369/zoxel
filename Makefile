@@ -36,6 +36,11 @@ $(TARGET): $(SRCS)
 clear:
 	$(RM) $(TARGET)
 
+install: # bash/install/install.sh
+	bash/install/install.sh
+
+# $(shell ./bash/install/install.sh)
+
 # CFLAGS += -D_POSIX_C_SOURCE=200112L
 # dCFLAGS += -fsanitize=undefined
 # LDLIBS += -flto-partition=none ?

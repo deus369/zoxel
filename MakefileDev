@@ -28,6 +28,10 @@ SRCS += $(shell find src/ -type f -name *.h)
 # OBJS defines all the files used to compile Zoxel.
 OBJS = include/flecs.c src/main.c
 
+
+#install:
+#    $(shell test.sh)
+
 all: $(TARGET)
 
 $(TARGET): $(SRCS)
@@ -35,6 +39,10 @@ $(TARGET): $(SRCS)
 
 clear:
 	$(RM) $(TARGET)
+
+#	$(shell ./bash/install/install.sh)
+#./bash/install/install.sh
+
 
 # CFLAGS += -D_POSIX_C_SOURCE=200112L
 # dCFLAGS += -fsanitize=undefined
