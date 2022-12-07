@@ -60,8 +60,8 @@ Code is on [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://git
 
 New Zoxel (C, FLECS, SDL)
 
-![Le New Zoxel](/screenshots/screen-2022-11-25-18-41-36.jpg?raw=false "Le New Zoxel")
+![Le New Zoxel](/documents/screenshots/screen-2022-11-25-18-41-36.jpg?raw=false "Le New Zoxel")
 
 Old Zoxel (Unity Engine ECS)
 
-![Le Old Zoxel](/screenshots/KEyHna.png?raw=false "Le Old Zoxel")
+![Le Old Zoxel](/documents/screenshots/KEyHna.png?raw=false "Le Old Zoxel")

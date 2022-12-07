@@ -1,22 +1,11 @@
 #ignore zoxel build
-builds/*
 zoxel
 zoxel-dev
 web-dev
-
-*.code-workspace
-
 #ignore scrap code
 scrap
 scrap.c
-
-#ignore settings
+# ignore settings
 .vscode
-
-# Ignore Code Counter
-.VSCodeCounter
-
-#wasm build
-# zoxel.wasm
-# zoxel.js
-# zoxel.html
+# ignore test builds
+tests/builds/*
