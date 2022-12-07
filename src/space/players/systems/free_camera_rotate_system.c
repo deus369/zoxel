@@ -4,7 +4,9 @@ void FreeCameraRotateSystem(ecs_iter_t *it)
     // while right click only, and hide mouse!
     double deltaTime = (double) (it->delta_time);
     float rotatePower = 0.62f * deltaTime * degreesToRadians;
-#ifndef WEB_BUILD
+#ifdef WEB_BUILD
+    rotatePower *= 16.0f;
+#else
     rotatePower *= 80.0f;
 #endif
     ecs_query_t *cameraQuery = it->ctx;

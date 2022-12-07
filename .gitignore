@@ -1,7 +1,7 @@
 #ignore zoxel build
 builds/*
 zoxel
-zoxel-devv
+zoxel-dev
 web-dev
 
 *.code-workspace
