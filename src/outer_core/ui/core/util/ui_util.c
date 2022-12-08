@@ -20,10 +20,10 @@ void add_ui_plus_components(ecs_world_t *world, ecs_entity_t e)
     add_seed(world, e, 666);
     add_dirty(world, e);
     add_transform2Ds(world, e);
+    add_ui_components(world, e);
     add_texture(world, e, (int2) { });
     add_unique_mesh_components(world, e);
     zoxel_set(world, e, MeshDirty, { 1 });
-    add_ui_components(world, e);
 }
 
 void add_ui_plus_components_invisible(ecs_world_t *world, ecs_entity_t e)

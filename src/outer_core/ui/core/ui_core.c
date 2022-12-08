@@ -32,6 +32,7 @@ zoxel_component(CanvasLink, ecs_entity_t);
 #include "systems/element_raycast_system.c"
 #include "systems/element_selected_system.c"
 #include "systems/element_activate_system.c"
+#include "systems/element_position_system.c"
 // render initialize systems
 #include "systems/element_mesh_system.c"
 
@@ -61,6 +62,10 @@ void UICoreImport(ecs_world_t *world)
     // ClicableState - reset system
     // destroy window
     // children - destroy children - hook
+    zoxel_filter(pixel_positions_query, world, [in] PixelPosition); // [none] Element, 
+    zoxel_system_ctx(world, ElementPositionSystem, EcsPostUpdate, pixel_positions_query,
+        [none] Element, [in] PixelPosition, [in] ParentLink, [in] Anchor, [in] CanvasLink,
+        [out] Position2D, [out] CanvasPixelPosition);
     // prefabs
     spawn_prefab_canvas(world);
     spawn_prefab_element(world);
