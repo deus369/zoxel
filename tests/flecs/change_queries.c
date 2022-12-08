@@ -35,57 +35,117 @@ ECS_COMPONENT_DECLARE(name)
 ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
 zoxel_component(TestComponent, int);
+zoxel_component(TestComponentA, bool);
+zoxel_component(TestComponentB, bool);
 
+//! Note: This only works if the tables match between the change filter and the normal iterator
 void TestChangeQuerySystem(ecs_iter_t *it)
 {
     ecs_query_t *changeQuery = it->ctx;
-    if (!changeQuery || !ecs_query_changed(changeQuery, NULL))
+    ecs_iter_t change_iter = ecs_query_iter(it->world, changeQuery);
+    // This handles multiple tables
+    while (ecs_query_next(&change_iter))
+    {
+        if (change_iter.table != it->table)
+        {
+            // if this is not the table currently iterated by the system, don't reset changed state
+            ecs_query_skip(&change_iter);
+        }
+    }
+    if (!ecs_query_changed(changeQuery, NULL))
     {
         printf("    - Not changed\n");
         return;
     }
-    printf("    - Changed\n");
-    ecs_world_t *world = it->world;
-    const TestComponent *TestComponents = ecs_field(it, TestComponent, 1);
-    for (int i = 0; i < it->count; i++)
+    else
     {
-        ecs_entity_t e = it->entities[i];
+        printf("    - Changed\n");
     }
-    // ecs_query_skip(it);
 }
 ECS_SYSTEM_DECLARE(TestChangeQuerySystem);
 
 int main(int argc, char *argv[]) 
 {
     printf("Testing change_queries.\n");
+    
     // initialize world
     ecs_world_t *world = ecs_init_w_args(argc, argv);
-    // initialize component
+
+    // initialize components
     ECS_COMPONENT(world, TestComponent);
+    ECS_COMPONENT(world, TestComponentA);
+    ECS_COMPONENT(world, TestComponentB);
+
     // initialize system with change query
     zoxel_filter(change_query, world, [in] TestComponent);
     zoxel_system_ctx(world, TestChangeQuerySystem, EcsPostUpdate, change_query, [in] TestComponent);
+
     // add entities
     ecs_entity_t test_entity;
     for (int i = 0; i < 8; i++)
     {
         ecs_entity_t e = ecs_new_entity(world, "");
         ecs_set(world, e, TestComponent, { 0 });
+        if (i < 4)
+        {
+            ecs_set(world, e, TestComponentA, { true });
+        }
+        else
+        {
+            ecs_set(world, e, TestComponentB, { false });
+        }
         if (i == 0)
         {
             test_entity = e;
         }
     }
-    // progress once
+
+    // progress system 8 times
     for (int i = 0; i < 8; i++)
     {
         printf("ECS Progress [%i]\n", i);
         ecs_progress(world, 0);
         if (i == 5)
         {
+            printf("Changed TestComponent at [%i]\n", i);
             ecs_set(world, test_entity, TestComponent, { 3 });  // this should trigger change
         }
     }
+
     printf("RESULT: (lazymode) Check log.\n");
     return ecs_fini(world);
 }
+
+/** Expected Result:
+
+Testing change_queries.
+ECS Progress [0]
+    - Changed
+    - Changed
+ECS Progress [1]
+    - Not changed
+    - Not changed
+ECS Progress [2]
+    - Not changed
+    - Not changed
+ECS Progress [3]
+    - Not changed
+    - Not changed
+ECS Progress [4]
+    - Not changed
+    - Not changed
+ECS Progress [5]
+    - Not changed
+    - Not changed
+Changed TestComponent at [5]
+ECS Progress [6]
+    - Not changed
+    - Not changed
+ECS Progress [7]
+    - Not changed
+    - Not changed
+RESULT: (lazymode) Check log.
+
+*/
+
+// ecs_query_next(&it2);
