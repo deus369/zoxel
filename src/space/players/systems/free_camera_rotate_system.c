@@ -7,7 +7,7 @@ void FreeCameraRotateSystem(ecs_iter_t *it)
 #ifdef WEB_BUILD
     rotatePower *= 16.0f;
 #else
-    rotatePower *= 80.0f;
+    rotatePower *= 32.0f;
 #endif
     ecs_query_t *cameraQuery = it->ctx;
     if (!cameraQuery)
@@ -27,7 +27,7 @@ void FreeCameraRotateSystem(ecs_iter_t *it)
     for (int i = 0; i < it->count; i++)
     {
         const Mouse *mouse = &mouses[i];
-        float3 eulerAddition = { 0, -mouse->delta.x, -mouse->delta.y };
+        float3 eulerAddition = { 0, -mouse->delta.x, mouse->delta.y };
         eulerAddition = float3_multiply_float(eulerAddition, rotatePower);
         if (!(eulerAddition.x == 0 && eulerAddition.y == 0 && eulerAddition.z == 0))
         {

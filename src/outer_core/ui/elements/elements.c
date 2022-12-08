@@ -21,6 +21,9 @@ ECS_DECLARE(ExitGameButton);
 #include "prefabs/button.c"
 #include "prefabs/header.c"
 #include "prefabs/window.c"
+// util
+#include "util/header.c"
+#include "util/window.c"
 // systems
 #include "systems/button_click_sound_system.c"
 #include "systems/window_close_system.c"
@@ -40,8 +43,7 @@ void ElementsImport(ecs_world_t *world)
     // systems
     zoxel_system(world, ButtonClickSoundSystem, EcsPostUpdate, [none] Button, [in] ClickableState);
     zoxel_system(world, WindowCloseSystem, EcsOnValidate, [none] CloseButton, [in] ClickableState);
-    zoxel_system(world, HeaderDragSystem, EcsOnValidate,
-        [none] Header, [in] DragableState, [in] DraggingDelta); //, [out] PixelPosition, [out] Position2D);
+    zoxel_system(world, HeaderDragSystem, EcsPostUpdate, [none] Header, [in] DragableState, [in] DraggingDelta);
     // prefabs
     spawn_prefab_label(world);
     spawn_prefab_button(world);

@@ -21,7 +21,6 @@ void DraggerEndSystem(ecs_iter_t *it)
             dragableState->value = 0;
             draggerLink->value = 0;
             draggingDelta->value = (int2) { 0, 0 };
-            printf("Ended dragging.\n");
         }
         else
         {

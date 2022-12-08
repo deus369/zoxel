@@ -57,6 +57,7 @@ float2 get_ui_real_position2D(ecs_world_t *world, ecs_entity_t e, ecs_entity_t p
             // return (float2) { 0, 0 };
         }
         const Position2D *parent_position2D = ecs_get(world, parent, Position2D);
+        const PixelSize *parent_pixel_size = ecs_get(world, parent, PixelSize);
         if (parent_position2D != NULL)
         {
             position2D = parent_position2D->value;
@@ -64,7 +65,6 @@ float2 get_ui_real_position2D(ecs_world_t *world, ecs_entity_t e, ecs_entity_t p
         position2D = float2_add(position2D, (float2) {
             (local_pixel_position.x  / canvasSizef.x) * aspectRatio,
             (local_pixel_position.y  / canvasSizef.y)});
-        const PixelSize *parent_pixel_size = ecs_get(world, parent, PixelSize);
         if (parent_pixel_size != NULL)
         {
             float2 parent_pixel_ratio = (float2) {

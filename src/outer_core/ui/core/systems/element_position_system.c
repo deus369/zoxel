@@ -1,4 +1,7 @@
 //! Sets real position when pixel position updates
+/**
+*   \todo Make this instantaneous for children uis as well.
+*/
 void ElementPositionSystem(ecs_iter_t *it)
 {
     ecs_query_t *changeQuery = it->ctx;
@@ -6,7 +9,8 @@ void ElementPositionSystem(ecs_iter_t *it)
     {
         return;
     }
-    printf("Pixel positions changed!\n");
+    //! \todo Update this after getting a working example of change filters.
+    // printf("Pixel positions changed!\n");
     ecs_world_t *world = it->world;
     const PixelPosition *pixelPositions = ecs_field(it, PixelPosition, 2);
     const ParentLink *parentLinks = ecs_field(it, ParentLink, 3);
@@ -27,6 +31,7 @@ void ElementPositionSystem(ecs_iter_t *it)
         }
         int2 canvas_size = ecs_get(world, canvasLink->value, PixelSize)->value;
         Position2D *position2D = &position2Ds[i];
+        // uses parent Position2D and PixelSize
         position2D->value = get_ui_real_position2D(world, e,
             parentLink->value, pixelPosition->value, anchor->value, canvas_size);
         CanvasPixelPosition *canvasPixelPosition = &canvasPixelPositions[i];
@@ -35,6 +40,7 @@ void ElementPositionSystem(ecs_iter_t *it)
         canvasPixelPosition->value = (int2) {
             ceil((position2D->value.x / aspectRatio + 0.5f) * canvasSizef.x),
             ((position2D->value.y + 0.5f) * canvasSizef.y) };
+        // set all children as well.
     }
 }
 ECS_SYSTEM_DECLARE(ElementPositionSystem);

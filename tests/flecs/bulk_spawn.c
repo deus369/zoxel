@@ -1,7 +1,5 @@
 //! This script tests bulk spawning inside a system!
-
-// Build:
-// cc -std=c99 -D_DEFAULT_SOURCE -o bulk_spawn include/flecs.c tests/flecs/test_bulk_spawn.c; ./bulk_spawn;
+// cc -std=c99 -D_DEFAULT_SOURCE -o tests/builds/bulk_spawn include/flecs.c tests/flecs/bulk_spawn.c; ./tests/builds/bulk_spawn;
 
 #include "../../include/flecs.h"
 #include "stdlib.h"
@@ -9,7 +7,6 @@
 #include <errno.h>
 #include <string.h>
 
-const bool isFixCrash = false;
 // components
 typedef struct
 {
@@ -40,25 +37,22 @@ void SpawnSystem(ecs_iter_t *it)
             position2Ds[i].y = ((rand() % 101) / 100.0f) * positionBounds - (positionBounds / 2.0f);
         }
         // This line crashes it!
-        if (!isFixCrash)
+        // const ecs_entity_t *bobArmy = 
+        ecs_bulk_init(it->world, &(ecs_bulk_desc_t)
         {
-            // const ecs_entity_t *bobArmy = 
-            ecs_bulk_init(it->world, &(ecs_bulk_desc_t)
+            .count = spawnCount,
+            .ids =
             {
-                .count = spawnCount,
-                .ids =
-                {
-                    ecs_pair(EcsIsA, bobPrefab),
-                    ecs_id(Position2D)
-                },
-                // provide data for each id
-                .data = (void*[])
-                {       
-                    NULL,           // Prefab pair, what is it used for?
-                    position2Ds
-                }
-            });
-        }
+                ecs_pair(EcsIsA, bobPrefab),
+                ecs_id(Position2D)
+            },
+            // provide data for each id
+            .data = (void*[])
+            {       
+                NULL,           // Prefab pair, what is it used for?
+                position2Ds
+            }
+        });
     }
 }
 

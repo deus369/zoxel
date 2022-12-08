@@ -52,17 +52,14 @@ void UICoreImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, CanvasLink);
     ECS_COMPONENT_DEFINE(world, ElementLayer);
     // Systems
-    zoxel_filter(ui_query, world, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [in] ElementLayer, [out] SelectableState);
+    zoxel_filter(ui_query, world, [none] Element,
+        [in] CanvasPixelPosition, [in] PixelSize, [in] ElementLayer, [out] SelectableState);
     zoxel_system_ctx(world, ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [out] RaycasterTarget);
     zoxel_system(world, ElementSelectedSystem, EcsOnUpdate, [out] Element, [in] SelectableState, [out] Brightness);
-    // make Activator?
     zoxel_system(world, ElementActivateSystem, EcsOnUpdate, [in] Mouse, [in] RaycasterTarget);
     zoxel_system_main_thread(world, ElementMeshSystem, EcsOnLoad, [none] Element,
         [in] EntityInitialize, [in] PixelSize, [in] CanvasLink);
-    // ClicableState - reset system
-    // destroy window
-    // children - destroy children - hook
-    zoxel_filter(pixel_positions_query, world, [in] PixelPosition); // [none] Element, 
+    zoxel_filter(pixel_positions_query, world, [none] Element, [in] PixelPosition);
     zoxel_system_ctx(world, ElementPositionSystem, EcsPostUpdate, pixel_positions_query,
         [none] Element, [in] PixelPosition, [in] ParentLink, [in] Anchor, [in] CanvasLink,
         [out] Position2D, [out] CanvasPixelPosition);
@@ -70,6 +67,10 @@ void UICoreImport(ecs_world_t *world)
     spawn_prefab_canvas(world);
     spawn_prefab_element(world);
 }
+
 // zoxel_system_ctx(world, ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster);
 // zoxel_system(world, ElementSelectedSystem, EcsOnUpdate, [out] Element, [in] ClickableState, [out] Brightness);
+// ClicableState - reset system
+// destroy window
+// children - destroy children - hook
 #endif

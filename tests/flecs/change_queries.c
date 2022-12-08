@@ -1,5 +1,4 @@
 //! This is to test change queries; expected result is only calling Changed when component has changed.
-// build line
 // cc -std=c99 -D_DEFAULT_SOURCE -o tests/builds/change_queries include/flecs.c tests/flecs/change_queries.c; ./tests/builds/change_queries;
 
 #include "../../include/flecs.h"
@@ -64,16 +63,15 @@ int main(int argc, char *argv[])
     // initialize component
     ECS_COMPONENT(world, TestComponent);
     // initialize system with change query
-    zoxel_filter(pixel_positions_query, world, [in] TestComponent); // [none] Element, 
-    zoxel_system_ctx(world, TestChangeQuerySystem, EcsPostUpdate, pixel_positions_query,
-         [in] TestComponent);
+    zoxel_filter(change_query, world, [in] TestComponent);
+    zoxel_system_ctx(world, TestChangeQuerySystem, EcsPostUpdate, change_query, [in] TestComponent);
     // add entities
     ecs_entity_t test_entity;
     for (int i = 0; i < 8; i++)
     {
         ecs_entity_t e = ecs_new_entity(world, "");
         ecs_set(world, e, TestComponent, { 0 });
-        if (i == 3)
+        if (i == 0)
         {
             test_entity = e;
         }
@@ -83,13 +81,11 @@ int main(int argc, char *argv[])
     {
         printf("ECS Progress [%i]\n", i);
         ecs_progress(world, 0);
-        if (i == 3)
+        if (i == 5)
         {
-            // change pixel position here
-            ecs_set(world, test_entity, TestComponent, { 3 });
+            ecs_set(world, test_entity, TestComponent, { 3 });  // this should trigger change
         }
     }
-    // le end
-    printf("RESULT: ????\n");
+    printf("RESULT: (lazymode) Check log.\n");
     return ecs_fini(world);
 }

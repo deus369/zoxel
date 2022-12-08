@@ -46,15 +46,12 @@ void extract_mouse(ecs_world_t *world, SDL_Event event)
         {
             int2 new_mouse_position = (int2) { event.motion.x, event.motion.y };
             new_mouse_position.y = screen_dimensions.y - new_mouse_position.y;
-            /*mouse->delta = (int2) {
-                new_mouse_position.x - mouse->position.x ,
-                new_mouse_position.y - mouse->position.y };*/
             mouse->position = new_mouse_position;
-            mouse->delta = (int2) { event.motion.xrel, event.motion.yrel };
-            //printf("    position: %i x %i\n", mouse->position.x, mouse->position.y);
-            //printf("Delta: %i x %i\n", mouse->delta.x, mouse->delta.y);
+            mouse->delta = int2_add(mouse->delta, (int2) { event.motion.xrel, - event.motion.yrel });
+            // printf("Delta: %i x %i\n", mouse->delta.x, mouse->delta.y);
             //! Reverse mouse position, so bottom is 0 and top is 1.
             // mouse->position.y = screen_dimensions.y - mouse->position.y;
+            //printf("    position: %i x %i\n", mouse->position.x, mouse->position.y);
 #ifdef WEB_BUILD
             //! Reverse position X in web
             // mouse->position.x = screenDimensions.x - mouse->position.x;
@@ -63,11 +60,23 @@ void extract_mouse(ecs_world_t *world, SDL_Event event)
         }
         else if (eventType == SDL_MOUSEBUTTONDOWN || eventType == SDL_MOUSEBUTTONUP)
         {
+            int2 new_mouse_position = (int2) { event.motion.x, event.motion.y };
+            new_mouse_position.y = screen_dimensions.y - new_mouse_position.y;
+            mouse->position = new_mouse_position;
+            /*if (eventType == SDL_MOUSEBUTTONDOWN)
+            {
+                mouse->delta = (int2) { 0, 0 };
+            }*/
             SDL_MouseButtonEvent *mouseEvent = &event.button;
             Uint8 button = mouseEvent->button;
             if (button == SDL_BUTTON_LEFT)
             {
                 SetMouseKey(&mouse->left, eventType);
+                /*if (eventType == SDL_MOUSEBUTTONDOWN)
+                {
+                    mouse_begin = mouse->position;
+                    relative_mouse_2 = (int2) { 0, 0 };
+                }*/
             }
             else if (button == SDL_BUTTON_MIDDLE)
             {
