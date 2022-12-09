@@ -38,7 +38,6 @@ zoxel_component(TestComponent, int);
 zoxel_component(TestComponentA, bool);
 zoxel_component(TestComponentB, bool);
 
-//! Note: This only works if the tables match between the change filter and the normal iterator
 void TestChangeQuerySystem(ecs_iter_t *it)
 {
     ecs_query_t *changeQuery = it->ctx;
@@ -67,7 +66,7 @@ ECS_SYSTEM_DECLARE(TestChangeQuerySystem);
 int main(int argc, char *argv[]) 
 {
     printf("Testing change_queries.\n");
-    
+
     // initialize world
     ecs_world_t *world = ecs_init_w_args(argc, argv);
 
@@ -146,6 +145,11 @@ ECS Progress [7]
     - Not changed
 RESULT: (lazymode) Check log.
 
-*/
+Notes: This only works if the tables match between the change filter and the normal iterator
+    A query will flag a table as changed if:
+    - the component has changed for a table
+    - the query hasn't iterated the table since the change
 
-// ecs_query_next(&it2);
+    This is an issue, if I have more components, does this flag the table as changed?
+        - No it shouldn't be an issue. The tables flag per component. May need to test anyway? Later.
+*/

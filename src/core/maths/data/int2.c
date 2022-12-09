@@ -58,9 +58,9 @@ int2 int2_normalize(int2 input)
 
 int int2_array_index(int2 input, int2 size)
 {
-    // return input.y + input.x * size.y;
     return input.x + input.y * size.x;
 }
+// return input.y + input.x * size.y;
 
 int2 get_from_byte2(byte2 input)
 {
@@ -81,4 +81,30 @@ int int_clamp(int input, int x, int y)
     {
         return input;
     }
+}
+
+int2 int2_down(int2 input)
+{
+    return (int2) { input.x, input.y - 1 };
+}
+
+int2 int2_up(int2 input)
+{
+    return (int2) { input.x, input.y + 1 };
+}
+
+int2 int2_left(int2 input)
+{
+    return (int2) { input.x - 1, input.y };
+}
+
+int2 int2_right(int2 input)
+{
+    return (int2) { input.x + 1, input.y };
+}
+
+bool int2_in_bounds(int2 input, int2 size)
+{
+    return (input.x >= 0 && input.x < size.x
+        && input.y >= 0 && input.y < size.y);
 }
