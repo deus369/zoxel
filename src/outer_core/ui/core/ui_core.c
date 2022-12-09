@@ -59,9 +59,13 @@ void UICoreImport(ecs_world_t *world)
     zoxel_system(world, ElementActivateSystem, EcsOnUpdate, [in] Mouse, [in] RaycasterTarget);
     zoxel_system_main_thread(world, ElementMeshSystem, EcsOnLoad, [none] Element,
         [in] EntityInitialize, [in] PixelSize, [in] CanvasLink);
-    zoxel_filter(pixel_positions_query, world, [none] Element, [in] PixelPosition);
+    zoxel_filter(pixel_positions_query, world,
+        [none] Element, [in] PixelPosition,
+        [none] ParentLink, [none] Anchor, [none] CanvasLink,
+        [none] Position2D, [none] CanvasPixelPosition);
     zoxel_system_ctx(world, ElementPositionSystem, EcsPostUpdate, pixel_positions_query,
-        [none] Element, [in] PixelPosition, [in] ParentLink, [in] Anchor, [in] CanvasLink,
+        [none] Element, [in] PixelPosition,
+        [in] ParentLink, [in] Anchor, [in] CanvasLink,
         [out] Position2D, [out] CanvasPixelPosition);
     // prefabs
     spawn_prefab_canvas(world);

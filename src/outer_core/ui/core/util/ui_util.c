@@ -81,6 +81,32 @@ float2 get_ui_real_position2D(ecs_world_t *world, ecs_entity_t e, ecs_entity_t p
     return position2D;
 }
 
+float2 get_ui_real_position2D_canvas(int2 local_pixel_position, float2 anchor, int2 canvas_size)
+{
+    float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
+    float aspectRatio = canvasSizef.x / canvasSizef.y;
+    return (float2) { 
+            ((local_pixel_position.x  / canvasSizef.x) - 0.5f + anchor.x) * aspectRatio,
+            ((local_pixel_position.y  / canvasSizef.y) - 0.5f + anchor.y) };
+}
+
+float2 get_ui_real_position2D_parent(int2 local_pixel_position, float2 anchor,
+    float2 parent_position2D, int2 parent_pixel_size,
+    int2 canvas_size, float2 canvas_size_f, float aspect_ratio)
+{
+    float2 position2D = parent_position2D;
+    position2D = float2_add(position2D, (float2) {
+        (local_pixel_position.x  / canvas_size_f.x) * aspect_ratio,
+        (local_pixel_position.y  / canvas_size_f.y)});
+    float2 parent_pixel_ratio = (float2) {
+        parent_pixel_size.x / canvas_size_f.y,
+        parent_pixel_size.y / canvas_size_f.y };
+    position2D = float2_add(position2D, (float2) {
+        - (parent_pixel_ratio.x / 2.0f) + parent_pixel_ratio.x * anchor.x,
+        - (parent_pixel_ratio.y / 2.0f) + parent_pixel_ratio.y * anchor.y });
+    return position2D;
+}
+
 float2 initialize_ui_components(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent,
     int2 local_pixel_position, int2 pixel_size, float2 anchor, unsigned char layer, int2 canvas_size)
 {

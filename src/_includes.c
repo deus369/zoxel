@@ -34,6 +34,7 @@
 // #define zoxel_debug_pathing 
 // #define zoxel_debug_prefabs
 // #define zoxel_debug_spawns
+// #define debug_element_position_change_query
 // #define zoxel_debug_sdl
 // #define zoxel_debug_opengl
 // #define zoxel_catch_opengl_errors
@@ -42,6 +43,7 @@
 // #define debug_ui_positioning
 // #define debug_ui_scaling
 // #define zoxel_time_render_loop
+// #define disable_main_menu_buttons
 
 #include "zoxel_engine.c"
 #include "zoxel/zoxel.c"

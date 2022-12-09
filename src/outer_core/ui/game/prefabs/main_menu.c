@@ -23,7 +23,11 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label,
     float2 position2D = initialize_ui_components(world, e, main_canvas, position, window_size, anchor, 0,
         ecs_get(world, main_canvas, PixelSize)->value);
     Children children = { };
-    initialize_memory_component_non_pointer(children, ecs_entity_t, 4);
+    int children_count = 4;
+    #ifdef disable_main_menu_buttons
+    children_count = 1;
+    #endif
+    initialize_memory_component_non_pointer(children, ecs_entity_t, children_count);
     children.value[0] = spawn_header(world, e, 
         (int2) { 0, - font_size / 2 - header_margins / 2 },
         (int2) { window_size.x, font_size + header_margins},
@@ -31,6 +35,7 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label,
         header_label, font_size, header_margins, 1,
         position2D, window_size,
         is_close_button);
+    #ifndef disable_main_menu_buttons
     children.value[1] = spawn_button(world, e,
         (int2) { 0, font_size * 2 },
         (int2) { font_size * 6, font_size },
@@ -51,6 +56,7 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label,
         "Exit", font_size, 1,
         position2D, window_size);
     zoxel_add_tag(world, children.value[3], ExitGameButton);
+    #endif
     ecs_set(world, e, Children, { children.length, children.value });
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns

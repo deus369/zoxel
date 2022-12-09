@@ -51,7 +51,7 @@ sleep 1
 # finally push the git change
 git push -u origin master
 echo Finished Git Push
-sleep 10
+sleep 6
 
 # filesUpdated2=$(git diff --name-only)
 # if [ -z "$filesUpdated2" ]; then

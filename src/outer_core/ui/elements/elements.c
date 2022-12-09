@@ -43,7 +43,8 @@ void ElementsImport(ecs_world_t *world)
     // systems
     zoxel_system(world, ButtonClickSoundSystem, EcsPostUpdate, [none] Button, [in] ClickableState);
     zoxel_system(world, WindowCloseSystem, EcsOnValidate, [none] CloseButton, [in] ClickableState);
-    zoxel_system(world, HeaderDragSystem, EcsPostUpdate, [none] Header, [in] DragableState, [in] DraggingDelta);
+    zoxel_system(world, HeaderDragSystem, EcsPostUpdate, [none] Header, [in] DragableState,
+        [in] DraggingDelta, [in] ParentLink);
     // prefabs
     spawn_prefab_label(world);
     spawn_prefab_button(world);
