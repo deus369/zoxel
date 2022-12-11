@@ -1,5 +1,6 @@
-// Camera2D prefab
+//! prefab for creating windows (in os)
 ecs_entity_t app_prefab;
+ecs_entity_t main_app;
 
 ecs_entity_t spawn_app_prefab(ecs_world_t *world)
 {
@@ -16,8 +17,6 @@ ecs_entity_t spawn_app_prefab(ecs_world_t *world)
     #endif
     return e;
 }
-
-ecs_entity_t main_app;
 
 ecs_entity_t spawn_app(ecs_world_t *world, SDL_Window* window, SDL_GLContext* context)
 {

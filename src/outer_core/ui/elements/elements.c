@@ -42,8 +42,8 @@ void ElementsImport(ecs_world_t *world)
     ECS_TAG_DEFINE(world, ExitGameButton);
     // systems
     zoxel_system(world, ButtonClickSoundSystem, EcsPostUpdate, [none] Button, [in] ClickableState);
-    zoxel_system(world, WindowCloseSystem, EcsOnValidate, [none] CloseButton, [in] ClickableState);
-    zoxel_system(world, HeaderDragSystem, EcsPostUpdate, [none] Header, [in] DragableState,
+    zoxel_system(world, WindowCloseSystem, EcsPostUpdate, [none] CloseButton, [in] ClickableState);
+    zoxel_system(world, HeaderDragSystem, EcsPostLoad, [none] Header, [in] DragableState,
         [in] DraggingDelta, [in] ParentLink);
     // prefabs
     spawn_prefab_label(world);

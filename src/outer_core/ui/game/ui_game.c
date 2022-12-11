@@ -30,16 +30,17 @@ void UIGameImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, FPSDisplayTicker);
     // systems
     // fps display has to be single thread for now - zoxel_system
-    ECS_SYSTEM_DEFINE(world, FpsDisplaySystem, EcsOnUpdate, [out] FPSDisplayTicker, [out] ZextDirty, [out] ZextData);
+    zoxel_system_main_thread(world, FpsDisplaySystem, EcsOnUpdate,
+        [out] FPSDisplayTicker, [out] ZextDirty, [out] ZextData);
     zoxel_button_system(PlayGameButtonSystem, elements.PlayGameButton)
     zoxel_button_system(ExitGameButtonSystem, elements.ExitGameButton)
+    // prefabs
+    spawn_prefab_main_menu(world);
+    spawn_prefab_fps_display(world);
+}
     // zoxel_system(world, ExitGameButtonSystem, EcsOnValidate, [none] elements.ExitGameButton, [in] ClickableState);
 
     // ECS_COMPONENT_DEFINE(world, PixelPosition);
     // Systems
     // zoxel_system(world, ElementRaycastSystem, EcsOnUpdate, [none] ElementRaycaster);
-    // prefabs
-    spawn_prefab_main_menu(world);
-    spawn_prefab_fps_display(world);
-}
 #endif

@@ -14,6 +14,11 @@ I need robust testing for modules and systems
 - [ ] Display database as a graph
 - [ ] Run on raspberry pi daily
 
+`Testing`
+- [ ] Automated testing, run on server?
+    - run tests weekly on pi
+    - display output onto a ui somewhere
+
 -----
 
 - [ ] Look into Github actions for testing

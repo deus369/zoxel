@@ -63,7 +63,7 @@ void generate_font_texture(Texture* texture, const TextureSize *textureSize, con
         pointB.x = (int) ((pointB.x / 255.0f) * textureSize->value.x);
         pointB.y = (int) ((pointB.y / 255.0f) * textureSize->value.y);
         int distance = int2_distance(pointA, pointB);
-        float2 direction = float2_normalize(float2_sub(get_float2_from_int2(pointB), get_float2_from_int2(pointA)));
+        float2 direction = float2_normalize(float2_sub(float2_from_int2(pointB), float2_from_int2(pointA)));
         #ifdef debug_font_texture
         printf("    - %ix%i > %ix%i\n", pointA.x, pointA.y, pointB.x, pointB.y);
         printf("    - distance %i direction %fx%f\n", distance, direction.x, direction.y);

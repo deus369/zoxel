@@ -35,7 +35,7 @@ void InputsImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, Mouse);
     ECS_COMPONENT_DEFINE(world, Touchscreen);
     zoxel_system(world, MouseRaycasterSystem, EcsOnUpdate, [in] Mouse, [out] Raycaster);
-    zoxel_system(world, DraggerEndSystem, EcsOnUpdate, [out] DragableState, [out] DraggerLink, [out] DraggingDelta);
+    zoxel_system(world, DraggerEndSystem, EcsOnLoad, [out] DragableState, [out] DraggerLink, [out] DraggingDelta);
     spawn_prefab_mouse(world);
 }
 #endif

@@ -81,18 +81,16 @@ float2 get_ui_real_position2D(ecs_world_t *world, ecs_entity_t e, ecs_entity_t p
     return position2D;
 }
 
-float2 get_ui_real_position2D_canvas(int2 local_pixel_position, float2 anchor, int2 canvas_size)
+float2 get_ui_real_position2D_canvas(int2 local_pixel_position, float2 anchor, float2 canvas_size_f, float aspect_ratio)
 {
-    float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
-    float aspectRatio = canvasSizef.x / canvasSizef.y;
     return (float2) { 
-            ((local_pixel_position.x  / canvasSizef.x) - 0.5f + anchor.x) * aspectRatio,
-            ((local_pixel_position.y  / canvasSizef.y) - 0.5f + anchor.y) };
+            ((local_pixel_position.x  / canvas_size_f.x) - 0.5f + anchor.x) * aspect_ratio,
+            ((local_pixel_position.y  / canvas_size_f.y) - 0.5f + anchor.y) };
 }
 
 float2 get_ui_real_position2D_parent(int2 local_pixel_position, float2 anchor,
     float2 parent_position2D, int2 parent_pixel_size,
-    int2 canvas_size, float2 canvas_size_f, float aspect_ratio)
+    float2 canvas_size_f, float aspect_ratio)
 {
     float2 position2D = parent_position2D;
     position2D = float2_add(position2D, (float2) {
@@ -104,6 +102,9 @@ float2 get_ui_real_position2D_parent(int2 local_pixel_position, float2 anchor,
     position2D = float2_add(position2D, (float2) {
         - (parent_pixel_ratio.x / 2.0f) + parent_pixel_ratio.x * anchor.x,
         - (parent_pixel_ratio.y / 2.0f) + parent_pixel_ratio.y * anchor.y });
+    #ifdef debug_ui_positioning
+    zoxel_log_arg("-> (parent) Position2D : %fx%f\n", position2D.x, position2D.y);
+    #endif
     return position2D;
 }
 
@@ -150,34 +151,9 @@ float2 initialize_ui_components(ecs_world_t *world, ecs_entity_t e, ecs_entity_t
     return position2D;
 }
 
-float2 get_ui_real_position2D_2(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent,
-    int2 local_pixel_position, float2 anchor,
-    float2 parent_position2D, int2 parent_pixel_size,
-    int2 canvas_size)
-{
-    // const PixelSize *canvasSize = ecs_get(world, main_canvas, PixelSize);
-    float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
-    float aspectRatio = canvasSizef.x / canvasSizef.y;
-    float2 position2D;
-    position2D = parent_position2D;
-    position2D = float2_add(position2D, (float2) {
-        (local_pixel_position.x  / canvasSizef.x) * aspectRatio,
-        (local_pixel_position.y  / canvasSizef.y)});
-    float2 parent_pixel_ratio = (float2) {
-        parent_pixel_size.x / canvasSizef.y,
-        parent_pixel_size.y / canvasSizef.y };
-    position2D = float2_add(position2D, (float2) {
-        - (parent_pixel_ratio.x / 2.0f) + parent_pixel_ratio.x * anchor.x,
-        - (parent_pixel_ratio.y / 2.0f) + parent_pixel_ratio.y * anchor.y });
-    #ifdef debug_ui_positioning
-    zoxel_log_arg("-> (parent) Position2D : %fx%f\n", position2D.x, position2D.y);
-    #endif
-    return position2D;
-}
-
 float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent,
     int2 local_pixel_position, int2 pixel_size, float2 anchor, unsigned char layer,
-    float2 parent_position2D, int2 parent_pixel_size, int2 canvas_size)
+    float2 parent_position, int2 parent_pixel_size, int2 canvas_size)
 {
     if (parent == main_canvas)
     {
@@ -192,15 +168,23 @@ float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity
     ecs_set(world, e, ParentLink, { parent });
     ecs_set(world, e, ElementLayer, { layer });
     // set scale
-    // const PixelSize *canvasSize = ecs_get(world, main_canvas, PixelSize);
-    float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
-    float aspectRatio = canvasSizef.x / canvasSizef.y;
-    float2 position2D = get_ui_real_position2D_2(world, e, parent, local_pixel_position, anchor,
-        parent_position2D, parent_pixel_size, canvas_size);
+    float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
+    float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
+    float2 position2D = get_ui_real_position2D_parent(
+        local_pixel_position, anchor,
+        parent_position, parent_pixel_size,
+        canvas_size_f, aspect_ratio);
+    /*if ((long int) e == 1957)
+    {
+        printf("Initially:\n");
+        printf("Position became: [%fx%f]\n", position2D.x, position2D.y);
+        printf("    parent_position [%fx%f]\n", parent_position.x, parent_position.y);
+        printf("    parent_pixel_size [%ix%i]\n", parent_pixel_size.x, parent_pixel_size.y);
+    }*/
     ecs_set(world, e, Position2D, { position2D });
     int2 global_pixel_position = (int2) {
-        ceil((position2D.x / aspectRatio + 0.5f) * canvasSizef.x),
-        ((position2D.y + 0.5f) * canvasSizef.y) };
+        ceil((position2D.x / aspect_ratio + 0.5f) * canvas_size_f.x),
+        ((position2D.y + 0.5f) * canvas_size_f.y) };
     ecs_set(world, e, CanvasPixelPosition, { global_pixel_position });
     return position2D;
 }

@@ -5,6 +5,7 @@
 void ElementRaycastSystem(ecs_iter_t *it)
 {
     // printf("~uis_it~ [%i]\n", it->count);
+    ecs_world_t *world = it->world;
     const Raycaster *raycasters = ecs_field(it, Raycaster, 1);
     RaycasterTarget *raycasterTargets = ecs_field(it, RaycasterTarget, 2);
     for (int i = 0; i < it->count; i++)
@@ -15,7 +16,7 @@ void ElementRaycastSystem(ecs_iter_t *it)
         ecs_entity_t ui_selected = 0;
         SelectableState *ui_selected_selectableState = NULL;
         const int2 position = raycaster->value;
-        ecs_iter_t uis_it = ecs_query_iter(it->world, it->ctx);
+        ecs_iter_t uis_it = ecs_query_iter(world, it->ctx);
         while(ecs_query_next(&uis_it))
         {
             // printf("    - uis_it.count [%i] - (%i)\n", i, uis_it.count);
@@ -66,7 +67,10 @@ void ElementRaycastSystem(ecs_iter_t *it)
             //! Deselect last ui.
             if (raycasterTarget->value != 0 && ecs_is_alive(world, raycasterTarget->value))
             {
-                ecs_set(it->world, raycasterTarget->value, SelectableState, { 0 });
+                // ecs_set(it->world, raycasterTarget->value, SelectableState, { 0 });
+                SelectableState *selectableState = ecs_get_mut(world, raycasterTarget->value, SelectableState);
+                selectableState->value = 0;
+                ecs_modified(world, raycasterTarget->value, SelectableState);
             }
             raycasterTarget->value = ui_selected;
             if (ui_layer != -1)

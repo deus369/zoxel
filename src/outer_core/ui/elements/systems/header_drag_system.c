@@ -4,14 +4,14 @@ void drag_ui(ecs_world_t *world, ecs_entity_t e, int2 drag_value)
     {
         return;
     }
-    int2 pixel_position = ecs_get(world, e, PixelPosition)->value;
+    /*int2 pixel_position = ecs_get(world, e, PixelPosition)->value;
     pixel_position.x += drag_value.x;
     pixel_position.y += drag_value.y;
-    ecs_set(world, e, PixelPosition, { pixel_position });
-    /*PixelPosition *pixel_position = ecs_get_mut(world, e, PixelPosition);
+    ecs_set(world, e, PixelPosition, { pixel_position });*/
+    PixelPosition *pixel_position = ecs_get_mut(world, e, PixelPosition);
     pixel_position->value.x += drag_value.x;
     pixel_position->value.y += drag_value.y;
-    ecs_modified(world, e, PixelPosition);*/
+    ecs_modified(world, e, PixelPosition);
     #ifdef debug_element_position_change_query
         printf("Dragging window [%lu]\n", (long int) e);
     #endif

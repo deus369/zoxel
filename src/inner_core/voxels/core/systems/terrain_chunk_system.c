@@ -1,27 +1,46 @@
-const unsigned char terrain_min_height = 32;
-const float terrain_noise = 32.0f;
-const float terrain_frequency = 0.006f;
+const unsigned char terrain_min_height = 16;
+const float terrain_amplifier = 32.0f;
+const float terrain_frequency = 0.009f; // 0.006f;
+
+int3 voxel_chunk_position(int3 chunk_position, int3 chunk_size)
+{
+    int3 voxel_position = int3_multiply_int3(chunk_position, chunk_size);
+    if (voxel_position.x < 0)
+    {
+        voxel_position.x += 1;
+    }
+    if (voxel_position.y < 0)
+    {
+        voxel_position.y += 1;
+    }
+    if (voxel_position.z < 0)
+    {
+        voxel_position.z += 1;
+    }
+    return voxel_position;
+}
+
+int3 voxel_chunk_position_xz(int3 chunk_position, int3 chunk_size)
+{
+    int3 voxel_position = int3_multiply_int3(chunk_position, chunk_size);
+    if (voxel_position.x < 0)
+    {
+        voxel_position.x += 1;
+    }
+    if (voxel_position.z < 0)
+    {
+        voxel_position.z += 1;
+    }
+    return voxel_position;
+}
+
 
 //! Our function that creates a chunk.
 void GenerateChunkTerrain(Chunk* chunk, const int3 chunkSize, const int3 chunkPosition)
 {
-    // const int2 valueRange = { 0, 2 };   // < max
-     // (chunkSize->value.y / 4) + rand() % ((int) (chunkSize->value.y * (3.0f / 4.0f)));
     int3 local_position;
     int3 global_position;
-    int3 chunk_position_offset = int3_multiply_int3(chunkPosition, chunkSize);
-    if (chunk_position_offset.x < 0)
-    {
-        chunk_position_offset.x += 1;
-    }
-    if (chunk_position_offset.z < 0)
-    {
-        chunk_position_offset.z += 1;
-    }
-    //printf("chunkPosition: [%ix%ix%i]\n", chunkPosition.x, chunkPosition.y, chunkPosition.z);
-    //printf("chunk_position_offset: [%ix%ix%i]\n",
-    //    chunk_position_offset.x, chunk_position_offset.y, chunk_position_offset.z);
-    // precount our face data for initialization
+    int3 chunk_position_offset = voxel_chunk_position_xz(chunkPosition, chunkSize);
     for (local_position.x = 0; local_position.x < chunkSize.x; local_position.x++)
     {
         for (local_position.z = 0; local_position.z < chunkSize.z; local_position.z++)
@@ -30,13 +49,15 @@ void GenerateChunkTerrain(Chunk* chunk, const int3 chunkSize, const int3 chunkPo
             global_position = int3_add(local_position, chunk_position_offset);
             // printf("global_position [%ix%ix%i]\n", global_position.x, global_position.y, global_position.z);
             // printf("global_position: [%fx%fx%f]\n", global_position.x, global_position.y, global_position.z);
+            float2 noise_point = float2_from_int2((int2) { global_position.x, global_position.z });
             int terrain_height2 = terrain_min_height +
-                int_floor(terrain_noise * simplex_fun_2D(float3_from_int3(global_position), terrain_frequency));
+                int_floor(terrain_amplifier * simplex_fun_2D(noise_point, terrain_frequency));
+                // int_floor(terrain_amplifier * generate_noise_2D(noise_point, terrain_frequency));
             if (terrain_height2 < terrain_min_height)
             {
                 terrain_height2 = terrain_min_height;
             }
-            // unsigned char terrain_height2 = terrain_height + rand() % terrain_noise;
+            // unsigned char terrain_height2 = terrain_height + rand() % terrain_height_amplifier;
             for (local_position.y = 0; local_position.y < chunkSize.y; local_position.y++)
             {
                 int array_index = int3_array_index(local_position, chunkSize);
@@ -94,3 +115,20 @@ void TerrainChunkSystem(ecs_iter_t *it)
     }
 }
 ECS_SYSTEM_DECLARE(TerrainChunkSystem);
+
+
+    // const int2 valueRange = { 0, 2 };   // < max
+    // (chunkSize->value.y / 4) + rand() % ((int) (chunkSize->value.y * (3.0f / 4.0f)));
+    /*int3 chunk_position_offset = int3_multiply_int3(chunkPosition, chunkSize);
+    if (chunk_position_offset.x < 0)
+    {
+        chunk_position_offset.x += 1;
+    }
+    if (chunk_position_offset.z < 0)
+    {
+        chunk_position_offset.z += 1;
+    }*/
+    //printf("chunkPosition: [%ix%ix%i]\n", chunkPosition.x, chunkPosition.y, chunkPosition.z);
+    //printf("chunk_position_offset: [%ix%ix%i]\n",
+    //    chunk_position_offset.x, chunk_position_offset.y, chunk_position_offset.z);
+    // precount our face data for initialization

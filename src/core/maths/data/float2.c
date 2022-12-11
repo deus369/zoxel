@@ -19,7 +19,7 @@ float2 float2_divide(float2 input, float div) // by-value param invokes class co
     return input;
 }
 
-float2 get_float2_from_int2(int2 input)
+float2 float2_from_int2(int2 input)
 {
     return (float2) { (float) input.x, (float) input.y };
 }

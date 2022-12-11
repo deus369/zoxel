@@ -24,9 +24,12 @@
 // util
 #include "util/math.c"
 #include "util/integer_util.c"
+#include "util/noise.c"
+#include "util/noise_2.c"
 
 void MathsImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Maths);
+    set_noise_seed(12666);
 }
 #endif

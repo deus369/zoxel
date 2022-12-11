@@ -6,7 +6,8 @@ ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, int2 position
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, header_prefab);
     set_unique_entity_name(world, e, "header");
-    float2 position2D = initialize_ui_components_2(world, e, parent, position, size, anchor, layer,
+    float2 position2D = initialize_ui_components_2(world, e, parent,
+        position, size, anchor, layer,
         parent_position2D, parent_pixel_size,
         ecs_get(world, main_canvas, PixelSize)->value);
     int children_length = 1;
@@ -37,6 +38,9 @@ ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, int2 position
             "X", font_size, layer + 1,
             position2D, size);
         zoxel_add_tag(world, children.value[1], CloseButton);
+        /*printf("--- Spawned close button [%lu] ---\n", (long int) children.value[1]);
+        printf("--- Spawned header [%lu] ---\n", (long int) e);
+        printf("    size [%ix%i]\n", size.x, size.y);*/
     }
     ecs_set(world, e, Children, { children.length, children.value });
     ecs_defer_end(world);

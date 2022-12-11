@@ -1,4 +1,4 @@
-const double movement_multiplier = 0.006 * 100;
+const double movement_multiplier = 0.018 * 100;
 
 //! Called in ecs updates
 void FreeCameraMoveSystem(ecs_iter_t *it)
@@ -46,6 +46,12 @@ void FreeCameraMoveSystem(ecs_iter_t *it)
         {
             // printf("Bob Accel %f x %f \n", movement.x, movement.y);
             movement = float3_multiply_float(movement, movement_power);
+            if (keyboard->left_shift.isPressed)
+            {
+                movement.x *= 4;
+                movement.y *= 4;
+                movement.z *= 4;
+            }
             for (int j = 0; j < cameras_it.count; j++)
             {
                 const FreeRoam *freeRoam = &freeRoams[j];

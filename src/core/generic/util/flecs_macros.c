@@ -161,26 +161,6 @@ ecs_entity_t ecs_id(id) = 0;\
 //! Adds a simple tag to an entity.
 #define zoxel_add_tag(world, entity, T)\
     ecs_add_id(world, entity, ecs_id(T))
-    
-#define zoxel_reset_system(system_name, component_name)\
-void system_name(ecs_iter_t *it)\
-{\
-    if (!ecs_query_changed(NULL, it))\
-    {\
-        return;\
-    }\
-    ecs_query_skip(it);\
-    component_name *components = ecs_field(it, component_name, 1);\
-    for (int i = 0; i < it->count; i++)\
-    {\
-        component_name *component = &components[i];\
-        if (component->value == 1)\
-        {\
-            component->value = 0;\
-        }\
-    }\
-}\
-ECS_SYSTEM_DECLARE(system_name);
 // printf("Component has reset [%lu].\n", (long int) it->entities[i]);
  
 /**
@@ -195,11 +175,16 @@ Chose one pipeline tag for each type of system.
     EcsOnStore
 */
 
+// the idea is to move the element before the ui is raycasted
+// mouse exact - outside loop before it
+// mouse drag - DraggerEndSystem - EcsOnLoad
+// HeaderDragSystem - EcsPostLoad
+// position ui children - ElementPositionSystem - EcsPreUpdate
+// raycast new positioned ones - ElementRaycastSystem - EcsOnUpdate
+// respond to raycasting ui - EcsOnValidate
+// respond to click events - WindowCloseSystem - EcsPostUpdate
+
 //! Used to respond to first level events.
 #define zoxel_event_respond_system_main_thread(system_name, tag_name, event_component_name)\
 zoxel_system_main_thread(world, system_name, EcsPreStore, [out] tag_name, [in] event_component_name);
-
-//! Used at the end to reset systems.
-#define zoxel_reset_system_define(system_name, component_name)\
-zoxel_system_main_thread(world, system_name, EcsOnStore, [out] component_name);
 

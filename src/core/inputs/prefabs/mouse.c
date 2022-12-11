@@ -24,7 +24,7 @@ ecs_entity_t spawn_mouse(ecs_world_t *world)
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, mouse_prefab);
     set_unique_entity_name(world, e, "mouse");
     // printf("- mouse spawned [%lu]\n", (long int) e);
-    mouse_entity = e;
     ecs_defer_end(world);
+    mouse_entity = e;
     return e;
 }

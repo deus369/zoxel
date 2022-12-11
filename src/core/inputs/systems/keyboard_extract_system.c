@@ -1,16 +1,15 @@
 //! Grabs keyboard data from SDL.
 
 ecs_entity_t keyboardEntity;
-// bool wasPressedThisFrame = false;
 
-void spawn_keyboard(ecs_world_t *world)
+ecs_entity_t spawn_keyboard(ecs_world_t *world)
 {
     ecs_entity_t e = ecs_new_entity(world, "keyboard");
     // ecs_add(world, keyboardEntity, Keyboard);
     ecs_set(world, e, Keyboard, { });
     // printf("Spawned Keyboard [%lu]\n", (long unsigned int) keyboardEntity);
-    // return keyboardEntity;
     keyboardEntity = e;
+    return e;
 }
 
 void set_key(PhysicalButton *key, int eventType)
@@ -69,6 +68,8 @@ void extract_keyboard(ecs_world_t *world, SDL_Event event)
             key_case(SDLK_RETURN, &keyboard->enter)
             key_case(SDLK_LALT, &keyboard->left_alt)
             key_case(SDLK_RALT, &keyboard->right_alt)
+            key_case(SDLK_LSHIFT, &keyboard->left_shift)
+            key_case(SDLK_RSHIFT, &keyboard->right_shift)
             key_case(SDLK_DOWN, &keyboard->down)
             key_case(SDLK_UP, &keyboard->up)
             key_case(SDLK_LEFT, &keyboard->left)

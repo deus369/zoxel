@@ -1,7 +1,7 @@
 #ifndef zoxel_voxels_core
 #define zoxel_voxels_core
 
-const int terrain_rows = 6;
+const int terrain_rows = 12;
 const double noiseChunkAnimateSpeed = 0.5; // 1 / 8.0;
 const float overall_voxel_scale = 2.0f;
 const int chunk_length = 16;
@@ -33,7 +33,6 @@ zoxel_state_component(ChunkDirty);
 // util
 #include "util/voxel_mesh_util.c"
 #include "util/chunk.c"
-#include "util/noise.c"
 #include "util/chunk_build_util.c"
 // prefabs
 #include "prefabs/chunk.c"

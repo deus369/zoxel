@@ -335,10 +335,12 @@ void update_sdl(ecs_world_t *world)
     {
         input_extract_from_sdl(world, event);
         int eventType = event.type;
+        // handles application close button
         if (eventType == SDL_QUIT)
         {
             quit();
         }
+        // redo this
         else if (eventType == SDL_KEYUP)
         {
             SDL_Keycode key = event.key.keysym.sym;

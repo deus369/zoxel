@@ -65,7 +65,7 @@ void TextsImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, ZextDirty);
     ECS_COMPONENT_DEFINE(world, AnimateZext);
     ECS_SYSTEM_DEFINE(world, AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData);
-    // define_texture_generation_system(FontTexture, FontTextureSystem);
+    // zoxel_texture_generation_system(FontTexture, FontTextureSystem);
     zoxel_filter(zextDirtyQuery, world, [none] Zext, [in] ZextDirty);
     zoxel_system_ctx_single_thread(world, ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery,
         [none] Zext, [out] ZextDirty, [in] ZextData, [in] ZextSize, [in] ElementLayer,

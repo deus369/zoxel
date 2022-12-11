@@ -24,6 +24,8 @@ void reset_keyboard(ecs_world_t *world, ecs_entity_t keyboard_entity)
     reset_key(&keyboard->enter);
     reset_key(&keyboard->left_alt);
     reset_key(&keyboard->right_alt);
+    reset_key(&keyboard->left_shift);
+    reset_key(&keyboard->right_shift);
     reset_key(&keyboard->a);
     reset_key(&keyboard->b);
     reset_key(&keyboard->c);
