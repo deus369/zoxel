@@ -1,18 +1,20 @@
 # Zoxel
 
-Play Latest [[Here](https://deus369.github.io/zoxel/web/)]
+> Play Latest [[Here](https://deus369.github.io/zoxel/web/)]
+
+> See my latest devlog! [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
 
 ## What is Zoxel?
 
-- An Open Source & Cross-platform Voxel RPG
-
-- Has performance on mushrooms thanks to data orientated design
+- A First Person Voxel RPG
 
 - Inspired by Minecraft, Warcraft and LitRPGs/Tabletops
 
-- Has a huge [[Roadmap](documents/todos/todo-main.md)] for the future
+- Open Source (GPL) & Cross-platform (Linux, Windows*, Android, Web, IOS*)
 
-> See my latest devlog! [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
+- Great performance due to data orientated design
+
+- Future Forward [[Roadmap](documents/todos/todo-main.md)]
 
 ## Origin Story
 
@@ -20,7 +22,7 @@ Zoxel has been in development a long time. For over a decade, I first made it in
 
 I have remade it over many different engines, unreal, unity, unity ecs.
 
-The latest iteration was made from 2017 where I added Unitys ECS.
+The last iteration was made 2017-2022 where I added Unitys ECS.
 
 It is time for it to set sail again to a custom game engine, back to my origins!
 
@@ -32,13 +34,13 @@ So far 12,031 lines have been written, with a great deal of macros to decrease t
 
 ## Screenshots
 
-New Zoxel (C, FLECS, SDL)
+Zoxel (C, FLECS, SDL)
 
-![Le New Zoxel](/documents/screenshots/screen-2022-11-25-18-41-36.jpg?raw=false "Le New Zoxel")
+![Zoxel](/documents/screenshots/screenshot-67e5703e.jpg?raw=false "Zoxel")
 
-Old Zoxel (Unity Engine ECS)
+Old Zoxel (C#, Unity ECS)
 
-![Le Old Zoxel](/documents/screenshots/KEyHna.png?raw=false "Le Old Zoxel")
+![Unity Zoxel](/documents/screenshots/KEyHna.png?raw=false "Old Zoxel")
 
 ## Links
 
