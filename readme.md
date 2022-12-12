@@ -2,7 +2,9 @@
 
 > Play Latest [[Here](https://deus369.github.io/zoxel/web/)]
 
-> See my latest devlog! [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
+> See My Devlog! [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
+
+> My Current Tasks [[Tasks](documents/todos/todo-main.md)]
 
 ## What is Zoxel?
 
@@ -14,7 +16,7 @@
 
 - Great performance due to data orientated design
 
-- Future Forward [[Roadmap](documents/todos/todo-main.md)]
+- Future Forward [[Roadmap](documents/roadmap.md)]
 
 ## Origin Story
 
