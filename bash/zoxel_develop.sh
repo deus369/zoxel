@@ -32,7 +32,3 @@ while [ $running ]; do
 		make run-dev
 	fi
 done
-
-	# elif [ $command = $run_command ]; then
-	# else
-	#	echo "Incorrect command given."

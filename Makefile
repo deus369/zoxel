@@ -63,6 +63,10 @@ MAKE_RELEASE = $(CC) $(CFLAGS) $(CFLAGS_RELEASE) -o $(TARGET) $(OBJS) $(LDLIBS)
 MAKE_DEV = $(CC) $(CFLAGS) $(CFLAGS_DEBUG) -o $(TARGET_DEV) $(OBJS) $(LDLIBS)
 MAKE_WEB_RELEASE = $(CC_WEB) $(CFLAGS) $(CFLAGS_WEB) -o $(TARGET_WEB) $(OBJS) $(LDLIBS_WEB)
 
+# release
+$(TARGET): $(SRCS) ## builds zoxel
+	$(MAKE_RELEASE)
+
 # builds for all platforms - this rebuilds everytime tho
 all: $(SRCS)
 	@echo "Begin Making All"
@@ -73,10 +77,6 @@ all: $(SRCS)
 	@echo "Making Webasm Release Build [$(TARGET_WEB)]"
 	$(MAKE_WEB_RELEASE)
 	@echo "Finished Making All"
-
-# release
-$(TARGET): $(SRCS) ## builds zoxel
-	$(MAKE_RELEASE)
 
 # dev
 $(TARGET_DEV): $(SRCS) ## builds zoxel

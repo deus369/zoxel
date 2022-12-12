@@ -1,6 +1,6 @@
 # Zoxel El Libre
 
-~ Play Latest [[Web Build](https://deus369.github.io/zoxel/web/)] ~
+Play Latest [[Here](https://deus369.github.io/zoxel/web/)]
 
 ## What is Zoxel?
 
@@ -12,17 +12,15 @@
 
 - Has performance on mushrooms thanks to data orientated design
 
-- Under the GPL license! (I want any derivatives to stay open, to protect the end users and keep information free)
+- Under the GPL license: I want any derivatives to stay open, to protect the end users and keep information free.
 
-- Has a huge roadmap for the future [[Roadmap](documents/todos/todo-main.md)]
+- Has a huge roadmap for the future
+
+[[The Roadmap](documents/todos/todo-main.md)]
 
 ## How To Build
 
-> Download the code & use make commands to build it
-
-Build Zoxel! [[How To Build?](documents/howtos/howto-build.md)]
-
-See some statistics [[Code Counter](documents/CodeCounter/results.md)]
+Download the code & use make commands to build it [[How To Build Guide](documents/howtos/howto-build.md)]
 
 ### Dependencies
 
@@ -34,27 +32,29 @@ I am using these libraries due to their light weight and power -unlimited power-
 
 - [OpenGL](https://www.khronos.org/opengles/) OpenGL 3 ES
 
-I may switch to Glut in the future to reduce build size even more, instead of SDL. I may also try out Vulkan.
+### Future Libaries
 
-## Why The Change?
+I may switch to Glut in the future to reduce build size even more, instead of SDL.
+
+I may also try out Vulkan, for multi threading powers and performance.
+
+## Origin Story
 
 Zoxel has been in development a long time. For over a decade, I first made it in Java in 2009.
 
-I have remade it over many different engines, unreal, unity, unity ecs. The latest iteration was made from 2017 where I added Unitys ECS.
+I have remade it over many different engines, unreal, unity, unity ecs.
 
-It is time for it to set sail again to a custom one, using FLECS for performance!
+The latest iteration was made from 2017 where I added Unitys ECS.
 
-### ~ = ~ Setting Sail ~ = ~
+It is time for it to set sail again to a custom game engine, back to my origins!
 
-This was not an easy decision. Flecs has offered me a way out of the Unity IPO mess, and it offers greater levels of freedom over my development. There are 120k+ lines on the unity ecs codebase, so it will take some time for things to be ported. 11,093 lines have been written so far, with a great deal of macros to decrease line count.
+### Setting Sail
 
-Try @ itchio [[Le Olde Zoxel](https://deus0.itch.io/zoxel)]
+Flecs has offered me a way out of the Unity IPO mess and it offers greater levels of freedom over my development. There are 120k+ lines on the unity ecs codebase, so it will take some time for modules to be ported.
 
-Follow le progress [[Link Tree](https://linktr.ee/lorddeus)]
+### So Far
 
-### Mirrored
-
-Code is on [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.com/deus369/zoxel)].
+12,031 lines have been written so far, with a great deal of macros to decrease line count.
 
 ## Screenshots
 
@@ -65,3 +65,11 @@ New Zoxel (C, FLECS, SDL)
 Old Zoxel (Unity Engine ECS)
 
 ![Le Old Zoxel](/documents/screenshots/KEyHna.png?raw=false "Le Old Zoxel")
+
+## Links
+
+Try @ itchio [[Le Olde Zoxel](https://deus0.itch.io/zoxel)]
+
+Follow le progress [[Link Tree](https://linktr.ee/lorddeus)]
+
+Code is on [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.com/deus369/zoxel)]
