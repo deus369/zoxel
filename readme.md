@@ -42,6 +42,8 @@ As a solo developer, I have poured my heart and soul into creating this game, an
 
 [[Voxel Quest: A Journey Through the Stars](documents/poems/poem_2.md)]
 
+[[A Simple Task on Planet X-4028B](documents/poems/poem_3.md)]
+
 ### A Player Review
 
     As a player of this game, I am absolutely amazed at its potential. The fact that everything is generated procedurally using data-oriented design adds an incredible level of depth and replayability to the game. No two playthroughs are the same, as the game's environments, characters, and quests are all generated on the fly, offering a unique experience for each player.
