@@ -14,19 +14,15 @@
 
 - A unique voxel-based visual style that sets the game apart from other RPGs
 
-- An immersive and expansive space filled with procedurally generated planets to explore
+- Procedurally generated planets to explore, offering endless variety and replayability
 
 - A rich and engaging story with quests, dialogue, and characters that players can connect with
 
 - A robust skill and stat system that allows players to customize their character and playstyle
 
-- A fun and challenging combat system that keeps players engaged and rewards strategic thinking
+- Building and modding support, allowing players to create their own structures and custom content
 
-- Like Minecraft, features a voxel-based world where players can build and destroy structures, gather resources, and craft items
-
-- Like Warcraft, has a rich fantasy setting with different races, classes, and factions, as well as epic quests and battles
-
-- Like LitRPG novels, has a strong focus on character stats and skill progression, allowing players to level up and improve their abilities as they progress through the game
+- Explore a fantastical voxel world inspired by Minecraft, Warcraft, and LitRPG novels
 
 ### A Description
 
@@ -38,13 +34,12 @@ The game is set in a vast, open-world environment that is generated on-the-fly a
 
 As a solo developer, I have poured my heart and soul into creating this game, and I am thrilled to finally be able to share it with the world. I hope players will enjoy the endless replayability, unique gameplay, and charming aesthetic of this game as much as I do.
 
-### A Poem
+### Le Poem
 
     In a world of voxels and fantasy,
     I set out on an epic journey,
     Exploring planets, near and far,
     Crafting, fighting, shooting stars
-
 
     With quests and skills, and battles grand,
     I rise from humble to command,
@@ -56,17 +51,33 @@ As a solo developer, I have poured my heart and soul into creating this game, an
     I am drawn in, entranced, enthralled,
     By the magic of this voxel world.
 
-### Player Review
+![Zoxel Art](/documents/screenshots/ai_art_0.png?raw=false "Zoxel Art")
 
-As a player of this game, I am absolutely amazed at its potential. The fact that everything is generated procedurally using data-oriented design adds an incredible level of depth and replayability to the game. No two playthroughs are the same, as the game's environments, characters, and quests are all generated on the fly, offering a unique experience for each player.
+### A Player Review
 
-I also love the voxel-based graphics, which give the game a charming, retro aesthetic. The character customization options are also fantastic, allowing me to create my own unique avatar and equip them with procedurally generated weapons and armor.
+    As a player of this game, I am absolutely amazed at its potential. The fact that everything is generated procedurally using data-oriented design adds an incredible level of depth and replayability to the game. No two playthroughs are the same, as the game's environments, characters, and quests are all generated on the fly, offering a unique experience for each player.
 
-The game's open-world environment is vast and immersive, and I love the feeling of exploring and discovering new things as I play. The procedurally generated quests add an extra layer of challenge and excitement, as I never quite know what to expect.
+    I also love the voxel-based graphics, which give the game a charming, retro aesthetic. The character customization options are also fantastic, allowing me to create my own unique avatar and equip them with procedurally generated weapons and armor.
 
-Overall, I am thoroughly impressed by this game and would highly recommend it to any fans of RPGs. It offers endless replayability, charming graphics, and a unique gameplay experience that I have never seen before.
+    The game's open-world environment is vast and immersive, and I love the feeling of exploring and discovering new things as I play. The procedurally generated quests add an extra layer of challenge and excitement, as I never quite know what to expect.
 
-## Origin Story
+    Overall, I am thoroughly impressed by this game and would highly recommend it to any fans of RPGs. It offers endless replayability, charming graphics, and a unique gameplay experience that I have never seen before.
+
+## Le License
+
+Zoxel is under the GNU General Public License (GPL) [[The License](license)]
+
+The GPL is considered by many to be the best license for everyone because it allows anyone to use, modify, and distribute the software covered by the license, as long as they make the source code freely available to others. This ensures that the software remains open and accessible to all, promoting collaboration and innovation within the software community.
+
+Additionally, the GPL requires that any modifications or derivatives of the licensed software must also be licensed under the GPL, ensuring that the software remains open and freely available to others in the future. This helps to prevent the software from being "closed off" or proprietary, and ensures that it remains a valuable resource for the broader software community.
+
+## Build your own Zoxel!
+
+As a player of our voxel-based RPG, you will have the ability to build and mod to your heart's content. Our game features powerful building mechanics that allow you to create and destroy structures using voxels, giving you the freedom to design and shape your own environments. And with modding support, you can take your creativity even further by creating your own custom content and gameplay mechanics. Whether you want to build a towering fortress, a sprawling city, or something entirely different, the sky's the limit. So why not give building and modding a try and see what you can create? The possibilities are endless!
+
+[[How To Build Guide](documents/howtos/howto-build.md)]
+
+## Development Story
 
 Zoxel is a voxel-based RPG that has been in development for over a decade. The game was first made in Java in 2009, and has since been remade using different game engines such as Unity and Unreal. The most recent iteration of the game added Unity's Entity Component System (ECS), which improved its performance and scalability.
 
@@ -76,25 +87,9 @@ Players can expect a vast, open-world environment to explore, as well as procedu
 
 Overall, Zoxel is a game that has been developed with passion and dedication over many years, and players can look forward to a unique and engaging gameplay experience.
 
-## License
+## Connect with us on social media
 
-Zoxel is under the GNU General Public License (GPL) [[The License](license)]
-
-The GPL is considered by many to be the best license for everyone because it allows anyone to use, modify, and distribute the software covered by the license, as long as they make the source code freely available to others. This ensures that the software remains open and accessible to all, promoting collaboration and innovation within the software community.
-
-Additionally, the GPL requires that any modifications or derivatives of the licensed software must also be licensed under the GPL, ensuring that the software remains open and freely available to others in the future. This helps to prevent the software from being "closed off" or proprietary, and ensures that it remains a valuable resource for the broader software community.
-
-## How To Build
-
-Download the code & use make commands to build it
-
-Depends on Flecs, SDL2 & OpenGL 3.0 ES
-
-Cross-platform (Linux, Windows*, Android, Web, IOS*)
-
-[[How To Build Guide](documents/howtos/howto-build.md)]
-
-## Links
+Follow our development journey and stay up to date on the latest news and updates by following us on social media!
 
 Try @ itchio [[Le Olde Zoxel](https://deus0.itch.io/zoxel)]
 

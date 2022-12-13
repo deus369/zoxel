@@ -7,6 +7,14 @@ How-To Building
 
 -----
 
+# Building
+
+    Download the code & use make commands to build it
+
+    Depends on Flecs, SDL2 & OpenGL 3.0 ES
+
+    Cross-platform (Linux, Windows*, Android, Web, IOS*)
+
 ## Dependencies
 
 I am using these libraries due to their light weight and power -unlimited power-
