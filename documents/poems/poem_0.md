@@ -15,7 +15,7 @@
     I am drawn in, entranced, enthralled,
     By the magic of this voxel world.
 
-![Zoxel Art](/documents/screenshots/ai_art_0.png?raw=false "Zoxel Art")
+![Zoxel Art](../art/ai_art_0.png?raw=false "Zoxel Art")
 
 -----
 
