@@ -13,8 +13,6 @@
     Where monsters prowl, and death is near
     And I must stay alert, to stay clear
 
-![Zoxel Art 2](../art/ai_art_2.png?raw=false "Zoxel Art 2")
-
     But even in the midst of fear
     I find a strange and eerie thrill
     As I explore the depths of Zoxel
@@ -24,6 +22,8 @@
     With its moving, shifting blocks
     It is I who brings it to life
     Through my choices, and my deeds, and my thoughts.
+
+![Zoxel Art 2](../art/ai_art_2.png?raw=false "Zoxel Art 2")
 
 -----
 
