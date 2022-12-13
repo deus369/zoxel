@@ -34,24 +34,11 @@ The game is set in a vast, open-world environment that is generated on-the-fly a
 
 As a solo developer, I have poured my heart and soul into creating this game, and I am thrilled to finally be able to share it with the world. I hope players will enjoy the endless replayability, unique gameplay, and charming aesthetic of this game as much as I do.
 
-### Le Poem
+### Some Poems
 
-    In a world of voxels and fantasy,
-    I set out on an epic journey,
-    Exploring planets, near and far,
-    Crafting, fighting, shooting stars
+[[The Joy of Zoxel](documents/poems/poem_0.md)]
 
-    With quests and skills, and battles grand,
-    I rise from humble to command,
-    Defending realms from evil's grasp,
-    And forging my own hero's path
-
-    In this game, the thrill never ends,
-    With endless worlds to comprehend,
-    I am drawn in, entranced, enthralled,
-    By the magic of this voxel world.
-
-![Zoxel Art](/documents/screenshots/ai_art_0.png?raw=false "Zoxel Art")
+[[The Darkness of Zoxel](documents/poems/poem_1.md)]
 
 ### A Player Review
 

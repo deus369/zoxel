@@ -1,4 +1,4 @@
-The Joy of Zoxel
+### The Joy of Zoxel
 
     In a world of voxels and fantasy,
     I set out on an epic journey,
@@ -14,3 +14,9 @@ The Joy of Zoxel
     With endless worlds to comprehend,
     I am drawn in, entranced, enthralled,
     By the magic of this voxel world.
+
+![Zoxel Art](/documents/screenshots/ai_art_0.png?raw=false "Zoxel Art")
+
+-----
+
+[Return to Main Menu](../../readme.md)
