@@ -67,6 +67,14 @@ MAKE_WEB_RELEASE = $(CC_WEB) $(CFLAGS) $(CFLAGS_WEB) -o $(TARGET_WEB) $(OBJS) $(
 $(TARGET): $(SRCS) ## builds zoxel
 	$(MAKE_RELEASE)
 
+# dev
+$(TARGET_DEV): $(SRCS) ## builds zoxel
+	$(MAKE_DEV)
+
+# web
+$(TARGET_WEB): $(SRCS) ## builds zoxel
+	$(MAKE_WEB_RELEASE)
+
 # builds for all platforms - this rebuilds everytime tho
 all: $(SRCS)
 	@echo "Begin Making All"
@@ -78,16 +86,9 @@ all: $(SRCS)
 	$(MAKE_WEB_RELEASE)
 	@echo "Finished Making All"
 
-# dev
-$(TARGET_DEV): $(SRCS) ## builds zoxel
-	$(MAKE_DEV)
-
-# web
-$(TARGET_WEB): $(SRCS) ## builds zoxel
-	$(MAKE_WEB_RELEASE)
-
 # Removes all build files
 clean:
+	@echo "Cleaning All Build Files"
 	$(RM) $(TARGET)
 	$(RM) $(TARGET_DEV)
 	$(RM) $(TARGET_WEB)

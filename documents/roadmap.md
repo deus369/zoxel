@@ -11,6 +11,11 @@
 `Apps`
 - [x] Spawn windows with opengl renderer
 
+`Input`
+- [ ] Support for multiple Keyboard/Mouse
+- [ ] Gamepad Support
+- [ ] Devices UI on main menu
+
 `Transforms`
 - [w] Hierarchys
 - [x] Transform2Ds
@@ -21,12 +26,19 @@
 
 `Audio`
 - [w] Core Audio
+- [ ] Generate Sound
+- [ ] Sound to SDL Sound
+- [ ] Play Generated Sounds
+- [ ] Generate Music
+- [ ] Volume options
 
 `UI`
 - [w] Core UI
+- [w] Generic Game UIs
+- [ ] 
 
 `Game`
-- [w] Generic Game UIs
+- [w] Generic save game flow
 
 `Voxels`
 - [ ] Voxel Terrain
@@ -47,3 +59,9 @@
         - [ ] Skeleton Generation
         - [ ] Skeleton rendering
         - [ ] Skeleton Weight Calculation
+
+`World Generation`
+- [ ] Seed based noise
+- [ ] Heightmap
+- [ ] Biomes
+- [ ] Caves

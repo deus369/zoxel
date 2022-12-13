@@ -7,6 +7,22 @@ How-To Building
 
 -----
 
+## Dependencies
+
+I am using these libraries due to their light weight and power -unlimited power-
+
+- [Flecs](https://github.com/SanderMertens/flecs) Fast and lightweight Entity Component System
+
+- [SDL2](https://www.libsdl.org/index.php) Simple DirectMedia Layer (zlib)
+
+- [OpenGL](https://www.khronos.org/opengles/) OpenGL 3 ES
+
+### Future Libaries
+
+I may switch to Glut in the future to reduce build size even more, instead of SDL.
+
+I may also try out Vulkan, for multi threading powers and performance.
+
 ## Building
 
 ### Download
