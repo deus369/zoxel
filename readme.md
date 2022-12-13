@@ -1,22 +1,32 @@
 # Zoxel
 
+> Experience the thrill of discovery and adventure in this groundbreaking, procedurally generated voxel RPG
+
 > Play Latest [[Here](https://deus369.github.io/zoxel/web/)]
 
-> See My Devlog! [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
+> Le Roadmap [[Roadmap](documents/roadmapmd)]
 
 > My Current Tasks [[Tasks](documents/todos/todo-main.md)]
 
+> See My Devlog! [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
+
 ## What is Zoxel?
 
-- A First Person Voxel RPG
+- A unique voxel-based visual style that sets the game apart from other RPGs
 
-- Inspired by Minecraft, Warcraft and LitRPGs/Tabletops
+- An immersive and expansive space filled with procedurally generated planets to explore
 
-- Open Source (GPL) & Cross-platform (Linux, Windows*, Android, Web, IOS*)
+- A rich and engaging story with quests, dialogue, and characters that players can connect with
 
-- Great performance due to data orientated design
+- A robust skill and stat system that allows players to customize their character and playstyle
 
-- An excellent roadmap [[Roadmap](documents/roadmap.md)]
+- A fun and challenging combat system that keeps players engaged and rewards strategic thinking
+
+- Like Minecraft, features a voxel-based world where players can build and destroy structures, gather resources, and craft items
+
+- Like Warcraft, has a rich fantasy setting with different races, classes, and factions, as well as epic quests and battles
+
+- Like LitRPG novels, has a strong focus on character stats and skill progression, allowing players to level up and improve their abilities as they progress through the game
 
 ### A Description
 
@@ -27,6 +37,23 @@ One of the key features of this game is its voxel-based graphics, which give it 
 The game is set in a vast, open-world environment that is generated on-the-fly as the player explores. The game's quests are also procedurally generated, offering a unique and challenging experience for each player.
 
 As a solo developer, I have poured my heart and soul into creating this game, and I am thrilled to finally be able to share it with the world. I hope players will enjoy the endless replayability, unique gameplay, and charming aesthetic of this game as much as I do.
+
+### A Poem
+
+In a world of voxels and fantasy
+I set out on an epic journey
+Exploring planets, near and far
+Crafting, fighting, shooting stars
+
+With quests and skills, and battles grand
+I rise from humble to command
+Defending realms from evil's grasp
+And forging my own hero's path
+
+In this game, the thrill never ends
+With endless worlds to comprehend
+I am drawn in, entranced, enthralled
+By the magic of this voxel world.
 
 ### Player Review
 
@@ -48,20 +75,6 @@ Players can expect a vast, open-world environment to explore, as well as procedu
 
 Overall, Zoxel is a game that has been developed with passion and dedication over many years, and players can look forward to a unique and engaging gameplay experience.
 
-    - 120k+ lines to port from unity ecs
-
-    - 12k lines so far in C
-
-## Screenshots
-
-Zoxel (C, FLECS, SDL)
-
-![Zoxel](/documents/screenshots/screenshot-67e5703e.jpg?raw=false "Zoxel")
-
-Old Zoxel (C#, Unity ECS)
-
-![Unity Zoxel](/documents/screenshots/KEyHna.png?raw=false "Old Zoxel")
-
 ## License
 
 Zoxel is under the GNU General Public License (GPL) [[The License](license)]
@@ -76,6 +89,8 @@ Download the code & use make commands to build it
 
 Depends on Flecs, SDL2 & OpenGL 3.0 ES
 
+Cross-platform (Linux, Windows*, Android, Web, IOS*)
+
 [[How To Build Guide](documents/howtos/howto-build.md)]
 
 ## Links
@@ -85,3 +100,13 @@ Try @ itchio [[Le Olde Zoxel](https://deus0.itch.io/zoxel)]
 Follow le progress [[Link Tree](https://linktr.ee/lorddeus)]
 
 Code is on [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.com/deus369/zoxel)]
+
+## Screenshots
+
+Zoxel (C, FLECS, SDL)
+
+![Zoxel](/documents/screenshots/screenshot-67e5703e.jpg?raw=false "Zoxel")
+
+Old Zoxel (C#, Unity ECS)
+
+![Unity Zoxel](/documents/screenshots/KEyHna.png?raw=false "Old Zoxel")

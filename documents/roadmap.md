@@ -8,6 +8,10 @@
 
 > Still working on this!
 
+    - 120k+ lines to port from unity ecs
+
+    - 12k lines so far in C
+
 `Apps`
 - [x] Spawn windows with opengl renderer
 
