@@ -82,18 +82,22 @@ Overall, Zoxel is a game that has been developed with passion and dedication ove
 
 Follow our development journey and stay up to date on the latest news and updates by following us on social media!
 
-Try @ itchio [[Le Olde Zoxel](https://deus0.itch.io/zoxel)]
+[[Itch IO](https://deus0.itch.io/zoxel)]
 
-Follow le progress [[Link Tree](https://linktr.ee/lorddeus)]
+[[Masodon](https://mastodon.gamedev.place/@deus)]
 
-Code is on [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.com/deus369/zoxel)]
+[[Twitter](https://twitter.com/deusxyz)]
+
+[[Link Tree](https://linktr.ee/lorddeus)]
+
+Mirrors [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.com/deus369/zoxel)]
 
 ## Screenshots
 
-Zoxel (C, FLECS, SDL)
+Zoxel
 
 ![Zoxel](/documents/screenshots/screenshot-67e5703e.jpg?raw=false "Zoxel")
 
-Old Zoxel (C#, Unity ECS)
+Old Unity Zoxel
 
 ![Unity Zoxel](/documents/screenshots/KEyHna.png?raw=false "Old Zoxel")
