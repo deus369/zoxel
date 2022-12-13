@@ -1,14 +1,14 @@
 # Zoxel
 
-> Experience the thrill of discovery and adventure in this groundbreaking, procedurally generated voxel RPG
+Experience the thrill of discovery and adventure in this groundbreaking, procedurally generated voxel RPG
 
-> Play Latest [[Here](https://deus369.github.io/zoxel/web/)]
+> [[Play Latest](https://deus369.github.io/zoxel/web/)]
 
-> Le Roadmap [[Roadmap](documents/roadmapmd)]
+> [[Roadmap](documents/roadmap.md)]
 
-> My Current Tasks [[Tasks](documents/todos/todo-main.md)]
+> [[Tasks](documents/todos/todo-main.md)]
 
-> See My Devlog! [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
+> [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
 
 ## What is Zoxel?
 
@@ -23,8 +23,6 @@
 - Building and modding support, allowing players to create their own structures and custom content
 
 - Explore a fantastical voxel world inspired by Minecraft, Warcraft, and LitRPG novels
-
-### A Description
 
 As the developer of this game, I am incredibly proud of what I have created. This game is a voxel-based RPG that uses data-oriented design to procedurally generate everything, from the game's environments and characters to its quests and items. This means that no two playthroughs are the same, and players can experience a unique and unpredictable world each time they play.
 
@@ -54,6 +52,16 @@ As a solo developer, I have poured my heart and soul into creating this game, an
 
     Overall, I am thoroughly impressed by this game and would highly recommend it to any fans of RPGs. It offers endless replayability, charming graphics, and a unique gameplay experience that I have never seen before.
 
+## Development Story
+
+Zoxel is a voxel-based RPG that has been in development for over a decade. The game was first made in Java in 2009, and has since been remade using different game engines such as Unity and Unreal. The most recent iteration of the game added Unity's Entity Component System (ECS), which improved its performance and scalability.
+
+Now, the game is being remade again, this time using a custom game engine that the developer has written themselves. This will allow the game to be tailored to the developer's specific needs and requirements, resulting in a more unique and innovative gameplay experience for players.
+
+Players can expect a vast, open-world environment to explore, as well as procedurally generated quests and enemies. The game's charming voxel-based graphics and character customization options will also add to the experience.
+
+Overall, Zoxel is a game that has been developed with passion and dedication over many years, and players can look forward to a unique and engaging gameplay experience.
+
 ## Le License
 
 Zoxel is under the GNU General Public License (GPL) [[The License](license)]
@@ -68,23 +76,13 @@ As a player of our voxel-based RPG, you will have the ability to build and mod t
 
 [[How To Build Guide](documents/howtos/howto-build.md)]
 
-## Development Story
-
-Zoxel is a voxel-based RPG that has been in development for over a decade. The game was first made in Java in 2009, and has since been remade using different game engines such as Unity and Unreal. The most recent iteration of the game added Unity's Entity Component System (ECS), which improved its performance and scalability.
-
-Now, the game is being remade again, this time using a custom game engine that the developer has written themselves. This will allow the game to be tailored to the developer's specific needs and requirements, resulting in a more unique and innovative gameplay experience for players.
-
-Players can expect a vast, open-world environment to explore, as well as procedurally generated quests and enemies. The game's charming voxel-based graphics and character customization options will also add to the experience.
-
-Overall, Zoxel is a game that has been developed with passion and dedication over many years, and players can look forward to a unique and engaging gameplay experience.
-
 ## Connect with us on social media
 
 Follow our development journey and stay up to date on the latest news and updates by following us on social media!
 
 [[Itch IO](https://deus0.itch.io/zoxel)]
 
-[[Masodon](https://mastodon.gamedev.place/@deus)]
+[[Mastodon](https://mastodon.gamedev.place/@deus)]
 
 [[Twitter](https://twitter.com/deusxyz)]
 
