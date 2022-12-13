@@ -40,20 +40,21 @@ As a solo developer, I have poured my heart and soul into creating this game, an
 
 ### A Poem
 
-In a world of voxels and fantasy
-I set out on an epic journey
-Exploring planets, near and far
-Crafting, fighting, shooting stars
+    In a world of voxels and fantasy,
+    I set out on an epic journey,
+    Exploring planets, near and far,
+    Crafting, fighting, shooting stars
 
-With quests and skills, and battles grand
-I rise from humble to command
-Defending realms from evil's grasp
-And forging my own hero's path
 
-In this game, the thrill never ends
-With endless worlds to comprehend
-I am drawn in, entranced, enthralled
-By the magic of this voxel world.
+    With quests and skills, and battles grand,
+    I rise from humble to command,
+    Defending realms from evil's grasp,
+    And forging my own hero's path
+
+    In this game, the thrill never ends,
+    With endless worlds to comprehend,
+    I am drawn in, entranced, enthralled,
+    By the magic of this voxel world.
 
 ### Player Review
 
