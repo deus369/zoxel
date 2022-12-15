@@ -15,7 +15,11 @@
 bool load_audio()
 {
 	bool success = true;
-	if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+    const int sample_rate = 44100;
+    const int channels_count = 1;   // 2
+    // MIX_DEFAULT_FORMAT
+    // https://wiki.libsdl.org/SDL2/SDL_AudioFormat
+	if( Mix_OpenAudio( sample_rate, AUDIO_F32SYS, channels_count, 2048 ) < 0 )
 	{
 		zoxel_log_arg( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		success = false;

@@ -30,7 +30,7 @@
 
 `Audio`
 - [w] Core Audio
-- [ ] Generate Sound
+- [x] Generate Sound
 - [ ] Sound to SDL Sound
 - [ ] Play Generated Sounds
 - [ ] Generate Music
@@ -39,7 +39,7 @@
 `UI`
 - [w] Core UI
 - [w] Generic Game UIs
-- [ ] 
+- [ ] GridUIs
 
 `Game`
 - [w] Generic save game flow

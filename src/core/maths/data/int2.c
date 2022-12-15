@@ -67,22 +67,6 @@ int2 get_from_byte2(byte2 input)
     return (int2) { (int) input.x, (int) input.y };
 }
 
-int int_clamp(int input, int x, int y)
-{
-    if (input < x)
-    {
-        return x;
-    }
-    else if (input > y)
-    {
-        return y;
-    }
-    else
-    {
-        return input;
-    }
-}
-
 int2 int2_down(int2 input)
 {
     return (int2) { input.x, input.y - 1 };
@@ -107,4 +91,36 @@ bool int2_in_bounds(int2 input, int2 size)
 {
     return (input.x >= 0 && input.x < size.x
         && input.y >= 0 && input.y < size.y);
+}
+
+float float_clamp(float input, float x, float y)
+{
+    if (input < x)
+    {
+        return x;
+    }
+    else if (input > y)
+    {
+        return y;
+    }
+    else
+    {
+        return input;
+    }
+}
+
+int int_clamp(int input, int x, int y)
+{
+    if (input < x)
+    {
+        return x;
+    }
+    else if (input > y)
+    {
+        return y;
+    }
+    else
+    {
+        return input;
+    }
 }

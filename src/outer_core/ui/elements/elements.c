@@ -41,7 +41,7 @@ void ElementsImport(ecs_world_t *world)
     ECS_TAG_DEFINE(world, PlayGameButton);
     ECS_TAG_DEFINE(world, ExitGameButton);
     // systems
-    zoxel_system(world, ButtonClickSoundSystem, EcsPostUpdate, [none] Button, [in] ClickableState);
+    zoxel_system(world, ButtonClickSoundSystem, EcsOnUpdate, [none] Button, [in] ClickableState); // EcsPostUpdate
     zoxel_system(world, WindowCloseSystem, EcsPostUpdate, [none] CloseButton, [in] ClickableState);
     zoxel_system(world, HeaderDragSystem, EcsPostLoad, [none] Header, [in] DragableState,
         [in] DraggingDelta, [in] ParentLink);
