@@ -31,7 +31,7 @@ int initialize_shader_line2D()
 //! Render 3D entities.
 void Line2DRenderSystem(ecs_iter_t *it)
 {
-    glViewport(0, 0, 1920, 1080);
+    // glViewport(0, 0, 1920, 1080);
     glUseProgram(line2D_material);
     GLuint position_attribute = glGetAttribLocation(line2D_material, "position");
     glEnableVertexAttribArray(position_attribute);

@@ -52,12 +52,13 @@ void UpdateSoundSystem(ecs_iter_t *it)
         sdlSound->value->alen = soundData->length * 4;
         sdlSound->value->abuf = (Uint8*) malloc(soundData->length * 4 * sizeof(Uint8));
         memcpy(sdlSound->value->abuf, soundData->value, sdlSound->value->alen);
+        double decay_time = 6.0 + rand() % 6;
         for (int i = 0; i < soundData->length; i++)
         {
             float x_position = (float) i / (float) soundData->length;
             x_position *= 2.0f;
             x_position -= 1.0f;
-            spawn_line2D(world, (float2) { x_position, 0 }, (float2) { x_position, soundData->value[i] }, 0.5f, 15.0);
+            spawn_line2D(world, (float2) { x_position, 0 }, (float2) { x_position, soundData->value[i] }, 0.5f, decay_time);
         }
         // Mix_PlayChannel( -1, sdlSound->value, 0 );
     }

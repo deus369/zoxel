@@ -18,6 +18,7 @@ modulate_function(9, 0.5f, 0.25f);
 
 void GenerateSoundSystem(ecs_iter_t *it)
 {
+    const int sampleRate = 44100; // (float) soundData.sampleRate;
     const float sound_bounds = 1.0f;
     const GenerateSound *generateSounds = ecs_field(it, GenerateSound, 2);
     SoundData *soundDatas = ecs_field(it, SoundData, 3);
@@ -43,10 +44,10 @@ void GenerateSoundSystem(ecs_iter_t *it)
         double sound_time_length = soundLength->value; // soundData.sound_time_length;
         float frequency =  146.83f; // 440;    // random.NextFloat(generateSound.frequency.x, generateSound.frequency.y); // * sound_time_length;
         float noise = 0.1f + 0.1f * (rand() % 101) / 100.0f;     // random.NextFloat(generateSound.noise.x, generateSound.noise.y);
-        int sampleRate = 44100; // (float) soundData.sampleRate;
-        // var decay = generateSound.decay;
-        float attack = 0.002f; // generateSound.attack;
-        float volume = 1.0f; // sound.volume;
+        //float attack = 0.002f;
+        float attack = 0.02f;
+        float decay = 0.6f;
+        float volume = 0.8f; // sound.volume;
         unsigned char instrumentType = rand() % 3; // 2;
         int total_sound_samples = (int) ( sampleRate * sound_time_length );
         initialize_memory_component(soundData, float, total_sound_samples);
@@ -81,21 +82,26 @@ void GenerateSoundSystem(ecs_iter_t *it)
                             pow(modulate_0(time_value, frequency, 1.0f), 7.0f)  )))) +
                     modulate_8(time_value, frequency, modulate_1(time_value, frequency, 1.75f));
             }
+            soundValue *= volume;
             if (noise != 0)
             {
-                soundValue += noise * (rand() % 101) / 100.0f; // random.NextFloat(-noise, noise);
+                soundValue += - noise + 2.0f * noise * (rand() % 101) / 100.0f; // random.NextFloat(-noise, noise);
             }
             // Linear build-up, fast.
-            if(i <= sampleRate * attack)
+            // if (i <= sampleRate * attack)
+            if (i <= total_sound_samples * attack)
             {
-                soundValue = soundValue * (i / (sampleRate * attack));
+                // soundValue = soundValue * (i / (sampleRate * attack));
+                soundValue *= (i / (total_sound_samples * attack));
             }
-            else // if (i >= 1 - sampleRate * decay)
+            // else if (i >= 1 - sampleRate * decay)
+            else // if (i >= total_sound_samples - total_sound_samples * decay)
             { 
                 float dampen = 0.0f;
                 if (instrumentType == 0)
                 {
-                    dampen = pow(0.5f * log((frequency * volume) / sampleRate), 2.0f);
+                    // dampen = pow(0.5f * log((frequency * volume) / sampleRate), 2.0f);
+                    dampen = pow(0.5f * log((frequency * volume) / total_sound_samples), 2.0f);
                 }
                 else if (instrumentType == 1)
                 {
