@@ -32,6 +32,7 @@ void Render3DSystem(ecs_iter_t *it)
             opengl_draw_triangles(meshIndicies2->length);
         }
     }
+    opengl_unset_mesh();
     opengl_disable_opengl_program();
 }
 ECS_SYSTEM_DECLARE(Render3DSystem);

@@ -26,7 +26,7 @@
 // #define zoxel_test_cubes             // Failing atm, gl error at opengl_draw_triangles
 // #define zoxel_test_cubes_textured    // wip
 // #define zoxel_test_character3Ds      // todo
-#define zoxel_test_voxels
+// #define zoxel_test_voxels
 #define zoxel_test_voxels_terrain
 // #define zoxel_test_uis
 // -- debugs --

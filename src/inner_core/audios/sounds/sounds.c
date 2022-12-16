@@ -65,6 +65,7 @@ void SoundsImport(ecs_world_t *world)
     zoxel_reset_system_define(SoundDirtyResetSystem, SoundDirty);
     // prefabs
     spawn_prefab_sound(world);
-    spawn_generated_sound(world);
+    // test
+    // spawn_generated_sound(world);
 }
 #endif

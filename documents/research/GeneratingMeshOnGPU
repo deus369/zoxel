@@ -1,0 +1,7 @@
+I asked Chat GPT3 how can I generate a triangle mesh on a compute buffer
+
+It gave me a unity example
+
+I asked how to do this in C and Opengl
+
+It gave me the example to generate the mesh

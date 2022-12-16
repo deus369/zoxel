@@ -8,6 +8,7 @@ int render_queue_count = 0;
 // \todo Create a queue of 3D models to render, including materials, etc
 //  - each type of render queue has different data based on the shaders
 //  - inside ecs systems, can run multithread, add things to queues to render
+ECS_SYSTEM_DECLARE(RenderMaterial2DSystem);
 
 void render_pre_loop()
 {
@@ -22,7 +23,7 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     glViewport(position.x, position.y, size.x, size.y);
     #endif
     // 3D renders
-    OpenGLBeginInstancing3D(main_camera_matrix);
+    opengl_instance3D_begin(main_camera_matrix);
     ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
     opengl_disable_opengl_program();
     ecs_run(world, ecs_id(Render3DSystem), 0, NULL);
@@ -34,6 +35,8 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     opengl_disable_opengl_program();
     ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);
     ecs_run(world, ecs_id(RenderMeshMaterial2DSystem), 0, NULL);
+    opengl_unset_mesh();    // do this per system
+    // ecs_run(world, ecs_id(Line2DRenderSystem), 0, NULL);
 }
 
 //! Temporarily runs render things on main thread until flecs bug is fixed.

@@ -79,7 +79,8 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it)
         }
         else if (keyboard->c.wasPressedThisFrame)
         {
-            spawn_sound(it->world);
+            // spawn_sound(it->world);
+            spawn_generated_sound(it->world);
         }
     }
 }

@@ -38,7 +38,7 @@ int load_shader3D_basic()
     return 0;
 }
 
-void OpenGLBeginInstancing3D(const float4x4 viewMatrix)
+void opengl_instance3D_begin(const float4x4 viewMatrix)
 {
     //! This sets the materials actually, would be best to group entities per material here?
     glUseProgram(materialInstance3D);
