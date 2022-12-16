@@ -33,6 +33,7 @@ Uint8 uint8_from_float(float x)
 //! Updates sound to SDL modules
 void UpdateSoundSystem(ecs_iter_t *it)
 {
+    const int skip_rate = 50; // 1
     const SoundDirty *soundDirtys = ecs_field(it, SoundDirty, 2);
     const SoundData *soundDatas = ecs_field(it, SoundData, 3);
     SDLSound *sdlSounds = ecs_field(it, SDLSound, 4);
@@ -43,7 +44,6 @@ void UpdateSoundSystem(ecs_iter_t *it)
         {
             continue;
         }
-        // printf("Updated sound.\n");
         const SoundData *soundData = &soundDatas[i];
         SDLSound *sdlSound = &sdlSounds[i];
         sdlSound->value = (Mix_Chunk *) malloc(sizeof(Mix_Chunk));
@@ -52,47 +52,17 @@ void UpdateSoundSystem(ecs_iter_t *it)
         sdlSound->value->alen = soundData->length * 4;
         sdlSound->value->abuf = (Uint8*) malloc(soundData->length * 4 * sizeof(Uint8));
         memcpy(sdlSound->value->abuf, soundData->value, sdlSound->value->alen);
+        // this is the debug feature
+        #ifdef zoxel_debug_sounds
         double decay_time = 6.0 + rand() % 6;
-        for (int i = 0; i < soundData->length; i++)
+        for (int i = 0; i < soundData->length; i += skip_rate)
         {
             float x_position = (float) i / (float) soundData->length;
             x_position *= 2.0f;
             x_position -= 1.0f;
             spawn_line2D(world, (float2) { x_position, 0 }, (float2) { x_position, soundData->value[i] }, 0.5f, decay_time);
         }
-        // Mix_PlayChannel( -1, sdlSound->value, 0 );
+        #endif
     }
 }
 ECS_SYSTEM_DECLARE(UpdateSoundSystem);
-
-
-        // sdlSound->value = Mix_LoadWAV(sound_file_names[0]);
-        // Mix_Chunk* 
-        /*Mix_Chunk* sound_copy_from = sounds[0];
-        sdlSound->value = (Mix_Chunk *) malloc(sizeof(Mix_Chunk));
-        sdlSound->value->allocated = 1;
-        sdlSound->value->volume = sound_copy_from->volume; // 1.0f;
-        sdlSound->value->abuf = (Uint8*) malloc(sound_copy_from->alen * sizeof(Uint8));
-        sdlSound->value->alen = sound_copy_from->alen;
-        for (int j = 0; j < sound_copy_from->alen; j++)
-        {
-            sdlSound->value->abuf[j] = sound_copy_from->abuf[j];
-        }
-        for (int j = 0; j < sound_copy_from->alen; j++)
-        {
-            sdlSound->value->abuf[j] += rand() % 50;
-        }*/
-
-        // for (int j = 0; j < sdlSound->value->alen; j += 4)
-        // for (int j = 0; j < sdlSound->value->alen; j++)
-        //{
-            // sdlSound->value->abuf[j] = 255 - sdlSound->value->abuf[j];
-            // sdlSound->value->abuf[j] = (Uint8) soundData->value[j];
-            // sdlSound->value->abuf[j] = uint8_from_float(soundData->value[j]);
-            // sdlSound->value->abuf[j] = (Uint8*) soundData->value[j];
-            // float value = soundData->value[j];
-            /*sdlSound->value->abuf[j + 0] = (value >> 24) & 0xFF;
-            sdlSound->value->abuf[j + 1] = (value >> 16) & 0xFF;
-            sdlSound->value->abuf[j + 2] = (value >> 8) & 0xFF;
-            sdlSound->value->abuf[j + 3] = value & 0xFF;*/
-        //}

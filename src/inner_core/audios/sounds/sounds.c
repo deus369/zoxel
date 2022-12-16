@@ -56,7 +56,7 @@ void SoundsImport(ecs_world_t *world)
     ecs_set_hooks(world, SDLSound, { .dtor = ecs_dtor(SDLSound) });
     // systems
 #ifdef SDL_MIXER
-    zoxel_system_main_thread(world, PlaySoundSystem, EcsPreStore, [none] Sound, [in] PlaySound, [in] SDLSound);	// 
+    zoxel_system_main_thread(world, PlaySoundSystem, EcsPreStore, [none] Sound, [in] PlaySound, [in] SDLSound);
 #endif
     zoxel_system(world, GenerateSoundSystem, EcsOnValidate, [none] Sound, [in] GenerateSound, [out] SoundData, [in] SoundLength, [out] SoundDirty);
     zoxel_system_main_thread(world, UpdateSoundSystem, EcsPostUpdate, [none] Sound, [in] SoundDirty, [in] SoundData, [out] SDLSound);

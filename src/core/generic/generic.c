@@ -33,6 +33,8 @@ zoxel_component(Seed, long int);
 zoxel_component(Raycaster, int2);
 //! A target entity for the Raycaster.
 zoxel_component(RaycasterTarget, ecs_entity_t);
+//! A 2D Layer for a entity.
+zoxel_component(Layer2D, unsigned char);
 // systems
 zoxel_reset_system(EntityDirtyResetSystem, EntityDirty)
 zoxel_reset_system(ClickableStateResetSystem, ClickableState)
@@ -57,6 +59,7 @@ void GenericImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, Raycaster);
     ECS_COMPONENT_DEFINE(world, RaycasterTarget);
     ECS_COMPONENT_DEFINE(world, EntityInitialize);
+    ECS_COMPONENT_DEFINE(world, Layer2D);
     zoxel_reset_system_define(EntityDirtyResetSystem, EntityDirty);
     zoxel_reset_system_define(ClickableStateResetSystem, ClickableState);
     zoxel_reset_system_define(EntityInitializeResetSystem, EntityInitialize);

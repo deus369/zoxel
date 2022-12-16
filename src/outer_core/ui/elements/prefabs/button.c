@@ -46,5 +46,6 @@ ecs_entity_t spawn_button(ecs_world_t *world, ecs_entity_t parent,
     #ifdef zoxel_debug_spawns
     zoxel_log_arg("Spawned button [%lu]\n", (long int) e);
     #endif
+    // printf("Button, with layer of [%i]\n ", layer);
     return e;
 }

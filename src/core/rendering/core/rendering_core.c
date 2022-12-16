@@ -80,7 +80,8 @@ void RenderingCoreImport(ecs_world_t *world)
         [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MaterialGPULink,
         [in] TextureGPULink, [none] !MeshGPULink);
     zoxel_system_main_thread(world, RenderMeshMaterial2DSystem, 0,
-        [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MeshGPULink,
+        [in] Position2D, [in] Rotation2D, [in] Scale1D,
+        [in] Layer2D, [in] Brightness, [in] MeshGPULink,
         [in] MaterialGPULink, [in] TextureGPULink);
     // render3D
     zoxel_system_main_thread(world, Render3DSystem, 0, // EcsOnStore,

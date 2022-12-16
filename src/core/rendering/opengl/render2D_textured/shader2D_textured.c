@@ -26,6 +26,7 @@ in lowp vec2 vertexUV;\
 uniform lowp mat4 viewMatrix;\
 uniform lowp float positionX;\
 uniform lowp float positionY;\
+uniform lowp float positionZ;\
 uniform lowp float angle;\
 uniform lowp float scale;\
 out lowp vec2 uv;\
@@ -34,7 +35,7 @@ void main()\
 {\
     vec2 position = vec2(positionX, positionY);\
     mat2 rotate = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));\
-    gl_Position = viewMatrix * vec4(position + (rotate * vertexPosition) * scale, 0, 1.0);\
+    gl_Position = viewMatrix * vec4(position + (rotate * vertexPosition) * scale, positionZ, 1.0);\
     uv = vertexUV;\
 }\
 ";
@@ -162,7 +163,7 @@ void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint
 }
 
 void render_entity_material2D_and_mesh(const float4x4 viewMatrix, GLuint2 mesh, GLuint material, GLuint texture,
-    float2 position, float angle, float scale, float brightness)
+    float2 position, float angle, float scale, float brightness, unsigned char layer)
 {
     if (material == 0)
     {
@@ -171,10 +172,13 @@ void render_entity_material2D_and_mesh(const float4x4 viewMatrix, GLuint2 mesh, 
     }
     MaterialTextured2D materialTextured2D = initialize_material2D_textured(material);
     glUseProgram(material);   // invalid operation
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    // glEnable(GL_DEPTH_TEST);
+    // glDepthFunc(GL_LESS);
+    // glEnable(GL_ALPHA_TEST);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);    // for indices
     glBindBuffer(GL_ARRAY_BUFFER, mesh.y);            // for vertex coordinates
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_BLEND);
     glBindTexture(GL_TEXTURE_2D, texture);
     glEnableVertexAttribArray(materialTextured2D.vertexPosition);
     glEnableVertexAttribArray(materialTextured2D.vertexUV);
@@ -183,6 +187,7 @@ void render_entity_material2D_and_mesh(const float4x4 viewMatrix, GLuint2 mesh, 
     glUniformMatrix4fv(materialTextured2D.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
     glUniform1f(materialTextured2D.positionX, position.x);
     glUniform1f(materialTextured2D.positionY, position.y);
+    glUniform1f(materialTextured2D.positionZ, ((int) layer) * +0.0001f);
     glUniform1f(materialTextured2D.angle, angle);
     glUniform1f(materialTextured2D.scale, scale);
     glUniform1f(materialTextured2D.brightness, brightness);
@@ -194,8 +199,10 @@ void render_entity_material2D_and_mesh(const float4x4 viewMatrix, GLuint2 mesh, 
         return;
     }*/
     glBindTexture(GL_TEXTURE_2D, 0);
-    glDisable(GL_BLEND);
     glUseProgram(0);
+    glDisable(GL_BLEND);
+    // glDisable(GL_ALPHA_TEST);
+    // glDisable(GL_DEPTH_TEST);
 }
 
 // #ifdef zoxel_catch_opengl_errors

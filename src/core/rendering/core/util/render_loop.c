@@ -5,6 +5,8 @@ const double min_render_loop_timing = 0;    // set to higher to check for spikes
 #endif
 
 int render_queue_count = 0;
+const unsigned char max_render_layers = 8;
+unsigned char renderer_layer;
 // \todo Create a queue of 3D models to render, including materials, etc
 //  - each type of render queue has different data based on the shaders
 //  - inside ecs systems, can run multithread, add things to queues to render
@@ -29,13 +31,17 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     ecs_run(world, ecs_id(Render3DSystem), 0, NULL);
     ecs_run(world, ecs_id(Render3DUvsSystem), 0, NULL);
     // 2D renders
-    glDisable(GL_DEPTH_TEST);
+    // glDisable(GL_DEPTH_TEST);
     shader2D_instance_begin(main_camera_matrix);
     ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
     opengl_disable_opengl_program();
     ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);
-    ecs_run(world, ecs_id(RenderMeshMaterial2DSystem), 0, NULL);
-    opengl_unset_mesh();    // do this per system
+    // render all ui, layer at a time..
+    for (int i = 0; i < max_render_layers; i++)
+    {
+        renderer_layer = i;
+        ecs_run(world, ecs_id(RenderMeshMaterial2DSystem), 0, NULL);    // render for all tables..
+    }
     // ecs_run(world, ecs_id(Line2DRenderSystem), 0, NULL);
 }
 

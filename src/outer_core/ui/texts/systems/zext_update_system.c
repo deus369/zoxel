@@ -12,7 +12,7 @@ void ZextUpdateSystem(ecs_iter_t *it)
     ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
     const ZextData *zextDatas = ecs_field(it, ZextData, 3);
     const ZextSize *zextSizes = ecs_field(it, ZextSize, 4);
-    const ElementLayer *elementLayers = ecs_field(it, ElementLayer, 5);
+    const Layer2D *layer2Ds = ecs_field(it, Layer2D, 5);
     const Position2D *position2Ds = ecs_field(it, Position2D, 6);
     const PixelSize *pixelSizes = ecs_field(it, PixelSize, 7);
     Children *childrens = ecs_field(it, Children, 8);
@@ -29,11 +29,11 @@ void ZextUpdateSystem(ecs_iter_t *it)
         ecs_entity_t e = it->entities[i];
         const ZextData *zextData = &zextDatas[i];
         const ZextSize *zextSize = &zextSizes[i];
-        const ElementLayer *elementLayer = &elementLayers[i];
+        const Layer2D *layer2D = &layer2Ds[i];
         const Position2D *position2D = &position2Ds[i];
         const PixelSize *pixelSize = &pixelSizes[i];
         Children *children = &childrens[i];
-        spawn_zext_zigels(world, e, children, zextData, zextSize->value, elementLayer->value,
+        spawn_zext_zigels(world, e, children, zextData, zextSize->value, layer2D->value,
             position2D->value, pixelSize->value);
     }
 }

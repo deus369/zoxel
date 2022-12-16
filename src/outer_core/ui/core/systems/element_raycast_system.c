@@ -22,25 +22,25 @@ void ElementRaycastSystem(ecs_iter_t *it)
             // printf("    - uis_it.count [%i] - (%i)\n", i, uis_it.count);
             const CanvasPixelPosition *canvasPixelPositions = ecs_field(&uis_it, CanvasPixelPosition, 2);
             const PixelSize *pixelSizes = ecs_field(&uis_it, PixelSize, 3);
-            const ElementLayer *elementLayers = ecs_field(&uis_it, ElementLayer, 4);
+            const Layer2D *layer2Ds = ecs_field(&uis_it, Layer2D, 4);
             SelectableState *selectableStates = ecs_field(&uis_it, SelectableState, 5);
             for (int j = 0; j < uis_it.count; j++)
             {
                 const CanvasPixelPosition *canvasPixelPosition2 = &canvasPixelPositions[j];
                 const PixelSize *pixelSize2 = &pixelSizes[j];
-                const ElementLayer *elementLayer = &elementLayers[j];
+                const Layer2D *layer2D = &layer2Ds[j];
                 const int2 canvasPixelPosition = canvasPixelPosition2->value;
                 const int2 pixelSize = pixelSize2->value;
-                // printf("ui raycasting [%lu] - [%i]\n", (long int) uis_it.entities[j], elementLayer->value);
+                // printf("ui raycasting [%lu] - [%i]\n", (long int) uis_it.entities[j], layer2D->value);
                 // centered
                 SelectableState *selectableState = &selectableStates[j];
                 bool was_raycasted = position.x >= canvasPixelPosition.x - pixelSize.x / 2
                     && position.x <= canvasPixelPosition.x + pixelSize.x / 2
                     && position.y >= canvasPixelPosition.y - pixelSize.y / 2
                     && position.y <= canvasPixelPosition.y + pixelSize.y / 2;
-                if (was_raycasted && elementLayer->value > ui_layer)
+                if (was_raycasted && layer2D->value > ui_layer)
                 {
-                    ui_layer = elementLayer->value;
+                    ui_layer = layer2D->value;
                     ui_selected = uis_it.entities[j];
                     ui_selected_selectableState = selectableState;
                     #ifdef zoxel_debug_element_raycasting

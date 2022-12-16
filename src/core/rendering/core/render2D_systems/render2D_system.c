@@ -1,7 +1,8 @@
 //! External data/function.
 bool isDebugRenderMaterial2DSystem = false;
 extern float4x4 main_camera_matrix;
-extern void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint texture, float2 position, float angle, float scale, float brightness);
+extern void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint texture, float2 position,
+    float angle, float scale, float brightness);
 
 //! Render 2D entities.
 void RenderMaterial2DSystem(ecs_iter_t *it)

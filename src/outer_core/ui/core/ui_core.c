@@ -17,8 +17,6 @@ ECS_DECLARE(Canvas);
 ECS_DECLARE(ElementRaycaster);
 // components
 zoxel_component(CanvasPixelPosition, int2);
-//! A 2D Layer for a entity. (make generic 2D component instead of just UI)
-zoxel_component(ElementLayer, unsigned char);
 //! An anchor, used to get base position using canvas
 zoxel_component(Anchor, float2);
 //! A link to a canvas.
@@ -50,10 +48,9 @@ void UICoreImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, CanvasPixelPosition);
     ECS_COMPONENT_DEFINE(world, Anchor);
     ECS_COMPONENT_DEFINE(world, CanvasLink);
-    ECS_COMPONENT_DEFINE(world, ElementLayer);
     // Systems
     zoxel_filter(ui_query, world, [none] Element,
-        [in] CanvasPixelPosition, [in] PixelSize, [in] ElementLayer, [out] SelectableState);
+        [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [out] SelectableState);
     zoxel_filter(pixel_positions_query, world,
         [none] Element, [in] PixelPosition,
         [none] ParentLink, [none] Anchor, [none] CanvasLink,

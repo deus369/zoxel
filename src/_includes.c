@@ -22,6 +22,7 @@
 // #define USE_SDL_3
 
 // -- Tests / Options --
+#define zoxel_debug_sounds
 // #define zoxel_test_character2Ds
 // #define zoxel_test_cubes             // Failing atm, gl error at opengl_draw_triangles
 // #define zoxel_test_cubes_textured    // wip

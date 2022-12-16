@@ -11,7 +11,7 @@ void add_ui_components(ecs_world_t *world, ecs_entity_t e)
     zoxel_set(world, e, CanvasPixelPosition, { { } });
     zoxel_set(world, e, Anchor, { { } });
     zoxel_set(world, e, CanvasLink, { });
-    zoxel_set(world, e, ElementLayer, { 0 });
+    zoxel_set(world, e, Layer2D, { 0 });
     zoxel_set(world, e, EntityInitialize, { 1 });
 }
 
@@ -130,7 +130,7 @@ float2 initialize_ui_components(ecs_world_t *world, ecs_entity_t e, ecs_entity_t
     ecs_set(world, e, TextureSize, { pixel_size });
     ecs_set(world, e, CanvasLink, { main_canvas });
     ecs_set(world, e, ParentLink, { parent });
-    ecs_set(world, e, ElementLayer, { layer });
+    ecs_set(world, e, Layer2D, { layer });
     ecs_set(world, e, Position2D, { position2D });
     ecs_set(world, e, CanvasPixelPosition, { global_pixel_position });
     // spawn_gpu_mesh(world, e);
@@ -166,7 +166,7 @@ float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity
     ecs_set(world, e, TextureSize, { pixel_size });
     ecs_set(world, e, CanvasLink, { main_canvas });
     ecs_set(world, e, ParentLink, { parent });
-    ecs_set(world, e, ElementLayer, { layer });
+    ecs_set(world, e, Layer2D, { layer });
     // set scale
     float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
     float aspect_ratio = canvas_size_f.x / canvas_size_f.y;

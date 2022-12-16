@@ -11,10 +11,9 @@ float3 backgroundColor = { 9.0f / 255.0f, 70.0f / 255.0f, 75.0f / 255.0f };//
 void opengl_clear()
 {
     glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);       // Clears the buffer ?
-    glClear(GL_DEPTH_BUFFER_BIT);       // Clears the buffer ?
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);       // Clears the buffer ?
     glEnable(GL_DEPTH_TEST);        // cull for 3D things
-    glEnable(GL_CULL_FACE);
+    // glEnable(GL_CULL_FACE);
     // glCullFace(GL_BACK); // defaults to this
 }
 

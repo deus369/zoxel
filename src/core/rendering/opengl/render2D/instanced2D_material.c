@@ -36,6 +36,8 @@ void main()\
     color = vec4(0.5, 0.65, 0.15, 0) * brightness;\
 }";
 
+//uniform lowp float positionZ;
+
 void DisposeInstance2DMaterial()
 {
     glDeleteShader(shader2D_basic.x);

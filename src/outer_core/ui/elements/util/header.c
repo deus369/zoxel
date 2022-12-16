@@ -47,5 +47,6 @@ ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, int2 position
     #ifdef zoxel_debug_spawns
     printf("Spawned header [%lu]\n", (long int) e);
     #endif
+    // printf("Header, with layer of [%i]\n ", layer);
     return e;
 }

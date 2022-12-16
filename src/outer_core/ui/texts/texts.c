@@ -68,7 +68,7 @@ void TextsImport(ecs_world_t *world)
     // zoxel_texture_generation_system(FontTexture, FontTextureSystem);
     zoxel_filter(zextDirtyQuery, world, [none] Zext, [in] ZextDirty);
     zoxel_system_ctx_single_thread(world, ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery,
-        [none] Zext, [out] ZextDirty, [in] ZextData, [in] ZextSize, [in] ElementLayer,
+        [none] Zext, [out] ZextDirty, [in] ZextData, [in] ZextSize, [in] Layer2D,
         [in] Position2D, [in] PixelSize, [out] Children);
     zoxel_filter(generateTextureQuery, world, [none] FontTexture, [in] GenerateTexture);
     zoxel_system_ctx(world, FontTextureSystem, EcsOnUpdate, generateTextureQuery,
