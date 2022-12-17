@@ -46,7 +46,7 @@ void GenerateSoundSystem(ecs_iter_t *it)
         float noise = 0.1f + 0.1f * (rand() % 101) / 100.0f;     // random.NextFloat(generateSound.noise.x, generateSound.noise.y);
         //float attack = 0.002f;
         float attack = 0.02f;
-        float decay = 0.6f;
+        // float decay = 0.6f;
         float volume = 0.8f; // sound.volume;
         unsigned char instrumentType = rand() % 3; // 2;
         int total_sound_samples = (int) ( sampleRate * sound_time_length );

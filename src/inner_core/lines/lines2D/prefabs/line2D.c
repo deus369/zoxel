@@ -34,7 +34,7 @@ ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 pointB, floa
     {
         e = ecs_new_w_pair(world, EcsIsA, prefab_temporary_line2D);
     }
-    set_unique_entity_name(world, e, "line2D");
+    // set_unique_entity_name(world, e, "line2D");
     ecs_set(world, e, LineData2D, { { pointA.x, pointA.y, pointB.x, pointB.y } });
     ecs_set(world, e, LineThickness, { thickness });
     if (life_time != 0.0f)
@@ -46,4 +46,24 @@ ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 pointB, floa
     zoxel_log_arg("Spawned line2D [%lu]\n", (long int) e);
     #endif
     return e;
+}
+
+void spawn_line2D_square(ecs_world_t *world, float2 point, float2 size, float thickness, double life_time)
+{
+    spawn_line2D(world,
+        float2_add(point, (float2) { -size.x / 2.0f, -size.y / 2.0f }),
+        float2_add(point, (float2) { size.x / 2.0f, -size.y / 2.0f }),
+        thickness, life_time);
+    spawn_line2D(world,
+        float2_add(point, (float2) { size.x / 2.0f, -size.y / 2.0f }),
+        float2_add(point, (float2) { size.x / 2.0f, size.y / 2.0f }),
+        thickness, life_time);
+    spawn_line2D(world,
+        float2_add(point, (float2) { size.x / 2.0f, size.y / 2.0f }),
+        float2_add(point, (float2) { -size.x / 2.0f, size.y / 2.0f }),
+        thickness, life_time);
+    spawn_line2D(world,
+        float2_add(point, (float2) { -size.x / 2.0f, size.y / 2.0f }),
+        float2_add(point, (float2) { -size.x / 2.0f, -size.y / 2.0f }),
+        thickness, life_time);
 }

@@ -45,6 +45,7 @@
 // #define debug_ui_scaling
 // #define zoxel_time_render_loop
 // #define disable_main_menu_buttons
+// #define zoxel_test_brain
 
 #include "zoxel_engine.c"
 #include "zoxel/zoxel.c"

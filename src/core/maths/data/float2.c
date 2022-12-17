@@ -45,6 +45,11 @@ float2 float2_add(float2 a, float2 b)
     return (float2) { a.x + b.x, a.y + b.y };
 }
 
+float2 float2_subtract(float2 a, float2 b)
+{
+    return (float2) { a.x - b.x, a.y - b.y };
+}
+
 float float2_highest(float2 input)
 {
     if (input.x > input.y)

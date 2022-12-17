@@ -3,6 +3,7 @@
 
 // --- Inner core ---
 #include "lines/lines.c"
+#include "neural/neural.c"
 #include "animations/animations.c"
 #include "audios/audios.c"
 #include "physics/physics.c"
@@ -19,6 +20,7 @@ void InnerCoreImport(ecs_world_t *world)
 {
     ECS_MODULE(world, InnerCore);
     ECS_IMPORT(world, Lines);
+    ECS_IMPORT(world, Neural);
     ECS_IMPORT(world, Animations);
     ECS_IMPORT(world, Audios);
     ECS_IMPORT(world, Textures);

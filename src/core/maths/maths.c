@@ -21,6 +21,7 @@
 #include "data/float4.c"
 #include "data/float4x4.c"
 #include "data/double2.c"
+#include "data/ecs_entity_2.c"
 // util
 #include "util/math.c"
 #include "util/integer_util.c"
