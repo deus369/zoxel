@@ -11,6 +11,7 @@
 #include "physics/physics.c"
 #include "tiles/tiles.c"
 #include "voxels/voxels.c"
+#include "blueprints/blueprints.c"
 
 void close_inner_core()
 {
@@ -29,5 +30,6 @@ void InnerCoreImport(ecs_world_t *world)
     ECS_IMPORT(world, Physics);
     ECS_IMPORT(world, Tiles);
     ECS_IMPORT(world, Voxels);
+    ECS_IMPORT(world, Blueprints);
 }
 #endif

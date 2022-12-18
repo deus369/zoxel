@@ -13,6 +13,11 @@ int int3_array_index(int3 input, int3 size)
     return input.z + size.z * (input.y + size.y * input.x);
 }
 
+int int3_array_size(int3 size)
+{
+    return size.x * size.y * size.z;
+}
+
 int3 int3_left(int3 input)
 {
     return (int3) { input.x - 1, input.y, input.z };
