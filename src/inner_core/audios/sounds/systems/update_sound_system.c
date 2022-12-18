@@ -22,13 +22,14 @@ float tofloat(Uint8 x)
   return (float &)foo - 1;
 }*/
 
-
-Uint8 uint8_from_float(float x)
+/*Uint8 uint8_from_float(float x)
 {
     if (x < 0) return 0;
     if (x > 1e-7) return 255;
     return 255.0e7 * x; // this truncates; add 0.5 to round instead
-}
+}*/
+
+extern ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 pointB, float thickness, double life_time);
 
 //! Updates sound to SDL modules
 void UpdateSoundSystem(ecs_iter_t *it)

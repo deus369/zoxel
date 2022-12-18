@@ -10,14 +10,6 @@ void set_element_position(ecs_world_t *world, ecs_entity_t e,
         pixel_position, anchor,
         parent_position, parent_pixel_size,
         canvas_size_f, aspect_ratio);
-    /*if ((long int) e == 1950)
-    {
-
-    }
-    if ((long int) e == 1957)
-    {
-        printf("size [%ix%i]\n", parent_pixel_size.x, parent_pixel_size.y);
-    }*/
     ecs_modified(world, e, Position2D);
     CanvasPixelPosition *canvasPixelPosition = ecs_get_mut(world, e, CanvasPixelPosition);
     canvasPixelPosition->value = (int2) {
@@ -133,3 +125,11 @@ ECS_SYSTEM_DECLARE(ElementPositionSystem);
     }*/
     //ecs_set(world, e, Position2D, { real_position });
     //ecs_set(world, e, CanvasPixelPosition, { global_pixel_position });
+    /*if ((long int) e == 1950)
+    {
+
+    }
+    if ((long int) e == 1957)
+    {
+        printf("size [%ix%i]\n", parent_pixel_size.x, parent_pixel_size.y);
+    }*/

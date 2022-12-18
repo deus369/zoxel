@@ -5,7 +5,6 @@
 #include "cubes/cubes.c"
 #include "ai/ai.c"
 #include "particles/particles.c"
-#include "ui/ui.c"
 
 void OuterCoreImport(ecs_world_t *world)
 {
@@ -13,6 +12,5 @@ void OuterCoreImport(ecs_world_t *world)
     ECS_IMPORT(world, Cubes);
     ECS_IMPORT(world, AI);
     ECS_IMPORT(world, Particles);
-    ECS_IMPORT(world, UI);
 }
 #endif

@@ -27,6 +27,16 @@ void boot_zoxel_game(ecs_world_t *world)
     // spawn font, canvas and ui
     spawn_font_style(world);
     spawn_canvas(world, screen_dimensions2);
+    // test ui line
+    color edge_color = (color) { 8, 3, 3, 255 };
+    // color cross_color =  (color) { 55, 33, 12, 255 };
+    float edge_size = 32.0f;
+    spawn_ui_line2D(world, main_canvas, (int2) { 0, 0 }, (int2) { screen_dimensions.x, 0 }, edge_color, edge_size, 0.0);
+    spawn_ui_line2D(world, main_canvas, (int2) { screen_dimensions.x, 0 }, (int2) { screen_dimensions.x, screen_dimensions.y }, edge_color, edge_size, 0.0);
+    spawn_ui_line2D(world, main_canvas, (int2) { screen_dimensions.x, screen_dimensions.y }, (int2) { 0, screen_dimensions.y }, edge_color, edge_size, 0.0);
+    spawn_ui_line2D(world, main_canvas, (int2) { 0, screen_dimensions.y }, (int2) { 0, 0 }, edge_color, edge_size, 0.0);
+    // spawn_ui_line2D(world, main_canvas, (int2) { 0, 0 }, (int2) { 1920, 1080 }, cross_color, 4.0f, 0.0);
+    // spawn_ui_line2D(world, main_canvas, (int2) { 0, 1080 }, (int2) { 1920, 0 }, cross_color, 4.0f, 0.0);
     #ifdef zoxel_test_uis
     spawn_test_uis(world);   // spawns test ui
     #endif

@@ -9,6 +9,7 @@ ecs_entity_t spawn_prefab_line2D(ecs_world_t *world)
     zoxel_add_tag(world, e, Line2D);
     zoxel_set(world, e, LineData2D, { { 0, 0, 0, 0 } });
     zoxel_set(world, e, LineThickness, { 1 });
+    zoxel_set(world, e, Color, { { 0, 255, 255, 255 } });
     ecs_entity_t e2 = ecs_new_w_pair(world, EcsIsA, e);
     ecs_add_id(world, e2, EcsPrefab);
     set_unique_entity_name(world, e2, "prefab_temporary_line2D");
@@ -26,7 +27,7 @@ ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 pointB, floa
 {
     ecs_defer_begin(world);
     ecs_entity_t e;
-    if (life_time != 0.0f)
+    if (life_time == 0.0)
     {
         e = ecs_new_w_pair(world, EcsIsA, prefab_line2D);
     }
