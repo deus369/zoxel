@@ -13,7 +13,7 @@ void opengl_clear()
     glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);       // Clears the buffer ?
     glEnable(GL_DEPTH_TEST);        // cull for 3D things
-    // glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
     // glCullFace(GL_BACK); // defaults to this
 }
 

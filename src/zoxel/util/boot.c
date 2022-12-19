@@ -13,12 +13,17 @@ void boot_zoxel_game(ecs_world_t *world)
         screen_dimensions2.x /= 2;
         set_main_cameras(2);
     }
-    main_cameras[0] = spawn_base_camera(world, (float3) { 0, 3.6f, 0.62f },
+    float3 camera_begin_position = { 0, 0.0f, 0.0f };
+    #ifdef zoxel_test_voxels_terrain
+    camera_begin_position = (float3) { 0, 2.6f, 0 }; // 0.62f };
+    #endif
+    main_cameras[0] = spawn_base_camera(world, camera_begin_position,
         quaternion_identity(), screen_dimensions2, (int2) { });
     if (is_split_screen)
     {
         //! \todo connect a gamepad to this camera
-        main_cameras[1] = spawn_base_camera(world, (float3) { 0, 3.6f, 1.62f },
+        camera_begin_position.z += 1.0f;
+        main_cameras[1] = spawn_base_camera(world, camera_begin_position,
             quaternion_identity(), screen_dimensions2, (int2) { screen_dimensions2.x, 0 });
     }
     spawn_ui_camera(world, screen_dimensions2);

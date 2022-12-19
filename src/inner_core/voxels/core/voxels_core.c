@@ -1,7 +1,7 @@
 #ifndef zoxel_voxels_core
 #define zoxel_voxels_core
 
-const int terrain_rows = 12;
+const int terrain_rows = 6;
 const double noiseChunkAnimateSpeed = 0.5; // 1 / 8.0;
 const float overall_voxel_scale = 2.0f;
 const int chunk_length = 16;
@@ -11,7 +11,6 @@ const int3 chunk_size = { chunk_length, chunk_length, chunk_length };
 const int3 terrain_chunk_size = { chunk_length, 8 * chunk_length, chunk_length };
 const float chunk_real_size = 1.0f;   // size achunk takes up
 // tags
-ECS_DECLARE(Vox);
 ECS_DECLARE(NoiseChunk);
 ECS_DECLARE(TerrainChunk);
 //! A simple chunk with an array of voxels.
@@ -56,7 +55,6 @@ int get_chunk_index(int i, int j, int terrain_rows)
 
 void define_voxels_core_components(ecs_world_t *world)
 {
-    ECS_TAG_DEFINE(world, Vox);
     ECS_TAG_DEFINE(world, NoiseChunk);
     ECS_TAG_DEFINE(world, TerrainChunk);
     ECS_COMPONENT_DEFINE(world, ChunkDirty);

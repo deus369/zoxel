@@ -66,7 +66,7 @@ typedef struct
     vox_file_header header;
     vox_file_chunk main;
     vox_file_pack pack;
-    vox_file_chunk_child *chunk_childs;  // allocate dynamically
+    vox_file_chunk_child *chunks;  // allocate dynamically
     vox_file_palette palette;
 } vox_file;
 
@@ -102,9 +102,9 @@ void dispose_vox_file(vox_file *vox)
     // first free children voxels
     for (int i = 0; i < vox->pack.model_nums; i++)
     {
-        free(vox->chunk_childs[i].xyzi.voxels);
+        free(vox->chunks[i].xyzi.voxels);
     }
-    free(vox->chunk_childs);    // children chunks
+    free(vox->chunks);    // children chunks
     free(vox->palette.values);  // pallete colors
 }
 
@@ -210,7 +210,7 @@ int read_vox(const char* filename, vox_file *vox)
         vox->pack.model_nums = 1;
     }
     // chunk childs
-    vox->chunk_childs = malloc(vox->pack.model_nums * sizeof(vox_file_chunk_child));
+    vox->chunks = malloc(vox->pack.model_nums * sizeof(vox_file_chunk_child));
     for (int i = 0; i < vox->pack.model_nums; i++)
     {
         #ifdef zoxel_debug_vox_read
@@ -333,7 +333,7 @@ int read_vox(const char* filename, vox_file *vox)
         for (int j = 0; j < bytes_length; j += 4)
         {
             int3 position = (int3) { voxel_bytes[j + 0], voxel_bytes[j + 1], voxel_bytes[j + 2] };
-            int array_index = int3_array_index(position, chunk.size.xyz);
+            int array_index = int3_array_index2(position, chunk.size.xyz);
             chunk.xyzi.voxels[array_index] = voxel_bytes[j + 3];
             #ifdef zoxel_debug_vox_read
             if (j < 4 * 32)
@@ -343,7 +343,7 @@ int read_vox(const char* filename, vox_file *vox)
             #endif
         }
         free(voxel_bytes);
-        vox->chunk_childs[i] = chunk;
+        vox->chunks[i] = chunk;
     }
     // now read pallete
     if (!feof(file))
@@ -422,7 +422,7 @@ int read_vox(const char* filename, vox_file *vox)
     printf("  - pack model_nums [%i]\n", vox->pack.model_nums);
     for (int i = 0; i < vox->pack.model_nums; i++)
     {
-        vox_file_chunk_child chunk = vox->chunk_childs[i];
+        vox_file_chunk_child chunk = vox->chunks[i];
         printf("  - chunk [%i]\n", i);
         printf("    - size.chunk_content [%i]\n", chunk.size.chunk_content);
         printf("    - size.chunk_nums [%i]\n", chunk.size.chunk_nums);

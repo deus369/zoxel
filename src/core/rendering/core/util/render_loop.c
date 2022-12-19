@@ -32,6 +32,7 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     ecs_run(world, ecs_id(Render3DUvsSystem), 0, NULL);
     // 2D renders
     // glDisable(GL_DEPTH_TEST);
+    glClear(GL_DEPTH_BUFFER_BIT);       // Clears the depth buffer
     shader2D_instance_begin(main_camera_matrix);
     ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
     opengl_disable_opengl_program();

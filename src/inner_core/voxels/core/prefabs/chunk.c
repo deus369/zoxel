@@ -32,10 +32,10 @@ ecs_entity_t spawn_chunk_prefab(ecs_world_t *world)
     add_chunk(world, e, size);
     add_noise_chunk(world, e);
     ecs_defer_end(world);
-    chunk_prefab = e;
     #ifdef zoxel_debug_prefabs
     zoxel_log_arg("spawn_prefab chunk_prefab [%lu].\n", (long int) (e));
     #endif
+    chunk_prefab = e;
     return e;
 }
 

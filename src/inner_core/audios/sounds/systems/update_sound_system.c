@@ -34,7 +34,9 @@ extern ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 point
 //! Updates sound to SDL modules
 void UpdateSoundSystem(ecs_iter_t *it)
 {
-    const int skip_rate = 50; // 1
+    #ifdef zoxel_debug_sounds
+        const int skip_rate = 50; // 1
+    #endif
     const SoundDirty *soundDirtys = ecs_field(it, SoundDirty, 2);
     const SoundData *soundDatas = ecs_field(it, SoundData, 3);
     SDLSound *sdlSounds = ecs_field(it, SDLSound, 4);

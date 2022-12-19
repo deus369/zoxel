@@ -22,13 +22,14 @@
 // #define USE_SDL_3
 
 // -- Tests / Options --
-#define zoxel_debug_sounds
+#define zoxel_test_voxels_terrain
+#define zoxel_test_chickens
+// #define zoxel_debug_sounds
 // #define zoxel_test_character2Ds
 // #define zoxel_test_cubes             // Failing atm, gl error at opengl_draw_triangles
 // #define zoxel_test_cubes_textured    // wip
 // #define zoxel_test_character3Ds      // todo
 // #define zoxel_test_voxels
-#define zoxel_test_voxels_terrain
 // #define zoxel_test_uis
 // -- debugs --
 //! \todo Fix pathing for android, cannot get resources there.
