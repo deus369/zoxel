@@ -15,7 +15,7 @@ int int3_array_index(int3 input, int3 size)
 
 int int3_array_index2(int3 input, int3 size)
 {
-    return input.y + size.x * (input.z + size.y * input.x);
+    return input.z + size.z * (input.y + size.y * input.x);
 }
 
 int int3_array_size(int3 size)

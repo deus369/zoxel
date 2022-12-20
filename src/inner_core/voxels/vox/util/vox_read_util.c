@@ -249,14 +249,14 @@ int read_vox(const char* filename, vox_file *vox)
             fprintf(stderr, "Failed to read chunk.size.x\n");
             return -1;
         }
-        if (fread(&chunk.size.xyz.y, sizeof(chunk.size.xyz.y), 1, file) != 1)
-        {
-            fprintf(stderr, "Failed to read chunk.size.y\n");
-            return -1;
-        }
         if (fread(&chunk.size.xyz.z, sizeof(chunk.size.xyz.z), 1, file) != 1)
         {
             fprintf(stderr, "Failed to read chunk.size.z\n");
+            return -1;
+        }
+        if (fread(&chunk.size.xyz.y, sizeof(chunk.size.xyz.y), 1, file) != 1)
+        {
+            fprintf(stderr, "Failed to read chunk.size.y\n");
             return -1;
         }
         if (fread(&chunk.xyzi.name, sizeof(chunk.xyzi.name), 1, file) != 1)
@@ -332,8 +332,10 @@ int read_vox(const char* filename, vox_file *vox)
         }*/
         for (int j = 0; j < bytes_length; j += 4)
         {
-            int3 position = (int3) { voxel_bytes[j + 0], voxel_bytes[j + 1], voxel_bytes[j + 2] };
-            int array_index = int3_array_index2(position, chunk.size.xyz);
+            // int3 position = (int3) { voxel_bytes[j + 0], voxel_bytes[j + 1], voxel_bytes[j + 2] };
+            int3 position = (int3) { voxel_bytes[j + 0], voxel_bytes[j + 2], voxel_bytes[j + 1] };
+            // int array_index = int3_array_index2(position, chunk.size.xyz);
+            int array_index = int3_array_index(position, chunk.size.xyz);
             chunk.xyzi.voxels[array_index] = voxel_bytes[j + 3];
             #ifdef zoxel_debug_vox_read
             if (j < 4 * 32)
