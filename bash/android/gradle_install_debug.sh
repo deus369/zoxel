@@ -4,12 +4,29 @@ source gradle_set_paths.sh
 
 cd $android_directory
 
-# ./gradlew installDebug --debug --stacktrace
+# echo ""
+# echo "Building android debug build."
+# echo "-----"
+# ./gradlew buildDebug --parallel # --debug  --stacktrace
 
-# ./gradlew installDebug --debug # --stacktrace
+# echo ""
+# echo "Installing app-debug.apk."
+# echo "-----"
+# adb install $android_directory/app/build/outputs/apk/debug/app-debug.apk
 
-./gradlew installDebug # --debug  --stacktrace
+echo ""
+echo "gradlew installDebug"
+echo "-----"
+./gradlew installDebug --parallel # --debug  --stacktrace
 
+echo ""
 echo Finished Installing Debug Zoxel Android
+echo ""
 
-sleep 15
+# ./gradlew run
+# ./gradlew installDebug --debug --stacktrace
+# ./gradlew installDebug --debug # --stacktrace
+# ./gradlew installDebug --parallel # --debug  --stacktrace
+# ./gradlew installRelease --parallel # --debug  --stacktrace
+# ./gradlew buildRelease --parallel # --debug  --stacktrace
+# ./gradlew buildRelease --parallel # --debug  --stacktrace

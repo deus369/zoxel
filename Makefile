@@ -111,6 +111,16 @@ run-dev-debug:
 run-web:
 	emrun --browser firefox web/index.html
 
+android:
+	bash/android/install.sh
+
+android-dev:
+	bash/android/install_debug.sh
+
+android-dev-debug:
+	bash/android/install_debug.sh
+	bash/android/read_logcat.sh
+
 install: ## installs zoxel into /usr/games directory
 	bash/install/install.sh
 
@@ -133,6 +143,9 @@ help:
 	@echo "    install		installs zoxel"
 	@echo "    uninstall		inuninstalls zoxel"
 	@echo "    install-web-builder	installs emcc for web build"
+	@echo "    android		builds & runs android release"
+	@echo "    android-dev		builds & runs android debug"
+	@echo "    android-dev-debug	builds & runs android debug with logcat"
 	@echo "    just make		builds zoxel"
 	@echo "latest -> https://codeberg.org/deus/zoxel"
 

@@ -6,6 +6,7 @@ web-dev
 #ignore scrap code
 scrap
 scrap.c
+android-build
 # ignore settings
 .vscode
 # ignore test builds

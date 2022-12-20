@@ -39,10 +39,12 @@ void AppsImport(ecs_world_t *world)
     spawn_app(world, window, context);
     main_window = window;
     #ifndef WEB_BUILD
-    if (fullscreen) 
-    {
-        sdl_toggle_fullscreen(main_window);
-    }
+        #ifndef ANDROID_BUILD
+            if (fullscreen) 
+            {
+                sdl_toggle_fullscreen(main_window);
+            }
+        #endif
     #endif
 }
 #endif

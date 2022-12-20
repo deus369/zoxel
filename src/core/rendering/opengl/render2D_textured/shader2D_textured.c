@@ -6,6 +6,7 @@
 //  https://www.reddit.com/r/opengl/comments/ydsqkn/textured_square_works_on_pinephone_pro_but_not_pc/
 //  https://github.com/edo9300/edopro/issues/151
 // const char *playerCharacterTextureName = "resources/textures/Test.png";
+const float shader_depth_multiplier = 0.001f; // 0.0001f;
 const bool disableTextureLoaded = false;
 int textureType = GL_NEAREST; // GL_LINEAR
 //! \todo Move these references to MaterialGPULink
@@ -187,7 +188,7 @@ void render_entity_material2D_and_mesh(const float4x4 viewMatrix, GLuint2 mesh, 
     glUniformMatrix4fv(materialTextured2D.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
     glUniform1f(materialTextured2D.positionX, position.x);
     glUniform1f(materialTextured2D.positionY, position.y);
-    glUniform1f(materialTextured2D.positionZ, ((int) layer) * +0.0001f);
+    glUniform1f(materialTextured2D.positionZ, ((int) layer) * shader_depth_multiplier);
     glUniform1f(materialTextured2D.angle, angle);
     glUniform1f(materialTextured2D.scale, scale);
     glUniform1f(materialTextured2D.brightness, brightness);

@@ -97,7 +97,7 @@ void close_core()
     if (!headless)
     {
         dispose_opengl();
-        sdl_on_end();
+        SDL_Quit();
     }
 }
 

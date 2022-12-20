@@ -15,8 +15,26 @@ ecs_entity_t spawn_prefab_main_menu(ecs_world_t *world)
 ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label,
     int2 position, int2 window_size, float2 anchor, bool is_close_button)
 {
+    float ui_scale = default_ui_scale;
     int font_size = 28;
     int header_margins = 4;
+    #ifdef ANDROID_BUILD
+    window_size.y = 160;
+    ui_scale = android_ui_scale;
+    #endif
+    // scale the ui!
+    window_size.x *= ui_scale;
+    window_size.y *= ui_scale;
+    font_size *= ui_scale;
+    header_margins *= ui_scale;
+    int2 play_button_position = (int2) { 0, font_size * 2 };
+    int2 options_button_position = (int2) { 0, 0 };
+    int2 header_position = (int2) { 0, - font_size / 2 - header_margins / 2 };
+    #ifdef ANDROID_BUILD
+    play_button_position.y = font_size;
+    options_button_position.y = -font_size;
+    #endif
+    header_position.y = font_size / 2 + header_margins / 2;
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, main_menu_prefab);
     set_unique_entity_name(world, e, "main_menu");
@@ -24,31 +42,32 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label,
         ecs_get(world, main_canvas, PixelSize)->value);
     Children children = { };
     int children_count = 4;
-    #ifdef disable_main_menu_buttons
-    children_count = 1;
+    #ifdef ANDROID_BUILD
+    children_count = 3;
     #endif
     initialize_memory_component_non_pointer(children, ecs_entity_t, children_count);
     children.value[0] = spawn_header(world, e, 
-        (int2) { 0, - font_size / 2 - header_margins / 2 },
+        header_position,
         (int2) { window_size.x, font_size + header_margins},
         (float2) { 0.5f, 1.0f },
         header_label, font_size, header_margins, 1,
         position2D, window_size,
         is_close_button);
-    #ifndef disable_main_menu_buttons
+    // spawn buttons!
     children.value[1] = spawn_button(world, e,
-        (int2) { 0, font_size * 2 },
+        play_button_position,
         (int2) { font_size * 6, font_size },
         (float2) { 0.5f, 0.5f },
         "Play", font_size, 1,
         position2D, window_size);
     zoxel_add_tag(world, children.value[1], PlayGameButton);
     children.value[2] = spawn_button(world, e,
-        (int2) { 0, 0 },
+        options_button_position,
         (int2) { font_size * 8, font_size },
         (float2) { 0.5f, 0.5f },
         "Options", font_size, 1,
         position2D, window_size);
+    #ifndef ANDROID_BUILD
     children.value[3] = spawn_button(world, e,
         (int2) { 0, - font_size * 2 },
         (int2) { font_size * 6, font_size },

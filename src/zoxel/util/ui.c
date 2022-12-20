@@ -11,7 +11,7 @@ void spawn_zoxel_main_menu(ecs_world_t *world)
         zoxel_main_menu = 0;
         return;
     }
-    int2 window_size = { 260, 320 };
+    int2 window_size = { 260, 220 };
     int2 window_position = { 0, 0 };
     float2 window_anchor = { 0.5f, 0.5f };
     zoxel_main_menu = spawn_main_menu(world, "Zoxel", window_position, window_size, window_anchor, false);

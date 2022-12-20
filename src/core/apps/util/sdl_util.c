@@ -232,9 +232,11 @@ void LoadIconSDL(SDL_Window* window)
 //! Spawn the SDLWindow.
 SDL_Window* SpawnWindowSDL(bool fullscreen)
 {
+    bool is_resizeable = true;
     windowFlags = SDL_WINDOW_OPENGL;
     #ifdef ANDROID_BUILD
-        windowFlags = SDL_WINDOW_FULLSCREEN;
+        windowFlags = SDL_WINDOW_FULLSCREEN_DESKTOP; // SDL_WINDOW_FULLSCREEN;
+        is_resizeable = false;
     #endif
     /*#ifndef WEB_BUILD
     if (fullscreen) 
@@ -262,7 +264,7 @@ SDL_Window* SpawnWindowSDL(bool fullscreen)
     }
     SDL_GL_SetSwapInterval(1);
     LoadIconSDL(window);
-    SDL_SetWindowResizable(window, SDL_TRUE);
+    SDL_SetWindowResizable(window, is_resizeable); // SDL_TRUE);
     SDL_GL_SwapWindow(window);
     return window;
 }
@@ -291,11 +293,6 @@ SDL_Window* spawn_sdl_window()
     }
     SDL_Window* window = SpawnWindowSDL(fullscreen);
     return window;
-}
-
-void sdl_on_end()
-{
-    SDL_Quit();
 }
 
 //! Quits the application from running indefinitely.

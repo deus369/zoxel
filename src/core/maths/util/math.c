@@ -1,6 +1,18 @@
 // Find more math inspiration at https://gist.github.com/mattatz/86fff4b32d198d0928d0fa4ff32cf6fa
 
-float math_abs(float input)
+float float_abs(float input)
+{
+    if (input < 0)
+    {
+        return -input;
+    }
+    else
+    {
+        return input;
+    }
+}
+
+double double_abs(double input)
 {
     if (input < 0)
     {
@@ -115,10 +127,14 @@ float3 quaternion_to_euler(float4 q)
     euler.x = atan2(sinr_cosp, cosr_cosp);
     // pitch (y-axis rotation)
     double sinp = 2 * (q.w * q.y - q.z * q.x);
-    if (abs(sinp) >= 1)
+    if (double_abs(sinp) >= 1)  // abs
+    {
         euler.y = copysign(M_PI / 2, sinp); // use 90 degrees if out of range
+    }
     else
+    {
         euler.y = asin(sinp);
+    }
     // yaw (z-axis rotation)
     double siny_cosp = 2 * (q.w * q.z + q.x * q.y);
     double cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z);

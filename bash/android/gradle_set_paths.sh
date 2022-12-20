@@ -1,8 +1,15 @@
 #!/bin/bash
 
+zoxel_directory="$HOME/zoxel"
+export zoxel_directory="$HOME/zoxel"
+android_directory="$zoxel_directory/android-build" # $HOME/zoxel-android
+android_bash_directory="$zoxel_directory/bash/android"
+# android_directory="$HOME/zoxel-android"
+
 # ndk installation path
-ANDROID_NDK_HOME="$HOME/android/ndk"
-export ANDROID_NDK_HOME="$HOME/android/ndk"
+android_sdk_directory="$HOME/android"
+ANDROID_NDK_HOME="$android_sdk_directory/ndk"
+export ANDROID_NDK_HOME="$android_sdk_directory/ndk"
 
 # Android installation path
 ANDROID_HOME="/usr/lib/android-sdk"
@@ -13,7 +20,6 @@ export ANDROID_SDK_ROOT="/usr/lib/android-sdk"
 # SDL
 sdl_directory="$HOME/SDL/SDL2"
 export sdl_directory="$HOME/SDL/SDL2"
-
-zoxel_directory="$HOME/zoxel"
-android_directory="$HOME/zoxel-android"
-export zoxel_directory="$HOME/zoxel"
+sdl_image_directory=$HOME/SDL/SDL2_image
+sdl_mixer_directory=$HOME/SDL/SDL2_mixer
+sdl_android_project_directory="$sdl_directory/android-project"
