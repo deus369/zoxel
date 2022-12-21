@@ -58,8 +58,10 @@ This is for Debian based Linux systems.
 
 Linux [Native]
 ```
-# installls required library
-sudo apt install make libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev
+# install required tools
+sudo apt install make gcc
+# installs required libraries
+sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev
 
 # builds zoxel binary
 #   j flag = processor core count

@@ -31,6 +31,7 @@ LDLIBS += -lSDL2_image		# SDL2 Image Library
 # LDLIBS += -s SDL2_IMAGE_FORMATS='["png"]' # "bmp",
 LDLIBS += -lSDL2_mixer		# SDL2 Audio Library
 LDLIBS += -lm				# for math.h
+LDLIBS += -lpthread			# For threading
 # used for manual sdl compiling on systems that don't have sdl lib in their package managers
 LDLIBS += -L/usr/local/lib
 LDLIBS += -Wl,-rpath=/usr/local/lib
@@ -120,6 +121,10 @@ android-dev:
 android-dev-debug:
 	bash/android/install_debug.sh
 	bash/android/read_logcat.sh
+	
+packages:
+	@echo "Installing Libaries: make gcc libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev"
+	sudo apt install make gcc libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev
 
 install: ## installs zoxel into /usr/games directory
 	bash/install/install.sh
@@ -132,7 +137,8 @@ install-web-builder:
 
 help:
 	@echo "zoxel -> an open source voxel engine"
-	@echo "  make <target>:"
+	@echo "  make			builds zoxel"
+	@echo "  make <target>"
 	@echo "    $(TARGET_DEV)	builds dev"
 	@echo "    $(TARGET_WEB)	builds zoxel-web"
 	@echo "    run			runs $(TARGET)"
@@ -146,8 +152,8 @@ help:
 	@echo "    android		builds & runs android release"
 	@echo "    android-dev		builds & runs android debug"
 	@echo "    android-dev-debug	builds & runs android debug with logcat"
-	@echo "    just make		builds zoxel"
-	@echo "latest -> https://codeberg.org/deus/zoxel"
+	@echo "    packages		installs required libraries with apt-get"
+	@echo "find latest at -> https://codeberg.org/deus/zoxel"
 
 # CFLAGS += -D_POSIX_C_SOURCE=200112L
 # dCFLAGS += -fsanitize=undefined
