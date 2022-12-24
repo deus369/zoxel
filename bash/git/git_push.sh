@@ -1,6 +1,7 @@
 #! /bin/bash
 
 ssh_key_location=$HOME/.ssh/zoxel
+
 echo "-> Connecting to Git with ssh key [$ssh_key_location]"
 if [ -f $ssh_key_location ]; then
 	echo "	- SSH Key found at [$ssh_key_location]"
@@ -12,7 +13,18 @@ fi
 eval "$(ssh-agent -s)"
 ssh-add $ssh_key_location
 ssh -T git@github.com
-cd $HOME/zoxel
+
+is_force=$(false)
+if [[ $1 = "-f" ]]; then
+	is_force=$(true)
+	echo "Forcing push."
+	git push -u origin master
+	sleep 6
+	exit
+fi
+
+cd ../../ # $HOME/zoxel
+echo "Inside Directory [$PWD]"
 echo "-> Getting modified or updated git files."
 modified_and_new_files="$(git ls-files --modified --others --exclude-standard)"
 if [ -z "$modified_and_new_files" ]; then
@@ -39,8 +51,9 @@ else
 	echo "========================="
 	echo ""
 	# echo $modified_and_new_files
+	sleep 1
 fi
-sleep 1
+
 echo "-> Enter your commit message"
 read commitmsg # get commit message off user
 echo "	- Commit message is [$commitmsg]"

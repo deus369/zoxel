@@ -1,8 +1,29 @@
 #!/bin/bash
 
+is_xclip=$(command -v xclip)
+if [[ $is_xclip = "" ]]; then
+    echo "xclip does not exist. Installing."
+    sudo apt-get install xclip
+else
+    echo "xclip does exist."
+fi
+
+is_ssh_keygen=$(command -v ssh-keygen)
+if [[ $is_ssh_keygen = "" ]]; then
+    echo "ssh-keygen does not exist. Installing."
+    sudo apt-get install ssh-keygen
+else
+    echo "ssh-keygen does exist."
+fi
+
 cd ~
 
-mkdir .ssh
+if [[ -d .ssh ]]; then
+    echo ".ssh exists."
+else
+    echo ".ssh does not exist. Making."
+    mkdir .ssh
+fi
 
 cd ~/.ssh
 
@@ -11,13 +32,6 @@ echo "Enter your ssh name"
 read sshname
 
 echo "SSH Name is [$sshname]"
-
-# create ssh key
-# stackoverflow how to execute ssh keygen without prompt
-#ssh-keygen || $sshname
-# ssh-keygen -q -t rsa -N '' -f "/$sshname" <<<y >/dev/null 2>&1
-
-# ssh-keygen -q -t rsa -N '' -f "/$sshname" <<< y
 
 ssh-keygen -q -N '' -f "$sshname"
 
@@ -34,7 +48,22 @@ ssh-add ~/.ssh/$sshname
 # next push your first commit
 
 echo "Go to https://github.com/settings/keys and paste the ssh key."
-
 echo "Click New SSH key button to add it. Give it the name [$sshname] for consistency."
+open https://github.com/settings/keys
+sleep 16
 
-sleep 10
+echo "Go to https://github.com/settings/keys and paste the ssh key."
+echo "Click New SSH key button to add it. Give it the name [$sshname] for consistency."
+open https://codeberg.org/user/settings/keys
+sleep 16
+
+echo Finished!
+sleep 16
+
+
+# create ssh key
+# stackoverflow how to execute ssh keygen without prompt
+#ssh-keygen || $sshname
+# ssh-keygen -q -t rsa -N '' -f "/$sshname" <<<y >/dev/null 2>&1
+
+# ssh-keygen -q -t rsa -N '' -f "/$sshname" <<< y
