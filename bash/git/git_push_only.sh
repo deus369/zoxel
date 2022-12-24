@@ -1,5 +1,7 @@
 #! /bin/bash
 
+source git_check_user.sh
+
 ssh_key_location=$HOME/.ssh/zoxel
 if [[ -f $ssh_key_location ]]; then
 	echo "SSH Key found at [$ssh_key_location]"

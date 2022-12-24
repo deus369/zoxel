@@ -50,15 +50,15 @@ ssh-add ~/.ssh/$sshname
 echo "Go to https://github.com/settings/keys and paste the ssh key."
 echo "Click New SSH key button to add it. Give it the name [$sshname] for consistency."
 open https://github.com/settings/keys
-sleep 16
+sleep 12
 
 echo "Go to https://github.com/settings/keys and paste the ssh key."
 echo "Click New SSH key button to add it. Give it the name [$sshname] for consistency."
 open https://codeberg.org/user/settings/keys
-sleep 16
+sleep 12
 
 echo Finished!
-sleep 16
+sleep 8
 
 
 # create ssh key

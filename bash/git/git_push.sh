@@ -1,5 +1,7 @@
 #! /bin/bash
 
+source git_check_user.sh
+
 ssh_key_location=$HOME/.ssh/zoxel
 
 echo "-> Connecting to Git with ssh key [$ssh_key_location]"
