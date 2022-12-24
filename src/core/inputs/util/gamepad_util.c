@@ -48,7 +48,10 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world)
     {
         int joystick_id = SDL_JoystickInstanceID(joystick);
         fprintf(stderr, "Joystick [%d] has been disconnected.\n", joystick_id);
+        SDL_JoystickClose(joystick);
         joystick = NULL;
+        // \todo add disconnection event to gamepad_entity
+        // - next, add a disconnection ui until reconnected
         return;
     }
     ecs_defer_begin(world);
