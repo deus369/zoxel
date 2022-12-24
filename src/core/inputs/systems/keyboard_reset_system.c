@@ -1,13 +1,13 @@
 //! Resets a single key!
 void reset_key(PhysicalButton *key)
 {
-    if (key->wasPressedThisFrame)
+    if (key->pressed_this_frame)
     {
-        key->wasPressedThisFrame = false;
+        key->pressed_this_frame = false;
     }
-    if (key->wasReleasedThisFrame)
+    if (key->released_this_frame)
     {
-        key->wasReleasedThisFrame = false;
+        key->released_this_frame = false;
     }
 }
 

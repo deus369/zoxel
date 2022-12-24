@@ -21,19 +21,19 @@ void Player3DMoveSystem(ecs_iter_t *it)
     {
         const Keyboard *keyboard = &keyboards[i];
         float2 movement = { 0, 0 };
-        if (keyboard->w.isPressed)
+        if (keyboard->w.is_pressed)
         {
             movement.y = 1;
         }
-        if (keyboard->s.isPressed)
+        if (keyboard->s.is_pressed)
         {
             movement.y = -1;
         }
-        if (keyboard->a.isPressed)
+        if (keyboard->a.is_pressed)
         {
             movement.x = -1;
         }
-        if (keyboard->d.isPressed)
+        if (keyboard->d.is_pressed)
         {
             movement.x = 1;
         }

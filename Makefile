@@ -39,6 +39,7 @@ LDLIBS += -Wl,-rpath=/usr/local/lib
 CFLAGS_RELEASE = -O3				# Optimization level 3
 CFLAGS_RELEASE += -flto=auto		# fuse linker plugin
 CFLAGS_RELEASE += -D NDEBUG			# No Debugging
+CFLAGS_RELEASE += -s				# strip - removes 70kb atm
 # FOR DEBUG
 CFLAGS_DEBUG = -Wall				# For Warnings
 CFLAGS_DEBUG += -g					# Adds debugging info to executeable

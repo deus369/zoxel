@@ -305,6 +305,7 @@ void quit()
 }
 
 extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event);
+extern void input_extract_from_sdl_per_frame(ecs_world_t *world);
 extern void resize_cameras(int width, int height);
 extern void uis_on_viewport_resized(ecs_world_t *world, int width, int height);
 
@@ -327,6 +328,7 @@ void on_viewport_resized(ecs_world_t *world, int width, int height)
 //! Polls SDL for input events. Also handles resize and window quit events.
 void update_sdl(ecs_world_t *world)
 {
+    input_extract_from_sdl_per_frame(world);
     SDL_Event event = { 0 };
     while (SDL_PollEvent(&event))
     {

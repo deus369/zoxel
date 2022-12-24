@@ -16,15 +16,15 @@ void set_key(PhysicalButton *key, int eventType)
 {
     bool keyDown = eventType == SDL_KEYDOWN;
     bool keyReleased = eventType == SDL_KEYUP;
-    if (!key->isPressed && keyDown)
+    if (!key->is_pressed && keyDown)
     {
-        key->wasPressedThisFrame = true;
+        key->pressed_this_frame = true;
     }
-    if (key->isPressed && keyReleased)
+    if (key->is_pressed && keyReleased)
     {
-        key->wasReleasedThisFrame = true;
+        key->released_this_frame = true;
     }
-    key->isPressed = keyDown;
+    key->is_pressed = keyDown;
 }
 
 #define key_case(sdl_event, key)\
@@ -45,15 +45,15 @@ void extract_keyboard(ecs_world_t *world, SDL_Event event)
     {
         Keyboard *keyboard = ecs_get_mut(world, keyboardEntity, Keyboard);
         PhysicalButton *key = &keyboard->space;
-        key->wasPressedThisFrame = eventType == SDL_FINGERDOWN;
-        key->wasReleasedThisFrame = eventType == SDL_FINGERUP;
-        if (key->wasPressedThisFrame)
+        key->pressed_this_frame = eventType == SDL_FINGERDOWN;
+        key->released_this_frame = eventType == SDL_FINGERUP;
+        if (key->pressed_this_frame)
         {
-            key->isPressed = true;
+            key->is_pressed = true;
         }
-        else if (key->wasReleasedThisFrame)
+        else if (key->released_this_frame)
         {
-            key->isPressed = false;
+            key->is_pressed = false;
         }
         ecs_modified(world, keyboardEntity, Keyboard);
     }
@@ -110,9 +110,9 @@ void extract_keyboard(ecs_world_t *world, SDL_Event event)
 void PrintKey(const PhysicalButton *key, char* name)
 {
     printf("    key %s [%s - %s - %s]\n", name,
-        (key->wasPressedThisFrame ? "true" : "false"),
-        (key->isPressed ? "true" : "false"),
-        (key->wasReleasedThisFrame ? "true" : "false"));
+        (key->pressed_this_frame ? "true" : "false"),
+        (key->is_pressed ? "true" : "false"),
+        (key->released_this_frame ? "true" : "false"));
 }
 
 void PrintKeyboard(ecs_world_t *world)

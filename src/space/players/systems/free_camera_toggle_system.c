@@ -18,7 +18,7 @@ void FreeCameraToggleSystem(ecs_iter_t *it)
         for (int j = 0; j < cameraIter.count; j++)
         {
             FreeRoam *freeRoam = &freeRoams[j];
-            if (mouse->left.wasPressedThisFrame)
+            if (mouse->left.pressed_this_frame)
             {
                 if (freeRoam->value == 0)
                 {
@@ -51,7 +51,7 @@ void FreeCameraDisableMovementSystem(ecs_iter_t *it)
         for (int j = 0; j < playerIter.count; j++)
         {
             DisableMovement *disableMovement = &disableMovements[j];
-            if (mouse->left.wasPressedThisFrame)
+            if (mouse->left.pressed_this_frame)
             {
                 disableMovement->value = !disableMovement->value;
                 // printf("DisableMovement Toggled [%s]\n", disableMovement->value ? "true" : "false");

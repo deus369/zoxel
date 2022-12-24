@@ -15,7 +15,7 @@ void DraggerEndSystem(ecs_iter_t *it)
         }
         DraggingDelta *draggingDelta = &draggingDeltas[i];
         const Mouse *mouse = ecs_get(it->world, draggerLink->value, Mouse);
-        if (mouse->left.wasReleasedThisFrame)
+        if (mouse->left.released_this_frame)
         {
             DragableState *dragableState = &dragableStates[i];
             dragableState->value = 0;

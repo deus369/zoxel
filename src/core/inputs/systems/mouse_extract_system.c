@@ -19,15 +19,15 @@ void SetMouseKey(PhysicalButton *key, int eventType)
 {
     bool keyDown = eventType == SDL_MOUSEBUTTONDOWN;
     bool keyReleased = eventType == SDL_MOUSEBUTTONUP;
-    key->wasPressedThisFrame = keyDown;
-    key->wasReleasedThisFrame = keyReleased;
+    key->pressed_this_frame = keyDown;
+    key->released_this_frame = keyReleased;
     if (keyDown)
     {
-        key->isPressed = true;
+        key->is_pressed = true;
     }
     else if (keyReleased)
     {
-        key->isPressed = false;
+        key->is_pressed = false;
     }
 }
 

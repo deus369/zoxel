@@ -12,7 +12,7 @@ void ElementActivateSystem(ecs_iter_t *it)
             continue;
         }
         const Mouse *mouse = &mouses[i];
-        if (mouse->left.wasPressedThisFrame)
+        if (mouse->left.pressed_this_frame)
         {
             // if (ecs_has(it->world, raycasterTarget->value, CloseButton))
             //  printf("Clicked UI: [%lu]\n", (long int) raycasterTarget->value);

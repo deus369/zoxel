@@ -18,27 +18,27 @@ void FreeCameraMoveSystem(ecs_iter_t *it)
     {
         const Keyboard *keyboard = &keyboards[i];
         float3 movement = { 0, 0, 0 };
-        if (keyboard->a.isPressed)
+        if (keyboard->a.is_pressed)
         {
             movement.x = -1;
         }
-        if (keyboard->d.isPressed)
+        if (keyboard->d.is_pressed)
         {
             movement.x = 1;
         }
-        if (keyboard->w.isPressed)
+        if (keyboard->w.is_pressed)
         {
             movement.z = -1;
         }
-        if (keyboard->s.isPressed)
+        if (keyboard->s.is_pressed)
         {
             movement.z = 1;
         }
-        if (keyboard->q.isPressed)
+        if (keyboard->q.is_pressed)
         {
             movement.y = -1;
         }
-        if (keyboard->e.isPressed)
+        if (keyboard->e.is_pressed)
         {
             movement.y = 1;
         }
@@ -46,7 +46,7 @@ void FreeCameraMoveSystem(ecs_iter_t *it)
         {
             // printf("Bob Accel %f x %f \n", movement.x, movement.y);
             movement = float3_multiply_float(movement, movement_power);
-            if (keyboard->left_shift.isPressed)
+            if (keyboard->left_shift.is_pressed)
             {
                 movement.x *= 4;
                 movement.y *= 4;
@@ -70,7 +70,7 @@ void FreeCameraMoveSystem(ecs_iter_t *it)
                 }
             }
         }
-        if (keyboard->r.wasPressedThisFrame)
+        if (keyboard->r.pressed_this_frame)
         {
             for (int j = 0; j < cameras_it.count; j++)
             {
@@ -82,7 +82,7 @@ void FreeCameraMoveSystem(ecs_iter_t *it)
 }
 ECS_SYSTEM_DECLARE(FreeCameraMoveSystem);
 
-        /*if (keyboard->x.wasPressedThisFrame)
+        /*if (keyboard->x.pressed_this_frame)
         {
             for (int j = 0; j < cameraIter.count; j++)
             {
@@ -90,7 +90,7 @@ ECS_SYSTEM_DECLARE(FreeCameraMoveSystem);
                 rotation->value = quaternion_from_euler( (float3) { 0 * degreesToRadians, 90 * degreesToRadians, 0 * degreesToRadians });
             }
         }*/
-        /*if (keyboard->v.wasPressedThisFrame)
+        /*if (keyboard->v.pressed_this_frame)
         {
             for (int j = 0; j < cameraIter.count; j++)
             {
@@ -98,7 +98,7 @@ ECS_SYSTEM_DECLARE(FreeCameraMoveSystem);
                 rotation->value = quaternion_from_euler( (float3) { 0 * degreesToRadians, -90 * degreesToRadians, 0 * degreesToRadians });
             }
         }
-        if (keyboard->b.wasPressedThisFrame)
+        if (keyboard->b.pressed_this_frame)
         {
             printf("Rotating Upwards");
             for (int j = 0; j < cameraIter.count; j++)
@@ -107,7 +107,7 @@ ECS_SYSTEM_DECLARE(FreeCameraMoveSystem);
                 rotation->value = quaternion_from_euler( (float3) { -90 * degreesToRadians, 0 * degreesToRadians, 0 * degreesToRadians });
             }
         }
-        if (keyboard->n.wasPressedThisFrame)
+        if (keyboard->n.pressed_this_frame)
         {
             printf("Rotating Downwards");
             for (int j = 0; j < cameraIter.count; j++)
