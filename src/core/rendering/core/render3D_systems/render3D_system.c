@@ -49,16 +49,16 @@ void Render3DSystem(ecs_iter_t *it)
 }
 ECS_SYSTEM_DECLARE(Render3DSystem);
 
-            /*for (int j = 0; j < main_cameras_count; j++)
-            {
-                ecs_entity_t camera_entity = main_cameras[j];
-                if (!ecs_is_valid(world, camera_entity))
-                {
-                    continue;
-                }
-                // printf("Rendering! [%i]\n", j);
-                opengl_set_camera_view_matrix(materialGPULink->value,
-                    ecs_get(world, camera_entity, ViewMatrix)->value);
-                opengl_draw_triangles(meshIndicies2->length);
-            }*/
-            // printf("Render3DSystem [%lu]\n", (long int) it->entities[i]);
+/*for (int j = 0; j < main_cameras_count; j++)
+{
+    ecs_entity_t camera_entity = main_cameras[j];
+    if (!ecs_is_valid(world, camera_entity))
+    {
+        continue;
+    }
+    // printf("Rendering! [%i]\n", j);
+    opengl_set_camera_view_matrix(materialGPULink->value,
+        ecs_get(world, camera_entity, ViewMatrix)->value);
+    opengl_draw_triangles(meshIndicies2->length);
+}*/
+// printf("Render3DSystem [%lu]\n", (long int) it->entities[i]);

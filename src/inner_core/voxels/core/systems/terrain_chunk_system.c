@@ -1,6 +1,8 @@
-const unsigned char terrain_min_height = 16;
-const float terrain_amplifier = 32.0f;
-const float terrain_frequency = 0.009f; // 0.006f;
+const unsigned char terrain_min_height = 8;
+const double terrain_amplifier = 120.0;
+const double terrain_frequency = 0.004216;
+const int terrain_octaves = 12;
+const uint32_t terrain_seed = 32666;
 
 int3 voxel_chunk_position(int3 chunk_position, int3 chunk_size)
 {
@@ -38,6 +40,7 @@ int3 voxel_chunk_position_xz(int3 chunk_position, int3 chunk_size)
 //! Our function that creates a chunk.
 void GenerateChunkTerrain(Chunk* chunk, const int3 chunkSize, const int3 chunkPosition)
 {
+    // srand(666);
     int3 local_position;
     int3 global_position;
     int3 chunk_position_offset = voxel_chunk_position_xz(chunkPosition, chunkSize);
@@ -50,8 +53,13 @@ void GenerateChunkTerrain(Chunk* chunk, const int3 chunkSize, const int3 chunkPo
             // printf("global_position [%ix%ix%i]\n", global_position.x, global_position.y, global_position.z);
             // printf("global_position: [%fx%fx%f]\n", global_position.x, global_position.y, global_position.z);
             float2 noise_point = float2_from_int2((int2) { global_position.x, global_position.z });
+            noise_point.x += 3200;
+            noise_point.y += 3200;
             int terrain_height2 = terrain_min_height +
-                int_floor(terrain_amplifier * simplex_fun_2D(noise_point, terrain_frequency));
+                // int_floor(terrain_amplifier * simplex_fun_2D(noise_point, terrain_frequency));
+                // int_floor(terrain_amplifier * perlin_noise(noise_point.x, noise_point.y, terrain_frequency, seed));
+                int_floor(terrain_amplifier * perlin_terrain(noise_point.x, noise_point.y,
+                    terrain_frequency, terrain_seed, terrain_octaves));
                 // int_floor(terrain_amplifier * generate_noise_2D(noise_point, terrain_frequency));
             if (terrain_height2 < terrain_min_height)
             {

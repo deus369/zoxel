@@ -24,18 +24,6 @@ void set_mesh_vertices_world_scale2D(ecs_world_t *world, ecs_entity_t e, const f
     ecs_modified(world, e, MeshVertices2D);
 }
 
-void set_mesh_uvs(ecs_world_t *world, ecs_entity_t e, const float2 uvs[], int length)
-{
-    MeshUVs *meshUVs = ecs_get_mut(world, e, MeshUVs);
-    re_initialize_memory_component(meshUVs, float2, length);
-    for (int i = 0; i < length; i++)
-    {
-        meshUVs->value[i] = uvs[i];
-    }
-    // memcpy(meshUVs->value, uvs, length);
-    ecs_modified(world, e, MeshUVs);
-}
-
 void set_mesh_vertices_world(ecs_world_t *world, ecs_entity_t e, const float3 vertices[], int length)
 {
     MeshVertices *meshVertices = ecs_get_mut(world, e, MeshVertices);
@@ -49,13 +37,22 @@ void set_mesh_vertices_world(ecs_world_t *world, ecs_entity_t e, const float3 ve
 
 void set_mesh_indicies(MeshIndicies* meshIndicies, const int indicies[], int length)
 {
-    printf("2 - MeshIndicies: %i\n", meshIndicies->length);
+    // printf("2 - MeshIndicies: %i\n", meshIndicies->length);
     re_initialize_memory_component(meshIndicies, int, length);
     for (int i = 0; i < meshIndicies->length; i++)
     {
         meshIndicies->value[i] = indicies[i];
     }
 }
+
+/*void set_mesh_uvs(ecs_world_t *world, ecs_entity_t e, const float2 uvs[], int length)
+{
+    const int byte_size = 8;    // float2 byte size
+    MeshUVs *meshUVs = ecs_get_mut(world, e, MeshUVs);
+    re_initialize_memory_component(meshUVs, float2, length);
+    memcpy(meshUVs->value, uvs, length * byte_size);
+    ecs_modified(world, e, MeshUVs);
+}*/
 
 /*void set_mesh_vertices(MeshVertices* meshVertices, const float3 vertices[], int length)
 {

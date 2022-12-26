@@ -209,7 +209,7 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
         const PixelSize *pixelSize = ecs_get(world, e, PixelSize);
         float2 scaledSize2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
         set_mesh_vertices_world_scale2D(world, e, square_vertices, 4, scaledSize2D);  // scale the mesh
-        set_mesh_uvs(world, e, square_vertices, 4);
+        // set_mesh_uvs(world, e, square_vertices, 4);
         ecs_set(world, e, MeshDirty, { 1 });
         #ifdef debug_ui_scaling
         zoxel_log_arg("        -> Scaling: [%fx%f]\n", scaledSize2D.x, scaledSize2D.y);

@@ -11,8 +11,8 @@ void add_ui_mesh_components(ecs_world_t *world, ecs_entity_t e)
     zoxel_add(world, e, MeshUVs);
     // Why can't i just set in prefab and reuse same memory array? write a test for this
     // set_mesh_uvs(world, e, square_vertices, 4);
-    /*MeshUVs meshUVs = { };
+    MeshUVs meshUVs = { };
     initialize_memory_component_non_pointer(meshUVs, float2, 4);
-    memcpy(meshUVs.value, square_vertices, 4);
-    ecs_set(world, e, MeshUVs, { meshUVs.length, meshUVs.value });*/
+    memcpy(meshUVs.value, square_vertices, 4 * 8);
+    ecs_set(world, e, MeshUVs, { meshUVs.length, meshUVs.value });
 }

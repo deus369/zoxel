@@ -32,11 +32,7 @@ ecs_entity_t spawn_vox_from_file(ecs_world_t *world, vox_file *vox, float3 posit
     int colors_length = vox->palette.chunk_content / 4;
     Colors colors = { };
     initialize_memory_component_non_pointer(colors, color, colors_length);
-    for (int i = 0; i < colors_length; i++)
-    {
-        colors.value[i] = vox->palette.values[i];
-    }
-    // memcpy(colors.value, vox->palette.values, colors_length);
+    memcpy(colors.value, vox->palette.values, colors_length * 4);
     ecs_set(world, e, Colors, { colors.length, colors.value });
     float4 rotationer = quaternion_from_euler( (float3) { 0, 0.2f * degreesToRadians, 0 });
     zoxel_set(world, e, EternalRotation, { rotationer });
