@@ -1,15 +1,24 @@
 #!/bin/bash
 
-file_name=zoxel
+zoxel_install_directory=/usr/games/zoxel
 shortcut_file_name=zoxel.desktop
+shortcut_directory=/usr/share/applications # $HOME/.local/share/applications
 
 # In directory [$pwd] - 
 echo "Uninstalling Zoxel"
-echo "Removing [/usr/games/$file_name]"
-sudo rm /usr/games/$file_name
-echo "Removing [/usr/games/zoxel_icon.png]"
-sudo rm /usr/games/zoxel_icon.png
-echo "Removing [$HOME/.local/share/applications/$shortcut_file_name]"
-sudo rm $HOME/.local/share/applications/$shortcut_file_name
+
+if [[ -d $zoxel_install_directory ]]; then
+    echo "  Removing Zoxel Directory at [$zoxel_install_directory]"
+    sudo rm -R $zoxel_install_directory
+else
+	echo "  Zoxel is not installed at [$zoxel_install_directory]"
+fi
+
+if [[ -f $shortcut_directory/$shortcut_file_name ]]; then
+    echo "  Removing Shortcut at [$shortcut_directory/$shortcut_file_name]"
+    sudo rm $shortcut_directory/$shortcut_file_name
+else
+	echo "  Zoxel Shortcut is not installed at [$zoxel_install_directory]"
+fi
 
 echo "Finished uninstalling Zoxel"

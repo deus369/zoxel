@@ -128,7 +128,7 @@ packages:
 	sudo apt install make gcc libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev
 
 install: ## installs zoxel into /usr/games directory
-	bash/install/install.sh
+	cd bash/install && ./install.sh
 
 uninstall: ## uninstalls zoxel into /usr/games directory
 	bash/install/uninstall.sh

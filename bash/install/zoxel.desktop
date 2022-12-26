@@ -4,5 +4,5 @@ Comment=A Voxely Game
 Categories=Game;
 Terminal=false
 Type=Application
-Exec=/usr/games/zoxel
-Icon=/usr/games/zoxel_icon.png
+Exec=bash -c 'cd /usr/games/zoxel && ./zoxel'
+Icon=/usr/games/zoxel/zoxel_icon.png
