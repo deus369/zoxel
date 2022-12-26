@@ -206,6 +206,38 @@ void render_entity_material2D_and_mesh(const float4x4 viewMatrix, GLuint2 mesh, 
     // glDisable(GL_DEPTH_TEST);
 }
 
+void opengl_upload_shader2D_textured(GLuint2 mesh_buffer, GLuint material_buffer,
+    const int *indicies, int indicies_length,
+    const float2 *verts, int verts_length,
+    const float2 *uvs, int uvs_length)
+{
+    MaterialTextured2D materialTextured2D = initialize_material2D_textured(material_buffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * 4, indicies, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, mesh_buffer.y);
+    int float_per_data = 4;
+    int floats_length = verts_length * float_per_data;
+    float combined_verts[floats_length];
+    for (int i = 0; i < verts_length; i++)
+    {
+        float2 vert = verts[i];
+        float2 uv = uvs[i];
+        combined_verts[i * float_per_data + 0] = vert.x;
+        combined_verts[i * float_per_data + 1] = vert.y;
+        combined_verts[i * float_per_data + 2] = uv.x;
+        combined_verts[i * float_per_data + 3] = uv.y;
+        // printf("[%i] uv: %fx%f\n", i, uv.x, uv.y);
+    }
+    glBufferData(GL_ARRAY_BUFFER, floats_length * 4, combined_verts, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(materialTextured2D.vertexPosition);
+    glEnableVertexAttribArray(materialTextured2D.vertexUV);
+    glVertexAttribPointer(materialTextured2D.vertexPosition, 2, GL_FLOAT, GL_FALSE, 4 * float_per_data, (GLvoid*)(0 * sizeof(float)));
+    glVertexAttribPointer(materialTextured2D.vertexUV, 2, GL_FLOAT, GL_FALSE, 4 * float_per_data, (GLvoid*)(2 * sizeof(float)));
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    // printf("Binding Data %i %i\n", indicies_length, verts_length);
+}
+
 // #ifdef zoxel_catch_opengl_errors
 //     GLenum err66 = glGetError();
 //     if (err66 != GL_NO_ERROR)

@@ -22,11 +22,23 @@ void Render3DSystem(ecs_iter_t *it)
         // printf(" - Rendering 3D Mesh [%lu]\n", (long int) it->entities[i]);
         if (opengl_set_material(materialGPULink->value))
         {
+            bool has_mesh_colors = ecs_has(world, it->entities[i], MeshColors);
             opengl_set_mesh(meshGPULink->value);
-            if (opengl_set_material3D_properties(materialGPULink->value,
-                position->value, rotation->value, scale1D->value, brightness->value) == -1)
+            if (!has_mesh_colors)
             {
-                return;
+                if (opengl_set_material3D_properties(materialGPULink->value,
+                    position->value, rotation->value, scale1D->value, brightness->value) == -1)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                if (opengl_set_material3D_colors_properties(materialGPULink->value,
+                    position->value, rotation->value, scale1D->value, brightness->value) == -1)
+                {
+                    return;
+                }
             }
             opengl_set_camera_view_matrix(materialGPULink->value, main_camera_matrix);
             opengl_draw_triangles(meshIndicies2->length);

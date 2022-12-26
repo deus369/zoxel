@@ -14,8 +14,7 @@ void add_gpu_mesh(ecs_world_t *world, ecs_entity_t prefab)
 extern GLuint2 spawn_gpu_mesh_buffers();
 void spawn_gpu_mesh(ecs_world_t *world, ecs_entity_t e)
 {
-    GLuint2 mesh_buffers = spawn_gpu_mesh_buffers();
-    ecs_set(world, e, MeshGPULink, { mesh_buffers });
+    ecs_set(world, e, MeshGPULink, { spawn_gpu_mesh_buffers() });
 }
 
 ECS_DTOR(MeshGPULink, ptr,

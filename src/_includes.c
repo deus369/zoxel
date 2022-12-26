@@ -32,6 +32,8 @@
 // #define zoxel_test_voxels
 // #define zoxel_test_uis
 // -- debugs --
+// #define zoxel_debug_vox_read
+// #define zoxel_catch_opengl_errors
 //! \todo Fix pathing for android, cannot get resources there.
 // #define zoxel_debug_pathing 
 // #define zoxel_debug_prefabs
@@ -39,7 +41,6 @@
 // #define debug_element_position_change_query
 // #define zoxel_debug_sdl
 // #define zoxel_debug_opengl
-// #define zoxel_catch_opengl_errors
 // #define debug_viewport_resize
 // #define zoxel_debug_element_raycasting
 // #define debug_ui_positioning

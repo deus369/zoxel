@@ -30,7 +30,7 @@ ecs_entity_t spawn_voxel_chunk_mesh(ecs_world_t *world, ecs_entity_t prefab, flo
     ecs_set(world, e, Position, { position });
     ecs_set(world, e, Scale1D, { scale });
     spawn_gpu_mesh(world, e);
-    spawn_gpu_material(world, e, shader3D_basic);
+    spawn_gpu_material(world, e, shader3D_colored);
     ecs_defer_end(world);
     return e;
 }

@@ -6,28 +6,25 @@ void add_voxel_face_uvs(MeshIndicies *meshIndicies, MeshVertices *meshVertices, 
     const float3 voxel_face_vertices[], int voxel_face_vertices_length,
     const float2 voxel_face_uvs[])
 {
-    int indicies_offset = start2.y / 3;
+    int indicies_offset = start2.y;
     for (int a = 0, b = start2.x; a < voxel_face_indicies_length; a++, b++)
     {
         meshIndicies->value[b] = indicies_offset + voxel_face_indicies[a];
     }
     // add verts
-    for (int a = 0, b = start2.y, c = start2.z; a < voxel_face_vertices_length; a++, b = b + 3, c = c + 2)
+    for (int a = 0, b = start2.y, c = start2.z; a < voxel_face_vertices_length; a++, b++, c++)
     {
         float3 vertex_position = voxel_face_vertices[a]; // (float3) { cubeVertices[a + 0], cubeVertices[a + 1], cubeVertices[a + 2] };
         vertex_position = float3_multiply_float(vertex_position, voxel_scale);          // scale vertex
         vertex_position = float3_add(vertex_position, vertex_position_offset);   // offset vertex by voxel position in chunk
         vertex_position = float3_add(vertex_position, center_mesh_offset);       // add total mesh offset
-        meshVertices->value[b + 0] = vertex_position.x;
-        meshVertices->value[b + 1] = vertex_position.y;
-        meshVertices->value[b + 2] = vertex_position.z;
+        meshVertices->value[b] = vertex_position;
         float2 uv = voxel_face_uvs[a];
-        meshUVs->value[c] = uv.x;
-        meshUVs->value[c + 1] = uv.y;
+        meshUVs->value[c] = uv;
     }
     start->x += voxel_face_indicies_length;
-    start->y += voxel_face_vertices_length * 3;
-    start->z += voxel_face_vertices_length * 2;
+    start->y += voxel_face_vertices_length;
+    start->z += voxel_face_vertices_length;
 }
 
 void build_chunk_mesh_uvs(const Chunk *chunk, const ChunkSize *chunkSize,
@@ -78,8 +75,8 @@ void build_chunk_mesh_uvs(const Chunk *chunk, const ChunkSize *chunkSize,
     }
     //! Create our index and vertex arrays
     re_initialize_memory_component(meshIndicies, int, indicies_count);
-    re_initialize_memory_component(meshVertices, float, verticies_count);
-    re_initialize_memory_component(meshUVs, float, uvs_count);
+    re_initialize_memory_component(meshVertices, float3, verticies_count);
+    re_initialize_memory_component(meshUVs, float2, uvs_count);
     for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++)
     {
         for (local_position.y = 0; local_position.y < chunkSize->value.y; local_position.y++)

@@ -14,8 +14,10 @@ ECS_DECLARE(ElementRender);
 //! Used to set the brightness of an entity.
 zoxel_component(Brightness, float);
 zoxel_memory_component(MeshIndicies, int);
-zoxel_memory_component(MeshVertices, float);
-zoxel_memory_component(MeshUVs, float);
+zoxel_memory_component(MeshVertices, float3);
+zoxel_memory_component(MeshVertices2D, float2);
+zoxel_memory_component(MeshUVs, float2);
+zoxel_memory_component(MeshColors, color);
 zoxel_state_component(MeshDirty);
 #include "components/MaterialGPULink.c"
 #include "components/TextureGPULink.c"
@@ -31,7 +33,9 @@ zoxel_component(EternalRotation, float4);
 #include "systems/eternal_rotation_system.c"
 // update systems
 #include "systems/mesh_update_system.c"
+#include "systems/mesh_colors_update_system.c"
 #include "systems/mesh_uvs_update_system.c"
+#include "systems/mesh2D_update_system.c"
 zoxel_reset_system(MeshDirtySystem, MeshDirty);
 // render 2D systems
 #include "render2D_systems/render2D_system.c"
@@ -58,7 +62,9 @@ void RenderingCoreImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, Brightness);
     zoxel_memory_component_define(world, MeshIndicies);
     zoxel_memory_component_define(world, MeshVertices);
+    zoxel_memory_component_define(world, MeshVertices2D);
     zoxel_memory_component_define(world, MeshUVs);
+    zoxel_memory_component_define(world, MeshColors);
     ECS_COMPONENT_DEFINE(world, MeshDirty);
     ECS_COMPONENT_DEFINE(world, MaterialGPULink);
     ECS_COMPONENT_DEFINE(world, TextureGPULink);
@@ -96,10 +102,19 @@ void RenderingCoreImport(ecs_world_t *world)
     // updates
     zoxel_system_main_thread(world, MeshUpdateSystem, EcsOnValidate,
         [in] MeshDirty, [in] MeshIndicies,[in] MeshVertices,
-        [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs);
+        [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColors);
+    zoxel_system_main_thread(world, Mesh2DUpdateSystem, EcsOnValidate,
+        [in] MeshDirty, [in] MeshIndicies,[in] MeshVertices2D,
+        [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColors);
     zoxel_system_main_thread(world, MeshUvsUpdateSystem, EcsOnValidate,
         [in] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshUVs,
-        [in] MeshGPULink, [in] MaterialGPULink);
+        [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshColors);
+    zoxel_system_main_thread(world, Mesh2DUvsUpdateSystem, EcsOnValidate,
+        [in] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshUVs,
+        [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshColors);
+    zoxel_system_main_thread(world, MeshColorsUpdateSystem, EcsOnValidate,
+        [in] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshColors,
+        [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs);
     zoxel_reset_system_define(MeshDirtySystem, MeshDirty);
 }
 #endif

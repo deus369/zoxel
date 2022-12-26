@@ -37,6 +37,8 @@ zoxel_component(RaycasterTarget, ecs_entity_t);
 zoxel_component(Layer2D, unsigned char);
 //! A generic entity color.
 zoxel_component(Color, color);
+//! A generic entity colors.
+zoxel_memory_component(Colors, color);
 // systems
 zoxel_reset_system(EntityDirtyResetSystem, EntityDirty)
 zoxel_reset_system(ClickableStateResetSystem, ClickableState)
@@ -63,6 +65,7 @@ void GenericImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, EntityInitialize);
     ECS_COMPONENT_DEFINE(world, Layer2D);
     ECS_COMPONENT_DEFINE(world, Color);
+    zoxel_memory_component_define(world, Colors);
     zoxel_reset_system_define(EntityDirtyResetSystem, EntityDirty);
     zoxel_reset_system_define(ClickableStateResetSystem, ClickableState);
     zoxel_reset_system_define(EntityInitializeResetSystem, EntityInitialize);

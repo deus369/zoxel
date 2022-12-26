@@ -23,6 +23,14 @@ GLuint2 spawn_gpu_mesh_buffers()
     GLuint2 mesh;
     glGenBuffers(1, &mesh.x);
     glGenBuffers(1, &mesh.y);
+    #ifdef zoxel_catch_opengl_errors
+        GLenum err = glGetError();
+        if (err != GL_NO_ERROR)
+        {
+            zoxel_log_arg("GL ERROR with spawn_gpu_mesh_buffers [%i] - glGenBuffers\n",
+                (int) err);
+        }
+    #endif
     return mesh;
 }
 

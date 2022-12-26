@@ -33,7 +33,25 @@ GLuint spawn_gpu_material_program(const GLuint2 shader)
         return 0;
     }
     GLuint material = glCreateProgram();
+    #ifdef zoxel_catch_opengl_errors
+        GLenum err2 = glGetError();
+        if (err2 != GL_NO_ERROR)
+        {
+            zoxel_log_arg("GL ERROR with spawn_gpu_material_program [%i] - glCreateProgram\n",
+                (int) err2);
+            return -1;
+        }
+    #endif
     LinkShaderProgram(material, shader.x, shader.y);
+    #ifdef zoxel_catch_opengl_errors
+        GLenum err = glGetError();
+        if (err != GL_NO_ERROR)
+        {
+            zoxel_log_arg("GL ERROR with spawn_gpu_material_program [%i] - shader [%ix%i]\n",
+                (int) err, shader.x, shader.y);
+            return -1;
+        }
+    #endif
     return material;
 }
 

@@ -78,45 +78,6 @@ void opengl_disable_texture(bool isBlend)
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void opengl_upload_shader3D_textured(GLuint2 mesh_buffer, GLuint material_buffer,
-    const int *indicies, int indicies_length,
-    const float *verts, int verts_length,
-    const float *uvs, int uvs_length)
-{
-    Material3DTextured material3D = spawn_material3D_textured(material_buffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * 4, indicies, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, mesh_buffer.y);
-    // glEnableVertexAttribArray(material3D.vertexPosition);
-    // glVertexAttribPointer(material3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 12, 0);
-    //! This recreates vertex data during upload
-    //! \todo Can I upload a non combined one? This isn't efficient.
-    int proper_verts_length = (verts_length / 3);
-    int floats_length = proper_verts_length * 5;
-    // \todo Even this size of array crashed web build! stackSize > 655360
-    /*if (floats_length > 15536) // 6)
-    {
-        printf("floats_length greater than 65536 [%i]\n", floats_length);
-    }*/
-    float combined_verts[floats_length];
-    for (int i = 0; i < proper_verts_length; i++)
-    {
-        combined_verts[i * 5 + 0] = verts[i * 3 + 0];
-        combined_verts[i * 5 + 1] = verts[i * 3 + 1];
-        combined_verts[i * 5 + 2] = verts[i * 3 + 2];
-        combined_verts[i * 5 + 3] = uvs[i * 2 + 0];
-        combined_verts[i * 5 + 4] = uvs[i * 2 + 1];
-    }
-    glBufferData(GL_ARRAY_BUFFER, floats_length * 4, combined_verts, GL_STATIC_DRAW);
-    glVertexAttribPointer(material3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 20, (GLvoid*)(0 * sizeof(float)));
-    glVertexAttribPointer(material3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 20, (GLvoid*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(material3D.vertexPosition);
-    glEnableVertexAttribArray(material3D.vertexUV);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    // printf("Binding Data %i %i\n", indicies_length, verts_length);
-}
-
 int opengl_set_material3D_uvs_properties(GLuint material,
     float3 position, float4 rotation, float scale, float brightness)
 {
@@ -144,6 +105,38 @@ int opengl_set_material3D_uvs_properties(GLuint material,
     return 0;
 }
 
+void opengl_upload_shader3D_textured(GLuint2 mesh_buffer, GLuint material_buffer,
+    const int *indicies, int indicies_length,
+    const float3 *verts, int verts_length,
+    const float2 *uvs, int uvs_length)
+{
+    Material3DTextured material3D = spawn_material3D_textured(material_buffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * 4, indicies, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, mesh_buffer.y);
+    int float_per_data = 5;
+    int floats_length = verts_length * float_per_data;
+    float combined_verts[floats_length];
+    for (int i = 0; i < verts_length; i++)
+    {
+        float3 vert = verts[i];
+        float2 uv = uvs[i];
+        combined_verts[i * float_per_data + 0] = vert.x;
+        combined_verts[i * float_per_data + 1] = vert.y;
+        combined_verts[i * float_per_data + 2] = vert.z;
+        combined_verts[i * float_per_data + 3] = uv.x;
+        combined_verts[i * float_per_data + 4] = uv.y;
+    }
+    glBufferData(GL_ARRAY_BUFFER, floats_length * 4, combined_verts, GL_STATIC_DRAW);
+    glVertexAttribPointer(material3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 4 * float_per_data, (GLvoid*)(0 * sizeof(float)));
+    glVertexAttribPointer(material3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 4 * float_per_data, (GLvoid*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(material3D.vertexPosition);
+    glEnableVertexAttribArray(material3D.vertexUV);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    // printf("Binding Data %i %i\n", indicies_length, verts_length);
+}
+
     /*glBufferData(GL_ARRAY_BUFFER, verts_length * 3, verts, GL_STATIC_DRAW);
     // uvs - combine with verts... this won't work?
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
@@ -153,3 +146,14 @@ int opengl_set_material3D_uvs_properties(GLuint material,
     // glBufferData(GL_ARRAY_BUFFER, uvs_length * 4, uvs, GL_STATIC_DRAW);
     // printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", mesh.x, mesh.y);
     // disable bindings
+
+    // glEnableVertexAttribArray(material3D.vertexPosition);
+    // glVertexAttribPointer(material3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 12, 0);
+    //! This recreates vertex data during upload
+    //! \todo Can I upload a non combined one? This isn't efficient.
+    // int proper_verts_length = verts_length; //  / 3);
+    // \todo Even this size of array crashed web build! stackSize > 655360
+    /*if (floats_length > 15536) // 6)
+    {
+        printf("floats_length greater than 65536 [%i]\n", floats_length);
+    }*/

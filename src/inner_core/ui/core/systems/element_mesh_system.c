@@ -14,15 +14,14 @@ void ElementMeshSystem(ecs_iter_t *it)
             const PixelSize *pixelSize = &pixelSizes[i];
             const CanvasLink *canvasLink = &canvasLinks[i];
             const PixelSize *canvasSize = ecs_get(world, canvasLink->value, PixelSize);
-            float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
             spawn_gpu_mesh(world, e);
             spawn_gpu_material(world, e, shader2D_textured);
             spawn_gpu_texture(world, e);
             set_mesh_indicies_world(world, e, square_indicies, 6);
-            float2 scaledSize2D = (float2) {
-                pixelSize->value.x / canvasSizef.y,
-                pixelSize->value.y / canvasSizef.y };
-            set_mesh_vertices_world_scale2D(world, e, squareTexturedVerts2, 16, scaledSize2D);  // scale the mesh
+            float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
+            float2 scaledSize2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
+            set_mesh_vertices_world_scale2D(world, e, square_vertices, 4, scaledSize2D);  // scale the mesh
+            set_mesh_uvs(world, e, square_vertices, 4);
             // printf("ElementMeshSystem [%lu]\n", (long int) e);
         }
     }

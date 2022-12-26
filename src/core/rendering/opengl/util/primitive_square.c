@@ -7,13 +7,13 @@ const int square_indicies[] =
 };
 
 // createt cube floats
-const float square_vertices[] =
+/*const float square_vertices[] =
 {
     -squareSize, -squareSize,
     -squareSize,  squareSize,
      squareSize,  squareSize,
      squareSize, -squareSize
-};
+};*/
 
 const float square_vertices2[] =
 {
@@ -54,6 +54,13 @@ const float squareTexturedVerts2[] = {
     0, 1,         0, 1,   // bottom right
     1, 1,         1, 1,   // bottom left
     1, 0,         1, 0    // top left 
+};
+
+const float2 square_vertices[] = {
+    { 0, 0 },       // top right
+    { 0, 1 },       // bottom right
+    { 1, 1 },       // bottom left
+    { 1, 0 }       // top left 
 };
 
 // positions  // texture coords

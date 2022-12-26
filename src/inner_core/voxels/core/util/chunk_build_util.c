@@ -110,8 +110,8 @@ zoxel_get_voxel_direction(front, z, true)   // creates get_voxel_front
     if (that_voxel == 0)\
     {\
         indicies_count += voxel_face_indicies_length;\
-        verticies_count += voxel_face_vertices_length * 3;\
-        uvs_count += voxel_face_vertices_length * 2;\
+        verticies_count += voxel_face_vertices_length;\
+        uvs_count += voxel_face_vertices_length;\
     }\
 }
 
@@ -121,8 +121,8 @@ zoxel_get_voxel_direction(front, z, true)   // creates get_voxel_front
     if (that_voxel == 0)\
     {\
         indicies_count += voxel_face_indicies_length;\
-        verticies_count += voxel_face_vertices_length * 3;\
-        uvs_count += voxel_face_vertices_length * 2;\
+        verticies_count += voxel_face_vertices_length;\
+        uvs_count += voxel_face_vertices_length;\
     }\
 }
 
@@ -189,7 +189,7 @@ zoxel_get_voxel_direction(front, z, true)   // creates get_voxel_front
     if (that_voxel == 0)\
     {\
         indicies_count += voxel_face_indicies_length;\
-        verticies_count += voxel_face_vertices_length * 3;\
+        verticies_count += voxel_face_vertices_length * 1;\
     }\
 }
 

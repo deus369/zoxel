@@ -22,7 +22,7 @@ void add_ui_plus_components(ecs_world_t *world, ecs_entity_t e)
     add_transform2Ds(world, e);
     add_ui_components(world, e);
     add_texture(world, e, (int2) { });
-    add_unique_mesh_components(world, e);
+    add_ui_mesh_components(world, e);
     zoxel_set(world, e, MeshDirty, { 1 });
 }
 
@@ -133,21 +133,6 @@ float2 initialize_ui_components(ecs_world_t *world, ecs_entity_t e, ecs_entity_t
     ecs_set(world, e, Layer2D, { layer });
     ecs_set(world, e, Position2D, { position2D });
     ecs_set(world, e, CanvasPixelPosition, { global_pixel_position });
-    // spawn_gpu_mesh(world, e);
-    // spawn_gpu_material(world, e, shader2D_textured);
-    // spawn_gpu_texture(world, e);
-    // set_mesh_indicies_world(world, e, square_indicies, 6);
-    // float2 scaledSize2D = (float2) { pixel_size.x / canvasSizef.y, pixel_size.y / canvasSizef.y };
-    // set_mesh_vertices_world_scale2D(world, e, squareTexturedVerts2, 16, scaledSize2D);  // scale the mesh
-    // printf("Layer: %i\n", layer);
-    // printf("> global_pixel_position [%ix%i] :: [%ix%i] -- [%fx%f]\n",
-    //     global_pixel_position.x, global_pixel_position.y,
-    //     size.x, size.y,
-    //     position2D.x, position2D.y);
-    // printf("> initialize_ui_components [%lu]\n", (long int) e);
-    //#ifdef debug_ui_scaling
-    //printf("    -> Scaling: [%fx%f]\n", scaledSize2D.x, scaledSize2D.y);
-    //#endif
     return position2D;
 }
 
@@ -219,11 +204,12 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
         zoxel_log_arg("UI doesn't have pixel position: %lu\n", (long int) e);
     }
     //! Resize (if visible)
-    if (is_valid && ecs_has(world, e, MeshVertices))
+    if (is_valid && ecs_has(world, e, MeshVertices2D))
     {
         const PixelSize *pixelSize = ecs_get(world, e, PixelSize);
         float2 scaledSize2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
-        set_mesh_vertices_world_scale2D(world, e, squareTexturedVerts2, 16, scaledSize2D);  // scale the mesh
+        set_mesh_vertices_world_scale2D(world, e, square_vertices, 4, scaledSize2D);  // scale the mesh
+        set_mesh_uvs(world, e, square_vertices, 4);
         ecs_set(world, e, MeshDirty, { 1 });
         #ifdef debug_ui_scaling
         zoxel_log_arg("        -> Scaling: [%fx%f]\n", scaledSize2D.x, scaledSize2D.y);
@@ -258,3 +244,18 @@ void uis_on_viewport_resized(ecs_world_t *world, int width, int height)
         set_ui_transform(world, e, main_canvas, 0, canvas_size);
     }
 }
+    // spawn_gpu_mesh(world, e);
+    // spawn_gpu_material(world, e, shader2D_textured);
+    // spawn_gpu_texture(world, e);
+    // set_mesh_indicies_world(world, e, square_indicies, 6);
+    // float2 scaledSize2D = (float2) { pixel_size.x / canvasSizef.y, pixel_size.y / canvasSizef.y };
+    // set_mesh_vertices_world_scale2D(world, e, squareTexturedVerts2, 16, scaledSize2D);  // scale the mesh
+    // printf("Layer: %i\n", layer);
+    // printf("> global_pixel_position [%ix%i] :: [%ix%i] -- [%fx%f]\n",
+    //     global_pixel_position.x, global_pixel_position.y,
+    //     size.x, size.y,
+    //     position2D.x, position2D.y);
+    // printf("> initialize_ui_components [%lu]\n", (long int) e);
+    //#ifdef debug_ui_scaling
+    //printf("    -> Scaling: [%fx%f]\n", scaledSize2D.x, scaledSize2D.y);
+    //#endif

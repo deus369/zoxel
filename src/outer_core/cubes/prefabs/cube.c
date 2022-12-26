@@ -30,7 +30,7 @@ ecs_entity_t spawn_cube(ecs_world_t *world, ecs_entity_t prefab, float3 position
     float4 rotationer = quaternion_from_euler( (float3) { 0.1f * degreesToRadians, 0.2f * degreesToRadians, 0 });
     zoxel_set(world, e, EternalRotation, { rotationer });
     spawn_gpu_mesh(world, e);
-    spawn_gpu_material(world, e, shader3D_basic);
+    spawn_gpu_material(world, e, shader3D);
     set_mesh_indicies_world(world, e, cubeIndicies, 36);
     set_mesh_vertices_world(world, e, cubeVertices, 24);
     ecs_defer_end(world);

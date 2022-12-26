@@ -46,6 +46,7 @@ zoxel_reset_system(ChunkDirtyResetSystem, ChunkDirty);
 #include "systems/terrain_chunk_system.c"
 #include "systems/animate_chunk_system.c"
 #include "systems/chunk_build_system.c"
+#include "systems/chunk_colors_build_system.c"
 #include "systems/chunk_uvs_build_system.c"
 
 int get_chunk_index(int i, int j, int terrain_rows)
@@ -80,10 +81,17 @@ void define_voxels_core_systems(ecs_world_t *world)
     // EcsOnValidate? why not working?
     zoxel_filter(generateChunkQuery, world, [in] GenerateChunk);
     zoxel_system_ctx(world, ChunkBuildSystem, EcsOnUpdate, generateChunkQuery,
-        [in] ChunkDirty, [in] Chunk, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices, [out] MeshDirty, [none] !MeshUVs);
+        [in] ChunkDirty, [in] Chunk, [in] ChunkSize,
+        [out] MeshIndicies, [out] MeshVertices, [out] MeshDirty,
+        [none] !MeshUVs, [none] !MeshColors);
+    zoxel_system_ctx(world, ChunkColorsBuildSystem, EcsOnUpdate, generateChunkQuery,
+        [in] ChunkDirty, [in] Chunk, [in] ChunkSize, [in] Colors,
+        [out] MeshIndicies, [out] MeshVertices, [out] MeshColors, [out] MeshDirty,
+        [none] !MeshUVs);
     zoxel_system_ctx(world, ChunkUVsBuildSystem, EcsOnUpdate, generateChunkQuery,
         [in] ChunkDirty, [in] Chunk, [in] ChunkSize, [in] ChunkNeighbors,
-        [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty);
+        [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty,
+        [none] !MeshColors);
     zoxel_reset_system_define(GenerateChunkResetSystem, GenerateChunk);
     zoxel_reset_system_define(ChunkDirtyResetSystem, ChunkDirty);
 }

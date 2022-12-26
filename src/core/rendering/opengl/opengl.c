@@ -26,9 +26,9 @@
 #include "data/material3D_textured.c"
 #include "rendering/unique3D_material.c"
 #include "rendering/shader3D_textured.c"
-
-// #include "shaders/terrain.vert"
-// #include "shaders/terrain.frag"
+// material3D_colored
+#include "data/material3D_colored.c"
+#include "rendering/shader3D_colored.c"
 
 int load_all_shaders()
 {
@@ -44,10 +44,22 @@ int load_all_shaders()
     {
         printf("Error [load_shader3D_basic]\n");
     }
+    if (load_shader3D_colored() != 0)
+    {
+        printf("Error [load_shader3D_colored]\n");
+    }
     if (load_shader3D_textured())
     {
         printf("Error [load_shader3D_textured]\n");
     }
+    #ifdef zoxel_catch_opengl_errors
+        GLenum err = glGetError();
+        if (err != GL_NO_ERROR)
+        {
+            zoxel_log_arg("GL ERROR with load_all_shaders [%i]\n", err);
+            return false;
+        }
+    #endif
     return 0;
 }
 
@@ -58,6 +70,7 @@ void dispose_opengl()
     dispose_shader2D_textured();
     DisposeInstanced3DMaterial();
     dispose_shader3D_textured();
+    dispose_shader3D_colored();
 // #ifdef zoxel_catch_opengl_errors
 //     GLenum err7 = glGetError();
 //     if (err7 != GL_NO_ERROR)
