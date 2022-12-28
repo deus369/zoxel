@@ -27,8 +27,6 @@ void boot_zoxel_game(ecs_world_t *world)
             quaternion_identity(), screen_dimensions2, (int2) { screen_dimensions2.x, 0 });
     }
     spawn_ui_camera(world, screen_dimensions2);
-    // spawn devices
-    spawn_connected_devices(world);
     // spawn font, canvas and ui
     spawn_font_style(world);
     spawn_canvas(world, screen_dimensions2);
@@ -45,7 +43,12 @@ void boot_zoxel_game(ecs_world_t *world)
     #ifdef zoxel_test_uis
     spawn_test_uis(world);   // spawns test ui
     #endif
-    // spawn_player_character3D(world, get_main_camera());
     spawn_zoxel_main_menu(world);
     fps_display = spawn_fps_display(world, main_canvas, 32);
+    if (!headless)
+    {
+        // spawn devices
+        spawn_connected_devices(world);
+        // spawn_player_character3D(world, get_main_camera());
+    }
 }

@@ -8,7 +8,10 @@
 void SpaceImport(ecs_world_t *world)
 {
     ECS_MODULE(world, Space);
-    ECS_IMPORT(world, Players);
+    if (!headless)
+    {
+        ECS_IMPORT(world, Players);
+    }
     // ECS_IMPORT(world, Realms);
 }
 #endif

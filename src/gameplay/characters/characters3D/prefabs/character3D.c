@@ -13,10 +13,10 @@ void spawn_prefab_character3D(ecs_world_t *world)
     zoxel_add_tag(world, e, Frictioned);
     // ecs_remove(world, e, AnimateChunk);
     ecs_defer_end(world);
-    character3D_prefab = e;
     #ifdef zoxel_debug_prefabs
     zoxel_log_arg("spawn_prefab character3D [%lu].\n", (long int) (e));
     #endif
+    character3D_prefab = e;
 }
 
 // ecs_entity_t e = ecs_new_prefab(world, "character3D_prefab");

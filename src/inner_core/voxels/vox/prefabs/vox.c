@@ -6,11 +6,14 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world)
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, voxel_prefab);
     ecs_add_id(world, e, EcsPrefab);
     ecs_set_name(world, e, "prefab_vox");
-    zoxel_add(world, e, MeshColors);
     zoxel_set(world, e, GenerateChunk, { 0 });
     zoxel_set(world, e, ChunkDirty, { 1 });
     zoxel_add(world, e, EternalRotation);
     zoxel_add(world, e, Colors);
+    if (!headless)
+    {
+        zoxel_add(world, e, MeshColors);
+    }
     ecs_defer_end(world);
     prefab_vox = e;
     return e;

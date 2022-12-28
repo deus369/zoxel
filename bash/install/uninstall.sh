@@ -2,7 +2,8 @@
 
 zoxel_install_directory=/usr/games/zoxel
 shortcut_file_name=zoxel.desktop
-shortcut_directory=/usr/share/applications # $HOME/.local/share/applications
+# shortcut_directory=/usr/share/applications
+shortcut_directory=$HOME/.local/share/applications
 
 # In directory [$pwd] - 
 echo "Uninstalling Zoxel"

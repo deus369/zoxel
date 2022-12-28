@@ -8,7 +8,7 @@ void ExitGameButtonSystem(ecs_iter_t *it)
         const ClickableState *clickableState = &clickableStates[i];
         if (clickableState->value == 1)
         {
-            quit();
+            exit_game();
         }
     }
 }

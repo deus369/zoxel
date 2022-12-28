@@ -5,7 +5,6 @@ int ui_entities_count = 0;
 void add_ui_components(ecs_world_t *world, ecs_entity_t e)
 {
     zoxel_add_tag(world, e, Element);
-    zoxel_add_tag(world, e, ElementRender);
     zoxel_set(world, e, PixelPosition, { { } });
     zoxel_set(world, e, PixelSize, { { } });
     zoxel_set(world, e, CanvasPixelPosition, { { } });
@@ -13,6 +12,10 @@ void add_ui_components(ecs_world_t *world, ecs_entity_t e)
     zoxel_set(world, e, CanvasLink, { });
     zoxel_set(world, e, Layer2D, { 0 });
     zoxel_set(world, e, EntityInitialize, { 1 });
+    if (!headless)
+    {
+        zoxel_add_tag(world, e, ElementRender);
+    }
 }
 
 void add_ui_plus_components(ecs_world_t *world, ecs_entity_t e)
@@ -22,8 +25,11 @@ void add_ui_plus_components(ecs_world_t *world, ecs_entity_t e)
     add_transform2Ds(world, e);
     add_ui_components(world, e);
     add_texture(world, e, (int2) { });
-    add_ui_mesh_components(world, e);
-    zoxel_set(world, e, MeshDirty, { 1 });
+    if (!headless)
+    {
+        add_ui_mesh_components(world, e);
+        zoxel_set(world, e, MeshDirty, { 1 });
+    }
 }
 
 void add_ui_plus_components_invisible(ecs_world_t *world, ecs_entity_t e)
@@ -204,7 +210,7 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
         zoxel_log_arg("UI doesn't have pixel position: %lu\n", (long int) e);
     }
     //! Resize (if visible)
-    if (is_valid && ecs_has(world, e, MeshVertices2D))
+    if (!headless && is_valid && ecs_has(world, e, MeshVertices2D))
     {
         const PixelSize *pixelSize = ecs_get(world, e, PixelSize);
         float2 scaledSize2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };

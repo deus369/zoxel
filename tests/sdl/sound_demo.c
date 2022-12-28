@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include<unistd.h>
 
-bool quit = false;
+bool running = true;
 const int sounds_length = 4;
 const char *sound_file_names[] = {
 	"resources/sounds/scratch.wav",
@@ -85,7 +85,7 @@ int main( int argc, char* args[] )
 		print_help();
 		printf("---------------\n");
 		printf("Input Command: ");
-		while(!quit)
+		while(running)
 		{
 			char input = getchar( );
 			if (input == '\n')
@@ -94,7 +94,7 @@ int main( int argc, char* args[] )
 			}
 			else if (input == 'q')
 			{
-				quit = true;
+				running = false;
 			}
 			else if (input == 'h')
 			{

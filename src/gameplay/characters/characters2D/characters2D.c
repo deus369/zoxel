@@ -1,6 +1,5 @@
 #ifndef zoxel_characters2D
 #define zoxel_characters2D
-//! players Module
 
 const int spawnCharacter2DsCount = 64;
 const int2 character2DTextureSize = { 16, 16 };
@@ -12,17 +11,9 @@ zoxel_component(Character2DLink, ecs_entity_t);
 #include "prefabs/character2D.c"
 // util
 #include "util/character2D.c"
+#include "util/spawn_many.c"
 // systems
 #include "systems/BobSpawnSystem.c"
-
-//! Testing, spawn more!
-void spawn_many_characters()
-{
-    for (int i = 0; i < spawnCharacter2DsCount; i++)
-    {
-        spawn_character2D(world, character2D_prefab, (float2) { -0.5f + (rand() % 100) * 0.2f, -0.5f + (rand() % 100) * 0.2f });
-    }
-}
 
 //! A module for 2 dimensional characters.
 void Characters2DImport(ecs_world_t *world)
@@ -35,17 +26,4 @@ void Characters2DImport(ecs_world_t *world)
     spawn_many_characters();
     #endif
 }
-
-// ecs_entity_t first_character;
-// for (int i = 0; i < spawnCharacter2DsCount; i++)
-// {
-//     ecs_entity_t e = spawn_character2D(world, character2D_prefab, (float2) { -0.5f + (rand() % 100) * 0.2f, -0.5f + (rand() % 100) * 0.2f });
-//     if (i == 0)
-//     {
-//         first_character = e;
-//         printf("Inside Loop - MaterialGPULink [%lu] : %i\n", (long int) first_character, ecs_get(world, first_character, MaterialGPULink)->value);
-//     }
-// }
-// printf("Outside Loop - MaterialGPULink [%lu] : %i\n", (long int) first_character, ecs_get(world, first_character, MaterialGPULink)->value);
-
 #endif

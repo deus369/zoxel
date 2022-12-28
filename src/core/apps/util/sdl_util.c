@@ -123,6 +123,7 @@ void PrintHelpMenu(const char* arg0)
     zoxel_log("    Options:\n");
     zoxel_log("\n");
     zoxel_log("        -h --help        print this help\n");
+    zoxel_log("        -z --headless       enable headless\n");
     zoxel_log("        -f --fullscreen  fullscreen window\n");
     zoxel_log("        -g --halfscreen  halfscreen window\n");
     zoxel_log("        -s --splitscreen split screen local coop\n");
@@ -295,15 +296,6 @@ SDL_Window* spawn_sdl_window()
     return window;
 }
 
-//! Quits the application from running indefinitely.
-void quit()
-{
-    running = false;
-    #ifdef WEB_BUILD
-    emscripten_cancel_main_loop();
-    #endif
-}
-
 extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event);
 extern void input_extract_from_sdl_per_frame(ecs_world_t *world);
 extern void resize_cameras(int width, int height);
@@ -325,7 +317,7 @@ void on_viewport_resized(ecs_world_t *world, int width, int height)
     uis_on_viewport_resized(world, width, height);
 }
 
-//! Polls SDL for input events. Also handles resize and window quit events.
+//! Polls SDL for input events. Also handles resize and window exit events.
 void update_sdl(ecs_world_t *world)
 {
     input_extract_from_sdl_per_frame(world);
@@ -337,7 +329,7 @@ void update_sdl(ecs_world_t *world)
         // handles application close button
         if (eventType == SDL_QUIT)
         {
-            quit();
+            exit_game();
         }
         // redo this
         else if (eventType == SDL_KEYUP)
@@ -345,7 +337,7 @@ void update_sdl(ecs_world_t *world)
             SDL_Keycode key = event.key.keysym.sym;
             if (key == SDLK_ESCAPE) 
             {
-                quit();
+                exit_game();
             }
         }
         else if (eventType == SDL_WINDOWEVENT)

@@ -8,22 +8,17 @@
 //      - Animate rotate the cube - for testing
 
 // Tags
-ECS_DECLARE(Mesh);
-ECS_DECLARE(ElementRender);
 // components
 //! Used to set the brightness of an entity.
-zoxel_component(Brightness, float);
 zoxel_memory_component(MeshIndicies, int);
 zoxel_memory_component(MeshVertices, float3);
 zoxel_memory_component(MeshVertices2D, float2);
 zoxel_memory_component(MeshUVs, float2);
 zoxel_memory_component(MeshColors, color);
-zoxel_state_component(MeshDirty);
 #include "components/MaterialGPULink.c"
 #include "components/TextureGPULink.c"
 #include "components/mesh_gpu_link.c"
 #include "components/uvs_gpu_link.c"
-zoxel_component(EternalRotation, float4);
 // util
 #include "util/mesh_util.c"
 #include "util/render_util.c"
@@ -56,21 +51,16 @@ void RenderingCoreImport(ecs_world_t *world)
 {
     ECS_MODULE(world, RenderingCore);
     // printf("Initializing rendering core.");
-    ECS_TAG_DEFINE(world, Mesh);
-    ECS_TAG_DEFINE(world, ElementRender);
     // components
-    ECS_COMPONENT_DEFINE(world, Brightness);
     zoxel_memory_component_define(world, MeshIndicies);
     zoxel_memory_component_define(world, MeshVertices);
     zoxel_memory_component_define(world, MeshVertices2D);
     zoxel_memory_component_define(world, MeshUVs);
     zoxel_memory_component_define(world, MeshColors);
-    ECS_COMPONENT_DEFINE(world, MeshDirty);
     ECS_COMPONENT_DEFINE(world, MaterialGPULink);
     ECS_COMPONENT_DEFINE(world, TextureGPULink);
     ECS_COMPONENT_DEFINE(world, MeshGPULink);
     ECS_COMPONENT_DEFINE(world, UvsGPULink);
-    ECS_COMPONENT_DEFINE(world, EternalRotation);
     // gpu destruction hooks
     ecs_set_hooks(world, MaterialGPULink, { .dtor = ecs_dtor(MaterialGPULink) });
     ecs_set_hooks(world, TextureGPULink, { .dtor = ecs_dtor(TextureGPULink) });

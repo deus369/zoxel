@@ -16,7 +16,7 @@ while [ $running ]; do
 	sleep 0.5
 	echo "	-> $run_command (or any) to build & run"
 	sleep 0.5
-	echo "	-> $quit_command to quit"
+	echo "	-> $quit_command to exit"
 	sleep 0.5
 	read -p "Enter a command: " command
 	if [ $command = $quit_command ]; then

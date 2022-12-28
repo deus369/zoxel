@@ -59,10 +59,13 @@ void TexturesCoreImport(ecs_world_t *world)
     zoxel_texture_generation_system(FrameTexture, FrameTextureSystem);
     zoxel_system_main_thread(world, TextureSaveSystem, EcsOnValidate,
         [in] TextureDirty, [in] Texture, [in] TextureSize, [none] SaveTexture);
-    zoxel_system_main_thread(world, TextureUpdateSystem, EcsOnValidate,
-        [in] TextureDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink);
     zoxel_reset_system_define(GenerateTextureResetSystem, GenerateTexture);
     zoxel_reset_system_define(TextureDirtyResetSystem, TextureDirty);
+    if (!headless)
+    {
+        zoxel_system_main_thread(world, TextureUpdateSystem, EcsOnValidate,
+            [in] TextureDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink);
+    }
     // prefabs
     spawn_prefab_noise_texture(world);
 }

@@ -69,7 +69,7 @@ void set_mouse_mode()
 
 void CamerasImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, cameras);
+    ECS_MODULE(world, Cameras);
     // zoxel_module(world, cameras, nm_zoxel_cameras);
     // -=- tags -=-
     ECS_TAG_DEFINE(world, Camera);

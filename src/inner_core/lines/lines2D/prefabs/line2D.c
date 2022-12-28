@@ -10,6 +10,7 @@ ecs_entity_t spawn_prefab_line2D(ecs_world_t *world)
     zoxel_set(world, e, LineData2D, { { 0, 0, 0, 0 } });
     zoxel_set(world, e, LineThickness, { 1 });
     zoxel_set(world, e, Color, { { 0, 255, 255, 255 } });
+    // create a temporary line, similar to the previous one
     ecs_entity_t e2 = ecs_new_w_pair(world, EcsIsA, e);
     ecs_add_id(world, e2, EcsPrefab);
     set_unique_entity_name(world, e2, "prefab_temporary_line2D");

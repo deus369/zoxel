@@ -22,16 +22,19 @@ void Lines2DImport(ecs_world_t *world)
     ECS_COMPONENT_DEFINE(world, LineData2D);
     ECS_COMPONENT_DEFINE(world, LineElementData);
     // systems
-    zoxel_system_main_thread(world, Line2DRenderSystem, EcsOnStore, // 0
-        [none] Line2D, [in] LineData2D, [in] LineThickness, [in] Color);
     zoxel_filter(line2Ds_query, world,
         [none] Line2D, [in] LineElementData, [none] CanvasLink, [none] LineData2D);
     zoxel_system_ctx(world, Line2DElementSystem, EcsPreUpdate, line2Ds_query,
         [none] Line2D, [in] LineElementData, [in] CanvasLink, [out] LineData2D);
+    if (!headless)
+    {
+        initialize_shader_line2D();
+        zoxel_system_main_thread(world, Line2DRenderSystem, EcsOnStore, // 0
+            [none] Line2D, [in] LineData2D, [in] LineThickness, [in] Color);
+    }
     // prefabs
     spawn_prefab_line2D(world);
     spawn_prefab_ui_line2D(world);
-    initialize_shader_line2D();
     // testing
     /*float line_length = 1.0f;
     spawn_line2D(world, (float2) { -line_length, 0 }, (float2) { line_length, 0 }, 3.0f);

@@ -14,10 +14,13 @@ ecs_entity_t spawn_voxel_chunk_mesh_prefab(ecs_world_t *world)
     add_seed(world, e, 666);
     add_chunk(world, e, chunk_size);
     add_generate_chunk(world, e);
-    zoxel_add(world, e, MeshIndicies);
-    zoxel_add(world, e, MeshVertices);
-    add_gpu_mesh(world, e);
-    add_gpu_material(world, e);
+    if (!headless)
+    {
+        zoxel_add(world, e, MeshIndicies);
+        zoxel_add(world, e, MeshVertices);
+        add_gpu_mesh(world, e);
+        add_gpu_material(world, e);
+    }
     ecs_defer_end(world);
     voxel_prefab = e;
     return e;
@@ -29,8 +32,11 @@ ecs_entity_t spawn_voxel_chunk_mesh(ecs_world_t *world, ecs_entity_t prefab, flo
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
     ecs_set(world, e, Position, { position });
     ecs_set(world, e, Scale1D, { scale });
-    spawn_gpu_mesh(world, e);
-    spawn_gpu_material(world, e, shader3D_colored);
+    if (!headless)
+    {
+        spawn_gpu_mesh(world, e);
+        spawn_gpu_material(world, e, shader3D_colored);
+    }
     ecs_defer_end(world);
     return e;
 }

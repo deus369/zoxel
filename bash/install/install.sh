@@ -7,7 +7,8 @@ echo "Installing Zoxel from zoxel directory [$PWD]"
 # cd $HOME/zoxel/bash/install/
 zoxel_directory=$PWD # $HOME/zoxel
 shortcut_file_name=zoxel.desktop
-shortcut_directory=/usr/share/applications # $HOME/.local/share/applications
+# shortcut_directory=/usr/share/applications
+shortcut_directory=$HOME/.local/share/applications
 # echo "Filename [$file_name]"
 binary_path=$zoxel_directory/zoxel
 resources_directory=$zoxel_directory/resources
