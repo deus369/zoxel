@@ -8,6 +8,9 @@ To-Do UI
 -----
 
 `Current`
+
+- [ ] Pause UI
+    - [ ] 
 - [ ] Press escape in game to open pause ui
     - [ ] (when game state changes) for touch ui, add button at bottom left for this
 - [ ] Generic Pause Menu
@@ -27,6 +30,7 @@ To-Do UI
     - [ ] Using Close Events, spawn a 2nd window
 - [ ] Scrollview + ListUI
     - [ ] Toggle group to select one in list
+- [ ] Grid UIs
 
 -----
 

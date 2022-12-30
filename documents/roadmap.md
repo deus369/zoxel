@@ -16,9 +16,9 @@
 - [x] Spawn windows with opengl renderer
 
 `Input`
-- [ ] Support for multiple Keyboard/Mouse
 - [ ] Gamepad Support
 - [ ] Devices UI on main menu
+- [ ] Support for multiple Keyboard/Mouse
 
 `Transforms`
 - [w] Hierarchys

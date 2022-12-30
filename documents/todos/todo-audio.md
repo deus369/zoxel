@@ -8,10 +8,13 @@ To-Do Audio
 -----
 
 `Current`
-- [ ] Basic Audio Module
-    - [ ] Generate sounds
-    - [ ] Play generated sound
+- [ ] Generate a musicical pattern
+    - [ ] Play music in loop
+    - [ ] Use both generated and imported sounds that exist
 
 `Done`
+- [x] Basic Audio Module
+    - [x] Generate sounds
+    - [x] Play generated sound
 - [x] Import sounds
 - [x] Play basic sound

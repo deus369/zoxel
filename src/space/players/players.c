@@ -64,10 +64,4 @@ void PlayersImport(ecs_world_t *world)
     // this has to update after reset systems (as gen is stuck on main thread, running before everything)
     zoxel_system(world, Player2DTestMainThreadSystem, EcsOnStore, [in] Keyboard);
 }
-
-// ECS_SYSTEM_DEFINE(world, CameraFollow2DSystem, EcsOnUpdate, [none] Camera, [out] Position);
-// printf("Character2DLink %s", ecs_get_fullpath(world, Character2DLink));
-// printf("Character2DLink %s", ecs_get_fullpath(world, ecs_id(Character2DLink)));
-// zoxel_filter(playerCharacter2DQuery, world, [none] PlayerCharacter2D, [in] Position2D);
-// \todo Add in out tags to this filter
 #endif

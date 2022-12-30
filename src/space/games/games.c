@@ -1,22 +1,22 @@
-#ifndef zoxel_realms
-#define zoxel_realms
+#ifndef zoxel_games
+#define zoxel_games
 
-ecs_entity_t local_realm;
+ecs_entity_t local_game;
 // Tags
-ECS_DECLARE(Realm);
+ECS_DECLARE(Game);
 // prefabs
-#include "prefabs/realm.c"
+#include "prefabs/game.c"
 // util
 // #include "util/player_character2D.c"
 // systems
 // #include "systems/player2D_move_system.c"
 
-//! Realms Module
-void RealmsImport(ecs_world_t *world)
+//! Games Module
+void GamesImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Realms);
-    ECS_TAG_DEFINE(world, Realm);
-    spawn_prefab_realm(world);
+    ECS_MODULE(world, Games);
+    ECS_TAG_DEFINE(world, Game);
+    spawn_prefab_game(world);
     // zoxel_filter(playerCharacter2DQuery2, world, [none] PlayerCharacter2D, [out] Acceleration2D, [in] Velocity2D,
     //    [in] physics.DisableMovement);
     // zoxel_system_ctx(world, Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2, [in] Keyboard);

@@ -6,6 +6,8 @@ void boot_zoxel_game(ecs_world_t *world)
 {
     zoxel_log("Booting [Zoxel]\n");
     update();   // update once? so ui does its thing properly
+    spawn_realm(world);
+    spawn_game(world);
     // spawn cameras first
     int2 screen_dimensions2 = screen_dimensions;
     if (is_split_screen)
