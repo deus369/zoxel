@@ -129,6 +129,7 @@ void PrintHelpMenu(const char* arg0)
     zoxel_log("        -s --splitscreen split screen local coop\n");
     zoxel_log("        -v --vsync       enable vsync\n");
     zoxel_log("        -p --profiler       enable profiler\n");
+    zoxel_log("        -x --server       enable server mode\n");
     zoxel_log("\n");
     zoxel_log("-=-=-=-=-=--=-=-=-=-=--=-=-=-=-=--=-=-=-=-=-\n");
     zoxel_log("\n");
@@ -383,6 +384,10 @@ int process_arguments(int argc, char* argv[])
         if (strcmp(argv[i], "-z") == 0 || strcmp(argv[i], "--headless") == 0)
         {
             headless = true;
+        }
+        if (strcmp(argv[i], "-x") == 0 || strcmp(argv[i], "--server") == 0)
+        {
+            server_mode = true;
         }
     }
     return EXIT_SUCCESS;

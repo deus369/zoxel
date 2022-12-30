@@ -1,4 +1,4 @@
-#include <stdio.h>
+/*#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -26,7 +26,7 @@ int run_packet_test()
     }
     printf("Sent packet.\n");
     return 0;
-}
+}*/
     
     /*
     // receive a message from the sender

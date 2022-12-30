@@ -45,6 +45,8 @@ zoxel_reset_system(ClickableStateResetSystem, ClickableState)
 zoxel_reset_system(EntityInitializeResetSystem, EntityInitialize)
 // util
 #include "util/generic_util.c"
+#include "util/convert_ascii.c"
+#include "util/convert_to_ascii.c"
 
 void GenericImport(ecs_world_t *world)
 {

@@ -48,11 +48,11 @@ bool profiler = false;
 // --- core ---
 #include "maths/maths.c"
 #include "generic/generic.c"
-#include "apps/apps.c"
-#include "inputs/inputs.c"
-#include "networking/networking.c"
 #include "timing/timing.c"
 #include "transforms/transforms.c"
+#include "networking/networking.c"
+#include "apps/apps.c"
+#include "inputs/inputs.c"
 #include "cameras/cameras.c"
 #include "rendering/rendering.c"
 
@@ -92,7 +92,7 @@ int begin_core(int argc, char* argv[])
 
 void close_core()
 {
-    close_networking();
+    // close_networking();
     close_ecs();
     if (!headless)
     {
@@ -106,9 +106,9 @@ void CoreImport(ecs_world_t *world)
     ECS_MODULE(world, Core);
     ECS_IMPORT(world, Generic);
     ECS_IMPORT(world, Maths);
-    ECS_IMPORT(world, Networking);
     ECS_IMPORT(world, Timing);
     ECS_IMPORT(world, Transforms);
+    ECS_IMPORT(world, Networking);
     if (!headless)
     {
         ECS_IMPORT(world, Apps);

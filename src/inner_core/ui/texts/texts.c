@@ -32,7 +32,6 @@ zoxel_component(ZextDirty, unsigned char);
 zoxel_component(AnimateZext, double);
 // util
 #include "util/default_font.c"
-#include "util/convert_ascii.c"
 #include "util/zigel_util.c"
 #include "util/zext_util.c"
 // prefabs

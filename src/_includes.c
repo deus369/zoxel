@@ -24,6 +24,7 @@
 // -- Tests / Options --
 #define zoxel_test_voxels_terrain
 #define zoxel_test_chickens
+// #define zoxel_test_networking
 // #define zoxel_debug_sounds
 // #define zoxel_test_character2Ds
 // #define zoxel_test_cubes             // Failing atm, gl error at opengl_draw_triangles
@@ -31,7 +32,9 @@
 // #define zoxel_test_character3Ds      // todo
 // #define zoxel_test_voxels
 // #define zoxel_test_uis
+
 // -- debugs --
+// #define zoxel_log_frames_per_second
 // #define zoxel_debug_vox_read
 // #define zoxel_catch_opengl_errors
 //! \todo Fix pathing for android, cannot get resources there.

@@ -1,0 +1,4 @@
+#define zoxel_packet_type_connect 0x01
+#define zoxel_packet_type_connect_confirm 0x02
+#define zoxel_packet_type_msg 0x03
+#define zoxel_packet_type_msg_confirm 0x04

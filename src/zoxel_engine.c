@@ -6,6 +6,7 @@
 // =-= Zoxel Engine =-=
 bool running = true;
 bool headless = false;
+bool server_mode = false;
 
 //! Quits the application from running indefinitely.
 void exit_game()

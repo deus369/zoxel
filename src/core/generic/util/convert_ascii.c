@@ -85,3 +85,26 @@ unsigned char convert_ascii(char input)
     zoxel_convert_ascii('Z', 52)
     return 0;
 }
+
+/*unsigned char* convert_ascii_text(const char *input, int length)
+{
+    static unsigned char output[length];
+    for (int i = 0; i < length; i++)
+    {
+        output[i] = convert_ascii(input[i]);
+    }
+    return output;
+}*/
+
+unsigned char* convert_from_ascii_text_at(const char *input, unsigned char start_buffer)
+{
+    unsigned char length = start_buffer + strlen(input);
+    unsigned char *output = malloc(length);
+    for (unsigned char i = start_buffer; i < length; i++)
+    {
+        unsigned char input_index = i - start_buffer;
+        output[i] = convert_ascii(input[input_index]);
+        // printf("Converting Ascii to byte: %i : %i : %c\n", i, output[i], input[input_index]);
+    }
+    return output;
+}

@@ -14,7 +14,9 @@ void iterate_fps_time()
         time_passed -= 1.0;
         frames_per_second = frames_count;
         frames_count = 0;
-        zoxel_log_arg("frames_per_second [%i]\n", frames_per_second);
+        #ifdef zoxel_log_frames_per_second
+            zoxel_log_arg("frames_per_second [%i]\n", frames_per_second);
+        #endif
     }
 }
 
