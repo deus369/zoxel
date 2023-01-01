@@ -8,7 +8,7 @@ ecs_entity_t spawn_prefab_realm(ecs_world_t *world)
     zoxel_add_tag(world, e, Realm);
     ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs
-    zoxel_log_arg("spawn_prefab realm [%lu].\n", (long int) (e));
+    zoxel_log("spawn_prefab realm [%lu].\n", (long int) (e));
     #endif
     prefab_realm = e;
     return e;
@@ -21,7 +21,7 @@ ecs_entity_t spawn_realm(ecs_world_t *world)
     set_unique_entity_name(world, e, "realm");
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
-    zoxel_log_arg("Spawned realm [%lu]\n", (long int) e);
+    zoxel_log("Spawned realm [%lu]\n", (long int) e);
     #endif
     return e;
 }

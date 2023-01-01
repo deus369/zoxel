@@ -1,12 +1,38 @@
 #ifndef zoxel_apps
 #define zoxel_apps
 
+// app includes
+#ifdef WEB_BUILD
+#include <emscripten.h>
+#endif
+#ifdef USE_SDL_3
+    #include <SDL3/SDL.h>
+    #include <SDL3/SDL_opengl.h>
+#else
+    #ifdef ANDROID_BUILD
+        #include <SDL.h>
+        #include <SDL_opengl.h>
+    #else
+        #include <SDL2/SDL.h>
+        #include <SDL2/SDL_opengl.h>
+    #endif
+#endif
+#ifdef ANDROID_BUILD
+    #ifdef SDL_IMAGES
+        #include <SDL_image.h>
+    #endif
+#else
+    #ifdef SDL_IMAGES
+        #include <SDL2/SDL_image.h>
+    #endif
+#endif
+
 //! apps Module.
 const int window_index = 1; // 1;
-bool vsync = false;
-bool fullscreen = true; // full screen is the new default option
-bool halfscreen = false;
-bool is_split_screen = false;
+unsigned char vsync = 0;
+unsigned char fullscreen = 1; // full screen is the new default option
+unsigned char halfscreen = 0;
+unsigned char is_split_screen = 0;
 SDL_Window* main_window;
 // Tags
 ECS_DECLARE(App);
@@ -18,7 +44,6 @@ zoxel_component(Context, SDL_GLContext*);
 #include "prefabs/app.c"
 /// Util
 #include "util/sdl_util.c"
-#include "util/flecs_util.c"
 #include "util/cleanup_util.c"
 
 void AppsImport(ecs_world_t *world)

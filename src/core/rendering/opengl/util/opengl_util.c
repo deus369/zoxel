@@ -27,7 +27,7 @@ GLuint2 spawn_gpu_mesh_buffers()
         GLenum err = glGetError();
         if (err != GL_NO_ERROR)
         {
-            zoxel_log_arg("GL ERROR with spawn_gpu_mesh_buffers [%i] - glGenBuffers\n",
+            zoxel_log("GL ERROR with spawn_gpu_mesh_buffers [%i] - glGenBuffers\n",
                 (int) err);
         }
     #endif
@@ -41,23 +41,23 @@ GLuint spawn_gpu_uvs_buffers()
     return uvs;
 }
 
-bool opengl_set_material(GLuint material)
+unsigned char opengl_set_material(GLuint material)
 {
     if (material == 0)
     {
         // printf("render_entity_material2D material is 0.\n");
-        return false;
+        return 0;
     }
     glUseProgram(material);
     #ifdef zoxel_catch_opengl_errors
         GLenum err = glGetError();
         if (err != GL_NO_ERROR)
         {
-            zoxel_log_arg("GL ERROR with opengl_set_material [%i]\n", material);
-            return false;
+            zoxel_log("GL ERROR with opengl_set_material [%i]\n", material);
+            return 0;
         }
     #endif
-    return true;
+    return 1;
 }
 
 void opengl_set_mesh(GLuint2 mesh)

@@ -50,7 +50,7 @@ int load_shader3D_colored()
         GLenum err = glGetError();
         if (err != GL_NO_ERROR)
         {
-            zoxel_log_arg("GL ERROR with load_shader3D_colored [%i]\n", err);
+            zoxel_log("GL ERROR with load_shader3D_colored [%i]\n", err);
             return false;
         }
     #endif
@@ -112,7 +112,7 @@ int opengl_set_material3D_colors_properties(GLuint material,
         GLenum err = glGetError();
         if (err != GL_NO_ERROR)
         {
-            zoxel_log_arg("GL ERROR - opengl_set_material3D_colors_properties [%i]\n", (int) err);
+            zoxel_log("GL ERROR - opengl_set_material3D_colors_properties [%i]\n", (int) err);
             return -1;
         }
     #endif

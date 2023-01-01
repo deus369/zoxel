@@ -11,7 +11,7 @@ ecs_entity_t spawn_prefab_sound(ecs_world_t *world)
     ecs_defer_end(world);
     prefab_sound = e;
     #ifdef zoxel_debug_prefabs
-    zoxel_log_arg("spawn_prefab sound [%lu].\n", (long int) (e));
+    zoxel_log("spawn_prefab sound [%lu].\n", (long int) (e));
     #endif
     return e;
 }
@@ -24,7 +24,7 @@ ecs_entity_t spawn_sound(ecs_world_t *world)
     ecs_set(world, e, SDLSound, { Mix_LoadWAV(sound_file_names[0]) }); //  sounds[0] });
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
-    zoxel_log_arg("Spawned sound [%lu]\n", (long int) e);
+    zoxel_log("Spawned sound [%lu]\n", (long int) e);
     #endif
     return e;
 }
@@ -40,7 +40,7 @@ ecs_entity_t spawn_generated_sound(ecs_world_t *world)
     zoxel_set(world, e, SoundDirty, { 0 });
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
-    zoxel_log_arg("Spawned generated_sound [%lu]\n", (long int) e);
+    zoxel_log("Spawned generated_sound [%lu]\n", (long int) e);
     #endif
     return e;
 }

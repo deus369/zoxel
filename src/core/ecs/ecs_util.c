@@ -2,7 +2,7 @@
 ecs_world_t *world;
 
 //! Initialize Flecs ECS by spawning a world and enabling threads.
-void open_ecs(int argc, char* argv[], bool profiler)
+void open_ecs(int argc, char* argv[], unsigned char profiler, int core_count)
 {
     // spawn ecs world
     world = ecs_init_w_args(argc, argv);
@@ -17,13 +17,12 @@ void open_ecs(int argc, char* argv[], bool profiler)
         #endif
     }
     // enable multi threading
-    int cpuCoreCount = SDL_GetCPUCount();
     #ifdef zoxel_debug_sdl
-    zoxel_log_arg("System Found [%i processors].\n", cpuCoreCount);
+    zoxel_log("System Found [%i processors].\n", core_count);
     #endif
-    if (cpuCoreCount > 1)
+    if (core_count > 1)
     {
-        ecs_set_threads(world, cpuCoreCount);
+        ecs_set_threads(world, core_count);
     }
 }
 

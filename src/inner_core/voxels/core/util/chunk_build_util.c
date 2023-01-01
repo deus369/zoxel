@@ -97,12 +97,12 @@ unsigned char get_voxel##_##direction(\
     }\
 }
 
-zoxel_get_voxel_direction(left, x, false)   // creates get_voxel_left
-zoxel_get_voxel_direction(right, x, true)   // creates get_voxel_right
-zoxel_get_voxel_direction(down, y, false)   // creates get_voxel_down
-zoxel_get_voxel_direction(up, y, true)      // creates get_voxel_up
-zoxel_get_voxel_direction(back, z, false)   // creates get_voxel_back
-zoxel_get_voxel_direction(front, z, true)   // creates get_voxel_front
+zoxel_get_voxel_direction(left, x, 0)       // creates get_voxel_left
+zoxel_get_voxel_direction(right, x, 1)      // creates get_voxel_right
+zoxel_get_voxel_direction(down, y, 0)       // creates get_voxel_down
+zoxel_get_voxel_direction(up, y, 1)         // creates get_voxel_up
+zoxel_get_voxel_direction(back, z, 0)       // creates get_voxel_back
+zoxel_get_voxel_direction(front, z, 1)      // creates get_voxel_front
 
 #define zoxel_check_faces_with_uvs(direction)\
 {\

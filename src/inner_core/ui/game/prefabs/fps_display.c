@@ -5,7 +5,7 @@ ecs_entity_t spawn_prefab_fps_display(ecs_world_t *world)
     ecs_defer_begin(world);
     // ecs_entity_t e = ecs_new_entity(world, "prefab_fps_display");
     // e = ecs_clone(world, e, label_prefab, true);
-    ecs_entity_t e = ecs_clone(world, 0, label_prefab, true);
+    ecs_entity_t e = ecs_clone(world, 0, label_prefab, 1); // true);
     ecs_set_name(world, e, "prefab_fps_display"); // bugged atm
     /*ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, label_prefab);
     ecs_add_id(world, e, EcsPrefab);

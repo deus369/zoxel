@@ -11,7 +11,7 @@ void spawn_camera2D_follower_prefab(ecs_world_t *world)
     zoxel_add(world, e, CameraTarget);
     ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs
-    zoxel_log_arg("spawn_prefab camera2D [%lu].\n", (long int) (e));
+    zoxel_log("spawn_prefab camera2D [%lu].\n", (long int) (e));
     #endif
     camera2D_follower_prefab = e;
 }
@@ -23,7 +23,7 @@ ecs_entity_t spawn_camera2D_follower(ecs_world_t *world, float3 position, float4
     ecs_set(world, e, Position, { position });
     ecs_set(world, e, Rotation, { rotation });
     ecs_set(world, e, ScreenDimensions, { screenDimensions });
-    // zoxel_log_arg("Spawned Camera [%lu]\n", (long unsigned int) e);
+    // zoxel_log("Spawned Camera [%lu]\n", (long unsigned int) e);
     ecs_defer_end(world);
     return e;
 }

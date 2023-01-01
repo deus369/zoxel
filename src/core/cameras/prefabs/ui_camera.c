@@ -11,7 +11,7 @@ ecs_entity_t spawn_ui_camera(ecs_world_t *world, int2 screenDimensions)
     ecs_set(world, e, Rotation, { rotation });
     ecs_set(world, e, FieldOfView, { 53.2f });  // fudged this to get ui right... maybe not the best but it works xD
     ecs_set(world, e, ScreenDimensions, { screenDimensions });
-    // zoxel_log_arg("Spawned Camera [%lu]\n", (long unsigned int) e);
+    // zoxel_log("Spawned Camera [%lu]\n", (long unsigned int) e);
     ecs_defer_end(world);
     ui_cameras[0] = e;
     return e;

@@ -4,14 +4,14 @@
 #include <signal.h>
 
 // =-= Zoxel Engine =-=
-bool running = true;
-bool headless = false;
-bool server_mode = false;
+unsigned char running = 1;
+unsigned char headless = 0;
+unsigned char server_mode = 0;
 
 //! Quits the application from running indefinitely.
 void exit_game()
 {
-    running = false;
+    running = 0;
     #ifdef WEB_BUILD
     emscripten_cancel_main_loop();
     #endif

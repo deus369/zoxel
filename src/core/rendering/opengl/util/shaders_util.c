@@ -1,7 +1,7 @@
 // things
-const bool isForceDefaults = false;
+const unsigned char isForceDefaults = false;
 
-bool LinkShaderProgram(GLuint program, GLuint vertShader, GLuint fragShader)
+unsigned char LinkShaderProgram(GLuint program, GLuint vertShader, GLuint fragShader)
 {
     glAttachShader(program, vertShader);
     glAttachShader(program, fragShader);
@@ -15,15 +15,15 @@ bool LinkShaderProgram(GLuint program, GLuint vertShader, GLuint fragShader)
         GLchar* info_log = malloc(info_log_length);
         glGetProgramInfoLog(program, info_log_length, NULL, info_log);
         // fprintf(stderr, " - failed to link program:\n%s\n", info_log);
-        zoxel_log_arg("Failed to link [%i], program:\n%s\n", (int) program, info_log);
+        zoxel_log("Failed to link [%i], program:\n%s\n", (int) program, info_log);
         free(info_log);
         glDetachShader(program, vertShader);
         glDetachShader(program, fragShader);
-        return false;
+        return 0;
     }
     glDetachShader(program, vertShader);
     glDetachShader(program, fragShader);
-    return false;
+    return 0;
 }
 
 GLuint spawn_gpu_material_program(const GLuint2 shader)
@@ -37,7 +37,7 @@ GLuint spawn_gpu_material_program(const GLuint2 shader)
         GLenum err2 = glGetError();
         if (err2 != GL_NO_ERROR)
         {
-            zoxel_log_arg("GL ERROR with spawn_gpu_material_program [%i] - glCreateProgram\n",
+            zoxel_log("GL ERROR with spawn_gpu_material_program [%i] - glCreateProgram\n",
                 (int) err2);
             return -1;
         }
@@ -47,7 +47,7 @@ GLuint spawn_gpu_material_program(const GLuint2 shader)
         GLenum err = glGetError();
         if (err != GL_NO_ERROR)
         {
-            zoxel_log_arg("GL ERROR with spawn_gpu_material_program [%i] - shader [%ix%i]\n",
+            zoxel_log("GL ERROR with spawn_gpu_material_program [%i] - shader [%ix%i]\n",
                 (int) err, shader.x, shader.y);
             return -1;
         }
@@ -69,8 +69,8 @@ int compile_shader(GLenum shaderType, GLuint* shader2, const GLchar* buffer)
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &info_log_length);
         GLchar* info_log = malloc(info_log_length);
         glGetShaderInfoLog(shader, info_log_length, NULL, info_log);
-        // zoxel_log_arg(stderr, "Failed to compile shader:\n%s\n", info_log);
-        zoxel_log_arg("Failed to compile shader:\n%s\n", info_log);
+        // zoxel_log(stderr, "Failed to compile shader:\n%s\n", info_log);
+        zoxel_log("Failed to compile shader:\n%s\n", info_log);
         free(info_log);
         return -1;
     }
@@ -90,7 +90,7 @@ int load_shader(const char* filepath, GLenum shaderType, GLuint* shader2)
     free(fullpath);
     if (!buffer)
     {
-        zoxel_log_arg("Loading shader (SDL_LoadFile) returned null at [%s].\n", filepath);
+        zoxel_log("Loading shader (SDL_LoadFile) returned null at [%s].\n", filepath);
         return -1;
     }
     // this is causing crashes...
@@ -108,13 +108,13 @@ GLuint2 spawn_gpu_shader(const char* vertFilepath, const char* fragFilepath)
     GLuint2 shader = { 0, 0 };
     if (load_shader(vertFilepath, GL_VERTEX_SHADER, &shader.x) != 0)
     {
-        zoxel_log_arg("Error loading shader vert [%s]\n", vertFilepath);
+        zoxel_log("Error loading shader vert [%s]\n", vertFilepath);
         return shader;
     }
     // GLuint fragShader;
     if (load_shader(fragFilepath, GL_FRAGMENT_SHADER, &shader.y) != 0)
     {
-        zoxel_log_arg("Error loading shader frag [%s]\n", fragFilepath);
+        zoxel_log("Error loading shader frag [%s]\n", fragFilepath);
         return shader;
     }
     return shader;
@@ -125,12 +125,12 @@ GLuint2 spawn_gpu_shader_inline(const GLchar* vert_buffer, const GLchar* frag_bu
     GLuint2 shader = { 0, 0 };
     if (compile_shader(GL_VERTEX_SHADER, &shader.x, vert_buffer) != 0)
     {
-        zoxel_log_arg("Error loading shader vert [%s]\n", vert_buffer);
+        zoxel_log("Error loading shader vert [%s]\n", vert_buffer);
         return shader;
     }
     if (compile_shader(GL_FRAGMENT_SHADER, &shader.y, frag_buffer) != 0)
     {
-        zoxel_log_arg("Error loading shader frag [%s]\n", frag_buffer);
+        zoxel_log("Error loading shader frag [%s]\n", frag_buffer);
         return shader;
     }
     return shader;
@@ -142,13 +142,13 @@ GLuint load_gpu_shader(GLuint2* shader, const char* vertFilepath, const char* fr
     // GLuint vertShader;
     if (load_shader(vertFilepath, GL_VERTEX_SHADER, &shader->x) != 0)
     {
-        zoxel_log_arg("Error loading shader vert [%s]\n", vertFilepath);
+        zoxel_log("Error loading shader vert [%s]\n", vertFilepath);
         return 0;
     }
     // GLuint fragShader;
     if (load_shader(fragFilepath, GL_FRAGMENT_SHADER, &shader->y) != 0)
     {
-        zoxel_log_arg("Error loading shader frag [%s]\n", fragFilepath);
+        zoxel_log("Error loading shader frag [%s]\n", fragFilepath);
         return 0;
     }
     return spawn_gpu_material_program((const GLuint2) { shader->x, shader->y });

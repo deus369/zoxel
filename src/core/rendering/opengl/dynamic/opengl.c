@@ -59,7 +59,7 @@ union bridge
         return false;                                              \
     }
 
-bool opengl_load_functions(void)
+unsigned char opengl_load_functions(void)
 {
     // use SDL2's platform-agnostic loader to pull the "real" addresses
     //  out by name and assign to the definitions above
@@ -79,5 +79,5 @@ OPENGL_FUNCTIONS
 OPENGL_FUNCTIONS
     #undef OPENGL_FUNCTION
 
-    return true;
+    return 1;
 }

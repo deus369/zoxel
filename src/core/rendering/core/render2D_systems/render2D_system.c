@@ -1,5 +1,5 @@
 //! External data/function.
-bool isDebugRenderMaterial2DSystem = false;
+const unsigned char isDebugRenderMaterial2DSystem = 0;
 extern float4x4 main_camera_matrix;
 extern void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint texture, float2 position,
     float angle, float scale, float brightness);
@@ -26,7 +26,7 @@ void RenderMaterial2DSystem(ecs_iter_t *it)
         {
             if (isDebugRenderMaterial2DSystem)
             {
-                zoxel_log_arg("RenderMaterial2DSystem Material Error: At [%i]. Entity [%lu].\n", i, (long int) (it->entities[i]));
+                zoxel_log("RenderMaterial2DSystem Material Error: At [%i]. Entity [%lu].\n", i, (long int) (it->entities[i]));
             }
             continue;
         }
@@ -34,7 +34,7 @@ void RenderMaterial2DSystem(ecs_iter_t *it)
         {
             if (isDebugRenderMaterial2DSystem)
             {
-                zoxel_log_arg("RenderMaterial2DSystem Material: At [%i]. Entity [%lu].\n", i, (long int) (it->entities[i]));
+                zoxel_log("RenderMaterial2DSystem Material: At [%i]. Entity [%lu].\n", i, (long int) (it->entities[i]));
             }
         }
         float4x4 viewMatrix;

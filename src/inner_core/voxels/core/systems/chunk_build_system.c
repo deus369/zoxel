@@ -87,22 +87,22 @@ void build_chunk_mesh(const Chunk *chunk, const ChunkSize *chunkSize,
                 {
                     float3 vertex_position_offset = float3_multiply_float(float3_from_int3(local_position), voxel_scale);
                     #ifndef disable_voxel_left
-                    zoxel_add_faces(left, false)
+                    zoxel_add_faces(left, 0)
                     #endif
                     #ifndef disable_voxel_right
-                    zoxel_add_faces(right, true)
+                    zoxel_add_faces(right, 1)
                     #endif
                     #ifndef disable_voxel_down
-                    zoxel_add_faces(down, true)
+                    zoxel_add_faces(down, 1)
                     #endif
                     #ifndef disable_voxel_up
-                    zoxel_add_faces(up, false)
+                    zoxel_add_faces(up, 0)
                     #endif
                     #ifndef disable_voxel_back
-                    zoxel_add_faces(back, false)
+                    zoxel_add_faces(back, 0)
                     #endif
                     #ifndef disable_voxel_front
-                    zoxel_add_faces(front, true)
+                    zoxel_add_faces(front, 1)
                     #endif
                 }
             }

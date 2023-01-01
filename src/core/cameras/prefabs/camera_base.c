@@ -18,7 +18,7 @@ void spawn_camera_base_prefab(ecs_world_t *world)
     zoxel_set(world, e, CameraNearDistance, { 0.01f });
     ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs
-    zoxel_log_arg("spawn_prefab camera_base [%lu].\n", (long int) (e));
+    zoxel_log("spawn_prefab camera_base [%lu].\n", (long int) (e));
     #endif
     base_camera_prefab = e;
 }
@@ -35,7 +35,7 @@ ecs_entity_t spawn_base_camera(ecs_world_t *world, float3 position, float4 rotat
     ecs_set(world, e, ScreenPosition, { screen_position });
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
-    zoxel_log_arg("Spawned base camera [%lu]\n", (long int) e);
+    zoxel_log("Spawned base camera [%lu]\n", (long int) e);
     #endif
     return e;
 }
@@ -54,7 +54,7 @@ ecs_entity_t spawn_free_camera(ecs_world_t *world, float3 position, float4 rotat
     zoxel_set(world, e, FreeRoam, { 0 });
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
-    zoxel_log_arg("Spawned Free Camera [%lu]\n", (long int) e);
+    zoxel_log("Spawned Free Camera [%lu]\n", (long int) e);
     #endif
     return e;
 }

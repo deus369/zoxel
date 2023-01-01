@@ -74,7 +74,7 @@ void render_loop_temp()
     double t2 =  (((double) 1000.0 * t) / CLOCKS_PER_SEC);
     if (t2 >= min_render_loop_timing)
     {
-        zoxel_log_arg("Render Time [%fms]\n", t2);
+        zoxel_log("Render Time [%fms]\n", t2);
     }
     #endif
 }

@@ -15,7 +15,7 @@ void iterate_fps_time()
         frames_per_second = frames_count;
         frames_count = 0;
         #ifdef zoxel_log_frames_per_second
-            zoxel_log_arg("frames_per_second [%i]\n", frames_per_second);
+            zoxel_log("frames_per_second [%i]\n", frames_per_second);
         #endif
     }
 }
@@ -29,7 +29,7 @@ void FpsDisplaySystem(ecs_iter_t *it)
     FPSDisplayTicker *fpsDisplayTickers = ecs_field(it, FPSDisplayTicker, 1);
     ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
     ZextData *zextDatas = ecs_field(it, ZextData, 3);
-    bool changed = false;   //! Skip changes if isn't updated.
+    unsigned char changed = 0;   //! Skip changes if isn't updated.
     for (int i = 0; i < it->count; i++)
     {
         FPSDisplayTicker *fpsDisplayTicker = &fpsDisplayTickers[i];
@@ -76,7 +76,7 @@ void FpsDisplaySystem(ecs_iter_t *it)
                 {
                     zextData->value[j] = 60 + rand() % 10;
                 }*/
-                changed = true;
+                changed = 1;
                 // printf("AnimateNoiseSystem, GenerateTexture Triggered: [%lu] on index [%i]\n", (long int)(it->entities[i]), i);
             }
         }

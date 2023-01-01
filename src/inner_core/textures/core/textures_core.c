@@ -3,7 +3,7 @@
 
 // Settings
 const double noise_animation_speed = 0.5;
-const bool is_texture_outlines = false;
+const unsigned char is_texture_outlines = 0;
 // Tags
 ECS_DECLARE(NoiseTexture);
 ECS_DECLARE(FrameTexture);

@@ -17,17 +17,17 @@ void reset_mouse(ecs_world_t *world)
 
 void SetMouseKey(PhysicalButton *key, int eventType)
 {
-    bool keyDown = eventType == SDL_MOUSEBUTTONDOWN;
-    bool keyReleased = eventType == SDL_MOUSEBUTTONUP;
+    unsigned char keyDown = eventType == SDL_MOUSEBUTTONDOWN;
+    unsigned char keyReleased = eventType == SDL_MOUSEBUTTONUP;
     key->pressed_this_frame = keyDown;
     key->released_this_frame = keyReleased;
     if (keyDown)
     {
-        key->is_pressed = true;
+        key->is_pressed = 1;
     }
     else if (keyReleased)
     {
-        key->is_pressed = false;
+        key->is_pressed = 0;
     }
 }
 

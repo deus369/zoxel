@@ -13,7 +13,7 @@ ecs_entity_t spawn_prefab_connection(ecs_world_t *world)
     ecs_defer_end(world);
     prefab_connection = e;
     #ifdef zoxel_debug_prefabs
-    zoxel_log_arg("spawn_prefab connection [%lu].\n", (long int) (e));
+    zoxel_log("spawn_prefab connection [%lu].\n", (long int) (e));
     #endif
     return e;
 }
@@ -27,7 +27,7 @@ ecs_entity_t spawn_connection(ecs_world_t *world, ecs_entity_t neuronA, ecs_enti
     ecs_set(world, e, Weight, { weight });
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
-    zoxel_log_arg("Spawned connection [%lu]\n", (long int) e);
+    zoxel_log("Spawned connection [%lu]\n", (long int) e);
     #endif
     return e;
 }

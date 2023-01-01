@@ -37,7 +37,7 @@ void set_data_path()
     if (dir)
     {
         #ifdef zoxel_debug_pathing
-        zoxel_log_arg("SDL data_path (EXISTS): %s\n", data_path);
+        zoxel_log("SDL data_path (EXISTS): %s\n", data_path);
         #endif
         /*char *path_test = malloc(strlen(base_path) + 1 + 1);
         strcpy(path_test, base_path);
@@ -45,11 +45,11 @@ void set_data_path()
         DIR* dir3 = opendir(path_test);
         if (dir3)
         {
-            zoxel_log_arg(" -> path_test [%s]\n", path_test);
+            zoxel_log(" -> path_test [%s]\n", path_test);
             struct dirent *dir3_data;
             while ((dir3_data = readdir(dir3)) != NULL)
             {
-                zoxel_log_arg("     -> child path [%s]\n", dir3_data->d_name);
+                zoxel_log("     -> child path [%s]\n", dir3_data->d_name);
             }
             closedir(dir3);
         }
@@ -61,23 +61,23 @@ void set_data_path()
         if (dir2)
         {
             #ifdef zoxel_debug_pathing
-                zoxel_log_arg("resources_path (EXISTS): %s\n", resources_path);
+                zoxel_log("resources_path (EXISTS): %s\n", resources_path);
             #endif
             closedir(dir2);
         }
         else
         {
-            zoxel_log_arg("resources_path (DOES NOT EXIST): %s\n", resources_path);
+            zoxel_log("resources_path (DOES NOT EXIST): %s\n", resources_path);
         }
         free(resources_path);
     }
     else if (ENOENT == errno)
     {
-        zoxel_log_arg("SDL data_path (DOES NOT EXIST): %s\n", data_path);
+        zoxel_log("SDL data_path (DOES NOT EXIST): %s\n", data_path);
     }
     else
     {
-        zoxel_log_arg("SDL data_path (MYSTERIOUSLY DOES NOT EXIST): %s\n", data_path);
+        zoxel_log("SDL data_path (MYSTERIOUSLY DOES NOT EXIST): %s\n", data_path);
     }
 }
 
@@ -87,7 +87,7 @@ char* get_full_file_path(const char* filepath)
     strcpy(fullpath, data_path);
     strcat(fullpath, filepath);
     #ifdef zoxel_debug_pathing
-    zoxel_log_arg("fullpath: %s\n", fullpath);
+    zoxel_log("fullpath: %s\n", fullpath);
     #endif
     return fullpath;
 }
@@ -98,7 +98,6 @@ char* get_full_file_path(const char* filepath)
 EM_JS(int, get_canvas_width, (), { return window.innerWidth; });
 EM_JS(int, get_canvas_height, (), { return window.innerHeight; });
 
-// bool isResizeCanvas = false;
 int2 get_canvas_size()
 {
     return (int2) { get_canvas_width(), get_canvas_height() };
@@ -107,7 +106,7 @@ int2 get_canvas_size()
 // Condensed
 void resize_canvas()
 {
-    zoxel_log_arg("Resizing Canvas [%ix%i]", get_canvas_width(), get_canvas_height());
+    zoxel_log("Resizing Canvas [%ix%i]", get_canvas_width(), get_canvas_height());
 }
 #endif
 
@@ -118,7 +117,7 @@ void PrintHelpMenu(const char* arg0)
     zoxel_log("-=-=-=-=-=--=-=-=-=-=--=-=-=-=-=--=-=-=-=-=-\n");
     zoxel_log("\n");
     zoxel_log("Welcome to Zoxel Help Menu\n\n");
-    zoxel_log_arg("    Usage: %s [options]\n", arg0);
+    zoxel_log("    Usage: %s [options]\n", arg0);
     zoxel_log("\n");
     zoxel_log("    Options:\n");
     zoxel_log("\n");
@@ -148,7 +147,7 @@ void SetStartScreenSize()
     }
 #ifdef WEB_BUILD
     int2 canvas_size = get_canvas_size();
-    zoxel_log_arg("    Canvas Screen Dimensions: %ix%i\n", canvas_size.x, canvas_size.y);
+    zoxel_log("    Canvas Screen Dimensions: %ix%i\n", canvas_size.x, canvas_size.y);
     screen_dimensions = canvas_size;
 #endif
 }
@@ -158,15 +157,15 @@ void print_sdl()
 {
     #ifdef zoxel_debug_sdl
     zoxel_log("SDL\n");
-    zoxel_log_arg("    Platform:        %s\n", SDL_GetPlatform());
-    zoxel_log_arg("    CPU Count:       %d\n", SDL_GetCPUCount());
-    zoxel_log_arg("    System RAM:      %d MB\n", SDL_GetSystemRAM());
-    zoxel_log_arg("    Screen Dimensions: %ix%i\n", screen_dimensions.x, screen_dimensions.y);
-    zoxel_log_arg("    Supports SSE:    %s\n", (SDL_HasSSE() ? "true" : "false"));
-    zoxel_log_arg("    Supports SSE2:   %s\n", (SDL_HasSSE2() ? "true" : "false"));
-    zoxel_log_arg("    Supports SSE3:   %s\n", (SDL_HasSSE3() ? "true" : "false"));
-    zoxel_log_arg("    Supports SSE4.1: %s\n", (SDL_HasSSE41() ? "true" : "false"));
-    zoxel_log_arg("    Supports SSE4.2: %s\n", (SDL_HasSSE42() ? "true" : "false"));
+    zoxel_log("    Platform:        %s\n", SDL_GetPlatform());
+    zoxel_log("    CPU Count:       %d\n", SDL_GetCPUCount());
+    zoxel_log("    System RAM:      %d MB\n", SDL_GetSystemRAM());
+    zoxel_log("    Screen Dimensions: %ix%i\n", screen_dimensions.x, screen_dimensions.y);
+    zoxel_log("    Supports SSE:    %s\n", (SDL_HasSSE() ? "true" : "false"));
+    zoxel_log("    Supports SSE2:   %s\n", (SDL_HasSSE2() ? "true" : "false"));
+    zoxel_log("    Supports SSE3:   %s\n", (SDL_HasSSE3() ? "true" : "false"));
+    zoxel_log("    Supports SSE4.1: %s\n", (SDL_HasSSE41() ? "true" : "false"));
+    zoxel_log("    Supports SSE4.2: %s\n", (SDL_HasSSE42() ? "true" : "false"));
     #endif
 }
 
@@ -174,10 +173,10 @@ void print_opengl()
 {
     #ifdef zoxel_debug_opengl
     zoxel_log("OpenGL Context\n");
-    zoxel_log_arg("    Vendor:   %s\n", glGetString(GL_VENDOR));
-    zoxel_log_arg("    Renderer: %s\n", glGetString(GL_RENDERER));
-    zoxel_log_arg("    Version:  %s\n", glGetString(GL_VERSION));
-    zoxel_log_arg("    GLSL Version:    %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+    zoxel_log("    Vendor:   %s\n", glGetString(GL_VENDOR));
+    zoxel_log("    Renderer: %s\n", glGetString(GL_RENDERER));
+    zoxel_log("    Version:  %s\n", glGetString(GL_VERSION));
+    zoxel_log("    GLSL Version:    %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
     #endif
 }
 
@@ -188,18 +187,18 @@ void sdl_toggle_fullscreen(SDL_Window* window)
     #else
         Uint32 fullscreen_flag = SDL_WINDOW_FULLSCREEN;
     #endif
-    bool isFullscreen = SDL_GetWindowFlags(window) & fullscreen_flag;
+    unsigned char isFullscreen = SDL_GetWindowFlags(window) & fullscreen_flag;
     SDL_SetWindowFullscreen(window, isFullscreen ? 0 : fullscreen_flag);
     // SDL_ShowCursor(isFullscreen);
 }
 
 //! Initialize SDL things, thingy things.
-int SetSDLAttributes(bool vsync)
+int SetSDLAttributes(unsigned char vsync)
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
-        // zoxel_log_arg(stderr, "Failed to Initialize SDL2: %s\n", SDL_GetError());
-        zoxel_log_arg("Failed to Initialize SDL2: %s\n", SDL_GetError());
+        // zoxel_log(stderr, "Failed to Initialize SDL2: %s\n", SDL_GetError());
+        zoxel_log("Failed to Initialize SDL2: %s\n", SDL_GetError());
         return EXIT_FAILURE;
     }
     // Request at least 32-bit color
@@ -232,9 +231,9 @@ void LoadIconSDL(SDL_Window* window)
 }
 
 //! Spawn the SDLWindow.
-SDL_Window* SpawnWindowSDL(bool fullscreen)
+SDL_Window* SpawnWindowSDL(unsigned char fullscreen)
 {
-    bool is_resizeable = true;
+    unsigned char is_resizeable = 1;
     windowFlags = SDL_WINDOW_OPENGL;
     #ifdef ANDROID_BUILD
         windowFlags = SDL_WINDOW_FULLSCREEN_DESKTOP; // SDL_WINDOW_FULLSCREEN;
@@ -261,7 +260,7 @@ SDL_Window* SpawnWindowSDL(bool fullscreen)
     {
         SDL_Quit();
         // fprintf(stderr, "Failed to Create SDLWindow: %s\n", SDL_GetError());
-        zoxel_log_arg("Failed to Create SDLWindow: %s\n", SDL_GetError());
+        zoxel_log("Failed to Create SDLWindow: %s\n", SDL_GetError());
         return window;
     }
     SDL_GL_SetSwapInterval(1);
@@ -276,8 +275,8 @@ SDL_GLContext* create_sdl_context(SDL_Window* window)
     SDL_GLContext* context = SDL_GL_CreateContext(window);
     if (context == NULL)
     {
-        // zoxel_log_arg(stderr, "Failed to Create OpenGL Context: %s\n", SDL_GetError());
-        zoxel_log_arg("Failed to Create OpenGL Context: %s\n", SDL_GetError());
+        // zoxel_log(stderr, "Failed to Create OpenGL Context: %s\n", SDL_GetError());
+        zoxel_log("Failed to Create OpenGL Context: %s\n", SDL_GetError());
     }
     print_opengl();
     return context;
@@ -305,7 +304,7 @@ extern void uis_on_viewport_resized(ecs_world_t *world, int width, int height);
 void on_viewport_resized(ecs_world_t *world, int width, int height)
 {
     #ifdef debug_viewport_resize
-    zoxel_log_arg("Viewport was resized [%ix%i]\n", width, height);
+    zoxel_log("Viewport was resized [%ix%i]\n", width, height);
     #endif
     screen_dimensions.x = width;
     screen_dimensions.y = height;
@@ -363,31 +362,31 @@ int process_arguments(int argc, char* argv[])
         }
         if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--fullscreen") == 0)
         {
-            fullscreen = true;
+            fullscreen = 1;
         }
         if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--halfscreen") == 0)
         {
-            halfscreen = true;
+            halfscreen = 1;
         }
         if (strcmp(argv[i], "-s") == 0 || strcmp(argv[i], "--splitscreen") == 0)
         {
-            is_split_screen = true;
+            is_split_screen = 1;
         }
         if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--vsync") == 0)
         {
-            vsync = true;
+            vsync = 1;
         }
         if (strcmp(argv[i], "-p") == 0 || strcmp(argv[i], "--profiler") == 0)
         {
-            profiler = true;
+            profiler = 1;
         }
         if (strcmp(argv[i], "-z") == 0 || strcmp(argv[i], "--headless") == 0)
         {
-            headless = true;
+            headless = 1;
         }
         if (strcmp(argv[i], "-x") == 0 || strcmp(argv[i], "--server") == 0)
         {
-            server_mode = true;
+            server_mode = 1;
         }
     }
     return EXIT_SUCCESS;
@@ -397,15 +396,15 @@ int process_arguments(int argc, char* argv[])
 
     #define debug_ui_scaling
 
-    bool update_web_canvas(ecs_world_t *world)
+    unsigned char update_web_canvas(ecs_world_t *world)
     {
         int2 canvas_size = get_canvas_size();
         if (screen_dimensions.x != canvas_size.x || screen_dimensions.y != canvas_size.y)
         {
-            zoxel_log_arg("update_web_canvas: Canvas size has changed [%i x %i]\n", canvas_size.x, canvas_size.y);
+            zoxel_log("update_web_canvas: Canvas size has changed [%i x %i]\n", canvas_size.x, canvas_size.y);
             on_viewport_resized(world, canvas_size.x, canvas_size.y);
-            return true;
+            return 1;
         }
-        return false;
+        return 0;
     }
 #endif

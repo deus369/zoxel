@@ -13,7 +13,7 @@ ecs_entity_t spawn_prefab_net_player(ecs_world_t *world)
     zoxel_set(world, e, SocketLink, { -1 });
     ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs
-    zoxel_log_arg("spawn_prefab net_player [%lu].\n", (long int) (e));
+    zoxel_log("spawn_prefab net_player [%lu].\n", (long int) (e));
     #endif
     prefab_net_player = e;
     return e;
@@ -26,7 +26,7 @@ ecs_entity_t spawn_net_player(ecs_world_t *world)
     set_unique_entity_name(world, e, "net_player");
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
-    zoxel_log_arg("Spawned net_player [%lu]\n", (long int) e);
+    zoxel_log("Spawned net_player [%lu]\n", (long int) e);
     #endif
     return e;
 }*/

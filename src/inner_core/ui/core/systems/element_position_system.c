@@ -53,7 +53,7 @@ void ElementPositionSystem(ecs_iter_t *it)
     }*/
     //! \todo Update this after getting a working example of change filters
     /*#ifdef debug_element_position_change_query
-        bool did_change = ecs_query_changed(changeQuery, NULL);
+        unsigned char did_change = ecs_query_changed(changeQuery, NULL);
     #endif*/
     ecs_world_t *world = it->world;
     const PixelPosition *pixelPositions = ecs_field(it, PixelPosition, 2);

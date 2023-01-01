@@ -14,7 +14,7 @@ void spawn_prefab_character3D(ecs_world_t *world)
     // ecs_remove(world, e, AnimateChunk);
     ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs
-    zoxel_log_arg("spawn_prefab character3D [%lu].\n", (long int) (e));
+    zoxel_log("spawn_prefab character3D [%lu].\n", (long int) (e));
     #endif
     character3D_prefab = e;
 }

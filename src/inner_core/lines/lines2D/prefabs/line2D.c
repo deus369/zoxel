@@ -17,7 +17,7 @@ ecs_entity_t spawn_prefab_line2D(ecs_world_t *world)
     zoxel_set(world, e2, DestroyInTime, { 0 });
     ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs
-    zoxel_log_arg("spawn_prefab line2D [%lu].\n", (long int) (e));
+    zoxel_log("spawn_prefab line2D [%lu].\n", (long int) (e));
     #endif
     prefab_line2D = e;
     prefab_temporary_line2D = e2;
@@ -45,7 +45,7 @@ ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 pointB, floa
     }
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
-    zoxel_log_arg("Spawned line2D [%lu]\n", (long int) e);
+    zoxel_log("Spawned line2D [%lu]\n", (long int) e);
     #endif
     return e;
 }

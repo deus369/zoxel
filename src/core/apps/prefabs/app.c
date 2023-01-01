@@ -13,7 +13,7 @@ ecs_entity_t spawn_app_prefab(ecs_world_t *world)
     ecs_defer_end(world);
     app_prefab = e;
     #ifdef zoxel_debug_prefabs
-    zoxel_log_arg("spawn_prefab app [%lu].\n", (long int) (e));
+    zoxel_log("spawn_prefab app [%lu].\n", (long int) (e));
     #endif
     return e;
 }
@@ -26,7 +26,7 @@ ecs_entity_t spawn_app(ecs_world_t *world, SDL_Window* window, SDL_GLContext* co
     ecs_set(world, e, Context, { context });
     ecs_defer_end(world);
     main_app = e;
-    // zoxel_log_arg("Spawned Camera [%lu]\n", (long unsigned int) e);
+    // zoxel_log("Spawned Camera [%lu]\n", (long unsigned int) e);
     return e;
 }
 

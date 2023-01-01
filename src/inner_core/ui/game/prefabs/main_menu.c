@@ -13,7 +13,7 @@ ecs_entity_t spawn_prefab_main_menu(ecs_world_t *world)
 }
 
 ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label,
-    int2 position, int2 window_size, float2 anchor, bool is_close_button)
+    int2 position, int2 window_size, float2 anchor, unsigned char is_close_button)
 {
     float ui_scale = default_ui_scale;
     int font_size = 28;
@@ -79,7 +79,7 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label,
     ecs_set(world, e, Children, { children.length, children.value });
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
-    zoxel_log_arg("Spawned main menu [%lu]\n", (long int) e);
+    zoxel_log("Spawned main menu [%lu]\n", (long int) e);
     #endif
     return e;
 }

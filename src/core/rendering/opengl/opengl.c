@@ -56,7 +56,7 @@ int load_all_shaders()
         GLenum err = glGetError();
         if (err != GL_NO_ERROR)
         {
-            zoxel_log_arg("GL ERROR with load_all_shaders [%i]\n", err);
+            zoxel_log("GL ERROR with load_all_shaders [%i]\n", err);
             return false;
         }
     #endif

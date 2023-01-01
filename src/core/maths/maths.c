@@ -8,9 +8,6 @@
 #define degreesToRadians (M_PI * 2) / 360.0f
 #endif
 
-// libraries
-#include <stdlib.h>
-#include <stdio.h>
 #include <math.h> // for sqrt
 // move this to math module?
 #include "data/byte2.c"

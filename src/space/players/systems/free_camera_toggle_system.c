@@ -28,7 +28,7 @@ void FreeCameraToggleSystem(ecs_iter_t *it)
                 {
                     freeRoam->value = 0;
                 }
-                // printf("Camera Free Toggled [%s]\n", freeRoam->value ? "true" : "false");
+                // printf("Camera Free Toggled [%s]\n", freeRoam->value ? "1" : "false");
             }
         }
     }

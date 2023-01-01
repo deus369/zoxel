@@ -4,7 +4,7 @@ void AnimateChunkSystem(ecs_iter_t *it)
     double deltaTime = it->delta_time;
     AnimateChunk *animateTextures = ecs_field(it, AnimateChunk, 1);
     GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 2);
-    bool changed = false;   //! Skip changes if texture isn't updated.
+    unsigned char changed = 0;   //! Skip changes if texture isn't updated.
     for (int i = 0; i < it->count; i++)
     {
         AnimateChunk *animateChunk = &animateTextures[i];
@@ -20,7 +20,7 @@ void AnimateChunkSystem(ecs_iter_t *it)
             if (generateChunk->value == 0)
             {
                 generateChunk->value = 1;
-                changed = true;
+                changed = 1;
                 // printf("AnimateNoiseSystem, GenerateChunk Triggered: [%lu] on index [%i]\n", (long int)(it->entities[i]), i);
             }
         }

@@ -69,6 +69,6 @@ OPENGL_FUNCTIONS
 
 // Call this function after obtaining an OpenGL context
 // to dynamically load the modern functions.
-bool opengl_load_functions(void);
+unsigned char opengl_load_functions(void);
 
 #endif

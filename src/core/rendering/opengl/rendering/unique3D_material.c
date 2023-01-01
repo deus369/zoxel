@@ -13,7 +13,7 @@ int opengl_set_material3D_properties(GLuint material,
         GLenum err = glGetError();
         if (err != GL_NO_ERROR)
         {
-            zoxel_log_arg("GL ERROR - opengl_set_material3D_properties [%i]\n", (int) err);
+            zoxel_log("GL ERROR - opengl_set_material3D_properties [%i]\n", (int) err);
             return -1;
         }
     #endif

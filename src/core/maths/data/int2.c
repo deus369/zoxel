@@ -38,7 +38,7 @@ int2 int2_sub(int2 a, int2 b)
     return (int2) { a.x - b.x, a.y - b.y };
 }
 
-bool int2_equal(int2 a, int2 b)
+unsigned char int2_equal(int2 a, int2 b)
 {
     return a.x == b.x && a.y == b.y;
 }
@@ -95,7 +95,7 @@ int2 int2_right(int2 input)
     return (int2) { input.x + 1, input.y };
 }
 
-bool int2_in_bounds(int2 input, int2 size)
+unsigned char int2_in_bounds(int2 input, int2 size)
 {
     return (input.x >= 0 && input.x < size.x
         && input.y >= 0 && input.y < size.y);

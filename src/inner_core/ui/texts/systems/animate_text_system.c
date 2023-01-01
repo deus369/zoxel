@@ -6,7 +6,7 @@ void AnimateTextSystem(ecs_iter_t *it)
     AnimateZext *animateZexts = ecs_field(it, AnimateZext, 1);
     ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
     ZextData *zextDatas = ecs_field(it, ZextData, 3);
-    bool changed = false;   //! Skip changes if texture isn't updated.
+    unsigned char changed = 0;   //! Skip changes if texture isn't updated.
     for (int i = 0; i < it->count; i++)
     {
         AnimateZext *animateZext = &animateZexts[i];
@@ -33,7 +33,7 @@ void AnimateTextSystem(ecs_iter_t *it)
                 {
                     zextData->value[index] = 0;
                 }*/
-                changed = true;
+                changed = 1;
                 // printf("AnimateNoiseSystem, GenerateTexture Triggered: [%lu] on index [%i]\n", (long int)(it->entities[i]), i);
             }
         }

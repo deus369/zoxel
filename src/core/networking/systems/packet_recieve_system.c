@@ -42,7 +42,7 @@ void PacketRecieveSystem(ecs_iter_t *it)
         unsigned char recv_buffer[1];
         while (1)
         {
-            bool is_consume_packet = true;
+            unsigned char is_consume_packet = 1;
             unsigned char packet_size = 1;
             //! \todo read the first byte of the packet, 
             unsigned char packet_type = peek_packet_type(socketLink->value, &recv_addr);
@@ -91,7 +91,7 @@ void PacketRecieveSystem(ecs_iter_t *it)
                         printf("    - Server recieved message of size [%i]\n", text_length);
                         packet_size = 2 + text_length;
                         unsigned char recv_buffer_3[packet_size];
-                        is_consume_packet = false;
+                        is_consume_packet = 0;
                         recv_size = recvfrom(socketLink->value, recv_buffer_3, packet_size, 0,
                             (struct sockaddr*) &recv_addr, &recv_addr_len);
                         if (recv_size < 0)

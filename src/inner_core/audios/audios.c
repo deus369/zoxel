@@ -12,21 +12,21 @@
 #include "musics/musics.c"
 
 #ifdef SDL_MIXER
-bool load_audio()
+unsigned char load_audio()
 {
-	bool success = true;
+	unsigned char success = 1;
     const int sample_rate = 44100;
     const int channels_count = 1;   // 2
     // MIX_DEFAULT_FORMAT
     // https://wiki.libsdl.org/SDL2/SDL_AudioFormat
 	if( Mix_OpenAudio( sample_rate, AUDIO_F32SYS, channels_count, 2048 ) < 0 )
 	{
-		zoxel_log_arg( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-		success = false;
+		zoxel_log( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+		success = 0;
 	}
     if (!load_static_sounds())
     {
-		success = false;
+		success = 0;
     }
 	return success;
 }

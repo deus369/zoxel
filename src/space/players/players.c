@@ -57,9 +57,10 @@ void PlayersImport(ecs_world_t *world)
     //#if zoxel_particles2D
     //! Needed for bulk spawning. Still crashes.
     ECS_SYSTEM_DEFINE(world, Player2DTestSystem, EcsOnUpdate, [in] Keyboard);
+    // no_staging - rename to no_readonly
     ecs_system(world, {
         .entity = ecs_id(Player2DTestSystem),
-        .no_readonly = true // no_staging - rename to no_readonly
+        .no_readonly = 1 // true
     });
     // this has to update after reset systems (as gen is stuck on main thread, running before everything)
     zoxel_system(world, Player2DTestMainThreadSystem, EcsOnStore, [in] Keyboard);

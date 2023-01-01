@@ -14,15 +14,15 @@ ecs_entity_t spawn_keyboard(ecs_world_t *world)
 
 void set_key(PhysicalButton *key, int eventType)
 {
-    bool keyDown = eventType == SDL_KEYDOWN;
-    bool keyReleased = eventType == SDL_KEYUP;
+    unsigned char keyDown = eventType == SDL_KEYDOWN;
+    unsigned char keyReleased = eventType == SDL_KEYUP;
     if (!key->is_pressed && keyDown)
     {
-        key->pressed_this_frame = true;
+        key->pressed_this_frame = 1;
     }
     if (key->is_pressed && keyReleased)
     {
-        key->released_this_frame = true;
+        key->released_this_frame = 1;
     }
     key->is_pressed = keyDown;
 }
@@ -49,11 +49,11 @@ void extract_keyboard(ecs_world_t *world, SDL_Event event)
         key->released_this_frame = eventType == SDL_FINGERUP;
         if (key->pressed_this_frame)
         {
-            key->is_pressed = true;
+            key->is_pressed = 1;
         }
         else if (key->released_this_frame)
         {
-            key->is_pressed = false;
+            key->is_pressed = 0;
         }
         ecs_modified(world, keyboardEntity, Keyboard);
     }

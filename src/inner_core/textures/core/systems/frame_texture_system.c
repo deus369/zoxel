@@ -1,35 +1,35 @@
-bool check_texture(Texture* texture, const TextureSize *textureSize, int2 pixel_position,
+unsigned char check_texture(Texture* texture, const TextureSize *textureSize, int2 pixel_position,
     color find_color, int distance)
 {
     if (!int2_in_bounds(pixel_position, textureSize->value))
     {
-        return false;
+        return 0;
     }
     if (color_equal(find_color, texture->value[int2_array_index(pixel_position, textureSize->value)]))
     {
-        return true;
+        return 1;
     }
     if (distance >= 0)
     {
         distance--;
         if (check_texture(texture, textureSize, int2_down(pixel_position), find_color, distance))
         {
-            return true;
+            return 1;
         }
         if (check_texture(texture, textureSize, int2_up(pixel_position), find_color, distance))
         {
-            return true;
+            return 1;
         }
         if (check_texture(texture, textureSize, int2_left(pixel_position), find_color, distance))
         {
-            return true;
+            return 1;
         }
         if (check_texture(texture, textureSize, int2_right(pixel_position), find_color, distance))
         {
-            return true;
+            return 1;
         }
     }
-    return false;
+    return 0;
 }
 
 //! Our function that creates a texture.
@@ -131,7 +131,7 @@ void FrameTextureSystem(ecs_iter_t *it)
     for (int i = 0; i < it->count; i++)
     {
         const GenerateTexture *generateTexture = &generateTextures[i];
-        //! Only rebuild if GenerateTexture is set to true and EntityDirty is false.
+        //! Only rebuild if GenerateTexture is set to 1 and EntityDirty is false.
         if (generateTexture->value == 0)
         {
             continue;

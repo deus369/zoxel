@@ -54,7 +54,7 @@ int load_shader3D_textured()
     return 0;
 }
 
-void opengl_set_texture(GLuint texturel_buffer, bool isBlend)
+void opengl_set_texture(GLuint texturel_buffer, unsigned char isBlend)
 {
     if (isBlend)
     {
@@ -69,7 +69,7 @@ void opengl_set_texture(GLuint texturel_buffer, bool isBlend)
     glBindTexture(GL_TEXTURE_2D, texturel_buffer);
 }
 
-void opengl_disable_texture(bool isBlend)
+void opengl_disable_texture(unsigned char isBlend)
 {
     if (isBlend)
     {
@@ -98,7 +98,7 @@ int opengl_set_material3D_uvs_properties(GLuint material,
         GLenum err = glGetError();
         if (err != GL_NO_ERROR)
         {
-            zoxel_log_arg("GL ERROR with opengl_set_material3D_uvs_properties [%i]\n", (int) err);
+            zoxel_log("GL ERROR with opengl_set_material3D_uvs_properties [%i]\n", (int) err);
             return -1;
         }
     #endif

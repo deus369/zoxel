@@ -1,9 +1,6 @@
 #ifndef zoxel_generic
 #define zoxel_generic
 
-// libraries
-#include <stdlib.h>
-#include <stdio.h>
 // util
 #include "util/flecs_macros.c"
 #include "util/flecs_system_macros.c"

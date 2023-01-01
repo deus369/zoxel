@@ -8,7 +8,7 @@ void initialize_sdl_gamepads()
         fprintf(stderr, "Error: Unable to initialize SDL joystick subsystem: %s\n", SDL_GetError());
     }
     joysticks_count = SDL_NumJoysticks();
-    zoxel_log_arg("Number of joysticks connected: %d\n", joysticks_count);
+    zoxel_log("Number of joysticks connected: %d\n", joysticks_count);
     for (int i = 0; i < joysticks_count; i++)
     {
         joystick = SDL_JoystickOpen(i);
@@ -21,14 +21,14 @@ void initialize_sdl_gamepads()
 
 void set_gamepad_button(PhysicalButton *key, SDL_Joystick *joystick, int index)
 {
-    bool is_pressed = SDL_JoystickGetButton(joystick, index);
+    unsigned char is_pressed = SDL_JoystickGetButton(joystick, index);
     if (!key->is_pressed && is_pressed)
     {
-        key->pressed_this_frame = true;
+        key->pressed_this_frame = 1;
     }
     if (key->is_pressed && !is_pressed)
     {
-        key->released_this_frame = true;
+        key->released_this_frame = 1;
     }
     key->is_pressed = is_pressed;
 }

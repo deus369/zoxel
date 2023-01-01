@@ -119,22 +119,22 @@ void build_chunk_mesh_colors(const Chunk *chunk, const ChunkSize *chunkSize, con
                     // get color based on pallete voxel_color
                     float3 vertex_position_offset = float3_multiply_float(float3_from_int3(local_position), voxel_scale);
                     #ifndef disable_voxel_left
-                    zoxel_add_faces_colors(left, false)
+                    zoxel_add_faces_colors(left, 0)
                     #endif
                     #ifndef disable_voxel_right
-                    zoxel_add_faces_colors(right, true)
+                    zoxel_add_faces_colors(right, 1)
                     #endif
                     #ifndef disable_voxel_down
-                    zoxel_add_faces_colors(down, true)
+                    zoxel_add_faces_colors(down, 1)
                     #endif
                     #ifndef disable_voxel_up
-                    zoxel_add_faces_colors(up, false)
+                    zoxel_add_faces_colors(up, 0)
                     #endif
                     #ifndef disable_voxel_back
-                    zoxel_add_faces_colors(back, false)
+                    zoxel_add_faces_colors(back, 0)
                     #endif
                     #ifndef disable_voxel_front
-                    zoxel_add_faces_colors(front, true)
+                    zoxel_add_faces_colors(front, 1)
                     #endif
                 }
             }

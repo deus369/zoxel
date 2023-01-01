@@ -7,7 +7,7 @@
 //  https://github.com/edo9300/edopro/issues/151
 // const char *playerCharacterTextureName = "resources/textures/Test.png";
 const float shader_depth_multiplier = 0.001f; // 0.0001f;
-const bool disableTextureLoaded = false;
+const unsigned char disableTextureLoaded = 0;
 int textureType = GL_NEAREST; // GL_LINEAR
 //! \todo Move these references to MaterialGPULink
 //! \todo Update texture based on Player Entity texture updateing

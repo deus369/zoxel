@@ -20,7 +20,7 @@ void spawn_prefab_ui_line2D(ecs_world_t *world)
     zoxel_set(world, e2, DestroyInTime, { 0 });
     ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs
-    zoxel_log_arg("spawn_prefab ui_line2D [%lu].\n", (long int) (e));
+    zoxel_log("spawn_prefab ui_line2D [%lu].\n", (long int) (e));
     #endif
     prefab_ui_line2D = e;
     prefab_temporary_ui_line2D = e2;
@@ -65,7 +65,21 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point
     }
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
-    zoxel_log_arg("Spawned ui_line2D [%lu]\n", (long int) e);
+    zoxel_log("Spawned ui_line2D [%lu]\n", (long int) e);
     #endif
     return e;
+}
+
+void test_ui_lines(ecs_world_t *world, ecs_entity_t main_canvas)
+{
+    // test ui line
+    color edge_color = (color) { 8, 3, 3, 255 };
+    // color cross_color =  (color) { 55, 33, 12, 255 };
+    float edge_size = 4.0f;
+    spawn_ui_line2D(world, main_canvas, (int2) { 0, 0 }, (int2) { screen_dimensions.x, 0 }, edge_color, edge_size, 0.0);
+    spawn_ui_line2D(world, main_canvas, (int2) { screen_dimensions.x, 0 }, (int2) { screen_dimensions.x, screen_dimensions.y }, edge_color, edge_size, 0.0);
+    spawn_ui_line2D(world, main_canvas, (int2) { screen_dimensions.x, screen_dimensions.y }, (int2) { 0, screen_dimensions.y }, edge_color, edge_size, 0.0);
+    spawn_ui_line2D(world, main_canvas, (int2) { 0, screen_dimensions.y }, (int2) { 0, 0 }, edge_color, edge_size, 0.0);
+    // spawn_ui_line2D(world, main_canvas, (int2) { 0, 0 }, (int2) { 1920, 1080 }, cross_color, 4.0f, 0.0);
+    // spawn_ui_line2D(world, main_canvas, (int2) { 0, 1080 }, (int2) { 1920, 0 }, cross_color, 4.0f, 0.0);
 }

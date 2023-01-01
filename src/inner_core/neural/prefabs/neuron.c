@@ -13,7 +13,7 @@ ecs_entity_t spawn_prefab_neuron(ecs_world_t *world)
     ecs_defer_end(world);
     prefab_neuron = e;
     #ifdef zoxel_debug_prefabs
-    zoxel_log_arg("spawn_prefab neuron [%lu].\n", (long int) (e));
+    zoxel_log("spawn_prefab neuron [%lu].\n", (long int) (e));
     #endif
     return e;
 }
@@ -44,7 +44,7 @@ ecs_entity_t spawn_neuron(ecs_world_t *world, ecs_entity_t brain, float2 positio
     }
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
-    zoxel_log_arg("Spawned neuron [%lu]\n", (long int) e);
+    zoxel_log("Spawned neuron [%lu]\n", (long int) e);
     #endif
     return e;
 }

@@ -90,22 +90,22 @@ void build_chunk_mesh_uvs(const Chunk *chunk, const ChunkSize *chunkSize,
                 }
                 float3 vertex_position_offset = float3_multiply_float(float3_from_int3(local_position), voxel_scale);
                 #ifndef disable_voxel_left
-                zoxel_add_faces_with_uvs(left, false)
+                zoxel_add_faces_with_uvs(left, 0)
                 #endif
                 #ifndef disable_voxel_right
-                zoxel_add_faces_with_uvs(right, true)
+                zoxel_add_faces_with_uvs(right, 1)
                 #endif
                 #ifndef disable_voxel_down
-                zoxel_add_faces_no_chunk(down, true)
+                zoxel_add_faces_no_chunk(down, 1)
                 #endif
                 #ifndef disable_voxel_up
-                zoxel_add_faces_no_chunk(up, false)
+                zoxel_add_faces_no_chunk(up, 0)
                 #endif
                 #ifndef disable_voxel_back
-                zoxel_add_faces_with_uvs(back, false)
+                zoxel_add_faces_with_uvs(back, 0)
                 #endif
                 #ifndef disable_voxel_front
-                zoxel_add_faces_with_uvs(front, true)
+                zoxel_add_faces_with_uvs(front, 1)
                 #endif
             }
         }

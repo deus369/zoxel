@@ -1,5 +1,4 @@
-
-bool debugSpawnBobArmy = false;
+// unsigned char debugSpawnBobArmy = 0;
 
 // forward declarations
 

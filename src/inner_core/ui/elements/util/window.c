@@ -17,11 +17,11 @@ ecs_entity_t spawn_window(ecs_world_t *world, const char *header_label,
         (float2) { 0.5f, 1.0f },
         header_label, font_size, header_margins, 1,
         position2D, pixel_size,
-        true);
+        1);
     ecs_set(world, e, Children, { children.length, children.value });
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
-    zoxel_log_arg("Spawned window [%lu]\n", (long int) e);
+    zoxel_log("Spawned window [%lu]\n", (long int) e);
     #endif
     return e;
 }

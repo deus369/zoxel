@@ -34,7 +34,7 @@ void ElementRaycastSystem(ecs_iter_t *it)
                 // printf("ui raycasting [%lu] - [%i]\n", (long int) uis_it.entities[j], layer2D->value);
                 // centered
                 SelectableState *selectableState = &selectableStates[j];
-                bool was_raycasted = position.x >= canvasPixelPosition.x - pixelSize.x / 2
+                unsigned char was_raycasted = position.x >= canvasPixelPosition.x - pixelSize.x / 2
                     && position.x <= canvasPixelPosition.x + pixelSize.x / 2
                     && position.y >= canvasPixelPosition.y - pixelSize.y / 2
                     && position.y <= canvasPixelPosition.y + pixelSize.y / 2;

@@ -4,7 +4,7 @@ ecs_entity_t spawn_prefab_cube(ecs_world_t *world)
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "prefab_cube");
     #ifdef zoxel_debug_prefabs
-    zoxel_log_arg("spawn_prefab custom_mesh [%lu].\n", (long int) (e));
+    zoxel_log("spawn_prefab custom_mesh [%lu].\n", (long int) (e));
     #endif
     #ifdef zoxel_transforms3D
     add_transform3Ds(world, e);
@@ -40,6 +40,6 @@ ecs_entity_t spawn_cube(ecs_world_t *world, ecs_entity_t prefab, float3 position
         set_mesh_vertices_world(world, e, cubeVertices, 24);
     }
     ecs_defer_end(world);
-    // zoxel_log_arg("Spawned Character2D [%lu]\n", (long unsigned int) e);
+    // zoxel_log("Spawned Character2D [%lu]\n", (long unsigned int) e);
     return e;
 }

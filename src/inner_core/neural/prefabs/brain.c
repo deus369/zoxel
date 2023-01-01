@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_brain(ecs_world_t *world)
     ecs_defer_end(world);
     prefab_brain = e;
     #ifdef zoxel_debug_prefabs
-    zoxel_log_arg("spawn_prefab brain [%lu].\n", (long int) (e));
+    zoxel_log("spawn_prefab brain [%lu].\n", (long int) (e));
     #endif
     return e;
 }
@@ -48,7 +48,7 @@ ecs_entity_t spawn_brain(ecs_world_t *world)
     ecs_set(world, e, Children, { children.length, children.value });
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
-    zoxel_log_arg("Spawned brain [%lu]\n", (long int) e);
+    zoxel_log("Spawned brain [%lu]\n", (long int) e);
     #endif
     return e;
 }

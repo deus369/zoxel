@@ -32,6 +32,22 @@ The game is set in a vast, open-world environment that is generated on-the-fly a
 
 As a solo developer, I have poured my heart and soul into creating this game, and I am thrilled to finally be able to share it with the world. I hope players will enjoy the endless replayability, unique gameplay, and charming aesthetic of this game as much as I do.
 
+## Build your own Zoxel!
+
+As a player of our voxel-based RPG, you will have the ability to build and mod to your heart's content. Our game features powerful building mechanics that allow you to create and destroy structures using voxels, giving you the freedom to design and shape your own environments. And with modding support, you can take your creativity even further by creating your own custom content and gameplay mechanics. Whether you want to build a towering fortress, a sprawling city, or something entirely different, the sky's the limit. So why not give building and modding a try and see what you can create? The possibilities are endless!
+
+[[How To Build Guide](documents/howtos/howto-build.md)]
+
+## Screenshots
+
+Zoxel
+
+![Zoxel](/documents/screenshots/screenshot_2022-12-31_15-18-13.png?raw=false "Zoxel")
+
+Old Unity Zoxel
+
+![Unity Zoxel](/documents/screenshots/KEyHna.png?raw=false "Old Zoxel")
+
 ### Some Poems
 
 [[The Joy of Zoxel](documents/poems/poem_0.md)]
@@ -64,12 +80,6 @@ The GPL is considered by many to be the best license for everyone because it all
 
 Additionally, the GPL requires that any modifications or derivatives of the licensed software must also be licensed under the GPL, ensuring that the software remains open and freely available to others in the future. This helps to prevent the software from being "closed off" or proprietary, and ensures that it remains a valuable resource for the broader software community.
 
-## Build your own Zoxel!
-
-As a player of our voxel-based RPG, you will have the ability to build and mod to your heart's content. Our game features powerful building mechanics that allow you to create and destroy structures using voxels, giving you the freedom to design and shape your own environments. And with modding support, you can take your creativity even further by creating your own custom content and gameplay mechanics. Whether you want to build a towering fortress, a sprawling city, or something entirely different, the sky's the limit. So why not give building and modding a try and see what you can create? The possibilities are endless!
-
-[[How To Build Guide](documents/howtos/howto-build.md)]
-
 ## Connect with us on social media
 
 Follow our development journey and stay up to date on the latest news and updates by following us on social media!
@@ -84,12 +94,10 @@ Follow our development journey and stay up to date on the latest news and update
 
 Mirrors [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.com/deus369/zoxel)]
 
-## Screenshots
+## 31.12.2022 Latest Update
 
-Zoxel
+I will have to delay the Steam release~ originally I planned a 2022 December release! I will finish porting at my own pace and create the Zoxel I can be proud of :D For now I need to spend some more time on my art and my portfolio. 
 
-![Zoxel](/documents/screenshots/screenshot-67e5703e.jpg?raw=false "Zoxel")
+Overall I am happy where the porting in C Flecs SDL has gotten me to and where Zoxel Unity is at. Unfortunately Unity took longer with their ecs package and there were many #unity bugs while testing. Their priorities also changed over time, as did mine.
 
-Old Unity Zoxel
-
-![Unity Zoxel](/documents/screenshots/KEyHna.png?raw=false "Old Zoxel")
+I will see how 2023 goes as I work on it a bit less. The last few years have been intense and I need to prioritize reducing stress more over my goals. That involves making myself work less, or doing things I enjoy more like art, making music or playing games.

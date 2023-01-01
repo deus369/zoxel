@@ -4,7 +4,7 @@
 // tags
 ECS_DECLARE(Frictioned);
 // components
-zoxel_component(DisableMovement, bool);
+zoxel_state_component(DisableMovement);
 // sub modules
 #include "physics2D/physics2D.c"
 #include "physics3D/physics3D.c"

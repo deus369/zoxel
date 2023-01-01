@@ -1,5 +1,5 @@
 //! Our function that creates a texture.
-void GenerateNoise(Texture* texture, const TextureSize *textureSize, bool is_dirt)
+void GenerateNoise(Texture* texture, const TextureSize *textureSize, unsigned char is_dirt)
 {
     int2 redRange = { 15, 244 };
     int2 greenRange = { 15, 122 };
@@ -91,7 +91,7 @@ void NoiseTextureSystem(ecs_iter_t *it)
     for (int i = 0; i < it->count; i++)
     {
         const GenerateTexture *generateTexture = &generateTextures[i];
-        //! Only rebuild if GenerateTexture is set to true and EntityDirty is false.
+        //! Only rebuild if GenerateTexture is set to 1 and EntityDirty is false.
         if (generateTexture->value == 0)
         {
             continue;
@@ -106,7 +106,7 @@ void NoiseTextureSystem(ecs_iter_t *it)
         const TextureSize *textureSize = &textureSizes[i];
         int newLength = textureSize->value.x * textureSize->value.y;
         re_initialize_memory_component(texture, color, newLength);
-        bool is_dirt = ecs_has(it->world, it->entities[i], DirtTexture);
+        unsigned char is_dirt = ecs_has(it->world, it->entities[i], DirtTexture);
         GenerateNoise(texture, textureSize, is_dirt);
         // printf("Noise Texture Generated: [%lu] \n", (long int) it->entities[i]);
     }

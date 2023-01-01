@@ -24,7 +24,7 @@ void TextureSaveSystem(ecs_iter_t *it)
         const Texture *texture = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
         save_texture_png(texture, textureSize, outputTextureName);
-        zoxel_log_arg("Saved Texture: %lu \n", (long int) it->entities[i]);
+        zoxel_log("Saved Texture: %lu \n", (long int) it->entities[i]);
     }
 }
 ECS_SYSTEM_DECLARE(TextureSaveSystem);

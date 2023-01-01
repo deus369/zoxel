@@ -22,7 +22,7 @@ void Render3DSystem(ecs_iter_t *it)
         // printf(" - Rendering 3D Mesh [%lu]\n", (long int) it->entities[i]);
         if (opengl_set_material(materialGPULink->value))
         {
-            bool has_mesh_colors = ecs_has(world, it->entities[i], MeshColors);
+            unsigned char has_mesh_colors = ecs_has(world, it->entities[i], MeshColors);
             opengl_set_mesh(meshGPULink->value);
             if (!has_mesh_colors)
             {

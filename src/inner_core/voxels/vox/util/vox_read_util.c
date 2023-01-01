@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 #define VOX_MAGIC "VOX "
 #define VOX_MAIN "MAIN"
 #define VOX_FILE_PACK "PACK"
@@ -121,52 +118,52 @@ int read_vox(const char* filename, vox_file *vox)
     if (file == NULL)
     {
         // Print an error message and exit if the file could not be opened
-        printf("Error: Could not open vox file [%s]\n", filename);
+        zoxel_log("Error: Could not open vox file [%s]\n", filename);
         return -1;
     }
     #ifdef zoxel_debug_vox_read
-    printf("Success Opening vox file [%s]\n", filename);
+    zoxel_log("Success Opening vox file [%s]\n", filename);
     #endif
     // vox_file vox;
     if (fread(&vox->header, sizeof(vox_file_header), 1, file) != 1)
     {
-        fprintf(stderr, "Failed to read header\n");
+        zoxel_log_error(stderr, "Failed to read header\n");
         return -1;
     }
     // compare header, make sure 'VOX ' label is inside it
     if (strncmp(vox->header.magic, VOX_MAGIC, sizeof(vox->header.magic)) != 0)
     {
-        fprintf(stderr, "Invalid magic value\n");
+        zoxel_log_error(stderr, "Invalid magic value\n");
         return -1;
     }
     if (vox->header.version != VOX_SUPPORTED_VERSION)
     {
-        fprintf(stderr, "Unsupported version [%i]\n", vox->header.version);
+        zoxel_log_error(stderr, "Unsupported version [%i]\n", vox->header.version);
         return -1;
     }
     if (fread(&vox->main.name, sizeof(vox->main.name), 1, file) != 1)
     {
-        fprintf(stderr, "Failed to read vox->main.name\n");
+        zoxel_log_error(stderr, "Failed to read vox->main.name\n");
         return -1;
     }
     if (strncmp(vox->main.name, VOX_MAIN, 4) != 0)
     {
-        fprintf(stderr, "Invalid vox->main.name\n");
+        zoxel_log_error(stderr, "Invalid vox->main.name\n");
         return -1;
     }
     if (fread(&vox->main.chunk_content, sizeof(vox->main.chunk_content), 1, file) != 1)
     {
-        fprintf(stderr, "Failed to read vox->main.chunk_content\n");
+        zoxel_log_error(stderr, "Failed to read vox->main.chunk_content\n");
         return -1;
     }
     if (vox->main.chunk_content != 0)
     {
-        printf("Bad chunk_content, should be 0.\n");
+        zoxel_log("Bad chunk_content, should be 0.\n");
         return -1;
     }
     if (fread(&vox->main.chunk_nums, sizeof(vox->main.chunk_nums), 1, file) != 1)
     {
-        fprintf(stderr, "Failed to read vox->main.chunk_nums\n");
+        zoxel_log_error(stderr, "Failed to read vox->main.chunk_nums\n");
         return -1;
     }
     // pack data
@@ -174,32 +171,32 @@ int read_vox(const char* filename, vox_file *vox)
     {
         if (fread(&vox->pack.name, sizeof(vox->pack.name), 1, file) != 1)
         {
-            fprintf(stderr, "Failed to read vox->pack.name\n");
+            zoxel_log_error(stderr, "Failed to read vox->pack.name\n");
             return -1;
         }
         if (strncmp(vox->pack.name, VOX_FILE_PACK, sizeof(vox->pack.name)) != 0)
         {
-            fprintf(stderr, "Invalid vox->pack.name\n");
+            zoxel_log_error(stderr, "Invalid vox->pack.name\n");
             return -1;
         }
         if (fread(&vox->pack.chunk_content, sizeof(vox->pack.chunk_content), 1, file) != 1)
         {
-            fprintf(stderr, "Failed to read vox->pack.chunk_content\n");
+            zoxel_log_error(stderr, "Failed to read vox->pack.chunk_content\n");
             return -1;
         }
         if (fread(&vox->pack.chunk_nums, sizeof(vox->pack.chunk_nums), 1, file) != 1)
         {
-            fprintf(stderr, "Failed to read vox->pack.chunk_nums\n");
+            zoxel_log_error(stderr, "Failed to read vox->pack.chunk_nums\n");
             return -1;
         }
         if (fread(&vox->pack.model_nums, sizeof(vox->pack.model_nums), 1, file) != 1)
         {
-            fprintf(stderr, "Failed to read vox->pack.model_nums\n");
+            zoxel_log_error(stderr, "Failed to read vox->pack.model_nums\n");
             return -1;
         }
         if (vox->pack.model_nums == 0)
         {
-            printf("Bad Token: model nums must be greater than zero.\n");
+            zoxel_log("Bad Token: model nums must be greater than zero.\n");
             return -1;
         }
     }
@@ -214,93 +211,93 @@ int read_vox(const char* filename, vox_file *vox)
     for (int i = 0; i < vox->pack.model_nums; i++)
     {
         #ifdef zoxel_debug_vox_read
-        printf("  - Reading Chunk [%i]\n", i);
+        zoxel_log("  - Reading Chunk [%i]\n", i);
         #endif
         vox_file_chunk_child chunk;
         if (fread(&chunk.size.name, sizeof(chunk.size.name), 1, file) != 1)
         {
-            fprintf(stderr, "Failed to read chunk.size.name\n");
+            zoxel_log_error(stderr, "Failed to read chunk.size.name\n");
             return -1;
         }
         if (strncmp(chunk.size.name, VOX_FILE_SIZE, sizeof(chunk.size.name)) != 0)
         {
-            fprintf(stderr, "Invalid chunk.size.name\n");
+            zoxel_log_error(stderr, "Invalid chunk.size.name\n");
             return -1;
         }
 
         if (fread(&chunk.size.chunk_content, sizeof(chunk.size.chunk_content), 1, file) != 1)
         {
-            fprintf(stderr, "Failed to read chunk.size.chunk_content\n");
+            zoxel_log_error(stderr, "Failed to read chunk.size.chunk_content\n");
             return -1;
         }
         if (chunk.size.chunk_content != 12)
         {
-            fprintf(stderr, "Invalid chunk.size.chunk_content, must be 12.\n");
+            zoxel_log_error(stderr, "Invalid chunk.size.chunk_content, must be 12.\n");
             return -1;
         }
 
         if (fread(&chunk.size.chunk_nums, sizeof(chunk.size.chunk_nums), 1, file) != 1)
         {
-            fprintf(stderr, "Failed to read chunk.size.chunk_nums\n");
+            zoxel_log_error(stderr, "Failed to read chunk.size.chunk_nums\n");
             return -1;
         }
         if (fread(&chunk.size.xyz.x, sizeof(chunk.size.xyz.x), 1, file) != 1)
         {
-            fprintf(stderr, "Failed to read chunk.size.x\n");
+            zoxel_log_error(stderr, "Failed to read chunk.size.x\n");
             return -1;
         }
         if (fread(&chunk.size.xyz.z, sizeof(chunk.size.xyz.z), 1, file) != 1)
         {
-            fprintf(stderr, "Failed to read chunk.size.z\n");
+            zoxel_log_error(stderr, "Failed to read chunk.size.z\n");
             return -1;
         }
         if (fread(&chunk.size.xyz.y, sizeof(chunk.size.xyz.y), 1, file) != 1)
         {
-            fprintf(stderr, "Failed to read chunk.size.y\n");
+            zoxel_log_error(stderr, "Failed to read chunk.size.y\n");
             return -1;
         }
         if (fread(&chunk.xyzi.name, sizeof(chunk.xyzi.name), 1, file) != 1)
         {
-            fprintf(stderr, "Failed to read chunk.xyzi.name\n");
+            zoxel_log_error(stderr, "Failed to read chunk.xyzi.name\n");
             return -1;
         }
         if (strncmp(chunk.xyzi.name, VOX_FILE_XYZI, sizeof(chunk.xyzi.name)) != 0)
         {
-            fprintf(stderr, "Invalid chunk.xyzi.name\n");
+            zoxel_log_error(stderr, "Invalid chunk.xyzi.name\n");
             return -1;
         }
         if (fread(&chunk.xyzi.chunk_content, sizeof(chunk.xyzi.chunk_content), 1, file) != 1)
         {
-            fprintf(stderr, "Failed to read chunk.xyzi.chunk_content\n");
+            zoxel_log_error(stderr, "Failed to read chunk.xyzi.chunk_content\n");
             return -1;
         }
         if (fread(&chunk.xyzi.chunk_nums, sizeof(chunk.xyzi.chunk_nums), 1, file) != 1)
         {
-            fprintf(stderr, "Failed to read chunk.xyzi.chunk_nums\n");
+            zoxel_log_error(stderr, "Failed to read chunk.xyzi.chunk_nums\n");
             return -1;
         }
         if (chunk.xyzi.chunk_nums != 0)
         {
-            printf("Bad Token: chunk nums is %i,i t should be 0.\n", chunk.xyzi.chunk_nums);
+            zoxel_log("Bad Token: chunk nums is %i,i t should be 0.\n", chunk.xyzi.chunk_nums);
             return -1;
         }
         int voxel_nums;
         if (fread(&voxel_nums, sizeof(voxel_nums), 1, file) != 1)
         {
-            fprintf(stderr, "Failed to read voxel_nums\n");
+            zoxel_log_error(stderr, "Failed to read voxel_nums\n");
             return -1;
         }
         int voxels_length = int3_array_size(chunk.size.xyz); // chunk.size.x * chunk.size.y * chunk.size.z;
         int bytes_length = voxel_nums * 4;
         #ifdef zoxel_debug_vox_read
-        printf("    - size.chunk_content [%i]\n", chunk.size.chunk_content);
-        printf("    - size.chunk_nums [%i]\n", chunk.size.chunk_nums);
-        printf("    - size.xyz [%ix%ix%i]\n", chunk.size.xyz.x, chunk.size.xyz.y, chunk.size.xyz.z);
-        printf("    - xyzi.chunk_content [%i]\n", chunk.xyzi.chunk_content);
-        printf("    - xyzi.chunk_nums [%i]\n", chunk.xyzi.chunk_nums);
-        printf("    - voxel_nums [%i]\n", voxel_nums);
-        printf("    - voxels_length [%i]\n", voxels_length);
-        printf("    - bytes_length [%i]\n", bytes_length);
+        zoxel_log("    - size.chunk_content [%i]\n", chunk.size.chunk_content);
+        zoxel_log("    - size.chunk_nums [%i]\n", chunk.size.chunk_nums);
+        zoxel_log("    - size.xyz [%ix%ix%i]\n", chunk.size.xyz.x, chunk.size.xyz.y, chunk.size.xyz.z);
+        zoxel_log("    - xyzi.chunk_content [%i]\n", chunk.xyzi.chunk_content);
+        zoxel_log("    - xyzi.chunk_nums [%i]\n", chunk.xyzi.chunk_nums);
+        zoxel_log("    - voxel_nums [%i]\n", voxel_nums);
+        zoxel_log("    - voxels_length [%i]\n", voxels_length);
+        zoxel_log("    - bytes_length [%i]\n", bytes_length);
         #endif
         // allocate voxels
         chunk.xyzi.voxels = malloc(voxels_length);
@@ -308,18 +305,18 @@ int read_vox(const char* filename, vox_file *vox)
         {
             chunk.xyzi.voxels[j] = 0;
         }
-        // printf("-=== voxel_nums [%i] ===-\n", voxel_nums);
+        // zoxel_log("-=== voxel_nums [%i] ===-\n", voxel_nums);
         unsigned char *voxel_bytes = (unsigned char*) malloc(bytes_length);
         if (voxel_bytes == NULL)
         {
-            fprintf(stderr, "Failed to allocate memory for voxel_bytes!\n");
+            zoxel_log_error(stderr, "Failed to allocate memory for voxel_bytes!\n");
             return -1;
         }
         for (int j = 0; j < bytes_length; j++)
         {
             if (feof(file))
             {
-                printf("End of file at [%i]\n", j);
+                zoxel_log("End of file at [%i]\n", j);
                 break;
             }
             voxel_bytes[j] = fgetc(file);
@@ -334,7 +331,7 @@ int read_vox(const char* filename, vox_file *vox)
             #ifdef zoxel_debug_vox_read
             if (j < 4 * 32)
             {
-                printf("        - voxel [%i] [%ix%ix%i] [%i]\n", j, position.x, position.y, position.z, chunk.xyzi.voxels[array_index]);
+                zoxel_log("        - voxel [%i] [%ix%ix%i] [%i]\n", j, position.x, position.y, position.z, chunk.xyzi.voxels[array_index]);
             }
             #endif
         }
@@ -346,34 +343,34 @@ int read_vox(const char* filename, vox_file *vox)
     {
         if (fread(&vox->palette.name, sizeof(vox->palette.name), 1, file) != 1)
         {
-            fprintf(stderr, "Failed to read vox->palette.name\n");
+            zoxel_log_error(stderr, "Failed to read vox->palette.name\n");
             return -1;
         }
         if (strncmp(vox->palette.name, VOX_FILE_RGBA, sizeof(vox->palette.name)) != 0)
         {
-            fprintf(stderr, "Invalid vox->palette.name\n");
+            zoxel_log_error(stderr, "Invalid vox->palette.name\n");
             return -1;
         }
         if (fread(&vox->palette.chunk_content, sizeof(vox->palette.chunk_content), 1, file) != 1)
         {
-            fprintf(stderr, "Failed to read vox->palette.chunk_content\n");
+            zoxel_log_error(stderr, "Failed to read vox->palette.chunk_content\n");
             return -1;
         }
         if (fread(&vox->palette.chunk_nums, sizeof(vox->palette.chunk_nums), 1, file) != 1)
         {
-            fprintf(stderr, "Failed to read vox->palette.chunk_nums\n");
+            zoxel_log_error(stderr, "Failed to read vox->palette.chunk_nums\n");
             return -1;
         }
         int colors_length = vox->palette.chunk_content / 4;
         #ifdef zoxel_debug_vox_read
-            printf("vox->palette.chunk_content: %i\n", colors_length);
+            zoxel_log("vox->palette.chunk_content: %i\n", colors_length);
         #endif
         vox->palette.values = malloc(sizeof(color) * colors_length);
         for (int i = 0; i < colors_length; i++)
         {
             if (feof(file))
             {
-                printf("End of file at [%i]\n", i);
+                zoxel_log("End of file at [%i]\n", i);
                 break;
             }
             vox->palette.values[i].r = fgetc(file);
@@ -381,7 +378,7 @@ int read_vox(const char* filename, vox_file *vox)
             vox->palette.values[i].b = fgetc(file);
             vox->palette.values[i].a = fgetc(file);
             #ifdef zoxel_debug_vox_read
-                printf("    - color [%i] [%ix%ix%ix%i]\n", i,
+                zoxel_log("    - color [%i] [%ix%ix%ix%i]\n", i,
                     vox->palette.values[i].r, vox->palette.values[i].g, vox->palette.values[i].b, vox->palette.values[i].a);
             #endif
         }
@@ -389,13 +386,13 @@ int read_vox(const char* filename, vox_file *vox)
     else
     {
         #ifdef zoxel_debug_vox_read
-            printf("Using default palette!\n");
+            zoxel_log("Using default palette!\n");
         #endif
         vox->palette.values = malloc(sizeof(unsigned int) * 256);
         memcpy(vox->palette.values, default_palette, sizeof(unsigned int) * 256);
     }
     #ifdef zoxel_debug_vox_read
-    printf("Success reading vox [%s]\n", filename);
+    zoxel_log("Success reading vox [%s]\n", filename);
     #endif
     // Close the vox file when we're done
     fclose(file);

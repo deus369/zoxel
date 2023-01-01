@@ -5,7 +5,7 @@
 //! Our function that creates a texture.
 void generate_font_texture(Texture* texture, const TextureSize *textureSize, const FontData *fontData)
 {
-    const bool is_background = false;
+    const unsigned char is_background = 0;
     const color nothing = { 0, 0, 0, 0 };
     // use FontData byte2 data.
     const int frame_thickness = textureSize->value.x / 4;
@@ -119,7 +119,7 @@ void FontTextureSystem(ecs_iter_t *it)
     for (int i = 0; i < it->count; i++)
     {
         const GenerateTexture *generateTexture = &generateTextures[i];
-        //! Only rebuild if GenerateTexture is set to true and EntityDirty is false.
+        //! Only rebuild if GenerateTexture is set to 1 and EntityDirty is false.
         if (generateTexture->value == 0)
         {
             continue;

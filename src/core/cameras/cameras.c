@@ -49,15 +49,15 @@ void set_mouse_mode()
     {
         return;
     }
-    bool constrain_mouse;
+    unsigned char constrain_mouse;
     if (ecs_has(world, main_camera, FreeRoam) &&
         ecs_get(world, main_camera, FreeRoam)->value == 1)
     {
-        constrain_mouse = true;
+        constrain_mouse = 1;
     }
     else
     {
-        constrain_mouse = false;
+        constrain_mouse = 0;
     }
     SDL_SetRelativeMouseMode(constrain_mouse);  //! Locks Main Mouse.
     if (constrain_mouse)
