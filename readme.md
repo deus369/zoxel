@@ -2,7 +2,7 @@
 
 Experience the thrill of discovery and adventure in this groundbreaking, procedurally generated voxel RPG
 
-> [[Play Latest](https://deus369.github.io/zoxel/web/)]
+> [[Play Latest](https://deus369.github.io/zoxel/)]
 
 > [[Roadmap](documents/roadmap.md)]
 
@@ -46,7 +46,7 @@ Zoxel
 
 Old Unity Zoxel
 
-![Unity Zoxel](/documents/screenshots/KEyHna.png?raw=false "Old Zoxel")
+![Unity Zoxel](/documents/screenshots/zoxel_unity_00.png?raw=false "Old Zoxel")
 
 ### Some Poems
 

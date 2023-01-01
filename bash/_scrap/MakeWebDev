@@ -37,7 +37,7 @@ LDLIBS += -s STACK_SIZE=365536
 SRCS = $(shell find src/ -type f -name *.c)
 SRCS += $(shell find src/ -type f -name *.h)
 # OBJS defines all the files used to compile Zoxel.
-OBJS = include/flecs.c src/main.c
+OBJS = include/flecs/flecs.c src/main.c
 
 all: $(TARGET)
 

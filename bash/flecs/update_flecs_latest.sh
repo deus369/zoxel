@@ -6,9 +6,9 @@ flecs_c_url="https://raw.githubusercontent.com/SanderMertens/flecs/master/flecs.
 
 flecs_h_url="https://raw.githubusercontent.com/SanderMertens/flecs/master/flecs.h"
 
-flecs_c_file_location="$HOME/zoxel/include/flecs.c"
+flecs_c_file_location="$HOME/zoxel/include/flecs/flecs.c"
 
-flecs_h_file_location="$HOME/zoxel/include/flecs.h"
+flecs_h_file_location="$HOME/zoxel/include/flecs/flecs.h"
 
 wget -O $flecs_c_file_location $flecs_c_url
 

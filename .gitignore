@@ -11,3 +11,6 @@ android-build
 .vscode
 # ignore test builds
 tests/builds/*
+# ignore flecs source
+include/flecs/flecs.h
+include/flecs/flecs.c

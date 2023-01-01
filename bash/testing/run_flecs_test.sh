@@ -15,7 +15,7 @@ else
   # echo "Number of arguments.: $#"
   # echo "List of arguments...: $@"
   # echo "Arg #1..............: $1"
-  cc -std=c99 -D_DEFAULT_SOURCE -o tests/builds/$test_file_name include/flecs.c tests/flecs/$test_file_name.c
+  cc -std=c99 -D_DEFAULT_SOURCE -o tests/builds/$test_file_name include/flecs/flecs.c tests/flecs/$test_file_name.c
   ./tests/builds/$test_file_name
   echo "\n=== Ended Test [$test_file_name] ==="
   echo "======================================="

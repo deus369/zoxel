@@ -7,16 +7,16 @@
 NAME := Zoxel
 TARGET = zoxel
 TARGET_DEV = dev
-TARGET_WEB = web/zoxel.js
+TARGET_WEB = zoxel.js
 # used for cleaning
 RM = rm
-TARGET_WEB_WASM = web/zoxel.wasm
-TARGET_WEB_DATA = web/zoxel.data
+TARGET_WEB_WASM = zoxel.wasm
+TARGET_WEB_DATA = zoxel.data
 # our compilers
 CC = cc						# Defines the compiler, cc for C code
 CC_WEB = emcc				# the web compiler
 # OBJS defines all the files used to compile the final Zoxel binary.
-OBJS = include/flecs.c src/main.c
+OBJS = include/flecs/flecs.c src/main.c
 # This collects all c and h files in the directory
 SRCS = $(shell find src/ -type f -name *.c)
 SRCS += $(shell find src/ -type f -name *.h)
@@ -67,19 +67,23 @@ MAKE_WEB_RELEASE = $(CC_WEB) $(CFLAGS) $(CFLAGS_WEB) -o $(TARGET_WEB) $(OBJS) $(
 
 # release
 $(TARGET): $(SRCS) ## builds zoxel
+	cd bash/flecs && ./install_flecs.sh
 	$(MAKE_RELEASE)
 
 # dev
 $(TARGET_DEV): $(SRCS) ## builds zoxel
+	cd bash/flecs && ./install_flecs.sh
 	$(MAKE_DEV)
 
 # web
 $(TARGET_WEB): $(SRCS) ## builds zoxel
+	cd bash/flecs && ./install_flecs.sh
 	$(MAKE_WEB_RELEASE)
 
 # builds for all platforms - this rebuilds everytime tho
 all: $(SRCS)
 	@echo "Begin Making All"
+	cd bash/flecs && ./install_flecs.sh
 	@echo "Making Native Release Build [$(TARGET)]"
 	$(MAKE_RELEASE)
 	@echo "Making Native Dev Build [$(TARGET_DEV)]"
@@ -93,9 +97,12 @@ clean:
 	@echo "Cleaning All Build Files"
 	$(RM) $(TARGET)
 	$(RM) $(TARGET_DEV)
-	$(RM) $(TARGET_WEB)
-	$(RM) $(TARGET_WEB_WASM)
-	$(RM) $(TARGET_WEB_DATA)
+	cd bash/flecs && ./remove_flecs.sh
+
+# used to remove web?
+# $(RM) $(TARGET_WEB)
+# $(RM) $(TARGET_WEB_WASM)
+# $(RM) $(TARGET_WEB_DATA)
 
 # Runs zoxel release build
 run:
@@ -135,6 +142,12 @@ uninstall: ## uninstalls zoxel into /usr/games directory
 
 install-web-builder:
 	bash/web/install_emcc.sh
+
+install-flecs:
+	cd bash/flecs && ./install_flecs.sh
+
+remove-flecs:
+	cd bash/flecs && ./remove_flecs.sh
 
 help:
 	@echo "zoxel -> an open source voxel engine"
