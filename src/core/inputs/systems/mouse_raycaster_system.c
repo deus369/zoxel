@@ -11,4 +11,4 @@ void MouseRaycasterSystem(ecs_iter_t *it)
         raycaster->value = mouse->position;
     }
 }
-ECS_SYSTEM_DECLARE(MouseRaycasterSystem);
+zoxel_declare_system(MouseRaycasterSystem)

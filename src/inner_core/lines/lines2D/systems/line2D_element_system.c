@@ -60,7 +60,7 @@ void Line2DElementSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(Line2DElementSystem);
+zoxel_declare_system(Line2DElementSystem);
 
 
 

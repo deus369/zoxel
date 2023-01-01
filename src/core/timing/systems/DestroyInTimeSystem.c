@@ -13,4 +13,4 @@ void DestroyInTimeSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(DestroyInTimeSystem);
+zoxel_declare_system(DestroyInTimeSystem)

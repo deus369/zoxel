@@ -18,4 +18,4 @@ void InstanceRender3DSystem(ecs_iter_t *it)
         RenderEntity3D(position->value, rotation->value, scale1D->value, brightness->value);
     }
 }
-ECS_SYSTEM_DECLARE(InstanceRender3DSystem);
+zoxel_declare_system(InstanceRender3DSystem)

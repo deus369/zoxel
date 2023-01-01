@@ -86,4 +86,4 @@ void FpsDisplaySystem(ecs_iter_t *it)
         ecs_query_skip(it);
     }
 }
-ECS_SYSTEM_DECLARE(FpsDisplaySystem);
+zoxel_declare_system(FpsDisplaySystem)

@@ -41,15 +41,15 @@ void Player2DTestSystem(ecs_iter_t *it)
                 }
             }
         }
-        else if (keyboard->p.pressed_this_frame)
+        /*else if (keyboard->p.pressed_this_frame)
         {
             zoxel_log("[Printing Debug]\n");
             DebugParticlesSpawned(world);
             // PrintKeyboard(world);
-        }
+        }*/
     }
 }
-ECS_SYSTEM_DECLARE(Player2DTestSystem);
+zoxel_declare_system(Player2DTestSystem);
 
 ecs_entity_t fps_display;
 
@@ -84,4 +84,4 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(Player2DTestMainThreadSystem);
+zoxel_declare_system(Player2DTestMainThreadSystem)

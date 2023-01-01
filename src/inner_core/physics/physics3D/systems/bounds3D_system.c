@@ -33,4 +33,4 @@ void Bounds3DSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(Bounds3DSystem);
+zoxel_declare_system(Bounds3DSystem)

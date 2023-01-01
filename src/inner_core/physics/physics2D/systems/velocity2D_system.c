@@ -12,4 +12,4 @@ void Velocity2DSystem(ecs_iter_t *it)
         position2D->value.y += velocity2D->value.y * deltaTime;
     }
 }
-ECS_SYSTEM_DECLARE(Velocity2DSystem);
+zoxel_declare_system(Velocity2DSystem)

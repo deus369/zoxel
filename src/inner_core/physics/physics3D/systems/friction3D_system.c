@@ -14,4 +14,4 @@ void Friction3DSystem(ecs_iter_t *it)
         // printf("Adding friction.\n");
     }
 }
-ECS_SYSTEM_DECLARE(Friction3DSystem);
+zoxel_declare_system(Friction3DSystem)

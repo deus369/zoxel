@@ -118,4 +118,4 @@ void GenerateSoundSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(GenerateSoundSystem);
+zoxel_declare_system(GenerateSoundSystem)

@@ -28,4 +28,4 @@ void DraggerEndSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(DraggerEndSystem);
+zoxel_declare_system(DraggerEndSystem)

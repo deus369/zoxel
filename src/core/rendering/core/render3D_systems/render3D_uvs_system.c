@@ -41,18 +41,4 @@ void Render3DUvsSystem(ecs_iter_t *it)
     opengl_disable_texture(false);
     opengl_disable_opengl_program();
 }
-ECS_SYSTEM_DECLARE(Render3DUvsSystem);
-
-            /*for (int j = 0; j < main_cameras_count; j++)
-            {
-                ecs_entity_t camera_entity = main_cameras[j];
-                if (!ecs_is_valid(world, camera_entity))
-                {
-                    continue;
-                }
-                // printf("Rendering! [%i]\n", j);
-                opengl_set_camera_view_matrix(materialGPULink->value,
-                    ecs_get(world, camera_entity, ViewMatrix)->value);
-                opengl_draw_triangles(meshIndicies2->length);
-            }*/
-            // printf("Rendering [%lu] mesh with texture: %i\n", (long int) it->entities[i], textureGPULink->value);
+zoxel_declare_system(Render3DUvsSystem)

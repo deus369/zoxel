@@ -39,32 +39,4 @@ void TextureUpdateSystem(ecs_iter_t *it)
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 }
-ECS_SYSTEM_DECLARE(TextureUpdateSystem);
-
-//! \todo Make proper queue.
-/*void texture_update_main_thread()
-{ 
-    if (queueCount == 0)
-    {
-        return;
-    }
-    // printf("queueCount: %i \n", queueCount);
-    for (int i = queueCount - 1; i >= 0; i--)
-    {
-        const Texture *texture = queueTextures[i];
-        const TextureSize *textureSize = queueTextureSizes[i];
-        glBindTexture(GL_TEXTURE_2D, queueTextureIDs[i]);
-        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize->value.x, textureSize->value.y,
-            0, GL_RGBA, GL_UNSIGNED_BYTE, texture->value);
-        glBindTexture(GL_TEXTURE_2D, 0);
-        // printf("Updating TextureID [%i] with texture color.red [%i] \n", queueTextureIDs[i], texture->value[8 + 8 * 16].r);
-    }
-    queueCount = 0;
-}*/
-        // add to queue
-        /*queueTextures[queueCount] = texture;
-        queueTextureSizes[queueCount] = textureSize;
-        queueTextureIDs[queueCount] = textureGPULink->value;
-        queueCount++;*/
+zoxel_declare_system(TextureUpdateSystem)

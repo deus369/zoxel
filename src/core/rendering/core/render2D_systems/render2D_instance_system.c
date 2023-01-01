@@ -20,4 +20,4 @@ void InstanceRender2DSystem(ecs_iter_t *it)
         render_instance2D(position->value, rotation2D->value, scale1D->value, brightness->value);
     }
 }
-ECS_SYSTEM_DECLARE(InstanceRender2DSystem);
+zoxel_declare_system(InstanceRender2DSystem)

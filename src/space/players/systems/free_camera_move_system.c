@@ -80,39 +80,4 @@ void FreeCameraMoveSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(FreeCameraMoveSystem);
-
-        /*if (keyboard->x.pressed_this_frame)
-        {
-            for (int j = 0; j < cameraIter.count; j++)
-            {
-                Rotation *rotation = &rotations[j];
-                rotation->value = quaternion_from_euler( (float3) { 0 * degreesToRadians, 90 * degreesToRadians, 0 * degreesToRadians });
-            }
-        }*/
-        /*if (keyboard->v.pressed_this_frame)
-        {
-            for (int j = 0; j < cameraIter.count; j++)
-            {
-                Rotation *rotation = &rotations[j];
-                rotation->value = quaternion_from_euler( (float3) { 0 * degreesToRadians, -90 * degreesToRadians, 0 * degreesToRadians });
-            }
-        }
-        if (keyboard->b.pressed_this_frame)
-        {
-            printf("Rotating Upwards");
-            for (int j = 0; j < cameraIter.count; j++)
-            {
-                Rotation *rotation = &rotations[j];
-                rotation->value = quaternion_from_euler( (float3) { -90 * degreesToRadians, 0 * degreesToRadians, 0 * degreesToRadians });
-            }
-        }
-        if (keyboard->n.pressed_this_frame)
-        {
-            printf("Rotating Downwards");
-            for (int j = 0; j < cameraIter.count; j++)
-            {
-                Rotation *rotation = &rotations[j];
-                rotation->value = quaternion_from_euler( (float3) { 90 * degreesToRadians, 0 * degreesToRadians, 0 * degreesToRadians });
-            }
-        }*/
+zoxel_declare_system(FreeCameraMoveSystem)

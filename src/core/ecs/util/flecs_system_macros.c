@@ -1,5 +1,8 @@
 //! A bunch of flecs system macros.
 
+#define zoxel_declare_system(name)\
+    ECS_SYSTEM_DECLARE(name);
+
 //! Multithreaded System Definitions.
 #define zoxel_system(world, id_, phase, ...)\
 { \

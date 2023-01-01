@@ -7,6 +7,16 @@ typedef struct
     float w;
 } float4;
 
+typedef struct
+{
+    float x;
+    float y;
+    float z;
+    float w;
+    float u;
+    float v;
+} float6;
+
 void print_float4(const float4 input)
 {
     printf("    Float4 [%f %f %f %f]\n", input.x, input.y, input.z, input.w);

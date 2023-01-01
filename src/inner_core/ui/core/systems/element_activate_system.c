@@ -39,5 +39,5 @@ void ElementActivateSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(ElementActivateSystem);
+zoxel_declare_system(ElementActivateSystem)
 #endif

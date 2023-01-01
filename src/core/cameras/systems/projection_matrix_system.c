@@ -71,4 +71,4 @@ void ProjectionMatrixSystem(ecs_iter_t *it)
         // printf("    Perspective Updated [%ix%i]\n", screenWidth, screenHeight);
     }
 }
-ECS_SYSTEM_DECLARE(ProjectionMatrixSystem);
+zoxel_declare_system(ProjectionMatrixSystem)

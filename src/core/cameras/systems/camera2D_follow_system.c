@@ -37,4 +37,4 @@ void CameraFollow2DSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(CameraFollow2DSystem);
+zoxel_declare_system(CameraFollow2DSystem)

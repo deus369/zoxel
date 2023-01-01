@@ -26,4 +26,4 @@ void NeuronRenderSystem(ecs_iter_t *it)
         // printf("    [%i]    Position %f -> %f = [%f]\n", i, x_position, x_position2, signal->value);
     }
 }
-ECS_SYSTEM_DECLARE(NeuronRenderSystem);
+zoxel_declare_system(NeuronRenderSystem)

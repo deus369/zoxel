@@ -32,4 +32,4 @@ void PlayGameButtonSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(PlayGameButtonSystem);
+zoxel_declare_system(PlayGameButtonSystem)

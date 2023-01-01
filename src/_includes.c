@@ -24,6 +24,7 @@
 // -- Tests / Options --
 #define zoxel_test_voxels_terrain
 #define zoxel_test_chickens
+#define zoxel_test_lines3D
 // #define zoxel_test_networking
 // #define zoxel_debug_sounds
 // #define zoxel_test_character2Ds

@@ -10,7 +10,7 @@ unsigned char renderer_layer;
 // \todo Create a queue of 3D models to render, including materials, etc
 //  - each type of render queue has different data based on the shaders
 //  - inside ecs systems, can run multithread, add things to queues to render
-ECS_SYSTEM_DECLARE(RenderMaterial2DSystem);
+// zoxel_declare_system(RenderMaterial2DSystem);
 
 void render_pre_loop()
 {

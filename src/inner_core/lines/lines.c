@@ -2,19 +2,19 @@
 #define zoxel_lines
 
 // tags
-ECS_DECLARE(Line);
+zoxel_declare_tag(Line)
 // components
-zoxel_component(LineThickness, float);
+zoxel_component(LineThickness, float)
 #include "lines2D/lines2D.c"
 #include "lines3D/lines3D.c"
 
 //! Lines Module.
 void LinesImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Lines);
-    ECS_TAG_DEFINE(world, Line);
-    ECS_COMPONENT_DEFINE(world, LineThickness);
-    ECS_IMPORT(world, Lines2D);
-    ECS_IMPORT(world, Lines3D);
+    zoxel_define_module(Lines)
+    zoxel_define_tag(Line)
+    zoxel_define_component(LineThickness)
+    zoxel_import_module(Lines2D)
+    zoxel_import_module(Lines3D)
 }
 #endif

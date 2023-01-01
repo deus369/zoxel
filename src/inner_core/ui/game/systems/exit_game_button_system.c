@@ -12,4 +12,4 @@ void ExitGameButtonSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(ExitGameButtonSystem);
+zoxel_declare_system(ExitGameButtonSystem)

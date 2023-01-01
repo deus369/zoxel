@@ -149,4 +149,4 @@ void FrameTextureSystem(ecs_iter_t *it)
         generate_frame_texture(texture, textureSize);
     }
 }
-ECS_SYSTEM_DECLARE(FrameTextureSystem);
+zoxel_declare_system(FrameTextureSystem)

@@ -1,3 +1,10 @@
+#include "util/flecs_module_macros.c"
+#include "util/flecs_component_macros.c"
+#include "util/flecs_system_macros.c"
+#include "util/flecs_macros.c"
+#include "util/flecs_extensions.c"
+#include "util/zoxel_entities_component.c"
+
 //! Helper file for Flecs!
 ecs_world_t *world;
 

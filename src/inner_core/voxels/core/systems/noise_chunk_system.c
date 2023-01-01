@@ -71,4 +71,4 @@ void NoiseChunkSystem(ecs_iter_t *it)
         // printf("Noise Chunk Generated: [%lu] \n", (long int) it->entities[i]);
     }
 }
-ECS_SYSTEM_DECLARE(NoiseChunkSystem);
+zoxel_declare_system(NoiseChunkSystem)

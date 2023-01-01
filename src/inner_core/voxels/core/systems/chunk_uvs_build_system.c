@@ -161,4 +161,4 @@ void ChunkUVsBuildSystem(ecs_iter_t *it)
         // printf("Building Chunk UVs Mesh [%lu]\n", (long int) it->entities[i]);
     }
 }
-ECS_SYSTEM_DECLARE(ChunkUVsBuildSystem);
+zoxel_declare_system(ChunkUVsBuildSystem)

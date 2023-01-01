@@ -57,4 +57,4 @@ void RenderMeshMaterial2DSystem(ecs_iter_t *it)
     }
     opengl_unset_mesh();    // do this per system
 }
-ECS_SYSTEM_DECLARE(RenderMeshMaterial2DSystem);
+zoxel_declare_system(RenderMeshMaterial2DSystem)

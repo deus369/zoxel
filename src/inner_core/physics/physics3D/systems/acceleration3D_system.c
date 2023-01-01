@@ -16,4 +16,4 @@ void Acceleration3DSystem(ecs_iter_t *it)
         acceleration3D->value.z = 0;
     }
 }
-ECS_SYSTEM_DECLARE(Acceleration3DSystem);
+zoxel_declare_system(Acceleration3DSystem)

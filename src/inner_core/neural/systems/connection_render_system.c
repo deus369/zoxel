@@ -39,4 +39,4 @@ void ConnectionRenderSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(ConnectionRenderSystem);
+zoxel_declare_system(ConnectionRenderSystem)

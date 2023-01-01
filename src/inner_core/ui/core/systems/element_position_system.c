@@ -106,30 +106,4 @@ void ElementPositionSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(ElementPositionSystem);
-
-    /*if (anchor.x == 0.5f && anchor.y == 1.0f)
-    {
-        printf("    - set_element_position [%ix%i] anchor [%fx%f] \n", (long int) e,
-            anchor.x, anchor.y);
-        printf("        - pixel_position [%ix%i] \n",
-            pixel_position.x, pixel_position.y);
-        printf("        - real_position [%fx%f] \n",
-            real_position.x, real_position.y);
-        printf("        - parent_pixel_position [%ix%i] \n",
-            parent_pixel_position.x, parent_pixel_position.y);
-        printf("        - parent_position2D [%fx%f] \n",
-            parent_position2D.x, parent_position2D.y);
-        printf("        - local_position [%fx%f] \n",
-            (parent_position2D.x - real_position.x), (parent_position2D.y - real_position.y));
-    }*/
-    //ecs_set(world, e, Position2D, { real_position });
-    //ecs_set(world, e, CanvasPixelPosition, { global_pixel_position });
-    /*if ((long int) e == 1950)
-    {
-
-    }
-    if ((long int) e == 1957)
-    {
-        printf("size [%ix%i]\n", parent_pixel_size.x, parent_pixel_size.y);
-    }*/
+zoxel_declare_system(ElementPositionSystem)

@@ -2,11 +2,12 @@
 #define zoxel_lines2D
 
 // tags
-ECS_DECLARE(Line2D);
+zoxel_declare_tag(Line2D)
 // components
-//! The two points in a line, held in a float4.
-zoxel_component(LineData2D, float4);
-zoxel_component(LineElementData, int4);
+//! The two points in a line2D.
+zoxel_component(LineData2D, float4)
+//! The two ui points in a line2D.
+zoxel_component(LineElementData, int4)
 // prefabs
 #include "prefabs/line2D.c"
 #include "prefabs/ui_line2D.c"
@@ -17,10 +18,10 @@ zoxel_component(LineElementData, int4);
 //! Lines2D Module.
 void Lines2DImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Lines2D);
-    ECS_TAG_DEFINE(world, Line2D);
-    ECS_COMPONENT_DEFINE(world, LineData2D);
-    ECS_COMPONENT_DEFINE(world, LineElementData);
+    zoxel_define_module(Lines2D)
+    zoxel_define_tag(Line2D)
+    zoxel_define_component(LineData2D)
+    zoxel_define_component(LineElementData)
     // systems
     zoxel_filter(line2Ds_query, world,
         [none] Line2D, [in] LineElementData, [none] CanvasLink, [none] LineData2D);

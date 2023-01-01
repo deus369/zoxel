@@ -68,4 +68,4 @@ void UpdateSoundSystem(ecs_iter_t *it)
         #endif
     }
 }
-ECS_SYSTEM_DECLARE(UpdateSoundSystem);
+zoxel_declare_system(UpdateSoundSystem);

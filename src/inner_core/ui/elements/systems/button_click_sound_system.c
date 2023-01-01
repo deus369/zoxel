@@ -19,4 +19,4 @@ void ButtonClickSoundSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(ButtonClickSoundSystem);
+zoxel_declare_system(ButtonClickSoundSystem)

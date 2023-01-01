@@ -111,4 +111,4 @@ void NoiseTextureSystem(ecs_iter_t *it)
         // printf("Noise Texture Generated: [%lu] \n", (long int) it->entities[i]);
     }
 }
-ECS_SYSTEM_DECLARE(NoiseTextureSystem);
+zoxel_declare_system(NoiseTextureSystem)

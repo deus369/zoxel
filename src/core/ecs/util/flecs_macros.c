@@ -1,16 +1,6 @@
 //! My own flecs macros
 // Remember it will destroy the prefab ones too... *facepalm*
 
-#define zoxel_component(name, type)\
-typedef struct\
-{\
-    type value;\
-} name;\
-ECS_COMPONENT_DECLARE(name)
-
-#define zoxel_state_component(name)\
-zoxel_component(name, unsigned char)
-
 // sizeof(type);    // 4 color
 // sizeof(component->value); // 8, presumably pointer takes 4 more bytes?
 // printf("Stride %i\n", stride);
@@ -134,16 +124,6 @@ ECS_COPY(name, dst, src, {\
         .filter.expr = #__VA_ARGS__});
 
 // ecs_entity_t ecs_module_init(
-
-#define zoxel_module(world, id, moduleName)\
-ecs_entity_t ecs_id(id) = 0;\
-{\
-    ecs_component_desc_t desc = {0};\
-    desc.entity = ecs_id(id);\
-    ecs_id(id) = ecs_module_init(world, moduleName, &desc);\
-    ecs_set_scope(world, ecs_id(id));\
-}\
-(void)ecs_id(id);
 
 //! Adds a component but also adds override to an entity.
 #define zoxel_add(world, entity, T)\

@@ -13,4 +13,4 @@ void EternalRotationSystem(ecs_iter_t *it)
         // printf("Rotation: %f %f %f %f\n", rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
     }
 }
-ECS_SYSTEM_DECLARE(EternalRotationSystem);
+zoxel_declare_system(EternalRotationSystem)

@@ -81,9 +81,4 @@ void ElementRaycastSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(ElementRaycastSystem);
-
-
-// cornered
-//if (position.x >= pixelPosition->x && position.x <= pixelPosition->x + pixelSize->x
-//    && position.y >= pixelPosition->y && position.y <= pixelPosition->y + pixelSize->y)
+zoxel_declare_system(ElementRaycastSystem)

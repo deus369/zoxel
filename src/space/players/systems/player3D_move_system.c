@@ -71,4 +71,4 @@ void Player3DMoveSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(Player3DMoveSystem);
+zoxel_declare_system(Player3DMoveSystem)

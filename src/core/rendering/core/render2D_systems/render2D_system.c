@@ -50,4 +50,4 @@ void RenderMaterial2DSystem(ecs_iter_t *it)
             position->value, rotation2D->value, scale1D->value, brightness->value);
     }
 }
-ECS_SYSTEM_DECLARE(RenderMaterial2DSystem);
+zoxel_declare_system(RenderMaterial2DSystem)

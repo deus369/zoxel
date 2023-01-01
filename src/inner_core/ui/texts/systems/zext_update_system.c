@@ -37,4 +37,4 @@ void ZextUpdateSystem(ecs_iter_t *it)
             position2D->value, pixelSize->value);
     }
 }
-ECS_SYSTEM_DECLARE(ZextUpdateSystem);
+zoxel_declare_system(ZextUpdateSystem)

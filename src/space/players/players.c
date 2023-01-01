@@ -21,6 +21,7 @@ ECS_DECLARE(PlayerCharacter3D);
 #include "systems/free_camera_move_system.c"
 #include "systems/free_camera_rotate_system.c"
 #include "systems/free_camera_toggle_system.c"
+#include "systems/free_camera_disable_movement_system.c"
 
 //! players Module
 /**

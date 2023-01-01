@@ -152,4 +152,4 @@ void FontTextureSystem(ecs_iter_t *it)
         generate_font_texture(texture, textureSize, fontData);
     }
 }
-ECS_SYSTEM_DECLARE(FontTextureSystem);
+zoxel_declare_system(FontTextureSystem)

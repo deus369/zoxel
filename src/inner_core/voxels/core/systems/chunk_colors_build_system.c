@@ -183,4 +183,4 @@ void ChunkColorsBuildSystem(ecs_iter_t *it)
         //    (long int) it->entities[i], meshIndicies2->length, meshVertices2->length);
     }
 }
-ECS_SYSTEM_DECLARE(ChunkColorsBuildSystem);
+zoxel_declare_system(ChunkColorsBuildSystem)

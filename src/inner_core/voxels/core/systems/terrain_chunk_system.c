@@ -122,21 +122,4 @@ void TerrainChunkSystem(ecs_iter_t *it)
         // printf("Terrain Chunk Generated: [%lu] \n", (long int) it->entities[i]);
     }
 }
-ECS_SYSTEM_DECLARE(TerrainChunkSystem);
-
-
-    // const int2 valueRange = { 0, 2 };   // < max
-    // (chunkSize->value.y / 4) + rand() % ((int) (chunkSize->value.y * (3.0f / 4.0f)));
-    /*int3 chunk_position_offset = int3_multiply_int3(chunkPosition, chunkSize);
-    if (chunk_position_offset.x < 0)
-    {
-        chunk_position_offset.x += 1;
-    }
-    if (chunk_position_offset.z < 0)
-    {
-        chunk_position_offset.z += 1;
-    }*/
-    //printf("chunkPosition: [%ix%ix%i]\n", chunkPosition.x, chunkPosition.y, chunkPosition.z);
-    //printf("chunk_position_offset: [%ix%ix%i]\n",
-    //    chunk_position_offset.x, chunk_position_offset.y, chunk_position_offset.z);
-    // precount our face data for initialization
+zoxel_declare_system(TerrainChunkSystem)

@@ -10,4 +10,4 @@ void EulerOverrideSystem(ecs_iter_t *it)
         rotation->value = quaternion_from_euler(euler->value);
     }
 }
-ECS_SYSTEM_DECLARE(EulerOverrideSystem);
+zoxel_declare_system(EulerOverrideSystem)

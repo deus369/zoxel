@@ -1,5 +1,4 @@
-
-void MeshColorsUpdateSystem(ecs_iter_t *it)
+void Mesh2DUvsUpdateSystem(ecs_iter_t *it)
 {
     if (!ecs_query_changed(NULL, it))
     {
@@ -7,10 +6,11 @@ void MeshColorsUpdateSystem(ecs_iter_t *it)
     }
     const MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 1);
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 2);
-    const MeshVertices *meshVertices = ecs_field(it, MeshVertices, 3);
-    const MeshColors *meshColors = ecs_field(it, MeshColors, 4);
+    const MeshVertices2D *meshVertices = ecs_field(it, MeshVertices2D, 3);
+    const MeshUVs *meshUVs = ecs_field(it, MeshUVs, 4);
     const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 5);
     const MaterialGPULink *materialGPULinks = ecs_field(it, MaterialGPULink, 6);
+    // const UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 7);
     // printf("TextureUpdateSystem [%i] \n", it->count);
     for (int i = 0; i < it->count; i++)
     {
@@ -19,21 +19,17 @@ void MeshColorsUpdateSystem(ecs_iter_t *it)
         {
             continue;
         }
+        // printf("Mesh 2D Uploading [%i] \n", i);
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
         const MaterialGPULink *materialGPULink = &materialGPULinks[i];
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
-        const MeshVertices *meshVertices2 = &meshVertices[i];
-        const MeshColors *meshColors2 = &meshColors[i];
-        if (meshColors2->length != meshVertices2->length)
-        {
-            // printf("Issue with %i mesh colors.\n", i);
-            continue;
-        }
-        set_gpu_mesh_colors(meshGPULink->value,  materialGPULink->value,
+        const MeshVertices2D *meshVertices2 = &meshVertices[i];
+        const MeshUVs *meshUVs2 = &meshUVs[i];
+        opengl_upload_shader2D_textured(
+            meshGPULink->value, materialGPULink->value,
             meshIndicies2->value, meshIndicies2->length,
             meshVertices2->value, meshVertices2->length,
-            meshColors2->value);
-        
+            meshUVs2->value, meshUVs2->length);
     }
 }
-zoxel_declare_system(MeshColorsUpdateSystem)
+zoxel_declare_system(Mesh2DUvsUpdateSystem)

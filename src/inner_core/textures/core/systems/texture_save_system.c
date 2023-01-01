@@ -27,4 +27,4 @@ void TextureSaveSystem(ecs_iter_t *it)
         zoxel_log("Saved Texture: %lu \n", (long int) it->entities[i]);
     }
 }
-ECS_SYSTEM_DECLARE(TextureSaveSystem);
+zoxel_declare_system(TextureSaveSystem)

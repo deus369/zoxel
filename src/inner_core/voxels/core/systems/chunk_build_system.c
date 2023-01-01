@@ -5,6 +5,12 @@
 // #define disable_voxel_back
 // #define disable_voxel_front
 
+//! \todo Use a hashmap with bit map of side voxels, to generate voxel faces.
+//      for example, top and bottom, would be 001100, and would have 8 vertexes and 12 indicies.
+
+//! \todo combine vertices between voxel meshes.
+//      For example, to up faces next to each other, will only have 6 vertices and now 8.
+
 void add_voxel_face(MeshIndicies *meshIndicies2, MeshVertices *meshVertices2,
     float3 vertex_position_offset, float3 center_mesh_offset, float voxel_scale,
     int2 *start, int2 start2,
@@ -147,25 +153,4 @@ void ChunkBuildSystem(ecs_iter_t *it)
         //    (long int) it->entities[i], meshIndicies2->length, meshVertices2->length);
     }
 }
-ECS_SYSTEM_DECLARE(ChunkBuildSystem);
-
-//! \todo Use a hashmap with bit map of side voxels, to generate voxel faces.
-//      for example, top and bottom, would be 001100, and would have 8 vertexes and 12 indicies.
-
-//! \todo combine vertices between voxel meshes.
-//      For example, to up faces next to each other, will only have 6 vertices and now 8.
-
-
-// invalid free?
-// printf("Rebuilding Chunk Mesh: %i - %i\n", meshIndicies2->length, meshVertices2->length);
-/*printf("1 - MeshIndicies: %i\n", meshIndicies2->length);
-set_mesh_indicies(meshIndicies2, cubeIndicies, 36);
-set_mesh_vertices(meshVertices2, cubeVertices, 24);*/
-// printf("Rebuilding Chunk Mesh with faces: [%i]\n", solid_voxels_count);
-
-/*if (k == 0 && l == 0)
-{
-    printf("Voxel [%i] - [%ix%ix%i]:\n", solid_voxels_count, j, k, l);
-    printf("    vertex_position_offset [%fx%fx%f]\n",  vertex_position_offset.x, vertex_position_offset.y, vertex_position_offset.z);
-    printf("    vertices_start [%i]\n", vertices_start);
-}*/
+zoxel_declare_system(ChunkBuildSystem)

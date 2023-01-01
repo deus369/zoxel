@@ -18,4 +18,4 @@ void WindowCloseSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(WindowCloseSystem);
+zoxel_declare_system(WindowCloseSystem)

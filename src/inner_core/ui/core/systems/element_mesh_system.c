@@ -26,4 +26,4 @@ void ElementMeshSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(ElementMeshSystem);
+zoxel_declare_system(ElementMeshSystem)

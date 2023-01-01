@@ -14,22 +14,4 @@ void Velocity3DSystem(ecs_iter_t *it)
         position->value.z += velocity3D->value.z * deltaTime;
     }
 }
-ECS_SYSTEM_DECLARE(Velocity3DSystem);
-
-        // bounds! Used atm to keep player within the start area
-        /*if (position->value.x >= bounds.x)
-        {
-            position->value.x -= bounds.x * 2.0f;
-        }
-        if (position->value.x <= -bounds.x)
-        {
-            position->value.x += bounds.x * 2.0f;
-        }
-        if (position->value.y >= bounds.y)
-        {
-            position->value.y -= bounds.y * 2.0f;
-        }
-        if (position->value.y <= -bounds.y)
-        {
-            position->value.y += bounds.y * 2.0f;
-        }*/
+zoxel_declare_system(Velocity3DSystem)

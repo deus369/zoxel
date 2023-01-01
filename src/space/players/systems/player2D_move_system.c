@@ -71,4 +71,4 @@ void Player2DMoveSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(Player2DMoveSystem);
+zoxel_declare_system(Player2DMoveSystem);

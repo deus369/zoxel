@@ -1,11 +1,6 @@
 #ifndef zoxel_generic
 #define zoxel_generic
 
-// util
-#include "util/flecs_macros.c"
-#include "util/flecs_system_macros.c"
-#include "util/flecs_extensions.c"
-#include "util/zoxel_entities_component.c"
 // move this to math module?
 #include "data/color.c"
 // tags

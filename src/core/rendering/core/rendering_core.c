@@ -31,6 +31,7 @@ zoxel_memory_component(MeshColors, color);
 #include "systems/mesh_colors_update_system.c"
 #include "systems/mesh_uvs_update_system.c"
 #include "systems/mesh2D_update_system.c"
+#include "systems/mesh2D_uvs_update_system.c"
 zoxel_reset_system(MeshDirtySystem, MeshDirty);
 // render 2D systems
 #include "render2D_systems/render2D_system.c"

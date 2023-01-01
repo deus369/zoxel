@@ -28,4 +28,4 @@ void Mesh2DUpdateSystem(ecs_iter_t *it)
         
     }
 }
-ECS_SYSTEM_DECLARE(Mesh2DUpdateSystem);
+zoxel_declare_system(Mesh2DUpdateSystem)

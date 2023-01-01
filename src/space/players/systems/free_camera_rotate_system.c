@@ -52,13 +52,4 @@ void FreeCameraRotateSystem(ecs_iter_t *it)
         }
     }
 }
-ECS_SYSTEM_DECLARE(FreeCameraRotateSystem);
-
-
-// rotate = float3_multiply_float(rotate, rotatePower);
-// rotateQuaternion = float4_multiply_float(rotateQuaternion, rotatePower);
-/*float4 rotateY = quaternion_from_euler((float3) { 0, -mouse->delta.x * rotatePower, 0 });
-float4 rotateZ = quaternion_from_euler((float3) { 0, 0, -mouse->delta.y * rotatePower });
-float4 rotateQuaternion = { 0, 0, 0, 1 };
-rotateQuaternion = quaternion_rotate(rotateQuaternion, rotateY);
-rotateQuaternion = quaternion_rotate(rotateQuaternion, rotateZ);*/
+zoxel_declare_system(FreeCameraRotateSystem)
