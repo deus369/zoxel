@@ -22,8 +22,6 @@ if [ ! -f "include/flecs/flecs.c" ] || [ ! -f "include/flecs/flecs.h" ]; then
     # download zip file
     wget https://github.com/SanderMertens/flecs/archive/refs/tags/v3.1.3.zip
 
-    wget --content-disposition https://github.com/SanderMertens/flecs/archive/refs/tags/v3.1.3.zip\#flecs-3.1.3/flecs.c
-
     # extract zip file
     unzip -j v3.1.3.zip flecs-3.1.3/flecs.c flecs-3.1.3/flecs.h -d include/flecs
 
