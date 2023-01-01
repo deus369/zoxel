@@ -50,6 +50,6 @@ int debug_ip4(struct sockaddr_in send_addr)
         perror("inet_ntop");
         return 1;
     }
-    printf("IP address: %s\n", ip_str);
+    zoxel_log("IP address: %s\n", ip_str);
     return 0;
 }

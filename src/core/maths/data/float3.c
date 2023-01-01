@@ -8,7 +8,7 @@ typedef struct
 
 void float3_print(const float3 input)
 {
-    printf("    Float3 [%f %f %f]\n", input.x, input.y, input.z);
+    zoxel_log("    Float3 [%f %f %f]\n", input.x, input.y, input.z);
 }
 
 float3 float3_multiply_float(float3 input, float mul) // by-value param invokes class copy-ctor

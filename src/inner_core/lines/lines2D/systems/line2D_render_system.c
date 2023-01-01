@@ -35,7 +35,6 @@ void Line2DRenderSystem(ecs_iter_t *it)
 {
     glUseProgram(line2D_material);
     glEnableVertexAttribArray(line2D_position_location);
-    // glEnableVertexAttribArray(line2D_color_location);
     const LineData2D *lineData2Ds = ecs_field(it, LineData2D, 2);
     const LineThickness *lineThicknesss = ecs_field(it, LineThickness, 3);
     const Color *colors = ecs_field(it, Color, 4);
@@ -44,12 +43,13 @@ void Line2DRenderSystem(ecs_iter_t *it)
         const LineData2D *lineData2D = &lineData2Ds[i];
         const LineThickness *lineThickness = &lineThicknesss[i];
         const Color *color = &colors[i];
-        float4 color_float4 = color_to_float4(color->value);
         float line_data[] = { lineData2D->value.x, lineData2D->value.y, lineData2D->value.z, lineData2D->value.w };
+        float4 color_float4 = color_to_float4(color->value);
         glLineWidth(lineThickness->value);
-        glUniform4f(line2D_color_location, color_float4.x, color_float4.y, color_float4.z, color_float4.w);
         glVertexAttribPointer(line2D_position_location, 2, GL_FLOAT, GL_FALSE, 0, line_data);
+        glUniform4f(line2D_color_location, color_float4.x, color_float4.y, color_float4.z, color_float4.w);
         glDrawArrays(GL_LINES, 0, 2);
     }
+    // glUseProgram(0);
 }
 zoxel_declare_system(Line2DRenderSystem)

@@ -40,7 +40,6 @@ void CalculatePerspectiveViewMatrix(float4x4 *viewMatrix, float fovInDegrees, fl
 */
 void ProjectionMatrixSystem(ecs_iter_t *it)
 {
-    const float camera_far_distance = 500;
     if (!ecs_query_changed(NULL, it))
     {
         // printf("A Component has not changed.\n");

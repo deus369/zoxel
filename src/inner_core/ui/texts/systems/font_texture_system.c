@@ -56,7 +56,7 @@ void generate_font_texture(Texture* texture, const TextureSize *textureSize, con
         int2 pointA = get_from_byte2(fontData->value[i]);
         int2 pointB = get_from_byte2(fontData->value[i + 1]);
         #ifdef debug_font_texture
-        printf("Font Data %i %ix%i > %ix%i\n", i, pointA.x, pointA.y, pointB.x, pointB.y);
+        zoxel_log("Font Data %i %ix%i > %ix%i\n", i, pointA.x, pointA.y, pointB.x, pointB.y);
         #endif
         pointA.x = (int) ((pointA.x / 255.0f) * textureSize->value.x);
         pointA.y = (int) ((pointA.y / 255.0f) * textureSize->value.y);
@@ -65,8 +65,8 @@ void generate_font_texture(Texture* texture, const TextureSize *textureSize, con
         int distance = int2_distance(pointA, pointB);
         float2 direction = float2_normalize(float2_sub(float2_from_int2(pointB), float2_from_int2(pointA)));
         #ifdef debug_font_texture
-        printf("    - %ix%i > %ix%i\n", pointA.x, pointA.y, pointB.x, pointB.y);
-        printf("    - distance %i direction %fx%f\n", distance, direction.x, direction.y);
+        zoxel_log("    - %ix%i > %ix%i\n", pointA.x, pointA.y, pointB.x, pointB.y);
+        zoxel_log("    - distance %i direction %fx%f\n", distance, direction.x, direction.y);
         #endif
         int2 splash_point = pointA;
         for (int j = 0; j <= distance; j++)
@@ -80,7 +80,7 @@ void generate_font_texture(Texture* texture, const TextureSize *textureSize, con
             // add noise later to this
             int pointSize2 = 1 + rand() % 1; // math.floor(random.NextFloat(pointSize.x, pointSize.y));
             #ifdef debug_font_texture
-            printf("    - j %i splash_point %ix%i size %i\n", j, splash_point.x, splash_point.y, pointSize2);
+            zoxel_log("    - j %i splash_point %ix%i size %i\n", j, splash_point.x, splash_point.y, pointSize2);
             #endif
             for (int k = -pointSize2; k <= pointSize2; k++)
             {
@@ -125,7 +125,7 @@ void FontTextureSystem(ecs_iter_t *it)
             continue;
         }
         #ifdef zoxel_debug_zigel_updates
-        printf("zigel font is updating [%lu]\n", (long int) it->entities[i]);
+        zoxel_log("zigel font is updating [%lu]\n", (long int) it->entities[i]);
         #endif
         TextureDirty *textureDirty = &textureDirtys[i];
         if (textureDirty->value != 0)

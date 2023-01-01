@@ -29,7 +29,7 @@ void PacketSendSystem(ecs_iter_t *it)
         send_buffer_2[1] = strlen(send_text);
         unsigned char packet_size_2 = 2 + send_buffer_2[1];
         unsigned char packets_send_count = 1 + rand() % test_send_packet_length;
-        printf("Sending [%i] packets\n", packets_send_count);
+        zoxel_log("Sending [%i] packets\n", packets_send_count);
         for (int j = 0; j < packets_send_count; j++)    // test sending multiple times
         {
             if (rand() % 100 >= 70)
@@ -43,7 +43,7 @@ void PacketSendSystem(ecs_iter_t *it)
                 }
                 else
                 {
-                   // printf("Sent packet type [%i] - [%s].\n", send_buffer_2[0], send_text);
+                   // zoxel_log("Sent packet type [%i] - [%s].\n", send_buffer_2[0], send_text);
                 }
             }
             else
@@ -56,7 +56,7 @@ void PacketSendSystem(ecs_iter_t *it)
                 }
                 else
                 {
-                    //printf("Sent packet type [%i].\n", send_buffer[0]);
+                    // zoxel_log("Sent packet type [%i].\n", send_buffer[0]);
                 }
             }
         }

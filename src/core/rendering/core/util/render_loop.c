@@ -18,6 +18,9 @@ void render_pre_loop()
     render_queue_count = 0;
 }
 
+extern long int line3D_render_system_id;
+
+//! This renders all render systems per camera, by externally setting the camera matrix this will be uploaded to all materials.
 void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, int2 size)
 {
     main_camera_matrix = camera_matrix;
@@ -29,6 +32,7 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
     opengl_disable_opengl_program();
     ecs_run(world, ecs_id(Render3DSystem), 0, NULL);
+    ecs_run(world, line3D_render_system_id, 0, NULL);
     ecs_run(world, ecs_id(Render3DUvsSystem), 0, NULL);
     // 2D renders
     // glDisable(GL_DEPTH_TEST);
@@ -46,9 +50,16 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     // ecs_run(world, ecs_id(Line2DRenderSystem), 0, NULL);
 }
 
-//! Temporarily runs render things on main thread until flecs bug is fixed.
+// extern unsigned char camera_changed;
+
+//! This is called after ecs loop.
 void render_loop_temp()
 {
+    /*if (camera_changed)
+    {
+        camera_changed = 0;
+        return;
+    }*/
     #ifdef zoxel_time_render_loop
     clock_t t = clock();
     #endif

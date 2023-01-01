@@ -47,7 +47,7 @@ float4x4 float4x4_multiply(const float4x4 a, const float4x4 b)
 void float4x4_print(const float4x4 matrix)
 {
     const float* matrix2 = (float*) &matrix;
-    printf("Matrix;\n\t[%f\t%f\t%f\t%f]\n\t[%f\t%f\t%f\t%f]\n\t[%f\t%f\t%f\t%f]\n\t[%f\t%f\t%f\t%f]\n",
+    zoxel_log("Matrix;\n\t[%f\t%f\t%f\t%f]\n\t[%f\t%f\t%f\t%f]\n\t[%f\t%f\t%f\t%f]\n\t[%f\t%f\t%f\t%f]\n",
          matrix2[0], matrix2[1], matrix2[2], matrix2[3],
          matrix2[4], matrix2[5], matrix2[6], matrix2[7],
          matrix2[8], matrix2[9], matrix2[10], matrix2[11],

@@ -1,34 +1,34 @@
 #ifndef zoxel_voxels_core
 #define zoxel_voxels_core
 
+#define overall_voxel_scale 4.0f // 2.0f;
 const int terrain_rows = 8;
 const double noiseChunkAnimateSpeed = 0.5; // 1 / 8.0;
-const float overall_voxel_scale = 2.0f;
 const int chunk_length = 16;
 const int dissapearChance = 92;
 const float spawnRange = 0.96f;
 const int3 chunk_size = { chunk_length, chunk_length, chunk_length };
 const int3 terrain_chunk_size = { chunk_length, 8 * chunk_length, chunk_length };
-const float chunk_real_size = 1.0f;   // size achunk takes up
+float chunk_real_size = overall_voxel_scale / 2.0f; // 1.0f;   // size achunk takes up
 // tags
-ECS_DECLARE(NoiseChunk);
-ECS_DECLARE(TerrainChunk);
+zoxel_declare_tag(NoiseChunk)
+zoxel_declare_tag(TerrainChunk)
 //! A simple chunk with an array of voxels.
-zoxel_memory_component(Chunk, unsigned char);
+zoxel_memory_component(Chunk, unsigned char)
 //! A list to all chunks in a Vox model.
-zoxel_memory_component(ChunkLinks, ecs_entity_t);
+zoxel_memory_component(ChunkLinks, ecs_entity_t)
 //! A list to all chunks in a Vox model.
-zoxel_memory_component(ChunkNeighbors, ecs_entity_t);
+zoxel_memory_component(ChunkNeighbors, ecs_entity_t)
 //! A simple chunk with an array of voxels.
-zoxel_component(ChunkSize, int3);
+zoxel_component(ChunkSize, int3)
 //! A local position of a chunk inside a Vox.
-zoxel_component(ChunkPosition, int3);
+zoxel_component(ChunkPosition, int3)
 //! A state for animating textures.
-zoxel_component(AnimateChunk, double);
+zoxel_component(AnimateChunk, double)
 //! A state for generating chunks.
-zoxel_state_component(GenerateChunk);
+zoxel_state_component(GenerateChunk)
 // components
-zoxel_state_component(ChunkDirty);
+zoxel_state_component(ChunkDirty)
 // util
 #include "util/voxel_mesh_util.c"
 #include "util/chunk.c"
@@ -56,21 +56,21 @@ int get_chunk_index(int i, int j, int terrain_rows)
 
 void define_voxels_core_components(ecs_world_t *world)
 {
-    ECS_TAG_DEFINE(world, NoiseChunk);
-    ECS_TAG_DEFINE(world, TerrainChunk);
-    ECS_COMPONENT_DEFINE(world, ChunkDirty);
-    zoxel_memory_component_define(world, Chunk);
-    zoxel_memory_component_define(world, ChunkLinks);
-    zoxel_memory_component_define(world, ChunkNeighbors);
-    ECS_COMPONENT_DEFINE(world, ChunkSize);
-    ECS_COMPONENT_DEFINE(world, GenerateChunk);
-    ECS_COMPONENT_DEFINE(world, ChunkPosition);
-    ECS_COMPONENT_DEFINE(world, AnimateChunk);
+    zoxel_define_tag(NoiseChunk)
+    zoxel_define_tag(TerrainChunk)
+    zoxel_define_component(ChunkDirty)
+    zoxel_define_component(ChunkSize)
+    zoxel_define_component(GenerateChunk)
+    zoxel_define_component(ChunkPosition)
+    zoxel_define_component(AnimateChunk)
+    zoxel_memory_component_define(world, Chunk)
+    zoxel_memory_component_define(world, ChunkLinks)
+    zoxel_memory_component_define(world, ChunkNeighbors)
 }
 
 void define_voxels_core_systems(ecs_world_t *world)
 {
-    ECS_SYSTEM_DEFINE(world, AnimateChunkSystem, EcsOnLoad, [out] AnimateChunk, [out] GenerateChunk);
+    zoxel_system_main_thread(world, AnimateChunkSystem, EcsOnLoad, [out] AnimateChunk, [out] GenerateChunk)
     // Generate Systems
     zoxel_filter(generateTerrainChunkQuery, world, [none] TerrainChunk, [in] GenerateChunk);
     zoxel_system_ctx(world, TerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
@@ -79,8 +79,8 @@ void define_voxels_core_systems(ecs_world_t *world)
     zoxel_system_ctx(world, NoiseChunkSystem, EcsPostLoad, generateNoiseChunkQuery,
         [none] NoiseChunk, [out] ChunkDirty, [out] Chunk, [in] ChunkSize, [in] GenerateChunk);
     // EcsOnValidate? why not working?
-    zoxel_reset_system_define(GenerateChunkResetSystem, GenerateChunk);
-    zoxel_reset_system_define(ChunkDirtyResetSystem, ChunkDirty);
+    zoxel_reset_system_define(GenerateChunkResetSystem, GenerateChunk)
+    zoxel_reset_system_define(ChunkDirtyResetSystem, ChunkDirty)
     if (!headless)
     {
         zoxel_filter(generateChunkQuery, world, [in] GenerateChunk);
@@ -107,7 +107,7 @@ void define_voxels_core_systems(ecs_world_t *world)
 */
 void VoxelsCoreImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, VoxelsCore);
+    zoxel_define_module(VoxelsCore)
     define_voxels_core_components(world);
     define_voxels_core_systems(world);
     // prefabs
@@ -145,7 +145,7 @@ void VoxelsCoreImport(ecs_world_t *world)
     {
         if (chunks[i] == 0)
         {
-            printf("One chunk not set at: %i\n", i);
+            zoxel_log("One chunk not set at: %i\n", i);
         }
     }
     // now for all of them, set their neighbors

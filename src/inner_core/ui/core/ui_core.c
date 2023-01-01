@@ -12,15 +12,15 @@
 ecs_entity_t main_canvas;
 // tags
 //! A basic tag for a UI Element.
-ECS_DECLARE(Element);
-ECS_DECLARE(Canvas);
-ECS_DECLARE(ElementRaycaster);
+zoxel_declare_tag(Element)
+zoxel_declare_tag(Canvas)
+zoxel_declare_tag(ElementRaycaster)
 // components
-zoxel_component(CanvasPixelPosition, int2);
+zoxel_component(CanvasPixelPosition, int2)
 //! An anchor, used to get base position using canvas
-zoxel_component(Anchor, float2);
+zoxel_component(Anchor, float2)
 //! A link to a canvas.
-zoxel_component(CanvasLink, ecs_entity_t);
+zoxel_component(CanvasLink, ecs_entity_t)
 // util
 #include "util/ui_util.c"
 // prefabs
@@ -41,13 +41,13 @@ zoxel_component(CanvasLink, ecs_entity_t);
 */
 void UICoreImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, UICore);
-    ECS_TAG_DEFINE(world, Element);
-    ECS_TAG_DEFINE(world, Canvas);
-    ECS_TAG_DEFINE(world, ElementRaycaster);
-    ECS_COMPONENT_DEFINE(world, CanvasPixelPosition);
-    ECS_COMPONENT_DEFINE(world, Anchor);
-    ECS_COMPONENT_DEFINE(world, CanvasLink);
+    zoxel_define_module(UICore);
+    zoxel_define_tag(Element)
+    zoxel_define_tag(Canvas)
+    zoxel_define_tag(ElementRaycaster)
+    zoxel_define_component(CanvasPixelPosition)
+    zoxel_define_component(Anchor)
+    zoxel_define_component(CanvasLink)
     // Systems
     zoxel_filter(ui_query, world, [none] Element,
         [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [out] SelectableState);
@@ -71,10 +71,4 @@ void UICoreImport(ecs_world_t *world)
     spawn_prefab_canvas(world);
     spawn_prefab_element(world);
 }
-
-// zoxel_system_ctx(world, ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster);
-// zoxel_system(world, ElementSelectedSystem, EcsOnUpdate, [out] Element, [in] ClickableState, [out] Brightness);
-// ClicableState - reset system
-// destroy window
-// children - destroy children - hook
 #endif

@@ -19,7 +19,7 @@ void input_extract_from_sdl(ecs_world_t *world, SDL_Event event)
     {
         joystick = SDL_JoystickOpen(event.jdevice.which);
         int joystick_id = SDL_JoystickInstanceID(joystick);
-        printf("Joystick [%d] has been reconnected.\n", joystick_id);
+        zoxel_log("Joystick [%d] has been reconnected.\n", joystick_id);
     }
 }
 

@@ -48,7 +48,7 @@ void PacketRecieveSystem(ecs_iter_t *it)
             unsigned char packet_type = peek_packet_type(socketLink->value, &recv_addr);
             if (packet_type != 0)
             {
-                printf("Received Packet [%i] from [%s]\n", packet_type, ip4_to_string(recv_addr)); // , recv_size);
+                zoxel_log("Received Packet [%i] from [%s]\n", packet_type, ip4_to_string(recv_addr)); // , recv_size);
                 if (packet_type == zoxel_packet_type_connect)
                 {
                     // reply to client to confirm message was sent
@@ -64,17 +64,17 @@ void PacketRecieveSystem(ecs_iter_t *it)
                         }
                         else
                         {
-                            printf("    - Sent return packet type [%i].\n", send_buffer[0]);
+                            zoxel_log("    - Sent return packet type [%i].\n", send_buffer[0]);
                         }
                     }
                 }
                 else if (packet_type == zoxel_packet_type_connect_confirm)
                 {
-                    printf("    - Client is confirmed to join server.\n");
+                    zoxel_log("    - Client is confirmed to join server.\n");
                 }
                 else if (packet_type == zoxel_packet_type_msg_confirm)
                 {
-                    printf("    - Message has reached the server.\n");
+                    zoxel_log("    - Message has reached the server.\n");
                 }
                 else if (packet_type == zoxel_packet_type_msg)
                 {
@@ -88,7 +88,7 @@ void PacketRecieveSystem(ecs_iter_t *it)
                     else
                     {
                         unsigned char text_length = recv_buffer_2[1];
-                        printf("    - Server recieved message of size [%i]\n", text_length);
+                        zoxel_log("    - Server recieved message of size [%i]\n", text_length);
                         packet_size = 2 + text_length;
                         unsigned char recv_buffer_3[packet_size];
                         is_consume_packet = 0;
@@ -101,7 +101,7 @@ void PacketRecieveSystem(ecs_iter_t *it)
                         else
                         {
                             char* text = convert_to_ascii_text_at(recv_buffer_3, text_length, 2);
-                            printf("        - Message [%s]\n", text);
+                            zoxel_log("        - Message [%s]\n", text);
                             free(text);
                         }
                     }
@@ -112,7 +112,7 @@ void PacketRecieveSystem(ecs_iter_t *it)
                 }
                 if (recv_size > packet_size)
                 {
-                    printf("    - multiple packets to read detected.\n");
+                    zoxel_log("    - multiple packets to read detected.\n");
                     continue;   // more packets to read
                 }
             }

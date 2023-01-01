@@ -19,10 +19,3 @@ int opengl_set_material3D_properties(GLuint material,
     #endif
     return 0;
 }
-
-/*GLenum err65 = glGetError();
-if (err65 != GL_NO_ERROR)
-{
-    printf("render_unique3D GLError [%i]: %i\n", material, err65);
-    return;
-}*/

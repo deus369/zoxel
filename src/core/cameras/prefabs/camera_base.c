@@ -10,17 +10,17 @@ void spawn_camera_base_prefab(ecs_world_t *world)
     zoxel_add(world, e, Position);
     zoxel_add(world, e, Rotation);
     zoxel_set(world, e, Euler, { { 0, 0, 0 } });
-    zoxel_add(world, e, ProjectionMatrix);
-    zoxel_add(world, e, ViewMatrix);
+    zoxel_set(world, e, ProjectionMatrix, { float4x4_identity() });
+    zoxel_set(world, e, ViewMatrix, { float4x4_identity() });
     zoxel_set(world, e, ScreenDimensions, { { 0, 0 } });
     zoxel_set(world, e, ScreenPosition, { { 0, 0 } });
     zoxel_set(world, e, FieldOfView, { 60 });
     zoxel_set(world, e, CameraNearDistance, { 0.01f });
     ecs_defer_end(world);
+    base_camera_prefab = e;
     #ifdef zoxel_debug_prefabs
     zoxel_log("spawn_prefab camera_base [%lu].\n", (long int) (e));
     #endif
-    base_camera_prefab = e;
 }
 
 ecs_entity_t spawn_base_camera(ecs_world_t *world, float3 position, float4 rotation,

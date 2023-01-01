@@ -89,7 +89,7 @@ void ElementPositionSystem(ecs_iter_t *it)
             ceil((position2D->value.x / aspect_ratio + 0.5f) * canvas_size_f.x),
             ((position2D->value.y + 0.5f) * canvas_size_f.y) };
         #ifdef debug_element_position_change_query
-            printf("    - PixelPosition Updated [%lu]\n", (long int) e);
+            zoxel_log("    - PixelPosition Updated [%lu]\n", (long int) e);
         #endif
         if (ecs_has(world, e, Children))
         {

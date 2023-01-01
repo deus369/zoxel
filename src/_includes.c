@@ -24,7 +24,7 @@
 // -- Tests / Options --
 #define zoxel_test_voxels_terrain
 #define zoxel_test_chickens
-// #define zoxel_test_lines3D
+#define zoxel_test_lines3D
 // #define zoxel_test_networking
 // #define zoxel_debug_sounds
 // #define zoxel_test_character2Ds
@@ -35,10 +35,10 @@
 // #define zoxel_test_uis
 
 // -- debugs --
-#define zox_logs // add logs with printf
+// #define zox_logs // add logs with printf
+// #define zoxel_catch_opengl_errors
 // #define zoxel_log_frames_per_second
 // #define zoxel_debug_vox_read
-// #define zoxel_catch_opengl_errors
 //! \todo Fix pathing for android, cannot get resources there.
 // #define zoxel_debug_pathing 
 // #define zoxel_debug_prefabs
@@ -54,6 +54,5 @@
 // #define zoxel_test_brain
 
 // Finally include zoxel engine and zoxel
-#include <string.h> // who uses this?
 #include "zoxel_engine.c"
 #include "zoxel/zoxel.c"

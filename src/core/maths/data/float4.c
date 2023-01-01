@@ -19,7 +19,7 @@ typedef struct
 
 void print_float4(const float4 input)
 {
-    printf("    Float4 [%f %f %f %f]\n", input.x, input.y, input.z, input.w);
+    zoxel_log("    Float4 [%f %f %f %f]\n", input.x, input.y, input.z, input.w);
 }
 
 float4 float4_identity()

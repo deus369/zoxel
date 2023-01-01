@@ -12,8 +12,7 @@ ecs_entity_t spawn_zigel(ecs_world_t *world, ecs_entity_t zext, unsigned char in
         ecs_get(world, main_canvas, PixelSize)->value);
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
-    printf("Spawned zigel [%lu]\n", (long int) e);
+    zoxel_log("Spawned zigel [%lu]\n", (long int) e);
     #endif
-    // printf("ZIgel, with layer of [%i]\n ", layer);
     return e;
 }

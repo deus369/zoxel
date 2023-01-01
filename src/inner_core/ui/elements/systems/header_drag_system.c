@@ -13,7 +13,7 @@ void drag_ui(ecs_world_t *world, ecs_entity_t e, int2 drag_value)
     pixel_position->value.y += drag_value.y;
     ecs_modified(world, e, PixelPosition);
     #ifdef debug_element_position_change_query
-        printf("Dragging window [%lu]\n", (long int) e);
+        zoxel_log("Dragging window [%lu]\n", (long int) e);
     #endif
 }
 

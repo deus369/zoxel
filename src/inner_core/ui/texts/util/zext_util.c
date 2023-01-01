@@ -28,7 +28,7 @@ void spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children
     // int2 zigel_size = (int2) { font_size, font_size };
     int reuse_count = integer_min(children->length, zextData->length);
     #ifdef zoxel_debug_zext_updates
-    printf("spawn_zext_zigels :: [%i] -> [%i]; reuse [%i];\n",
+    zoxel_log("spawn_zext_zigels :: [%i] -> [%i]; reuse [%i];\n",
         children->length, zextData->length, reuse_count);
     #endif
     // update the reused ones.
@@ -40,7 +40,7 @@ void spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children
         if (zigelIndex->value != zextData->value[i])
         {
             #ifdef zoxel_debug_zigel_updates
-            printf("    - zig updated [%i] [%i] -> [%i]\n",
+            zoxel_log("    - zig updated [%i] [%i] -> [%i]\n",
                 i, zigelIndex->value, zextData->value[i]);
             #endif
             ecs_set(world, old_zigel, ZigelIndex, { zextData->value[i] });
@@ -61,7 +61,7 @@ void spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children
         if (new_children_length > old_children_length)
         {
             #ifdef zoxel_debug_zext_updates
-            printf("    - spawning new_children [%i].\n", (new_children_length - old_children_length));
+            zoxel_log("    - spawning new_children [%i].\n", (new_children_length - old_children_length));
             #endif
             for (int i = old_children_length; i < new_children_length; i++)
             {

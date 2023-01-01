@@ -4,7 +4,7 @@
 // #define zoxel_debug_vox_read
 
 // tags
-ECS_DECLARE(Vox);
+zoxel_declare_tag(Vox)
 // util
 #include "util/vox_read_util.c"
 // prefabs
@@ -15,17 +15,17 @@ ECS_DECLARE(Vox);
 //! The voxels core Sub Module.
 void VoxImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Vox);
-    ECS_TAG_DEFINE(world, Vox);
+    zoxel_define_module(Vox)
+    zoxel_define_tag(Vox)
     spawn_prefab_vox(world);
     #ifdef zoxel_test_voxels_terrain
         const float model_scale = 0.015f;
         const float distance_to_camera = 0.3f;
-        const float side_distance = 0.08f;
+        const float side_distance = 0.12f;
         float4 rotation = quaternion_from_euler((float3) { 0, 180 * degreesToRadians, 0 });  // (float4) { 0, -1.6f, 0, -1.0f }
         float3 spawn_position = (float3) { 0, 0, -distance_to_camera };
         #ifdef zoxel_test_voxels_terrain
-            spawn_position.y += 2.46f;
+            spawn_position.y += 1.227f * overall_voxel_scale; // 2.46f;
         #endif
         vox_file chicken_vox;
         if (read_vox(resources_folder_name"voxes/monsters/chicken.vox", &chicken_vox) == 0)

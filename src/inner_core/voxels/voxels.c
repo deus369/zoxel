@@ -9,7 +9,7 @@
 //! The voxels Module.
 void VoxelsImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Voxels);
+    zoxel_define_module(Voxels)
     ECS_IMPORT(world, VoxelsCore);
     ECS_IMPORT(world, Vox);
 }

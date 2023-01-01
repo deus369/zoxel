@@ -92,7 +92,8 @@ void opengl_disable_opengl_program()
 void opengl_set_camera_view_matrix(GLuint material, const float4x4 view_matrix)
 {
     GLuint view_matrix_location = glGetUniformLocation(material, "viewMatrix");
-    glUniformMatrix4fv(view_matrix_location, 1, GL_FALSE, (const GLfloat*) ((float*) &view_matrix));
+    // glUniformMatrix4fv(view_matrix_location, 1, GL_FALSE, (const GLfloat*) ((float*) &view_matrix));
+    glUniformMatrix4fv(view_matrix_location, 1, GL_FALSE, (float*) &view_matrix);
 }
 
 /*

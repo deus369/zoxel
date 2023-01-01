@@ -122,5 +122,32 @@ ECS_SYSTEM_DECLARE(system_name);
 
 //! Used at the end to reset systems.
 #define zoxel_reset_system_define(system_name, component_name)\
-zoxel_system_main_thread(world, system_name, EcsOnStore, [out] component_name);
+    zoxel_system_main_thread(world, system_name, EcsOnStore, [out] component_name);
+
+
+ 
+/**
+Chose one pipeline tag for each type of system.
+    EcsOnLoad
+    EcsPostLoad
+    EcsPreUpdate
+    EcsOnUpdate
+    EcsOnValidate
+    EcsPostUpdate
+    EcsPreStore
+    EcsOnStore
+*/
+
+// the idea is to move the element before the ui is raycasted
+// mouse exact - outside loop before it
+// mouse drag - DraggerEndSystem - EcsOnLoad
+// HeaderDragSystem - EcsPostLoad
+// position ui children - ElementPositionSystem - EcsPreUpdate
+// raycast new positioned ones - ElementRaycastSystem - EcsOnUpdate
+// respond to raycasting ui - EcsOnValidate
+// respond to click events - WindowCloseSystem - EcsPostUpdate
+
+//! Used to respond to first level events.
+#define zoxel_event_respond_system_main_thread(system_name, tag_name, event_component_name)\
+    zoxel_system_main_thread(world, system_name, EcsPreStore, [out] tag_name, [in] event_component_name);
 

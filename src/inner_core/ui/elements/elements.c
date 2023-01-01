@@ -3,17 +3,17 @@
 
 // tags
 // UI extras, make extra ui module?
-ECS_DECLARE(Label);
+zoxel_declare_tag(Label)
 //! A generic ui button for clicking.
-ECS_DECLARE(Button);
+zoxel_declare_tag(Button)
 //! A ui window.
-ECS_DECLARE(Window);
+zoxel_declare_tag(Window)
 //! A ui window header.
-ECS_DECLARE(Header);
+zoxel_declare_tag(Header)
 //! A ui window close button.
-ECS_DECLARE(CloseButton);
-ECS_DECLARE(PlayGameButton);
-ECS_DECLARE(ExitGameButton);
+zoxel_declare_tag(CloseButton)
+zoxel_declare_tag(PlayGameButton)
+zoxel_declare_tag(ExitGameButton)
 // components
 // util
 // prefabs
@@ -32,14 +32,14 @@ ECS_DECLARE(ExitGameButton);
 //! The Elements contains various things I can use in my uis.
 void ElementsImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Elements);
-    ECS_TAG_DEFINE(world, Label);
-    ECS_TAG_DEFINE(world, Button);
-    ECS_TAG_DEFINE(world, Window);
-    ECS_TAG_DEFINE(world, Header);
-    ECS_TAG_DEFINE(world, CloseButton);
-    ECS_TAG_DEFINE(world, PlayGameButton);
-    ECS_TAG_DEFINE(world, ExitGameButton);
+    zoxel_define_module(Elements)
+    zoxel_define_tag(Label)
+    zoxel_define_tag(Button)
+    zoxel_define_tag(Window)
+    zoxel_define_tag(Header)
+    zoxel_define_tag(CloseButton)
+    zoxel_define_tag(PlayGameButton)
+    zoxel_define_tag(ExitGameButton)
     // systems
     zoxel_system(world, ButtonClickSoundSystem, EcsOnUpdate, [none] Button, [in] ClickableState); // EcsPostUpdate
     zoxel_system(world, WindowCloseSystem, EcsPostUpdate, [none] CloseButton, [in] ClickableState);

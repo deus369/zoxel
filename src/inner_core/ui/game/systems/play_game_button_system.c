@@ -28,6 +28,7 @@ void PlayGameButtonSystem(ecs_iter_t *it)
             main_cameras[0] = spawn_free_camera(world, first_camera_position, // (float3) { 0, 3.6f, 0.62f },
                 first_camera_rotation, first_camera_screen_dimensions, (int2) { });
             ecs_set(world, main_cameras[0], ViewMatrix, { first_view_matrix });
+            main_camera_matrix = first_view_matrix;
             // \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cameras
         }
     }
