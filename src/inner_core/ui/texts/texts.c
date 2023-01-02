@@ -45,18 +45,18 @@ void TextsImport(ecs_world_t *world)
     zoxel_define_component(ZextSize)
     zoxel_define_component(ZextDirty)
     zoxel_define_component(AnimateZext)
-    zoxel_memory_component_define(world, FontData);
-    zoxel_memory_component_define(world, ZextData);
+    zoxel_memory_component_define(world, FontData)
+    zoxel_memory_component_define(world, ZextData)
     zoxel_system_main_thread(world, AnimateTextSystem, EcsOnUpdate,
-        [out] AnimateZext, [out] ZextDirty, [out] ZextData);
-    zoxel_filter(zextDirtyQuery, world, [none] Zext, [in] ZextDirty);
+        [out] AnimateZext, [out] ZextDirty, [out] ZextData)
+    zoxel_filter(zextDirtyQuery, world, [none] Zext, [in] ZextDirty)
     zoxel_system_ctx_single_thread(world, ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery,
         [none] Zext, [out] ZextDirty, [in] ZextData, [in] ZextSize, [in] Layer2D,
-        [in] Position2D, [in] PixelSize, [out] Children);
-    zoxel_filter(generateTextureQuery, world, [none] FontTexture, [in] GenerateTexture);
+        [in] Position2D, [in] PixelSize, [out] Children)
+    zoxel_filter(generateTextureQuery, world, [none] FontTexture, [in] GenerateTexture)
     zoxel_system_ctx(world, FontTextureSystem, EcsOnUpdate, generateTextureQuery,
         [none] FontTexture, [out] TextureDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture,
-        [in] ZigelIndex);
+        [in] ZigelIndex)
     spawn_font_style_prefab(world);
     spawn_font_prefab(world);
     zigel_prefab = spawn_zigel_prefab(world);

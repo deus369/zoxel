@@ -12,11 +12,6 @@
 #include "voxels/voxels.c"
 #include "blueprints/blueprints.c"
 
-void close_inner_core()
-{
-    close_audio();
-}
-
 void InnerCoreImport(ecs_world_t *world)
 {
     zoxel_module(InnerCore)

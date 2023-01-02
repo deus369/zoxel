@@ -2,14 +2,9 @@
 #define zoxel_voxels_vox
 
 // #define zoxel_debug_vox_read
-
-// tags
 zoxel_declare_tag(Vox)
-// util
 #include "util/vox_read_util.c"
-// prefabs
 #include "prefabs/vox.c"
-// systems
 // #include "systems/noise_chunk_system.c"
 
 //! The voxels core Sub Module.

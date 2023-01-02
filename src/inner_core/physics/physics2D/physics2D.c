@@ -21,10 +21,10 @@ void Physics2DImport(ecs_world_t *world)
     zoxel_define_component(Acceleration2D)
     zoxel_define_component(Bounds2D)
     zoxel_system(world, Friction2DSystem, EcsOnUpdate,
-        [none] physics.Frictioned, [in] Velocity2D, [out] Acceleration2D);
-    zoxel_system(world, Acceleration2DSystem, EcsOnUpdate, [out] Velocity2D, [out] Acceleration2D);
-    zoxel_system(world, Velocity2DSystem, EcsOnUpdate, [out] Position2D, [in] Velocity2D);
-    zoxel_system(world, Torque2DSystem, EcsOnUpdate, [out] Rotation2D, [in] Torque2D);
-    zoxel_system(world, Bounds2DSystem, EcsOnUpdate, [out] Position2D, [in] Bounds2D);
+        [none] physics.Frictioned, [in] Velocity2D, [out] Acceleration2D)
+    zoxel_system(world, Acceleration2DSystem, EcsOnUpdate, [out] Velocity2D, [out] Acceleration2D)
+    zoxel_system(world, Velocity2DSystem, EcsOnUpdate, [out] Position2D, [in] Velocity2D)
+    zoxel_system(world, Torque2DSystem, EcsOnUpdate, [out] Rotation2D, [in] Torque2D)
+    zoxel_system(world, Bounds2DSystem, EcsOnUpdate, [out] Position2D, [in] Bounds2D)
 }
 #endif

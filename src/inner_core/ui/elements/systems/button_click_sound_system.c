@@ -15,7 +15,7 @@ void ButtonClickSoundSystem(ecs_iter_t *it)
             {
                 spawn_generated_sound(it->world);
             }*/
-            spawn_generated_sound(it->world);
+            spawn_generated_sound(it->world, note_frequencies[32]);
         }
     }
 }

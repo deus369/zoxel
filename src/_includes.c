@@ -26,6 +26,7 @@
 #define zoxel_test_chickens
 #define zoxel_test_lines3D
 // #define zoxel_test_networking
+// #define zoxel_test_brain
 // #define zoxel_debug_sounds
 // #define zoxel_test_character2Ds
 // #define zoxel_test_cubes             // Failing atm, gl error at opengl_draw_triangles
@@ -51,7 +52,6 @@
 // #define debug_ui_positioning
 // #define debug_ui_scaling
 // #define zoxel_time_render_loop
-// #define zoxel_test_brain
 
 // Finally include zoxel engine and zoxel
 #include "zoxel_engine.c"

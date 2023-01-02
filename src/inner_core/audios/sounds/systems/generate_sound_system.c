@@ -5,25 +5,26 @@ float modulate##_##index(float time_value, float frequency, float pi_offset)\
     return amplitude * sin(frequency_2 * M_PI * time_value * frequency + pi_offset);\
 }
 
-modulate_function(0, 1.0f, 2.0f);
-modulate_function(1, 1.0f, 4.0f);
-modulate_function(2, 1.0f, 8.0f);
-modulate_function(3, 1.0f, 0.5f);
-modulate_function(4, 1.0f, 0.25f);
-modulate_function(5, 0.5f, 2.0f);
-modulate_function(6, 0.5f, 4.0f);
-modulate_function(7, 0.5f, 8.0f);
-modulate_function(8, 0.5f, 0.5f);
-modulate_function(9, 0.5f, 0.25f);
+modulate_function(0, 1.0f, 2.0f)
+modulate_function(1, 1.0f, 4.0f)
+modulate_function(2, 1.0f, 8.0f)
+modulate_function(3, 1.0f, 0.5f)
+modulate_function(4, 1.0f, 0.25f)
+modulate_function(5, 0.5f, 2.0f)
+modulate_function(6, 0.5f, 4.0f)
+modulate_function(7, 0.5f, 8.0f)
+modulate_function(8, 0.5f, 0.5f)
+modulate_function(9, 0.5f, 0.25f)
 
 void GenerateSoundSystem(ecs_iter_t *it)
 {
     const int sampleRate = 44100; // (float) soundData.sampleRate;
     const float sound_bounds = 1.0f;
     const GenerateSound *generateSounds = ecs_field(it, GenerateSound, 2);
-    SoundData *soundDatas = ecs_field(it, SoundData, 3);
-    const SoundLength *soundLengths = ecs_field(it, SoundLength, 4);
-    SoundDirty *soundDirtys = ecs_field(it, SoundDirty, 5);
+    const SoundLength *soundLengths = ecs_field(it, SoundLength, 3);
+    const SoundFrequency *soundFrequencys = ecs_field(it, SoundFrequency, 4);
+    SoundData *soundDatas = ecs_field(it, SoundData, 5);
+    SoundDirty *soundDirtys = ecs_field(it, SoundDirty, 6);
     for (int i = 0; i < it->count; i++)
     {
         const GenerateSound *generateSound = &generateSounds[i];
@@ -36,13 +37,13 @@ void GenerateSoundSystem(ecs_iter_t *it)
         {
             continue;
         }
-        // printf("Generated sound.\n");
         soundDirty->value = 1;
         SoundData *soundData = &soundDatas[i];
         const SoundLength *soundLength = &soundLengths[i];
+        const SoundFrequency *soundFrequency = &soundFrequencys[i];
         // random.InitState((uint) seed.seed);
         double sound_time_length = soundLength->value; // soundData.sound_time_length;
-        float frequency =  146.83f; // 440;    // random.NextFloat(generateSound.frequency.x, generateSound.frequency.y); // * sound_time_length;
+        float frequency = soundFrequency->value; // 146.83f; // 440;    // random.NextFloat(generateSound.frequency.x, generateSound.frequency.y); // * sound_time_length;
         float noise = 0.1f + 0.1f * (rand() % 101) / 100.0f;     // random.NextFloat(generateSound.noise.x, generateSound.noise.y);
         //float attack = 0.002f;
         float attack = 0.02f;

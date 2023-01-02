@@ -18,12 +18,14 @@ void Lines3DImport(ecs_world_t *world)
     // systems
     if (!headless)
     {
-        initialize_shader_line3D();
         zoxel_system_main_thread(world, Line3DRenderSystem, 0, //EcsOnStore,
-            [none] Line3D, [in] LineData3D, [in] LineThickness, [in] Color);
+            [none] Line3D, [in] LineData3D, [in] LineThickness, [in] Color)
         line3D_render_system_id = ecs_id(Line3DRenderSystem);
     }
-    // prefabs
+    if (!headless)
+    {
+        initialize_shader_line3D();
+    }
     spawn_prefab_line3D(world);
     // test lines
     #ifdef zoxel_test_lines3D

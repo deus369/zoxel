@@ -80,7 +80,7 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it)
         else if (keyboard->c.pressed_this_frame)
         {
             // spawn_sound(it->world);
-            spawn_generated_sound(it->world);
+            spawn_generated_sound(it->world, note_frequencies[rand() % 42]);
         }
     }
 }

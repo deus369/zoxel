@@ -40,7 +40,7 @@ int begin(int argc, char* argv[])
 
 void end()
 {
-    close_inner_core();
+    close_audio();
     close_core();
 }
 

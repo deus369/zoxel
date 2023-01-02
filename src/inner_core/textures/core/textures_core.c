@@ -35,24 +35,23 @@ void TexturesCoreImport(ecs_world_t *world)
     zoxel_define_tag(FrameTexture)
     zoxel_define_tag(SaveTexture)
     zoxel_define_tag(DirtTexture)
-    zoxel_memory_component_define(world, Texture);
     zoxel_define_component(TextureSize)
     zoxel_define_component(GenerateTexture)
     zoxel_define_component(AnimateTexture)
     zoxel_define_component(TextureDirty)
+    zoxel_memory_component_define(world, Texture)
     zoxel_system_main_thread(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture);
-    zoxel_texture_generation_system(NoiseTexture, NoiseTextureSystem);
-    zoxel_texture_generation_system(FrameTexture, FrameTextureSystem);
+    zoxel_texture_generation_system(NoiseTexture, NoiseTextureSystem)
+    zoxel_texture_generation_system(FrameTexture, FrameTextureSystem)
     zoxel_system_main_thread(world, TextureSaveSystem, EcsOnValidate,
-        [in] TextureDirty, [in] Texture, [in] TextureSize, [none] SaveTexture);
-    zoxel_reset_system_define(GenerateTextureResetSystem, GenerateTexture);
-    zoxel_reset_system_define(TextureDirtyResetSystem, TextureDirty);
+        [in] TextureDirty, [in] Texture, [in] TextureSize, [none] SaveTexture)
+    zoxel_reset_system_define(GenerateTextureResetSystem, GenerateTexture)
+    zoxel_reset_system_define(TextureDirtyResetSystem, TextureDirty)
     if (!headless)
     {
         zoxel_system_main_thread(world, TextureUpdateSystem, EcsOnValidate,
-            [in] TextureDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink);
+            [in] TextureDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink)
     }
-    // prefabs
     spawn_prefab_noise_texture(world);
 }
 // #include <cstdint> ? https://stackoverflow.com/questions/20024690/is-there-byte-data-type-in-c
