@@ -2,43 +2,13 @@
 
 Experience the thrill of discovery and adventure in this groundbreaking, procedurally generated voxel RPG
 
-Code Mirrors [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.com/deus369/zoxel)]
+Code @ [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.com/deus369/zoxel)]
 
-> [[Play Latest](https://deus369.github.io/zoxel-play/)]
+> [[Play](https://deus369.github.io/zoxel-play/)]
 
-> [[Roadmap](documents/roadmap.md)]
-
-> [[Tasks](documents/todos/todo-main.md)]
+> [[Roadmap](documents/roadmap.md)] | [[Tasks](documents/todos/todo-main.md)]
 
 > [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
-
-### Endless Possibilities: Building and Modding in Our Voxel-Based RPG
-
-As a player of our voxel-based RPG, you will have the ability to build and mod to your heart's content. Our game features powerful building mechanics that allow you to create and destroy structures using voxels, giving you the freedom to design and shape your own environments. And with modding support, you can take your creativity even further by creating your own custom content and gameplay mechanics. Whether you want to build a towering fortress, a sprawling city, or something entirely different, the sky's the limit. So why not give building and modding a try and see what you can create? The possibilities are endless!
-
-[[How To Build Guide](documents/howtos/howto-build.md)]
-
-### Code Structure and Organization
-
-Our codebase is organized into modules, with the game engine serving as the main module. Below the game engine, we have five main modules: core, inner_core, outer_core, gameplay, and space. Each main module has its own set of sub modules, with the core module containing sub modules such as generic, maths, timing, transforms, networking, apps, inputs, rendering, and cameras. Within each module, we have systems, components, prefabs, and utility functions to support the various features and functionality of the game. This modular approach helps to keep the code organized and easy to maintain.
-
-### The Benefits of Using the GPL License
-
-Zoxel is under the GNU General Public License (GPL) [[The License](license)]
-
-The GPL (GNU General Public License) is a popular open-source license that allows users to modify and distribute software as long as they make the source code freely available. This encourages collaboration and innovation within the software community. The GPL also requires that any modifications or derivatives of the licensed software must also be licensed under the GPL, ensuring that the software remains open and freely available to others in the future.
-
-### Connect with us on social media
-
-Follow our development journey and stay up to date on the latest news and updates by following us on social media!
-
-> [[Itch IO](https://deus0.itch.io/zoxel)]
-
-> [[Mastodon](https://mastodon.gamedev.place/@deus)]
-
-> [[Twitter](https://twitter.com/deusxyz)]
-
-> [[Link Tree](https://linktr.ee/lorddeus)]
 
 ### Snapshots
 
@@ -50,17 +20,21 @@ Unity Zoxel
 
 ![Unity Zoxel](/documents/screenshots/zoxel_unity_00.png?raw=false "Old Zoxel")
 
-### Poetic Musings
+### Endless Possibilities: Building and Modding in Our Voxel-Based RPG
 
-> [[The Joy of Zoxel](documents/poems/poem_0.md)]
+[[How To Build Guide](documents/howtos/howto-build.md)]
 
-> [[The Darkness of Zoxel](documents/poems/poem_1.md)]
+As a player of our voxel-based RPG, you will have the ability to build and mod to your heart's content. Our game features powerful building mechanics that allow you to create and destroy structures using voxels, giving you the freedom to design and shape your own environments. And with modding support, you can take your creativity even further by creating your own custom content and gameplay mechanics. Whether you want to build a towering fortress, a sprawling city, or something entirely different, the sky's the limit. So why not give building and modding a try and see what you can create? The possibilities are endless!
 
-> [[Voxel Quest: A Journey Through the Stars](documents/poems/poem_2.md)]
+### Code Structure and Organization
 
-> [[A Simple Task on Planet X-4028B](documents/poems/poem_3.md)]
+Our codebase is organized into modules, with the game engine serving as the main module. Below the game engine, we have five main modules: core, inner_core, outer_core, gameplay, and space. Each main module has its own set of sub modules, with the core module containing sub modules such as generic, maths, timing, transforms, networking, apps, inputs, rendering, and cameras. Within each module, we have systems, components, prefabs, and utility functions to support the various features and functionality of the game. This modular approach helps to keep the code organized and easy to maintain.
 
-> [[Amazing Potential](documents/reviews/review_0.md)]
+### The Benefits of Using the GPL License
+
+Zoxel is under the GNU General Public License (GPL) [[The License](license)]
+
+The GPL (GNU General Public License) is a popular open-source license that allows users to modify and distribute software as long as they make the source code freely available. This encourages collaboration and innovation within the software community. The GPL also requires that any modifications or derivatives of the licensed software must also be licensed under the GPL, ensuring that the software remains open and freely available to others in the future.
 
 ### Zoxel: A Game of Many Iterations and a Bright Future Ahead
 
@@ -75,3 +49,27 @@ Overall, Zoxel is a game that has been developed with passion and dedication ove
 ### Prioritizing Balance and Well-Being in the New Year
 
 I am happy with the progress that I have made so far on my voxel RPG development. However, I have decided to take a step back and prioritize reducing stress in 2023. This means that I will be working on the game a bit less and focusing on other commitments, such as art, music, and playing games. It's important for me to take care of myself and make sure that I am in a good place both mentally and physically. While I am passionate about game development, it's important for me to find a balance and make sure that I am taking care of myself as well.
+
+### Poetic Musings
+
+> [[The Joy of Zoxel](documents/poems/poem_0.md)]
+
+> [[The Darkness of Zoxel](documents/poems/poem_1.md)]
+
+> [[Voxel Quest: A Journey Through the Stars](documents/poems/poem_2.md)]
+
+> [[A Simple Task on Planet X-4028B](documents/poems/poem_3.md)]
+
+> [[Amazing Potential](documents/reviews/review_0.md)]
+
+### Connect with us on social media
+
+Follow our development journey and stay up to date on the latest news and updates by following us on social media!
+
+> [[Itch IO](https://deus0.itch.io/zoxel)]
+
+> [[Mastodon](https://mastodon.gamedev.place/@deus)]
+
+> [[Twitter](https://twitter.com/deusxyz)]
+
+> [[Link Tree](https://linktr.ee/lorddeus)]
