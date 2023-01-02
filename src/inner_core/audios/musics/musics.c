@@ -1,15 +1,13 @@
 #ifndef zoxel_musics
 #define zoxel_musics
 
-// Tags
-ECS_DECLARE(Music);
-// components
+zoxel_declare_tag(Music)
 
 //! Musics Module.
 void MusicsImport(ecs_world_t *world)
 {
     zoxel_module(Musics)
-    ECS_TAG_DEFINE(world, Music);
+    zoxel_define_tag(Music)
     // components
 
     // systems

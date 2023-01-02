@@ -1,17 +1,14 @@
 #ifndef zoxel_timing
 #define zoxel_timing
 
-// components
-//! Used to set the brightness of an entity.
-zoxel_component(DestroyInTime, double);
-// systems
+zoxel_component(DestroyInTime, double)      //! Used to set the brightness of an entity.
 #include "systems/DestroyInTimeSystem.c"
 
 //! timing Module.
 void TimingImport(ecs_world_t *world)
 {
     zoxel_module(Timing)
-    ECS_COMPONENT_DEFINE(world, DestroyInTime);
+    zoxel_define_component(DestroyInTime)
     zoxel_system(world, DestroyInTimeSystem, EcsOnUpdate, [out] DestroyInTime);
 }
 #endif

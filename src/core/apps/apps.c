@@ -1,7 +1,6 @@
 #ifndef zoxel_apps
 #define zoxel_apps
 
-// app includes
 #ifdef WEB_BUILD
 #include <emscripten.h>
 #endif
@@ -27,32 +26,28 @@
     #endif
 #endif
 
-//! apps Module.
 const int window_index = 1; // 1;
 unsigned char vsync = 0;
 unsigned char fullscreen = 1; // full screen is the new default option
 unsigned char halfscreen = 0;
 unsigned char is_split_screen = 0;
 SDL_Window* main_window;
-// Tags
-ECS_DECLARE(App);
-// components
-zoxel_component(SDLWindow, SDL_Window*);
-zoxel_component(Renderer, SDL_Renderer*);
-zoxel_component(Context, SDL_GLContext*);
-// prefabs
+zoxel_declare_tag(App)
+zoxel_component(SDLWindow, SDL_Window*)
+zoxel_component(Renderer, SDL_Renderer*)
+zoxel_component(Context, SDL_GLContext*)
 #include "prefabs/app.c"
-/// Util
 #include "util/sdl_util.c"
 #include "util/cleanup_util.c"
 
+//! apps Module.
 void AppsImport(ecs_world_t *world)
 {
     zoxel_module(Apps)
-    ECS_TAG_DEFINE(world, App);
-    ECS_COMPONENT_DEFINE(world, SDLWindow);
-    ECS_COMPONENT_DEFINE(world, Context);
-    ECS_COMPONENT_DEFINE(world, Renderer);
+    zoxel_define_tag(App)
+    zoxel_define_component(SDLWindow)
+    zoxel_define_component(Context)
+    zoxel_define_component(Renderer)
     ecs_set_hooks(world, SDLWindow, { .dtor = ecs_dtor(SDLWindow) });
     ecs_set_hooks(world, Context, { .dtor = ecs_dtor(Context) });
     ecs_set_hooks(world, Renderer, { .dtor = ecs_dtor(Renderer) });

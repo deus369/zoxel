@@ -2,36 +2,25 @@
 #define zoxel_ui_core
 
 // #define debug_ui_positioning
-
 //! \todo When resizing, reposition UIs.
 //      - should i use a resize event in the window?
-
 // completely 2D ui? 3D canvas + 3D transforms?
 // canvas: still uses 2D posti
 
 ecs_entity_t main_canvas;
-// tags
-//! A basic tag for a UI Element.
-zoxel_declare_tag(Element)
+zoxel_declare_tag(Element)                  //! A basic tag for a UI Element.
 zoxel_declare_tag(Canvas)
 zoxel_declare_tag(ElementRaycaster)
-// components
 zoxel_component(CanvasPixelPosition, int2)
-//! An anchor, used to get base position using canvas
-zoxel_component(Anchor, float2)
-//! A link to a canvas.
-zoxel_component(CanvasLink, ecs_entity_t)
-// util
+zoxel_component(Anchor, float2)             //! An anchor, used to get base position using canvas
+zoxel_component(CanvasLink, ecs_entity_t)   //! A link to a canvas.
 #include "util/ui_util.c"
-// prefabs
 #include "prefabs/canvas.c"
 #include "prefabs/element.c"
-// systems
 #include "systems/element_raycast_system.c"
 #include "systems/element_selected_system.c"
 #include "systems/element_activate_system.c"
 #include "systems/element_position_system.c"
-// render initialize systems
 #include "systems/element_mesh_system.c"
 
 //! The UI contains ways to interact with 2D objects.
@@ -48,7 +37,6 @@ void UICoreImport(ecs_world_t *world)
     zoxel_define_component(CanvasPixelPosition)
     zoxel_define_component(Anchor)
     zoxel_define_component(CanvasLink)
-    // Systems
     zoxel_filter(ui_query, world, [none] Element,
         [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [out] SelectableState);
     zoxel_filter(pixel_positions_query, world,
@@ -67,7 +55,6 @@ void UICoreImport(ecs_world_t *world)
         zoxel_system_main_thread(world, ElementMeshSystem, EcsOnLoad, [none] Element,
             [in] EntityInitialize, [in] PixelSize, [in] CanvasLink);
     }
-    // prefabs
     spawn_prefab_canvas(world);
     spawn_prefab_element(world);
 }

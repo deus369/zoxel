@@ -1,7 +1,7 @@
 ecs_entity_t particle3D_prefab;
 
 //! Spawns a Particle3D Prefab.
-void SpawnPrefabParticle(ecs_world_t *world)
+void spawn_prefab_particle3D(ecs_world_t *world)
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "particle_prefab");

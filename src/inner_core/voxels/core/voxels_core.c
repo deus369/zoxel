@@ -10,38 +10,25 @@ const float spawnRange = 0.96f;
 const int3 chunk_size = { chunk_length, chunk_length, chunk_length };
 const int3 terrain_chunk_size = { chunk_length, 8 * chunk_length, chunk_length };
 float chunk_real_size = overall_voxel_scale / 2.0f; // 1.0f;   // size achunk takes up
-// tags
 zoxel_declare_tag(NoiseChunk)
 zoxel_declare_tag(TerrainChunk)
-//! A simple chunk with an array of voxels.
-zoxel_memory_component(Chunk, unsigned char)
-//! A list to all chunks in a Vox model.
-zoxel_memory_component(ChunkLinks, ecs_entity_t)
-//! A list to all chunks in a Vox model.
-zoxel_memory_component(ChunkNeighbors, ecs_entity_t)
-//! A simple chunk with an array of voxels.
-zoxel_component(ChunkSize, int3)
-//! A local position of a chunk inside a Vox.
-zoxel_component(ChunkPosition, int3)
-//! A state for animating textures.
-zoxel_component(AnimateChunk, double)
-//! A state for generating chunks.
-zoxel_state_component(GenerateChunk)
-// components
-zoxel_state_component(ChunkDirty)
-// util
+zoxel_component(ChunkSize, int3)    //! A simple chunk with an array of voxels.
+zoxel_component(ChunkPosition, int3)                    //! A local position of a chunk inside a Vox.
+zoxel_component(AnimateChunk, double)                   //! A state for animating textures.
+zoxel_state_component(GenerateChunk)                    //! A state for generating chunks.
+zoxel_state_component(ChunkDirty)                       //! A state for generating chunk meshes.
+zoxel_memory_component(Chunk, unsigned char)            //! A simple chunk with an array of voxels.
+zoxel_memory_component(ChunkLinks, ecs_entity_t)        //! A list to all chunks in a Vox model.
+zoxel_memory_component(ChunkNeighbors, ecs_entity_t)    //! A list to all chunks in a Vox model.
 #include "util/voxel_mesh_util.c"
 #include "util/chunk.c"
 #include "util/chunk_build_util.c"
-// prefabs
 #include "prefabs/chunk.c"
 #include "prefabs/voxel_chunk_mesh.c"
 #include "prefabs/noise_chunk.c"
 #include "prefabs/terrain_chunk.c"
-// systems
 zoxel_reset_system(GenerateChunkResetSystem, GenerateChunk);
 zoxel_reset_system(ChunkDirtyResetSystem, ChunkDirty);
-// #include "systems/generate_chunk_reset_system.c"
 #include "systems/noise_chunk_system.c"
 #include "systems/terrain_chunk_system.c"
 #include "systems/animate_chunk_system.c"

@@ -1,17 +1,13 @@
 #ifndef zoxel_blueprints
 #define zoxel_blueprints
 
-// tags per entity
-ECS_DECLARE(Blueprint);
-ECS_DECLARE(Bluenode);
-// components
-// prefabs
-// systems
+zoxel_declare_tag(Blueprint)
+zoxel_declare_tag(Bluenode)
 
 void BlueprintsImport(ecs_world_t *world)
 {
     zoxel_module(Blueprints)
-    ECS_TAG_DEFINE(world, Blueprint);
-    ECS_TAG_DEFINE(world, Bluenode);
+    zoxel_define_tag(Blueprint)
+    zoxel_define_tag(Bluenode)
 }
 #endif

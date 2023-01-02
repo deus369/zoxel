@@ -1,27 +1,21 @@
 #ifndef zoxel_inputs
 #define zoxel_inputs
 
-// Tags
-ECS_DECLARE(Device);
-// data
+zoxel_declare_tag(Device)
 #include "data/finger.c"
 #include "data/physical_button.c"
-// components
 #include "components/keyboard.c"
 #include "components/mouse.c"
 #include "components/gamepad.c"
 #include "components/touchscreen.c"
-// prefabs
 #include "prefabs/mouse.c"
 #include "prefabs/keyboard.c"
 #include "prefabs/gamepad.c"
-// systems
 #include "systems/keyboard_reset_system.c"
 #include "systems/keyboard_extract_system.c"
 #include "systems/mouse_extract_system.c"
 #include "systems/mouse_raycaster_system.c"
 #include "systems/dragger_end_system.c"
-// util
 #include "util/gamepad_util.c"
 #include "util/input_util.c"
 
@@ -32,11 +26,11 @@ ECS_DECLARE(Device);
 void InputsImport(ecs_world_t *world)
 {
     zoxel_module(inputs)
-    ECS_TAG_DEFINE(world, Device);
-    ECS_COMPONENT_DEFINE(world, Keyboard);
-    ECS_COMPONENT_DEFINE(world, Mouse);
-    ECS_COMPONENT_DEFINE(world, Gamepad);
-    ECS_COMPONENT_DEFINE(world, Touchscreen);
+    zoxel_define_tag(Device)
+    zoxel_define_component(Keyboard)
+    zoxel_define_component(Mouse)
+    zoxel_define_component(Gamepad)
+    zoxel_define_component(Touchscreen)
     zoxel_system(world, MouseRaycasterSystem, EcsOnUpdate, [in] Mouse, [out] Raycaster);
     zoxel_system(world, DraggerEndSystem, EcsOnLoad, [out] DragableState, [out] DraggerLink, [out] DraggingDelta);
     spawn_prefab_mouse(world);

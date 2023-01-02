@@ -5,7 +5,7 @@ int main(int argc, char* argv[])
 {
     if (begin(argc, argv) == 0)
     {
-        ECS_IMPORT(world, Zoxel);       // import game
+        zoxel_import_module(Zoxel)       // import game
         main_loop();
         end();
     }

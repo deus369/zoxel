@@ -1,7 +1,6 @@
 #ifndef zoxel_sounds
 #define zoxel_sounds
 
-// resources
 #define static_sounds_length 5
 const char *sound_file_names[] = {
     resources_folder_name"sounds/bloop.wav",
@@ -13,22 +12,14 @@ const char *sound_file_names[] = {
 #ifdef SDL_MIXER
 Mix_Chunk *sounds[static_sounds_length];
 #endif
-// Tags
-ECS_DECLARE(Sound);
-// components
-//! A sound has an array of bytes.
-zoxel_memory_component(SoundData, float);
-//! The length of a sound.
-zoxel_component(SoundLength, double);
-//! A state event for generating sounds.
-zoxel_state_component(GenerateSound);
-//! A state event for playing sounds.
-zoxel_state_component(PlaySound);
-zoxel_state_component(SoundDirty);
+zoxel_declare_tag(Sound)
+zoxel_memory_component(SoundData, float)    //! A sound has an array of bytes.
+zoxel_component(SoundLength, double)        //! The length of a sound.
+zoxel_state_component(GenerateSound)        //! A state event for generating sounds.
+zoxel_state_component(PlaySound)            //! A state event for playing sounds.
+zoxel_state_component(SoundDirty)
 #include "components/SDLSound.c"
-// prefabs
 #include "prefabs/sound_prefab.c"
-// util
 #ifdef SDL_MIXER
 	#include "util/static_sound_util.c"
 #endif
@@ -46,13 +37,13 @@ zoxel_reset_system(SoundDirtyResetSystem, SoundDirty)
 void SoundsImport(ecs_world_t *world)
 {
     zoxel_module(Sounds)
-    ECS_TAG_DEFINE(world, Sound);
+    zoxel_define_tag(Sound)
     zoxel_memory_component_define(world, SoundData);
-    ECS_COMPONENT_DEFINE(world, SoundLength);
-    ECS_COMPONENT_DEFINE(world, GenerateSound);
-    ECS_COMPONENT_DEFINE(world, PlaySound);
-    ECS_COMPONENT_DEFINE(world, SDLSound);
-    ECS_COMPONENT_DEFINE(world, SoundDirty);
+    zoxel_define_component(SoundLength)
+    zoxel_define_component(GenerateSound)
+    zoxel_define_component(PlaySound)
+    zoxel_define_component(SDLSound)
+    zoxel_define_component(SoundDirty)
     ecs_set_hooks(world, SDLSound, { .dtor = ecs_dtor(SDLSound) });
     // systems
 #ifdef SDL_MIXER

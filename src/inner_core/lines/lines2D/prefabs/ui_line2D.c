@@ -70,7 +70,7 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point
     return e;
 }
 
-void test_ui_lines(ecs_world_t *world, ecs_entity_t main_canvas)
+void spawn_canvas_edge_lines(ecs_world_t *world, ecs_entity_t main_canvas)
 {
     // test ui line
     color edge_color = (color) { 8, 3, 3, 255 };

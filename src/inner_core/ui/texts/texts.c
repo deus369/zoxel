@@ -6,40 +6,24 @@
 const double zext_animation_speed = 10.0;
 ecs_entity_t zigel_prefab;
 ecs_entity_t zext_prefab;
-// tags
-//! Contains a bunch of fonts!
-ECS_DECLARE(FontStyle);
-//! A basic tag for a UI Element.
-ECS_DECLARE(Font);
-//! An individual text character entity.
-ECS_DECLARE(Zigel);
-//! A basic tag for a Font Texture. Generated on a Zigel.
-ECS_DECLARE(FontTexture);
-//! Holds all the zigels.
-ECS_DECLARE(Zext);
-// components
-//! A character index per zigel.
-zoxel_component(ZigelIndex, unsigned char);
-//! An array of points used for generating a font texture.
-zoxel_memory_component(FontData, byte2);
-//! An array of bytes for characters.
-zoxel_memory_component(ZextData, unsigned char);
-//! The size of the font in a Zext.
-zoxel_component(ZextSize, int);
-//! A state event for when Zext is dirty.
-zoxel_component(ZextDirty, unsigned char);
-//! A Zext that animates.
-zoxel_component(AnimateZext, double);
-// util
+zoxel_declare_tag(FontStyle)                    //! Contains a bunch of fonts!
+zoxel_declare_tag(Font)                         //! A basic tag for a UI Element.
+zoxel_declare_tag(Zigel)                        //! An individual text character entity.
+zoxel_declare_tag(FontTexture)                  //! A basic tag for a Font Texture. Generated on a Zigel.
+zoxel_declare_tag(Zext)                         //! Holds all the zigels.
+zoxel_component(ZigelIndex, unsigned char)      //! A character index per zigel.
+zoxel_component(ZextSize, int)                  //! The size of the font in a Zext.
+zoxel_component(ZextDirty, unsigned char)       //! A state event for when Zext is dirty.
+zoxel_component(AnimateZext, double)            //! A Zext that animates.
+zoxel_memory_component(FontData, byte2)         //! An array of points used for generating a font texture.
+zoxel_memory_component(ZextData, unsigned char) //! An array of bytes for characters.
 #include "util/default_font.c"
 #include "util/zigel_util.c"
 #include "util/zext_util.c"
-// prefabs
 #include "prefabs/font.c"
 #include "prefabs/font_style.c"
 #include "prefabs/zigel.c"
 #include "prefabs/zext.c"
-// systems
 #include "systems/font_texture_system.c"
 #include "systems/zext_update_system.c"
 #include "systems/animate_text_system.c"
@@ -52,19 +36,19 @@ zoxel_component(AnimateZext, double);
 void TextsImport(ecs_world_t *world)
 {
     zoxel_module(Texts)
-    ECS_TAG_DEFINE(world, Font);
-    ECS_TAG_DEFINE(world, Zigel);
-    ECS_TAG_DEFINE(world, FontTexture);
-    ECS_TAG_DEFINE(world, Zext);
-    ECS_TAG_DEFINE(world, FontStyle);
-    ECS_COMPONENT_DEFINE(world, ZigelIndex);
+    zoxel_define_tag(Font)
+    zoxel_define_tag(Zigel)
+    zoxel_define_tag(FontTexture)
+    zoxel_define_tag(Zext)
+    zoxel_define_tag(FontStyle)
+    zoxel_define_component(ZigelIndex)
+    zoxel_define_component(ZextSize)
+    zoxel_define_component(ZextDirty)
+    zoxel_define_component(AnimateZext)
     zoxel_memory_component_define(world, FontData);
     zoxel_memory_component_define(world, ZextData);
-    ECS_COMPONENT_DEFINE(world, ZextSize);
-    ECS_COMPONENT_DEFINE(world, ZextDirty);
-    ECS_COMPONENT_DEFINE(world, AnimateZext);
-    ECS_SYSTEM_DEFINE(world, AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData);
-    // zoxel_texture_generation_system(FontTexture, FontTextureSystem);
+    zoxel_system_main_thread(world, AnimateTextSystem, EcsOnUpdate,
+        [out] AnimateZext, [out] ZextDirty, [out] ZextData);
     zoxel_filter(zextDirtyQuery, world, [none] Zext, [in] ZextDirty);
     zoxel_system_ctx_single_thread(world, ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery,
         [none] Zext, [out] ZextDirty, [in] ZextData, [in] ZextSize, [in] Layer2D,

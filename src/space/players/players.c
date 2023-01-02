@@ -2,19 +2,15 @@
 #define zoxel_players
 
 ecs_entity_t local_player;
-// Tags
-ECS_DECLARE(Player2D);
-ECS_DECLARE(Player3D);
-ECS_DECLARE(PlayerCharacter);
-ECS_DECLARE(PlayerCharacter2D);
-ECS_DECLARE(PlayerCharacter3D);
-// prefabs
+zoxel_declare_tag(Player2D)
+zoxel_declare_tag(Player3D)
+zoxel_declare_tag(PlayerCharacter)
+zoxel_declare_tag(PlayerCharacter2D)
+zoxel_declare_tag(PlayerCharacter3D)
 #include "prefabs/player_character2D.c"
 #include "prefabs/player_character3D.c"
-// util
 #include "util/player_character2D.c"
 #include "util/player_character3D.c"
-// systems
 #include "systems/player2D_move_system.c"
 #include "systems/player2D_test_system.c"
 #include "systems/player3D_move_system.c"
@@ -30,11 +26,11 @@ ECS_DECLARE(PlayerCharacter3D);
 void PlayersImport(ecs_world_t *world)
 {
     zoxel_module(Players)
-    ECS_TAG_DEFINE(world, Player2D);
-    ECS_TAG_DEFINE(world, Player3D);
-    ECS_TAG_DEFINE(world, PlayerCharacter);
-    ECS_TAG_DEFINE(world, PlayerCharacter2D);
-    ECS_TAG_DEFINE(world, PlayerCharacter3D);
+    zoxel_define_tag(Player2D)
+    zoxel_define_tag(Player3D)
+    zoxel_define_tag(PlayerCharacter)
+    zoxel_define_tag(PlayerCharacter2D)
+    zoxel_define_tag(PlayerCharacter3D)
     spawn_player_character2D_prefab(world);
     spawn_player_character3D_prefab(world);
     #ifdef zoxel_physics2D
@@ -57,7 +53,7 @@ void PlayersImport(ecs_world_t *world)
     zoxel_system_ctx(world, FreeCameraDisableMovementSystem, EcsOnUpdate, playerCharacter2DQuery3, [in] Mouse);
     //#if zoxel_particles2D
     //! Needed for bulk spawning. Still crashes.
-    ECS_SYSTEM_DEFINE(world, Player2DTestSystem, EcsOnUpdate, [in] Keyboard);
+    zoxel_system_main_thread(world, Player2DTestSystem, EcsOnUpdate, [in] Keyboard);
     // no_staging - rename to no_readonly
     ecs_system(world, {
         .entity = ecs_id(Player2DTestSystem),

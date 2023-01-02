@@ -44,8 +44,8 @@ void close_audio() { }
 void AudiosImport(ecs_world_t *world)
 {
     zoxel_module(Audios)
-    ECS_IMPORT(world, Sounds);
-    ECS_IMPORT(world, Musics);
+    zoxel_import_module(Sounds)
+    zoxel_import_module(Musics)
 #ifdef SDL_MIXER
     load_audio();
 #endif

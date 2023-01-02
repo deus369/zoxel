@@ -2,14 +2,9 @@
 #define zoxel_lines3D
 
 long int line3D_render_system_id;
-// Tags
 zoxel_declare_tag(Line3D)
-// components
-//! The two points in a line3D.
-zoxel_component(LineData3D, float6)
-// prefabs
+zoxel_component(LineData3D, float6)     //! The two points in a line3D.
 #include "prefabs/line3D.c"
-// systems
 #include "systems/line3D_render_system.c"
 
 // extern float overall_voxel_scale;
@@ -37,7 +32,7 @@ void Lines3DImport(ecs_world_t *world)
         float thickness = voxel_scale; //  2.0f;
         float bottom = - (voxel_scale / 2.0f) + 1.0f; // voxel_scale; //  * (1.0f / 2.0f); // 2.0f; // 0.5f;
         float height = voxel_scale * 4.0f;
-        float radius = (terrain_rows + 0.5f) * (voxel_scale / 2.0f); // 8.5f;
+        float radius = thickness * 0.01f + (terrain_rows + 0.5f) * (voxel_scale / 2.0f); // 8.5f;
         float spacing = 1.0f; // / 2.0f;
         spawn_line3D(world, (float3) { -radius, bottom, -radius }, (float3) { -radius, bottom, radius }, thickness, 0);
         spawn_line3D(world, (float3) { -radius, bottom, radius }, (float3) { radius, bottom, radius }, thickness, 0);

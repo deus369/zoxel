@@ -1,7 +1,6 @@
 #ifndef zoxel_inner_core
 #define zoxel_inner_core
 
-// --- Inner core ---
 #include "textures/textures.c"
 #include "audios/audios.c"
 #include "ui/ui.c"
@@ -21,15 +20,15 @@ void close_inner_core()
 void InnerCoreImport(ecs_world_t *world)
 {
     zoxel_module(InnerCore)
-    ECS_IMPORT(world, Textures);
-    ECS_IMPORT(world, Audios);
-    ECS_IMPORT(world, UI);
-    ECS_IMPORT(world, Lines);
-    ECS_IMPORT(world, Neural);
-    ECS_IMPORT(world, Animations);
-    ECS_IMPORT(world, Physics);
-    ECS_IMPORT(world, Tiles);
-    ECS_IMPORT(world, Voxels);
-    ECS_IMPORT(world, Blueprints);
+    zoxel_import_module(Textures)
+    zoxel_import_module(Audios)
+    zoxel_import_module(UI)
+    zoxel_import_module(Lines)
+    zoxel_import_module(Neural)
+    zoxel_import_module(Animations)
+    zoxel_import_module(Physics)
+    zoxel_import_module(Tiles)
+    zoxel_import_module(Voxels)
+    zoxel_import_module(Blueprints)
 }
 #endif

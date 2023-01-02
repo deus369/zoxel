@@ -2,7 +2,7 @@
 #define zoxel_particles3D
 
 // Tags
-ECS_DECLARE(Particle3D);
+zoxel_declare_tag(Particle3D)
 // prefabs
 #include "prefabs/particle3D.c"
 // systems
@@ -12,7 +12,7 @@ ECS_DECLARE(Particle3D);
 void Particles3DImport(ecs_world_t *world)
 {
     zoxel_module(Particles3D)
-    ECS_TAG_DEFINE(world, Particle3D);
-    SpawnPrefabParticle(world);
+    zoxel_define_tag(Particle3D)
+    spawn_prefab_particle3D(world);
 }
 #endif

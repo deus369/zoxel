@@ -17,7 +17,7 @@ void open_ecs(int argc, char* argv[], unsigned char profiler, int core_count)
     if (profiler)
     {
         #if defined (FLECS_REST) && defined (FLECS_MONITOR)
-        ECS_IMPORT(world, FlecsMonitor); 
+        zoxel_import_module(FlecsMonitor)
         ecs_singleton_set(world, EcsRest, {0});
         #else
         zoxel_log("Error: Cannot import FlecsMonitor. Make sure to define FLECS_REST & FLECS_MONITOR.\n");

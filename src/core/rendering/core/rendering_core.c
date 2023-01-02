@@ -1,67 +1,51 @@
 #ifndef zoxel_rendering_core
 #define zoxel_rendering_core
-//! rendering core Module.
 
 //! \todo Create a Cube with unique mesh - for chunk - add these components and update mesh for voxel chunk.
 //      - Test Mesh - simply create a test entity now with mesh and set to dirty
 //      - set data as cube and render
 //      - Animate rotate the cube - for testing
+//! \todo GPU Meshes?
 
-// Tags
-// components
-//! Used to set the brightness of an entity.
-zoxel_memory_component(MeshIndicies, int);
-zoxel_memory_component(MeshVertices, float3);
-zoxel_memory_component(MeshVertices2D, float2);
-zoxel_memory_component(MeshUVs, float2);
-zoxel_memory_component(MeshColors, color);
+zoxel_memory_component(MeshIndicies, int)
+zoxel_memory_component(MeshVertices, float3)
+zoxel_memory_component(MeshVertices2D, float2)
+zoxel_memory_component(MeshUVs, float2)
+zoxel_memory_component(MeshColors, color)
 #include "components/MaterialGPULink.c"
 #include "components/TextureGPULink.c"
 #include "components/mesh_gpu_link.c"
 #include "components/uvs_gpu_link.c"
-// util
 #include "util/mesh_util.c"
 #include "util/render_util.c"
-// prefabs
-// systems
-// animation systems
-#include "systems/eternal_rotation_system.c"
-// update systems
+#include "systems/eternal_rotation_system.c"    // move this to animation module
 #include "systems/mesh_update_system.c"
 #include "systems/mesh_colors_update_system.c"
 #include "systems/mesh_uvs_update_system.c"
 #include "systems/mesh2D_update_system.c"
 #include "systems/mesh2D_uvs_update_system.c"
-zoxel_reset_system(MeshDirtySystem, MeshDirty);
-// render 2D systems
+zoxel_reset_system(MeshDirtySystem, MeshDirty)
 #include "render2D_systems/render2D_system.c"
 #include "render2D_systems/render2D_mesh_system.c"
 #include "render2D_systems/render2D_instance_system.c"
-// render 3D systems
 #include "render3D_systems/render3D_system.c"
 #include "render3D_systems/render3D_uvs_system.c"
 #include "render3D_systems/render3D_instance_system.c"
-// util
 #include "util/render_loop.c"
 
 //! The rendering core Sub Module.
-/**
-*   \todo CPU Meshes?
-*/
 void RenderingCoreImport(ecs_world_t *world)
 {
     zoxel_module(RenderingCore)
-    // printf("Initializing rendering core.");
-    // components
-    zoxel_memory_component_define(world, MeshIndicies);
-    zoxel_memory_component_define(world, MeshVertices);
-    zoxel_memory_component_define(world, MeshVertices2D);
-    zoxel_memory_component_define(world, MeshUVs);
-    zoxel_memory_component_define(world, MeshColors);
-    ECS_COMPONENT_DEFINE(world, MaterialGPULink);
-    ECS_COMPONENT_DEFINE(world, TextureGPULink);
-    ECS_COMPONENT_DEFINE(world, MeshGPULink);
-    ECS_COMPONENT_DEFINE(world, UvsGPULink);
+    zoxel_define_component(MaterialGPULink)
+    zoxel_define_component(TextureGPULink)
+    zoxel_define_component(MeshGPULink)
+    zoxel_define_component(UvsGPULink)
+    zoxel_memory_component_define(world, MeshIndicies)
+    zoxel_memory_component_define(world, MeshVertices)
+    zoxel_memory_component_define(world, MeshVertices2D)
+    zoxel_memory_component_define(world, MeshUVs)
+    zoxel_memory_component_define(world, MeshColors)
     // gpu destruction hooks
     ecs_set_hooks(world, MaterialGPULink, { .dtor = ecs_dtor(MaterialGPULink) });
     ecs_set_hooks(world, TextureGPULink, { .dtor = ecs_dtor(TextureGPULink) });

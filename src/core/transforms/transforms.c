@@ -1,10 +1,7 @@
 #ifndef zoxel_transforms
 #define zoxel_transforms
 
-// shared components
-//! Scales an entities transform in 1D.
-zoxel_component(Scale1D, float);
-// Sub Modules
+zoxel_component(Scale1D, float)     //! Scales an entities transform in 1D.
 #include "hierarchy/hierarchy.c"
 #include "transforms2D/transforms2D.c"
 #include "transforms3D/transforms3D.c"
@@ -16,9 +13,9 @@ zoxel_component(Scale1D, float);
 void TransformsImport(ecs_world_t *world)
 {
     zoxel_module(Transforms)
-    ECS_COMPONENT_DEFINE(world, Scale1D);
-    ECS_IMPORT(world, Hierarchys);
-    ECS_IMPORT(world, Transforms2D);
-    ECS_IMPORT(world, Transforms3D);
+    zoxel_define_component(Scale1D)
+    zoxel_import_module(Hierarchys)
+    zoxel_import_module(Transforms2D)
+    zoxel_import_module(Transforms3D)
 }
 #endif

@@ -21,17 +21,17 @@ unsigned char profiler = 0;
 void CoreImport(ecs_world_t *world)
 {
     zoxel_module(Core)
-    ECS_IMPORT(world, Generic);
-    ECS_IMPORT(world, Maths);
-    ECS_IMPORT(world, Timing);
-    ECS_IMPORT(world, Transforms);
-    ECS_IMPORT(world, Networking);
+    zoxel_import_module(Generic)
+    zoxel_import_module(Maths)
+    zoxel_import_module(Timing)
+    zoxel_import_module(Transforms)
+    zoxel_import_module(Networking)
     if (!headless)
     {
-        ECS_IMPORT(world, Apps);
-        ECS_IMPORT(world, Inputs);
+        zoxel_import_module(Apps)
+        zoxel_import_module(Inputs)
     }
-    ECS_IMPORT(world, Rendering);   // imports just shared components
-    ECS_IMPORT(world, Cameras);
+    zoxel_import_module(Rendering)
+    zoxel_import_module(Cameras)
 }
 #endif

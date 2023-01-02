@@ -1,13 +1,9 @@
 #ifndef zoxel_lines2D
 #define zoxel_lines2D
 
-// tags
 zoxel_declare_tag(Line2D)
-// components
-//! The two points in a line2D.
-zoxel_component(LineData2D, float4)
-//! The two ui points in a line2D.
-zoxel_component(LineElementData, int4)
+zoxel_component(LineData2D, float4)     //! The two points in a line2D.
+zoxel_component(LineElementData, int4)  //! The two ui points in a line2D.
 // prefabs
 #include "prefabs/line2D.c"
 #include "prefabs/ui_line2D.c"

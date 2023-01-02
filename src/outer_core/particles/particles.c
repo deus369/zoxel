@@ -1,7 +1,6 @@
 #ifndef zoxel_particles
 #define zoxel_particles
 
-// Sub Modules
 #include "particles2D/particles2D.c"
 #include "particles3D/particles3D.c"
 
@@ -9,7 +8,7 @@
 void ParticlesImport(ecs_world_t *world)
 {
     zoxel_module(Particles)
-    ECS_IMPORT(world, Particles2D);
-    ECS_IMPORT(world, Particles3D);
+    zoxel_import_module(Particles2D)
+    zoxel_import_module(Particles3D)
 }
 #endif

@@ -10,7 +10,7 @@
 void VoxelsImport(ecs_world_t *world)
 {
     zoxel_module(Voxels)
-    ECS_IMPORT(world, VoxelsCore);
-    ECS_IMPORT(world, Vox);
+    zoxel_import_module(VoxelsCore)
+    zoxel_import_module(Vox)
 }
 #endif

@@ -1,9 +1,7 @@
 #ifndef zoxel_lines
 #define zoxel_lines
 
-// tags
 zoxel_declare_tag(Line)
-// components
 zoxel_component(LineThickness, float)
 #include "lines2D/lines2D.c"
 #include "lines3D/lines3D.c"

@@ -16,9 +16,9 @@ const float android_ui_scale = 2.0f;
 void UIImport(ecs_world_t *world)
 {
     zoxel_module(UI)
-    ECS_IMPORT(world, UICore)
-    ECS_IMPORT(world, Texts);
-    ECS_IMPORT(world, Elements);
-    ECS_IMPORT(world, UIGame);
+    zoxel_import_module(UICore)
+    zoxel_import_module(Texts)
+    zoxel_import_module(Elements)
+    zoxel_import_module(UIGame)
 }
 #endif
