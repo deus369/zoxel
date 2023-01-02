@@ -20,51 +20,11 @@ As a player of our voxel-based RPG, you will have the ability to build and mod t
 
 Zoxel is under the GNU General Public License (GPL) [[The License](license)]
 
-The GPL is considered by many to be the best license for everyone because it allows anyone to use, modify, and distribute the software covered by the license, as long as they make the source code freely available to others. This ensures that the software remains open and accessible to all, promoting collaboration and innovation within the software community.
-
-Additionally, the GPL requires that any modifications or derivatives of the licensed software must also be licensed under the GPL, ensuring that the software remains open and freely available to others in the future. This helps to prevent the software from being "closed off" or proprietary, and ensures that it remains a valuable resource for the broader software community.
-
-## Screenshots
-
-Zoxel
-
-![Zoxel](/documents/screenshots/screenshot_2022-12-31_15-18-13.png?raw=false "Zoxel")
-
-Old Unity Zoxel
-
-![Unity Zoxel](/documents/screenshots/zoxel_unity_00.png?raw=false "Old Zoxel")
-
-### Some Poems
-
-[[The Joy of Zoxel](documents/poems/poem_0.md)]
-
-[[The Darkness of Zoxel](documents/poems/poem_1.md)]
-
-[[Voxel Quest: A Journey Through the Stars](documents/poems/poem_2.md)]
-
-[[A Simple Task on Planet X-4028B](documents/poems/poem_3.md)]
-
-### A Player Review
-
-[[Amazing Potential](documents/reviews/review_0.md)]
-
-## Development Story
-
-Zoxel is a voxel-based RPG that has been in development for over a decade. The game was first made in Java in 2009, and has since been remade using different game engines such as Unity and Unreal. The most recent iteration of the game added Unity's Entity Component System (ECS), which improved its performance and scalability.
-
-Now, the game is being remade again, this time using a custom game engine that the developer has written themselves. This will allow the game to be tailored to the developer's specific needs and requirements, resulting in a more unique and innovative gameplay experience for players.
-
-Players can expect a vast, open-world environment to explore, as well as procedurally generated quests and enemies. The game's charming voxel-based graphics and character customization options will also add to the experience.
-
-Overall, Zoxel is a game that has been developed with passion and dedication over many years, and players can look forward to a unique and engaging gameplay experience.
+The GPL (GNU General Public License) is a popular open-source license that allows users to modify and distribute software as long as they make the source code freely available. This encourages collaboration and innovation within the software community. The GPL also requires that any modifications or derivatives of the licensed software must also be licensed under the GPL, ensuring that the software remains open and freely available to others in the future.
 
 ## 31.12.2022 Latest Update
 
-I will have to delay the Steam release~ originally I planned a 2022 December release! I will finish porting at my own pace and create the Zoxel I can be proud of :D For now I need to spend some more time on my art and my portfolio. 
-
-Overall I am happy where the porting in C Flecs SDL has gotten me to and where Zoxel Unity is at. Unfortunately Unity took longer with their ecs package and there were many #unity bugs while testing. Their priorities also changed over time, as did mine.
-
-I will see how 2023 goes as I work on it a bit less. The last few years have been intense and I need to prioritize reducing stress more over my goals. That involves making myself work less, or doing things I enjoy more like art, making music or playing games.
+I am happy with the progress that I have made so far on my voxel RPG development. However, I have decided to take a step back and prioritize reducing stress in 2023. This means that I will be working on the game a bit less and focusing on other commitments, such as art, music, and playing games. It's important for me to take care of myself and make sure that I am in a good place both mentally and physically. While I am passionate about game development, it's important for me to find a balance and make sure that I am taking care of myself as well.
 
 ## Connect with us on social media
 
@@ -79,3 +39,37 @@ Follow our development journey and stay up to date on the latest news and update
 [[Link Tree](https://linktr.ee/lorddeus)]
 
 Mirrors [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.com/deus369/zoxel)]
+
+## Screenshots
+
+Zoxel
+
+![Zoxel](/documents/screenshots/screenshot_2022-12-31_15-18-13.png?raw=false "Zoxel")
+
+Old Unity Zoxel
+
+![Unity Zoxel](/documents/screenshots/zoxel_unity_00.png?raw=false "Old Zoxel")
+
+### A Player Review
+
+[[Amazing Potential](documents/reviews/review_0.md)]
+
+### Some Poems
+
+[[The Joy of Zoxel](documents/poems/poem_0.md)]
+
+[[The Darkness of Zoxel](documents/poems/poem_1.md)]
+
+[[Voxel Quest: A Journey Through the Stars](documents/poems/poem_2.md)]
+
+[[A Simple Task on Planet X-4028B](documents/poems/poem_3.md)]
+
+## Development Story
+
+Zoxel is a voxel-based RPG that has been in development for over a decade. The game was first made in Java in 2009, and has since been remade using different game engines such as Unity and Unreal. The most recent iteration of the game added Unity's Entity Component System (ECS), which improved its performance and scalability.
+
+Now, the game is being remade again, this time using a custom game engine that the developer has written themselves. This will allow the game to be tailored to the developer's specific needs and requirements, resulting in a more unique and innovative gameplay experience for players.
+
+Players can expect a vast, open-world environment to explore, as well as procedurally generated quests and enemies. The game's charming voxel-based graphics and character customization options will also add to the experience.
+
+Overall, Zoxel is a game that has been developed with passion and dedication over many years, and players can look forward to a unique and engaging gameplay experience.
