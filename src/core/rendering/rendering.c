@@ -21,7 +21,7 @@ zoxel_component(Brightness, float);
 //! The Rendering Module!
 void RenderingImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Rendering);
+    zoxel_module(Rendering)
     ECS_TAG_DEFINE(world, Mesh);
     ECS_TAG_DEFINE(world, ElementRender);
     ECS_COMPONENT_DEFINE(world, Brightness);

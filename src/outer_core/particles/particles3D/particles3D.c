@@ -11,7 +11,7 @@ ECS_DECLARE(Particle3D);
 //! zoxel_particles 3D Module
 void Particles3DImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Particles3D);
+    zoxel_module(Particles3D)
     ECS_TAG_DEFINE(world, Particle3D);
     SpawnPrefabParticle(world);
 }

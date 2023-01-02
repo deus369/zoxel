@@ -31,7 +31,7 @@ zoxel_component(ConnectionData, ecs_entity_2);
 
 void NeuralImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Neural);
+    zoxel_module(Neural)
     ECS_TAG_DEFINE(world, Brain);
     ECS_TAG_DEFINE(world, Neuron);
     ECS_TAG_DEFINE(world, Connection);

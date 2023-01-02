@@ -18,7 +18,7 @@ zoxel_component(LineElementData, int4)
 //! Lines2D Module.
 void Lines2DImport(ecs_world_t *world)
 {
-    zoxel_define_module(Lines2D)
+    zoxel_module(Lines2D)
     zoxel_define_tag(Line2D)
     zoxel_define_component(LineData2D)
     zoxel_define_component(LineElementData)

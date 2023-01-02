@@ -11,7 +11,7 @@ zoxel_state_component(DisableMovement);
 
 void PhysicsImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Physics);
+    zoxel_module(Physics)
     ECS_TAG_DEFINE(world, Frictioned);
     ECS_COMPONENT_DEFINE(world, DisableMovement);
     ECS_IMPORT(world, Physics2D);

@@ -21,7 +21,7 @@ zoxel_component(Bounds3D, float3);
 
 void Physics3DImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Physics3D);
+    zoxel_module(Physics3D)
     ECS_COMPONENT_DEFINE(world, Velocity3D);
     ECS_COMPONENT_DEFINE(world, Acceleration3D);
     ECS_COMPONENT_DEFINE(world, Torque3D);

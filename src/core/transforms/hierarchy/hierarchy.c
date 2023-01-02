@@ -11,7 +11,7 @@ zoxel_component(ParentLink, ecs_entity_t);
 //! Hierarchy Module.
 void HierarchysImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Hierarchys);
+    zoxel_module(Hierarchys)
     // zoxel_entities_component_define(world, Children);
     zoxel_memory_component_define(world, Children);
     ECS_COMPONENT_DEFINE(world, ParentLink);

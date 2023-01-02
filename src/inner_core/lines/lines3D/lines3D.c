@@ -17,7 +17,7 @@ zoxel_component(LineData3D, float6)
 //! Lines2D Module.
 void Lines3DImport(ecs_world_t *world)
 {
-    zoxel_define_module(Lines3D)
+    zoxel_module(Lines3D)
     zoxel_define_tag(Line3D)
     zoxel_define_component(LineData3D)
     // systems

@@ -8,7 +8,7 @@ ECS_DECLARE(Music);
 //! Musics Module.
 void MusicsImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Musics);
+    zoxel_module(Musics)
     ECS_TAG_DEFINE(world, Music);
     // components
 

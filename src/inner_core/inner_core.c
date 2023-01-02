@@ -20,7 +20,7 @@ void close_inner_core()
 
 void InnerCoreImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, InnerCore);
+    zoxel_module(InnerCore)
     ECS_IMPORT(world, Textures);
     ECS_IMPORT(world, Audios);
     ECS_IMPORT(world, UI);

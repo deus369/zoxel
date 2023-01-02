@@ -42,7 +42,7 @@ zoxel_reset_system(EntityInitializeResetSystem, EntityInitialize)
 
 void GenericImport(ecs_world_t *world)
 {
-    zoxel_define_module(Generic)
+    zoxel_module(Generic)
     zoxel_define_tag(Selectable)
     zoxel_define_tag(Clickable)
     zoxel_define_tag(Dragable)

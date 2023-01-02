@@ -107,7 +107,7 @@ void define_voxels_core_systems(ecs_world_t *world)
 */
 void VoxelsCoreImport(ecs_world_t *world)
 {
-    zoxel_define_module(VoxelsCore)
+    zoxel_module(VoxelsCore)
     define_voxels_core_components(world);
     define_voxels_core_systems(world);
     // prefabs

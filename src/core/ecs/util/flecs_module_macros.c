@@ -1,11 +1,11 @@
 // zoxel shorthand for a module definition
-#define zoxel_define_module(name)\
+#define zoxel_module(name)\
     ECS_MODULE(world, name);
 
 #define zoxel_import_module(name)\
     ECS_IMPORT(world, name);
 
-
+/*
 #define zoxel_module(world, id, moduleName)\
 ecs_entity_t ecs_id(id) = 0;\
 {\
@@ -15,3 +15,4 @@ ecs_entity_t ecs_id(id) = 0;\
     ecs_set_scope(world, ecs_id(id));\
 }\
 (void)ecs_id(id);
+*/

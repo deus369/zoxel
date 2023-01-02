@@ -22,7 +22,7 @@ zoxel_component(FPSDisplayTicker, double);
 //! Game UI Module, main menu, level select, etc.
 void UIGameImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, UIGame);
+    zoxel_module(UIGame)
     ECS_TAG_DEFINE(world, MainMenu);
     ECS_TAG_DEFINE(world, OptionsUI);
     ECS_TAG_DEFINE(world, PauseUI);

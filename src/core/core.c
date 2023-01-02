@@ -20,7 +20,7 @@ unsigned char profiler = 0;
 //! Handles modules that are for basic stuff at lowest level
 void CoreImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Core);
+    zoxel_module(Core)
     ECS_IMPORT(world, Generic);
     ECS_IMPORT(world, Maths);
     ECS_IMPORT(world, Timing);

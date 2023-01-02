@@ -8,7 +8,7 @@
 
 void SpaceImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Space);
+    zoxel_module(Space)
     if (!headless)
     {
         ECS_IMPORT(world, Players);

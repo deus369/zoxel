@@ -45,7 +45,7 @@ zoxel_reset_system(SoundDirtyResetSystem, SoundDirty)
 //! Sounds Module.
 void SoundsImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Sounds);
+    zoxel_module(Sounds)
     ECS_TAG_DEFINE(world, Sound);
     zoxel_memory_component_define(world, SoundData);
     ECS_COMPONENT_DEFINE(world, SoundLength);

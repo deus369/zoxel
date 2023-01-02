@@ -8,7 +8,7 @@
 //! zoxel_particles Module
 void ParticlesImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Particles);
+    zoxel_module(Particles)
     ECS_IMPORT(world, Particles2D);
     ECS_IMPORT(world, Particles3D);
 }

@@ -16,7 +16,7 @@ zoxel_component(PixelSize, int2);
 //! Used for 2D transforms positioning.
 void Transforms2DImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Transforms2D);
+    zoxel_module(Transforms2D)
     ECS_COMPONENT_DEFINE(world, Position2D);
     ECS_COMPONENT_DEFINE(world, Rotation2D);
     ECS_COMPONENT_DEFINE(world, Scale2D);

@@ -29,7 +29,7 @@ ECS_DECLARE(PlayerCharacter3D);
 */
 void PlayersImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Players);
+    zoxel_module(Players)
     ECS_TAG_DEFINE(world, Player2D);
     ECS_TAG_DEFINE(world, Player3D);
     ECS_TAG_DEFINE(world, PlayerCharacter);

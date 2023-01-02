@@ -37,7 +37,7 @@ zoxel_memory_component(PacketData, unsigned char);
 
 void NetworkingImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Networking);
+    zoxel_module(Networking)
     if (server_mode)
     {
         zoxel_log("Server mode activated.\n");

@@ -16,7 +16,7 @@ zoxel_component(RealmLink, ecs_entity_t);
 //! Realms Module
 void RealmsImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Realms);
+    zoxel_module(Realms)
     ECS_TAG_DEFINE(world, Realm);
     ECS_COMPONENT_DEFINE(world, RealmLink);
     spawn_prefab_realm(world);

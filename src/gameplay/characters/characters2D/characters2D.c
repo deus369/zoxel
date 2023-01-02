@@ -18,7 +18,7 @@ zoxel_component(Character2DLink, ecs_entity_t);
 //! A module for 2 dimensional characters.
 void Characters2DImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Characters2D);
+    zoxel_module(Characters2D)
     ECS_TAG_DEFINE(world, Character2D);
     ECS_COMPONENT_DEFINE(world, Character2DLink);
     spawn_prefab_character2D(world, character2DTextureSize);

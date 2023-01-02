@@ -7,7 +7,7 @@
 
 void AIImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, AI);
+    zoxel_module(AI)
     // Components
     // Systems
 }

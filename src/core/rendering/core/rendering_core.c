@@ -50,7 +50,7 @@ zoxel_reset_system(MeshDirtySystem, MeshDirty);
 */
 void RenderingCoreImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, RenderingCore);
+    zoxel_module(RenderingCore)
     // printf("Initializing rendering core.");
     // components
     zoxel_memory_component_define(world, MeshIndicies);

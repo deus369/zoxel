@@ -11,7 +11,7 @@
 
 void TexturesImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, textures);
+    zoxel_module(textures)
     ECS_IMPORT(world, TexturesCore);
 }
 #endif

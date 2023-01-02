@@ -27,7 +27,7 @@ zoxel_component(Matrix, float4x4);
 */
 void Transforms3DImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Transforms3D);
+    zoxel_module(Transforms3D)
     ECS_TAG_DEFINE(world, EulerOverride);
     ECS_COMPONENT_DEFINE(world, Position);
     ECS_COMPONENT_DEFINE(world, Rotation);

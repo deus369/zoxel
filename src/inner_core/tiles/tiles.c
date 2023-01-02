@@ -7,7 +7,7 @@
 
 void TilesImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Tiles);
+    zoxel_module(Tiles)
     // ECS_IMPORT(world, VoxelsCore);
 }
 #endif

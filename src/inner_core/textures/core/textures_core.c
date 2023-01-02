@@ -44,7 +44,7 @@ zoxel_reset_system(GenerateTextureResetSystem, GenerateTexture)
 */
 void TexturesCoreImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, TexturesCore);
+    zoxel_module(TexturesCore)
     ECS_TAG_DEFINE(world, NoiseTexture);
     ECS_TAG_DEFINE(world, FrameTexture);
     ECS_TAG_DEFINE(world, SaveTexture);

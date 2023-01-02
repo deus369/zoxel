@@ -51,7 +51,7 @@ zoxel_component(AnimateZext, double);
 */
 void TextsImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Texts);
+    zoxel_module(Texts)
     ECS_TAG_DEFINE(world, Font);
     ECS_TAG_DEFINE(world, Zigel);
     ECS_TAG_DEFINE(world, FontTexture);

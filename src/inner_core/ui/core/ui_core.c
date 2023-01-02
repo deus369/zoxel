@@ -41,7 +41,7 @@ zoxel_component(CanvasLink, ecs_entity_t)
 */
 void UICoreImport(ecs_world_t *world)
 {
-    zoxel_define_module(UICore)
+    zoxel_module(UICore)
     zoxel_define_tag(Element)
     zoxel_define_tag(Canvas)
     zoxel_define_tag(ElementRaycaster)

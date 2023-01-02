@@ -15,7 +15,7 @@ const float android_ui_scale = 2.0f;
 //! The UI contains submodules for ui.
 void UIImport(ecs_world_t *world)
 {
-    zoxel_define_module(UI)
+    zoxel_module(UI)
     ECS_IMPORT(world, UICore)
     ECS_IMPORT(world, Texts);
     ECS_IMPORT(world, Elements);

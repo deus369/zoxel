@@ -43,7 +43,7 @@ void close_audio() { }
 //! textures Module.
 void AudiosImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Audios);
+    zoxel_module(Audios)
     ECS_IMPORT(world, Sounds);
     ECS_IMPORT(world, Musics);
 #ifdef SDL_MIXER

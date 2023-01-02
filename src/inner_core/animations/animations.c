@@ -7,7 +7,7 @@
 
 void AnimationsImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Animations);
+    zoxel_module(Animations)
     // Components
     // Systems
 }

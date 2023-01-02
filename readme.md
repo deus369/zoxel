@@ -1,14 +1,12 @@
-## Zoxel | A Unique Procedurally Generated RPG
+## Zoxel A Unique Procedurally Generated RPG
 
 Experience the thrill of discovery and adventure in this groundbreaking, procedurally generated voxel RPG
 
 Code @ [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.com/deus369/zoxel)]
 
-> [[Play](https://deus369.github.io/zoxel-play/)]
+> [[Play](https://deus369.github.io/zoxel-play/)] | [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
 
 > [[Roadmap](documents/roadmap.md)] | [[Tasks](documents/todos/todo-main.md)]
-
-> [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
 
 ### Snapshots
 
@@ -51,6 +49,8 @@ Overall, Zoxel is a game that has been developed with passion and dedication ove
 I am happy with the progress that I have made so far on my voxel RPG development. However, I have decided to take a step back and prioritize reducing stress in 2023. This means that I will be working on the game a bit less and focusing on other commitments, such as art, music, and playing games. It's important for me to take care of myself and make sure that I am in a good place both mentally and physically. While I am passionate about game development, it's important for me to find a balance and make sure that I am taking care of myself as well.
 
 ### Poetic Musings
+
+Some poetry that helps guide my way in this dark world.
 
 > [[The Joy of Zoxel](documents/poems/poem_0.md)]
 

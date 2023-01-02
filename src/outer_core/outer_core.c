@@ -8,7 +8,7 @@
 
 void OuterCoreImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, OuterCore);
+    zoxel_module(OuterCore)
     ECS_IMPORT(world, Cubes);
     ECS_IMPORT(world, AI);
     ECS_IMPORT(world, Particles);

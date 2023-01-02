@@ -32,7 +32,7 @@ zoxel_declare_tag(ExitGameButton)
 //! The Elements contains various things I can use in my uis.
 void ElementsImport(ecs_world_t *world)
 {
-    zoxel_define_module(Elements)
+    zoxel_module(Elements)
     zoxel_define_tag(Label)
     zoxel_define_tag(Button)
     zoxel_define_tag(Window)

@@ -48,7 +48,7 @@ zoxel_component(Context, SDL_GLContext*);
 
 void AppsImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Apps);
+    zoxel_module(Apps)
     ECS_TAG_DEFINE(world, App);
     ECS_COMPONENT_DEFINE(world, SDLWindow);
     ECS_COMPONENT_DEFINE(world, Context);

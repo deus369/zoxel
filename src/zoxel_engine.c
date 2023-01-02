@@ -69,7 +69,7 @@ void main_loop()
 void ZoxelEngineImport(ecs_world_t *world)
 {
     // zoxel_log("Importing [Zoxel Engine]\n");
-    ECS_MODULE(world, ZoxelEngine);
+    zoxel_module(ZoxelEngine)
     ECS_IMPORT(world, Core);
     ECS_IMPORT(world, InnerCore);
     ECS_IMPORT(world, OuterCore);

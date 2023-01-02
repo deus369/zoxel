@@ -22,7 +22,7 @@ zoxel_component(Bounds2D, float2);
 
 void Physics2DImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Physics2D);
+    zoxel_module(Physics2D)
     ECS_COMPONENT_DEFINE(world, Velocity2D);
     ECS_COMPONENT_DEFINE(world, Torque2D);
     ECS_COMPONENT_DEFINE(world, Acceleration2D);

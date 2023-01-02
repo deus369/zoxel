@@ -11,7 +11,7 @@ zoxel_component(LineThickness, float)
 //! Lines Module.
 void LinesImport(ecs_world_t *world)
 {
-    zoxel_define_module(Lines)
+    zoxel_module(Lines)
     zoxel_define_tag(Line)
     zoxel_define_component(LineThickness)
     zoxel_import_module(Lines2D)

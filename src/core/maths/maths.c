@@ -28,7 +28,7 @@
 
 void MathsImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Maths);
+    zoxel_module(Maths)
     set_noise_seed(12666);
 }
 #endif

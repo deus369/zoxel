@@ -83,7 +83,7 @@ void dispose_opengl()
 //! The OpenGL Module.
 void OpenGLImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, OpenGL);
+    zoxel_module(OpenGL)
     // check open gl for failures?
     opengl_load_functions();
     int didFail = load_all_shaders();

@@ -10,7 +10,7 @@ ECS_DECLARE(Bluenode);
 
 void BlueprintsImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Blueprints);
+    zoxel_module(Blueprints)
     ECS_TAG_DEFINE(world, Blueprint);
     ECS_TAG_DEFINE(world, Bluenode);
 }

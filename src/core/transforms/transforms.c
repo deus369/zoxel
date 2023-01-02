@@ -15,7 +15,7 @@ zoxel_component(Scale1D, float);
 */
 void TransformsImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Transforms);
+    zoxel_module(Transforms)
     ECS_COMPONENT_DEFINE(world, Scale1D);
     ECS_IMPORT(world, Hierarchys);
     ECS_IMPORT(world, Transforms2D);

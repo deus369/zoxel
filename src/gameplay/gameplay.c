@@ -6,7 +6,7 @@
 
 void GameplayImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Gameplay);
+    zoxel_module(Gameplay)
     ECS_IMPORT(world, Characters);
 }
 #endif

@@ -15,7 +15,7 @@ zoxel_declare_tag(Vox)
 //! The voxels core Sub Module.
 void VoxImport(ecs_world_t *world)
 {
-    zoxel_define_module(Vox)
+    zoxel_module(Vox)
     zoxel_define_tag(Vox)
     spawn_prefab_vox(world);
     #ifdef zoxel_test_voxels_terrain

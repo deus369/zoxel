@@ -16,7 +16,7 @@ zoxel_state_component(GameState);
 //! Games Module
 void GamesImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Games);
+    zoxel_module(Games)
     ECS_TAG_DEFINE(world, Game);
     // components
     ECS_COMPONENT_DEFINE(world, GameState);

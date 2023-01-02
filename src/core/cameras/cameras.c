@@ -75,7 +75,7 @@ void set_mouse_mode()
 */
 void CamerasImport(ecs_world_t *world)
 {
-    zoxel_define_module(Cameras)
+    zoxel_module(Cameras)
     // zoxel_module(world, cameras, nm_zoxel_cameras);
     zoxel_define_tag(Camera)
     zoxel_define_tag(CameraFollower2D) // Until fix is found. \todo Fix this, readd it back here where it belongs.

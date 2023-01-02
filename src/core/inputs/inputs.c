@@ -31,7 +31,7 @@ ECS_DECLARE(Device);
 */
 void InputsImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, inputs);
+    zoxel_module(inputs)
     ECS_TAG_DEFINE(world, Device);
     ECS_COMPONENT_DEFINE(world, Keyboard);
     ECS_COMPONENT_DEFINE(world, Mouse);

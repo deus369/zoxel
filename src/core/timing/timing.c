@@ -10,7 +10,7 @@ zoxel_component(DestroyInTime, double);
 //! timing Module.
 void TimingImport(ecs_world_t *world)
 {
-    ECS_MODULE(world, Timing);
+    zoxel_module(Timing)
     ECS_COMPONENT_DEFINE(world, DestroyInTime);
     zoxel_system(world, DestroyInTimeSystem, EcsOnUpdate, [out] DestroyInTime);
 }
