@@ -107,6 +107,13 @@ void render_instance2D(float2 position, float angle, float scale, float brightne
     glUniform1f(material2D.brightness, brightness);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 }
+
+void shader2D_instance_end()
+{
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    opengl_disable_opengl_program();
+}
     
     /*square2DMaterial = load_gpu_shader(&shader2D_basic, basicRender2DVertFilepath, basicRender2DFragFilepath);
     if (square2DMaterial == 0)

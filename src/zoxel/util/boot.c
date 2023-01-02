@@ -21,7 +21,7 @@ void boot_zoxel_game(ecs_world_t *world)
     if (is_split_screen)
     {
         //! \todo connect a gamepad to this camera
-        camera_begin_position.z += 1.0f;
+        camera_begin_position.z += 0.4f;
         main_cameras[1] = spawn_base_camera(world, camera_begin_position,
             quaternion_identity(), screen_dimensions2, (int2) { screen_dimensions2.x, 0 });
     }

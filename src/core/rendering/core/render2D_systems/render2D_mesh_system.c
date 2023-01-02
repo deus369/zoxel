@@ -55,6 +55,5 @@ void RenderMeshMaterial2DSystem(ecs_iter_t *it)
             position->value, rotation2D->value, scale1D->value, brightness->value, layer2D->value);
         // zoxel_log("Rendering 2D mesh material [%lu]\n", (long int) it->entities[i]);
     }
-    opengl_unset_mesh();    // do this per system
 }
 zoxel_declare_system(RenderMeshMaterial2DSystem)
