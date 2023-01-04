@@ -27,7 +27,6 @@
 #define zoxel_test_lines3D
 // #define zoxel_test_networking
 // #define zoxel_test_brain
-// #define zoxel_debug_sounds
 // #define zoxel_test_character2Ds
 // #define zoxel_test_cubes             // Failing atm, gl error at opengl_draw_triangles
 // #define zoxel_test_cubes_textured    // wip
@@ -36,7 +35,7 @@
 // #define zoxel_test_uis
 
 // -- debugs --
-// #define zox_logs // add logs with printf
+#define zox_logs // add logs with printf
 // #define zoxel_catch_opengl_errors
 // #define zoxel_log_frames_per_second
 // #define zoxel_debug_vox_read
@@ -52,6 +51,11 @@
 // #define debug_ui_positioning
 // #define debug_ui_scaling
 // #define zoxel_time_render_loop
+
+// audio
+#define zoxel_debug_music
+#define zoxel_debug_sounds
+// #define zoxel_slow_music
 
 // Finally include zoxel engine and zoxel
 #include "zoxel_engine.c"

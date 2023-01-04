@@ -7,15 +7,7 @@ void ButtonClickSoundSystem(ecs_iter_t *it)
         const ClickableState *clickableState = &clickableStates[i];
         if (clickableState->value == 1)
         {
-            /*if (rand() % 101 >= 94)
-            {
-                spawn_sound(it->world);
-            }
-            else
-            {
-                spawn_generated_sound(it->world);
-            }*/
-            spawn_generated_sound(it->world, note_frequencies[32]);
+            spawn_generated_sound(it->world, note_frequencies[32], 0.8 + 0.4 * (rand() % 101) / 100.0);
         }
     }
 }

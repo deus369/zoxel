@@ -8,6 +8,7 @@
 		  #include <SDL2/SDL_mixer.h>
     #endif
 #endif
+zoxel_component(InstrumentType, unsigned char)
 #include "sounds/sounds.c"
 #include "musics/musics.c"
 
@@ -15,11 +16,11 @@
 unsigned char load_audio()
 {
 	unsigned char success = 1;
-    const int sample_rate = 44100;
+    // const int sample_rate = 44100;
     const int channels_count = 1;   // 2
     // MIX_DEFAULT_FORMAT
     // https://wiki.libsdl.org/SDL2/SDL_AudioFormat
-	if( Mix_OpenAudio( sample_rate, AUDIO_F32SYS, channels_count, 2048 ) < 0 )
+	if( Mix_OpenAudio( sound_sample_rate, AUDIO_F32SYS, channels_count, 2048 ) < 0 )
 	{
 		zoxel_log( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		success = 0;
@@ -44,6 +45,7 @@ void close_audio() { }
 void AudiosImport(ecs_world_t *world)
 {
     zoxel_module(Audios)
+    zoxel_define_component(InstrumentType)
     zoxel_import_module(Sounds)
     zoxel_import_module(Musics)
 #ifdef SDL_MIXER

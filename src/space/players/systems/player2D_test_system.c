@@ -41,6 +41,13 @@ void Player2DTestSystem(ecs_iter_t *it)
                 }
             }
         }
+        else if (keyboard->m.pressed_this_frame)
+        {
+            double music_speed = 0.2 + (rand() % 100) * 0.008;
+            ecs_set(world, main_music, MusicSpeed, { music_speed });
+            ecs_set(world, main_music, GenerateMusic, { 1 });
+            printf("Generating new music with speed [%f].\n", music_speed);
+        }
         /*else if (keyboard->p.pressed_this_frame)
         {
             zoxel_log("[Printing Debug]\n");
@@ -80,7 +87,7 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it)
         else if (keyboard->c.pressed_this_frame)
         {
             // spawn_sound(it->world);
-            spawn_generated_sound(it->world, note_frequencies[rand() % 42]);
+            spawn_generated_sound(it->world, note_frequencies[rand() % 42], 0.8 + 0.4 * (rand() % 101) / 100.0);
         }
     }
 }

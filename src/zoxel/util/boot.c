@@ -43,4 +43,5 @@ void boot_zoxel_game(ecs_world_t *world)
     spawn_test_uis(world);   // spawns test ui
     #endif
     spawn_canvas_edge_lines(world, main_canvas);
+    spawn_music(world);
 }
