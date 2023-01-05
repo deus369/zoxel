@@ -53,8 +53,8 @@
 // #define zoxel_time_render_loop
 
 // audio
-#define zoxel_debug_music
-#define zoxel_debug_sounds
+// #define zoxel_debug_music
+// #define zoxel_debug_sounds
 // #define zoxel_slow_music
 
 // Finally include zoxel engine and zoxel

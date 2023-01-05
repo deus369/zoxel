@@ -7,7 +7,7 @@
 // instrument_piano_square
 // instrument_saxophone
 // instrument_trumpet
-const unsigned char instrumentType = instrument_guitar;
+const unsigned char instrumentType = instrument_piano;
 const float attack_multiplier = 0.02f; // 0.04f
 const float dampen_multiplier = 0.7f; // 0.92f
 

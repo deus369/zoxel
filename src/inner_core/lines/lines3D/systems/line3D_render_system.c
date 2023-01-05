@@ -56,6 +56,7 @@ void Line3DRenderSystem(ecs_iter_t *it)
         glUniform4f(line3D_color_location, color_float4.x, color_float4.y, color_float4.z, color_float4.w);
         glDrawArrays(GL_LINES, 0, 3);
     }
-    // glUseProgram(0);
+    glDisableVertexAttribArray(line3D_position_location);
+    glUseProgram(0);
 }
 zoxel_declare_system(Line3DRenderSystem)
