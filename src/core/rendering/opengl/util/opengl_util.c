@@ -6,7 +6,8 @@
 //  https://github.com/edo9300/edopro/issues/151
 // float3 backgroundColor = { 16.0f / 255.0f, 24.0f / 255.0f, 32.0f / 255.0f };
 // float3 backgroundColor = { 99.0f / 255.0f, 190.0f / 255.0f, 191.0f / 255.0f };
-float3 backgroundColor = { 9.0f / 255.0f, 70.0f / 255.0f, 75.0f / 255.0f };//
+// float3 backgroundColor = { 9.0f / 255.0f, 70.0f / 255.0f, 75.0f / 255.0f };//
+float3 backgroundColor = { 2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f };//
 
 void opengl_clear()
 {
