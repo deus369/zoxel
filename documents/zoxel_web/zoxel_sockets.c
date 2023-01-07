@@ -10,8 +10,8 @@
 int num_clients = 0;
 int web_sock;
 int server_port = 80;
-char* html_index = "index.html";
-// char* html_index = "index_mini.html";
+// char* html_index = "index.html";
+char* html_index = "index_mini.html";
 char* response = NULL;
 // char *inline_response = "HTTP/1.1 200 OK\nContent-Type: text/html\n\n<html><body><h1>Website home was not found.</h1></body></html>\n";
 
