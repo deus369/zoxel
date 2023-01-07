@@ -14,3 +14,5 @@ tests/builds/*
 # ignore flecs source
 include/flecs/flecs.h
 include/flecs/flecs.c
+# ignore zoxel_web build
+documents/zoxel_web/zoxel_web

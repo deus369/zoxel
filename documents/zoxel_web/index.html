@@ -11,8 +11,9 @@
             --dark_4: #252525;
             --dark_5: #000000;
             --red_1: #a07e7e;
-            --red_2: #b22222;
+            --red_2: #7e1111;
             --red_3: #270b0b;
+            --red_4: #c41616;
         }
         
         /* Misc */
@@ -30,6 +31,10 @@
         h2, h3 {
             font-size: 14px;
         }
+        h1, h2, h3 {
+            color: var(--red_2);
+            padding: 6px 6px;
+        }
         footer {
             display: flex;
             flex-direction: column;
@@ -46,7 +51,7 @@
         img {
             display: block;
             margin: 0 auto;
-            max-width: 80%;
+            max-width: 90%;
             height: auto;
             object-fit: contain;
         }
@@ -66,13 +71,8 @@
             color: var(--dark_5);
             background-color: var(--red_2);
         }
-
-        /* Buttons */
-        button {
-            float: left;
-        }
-        button.active {
-            color: var(--red_1);
+        button.active, a.active {
+            color: var(--red_4);
             background-color: var(--dark_4);
         }
 
@@ -91,12 +91,18 @@
             background-color: var(--dark_2);
             border-top: none;
         }
+        #tabcontent { 
+            padding: 0 4%;
+        }
         
         /* Dropdown */
         .dropdown {
             position: absolute;
             right: 10px;
             top: 10px;
+        }
+        .dropdown_item {
+            display: block;
         }
         .dropdown_content {
             display: none;
@@ -106,25 +112,10 @@
             z-index: 1;
             text-align: center;
         }
+        /* when hovered, display goes to visible? */
         .dropdown:hover .dropdown_content {
             display: block;
         }
-        .dropdown_item {
-            /*float: none;
-            padding: 12px 16px;
-            text-decoration: none;*/
-            display: block;
-        }
-        /*.dropdown-content a:hover {
-            color: var(--dark_4);
-            background-color: var(--red_3);
-        }*/
-        /*color: var(--red_2);
-        background-color: var(--dark_4);*/
-        /*.dropdown-content a:hover {
-            color: var(--dark_4);
-            background-color: var(--red_3);
-        }*/
 
         /* Timeline */
         /*.timeline {
@@ -176,7 +167,8 @@
 	<div style="display: flex; justify-content: center;">
 		<img  class="icon" alt="Zoxel logo"
             src="https://codeberg.org/deus/zoxel/raw/commit/d5b59c6c6c42fe26252b3d2d4a92ec365afcd019/resources/textures/game_icon.png">
-	</div></br>
+	</div>
+    </br>
     <!-- A dropdown for the screen width -->
     <div class="dropdown">
         <button class="dropbtn">Width %</button>
@@ -191,12 +183,12 @@
     </div>
     <!-- Our Tab content, dynamically generated in Javascript-->
 	<div id="tabbuttons" class="tabbuttons"></div>
-    <div id="tabcontent" class="tabcontent"></div>
-
+    <div class="tabcontent">
+        <div id="tabcontent"></div>
+    </div>
     <footer>
         <p>Follow me on <a href="https://mastodon.gamedev.place/@deus">Mastodon</a> || <a href="https://twitter.com/deusxyz">Twitter</a></p>
     </footer>
-
 	<script>
 		function open_tab(evt, tabName) {
             var i, tabcontent, tablinks;
@@ -234,6 +226,7 @@
 
         //! Used for dropdown
         function set_tab_width(percentage) {
+            // class selection?
             const tabcontentElements = document.querySelectorAll(".tabcontent, .tabbuttons");
             for (const element of tabcontentElements) {
                 element.style.width = percentage + "%";
