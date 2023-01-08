@@ -9,14 +9,20 @@
 
 int num_clients = 0;
 int web_sock;
+int does_socket_exist = 0;
 int server_port = 80;
-// char* html_index = "index.html";
-char* html_index = "index_mini.html";
+int is_minify = 1;
+char* html_index = "index.html";
+char* html_index_minify = "index_mini.html";
 char* response = NULL;
+int has_loaded_html = 0;
 // char *inline_response = "HTTP/1.1 200 OK\nContent-Type: text/html\n\n<html><body><h1>Website home was not found.</h1></body></html>\n";
 
 void close_socket() {
-    close(web_sock);
+    if (does_socket_exist) {
+        close(web_sock);
+        does_socket_exist = 0;
+    }
 }
 
 void make_socket_non_blocking(int web_sock) {
@@ -34,29 +40,24 @@ void make_socket_non_blocking(int web_sock) {
 }
 
 int initialize_sockets() {
+    if (does_socket_exist) {
+        return 0;
+    }
     struct sockaddr_in server;
-
-    // Create socket
     web_sock = socket(AF_INET, SOCK_STREAM, 0);
     if (web_sock == -1) {
         printf("Could not create socket");
+        return 1;
     }
-
-    // Prepare the sockaddr_in structure
     server.sin_family = AF_INET;
     server.sin_addr.s_addr = INADDR_ANY;
     server.sin_port = htons(server_port);
-
-    // Bind
     if (bind(web_sock, (struct sockaddr *) &server, sizeof(server)) < 0) {
-        // print the error message
         perror("bind failed. Error");
         return 1;
     }
-
-    // Make the socket non-blocking
+    does_socket_exist = 1;
     make_socket_non_blocking(web_sock);
-    
     if (!is_terminal_ui) {
         puts("bind done");
     }
@@ -73,7 +74,7 @@ void start_listening() {
 extern int running;
 extern int exit_reason;
 
-void accept_incoming_connections(int web_sock, char *response) {
+int accept_incoming_connections(int web_sock, char *response) {
     int client_sock, c, read_size;
     struct sockaddr_in client;
     char client_message[2000];
@@ -86,7 +87,7 @@ void accept_incoming_connections(int web_sock, char *response) {
                 perror("accept_incoming_connections: accept failed");
             }
         }
-        return;
+        return 1;
     }
     if (is_terminal_ui == 0) {
         puts("Connection accepted");
@@ -95,19 +96,16 @@ void accept_incoming_connections(int web_sock, char *response) {
     is_dirty = 1;
     // Receive a message from client
     if ((read_size = recv(client_sock, client_message, 2000, 0)) > 0) {
-        // Send the response to the client
         if (is_terminal_ui == 0) {
             puts("Sending response to client.");
         }
-        write(client_sock, response, strlen(response));
-        // printf("%s \n", response);
-        // running = 0;
-        // exit_reason = 255;
+        write(client_sock, response, strlen(response));     // Send the response packet to the client
     } else if (read_size == -1) {
         perror("recv failed");
     }
     // Close the client socket
     close(client_sock);
+    return 0;   // no error
 }
 
 char* build_http_response(const char* html_file_buffer) {
@@ -121,24 +119,29 @@ int load_html() {
     if (html_file == NULL) {
         return 1;
     }
-    if (response != NULL) {
+    if (has_loaded_html) {
         free(response);
+    } else {
+        has_loaded_html = 1;
     }
     response = build_http_response(html_file);
     free(html_file);
     return 0;
 }
 
-void update_html() {
-    if (was_modified(html_index)) {
+void update_html(char* html_filepath) {
+    if (was_modified(html_filepath)) {
         if (load_html()) {
-            set_mod_time(html_index);   // set file as dirty only when successfully loads
+            set_mod_time(html_filepath);   // set file as dirty only when successfully loads
         }
     }
 }
 
 void update_web() {
-    update_html();
+    if (is_minify)
+        update_html(html_index_minify);
+    else
+        update_html(html_index);
     accept_incoming_connections(web_sock, response);
 }
 
@@ -146,12 +149,18 @@ int open_web() {
     if (initialize_sockets()) {
         return 1;
     }
-    set_mod_time(html_index);
+    if (is_minify)
+        set_mod_time(html_index_minify);
+    else
+        set_mod_time(html_index);
     load_html();
     return 0;
 }
 
 void close_web() {
     close_socket();
-    free(response);
+    if (has_loaded_html) {
+        free(response);
+        has_loaded_html = 0;
+    }
 }

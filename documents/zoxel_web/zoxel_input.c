@@ -36,11 +36,10 @@ void restore_terminal_settings() {
     tcsetattr(STDIN_FILENO, TCSANOW, &old_tio);
 }
 
-char get_keyboard_key() {
-    char c;
+char get_keyboard_key(int is_terminal_ui) {
+    char c = 0;
     read(STDIN_FILENO, &c, 1);
-    if (!is_terminal_ui && c != '\0') // && c != '\xff')
-    {
+    if (!is_terminal_ui && c != '\0') {
         printf("Key input: %c\n", c);
     }
     return c;

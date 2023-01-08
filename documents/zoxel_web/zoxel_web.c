@@ -8,19 +8,6 @@
 #include "zoxel_sockets.c"
 // #include <vte/vte.h> // for VteTerminal
 
-// todo:
-//      Check if local IP changes
-//        Can I update that on router automatically? port forwarding, maybe new router?
-//      Can I run a test in terminal to see if website url works, and if it doesn't notify myself
-//        Linux notifications, can I use those?
-//      Center the tab buttons?
-//      Header image?
-//      Find a minify html tool that works in terminal
-//      Fix lists
-//      Just go over Zoxel content again
-//      A Roadmap tab?
-//      Set dropdown item to active like tab buttons
-
 // variables
 int running = 1;
 int exit_reason = 0;
@@ -52,6 +39,7 @@ void display_text() {
 
 void set_text(char* display_text) {
     if (!is_terminal_ui) {
+        puts(display_text);
         return;
     }
     clear_terminal();
@@ -63,9 +51,12 @@ void set_text(char* display_text) {
     fflush(stdout); // flush the output buffer
 }
 
-int try_open_app() {
+void handle_events() {
     signal(SIGINT, on_interupt_app);
     signal(SIGWINCH, handle_sigwinch);
+}
+
+void begin_open_app() {
     if (is_terminal_ui) {
         save_terminal_settings();
         save_terminal_state();
@@ -73,19 +64,17 @@ int try_open_app() {
     } else {
         save_terminal_settings_log();
     }
-    if (open_web()) {
-        return 1;
-    };
-    return 0;
 }
 
 void open_app() {
-    while (try_open_app()) {
-        set_text("Trouble starting Zoxel Web");
+    begin_open_app();
+    while (open_web()) {
+        set_text("Attempting to open socket");
         sleep(3);
     }
     sleep(1);
     start_listening();
+    is_dirty = 1;
 }
 
 void close_app() {
@@ -122,20 +111,28 @@ void process_arguments(int argc, char *argv[]) {
 
 int main(int argc, char *argv[]) {
     process_arguments(argc, argv);
+    handle_events();
     open_app();
     while (running) {
         if (is_terminal_ui) {
             display_text();
         }
         update_web();
-        char key_press = get_keyboard_key();
+        char key_press = get_keyboard_key(is_terminal_ui);
         if (key_press == 'q') {
             running = 0;
             exit_reason = 1;
         } else if (key_press == 'r') {
             restart_app();
+        } else if (key_press == 'm') {
+            is_minify = !is_minify;
+            if (is_minify)
+                set_text("Toggled Minify [ON]\n");
+            else
+                set_text("Toggled Minify [OFF]\n");
+            sleep(3);
+            restart_app();
         }
-        // todo check if html file was updated and re load it here
     }
     close_app();
     return 0;
