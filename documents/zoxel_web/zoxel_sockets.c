@@ -10,7 +10,7 @@
 int num_clients = 0;
 int web_sock;
 int does_socket_exist = 0;
-int server_port = 80;
+int server_port = 8080; // 80 - im rerouting this traffic from 80 to 8080 internally
 int is_minify = 1;
 char* html_index = "index.html";
 char* html_index_minify = "index_mini.html";

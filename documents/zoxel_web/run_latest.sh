@@ -1,8 +1,10 @@
 #!/bin/bash
+
 # run our zoxel_web
 
-sudo cc zoxel_web.c -o zoxel_web && sudo ./zoxel_web
+cd $HOME/zoxel/documents/zoxel_web
 
-# echo "Finished running server."
+source check_local_ip.sh
 
-# sleep 30
+#sudo cc zoxel_web.c -o zoxel_web && sudo ./zoxel_web
+cc zoxel_web.c -o zoxel_web && ./zoxel_web
