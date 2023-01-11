@@ -87,7 +87,13 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it)
         else if (keyboard->c.pressed_this_frame)
         {
             // spawn_sound(it->world);
-            spawn_generated_sound(it->world, note_frequencies[rand() % 42], 0.8 + 0.4 * (rand() % 101) / 100.0);
+            spawn_generated_sound(it->world,
+                note_frequencies[rand() % 42], 0.8 + 0.4 * (rand() % 101) / 100.0,
+                instrument_violin);
+        }
+        else if (keyboard->m.pressed_this_frame)
+        {
+            ecs_set(it->world, main_music, GenerateMusic, { 1 });
         }
     }
 }

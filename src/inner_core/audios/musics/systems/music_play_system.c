@@ -19,7 +19,7 @@ void MusicPlaySystem(ecs_iter_t *it)
         {
             musicTime->value -= music_speed;
             music_note_index++;
-            if (music_note_index > musicData->length)
+            if (music_note_index >= musicData->length)
             {
                 music_note_index = 0;
             }
@@ -30,9 +30,11 @@ void MusicPlaySystem(ecs_iter_t *it)
             }
             float frequency = note_frequencies[music_note];
             // based sound note off music note, get timings off music notes in array
-            float note_time = musicSpeed->value * music_speed * 1.2f;
-            spawn_generated_sound(it->world, frequency, note_time);
-            // printf("Playing note [%i] frequency [%f]\n", music_note, frequency);
+            float note_time = musicSpeed->value * music_speed * 1.0f;
+            spawn_generated_sound(it->world, frequency, note_time, instrumentType->value);
+            #ifdef zoxel_log_music_playing
+                printf("Playing [%i] Note - [%i] frequency [%f]\n", music_note_index, music_note, frequency);
+            #endif
         }
     }
 }

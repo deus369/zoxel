@@ -9,7 +9,7 @@ To-Do Cameras
 
 `Current`
 
-- [ ] Hold shift to speed up camera roam movement
+- [x] Hold shift to speed up camera roam movement
 - [ ] RenderTextures - connect a texture to a camera
 
 `Done`

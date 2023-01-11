@@ -1,7 +1,7 @@
 #!/bin/bash
 
 install_location=$HOME/.profile #.bash_profile
-run_command="gnome-terminal --full-screen -e '$HOME/zoxel/documents/zoxel_web/run_latest.sh'"
+run_command="x-terminal-emulator -f -e '$HOME/zoxel/documents/zoxel_web/run_latest.sh'"
 
 if [ ! -f $install_location ]
 then

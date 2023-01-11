@@ -14,17 +14,14 @@
     return soundValue;
 }*/
 
-float apply_envelope(float value, float time, float attack, float dampen, float total_time)
+float envelope(float time, float total_time, float attack, float dampen)
 {
-    if (time <= attack)
-    {
+    if (time < attack) {
         // soundValue = soundValue * (i / (sampleRate * attack));
         // return value * attack;
-        return value * (time / attack);
+        return time / attack;
         // value *= (i / (total_sound_samples * attack));
-    }
-    else if (time >= dampen)
-    { 
+    } else if (time >= dampen) { 
         // Apply exponential dampen effect
         /*float dampen_factor = 1.0 - ((time - attack) / (dampen - attack));
         if (dampen_factor < 0)
@@ -42,9 +39,9 @@ float apply_envelope(float value, float time, float attack, float dampen, float 
         {
             dampen_factor = 0;
         }
-        return value * (pow(dampen_factor, 4));
+        return pow(dampen_factor, 4);
     }
-    return value;
+    return 1.0f;
 }
     // else if (i >= 1 - sampleRate * decay)
     // else // if (i >= total_sound_samples - total_sound_samples * decay)

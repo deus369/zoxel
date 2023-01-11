@@ -35,6 +35,10 @@ zoxel_state_component(SoundDirty)
 #include "util/note_frequencies.c"
 #include "util/sin_waves.c"
 #include "util/square_waves.c"
+#include "util/triangle_waves.c"
+#include "util/sawtooth_waves.c"
+#include "util/fm_synthesis_waves.c"
+#include "util/noise_waves.c"
 #include "util/instruments.c"
 #include "util/envelop.c"
 // systems
@@ -61,7 +65,7 @@ void SoundsImport(ecs_world_t *world)
     zoxel_memory_component_define(world, SoundData)
     ecs_set_hooks(world, SDLSound, { .dtor = ecs_dtor(SDLSound) });
     zoxel_system(world, SoundGenerateSystem, EcsOnValidate, [none] Sound,
-        [in] GenerateSound, [in] SoundLength, [in] SoundFrequency,
+        [in] GenerateSound, [in] SoundLength, [in] SoundFrequency, [in] InstrumentType,
         [out] SoundData, [out] SoundDirty)
 #ifdef SDL_MIXER
     zoxel_system_main_thread(world, SoundUpdateSystem, EcsPreStore,

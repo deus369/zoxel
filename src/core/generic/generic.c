@@ -20,6 +20,7 @@ zoxel_component(Raycaster, int2)                //! Contains the raycast mouse p
 zoxel_component(RaycasterTarget, ecs_entity_t)  //! A target entity for the Raycaster.
 zoxel_component(Layer2D, unsigned char)         //! A 2D Layer for a entity.
 zoxel_component(Color, color)                   //! A generic entity color.
+zoxel_component(SecondaryColor, color)                   //! A generic entity color.
 zoxel_memory_component(Colors, color)           //! A generic entity colors.
 zoxel_reset_system(EntityDirtyResetSystem, EntityDirty)
 zoxel_reset_system(ClickableStateResetSystem, ClickableState)
@@ -47,6 +48,7 @@ void GenericImport(ecs_world_t *world)
     zoxel_define_component(EntityInitialize)
     zoxel_define_component(Layer2D)
     zoxel_define_component(Color)
+    zoxel_define_component(SecondaryColor)
     zoxel_memory_component_define(world, Colors)
     zoxel_reset_system_define(EntityDirtyResetSystem, EntityDirty)
     zoxel_reset_system_define(ClickableStateResetSystem, ClickableState)

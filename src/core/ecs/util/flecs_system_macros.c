@@ -1,5 +1,18 @@
 //! A bunch of flecs system macros.
 
+
+/**
+Chose one pipeline tag for each type of system.
+    EcsOnLoad
+    EcsPostLoad
+    EcsPreUpdate
+    EcsOnUpdate
+    EcsOnValidate
+    EcsPostUpdate
+    EcsPreStore
+    EcsOnStore
+*/
+
 #define zoxel_declare_system(name)\
     ECS_SYSTEM_DECLARE(name);
 
@@ -124,19 +137,6 @@ ECS_SYSTEM_DECLARE(system_name);
 #define zoxel_reset_system_define(system_name, component_name)\
     zoxel_system_main_thread(world, system_name, EcsOnStore, [out] component_name);
 
-
- 
-/**
-Chose one pipeline tag for each type of system.
-    EcsOnLoad
-    EcsPostLoad
-    EcsPreUpdate
-    EcsOnUpdate
-    EcsOnValidate
-    EcsPostUpdate
-    EcsPreStore
-    EcsOnStore
-*/
 
 // the idea is to move the element before the ui is raycasted
 // mouse exact - outside loop before it

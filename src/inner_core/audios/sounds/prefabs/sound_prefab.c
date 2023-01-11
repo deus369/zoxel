@@ -30,7 +30,8 @@ ecs_entity_t spawn_sound(ecs_world_t *world)
     return e;
 }
 
-ecs_entity_t spawn_generated_sound(ecs_world_t *world, float frequency, float sound_length)
+ecs_entity_t spawn_generated_sound(ecs_world_t *world,
+    float frequency, float sound_length, unsigned char instrument_type)
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_sound);
@@ -39,6 +40,7 @@ ecs_entity_t spawn_generated_sound(ecs_world_t *world, float frequency, float so
     zoxel_add(world, e, SoundData);
     zoxel_set(world, e, SoundFrequency, { frequency });
     zoxel_set(world, e, SoundLength, { sound_length });
+    zoxel_set(world, e, InstrumentType, { instrument_type });
     zoxel_set(world, e, SoundDirty, { 0 });
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns

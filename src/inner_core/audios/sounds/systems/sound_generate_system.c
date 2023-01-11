@@ -7,7 +7,7 @@
 // instrument_piano_square
 // instrument_saxophone
 // instrument_trumpet
-const unsigned char instrumentType = instrument_piano;
+// const unsigned char instrumentType = instrument_piano;
 const float attack_multiplier = 0.02f; // 0.04f
 const float dampen_multiplier = 0.7f; // 0.92f
 
@@ -15,12 +15,14 @@ const float dampen_multiplier = 0.7f; // 0.92f
 
 void SoundGenerateSystem(ecs_iter_t *it)
 {
-    const float sound_bounds = 1.0f;
+    // const float sound_bounds = 1.0f;
+    const float volume = 1.0f; // 0.8f;
     const GenerateSound *generateSounds = ecs_field(it, GenerateSound, 2);
     const SoundLength *soundLengths = ecs_field(it, SoundLength, 3);
     const SoundFrequency *soundFrequencys = ecs_field(it, SoundFrequency, 4);
-    SoundData *soundDatas = ecs_field(it, SoundData, 5);
-    SoundDirty *soundDirtys = ecs_field(it, SoundDirty, 6);
+    const InstrumentType *instrumentTypes = ecs_field(it, InstrumentType, 5);
+    SoundData *soundDatas = ecs_field(it, SoundData, 6);
+    SoundDirty *soundDirtys = ecs_field(it, SoundDirty, 7);
     for (int i = 0; i < it->count; i++)
     {
         const GenerateSound *generateSound = &generateSounds[i];
@@ -37,69 +39,92 @@ void SoundGenerateSystem(ecs_iter_t *it)
         SoundData *soundData = &soundDatas[i];
         const SoundLength *soundLength = &soundLengths[i];
         const SoundFrequency *soundFrequency = &soundFrequencys[i];
+        const InstrumentType *instrumentType = &instrumentTypes[i];
+        #ifdef zoxel_log_sound_generation
+            printf("Sound played. Instrument [%i]. Frequency [%f]. Length [%f].\n",
+                instrumentType->value, soundFrequency->value, soundLength->value);
+        #endif
         // random.InitState((uint) seed.seed);
         double sound_time_length = soundLength->value; // soundData.sound_time_length;
         float frequency = soundFrequency->value;
-        float noise = 0.06f * (rand() % 101) / 100.0f;     // random.NextFloat(generateSound.noise.x, generateSound.noise.y);
-        // unsigned char instrumentType = 0; // rand() % 3; // 2;
+        float noise = 0.04f * (rand() % 101) / 100.0f;     // random.NextFloat(generateSound.noise.x, generateSound.noise.y);
+        unsigned char instrument_type = instrumentType->value; // rand() % 3; // 2;
         //float attack = 0.002f;
         float attack = attack_multiplier * sound_time_length; //  0.02f * sound_time_length;
         float dampen = dampen_multiplier * sound_time_length;
-        float volume = 0.8f;
         int total_sound_samples = (int) ( sound_sample_rate * sound_time_length );
         initialize_memory_component(soundData, float, total_sound_samples);
         for (int i = 0; i < total_sound_samples; i++)
         {
             float time = (float) (i / sample_rate_f);
             float value = 0.0f;
-            if (instrumentType == instrument_piano)
+            if (instrument_type == instrument_piano)
             {
                 value = piano_sound(time, frequency);
             }
-            else if (instrumentType == instrument_piano_square)
+            else if (instrument_type == instrument_piano_square)
             {
                 value = piano_square_sound(time, frequency);
             }
-            else if (instrumentType == instrument_organ)
+            else if (instrument_type == instrument_unique)
+            {
+                value = unique_sound(time, frequency);
+            }
+            else if (instrument_type == instrument_organ)
             {
                 value = organ_sound(time, frequency);
             }
-            else if (instrumentType == instrument_edm)
+            else if (instrument_type == instrument_edm)
             {
                 value = edm_sound(time, frequency);
             }
-            else if (instrumentType == instrument_guitar)
+            else if (instrument_type == instrument_guitar)
             {
                 value = guitar_sound(time, frequency);
             }
-            else if (instrumentType == instrument_flute)
+            else if (instrument_type == instrument_flute)
             {
                 value = flute_sound(time, frequency);
             }
-            else if (instrumentType == instrument_violin)
+            else if (instrument_type == instrument_violin)
             {
                 value = violin_sound(time, frequency);
             }
-            else if (instrumentType == instrument_saxophone)
+            else if (instrument_type == instrument_saxophone)
             {
                 value = saxophone_sound(time, frequency);
             }
-            else if (instrumentType ==  instrument_trumpet)
+            else if (instrument_type ==  instrument_trumpet)
             {
                 value = trumpet_sound(time, frequency);
             }
+            else
+            {
+                break;
+                continue;
+            }
             if (noise != 0)
             {
-                value += - noise + 2.0f * noise * (rand() % 101) / 100.0f; // random.NextFloat(-noise, noise);
+                value += noise * ((rand() / (float) RAND_MAX) * 2.0f - 1.0f);
+                // value += - noise + 2.0f * noise * (rand() % 101) / 100.0f; // random.NextFloat(-noise, noise);
             }
-            value = apply_envelope(value, time, attack, dampen, sound_time_length);
+            value *= envelope(time, sound_time_length, attack, dampen);
             value *= volume;
-            value = float_clamp(value, -sound_bounds, sound_bounds);
+            // value = float_clamp(value, -sound_bounds, sound_bounds);
             soundData->value[i] = value;
         }
     }
 }
 zoxel_declare_system(SoundGenerateSystem)
+
+            /*if (rand() % 101 >= 50)
+            {
+                value += noise * (rand() % 101) / 100.0f;
+            }
+            else
+            {
+                value -= noise * (rand() % 101) / 100.0f;
+            }*/
 
             // Linear build-up, fast.
             // if (i <= sound_sample_rate * attack)

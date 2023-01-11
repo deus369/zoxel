@@ -20,7 +20,7 @@ ecs_entity_t spawn_prefab_music(ecs_world_t *world)
     return e;
 }
 
-ecs_entity_t spawn_music(ecs_world_t *world)
+ecs_entity_t spawn_music(ecs_world_t *world) //, unsigned char instrument_type)
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_music);
