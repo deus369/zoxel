@@ -1,5 +1,7 @@
 #!/bin/bash
 
+is_github=false
+
 is_xclip=$(command -v xclip)
 if [[ $is_xclip = "" ]]; then
     echo "xclip does not exist. Installing."
@@ -39,7 +41,6 @@ echo "Created SSH [$sshname]"
 
 xclip -sel c < $sshname.pub
 cat $sshname.pub
-
 echo Finished SSH Create. SSH copied to clipboard.
 
 # Start Agent, add ssh to agent
@@ -50,15 +51,15 @@ ssh-add ~/.ssh/$sshname
 echo "Go to https://github.com/settings/keys and paste the ssh key."
 echo "Click New SSH key button to add it. Give it the name [$sshname] for consistency."
 open https://github.com/settings/keys
-sleep 12
+sleep 6
 
 echo "Go to https://github.com/settings/keys and paste the ssh key."
 echo "Click New SSH key button to add it. Give it the name [$sshname] for consistency."
 open https://codeberg.org/user/settings/keys
-sleep 12
+sleep 6
 
 echo Finished!
-sleep 8
+sleep 6
 
 
 # create ssh key
