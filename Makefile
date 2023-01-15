@@ -152,6 +152,9 @@ remove-flecs:
 git-push: ## installs zoxel into /usr/games directory
 	cd bash/git && ./git_push.sh
 
+git-pull: ## installs zoxel into /usr/games directory
+	cd bash/git && ./git_pull.sh
+
 help:
 	@echo "zoxel -> an open source voxel engine"
 	@echo "  make			builds zoxel"
@@ -170,6 +173,8 @@ help:
 	@echo "    android-dev		builds & runs android debug"
 	@echo "    android-dev-debug	builds & runs android debug with logcat"
 	@echo "    packages		installs required libraries with apt-get"
+	@echo "    git-pull		pulls latest git"
+	@echo "    git-push		pushes git updates - if has ssh access"
 	@echo "find latest at -> https://codeberg.org/deus/zoxel"
 
 # CFLAGS += -D_POSIX_C_SOURCE=200112L
