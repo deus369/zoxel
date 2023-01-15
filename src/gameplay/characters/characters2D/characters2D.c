@@ -1,7 +1,7 @@
 #ifndef zoxel_characters2D
 #define zoxel_characters2D
 
-const int spawnCharacter2DsCount = 64;
+const int spawn_characters2D_count = 64;
 const int2 character2DTextureSize = { 16, 16 };
 zoxel_declare_tag(Character2D)
 zoxel_component(Character2DLink, ecs_entity_t)
@@ -18,7 +18,7 @@ void Characters2DImport(ecs_world_t *world)
     zoxel_define_component(Character2DLink)
     spawn_prefab_character2D(world, character2DTextureSize);
     #ifdef zoxel_test_character2Ds
-    spawn_many_characters();
+    spawn_many_characters2D();
     #endif
 }
 #endif

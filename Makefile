@@ -149,6 +149,9 @@ install-flecs:
 remove-flecs:
 	cd bash/flecs && ./remove_flecs.sh
 
+git-push: ## installs zoxel into /usr/games directory
+	cd bash/git && ./git_push.sh
+
 help:
 	@echo "zoxel -> an open source voxel engine"
 	@echo "  make			builds zoxel"

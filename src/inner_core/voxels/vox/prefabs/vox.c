@@ -19,24 +19,28 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world)
     return e;
 }
 
+void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, vox_file *vox)
+{
+    ChunkSize chunkSize = { vox->chunks[0].size.xyz };
+    int voxels_length = chunkSize.value.x * chunkSize.value.y * chunkSize.value.z;
+    Chunk chunk = { };
+    Colors colors = { };
+    int colors_length = vox->palette.chunk_content / 4;
+    initialize_memory_component_non_pointer(chunk, unsigned char, voxels_length);
+    initialize_memory_component_non_pointer(colors, color, colors_length);
+    memcpy(chunk.value, vox->chunks[0].xyzi.voxels, voxels_length);
+    memcpy(colors.value, vox->palette.values, colors_length * 4);
+    ecs_set(world, e, ChunkSize, { chunkSize.value });
+    ecs_set(world, e, Chunk, { chunk.length, chunk.value });
+    ecs_set(world, e, Colors, { colors.length, colors.value });
+}
+
 ecs_entity_t spawn_vox_from_file(ecs_world_t *world, vox_file *vox, float3 position, float4 rotation, float scale)
 {
     ecs_defer_begin(world);
     ecs_entity_t e = spawn_voxel_chunk_mesh(world, prefab_vox, position, scale);
+    set_vox_from_vox_file(world, e, vox);
     ecs_set(world, e, Rotation, { rotation });
-    ChunkSize chunkSize = { vox->chunks[0].size.xyz };
-    ecs_set(world, e, ChunkSize, { chunkSize.value });
-    int voxels_length = chunkSize.value.x * chunkSize.value.y * chunkSize.value.z;
-    Chunk chunk = { };
-    initialize_memory_component_non_pointer(chunk, unsigned char, voxels_length);
-    memcpy(chunk.value, vox->chunks[0].xyzi.voxels, voxels_length);
-    ecs_set(world, e, Chunk, { chunk.length, chunk.value });
-    // set colors on vox
-    int colors_length = vox->palette.chunk_content / 4;
-    Colors colors = { };
-    initialize_memory_component_non_pointer(colors, color, colors_length);
-    memcpy(colors.value, vox->palette.values, colors_length * 4);
-    ecs_set(world, e, Colors, { colors.length, colors.value });
     float4 rotationer = quaternion_from_euler( (float3) { 0, 0.2f * degreesToRadians, 0 });
     zoxel_set(world, e, EternalRotation, { rotationer });
     ecs_defer_end(world);

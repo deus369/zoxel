@@ -7,6 +7,8 @@ zoxel_declare_tag(Vox)
 #include "prefabs/vox.c"
 // #include "systems/noise_chunk_system.c"
 
+vox_file *vox_files;                //! load a bunch of vox files from resources/voxes
+
 //! The voxels core Sub Module.
 void VoxImport(ecs_world_t *world)
 {
