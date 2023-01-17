@@ -35,7 +35,7 @@ void ConnectionRenderSystem(ecs_iter_t *it)
                     signal_position, // (float2) { neuron_a_position.x + (x_position2 - x_position) * signalStrength->value, y_position },
                     (float2) { square_size, square_size }, 0.5f, animate_time);
             }
-            // printf("    [%i]    Position %f -> %f = [%f]\n", i, x_position, x_position2, signal->value);
+            // printf("    [%i]    Position3D %f -> %f = [%f]\n", i, x_position, x_position2, signal->value);
         }
     }
 }

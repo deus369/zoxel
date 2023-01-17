@@ -32,7 +32,7 @@ ecs_entity_t spawn_terrain_chunk(ecs_world_t *world, ecs_entity_t prefab,
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
     set_unique_entity_name(world, e, "terrain_chunk");
     ecs_set(world, e, ChunkPosition, { chunk_position });
-    ecs_set(world, e, Position, { position });
+    ecs_set(world, e, Position3D, { position });
     ecs_set(world, e, Scale1D, { scale });
     if (!headless)
     {

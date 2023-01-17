@@ -42,6 +42,7 @@ void end()
 {
     close_audio();
     close_core();
+    dispose_vox_files();
 }
 
 void update()

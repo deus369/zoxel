@@ -28,9 +28,9 @@ void Player2DTestSystem(ecs_iter_t *it)
                     Particle2DSpawnSystem(world, position2D->value, particleSpawnCount);
                 }
             }
-            else if (local_player != 0 && ecs_has(world, local_player, Position))
+            else if (local_player != 0 && ecs_has(world, local_player, Position3D))
             {
-                const Position *position = ecs_get(world, local_player, Position);
+                const Position3D *position = ecs_get(world, local_player, Position3D);
                 if (keyboard->space.is_pressed)
                 {
                     Particle3DSpawnSystem(world, position->value, particleSpawnCount);
@@ -95,6 +95,25 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it)
         {
             ecs_set(it->world, main_music, GenerateMusic, { 1 });
         }
+        else if (keyboard->v.pressed_this_frame)
+        {
+            spawn_many_characters3D(it->world);
+        }
+        else if (keyboard->b.pressed_this_frame)
+        {
+            const Position3D *position3D = ecs_get(it->world, latest_character3D, Position3D);
+            const Rotation3D *rotation = ecs_get(it->world, latest_character3D, Rotation3D);
+            const Scale1D *scale1D = ecs_get(it->world, latest_character3D, Scale1D);
+            printf("Character stats: pos [%fx%fx%f] rot [%fx%fx%fx%f] sca [%f]\n",
+                position3D->value.x, position3D->value.y, position3D->value.z,
+                rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w,
+                scale1D->value);
+            // ecs_set(it->world, latest_character3D, Rotation3D, { { 0, 0, 0, 0 } });
+            // ecs_set(it->world, latest_character3D, Rotation3D, { float4_identity() });
+            ecs_set(it->world, latest_character3D, Rotation3D, { { 0.01f, 0, 0, 0 } });
+        }
+
+        
     }
 }
 zoxel_declare_system(Player2DTestMainThreadSystem)

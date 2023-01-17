@@ -11,7 +11,7 @@ void Bounds2DSystem(ecs_iter_t *it)
         {
             position2D->value.x -= bounds2D->value.x * 2.0f;
         }
-        if (position2D->value.x <= -bounds2D->value.x)
+        else if (position2D->value.x <= -bounds2D->value.x)
         {
             position2D->value.x += bounds2D->value.x * 2.0f;
         }
@@ -19,7 +19,7 @@ void Bounds2DSystem(ecs_iter_t *it)
         {
             position2D->value.y -= bounds2D->value.y * 2.0f;
         }
-        if (position2D->value.y <= -bounds2D->value.y)
+        else if (position2D->value.y <= -bounds2D->value.y)
         {
             position2D->value.y += bounds2D->value.y * 2.0f;
         }

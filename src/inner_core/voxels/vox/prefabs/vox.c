@@ -8,7 +8,7 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world)
     ecs_set_name(world, e, "prefab_vox");
     zoxel_set(world, e, GenerateChunk, { 0 });
     zoxel_set(world, e, ChunkDirty, { 1 });
-    zoxel_add(world, e, EternalRotation);
+    zoxel_set(world, e, EternalRotation, { 0, 0, 0, 0 });
     zoxel_add(world, e, Colors);
     if (!headless)
     {
@@ -40,7 +40,7 @@ ecs_entity_t spawn_vox_from_file(ecs_world_t *world, vox_file *vox, float3 posit
     ecs_defer_begin(world);
     ecs_entity_t e = spawn_voxel_chunk_mesh(world, prefab_vox, position, scale);
     set_vox_from_vox_file(world, e, vox);
-    ecs_set(world, e, Rotation, { rotation });
+    ecs_set(world, e, Rotation3D, { rotation });
     float4 rotationer = quaternion_from_euler( (float3) { 0, 0.2f * degreesToRadians, 0 });
     zoxel_set(world, e, EternalRotation, { rotationer });
     ecs_defer_end(world);

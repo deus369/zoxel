@@ -7,9 +7,13 @@ void spawn_prefab_character3D(ecs_world_t *world)
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_vox); // voxel_prefab);
     ecs_add_id(world, e, EcsPrefab);
     ecs_set_name(world, e, "prefab_character3D");
+    // ecs_set(world, e, Rotation3D, { { 0, 0, 0, 1 } });
+    // zoxel_set(world, e, Rotation3D, { { 0, 0, 0, 0 } });
+    // ecs_set(world, e, Rotation3D, { float4_identity() });
     // zoxel_add_tag(world, e, NoiseChunk);
     add_seed(world, e, 999);
-    // add_physics3D(world, e);
+    // zoxel_set(world, e, Rotation3D, { { 0, 0, 0, 1 } });
+    add_physics3D(world, e);
     // zoxel_add_tag(world, e, Frictioned);
     ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs

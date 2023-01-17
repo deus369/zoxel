@@ -10,8 +10,8 @@ void spawn_prefab_particle3D(ecs_world_t *world)
     #endif
     zoxel_add_tag(world, e, Particle3D);
     // ecs_override(world, prefab, Particle2D);
-    zoxel_set(world, e, Position, { { 0, 0, 0 } });
-    zoxel_set(world, e, Rotation, { { 0, 0, 0, 1 } });
+    zoxel_set(world, e, Position3D, { { 0, 0, 0 } });
+    zoxel_set(world, e, Rotation3D, { { 0, 0, 0, 1 } });
     zoxel_set(world, e, Scale1D, { 1 });
     // rendering
     zoxel_add(world, e, Brightness);

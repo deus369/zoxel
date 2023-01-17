@@ -10,8 +10,8 @@ void FreeCameraMoveSystem(ecs_iter_t *it)
         return;
     }
     const FreeRoam *freeRoams = ecs_field(&cameras_it, FreeRoam, 2);
-    Position *positions = ecs_field(&cameras_it, Position, 3);
-    Rotation *rotations = ecs_field(&cameras_it, Rotation, 4);
+    Position3D *positions = ecs_field(&cameras_it, Position3D, 3);
+    Rotation3D *rotations = ecs_field(&cameras_it, Rotation3D, 4);
     double movement_power = (double) (it->delta_time) * movement_multiplier;
     Keyboard *keyboards = ecs_field(it, Keyboard, 1);
     for (int i = 0; i < it->count; i++)
@@ -57,16 +57,16 @@ void FreeCameraMoveSystem(ecs_iter_t *it)
                 const FreeRoam *freeRoam = &freeRoams[j];
                 if (freeRoam->value == 1)
                 {
-                    const Rotation *rotation = &rotations[j];
+                    const Rotation3D *rotation = &rotations[j];
                     //printf("Before Movement: %fx%fx%f - [%fx%fx%fx%f]\n", movement.x, movement.y, movement.z,
                     //    rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
                     float3 rotatedMovement = float4_rotate_float3(rotation->value, movement);
-                    Position *position = &positions[j];
+                    Position3D *position = &positions[j];
                     position->value = float3_add(position->value, rotatedMovement);
                     // float4_print_euler(rotation->value);
                     // float3 rotatedMovement2 = float3_multiply_float(rotatedMovement, 10000);
                     // printf("Moving [%i x %i x %i]\n", (int) rotatedMovement2.x, (int) rotatedMovement2.y, (int) rotatedMovement2.z);
-                    // printf("    Rotation [%f x %f x %f x %f]\n", rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
+                    // printf("    Rotation3D [%f x %f x %f x %f]\n", rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
                 }
             }
         }
@@ -74,7 +74,7 @@ void FreeCameraMoveSystem(ecs_iter_t *it)
         {
             for (int j = 0; j < cameras_it.count; j++)
             {
-                Rotation *rotation = &rotations[j];
+                Rotation3D *rotation = &rotations[j];
                 rotation->value = quaternion_from_euler( (float3) { 0 * degreesToRadians, 0 * degreesToRadians, 0 * degreesToRadians });
             }
         }

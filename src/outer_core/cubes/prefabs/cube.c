@@ -27,7 +27,7 @@ ecs_entity_t spawn_cube(ecs_world_t *world, ecs_entity_t prefab, float3 position
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
     set_unique_entity_name(world, e, "cube");
-    ecs_set(world, e, Position, { position });
+    ecs_set(world, e, Position3D, { position });
     ecs_set(world, e, Scale1D, { 0.05f });
     ecs_set(world, e, Brightness, { 1.4f });
     float4 rotationer = quaternion_from_euler( (float3) { 0.1f * degreesToRadians, 0.2f * degreesToRadians, 0 });

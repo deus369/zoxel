@@ -30,7 +30,7 @@ ecs_entity_t spawn_voxel_chunk_mesh(ecs_world_t *world, ecs_entity_t prefab, flo
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
-    ecs_set(world, e, Position, { position });
+    ecs_set(world, e, Position3D, { position });
     ecs_set(world, e, Scale1D, { scale });
     if (!headless)
     {

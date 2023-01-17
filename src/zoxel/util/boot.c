@@ -14,7 +14,7 @@ void boot_zoxel_game(ecs_world_t *world)
     }
     float3 camera_begin_position = { 0, 0.0f, 0.0f };
     #ifdef zoxel_test_voxels_terrain
-    camera_begin_position = (float3) { 0, 1.25f * overall_voxel_scale, 0 }; // 0.62f };
+    camera_begin_position = (float3) { 0, 1.1f * overall_voxel_scale, 0 }; // 0.62f };
     #endif
     main_cameras[0] = spawn_base_camera(world, camera_begin_position,
         quaternion_identity(), screen_dimensions2, (int2) { });

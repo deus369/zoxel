@@ -12,7 +12,7 @@ void set_ui_line_position(LineData2D *lineData2D, const LineElementData *lineEle
     float2 point_b = get_ui_real_position2D_canvas_no_anchor(
         (int2) { lineElementData->value.z, lineElementData->value.w }, canvas_size_f, aspect_ratio);
     lineData2D->value = (float4) { point_a.x, point_a.y, point_b.x, point_b.y };
-    // printf("Position of line set to: %fx%fx%fx%f from %ix%ix%ix%i\n",
+    // printf("Position3D of line set to: %fx%fx%fx%f from %ix%ix%ix%i\n",
     //    point_a.x, point_a.y, point_b.x, point_b.y,
     //    lineElementData->value.x, lineElementData->value.y, lineElementData->value.z, lineElementData->value.w);
     // lineData2D->value = (float4) { -1.0f, 0, 1.0f, 0 };

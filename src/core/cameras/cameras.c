@@ -50,9 +50,9 @@ void CamerasImport(ecs_world_t *world)
     zoxel_system_main_thread(world, ProjectionMatrixSystem, EcsOnUpdate,
         [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
     zoxel_system(world, ViewMatrixSystem, EcsOnUpdate,
-        [in] Position, [in] Rotation, [in] ProjectionMatrix, [out] ViewMatrix)
+        [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)
     zoxel_system(world, CameraFollow2DSystem, EcsOnUpdate,
-        [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position, [out] Rotation)
+        [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D)
     spawn_camera_base_prefab(world);
     spawn_camera2D_follower_prefab(world);
 }

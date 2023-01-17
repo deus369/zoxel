@@ -8,9 +8,9 @@ void Particle3DSpawnSystem(ecs_world_t *world, float3 bobPosition, int spawnCoun
     const double2 lifeTime = { 0.1f, 2.0f };
     const float2 brightnessBounds = { 0.2f, 0.8f };
     // Create a SpaceShip prefab with a Defense component.
-    Position *positions = malloc(sizeof(Position) * spawnCount);
+    Position3D *positions = malloc(sizeof(Position3D) * spawnCount);
     Velocity3D *velocity3Ds = malloc(sizeof(Velocity3D) * spawnCount);
-    // Rotation *rotations = malloc(sizeof(Rotation) * spawnCount);
+    // Rotation3D *rotations = malloc(sizeof(Rotation3D) * spawnCount);
     // Acceleration *accelerations = malloc(sizeof(Acceleration) * spawnCount);
     // Torque3D *torques = malloc(sizeof(Torque3D) * spawnCount);
     Scale1D *scale1Ds = malloc(sizeof(Scale1D) * spawnCount);
@@ -70,10 +70,10 @@ void Particle3DSpawnSystem(ecs_world_t *world, float3 bobPosition, int spawnCoun
         .ids =
         {
             ecs_pair(EcsIsA, particle3D_prefab),
-            ecs_id(Position),
+            ecs_id(Position3D),
             ecs_id(Velocity3D),
             ecs_id(Acceleration3D),
-            ecs_id(Rotation),
+            ecs_id(Rotation3D),
             ecs_id(Torque3D),
             ecs_id(Scale1D),
             ecs_id(Brightness),
@@ -86,7 +86,7 @@ void Particle3DSpawnSystem(ecs_world_t *world, float3 bobPosition, int spawnCoun
             positions,
             velocity3Ds,
             NULL,           // Acceleration3D
-            NULL,           // Rotation
+            NULL,           // Rotation3D
             NULL,           // Torque3D
             scale1Ds,
             brightnesses,

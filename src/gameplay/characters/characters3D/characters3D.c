@@ -10,24 +10,20 @@ zoxel_component(Character3DLink, ecs_entity_t)
 //! Testing, spawn more!
 void spawn_many_characters3D(ecs_world_t *world)
 {
-    vox_file vox_slime;
-    if (!read_vox(resources_folder_name"voxes/monsters/slime.vox", &vox_slime) == 0)
-    {
-        zoxel_log("Cannot find slime.vox!");
-        return;
-    }
+    int vox_file_index = rand() % vox_files_count;
+    printf("Spawning %i\n", vox_file_index);
+    vox_file vox = vox_files[vox_file_index];
     zoxel_log("spawn_many_characters3D [%i]\n", spawn_characters3D_count);
     const float model_scale = 0.015f;
-    float cameraY = 1.02f * overall_voxel_scale; // ecs_get(world, main_cameras[0], Position)->value.y; //  100.0f;
+    float cameraY = 1.02f * overall_voxel_scale; // ecs_get(world, main_cameras[0], Position3D)->value.y; //  100.0f;
     float radius = 0.5f * overall_voxel_scale; // 16.0f;
     for (int i = 0; i < spawn_characters3D_count; i++)
     {
-        spawn_character3D(world, character3D_prefab, &vox_slime, (float3) {
+        spawn_character3D(world, character3D_prefab, &vox, (float3) {
             - radius + (rand() % 100) / 101.0f * radius * 2.0f,
             cameraY, // 100.0f,
             - radius + (rand() % 100) / 101.0f * radius * 2.0f }, model_scale);
     }
-    dispose_vox_file(&vox_slime); //! Free vox files after use
 }
 
 //! A module for 3 dimensional characters.

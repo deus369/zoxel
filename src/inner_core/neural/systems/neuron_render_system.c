@@ -23,7 +23,7 @@ void NeuronRenderSystem(ecs_iter_t *it)
         spawn_line2D_square(world,  position2D->value, // (float2) { x_position, y_position + y_position_mult * position2D->value.y },
             (float2) { (neuron_min_size + neuron_size * weight->value) / aspect_ratio, neuron_min_size + neuron_size * weight->value },
             scaleA, animate_time);
-        // printf("    [%i]    Position %f -> %f = [%f]\n", i, x_position, x_position2, signal->value);
+        // printf("    [%i]    Position3D %f -> %f = [%f]\n", i, x_position, x_position2, signal->value);
     }
 }
 zoxel_declare_system(NeuronRenderSystem)

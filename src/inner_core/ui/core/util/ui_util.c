@@ -168,7 +168,7 @@ float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity
     /*if ((long int) e == 1957)
     {
         printf("Initially:\n");
-        printf("Position became: [%fx%f]\n", position2D.x, position2D.y);
+        printf("Position3D became: [%fx%f]\n", position2D.x, position2D.y);
         printf("    parent_position [%fx%f]\n", parent_position.x, parent_position.y);
         printf("    parent_pixel_size [%ix%i]\n", parent_pixel_size.x, parent_pixel_size.y);
     }*/

@@ -20,8 +20,8 @@ ecs_entity_t spawn_camera2D_follower(ecs_world_t *world, float3 position, float4
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, camera2D_follower_prefab);
-    ecs_set(world, e, Position, { position });
-    ecs_set(world, e, Rotation, { rotation });
+    ecs_set(world, e, Position3D, { position });
+    ecs_set(world, e, Rotation3D, { rotation });
     ecs_set(world, e, ScreenDimensions, { screenDimensions });
     // zoxel_log("Spawned Camera [%lu]\n", (long unsigned int) e);
     ecs_defer_end(world);

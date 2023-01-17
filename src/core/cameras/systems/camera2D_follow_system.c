@@ -3,8 +3,8 @@ void CameraFollow2DSystem(ecs_iter_t *it)
 {
     const FreeRoam *freeRoams = ecs_field(it, FreeRoam, 2);
     const CameraTarget *cameraTargets = ecs_field(it, CameraTarget, 3);
-    Position *positions = ecs_field(it, Position, 4);
-    Rotation *rotations = ecs_field(it, Rotation, 5);
+    Position3D *positions = ecs_field(it, Position3D, 4);
+    Rotation3D *rotations = ecs_field(it, Rotation3D, 5);
     // player positions
     for (int i = 0; i < it->count; i++)
     {
@@ -19,9 +19,9 @@ void CameraFollow2DSystem(ecs_iter_t *it)
                 target_position.x = playerPosition2D->value.x;
                 target_position.y = playerPosition2D->value.y;
             }
-            else if (ecs_has(it->world, cameraTarget->value, Position))
+            else if (ecs_has(it->world, cameraTarget->value, Position3D))
             {
-                const Position *playerPosition = ecs_get(it->world, cameraTarget->value, Position);
+                const Position3D *playerPosition = ecs_get(it->world, cameraTarget->value, Position3D);
                 target_position.x = playerPosition->value.x;
                 target_position.y = playerPosition->value.y;
             }
@@ -29,10 +29,10 @@ void CameraFollow2DSystem(ecs_iter_t *it)
             {
                 continue;
             }
-            Position *position = &positions[i];
+            Position3D *position = &positions[i];
             position->value.x = target_position.x;
             position->value.y = target_position.y;
-            Rotation *rosition = &rotations[i];
+            Rotation3D *rosition = &rotations[i];
             rosition->value = float4_identity();
         }
     }

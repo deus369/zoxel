@@ -4,14 +4,14 @@ extern void RenderEntity3D(float3 position, float4 rotation, float scale1D, floa
 //! Render 3D entities.
 void InstanceRender3DSystem(ecs_iter_t *it)
 {
-    Position *positions = ecs_field(it, Position, 1);
-    Rotation *rotations = ecs_field(it, Rotation, 2);
-    Scale1D *scale1Ds = ecs_field(it, Scale1D, 3);
-    Brightness *brightnesses = ecs_field(it, Brightness, 4);
+    const Position3D *positions = ecs_field(it, Position3D, 1);
+    const Rotation3D *rotations = ecs_field(it, Rotation3D, 2);
+    const Scale1D *scale1Ds = ecs_field(it, Scale1D, 3);
+    const Brightness *brightnesses = ecs_field(it, Brightness, 4);
     for (int i = 0; i < it->count; i++)
     {
-        const Position *position = &positions[i];
-        const Rotation *rotation = &rotations[i];
+        const Position3D *position = &positions[i];
+        const Rotation3D *rotation = &rotations[i];
         const Scale1D *scale1D = &scale1Ds[i];
         const Brightness *brightness = &brightnesses[i];
         // printf("    Bob's Position2D is {%f, %f}\n", position.value.x, position.value.y);

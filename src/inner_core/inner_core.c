@@ -21,9 +21,9 @@ void InnerCoreImport(ecs_world_t *world)
     zoxel_import_module(Lines)
     zoxel_import_module(Neural)
     zoxel_import_module(Animations)
-    zoxel_import_module(Physics)
     zoxel_import_module(Tiles)
     zoxel_import_module(Voxels)
+    zoxel_import_module(Physics)
     zoxel_import_module(Blueprints)
 }
 #endif
