@@ -62,7 +62,7 @@ void SoundsImport(ecs_world_t *world)
     zoxel_define_component(PlaySound)
     zoxel_define_component(SDLSound)
     zoxel_define_component(SoundDirty)
-    zoxel_memory_component_define(world, SoundData)
+    zoxel_memory_component_define(SoundData)
     ecs_set_hooks(world, SDLSound, { .dtor = ecs_dtor(SDLSound) });
     zoxel_system(world, SoundGenerateSystem, EcsOnValidate, [none] Sound,
         [in] GenerateSound, [in] SoundLength, [in] SoundFrequency, [in] InstrumentType,

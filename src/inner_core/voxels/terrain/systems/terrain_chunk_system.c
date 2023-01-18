@@ -38,7 +38,7 @@ int3 voxel_chunk_position_xz(int3 chunk_position, int3 chunk_size)
 
 
 //! Our function that creates a chunk.
-void GenerateChunkTerrain(Chunk* chunk, const int3 chunkSize, const int3 chunkPosition)
+void GenerateChunkTerrain(ChunkData* chunk, const int3 chunkSize, const int3 chunkPosition)
 {
     // srand(666);
     int3 local_position;
@@ -96,7 +96,7 @@ void TerrainChunkSystem(ecs_iter_t *it)
         return;
     }
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
-    Chunk *chunks = ecs_field(it, Chunk, 3);
+    ChunkData *chunks = ecs_field(it, ChunkData, 3);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 4);
     const ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 5);
     const GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 6);
@@ -114,12 +114,12 @@ void TerrainChunkSystem(ecs_iter_t *it)
             continue;
         }
         chunkDirty->value = 1;
-        Chunk *chunk = &chunks[i];
+        ChunkData *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
         const ChunkPosition *chunkPosition = &chunkPositions[i];
         re_initialize_memory_component(chunk, unsigned char, chunkSize->value.x * chunkSize->value.y * chunkSize->value.z);
         GenerateChunkTerrain(chunk, chunkSize->value, chunkPosition->value);
-        // printf("Terrain Chunk Generated: [%lu] \n", (long int) it->entities[i]);
+        // printf("Terrain ChunkData Generated: [%lu] \n", (long int) it->entities[i]);
     }
 }
 zoxel_declare_system(TerrainChunkSystem)

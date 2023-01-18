@@ -116,6 +116,9 @@ run-dev:
 run-dev-debug:
 	valgrind ./$(TARGET_DEV)
 
+run-dev-profiler:
+	./$(TARGET_DEV) --profiler
+
 # Runs zoxel web release build
 run-web:
 	emrun --browser firefox web/index.html
@@ -164,6 +167,7 @@ help:
 	@echo "    run			runs $(TARGET)"
 	@echo "    run-dev		runs $(TARGET_DEV)"
 	@echo "    run-dev-debug	runs valgrind $(TARGET_DEV)"
+	@echo "    run-dev-profiler		runs $(TARGET_DEV) --profiler"
 	@echo "    run-web		runs $(TARGET_WEB)"
 	@echo "    clean		removes all build files"
 	@echo "    install		installs zoxel"

@@ -48,7 +48,7 @@ void NetworkingImport(ecs_world_t *world)
     zoxel_define_component(TargetNetAddress)
     zoxel_define_component(TargetNetPort)
     zoxel_define_component(SocketLink)
-    zoxel_memory_component_define(world, PacketData);
+    zoxel_memory_component_define(PacketData);
     ecs_set_hooks(world, SocketLink, { .dtor = ecs_dtor(SocketLink) });
     zoxel_system(world, PacketRecieveSystem, EcsOnUpdate, [none] PacketReciever, [in] SocketLink);
     zoxel_system(world, PacketSendSystem, EcsOnUpdate, [none] PacketSender, [in] SocketLink,

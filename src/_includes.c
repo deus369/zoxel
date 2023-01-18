@@ -3,9 +3,12 @@
 #define FLECS_MODULE
 #define FLECS_SYSTEM 
 #define FLECS_PIPELINE
-//! Use these when profiling.
+//! Use these when profiling >
+//  make dev && make run-dev-profiler
+//  go to https://www.flecs.dev/explorer/
 // #define FLECS_REST
 // #define FLECS_MONITOR
+// finally our flecs
 #include "../include/flecs/flecs.h"
 
 // Platforms
@@ -25,6 +28,7 @@
 #define zoxel_test_voxels_terrain
 #define zoxel_test_chickens
 #define zoxel_test_character3Ds
+// #define voxel_octrees
 // #define zoxel_test_lines3D
 // #define zoxel_test_networking
 // #define zoxel_test_brain

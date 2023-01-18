@@ -8,7 +8,7 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world)
     ecs_set_name(world, e, "prefab_vox");
     zoxel_set(world, e, GenerateChunk, { 0 });
     zoxel_set(world, e, ChunkDirty, { 1 });
-    zoxel_set(world, e, EternalRotation, { 0, 0, 0, 0 });
+    // zoxel_set(world, e, EternalRotation, { { 0, 0, 0, 0 } });
     zoxel_add(world, e, Colors);
     if (!headless)
     {
@@ -23,7 +23,7 @@ void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, vox_file *vox)
 {
     ChunkSize chunkSize = { vox->chunks[0].size.xyz };
     int voxels_length = chunkSize.value.x * chunkSize.value.y * chunkSize.value.z;
-    Chunk chunk = { };
+    ChunkData chunk = { };
     Colors colors = { };
     int colors_length = vox->palette.chunk_content / 4;
     initialize_memory_component_non_pointer(chunk, unsigned char, voxels_length);
@@ -31,7 +31,7 @@ void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, vox_file *vox)
     memcpy(chunk.value, vox->chunks[0].xyzi.voxels, voxels_length);
     memcpy(colors.value, vox->palette.values, colors_length * 4);
     ecs_set(world, e, ChunkSize, { chunkSize.value });
-    ecs_set(world, e, Chunk, { chunk.length, chunk.value });
+    ecs_set(world, e, ChunkData, { chunk.length, chunk.value });
     ecs_set(world, e, Colors, { colors.length, colors.value });
 }
 

@@ -35,7 +35,7 @@ void add_voxel_face(MeshIndicies *meshIndicies2, MeshVertices *meshVertices2,
     start->y += voxel_face_vertices_length;
 }
 
-void build_chunk_mesh(const Chunk *chunk, const ChunkSize *chunkSize,
+void build_chunk_mesh(const ChunkData *chunk, const ChunkSize *chunkSize,
     MeshIndicies *meshIndicies, MeshVertices *meshVertices)
 {
     // go through and add a top face for each voxel position that is solid
@@ -126,7 +126,7 @@ void ChunkBuildSystem(ecs_iter_t *it)
     }
     // printf("[ChunkBuildSystem] GenerateChunk was changed.\n");
     const ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
-    const Chunk *chunks = ecs_field(it, Chunk, 2);
+    const ChunkData *chunks = ecs_field(it, ChunkData, 2);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 3);
     MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 4);
     MeshVertices *meshVertices = ecs_field(it, MeshVertices, 5);
@@ -144,12 +144,12 @@ void ChunkBuildSystem(ecs_iter_t *it)
             continue;
         }
         meshDirty->value = 1;
-        const Chunk *chunk = &chunks[i];
+        const ChunkData *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
         build_chunk_mesh(chunk, chunkSize, meshIndicies2, meshVertices2);
-        // printf("Building Chunk Mesh [%lu] - [%i] [%i]\n",
+        // printf("Building ChunkData Mesh [%lu] - [%i] [%i]\n",
         //    (long int) it->entities[i], meshIndicies2->length, meshVertices2->length);
     }
 }

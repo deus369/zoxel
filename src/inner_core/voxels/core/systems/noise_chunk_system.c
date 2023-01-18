@@ -1,5 +1,5 @@
 //! Our function that creates a chunk.
-void GenerateChunkNoise(Chunk* chunk, const ChunkSize *chunkSize)
+void GenerateChunkNoise(ChunkData* chunk, const ChunkSize *chunkSize)
 {
     // const int2 valueRange = { 0, 2 };   // < max
     int array_index = 0;
@@ -47,7 +47,7 @@ void NoiseChunkSystem(ecs_iter_t *it)
         return;
     }
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
-    Chunk *chunks = ecs_field(it, Chunk, 3);
+    ChunkData *chunks = ecs_field(it, ChunkData, 3);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 4);
     const GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 5);
     for (int i = 0; i < it->count; i++)
@@ -64,11 +64,11 @@ void NoiseChunkSystem(ecs_iter_t *it)
             continue;
         }
         chunkDirty->value = 1;
-        Chunk *chunk = &chunks[i];
+        ChunkData *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
         re_initialize_memory_component(chunk, unsigned char, chunkSize->value.x * chunkSize->value.y * chunkSize->value.z);
         GenerateChunkNoise(chunk, chunkSize);
-        // printf("Noise Chunk Generated: [%lu] \n", (long int) it->entities[i]);
+        // printf("Noise ChunkData Generated: [%lu] \n", (long int) it->entities[i]);
     }
 }
 zoxel_declare_system(NoiseChunkSystem)

@@ -1,13 +1,14 @@
 #ifndef zoxel_voxels_terrain
 #define zoxel_voxels_terrain
 
-const int terrain_rows = 8;
+const int terrain_rows = 6;
 const int3 terrain_chunk_size = { chunk_length, 8 * chunk_length, chunk_length };
 float chunk_real_size = overall_voxel_scale / 2.0f; // 1.0f;   // size achunk takes up
+zoxel_declare_tag(TerrainChunk)
 zoxel_declare_tag(ChunkTerrain)
-// #include "util/vox_read_util.c"
 #include "prefabs/terrain_chunk.c"
-// #include "systems/noise_chunk_system.c"
+#include "prefabs/terrain_chunk_octree.c"
+#include "systems/terrain_chunk_system.c"
 
 int get_chunk_index(int i, int j, int terrain_rows)
 {
@@ -18,9 +19,13 @@ int get_chunk_index(int i, int j, int terrain_rows)
 void TerrainImport(ecs_world_t *world)
 {
     zoxel_module(Terrain)
+    zoxel_define_tag(TerrainChunk)
     zoxel_define_tag(ChunkTerrain)
+    zoxel_filter(generateTerrainChunkQuery, world, [none] TerrainChunk, [in] GenerateChunk)
+    zoxel_system_ctx(world, TerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
+        [none] TerrainChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] ChunkPosition, [in] GenerateChunk)
     spawn_prefab_terrain_chunk(world, terrain_chunk_size);
-    // spawn_prefab_vox(world);
+    spawn_prefab_terrain_chunk_octree(world, terrain_chunk_size);
     #ifdef zoxel_test_voxels_terrain
     // todo: create a hashmap here
     ecs_defer_begin(world);
@@ -35,8 +40,13 @@ void TerrainImport(ecs_world_t *world)
         for (int j = -terrain_rows; j <= terrain_rows; j++)
         {
             // printf("%ix%i index is %i\n", i, j, get_chunk_index(i, j, terrain_rows));
-            chunks[get_chunk_index(i, j, terrain_rows)] = spawn_terrain_chunk(world, terrain_chunk_prefab,
+            #ifdef voxel_octrees
+            chunks[get_chunk_index(i, j, terrain_rows)] = spawn_terrain_chunk_octree(world, prefab_terrain_chunk_octree,
                 (int3) { i, 0, j }, (float3) { i * chunk_real_size, 0, j * chunk_real_size }, 0.5f);
+            #else
+            chunks[get_chunk_index(i, j, terrain_rows)] = spawn_terrain_chunk(world, prefab_terrain_chunk,
+                (int3) { i, 0, j }, (float3) { i * chunk_real_size, 0, j * chunk_real_size }, 0.5f);
+            #endif
         }
     }
     for (int i = 0; i < chunks_total_length; i++)

@@ -19,10 +19,13 @@ void spawn_many_characters3D(ecs_world_t *world)
     float radius = 0.5f * overall_voxel_scale; // 16.0f;
     for (int i = 0; i < spawn_characters3D_count; i++)
     {
+        float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
         spawn_character3D(world, character3D_prefab, &vox, (float3) {
             - radius + (rand() % 100) / 101.0f * radius * 2.0f,
             cameraY, // 100.0f,
-            - radius + (rand() % 100) / 101.0f * radius * 2.0f }, model_scale);
+            - radius + (rand() % 100) / 101.0f * radius * 2.0f },
+            rotation,
+            model_scale);
     }
 }
 

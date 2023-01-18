@@ -76,9 +76,9 @@ const float3 voxel_face_vertices_front[] =
 #define zoxel_get_voxel_direction(direction, dimension, is_positive)\
 unsigned char get_voxel##_##direction(\
     int3 local_position,\
-    const Chunk *chunk,\
+    const ChunkData *chunk,\
     const ChunkSize *chunkSize,\
-    const Chunk *chunk_other)\
+    const ChunkData *chunk_other)\
 {\
     if ((is_positive && local_position.dimension == chunkSize->value.dimension - 1)\
         || (!is_positive && local_position.dimension == 0))\

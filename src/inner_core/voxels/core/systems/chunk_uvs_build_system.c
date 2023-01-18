@@ -27,10 +27,10 @@ void add_voxel_face_uvs(MeshIndicies *meshIndicies, MeshVertices *meshVertices, 
     start->z += voxel_face_vertices_length;
 }
 
-void build_chunk_mesh_uvs(const Chunk *chunk, const ChunkSize *chunkSize,
+void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,
     MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
-    const Chunk *chunk_left, const Chunk *chunk_right,
-    const Chunk *chunk_back, const Chunk *chunk_front)
+    const ChunkData *chunk_left, const ChunkData *chunk_right,
+    const ChunkData *chunk_back, const ChunkData *chunk_front)
 {
     int indicies_count = 0;
     int verticies_count = 0;
@@ -122,7 +122,7 @@ void ChunkUVsBuildSystem(ecs_iter_t *it)
     }
     // printf("[ChunkBuildSystem] GenerateChunk was changed.\n");
     const ChunkDirty *entityDirtys = ecs_field(it, ChunkDirty, 1);
-    const Chunk *chunks = ecs_field(it, Chunk, 2);
+    const ChunkData *chunks = ecs_field(it, ChunkData, 2);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 3);
     const ChunkNeighbors *chunkNeighbors = ecs_field(it, ChunkNeighbors, 4);
     MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 5);
@@ -142,23 +142,23 @@ void ChunkUVsBuildSystem(ecs_iter_t *it)
             continue;
         }
         meshDirty->value = 1;
-        const Chunk *chunk = &chunks[i];
+        const ChunkData *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
         const ChunkNeighbors *chunkNeighbors2 = &chunkNeighbors[i];
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
         MeshUVs *meshUVs2 = &meshUVs[i];
-        const Chunk *chunk_left = chunkNeighbors2->value[0] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[0], Chunk);
-        const Chunk *chunk_right = chunkNeighbors2->value[1] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[1], Chunk);
-        const Chunk *chunk_back = chunkNeighbors2->value[2] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[2], Chunk);
-        const Chunk *chunk_front = chunkNeighbors2->value[3] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[3], Chunk);
+        const ChunkData *chunk_left = chunkNeighbors2->value[0] == 0 ?
+            NULL : ecs_get(it->world, chunkNeighbors2->value[0], ChunkData);
+        const ChunkData *chunk_right = chunkNeighbors2->value[1] == 0 ?
+            NULL : ecs_get(it->world, chunkNeighbors2->value[1], ChunkData);
+        const ChunkData *chunk_back = chunkNeighbors2->value[2] == 0 ?
+            NULL : ecs_get(it->world, chunkNeighbors2->value[2], ChunkData);
+        const ChunkData *chunk_front = chunkNeighbors2->value[3] == 0 ?
+            NULL : ecs_get(it->world, chunkNeighbors2->value[3], ChunkData);
         build_chunk_mesh_uvs(chunk, chunkSize, meshIndicies2, meshVertices2, meshUVs2,
             chunk_left, chunk_right, chunk_back, chunk_front);
-        // printf("Building Chunk UVs Mesh [%lu]\n", (long int) it->entities[i]);
+        // printf("Building ChunkData UVs Mesh [%lu]\n", (long int) it->entities[i]);
     }
 }
 zoxel_declare_system(ChunkUVsBuildSystem)

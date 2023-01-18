@@ -24,7 +24,7 @@ void MusicsImport(ecs_world_t *world)
     zoxel_define_component(GenerateMusic)
     zoxel_define_component(MusicTime)
     zoxel_define_component(MusicSpeed)
-    zoxel_memory_component_define(world, MusicData)
+    zoxel_memory_component_define(MusicData)
     zoxel_system(world, MusicGenerateSystem, EcsPostUpdate,
         [none] Music, [in] GenerateMusic, [out] MusicData, [out] InstrumentType)
     zoxel_system(world, MusicPlaySystem, EcsOnUpdate,

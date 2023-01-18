@@ -1,7 +1,7 @@
 // Uses SDL mixer to play sounds
 // Mix_Chunk *sound
 // Mix_PlayChannel( -1, sound, 0 );
-// need to also update sounds generated into a SDL Chunk
+// need to also update sounds generated into a SDL ChunkData
 
 //! Plays a sound.
 void PlaySoundSystem(ecs_iter_t *it)
