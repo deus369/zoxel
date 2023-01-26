@@ -6,9 +6,11 @@ Code @ [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.
 
 > [[Play](https://deus369.github.io/zoxel-play/)] | [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
 
-> [[Roadmap]((https://github.com/deus369/zoxel-web/blob/master/documents//roadmap.md)] | [[Tasks]((https://github.com/deus369/zoxel-web/blob/master/documents//todos/todo-main.md)]
-
 ### Endless Possibilities: Building and Modding in Our Voxel-Based RPG
+
+[[Roadmap](https://github.com/deus369/zoxel-web/blob/master/documents/roadmap.md)]
+
+[[Tasks](https://github.com/deus369/zoxel-web/blob/master/documents/todos/todo-main.md)]
 
 [[How To Build Guide](https://github.com/deus369/zoxel-web/blob/master/documents/howtos/howto-build.md)]
 
