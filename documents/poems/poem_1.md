@@ -23,7 +23,7 @@
     It is I who brings it to life
     Through my choices, and my deeds, and my thoughts.
 
-![Zoxel Art 2](../art/ai_art_2.png?raw=false "Zoxel Art 2")
+![Zoxel Art 2](https://github.com/deus369/zoxel-play/raw/main/docs/art/ai_art_2.png?raw=false "Zoxel Art 2")
 
 -----
 

@@ -6,7 +6,7 @@ The game's open-world environment is vast and immersive, and I love the feeling 
 
 Overall, I am thoroughly impressed by this game and would highly recommend it to any fans of RPGs. It offers endless replayability, charming graphics, and a unique gameplay experience that I have never seen before.
 
-![Photo 0](../photos/ai_photo_0.png?raw=false "Photo 0")
+![Photo 0](https://github.com/deus369/zoxel-play/raw/main/docs/photos/ai_photo_0.png?raw=false "Photo 0")
 
 -----
 

@@ -22,7 +22,7 @@
     A true testament to the power of procedural generation,
     A voxel RPG, unlike anything ever known.
 
-![Zoxel Art 4](../art/ai_art_4.png?raw=false "Zoxel Art 4")
+![Zoxel Art 4](https://github.com/deus369/zoxel-play/raw/main/docs/art/ai_art_4.png?raw=false "Zoxel Art 4")
 
 -----
 

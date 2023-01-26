@@ -8,15 +8,19 @@ Code @ [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.
 
 > [[Roadmap](documents/roadmap.md)] | [[Tasks](documents/todos/todo-main.md)]
 
+### Prioritizing Balance and Well-Being in the New Year
+
+I am happy with the progress that I have made so far on my voxel RPG development. However, I have decided to take a step back and prioritize reducing stress in 2023. This means that I will be working on the game a bit less and focusing on other commitments, such as art, music, and playing games. It's important for me to take care of myself and make sure that I am in a good place both mentally and physically. While I am passionate about game development, it's important for me to find a balance and make sure that I am taking care of myself as well.
+
 ### Snapshots
 
 Libre Zoxel
 
-![Zoxel](https://github.com/deus369/zoxel-play/raw/main/screenshots/screen-2023-01-17-23-27-34.jpg?raw=false "Zoxel")
+![Zoxel](https://github.com/deus369/zoxel-play/raw/main/docs/screenshots/screen-2023-01-17-23-27-34.jpg?raw=false "Zoxel")
 
 Unity Zoxel
 
-![Unity Zoxel](https://github.com/deus369/zoxel-play/raw/main/screenshots/zoxel_unity_00.png?raw=false "Old Zoxel")
+![Unity Zoxel](https://github.com/deus369/zoxel-play/raw/main/docs/screenshots/zoxel_unity_00.png?raw=false "Old Zoxel")
 
 ### Endless Possibilities: Building and Modding in Our Voxel-Based RPG
 
@@ -41,10 +45,6 @@ Now, the game is being remade again, this time using a custom game engine that t
 Players can expect a vast, open-world environment to explore, as well as procedurally generated quests and enemies. The game's charming voxel-based graphics and character customization options will also add to the experience.
 
 Overall, Zoxel is a game that has been developed with passion and dedication over many years, and players can look forward to a unique and engaging gameplay experience.
-
-### Prioritizing Balance and Well-Being in the New Year
-
-I am happy with the progress that I have made so far on my voxel RPG development. However, I have decided to take a step back and prioritize reducing stress in 2023. This means that I will be working on the game a bit less and focusing on other commitments, such as art, music, and playing games. It's important for me to take care of myself and make sure that I am in a good place both mentally and physically. While I am passionate about game development, it's important for me to find a balance and make sure that I am taking care of myself as well.
 
 ### Poetic Musings
 
