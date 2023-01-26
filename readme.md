@@ -4,15 +4,9 @@ Experience the thrill of discovery and adventure in this groundbreaking, procedu
 
 Code @ [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.com/deus369/zoxel)]
 
-> [[Play](https://deus369.github.io/zoxel-play/)] | [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
+> [[Play](https://deus369.github.io/zoxel-play/)] 
 
-### Endless Possibilities: Building and Modding in Our Voxel-Based RPG
-
-[[Roadmap](https://github.com/deus369/zoxel-web/blob/master/documents/roadmap.md)]
-
-[[Tasks](https://github.com/deus369/zoxel-web/blob/master/documents/todos/todo-main.md)]
-
-[[How To Build Guide](https://github.com/deus369/zoxel-web/blob/master/documents/howtos/howto-build.md)]
+> [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
 
 ### Prioritizing Balance and Well-Being in the New Year
 
@@ -27,6 +21,14 @@ Libre Zoxel
 Unity Zoxel
 
 ![Unity Zoxel](https://github.com/deus369/zoxel-play/raw/main/docs/screenshots/zoxel_unity_00.png?raw=false "Old Zoxel")
+
+### Docs
+
+[[Roadmap](https://github.com/deus369/zoxel-web/blob/master/documents/roadmap.md)]
+
+[[Tasks](https://github.com/deus369/zoxel-web/blob/master/documents/todos/todo-main.md)]
+
+[[How To Build Guide](https://github.com/deus369/zoxel-web/blob/master/documents/howtos/howto-build.md)]
 
 ### Code Structure and Organization
 
@@ -51,6 +53,8 @@ Overall, Zoxel is a game that has been developed with passion and dedication ove
 ### Connect with us on social media
 
 Follow our development journey and stay up to date on the latest news and updates by following us on social media!
+
+> [[Zoxel Web](http://zoxel.duckdns.org)]
 
 > [[Itch IO](https://deus0.itch.io/zoxel)]
 
