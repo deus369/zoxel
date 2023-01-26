@@ -12,17 +12,15 @@ Code @ [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.
 
 Libre Zoxel
 
-![Zoxel](/documents/screenshots/screenshot_2022-12-31_15-18-13.png?raw=false "Zoxel")
+![Zoxel](https://github.com/deus369/zoxel-play/raw/main/screenshots/screen-2023-01-17-23-27-34.jpg?raw=false "Zoxel")
 
 Unity Zoxel
 
-![Unity Zoxel](/documents/screenshots/zoxel_unity_00.png?raw=false "Old Zoxel")
+![Unity Zoxel](https://github.com/deus369/zoxel-play/raw/main/screenshots/zoxel_unity_00.png?raw=false "Old Zoxel")
 
 ### Endless Possibilities: Building and Modding in Our Voxel-Based RPG
 
 [[How To Build Guide](documents/howtos/howto-build.md)]
-
-As a player of our voxel-based RPG, you will have the ability to build and mod to your heart's content. Our game features powerful building mechanics that allow you to create and destroy structures using voxels, giving you the freedom to design and shape your own environments. And with modding support, you can take your creativity even further by creating your own custom content and gameplay mechanics. Whether you want to build a towering fortress, a sprawling city, or something entirely different, the sky's the limit. So why not give building and modding a try and see what you can create? The possibilities are endless!
 
 ### Code Structure and Organization
 
@@ -30,9 +28,9 @@ Our codebase is organized into modules, with the game engine serving as the main
 
 ### The Benefits of Using the GPL License
 
-Zoxel is under the GNU General Public License (GPL) [[The License](license)]
-
 The GPL (GNU General Public License) is a popular open-source license that allows users to modify and distribute software as long as they make the source code freely available. This encourages collaboration and innovation within the software community. The GPL also requires that any modifications or derivatives of the licensed software must also be licensed under the GPL, ensuring that the software remains open and freely available to others in the future.
+
+Zoxel is under the GNU General Public License (GPL) [[The License](license)]
 
 ### Zoxel: A Game of Many Iterations and a Bright Future Ahead
 

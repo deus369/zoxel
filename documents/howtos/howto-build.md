@@ -15,6 +15,8 @@ How-To Building
 
     Cross-platform (Linux, Windows*, Android, Web, IOS*)
 
+As a player of our voxel-based RPG, you will have the ability to build and mod to your heart's content. Our game features powerful building mechanics that allow you to create and destroy structures using voxels, giving you the freedom to design and shape your own environments. And with modding support, you can take your creativity even further by creating your own custom content and gameplay mechanics. Whether you want to build a towering fortress, a sprawling city, or something entirely different, the sky's the limit. So why not give building and modding a try and see what you can create? The possibilities are endless!
+
 ## Dependencies
 
 I am using these libraries due to their light weight and power -unlimited power-
