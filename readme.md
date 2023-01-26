@@ -6,7 +6,11 @@ Code @ [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.
 
 > [[Play](https://deus369.github.io/zoxel-play/)] | [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
 
-> [[Roadmap](documents/roadmap.md)] | [[Tasks](documents/todos/todo-main.md)]
+> [[Roadmap]((https://github.com/deus369/zoxel-web/blob/master/documents//roadmap.md)] | [[Tasks]((https://github.com/deus369/zoxel-web/blob/master/documents//todos/todo-main.md)]
+
+### Endless Possibilities: Building and Modding in Our Voxel-Based RPG
+
+[[How To Build Guide](https://github.com/deus369/zoxel-web/blob/master/documents/howtos/howto-build.md)]
 
 ### Prioritizing Balance and Well-Being in the New Year
 
@@ -21,10 +25,6 @@ Libre Zoxel
 Unity Zoxel
 
 ![Unity Zoxel](https://github.com/deus369/zoxel-play/raw/main/docs/screenshots/zoxel_unity_00.png?raw=false "Old Zoxel")
-
-### Endless Possibilities: Building and Modding in Our Voxel-Based RPG
-
-[[How To Build Guide](documents/howtos/howto-build.md)]
 
 ### Code Structure and Organization
 
@@ -45,20 +45,6 @@ Now, the game is being remade again, this time using a custom game engine that t
 Players can expect a vast, open-world environment to explore, as well as procedurally generated quests and enemies. The game's charming voxel-based graphics and character customization options will also add to the experience.
 
 Overall, Zoxel is a game that has been developed with passion and dedication over many years, and players can look forward to a unique and engaging gameplay experience.
-
-### Poetic Musings
-
-Some poetry that helps guide my way in this dark world.
-
-> [[The Joy of Zoxel](documents/poems/poem_0.md)]
-
-> [[The Darkness of Zoxel](documents/poems/poem_1.md)]
-
-> [[Voxel Quest: A Journey Through the Stars](documents/poems/poem_2.md)]
-
-> [[A Simple Task on Planet X-4028B](documents/poems/poem_3.md)]
-
-> [[Amazing Potential](documents/reviews/review_0.md)]
 
 ### Connect with us on social media
 
