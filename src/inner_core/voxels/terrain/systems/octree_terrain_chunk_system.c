@@ -1,4 +1,23 @@
 //! Our function that creates a chunk.
+void randomize_inner_nodes(ChunkOctree* chunk_octree, unsigned char depth)
+{
+    if (depth >= 8)
+    {
+        return;
+    }
+    if (rand() % 100 >= 80)
+    {
+        depth++;
+        chunk_octree->value = 1;
+        open_ChunkOctree(chunk_octree);
+        for (int i = 0; i < octree_length; i++)
+        {
+            chunk_octree->nodes[i].value = rand() % 2;
+            randomize_inner_nodes(&chunk_octree->nodes[i], depth);
+        }
+    }
+}
+
 void GenerateOctreeChunkTerrain(ChunkOctree* chunkOctree, const int3 chunkSize, const int3 chunkPosition)
 {
     //  int3 node_size = (int3) { 2, 2, 2 };
@@ -10,8 +29,9 @@ void GenerateOctreeChunkTerrain(ChunkOctree* chunkOctree, const int3 chunkSize, 
             for (local_position.z = 0; local_position.z < octree_node_size; local_position.z++)
             {
                 int array_index = int3_array_index(local_position, octree_node_size3);
+                randomize_inner_nodes(&chunkOctree->nodes[array_index], 0);
                 // chunkOctree->nodes[array_index].value = 1;
-                if (local_position.y == 1 && local_position.x == 1 && local_position.z == 1)
+                /*if (local_position.y == 1 && local_position.x == 1 && local_position.z == 1)
                 {
                     chunkOctree->nodes[array_index].value = 1;
                     open_ChunkOctree(&chunkOctree->nodes[array_index]);
@@ -23,7 +43,7 @@ void GenerateOctreeChunkTerrain(ChunkOctree* chunkOctree, const int3 chunkSize, 
                 else if (local_position.y == 0 || rand() % 100 >= 60)
                 {
                     chunkOctree->nodes[array_index].value = 1;
-                }
+                }*/
             }
         }
     }

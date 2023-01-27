@@ -1,8 +1,29 @@
-void count_mesh(const ChunkOctree *chunkOctree,
+void count_mesh(const ChunkOctree *chunk_octree,
     MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
     int2 *mesh_count)
 {
-    int3 local_position;
+    /*if (chunk_octree == NULL)
+    {
+        return;
+    }*/
+    if (chunk_octree->value)
+    {
+        zoxel_add_voxel_face_counts()
+        zoxel_add_voxel_face_counts()
+        zoxel_add_voxel_face_counts()
+        zoxel_add_voxel_face_counts()
+        zoxel_add_voxel_face_counts()
+        zoxel_add_voxel_face_counts()
+    }
+    // also check for sub nodes!
+    if (chunk_octree->nodes != NULL)
+    {
+        for (unsigned char i = 0; i < octree_length; i++)
+        {
+            count_mesh(&chunk_octree->nodes[i], meshIndicies, meshVertices, meshUVs, mesh_count);
+        }
+    }
+    /*int3 local_position;
     for (local_position.x = 0; local_position.x < octree_node_size; local_position.x++)
     {
         for (local_position.y = 0; local_position.y < octree_node_size; local_position.y++)
@@ -10,13 +31,14 @@ void count_mesh(const ChunkOctree *chunkOctree,
             for (local_position.z = 0; local_position.z < octree_node_size; local_position.z++)
             {
                 int array_index = int3_array_index(local_position, octree_node_size3);
-                if (chunkOctree->nodes[array_index].value == 0)
+                count_mesh(&chunk_octree->nodes[array_index], meshIndicies, meshVertices, meshUVs, mesh_count);*/
+                /*if (chunk_octree->nodes[array_index].value == 0)
                 {
                     continue;
                 }
-                if (chunkOctree->nodes[array_index].nodes != NULL)
+                if (chunk_octree->nodes[array_index].nodes != NULL)
                 {
-                    count_mesh(&chunkOctree->nodes[array_index], meshIndicies, meshVertices, meshUVs, mesh_count);
+                    count_mesh(&chunk_octree->nodes[array_index], meshIndicies, meshVertices, meshUVs, mesh_count);
                 }
                 else
                 {
@@ -27,13 +49,13 @@ void count_mesh(const ChunkOctree *chunkOctree,
                     zoxel_add_voxel_face_counts()
                     zoxel_add_voxel_face_counts()
                     zoxel_add_voxel_face_counts()
-                }
-            }
+                }*/
+            /*}
         }
-    }
+    }*/
 }
 
-void build_octree_chunk(const ChunkOctree *chunkOctree,
+void build_octree_chunk(const ChunkOctree *chunk_octree,
     MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
     int2 *start, float3 parent_vertex_position_offset, float scale)
 {
@@ -41,6 +63,19 @@ void build_octree_chunk(const ChunkOctree *chunkOctree,
     scale *= 0.5f;
     float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f,
         - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
+    /*if (chunk_octree == NULL)
+    {
+        if (chunk_octree->value)
+        {
+            zoxel_add_voxel_face_uvs(left, 0)
+            zoxel_add_voxel_face_uvs(right, 1)
+            zoxel_add_voxel_face_uvs(down, 1)
+            zoxel_add_voxel_face_uvs(up, 0)
+            zoxel_add_voxel_face_uvs(back, 0)
+            zoxel_add_voxel_face_uvs(front, 1)
+        }
+        return;
+    }*/
     int3 local_position;
     for (local_position.x = 0; local_position.x < octree_node_size; local_position.x++)
     {
@@ -49,16 +84,16 @@ void build_octree_chunk(const ChunkOctree *chunkOctree,
             for (local_position.z = 0; local_position.z < octree_node_size; local_position.z++)
             {
                 int array_index = int3_array_index(local_position, octree_node_size3);
-                ChunkOctree node = chunkOctree->nodes[array_index];
+                ChunkOctree node = chunk_octree->nodes[array_index];
                 if (node.value == 0)
                 {
                     continue;
                 }
                 float3 vertex_position_offset = float3_add(parent_vertex_position_offset,
                     float3_multiply_float(float3_from_int3(local_position), voxel_scale));
-                if (chunkOctree->nodes[array_index].nodes != NULL)
+                if (chunk_octree->nodes[array_index].nodes != NULL)
                 {
-                    build_octree_chunk(&chunkOctree->nodes[array_index],
+                    build_octree_chunk(&chunk_octree->nodes[array_index],
                         meshIndicies, meshVertices, meshUVs, start, vertex_position_offset, scale);
                 }
                 else
@@ -77,7 +112,7 @@ void build_octree_chunk(const ChunkOctree *chunkOctree,
 
 #define float3_zero (float3) { 0, 0, 0 }
 
-void build_octree_chunk_mesh_uvs(const ChunkOctree *chunkOctree, const ChunkSize *chunkSize,
+void build_octree_chunk_mesh_uvs(const ChunkOctree *chunk_octree, const ChunkSize *chunkSize,
     MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
     const ChunkOctree *chunk_left, const ChunkOctree *chunk_right,
     const ChunkOctree *chunk_back, const ChunkOctree *chunk_front)
@@ -87,12 +122,12 @@ void build_octree_chunk_mesh_uvs(const ChunkOctree *chunkOctree, const ChunkSize
     //int indicies_count = 0;
     //int verticies_count = 0;
     //int uvs_count = 0;
-    count_mesh(chunkOctree, meshIndicies, meshVertices, meshUVs, &mesh_count);
+    count_mesh(chunk_octree, meshIndicies, meshVertices, meshUVs, &mesh_count);
     re_initialize_memory_component(meshIndicies, int, mesh_count.x);
     re_initialize_memory_component(meshVertices, float3, mesh_count.y);
     re_initialize_memory_component(meshUVs, float2, mesh_count.y);
     // printf("indicies_count [%i]\n", mesh_count.x);
-    build_octree_chunk(chunkOctree, meshIndicies, meshVertices, meshUVs, start, float3_zero, 1.0f);
+    build_octree_chunk(chunk_octree, meshIndicies, meshVertices, meshUVs, start, float3_zero, 1.0f);
     // int3 local_position;
     //! Precount our index and vertex array lengths.
     /*for (local_position.x = 0; local_position.x < octree_node_size; local_position.x++)

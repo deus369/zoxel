@@ -17,7 +17,7 @@ zoxel_state_component(ChunkDirty)                       //! A state for generati
 zoxel_memory_component(ChunkData, unsigned char)            //! A simple chunk with an array of voxels.
 zoxel_memory_component(ChunkLinks, ecs_entity_t)        //! A list to all chunks in a Vox model.
 zoxel_memory_component(ChunkNeighbors, ecs_entity_t)    //! A list to all chunks in a Vox model.
-zoxel_octree_component(ChunkOctree, unsigned char)  //! A chunk that stores voxels in an octree.
+zoxel_octree_component(ChunkOctree, unsigned char, 0)  //! A chunk that stores voxels in an octree.
 #include "util/voxel_mesh_util.c"
 #include "util/chunk.c"
 #include "util/chunk_build_util.c"

@@ -2,7 +2,7 @@
 #define octree_node_size 2
 #define octree_node_size3 (int3) { 2, 2, 2 }
 
-#define zoxel_octree_component(name, type)\
+#define zoxel_octree_component(name, type, default_value)\
 typedef struct name name;\
 typedef struct name\
 {\
@@ -46,6 +46,7 @@ void open##_##name(name* octree)\
         for (unsigned char i = 0; i < octree_length; i++)\
         {\
             octree->nodes[i].nodes = NULL;\
+            octree->nodes[i].value = default_value;\
         }\
     }\
 }\
@@ -56,6 +57,7 @@ void close##_##name(name* octree)\
 ECS_CTOR(name, ptr,\
 {\
     ptr->nodes = NULL;\
+    ptr->value = default_value;\
 })\
 ECS_DTOR(name, ptr,\
 {\
@@ -66,6 +68,7 @@ ECS_MOVE(name, dst, src,\
     dst->value = src->value;\
     dst->nodes = src->nodes;\
     src->nodes = NULL;\
+    src->value = default_value;\
 })\
 ECS_COPY(name, dst, src, {\
     free##_##name(dst);\
