@@ -4,11 +4,18 @@
 const int terrain_rows = 6;
 const int3 terrain_chunk_size = { chunk_length, 8 * chunk_length, chunk_length };
 float chunk_real_size = overall_voxel_scale / 2.0f; // 1.0f;   // size achunk takes up
+const unsigned char terrain_min_height = 8;
+const double terrain_amplifier = 120.0;
+const double terrain_frequency = 0.004216;
+const int terrain_octaves = 12;
+const uint32_t terrain_seed = 32666;
 zoxel_declare_tag(TerrainChunk)
 zoxel_declare_tag(ChunkTerrain)
 #include "prefabs/terrain_chunk.c"
 #include "prefabs/terrain_chunk_octree.c"
 #include "systems/terrain_chunk_system.c"
+#include "systems/octree_terrain_chunk_system.c"
+#include "systems/octree_chunk_uvs_build_system.c"
 
 int get_chunk_index(int i, int j, int terrain_rows)
 {
@@ -24,6 +31,14 @@ void TerrainImport(ecs_world_t *world)
     zoxel_filter(generateTerrainChunkQuery, world, [none] TerrainChunk, [in] GenerateChunk)
     zoxel_system_ctx(world, TerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
         [none] TerrainChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] ChunkPosition, [in] GenerateChunk)
+    zoxel_system_ctx(world, OctreeTerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
+        [none] TerrainChunk, [out] ChunkDirty, [out] ChunkOctree, [in] ChunkSize, [in] ChunkPosition, [in] GenerateChunk)
+    
+    zoxel_filter(generateChunkQuery, world, [in] GenerateChunk)
+    zoxel_system_ctx(world, OctreeChunkUVsBuildSystem, EcsOnUpdate, generateChunkQuery,
+        [in] ChunkDirty, [in] ChunkOctree, [in] ChunkSize, [in] ChunkNeighbors,
+        [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty,
+        [none] !MeshColors)
     spawn_prefab_terrain_chunk(world, terrain_chunk_size);
     spawn_prefab_terrain_chunk_octree(world, terrain_chunk_size);
     #ifdef zoxel_test_voxels_terrain

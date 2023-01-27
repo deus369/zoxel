@@ -10,15 +10,6 @@ void add_chunk(ecs_world_t *world, ecs_entity_t prefab, int3 size)
     zoxel_set(world, prefab, ChunkPosition, { { 0, 0, 0 } });
 }
 
-void add_chunk_octree(ecs_world_t *world, ecs_entity_t prefab, int3 size)
-{
-    zoxel_add_tag(world, prefab, Chunk);
-    zoxel_add(world, prefab, ChunkOctree);
-    zoxel_set(world, prefab, ChunkSize, { size });
-    zoxel_set(world, prefab, ChunkDirty, { 0 });
-    zoxel_set(world, prefab, ChunkPosition, { { 0, 0, 0 } });
-}
-
 void add_generate_chunk(ecs_world_t *world, ecs_entity_t e)
 {
     zoxel_set(world, e, EntityDirty, { 0 });

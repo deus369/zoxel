@@ -21,6 +21,7 @@ zoxel_octree_component(ChunkOctree, unsigned char)  //! A chunk that stores voxe
 #include "util/voxel_mesh_util.c"
 #include "util/chunk.c"
 #include "util/chunk_build_util.c"
+#include "util/voxel_util.c"
 #include "prefabs/chunk.c"
 #include "prefabs/voxel_chunk_mesh.c"
 #include "prefabs/noise_chunk.c"

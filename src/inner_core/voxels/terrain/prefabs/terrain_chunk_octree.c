@@ -1,20 +1,17 @@
 ecs_entity_t prefab_terrain_chunk_octree;
 
+void add_chunk_octree(ecs_world_t *world, ecs_entity_t prefab, int3 size)
+{
+    zoxel_add_tag(world, prefab, Chunk);
+    zoxel_add(world, prefab, ChunkOctree);
+    zoxel_set(world, prefab, ChunkSize, { size });
+    zoxel_set(world, prefab, ChunkDirty, { 0 });
+    zoxel_set(world, prefab, ChunkPosition, { { 0, 0, 0 } });
+}
+
 ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size)
 {
     int2 texture_size = { 16, 16 };
-    /*ecs_defer_begin(world);
-    // ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_terrain_chunk);
-    ecs_entity_t e = ecs_clone(world, 0, prefab_terrain_chunk, 1);
-    ecs_add_id(world, e, EcsPrefab);
-    zoxel_remove(e, ChunkData)
-    zoxel_set(world, e, ChunkOctree, { 0, NULL });
-    // set_unique_entity_name(world, e, "prefab_terrain_chunk_octree");
-    ecs_defer_end(world);
-    printf("Has ChunkData? %b\n", ecs_has(world, e, ChunkData));
-    prefab_terrain_chunk_octree = e;
-    return e;*/
-
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, ""); // , "prefab_cube");
     #ifdef zoxel_transforms3D
@@ -61,3 +58,15 @@ ecs_entity_t spawn_terrain_chunk_octree(ecs_world_t *world, ecs_entity_t prefab,
     ecs_defer_end(world);
     return e;
 }
+
+    /*ecs_defer_begin(world);
+    // ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_terrain_chunk);
+    ecs_entity_t e = ecs_clone(world, 0, prefab_terrain_chunk, 1);
+    ecs_add_id(world, e, EcsPrefab);
+    zoxel_remove(e, ChunkData)
+    zoxel_set(world, e, ChunkOctree, { 0, NULL });
+    // set_unique_entity_name(world, e, "prefab_terrain_chunk_octree");
+    ecs_defer_end(world);
+    printf("Has ChunkData? %b\n", ecs_has(world, e, ChunkData));
+    prefab_terrain_chunk_octree = e;
+    return e;*/

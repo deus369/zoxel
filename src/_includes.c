@@ -25,10 +25,10 @@
 // #define USE_SDL_3
 
 // -- Tests / Options --
+#define voxel_octrees
 #define zoxel_test_voxels_terrain
 #define zoxel_test_chickens
 #define zoxel_test_character3Ds
-// #define voxel_octrees
 // #define zoxel_test_lines3D
 // #define zoxel_test_networking
 // #define zoxel_test_brain

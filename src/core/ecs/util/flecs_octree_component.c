@@ -1,4 +1,6 @@
 #define octree_length 8
+#define octree_node_size 2
+#define octree_node_size3 (int3) { 2, 2, 2 }
 
 #define zoxel_octree_component(name, type)\
 typedef struct name name;\
@@ -41,6 +43,10 @@ void open##_##name(name* octree)\
     if (octree->nodes == NULL)\
     {\
         octree->nodes = malloc(sizeof(name) * octree_length);\
+        for (unsigned char i = 0; i < octree_length; i++)\
+        {\
+            octree->nodes[i].nodes = NULL;\
+        }\
     }\
 }\
 void close##_##name(name* octree)\
