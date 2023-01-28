@@ -4,8 +4,9 @@
 #define octree_frequency 0.5f
 #define octree_min_height 0.005f
 #define octree_height_addition 0.4f
-#define noise_positiver2 3200
+#define noise_positiver2 32000
 #define octree_terrain_frequency 0.002f
+// 3200 2147483647 / 2
 
 //! Our function that creates a chunk.
 void randomize_inner_nodes(ChunkOctree* chunk_octree, unsigned char depth)
@@ -40,9 +41,10 @@ void fill_octree(ChunkOctree* chunk_octree, unsigned char voxel, unsigned char d
 
 void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 position, float scale)
 {
-    float2 noise_position = (float2) { position.x * 16 + noise_positiver2, position.z * 16 + noise_positiver2 };
-    double octree_noise = perlin_terrain(noise_position.x, noise_position.y,
-        terrain_frequency, terrain_seed, terrain_octaves);
+    double octree_noise = perlin_terrain(
+        position.x + noise_positiver2, 
+        position.z + noise_positiver2,
+        terrain_frequency * 16, terrain_seed, terrain_octaves);
     // octree_noise -= 0.24;
     octree_noise -= 0.2;
     octree_noise *= 8.0;
@@ -78,6 +80,7 @@ void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 pos
             generate_terrain(&chunk_octree->nodes[i], depth, node_position, scale);
         }
         // check all children
+        #ifndef zoxel_disable_close_nodes
         unsigned char is_all_solid = 1;
         for (unsigned char i = 0; i < octree_length; i++)
         {
@@ -91,6 +94,7 @@ void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 pos
         {
             close_ChunkOctree(chunk_octree);
         }
+        #endif
     }
 }
 
@@ -126,11 +130,8 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it)
         // open_ChunkOctree(chunkOctree);
         // chunkOctree->value = 1;
         // randomize_inner_nodes(chunkOctree, 0);
-        // fill_octree(chunkOctree, 1, 4)
-        // float3_zero
-        // generate_terrain(chunkOctree, 0, float3_from_int3(chunk_position_fix(chunkPosition->value)), 1.0f);
+        // fill_octree(chunkOctree, 1, 4);
         generate_terrain(chunkOctree, 0, float3_from_int3(chunkPosition->value), 1.0f);
-        // generate_terrain(chunkOctree, 0, float3_zero, 1.0f);
         // printf("Terrain ChunkData Generated: [%lu] \n", (long int) it->entities[i]);
     }
 }

@@ -1,7 +1,7 @@
 //! Add vertices and uvs to the chunk one.
 void add_voxel_face_uvs(MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
     float3 vertex_position_offset, float3 center_mesh_offset, float voxel_scale,
-    int2 *mesh_start, // int3 start2,
+    int2 *mesh_start,
     const int voxel_face_indicies[], int voxel_face_indicies_length,
     const float3 voxel_face_vertices[], int voxel_face_vertices_length,
     const float2 voxel_face_uvs[])
@@ -23,7 +23,6 @@ void add_voxel_face_uvs(MeshIndicies *meshIndicies, MeshVertices *meshVertices, 
     }
     mesh_start->x += voxel_face_indicies_length;
     mesh_start->y += voxel_face_vertices_length;
-    // mesh_start->z += voxel_face_vertices_length;
 }
 
 void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,

@@ -26,7 +26,7 @@
     #endif
 #endif
 
-const int window_index = 1; // 1;
+const int window_index = 0; // 1;
 unsigned char vsync = 0;
 unsigned char fullscreen = 1; // full screen is the new default option
 unsigned char halfscreen = 0;
