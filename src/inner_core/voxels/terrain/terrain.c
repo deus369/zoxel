@@ -1,7 +1,8 @@
 #ifndef zoxel_voxels_terrain
 #define zoxel_voxels_terrain
 
-const int terrain_rows = 6;
+#define max_octree_depth 7
+const int terrain_rows = 10;
 const int3 terrain_chunk_size = { chunk_length, 8 * chunk_length, chunk_length };
 float chunk_real_size = overall_voxel_scale / 2.0f; // 1.0f;   // size achunk takes up
 const unsigned char terrain_min_height = 8;
@@ -36,7 +37,7 @@ void TerrainImport(ecs_world_t *world)
     
     zoxel_filter(generateChunkQuery, world, [in] GenerateChunk)
     zoxel_system_ctx(world, OctreeChunkUVsBuildSystem, EcsOnUpdate, generateChunkQuery,
-        [in] ChunkDirty, [in] ChunkOctree, [in] ChunkSize, [in] ChunkNeighbors,
+        [in] ChunkDirty, [in] ChunkOctree, [in] ChunkDivision, [in] ChunkNeighbors,
         [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty,
         [none] !MeshColors)
     spawn_prefab_terrain_chunk(world, terrain_chunk_size);

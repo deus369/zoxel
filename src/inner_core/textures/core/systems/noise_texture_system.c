@@ -57,13 +57,34 @@ void GenerateNoise(Texture* texture, const TextureSize *textureSize, unsigned ch
                 }
             }
             // outline voxel textures
-            else if (is_texture_outlines)
+            else if (is_texture_outlines == 1)
             {
                 if (j == 0 || k == 0 || j == textureSize->value.x - 1 || k == textureSize->value.y - 1)
                 {
                     texture->value[index].r /= 2;
                     texture->value[index].g /= 2;
                     texture->value[index].b /= 2;
+                }
+            }
+            else if (is_texture_outlines == 2)
+            {
+                if (j == 0 || k == 0 || j == textureSize->value.x - 1 || k == textureSize->value.y - 1)
+                {
+                    texture->value[index].r = 0;
+                    texture->value[index].g = 0;
+                    texture->value[index].b = 0;
+                }
+            }
+            else if (is_texture_outlines == 3)
+            {
+                if (j == 0 || k == 0 || j == textureSize->value.x - 1 || k == textureSize->value.y - 1)
+                {
+                    texture->value[index].r *= 5;
+                    texture->value[index].g *= 5;
+                    texture->value[index].b *= 5;
+                    texture->value[index].r /= 6;
+                    texture->value[index].g /= 6;
+                    texture->value[index].b /= 6;
                 }
             }
             // printf("texture value: %i\n", texture->value[index].r);

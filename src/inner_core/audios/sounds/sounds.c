@@ -24,9 +24,9 @@ zoxel_declare_tag(Sound)
 zoxel_memory_component(SoundData, float)    //! A sound has an array of bytes.
 zoxel_component(SoundLength, double)        //! The length of a sound.
 zoxel_component(SoundFrequency, float)      //! The frequency of the generated sound.
-zoxel_state_component(GenerateSound)        //! A state event for generating sounds.
-zoxel_state_component(PlaySound)            //! A state event for playing sounds.
-zoxel_state_component(SoundDirty)
+zoxel_byte_component(GenerateSound)        //! A state event for generating sounds.
+zoxel_byte_component(PlaySound)            //! A state event for playing sounds.
+zoxel_byte_component(SoundDirty)
 #include "components/SDLSound.c"
 #include "prefabs/sound_prefab.c"
 #ifdef SDL_MIXER

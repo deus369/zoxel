@@ -31,3 +31,16 @@ int3 voxel_chunk_position_xz(int3 chunk_position, int3 chunk_size)
     }
     return voxel_position;
 }
+
+int3 chunk_position_fix(int3 chunk_position)
+{
+    if (chunk_position.x < 0)
+    {
+        chunk_position.x += 1;
+    }
+    if (chunk_position.z < 0)
+    {
+        chunk_position.z += 1;
+    }
+    return chunk_position;
+}

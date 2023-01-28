@@ -6,6 +6,8 @@ typedef struct
     float z;
 } float3;
 
+#define float3_zero (float3) { 0, 0, 0 }
+
 void float3_print(const float3 input)
 {
     zoxel_log("    Float3 [%f %f %f]\n", input.x, input.y, input.z);

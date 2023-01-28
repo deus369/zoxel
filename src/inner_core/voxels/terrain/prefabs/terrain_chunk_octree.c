@@ -7,6 +7,7 @@ void add_chunk_octree(ecs_world_t *world, ecs_entity_t prefab, int3 size)
     zoxel_set(world, prefab, ChunkSize, { size });
     zoxel_set(world, prefab, ChunkDirty, { 0 });
     zoxel_set(world, prefab, ChunkPosition, { { 0, 0, 0 } });
+    zoxel_set(world, prefab, ChunkDivision, { 0 });
 }
 
 ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size)
@@ -55,6 +56,12 @@ ecs_entity_t spawn_terrain_chunk_octree(ecs_world_t *world, ecs_entity_t prefab,
     ecs_defer_begin(world);
     ecs_entity_t e = spawn_terrain_chunk(world, prefab, chunk_position, position, scale);
     set_unique_entity_name(world, e, "terrain_chunk_octree");
+    unsigned char distance = ((int_abs(chunk_position.x) + int_abs(chunk_position.z)) / 2);
+    /*if (distance >= 1)
+    {
+        distance--;
+    }*/
+    ecs_set(world, e, ChunkDivision, { distance });
     ecs_defer_end(world);
     return e;
 }

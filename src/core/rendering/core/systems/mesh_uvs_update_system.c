@@ -15,7 +15,7 @@ void MeshUvsUpdateSystem(ecs_iter_t *it)
     const MeshUVs *meshUVs = ecs_field(it, MeshUVs, 4);
     const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 5);
     const MaterialGPULink *materialGPULinks = ecs_field(it, MaterialGPULink, 6);
-    // const UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 7);
+    const UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 7);
     // printf("TextureUpdateSystem [%i] \n", it->count);
     for (int i = 0; i < it->count; i++)
     {
@@ -29,8 +29,9 @@ void MeshUvsUpdateSystem(ecs_iter_t *it)
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         const MeshVertices *meshVertices2 = &meshVertices[i];
         const MeshUVs *meshUVs2 = &meshUVs[i];
+        const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
         opengl_upload_shader3D_textured(
-            meshGPULink->value, materialGPULink->value,
+            meshGPULink->value, uvsGPULink->value, materialGPULink->value,
             meshIndicies2->value, meshIndicies2->length,
             meshVertices2->value, meshVertices2->length,
             meshUVs2->value, meshUVs2->length);

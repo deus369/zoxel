@@ -8,7 +8,7 @@ float4x4 ui_camera_matrix;
 float4x4 main_camera_matrix2;
 zoxel_declare_tag(Mesh)
 zoxel_declare_tag(ElementRender)
-zoxel_state_component(MeshDirty)
+zoxel_byte_component(MeshDirty)
 zoxel_component(EternalRotation, float4)
 zoxel_component(Brightness, float)
 #include "opengl/opengl.c"

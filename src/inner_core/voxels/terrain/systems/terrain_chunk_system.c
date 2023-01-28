@@ -1,4 +1,4 @@
-
+#define noise_positiver 3200
 
 //! Our function that creates a chunk.
 void GenerateChunkTerrain(ChunkData* chunk, const int3 chunkSize, const int3 chunkPosition)
@@ -15,9 +15,7 @@ void GenerateChunkTerrain(ChunkData* chunk, const int3 chunkSize, const int3 chu
             global_position = int3_add(local_position, chunk_position_offset);
             // printf("global_position [%ix%ix%i]\n", global_position.x, global_position.y, global_position.z);
             // printf("global_position: [%fx%fx%f]\n", global_position.x, global_position.y, global_position.z);
-            float2 noise_point = float2_from_int2((int2) { global_position.x, global_position.z });
-            noise_point.x += 3200;
-            noise_point.y += 3200;
+            float2 noise_point = float2_from_int2((int2) { global_position.x + noise_positiver, global_position.z + noise_positiver });
             int terrain_height2 = terrain_min_height +
                 // int_floor(terrain_amplifier * simplex_fun_2D(noise_point, terrain_frequency));
                 // int_floor(terrain_amplifier * perlin_noise(noise_point.x, noise_point.y, terrain_frequency, seed));

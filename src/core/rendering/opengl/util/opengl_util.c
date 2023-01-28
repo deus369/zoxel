@@ -67,6 +67,16 @@ void opengl_set_mesh(GLuint2 mesh)
     glBindBuffer(GL_ARRAY_BUFFER, mesh.y);            // for vertex coordinates
 }
 
+void opengl_set_mesh_indicies(GLuint indices_buffer)
+{
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_buffer);    // for indices
+}
+
+void opengl_set_mesh_uvs(GLuint uv_buffer)
+{
+    glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);         // for UV coordinates
+}
+
 void opengl_unset_mesh()
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

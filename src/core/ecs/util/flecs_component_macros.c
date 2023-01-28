@@ -15,6 +15,6 @@ typedef struct\
 } name;\
 ECS_COMPONENT_DECLARE(name);
 
-#define zoxel_state_component(name)\
+#define zoxel_byte_component(name)\
     zoxel_component(name, unsigned char);
     

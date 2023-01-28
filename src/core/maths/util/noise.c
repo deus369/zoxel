@@ -8,6 +8,18 @@ int int_floor(float input)
     return (int) floor(input);
 }
 
+int int_abs(float input)
+{
+    if (input < 0)
+    {
+        return -input;
+    }
+    else
+    {
+        return input;
+    }
+}
+
 float simplex_fun_int_1D(float3 point, int ix)
 {
     float x = point.x - ix;
@@ -128,9 +140,7 @@ double perlin_noise(double x, double y, double f, uint32_t seed) {
     double noise = lerp(lerp(n0, n1, u), lerp(n2, n3, u), v);
 
     // Scale the noise value to the range [0, 1]
-    noise = (noise + 1.0) / 2.0;
-
-    return noise;
+    return (noise + 1.0) / 2.0;
 }
 
 double perlin_terrain(double x, double y, double f, uint32_t seed, int octaves)

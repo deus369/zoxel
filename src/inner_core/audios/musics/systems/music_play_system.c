@@ -3,6 +3,9 @@ int music_note_index;   // for now just use it here
 //! Play music on generates
 void MusicPlaySystem(ecs_iter_t *it)
 {
+    #ifdef zoxel_disable_music
+    return;
+    #endif
     const double music_speed = 1.00;
     const MusicData *musicDatas = ecs_field(it, MusicData, 2);
     const MusicSpeed *musicSpeeds = ecs_field(it, MusicSpeed, 3);

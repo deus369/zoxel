@@ -3,7 +3,7 @@
 
 ecs_entity_t local_game;
 zoxel_declare_tag(Game)
-zoxel_state_component(GameState);
+zoxel_byte_component(GameState);
 #include "prefabs/game.c"
 #include "util/game_states.c"
 // #include "systems/player2D_move_system.c"

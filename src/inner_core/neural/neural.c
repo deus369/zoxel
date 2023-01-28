@@ -9,7 +9,7 @@ zoxel_declare_tag(Connection)
 zoxel_declare_tag(InputNeuron)
 zoxel_declare_tag(OutputNeuron)
 zoxel_component(Weight, float)                  //! The weight of the neural connection
-zoxel_state_component(Signal)                   //! If the signal is sending
+zoxel_byte_component(Signal)                   //! If the signal is sending
 zoxel_component(SignalStrength, float)          //! The signal value of a connection
 zoxel_component(ConnectionData, ecs_entity_2)   //! The weight of the neural connection
 //! A brain holds an array of connections.

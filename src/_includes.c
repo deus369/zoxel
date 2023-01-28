@@ -28,7 +28,7 @@
 #define voxel_octrees
 #define zoxel_test_voxels_terrain
 #define zoxel_test_chickens
-#define zoxel_test_character3Ds
+// #define zoxel_test_character3Ds
 // #define zoxel_test_lines3D
 // #define zoxel_test_networking
 // #define zoxel_test_brain
@@ -63,6 +63,7 @@
 // #define zoxel_log_sound_generation
 // #define zoxel_log_music_playing
 // #define zoxel_slow_music
+#define zoxel_disable_music
 
 // Finally include zoxel engine and zoxel
 #include "zoxel_engine.c"

@@ -2,7 +2,7 @@
 #define zoxel_physics
 
 zoxel_declare_tag(Frictioned)
-zoxel_state_component(DisableMovement)
+zoxel_byte_component(DisableMovement)
 #include "physics2D/physics2D.c"
 #include "physics3D/physics3D.c"
 

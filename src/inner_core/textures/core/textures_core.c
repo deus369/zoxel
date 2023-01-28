@@ -2,16 +2,16 @@
 #define zoxel_textures_core
 
 const double noise_animation_speed = 0.5;
-const unsigned char is_texture_outlines = 1;
+const unsigned char is_texture_outlines = 3;
 zoxel_declare_tag(NoiseTexture)
 zoxel_declare_tag(FrameTexture)
 zoxel_declare_tag(SaveTexture)
 zoxel_declare_tag(DirtTexture)
 zoxel_memory_component(Texture, color)  //! A texture with pixels!
 zoxel_component(TextureSize, int2)      //! A texture with pixels!
-zoxel_state_component(GenerateTexture)  //! A state for generating textures.
+zoxel_byte_component(GenerateTexture)  //! A state for generating textures.
 zoxel_component(AnimateTexture, double) //! A state for animating textures.
-zoxel_state_component(TextureDirty)
+zoxel_byte_component(TextureDirty)
 #include "util/textures_sdl_util.c"
 #include "util/textures_util.c"
 #include "prefabs/noise_texture.c"

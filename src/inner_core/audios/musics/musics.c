@@ -6,7 +6,7 @@ zoxel_declare_tag(Looping)
 zoxel_component(MusicTime, double)
 zoxel_component(MusicSpeed, double)
 zoxel_memory_component(MusicData, int)      //! Contains a bunch of notes? - make custom struct for this with timing + note
-zoxel_state_component(GenerateMusic)
+zoxel_byte_component(GenerateMusic)
 zoxel_reset_system(GenerateMusicResetSystem, GenerateMusic)
 #include "util/music_palette.c"
 #include "prefabs/music.c"

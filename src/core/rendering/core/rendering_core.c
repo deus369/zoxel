@@ -71,7 +71,8 @@ void RenderingCoreImport(ecs_world_t *world)
         [none] !UvsGPULink);
     zoxel_system_main_thread(world, Render3DUvsSystem, 0, // EcsOnStore,
         [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness,
-        [in] MeshGPULink, [in] MaterialGPULink, [in] TextureGPULink, [in] MeshIndicies);
+        [in] MeshGPULink, [in] MaterialGPULink, [in] UvsGPULink,
+        [in] TextureGPULink, [in] MeshIndicies);
     zoxel_system_main_thread(world, InstanceRender3DSystem, 0,
         [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink);
     // updates
@@ -83,7 +84,8 @@ void RenderingCoreImport(ecs_world_t *world)
         [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColors);
     zoxel_system_main_thread(world, MeshUvsUpdateSystem, EcsOnValidate,
         [in] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshUVs,
-        [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshColors);
+        [in] MeshGPULink, [in] MaterialGPULink, [in] UvsGPULink,
+        [none] !MeshColors);
     zoxel_system_main_thread(world, Mesh2DUvsUpdateSystem, EcsOnValidate,
         [in] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshUVs,
         [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshColors);
