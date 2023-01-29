@@ -28,6 +28,7 @@
 #define voxel_octrees
 #define zoxel_test_voxels_terrain
 #define zoxel_test_chickens
+// #define zoxel_voxel_disable_distance_division
 // #define disable_voxel_left
 // #define disable_voxel_right
 // #define disable_voxel_back

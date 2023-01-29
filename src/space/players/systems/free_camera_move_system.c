@@ -1,4 +1,4 @@
-const double movement_multiplier = 0.018 * 100;
+const double movement_multiplier = 0.06 * 100;
 
 //! Called in ecs updates
 void FreeCameraMoveSystem(ecs_iter_t *it)

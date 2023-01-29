@@ -6,6 +6,8 @@ typedef struct
     int z;
 } int3;
 
+#define int3_zero (int3) { 0, 0, 0 }
+
 int int3_array_index(int3 input, int3 size)
 {
     // return input.x + input.y * size.x + input.z * size.x * size.y;

@@ -37,6 +37,13 @@ void fill_octree(ChunkOctree* chunk_octree, unsigned char voxel, unsigned char d
             fill_octree(&chunk_octree->nodes[i], voxel, depth);
         }
     }
+    else
+    {
+        if (rand() % 101 >= 98)
+        {
+            chunk_octree->value = 0;
+        }
+    }
 }
 
 void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 position, float scale)
@@ -107,7 +114,6 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it)
     }
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
     ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 3);
-    // const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 4);
     const ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 5);
     const GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 6);
     for (int i = 0; i < it->count; i++)
@@ -124,15 +130,10 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it)
         }
         chunkDirty->value = 1;
         ChunkOctree *chunkOctree = &chunkOctrees[i];
-        // const ChunkSize *chunkSize = &chunkSizes[i];
         const ChunkPosition *chunkPosition = &chunkPositions[i];
-        // open first node
-        // open_ChunkOctree(chunkOctree);
-        // chunkOctree->value = 1;
         // randomize_inner_nodes(chunkOctree, 0);
-        // fill_octree(chunkOctree, 1, 4);
+        // fill_octree(chunkOctree, 1, 3);
         generate_terrain(chunkOctree, 0, float3_from_int3(chunkPosition->value), 1.0f);
-        // printf("Terrain ChunkData Generated: [%lu] \n", (long int) it->entities[i]);
     }
 }
 zoxel_declare_system(OctreeTerrainChunkSystem)

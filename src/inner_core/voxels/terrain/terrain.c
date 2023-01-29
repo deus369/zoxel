@@ -1,8 +1,8 @@
 #ifndef zoxel_voxels_terrain
 #define zoxel_voxels_terrain
 
-#define max_octree_depth 6 //  8
-const int terrain_rows = 8; //12;
+#define max_octree_depth 6
+#define terrain_rows 12
 const int3 terrain_chunk_size = { chunk_length, 8 * chunk_length, chunk_length };
 float chunk_real_size = overall_voxel_scale / 2.0f; // 1.0f;   // size achunk takes up
 const unsigned char terrain_min_height = 8;
@@ -18,9 +18,9 @@ zoxel_declare_tag(ChunkTerrain)
 #include "systems/octree_terrain_chunk_system.c"
 #include "systems/octree_chunk_uvs_build_system.c"
 
-int get_chunk_index(int i, int j, int terrain_rows)
+int get_chunk_index(int i, int j, int rows)
 {
-    return (i + terrain_rows) * (terrain_rows + terrain_rows + 1) + (j + terrain_rows);
+    return (i + rows) * (rows + rows + 1) + (j + rows);
 }
 
 //! The Terrain Sub Module of Voxels.
