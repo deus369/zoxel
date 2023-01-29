@@ -1,30 +1,23 @@
 #define zoxel_set_octree_adjacent(direction_name)\
     const ChunkOctree *octree_node = find_adjacent_ChunkOctree(root_node, parent_node, octree_position, node_position, depth, direction##_##direction_name);
-
-    //const ChunkOctree *octree_node = NULL;
     
+// if (octree_node != NULL && octree_node->nodes != NULL && depth > max_depth) octree_node = NULL;
+
+#define zoxel_octree_check(direction_name)\
+    zoxel_set_octree_adjacent(direction_name)\
+    if (octree_node == NULL || octree_node->value == 0)
+
 #define zoxel_octree_add_face_counts(direction_name)\
 {\
-    zoxel_set_octree_adjacent(direction_name)\
-    if (octree_node == NULL || octree_node->value == 0)\
-    {\
+    zoxel_octree_check(direction_name)\
         zoxel_add_voxel_face_counts()\
-    }\
 }
-
-//  find_adjacent_ChunkOctree(root_node, parent_node, octree_position, node_position, depth, direction##_##name);
 
 #define zoxel_octree_build_face(direction_name, is_positive)\
 {\
-    zoxel_set_octree_adjacent(direction_name)\
-    if (octree_node == NULL || octree_node->value == 0)\
-    {\
+    zoxel_octree_check(direction_name)\
         zoxel_add_voxel_face_uvs(direction_name, is_positive)\
-    }\
 }
-
-// 
-
 
 void count_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree,
     MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,

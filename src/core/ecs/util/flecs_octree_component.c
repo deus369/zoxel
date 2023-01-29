@@ -122,10 +122,6 @@ const name* find_node##_##name(const name* node, int3 octree_position, unsigned 
 {\
     if (depth == 0)\
     {\
-        if (node->nodes != NULL)\
-        {\
-            return NULL;\
-        }\
         return node;\
     }\
     if (node->nodes == NULL)\
@@ -214,6 +210,10 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
 }
 
 /*
+        if (node->nodes != NULL && max_depth != 0)\
+        {\
+            return NULL;\
+        }\
     printf("octree_position [%ix%ix%i] depth [%i] dividor[%i] local_position [%ix%ix%i]\n", octree_position.x, octree_position.y, octree_position.z, depth, dividor, local_position.x, local_position.y, local_position.z);\
     
 
