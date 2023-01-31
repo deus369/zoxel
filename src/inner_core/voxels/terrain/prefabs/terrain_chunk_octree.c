@@ -56,24 +56,9 @@ ecs_entity_t spawn_terrain_chunk_octree(ecs_world_t *world, ecs_entity_t prefab,
     ecs_defer_begin(world);
     ecs_entity_t e = spawn_terrain_chunk(world, prefab, chunk_position, position, scale);
     set_unique_entity_name(world, e, "terrain_chunk_octree");
-    unsigned char distance = ((int_abs(chunk_position.x) + int_abs(chunk_position.z)) / 2);
-    /*if (distance >= 1)
-    {
-        distance--;
-    }*/
+    // unsigned char distance = ((int_abs(chunk_position.x) + int_abs(chunk_position.z)) / 2);
+    unsigned char distance = int_max(int_abs(chunk_position.x), int_abs(chunk_position.z));
     ecs_set(world, e, ChunkDivision, { distance });
     ecs_defer_end(world);
     return e;
 }
-
-    /*ecs_defer_begin(world);
-    // ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_terrain_chunk);
-    ecs_entity_t e = ecs_clone(world, 0, prefab_terrain_chunk, 1);
-    ecs_add_id(world, e, EcsPrefab);
-    zoxel_remove(e, ChunkData)
-    zoxel_set(world, e, ChunkOctree, { 0, NULL });
-    // set_unique_entity_name(world, e, "prefab_terrain_chunk_octree");
-    ecs_defer_end(world);
-    printf("Has ChunkData? %b\n", ecs_has(world, e, ChunkData));
-    prefab_terrain_chunk_octree = e;
-    return e;*/

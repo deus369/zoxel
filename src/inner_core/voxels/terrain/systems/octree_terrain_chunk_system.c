@@ -39,7 +39,7 @@ void fill_octree(ChunkOctree* chunk_octree, unsigned char voxel, unsigned char d
     }
     else
     {
-        if (rand() % 101 >= 98)
+        if (rand() % 1001 >= 999)
         {
             chunk_octree->value = 0;
         }
@@ -132,7 +132,7 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it)
         ChunkOctree *chunkOctree = &chunkOctrees[i];
         const ChunkPosition *chunkPosition = &chunkPositions[i];
         // randomize_inner_nodes(chunkOctree, 0);
-        // fill_octree(chunkOctree, 1, 3);
+        // fill_octree(chunkOctree, 1, 4);
         generate_terrain(chunkOctree, 0, float3_from_int3(chunkPosition->value), 1.0f);
     }
 }

@@ -9,34 +9,32 @@
 #define direction_back 4
 #define direction_front 5
 
-/*int getAdjacentIndex(unsigned int node_index, unsigned char direction)
-{
-    int x = node_index & 1;
-    int y = (node_index >> 1) & 1;
-    int z = (node_index >> 2) & 1;
-    switch (direction) {
-        case 0:
-            x = x == 0 ? 1 : 0;
-            break;
-        case 1:
-            x = x == 0 ? 1 : 0;
-            break;
-        case 2: // down
-            y = y == 0 ? 1 : 0;
-            break;
-        case 3: // up
-            y = y == 0 ? 1 : 0;
-            break;
-        case 4:
-            z = z == 0 ? 1 : 0;
-            break;
-        case 5:
-            z = z == 0 ? 1 : 0;
-            break;
-    }
-    return (x | (y << 1) | (z << 2));
-}*/
+#ifndef is_int3
+    #define is_int3
+    typedef struct
+    {
+        int x;
+        int y;
+        int z;
+    } int3;
+#endif
 
+const int3 octree_positions[] =
+{
+    { 0, 0, 0},
+    { 0, 0, 1},
+    { 0, 1, 0},
+    { 0, 1, 1},
+    { 1, 0, 0},
+    { 1, 0, 1},
+    { 1, 1, 0},
+    { 1, 1, 1}
+};
+
+unsigned char get_node_index(int3 node_position)
+{
+    return node_position.x * 4 + node_position.y * 2 + node_position.z;
+}
 
 #define zoxel_octree_component(name, type, default_value)\
 typedef struct name name;\
@@ -112,10 +110,6 @@ ECS_COPY(name, dst, src, {\
 })\
 const name* null_if_open##_##name(const name* node)\
 {\
-    if (node->nodes != NULL)\
-    {\
-        return NULL;\
-    }\
     return node;\
 }\
 const name* find_node##_##name(const name* node, int3 octree_position, unsigned char depth)\
@@ -124,6 +118,7 @@ const name* find_node##_##name(const name* node, int3 octree_position, unsigned 
     {\
         return node;\
     }\
+    /* if closed node, return node early */ \
     if (node->nodes == NULL)\
     {\
         return node;\
@@ -136,64 +131,81 @@ const name* find_node##_##name(const name* node, int3 octree_position, unsigned 
     node = &node->nodes[child_index];\
     return find_node##_##name(node, child_octree_position, depth);\
 }\
-const name* find_adjacent##_##name(const name* root, const name* node, int3 octree_position, int3 node_position, unsigned char depth, unsigned char direction)\
+const name* find_adjacent##_##name(const name* root, const name* node, int3 octree_position, int3 node_position, unsigned char depth, unsigned char direction, const name *neighbors[])\
 {\
-    if (node == NULL || node->nodes == NULL)\
+    if (node != NULL)\
     {\
-        return NULL;\
+        if (direction == direction_left)\
+        {\
+            if (node_position.x != 0)\
+            {\
+                node_position.x--;\
+                return null_if_open##_##name(&node->nodes[get_node_index(node_position)]);\
+            }\
+        }\
+        else if (direction == direction_right)\
+        {\
+            if (node_position.x != 1)\
+            {\
+                node_position.x++;\
+                return null_if_open##_##name(&node->nodes[get_node_index(node_position)]);\
+            }\
+        }\
+        else if (direction == direction_down)\
+        {\
+            if (node_position.y != 0)\
+            {\
+                node_position.y--;\
+                return null_if_open##_##name(&node->nodes[get_node_index(node_position)]);\
+            }\
+        }\
+        else if (direction == direction_up)\
+        {\
+            if (node_position.y != 1)\
+            {\
+                node_position.y++;\
+                return null_if_open##_##name(&node->nodes[get_node_index(node_position)]);\
+            }\
+        }\
+        else if (direction == direction_back)\
+        {\
+            if (node_position.z != 0)\
+            {\
+                node_position.z--;\
+                return null_if_open##_##name(&node->nodes[get_node_index(node_position)]);\
+            }\
+        }\
+        else if (direction == direction_front)\
+        {\
+            if (node_position.z != 1)\
+            {\
+                node_position.z++;\
+                return null_if_open##_##name(&node->nodes[get_node_index(node_position)]);\
+            }\
+        }\
     }\
     if (direction == direction_left)\
     {\
-        if (node_position.x != 0)\
-        {\
-            node_position.x--;\
-            return null_if_open##_##name(&node->nodes[node_position.x * 4 + node_position.y * 2 + node_position.z]);\
-        }\
         octree_position.x--;\
     }\
     else if (direction == direction_right)\
     {\
-        if (node_position.x != 1)\
-        {\
-            node_position.x++;\
-            return null_if_open##_##name(&node->nodes[node_position.x * 4 + node_position.y * 2 + node_position.z]);\
-        }\
         octree_position.x++;\
     }\
     else if (direction == direction_down)\
     {\
-        if (node_position.y != 0)\
-        {\
-            node_position.y--;\
-            return null_if_open##_##name(&node->nodes[node_position.x * 4 + node_position.y * 2 + node_position.z]);\
-        }\
         octree_position.y--;\
     }\
     else if (direction == direction_up)\
     {\
-        if (node_position.y != 1)\
-        {\
-            node_position.y++;\
-            return null_if_open##_##name(&node->nodes[node_position.x * 4 + node_position.y * 2 + node_position.z]);\
-        }\
         octree_position.y++;\
     }\
     else if (direction == direction_back)\
     {\
-        if (node_position.z != 0)\
-        {\
-            node_position.z--;\
-            return null_if_open##_##name(&node->nodes[node_position.x * 4 + node_position.y * 2 + node_position.z]);\
-        }\
         octree_position.z--;\
     }\
     else if (direction == direction_front)\
     {\
-        if (node_position.z != 1)\
-        {\
-            node_position.z++;\
-            return null_if_open##_##name(&node->nodes[node_position.x * 4 + node_position.y * 2 + node_position.z]);\
-        }\
         octree_position.z++;\
     }\
     unsigned char position_bounds = pow(2, depth);\
@@ -205,11 +217,47 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
     }\
     else\
     {\
-        return NULL;\
+        if (direction == direction_left)\
+        {\
+            if (neighbors[0] == NULL) return NULL;\
+            unsigned char dividor = pow(2, depth);\
+            octree_position.x = dividor - 1;\
+            return find_node##_##name(neighbors[0], octree_position, depth);\
+        }\
+        else if (direction == direction_right)\
+        {\
+            if (neighbors[1] == NULL) return NULL;\
+            octree_position.x = 0;\
+            return find_node##_##name(neighbors[1], octree_position, depth);\
+        }\
+        else if (direction == direction_back)\
+        {\
+            if (neighbors[2] == NULL) return NULL;\
+            unsigned char dividor = pow(2, depth);\
+            octree_position.z = dividor - 1;\
+            return find_node##_##name(neighbors[2], octree_position, depth);\
+        }\
+        else if (direction == direction_front)\
+        {\
+            if (neighbors[3] == NULL) return NULL;\
+            octree_position.z = 0;\
+            return find_node##_##name(neighbors[3], octree_position, depth);\
+        }\
+        else\
+        {\
+            return NULL;\
+        }\
     }\
 }
 
 /*
+    if (node->nodes != NULL)\
+    {\
+        return NULL;\
+    }\
+    
+ || node->nodes == NULL
+
         if (node->nodes != NULL && max_depth != 0)\
         {\
             return NULL;\

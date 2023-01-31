@@ -3,23 +3,6 @@ const float sqrtofthree = 1.73205080757f;   // sqrt(3.0f)
 const float trianglesToSquares = (sqrtofthree - 1.0f) / 2.0f;
 const float squaresToTriangles = (3.0f - sqrtofthree) / 6.0f;
 
-int int_floor(float input)
-{
-    return (int) floor(input);
-}
-
-int int_abs(float input)
-{
-    if (input < 0)
-    {
-        return -input;
-    }
-    else
-    {
-        return input;
-    }
-}
-
 float simplex_fun_int_1D(float3 point, int ix)
 {
     float x = point.x - ix;

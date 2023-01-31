@@ -108,8 +108,6 @@ zoxel_get_voxel_direction(front, z, 1)      // creates get_voxel_front
     mesh_count->x += voxel_face_indicies_length;\
     mesh_count->y += voxel_face_vertices_length;
 
-//uvs_count += voxel_face_vertices_length;
-
 #define zoxel_check_faces_with_uvs(direction)\
 {\
     unsigned char that_voxel = get_voxel##_##direction(local_position, chunk, chunkSize, chunk##_##direction);\

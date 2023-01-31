@@ -1,10 +1,13 @@
 //! A basic x2 building block.
-typedef struct
-{
-    int x;
-    int y;
-    int z;
-} int3;
+#ifndef is_int3
+    #define is_int3
+    typedef struct
+    {
+        int x;
+        int y;
+        int z;
+    } int3;
+#endif
 
 #define int3_zero (int3) { 0, 0, 0 }
 
@@ -94,15 +97,3 @@ int3 int3_add(int3 a, int3 b)
 {
     return (int3) { a.x + b.x, a.y + b.y, a.z + b.z };
 }
-
-const int3 octree_positions[] =
-{
-    { 0, 0, 0},
-    { 0, 0, 1},
-    { 0, 1, 0},
-    { 0, 1, 1},
-    { 1, 0, 0},
-    { 1, 0, 1},
-    { 1, 1, 0},
-    { 1, 1, 1}
-};
