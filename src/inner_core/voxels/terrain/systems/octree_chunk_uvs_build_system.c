@@ -138,13 +138,13 @@ void build_octree_chunk_mesh_uvs(const ChunkOctree *chunk_octree,
         {
             max_depth = max_octree_depth;
         }
-        else if (chunk_division - 1 > max_octree_depth)
+        else if ((chunk_division) > max_octree_depth) //  - 1
         {
             max_depth = 0;
         }
         else
         {
-            max_depth = max_octree_depth - (chunk_division - 1);
+            max_depth = max_octree_depth - (chunk_division);
         }
     #endif
     count_octree_chunk(chunk_octree, NULL, chunk_octree, neighbors,
