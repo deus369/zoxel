@@ -108,18 +108,10 @@ ECS_COPY(name, dst, src, {\
     free##_##name(dst);\
     clone##_##name(dst, src);\
 })\
-const name* null_if_open##_##name(const name* node)\
-{\
-    return node;\
-}\
 const name* find_node##_##name(const name* node, int3 octree_position, unsigned char depth)\
 {\
-    if (depth == 0)\
-    {\
-        return node;\
-    }\
-    /* if closed node, return node early */ \
-    if (node->nodes == NULL)\
+    /* if depth finish or if closed node, return node early */ \
+    if (depth == 0 || node->nodes == NULL)\
     {\
         return node;\
     }\
@@ -127,11 +119,11 @@ const name* find_node##_##name(const name* node, int3 octree_position, unsigned 
     unsigned char dividor = pow(2, depth);\
     int3 local_position = (int3) { octree_position.x / dividor, octree_position.y / dividor, octree_position.z / dividor };\
     int3 child_octree_position = (int3) { octree_position.x % dividor, octree_position.y % dividor, octree_position.z % dividor };\
-    unsigned char child_index = local_position.x * 4 + local_position.y * 2 + local_position.z;\
-    node = &node->nodes[child_index];\
+    node = &node->nodes[get_node_index(local_position)];\
     return find_node##_##name(node, child_octree_position, depth);\
 }\
-const name* find_adjacent##_##name(const name* root, const name* node, int3 octree_position, int3 node_position, unsigned char depth, unsigned char direction, const name *neighbors[])\
+const name* find_adjacent##_##name(const name* root, const name* node, int3 octree_position, int3 node_position,\
+    unsigned char depth, unsigned char direction, const name *neighbors[])\
 {\
     if (node != NULL)\
     {\
@@ -140,7 +132,7 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
             if (node_position.x != 0)\
             {\
                 node_position.x--;\
-                return null_if_open##_##name(&node->nodes[get_node_index(node_position)]);\
+                return &node->nodes[get_node_index(node_position)];\
             }\
         }\
         else if (direction == direction_right)\
@@ -148,7 +140,7 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
             if (node_position.x != 1)\
             {\
                 node_position.x++;\
-                return null_if_open##_##name(&node->nodes[get_node_index(node_position)]);\
+                return &node->nodes[get_node_index(node_position)];\
             }\
         }\
         else if (direction == direction_down)\
@@ -156,7 +148,7 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
             if (node_position.y != 0)\
             {\
                 node_position.y--;\
-                return null_if_open##_##name(&node->nodes[get_node_index(node_position)]);\
+                return &node->nodes[get_node_index(node_position)];\
             }\
         }\
         else if (direction == direction_up)\
@@ -164,7 +156,7 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
             if (node_position.y != 1)\
             {\
                 node_position.y++;\
-                return null_if_open##_##name(&node->nodes[get_node_index(node_position)]);\
+                return &node->nodes[get_node_index(node_position)];\
             }\
         }\
         else if (direction == direction_back)\
@@ -172,7 +164,7 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
             if (node_position.z != 0)\
             {\
                 node_position.z--;\
-                return null_if_open##_##name(&node->nodes[get_node_index(node_position)]);\
+                return &node->nodes[get_node_index(node_position)];\
             }\
         }\
         else if (direction == direction_front)\
@@ -180,7 +172,7 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
             if (node_position.z != 1)\
             {\
                 node_position.z++;\
-                return null_if_open##_##name(&node->nodes[get_node_index(node_position)]);\
+                return &node->nodes[get_node_index(node_position)];\
             }\
         }\
     }\
@@ -220,8 +212,7 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
         if (direction == direction_left)\
         {\
             if (neighbors[0] == NULL) return NULL;\
-            unsigned char dividor = pow(2, depth);\
-            octree_position.x = dividor - 1;\
+            octree_position.x = pow(2, depth) - 1;\
             return find_node##_##name(neighbors[0], octree_position, depth);\
         }\
         else if (direction == direction_right)\
@@ -233,8 +224,7 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
         else if (direction == direction_back)\
         {\
             if (neighbors[2] == NULL) return NULL;\
-            unsigned char dividor = pow(2, depth);\
-            octree_position.z = dividor - 1;\
+            octree_position.z = pow(2, depth) - 1;\
             return find_node##_##name(neighbors[2], octree_position, depth);\
         }\
         else if (direction == direction_front)\
@@ -251,6 +241,9 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
 }
 
 /*
+    unsigned char *chunk_index
+    *chunk_index = 1;\
+
     if (node->nodes != NULL)\
     {\
         return NULL;\
@@ -318,120 +311,120 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
     {\
         if (direction == direction_up)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[2]);\
+            return &parent_node->nodes[2]);\
         }\
         else if (direction == direction_right)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[4]);\
+            return &parent_node->nodes[4]);\
         }\
         else if (direction == direction_front)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[1]);\
+            return &parent_node->nodes[1]);\
         }\
     }\
     else if (node_index == 1)\
     {\
         if (direction == direction_up)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[3]);\
+            return &parent_node->nodes[3]);\
         }\
         else if (direction == direction_right)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[5]);\
+            return &parent_node->nodes[5]);\
         }\
         else if (direction == direction_back)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[0]);\
+            return &parent_node->nodes[0]);\
         }\
     }\
     else if (node_index == 2)\
     {\
         if (direction == direction_down)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[0]);\
+            return &parent_node->nodes[0]);\
         }\
         else if (direction == direction_right)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[6]);\
+            return &parent_node->nodes[6]);\
         }\
         else if (direction == direction_front)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[3]);\
+            return &parent_node->nodes[3]);\
         }\
     }\
     else if (node_index == 3)\
     {\
         if (direction == direction_down)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[1]);\
+            return &parent_node->nodes[1]);\
         }\
         else if (direction == direction_right)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[7]);\
+            return &parent_node->nodes[7]);\
         }\
         else if (direction == direction_back)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[2]);\
+            return &parent_node->nodes[2]);\
         }\
     }\
     else if (node_index == 4)\
     {\
         if (direction == direction_up)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[6]);\
+            return &parent_node->nodes[6]);\
         }\
         else if (direction == direction_left)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[0]);\
+            return &parent_node->nodes[0]);\
         }\
         else if (direction == direction_front)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[5]);\
+            return &parent_node->nodes[5]);\
         }\
     }\
     else if (node_index == 5)\
     {\
         if (direction == direction_up)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[7]);\
+            return &parent_node->nodes[7]);\
         }\
         else if (direction == direction_left)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[1]);\
+            return &parent_node->nodes[1]);\
         }\
         else if (direction == direction_back)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[4]);\
+            return &parent_node->nodes[4]);\
         }\
     }\
     else if (node_index == 6)\
     {\
         if (direction == direction_down)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[4]);\
+            return &parent_node->nodes[4]);\
         }\
         else if (direction == direction_left)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[2]);\
+            return &parent_node->nodes[2]);\
         }\
         else if (direction == direction_front)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[7]);\
+            return &parent_node->nodes[7]);\
         }\
     }\
     else if (node_index == 7)\
     {\
         if (direction == direction_down)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[5]);\
+            return &parent_node->nodes[5]);\
         }\
         else if (direction == direction_left)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[3]);\
+            return &parent_node->nodes[3]);\
         }\
         else if (direction == direction_back)\
         {\
-            return null_if_open##_##name(&parent_node->nodes[6]);\
+            return &parent_node->nodes[6]);\
         }\
     }\
 */

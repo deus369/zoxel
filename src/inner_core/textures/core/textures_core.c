@@ -2,7 +2,7 @@
 #define zoxel_textures_core
 
 const double noise_animation_speed = 0.5;
-const unsigned char is_texture_outlines = 3;
+const unsigned char is_texture_outlines = 0;
 zoxel_declare_tag(NoiseTexture)
 zoxel_declare_tag(FrameTexture)
 zoxel_declare_tag(SaveTexture)

@@ -28,7 +28,7 @@
 #define voxel_octrees
 #define zoxel_test_voxels_terrain
 #define zoxel_test_chickens
-// #define zoxel_voxel_disable_distance_division
+#define zoxel_voxel_disable_distance_division
 // #define disable_voxel_left
 // #define disable_voxel_right
 // #define disable_voxel_back
@@ -47,7 +47,7 @@
 // #define zoxel_test_uis
 
 // -- debugs --
-#define zox_logs // add logs with printf
+// #define zox_logs // add logs with printf
 // #define zoxel_catch_opengl_errors
 // #define zoxel_log_frames_per_second
 // #define zoxel_debug_vox_read
@@ -70,7 +70,7 @@
 // #define zoxel_log_sound_generation
 // #define zoxel_log_music_playing
 // #define zoxel_slow_music
-#define zoxel_disable_music
+// #define zoxel_disable_music
 
 // Finally include zoxel engine and zoxel
 #include "zoxel_engine.c"
