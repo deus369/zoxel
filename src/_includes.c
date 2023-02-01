@@ -28,14 +28,15 @@
 #define voxel_octrees
 #define zoxel_test_voxels_terrain
 #define zoxel_test_chickens
-#define zoxel_voxel_disable_distance_division
+// #define zoxel_voxel_disable_distance_division
+// #define zoxel_test_character3Ds
+
 // #define disable_voxel_left
 // #define disable_voxel_right
 // #define disable_voxel_back
 // #define disable_voxel_front
 // #define disable_voxel_down
 // #define zoxel_disable_close_nodes
-// #define zoxel_test_character3Ds
 // #define zoxel_test_lines3D
 // #define zoxel_test_networking
 // #define zoxel_test_brain

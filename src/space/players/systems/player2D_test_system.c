@@ -91,15 +91,19 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it)
                 note_frequencies[rand() % 42], 0.8 + 0.4 * (rand() % 101) / 100.0,
                 instrument_violin);
         }
+        else if (keyboard->v.pressed_this_frame)
+        {
+            printf("Total quads for chunks: %i\n", total_quads);
+        }
         else if (keyboard->m.pressed_this_frame)
         {
             ecs_set(it->world, main_music, GenerateMusic, { 1 });
         }
-        else if (keyboard->v.pressed_this_frame)
+        else if (keyboard->b.pressed_this_frame)
         {
             spawn_many_characters3D(it->world);
         }
-        else if (keyboard->b.pressed_this_frame)
+        else if (keyboard->n.pressed_this_frame)
         {
             const Position3D *position3D = ecs_get(it->world, latest_character3D, Position3D);
             const Rotation3D *rotation = ecs_get(it->world, latest_character3D, Rotation3D);

@@ -2,7 +2,7 @@
 #define zoxel_voxels_terrain
 
 #define max_octree_depth 5
-#define terrain_rows 6
+#define terrain_rows 12
 const int3 terrain_chunk_size = { chunk_length, 8 * chunk_length, chunk_length };
 float chunk_real_size = overall_voxel_scale / 2.0f; // 1.0f;   // size achunk takes up
 const unsigned char terrain_min_height = 8;

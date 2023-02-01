@@ -1,4 +1,5 @@
 extern unsigned char is_split_screen;
+extern ecs_entity_t fps_display;
 
 //! Spawns our first game entities.
 void boot_zoxel_game(ecs_world_t *world)
@@ -15,13 +16,17 @@ void boot_zoxel_game(ecs_world_t *world)
     float3 camera_begin_position = { 0, 0.0f, 0.0f };
     #ifdef zoxel_test_voxels_terrain
     #ifdef voxel_octrees
-    camera_begin_position = (float3) { 0, -0.06f * overall_voxel_scale, 0 };
+    camera_begin_position = (float3) { 0, -0.01f * overall_voxel_scale, 0 };
     #else
     camera_begin_position = (float3) { 0, 0.52f * 2 * overall_voxel_scale, 0 };
     #endif
     #endif
     main_cameras[0] = spawn_base_camera(world, camera_begin_position,
         quaternion_identity(), screen_dimensions2, (int2) { });
+
+    float4 rotationer = quaternion_from_euler( (float3) { 0, -0.02f * degreesToRadians, 0 });
+    zoxel_set(world, main_cameras[0] , EternalRotation, { rotationer });
+
     if (is_split_screen)
     {
         //! \todo connect a gamepad to this camera
@@ -48,4 +53,5 @@ void boot_zoxel_game(ecs_world_t *world)
     #endif
     spawn_canvas_edge_lines(world, main_canvas);
     spawn_music(world);
+    fps_display = spawn_fps_display(world, main_canvas, 32);
 }

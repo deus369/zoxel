@@ -1,3 +1,5 @@
+int total_quads = 0;
+
 //! Generate random noise texture.
 /**
  * Once main thread is fixed, update to gpu in this system.
@@ -35,6 +37,7 @@ void MeshUvsUpdateSystem(ecs_iter_t *it)
             meshIndicies2->value, meshIndicies2->length,
             meshVertices2->value, meshVertices2->length,
             meshUVs2->value, meshUVs2->length);
+        total_quads += meshIndicies2->length / 3;
     }
 }
 zoxel_declare_system(MeshUvsUpdateSystem)

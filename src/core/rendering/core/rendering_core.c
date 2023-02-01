@@ -18,7 +18,6 @@ zoxel_memory_component(MeshColors, color)
 #include "components/uvs_gpu_link.c"
 #include "util/mesh_util.c"
 #include "util/render_util.c"
-#include "systems/eternal_rotation_system.c"    // move this to animation module
 #include "systems/mesh_update_system.c"
 #include "systems/mesh_colors_update_system.c"
 #include "systems/mesh_uvs_update_system.c"
@@ -52,7 +51,6 @@ void RenderingCoreImport(ecs_world_t *world)
     ecs_set_hooks(world, MeshGPULink, { .dtor = ecs_dtor(MeshGPULink) });
     ecs_set_hooks(world, UvsGPULink, { .dtor = ecs_dtor(UvsGPULink) });
     // move this to animations systems
-    zoxel_system(world, EternalRotationSystem, EcsOnUpdate, [out] Rotation3D, [in] EternalRotation);  // _main_thread
     // render2D
     zoxel_system_main_thread(world, InstanceRender2DSystem, 0,
         [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink,

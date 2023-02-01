@@ -214,23 +214,26 @@ void build_octree_chunk(
     }
 }
 
+const unsigned char inner_render_buffer = 0;
+
 unsigned char get_max_depth_from_division(unsigned char chunk_division)
 {
     #ifdef zoxel_voxel_disable_distance_division
         unsigned char max_depth = max_octree_depth;
     #else
+        unsigned char depth_addition = chunk_division / 2;
         unsigned char max_depth;
-        if (chunk_division == 0)
+        if (depth_addition < inner_render_buffer)
         {
             max_depth = max_octree_depth;
         }
-        else if ((chunk_division - 1) > max_octree_depth)
+        else if ((depth_addition - inner_render_buffer) > max_octree_depth)
         {
             max_depth = 0;
         }
         else
         {
-            max_depth = max_octree_depth - (chunk_division - 1);
+            max_depth = max_octree_depth - (depth_addition - inner_render_buffer);
         }
     #endif
     return max_depth;
