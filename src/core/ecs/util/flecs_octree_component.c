@@ -237,6 +237,11 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
             octree_position.z = 0;\
             return find_node##_##name(neighbors[3], octree_position, depth);\
         }\
+        else if (direction == direction_down)\
+        {\
+            *chunk_index = 5;\
+            return NULL;\
+        }\
         else\
         {\
             return NULL;\

@@ -12,6 +12,10 @@ unsigned char is_adjacent_all_solid(unsigned char direction,
         octree_position, node_position, depth, direction, neighbors, &chunk_index);
     if (adjacent_node == NULL || adjacent_node->value == 0)
     {
+        if (adjacent_node == NULL && chunk_index != 0)
+        {
+            return 1;
+        }
         return 0;
     }
     // check underneath nodes
