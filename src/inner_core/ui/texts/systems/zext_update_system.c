@@ -9,7 +9,7 @@ void ZextUpdateSystem(ecs_iter_t *it)
     }
     // printf("ZextUpdateSystem: changeQuery changed\n");
     // ecs_query_skip(it); //! Resetting doesn't cause table changes.
-    ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
+    const ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
     const ZextData *zextDatas = ecs_field(it, ZextData, 3);
     const ZextSize *zextSizes = ecs_field(it, ZextSize, 4);
     const Layer2D *layer2Ds = ecs_field(it, Layer2D, 5);
@@ -18,13 +18,12 @@ void ZextUpdateSystem(ecs_iter_t *it)
     Children *childrens = ecs_field(it, Children, 8);
     for (int i = 0; i < it->count; i++)
     {
-        ZextDirty *zextDirty = &zextDirtys[i];
+        const ZextDirty *zextDirty = &zextDirtys[i];
         if (zextDirty->value != 1)
         {
             // printf("ZextUpdateSystem: ZextDirty is not dirty.\n");
             continue;
         }
-        zextDirty->value = 0;
         // printf("ZextUpdateSystem: ZextDirty is has updated.\n");
         ecs_entity_t e = it->entities[i];
         const ZextData *zextData = &zextDatas[i];

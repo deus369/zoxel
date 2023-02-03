@@ -152,7 +152,6 @@ float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity
         ui_entities_count++;
     }
     ecs_set(world, e, Anchor, { anchor });
-    ecs_set(world, e, PixelPosition, { local_pixel_position });
     ecs_set(world, e, PixelSize, { pixel_size });
     ecs_set(world, e, TextureSize, { pixel_size });
     ecs_set(world, e, CanvasLink, { main_canvas });
@@ -165,6 +164,14 @@ float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity
         local_pixel_position, anchor,
         parent_position, parent_pixel_size,
         canvas_size_f, aspect_ratio);
+    int2 global_pixel_position = (int2) {
+        ceil((position2D.x / aspect_ratio + 0.5f) * canvas_size_f.x),
+        ((position2D.y + 0.5f) * canvas_size_f.y) };
+    ecs_set(world, e, PixelPosition, { local_pixel_position });
+    ecs_set(world, e, Position2D, { position2D });
+    ecs_set(world, e, CanvasPixelPosition, { global_pixel_position });
+    return position2D;
+}
     /*if ((long int) e == 1957)
     {
         printf("Initially:\n");
@@ -172,13 +179,6 @@ float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity
         printf("    parent_position [%fx%f]\n", parent_position.x, parent_position.y);
         printf("    parent_pixel_size [%ix%i]\n", parent_pixel_size.x, parent_pixel_size.y);
     }*/
-    ecs_set(world, e, Position2D, { position2D });
-    int2 global_pixel_position = (int2) {
-        ceil((position2D.x / aspect_ratio + 0.5f) * canvas_size_f.x),
-        ((position2D.y + 0.5f) * canvas_size_f.y) };
-    ecs_set(world, e, CanvasPixelPosition, { global_pixel_position });
-    return position2D;
-}
 
 // set children position as well
 void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, unsigned char layer, int2 canvas_size)

@@ -32,6 +32,12 @@ const byte2 font_question_mark[] =
 const unsigned char font_space_length = 1 * 2;
 const byte2 font_space[] =
 {
+    { middleSideX, font_bottom_side }, { middleSideX, font_bottom_side }
+};
+
+const unsigned char underscore_length = 1 * 2;
+const byte2 font_underscore[] =
+{
     { font_left_side, font_bottom_side }, { font_right_side, font_bottom_side }
 };
 

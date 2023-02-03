@@ -1,5 +1,6 @@
 extern ecs_entity_t local_player;
 const int particleSpawnCount = 266;
+ecs_entity_t fps_display;
 
 //! Called in ecs updates
 void Player2DTestSystem(ecs_iter_t *it)
@@ -58,8 +59,6 @@ void Player2DTestSystem(ecs_iter_t *it)
 }
 zoxel_declare_system(Player2DTestSystem);
 
-ecs_entity_t fps_display;
-
 void Player2DTestMainThreadSystem(ecs_iter_t *it)
 {
     const Keyboard *keyboards = ecs_field(it, Keyboard, 1);
@@ -93,7 +92,7 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it)
         }
         else if (keyboard->v.pressed_this_frame)
         {
-            printf("Total quads for chunks: %i\n", total_quads);
+            printf("Total quads for chunks: %i\n", quad_count);
         }
         else if (keyboard->m.pressed_this_frame)
         {
@@ -102,6 +101,29 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it)
         else if (keyboard->b.pressed_this_frame)
         {
             spawn_many_characters3D(it->world);
+        }
+        else if (keyboard->h.pressed_this_frame)
+        {
+            // print positions
+            const Children *children = ecs_get(it->world, quads_label, Children);
+            for (int i = 0; i < children->length; i++)
+            {
+                const Position2D *position2D = ecs_get(it->world, children->value[i], Position2D);
+                const ZigelIndex *zigelIndex = ecs_get(it->world, children->value[i], ZigelIndex);
+                const CanvasPixelPosition *canvasPixelPosition = ecs_get(it->world, children->value[i], CanvasPixelPosition);
+                const ParentLink *parentLink = ecs_get(it->world, children->value[i], ParentLink);
+                const TextureSize *textureSize = ecs_get(it->world, children->value[i], TextureSize);
+                const Texture *texture = ecs_get(it->world, children->value[i], Texture);
+                
+                printf("    [%i] is %fx%f - zigelIndex %i - canvasPixelPosition %ix%i - parentLink %lu - texture %ix%i:%i\n",
+                    i, position2D->value.x, position2D->value.y, zigelIndex->value,
+                    canvasPixelPosition->value.x, canvasPixelPosition->value.y,
+                    parentLink->value,
+                    textureSize->value.x, textureSize->value.y, texture->length);
+                ecs_set(it->world, children->value[i], GenerateTexture, { 1 });
+                ecs_set(it->world, children->value[i], MeshDirty, { 1 });
+                ecs_set(it->world, children->value[i], TextureDirty, { 1 });
+            }
         }
         else if (keyboard->n.pressed_this_frame)
         {

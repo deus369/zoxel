@@ -18,6 +18,8 @@ unsigned char convert_ascii(char input)
     zoxel_convert_ascii('/', 58)
     zoxel_convert_ascii('\\', 59)
     zoxel_convert_ascii('.', 56)
+    // more special
+    zoxel_convert_ascii('_', 70)
     // numbers
     zoxel_convert_ascii('0', 60)
     zoxel_convert_ascii('1', 61)

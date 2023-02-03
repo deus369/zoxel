@@ -123,7 +123,7 @@ const name* find_node##_##name(const name* node, int3 octree_position, unsigned 
     return find_node##_##name(node, child_octree_position, depth);\
 }\
 const name* find_adjacent##_##name(const name* root, const name* node, int3 octree_position, int3 node_position,\
-    unsigned char depth, unsigned char direction, const name *neighbors[])\
+    unsigned char depth, unsigned char direction, const name *neighbors[], unsigned char *chunk_index)\
 {\
     if (node != NULL)\
     {\
@@ -211,24 +211,28 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
     {\
         if (direction == direction_left)\
         {\
+            *chunk_index = 1;\
             if (neighbors[0] == NULL) return NULL;\
             octree_position.x = pow(2, depth) - 1;\
             return find_node##_##name(neighbors[0], octree_position, depth);\
         }\
         else if (direction == direction_right)\
         {\
+            *chunk_index = 2;\
             if (neighbors[1] == NULL) return NULL;\
             octree_position.x = 0;\
             return find_node##_##name(neighbors[1], octree_position, depth);\
         }\
         else if (direction == direction_back)\
         {\
+            *chunk_index = 3;\
             if (neighbors[2] == NULL) return NULL;\
             octree_position.z = pow(2, depth) - 1;\
             return find_node##_##name(neighbors[2], octree_position, depth);\
         }\
         else if (direction == direction_front)\
         {\
+            *chunk_index = 4;\
             if (neighbors[3] == NULL) return NULL;\
             octree_position.z = 0;\
             return find_node##_##name(neighbors[3], octree_position, depth);\
@@ -241,8 +245,6 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
 }
 
 /*
-    unsigned char *chunk_index
-    *chunk_index = 1;\
 
     if (node->nodes != NULL)\
     {\

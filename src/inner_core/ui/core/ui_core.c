@@ -50,9 +50,9 @@ void UICoreImport(ecs_world_t *world)
     zoxel_system(world, ElementSelectedSystem, EcsOnUpdate, [out] Element, [in] SelectableState, [out] Brightness)
     if (!headless)
     {
-        zoxel_system(world, ElementActivateSystem, EcsOnUpdate, [in] Mouse, [in] RaycasterTarget);
-        zoxel_system_main_thread(world, ElementMeshSystem, EcsOnLoad, [none] Element,
-            [in] EntityInitialize, [in] PixelSize, [in] CanvasLink)
+        zoxel_system(world, ElementActivateSystem, EcsPostUpdate, [in] Mouse, [in] RaycasterTarget);
+        zoxel_system_main_thread(world, ElementMeshSystem, EcsPostUpdate, [none] Element,   // EcsOnLoad
+            [in] EntityInitialize, [in] PixelSize, [in] CanvasLink, [out] MeshDirty)
     }
     spawn_prefab_canvas(world);
     spawn_prefab_element(world);

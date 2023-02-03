@@ -26,8 +26,8 @@
 
 // -- Tests / Options --
 #define voxel_octrees
-#define zoxel_test_voxels_terrain
 #define zoxel_test_chickens
+#define zoxel_test_voxels_terrain
 // #define zoxel_voxel_disable_distance_division
 // #define zoxel_test_character3Ds
 

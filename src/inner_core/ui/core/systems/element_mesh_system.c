@@ -23,6 +23,7 @@ void ElementMeshSystem(ecs_iter_t *it)
             set_mesh_vertices_world_scale2D(world, e, square_vertices, 4, scaledSize2D);  // scale the mesh
             // set_mesh_uvs(world, e, square_vertices, 4);
             // printf("ElementMeshSystem [%lu]\n", (long int) e);
+            // never reaches here when spawning zigel...
         }
     }
 }

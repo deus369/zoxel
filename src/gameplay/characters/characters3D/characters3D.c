@@ -11,7 +11,7 @@ zoxel_component(Character3DLink, ecs_entity_t)
 void spawn_many_characters3D(ecs_world_t *world)
 {
     int vox_file_index = rand() % vox_files_count;
-    printf("Spawning %i\n", vox_file_index);
+    // printf("Spawning %i\n", vox_file_index);
     vox_file vox = vox_files[vox_file_index];
     zoxel_log("spawn_many_characters3D [%i]\n", spawn_characters3D_count);
     const float model_scale = 0.015f;

@@ -1,6 +1,9 @@
 ecs_entity_t font_style_prefab;
 ecs_entity_t font_style_entity;
 const int font_styles_length = 256;
+const int fonts_used = 71;
+// #define font_styles_length 256
+// #define fonts_used 71
 
 //! meta data for a font character
 ecs_entity_t spawn_font_style_prefab(ecs_world_t *world)
@@ -18,7 +21,6 @@ ecs_entity_t spawn_font_style_prefab(ecs_world_t *world)
 ecs_entity_t spawn_font_style(ecs_world_t *world)
 {
     ecs_defer_begin(world);
-    const int fonts_used = 70;
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, font_style_prefab);
     set_unique_entity_name(world, e, "font_style");
     Children children = { };
@@ -84,6 +86,8 @@ ecs_entity_t spawn_font_style(ecs_world_t *world)
     children.value[57] = spawn_font(world, font_question_mark, font_question_mark_length);
     children.value[58] = spawn_font(world, font_question_mark, font_question_mark_length);
     children.value[59] = spawn_font(world, font_question_mark, font_question_mark_length);
+    // more special
+    children.value[70] = spawn_font(world, font_underscore, underscore_length);
     // do these
     children.value[60] = spawn_font(world, number_0, number_0_length);
     children.value[61] = spawn_font(world, number_1, number_1_length);

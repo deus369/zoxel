@@ -134,8 +134,8 @@ void opengl_upload_shader3D_textured(
     const float3 *verts, int verts_length,
     const float2 *uvs, int uvs_length)
 {
+    quad_count += indicies_length / 3;
     Material3DTextured material3D = spawn_material3D_textured(material_buffer);
-
     // Bind the index buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);

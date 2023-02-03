@@ -12,3 +12,12 @@ typedef struct
     PhysicalButton right;
 } Mouse;
 ECS_COMPONENT_DECLARE(Mouse);
+
+#define mouse_zero {\
+    (int2) { 0, 0 },\
+    (int2) { 0, 0 },\
+    (int2) { 0, 0 },\
+    (PhysicalButton) { 0, 0, 0 },\
+    (PhysicalButton) { 0, 0, 0 },\
+    (PhysicalButton) { 0, 0, 0 }\
+}

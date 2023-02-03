@@ -1,6 +1,7 @@
 #ifndef zoxel_textures_core
 #define zoxel_textures_core
 
+#define texture_update_pipeline EcsOnStore // EcsOnValidate
 const double noise_animation_speed = 0.5;
 const unsigned char is_texture_outlines = 0;
 zoxel_declare_tag(NoiseTexture)
@@ -43,15 +44,15 @@ void TexturesCoreImport(ecs_world_t *world)
     zoxel_system_main_thread(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture);
     zoxel_texture_generation_system(NoiseTexture, NoiseTextureSystem)
     zoxel_texture_generation_system(FrameTexture, FrameTextureSystem)
-    zoxel_system_main_thread(world, TextureSaveSystem, EcsOnValidate,
+    zoxel_system_main_thread(world, TextureSaveSystem, texture_update_pipeline,
         [in] TextureDirty, [in] Texture, [in] TextureSize, [none] SaveTexture)
-    zoxel_reset_system_define(GenerateTextureResetSystem, GenerateTexture)
-    zoxel_reset_system_define(TextureDirtyResetSystem, TextureDirty)
     if (!headless)
     {
-        zoxel_system_main_thread(world, TextureUpdateSystem, EcsOnValidate,
+        zoxel_system_main_thread(world, TextureUpdateSystem, texture_update_pipeline,
             [in] TextureDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink)
     }
+    zoxel_reset_system_define(GenerateTextureResetSystem, GenerateTexture)
+    zoxel_reset_system_define(TextureDirtyResetSystem, TextureDirty)
     spawn_prefab_noise_texture(world);
 }
 // #include <cstdint> ? https://stackoverflow.com/questions/20024690/is-there-byte-data-type-in-c

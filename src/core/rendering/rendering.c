@@ -1,6 +1,8 @@
 #ifndef zoxel_rendering
 #define zoxel_rendering
 
+// stats
+int quad_count = 0;
 #include "data/GLuint2.c"
 // used atm for rendering
 float4x4 main_camera_matrix; 

@@ -27,6 +27,7 @@ zoxel_memory_component(ZextData, unsigned char) //! An array of bytes for charac
 #include "systems/font_texture_system.c"
 #include "systems/zext_update_system.c"
 #include "systems/animate_text_system.c"
+zoxel_reset_system(ZextDirtyResetSystem, ZextDirty)
 
 //! The UI contains ways to interact with 2D objects.
 /**
@@ -47,16 +48,17 @@ void TextsImport(ecs_world_t *world)
     zoxel_define_component(AnimateZext)
     zoxel_memory_component_define(FontData)
     zoxel_memory_component_define(ZextData)
+    zoxel_filter(zextDirtyQuery, world, [none] Zext, [in] ZextDirty)
+    zoxel_filter(generateTextureQuery, world, [none] FontTexture, [in] GenerateTexture)
     zoxel_system_main_thread(world, AnimateTextSystem, EcsOnUpdate,
         [out] AnimateZext, [out] ZextDirty, [out] ZextData)
-    zoxel_filter(zextDirtyQuery, world, [none] Zext, [in] ZextDirty)
     zoxel_system_ctx_single_thread(world, ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery,
-        [none] Zext, [out] ZextDirty, [in] ZextData, [in] ZextSize, [in] Layer2D,
+        [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] Layer2D,
         [in] Position2D, [in] PixelSize, [out] Children)
-    zoxel_filter(generateTextureQuery, world, [none] FontTexture, [in] GenerateTexture)
     zoxel_system_ctx(world, FontTextureSystem, EcsOnUpdate, generateTextureQuery,
         [none] FontTexture, [out] TextureDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture,
         [in] ZigelIndex)
+    zoxel_reset_system_define(ZextDirtyResetSystem, ZextDirty)
     spawn_font_style_prefab(world);
     spawn_font_prefab(world);
     zigel_prefab = spawn_zigel_prefab(world);

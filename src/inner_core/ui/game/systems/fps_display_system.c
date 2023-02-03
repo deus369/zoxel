@@ -37,48 +37,45 @@ void FpsDisplaySystem(ecs_iter_t *it)
         if (fpsDisplayTicker->value <= 0.0)
         {
             // printf("Checking FPS Ticker Ticked.\n");
+            ZextDirty *zextDirty = &zextDirtys[i];
+            zextDirty->value = 1;
+            changed = 1;
             fpsDisplayTicker->value += frame_rate_update_speed;
             if (fpsDisplayTicker->value <= -frame_rate_update_speed)
             {
                 fpsDisplayTicker->value = 0;
             }
-            ZextDirty *zextDirty = &zextDirtys[i];
-            if (zextDirty->value == 0)
+            // printf("Updated FPSDisplay.\n");
+            ZextData *zextData = &zextDatas[i];
+            if (frames_per_second < 10)
             {
-                zextDirty->value = 1;
-                // printf("Updated FPSDisplay.\n");
-                ZextData *zextData = &zextDatas[i];
-                if (frames_per_second < 10)
-                {
-                    zextData->value[0] = number_0_start;
-                    zextData->value[1] = number_0_start;
-                    zextData->value[2] = number_0_start + frames_per_second;
-                }
-                else if (frames_per_second < 100)
-                {
-                    zextData->value[0] = number_0_start;
-                    zextData->value[1] = number_0_start + (frames_per_second / 10);
-                    zextData->value[2] = number_0_start + (frames_per_second % 10);
-                }
-                else if (frames_per_second < 1000)
-                {
-                    zextData->value[0] = number_0_start + (frames_per_second / 100);
-                    zextData->value[1] = number_0_start + (frames_per_second / 10) % 10;
-                    zextData->value[2] = number_0_start + ((frames_per_second % 100) % 10);
-                }
-                else // if (frames_per_second < 100)
-                {
-                    zextData->value[0] = number_0_start;
-                    zextData->value[1] = number_0_start;
-                    zextData->value[2] = number_0_start;
-                }
-                /*for (int j = 0; j < zextData->length; j++)
-                {
-                    zextData->value[j] = 60 + rand() % 10;
-                }*/
-                changed = 1;
-                // printf("AnimateNoiseSystem, GenerateTexture Triggered: [%lu] on index [%i]\n", (long int)(it->entities[i]), i);
+                zextData->value[0] = number_0_start;
+                zextData->value[1] = number_0_start;
+                zextData->value[2] = number_0_start + frames_per_second;
             }
+            else if (frames_per_second < 100)
+            {
+                zextData->value[0] = number_0_start;
+                zextData->value[1] = number_0_start + (frames_per_second / 10);
+                zextData->value[2] = number_0_start + (frames_per_second % 10);
+            }
+            else if (frames_per_second < 1000)
+            {
+                zextData->value[0] = number_0_start + (frames_per_second / 100);
+                zextData->value[1] = number_0_start + (frames_per_second / 10) % 10;
+                zextData->value[2] = number_0_start + ((frames_per_second % 100) % 10);
+            }
+            else // if (frames_per_second < 100)
+            {
+                zextData->value[0] = number_0_start;
+                zextData->value[1] = number_0_start;
+                zextData->value[2] = number_0_start;
+            }
+            /*for (int j = 0; j < zextData->length; j++)
+            {
+                zextData->value[j] = 60 + rand() % 10;
+            }*/
+            // printf("AnimateNoiseSystem, GenerateTexture Triggered: [%lu] on index [%i]\n", (long int)(it->entities[i]), i);
         }
     }
     if (!changed)

@@ -1,17 +1,17 @@
 #ifndef zoxel_rendering_core
 #define zoxel_rendering_core
 
+#define mesh_update_pipeline EcsPreStore // EcsOnValidate
 //! \todo Create a Cube with unique mesh - for chunk - add these components and update mesh for voxel chunk.
 //      - Test Mesh - simply create a test entity now with mesh and set to dirty
 //      - set data as cube and render
 //      - Animate rotate the cube - for testing
 //! \todo GPU Meshes?
-
-zoxel_memory_component(MeshIndicies, int)
 zoxel_memory_component(MeshVertices, float3)
 zoxel_memory_component(MeshVertices2D, float2)
 zoxel_memory_component(MeshUVs, float2)
 zoxel_memory_component(MeshColors, color)
+#include "components/mesh_indicies.c"
 #include "components/MaterialGPULink.c"
 #include "components/TextureGPULink.c"
 #include "components/mesh_gpu_link.c"
@@ -45,12 +45,10 @@ void RenderingCoreImport(ecs_world_t *world)
     zoxel_memory_component_define(MeshVertices2D)
     zoxel_memory_component_define(MeshUVs)
     zoxel_memory_component_define(MeshColors)
-    // gpu destruction hooks
     ecs_set_hooks(world, MaterialGPULink, { .dtor = ecs_dtor(MaterialGPULink) });
     ecs_set_hooks(world, TextureGPULink, { .dtor = ecs_dtor(TextureGPULink) });
     ecs_set_hooks(world, MeshGPULink, { .dtor = ecs_dtor(MeshGPULink) });
     ecs_set_hooks(world, UvsGPULink, { .dtor = ecs_dtor(UvsGPULink) });
-    // move this to animations systems
     // render2D
     zoxel_system_main_thread(world, InstanceRender2DSystem, 0,
         [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink,
@@ -74,20 +72,20 @@ void RenderingCoreImport(ecs_world_t *world)
     zoxel_system_main_thread(world, InstanceRender3DSystem, 0,
         [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink);
     // updates
-    zoxel_system_main_thread(world, MeshUpdateSystem, EcsOnValidate,
+    zoxel_system_main_thread(world, MeshUpdateSystem, mesh_update_pipeline,
         [in] MeshDirty, [in] MeshIndicies,[in] MeshVertices,
         [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColors);
-    zoxel_system_main_thread(world, Mesh2DUpdateSystem, EcsOnValidate,
+    zoxel_system_main_thread(world, Mesh2DUpdateSystem, mesh_update_pipeline,
         [in] MeshDirty, [in] MeshIndicies,[in] MeshVertices2D,
         [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColors);
-    zoxel_system_main_thread(world, MeshUvsUpdateSystem, EcsOnValidate,
+    zoxel_system_main_thread(world, MeshUvsUpdateSystem, mesh_update_pipeline,
         [in] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshUVs,
         [in] MeshGPULink, [in] MaterialGPULink, [in] UvsGPULink,
         [none] !MeshColors);
-    zoxel_system_main_thread(world, Mesh2DUvsUpdateSystem, EcsOnValidate,
+    zoxel_system_main_thread(world, Mesh2DUvsUpdateSystem, mesh_update_pipeline,
         [in] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshUVs,
         [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshColors);
-    zoxel_system_main_thread(world, MeshColorsUpdateSystem, EcsOnValidate,
+    zoxel_system_main_thread(world, MeshColorsUpdateSystem, mesh_update_pipeline,
         [in] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshColors,
         [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs);
     zoxel_reset_system_define(MeshDirtySystem, MeshDirty);

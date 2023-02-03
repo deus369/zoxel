@@ -7,7 +7,6 @@ void spawn_connected_devices(ecs_world_t *world)
     {
         spawn_gamepad(world);
     }
-    // spawn_mouse(world); //! \todo Why?? Why does this only count systems with 1 count in iterators.
 }
 
 void input_extract_from_sdl(ecs_world_t *world, SDL_Event event)

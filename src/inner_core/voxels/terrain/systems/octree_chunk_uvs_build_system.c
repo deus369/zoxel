@@ -2,18 +2,22 @@
 // max_depth is per chunk... refactor that
 // Fix issues between chunks of different levels of division
 // function to check all adjacent voxels are solid on the face
-unsigned char is_adjacent_all_solid(
+unsigned char is_adjacent_all_solid(unsigned char direction,
     const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *neighbors[],
-    int3 octree_position, int3 node_position, unsigned char depth, unsigned char direction)
+    int3 octree_position, int3 node_position,
+    unsigned char depth, unsigned char max_depth, unsigned char neighbors_max_depths[])
 {
+    unsigned char chunk_index = 0;
     const ChunkOctree *adjacent_node = find_adjacent_ChunkOctree(root_node, parent_node,
-        octree_position, node_position, depth, direction, neighbors);
+        octree_position, node_position, depth, direction, neighbors, &chunk_index);
     if (adjacent_node == NULL || adjacent_node->value == 0)
     {
         return 0;
     }
     // check underneath nodes
-    else if (adjacent_node->nodes)
+    else if (adjacent_node->nodes &&
+        ((chunk_index == 0 && depth < max_depth) || 
+        (chunk_index != 0 && depth < neighbors_max_depths[chunk_index - 1])))
     {
         depth++;
         octree_position.x *= 2;
@@ -68,9 +72,10 @@ unsigned char is_adjacent_all_solid(
             {
                 continue;
             }
-            if (is_adjacent_all_solid(root_node,
+            if (is_adjacent_all_solid(direction, root_node,
                 &adjacent_node->nodes[i], neighbors,
-                int3_add(octree_position, local_position), local_position, depth, direction) == 0)
+                int3_add(octree_position, local_position), local_position,
+                    depth, max_depth, neighbors_max_depths) == 0)
             {
                 return 0;
             }
@@ -88,17 +93,19 @@ unsigned char is_adjacent_all_solid(
 // if (octree_node != NULL && octree_node->nodes != NULL) octree_node = NULL;
 // if (octree_node != NULL && octree_node->nodes != NULL) octree_node = NULL;
 
-#define zoxel_set_octree_adjacent(direction_name)\
-    const ChunkOctree *octree_node = find_adjacent_ChunkOctree(root_node, parent_node, octree_position, node_position, depth, direction##_##direction_name, neighbors);\
+/*#define zoxel_set_octree_adjacent(direction_name)\
+    const ChunkOctree *octree_node = find_adjacent_ChunkOctree(root_node, parent_node,\
+        octree_position, node_position, depth, direction##_##direction_name, neighbors);\
     if (octree_node != NULL && octree_node->nodes != NULL)\
-            octree_node = NULL;
+            octree_node = NULL;*/
 
 /*#define zoxel_octree_check(direction_name)\
     zoxel_set_octree_adjacent(direction_name)\
         if (octree_node == NULL || octree_node->value == 0)*/
 
 #define zoxel_octree_check(direction_name)\
-    if (!is_adjacent_all_solid(root_node, parent_node, neighbors, octree_position, node_position, depth, direction##_##direction_name))
+    if (!is_adjacent_all_solid(direction##_##direction_name, root_node, parent_node, neighbors,\
+         octree_position, node_position, depth, max_depth, neighbors_max_depths))
 
 #define zoxel_octree_add_face_counts(direction_name)\
 {\

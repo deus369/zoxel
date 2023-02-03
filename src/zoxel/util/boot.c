@@ -5,7 +5,7 @@ extern ecs_entity_t fps_display;
 void boot_zoxel_game(ecs_world_t *world)
 {
     zoxel_log("Booting [Zoxel]\n");
-    update();   // update once? so ui does its thing properly
+    // update();   // update once? so ui does its thing properly
     // spawn cameras first
     int2 screen_dimensions2 = screen_dimensions;
     if (is_split_screen)
@@ -24,7 +24,7 @@ void boot_zoxel_game(ecs_world_t *world)
     main_cameras[0] = spawn_base_camera(world, camera_begin_position,
         quaternion_identity(), screen_dimensions2, (int2) { });
 
-    float4 rotationer = quaternion_from_euler( (float3) { 0, -0.02f * degreesToRadians, 0 });
+    float4 rotationer = quaternion_from_euler( (float3) { 0, -0.12f * degreesToRadians, 0 });
     zoxel_set(world, main_cameras[0] , EternalRotation, { rotationer });
 
     if (is_split_screen)
@@ -37,21 +37,20 @@ void boot_zoxel_game(ecs_world_t *world)
     ecs_entity_t realm = spawn_realm(world);
     ecs_entity_t game = spawn_game(world);
     ecs_set(world, game, RealmLink, { realm });
-    // fps_display = spawn_fps_display(world, main_canvas, 32);
+    spawn_music(world);
     if (!headless)
     {
-        // spawn devices
         spawn_connected_devices(world);
         // spawn_player_character3D(world, get_main_camera());
     }
     spawn_ui_camera(world, screen_dimensions2);
-    spawn_font_style(world);
     spawn_canvas(world, screen_dimensions2);
-    spawn_zoxel_main_menu(world);
-    #ifdef zoxel_test_uis
-    spawn_test_uis(world);   // spawns test ui
-    #endif
     spawn_canvas_edge_lines(world, main_canvas);
-    spawn_music(world);
+    spawn_font_style(world);
+    spawn_zoxel_main_menu(world);
+    spawn_quad_count_label(world, main_canvas, 32);
     fps_display = spawn_fps_display(world, main_canvas, 32);
+    // #ifdef zoxel_test_uis
+    // spawn_test_uis(world);   // spawns test ui
+    // #endif
 }
