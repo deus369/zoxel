@@ -85,6 +85,20 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it)
                 fps_display = 0;
             }
         }
+        else if (keyboard->p.pressed_this_frame)
+        {
+            if (quads_label == 0)
+            {
+                zoxel_log("Showing quads_label.\n");
+                quads_label = spawn_quad_count_label(it->world, main_canvas, 32);
+            }
+            else
+            {
+                zoxel_log("Hiding quads_label.\n");
+                delete_hierarchy(it->world, quads_label);
+                quads_label = 0;
+            }
+        }
         else if (keyboard->c.pressed_this_frame)
         {
             // spawn_sound(it->world);

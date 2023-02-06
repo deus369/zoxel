@@ -48,7 +48,7 @@ void boot_zoxel_game(ecs_world_t *world)
     spawn_canvas_edge_lines(world, main_canvas);
     spawn_font_style(world);
     spawn_zoxel_main_menu(world);
-    spawn_quad_count_label(world, main_canvas, 32);
+    // quads_label = spawn_quad_count_label(world, main_canvas, 32);
     fps_display = spawn_fps_display(world, main_canvas, 32);
     // #ifdef zoxel_test_uis
     // spawn_test_uis(world);   // spawns test ui

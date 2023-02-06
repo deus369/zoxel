@@ -3,7 +3,7 @@
 
 #define max_octree_depth 5
 #define inner_render_buffer 0
-#define terrain_rows 12
+#define terrain_rows 8
 #define terrain_vertical 2
 #define octree_min_height -1.995f // 0.005f
 #define terrain_frequency 0.1216 // 0.004216
