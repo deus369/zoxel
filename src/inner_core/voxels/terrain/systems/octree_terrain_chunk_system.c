@@ -2,10 +2,11 @@
 #define octree_octaves 6
 #define octree_persistence 0.5f
 #define octree_frequency 0.5f
-#define octree_min_height 0.005f
+// #define octree_min_height 0.005f
 #define octree_height_addition 0.4f
 #define noise_positiver2 32000
-#define octree_terrain_frequency 0.002f
+// #define octree_terrain_frequency 0.001f
+// #define octree_terrain_frequency 0.001f
 // 3200 2147483647 / 2
 
 //! Our function that creates a chunk.
@@ -51,11 +52,26 @@ void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 pos
     double octree_noise = perlin_terrain(
         position.x + noise_positiver2, 
         position.z + noise_positiver2,
-        terrain_frequency * 16, terrain_seed, terrain_octaves);
-    // octree_noise -= 0.24;
-    octree_noise -= 0.2;
+        terrain_frequency,
+        terrain_seed, terrain_octaves);  //  * 16
+    /*if (octree_noise < 0.0)
+    {
+        octree_noise *= 100.0;
+        // printf("    [%f]   ", octree_noise);
+        printf("    [%f:%f]   ", octree_noise, position.y);
+    }*/
+    // octree_noise *= 0.01 * terrain_amplifier;
+    // octree_noise += 0.33;
+    // octree_noise *= 100.0;
+    
+    // octree_noise *= 2.0;
+    // octree_noise -= 1.0;
+
+    //octree_noise *= 4.0;
+    /*octree_noise -= 0.2;
     octree_noise *= 8.0;
-    // printf("    [%f]   ", octree_noise);
+    octree_noise *= 4.0;*/
+    // octree_noise += position.y * 0.1f;
     // printf("    [%f]   ", position.y);
     // printf("    [%f:%f]   ", position.x, position.z);
     // double octree_noise = (rand() % 101) / 100.0f;
@@ -107,6 +123,7 @@ void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 pos
 
 void OctreeTerrainChunkSystem(ecs_iter_t *it)
 {
+    if (disable_chunk_systems) return;
     ecs_query_t *changeQuery = it->ctx;
     if (!changeQuery || !ecs_query_changed(changeQuery, NULL))
     {

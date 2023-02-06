@@ -2,6 +2,8 @@
 #define zoxel_rendering_core
 
 #define mesh_update_pipeline EcsPreStore // EcsOnValidate
+#define render3D_update_pipeline EcsOnStore // 0, EcsOnStore
+#define render2D_update_pipeline 0 // 0, EcsOnStore
 //! \todo Create a Cube with unique mesh - for chunk - add these components and update mesh for voxel chunk.
 //      - Test Mesh - simply create a test entity now with mesh and set to dirty
 //      - set data as cube and render
@@ -50,26 +52,26 @@ void RenderingCoreImport(ecs_world_t *world)
     ecs_set_hooks(world, MeshGPULink, { .dtor = ecs_dtor(MeshGPULink) });
     ecs_set_hooks(world, UvsGPULink, { .dtor = ecs_dtor(UvsGPULink) });
     // render2D
-    zoxel_system_main_thread(world, InstanceRender2DSystem, 0,
+    zoxel_system_main_thread(world, InstanceRender2DSystem, render2D_update_pipeline,
         [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink,
         [none] !MeshGPULink);
-    zoxel_system_main_thread(world, RenderMaterial2DSystem, 0,
+    zoxel_system_main_thread(world, RenderMaterial2DSystem, render2D_update_pipeline,
         [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MaterialGPULink,
         [in] TextureGPULink, [none] !MeshGPULink);
-    zoxel_system_main_thread(world, RenderMeshMaterial2DSystem, 0,
+    zoxel_system_main_thread(world, RenderMeshMaterial2DSystem, render2D_update_pipeline,
         [in] Position2D, [in] Rotation2D, [in] Scale1D,
         [in] Layer2D, [in] Brightness, [in] MeshGPULink,
         [in] MaterialGPULink, [in] TextureGPULink);
     // render3D
-    zoxel_system_main_thread(world, Render3DSystem, 0, // EcsOnStore,
+    zoxel_system_main_thread(world, Render3DSystem, render3D_update_pipeline, // EcsOnStore,
         [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness,
         [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies,
         [none] !UvsGPULink);
-    zoxel_system_main_thread(world, Render3DUvsSystem, 0, // EcsOnStore,
+    zoxel_system_main_thread(world, Render3DUvsSystem, render3D_update_pipeline, // EcsOnStore,
         [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness,
         [in] MeshGPULink, [in] MaterialGPULink, [in] UvsGPULink,
         [in] TextureGPULink, [in] MeshIndicies);
-    zoxel_system_main_thread(world, InstanceRender3DSystem, 0,
+    zoxel_system_main_thread(world, InstanceRender3DSystem, render3D_update_pipeline,
         [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink);
     // updates
     zoxel_system_main_thread(world, MeshUpdateSystem, mesh_update_pipeline,

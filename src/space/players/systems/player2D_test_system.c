@@ -59,6 +59,8 @@ void Player2DTestSystem(ecs_iter_t *it)
 }
 zoxel_declare_system(Player2DTestSystem);
 
+extern bool disable_chunk_systems;
+
 void Player2DTestMainThreadSystem(ecs_iter_t *it)
 {
     const Keyboard *keyboards = ecs_field(it, Keyboard, 1);
@@ -138,8 +140,18 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it)
             // ecs_set(it->world, latest_character3D, Rotation3D, { float4_identity() });
             ecs_set(it->world, latest_character3D, Rotation3D, { { 0.01f, 0, 0, 0 } });
         }
-
-        
+        else if (keyboard->j.pressed_this_frame)
+        {
+            disable_chunk_systems = true;
+            if (disable_chunk_systems)
+            {
+                printf("Disabled chunk systems.\n");
+            }
+            else
+            {
+                printf("Enabled chunk systems.\n");
+            }
+        }
     }
 }
 zoxel_declare_system(Player2DTestMainThreadSystem)

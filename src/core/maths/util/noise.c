@@ -123,26 +123,27 @@ double perlin_noise(double x, double y, double f, uint32_t seed) {
     double noise = lerp(lerp(n0, n1, u), lerp(n2, n3, u), v);
 
     // Scale the noise value to the range [0, 1]
-    return (noise + 1.0) / 2.0;
+    return noise; //  (noise + 1.0) / 2.0;
 }
 
 double perlin_terrain(double x, double y, double f, uint32_t seed, int octaves)
 {
     double terrain = 0.0;
     double amplitude = 1.0;
-
     // Add multiple scales of Perlin noise
-    for (int i = 0; i < octaves; i++) {
+    for (int i = 0; i < octaves; i++)
+    {
         double frequency = pow(2.0, i);
         terrain += perlin_noise(x * frequency, y * frequency, f, seed) * amplitude;
         amplitude /= 2.0;
     }
-    terrain /= 4.0;
-    if (terrain > 1.0)
+    // terrain /= 4.0;
+    // terrain /= (double) octaves;
+    /*if (terrain > 1.0)
     {
         // printf("Terrain too high %d\n", terrain);
         terrain = 1.0;
-    }
+    }*/
     return terrain;
 }
 

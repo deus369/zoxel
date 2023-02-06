@@ -225,8 +225,6 @@ void build_octree_chunk(
     }
 }
 
-const unsigned char inner_render_buffer = 0;
-
 unsigned char get_max_depth_from_division(unsigned char chunk_division)
 {
     #ifdef zoxel_voxel_disable_distance_division
@@ -274,6 +272,7 @@ void build_octree_chunk_mesh_uvs(const ChunkOctree *chunk_octree,
 //! Builds a mesh data from the chunk!
 void OctreeChunkUVsBuildSystem(ecs_iter_t *it)
 {
+    if (disable_chunk_systems) return;
     ecs_query_t *changeQuery = it->ctx;
     if (!changeQuery || !ecs_query_changed(changeQuery, NULL))
     {

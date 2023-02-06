@@ -42,8 +42,8 @@ void main() \
 { \
     color = texture(tex, uv) * brightness; \
     lowp vec4 backgroundColor = vec4(2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f, 1);\
-    lowp float fogDensity = 0.012;\
-    lowp float fogBlend = 1.0 - exp2(-fogDensity * fogDensity * fogFactor * fogFactor);\
+    lowp float fog_density = 0.01;\
+    lowp float fogBlend = 1.0 - exp2(-fog_density * fog_density * fogFactor * fogFactor);\
     color = mix(color, backgroundColor, fogBlend);\
 } \
 ";

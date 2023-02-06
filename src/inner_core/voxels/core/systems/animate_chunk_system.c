@@ -1,6 +1,7 @@
 //! Every noiseChunkAnimateSpeed it makes the texture update.
 void AnimateChunkSystem(ecs_iter_t *it)
 {
+    if (disable_chunk_systems) return;
     double deltaTime = it->delta_time;
     AnimateChunk *animateTextures = ecs_field(it, AnimateChunk, 1);
     GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 2);

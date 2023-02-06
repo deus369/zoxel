@@ -7,7 +7,8 @@
 void PlaySoundSystem(ecs_iter_t *it)
 {
     const PlaySound *playSounds = ecs_field(it, PlaySound, 2);
-    const SDLSound *sdlSounds = ecs_field(it, SDLSound, 3);
+    const SoundLength *soundLengths = ecs_field(it, SoundLength, 3);
+    const SDLSound *sdlSounds = ecs_field(it, SDLSound, 4);
     for (int i = 0; i < it->count; i++)
     {
         const PlaySound *playSound = &playSounds[i];
@@ -16,6 +17,7 @@ void PlaySoundSystem(ecs_iter_t *it)
             continue;
         }
         const SDLSound *sdlSound = &sdlSounds[i];
+        const SoundLength *soundLength = &soundLengths[i];
         //! \todo Link this to sound data
         //! \todo Destroy this sound upon played
         // printf("Played sound 0.\n");
@@ -23,6 +25,8 @@ void PlaySoundSystem(ecs_iter_t *it)
         {
             Mix_PlayChannel( -1, sdlSound->value, 0 );
             // printf("Volume: %i\n", sdlSound->value->volume);
+            // ecs_delete(it->world, it->entities[i]);
+            ecs_set(it->world, it->entities[i], DestroyInTime, { soundLength->value });
         }
     }
 }

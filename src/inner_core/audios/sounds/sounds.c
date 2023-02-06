@@ -71,7 +71,7 @@ void SoundsImport(ecs_world_t *world)
     zoxel_system_main_thread(world, SoundUpdateSystem, EcsPreStore,
         [none] Sound, [in] SoundDirty, [in] SoundData, [out] SDLSound)
     zoxel_system_main_thread(world, PlaySoundSystem, EcsPreStore,
-        [none] Sound, [in] PlaySound, [in] SDLSound)
+        [none] Sound, [in] PlaySound, [in] SoundLength, [in] SDLSound)
 #endif
 	zoxel_reset_system_define(PlaySoundResetSystem, PlaySound)
     zoxel_reset_system_define(GenerateSoundResetSystem, GenerateSound)

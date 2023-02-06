@@ -30,7 +30,6 @@
 #define zoxel_test_voxels_terrain
 // #define zoxel_voxel_disable_distance_division
 // #define zoxel_test_character3Ds
-
 // #define disable_voxel_left
 // #define disable_voxel_right
 // #define disable_voxel_back

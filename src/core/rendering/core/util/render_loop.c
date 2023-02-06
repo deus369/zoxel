@@ -29,26 +29,32 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     #endif
     // 3D renders
     opengl_instance3D_begin(main_camera_matrix);
-    ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
-    opengl_disable_opengl_program();
-    ecs_run(world, ecs_id(Render3DSystem), 0, NULL);
-    ecs_run(world, ecs_id(Render3DUvsSystem), 0, NULL);
-    ecs_run(world, line3D_render_system_id, 0, NULL);
-    // 2D renders
-    // glDisable(GL_DEPTH_TEST);
-    glClear(GL_DEPTH_BUFFER_BIT);
-    shader2D_instance_begin(main_camera_matrix);
-    ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
-    shader2D_instance_end();
-    ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);
-    // render all ui, layer at a time..
-    for (int i = 0; i < max_render_layers; i++)
+    if (render3D_update_pipeline == 0)
     {
-        renderer_layer = i;
-        ecs_run(world, ecs_id(RenderMeshMaterial2DSystem), 0, NULL);    // render for all tables..
+        ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
+        opengl_disable_opengl_program();
+        ecs_run(world, ecs_id(Render3DSystem), 0, NULL);
+        ecs_run(world, ecs_id(Render3DUvsSystem), 0, NULL);
+        ecs_run(world, line3D_render_system_id, 0, NULL);
     }
-    opengl_unset_mesh();    // for RenderMeshMaterial2DSystem
-    opengl_disable_opengl_program();
+    if (render2D_update_pipeline == 0)
+    {
+        // 2D renders
+        // glDisable(GL_DEPTH_TEST);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        shader2D_instance_begin(main_camera_matrix);
+        ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
+        shader2D_instance_end();
+        ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);
+        // render all ui, layer at a time..
+        for (int i = 0; i < max_render_layers; i++)
+        {
+            renderer_layer = i;
+            ecs_run(world, ecs_id(RenderMeshMaterial2DSystem), 0, NULL);    // render for all tables..
+        }
+        opengl_unset_mesh();    // for RenderMeshMaterial2DSystem
+        opengl_disable_opengl_program();
+    }
     // ecs_run(world, ecs_id(Line2DRenderSystem), 0, NULL);
 }
 

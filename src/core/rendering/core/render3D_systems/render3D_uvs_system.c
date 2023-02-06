@@ -14,6 +14,11 @@ void Render3DUvsSystem(ecs_iter_t *it)
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 9);
     for (int i = 0; i < it->count; i++)
     {
+        const MeshIndicies *meshIndicies2 = &meshIndicies[i];
+        if (meshIndicies2->length == 0)
+        {
+            continue;
+        }
         const Position3D *position = &positions[i];
         const Rotation3D *rotation = &rotations[i];
         const Scale1D *scale1D = &scale1Ds[i];
@@ -22,12 +27,9 @@ void Render3DUvsSystem(ecs_iter_t *it)
         const MaterialGPULink *materialGPULink = &materialGPULinks[i];
         const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
         const TextureGPULink *textureGPULink = &textureGPULinks[i];
-        const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         if (opengl_set_material(materialGPULink->value))
         {
             opengl_set_texture(textureGPULink->value, false);
-            //opengl_set_mesh(meshGPULink->value);
-            //opengl_set_mesh_uvs(uvsGPULink->value);
             opengl_set_mesh_indicies(meshGPULink->value.x);
             opengl_set_buffer_attributes(materialGPULink->value, meshGPULink->value.y, uvsGPULink->value);
             if (opengl_set_material3D_uvs_properties(materialGPULink->value,
