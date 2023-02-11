@@ -16,11 +16,11 @@ I am happy with the progress that I have made so far on my voxel RPG development
 
 Libre Zoxel
 
-![Zoxel](https://github.com/deus369/zoxel-web/raw/main/docs/screenshots/screen-2023-01-17-23-27-34.jpg?raw=false "Zoxel")
+![Zoxel](https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/screen-2023-02-06-20-28-49.jpg?raw=false "Zoxel")
 
 Unity Zoxel
 
-![Unity Zoxel](https://github.com/deus369/zoxel-web/raw/main/docs/screenshots/zoxel_unity_00.png?raw=false "Old Zoxel")
+![Unity Zoxel](https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/zoxel_unity_00.png?raw=false "Old Zoxel")
 
 ### Docs
 
