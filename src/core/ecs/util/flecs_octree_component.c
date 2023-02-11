@@ -223,24 +223,33 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
             octree_position.x = 0;\
             return find_node##_##name(neighbors[1], octree_position, depth);\
         }\
-        else if (direction == direction_back)\
+        else if (direction == direction_down)\
         {\
             *chunk_index = 3;\
             if (neighbors[2] == NULL) return NULL;\
-            octree_position.z = pow(2, depth) - 1;\
+            octree_position.y = pow(2, depth) - 1;\
             return find_node##_##name(neighbors[2], octree_position, depth);\
         }\
-        else if (direction == direction_front)\
+        else if (direction == direction_up)\
         {\
             *chunk_index = 4;\
             if (neighbors[3] == NULL) return NULL;\
-            octree_position.z = 0;\
+            octree_position.y = 0;\
             return find_node##_##name(neighbors[3], octree_position, depth);\
         }\
-        else if (direction == direction_down)\
+        else if (direction == direction_back)\
         {\
             *chunk_index = 5;\
-            return NULL;\
+            if (neighbors[4] == NULL) return NULL;\
+            octree_position.z = pow(2, depth) - 1;\
+            return find_node##_##name(neighbors[4], octree_position, depth);\
+        }\
+        else if (direction == direction_front)\
+        {\
+            *chunk_index = 6;\
+            if (neighbors[5] == NULL) return NULL;\
+            octree_position.z = 0;\
+            return find_node##_##name(neighbors[5], octree_position, depth);\
         }\
         else\
         {\
@@ -250,6 +259,11 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
 }
 
 /*
+        else if (direction == direction_down)\
+        {\
+            *chunk_index = 5;\
+            return NULL;\
+        }\
 
     if (node->nodes != NULL)\
     {\
