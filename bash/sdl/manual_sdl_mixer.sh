@@ -55,8 +55,6 @@ export LD_RUN_PATH=$LIBDIR
 # sudo mv /usr/local/lib/libSDL2_mixer.so /usr/local/lib/SDL_mixer/libSDL2_mixer.so
 # sudo mv /usr/local/lib/libSDL2_mixer-2.0.so.0 /usr/local/lib/SDL_mixer/libSDL2_mixer-2.0.so.0
 
-# source $HOME/zoxel/bash/sdl/set_sdl_mixer_path.sh
-
 # cd ~
 # echo Removing install folder SDL_mixer
 # rm -r SDL_mixer

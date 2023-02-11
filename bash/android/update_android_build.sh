@@ -4,7 +4,8 @@
 # updates source files after that.
 
 # remove last zoxel-android
-cd $HOME/zoxel/bash/android
+zoxel_directory="$HOME/zoxel"
+cd $zoxel_directory/bash/android
 source gradle_set_paths.sh
 
 if [[ -d $android_sdk_directory ]]; then

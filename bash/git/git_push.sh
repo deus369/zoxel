@@ -13,8 +13,8 @@ if [[ $1 = "-f" ]]; then
 	exit
 fi
 
-cd ../../ # $HOME/zoxel
-echo "Inside Directory [$PWD]"
+cd ../../
+echo "Inside Directory [$PWD]" # should be zoxel directory
 echo "-> Getting modified or updated git files."
 modified_and_new_files="$(git ls-files --modified --others --exclude-standard)"
 if [ -z "$modified_and_new_files" ]; then
@@ -54,7 +54,6 @@ sleep 1
 # finally push the git change
 git push -u origin master
 echo Finished Git Push
-sleep 6
 
 # filesUpdated2=$(git diff --name-only)
 # if [ -z "$filesUpdated2" ]; then

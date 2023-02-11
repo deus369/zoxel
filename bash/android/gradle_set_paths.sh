@@ -1,10 +1,9 @@
 #!/bin/bash
 
 zoxel_directory="$HOME/zoxel"
-export zoxel_directory="$HOME/zoxel"
-android_directory="$zoxel_directory/android-build" # $HOME/zoxel-android
+export zoxel_directory="$zoxel_directory"
+android_directory="$zoxel_directory/android-build"
 android_bash_directory="$zoxel_directory/bash/android"
-# android_directory="$HOME/zoxel-android"
 
 # ndk installation path
 android_sdk_directory="$HOME/android"

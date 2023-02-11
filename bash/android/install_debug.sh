@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # remove last zoxel-android
-cd $HOME/zoxel/bash/android
+zoxel_directory="$HOME/zoxel"
+cd $zoxel_directory/bash/android
 source gradle_set_paths.sh
 
 source update_android_build.sh
