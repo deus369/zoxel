@@ -4,11 +4,6 @@
 #define mesh_update_pipeline EcsPreStore // EcsOnValidate
 #define render3D_update_pipeline EcsOnStore // 0, EcsOnStore
 #define render2D_update_pipeline 0 // 0, EcsOnStore
-//! \todo Create a Cube with unique mesh - for chunk - add these components and update mesh for voxel chunk.
-//      - Test Mesh - simply create a test entity now with mesh and set to dirty
-//      - set data as cube and render
-//      - Animate rotate the cube - for testing
-//! \todo GPU Meshes?
 zoxel_memory_component(MeshVertices, float3)
 zoxel_memory_component(MeshVertices2D, float2)
 zoxel_memory_component(MeshUVs, float2)
@@ -92,4 +87,10 @@ void RenderingCoreImport(ecs_world_t *world)
         [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs);
     zoxel_reset_system_define(MeshDirtySystem, MeshDirty);
 }
+
+//! \todo Create a Cube with unique mesh - for chunk - add these components and update mesh for voxel chunk.
+//      - Test Mesh - simply create a test entity now with mesh and set to dirty
+//      - set data as cube and render
+//      - Animate rotate the cube - for testing
+//! \todo GPU Meshes?
 #endif
