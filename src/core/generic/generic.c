@@ -28,6 +28,7 @@ zoxel_reset_system(EntityInitializeResetSystem, EntityInitialize)
 #include "util/generic_util.c"
 #include "util/convert_ascii.c"
 #include "util/convert_to_ascii.c"
+#include "util/time_macros.c"
 
 void GenericImport(ecs_world_t *world)
 {

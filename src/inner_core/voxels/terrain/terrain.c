@@ -122,8 +122,4 @@ void TerrainImport(ecs_world_t *world)
     create_terrain();
     #endif
 }
-
-// const double terrain_amplifier = 120.0;
-// const double terrain_frequency = 0.004216;
-
 #endif

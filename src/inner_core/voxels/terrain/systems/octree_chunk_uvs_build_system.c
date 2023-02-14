@@ -278,7 +278,8 @@ void OctreeChunkUVsBuildSystem(ecs_iter_t *it)
     {
         return;
     }
-    const ChunkDirty *entityDirtys = ecs_field(it, ChunkDirty, 1);
+    // begin_timing()
+    const ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
     const ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 2);
     const ChunkDivision *chunkDivisions = ecs_field(it, ChunkDivision, 3);
     const ChunkNeighbors *chunkNeighbors = ecs_field(it, ChunkNeighbors, 4);
@@ -288,7 +289,7 @@ void OctreeChunkUVsBuildSystem(ecs_iter_t *it)
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 8);
     for (int i = 0; i < it->count; i++)
     {
-        const ChunkDirty *chunkDirty = &entityDirtys[i];
+        const ChunkDirty *chunkDirty = &chunkDirtys[i];
         if (chunkDirty->value == 0)
         {
             continue;
@@ -340,6 +341,8 @@ void OctreeChunkUVsBuildSystem(ecs_iter_t *it)
         };
         build_octree_chunk_mesh_uvs(chunkOctree, meshIndicies2, meshVertices2, meshUVs2,
             chunkDivision->value, neighbors, neighbors_max_depths);
+        // did_do_timing()
     }
+    // end_timing("OctreeChunkUVsBuildSystem")
 }
 zoxel_declare_system(OctreeChunkUVsBuildSystem)

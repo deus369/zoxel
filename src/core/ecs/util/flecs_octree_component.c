@@ -259,6 +259,9 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
 }
 
 /*
+        octree->nodes = malloc(sizeof(name) * octree_length);\
+
+        
         else if (direction == direction_down)\
         {\
             *chunk_index = 5;\

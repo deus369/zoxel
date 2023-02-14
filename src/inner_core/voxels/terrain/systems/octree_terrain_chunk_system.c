@@ -38,13 +38,13 @@ void fill_octree(ChunkOctree* chunk_octree, unsigned char voxel, unsigned char d
             fill_octree(&chunk_octree->nodes[i], voxel, depth);
         }
     }
-    else
+    /*else
     {
         if (rand() % 1001 >= 999)
         {
             chunk_octree->value = 0;
         }
-    }
+    }*/
 }
 
 void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 position, float scale)
@@ -53,29 +53,7 @@ void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 pos
         position.x + noise_positiver2, 
         position.z + noise_positiver2,
         terrain_frequency,
-        terrain_seed, terrain_octaves);  //  * 16
-    /*if (octree_noise < 0.0)
-    {
-        octree_noise *= 100.0;
-        // printf("    [%f]   ", octree_noise);
-        printf("    [%f:%f]   ", octree_noise, position.y);
-    }*/
-    // octree_noise *= 0.01 * terrain_amplifier;
-    // octree_noise += 0.33;
-    // octree_noise *= 100.0;
-    
-    // octree_noise *= 2.0;
-    // octree_noise -= 1.0;
-
-    //octree_noise *= 4.0;
-    /*octree_noise -= 0.2;
-    octree_noise *= 8.0;
-    octree_noise *= 4.0;*/
-    // octree_noise += position.y * 0.1f;
-    // printf("    [%f]   ", position.y);
-    // printf("    [%f:%f]   ", position.x, position.z);
-    // double octree_noise = (rand() % 101) / 100.0f;
-    // double octree_noise = ((int)(100 * (position.x + 3200)) % 100) / 100.0f;
+        terrain_seed, terrain_octaves);
     if (octree_noise < octree_min_height)
     {
         octree_noise = octree_min_height;
@@ -129,6 +107,7 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it)
     {
         return;
     }
+    begin_timing()
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
     ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 3);
     const ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 5);
@@ -148,13 +127,41 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it)
         chunkDirty->value = 1;
         ChunkOctree *chunkOctree = &chunkOctrees[i];
         const ChunkPosition *chunkPosition = &chunkPositions[i];
+        float3 chunk_position_float3 = float3_from_int3(chunkPosition->value);
         // randomize_inner_nodes(chunkOctree, 0);
-        // fill_octree(chunkOctree, 1, 4);
-        generate_terrain(chunkOctree, 0, float3_from_int3(chunkPosition->value), 1.0f);
+        // begin_timing()
+        // fill_octree(chunkOctree, 1, 5); // max_octree_depth);
+        generate_terrain(chunkOctree, 0, chunk_position_float3, 1.0f);
+        did_do_timing()
+        // end_timing("OctreeTerrainChunkSystem")
     }
+    end_timing("OctreeTerrainChunkSystem")
 }
 zoxel_declare_system(OctreeTerrainChunkSystem)
 
+  //  * 16
+    /*if (octree_noise < 0.0)
+    {
+        octree_noise *= 100.0;
+        // printf("    [%f]   ", octree_noise);
+        printf("    [%f:%f]   ", octree_noise, position.y);
+    }*/
+    // octree_noise *= 0.01 * terrain_amplifier;
+    // octree_noise += 0.33;
+    // octree_noise *= 100.0;
+    
+    // octree_noise *= 2.0;
+    // octree_noise -= 1.0;
+
+    //octree_noise *= 4.0;
+    /*octree_noise -= 0.2;
+    octree_noise *= 8.0;
+    octree_noise *= 4.0;*/
+    // octree_noise += position.y * 0.1f;
+    // printf("    [%f]   ", position.y);
+    // printf("    [%f:%f]   ", position.x, position.z);
+    // double octree_noise = (rand() % 101) / 100.0f;
+    // double octree_noise = ((int)(100 * (position.x + 3200)) % 100) / 100.0f;
     /*for (int i = 0; i < 4; i++)
     {
         chunkOctree->nodes[i].value = 1;
