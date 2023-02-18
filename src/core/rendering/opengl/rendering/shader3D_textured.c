@@ -5,14 +5,14 @@ const char* shader3D_textured_filepath_frag = resources_folder_name"shaders/3D/s
 //! inline shaders incase the shader files don't exist.
 const GLchar* shader3D_textured_vert_buffer = "\
 #version 300 es\n\
-in lowp vec3 vertexPosition; \
-in lowp vec2 vertexUV; \
-uniform lowp mat4 viewMatrix; \
-uniform lowp vec3 position; \
-uniform lowp vec4 rotation; \
-uniform lowp float scale; \
-out lowp vec2 uv; \
-out lowp float fogFactor;\
+in highp vec3 vertexPosition; \
+in highp vec2 vertexUV; \
+uniform highp mat4 viewMatrix; \
+uniform highp vec3 position; \
+uniform highp vec4 rotation; \
+uniform highp float scale; \
+out highp vec2 uv; \
+out highp float fogFactor;\
 \
 vec3 float4_rotate_float3(vec4 rotation, vec3 value) \
 { \
@@ -32,25 +32,25 @@ void main()\
 ";
 const GLchar* shader3D_textured_frag_buffer = "\
 #version 300 es\n\
-in lowp vec2 uv;\
-in lowp float fogFactor;\
-uniform lowp float brightness; \
+in highp vec2 uv;\
+in highp float fogFactor;\
+uniform highp float brightness; \
 uniform sampler2D tex; \
-out lowp vec4 color; \
+out highp vec4 color; \
  \
 void main() \
 { \
     color = texture(tex, uv) * brightness; \
-    lowp vec4 backgroundColor = vec4(2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f, 1);\
-    lowp float fog_density = 0.01;\
-    lowp float fogBlend = 1.0 - exp2(-fog_density * fog_density * fogFactor * fogFactor);\
+    highp vec4 backgroundColor = vec4(2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f, 1);\
+    highp float fog_density = 0.01;\
+    highp float fogBlend = 1.0 - exp2(-fog_density * fog_density * fogFactor * fogFactor);\
     color = mix(color, backgroundColor, fogBlend);\
 } \
 ";
 
 //  
-// lowp float fogFactor = fogDensity * (gl_FragCoord.z / gl_FragCoord.w);
-// in lowp float fogFactor;
+// highp float fogFactor = fogDensity * (gl_FragCoord.z / gl_FragCoord.w);
+// in highp float fogFactor;
 // color = mix(color, fogColor, fogFactor);
 // color = mix(color, fogColor, smoothstep(4.0,32.0,fogBlend));
 
