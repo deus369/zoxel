@@ -105,8 +105,7 @@ void generate_font_texture(Texture* texture, const TextureSize *textureSize, con
 
 void FontTextureSystem(ecs_iter_t *it)
 {
-    ecs_query_t *changeQuery = it->ctx;
-    if (!changeQuery || !ecs_query_changed(changeQuery, NULL))
+    if (!ecs_query_changed(it->ctx, NULL))
     {
         return;
     }

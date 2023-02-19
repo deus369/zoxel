@@ -5,7 +5,6 @@ extern ecs_entity_t fps_display;
 void boot_zoxel_game(ecs_world_t *world)
 {
     zoxel_log("Booting [Zoxel]\n");
-    // update();   // update once? so ui does its thing properly
     // spawn cameras first
     int2 screen_dimensions2 = screen_dimensions;
     if (is_split_screen)
@@ -23,6 +22,8 @@ void boot_zoxel_game(ecs_world_t *world)
     #endif
     main_cameras[0] = spawn_base_camera(world, camera_begin_position,
         quaternion_identity(), screen_dimensions2, (int2) { });
+    // ecs_add(world, main_cameras[0], Streamer);
+    // ecs_add(world, main_cameras[0], StreamPoint);
 
     float4 rotationer = quaternion_from_euler( (float3) { 0, -0.12f * degreesToRadians, 0 });
     zoxel_set(world, main_cameras[0] , EternalRotation, { rotationer });

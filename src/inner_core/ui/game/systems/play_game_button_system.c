@@ -16,20 +16,8 @@ void PlayGameButtonSystem(ecs_iter_t *it)
             ecs_entity_t window = parentLink->value;
             delete_hierarchy(world, window);
             // ecs_delete(it->world, window);
-            // destroy ai camera
-            ecs_entity_t first_camera = main_cameras[0];
-            float3 first_camera_position = ecs_get(world, first_camera, Position3D)->value;
-            float4 first_camera_rotation = ecs_get(world, first_camera, Rotation3D)->value;
-            float4x4 first_view_matrix = ecs_get(world, first_camera, ViewMatrix)->value;
-            int2 first_camera_screen_dimensions = ecs_get(world, first_camera, ScreenDimensions)->value;
-            ecs_delete(world, first_camera);
-            // spawn free roam camera
-            // \todo I believe the flickering is due to the matrix not being set in time.
-            main_cameras[0] = spawn_free_camera(world, first_camera_position, // (float3) { 0, 3.6f, 0.62f },
-                first_camera_rotation, first_camera_screen_dimensions, (int2) { });
-            ecs_set(world, main_cameras[0], ViewMatrix, { first_view_matrix });
-            main_camera_matrix = first_view_matrix;
-            // \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cameras
+            // create play game event
+            spawn_generic_event(it->world, 1);
         }
     }
 }

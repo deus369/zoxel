@@ -102,8 +102,7 @@ void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 pos
 void OctreeTerrainChunkSystem(ecs_iter_t *it)
 {
     if (disable_chunk_systems) return;
-    ecs_query_t *changeQuery = it->ctx;
-    if (!changeQuery || !ecs_query_changed(changeQuery, NULL))
+    if (!ecs_query_changed(it->ctx, NULL))
     {
         return;
     }

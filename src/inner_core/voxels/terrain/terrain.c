@@ -3,7 +3,7 @@
 
 #define max_octree_depth 5
 #define inner_render_buffer 0
-#define terrain_rows 12
+#define terrain_rows 8
 #define terrain_vertical 2
 #define octree_min_height -1.995f // 0.005f
 #define terrain_frequency 0.1216 // 0.004216
@@ -15,11 +15,14 @@ const int terrain_octaves = 12;
 const uint32_t terrain_seed = 32666;
 zoxel_declare_tag(TerrainChunk)
 zoxel_declare_tag(ChunkTerrain)
+zoxel_declare_tag(Streamer)
+zoxel_component(StreamPoint, int3)                        //! A stream point in the terrain module.
 #include "prefabs/terrain_chunk.c"
 #include "prefabs/terrain_chunk_octree.c"
 #include "systems/terrain_chunk_system.c"
 #include "systems/octree_terrain_chunk_system.c"
 #include "systems/octree_chunk_uvs_build_system.c"
+#include "systems/stream_point_system.c"
 
 int get_chunk_index(int i, int j, int rows)
 {
@@ -106,8 +109,11 @@ void TerrainImport(ecs_world_t *world)
     zoxel_module(Terrain)
     zoxel_define_tag(TerrainChunk)
     zoxel_define_tag(ChunkTerrain)
+    zoxel_define_tag(Streamer)
+    zoxel_define_component(StreamPoint)
     zoxel_filter(generateTerrainChunkQuery, world, [none] TerrainChunk, [in] GenerateChunk)
     zoxel_filter(generateChunkQuery, world, [in] GenerateChunk)
+    //zoxel_filter(streamerPositionQuery, world, [none] Streamer, [in] Position3D)
     zoxel_system_ctx(world, TerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
         [none] TerrainChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] ChunkPosition, [in] GenerateChunk)
     zoxel_system_ctx(world, OctreeTerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
@@ -116,6 +122,9 @@ void TerrainImport(ecs_world_t *world)
         [in] ChunkDirty, [in] ChunkOctree, [in] ChunkDivision, [in] ChunkNeighbors,
         [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty,
         [none] !MeshColors)
+    //zoxel_system_ctx_single_thread(world, StreamPointSystem, EcsOnUpdate, streamerPositionQuery,
+    //    [none] Streamer, [in] Position3D, [out] StreamPoint)
+    zoxel_system_main_thread(world, StreamPointSystem, EcsOnUpdate, [none] Streamer, [in] Position3D, [out] StreamPoint)
     spawn_prefab_terrain_chunk(world, terrain_chunk_size);
     spawn_prefab_terrain_chunk_octree(world, terrain_chunk_size);
     #ifdef zoxel_test_voxels_terrain

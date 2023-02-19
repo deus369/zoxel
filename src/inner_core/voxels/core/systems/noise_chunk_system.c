@@ -42,8 +42,7 @@ void GenerateChunkNoise(ChunkData* chunk, const ChunkSize *chunkSize)
 void NoiseChunkSystem(ecs_iter_t *it)
 {
     if (disable_chunk_systems) return;
-    ecs_query_t *changeQuery = it->ctx;
-    if (!changeQuery || !ecs_query_changed(changeQuery, NULL))
+    if (!ecs_query_changed(it->ctx, NULL))
     {
         return;
     }

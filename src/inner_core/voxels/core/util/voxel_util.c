@@ -1,4 +1,10 @@
-
+int3 get_chunk_position(float3 real_position, int3 chunk_size)
+{
+    return (int3) {
+        (int) round((real_position.x) / chunk_size.x),
+        (int) round((real_position.y) / chunk_size.y),
+        (int) round((real_position.z) / chunk_size.z) };
+}
 
 int3 voxel_chunk_position(int3 chunk_position, int3 chunk_size)
 {

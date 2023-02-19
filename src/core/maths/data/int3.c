@@ -11,6 +11,18 @@
 
 #define int3_zero (int3) { 0, 0, 0 }
 
+unsigned char int3_equal(int3 a, int3 b)
+{
+    if (a.x == b.x && a.y == b.y && a.z == b.z)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 int int3_array_index(int3 input, int3 size)
 {
     // return input.x + input.y * size.x + input.z * size.x * size.y;

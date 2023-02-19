@@ -28,8 +28,8 @@
 
 const int window_index = 0; // 1;
 unsigned char vsync = 0;
-unsigned char fullscreen = 1; // full screen is the new default option
-unsigned char halfscreen = 0;
+unsigned char fullscreen = 0; // set full screen default option here
+unsigned char halfscreen = 1;
 unsigned char is_split_screen = 0;
 SDL_Window* main_window;
 zoxel_declare_tag(App)

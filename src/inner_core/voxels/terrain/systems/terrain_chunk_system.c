@@ -52,8 +52,7 @@ void GenerateChunkTerrain(ChunkData* chunk, const int3 chunkSize, const int3 chu
 void TerrainChunkSystem(ecs_iter_t *it)
 {
     if (disable_chunk_systems) return;
-    ecs_query_t *changeQuery = it->ctx;
-    if (!changeQuery || !ecs_query_changed(changeQuery, NULL))
+    if (!ecs_query_changed(it->ctx, NULL))
     {
         return;
     }

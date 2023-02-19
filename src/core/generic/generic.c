@@ -7,6 +7,7 @@
 zoxel_declare_tag(Selectable)
 zoxel_declare_tag(Clickable)
 zoxel_declare_tag(Dragable)
+zoxel_declare_tag(DestroyInFrame)
 zoxel_byte_component(EntityDirty)
 zoxel_byte_component(EntityInitialize)
 zoxel_byte_component(SelectableState)
@@ -22,6 +23,7 @@ zoxel_component(Layer2D, unsigned char)         //! A 2D Layer for a entity.
 zoxel_component(Color, color)                   //! A generic entity color.
 zoxel_component(SecondaryColor, color)                   //! A generic entity color.
 zoxel_memory_component(Colors, color)           //! A generic entity colors.
+zoxel_byte_component(GenericEvent)             //! Used for game and other events, genetic
 zoxel_reset_system(EntityDirtyResetSystem, EntityDirty)
 zoxel_reset_system(ClickableStateResetSystem, ClickableState)
 zoxel_reset_system(EntityInitializeResetSystem, EntityInitialize)
@@ -29,6 +31,8 @@ zoxel_reset_system(EntityInitializeResetSystem, EntityInitialize)
 #include "util/convert_ascii.c"
 #include "util/convert_to_ascii.c"
 #include "util/time_macros.c"
+#include "prefabs/generic_event.c"
+#include "systems/destroy_in_frame_system.c"
 
 void GenericImport(ecs_world_t *world)
 {
@@ -36,6 +40,7 @@ void GenericImport(ecs_world_t *world)
     zoxel_define_tag(Selectable)
     zoxel_define_tag(Clickable)
     zoxel_define_tag(Dragable)
+    zoxel_define_tag(DestroyInFrame)
     zoxel_define_component(EntityDirty)
     zoxel_define_component(SelectableState)
     zoxel_define_component(ClickableState)
@@ -51,8 +56,11 @@ void GenericImport(ecs_world_t *world)
     zoxel_define_component(Color)
     zoxel_define_component(SecondaryColor)
     zoxel_memory_component_define(Colors)
+    zoxel_define_component(GenericEvent)
     zoxel_reset_system_define(EntityDirtyResetSystem, EntityDirty)
     zoxel_reset_system_define(ClickableStateResetSystem, ClickableState)
     zoxel_reset_system_define(EntityInitializeResetSystem, EntityInitialize)
+    zoxel_system(world, DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
+    spawn_prefab_generic_event(world);
 }
 #endif

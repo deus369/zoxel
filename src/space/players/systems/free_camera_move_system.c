@@ -9,11 +9,12 @@ void FreeCameraMoveSystem(ecs_iter_t *it)
     {
         return;
     }
+    unsigned char did_update = 0;
+    double movement_power = (double) (it->delta_time) * movement_multiplier;
     const FreeRoam *freeRoams = ecs_field(&cameras_it, FreeRoam, 2);
     Position3D *positions = ecs_field(&cameras_it, Position3D, 3);
     Rotation3D *rotations = ecs_field(&cameras_it, Rotation3D, 4);
-    double movement_power = (double) (it->delta_time) * movement_multiplier;
-    Keyboard *keyboards = ecs_field(it, Keyboard, 1);
+    const Keyboard *keyboards = ecs_field(it, Keyboard, 1);
     for (int i = 0; i < it->count; i++)
     {
         const Keyboard *keyboard = &keyboards[i];
@@ -44,6 +45,7 @@ void FreeCameraMoveSystem(ecs_iter_t *it)
         }
         if (!(movement.x == 0 && movement.y == 0 && movement.z == 0))
         {
+            did_update = 1;
             // printf("Bob Accel %f x %f \n", movement.x, movement.y);
             movement = float3_multiply_float(movement, movement_power);
             if (keyboard->left_shift.is_pressed)
@@ -72,12 +74,17 @@ void FreeCameraMoveSystem(ecs_iter_t *it)
         }
         if (keyboard->r.pressed_this_frame)
         {
+            did_update = 1;
             for (int j = 0; j < cameras_it.count; j++)
             {
                 Rotation3D *rotation = &rotations[j];
                 rotation->value = quaternion_from_euler( (float3) { 0 * degreesToRadians, 0 * degreesToRadians, 0 * degreesToRadians });
             }
         }
+    }
+    if (!did_update)
+    {
+        // ecs_query_skip(&cameras_it);
     }
 }
 zoxel_declare_system(FreeCameraMoveSystem)
