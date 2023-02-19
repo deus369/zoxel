@@ -88,25 +88,6 @@ unsigned char is_adjacent_all_solid(unsigned char direction,
     return 1;
 }
 
-
-//  && depth > max_depth
-//  && (chunk_index != 0 || depth > max_depth)
-// (chunk_index == 0 && depth > max_depth))
-// || (chunk_index != 0 && depth > neighbors_max_depths[chunk_index - 1]) 
-// if (octree_node != NULL && octree_node->nodes != NULL) octree_node = NULL;
-// if (octree_node != NULL && octree_node->nodes != NULL) octree_node = NULL;
-// if (octree_node != NULL && octree_node->nodes != NULL) octree_node = NULL;
-
-/*#define zoxel_set_octree_adjacent(direction_name)\
-    const ChunkOctree *octree_node = find_adjacent_ChunkOctree(root_node, parent_node,\
-        octree_position, node_position, depth, direction##_##direction_name, neighbors);\
-    if (octree_node != NULL && octree_node->nodes != NULL)\
-            octree_node = NULL;*/
-
-/*#define zoxel_octree_check(direction_name)\
-    zoxel_set_octree_adjacent(direction_name)\
-        if (octree_node == NULL || octree_node->value == 0)*/
-
 #define zoxel_octree_check(direction_name)\
     if (!is_adjacent_all_solid(direction##_##direction_name, root_node, parent_node, neighbors,\
          octree_position, node_position, depth, max_depth, neighbors_max_depths))
@@ -267,6 +248,7 @@ void build_octree_chunk_mesh_uvs(const ChunkOctree *chunk_octree,
         neighbors, neighbors_max_depths,
         meshIndicies, meshVertices, meshUVs, start, 0, max_depth,
         int3_zero, int3_zero, 2.0f);
+    // try using a list of mesh data and then converting to an array instead and comparing speeds
 }
 
 //! Builds a mesh data from the chunk!
@@ -277,7 +259,9 @@ void OctreeChunkUVsBuildSystem(ecs_iter_t *it)
     {
         return;
     }
-    // begin_timing()
+    #ifdef zoxel_time_octree_chunk_uvs_builds_system
+        begin_timing()
+    #endif
     const ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
     const ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 2);
     const ChunkDivision *chunkDivisions = ecs_field(it, ChunkDivision, 3);
@@ -305,6 +289,12 @@ void OctreeChunkUVsBuildSystem(ecs_iter_t *it)
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
         MeshUVs *meshUVs2 = &meshUVs[i];
+        if (meshIndicies2->length != 0)
+        {
+            tri_count -= meshIndicies2->length / 3;
+            //if (it->entities[i] == 1597)
+            //    printf("Removed %lu - %i - tri_count[%i]  \n",  it->entities[i], meshIndicies2->length / 3, tri_count);
+        }
         const ChunkOctree *chunk_left = chunkNeighbors2->value[0] == 0 ?
             NULL : ecs_get(it->world, chunkNeighbors2->value[0], ChunkOctree);
         const ChunkOctree *chunk_right = chunkNeighbors2->value[1] == 0 ?
@@ -340,8 +330,31 @@ void OctreeChunkUVsBuildSystem(ecs_iter_t *it)
         };
         build_octree_chunk_mesh_uvs(chunkOctree, meshIndicies2, meshVertices2, meshUVs2,
             chunkDivision->value, neighbors, neighbors_max_depths);
-        // did_do_timing()
+        #ifdef zoxel_time_octree_chunk_uvs_builds_system
+            did_do_timing()
+        #endif
     }
-    // end_timing("OctreeChunkUVsBuildSystem")
+    #ifdef zoxel_time_octree_chunk_uvs_builds_system
+        end_timing("OctreeChunkUVsBuildSystem")
+    #endif
 }
 zoxel_declare_system(OctreeChunkUVsBuildSystem)
+
+
+//  && depth > max_depth
+//  && (chunk_index != 0 || depth > max_depth)
+// (chunk_index == 0 && depth > max_depth))
+// || (chunk_index != 0 && depth > neighbors_max_depths[chunk_index - 1]) 
+// if (octree_node != NULL && octree_node->nodes != NULL) octree_node = NULL;
+// if (octree_node != NULL && octree_node->nodes != NULL) octree_node = NULL;
+// if (octree_node != NULL && octree_node->nodes != NULL) octree_node = NULL;
+
+/*#define zoxel_set_octree_adjacent(direction_name)\
+    const ChunkOctree *octree_node = find_adjacent_ChunkOctree(root_node, parent_node,\
+        octree_position, node_position, depth, direction##_##direction_name, neighbors);\
+    if (octree_node != NULL && octree_node->nodes != NULL)\
+            octree_node = NULL;*/
+
+/*#define zoxel_octree_check(direction_name)\
+    zoxel_set_octree_adjacent(direction_name)\
+        if (octree_node == NULL || octree_node->value == 0)*/

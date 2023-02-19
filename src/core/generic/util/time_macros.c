@@ -10,14 +10,34 @@ clock_t time_start = clock();
 if (did_do)\
 {\
     clock_t time_end = clock();\
-    long double time_taken = 0.1 * ((long double) (time_end - time_start) / CLOCKS_PER_SEC);\
+    long double time_taken = ((long double) (time_end - time_start) / CLOCKS_PER_SEC);\
     if (time_taken >= 1.0)\
     {\
-        printf("%s [%Lgs]\n", system_name, time_taken);\
+        printf("%s [%Lgs] - [Seconds]\n", system_name, time_taken);\
     }\
     else\
     {\
         time_taken *= 1000.0;\
         printf("%s [%Lgms]\n", system_name, time_taken);\
+    }\
+}
+
+
+#define end_timing_cutoff(system_name, cuttoff)\
+if (did_do)\
+{\
+    clock_t time_end = clock();\
+    long double time_taken = ((long double) (time_end - time_start) / CLOCKS_PER_SEC);\
+    if (time_taken >= 1.0)\
+    {\
+        printf("%s [%Lgs] - [Seconds]\n", system_name, time_taken);\
+    }\
+    else\
+    {\
+        time_taken *= 1000.0;\
+        if (time_taken >= cuttoff)\
+        {\
+            printf("%s [%Lgms]\n", system_name, time_taken);\
+        }\
     }\
 }

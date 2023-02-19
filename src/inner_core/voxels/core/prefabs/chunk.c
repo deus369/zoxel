@@ -8,6 +8,7 @@ void add_chunk(ecs_world_t *world, ecs_entity_t prefab, int3 size)
     zoxel_set(world, prefab, ChunkSize, { size });
     zoxel_set(world, prefab, ChunkDirty, { 0 });
     zoxel_set(world, prefab, ChunkPosition, { { 0, 0, 0 } });
+    zoxel_set(world, prefab, VoxLink, { 0 });
 }
 
 void add_generate_chunk(ecs_world_t *world, ecs_entity_t e)

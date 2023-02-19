@@ -25,10 +25,7 @@
 // #define USE_SDL_3
 
 // -- Tests / Options --
-#define voxel_octrees
 #define zoxel_test_chickens
-#define zoxel_test_voxels_terrain
-// #define zoxel_voxel_disable_distance_division
 // #define zoxel_test_character3Ds
 // #define disable_voxel_left
 // #define disable_voxel_right
@@ -64,13 +61,26 @@
 // #define debug_ui_scaling
 // #define zoxel_time_render_loop
 
+// voxels
+#define voxel_octrees
+#define zoxel_test_voxels_terrain
+// #define zoxel_voxel_disable_distance_division
+#define voxels_disable_streaming
+
 // audio
 // #define zoxel_debug_sounds
 // #define zoxel_debug_music
 // #define zoxel_log_sound_generation
 // #define zoxel_log_music_playing
 // #define zoxel_slow_music
-// #define zoxel_disable_music
+#define zoxel_disable_music
+
+// Timings
+#define zoxel_time_main_loop
+#define zoxel_time_main_loop_cutoff 40
+// #define zoxel_time_octree_chunk_uvs_builds_system
+// #define zoxel_time_stream_point_system
+
 
 // Finally include zoxel engine and zoxel
 #include "zoxel_engine.c"

@@ -12,6 +12,7 @@ zoxel_declare_tag(NoiseChunk)
 zoxel_component(ChunkSize, int3)                        //! A simple chunk with an array of voxels.
 zoxel_component(ChunkPosition, int3)                    //! A local position of a chunk inside a Vox.
 zoxel_component(AnimateChunk, double)                   //! A state for animating textures.
+zoxel_component(VoxLink, ecs_entity_t)                  //! A link to a vox.
 zoxel_byte_component(GenerateChunk)                     //! A state for generating chunks.
 zoxel_byte_component(ChunkDirty)                        //! A state for generating chunk meshes.
 zoxel_memory_component(ChunkData, unsigned char)        //! A simple chunk with an array of voxels.
@@ -43,11 +44,12 @@ void define_voxels_core_components(ecs_world_t *world)
     zoxel_define_component(GenerateChunk)
     zoxel_define_component(ChunkPosition)
     zoxel_define_component(ChunkDivision)
+    zoxel_define_component(VoxLink)
     zoxel_memory_component_define(ChunkData)
     zoxel_memory_component_define(ChunkLinks)
     zoxel_memory_component_define(ChunkNeighbors)
     zoxel_octree_component_define(ChunkOctree)
-    // extras
+    // extras - move to another module
     zoxel_define_tag(NoiseChunk)
     zoxel_define_component(AnimateChunk)
 }

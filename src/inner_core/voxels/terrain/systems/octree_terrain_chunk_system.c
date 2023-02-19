@@ -1,3 +1,4 @@
+// #define zoxel_time_octree_terrain_chunk_system
 #define octree_random_spawn_chance 90
 #define octree_octaves 6
 #define octree_persistence 0.5f
@@ -106,7 +107,9 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it)
     {
         return;
     }
-    begin_timing()
+    #ifdef zoxel_time_octree_terrain_chunk_system
+        begin_timing()
+    #endif
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
     ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 3);
     const ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 5);
@@ -128,13 +131,15 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it)
         const ChunkPosition *chunkPosition = &chunkPositions[i];
         float3 chunk_position_float3 = float3_from_int3(chunkPosition->value);
         // randomize_inner_nodes(chunkOctree, 0);
-        // begin_timing()
         // fill_octree(chunkOctree, 1, 5); // max_octree_depth);
         generate_terrain(chunkOctree, 0, chunk_position_float3, 1.0f);
-        did_do_timing()
-        // end_timing("OctreeTerrainChunkSystem")
+        #ifdef zoxel_time_octree_terrain_chunk_system
+            did_do_timing()
+        #endif
     }
-    end_timing("OctreeTerrainChunkSystem")
+    #ifdef zoxel_time_octree_terrain_chunk_system
+        end_timing("OctreeTerrainChunkSystem")
+    #endif
 }
 zoxel_declare_system(OctreeTerrainChunkSystem)
 

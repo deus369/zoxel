@@ -132,9 +132,9 @@ void opengl_upload_shader3D_textured(
     GLuint2 mesh_buffer, GLuint uv_buffer, GLuint material_buffer,
     const int *indicies, int indicies_length,
     const float3 *verts, int verts_length,
-    const float2 *uvs, int uvs_length)
+    const float2 *uvs)
 {
-    quad_count += indicies_length / 3;
+    tri_count += indicies_length / 3;
     Material3DTextured material3D = spawn_material3D_textured(material_buffer);
     // Bind the index buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
@@ -146,7 +146,7 @@ void opengl_upload_shader3D_textured(
 
     // Bind the UV buffer
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
-    glBufferData(GL_ARRAY_BUFFER, uvs_length * sizeof(float2), uvs, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float2), uvs, GL_STATIC_DRAW);
 
     // Set the vertex attribute pointers
     glVertexAttribPointer(material3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 0, 0);

@@ -108,7 +108,7 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it)
         }
         else if (keyboard->v.pressed_this_frame)
         {
-            printf("Total quads for chunks: %i\n", quad_count);
+            printf("Total Tris [%i]\n", tri_count);
         }
         else if (keyboard->m.pressed_this_frame)
         {

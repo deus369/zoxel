@@ -3,12 +3,12 @@ int last_quads;
 void QuadsLabelSystem(ecs_iter_t *it)
 {
     unsigned char changed = 0;   //! Skip changes if isn't updated.
-    if (last_quads != quad_count)
+    if (last_quads != tri_count)
     {
-        last_quads = quad_count;
+        last_quads = tri_count;
         changed = 1;
         char buffer[20];
-        snprintf(buffer, sizeof(buffer), "Tris %i", quad_count);
+        snprintf(buffer, sizeof(buffer), "Tris %i", tri_count);
         const char* text = buffer;
         ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
         ZextData *zextDatas = ecs_field(it, ZextData, 3);
@@ -20,7 +20,7 @@ void QuadsLabelSystem(ecs_iter_t *it)
             set_zext(zextData, text);
             // printf("    zext data: %i\n", zextData->length);
         }
-        // printf("QuadsLabelSystem -: %i [%s]\n", quad_count, buffer);
+        // printf("QuadsLabelSystem -: %i [%s]\n", tri_count, buffer);
     }
     if (!changed)
     {

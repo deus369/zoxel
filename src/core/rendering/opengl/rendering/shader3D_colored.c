@@ -60,7 +60,7 @@ int load_shader3D_colored()
 void set_gpu_mesh_colors(GLuint2 mesh, GLuint material, const int *indicies, int indicies_length,
     const float3 *verts, int verts_length, const color *colors)
 {
-    quad_count += indicies_length / 3;
+    tri_count += indicies_length / 3;
     MaterialColored3D materialColored3D = spawn_material3D_colored_properties(material);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);
     glBindBuffer(GL_ARRAY_BUFFER, mesh.y);

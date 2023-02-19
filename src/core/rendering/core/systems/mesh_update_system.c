@@ -29,7 +29,6 @@ void MeshUpdateSystem(ecs_iter_t *it)
         set_gpu_mesh(meshGPULink->value,  materialGPULink->value,
             meshIndicies2->value, meshIndicies2->length,
             meshVertices2->value, meshVertices2->length);
-        
     }
 }
 zoxel_declare_system(MeshUpdateSystem)

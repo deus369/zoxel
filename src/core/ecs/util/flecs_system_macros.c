@@ -67,7 +67,7 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 } \
 ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
-#define zoxel_system_ctx_single_thread(world, id_, phase, ctx_, ...)\
+#define zoxel_system_ctx_main_thread(world, id_, phase, ctx_, ...)\
 { \
     ecs_system_desc_t desc = {0}; \
     ecs_entity_desc_t edesc = {0}; \

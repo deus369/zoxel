@@ -45,11 +45,17 @@ void end()
     dispose_vox_files();
 }
 
-void update()
+void main_update()
 {
+    #ifdef zoxel_time_main_loop
+        begin_timing()
+    #endif
     iterate_fps_time();
     update_core();
-    // printf("update\n");
+    #ifdef zoxel_time_main_loop
+        did_do_timing()
+        end_timing_cutoff("main_update", zoxel_time_main_loop_cutoff)
+    #endif
 }
 
 //! Includes special case for emscripten.
@@ -58,11 +64,11 @@ void main_loop()
     // Set up the signal handler for SIGINT
     signal(SIGINT, sigint_handler);
 #ifdef WEB_BUILD
-    emscripten_set_main_loop(&update, -1, 1); // old - 60, 1);
+    emscripten_set_main_loop(&main_update, -1, 1); // old - 60, 1);
 #else
     while (running)
     {
-        update();
+        main_update();
     }
 #endif
 }

@@ -50,15 +50,22 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size)
     return e;
 }
 
+unsigned char get_chunk_division(int3 camera_position, int3 chunk_position)
+{
+    unsigned char distance = int_max(int_abs(chunk_position.x - camera_position.x), int_abs(chunk_position.z - camera_position.z));
+    return distance;
+}
+
 ecs_entity_t spawn_terrain_chunk_octree(ecs_world_t *world, ecs_entity_t prefab,
-    int3 chunk_position, float3 position, float scale)
+    ecs_entity_t terrain, int3 chunk_position, float3 position, float scale)
 {
     ecs_defer_begin(world);
     ecs_entity_t e = spawn_terrain_chunk(world, prefab, chunk_position, position, scale);
     set_unique_entity_name(world, e, "terrain_chunk_octree");
     // unsigned char distance = ((int_abs(chunk_position.x) + int_abs(chunk_position.z)) / 2);
-    unsigned char distance = int_max(int_abs(chunk_position.x), int_abs(chunk_position.z));
-    ecs_set(world, e, ChunkDivision, { distance });
+    // unsigned char distance = int_max(int_abs(chunk_position.x), int_abs(chunk_position.z));
+    ecs_set(world, e, ChunkDivision, { get_chunk_division(int3_zero, chunk_position) });
+    ecs_set(world, e, VoxLink, { terrain });
     ecs_defer_end(world);
     return e;
 }

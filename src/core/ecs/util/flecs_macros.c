@@ -15,7 +15,7 @@
 //! Adds a component but also adds override to an entity.
 #define zoxel_add(world, entity, T)\
     ecs_add(world, entity, T);\
-    ecs_override(world, entity, T)
+    ecs_override(world, entity, T);
 
 #define zoxel_remove(entity, T)\
     ecs_remove(world, entity, T);
@@ -26,9 +26,9 @@
 //! Adds a component with data and also adds override to an entity.
 #define zoxel_set(world, entity, T, ...)\
     ecs_set_id(world, entity, ecs_id(T), sizeof(T), &(T)__VA_ARGS__);\
-    ecs_override_id(world, entity, ecs_id(T))
+    ecs_override_id(world, entity, ecs_id(T));
 
 //! Adds a simple tag to an entity.
 #define zoxel_add_tag(world, entity, T)\
-    ecs_add_id(world, entity, ecs_id(T))
+    ecs_add_id(world, entity, ecs_id(T));
 // printf("Component has reset [%lu].\n", (long int) it->entities[i]);

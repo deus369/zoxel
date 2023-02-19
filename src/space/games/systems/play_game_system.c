@@ -23,6 +23,7 @@ void PlayGameSystem(ecs_iter_t *it)
             ecs_set(world, main_cameras[0], ViewMatrix, { first_view_matrix });
             ecs_add(world, main_cameras[0], Streamer);
             ecs_add(world, main_cameras[0], StreamPoint);
+            ecs_set(world, main_cameras[0], VoxLink, { main_terrain_world });
             main_camera_matrix = first_view_matrix;
             // \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cameras
         }

@@ -45,6 +45,7 @@ void ProjectionMatrixSystem(ecs_iter_t *it)
         // printf("A Component has not changed.\n");
         return;
     }
+    // printf("ProjectionMatrixSystem Updated\n");
     const ScreenDimensions *screenDimensions = ecs_field(it, ScreenDimensions, 1);
     const FieldOfView *fieldOfViews = ecs_field(it, FieldOfView, 2);
     const CameraNearDistance *cameraNearDistances = ecs_field(it, CameraNearDistance, 3);

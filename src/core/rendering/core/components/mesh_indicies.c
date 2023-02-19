@@ -15,7 +15,7 @@ ECS_DTOR(MeshIndicies, ptr,\
     if (ptr->value)\
     {\
         free(ptr->value);\
-        quad_count -= ptr->length;\
+        tri_count -= ptr->length;\
     }\
 })\
 ECS_MOVE(name, dst, src,\

@@ -1,3 +1,4 @@
+// #define zoxel_time_terrain_chunk_system
 #define noise_positiver 3200
 
 //! Our function that creates a chunk.
