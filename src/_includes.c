@@ -65,7 +65,7 @@
 #define voxel_octrees
 #define zoxel_test_voxels_terrain
 // #define zoxel_voxel_disable_distance_division
-#define voxels_disable_streaming
+// #define voxels_disable_streaming
 
 // audio
 // #define zoxel_debug_sounds
@@ -73,11 +73,11 @@
 // #define zoxel_log_sound_generation
 // #define zoxel_log_music_playing
 // #define zoxel_slow_music
-#define zoxel_disable_music
+// #define zoxel_disable_music
 
 // Timings
-#define zoxel_time_main_loop
-#define zoxel_time_main_loop_cutoff 40
+// #define zoxel_time_main_loop
+// #define zoxel_time_main_loop_cutoff 40
 // #define zoxel_time_octree_chunk_uvs_builds_system
 // #define zoxel_time_stream_point_system
 
