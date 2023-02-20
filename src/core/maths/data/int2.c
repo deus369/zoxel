@@ -68,6 +68,11 @@ int int2_array_index(int2 input, int2 size)
 {
     return input.x + input.y * size.x;
 }
+
+int int2_array_index2(int2 input, int2 size)
+{
+    return input.y + input.x * size.x;
+}
 // return input.y + input.x * size.y;
 
 int2 get_from_byte2(byte2 input)

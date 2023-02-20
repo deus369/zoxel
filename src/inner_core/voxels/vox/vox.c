@@ -24,13 +24,13 @@ void VoxImport(ecs_world_t *world)
     zoxel_module(Vox)
     zoxel_define_tag(Vox)
     spawn_prefab_vox(world);
-    //#ifdef zoxel_test_voxels_terrain
+    //#ifdef voxels_spawn_terrain
     /*const float model_scale = 0.015f;
     const float distance_to_camera = 0.3f;
     const float side_distance = 0.12f;
     float4 rotation = quaternion_from_euler((float3) { 0, 180 * degreesToRadians, 0 });  // (float4) { 0, -1.6f, 0, -1.0f }
     float3 spawn_position = (float3) { 0, 0, -distance_to_camera };
-    #ifdef zoxel_test_voxels_terrain
+    #ifdef voxels_spawn_terrain
          spawn_position.y += (1.1f - 0.028f) * overall_voxel_scale; // 2.46f;
     #endif*/
 

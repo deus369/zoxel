@@ -14,7 +14,11 @@ unsigned char is_adjacent_all_solid(unsigned char direction,
     {
         if (adjacent_node == NULL && chunk_index != 0)
         {
-            return 1;
+            #ifdef voxels_hide_terrain_edge
+                return 1;
+            #else
+                return 0;
+            #endif
         }
         return 0;
     }

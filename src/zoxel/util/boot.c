@@ -13,7 +13,7 @@ void boot_zoxel_game(ecs_world_t *world)
         set_main_cameras(2);
     }
     float3 camera_begin_position = { 0, 0.0f, 0.0f };
-    #ifdef zoxel_test_voxels_terrain
+    #ifdef voxels_spawn_terrain
     #ifdef voxel_octrees
     camera_begin_position = (float3) { 0, -0.01f * overall_voxel_scale, 0 };
     #else
@@ -54,4 +54,7 @@ void boot_zoxel_game(ecs_world_t *world)
     // #ifdef zoxel_test_uis
     // spawn_test_uis(world);   // spawns test ui
     // #endif
+    #ifdef voxels_spawn_terrain
+    create_terrain(world);
+    #endif
 }

@@ -21,21 +21,29 @@ int get_chunk_index_2(int i, int j, int k, int rows)
 
 void create_terrain(ecs_world_t *world)
 {
-    int chunks_total_length = get_terrain_chunks_count(terrain_rows, terrain_vertical);
-    printf("Spawning Terrain Chunks [%i]\n\n", chunks_total_length); 
+    #ifdef voxel_octrees
+        int chunks_total_length = get_terrain_chunks_count(terrain_rows, terrain_vertical);
+    #else
+        int chunks_total_length = get_terrain_chunks_count(terrain_rows, 0);
+    #endif
+    // printf("Spawning Terrain Chunks [%i]\n\n", chunks_total_length); 
     // todo: create a hashmap here
     ecs_defer_begin(world);
     ecs_entity_t terrain_world = spawn_terrain(world, prefab_terrain, float3_zero, 1.0f);  // todo link world to chunks and vice versa
     ecs_entity_t chunks[chunks_total_length];
-    for (int i = 0; i < chunks_total_length; i++)
+    /*for (int i = 0; i < chunks_total_length; i++)
     {
         chunks[i] = 0;
-    }
+    }*/
     for (int i = -terrain_rows; i <= terrain_rows; i++)
     {
         for (int k = -terrain_rows; k <= terrain_rows; k++)
         {
+            #ifdef voxel_octrees
             for (int j = -terrain_vertical; j <= terrain_vertical; j++)
+            #else
+            int j = 0;
+            #endif
             {
                 // printf("%ix%i index is %i\n", i, j, get_chunk_index(i, j, terrain_rows));
                 // printf("%ix%ix%i index is %i out of %i\n", i, j, k, get_chunk_index_2(i, j, k, terrain_rows), chunks_total_length)
@@ -47,35 +55,45 @@ void create_terrain(ecs_world_t *world)
                     (float3) { i * chunk_real_size, j * chunk_real_size, k * chunk_real_size },
                     0.5f);
                 #else
-                chunks[get_chunk_index(i, k, terrain_rows)] = spawn_terrain_chunk(world, prefab_terrain_chunk,
+                chunks[get_chunk_index_2(i, j, k, terrain_rows)] = spawn_terrain_chunk(world, prefab_terrain_chunk,
                     (int3) { i, 0, k }, (float3) { i * chunk_real_size, 0, k * chunk_real_size }, 0.5f);
                 #endif
             }
         }
     }
-    for (int i = 0; i < chunks_total_length; i++)
+    /*for (int i = 0; i < chunks_total_length; i++)
     {
         if (chunks[i] == 0)
         {
             zoxel_log("One chunk not set at: %i\n", i);
         }
-    }
+    }*/
     // now for all of them, set their neighbors
     for (int i = -terrain_rows; i <= terrain_rows; i++)
     {
         for (int k = -terrain_rows; k <= terrain_rows; k++)
         {
-            for (int j = -terrain_vertical; j <= terrain_vertical; j++)
-            {
-                set_chunk_neighbors_six_directions(world,
-                    chunks[get_chunk_index_2(i, j, k, terrain_rows)],
-                    i == -terrain_rows ? 0 : chunks[get_chunk_index_2(i - 1, j, k, terrain_rows)],
-                    i == terrain_rows ? 0 : chunks[get_chunk_index_2(i + 1, j, k, terrain_rows)],
-                    j == -terrain_vertical ? 0 : chunks[get_chunk_index_2(i, j - 1, k, terrain_rows)],
-                    j == terrain_vertical ? 0 : chunks[get_chunk_index_2(i, j + 1, k, terrain_rows)],
-                    k == -terrain_rows ? 0 : chunks[get_chunk_index_2(i, j, k - 1, terrain_rows)],
-                    k == terrain_rows ? 0 : chunks[get_chunk_index_2(i, j, k + 1, terrain_rows)]);
-            }
+            #ifdef voxel_octrees
+                for (int j = -terrain_vertical; j <= terrain_vertical; j++)
+                {
+                    set_chunk_neighbors_six_directions(world,
+                        chunks[get_chunk_index_2(i, j, k, terrain_rows)],
+                        i == -terrain_rows ? 0 : chunks[get_chunk_index_2(i - 1, j, k, terrain_rows)],
+                        i == terrain_rows ? 0 : chunks[get_chunk_index_2(i + 1, j, k, terrain_rows)],
+                        j == -terrain_vertical ? 0 : chunks[get_chunk_index_2(i, j - 1, k, terrain_rows)],
+                        j == terrain_vertical ? 0 : chunks[get_chunk_index_2(i, j + 1, k, terrain_rows)],
+                        k == -terrain_rows ? 0 : chunks[get_chunk_index_2(i, j, k - 1, terrain_rows)],
+                        k == terrain_rows ? 0 : chunks[get_chunk_index_2(i, j, k + 1, terrain_rows)]);
+                }
+            #else
+                int j = 0;
+                set_chunk_neighbors(world,
+                        chunks[get_chunk_index_2(i, j, k, terrain_rows)],
+                        i == -terrain_rows ? 0 : chunks[get_chunk_index_2(i - 1, j, k, terrain_rows)],
+                        i == terrain_rows ? 0 : chunks[get_chunk_index_2(i + 1, j, k, terrain_rows)],
+                        k == -terrain_rows ? 0 : chunks[get_chunk_index_2(i, j, k - 1, terrain_rows)],
+                        k == terrain_rows ? 0 : chunks[get_chunk_index_2(i, j, k + 1, terrain_rows)]);
+            #endif
         }
     }
     ChunkLinks chunkLinks = { };

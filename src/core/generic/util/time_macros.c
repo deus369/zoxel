@@ -1,5 +1,7 @@
 // timing system macros
 
+#define clocks_per_second 1000000.0 // 0
+
 #define begin_timing()\
 unsigned char did_do = 0;\
 clock_t time_start = clock();
@@ -9,16 +11,14 @@ clock_t time_start = clock();
 #define end_timing(system_name)\
 if (did_do)\
 {\
-    clock_t time_end = clock();\
-    long double time_taken = ((long double) (time_end - time_start) / CLOCKS_PER_SEC);\
+    double time_taken = (double) (clock() - time_start) / clocks_per_second;\
     if (time_taken >= 1.0)\
     {\
-        printf("%s [%Lgs] - [Seconds]\n", system_name, time_taken);\
+        printf("%s [%fs]\n", system_name, time_taken);\
     }\
     else\
     {\
-        time_taken *= 1000.0;\
-        printf("%s [%Lgms]\n", system_name, time_taken);\
+        printf("%s [%fms]\n", system_name, 1000.0 * time_taken);\
     }\
 }
 
@@ -26,8 +26,7 @@ if (did_do)\
 #define end_timing_cutoff(system_name, cuttoff)\
 if (did_do)\
 {\
-    clock_t time_end = clock();\
-    long double time_taken = ((long double) (time_end - time_start) / CLOCKS_PER_SEC);\
+    long double time_taken = ((long double) (clock() - time_start) / CLOCKS_PER_SEC);\
     if (time_taken >= 1.0)\
     {\
         printf("%s [%Lgs] - [Seconds]\n", system_name, time_taken);\
@@ -41,3 +40,9 @@ if (did_do)\
         }\
     }\
 }
+
+/*
+long double time_taken = ((long double) 0.1) * ((long double) (clock() - time_start) / CLOCKS_PER_SEC);\
+    
+    time_taken *= 1000.0;\
+*/

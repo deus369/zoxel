@@ -31,7 +31,6 @@ zoxel_byte_component(ChunkDivision)                     //! The resolution of ea
 #include "systems/animate_chunk_system.c"
 #include "systems/chunk_build_system.c"
 #include "systems/chunk_colors_build_system.c"
-#include "systems/chunk_uvs_build_system.c"
 // \todo for things like this, declare system in component declaration - a variable that resets~
 zoxel_reset_system(GenerateChunkResetSystem, GenerateChunk)
 zoxel_reset_system(ChunkDirtyResetSystem, ChunkDirty)
@@ -69,10 +68,6 @@ void define_voxels_core_systems(ecs_world_t *world)
             [in] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] Colors,
             [out] MeshIndicies, [out] MeshVertices, [out] MeshColors, [out] MeshDirty,
             [none] !MeshUVs)
-        zoxel_system_ctx(world, ChunkUVsBuildSystem, EcsOnUpdate, generateChunkQuery,
-            [in] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ChunkNeighbors,
-            [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty,
-            [none] !MeshColors)
     }
     // extras
     zoxel_system_main_thread(world, AnimateChunkSystem, EcsOnLoad, [out] AnimateChunk, [out] GenerateChunk)
