@@ -91,6 +91,9 @@ void ChunkUVsBuildSystem(ecs_iter_t *it)
     {
         return;
     }
+    #ifdef zoxel_time_chunk_uvs_builds_system
+        begin_timing()
+    #endif
     // printf("[ChunkBuildSystem] GenerateChunk was changed.\n");
     const ChunkDirty *entityDirtys = ecs_field(it, ChunkDirty, 1);
     const ChunkData *chunks = ecs_field(it, ChunkData, 2);
@@ -130,6 +133,12 @@ void ChunkUVsBuildSystem(ecs_iter_t *it)
         build_chunk_mesh_uvs(chunk, chunkSize, meshIndicies2, meshVertices2, meshUVs2,
             chunk_left, chunk_right, chunk_back, chunk_front);
         // printf("Building ChunkData UVs Mesh [%lu]\n", (long int) it->entities[i]);
+        #ifdef zoxel_time_chunk_uvs_builds_system
+            did_do_timing()
+        #endif
     }
+    #ifdef zoxel_time_chunk_uvs_builds_system
+        end_timing("ChunkUVsBuildSystem")
+    #endif
 }
 zoxel_declare_system(ChunkUVsBuildSystem)

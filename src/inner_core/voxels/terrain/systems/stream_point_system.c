@@ -17,7 +17,7 @@ void StreamPointSystem(ecs_iter_t *it)
         begin_timing()
     #endif
     const ChunkPosition *chunkPositions = ecs_field(&chunks_iterator, ChunkPosition, 2);
-    // const ChunkNeighbors *chunkNeighbors2 = ecs_field(&chunks_iterator, ChunkNeighbors, 3);
+    const ChunkNeighbors *chunkNeighbors2 = ecs_field(&chunks_iterator, ChunkNeighbors, 3);
     ChunkDivision *chunkDivisions = ecs_field(&chunks_iterator, ChunkDivision, 4);
     ChunkDirty *chunkDirtys = ecs_field(&chunks_iterator, ChunkDirty, 5);
     const Position3D *position3Ds = ecs_field(it, Position3D, 2);
@@ -65,14 +65,14 @@ void StreamPointSystem(ecs_iter_t *it)
                 }
             }
             // printf("    > Resetting Chunks [%i]\n", chunkLinks->length);*/
+            unsigned char *changed = malloc(chunks_iterator.count);
             for (int j = 0; j < chunks_iterator.count; j++)
             {
                 // later check matching world
                 const ChunkPosition *chunkPosition = &chunkPositions[j];
                 unsigned char new_chunk_division = get_chunk_division(new_position, chunkPosition->value);
                 ChunkDivision *chunkDivision = &chunkDivisions[j];
-                ChunkDirty *chunkDirty = &chunkDirtys[j];
-                /*const ChunkNeighbors *chunkNeighbors = &chunkNeighbors2[j];
+                const ChunkNeighbors *chunkNeighbors = &chunkNeighbors2[j];
                 if (chunkDivision->value != new_chunk_division ||
                     // check if neighbors changed division
                     (chunkNeighbors->value[0] != 0 && 
@@ -86,12 +86,26 @@ void StreamPointSystem(ecs_iter_t *it)
                         get_chunk_division(new_position, int3_back(chunkPosition->value)))  ||
                     (chunkNeighbors->value[5] != 0 && 
                         ecs_get(it->world, chunkNeighbors->value[5], ChunkDivision)->value !=
-                        get_chunk_division(new_position, int3_front(chunkPosition->value))))*/
+                        get_chunk_division(new_position, int3_front(chunkPosition->value))))
                 {
-                    chunkDivision->value = new_chunk_division;
+                    changed[j] = new_chunk_division;
+                }
+                else
+                {
+                    changed[j] = 255;
+                }
+            }
+            for (int j = 0; j < chunks_iterator.count; j++)
+            {
+                ChunkDivision *chunkDivision = &chunkDivisions[j];
+                ChunkDirty *chunkDirty = &chunkDirtys[j];
+                if (changed[j] != 255)
+                {
+                    chunkDivision->value = changed[j];
                     chunkDirty->value = 1;
                 }
             }
+            free(changed);
             #ifdef zoxel_time_stream_point_system
                 did_do_timing()
             #endif

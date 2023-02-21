@@ -8,9 +8,9 @@ clock_t time_start = clock();
 
 #define did_do_timing() if (did_do == 0) did_do = 1;
 
-#define end_timing(system_name)\
-if (did_do)\
-{\
+#ifdef zoxel_time_always
+
+    #define end_timing(system_name)\
     double time_taken = (double) (clock() - time_start) / clocks_per_second;\
     if (time_taken >= 1.0)\
     {\
@@ -19,14 +19,28 @@ if (did_do)\
     else\
     {\
         printf("%s [%fms]\n", system_name, 1000.0 * time_taken);\
-    }\
-}
+    }
+#else
+    #define end_timing(system_name)\
+    if (did_do)\
+    {\
+        double time_taken = (double) (clock() - time_start) / clocks_per_second;\
+        if (time_taken >= 1.0)\
+        {\
+            printf("%s [%fs]\n", system_name, time_taken);\
+        }\
+        else\
+        {\
+            printf("%s [%fms]\n", system_name, 1000.0 * time_taken);\
+        }\
+    }
+#endif
 
 
 #define end_timing_cutoff(system_name, cuttoff)\
 if (did_do)\
 {\
-    long double time_taken = ((long double) (clock() - time_start) / CLOCKS_PER_SEC);\
+    long double time_taken = ((long double) (clock() - time_start) / clocks_per_second);\
     if (time_taken >= 1.0)\
     {\
         printf("%s [%Lgs] - [Seconds]\n", system_name, time_taken);\

@@ -10,10 +10,10 @@ int get_terrain_chunks_count(int rows, int vertical_rows)
     return (vertical_rows + vertical_rows + 1) * (rows + rows + 1) * (rows + rows + 1);
 }
 
-int get_chunk_index_2(int i, int j, int k, int rows)
+int get_chunk_index_2(int i, int j, int k, int rows, int vertical)
 {
     i += rows;
-    j += terrain_vertical;
+    j += vertical;
     k += rows;
     return i * (rows + rows + 1) + j * (rows + rows + 1) * (rows + rows + 1) + k;
     // return i * (rows + rows + 1) + k * (rows + rows + 1) * (rows + rows + 1) + j;
@@ -48,14 +48,14 @@ void create_terrain(ecs_world_t *world)
                 // printf("%ix%i index is %i\n", i, j, get_chunk_index(i, j, terrain_rows));
                 // printf("%ix%ix%i index is %i out of %i\n", i, j, k, get_chunk_index_2(i, j, k, terrain_rows), chunks_total_length)
                 #ifdef voxel_octrees
-                chunks[get_chunk_index_2(i, j, k, terrain_rows)] = spawn_terrain_chunk_octree(world,
+                chunks[get_chunk_index_2(i, j, k, terrain_rows, terrain_vertical)] = spawn_terrain_chunk_octree(world,
                     prefab_terrain_chunk_octree,
                     terrain_world,
                     (int3) { i, j, k },
                     (float3) { i * chunk_real_size, j * chunk_real_size, k * chunk_real_size },
                     0.5f);
                 #else
-                chunks[get_chunk_index_2(i, j, k, terrain_rows)] = spawn_terrain_chunk(world, prefab_terrain_chunk,
+                chunks[get_chunk_index_2(i, j, k, terrain_rows, 0)] = spawn_terrain_chunk(world, prefab_terrain_chunk,
                     (int3) { i, 0, k }, (float3) { i * chunk_real_size, 0, k * chunk_real_size }, 0.5f);
                 #endif
             }
@@ -77,22 +77,22 @@ void create_terrain(ecs_world_t *world)
                 for (int j = -terrain_vertical; j <= terrain_vertical; j++)
                 {
                     set_chunk_neighbors_six_directions(world,
-                        chunks[get_chunk_index_2(i, j, k, terrain_rows)],
-                        i == -terrain_rows ? 0 : chunks[get_chunk_index_2(i - 1, j, k, terrain_rows)],
-                        i == terrain_rows ? 0 : chunks[get_chunk_index_2(i + 1, j, k, terrain_rows)],
-                        j == -terrain_vertical ? 0 : chunks[get_chunk_index_2(i, j - 1, k, terrain_rows)],
-                        j == terrain_vertical ? 0 : chunks[get_chunk_index_2(i, j + 1, k, terrain_rows)],
-                        k == -terrain_rows ? 0 : chunks[get_chunk_index_2(i, j, k - 1, terrain_rows)],
-                        k == terrain_rows ? 0 : chunks[get_chunk_index_2(i, j, k + 1, terrain_rows)]);
+                        chunks[get_chunk_index_2(i, j, k, terrain_rows, terrain_vertical)],
+                        i == -terrain_rows ? 0 : chunks[get_chunk_index_2(i - 1, j, k, terrain_rows, terrain_vertical)],
+                        i == terrain_rows ? 0 : chunks[get_chunk_index_2(i + 1, j, k, terrain_rows, terrain_vertical)],
+                        j == -terrain_vertical ? 0 : chunks[get_chunk_index_2(i, j - 1, k, terrain_rows, terrain_vertical)],
+                        j == terrain_vertical ? 0 : chunks[get_chunk_index_2(i, j + 1, k, terrain_rows, terrain_vertical)],
+                        k == -terrain_rows ? 0 : chunks[get_chunk_index_2(i, j, k - 1, terrain_rows, terrain_vertical)],
+                        k == terrain_rows ? 0 : chunks[get_chunk_index_2(i, j, k + 1, terrain_rows, terrain_vertical)]);
                 }
             #else
                 int j = 0;
                 set_chunk_neighbors(world,
-                        chunks[get_chunk_index_2(i, j, k, terrain_rows)],
-                        i == -terrain_rows ? 0 : chunks[get_chunk_index_2(i - 1, j, k, terrain_rows)],
-                        i == terrain_rows ? 0 : chunks[get_chunk_index_2(i + 1, j, k, terrain_rows)],
-                        k == -terrain_rows ? 0 : chunks[get_chunk_index_2(i, j, k - 1, terrain_rows)],
-                        k == terrain_rows ? 0 : chunks[get_chunk_index_2(i, j, k + 1, terrain_rows)]);
+                        chunks[get_chunk_index_2(i, j, k, terrain_rows, 0)],
+                        i == -terrain_rows ? 0 : chunks[get_chunk_index_2(i - 1, j, k, terrain_rows, 0)],
+                        i == terrain_rows ? 0 : chunks[get_chunk_index_2(i + 1, j, k, terrain_rows, 0)],
+                        k == -terrain_rows ? 0 : chunks[get_chunk_index_2(i, j, k - 1, terrain_rows, 0)],
+                        k == terrain_rows ? 0 : chunks[get_chunk_index_2(i, j, k + 1, terrain_rows, 0)]);
             #endif
         }
     }

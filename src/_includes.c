@@ -32,7 +32,6 @@
 // #define disable_voxel_back
 // #define disable_voxel_front
 // #define disable_voxel_down
-// #define zoxel_disable_close_nodes
 // #define zoxel_test_lines3D
 // #define zoxel_test_networking
 // #define zoxel_test_brain
@@ -61,12 +60,28 @@
 // #define debug_ui_scaling
 // #define zoxel_time_render_loop
 
+// Timings
+#define zoxel_time_main_loop
+#define zoxel_time_main_loop_cutoff 32
+// #define zoxel_time_always
+
 // voxels
 #define voxel_octrees
 #define voxels_spawn_terrain
 #define voxels_hide_terrain_edge
+#define zoxel_disable_close_nodes
+// #define voxels_disable_streaming
+// #define voxels_flat_land
 // #define zoxel_voxel_disable_distance_division
-#define voxels_disable_streaming
+// #define voxels_use_octree_pooling
+// voxels timing
+// #define zoxel_time_terrain_chunk_system
+// #define zoxel_time_chunk_uvs_builds_system
+// #define zoxel_time_octree_terrain_chunk_system
+#define zoxel_time_octree_chunk_uvs_builds_system
+// #define zoxel_time_mesh_uvs_update_system
+// #define zoxel_time_stream_point_system
+// idea: generate terrain too at lesser resolutions
 
 // audio
 // #define zoxel_debug_sounds
@@ -75,13 +90,6 @@
 // #define zoxel_log_music_playing
 // #define zoxel_slow_music
 #define zoxel_disable_music
-
-// Timings
-// #define zoxel_time_main_loop
-// #define zoxel_time_main_loop_cutoff 40
-// #define zoxel_time_octree_terrain_chunk_system
-// #define zoxel_time_octree_chunk_uvs_builds_system
-// #define zoxel_time_stream_point_system
 
 // Finally include zoxel engine and zoxel
 #include "zoxel_engine.c"

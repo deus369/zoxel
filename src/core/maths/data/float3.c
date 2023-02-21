@@ -46,3 +46,15 @@ float3 float3_cross(float3 a, float3 b)
         a.x * b.y - a.y * b.x
     };
 }
+
+const float3 octree_positions_float3s[] =
+{
+    { 0.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 1.0f },
+    { 0.0f, 1.0f, 0.0f },
+    { 0.0f, 1.0f, 1.0f },
+    { 1.0f, 0.0f, 0.0f },
+    { 1.0f, 0.0f, 1.0f },
+    { 1.0f, 1.0f, 0.0f },
+    { 1.0f, 1.0f, 1.0f }
+};

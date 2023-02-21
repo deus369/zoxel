@@ -1,5 +1,3 @@
-// #define zoxel_time_mesh_uvs_update_system
-
 //! Generate random noise texture.
 /**
  * Once main thread is fixed, update to gpu in this system.
@@ -13,6 +11,7 @@ void MeshUvsUpdateSystem(ecs_iter_t *it)
     }
     #ifdef zoxel_time_mesh_uvs_update_system
         begin_timing()
+        int update_count = 0;
     #endif
     const MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 1);
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 2);
@@ -46,10 +45,15 @@ void MeshUvsUpdateSystem(ecs_iter_t *it)
         // }
         #ifdef zoxel_time_mesh_uvs_update_system
             did_do_timing()
+            update_count++;
         #endif
     }
     #ifdef zoxel_time_mesh_uvs_update_system
         end_timing("MeshUvsUpdateSystem")
+        if (did_do)
+        {
+            printf("    > updated: %i\n", update_count);
+        }
     #endif
 }
 zoxel_declare_system(MeshUvsUpdateSystem)

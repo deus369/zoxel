@@ -1,18 +1,25 @@
 #ifndef zoxel_voxels_terrain
 #define zoxel_voxels_terrain
 
+// voxels settings
 #define max_octree_depth 4
-#define inner_render_buffer 1
+#define inner_render_buffer 0
 #define terrain_rows 12
 #define terrain_vertical 2
 #define octree_min_height -1.995f // 0.005f
-#define terrain_frequency 0.1216 // 0.004216
-#define terrain_amplifier 120.0
+#ifdef voxel_octrees
+    #define terrain_amplifier 120.0
+    #define terrain_frequency 0.1216 // 0.004216
+#else
+    #define terrain_amplifier 64.0
+    #define terrain_frequency 0.00216 // 0.004216
+#endif
 const int3 terrain_chunk_size = { chunk_length, 8 * chunk_length, chunk_length };
 float chunk_real_size = overall_voxel_scale / 2.0f; // 1.0f;   // size achunk takes up
 const unsigned char terrain_min_height = 8;
 const int terrain_octaves = 12;
 const uint32_t terrain_seed = 32666;
+// the rest
 zoxel_declare_tag(TerrainWorld)
 zoxel_declare_tag(TerrainChunk)
 zoxel_declare_tag(ChunkTerrain)
@@ -46,9 +53,8 @@ void TerrainImport(ecs_world_t *world)
         [none] TerrainChunk, [in] ChunkPosition, [in] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree)
     zoxel_filter(terrain_chunks_query, world,
         [none] TerrainChunk, [in] ChunkPosition, [in] ChunkNeighbors, [out] ChunkDivision, [out] ChunkDirty)
-    zoxel_system_ctx_main_thread(world, StreamPointSystem, EcsOnUpdate, terrain_chunks_query, [none] Streamer, [in] Position3D, [out] StreamPoint)
-    //zoxel_system_ctx_main_thread(world, StreamPointSystem, EcsOnUpdate, streamerPositionQuery,
-    //    [none] Streamer, [in] Position3D, [out] StreamPoint)
+    zoxel_system_ctx_main_thread(world, StreamPointSystem, EcsOnUpdate, terrain_chunks_query,
+        [none] Streamer, [in] Position3D, [out] StreamPoint)
     zoxel_system_ctx(world, ChunkUVsBuildSystem, EcsOnUpdate, generateChunkQuery,
         [in] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ChunkNeighbors,
         [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty,
