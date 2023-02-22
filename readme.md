@@ -1,4 +1,7 @@
-## Zoxel A Procedurally Generated RPG
+<p align="center" style="margin-bottom: 0px !important;">
+  <img width="64" src="resources/textures/game_icon.png" alt="Zoxel Logo" align="center">
+</p>
+<h1 align="center" style="margin-top: 0px;">Zoxel A Procedurally Generated RPG</h1>
 
 Experience the thrill of discovery and adventure in this groundbreaking, procedurally generated voxel RPG
 
@@ -33,14 +36,20 @@ Our codebase is modular and well-organized, with the game engine serving as the 
 
 -----
 
-<p align="center">
-
-[[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.com/deus369/zoxel)]
-
-</p>
-
-<p align="center">
-
-[[Play Zoxel](https://deus369.github.io/zoxel-play/)]
-
-</p>
+<link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+</br>
+<div style="text-align:center">
+  <a href="https://codeberg.org/deus/zoxel" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'Press Start 2P', cursive; font-size: 10px; border-radius: 0px;">
+    codeberg
+  </a>
+  <a style="margin-left: 10px;"> | </a>
+  <a href="https://github.com/deus369/zoxel" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'Press Start 2P', cursive; font-size: 10px; border-radius: 0px;">
+    github
+  </a>
+</div>
+</br>
+<div style="text-align:center">
+  <a href="https://deus369.github.io/zoxel-play" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 24px; font-family: 'Press Start 2P', cursive; font-size: 12px; border-radius: 0px;">
+    play zoxel
+  </a>
+</div>
