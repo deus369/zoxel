@@ -7,7 +7,7 @@
 	<br>
 </div>
 <h1 align="center">
-    <img width="32" src="resources/textures/game_icon.png" alt="Zoxel Logo" align="center"> A Procedural Simulation Game
+    A Procedural Simulation Game
 </h1>
 
 Experience the thrill of discovery and adventure in this groundbreaking, procedurally generated voxel RPG
@@ -62,4 +62,7 @@ Our codebase is modular and well-organized, with the game engine serving as the 
   <a href="https://deus369.github.io/zoxel-play" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 24px;; font-family: resources/monocraft.otf; font-size: 14px;">
     play zoxel
   </a>
+</p>
+<p align="center">
+  <img width="64" src="resources/textures/game_icon.png" alt="Zoxel Logo"> 
 </p>
