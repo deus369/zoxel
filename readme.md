@@ -1,10 +1,13 @@
 <link href="resources/monocraft.otf" rel="stylesheet">
 
-<p align="center" style="margin-bottom: 0px !important;">
-  <img width="64" src="resources/textures/game_icon.png" alt="Zoxel Logo" align="center">
-</p>
-<h1 align="center" style="margin-top: 0px; font-family: 'Franklin Gothic Medium'; font-size: 18px;">
-Zoxel A Procedurally Generated RPG
+<div align="center">
+	<br>
+		<img src="header.svg" width="100%" height="200">
+	</a>
+	<br>
+</div>
+<h1 align="center">
+    <img width="32" src="resources/textures/game_icon.png" alt="Zoxel Logo" align="center"> A Procedural Simulation Game
 </h1>
 
 Experience the thrill of discovery and adventure in this groundbreaking, procedurally generated voxel RPG
