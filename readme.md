@@ -10,14 +10,7 @@ Experience the thrill of discovery and adventure in this groundbreaking, procedu
 
 ### New vs Old
 
-<style>
-img, p {
-  display:flex; justify-content:center;
-  text-align:center;
-}
-</style>
-
-<p>
+<p align="center">
   <img src="https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/screen-2023-02-06-20-28-49.jpg?raw=false" alt="Zoxel" width="400"/>
   <img src="https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/zoxel_unity_00.png?raw=false" alt="Unity Zoxel" width="400"/>
 </p>
@@ -40,13 +33,13 @@ Our codebase is modular and well-organized, with the game engine serving as the 
 
 -----
 
-<p style="text-align:center;">
+<p align="center">
 
 [[Codeberg](https://codeberg.org/deus/zoxel)] | [[Github](https://github.com/deus369/zoxel)]
 
 </p>
 
-<p style="text-align:center;">
+<p align="center">
 
 [[Play Zoxel](https://deus369.github.io/zoxel-play/)]
 
