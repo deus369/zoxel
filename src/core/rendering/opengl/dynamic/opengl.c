@@ -1,75 +1,98 @@
-#include "opengl.h"
 
-// Define an OpenGL function. Until dynamically loaded, it will
-// be set to NULL and should NOT be called. Doing so will cause
-// a segfault.
-//
-// OPENGL_DEFINE(glCreateShader, PFNGLCREATESHADERPROC)
-//
-//   becomes
-//
-// PFNGLCREATESHADERPROC glCreateShader = NULL;
+#define OPENGL_FUNCTIONS                                                            \
+    OPENGL_FUNCTION(glCreateShader, PFNGLCREATESHADERPROC)                          \
+    OPENGL_FUNCTION(glDeleteShader, PFNGLDELETESHADERPROC)                          \
+    OPENGL_FUNCTION(glAttachShader, PFNGLATTACHSHADERPROC)                          \
+    OPENGL_FUNCTION(glDetachShader, PFNGLDETACHSHADERPROC)                          \
+    OPENGL_FUNCTION(glShaderSource, PFNGLSHADERSOURCEPROC)                          \
+    OPENGL_FUNCTION(glCompileShader, PFNGLCOMPILESHADERPROC)                        \
+    OPENGL_FUNCTION(glGetShaderiv, PFNGLGETSHADERIVPROC)                            \
+    OPENGL_FUNCTION(glGetShaderInfoLog, PFNGLGETSHADERINFOLOGPROC)                  \
+    OPENGL_FUNCTION(glCreateProgram, PFNGLCREATEPROGRAMPROC)                        \
+    OPENGL_FUNCTION(glDeleteProgram, PFNGLDELETEPROGRAMPROC)                        \
+    OPENGL_FUNCTION(glUseProgram, PFNGLUSEPROGRAMPROC)                              \
+    OPENGL_FUNCTION(glLinkProgram, PFNGLLINKPROGRAMPROC)                            \
+    OPENGL_FUNCTION(glValidateProgram, PFNGLVALIDATEPROGRAMPROC)                    \
+    OPENGL_FUNCTION(glGetProgramiv, PFNGLGETPROGRAMIVPROC)                          \
+    OPENGL_FUNCTION(glGetProgramInfoLog, PFNGLGETPROGRAMINFOLOGPROC)                \
+    OPENGL_FUNCTION(glUniform1i, PFNGLUNIFORM1IPROC)                                \
+    OPENGL_FUNCTION(glUniform1f, PFNGLUNIFORM1FPROC)                                \
+    OPENGL_FUNCTION(glUniform2f, PFNGLUNIFORM2FPROC)                                \
+    OPENGL_FUNCTION(glUniform3f, PFNGLUNIFORM3FPROC)                                \
+    OPENGL_FUNCTION(glUniform4f, PFNGLUNIFORM4FPROC)                                \
+    OPENGL_FUNCTION(glUniformMatrix4fv, PFNGLUNIFORMMATRIX4FVPROC)                  \
+    OPENGL_FUNCTION(glGenBuffers, PFNGLGENBUFFERSPROC)                              \
+    OPENGL_FUNCTION(glDeleteBuffers, PFNGLDELETEBUFFERSPROC)                        \
+    OPENGL_FUNCTION(glBindBuffer, PFNGLBINDBUFFERPROC)                              \
+    OPENGL_FUNCTION(glBufferData, PFNGLBUFFERDATAPROC)                              \
+    OPENGL_FUNCTION(glVertexAttribPointer, PFNGLVERTEXATTRIBPOINTERPROC)            \
+    OPENGL_FUNCTION(glEnableVertexAttribArray, PFNGLENABLEVERTEXATTRIBARRAYPROC)    \
+    OPENGL_FUNCTION(glDisableVertexAttribArray, PFNGLDISABLEVERTEXATTRIBARRAYPROC)  \
+    OPENGL_FUNCTION(glBufferSubData, PFNGLBUFFERSUBDATAPROC)                        \
+    OPENGL_FUNCTION(glGetAttribLocation, PFNGLGETATTRIBLOCATIONPROC)                \
+    OPENGL_FUNCTION(glIsProgram, PFNGLISPROGRAMPROC)                                
+
+    // OPENGL_FUNCTION(glGetUniformLocation, PFNGLGETUNIFORMLOCATIONPROC) 
+    // OPENGL_FUNCTION(glGetUniformLocation, PFNGLGETUNIFORMLOCATIONPROC)
+    // OPENGL_FUNCTION(glBindVertexArray, PFNGLBINDVERTEXARRAYPROC)
+    // OPENGL_FUNCTION(glDeleteVertexArrays, PFNGLDELETEVERTEXARRAYSPROC)
+    // OPENGL_FUNCTION(glGenVertexArrays, PFNGLGENVERTEXARRAYSPROC)
+
+#define OPENGL_DECLARE(func_name, func_type)  \
+    extern func_type func_name;
+
+#define OPENGL_FUNCTION OPENGL_DECLARE
+OPENGL_FUNCTIONS
+#undef OPENGL_FUNCTION
+
+unsigned char opengl_load_functions(void);
+
+// #endif
+
 #define OPENGL_DEFINE(func_name, func_type)  \
-    func_type func_name = NULL;
+    func_type func_name __attribute__((weak))  = NULL;
 
-// Define all of the initally-NULL OpenGL functions.
 #define OPENGL_FUNCTION OPENGL_DEFINE
 OPENGL_FUNCTIONS
 #undef OPENGL_FUNCTION
 
-// Define a union that bridges the gap between object pointers
-// and function pointers. This is needed because the C standard
-// forbids assignment between function pointers and object pointers
-// (void*, in our case). They are NOT guaranteed to be the same size.
-// By pulling the void* from SDL_GL_GetProcAddress though this union,
-// we ensure that the potential difference in pointer sizes is mitigated.
 union bridge
 {
     void* object_ptr;
     void (*function_ptr)(void);
 };
 
-//
-//   becomes
-//
-// glCreateShader = (PFNGLCREATESHADERPROC)(union bridge){
-//     .object_ptr = SDL_GL_GetProcAddress("glCreateShader")
-// }.function_ptr;
 #define OPENGL_LOAD(func_name, func_type)                \
     func_name = (func_type)(union bridge)               \
     {               \
         .object_ptr = SDL_GL_GetProcAddress(#func_name)  \
     }.function_ptr;
 
-// Extra safety step to ensure that all the OpenGL functions were successfully
-// dynamically loaded. If a function failed to load, print and error and
-// return false back to the caller.
-//
-// OPENGL_VALIDATE(glCreateShader, PFNGLCREATESHADERPROC)
-//
-//   becomes
-//
-// if (glCreateShader == NULL) {
-//     fprintf(stderr, "failed to load func: %s\n", "glCreateShader);
-//     return false;
-// }
 #define OPENGL_VALIDATE(func_name, func_type)                      \
     if (func_name == NULL) {                                       \
         fprintf(stderr, "failed to load func: %s\n", #func_name);  \
         return false;                                              \
     }
 
+#define opengl_define_function(func_type, func_name)  \
+    func_type func_name __attribute__((weak)) = NULL;
+
+#define opengl_load_function(func_type, func_name)          \
+    func_name = (func_type)(union bridge)                   \
+    {                                                       \
+        .object_ptr = SDL_GL_GetProcAddress(#func_name)     \
+    }.function_ptr;                                         \
+    if (func_name == NULL)                                  \
+    {                                                       \
+        fprintf(stderr, "failed to load func: %s\n", #func_name);  \
+        return false;                                        \
+    }
+
+opengl_define_function(PFNGLGETUNIFORMLOCATIONPROC, glGetUniformLocation)
+
 unsigned char opengl_load_functions(void)
 {
-    // use SDL2's platform-agnostic loader to pull the "real" addresses
-    //  out by name and assign to the definitions above
-    //
-    // WARN: ISO C forbids conversion of object pointer to function pointer type
-    //
-    // the C standard defines func ptrs and object ptrs as different types
-    //  that are potentially different sizes (though in practice they tend
-    //  to be the same)
-    // glCreateShader = (PFNGLCREATESHADERPROC)SDL_GL_GetProcAddress("glCreateShader");
+    opengl_load_function(PFNGLGETUNIFORMLOCATIONPROC, glGetUniformLocation)
 
     #define OPENGL_FUNCTION OPENGL_LOAD
 OPENGL_FUNCTIONS

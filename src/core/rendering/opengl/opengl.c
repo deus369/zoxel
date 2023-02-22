@@ -1,7 +1,7 @@
 #ifndef zoxel_opengl
 #define zoxel_opengl
 
-#include "dynamic/opengl.h"
+// #include "dynamic/opengl.h"
 #include "dynamic/opengl.c"
 // util Functions
 #include "util/primitive_square.c"
