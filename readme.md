@@ -3,11 +3,12 @@
 <p align="center" style="margin-bottom: 0px !important;">
   <img width="64" src="resources/textures/game_icon.png" alt="Zoxel Logo" align="center">
 </p>
-<h1 align="center" style="font-family: 'monocraft'; margin-top: 0px;">Zoxel A Procedurally Generated RPG</h1>
+<p align="center" style="font-family: 'resources/monocraft.otf' margin-top: 0px; font-size: 20px;">
+Zoxel A Procedurally Generated RPG
+</p>
 
 Experience the thrill of discovery and adventure in this groundbreaking, procedurally generated voxel RPG
 
-</br>
 <p align="center">
   <a href="https://github.com/deus369/zoxel-web/blob/master/documents/roadmap.md" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 10px;">
     roadmap
@@ -21,7 +22,6 @@ Experience the thrill of discovery and adventure in this groundbreaking, procedu
     how to build
   </a>
 </p>
-</br>
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/screen-2023-02-06-20-28-49.jpg?raw=false" alt="Zoxel" width="400"/>
@@ -46,9 +46,8 @@ Our codebase is modular and well-organized, with the game engine serving as the 
 
 -----
 
-</br>
 <p align="center">
-  <a href="https://codeberg.org/deus/zoxel" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 10px;">
+  <a href="https://codeberg.org/deus/zoxel" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; margin: 24px; font-family: 'monocraft'; font-size: 10px;">
     codeberg
   </a>
   <a style="margin-left: 10px;"> | </a>
@@ -56,9 +55,8 @@ Our codebase is modular and well-organized, with the game engine serving as the 
     github
   </a>
 </p>
-</br>
 <p align="center">
-  <a href="https://deus369.github.io/zoxel-play" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 24px; font-family: 'monocraft'; font-size: 12px;;">
+  <a href="https://deus369.github.io/zoxel-play" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 24px;; font-family: resources/monocraft.otf; font-size: 12px;">
     play zoxel
   </a>
 </p>
