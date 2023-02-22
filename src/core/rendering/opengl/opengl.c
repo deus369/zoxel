@@ -25,6 +25,16 @@
 #include "rendering/shader3D_colored.c"
 #include "util/opengl_main_util.c"
 
+void print_opengl()
+{
+    #ifdef zoxel_debug_opengl
+        zoxel_log("OpenGL Context\n");
+        zoxel_log("    Vendor:   %s\n", glGetString(GL_VENDOR));
+        zoxel_log("    Renderer: %s\n", glGetString(GL_RENDERER));
+        zoxel_log("    Version:  %s\n", glGetString(GL_VERSION));
+        zoxel_log("    GLSL Version:    %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+    #endif
+}
 
 int check_compute_shader_support()
 {
@@ -76,6 +86,7 @@ void OpenGLImport(ecs_world_t *world)
     {
         printf("Failed to InitializeOpenGL.");
     }
+    print_opengl();
     int supports_compute = check_compute_shader_support();
     if (supports_compute == 0)
     {

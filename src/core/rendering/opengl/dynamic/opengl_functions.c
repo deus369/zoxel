@@ -46,8 +46,6 @@ union bridge
 #define opengl_declare(func_name, func_type)    \
     func_type func_name __attribute__((weak))  = NULL;
 
-    // extern func_type func_name;
-
 #define opengl_load_function(func_name, func_type)                  \
     func_name = (func_type)(union bridge)                           \
     {                                                               \

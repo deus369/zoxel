@@ -27,7 +27,7 @@
 #endif
 
 const int window_index = 0; // 1;
-unsigned char vsync = 0;
+unsigned char vsync = 1;
 unsigned char fullscreen = 0; // set full screen default option here
 unsigned char halfscreen = 1;
 unsigned char is_split_screen = 0;

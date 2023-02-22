@@ -44,11 +44,4 @@ void dispose_opengl()
     DisposeInstanced3DMaterial();
     dispose_shader3D_textured();
     dispose_shader3D_colored();
-// #ifdef zoxel_catch_opengl_errors
-//     GLenum err7 = glGetError();
-//     if (err7 != GL_NO_ERROR)
-//     {
-//         printf("GL ERROR with end of dispose_opengl: %i\n", err7);
-//     }
-// #endif
 }

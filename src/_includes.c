@@ -43,7 +43,7 @@
 // #define zoxel_test_uis
 
 // -- debugs --
-// #define zox_logs // add logs with printf
+#define zox_logs // add logs with printf
 // #define zoxel_catch_opengl_errors
 // #define zoxel_log_frames_per_second
 // #define zoxel_debug_vox_read
@@ -53,7 +53,7 @@
 // #define zoxel_debug_spawns
 // #define debug_element_position_change_query
 // #define zoxel_debug_sdl
-// #define zoxel_debug_opengl
+#define zoxel_debug_opengl
 // #define debug_viewport_resize
 // #define zoxel_debug_element_raycasting
 // #define debug_ui_positioning
@@ -62,15 +62,15 @@
 
 // Timings
 //  > target fps is 30 then 33.33 is the ms required, 16.66 if 60 fps
-#define zoxel_time_main_loop
-#define zoxel_time_main_loop_cutoff 33.5
+// #define zoxel_time_main_loop
+// #define zoxel_time_main_loop_cutoff 33.5
 // #define zoxel_time_always
 
 // voxels
 #define voxel_octrees
 #define voxels_spawn_terrain
 #define voxels_hide_terrain_edge
-#define zoxel_disable_close_nodes
+// #define zoxel_disable_close_nodes
 // #define voxels_disable_streaming
 // #define voxels_flat_land
 // #define zoxel_voxel_disable_distance_division

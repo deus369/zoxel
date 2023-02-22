@@ -111,7 +111,7 @@ void resize_canvas()
 #endif
 
 //! Zoxel can also be a command tool... Wuut?!?!!
-void PrintHelpMenu(const char* arg0)
+void print_help_menu(const char* arg0)
 {
     zoxel_log("\n");
     zoxel_log("-=-=-=-=-=--=-=-=-=-=--=-=-=-=-=--=-=-=-=-=-\n");
@@ -134,7 +134,7 @@ void PrintHelpMenu(const char* arg0)
     zoxel_log("\n");
 }
 
-void SetStartScreenSize()
+void set_screen_size()
 {
     SDL_DisplayMode displayMode;
     SDL_GetCurrentDisplayMode(0, &displayMode);
@@ -156,27 +156,16 @@ void SetStartScreenSize()
 void print_sdl()
 {
     #ifdef zoxel_debug_sdl
-    zoxel_log("SDL\n");
-    zoxel_log("    Platform:        %s\n", SDL_GetPlatform());
-    zoxel_log("    CPU Count:       %d\n", SDL_GetCPUCount());
-    zoxel_log("    System RAM:      %d MB\n", SDL_GetSystemRAM());
-    zoxel_log("    Screen Dimensions: %ix%i\n", screen_dimensions.x, screen_dimensions.y);
-    zoxel_log("    Supports SSE:    %s\n", (SDL_HasSSE() ? "true" : "false"));
-    zoxel_log("    Supports SSE2:   %s\n", (SDL_HasSSE2() ? "true" : "false"));
-    zoxel_log("    Supports SSE3:   %s\n", (SDL_HasSSE3() ? "true" : "false"));
-    zoxel_log("    Supports SSE4.1: %s\n", (SDL_HasSSE41() ? "true" : "false"));
-    zoxel_log("    Supports SSE4.2: %s\n", (SDL_HasSSE42() ? "true" : "false"));
-    #endif
-}
-
-void print_opengl()
-{
-    #ifdef zoxel_debug_opengl
-    zoxel_log("OpenGL Context\n");
-    zoxel_log("    Vendor:   %s\n", glGetString(GL_VENDOR));
-    zoxel_log("    Renderer: %s\n", glGetString(GL_RENDERER));
-    zoxel_log("    Version:  %s\n", glGetString(GL_VERSION));
-    zoxel_log("    GLSL Version:    %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+        zoxel_log("SDL\n");
+        zoxel_log("    Platform:        %s\n", SDL_GetPlatform());
+        zoxel_log("    CPU Count:       %d\n", SDL_GetCPUCount());
+        zoxel_log("    System RAM:      %d MB\n", SDL_GetSystemRAM());
+        zoxel_log("    Screen Dimensions: %ix%i\n", screen_dimensions.x, screen_dimensions.y);
+        zoxel_log("    Supports SSE:    %s\n", (SDL_HasSSE() ? "true" : "false"));
+        zoxel_log("    Supports SSE2:   %s\n", (SDL_HasSSE2() ? "true" : "false"));
+        zoxel_log("    Supports SSE3:   %s\n", (SDL_HasSSE3() ? "true" : "false"));
+        zoxel_log("    Supports SSE4.1: %s\n", (SDL_HasSSE41() ? "true" : "false"));
+        zoxel_log("    Supports SSE4.2: %s\n", (SDL_HasSSE42() ? "true" : "false"));
     #endif
 }
 
@@ -206,13 +195,13 @@ int SetSDLAttributes(unsigned char vsync)
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
-    // Request a double-buffered, OpenGL 3.3 (or higher) core profile
+    // Request a double-buffered, OpenGL 3.0 ES (or higher) profile
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     // SDL_RENDERER_SOFTWARE SDL_RENDERER_ACCELERATED
-    SDL_GL_SetSwapInterval(vsync ? 1 : 0);
+    SDL_GL_SetSwapInterval(vsync); //  ? 1 : 0);
     return EXIT_SUCCESS;
 }
 
@@ -278,14 +267,13 @@ SDL_GLContext* create_sdl_context(SDL_Window* window)
         // zoxel_log(stderr, "Failed to Create OpenGL Context: %s\n", SDL_GetError());
         zoxel_log("Failed to Create OpenGL Context: %s\n", SDL_GetError());
     }
-    print_opengl();
     return context;
 }
 
 SDL_Window* spawn_sdl_window()
 {
     int didFail = SetSDLAttributes(vsync);
-    SetStartScreenSize();
+    set_screen_size();
     print_sdl();
     if (didFail == EXIT_FAILURE)
     {
@@ -357,7 +345,7 @@ int process_arguments(int argc, char* argv[])
     {
         if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0)
         {
-            PrintHelpMenu(argv[0]);
+            print_help_menu(argv[0]);
             return EXIT_FAILURE;
         }
         if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--fullscreen") == 0)
