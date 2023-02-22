@@ -1,8 +1,7 @@
 #ifndef zoxel_opengl
 #define zoxel_opengl
 
-// #include "dynamic/opengl.h"
-#include "dynamic/opengl.c"
+#include "dynamic/opengl_functions.c"
 // util Functions
 #include "util/primitive_square.c"
 #include "util/primitive_mesh_util.c"
@@ -26,6 +25,46 @@
 #include "rendering/shader3D_colored.c"
 #include "util/opengl_main_util.c"
 
+
+int check_compute_shader_support()
+{
+    // Check whether compute shaders are supported
+    if (!glUseProgram)
+    {
+        printf("glUseProgram is not supported\n");
+        return 0;
+    }
+
+    if (!glDispatchCompute)
+    {
+        printf("glDispatchCompute is not supported\n");
+        return 0;
+    }
+
+    // Get the maximum number of compute work groups
+    GLint max_compute_group_count[3];
+    glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0, &max_compute_group_count[0]);
+    glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1, &max_compute_group_count[1]);
+    glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2, &max_compute_group_count[2]);
+    printf("Maximum compute work group count: %d, %d, %d\n",
+        max_compute_group_count[0], max_compute_group_count[1], max_compute_group_count[2]);
+
+    // Get the maximum compute work group size
+    GLint max_compute_group_size[3];
+    glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 0, &max_compute_group_size[0]);
+    glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 1, &max_compute_group_size[1]);
+    glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 2, &max_compute_group_size[2]);
+    printf("Maximum compute work group size: %d, %d, %d\n",
+        max_compute_group_size[0], max_compute_group_size[1], max_compute_group_size[2]);
+    
+    // Get the maximum compute work group invocations
+    GLint max_compute_work_group_invocations;
+    glGetIntegerv(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, &max_compute_work_group_invocations);
+    printf("Maximum compute work group invocations: %d\n", max_compute_work_group_invocations);
+    
+    return 1;
+}
+
 //! The OpenGL Module.
 void OpenGLImport(ecs_world_t *world)
 {
@@ -36,6 +75,11 @@ void OpenGLImport(ecs_world_t *world)
     if (didFail == EXIT_FAILURE)
     {
         printf("Failed to InitializeOpenGL.");
+    }
+    int supports_compute = check_compute_shader_support();
+    if (supports_compute == 0)
+    {
+        printf("Failed to support Compute Shaders.");
     }
 }
 #endif

@@ -25,7 +25,7 @@
 // #define USE_SDL_3
 
 // -- Tests / Options --
-#define zoxel_test_chickens
+// #define zoxel_test_chickens
 // #define zoxel_test_character3Ds
 // #define disable_voxel_left
 // #define disable_voxel_right
@@ -61,8 +61,9 @@
 // #define zoxel_time_render_loop
 
 // Timings
+//  > target fps is 30 then 33.33 is the ms required, 16.66 if 60 fps
 #define zoxel_time_main_loop
-#define zoxel_time_main_loop_cutoff 32
+#define zoxel_time_main_loop_cutoff 33.5
 // #define zoxel_time_always
 
 // voxels

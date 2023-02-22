@@ -2,6 +2,6 @@
 
 cd ../../
 
-sudo rm -R include/flecs
+rm -R include/flecs
 
 echo "Removed include/flecs directory."
