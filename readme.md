@@ -40,7 +40,7 @@ Our codebase is modular and well-organized, with the game engine serving as the 
   <a style="margin-left: 10px;"> | </a>
   <a href="https://mastodon.gamedev.place/@deus">mastodon</a>
   <a style="margin-left: 10px;"> | </a>
-  <a href="hhttps://twitter.com/deusxyz">twitter</a>
+  <a href="https://twitter.com/deusxyz">twitter</a>
   <a style="margin-left: 10px;"> | </a>
   <a href="https://deus0.itch.io/zoxel">itchio</a>
   <a style="margin-left: 10px;"> | </a>
