@@ -6,22 +6,22 @@
 	</a>
 	<br>
 </div>
-<h1 align="center">
-    A Procedural Simulation Game
-</h1>
-
-Experience the thrill of discovery and adventure in this groundbreaking, procedurally generated voxel RPG
+<h1 align="center">A Procedural Simulation Game</h1>
 
 <p align="center">
-  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/roadmap.md" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 12px;">
+Experience the thrill of discovery and adventure in this groundbreaking, procedurally generated voxel RPG
+</p>
+
+<p align="center">
+  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/roadmap.md">
     roadmap
   </a>
   <a style="margin-left: 10px;"> | </a>
-  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/todos/todo-main.md" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 12px;">
+  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/todos/todo-main.md">
     tasks
   </a>
   <a style="margin-left: 10px;"> | </a>
-  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/howtos/howto-build.md" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 12px;">
+  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/howtos/howto-build.md">
     how to build
   </a>
 </p>
@@ -31,35 +31,31 @@ Experience the thrill of discovery and adventure in this groundbreaking, procedu
   <img src="https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/zoxel_unity_00.png?raw=false" alt="Unity Zoxel" width="400"/>
 </p>
 
-### Code, Licensing, and Socials!
+### Code | GPL | Socials
 
 Our codebase is modular and well-organized, with the game engine serving as the main module and five additional main modules (core, inner_core, outer_core, gameplay, and space) each with their own sub-modules. We use the GPL license, which allows for open-source collaboration and innovation within the software community. Stay up to date on our development journey by following us on social media.
 
-> [[devlog_119](https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4)]
-
-> [[Zoxel Web](http://zoxel.duckdns.org)]
-
-> [[Itch IO](https://deus0.itch.io/zoxel)]
-
-> [[Mastodon](https://mastodon.gamedev.place/@deus)]
-
-> [[Twitter](https://twitter.com/deusxyz)]
-
-> [[Link Tree](https://linktr.ee/lorddeus)]
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4">devlog_119</a>
+  <a style="margin-left: 10px;"> | </a>
+  <a href="https://mastodon.gamedev.place/@deus">mastodon</a>
+  <a style="margin-left: 10px;"> | </a>
+  <a href="hhttps://twitter.com/deusxyz">twitter</a>
+  <a style="margin-left: 10px;"> | </a>
+  <a href="https://deus0.itch.io/zoxel">itchio</a>
+  <a style="margin-left: 10px;"> | </a>
+  <a href="https://linktr.ee/lorddeus">linktree</a>
+</p>
 
 -----
 
 <p align="center">
-  <a href="https://codeberg.org/deus/zoxel" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; margin: 24px; font-family: 'monocraft'; font-size: 12px;">
-    codeberg
-  </a>
+  <a href="https://codeberg.org/deus/zoxel">codeberg</a>
   <a style="margin-left: 10px;"> | </a>
-  <a href="https://github.com/deus369/zoxel" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 12px;">
-    github
-  </a>
+  <a href="https://github.com/deus369/zoxel">github</a>
 </p>
 <p align="center">
-  <a href="https://deus369.github.io/zoxel-play" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 24px;; font-family: resources/monocraft.otf; font-size: 14px;">
+  <a href="https://deus369.github.io/zoxel-play">
     play zoxel
   </a>
 </p>
