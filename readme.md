@@ -3,7 +3,7 @@
 <p align="center" style="margin-bottom: 0px !important;">
   <img width="64" src="resources/textures/game_icon.png" alt="Zoxel Logo" align="center">
 </p>
-<p align="center" style="font-family: 'resources/monocraft.otf' margin-top: 0px; font-size: 20px;">
+<p align="center" style="font-family: 'resources/monocraft.otf'; margin-top: 0px; font-size: 20px;">
 Zoxel A Procedurally Generated RPG
 </p>
 
