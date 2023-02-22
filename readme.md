@@ -3,22 +3,22 @@
 <p align="center" style="margin-bottom: 0px !important;">
   <img width="64" src="resources/textures/game_icon.png" alt="Zoxel Logo" align="center">
 </p>
-<h1 align="center" style="margin-top: 0px; font-family: resources/monocraft.otf; font-size: 20px;">
+<h1 align="center" style="margin-top: 0px; font-family: 'Franklin Gothic Medium'; font-size: 18px;">
 Zoxel A Procedurally Generated RPG
 </h1>
 
 Experience the thrill of discovery and adventure in this groundbreaking, procedurally generated voxel RPG
 
 <p align="center">
-  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/roadmap.md" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 10px;">
+  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/roadmap.md" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 12px;">
     roadmap
   </a>
   <a style="margin-left: 10px;"> | </a>
-  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/todos/todo-main.md" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 10px;">
+  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/todos/todo-main.md" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 12px;">
     tasks
   </a>
   <a style="margin-left: 10px;"> | </a>
-  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/howtos/howto-build.md" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 10px;">
+  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/howtos/howto-build.md" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 12px;">
     how to build
   </a>
 </p>
@@ -47,16 +47,16 @@ Our codebase is modular and well-organized, with the game engine serving as the 
 -----
 
 <p align="center">
-  <a href="https://codeberg.org/deus/zoxel" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; margin: 24px; font-family: 'monocraft'; font-size: 10px;">
+  <a href="https://codeberg.org/deus/zoxel" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; margin: 24px; font-family: 'monocraft'; font-size: 12px;">
     codeberg
   </a>
   <a style="margin-left: 10px;"> | </a>
-  <a href="https://github.com/deus369/zoxel" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 10px;">
+  <a href="https://github.com/deus369/zoxel" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 12px;">
     github
   </a>
 </p>
 <p align="center">
-  <a href="https://deus369.github.io/zoxel-play" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 24px;; font-family: resources/monocraft.otf; font-size: 12px;">
+  <a href="https://deus369.github.io/zoxel-play" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 24px;; font-family: resources/monocraft.otf; font-size: 14px;">
     play zoxel
   </a>
 </p>
