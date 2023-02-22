@@ -8,19 +8,19 @@
 Experience the thrill of discovery and adventure in this groundbreaking, procedurally generated voxel RPG
 
 </br>
-<div style="text-align:center">
-  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/roadmap.md" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft', cursive; font-size: 10px; border-radius: 0px;">
+<p align="center">
+  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/roadmap.md" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 10px;">
     roadmap
   </a>
   <a style="margin-left: 10px;"> | </a>
-  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/todos/todo-main.md" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft', cursive; font-size: 10px; border-radius: 0px;">
+  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/todos/todo-main.md" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 10px;">
     tasks
   </a>
   <a style="margin-left: 10px;"> | </a>
-  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/howtos/howto-build.md" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft', cursive; font-size: 10px; border-radius: 0px;">
+  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/howtos/howto-build.md" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 10px;">
     how to build
   </a>
-</div>
+</p>
 </br>
 
 <p align="center">
@@ -47,18 +47,18 @@ Our codebase is modular and well-organized, with the game engine serving as the 
 -----
 
 </br>
-<div style="text-align:center">
-  <a href="https://codeberg.org/deus/zoxel" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft', cursive; font-size: 10px; border-radius: 0px;">
+<p align="center">
+  <a href="https://codeberg.org/deus/zoxel" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 10px;">
     codeberg
   </a>
   <a style="margin-left: 10px;"> | </a>
-  <a href="https://github.com/deus369/zoxel" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft', cursive; font-size: 10px; border-radius: 0px;">
+  <a href="https://github.com/deus369/zoxel" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 16px; font-family: 'monocraft'; font-size: 10px;">
     github
   </a>
-</div>
+</p>
 </br>
-<div style="text-align:center">
-  <a href="https://deus369.github.io/zoxel-play" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 24px; font-family: 'monocraft', cursive; font-size: 12px; border-radius: 0px;">
+<p align="center">
+  <a href="https://deus369.github.io/zoxel-play" style="text-decoration:none; background-color:#333; color:#fff; padding: 12px 24px; font-family: 'monocraft'; font-size: 12px;;">
     play zoxel
   </a>
-</div>
+</p>
