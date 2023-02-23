@@ -1,11 +1,11 @@
 <link href="resources/monocraft.otf" rel="stylesheet">
 
-<div align="center">
+<p align="center">
 	<br>
 		<img src="readme.svg" width="100%" height="200">
 	</a>
 	<br>
-</div>
+</p>
 <h1 align="center">A Procedural Simulation Game</h1>
 
 <p align="center">
@@ -36,13 +36,13 @@ Experience the thrill of discovery and adventure in this groundbreaking, procedu
 Our codebase is modular and well-organized, with the game engine serving as the main module and five additional main modules (core, inner_core, outer_core, gameplay, and space) each with their own sub-modules. We use the GPL license, which allows for open-source collaboration and innovation within the software community. Stay up to date on our development journey by following us on social media.
 
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4">devlog_119</a>
-  <a style="margin-left: 10px;"> | </a>
   <a href="https://mastodon.gamedev.place/@deus">mastodon</a>
   <a style="margin-left: 10px;"> | </a>
   <a href="https://twitter.com/deusxyz">twitter</a>
   <a style="margin-left: 10px;"> | </a>
   <a href="https://deus0.itch.io/zoxel">itchio</a>
+  <a style="margin-left: 10px;"> | </a>
+  <a href="https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4">youtube</a>
   <a style="margin-left: 10px;"> | </a>
   <a href="https://linktr.ee/lorddeus">linktree</a>
 </p>

@@ -37,6 +37,9 @@ zoxel_component(SDLWindow, SDL_Window*)
 zoxel_component(Renderer, SDL_Renderer*)
 zoxel_component(Context, SDL_GLContext*)
 #include "prefabs/app.c"
+#include "util/path_util.c"
+#include "util/terminal_util.c"
+#include "util/webasm_util.c"
 #include "util/sdl_util.c"
 #include "util/cleanup_util.c"
 

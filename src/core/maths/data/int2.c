@@ -5,13 +5,7 @@ typedef struct
     int y;
 } int2;
 
-typedef struct
-{
-    int x;
-    int y;
-    int z;
-    int w;
-} int4;
+#define int2_zero (int2) { 0, 0 }
 
 int2 int2_multiply_float(int2 input, float mult)
 {

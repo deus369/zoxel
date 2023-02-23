@@ -14,6 +14,7 @@
 #include "data/byte4.c"
 #include "data/int2.c"
 #include "data/int3.c"
+#include "data/int4.c"
 #include "data/float2.c"
 #include "data/float3.c"
 #include "data/float4.c"

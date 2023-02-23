@@ -1,156 +1,9 @@
 // sdl util things
-#ifdef ANDROID_BUILD
-    #define resources_folder_name "android-resources/"
-#else
-    #define resources_folder_name "resources/"
-#endif
-#include <dirent.h>
-#include <errno.h>
-
 const char *iconFilename = resources_folder_name"textures/game_icon.png";
 int2 screen_dimensions = { 720, 480 };
 float aspectRatio = 1;
 float fov = 60;
 unsigned long windowFlags;
-char *data_path = NULL;
-
-void set_data_path()
-{
-    #ifdef ANDROID_BUILD
-    char *base_path = SDL_GetPrefPath("libsdl", "app");
-    /*char *android_path = SDL_GetBasePath(); // SDL_AndroidGetInternalStoragePath();
-    char *base_path = malloc(strlen(android_path) + 1 + 0); // 1
-    strcpy(base_path, android_path);
-    strcat(base_path, "");  // /*/
-    #else
-    char *base_path = SDL_GetBasePath();
-    #endif
-    if (base_path)
-    {
-        data_path = base_path;
-    }
-    else
-    {
-        data_path = SDL_strdup("./");
-    }
-    DIR* dir = opendir(base_path);
-    if (dir)
-    {
-        #ifdef zoxel_debug_pathing
-        zoxel_log("SDL data_path (EXISTS): %s\n", data_path);
-        #endif
-        /*char *path_test = malloc(strlen(base_path) + 1 + 1);
-        strcpy(path_test, base_path);
-        strcat(path_test, ".");
-        DIR* dir3 = opendir(path_test);
-        if (dir3)
-        {
-            zoxel_log(" -> path_test [%s]\n", path_test);
-            struct dirent *dir3_data;
-            while ((dir3_data = readdir(dir3)) != NULL)
-            {
-                zoxel_log("     -> child path [%s]\n", dir3_data->d_name);
-            }
-            closedir(dir3);
-        }
-        free(path_test);*/
-        char *resources_path = malloc(strlen(base_path) + strlen(resources_folder_name) + 1);
-        strcpy(resources_path, base_path);
-        strcat(resources_path, resources_folder_name);
-        DIR* dir2 = opendir(resources_path);
-        if (dir2)
-        {
-            #ifdef zoxel_debug_pathing
-                zoxel_log("resources_path (EXISTS): %s\n", resources_path);
-            #endif
-            closedir(dir2);
-        }
-        else
-        {
-            zoxel_log("resources_path (DOES NOT EXIST): %s\n", resources_path);
-        }
-        free(resources_path);
-    }
-    else if (ENOENT == errno)
-    {
-        zoxel_log("SDL data_path (DOES NOT EXIST): %s\n", data_path);
-    }
-    else
-    {
-        zoxel_log("SDL data_path (MYSTERIOUSLY DOES NOT EXIST): %s\n", data_path);
-    }
-}
-
-char* get_full_file_path(const char* filepath)
-{
-    char* fullpath = malloc(strlen(data_path) + strlen(filepath) + 1);
-    strcpy(fullpath, data_path);
-    strcat(fullpath, filepath);
-    #ifdef zoxel_debug_pathing
-    zoxel_log("fullpath: %s\n", fullpath);
-    #endif
-    return fullpath;
-}
-
-// emscripten app functions
-#ifdef WEB_BUILD
-
-EM_JS(int, get_canvas_width, (), { return window.innerWidth; });
-EM_JS(int, get_canvas_height, (), { return window.innerHeight; });
-
-int2 get_canvas_size()
-{
-    return (int2) { get_canvas_width(), get_canvas_height() };
-}
-
-// Condensed
-void resize_canvas()
-{
-    zoxel_log("Resizing Canvas [%ix%i]", get_canvas_width(), get_canvas_height());
-}
-#endif
-
-//! Zoxel can also be a command tool... Wuut?!?!!
-void print_help_menu(const char* arg0)
-{
-    zoxel_log("\n");
-    zoxel_log("-=-=-=-=-=--=-=-=-=-=--=-=-=-=-=--=-=-=-=-=-\n");
-    zoxel_log("\n");
-    zoxel_log("Welcome to Zoxel Help Menu\n\n");
-    zoxel_log("    Usage: %s [options]\n", arg0);
-    zoxel_log("\n");
-    zoxel_log("    Options:\n");
-    zoxel_log("\n");
-    zoxel_log("        -h --help        print this help\n");
-    zoxel_log("        -z --headless       enable headless\n");
-    zoxel_log("        -f --fullscreen  fullscreen window\n");
-    zoxel_log("        -g --halfscreen  halfscreen window\n");
-    zoxel_log("        -s --splitscreen split screen local coop\n");
-    zoxel_log("        -v --vsync       enable vsync\n");
-    zoxel_log("        -p --profiler       enable profiler\n");
-    zoxel_log("        -x --server       enable server mode\n");
-    zoxel_log("\n");
-    zoxel_log("-=-=-=-=-=--=-=-=-=-=--=-=-=-=-=--=-=-=-=-=-\n");
-    zoxel_log("\n");
-}
-
-void set_screen_size()
-{
-    SDL_DisplayMode displayMode;
-    SDL_GetCurrentDisplayMode(0, &displayMode);
-    screen_dimensions.x = displayMode.w;
-    screen_dimensions.y = displayMode.h;
-    if (halfscreen)
-    {
-        screen_dimensions.x /= 2;
-        screen_dimensions.y /= 2;
-    }
-#ifdef WEB_BUILD
-    int2 canvas_size = get_canvas_size();
-    zoxel_log("    Canvas Screen Dimensions: %ix%i\n", canvas_size.x, canvas_size.y);
-    screen_dimensions = canvas_size;
-#endif
-}
 
 //! Print debug info!
 void print_sdl()
@@ -169,6 +22,30 @@ void print_sdl()
     #endif
 }
 
+int2 get_sdl_screen_size()
+{
+    int2 screen_size = int2_zero;
+    SDL_DisplayMode displayMode;
+    SDL_GetCurrentDisplayMode(0, &displayMode);
+    screen_size.x = displayMode.w;
+    screen_size.y = displayMode.h;
+    if (halfscreen)
+    {
+        screen_size.x /= 2;
+        screen_size.y /= 2;
+    }
+    return screen_size;
+}
+
+void set_screen_size()
+{
+    #ifndef WEB_BUILD
+        screen_dimensions = get_sdl_screen_size();
+    #else
+        screen_dimensions = get_webasm_screen_size();
+    #endif
+}
+
 void sdl_toggle_fullscreen(SDL_Window* window)
 {
     #ifndef ANDROID_BUILD
@@ -182,7 +59,7 @@ void sdl_toggle_fullscreen(SDL_Window* window)
 }
 
 //! Initialize SDL things, thingy things.
-int SetSDLAttributes(unsigned char vsync)
+int set_sdl_attributes(unsigned char vsync)
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
@@ -206,7 +83,7 @@ int SetSDLAttributes(unsigned char vsync)
 }
 
 //! Loads a Game Icon from the ui-icons folder.
-void LoadIconSDL(SDL_Window* window)
+void load_app_icon(SDL_Window* window)
 {
 #ifdef SDL_IMAGES
     char* fullpath = get_full_file_path(iconFilename);
@@ -219,9 +96,29 @@ void LoadIconSDL(SDL_Window* window)
 #endif
 }
 
-//! Spawn the SDLWindow.
-SDL_Window* SpawnWindowSDL(unsigned char fullscreen)
+SDL_GLContext* create_sdl_context(SDL_Window* window)
 {
+    SDL_GLContext* context = SDL_GL_CreateContext(window);
+    if (context == NULL)
+    {
+        // zoxel_log(stderr, "Failed to Create OpenGL Context: %s\n", SDL_GetError());
+        zoxel_log("Failed to Create OpenGL Context: %s\n", SDL_GetError());
+    }
+    return context;
+}
+
+
+//! Spawn the SDLWindow.
+SDL_Window* spawn_sdl_window()
+{
+    int didFail = set_sdl_attributes(vsync);
+    set_screen_size();
+    print_sdl();
+    if (didFail == EXIT_FAILURE)
+    {
+        zoxel_log("Failed to set_sdl_attributes.");
+        return NULL;
+    }
     unsigned char is_resizeable = 1;
     windowFlags = SDL_WINDOW_OPENGL;
     #ifdef ANDROID_BUILD
@@ -253,34 +150,9 @@ SDL_Window* SpawnWindowSDL(unsigned char fullscreen)
         return window;
     }
     SDL_GL_SetSwapInterval(1);
-    LoadIconSDL(window);
+    load_app_icon(window);
     SDL_SetWindowResizable(window, is_resizeable); // SDL_TRUE);
     SDL_GL_SwapWindow(window);
-    return window;
-}
-
-SDL_GLContext* create_sdl_context(SDL_Window* window)
-{
-    SDL_GLContext* context = SDL_GL_CreateContext(window);
-    if (context == NULL)
-    {
-        // zoxel_log(stderr, "Failed to Create OpenGL Context: %s\n", SDL_GetError());
-        zoxel_log("Failed to Create OpenGL Context: %s\n", SDL_GetError());
-    }
-    return context;
-}
-
-SDL_Window* spawn_sdl_window()
-{
-    int didFail = SetSDLAttributes(vsync);
-    set_screen_size();
-    print_sdl();
-    if (didFail == EXIT_FAILURE)
-    {
-        zoxel_log("Failed to SetSDLAttributes.");
-        return NULL;
-    }
-    SDL_Window* window = SpawnWindowSDL(fullscreen);
     return window;
 }
 
@@ -300,7 +172,7 @@ void on_viewport_resized(ecs_world_t *world, int width, int height)
     {
         screen_dimensions.y = 1;
     }
-    aspectRatio = ((float)screen_dimensions.x) / ((float)screen_dimensions.y);
+    aspectRatio = ((float) screen_dimensions.x) / ((float) screen_dimensions.y);
     resize_cameras(width, height);
     uis_on_viewport_resized(world, width, height);
 }
@@ -337,62 +209,3 @@ void update_sdl(ecs_world_t *world)
         }
     }
 }
-
-//! Convert starting arguments to Settings.
-int process_arguments(int argc, char* argv[])
-{
-    for (int i = 1; i < argc; i++)
-    {
-        if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0)
-        {
-            print_help_menu(argv[0]);
-            return EXIT_FAILURE;
-        }
-        if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--fullscreen") == 0)
-        {
-            fullscreen = 1;
-        }
-        if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--halfscreen") == 0)
-        {
-            halfscreen = 1;
-        }
-        if (strcmp(argv[i], "-s") == 0 || strcmp(argv[i], "--splitscreen") == 0)
-        {
-            is_split_screen = 1;
-        }
-        if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--vsync") == 0)
-        {
-            vsync = 1;
-        }
-        if (strcmp(argv[i], "-p") == 0 || strcmp(argv[i], "--profiler") == 0)
-        {
-            profiler = 1;
-        }
-        if (strcmp(argv[i], "-z") == 0 || strcmp(argv[i], "--headless") == 0)
-        {
-            headless = 1;
-        }
-        if (strcmp(argv[i], "-x") == 0 || strcmp(argv[i], "--server") == 0)
-        {
-            server_mode = 1;
-        }
-    }
-    return EXIT_SUCCESS;
-}
-
-#ifdef WEB_BUILD
-
-    #define debug_ui_scaling
-
-    unsigned char update_web_canvas(ecs_world_t *world)
-    {
-        int2 canvas_size = get_canvas_size();
-        if (screen_dimensions.x != canvas_size.x || screen_dimensions.y != canvas_size.y)
-        {
-            zoxel_log("update_web_canvas: Canvas size has changed [%i x %i]\n", canvas_size.x, canvas_size.y);
-            on_viewport_resized(world, canvas_size.x, canvas_size.y);
-            return 1;
-        }
-        return 0;
-    }
-#endif

@@ -54,7 +54,7 @@
 					background-size: 600% 400%;
 					animation: gradientBackground 10s ease infinite;
 					border-radius: 0px;
-					color: 887777;
+					color: #991111;
 					text-align: center;
 				}
 				h1 {
@@ -63,16 +63,16 @@
 					letter-spacing: 5px;
 					text-transform: uppercase;
 					text-shadow:
-						0 1px 0 #332222,
-						0 2px 0 #332222,
-						0 3px 0 #332222,
-						0 4px 0 #332222,
+						0 1px 0 #442222,
+						0 2px 0 #442222,
+						0 3px 0 #442222,
+						0 4px 0 #442222,
 						0 12px 5px rgba(0, 0, 0, 0.1);
 					animation: rotate ease-in-out 1s infinite alternate;
 				}
 				p {
 					font-size: 22px;
-					text-shadow: 0 1px 0 #332222;
+					text-shadow: 0 1px 0 #442222;
 					animation: 5s ease 0s normal forwards 1 fadeIn;
 				}
 			</style>
