@@ -1,7 +1,5 @@
-# Zoxel Makefile!
-# can add --num-callers=60 to valgrind
-# \todo atm: put all platform builds into this one file
-#	make web, or make android, or make windows, or make dev, make is for make linux
+# Zoxel Makefile 
+#	sudo apt install make
 
 # Declare compiler tools and flags
 NAME := Zoxel
@@ -99,11 +97,6 @@ clean:
 	$(RM) $(TARGET_DEV)
 	cd bash/flecs && ./remove_flecs.sh
 
-# used to remove web?
-# $(RM) $(TARGET_WEB)
-# $(RM) $(TARGET_WEB_WASM)
-# $(RM) $(TARGET_WEB_DATA)
-
 # Runs zoxel release build
 run:
 	./$(TARGET)
@@ -132,10 +125,6 @@ android-dev:
 android-dev-debug:
 	bash/android/install_debug.sh
 	bash/android/read_logcat.sh
-	
-packages:
-	@echo "Installing Libaries: make gcc libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev"
-	sudo apt install make gcc libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev
 
 install: ## installs zoxel into /usr/games directory
 	cd bash/install && ./install.sh
@@ -146,8 +135,16 @@ uninstall: ## uninstalls zoxel into /usr/games directory
 install-web-builder:
 	bash/web/install_emcc.sh
 
+install-sdl:
+	./bash/sdl/install_sdl.sh
+
 install-flecs:
 	cd bash/flecs && ./install_flecs.sh
+	
+install-required:
+	@echo "Installing Libaries: make gcc"
+	sudo apt install gcc
+	./bash/sdl/install_sdl.sh
 
 remove-flecs:
 	cd bash/flecs && ./remove_flecs.sh
@@ -162,21 +159,22 @@ help:
 	@echo "zoxel -> an open source voxel engine"
 	@echo "  make			builds zoxel"
 	@echo "  make <target>"
-	@echo "    $(TARGET_DEV)	builds dev"
-	@echo "    $(TARGET_WEB)	builds zoxel-web"
+	@echo "    $(TARGET_DEV)			builds dev"
+	@echo "    $(TARGET_WEB)		builds zoxel-web"
 	@echo "    run			runs $(TARGET)"
 	@echo "    run-dev		runs $(TARGET_DEV)"
 	@echo "    run-dev-debug	runs valgrind $(TARGET_DEV)"
-	@echo "    run-dev-profiler		runs $(TARGET_DEV) --profiler"
+	@echo "    run-dev-profiler	runs $(TARGET_DEV) --profiler"
 	@echo "    run-web		runs $(TARGET_WEB)"
 	@echo "    clean		removes all build files"
 	@echo "    install		installs zoxel"
 	@echo "    uninstall		inuninstalls zoxel"
+	@echo "    install-sdl		installs sdl"
 	@echo "    install-web-builder	installs emcc for web build"
 	@echo "    android		builds & runs android release"
 	@echo "    android-dev		builds & runs android debug"
 	@echo "    android-dev-debug	builds & runs android debug with logcat"
-	@echo "    packages		installs required libraries with apt-get"
+	@echo "    install-required	installs required libraries for debian systems"
 	@echo "    git-pull		pulls latest git"
 	@echo "    git-push		pushes git updates - if has ssh access"
 	@echo "find latest at -> https://codeberg.org/deus/zoxel"
@@ -191,3 +189,12 @@ help:
 # web build threading
 # LDLIBS += -s USE_PTHREADS=1
 # LDLIBS += -s PTHREAD_POOL_SIZE=2
+
+# can add --num-callers=60 to valgrind
+# \todo atm: put all platform builds into this one file
+#	make web, or make android, or make windows, or make dev, make is for make linux
+
+# used to remove web?
+# $(RM) $(TARGET_WEB)
+# $(RM) $(TARGET_WEB_WASM)
+# $(RM) $(TARGET_WEB_DATA)
