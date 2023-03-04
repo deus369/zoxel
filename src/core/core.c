@@ -3,9 +3,10 @@
 
 // Settings for main
 unsigned char profiler = 0;
-// --- core ---
-#include "debug_logs/debug_logs.c"
-#include "ecs/ecs_util.c"
+// util
+#include "util/logs.c"
+#include "util/ecs/ecs.c"
+// modules
 #include "maths/maths.c"
 #include "generic/generic.c"
 #include "timing/timing.c"
@@ -15,7 +16,7 @@ unsigned char profiler = 0;
 #include "inputs/inputs.c"
 #include "cameras/cameras.c"
 #include "rendering/rendering.c"
-#include "core_util.c"
+#include "util/core_util.c"
 
 //! Handles modules that are for basic stuff at lowest level
 void CoreImport(ecs_world_t *world)

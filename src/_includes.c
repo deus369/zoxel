@@ -78,7 +78,7 @@
 // voxels timing
 // #define zoxel_time_terrain_chunk_system
 // #define zoxel_time_chunk_uvs_builds_system
-// #define zoxel_time_octree_terrain_chunk_system
+#define zoxel_time_octree_terrain_chunk_system
 #define zoxel_time_octree_chunk_uvs_builds_system
 // #define zoxel_time_mesh_uvs_update_system
 // #define zoxel_time_stream_point_system
