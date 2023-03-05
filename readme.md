@@ -13,13 +13,17 @@ Experience the thrill of discovery and adventure in this groundbreaking, procedu
 </p>
 
 <p align="center">
+  <a href="todo.md">
+    todo
+  </a>
+  <!--<a style="margin-left: 10px;"> | </a>
   <a href="https://github.com/deus369/zoxel-web/blob/master/documents/roadmap.md">
     roadmap
   </a>
   <a style="margin-left: 10px;"> | </a>
   <a href="https://github.com/deus369/zoxel-web/blob/master/documents/todos/todo-main.md">
     tasks
-  </a>
+  </a>-->
   <a style="margin-left: 10px;"> | </a>
   <a href="https://github.com/deus369/zoxel-web/blob/master/documents/howtos/howto-build.md">
     how to build
