@@ -16,6 +16,7 @@ unsigned char profiler = 0;
 #include "inputs/inputs.c"
 #include "cameras/cameras.c"
 #include "rendering/rendering.c"
+// core loop
 #include "util/core_util.c"
 
 //! Handles modules that are for basic stuff at lowest level
