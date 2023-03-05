@@ -22,11 +22,11 @@ float high_pass_filter(float time, float cutoff_frequency) {
     // Biquad filter coefficients
     float b0, b1, a1, a2;
     // Sample rate
-    float sr = 44100;
+    // float sr = 44100;
     // Quality factor
     float Q = 1.0f; // 0.7f; 
     // Calculate filter coefficients
-    float omega = 2 * M_PI * cutoff_frequency / sr;
+    float omega = 2 * M_PI * cutoff_frequency / sample_rate_f;
     float alpha = sin(omega) / (2 * Q);
     // a0 = 1 + alpha;
     b0 = (1 + cos(omega)) / 2;

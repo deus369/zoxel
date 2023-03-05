@@ -20,7 +20,7 @@ ecs_entity_t spawn_prefab_music(ecs_world_t *world)
     return e;
 }
 
-ecs_entity_t spawn_music(ecs_world_t *world) //, unsigned char instrument_type)
+ecs_entity_t spawn_music(ecs_world_t *world, unsigned char instrument_type)
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_music);
@@ -30,6 +30,7 @@ ecs_entity_t spawn_music(ecs_world_t *world) //, unsigned char instrument_type)
         music_speed *= 6.0;
     #endif
     ecs_set(world, e, MusicSpeed, { music_speed });
+    ecs_set(world, e, InstrumentType, { instrument_type });
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
         zoxel_log("Spawned music [%lu]\n", (long int) e);

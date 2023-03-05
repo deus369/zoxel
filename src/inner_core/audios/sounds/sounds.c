@@ -1,8 +1,8 @@
 #ifndef zoxel_sounds
 #define zoxel_sounds
 
-#define sound_sample_rate 44100
-#define sample_rate_f 44100.0f
+#define sound_sample_rate 44100 // / 2
+#define sample_rate_f 44100.0f // / 2.0f
 #define static_sounds_length 5
 #ifdef zoxel_debug_sounds
     // 50

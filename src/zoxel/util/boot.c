@@ -38,7 +38,7 @@ void boot_zoxel_game(ecs_world_t *world)
     ecs_entity_t realm = spawn_realm(world);
     ecs_entity_t game = spawn_game(world);
     ecs_set(world, game, RealmLink, { realm });
-    spawn_music(world);
+    spawn_music(world, instrument_piano);
     if (!headless)
     {
         spawn_connected_devices(world);

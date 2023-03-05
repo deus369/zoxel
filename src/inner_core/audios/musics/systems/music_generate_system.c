@@ -16,8 +16,8 @@ void MusicGenerateSystem(ecs_iter_t *it)
         }
         MusicData *musicData = &musicDatas[i];
         InstrumentType *instrumentType = &instrumentTypes[i];
-        instrumentType->value = rand() % instrument_end;
-        instrumentType->value = instrument_unique;
+        // instrumentType->value = rand() % instrument_end;
+        // instrumentType->value = instrument_unique;
         int sounds_per_verse = 8;
         int verses = 6;
         re_initialize_memory_component(musicData, int, verses * sounds_per_verse);

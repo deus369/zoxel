@@ -15,6 +15,9 @@ const float dampen_multiplier = 0.7f; // 0.92f
 
 void SoundGenerateSystem(ecs_iter_t *it)
 {
+    #ifdef zoxel_time_sound_generate_system
+        begin_timing()
+    #endif
     // const float sound_bounds = 1.0f;
     const float volume = 1.0f; // 0.8f;
     const GenerateSound *generateSounds = ecs_field(it, GenerateSound, 2);
@@ -113,7 +116,13 @@ void SoundGenerateSystem(ecs_iter_t *it)
             // value = float_clamp(value, -sound_bounds, sound_bounds);
             soundData->value[i] = value;
         }
+        #ifdef zoxel_time_sound_generate_system
+            did_do_timing()
+        #endif
     }
+    #ifdef zoxel_time_sound_generate_system
+        end_timing("SoundGenerateSystem")
+    #endif
 }
 zoxel_declare_system(SoundGenerateSystem)
 
