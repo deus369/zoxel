@@ -68,6 +68,7 @@
 
 // voxels
 #define voxel_octrees
+#define voxels_close_octree_nodes
 #define voxels_spawn_terrain
 #define voxels_hide_terrain_edge
 // #define zoxel_disable_close_nodes
@@ -79,7 +80,7 @@
 // #define zoxel_time_terrain_chunk_system
 // #define zoxel_time_chunk_uvs_builds_system
 #define zoxel_time_octree_terrain_chunk_system
-// #define zoxel_time_octree_chunk_uvs_builds_system
+#define zoxel_time_octree_chunk_uvs_builds_system
 // #define zoxel_time_mesh_uvs_update_system
 // #define zoxel_time_stream_point_system
 // idea: generate terrain too at lesser resolutions

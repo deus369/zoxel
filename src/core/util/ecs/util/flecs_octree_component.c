@@ -31,6 +31,18 @@ const float octree_scales[] =
     0.0078125f
 };
 
+const unsigned char powers_of_two_byte[] =
+{
+    1,
+    2,
+    4,
+    8,
+    16,
+    32,
+    64,
+    128
+};
+
 const float powers_of_two[] =
 {
     1,

@@ -7,14 +7,21 @@
 ## core
 
 - [ ] multiple apps for network testing
+- [ ] get a working change filter working for flecs
+    - using a simple byte component to check when it changes
+    - next replicate onto my systems
 
 ## ui
 
 - [ ] finish other modules ui parts
-- [ ] slider ui
-- [ ] input field
-- [ ] list ui
-- [ ] basic tooltip ui
+- [ ] finish sub modules
+
+    ### core
+
+    - [ ] slider ui
+    - [ ] input field
+    - [ ] list ui
+    - [ ] basic tooltip ui
 
 ## debug
 
@@ -168,7 +175,15 @@
     - [ ] bar overlays (for health)
     - [ ] stat list ui, toggle key for test entity
 
+## skills
+
+- [ ] basic entities, module, prefabs, etc
+
 ## items
+
+- [ ] basic entities, module, prefabs, etc
+
+## actions
 
 - [ ] basic entities, module, prefabs, etc
 

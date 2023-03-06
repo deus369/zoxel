@@ -8,14 +8,14 @@ void MusicGenerateSystem(ecs_iter_t *it)
     const unsigned char note_verse_difference = 6;
     const GenerateMusic *generateMusics = ecs_field(it, GenerateMusic, 2);
     MusicData *musicDatas = ecs_field(it, MusicData, 3);
-    InstrumentType *instrumentTypes = ecs_field(it, InstrumentType, 4);
+    // InstrumentType *instrumentTypes = ecs_field(it, InstrumentType, 4);
     for (int i = 0; i < it->count; i++) {
         const GenerateMusic *generateMusic = &generateMusics[i];
         if (generateMusic->value != 1) {
             continue;
         }
         MusicData *musicData = &musicDatas[i];
-        InstrumentType *instrumentType = &instrumentTypes[i];
+        // InstrumentType *instrumentType = &instrumentTypes[i];
         // instrumentType->value = rand() % instrument_end;
         // instrumentType->value = instrument_unique;
         int sounds_per_verse = 8;
