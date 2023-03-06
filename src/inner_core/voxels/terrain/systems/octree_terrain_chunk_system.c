@@ -1,13 +1,6 @@
 #define octree_random_spawn_chance 90
-#define octree_octaves 6
-#define octree_persistence 0.5f
-#define octree_frequency 0.5f
-// #define octree_min_height 0.005f
-// #define octree_height_addition 0.4f
-// #define octree_terrain_frequency 0.001f
-// #define octree_terrain_frequency 0.001f
-// 3200 2147483647 / 2
 
+//! Closes all solid nodes, as well as air nodes, after terrain system generates it.
 void close_solid_nodes(ChunkOctree *node)
 {
     // for all children nodes
@@ -33,6 +26,22 @@ void close_solid_nodes(ChunkOctree *node)
         if (all_solid)
         {
             close_ChunkOctree(node);
+        }
+        else
+        {
+            unsigned char all_air = 1;
+            for (unsigned char i = 0; i < octree_length; i++)
+            {
+                if (node->nodes[i].nodes != NULL || node->nodes[i].value != 0)
+                {
+                    all_air = 0;
+                    break;
+                }
+            }
+            if (all_air)
+            {
+                close_ChunkOctree(node);
+            }
         }
     }
 }
@@ -590,3 +599,12 @@ double octree_perlin_noise(double x, double y, double z, double persistence, dou
     }
     return (total + 1.0) / 2.0;
 }*/
+
+// #define octree_min_height 0.005f
+// #define octree_height_addition 0.4f
+// #define octree_terrain_frequency 0.001f
+// #define octree_terrain_frequency 0.001f
+// 3200 2147483647 / 2
+// #define octree_octaves 6
+// #define octree_persistence 0.5f
+// #define octree_frequency 0.5f
