@@ -22,6 +22,15 @@
     - [ ] input field
     - [ ] list ui
     - [ ] basic tooltip ui
+    - [ ] add padding on buttons
+
+    ### font
+
+    - [ ] point editor for font
+    - [ ] style data files, binary and text support?
+    - [ ] ZextColor & ZextOutlineColor components
+    - [ ] ui style so buttons have same or similar color/s
+    - [ ] animate font with slight jiggly
 
 ## debug
 
