@@ -80,8 +80,8 @@
 
     ### core
 
-    - [ ] stream functions, loading/unloading chunks based on camera
     - [ ] bake mesh on gpu test
+    - [ ] stream functions, loading/unloading chunks based on camera
     - [ ] bake voxels on gpu (implementation)
 
     ### terrain
@@ -187,6 +187,11 @@
 
 - [ ] basic entities, module, prefabs, etc
 
+    ### ui
+
+    - [ ] actionbar frame + icon ui
+    - [ ] actionbar ui
+
 ## quests
 
 - [ ] basic entities, module, prefabs, etc
@@ -194,6 +199,13 @@
 ## dialogue
 
 - [ ] basic entities, module, prefabs, etc
+- [ ] dialogue tree is simply a series of dialogue node entities, the root node is the first one
+
+    ### ui
+
+    - [ ] extend node window for a dialogue editor
+    - [ ] extend node ui for dialogue node ui
+    - [ ] add dialogue input for dialogue node ui
 
 ## achievements
 
