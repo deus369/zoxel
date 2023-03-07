@@ -15,10 +15,11 @@ const int vertex_count = 3;
 const int single_data_length = 3 * 4;
 const int data_length = vertex_count * single_data_length;
 // 430 | 300 es
-// 300 es uses int index = gl_WorkGroupID.x;
+// 300 es uses 
 // note, vec3 in compute shader is packed as vec4s
+// uint index = gl_GlobalInvocationID.x; -> int index = gl_WorkGroupID.x;
 const char* compute_shader_source = "\
-#version 430\n\
+#version 310 es\n\
 \
 struct vec3z\
 {\
@@ -33,7 +34,7 @@ layout(std430, binding = 0) buffer PositionBuffer {\
 };\
 \
 void main() {\
-    uint index = gl_GlobalInvocationID.x;\
+    int index = int(gl_WorkGroupID.x);\
     vec3z position;\
     if (index == 0) {\
         position = vec3z(-0.5, -0.5, 0.0);\

@@ -1,4 +1,4 @@
-// cc -std=c99 tests/opengl/triangle.c -o triangle -lGL -lGLEW -lglfw && ./triangle
+// cc -std=c99 tests/opengl/compute_triangle.c -o compute_triangle -lGL -lGLEW -lglfw && ./compute_triangle
 // sudo apt-get install libglew-dev libglfw3-dev
 #include <stdio.h>
 #include <GL/glew.h>

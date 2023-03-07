@@ -16,3 +16,7 @@ include/flecs/flecs.h
 include/flecs/flecs.c
 # ignore zoxel_web build
 documents/zoxel_web/zoxel_web
+# specific tests
+compute_program
+compute_triangle
+compute_voxels

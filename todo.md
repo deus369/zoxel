@@ -89,13 +89,14 @@
 
     ### core
 
-    - [ ] bake mesh on gpu test
+    - [x] bake mesh on gpu test
+    - [ ] bake a voxel mesh on gpu test
     - [ ] stream functions, loading/unloading chunks based on camera
     - [ ] bake voxels on gpu (implementation)
 
     ### terrain
 
-    - [ ] rewrite terrain function in octree
+    - [x] rewrite terrain function in octree
     - [ ] voxel lighting systems
 
     ### vox
