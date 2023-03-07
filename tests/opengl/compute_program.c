@@ -81,12 +81,31 @@ void check_opengl_error(char* function_name) {
     }
 }
 
+int check_compute_shader_support() {
+    //GLint max_compute_shader_storage_blocks, max_compute_uniform_blocks;
+    //glGetIntegeri_v(GL_MAX_COMPUTE_SHADER_STORAGE_BLOCKS, 0, &max_compute_shader_storage_blocks);
+    //glGetIntegeri_v(GL_MAX_COMPUTE_UNIFORM_BLOCKS, 0, &max_compute_uniform_blocks);
+    //if (max_compute_shader_storage_blocks == 0 || max_compute_uniform_blocks == 0) {
+    if (!GLEW_ARB_compute_shader) {
+        printf("Compute shaders are not supported on this device.\n");
+        return 0;
+    }
+    printf("Compute shaders are supported on this device.\n");
+    //printf("Max compute shader storage blocks: %d\n", max_compute_shader_storage_blocks);
+    //printf("Max compute uniform blocks: %d\n", max_compute_uniform_blocks);
+    check_opengl_error("check_compute_shader_support");
+    return 1;
+}
+
 GLFWwindow* setup_window() {
     glfwInit();
     GLFWwindow* window = glfwCreateWindow(600, 420, "Compute Triangle Example", NULL, NULL);
     glfwMakeContextCurrent(window);
     glewExperimental = GL_TRUE;
     glewInit();
+    check_opengl_error("setup_window");
+    // Wait for all previously issued commands to complete
+    glFinish();
     return window;
 }
 
@@ -96,11 +115,16 @@ void create_position_buffer() {
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, vertex_buffer);
     glBufferData(GL_SHADER_STORAGE_BUFFER, data_length, NULL, GL_DYNAMIC_DRAW);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+    check_opengl_error("create_position_buffer");
 }
 
 // Set up compute shader
-void create_compute_program() {
-    compute_shader = glCreateShader(GL_COMPUTE_SHADER); // GL_COMPUTE_SHADER GL_COMPUTE_SHADER_BIT
+int create_compute_program() {
+    compute_shader = glCreateShader(GL_COMPUTE_SHADER); // GL_COMPUTE_SHADER GL_COMPUTE_SHADER_BIT GL_SHADER_TYPE_COMPUTE
+    if (compute_shader == 0) {
+        printf("Error creating compute shader.\n");
+        return 1;
+    }
     check_opengl_error("create_compute_program_1");
     glShaderSource(compute_shader, 1, &compute_shader_source, NULL);
     glCompileShader(compute_shader);
@@ -118,9 +142,10 @@ void create_compute_program() {
         glGetProgramInfoLog(compute_program, log_length, NULL, log);
         printf("Compute shader program failed to link: %s\n", log);
         free(log);
-        return;
+        return 1;
     }
     check_opengl_error("create_compute_program_3");
+    return 0;
 }
 
 void attach_buffer_to_compute_program() {
@@ -188,19 +213,23 @@ unsigned char check_buffer() {
 
 int main()
 {
-    printf("Running compute program test.\n");
     setup_window();
-    create_position_buffer();
-    create_compute_program();
-    attach_buffer_to_compute_program();
-    run_compute_shader();
-    unsigned char success = check_buffer();
-    if (success) {
-        printf("Compute Program ran successfully.\n");
-    } else {
-        printf("Compute Program failed.\n");
+    int supports_compute = check_compute_shader_support();
+    if (supports_compute)
+    {
+        printf("Running compute program test.\n");
+        create_position_buffer();
+        create_compute_program();
+        attach_buffer_to_compute_program();
+        run_compute_shader();
+        unsigned char success = check_buffer();
+        if (success) {
+            printf("Compute Program ran successfully.\n");
+        } else {
+            printf("Compute Program failed.\n");
+        }
+        cleanup();
     }
-    cleanup();
     glfwTerminate();
     return 0;
 }
