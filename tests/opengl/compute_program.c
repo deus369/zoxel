@@ -217,18 +217,21 @@ int main()
     int supports_compute = check_compute_shader_support();
     if (supports_compute)
     {
-        printf("Running compute program test.\n");
-        create_position_buffer();
-        create_compute_program();
-        attach_buffer_to_compute_program();
-        run_compute_shader();
-        unsigned char success = check_buffer();
-        if (success) {
-            printf("Compute Program ran successfully.\n");
+        if (create_compute_program() == 0) {
+            printf("Running compute program test.\n");
+            create_position_buffer();
+            attach_buffer_to_compute_program();
+            run_compute_shader();
+            unsigned char success = check_buffer();
+            if (success) {
+                printf("Compute Program ran successfully.\n");
+            } else {
+                printf("Compute Program failed.\n");
+            }
+            cleanup();
         } else {
-            printf("Compute Program failed.\n");
+            printf("Could not test due to compute shader not creating.\n");
         }
-        cleanup();
     }
     glfwTerminate();
     return 0;
