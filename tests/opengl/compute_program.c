@@ -50,7 +50,7 @@ GLuint compute_shader, compute_program, vertex_buffer;
 
 void check_opengl_error(char* function_name) {
     GLenum error_code = glGetError();
-    if (error_code != GL_NO_ERROR) {
+    while (error_code != GL_NO_ERROR) {
         // printf("check_opengl_error [%s] [%i]\n", function_name, (int) error_code);
         const char* error_message;
         switch (error_code) {
@@ -77,6 +77,7 @@ void check_opengl_error(char* function_name) {
                 break;
         }
         printf("OpenGL error %s (%d) in %s\n", error_message, error_code, function_name);
+        error_code = glGetError();
     }
 }
 
@@ -99,13 +100,14 @@ void create_position_buffer() {
 
 // Set up compute shader
 void create_compute_program() {
-    compute_shader = glCreateShader(GL_COMPUTE_SHADER_BIT); // GL_COMPUTE_SHADER GL_COMPUTE_SHADER_BIT
+    compute_shader = glCreateShader(GL_COMPUTE_SHADER); // GL_COMPUTE_SHADER GL_COMPUTE_SHADER_BIT
+    check_opengl_error("create_compute_program_1");
     glShaderSource(compute_shader, 1, &compute_shader_source, NULL);
     glCompileShader(compute_shader);
     compute_program = glCreateProgram();
     glAttachShader(compute_program, compute_shader);
     glLinkProgram(compute_program);
-    check_opengl_error("create_compute_program 1");
+    check_opengl_error("create_compute_program_2");
     // debug compute_program linking
     GLint link_status;
     glGetProgramiv(compute_program, GL_LINK_STATUS, &link_status);
@@ -118,7 +120,7 @@ void create_compute_program() {
         free(log);
         return;
     }
-    check_opengl_error("create_compute_program 2");
+    check_opengl_error("create_compute_program_3");
 }
 
 void attach_buffer_to_compute_program() {
