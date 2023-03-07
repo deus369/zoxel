@@ -1,0 +1,175 @@
+// cc -std=c99 tests/opengl/compute_program.c -o compute_program -lGL -lGLEW -lglfw && ./compute_program
+#include <stdio.h>
+#include <stdlib.h>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
+typedef struct
+{
+    float x;
+    float y;
+    float z;
+} vec3;
+
+const int vertex_count = 3;
+const int single_data_length = 3 * 4;
+const int data_length = vertex_count * single_data_length;
+// 430 | 300 es
+// 300 es uses int index = gl_WorkGroupID.x;
+// note, vec3 in compute shader is packed as vec4s
+const char* compute_shader_source = "\
+#version 430\n\
+\
+struct vec3z\
+{\
+    float x;\
+    float y;\
+    float z;\
+};\
+\
+layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;\
+layout(std430, binding = 0) buffer PositionBuffer {\
+    vec3z positions[];\
+};\
+\
+void main() {\
+    uint index = gl_GlobalInvocationID.x;\
+    vec3z position;\
+    if (index == 0) {\
+        position = vec3z(-0.5, -0.5, 0.0);\
+    } else if (index == 1) {\
+        position = vec3z(0.5, -0.5, 0.0);\
+    } else if (index == 2) {\
+        position = vec3z(0.0, 0.5, 0.0);\
+    }\
+    positions[index] = position;\
+}";
+
+GLuint compute_shader, compute_program, vertex_buffer;
+
+void check_opengl_error() {
+    GLenum err = glGetError();
+    if (err != GL_NO_ERROR) {
+        printf("check_opengl_error [%i]\n", (int) err);
+    }
+}
+
+GLFWwindow* setup_window() {
+    glfwInit();
+    GLFWwindow* window = glfwCreateWindow(600, 420, "Compute Triangle Example", NULL, NULL);
+    glfwMakeContextCurrent(window);
+    glewExperimental = GL_TRUE;
+    glewInit();
+    return window;
+}
+
+// position buffer used for vertex positions
+void create_position_buffer() {
+    glGenBuffers(1, &vertex_buffer);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, vertex_buffer);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, data_length, NULL, GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+}
+
+// Set up compute shader
+void create_compute_program() {
+    compute_shader = glCreateShader(GL_COMPUTE_SHADER);
+    glShaderSource(compute_shader, 1, &compute_shader_source, NULL);
+    glCompileShader(compute_shader);
+    compute_program = glCreateProgram();
+    glAttachShader(compute_program, compute_shader);
+    glLinkProgram(compute_program);
+    // debug compute_program linking
+    GLint link_status;
+    glGetProgramiv(compute_program, GL_LINK_STATUS, &link_status);
+    if (link_status == GL_FALSE) {
+        GLint log_length;
+        glGetProgramiv(compute_program, GL_INFO_LOG_LENGTH, &log_length);
+        char* log = (char*)malloc(log_length * sizeof(char));
+        glGetProgramInfoLog(compute_program, log_length, NULL, log);
+        printf("Compute shader program failed to link: %s\n", log);
+        free(log);
+        return;
+    }
+    check_opengl_error();
+}
+
+void attach_buffer_to_compute_program() {
+    glUseProgram(compute_program);
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, vertex_buffer);
+    glUseProgram(0);
+    check_opengl_error();
+}
+
+// Dispatch compute shader to generate vertex positions
+void run_compute_shader() {
+    glUseProgram(compute_program);
+    glDispatchCompute(3, 1, 1);
+    glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+    check_opengl_error();
+}
+
+// cleans up opengl resources
+void cleanup()
+{
+    glDeleteBuffers(1, &vertex_buffer);
+    glDeleteShader(compute_shader);
+    glDeleteProgram(compute_program);
+}
+
+// prints the position buffer
+unsigned char check_buffer() {
+    unsigned char success = 1;
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, vertex_buffer);
+    vec3* data = (vec3*) glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_READ_ONLY);
+    if (data) {
+        for (int i = 0; i < vertex_count; i++) {
+            vec3 vertex = data[i];
+            if (i == 0) {
+                if (!(vertex.x == -0.5f && vertex.y == -0.5f && vertex.z == 0.0)) {
+                    printf("Vertex 1 has failed.\n");
+                    success = 0;
+                } else {
+                    printf("Vertex 1 is correct.\n");
+                }
+            } else if (i == 1) {
+                if (!(vertex.x == 0.5f && vertex.y == -0.5f && vertex.z == 0.0)) {
+                    printf("Vertex 2 has failed.\n");
+                    success = 0;
+                } else {
+                    printf("Vertex 2 is correct.\n");
+                }
+            } else if (i == 2) {
+                if (!(vertex.x == 0 && vertex.y == 0.5f && vertex.z == 0)) {
+                    printf("Vertex 3 has failed.\n");
+                    success = 0;
+                } else {
+                    printf("Vertex 3 is correct.\n");
+                }
+            }
+            printf("    - vertex %d: [%f, %f, %f]\n", (i + 1), vertex.x, vertex.y, vertex.z);
+        }
+        glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+    }
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+    return success;
+}
+
+int main()
+{
+    printf("Running compute program test.\n");
+    setup_window();
+    create_position_buffer();
+    create_compute_program();
+    attach_buffer_to_compute_program();
+    run_compute_shader();
+    unsigned char success = check_buffer();
+    if (success) {
+        printf("Compute Program ran successfully.\n");
+    } else {
+        printf("Compute Program failed.\n");
+    }
+    cleanup();
+    glfwTerminate();
+    return 0;
+}
