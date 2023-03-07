@@ -49,9 +49,34 @@ void main() {\
 GLuint compute_shader, compute_program, vertex_buffer;
 
 void check_opengl_error(char* function_name) {
-    GLenum err = glGetError();
-    if (err != GL_NO_ERROR) {
-        printf("check_opengl_error [%s] [%i]\n", function_name, (int) err);
+    GLenum error_code = glGetError();
+    if (error_code != GL_NO_ERROR) {
+        // printf("check_opengl_error [%s] [%i]\n", function_name, (int) error_code);
+        const char* error_message;
+        switch (error_code) {
+            case GL_INVALID_ENUM:
+                error_message = "GL_INVALID_ENUM";
+                break;
+            case GL_INVALID_VALUE:
+                error_message = "GL_INVALID_VALUE";
+                break;
+            case GL_INVALID_OPERATION:
+                error_message = "GL_INVALID_OPERATION";
+                break;
+            case GL_STACK_OVERFLOW:
+                error_message = "GL_STACK_OVERFLOW";
+                break;
+            case GL_STACK_UNDERFLOW:
+                error_message = "GL_STACK_UNDERFLOW";
+                break;
+            case GL_OUT_OF_MEMORY:
+                error_message = "GL_OUT_OF_MEMORY";
+                break;
+            default:
+                error_message = "UNKNOWN";
+                break;
+        }
+        printf("OpenGL error %s (%d) in %s\n", error_message, error_code, function_name);
     }
 }
 
@@ -86,7 +111,7 @@ void create_compute_program() {
     if (link_status == GL_FALSE) {
         GLint log_length;
         glGetProgramiv(compute_program, GL_INFO_LOG_LENGTH, &log_length);
-        char* log = (char*)malloc(log_length * sizeof(char));
+        char* log = (char*) malloc(log_length * sizeof(char));
         glGetProgramInfoLog(compute_program, log_length, NULL, log);
         printf("Compute shader program failed to link: %s\n", log);
         free(log);
