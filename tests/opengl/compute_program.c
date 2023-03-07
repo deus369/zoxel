@@ -48,10 +48,10 @@ void main() {\
 
 GLuint compute_shader, compute_program, vertex_buffer;
 
-void check_opengl_error() {
+void check_opengl_error(char* function_name) {
     GLenum err = glGetError();
     if (err != GL_NO_ERROR) {
-        printf("check_opengl_error [%i]\n", (int) err);
+        printf("check_opengl_error [%s] [%i]\n", function_name, (int) err);
     }
 }
 
@@ -92,14 +92,14 @@ void create_compute_program() {
         free(log);
         return;
     }
-    check_opengl_error();
+    check_opengl_error("create_compute_program");
 }
 
 void attach_buffer_to_compute_program() {
     glUseProgram(compute_program);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, vertex_buffer);
     glUseProgram(0);
-    check_opengl_error();
+    check_opengl_error("attach_buffer_to_compute_program");
 }
 
 // Dispatch compute shader to generate vertex positions
@@ -107,7 +107,7 @@ void run_compute_shader() {
     glUseProgram(compute_program);
     glDispatchCompute(3, 1, 1);
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
-    check_opengl_error();
+    check_opengl_error("run_compute_shader");
 }
 
 // cleans up opengl resources
@@ -116,6 +116,7 @@ void cleanup()
     glDeleteBuffers(1, &vertex_buffer);
     glDeleteShader(compute_shader);
     glDeleteProgram(compute_program);
+    check_opengl_error("cleanup");
 }
 
 // prints the position buffer
@@ -153,6 +154,7 @@ unsigned char check_buffer() {
         glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
     }
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+    check_opengl_error("check_buffer");
     return success;
 }
 
