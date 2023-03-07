@@ -1,6 +1,7 @@
 // cc -std=c99 tests/opengl/compute_program.c -o compute_program -lGL -lGLEW -lglfw && ./compute_program
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -82,19 +83,26 @@ void check_opengl_error(char* function_name) {
 }
 
 int check_compute_shader_support() {
-    //GLint max_compute_shader_storage_blocks, max_compute_uniform_blocks;
-    //glGetIntegeri_v(GL_MAX_COMPUTE_SHADER_STORAGE_BLOCKS, 0, &max_compute_shader_storage_blocks);
-    //glGetIntegeri_v(GL_MAX_COMPUTE_UNIFORM_BLOCKS, 0, &max_compute_uniform_blocks);
-    //if (max_compute_shader_storage_blocks == 0 || max_compute_uniform_blocks == 0) {
-    if (!GLEW_ARB_compute_shader) {
-        printf("Compute shaders are not supported on this device.\n");
-        return 0;
+
+    // Check for OES_compute_shader extension
+    const char* extensions = (const char*)glGetString(GL_EXTENSIONS);
+    if (strstr(extensions, "GL_OES_compute_shader") != NULL)
+    {
+        printf("Compute shaders are supported on this device (GL_OES_compute_shader).\n");
+        return 1;
     }
-    printf("Compute shaders are supported on this device.\n");
-    //printf("Max compute shader storage blocks: %d\n", max_compute_shader_storage_blocks);
-    //printf("Max compute uniform blocks: %d\n", max_compute_uniform_blocks);
-    check_opengl_error("check_compute_shader_support");
-    return 1;
+
+    // Check for OpenGL 4.3 or higher
+    const char* version_str = (const char*)glGetString(GL_VERSION);
+    float version;
+    if (sscanf(version_str, "%f", &version) == 1 && version >= 4.3)
+    {
+        printf("Compute shaders are supported on this device (OpenGL %s).\n", version_str);
+        return 1;
+    }
+    
+    printf("Compute shaders are not supported on this device.\n");
+    return 0;
 }
 
 GLFWwindow* setup_window() {
@@ -120,7 +128,7 @@ void create_position_buffer() {
 
 // Set up compute shader
 int create_compute_program() {
-    compute_shader = glCreateShader(GL_COMPUTE_SHADER); // GL_COMPUTE_SHADER GL_COMPUTE_SHADER_BIT GL_SHADER_TYPE_COMPUTE
+    compute_shader = glCreateShader(GL_COMPUTE_SHADER);
     if (compute_shader == 0) {
         printf("Error creating compute shader.\n");
         return 1;
