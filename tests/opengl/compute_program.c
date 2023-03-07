@@ -83,25 +83,33 @@ void check_opengl_error(char* function_name) {
 }
 
 int check_compute_shader_support() {
-
-    // Check for OES_compute_shader extension
-    const char* extensions = (const char*)glGetString(GL_EXTENSIONS);
-    if (strstr(extensions, "GL_OES_compute_shader") != NULL)
-    {
-        printf("Compute shaders are supported on this device (GL_OES_compute_shader).\n");
-        return 1;
-    }
-
     // Check for OpenGL 4.3 or higher
-    const char* version_str = (const char*)glGetString(GL_VERSION);
-    float version;
-    if (sscanf(version_str, "%f", &version) == 1 && version >= 4.3)
+    const char* version_str = (const char*) glGetString(GL_VERSION);
+    int is_opengl_es = strstr(version_str, "ES") != NULL;
+    int major = 0, minor = 0;
+    glGetIntegerv(GL_MAJOR_VERSION, &major);
+    glGetIntegerv(GL_MINOR_VERSION, &minor);
+
+    if (is_opengl_es)
     {
-        printf("Compute shaders are supported on this device (OpenGL %s).\n", version_str);
-        return 1;
+        printf("OpenGL is ES.\n");
+        // sscanf(version_str, "OpenGL ES %d.%d", &major, &minor);
+        if (major >= 3 && minor >= 1) {
+            printf("Compute shaders are supported on this device (OpenGL ES %s).\n", version_str);
+            return 1;
+        }
+    }
+    else
+    {
+        printf("OpenGL is not ES.\n");
+        // sscanf(version_str, "%*s %d.%d", &major, &minor);
+        if (major >= 4 && minor >= 3) {
+            printf("Compute shaders are supported on this device (OpenGL %s -- %d).\n", version_str, major);
+            return 1;
+        }
     }
     
-    printf("Compute shaders are not supported on this device.\n");
+    printf("Compute shaders are not supported on this device (OpenGL %s -- %d).\n", version_str, major);
     return 0;
 }
 
