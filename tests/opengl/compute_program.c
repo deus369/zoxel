@@ -99,12 +99,13 @@ void create_position_buffer() {
 
 // Set up compute shader
 void create_compute_program() {
-    compute_shader = glCreateShader(GL_COMPUTE_SHADER);
+    compute_shader = glCreateShader(GL_COMPUTE_SHADER_BIT); // GL_COMPUTE_SHADER GL_COMPUTE_SHADER_BIT
     glShaderSource(compute_shader, 1, &compute_shader_source, NULL);
     glCompileShader(compute_shader);
     compute_program = glCreateProgram();
     glAttachShader(compute_program, compute_shader);
     glLinkProgram(compute_program);
+    check_opengl_error("create_compute_program 1");
     // debug compute_program linking
     GLint link_status;
     glGetProgramiv(compute_program, GL_LINK_STATUS, &link_status);
@@ -117,7 +118,7 @@ void create_compute_program() {
         free(log);
         return;
     }
-    check_opengl_error("create_compute_program");
+    check_opengl_error("create_compute_program 2");
 }
 
 void attach_buffer_to_compute_program() {
