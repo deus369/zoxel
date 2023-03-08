@@ -33,7 +33,7 @@ const char* fragment_shader_source =
     "out vec4 FragColor;\n"
     "void main()\n"
     "{\n"
-    "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+    "   FragColor = vec4(0.32f, 0.16f, 0.16f, 1.0f);\n"
     "}\n\0";
 const char* compute_shader_source = "\
 #version 310 es\n\
@@ -135,6 +135,15 @@ void run_compute_shader(GLuint compute_program) {
     check_opengl_error("run_compute_shader");
 }
 
+void cleanup()
+{
+    glDeleteShader(compute_shader);
+    glDeleteProgram(compute_program);
+    glDeleteBuffers(1, &position_buffer);
+    glDeleteBuffers(1, &vbo);
+    glDeleteProgram(shader_program);
+}
+
 // prints the position buffer
 /*void print_buffer(GLuint buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
@@ -148,15 +157,6 @@ void run_compute_shader(GLuint compute_program) {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     check_opengl_error("print_buffer");
 }*/
-
-void cleanup()
-{
-    glDeleteShader(compute_shader);
-    glDeleteProgram(compute_program);
-    glDeleteBuffers(1, &position_buffer);
-    glDeleteBuffers(1, &vbo);
-    glDeleteProgram(shader_program);
-}
 
 int main()
 {
@@ -176,15 +176,10 @@ int main()
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         while (loop_glfw_window(window))
         {
-            /*if (render_dirty >= 1 && render_dirty < max_render_dirty) {
-                render_dirty++;
-            } else if (render_dirty == max_render_dirty) {
-                render_dirty = 0;*/
-            glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+            glClearColor(0.13f, 0.24f, 0.33f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
             glDrawArrays(GL_TRIANGLES, 0, vertex_count);
             updated_glfw_render(window);
-            //}
             update_glfw_window();
         }
         cleanup();
@@ -192,104 +187,3 @@ int main()
     close_glfw_window();
     return 0;
 }
-
-
-    // Unbind vertex buffer
-    // glBindBuffer(GL_ARRAY_BUFFER, 0);
-    // works
-    // GLuint vbo = create_vertex_buffer();
-
-    // glDeleteVertexArrays(1, &vao);
-
-        // glDrawArrays(GL_TRIANGLES, 0, 3);
-        /*glUseProgram(shader_program);
-        glBindVertexArray(vao);
-        glDrawArrays(GL_TRIANGLES, 0, 36);*/
-
-    // Set up vertex data and buffer
-    /*float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
-    };
-
-    GLuint VBO, VAO, computeShader;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // Set up shader program
-    GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertex_shader, 1, &vertex_shader_source, NULL);
-    glCompileShader(vertex_shader);
-    GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment_shader, 1, &fragment_shader_source, NULL);
-    glCompileShader(fragment_shader);
-    GLuint shader_program = glCreateProgram();
-    glAttachShader(shader_program, vertex_shader);
-    glAttachShader(shader_program, fragment_shader);
-    glLinkProgram(shader_program);
-    glUseProgram(shader_program);*/
-
-    /**/
-
-    // Set up vertex array and buffer for rendering
-    /*GLuint vao, vbo;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, 24 * 16, NULL, GL_DYNAMIC_DRAW);
-    glBindBuffer(GL_COPY_WRITE_BUFFER, position_buffer);
-    glCopyBufferSubData(GL_COPY_WRITE_BUFFER, GL_ARRAY_BUFFER, 0, 0, 24 * 16);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glEnableVertexAttribArray(0);*/
-
-/*const char* compute_shader_source = "\
-layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;\
-\
-layout(std430, binding = 0) buffer PositionBuffer {\
-    vec4 positions[];\
-};\
-\
-void main() {\
-    uint index = gl_GlobalInvocationID.x;\
-    vec3 position = vec3((index / 6) % 2, (index / 3) % 2, index % 2);\
-    position = position * 2.0 - 1.0;\
-    if ((index / 6) % 2 == 1) position = position.yzx;\
-    positions[index] = vec4(position, 1.0);\
-}";*/
-
-
-
-
-/*GLuint create_vertex_buffer() {
-    GLuint vbo;
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-    // Set up vertices
-    GLfloat vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.0f,  0.5f, 0.0f
-    };
-
-    // Copy vertex data to buffer
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // Set up vertex attributes
-    GLuint position_attrib = 0;
-    glVertexAttribPointer(position_attrib, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
-    glEnableVertexAttribArray(position_attrib);
-
-    // Unbind buffer
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    // Return buffer ID
-    return vbo;
-}*/

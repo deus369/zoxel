@@ -1,7 +1,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#define max_render_dirty 100
 int render_dirty = 1;
 
 void window_pos_callback(GLFWwindow* window, int xpos, int ypos)
@@ -26,12 +25,12 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     }
     glfwSwapInterval(1);    // vsync
-    // glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE); // prevent fullscreen
+    glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE); // prevent fullscreen
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
     // glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
-    int screen_width = mode->width; // 256
-    int screen_height = mode->height;
+    int screen_width = mode->width / 2;
+    int screen_height = mode->height / 2;
     printf("Spawning GLFW window with size [%ix%i]\n", screen_width, screen_height);
     // "Compute Test"
     if (fullscreen == 0) {
@@ -45,6 +44,9 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     // glfwSetWindowSize(window, 202, 202);
     glfwMakeContextCurrent(window);
     glewExperimental = GL_TRUE;
+    glfwSetWindowAttrib(window, GLFW_DECORATED, GLFW_FALSE);
+    glfwSetWindowAttrib(window, GLFW_MAXIMIZED, GLFW_FALSE);
+    glfwSetWindowMonitor(window, NULL, 0, 0, screen_width, screen_height, GLFW_DONT_CARE);
     glfwSetWindowPosCallback(window, window_pos_callback);
     glfwSetWindowSizeCallback(window, window_size_callback);
     glewInit();
