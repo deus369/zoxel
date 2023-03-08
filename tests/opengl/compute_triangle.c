@@ -53,12 +53,13 @@ layout(std430, binding = 0) buffer PositionBuffer {\
 void main() {\
     int index = int(gl_WorkGroupID.x);\
     vec3z position;\
+    float size = 0.98;\
     if (index == 0) {\
-        position = vec3z(-0.92, -0.92, 0.0);\
+        position = vec3z(-size, -size, 0.0);\
     } else if (index == 1) {\
-        position = vec3z(0.92, -0.92, 0.0);\
+        position = vec3z(size, -size, 0.0);\
     } else if (index == 2) {\
-        position = vec3z(0.0, 0.92, 0.0);\
+        position = vec3z(0.0, size, 0.0);\
     }\
     positions[index] = position;\
 }";

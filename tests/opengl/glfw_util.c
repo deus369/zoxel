@@ -23,6 +23,7 @@ void window_pos_callback(GLFWwindow* window, int xpos, int ypos)
 
 void window_size_callback(GLFWwindow* window, int width, int height)
 {
+    glViewport(0, 0, width, height);
     printf("Window size: %d x %d\n", width, height);
     render_dirty = 1;
     // glfwSetWindowMonitor(window, NULL, 0, 0, screen_width, screen_height, GLFW_DONT_CARE);
