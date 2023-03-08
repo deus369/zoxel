@@ -84,13 +84,13 @@ void OpenGLImport(ecs_world_t *world)
     int didFail = load_all_shaders();
     if (didFail == EXIT_FAILURE)
     {
-        printf("Failed to InitializeOpenGL.");
+        printf("Failed to InitializeOpenGL.\n");
     }
     print_opengl();
     int supports_compute = check_compute_shader_support();
     if (supports_compute == 0)
     {
-        printf("Failed to support Compute Shaders.");
+        printf("Failed to support Compute Shaders.\n");
     }
 }
 #endif
