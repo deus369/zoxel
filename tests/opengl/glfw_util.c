@@ -32,7 +32,9 @@ GLFWwindow* open_glfw_window(int is_es) {
     // glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
     int screen_width = mode->width; // 256
     int screen_height = mode->height;
-    GLFWwindow* window = glfwCreateWindow(screen_width, screen_height, "Compute Test", glfwGetPrimaryMonitor(), NULL);
+    printf("Spawning GLFW window with size [%ix%i]\n", screen_width, screen_height);
+    // "Compute Test"
+    GLFWwindow* window = glfwCreateWindow(screen_width, screen_height, "", glfwGetPrimaryMonitor(), NULL); //  , NULL);
     if (!window)
     {
         return NULL;
