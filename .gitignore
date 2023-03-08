@@ -18,5 +18,6 @@ include/flecs/flecs.c
 documents/zoxel_web/zoxel_web
 # specific tests
 compute_program
+compute_simpler
 compute_triangle
 compute_voxels

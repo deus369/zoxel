@@ -54,11 +54,11 @@ void main() {\
     int index = int(gl_WorkGroupID.x);\
     vec3z position;\
     if (index == 0) {\
-        position = vec3z(-0.8, -0.8, 0.0);\
+        position = vec3z(-0.92, -0.92, 0.0);\
     } else if (index == 1) {\
-        position = vec3z(0.8, -0.8, 0.0);\
+        position = vec3z(0.92, -0.92, 0.0);\
     } else if (index == 2) {\
-        position = vec3z(0.0, 0.8, 0.0);\
+        position = vec3z(0.0, 0.92, 0.0);\
     }\
     positions[index] = position;\
 }";
@@ -144,23 +144,8 @@ void cleanup()
     glDeleteProgram(shader_program);
 }
 
-// prints the position buffer
-/*void print_buffer(GLuint buffer) {
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    vec3* data = (vec3*) glMapBuffer(GL_ARRAY_BUFFER, GL_READ_ONLY);
-    if (data) {
-        for (int i = 0; i < vertex_count; i++) {
-            printf("Vertex %d: (%f, %f, %f)\n", i, data[i].x, data[i].y, data[i].z);
-        }
-        glUnmapBuffer(GL_ARRAY_BUFFER);
-    }
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    check_opengl_error("print_buffer");
-}*/
-
 int main()
 {
-    check_glfw();
     GLFWwindow* window = open_glfw_window(1, 0);
     int supports_compute = check_compute_shader_support();
     if (supports_compute)
@@ -188,3 +173,17 @@ int main()
     close_glfw_window();
     return 0;
 }
+
+// prints the position buffer
+/*void print_buffer(GLuint buffer) {
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    vec3* data = (vec3*) glMapBuffer(GL_ARRAY_BUFFER, GL_READ_ONLY);
+    if (data) {
+        for (int i = 0; i < vertex_count; i++) {
+            printf("Vertex %d: (%f, %f, %f)\n", i, data[i].x, data[i].y, data[i].z);
+        }
+        glUnmapBuffer(GL_ARRAY_BUFFER);
+    }
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    check_opengl_error("print_buffer");
+}*/

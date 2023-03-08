@@ -35,25 +35,18 @@ void check_glfw() {
 }
 
 GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
+    check_glfw();
     if (!glfwInit()) {
         return NULL;
     }
-
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-    glfwSwapInterval(1);    // vsync
-    glfwWindowHint(GLFW_STENCIL_BITS, 8);
-    glfwWindowHint(GLFW_DEPTH_BITS, 24);
+    glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE); // prevent fullscreen
     glfwWindowHint(GLFW_SAMPLES, 0);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_REFRESH_RATE, 30); // Max 30 fps
     if (is_es) {
-        // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ES_PROFILE);
         glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     }
-    // glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE); // prevent fullscreen
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
     // glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
@@ -63,27 +56,27 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     // "Compute Test"
     // if (fullscreen == 0)
     {
-        monitor = NULL;
+        // monitor = NULL;
+        // screen_width /= 2;
+        // screen_height /= 2;
     }
-    GLFWwindow* window = glfwCreateWindow(screen_width, screen_height, "", monitor, NULL); //  , NULL);
+    GLFWwindow* window = glfwCreateWindow(screen_width, screen_height, "", NULL, NULL);
     if (!window)
     {
         return NULL;
     }
-    // glfwSetWindowMonitor(window, NULL, 0, 0, screen_width, screen_height, GLFW_DONT_CARE);
-    // Set the key callback function
-    glfwSetKeyCallback(window, key_callback);
-    // glfwSetWindowSize(window, 202, 202);
-    glfwMakeContextCurrent(window);
-    glewExperimental = GL_TRUE;
     glfwSetWindowAttrib(window, GLFW_DECORATED, GLFW_FALSE);
     glfwSetWindowAttrib(window, GLFW_MAXIMIZED, GLFW_FALSE);
+    glfwSwapInterval(1);    // vsync
+    glfwMakeContextCurrent(window);
+    // Set the key callback function
     glfwSetWindowPosCallback(window, window_pos_callback);
     glfwSetWindowSizeCallback(window, window_size_callback);
+    glfwSetKeyCallback(window, key_callback);
+    // Wait for all previously issued commands to complete
+    glewExperimental = GL_TRUE;
     glewInit();
     check_opengl_error("setup_window");
-    // Wait for all previously issued commands to complete
-    glFinish();
     return window;
 }
 
@@ -102,3 +95,14 @@ int loop_glfw_window(GLFWwindow* window) {
 void close_glfw_window() {
     glfwTerminate();
 }
+
+// glfwSetWindowMonitor(window, NULL, 0, 0, screen_width, screen_height, GLFW_DONT_CARE);
+// glfwSetWindowSize(window, 202, 202);
+// glFinish();
+    /*
+    glfwWindowHint(GLFW_STENCIL_BITS, 8);
+    glfwWindowHint(GLFW_DEPTH_BITS, 24);
+    glfwWindowHint(GLFW_REFRESH_RATE, 30); // Max 30 fps
+    glfwWindowHint(GLFW_FLOATING, GLFW_TRUE); // Always on top
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    */
