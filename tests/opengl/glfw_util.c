@@ -9,6 +9,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+    if (key == GLFW_KEY_Z && action == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
 
@@ -42,7 +44,7 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     }
     glfwSwapInterval(1);    // vsync
-    glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE); // prevent fullscreen
+    // glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE); // prevent fullscreen
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
     // glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
@@ -51,7 +53,7 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     printf("Spawning GLFW window with size [%ix%i]\n", screen_width, screen_height);
     // "Compute Test"
     if (fullscreen == 0) {
-        monitor = NULL;
+        // monitor = NULL;
     }
     GLFWwindow* window = glfwCreateWindow(screen_width, screen_height, "", monitor, NULL); //  , NULL);
     if (!window)
