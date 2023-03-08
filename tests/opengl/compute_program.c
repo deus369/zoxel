@@ -119,6 +119,7 @@ void run_compute_shader() {
     glUseProgram(compute_program);
     glDispatchCompute(vertex_count, 1, 1);
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+    glUseProgram(0);
     check_opengl_error("run_compute_shader");
 }
 
@@ -177,7 +178,7 @@ unsigned char check_compute_results() {
 
 int main()
 {
-    open_glfw_window(0, 0);
+    GLFWwindow* window = open_glfw_window(1, 0);
     int supports_compute = check_compute_shader_support();
     if (supports_compute)
     {
@@ -197,7 +198,7 @@ int main()
             printf("Could not test due to compute shader not creating.\n");
         }
     }
-    glfwTerminate();
+    close_glfw_window(window);
     return 0;
 }
 

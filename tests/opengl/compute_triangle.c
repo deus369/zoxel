@@ -128,10 +128,11 @@ void attach_buffer_to_compute_program() {
 
 // Dispatch compute shader to generate vertex positions
 void run_compute_shader(GLuint compute_program) {
+    printf("    > Running compute\n");
     glUseProgram(compute_program);
-    glDispatchCompute(3, 1, 1);
+    glDispatchCompute(vertex_count, 1, 1);
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
-    glFinish();
+    glUseProgram(0);
     check_opengl_error("run_compute_shader");
 }
 
@@ -158,19 +159,24 @@ int main()
         vbo = create_vertex_buffer(position_buffer);
         shader_program = create_shader_program();
         // Use shader program and bind vertex buffer for rendering
-        glUseProgram(shader_program);
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
         while (loop_glfw_window(window))
         {
-            glClearColor(0.13f, 0.24f, 0.33f, 1.0f);
+            glClearColor(0.13f, 0.24f, 0.66f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
+
+            // draw the triangle
+            glUseProgram(shader_program);
+            glBindBuffer(GL_ARRAY_BUFFER, vbo);
             glDrawArrays(GL_TRIANGLES, 0, vertex_count);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glUseProgram(0);
+
             updated_glfw_render(window);
             update_glfw_window();
         }
         cleanup();
     }
-    close_glfw_window();
+    close_glfw_window(window);
     return 0;
 }
 
@@ -187,3 +193,10 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     check_opengl_error("print_buffer");
 }*/
+
+
+    /*glUseProgram(compute_program);
+    glDispatchCompute(3, 1, 1);
+    glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+    // glFinish();
+    check_opengl_error("run_compute_shader");*/

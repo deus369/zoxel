@@ -92,7 +92,8 @@ int loop_glfw_window(GLFWwindow* window) {
     return !glfwWindowShouldClose(window);
 }
 
-void close_glfw_window() {
+void close_glfw_window(GLFWwindow* window) {
+    glfwDestroyWindow(window);
     glfwTerminate();
 }
 
