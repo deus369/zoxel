@@ -160,6 +160,7 @@ void cleanup()
 
 int main()
 {
+    check_glfw();
     GLFWwindow* window = open_glfw_window(1, 0);
     int supports_compute = check_compute_shader_support();
     if (supports_compute)

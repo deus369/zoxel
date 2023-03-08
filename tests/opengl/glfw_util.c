@@ -3,6 +3,13 @@
 
 int render_dirty = 1;
 
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
+}
+
+
 void window_pos_callback(GLFWwindow* window, int xpos, int ypos)
 {
     //printf("Window position: %d, %d\n", xpos, ypos);
@@ -13,6 +20,12 @@ void window_size_callback(GLFWwindow* window, int width, int height)
 {
     //printf("Window size: %d x %d\n", width, height);
     render_dirty = 1;
+}
+
+void check_glfw() {
+    int major, minor, rev;
+    glfwGetVersion(&major, &minor, &rev);
+    printf("GLFW version: %d.%d.%d\n", major, minor, rev);
 }
 
 GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
@@ -41,6 +54,8 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     {
         return NULL;
     }
+    // Set the key callback function
+    glfwSetKeyCallback(window, key_callback);
     // glfwSetWindowSize(window, 202, 202);
     glfwMakeContextCurrent(window);
     glewExperimental = GL_TRUE;
