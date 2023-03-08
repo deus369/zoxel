@@ -173,10 +173,16 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     while (loop_glfw_window(window))
     {
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        glDrawArrays(GL_TRIANGLES, 0, vertex_count);
-        update_glfw_window(window);
+        if (render_dirty >= 1 && render_dirty < max_render_dirty) {
+            render_dirty++;
+        } else if (render_dirty == max_render_dirty) {
+            render_dirty = 0;
+            glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+            glDrawArrays(GL_TRIANGLES, 0, vertex_count);
+            updated_glfw_render(window);
+        }
+        update_glfw_window();
     }
     cleanup();
     close_glfw_window();
