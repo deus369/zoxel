@@ -38,12 +38,21 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     if (!glfwInit()) {
         return NULL;
     }
+
+    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+    glfwSwapInterval(1);    // vsync
+    glfwWindowHint(GLFW_STENCIL_BITS, 8);
+    glfwWindowHint(GLFW_DEPTH_BITS, 24);
+    glfwWindowHint(GLFW_SAMPLES, 0);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_REFRESH_RATE, 30); // Max 30 fps
     if (is_es) {
+        // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ES_PROFILE);
         glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     }
-    glfwSwapInterval(1);    // vsync
     // glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE); // prevent fullscreen
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
@@ -52,15 +61,16 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     screen_height = mode->height;
     printf("Spawning GLFW window with size [%ix%i]\n", screen_width, screen_height);
     // "Compute Test"
-    if (fullscreen == 0) {
-        // monitor = NULL;
+    // if (fullscreen == 0)
+    {
+        monitor = NULL;
     }
     GLFWwindow* window = glfwCreateWindow(screen_width, screen_height, "", monitor, NULL); //  , NULL);
     if (!window)
     {
         return NULL;
     }
-    glfwSetWindowMonitor(window, NULL, 0, 0, screen_width, screen_height, GLFW_DONT_CARE);
+    // glfwSetWindowMonitor(window, NULL, 0, 0, screen_width, screen_height, GLFW_DONT_CARE);
     // Set the key callback function
     glfwSetKeyCallback(window, key_callback);
     // glfwSetWindowSize(window, 202, 202);
