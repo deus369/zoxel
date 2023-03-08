@@ -1,4 +1,5 @@
 // cc -std=c99 tests/opengl/compute_program.c -o compute_program -lGL -lGLEW -lglfw && ./compute_program
+#define zox_logs
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,14 +12,12 @@
 
 const char* compute_shader_source = "\
 #version 310 es\n\
-\
 struct vec3z\
 {\
     float x;\
     float y;\
     float z;\
 };\
-\
 layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;\
 layout(std430, binding = 0) buffer PositionBuffer {\
     vec3z positions[];\
@@ -67,7 +66,7 @@ GLFWwindow* setup_window() {
 
 // position buffer used for vertex positions
 void create_position_buffer() {
-    printf("    > Creating buffer\n");
+    zoxel_log("    > Creating buffer\n");
     glGenBuffers(1, &vertex_buffer);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, vertex_buffer);
     glBufferData(GL_SHADER_STORAGE_BUFFER, data_length, NULL, GL_DYNAMIC_DRAW);
@@ -77,10 +76,10 @@ void create_position_buffer() {
 
 // Set up compute shader
 int create_compute_program() {
-    printf("    > Creating compute program\n");
+    zoxel_log("    > Creating compute program\n");
     compute_shader = glCreateShader(GL_COMPUTE_SHADER);
     if (compute_shader == 0) {
-        printf("Error creating compute shader.\n");
+        zoxel_log("Error creating compute shader.\n");
         return 1;
     }
     check_opengl_error("create_compute_program_1");
@@ -98,7 +97,7 @@ int create_compute_program() {
         glGetProgramiv(compute_program, GL_INFO_LOG_LENGTH, &log_length);
         char* log = (char*) malloc(log_length * sizeof(char));
         glGetProgramInfoLog(compute_program, log_length, NULL, log);
-        printf("Compute shader program failed to link: %s\n", log);
+        zoxel_log("Compute shader program failed to link: %s\n", log);
         free(log);
         return 1;
     }
@@ -115,7 +114,7 @@ void attach_buffer_to_compute_program() {
 
 // Dispatch compute shader to generate vertex positions
 void run_compute_shader() {
-    printf("    > Running compute\n");
+    zoxel_log("    > Running compute\n");
     glUseProgram(compute_program);
     glDispatchCompute(vertex_count, 1, 1);
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
@@ -134,7 +133,7 @@ void cleanup()
 
 // prints the position buffer
 unsigned char check_compute_results() {
-    printf("    > Checking compute storage buffer for results\n");
+    zoxel_log("    > Checking compute storage buffer for results\n");
     unsigned char success = 1;
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, vertex_buffer);
     check_opengl_error("check_compute_results_glBindBuffer");
@@ -144,31 +143,31 @@ unsigned char check_compute_results() {
             vec3 vertex = data[i];
             if (i == 0) {
                 if (!(vertex.x == -0.5f && vertex.y == -0.5f && vertex.z == 0.0)) {
-                    printf("Vertex 1 has failed.\n");
+                    zoxel_log("Vertex 1 has failed.\n");
                     success = 0;
                 } else {
-                    printf("Vertex 1 is correct.\n");
+                    zoxel_log("Vertex 1 is correct.\n");
                 }
             } else if (i == 1) {
                 if (!(vertex.x == 0.5f && vertex.y == -0.5f && vertex.z == 0.0)) {
-                    printf("Vertex 2 has failed.\n");
+                    zoxel_log("Vertex 2 has failed.\n");
                     success = 0;
                 } else {
-                    printf("Vertex 2 is correct.\n");
+                    zoxel_log("Vertex 2 is correct.\n");
                 }
             } else if (i == 2) {
                 if (!(vertex.x == 0 && vertex.y == 0.5f && vertex.z == 0)) {
-                    printf("Vertex 3 has failed.\n");
+                    zoxel_log("Vertex 3 has failed.\n");
                     success = 0;
                 } else {
-                    printf("Vertex 3 is correct.\n");
+                    zoxel_log("Vertex 3 is correct.\n");
                 }
             }
-            printf("    - vertex %d: [%f, %f, %f]\n", (i + 1), vertex.x, vertex.y, vertex.z);
+            zoxel_log("    - vertex %d: [%f, %f, %f]\n", (i + 1), vertex.x, vertex.y, vertex.z);
         }
         glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
     } else {
-        printf("    - Failed with glMapBuffer\n");
+        zoxel_log("    - Failed with glMapBuffer\n");
         success = 0;
     }
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
@@ -182,20 +181,20 @@ int main()
     int supports_compute = check_compute_shader_support();
     if (supports_compute)
     {
-        printf("Running compute program test.\n");
+        zoxel_log("Running compute program test.\n");
         if (create_compute_program() == 0) {
             create_position_buffer();
             attach_buffer_to_compute_program();
             run_compute_shader();
             unsigned char success = check_compute_results();
             if (success) {
-                printf("Compute Program ran successfully.\n");
+                zoxel_log("Compute Program ran successfully.\n");
             } else {
-                printf("Compute Program failed.\n");
+                zoxel_log("Compute Program failed.\n");
             }
             cleanup();
         } else {
-            printf("Could not test due to compute shader not creating.\n");
+            zoxel_log("Could not test due to compute shader not creating.\n");
         }
     }
     close_glfw_window(window);

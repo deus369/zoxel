@@ -1,12 +1,25 @@
 // timing system macros
+#include <time.h>
 
 #define clocks_per_second 1000000.0 // 0
+double time_app_started = 0;
 
 #define begin_timing()\
 unsigned char did_do = 0;\
 clock_t time_start = clock();
 
 #define did_do_timing() if (did_do == 0) did_do = 1;
+
+#define begin_timing_absolute()\
+    begin_timing()\
+    did_do_timing()
+
+double get_time_seconds()
+{
+    if (time_app_started == 0)
+        time_app_started = (double) (clock() / clocks_per_second);
+    return ((double) (clock() / clocks_per_second) - time_app_started);
+}
 
 #ifdef zoxel_time_always
 

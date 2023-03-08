@@ -1,4 +1,5 @@
 // cc -std=c99 tests/opengl/compute_simpler.c -o compute_simpler -lGL -lGLEW -lglfw && ./compute_simpler
+#define zox_logs
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,54 +10,39 @@
 #include "../../src/core/rendering/opengl/util/compute_util.c"
 #include "glfw_util.c"
 
-#define buffer_type GL_SHADER_STORAGE_BUFFER // GL_SHADER_STORAGE_BUFFER GL_DYNAMIC_STORAGE_BIT
-typedef struct
-{
-    int value;
-    int padding_a;
-    int padding_b;
-    int padding_c;
-} custom_struct;
+#define buffer_type GL_SHADER_STORAGE_BUFFER
 const char* compute_shader_source = "\
 #version 310 es\n\
-struct custom_struct\
-{\
-    int value;\
-    int padding_a;\
-    int padding_b;\
-    int padding_c;\
-};\
 layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;\
-layout(std430, binding = 0) buffer PositionBuffer {\
-    custom_struct values[];\
+buffer PositionBuffer {\
+    int values[];\
 };\
-\
 void main() {\
     int index = int(gl_WorkGroupID.x);\
-    values[index] = custom_struct(index, 0, 0, 0);\
+    values[index] = index;\
 }";
 const int data_count = 1;
-const int single_data_length = sizeof(custom_struct);
+const int single_data_length = sizeof(int);
 const int data_length = data_count * single_data_length;
 GLuint compute_shader, compute_program, vertex_buffer;
 
 // position buffer used for vertex positions
 void create_position_buffer() {
-    printf("    > Creating buffer\n");
+    zoxel_log("    > Creating buffer\n");
     glGenBuffers(1, &vertex_buffer);
     glBindBuffer(buffer_type, vertex_buffer);
     glBufferData(buffer_type, data_length, NULL, GL_DYNAMIC_DRAW);
     glBindBuffer(buffer_type, 0);
     check_opengl_error("create_position_buffer");
-    printf("    > created buffer [%i]\n", vertex_buffer);
+    zoxel_log("    > created buffer [%i]\n", vertex_buffer);
 }
 
 // Set up compute shader
 int create_compute_program() {
-    printf("    > Creating compute program\n");
+    zoxel_log("    > Creating compute program\n");
     compute_shader = glCreateShader(GL_COMPUTE_SHADER);
     if (compute_shader == 0) {
-        printf("Error creating compute shader.\n");
+        zoxel_log("Error creating compute shader.\n");
         return 1;
     }
     glShaderSource(compute_shader, 1, &compute_shader_source, NULL);
@@ -72,7 +58,7 @@ int create_compute_program() {
         glGetProgramiv(compute_program, GL_INFO_LOG_LENGTH, &log_length);
         char* log = (char*) malloc(log_length * sizeof(char));
         glGetProgramInfoLog(compute_program, log_length, NULL, log);
-        printf("Compute shader program failed to link: %s\n", log);
+        zoxel_log("Compute shader program failed to link: %s\n", log);
         free(log);
         return 1;
     }
@@ -89,7 +75,7 @@ void attach_buffer_to_compute_program() {
 
 // Dispatch compute shader to generate vertex positions
 void run_compute_shader() {
-    printf("    > Running compute\n");
+    zoxel_log("    > Running compute\n");
     glUseProgram(compute_program);
     glDispatchCompute(data_count, 1, 1);
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
@@ -107,25 +93,25 @@ void cleanup()
 
 // prints the position buffer
 unsigned char check_compute_results() {
-    printf("    > Checking compute storage buffer for results\n");
+    zoxel_log("    > Checking compute storage buffer for results\n");
     unsigned char success = 1;
     glBindBuffer(buffer_type, vertex_buffer);
     check_opengl_error("check_compute_results_glBindBuffer");
-    custom_struct* data = (custom_struct*) glMapBuffer(buffer_type, GL_READ_ONLY);
+    int* data = (int*) glMapBuffer(buffer_type, GL_READ_ONLY);
     check_opengl_error("check_compute_results_glMapBuffer");
     if (data) {
         for (int i = 0; i < data_count; i++) {
-            custom_struct data2 = data[i];
-            if (i == data2.value) {
-                printf("        - data [%i] success\n", i);
+            int data2 = data[i];
+            if (i == data2) {
+                zoxel_log("        - data [%i] success\n", i);
             } else {
-                printf("        - data [%i] failed [%i]\n", i, data2.value);
+                zoxel_log("        - data [%i] failed [%i]\n", i, data2);
                 success = 0;
             }
         }
         glUnmapBuffer(buffer_type);
     } else {
-        printf("    - Failed with glMapBuffer\n");
+        zoxel_log("    - Failed with glMapBuffer\n");
         success = 0;
     }
     glBindBuffer(buffer_type, 0);
@@ -135,30 +121,32 @@ unsigned char check_compute_results() {
 
 int main()
 {
-    printf("custom struct has size [%i]\n", single_data_length);
+    zoxel_log("custom struct has size [%i]\n", single_data_length);
     GLFWwindow* window = open_glfw_window(0, 0);
-    int supports_compute = check_compute_shader_support();
-    if (supports_compute)
+    if (check_compute_shader_support())
     {
-        int align_offset = 0;
-        glGetIntegerv(GL_SHADER_STORAGE_BUFFER_OFFSET_ALIGNMENT, &align_offset);
-        printf("    > opengl alignment is [%i]\n", align_offset);
-        printf("Running compute program test.\n");
+        zoxel_log("Running compute program test.\n");
         if (create_compute_program() == 0) {
             create_position_buffer();
             attach_buffer_to_compute_program();
             run_compute_shader();
             unsigned char success = check_compute_results();
             if (success) {
-                printf("Compute Program ran successfully.\n");
+                zoxel_log("Compute Program ran successfully.\n");
             } else {
-                printf("Compute Program failed.\n");
+                zoxel_log("Compute Program failed.\n");
             }
             cleanup();
         } else {
-            printf("Could not test due to compute shader not creating.\n");
+            zoxel_log("Could not test due to compute shader not creating.\n");
         }
+    } else {
+        zoxel_log("Does not support compute shader. Cannot run test.\n");
     }
     close_glfw_window(window);
     return 0;
 }
+
+// int align_offset = 0;
+// glGetIntegerv(GL_SHADER_STORAGE_BUFFER_OFFSET_ALIGNMENT, &align_offset);
+// zoxel_log("    > opengl alignment is [%i]\n", align_offset);
