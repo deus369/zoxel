@@ -49,48 +49,11 @@ void main() {\
 
 GLuint compute_shader, compute_program, vertex_buffer;
 
-int check_compute_shader_support_initial()
-{
-    // Check whether compute shaders are supported
-    if (!glUseProgram)
-    {
-        printf("glUseProgram is not supported\n");
-        return 0;
-    }
-
-    if (!glDispatchCompute)
-    {
-        printf("glDispatchCompute is not supported\n");
-        return 0;
-    }
-
-    // Get the maximum number of compute work groups
-    GLint max_compute_group_count[3];
-    glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0, &max_compute_group_count[0]);
-    glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1, &max_compute_group_count[1]);
-    glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2, &max_compute_group_count[2]);
-    printf("Maximum compute work group count: %d, %d, %d\n",
-        max_compute_group_count[0], max_compute_group_count[1], max_compute_group_count[2]);
-
-    // Get the maximum compute work group size
-    GLint max_compute_group_size[3];
-    glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 0, &max_compute_group_size[0]);
-    glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 1, &max_compute_group_size[1]);
-    glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 2, &max_compute_group_size[2]);
-    printf("Maximum compute work group size: %d, %d, %d\n",
-        max_compute_group_size[0], max_compute_group_size[1], max_compute_group_size[2]);
-    
-    // Get the maximum compute work group invocations
-    GLint max_compute_work_group_invocations;
-    glGetIntegerv(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, &max_compute_work_group_invocations);
-    printf("Maximum compute work group invocations: %d\n", max_compute_work_group_invocations);
-    
-    return 1;
-}
-
-void check_opengl_error(char* function_name) {
+int check_opengl_error(char* function_name) {
+    int is_error = 0;
     GLenum error_code = glGetError();
     while (error_code != GL_NO_ERROR) {
+        is_error = 1;
         // printf("check_opengl_error [%s] [%i]\n", function_name, (int) error_code);
         const char* error_message;
         switch (error_code) {
@@ -119,6 +82,64 @@ void check_opengl_error(char* function_name) {
         printf("OpenGL error %s (%d) in %s\n", error_message, error_code, function_name);
         error_code = glGetError();
     }
+    return is_error;
+}
+
+int check_compute_shader_support_initial()
+{
+    // Check whether compute shaders are supported
+    if (!glUseProgram)
+    {
+        printf("glUseProgram is not supported\n");
+        return 0;
+    }
+
+    if (!glDispatchCompute)
+    {
+        printf("glDispatchCompute is not supported\n");
+        return 0;
+    }
+
+    // Get the maximum number of compute work groups
+    GLint max_compute_group_count[3];
+    glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0, &max_compute_group_count[0]);
+    glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1, &max_compute_group_count[1]);
+    glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2, &max_compute_group_count[2]);
+    printf("Maximum compute work group count: %d, %d, %d\n",
+        max_compute_group_count[0], max_compute_group_count[1], max_compute_group_count[2]);
+    int is_error = check_opengl_error("[GL_MAX_COMPUTE_WORK_GROUP_COUNT Error]");
+    if (is_error)
+    {
+        printf("GL_MAX_COMPUTE_WORK_GROUP_COUNT is not supported\n");
+        return 0;
+    }
+
+    // Get the maximum compute work group size
+    GLint max_compute_group_size[3];
+    glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 0, &max_compute_group_size[0]);
+    glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 1, &max_compute_group_size[1]);
+    glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 2, &max_compute_group_size[2]);
+    printf("Maximum compute work group size: %d, %d, %d\n",
+        max_compute_group_size[0], max_compute_group_size[1], max_compute_group_size[2]);
+    is_error = check_opengl_error("[GL_MAX_COMPUTE_WORK_GROUP_SIZE Error]");
+    if (is_error)
+    {
+        printf("GL_MAX_COMPUTE_WORK_GROUP_SIZE is not supported\n");
+        return 0;
+    }
+    
+    // Get the maximum compute work group invocations
+    GLint max_compute_work_group_invocations;
+    glGetIntegerv(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, &max_compute_work_group_invocations);
+    printf("Maximum compute work group invocations: %d\n", max_compute_work_group_invocations);
+    is_error = check_opengl_error("[GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS Error]");
+    if (is_error)
+    {
+        printf("GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS is not supported\n");
+        return 0;
+    }
+    
+    return 1;
 }
 
 int check_compute_shader_support() {
