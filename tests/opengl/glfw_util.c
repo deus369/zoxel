@@ -23,7 +23,7 @@ void window_size_callback(GLFWwindow* window, int width, int height)
 {
     printf("Window size: %d x %d\n", width, height);
     render_dirty = 1;
-    glfwSetWindowMonitor(window, NULL, 0, 0, screen_width, screen_height, GLFW_DONT_CARE);
+    // glfwSetWindowMonitor(window, NULL, 0, 0, screen_width, screen_height, GLFW_DONT_CARE);
 }
 
 void check_glfw() {
