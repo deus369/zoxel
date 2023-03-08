@@ -10,6 +10,7 @@ GLFWwindow* open_glfw_window(int is_es) {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     }
+    glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE); // prevent fullscreen
     GLFWwindow* window = glfwCreateWindow(256, 256, "Compute Test", NULL, NULL);
     glfwMakeContextCurrent(window);
     glewExperimental = GL_TRUE;
