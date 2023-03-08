@@ -12,14 +12,16 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 void window_pos_callback(GLFWwindow* window, int xpos, int ypos)
 {
-    //printf("Window position: %d, %d\n", xpos, ypos);
+    printf("Window position: %d, %d\n", xpos, ypos);
     render_dirty = 1;
+    glfwSetWindowMonitor(window, NULL, 0, 0, 420, 420, GLFW_DONT_CARE);
 }
 
 void window_size_callback(GLFWwindow* window, int width, int height)
 {
-    //printf("Window size: %d x %d\n", width, height);
+    printf("Window size: %d x %d\n", width, height);
     render_dirty = 1;
+    glfwSetWindowMonitor(window, NULL, 0, 0, 420, 420, GLFW_DONT_CARE);
 }
 
 void check_glfw() {
