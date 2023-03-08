@@ -22,15 +22,15 @@ const int data_length = vertex_count * 3 * 4;    // 24 * 16
 GLuint position_buffer, vbo, shader_program;
 GLuint compute_shader, compute_program;
 const char* vertex_shader_source =
-    "#version 330 core\n"
-    "layout (location = 0) in vec4 position;\n"
+    "#version 300 es\n"
+    "in lowp vec4 position;\n"
     "void main()\n"
     "{\n"
     "   gl_Position = position;\n"
     "}\n\0";
 const char* fragment_shader_source =
-    "#version 330 core\n"
-    "out vec4 FragColor;\n"
+    "#version 300 es\n"
+    "out lowp vec4 FragColor;\n"
     "void main()\n"
     "{\n"
     "   FragColor = vec4(0.32f, 0.16f, 0.16f, 1.0f);\n"
@@ -93,7 +93,7 @@ GLuint setup_position_buffer() {
 GLuint create_vertex_buffer(GLuint shader_program, GLuint position_buffer) {
     // GLuint position_attrib = 0; 
     GLuint position_attrib = glGetAttribLocation(shader_program, "position");
-    printf("    > position_attrib [%i]\n", position_attrib);
+    printf("    > position attrib [%i]\n", position_attrib);
     GLuint vbo;
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
