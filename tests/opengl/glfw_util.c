@@ -2,6 +2,8 @@
 #include <GLFW/glfw3.h>
 
 int render_dirty = 1;
+int screen_width = 256;
+int screen_height = 256;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -21,7 +23,7 @@ void window_size_callback(GLFWwindow* window, int width, int height)
 {
     printf("Window size: %d x %d\n", width, height);
     render_dirty = 1;
-    glfwSetWindowMonitor(window, NULL, 0, 0, 256, 256, GLFW_DONT_CARE);
+    glfwSetWindowMonitor(window, NULL, 0, 0, screen_width, screen_height, GLFW_DONT_CARE);
 }
 
 void check_glfw() {
@@ -44,8 +46,8 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
     // glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
-    int screen_width = 256; // mode->width / 2;
-    int screen_height = 256; // mode->height / 2;
+    screen_width = mode->width;
+    screen_height = mode->height;
     printf("Spawning GLFW window with size [%ix%i]\n", screen_width, screen_height);
     // "Compute Test"
     if (fullscreen == 0) {
@@ -56,6 +58,7 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     {
         return NULL;
     }
+    glfwSetWindowMonitor(window, NULL, 0, 0, screen_width, screen_height, GLFW_DONT_CARE);
     // Set the key callback function
     glfwSetKeyCallback(window, key_callback);
     // glfwSetWindowSize(window, 202, 202);
@@ -63,7 +66,6 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     glewExperimental = GL_TRUE;
     glfwSetWindowAttrib(window, GLFW_DECORATED, GLFW_FALSE);
     glfwSetWindowAttrib(window, GLFW_MAXIMIZED, GLFW_FALSE);
-    glfwSetWindowMonitor(window, NULL, 0, 0, screen_width, screen_height, GLFW_DONT_CARE);
     glfwSetWindowPosCallback(window, window_pos_callback);
     glfwSetWindowSizeCallback(window, window_size_callback);
     glewInit();
