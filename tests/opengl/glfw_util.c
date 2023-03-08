@@ -14,14 +14,14 @@ void window_pos_callback(GLFWwindow* window, int xpos, int ypos)
 {
     printf("Window position: %d, %d\n", xpos, ypos);
     render_dirty = 1;
-    glfwSetWindowMonitor(window, NULL, 0, 0, 420, 420, GLFW_DONT_CARE);
+    // glfwSetWindowMonitor(window, NULL, 0, 0, 420, 420, GLFW_DONT_CARE);
 }
 
 void window_size_callback(GLFWwindow* window, int width, int height)
 {
     printf("Window size: %d x %d\n", width, height);
     render_dirty = 1;
-    glfwSetWindowMonitor(window, NULL, 0, 0, 420, 420, GLFW_DONT_CARE);
+    glfwSetWindowMonitor(window, NULL, 0, 0, 256, 256, GLFW_DONT_CARE);
 }
 
 void check_glfw() {
@@ -44,8 +44,8 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
     // glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
-    int screen_width = mode->width / 2;
-    int screen_height = mode->height / 2;
+    int screen_width = 256; // mode->width / 2;
+    int screen_height = 256; // mode->height / 2;
     printf("Spawning GLFW window with size [%ix%i]\n", screen_width, screen_height);
     // "Compute Test"
     if (fullscreen == 0) {
