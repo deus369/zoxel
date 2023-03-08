@@ -44,5 +44,6 @@ void OpenGLImport(ecs_world_t *world)
     {
         printf("Failed to support Compute Shaders.\n");
     }
+    int compute_shader_test = test_compute_shader();
 }
 #endif

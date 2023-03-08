@@ -51,3 +51,15 @@ int check_compute_shader_support()
     }
     return 1;
 }
+
+int test_compute_shader() {
+    GLuint compute_shader = glCreateShader(GL_COMPUTE_SHADER);
+    if (compute_shader == 0) {
+        printf("Error creating compute shader.\n");
+        return 1;
+    } else {
+        printf("Compute shader works.\n");
+        glDeleteShader(compute_shader);
+        return 0;
+    }
+}
