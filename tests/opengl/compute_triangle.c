@@ -90,8 +90,10 @@ GLuint setup_position_buffer() {
     return position_buffer;
 }
 
-GLuint create_vertex_buffer(GLuint position_buffer) {
-    GLuint position_attrib = 0; // glGetAttribLocation(material, "positions");
+GLuint create_vertex_buffer(GLuint shader_program, GLuint position_buffer) {
+    // GLuint position_attrib = 0; 
+    GLuint position_attrib = glGetAttribLocation(shader_program, "position");
+    printf("    > position_attrib [%i]\n", position_attrib);
     GLuint vbo;
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -156,8 +158,8 @@ int main()
         attach_buffer_to_compute_program();
         run_compute_shader(compute_program);
         // print_buffer(position_buffer);
-        vbo = create_vertex_buffer(position_buffer);
         shader_program = create_shader_program();
+        vbo = create_vertex_buffer(shader_program, position_buffer);
         // Use shader program and bind vertex buffer for rendering
         while (loop_glfw_window(window))
         {
