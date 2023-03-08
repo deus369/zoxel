@@ -174,6 +174,9 @@ int check_compute_shader_support() {
 }
 
 GLFWwindow* setup_window() {
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ES_API);
     glfwInit();
     GLFWwindow* window = glfwCreateWindow(600, 420, "Compute Triangle Example", NULL, NULL);
     glfwMakeContextCurrent(window);
