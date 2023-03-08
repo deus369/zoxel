@@ -1,3 +1,35 @@
+#include <string.h>
+
+// uses opengl version to check
+int check_compute_shader_support_from_version() {
+    // Check for OpenGL 4.3 or higher
+    const char* version_str = (const char*) glGetString(GL_VERSION);
+    int is_opengl_es = strstr(version_str, "ES") != NULL;
+    int major = 0, minor = 0;
+    glGetIntegerv(GL_MAJOR_VERSION, &major);
+    glGetIntegerv(GL_MINOR_VERSION, &minor);
+    if (is_opengl_es)
+    {
+        printf("OpenGL is ES.\n");
+        // sscanf(version_str, "OpenGL ES %d.%d", &major, &minor);
+        if (major >= 3 && minor >= 1) {
+            printf("Compute shaders are supported on this device (OpenGL ES %s).\n", version_str);
+            return 1;
+        }
+    }
+    else
+    {
+        printf("OpenGL is not ES.\n");
+        // sscanf(version_str, "%*s %d.%d", &major, &minor);
+        if (major >= 4 && minor >= 3) {
+            printf("Compute shaders are supported on this device (OpenGL %s -- %d).\n", version_str, major);
+            return 1;
+        }
+    }
+    printf("Compute shaders are not supported on this device (OpenGL %s -- %d).\n", version_str, major);
+    return 0;
+}
+
 // debugs compute shader support
 int check_compute_shader_support()
 {
@@ -49,7 +81,7 @@ int check_compute_shader_support()
         printf("GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS is not supported\n");
         return 0;
     }
-    return 1;
+    return check_compute_shader_support_from_version();
 }
 
 int test_compute_shader() {

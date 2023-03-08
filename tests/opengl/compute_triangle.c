@@ -4,6 +4,10 @@
 #include <stdio.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "../../src/core/util/logs.c"
+#include "../../src/core/rendering/opengl/util/error_util.c"
+#include "../../src/core/rendering/opengl/util/compute_util.c"
+#include "glfw_util.c"
 
 typedef struct
 {
@@ -32,7 +36,7 @@ const char* fragment_shader_source =
     "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
     "}\n\0";
 const char* compute_shader_source = "\
-#version 430\n\
+#version 310 es\n\
 \
 struct vec3z\
 {\
@@ -47,7 +51,7 @@ layout(std430, binding = 0) buffer PositionBuffer {\
 };\
 \
 void main() {\
-    uint index = gl_GlobalInvocationID.x;\
+    int index = int(gl_WorkGroupID.x);\
     vec3z position;\
     if (index == 0) {\
         position = vec3z(-0.5, -0.5, 0.0);\
@@ -58,22 +62,6 @@ void main() {\
     }\
     positions[index] = position;\
 }";
-
-void check_opengl_error() {
-    GLenum err = glGetError();
-    if (err != GL_NO_ERROR) {
-        printf("check_opengl_error [%i]\n", (int) err);
-    }
-}
-
-GLFWwindow* setup_window() {
-    glfwInit();
-    GLFWwindow* window = glfwCreateWindow(600, 420, "Compute Triangle Example", NULL, NULL);
-    glfwMakeContextCurrent(window);
-    glewExperimental = GL_TRUE;
-    glewInit();
-    return window;
-}
 
 GLuint create_shader_program() {
     GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
@@ -88,7 +76,7 @@ GLuint create_shader_program() {
     glLinkProgram(shader_program);
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
-    check_opengl_error();
+    check_opengl_error("create_shader_program");
     return shader_program;
 }
 
@@ -98,7 +86,7 @@ GLuint setup_position_buffer() {
     glGenBuffers(1, &position_buffer);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, position_buffer);
     glBufferData(GL_SHADER_STORAGE_BUFFER, data_length, NULL, GL_DYNAMIC_DRAW);
-    check_opengl_error();
+    check_opengl_error("setup_position_buffer");
     return position_buffer;
 }
 
@@ -116,7 +104,7 @@ GLuint create_vertex_buffer(GLuint position_buffer) {
     glVertexAttribPointer(position_attrib, vertex_count, GL_FLOAT, GL_FALSE, single_data_length, (void*) 0);
     // Unbind buffer
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    check_opengl_error();
+    check_opengl_error("create_vertex_buffer");
     return vbo;
 }
 
@@ -128,14 +116,14 @@ void setup_compute_buffer(GLuint position_buffer) {
     compute_program = glCreateProgram();
     glAttachShader(compute_program, compute_shader);
     glLinkProgram(compute_program);
-    check_opengl_error();
+    check_opengl_error("setup_compute_buffer");
 }
 
 void attach_buffer_to_compute_program() {
     glUseProgram(compute_program);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, position_buffer);
     glUseProgram(0);
-    check_opengl_error();
+    check_opengl_error("attach_buffer_to_compute_program");
 }
 
 // Dispatch compute shader to generate vertex positions
@@ -144,11 +132,11 @@ void run_compute_shader(GLuint compute_program) {
     glDispatchCompute(3, 1, 1);
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
     glFinish();
-    check_opengl_error();
+    check_opengl_error("run_compute_shader");
 }
 
 // prints the position buffer
-void print_buffer(GLuint buffer) {
+/*void print_buffer(GLuint buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     vec3* data = (vec3*) glMapBuffer(GL_ARRAY_BUFFER, GL_READ_ONLY);
     if (data) {
@@ -158,8 +146,8 @@ void print_buffer(GLuint buffer) {
         glUnmapBuffer(GL_ARRAY_BUFFER);
     }
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    check_opengl_error();
-}
+    check_opengl_error("print_buffer");
+}*/
 
 void cleanup()
 {
@@ -172,27 +160,26 @@ void cleanup()
 
 int main()
 {
-    GLFWwindow* window = setup_window();
+    GLFWwindow* window = open_glfw_window(1);
     position_buffer = setup_position_buffer();
     setup_compute_buffer(position_buffer);
     attach_buffer_to_compute_program();
     run_compute_shader(compute_program);
-    print_buffer(position_buffer);
+    // print_buffer(position_buffer);
     vbo = create_vertex_buffer(position_buffer);
     shader_program = create_shader_program();
     // Use shader program and bind vertex buffer for rendering
     glUseProgram(shader_program);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    while (!glfwWindowShouldClose(window))
+    while (loop_glfw_window(window))
     {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         glDrawArrays(GL_TRIANGLES, 0, vertex_count);
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+        update_glfw_window(window);
     }
     cleanup();
-    glfwTerminate();
+    close_glfw_window();
     return 0;
 }
 
