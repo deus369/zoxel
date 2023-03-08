@@ -12,6 +12,12 @@ GLFWwindow* open_glfw_window(int is_es) {
     }
     glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE); // prevent fullscreen
     GLFWwindow* window = glfwCreateWindow(256, 256, "Compute Test", NULL, NULL);
+    if (!window)
+    {
+        return NULL;
+    }
+    // Set the window size to 800 x 600
+    glfwSetWindowSize(window, 202, 202);
     glfwMakeContextCurrent(window);
     glewExperimental = GL_TRUE;
     glewInit();
