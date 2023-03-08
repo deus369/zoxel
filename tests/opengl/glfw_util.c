@@ -10,7 +10,7 @@ GLFWwindow* open_glfw_window(int is_es) {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     }
-    GLFWwindow* window = glfwCreateWindow(600, 420, "Compute Simpler", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(256, 256, "Compute Test", NULL, NULL);
     glfwMakeContextCurrent(window);
     glewExperimental = GL_TRUE;
     glewInit();

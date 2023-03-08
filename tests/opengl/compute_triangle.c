@@ -54,11 +54,11 @@ void main() {\
     int index = int(gl_WorkGroupID.x);\
     vec3z position;\
     if (index == 0) {\
-        position = vec3z(-0.5, -0.5, 0.0);\
+        position = vec3z(-0.8, -0.8, 0.0);\
     } else if (index == 1) {\
-        position = vec3z(0.5, -0.5, 0.0);\
+        position = vec3z(0.8, -0.8, 0.0);\
     } else if (index == 2) {\
-        position = vec3z(0.0, 0.5, 0.0);\
+        position = vec3z(0.0, 0.8, 0.0);\
     }\
     positions[index] = position;\
 }";
