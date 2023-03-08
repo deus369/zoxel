@@ -16,7 +16,7 @@ void window_size_callback(GLFWwindow* window, int width, int height)
     render_dirty = 1;
 }
 
-GLFWwindow* open_glfw_window(int is_es) {
+GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     if (!glfwInit()) {
         return NULL;
     }
@@ -34,7 +34,10 @@ GLFWwindow* open_glfw_window(int is_es) {
     int screen_height = mode->height;
     printf("Spawning GLFW window with size [%ix%i]\n", screen_width, screen_height);
     // "Compute Test"
-    GLFWwindow* window = glfwCreateWindow(screen_width, screen_height, "", glfwGetPrimaryMonitor(), NULL); //  , NULL);
+    if (fullscreen == 0) {
+        monitor = NULL;
+    }
+    GLFWwindow* window = glfwCreateWindow(screen_width, screen_height, "", monitor, NULL); //  , NULL);
     if (!window)
     {
         return NULL;

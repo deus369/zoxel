@@ -160,31 +160,35 @@ void cleanup()
 
 int main()
 {
-    GLFWwindow* window = open_glfw_window(1);
-    position_buffer = setup_position_buffer();
-    setup_compute_buffer(position_buffer);
-    attach_buffer_to_compute_program();
-    run_compute_shader(compute_program);
-    // print_buffer(position_buffer);
-    vbo = create_vertex_buffer(position_buffer);
-    shader_program = create_shader_program();
-    // Use shader program and bind vertex buffer for rendering
-    glUseProgram(shader_program);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    while (loop_glfw_window(window))
+    GLFWwindow* window = open_glfw_window(1, 0);
+    int supports_compute = check_compute_shader_support();
+    if (supports_compute)
     {
-        if (render_dirty >= 1 && render_dirty < max_render_dirty) {
-            render_dirty++;
-        } else if (render_dirty == max_render_dirty) {
-            render_dirty = 0;
+        position_buffer = setup_position_buffer();
+        setup_compute_buffer(position_buffer);
+        attach_buffer_to_compute_program();
+        run_compute_shader(compute_program);
+        // print_buffer(position_buffer);
+        vbo = create_vertex_buffer(position_buffer);
+        shader_program = create_shader_program();
+        // Use shader program and bind vertex buffer for rendering
+        glUseProgram(shader_program);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        while (loop_glfw_window(window))
+        {
+            /*if (render_dirty >= 1 && render_dirty < max_render_dirty) {
+                render_dirty++;
+            } else if (render_dirty == max_render_dirty) {
+                render_dirty = 0;*/
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
             glDrawArrays(GL_TRIANGLES, 0, vertex_count);
             updated_glfw_render(window);
+            //}
+            update_glfw_window();
         }
-        update_glfw_window();
+        cleanup();
     }
-    cleanup();
     close_glfw_window();
     return 0;
 }

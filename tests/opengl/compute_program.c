@@ -177,7 +177,7 @@ unsigned char check_compute_results() {
 
 int main()
 {
-    open_glfw_window(0);
+    open_glfw_window(0, 0);
     int supports_compute = check_compute_shader_support();
     if (supports_compute)
     {
