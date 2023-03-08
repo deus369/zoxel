@@ -174,10 +174,13 @@ int check_compute_shader_support() {
 }
 
 GLFWwindow* setup_window() {
+    if (!glfwInit())
+        return NULL;
+    
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);    // GLFW_CLIENT_API GLFW_OPENGL_PROFILE
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ES_API);
-    glfwInit();
+
     GLFWwindow* window = glfwCreateWindow(600, 420, "Compute Triangle Example", NULL, NULL);
     glfwMakeContextCurrent(window);
     glewExperimental = GL_TRUE;
@@ -284,6 +287,8 @@ unsigned char check_buffer() {
             printf("    - vertex %d: [%f, %f, %f]\n", (i + 1), vertex.x, vertex.y, vertex.z);
         }
         glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+    } else {
+        success = 0;
     }
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
     check_opengl_error("check_buffer");
