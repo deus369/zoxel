@@ -2,7 +2,7 @@
 #define zoxel_opengl
 
 #include "dynamic/opengl_functions.c"
-// util Functions
+// util
 #include "util/error_util.c"
 #include "util/primitive_square.c"
 #include "util/primitive_mesh_util.c"
@@ -27,23 +27,22 @@
 #include "rendering/shader3D_colored.c"
 #include "util/opengl_main_util.c"
 
-//! The OpenGL Module.
 void OpenGLImport(ecs_world_t *world)
 {
     zoxel_module(OpenGL)
-    // check open gl for failures?
     opengl_load_functions();
-    int didFail = load_all_shaders();
-    if (didFail == EXIT_FAILURE)
-    {
+    if (load_all_shaders() == EXIT_FAILURE) {
         printf("Failed to InitializeOpenGL.\n");
+        return;
     }
     print_opengl();
-    int supports_compute = check_compute_shader_support();
-    if (supports_compute == 0)
-    {
+    if (check_compute_shader_support() == EXIT_FAILURE) {
         printf("Failed to support Compute Shaders.\n");
+        return;
     }
-    int compute_shader_test = test_compute_shader();
+    if (test_compute_shader() == EXIT_FAILURE) {
+        printf("Failed to creating compute shader.\n");
+        return;
+    }
 }
 #endif

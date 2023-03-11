@@ -181,7 +181,7 @@ int main()
 {
     GLFWwindow* window = open_glfw_window(1, is_full_screen);
     int supports_compute = check_compute_shader_support();
-    if (supports_compute)
+    if (supports_compute == EXIT_SUCCESS)
     {
         position_buffer = setup_position_buffer();
         setup_compute_buffer(position_buffer);

@@ -1,12 +1,27 @@
 #! /bin/bash
 
-ssh_key_location=$HOME/.ssh/zoxel
+sshname_path="$HOME/.ssh/sshname.txt"
+# sshname="zoxel"
+
+# if file doesn't exist, ask user for info
+if [ -f "$sshname_path" ]; then
+    echo "Loaded ssh name from [$sshname_path]."
+    sshname=$(cat "$sshname_path")	
+else
+	# save ssh name for future pushes
+	echo "Enter your ssh name (name of machine):"
+	read sshname
+    echo $sshname > "$sshname_path"
+fi
+
+echo "SSH Name is [$sshname]"
+ssh_key_location=$HOME/.ssh/$sshname
 
 echo "-> Connecting to Git with ssh key [$ssh_key_location]"
 if [ -f $ssh_key_location ]; then
 	echo "	- SSH Key found at [$ssh_key_location]"
 else
-	echo "\nSSH Key not found at [$ssh_key_location]\n"
+	echo "	- SSH Key not found at [$ssh_key_location]\n"
 	sleep 6
 	exit
 fi

@@ -15,10 +15,10 @@ void boot_zoxel_game(ecs_world_t *world)
     float3 camera_begin_position = { 0, 0.0f, 0.0f };
     #ifdef voxels_spawn_terrain
     #ifdef voxel_octrees
-    // camera_begin_position = (float3) { 0, -0.01f * overall_voxel_scale, 0 };
-    camera_begin_position = (float3) { 0, 0.11f * 2 * overall_voxel_scale, 0 };
+        // camera_begin_position = (float3) { 0, -0.01f * overall_voxel_scale, 0 };
+        camera_begin_position = (float3) { 0, 0.14f * 2 * overall_voxel_scale, 0 };
     #else
-    camera_begin_position = (float3) { 0, 0.52f * 2 * overall_voxel_scale, 0 };
+        camera_begin_position = (float3) { 0, 0.52f * 2 * overall_voxel_scale, 0 };
     #endif
     #endif
     main_cameras[0] = spawn_base_camera(world, camera_begin_position,

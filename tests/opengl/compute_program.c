@@ -179,7 +179,7 @@ int main()
 {
     GLFWwindow* window = open_glfw_window(1, 0);
     int supports_compute = check_compute_shader_support();
-    if (supports_compute)
+    if (supports_compute == EXIT_SUCCESS)
     {
         zoxel_log("Running compute program test.\n");
         if (create_compute_program() == 0) {

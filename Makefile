@@ -140,6 +140,9 @@ install-sdl:
 
 install-flecs:
 	cd bash/flecs && ./install_flecs.sh
+
+create-ssh:
+	./bash/ssh/create_ssh.sh
 	
 install-required:
 	@echo "Installing Libaries: make gcc"
@@ -175,6 +178,7 @@ help:
 	@echo "    android-dev		builds & runs android debug"
 	@echo "    android-dev-debug	builds & runs android debug with logcat"
 	@echo "    install-required	installs required libraries for debian systems"
+	@echo "    create-ssh		creates a ssh key to add to git servers"
 	@echo "    git-pull		pulls latest git"
 	@echo "    git-push		pushes git updates - if has ssh access"
 	@echo "find latest at -> https://codeberg.org/deus/zoxel"

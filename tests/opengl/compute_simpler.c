@@ -123,7 +123,7 @@ int main()
 {
     zoxel_log("custom struct has size [%i]\n", single_data_length);
     GLFWwindow* window = open_glfw_window(0, 0);
-    if (check_compute_shader_support())
+    if (check_compute_shader_support() == EXIT_SUCCESS)
     {
         zoxel_log("Running compute program test.\n");
         if (create_compute_program() == 0) {

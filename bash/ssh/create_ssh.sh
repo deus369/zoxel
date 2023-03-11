@@ -1,7 +1,5 @@
 #!/bin/bash
 
-is_github=false
-
 is_xclip=$(command -v xclip)
 if [[ $is_xclip = "" ]]; then
     echo "xclip does not exist. Installing."
@@ -29,7 +27,7 @@ fi
 
 cd ~/.ssh
 
-echo "Enter your ssh name"
+echo "Enter your ssh name (name of machine):"
 
 read sshname
 
@@ -48,18 +46,21 @@ eval `ssh-agent`
 ssh-add ~/.ssh/$sshname
 # next push your first commit
 
-echo "Go to https://github.com/settings/keys and paste the ssh key."
-echo "Click New SSH key button to add it. Give it the name [$sshname] for consistency."
+
+# echo "Go to https://github.com/settings/keys and paste the ssh key."
+# echo "Go to https://github.com/settings/keys and paste the ssh key."
+# echo "Click New SSH key button to add it. Give it the name [$sshname] for consistency."
+# sleep 6
+# echo "Click New SSH key button to add it. Give it the name [$sshname] for consistency."
+
+echo "Add new ssh keys to github and codeberg."
+echo "Name it [$sshname] for consistency."
 open https://github.com/settings/keys
-sleep 6
-
-echo "Go to https://github.com/settings/keys and paste the ssh key."
-echo "Click New SSH key button to add it. Give it the name [$sshname] for consistency."
 open https://codeberg.org/user/settings/keys
-sleep 6
+# sleep 6
 
-echo Finished!
-sleep 6
+# echo Finished!
+# sleep 6
 
 
 # create ssh key
@@ -68,3 +69,14 @@ sleep 6
 # ssh-keygen -q -t rsa -N '' -f "/$sshname" <<<y >/dev/null 2>&1
 
 # ssh-keygen -q -t rsa -N '' -f "/$sshname" <<< y
+
+# is_github=false
+# echo "gibhub (N for codeberg)? (Y/N)"
+# read answer
+# if [[ $answer =~ ^[Yy]$ ]]; then
+#     is_github = true
+#     echo "You chose github."
+# else
+#     is_github = false
+#     echo "You chose codeberg."
+# fi
