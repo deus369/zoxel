@@ -1,7 +1,6 @@
 #! /bin/bash
 
 source git_check_user.sh
-
 source git_add_ssh.sh
 
 is_force=$(false)
@@ -41,7 +40,7 @@ else
 	echo "========================="
 	echo ""
 	# echo $modified_and_new_files
-	sleep 1
+	# sleep 1
 fi
 
 echo "-> Enter your commit message"
@@ -50,7 +49,7 @@ echo "	- Commit message is [$commitmsg]"
 git add -A	# add all files to staged list
 git commit -m "$commitmsg"	# create commit
 echo "	- Created commit."
-sleep 1
+# sleep 1
 # finally push the git change
 git push -u origin master
 echo Finished Git Push

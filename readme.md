@@ -1,5 +1,3 @@
-<link href="resources/monocraft.otf" rel="stylesheet">
-
 <p align="center">
 	<br>
 		<img src="readme.svg" width="100%" height="200">

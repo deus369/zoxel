@@ -25,10 +25,10 @@ unsigned char load_audio()
 		zoxel_log( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		success = 0;
 	}
-    if (!load_static_sounds())
+    /*if (!load_static_sounds())
     {
 		success = 0;
-    }
+    }*/
 	return success;
 }
 
