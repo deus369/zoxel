@@ -73,17 +73,14 @@ make_flecs_lib = ar rcs ../$(flecs_target) $(flecs_obj)
 
 # release
 $(TARGET): $(SRCS)
-	cd bash/flecs && ./install_flecs.sh
 	./bash/flecs/check_flecs_lib.sh && cd build && $(MAKE_RELEASE)
 
 # dev
 $(TARGET_DEV): $(SRCS)
-	cd bash/flecs && ./install_flecs.sh
 	./bash/flecs/check_flecs_lib.sh && cd build && $(MAKE_DEV)
 
 # web
 $(TARGET_WEB): $(SRCS)
-	cd bash/flecs && ./install_flecs.sh
 	./bash/flecs/check_flecs_lib.sh && cd build && $(MAKE_WEB_RELEASE)
 
 # flecs
@@ -94,8 +91,8 @@ $(flecs_target): $(flecs_source)
 # builds for all platforms - this rebuilds everytime tho
 all: $(SRCS)
 	@echo "Begin Making All"
+	@echo "Installing/Making Flecs [$(flecs_target)]"
 	cd bash/flecs && ./install_flecs.sh
-	@echo "Making Flecs [$(TARGET)]"
 	cd build && $(make_flecs) && $(make_flecs_lib)
 	@echo "Making Native Release Build [$(TARGET)]"
 	cd build && $(MAKE_RELEASE)
@@ -109,8 +106,10 @@ all: $(SRCS)
 # Removes all build files
 clean:
 	@echo "Cleaning All Build Files"
-	$(RM) build/*
 	cd bash/flecs && ./remove_flecs.sh
+
+# todo ignore resources directory and gitignore file here
+# $(RM) build/*.o
 
 # Runs zoxel release build
 run:
