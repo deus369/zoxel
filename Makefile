@@ -3,8 +3,8 @@
 
 # Declare compiler tools and flags
 NAME := Zoxel
-TARGET = zoxel
-TARGET_DEV = dev
+TARGET = build/zoxel
+TARGET_DEV = build/dev
 TARGET_WEB = zoxel.js
 # used for cleaning
 RM = rm
@@ -14,7 +14,7 @@ TARGET_WEB_DATA = zoxel.data
 CC = cc						# Defines the compiler, cc for C code
 CC_WEB = emcc				# the web compiler
 # OBJS defines all the files used to compile the final Zoxel binary.
-OBJS = include/flecs/flecs.c src/main.c
+OBJS = ../src/main.c # include/flecs/flecs.c 
 # This collects all c and h files in the directory
 SRCS = $(shell find src/ -type f -name *.c)
 SRCS += $(shell find src/ -type f -name *.h)
@@ -30,6 +30,7 @@ LDLIBS += -lSDL2_image		# SDL2 Image Library
 LDLIBS += -lSDL2_mixer		# SDL2 Audio Library
 LDLIBS += -lm				# for math.h
 LDLIBS += -lpthread			# For threading
+LDLIBS += -L./ -lflecs		# For a pre compiled flecs
 # used for manual sdl compiling on systems that don't have sdl lib in their package managers
 LDLIBS += -L/usr/local/lib
 LDLIBS += -Wl,-rpath=/usr/local/lib
@@ -58,52 +59,66 @@ LDLIBS_WEB += -s USE_SDL=2
 LDLIBS_WEB += -s USE_SDL_IMAGE=2
 LDLIBS_WEB += -s SDL2_IMAGE_FORMATS='["png"]' # "bmp",
 LDLIBS_WEB += -s USE_SDL_MIXER=2
+# flecs
+flecs_target = build/libflecs.a
+flecs_source = include/flecs/flecs.c
+flecs_flags = -c
+flecs_obj = flecs.o
 # Completed build commands
-MAKE_RELEASE = $(CC) $(CFLAGS) $(CFLAGS_RELEASE) -o $(TARGET) $(OBJS) $(LDLIBS)
-MAKE_DEV = $(CC) $(CFLAGS) $(CFLAGS_DEBUG) -o $(TARGET_DEV) $(OBJS) $(LDLIBS)
+MAKE_RELEASE = $(CC) $(CFLAGS) $(CFLAGS_RELEASE) -o ../$(TARGET) $(OBJS) $(LDLIBS)
+MAKE_DEV = $(CC) $(CFLAGS) $(CFLAGS_DEBUG) -o ../$(TARGET_DEV) $(OBJS) $(LDLIBS)
 MAKE_WEB_RELEASE = $(CC_WEB) $(CFLAGS) $(CFLAGS_WEB) -o $(TARGET_WEB) $(OBJS) $(LDLIBS_WEB)
+make_flecs = $(CC) $(flecs_flags) $(CFLAGS) $(CFLAGS_RELEASE) ../$(flecs_source) -o $(flecs_obj)
+make_flecs_lib = ar rcs ../$(flecs_target) $(flecs_obj)
 
 # release
-$(TARGET): $(SRCS) ## builds zoxel
+$(TARGET): $(SRCS)
 	cd bash/flecs && ./install_flecs.sh
-	$(MAKE_RELEASE)
+	./bash/flecs/check_flecs_lib.sh && cd build && $(MAKE_RELEASE)
 
 # dev
-$(TARGET_DEV): $(SRCS) ## builds zoxel
+$(TARGET_DEV): $(SRCS)
 	cd bash/flecs && ./install_flecs.sh
-	$(MAKE_DEV)
+	./bash/flecs/check_flecs_lib.sh && cd build && $(MAKE_DEV)
 
 # web
-$(TARGET_WEB): $(SRCS) ## builds zoxel
+$(TARGET_WEB): $(SRCS)
 	cd bash/flecs && ./install_flecs.sh
-	$(MAKE_WEB_RELEASE)
+	./bash/flecs/check_flecs_lib.sh && cd build && $(MAKE_WEB_RELEASE)
+
+# flecs
+$(flecs_target): $(flecs_source)
+	cd bash/flecs && ./install_flecs.sh
+	cd build && $(make_flecs) && $(make_flecs_lib)
 
 # builds for all platforms - this rebuilds everytime tho
 all: $(SRCS)
 	@echo "Begin Making All"
 	cd bash/flecs && ./install_flecs.sh
+	@echo "Making Flecs [$(TARGET)]"
+	cd build && $(make_flecs) && $(make_flecs_lib)
 	@echo "Making Native Release Build [$(TARGET)]"
-	$(MAKE_RELEASE)
+	cd build && $(MAKE_RELEASE)
 	@echo "Making Native Dev Build [$(TARGET_DEV)]"
-	$(MAKE_DEV)
-	@echo "Making Webasm Release Build [$(TARGET_WEB)]"
-	$(MAKE_WEB_RELEASE)
+	cd build && $(MAKE_DEV)
 	@echo "Finished Making All"
+
+# @echo "Making Webasm Release Build [$(TARGET_WEB)]"
+# cd build && $(MAKE_WEB_RELEASE)
 
 # Removes all build files
 clean:
 	@echo "Cleaning All Build Files"
-	$(RM) $(TARGET)
-	$(RM) $(TARGET_DEV)
+	$(RM) build/*
 	cd bash/flecs && ./remove_flecs.sh
 
 # Runs zoxel release build
 run:
-	./$(TARGET)
+	cd build && ./../$(TARGET)
 
 # Runs zoxel dev build
 run-dev:
-	./$(TARGET_DEV)
+	cd build && ./../$(TARGET_DEV)
 
 # Runs zoxel dev build with valgrind
 run-dev-debug:
@@ -131,6 +146,11 @@ install: ## installs zoxel into /usr/games directory
 
 uninstall: ## uninstalls zoxel into /usr/games directory
 	bash/install/uninstall.sh
+	
+install-required:
+	@echo "Installing Libaries: make gcc"
+	sudo apt install gcc
+	./bash/sdl/install_sdl.sh
 
 install-web-builder:
 	bash/web/install_emcc.sh
@@ -143,11 +163,6 @@ install-flecs:
 
 create-ssh:
 	./bash/ssh/create_ssh.sh
-	
-install-required:
-	@echo "Installing Libaries: make gcc"
-	sudo apt install gcc
-	./bash/sdl/install_sdl.sh
 
 remove-flecs:
 	cd bash/flecs && ./remove_flecs.sh
@@ -160,6 +175,7 @@ git-pull: ## installs zoxel into /usr/games directory
 
 help:
 	@echo "zoxel -> an open source voxel engine"
+	@echo "  make $(flecs_target)	builds flecs"
 	@echo "  make			builds zoxel"
 	@echo "  make <target>"
 	@echo "    $(TARGET_DEV)			builds dev"
@@ -202,3 +218,7 @@ help:
 # $(RM) $(TARGET_WEB)
 # $(RM) $(TARGET_WEB_WASM)
 # $(RM) $(TARGET_WEB_DATA)
+
+# $(RM) $(TARGET)
+# $(RM) $(TARGET_DEV)
+# $(RM) $(flecs_target)

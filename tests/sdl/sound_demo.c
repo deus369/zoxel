@@ -11,13 +11,13 @@
 bool running = true;
 const int sounds_length = 4;
 const char *sound_file_names[] = {
-	"resources/sounds/scratch.wav",
-	"resources/sounds/high.wav",
-	"resources/sounds/medium.wav",
-	"resources/sounds/low.wav"
+	"sounds/scratch.wav",
+	"sounds/high.wav",
+	"sounds/medium.wav",
+	"sounds/low.wav"
 };
 Mix_Chunk *sounds[4];
-const char *music_file_name = "resources/musics/beat.wav";
+const char *music_file_name = "musics/beat.wav";
 Mix_Music *gMusic = NULL;
 
 void print_help()

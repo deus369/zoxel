@@ -7,17 +7,18 @@
 #include <dirent.h>
 #include <errno.h>
 char *data_path = NULL;
+char *resources_path = NULL;
 
 void set_data_path()
 {
     #ifdef ANDROID_BUILD
-    char *base_path = SDL_GetPrefPath("libsdl", "app");
-    /*char *android_path = SDL_GetBasePath(); // SDL_AndroidGetInternalStoragePath();
-    char *base_path = malloc(strlen(android_path) + 1 + 0); // 1
-    strcpy(base_path, android_path);
-    strcat(base_path, "");  // /*/
+        char *base_path = SDL_GetPrefPath("libsdl", "app");
+        /*char *android_path = SDL_GetBasePath(); // SDL_AndroidGetInternalStoragePath();
+        char *base_path = malloc(strlen(android_path) + 1 + 0); // 1
+        strcpy(base_path, android_path);
+        strcat(base_path, "");  // /*/
     #else
-    char *base_path = SDL_GetBasePath();
+        char *base_path = SDL_GetBasePath();
     #endif
     if (base_path)
     {
@@ -48,22 +49,22 @@ void set_data_path()
             closedir(dir3);
         }
         free(path_test);*/
-        char *resources_path = malloc(strlen(base_path) + strlen(resources_folder_name) + 1);
+        resources_path = malloc(strlen(base_path) + strlen(resources_folder_name) + 1); // char *
         strcpy(resources_path, base_path);
         strcat(resources_path, resources_folder_name);
         DIR* dir2 = opendir(resources_path);
         if (dir2)
         {
-            #ifdef zoxel_debug_pathing
-                zoxel_log("resources_path (EXISTS): %s\n", resources_path);
-            #endif
+            //#ifdef zoxel_debug_pathing
+                zoxel_log(" > resources found at [%s]\n", resources_path);
+            //#endif
             closedir(dir2);
         }
         else
         {
             zoxel_log("resources_path (DOES NOT EXIST): %s\n", resources_path);
         }
-        free(resources_path);
+        // free(resources_path);
     }
     else if (ENOENT == errno)
     {
@@ -84,4 +85,11 @@ char* get_full_file_path(const char* filepath)
     zoxel_log("fullpath: %s\n", fullpath);
     #endif
     return fullpath;
+}
+
+char* concat_file_path(char* resources_path, char* file_path) {
+    char* full_file_path = malloc(strlen(resources_path) + strlen(file_path) + 1);
+    strcpy(full_file_path, resources_path);
+    strcat(full_file_path, file_path);
+    return full_file_path;
 }

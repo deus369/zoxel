@@ -29,4 +29,11 @@ if [ ! -f "include/flecs/flecs.c" ] || [ ! -f "include/flecs/flecs.h" ]; then
     rm v3.1.3.zip
 fi
 
-echo "Flecs 3.3 is installed."
+echo "Flecs is installed."
+
+# check if include/flecs directory exists
+if [ ! -f "build/libflecs.a" ]; then
+  echo "Make sure to build flecs first: make build/libflecs.a"
+else
+  echo "The flecs library has been built."
+fi
