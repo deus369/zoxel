@@ -1,23 +1,25 @@
-#ignore zoxel build
-zoxel
-dev
-zoxel-dev
-web-dev
-#ignore scrap code
-scrap
-scrap.c
-android-build
-# ignore settings
-.vscode
-# ignore test builds
-tests/builds/*
 # ignore flecs source
 include/flecs/flecs.h
 include/flecs/flecs.c
-# ignore zoxel_web build
-documents/zoxel_web/zoxel_web
+.vscode
+android-build
+tests/builds/*
+#ignore zoxel build
+# build
+# zoxel
+# dev
+# zoxel-dev
+# web-dev
+# build files
 # specific tests
-compute_program
-compute_simpler
-compute_triangle
-compute_voxels
+# compute_program
+# compute_simpler
+# compute_triangle
+# compute_voxels
+#ignore scrap code
+# scrap
+# scrap.c
+# ignore settings
+# ignore test builds
+# ignore zoxel_web build
+# documents/zoxel_web/zoxel_web
