@@ -17,7 +17,7 @@ void Render3DUvsSystem(ecs_iter_t *it)
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 9);
     // later store commands per material to optimize this process
     unsigned char has_set_single_material = 0;
-    Material3DTextured materialTextured3D;
+    // Material3DTextured materialTextured3D;
     for (int i = 0; i < it->count; i++)
     {
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];

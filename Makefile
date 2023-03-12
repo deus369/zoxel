@@ -44,6 +44,7 @@ CFLAGS_RELEASE += -Wno-stringop-overflow # supresses flecs warning
 CFLAGS_DEBUG = -Wall				# For Warnings
 CFLAGS_DEBUG += -g					# Adds debugging info to executeable
 # CFLAGS_DEBUG += -fsanitize=address # detects memory leaks as well
+CFLAGS_DEBUG += -Wno-stringop-overflow # supresses flecs warning
 # web build flags
 CFLAGS_WEB = --preload-file resources
 CFLAGS_WEB += -s WASM=1
