@@ -14,14 +14,6 @@ Experience the thrill of discovery and adventure in this groundbreaking, procedu
   <a href="todo.md">
     todo
   </a>
-  <!--<a style="margin-left: 10px;"> | </a>
-  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/roadmap.md">
-    roadmap
-  </a>
-  <a style="margin-left: 10px;"> | </a>
-  <a href="https://github.com/deus369/zoxel-web/blob/master/documents/todos/todo-main.md">
-    tasks
-  </a>-->
   <a style="margin-left: 10px;"> | </a>
   <a href="https://github.com/deus369/zoxel-web/blob/master/documents/howtos/howto-build.md">
     how to build
@@ -29,7 +21,7 @@ Experience the thrill of discovery and adventure in this groundbreaking, procedu
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/screen-2023-02-06-20-28-49.jpg?raw=false" alt="Zoxel" width="400"/>
+  <img src="latest_screenshot.png?raw=false" alt="Zoxel" width="400"/>
   <img src="https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/zoxel_unity_00.png?raw=false" alt="Unity Zoxel" width="400"/>
 </p>
 
@@ -55,7 +47,7 @@ Zoxel's codebase is modular and well-organized, with the game engine serving as 
   <a href="https://deus369.github.io/zoxel-play">play zoxel</a>
 </h2>
 <p align="center">
-  <img width="64" src="resources/textures/game_icon.png" alt="Zoxel Logo"> 
+  <img width="64" src="build/resources/textures/game_icon.png" alt="Zoxel Logo"> 
 </p>
 <p align="center">
   <a href="https://codeberg.org/deus/zoxel">codeberg</a>

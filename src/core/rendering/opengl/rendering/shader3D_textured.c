@@ -48,12 +48,6 @@ void main() \
 } \
 ";
 
-//  
-// highp float fogFactor = fogDensity * (gl_FragCoord.z / gl_FragCoord.w);
-// in highp float fogFactor;
-// color = mix(color, fogColor, fogFactor);
-// color = mix(color, fogColor, smoothstep(4.0,32.0,fogBlend));
-
 void dispose_shader3D_textured()
 {
     glDeleteShader(shader3D_textured.x);
@@ -226,3 +220,9 @@ glVertexAttribPointer(materialTextured3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 20, (G
     {
         printf("floats_length greater than 65536 [%i]\n", floats_length);
     }*/
+
+//  
+// highp float fogFactor = fogDensity * (gl_FragCoord.z / gl_FragCoord.w);
+// in highp float fogFactor;
+// color = mix(color, fogColor, fogFactor);
+// color = mix(color, fogColor, smoothstep(4.0,32.0,fogBlend));

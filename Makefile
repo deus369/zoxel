@@ -11,7 +11,7 @@ RM = rm
 TARGET_WEB_WASM = zoxel.wasm
 TARGET_WEB_DATA = zoxel.data
 # our compilers
-CC = gcc						# Defines the compiler, cc for C code
+CC = cc						# Defines the compiler, cc for C code
 CC_WEB = emcc				# the web compiler
 # OBJS defines all the files used to compile the final Zoxel binary.
 OBJS = ../src/main.c # include/flecs/flecs.c 
@@ -40,13 +40,13 @@ CFLAGS_RELEASE += -flto=auto		# fuse linker plugin
 CFLAGS_RELEASE += -D NDEBUG			# No Debugging
 CFLAGS_RELEASE += -s				# strip - removes 70kb atm
 CFLAGS_RELEASE += -Wno-stringop-overflow # supresses flecs warning
-CFLAGS_RELEASE += -Wno-stringop-overflow-size
+# CFLAGS_RELEASE += -Wno-stringop-overflow-size
 # FOR DEBUG
 CFLAGS_DEBUG = -Wall				# For Warnings
 CFLAGS_DEBUG += -g					# Adds debugging info to executeable
 # CFLAGS_DEBUG += -fsanitize=address # detects memory leaks as well
 CFLAGS_DEBUG += -Wno-stringop-overflow # supresses flecs warning
-CFLAGS_DEBUG += -Wno-stringop-overflow-size
+# CFLAGS_DEBUG += -Wno-stringop-overflow-size
 # web build flags
 CFLAGS_WEB = --preload-file resources
 CFLAGS_WEB += -s WASM=1
