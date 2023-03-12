@@ -26,12 +26,12 @@ void CalculateFrustrumMatrix(float4x4 *matrix, float left, float right, float bo
     matrix->w.w = 0.0;
 }
 
-void CalculatePerspectiveViewMatrix(float4x4 *viewMatrix, float fovInDegrees, float aspectRatio, float znear, float zfar)
+void CalculatePerspectiveViewMatrix(float4x4 *view_matrix, float fovInDegrees, float aspectRatio, float znear, float zfar)
 {
     float ymax, xmax;
     ymax = znear * tanf(fovInDegrees * M_PI / 360.0);
     xmax = ymax * aspectRatio;
-    CalculateFrustrumMatrix(viewMatrix, -xmax, xmax, -ymax, ymax, znear, zfar);
+    CalculateFrustrumMatrix(view_matrix, -xmax, xmax, -ymax, ymax, znear, zfar);
 }
 
 //! Recalculates the Projection Matrix.
@@ -67,7 +67,7 @@ void ProjectionMatrixSystem(ecs_iter_t *it)
         CalculatePerspectiveViewMatrix(&projectionMatrix->value, fieldOfView->value, aspectRatio,
             cameraNearDistance->value, camera_far_distance);
         // 0.1f, 100);
-        // float4x4_print(viewMatrix->value);
+        // float4x4_print(view_matrix->value);
         // printf("    Perspective Updated [%ix%i]\n", screenWidth, screenHeight);
     }
 }

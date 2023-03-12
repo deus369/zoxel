@@ -12,11 +12,11 @@ float3 backgroundColor = { 2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f };//
 void print_opengl()
 {
     #ifdef zoxel_debug_opengl
-        zoxel_log("OpenGL Context\n");
-        zoxel_log("    Vendor:   %s\n", glGetString(GL_VENDOR));
-        zoxel_log("    Renderer: %s\n", glGetString(GL_RENDERER));
-        zoxel_log("    Version:  %s\n", glGetString(GL_VERSION));
-        zoxel_log("    GLSL Version:    %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+        zoxel_log(" > opengl\n");
+        zoxel_log("     + vendor:   %s\n", glGetString(GL_VENDOR));
+        zoxel_log("     + renderer: %s\n", glGetString(GL_RENDERER));
+        zoxel_log("     + version:  %s\n", glGetString(GL_VERSION));
+        zoxel_log("     + glsl version:    %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
     #endif
 }
 

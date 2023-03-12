@@ -33,7 +33,7 @@ void MathsImport(ecs_world_t *world)
     zoxel_module(Maths)
     unsigned long seed = get_unique_time_seed();
     set_noise_seed(seed);
-    zoxel_log("Seed set to [%lu]\n", seed);
+    zoxel_log(" > seed [%lu]\n", seed);
     // set_noise_seed(12666);
 }
 #endif

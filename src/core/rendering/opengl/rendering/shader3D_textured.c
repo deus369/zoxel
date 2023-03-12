@@ -1,48 +1,48 @@
 // Shader3D Textured
 GLuint2 shader3D_textured;
-const char* shader3D_textured_filepath_vert = resources_folder_name"shaders/3D/shader3D_textured.vert";
-const char* shader3D_textured_filepath_frag = resources_folder_name"shaders/3D/shader3D_textured.frag";
+// const char* shader3D_textured_filepath_vert = resources_folder_name"shaders/3D/shader3D_textured.vert";
+// const char* shader3D_textured_filepath_frag = resources_folder_name"shaders/3D/shader3D_textured.frag";
 //! inline shaders incase the shader files don't exist.
 const GLchar* shader3D_textured_vert_buffer = "\
-#version 300 es\n\
-in highp vec3 vertexPosition; \
-in highp vec2 vertexUV; \
-uniform highp mat4 viewMatrix; \
-uniform highp vec3 position; \
-uniform highp vec4 rotation; \
-uniform highp float scale; \
-out highp vec2 uv; \
+#version 310 es\n\
+layout(location = 0) in highp vec3 vertexPosition;\
+layout(location = 1) in highp vec2 vertexUV;\
+layout(location = 2) uniform highp mat4 view_matrix;\
+layout(location = 3) uniform highp vec3 position;\
+layout(location = 4) uniform highp vec4 rotation;\
+layout(location = 5) uniform highp float scale;\
+out highp vec2 uv;\
 out highp float fogFactor;\
 \
-vec3 float4_rotate_float3(vec4 rotation, vec3 value) \
-{ \
-    vec3 rotationXYZ = rotation.xyz; \
-    vec3 t = cross(rotationXYZ, value) * 2.0f; \
-    vec3 crossB = cross(rotationXYZ, t); \
-    vec3 scaledT = t * rotation.w; \
-    return value + scaledT + crossB; \
-} \
+vec3 float4_rotate_float3(vec4 rotation, vec3 value)\
+{\
+    vec3 rotationXYZ = rotation.xyz;\
+    vec3 t = cross(rotationXYZ, value) * 2.0f;\
+    vec3 crossB = cross(rotationXYZ, t);\
+    vec3 scaledT = t * rotation.w;\
+    return value + scaledT + crossB;\
+}\
 \
 void main()\
 {\
-    gl_Position = viewMatrix * vec4(position + float4_rotate_float3(rotation, vertexPosition * scale), 1.0); \
+    gl_Position = view_matrix * vec4(position + float4_rotate_float3(rotation, vertexPosition * scale), 1.0);\
     uv = vertexUV;\
-    fogFactor = (viewMatrix * vec4(position + float4_rotate_float3(rotation, vertexPosition * scale), 1.0)).z;\
+    fogFactor = (view_matrix * vec4(position + float4_rotate_float3(rotation, vertexPosition * scale), 1.0)).z;\
 }\
 ";
 const GLchar* shader3D_textured_frag_buffer = "\
-#version 300 es\n\
+#version 310 es\n\
 in highp vec2 uv;\
 in highp float fogFactor;\
-uniform highp float brightness; \
-uniform sampler2D tex; \
+layout(location = 6) uniform highp float brightness;\
+layout(location = 7) uniform sampler2D tex;\
 out highp vec4 color; \
  \
 void main() \
 { \
     color = texture(tex, uv) * brightness; \
     highp vec4 backgroundColor = vec4(2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f, 1);\
-    highp float fog_density = 0.008;\
+    highp float fog_density = 0.012;\
     highp float fogBlend = 1.0 - exp2(-fog_density * fog_density * fogFactor * fogFactor);\
     color = mix(color, backgroundColor, fogBlend);\
 } \
@@ -67,7 +67,7 @@ int load_shader3D_textured()
     return 0;
 }
 
-void opengl_set_texture(GLuint texturel_buffer, unsigned char isBlend)
+void opengl_set_texture(GLuint texture_buffer, unsigned char isBlend)
 {
     if (isBlend)
     {
@@ -79,7 +79,7 @@ void opengl_set_texture(GLuint texturel_buffer, unsigned char isBlend)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glDisable(GL_BLEND);
     }
-    glBindTexture(GL_TEXTURE_2D, texturel_buffer);
+    glBindTexture(GL_TEXTURE_2D, texture_buffer);
 }
 
 void opengl_disable_texture(unsigned char isBlend)
@@ -91,41 +91,42 @@ void opengl_disable_texture(unsigned char isBlend)
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void opengl_set_buffer_attributes(GLuint material, GLuint vertex_buffer, GLuint uv_buffer)
+void opengl_set_buffer_attributes(GLuint vertex_buffer, GLuint uv_buffer)
 {
-    Material3DTextured materialTextured3D = spawn_material3D_textured(material);
-
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glEnableVertexAttribArray(materialTextured3D.vertexPosition);
-    glVertexAttribPointer(materialTextured3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 12, 0);
+    glEnableVertexAttribArray(shader_attributes_material_textured3D.vertexPosition);
+    glVertexAttribPointer(shader_attributes_material_textured3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 12, 0);
 
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
-    glEnableVertexAttribArray(materialTextured3D.vertexUV);
-    glVertexAttribPointer(materialTextured3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 8, 0); // (GLvoid*)(12));
+    glEnableVertexAttribArray(shader_attributes_material_textured3D.vertexUV);
+    glVertexAttribPointer(shader_attributes_material_textured3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 8, 0);
 }
 
-int opengl_set_material3D_uvs_properties(GLuint material,
-    float3 position, float4 rotation, float scale, float brightness)
+int opengl_set_material3D_uvs_properties(float4 rotation, float scale, float brightness)
 {
-    Material3DTextured materialTextured3D = spawn_material3D_textured(material);
-    glUniform3f(materialTextured3D.position, position.x, position.y, position.z);
-    glUniform4f(materialTextured3D.rotation, rotation.x, rotation.y, rotation.z, rotation.w);
-    glUniform1f(materialTextured3D.scale, scale);
-    glUniform1f(materialTextured3D.brightness, brightness);
-    #ifdef zoxel_catch_opengl_errors
+    // glUniform3f(materialTextured3D->position, position.x, position.y, position.z);
+    glUniform4f(shader_attributes_material_textured3D.rotation, rotation.x, rotation.y, rotation.z, rotation.w);
+    glUniform1f(shader_attributes_material_textured3D.scale, scale);
+    glUniform1f(shader_attributes_material_textured3D.brightness, brightness);
+    /*#ifdef zoxel_catch_opengl_errors
         GLenum err = glGetError();
         if (err != GL_NO_ERROR)
         {
             zoxel_log("GL ERROR with opengl_set_material3D_uvs_properties [%i]\n", (int) err);
             return -1;
         }
-    #endif
+    #endif*/
     return 0;
 }
 
-int opengl_set_material3D_uvs_position(Material3DTextured materialTextured3D, float3 position)
+void opengl_set_material3D_uvs_position(float3 position)
 {
-    glUniform3f(materialTextured3D.position, position.x, position.y, position.z);
+    glUniform3f(shader_attributes_material_textured3D.position, position.x, position.y, position.z);
+}
+
+void opengl_shader3D_textured_set_camera_view_matrix(const float4x4 view_matrix)
+{
+    glUniformMatrix4fv(shader_attributes_material_textured3D.view_matrix, 1, GL_FALSE, (float*) &view_matrix);
 }
 
 // printf("Rendering Cube [%ix%i]\n", mesh.x, mesh.y);
@@ -140,7 +141,6 @@ void opengl_upload_shader3D_textured(
     const float2 *uvs)
 {
     tri_count += indicies_length / 3;
-    Material3DTextured material3D = spawn_material3D_textured(material_buffer);
     // Bind the index buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);
@@ -154,19 +154,19 @@ void opengl_upload_shader3D_textured(
     glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float2), uvs, GL_STATIC_DRAW);
 
     // Set the vertex attribute pointers
-    glVertexAttribPointer(material3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glVertexAttribPointer(material3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 0, (GLvoid*)(sizeof(float3) * verts_length));
+    glVertexAttribPointer(shader_attributes_material_textured3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(shader_attributes_material_textured3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 0, (GLvoid*)(sizeof(float3) * verts_length));
 
     // Enable the vertex attribute arrays
-    glEnableVertexAttribArray(material3D.vertexPosition);
-    glEnableVertexAttribArray(material3D.vertexUV);
+    glEnableVertexAttribArray(shader_attributes_material_textured3D.vertexPosition);
+    glEnableVertexAttribArray(shader_attributes_material_textured3D.vertexUV);
 
     // Unbind the buffers
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-/*Material3DTextured materialTextured3D = spawn_material3D_textured(material);
+/*
 glEnableVertexAttribArray(materialTextured3D.vertexPosition);
 glEnableVertexAttribArray(materialTextured3D.vertexUV);
 glVertexAttribPointer(materialTextured3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 20, 0);
@@ -178,7 +178,6 @@ glVertexAttribPointer(materialTextured3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 20, (G
     const float3 *verts, int verts_length,
     const float2 *uvs, int uvs_length)
 {
-    Material3DTextured material3D = spawn_material3D_textured(material_buffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * 4, indicies, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, mesh_buffer.y);

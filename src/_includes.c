@@ -63,6 +63,7 @@
 #define voxels_close_octree_nodes
 #define voxels_spawn_terrain
 #define voxels_hide_terrain_edge
+// #define voxels_terrain_multi_material
 // #define zoxel_disable_close_nodes
 // #define voxels_disable_streaming
 // #define voxels_flat_land

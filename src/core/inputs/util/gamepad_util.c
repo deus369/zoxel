@@ -8,7 +8,7 @@ void initialize_sdl_gamepads()
         fprintf(stderr, "Error: Unable to initialize SDL joystick subsystem: %s\n", SDL_GetError());
     }
     joysticks_count = SDL_NumJoysticks();
-    zoxel_log("Number of joysticks connected: %d\n", joysticks_count);
+    zoxel_log(" > joysticks connected [%d]\n", joysticks_count);
     for (int i = 0; i < joysticks_count; i++)
     {
         joystick = SDL_JoystickOpen(i);

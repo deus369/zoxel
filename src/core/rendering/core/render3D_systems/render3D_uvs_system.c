@@ -33,34 +33,29 @@ void Render3DUvsSystem(ecs_iter_t *it)
         const MaterialGPULink *materialGPULink = &materialGPULinks[i];
         const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
         const TextureGPULink *textureGPULink = &textureGPULinks[i];
-        if (!has_set_single_material)
-        {
-            has_set_single_material = 1;
+        #ifndef voxels_terrain_multi_material
+            if (!has_set_single_material)
+            {
+                has_set_single_material = 1;
+                opengl_set_material(materialGPULink->value);
+                opengl_set_texture(textureGPULink->value, false);
+                opengl_shader3D_textured_set_camera_view_matrix(main_camera_matrix);
+                opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value);
+            }
+            opengl_set_material3D_uvs_position(position->value);
+            opengl_set_mesh_indicies(meshGPULink->value.x);
+            opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value);
+            opengl_draw_triangles(meshIndicies2->length);
+        #else
             opengl_set_material(materialGPULink->value);
             opengl_set_texture(textureGPULink->value, false);
-            opengl_set_material3D_uvs_properties(materialGPULink->value,
-                position->value, rotation->value, scale1D->value, brightness->value);
-            opengl_set_camera_view_matrix(materialGPULink->value, main_camera_matrix);
-            materialTextured3D = spawn_material3D_textured(materialGPULink->value);
-        }
-        opengl_set_material3D_uvs_position(materialTextured3D, position->value);
-        opengl_set_mesh_indicies(meshGPULink->value.x);
-        opengl_set_buffer_attributes(materialGPULink->value, meshGPULink->value.y, uvsGPULink->value);
-        opengl_draw_triangles(meshIndicies2->length);
-        
-        /*if (opengl_set_material(materialGPULink->value))
-        {
-            opengl_set_texture(textureGPULink->value, false);
+            opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value);
             opengl_set_mesh_indicies(meshGPULink->value.x);
-            opengl_set_buffer_attributes(materialGPULink->value, meshGPULink->value.y, uvsGPULink->value);
-            if (opengl_set_material3D_uvs_properties(materialGPULink->value,
-                position->value, rotation->value, scale1D->value, brightness->value) == -1)
-            {
-                continue;
-            }
-            opengl_set_camera_view_matrix(materialGPULink->value, main_camera_matrix);
+            opengl_shader3D_textured_set_camera_view_matrix(main_camera_matrix);
+            opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value);
+            opengl_set_material3D_uvs_position(position->value);
             opengl_draw_triangles(meshIndicies2->length);
-        }*/
+        #endif
     }
     opengl_unset_mesh();
     opengl_disable_texture(false);

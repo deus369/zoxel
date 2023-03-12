@@ -4,7 +4,7 @@ extern ecs_entity_t fps_display;
 //! Spawns our first game entities.
 void boot_zoxel_game(ecs_world_t *world)
 {
-    zoxel_log("Booting [Zoxel]\n");
+    zoxel_log(" > booting [zoxel]\n");
     // spawn cameras first
     int2 screen_dimensions2 = screen_dimensions;
     if (is_split_screen)
@@ -16,7 +16,7 @@ void boot_zoxel_game(ecs_world_t *world)
     #ifdef voxels_spawn_terrain
     #ifdef voxel_octrees
         // camera_begin_position = (float3) { 0, -0.01f * overall_voxel_scale, 0 };
-        camera_begin_position = (float3) { 0, 0.28f * 2 * overall_voxel_scale, 0 };
+        camera_begin_position = (float3) { 0, 0.26f * 2 * overall_voxel_scale, 0 };
     #else
         camera_begin_position = (float3) { 0, 0.52f * 2 * overall_voxel_scale, 0 };
     #endif

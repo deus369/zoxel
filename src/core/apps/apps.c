@@ -1,6 +1,8 @@
 #ifndef zoxel_apps
 #define zoxel_apps
 
+#define sdl_gl_major 3
+#define sdl_gl_minor 0
 #ifdef WEB_BUILD
 #include <emscripten.h>
 #endif

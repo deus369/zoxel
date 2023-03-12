@@ -74,8 +74,8 @@ int set_sdl_attributes(unsigned char vsync)
     SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
     // Request a double-buffered, OpenGL 3.0 ES (or higher) profile
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, sdl_gl_major);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, sdl_gl_minor);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     // SDL_RENDERER_SOFTWARE SDL_RENDERER_ACCELERATED
     SDL_GL_SetSwapInterval(vsync); //  ? 1 : 0);
