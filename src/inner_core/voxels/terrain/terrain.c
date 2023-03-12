@@ -13,15 +13,15 @@
     128     // 7
 */
 #define max_octree_depth 4 // 5
-#define inner_render_buffer 1
-#define terrain_rows 10
+#define inner_render_buffer 3
+#define terrain_rows 18
 #define terrain_vertical 2
 #define octree_min_height -1.995f // 0.005f
 #define noise_positiver2 32000
 #ifdef voxel_octrees
     #define terrain_amplifier 64.0
-    #define terrain_frequency 0.016216 // 0.004216
-    #define terrain_minus_amplifier 8.0
+    #define terrain_frequency 0.026216 // 0.004216
+    #define terrain_minus_amplifier 0.0
 #else
     #define terrain_amplifier 64.0
     #define terrain_frequency 0.00216 // 0.004216

@@ -42,7 +42,7 @@ void main() \
 { \
     color = texture(tex, uv) * brightness; \
     highp vec4 backgroundColor = vec4(2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f, 1);\
-    highp float fog_density = 0.01;\
+    highp float fog_density = 0.008;\
     highp float fogBlend = 1.0 - exp2(-fog_density * fog_density * fogFactor * fogFactor);\
     color = mix(color, backgroundColor, fogBlend);\
 } \
@@ -121,6 +121,11 @@ int opengl_set_material3D_uvs_properties(GLuint material,
         }
     #endif
     return 0;
+}
+
+int opengl_set_material3D_uvs_position(Material3DTextured materialTextured3D, float3 position)
+{
+    glUniform3f(materialTextured3D.position, position.x, position.y, position.z);
 }
 
 // printf("Rendering Cube [%ix%i]\n", mesh.x, mesh.y);

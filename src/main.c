@@ -1,3 +1,4 @@
+// #include "_profiler.c"  // profiling: make build/dev && make run-dev-profiler
 #include "_includes.c"
 
 //! Where it all begins and ends.

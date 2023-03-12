@@ -11,7 +11,7 @@ RM = rm
 TARGET_WEB_WASM = zoxel.wasm
 TARGET_WEB_DATA = zoxel.data
 # our compilers
-CC = cc						# Defines the compiler, cc for C code
+CC = gcc						# Defines the compiler, cc for C code
 CC_WEB = emcc				# the web compiler
 # OBJS defines all the files used to compile the final Zoxel binary.
 OBJS = ../src/main.c # include/flecs/flecs.c 
@@ -35,7 +35,7 @@ LDLIBS += -L./ -lflecs		# For a pre compiled flecs
 LDLIBS += -L/usr/local/lib
 LDLIBS += -Wl,-rpath=/usr/local/lib
 # FOR RELEASE
-CFLAGS_RELEASE = -O3				# Optimization level 3
+CFLAGS_RELEASE = -Ofast				# Optimization Level | -Ofast | -O1 | -O2 | -O3
 CFLAGS_RELEASE += -flto=auto		# fuse linker plugin
 CFLAGS_RELEASE += -D NDEBUG			# No Debugging
 CFLAGS_RELEASE += -s				# strip - removes 70kb atm
@@ -121,10 +121,15 @@ run-dev:
 
 # Runs zoxel dev build with valgrind
 run-dev-debug:
-	valgrind ./$(TARGET_DEV)
+	cd build && valgrind ./../$(TARGET_DEV)
+
+run-profiler:
+	sleep 3 && open https://www.flecs.dev/explorer &
+	cd build && ./../$(TARGET) --profiler
 
 run-dev-profiler:
-	./$(TARGET_DEV) --profiler
+	sleep 3 && open https://www.flecs.dev/explorer &
+	cd build && ./../$(TARGET_DEV) --profiler
 
 # Runs zoxel web release build
 run-web:
@@ -180,6 +185,7 @@ help:
 	@echo "    $(TARGET_DEV)			builds dev"
 	@echo "    $(TARGET_WEB)		builds zoxel-web"
 	@echo "    run			runs $(TARGET)"
+	@echo "    run-profiler	runs $(TARGET) --profiler"
 	@echo "    run-dev		runs $(TARGET_DEV)"
 	@echo "    run-dev-debug	runs valgrind $(TARGET_DEV)"
 	@echo "    run-dev-profiler	runs $(TARGET_DEV) --profiler"

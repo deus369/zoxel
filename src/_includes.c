@@ -1,28 +1,20 @@
-// =-= Flecs =-=
+// flecs
 #define FLECS_CUSTOM_BUILD
 #define FLECS_MODULE
 #define FLECS_SYSTEM 
 #define FLECS_PIPELINE
-//! Use these when profiling >
-//  make dev && make run-dev-profiler
-//  go to https://www.flecs.dev/explorer/
-// #define FLECS_REST
-// #define FLECS_MONITOR
-// finally our flecs
 #include "../include/flecs/flecs.h"
-
-// Platforms
+// sdl
+#define SDL_IMAGES
+#define SDL_MIXER
+// #define USE_SDL_3
+// platforms
 #if defined(__unix__) && __ANDROID__
     #define ANDROID_BUILD
 #endif
 #ifdef __EMSCRIPTEN__
     #define WEB_BUILD
 #endif
-
-// SDL
-#define SDL_IMAGES
-#define SDL_MIXER
-// #define USE_SDL_3
 
 // -- Tests / Options --
 // #define zoxel_test_chickens
@@ -84,6 +76,7 @@
 // #define zoxel_time_mesh_uvs_update_system
 // #define zoxel_time_stream_point_system
 // idea: generate terrain too at lesser resolutions
+// #define zoxel_time_render_3d_uvs
 
 // audio
 // #define zoxel_debug_sounds
