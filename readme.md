@@ -21,8 +21,8 @@ Experience the thrill of discovery and adventure in this groundbreaking, procedu
 </p>
 
 <p align="center">
-  <img src="latest_screenshot.jpg?raw=false" alt="Zoxel" width="400"/>
-  <img src="https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/zoxel_unity_00.png?raw=false" alt="Unity Zoxel" width="400"/>
+  <img src="latest_screenshot.jpg?raw=false" alt="Zoxel" width="420"/>
+  <!--<img src="https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/zoxel_unity_00.png?raw=false" alt="Unity Zoxel" width="400"/>-->
 </p>
 
 <h3 align="center">Code | License | Socials</h3>
