@@ -14,12 +14,12 @@ void boot_zoxel_game(ecs_world_t *world)
     }
     float3 camera_begin_position = { 0, 0.0f, 0.0f };
     #ifdef voxels_spawn_terrain
-    #ifdef voxel_octrees
-        // camera_begin_position = (float3) { 0, -0.01f * overall_voxel_scale, 0 };
-        camera_begin_position = (float3) { 0, 0.26f * 2 * overall_voxel_scale, 0 };
-    #else
-        camera_begin_position = (float3) { 0, 0.52f * 2 * overall_voxel_scale, 0 };
-    #endif
+        #ifdef voxel_octrees
+            // camera_begin_position = (float3) { 0, -0.01f * overall_voxel_scale, 0 };
+            camera_begin_position = (float3) { 0, 0.26f * 2 * overall_voxel_scale, 0 };
+        #else
+            camera_begin_position = (float3) { 0, 0.52f * 2 * overall_voxel_scale, 0 };
+        #endif
     #endif
     main_cameras[0] = spawn_base_camera(world, camera_begin_position,
         quaternion_identity(), screen_dimensions2, (int2) { });
@@ -36,16 +36,17 @@ void boot_zoxel_game(ecs_world_t *world)
         main_cameras[1] = spawn_base_camera(world, camera_begin_position,
             quaternion_identity(), screen_dimensions2, (int2) { screen_dimensions2.x, 0 });
     }
+    
     ecs_entity_t realm = spawn_realm(world);
     ecs_entity_t game = spawn_game(world);
     ecs_set(world, game, RealmLink, { realm });
-    spawn_music(world, instrument_piano);
     if (!headless)
     {
         spawn_connected_devices(world);
         // spawn_player_character3D(world, get_main_camera());
     }
     spawn_ui_camera(world, screen_dimensions2);
+
     spawn_canvas(world, screen_dimensions2);
     spawn_canvas_edge_lines(world, main_canvas);
     spawn_font_style(world);
@@ -55,7 +56,11 @@ void boot_zoxel_game(ecs_world_t *world)
     // #ifdef zoxel_test_uis
     // spawn_test_uis(world);   // spawns test ui
     // #endif
+    
+    spawn_music(world, instrument_piano);
     #ifdef voxels_spawn_terrain
-    create_terrain(world);
+        create_terrain(world);
     #endif
+
+    zoxel_log(" > success booting [zoxel]\n");
 }

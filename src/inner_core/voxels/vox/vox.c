@@ -24,7 +24,8 @@ void VoxImport(ecs_world_t *world)
     zoxel_module(Vox)
     zoxel_define_tag(Vox)
     spawn_prefab_vox(world);
-    vox_files_count = 3;
+    
+    /*vox_files_count = 3;
     vox_files = malloc(sizeof(vox_file) * vox_files_count);
     vox_file chicken_vox;
     char* chicken_vox_path = concat_file_path(resources_path, "voxes/monsters/chicken.vox");
@@ -47,7 +48,7 @@ void VoxImport(ecs_world_t *world)
         vox_files[2] = vox_mrpenguin;
     }
     free(mrpenguin_vox_path);
-        
+    */
     //#endif
 }
 #endif

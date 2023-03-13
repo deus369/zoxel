@@ -6,12 +6,12 @@
 //! Plays a sound.
 void PlaySoundSystem(ecs_iter_t *it)
 {
-    const PlaySound *playSounds = ecs_field(it, PlaySound, 2);
+    const PlaySnd *playSounds = ecs_field(it, PlaySnd, 2);
     const SoundLength *soundLengths = ecs_field(it, SoundLength, 3);
     const SDLSound *sdlSounds = ecs_field(it, SDLSound, 4);
     for (int i = 0; i < it->count; i++)
     {
-        const PlaySound *playSound = &playSounds[i];
+        const PlaySnd *playSound = &playSounds[i];
         if (playSound->value != 1)
         {
             continue;

@@ -37,7 +37,16 @@
             va_start(a, msg);
             char msg2[1024] = { 0 };
             vsnprintf(msg2, debug_logs_countof(msg2), msg, a);
-            fputs(msg2, stderr);
+            #ifdef log_to_file
+                FILE* f = fopen("log.txt", "a");
+                if (f) {
+                    fputs(msg2, f);
+                    fclose(f);
+                }
+            #else
+                fputs(msg2, stderr);
+            #endif
+            va_end(a);
         #endif
     }
 

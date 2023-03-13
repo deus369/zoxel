@@ -1,51 +1,108 @@
 # Zoxel Makefile 
 #	sudo apt install make
+#	remember, put dependent libaries first, followed by core ones
+# https://github.com/libsdl-org/SDL/releases/tag/release-2.26.4
+# Determine the operating system
+ifeq ($(OS),Windows_NT)
+    SYSTEM := Windows
+else
+    SYSTEM := $(shell uname -s)
+endif
 
 # Declare compiler tools and flags
 NAME := Zoxel
 TARGET = build/zoxel
 TARGET_DEV = build/dev
 TARGET_WEB = zoxel.js
+ifeq ($(SYSTEM),Windows)
+TARGET = build/zoxel.exe
+TARGET_DEV = build/dev.exe
+endif
 # used for cleaning
 RM = rm
 TARGET_WEB_WASM = zoxel.wasm
 TARGET_WEB_DATA = zoxel.data
 # our compilers
-CC = cc						# Defines the compiler, cc for C code
+# Defines the compiler, cc for C code
+CC = gcc
 CC_WEB = emcc				# the web compiler
 # OBJS defines all the files used to compile the final Zoxel binary.
 OBJS = ../src/main.c # include/flecs/flecs.c 
 # This collects all c and h files in the directory
-SRCS = $(shell find src/ -type f -name *.c)
-SRCS += $(shell find src/ -type f -name *.h)
+
+# Set the source files
+ifeq ($(SYSTEM),Windows)
+    SRCS := $(shell find src/ -type f \( -name "*.c" -o -name "*.h" \))
+else
+    SRCS := $(shell find src/ -type f \( -name "*.c" -o -name "*.h" \))
+endif
+
 # our compiler properties
-CFLAGS = -std=c99			# Specificies c99 Standard
-CFLAGS += -D_DEFAULT_SOURCE	# Needed for a few functions, will be fixed in the future
-CFLAGS += -fPIC				# Position Independent Code https://stackoverflow.com/questions/5311515/gcc-fpic-option
+CFLAGS = # -std=c99			# Specificies c99 Standard
+# CFLAGS += -std=c99
+CFLAGS += -std=gnu99
+# Needed for a few functions, will be fixed in the future
+CFLAGS += -D_DEFAULT_SOURCE
+# Position Independent Code https://stackoverflow.com/questions/5311515/gcc-fpic-option
+CFLAGS += -fPIC
 # Add libraries
-LDLIBS = -lGL				# OpenGL library
-LDLIBS += -lSDL2			# SDL2 Library
-LDLIBS += -lSDL2_image		# SDL2 Image Library
+LDLIBS =
+LDLIBS2 =
+# for math.h
+LDLIBS2 += -lm
+# For threading
+LDLIBS2 += -lpthread
+# For a pre compiled flecs
+LDLIBS += -L./ -lflecs
+ifeq ($(SYSTEM), Windows)
+LDLIBS += -lopengl32
+LDLIBS2 += -lws2_32 # win sockets
+else
+LDLIBS += -lGL
+endif
+# add sdl2 includes
+ifeq ($(SYSTEM), Windows)
+LDLIBS += -IC:/SDL2/include
+LDLIBS += -LC:/SDL2/lib
+LDLIBS += -LC:/SDL2_image/lib
+LDLIBS += -LC:/SDL2_mixer/lib
+endif
+# SDL2 Audio Library
+LDLIBS += -lSDL2_mixer
+# SDL2 Image Library
+LDLIBS += -lSDL2_image
+# SDL2 Library
+LDLIBS += -lSDL2
+ifeq ($(SYSTEM), Windows)
+LDLIBS += -LSDL2main
+LDLIBS += -Wl,-subsystem,windows
+LDLIBS += -mwindows
+endif
 # LDLIBS += -s SDL2_IMAGE_FORMATS='["png"]' # "bmp",
-LDLIBS += -lSDL2_mixer		# SDL2 Audio Library
-LDLIBS += -lm				# for math.h
-LDLIBS += -lpthread			# For threading
-LDLIBS += -L./ -lflecs		# For a pre compiled flecs
 # used for manual sdl compiling on systems that don't have sdl lib in their package managers
-LDLIBS += -L/usr/local/lib
-LDLIBS += -Wl,-rpath=/usr/local/lib
+# LDLIBS += -L/usr/local/lib
+# LDLIBS += -Wl,-rpath=/usr/local/lib
 # FOR RELEASE
-CFLAGS_RELEASE = -Ofast				# Optimization Level | -Ofast | -O1 | -O2 | -O3
-CFLAGS_RELEASE += -flto=auto		# fuse linker plugin
-CFLAGS_RELEASE += -D NDEBUG			# No Debugging
-CFLAGS_RELEASE += -s				# strip - removes 70kb atm
-CFLAGS_RELEASE += -Wno-stringop-overflow # supresses flecs warning
+CFLAGS_RELEASE =
+# Optimization Level | -Ofast | -O1 | -O2 | -O3
+CFLAGS_RELEASE += -Ofast
+# No Debugging
+CFLAGS_RELEASE += -D NDEBUG
+#  strip - removes 70kb atm
+CFLAGS_RELEASE += -s
+# supresses flecs warning
+# CFLAGS_RELEASE += -Wno-stringop-overflow
 # CFLAGS_RELEASE += -Wno-stringop-overflow-size
+ifneq ($(SYSTEM),Windows)
+CFLAGS_RELEASE += -flto=auto		# fuse linker plugin
+endif
 # FOR DEBUG
-CFLAGS_DEBUG = -Wall				# For Warnings
-CFLAGS_DEBUG += -g					# Adds debugging info to executeable
+# For Warnings
+CFLAGS_DEBUG = -Wall
+# Adds debugging info to executeable
+CFLAGS_DEBUG += -g
 # CFLAGS_DEBUG += -fsanitize=address # detects memory leaks as well
-CFLAGS_DEBUG += -Wno-stringop-overflow # supresses flecs warning
+# CFLAGS_DEBUG += -Wno-stringop-overflow # supresses flecs warning
 # CFLAGS_DEBUG += -Wno-stringop-overflow-size
 # web build flags
 CFLAGS_WEB = --preload-file resources
@@ -69,34 +126,35 @@ flecs_source = include/flecs/flecs.c
 flecs_flags = -c
 flecs_obj = flecs.o
 # Completed build commands
-MAKE_RELEASE = $(CC) $(CFLAGS) $(CFLAGS_RELEASE) -o ../$(TARGET) $(OBJS) $(LDLIBS)
-MAKE_DEV = $(CC) $(CFLAGS) $(CFLAGS_DEBUG) -o ../$(TARGET_DEV) $(OBJS) $(LDLIBS)
+MAKE_RELEASE = $(CC) $(CFLAGS) $(CFLAGS_RELEASE) -o ../$(TARGET) $(OBJS) $(LDLIBS) $(LDLIBS2)
+MAKE_DEV = $(CC) $(CFLAGS) $(CFLAGS_DEBUG) -o ../$(TARGET_DEV) $(OBJS) $(LDLIBS) $(LDLIBS2)
 MAKE_WEB_RELEASE = $(CC_WEB) $(CFLAGS) $(CFLAGS_WEB) -o $(TARGET_WEB) $(OBJS) $(LDLIBS_WEB)
-make_flecs = $(CC) $(flecs_flags) $(CFLAGS) $(CFLAGS_RELEASE) ../$(flecs_source) -o $(flecs_obj)
+make_flecs = $(CC) $(flecs_flags) $(CFLAGS) $(CFLAGS_RELEASE) ../$(flecs_source) -o $(flecs_obj) $(LDLIBS2)
 make_flecs_lib = ar rcs ../$(flecs_target) $(flecs_obj)
 
 # release
 $(TARGET): $(SRCS)
-	./bash/flecs/check_flecs_lib.sh && cd build && $(MAKE_RELEASE)
+	bash bash/flecs/check_flecs_lib.sh && cd build && $(MAKE_RELEASE)
 
 # dev
 $(TARGET_DEV): $(SRCS)
-	./bash/flecs/check_flecs_lib.sh && cd build && $(MAKE_DEV)
+	bash bash/flecs/check_flecs_lib.sh && cd build && $(MAKE_DEV)
 
 # web
 $(TARGET_WEB): $(SRCS)
-	./bash/flecs/check_flecs_lib.sh && cd build && $(MAKE_WEB_RELEASE)
+	bash bash/flecs/check_flecs_lib.sh && cd build && $(MAKE_WEB_RELEASE)
 
-# flecs
-$(flecs_target): $(flecs_source)
-	cd bash/flecs && ./install_flecs.sh
+# flecs $(flecs_source)
+$(flecs_target):
+	set -e ; \
+	bash bash/flecs/check_flecs.sh && cd bash/flecs && bash install_flecs.sh ; \
 	cd build && $(make_flecs) && $(make_flecs_lib)
 
 # builds for all platforms - this rebuilds everytime tho
 all: $(SRCS)
 	@echo "Begin Making All"
 	@echo "Installing/Making Flecs [$(flecs_target)]"
-	cd bash/flecs && ./install_flecs.sh
+	cd bash/flecs && bash install_flecs.sh
 	cd build && $(make_flecs) && $(make_flecs_lib)
 	@echo "Making Native Release Build [$(TARGET)]"
 	cd build && $(MAKE_RELEASE)
@@ -110,7 +168,7 @@ all: $(SRCS)
 # Removes all build files
 clean:
 	@echo "Cleaning All Build Files"
-	cd bash/flecs && ./remove_flecs.sh
+	cd bash/flecs && bash remove_flecs.sh
 
 # todo ignore resources directory and gitignore file here
 # $(RM) build/*.o
@@ -150,7 +208,7 @@ android-dev-debug:
 	bash/android/read_logcat.sh
 
 install: ## installs zoxel into /usr/games directory
-	cd bash/install && ./install.sh
+	cd bash/install && bash install.sh
 
 uninstall: ## uninstalls zoxel into /usr/games directory
 	bash/install/uninstall.sh
@@ -158,28 +216,28 @@ uninstall: ## uninstalls zoxel into /usr/games directory
 install-required:
 	@echo "Installing Libaries: make gcc"
 	sudo apt install gcc
-	./bash/sdl/install_sdl.sh
+	bash bash/sdl/install_sdl.sh
 
 install-web-builder:
-	bash/web/install_emcc.sh
+	bash bash/web/install_emcc.sh
 
 install-sdl:
-	./bash/sdl/install_sdl.sh
+	bash bash/sdl/install_sdl.sh
 
 install-flecs:
-	cd bash/flecs && ./install_flecs.sh
+	cd bash/flecs && bash install_flecs.sh
 
 create-ssh:
-	./bash/ssh/create_ssh.sh
+	bash bash/ssh/create_ssh.sh
 
 remove-flecs:
-	cd bash/flecs && ./remove_flecs.sh
+	cd bash/flecs && bash remove_flecs.sh
 
 git-push: ## installs zoxel into /usr/games directory
-	cd bash/git && ./git_push.sh
+	cd bash/git && bash git_push.sh
 
 git-pull: ## installs zoxel into /usr/games directory
-	cd bash/git && ./git_pull.sh
+	cd bash/git && bash git_pull.sh
 
 help:
 	@echo "zoxel -> an open source voxel engine"

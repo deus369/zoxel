@@ -9,9 +9,10 @@ if [ -f "$sshname_path" ]; then
     sshname=$(cat "$sshname_path")	
 else
 	# save ssh name for future pushes
-	echo "Enter your ssh name (name of machine):"
-	read sshname
-    echo $sshname > "$sshname_path"
+	# echo "Enter your ssh name (name of machine):"
+	# read sshname
+    # echo $sshname > "$sshname_path"
+	source git_set_ssh.sh
 fi
 
 echo "SSH Name is [$sshname]"

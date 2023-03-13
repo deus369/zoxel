@@ -25,5 +25,6 @@ void InnerCoreImport(ecs_world_t *world)
     zoxel_import_module(Voxels)
     zoxel_import_module(Physics)
     zoxel_import_module(Blueprints)
+    zoxel_log("     > imported inner core\n");
 }
 #endif

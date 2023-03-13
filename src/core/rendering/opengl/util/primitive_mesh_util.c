@@ -56,16 +56,15 @@ const int cubeIndicies[] =
     cubeSize,  cubeSize, -cubeSize     //7
 };*/
 
-const float3 cubeVertices[] =
-{
-    { -cubeSize, -cubeSize,  cubeSize},   //0
-    { cubeSize, -cubeSize,  cubeSize},    //1
-    { -cubeSize,  cubeSize,  cubeSize},   //2
-    { cubeSize,  cubeSize,  cubeSize},    //3
-    { -cubeSize, -cubeSize, -cubeSize},   //4
-    { cubeSize, -cubeSize, -cubeSize},    //5
-    { -cubeSize,  cubeSize, -cubeSize},   //6
-    { cubeSize,  cubeSize, -cubeSize}     //7
+const float3 cubeVertices[] = {
+    (float3) { -cubeSize, -cubeSize,  cubeSize },   //0
+    (float3) { cubeSize, -cubeSize,  cubeSize },    //1
+    (float3) { -cubeSize,  cubeSize,  cubeSize },   //2
+    (float3) { cubeSize,  cubeSize,  cubeSize },    //3
+    (float3) { -cubeSize, -cubeSize, -cubeSize },   //4
+    (float3) { cubeSize, -cubeSize, -cubeSize },    //5
+    (float3) { -cubeSize,  cubeSize, -cubeSize },   //6
+    (float3) { cubeSize,  cubeSize, -cubeSize }     //7
 };
 
 const float3 cubeVertices2[] =

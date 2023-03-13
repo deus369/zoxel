@@ -35,5 +35,6 @@ void CoreImport(ecs_world_t *world)
     }
     zoxel_import_module(Rendering)
     zoxel_import_module(Cameras)
+    zoxel_log("     > imported core\n");
 }
 #endif

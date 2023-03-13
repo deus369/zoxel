@@ -1,4 +1,4 @@
-#include <arpa/inet.h>  // inet_addr, inet_ntop, sockaddr_in
+// #include <arpa/inet.h>  // inet_addr, inet_ntop, sockaddr_in
 // #include <sys/socket.h>
 
 //! Converts byte4 and a port to a sockaddr_in struct.
@@ -26,7 +26,7 @@ struct sockaddr_in string_to_ip(char *text, int port)
 char* ip4_to_string(struct sockaddr_in send_addr)
 {
     char *ip_string = inet_ntoa(send_addr.sin_addr);
-    in_port_t port = ntohs(send_addr.sin_port);
+    uint16_t port = ntohs(send_addr.sin_port); // in_port_t
     char *result = malloc(strlen(ip_string) + 6);
     sprintf(result, "%s:%u", ip_string, port);
     return result;

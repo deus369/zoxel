@@ -67,18 +67,21 @@ int set_sdl_attributes(unsigned char vsync)
         zoxel_log("Failed to Initialize SDL2: %s\n", SDL_GetError());
         return EXIT_FAILURE;
     }
+    
     // Request at least 32-bit color
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
     // Request a double-buffered, OpenGL 3.0 ES (or higher) profile
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, sdl_gl_type);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, sdl_gl_major);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, sdl_gl_minor);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     // SDL_RENDERER_SOFTWARE SDL_RENDERER_ACCELERATED
     SDL_GL_SetSwapInterval(vsync); //  ? 1 : 0);
+    
     return EXIT_SUCCESS;
 }
 
@@ -98,6 +101,10 @@ void load_app_icon(SDL_Window* window)
 
 SDL_GLContext* create_sdl_context(SDL_Window* window)
 {
+    if (window == NULL)
+    {
+        return NULL;
+    }
     SDL_GLContext* context = SDL_GL_CreateContext(window);
     if (context == NULL)
     {
@@ -112,13 +119,13 @@ SDL_GLContext* create_sdl_context(SDL_Window* window)
 SDL_Window* spawn_sdl_window()
 {
     int didFail = set_sdl_attributes(vsync);
-    set_screen_size();
     print_sdl();
     if (didFail == EXIT_FAILURE)
     {
         zoxel_log("Failed to set_sdl_attributes.");
         return NULL;
     }
+    set_screen_size();
     unsigned char is_resizeable = 1;
     windowFlags = SDL_WINDOW_OPENGL;
     #ifdef ANDROID_BUILD
@@ -141,7 +148,8 @@ SDL_Window* spawn_sdl_window()
     }
     SDL_Window* window = SDL_CreateWindow("Zoxel",
         app_position.x, app_position.y,
-        screen_dimensions.x, screen_dimensions.y, windowFlags);
+        screen_dimensions.x, screen_dimensions.y, // windowFlags);
+        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
     if (window == NULL)
     {
         SDL_Quit();

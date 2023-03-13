@@ -1,6 +1,15 @@
 #ifndef zoxel_networking
 #define zoxel_networking
 
+#ifdef _WIN32
+    #include <winsock2.h>
+    #include <ws2tcpip.h>
+#else
+    #include <arpa/inet.h>
+    #include <sys/socket.h>
+#endif
+#include <fcntl.h>  // F_SETFL etc
+
 // atm using 127.0.0.1 for same machine testing
 // later for secure packets, keep sending with udp every x seconds
 #define IP_TO (byte4) { 127, 0, 0, 1 }  //  "192.0.2.1"

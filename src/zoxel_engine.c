@@ -81,5 +81,6 @@ void ZoxelEngineImport(ecs_world_t *world)
     zoxel_import_module(OuterCore)
     zoxel_import_module(Gameplay)
     zoxel_import_module(Space)
+    zoxel_log(" > imported zoxel engine\n");
 }
 #endif

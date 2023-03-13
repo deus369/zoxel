@@ -25,7 +25,8 @@ zoxel_memory_component(SoundData, float)    //! A sound has an array of bytes.
 zoxel_component(SoundLength, double)        //! The length of a sound.
 zoxel_component(SoundFrequency, float)      //! The frequency of the generated sound.
 zoxel_byte_component(GenerateSound)        //! A state event for generating sounds.
-zoxel_byte_component(PlaySound)            //! A state event for playing sounds.
+zoxel_byte_component(PlaySnd)            //! A state event for playing sounds.
+// renamed PlaySound to PlaySnd temporarily, cause of windows.h conflict
 zoxel_byte_component(SoundDirty)
 #include "components/SDLSound.c"
 #include "prefabs/sound_prefab.c"
@@ -47,7 +48,7 @@ zoxel_byte_component(SoundDirty)
 	#include "systems/play_sound_system.c"
     #include "systems/sound_update_system.c"
 #endif
-zoxel_reset_system(PlaySoundResetSystem, PlaySound)
+zoxel_reset_system(PlaySoundResetSystem, PlaySnd)
 zoxel_reset_system(GenerateSoundResetSystem, GenerateSound)
 zoxel_reset_system(SoundDirtyResetSystem, SoundDirty)
 
@@ -59,7 +60,7 @@ void SoundsImport(ecs_world_t *world)
     zoxel_define_component(SoundLength)
     zoxel_define_component(GenerateSound)
     zoxel_define_component(SoundFrequency)
-    zoxel_define_component(PlaySound)
+    zoxel_define_component(PlaySnd)
     zoxel_define_component(SDLSound)
     zoxel_define_component(SoundDirty)
     zoxel_memory_component_define(SoundData)
@@ -71,9 +72,9 @@ void SoundsImport(ecs_world_t *world)
     zoxel_system_main_thread(world, SoundUpdateSystem, EcsPreStore,
         [none] Sound, [in] SoundDirty, [in] SoundData, [out] SDLSound)
     zoxel_system_main_thread(world, PlaySoundSystem, EcsPreStore,
-        [none] Sound, [in] PlaySound, [in] SoundLength, [in] SDLSound)
+        [none] Sound, [in] PlaySnd, [in] SoundLength, [in] SDLSound)
 #endif
-	zoxel_reset_system_define(PlaySoundResetSystem, PlaySound)
+	zoxel_reset_system_define(PlaySoundResetSystem, PlaySnd)
     zoxel_reset_system_define(GenerateSoundResetSystem, GenerateSound)
     zoxel_reset_system_define(SoundDirtyResetSystem, SoundDirty)
     spawn_prefab_sound(world);
