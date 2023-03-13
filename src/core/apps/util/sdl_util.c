@@ -58,7 +58,7 @@ void sdl_toggle_fullscreen(SDL_Window* window)
     // SDL_ShowCursor(isFullscreen);
 }
 
-int is_opengl_es_supported() {
+/*int is_opengl_es_supported() {
     int major_version, minor_version;
     SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &major_version);
     SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &minor_version);
@@ -78,7 +78,7 @@ int is_opengl_es_supported() {
         }
     }
     return 0;
-}
+}*/
 
 //! Initialize SDL things, thingy things.
 int set_sdl_attributes(unsigned char vsync)
@@ -97,10 +97,11 @@ int set_sdl_attributes(unsigned char vsync)
     // Request a double-buffered, OpenGL 3.0 ES (or higher) profile
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, sdl_gl_major);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, sdl_gl_minor);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-    if (!is_opengl_es_supported()) {
+    #ifdef zoxel_opengl_es
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+    #else
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    }
+    #endif
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     // SDL_RENDERER_SOFTWARE SDL_RENDERER_ACCELERATED

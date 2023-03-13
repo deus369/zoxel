@@ -16,6 +16,8 @@
     #define WEB_BUILD
 #endif
 
+#define zoxel_opengl_es
+
 // -- Tests / Options --
 // #define zoxel_test_chickens
 // #define zoxel_test_character3Ds
