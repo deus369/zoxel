@@ -97,11 +97,12 @@ int set_sdl_attributes(unsigned char vsync)
     // Request a double-buffered, OpenGL 3.0 ES (or higher) profile
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, sdl_gl_major);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, sdl_gl_minor);
-    #ifdef zoxel_opengl_es
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+    /*#ifdef zoxel_opengl_es
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
     #else
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    #endif
+    #endif*/
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     // SDL_RENDERER_SOFTWARE SDL_RENDERER_ACCELERATED
@@ -175,6 +176,14 @@ SDL_Window* spawn_sdl_window()
         app_position.x, app_position.y,
         screen_dimensions.x, screen_dimensions.y, // windowFlags);
         SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+    if (window == NULL)
+    {
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+        window = SDL_CreateWindow("Zoxel",
+            app_position.x, app_position.y,
+            screen_dimensions.x, screen_dimensions.y, // windowFlags);
+            SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+    }
     if (window == NULL)
     {
         SDL_Quit();
