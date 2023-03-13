@@ -36,7 +36,7 @@
 
 // -- debugs --
 #define zox_logs // add logs with printf
-#define log_to_file
+// #define log_to_file
 // #define zoxel_catch_opengl_errors
 // #define zoxel_log_frames_per_second
 // #define zoxel_debug_vox_read

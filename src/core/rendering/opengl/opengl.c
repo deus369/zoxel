@@ -32,16 +32,16 @@ void OpenGLImport(ecs_world_t *world)
     zoxel_module(OpenGL)
     opengl_load_functions();
     if (load_all_shaders() == EXIT_FAILURE) {
-        printf("Failed to InitializeOpenGL.\n");
+        zoxel_log("Failed to InitializeOpenGL.\n");
         return;
     }
     print_opengl();
     if (check_compute_shader_support() == EXIT_FAILURE) {
-        printf("Failed to support Compute Shaders.\n");
+        zoxel_log("Failed to support Compute Shaders.\n");
         return;
     }
     if (test_compute_shader() == EXIT_FAILURE) {
-        printf("Failed to creating compute shader.\n");
+        zoxel_log("Failed to creating compute shader.\n");
         return;
     }
 }

@@ -58,6 +58,28 @@ void sdl_toggle_fullscreen(SDL_Window* window)
     // SDL_ShowCursor(isFullscreen);
 }
 
+int is_opengl_es_supported() {
+    int major_version, minor_version;
+    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &major_version);
+    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &minor_version);
+    zoxel_log(" > initial gl found [%i.%i]\n", major_version, minor_version);
+    if (major_version <= 2 && minor_version <= 1) {
+        // OpenGL 2.1 or earlier does not support the ES profile
+        zoxel_log(" - OpenGL ES profile not supported as opengl version is too low\n");
+    } else {
+        // OpenGL 3.0 and later support the ES profile
+        int profile_mask;
+        SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, &profile_mask);
+        if (profile_mask & SDL_GL_CONTEXT_PROFILE_ES) {
+            zoxel_log(" + OpenGL ES profile supported\n");
+            return 1;
+        } else {
+            zoxel_log(" - OpenGL ES profile not supported due to SDL_GL_CONTEXT_PROFILE_ES\n");
+        }
+    }
+    return 0;
+}
+
 //! Initialize SDL things, thingy things.
 int set_sdl_attributes(unsigned char vsync)
 {
@@ -67,16 +89,18 @@ int set_sdl_attributes(unsigned char vsync)
         zoxel_log("Failed to Initialize SDL2: %s\n", SDL_GetError());
         return EXIT_FAILURE;
     }
-    
     // Request at least 32-bit color
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
     // Request a double-buffered, OpenGL 3.0 ES (or higher) profile
-    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, sdl_gl_type);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, sdl_gl_major);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, sdl_gl_minor);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+    if (!is_opengl_es_supported()) {
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    }
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     // SDL_RENDERER_SOFTWARE SDL_RENDERER_ACCELERATED

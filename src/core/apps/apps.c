@@ -3,7 +3,6 @@
 
 #define sdl_gl_major 3
 #define sdl_gl_minor 0
-#define sdl_gl_type SDL_GL_CONTEXT_PROFILE_ES
 #ifdef WEB_BUILD
 #include <emscripten.h>
 #endif
