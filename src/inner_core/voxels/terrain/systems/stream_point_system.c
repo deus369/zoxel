@@ -3,13 +3,13 @@ void StreamPointSystem(ecs_iter_t *it)
     #ifdef voxels_disable_streaming
         return;
     #endif
-    // printf("Position3D has changed.\n");
     unsigned char did_update = 0;
     const int3 chunk_size = (int3) { 16, 16, 16 };
     ecs_query_t *chunks_query = it->ctx;
     ecs_iter_t chunks_iterator = ecs_query_iter(it->world, chunks_query);
     ecs_query_next(&chunks_iterator);
-    if (chunks_iterator.count == 0)
+    int total_chunks = chunks_iterator.count;
+    if (total_chunks == 0)
     {
         return;
     }
@@ -32,41 +32,11 @@ void StreamPointSystem(ecs_iter_t *it)
         {
             streamPoint->value = new_position;
             did_update = 1;
-            // printf("Stream Point Updated [%ix%ix%i]\n", new_position.x, new_position.y, new_position.z);
-            // update chunk divisions
-            /*ecs_entity_t terrain_world = ecs_get(it->world, it->entities[i], VoxLink)->value;
-            const ChunkLinks *chunkLinks = ecs_get(it->world, terrain_world, ChunkLinks);
-            for (int j = 0; j < chunkLinks->length; j++)
-            {
-                ecs_entity_t chunk_entity = chunkLinks->value[j];
-                const ChunkPosition *chunkPosition = ecs_get(it->world, chunk_entity, ChunkPosition);
-                unsigned char new_chunk_division = get_chunk_division(new_position, chunkPosition->value);
-                const ChunkDivision *chunkDivision = ecs_get(it->world, chunk_entity, ChunkDivision);
-                const ChunkNeighbors *chunkNeighbors = ecs_get(it->world, chunk_entity, ChunkNeighbors);
-                if (chunkDivision->value != new_chunk_division ||
-                    // check if neighbors changed division
-                    (chunkNeighbors->value[5] != 0 && 
-                        ecs_get(it->world, chunkNeighbors->value[5], ChunkDivision)->value !=
-                        get_chunk_division(new_position, int3_front(chunkPosition->value))) ||
-                    (chunkNeighbors->value[4] != 0 && 
-                        ecs_get(it->world, chunkNeighbors->value[4], ChunkDivision)->value !=
-                        get_chunk_division(new_position, int3_back(chunkPosition->value))) ||
-                    (chunkNeighbors->value[0] != 0 && 
-                        ecs_get(it->world, chunkNeighbors->value[0], ChunkDivision)->value !=
-                        get_chunk_division(new_position, int3_left(chunkPosition->value))) ||
-                    (chunkNeighbors->value[1] != 0 && 
-                        ecs_get(it->world, chunkNeighbors->value[1], ChunkDivision)->value !=
-                        get_chunk_division(new_position, int3_right(chunkPosition->value)))
-                        )
-                {
-                    ecs_set(it->world, chunk_entity, ChunkDivision,
-                        { new_chunk_division });
-                    ecs_set(it->world, chunk_entity, ChunkDirty, { 1 });
-                }
-            }
-            // printf("    > Resetting Chunks [%i]\n", chunkLinks->length);*/
-            unsigned char *changed = malloc(chunks_iterator.count);
-            for (int j = 0; j < chunks_iterator.count; j++)
+            #ifdef zoxel_time_stream_point_system
+                int updated_count = 0;
+            #endif
+            unsigned char *changed = malloc(total_chunks);
+            for (int j = 0; j < total_chunks; j++)
             {
                 // later check matching world
                 const ChunkPosition *chunkPosition = &chunkPositions[j];
@@ -89,18 +59,21 @@ void StreamPointSystem(ecs_iter_t *it)
                         get_chunk_division(new_position, int3_front(chunkPosition->value))))
                 {
                     changed[j] = new_chunk_division;
+                    #ifdef zoxel_time_stream_point_system
+                        updated_count++;
+                    #endif
                 }
                 else
                 {
                     changed[j] = 255;
                 }
             }
-            for (int j = 0; j < chunks_iterator.count; j++)
+            for (int j = 0; j < total_chunks; j++)
             {
-                ChunkDivision *chunkDivision = &chunkDivisions[j];
-                ChunkDirty *chunkDirty = &chunkDirtys[j];
                 if (changed[j] != 255)
                 {
+                    ChunkDivision *chunkDivision = &chunkDivisions[j];
+                    ChunkDirty *chunkDirty = &chunkDirtys[j];
                     chunkDivision->value = changed[j];
                     chunkDirty->value = 1;
                 }
@@ -108,6 +81,7 @@ void StreamPointSystem(ecs_iter_t *it)
             free(changed);
             #ifdef zoxel_time_stream_point_system
                 did_do_timing()
+                zoxel_log(" > stream point updated [%i / %i]\n", updated_count, total_chunks);
             #endif
         }
     }
@@ -148,3 +122,36 @@ if (!ecs_query_changed(NULL, &change_iter))
     printf("Position3D has not changed.\n");
     return;
 }*/
+            // printf("Stream Point Updated [%ix%ix%i]\n", new_position.x, new_position.y, new_position.z);
+            // update chunk divisions
+            /*ecs_entity_t terrain_world = ecs_get(it->world, it->entities[i], VoxLink)->value;
+            const ChunkLinks *chunkLinks = ecs_get(it->world, terrain_world, ChunkLinks);
+            for (int j = 0; j < chunkLinks->length; j++)
+            {
+                ecs_entity_t chunk_entity = chunkLinks->value[j];
+                const ChunkPosition *chunkPosition = ecs_get(it->world, chunk_entity, ChunkPosition);
+                unsigned char new_chunk_division = get_chunk_division(new_position, chunkPosition->value);
+                const ChunkDivision *chunkDivision = ecs_get(it->world, chunk_entity, ChunkDivision);
+                const ChunkNeighbors *chunkNeighbors = ecs_get(it->world, chunk_entity, ChunkNeighbors);
+                if (chunkDivision->value != new_chunk_division ||
+                    // check if neighbors changed division
+                    (chunkNeighbors->value[5] != 0 && 
+                        ecs_get(it->world, chunkNeighbors->value[5], ChunkDivision)->value !=
+                        get_chunk_division(new_position, int3_front(chunkPosition->value))) ||
+                    (chunkNeighbors->value[4] != 0 && 
+                        ecs_get(it->world, chunkNeighbors->value[4], ChunkDivision)->value !=
+                        get_chunk_division(new_position, int3_back(chunkPosition->value))) ||
+                    (chunkNeighbors->value[0] != 0 && 
+                        ecs_get(it->world, chunkNeighbors->value[0], ChunkDivision)->value !=
+                        get_chunk_division(new_position, int3_left(chunkPosition->value))) ||
+                    (chunkNeighbors->value[1] != 0 && 
+                        ecs_get(it->world, chunkNeighbors->value[1], ChunkDivision)->value !=
+                        get_chunk_division(new_position, int3_right(chunkPosition->value)))
+                        )
+                {
+                    ecs_set(it->world, chunk_entity, ChunkDivision,
+                        { new_chunk_division });
+                    ecs_set(it->world, chunk_entity, ChunkDirty, { 1 });
+                }
+            }
+            // printf("    > Resetting Chunks [%i]\n", chunkLinks->length);*/

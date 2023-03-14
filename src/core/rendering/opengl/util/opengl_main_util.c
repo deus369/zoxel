@@ -39,9 +39,9 @@ int load_all_shaders()
 //! Cleanup Meshes VBOs
 void dispose_opengl()
 {
-    DisposeInstance2DMaterial();
+    dispose_shader2D_instance_material();
     dispose_shader2D_textured();
-    DisposeInstanced3DMaterial();
+    dispose_shader3D_instance_material();
     dispose_shader3D_textured();
     dispose_shader3D_colored();
 }

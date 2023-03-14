@@ -38,7 +38,7 @@ GLuint materialInstance3D;
 Material3D material3D;
 GLuint2 materialInstance3D_mesh;
 
-void DisposeInstanced3DMaterial()
+void dispose_shader3D_instance_material()
 {
     glDeleteShader(shader3D.x);
     glDeleteShader(shader3D.y);

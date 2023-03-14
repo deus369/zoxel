@@ -9,6 +9,7 @@
 #include "../../src/core/rendering/opengl/util/error_util.c"
 #include "../../src/core/rendering/opengl/util/compute_util.c"
 #include "glfw_util.c"
+#include "glew_util.c"
 
 const char* compute_shader_source = "\
 #version 310 es\n\
@@ -178,6 +179,7 @@ unsigned char check_compute_results() {
 int main()
 {
     GLFWwindow* window = open_glfw_window(1, 0);
+    initialize_glew();
     int supports_compute = check_compute_shader_support();
     if (supports_compute == EXIT_SUCCESS)
     {

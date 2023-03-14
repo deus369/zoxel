@@ -1,3 +1,10 @@
+// platforms
+#if defined(__unix__) && __ANDROID__
+    #define ANDROID_BUILD
+#endif
+#ifdef __EMSCRIPTEN__
+    #define WEB_BUILD
+#endif
 // flecs
 #define FLECS_CUSTOM_BUILD
 #define FLECS_MODULE
@@ -8,16 +15,6 @@
 #define SDL_IMAGES
 #define SDL_MIXER
 // #define USE_SDL_3
-// platforms
-#if defined(__unix__) && __ANDROID__
-    #define ANDROID_BUILD
-#endif
-#ifdef __EMSCRIPTEN__
-    #define WEB_BUILD
-#endif
-
-#define zoxel_opengl_es
-
 // -- Tests / Options --
 // #define zoxel_test_chickens
 // #define zoxel_test_character3Ds
@@ -35,10 +32,10 @@
 // #define zoxel_test_character3Ds      // todo
 // #define zoxel_test_voxels
 // #define zoxel_test_uis
-
 // -- debugs --
 #define zox_logs // add logs with printf
 // #define log_to_file
+// #define zoxel_debug_opengl
 // #define zoxel_catch_opengl_errors
 // #define zoxel_log_frames_per_second
 // #define zoxel_debug_vox_read
@@ -48,19 +45,16 @@
 // #define zoxel_debug_spawns
 // #define debug_element_position_change_query
 // #define zoxel_debug_sdl
-#define zoxel_debug_opengl
 // #define debug_viewport_resize
 // #define zoxel_debug_element_raycasting
 // #define debug_ui_positioning
 // #define debug_ui_scaling
 // #define zoxel_time_render_loop
-
 // Timings
 //  > target fps is 30 then 33.33 is the ms required, 16.66 if 60 fps
 // #define zoxel_time_main_loop
-// #define zoxel_time_main_loop_cutoff 33.5
+// #define zoxel_time_main_loop_cutoff 30
 // #define zoxel_time_always
-
 // voxels
 #define voxel_octrees
 #define voxels_close_octree_nodes
@@ -73,15 +67,14 @@
 // #define zoxel_voxel_disable_distance_division
 // #define voxels_use_octree_pooling
 // voxels timing
+// #define zoxel_time_stream_point_system
 // #define zoxel_time_terrain_chunk_system
 // #define zoxel_time_chunk_uvs_builds_system
-// #define zoxel_time_octree_terrain_chunk_system
-// #define zoxel_time_octree_chunk_uvs_builds_system
+#define zoxel_time_octree_terrain_chunk_system
+#define zoxel_time_octree_chunk_uvs_builds_system
 // #define zoxel_time_mesh_uvs_update_system
-// #define zoxel_time_stream_point_system
 // idea: generate terrain too at lesser resolutions
 // #define zoxel_time_render_3d_uvs
-
 // audio
 // #define zoxel_debug_sounds
 // #define zoxel_debug_music
@@ -91,7 +84,6 @@
 // #define zoxel_disable_music
 // audio timing
 // #define zoxel_time_sound_generate_system
-
 // Finally include zoxel engine and zoxel
 #include "zoxel_engine.c"
 #include "zoxel/zoxel.c"

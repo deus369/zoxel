@@ -1,4 +1,4 @@
-# Zoxel Makefile 
+# zoxel makefile built for: linux, webasm, android, windows
 #	sudo apt install make
 #	remember, put dependent libaries first, followed by core ones
 # https://github.com/libsdl-org/SDL/releases/tag/release-2.26.4
@@ -8,9 +8,8 @@ ifeq ($(OS),Windows_NT)
 else
     SYSTEM := $(shell uname -s)
 endif
-
 # Declare compiler tools and flags
-NAME := Zoxel
+NAME := zoxel
 TARGET = build/zoxel
 TARGET_DEV = build/dev
 TARGET_WEB = zoxel.js
@@ -25,21 +24,20 @@ TARGET_WEB_DATA = zoxel.data
 # our compilers
 # Defines the compiler, cc for C code
 CC = gcc
-CC_WEB = emcc				# the web compiler
+# the web compiler
+CC_WEB = emcc
 # OBJS defines all the files used to compile the final Zoxel binary.
-OBJS = ../src/main.c # include/flecs/flecs.c 
+OBJS = ../src/main.c
 # This collects all c and h files in the directory
-
 # Set the source files
 ifeq ($(SYSTEM),Windows)
     SRCS := $(shell find src/ -type f \( -name "*.c" -o -name "*.h" \))
 else
     SRCS := $(shell find src/ -type f \( -name "*.c" -o -name "*.h" \))
 endif
-
 # our compiler properties
-CFLAGS = # -std=c99			# Specificies c99 Standard
-# CFLAGS += -std=c99
+CFLAGS =
+# -std=c99 # Specificies c99 Standard
 CFLAGS += -std=gnu99
 # Needed for a few functions, will be fixed in the future
 CFLAGS += -D_DEFAULT_SOURCE
@@ -55,9 +53,12 @@ LDLIBS2 += -lpthread
 # For a pre compiled flecs
 LDLIBS += -L./ -lflecs
 ifeq ($(SYSTEM), Windows)
+# opengl windows
 LDLIBS += -lopengl32
-LDLIBS2 += -lws2_32 # win sockets
+# win sockets
+LDLIBS2 += -lws2_32
 else
+# opengl linux
 LDLIBS += -lGL
 endif
 # add sdl2 includes
@@ -91,10 +92,11 @@ CFLAGS_RELEASE += -D NDEBUG
 #  strip - removes 70kb atm
 CFLAGS_RELEASE += -s
 # supresses flecs warning
-# CFLAGS_RELEASE += -Wno-stringop-overflow
+CFLAGS_RELEASE += -Wno-stringop-overflow
 # CFLAGS_RELEASE += -Wno-stringop-overflow-size
 ifneq ($(SYSTEM),Windows)
-CFLAGS_RELEASE += -flto=auto		# fuse linker plugin
+# fuse linker plugin on linux
+CFLAGS_RELEASE += -flto=auto
 endif
 # FOR DEBUG
 # For Warnings

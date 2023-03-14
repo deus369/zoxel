@@ -1,22 +1,17 @@
-#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 int screen_width = 256;
 int screen_height = 256;
 
-extern void action_a();
-
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (action == GLFW_PRESS)
     {
-        if (key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Z)
+        if (key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Z) {
             glfwSetWindowShouldClose(window, GLFW_TRUE);
-        else if (key == GLFW_KEY_X)
-            action_a();
+        }
     }
 }
-
 
 void window_pos_callback(GLFWwindow* window, int xpos, int ypos)
 {
@@ -40,7 +35,7 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     if (!glfwInit()) {
         return NULL;
     }
-    glfwWindowHint(GLFW_SAMPLES, 0);
+    // glfwWindowHint(GLFW_SAMPLES, 0);
     if (is_es) {
         glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -55,6 +50,8 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
         monitor = NULL;
         glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE); // prevent fullscreen
         glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+        screen_width /= 2;
+        screen_height /= 2;
     }
     zoxel_log("> spawning glfw window: size [%ix%i]\n", screen_width, screen_height);
     GLFWwindow* window = glfwCreateWindow(screen_width, screen_height, "gpu_compute", monitor, NULL);
@@ -73,10 +70,7 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     glfwSetWindowPosCallback(window, window_pos_callback);
     glfwSetWindowSizeCallback(window, window_size_callback);
     glfwSetKeyCallback(window, key_callback);
-    // opengl
-    glewExperimental = GL_TRUE;
-    glewInit();
-    check_opengl_error("setup_window");
+    // check_opengl_error("setup_window");
     return window;
 }
 
@@ -93,25 +87,8 @@ int loop_glfw_window(GLFWwindow* window) {
 }
 
 void close_glfw_window(GLFWwindow* window) {
-    glfwDestroyWindow(window);
     glfwTerminate();
-}
-
-int check_new_shader(GLuint compute_program) {
-    // debug compute_program linking
-    GLint link_status;
-    glGetProgramiv(compute_program, GL_LINK_STATUS, &link_status);
-    if (link_status == GL_FALSE) {
-        GLint log_length;
-        glGetProgramiv(compute_program, GL_INFO_LOG_LENGTH, &log_length);
-        char* log = (char*) malloc(log_length * sizeof(char));
-        glGetProgramInfoLog(compute_program, log_length, NULL, log);
-        zoxel_log("Compute shader program failed to link: %s\n", log);
-        free(log);
-        return 1;
-    }
-    check_opengl_error("check_new_shader");
-    return 0;
+    glfwDestroyWindow(window);
 }
 
 // glfwSetWindowMonitor(window, NULL, 0, 0, screen_width, screen_height, GLFW_DONT_CARE);

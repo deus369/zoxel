@@ -9,6 +9,7 @@
 #include "../../src/core/rendering/opengl/util/error_util.c"
 #include "../../src/core/rendering/opengl/util/compute_util.c"
 #include "glfw_util.c"
+#include "glew_util.c"
 
 #define buffer_type GL_SHADER_STORAGE_BUFFER
 const char* compute_shader_source = "\
@@ -123,6 +124,7 @@ int main()
 {
     zoxel_log("custom struct has size [%i]\n", single_data_length);
     GLFWwindow* window = open_glfw_window(0, 0);
+    initialize_glew();
     if (check_compute_shader_support() == EXIT_SUCCESS)
     {
         zoxel_log("Running compute program test.\n");

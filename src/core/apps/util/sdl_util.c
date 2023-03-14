@@ -97,17 +97,17 @@ int set_sdl_attributes(unsigned char vsync)
     // Request a double-buffered, OpenGL 3.0 ES (or higher) profile
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, sdl_gl_major);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, sdl_gl_minor);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-    /*#ifdef zoxel_opengl_es
+    #ifdef SDL_VIDEO_RENDER_OGL_ES2
+        zoxel_log(" > GL_ES detected\n");
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
     #else
+        zoxel_log(" > GL_ES unavilable\n");
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    #endif*/
+    #endif
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     // SDL_RENDERER_SOFTWARE SDL_RENDERER_ACCELERATED
     SDL_GL_SetSwapInterval(vsync); //  ? 1 : 0);
-    
     return EXIT_SUCCESS;
 }
 
@@ -178,6 +178,7 @@ SDL_Window* spawn_sdl_window()
         SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
     if (window == NULL)
     {
+        zoxel_log("OpenGL ES profile failed. Falling back to Open GL Core profile.");
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         window = SDL_CreateWindow("Zoxel",
             app_position.x, app_position.y,

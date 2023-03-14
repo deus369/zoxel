@@ -1,13 +1,10 @@
-// cc -std=c99 tests/sdl/basic_window.c -o basic_window -lSDL2
-// #include <SDL2/SDL.h>
-#include <SDL3/SDL.h>
+// cc -std=c99 tests/sdl/sdl_window.c -o build/sdl_window -lSDL2 && ./build/sdl_window
+#include <SDL2/SDL.h> // <SDL3/SDL.h>
 
 int main(int argc, char *argv[])
 {
   SDL_Window *window;
   SDL_Renderer *renderer;
-  int done;
-  SDL_Event event;
   if (SDL_CreateWindowAndRenderer(0, 0, 0, &window, &renderer) <0)
   {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
@@ -15,9 +12,10 @@ int main(int argc, char *argv[])
     return(2);
   }
   SDL_SetWindowSize(window, 480, 480);
-  done = 0;
+  int done = 0;
   while (!done)
   {
+    SDL_Event event;
     while (SDL_PollEvent(&event))
     {
       if (event.type == SDL_QUIT)

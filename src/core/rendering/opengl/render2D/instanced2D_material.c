@@ -38,7 +38,7 @@ void main()\
 
 //uniform lowp float positionZ;
 
-void DisposeInstance2DMaterial()
+void dispose_shader2D_instance_material()
 {
     glDeleteShader(shader2D_basic.x);
     glDeleteShader(shader2D_basic.y);
