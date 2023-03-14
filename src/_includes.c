@@ -32,6 +32,17 @@
 // #define zoxel_test_character3Ds      // todo
 // #define zoxel_test_voxels
 // #define zoxel_test_uis
+// voxels
+#define voxel_octrees
+#define voxels_close_octree_nodes
+#define voxels_spawn_terrain
+#define voxels_hide_terrain_edge
+// #define voxels_terrain_multi_material
+// #define zoxel_disable_close_nodes
+// #define voxels_disable_streaming
+// #define voxels_flat_land
+// #define zoxel_voxel_disable_distance_division
+// #define voxels_use_octree_pooling
 // -- debugs --
 #define zox_logs // add logs with printf
 // #define log_to_file
@@ -55,23 +66,12 @@
 // #define zoxel_time_main_loop
 // #define zoxel_time_main_loop_cutoff 30
 // #define zoxel_time_always
-// voxels
-#define voxel_octrees
-#define voxels_close_octree_nodes
-#define voxels_spawn_terrain
-#define voxels_hide_terrain_edge
-// #define voxels_terrain_multi_material
-// #define zoxel_disable_close_nodes
-// #define voxels_disable_streaming
-// #define voxels_flat_land
-// #define zoxel_voxel_disable_distance_division
-// #define voxels_use_octree_pooling
 // voxels timing
 // #define zoxel_time_stream_point_system
 // #define zoxel_time_terrain_chunk_system
 // #define zoxel_time_chunk_uvs_builds_system
-#define zoxel_time_octree_terrain_chunk_system
-#define zoxel_time_octree_chunk_uvs_builds_system
+// #define zoxel_time_octree_terrain_chunk_system
+// #define zoxel_time_octree_chunk_uvs_builds_system
 // #define zoxel_time_mesh_uvs_update_system
 // idea: generate terrain too at lesser resolutions
 // #define zoxel_time_render_3d_uvs
