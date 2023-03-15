@@ -43,6 +43,9 @@ CFLAGS += -std=gnu99
 CFLAGS += -D_DEFAULT_SOURCE
 # Position Independent Code https://stackoverflow.com/questions/5311515/gcc-fpic-option
 CFLAGS += -fPIC
+# supresses flecs warning
+CFLAGS += -Wno-stringop-overflow
+# CFLAGS += -Wno-stringop-overflow-size
 # Add libraries
 LDLIBS =
 LDLIBS2 =
@@ -91,9 +94,6 @@ CFLAGS_RELEASE += -Ofast
 CFLAGS_RELEASE += -D NDEBUG
 #  strip - removes 70kb atm
 CFLAGS_RELEASE += -s
-# supresses flecs warning
-CFLAGS_RELEASE += -Wno-stringop-overflow
-# CFLAGS_RELEASE += -Wno-stringop-overflow-size
 ifneq ($(SYSTEM),Windows)
 # fuse linker plugin on linux
 CFLAGS_RELEASE += -flto=auto

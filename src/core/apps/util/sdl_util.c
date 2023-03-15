@@ -117,29 +117,6 @@ void load_app_icon(SDL_Window* window)
 #endif
 }
 
-SDL_GLContext* create_sdl_context(SDL_Window* window)
-{
-    if (window == NULL)
-    {
-        return NULL;
-    }
-    SDL_GLContext* context = SDL_GL_CreateContext(window);
-    if (context == NULL)
-    {
-        zoxel_log(" - failed to create opengl contex [%s]\n", SDL_GetError());
-        zoxel_log(" > using opengl core profile");
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-        context = SDL_GL_CreateContext(window);
-    }
-    if (context == NULL)
-    {
-        // zoxel_log(stderr, "Failed to Create OpenGL Context: %s\n", SDL_GetError());
-        zoxel_log("Failed to Create OpenGL Context: %s\n", SDL_GetError());
-    }
-    return context;
-}
-
-
 //! Spawn the SDLWindow.
 SDL_Window* spawn_sdl_window()
 {
@@ -179,6 +156,28 @@ SDL_Window* spawn_sdl_window()
     SDL_SetWindowResizable(window, is_resizeable); // SDL_TRUE);
     SDL_GL_SwapWindow(window);
     return window;
+}
+
+SDL_GLContext* create_sdl_context(SDL_Window* window)
+{
+    if (window == NULL)
+    {
+        return NULL;
+    }
+    SDL_GLContext* context = SDL_GL_CreateContext(window);
+    if (context == NULL)
+    {
+        zoxel_log(" - failed to create opengl context [%s]\n", SDL_GetError());
+        zoxel_log(" > falling back to opengl core profile\n");
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+        context = SDL_GL_CreateContext(window);
+    }
+    if (context == NULL)
+    {
+        // zoxel_log(stderr, "Failed to Create OpenGL Context: %s\n", SDL_GetError());
+        zoxel_log(" - failed again to create opengl context [%s]\n", SDL_GetError());
+    }
+    return context;
 }
 
 extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event);

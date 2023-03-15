@@ -30,7 +30,7 @@ void set_mesh_vertices_world(ecs_world_t *world, ecs_entity_t e, const float3 ve
     initialize_memory_component(meshVertices, float3, length);
     for (int i = 0; i < meshVertices->length; i++)
     {
-        meshVertices->value[i] = vertices[i];
+        meshVertices->value[i] = (float3) { vertices[i].x, vertices[i].y, vertices[i].z };
     }
     ecs_modified(world, e, MeshVertices);
 }

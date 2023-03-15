@@ -35,7 +35,7 @@ void PacketSendSystem(ecs_iter_t *it)
             if (rand() % 100 >= 70)
             {
                 // send text instead
-                ssize_t send_size = sendto(socketLink->value, send_buffer_2, packet_size_2, 0,
+                ssize_t send_size = sendto(socketLink->value, (const char *) send_buffer_2, packet_size_2, 0,
                     (struct sockaddr*) &send_addr, sizeof(send_addr));
                 if (send_size < 0)
                 {
@@ -48,7 +48,7 @@ void PacketSendSystem(ecs_iter_t *it)
             }
             else
             {
-                ssize_t send_size = sendto(socketLink->value, send_buffer, packet_size, 0,
+                ssize_t send_size = sendto(socketLink->value, (const char *) send_buffer, packet_size, 0,
                     (struct sockaddr*) &send_addr, sizeof(send_addr));
                 if (send_size < 0)
                 {
