@@ -1,6 +1,16 @@
 #ifndef zoxel_voxels_vox
 #define zoxel_voxels_vox
 
+#ifdef WINDOWS_BUILD
+    #define vox_file_chicken "voxes\\monsters\\chicken.vox"
+    #define vox_file_slime "voxes\\monsters\\slime.vox"
+    #define vox_file_mrpenguin "voxes\\monsters\\mrpenguin.vox"
+#else
+    #define vox_file_chicken "voxes/monsters/chicken.vox"
+    #define vox_file_slime "voxes/monsters/slime.vox"
+    #define vox_file_mrpenguin "voxes/monsters/mrpenguin.vox"
+#endif
+
 // #define zoxel_debug_vox_read
 zoxel_declare_tag(Vox)
 #include "util/vox_read_util.c"
@@ -20,19 +30,19 @@ void load_vox_files() {
     vox_files_count = 3;
     vox_files = malloc(sizeof(vox_file) * vox_files_count);
     vox_file chicken_vox;
-    char* chicken_vox_path = concat_file_path(resources_path, "voxes/monsters/chicken.vox");
+    char* chicken_vox_path = concat_file_path(resources_path, vox_file_chicken);
     if (read_vox(chicken_vox_path, &chicken_vox) == 0) {
         vox_files[0] = chicken_vox;
     }
     free(chicken_vox_path);
     vox_file vox_slime;
-    char* slime_vox_path = concat_file_path(resources_path, "voxes/monsters/slime.vox");
+    char* slime_vox_path = concat_file_path(resources_path, vox_file_slime);
     if (read_vox(slime_vox_path, &vox_slime) == 0) {
         vox_files[1] = vox_slime;
     }
     free(slime_vox_path);
     vox_file vox_mrpenguin;
-    char* mrpenguin_vox_path = concat_file_path(resources_path, "voxes/monsters/mrpenguin.vox");
+    char* mrpenguin_vox_path = concat_file_path(resources_path, vox_file_mrpenguin);
     if (read_vox(mrpenguin_vox_path, &vox_mrpenguin) == 0) {
         vox_files[2] = vox_mrpenguin;
     }
