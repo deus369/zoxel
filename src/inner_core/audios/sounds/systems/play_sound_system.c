@@ -23,10 +23,14 @@ void PlaySoundSystem(ecs_iter_t *it)
         // printf("Played sound 0.\n");
         if (sdlSound->value != NULL) // sounds[0] != NULL)
         {
-            Mix_PlayChannel( -1, sdlSound->value, 0 );
+            if (Mix_PlayChannel(-1, sdlSound->value, 0) == -1) {
+                zoxel_log(" - playing sound failed [%s]\n", Mix_GetError());
+                ecs_delete(it->world, it->entities[i]);
+            } else {
+                ecs_set(it->world, it->entities[i], DestroyInTime, { soundLength->value });
+            }
             // printf("Volume: %i\n", sdlSound->value->volume);
             // ecs_delete(it->world, it->entities[i]);
-            ecs_set(it->world, it->entities[i], DestroyInTime, { soundLength->value });
         }
     }
 }

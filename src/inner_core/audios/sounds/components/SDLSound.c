@@ -4,7 +4,9 @@ ECS_DTOR(SDLSound, ptr,
 {
     if (ptr->value != NULL)
     {
-        // printf("Freeing SDLSound.\n");
-        Mix_FreeChunk(ptr->value);
+        // Mix_FreeChunk(ptr->value);
+        if (sdlSound->value->abuf != NULL) {
+            free(sdlSound->value->abuf);
+        }
     }
 })
