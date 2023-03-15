@@ -5,6 +5,9 @@
 #ifdef __EMSCRIPTEN__
     #define WEB_BUILD
 #endif
+#ifdef _WIN32
+    #define WINDOWS_BUILD
+#endif
 // flecs
 #define FLECS_CUSTOM_BUILD
 #define FLECS_MODULE
