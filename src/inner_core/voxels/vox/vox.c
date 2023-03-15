@@ -1,15 +1,9 @@
 #ifndef zoxel_voxels_vox
 #define zoxel_voxels_vox
 
-#ifdef WINDOWS_BUILD
-    #define vox_file_chicken "voxes\\monsters\\chicken.vox"
-    #define vox_file_slime "voxes\\monsters\\slime.vox"
-    #define vox_file_mrpenguin "voxes\\monsters\\mrpenguin.vox"
-#else
-    #define vox_file_chicken "voxes/monsters/chicken.vox"
-    #define vox_file_slime "voxes/monsters/slime.vox"
-    #define vox_file_mrpenguin "voxes/monsters/mrpenguin.vox"
-#endif
+#define vox_file_chicken "voxes/monsters/chicken.vox"
+#define vox_file_slime "voxes/monsters/slime.vox"
+#define vox_file_mrpenguin "voxes/monsters/mrpenguin.vox"
 
 // #define zoxel_debug_vox_read
 zoxel_declare_tag(Vox)
@@ -17,7 +11,8 @@ zoxel_declare_tag(Vox)
 #include "prefabs/vox.c"
 // #include "systems/noise_chunk_system.c"
 int vox_files_count = 0;
-vox_file *vox_files;                //! load a bunch of vox files from resources/voxes
+//! load a bunch of vox files from resources/voxes
+vox_file *vox_files;
 
 void dispose_vox_files() {
     for (int i = 0; i < vox_files_count; i++) {

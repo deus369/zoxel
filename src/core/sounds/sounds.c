@@ -1,6 +1,14 @@
 #ifndef zoxel_sounds
 #define zoxel_sounds
 
+#ifdef SDL_MIXER
+    #ifdef ANDROID_BUILD
+		  #include <SDL_mixer.h>
+    #else
+		  #include <SDL2/SDL_mixer.h>
+    #endif
+#endif
+
 #define sound_sample_rate 44100 // / 2
 #define sample_rate_f 44100.0f // / 2.0f
 #define static_sounds_length 5
@@ -9,56 +17,45 @@
     #define sound_display_start 0.0f
     #define sound_display_end 1.0f
 #endif
-const char *sound_file_names[] = {
-    resources_folder_name"sounds/bloop.wav",
-	resources_folder_name"sounds/scratch.wav",
-	resources_folder_name"sounds/high.wav",
-	resources_folder_name"sounds/medium.wav",
-	resources_folder_name"sounds/low.wav"
-};
-#ifdef SDL_MIXER
-Mix_Chunk *sounds[static_sounds_length];
-#endif
 zoxel_declare_tag(Sound)
+zoxel_byte_component(InstrumentType)
 zoxel_memory_component(SoundData, float)    //! A sound has an array of bytes.
 zoxel_component(SoundLength, double)        //! The length of a sound.
 zoxel_component(SoundFrequency, float)      //! The frequency of the generated sound.
 zoxel_byte_component(GenerateSound)        //! A state event for generating sounds.
-zoxel_byte_component(PlaySnd)            //! A state event for playing sounds.
-// renamed PlaySound to PlaySnd temporarily, cause of windows.h conflict
+zoxel_byte_component(TriggerSound)            //! A state event for playing sounds.
+// renamed PlaySound to TriggerSound temporarily, cause of windows.h conflict
 zoxel_byte_component(SoundDirty)
 #include "components/SDLSound.c"
 #include "prefabs/sound_prefab.c"
-#ifdef SDL_MIXER
-	#include "util/static_sound_util.c"
-#endif
-#include "util/note_frequencies.c"
-#include "util/sin_waves.c"
-#include "util/square_waves.c"
-#include "util/triangle_waves.c"
-#include "util/sawtooth_waves.c"
-#include "util/fm_synthesis_waves.c"
-#include "util/noise_waves.c"
-#include "util/instruments.c"
-#include "util/envelop.c"
-// systems
+#include "util/static_sound_util.c"
+#include "util/sdl_mix_util.c"
+#include "instruments/note_frequencies.c"
+#include "instruments/sin_waves.c"
+#include "instruments/square_waves.c"
+#include "instruments/triangle_waves.c"
+#include "instruments/sawtooth_waves.c"
+#include "instruments/fm_synthesis_waves.c"
+#include "instruments/noise_waves.c"
+#include "instruments/instruments.c"
+#include "instruments/envelop.c"
 #include "systems/sound_generate_system.c"
 #ifdef SDL_MIXER
 	#include "systems/play_sound_system.c"
     #include "systems/sound_update_system.c"
 #endif
-zoxel_reset_system(PlaySoundResetSystem, PlaySnd)
+zoxel_reset_system(PlaySoundResetSystem, TriggerSound)
 zoxel_reset_system(GenerateSoundResetSystem, GenerateSound)
 zoxel_reset_system(SoundDirtyResetSystem, SoundDirty)
 
-//! Sounds Module.
 void SoundsImport(ecs_world_t *world) {
     zoxel_module(Sounds)
     zoxel_define_tag(Sound)
+    zoxel_define_component(InstrumentType)
     zoxel_define_component(SoundLength)
     zoxel_define_component(GenerateSound)
     zoxel_define_component(SoundFrequency)
-    zoxel_define_component(PlaySnd)
+    zoxel_define_component(TriggerSound)
     zoxel_define_component(SDLSound)
     zoxel_define_component(SoundDirty)
     zoxel_memory_component_define(SoundData)
@@ -70,11 +67,12 @@ void SoundsImport(ecs_world_t *world) {
     zoxel_system_main_thread(world, SoundUpdateSystem, EcsPreStore,
         [none] Sound, [in] SoundDirty, [in] SoundData, [out] SDLSound)
     zoxel_system_main_thread(world, PlaySoundSystem, EcsPreStore,
-        [none] Sound, [in] PlaySnd, [in] SoundLength, [in] SDLSound)
+        [none] Sound, [in] TriggerSound, [in] SoundLength, [in] SDLSound)
 #endif
-	zoxel_reset_system_define(PlaySoundResetSystem, PlaySnd)
+	zoxel_reset_system_define(PlaySoundResetSystem, TriggerSound)
     zoxel_reset_system_define(GenerateSoundResetSystem, GenerateSound)
     zoxel_reset_system_define(SoundDirtyResetSystem, SoundDirty)
     spawn_prefab_sound(world);
+    load_audio_sdl();
 }
 #endif

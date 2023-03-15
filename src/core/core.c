@@ -16,11 +16,13 @@ unsigned char profiler = 0;
 #include "inputs/inputs.c"
 #include "cameras/cameras.c"
 #include "rendering/rendering.c"
+#include "sounds/sounds.c"
 // core loop
 #include "util/core_util.c"
 
 //! Handles modules that are for basic stuff at lowest level
 void CoreImport(ecs_world_t *world) {
+    zoxel_log("     > importing core\n");
     zoxel_module(Core)
     zoxel_import_module(Generic)
     zoxel_import_module(Maths)
@@ -32,6 +34,7 @@ void CoreImport(ecs_world_t *world) {
         zoxel_import_module(Inputs)
     }
     zoxel_import_module(Rendering)
+    zoxel_import_module(Sounds)
     zoxel_import_module(Cameras)
     zoxel_log("     > imported core\n");
 }

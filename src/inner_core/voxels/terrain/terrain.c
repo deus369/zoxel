@@ -31,7 +31,6 @@ float chunk_real_size = overall_voxel_scale / 2.0f; // 1.0f;   // size achunk ta
 const unsigned char terrain_min_height = 8;
 const int terrain_octaves = 12;
 const uint32_t terrain_seed = 32666;
-// the rest
 zoxel_declare_tag(TerrainWorld)
 zoxel_declare_tag(TerrainChunk)
 zoxel_declare_tag(ChunkTerrain)
@@ -47,9 +46,7 @@ zoxel_component(StreamPoint, int3)                        //! A stream point in 
 #include "systems/stream_point_system.c"
 #include "util/create_terrain.c"
 
-//! The Terrain Sub Module of Voxels.
-void TerrainImport(ecs_world_t *world)
-{
+void TerrainImport(ecs_world_t *world) {
     zoxel_module(Terrain)
     zoxel_define_tag(TerrainWorld)
     zoxel_define_tag(TerrainChunk)

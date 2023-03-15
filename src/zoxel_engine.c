@@ -1,6 +1,7 @@
 #ifndef zoxel_engine
 #define zoxel_engine
 
+#include "_includes.c"
 #include <signal.h> // used for detecting cancel
 #include <string.h> // who uses this?
 #include <stdlib.h> // for malloc & free
@@ -40,7 +41,7 @@ int begin(int argc, char* argv[])
 
 void end()
 {
-    close_audio();
+    close_audio_sdl();
     close_core();
     dispose_vox_files();
 }

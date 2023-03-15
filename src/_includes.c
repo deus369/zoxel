@@ -88,5 +88,3 @@
 // audio timing
 // #define zoxel_time_sound_generate_system
 // Finally include zoxel engine and zoxel
-#include "zoxel_engine.c"
-#include "zoxel/zoxel.c"

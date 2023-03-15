@@ -1,8 +1,9 @@
 #ifndef zoxel_inner_core
 #define zoxel_inner_core
 
+#include "blueprints/blueprints.c"
 #include "textures/textures.c"
-#include "audios/audios.c"
+#include "musics/musics.c"
 #include "ui/ui.c"
 #include "lines/lines.c"
 #include "neural/neural.c"
@@ -10,13 +11,12 @@
 #include "physics/physics.c"
 #include "tiles/tiles.c"
 #include "voxels/voxels.c"
-#include "blueprints/blueprints.c"
 
-void InnerCoreImport(ecs_world_t *world)
-{
+void InnerCoreImport(ecs_world_t *world) {
+    zoxel_log("     > importing inner core\n");
     zoxel_module(InnerCore)
     zoxel_import_module(Textures)
-    zoxel_import_module(Audios)
+    zoxel_import_module(Musics)
     zoxel_import_module(UI)
     zoxel_import_module(Lines)
     zoxel_import_module(Neural)

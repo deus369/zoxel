@@ -1,3 +1,15 @@
+#ifdef SDL_MIXER
+
+// MIX_DEFAULT_FORMAT https://wiki.libsdl.org/SDL2/SDL_AudioFormat
+
+const char *sound_file_names[] = {
+    resources_folder_name"sounds/bloop.wav",
+	resources_folder_name"sounds/scratch.wav",
+	resources_folder_name"sounds/high.wav",
+	resources_folder_name"sounds/medium.wav",
+	resources_folder_name"sounds/low.wav"
+};
+Mix_Chunk *sounds[static_sounds_length];
 
 unsigned char load_static_sounds()
 {
@@ -21,3 +33,5 @@ void dispose_static_sounds()
         Mix_FreeChunk(sounds[i]);
     }
 }
+
+#endif

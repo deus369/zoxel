@@ -44,8 +44,8 @@ void SoundUpdateSystem(ecs_iter_t *it)
     }
 }
 zoxel_declare_system(SoundUpdateSystem);
-/*
-typedef struct Mix_Chunk {
+
+/*typedef struct Mix_Chunk {
     int allocated;
     Uint8 *abuf;
     Uint32 alen;

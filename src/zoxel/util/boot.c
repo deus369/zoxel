@@ -48,7 +48,3 @@ void boot_zoxel_game(ecs_world_t *world) {
     spawn_music(world, instrument_piano);
     zoxel_log(" > success booting [zoxel]\n");
 }
-
-// #ifdef zoxel_test_uis
-// spawn_test_uis(world);   // spawns test ui
-// #endif

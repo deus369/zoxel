@@ -6,7 +6,7 @@ ecs_entity_t spawn_prefab_sound(ecs_world_t *world)
     ecs_entity_t e = ecs_new_prefab(world, "prefab_sound");
     set_unique_entity_name(world, e, "prefab_sound");
     zoxel_add_tag(world, e, Sound);
-    zoxel_set(world, e, PlaySnd, { 1 });
+    zoxel_set(world, e, TriggerSound, { 1 });
     zoxel_set(world, e, SDLSound, { NULL });
     // zoxel_set(world, e, SoundFrequency, { 146.83f });
     ecs_defer_end(world);
@@ -17,7 +17,7 @@ ecs_entity_t spawn_prefab_sound(ecs_world_t *world)
     return e;
 }
 
-ecs_entity_t spawn_sound(ecs_world_t *world)
+/*ecs_entity_t spawn_sound(ecs_world_t *world)
 {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_sound);
@@ -28,7 +28,7 @@ ecs_entity_t spawn_sound(ecs_world_t *world)
     zoxel_log("Spawned sound [%lu]\n", (long int) e);
     #endif
     return e;
-}
+}*/
 
 ecs_entity_t spawn_generated_sound(ecs_world_t *world,
     float frequency, float sound_length, unsigned char instrument_type)

@@ -7,9 +7,7 @@ bool disable_chunk_systems;
 #include "terrain/terrain.c"
 #include "vox/vox.c"
 
-//! The voxels Module.
-void VoxelsImport(ecs_world_t *world)
-{
+void VoxelsImport(ecs_world_t *world) {
     zoxel_module(Voxels)
     zoxel_import_module(VoxelsCore)
     zoxel_import_module(Vox)

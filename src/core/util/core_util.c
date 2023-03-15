@@ -1,9 +1,7 @@
 //! The main update loop.
-void update_core()
-{
+void update_core() {
     // apps / Input events
-    if (!headless)
-    {
+    if (!headless) {
         reset_input_devices(world);
         update_sdl(world);
         #ifdef WEB_BUILD
@@ -14,30 +12,25 @@ void update_core()
     // ecs_log_set_level(1);    // use this to debug system pipelines
     ecs_progress(world, 0);
     // main thread, generates gpu buffer
-    if (!headless)
-    {
+    if (!headless) {
         set_mouse_mode();
         render_loop_temp();
     }
 }
 
-int begin_core(int argc, char* argv[])
-{
+int begin_core(int argc, char* argv[]) {
     int didFail = process_arguments(argc, argv);
-    if (didFail == EXIT_FAILURE)
-    {
-        return EXIT_SUCCESS;
+    if (didFail == EXIT_FAILURE) {
+        return EXIT_FAILURE;
     }
     int cpuCoreCount = SDL_GetCPUCount();
     open_ecs(argc, argv, profiler, cpuCoreCount); // begin ecs
-    return 0;
+    return EXIT_SUCCESS;
 }
 
-void close_core()
-{
+void close_core() {
     close_ecs();
-    if (!headless)
-    {
+    if (!headless) {
         dispose_opengl();
         SDL_Quit();
     }
