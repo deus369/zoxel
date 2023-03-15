@@ -28,6 +28,10 @@ int2 get_sdl_screen_size() {
     SDL_GetCurrentDisplayMode(0, &displayMode);
     screen_size.x = displayMode.w;
     screen_size.y = displayMode.h;
+    if (!(screen_size.x > 0 && screen_size.x < 8000 && screen_size.y > 0 && screen_size.y < 8000)) {
+        zoxel_log(" - screen size is wrong [%ix%i]\n", screen_size.x, screen_size.y);
+        return (int2) { 480, 480 };
+    }
     if (halfscreen) {
         screen_size.x /= 2;
         screen_size.y /= 2;
