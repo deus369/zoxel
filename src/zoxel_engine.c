@@ -76,6 +76,7 @@ void main_loop()
 void ZoxelEngineImport(ecs_world_t *world)
 {
     zoxel_module(ZoxelEngine)
+    clear_zoxel_log();
     zoxel_import_module(Core)
     zoxel_import_module(InnerCore)
     zoxel_import_module(OuterCore)

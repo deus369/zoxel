@@ -58,34 +58,17 @@ void sdl_toggle_fullscreen(SDL_Window* window)
     // SDL_ShowCursor(isFullscreen);
 }
 
-/*int is_opengl_es_supported() {
-    int major_version, minor_version;
-    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &major_version);
-    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &minor_version);
-    zoxel_log(" > initial gl found [%i.%i]\n", major_version, minor_version);
-    if (major_version <= 2 && minor_version <= 1) {
-        // OpenGL 2.1 or earlier does not support the ES profile
-        zoxel_log(" - OpenGL ES profile not supported as opengl version is too low\n");
-    } else {
-        // OpenGL 3.0 and later support the ES profile
-        int profile_mask;
-        SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, &profile_mask);
-        if (profile_mask & SDL_GL_CONTEXT_PROFILE_ES) {
-            zoxel_log(" + OpenGL ES profile supported\n");
-            return 1;
-        } else {
-            zoxel_log(" - OpenGL ES profile not supported due to SDL_GL_CONTEXT_PROFILE_ES\n");
+// checks es is supported
+int opengl_es_supported() {
+    int num_render_drivers = SDL_GetNumRenderDrivers();
+    for (int i = 0; i < num_render_drivers; i++) {
+        SDL_RendererInfo info;
+        SDL_GetRenderDriverInfo(i, &info);
+        zoxel_log(" > checking driver [%s]\n", info.name);
+        if (strstr(info.name, "opengles")) {
+            return 1; 
         }
     }
-    return 0;
-}*/
-
-int opengl_es_supported() {
-    #ifdef SDL_VIDEO_RENDER_OGL_ES2
-        if (SDL_GL_ExtensionSupported("GL_OES_rgb8_rgba8")) {
-            return 1;
-        }
-    #endif
     return 0;
 }
 
@@ -153,13 +136,6 @@ SDL_GLContext* create_sdl_context(SDL_Window* window)
 //! Spawn the SDLWindow.
 SDL_Window* spawn_sdl_window()
 {
-    int didFail = set_sdl_attributes(vsync);
-    print_sdl();
-    if (didFail == EXIT_FAILURE)
-    {
-        zoxel_log("Failed to set_sdl_attributes.");
-        return NULL;
-    }
     set_screen_size();
     unsigned char is_resizeable = 1;
     windowFlags = SDL_WINDOW_OPENGL;
@@ -193,6 +169,15 @@ SDL_Window* spawn_sdl_window()
         zoxel_log(" - failed to create sdl window: %s\n", SDL_GetError());
         return window;
     }
+    
+    int didFail = set_sdl_attributes(vsync);
+    print_sdl();
+    if (didFail == EXIT_FAILURE)
+    {
+        zoxel_log("Failed to set_sdl_attributes.");
+        return NULL;
+    }
+
     SDL_GL_SetSwapInterval(1);
     load_app_icon(window);
     SDL_SetWindowResizable(window, is_resizeable); // SDL_TRUE);

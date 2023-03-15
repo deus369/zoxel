@@ -37,7 +37,7 @@ void OpenGLImport(ecs_world_t *world)
     }
     print_opengl();
     if (check_compute_shader_support() == EXIT_FAILURE) {
-        zoxel_log("Failed to support Compute Shaders.\n");
+        // zoxel_log("Failed to support Compute Shaders.\n");
         return;
     }
     if (test_compute_shader() == EXIT_FAILURE) {

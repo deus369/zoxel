@@ -10,6 +10,13 @@
 
 #define debug_logs_countof(A) (sizeof(A) / sizeof(A[0]))
 
+int clear_zoxel_log() {
+    #ifdef log_to_file
+        fclose(fopen("log.txt", "w"));
+    #endif
+    return 0;
+}
+
 #ifdef ANDROID_BUILD
     #include <android/log.h>
     #define APPNAME "Zoxel"
