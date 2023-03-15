@@ -2,7 +2,11 @@
 #ifdef ANDROID_BUILD
     #define resources_folder_name "android-resources/"
 #else
-    #define resources_folder_name "resources/"
+    #ifdef WINDOWS_BUILD
+        #define resources_folder_name "resources\\"
+    #else
+        #define resources_folder_name "resources/"
+    #endif
 #endif
 #include <dirent.h>
 #include <errno.h>
