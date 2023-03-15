@@ -5,8 +5,8 @@ ECS_DTOR(SDLSound, ptr,
     if (ptr->value != NULL)
     {
         // Mix_FreeChunk(ptr->value);
-        if (sdlSound->value->abuf != NULL) {
-            free(sdlSound->value->abuf);
+        if (ptr->value->abuf != NULL) {
+            free(ptr->value->abuf);
         }
     }
 })
