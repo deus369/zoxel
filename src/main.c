@@ -1,4 +1,5 @@
-// #include "_profiler.c"  // profiling: make build/dev && make run-dev-profiler
+// profiling: make build/dev && make run-dev-profiler
+// #include "profiler_defines.c"
 #include "zoxel_engine.c"
 #include "zoxel/zoxel.c"
 

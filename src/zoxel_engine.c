@@ -1,7 +1,27 @@
 #ifndef zoxel_engine
 #define zoxel_engine
 
-#include "_includes.c"
+// platforms
+#if defined(__unix__) && __ANDROID__
+    #define ANDROID_BUILD
+#endif
+#ifdef __EMSCRIPTEN__
+    #define WEB_BUILD
+#endif
+#ifdef _WIN32
+    #define WINDOWS_BUILD
+#endif
+// flecs
+#define FLECS_CUSTOM_BUILD
+#define FLECS_MODULE
+#define FLECS_SYSTEM 
+#define FLECS_PIPELINE
+#include "../include/flecs/flecs.h"
+// sdl
+#define SDL_IMAGES
+#define SDL_MIXER
+// #define USE_SDL_3
+#include "build_settings.c"
 #include <signal.h> // used for detecting cancel
 #include <string.h> // who uses this?
 #include <stdlib.h> // for malloc & free
@@ -13,16 +33,14 @@ unsigned char headless = 0;
 unsigned char server_mode = 0;
 
 //! Quits the application from running indefinitely.
-void exit_game()
-{
+void exit_game() {
     running = 0;
     #ifdef WEB_BUILD
     emscripten_cancel_main_loop();
     #endif
 }
 
-void sigint_handler(int sig)
-{
+void sigint_handler(int sig) {
     // Signal was SIGINT
     // zoxel_log("Zoxel Engine is closing from control + c.\n");
     exit_game();
@@ -34,20 +52,17 @@ void sigint_handler(int sig)
 #include "gameplay/gameplay.c"
 #include "space/space.c"
 
-int begin(int argc, char* argv[])
-{
+int begin(int argc, char* argv[]) {
     return begin_core(argc, argv);
 }
 
-void end()
-{
+void end() {
     close_audio_sdl();
     close_core();
     dispose_vox_files();
 }
 
-void main_update()
-{
+void main_update() {
     #ifdef zoxel_time_main_loop
         begin_timing()
     #endif
@@ -60,8 +75,7 @@ void main_update()
 }
 
 //! Includes special case for emscripten.
-void main_loop()
-{
+void main_loop() {
     // Set up the signal handler for SIGINT
     signal(SIGINT, sigint_handler);
 #ifdef WEB_BUILD
@@ -74,8 +88,7 @@ void main_loop()
 #endif
 }
 
-void ZoxelEngineImport(ecs_world_t *world)
-{
+void ZoxelEngineImport(ecs_world_t *world) {
     zoxel_module(ZoxelEngine)
     clear_zoxel_log();
     zoxel_import_module(Core)

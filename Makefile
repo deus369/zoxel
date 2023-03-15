@@ -172,6 +172,10 @@ clean:
 	@echo "Cleaning All Build Files"
 	cd bash/flecs && bash remove_flecs.sh
 
+count:
+	@echo "Counting Source Files"
+	bash bash/count/count_source.sh
+
 # todo ignore resources directory and gitignore file here
 # $(RM) build/*.o
 
@@ -255,6 +259,7 @@ help:
 	@echo "    run-dev-profiler	runs $(TARGET_DEV) --profiler"
 	@echo "    run-web		runs $(TARGET_WEB)"
 	@echo "    clean		removes all build files"
+	@echo "    count		counts total lines in all source"
 	@echo "    install		installs zoxel"
 	@echo "    uninstall		inuninstalls zoxel"
 	@echo "    install-sdl		installs sdl"

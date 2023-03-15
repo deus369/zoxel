@@ -1,23 +1,3 @@
-// platforms
-#if defined(__unix__) && __ANDROID__
-    #define ANDROID_BUILD
-#endif
-#ifdef __EMSCRIPTEN__
-    #define WEB_BUILD
-#endif
-#ifdef _WIN32
-    #define WINDOWS_BUILD
-#endif
-// flecs
-#define FLECS_CUSTOM_BUILD
-#define FLECS_MODULE
-#define FLECS_SYSTEM 
-#define FLECS_PIPELINE
-#include "../include/flecs/flecs.h"
-// sdl
-#define SDL_IMAGES
-#define SDL_MIXER
-// #define USE_SDL_3
 // -- Tests / Options --
 // #define zoxel_test_chickens
 // #define zoxel_test_character3Ds
