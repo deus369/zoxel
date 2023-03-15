@@ -20,16 +20,14 @@ unsigned char profiler = 0;
 #include "util/core_util.c"
 
 //! Handles modules that are for basic stuff at lowest level
-void CoreImport(ecs_world_t *world)
-{
+void CoreImport(ecs_world_t *world) {
     zoxel_module(Core)
     zoxel_import_module(Generic)
     zoxel_import_module(Maths)
     zoxel_import_module(Timing)
     zoxel_import_module(Transforms)
     zoxel_import_module(Networking)
-    if (!headless)
-    {
+    if (!headless) {
         zoxel_import_module(Apps)
         zoxel_import_module(Inputs)
     }

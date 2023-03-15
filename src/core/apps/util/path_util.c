@@ -92,6 +92,9 @@ char* get_full_file_path(const char* filepath)
 }
 
 char* concat_file_path(char* resources_path, char* file_path) {
+    if (resources_path == NULL || file_path == NULL) {
+        return NULL;
+    }
     char* full_file_path = malloc(strlen(resources_path) + strlen(file_path) + 1);
     strcpy(full_file_path, resources_path);
     strcat(full_file_path, file_path);
