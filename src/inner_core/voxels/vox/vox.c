@@ -54,6 +54,6 @@ void VoxImport(ecs_world_t *world) {
     zoxel_module(Vox)
     zoxel_define_tag(Vox)
     spawn_prefab_vox(world);
-    load_vox_files();
+    // load_vox_files();
 }
 #endif

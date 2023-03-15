@@ -59,17 +59,19 @@ void AppsImport(ecs_world_t *world)
     spawn_app_prefab(world);
     set_data_path();
     // spawn app
-    SDL_Window* window = spawn_sdl_window();
-    SDL_GLContext* context = create_sdl_context(window);
-    spawn_app(world, window, context);
-    main_window = window;
-    #ifndef WEB_BUILD
-        #ifndef ANDROID_BUILD
-            if (fullscreen) 
-            {
-                sdl_toggle_fullscreen(main_window);
-            }
+    if (init_sdl() == EXIT_SUCCESS) {
+        SDL_Window* window = spawn_sdl_window();
+        SDL_GLContext* context = create_sdl_context(window);
+        spawn_app(world, window, context);
+        main_window = window;
+        #ifndef WEB_BUILD
+            #ifndef ANDROID_BUILD
+                if (fullscreen) 
+                {
+                    sdl_toggle_fullscreen(main_window);
+                }
+            #endif
         #endif
-    #endif
+    }
 }
 #endif

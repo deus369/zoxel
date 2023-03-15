@@ -30,21 +30,22 @@ int2 get_sdl_screen_size() {
     screen_size.y = displayMode.h;
     if (!(screen_size.x > 0 && screen_size.x < 8000 && screen_size.y > 0 && screen_size.y < 8000)) {
         zoxel_log(" - screen size is wrong [%ix%i]\n", screen_size.x, screen_size.y);
+        zoxel_log(" > setting to 480x480\n");
         return (int2) { 480, 480 };
-    }
-    if (halfscreen) {
-        screen_size.x /= 2;
-        screen_size.y /= 2;
     }
     return screen_size;
 }
 
 void set_screen_size() {
-    #ifndef WEB_BUILD
-        screen_dimensions = get_sdl_screen_size();
-    #else
+    #ifdef WEB_BUILD
         screen_dimensions = get_webasm_screen_size();
+    #else
+        screen_dimensions = get_sdl_screen_size();
     #endif
+    if (halfscreen) {
+        screen_dimensions.x /= 2;
+        screen_dimensions.y /= 2;
+    }
 }
 
 void sdl_toggle_fullscreen(SDL_Window* window) {
@@ -72,13 +73,18 @@ int opengl_es_supported() {
     return 0;
 }
 
-//! Initialize SDL things, thingy things.
-int set_sdl_attributes(unsigned char vsync) {
+int init_sdl() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         // zoxel_log(stderr, "Failed to Initialize SDL2: %s\n", SDL_GetError());
         zoxel_log("Failed to Initialize SDL2: %s\n", SDL_GetError());
         return EXIT_FAILURE;
+    } else {
+        return EXIT_SUCCESS;
     }
+}
+
+//! Initialize SDL things, thingy things.
+int set_sdl_attributes(unsigned char vsync) {
     // Request at least 32-bit color
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);

@@ -7,59 +7,51 @@
 #define VOX_SIZE_INT 32
 #define VOX_SUPPORTED_VERSION 150
 
-typedef struct
-{
+typedef struct {
   char name[4];
   int chunk_content;
   int chunk_nums;
   int3 xyz;
 } vox_file_size;
 
-typedef struct
-{
+typedef struct {
   char name[4];
   int chunk_content;
   int chunk_nums;
   unsigned char *voxels;
 } vox_file_xyzi;
 
-typedef struct
-{
+typedef struct {
   char magic[4];
   int version;
 } vox_file_header;
 
-typedef struct
-{
+typedef struct {
   char name[4];
   int chunk_content;
   int chunk_nums;
 } vox_file_chunk;
 
-typedef struct
-{
+typedef struct {
   char name[4];
   int chunk_content;
   int chunk_nums;
   int model_nums;
 } vox_file_pack;
 
-typedef struct
-{
+typedef struct {
   vox_file_size size;
   vox_file_xyzi xyzi;
 } vox_file_chunk_child;
 
-typedef struct
-{
+typedef struct {
     char name[4];
     int chunk_content;
     int chunk_nums;
     color *values;
 } vox_file_palette;
 
-typedef struct
-{
+typedef struct {
     vox_file_header header;
     vox_file_chunk main;
     vox_file_pack pack;
@@ -67,15 +59,13 @@ typedef struct
     vox_file_palette palette;
 } vox_file;
 
-int peek(FILE* file)
-{
+int peek(FILE* file) {
     int c = fgetc(file);
     ungetc(c, file);
     return c;
 }
 
-unsigned int default_palette[] =
-{
+unsigned int default_palette[] = {
     0x00000000, 0xffffffff, 0xffccffff, 0xff99ffff, 0xff66ffff, 0xff33ffff, 0xff00ffff, 0xffffccff, 0xffccccff, 0xff99ccff, 0xff66ccff, 0xff33ccff, 0xff00ccff, 0xffff99ff, 0xffcc99ff, 0xff9999ff,
     0xff6699ff, 0xff3399ff, 0xff0099ff, 0xffff66ff, 0xffcc66ff, 0xff9966ff, 0xff6666ff, 0xff3366ff, 0xff0066ff, 0xffff33ff, 0xffcc33ff, 0xff9933ff, 0xff6633ff, 0xff3333ff, 0xff0033ff, 0xffff00ff,
     0xffcc00ff, 0xff9900ff, 0xff6600ff, 0xff3300ff, 0xff0000ff, 0xffffffcc, 0xffccffcc, 0xff99ffcc, 0xff66ffcc, 0xff33ffcc, 0xff00ffcc, 0xffffcccc, 0xffcccccc, 0xff99cccc, 0xff66cccc, 0xff33cccc,
@@ -94,11 +84,9 @@ unsigned int default_palette[] =
     0xff880000, 0xff770000, 0xff550000, 0xff440000, 0xff220000, 0xff110000, 0xffeeeeee, 0xffdddddd, 0xffbbbbbb, 0xffaaaaaa, 0xff888888, 0xff777777, 0xff555555, 0xff444444, 0xff222222, 0xff111111
 };
 
-void dispose_vox_file(vox_file *vox)
-{
+void dispose_vox_file(vox_file *vox) {
     // first free children voxels
-    for (int i = 0; i < vox->pack.model_nums; i++)
-    {
+    for (int i = 0; i < vox->pack.model_nums; i++) {
         free(vox->chunks[i].xyzi.voxels);
     }
     free(vox->chunks);    // children chunks
