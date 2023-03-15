@@ -46,8 +46,7 @@ zoxel_component(Context, SDL_GLContext*)
 #include "util/cleanup_util.c"
 
 //! apps Module.
-void AppsImport(ecs_world_t *world)
-{
+void AppsImport(ecs_world_t *world) {
     zoxel_module(Apps)
     zoxel_define_tag(App)
     zoxel_define_component(SDLWindow)
@@ -66,8 +65,7 @@ void AppsImport(ecs_world_t *world)
         main_window = window;
         #ifndef WEB_BUILD
             #ifndef ANDROID_BUILD
-                if (fullscreen) 
-                {
+                if (fullscreen) {
                     sdl_toggle_fullscreen(main_window);
                 }
             #endif

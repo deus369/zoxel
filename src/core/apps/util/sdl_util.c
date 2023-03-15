@@ -4,6 +4,12 @@ int2 screen_dimensions = { 720, 480 };
 // SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN
 // SDL_RENDERER_SOFTWARE SDL_RENDERER_ACCELERATED
 
+// links to input and camera modules
+extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event);
+extern void input_extract_from_sdl_per_frame(ecs_world_t *world);
+extern void resize_cameras(int width, int height);
+extern void uis_on_viewport_resized(ecs_world_t *world, int width, int height);
+
 //! Print debug info!
 void print_sdl() {
     #ifdef zoxel_debug_sdl
@@ -26,7 +32,7 @@ int2 get_sdl_screen_size() {
     SDL_GetCurrentDisplayMode(0, &displayMode);
     screen_size.x = displayMode.w;
     screen_size.y = displayMode.h;
-    if (!(screen_size.x > 0 && screen_size.x < 8000 && screen_size.y > 0 && screen_size.y < 8000)) {
+    if (!(screen_size.x > 0 && screen_size.x < 22000 && screen_size.y > 0 && screen_size.y < 22000)) {
         zoxel_log(" - screen size is wrong [%ix%i]\n", screen_size.x, screen_size.y);
         zoxel_log(" > setting to 480x480\n");
         return (int2) { 480, 480 };
@@ -73,17 +79,15 @@ int opengl_es_supported() {
 
 int init_sdl() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        // zoxel_log(stderr, "Failed to Initialize SDL2: %s\n", SDL_GetError());
-        zoxel_log("Failed to Initialize SDL2: %s\n", SDL_GetError());
+        zoxel_log(" - failed to initialize sdl [%s]\n", SDL_GetError());
         return EXIT_FAILURE;
     } else {
         return EXIT_SUCCESS;
     }
 }
 
-//! Initialize SDL things, thingy things.
+//! Initialize SDL things, thingy things. 32bit color, 24bit depth
 int set_sdl_attributes(unsigned char vsync) {
-    // Request at least 32-bit color
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
@@ -126,10 +130,6 @@ SDL_Window* spawn_sdl_window() {
         is_resizeable = false;
     #endif
     int2 app_position = (int2) { 0, 0 };
-    /*int displays = SDL_GetNumVideoDisplays();
-    if (displays > 1 && window_index != -1 && window_index < displays) {
-        app_position.x = screen_dimensions.x * window_index;
-    }*/
     SDL_Window* window = SDL_CreateWindow("Zoxel", app_position.x, app_position.y,
         screen_dimensions.x, screen_dimensions.y, window_flags);
     if (window == NULL) {
@@ -167,12 +167,6 @@ SDL_GLContext* create_sdl_context(SDL_Window* window) {
     return context;
 }
 
-// links to input and camera modules
-extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event);
-extern void input_extract_from_sdl_per_frame(ecs_world_t *world);
-extern void resize_cameras(int width, int height);
-extern void uis_on_viewport_resized(ecs_world_t *world, int width, int height);
-
 void on_viewport_resized(ecs_world_t *world, int width, int height) {
     #ifdef debug_viewport_resize
     zoxel_log("Viewport was resized [%ix%i]\n", width, height);
@@ -182,30 +176,37 @@ void on_viewport_resized(ecs_world_t *world, int width, int height) {
     if(screen_dimensions.y <= 0) {
         screen_dimensions.y = 1;
     }
-    // aspectRatio = ((float) screen_dimensions.x) / ((float) screen_dimensions.y);
     resize_cameras(width, height);
     uis_on_viewport_resized(world, width, height);
 }
 
-//! Polls SDL for input events. Also handles resize and window exit events.
+//! handles sdl events including keys
 void update_sdl(ecs_world_t *world) {
     input_extract_from_sdl_per_frame(world);
     SDL_Event event = { 0 };
     while (SDL_PollEvent(&event)) {
         input_extract_from_sdl(world, event);
         int eventType = event.type;
-        // handles application close button
         if (eventType == SDL_QUIT) {
+            // handles application close button
             exit_game();
         } else if (eventType == SDL_WINDOWEVENT) {
-            if(event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+            // handles application resizing
+            if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
                 on_viewport_resized(world, event.window.data1, event.window.data2);
             }
         } else if (eventType == SDL_KEYUP) {
             SDL_Keycode key = event.key.keysym.sym;
             if (key == SDLK_ESCAPE) {
-                exit_game(); // todo: move this to engine code
+                // handles escape key
+                // todo: move this to engine code
+                exit_game();
             }
         }
     }
 }
+
+/*int displays = SDL_GetNumVideoDisplays();
+if (displays > 1 && window_index != -1 && window_index < displays) {
+    app_position.x = screen_dimensions.x * window_index;
+}*/

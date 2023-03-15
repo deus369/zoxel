@@ -27,8 +27,7 @@
 #include "rendering/shader3D_colored.c"
 #include "util/opengl_main_util.c"
 
-void OpenGLImport(ecs_world_t *world)
-{
+void OpenGLImport(ecs_world_t *world) {
     zoxel_module(OpenGL)
     opengl_load_functions();
     if (load_all_shaders() == EXIT_FAILURE) {

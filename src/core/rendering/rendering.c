@@ -16,15 +16,13 @@ zoxel_component(Brightness, float)
 #include "core/rendering_core.c"
 
 //! The Rendering Module!
-void RenderingImport(ecs_world_t *world)
-{
+void RenderingImport(ecs_world_t *world) {
     zoxel_module(Rendering)
     zoxel_define_tag(Mesh)
     zoxel_define_tag(ElementRender)
     zoxel_define_component(Brightness)
     zoxel_define_component(MeshDirty)
-    if (!headless)
-    {
+    if (!headless) {
         zoxel_import_module(OpenGL)
         zoxel_import_module(RenderingCore)
     }

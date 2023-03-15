@@ -2,13 +2,11 @@ extern unsigned char is_split_screen;
 extern ecs_entity_t fps_display;
 
 //! Spawns our first game entities.
-void boot_zoxel_game(ecs_world_t *world)
-{
+void boot_zoxel_game(ecs_world_t *world) {
     zoxel_log(" > booting [zoxel]\n");
     // spawn cameras first
     int2 screen_dimensions2 = screen_dimensions;
-    if (is_split_screen)
-    {
+    if (is_split_screen) {
         screen_dimensions2.x /= 2;
         set_main_cameras(2);
     }
@@ -24,8 +22,7 @@ void boot_zoxel_game(ecs_world_t *world)
         quaternion_identity(), screen_dimensions2, (int2) { });
     float4 rotationer = quaternion_from_euler( (float3) { 0, -0.12f * degreesToRadians, 0 });
     zoxel_set(world, main_cameras[0] , EternalRotation, { rotationer });
-    if (is_split_screen)
-    {
+    if (is_split_screen) {
         //! \todo connect a gamepad to this camera
         camera_begin_position.z += 0.4f;
         main_cameras[1] = spawn_base_camera(world, camera_begin_position,
@@ -34,8 +31,7 @@ void boot_zoxel_game(ecs_world_t *world)
     ecs_entity_t realm = spawn_realm(world);
     ecs_entity_t game = spawn_game(world);
     ecs_set(world, game, RealmLink, { realm });
-    if (!headless)
-    {
+    if (!headless) {
         spawn_connected_devices(world);
         // spawn_player_character3D(world, get_main_camera());
     }
@@ -44,14 +40,15 @@ void boot_zoxel_game(ecs_world_t *world)
     spawn_canvas_edge_lines(world, main_canvas);
     spawn_font_style(world);
     spawn_zoxel_main_menu(world);
-    // quads_label = spawn_quad_count_label(world, main_canvas, 32);
     fps_display = spawn_fps_display(world, main_canvas, 32);
-    // #ifdef zoxel_test_uis
-    // spawn_test_uis(world);   // spawns test ui
-    // #endif
+    // quads_label = spawn_quad_count_label(world, main_canvas, 32);
     #ifdef voxels_spawn_terrain
         create_terrain(world);
     #endif
     spawn_music(world, instrument_piano);
     zoxel_log(" > success booting [zoxel]\n");
 }
+
+// #ifdef zoxel_test_uis
+// spawn_test_uis(world);   // spawns test ui
+// #endif

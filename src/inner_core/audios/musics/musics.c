@@ -5,7 +5,7 @@ zoxel_declare_tag(Music)
 zoxel_declare_tag(Looping)
 zoxel_component(MusicTime, double)
 zoxel_component(MusicSpeed, double)
-zoxel_memory_component(MusicData, int)      //! Contains a bunch of notes? - make custom struct for this with timing + note
+zoxel_memory_component(MusicData, int)
 zoxel_byte_component(GenerateMusic)
 zoxel_reset_system(GenerateMusicResetSystem, GenerateMusic)
 #include "util/music_palette.c"
@@ -13,11 +13,7 @@ zoxel_reset_system(GenerateMusicResetSystem, GenerateMusic)
 #include "systems/music_play_system.c"
 #include "systems/music_generate_system.c"
 
-//! \todo MusicPlayer -> play a music and pick a new one when song ends
-
-//! Musics Module.
-void MusicsImport(ecs_world_t *world)
-{
+void MusicsImport(ecs_world_t *world) {
     zoxel_module(Musics)
     zoxel_define_tag(Music)
     zoxel_define_tag(Looping)
@@ -32,4 +28,7 @@ void MusicsImport(ecs_world_t *world)
     zoxel_reset_system_define(GenerateMusicResetSystem, GenerateMusic)
     spawn_prefab_music(world);
 }
+
+//! \todo MusicPlayer -> play a music and pick a new one when song ends
+//! \todo MusicData - Contains a bunch of notes? - make custom struct for this with timing + note
 #endif

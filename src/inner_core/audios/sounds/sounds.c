@@ -5,7 +5,6 @@
 #define sample_rate_f 44100.0f // / 2.0f
 #define static_sounds_length 5
 #ifdef zoxel_debug_sounds
-    // 50
     #define sound_display_skip_rate 35
     #define sound_display_start 0.0f
     #define sound_display_end 1.0f
@@ -53,8 +52,7 @@ zoxel_reset_system(GenerateSoundResetSystem, GenerateSound)
 zoxel_reset_system(SoundDirtyResetSystem, SoundDirty)
 
 //! Sounds Module.
-void SoundsImport(ecs_world_t *world)
-{
+void SoundsImport(ecs_world_t *world) {
     zoxel_module(Sounds)
     zoxel_define_tag(Sound)
     zoxel_define_component(SoundLength)
@@ -78,7 +76,5 @@ void SoundsImport(ecs_world_t *world)
     zoxel_reset_system_define(GenerateSoundResetSystem, GenerateSound)
     zoxel_reset_system_define(SoundDirtyResetSystem, SoundDirty)
     spawn_prefab_sound(world);
-    // test
-    // spawn_generated_sound(world);
 }
 #endif
