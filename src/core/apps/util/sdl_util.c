@@ -60,17 +60,6 @@ void sdl_toggle_fullscreen(SDL_Window* window)
 
 // checks es is supported
 int opengl_es_supported() {
-    #ifdef WINDOWS_BUILD
-        PFNWGLGETEXTENSIONSSTRINGARBPROC wglGetExtensionsStringARB = 
-            (PFNWGLGETEXTENSIONSSTRINGARBPROC) wglGetProcAddress("wglGetExtensionsStringARB");
-        if (!wglGetExtensionsStringARB) {
-            return 0;
-        }
-        const char* extensions = wglGetExtensionsStringARB(wglGetCurrentDC());
-        if (strstr(extensions, "GL_OES_rgb8_rgba8")) {
-            return 1;
-        }
-    #endif
     int num_render_drivers = SDL_GetNumRenderDrivers();
     for (int i = 0; i < num_render_drivers; i++) {
         SDL_RendererInfo info;
