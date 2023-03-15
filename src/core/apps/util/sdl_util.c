@@ -9,16 +9,16 @@ unsigned long windowFlags;
 void print_sdl()
 {
     #ifdef zoxel_debug_sdl
-        zoxel_log("SDL\n");
-        zoxel_log("    Platform:        %s\n", SDL_GetPlatform());
-        zoxel_log("    CPU Count:       %d\n", SDL_GetCPUCount());
-        zoxel_log("    System RAM:      %d MB\n", SDL_GetSystemRAM());
-        zoxel_log("    Screen Dimensions: %ix%i\n", screen_dimensions.x, screen_dimensions.y);
-        zoxel_log("    Supports SSE:    %s\n", (SDL_HasSSE() ? "true" : "false"));
-        zoxel_log("    Supports SSE2:   %s\n", (SDL_HasSSE2() ? "true" : "false"));
-        zoxel_log("    Supports SSE3:   %s\n", (SDL_HasSSE3() ? "true" : "false"));
-        zoxel_log("    Supports SSE4.1: %s\n", (SDL_HasSSE41() ? "true" : "false"));
-        zoxel_log("    Supports SSE4.2: %s\n", (SDL_HasSSE42() ? "true" : "false"));
+        zoxel_log(" > sdl stats\n");
+        zoxel_log("     + platform:     %s\n", SDL_GetPlatform());
+        zoxel_log("     + cpu count:    %d\n", SDL_GetCPUCount());
+        zoxel_log("     + ram:          %d MB\n", SDL_GetSystemRAM());
+        zoxel_log("     + screen:       %ix%i\n", screen_dimensions.x, screen_dimensions.y);
+        zoxel_log("     + sse:          %s\n", (SDL_HasSSE() ? "true" : "false"));
+        zoxel_log("     + sse2:         %s\n", (SDL_HasSSE2() ? "true" : "false"));
+        zoxel_log("     + sse3:         %s\n", (SDL_HasSSE3() ? "true" : "false"));
+        zoxel_log("     + sse4.1:       %s\n", (SDL_HasSSE41() ? "true" : "false"));
+        zoxel_log("     + sse4.2:       %s\n", (SDL_HasSSE42() ? "true" : "false"));
     #endif
 }
 
@@ -80,6 +80,15 @@ void sdl_toggle_fullscreen(SDL_Window* window)
     return 0;
 }*/
 
+int opengl_es_supported() {
+    #ifdef SDL_VIDEO_RENDER_OGL_ES2
+        if (SDL_GL_ExtensionSupported("GL_OES_rgb8_rgba8")) {
+            return 1;
+        }
+    #endif
+    return 0;
+}
+
 //! Initialize SDL things, thingy things.
 int set_sdl_attributes(unsigned char vsync)
 {
@@ -97,13 +106,13 @@ int set_sdl_attributes(unsigned char vsync)
     // Request a double-buffered, OpenGL 3.0 ES (or higher) profile
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, sdl_gl_major);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, sdl_gl_minor);
-    #ifdef SDL_VIDEO_RENDER_OGL_ES2
+    if (opengl_es_supported()) {
         zoxel_log(" > GL_ES detected\n");
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-    #else
+    } else {
         zoxel_log(" > GL_ES unavilable\n");
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    #endif
+    }
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     // SDL_RENDERER_SOFTWARE SDL_RENDERER_ACCELERATED
@@ -158,14 +167,6 @@ SDL_Window* spawn_sdl_window()
         windowFlags = SDL_WINDOW_FULLSCREEN_DESKTOP; // SDL_WINDOW_FULLSCREEN;
         is_resizeable = false;
     #endif
-    /*#ifndef WEB_BUILD
-    if (fullscreen) 
-    {
-        printf("Setting fullscreen!\n");
-        windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-    }
-    #endif*/
-    // SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
     int2 app_position = (int2) { };
     int displays = SDL_GetNumVideoDisplays();
     if (displays > 1 && window_index != -1 && window_index < displays)
@@ -175,21 +176,21 @@ SDL_Window* spawn_sdl_window()
     SDL_Window* window = SDL_CreateWindow("Zoxel",
         app_position.x, app_position.y,
         screen_dimensions.x, screen_dimensions.y, // windowFlags);
-        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+        SDL_WINDOW_OPENGL); //  | SDL_WINDOW_SHOWN);
     if (window == NULL)
     {
-        zoxel_log("OpenGL ES profile failed. Falling back to Open GL Core profile.");
+        zoxel_log(" - opengl es profile failed, using opengl core profile");
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         window = SDL_CreateWindow("Zoxel",
             app_position.x, app_position.y,
             screen_dimensions.x, screen_dimensions.y, // windowFlags);
-            SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+            SDL_WINDOW_OPENGL); //  | SDL_WINDOW_SHOWN);
     }
     if (window == NULL)
     {
         SDL_Quit();
         // fprintf(stderr, "Failed to Create SDLWindow: %s\n", SDL_GetError());
-        zoxel_log("Failed to Create SDLWindow: %s\n", SDL_GetError());
+        zoxel_log(" - failed to create sdl window: %s\n", SDL_GetError());
         return window;
     }
     SDL_GL_SetSwapInterval(1);
@@ -252,3 +253,12 @@ void update_sdl(ecs_world_t *world)
         }
     }
 }
+
+/*#ifndef WEB_BUILD
+if (fullscreen) 
+{
+    printf("Setting fullscreen!\n");
+    windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+}
+#endif*/
+// SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,

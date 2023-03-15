@@ -46,6 +46,7 @@
 // -- debugs --
 #define zox_logs // add logs with printf
 // #define log_to_file
+#define zoxel_debug_sdl
 // #define zoxel_debug_opengl
 // #define zoxel_catch_opengl_errors
 // #define zoxel_log_frames_per_second
@@ -55,7 +56,6 @@
 // #define zoxel_debug_prefabs
 // #define zoxel_debug_spawns
 // #define debug_element_position_change_query
-// #define zoxel_debug_sdl
 // #define debug_viewport_resize
 // #define zoxel_debug_element_raycasting
 // #define debug_ui_positioning
