@@ -1,10 +1,8 @@
 // sdl util things
 const char *iconFilename = resources_folder_name"textures/game_icon.png";
 int2 screen_dimensions = { 720, 480 };
-float aspectRatio = 1;
-float fov = 60;
-// unsigned long window_flags;
 // SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN
+// SDL_RENDERER_SOFTWARE SDL_RENDERER_ACCELERATED
 
 //! Print debug info!
 void print_sdl() {
@@ -90,7 +88,9 @@ int set_sdl_attributes(unsigned char vsync) {
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
-    // Request a double-buffered, OpenGL 3.0 ES (or higher) profile
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); // 24 | 32
+    SDL_GL_SetSwapInterval(vsync); //  ? 1 : 0);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, sdl_gl_major);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, sdl_gl_minor);
     if (opengl_es_supported()) {
@@ -100,10 +100,6 @@ int set_sdl_attributes(unsigned char vsync) {
         zoxel_log(" > GL_ES unavilable\n");
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     }
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-    // SDL_RENDERER_SOFTWARE SDL_RENDERER_ACCELERATED
-    SDL_GL_SetSwapInterval(vsync); //  ? 1 : 0);
     return EXIT_SUCCESS;
 }
 
@@ -171,6 +167,7 @@ SDL_GLContext* create_sdl_context(SDL_Window* window) {
     return context;
 }
 
+// links to input and camera modules
 extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event);
 extern void input_extract_from_sdl_per_frame(ecs_world_t *world);
 extern void resize_cameras(int width, int height);
@@ -185,7 +182,7 @@ void on_viewport_resized(ecs_world_t *world, int width, int height) {
     if(screen_dimensions.y <= 0) {
         screen_dimensions.y = 1;
     }
-    aspectRatio = ((float) screen_dimensions.x) / ((float) screen_dimensions.y);
+    // aspectRatio = ((float) screen_dimensions.x) / ((float) screen_dimensions.y);
     resize_cameras(width, height);
     uis_on_viewport_resized(world, width, height);
 }
@@ -204,12 +201,10 @@ void update_sdl(ecs_world_t *world) {
             if(event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
                 on_viewport_resized(world, event.window.data1, event.window.data2);
             }
-        }
-        // todo: move this to engine code
-        else if (eventType == SDL_KEYUP) {
+        } else if (eventType == SDL_KEYUP) {
             SDL_Keycode key = event.key.keysym.sym;
             if (key == SDLK_ESCAPE) {
-                exit_game();
+                exit_game(); // todo: move this to engine code
             }
         }
     }

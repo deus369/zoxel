@@ -20,16 +20,18 @@ unsigned char load_audio()
     const int channels_count = 1;   // 2
     // MIX_DEFAULT_FORMAT
     // https://wiki.libsdl.org/SDL2/SDL_AudioFormat
-	if( Mix_OpenAudio( sound_sample_rate, AUDIO_F32SYS, channels_count, 2048 ) < 0 )
+	if(Mix_OpenAudio( sound_sample_rate, AUDIO_F32SYS, channels_count, 2048 ) < 0)
 	{
-		zoxel_log( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-		success = 0;
-	}
-    /*if (!load_static_sounds())
-    {
-		success = 0;
-    }*/
-	return success;
+		zoxel_log(" - sdl audio could not initialize [%s]\n", Mix_GetError());
+        return EXIT_FAILURE;
+	} else {
+        /*if (!load_static_sounds())
+        {
+            success = 0;
+        }*/
+		zoxel_log(" + sdl audio has initialized\n");
+        return EXIT_SUCCESS;
+    }
 }
 
 void close_audio()

@@ -2,7 +2,7 @@
 #define zoxel_cameras
 
 #define max_cameras 16
-const float camera_far_distance = 9000;
+const float camera_far_distance = 6000;
 int main_cameras_count = 1;
 ecs_entity_t main_cameras[max_cameras];
 ecs_entity_t ui_cameras[1];
