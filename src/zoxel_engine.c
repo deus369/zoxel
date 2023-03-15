@@ -1,6 +1,8 @@
 #ifndef zoxel_engine
 #define zoxel_engine
 
+// todo: move some things to sdl module in core
+
 // platforms
 #if defined(__unix__) && __ANDROID__
     #define ANDROID_BUILD
