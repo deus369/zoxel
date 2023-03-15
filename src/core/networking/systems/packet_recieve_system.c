@@ -2,7 +2,7 @@ unsigned char peek_packet_type(int socket, struct sockaddr_in *recv_addr)
 {
     socklen_t recv_addr_len = sizeof(recv_addr);
     unsigned char recv_buffer[1];
-    ssize_t recv_size = recvfrom(socket, recv_buffer, 1, MSG_PEEK,
+    ssize_t recv_size = recvfrom(socket, (const char *) recv_buffer, 1, MSG_PEEK,
         (struct sockaddr*) recv_addr, &recv_addr_len);
     if (recv_size < 0)
     {
@@ -56,7 +56,7 @@ void PacketRecieveSystem(ecs_iter_t *it)
                     {
                         unsigned char return_packet_size = 1;
                         unsigned char send_buffer[1] = { zoxel_packet_type_connect_confirm };   // return packet
-                        ssize_t send_size = sendto(socketLink->value, send_buffer, return_packet_size, 0,
+                        ssize_t send_size = sendto(socketLink->value, (const char *) send_buffer, return_packet_size, 0,
                              (struct sockaddr*) &recv_addr, sizeof(recv_addr));
                         if (send_size < 0)
                         {
@@ -79,7 +79,7 @@ void PacketRecieveSystem(ecs_iter_t *it)
                 else if (packet_type == zoxel_packet_type_msg)
                 {
                     unsigned char recv_buffer_2[2];
-                    ssize_t text_size2 = recvfrom(socketLink->value, recv_buffer_2, 2, MSG_PEEK,
+                    ssize_t text_size2 = recvfrom(socketLink->value, (const char *) recv_buffer_2, 2, MSG_PEEK,
                         (struct sockaddr*) &recv_addr, &recv_addr_len);
                     if (text_size2 < 0)
                     {
@@ -92,7 +92,7 @@ void PacketRecieveSystem(ecs_iter_t *it)
                         packet_size = 2 + text_length;
                         unsigned char recv_buffer_3[packet_size];
                         is_consume_packet = 0;
-                        recv_size = recvfrom(socketLink->value, recv_buffer_3, packet_size, 0,
+                        recv_size = recvfrom(socketLink->value, (const char *) recv_buffer_3, packet_size, 0,
                             (struct sockaddr*) &recv_addr, &recv_addr_len);
                         if (recv_size < 0)
                         {
@@ -108,7 +108,7 @@ void PacketRecieveSystem(ecs_iter_t *it)
                 }
                 if (is_consume_packet)
                 {
-                    recv_size = recvfrom(socketLink->value, recv_buffer, 1, 0, (struct sockaddr*) &recv_addr, &recv_addr_len);
+                    recv_size = recvfrom(socketLink->value, (const char *) recv_buffer, 1, 0, (struct sockaddr*) &recv_addr, &recv_addr_len);
                 }
                 if (recv_size > packet_size)
                 {
