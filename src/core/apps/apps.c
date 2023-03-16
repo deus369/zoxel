@@ -27,7 +27,8 @@
         #include <SDL2/SDL_image.h>
     #endif
 #endif
-
+unsigned char running = 1;
+unsigned char headless = 0;
 const int window_index = 0; // 1;
 unsigned char vsync = 1;
 unsigned char fullscreen = 1; // set full screen default option here
@@ -39,10 +40,11 @@ zoxel_component(SDLWindow, SDL_Window*)
 zoxel_component(Renderer, SDL_Renderer*)
 zoxel_component(Context, SDL_GLContext*)
 #include "prefabs/app.c"
+#include "util/main_loop_util.c"
 #include "util/path_util.c"
 #include "util/terminal_util.c"
-#include "util/webasm_util.c"
 #include "util/sdl_util.c"
+#include "util/webasm_util.c"
 #include "util/cleanup_util.c"
 
 //! apps Module.

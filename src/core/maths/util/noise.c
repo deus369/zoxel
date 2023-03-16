@@ -86,20 +86,21 @@ double lerp(double a, double b, double t) {
     return (1 - t) * a + t * b;
 }
 
+uint32_t hash(uint32_t x, uint32_t y, uint32_t seed) {
+    uint32_t hash = seed;
+    hash ^= hash << 13;
+    hash ^= hash >> 7;
+    hash ^= hash << 17;
+    hash ^= y;
+    hash ^= hash << 5;
+    hash ^= hash >> 2;
+    hash ^= hash << 3;
+    hash ^= x;
+    return hash;
+}
+
 double perlin_noise(double x, double y, double f, uint32_t seed) {
     // Hash function that maps a 2D vector to a random integer value
-    uint32_t hash(uint32_t x, uint32_t y, uint32_t seed) {
-        uint32_t hash = seed;
-        hash ^= hash << 13;
-        hash ^= hash >> 7;
-        hash ^= hash << 17;
-        hash ^= y;
-        hash ^= hash << 5;
-        hash ^= hash >> 2;
-        hash ^= hash << 3;
-        hash ^= x;
-        return hash;
-    }
 
     // Calculate the lattice coordinates of the grid cell that contains the point (x, y)
     int x0 = (int)double_floor(x * f);

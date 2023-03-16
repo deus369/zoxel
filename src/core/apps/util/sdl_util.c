@@ -40,6 +40,8 @@ int2 get_sdl_screen_size() {
     return screen_size;
 }
 
+extern int2 get_webasm_screen_size();
+
 void set_screen_size() {
     #ifdef WEB_BUILD
         screen_dimensions = get_webasm_screen_size();

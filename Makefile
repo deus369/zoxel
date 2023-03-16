@@ -12,20 +12,20 @@ endif
 NAME := zoxel
 TARGET = build/zoxel
 TARGET_DEV = build/dev
-TARGET_WEB = zoxel.js
+TARGET_WEB = build/zoxel.js
 ifeq ($(SYSTEM),Windows)
 TARGET = build/zoxel.exe
 TARGET_DEV = build/dev.exe
 endif
 # used for cleaning
 RM = rm
-TARGET_WEB_WASM = zoxel.wasm
-TARGET_WEB_DATA = zoxel.data
+TARGET_WEB_WASM = build/zoxel.wasm
+TARGET_WEB_DATA = build/zoxel.data
 # our compilers
 # Defines the compiler, cc for C code
 CC = gcc
 # the web compiler
-CC_WEB = emcc
+CC_WEB = ~/projects/emsdk/upstream/emscripten/emcc
 # OBJS defines all the files used to compile the final Zoxel binary.
 OBJS = ../src/main.c
 # This collects all c and h files in the directory
@@ -82,10 +82,6 @@ LDLIBS += -LSDL2main
 LDLIBS += -Wl,-subsystem,windows
 LDLIBS += -mwindows
 endif
-# LDLIBS += -s SDL2_IMAGE_FORMATS='["png"]' # "bmp",
-# used for manual sdl compiling on systems that don't have sdl lib in their package managers
-# LDLIBS += -L/usr/local/lib
-# LDLIBS += -Wl,-rpath=/usr/local/lib
 # FOR RELEASE
 CFLAGS_RELEASE =
 # Optimization Level | -Ofast | -O1 | -O2 | -O3
@@ -122,6 +118,7 @@ LDLIBS_WEB += -s USE_SDL=2
 LDLIBS_WEB += -s USE_SDL_IMAGE=2
 LDLIBS_WEB += -s SDL2_IMAGE_FORMATS='["png"]' # "bmp",
 LDLIBS_WEB += -s USE_SDL_MIXER=2
+LDLIBS_WEB += -L./ -lflecs
 # flecs
 flecs_target = build/libflecs.a
 flecs_source = include/flecs/flecs.c
@@ -130,7 +127,7 @@ flecs_obj = flecs.o
 # Completed build commands
 MAKE_RELEASE = $(CC) $(CFLAGS) $(CFLAGS_RELEASE) -o ../$(TARGET) $(OBJS) $(LDLIBS) $(LDLIBS2)
 MAKE_DEV = $(CC) $(CFLAGS) $(CFLAGS_DEBUG) -o ../$(TARGET_DEV) $(OBJS) $(LDLIBS) $(LDLIBS2)
-MAKE_WEB_RELEASE = $(CC_WEB) $(CFLAGS) $(CFLAGS_WEB) -o $(TARGET_WEB) $(OBJS) $(LDLIBS_WEB)
+MAKE_WEB_RELEASE = $(CC_WEB) $(CFLAGS) $(CFLAGS_WEB) -o ../$(TARGET_WEB) $(OBJS) $(LDLIBS_WEB)
 make_flecs = $(CC) $(flecs_flags) $(CFLAGS) $(CFLAGS_RELEASE) ../$(flecs_source) -o $(flecs_obj) $(LDLIBS2)
 make_flecs_lib = ar rcs ../$(flecs_target) $(flecs_obj)
 
@@ -144,6 +141,7 @@ $(TARGET_DEV): $(SRCS)
 
 # web
 $(TARGET_WEB): $(SRCS)
+	python3 ~/projects/emsdk/emsdk.py construct_env
 	bash bash/flecs/check_flecs_lib.sh && cd build && $(MAKE_WEB_RELEASE)
 
 # flecs $(flecs_source)
@@ -201,7 +199,7 @@ run-dev-profiler:
 
 # Runs zoxel web release build
 run-web:
-	emrun --browser firefox web/index.html
+	cd build && emrun --browser firefox index.html
 
 android:
 	bash/android/install.sh
@@ -224,8 +222,8 @@ install-required:
 	sudo apt install gcc
 	bash bash/sdl/install_sdl.sh
 
-install-web-builder:
-	bash bash/web/install_emcc.sh
+install-web-sdk:
+	bash bash/web/install_sdk.sh
 
 install-sdl:
 	bash bash/sdl/install_sdl.sh
@@ -263,7 +261,7 @@ help:
 	@echo "    install		installs zoxel"
 	@echo "    uninstall		inuninstalls zoxel"
 	@echo "    install-sdl		installs sdl"
-	@echo "    install-web-builder	installs emcc for web build"
+	@echo "    install-web-sdk	installs emcc for web build"
 	@echo "    android		builds & runs android release"
 	@echo "    android-dev		builds & runs android debug"
 	@echo "    android-dev-debug	builds & runs android debug with logcat"
@@ -296,3 +294,8 @@ help:
 # $(RM) $(TARGET)
 # $(RM) $(TARGET_DEV)
 # $(RM) $(flecs_target)
+
+# LDLIBS += -s SDL2_IMAGE_FORMATS='["png"]' # "bmp",
+# used for manual sdl compiling on systems that don't have sdl lib in their package managers
+# LDLIBS += -L/usr/local/lib
+# LDLIBS += -Wl,-rpath=/usr/local/lib
