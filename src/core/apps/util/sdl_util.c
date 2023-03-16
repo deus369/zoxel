@@ -144,10 +144,10 @@ SDL_Window* spawn_sdl_window() {
         zoxel_log("Failed to set_sdl_attributes.");
         return NULL;
     }
-    load_app_icon(window);
     SDL_GL_SetSwapInterval(1);
     SDL_SetWindowResizable(window, is_resizeable);
     SDL_GL_SwapWindow(window);
+    load_app_icon(window);
     return window;
 }
 

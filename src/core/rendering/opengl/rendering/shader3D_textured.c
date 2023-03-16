@@ -1,16 +1,27 @@
 // Shader3D Textured
 GLuint2 shader3D_textured;
-// const char* shader3D_textured_filepath_vert = resources_folder_name"shaders/3D/shader3D_textured.vert";
-// const char* shader3D_textured_filepath_frag = resources_folder_name"shaders/3D/shader3D_textured.frag";
-//! inline shaders incase the shader files don't exist.
-const GLchar* shader3D_textured_vert_buffer = "\
-#version 310 es\n\
+/*
 layout(location = 0) in highp vec3 vertexPosition;\
 layout(location = 1) in highp vec2 vertexUV;\
 layout(location = 2) uniform highp mat4 view_matrix;\
 layout(location = 3) uniform highp vec3 position;\
 layout(location = 4) uniform highp vec4 rotation;\
 layout(location = 5) uniform highp float scale;\
+
+layout(location = 6) uniform highp float brightness;\
+layout(location = 7) uniform sampler2D tex;\
+*/
+// const char* shader3D_textured_filepath_vert = resources_folder_name"shaders/3D/shader3D_textured.vert";
+// const char* shader3D_textured_filepath_frag = resources_folder_name"shaders/3D/shader3D_textured.frag";
+//! inline shaders incase the shader files don't exist.
+const GLchar* shader3D_textured_vert_buffer = "\
+#version 300 es\n\
+in highp vec3 vertexPosition;\
+in highp vec2 vertexUV;\
+uniform highp mat4 view_matrix;\
+uniform highp vec3 position;\
+uniform highp vec4 rotation;\
+uniform highp float scale;\
 out highp vec2 uv;\
 out highp float fogFactor;\
 \
@@ -31,11 +42,11 @@ void main()\
 }\
 ";
 const GLchar* shader3D_textured_frag_buffer = "\
-#version 310 es\n\
+#version 300 es\n\
+uniform highp float brightness;\
+uniform sampler2D tex;\
 in highp vec2 uv;\
 in highp float fogFactor;\
-layout(location = 6) uniform highp float brightness;\
-layout(location = 7) uniform sampler2D tex;\
 out highp vec4 color; \
  \
 void main() \
@@ -58,6 +69,22 @@ int load_shader3D_textured()
 {
     // shader3D_textured = spawn_gpu_shader(shader3D_textured_filepath_vert, shader3D_textured_filepath_frag);
     shader3D_textured = spawn_gpu_shader_inline(shader3D_textured_vert_buffer, shader3D_textured_frag_buffer);
+    GLuint material = spawn_gpu_material_program(shader3D_textured);
+    shader_attributes_material_textured3D = (Material3DTextured) { 
+        glGetAttribLocation(material, "vertexPosition"),
+        glGetAttribLocation(material, "vertexUV"),
+        glGetUniformLocation(material, "view_matrix"),
+        glGetUniformLocation(material, "position"),
+        glGetUniformLocation(material, "rotation"),
+        glGetUniformLocation(material, "scale"),
+        glGetUniformLocation(material, "brightness"),
+        glGetUniformLocation(material, "tex")
+    };
+    zoxel_log(" + vertexPosition location: %i\n", shader_attributes_material_textured3D.vertexPosition);
+    zoxel_log(" + vertexUV location: %i\n", shader_attributes_material_textured3D.vertexUV);
+    zoxel_log(" + view_matrix location: %i\n", shader_attributes_material_textured3D.view_matrix);
+    zoxel_log(" + texture location: %i\n", shader_attributes_material_textured3D.texture);
+    glDeleteProgram(material);
     return 0;
 }
 
@@ -85,42 +112,39 @@ void opengl_disable_texture(unsigned char isBlend)
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void opengl_set_buffer_attributes(GLuint vertex_buffer, GLuint uv_buffer)
+void opengl_set_buffer_attributes(GLuint vertex_buffer, GLuint uv_buffer, Material3DTextured *attributes)
 {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glEnableVertexAttribArray(shader_attributes_material_textured3D.vertexPosition);
-    glVertexAttribPointer(shader_attributes_material_textured3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 12, 0);
-
+    glEnableVertexAttribArray(attributes->vertexPosition);
+    glVertexAttribPointer(attributes->vertexPosition, 3, GL_FLOAT, GL_FALSE, 12, 0);
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
-    glEnableVertexAttribArray(shader_attributes_material_textured3D.vertexUV);
-    glVertexAttribPointer(shader_attributes_material_textured3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 8, 0);
+    glEnableVertexAttribArray(attributes->vertexUV);
+    glVertexAttribPointer(attributes->vertexUV, 2, GL_FLOAT, GL_FALSE, 8, 0);
 }
 
-int opengl_set_material3D_uvs_properties(float4 rotation, float scale, float brightness)
+void opengl_set_material3D_uvs_properties(float4 rotation, float scale, float brightness, Material3DTextured *attributes)
 {
     // glUniform3f(materialTextured3D->position, position.x, position.y, position.z);
-    glUniform4f(shader_attributes_material_textured3D.rotation, rotation.x, rotation.y, rotation.z, rotation.w);
-    glUniform1f(shader_attributes_material_textured3D.scale, scale);
-    glUniform1f(shader_attributes_material_textured3D.brightness, brightness);
+    glUniform4f(attributes->rotation, rotation.x, rotation.y, rotation.z, rotation.w);
+    glUniform1f(attributes->scale, scale);
+    glUniform1f(attributes->brightness, brightness);
     /*#ifdef zoxel_catch_opengl_errors
         GLenum err = glGetError();
         if (err != GL_NO_ERROR)
         {
             zoxel_log("GL ERROR with opengl_set_material3D_uvs_properties [%i]\n", (int) err);
             return -1;
-        }
-    #endif*/
-    return 0;
+        }*/
 }
 
-void opengl_set_material3D_uvs_position(float3 position)
+void opengl_set_material3D_uvs_position(float3 position, Material3DTextured *attributes)
 {
-    glUniform3f(shader_attributes_material_textured3D.position, position.x, position.y, position.z);
+    glUniform3f(attributes->position, position.x, position.y, position.z);
 }
 
-void opengl_shader3D_textured_set_camera_view_matrix(const float4x4 view_matrix)
+void opengl_shader3D_textured_set_camera_view_matrix(const float4x4 view_matrix, Material3DTextured *attributes)
 {
-    glUniformMatrix4fv(shader_attributes_material_textured3D.view_matrix, 1, GL_FALSE, (float*) &view_matrix);
+    glUniformMatrix4fv(attributes->view_matrix, 1, GL_FALSE, (float*) &view_matrix);
 }
 
 // printf("Rendering Cube [%ix%i]\n", mesh.x, mesh.y);

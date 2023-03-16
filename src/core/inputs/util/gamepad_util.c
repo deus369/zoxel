@@ -96,7 +96,7 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world)
     }
 }
 
-void reset_gamepad()
+void reset_gamepad(ecs_world_t *world, ecs_entity_t gamepad_entity)
 {
     if (!gamepad_entity || !ecs_is_alive(world, gamepad_entity))
     {

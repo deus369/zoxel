@@ -78,11 +78,11 @@ unsigned char get_node_index(int3 node_position)
 
 #define zoxel_octree_component(name, type, default_value)\
 typedef struct name name;\
-typedef struct name\
+struct name\
 {\
     type value;\
     name *nodes;\
-} name;\
+};\
 ECS_COMPONENT_DECLARE(name);\
 void free##_##name(name* octree)\
 {\

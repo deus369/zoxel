@@ -24,9 +24,9 @@ extern long int line3D_render_system_id;
 void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, int2 size)
 {
     main_camera_matrix = camera_matrix;
-    #ifndef WEB_BUILD
+    //#ifndef WEB_BUILD
     glViewport(position.x, position.y, size.x, size.y);
-    #endif
+    //#endif
     // 3D renders
     opengl_instance3D_begin(main_camera_matrix);
     if (render3D_update_pipeline == 0)
@@ -57,8 +57,6 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     }
     // ecs_run(world, ecs_id(Line2DRenderSystem), 0, NULL);
 }
-
-// extern unsigned char camera_changed;
 
 //! This is called after ecs loop.
 void render_loop_temp()

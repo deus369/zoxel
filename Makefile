@@ -11,21 +11,22 @@ endif
 # Declare compiler tools and flags
 NAME := zoxel
 TARGET = build/zoxel
-TARGET_DEV = build/dev
-TARGET_WEB = build/zoxel.js
+target_dev = build/dev
+target_web = build/zoxel.html # .js
+target_web2 = zoxel.html # .js
 ifeq ($(SYSTEM),Windows)
 TARGET = build/zoxel.exe
-TARGET_DEV = build/dev.exe
+target_dev = build/dev.exe
 endif
 # used for cleaning
 RM = rm
-TARGET_WEB_WASM = build/zoxel.wasm
-TARGET_WEB_DATA = build/zoxel.data
+web_wasm_file = build/zoxel.wasm
+web_data_file = build/zoxel.data
 # our compilers
 # Defines the compiler, cc for C code
 CC = gcc
 # the web compiler
-CC_WEB = ~/projects/emsdk/upstream/emscripten/emcc
+cc_web = ~/projects/emsdk/upstream/emscripten/emcc
 # OBJS defines all the files used to compile the final Zoxel binary.
 OBJS = ../src/main.c
 # This collects all c and h files in the directory
@@ -37,14 +38,14 @@ else
 endif
 # our compiler properties
 CFLAGS =
-# -std=c99 # Specificies c99 Standard
+# c99 | gnu99
 CFLAGS += -std=gnu99
 # Needed for a few functions, will be fixed in the future
 CFLAGS += -D_DEFAULT_SOURCE
 # Position Independent Code https://stackoverflow.com/questions/5311515/gcc-fpic-option
 CFLAGS += -fPIC
 # supresses flecs warning
-CFLAGS += -Wno-stringop-overflow
+cflags_linux += -Wno-stringop-overflow
 # CFLAGS += -Wno-stringop-overflow-size
 # Add libraries
 LDLIBS =
@@ -96,53 +97,54 @@ CFLAGS_RELEASE += -flto=auto
 endif
 # FOR DEBUG
 # For Warnings
-CFLAGS_DEBUG = -Wall
+cflags_debug = -Wall
 # Adds debugging info to executeable
-CFLAGS_DEBUG += -g
-# CFLAGS_DEBUG += -fsanitize=address # detects memory leaks as well
-# CFLAGS_DEBUG += -Wno-stringop-overflow # supresses flecs warning
-# CFLAGS_DEBUG += -Wno-stringop-overflow-size
+cflags_debug += -g
+# cflags_debug += -fsanitize=address # detects memory leaks as well
+# cflags_debug += -Wno-stringop-overflow # supresses flecs warning
+# cflags_debug += -Wno-stringop-overflow-size
 # web build flags
-CFLAGS_WEB = --preload-file resources
-CFLAGS_WEB += -s WASM=1
-CFLAGS_WEB += -s FULL_ES3=1
-CFLAGS_WEB += -s USE_WEBGL2=1
-CFLAGS_WEB += -s MIN_WEBGL_VERSION=2
-CFLAGS_WEB += -s MAX_WEBGL_VERSION=2
-CFLAGS_WEB += -s ALLOW_MEMORY_GROWTH
-CFLAGS_WEB += -s STACK_SIZE=365536
+cflags_web = --preload-file resources
+cflags_web += -s WASM=1
+cflags_web += -s FULL_ES3=1
+cflags_web += -s USE_WEBGL2=1
+cflags_web += -s MIN_WEBGL_VERSION=2
+cflags_web += -s MAX_WEBGL_VERSION=2
+cflags_web += -s ALLOW_MEMORY_GROWTH
+cflags_web += -s STACK_SIZE=365536
+cflags_web += -s EXPORTED_FUNCTIONS=['_main','_ntohs']
 # libraries used in web build
-LDLIBS_WEB = -lGL
-LDLIBS_WEB += -lSDL
-LDLIBS_WEB += -s USE_SDL=2
-LDLIBS_WEB += -s USE_SDL_IMAGE=2
-LDLIBS_WEB += -s SDL2_IMAGE_FORMATS='["png"]' # "bmp",
-LDLIBS_WEB += -s USE_SDL_MIXER=2
-LDLIBS_WEB += -L./ -lflecs
+ldlibs_web = -lGL
+ldlibs_web += -lSDL
+ldlibs_web += -s USE_SDL=2
+ldlibs_web += -s USE_SDL_IMAGE=2
+ldlibs_web += -s SDL2_IMAGE_FORMATS='["png"]' # "bmp",
+ldlibs_web += -s USE_SDL_MIXER=2
+# ldlibs_web += -L./ -lflecs
 # flecs
 flecs_target = build/libflecs.a
 flecs_source = include/flecs/flecs.c
 flecs_flags = -c
 flecs_obj = flecs.o
 # Completed build commands
-MAKE_RELEASE = $(CC) $(CFLAGS) $(CFLAGS_RELEASE) -o ../$(TARGET) $(OBJS) $(LDLIBS) $(LDLIBS2)
-MAKE_DEV = $(CC) $(CFLAGS) $(CFLAGS_DEBUG) -o ../$(TARGET_DEV) $(OBJS) $(LDLIBS) $(LDLIBS2)
-MAKE_WEB_RELEASE = $(CC_WEB) $(CFLAGS) $(CFLAGS_WEB) -o ../$(TARGET_WEB) $(OBJS) $(LDLIBS_WEB)
 make_flecs = $(CC) $(flecs_flags) $(CFLAGS) $(CFLAGS_RELEASE) ../$(flecs_source) -o $(flecs_obj) $(LDLIBS2)
 make_flecs_lib = ar rcs ../$(flecs_target) $(flecs_obj)
+make_release = $(CC) $(CFLAGS) $(cflags_linux) $(CFLAGS_RELEASE) -o ../$(TARGET) $(OBJS) $(LDLIBS) $(LDLIBS2)
+make_dev = $(CC) $(CFLAGS) $(cflags_linux) $(cflags_debug) -o ../$(target_dev) $(OBJS) $(LDLIBS) $(LDLIBS2)
+make_web_release = $(cc_web) $(CFLAGS) $(cflags_web) -o $(target_web2) $(OBJS) ../include/flecs/flecs.c $(ldlibs_web)
 
 # release
 $(TARGET): $(SRCS)
-	bash bash/flecs/check_flecs_lib.sh && cd build && $(MAKE_RELEASE)
+	bash bash/flecs/check_flecs_lib.sh && cd build && $(make_release)
 
 # dev
-$(TARGET_DEV): $(SRCS)
-	bash bash/flecs/check_flecs_lib.sh && cd build && $(MAKE_DEV)
+$(target_dev): $(SRCS)
+	bash bash/flecs/check_flecs_lib.sh && cd build && $(make_dev)
 
-# web
-$(TARGET_WEB): $(SRCS)
+# web - bash bash/flecs/check_flecs_lib.sh && 
+$(target_web): $(SRCS)
 	python3 ~/projects/emsdk/emsdk.py construct_env
-	bash bash/flecs/check_flecs_lib.sh && cd build && $(MAKE_WEB_RELEASE)
+	cd build && $(make_web_release)
 
 # flecs $(flecs_source)
 $(flecs_target):
@@ -157,13 +159,13 @@ all: $(SRCS)
 	cd bash/flecs && bash install_flecs.sh
 	cd build && $(make_flecs) && $(make_flecs_lib)
 	@echo "Making Native Release Build [$(TARGET)]"
-	cd build && $(MAKE_RELEASE)
-	@echo "Making Native Dev Build [$(TARGET_DEV)]"
-	cd build && $(MAKE_DEV)
+	cd build && $(make_release)
+	@echo "Making Native Dev Build [$(target_dev)]"
+	cd build && $(make_dev)
 	@echo "Finished Making All"
 
-# @echo "Making Webasm Release Build [$(TARGET_WEB)]"
-# cd build && $(MAKE_WEB_RELEASE)
+# @echo "Making Webasm Release Build [$(target_web)]"
+# cd build && $(make_web_release)
 
 # Removes all build files
 clean:
@@ -183,11 +185,11 @@ run:
 
 # Runs zoxel dev build
 run-dev:
-	cd build && ./../$(TARGET_DEV)
+	cd build && ./../$(target_dev)
 
 # Runs zoxel dev build with valgrind
 run-dev-debug:
-	cd build && valgrind ./../$(TARGET_DEV)
+	cd build && valgrind ./../$(target_dev)
 
 run-profiler:
 	sleep 3 && open https://www.flecs.dev/explorer &
@@ -195,11 +197,11 @@ run-profiler:
 
 run-dev-profiler:
 	sleep 3 && open https://www.flecs.dev/explorer &
-	cd build && ./../$(TARGET_DEV) --profiler
+	cd build && ./../$(target_dev) --profiler
 
 # Runs zoxel web release build
 run-web:
-	cd build && emrun --browser firefox index.html
+	cd build && ~/projects/emsdk/upstream/emscripten/emrun --browser firefox-esr zoxel.html
 
 android:
 	bash/android/install.sh
@@ -248,14 +250,14 @@ help:
 	@echo "  make $(flecs_target)	builds flecs"
 	@echo "  make			builds zoxel"
 	@echo "  make <target>"
-	@echo "    $(TARGET_DEV)			builds dev"
-	@echo "    $(TARGET_WEB)		builds zoxel-web"
+	@echo "    $(target_dev)			builds dev"
+	@echo "    $(target_web)		builds zoxel-web"
 	@echo "    run			runs $(TARGET)"
 	@echo "    run-profiler	runs $(TARGET) --profiler"
-	@echo "    run-dev		runs $(TARGET_DEV)"
-	@echo "    run-dev-debug	runs valgrind $(TARGET_DEV)"
-	@echo "    run-dev-profiler	runs $(TARGET_DEV) --profiler"
-	@echo "    run-web		runs $(TARGET_WEB)"
+	@echo "    run-dev		runs $(target_dev)"
+	@echo "    run-dev-debug	runs valgrind $(target_dev)"
+	@echo "    run-dev-profiler	runs $(target_dev) --profiler"
+	@echo "    run-web		runs $(target_web)"
 	@echo "    clean		removes all build files"
 	@echo "    count		counts total lines in all source"
 	@echo "    install		installs zoxel"
@@ -287,12 +289,12 @@ help:
 #	make web, or make android, or make windows, or make dev, make is for make linux
 
 # used to remove web?
-# $(RM) $(TARGET_WEB)
-# $(RM) $(TARGET_WEB_WASM)
-# $(RM) $(TARGET_WEB_DATA)
+# $(RM) $(target_web)
+# $(RM) $(web_wasm_file)
+# $(RM) $(web_data_file)
 
 # $(RM) $(TARGET)
-# $(RM) $(TARGET_DEV)
+# $(RM) $(target_dev)
 # $(RM) $(flecs_target)
 
 # LDLIBS += -s SDL2_IMAGE_FORMATS='["png"]' # "bmp",

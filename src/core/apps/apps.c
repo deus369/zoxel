@@ -59,7 +59,6 @@ void AppsImport(ecs_world_t *world) {
     ecs_set_hooks(world, Renderer, { .dtor = ecs_dtor(Renderer) });
     spawn_app_prefab(world);
     set_data_path();
-    // spawn app
     if (init_sdl() == EXIT_SUCCESS) {
         SDL_Window* window = spawn_sdl_window();
         SDL_GLContext* context = create_sdl_context(window);

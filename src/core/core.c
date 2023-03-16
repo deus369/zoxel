@@ -1,12 +1,9 @@
 #ifndef zoxel_core
 #define zoxel_core
 
-// Settings for main
 unsigned char profiler = 0;
-// util
 #include "util/logs.c"
 #include "util/ecs/ecs.c"
-// modules
 #include "maths/maths.c"
 #include "generic/generic.c"
 #include "timing/timing.c"
@@ -17,7 +14,6 @@ unsigned char profiler = 0;
 #include "cameras/cameras.c"
 #include "rendering/rendering.c"
 #include "sounds/sounds.c"
-// core loop
 #include "util/core_util.c"
 
 //! Handles modules that are for basic stuff at lowest level

@@ -1,5 +1,7 @@
-// #include <arpa/inet.h>  // inet_addr, inet_ntop, sockaddr_in
-// #include <sys/socket.h>
+/*uint16_t ntohs2(uint16_t netshort) {
+    uint8_t *p = (uint8_t *)&netshort;
+    return (uint16_t)(p[0] << 8 | p[1]);
+}*/
 
 //! Converts byte4 and a port to a sockaddr_in struct.
 struct sockaddr_in byte4_to_ip(byte4 input, int port)

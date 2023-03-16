@@ -10,7 +10,8 @@ typedef struct
     GLuint texture;
 } Material3DTextured;
 
-const Material3DTextured shader_attributes_material_textured3D = (Material3DTextured) { 0, 1, 2, 3, 4, 5, 6, 7 };
+Material3DTextured shader_attributes_material_textured3D;
+// const Material3DTextured shader_attributes_material_textured3D = (Material3DTextured) { 0, 1, 2, 3, 4, 5, 6, 7 };
 
 /*Material3DTextured spawn_material3D_textured()
 {
