@@ -1,6 +1,8 @@
 # zoxel todo list
 
-[Back](readme.md)
+    A todo list for zoxel porting and beyond
+
+[Back](../readme.md)
 
 -----
 

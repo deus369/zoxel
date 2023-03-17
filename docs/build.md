@@ -3,7 +3,7 @@ How-To Building
 
     A quick guide on how I build Zoxel.
 
-[Return Home](../../readme.md)
+[Return Home](../readme.md)
 
 -----
 

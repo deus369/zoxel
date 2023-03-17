@@ -1,6 +1,6 @@
 <p align="center">
 	<br>
-		<img src="readme.svg" width="100%" height="200">
+		<img src="docs/readme.svg" width="100%" height="200">
 	</a>
 	<br>
 </p>
@@ -12,18 +12,18 @@ Experience the thrill of discovery and adventure in this groundbreaking, procedu
 
 <p align="center">
   [
-  <a href="todo.md">
+  <a href="docs/todo.md">
     todo list
   </a>
   <a style="margin-left: 10px;"> | </a>
-  <a href="build.md">
+  <a href="docs/build.md">
     build guide
   </a>
   ]
 </p>
 
 <p align="center">
-  <img src="latest_screenshot.jpg?raw=false" alt="Zoxel" width="420"/>
+  <img src="docs/latest_screenshot.jpg?raw=false" alt="Zoxel" width="420"/>
   <!--<img src="https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/zoxel_unity_00.png?raw=false" alt="Unity Zoxel" width="400"/>-->
 </p>
 
