@@ -21,29 +21,24 @@ double get_time_seconds()
     return ((double) (clock() / clocks_per_second) - time_app_started);
 }
 
-#ifdef zoxel_time_always
+#define get_timing_passed()\
+     (double) (clock() - time_start) / CLOCKS_PER_SEC
 
+#ifdef zoxel_time_always
     #define end_timing(system_name)\
-    double time_taken = (double) (clock() - time_start) / clocks_per_second;\
-    if (time_taken >= 1.0)\
-    {\
+    double time_taken = get_timing_passed();\
+    if (time_taken >= 1.0) {\
         zoxel_log("%s [%fs]\n", system_name, time_taken);\
-    }\
-    else\
-    {\
+    } else {\
         zoxel_log("%s [%fms]\n", system_name, 1000.0 * time_taken);\
     }
 #else
     #define end_timing(system_name)\
-    if (did_do)\
-    {\
+    if (did_do) {\
         double time_taken = (double) (clock() - time_start) / clocks_per_second;\
-        if (time_taken >= 1.0)\
-        {\
+        if (time_taken >= 1.0) {\
             zoxel_log("%s [%fs]\n", system_name, time_taken);\
-        }\
-        else\
-        {\
+        } else {\
             zoxel_log("%s [%fms]\n", system_name, 1000.0 * time_taken);\
         }\
     }
@@ -51,18 +46,13 @@ double get_time_seconds()
 
 
 #define end_timing_cutoff(system_name, cuttoff)\
-if (did_do)\
-{\
+if (did_do) {\
     long double time_taken = ((long double) (clock() - time_start) / clocks_per_second);\
-    if (time_taken >= 1.0)\
-    {\
+    if (time_taken >= 1.0) {\
         zoxel_log("%s [%Lgs] - [Seconds]\n", system_name, time_taken);\
-    }\
-    else\
-    {\
+    } else {\
         time_taken *= 1000.0;\
-        if (time_taken >= cuttoff)\
-        {\
+        if (time_taken >= cuttoff) {\
             zoxel_log("%s [%Lgms]\n", system_name, time_taken);\
         }\
     }\

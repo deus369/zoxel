@@ -1,8 +1,7 @@
 extern float4x4 main_camera_matrix;
 
 //! Renders for material material3D_textured
-void Render3DUvsSystem(ecs_iter_t *it)
-{
+void Render3DUvsSystem(ecs_iter_t *it) {
     #ifdef zoxel_time_render_3d_uvs
         begin_timing_absolute()
     #endif
@@ -18,11 +17,9 @@ void Render3DUvsSystem(ecs_iter_t *it)
     // later store commands per material to optimize this process
     // zoxel_log("rendering chunks: %i\n", it->count);
     unsigned char has_set_single_material = 0;
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
-        if (meshIndicies2->length == 0)
-        {
+        if (meshIndicies2->length == 0) {
             continue;
         }
         const Position3D *position = &positions[i];
@@ -33,20 +30,18 @@ void Render3DUvsSystem(ecs_iter_t *it)
         const MaterialGPULink *materialGPULink = &materialGPULinks[i];
         const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
         const TextureGPULink *textureGPULink = &textureGPULinks[i];
-        Material3DTextured attributes = (Material3DTextured) { 
-            glGetAttribLocation(materialGPULink->value, "vertexPosition"),
-            glGetAttribLocation(materialGPULink->value, "vertexUV"),
-            glGetUniformLocation(materialGPULink->value, "view_matrix"),
-            glGetUniformLocation(materialGPULink->value, "position"),
-            glGetUniformLocation(materialGPULink->value, "rotation"),
-            glGetUniformLocation(materialGPULink->value, "scale"),
-            glGetUniformLocation(materialGPULink->value, "brightness"),
-            glGetUniformLocation(materialGPULink->value, "tex")
-        };
         #ifndef voxels_terrain_multi_material
-            if (!has_set_single_material)
-            {
+            Material3DTextured attributes = (Material3DTextured) { 
+                glGetAttribLocation(materialGPULink->value, "vertexPosition"),
+                glGetAttribLocation(materialGPULink->value, "vertexUV"), 0,
+                glGetUniformLocation(materialGPULink->value, "position"), 0, 0, 0, 0
+            };
+            if (!has_set_single_material) {
                 has_set_single_material = 1;
+                attributes.view_matrix = glGetUniformLocation(materialGPULink->value, "view_matrix");
+                attributes.rotation = glGetUniformLocation(materialGPULink->value, "rotation");
+                attributes.scale = glGetUniformLocation(materialGPULink->value, "scale");
+                attributes.brightness = glGetUniformLocation(materialGPULink->value, "brightness");
                 opengl_set_material(materialGPULink->value);
                 opengl_set_texture(textureGPULink->value, false);
                 opengl_shader3D_textured_set_camera_view_matrix(main_camera_matrix, &attributes);
@@ -57,8 +52,18 @@ void Render3DUvsSystem(ecs_iter_t *it)
             opengl_set_mesh_indicies(meshGPULink->value.x);
             opengl_draw_triangles(meshIndicies2->length);
         #else
+            Material3DTextured attributes = (Material3DTextured) { 
+                glGetAttribLocation(materialGPULink->value, "vertexPosition"),
+                glGetAttribLocation(materialGPULink->value, "vertexUV"),
+                glGetUniformLocation(materialGPULink->value, "view_matrix"),
+                glGetUniformLocation(materialGPULink->value, "position"),
+                glGetUniformLocation(materialGPULink->value, "rotation"),
+                glGetUniformLocation(materialGPULink->value, "scale"),
+                glGetUniformLocation(materialGPULink->value, "brightness"),
+                glGetUniformLocation(materialGPULink->value, "tex")
+            };
             opengl_set_material(materialGPULink->value);
-            opengl_set_texture(textureGPULink->value, false);
+            opengl_set_texture_only(textureGPULink->value);
             opengl_set_mesh_indicies(meshGPULink->value.x);
             opengl_shader3D_textured_set_camera_view_matrix(main_camera_matrix, &attributes);
             opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, &attributes);

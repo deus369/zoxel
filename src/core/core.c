@@ -2,6 +2,7 @@
 #define zoxel_core
 
 unsigned char profiler = 0;
+ecs_world_t *world;
 #include "util/logs.c"
 #include "util/ecs/ecs.c"
 #include "maths/maths.c"

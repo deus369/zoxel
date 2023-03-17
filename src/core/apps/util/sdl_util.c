@@ -1,8 +1,5 @@
-// sdl util things
 const char *iconFilename = resources_folder_name"textures/game_icon.png";
 int2 screen_dimensions = { 720, 480 };
-// SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN
-// SDL_RENDERER_SOFTWARE SDL_RENDERER_ACCELERATED
 
 // links to input and camera modules
 extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event);
@@ -89,14 +86,13 @@ int init_sdl() {
 }
 
 //! Initialize SDL things, thingy things. 32bit color, 24bit depth
-int set_sdl_attributes(unsigned char vsync) {
+int set_sdl_attributes() {
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); // 24 | 32
-    SDL_GL_SetSwapInterval(vsync); //  ? 1 : 0);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, sdl_gl_major);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, sdl_gl_minor);
     if (opengl_es_supported()) {
@@ -138,15 +134,15 @@ SDL_Window* spawn_sdl_window() {
         zoxel_log(" - failed to create sdl window [%s]\n", SDL_GetError());
         return window;
     }
-    int didFail = set_sdl_attributes(vsync);
+    int didFail = set_sdl_attributes();
     print_sdl();
     if (didFail == EXIT_FAILURE) {
         zoxel_log("Failed to set_sdl_attributes.");
         return NULL;
     }
-    SDL_GL_SetSwapInterval(1);
     SDL_SetWindowResizable(window, is_resizeable);
     SDL_GL_SwapWindow(window);
+    SDL_GL_SetSwapInterval(vsync);
     load_app_icon(window);
     return window;
 }
@@ -212,3 +208,5 @@ void update_sdl(ecs_world_t *world) {
 if (displays > 1 && window_index != -1 && window_index < displays) {
     app_position.x = screen_dimensions.x * window_index;
 }*/
+// SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN
+// SDL_RENDERER_SOFTWARE SDL_RENDERER_ACCELERATED

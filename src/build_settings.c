@@ -32,7 +32,6 @@
 #define zoxel_debug_sdl
 #define zoxel_debug_opengl
 // #define zoxel_catch_opengl_errors
-// #define zoxel_log_frames_per_second
 // #define zoxel_debug_vox_read
 //! \todo Fix pathing for android, cannot get resources there.
 // #define zoxel_debug_pathing 
@@ -46,7 +45,10 @@
 // #define zoxel_time_render_loop
 // Timings
 //  > target fps is 30 then 33.33 is the ms required, 16.66 if 60 fps
+// #define zoxel_log_frame_ms
+// #define zoxel_log_frames_per_second
 // #define zoxel_time_main_loop
+// #define zoxel_time_main_loop_cutoff 0
 // #define zoxel_time_main_loop_cutoff 30
 // #define zoxel_time_always
 // voxels timing

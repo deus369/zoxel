@@ -1,6 +1,8 @@
 #ifndef zoxel_players
 #define zoxel_players
 
+// \todo Spawning Queries in Initialize function as they depend on other Modules.
+
 ecs_entity_t local_player;
 zoxel_declare_tag(Player2D)
 zoxel_declare_tag(Player3D)
@@ -19,12 +21,7 @@ zoxel_declare_tag(PlayerCharacter3D)
 #include "systems/free_camera_toggle_system.c"
 #include "systems/free_camera_disable_movement_system.c"
 
-//! players Module
-/**
- * \todo Spawning Queries in Initialize function as they depend on other Modules.
-*/
-void PlayersImport(ecs_world_t *world)
-{
+void PlayersImport(ecs_world_t *world) {
     zoxel_module(Players)
     zoxel_define_tag(Player2D)
     zoxel_define_tag(Player3D)

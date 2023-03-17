@@ -1,28 +1,18 @@
 //! Contains a link to the MaterialGPULink on the GPU.
-/**
-*   Materials are shader program instances.
-*   \todo Seperate mesh data into different files.
-*/
 zoxel_component(MaterialGPULink, GLuint);
 
-//! Grab from opengl part.
 extern GLuint spawn_gpu_material_program(const GLuint2 shader);
 
-void add_gpu_material(ecs_world_t *world, ecs_entity_t prefab)
-{
+void add_gpu_material(ecs_world_t *world, ecs_entity_t prefab) {
     zoxel_set(world, prefab, MaterialGPULink, { 0 });
 }
 
-void spawn_gpu_material(ecs_world_t *world, ecs_entity_t e, const GLuint2 shader)
-{
+void spawn_gpu_material(ecs_world_t *world, ecs_entity_t e, const GLuint2 shader) {
     ecs_set(world, e, MaterialGPULink, { spawn_gpu_material_program(shader) });
 }
 
-ECS_DTOR(MaterialGPULink, ptr,
-{
-    // printf("ECS_DTOR MaterialGPULink [%i] on GPU.\n", ptr->value);
-    if (ptr->value != 0)
-    {
+ECS_DTOR(MaterialGPULink, ptr, {
+    if (ptr->value != 0) {
         glDeleteProgram(ptr->value);
     }
 })

@@ -1,6 +1,12 @@
 #ifndef zoxel_cameras
 #define zoxel_cameras
 
+/**
+*   Custom name for namespace?
+*       const char* nm_zoxel_cameras = "Zoxel.cameras";
+*       zoxel_module(world, cameras, nm_zoxel_cameras);
+*/
+
 #define max_cameras 16
 const float camera_far_distance = 6000;
 int main_cameras_count = 1;
@@ -26,14 +32,7 @@ zoxel_byte_component(FreeRoam)             //! Used to free roam a camera.
 #include "systems/view_matrix_system.c"
 #include "systems/camera2D_follow_system.c"
 
-//! Camera module for camera matrix and other stuff.
-/**
-*   Custom name for namespace?
-*       const char* nm_zoxel_cameras = "Zoxel.cameras";
-*       zoxel_module(world, cameras, nm_zoxel_cameras);
-*/
-void CamerasImport(ecs_world_t *world)
-{
+void CamerasImport(ecs_world_t *world) {
     zoxel_module(Cameras)
     zoxel_define_tag(Camera)
     zoxel_define_tag(CameraFollower2D) // Until fix is found. \todo Fix this, readd it back here where it belongs.

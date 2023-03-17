@@ -30,7 +30,7 @@
 unsigned char running = 1;
 unsigned char headless = 0;
 const int window_index = 0; // 1;
-unsigned char vsync = 1;
+unsigned char vsync = 0;
 unsigned char fullscreen = 1; // set full screen default option here
 unsigned char halfscreen = 0;
 unsigned char is_split_screen = 0;
@@ -46,6 +46,7 @@ zoxel_component(Context, SDL_GLContext*)
 #include "util/sdl_util.c"
 #include "util/webasm_util.c"
 #include "util/cleanup_util.c"
+#include "util/mouse_util.c"
 
 //! apps Module.
 void AppsImport(ecs_world_t *world) {

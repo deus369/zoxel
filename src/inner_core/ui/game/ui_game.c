@@ -18,8 +18,7 @@ zoxel_component(FPSDisplayTicker, double)
 #include "systems/quads_display_system.c"
 
 //! Game UI Module, main menu, level select, etc.
-void UIGameImport(ecs_world_t *world)
-{
+void UIGameImport(ecs_world_t *world) {
     zoxel_module(UIGame)
     zoxel_define_tag(MainMenu)
     zoxel_define_tag(OptionsUI)

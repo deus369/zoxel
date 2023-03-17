@@ -1,8 +1,4 @@
-// extern ecs_entity_t mainCamera;
-
-//! Spawn a Player character.
-ecs_entity_t spawn_player_character2D(ecs_world_t *world, ecs_entity_t camera)
-{
+ecs_entity_t spawn_player_character2D(ecs_world_t *world, ecs_entity_t camera) {
     ecs_defer_begin(world);
     // child prefabs don't seem to inherit tags
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, player_character2D_prefab);

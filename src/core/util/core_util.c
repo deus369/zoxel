@@ -1,6 +1,6 @@
 //! The main update loop.
 void update_core() {
-    // apps / Input events
+    begin_timing()
     if (!headless) {
         reset_input_devices(world);
         update_sdl(world);
@@ -11,11 +11,14 @@ void update_core() {
     }
     // ecs_log_set_level(1);    // use this to debug system pipelines
     ecs_progress(world, 0);
-    // main thread, generates gpu buffer
     if (!headless) {
-        set_mouse_mode();
-        render_loop_temp();
+        set_mouse_constrained(get_mouse_constrained());
+        render_loop_temp(); // opengl render commands
     }
+    zoxel_delta_time = get_timing_passed();
+    #ifdef zoxel_log_frame_ms
+        zoxel_log(" > frame time [%fms]\n", (float) (zoxel_delta_time * 1000.0f));
+    #endif
 }
 
 int begin_core(int argc, char* argv[]) {
@@ -24,7 +27,7 @@ int begin_core(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
     int cpuCoreCount = SDL_GetCPUCount();
-    open_ecs(argc, argv, profiler, cpuCoreCount); // begin ecs
+    world = open_ecs(argc, argv, profiler, cpuCoreCount); // begin ecs
     return EXIT_SUCCESS;
 }
 

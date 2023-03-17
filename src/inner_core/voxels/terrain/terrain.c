@@ -1,29 +1,22 @@
 #ifndef zoxel_voxels_terrain
 #define zoxel_voxels_terrain
 
-// voxels settings
-/*
-    1,      // 0
-    2,      // 1
-    4,      // 2
-    8,      // 3
-    16,     // 4
-    32,     // 5
-    64,     // 6
-    128     // 7
-*/
+#ifndef WEB_BUILD
+    #define terrain_spawn_distance 16
+    #define inner_render_buffer 2
+#else
+    #define terrain_spawn_distance 8
+    #define inner_render_buffer 1
+#endif
 #define max_octree_depth 4 // 5
-#define inner_render_buffer 2
-#define terrain_rows 16
 #define terrain_vertical 2
 #define octree_min_height -1.995f // 0.005f
 #define noise_positiver2 32000
+#define terrain_amplifier 64.0
+#define terrain_minus_amplifier 0.0
 #ifdef voxel_octrees
-    #define terrain_amplifier 64.0
     #define terrain_frequency 0.026216 // 0.004216
-    #define terrain_minus_amplifier 0.0
 #else
-    #define terrain_amplifier 64.0
     #define terrain_frequency 0.00216 // 0.004216
 #endif
 const int3 terrain_chunk_size = { chunk_length, 8 * chunk_length, chunk_length };
@@ -55,7 +48,6 @@ void TerrainImport(ecs_world_t *world) {
     zoxel_define_component(StreamPoint)
     zoxel_filter(generateTerrainChunkQuery, world, [none] TerrainChunk, [in] GenerateChunk)
     zoxel_filter(generateChunkQuery, world, [in] GenerateChunk)
-    //zoxel_filter(streamerPositionQuery, world, [none] Streamer, [in] Position3D)
     zoxel_system_ctx(world, TerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
         [none] TerrainChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] ChunkPosition, [in] GenerateChunk)
     zoxel_system_ctx(world, OctreeTerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
@@ -77,3 +69,14 @@ void TerrainImport(ecs_world_t *world) {
     spawn_prefab_terrain_chunk_octree(world, terrain_chunk_size);
 }
 #endif
+
+/*  terrain_spawn_distance
+    1,      // 0
+    2,      // 1
+    4,      // 2
+    8,      // 3
+    16,     // 4
+    32,     // 5
+    64,     // 6
+    128     // 7
+*/

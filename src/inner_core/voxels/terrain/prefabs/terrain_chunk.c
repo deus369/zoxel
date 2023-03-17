@@ -1,7 +1,6 @@
 ecs_entity_t prefab_terrain_chunk;
 
-ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, int3 size)
-{
+ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, int3 size) {
     int2 texture_size = { 16, 16 };
     ecs_defer_begin(world);
     // ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, voxel_prefab);
@@ -15,8 +14,7 @@ ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, int3 size)
     add_texture(world, e, texture_size);
     add_noise_texture(world, e);
     zoxel_add_tag(world, e, DirtTexture);
-    if (!headless)
-    {
+    if (!headless) {
         zoxel_add(world, e, MeshUVs);
         add_gpu_uvs(world, e);
         add_gpu_texture(world, e);
@@ -27,16 +25,14 @@ ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, int3 size)
 }
 
 ecs_entity_t spawn_terrain_chunk(ecs_world_t *world, ecs_entity_t prefab,
-    int3 chunk_position, float3 position, float scale)
-{
+    int3 chunk_position, float3 position, float scale) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
     set_unique_entity_name(world, e, "terrain_chunk");
     ecs_set(world, e, ChunkPosition, { chunk_position });
     ecs_set(world, e, Position3D, { position });
     ecs_set(world, e, Scale1D, { scale });
-    if (!headless)
-    {
+    if (!headless) {
         spawn_gpu_mesh(world, e);
         spawn_gpu_material(world, e, shader3D_textured);
         spawn_gpu_uvs(world, e);
@@ -47,8 +43,7 @@ ecs_entity_t spawn_terrain_chunk(ecs_world_t *world, ecs_entity_t prefab,
 }
 
 void set_chunk_neighbors(ecs_world_t *world, ecs_entity_t e,
-    ecs_entity_t chunk_left, ecs_entity_t chunk_right, ecs_entity_t chunk_back, ecs_entity_t chunk_front)
-{
+    ecs_entity_t chunk_left, ecs_entity_t chunk_right, ecs_entity_t chunk_back, ecs_entity_t chunk_front) {
     ChunkNeighbors chunkNeighbors = { };
     initialize_memory_component_non_pointer(chunkNeighbors, ecs_entity_t, 4);
     chunkNeighbors.value[0] = chunk_left;
@@ -61,8 +56,7 @@ void set_chunk_neighbors(ecs_world_t *world, ecs_entity_t e,
 void set_chunk_neighbors_six_directions(ecs_world_t *world, ecs_entity_t e,
     ecs_entity_t chunk_left, ecs_entity_t chunk_right,
     ecs_entity_t chunk_down, ecs_entity_t chunk_up,
-    ecs_entity_t chunk_back, ecs_entity_t chunk_front)
-{
+    ecs_entity_t chunk_back, ecs_entity_t chunk_front) {
     ChunkNeighbors chunkNeighbors = { };
     initialize_memory_component_non_pointer(chunkNeighbors, ecs_entity_t, 6);
     chunkNeighbors.value[0] = chunk_left;

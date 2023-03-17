@@ -1,8 +1,6 @@
-// Camera2D prefab
 ecs_entity_t base_camera_prefab;
 
-void spawn_camera_base_prefab(ecs_world_t *world)
-{
+void spawn_camera_base_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "base_camera_prefab");
     set_unique_entity_name(world, e, "base_camera_prefab");
@@ -24,8 +22,7 @@ void spawn_camera_base_prefab(ecs_world_t *world)
 }
 
 ecs_entity_t spawn_base_camera(ecs_world_t *world, float3 position, float4 rotation,
-    int2 screen_dimensions, int2 screen_position)
-{
+    int2 screen_dimensions, int2 screen_position) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, base_camera_prefab);
     set_unique_entity_name(world, e, "base_camera");
@@ -41,8 +38,7 @@ ecs_entity_t spawn_base_camera(ecs_world_t *world, float3 position, float4 rotat
 }
 
 ecs_entity_t spawn_free_camera(ecs_world_t *world, float3 position, float4 rotation,
-    int2 screen_dimensions, int2 screen_position)
-{
+    int2 screen_dimensions, int2 screen_position) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, base_camera_prefab);
     set_unique_entity_name(world, e, "free_camera");
