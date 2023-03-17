@@ -24,10 +24,17 @@ A quick reference to make commands. Make sure to install flecs first before buil
 ```
 make help               # if you are feeling lost
 ```
-> install zoxel and required libraries
+> download zoxel project source
 ```
-sudo apt-get install git make               # you need these to build 
-git clone https://codeberg.org/deus/zoxel   # first get the project
+curl -L https://github.com/deus369/zoxel/tarball/master | tar xz && mv deus369-zoxel-* zoxel 
+```
+> or get the project git repo
+```
+git clone https://codeberg.org/deus/zoxel
+```
+> install required libraries
+```
+sudo apt-get install make               # you need these to build 
 make install-required                       # installs required libraries
 ```
 > install flecs using make > bash commands

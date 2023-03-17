@@ -91,10 +91,16 @@
 
     ### core
 
-    - [x] bake mesh on gpu test
-    - [ ] bake a voxel mesh on gpu test
-    - [ ] stream functions, loading/unloading chunks based on camera
-    - [ ] bake voxels on gpu (implementation)
+    - [ ] speed up terrain generation OctreeTerrainChunkSystem
+    - [ ] speed up mesh building on cpu OctreeChunkUVsBuildSystem
+    - [ ] stream functions, loading new/unloading chunks based on camera
+    - [ ] camera culling with chunk bounds
+
+        #### gpu meshing
+
+        - [x] bake mesh on gpu test
+        - [ ] bake a voxel mesh on gpu test
+        - [ ] bake voxels on gpu (implementation)
 
     ### terrain
 

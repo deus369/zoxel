@@ -5,15 +5,12 @@
 unsigned char is_adjacent_all_solid(unsigned char direction,
     const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *neighbors[],
     int3 octree_position, int3 node_position,
-    unsigned char depth, unsigned char max_depth, unsigned char neighbors_max_depths[])
-{
+    unsigned char depth, unsigned char max_depth, unsigned char neighbors_max_depths[]) {
     unsigned char chunk_index = 0;
     const ChunkOctree *adjacent_node = find_adjacent_ChunkOctree(root_node, parent_node,
         octree_position, node_position, depth, direction, neighbors, &chunk_index);
-    if (adjacent_node == NULL || adjacent_node->value == 0)
-    {
-        if (adjacent_node == NULL && chunk_index != 0)
-        {
+    if (adjacent_node == NULL || adjacent_node->value == 0) {
+        if (adjacent_node == NULL && chunk_index != 0) {
             #ifdef voxels_hide_terrain_edge
                 return 1;
             #else
@@ -21,70 +18,46 @@ unsigned char is_adjacent_all_solid(unsigned char direction,
             #endif
         }
         return 0;
-    }
-    // check underneath nodes
-    else if (adjacent_node->nodes &&
+    } else if (adjacent_node->nodes &&
         ((chunk_index == 0 && depth < max_depth) || 
-        (chunk_index != 0 && depth < neighbors_max_depths[chunk_index - 1])))
-    {
+        (chunk_index != 0 && depth < neighbors_max_depths[chunk_index - 1]))) {
+        // check underneath nodes
         depth++;
         octree_position.x *= 2;
         octree_position.y *= 2;
         octree_position.z *= 2;
-        for (unsigned char i = 0; i < octree_length; i++)
-        {
+        for (unsigned char i = 0; i < octree_length; i++) {
             int3 local_position = octree_positions[i];
-            if (direction == direction_left)
-            {
-                if (local_position.x != 0)
-                {
+            if (direction == direction_left) {
+                if (local_position.x != 0) {
                     continue;
                 }
-            }
-            else if (direction == direction_right)
-            {
-                if (local_position.x != 1)
-                {
+            } else if (direction == direction_right) {
+                if (local_position.x != 1) {
                     continue;
                 }
-            }
-            else if (direction == direction_down)
-            {
-                if (local_position.y != 0)
-                {
+            } else if (direction == direction_down) {
+                if (local_position.y != 0) {
                     continue;
                 }
-            }
-            else if (direction == direction_up)
-            {
-                if (local_position.y != 1)
-                {
+            } else if (direction == direction_up) {
+                if (local_position.y != 1) {
                     continue;
                 }
-            }
-            else if (direction == direction_back)
-            {
-                if (local_position.z != 0)
-                {
+            } else if (direction == direction_back) {
+                if (local_position.z != 0) {
                     continue;
                 }
-            }
-            else if (direction == direction_front)
-            {
-                if (local_position.z != 1)
-                {
+            } else if (direction == direction_front) {
+                if (local_position.z != 1) {
                     continue;
                 }
-            }
-            else
-            {
+            } else {
                 continue;
             }
-            if (is_adjacent_all_solid(direction, root_node,
-                &adjacent_node->nodes[i], neighbors,
+            if (is_adjacent_all_solid(direction, root_node, &adjacent_node->nodes[i], neighbors,
                 int3_add(octree_position, local_position), local_position,
-                    depth, max_depth, neighbors_max_depths) == 0)
-            {
+                    depth, max_depth, neighbors_max_depths) == 0) {
                 return 0;
             }
         }
@@ -112,17 +85,12 @@ unsigned char is_adjacent_all_solid(unsigned char direction,
     }\
 }
 
-void count_octree_chunk(
-    const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree,
-    const ChunkOctree *neighbors[], unsigned char neighbors_max_depths[],
-    MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
-    int2 *mesh_count, unsigned char depth, unsigned char max_depth,
-    int3 octree_position, int3 node_position)
-{
-    if (depth >= max_depth || chunk_octree->nodes == NULL)
-    {
-        if (chunk_octree->value)
-        {
+void count_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_node,
+    const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[], unsigned char neighbors_max_depths[],
+    MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, int2 *mesh_count,
+    unsigned char depth, unsigned char max_depth, int3 octree_position, int3 node_position) {
+    if (depth >= max_depth || chunk_octree->nodes == NULL) {
+        if (chunk_octree->value) {
             zoxel_octree_add_face_counts(left)
             zoxel_octree_add_face_counts(right)
             zoxel_octree_add_face_counts(down)
@@ -130,18 +98,14 @@ void count_octree_chunk(
             zoxel_octree_add_face_counts(back)
             zoxel_octree_add_face_counts(front)
         }
-    }
-    else
-    {
+    } else {
         depth++;
         // also check for sub nodes!
-        if (chunk_octree->nodes != NULL)
-        {
+        if (chunk_octree->nodes != NULL) {
             octree_position.x *= 2;
             octree_position.y *= 2;
             octree_position.z *= 2;
-            for (unsigned char i = 0; i < octree_length; i++)
-            {
+            for (unsigned char i = 0; i < octree_length; i++) {
                 int3 local_position = octree_positions[i];
                 count_octree_chunk(root_node, chunk_octree, &chunk_octree->nodes[i],
                     neighbors, neighbors_max_depths,
@@ -158,12 +122,9 @@ void build_octree_chunk(
     const ChunkOctree *neighbors[], unsigned char neighbors_max_depths[],
     MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
     int2 *start, unsigned char depth, unsigned char max_depth,
-    int3 octree_position, int3 node_position, float scale)
-{
-    if (depth >= max_depth || chunk_octree->nodes == NULL)
-    {
-        if (chunk_octree->value)
-        {
+    int3 octree_position, int3 node_position, float scale) {
+    if (depth >= max_depth || chunk_octree->nodes == NULL) {
+        if (chunk_octree->value) {
             float voxel_scale = scale * (overall_voxel_scale / ((float) octree_node_size));
             float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f,
                 - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
@@ -176,25 +137,19 @@ void build_octree_chunk(
             zoxel_octree_build_face(back, 0)
             zoxel_octree_build_face(front, 1)
         }
-    }
-    else
-    {
+    } else {
         depth++;
         scale *= 0.5f;
         octree_position.x *= 2;
         octree_position.y *= 2;
         octree_position.z *= 2;
         int3 local_position;
-        for (local_position.x = 0; local_position.x < octree_node_size; local_position.x++)
-        {
-            for (local_position.y = 0; local_position.y < octree_node_size; local_position.y++)
-            {
-                for (local_position.z = 0; local_position.z < octree_node_size; local_position.z++)
-                {
+        for (local_position.x = 0; local_position.x < octree_node_size; local_position.x++) {
+            for (local_position.y = 0; local_position.y < octree_node_size; local_position.y++) {
+                for (local_position.z = 0; local_position.z < octree_node_size; local_position.z++) {
                     int array_index = int3_array_index(local_position, octree_node_size3);
                     ChunkOctree node = chunk_octree->nodes[array_index];
-                    if (node.value == 0)
-                    {
+                    if (node.value == 0) {
                         continue;
                     }
                     int3 child_octree_position = int3_add(octree_position, local_position);
@@ -210,23 +165,17 @@ void build_octree_chunk(
     }
 }
 
-unsigned char get_max_depth_from_division(unsigned char chunk_division)
-{
+unsigned char get_max_depth_from_division(unsigned char chunk_division) {
     #ifdef zoxel_voxel_disable_distance_division
         unsigned char max_depth = max_octree_depth;
     #else
         unsigned char depth_addition = chunk_division / 2;
         unsigned char max_depth;
-        if (depth_addition < inner_render_buffer)
-        {
+        if (depth_addition < inner_render_buffer) {
             max_depth = max_octree_depth;
-        }
-        else if ((depth_addition - inner_render_buffer) > max_octree_depth)
-        {
+        } else if ((depth_addition - inner_render_buffer) > max_octree_depth) {
             max_depth = 0;
-        }
-        else
-        {
+        } else {
             max_depth = max_octree_depth - (depth_addition - inner_render_buffer);
         }
     #endif
@@ -236,8 +185,8 @@ unsigned char get_max_depth_from_division(unsigned char chunk_division)
 void build_octree_chunk_mesh_uvs(const ChunkOctree *chunk_octree,
     MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
     unsigned char chunk_division,
-    const ChunkOctree *neighbors[], unsigned char neighbors_max_depths[])
-{
+    const ChunkOctree *neighbors[], unsigned char neighbors_max_depths[]) {
+    // try using a list of mesh data and then converting to an array instead and comparing speeds
     int2 mesh_count = { 0, 0 };
     int2 *start = &((int2) { 0, 0 });
     unsigned char max_depth = get_max_depth_from_division(chunk_division);
@@ -252,15 +201,11 @@ void build_octree_chunk_mesh_uvs(const ChunkOctree *chunk_octree,
         neighbors, neighbors_max_depths,
         meshIndicies, meshVertices, meshUVs, start, 0, max_depth,
         int3_zero, int3_zero, 2.0f);
-    // try using a list of mesh data and then converting to an array instead and comparing speeds
 }
 
-//! Builds a mesh data from the chunk!
-void OctreeChunkUVsBuildSystem(ecs_iter_t *it)
-{
+void OctreeChunkUVsBuildSystem(ecs_iter_t *it) {
     if (disable_chunk_systems) return;
-    if (!ecs_query_changed(it->ctx, NULL))
-    {
+    if (!ecs_query_changed(it->ctx, NULL)) {
         return;
     }
     #ifdef zoxel_time_octree_chunk_uvs_builds_system
@@ -274,16 +219,13 @@ void OctreeChunkUVsBuildSystem(ecs_iter_t *it)
     MeshVertices *meshVertices = ecs_field(it, MeshVertices, 6);
     MeshUVs *meshUVs = ecs_field(it, MeshUVs, 7);
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 8);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         const ChunkDirty *chunkDirty = &chunkDirtys[i];
-        if (chunkDirty->value == 0)
-        {
+        if (chunkDirty->value == 0) {
             continue;
         }
         MeshDirty *meshDirty = &meshDirtys[i];
-        if (meshDirty->value != 0)
-        {
+        if (meshDirty->value != 0) {
             continue;
         }
         meshDirty->value = 1;
@@ -293,11 +235,8 @@ void OctreeChunkUVsBuildSystem(ecs_iter_t *it)
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
         MeshUVs *meshUVs2 = &meshUVs[i];
-        if (meshIndicies2->length != 0)
-        {
+        if (meshIndicies2->length != 0) {
             tri_count -= meshIndicies2->length / 3;
-            //if (it->entities[i] == 1597)
-            //    printf("Removed %lu - %i - tri_count[%i]  \n",  it->entities[i], meshIndicies2->length / 3, tri_count);
         }
         const ChunkOctree *chunk_left = chunkNeighbors2->value[0] == 0 ?
             NULL : ecs_get(it->world, chunkNeighbors2->value[0], ChunkOctree);
@@ -343,22 +282,3 @@ void OctreeChunkUVsBuildSystem(ecs_iter_t *it)
     #endif
 }
 zoxel_declare_system(OctreeChunkUVsBuildSystem)
-
-
-//  && depth > max_depth
-//  && (chunk_index != 0 || depth > max_depth)
-// (chunk_index == 0 && depth > max_depth))
-// || (chunk_index != 0 && depth > neighbors_max_depths[chunk_index - 1]) 
-// if (octree_node != NULL && octree_node->nodes != NULL) octree_node = NULL;
-// if (octree_node != NULL && octree_node->nodes != NULL) octree_node = NULL;
-// if (octree_node != NULL && octree_node->nodes != NULL) octree_node = NULL;
-
-/*#define zoxel_set_octree_adjacent(direction_name)\
-    const ChunkOctree *octree_node = find_adjacent_ChunkOctree(root_node, parent_node,\
-        octree_position, node_position, depth, direction##_##direction_name, neighbors);\
-    if (octree_node != NULL && octree_node->nodes != NULL)\
-            octree_node = NULL;*/
-
-/*#define zoxel_octree_check(direction_name)\
-    zoxel_set_octree_adjacent(direction_name)\
-        if (octree_node == NULL || octree_node->value == 0)*/

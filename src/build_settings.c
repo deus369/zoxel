@@ -55,8 +55,9 @@
 // #define zoxel_time_stream_point_system
 // #define zoxel_time_terrain_chunk_system
 // #define zoxel_time_chunk_uvs_builds_system
-// #define zoxel_time_octree_terrain_chunk_system
-// #define zoxel_time_octree_chunk_uvs_builds_system
+// voxel octrees timing
+#define zoxel_time_octree_terrain_chunk_system
+#define zoxel_time_octree_chunk_uvs_builds_system
 // #define zoxel_time_mesh_uvs_update_system
 // idea: generate terrain too at lesser resolutions
 // #define zoxel_time_render_3d_uvs

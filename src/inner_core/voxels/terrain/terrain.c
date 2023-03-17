@@ -4,11 +4,12 @@
 #ifndef WEB_BUILD
     #define terrain_spawn_distance 16
     #define inner_render_buffer 2
+    #define max_octree_depth 4
 #else
     #define terrain_spawn_distance 8
     #define inner_render_buffer 1
+    #define max_octree_depth 3
 #endif
-#define max_octree_depth 4 // 5
 #define terrain_vertical 2
 #define octree_min_height -1.995f // 0.005f
 #define noise_positiver2 32000

@@ -54,7 +54,9 @@ Zoxel's codebase is modular and well-organized, with the game engine serving as 
   <img width="64" src="build/resources/textures/game_icon.png" alt="Zoxel Logo"> 
 </p>
 <p align="center">
+  [
   <a href="https://codeberg.org/deus/zoxel">codeberg</a>
   <a style="margin-left: 10px;"> | </a>
   <a href="https://github.com/deus369/zoxel">github</a>
+  ]
 </p>
