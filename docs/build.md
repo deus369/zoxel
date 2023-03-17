@@ -1,34 +1,13 @@
 How-To Building
 -----
 
-    A quick guide on how I build Zoxel.
+    The one true guide on how to build Zoxel
 
-[Return Home](../readme.md)
-
------
-
-# The true way
-
-A quick reference to make commands. Make sure to install flecs first before building zoxel.
-
-```
-make help               // if you are feeling lost
-make install-required   // installs required libraries
-make install-flecs      // installs flecs v3.0.3 files
-make build/libflecs.a   // builds flecs library
-make                    // builds a release build on linux
-make build/dev          // builds a dev build
-make install            // installs zoxel (linux only atm)
-zoxel                   // runs zoxel after installed
-make -j$(nproc)         // add -j$(nproc) to use all cpu cores to build
-make install-web-sdk    // installs emscripten for web builds
-make build/zoxel.html   // build web
-make run-web            // run web
-```
+[Back](../readme.md)
 
 -----
 
-# Building
+## Building
 
     Download the code & use make commands to build it
 
@@ -48,111 +27,50 @@ I am using these libraries due to their light weight and power -unlimited power-
 
 - [OpenGL](https://www.khronos.org/opengles/) OpenGL 3.0 ES
 
+
+## The true way
+
+A quick reference to make commands. Make sure to install flecs first before building zoxel.
+
+```
+make help               // if you are feeling lost
+```
+> install zoxel and required libraries
+```
+sudo apt-get install git make // you need these to build 
+git clone https://codeberg.org/deus/zoxel   // first get the project
+make install-required   // installs required libraries
+```
+> install flecs using make > bash commands
+```
+make install-flecs      // installs flecs v3.0.3 files
+make build/libflecs.a   // builds flecs library
+```
+> for linux or windows
+```
+make                    // builds a release build
+make build/dev          // builds a dev build
+make -j$(nproc)         // multithreaded building
+```
+> linux
+```
+make install            // installs zoxel
+zoxel                   // runs zoxel after installed
+```
+> web
+```
+make install-web-sdk    // installs emscripten for web builds
+make build/zoxel.html   // build web
+make run-web            // run web
+```
+
 ### Future Libaries
 
 I may switch to Glut in the future to reduce build size even more, instead of SDL.
 
 I may also try out Vulkan, for multi threading powers and performance.
 
-## Building
-
-### Download
-
-```
-# go to home directory
-cd ~
-
-# install git (if required)
-sudo apt-get install git
-
-# clone with git
-git clone https://codeberg.org/deus/zoxel
-
-# go to zoxel directory for building
-cd zoxel
-
-# for a list of commands
-make help
-```
-
-### Linux
-
-This is for Debian based Linux systems.
-
-Linux [Native]
-```
-# install required tools
-sudo apt install make gcc
-# installs required libraries
-sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev
-
-# builds zoxel binary
-#   j flag = processor core count
-make -j$(nproc)
-
-# installs zoxel binary, shortcut and resources
-make install
-
-# removes those installed files
-make uninstall
-```
-
-### Dev Mode
-
-Make Zoxel Dev
-
-```
-# Make Dev Build
-make zoxel-dev
-
-# Run Dev Build
-make run-dev
-```
-
-Use valgrind for debugging memory / stack tracing
-```
-#install valgrind
-sudo apt-get install valgrind
-
-# use valgrind with a binary build
-make run-dev-debug
-```
-
-### Windows [On Linux]
-
-[mingw-w64](http://mingw-w64.org/doku.php) is used to cross-compile the project from a unix-like system.
-
-```
-sudo apt install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev mingw-w64 make tar wget
-make -f MakefileToWindows
-```
-
-### Web [On Linux]
-
-This is to compile zoxel with emscripten as web asm
-
-First install emscripten sdk using their guide https://emscripten.org/docs/getting_started/downloads.html
-
-This should put emsdk inside your home directory
-
-```
-# uses a bash to install emcc for building web
-make install-web-builder
-
-# This loads emsdk environment variables
-#   [must run before using other commands]
-source ~/emsdk/emsdk_env.sh
-
-# build zoxel web build
-source ~/emsdk/emsdk_env.sh; make -j$(nproc) web/zoxel.js
-
-# run zoxel web build
-source ~/emsdk/emsdk_env.sh; make run-web
-```
-
-Note: Javascript must be enabled to run web build
-
-### Android [On Linux]
+## Android [On Linux]
 
 This is to compile zoxel as an apk
 
@@ -177,11 +95,3 @@ To run, connect an android device with the right privlages and run the bash belo
 ```
 sh gradle_install_debug.sh
 ```
-
-### MacOS [On Linux] [todo]
-
-### IOS [On Linux] [todo]
-
-### Windows [Native] [todo]
-
-[Make](https://pubs.opengroup.org/onlinepubs/009695399/utilities/make.html)
