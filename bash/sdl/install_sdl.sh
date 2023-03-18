@@ -2,15 +2,13 @@
 
 function has_library {
     libraries=("$@")
-    found=0
     for library in "${libraries[@]}"; do
         if dpkg -s "$library" > /dev/null 2>&1 || pacman -Qs "$library" > /dev/null 2>&1; then
             echo "[$library] is already installed."
-            found=1
-            break
+            return 0
         fi
     done
-    return $found
+    return 1
 }
 
 function install_library {
@@ -27,10 +25,11 @@ function install_library {
 }
 
 function install_first_library {
-    echo "  > install_first_library"
+    # echo "  > install_first_library"
     libraries=("$@")
     if has_library "${libraries[@]}"; then
-       return 0
+        echo "  > library already exists"
+        return 0
     fi
     echo "  > Installing library from list"
     for library in "${libraries[@]}"; do
