@@ -14,9 +14,9 @@ function has_library {
 function install_library {
     library=$1
     if command -v apt-get >/dev/null 2>&1; then
-        sudo apt-get install -y "$library"
+        sudo apt-get install -y "$library" || return 1
     elif command -v pacman >/dev/null 2>&1; then
-        sudo pacman -S --noconfirm "$library"
+        sudo pacman -S --noconfirm "$library" || return 1
     else
         echo "Package manager not found!"
         return 1
