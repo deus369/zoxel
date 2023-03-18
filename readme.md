@@ -12,12 +12,12 @@ Experience the thrill of discovery and adventure in this groundbreaking, procedu
 
 <p align="center">
   [
-  <a href="docs/todo.md">
-    todo list
-  </a>
-  <a style="margin-left: 10px;"> | </a>
   <a href="docs/build.md">
     build guide
+  </a>
+  <a style="margin-left: 10px;"> | </a>
+  <a href="docs/todo.md">
+    todo list
   </a>
   ]
 </p>
@@ -27,22 +27,16 @@ Experience the thrill of discovery and adventure in this groundbreaking, procedu
   <!--<img src="https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/zoxel_unity_00.png?raw=false" alt="Unity Zoxel" width="400"/>-->
 </p>
 
-<h3 align="center">Code | License | Socials</h3>
-
-Zoxel's codebase is modular and well-organized, with the game engine serving as the main module and five additional main modules (core, inner_core, outer_core, gameplay, and space) each with their own sub-modules. Zoxel uses the GPL license, which allows for open-source collaboration and innovation within the software community. Stay up to date on my development journey by following me on social media.
+<h3 align="center">The Zoxel Engine</h3>
 
 <p align="center">
-  [
-  <a href="https://mastodon.gamedev.place/@deus">mastodon</a>
-  <a style="margin-left: 10px;"> | </a>
-  <a href="https://twitter.com/deusxyz">twitter</a>
-  <a style="margin-left: 10px;"> | </a>
-  <a href="https://deus0.itch.io">itchio</a>
-  <a style="margin-left: 10px;"> | </a>
-  <a href="https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4">youtube</a>
-  <a style="margin-left: 10px;"> | </a>
-  <a href="https://linktr.ee/lorddeus">linktree</a>
-  ]
+The game engine has five main modules (core, inner_core, outer_core, gameplay, and space) each with their own sub-modules.
+</p>
+<p align="center">
+Zoxel uses the GPL license, which allows for open-source collaboration and innovation within the software community.
+</p>
+<p align="center">
+Stay up to date on my development journey by following me on social media.
 </p>
 
 -----
@@ -58,5 +52,19 @@ Zoxel's codebase is modular and well-organized, with the game engine serving as 
   <a href="https://codeberg.org/deus/zoxel">codeberg</a>
   <a style="margin-left: 10px;"> | </a>
   <a href="https://github.com/deus369/zoxel">github</a>
+  ]
+</p>
+
+<p align="center">
+  [
+  <a href="https://mastodon.gamedev.place/@deus">mastodon</a>
+  <a style="margin-left: 10px;"> | </a>
+  <a href="https://twitter.com/deusxyz">twitter</a>
+  <a style="margin-left: 10px;"> | </a>
+  <a href="https://deus0.itch.io">itchio</a>
+  <a style="margin-left: 10px;"> | </a>
+  <a href="https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4">youtube</a>
+  <a style="margin-left: 10px;"> | </a>
+  <a href="https://linktr.ee/lorddeus">linktree</a>
   ]
 </p>
