@@ -1,7 +1,7 @@
 How-To Building
 -----
 
-    The one true guide on how to build Zoxel
+    The one true guide on how to build zoxel
 
 [Back](../readme.md)
 
@@ -17,7 +17,19 @@ How-To Building
 
 As a player of our voxel-based RPG, you will have the ability to build and mod to your heart's content. Our game features powerful building mechanics that allow you to create and destroy structures using voxels, giving you the freedom to design and shape your own environments. And with modding support, you can take your creativity even further by creating your own custom content and gameplay mechanics. Whether you want to build a towering fortress, a sprawling city, or something entirely different, the sky's the limit. So why not give building and modding a try and see what you can create? The possibilities are endless!
 
-## The true way
+### Dependencies
+
+I am using these libraries due to their light weight and power -unlimited power-
+
+- [Flecs](https://github.com/SanderMertens/flecs) Fast and lightweight Entity Component System
+
+- [SDL2](https://www.libsdl.org/index.php) Simple DirectMedia Layer (zlib)
+
+- [OpenGL](https://www.khronos.org/opengles/) OpenGL 3.0 ES
+
+In the future I may support Vulkan, for multi threading powers and performance gains.
+
+## The True Way
 
 A quick reference to make commands. Make sure to install flecs first before building zoxel.
 
@@ -63,44 +75,4 @@ make run-web            # run web
 ```
 make install-android-sdk    # installs android sdk, ndk for android builds
 make android                # builds an android apk and pushes it to device (uses gradle)
-```
-
-## Dependencies
-
-I am using these libraries due to their light weight and power -unlimited power-
-
-- [Flecs](https://github.com/SanderMertens/flecs) Fast and lightweight Entity Component System
-
-- [SDL2](https://www.libsdl.org/index.php) Simple DirectMedia Layer (zlib)
-
-- [OpenGL](https://www.khronos.org/opengles/) OpenGL 3.0 ES
-
-I may switch to Glut in the future to reduce build size even more, instead of SDL.
-
-I may also try out Vulkan, for multi threading powers and performance.
-
-## Android [On Linux]
-
-This is to compile zoxel as an apk
-
-First install ndk in $HOME/android/ndk
-
-Next install android-sdk in /usr/lib/android-sdk
-
-Third, install SDL into $HOME/SDL/ under sub directories:
-    SDL2, SDL2_image, SDL2_mixer
-
-Go to the android bash scripts folder
-```
-cd ~/zoxel/bash/android
-```
-
-Now run the installer which will copy all files needed, including zoxel source code and settings.
-```
-sh android_total_install.sh
-```
-
-To run, connect an android device with the right privlages and run the bash below
-```
-sh gradle_install_debug.sh
 ```

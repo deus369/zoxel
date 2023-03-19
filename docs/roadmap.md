@@ -1,6 +1,6 @@
 # zoxel roadmap
 
-    A list of milestones and timeline
+    the timeline of development consisting of milestones
 
 [Back](../readme.md)
 
