@@ -16,12 +16,12 @@ Experience the thrill of discovery and adventure in this groundbreaking, procedu
     build guide
   </a>
   <a style="margin-left: 10px;"> | </a>
-  <a href="docs/todo.md">
-    todo list
+  <a href="docs/roadmap.md">
+    the roadmap
   </a>
   <a style="margin-left: 10px;"> | </a>
-  <a href="docs/roadmap.md">
-    roadmap
+  <a href="docs/todo.md">
+    todo list
   </a>
   ]
 </p>

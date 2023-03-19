@@ -77,12 +77,12 @@ As a player of our voxel-based RPG, you will have the ability to build and mod t
 -----
 
 <p align="center">
-  <img width="64" src="build/resources/textures/game_icon.png" alt="Zoxel Logo"> 
+  <img width="64" src="../build/resources/textures/game_icon.png" alt="Zoxel Logo"> 
 </p>
 
 <p align="center">
   [
-  <a href="(https://github.com/SanderMertens/flecs">flecs</a>
+  <a href="https://github.com/SanderMertens/flecs">flecs</a>
   <a style="margin-left: 10px;"> | </a>
   <a href="https://www.libsdl.org">sdl</a>
   <a style="margin-left: 10px;"> | </a>
