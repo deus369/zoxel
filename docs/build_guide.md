@@ -1,37 +1,36 @@
-How-To Building
------
+# zoxel build guide
 
-    The one true guide on how to build zoxel
+    the one true guide on how to build zoxel
 
 [Back](../readme.md)
 
 -----
 
-## Welcome
+## welcome
 
-    Download the code & use make commands to build it
+    download the code & use make commands to build it
 
-    Cross-platform Building (Linux, Windows, Android, Web, IOS*)
+    cross-platform: linux, windows, android & web
 
-    Depends on Flecs, SDL2 & OpenGL 3.0 ES
+    depends on flecs, sdl2 & opengl 3.0 es
 
 As a player of our voxel-based RPG, you will have the ability to build and mod to your heart's content. Our game features powerful building mechanics that allow you to create and destroy structures using voxels, giving you the freedom to design and shape your own environments. And with modding support, you can take your creativity even further by creating your own custom content and gameplay mechanics. Whether you want to build a towering fortress, a sprawling city, or something entirely different, the sky's the limit. So why not give building and modding a try and see what you can create? The possibilities are endless!
 
-### Dependencies
+### dependencies
 
-I am using these libraries due to their light weight and power -unlimited power-
+light weight and power -unlimited power-
 
-- [Flecs](https://github.com/SanderMertens/flecs) Fast and lightweight Entity Component System
+- [flecs](https://github.com/SanderMertens/flecs) fast and lightweight entity component system
 
-- [SDL2](https://www.libsdl.org/index.php) Simple DirectMedia Layer (zlib)
+- [sdl](https://www.libsdl.org/index.php) simple directMedia layer
 
-- [OpenGL](https://www.khronos.org/opengles/) OpenGL 3.0 ES
+- [opengl](https://www.khronos.org/opengles/) opengl 3.0 es
 
-In the future I may support Vulkan, for multi threading powers and performance gains.
+one day, i may support Vulkan, for performance gains
 
-## The True Way
+## the true way
 
-A quick reference to make commands. Make sure to install flecs first before building zoxel.
+a quick reference to make commands. Make sure to install flecs first before building zoxel.
 
 ```
 make help               # if you are feeling lost
