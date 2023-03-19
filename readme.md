@@ -19,6 +19,10 @@ Experience the thrill of discovery and adventure in this groundbreaking, procedu
   <a href="docs/todo.md">
     todo list
   </a>
+  <a style="margin-left: 10px;"> | </a>
+  <a href="docs/todo.md">
+    roadmap
+  </a>
   ]
 </p>
 

@@ -31,7 +31,7 @@ cd $sdl_directory/build/org.zoxel.zoxel/
 # .$sdl_directory/build/org.zoxel.zoxel/gradlew org.zoxel.zoxel $SRCS
 
 echo Finished Building Zoxel Android
-sleep 330
+# sleep 330
 
 #ln -s /usr/src/SDL2_image jni/
 #ln -s /usr/src/SDL2_image/external/libwebp-0.3.0 jni/webp

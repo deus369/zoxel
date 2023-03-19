@@ -2,7 +2,7 @@
 
 # copies SDL2 and SDL_image src, include and Application into android project
 
-source gradle_set_paths.sh
+source $PWD/bash/android/gradle_set_paths.sh
 
 # sdl - base
 # sdl_directory=$HOME/SDL/SDL2
@@ -51,4 +51,4 @@ cp -R $sdl2_mixer_directory_include $destination_directory3
 echo Finished copying SDL files
 # sleep 2
 # echo Make sure to set AndroidBuild in include file at $new_source_directory0/src
-sleep 3 # 15
+# sleep 3 # 15

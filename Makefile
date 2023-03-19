@@ -203,15 +203,21 @@ run-dev-profiler:
 run-web:
 	cd build && ~/projects/emsdk/upstream/emscripten/emrun --browser firefox-esr zoxel.html
 
+install-web-sdk:
+	bash bash/web/install_sdk.sh
+
 android:
-	bash/android/install.sh
+	bash bash/android/install.sh
 
 android-dev:
-	bash/android/install_debug.sh
+	bash bash/android/install_debug.sh
 
 android-dev-debug:
-	bash/android/install_debug.sh
-	bash/android/read_logcat.sh
+	bash bash/android/install_debug.sh
+	bash bash/android/read_logcat.sh
+
+install-android-sdk:
+	bash bash/android/install_required.sh
 
 install: ## installs zoxel into /usr/games directory
 	cd bash/install && bash install.sh
@@ -223,9 +229,6 @@ install-required:
 	@echo "Installing Libaries: make gcc"
 	sudo apt install gcc
 	bash bash/sdl/install_sdl.sh
-
-install-web-sdk:
-	bash bash/web/install_sdk.sh
 
 install-sdl:
 	bash bash/sdl/install_sdl.sh
@@ -263,7 +266,8 @@ help:
 	@echo "    install		installs zoxel"
 	@echo "    uninstall		inuninstalls zoxel"
 	@echo "    install-sdl		installs sdl"
-	@echo "    install-web-sdk	installs emcc for web build"
+	@echo "    install-web-sdk	installs tools for web build"
+	@echo "    install-android-sdk	installs tools for android build"
 	@echo "    android		builds & runs android release"
 	@echo "    android-dev		builds & runs android debug"
 	@echo "    android-dev-debug	builds & runs android debug with logcat"

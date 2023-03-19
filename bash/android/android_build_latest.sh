@@ -1,25 +1,17 @@
 #!/bin/bash
 
 current_directory=$(pwd)
-echo Inside $current_directory
-sleep 3
 
-source android_copy_source.sh
+echo "Inside Zoxel Directory [$current_directory]"
 
-source gradle_install_debug.sh
+source $PWD/bash/android/android_copy_source.sh
 
-echo =====
-
-sleep 3
+source $PWD/bash/android/gradle_install_debug.sh
 
 echo Running logcat
 
-sleep 3
-
 cd $current_directory
 
-source read_logcat.sh
+source $PWD/bash/android/read_logcat.sh
 
 echo Finished running latest
-
-sleep 30

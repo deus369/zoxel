@@ -8,7 +8,7 @@
 #   - app/src/main/res
 #   - resources into app/src/main/resources/ & rename to android-resources sub folder
 
-source gradle_set_paths.sh
+source $PWD/bash/android/gradle_set_paths.sh
 
 # new_source_directory0=$android_directory/app/jni/src
 # # our settings files
