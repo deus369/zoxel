@@ -12,7 +12,7 @@ Experience the thrill of discovery and adventure in this groundbreaking, procedu
 
 <p align="center">
   [
-  <a href="docs/build.md">
+  <a href="docs/build_guide.md">
     build guide
   </a>
   <a style="margin-left: 10px;"> | </a>

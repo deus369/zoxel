@@ -35,7 +35,7 @@ git clone https://codeberg.org/deus/zoxel
 > install required libraries
 ```
 sudo apt-get install make               # you need these to build 
-make install-required                       # installs required libraries
+make install-required                   # installs required libraries
 ```
 > install flecs using make > bash commands
 ```
@@ -58,6 +58,11 @@ zoxel                   # runs zoxel after installed
 make install-web-sdk    # installs emscripten for web builds
 make build/zoxel.html   # build web
 make run-web            # run web
+```
+> android
+```
+make install-android-sdk    # installs android sdk, ndk for android builds
+make android                # builds an android apk and pushes it to device (uses gradle)
 ```
 
 ## Dependencies
