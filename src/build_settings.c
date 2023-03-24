@@ -70,4 +70,4 @@
 // audio timing
 // #define zoxel_time_sound_generate_system
 // zoxel game
-// #define voxels_spawn_terrain
+#define voxels_spawn_terrain

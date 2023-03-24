@@ -1,8 +1,11 @@
 #ifndef zoxel_ui
 #define zoxel_ui
 
-const float default_ui_scale = 1.0f;
-const float android_ui_scale = 2.0f;
+#ifndef ANDROID_BUILD
+    #define default_ui_scale 1.0f
+#else
+    #define default_ui_scale 2.0f
+#endif
 #include "core/ui_core.c"
 #include "texts/texts.c"
 #include "elements/elements.c"

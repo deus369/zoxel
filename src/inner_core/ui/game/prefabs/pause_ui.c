@@ -22,7 +22,6 @@ ecs_entity_t spawn_pause_ui(ecs_world_t *world, const char *header_label,
     int header_margins = 4;
     #ifdef ANDROID_BUILD
     window_size.y = 160;
-    ui_scale = android_ui_scale;
     #endif
     // scale the ui!
     window_size.x *= ui_scale;

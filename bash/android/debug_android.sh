@@ -1,7 +1,7 @@
 #!/bin/bash
 
 log_tag="Zoxel"
-package_name="org.mrpenguin.zoxel"
+package_name="org.libsdl.app"
 echo "  > debugging zoxel android [$log_tag]."
 while true; do
     # adb logcat *:V # $package_name *:V
@@ -9,8 +9,10 @@ while true; do
     # adb logcat $log_tag:verbose *:V
     # adb logcat
     # adb logcat $log_tag:verbose *:S
-    # adb logcat -s "$log_tag"
-    adb logcat -s SDL
+    a# db logcat -s "$log_tag" color *:V
+    adb logcat -s org.libsdl.app
+    # adb logcat -s SDL
+    # adb logcat -v color *:V
     sleep 1
     # echo "Restarting logcat."
 done
