@@ -24,12 +24,12 @@ else
 
     echo "Copying zoxel settings to build directory."
     # cd $android_bash_directory
-    source bash/android/android_copy_settings.sh
+    source bash/android/copy_settings.sh
 fi
 
 echo "Copying zoxel source files to build directory."
 # cd $android_bash_directory
-source bash/android/android_copy_source.sh
+source bash/android/copy_source.sh
 
 # checks if android build directory exists, if it doesn't exist it will build it using sdl files.
 # updates source files after that.

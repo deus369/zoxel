@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export ANDROID_SDK_ROOT=/usr/lib/android-sdk
 source $PWD/bash/android/gradle_set_paths.sh
 cd $android_directory
 echo "gradlew installDebug"

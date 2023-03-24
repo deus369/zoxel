@@ -25,12 +25,7 @@ zoxel_reset_system(TextureDirtyResetSystem, TextureDirty)
 zoxel_reset_system(GenerateTextureResetSystem, GenerateTexture)
 #include "tests/test_texture.c"
 
-//! textures Module.
-/**
-*    \todo Multithreaded change filters? zoxel_system
-*/
-void TexturesCoreImport(ecs_world_t *world)
-{
+void TexturesCoreImport(ecs_world_t *world) {
     zoxel_module(TexturesCore)
     zoxel_define_tag(NoiseTexture)
     zoxel_define_tag(FrameTexture)
@@ -46,8 +41,7 @@ void TexturesCoreImport(ecs_world_t *world)
     zoxel_texture_generation_system(FrameTexture, FrameTextureSystem)
     zoxel_system_main_thread(world, TextureSaveSystem, texture_update_pipeline,
         [in] TextureDirty, [in] Texture, [in] TextureSize, [none] SaveTexture)
-    if (!headless)
-    {
+    if (!headless) {
         zoxel_system_main_thread(world, TextureUpdateSystem, texture_update_pipeline,
             [in] TextureDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink)
     }
@@ -55,5 +49,7 @@ void TexturesCoreImport(ecs_world_t *world)
     zoxel_reset_system_define(TextureDirtyResetSystem, TextureDirty)
     spawn_prefab_noise_texture(world);
 }
+
 // #include <cstdint> ? https://stackoverflow.com/questions/20024690/is-there-byte-data-type-in-c
+// \todo Multithreaded change filters? zoxel_system
 #endif

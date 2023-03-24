@@ -1,8 +1,7 @@
 ecs_entity_t prefab_ui_line2D;
 ecs_entity_t prefab_temporary_ui_line2D;
 
-void spawn_prefab_ui_line2D(ecs_world_t *world)
-{
+void spawn_prefab_ui_line2D(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "prefab_ui_line2D");
     set_unique_entity_name(world, e, "prefab_ui_line2D");
@@ -28,17 +27,13 @@ void spawn_prefab_ui_line2D(ecs_world_t *world)
 
 extern void set_ui_line_position(LineData2D *lineData2D, const LineElementData *lineElementData, float2 canvas_size_f, float aspect_ratio);
 
-ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point_a, int2 point_b, color line_color, float thickness, double life_time)
-{
+ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point_a, int2 point_b, color line_color, float thickness, double life_time) {
     ecs_defer_begin(world);
     ecs_entity_t e;
-    if (life_time == 0.0)
-    {
+    if (life_time == 0.0) {
         // printf("Spawning ui_line2D!\n");
         e = ecs_new_w_pair(world, EcsIsA, prefab_ui_line2D);
-    }
-    else
-    {
+    } else {
         // printf("Spawning temporary_ui_line2D! %f\n", life_time);
         e = ecs_new_w_pair(world, EcsIsA, prefab_temporary_ui_line2D);
     }
@@ -47,8 +42,7 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point
     ecs_set(world, e, LineThickness, { thickness });
     ecs_set(world, e, LineElementData, { { point_a.x, point_a.y, point_b.x, point_b.y } });
     int2 canvas_size = screen_dimensions;
-    if (canvas != 0)
-    {
+    if (canvas != 0) {
         canvas_size = ecs_get(world, canvas, PixelSize)->value;
         ecs_set(world, e, CanvasLink, { canvas });
     }
@@ -59,8 +53,7 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point
     set_ui_line_position(&lineData2D, &lineElementData, canvas_size_f, aspect_ratio);
     ecs_set(world, e, LineData2D, { lineData2D.value });
     // temp stuff
-    if (life_time != 0.0f)
-    {
+    if (life_time != 0.0f) {
         ecs_set(world, e, DestroyInTime, { life_time });
     }
     ecs_defer_end(world);
@@ -70,8 +63,7 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point
     return e;
 }
 
-void spawn_canvas_edge_lines(ecs_world_t *world, ecs_entity_t main_canvas)
-{
+void spawn_canvas_edge_lines(ecs_world_t *world, ecs_entity_t main_canvas) {
     // test ui line
     color edge_color = (color) { 8, 3, 3, 255 };
     // color cross_color =  (color) { 55, 33, 12, 255 };

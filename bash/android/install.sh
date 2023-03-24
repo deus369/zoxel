@@ -1,5 +1,7 @@
 #!/bin/bash
-source bash/android/update_android_build.sh
+
+#source bash/android/update_android_build.sh
+source bash/android/copy_source.sh
 source bash/android/gradle_install.sh
 
 # write a script to download sdl2 folders

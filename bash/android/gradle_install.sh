@@ -1,12 +1,15 @@
 #!/bin/bash
 
-source bash/android/gradle_set_paths.sh
-cd $android_directory
+export ANDROID_SDK_ROOT=/usr/lib/android-sdk
+# source bash/android/gradle_set_paths.sh
+# cd $android_directory
+cd build/android-build
 # ./gradlew install #installRelease
-echo ""
-echo "Building android release build."
-echo "-----"
+# echo ""
+echo "  > building android release build"
+# echo "-----"
 bash gradlew build --parallel && bash gradlew install --parallel
+
 # echo ""
 # echo "gradlew installRelease"
 # echo "-----"

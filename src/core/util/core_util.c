@@ -32,9 +32,12 @@ int begin_core(int argc, char* argv[]) {
 }
 
 void close_core() {
-    close_ecs();
     if (!headless) {
         dispose_opengl();
+    }
+    close_ecs();
+    if (!headless) {
+        close_audio_sdl();
         SDL_Quit();
     }
 }

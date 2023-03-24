@@ -212,9 +212,18 @@ android:
 android-dev:
 	bash bash/android/install_debug.sh
 
+android-clean:
+	bash bash/android/gradle_clean.sh
+
+android-debug:
+	bash bash/android/debug_android.sh
+
+android-update-settings:
+	bash bash/android/copy_settings.sh
+
 android-dev-debug:
 	bash bash/android/install_debug.sh
-	bash bash/android/read_logcat.sh
+	bash bash/android/debug_android.sh
 
 install-android-sdk:
 	bash bash/android/install_required.sh

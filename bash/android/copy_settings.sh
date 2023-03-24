@@ -63,4 +63,4 @@ rm $file_3_target
 cp $file_3 $file_3_target
 
 echo "Finished copying settings files."
-sleep 3
+# sleep 3

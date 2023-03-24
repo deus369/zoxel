@@ -18,7 +18,6 @@
 // voxels
 #define voxel_octrees
 #define voxels_close_octree_nodes
-#define voxels_spawn_terrain
 #define voxels_hide_terrain_edge
 // #define voxels_terrain_multi_material
 // #define zoxel_disable_close_nodes
@@ -70,4 +69,5 @@
 // #define zoxel_disable_music
 // audio timing
 // #define zoxel_time_sound_generate_system
-// Finally include zoxel engine and zoxel
+// zoxel game
+// #define voxels_spawn_terrain

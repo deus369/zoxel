@@ -25,19 +25,21 @@
 
 void OpenGLImport(ecs_world_t *world) {
     zoxel_module(OpenGL)
-    opengl_load_functions();
-    if (load_all_shaders() == EXIT_FAILURE) {
-        zoxel_log(" - failed to load all shaders\n");
-        return;
-    }
-    print_opengl();
-    if (check_compute_shader_support() == EXIT_FAILURE) {
-        zoxel_log(" - compute is not supported\n");
-        return;
-    }
-    if (test_compute_shader() == EXIT_FAILURE) {
-        zoxel_log(" - failed to create compute shader\n");
-        return;
+    if (main_gl_context) {
+        opengl_load_functions();
+        if (load_all_shaders() == EXIT_FAILURE) {
+            zoxel_log(" - failed to load all shaders\n");
+            return;
+        }
+        print_opengl();
+        if (check_compute_shader_support() == EXIT_FAILURE) {
+            zoxel_log(" - compute is not supported\n");
+            return;
+        }
+        if (test_compute_shader() == EXIT_FAILURE) {
+            zoxel_log(" - failed to create compute shader\n");
+            return;
+        }
     }
 }
 #endif

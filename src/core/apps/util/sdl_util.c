@@ -63,17 +63,22 @@ void sdl_toggle_fullscreen(SDL_Window* window) {
 }
 
 // checks es is supported
-int opengl_es_supported() {
+unsigned char opengl_es_supported() {
+    unsigned char is_supported = 0;
     int num_render_drivers = SDL_GetNumRenderDrivers();
+    zoxel_log(" > found [%i] render drivers\n", num_render_drivers);
     for (int i = 0; i < num_render_drivers; i++) {
         SDL_RendererInfo info;
         SDL_GetRenderDriverInfo(i, &info);
-        zoxel_log(" > checking driver [%s]\n", info.name);
         if (strstr(info.name, "opengles")) {
-            return 1; 
+            zoxel_log("     + render driver [%s]\n", info.name);
+            is_supported = 1;
+            // return 1; 
+        } else {
+            zoxel_log("     - render driver [%s]\n", info.name);
         }
     }
-    return 0;
+    return is_supported;
 }
 
 int init_sdl() {

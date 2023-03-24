@@ -30,11 +30,12 @@
 unsigned char running = 1;
 unsigned char headless = 0;
 const int window_index = 0; // 1;
-unsigned char vsync = 0;
-unsigned char fullscreen = 1; // set full screen default option here
-unsigned char halfscreen = 0;
+unsigned char vsync = 1;
+unsigned char fullscreen = 0; // set full screen default option here
+unsigned char halfscreen = 1;
 unsigned char is_split_screen = 0;
 SDL_Window* main_window;
+SDL_GLContext* main_gl_context;
 zoxel_declare_tag(App)
 zoxel_component(SDLWindow, SDL_Window*)
 zoxel_component(Renderer, SDL_Renderer*)
@@ -62,8 +63,8 @@ void AppsImport(ecs_world_t *world) {
     set_data_path();
     if (init_sdl() == EXIT_SUCCESS) {
         SDL_Window* window = spawn_sdl_window();
-        SDL_GLContext* context = create_sdl_context(window);
-        spawn_app(world, window, context);
+        SDL_GLContext* gl_context = create_sdl_context(window);
+        spawn_app(world, window, gl_context);
         main_window = window;
         #ifndef WEB_BUILD
             #ifndef ANDROID_BUILD
@@ -72,6 +73,10 @@ void AppsImport(ecs_world_t *world) {
                 }
             #endif
         #endif
+        main_gl_context = gl_context;
+        if (main_gl_context == NULL) {
+            running = false;
+        }
     }
 }
 #endif

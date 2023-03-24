@@ -42,7 +42,7 @@ int begin(int argc, char* argv[]) {
 }
 
 void end() {
-    close_audio_sdl();
+    zoxel_log(" > ending zoxel_engine\n");
     close_core();
     dispose_vox_files();
 }
