@@ -1,9 +1,7 @@
 //! When ui text updates, spawn/destroy font entities
-void ZextUpdateSystem(ecs_iter_t *it)
-{
+void ZextUpdateSystem(ecs_iter_t *it) {
     ecs_query_t *changeQuery = it->ctx;
-    if (!changeQuery || !ecs_query_changed(changeQuery, NULL))
-    {
+    if (!changeQuery || !ecs_query_changed(changeQuery, NULL)) {
         // printf("ZextUpdateSystem: changeQuery didn't change\n");
         return;
     }
@@ -16,15 +14,11 @@ void ZextUpdateSystem(ecs_iter_t *it)
     const Position2D *position2Ds = ecs_field(it, Position2D, 6);
     const PixelSize *pixelSizes = ecs_field(it, PixelSize, 7);
     Children *childrens = ecs_field(it, Children, 8);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         const ZextDirty *zextDirty = &zextDirtys[i];
-        if (zextDirty->value != 1)
-        {
-            // printf("ZextUpdateSystem: ZextDirty is not dirty.\n");
+        if (zextDirty->value != 1) {
             continue;
         }
-        // printf("ZextUpdateSystem: ZextDirty is has updated.\n");
         ecs_entity_t e = it->entities[i];
         const ZextData *zextData = &zextDatas[i];
         const ZextSize *zextSize = &zextSizes[i];
@@ -32,8 +26,7 @@ void ZextUpdateSystem(ecs_iter_t *it)
         const Position2D *position2D = &position2Ds[i];
         const PixelSize *pixelSize = &pixelSizes[i];
         Children *children = &childrens[i];
-        spawn_zext_zigels(world, e, children, zextData, zextSize->value, layer2D->value,
-            position2D->value, pixelSize->value);
+        spawn_zext_zigels(world, e, children, zextData, zextSize->value, layer2D->value, position2D->value, pixelSize->value);
     }
 }
 zoxel_declare_system(ZextUpdateSystem)

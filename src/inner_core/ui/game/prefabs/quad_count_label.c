@@ -1,8 +1,7 @@
 ecs_entity_t prefab_quad_count_label;
 ecs_entity_t quads_label;
 
-ecs_entity_t spawn_prefab_quad_count_label(ecs_world_t *world)
-{
+ecs_entity_t spawn_prefab_quad_count_label(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_clone(world, 0, label_prefab, 1);
     // ecs_set_name(world, e, "prefab_fps_display"); // bugged atm
@@ -12,8 +11,7 @@ ecs_entity_t spawn_prefab_quad_count_label(ecs_world_t *world)
     return e;
 }
 
-ecs_entity_t spawn_quad_count_label(ecs_world_t *world, ecs_entity_t parent, int font_size)
-{
+ecs_entity_t spawn_quad_count_label(ecs_world_t *world, ecs_entity_t parent, int font_size) {
     int textLength = 3;
     int2 pixel_size = (int2) { font_size * textLength, font_size };
     float2 anchor = { 0.0f, 1.0f };

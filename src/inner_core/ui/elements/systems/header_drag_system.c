@@ -1,7 +1,5 @@
-void drag_ui(ecs_world_t *world, ecs_entity_t e, int2 drag_value)
-{
-    if (!ecs_is_valid(world, e))
-    {
+void drag_ui(ecs_world_t *world, ecs_entity_t e, int2 drag_value) {
+    if (!ecs_is_valid(world, e)) {
         return;
     }
     /*int2 pixel_position = ecs_get(world, e, PixelPosition)->value;
@@ -21,20 +19,16 @@ void drag_ui(ecs_world_t *world, ecs_entity_t e, int2 drag_value)
 // if it updates, also update any childrens positions too
 // has to also move children and their children
 //! Plays a Sound when button is clicked
-void HeaderDragSystem(ecs_iter_t *it)
-{
+void HeaderDragSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
     const DragableState *dragableStates = ecs_field(it, DragableState, 2);
     const DraggingDelta *draggingDeltas = ecs_field(it, DraggingDelta, 3);
     const ParentLink *parentLinks = ecs_field(it, ParentLink, 4);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         const DragableState *dragableState = &dragableStates[i];
-        if (dragableState->value == 1)
-        {
+        if (dragableState->value == 1) {
             const DraggingDelta *draggingDelta = &draggingDeltas[i];
-            if (draggingDelta->value.x != 0 || draggingDelta->value.y != 0)
-            {
+            if (draggingDelta->value.x != 0 || draggingDelta->value.y != 0) {
                 const ParentLink *parentLink = &parentLinks[i];
                 drag_ui(world, parentLink->value, draggingDelta->value);
             }

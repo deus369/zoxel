@@ -1,6 +1,4 @@
-// an individual text character entity.
-ecs_entity_t spawn_zigel_prefab(ecs_world_t *world)
-{
+ecs_entity_t spawn_zigel_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "zigel_prefab");
     set_unique_entity_name(world, e, "zigel_prefab");
@@ -10,7 +8,7 @@ ecs_entity_t spawn_zigel_prefab(ecs_world_t *world)
     add_ui_plus_components(world, e);
     ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs
-    printf("spawn_prefab zigel [%lu].\n", (long int) (e));
+        printf("spawn_prefab zigel [%lu].\n", (long int) (e));
     #endif
     return e;
 }

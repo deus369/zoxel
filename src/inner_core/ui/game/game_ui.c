@@ -1,5 +1,5 @@
-#ifndef zoxel_ui_game
-#define zoxel_ui_game
+#ifndef zoxel_game_ui
+#define zoxel_game_ui
 
 zoxel_declare_tag(MainMenu)
 zoxel_declare_tag(OptionsUI)
@@ -17,9 +17,8 @@ zoxel_component(FPSDisplayTicker, double)
 #include "systems/exit_game_button_system.c"
 #include "systems/quads_display_system.c"
 
-//! Game UI Module, main menu, level select, etc.
-void UIGameImport(ecs_world_t *world) {
-    zoxel_module(UIGame)
+void GameUIImport(ecs_world_t *world) {
+    zoxel_module(GameUI)
     zoxel_define_tag(MainMenu)
     zoxel_define_tag(OptionsUI)
     zoxel_define_tag(PauseUI)

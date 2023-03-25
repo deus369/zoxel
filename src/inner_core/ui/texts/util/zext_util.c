@@ -1,19 +1,19 @@
 // #define zoxel_debug_zext_updates
-ecs_entity_t spawn_zext_zigel(ecs_world_t *world, ecs_entity_t zext, int layer,
-    int i, int new_children_length, unsigned char zigel_index, int font_size,
-    float2 parent_position, int2 parent_pixel_size, int2 canvas_size) {
+
+// spawns a text character in a place
+ecs_entity_t spawn_zext_zigel(ecs_world_t *world, ecs_entity_t zext, int layer, int i, int new_children_length,
+    unsigned char zigel_index, int font_size, float2 parent_position, int2 parent_pixel_size, int2 canvas_size) {
     int2 zigel_size = (int2) { font_size, font_size };
     float half_size = (zigel_size.x * new_children_length) / 2.0f;
-    ecs_entity_t zigel = spawn_zigel(world, zext, zigel_index,
-        (int2) { (int) (((float) zigel_size.x * i) - half_size) + zigel_size.x / 2, 0 },
-        zigel_size, (float2) { 0.5f, 0.5f }, layer, parent_position, parent_pixel_size, canvas_size);
+    int2 zigel_position = (int2) { (int) (((float) zigel_size.x * i) - half_size) + zigel_size.x / 2, 0 };
+    ecs_entity_t zigel = spawn_zigel(world, zext, zigel_index, zigel_position, zigel_size,
+        (float2) { 0.5f, 0.5f }, layer, parent_position, parent_pixel_size, canvas_size);
     return zigel;
 }
 
 // For reusing a zigel, set all positions again to position entire text
-void set_zigel_position(ecs_world_t *world, ecs_entity_t zigel, unsigned char zigel_index,
-    int font_size, float2 anchor, unsigned char new_children_length,
-    float2 parent_position, int2 parent_pixel_size, int2 canvas_size) {
+void set_zigel_position(ecs_world_t *world, ecs_entity_t zigel, unsigned char zigel_index, int font_size, float2 anchor,
+    unsigned char new_children_length, float2 parent_position, int2 parent_pixel_size, int2 canvas_size) {
     int2 zigel_size = (int2) { font_size, font_size };
     float half_size = (zigel_size.x * new_children_length) / 2.0f;
     int2 local_pixel_position = (int2) { (int) (((float) zigel_size.x * zigel_index) - half_size)

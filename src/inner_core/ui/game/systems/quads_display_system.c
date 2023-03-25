@@ -1,10 +1,8 @@
 int last_quads;
 //! Every noise_animation_speed it makes the update.
-void QuadsLabelSystem(ecs_iter_t *it)
-{
+void QuadsLabelSystem(ecs_iter_t *it) {
     unsigned char changed = 0;   //! Skip changes if isn't updated.
-    if (last_quads != tri_count)
-    {
+    if (last_quads != tri_count) {
         last_quads = tri_count;
         changed = 1;
         char buffer[20];
@@ -12,8 +10,7 @@ void QuadsLabelSystem(ecs_iter_t *it)
         const char* text = buffer;
         ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
         ZextData *zextDatas = ecs_field(it, ZextData, 3);
-        for (int i = 0; i < it->count; i++)
-        {
+        for (int i = 0; i < it->count; i++) {
             ZextDirty *zextDirty = &zextDirtys[i];
             ZextData *zextData = &zextDatas[i];
             zextDirty->value = 1;
@@ -22,8 +19,7 @@ void QuadsLabelSystem(ecs_iter_t *it)
         }
         // printf("QuadsLabelSystem -: %i [%s]\n", tri_count, buffer);
     }
-    if (!changed)
-    {
+    if (!changed) {
         ecs_query_skip(it);
     }
 }

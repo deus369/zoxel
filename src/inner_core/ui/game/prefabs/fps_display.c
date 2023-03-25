@@ -32,7 +32,3 @@ ecs_entity_t spawn_fps_display(ecs_world_t *world, ecs_entity_t parent, int font
     ecs_entity_t e = spawn_label(world, fps_display_prefab, parent, position, anchor, "FPS", font_size, layer, (float2) { }, parent_pixel_size->value);
     return e;
 }
-
-// ecs_remove(world, e, AnimateZext);
-// printf("Label has? %s\n", ecs_has(world, e, Label) ? "Yes" : "No");
-// printf("Position2D has? %s\n", ecs_has(world, e, Position2D) ? "Yes" : "No");

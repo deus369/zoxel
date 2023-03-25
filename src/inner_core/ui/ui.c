@@ -9,7 +9,7 @@
 #include "core/ui_core.c"
 #include "texts/texts.c"
 #include "elements/elements.c"
-#include "game/ui_game.c"
+#include "game/game_ui.c"
 #include "util/test_uis.c"
 
 void UIImport(ecs_world_t *world) {
@@ -18,7 +18,7 @@ void UIImport(ecs_world_t *world) {
     zoxel_import_module(UICore)
     zoxel_import_module(Texts)
     zoxel_import_module(Elements)
-    zoxel_import_module(UIGame)
+    zoxel_import_module(GameUI)
     zoxel_log("         > imported ui\n");
 }
 #endif

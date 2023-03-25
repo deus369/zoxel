@@ -1,7 +1,6 @@
 #ifndef zoxel_ui_core
 #define zoxel_ui_core
 
-// #define debug_ui_positioning
 ecs_entity_t main_canvas;
 zoxel_declare_tag(Element)                  //! A basic tag for a UI Element.
 zoxel_declare_tag(Canvas)
@@ -27,10 +26,8 @@ void UICoreImport(ecs_world_t *world) {
     zoxel_define_component(Anchor)
     zoxel_define_component(CanvasLink)
     zoxel_filter(ui_query, world, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [out] SelectableState)
-    zoxel_filter(pixel_positions_query, world,
-        [none] Element, [in] PixelPosition,
-        [none] ParentLink, [none] Anchor, [none] CanvasLink,
-        [none] Position2D, [none] CanvasPixelPosition)
+    zoxel_filter(pixel_positions_query, world, [none] Element, [in] PixelPosition,
+        [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPixelPosition)
     zoxel_system_ctx(world, ElementPositionSystem, EcsPreUpdate, pixel_positions_query, [none] Element, [in] PixelPosition,
         [in] ParentLink, [in] Anchor, [in] CanvasLink, [out] Position2D, [out] CanvasPixelPosition)
     zoxel_system_ctx(world, ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [out] RaycasterTarget)

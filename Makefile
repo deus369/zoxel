@@ -45,7 +45,7 @@ CFLAGS += -D_DEFAULT_SOURCE
 # Position Independent Code https://stackoverflow.com/questions/5311515/gcc-fpic-option
 CFLAGS += -fPIC
 # supresses flecs warning
-cflags_linux += -Wno-stringop-overflow
+fix_flecs_warning = -Wno-stringop-overread -Wno-stringop-overflow
 # CFLAGS += -Wno-stringop-overflow-size
 # Add libraries
 LDLIBS =
@@ -55,7 +55,7 @@ LDLIBS2 += -lm
 # For threading
 LDLIBS2 += -lpthread
 # For a pre compiled flecs
-LDLIBS += -L./ -lflecs
+LDLIBS += -L../lib -lflecs
 ifeq ($(SYSTEM), Windows)
 # opengl windows
 LDLIBS += -lopengl32
@@ -126,11 +126,11 @@ flecs_target = build/libflecs.a
 flecs_source = include/flecs/flecs.c
 flecs_flags = -c
 flecs_obj = flecs.o
-# Completed build commands
-make_flecs = $(CC) $(flecs_flags) $(CFLAGS) $(CFLAGS_RELEASE) ../$(flecs_source) -o $(flecs_obj) $(LDLIBS2)
+make_flecs = $(CC) $(flecs_flags) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) ../$(flecs_source) -o $(flecs_obj) $(LDLIBS2)
 make_flecs_lib = ar rcs ../$(flecs_target) $(flecs_obj)
-make_release = $(CC) $(CFLAGS) $(cflags_linux) $(CFLAGS_RELEASE) -o ../$(TARGET) $(OBJS) $(LDLIBS) $(LDLIBS2)
-make_dev = $(CC) $(CFLAGS) $(cflags_linux) $(cflags_debug) -o ../$(target_dev) $(OBJS) $(LDLIBS) $(LDLIBS2)
+# build commands
+make_release = $(CC) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) -o ../$(TARGET) $(OBJS) $(LDLIBS) $(LDLIBS2)
+make_dev = $(CC) $(CFLAGS) $(fix_flecs_warning) $(cflags_debug) -o ../$(target_dev) $(OBJS) $(LDLIBS) $(LDLIBS2)
 make_web_release = $(cc_web) $(CFLAGS) $(cflags_web) -o $(target_web2) $(OBJS) ../include/flecs/flecs.c $(ldlibs_web)
 
 # release
@@ -150,7 +150,10 @@ $(target_web): $(SRCS)
 $(flecs_target):
 	set -e ; \
 	bash bash/flecs/check_flecs.sh && cd bash/flecs && bash install_flecs.sh ; \
-	cd build && $(make_flecs) && $(make_flecs_lib)
+	cd build && $(make_flecs) && cd ..; \
+	cp include/flecs/flecs.h include ; \
+	cp build/libflecs.a lib ; \
+	cd build && $(make_flecs_lib)
 
 # builds for all platforms - this rebuilds everytime tho
 all: $(SRCS)

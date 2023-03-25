@@ -72,3 +72,6 @@
 // #define zoxel_time_sound_generate_system
 // zoxel game
 #define voxels_spawn_terrain
+// #define zoxel_debug_zext_updates
+// #define zoxel_debug_zigel_updates
+// #define debug_ui_positioning

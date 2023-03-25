@@ -1,14 +1,11 @@
 //! Closes the game when button is clicked.
-void PlayGameButtonSystem(ecs_iter_t *it)
-{
+void PlayGameButtonSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
     // printf("WindowCloseSystem [%i]\n", it->count);
     const ClickableState *clickableStates = ecs_field(it, ClickableState, 2);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         const ClickableState *clickableState = &clickableStates[i];
-        if (clickableState->value == 1)
-        {
+        if (clickableState->value == 1) {
             // destroy ui
             //! window is 2nd parent
             const ParentLink *parentLink = ecs_get(world, it->entities[i], ParentLink);

@@ -3,8 +3,7 @@
 // #define debug_font_texture
 
 //! Our function that creates a texture.
-void generate_font_texture(Texture* texture, const TextureSize *textureSize, const FontData *fontData)
-{
+void generate_font_texture(Texture* texture, const TextureSize *textureSize, const FontData *fontData) {
     const unsigned char is_background = 0;
     const color nothing = { 0, 0, 0, 0 };
     // use FontData byte2 data.
@@ -27,20 +26,13 @@ void generate_font_texture(Texture* texture, const TextureSize *textureSize, con
         alphaRange2.x + rand() % (alphaRange2.y - alphaRange2.x)
     };
     int index = 0;
-    for (int k = 0; k < textureSize->value.y; k++)
-    {
-        for (int j = 0; j < textureSize->value.x; j++)
-        {
-            if (!is_background)
-            {
+    for (int k = 0; k < textureSize->value.y; k++) {
+        for (int j = 0; j < textureSize->value.x; j++) {
+            if (!is_background) {
                 texture->value[index] = nothing;
-            }
-            else if (j <= frame_thickness || k <= frame_thickness || j >= textureSize->value.x - 1 - frame_thickness || k >= textureSize->value.y - 1 - frame_thickness)
-            {
+            } else if (j <= frame_thickness || k <= frame_thickness || j >= textureSize->value.x - 1 - frame_thickness || k >= textureSize->value.y - 1 - frame_thickness) {
                 texture->value[index] = base;
-            }
-            else
-            {
+            } else {
                 texture->value[index] = darker;
             }
             index++;
@@ -51,12 +43,11 @@ void generate_font_texture(Texture* texture, const TextureSize *textureSize, con
     // var size = new int3(texture.size.x, texture.size.y, 0);
     color fillColor = (color) { 5 + rand() % 120, 100 + rand() % 120, 100 + rand() % 120, 255 };
     // int2 size = (int2) { 1, 1 };
-    for (int i = 0; i < fontData->length; i += 2)
-    {
+    for (int i = 0; i < fontData->length; i += 2) {
         int2 pointA = get_from_byte2(fontData->value[i]);
         int2 pointB = get_from_byte2(fontData->value[i + 1]);
         #ifdef debug_font_texture
-        zoxel_log("Font Data %i %ix%i > %ix%i\n", i, pointA.x, pointA.y, pointB.x, pointB.y);
+            zoxel_log("Font Data %i %ix%i > %ix%i\n", i, pointA.x, pointA.y, pointB.x, pointB.y);
         #endif
         pointA.x = (int) ((pointA.x / 255.0f) * textureSize->value.x);
         pointA.y = (int) ((pointA.y / 255.0f) * textureSize->value.y);
@@ -65,15 +56,13 @@ void generate_font_texture(Texture* texture, const TextureSize *textureSize, con
         int distance = int2_distance(pointA, pointB);
         float2 direction = float2_normalize(float2_sub(float2_from_int2(pointB), float2_from_int2(pointA)));
         #ifdef debug_font_texture
-        zoxel_log("    - %ix%i > %ix%i\n", pointA.x, pointA.y, pointB.x, pointB.y);
-        zoxel_log("    - distance %i direction %fx%f\n", distance, direction.x, direction.y);
+            zoxel_log("    - %ix%i > %ix%i\n", pointA.x, pointA.y, pointB.x, pointB.y);
+            zoxel_log("    - distance %i direction %fx%f\n", distance, direction.x, direction.y);
         #endif
         int2 splash_point = pointA;
-        for (int j = 0; j <= distance; j++)
-        {
+        for (int j = 0; j <= distance; j++) {
             int2 splash_point_check = int2_add(get_int2_from_float2(float2_multiply_float(direction, (float) j)), pointA);
-            if (int2_equal(splash_point, splash_point_check))
-            {
+            if (int2_equal(splash_point, splash_point_check)) {
                 continue;
             }
             splash_point = splash_point_check;
@@ -82,14 +71,11 @@ void generate_font_texture(Texture* texture, const TextureSize *textureSize, con
             #ifdef debug_font_texture
             zoxel_log("    - j %i splash_point %ix%i size %i\n", j, splash_point.x, splash_point.y, pointSize2);
             #endif
-            for (int k = -pointSize2; k <= pointSize2; k++)
-            {
-                for (int l = -pointSize2; l <= pointSize2; l++)
-                {
+            for (int k = -pointSize2; k <= pointSize2; k++) {
+                for (int l = -pointSize2; l <= pointSize2; l++) {
                     int2 drawPoint = (int2) { splash_point.x + k, splash_point.y + l};
                     if (drawPoint.x >= 0 && drawPoint.x < textureSize->value.x
-                        && drawPoint.y >= 0 && drawPoint.y < textureSize->value.y)
-                    {
+                        && drawPoint.y >= 0 && drawPoint.y < textureSize->value.y) {
                         texture->value[int2_array_index(drawPoint, textureSize->value)] = fillColor;
                     }
                 }
@@ -103,10 +89,8 @@ void generate_font_texture(Texture* texture, const TextureSize *textureSize, con
     random.NextFloat(pointNoise.x * 2) - pointNoise.x, 
     random.NextFloat(pointNoise.y * 2) - pointNoise.y };*/
 
-void FontTextureSystem(ecs_iter_t *it)
-{
-    if (!ecs_query_changed(it->ctx, NULL))
-    {
+void FontTextureSystem(ecs_iter_t *it) {
+    if (!ecs_query_changed(it->ctx, NULL)) {
         return;
     }
     const Children *font_style_children = ecs_get(world, font_style_entity, Children);
@@ -115,20 +99,17 @@ void FontTextureSystem(ecs_iter_t *it)
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 4);
     const GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 5);
     const ZigelIndex *zigelIndexs = ecs_field(it, ZigelIndex, 6);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         const GenerateTexture *generateTexture = &generateTextures[i];
         //! Only rebuild if GenerateTexture is set to 1 and EntityDirty is false.
-        if (generateTexture->value == 0)
-        {
+        if (generateTexture->value == 0) {
             continue;
         }
         #ifdef zoxel_debug_zigel_updates
         zoxel_log("zigel font is updating [%lu]\n", (long int) it->entities[i]);
         #endif
         TextureDirty *textureDirty = &textureDirtys[i];
-        if (textureDirty->value != 0)
-        {
+        if (textureDirty->value != 0) {
             continue;
         }
         textureDirty->value = 1;
@@ -138,8 +119,7 @@ void FontTextureSystem(ecs_iter_t *it)
         re_initialize_memory_component(texture, color, newLength);
         // get font based on zigel index
         const ZigelIndex *zigelIndex = &zigelIndexs[i];
-        if (zigelIndex->value >= font_styles_length)
-        {
+        if (zigelIndex->value >= font_styles_length) {
             continue;
         }
         ecs_entity_t zigel_font_entity = font_style_children->value[zigelIndex->value];

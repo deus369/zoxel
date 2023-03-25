@@ -18,7 +18,7 @@
 #define FLECS_MODULE
 #define FLECS_SYSTEM 
 #define FLECS_PIPELINE
-#include "../include/flecs/flecs.h"
+#include "../include/flecs.h"
 // sdl
 #define SDL_IMAGES
 #define SDL_MIXER

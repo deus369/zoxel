@@ -1,15 +1,10 @@
-//! Closes a window when button is clicked
-void ElementMeshSystem(ecs_iter_t *it)
-{
-    // printf("ElementMeshSystem [%i] - canvas [%lu]\n", it->count, (long int) main_canvas);
+void ElementMeshSystem(ecs_iter_t *it) {
     const EntityInitialize *entityInitializes = ecs_field(it, EntityInitialize, 2);
     const PixelSize *pixelSizes = ecs_field(it, PixelSize, 3);
     const CanvasLink *canvasLinks = ecs_field(it, CanvasLink, 4);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         const EntityInitialize *entityInitialize = &entityInitializes[i];
-        if (entityInitialize->value == 1)
-        {
+        if (entityInitialize->value == 1) {
             ecs_entity_t e = it->entities[i];
             const PixelSize *pixelSize = &pixelSizes[i];
             const CanvasLink *canvasLink = &canvasLinks[i];
