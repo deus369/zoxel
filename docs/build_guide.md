@@ -56,8 +56,11 @@ make run-web            # run web
 ```
 > android
 ```
-make install-android-sdk    # installs android sdk, ndk for android builds
-make android                # builds an android apk and pushes it to device (uses gradle)
+make install-android-sdk    # installs java, android sdk, ndk for android building
+make android-create-key     # create a storekey in ~/.keys directory to use for signing a release build
+make android                # builds, installs and runs and android release build
+make android-dev            # builds, installs and runs and android dev build
+make android-dev-debug      # builds, installs, runs and debugs and android dev build
 ```
 > lost little lambs
 ```

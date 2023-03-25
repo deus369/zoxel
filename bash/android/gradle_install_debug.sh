@@ -7,7 +7,8 @@ echo "gradlew installDebug"
 echo "-----"
 bash gradlew installDebug --parallel
 echo "  > running android release build"
-adb shell am start -n org.libsdl.app/.SDLActivity
+# adb shell am start -n org.libsdl.app/.SDLActivity
+source $PWD/bash/android/gradle_run.sh
 
 # ./gradlew installDebug --debug --stacktrace
 # ./gradlew installDebug --debug
