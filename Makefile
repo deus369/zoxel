@@ -215,6 +215,9 @@ android-create-key:
 android-dev:
 	bash bash/android/install_debug.sh
 
+android-uninstall:
+	bash bash/android/gradle_uninstall.sh
+
 android-clean:
 	bash bash/android/gradle_clean.sh
 

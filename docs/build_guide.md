@@ -61,6 +61,7 @@ make android-create-key     # create a storekey in ~/.keys directory to use for 
 make android                # builds, installs and runs and android release build
 make android-dev            # builds, installs and runs and android dev build
 make android-dev-debug      # builds, installs, runs and debugs and android dev build
+make android-uninstall      # uninstalls zoxel from device, release and dev will conflict
 ```
 > lost little lambs
 ```

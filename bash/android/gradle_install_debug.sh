@@ -1,14 +1,17 @@
 #!/bin/bash
 
-export ANDROID_SDK_ROOT=/usr/lib/android-sdk
-source $PWD/bash/android/gradle_set_paths.sh
-cd $android_directory
+# source bash/android/gradle_set_paths.sh
+# cd $android_directory
 echo "gradlew installDebug"
 echo "-----"
+cd build/android-build
+export ANDROID_SDK_ROOT=/usr/lib/android-sdk
 bash gradlew installDebug --parallel
-echo "  > running android release build"
+cd ../..
+
+# echo "  > running android release build"
 # adb shell am start -n org.libsdl.app/.SDLActivity
-source $PWD/bash/android/gradle_run.sh
+source bash/android/gradle_run.sh
 
 # ./gradlew installDebug --debug --stacktrace
 # ./gradlew installDebug --debug
