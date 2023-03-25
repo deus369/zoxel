@@ -30,6 +30,7 @@
 // #define log_to_file
 #define zoxel_debug_sdl
 #define zoxel_debug_opengl
+// #define zoxel_entity_names
 // #define zoxel_catch_opengl_errors
 // #define zoxel_debug_vox_read
 //! \todo Fix pathing for android, cannot get resources there.

@@ -9,17 +9,14 @@
 // printf("Destroying name Memory.\n");
 
 //! A query container for a system.
-typedef struct
-{
+typedef struct {
     ecs_query_t *query1;
     ecs_query_t *query2;
 } QueryContainer2;
 
-int32_t ecs_count_id_with_up(const ecs_world_t *world, ecs_entity_t id)
-{
+int32_t ecs_count_id_with_up(const ecs_world_t *world, ecs_entity_t id) {
     ecs_check(world != NULL, ECS_INVALID_PARAMETER, NULL);
-    if (!id)
-    {
+    if (!id) {
         return 0;
     }
     ecs_iter_t it = ecs_term_iter(world, &(ecs_term_t) { 
@@ -31,24 +28,20 @@ error:
     return 0;
 }
 
-char *long_int_itoa(char *str, long int num)
-{
-    if (str == NULL)
-    {
+char *long_int_itoa(char *str, long int num) {
+    if (str == NULL) {
         return NULL;
     }
     sprintf(str, "%lu", num);
     return str;
 }
 
-char* get_entity_string(char label[], ecs_entity_t e)
-{
+char* get_entity_string(char label[], ecs_entity_t e) {
     static char e_string[22];
     long_int_itoa(e_string, (long int) e); // (long int) (rand() % 100000));   // 
     int entity_name_length = strlen(label) + 1 + 22 + 1;
     char* entity_name = malloc(entity_name_length);
-    for (int i = 0; i < entity_name_length; i++)
-    {
+    for (int i = 0; i < entity_name_length; i++) {
         entity_name[i] = 0;
     }
     strcat(entity_name, label);
@@ -57,9 +50,10 @@ char* get_entity_string(char label[], ecs_entity_t e)
     return entity_name;
 }
 
-void set_unique_entity_name(ecs_world_t *world, ecs_entity_t e, char label[])
-{
-    char* entity_name = get_entity_string(label, e);
-    ecs_set_name(world, e, entity_name);
-    free(entity_name);
+void set_unique_entity_name(ecs_world_t *world, ecs_entity_t e, char label[]) {
+    #ifdef zoxel_entity_names
+        char* entity_name = get_entity_string(label, e);
+        ecs_set_name(world, e, entity_name);
+        free(entity_name);
+    #endif
 }

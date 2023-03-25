@@ -5,7 +5,7 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world)
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, voxel_prefab);
     ecs_add_id(world, e, EcsPrefab);
-    ecs_set_name(world, e, "prefab_vox");
+    set_unique_entity_name(world, e, "prefab_vox");
     zoxel_set(world, e, GenerateChunk, { 0 });
     zoxel_set(world, e, ChunkDirty, { 1 });
     // zoxel_set(world, e, EternalRotation, { { 0, 0, 0, 0 } });

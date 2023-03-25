@@ -6,7 +6,7 @@ ecs_entity_t spawn_prefab_options_ui(ecs_world_t *world)
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, window_prefab);
     ecs_add_id(world, e, EcsPrefab);
-    ecs_set_name(world, e, "prefab_options_ui");
+    set_unique_entity_name(world, e, "prefab_options_ui");
     zoxel_add_tag(world, e, PauseUI);
     ecs_defer_end(world);
     options_ui_prefab = e;

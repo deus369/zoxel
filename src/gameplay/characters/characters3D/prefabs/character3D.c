@@ -6,7 +6,7 @@ void spawn_prefab_character3D(ecs_world_t *world)
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_vox); // voxel_prefab);
     ecs_add_id(world, e, EcsPrefab);
-    ecs_set_name(world, e, "prefab_character3D");
+    set_unique_entity_name(world, e, "prefab_character3D");
     // ecs_set(world, e, Rotation3D, { { 0, 0, 0, 1 } });
     // zoxel_set(world, e, Rotation3D, { { 0, 0, 0, 0 } });
     // ecs_set(world, e, Rotation3D, { float4_identity() });
@@ -17,7 +17,7 @@ void spawn_prefab_character3D(ecs_world_t *world)
     // zoxel_add_tag(world, e, Frictioned);
     ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs
-    zoxel_log("spawn_prefab character3D [%lu].\n", (long int) (e));
+        zoxel_log("spawn_prefab character3D [%lu].\n", (long int) (e));
     #endif
     character3D_prefab = e;
 }

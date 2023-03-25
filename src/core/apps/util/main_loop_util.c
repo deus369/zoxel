@@ -9,17 +9,15 @@ void exit_game() {
 }
 
 void sigint_handler(int sig) {
-    // Signal was SIGINT
-    // zoxel_log("Zoxel Engine is closing from control + c.\n");
+    zoxel_log("Zoxel Engine is closing from control + c.\n");
     exit_game();
 }
 
 void main_loop() {
-    // Set up the signal handler for SIGINT
-    signal(SIGINT, sigint_handler);
     #ifdef WEB_BUILD
         emscripten_set_main_loop(&main_update, -1, 1); // old - 60, 1);
     #else
+        signal(SIGINT, sigint_handler);     // Handles closing from control + c
         while (running)
         {
             main_update();
