@@ -209,6 +209,9 @@ install-web-sdk:
 android:
 	bash bash/android/install.sh
 
+android-create-key:
+	bash bash/android/generate_keystore.sh
+
 android-dev:
 	bash bash/android/install_debug.sh
 

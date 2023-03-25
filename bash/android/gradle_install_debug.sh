@@ -6,6 +6,8 @@ cd $android_directory
 echo "gradlew installDebug"
 echo "-----"
 bash gradlew installDebug --parallel
+echo "  > running android release build"
+adb shell am start -n org.libsdl.app/.SDLActivity
 
 # ./gradlew installDebug --debug --stacktrace
 # ./gradlew installDebug --debug

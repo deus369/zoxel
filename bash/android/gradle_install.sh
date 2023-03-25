@@ -1,14 +1,24 @@
 #!/bin/bash
 
-export ANDROID_SDK_ROOT=/usr/lib/android-sdk
-# source bash/android/gradle_set_paths.sh
-# cd $android_directory
+source bash/android/gradle_build.sh
+
 cd build/android-build
-# ./gradlew install #installRelease
-# echo ""
-echo "  > building android release build"
-# echo "-----"
-bash gradlew build --parallel && bash gradlew install --parallel
+echo "  > signing android release build"
+echo "need to sign apk: "
+
+apk_filepath="app/build/outputs/apk/release/app-release-unsigned.apk"
+# apk_filepath="app/build/outputs/apk/release/zipped.apk"
+
+# sign the apk, i should save the keyname/alias somewhere for later
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ~/.keys/zoxel.keystore $apk_filepath zoxel
+
+# install the apk
+echo "  > installing android release build"
+adb install $apk_filepath
+
+# run the apk
+echo "  > running android release build"
+adb shell am start -n org.libsdl.app/.SDLActivity
 
 # echo ""
 # echo "gradlew installRelease"
@@ -25,3 +35,14 @@ bash gradlew build --parallel && bash gradlew install --parallel
 # echo ""
 # echo Finished Installing Release Zoxel Android
 # echo ""
+# export ANDROID_SDK_ROOT=/usr/lib/android-sdk
+# source bash/android/gradle_set_paths.sh
+# cd $android_directory
+# ./gradlew install #installRelease
+# echo ""
+
+# echo "-----"
+# bash gradlew build --parallel && bash gradlew install --parallel
+# bash gradlew installRelease --parallel
+
+# bash gradlew assembleRelease --parallel
