@@ -22,7 +22,6 @@ unsigned char get_mouse_constrained() {
     if (!ecs_is_valid(world, main_camera)) {
         return 0;
     }
-    unsigned char constrain_mouse;
     if (ecs_has(world, main_camera, FreeRoam) && ecs_get(world, main_camera, FreeRoam)->value == 1) {
         return 1;
     } else {

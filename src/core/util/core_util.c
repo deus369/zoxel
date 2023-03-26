@@ -1,11 +1,11 @@
 //! The main update loop.
 void update_core() {
-    begin_timing()
+    begin_timing_absolute()
     if (!headless) {
         reset_input_devices(world);
         update_sdl(world);
         #ifdef WEB_BUILD
-        update_web_canvas(world);   // handles resize event
+            update_web_canvas(world);   // handles resize event
         #endif
         render_pre_loop();
     }

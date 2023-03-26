@@ -1,15 +1,15 @@
-int begin(int argc, char* argv[]) {
+int engine_begin(int argc, char* argv[]) {
     clear_zoxel_log();
     return begin_core(argc, argv);
 }
 
-void end() {
+void engine_end() {
     zoxel_log(" > ending zoxel_engine\n");
     close_core();
     dispose_vox_files();
 }
 
-void main_update() {
+void engine_update() {
     #ifdef zoxel_time_main_loop
         begin_timing()
     #endif

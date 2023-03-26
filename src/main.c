@@ -1,6 +1,6 @@
 // profiling: make build/dev && make run-dev-profiler
 // #include "core/util/ecs/util/profiler_defines.c"
-#include "build_settings.c"
+#include "zoxel/build_settings.c"
 #include "engine/engine.c"
 #include "zoxel/zoxel.c"
 
@@ -16,11 +16,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 #else
 int main(int argc, char* argv[]) {
 #endif
-    if (begin(argc, argv) == EXIT_SUCCESS) {
-        // import game module
+    if (engine_begin(argc, argv) == EXIT_SUCCESS) {
         zoxel_import_module(Zoxel)
-        main_loop();
-        end();
+        engine_loop();
+        engine_end();
     }
     return 0;
 }

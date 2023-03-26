@@ -1,9 +1,9 @@
-extern void main_update();
+extern void engine_update();
 
 //! Quits the application from running indefinitely.
 void exit_game() {
     running = 0;
-    #ifdef WEB_BUILD
+    #ifdef WEB_BUILD    
     emscripten_cancel_main_loop();
     #endif
 }
@@ -13,14 +13,14 @@ void sigint_handler(int sig) {
     exit_game();
 }
 
-void main_loop() {
+void engine_loop() {
     #ifdef WEB_BUILD
-        emscripten_set_main_loop(&main_update, -1, 1); // old - 60, 1);
+        emscripten_set_main_loop(&engine_update, -1, 1); // old - 60, 1);
     #else
         signal(SIGINT, sigint_handler);     // Handles closing from control + c
         while (running)
         {
-            main_update();
+            engine_update();
         }
     #endif
 }
