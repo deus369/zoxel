@@ -8,6 +8,20 @@ const int voxel_face_indicies_normal[] = {
 const int voxel_face_indicies_reversed[] = {
     2, 1, 0,    0, 3, 2
 };
+
+const int voxel_face_indicies_p[] = {
+    2, 1, 0, 0, 3, 2,   // reversed
+    0, 1, 2, 2, 3, 0    // normal
+};
+
+const int* get_voxel_indices(unsigned char is_positive) {
+    if (is_positive) {
+        return &voxel_face_indicies_p[0];
+    } else {
+        return &voxel_face_indicies_p[6];
+    }
+}
+
 const float2 voxel_face_uvs[] = {
     { 0, 0.0f },
     { 0.0f, 1.0f },

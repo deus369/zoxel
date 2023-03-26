@@ -19,6 +19,7 @@
 #define voxel_octrees
 #define voxels_close_octree_nodes
 #define voxels_hide_terrain_edge
+#define zoxel_voxels_dynamic_array
 // #define voxels_terrain_multi_material
 // #define zoxel_disable_close_nodes
 // #define voxels_disable_streaming
@@ -47,9 +48,9 @@
 //  > target fps is 30 then 33.33 is the ms required, 16.66 if 60 fps
 // #define zoxel_log_frame_ms
 // #define zoxel_log_frames_per_second
-// #define zoxel_time_main_loop
+#define zoxel_time_main_loop
 // #define zoxel_time_main_loop_cutoff 0
-// #define zoxel_time_main_loop_cutoff 30
+#define zoxel_time_main_loop_cutoff 30
 // #define zoxel_time_always
 // voxels timing
 // #define zoxel_time_stream_point_system
@@ -57,7 +58,7 @@
 // #define zoxel_time_chunk_uvs_builds_system
 // voxel octrees timing
 #define zoxel_time_octree_terrain_chunk_system
-#define zoxel_time_octree_chunk_uvs_builds_system
+// #define zoxel_time_octree_chunk_builds_system
 // #define zoxel_time_mesh_uvs_update_system
 // idea: generate terrain too at lesser resolutions
 // #define zoxel_time_render_3d_uvs

@@ -2,8 +2,8 @@
 #define zoxel_voxels_terrain
 
 #ifndef WEB_BUILD
-    #define terrain_spawn_distance 16
-    #define inner_render_buffer 2
+    #define terrain_spawn_distance 14   // for release, just incase
+    #define inner_render_buffer 1       // 2, will lag too much if too high
     #define max_octree_depth 4
 #else
     #define terrain_spawn_distance 8
@@ -16,7 +16,7 @@
 #define terrain_amplifier 64.0
 #define terrain_minus_amplifier 0.0
 #ifdef voxel_octrees
-    #define terrain_frequency 0.026216 // 0.004216
+    #define terrain_frequency 0.022216 // 0.026216
 #else
     #define terrain_frequency 0.00216 // 0.004216
 #endif
@@ -35,11 +35,13 @@ zoxel_component(StreamPoint, int3)                        //! A stream point in 
 #include "prefabs/terrain.c"
 #include "prefabs/terrain_chunk.c"
 #include "prefabs/terrain_chunk_octree.c"
+#include "util/octree_tricks.c"
+#include "util/static_octree_build.c"
 #include "systems/terrain_chunk_system.c"
 #include "systems/chunk_uvs_build_system.c"
 #include "systems/stream_point_system.c"
 #include "octree_systems/octree_terrain_chunk_system.c"
-#include "octree_systems/octree_chunk_uvs_build_system.c"
+#include "octree_systems/octree_chunk_build_system.c"
 #include "util/create_terrain.c"
 
 void TerrainImport(ecs_world_t *world) {
@@ -61,7 +63,7 @@ void TerrainImport(ecs_world_t *world) {
         [none] Streamer, [in] Position3D, [out] StreamPoint)
     zoxel_system_ctx(world, ChunkUVsBuildSystem, EcsOnUpdate, generateChunkQuery, [in] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ChunkNeighbors,
         [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty, [none] !MeshColors)
-    zoxel_system_ctx(world, OctreeChunkUVsBuildSystem, EcsOnUpdate, generateChunkQuery,
+    zoxel_system_ctx(world, OctreeChunkBuildSystem, EcsOnUpdate, generateChunkQuery,
         [in] ChunkDirty, [in] ChunkOctree, [in] ChunkDivision, [in] ChunkNeighbors,
         [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty, [none] !MeshColors)
     spawn_prefab_terrain(world);
@@ -70,7 +72,6 @@ void TerrainImport(ecs_world_t *world) {
 }
 
 // todo: move texture to terrain entity and not terrain chunks
-#endif
 
 /*  terrain_spawn_distance
     1,      // 0
@@ -82,3 +83,4 @@ void TerrainImport(ecs_world_t *world) {
     64,     // 6
     128     // 7
 */
+#endif

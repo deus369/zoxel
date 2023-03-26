@@ -1,4 +1,4 @@
-const double movement_multiplier = 0.12 * 100;
+const double movement_multiplier = 0.18 * 100;
 const double shift_movement_multiplier = 3.0;
 
 void FreeCameraMoveSystem(ecs_iter_t *it) {

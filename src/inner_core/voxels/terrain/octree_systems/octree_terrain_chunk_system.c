@@ -155,7 +155,7 @@ void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 pos
 }
 
 void generate_terrain_height_map(ChunkOctree* chunk_octree, unsigned char depth,
-    float3 position, int3 local_position, double* height_map, int2 map_size, ChunkOctreePool *pool) {
+    float3 position, int3 local_position, double* height_map, int2 map_size) {
     int depth_left = max_octree_depth - depth;
     int division_left = powers_of_two[depth_left]; //  pow(2, depth_left);
     int2 map_position = (int2) { local_position.x * division_left, local_position.z * division_left };
@@ -182,7 +182,7 @@ void generate_terrain_height_map(ChunkOctree* chunk_octree, unsigned char depth,
         chunk_octree->value = 1;
         if (depth < max_octree_depth) {
             depth++;
-            #ifdef voxels_use_octree_pooling
+            /*#ifdef voxels_use_octree_pooling
                 if (chunk_octree->nodes == NULL) {
                     if (pool->used + octree_length >= pool->allocated) {
                         printf("Used Max: %i\n", pool->used);
@@ -198,12 +198,12 @@ void generate_terrain_height_map(ChunkOctree* chunk_octree, unsigned char depth,
                 }
             #else
                 open_ChunkOctree(chunk_octree);
-            #endif
+            #endif*/
             for (unsigned char i = 0; i < octree_length; i++) {
                 // calculates sub node position
                 float3 node_position = float3_add(position, float3_multiply_float(octree_positions_float3s[i], octree_scales[depth]));
                 int3 node_local_position = int3_add(octree_positions[i], int3_multiply_int(local_position, 2));
-                generate_terrain_height_map(&chunk_octree->nodes[i], depth, node_position, node_local_position, height_map, map_size, pool);
+                generate_terrain_height_map(&chunk_octree->nodes[i], depth, node_position, node_local_position, height_map, map_size);
             }
             // check all children
             #ifndef zoxel_disable_close_nodes
@@ -330,7 +330,7 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
             /*
             generate_terrain_height_map(chunkOctree, 0,
                 chunk_position_float3, int3_zero, // 1.0f,
-                height_map, map_size, pool);*/
+                height_map, map_size);*/
             
             // test timing
             //for (int j = 0; j < 4096 * 8; j++)
@@ -348,7 +348,7 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
         // free(height_map);
     }
     #ifdef zoxel_time_octree_terrain_chunk_system
-        end_timing("    - OctreeTerrainChunkSystem")
+        end_timing("    - octree_terrain_chunk_system")
     #endif
 }
 zoxel_declare_system(OctreeTerrainChunkSystem)
@@ -455,20 +455,23 @@ zoxel_declare_system(OctreeTerrainChunkSystem)
 }*/
 /*
 
-double octree_noise(int x, int y, int z) {
+double octree_noise(int x, int y, int z)
+{
     int n = x + y * 57 + z * 113;
     n = (n << 13) ^ n;
     return (1.0 - ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0);
 }
 
 
-double octree_interpolate(double a, double b, double x) {
+double octree_interpolate(double a, double b, double x)
+{
     double ft = x * 3.1415927;
     double f = (1 - cos(ft)) * 0.5;
     return  a*(1-f) + b*f;
 }
 
-double octree_smooth_noise(double x, double y, double z) {
+double octree_smooth_noise(double x, double y, double z)
+{
     double corners = ( octree_noise(x-1, y-1, z-1) + octree_noise(x+1, y-1, z-1) + octree_noise(x-1, y+1, z-1) + octree_noise(x+1, y+1, z-1) +
                     octree_noise(x-1, y-1, z+1) + octree_noise(x+1, y-1, z+1) + octree_noise(x-1, y+1, z+1) + octree_noise(x+1, y+1, z+1) ) / 16;
     double sides   = ( octree_noise(x-1, y, z) + octree_noise(x+1, y, z) + octree_noise(x, y-1, z) + octree_noise(x, y+1, z) +
@@ -478,7 +481,8 @@ double octree_smooth_noise(double x, double y, double z) {
 }
 
 
-double octree_interpolated_noise(double x, double y, double z) {
+double octree_interpolated_noise(double x, double y, double z)
+{
     int int_x = (int)x;
     int int_y = (int)y;
     int int_z = (int)z;
@@ -504,7 +508,8 @@ double octree_interpolated_noise(double x, double y, double z) {
     return i4;
 }
 
-double octree_perlin_noise(double x, double y, double z, double persistence, double frequency) {
+double octree_perlin_noise(double x, double y, double z, double persistence, double frequency)
+{
     double total = 0;
     double p = persistence;
     double n = frequency;

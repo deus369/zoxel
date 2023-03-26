@@ -17,6 +17,6 @@ void engine_update() {
     update_core();
     #ifdef zoxel_time_main_loop
         did_do_timing()
-        end_timing_cutoff("main_update", zoxel_time_main_loop_cutoff)
+        end_timing_cutoff(" - engine update lagged", zoxel_time_main_loop_cutoff)
     #endif
 }

@@ -22,6 +22,24 @@ unsigned char int3_equal(int3 a, int3 b) {
     }
 }
 
+int3 int3_multiply_int3(int3 a, int3 b) {
+    return (int3) { a.x * b.x, a.y * b.y, a.z * b.z };
+}
+
+int3 int3_add(int3 a, int3 b) {
+    return (int3) { a.x + b.x, a.y + b.y, a.z + b.z };
+}
+
+int3 int3_multiply_int(int3 a, int b) {
+    return (int3) { a.x * b, a.y * b, a.z * b };
+}
+
+void int3_multiply_int_p(int3* input, int mul) {
+    input->x *= mul;
+    input->y *= mul;
+    input->z *= mul;
+}
+
 int int3_array_index(int3 input, int3 size) {
     // return input.x + input.y * size.x + input.z * size.x * size.y;
     // return (position.z + size.z * (position.y + size.y * position.x));
@@ -82,16 +100,4 @@ int3 int3_front(int3 input) {
 
 int3 int3_reverse_front(int3 input, int3 size) {
     return (int3) { input.x, input.y, 0 };
-}
-
-int3 int3_multiply_int3(int3 a, int3 b) {
-    return (int3) { a.x * b.x, a.y * b.y, a.z * b.z };
-}
-
-int3 int3_add(int3 a, int3 b) {
-    return (int3) { a.x + b.x, a.y + b.y, a.z + b.z };
-}
-
-int3 int3_multiply_int(int3 a, int b) {
-    return (int3) { a.x * b, a.y * b, a.z * b };
 }
