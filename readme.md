@@ -65,7 +65,7 @@ Stay up to date on my development journey by following me on social media.
   <a style="margin-left: 10px;"> | </a>
   <a href="https://twitter.com/deusxyz">twitter</a>
   <a style="margin-left: 10px;"> | </a>
-  <a href="https://deus0.itch.io">itchio</a>
+  <a href="https://deusxyz.itch.io/zoxel-foss">itchio</a>
   <a style="margin-left: 10px;"> | </a>
   <a href="https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4">youtube</a>
   <a style="margin-left: 10px;"> | </a>
