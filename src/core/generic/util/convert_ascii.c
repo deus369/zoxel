@@ -5,8 +5,7 @@ else if (input == char)\
 }
 
 //! \todo use a Hash Map to convert these
-unsigned char convert_ascii(char input)
-{
+unsigned char convert_ascii(char input) {
     // special characters
     if (input == '?')
     {
@@ -88,8 +87,7 @@ unsigned char convert_ascii(char input)
     return 0;
 }
 
-/*unsigned char* convert_ascii_text(const char *input, int length)
-{
+/*unsigned char* convert_ascii_text(const char *input, int length) {
     static unsigned char output[length];
     for (int i = 0; i < length; i++)
     {
@@ -98,8 +96,7 @@ unsigned char convert_ascii(char input)
     return output;
 }*/
 
-unsigned char* convert_from_ascii_text_at(const char *input, unsigned char start_buffer)
-{
+unsigned char* convert_from_ascii_text_at(const char *input, unsigned char start_buffer) {
     unsigned char length = start_buffer + strlen(input);
     unsigned char *output = malloc(length);
     for (unsigned char i = start_buffer; i < length; i++)

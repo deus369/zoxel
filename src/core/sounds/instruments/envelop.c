@@ -2,8 +2,7 @@
 // The attack effect is applied when time < attackTime, and the dampen effect is applied when time > dampenTime.
 // The sound value is multiplied by a factor ranging from 0 (silence) to 1 (original sound value).
 
-float envelope(float time, float total_time, float attack, float dampen)
-{
+float envelope(float time, float total_time, float attack, float dampen) {
     if (time < attack) {
         // soundValue = soundValue * (i / (sampleRate * attack));
         // return value * attack;
@@ -32,8 +31,7 @@ float envelope(float time, float total_time, float attack, float dampen)
     return 1.0f;
 }
 
-/*float apply_envelope(float time, float soundValue, float attackTime, float dampenTime)
-{
+/*float apply_envelope(float time, float soundValue, float attackTime, float dampenTime) {
     if (time < attackTime) {
         // Apply attack effect
         return soundValue * (time / attackTime);
@@ -48,17 +46,14 @@ float envelope(float time, float total_time, float attack, float dampen)
 // else if (i >= 1 - sampleRate * decay)
 // else // if (i >= total_sound_samples - total_sound_samples * decay)
 /*float dampen = 0.0f;
-if (instrumentType == 0)
-{
+if (instrumentType == 0) {
     // dampen = pow(0.5f * log((frequency * volume) / sampleRate), 2.0f);
     dampen = pow(0.5f * log((frequency * volume) / total_sound_samples), 2.0f);
 }
-else if (instrumentType == 1)
-{
+else if (instrumentType == 1) {
     dampen = 1 + (frequency * 0.01f);
 }
-else if (instrumentType == 2)
-{
+else if (instrumentType == 2) {
     dampen = 1;
 }
 else

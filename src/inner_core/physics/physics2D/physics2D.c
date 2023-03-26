@@ -13,8 +13,7 @@ zoxel_component(Bounds2D, float2)       //! Bounding box of a 2D Entity.
 #include "systems/bounds2D_system.c"
 #include "systems/gravity2D_system.c"
 
-void Physics2DImport(ecs_world_t *world)
-{
+void Physics2DImport(ecs_world_t *world) {
     zoxel_module(Physics2D)
     zoxel_define_component(Velocity2D)
     zoxel_define_component(Torque2D)

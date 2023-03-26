@@ -1,3 +1,11 @@
+
+typedef struct {
+    float3 *vertices;
+    size_t capacity;
+    size_t size;
+} MeshDynamicArray;
+
+
 // Check all voxels on a side, instead of just one, a big voxel with 4 small voxels on its side should be face culled.
 // max_depth is per chunk... refactor that
 // Fix issues between chunks of different levels of division
@@ -251,8 +259,7 @@ void OctreeChunkUVsBuildSystem(ecs_iter_t *it) {
             get_max_depth_from_division(chunk_down_max_distance), get_max_depth_from_division(chunk_up_max_distance),
             get_max_depth_from_division(chunk_back_max_distance), get_max_depth_from_division(chunk_front_max_distance)
         };
-        build_octree_chunk_mesh_uvs(chunkOctree, meshIndicies2, meshVertices2, meshUVs2,
-            chunkDivision->value, neighbors, neighbors_max_depths);
+        build_octree_chunk_mesh_uvs(chunkOctree, meshIndicies2, meshVertices2, meshUVs2, chunkDivision->value, neighbors, neighbors_max_depths);
         #ifdef zoxel_time_octree_chunk_uvs_builds_system
             did_do_timing()
         #endif

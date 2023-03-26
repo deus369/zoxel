@@ -14,8 +14,7 @@ zoxel_component(Gravity3D, float3)      //! A constant acceleration towards some
 #include "systems/bounds3D_system.c"
 #include "systems/gravity3D_system.c"
 
-void Physics3DImport(ecs_world_t *world)
-{
+void Physics3DImport(ecs_world_t *world) {
     zoxel_module(Physics3D)
     zoxel_define_component(Velocity3D)
     zoxel_define_component(Acceleration3D)

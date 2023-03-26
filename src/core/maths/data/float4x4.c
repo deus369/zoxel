@@ -1,14 +1,12 @@
 //! A basic x2 building block.
-typedef struct
-{
+typedef struct {
     float4 x;
     float4 y;
     float4 z;
     float4 w;
 } float4x4;
 
-float4x4 float4x4_zero()
-{
+float4x4 float4x4_zero() {
     float4x4 identity; // = malloc(16 * 4);
     float* identity2 = (float*) &identity;
     for (int i = 0; i < 16; i++)
@@ -18,8 +16,7 @@ float4x4 float4x4_zero()
     return identity;
 }
 
-float4x4 float4x4_identity()
-{
+float4x4 float4x4_identity() {
     float4x4 identity = float4x4_zero();
     identity.x.x = 1;
     identity.y.y = 1;
@@ -28,8 +25,7 @@ float4x4 float4x4_identity()
     return identity;
 }
 
-float4x4 float4x4_multiply(const float4x4 a, const float4x4 b)
-{
+float4x4 float4x4_multiply(const float4x4 a, const float4x4 b) {
     float4x4 c = float4x4_zero();
     float* a2 = (float*) &a;
     float* b2 = (float*) &b;
@@ -44,8 +40,7 @@ float4x4 float4x4_multiply(const float4x4 a, const float4x4 b)
     return c;
 }
 
-void float4x4_print(const float4x4 matrix)
-{
+void float4x4_print(const float4x4 matrix) {
     const float* matrix2 = (float*) &matrix;
     zoxel_log("Matrix;\n\t[%f\t%f\t%f\t%f]\n\t[%f\t%f\t%f\t%f]\n\t[%f\t%f\t%f\t%f]\n\t[%f\t%f\t%f\t%f]\n",
          matrix2[0], matrix2[1], matrix2[2], matrix2[3],

@@ -21,8 +21,7 @@ zoxel_component(ConnectionData, ecs_entity_2)   //! The weight of the neural con
 #include "systems/connection_render_system.c"
 #include "systems/neuron_render_system.c"
 
-void NeuralImport(ecs_world_t *world)
-{
+void NeuralImport(ecs_world_t *world) {
     zoxel_module(Neural)
     zoxel_define_tag(Brain)
     zoxel_define_tag(Neuron)

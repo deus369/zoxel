@@ -1,5 +1,4 @@
-const int voxel_cube_indicies[] =
-{
+const int voxel_cube_indicies[] = {
     //Left
     0, 2, 6,    0, 4, 6,
     //Right
@@ -14,8 +13,7 @@ const int voxel_cube_indicies[] =
     0, 2, 3,    0, 1, 3
 };
 
-const float3 voxel_cube_vertices[] =
-{
+const float3 voxel_cube_vertices[] = {
     { 0, 0, 1.0f },         //0
     { 1.0f, 0, 1.0f},       //1
     { 0, 1.0f, 1.0f },      //2

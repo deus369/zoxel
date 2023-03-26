@@ -10,8 +10,7 @@ zoxel_component(RealmLink, ecs_entity_t);
 // #include "systems/player2D_move_system.c"
 
 //! Realms Module
-void RealmsImport(ecs_world_t *world)
-{
+void RealmsImport(ecs_world_t *world) {
     zoxel_module(Realms)
     zoxel_define_tag(Realm)
     zoxel_define_component(RealmLink)

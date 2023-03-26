@@ -1,7 +1,6 @@
 ecs_entity_t prefab_vox;
 
-ecs_entity_t spawn_prefab_vox(ecs_world_t *world)
-{
+ecs_entity_t spawn_prefab_vox(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, voxel_prefab);
     ecs_add_id(world, e, EcsPrefab);
@@ -19,8 +18,7 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world)
     return e;
 }
 
-void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, vox_file *vox)
-{
+void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, vox_file *vox) {
     ChunkSize chunkSize = { vox->chunks[0].size.xyz };
     int voxels_length = chunkSize.value.x * chunkSize.value.y * chunkSize.value.z;
     ChunkData chunk = { };
@@ -35,8 +33,7 @@ void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, vox_file *vox)
     ecs_set(world, e, Colors, { colors.length, colors.value });
 }
 
-ecs_entity_t spawn_vox_from_file(ecs_world_t *world, vox_file *vox, float3 position, float4 rotation, float scale)
-{
+ecs_entity_t spawn_vox_from_file(ecs_world_t *world, vox_file *vox, float3 position, float4 rotation, float scale) {
     ecs_defer_begin(world);
     ecs_entity_t e = spawn_voxel_chunk_mesh(world, prefab_vox, position, scale);
     set_vox_from_vox_file(world, e, vox);

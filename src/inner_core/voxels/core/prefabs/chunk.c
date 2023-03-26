@@ -1,8 +1,7 @@
 //! Basic noise texture.
 ecs_entity_t chunk_prefab;
 
-void add_chunk(ecs_world_t *world, ecs_entity_t prefab, int3 size)
-{
+void add_chunk(ecs_world_t *world, ecs_entity_t prefab, int3 size) {
     zoxel_add_tag(world, prefab, Chunk);
     zoxel_add(world, prefab, ChunkData);
     zoxel_set(world, prefab, ChunkSize, { size });
@@ -11,22 +10,19 @@ void add_chunk(ecs_world_t *world, ecs_entity_t prefab, int3 size)
     zoxel_set(world, prefab, VoxLink, { 0 });
 }
 
-void add_generate_chunk(ecs_world_t *world, ecs_entity_t e)
-{
+void add_generate_chunk(ecs_world_t *world, ecs_entity_t e) {
     zoxel_set(world, e, EntityDirty, { 0 });
     zoxel_set(world, e, GenerateChunk, { 1 });
 }
 
-void add_noise_chunk(ecs_world_t *world, ecs_entity_t e)
-{
+void add_noise_chunk(ecs_world_t *world, ecs_entity_t e) {
     zoxel_add_tag(world, e, NoiseChunk);
     zoxel_set(world, e, EntityDirty, { 0 });
     zoxel_set(world, e, GenerateChunk, { 1 });
     // zoxel_set(world, e, AnimateTexture, { 0.0 });
 }
 
-ecs_entity_t spawn_chunk_prefab(ecs_world_t *world)
-{
+ecs_entity_t spawn_chunk_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
     const int3 size = { 16, 16, 16 };
     ecs_entity_t e = ecs_new_prefab(world, "chunk_prefab");
@@ -42,8 +38,7 @@ ecs_entity_t spawn_chunk_prefab(ecs_world_t *world)
 }
 
 //! Spawn a ChunkData.
-ecs_entity_t spawn_chunk(ecs_world_t *world)
-{
+ecs_entity_t spawn_chunk(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, chunk_prefab);
     zoxel_add_tag(world, e, NoiseChunk);

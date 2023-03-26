@@ -1,7 +1,6 @@
 ecs_entity_t generic_event_prefab;
 
-void spawn_prefab_generic_event(ecs_world_t *world)
-{
+void spawn_prefab_generic_event(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "generic_event_prefab");
     set_unique_entity_name(world, e, "generic_event_prefab");
@@ -15,8 +14,7 @@ void spawn_prefab_generic_event(ecs_world_t *world)
     #endif
 }
 
-ecs_entity_t spawn_generic_event(ecs_world_t *world, unsigned char state)
-{
+ecs_entity_t spawn_generic_event(ecs_world_t *world, unsigned char state) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, generic_event_prefab);
     set_unique_entity_name(world, e, "event");

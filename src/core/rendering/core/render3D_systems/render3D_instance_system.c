@@ -2,8 +2,7 @@
 extern void RenderEntity3D(float3 position, float4 rotation, float scale1D, float brightness);
 
 //! Render 3D entities.
-void InstanceRender3DSystem(ecs_iter_t *it)
-{
+void InstanceRender3DSystem(ecs_iter_t *it) {
     const Position3D *positions = ecs_field(it, Position3D, 1);
     const Rotation3D *rotations = ecs_field(it, Rotation3D, 2);
     const Scale1D *scale1Ds = ecs_field(it, Scale1D, 3);

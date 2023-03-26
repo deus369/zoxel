@@ -1,6 +1,5 @@
 
-void MeshColorsUpdateSystem(ecs_iter_t *it)
-{
+void MeshColorsUpdateSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(NULL, it))
     {
         return;

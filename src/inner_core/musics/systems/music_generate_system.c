@@ -1,8 +1,7 @@
 const int skip_chance = 84;
 
 //! Play music on generates
-void MusicGenerateSystem(ecs_iter_t *it)
-{
+void MusicGenerateSystem(ecs_iter_t *it) {
     const unsigned char lowest_note = 12;
     const unsigned char highest_note = 36;
     const unsigned char note_verse_difference = 6;

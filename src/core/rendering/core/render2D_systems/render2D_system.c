@@ -5,8 +5,7 @@ extern void render_entity_material2D(const float4x4 viewMatrix, GLuint material,
     float angle, float scale, float brightness);
 
 //! Render 2D entities.
-void RenderMaterial2DSystem(ecs_iter_t *it)
-{
+void RenderMaterial2DSystem(ecs_iter_t *it) {
     // printf("RenderMaterial2DSystem %i.\n", it->count);
     Position2D *position2Ds = ecs_field(it, Position2D, 1);
     Rotation2D *rotation2Ds = ecs_field(it, Rotation2D, 2);

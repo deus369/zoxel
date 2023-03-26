@@ -44,32 +44,28 @@ float high_pass_filter(float time, float cutoff_frequency) {
     return output;
 }
 
-float piano_sound(float time, float frequency)
-{
+float piano_sound(float time, float frequency) {
     return 0.75f * sin_wave_1(time, frequency,
         pow(sin_wave_0(time, frequency, 0.0f), 2.0f) + 
             (0.75f * sin_wave_0(time, frequency, 0.25f)) + 
             (0.5f * sin_wave_0(time, frequency, 0.5f)) );
 }
 
-float piano_square_sound(float time, float frequency)
-{
+float piano_square_sound(float time, float frequency) {
     return 0.94f * square_wave_1(time, frequency,
         pow(square_wave_0(time, frequency, 0.0f), 2.0f) + 
             (0.75f * square_wave_0(time, frequency, 0.25f)) + 
             (0.5f * square_wave_0(time, frequency, 0.5f)) );
 }
 
-float organ_sound(float time, float frequency)
-{
+float organ_sound(float time, float frequency) {
     return 0.94f * sin_wave_1(time, frequency,
         (sin_wave_0(time, frequency, 0.0f)) + 
         (0.5f * sin_wave_0(time, frequency, 0.25f)) + 
         (0.25f * sin_wave_0(time, frequency, 0.5f)));
 }
 
-float edm_sound(float time, float frequency)
-{
+float edm_sound(float time, float frequency) {
     return 0.6f * (sin_wave_0(time, frequency, 
         (sin_wave_9(time, frequency, 
             sin_wave_2(time, frequency, 
@@ -80,8 +76,7 @@ float edm_sound(float time, float frequency)
             sin_wave_1(time, frequency, 1.75f)));
 }
 
-float guitar_sound(float time, float frequency)
-{
+float guitar_sound(float time, float frequency) {
     return 0.5f * (sin_wave_0(time, frequency,
         (sin_wave_1(time, frequency,
         sin_wave_2(time, frequency,
@@ -92,8 +87,7 @@ float guitar_sound(float time, float frequency)
             sin_wave_4(time, frequency, 1.75f)));
 }
 
-float flute_sound(float time, float frequency)
-{
+float flute_sound(float time, float frequency) {
     frequency *= 2.0f;
     float pi_offset = 0.0f;
     float lfo_frequency = 0.1f;    // .5
@@ -148,8 +142,7 @@ float unique_sound(float time, float frequency) {
     return 0.3f * (fm_comp + additive_comp + noise_comp + ring_mod_comp + am_comp);
 }
 
-float violin_sound(float time, float frequency)
-{
+float violin_sound(float time, float frequency) {
     // float frequency = 440.0f; // base frequency of an A note
     float pi_offset = 0.0f;
     float tremolo_frequency = 8.0f;
@@ -166,8 +159,7 @@ float violin_sound(float time, float frequency)
         + 0.1f * sin_wave_1(time, vibrato_frequency, pi_offset));
 }
 
-float saxophone_sound(float time, float frequency)
-{
+float saxophone_sound(float time, float frequency) {
     return 0.5f * sin_wave_1(time, frequency,
         (sin_wave_2(time, frequency,
         sin_wave_3(time, frequency,
@@ -177,8 +169,7 @@ float saxophone_sound(float time, float frequency)
         sin_wave_4(time, frequency, sin_wave_5(time, frequency, 2.0f));
 }
 
-float trumpet_sound(float time, float frequency)
-{
+float trumpet_sound(float time, float frequency) {
     return sin_wave_5(time, frequency,
         (sin_wave_6(time, frequency,
         sin_wave_7(time, frequency,

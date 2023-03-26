@@ -1,6 +1,5 @@
 //! Adds force to the velocity per frame.
-void Acceleration3DResetSystem(ecs_iter_t *it)
-{
+void Acceleration3DResetSystem(ecs_iter_t *it) {
     Acceleration3D *acceleration3Ds = ecs_field(it, Acceleration3D, 1);
     for (int i = 0; i < it->count; i++)
     {

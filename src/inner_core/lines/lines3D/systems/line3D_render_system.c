@@ -24,8 +24,7 @@ GLuint line3D_position_location;
 GLuint line3D_color_location;
 GLuint line3D_camera_matrix_location;
 
-int initialize_shader_line3D()
-{
+int initialize_shader_line3D() {
     line3D_shader = spawn_gpu_shader_inline(line3D_source_vert, line3D_source_frag);
     line3D_material = spawn_gpu_material_program((const GLuint2) { line3D_shader.x, line3D_shader.y });
     line3D_position_location = glGetAttribLocation(line3D_material, "position");
@@ -34,8 +33,7 @@ int initialize_shader_line3D()
     return 0;
 }
 
-void Line3DRenderSystem(ecs_iter_t *it)
-{
+void Line3DRenderSystem(ecs_iter_t *it) {
     glUseProgram(line3D_material);
     glEnableVertexAttribArray(line3D_position_location);
     const LineData3D *lineData3Ds = ecs_field(it, LineData3D, 2);

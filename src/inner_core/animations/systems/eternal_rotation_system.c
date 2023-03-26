@@ -1,6 +1,5 @@
 //! Rotates things eternally.
-void EternalRotationSystem(ecs_iter_t *it)
-{
+void EternalRotationSystem(ecs_iter_t *it) {
     // float deltaTime = (float) it->delta_time;
     Rotation3D *rotations = ecs_field(it, Rotation3D, 1);
     const EternalRotation *eternalRotations = ecs_field(it, EternalRotation, 2);

@@ -2,8 +2,7 @@
 #define noise_positiver 3200
 
 //! Our function that creates a chunk.
-void GenerateChunkTerrain(ChunkData* chunk, const int3 chunkSize, const int3 chunkPosition)
-{
+void GenerateChunkTerrain(ChunkData* chunk, const int3 chunkSize, const int3 chunkPosition) {
     // srand(666);
     int3 local_position;
     int3 global_position;
@@ -50,8 +49,7 @@ void GenerateChunkTerrain(ChunkData* chunk, const int3 chunkSize, const int3 chu
     }
 }
 
-void TerrainChunkSystem(ecs_iter_t *it)
-{
+void TerrainChunkSystem(ecs_iter_t *it) {
     if (disable_chunk_systems) return;
     if (!ecs_query_changed(it->ctx, NULL))
     {

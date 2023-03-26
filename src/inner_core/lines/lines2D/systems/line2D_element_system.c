@@ -1,12 +1,10 @@
-float2 get_ui_real_position2D_canvas_no_anchor(int2 local_pixel_position, float2 canvas_size_f, float aspect_ratio)
-{
+float2 get_ui_real_position2D_canvas_no_anchor(int2 local_pixel_position, float2 canvas_size_f, float aspect_ratio) {
     return (float2) { 
             (2.0f * (local_pixel_position.x  / canvas_size_f.x) - 1.0f), // aspect_ratio,
             (2.0f * (local_pixel_position.y  / canvas_size_f.y) - 1.0f) };
 }
 
-void set_ui_line_position(LineData2D *lineData2D, const LineElementData *lineElementData, float2 canvas_size_f, float aspect_ratio)
-{
+void set_ui_line_position(LineData2D *lineData2D, const LineElementData *lineElementData, float2 canvas_size_f, float aspect_ratio) {
     float2 point_a = get_ui_real_position2D_canvas_no_anchor(
         (int2) { lineElementData->value.x, lineElementData->value.y }, canvas_size_f, aspect_ratio);
     float2 point_b = get_ui_real_position2D_canvas_no_anchor(
@@ -24,8 +22,7 @@ void set_ui_line_position(LineData2D *lineData2D, const LineElementData *lineEle
 *   \todo This needs to also account for child uis
 *   \todo Change queries still not working, make a better test function with more components.
 */
-void Line2DElementSystem(ecs_iter_t *it)
-{
+void Line2DElementSystem(ecs_iter_t *it) {
     ecs_query_t *changeQuery = it->ctx;
     ecs_iter_t change_iter = ecs_query_iter(it->world, changeQuery);
     while (ecs_query_next(&change_iter))

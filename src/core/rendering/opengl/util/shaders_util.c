@@ -1,8 +1,7 @@
 // things
 const unsigned char isForceDefaults = false;
 
-unsigned char LinkShaderProgram(GLuint program, GLuint vertShader, GLuint fragShader)
-{
+unsigned char LinkShaderProgram(GLuint program, GLuint vertShader, GLuint fragShader) {
     glAttachShader(program, vertShader);
     glAttachShader(program, fragShader);
     glLinkProgram(program);
@@ -26,8 +25,7 @@ unsigned char LinkShaderProgram(GLuint program, GLuint vertShader, GLuint fragSh
     return 0;
 }
 
-GLuint spawn_gpu_material_program(const GLuint2 shader)
-{
+GLuint spawn_gpu_material_program(const GLuint2 shader) {
     if (shader.x == 0 || shader.y == 0)
     {
         return 0;
@@ -55,8 +53,7 @@ GLuint spawn_gpu_material_program(const GLuint2 shader)
     return material;
 }
 
-int compile_shader(GLenum shaderType, GLuint* shader2, const GLchar* buffer)
-{
+int compile_shader(GLenum shaderType, GLuint* shader2, const GLchar* buffer) {
     GLuint shader = glCreateShader(shaderType);
     glShaderSource(shader, 1, (const GLchar **) &buffer, NULL);
     glCompileShader(shader);
@@ -78,8 +75,7 @@ int compile_shader(GLenum shaderType, GLuint* shader2, const GLchar* buffer)
     return 0;
 }
 
-int load_shader(const char* filepath, GLenum shaderType, GLuint* shader2)
-{
+int load_shader(const char* filepath, GLenum shaderType, GLuint* shader2) {
     if (strlen(filepath) == 0)
     {
         zoxel_log("Shader Filepath is Empty.\n");
@@ -103,8 +99,7 @@ int load_shader(const char* filepath, GLenum shaderType, GLuint* shader2)
     return 0;
 }
 
-GLuint2 spawn_gpu_shader(const char* vertFilepath, const char* fragFilepath)
-{
+GLuint2 spawn_gpu_shader(const char* vertFilepath, const char* fragFilepath) {
     GLuint2 shader = { 0, 0 };
     if (load_shader(vertFilepath, GL_VERTEX_SHADER, &shader.x) != 0)
     {
@@ -120,8 +115,7 @@ GLuint2 spawn_gpu_shader(const char* vertFilepath, const char* fragFilepath)
     return shader;
 }
 
-GLuint2 spawn_gpu_shader_inline(const GLchar* vert_buffer, const GLchar* frag_buffer)
-{
+GLuint2 spawn_gpu_shader_inline(const GLchar* vert_buffer, const GLchar* frag_buffer) {
     GLuint2 shader = { 0, 0 };
     if (compile_shader(GL_VERTEX_SHADER, &shader.x, vert_buffer) != 0)
     {
@@ -137,8 +131,7 @@ GLuint2 spawn_gpu_shader_inline(const GLchar* vert_buffer, const GLchar* frag_bu
 }
 
 //! For when you only need one material, otherwise will need to return shaders too. Returns material reference.
-GLuint load_gpu_shader(GLuint2* shader, const char* vertFilepath, const char* fragFilepath)
-{
+GLuint load_gpu_shader(GLuint2* shader, const char* vertFilepath, const char* fragFilepath) {
     // GLuint vertShader;
     if (load_shader(vertFilepath, GL_VERTEX_SHADER, &shader->x) != 0)
     {
@@ -161,8 +154,7 @@ GLuint load_gpu_shader(GLuint2* shader, const char* vertFilepath, const char* fr
     return material;*/
     
 //! Used incase external shaders are missing
-/*int LoadDefaultShaders()
-{
+/*int LoadDefaultShaders() {
     const GLchar *vertexShaderSource = \
         "void main(void) {\n" \
         "    gl_Position = vec4(0, 0, 0, 1);\n" \

@@ -39,8 +39,7 @@ void main() {\
 const int vertex_count = 3;
 const int single_data_length = 3 * 4;
 const int data_length = vertex_count * single_data_length;
-typedef struct
-{
+typedef struct {
     float x;
     float y;
     float z;

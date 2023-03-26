@@ -1,8 +1,4 @@
-// Shader3D Textured
 GLuint2 shader3D_textured;
-// const char* shader3D_textured_filepath_vert = resources_folder_name"shaders/3D/shader3D_textured.vert";
-// const char* shader3D_textured_filepath_frag = resources_folder_name"shaders/3D/shader3D_textured.frag";
-//! inline shaders incase the shader files don't exist.
 const GLchar* shader3D_textured_vert_buffer = "\
 #version 300 es\n\
 in highp vec3 vertexPosition;\
@@ -12,10 +8,9 @@ uniform highp vec3 position;\
 uniform highp vec4 rotation;\
 uniform highp float scale;\
 out highp vec2 uv;\
-out highp float fogFactor;\
+out highp float fog_level;\
 \
-vec3 float4_rotate_float3(vec4 rotation, vec3 value)\
-{\
+vec3 float4_rotate_float3(vec4 rotation, vec3 value) {\
     vec3 rotationXYZ = rotation.xyz;\
     vec3 t = cross(rotationXYZ, value) * 2.0f;\
     vec3 crossB = cross(rotationXYZ, t);\
@@ -23,11 +18,10 @@ vec3 float4_rotate_float3(vec4 rotation, vec3 value)\
     return value + scaledT + crossB;\
 }\
 \
-void main()\
-{\
+void main() {\
     gl_Position = view_matrix * vec4(position + float4_rotate_float3(rotation, vertexPosition * scale), 1.0);\
     uv = vertexUV;\
-    fogFactor = (view_matrix * vec4(position + float4_rotate_float3(rotation, vertexPosition * scale), 1.0)).z;\
+    fog_level = (view_matrix * vec4(position + float4_rotate_float3(rotation, vertexPosition * scale), 1.0)).z;\
 }\
 ";
 const GLchar* shader3D_textured_frag_buffer = "\
@@ -35,18 +29,16 @@ const GLchar* shader3D_textured_frag_buffer = "\
 uniform highp float brightness;\
 uniform sampler2D tex;\
 in highp vec2 uv;\
-in highp float fogFactor;\
+in highp float fog_level;\
 out highp vec4 color; \
- \
-void main() \
-{ \
+\
+void main() { \
     color = texture(tex, uv) * brightness; \
     highp vec4 backgroundColor = vec4(2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f, 1);\
-    highp float fog_density = 0.012;\
-    highp float fogBlend = 1.0 - exp2(-fog_density * fog_density * fogFactor * fogFactor);\
+    highp float fog_density = 0.0096;\
+    highp float fogBlend = 1.0 - exp2(-fog_density * fog_density * fog_level * fog_level);\
     color = mix(color, backgroundColor, fogBlend);\
-} \
-";
+}";
 
 void dispose_shader3D_textured() {
     glDeleteShader(shader3D_textured.x);
@@ -54,7 +46,6 @@ void dispose_shader3D_textured() {
 }
 
 int load_shader3D_textured() {
-    // shader3D_textured = spawn_gpu_shader(shader3D_textured_filepath_vert, shader3D_textured_filepath_frag);
     shader3D_textured = spawn_gpu_shader_inline(shader3D_textured_vert_buffer, shader3D_textured_frag_buffer);
     GLuint material = spawn_gpu_material_program(shader3D_textured);
     shader_attributes_material_textured3D = (Material3DTextured) { 
@@ -159,8 +150,7 @@ glVertexAttribPointer(materialTextured3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 20, (G
     GLuint2 mesh_buffer, GLuint material_buffer,
     const int *indicies, int indicies_length,
     const float3 *verts, int verts_length,
-    const float2 *uvs, int uvs_length)
-{
+    const float2 *uvs, int uvs_length) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * 4, indicies, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, mesh_buffer.y);
@@ -205,15 +195,14 @@ glVertexAttribPointer(material3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 8, 0);*/
 //! \todo Can I upload a non combined one? This isn't efficient.
 // int proper_verts_length = verts_length; //  / 3);
 // \todo Even this size of array crashed web build! stackSize > 655360
-/*if (floats_length > 15536) // 6)
-{
+/*if (floats_length > 15536) // 6) {
     printf("floats_length greater than 65536 [%i]\n", floats_length);
 }*/
 
 //  
-// highp float fogFactor = fogDensity * (gl_FragCoord.z / gl_FragCoord.w);
-// in highp float fogFactor;
-// color = mix(color, fogColor, fogFactor);
+// highp float fog_level = fogDensity * (gl_FragCoord.z / gl_FragCoord.w);
+// in highp float fog_level;
+// color = mix(color, fogColor, fog_level);
 // color = mix(color, fogColor, smoothstep(4.0,32.0,fogBlend));
 
 /*

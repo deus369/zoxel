@@ -1,31 +1,22 @@
-unsigned char check_texture(Texture* texture, const TextureSize *textureSize, int2 pixel_position,
-    color find_color, int distance)
-{
-    if (!int2_in_bounds(pixel_position, textureSize->value))
-    {
+unsigned char check_texture(Texture* texture, const TextureSize *textureSize, int2 pixel_position, color find_color, int distance) {
+    if (!int2_in_bounds(pixel_position, textureSize->value)) {
         return 0;
     }
-    if (color_equal(find_color, texture->value[int2_array_index(pixel_position, textureSize->value)]))
-    {
+    if (color_equal(find_color, texture->value[int2_array_index(pixel_position, textureSize->value)])) {
         return 1;
     }
-    if (distance >= 0)
-    {
+    if (distance >= 0) {
         distance--;
-        if (check_texture(texture, textureSize, int2_down(pixel_position), find_color, distance))
-        {
+        if (check_texture(texture, textureSize, int2_down(pixel_position), find_color, distance)) {
             return 1;
         }
-        if (check_texture(texture, textureSize, int2_up(pixel_position), find_color, distance))
-        {
+        if (check_texture(texture, textureSize, int2_up(pixel_position), find_color, distance)) {
             return 1;
         }
-        if (check_texture(texture, textureSize, int2_left(pixel_position), find_color, distance))
-        {
+        if (check_texture(texture, textureSize, int2_left(pixel_position), find_color, distance)) {
             return 1;
         }
-        if (check_texture(texture, textureSize, int2_right(pixel_position), find_color, distance))
-        {
+        if (check_texture(texture, textureSize, int2_right(pixel_position), find_color, distance)) {
             return 1;
         }
     }
@@ -33,8 +24,7 @@ unsigned char check_texture(Texture* texture, const TextureSize *textureSize, in
 }
 
 //! Our function that creates a texture.
-void generate_frame_texture(Texture* texture, const TextureSize *textureSize)
-{
+void generate_frame_texture(Texture* texture, const TextureSize *textureSize) {
     const int empty_buffer = 6;
     const int frame_thickness = 2;
     const int2 redRange = { 15, 244 };
@@ -57,22 +47,17 @@ void generate_frame_texture(Texture* texture, const TextureSize *textureSize)
     color empty = { 0, 0, 0, 0 };
     int index = 0;
     int2 pixel_position = { 0, 0 };
-    for (pixel_position.y = 0; pixel_position.y < textureSize->value.y; pixel_position.y++)
-    {
-        for (pixel_position.x = 0; pixel_position.x < textureSize->value.x; pixel_position.x++)
-        {
+    for (pixel_position.y = 0; pixel_position.y < textureSize->value.y; pixel_position.y++) {
+        for (pixel_position.x = 0; pixel_position.x < textureSize->value.x; pixel_position.x++) {
             // corner
             int distance_to_corner_a = pixel_position.x + pixel_position.y;
             int distance_to_corner_b = (textureSize->value.x - 1 - pixel_position.x) + pixel_position.y;
             int distance_to_corner_c = (textureSize->value.x - 1 - pixel_position.x) + (textureSize->value.y - 1 - pixel_position.y);
             int distance_to_corner_d = pixel_position.x + (textureSize->value.y - 1 - pixel_position.y);
             if (distance_to_corner_a <= empty_buffer || distance_to_corner_b <= empty_buffer
-                || distance_to_corner_c <= empty_buffer || distance_to_corner_d <= empty_buffer)
-            {
+                || distance_to_corner_c <= empty_buffer || distance_to_corner_d <= empty_buffer) {
                 texture->value[index] = empty;
-            }
-            else
-            {
+            } else {
                 texture->value[index] = base;
             }
             index++;
@@ -80,65 +65,42 @@ void generate_frame_texture(Texture* texture, const TextureSize *textureSize)
     }
     // outline of frame
     index = 0;
-    for (pixel_position.y = 0; pixel_position.y < textureSize->value.y; pixel_position.y++)
-    {
-        for (pixel_position.x = 0; pixel_position.x < textureSize->value.x; pixel_position.x++)
-        {
-            if (!color_equal(texture->value[index], base))
-            {
+    for (pixel_position.y = 0; pixel_position.y < textureSize->value.y; pixel_position.y++) {
+        for (pixel_position.x = 0; pixel_position.x < textureSize->value.x; pixel_position.x++) {
+            if (!color_equal(texture->value[index], base)) {
                 index++;
                 continue;
             }
             if (pixel_position.x <= frame_thickness ||
                 pixel_position.y <= frame_thickness ||
                 pixel_position.x >= textureSize->value.x - 1 - frame_thickness ||
-                pixel_position.y >= textureSize->value.y - 1 - frame_thickness)
-            {
+                pixel_position.y >= textureSize->value.y - 1 - frame_thickness) {
                 texture->value[index] = darker;
-            }
-            else if (check_texture(texture, textureSize, pixel_position, empty, frame_thickness))
-            {
+            } else if (check_texture(texture, textureSize, pixel_position, empty, frame_thickness)) {
                 texture->value[index] = darker;
             }
             index++;
         }
     }
 }
-                /* || color_equal(texture->value[int2_array_index(int2_down(pixel_position), textureSize->value)], empty) ||
-                color_equal(texture->value[int2_array_index(int2_up(pixel_position), textureSize->value)], empty) ||
-                color_equal(texture->value[int2_array_index(int2_left(pixel_position), textureSize->value)], empty) ||
-                color_equal(texture->value[int2_array_index(int2_right(pixel_position), textureSize->value)], empty)*/
-                
 
-            //if (j <= empty_buffer || j >= textureSize->value.x - 1 - empty_buffer
-            //    || k <= empty_buffer || k >= textureSize->value.y - 1 - empty_buffer)
-            /*else if (j <= frame_thickness || k <= frame_thickness || j >= textureSize->value.x - 1 - frame_thickness || k >= textureSize->value.y - 1 - frame_thickness)
-            {
-                texture->value[index] = darker;
-            }*/
-
-void FrameTextureSystem(ecs_iter_t *it)
-{
+void FrameTextureSystem(ecs_iter_t *it) {
     ecs_query_t *changeQuery = it->ctx;
-    if (!changeQuery || !ecs_query_changed(changeQuery, NULL))
-    {
+    if (!changeQuery || !ecs_query_changed(changeQuery, NULL)) {
         return;
     }
     TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 2);
     Texture *textures = ecs_field(it, Texture, 3);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 4);
     const GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 5);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         const GenerateTexture *generateTexture = &generateTextures[i];
         //! Only rebuild if GenerateTexture is set to 1 and EntityDirty is false.
-        if (generateTexture->value == 0)
-        {
+        if (generateTexture->value == 0) {
             continue;
         }
         TextureDirty *textureDirty = &textureDirtys[i];
-        if (textureDirty->value != 0)
-        {
+        if (textureDirty->value != 0) {
             continue;
         }
         textureDirty->value = 1;
@@ -150,3 +112,15 @@ void FrameTextureSystem(ecs_iter_t *it)
     }
 }
 zoxel_declare_system(FrameTextureSystem)
+
+
+/* || color_equal(texture->value[int2_array_index(int2_down(pixel_position), textureSize->value)], empty) ||
+color_equal(texture->value[int2_array_index(int2_up(pixel_position), textureSize->value)], empty) ||
+color_equal(texture->value[int2_array_index(int2_left(pixel_position), textureSize->value)], empty) ||
+color_equal(texture->value[int2_array_index(int2_right(pixel_position), textureSize->value)], empty)*/
+//if (j <= empty_buffer || j >= textureSize->value.x - 1 - empty_buffer
+//    || k <= empty_buffer || k >= textureSize->value.y - 1 - empty_buffer)
+/*else if (j <= frame_thickness || k <= frame_thickness || j >= textureSize->value.x - 1 - frame_thickness || k >= textureSize->value.y - 1 - frame_thickness)
+{
+    texture->value[index] = darker;
+}*/

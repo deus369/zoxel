@@ -1,6 +1,5 @@
 //! A basic x2 building block.
-typedef struct
-{
+typedef struct {
     double x;
     double y;
 } double2;

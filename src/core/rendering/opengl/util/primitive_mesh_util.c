@@ -1,8 +1,7 @@
 // mesh data
 #define cubeSize 0.5f
 
-const int cubeIndicies3[] =
-{
+const int cubeIndicies3[] = {
     0, 1, 2,
     2, 3, 0,
     4, 5, 6,
@@ -10,8 +9,7 @@ const int cubeIndicies3[] =
 };
 
 // createt cube floats
-const float cubeVertices3[] =
-{
+const float cubeVertices3[] = {
     -cubeSize, -cubeSize, -cubeSize,    // 0
     -cubeSize,  cubeSize, -cubeSize,    // 1
      cubeSize,  cubeSize, -cubeSize,    // 2
@@ -22,8 +20,7 @@ const float cubeVertices3[] =
      cubeSize, -cubeSize, cubeSize      // 7
 };
 
-const int cubeIndicies[] =
-{
+const int cubeIndicies[] = {
     //Left
     0, 2, 6,
     0, 4, 6,
@@ -44,8 +41,7 @@ const int cubeIndicies[] =
     0, 1, 3
 };
 
-/*const float cubeVertices[] =
-{
+/*const float cubeVertices[] = {
     -cubeSize, -cubeSize,  cubeSize,   //0
     cubeSize, -cubeSize,  cubeSize,    //1
     -cubeSize,  cubeSize,  cubeSize,   //2
@@ -67,8 +63,7 @@ const float3 cubeVertices[] = {
     (float3) { cubeSize,  cubeSize, -cubeSize }     //7
 };
 
-const float3 cubeVertices2[] =
-{
+const float3 cubeVertices2[] = {
     { 0, 0, 1.0f },         //0
     { 1.0f, 0, 1.0f},       //1
     { 0, 1.0f, 1.0f },      //2

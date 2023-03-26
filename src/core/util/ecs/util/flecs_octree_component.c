@@ -19,8 +19,7 @@
     } int3;
 #endif
 
-const float octree_scales[] =
-{
+const float octree_scales[] = {
     1.0f,
     0.5f,
     0.25f,
@@ -31,8 +30,7 @@ const float octree_scales[] =
     0.0078125f
 };
 
-const unsigned char powers_of_two_byte[] =
-{
+const unsigned char powers_of_two_byte[] = {
     1,
     2,
     4,
@@ -43,8 +41,7 @@ const unsigned char powers_of_two_byte[] =
     128
 };
 
-const float powers_of_two[] =
-{
+const float powers_of_two[] = {
     1,
     2,
     4,
@@ -59,8 +56,7 @@ const float powers_of_two[] =
     2048
 };
 
-const int3 octree_positions[] =
-{
+const int3 octree_positions[] = {
     { 0, 0, 0},
     { 0, 0, 1},
     { 0, 1, 0},
@@ -71,8 +67,7 @@ const int3 octree_positions[] =
     { 1, 1, 1}
 };
 
-unsigned char get_node_index(int3 node_position)
-{
+unsigned char get_node_index(int3 node_position) {
     return node_position.x * 4 + node_position.y * 2 + node_position.z;
 }
 
@@ -493,8 +488,7 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 octr
         }\
     }\
 */
-/*const int3 octree_positions[] =
-{
+/*const int3 octree_positions[] = {
     { 0, 0, 0}, 0
     { 0, 0, 1}, 1
     { 0, 1, 0}, 2

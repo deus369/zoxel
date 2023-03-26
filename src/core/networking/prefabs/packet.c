@@ -1,7 +1,6 @@
 /*ecs_entity_t prefab_packet;
 
-ecs_entity_t spawn_prefab_net_player(ecs_world_t *world)
-{
+ecs_entity_t spawn_prefab_net_player(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "prefab_net_player");
     set_unique_entity_name(world, e, "prefab_net_player");
@@ -19,8 +18,7 @@ ecs_entity_t spawn_prefab_net_player(ecs_world_t *world)
     return e;
 }
 
-ecs_entity_t spawn_net_player(ecs_world_t *world)
-{
+ecs_entity_t spawn_net_player(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_net_player);
     set_unique_entity_name(world, e, "net_player");

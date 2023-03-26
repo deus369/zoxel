@@ -10,8 +10,7 @@ else if (input == number)\
     return char;\
 }
 
-char convert_to_ascii(unsigned char input)
-{
+char convert_to_ascii(unsigned char input) {
     zoxel_convert_to_ascii_start('?', 0)
     zoxel_convert_to_ascii(' ', 55)
     zoxel_convert_to_ascii('.', 56)
@@ -89,8 +88,7 @@ char convert_to_ascii(unsigned char input)
     return ' ';
 }
 
-char* convert_to_ascii_text(unsigned char *input, int length)
-{
+char* convert_to_ascii_text(unsigned char *input, int length) {
     char *output = malloc(sizeof(char) * length);
     for (int i = 0; i < length; i++)
     {
@@ -99,8 +97,7 @@ char* convert_to_ascii_text(unsigned char *input, int length)
     return output;
 }
 
-char* convert_to_ascii_text_at(unsigned char *input, int length, unsigned char at_index)
-{
+char* convert_to_ascii_text_at(unsigned char *input, int length, unsigned char at_index) {
     char *output = malloc(sizeof(char) * (length + 1));
     for (unsigned char i = at_index; i < at_index + length; i++)
     {

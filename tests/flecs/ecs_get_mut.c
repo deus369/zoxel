@@ -7,8 +7,7 @@
 #include "stdlib.h"
 #include "stdio.h"
 
-typedef struct
-{
+typedef struct {
     bool value;
 } IsAwesome;
 

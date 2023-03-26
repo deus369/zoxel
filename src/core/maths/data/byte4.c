@@ -1,5 +1,4 @@
-typedef struct
-{
+typedef struct {
     unsigned char x;
     unsigned char y;
     unsigned char z;

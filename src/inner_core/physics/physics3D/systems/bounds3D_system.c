@@ -1,6 +1,5 @@
 //! Bounds, because everyone needs limits! Used atm to keep player within the start area.
-void Bounds3DSystem(ecs_iter_t *it)
-{
+void Bounds3DSystem(ecs_iter_t *it) {
     const Bounds3D *bounds3Ds = ecs_field(it, Bounds3D, 1);
     Position3D *position3Ds = ecs_field(it, Position3D, 2);
     for (int i = 0; i < it->count; i++)

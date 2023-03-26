@@ -34,8 +34,7 @@ void add_voxel_face_colors(MeshIndicies *meshIndicies, MeshVertices *meshVertice
     float3 vertex_position_offset, float3 center_mesh_offset, float voxel_scale,
     int2 *start, int2 start2,
     const int voxel_face_indicies[], int voxel_face_indicies_length,
-    const float3 voxel_face_vertices[], int voxel_face_vertices_length)
-{
+    const float3 voxel_face_vertices[], int voxel_face_vertices_length) {
     int indicies_offset = start2.y;
     for (int a = 0, b = start2.x; a < voxel_face_indicies_length; a++, b++)
     {
@@ -56,8 +55,7 @@ void add_voxel_face_colors(MeshIndicies *meshIndicies, MeshVertices *meshVertice
 }
 
 void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize, const Colors *colors,
-    MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColors *meshColors)
-{
+    MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColors *meshColors) {
     // go through and add a top face for each voxel position that is solid
     int array_index = 0;
     int indicies_count = 0;
@@ -143,8 +141,7 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
 }
 
 //! Builds a mesh data from the chunk!
-void ChunkColorsBuildSystem(ecs_iter_t *it)
-{
+void ChunkColorsBuildSystem(ecs_iter_t *it) {
     if (disable_chunk_systems) return;
     if (!ecs_query_changed(it->ctx, NULL))
     {

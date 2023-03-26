@@ -8,12 +8,10 @@
 #include <string.h>
 
 // components
-typedef struct
-{
+typedef struct {
     float a;    // no empty structs? :(
 } Spawner;
-typedef struct
-{
+typedef struct {
     float x, y;
 } Position2D;
 // forward declares

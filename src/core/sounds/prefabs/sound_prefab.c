@@ -1,7 +1,6 @@
 ecs_entity_t prefab_sound;
 
-ecs_entity_t spawn_prefab_sound(ecs_world_t *world)
-{
+ecs_entity_t spawn_prefab_sound(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "prefab_sound");
     set_unique_entity_name(world, e, "prefab_sound");
@@ -17,8 +16,7 @@ ecs_entity_t spawn_prefab_sound(ecs_world_t *world)
     return e;
 }
 
-/*ecs_entity_t spawn_sound(ecs_world_t *world)
-{
+/*ecs_entity_t spawn_sound(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_sound);
     set_unique_entity_name(world, e, "sound");
@@ -31,8 +29,7 @@ ecs_entity_t spawn_prefab_sound(ecs_world_t *world)
 }*/
 
 ecs_entity_t spawn_generated_sound(ecs_world_t *world,
-    float frequency, float sound_length, unsigned char instrument_type)
-{
+    float frequency, float sound_length, unsigned char instrument_type) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_sound);
     set_unique_entity_name(world, e, "sound");

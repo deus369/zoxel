@@ -1,6 +1,5 @@
 //! Get all connections belonging to a neuron. Then begin the signals.
-void neuron_signal_begin(ecs_world_t *world, ecs_entity_t e)
-{
+void neuron_signal_begin(ecs_world_t *world, ecs_entity_t e) {
     ecs_entity_t brain_entity = ecs_get(world, e, ParentLink)->value;
     const Children *children = ecs_get(world, brain_entity, Children);
     // for all children, if connection..
@@ -19,8 +18,7 @@ void neuron_signal_begin(ecs_world_t *world, ecs_entity_t e)
 }
 
 //! Adds force to the velocity per frame.
-void FeedForwardSystem(ecs_iter_t *it)
-{
+void FeedForwardSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
     double deltaTime = (double) it->delta_time;
     const float brain_speed = 4.0f;

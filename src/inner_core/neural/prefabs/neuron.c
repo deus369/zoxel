@@ -1,7 +1,6 @@
 ecs_entity_t prefab_neuron;
 
-ecs_entity_t spawn_prefab_neuron(ecs_world_t *world)
-{
+ecs_entity_t spawn_prefab_neuron(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "prefab_neuron");
     set_unique_entity_name(world, e, "prefab_neuron");
@@ -18,8 +17,7 @@ ecs_entity_t spawn_prefab_neuron(ecs_world_t *world)
     return e;
 }
 
-ecs_entity_t spawn_neuron(ecs_world_t *world, ecs_entity_t brain, float2 position, float weight)
-{
+ecs_entity_t spawn_neuron(ecs_world_t *world, ecs_entity_t brain, float2 position, float weight) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_neuron);
     set_unique_entity_name(world, e, "neuron");

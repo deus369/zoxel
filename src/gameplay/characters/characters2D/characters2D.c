@@ -11,8 +11,7 @@ zoxel_component(Character2DLink, ecs_entity_t)
 #include "systems/BobSpawnSystem.c"
 
 //! A module for 2 dimensional characters.
-void Characters2DImport(ecs_world_t *world)
-{
+void Characters2DImport(ecs_world_t *world) {
     zoxel_module(Characters2D)
     zoxel_define_tag(Character2D)
     zoxel_define_component(Character2DLink)

@@ -88,27 +88,23 @@ zoxel_declare_system(StreamPointSystem)
 
 /*ecs_query_t *changeQuery = it->ctx;
 ecs_iter_t change_iter = ecs_query_iter(it->world, changeQuery);
-while (ecs_query_next(&change_iter))
-{
+while (ecs_query_next(&change_iter)) {
     if (change_iter.table != it->table)
     {
         ecs_query_skip(&change_iter);
     }
 }
-if (!ecs_query_changed(NULL, &change_iter))
-{
+if (!ecs_query_changed(NULL, &change_iter)) {
     printf("Position3D has not changed.\n");
     return;
 }*/
 //! todo only check when Position3D changes.
-/*if (!ecs_query_changed(NULL, it))
-{
+/*if (!ecs_query_changed(NULL, it)) {
     // printf("Position3D has not changed.\n");
     return;
 }*/
 // printf("StreamPointSystem Updated\n");
-/*if (!ecs_query_changed(it->ctx, NULL))
-{
+/*if (!ecs_query_changed(it->ctx, NULL)) {
     printf("Position3D has not changed.\n");
     return;
 }*/

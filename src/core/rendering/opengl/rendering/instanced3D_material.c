@@ -38,8 +38,7 @@ GLuint materialInstance3D;
 Material3D material3D;
 GLuint2 materialInstance3D_mesh;
 
-void dispose_shader3D_instance_material()
-{
+void dispose_shader3D_instance_material() {
     glDeleteShader(shader3D.x);
     glDeleteShader(shader3D.y);
     glDeleteBuffers(1, &materialInstance3D_mesh.x);
@@ -47,8 +46,7 @@ void dispose_shader3D_instance_material()
     glDeleteProgram(materialInstance3D);
 }
 
-void initialize_cube_mesh(GLuint material)
-{
+void initialize_cube_mesh(GLuint material) {
     glGenBuffers(1, &materialInstance3D_mesh.x);
     glGenBuffers(1, &materialInstance3D_mesh.y);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, materialInstance3D_mesh.x);
@@ -62,8 +60,7 @@ void initialize_cube_mesh(GLuint material)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-int load_shader3D_basic()
-{
+int load_shader3D_basic() {
     shader3D = spawn_gpu_shader_inline(shader3D_vert_buffer, shader3D_frag_buffer);
     materialInstance3D = spawn_gpu_material_program((const GLuint2) { shader3D.x, shader3D.y });
     // materialInstance3D = load_gpu_shader(&shader3D, basicRender3DVertFilepath, basicRender3DFragFilepath);
@@ -72,8 +69,7 @@ int load_shader3D_basic()
     return 0;
 }
 
-void opengl_instance3D_begin(const float4x4 viewMatrix)
-{
+void opengl_instance3D_begin(const float4x4 viewMatrix) {
     //! This sets the materials actually, would be best to group entities per material here?
     glUseProgram(materialInstance3D);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, materialInstance3D_mesh.x);    // for indices
@@ -84,8 +80,7 @@ void opengl_instance3D_begin(const float4x4 viewMatrix)
 }
 
 //! Set variables, can this be done using a filtered / system ?
-void RenderEntity3D(float3 position, float4 rotation, float scale1D, float brightness)
-{
+void RenderEntity3D(float3 position, float4 rotation, float scale1D, float brightness) {
     glUniform3f(material3D.position, position.x, position.y, position.z);
     glUniform4f(material3D.rotation, rotation.x, rotation.y, rotation.z, rotation.w);
     glUniform1f(material3D.scale, scale1D);
@@ -94,9 +89,7 @@ void RenderEntity3D(float3 position, float4 rotation, float scale1D, float brigh
 }
 
 //! Set the mesh on the gpu by uploading indicies and vert buffers.
-void set_gpu_mesh(GLuint2 mesh, GLuint material, const int *indicies, int indicies_length,
-    const float3 *verts, int verts_length) // const float3 *verts)
-{
+void set_gpu_mesh(GLuint2 mesh, GLuint material, const int *indicies, int indicies_length, const float3 *verts, int verts_length) {
     tri_count += indicies_length / 3;
     Material3D material3D = spawn_material3D_properties(material);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);
@@ -124,9 +117,7 @@ void set_gpu_mesh(GLuint2 mesh, GLuint material, const int *indicies, int indici
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void set_gpu_mesh2D(GLuint2 mesh, GLuint material, const int *indicies, int indicies_length,
-    const float2 *verts, int verts_length) // const float3 *verts)
-{
+void set_gpu_mesh2D(GLuint2 mesh, GLuint material, const int *indicies, int indicies_length, const float2 *verts, int verts_length) {
     tri_count += indicies_length / 3;
     Material3D material3D = spawn_material3D_properties(material);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);

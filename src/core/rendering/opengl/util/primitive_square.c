@@ -1,22 +1,19 @@
 #define squareSize 0.1f
 
-const int square_indicies[] =
-{
+const int square_indicies[] = {
     // 0, 1, 2,    2, 3, 0
     2, 1, 0,    0, 3, 2
 };
 
 // createt cube floats
-/*const float square_vertices[] =
-{
+/*const float square_vertices[] = {
     -squareSize, -squareSize,
     -squareSize,  squareSize,
      squareSize,  squareSize,
      squareSize, -squareSize
 };*/
 
-const float square_vertices2[] =
-{
+const float square_vertices2[] = {
     -1, -1,
     -1, 1,
     1, 1,
@@ -24,8 +21,7 @@ const float square_vertices2[] =
 };
 
 // createt cube floats
-const float squareVerts3D[] =
-{
+const float squareVerts3D[] = {
     -squareSize, -squareSize, -squareSize,
     -squareSize,  squareSize, -squareSize,
      squareSize,  squareSize, -squareSize,
@@ -33,8 +29,7 @@ const float squareVerts3D[] =
 };
 
 // createt cube floats
-const float squareUVs[] =
-{
+const float squareUVs[] = {
     0, 0,
     1, 0,
     1, 1,

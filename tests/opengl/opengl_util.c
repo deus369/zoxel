@@ -1,6 +1,5 @@
 // a simple 3D point
-typedef struct
-{
+typedef struct {
     float x;
     float y;
     float z;

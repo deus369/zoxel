@@ -1,6 +1,5 @@
 //! Adds force to the velocity per frame.
-void ConnectionRenderSystem(ecs_iter_t *it)
-{
+void ConnectionRenderSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
     double deltaTime = (double) it->delta_time;
     float animate_time = deltaTime * 0.5f;

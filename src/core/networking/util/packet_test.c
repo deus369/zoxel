@@ -6,8 +6,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-int run_packet_test()
-{
+int run_packet_test() {
     printf("Running test packet_test.\n");
     // set up the address to send to
     struct sockaddr_in send_addr;

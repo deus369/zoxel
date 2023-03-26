@@ -1,6 +1,5 @@
 //! Links to locations inside a base material->
-typedef struct
-{
+typedef struct {
     GLint vertexPosition;
     GLuint view_matrix;
     GLuint positionX;
@@ -10,8 +9,7 @@ typedef struct
     GLuint brightness;
 } Material2D;
 
-void initialize_material2D_properties(Material2D *material2D, GLuint material)
-{
+void initialize_material2D_properties(Material2D *material2D, GLuint material) {
     material2D->view_matrix = glGetUniformLocation(material, "viewMatrix");
     material2D->angle = glGetUniformLocation(material, "angle");
     material2D->scale = glGetUniformLocation(material, "scale");

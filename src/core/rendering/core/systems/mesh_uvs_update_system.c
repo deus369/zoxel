@@ -3,8 +3,7 @@
  * Once main thread is fixed, update to gpu in this system.
  * \todo update to gpu here?
 */
-void MeshUvsUpdateSystem(ecs_iter_t *it)
-{
+void MeshUvsUpdateSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(NULL, it))
     {
         return;
@@ -58,8 +57,7 @@ void MeshUvsUpdateSystem(ecs_iter_t *it)
 }
 zoxel_declare_system(MeshUvsUpdateSystem)
 
-/*void MeshUvsUpdateSystem2(ecs_iter_t *it)
-{
+/*void MeshUvsUpdateSystem2(ecs_iter_t *it) {
     if (!ecs_query_changed(NULL, it))
     {
         return;

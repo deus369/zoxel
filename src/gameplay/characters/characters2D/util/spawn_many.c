@@ -1,6 +1,5 @@
 //! Testing, spawn more!
-void spawn_many_characters2D()
-{
+void spawn_many_characters2D() {
     for (int i = 0; i < spawn_characters2D_count; i++)
     {
         spawn_character2D(world, character2D_prefab, (float2) {

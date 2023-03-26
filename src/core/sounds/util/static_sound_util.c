@@ -11,8 +11,7 @@ const char *sound_file_names[] = {
 };
 Mix_Chunk *sounds[static_sounds_length];
 
-unsigned char load_static_sounds()
-{
+unsigned char load_static_sounds() {
     unsigned char success = 1;
     for (int i = 0; i < static_sounds_length; i++)
     {
@@ -26,8 +25,7 @@ unsigned char load_static_sounds()
     return success;
 }
 
-void dispose_static_sounds()
-{
+void dispose_static_sounds() {
     for (int i = 0; i < static_sounds_length; i++)
     {
         Mix_FreeChunk(sounds[i]);

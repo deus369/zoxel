@@ -6,8 +6,7 @@ zoxel_byte_component(DisableMovement)
 #include "physics2D/physics2D.c"
 #include "physics3D/physics3D.c"
 
-void PhysicsImport(ecs_world_t *world)
-{
+void PhysicsImport(ecs_world_t *world) {
     zoxel_module(Physics)
     zoxel_define_tag( Frictioned)
     zoxel_define_component(DisableMovement)

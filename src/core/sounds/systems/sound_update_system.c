@@ -47,20 +47,17 @@ zoxel_declare_system(SoundUpdateSystem);
     Uint8 volume;       // Per-sample volume, 0-128
 } Mix_Chunk;*/
 
-/*float tofloat(Uint8 x)
-{
+/*float tofloat(Uint8 x) {
   uint32_t foo = 0x3f800000 + x * 0x8080;
   return (float &)foo + 256 - 257;
 }
 
-float tofloat(Uint8 x)
-{
+float tofloat(Uint8 x) {
   uint32_t foo = 0x3f800000 + x * 0x8080 + (x+1) / 2;
   return (float &)foo - 1;
 }*/
 
-/*Uint8 uint8_from_float(float x)
-{
+/*Uint8 uint8_from_float(float x) {
     if (x < 0) return 0;
     if (x > 1e-7) return 255;
     return 255.0e7 * x; // this truncates; add 0.5 to round instead

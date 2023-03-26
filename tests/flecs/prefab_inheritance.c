@@ -7,8 +7,7 @@
 #include "stdlib.h"
 #include "stdio.h"
 
-typedef struct
-{
+typedef struct {
     int value;
 } Component;
 ECS_COMPONENT_DECLARE(Component);

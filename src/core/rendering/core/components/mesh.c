@@ -4,8 +4,7 @@
 */
 // zoxel_memory_component(MeshVertices, float3);
 
-/*typedef struct
-{
+/*typedef struct {
     float3 *vertices;
     float3 *normals;
     float3 *colors;
@@ -13,8 +12,7 @@
 } Mesh;
 ECS_COMPONENT_DECLARE(MeshVertices);*/
 
-/*typedef struct
-{
+/*typedef struct {
     float3 *vertices;
     float3 *normals;
     float3 *colors;

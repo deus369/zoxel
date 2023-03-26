@@ -1,7 +1,6 @@
 ecs_entity_t element_prefab;
 
-ecs_entity_t spawn_prefab_element(ecs_world_t *world)
-{
+ecs_entity_t spawn_prefab_element(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "element_prefab");
     zoxel_add_tag(world, e, FrameTexture);
@@ -17,8 +16,7 @@ ecs_entity_t spawn_prefab_element(ecs_world_t *world)
     return e;
 }
 
-ecs_entity_t spawn_element(ecs_world_t *world, ecs_entity_t parent, int2 position, int2 size, float2 anchor)
-{
+ecs_entity_t spawn_element(ecs_world_t *world, ecs_entity_t parent, int2 position, int2 size, float2 anchor) {
     int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, element_prefab);

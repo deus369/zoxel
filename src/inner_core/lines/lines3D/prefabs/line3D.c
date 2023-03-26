@@ -1,8 +1,7 @@
 ecs_entity_t prefab_line3D;
 ecs_entity_t prefab_temporary_line3D;
 
-ecs_entity_t spawn_prefab_line3D(ecs_world_t *world)
-{
+ecs_entity_t spawn_prefab_line3D(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "prefab_line3D");
     set_unique_entity_name(world, e, "prefab_line3D");
@@ -24,8 +23,7 @@ ecs_entity_t spawn_prefab_line3D(ecs_world_t *world)
     return e;
 }
 
-ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time)
-{
+ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time) {
     ecs_defer_begin(world);
     ecs_entity_t e;
     if (life_time == 0.0)
@@ -50,8 +48,7 @@ ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, floa
     return e;
 }
 
-/*void spawn_line3D_square(ecs_world_t *world, float3 point, float3 size, float thickness, double life_time)
-{
+/*void spawn_line3D_square(ecs_world_t *world, float3 point, float3 size, float thickness, double life_time) {
     spawn_line3D(world,
         float3_add(point, (float3) { -size.x / 2.0f, -size.y / 2.0f }),
         float3_add(point, (float3) { size.x / 2.0f, -size.y / 2.0f }),

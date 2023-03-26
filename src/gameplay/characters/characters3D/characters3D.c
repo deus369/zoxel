@@ -8,8 +8,7 @@ zoxel_component(Character3DLink, ecs_entity_t)
 #include "util/character3D.c"
 
 //! Testing, spawn more!
-void spawn_many_characters3D(ecs_world_t *world)
-{
+void spawn_many_characters3D(ecs_world_t *world) {
     int vox_file_index = rand() % vox_files_count;
     // printf("Spawning %i\n", vox_file_index);
     vox_file vox = vox_files[vox_file_index];
@@ -30,8 +29,7 @@ void spawn_many_characters3D(ecs_world_t *world)
 }
 
 //! A module for 3 dimensional characters.
-void Characters3DImport(ecs_world_t *world)
-{
+void Characters3DImport(ecs_world_t *world) {
     zoxel_module(Characters3D)
     zoxel_define_tag(Character3D)
     zoxel_define_component(Character3DLink)

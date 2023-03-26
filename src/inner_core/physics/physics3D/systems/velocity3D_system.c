@@ -1,6 +1,5 @@
 //! Veloco Rapters!
-void Velocity3DSystem(ecs_iter_t *it)
-{
+void Velocity3DSystem(ecs_iter_t *it) {
     // const float2 bounds = { 2.2f, 1.2f };
     double deltaTime = (double) it->delta_time;
     Position3D *positions = ecs_field(it, Position3D, 1);

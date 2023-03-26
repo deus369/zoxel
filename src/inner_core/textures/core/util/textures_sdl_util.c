@@ -3,8 +3,7 @@
  * https://wiki.libsdl.org/SDL_CreateTexture
  * https://wiki.libsdl.org/SDL_UpdateTexture
 */
-void save_texture_png(const Texture *texture, const TextureSize *textureSize, const char *outputTextureName)
-{
+void save_texture_png(const Texture *texture, const TextureSize *textureSize, const char *outputTextureName) {
     // https://wiki.libsdl.org/SDL_PixelFormatEnum
     // int req_format = STBI_rgb_alpha;
     int rmask, gmask, bmask, amask;

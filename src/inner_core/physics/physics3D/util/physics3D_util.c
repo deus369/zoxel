@@ -1,5 +1,4 @@
-void add_physics3D(ecs_world_t *world, ecs_entity_t e)
-{
+void add_physics3D(ecs_world_t *world, ecs_entity_t e) {
     zoxel_set(world, e, Velocity3D, { { 0, 0, 0 } });
     zoxel_set(world, e, Acceleration3D, { { 0, 0, 0 } });
     // zoxel_set(world, e, Gravity3D, { { 0, 0, 0 } });

@@ -37,14 +37,12 @@ void main() \
 } \
 ";
 
-void dispose_shader3D_colored()
-{
+void dispose_shader3D_colored() {
     glDeleteShader(shader3D_colored.x);
     glDeleteShader(shader3D_colored.y);
 }
 
-int load_shader3D_colored()
-{
+int load_shader3D_colored() {
     shader3D_colored = spawn_gpu_shader_inline(shader3D_colored_vert_buffer, shader3D_colored_frag_buffer);
     #ifdef zoxel_catch_opengl_errors
         GLenum err = glGetError();
@@ -58,8 +56,7 @@ int load_shader3D_colored()
 }
 
 void set_gpu_mesh_colors(GLuint2 mesh, GLuint material, const int *indicies, int indicies_length,
-    const float3 *verts, int verts_length, const color *colors)
-{
+    const float3 *verts, int verts_length, const color *colors) {
     tri_count += indicies_length / 3;
     MaterialColored3D materialColored3D = spawn_material3D_colored_properties(material);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);
@@ -98,8 +95,7 @@ void set_gpu_mesh_colors(GLuint2 mesh, GLuint material, const int *indicies, int
 }
 
 int opengl_set_material3D_colors_properties(GLuint material,
-    float3 position, float4 rotation, float scale, float brightness)
-{
+    float3 position, float4 rotation, float scale, float brightness) {
     MaterialColored3D materialColored3D = spawn_material3D_colored_properties(material);
     glEnableVertexAttribArray(materialColored3D.vertexPosition);
     glEnableVertexAttribArray(materialColored3D.vertexColor);

@@ -1,6 +1,5 @@
 //! Torques!
-void Torque2DSystem(ecs_iter_t *it)
-{
+void Torque2DSystem(ecs_iter_t *it) {
     double deltaTime = (double) it->delta_time;
     Rotation2D *rotation2Ds = ecs_field(it, Rotation2D, 1);
     Torque2D *torque2Ds = ecs_field(it, Torque2D, 2);

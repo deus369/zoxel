@@ -5,20 +5,16 @@ const char *outputTextureName = resources_folder_name"textures/tester.png";
 /**
  * \todo update to gpu here?
 */
-void TextureSaveSystem(ecs_iter_t *it)
-{
-    if (!ecs_query_changed(NULL, it))
-    {
+void TextureSaveSystem(ecs_iter_t *it) {
+    if (!ecs_query_changed(NULL, it)) {
         return;
     }
     const TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 1);
     const Texture *textures = ecs_field(it, Texture, 2);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 3);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         const TextureDirty *textureDirty = &textureDirtys[i];
-        if (textureDirty->value != 1)
-        {
+        if (textureDirty->value != 1) {
             continue;
         }
         const Texture *texture = &textures[i];

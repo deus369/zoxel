@@ -1,6 +1,5 @@
 //! Adds force to the velocity per frame.
-void NeuronRenderSystem(ecs_iter_t *it)
-{
+void NeuronRenderSystem(ecs_iter_t *it) {
     float aspect_ratio = screen_dimensions.x / (float) screen_dimensions.y;
     ecs_world_t *world = it->world;
     double deltaTime = (double) it->delta_time;

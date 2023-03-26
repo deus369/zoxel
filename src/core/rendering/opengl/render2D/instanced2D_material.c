@@ -38,8 +38,7 @@ void main()\
 
 //uniform lowp float positionZ;
 
-void dispose_shader2D_instance_material()
-{
+void dispose_shader2D_instance_material() {
     glDeleteShader(shader2D_basic.x);
     glDeleteShader(shader2D_basic.y);
     glDeleteBuffers(1, &squareMesh.x);
@@ -47,8 +46,7 @@ void dispose_shader2D_instance_material()
     glDeleteProgram(square2DMaterial);
 }
 
-void initialize_mesh(GLuint material)
-{
+void initialize_mesh(GLuint material) {
     glGenBuffers(1, &squareMesh.x);
     glGenBuffers(1, &squareMesh.y);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareMesh.x);
@@ -71,8 +69,7 @@ void initialize_mesh(GLuint material)
 #endif
 }
 
-int load_instance2D_material()
-{
+int load_instance2D_material() {
     shader2D_basic = spawn_gpu_shader_inline(shader2D_basic_vert_buffer, shader2D_basic_frag_buffer);
     square2DMaterial = spawn_gpu_material_program((const GLuint2) { shader2D_basic.x, shader2D_basic.y });
     initialize_material2D_properties(&material2D, square2DMaterial);
@@ -80,8 +77,7 @@ int load_instance2D_material()
     return 0;
 }
 
-void shader2D_instance_begin(const float4x4 viewMatrix)
-{
+void shader2D_instance_begin(const float4x4 viewMatrix) {
     if (square2DMaterial == 0)
     {
         // printf("shader2D_instance_begin square2DMaterial is 0.\n");
@@ -97,8 +93,7 @@ void shader2D_instance_begin(const float4x4 viewMatrix)
 }
 
 // does this per material!
-void render_instance2D(float2 position, float angle, float scale, float brightness)
-{
+void render_instance2D(float2 position, float angle, float scale, float brightness) {
     // set variables, can this be done using a filtered / system ?
     glUniform1f(material2D.positionX, position.x);
     glUniform1f(material2D.positionY, position.y);
@@ -108,8 +103,7 @@ void render_instance2D(float2 position, float angle, float scale, float brightne
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 }
 
-void shader2D_instance_end()
-{
+void shader2D_instance_end() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     opengl_disable_opengl_program();

@@ -1,6 +1,5 @@
 //! Adds force to the velocity per frame.
-void Acceleration2DSystem(ecs_iter_t *it)
-{
+void Acceleration2DSystem(ecs_iter_t *it) {
     double deltaTime = (double) it->delta_time;
     Velocity2D *velocity2Ds = ecs_field(it, Velocity2D, 1);
     Acceleration2D *acceleration2Ds = ecs_field(it, Acceleration2D, 2);

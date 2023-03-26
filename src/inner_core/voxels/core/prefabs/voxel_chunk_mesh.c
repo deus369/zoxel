@@ -1,7 +1,6 @@
 ecs_entity_t voxel_prefab;
 
-ecs_entity_t spawn_voxel_chunk_mesh_prefab(ecs_world_t *world)
-{
+ecs_entity_t spawn_voxel_chunk_mesh_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, ""); // , "prefab_cube");
     #ifdef zoxel_transforms3D
@@ -26,8 +25,7 @@ ecs_entity_t spawn_voxel_chunk_mesh_prefab(ecs_world_t *world)
     return e;
 }
 
-ecs_entity_t spawn_voxel_chunk_mesh(ecs_world_t *world, ecs_entity_t prefab, float3 position, float scale)
-{
+ecs_entity_t spawn_voxel_chunk_mesh(ecs_world_t *world, ecs_entity_t prefab, float3 position, float scale) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
     ecs_set(world, e, Position3D, { position });

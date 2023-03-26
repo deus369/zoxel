@@ -1,7 +1,6 @@
 ecs_entity_t canvas_prefab;
 
-void spawn_prefab_canvas(ecs_world_t *world)
-{
+void spawn_prefab_canvas(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "canvas_prefab");
     set_unique_entity_name(world, e, "canvas_prefab");
@@ -14,8 +13,7 @@ void spawn_prefab_canvas(ecs_world_t *world)
     canvas_prefab = e;
 }
 
-ecs_entity_t spawn_canvas(ecs_world_t *world, int2 size)
-{
+ecs_entity_t spawn_canvas(ecs_world_t *world, int2 size) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, canvas_prefab);
     set_unique_entity_name(world, e, "canvas");

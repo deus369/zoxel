@@ -1,5 +1,4 @@
-const float note_frequencies[] =
-{
+const float note_frequencies[] = {
     // 0
     16.35f, // C
     17.32f, // C#

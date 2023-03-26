@@ -14,8 +14,7 @@ clock_t time_start = clock();
     begin_timing()\
     did_do_timing()
 
-double get_time_seconds()
-{
+double get_time_seconds() {
     if (time_app_started == 0)
         time_app_started = (double) (clock() / clocks_per_second);
     return ((double) (clock() / clocks_per_second) - time_app_started);

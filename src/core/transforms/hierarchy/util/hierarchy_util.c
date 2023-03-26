@@ -1,5 +1,4 @@
-void delete_hierarchy(ecs_world_t *world, ecs_entity_t e)
-{
+void delete_hierarchy(ecs_world_t *world, ecs_entity_t e) {
     if (ecs_has(world, e, Children))
     {
         const Children *children = ecs_get(world, e, Children);

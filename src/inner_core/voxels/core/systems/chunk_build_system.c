@@ -15,8 +15,7 @@ void add_voxel_face(MeshIndicies *meshIndicies2, MeshVertices *meshVertices2,
     float3 vertex_position_offset, float3 center_mesh_offset, float voxel_scale,
     int2 *start, int2 start2,
     const int voxel_face_indicies[], int voxel_face_indicies_length,
-    const float3 voxel_face_vertices[], int voxel_face_vertices_length)
-{
+    const float3 voxel_face_vertices[], int voxel_face_vertices_length) {
     int indicies_offset = start2.y;
     for (int a = 0, b = start2.x; a < voxel_face_indicies_length; a++, b++)
     {
@@ -36,8 +35,7 @@ void add_voxel_face(MeshIndicies *meshIndicies2, MeshVertices *meshVertices2,
 }
 
 void build_chunk_mesh(const ChunkData *chunk, const ChunkSize *chunkSize,
-    MeshIndicies *meshIndicies, MeshVertices *meshVertices)
-{
+    MeshIndicies *meshIndicies, MeshVertices *meshVertices) {
     // go through and add a top face for each voxel position that is solid
     int array_index = 0;
     int indicies_count = 0;
@@ -117,8 +115,7 @@ void build_chunk_mesh(const ChunkData *chunk, const ChunkSize *chunkSize,
 }
 
 //! Builds a mesh data from the chunk!
-void ChunkBuildSystem(ecs_iter_t *it)
-{
+void ChunkBuildSystem(ecs_iter_t *it) {
     if (disable_chunk_systems) return;
     ecs_query_t *changeQuery = it->ctx;
     if (!changeQuery || !ecs_query_changed(changeQuery, NULL))

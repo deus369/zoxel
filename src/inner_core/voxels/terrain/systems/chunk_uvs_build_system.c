@@ -3,8 +3,7 @@
 void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,
     MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
     const ChunkData *chunk_left, const ChunkData *chunk_right,
-    const ChunkData *chunk_back, const ChunkData *chunk_front)
-{
+    const ChunkData *chunk_back, const ChunkData *chunk_front) {
     int2 *mesh_count = &((int2){ 0, 0 });
     int2 *start = &((int2) { 0, 0 });
     int3 local_position;
@@ -84,8 +83,7 @@ void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,
 }
 
 //! Builds a mesh data from the chunk!
-void ChunkUVsBuildSystem(ecs_iter_t *it)
-{
+void ChunkUVsBuildSystem(ecs_iter_t *it) {
     if (disable_chunk_systems) return;
     if (!ecs_query_changed(it->ctx, NULL))
     {

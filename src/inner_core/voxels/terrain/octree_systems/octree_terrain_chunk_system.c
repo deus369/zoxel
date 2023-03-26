@@ -455,23 +455,20 @@ zoxel_declare_system(OctreeTerrainChunkSystem)
 }*/
 /*
 
-double octree_noise(int x, int y, int z)
-{
+double octree_noise(int x, int y, int z) {
     int n = x + y * 57 + z * 113;
     n = (n << 13) ^ n;
     return (1.0 - ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0);
 }
 
 
-double octree_interpolate(double a, double b, double x)
-{
+double octree_interpolate(double a, double b, double x) {
     double ft = x * 3.1415927;
     double f = (1 - cos(ft)) * 0.5;
     return  a*(1-f) + b*f;
 }
 
-double octree_smooth_noise(double x, double y, double z)
-{
+double octree_smooth_noise(double x, double y, double z) {
     double corners = ( octree_noise(x-1, y-1, z-1) + octree_noise(x+1, y-1, z-1) + octree_noise(x-1, y+1, z-1) + octree_noise(x+1, y+1, z-1) +
                     octree_noise(x-1, y-1, z+1) + octree_noise(x+1, y-1, z+1) + octree_noise(x-1, y+1, z+1) + octree_noise(x+1, y+1, z+1) ) / 16;
     double sides   = ( octree_noise(x-1, y, z) + octree_noise(x+1, y, z) + octree_noise(x, y-1, z) + octree_noise(x, y+1, z) +
@@ -481,8 +478,7 @@ double octree_smooth_noise(double x, double y, double z)
 }
 
 
-double octree_interpolated_noise(double x, double y, double z)
-{
+double octree_interpolated_noise(double x, double y, double z) {
     int int_x = (int)x;
     int int_y = (int)y;
     int int_z = (int)z;
@@ -508,8 +504,7 @@ double octree_interpolated_noise(double x, double y, double z)
     return i4;
 }
 
-double octree_perlin_noise(double x, double y, double z, double persistence, double frequency)
-{
+double octree_perlin_noise(double x, double y, double z, double persistence, double frequency) {
     double total = 0;
     double p = persistence;
     double n = frequency;

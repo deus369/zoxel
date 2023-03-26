@@ -9,10 +9,8 @@ const TextureSize* queueTextureSizes[maxTextureQueue];*/
  * Once main thread is fixed, update to gpu in this system.
  * \todo update to gpu here?
 */
-void TextureUpdateSystem(ecs_iter_t *it)
-{
-    if (!ecs_query_changed(NULL, it))
-    {
+void TextureUpdateSystem(ecs_iter_t *it) {
+    if (!ecs_query_changed(NULL, it)) {
         return;
     }
     const TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 1);
@@ -20,11 +18,9 @@ void TextureUpdateSystem(ecs_iter_t *it)
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 3);
     const TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 4);
     // printf("TextureUpdateSystem [%i] \n", it->count);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         const TextureDirty *textureDirty = &textureDirtys[i];
-        if (textureDirty->value != 1)
-        {
+        if (textureDirty->value != 1) {
             continue;
         }
         const Texture *texture = &textures[i];

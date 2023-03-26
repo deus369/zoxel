@@ -3,8 +3,7 @@
 extern void render_instance2D(float2 position, float angle, float scale, float brightness);
 
 //! Render 2D entities.
-void InstanceRender2DSystem(ecs_iter_t *it)
-{
+void InstanceRender2DSystem(ecs_iter_t *it) {
     Position2D *position2Ds = ecs_field(it, Position2D, 1);
     Rotation2D *rotation2Ds = ecs_field(it, Rotation2D, 2);
     Scale1D *scale1Ds = ecs_field(it, Scale1D, 3);

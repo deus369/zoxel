@@ -1,7 +1,6 @@
 ecs_entity_t prefab_realm;
 
-ecs_entity_t spawn_prefab_realm(ecs_world_t *world)
-{
+ecs_entity_t spawn_prefab_realm(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, ""); // prefab_realm");
     set_unique_entity_name(world, e, "prefab_realm");
@@ -14,8 +13,7 @@ ecs_entity_t spawn_prefab_realm(ecs_world_t *world)
     return e;
 }
 
-ecs_entity_t spawn_realm(ecs_world_t *world)
-{
+ecs_entity_t spawn_realm(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_realm);
     set_unique_entity_name(world, e, "realm");

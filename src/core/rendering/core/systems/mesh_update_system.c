@@ -3,8 +3,7 @@
  * Once main thread is fixed, update to gpu in this system.
  * \todo update to gpu here?
 */
-void MeshUpdateSystem(ecs_iter_t *it)
-{
+void MeshUpdateSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(NULL, it))
     {
         return;

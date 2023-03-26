@@ -1,6 +1,5 @@
 //! Our function that creates a chunk.
-void GenerateChunkNoise(ChunkData* chunk, const ChunkSize *chunkSize)
-{
+void GenerateChunkNoise(ChunkData* chunk, const ChunkSize *chunkSize) {
     // const int2 valueRange = { 0, 2 };   // < max
     int array_index = 0;
     for (int j = 0; j < chunkSize->value.x; j++)
@@ -39,8 +38,7 @@ void GenerateChunkNoise(ChunkData* chunk, const ChunkSize *chunkSize)
     }
 }
 
-void NoiseChunkSystem(ecs_iter_t *it)
-{
+void NoiseChunkSystem(ecs_iter_t *it) {
     if (disable_chunk_systems) return;
     if (!ecs_query_changed(it->ctx, NULL))
     {

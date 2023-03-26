@@ -1,5 +1,4 @@
-void Mesh2DUvsUpdateSystem(ecs_iter_t *it)
-{
+void Mesh2DUvsUpdateSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(NULL, it))
     {
         return;

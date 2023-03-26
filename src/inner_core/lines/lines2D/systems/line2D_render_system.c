@@ -22,8 +22,7 @@ GLuint line2D_material;
 GLuint line2D_position_location;
 GLuint line2D_color_location;
 
-int initialize_shader_line2D()
-{
+int initialize_shader_line2D() {
     line2D_shader = spawn_gpu_shader_inline(line2D_source_vert, line2D_source_frag);
     line2D_material = spawn_gpu_material_program((const GLuint2) { line2D_shader.x, line2D_shader.y });
     line2D_position_location = glGetAttribLocation(line2D_material, "position");
@@ -31,8 +30,7 @@ int initialize_shader_line2D()
     return 0;
 }
 
-void Line2DRenderSystem(ecs_iter_t *it)
-{
+void Line2DRenderSystem(ecs_iter_t *it) {
     glUseProgram(line2D_material);
     glEnableVertexAttribArray(line2D_position_location);
     const LineData2D *lineData2Ds = ecs_field(it, LineData2D, 2);

@@ -1,5 +1,4 @@
-typedef struct
-{
+typedef struct {
     GLint vertexPosition;
     GLint vertexColor;
     GLuint view_matrix;
@@ -9,8 +8,7 @@ typedef struct
     GLuint brightness;
 } MaterialColored3D;
 
-MaterialColored3D spawn_material3D_colored_properties(GLuint material)
-{
+MaterialColored3D spawn_material3D_colored_properties(GLuint material) {
     MaterialColored3D material3D;
     material3D.view_matrix = glGetUniformLocation(material, "viewMatrix");
     material3D.position = glGetUniformLocation(material, "position");

@@ -1,5 +1,4 @@
-typedef struct
-{
+typedef struct {
     GLint vertexPosition;
     GLint vertexUV;
     GLuint view_matrix;
@@ -13,8 +12,7 @@ typedef struct
 Material3DTextured shader_attributes_material_textured3D;
 // const Material3DTextured shader_attributes_material_textured3D = (Material3DTextured) { 0, 1, 2, 3, 4, 5, 6, 7 };
 
-/*Material3DTextured spawn_material3D_textured()
-{
+/*Material3DTextured spawn_material3D_textured() {
     Material3DTextured material3D;
 
     material3D.vertexPosition = 0;

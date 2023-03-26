@@ -1,6 +1,5 @@
 //! Links to locations inside a base material.
-typedef struct
-{
+typedef struct {
     GLint vertexPosition;
     GLuint view_matrix;
     GLuint positionX;
@@ -14,8 +13,7 @@ typedef struct
     GLuint texture;
 } MaterialTextured2D;
 
-MaterialTextured2D initialize_material2D_textured(GLuint material)
-{
+MaterialTextured2D initialize_material2D_textured(GLuint material) {
     MaterialTextured2D materialTextured2D;
     materialTextured2D.view_matrix = glGetUniformLocation(material, "viewMatrix");
     materialTextured2D.positionX = glGetUniformLocation(material, "positionX");

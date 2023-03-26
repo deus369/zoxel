@@ -3,7 +3,6 @@
 
 int tri_count = 0;
 #include "data/GLuint2.c"
-// todo: use realm cameras instead of singleton data
 float4x4 main_camera_matrix; 
 float4x4 ui_camera_matrix; 
 float4x4 main_camera_matrix2;
@@ -25,4 +24,6 @@ void RenderingImport(ecs_world_t *world) {
         zoxel_import_module(RenderingCore)
     }
 }
+
+// todo: use realm cameras instead of singleton data main_camera_matrix
 #endif
