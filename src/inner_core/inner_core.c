@@ -12,19 +12,16 @@
 #include "tiles/tiles.c"
 #include "voxels/voxels.c"
 
-void InnerCoreImport(ecs_world_t *world) {
-    zoxel_log("     > importing inner core\n");
-    zoxel_module(InnerCore)
-    zoxel_import_module(Textures)
-    zoxel_import_module(Musics)
-    zoxel_import_module(UI)
-    zoxel_import_module(Lines)
-    zoxel_import_module(Neural)
-    zoxel_import_module(Animations)
-    zoxel_import_module(Tiles)
-    zoxel_import_module(Voxels)
-    zoxel_import_module(Physics)
-    zoxel_import_module(Blueprints)
-    zoxel_log("     > imported inner core\n");
-}
+zoxel_begin_module(InnerCore)
+zoxel_import_module(Textures)
+zoxel_import_module(Musics)
+zoxel_import_module(UI)
+zoxel_import_module(Lines)
+zoxel_import_module(Neural)
+zoxel_import_module(Animations)
+zoxel_import_module(Tiles)
+zoxel_import_module(Voxels)
+zoxel_import_module(Physics)
+zoxel_import_module(Blueprints)
+zoxel_end_module(InnerCore)
 #endif

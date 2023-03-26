@@ -17,22 +17,16 @@ ecs_world_t *world;
 #include "sounds/sounds.c"
 #include "util/core_util.c"
 
-//! Handles modules that are for basic stuff at lowest level
-void CoreImport(ecs_world_t *world) {
-    zoxel_log("     > importing core\n");
-    zoxel_module(Core)
-    zoxel_import_module(Generic)
-    zoxel_import_module(Maths)
-    zoxel_import_module(Timing)
-    zoxel_import_module(Transforms)
-    zoxel_import_module(Networking)
-    if (!headless) {
-        zoxel_import_module(Apps)
-        zoxel_import_module(Inputs)
-    }
-    zoxel_import_module(Rendering)
-    zoxel_import_module(Sounds)
-    zoxel_import_module(Cameras)
-    zoxel_log("     > imported core\n");
-}
+zoxel_begin_module(Core)
+zoxel_import_module(Generic)
+zoxel_import_module(Maths)
+zoxel_import_module(Timing)
+zoxel_import_module(Transforms)
+zoxel_import_module(Networking)
+if (!headless) zoxel_import_module(Apps)
+if (!headless) zoxel_import_module(Inputs)
+zoxel_import_module(Rendering)
+zoxel_import_module(Sounds)
+zoxel_import_module(Cameras)
+zoxel_end_module(Core)
 #endif

@@ -1,8 +1,4 @@
-//! Contains a link to the MaterialGPULink on the GPU.
-/**
-*   Materials are shader program instances.
-*   \todo Seperate mesh data into different files.
-*/
+// x is for indicies and verts
 zoxel_component(MeshGPULink, GLuint2)
 
 void add_gpu_mesh(ecs_world_t *world, ecs_entity_t prefab) {

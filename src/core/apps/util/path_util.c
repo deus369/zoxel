@@ -13,8 +13,7 @@
 char *data_path = NULL;
 char *resources_path = NULL;
 
-void set_data_path()
-{
+void set_data_path() {
     #ifdef ANDROID_BUILD
         char *base_path = SDL_GetPrefPath("libsdl", "app");
         /*char *android_path = SDL_GetBasePath(); // SDL_AndroidGetInternalStoragePath();
@@ -24,17 +23,13 @@ void set_data_path()
     #else
         char *base_path = SDL_GetBasePath();
     #endif
-    if (base_path)
-    {
+    if (base_path) {
         data_path = base_path;
-    }
-    else
-    {
+    } else {
         data_path = SDL_strdup("./");
     }
     DIR* dir = opendir(base_path);
-    if (dir)
-    {
+    if (dir) {
         #ifdef zoxel_debug_pathing
         zoxel_log("SDL data_path (EXISTS): %s\n", data_path);
         #endif
@@ -57,36 +52,28 @@ void set_data_path()
         strcpy(resources_path, base_path);
         strcat(resources_path, resources_folder_name);
         DIR* dir2 = opendir(resources_path);
-        if (dir2)
-        {
+        if (dir2) {
             //#ifdef zoxel_debug_pathing
                 zoxel_log(" > resources found at [%s]\n", resources_path);
             //#endif
             closedir(dir2);
-        }
-        else
-        {
+        } else {
             zoxel_log("resources_path (DOES NOT EXIST): %s\n", resources_path);
         }
         // free(resources_path);
-    }
-    else if (ENOENT == errno)
-    {
+    } else if (ENOENT == errno) {
         zoxel_log("SDL data_path (DOES NOT EXIST): %s\n", data_path);
-    }
-    else
-    {
+    } else {
         zoxel_log("SDL data_path (MYSTERIOUSLY DOES NOT EXIST): %s\n", data_path);
     }
 }
 
-char* get_full_file_path(const char* filepath)
-{
+char* get_full_file_path(const char* filepath) {
     char* fullpath = malloc(strlen(data_path) + strlen(filepath) + 1);
     strcpy(fullpath, data_path);
     strcat(fullpath, filepath);
     #ifdef zoxel_debug_pathing
-    zoxel_log("fullpath: %s\n", fullpath);
+        zoxel_log("fullpath: %s\n", fullpath);
     #endif
     return fullpath;
 }

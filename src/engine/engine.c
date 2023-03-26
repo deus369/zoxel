@@ -1,23 +1,11 @@
 #ifndef zoxel_engine
 #define zoxel_engine
 
-// platforms
-#if defined(__unix__) && __ANDROID__
-    #define ANDROID_BUILD
-#endif
-#ifdef __EMSCRIPTEN__
-    #define WEB_BUILD
-#endif
-#ifdef _WIN32
-    #define WINDOWS_BUILD
-#endif
-// flecs
 #define FLECS_CUSTOM_BUILD
 #define FLECS_MODULE
 #define FLECS_SYSTEM 
 #define FLECS_PIPELINE
 #include "../../include/flecs.h"
-// sdl
 #define SDL_IMAGES
 #define SDL_MIXER
 // #define USE_SDL_3
@@ -26,7 +14,7 @@
 #include <stdlib.h> // for malloc & free
 #include <stdio.h>  // just for sprintf and perror
 unsigned char server_mode = 0;
-#include "../build_settings.c"
+#include "util/platforms_util.c"
 #include "../core/core.c"
 #include "../inner_core/inner_core.c"
 #include "../outer_core/outer_core.c"

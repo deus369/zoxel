@@ -1,8 +1,7 @@
 
 
 //! Zoxel can also be a command tool... Wuut?!?!!
-void print_help_menu(const char* arg0)
-{
+void print_help_menu(const char* arg0) {
     zoxel_log("\n");
     zoxel_log("-=-=-=-=-=--=-=-=-=-=--=-=-=-=-=--=-=-=-=-=-\n");
     zoxel_log("\n");
@@ -25,41 +24,31 @@ void print_help_menu(const char* arg0)
 }
 
 //! Convert starting arguments to Settings.
-int process_arguments(int argc, char* argv[])
-{
-    for (int i = 1; i < argc; i++)
-    {
-        if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0)
-        {
+int process_arguments(int argc, char* argv[]) {
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
             print_help_menu(argv[0]);
             return EXIT_FAILURE;
         }
-        if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--fullscreen") == 0)
-        {
+        if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--fullscreen") == 0) {
             fullscreen = 1;
         }
-        if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--halfscreen") == 0)
-        {
+        if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--halfscreen") == 0) {
             halfscreen = 1;
         }
-        if (strcmp(argv[i], "-s") == 0 || strcmp(argv[i], "--splitscreen") == 0)
-        {
+        if (strcmp(argv[i], "-s") == 0 || strcmp(argv[i], "--splitscreen") == 0) {
             is_split_screen = 1;
         }
-        if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--vsync") == 0)
-        {
+        if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--vsync") == 0) {
             vsync = 1;
         }
-        if (strcmp(argv[i], "-p") == 0 || strcmp(argv[i], "--profiler") == 0)
-        {
+        if (strcmp(argv[i], "-p") == 0 || strcmp(argv[i], "--profiler") == 0) {
             profiler = 1;
         }
-        if (strcmp(argv[i], "-z") == 0 || strcmp(argv[i], "--headless") == 0)
-        {
+        if (strcmp(argv[i], "-z") == 0 || strcmp(argv[i], "--headless") == 0) {
             headless = 1;
         }
-        if (strcmp(argv[i], "-x") == 0 || strcmp(argv[i], "--server") == 0)
-        {
+        if (strcmp(argv[i], "-x") == 0 || strcmp(argv[i], "--server") == 0) {
             server_mode = 1;
         }
     }
