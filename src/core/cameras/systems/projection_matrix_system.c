@@ -1,7 +1,5 @@
 //! Calculate the view matrix
-
-void CalculateFrustrumMatrix(float4x4 *matrix, float left, float right, float bottom, float top, float znear, float zfar)
-{
+void CalculateFrustrumMatrix(float4x4 *matrix, float left, float right, float bottom, float top, float znear, float zfar) {
     float temp, temp2, temp3, temp4;
     temp = 2.0 * znear;
     temp2 = right - left;
@@ -26,8 +24,7 @@ void CalculateFrustrumMatrix(float4x4 *matrix, float left, float right, float bo
     matrix->w.w = 0.0;
 }
 
-void CalculatePerspectiveViewMatrix(float4x4 *view_matrix, float fovInDegrees, float aspectRatio, float znear, float zfar)
-{
+void CalculatePerspectiveViewMatrix(float4x4 *view_matrix, float fovInDegrees, float aspectRatio, float znear, float zfar) {
     float ymax, xmax;
     ymax = znear * tanf(fovInDegrees * M_PI / 360.0);
     xmax = ymax * aspectRatio;
@@ -38,10 +35,8 @@ void CalculatePerspectiveViewMatrix(float4x4 *view_matrix, float fovInDegrees, f
 /**
  * This should only update when either ScreenDimensions or FieldOfView changes.
 */
-void ProjectionMatrixSystem(ecs_iter_t *it)
-{
-    if (!ecs_query_changed(NULL, it))
-    {
+void ProjectionMatrixSystem(ecs_iter_t *it) {
+    if (!ecs_query_changed(NULL, it)) {
         // printf("A Component has not changed.\n");
         return;
     }
@@ -51,22 +46,18 @@ void ProjectionMatrixSystem(ecs_iter_t *it)
     const CameraNearDistance *cameraNearDistances = ecs_field(it, CameraNearDistance, 3);
     ProjectionMatrix *projectionMatrixs = ecs_field(it, ProjectionMatrix, 4);
     // ecs_query_changed(it->query, &it, ScreenDimensions) || ecs_query_changed(q_read, &it, ScreenDimensions)
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         const ScreenDimensions *screenDimensions2 = &screenDimensions[i];
         int screenWidth = screenDimensions2->value.x;
         int screenHeight = screenDimensions2->value.y;
-        if(screenHeight <= 0)
-        {
-            return;
+        if(screenHeight <= 0) {
+            continue;
         }
         float aspectRatio = ((float) screenWidth) / ((float) screenHeight);
         const FieldOfView *fieldOfView = &fieldOfViews[i];
         const CameraNearDistance *cameraNearDistance = &cameraNearDistances[i];
         ProjectionMatrix *projectionMatrix = &projectionMatrixs[i];
-        CalculatePerspectiveViewMatrix(&projectionMatrix->value, fieldOfView->value, aspectRatio,
-            cameraNearDistance->value, camera_far_distance);
-        // 0.1f, 100);
+        CalculatePerspectiveViewMatrix(&projectionMatrix->value, fieldOfView->value, aspectRatio, cameraNearDistance->value, camera_far_distance);
         // float4x4_print(view_matrix->value);
         // printf("    Perspective Updated [%ix%i]\n", screenWidth, screenHeight);
     }

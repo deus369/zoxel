@@ -1,71 +1,47 @@
-// baasic abs for int
-int abs_integer(int value)
-{
-    if (value < 0)
-    {
+int abs_integer(int value) {
+    if (value < 0) {
         return -value;
-    }
-    else
-    {
+    } else {
         return value;
     }
 }
 
-
-int integer_min(int a, int b)
-{
-    if (a > b)
-    {
+int integer_min(int a, int b) {
+    if (a > b) {
         return b;
-    }
-    else
-    {
+    } else {
         return a;
     }
 }
 
-float3 float3_from_int3(int3 input)
-{
+float3 float3_from_int3(int3 input) {
     return (float3) { input.x, input.y, input.z };
 }
 
-int int_floor(float input)
-{
+int int_floor(float input) {
     return (int) floor(input);
 }
 
-int int_min(int a, int b)
-{
-    if (a < b)
-    {
+int int_min(int a, int b) {
+    if (a < b) {
         return a;
-    }
-    else
-    {
+    } else {
         return b;
     }
 }
 
-int int_max(int a, int b)
-{
-    if (a > b)
-    {
+int int_max(int a, int b) {
+    if (a > b) {
         return a;
-    }
-    else
-    {
+    } else {
         return b;
     }
 }
 
-int int_abs(float input)
-{
-    if (input < 0)
-    {
+int int_abs(float input) {
+    if (input < 0) {
         return -input;
-    }
-    else
-    {
+    } else {
         return input;
     }
 }

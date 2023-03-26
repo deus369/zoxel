@@ -1,6 +1,6 @@
 // profiling: make build/dev && make run-dev-profiler
 // #include "profiler_defines.c"
-#include "zoxel_engine.c"
+#include "engine/engine.c"
 #include "zoxel/zoxel.c"
 
 #ifdef ANDROID_BUILD

@@ -1,31 +1,22 @@
 // Find more math inspiration at https://gist.github.com/mattatz/86fff4b32d198d0928d0fa4ff32cf6fa
 
-float float_abs(float input)
-{
-    if (input < 0)
-    {
+float float_abs(float input) {
+    if (input < 0) {
         return -input;
-    }
-    else
-    {
+    } else {
         return input;
     }
 }
 
-double double_abs(double input)
-{
-    if (input < 0)
-    {
+double double_abs(double input) {
+    if (input < 0) {
         return -input;
-    }
-    else
-    {
+    } else {
         return input;
     }
 }
 
-float4x4 float4x4_position(float3 position)
-{
+float4x4 float4x4_position(float3 position) {
     float4x4 matrix = float4x4_identity();
     matrix.w.x = position.x;
     matrix.w.y = position.y;
@@ -34,8 +25,7 @@ float4x4 float4x4_position(float3 position)
 }
 
 //! View Matrix multipled by projection and used to distort pixel magic.
-float4x4 float4x4_view_matrix(float3 position, float3 forward, float3 up)
-{
+float4x4 float4x4_view_matrix(float3 position, float3 forward, float3 up) {
     float4x4 matrix = float4x4_position(float3_multiply_float(position, -1.0f));
     float3 side = { };
     side = float3_cross(forward, up);
@@ -52,8 +42,7 @@ float4x4 float4x4_view_matrix(float3 position, float3 forward, float3 up)
     return matrix;
 }
 
-void float4x4_rotate(float4x4 *matrix, const float4 rotation)
-{
+void float4x4_rotate(float4x4 *matrix, const float4 rotation) {
     matrix->x.x *= rotation.x;
     matrix->y.x *= rotation.x;
     matrix->z.x *= rotation.x;
@@ -72,16 +61,14 @@ void float4x4_rotate(float4x4 *matrix, const float4 rotation)
     matrix->w.w *= rotation.w;
 }
 
-void float4_divide(float4 *input, float division)
-{
+void float4_divide(float4 *input, float division) {
     input->x /= division;
     input->y /= division;
     input->z /= division;
     input->w /= division;
 }
 
-float4x4 quaternion_to_matrix(float4 quat)
-{
+float4x4 quaternion_to_matrix(float4 quat) {
     float4x4 m = float4x4_identity();
     float x = quat.x;
     float y = quat.y;
@@ -93,33 +80,26 @@ float4x4 quaternion_to_matrix(float4 quat)
     float xx = x * x2;
     float xy = x * y2;
     float xz = x * z2;
-
     float yy = y * y2;
     float yz = y * z2;
     float zz = z * z2;
-
     float wx = w * x2;
     float wy = w * y2;
     float wz = w * z2;
-
     m.x.x = 1.0 - (yy + zz);
     m.x.y = xy - wz;
     m.x.z = xz + wy;
-
     m.y.x = xy + wz;
     m.y.y = 1.0 - (xx + zz);
     m.y.z = yz - wx;
-
     m.z.x = xz - wy;
     m.z.y = yz + wx;
     m.z.z = 1.0 - (xx + yy);
-
     m.w.w = 1.0;
     return m;
 }
 
-float3 quaternion_to_euler(float4 q)
-{
+float3 quaternion_to_euler(float4 q) {
     float3 euler = { };
     // roll (x-axis rotation)
     double sinr_cosp = 2 * (q.w * q.x + q.y * q.z);
@@ -127,12 +107,9 @@ float3 quaternion_to_euler(float4 q)
     euler.x = atan2(sinr_cosp, cosr_cosp);
     // pitch (y-axis rotation)
     double sinp = 2 * (q.w * q.y - q.z * q.x);
-    if (double_abs(sinp) >= 1)  // abs
-    {
+    if (double_abs(sinp) >= 1) {
         euler.y = copysign(M_PI / 2, sinp); // use 90 degrees if out of range
-    }
-    else
-    {
+    } else {
         euler.y = asin(sinp);
     }
     // yaw (z-axis rotation)
@@ -145,8 +122,7 @@ float3 quaternion_to_euler(float4 q)
     return euler;
 }
 
-float4 quaternion_from_euler(float3 euler)
-{
+float4 quaternion_from_euler(float3 euler) {
     float yaw = euler.x;
     float pitch = euler.y;
     float roll = euler.z;
@@ -158,13 +134,11 @@ float4 quaternion_from_euler(float3 euler)
     return output;
 }
 
-float4 quaternion_identity()
-{
+float4 quaternion_identity() {
     return (float4) { 0, 0, 0, 1 };
 }
 
-void float4_print_euler(float4 input)
-{
+void float4_print_euler(float4 input) {
     float3 euler = float3_divide_float(quaternion_to_euler(input), degreesToRadians);
     zoxel_log("-> Euler [x:%f y:%f z:%f]\n", euler.x, euler.y, euler.z);
 }

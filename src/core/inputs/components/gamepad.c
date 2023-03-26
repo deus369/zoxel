@@ -1,6 +1,5 @@
 //! A gamepad representation. \todo Add axis data.
-typedef struct
-{
+typedef struct {
     PhysicalButton a;
     PhysicalButton b;
     PhysicalButton x;

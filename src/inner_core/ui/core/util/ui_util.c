@@ -153,7 +153,7 @@ float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity
 // set children position as well
 void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, unsigned char layer, int2 canvas_size) {
     #ifdef debug_ui_scaling
-    zoxel_log("    - layer [%i] Repositioning entity [%lu]\n", layer, (long int) e);
+        zoxel_log("    - layer [%i] Repositioning entity [%lu]\n", layer, (long int) e);
     #endif
     float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
     float aspectRatio = canvasSizef.x / canvasSizef.y;
@@ -170,7 +170,7 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
             ((position2D.y + 0.5f) * canvasSizef.y) };
         ecs_set(world, e, CanvasPixelPosition, { global_pixel_position });
         #ifdef debug_ui_scaling
-        zoxel_log("        -> to [%ix%i]\n", global_pixel_position.x, global_pixel_position.y);
+            zoxel_log("        -> to [%ix%i]\n", global_pixel_position.x, global_pixel_position.y);
         #endif
     } else {
         zoxel_log("UI doesn't have pixel position: %lu\n", (long int) e);
@@ -183,7 +183,7 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
         // set_mesh_uvs(world, e, square_vertices, 4);
         ecs_set(world, e, MeshDirty, { 1 });
         #ifdef debug_ui_scaling
-        zoxel_log("        -> Scaling: [%fx%f]\n", scaledSize2D.x, scaledSize2D.y);
+            zoxel_log("        -> Scaling: [%fx%f]\n", scaledSize2D.x, scaledSize2D.y);
         #endif
     }
     if (is_valid && ecs_has(world, e, Children)) {
@@ -201,7 +201,7 @@ void uis_on_viewport_resized(ecs_world_t *world, int width, int height) {
     int2 canvas_size = { width, height };
     ecs_set(world, main_canvas, PixelSize, { canvas_size });
     #ifdef debug_viewport_resize
-    zoxel_log("On Viewport Resized to dimensions: [%ix%i]\n", canvas_size.x, canvas_size.y);
+        zoxel_log("On Viewport Resized to dimensions: [%ix%i]\n", canvas_size.x, canvas_size.y);
     #endif
     for (int i = 0; i < ui_entities_count; i++) {
         ecs_entity_t e = ui_entities[i];

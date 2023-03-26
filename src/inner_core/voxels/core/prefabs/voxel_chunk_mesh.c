@@ -18,9 +18,9 @@ ecs_entity_t spawn_voxel_chunk_mesh_prefab(ecs_world_t *world)
     {
         zoxel_add(world, e, MeshIndicies);
         zoxel_add(world, e, MeshVertices);
-        add_gpu_mesh(world, e);
-        add_gpu_material(world, e);
     }
+    add_gpu_mesh(world, e);
+    add_gpu_material(world, e);
     ecs_defer_end(world);
     voxel_prefab = e;
     return e;

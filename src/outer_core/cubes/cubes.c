@@ -8,9 +8,7 @@ ecs_entity_t prefab_cube_textured;
 #include "prefabs/cube.c"
 #include "prefabs/cube_textured.c"
 
-//! The Cubes sub module.
-void CubesImport(ecs_world_t *world)
-{
+void CubesImport(ecs_world_t *world) {
     zoxel_module(Cubes)
     prefab_cube = spawn_prefab_cube(world);
     prefab_cube_textured = spawn_prefab_cube_textured(world);

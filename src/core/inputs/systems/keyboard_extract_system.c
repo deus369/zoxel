@@ -1,9 +1,13 @@
 //! Grabs keyboard data from SDL.
 
+#define key_case(sdl_event, key)\
+            case sdl_event:\
+                set_key(key, eventType);\
+                break;
+
 ecs_entity_t keyboardEntity;
 
-ecs_entity_t spawn_keyboard(ecs_world_t *world)
-{
+ecs_entity_t spawn_keyboard(ecs_world_t *world) {
     ecs_entity_t e = ecs_new_entity(world, "keyboard");
     // ecs_add(world, keyboardEntity, Keyboard);
     ecs_set(world, e, Keyboard, { });
@@ -12,57 +16,40 @@ ecs_entity_t spawn_keyboard(ecs_world_t *world)
     return e;
 }
 
-void set_key(PhysicalButton *key, int eventType)
-{
+void set_key(PhysicalButton *key, int eventType) {
     unsigned char keyDown = eventType == SDL_KEYDOWN;
     unsigned char keyReleased = eventType == SDL_KEYUP;
-    if (!key->is_pressed && keyDown)
-    {
+    if (!key->is_pressed && keyDown) {
         key->pressed_this_frame = 1;
     }
-    if (key->is_pressed && keyReleased)
-    {
+    if (key->is_pressed && keyReleased) {
         key->released_this_frame = 1;
     }
     key->is_pressed = keyDown;
 }
 
-#define key_case(sdl_event, key)\
-            case sdl_event:\
-                set_key(key, eventType);\
-                break;
-
 //! Extract Key Events from SDL and set them on entities keyboad.
-void extract_keyboard(ecs_world_t *world, SDL_Event event)
-{
-    if (!keyboardEntity || !ecs_is_alive(world, keyboardEntity))
-    {
+void extract_keyboard(ecs_world_t *world, SDL_Event event) {
+    if (!keyboardEntity || !ecs_is_alive(world, keyboardEntity)) {
         return;
     }
     int eventType = event.type;
     //! Links touch events to space key press
-    if (eventType == SDL_FINGERDOWN || eventType == SDL_FINGERUP)
-    {
+    if (eventType == SDL_FINGERDOWN || eventType == SDL_FINGERUP) {
         Keyboard *keyboard = ecs_get_mut(world, keyboardEntity, Keyboard);
         PhysicalButton *key = &keyboard->space;
         key->pressed_this_frame = eventType == SDL_FINGERDOWN;
         key->released_this_frame = eventType == SDL_FINGERUP;
-        if (key->pressed_this_frame)
-        {
+        if (key->pressed_this_frame) {
             key->is_pressed = 1;
-        }
-        else if (key->released_this_frame)
-        {
+        } else if (key->released_this_frame) {
             key->is_pressed = 0;
         }
         ecs_modified(world, keyboardEntity, Keyboard);
-    }
-    else if (eventType == SDL_KEYDOWN || eventType == SDL_KEYUP)
-    {
+    } else if (eventType == SDL_KEYDOWN || eventType == SDL_KEYUP) {
         SDL_Keycode key = event.key.keysym.sym;
         Keyboard *keyboard = ecs_get_mut(world, keyboardEntity, Keyboard);
-        switch(key)
-        {
+        switch(key) {
             key_case(SDLK_SPACE, &keyboard->space)
             key_case(SDLK_ESCAPE, &keyboard->escape)
             key_case(SDLK_RETURN, &keyboard->enter)
@@ -107,16 +94,14 @@ void extract_keyboard(ecs_world_t *world, SDL_Event event)
     }
 }
 
-void PrintKey(const PhysicalButton *key, char* name)
-{
+void PrintKey(const PhysicalButton *key, char* name) {
     printf("    key %s [%s - %s - %s]\n", name,
         (key->pressed_this_frame ? "true" : "false"),
         (key->is_pressed ? "true" : "false"),
         (key->released_this_frame ? "true" : "false"));
 }
 
-void PrintKeyboard(ecs_world_t *world)
-{
+void PrintKeyboard(ecs_world_t *world) {
     const Keyboard *keyboard = ecs_get(world, keyboardEntity, Keyboard);
     PrintKey(&keyboard->space, "space");
     PrintKey(&keyboard->p, "p");

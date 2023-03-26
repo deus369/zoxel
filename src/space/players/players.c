@@ -1,8 +1,6 @@
 #ifndef zoxel_players
 #define zoxel_players
 
-// \todo Spawning Queries in Initialize function as they depend on other Modules.
-
 ecs_entity_t local_player;
 zoxel_declare_tag(Player2D)
 zoxel_declare_tag(Player3D)
@@ -31,13 +29,11 @@ void PlayersImport(ecs_world_t *world) {
     spawn_player_character2D_prefab(world);
     spawn_player_character3D_prefab(world);
     #ifdef zoxel_physics2D
-    zoxel_filter(playerCharacter2DQuery2, world, [none] PlayerCharacter2D, [out] Acceleration2D, [in] Velocity2D,
-        [in] physics.DisableMovement)
+    zoxel_filter(playerCharacter2DQuery2, world, [none] PlayerCharacter2D, [out] Acceleration2D, [in] Velocity2D, [in] physics.DisableMovement)
     zoxel_system_ctx(world, Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2, [in] Keyboard)
     #endif
     #ifdef zoxel_physics3D
-    zoxel_filter(playerCharacter3DQuery, world, [none] PlayerCharacter3D, [out] Acceleration3D, [in] Velocity3D,
-        [in] physics.DisableMovement)
+    zoxel_filter(playerCharacter3DQuery, world, [none] PlayerCharacter3D, [out] Acceleration3D, [in] Velocity3D, [in] physics.DisableMovement)
     zoxel_system_ctx(world, Player3DMoveSystem, EcsOnUpdate, playerCharacter3DQuery, [in] Keyboard)
     #endif
     zoxel_filter(cameraQuery, world, [none] cameras.Camera, [in] cameras.FreeRoam, [out] Position3D, [out] Rotation3D)
@@ -59,4 +55,6 @@ void PlayersImport(ecs_world_t *world) {
     // this has to update after reset systems (as gen is stuck on main thread, running before everything)
     zoxel_system(world, Player2DTestMainThreadSystem, EcsOnStore, [in] Keyboard)
 }
+
+// \todo Spawning Queries in Initialize function as they depend on other Modules.
 #endif

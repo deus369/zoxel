@@ -1,33 +1,26 @@
 SDL_Joystick *joystick;
 int joysticks_count;
 
-void initialize_sdl_gamepads()
-{
-    if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0)
-    {
+void initialize_sdl_gamepads() {
+    if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
         fprintf(stderr, "Error: Unable to initialize SDL joystick subsystem: %s\n", SDL_GetError());
     }
     joysticks_count = SDL_NumJoysticks();
     zoxel_log(" > joysticks connected [%d]\n", joysticks_count);
-    for (int i = 0; i < joysticks_count; i++)
-    {
+    for (int i = 0; i < joysticks_count; i++) {
         joystick = SDL_JoystickOpen(i);
-        if (!joystick)
-        {
+        if (!joystick) {
             fprintf(stderr, "Error: Unable to open joystick: %s\n", SDL_GetError());
         }
     }
 }
 
-void set_gamepad_button(PhysicalButton *key, SDL_Joystick *joystick, int index)
-{
+void set_gamepad_button(PhysicalButton *key, SDL_Joystick *joystick, int index) {
     unsigned char is_pressed = SDL_JoystickGetButton(joystick, index);
-    if (!key->is_pressed && is_pressed)
-    {
+    if (!key->is_pressed && is_pressed) {
         key->pressed_this_frame = 1;
     }
-    if (key->is_pressed && !is_pressed)
-    {
+    if (key->is_pressed && !is_pressed) {
         key->released_this_frame = 1;
     }
     key->is_pressed = is_pressed;
@@ -38,14 +31,11 @@ void set_gamepad_button(PhysicalButton *key, SDL_Joystick *joystick, int index)
                 set_key(key, eventType);\
                 break;
 
-void input_extract_from_sdl_per_frame(ecs_world_t *world)
-{
-    if (gamepad_entity == 0 || joystick == NULL)
-    {
+void input_extract_from_sdl_per_frame(ecs_world_t *world) {
+    if (gamepad_entity == 0 || joystick == NULL) {
         return;
     }
-    if (!SDL_JoystickGetAttached(joystick))
-    {
+    if (!SDL_JoystickGetAttached(joystick)) {
         int joystick_id = SDL_JoystickInstanceID(joystick);
         fprintf(stderr, "Joystick [%d] has been disconnected.\n", joystick_id);
         SDL_JoystickClose(joystick);
@@ -86,20 +76,16 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world)
             printf("Button pushed at [%i]\n", i);
         }
     }*/
-    if (gamepad->select.pressed_this_frame)
-    {
+    if (gamepad->select.pressed_this_frame) {
         zoxel_log("Select Button Pushed.\n");
     }
-    if (gamepad->select.released_this_frame)
-    {
+    if (gamepad->select.released_this_frame) {
         zoxel_log("Select Button Released.\n");
     }
 }
 
-void reset_gamepad(ecs_world_t *world, ecs_entity_t gamepad_entity)
-{
-    if (!gamepad_entity || !ecs_is_alive(world, gamepad_entity))
-    {
+void reset_gamepad(ecs_world_t *world, ecs_entity_t gamepad_entity) {
+    if (!gamepad_entity || !ecs_is_alive(world, gamepad_entity)) {
         return;
     }
     ecs_defer_begin(world);
@@ -115,13 +101,14 @@ void reset_gamepad(ecs_world_t *world, ecs_entity_t gamepad_entity)
     ecs_modified(world, gamepad_entity, Gamepad);
     ecs_defer_end(world);
 }
-    /*gamepad->a.is_pressed = SDL_JoystickGetButton(joystick, 0);
-    gamepad->b.is_pressed = SDL_JoystickGetButton(joystick, 1);
-    gamepad->x.is_pressed = SDL_JoystickGetButton(joystick, 2);
-    gamepad->y.is_pressed = SDL_JoystickGetButton(joystick, 3);
-    gamepad->lb.is_pressed = SDL_JoystickGetButton(joystick, 4);
-    gamepad->rb.is_pressed = SDL_JoystickGetButton(joystick, 5);
-    gamepad->select.is_pressed = SDL_JoystickGetButton(joystick, 6);
-    gamepad->start.is_pressed = SDL_JoystickGetButton(joystick, 7);
-    gamepad->left_joystick_push.is_pressed = SDL_JoystickGetButton(joystick, 9);
-    gamepad->right_joystick_push.is_pressed = SDL_JoystickGetButton(joystick, 10);*/
+
+/*gamepad->a.is_pressed = SDL_JoystickGetButton(joystick, 0);
+gamepad->b.is_pressed = SDL_JoystickGetButton(joystick, 1);
+gamepad->x.is_pressed = SDL_JoystickGetButton(joystick, 2);
+gamepad->y.is_pressed = SDL_JoystickGetButton(joystick, 3);
+gamepad->lb.is_pressed = SDL_JoystickGetButton(joystick, 4);
+gamepad->rb.is_pressed = SDL_JoystickGetButton(joystick, 5);
+gamepad->select.is_pressed = SDL_JoystickGetButton(joystick, 6);
+gamepad->start.is_pressed = SDL_JoystickGetButton(joystick, 7);
+gamepad->left_joystick_push.is_pressed = SDL_JoystickGetButton(joystick, 9);
+gamepad->right_joystick_push.is_pressed = SDL_JoystickGetButton(joystick, 10);*/

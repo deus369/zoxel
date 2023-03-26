@@ -1,7 +1,6 @@
 ecs_entity_t prefab_terrain;
 
-ecs_entity_t spawn_prefab_terrain(ecs_world_t *world)
-{
+ecs_entity_t spawn_prefab_terrain(ecs_world_t *world) {
     // int2 texture_size = { 16, 16 };
     ecs_defer_begin(world);
     // ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, voxel_prefab);
@@ -17,8 +16,7 @@ ecs_entity_t spawn_prefab_terrain(ecs_world_t *world)
     return e;
 }
 
-ecs_entity_t spawn_terrain(ecs_world_t *world, ecs_entity_t prefab, float3 position, float scale)
-{
+ecs_entity_t spawn_terrain(ecs_world_t *world, ecs_entity_t prefab, float3 position, float scale) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
     set_unique_entity_name(world, e, "terrain");

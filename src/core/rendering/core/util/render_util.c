@@ -1,6 +1,4 @@
-//! Add mesh components to an entity prefab
-void add_ui_mesh_components(ecs_world_t *world, ecs_entity_t e)
-{
+void add_ui_mesh_components(ecs_world_t *world, ecs_entity_t e) {
     zoxel_set(world, e, Brightness, { 1 });
     add_gpu_mesh(world, e);
     add_gpu_material(world, e);

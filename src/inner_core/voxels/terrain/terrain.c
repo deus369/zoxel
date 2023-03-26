@@ -34,10 +34,10 @@ zoxel_component(StreamPoint, int3)                        //! A stream point in 
 #include "prefabs/terrain_chunk.c"
 #include "prefabs/terrain_chunk_octree.c"
 #include "systems/terrain_chunk_system.c"
-#include "systems/octree_terrain_chunk_system.c"
-#include "systems/octree_chunk_uvs_build_system.c"
 #include "systems/chunk_uvs_build_system.c"
 #include "systems/stream_point_system.c"
+#include "octree_systems/octree_terrain_chunk_system.c"
+#include "octree_systems/octree_chunk_uvs_build_system.c"
 #include "util/create_terrain.c"
 
 void TerrainImport(ecs_world_t *world) {

@@ -5,8 +5,7 @@ void set_element_position(ecs_world_t *world, ecs_entity_t e, float2 parent_posi
     position2D->value = get_ui_real_position2D_parent(pixel_position, anchor, parent_position, parent_pixel_size, canvas_size_f, aspect_ratio);
     ecs_modified(world, e, Position2D);
     CanvasPixelPosition *canvasPixelPosition = ecs_get_mut(world, e, CanvasPixelPosition);
-    canvasPixelPosition->value = (int2) { ceil((position2D->value.x / aspect_ratio + 0.5f) * canvas_size_f.x),
-        ((position2D->value.y + 0.5f) * canvas_size_f.y) };
+    canvasPixelPosition->value = (int2) { ceil((position2D->value.x / aspect_ratio + 0.5f) * canvas_size_f.x), ((position2D->value.y + 0.5f) * canvas_size_f.y) };
     ecs_modified(world, e, CanvasPixelPosition);
     // set all children as well.
     if (ecs_has(world, e, Children)) {
@@ -21,12 +20,6 @@ void set_element_position(ecs_world_t *world, ecs_entity_t e, float2 parent_posi
     }
 }
 
-//! Sets real position when pixel position updates
-/**
-*   \done Make this instantaneous for children uis as well.
-*   \todo This needs to also account for child uis
-*   \todo Change queries still not working, make a better test function with more components.
-*/
 void ElementPositionSystem(ecs_iter_t *it) {
     ecs_query_t *changeQuery = it->ctx;
     ecs_iter_t change_iter = ecs_query_iter(it->world, changeQuery);
@@ -56,17 +49,12 @@ void ElementPositionSystem(ecs_iter_t *it) {
         const ParentLink *parentLink = &parentLinks[i];
         const Anchor *anchor = &anchors[i];
         const CanvasLink *canvasLink = &canvasLinks[i];
-        if (!ecs_is_valid(world, canvasLink->value)) {
-            // printf("canvasLink not valid: %lu\n", (long int) e);
-            continue;
-        }
-        if (parentLink->value != canvasLink->value) {
+        if (!ecs_is_valid(world, canvasLink->value) || parentLink->value != canvasLink->value) {
             continue;
         }
         int2 canvas_size = ecs_get(world, canvasLink->value, PixelSize)->value;
         float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
         float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
-        // printf("canvas_size [%ix%i]\n", canvas_size.x, canvas_size.y);
         Position2D *position2D = &position2Ds[i];
         CanvasPixelPosition *canvasPixelPosition = &canvasPixelPositions[i];
         position2D->value = get_ui_real_position2D_canvas(pixelPosition->value, anchor->value, canvas_size_f, aspect_ratio);
@@ -76,7 +64,6 @@ void ElementPositionSystem(ecs_iter_t *it) {
             zoxel_log("    - PixelPosition Updated [%lu]\n", (long int) e);
         #endif
         if (ecs_has(world, e, Children)) {
-            // ecs_defer_begin(world);
             int2 pixel_size = ecs_get(world, e, PixelSize)->value;
             const Children *children = ecs_get(world, e, Children);
             for (int i = 0; i < children->length; i++) {
@@ -84,8 +71,11 @@ void ElementPositionSystem(ecs_iter_t *it) {
                     position2D->value, pixel_size,
                     canvas_size_f, aspect_ratio);
             }
-            // ecs_defer_end(world);
         }
     }
 }
 zoxel_declare_system(ElementPositionSystem)
+
+//   \done Make this instantaneous for children uis as well.
+//   \todo This needs to also account for child uis
+//   \todo Change queries still not working, make a better test function with more components.

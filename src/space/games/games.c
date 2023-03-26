@@ -8,9 +8,7 @@ zoxel_byte_component(GameState);
 #include "util/game_states.c"
 #include "systems/play_game_system.c"
 
-//! Games Module
-void GamesImport(ecs_world_t *world)
-{
+void GamesImport(ecs_world_t *world) {
     zoxel_module(Games)
     zoxel_define_tag(Game)
     // components

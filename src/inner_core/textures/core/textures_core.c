@@ -39,11 +39,9 @@ void TexturesCoreImport(ecs_world_t *world) {
     zoxel_system_main_thread(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture);
     zoxel_texture_generation_system(NoiseTexture, NoiseTextureSystem)
     zoxel_texture_generation_system(FrameTexture, FrameTextureSystem)
-    zoxel_system_main_thread(world, TextureSaveSystem, texture_update_pipeline,
-        [in] TextureDirty, [in] Texture, [in] TextureSize, [none] SaveTexture)
+    zoxel_system_main_thread(world, TextureSaveSystem, texture_update_pipeline, [in] TextureDirty, [in] Texture, [in] TextureSize, [none] SaveTexture)
     if (!headless) {
-        zoxel_system_main_thread(world, TextureUpdateSystem, texture_update_pipeline,
-            [in] TextureDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink)
+        zoxel_system_main_thread(world, TextureUpdateSystem, texture_update_pipeline, [in] TextureDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink)
     }
     zoxel_reset_system_define(GenerateTextureResetSystem, GenerateTexture)
     zoxel_reset_system_define(TextureDirtyResetSystem, TextureDirty)

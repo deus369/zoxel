@@ -1,6 +1,4 @@
-void spawn_connected_devices(ecs_world_t *world)
-{
-    // printf("Devices detected: 2\n");
+void spawn_connected_devices(ecs_world_t *world) {
     spawn_keyboard(world);
     spawn_mouse(world);
     if (joysticks_count > 0)
@@ -9,8 +7,7 @@ void spawn_connected_devices(ecs_world_t *world)
     }
 }
 
-void input_extract_from_sdl(ecs_world_t *world, SDL_Event event)
-{
+void input_extract_from_sdl(ecs_world_t *world, SDL_Event event) {
     extract_keyboard(world, event);
     extract_mouse(world, event);
     // extract_gamepad(world, event);
@@ -22,8 +19,7 @@ void input_extract_from_sdl(ecs_world_t *world, SDL_Event event)
     }
 }
 
-void reset_input_devices(ecs_world_t *world)
-{
+void reset_input_devices(ecs_world_t *world) {
     reset_gamepad(world, gamepad_entity);
     reset_keyboard(world, keyboardEntity);
     reset_mouse(world);

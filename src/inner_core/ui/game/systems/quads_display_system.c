@@ -1,5 +1,5 @@
 int last_quads;
-//! Every noise_animation_speed it makes the update.
+
 void QuadsLabelSystem(ecs_iter_t *it) {
     unsigned char changed = 0;   //! Skip changes if isn't updated.
     if (last_quads != tri_count) {

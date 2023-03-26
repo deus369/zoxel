@@ -18,11 +18,8 @@ void spawn_prefab_character2D(ecs_world_t *world, int2 textureSize)
     add_dirty(world, e);
     add_texture(world, e, textureSize);
     add_animated_noise_texture(world, e);
-    if (!headless)
-    {
-        add_gpu_material(world, e);
-        add_gpu_texture(world, e);
-    }
+    add_gpu_material(world, e);
+    add_gpu_texture(world, e);
     ecs_defer_end(world);
     character2D_prefab = e;
     #ifdef zoxel_debug_prefabs

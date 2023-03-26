@@ -19,12 +19,7 @@ zoxel_declare_tag(Device)
 #include "util/gamepad_util.c"
 #include "util/input_util.c"
 
-//! Inputs system handles virtual devices.
-/**
-*   \todo Add Extract systems to mainthread
-*/
-void InputsImport(ecs_world_t *world)
-{
+void InputsImport(ecs_world_t *world) {
     zoxel_module(inputs)
     zoxel_define_tag(Device)
     zoxel_define_component(Keyboard)
@@ -37,4 +32,6 @@ void InputsImport(ecs_world_t *world)
     spawn_prefab_gamepad(world);
     initialize_sdl_gamepads();
 }
+
+// \todo Add Extract systems to mainthread
 #endif

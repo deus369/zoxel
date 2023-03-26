@@ -5,8 +5,7 @@ const unsigned long f_getfl = 3; // F_GETFL
 const unsigned long f_setfl = 4; // F_SETFL 
 
 //! Returns socket integer, -1 if failed to bind socket.
-int open_socket(int port)
-{
+int open_socket(int port) {
     /*
     // create the UDP socket
     int sock = socket(AF_INET, SOCK_DGRAM, 0);

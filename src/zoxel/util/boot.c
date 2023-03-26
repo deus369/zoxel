@@ -4,7 +4,6 @@ extern ecs_entity_t fps_display;
 //! Spawns our first game entities.
 void boot_zoxel_game(ecs_world_t *world) {
     zoxel_log(" > booting [zoxel]\n");
-    // spawn cameras first
     int2 screen_dimensions2 = screen_dimensions;
     if (is_split_screen) {
         screen_dimensions2.x /= 2;

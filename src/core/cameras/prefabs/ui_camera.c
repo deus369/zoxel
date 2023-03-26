@@ -1,6 +1,5 @@
 //! Uses base camera as prefab for now
-ecs_entity_t spawn_ui_camera(ecs_world_t *world, int2 screenDimensions)
-{
+ecs_entity_t spawn_ui_camera(ecs_world_t *world, int2 screenDimensions) {
     float3 position = { 0, -0.0f, 1.0f };
     float4 rotation = quaternion_identity();
     ecs_defer_begin(world);

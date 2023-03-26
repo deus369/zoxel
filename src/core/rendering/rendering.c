@@ -1,10 +1,9 @@
 #ifndef zoxel_rendering
 #define zoxel_rendering
 
-// stats
 int tri_count = 0;
 #include "data/GLuint2.c"
-// used atm for rendering
+// todo: use realm cameras instead of singleton data
 float4x4 main_camera_matrix; 
 float4x4 ui_camera_matrix; 
 float4x4 main_camera_matrix2;
@@ -15,7 +14,6 @@ zoxel_component(Brightness, float)
 #include "opengl/opengl.c"
 #include "core/rendering_core.c"
 
-//! The Rendering Module!
 void RenderingImport(ecs_world_t *world) {
     zoxel_module(Rendering)
     zoxel_define_tag(Mesh)

@@ -1,5 +1,4 @@
-void StreamPointSystem(ecs_iter_t *it)
-{
+void StreamPointSystem(ecs_iter_t *it) {
     #ifdef voxels_disable_streaming
         return;
     #endif
@@ -9,8 +8,7 @@ void StreamPointSystem(ecs_iter_t *it)
     ecs_iter_t chunks_iterator = ecs_query_iter(it->world, chunks_query);
     ecs_query_next(&chunks_iterator);
     int total_chunks = chunks_iterator.count;
-    if (total_chunks == 0)
-    {
+    if (total_chunks == 0) {
         return;
     }
     #ifdef zoxel_time_stream_point_system
@@ -22,22 +20,19 @@ void StreamPointSystem(ecs_iter_t *it)
     ChunkDirty *chunkDirtys = ecs_field(&chunks_iterator, ChunkDirty, 5);
     const Position3D *position3Ds = ecs_field(it, Position3D, 2);
     StreamPoint *streamPoints = ecs_field(it, StreamPoint, 3);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         const Position3D *position3D = &position3Ds[i];
         int3 new_position = get_chunk_position(position3D->value, chunk_size);  // translate position to int3 chunk position
         // printf("Checking Streamer position3D: [%fx%fx%f] \n", position3D->value.x, position3D->value.y, position3D->value.z);
         StreamPoint *streamPoint = &streamPoints[i];
-        if (!int3_equal(new_position, streamPoint->value))
-        {
+        if (!int3_equal(new_position, streamPoint->value)) {
             streamPoint->value = new_position;
             did_update = 1;
             #ifdef zoxel_time_stream_point_system
                 int updated_count = 0;
             #endif
             unsigned char *changed = malloc(total_chunks);
-            for (int j = 0; j < total_chunks; j++)
-            {
+            for (int j = 0; j < total_chunks; j++) {
                 // later check matching world
                 const ChunkPosition *chunkPosition = &chunkPositions[j];
                 unsigned char new_chunk_division = get_chunk_division(new_position, chunkPosition->value);
@@ -62,16 +57,12 @@ void StreamPointSystem(ecs_iter_t *it)
                     #ifdef zoxel_time_stream_point_system
                         updated_count++;
                     #endif
-                }
-                else
-                {
+                } else {
                     changed[j] = 255;
                 }
             }
-            for (int j = 0; j < total_chunks; j++)
-            {
-                if (changed[j] != 255)
-                {
+            for (int j = 0; j < total_chunks; j++) {
+                if (changed[j] != 255) {
                     ChunkDivision *chunkDivision = &chunkDivisions[j];
                     ChunkDirty *chunkDirty = &chunkDirtys[j];
                     chunkDivision->value = changed[j];
@@ -86,8 +77,7 @@ void StreamPointSystem(ecs_iter_t *it)
         }
     }
     // skip table updates here if no updates
-    if (!did_update)
-    {
+    if (!did_update) {
         // ecs_query_skip(it);
     }
     #ifdef zoxel_time_stream_point_system

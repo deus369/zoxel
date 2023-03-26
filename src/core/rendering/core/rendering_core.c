@@ -1,18 +1,19 @@
 #ifndef zoxel_rendering_core
 #define zoxel_rendering_core
 
-#define mesh_update_pipeline EcsPreStore // EcsOnValidate
-#define render3D_update_pipeline EcsOnStore // 0, EcsOnStore
-#define render2D_update_pipeline 0 // 0, EcsOnStore
+#define mesh_update_pipeline EcsPreStore        // EcsOnValidate
+#define render3D_update_pipeline EcsOnStore     // 0, EcsOnStore
+#define render2D_update_pipeline 0              // 0, EcsOnStore
 zoxel_memory_component(MeshVertices, float3)
 zoxel_memory_component(MeshVertices2D, float2)
 zoxel_memory_component(MeshUVs, float2)
 zoxel_memory_component(MeshColors, color)
 #include "components/mesh_indicies.c"
-#include "components/MaterialGPULink.c"
-#include "components/TextureGPULink.c"
+#include "components/material_gpu_link.c"
+#include "components/texture_gpu_link.c"
 #include "components/mesh_gpu_link.c"
 #include "components/uvs_gpu_link.c"
+#include "components/shader_gpu_link.c"
 #include "util/mesh_util.c"
 #include "util/render_util.c"
 #include "systems/mesh_update_system.c"
@@ -29,9 +30,7 @@ zoxel_reset_system(MeshDirtySystem, MeshDirty)
 #include "render3D_systems/render3D_instance_system.c"
 #include "util/render_loop.c"
 
-//! The rendering core Sub Module.
-void RenderingCoreImport(ecs_world_t *world)
-{
+void RenderingCoreImport(ecs_world_t *world) {
     zoxel_module(RenderingCore)
     zoxel_define_component(MaterialGPULink)
     zoxel_define_component(TextureGPULink)

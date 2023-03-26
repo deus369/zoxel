@@ -1,10 +1,5 @@
 ecs_entity_t window_prefab;
 
-// i'm getting prefab issues with a override component not appearing on the spawned entity, wondering if anyone else is geting this
-// (im thinking its something to do with deffered operations in ecs_set)
-
-//! \todo in web build, throws error during resize, if window is around
-//      Uncaught TypeError: WebGL2RenderingContext.getAttribLocation: Argument 1 is not an object.
 ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "");
@@ -21,3 +16,9 @@ ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     #endif
     return e;
 }
+
+// i'm getting prefab issues with a override component not appearing on the spawned entity, wondering if anyone else is geting this
+// (im thinking its something to do with deffered operations in ecs_set)
+
+//! \todo in web build, throws error during resize, if window is around
+//      Uncaught TypeError: WebGL2RenderingContext.getAttribLocation: Argument 1 is not an object.

@@ -1,20 +1,15 @@
 //! Resets a single key!
-void reset_key(PhysicalButton *key)
-{
-    if (key->pressed_this_frame)
-    {
+void reset_key(PhysicalButton *key) {
+    if (key->pressed_this_frame) {
         key->pressed_this_frame = false;
     }
-    if (key->released_this_frame)
-    {
+    if (key->released_this_frame) {
         key->released_this_frame = false;
     }
 }
 
-void reset_keyboard(ecs_world_t *world, ecs_entity_t keyboard_entity)
-{
-    if (!keyboard_entity || !ecs_is_alive(world, keyboard_entity))
-    {
+void reset_keyboard(ecs_world_t *world, ecs_entity_t keyboard_entity) {
+    if (!keyboard_entity || !ecs_is_alive(world, keyboard_entity)) {
         return;
     }
     ecs_defer_begin(world);

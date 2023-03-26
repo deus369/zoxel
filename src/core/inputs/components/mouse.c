@@ -2,8 +2,7 @@
 /**
 *   \todo Use a hashmap with keys keyboard->keys['a'] for more dynamic access.
 */
-typedef struct
-{
+typedef struct {
     int2 position;
     int2 delta;
     int2 wheel;

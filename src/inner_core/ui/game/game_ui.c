@@ -25,7 +25,7 @@ void GameUIImport(ecs_world_t *world) {
     zoxel_define_tag(FPSDisplay)
     zoxel_define_tag(QuadsCountLabel)
     zoxel_define_component(FPSDisplayTicker)
-    // fps display has to be single thread for now - zoxel_system
+    // todo: fps display to be multithreaded
     zoxel_system_main_thread(world, FpsDisplaySystem, EcsPreUpdate,
         [out] FPSDisplayTicker, [out] ZextDirty, [out] ZextData);
     zoxel_system_main_thread(world, QuadsLabelSystem, EcsPreUpdate,

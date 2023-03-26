@@ -1,12 +1,6 @@
 #ifndef zoxel_cameras
 #define zoxel_cameras
 
-/**
-*   Custom name for namespace?
-*       const char* nm_zoxel_cameras = "Zoxel.cameras";
-*       zoxel_module(world, cameras, nm_zoxel_cameras);
-*/
-
 #define max_cameras 16
 const float camera_far_distance = 6000;
 int main_cameras_count = 1;
@@ -46,13 +40,16 @@ void CamerasImport(ecs_world_t *world) {
     zoxel_define_component(FieldOfView)
     zoxel_define_component(CameraNearDistance)
     zoxel_define_component(FreeRoam)
-    zoxel_system_main_thread(world, ProjectionMatrixSystem, EcsOnUpdate,
-        [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
-    zoxel_system(world, ViewMatrixSystem, EcsOnUpdate,
-        [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)
-    zoxel_system(world, CameraFollow2DSystem, EcsOnUpdate,
-        [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D)
+    zoxel_system_main_thread(world, ProjectionMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
+    zoxel_system(world, ViewMatrixSystem, EcsOnUpdate, [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)
+    zoxel_system(world, CameraFollow2DSystem, EcsOnUpdate, [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D)
     spawn_camera_base_prefab(world);
     spawn_camera2D_follower_prefab(world);
 }
+
+/**
+*   Custom name for namespace?
+*       const char* nm_zoxel_cameras = "Zoxel.cameras";
+*       zoxel_module(world, cameras, nm_zoxel_cameras);
+*/
 #endif

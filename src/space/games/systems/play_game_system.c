@@ -1,14 +1,10 @@
 //! Closes the game when button is clicked.
-void PlayGameSystem(ecs_iter_t *it)
-{
+void PlayGameSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
-    // printf("WindowCloseSystem [%i]\n", it->count);
     const GenericEvent *genericEvents = ecs_field(it, GenericEvent, 1);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         const GenericEvent *genericEvent = &genericEvents[i];
-        if (genericEvent->value == 1)
-        {
+        if (genericEvent->value == 1) {
             // destroy ai camera
             ecs_entity_t first_camera = main_cameras[0];
             float3 first_camera_position = ecs_get(world, first_camera, Position3D)->value;

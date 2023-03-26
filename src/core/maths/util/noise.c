@@ -3,8 +3,7 @@ const float sqrtofthree = 1.73205080757f;   // sqrt(3.0f)
 const float trianglesToSquares = (sqrtofthree - 1.0f) / 2.0f;
 const float squaresToTriangles = (3.0f - sqrtofthree) / 6.0f;
 
-float simplex_fun_int_1D(float3 point, int ix)
-{
+float simplex_fun_int_1D(float3 point, int ix) {
     float x = point.x - ix;
     float f = 1.0f - x * x;
     float f2 = f * f;
@@ -12,8 +11,7 @@ float simplex_fun_int_1D(float3 point, int ix)
     return f3;
 }
 
-float simplex_fun_1D(float3 point, float frequency)
-{
+float simplex_fun_1D(float3 point, float frequency) {
     point = float3_multiply_float(point, frequency);
     int ix = int_floor(point.x);
     float sample = simplex_fun_int_1D(point, ix);
@@ -21,21 +19,18 @@ float simplex_fun_1D(float3 point, float frequency)
     return sample * 2.0f - 1.0f;
 }
 
-float simplex_fun_int_2D(float2 point, int ix, int iy)
-{
+float simplex_fun_int_2D(float2 point, int ix, int iy) {
     float unskew = (ix + iy) * squaresToTriangles;
     float x = point.x - ix + unskew;
     float y = point.y - iy + unskew;
     float f = 0.5f - x * x - y * y;
-    if (f > 0.0f)
-    {
+    if (f > 0.0f) {
         return f * f * f;
     }
     return 0.0f;
 }
 
-float simplex_fun_2D(float2 point, float frequency)
-{
+float simplex_fun_2D(float2 point, float frequency) {
     point = float2_multiply_float(point, frequency);
     float skew = (point.x + point.y) * trianglesToSquares;
     float sx = point.x + skew;
@@ -44,12 +39,9 @@ float simplex_fun_2D(float2 point, float frequency)
     int iy = int_floor(sy);
     float sample = simplex_fun_int_2D(point, ix, iy);
     sample += simplex_fun_int_2D(point, ix + 1, iy + 1);
-    if (sx - ix >= sy - iy)
-    {
+    if (sx - ix >= sy - iy) {
         sample += simplex_fun_int_2D(point, ix + 1, iy);
-    }
-    else
-    {
+    } else {
         sample += simplex_fun_int_2D(point, ix, iy + 1);
     }
     // return sample * 2.0f - 1.0f;
@@ -127,13 +119,11 @@ double perlin_noise(double x, double y, double f, uint32_t seed) {
     return noise; //  (noise + 1.0) / 2.0;
 }
 
-double perlin_terrain(double x, double y, double f, uint32_t seed, int octaves)
-{
+double perlin_terrain(double x, double y, double f, uint32_t seed, int octaves) {
     double terrain = 0.0;
     double amplitude = 1.0;
     // Add multiple scales of Perlin noise
-    for (int i = 0; i < octaves; i++)
-    {
+    for (int i = 0; i < octaves; i++) {
         double frequency = pow(2.0, i);
         terrain += perlin_noise(x * frequency, y * frequency, f, seed) * amplitude;
         amplitude /= 2.0;

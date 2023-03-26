@@ -16,9 +16,6 @@ void ElementMeshSystem(ecs_iter_t *it) {
             float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
             float2 scaledSize2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
             set_mesh_vertices_world_scale2D(world, e, square_vertices, 4, scaledSize2D);  // scale the mesh
-            // set_mesh_uvs(world, e, square_vertices, 4);
-            // printf("ElementMeshSystem [%lu]\n", (long int) e);
-            // never reaches here when spawning zigel...
         }
     }
 }

@@ -1,12 +1,10 @@
 //! A basic x2 building block.
-typedef struct
-{
+typedef struct {
     GLuint x;
     GLuint y;
 } GLuint2;
 
-typedef struct
-{
+typedef struct {
     GLuint x;
     GLuint y;
     GLuint z;

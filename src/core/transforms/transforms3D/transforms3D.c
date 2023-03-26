@@ -11,9 +11,7 @@ zoxel_component(Matrix, float4x4)       //! A matrix used for rendering.
 #include "util/transform3d_util.c"
 #include "systems/euler_override_system.c"
 
-//! The transforms Module.
-void Transforms3DImport(ecs_world_t *world)
-{
+void Transforms3DImport(ecs_world_t *world) {
     zoxel_module(Transforms3D)
     zoxel_define_tag(EulerOverride)
     zoxel_define_component(Position3D)

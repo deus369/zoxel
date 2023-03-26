@@ -2,13 +2,10 @@
 // max_depth is per chunk... refactor that
 // Fix issues between chunks of different levels of division
 // function to check all adjacent voxels are solid on the face
-unsigned char is_adjacent_all_solid(unsigned char direction,
-    const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *neighbors[],
-    int3 octree_position, int3 node_position,
-    unsigned char depth, unsigned char max_depth, unsigned char neighbors_max_depths[]) {
+unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *neighbors[],
+    int3 octree_position, int3 node_position, unsigned char depth, unsigned char max_depth, unsigned char neighbors_max_depths[]) {
     unsigned char chunk_index = 0;
-    const ChunkOctree *adjacent_node = find_adjacent_ChunkOctree(root_node, parent_node,
-        octree_position, node_position, depth, direction, neighbors, &chunk_index);
+    const ChunkOctree *adjacent_node = find_adjacent_ChunkOctree(root_node, parent_node, octree_position, node_position, depth, direction, neighbors, &chunk_index);
     if (adjacent_node == NULL || adjacent_node->value == 0) {
         if (adjacent_node == NULL && chunk_index != 0) {
             #ifdef voxels_hide_terrain_edge
@@ -55,9 +52,9 @@ unsigned char is_adjacent_all_solid(unsigned char direction,
             } else {
                 continue;
             }
-            if (is_adjacent_all_solid(direction, root_node, &adjacent_node->nodes[i], neighbors,
-                int3_add(octree_position, local_position), local_position,
-                    depth, max_depth, neighbors_max_depths) == 0) {
+            int3 new_octree_position = int3_add(octree_position, local_position);
+            unsigned char is_adjacent_solid = is_adjacent_all_solid(direction, root_node, &adjacent_node->nodes[i], neighbors, new_octree_position, local_position, depth, max_depth, neighbors_max_depths);
+            if (is_adjacent_solid == 0) {
                 return 0;
             }
         }
@@ -69,25 +66,22 @@ unsigned char is_adjacent_all_solid(unsigned char direction,
     if (!is_adjacent_all_solid(direction##_##direction_name, root_node, parent_node, neighbors,\
          octree_position, node_position, depth, max_depth, neighbors_max_depths))
 
-#define zoxel_octree_add_face_counts(direction_name)\
-{\
+#define zoxel_octree_add_face_counts(direction_name) {\
     zoxel_octree_check(direction_name)\
     {\
         zoxel_add_voxel_face_counts()\
     }\
 }
 
-#define zoxel_octree_build_face(direction_name, is_positive)\
-{\
+#define zoxel_octree_build_face(direction_name, is_positive) {\
     zoxel_octree_check(direction_name)\
     {\
         zoxel_add_voxel_face_uvs(direction_name, is_positive)\
     }\
 }
 
-void count_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_node,
-    const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[], unsigned char neighbors_max_depths[],
-    MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, int2 *mesh_count,
+void count_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[],
+    unsigned char neighbors_max_depths[], MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, int2 *mesh_count,
     unsigned char depth, unsigned char max_depth, int3 octree_position, int3 node_position) {
     if (depth >= max_depth || chunk_octree->nodes == NULL) {
         if (chunk_octree->value) {
@@ -117,17 +111,13 @@ void count_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_
     }
 }
 
-void build_octree_chunk(
-    const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, 
-    const ChunkOctree *neighbors[], unsigned char neighbors_max_depths[],
-    MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
-    int2 *start, unsigned char depth, unsigned char max_depth,
-    int3 octree_position, int3 node_position, float scale) {
+void build_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[],
+    unsigned char neighbors_max_depths[], MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
+    int2 *start, unsigned char depth, unsigned char max_depth, int3 octree_position, int3 node_position, float scale) {
     if (depth >= max_depth || chunk_octree->nodes == NULL) {
         if (chunk_octree->value) {
             float voxel_scale = scale * (overall_voxel_scale / ((float) octree_node_size));
-            float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f,
-                - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
+            float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
             float3 vertex_position_offset = float3_from_int3(octree_position);
             vertex_position_offset = float3_multiply_float(vertex_position_offset, voxel_scale);
             zoxel_octree_build_face(left, 0)
@@ -182,25 +172,18 @@ unsigned char get_max_depth_from_division(unsigned char chunk_division) {
     return max_depth;
 }
 
-void build_octree_chunk_mesh_uvs(const ChunkOctree *chunk_octree,
-    MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
-    unsigned char chunk_division,
-    const ChunkOctree *neighbors[], unsigned char neighbors_max_depths[]) {
+void build_octree_chunk_mesh_uvs(const ChunkOctree *chunk_octree, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
+    unsigned char chunk_division, const ChunkOctree *neighbors[], unsigned char neighbors_max_depths[]) {
     // try using a list of mesh data and then converting to an array instead and comparing speeds
     int2 mesh_count = { 0, 0 };
     int2 *start = &((int2) { 0, 0 });
     unsigned char max_depth = get_max_depth_from_division(chunk_division);
-    count_octree_chunk(chunk_octree, NULL, chunk_octree,
-        neighbors, neighbors_max_depths,
-        meshIndicies, meshVertices, meshUVs, &mesh_count, 0, max_depth,
-        int3_zero, int3_zero);
+    count_octree_chunk(chunk_octree, NULL, chunk_octree, neighbors, neighbors_max_depths, meshIndicies, meshVertices, meshUVs, &mesh_count, 0, max_depth, int3_zero, int3_zero);
     re_initialize_memory_component(meshIndicies, int, mesh_count.x);
     re_initialize_memory_component(meshVertices, float3, mesh_count.y);
     re_initialize_memory_component(meshUVs, float2, mesh_count.y);
-    build_octree_chunk(chunk_octree, NULL, chunk_octree,
-        neighbors, neighbors_max_depths,
-        meshIndicies, meshVertices, meshUVs, start, 0, max_depth,
-        int3_zero, int3_zero, 2.0f);
+    build_octree_chunk(chunk_octree, NULL, chunk_octree, neighbors, neighbors_max_depths,
+        meshIndicies, meshVertices, meshUVs, start, 0, max_depth, int3_zero, int3_zero, 2.0f);
 }
 
 void OctreeChunkUVsBuildSystem(ecs_iter_t *it) {
@@ -263,13 +246,10 @@ void OctreeChunkUVsBuildSystem(ecs_iter_t *it) {
             0 : ecs_get(it->world, chunkNeighbors2->value[4], ChunkDivision)->value;
         unsigned char chunk_front_max_distance = chunkNeighbors2->value[5] == 0 ?
             0 : ecs_get(it->world, chunkNeighbors2->value[5], ChunkDivision)->value;
-        unsigned char neighbors_max_depths[] =  {
-            get_max_depth_from_division(chunk_left_max_distance),
-            get_max_depth_from_division(chunk_right_max_distance),
-            get_max_depth_from_division(chunk_down_max_distance),
-            get_max_depth_from_division(chunk_up_max_distance),
-            get_max_depth_from_division(chunk_back_max_distance),
-            get_max_depth_from_division(chunk_front_max_distance)
+        unsigned char neighbors_max_depths[] = {
+            get_max_depth_from_division(chunk_left_max_distance), get_max_depth_from_division(chunk_right_max_distance),
+            get_max_depth_from_division(chunk_down_max_distance), get_max_depth_from_division(chunk_up_max_distance),
+            get_max_depth_from_division(chunk_back_max_distance), get_max_depth_from_division(chunk_front_max_distance)
         };
         build_octree_chunk_mesh_uvs(chunkOctree, meshIndicies2, meshVertices2, meshUVs2,
             chunkDivision->value, neighbors, neighbors_max_depths);
@@ -278,7 +258,7 @@ void OctreeChunkUVsBuildSystem(ecs_iter_t *it) {
         #endif
     }
     #ifdef zoxel_time_octree_chunk_uvs_builds_system
-        end_timing("OctreeChunkUVsBuildSystem")
+        end_timing("    - OctreeChunkUVsBuildSystem")
     #endif
 }
 zoxel_declare_system(OctreeChunkUVsBuildSystem)
