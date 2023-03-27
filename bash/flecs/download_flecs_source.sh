@@ -26,10 +26,3 @@ if [ ! -f "include/flecs/flecs.c" ] || [ ! -f "include/flecs/flecs.h" ]; then
 fi
 
 echo "  > flecs [v$version] source is downloaded"
-
-# check if include/flecs directory exists
-# if [ ! -f "build/libflecs.a" ]; then
-#   echo "Make sure to build flecs first: make build/libflecs.a"
-# else
-#   echo "The flecs library has been built."
-# fi

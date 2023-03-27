@@ -225,8 +225,9 @@ android-dev-debug:
 
 # flecs #
 
+# $(flecs_source)
 # downloads source into include, installs library into lib
-$(flecs_target): $(flecs_source)
+$(flecs_target):
 	set -e ; \
 	bash bash/flecs/check_flecs_source.sh && bash bash/flecs/download_flecs_source.sh && cp include/flecs/flecs.h include; \
 	cd build && $(make_flecs) && $(make_flecs_lib) && cd .. && cp build/libflecs.a lib && echo "  > installed flecs library"
@@ -241,7 +242,10 @@ remove-flecs:
 	bash remove_flecs.sh
 
 get-nightly-flecs:
-	bash bash/flecs/download_flecs_source.sh
+	bash bash/flecs/nightly_flecs.sh
+
+revert-nightly-flecs:
+	bash bash/flecs/nightly_revert_source.sh
 
 # ssh & git #
 

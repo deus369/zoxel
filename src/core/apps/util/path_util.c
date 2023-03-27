@@ -54,7 +54,7 @@ void set_data_path() {
         DIR* dir2 = opendir(resources_path);
         if (dir2) {
             //#ifdef zoxel_debug_pathing
-                zoxel_log(" > resources found at [%s]\n", resources_path);
+                zoxel_log(" > resources path is [%s]\n", resources_path);
             //#endif
             closedir(dir2);
         } else {

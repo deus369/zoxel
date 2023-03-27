@@ -19,7 +19,7 @@ ecs_world_t* open_ecs(int argc, char* argv[], unsigned char profiler, int core_c
         #endif
     }
     #ifdef zoxel_debug_sdl
-    zoxel_log("System Found [%i processors].\n", core_count);
+        zoxel_log(" > found [%i] processor cores\n", core_count);
     #endif
     if (core_count > 1) {
         ecs_set_threads(world, core_count); // enable multi threading

@@ -20,14 +20,4 @@ wget -O $flecs_c_file_location $flecs_c_url
 
 wget -O $flecs_h_file_location $flecs_h_url
 
-# echo Will now test flecs
-
-# cd ..
-
-# cd testing
-
-# source run_flecs_tests.sh
-
-# echo Finished updating flecs, revert if tests failed.
-
-# sleep 30
+echo "  > downloaded current flecs source"

@@ -50,14 +50,15 @@
 // #define zoxel_log_frames_per_second
 #define zoxel_time_main_loop
 // #define zoxel_time_main_loop_cutoff 0
-#define zoxel_time_main_loop_cutoff 30
+// 1000 / 60 = 16.66 | 1000 / 30 = 33.33
+#define zoxel_time_main_loop_cutoff 16.66
 // #define zoxel_time_always
 // voxels timing
 // #define zoxel_time_stream_point_system
 // #define zoxel_time_terrain_chunk_system
 // #define zoxel_time_chunk_uvs_builds_system
 // voxel octrees timing
-#define zoxel_time_octree_terrain_chunk_system
+// #define zoxel_time_octree_terrain_chunk_system
 // #define zoxel_time_octree_chunk_builds_system
 // #define zoxel_time_mesh_uvs_update_system
 // idea: generate terrain too at lesser resolutions

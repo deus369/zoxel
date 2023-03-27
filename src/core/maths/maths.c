@@ -7,9 +7,7 @@
 #ifndef degreesToRadians
 #define degreesToRadians (M_PI * 2) / 360.0f
 #endif
-
-#include <math.h> // for sqrt
-// move this to math module?
+#include <math.h>       // for sqrt
 #include "data/byte2.c"
 #include "data/byte4.c"
 #include "data/int2.c"
@@ -22,7 +20,6 @@
 #include "data/double2.c"
 #include "data/ecs_entity_2.c"
 #include "data/dynamic_array.c"
-// util
 #include "util/math.c"
 #include "util/integer_util.c"
 #include "util/noise.c"
@@ -33,7 +30,7 @@ void MathsImport(ecs_world_t *world) {
     zoxel_module(Maths)
     unsigned long seed = get_unique_time_seed();
     set_noise_seed(seed);
-    zoxel_log(" > seed [%lu]\n", seed);
+    zoxel_log(" > seed set to [%lu]\n", seed);
     // set_noise_seed(12666);
 }
 #endif
