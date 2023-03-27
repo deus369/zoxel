@@ -2,9 +2,9 @@
 
 # Check if the file exists
 if [ -f "include/flecs/flecs.c" ]; then
-    echo "Flecs code found in include directory."
+    echo "  > flecs source found"
     exit 1 # Set success status
 else
-    echo "Flecs code not found. Downloading Flecs 3.1.3."
+    echo "  > flecs source not found"
     exit 0 # Set failure status
 fi

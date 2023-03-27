@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# first go to zoxel directory
-cd ../../
+version="3.1.3"
 
 # check if include directory exists
 if [ ! -d "include" ]; then
@@ -17,23 +16,20 @@ fi
 
 # check if flecs.c and flecs.h already exist in include/flecs
 if [ ! -f "include/flecs/flecs.c" ] || [ ! -f "include/flecs/flecs.h" ]; then
-    echo "Installing Flecs 3.3"
-
+    echo "  > downloading fecs [v$version]"
     # download zip file
-    wget https://github.com/SanderMertens/flecs/archive/refs/tags/v3.1.3.zip
-
+    wget https://github.com/SanderMertens/flecs/archive/refs/tags/v$version.zip
     # extract zip file
-    unzip -j v3.1.3.zip flecs-3.1.3/flecs.c flecs-3.1.3/flecs.h -d include/flecs
-
+    unzip -j v$version.zip flecs-$version/flecs.c flecs-$version/flecs.h -d include/flecs
     # delete downloaded zip and extracted folder
-    rm v3.1.3.zip
+    rm v$version.zip
 fi
 
-echo "Flecs is installed."
+echo "  > flecs [v$version] source is downloaded"
 
 # check if include/flecs directory exists
-if [ ! -f "build/libflecs.a" ]; then
-  echo "Make sure to build flecs first: make build/libflecs.a"
-else
-  echo "The flecs library has been built."
-fi
+# if [ ! -f "build/libflecs.a" ]; then
+#   echo "Make sure to build flecs first: make build/libflecs.a"
+# else
+#   echo "The flecs library has been built."
+# fi

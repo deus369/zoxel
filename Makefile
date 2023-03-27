@@ -133,81 +133,70 @@ make_release = $(CC) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) -o ../$(TA
 make_dev = $(CC) $(CFLAGS) $(fix_flecs_warning) $(cflags_debug) -o ../$(target_dev) $(OBJS) $(LDLIBS) $(LDLIBS2)
 make_web_release = $(cc_web) $(CFLAGS) $(cflags_web) -o $(target_web2) $(OBJS) ../include/flecs/flecs.c $(ldlibs_web)
 
+# linux & windows #
+
 # release
 $(TARGET): $(SRCS)
 	bash bash/flecs/check_flecs_lib.sh && cd build && $(make_release)
 
-# dev
+# development
 $(target_dev): $(SRCS)
 	bash bash/flecs/check_flecs_lib.sh && cd build && $(make_dev)
+
+# required libraries
+install-required:
+	@echo "Installing Libaries: make gcc"
+	sudo apt install gcc
+	bash bash/sdl/install_sdl.sh
+
+## installs zoxel into /usr/games directory
+install: 
+	cd bash/install && bash install.sh
+
+## uninstalls zoxel into /usr/games directory
+uninstall: 
+	bash/install/uninstall.sh
+
+# run release
+run:
+	cd build && ./../$(TARGET)
+
+# run development
+run-dev:
+	cd build && ./../$(target_dev)
+
+# run development + valgrind
+run-dev-debug:
+	cd build && valgrind ./../$(target_dev)
+
+# run release + flecs profiler
+run-profiler:
+	sleep 3 && open https://www.flecs.dev/explorer &
+	cd build && ./../$(TARGET) --profiler
+
+# run development + flecs profiler
+run-dev-profiler:
+	sleep 3 && open https://www.flecs.dev/explorer &
+	cd build && ./../$(target_dev) --profiler
+
+# web #
+
+install-web-sdk:
+	bash bash/web/install_sdk.sh
 
 # web - bash bash/flecs/check_flecs_lib.sh && 
 $(target_web): $(SRCS)
 	python3 ~/projects/emsdk/emsdk.py construct_env
 	cd build && $(make_web_release)
 
-# flecs $(flecs_source)
-$(flecs_target):
-	set -e ; \
-	bash bash/flecs/check_flecs.sh && cd bash/flecs && bash install_flecs.sh ; \
-	cd build && $(make_flecs) && cd ..; \
-	cp include/flecs/flecs.h include ; \
-	cp build/libflecs.a lib ; \
-	cd build && $(make_flecs_lib)
-
-# builds for all platforms - this rebuilds everytime tho
-all: $(SRCS)
-	@echo "Begin Making All"
-	@echo "Installing/Making Flecs [$(flecs_target)]"
-	cd bash/flecs && bash install_flecs.sh
-	cd build && $(make_flecs) && $(make_flecs_lib)
-	@echo "Making Native Release Build [$(TARGET)]"
-	cd build && $(make_release)
-	@echo "Making Native Dev Build [$(target_dev)]"
-	cd build && $(make_dev)
-	@echo "Finished Making All"
-
-# @echo "Making Webasm Release Build [$(target_web)]"
-# cd build && $(make_web_release)
-
-# Removes all build files
-clean:
-	@echo "Cleaning All Build Files"
-	cd bash/flecs && bash remove_flecs.sh
-
-count:
-	@echo "Counting Source Files"
-	bash bash/count/count_source.sh
-
-# todo ignore resources directory and gitignore file here
-# $(RM) build/*.o
-
-# Runs zoxel release build
-run:
-	cd build && ./../$(TARGET)
-
-# Runs zoxel dev build
-run-dev:
-	cd build && ./../$(target_dev)
-
-# Runs zoxel dev build with valgrind
-run-dev-debug:
-	cd build && valgrind ./../$(target_dev)
-
-run-profiler:
-	sleep 3 && open https://www.flecs.dev/explorer &
-	cd build && ./../$(TARGET) --profiler
-
-run-dev-profiler:
-	sleep 3 && open https://www.flecs.dev/explorer &
-	cd build && ./../$(target_dev) --profiler
-
 # Runs zoxel web release build
 run-web:
 	cd build && ~/projects/emsdk/upstream/emscripten/emrun --browser firefox-esr zoxel.html
 
-install-web-sdk:
-	bash bash/web/install_sdk.sh
+# android #
+
+install-android-sdk:
+	bash bash/android/install_required.sh
 
 android:
 	bash bash/android/install.sh
@@ -234,37 +223,63 @@ android-dev-debug:
 	bash bash/android/install_debug.sh
 	bash bash/android/debug_android.sh
 
-install-android-sdk:
-	bash bash/android/install_required.sh
+# flecs #
 
-install: ## installs zoxel into /usr/games directory
-	cd bash/install && bash install.sh
-
-uninstall: ## uninstalls zoxel into /usr/games directory
-	bash/install/uninstall.sh
-	
-install-required:
-	@echo "Installing Libaries: make gcc"
-	sudo apt install gcc
-	bash bash/sdl/install_sdl.sh
+# downloads source into include, installs library into lib
+$(flecs_target): $(flecs_source)
+	set -e ; \
+	bash bash/flecs/check_flecs_source.sh && bash bash/flecs/download_flecs_source.sh && cp include/flecs/flecs.h include; \
+	cd build && $(make_flecs) && $(make_flecs_lib) && cd .. && cp build/libflecs.a lib && echo "  > installed flecs library"
 
 install-sdl:
 	bash bash/sdl/install_sdl.sh
 
 install-flecs:
-	cd bash/flecs && bash install_flecs.sh
+	bash bash/flecs/download_flecs_source.sh
+
+remove-flecs:
+	bash remove_flecs.sh
+
+get-nightly-flecs:
+	bash bash/flecs/download_flecs_source.sh
+
+# ssh & git #
 
 create-ssh:
 	bash bash/ssh/create_ssh.sh
-
-remove-flecs:
-	cd bash/flecs && bash remove_flecs.sh
 
 git-push: ## installs zoxel into /usr/games directory
 	cd bash/git && bash git_push.sh
 
 git-pull: ## installs zoxel into /usr/games directory
 	cd bash/git && bash git_pull.sh
+
+# all platforms #
+
+# builds for all platforms - this rebuilds everytime tho
+all: $(SRCS)
+	@echo "Begin Making All"
+	@echo "Installing/Making Flecs [$(flecs_target)]"
+	bash bash/flecs/download_flecs_source.sh
+	cd build && $(make_flecs) && $(make_flecs_lib)
+	@echo "Making Native Release Build [$(TARGET)]"
+	cd build && $(make_release)
+	@echo "Making Native Dev Build [$(target_dev)]"
+	cd build && $(make_dev)
+	@echo "Finished Making All"
+
+# removes all build files
+clean:
+	@echo "Cleaning All Build Files"
+	bash remove_flecs.sh
+
+# util #
+
+count:
+	@echo "Counting Source Files"
+	bash bash/count/count_source.sh
+
+# lost ones #
 
 help:
 	@echo "zoxel -> an open source voxel engine"
@@ -295,31 +310,28 @@ help:
 	@echo "    git-push		pushes git updates - if has ssh access"
 	@echo "find latest at -> https://codeberg.org/deus/zoxel"
 
+# todo: clean more
+# ignore resources directory and gitignore in build?
+# $(RM) build/*.o
+# used to remove web?
+# $(RM) $(target_web)
+# $(RM) $(web_wasm_file)
+# $(RM) $(web_data_file)
+# $(RM) $(TARGET)
+# $(RM) $(target_dev)
+# $(RM) $(flecs_target)
+
+# use these?
+# LDLIBS += -s SDL2_IMAGE_FORMATS='["png"]' # "bmp",
 # CFLAGS += -D_POSIX_C_SOURCE=200112L
 # dCFLAGS += -fsanitize=undefined
 # LDLIBS += -flto-partition=none ?
 # https://stackoverflow.com/questions/66350310/link-time-optimizations-in-cuda-11-what-are-they-and-how-to-use-them
 # LDLIBS += -dlto	# Dynamic Link-Time Optimization
-# @echo " Inside Directory: $(CURDIR)"
-# . $(CURDIR)/bash/web/emsdk_env.sh
 # web build threading
 # LDLIBS += -s USE_PTHREADS=1
 # LDLIBS += -s PTHREAD_POOL_SIZE=2
-
 # can add --num-callers=60 to valgrind
-# \todo atm: put all platform builds into this one file
-#	make web, or make android, or make windows, or make dev, make is for make linux
-
-# used to remove web?
-# $(RM) $(target_web)
-# $(RM) $(web_wasm_file)
-# $(RM) $(web_data_file)
-
-# $(RM) $(TARGET)
-# $(RM) $(target_dev)
-# $(RM) $(flecs_target)
-
-# LDLIBS += -s SDL2_IMAGE_FORMATS='["png"]' # "bmp",
 # used for manual sdl compiling on systems that don't have sdl lib in their package managers
 # LDLIBS += -L/usr/local/lib
 # LDLIBS += -Wl,-rpath=/usr/local/lib
