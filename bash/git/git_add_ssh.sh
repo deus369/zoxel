@@ -8,11 +8,7 @@ if [ -f "$sshname_path" ]; then
     echo "Loaded ssh name from [$sshname_path]."
     sshname=$(cat "$sshname_path")	
 else
-	# save ssh name for future pushes
-	# echo "Enter your ssh name (name of machine):"
-	# read sshname
-    # echo $sshname > "$sshname_path"
-	source git_set_ssh.sh
+	source bash/git/git_set_ssh.sh
 fi
 
 echo "SSH Name is [$sshname]"
@@ -29,3 +25,8 @@ fi
 eval "$(ssh-agent -s)"
 ssh-add $ssh_key_location
 ssh -T git@github.com
+
+# save ssh name for future pushes
+# echo "Enter your ssh name (name of machine):"
+# read sshname
+# echo $sshname > "$sshname_path"

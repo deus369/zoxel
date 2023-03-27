@@ -1,7 +1,7 @@
 #! /bin/bash
 
-source git_add_ssh.sh
-cd ../../
+source bash/git/git_add_ssh.sh
+# cd ../../
 
 # ssh_key_location=$HOME/.ssh/zoxel
 # echo "Adding ssh key for github [$ssh_key_location]."

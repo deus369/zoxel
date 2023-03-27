@@ -6,9 +6,10 @@
     #define inner_render_buffer 1       // 2, will lag too much if too high
     #define max_octree_depth 4
 #else
-    #define terrain_spawn_distance 8
+    #define terrain_spawn_distance 10
     #define inner_render_buffer 1
-    #define max_octree_depth 3
+    #define max_octree_depth 4
+    #define voxels_disable_streaming
 #endif
 #define terrain_vertical 2
 #define octree_min_height -1.995f // 0.005f

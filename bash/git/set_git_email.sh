@@ -10,4 +10,4 @@ git config --global user.email "$gitemail"
 
 echo "Finished setting your git email"
 
-sleep 3
+# sleep 3

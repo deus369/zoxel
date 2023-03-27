@@ -151,11 +151,11 @@ install-required:
 
 ## installs zoxel into /usr/games directory
 install: 
-	cd bash/install && bash install.sh
+	bash bash/install/install.sh
 
 ## uninstalls zoxel into /usr/games directory
 uninstall: 
-	bash/install/uninstall.sh
+	bash bash/install/uninstall.sh
 
 # run release
 run:
@@ -191,8 +191,21 @@ $(target_web): $(SRCS)
 
 # Runs zoxel web release build
 run-web:
-	cd build && ~/projects/emsdk/upstream/emscripten/emrun --browser firefox-esr zoxel.html
+	cd build && ~/projects/emsdk/upstream/emscripten/emrun --browser firefox zoxel.html
 
+# updates the zoxel-play project
+update-web:
+	bash bash/web/update_zoxel_play.sh
+
+# updates the zoxel-play project
+run-zoxel-play:
+	bash bash/web/run_zoxel_play.sh
+
+# updates the zoxel-play project
+git-push-zoxel-play:
+	cd ../zoxel-play && bash/git/git_push.sh
+
+# firefox-esr | firefox
 # android #
 
 install-android-sdk:
@@ -253,10 +266,10 @@ create-ssh:
 	bash bash/ssh/create_ssh.sh
 
 git-push: ## installs zoxel into /usr/games directory
-	cd bash/git && bash git_push.sh
+	bash bash/git/git_push.sh
 
 git-pull: ## installs zoxel into /usr/games directory
-	cd bash/git && bash git_pull.sh
+	bash bash/git/git_pull.sh
 
 # all platforms #
 
@@ -275,7 +288,7 @@ all: $(SRCS)
 # removes all build files
 clean:
 	@echo "Cleaning All Build Files"
-	bash remove_flecs.sh
+	bash bash/flecs/remove_flecs.sh
 
 # util #
 

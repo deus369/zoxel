@@ -2,7 +2,7 @@
 # copies zoxel binary, resources folder, and game icon
 
 # Exec=/usr/games/zoxel/zoxel
-cd ../../
+# cd ../../
 echo "Installing Zoxel from zoxel directory [$PWD]"
 zoxel_directory=$PWD
 shortcut_file_name=zoxel.desktop

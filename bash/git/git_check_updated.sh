@@ -21,4 +21,4 @@ fi
 
 echo Finished Checking
 
-sleep 16
+# sleep 16
