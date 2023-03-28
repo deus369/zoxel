@@ -1,14 +1,13 @@
-# zoxel makefile built for: linux, webasm, android, windows
-#	sudo apt install make
-#	remember, put dependent libaries first, followed by core ones
-# https://github.com/libsdl-org/SDL/releases/tag/release-2.26.4
-# Determine the operating system
+# zoxel makefile: [linux, web, android, windows]
+#	sudo apt install make && make install-required
+
+# determine the operating system #
 ifeq ($(OS),Windows_NT)
     SYSTEM := Windows
 else
     SYSTEM := $(shell uname -s)
 endif
-# Declare compiler tools and flags
+# compiler tools and flags #
 NAME := zoxel
 TARGET = build/zoxel
 target_dev = build/dev
@@ -18,8 +17,6 @@ ifeq ($(SYSTEM),Windows)
 TARGET = build/zoxel.exe
 target_dev = build/dev.exe
 endif
-# used for cleaning
-RM = rm
 web_wasm_file = build/zoxel.wasm
 web_data_file = build/zoxel.data
 # our compilers
@@ -100,9 +97,6 @@ endif
 cflags_debug = -Wall
 # Adds debugging info to executeable
 cflags_debug += -g
-# cflags_debug += -fsanitize=address # detects memory leaks as well
-# cflags_debug += -Wno-stringop-overflow # supresses flecs warning
-# cflags_debug += -Wno-stringop-overflow-size
 # web build flags
 cflags_web = --preload-file resources
 cflags_web += -s WASM=1
@@ -337,7 +331,6 @@ help:
 # $(RM) $(TARGET)
 # $(RM) $(target_dev)
 # $(RM) $(flecs_target)
-
 # use these?
 # LDLIBS += -s SDL2_IMAGE_FORMATS='["png"]' # "bmp",
 # CFLAGS += -D_POSIX_C_SOURCE=200112L
@@ -352,3 +345,6 @@ help:
 # used for manual sdl compiling on systems that don't have sdl lib in their package managers
 # LDLIBS += -L/usr/local/lib
 # LDLIBS += -Wl,-rpath=/usr/local/lib
+# cflags_debug += -fsanitize=address # detects memory leaks as well
+# cflags_debug += -Wno-stringop-overflow # supresses flecs warning
+# cflags_debug += -Wno-stringop-overflow-size
