@@ -56,5 +56,6 @@ void PlayersImport(ecs_world_t *world) {
     zoxel_system(world, Player2DTestMainThreadSystem, EcsOnStore, [in] Keyboard)
 }
 
-// \todo Spawning Queries in Initialize function as they depend on other Modules.
+// \todo Spawning Queries in Initialize function as they depend on other Modules
+
 #endif

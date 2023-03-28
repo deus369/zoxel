@@ -64,7 +64,7 @@ void build_octree_chunk_d(const ChunkOctree *root_node, const ChunkOctree *paren
 void build_octree_chunk_mesh_uvs(const ChunkOctree *chunk_octree, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
     unsigned char chunk_division, const ChunkOctree *neighbors[], unsigned char neighbors_max_depths[]) {
     // try using a list of mesh data and then converting to an array instead and comparing speeds
-    int2 mesh_count = { 0, 0 };
+    // int2 mesh_count = { 0, 0 };
     unsigned char max_depth = get_max_depth_from_division(chunk_division);
     #ifdef zoxel_voxels_dynamic_array
         int_array_d* indicies = create_int_array_d();

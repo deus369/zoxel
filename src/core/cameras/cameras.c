@@ -46,9 +46,8 @@ spawn_camera_base_prefab(world);
 spawn_camera2D_follower_prefab(world);
 zoxel_end_module(Cameras)
 
-/**
-*   Custom name for namespace?
-*       const char* nm_zoxel_cameras = "Zoxel.cameras";
-*       zoxel_module(world, cameras, nm_zoxel_cameras);
-*/
+//   todo: Custom name for namespaces used in flecs
+//       const char* nm_zoxel_cameras = "Zoxel.cameras";
+//       zoxel_module(world, cameras, nm_zoxel_cameras);
+
 #endif

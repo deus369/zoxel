@@ -2,7 +2,6 @@ extern ecs_entity_t local_player;
 const int particleSpawnCount = 266;
 ecs_entity_t fps_display;
 
-//! Called in ecs updates
 void Player2DTestSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
     const Keyboard *keyboards = ecs_field(it, Keyboard, 1);

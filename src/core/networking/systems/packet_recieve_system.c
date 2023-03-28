@@ -16,7 +16,6 @@ unsigned char peek_packet_type(int socket, struct sockaddr_in *recv_addr) {
     }
 }
 
-//! Called in ecs updates
 void PacketRecieveSystem(ecs_iter_t *it) {
     // only for PacketListener tagged entities
     const SocketLink *socketLinks = ecs_field(it, SocketLink, 2);
