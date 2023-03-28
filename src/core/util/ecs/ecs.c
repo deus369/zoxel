@@ -1,11 +1,12 @@
-#include "util/flecs_module_macros.c"
-#include "util/flecs_component_macros.c"
-#include "util/flecs_system_macros.c"
+#include "util/module_macros.c"
+#include "util/component_macros.c"
+#include "util/system_macros.c"
 #include "util/flecs_macros.c"
 #include "util/flecs_extensions.c"
-#include "util/zoxel_entities_component.c"
-#include "util/flecs_memory_component.c"
-#include "util/flecs_octree_component.c"
+#include "util/entities_component.c"
+#include "util/memory_component.c"
+#include "util/octree_component.c"
+#include "util/user_data.c"
 
 //! Initialize Flecs ECS by spawning a world and enabling threads.
 ecs_world_t* open_ecs(int argc, char* argv[], unsigned char profiler, int core_count) {

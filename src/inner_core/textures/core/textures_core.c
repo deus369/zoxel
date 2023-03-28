@@ -35,7 +35,7 @@ void TexturesCoreImport(ecs_world_t *world) {
     zoxel_define_component(GenerateTexture)
     zoxel_define_component(AnimateTexture)
     zoxel_define_component(TextureDirty)
-    zoxel_memory_component_define(Texture)
+    zoxel_define_memory_component(Texture)
     zoxel_system_main_thread(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture);
     zoxel_texture_generation_system(NoiseTexture, NoiseTextureSystem)
     zoxel_texture_generation_system(FrameTexture, FrameTextureSystem)

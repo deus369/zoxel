@@ -18,6 +18,7 @@ unsigned char server_mode = 0;
 #include "../core/core.c"
 #include "../inner_core/inner_core.c"
 #include "../outer_core/outer_core.c"
+#include "../users/users.c"
 #include "../gameplay/gameplay.c"
 #include "../space/space.c"
 #include "util/engine_util.c"
@@ -26,6 +27,7 @@ zoxel_begin_module(ZoxelEngine)
 zoxel_import_module(Core)
 zoxel_import_module(InnerCore)
 zoxel_import_module(OuterCore)
+zoxel_import_module(Users)
 zoxel_import_module(Gameplay)
 zoxel_import_module(Space)
 zoxel_end_module(ZoxelEngine)

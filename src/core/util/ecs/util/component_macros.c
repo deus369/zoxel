@@ -17,4 +17,3 @@ ECS_COMPONENT_DECLARE(name);
 
 #define zoxel_byte_component(name)\
     zoxel_component(name, unsigned char);
-    

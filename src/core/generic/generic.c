@@ -51,7 +51,7 @@ void GenericImport(ecs_world_t *world) {
     zoxel_define_component(Layer2D)
     zoxel_define_component(Color)
     zoxel_define_component(SecondaryColor)
-    zoxel_memory_component_define(Colors)
+    zoxel_define_memory_component(Colors)
     zoxel_define_component(GenericEvent)
     zoxel_reset_system_define(EntityDirtyResetSystem, EntityDirty)
     zoxel_reset_system_define(ClickableStateResetSystem, ClickableState)

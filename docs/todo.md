@@ -15,8 +15,7 @@
 
 ## ui
 
-- [ ] finish other modules ui parts
-- [ ] finish sub modules
+- [ ] -
 
     ### core
 
@@ -87,7 +86,7 @@
 
 ## voxels
 
-- [ ] complete all sub modules
+- [ ] -
 
     ### core
 
@@ -144,7 +143,7 @@
 
 ## music
 
-- [ ] finish sub modules
+- [ ] -
 
     ### ui
 
@@ -167,7 +166,7 @@
 
 ## game
 
-- [ ] complete all sub modules
+- [ ] -
 
     ### core
 

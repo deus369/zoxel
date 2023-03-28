@@ -59,7 +59,7 @@ ECS_COPY(name, dst, src, {\
     }\
 })
 
-#define zoxel_memory_component_define(world, ComponentName)\
+#define zoxel_define_memory_component(world, ComponentName)\
 {\
     ECS_COMPONENT_DEFINE(world, ComponentName);\
     ecs_set_hooks(world, ComponentName, {\
@@ -215,8 +215,8 @@ ECS_SYSTEM_DECLARE(ChunkBuildSystem);
 int main(int argc, char *argv[])
 {
     ecs_world_t *world = ecs_init_w_args(argc, argv);
-    zoxel_memory_component_define(world, Chunk);
-    zoxel_memory_component_define(world, ChunkNeighbors);
+    zoxel_define_memory_component(world, Chunk);
+    zoxel_define_memory_component(world, ChunkNeighbors);
     ECS_COMPONENT_DEFINE(world, ChunkGenerate);
     ECS_COMPONENT_DEFINE(world, ChunkDirty);
     // spawn system

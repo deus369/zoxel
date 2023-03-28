@@ -100,7 +100,7 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it) {
                 ecs_set(world, children->value[i], MeshDirty, { 1 });
                 ecs_set(world, children->value[i], TextureDirty, { 1 });
             }
-        } else if (keyboard->n.pressed_this_frame) {
+        } /*else if (keyboard->n.pressed_this_frame) {
             const Position3D *position3D = ecs_get(world, latest_character3D, Position3D);
             const Rotation3D *rotation = ecs_get(world, latest_character3D, Rotation3D);
             const Scale1D *scale1D = ecs_get(world, latest_character3D, Scale1D);
@@ -111,7 +111,7 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it) {
             // ecs_set(it->world, latest_character3D, Rotation3D, { { 0, 0, 0, 0 } });
             // ecs_set(it->world, latest_character3D, Rotation3D, { float4_identity() });
             ecs_set(world, latest_character3D, Rotation3D, { { 0.01f, 0, 0, 0 } });
-        } else if (keyboard->j.pressed_this_frame) {
+        }*/ else if (keyboard->j.pressed_this_frame) {
             disable_chunk_systems = true;
             if (disable_chunk_systems) {
                 printf("Disabled chunk systems.\n");

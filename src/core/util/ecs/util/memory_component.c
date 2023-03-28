@@ -52,7 +52,7 @@ ECS_COPY(name, dst, src, {\
     }\
 })
 
-#define zoxel_memory_component_define(name)\
+#define zoxel_define_memory_component(name)\
     ECS_COMPONENT_DEFINE(world, name);\
     ecs_set_hooks(world, name, {\
         .ctor = ecs_ctor(name),\

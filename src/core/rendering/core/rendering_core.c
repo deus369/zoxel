@@ -36,11 +36,11 @@ void RenderingCoreImport(ecs_world_t *world) {
     zoxel_define_component(TextureGPULink)
     zoxel_define_component(MeshGPULink)
     zoxel_define_component(UvsGPULink)
-    zoxel_memory_component_define(MeshIndicies)
-    zoxel_memory_component_define(MeshVertices)
-    zoxel_memory_component_define(MeshVertices2D)
-    zoxel_memory_component_define(MeshUVs)
-    zoxel_memory_component_define(MeshColors)
+    zoxel_define_memory_component(MeshIndicies)
+    zoxel_define_memory_component(MeshVertices)
+    zoxel_define_memory_component(MeshVertices2D)
+    zoxel_define_memory_component(MeshUVs)
+    zoxel_define_memory_component(MeshColors)
     ecs_set_hooks(world, MaterialGPULink, { .dtor = ecs_dtor(MaterialGPULink) });
     ecs_set_hooks(world, TextureGPULink, { .dtor = ecs_dtor(TextureGPULink) });
     ecs_set_hooks(world, MeshGPULink, { .dtor = ecs_dtor(MeshGPULink) });

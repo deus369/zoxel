@@ -43,9 +43,9 @@ void define_voxels_core_components(ecs_world_t *world) {
     zoxel_define_component(ChunkPosition)
     zoxel_define_component(ChunkDivision)
     zoxel_define_component(VoxLink)
-    zoxel_memory_component_define(ChunkData)
-    zoxel_memory_component_define(ChunkLinks)
-    zoxel_memory_component_define(ChunkNeighbors)
+    zoxel_define_memory_component(ChunkData)
+    zoxel_define_memory_component(ChunkLinks)
+    zoxel_define_memory_component(ChunkNeighbors)
     zoxel_octree_component_define(ChunkOctree)
     // extras - move to another module
     zoxel_define_tag(NoiseChunk)
