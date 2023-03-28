@@ -17,25 +17,26 @@ zoxel_component(FPSDisplayTicker, double)
 #include "systems/exit_game_button_system.c"
 #include "systems/quads_display_system.c"
 
-void GameUIImport(ecs_world_t *world) {
-    zoxel_module(GameUI)
-    zoxel_define_tag(MainMenu)
-    zoxel_define_tag(OptionsUI)
-    zoxel_define_tag(PauseUI)
-    zoxel_define_tag(FPSDisplay)
-    zoxel_define_tag(QuadsCountLabel)
-    zoxel_define_component(FPSDisplayTicker)
-    // todo: fps display to be multithreaded
-    zoxel_system_main_thread(world, FpsDisplaySystem, EcsPreUpdate,
-        [out] FPSDisplayTicker, [out] ZextDirty, [out] ZextData);
-    zoxel_system_main_thread(world, QuadsLabelSystem, EcsPreUpdate,
-        [none] QuadsCountLabel, [out] ZextDirty, [out] ZextData);
-    zoxel_button_system(PlayGameButtonSystem, elements.PlayGameButton)
-    zoxel_button_system(ExitGameButtonSystem, elements.ExitGameButton)
-    spawn_prefab_main_menu(world);
-    spawn_prefab_fps_display(world);
-    spawn_prefab_pause_ui(world);
-    spawn_prefab_options_ui(world);
-    spawn_prefab_quad_count_label(world);
-}
+zoxel_begin_module(GameUI)
+zoxel_define_tag(MainMenu)
+zoxel_define_tag(OptionsUI)
+zoxel_define_tag(PauseUI)
+zoxel_define_tag(FPSDisplay)
+zoxel_define_tag(QuadsCountLabel)
+zoxel_define_component(FPSDisplayTicker)
+zoxel_system_main_thread(world, FpsDisplaySystem, EcsPreUpdate,
+    [out] FPSDisplayTicker, [out] ZextDirty, [out] ZextData);
+zoxel_system_main_thread(world, QuadsLabelSystem, EcsPreUpdate,
+    [none] QuadsCountLabel, [out] ZextDirty, [out] ZextData);
+zoxel_button_system(PlayGameButtonSystem, elements.PlayGameButton)
+zoxel_button_system(ExitGameButtonSystem, elements.ExitGameButton)
+spawn_prefab_main_menu(world);
+spawn_prefab_fps_display(world);
+spawn_prefab_pause_ui(world);
+spawn_prefab_options_ui(world);
+spawn_prefab_quad_count_label(world);
+zoxel_end_module(GameUI)
+
+// todo: fps display to be multithreaded
+
 #endif

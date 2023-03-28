@@ -9,7 +9,6 @@
     #include <sys/socket.h>
 #endif
 #include <fcntl.h>  // F_SETFL etc
-
 // atm using 127.0.0.1 for same machine testing
 // later for secure packets, keep sending with udp every x seconds
 #define IP_TO (byte4) { 127, 0, 0, 1 }  //  "192.0.2.1"
@@ -39,34 +38,34 @@ zoxel_memory_component(PacketData, unsigned char)
 #include "systems/packet_send_system.c"
 #include "systems/packet_recieve_system.c"
 
-void NetworkingImport(ecs_world_t *world) {
-    zoxel_module(Networking)
-    if (server_mode) {
-        zoxel_log("Server mode activated.\n");
-        zoxel_log("Recieving packets.\n");
-    }
-    zoxel_define_tag(Packet)
-    zoxel_define_tag(NetRoom)
-    zoxel_define_tag(NetPlayer)
-    zoxel_define_tag(PacketReciever)
-    zoxel_define_tag(PacketSender)
-    zoxel_define_component(NetAddress)
-    zoxel_define_component(NetPort)
-    zoxel_define_component(TargetNetAddress)
-    zoxel_define_component(TargetNetPort)
-    zoxel_define_component(SocketLink)
-    zoxel_define_memory_component(PacketData);
-    ecs_set_hooks(world, SocketLink, { .dtor = ecs_dtor(SocketLink) });
-    zoxel_system(world, PacketRecieveSystem, EcsOnUpdate, [none] PacketReciever, [in] SocketLink);
-    zoxel_system(world, PacketSendSystem, EcsOnUpdate, [none] PacketSender, [in] SocketLink, [in] TargetNetAddress, [in] TargetNetPort);
-    spawn_prefab_net_player(world);
-    spawn_prefab_net_room(world);
-    #ifdef zoxel_test_networking
-        if (server_mode) {
-            spawn_net_room(world, SERVER_PORT);
-        } else {
-            spawn_net_player(world, PORT, IP_TO, SERVER_PORT);
-        }
-    #endif
+zoxel_begin_module(Networking)
+if (server_mode) {
+    zoxel_log("Server mode activated.\n");
+    zoxel_log("Recieving packets.\n");
 }
+zoxel_define_tag(Packet)
+zoxel_define_tag(NetRoom)
+zoxel_define_tag(NetPlayer)
+zoxel_define_tag(PacketReciever)
+zoxel_define_tag(PacketSender)
+zoxel_define_component(NetAddress)
+zoxel_define_component(NetPort)
+zoxel_define_component(TargetNetAddress)
+zoxel_define_component(TargetNetPort)
+zoxel_define_component(SocketLink)
+zoxel_define_memory_component(PacketData);
+ecs_set_hooks(world, SocketLink, { .dtor = ecs_dtor(SocketLink) });
+zoxel_system(world, PacketRecieveSystem, EcsOnUpdate, [none] PacketReciever, [in] SocketLink);
+zoxel_system(world, PacketSendSystem, EcsOnUpdate, [none] PacketSender, [in] SocketLink, [in] TargetNetAddress, [in] TargetNetPort);
+spawn_prefab_net_player(world);
+spawn_prefab_net_room(world);
+#ifdef zoxel_test_networking
+if (server_mode) {
+    spawn_net_room(world, SERVER_PORT);
+} else {
+    spawn_net_player(world, PORT, IP_TO, SERVER_PORT);
+}
+#endif
+zoxel_end_module(Networking)
+
 #endif

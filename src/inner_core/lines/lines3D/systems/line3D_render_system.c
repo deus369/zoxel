@@ -25,11 +25,13 @@ GLuint line3D_color_location;
 GLuint line3D_camera_matrix_location;
 
 int initialize_shader_line3D() {
-    line3D_shader = spawn_gpu_shader_inline(line3D_source_vert, line3D_source_frag);
-    line3D_material = spawn_gpu_material_program((const GLuint2) { line3D_shader.x, line3D_shader.y });
-    line3D_position_location = glGetAttribLocation(line3D_material, "position");
-    line3D_color_location = glGetUniformLocation(line3D_material, "color");
-    line3D_camera_matrix_location = glGetUniformLocation(line3D_material, "camera_matrix");
+    if (is_opengl_running()) {
+        line3D_shader = spawn_gpu_shader_inline(line3D_source_vert, line3D_source_frag);
+        line3D_material = spawn_gpu_material_program((const GLuint2) { line3D_shader.x, line3D_shader.y });
+        line3D_position_location = glGetAttribLocation(line3D_material, "position");
+        line3D_color_location = glGetUniformLocation(line3D_material, "color");
+        line3D_camera_matrix_location = glGetUniformLocation(line3D_material, "camera_matrix");
+    }
     return 0;
 }
 
@@ -39,13 +41,11 @@ void Line3DRenderSystem(ecs_iter_t *it) {
     const LineData3D *lineData3Ds = ecs_field(it, LineData3D, 2);
     const LineThickness *lineThicknesss = ecs_field(it, LineThickness, 3);
     const Color *colors = ecs_field(it, Color, 4);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         const LineData3D *lineData3D = &lineData3Ds[i];
         const LineThickness *lineThickness = &lineThicknesss[i];
         const Color *color = &colors[i];
-        float line_data[] = {
-            lineData3D->value.x, lineData3D->value.y, lineData3D->value.z,
+        float line_data[] = { lineData3D->value.x, lineData3D->value.y, lineData3D->value.z,
             lineData3D->value.w, lineData3D->value.u, lineData3D->value.v };
         float4 color_float4 = color_to_float4(color->value);
         glLineWidth(lineThickness->value);

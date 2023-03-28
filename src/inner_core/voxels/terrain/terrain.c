@@ -45,32 +45,31 @@ zoxel_component(StreamPoint, int3)                        //! A stream point in 
 #include "octree_systems/octree_chunk_build_system.c"
 #include "util/create_terrain.c"
 
-void TerrainImport(ecs_world_t *world) {
-    zoxel_module(Terrain)
-    zoxel_define_tag(TerrainWorld)
-    zoxel_define_tag(TerrainChunk)
-    zoxel_define_tag(ChunkTerrain)
-    zoxel_define_tag(Streamer)
-    zoxel_define_component(StreamPoint)
-    zoxel_filter(generateTerrainChunkQuery, world, [none] TerrainChunk, [in] GenerateChunk)
-    zoxel_filter(generateChunkQuery, world, [in] GenerateChunk)
-    zoxel_system_ctx(world, TerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
-        [none] TerrainChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] ChunkPosition, [in] GenerateChunk)
-    zoxel_system_ctx(world, OctreeTerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
-        [none] TerrainChunk, [in] ChunkPosition, [in] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree)
-    zoxel_filter(terrain_chunks_query, world,
-        [none] TerrainChunk, [in] ChunkPosition, [in] ChunkNeighbors, [out] ChunkDivision, [out] ChunkDirty)
-    zoxel_system_ctx_main_thread(world, StreamPointSystem, EcsOnUpdate, terrain_chunks_query,
-        [none] Streamer, [in] Position3D, [out] StreamPoint)
-    zoxel_system_ctx(world, ChunkUVsBuildSystem, EcsOnUpdate, generateChunkQuery, [in] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ChunkNeighbors,
-        [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty, [none] !MeshColors)
-    zoxel_system_ctx(world, OctreeChunkBuildSystem, EcsOnUpdate, generateChunkQuery,
-        [in] ChunkDirty, [in] ChunkOctree, [in] ChunkDivision, [in] ChunkNeighbors,
-        [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty, [none] !MeshColors)
-    spawn_prefab_terrain(world);
-    spawn_prefab_terrain_chunk(world, terrain_chunk_size);
-    spawn_prefab_terrain_chunk_octree(world, terrain_chunk_size);
-}
+zoxel_begin_module(Terrain)
+zoxel_define_tag(TerrainWorld)
+zoxel_define_tag(TerrainChunk)
+zoxel_define_tag(ChunkTerrain)
+zoxel_define_tag(Streamer)
+zoxel_define_component(StreamPoint)
+zoxel_filter(generateTerrainChunkQuery, world, [none] TerrainChunk, [in] GenerateChunk)
+zoxel_filter(generateChunkQuery, world, [in] GenerateChunk)
+zoxel_system_ctx(world, TerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
+    [none] TerrainChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] ChunkPosition, [in] GenerateChunk)
+zoxel_system_ctx(world, OctreeTerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
+    [none] TerrainChunk, [in] ChunkPosition, [in] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree)
+zoxel_filter(terrain_chunks_query, world,
+    [none] TerrainChunk, [in] ChunkPosition, [in] ChunkNeighbors, [out] ChunkDivision, [out] ChunkDirty)
+zoxel_system_ctx_main_thread(world, StreamPointSystem, EcsOnUpdate, terrain_chunks_query,
+    [none] Streamer, [in] Position3D, [out] StreamPoint)
+zoxel_system_ctx(world, ChunkUVsBuildSystem, EcsOnUpdate, generateChunkQuery, [in] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ChunkNeighbors,
+    [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty, [none] !MeshColors)
+zoxel_system_ctx(world, OctreeChunkBuildSystem, EcsOnUpdate, generateChunkQuery,
+    [in] ChunkDirty, [in] ChunkOctree, [in] ChunkDivision, [in] ChunkNeighbors,
+    [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty, [none] !MeshColors)
+spawn_prefab_terrain(world);
+spawn_prefab_terrain_chunk(world, terrain_chunk_size);
+spawn_prefab_terrain_chunk_octree(world, terrain_chunk_size);
+zoxel_end_module(Terrain)
 
 // todo: move texture to terrain entity and not terrain chunks
 
@@ -84,4 +83,5 @@ void TerrainImport(ecs_world_t *world) {
     64,     // 6
     128     // 7
 */
+
 #endif

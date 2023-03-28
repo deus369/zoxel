@@ -9,7 +9,7 @@ void exit_game() {
 }
 
 void sigint_handler(int sig) {
-    zoxel_log("Zoxel Engine is closing from control + c.\n");
+    zoxel_log(" > zoxel engine is exiting [control + c]\n");
     exit_game();
 }
 

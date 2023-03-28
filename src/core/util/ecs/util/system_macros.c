@@ -134,7 +134,7 @@ void system_name(ecs_iter_t *it)\
 ECS_SYSTEM_DECLARE(system_name);
 
 //! Used at the end to reset systems.
-#define zoxel_reset_system_define(system_name, component_name)\
+#define zoxel_define_reset_system(system_name, component_name)\
     zoxel_system_main_thread(world, system_name, EcsOnStore, [out] component_name);
 
 

@@ -1,21 +1,21 @@
 
 const char* line2D_source_vert = "\
-#version 300 es\n\
-in lowp vec2 position;\
-\
-void main()\
-{\
-    gl_Position = vec4(position, 0, 1);\
-}";
+    #version 300 es\n\
+    in lowp vec2 position;\
+    \
+    void main()\
+    {\
+        gl_Position = vec4(position, 0, 1);\
+    }";
 const GLchar* line2D_source_frag = "\
-#version 300 es\n\
-uniform lowp vec4 color;\
-out lowp vec4 color_output;\
-\
-void main()\
-{\
-    color_output = color;\
-}";
+    #version 300 es\n\
+    uniform lowp vec4 color;\
+    out lowp vec4 color_output;\
+    \
+    void main()\
+    {\
+        color_output = color;\
+    }";
 GLuint2 line2D_shader;
 GLuint line2D_shader_frag;
 GLuint line2D_material;
@@ -23,10 +23,12 @@ GLuint line2D_position_location;
 GLuint line2D_color_location;
 
 int initialize_shader_line2D() {
-    line2D_shader = spawn_gpu_shader_inline(line2D_source_vert, line2D_source_frag);
-    line2D_material = spawn_gpu_material_program((const GLuint2) { line2D_shader.x, line2D_shader.y });
-    line2D_position_location = glGetAttribLocation(line2D_material, "position");
-    line2D_color_location = glGetUniformLocation(line2D_material, "color");
+    if (is_opengl_running()) {
+        line2D_shader = spawn_gpu_shader_inline(line2D_source_vert, line2D_source_frag);
+        line2D_material = spawn_gpu_material_program((const GLuint2) { line2D_shader.x, line2D_shader.y });
+        line2D_position_location = glGetAttribLocation(line2D_material, "position");
+        line2D_color_location = glGetUniformLocation(line2D_material, "color");
+    }
     return 0;
 }
 
@@ -36,8 +38,7 @@ void Line2DRenderSystem(ecs_iter_t *it) {
     const LineData2D *lineData2Ds = ecs_field(it, LineData2D, 2);
     const LineThickness *lineThicknesss = ecs_field(it, LineThickness, 3);
     const Color *colors = ecs_field(it, Color, 4);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         const LineData2D *lineData2D = &lineData2Ds[i];
         const LineThickness *lineThickness = &lineThicknesss[i];
         const Color *color = &colors[i];

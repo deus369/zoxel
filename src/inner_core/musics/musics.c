@@ -25,7 +25,7 @@ void MusicsImport(ecs_world_t *world) {
         [none] Music, [in] GenerateMusic, [out] MusicData, [out] InstrumentType)
     zoxel_system(world, MusicPlaySystem, EcsOnUpdate,
         [none] Music, [in] MusicData, [in] MusicSpeed, [in] InstrumentType, [out] MusicTime)
-    zoxel_reset_system_define(GenerateMusicResetSystem, GenerateMusic)
+    zoxel_define_reset_system(GenerateMusicResetSystem, GenerateMusic)
     spawn_prefab_music(world);
 }
 

@@ -49,6 +49,10 @@ zoxel_component(Context, SDL_GLContext*)
 #include "util/cleanup_util.c"
 #include "util/mouse_util.c"
 
+unsigned char is_opengl_running() {
+    return main_gl_context != NULL;
+}
+
 //! apps Module.
 void AppsImport(ecs_world_t *world) {
     zoxel_module(Apps)

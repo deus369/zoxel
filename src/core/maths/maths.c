@@ -26,11 +26,11 @@
 #include "util/noise_2.c"
 #include "util/unique_seed.c"
 
-void MathsImport(ecs_world_t *world) {
-    zoxel_module(Maths)
-    unsigned long seed = get_unique_time_seed();
-    set_noise_seed(seed);
-    zoxel_log(" > seed set to [%lu]\n", seed);
-    // set_noise_seed(12666);
-}
+zoxel_begin_module(Maths)
+unsigned long seed = get_unique_time_seed();
+set_noise_seed(seed);
+zoxel_log(" > seed set to [%lu]\n", seed);
+// set_noise_seed(12666);
+zoxel_end_module(Maths)
+
 #endif

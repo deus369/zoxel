@@ -8,12 +8,12 @@ zoxel_component(PixelPosition, int2)
 zoxel_component(PixelSize, int2)
 #include "util/transform2D_util.c"
 
-void Transforms2DImport(ecs_world_t *world) {
-    zoxel_module(Transforms2D)
-    zoxel_define_component(Position2D)
-    zoxel_define_component(Rotation2D)
-    zoxel_define_component(Scale2D)
-    zoxel_define_component(PixelPosition)
-    zoxel_define_component(PixelSize)
-}
+zoxel_begin_module(Transforms2D)
+zoxel_define_component(Position2D)
+zoxel_define_component(Rotation2D)
+zoxel_define_component(Scale2D)
+zoxel_define_component(PixelPosition)
+zoxel_define_component(PixelSize)
+zoxel_end_module(Transforms2D)
+
 #endif

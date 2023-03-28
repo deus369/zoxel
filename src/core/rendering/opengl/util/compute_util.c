@@ -26,11 +26,11 @@ int check_compute_shader_support_from_version() {
 int check_compute_shader_support() {
     // Check whether compute shaders are supported
     if (!glUseProgram) {
-        zoxel_log("[glUseProgram] is not supported.\n");
+        zoxel_log(" - [glUseProgram] is not supported.\n");
         return EXIT_FAILURE;
     }
     if (!glDispatchCompute) {
-        zoxel_log("[glDispatchCompute] is not supported.\n");
+        zoxel_log(" - [glDispatchCompute] is not supported.\n");
         return EXIT_FAILURE;
     }
     if (check_compute_shader_support_from_version() == EXIT_FAILURE) {
@@ -46,7 +46,7 @@ int check_compute_shader_support() {
         max_compute_group_count[0], max_compute_group_count[1], max_compute_group_count[2]);
     int is_error = check_opengl_error("[GL_MAX_COMPUTE_WORK_GROUP_COUNT Error]");
     if (is_error) {
-        zoxel_log("GL_MAX_COMPUTE_WORK_GROUP_COUNT is not supported\n");
+        zoxel_log(" - GL_MAX_COMPUTE_WORK_GROUP_COUNT is not supported\n");
         return EXIT_FAILURE;
     }
     // Get the maximum compute work group size
@@ -58,7 +58,7 @@ int check_compute_shader_support() {
         max_compute_group_size[0], max_compute_group_size[1], max_compute_group_size[2]);
     is_error = check_opengl_error("[GL_MAX_COMPUTE_WORK_GROUP_SIZE Error]");
     if (is_error) {
-        zoxel_log("GL_MAX_COMPUTE_WORK_GROUP_SIZE is not supported\n");
+        zoxel_log(" - GL_MAX_COMPUTE_WORK_GROUP_SIZE is not supported\n");
         return EXIT_FAILURE;
     }
     // Get the maximum compute work group invocations
@@ -67,7 +67,7 @@ int check_compute_shader_support() {
     zoxel_log("        + invocations [%d]\n", max_compute_work_group_invocations);
     is_error = check_opengl_error("[GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS Error]");
     if (is_error) {
-        zoxel_log("GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS is not supported\n");
+        zoxel_log(" - GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS is not supported\n");
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;

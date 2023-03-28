@@ -26,26 +26,25 @@ zoxel_byte_component(FreeRoam)             //! Used to free roam a camera.
 #include "systems/view_matrix_system.c"
 #include "systems/camera2D_follow_system.c"
 
-void CamerasImport(ecs_world_t *world) {
-    zoxel_module(Cameras)
-    zoxel_define_tag(Camera)
-    zoxel_define_tag(CameraFollower2D) // Until fix is found. \todo Fix this, readd it back here where it belongs.
-    zoxel_define_tag(UICamera)
-    zoxel_define_component(CameraLink)
-    zoxel_define_component(CameraTarget)
-    zoxel_define_component(ProjectionMatrix)
-    zoxel_define_component(ViewMatrix)
-    zoxel_define_component(ScreenDimensions)
-    zoxel_define_component(ScreenPosition)
-    zoxel_define_component(FieldOfView)
-    zoxel_define_component(CameraNearDistance)
-    zoxel_define_component(FreeRoam)
-    zoxel_system_main_thread(world, ProjectionMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
-    zoxel_system(world, ViewMatrixSystem, EcsOnUpdate, [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)
-    zoxel_system(world, CameraFollow2DSystem, EcsOnUpdate, [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D)
-    spawn_camera_base_prefab(world);
-    spawn_camera2D_follower_prefab(world);
-}
+zoxel_begin_module(Cameras)
+zoxel_define_tag(Camera)
+zoxel_define_tag(CameraFollower2D) // Until fix is found. \todo Fix this, readd it back here where it belongs.
+zoxel_define_tag(UICamera)
+zoxel_define_component(CameraLink)
+zoxel_define_component(CameraTarget)
+zoxel_define_component(ProjectionMatrix)
+zoxel_define_component(ViewMatrix)
+zoxel_define_component(ScreenDimensions)
+zoxel_define_component(ScreenPosition)
+zoxel_define_component(FieldOfView)
+zoxel_define_component(CameraNearDistance)
+zoxel_define_component(FreeRoam)
+zoxel_system_main_thread(world, ProjectionMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
+zoxel_system(world, ViewMatrixSystem, EcsOnUpdate, [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)
+zoxel_system(world, CameraFollow2DSystem, EcsOnUpdate, [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D)
+spawn_camera_base_prefab(world);
+spawn_camera2D_follower_prefab(world);
+zoxel_end_module(Cameras)
 
 /**
 *   Custom name for namespace?

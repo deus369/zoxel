@@ -69,9 +69,9 @@ void SoundsImport(ecs_world_t *world) {
         zoxel_system_main_thread(world, PlaySoundSystem, EcsPreStore,
             [none] Sound, [in] TriggerSound, [in] SoundLength, [in] SDLSound)
     #endif
-	zoxel_reset_system_define(PlaySoundResetSystem, TriggerSound)
-    zoxel_reset_system_define(GenerateSoundResetSystem, GenerateSound)
-    zoxel_reset_system_define(SoundDirtyResetSystem, SoundDirty)
+	zoxel_define_reset_system(PlaySoundResetSystem, TriggerSound)
+    zoxel_define_reset_system(GenerateSoundResetSystem, GenerateSound)
+    zoxel_define_reset_system(SoundDirtyResetSystem, SoundDirty)
     spawn_prefab_sound(world);
     load_audio_sdl();
 }

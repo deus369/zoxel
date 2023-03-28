@@ -8,4 +8,5 @@ zoxel_begin_module(Skills)
 zoxel_define_user_data(Skill)
 spawn_prefab_skill(world);
 zoxel_end_module(Skills)
+
 #endif

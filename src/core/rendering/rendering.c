@@ -13,17 +13,17 @@ zoxel_component(Brightness, float)
 #include "opengl/opengl.c"
 #include "core/rendering_core.c"
 
-void RenderingImport(ecs_world_t *world) {
-    zoxel_module(Rendering)
-    zoxel_define_tag(Mesh)
-    zoxel_define_tag(ElementRender)
-    zoxel_define_component(Brightness)
-    zoxel_define_component(MeshDirty)
-    if (!headless) {
-        zoxel_import_module(OpenGL)
-        zoxel_import_module(RenderingCore)
-    }
+zoxel_begin_module(Rendering)
+zoxel_define_tag(Mesh)
+zoxel_define_tag(ElementRender)
+zoxel_define_component(Brightness)
+zoxel_define_component(MeshDirty)
+if (!headless && is_opengl_running()) {
+    zoxel_import_module(OpenGL)
+    zoxel_import_module(RenderingCore)
 }
+zoxel_end_module(Rendering)
 
 // todo: use realm cameras instead of singleton data main_camera_matrix
+
 #endif

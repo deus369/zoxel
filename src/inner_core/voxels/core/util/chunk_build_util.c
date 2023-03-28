@@ -102,8 +102,7 @@ void add_voxel_face_uvs(MeshIndicies *meshIndicies, MeshVertices *meshVertices, 
 *   \todo chunk_other should never be non null and have value == null as all chunks should be built at once..
 */
 #define zoxel_get_voxel_direction(direction, dimension, is_positive)\
-unsigned char get_voxel##_##direction(\
-    int3 local_position, const ChunkData *chunk, const ChunkSize *chunkSize, const ChunkData *chunk_other) {\
+unsigned char get_voxel##_##direction(int3 local_position, const ChunkData *chunk, const ChunkSize *chunkSize, const ChunkData *chunk_other) {\
     if ((is_positive && local_position.dimension == chunkSize->value.dimension - 1)\
         || (!is_positive && local_position.dimension == 0)) {\
         if (chunk_other == NULL || chunk_other->value == NULL || chunk_other->length == 0) {\
@@ -128,16 +127,14 @@ zoxel_get_voxel_direction(front, z, 1)      // creates get_voxel_front
     mesh_count->x += voxel_face_indicies_length;\
     mesh_count->y += voxel_face_vertices_length;
 
-#define zoxel_check_faces_with_uvs(direction)\
-{\
+#define zoxel_check_faces_with_uvs(direction) {\
     unsigned char that_voxel = get_voxel##_##direction(local_position, chunk, chunkSize, chunk##_##direction);\
     if (that_voxel == 0) {\
         zoxel_add_voxel_face_counts()\
     }\
 }
 
-#define zoxel_check_faces_no_chunk(direction)\
-{\
+#define zoxel_check_faces_no_chunk(direction) {\
     unsigned char that_voxel = get_voxel##_##direction(local_position, chunk, chunkSize, NULL);\
     if (that_voxel == 0) {\
         zoxel_add_voxel_face_counts()\
@@ -163,8 +160,7 @@ zoxel_get_voxel_direction(front, z, 1)      // creates get_voxel_front
             voxel_face_uvs);\
     }
 
-#define zoxel_add_faces_with_uvs(direction, is_positive)\
-{\
+#define zoxel_add_faces_with_uvs(direction, is_positive) {\
     unsigned char that_voxel = get_voxel##_##direction(local_position, chunk, chunkSize, chunk##_##direction);\
     if (that_voxel == 0) {\
         zoxel_add_voxel_face_uvs(direction, is_positive)\
@@ -172,8 +168,7 @@ zoxel_get_voxel_direction(front, z, 1)      // creates get_voxel_front
 }
 // start,
 
-#define zoxel_add_faces_no_chunk(direction, is_positive)\
-{\
+#define zoxel_add_faces_no_chunk(direction, is_positive) {\
     unsigned char that_voxel = get_voxel##_##direction(local_position, chunk, chunkSize, NULL);\
     if (that_voxel == 0) {\
         if (is_positive) {\
@@ -196,8 +191,7 @@ zoxel_get_voxel_direction(front, z, 1)      // creates get_voxel_front
     }\
 }
 
-#define zoxel_check_faces(direction)\
-{\
+#define zoxel_check_faces(direction) {\
     unsigned char that_voxel = get_voxel##_##direction(local_position, chunk, chunkSize, NULL);\
     if (that_voxel == 0) {\
         indicies_count += voxel_face_indicies_length;\
@@ -205,8 +199,7 @@ zoxel_get_voxel_direction(front, z, 1)      // creates get_voxel_front
     }\
 }
 
-#define zoxel_add_faces(direction, is_positive)\
-{\
+#define zoxel_add_faces(direction, is_positive) {\
     unsigned char that_voxel = get_voxel##_##direction(local_position, chunk, chunkSize, NULL);\
     if (that_voxel == 0) {\
         if (is_positive) {\

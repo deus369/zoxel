@@ -27,34 +27,33 @@ zoxel_memory_component(ZextData, unsigned char) //! An array of bytes for charac
 #include "systems/animate_text_system.c"
 zoxel_reset_system(ZextDirtyResetSystem, ZextDirty)
 
-void TextsImport(ecs_world_t *world) {
-    zoxel_module(Texts)
-    zoxel_define_tag(Font)
-    zoxel_define_tag(Zigel)
-    zoxel_define_tag(FontTexture)
-    zoxel_define_tag(Zext)
-    zoxel_define_tag(FontStyle)
-    zoxel_define_component(ZigelIndex)
-    zoxel_define_component(ZextSize)
-    zoxel_define_component(ZextDirty)
-    zoxel_define_component(AnimateZext)
-    zoxel_define_memory_component(FontData)
-    zoxel_define_memory_component(ZextData)
-    zoxel_filter(zextDirtyQuery, world, [none] Zext, [in] ZextDirty)
-    zoxel_filter(generateTextureQuery, world, [none] FontTexture, [in] GenerateTexture)
-    zoxel_system_main_thread(world, AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
-    zoxel_system_ctx_main_thread(world, ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery,
-        [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] Layer2D,
-        [in] Position2D, [in] PixelSize, [out] Children)
-    zoxel_system_ctx(world, FontTextureSystem, EcsOnUpdate, generateTextureQuery, [none] FontTexture, [out] TextureDirty,
-        [out] Texture, [in] TextureSize, [in] GenerateTexture, [in] ZigelIndex)
-    zoxel_reset_system_define(ZextDirtyResetSystem, ZextDirty)
-    spawn_font_style_prefab(world);
-    spawn_font_prefab(world);
-    zigel_prefab = spawn_zigel_prefab(world);
-    zext_prefab = spawn_zext_prefab(world);
-}
-#endif
+zoxel_begin_module(Texts)
+zoxel_define_tag(Font)
+zoxel_define_tag(Zigel)
+zoxel_define_tag(FontTexture)
+zoxel_define_tag(Zext)
+zoxel_define_tag(FontStyle)
+zoxel_define_component(ZigelIndex)
+zoxel_define_component(ZextSize)
+zoxel_define_component(ZextDirty)
+zoxel_define_component(AnimateZext)
+zoxel_define_memory_component(FontData)
+zoxel_define_memory_component(ZextData)
+zoxel_filter(zextDirtyQuery, world, [none] Zext, [in] ZextDirty)
+zoxel_filter(generateTextureQuery, world, [none] FontTexture, [in] GenerateTexture)
+zoxel_system_main_thread(world, AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
+zoxel_system_ctx_main_thread(world, ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
+    [in] ZextData, [in] ZextSize, [in] Layer2D, [in] Position2D, [in] PixelSize, [out] Children)
+zoxel_system_ctx(world, FontTextureSystem, EcsOnUpdate, generateTextureQuery, [none] FontTexture, [out] TextureDirty,
+    [out] Texture, [in] TextureSize, [in] GenerateTexture, [in] ZigelIndex)
+zoxel_define_reset_system(ZextDirtyResetSystem, ZextDirty)
+spawn_font_style_prefab(world);
+spawn_font_prefab(world);
+zigel_prefab = spawn_zigel_prefab(world);
+zext_prefab = spawn_zext_prefab(world);
+zoxel_end_module(Texts)
 
 // \todo Display a UI Element anchored, with a pixel position.
 // \todo Change colour when ray hits a button.
+
+#endif

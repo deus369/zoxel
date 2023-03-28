@@ -43,8 +43,8 @@ void TexturesCoreImport(ecs_world_t *world) {
     if (!headless) {
         zoxel_system_main_thread(world, TextureUpdateSystem, texture_update_pipeline, [in] TextureDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink)
     }
-    zoxel_reset_system_define(GenerateTextureResetSystem, GenerateTexture)
-    zoxel_reset_system_define(TextureDirtyResetSystem, TextureDirty)
+    zoxel_define_reset_system(GenerateTextureResetSystem, GenerateTexture)
+    zoxel_define_reset_system(TextureDirtyResetSystem, TextureDirty)
     spawn_prefab_noise_texture(world);
 }
 
