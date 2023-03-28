@@ -2,7 +2,7 @@ ecs_entity_t font_prefab;
 
 ecs_entity_t spawn_font_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_prefab(world, "font_prefab");
+    ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "font_prefab");
     zoxel_add_tag(world, e, Font);
     zoxel_add(world, e, FontData);

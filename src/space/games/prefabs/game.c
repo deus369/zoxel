@@ -14,11 +14,14 @@ ecs_entity_t spawn_prefab_game(ecs_world_t *world) {
     return e;
 }
 
+ecs_entity_t local_game;
+
 ecs_entity_t spawn_game(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_game);
     set_unique_entity_name(world, e, "game");
     ecs_defer_end(world);
+    local_game = e;
     #ifdef zoxel_debug_spawns
         zoxel_log("Spawned game [%lu]\n", (long int) e);
     #endif

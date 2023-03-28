@@ -25,29 +25,29 @@ zoxel_reset_system(TextureDirtyResetSystem, TextureDirty)
 zoxel_reset_system(GenerateTextureResetSystem, GenerateTexture)
 #include "tests/test_texture.c"
 
-void TexturesCoreImport(ecs_world_t *world) {
-    zoxel_module(TexturesCore)
-    zoxel_define_tag(NoiseTexture)
-    zoxel_define_tag(FrameTexture)
-    zoxel_define_tag(SaveTexture)
-    zoxel_define_tag(DirtTexture)
-    zoxel_define_component(TextureSize)
-    zoxel_define_component(GenerateTexture)
-    zoxel_define_component(AnimateTexture)
-    zoxel_define_component(TextureDirty)
-    zoxel_define_memory_component(Texture)
-    zoxel_system_main_thread(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture);
-    zoxel_texture_generation_system(NoiseTexture, NoiseTextureSystem)
-    zoxel_texture_generation_system(FrameTexture, FrameTextureSystem)
-    zoxel_system_main_thread(world, TextureSaveSystem, texture_update_pipeline, [in] TextureDirty, [in] Texture, [in] TextureSize, [none] SaveTexture)
-    if (!headless) {
-        zoxel_system_main_thread(world, TextureUpdateSystem, texture_update_pipeline, [in] TextureDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink)
-    }
-    zoxel_define_reset_system(GenerateTextureResetSystem, GenerateTexture)
-    zoxel_define_reset_system(TextureDirtyResetSystem, TextureDirty)
-    spawn_prefab_noise_texture(world);
+zoxel_begin_module(TexturesCore)
+zoxel_define_tag(NoiseTexture)
+zoxel_define_tag(FrameTexture)
+zoxel_define_tag(SaveTexture)
+zoxel_define_tag(DirtTexture)
+zoxel_define_component(TextureSize)
+zoxel_define_component(GenerateTexture)
+zoxel_define_component(AnimateTexture)
+zoxel_define_component(TextureDirty)
+zoxel_define_memory_component(Texture)
+zoxel_system_main_thread(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture)
+zoxel_texture_generation_system(NoiseTexture, NoiseTextureSystem)
+zoxel_texture_generation_system(FrameTexture, FrameTextureSystem)
+zoxel_system_main_thread(world, TextureSaveSystem, texture_update_pipeline, [in] TextureDirty, [in] Texture, [in] TextureSize, [none] SaveTexture)
+if (!headless) {
+    zoxel_system_main_thread(world, TextureUpdateSystem, texture_update_pipeline, [in] TextureDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink)
 }
+zoxel_define_reset_system(GenerateTextureResetSystem, GenerateTexture)
+zoxel_define_reset_system(TextureDirtyResetSystem, TextureDirty)
+spawn_prefab_noise_texture(world);
+zoxel_end_module(TexturesCore)
 
 // #include <cstdint> ? https://stackoverflow.com/questions/20024690/is-there-byte-data-type-in-c
 // \todo Multithreaded change filters? zoxel_system
+
 #endif

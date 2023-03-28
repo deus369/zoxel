@@ -28,6 +28,12 @@ void float3_multiply_float_p(float3* input, float mul) {
     input->z *= mul;
 }
 
+float3 float3_divide_float_p(float3* input, float div) {
+    input->x *= div;
+    input->y *= div;
+    input->z *= div;
+}
+
 void float3_add_float3_p(float3* a, float3 b) {
     a->x += b.x;
     a->y += b.y;
@@ -62,3 +68,11 @@ const float3 octree_positions_float3s[] = {
     { 1.0f, 1.0f, 0.0f },
     { 1.0f, 1.0f, 1.0f }
 };
+
+float float3_dot(float3 a, float3 b) {
+    return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+float float3_length(float3 v) {
+    return sqrt(float3_dot(v, v));
+}

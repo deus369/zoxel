@@ -1,7 +1,7 @@
 // the ui text entity that holds zigels.
 ecs_entity_t spawn_zext_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_prefab(world, "zext_prefab");
+    ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "zext_prefab");
     zoxel_add_tag(world, e, Zext);
     zoxel_add(world, e, ZextData);

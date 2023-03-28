@@ -1,8 +1,7 @@
 #ifndef zoxel_tiles
 #define zoxel_tiles
 
+zoxel_begin_module(Tiles)
+zoxel_end_module(Tiles)
 
-void TilesImport(ecs_world_t *world) {
-    zoxel_module(Tiles)
-}
 #endif

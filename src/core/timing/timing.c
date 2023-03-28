@@ -6,9 +6,9 @@ zoxel_component(DestroyInTime, double)      //! Used to set the brightness of an
 #include "util/time_macros.c"
 #include "util/time_util.c"
 
-void TimingImport(ecs_world_t *world) {
-    zoxel_module(Timing)
-    zoxel_define_component(DestroyInTime)
-    zoxel_system(world, DestroyInTimeSystem, EcsOnUpdate, [out] DestroyInTime);
-}
+zoxel_begin_module(Timing)
+zoxel_define_component(DestroyInTime)
+zoxel_system(world, DestroyInTimeSystem, EcsOnUpdate, [out] DestroyInTime)
+zoxel_end_module(Timing)
+
 #endif

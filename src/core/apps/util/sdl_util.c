@@ -66,16 +66,22 @@ void sdl_toggle_fullscreen(SDL_Window* window) {
 unsigned char opengl_es_supported() {
     unsigned char is_supported = 0;
     int num_render_drivers = SDL_GetNumRenderDrivers();
-    zoxel_log(" > found [%i] render drivers\n", num_render_drivers);
+    #ifdef zoxel_debug_opengl
+        zoxel_log(" > found [%i] render drivers\n", num_render_drivers);
+    #endif
     for (int i = 0; i < num_render_drivers; i++) {
         SDL_RendererInfo info;
         SDL_GetRenderDriverInfo(i, &info);
         if (strstr(info.name, "opengles")) {
-            zoxel_log("     + render driver [%s]\n", info.name);
+            #ifdef zoxel_debug_opengl
+                zoxel_log("     + render driver [%s]\n", info.name);
+            #endif
             is_supported = 1;
             // return 1; 
         } else {
-            zoxel_log("     - render driver [%s]\n", info.name);
+            #ifdef zoxel_debug_opengl
+                zoxel_log("     - render driver [%s]\n", info.name);
+            #endif
         }
     }
     return is_supported;
@@ -101,10 +107,14 @@ int set_sdl_attributes() {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, sdl_gl_major);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, sdl_gl_minor);
     if (opengl_es_supported()) {
-        zoxel_log(" > GL_ES detected\n");
+        #ifdef zoxel_debug_opengl
+            zoxel_log(" + GL_ES detected\n");
+        #endif
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
     } else {
-        zoxel_log(" > GL_ES unavilable\n");
+        #ifdef zoxel_debug_opengl
+            zoxel_log(" - GL_ES unavilable\n");
+        #endif
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     }
     return EXIT_SUCCESS;

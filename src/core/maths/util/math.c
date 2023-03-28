@@ -104,7 +104,7 @@ float3 quaternion_to_euler(float4 q) {
     // roll (x-axis rotation)
     double sinr_cosp = 2 * (q.w * q.x + q.y * q.z);
     double cosr_cosp = 1 - 2 * (q.x * q.x + q.y * q.y);
-    euler.x = atan2(sinr_cosp, cosr_cosp);
+    euler.x = - atan2(sinr_cosp, cosr_cosp);
     // pitch (y-axis rotation)
     double sinp = 2 * (q.w * q.y - q.z * q.x);
     if (double_abs(sinp) >= 1) {
@@ -113,13 +113,47 @@ float3 quaternion_to_euler(float4 q) {
         euler.y = asin(sinp);
     }
     // yaw (z-axis rotation)
-    double siny_cosp = 2 * (q.w * q.z + q.x * q.y);
     double cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z);
-    euler.z = atan2(siny_cosp, cosy_cosp);
-    /*euler.x /= degreesToRadians;
-    euler.y /= degreesToRadians;
-    euler.z /= degreesToRadians;*/
+    double siny_cosp = 2 * (q.w * q.z + q.x * q.y);
+    if (fabs(cosy_cosp) < 1e-6) {
+        euler.z = 0.0f;
+    } else {
+        euler.z = -atan2(siny_cosp, cosy_cosp);
+    }
     return euler;
+}
+
+void print_quadrant(float4 q) {
+    double sinp = 2 * (q.w * q.y - q.z * q.x);
+    double sinr_cosp = 2 * (q.w * q.x + q.y * q.z);
+    double cosr_cosp = 1 - 2 * (q.x * q.x + q.y * q.y);
+    float euler_x = - atan2(sinr_cosp, cosr_cosp);
+    float euler_y;
+    if (double_abs(sinp) >= 1) {
+        euler_y = copysign(M_PI / 2, sinp); // use 90 degrees if out of range
+    } else {
+        euler_y = asin(sinp);
+    }
+    if (euler_x == 0.0f) {
+        if (euler_y >= 0 && euler_y <= M_PI / 2.0f) {
+            zoxel_log(" + quadrant 1\n");
+        } else if (euler_y >= -M_PI / 2.0f && euler_y <= 0) {
+            zoxel_log(" + quadrant 2\n");
+        }
+    } else {
+        if (euler_y >= 0 && euler_y <= M_PI / 2.0f) {
+            zoxel_log(" + quadrant 4\n");   // - pi x z
+        } else if (euler_y >= -M_PI / 2.0f && euler_y <= 0) {
+            zoxel_log(" + quadrant 3\n");   // + pi x z
+        }
+    }
+    /* else if (euler_y >= - M_PI / 4.0f) {
+        zoxel_log(" + quadrant 3\n");
+    } else if (euler_y >= - M_PI / 2.0f) {
+        zoxel_log(" + quadrant 4\n");
+    } else {
+        zoxel_log(" + quadrant ? [%f]\n", euler_y);
+    }*/
 }
 
 float4 quaternion_from_euler(float3 euler) {
@@ -142,3 +176,20 @@ void float4_print_euler(float4 input) {
     float3 euler = float3_divide_float(quaternion_to_euler(input), degreesToRadians);
     zoxel_log("-> Euler [x:%f y:%f z:%f]\n", euler.x, euler.y, euler.z);
 }
+
+unsigned char test_quaternion_math(float4 input) {
+    float3 euler = quaternion_to_euler(input);
+    float4 output = quaternion_from_euler(euler);
+    if (input.x == output.x && input.y == output.y && input.z == output.z && input.w == output.w) {
+        return 1;
+    } else {
+        zoxel_log(" - quaternion test failed in [%fx%fx%f]\n", euler.x, euler.y, euler.z);
+        float3 euler2 = quaternion_to_euler(output);
+        zoxel_log("     - out [%fx%fx%f]\n", euler2.x, euler2.y, euler2.z);
+        return 0;
+    }
+}
+
+/*euler.x /= degreesToRadians;
+euler.y /= degreesToRadians;
+euler.z /= degreesToRadians;*/

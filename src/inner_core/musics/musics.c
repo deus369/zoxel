@@ -13,22 +13,20 @@ zoxel_reset_system(GenerateMusicResetSystem, GenerateMusic)
 #include "systems/music_play_system.c"
 #include "systems/music_generate_system.c"
 
-void MusicsImport(ecs_world_t *world) {
-    zoxel_module(Musics)
-    zoxel_define_tag(Music)
-    zoxel_define_tag(Looping)
-    zoxel_define_component(GenerateMusic)
-    zoxel_define_component(MusicTime)
-    zoxel_define_component(MusicSpeed)
-    zoxel_define_memory_component(MusicData)
-    zoxel_system(world, MusicGenerateSystem, EcsPostUpdate,
-        [none] Music, [in] GenerateMusic, [out] MusicData, [out] InstrumentType)
-    zoxel_system(world, MusicPlaySystem, EcsOnUpdate,
-        [none] Music, [in] MusicData, [in] MusicSpeed, [in] InstrumentType, [out] MusicTime)
-    zoxel_define_reset_system(GenerateMusicResetSystem, GenerateMusic)
-    spawn_prefab_music(world);
-}
+zoxel_begin_module(Musics)
+zoxel_define_tag(Music)
+zoxel_define_tag(Looping)
+zoxel_define_component(GenerateMusic)
+zoxel_define_component(MusicTime)
+zoxel_define_component(MusicSpeed)
+zoxel_define_memory_component(MusicData)
+zoxel_system(world, MusicGenerateSystem, EcsPostUpdate, [none] Music, [in] GenerateMusic, [out] MusicData, [out] InstrumentType)
+zoxel_system(world, MusicPlaySystem, EcsOnUpdate, [none] Music, [in] MusicData, [in] MusicSpeed, [in] InstrumentType, [out] MusicTime)
+zoxel_define_reset_system(GenerateMusicResetSystem, GenerateMusic)
+spawn_prefab_music(world);
+zoxel_end_module(Musics)
 
 //! \todo MusicPlayer -> play a music and pick a new one when song ends
 //! \todo MusicData - Contains a bunch of notes? - make custom struct for this with timing + note
+
 #endif

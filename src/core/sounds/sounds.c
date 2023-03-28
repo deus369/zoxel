@@ -8,7 +8,6 @@
 		  #include <SDL2/SDL_mixer.h>
     #endif
 #endif
-
 #define sound_sample_rate 44100 // / 2
 #define sample_rate_f 44100.0f // / 2.0f
 #define static_sounds_length 5
@@ -19,11 +18,11 @@
 #endif
 zoxel_declare_tag(Sound)
 zoxel_byte_component(InstrumentType)
-zoxel_memory_component(SoundData, float)    //! A sound has an array of bytes.
-zoxel_component(SoundLength, double)        //! The length of a sound.
-zoxel_component(SoundFrequency, float)      //! The frequency of the generated sound.
+zoxel_memory_component(SoundData, float)   //! A sound has an array of bytes.
+zoxel_component(SoundLength, double)       //! The length of a sound.
+zoxel_component(SoundFrequency, float)     //! The frequency of the generated sound.
 zoxel_byte_component(GenerateSound)        //! A state event for generating sounds.
-zoxel_byte_component(TriggerSound)            //! A state event for playing sounds.
+zoxel_byte_component(TriggerSound)         //! A state event for playing sounds.
 // renamed PlaySound to TriggerSound temporarily, cause of windows.h conflict
 zoxel_byte_component(SoundDirty)
 #include "components/SDLSound.c"
@@ -48,31 +47,28 @@ zoxel_reset_system(PlaySoundResetSystem, TriggerSound)
 zoxel_reset_system(GenerateSoundResetSystem, GenerateSound)
 zoxel_reset_system(SoundDirtyResetSystem, SoundDirty)
 
-void SoundsImport(ecs_world_t *world) {
-    zoxel_module(Sounds)
-    zoxel_define_tag(Sound)
-    zoxel_define_component(InstrumentType)
-    zoxel_define_component(SoundLength)
-    zoxel_define_component(GenerateSound)
-    zoxel_define_component(SoundFrequency)
-    zoxel_define_component(TriggerSound)
-    zoxel_define_component(SDLSound)
-    zoxel_define_component(SoundDirty)
-    zoxel_define_memory_component(SoundData)
-    ecs_set_hooks(world, SDLSound, { .dtor = ecs_dtor(SDLSound) });
-    zoxel_system(world, SoundGenerateSystem, EcsOnValidate, [none] Sound,
-        [in] GenerateSound, [in] SoundLength, [in] SoundFrequency, [in] InstrumentType,
-        [out] SoundData, [out] SoundDirty)
-    #ifdef SDL_MIXER
-        zoxel_system_main_thread(world, SoundUpdateSystem, EcsPreStore,
-            [none] Sound, [in] SoundDirty, [in] SoundData, [out] SDLSound)
-        zoxel_system_main_thread(world, PlaySoundSystem, EcsPreStore,
-            [none] Sound, [in] TriggerSound, [in] SoundLength, [in] SDLSound)
-    #endif
-	zoxel_define_reset_system(PlaySoundResetSystem, TriggerSound)
-    zoxel_define_reset_system(GenerateSoundResetSystem, GenerateSound)
-    zoxel_define_reset_system(SoundDirtyResetSystem, SoundDirty)
-    spawn_prefab_sound(world);
-    load_audio_sdl();
-}
+zoxel_begin_module(Sounds)
+zoxel_define_tag(Sound)
+zoxel_define_component(InstrumentType)
+zoxel_define_component(SoundLength)
+zoxel_define_component(GenerateSound)
+zoxel_define_component(SoundFrequency)
+zoxel_define_component(TriggerSound)
+zoxel_define_component(SDLSound)
+zoxel_define_component(SoundDirty)
+zoxel_define_memory_component(SoundData)
+ecs_set_hooks(world, SDLSound, { .dtor = ecs_dtor(SDLSound) });
+zoxel_system(world, SoundGenerateSystem, EcsOnValidate, [none] Sound, [in] GenerateSound, [in] SoundLength,
+    [in] SoundFrequency, [in] InstrumentType, [out] SoundData, [out] SoundDirty)
+#ifdef SDL_MIXER
+    zoxel_system_main_thread(world, SoundUpdateSystem, EcsPreStore, [none] Sound, [in] SoundDirty, [in] SoundData, [out] SDLSound)
+    zoxel_system_main_thread(world, PlaySoundSystem, EcsPreStore, [none] Sound, [in] TriggerSound, [in] SoundLength, [in] SDLSound)
+#endif
+zoxel_define_reset_system(PlaySoundResetSystem, TriggerSound)
+zoxel_define_reset_system(GenerateSoundResetSystem, GenerateSound)
+zoxel_define_reset_system(SoundDirtyResetSystem, SoundDirty)
+spawn_prefab_sound(world);
+load_audio_sdl();
+zoxel_end_module(Sounds)
+
 #endif

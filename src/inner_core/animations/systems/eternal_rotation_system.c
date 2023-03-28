@@ -3,12 +3,14 @@ void EternalRotationSystem(ecs_iter_t *it) {
     // float deltaTime = (float) it->delta_time;
     Rotation3D *rotations = ecs_field(it, Rotation3D, 1);
     const EternalRotation *eternalRotations = ecs_field(it, EternalRotation, 2);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         const EternalRotation *eternalRotation = &eternalRotations[i];
         Rotation3D *rotation = &rotations[i];
         rotation->value = quaternion_rotate(eternalRotation->value, rotation->value);
         // printf("Rotation3D: %f %f %f %f\n", rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
+        // float3 euler = quaternion_to_euler(rotation->value);
+        // zoxel_log(" + rotating [%fx%fx%f]\n", euler.x, euler.y, euler.z);
+        // print_quadrant(rotation->value);
     }
 }
 zoxel_declare_system(EternalRotationSystem)

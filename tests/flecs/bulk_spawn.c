@@ -54,8 +54,7 @@ void SpawnSystem(ecs_iter_t *it)
     }
 }
 
-int main(int argc, char *argv[]) 
-{
+int main(int argc, char *argv[]) {
     // initialize world
     ecs_world_t *world = ecs_init_w_args(argc, argv);
     // initialize components

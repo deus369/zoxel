@@ -3,7 +3,7 @@ ecs_entity_t prefab_temporary_ui_line2D;
 
 void spawn_prefab_ui_line2D(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_prefab(world, "prefab_ui_line2D");
+    ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "prefab_ui_line2D");
     zoxel_add_tag(world, e, Line2D);
     zoxel_set(world, e, LineData2D, { { 0, 0, 0, 0 } });

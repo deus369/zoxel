@@ -8,7 +8,8 @@ zoxel_component(Scale, float3)          //! A Non Uniform 3D Scale
 zoxel_component(UniformScale, float)    //! A Uniform scale used generically
 zoxel_component(Matrix, float4x4)       //! A matrix used for rendering
 zoxel_component(Euler, float3)          //! A rotation but kept in euler form
-zoxel_component(EulerLimitZ, float2)    //! a limitation of euler x axis
+zoxel_component(EulerLimitX, float2)    //! a limitation of euler x axis
+zoxel_component(EulerLimitZ, float2)    //! a limitation of euler z axis
 #include "util/transform3d_util.c"
 #include "systems/euler_limit_z_system.c"
 #include "systems/euler_override_system.c"
@@ -21,9 +22,14 @@ zoxel_define_component(Scale)
 zoxel_define_component(UniformScale)
 zoxel_define_component(Matrix)
 zoxel_define_component(Euler)
+zoxel_define_component(EulerLimitX)
 zoxel_define_component(EulerLimitZ)
-zoxel_system(world, EulerLimitZSystem, EcsOnUpdate, [in] EulerLimitZ, [out] Euler);
-zoxel_system(world, EulerOverrideSystem, EcsOnUpdate, [none] EulerOverride, [in] Euler, [out] Rotation3D);
+zoxel_system(world, EulerLimitXSystem, EcsOnUpdate, [in] EulerLimitX, [out] Euler)
+zoxel_system(world, EulerLimitZSystem, EcsOnUpdate, [in] EulerLimitZ, [out] Euler) // Rotation3D)
+zoxel_system(world, EulerOverrideSystem, EcsOnUpdate, [none] EulerOverride, [in] Euler, [out] Rotation3D)
 zoxel_end_module(Transforms3D)
+
+// todo: remove euler use, and find a way to limit quaternion rotations used for camera atm
+//      ai mentioned something about using axis and angle of a quaternion
 
 #endif

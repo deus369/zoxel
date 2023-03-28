@@ -38,6 +38,7 @@ void FreeCameraRotateSystem(ecs_iter_t *it) {
             continue;
         }
         float3 eulerAddition = { 0, -mouse->delta.x, mouse->delta.y };
+        // float3 eulerAddition = { mouse->delta.y, -mouse->delta.x, 0 };
         if (!(eulerAddition.x == 0 && eulerAddition.y == 0 && eulerAddition.z == 0)) {
             eulerAddition = float3_multiply_float(eulerAddition, (float) rotate_power);
             for (int j = 0; j < cameraIter.count; j++) {
@@ -46,6 +47,8 @@ void FreeCameraRotateSystem(ecs_iter_t *it) {
                 if (freeRoam->value == 1) {
                     euler->value = float3_add(euler->value, eulerAddition);
                     // zoxel_log("mouse->delta eulerAddition [%ix%i]\n", mouse->delta.x, mouse->delta.y);
+                    // float3 euler2 = quaternion_to_euler(quaternion_from_euler(euler->value));
+                    // zoxel_log(" + rotating [%fx%fx%f] - [%fx%fx%f]\n", euler->value.x, euler->value.y, euler->value.z, euler2.x, euler2.y, euler2.z);
                 }
             }
         }

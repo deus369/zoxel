@@ -44,7 +44,10 @@ ecs_entity_t spawn_free_camera(ecs_world_t *world, float3 position, float4 rotat
     set_unique_entity_name(world, e, "free_camera");
     ecs_set(world, e, Position3D, { position });
     ecs_set(world, e, Rotation3D, { rotation });
-    ecs_set(world, e, Euler, { quaternion_to_euler(rotation) });
+    /*if (test_quaternion_math(rotation)) {
+        // ecs_set(world, e, Euler, { quaternion_to_euler(rotation) });
+    }*/
+    // ecs_set(world, e, Euler, { quaternion_to_euler(rotation) });
     ecs_set(world, e, ScreenDimensions, { screen_dimensions });
     ecs_set(world, e, ScreenPosition, { screen_position });
     zoxel_add_tag(world, e, EulerOverride);

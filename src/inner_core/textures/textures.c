@@ -3,11 +3,11 @@
 
 #include "core/textures_core.c"
 
-void TexturesImport(ecs_world_t *world) {
-    zoxel_module(textures)
-    zoxel_import_module(TexturesCore)
-}
+zoxel_begin_module(Textures)
+zoxel_import_module(TexturesCore)
+zoxel_end_module(Textures)
 
 // \todo Blueprints (Nodes) + UI
-// \todo Noise generation to work on a node.
+// \todo Noise generation to work on a node
+
 #endif

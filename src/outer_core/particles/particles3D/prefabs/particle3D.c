@@ -2,7 +2,8 @@ ecs_entity_t particle3D_prefab;
 
 void spawn_prefab_particle3D(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_prefab(world, "particle_prefab");
+    ecs_entity_t e = ecs_new_prefab(world, "");
+    set_unique_entity_name(world, e, "particle3D_prefab");
     zoxel_add_tag(world, e, Particle3D);
     // ecs_override(world, prefab, Particle2D);
     zoxel_set(world, e, Position3D, { { 0, 0, 0 } });

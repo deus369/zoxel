@@ -2,7 +2,7 @@ ecs_entity_t element_prefab;
 
 ecs_entity_t spawn_prefab_element(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_prefab(world, "element_prefab");
+    ecs_entity_t e = ecs_new_prefab(world, "");
     zoxel_add_tag(world, e, FrameTexture);
     zoxel_set(world, e, SelectableState, { 0 });
     add_ui_plus_components(world, e);
@@ -11,7 +11,7 @@ ecs_entity_t spawn_prefab_element(ecs_world_t *world) {
     ecs_defer_end(world);
     element_prefab = e;
     #ifdef zoxel_debug_prefabs
-    zoxel_log("spawn_prefab element [%lu].\n", (long int) (e));
+        zoxel_log("spawn_prefab element [%lu].\n", (long int) (e));
     #endif
     return e;
 }
@@ -23,7 +23,7 @@ ecs_entity_t spawn_element(ecs_world_t *world, ecs_entity_t parent, int2 positio
     initialize_ui_components(world, e, parent, position, size, anchor, 0, canvas_size);
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
-    zoxel_log("Spawned element [%lu]\n", (long int) e);
+        zoxel_log("Spawned element [%lu]\n", (long int) e);
     #endif
     return e;
 }
