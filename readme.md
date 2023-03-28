@@ -9,16 +9,14 @@
 <p align="center">
 Experience the thrill of discovery and adventure in this procedurally generated voxel RPG!
 </p>
-<p align="center">
-  <img width="64" src="build/resources/textures/game_icon.png" alt="Zoxel Logo"> 
-</p>
 
 <h2 align="center">
-  [<a href="https://deus369.github.io/zoxel-play">play zoxel</a>]
+  [<a href="https://deus369.github.io/zoxel-play">play
+  <img width="16" src="build/resources/textures/game_icon.png"></a>]
 </h2>
 
 <p align="center">
-  <img src="docs/latest_screenshot.jpg?raw=false" alt="Zoxel" width="80%"/>
+  <img src="docs/latest_screenshot.png?raw=false" alt="Zoxel" width="90%"/>
   <!--<img src="https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/zoxel_unity_00.png?raw=false" alt="Unity Zoxel" width="400"/> width="420" -->
 </p>
 
@@ -74,4 +72,7 @@ Stay up to date on my development journey by following me on social media.
   <a style="margin-left: 10px;"> | </a>
   <a href="https://github.com/deus369/zoxel">github</a>
   ]
+</p>
+<p align="center">
+  <img width="64" src="build/resources/textures/game_icon.png">
 </p>
