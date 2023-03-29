@@ -6,15 +6,6 @@ typedef struct {
     float w;
 } float4;
 
-typedef struct {
-    float x;
-    float y;
-    float z;
-    float w;
-    float u;
-    float v;
-} float6;
-
 void print_float4(const float4 input) {
     zoxel_log("    Float4 [%f %f %f %f]\n", input.x, input.y, input.z, input.w);
 }
@@ -95,4 +86,11 @@ float3 float4_rotate_float3(float4 rotation, float3 value) {
     float3 crossB = float3_cross(rotationXYZ, t);
     float3 scaledT = float3_multiply_float(t, rotation.w);
     return float3_add(value, float3_add(scaledT, crossB));
+}
+
+void float4_multiply_float_p(float4* input, float mul) {
+    input->x *= mul;
+    input->y *= mul;
+    input->z *= mul;
+    input->w *= mul;
 }

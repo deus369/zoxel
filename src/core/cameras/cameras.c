@@ -18,10 +18,11 @@ zoxel_component(CameraNearDistance, float)
 zoxel_component(CameraLink, ecs_entity_t)   //! A link to a Camera
 zoxel_component(CameraTarget, ecs_entity_t) //! A link to a Camera Target entity.
 zoxel_byte_component(FreeRoam)             //! Used to free roam a camera.
-#include "prefabs/camera_base.c"
+#include "prefabs/base_camera.c"
 #include "prefabs/camera2D.c"
 #include "prefabs/ui_camera.c"
-#include "util/main_camera.c"
+#include "prefabs/free_camera.c"
+#include "fun/camera_util.c"
 #include "systems/projection_matrix_system.c"
 #include "systems/view_matrix_system.c"
 #include "systems/camera2D_follow_system.c"
@@ -43,6 +44,7 @@ zoxel_system_main_thread(world, ProjectionMatrixSystem, EcsOnUpdate, [in] Screen
 zoxel_system(world, ViewMatrixSystem, EcsOnUpdate, [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)
 zoxel_system(world, CameraFollow2DSystem, EcsOnUpdate, [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D)
 spawn_camera_base_prefab(world);
+spawn_prefab_free_camera(world);
 spawn_camera2D_follower_prefab(world);
 zoxel_end_module(Cameras)
 

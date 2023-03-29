@@ -36,7 +36,12 @@ zoxel_filter(playerCharacter3DQuery, world, [none] PlayerCharacter3D, [out] Acce
 zoxel_system_ctx(world, Player3DMoveSystem, EcsOnUpdate, playerCharacter3DQuery, [in] Keyboard)
 #endif
 zoxel_filter(cameraQuery, world, [none] cameras.Camera, [in] cameras.FreeRoam, [out] Position3D, [out] Rotation3D)
-zoxel_filter(cameraQuery2, world, [none] cameras.Camera, [in] cameras.FreeRoam, [out] Euler)
+zoxel_filter(cameraQuery2, world, [none] cameras.Camera, [in] cameras.FreeRoam,
+#ifndef zoxel_quaternion_camera
+    [out] Euler)
+#else
+    [out] Rotation3D)
+#endif
 zoxel_filter(cameraQuery3, world, [none] cameras.Camera, [out] cameras.FreeRoam)
 zoxel_filter(playerCharacter2DQuery3, world, [none] PlayerCharacter, [out] physics.DisableMovement)
 zoxel_system_ctx(world, FreeCameraMoveSystem, EcsOnUpdate, cameraQuery, [in] Keyboard)

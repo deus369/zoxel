@@ -1,7 +1,7 @@
 extern unsigned char is_split_screen;
 extern ecs_entity_t fps_display;
 
-#define main_camera_rotation_speed 0.14f // 0.16f
+#define main_camera_rotation_speed 0.38f // 0.16f
 
 //! Spawns our first game entities.
 void boot_zoxel_game(ecs_world_t *world) {
@@ -19,8 +19,10 @@ void boot_zoxel_game(ecs_world_t *world) {
             camera_begin_position = (float3) { 0, 0.52f * 2 * overall_voxel_scale, 0 };
         #endif
     #endif
+    // -0.2f
+    float4 camera_spawn_rotation = quaternion_from_euler((float3) { 0, 0, 0 });  // quaternion_identity()
     main_cameras[0] = spawn_base_camera(world, camera_begin_position,
-        quaternion_identity(), screen_dimensions2, (int2) { });
+        camera_spawn_rotation, screen_dimensions2, (int2) { });
     float4 rotationer = quaternion_from_euler( (float3) { 0, -main_camera_rotation_speed * degreesToRadians, 0 });
     zoxel_set(world, main_cameras[0] , EternalRotation, { rotationer });
     if (is_split_screen) {

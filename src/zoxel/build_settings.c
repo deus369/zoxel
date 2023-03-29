@@ -60,7 +60,7 @@
 // #define zoxel_test_voxels
 // #define zoxel_test_uis
 // -- disables --
-// #define zoxel_disable_music
+#define zoxel_disable_music
 // #define disable_voxel_left
 // #define disable_voxel_right
 // #define disable_voxel_back
@@ -80,3 +80,4 @@
 // #define voxels_use_octree_pooling
 // -- zoxel game --
 #define voxels_spawn_terrain
+// #define zoxel_quaternion_camera
