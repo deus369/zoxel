@@ -1,14 +1,3 @@
-// instrument_piano
-// instrument_organ
-// instrument_edm
-// instrument_guitar
-// instrument_flute
-// instrument_violin
-// instrument_piano_square
-// instrument_saxophone
-// instrument_trumpet
-// const unsigned char instrumentType = instrument_piano;
-// sometimes envelop function has glitches?
 const float attack_multiplier = 0.02f; // 0.04f
 const float dampen_multiplier = 0.7f; // 0.92f
 
@@ -96,3 +85,15 @@ void SoundGenerateSystem(ecs_iter_t *it) {
     #endif
 }
 zoxel_declare_system(SoundGenerateSystem)
+
+// instrument_piano
+// instrument_organ
+// instrument_edm
+// instrument_guitar
+// instrument_flute
+// instrument_violin
+// instrument_piano_square
+// instrument_saxophone
+// instrument_trumpet
+// const unsigned char instrumentType = instrument_piano;
+// sometimes envelop function has glitches?

@@ -9,9 +9,9 @@ int test_quadrants() {
     float4 q3 = quaternion_from_euler((float3) { 0, x3 * degreesToRadians, 0 });
     float4 q4 = quaternion_from_euler((float3) { 0, x4 * degreesToRadians, 0 });
     float4 q5 = quaternion_from_euler((float3) { 0, x5 * degreesToRadians, 0 });
-    float3 e2 = quaternion_to_euler_raw(q2);
-    float3 e3 = quaternion_to_euler_raw(q3);
-    float3 e4 = quaternion_to_euler_raw(q4);
+    float3 e2 = quaternion_to_euler(q2);
+    float3 e3 = quaternion_to_euler(q3);
+    float3 e4 = quaternion_to_euler(q4);
     zoxel_log(" > [%f] - [%fx%fx%f]:\n", x2, e2.x, e2.y, e2.z);
     test_quaternion_math(q2);
     zoxel_log(" > [%f] - [%fx%fx%f]:\n", x3, e3.x, e3.y, e3.z);

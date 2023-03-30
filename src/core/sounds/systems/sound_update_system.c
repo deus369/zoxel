@@ -1,10 +1,5 @@
-// Uses SDL mixer to play sounds
-// Mix_Chunk *sound
-// Mix_PlayChannel( -1, sound, 0 );
-// need to also update sounds generated into a SDL Chunkio chunk
 extern ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 pointB, float thickness, double life_time);
 
-//! Updates sound to SDL modules
 void SoundUpdateSystem(ecs_iter_t *it) {
     const SoundDirty *soundDirtys = ecs_field(it, SoundDirty, 2);
     const SoundData *soundDatas = ecs_field(it, SoundData, 3);
@@ -39,6 +34,11 @@ void SoundUpdateSystem(ecs_iter_t *it) {
     }
 }
 zoxel_declare_system(SoundUpdateSystem);
+
+// Uses SDL mixer to play sounds
+// Mix_Chunk *sound
+// Mix_PlayChannel( -1, sound, 0 );
+// need to also update sounds generated into a SDL Chunkio chunk
 
 /*typedef struct Mix_Chunk {
     int allocated;

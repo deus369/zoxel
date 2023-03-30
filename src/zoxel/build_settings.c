@@ -6,6 +6,7 @@
 // #define zoxel_debug_audio        // debugs sdl audio
 // #define zoxel_debug_input        // debugs sdl input
 // #define zoxel_entity_names       // sets entity names
+// #define zoxel_debug_eternal_rotation    // debugs euler in main menu
 // #define zoxel_catch_opengl_errors
 // #define zoxel_debug_vox_read
 //! \todo Fix pathing for android, cannot get resources there.
