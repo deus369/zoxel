@@ -79,3 +79,25 @@ unsigned char get_max_depth_from_division(unsigned char chunk_division) {
     #endif
     return max_depth;
 }
+
+unsigned char get_octree_voxel(const ChunkOctree *node, int3 position, unsigned char depth) {
+    if (node->nodes == NULL || depth == 0) {
+        // zoxel_log("Found at depth: %i\n", depth);
+        return node->value;
+    }
+    unsigned char dividor = powers_of_two_byte[depth - 1]; // target - depth - 1];   // starts at 16, ends at 1
+    int3 node_position = (int3) { position.x / dividor, position.y / dividor, position.z / dividor };
+    // zoxel_log("dividor %i node pos [%ix%ix%i]\n", dividor, node_position.x, node_position.y, node_position.z);
+    for (unsigned char i = 0; i < octree_length; i++) {
+        int3 local_position = octree_positions[i];
+        if (int3_equals(node_position, local_position)) {
+            int3 new_position = (int3) { position.x % dividor, position.y % dividor, position.z % dividor };
+            return get_octree_voxel(&node->nodes[i], new_position, depth - 1);
+        }
+    }
+    // zoxel_log("WAEIJOAWE\n");
+    return 0;
+}
+    /*if (depth == target) {
+        return node->value;
+    }*/

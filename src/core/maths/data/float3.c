@@ -28,16 +28,22 @@ void float3_multiply_float_p(float3* input, float mul) {
     input->z *= mul;
 }
 
-float3 float3_divide_float_p(float3* input, float div) {
-    input->x *= div;
-    input->y *= div;
-    input->z *= div;
+void float3_divide_float_p(float3* input, float div) {
+    input->x /= div;
+    input->y /= div;
+    input->z /= div;
 }
 
 void float3_add_float3_p(float3* a, float3 b) {
     a->x += b.x;
     a->y += b.y;
     a->z += b.z;
+}
+
+void float3_subtract_float3_p(float3* a, float3 b) {
+    a->x -= b.x;
+    a->y -= b.y;
+    a->z -= b.z;
 }
 
 float3 float3_divide_float(float3 input, float div) {

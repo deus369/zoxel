@@ -1,3 +1,15 @@
+int3 get_voxel_position(float3 real_position) {
+    float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };        
+    return (int3) {
+        (int) round((real_position.x) - center_mesh_offset.x / 2.0f) - 1,
+        (int) round((real_position.y) - center_mesh_offset.y / 2.0f) - 1,
+        (int) round((real_position.z) - center_mesh_offset.z / 2.0f) - 1 };
+    /*return (int3) {
+        (int) floor(real_position.x),
+        (int) floor(real_position.y),
+        (int) floor(real_position.z) };*/
+}
+
 int3 get_chunk_position(float3 real_position, int3 chunk_size) {
     return (int3) {
         (int) round((real_position.x) / chunk_size.x),
@@ -38,4 +50,12 @@ int3 chunk_position_fix(int3 chunk_position) {
         chunk_position.z += 1;
     }
     return chunk_position;
+}
+
+int3 get_local_position(int3 global_voxel_position, int3 chunk_position, int3 chunk_size) {
+    return (int3) {
+        global_voxel_position.x - chunk_position.x * chunk_size.x,
+        global_voxel_position.y - chunk_position.y * chunk_size.y,
+        global_voxel_position.z - chunk_position.z * chunk_size.z
+    };
 }

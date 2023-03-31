@@ -11,7 +11,7 @@
 
 #define int3_zero (int3) { 0, 0, 0 }
 
-unsigned char int3_equal(int3 a, int3 b) {
+unsigned char int3_equals(int3 a, int3 b) {
     if (a.x == b.x && a.y == b.y && a.z == b.z)
     {
         return 1;

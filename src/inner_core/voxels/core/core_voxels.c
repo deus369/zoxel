@@ -7,12 +7,8 @@ const int3 chunk_size = { chunk_length, chunk_length, chunk_length };
 const double noiseChunkAnimateSpeed = 0.5; // 1 / 8.0;
 const int dissapearChance = 92;
 const float spawnRange = 0.96f;
-zoxel_declare_tag(Chunk)
-zoxel_declare_tag(NoiseChunk)
 zoxel_component(ChunkSize, int3)                        //! A simple chunk with an array of voxels.
-zoxel_component(ChunkPosition, int3)                    //! A local position of a chunk inside a Vox.
 zoxel_component(AnimateChunk, double)                   //! A state for animating textures.
-zoxel_component(VoxLink, ecs_entity_t)                  //! A link to a vox.
 zoxel_byte_component(GenerateChunk)                     //! A state for generating chunks.
 zoxel_byte_component(ChunkDirty)                        //! A state for generating chunk meshes.
 zoxel_memory_component(ChunkData, unsigned char)        //! A simple chunk with an array of voxels.
@@ -35,22 +31,15 @@ zoxel_reset_system(GenerateChunkResetSystem, GenerateChunk)
 zoxel_reset_system(ChunkDirtyResetSystem, ChunkDirty)
 
 zoxel_begin_module(VoxelsCore)
-// components
-zoxel_define_tag(Chunk)
 zoxel_define_component(ChunkDirty)
 zoxel_define_component(ChunkSize)
 zoxel_define_component(GenerateChunk)
-zoxel_define_component(ChunkPosition)
 zoxel_define_component(ChunkDivision)
-zoxel_define_component(VoxLink)
 zoxel_define_memory_component(ChunkData)
 zoxel_define_memory_component(ChunkLinks)
 zoxel_define_memory_component(ChunkNeighbors)
 zoxel_octree_component_define(ChunkOctree)
-// extras - move to another module
-zoxel_define_tag(NoiseChunk)
-zoxel_define_component(AnimateChunk)
-// systems
+zoxel_define_component(AnimateChunk)    // move to another module
 zoxel_define_reset_system(GenerateChunkResetSystem, GenerateChunk)
 zoxel_define_reset_system(ChunkDirtyResetSystem, ChunkDirty)
 if (!headless) {
@@ -62,9 +51,7 @@ if (!headless) {
 }
 zoxel_system_main_thread(world, AnimateChunkSystem, EcsOnLoad, [out] AnimateChunk, [out] GenerateChunk)
 zoxel_filter(generateNoiseChunkQuery, world, [none] NoiseChunk, [in] GenerateChunk)
-zoxel_system_ctx(world, NoiseChunkSystem, EcsPostLoad, generateNoiseChunkQuery,
-    [none] NoiseChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] GenerateChunk)
-// prefabs
+zoxel_system_ctx(world, NoiseChunkSystem, EcsPostLoad, generateNoiseChunkQuery, [none] NoiseChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] GenerateChunk)
 spawn_voxel_chunk_mesh_prefab(world);
 spawn_prefab_noise_chunk(world);
 #ifdef zoxel_test_voxels

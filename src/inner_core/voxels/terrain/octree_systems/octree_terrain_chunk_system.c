@@ -60,7 +60,7 @@ unsigned char set_octree_voxel(unsigned char voxel, unsigned char target_depth, 
     int3 node_position = (int3) { position.x / dividor, position.y / dividor, position.z / dividor };
     for (unsigned char i = 0; i < octree_length; i++) {
         int3 local_position = octree_positions[i];
-        if (int3_equal(node_position, local_position)) {
+        if (int3_equals(node_position, local_position)) {
             /*printf("        - child node: index [%i] depth [%i] dividor [%i] - position [%ix%ix%i] - node_position [%ix%ix%i]\n",
                 i, depth, dividor,
                 position.x, position.y, position.z,

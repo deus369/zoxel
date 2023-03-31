@@ -9,8 +9,7 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world) {
     zoxel_set(world, e, ChunkDirty, { 1 });
     // zoxel_set(world, e, EternalRotation, { { 0, 0, 0, 0 } });
     zoxel_add(world, e, Colors);
-    if (!headless)
-    {
+    if (!headless) {
         zoxel_add(world, e, MeshColors);
     }
     ecs_defer_end(world);

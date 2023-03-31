@@ -170,9 +170,9 @@ unsigned char test_quaternion_math(float4 input) {
         // zoxel_log(" - quaternion test success\n");
         return 1;
     } else {
-        float3 euler2 = quaternion_to_euler(output);
-        //zoxel_log(" - quaternion test failed:\n");
-        //zoxel_log("     - out e [%fx%fx%f]\n", euler2.x, euler2.y, euler2.z);
+        // float3 euler2 = quaternion_to_euler(output);
+        // zoxel_log(" - quaternion test failed:\n");
+        // zoxel_log("     - out e [%fx%fx%f]\n", euler2.x, euler2.y, euler2.z);
         // zoxel_log("     - in q [%fx%fx%fx%f]\n", input.x, input.y, input.z, input.w);
         // zoxel_log("     - out q [%fx%fx%fx%f]\n", output.x, output.y, output.z, output.w);
         return 0;

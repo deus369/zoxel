@@ -50,14 +50,13 @@
 // #define debug_ui_positioning
 // -- testing --
 // #define zoxel_test_chickens
-// #define zoxel_test_character3Ds
+#define zoxel_test_character3Ds
 // #define zoxel_test_lines3D
 // #define zoxel_test_networking
 // #define zoxel_test_brain
 // #define zoxel_test_character2Ds
 // #define zoxel_test_cubes             // Failing atm, gl error at opengl_draw_triangles
 // #define zoxel_test_cubes_textured    // wip
-// #define zoxel_test_character3Ds      // todo
 // #define zoxel_test_voxels
 // #define zoxel_test_uis
 // -- disables --
@@ -82,3 +81,4 @@
 // -- zoxel game --
 #define voxels_spawn_terrain
 // #define zoxel_quaternion_camera
+// #define zoxel_debug_vox_read
