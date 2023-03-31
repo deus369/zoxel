@@ -64,16 +64,6 @@ GLFWwindow* setup_window() {
     return window;
 }
 
-// position buffer used for vertex positions
-void create_position_buffer() {
-    zoxel_log("    > Creating buffer\n");
-    glGenBuffers(1, &vertex_buffer);
-    glBindBuffer(GL_SHADER_STORAGE_BUFFER, vertex_buffer);
-    glBufferData(GL_SHADER_STORAGE_BUFFER, data_length, NULL, GL_DYNAMIC_DRAW);
-    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-    check_opengl_error("create_position_buffer");
-}
-
 // Set up compute shader
 int create_compute_program() {
     zoxel_log("    > Creating compute program\n");
@@ -103,6 +93,16 @@ int create_compute_program() {
     }
     check_opengl_error("create_compute_program_3");
     return 0;
+}
+
+// position buffer used for vertex positions
+void create_position_buffer() {
+    zoxel_log("    > Creating buffer\n");
+    glGenBuffers(1, &vertex_buffer);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, vertex_buffer);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, data_length, NULL, GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+    check_opengl_error("create_position_buffer");
 }
 
 void attach_buffer_to_compute_program() {

@@ -62,6 +62,15 @@ void attach_buffer_to_compute_program(GLuint material, GLuint buffer) {
     check_opengl_error("attach_buffer_to_compute_program");
 }
 
+void attach_buffer_to_render_program(GLuint render_program, GLuint buffer) {
+    glUseProgram(render_program);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(0);
+    glUseProgram(0);
+    check_opengl_error("attach_buffer_to_render_program");
+}
+
 GLuint create_vertex_buffer(GLuint shader_program, int vertex_count, int single_data_length) {
     const GLuint position_attrib = 0; // glGetAttribLocation(shader_program, "position");
     GLuint vbo = 0;
