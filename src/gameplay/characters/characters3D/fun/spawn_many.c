@@ -14,11 +14,8 @@ void spawn_many_characters3D(ecs_world_t *world) {
     float cameraY = spawn_many_y * overall_voxel_scale; // ecs_get(world, main_cameras[0], Position3D)->value.y; //  100.0f;
     float radius = spawn_many_radius * overall_voxel_scale; // 16.0f;
     for (int i = 0; i < spawn_characters3D_count; i++) {
-
         vox_file_index = rand() % vox_files_count;
-        // printf("Spawning %i\n", vox_file_index);
         vox = vox_files[vox_file_index];
-
         float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
         float3 position = (float3) {
             - radius + ((rand() % 100) / 101.0f) * radius * 2.0f,

@@ -7,12 +7,12 @@ const int3 chunk_size = { chunk_length, chunk_length, chunk_length };
 const double noiseChunkAnimateSpeed = 0.5; // 1 / 8.0;
 const int dissapearChance = 92;
 const float spawnRange = 0.96f;
+zoxel_declare_tag(LinkChunk)
 zoxel_component(ChunkSize, int3)                        //! A simple chunk with an array of voxels.
 zoxel_component(AnimateChunk, double)                   //! A state for animating textures.
 zoxel_byte_component(GenerateChunk)                     //! A state for generating chunks.
 zoxel_byte_component(ChunkDirty)                        //! A state for generating chunk meshes.
 zoxel_memory_component(ChunkData, unsigned char)        //! A simple chunk with an array of voxels.
-zoxel_memory_component(ChunkLinks, ecs_entity_t)        //! A list to all chunks in a Vox model.
 zoxel_memory_component(ChunkNeighbors, ecs_entity_t)    //! A list to all chunks in a Vox model.
 zoxel_octree_component(ChunkOctree, unsigned char, 0)   //! A chunk that stores voxels in an octree.
 zoxel_byte_component(ChunkDivision)                     //! The resolution of each chunk, distance to nearest camera.
@@ -27,21 +27,23 @@ zoxel_byte_component(ChunkDivision)                     //! The resolution of ea
 #include "systems/animate_chunk_system.c"
 #include "systems/chunk_build_system.c"
 #include "systems/chunk_colors_build_system.c"
+#include "systems/chunk_link_system.c"
 zoxel_reset_system(GenerateChunkResetSystem, GenerateChunk)
 zoxel_reset_system(ChunkDirtyResetSystem, ChunkDirty)
 
 zoxel_begin_module(VoxelsCore)
+zoxel_define_tag(LinkChunk)
 zoxel_define_component(ChunkDirty)
 zoxel_define_component(ChunkSize)
 zoxel_define_component(GenerateChunk)
 zoxel_define_component(ChunkDivision)
 zoxel_define_memory_component(ChunkData)
-zoxel_define_memory_component(ChunkLinks)
 zoxel_define_memory_component(ChunkNeighbors)
 zoxel_octree_component_define(ChunkOctree)
 zoxel_define_component(AnimateChunk)    // move to another module
 zoxel_define_reset_system(GenerateChunkResetSystem, GenerateChunk)
 zoxel_define_reset_system(ChunkDirtyResetSystem, ChunkDirty)
+zoxel_system(world, ChunkLinkSystem, EcsPostUpdate, [none] LinkChunk, [in] Position3D, [out] ChunkPosition, [out] ChunkLink)
 if (!headless) {
     zoxel_filter(generateChunkQuery, world, [in] GenerateChunk)
     zoxel_system_ctx(world, ChunkBuildSystem, EcsOnUpdate, generateChunkQuery, [in] ChunkDirty, [in] ChunkData, [in] ChunkSize,
