@@ -16,7 +16,7 @@ fi
 
 # check if flecs.c and flecs.h already exist in include/flecs
 if [ ! -f "include/flecs/flecs.c" ] || [ ! -f "include/flecs/flecs.h" ]; then
-    echo "  > downloading fecs [v$version]"
+    echo "  > downloading flecs [v$version]"
     # download zip file
     wget https://github.com/SanderMertens/flecs/archive/refs/tags/v$version.zip
     # extract zip file

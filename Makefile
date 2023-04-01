@@ -120,10 +120,10 @@ flecs_target = build/libflecs.a
 flecs_source = include/flecs/flecs.c
 flecs_flags = -c
 flecs_obj = flecs.o
-make_flecs = $(CC) $(flecs_flags) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) ../$(flecs_source) -o $(flecs_obj) $(LDLIBS2)
-make_flecs_lib = ar rcs ../$(flecs_target) $(flecs_obj)
+make_flecs = $(CC) $(flecs_flags) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) ../$(flecs_source) -o $(flecs_obj) $(LDLIBS2) && echo "  > built [flecs.o]"
+make_flecs_lib = ar rcs ../$(flecs_target) $(flecs_obj) && echo "  > built [libflecs.a]"
 # build commands
-make_release = $(CC) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) -o ../$(TARGET) $(OBJS) $(LDLIBS) $(LDLIBS2)
+make_release = $(CC) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) -o ../$(TARGET) $(OBJS) $(LDLIBS) $(LDLIBS2) && echo "  > built [$(TARGET)]"
 make_dev = $(CC) $(CFLAGS) $(fix_flecs_warning) $(cflags_debug) -o ../$(target_dev) $(OBJS) $(LDLIBS) $(LDLIBS2)
 make_web_release = $(cc_web) $(CFLAGS) $(cflags_web) -o $(target_web2) $(OBJS) ../include/flecs/flecs.c $(ldlibs_web)
 
@@ -131,7 +131,15 @@ make_web_release = $(cc_web) $(CFLAGS) $(cflags_web) -o $(target_web2) $(OBJS) .
 
 # release
 $(TARGET): $(SRCS)
+ifneq ($(SYSTEM),Windows)
+	bash bash/util/install_required.sh
+endif
+	set -e ; \
+	bash bash/flecs/check_flecs_lib_not_installed.sh && bash bash/flecs/check_flecs_source.sh && bash bash/flecs/download_flecs_source.sh && cp include/flecs/flecs.h include; \
+	bash bash/flecs/check_flecs_lib_not_installed.sh && cd build && $(make_flecs) && $(make_flecs_lib) && cd .. && cp build/libflecs.a lib;  \
 	bash bash/flecs/check_flecs_lib.sh && cd build && $(make_release)
+	
+# bash bash/flecs/check_flecs_lib.sh && cd build && $(make_release)
 
 # development
 $(target_dev): $(SRCS)
@@ -139,9 +147,7 @@ $(target_dev): $(SRCS)
 
 # required libraries
 install-required:
-	@echo "Installing Libaries: make gcc"
-	sudo apt install gcc
-	bash bash/sdl/install_sdl.sh
+	bash bash/util/install_required.sh
 
 ## installs zoxel into /usr/games directory
 install: 
@@ -237,7 +243,8 @@ android-dev-debug:
 $(flecs_target):
 	set -e ; \
 	bash bash/flecs/check_flecs_source.sh && bash bash/flecs/download_flecs_source.sh && cp include/flecs/flecs.h include; \
-	cd build && $(make_flecs) && $(make_flecs_lib) && cd .. && cp build/libflecs.a lib && echo "  > installed flecs library"
+	cd build && $(make_flecs) && $(make_flecs_lib) && cd .. && cp build/libflecs.a lib; \
+	echo "  > installed flecs library"
 
 install-sdl:
 	bash bash/sdl/install_sdl.sh
@@ -348,3 +355,5 @@ help:
 # cflags_debug += -fsanitize=address # detects memory leaks as well
 # cflags_debug += -Wno-stringop-overflow # supresses flecs warning
 # cflags_debug += -Wno-stringop-overflow-size
+# make something like this so it's less confusing:
+# bash bash/flecs/install_flecs.sh

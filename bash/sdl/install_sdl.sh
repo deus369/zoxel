@@ -1,45 +1,7 @@
 #!/bin/bash
 # the script will use a series of sdl library names and apt-get or pacman to install sdl libraries
 
-function has_library {
-    libraries=("$@")
-    for library in "${libraries[@]}"; do
-        if dpkg -s "$library" > /dev/null 2>&1 || pacman -Qs "$library" > /dev/null 2>&1; then
-            echo "[$library] is already installed."
-            return 0
-        fi
-    done
-    return 1
-}
-
-function install_library {
-    library=$1
-    if command -v apt-get >/dev/null 2>&1; then
-        sudo apt-get install -y "$library" || return 1
-    elif command -v pacman >/dev/null 2>&1; then
-        sudo pacman -S --noconfirm "$library" || return 1
-    else
-        echo "Package manager not found!"
-        return 1
-    fi
-    return 0
-}
-
-function install_first_library {
-    # echo "  > install_first_library"
-    libraries=("$@")
-    if has_library "${libraries[@]}"; then
-        echo "  > library already exists"
-        return 0
-    fi
-    echo "  > Installing library from list"
-    for library in "${libraries[@]}"; do
-        if install_library "$library"; then
-            return 0
-        fi
-    done
-    return 1
-}
+source bash/util/package_util.sh
 
 install_first_library "libsdl2-dev" "SDL2-devel" "libsdl2" "libsdl2-2.0" "sdl2"
 install_first_library "libsdl2-image-dev" "SDL2_image-devel" "libsdl2_image" "libsdl2-image-2.0" "sdl2_image"

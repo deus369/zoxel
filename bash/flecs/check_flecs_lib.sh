@@ -1,13 +1,14 @@
 #!/bin/bash
 
+lib_check_filepath="lib/libflecs.a"
 # Check if the file exists
-if [ -f "build/libflecs.a" ]; then
-    echo "  > [build/libflecs.a] exists, proceeding with build"
+if [ -f $lib_check_filepath ]; then
+    echo "  > found [$lib_check_filepath] proceeding.."
     exit 0 # Set success status
 else
-    echo "  - [build/libflecs.a] does not exist."
+    echo "  - [$lib_check_filepath] does not exist"
     echo "#####"
-    echo "Remember to build flecs lib with 'make build/libflecs.a'"
+    echo "  > remember to build flecs lib with 'make build/libflecs.a'"
     echo "#####"
     exit 1 # Set failure status
 fi

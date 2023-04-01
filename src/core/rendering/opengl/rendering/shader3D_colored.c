@@ -2,13 +2,13 @@
 GLuint2 shader3D_colored;
 const GLchar* shader3D_colored_vert_buffer = "\
 #version 300 es\n\
-in lowp vec3 vertexPosition; \
-in lowp vec4 vertexColor; \
-uniform lowp mat4 viewMatrix; \
-uniform lowp vec3 position; \
-uniform lowp vec4 rotation; \
-uniform lowp float scale; \
-out lowp vec4 vertexColorOutput; \
+in highp vec3 vertexPosition; \
+in highp vec4 vertexColor; \
+uniform highp mat4 viewMatrix; \
+uniform highp vec3 position; \
+uniform highp vec4 rotation; \
+uniform highp float scale; \
+out highp vec4 vertexColorOutput; \
 \
 vec3 float4_rotate_float3(vec4 rotation, vec3 value) \
 { \
@@ -27,9 +27,9 @@ void main()\
 ";
 const GLchar* shader3D_colored_frag_buffer = "\
 #version 300 es\n\
-in lowp vec4 vertexColorOutput;\
-uniform lowp float brightness; \
-out lowp vec4 color; \
+in highp vec4 vertexColorOutput;\
+uniform highp float brightness; \
+out highp vec4 color; \
  \
 void main() \
 { \
