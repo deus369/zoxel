@@ -272,6 +272,9 @@ git-push: ## installs zoxel into /usr/games directory
 git-pull: ## installs zoxel into /usr/games directory
 	bash bash/git/git_pull.sh
 
+git-config:
+	bash bash/git/git_update_config.sh
+
 # all platforms #
 
 # builds for all platforms - this rebuilds everytime tho
