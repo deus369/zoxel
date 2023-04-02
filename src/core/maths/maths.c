@@ -36,6 +36,9 @@
 
 zoxel_begin_module(Maths)
 unsigned long seed = get_unique_time_seed();
+#ifdef zoxel_seed_666
+    seed = 666;
+#endif
 set_noise_seed(seed);
 // zoxel_log(" > seed set to [%lu]\n", seed);
 // set_noise_seed(12666);

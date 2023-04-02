@@ -30,6 +30,30 @@ const float octree_scales[] = {
     0.0078125f
 };
 
+const float octree_scales2[] = {
+    2.0f,
+    1.0f,
+    0.5f,
+    0.25f,
+    0.125f,
+    0.0625f,
+    0.03125f,
+    0.015625f,
+    0.0078125f
+};
+
+/*const float octree_scales[] = {
+    2.0f,
+    1.0f,
+    0.5f,
+    0.25f,
+    0.125f,
+    0.125f / 2.0f,
+    0.125f / 4.0f,
+    0.125f / 8.0f,
+    0.125f / 16.0f
+};*/
+
 const unsigned char powers_of_two_byte[] = {
     1,
     2,
@@ -67,232 +91,246 @@ const int3 octree_positions[] = {
     { 1, 1, 1}
 };
 
+const unsigned char node_index_with_down[] = {
+    -1,
+    -1,
+    0,
+    1,
+    -1,
+    -1,
+    4,
+    5
+};
+
+const unsigned char node_index_with_up[] = {
+    2,
+    3,
+    -1,
+    -1,
+    6,
+    7,
+    -1,
+    -1
+};
+
+const unsigned char node_index_with_back[] = {
+    -1,
+    0,
+    -1,
+    2,
+    -1,
+    4,
+    -1,
+    6
+};
+
+const unsigned char node_index_with_front[] = {
+    1,
+    -1,
+    3,
+    -1,
+    5,
+    -1,
+    7,
+    -1
+};
+
+const unsigned char node_index_with_left[] = {
+    -1,
+    -1,
+    -1,
+    -1,
+    0,
+    1,
+    2,
+    3
+};
+
+const unsigned char node_index_with_right[] = {
+    4,
+    5,
+    6,
+    7,
+    -1,
+    -1,
+    -1,
+    -1
+};
+
 unsigned char get_node_index(int3 node_position) {
     return node_position.x * 4 + node_position.y * 2 + node_position.z;
 }
 
 #define zoxel_octree_component(name, type, default_value)\
 typedef struct name name;\
-struct name\
-{\
+struct name {\
     type value;\
     name *nodes;\
 };\
 ECS_COMPONENT_DECLARE(name);\
-void free##_##name(name* octree)\
-{\
-    if (octree->nodes != NULL)\
-    {\
-        for (unsigned char i = 0; i < octree_length; i++)\
-        {\
+void free##_##name(name* octree) {\
+    if (octree->nodes != NULL) {\
+        for (unsigned char i = 0; i < octree_length; i++) {\
             free##_##name(&octree->nodes[i]);\
         }\
         free(octree->nodes);\
         octree->nodes = NULL;\
     }\
 }\
-void clone##_##name(name* dst, name* src)\
-{\
+\
+void clone##_##name(name* dst, name* src) {\
     dst->value = src->value;\
-    if (src->nodes)\
-    {\
+    if (src->nodes) {\
         dst->nodes = malloc(sizeof(name) * octree_length);\
-        for (int i = 0; i < octree_length; i++)\
-        {\
+        for (int i = 0; i < octree_length; i++) {\
             clone##_##name(&dst->nodes[i], &src->nodes[i]);\
         }\
-    }\
-    else\
-    {\
+    } else {\
         dst->nodes = NULL;\
     }\
 }\
-void open##_##name(name* octree)\
-{\
-    if (octree->nodes == NULL)\
-    {\
+\
+void open##_##name(name* octree) {\
+    if (octree->nodes == NULL) {\
         octree->nodes = malloc(sizeof(name) * octree_length);\
-        for (unsigned char i = 0; i < octree_length; i++)\
-        {\
+        for (unsigned char i = 0; i < octree_length; i++) {\
             octree->nodes[i].nodes = NULL;\
         }\
     }\
 }\
-void close##_##name(name* octree)\
-{\
+\
+void close##_##name(name* octree) {\
     free##_##name(octree);\
 }\
-ECS_CTOR(name, ptr,\
-{\
+\
+ECS_CTOR(name, ptr, {\
     ptr->nodes = NULL;\
     ptr->value = default_value;\
 })\
-ECS_DTOR(name, ptr,\
-{\
+\
+ECS_DTOR(name, ptr, {\
     free##_##name(ptr);\
 })\
-ECS_MOVE(name, dst, src,\
-{\
+ECS_MOVE(name, dst, src, {\
     dst->value = src->value;\
     dst->nodes = src->nodes;\
     src->nodes = NULL;\
     src->value = default_value;\
 })\
+\
 ECS_COPY(name, dst, src, {\
     free##_##name(dst);\
     clone##_##name(dst, src);\
 })\
-const name* find_node##_##name(const name* node, int3 octree_position, unsigned char depth)\
-{\
+\
+const name* find_node##_##name(const name* node, int3 octree_position, unsigned char depth) {\
     /* if depth finish or if closed node, return node early */ \
-    if (depth == 0 || node->nodes == NULL)\
-    {\
+    if (depth == 0 || node->nodes == NULL) {\
         return node;\
     }\
     depth--;\
     unsigned char dividor = powers_of_two[depth];\
     int3 local_position = (int3) { octree_position.x / dividor, octree_position.y / dividor, octree_position.z / dividor };\
     int3 child_octree_position = (int3) { octree_position.x % dividor, octree_position.y % dividor, octree_position.z % dividor };\
-    node = &node->nodes[get_node_index(local_position)];\
-    return find_node##_##name(node, child_octree_position, depth);\
+    return find_node##_##name(&node->nodes[get_node_index(local_position)], child_octree_position, depth);\
 }\
-const name* find_adjacent##_##name(const name* root, const name* node, int3 octree_position, int3 node_position,\
-    unsigned char depth, unsigned char direction, const name *neighbors[], unsigned char *chunk_index)\
-{\
-    if (node != NULL)\
-    {\
-        if (direction == direction_left)\
-        {\
-            if (node_position.x != 0)\
-            {\
-                node_position.x--;\
-                return &node->nodes[get_node_index(node_position)];\
+\
+const name* find_adjacent##_##name(const name* root, const name* node, int3 octree_position, unsigned char node_index, int3 node_position,\
+    unsigned char depth, unsigned char direction, const name *neighbors[], unsigned char *chunk_index) {\
+    if (node != NULL) {\
+        if (direction == direction_left) {\
+            if (node_position.x != 0) {\
+                return &node->nodes[node_index_with_left[node_index]];\
             }\
-        }\
-        else if (direction == direction_right)\
-        {\
-            if (node_position.x != 1)\
-            {\
-                node_position.x++;\
-                return &node->nodes[get_node_index(node_position)];\
+        } else if (direction == direction_right) {\
+            if (node_position.x != 1) {\
+                return &node->nodes[node_index_with_right[node_index]];\
             }\
-        }\
-        else if (direction == direction_down)\
-        {\
-            if (node_position.y != 0)\
-            {\
-                node_position.y--;\
-                return &node->nodes[get_node_index(node_position)];\
+        } else if (direction == direction_down) {\
+            if (node_position.y != 0) {\
+                return &node->nodes[node_index_with_down[node_index]];\
             }\
-        }\
-        else if (direction == direction_up)\
-        {\
-            if (node_position.y != 1)\
-            {\
-                node_position.y++;\
-                return &node->nodes[get_node_index(node_position)];\
+        } else if (direction == direction_up) {\
+            if (node_position.y != 1) {\
+                return &node->nodes[node_index_with_up[node_index]];\
             }\
-        }\
-        else if (direction == direction_back)\
-        {\
-            if (node_position.z != 0)\
-            {\
-                node_position.z--;\
-                return &node->nodes[get_node_index(node_position)];\
+        } else if (direction == direction_back) {\
+            if (node_position.z != 0) {\
+                return &node->nodes[node_index_with_back[node_index]];\
             }\
-        }\
-        else if (direction == direction_front)\
-        {\
-            if (node_position.z != 1)\
-            {\
-                node_position.z++;\
-                return &node->nodes[get_node_index(node_position)];\
+        } else if (direction == direction_front) {\
+            if (node_position.z != 1) {\
+                return &node->nodes[node_index_with_front[node_index]];\
             }\
         }\
     }\
-    if (direction == direction_left)\
-    {\
+    if (direction == direction_left) {\
         octree_position.x--;\
-    }\
-    else if (direction == direction_right)\
-    {\
+    } else if (direction == direction_right) {\
         octree_position.x++;\
-    }\
-    else if (direction == direction_down)\
-    {\
+    } else if (direction == direction_down) {\
         octree_position.y--;\
-    }\
-    else if (direction == direction_up)\
-    {\
+    } else if (direction == direction_up) {\
         octree_position.y++;\
-    }\
-    else if (direction == direction_back)\
-    {\
+    } else if (direction == direction_back) {\
         octree_position.z--;\
-    }\
-    else if (direction == direction_front)\
-    {\
+    } else if (direction == direction_front) {\
         octree_position.z++;\
     }\
     unsigned char position_bounds = powers_of_two[depth];\
-    if (octree_position.x >= 0 && octree_position.x < position_bounds\
-        && octree_position.y >= 0 && octree_position.y < position_bounds\
-        && octree_position.z >= 0 && octree_position.z < position_bounds)\
-    {\
+    if (octree_position.x >= 0 && octree_position.x < position_bounds && octree_position.y >= 0 && octree_position.y < position_bounds && octree_position.z >= 0 && octree_position.z < position_bounds) {\
         return find_node##_##name(root, octree_position, depth);\
-    }\
-    else\
-    {\
-        if (direction == direction_left)\
-        {\
-            *chunk_index = 1;\
-            if (neighbors[0] == NULL) return NULL;\
-            octree_position.x = powers_of_two[depth] - 1;\
-            return find_node##_##name(neighbors[0], octree_position, depth);\
+    } else {\
+        *chunk_index = direction + 1;\
+        if (direction == direction_left) {\
+            if (neighbors[direction] != NULL) {\
+                octree_position.x = position_bounds - 1;\
+                return find_node##_##name(neighbors[direction], octree_position, depth);\
+            }\
+        } else if (direction == direction_right) {\
+            if (neighbors[direction] != NULL) {\
+                octree_position.x = 0;\
+                return find_node##_##name(neighbors[direction], octree_position, depth);\
+            }\
+        } else if (direction == direction_down) {\
+            if (neighbors[direction] != NULL) {\
+                octree_position.y = position_bounds - 1;\
+                return find_node##_##name(neighbors[direction], octree_position, depth);\
+            }\
+        } else if (direction == direction_up) {\
+            if (neighbors[direction] != NULL) {\
+                octree_position.y = 0;\
+                return find_node##_##name(neighbors[direction], octree_position, depth);\
+            }\
+        } else if (direction == direction_back) {\
+            if (neighbors[direction] != NULL) {\
+                octree_position.z = position_bounds - 1;\
+                return find_node##_##name(neighbors[direction], octree_position, depth);\
+            }\
+        } else if (direction == direction_front) {\
+            if (neighbors[direction] != NULL) {\
+                octree_position.z = 0;\
+                return find_node##_##name(neighbors[direction], octree_position, depth);\
+            }\
         }\
-        else if (direction == direction_right)\
-        {\
-            *chunk_index = 2;\
-            if (neighbors[1] == NULL) return NULL;\
-            octree_position.x = 0;\
-            return find_node##_##name(neighbors[1], octree_position, depth);\
-        }\
-        else if (direction == direction_down)\
-        {\
-            *chunk_index = 3;\
-            if (neighbors[2] == NULL) return NULL;\
-            octree_position.y = powers_of_two[depth] - 1;\
-            return find_node##_##name(neighbors[2], octree_position, depth);\
-        }\
-        else if (direction == direction_up)\
-        {\
-            *chunk_index = 4;\
-            if (neighbors[3] == NULL) return NULL;\
-            octree_position.y = 0;\
-            return find_node##_##name(neighbors[3], octree_position, depth);\
-        }\
-        else if (direction == direction_back)\
-        {\
-            *chunk_index = 5;\
-            if (neighbors[4] == NULL) return NULL;\
-            octree_position.z = powers_of_two[depth] - 1;\
-            return find_node##_##name(neighbors[4], octree_position, depth);\
-        }\
-        else if (direction == direction_front)\
-        {\
-            *chunk_index = 6;\
-            if (neighbors[5] == NULL) return NULL;\
-            octree_position.z = 0;\
-            return find_node##_##name(neighbors[5], octree_position, depth);\
-        }\
-        else\
-        {\
-            return NULL;\
-        }\
+        return NULL;\
     }\
 }
 
 /*
+        node_position.x--;
+        return &node->nodes[get_node_index(node_position)];
+        node_position.x++;
+        return &node->nodes[get_node_index(node_position)];
+        node_position.y--;
+        return &node->nodes[get_node_index(node_position)];
+        node_position.y++;
+        return &node->nodes[get_node_index(node_position)];
+        node_position.z--;
+        return &node->nodes[get_node_index(node_position)];
+        node_position.z++;
+        return &node->nodes[get_node_index(node_position)];
+
         octree->nodes[i].value = default_value;\
 
         octree->nodes = malloc(sizeof(name) * octree_length);\

@@ -3,9 +3,9 @@
 // Fix issues between chunks of different levels of division
 // function to check all adjacent voxels are solid on the face
 unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *neighbors[],
-    int3 octree_position, int3 node_position, unsigned char depth, unsigned char max_depth, unsigned char neighbors_max_depths[]) {
+    int3 octree_position, unsigned char node_index, int3 node_position, unsigned char depth, unsigned char max_depth, unsigned char *neighbors_max_depths) {
     unsigned char chunk_index = 0;
-    const ChunkOctree *adjacent_node = find_adjacent_ChunkOctree(root_node, parent_node, octree_position, node_position, depth, direction, neighbors, &chunk_index);
+    const ChunkOctree *adjacent_node = find_adjacent_ChunkOctree(root_node, parent_node, octree_position, node_index, node_position, depth, direction, neighbors, &chunk_index);
     if (adjacent_node == NULL || adjacent_node->value == 0) {
         if (adjacent_node == NULL && chunk_index != 0) {
             #ifdef voxels_hide_terrain_edge
@@ -50,7 +50,7 @@ unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *
             }
             // check underneath nodes
             int3 new_octree_position = int3_add(octree_position, local_position);
-            unsigned char is_adjacent_solid = is_adjacent_all_solid(direction, root_node, &adjacent_node->nodes[i], neighbors, new_octree_position, local_position, depth, max_depth, neighbors_max_depths);
+            unsigned char is_adjacent_solid = is_adjacent_all_solid(direction, root_node, &adjacent_node->nodes[i], neighbors, new_octree_position, i, local_position, depth, max_depth, neighbors_max_depths);
             if (is_adjacent_solid == 0) {
                 return 0;
             }
@@ -61,7 +61,7 @@ unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *
 
 #define zoxel_octree_check(direction_name)\
     if (!is_adjacent_all_solid(direction##_##direction_name, root_node, parent_node, neighbors,\
-        octree_position, node_position, depth, max_depth, neighbors_max_depths))
+        octree_position, node_index, node_position, depth, max_depth, neighbors_max_depths))
 
 unsigned char get_max_depth_from_division(unsigned char chunk_division) {
     #ifdef zoxel_voxel_disable_distance_division
@@ -88,13 +88,18 @@ unsigned char get_octree_voxel(const ChunkOctree *node, int3 position, unsigned 
     unsigned char dividor = powers_of_two_byte[depth - 1]; // target - depth - 1];   // starts at 16, ends at 1
     int3 node_position = (int3) { position.x / dividor, position.y / dividor, position.z / dividor };
     // zoxel_log("dividor %i node pos [%ix%ix%i]\n", dividor, node_position.x, node_position.y, node_position.z);
-    for (unsigned char i = 0; i < octree_length; i++) {
+    /*for (unsigned char i = 0; i < octree_length; i++) {
         int3 local_position = octree_positions[i];
         if (int3_equals(node_position, local_position)) {
             int3 new_position = (int3) { position.x % dividor, position.y % dividor, position.z % dividor };
             return get_octree_voxel(&node->nodes[i], new_position, depth - 1);
         }
-    }
+    }*/
+
+    int array_index = int3_array_index(node_position, octree_node_size3);
+    int3 new_position = (int3) { position.x % dividor, position.y % dividor, position.z % dividor };
+    return get_octree_voxel(&node->nodes[array_index], new_position, depth - 1);
+
     // zoxel_log("WAEIJOAWE\n");
     return 0;
 }

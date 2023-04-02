@@ -9,6 +9,7 @@
 // #define zoxel_debug_eternal_rotation    // debugs euler in main menu
 // #define zoxel_catch_opengl_errors
 // #define zoxel_debug_vox_read
+#define zoxel_seed_666  // tests seed at 666
 //! \todo Fix pathing for android, cannot get resources there.
 // #define zoxel_debug_pathing 
 // #define zoxel_debug_prefabs
@@ -32,8 +33,8 @@
 // #define zoxel_time_terrain_chunk_system
 // #define zoxel_time_chunk_uvs_builds_system
 // voxel octrees timing
-// #define zoxel_time_octree_terrain_chunk_system
-// #define zoxel_time_octree_chunk_builds_system
+#define zoxel_time_octree_terrain_chunk_system
+#define zoxel_time_octree_chunk_builds_system
 // #define zoxel_time_mesh_uvs_update_system
 // idea: generate terrain too at lesser resolutions
 // #define zoxel_time_render_3d_uvs
@@ -50,7 +51,7 @@
 // #define debug_ui_positioning
 // -- testing --
 // #define zoxel_test_chickens
-#define zoxel_test_character3Ds
+#define zoxel_test_character3Ds     // spawn 100 penguins
 // #define zoxel_test_lines3D
 // #define zoxel_test_networking
 // #define zoxel_test_brain

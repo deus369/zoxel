@@ -58,20 +58,22 @@ unsigned char set_octree_voxel(unsigned char voxel, unsigned char target_depth, 
     }
     unsigned char dividor = powers_of_two_byte[target_depth - depth - 1];   // starts at 16, ends at 1
     int3 node_position = (int3) { position.x / dividor, position.y / dividor, position.z / dividor };
-    for (unsigned char i = 0; i < octree_length; i++) {
-        int3 local_position = octree_positions[i];
-        if (int3_equals(node_position, local_position)) {
+    int array_index = int3_array_index(node_position, octree_node_size3);
+    // if (array_index < 0 || array_index >= octree_length) return 1;
+    int3 new_position = (int3) { position.x % dividor, position.y % dividor, position.z % dividor };
+    if (set_octree_voxel(voxel, target_depth, &node->nodes[array_index], new_position, depth + 1) == 0) {
+        return 0;
+    }
+    //for (unsigned char i = 0; i < octree_length; i++) {
+    //    int3 local_position = octree_positions[i];
+    //    if (int3_equals(node_position, local_position)) {
             /*printf("        - child node: index [%i] depth [%i] dividor [%i] - position [%ix%ix%i] - node_position [%ix%ix%i]\n",
                 i, depth, dividor,
                 position.x, position.y, position.z,
                 node_position.x, node_position.y, node_position.z);*/
-            int3 new_position = (int3) { position.x % dividor, position.y % dividor, position.z % dividor };
-            if (set_octree_voxel(voxel, target_depth, &node->nodes[i], new_position, depth + 1) == 0) {
-                return 0;
-            }
-            break;
-        }
-    }
+            //break;
+        //}
+   // }
     /*printf("Failed to set position [%ix%ix%i] - node_position [%ix%ix%i] - depth %i:%i - %i\n",
         position.x, position.y, position.z,
         node_position.x, node_position.y, node_position.z,
@@ -133,6 +135,7 @@ void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 pos
         depth++;
         scale = scale * 0.5f;
         open_ChunkOctree(chunk_octree);
+        // float scale = octree_scales2[depth];
         for (unsigned char i = 0; i < octree_length; i++) {
             // calculates sub node position
             float3 node_position = float3_add(position, float3_multiply_float(float3_from_int3(octree_positions[i]), scale));
