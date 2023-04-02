@@ -73,6 +73,7 @@
 #define voxels_close_octree_nodes       // closes nodes in terrain gen
 #define voxels_hide_terrain_edge        // hides faces on edge of map
 #define zoxel_voxels_dynamic_array      // used in mesh generation
+// #define zoxel_is_flat_height
 // #define voxels_terrain_multi_material
 // #define zoxel_disable_close_nodes
 // #define voxels_disable_streaming
