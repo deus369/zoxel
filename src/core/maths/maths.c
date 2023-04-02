@@ -12,6 +12,7 @@
 #endif
 #include <math.h>       // for sqrt
 #include "data/byte2.c"
+#include "data/byte3.c"
 #include "data/byte4.c"
 #include "data/int2.c"
 #include "data/int3.c"

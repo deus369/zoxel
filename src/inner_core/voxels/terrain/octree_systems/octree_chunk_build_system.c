@@ -1,3 +1,5 @@
+const float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
+
 // this takes 14ms on a 24core cpu, 6ms though during streaming
 // scales vertex, offsets vertex by voxel position in chunk, adds total mesh offset
 void add_voxel_face_uvs_d(int_array_d *indicies, float3_array_d* vertices, float2_array_d* uvs,
@@ -22,16 +24,16 @@ void add_voxel_face_uvs_d(int_array_d *indicies, float3_array_d* vertices, float
             voxel_scale, get_voxel_indices(is_positive), voxel_face_vertices##_##direction, voxel_face_uvs);\
     }
 
-const float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
-
-void build_octree_chunk_d(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[],
-    unsigned char *neighbors_max_depths, int_array_d *indicies, float3_array_d* vertices, float2_array_d* uvs,
-    const unsigned char max_depth, unsigned char depth, int3 octree_position, unsigned char node_index, int3 node_position) {
+void build_octree_chunk_d(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree,
+    const ChunkOctree *neighbors[], const unsigned char *neighbors_max_depths,
+    int_array_d *indicies, float3_array_d* vertices, float2_array_d* uvs,
+    const unsigned char max_depth, unsigned char depth, int3 octree_position, const unsigned char node_index) {
     if (depth >= max_depth || chunk_octree->nodes == NULL) {
         if (chunk_octree->value != 0) {
             float3 vertex_position_offset = float3_from_int3(octree_position);
             float voxel_scale = octree_scales2[depth] * (overall_voxel_scale / ((float) octree_node_size));
             float3_multiply_float_p(&vertex_position_offset, voxel_scale);
+            byte3 node_position = octree_positions_b[node_index];
             zoxel_octree_build_face_d(left, 0)
             zoxel_octree_build_face_d(right, 1)
             zoxel_octree_build_face_d(down, 1)
@@ -46,7 +48,7 @@ void build_octree_chunk_d(const ChunkOctree *root_node, const ChunkOctree *paren
             if (chunk_octree->nodes[i].value != 0) {
                 int3 child_octree_position = int3_add(octree_position, octree_positions[i]);
                 build_octree_chunk_d(root_node, chunk_octree, &chunk_octree->nodes[i], neighbors,
-                    neighbors_max_depths, indicies, vertices, uvs, max_depth, depth, child_octree_position, i, octree_positions[i]);
+                    neighbors_max_depths, indicies, vertices, uvs, max_depth, depth, child_octree_position, i);
             }
         }
     }
@@ -54,15 +56,13 @@ void build_octree_chunk_d(const ChunkOctree *root_node, const ChunkOctree *paren
 
 void build_octree_chunk_mesh_uvs(const ChunkOctree *chunk_octree, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
     unsigned char chunk_division, const ChunkOctree *neighbors[], unsigned char *neighbors_max_depths) {
-    // try using a list of mesh data and then converting to an array instead and comparing speeds
-    // int2 mesh_count = { 0, 0 };
     unsigned char max_depth = get_max_depth_from_division(chunk_division);
     #ifdef zoxel_voxels_dynamic_array
         int_array_d* indicies = create_int_array_d();
         float3_array_d* vertices = create_float3_array_d();
         float2_array_d* uvs = create_float2_array_d();
         build_octree_chunk_d(chunk_octree, NULL, chunk_octree, neighbors, neighbors_max_depths, indicies, vertices, uvs,
-            max_depth, 0, int3_zero, 0, int3_zero);
+            max_depth, 0, int3_zero, 0); // , byte3_zero);
         if (meshIndicies->length != 0) {
             free(meshIndicies->value);
         }

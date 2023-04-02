@@ -9,7 +9,8 @@
     } int3;
 #endif
 
-#define int3_zero (int3) { 0, 0, 0 }
+const int3 int3_zero = (int3) { 0, 0, 0 };
+// #define int3_zero (int3) { 0, 0, 0 }
 
 unsigned char int3_equals(int3 a, int3 b) {
     if (a.x == b.x && a.y == b.y && a.z == b.z)

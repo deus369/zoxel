@@ -3,83 +3,11 @@
 // todo: remove pool that didnt work out
 // todo: rewrite algorithm, it's too slow atm for xyz chunks
 
-typedef struct {
+/*typedef struct {
     int allocated;
     int used;
     ChunkOctree *pool;
-} ChunkOctreePool;
-
-//! Closes all solid nodes, as well as air nodes, after terrain system generates it.
-void close_solid_nodes(ChunkOctree *node) {
-    // for all children nodes
-    //  only check higher nodes if closed children
-    if (node->nodes != NULL) {
-        for (unsigned char i = 0; i < octree_length; i++) {
-            close_solid_nodes(&node->nodes[i]);
-        }
-    }
-    if (node->nodes != NULL) {
-        unsigned char all_solid = 1;
-        for (unsigned char i = 0; i < octree_length; i++) {
-            if (node->nodes[i].nodes != NULL || node->nodes[i].value == 0) {
-                all_solid = 0;
-                break;
-            }
-        }
-        if (all_solid) {
-            close_ChunkOctree(node);
-        } else {
-            unsigned char all_air = 1;
-            for (unsigned char i = 0; i < octree_length; i++) {
-                if (node->nodes[i].nodes != NULL || node->nodes[i].value != 0) {
-                    all_air = 0;
-                    break;
-                }
-            }
-            if (all_air) {
-                close_ChunkOctree(node);
-            }
-        }
-    }
-}
-
-unsigned char set_octree_voxel(unsigned char voxel, unsigned char target_depth, ChunkOctree *node, int3 position, unsigned char depth) {
-    // printf("    checking [%i]: %ix%ix%i\n", depth, position.x, position.y, position.z);
-    if (depth == target_depth) {
-        //printf("    - set voxel [%i] at depth [%i] [%ix%ix%i]\n", voxel, depth, position.x, position.y, position.z);
-        node->value = voxel;
-        return 0;
-    }
-    node->value = voxel;
-    if (node->nodes == NULL) {
-        // printf("node closed at [%i]: %ix%ix%i\n", depth, position.x, position.y, position.z);
-        node->value = voxel;
-        return 0;
-    }
-    unsigned char dividor = powers_of_two_byte[target_depth - depth - 1];   // starts at 16, ends at 1
-    int3 node_position = (int3) { position.x / dividor, position.y / dividor, position.z / dividor };
-    int array_index = int3_array_index(node_position, octree_node_size3);
-    // if (array_index < 0 || array_index >= octree_length) return 1;
-    int3 new_position = (int3) { position.x % dividor, position.y % dividor, position.z % dividor };
-    if (set_octree_voxel(voxel, target_depth, &node->nodes[array_index], new_position, depth + 1) == 0) {
-        return 0;
-    }
-    //for (unsigned char i = 0; i < octree_length; i++) {
-    //    int3 local_position = octree_positions[i];
-    //    if (int3_equals(node_position, local_position)) {
-            /*printf("        - child node: index [%i] depth [%i] dividor [%i] - position [%ix%ix%i] - node_position [%ix%ix%i]\n",
-                i, depth, dividor,
-                position.x, position.y, position.z,
-                node_position.x, node_position.y, node_position.z);*/
-            //break;
-        //}
-   // }
-    /*printf("Failed to set position [%ix%ix%i] - node_position [%ix%ix%i] - depth %i:%i - %i\n",
-        position.x, position.y, position.z,
-        node_position.x, node_position.y, node_position.z,
-        depth, target_depth, dividor);*/
-    return 1;
-}
+} ChunkOctreePool;*/
 
 //! Our function that creates a chunk.
 void randomize_inner_nodes(ChunkOctree* chunk_octree, unsigned char depth) {
@@ -168,40 +96,12 @@ void generate_terrain_height_map(ChunkOctree* chunk_octree, unsigned char depth,
     if (octree_noise < octree_min_height) {
         octree_noise = octree_min_height;
     }
-    /*if (position.x >= 0 && position.x <= 1.0f
-        && position.y >= 0 && position.y <= 1.0f
-        && position.z >= 0 && position.z <= 1.0f)
-    {
-        printf("depth: %i - depth_left: %i\n", depth, depth_left);
-        //printf("height_map_index: %i - division_left: %i \n",
-        //    height_map_index, division_left);
-        printf("    - position: %fx%f\n", position.x, position.z);
-        printf("    - local_position: %ix%i\n", local_position.x, local_position.y);
-        printf("    - map_position: %ix%i\n", map_position.x, map_position.y);
-    }*/
     // octree_noise += octree_height_addition * octree_perlin_noise(position.x, position.y, position.z,
     //    octree_persistence, octree_frequency);
     if (position.y <= octree_noise) {
         chunk_octree->value = 1;
         if (depth < max_octree_depth) {
             depth++;
-            /*#ifdef voxels_use_octree_pooling
-                if (chunk_octree->nodes == NULL) {
-                    if (pool->used + octree_length >= pool->allocated) {
-                        printf("Used Max: %i\n", pool->used);
-                        return;
-                    }
-                    chunk_octree->nodes = &pool->pool[pool->used];
-                    pool->used += octree_length;
-                    for (unsigned char i = 0; i < octree_length; i++) {
-                        chunk_octree->nodes[i].nodes = NULL;
-                        chunk_octree->nodes[i].value = 0;
-                    }
-                    // printf("Used: %i\n", pool->used);
-                }
-            #else
-                open_ChunkOctree(chunk_octree);
-            #endif*/
             for (unsigned char i = 0; i < octree_length; i++) {
                 // calculates sub node position
                 float3 node_position = float3_add(position, float3_multiply_float(octree_positions_float3s[i], octree_scales[depth]));
@@ -240,6 +140,39 @@ void generate_height_map(double* height_map, float3 position, int2 map_size) {
                     terrain_frequency,
                     terrain_seed, terrain_octaves);
             #endif
+        }
+    }
+}
+
+//! Closes all solid nodes, as well as air nodes, after terrain system generates it.
+void close_solid_nodes(ChunkOctree *node) {
+    // for all children nodes - only check higher nodes if closed children
+    if (node->nodes != NULL) {
+        for (unsigned char i = 0; i < octree_length; i++) {
+            close_solid_nodes(&node->nodes[i]);
+        }
+    }
+    if (node->nodes != NULL) {
+        unsigned char all_solid = 1;
+        for (unsigned char i = 0; i < octree_length; i++) {
+            if (node->nodes[i].nodes != NULL || node->nodes[i].value == 0) {
+                all_solid = 0;
+                break;
+            }
+        }
+        if (all_solid) {
+            close_ChunkOctree(node);
+        } else {
+            unsigned char all_air = 1;
+            for (unsigned char i = 0; i < octree_length; i++) {
+                if (node->nodes[i].nodes != NULL || node->nodes[i].value != 0) {
+                    all_air = 0;
+                    break;
+                }
+            }
+            if (all_air) {
+                close_ChunkOctree(node);
+            }
         }
     }
 }
@@ -295,29 +228,27 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
             // fill_octree(chunkOctree, 1, target_depth);
             fill_octree(chunkOctree, 0, target_depth);
             // generate_height_map(height_map, chunk_position_float3, map_size);
-            for (unsigned char i = 0; i < chunk_voxel_length; i++) {
-                for (unsigned char k = 0; k < chunk_voxel_length; k++) {
-                    // int2 map_position = (int2) { i, k };
-                    // int height_map_index = int2_array_index(map_position, map_size);
-                    // double height_d = height_map[height_map_index];
-                    int height = int_floor(-terrain_minus_amplifier + terrain_amplifier * perlin_terrain(
-                        noise_positiver2 + chunk_position_float3.x + (i / map_size_f.x), 
-                        noise_positiver2 + chunk_position_float3.z + (k / map_size_f.y),
-                        terrain_frequency, terrain_seed, terrain_octaves));
-                    // int height = height_d;
-                    // int height = (chunk_voxel_length / 2) - 1;
-                    int j_start = height - (chunk_position_float3.y * chunk_voxel_length);
-                    if (j_start < 0) {
-                        j_start = -1;
-                    }
-                    if (j_start >= chunk_voxel_length) {
-                        j_start = chunk_voxel_length - 1;
-                    }
-                    for (int j = j_start; j >= 0; j--) {
-                        int3 voxel_position = (int3) { i, j, k };
-                        if (set_octree_voxel(1, target_depth, chunkOctree, voxel_position, 0) == 1) {
-                            // printf("Failed to set voxel: %ix%ix%i\n", voxel_position.x, voxel_position.y, voxel_position.z);
-                            break;
+            const byte2 set_octree_data = (byte2) { 1, target_depth };
+            byte3 voxel_position;
+            for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
+                for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
+                    #ifdef zoxel_is_flat_height
+                        int global_height = int_floor(terrain_amplifier * 0.2f);
+                    #else
+                        int global_height = int_floor(-terrain_minus_amplifier + terrain_amplifier * perlin_terrain(
+                            noise_positiver2 + chunk_position_float3.x + (voxel_position.x / map_size_f.x), 
+                            noise_positiver2 + chunk_position_float3.z + (voxel_position.z / map_size_f.y),
+                            terrain_frequency, terrain_seed, terrain_octaves));
+                    #endif
+                    int local_height = (int) (global_height - (chunk_position_float3.y * chunk_voxel_length));
+                    if (local_height > 0) {
+                        // local_height = 0;
+                        if (local_height > chunk_voxel_length) {
+                            local_height = chunk_voxel_length;
+                        }
+                        for (voxel_position.y = 0; voxel_position.y < local_height; voxel_position.y++) {
+                            byte3 node_position = voxel_position; // (byte3) { voxel_position.x, voxel_position.y, voxel_position.z };
+                            set_octree_voxel(chunkOctree, &node_position, &set_octree_data, 0);
                         }
                     }
                 }
@@ -533,3 +464,53 @@ double octree_perlin_noise(double x, double y, double z, double persistence, dou
 // #define octree_octaves 6
 // #define octree_persistence 0.5f
 // #define octree_frequency 0.5f
+
+            /*#ifdef voxels_use_octree_pooling
+                if (chunk_octree->nodes == NULL) {
+                    if (pool->used + octree_length >= pool->allocated) {
+                        printf("Used Max: %i\n", pool->used);
+                        return;
+                    }
+                    chunk_octree->nodes = &pool->pool[pool->used];
+                    pool->used += octree_length;
+                    for (unsigned char i = 0; i < octree_length; i++) {
+                        chunk_octree->nodes[i].nodes = NULL;
+                        chunk_octree->nodes[i].value = 0;
+                    }
+                    // printf("Used: %i\n", pool->used);
+                }
+            #else
+                open_ChunkOctree(chunk_octree);
+            #endif*/
+
+    //for (unsigned char i = 0; i < octree_length; i++) {
+    //    int3 local_position = octree_positions[i];
+    //    if (int3_equals(node_position, local_position)) {
+            /*printf("        - child node: index [%i] depth [%i] dividor [%i] - position [%ix%ix%i] - node_position [%ix%ix%i]\n",
+                i, depth, dividor,
+                position.x, position.y, position.z,
+                node_position.x, node_position.y, node_position.z);*/
+            //break;
+        //}
+   // }
+    /*printf("Failed to set position [%ix%ix%i] - node_position [%ix%ix%i] - depth %i:%i - %i\n",
+        position.x, position.y, position.z,
+        node_position.x, node_position.y, node_position.z,
+        depth, target_depth, dividor);*/
+    // if (array_index < 0 || array_index >= octree_length) return 1;
+    // byte3 new_position = (byte3) { position.x % dividor, position.y % dividor, position.z % dividor };
+    /*if (set_octree_voxel(voxel, target_depth, &node->nodes[node_index], position, depth + 1) == 0) {
+        return 0;
+    }
+    return 1;*/
+    /*if (position.x >= 0 && position.x <= 1.0f
+        && position.y >= 0 && position.y <= 1.0f
+        && position.z >= 0 && position.z <= 1.0f)
+    {
+        printf("depth: %i - depth_left: %i\n", depth, depth_left);
+        //printf("height_map_index: %i - division_left: %i \n",
+        //    height_map_index, division_left);
+        printf("    - position: %fx%f\n", position.x, position.z);
+        printf("    - local_position: %ix%i\n", local_position.x, local_position.y);
+        printf("    - map_position: %ix%i\n", map_position.x, map_position.y);
+    }*/

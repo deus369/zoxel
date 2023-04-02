@@ -1,6 +1,7 @@
 // todo seperate voxel position, and chunk position updates outside of this
 // todo check normal of voxel position difference, base bounce velocity off that instead of just y axis
 void BasicCollision3DSystem(ecs_iter_t *it) {
+    unsigned char bounds = powers_of_two_byte[max_octree_depth];
     double deltaTime = (double) it->delta_time;
     const int3 chunk_size = (int3) { 16, 16, 16 };
     const ChunkLink *chunkLinks = ecs_field(it, ChunkLink, 1);
@@ -27,17 +28,21 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
                 // get voxel from new position
                 const ChunkOctree *chunkOctree = ecs_get(world, chunkLink->value, ChunkOctree);
                 if (chunkOctree != NULL) {
-                    unsigned char voxel = get_octree_voxel(chunkOctree, voxelPosition->value, max_octree_depth);
-                    // zoxel_log(" > voxel %i\n", voxel);
-                    // if voxel is solid, reset positin to last position, by subtracting velocity
-                    if (voxel != 0 && voxel != 255) {
-                        // zoxel_log(" > voxel collided %i\n", voxel);
-                        Velocity3D *velocity3D = &velocity3Ds[i];
-                        position3D->value.x -= velocity3D->value.x * deltaTime * bounce_multiplier;
-                        position3D->value.y -= velocity3D->value.y * deltaTime * bounce_multiplier;
-                        position3D->value.z -= velocity3D->value.z * deltaTime * bounce_multiplier;
-                        velocity3D->value.y *= -1.0f * bounce_lost_force;
-                        // float3_subtract_float3_p(&position3D->value, velocity3D->value);
+                    byte3 voxel_position_2 = (byte3) { voxelPosition->value.x, voxelPosition->value.y, voxelPosition->value.z };
+                    if (voxel_position_2.x < bounds && voxel_position_2.y < bounds && voxel_position_2.z < bounds) {
+                        unsigned char voxel = get_octree_voxel(chunkOctree, &voxel_position_2, max_octree_depth);
+                        // zoxel_log(" > voxel %i\n", voxel);
+                        // if voxel is solid, reset positin to last position, by subtracting velocity
+                        if (voxel != 0 && voxel != 255) {
+                            // zoxel_log(" > voxel collided %i\n", voxel);
+                            Velocity3D *velocity3D = &velocity3Ds[i];
+                            position3D->value.x -= velocity3D->value.x * deltaTime * bounce_multiplier;
+                            position3D->value.y -= velocity3D->value.y * deltaTime * bounce_multiplier;
+                            position3D->value.z -= velocity3D->value.z * deltaTime * bounce_multiplier;
+                            // get normal of collision here
+                            velocity3D->value.y *= -1.0f * bounce_lost_force;
+                            // float3_subtract_float3_p(&position3D->value, velocity3D->value);
+                        }
                     }
                 }
             }

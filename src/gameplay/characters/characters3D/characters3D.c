@@ -1,9 +1,9 @@
 #ifndef zoxel_characters3D
 #define zoxel_characters3D
 
-#define spawn_characters3D_count 32
-#define spawn_many_radius 2         // 0.5
-#define spawn_many_y 2.1f           // 0.7f
+#define spawn_characters3D_count 24
+#define spawn_many_radius 0.8f         // 0.5
+#define spawn_many_y 1.2f           // 0.7f
 #define model_scale 0.0006f         // 0.015f
 zoxel_declare_tag(Character3D)
 zoxel_component(Character3DLink, ecs_entity_t)

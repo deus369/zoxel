@@ -235,7 +235,7 @@ const name* find_node##_##name(const name* node, int3 octree_position, unsigned 
     return find_node##_##name(&node->nodes[get_node_index(local_position)], child_octree_position, depth);\
 }\
 \
-const name* find_adjacent##_##name(const name* root, const name* node, int3 octree_position, unsigned char node_index, int3 node_position,\
+const name* find_adjacent##_##name(const name* root, const name* node, int3 octree_position, unsigned char node_index, byte3 node_position,\
     unsigned char depth, unsigned char direction, const name *neighbors[], unsigned char *chunk_index) {\
     if (node != NULL) {\
         if (direction == direction_left) {\

@@ -61,7 +61,7 @@
 // #define zoxel_test_voxels
 // #define zoxel_test_uis
 // -- disables --
-#define zoxel_disable_music
+// #define zoxel_disable_music
 // #define disable_voxel_left
 // #define disable_voxel_right
 // #define disable_voxel_back
