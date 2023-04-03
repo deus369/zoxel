@@ -139,6 +139,14 @@ void indirect_render_material(GLuint shader_program, GLuint vbo, GLuint ibo) {
     check_opengl_error("indirect_render_material glDrawArraysIndirect");
 }
 
+unsigned char is_indirect_supported() {
+    const char* extensions = (const char*) glGetString(GL_EXTENSIONS);
+    if (extensions != NULL && strstr(extensions, "GL_EXT_draw_instanced") != NULL) {
+        return EXIT_SUCCESS;
+    } else {
+        return EXIT_FAILURE;
+    }
+}
 
 
 //glVertexAttribPointer(position_attrib, vertex_count, GL_FLOAT, GL_FALSE, single_data_length, (void*) 0);

@@ -15,7 +15,7 @@
 
  // 0 | 1
 #define is_full_screen 1
-#define is_opengl_es 0
+#define is_opengl_es 1
 
 // Define the parameters for the indirect draw command
 struct DrawArraysIndirectCommand {
@@ -119,6 +119,12 @@ int main() {
     initialize_glew();
     int supports_compute = check_compute_shader_support();
     if (supports_compute == EXIT_FAILURE) {
+        printf("    - compute shaders is not supported\n");
+        close_glfw_window(window);
+        return 1;
+    }
+    if (is_indirect_supported() == EXIT_FAILURE) {
+        printf("    - indirect opengl rendering is not supported\n");
         close_glfw_window(window);
         return 1;
     }
