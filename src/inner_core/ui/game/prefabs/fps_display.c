@@ -17,6 +17,8 @@ ecs_entity_t spawn_prefab_fps_display(ecs_world_t *world) {
     return e;
 }
 
+ecs_entity_t fps_display;
+
 ecs_entity_t spawn_fps_display(ecs_world_t *world, ecs_entity_t parent, int font_size) {
     int textLength = 3;
     int2 pixel_size = (int2) { font_size * textLength, font_size };

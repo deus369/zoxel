@@ -43,6 +43,14 @@ double get_time_seconds() {
     }
 #endif
 
+#define end_timing_absolute(system_name)\
+    double time_taken = (double) (clock() - time_start) / CLOCKS_PER_SEC;\
+    if (time_taken >= 1.0) {\
+        zoxel_log("%s [%fs]\n", system_name, time_taken);\
+    } else {\
+        zoxel_log("%s [%fms]\n", system_name, 1000.0 * time_taken);\
+    }
+
 
 #define end_timing_cutoff(system_name, cuttoff)\
 if (did_do) {\

@@ -25,8 +25,8 @@ zoxel_define_component(Keyboard)
 zoxel_define_component(Mouse)
 zoxel_define_component(Gamepad)
 zoxel_define_component(Touchscreen)
-zoxel_system(world, MouseRaycasterSystem, EcsOnUpdate, [in] Mouse, [out] Raycaster);
-zoxel_system(world, DraggerEndSystem, EcsOnLoad, [out] DragableState, [out] DraggerLink, [out] DraggingDelta);
+zoxel_system(world, MouseRaycasterSystem, EcsOnUpdate, [in] Mouse, [out] Raycaster)
+zoxel_system(world, DraggerEndSystem, EcsOnLoad, [out] DragableState, [out] DraggerLink, [out] DraggingDelta)
 spawn_prefab_mouse(world);
 spawn_prefab_gamepad(world);
 initialize_sdl_gamepads();

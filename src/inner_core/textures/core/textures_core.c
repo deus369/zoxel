@@ -1,7 +1,8 @@
 #ifndef zoxel_textures_core
 #define zoxel_textures_core
 
-#define texture_update_pipeline EcsOnStore // EcsOnValidate
+#define texture_update_pipeline 0      // 0 | EcsOnStore | EcsPostUpdate | EcsOnValidate
+long int texture_update_system_id;
 #define is_texture_outlines 0 // 0 no outline, 1 full outline, 2 half outline, 3 5/6 outline
 const double noise_animation_speed = 0.5;
 zoxel_declare_tag(NoiseTexture)
@@ -35,15 +36,18 @@ zoxel_define_component(GenerateTexture)
 zoxel_define_component(AnimateTexture)
 zoxel_define_component(TextureDirty)
 zoxel_define_memory_component(Texture)
-zoxel_system_main_thread(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture)
+// zoxel_system_main_thread(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture)
+zoxel_system(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture)
 zoxel_texture_generation_system(NoiseTexture, NoiseTextureSystem)
 zoxel_texture_generation_system(FrameTexture, FrameTextureSystem)
-zoxel_system_main_thread(world, TextureSaveSystem, texture_update_pipeline, [in] TextureDirty, [in] Texture, [in] TextureSize, [none] SaveTexture)
+// zoxel_system_main_thread(world, TextureSaveSystem, texture_update_pipeline, [in] TextureDirty, [in] Texture, [in] TextureSize, [none] SaveTexture)
+// zoxel_system(world, TextureSaveSystem, texture_update_pipeline, [in] TextureDirty, [in] Texture, [in] TextureSize, [none] SaveTexture)
 if (!headless) {
-    zoxel_system_main_thread(world, TextureUpdateSystem, texture_update_pipeline, [in] TextureDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink)
+    zoxel_system_main_thread(world, TextureUpdateSystem, texture_update_pipeline, [out] TextureDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink)
+    texture_update_system_id = ecs_id(TextureUpdateSystem);
 }
 zoxel_define_reset_system(GenerateTextureResetSystem, GenerateTexture)
-zoxel_define_reset_system(TextureDirtyResetSystem, TextureDirty)
+// zoxel_define_reset_system(TextureDirtyResetSystem, TextureDirty)
 spawn_prefab_noise_texture(world);
 zoxel_end_module(TexturesCore)
 

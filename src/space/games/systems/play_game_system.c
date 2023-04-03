@@ -5,6 +5,7 @@ void PlayGameSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const GenericEvent *genericEvent = &genericEvents[i];
         if (genericEvent->value == 1) {
+            zoxel_log(" > game play begins\n");
             // destroy ai camera
             ecs_entity_t first_camera = main_cameras[0];
             float3 first_camera_position = ecs_get(world, first_camera, Position3D)->value;

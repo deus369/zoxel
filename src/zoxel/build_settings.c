@@ -19,22 +19,27 @@
 // #define zoxel_debug_element_raycasting
 // #define debug_ui_positioning
 // #define debug_ui_scaling
-// #define zoxel_time_render_loop
 // Timings
 // #define zoxel_log_frame_ms
 // #define zoxel_log_frames_per_second
-// #define zoxel_time_main_loop                    // enables time debugging of main loop
+// #define zoxel_time_render_loop
+#define zoxel_time_main_loop                    // enables time debugging of main loop
 //  > target fps is 30 then 33.33 is the ms required, 16.66 if 60 fps
 #define zoxel_time_main_loop_cutoff 16.66       // 1000 / 60 = 16.66 | 1000 / 30 = 33.33
+// #define zoxel_time_main_loop_cutoff 0.001
 // #define zoxel_time_main_loop_cutoff 0
 // #define zoxel_time_always
+// #define zoxel_time_zext_update_system
+// tests for single thread systems, I get alot more ms timing there
+// #define main_thread_zext_update_system
+// #define main_thread_projection_matrix_system
 // voxels timing
 // #define zoxel_time_stream_point_system
 // #define zoxel_time_terrain_chunk_system
 // #define zoxel_time_chunk_uvs_builds_system
 // voxel octrees timing
-#define zoxel_time_octree_terrain_chunk_system
-#define zoxel_time_octree_chunk_builds_system
+// #define zoxel_time_octree_terrain_chunk_system
+// #define zoxel_time_octree_chunk_builds_system
 // #define zoxel_time_mesh_uvs_update_system
 // idea: generate terrain too at lesser resolutions
 // #define zoxel_time_render_3d_uvs

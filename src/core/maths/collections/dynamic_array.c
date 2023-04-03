@@ -38,6 +38,14 @@ void add_block_to##_##data_type##_##array_d(data_type##_##array_d* dynamic_array
     dynamic_array->size += length; \
 }\
 \
+void expand_capacity##_##data_type##_##array_d(data_type##_##array_d* dynamic_array, int add_count) {\
+    size_t required_capacity = dynamic_array->size + add_count; \
+    if (required_capacity > dynamic_array->capacity) { \
+        dynamic_array->capacity *= 2;\
+        dynamic_array->data = realloc(dynamic_array->data, dynamic_array->capacity * sizeof(data_type));\
+    }\
+}\
+\
 void add_block_to##_##data_type##_##array_d2(data_type##_##array_d* dynamic_array, const data_type block[], unsigned char length) {\
     size_t required_capacity = dynamic_array->size + length; \
     if (required_capacity > dynamic_array->capacity) { \

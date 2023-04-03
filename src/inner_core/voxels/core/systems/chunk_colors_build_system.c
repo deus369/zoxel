@@ -63,8 +63,8 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
     int3 local_position;
     int2 start = { };
     float voxel_scale = overall_voxel_scale / ((float) chunkSize->value.x); // 16.0f;
-    float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f,
-        - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
+    // float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f,
+    //    - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
     // precount our face data for initialization
     for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++)
     {

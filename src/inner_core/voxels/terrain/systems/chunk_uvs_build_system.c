@@ -1,5 +1,3 @@
-
-
 void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,
     MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
     const ChunkData *chunk_left, const ChunkData *chunk_right,
@@ -8,8 +6,8 @@ void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,
     int2 *start = &((int2) { 0, 0 });
     int3 local_position;
     float voxel_scale = overall_voxel_scale / ((float) chunkSize->value.x);
-    float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f,
-        - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
+    // float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f,
+    //    - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
     //! Precount our index and vertex array lengths.
     for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++)
     {

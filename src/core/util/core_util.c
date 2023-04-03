@@ -1,8 +1,9 @@
-//! The main update loop.
 void update_core() {
     begin_timing_absolute()
     if (!headless) {
-        reset_input_devices(world);
+        #ifdef zoxel_inputs
+            reset_input_devices(world);
+        #endif
         update_sdl(world);
         #ifdef WEB_BUILD
             update_web_canvas(world);   // handles resize event
@@ -12,8 +13,10 @@ void update_core() {
     // ecs_log_set_level(1);    // use this to debug system pipelines
     ecs_progress(world, 0);
     if (!headless) {
-        set_mouse_constrained(get_mouse_constrained());
-        render_loop_temp(); // opengl render commands
+        #ifdef zoxel_cameras
+            set_mouse_constrained(get_mouse_constrained(), screen_dimensions);
+        #endif
+        render_loop();
     }
     zoxel_delta_time = get_timing_passed();
     #ifdef zoxel_log_frame_ms

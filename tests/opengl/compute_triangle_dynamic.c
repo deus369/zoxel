@@ -72,9 +72,9 @@ void run_compute_shader_debug(GLuint compute_program, GLuint vbo, GLuint positio
 }
 
 int main() {
-    const int vertex_count = 3;
+    // const int vertex_count = 3;
     const int single_data_length = 3 * 4;    // 24 * 16
-    const int data_length = vertex_count * 3 * 4;    // 24 * 16
+    // const int data_length = vertex_count * 3 * 4;    // 24 * 16
     GLFWwindow* window = open_glfw_window(1, is_full_screen);
     initialize_glew();
     int supports_compute = check_compute_shader_support();

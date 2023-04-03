@@ -36,10 +36,13 @@ void CalculatePerspectiveViewMatrix(float4x4 *view_matrix, float fovInDegrees, f
  * This should only update when either ScreenDimensions or FieldOfView changes.
 */
 void ProjectionMatrixSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(NULL, it)) {
-        // printf("A Component has not changed.\n");
-        return;
-    }
+    // this doesn't work in multithreaded
+    #ifdef main_thread_projection_matrix_system
+        if (!ecs_query_changed(NULL, it)) {
+            // printf("A Component has not changed.\n");
+            return;
+        }
+    #endif
     // printf("ProjectionMatrixSystem Updated\n");
     const ScreenDimensions *screenDimensions = ecs_field(it, ScreenDimensions, 1);
     const FieldOfView *fieldOfViews = ecs_field(it, FieldOfView, 2);

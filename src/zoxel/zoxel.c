@@ -1,8 +1,9 @@
 #ifndef zoxel_game
 #define zoxel_game
 
-// --- util ---
-#include "util/ui.c"
+#ifdef zoxel_ui
+    #include "util/ui.c"
+#endif
 #include "util/boot.c"
 
 void ZoxelImport(ecs_world_t *world) {

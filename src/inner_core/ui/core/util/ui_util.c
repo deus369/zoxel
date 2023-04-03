@@ -9,10 +9,28 @@ void add_ui_components(ecs_world_t *world, ecs_entity_t e) {
     zoxel_set(world, e, Anchor, { { } });
     zoxel_set(world, e, CanvasLink, { });
     zoxel_set(world, e, Layer2D, { 0 });
-    zoxel_set(world, e, EntityInitialize, { 1 });
+    zoxel_set(world, e, InitializeEntityMesh, { 1 });
     if (!headless) {
         zoxel_add_tag(world, e, ElementRender);
     }
+}
+
+void add_ui_mesh_components(ecs_world_t *world, ecs_entity_t e) {
+    zoxel_set(world, e, Brightness, { 1 });
+    add_gpu_mesh(world, e);
+    add_gpu_material(world, e);
+    add_gpu_texture(world, e);
+    zoxel_add(world, e, MeshVertices2D);
+    zoxel_add(world, e, MeshIndicies);
+    zoxel_add(world, e, MeshUVs);
+    // Why can't i just set in prefab and reuse same memory array? write a test for this
+    // set_mesh_uvs(world, e, square_vertices, 4);
+    set_mesh_indicies_world(world, e, square_indicies, 6);
+    set_mesh2D_vertices_world(world, e, square_vertices, 4);
+    MeshUVs meshUVs = { };
+    initialize_memory_component_non_pointer(meshUVs, float2, 4);
+    memcpy(meshUVs.value, square_vertices, 4 * 8);
+    ecs_set(world, e, MeshUVs, { meshUVs.length, meshUVs.value });
 }
 
 void add_ui_plus_components(ecs_world_t *world, ecs_entity_t e) {
@@ -20,10 +38,10 @@ void add_ui_plus_components(ecs_world_t *world, ecs_entity_t e) {
     add_dirty(world, e);
     add_transform2Ds(world, e);
     add_ui_components(world, e);
-    add_texture(world, e, (int2) { });
+    add_texture(world, e, (int2) { }, 0);
     if (!headless) {
         add_ui_mesh_components(world, e);
-        zoxel_set(world, e, MeshDirty, { 1 });
+        zoxel_set(world, e, MeshDirty, { 0 });
     }
 }
 
@@ -137,12 +155,9 @@ float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity
     // set scale
     float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
     float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
-    float2 position2D = get_ui_real_position2D_parent(
-        local_pixel_position, anchor,
-        parent_position, parent_pixel_size,
-        canvas_size_f, aspect_ratio);
-    int2 global_pixel_position = (int2) {
-        ceil((position2D.x / aspect_ratio + 0.5f) * canvas_size_f.x),
+    float2 position2D = get_ui_real_position2D_parent(local_pixel_position, anchor,
+        parent_position, parent_pixel_size, canvas_size_f, aspect_ratio);
+    int2 global_pixel_position = (int2) { ceil((position2D.x / aspect_ratio + 0.5f) * canvas_size_f.x),
         ((position2D.y + 0.5f) * canvas_size_f.y) };
     ecs_set(world, e, PixelPosition, { local_pixel_position });
     ecs_set(world, e, Position2D, { position2D });
@@ -165,8 +180,7 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
         int2 position = pixelPosition->value;
         float2 position2D = get_ui_real_position2D(world, e, parent, position, anchor->value, canvas_size);
         ecs_set(world, e, Position2D, { position2D });
-        int2 global_pixel_position = (int2) {
-            ceil((position2D.x / aspectRatio + 0.5f) * canvasSizef.x),
+        int2 global_pixel_position = (int2) { ceil((position2D.x / aspectRatio + 0.5f) * canvasSizef.x),
             ((position2D.y + 0.5f) * canvasSizef.y) };
         ecs_set(world, e, CanvasPixelPosition, { global_pixel_position });
         #ifdef debug_ui_scaling

@@ -11,8 +11,7 @@ void set_element_position(ecs_world_t *world, ecs_entity_t e, float2 parent_posi
     if (ecs_has(world, e, Children)) {
         int2 pixel_size = ecs_get(world, e, PixelSize)->value;
         const Children *children = ecs_get(world, e, Children);
-        for (int i = 0; i < children->length; i++)
-        {
+        for (int i = 0; i < children->length; i++) {
             set_element_position(world, children->value[i],
                 position2D->value, pixel_size,
                 canvas_size_f, aspect_ratio);
@@ -28,14 +27,6 @@ void ElementPositionSystem(ecs_iter_t *it) {
             ecs_query_skip(&change_iter);
         }
     }
-    /*if (!ecs_query_changed(changeQuery, NULL))
-    {
-        return;
-    }*/
-    //! \todo Update this after getting a working example of change filters
-    /*#ifdef debug_element_position_change_query
-        unsigned char did_change = ecs_query_changed(changeQuery, NULL);
-    #endif*/
     ecs_world_t *world = it->world;
     const PixelPosition *pixelPositions = ecs_field(it, PixelPosition, 2);
     const ParentLink *parentLinks = ecs_field(it, ParentLink, 3);
@@ -67,15 +58,22 @@ void ElementPositionSystem(ecs_iter_t *it) {
             int2 pixel_size = ecs_get(world, e, PixelSize)->value;
             const Children *children = ecs_get(world, e, Children);
             for (int i = 0; i < children->length; i++) {
-                set_element_position(world, children->value[i],
-                    position2D->value, pixel_size,
-                    canvas_size_f, aspect_ratio);
+                set_element_position(world, children->value[i], position2D->value, pixel_size, canvas_size_f, aspect_ratio);
             }
         }
     }
 }
 zoxel_declare_system(ElementPositionSystem)
 
-//   \done Make this instantaneous for children uis as well.
+//   \done Make this instantaneous for children uis as well
 //   \todo This needs to also account for child uis
-//   \todo Change queries still not working, make a better test function with more components.
+//   \todo Change queries still not working, make a better test function with more components
+
+    /*if (!ecs_query_changed(changeQuery, NULL))
+    {
+        return;
+    }*/
+    //! \todo Update this after getting a working example of change filters
+    /*#ifdef debug_element_position_change_query
+        unsigned char did_change = ecs_query_changed(changeQuery, NULL);
+    #endif*/

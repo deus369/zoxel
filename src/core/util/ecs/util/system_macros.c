@@ -111,6 +111,9 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 #define zoxel_button_system(system, tag)\
     zoxel_system(world, system, EcsPostUpdate, [none] tag, [in] ClickableState);
 
+#define zoxel_button_system2(system, tag, pipeline)\
+    zoxel_system(world, system, pipeline, [none] tag, [in] ClickableState);
+
 // EcsPreFrame, EcsOnLoad, EcsPostLoad, EcsPreUpdate, EcsOnUpdate
     
 #define zoxel_reset_system(system_name, component_name)\

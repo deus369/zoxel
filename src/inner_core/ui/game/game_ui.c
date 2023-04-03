@@ -24,12 +24,10 @@ zoxel_define_tag(PauseUI)
 zoxel_define_tag(FPSDisplay)
 zoxel_define_tag(QuadsCountLabel)
 zoxel_define_component(FPSDisplayTicker)
-zoxel_system_main_thread(world, FpsDisplaySystem, EcsPreUpdate,
-    [out] FPSDisplayTicker, [out] ZextDirty, [out] ZextData);
-zoxel_system_main_thread(world, QuadsLabelSystem, EcsPreUpdate,
-    [none] QuadsCountLabel, [out] ZextDirty, [out] ZextData);
-zoxel_button_system(PlayGameButtonSystem, elements.PlayGameButton)
-zoxel_button_system(ExitGameButtonSystem, elements.ExitGameButton)
+zoxel_system(world, FpsDisplaySystem, EcsPreUpdate, [out] FPSDisplayTicker, [out] ZextDirty, [out] ZextData);
+zoxel_system(world, QuadsLabelSystem, EcsPreUpdate, [none] QuadsCountLabel, [out] ZextDirty, [out] ZextData);
+zoxel_button_system2(PlayGameButtonSystem, elements.PlayGameButton, EcsPreStore)
+zoxel_button_system2(ExitGameButtonSystem, elements.ExitGameButton, EcsPreStore)
 spawn_prefab_main_menu(world);
 spawn_prefab_fps_display(world);
 spawn_prefab_pause_ui(world);

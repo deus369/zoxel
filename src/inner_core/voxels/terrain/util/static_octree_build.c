@@ -46,7 +46,7 @@ void build_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_
     int2 *start, unsigned char depth, unsigned char max_depth, int3 octree_position, unsigned char node_index, byte3 node_position) {
     if (depth >= max_depth || chunk_octree->nodes == NULL) {
         if (chunk_octree->value) {
-            float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
+            // float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
             float3 vertex_position_offset = float3_from_int3(octree_position);
             float voxel_scale = octree_scales2[depth] * (overall_voxel_scale / ((float) octree_node_size));
             vertex_position_offset = float3_multiply_float(vertex_position_offset, voxel_scale);

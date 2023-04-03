@@ -3,30 +3,6 @@
 
 #define sdl_gl_major 3
 #define sdl_gl_minor 0
-#ifdef WEB_BUILD
-#include <emscripten.h>
-#endif
-#ifdef USE_SDL_3
-    #include <SDL3/SDL.h>
-    #include <SDL3/SDL_opengl.h>
-#else
-    #ifdef ANDROID_BUILD
-        #include <SDL.h>
-        #include <SDL_opengl.h>
-    #else
-        #include <SDL2/SDL.h>
-        #include <SDL2/SDL_opengl.h>
-    #endif
-#endif
-#ifdef ANDROID_BUILD
-    #ifdef SDL_IMAGES
-        #include <SDL_image.h>
-    #endif
-#else
-    #ifdef SDL_IMAGES
-        #include <SDL2/SDL_image.h>
-    #endif
-#endif
 unsigned char running = 1;
 unsigned char headless = 0;
 const int window_index = 0; // 1;
@@ -53,7 +29,6 @@ unsigned char is_opengl_running() {
     return main_gl_context != NULL;
 }
 
-//! apps Module.
 void AppsImport(ecs_world_t *world) {
     zoxel_module(Apps)
     zoxel_define_tag(App)

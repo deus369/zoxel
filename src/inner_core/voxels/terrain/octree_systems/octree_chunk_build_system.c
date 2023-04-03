@@ -1,28 +1,82 @@
-const float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
+// const float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
+const float octree_scales3_multiplier = overall_voxel_scale / ((float) octree_node_size);
+const float octree_scales3[] = {
+    2.0f * octree_scales3_multiplier,
+    1.0f * octree_scales3_multiplier,
+    0.5f * octree_scales3_multiplier,
+    0.25f * octree_scales3_multiplier,
+    0.125f * octree_scales3_multiplier,
+    0.0625f * octree_scales3_multiplier,
+    0.03125f * octree_scales3_multiplier,
+    0.015625f * octree_scales3_multiplier,
+    0.0078125f * octree_scales3_multiplier
+};
+// making these static is hard...
+/*typedef struct {
+    float3 *verts_left;
+    float3 *verts_right;
+    float3 *verts_down;
+    float3 *verts_up;
+    float3 *verts_back;
+    float3 *verts_front;
+} cube_verts;*/
+
+#define add_voxel_face_uvs_indicies(index)\
+    indicies->data[indicies->size + index] = vertices->size + voxel_face_indicies[index];
+
+#define add_voxel_face_uvs_vertices(index)\
+{\
+    float3 vertex_position = voxel_face_vertices[index];\
+    float3_multiply_float_p(&vertex_position, voxel_scale);\
+    float3_add_float3_p(&vertex_position, center_mesh_offset);\
+    float3_add_float3_p(&vertex_position, vertex_position_offset);\
+    vertices->data[vertices->size + index] = vertex_position;\
+}
+
+#define add_voxel_face_uvs_uvs(index)\
+    uvs->data[uvs->size + index] = voxel_face_uvs[index];
 
 // this takes 14ms on a 24core cpu, 6ms though during streaming
 // scales vertex, offsets vertex by voxel position in chunk, adds total mesh offset
 void add_voxel_face_uvs_d(int_array_d *indicies, float3_array_d* vertices, float2_array_d* uvs,
     float3 vertex_position_offset, float3 center_mesh_offset, float voxel_scale,
     const int* voxel_face_indicies, const float3 voxel_face_vertices[], const float2 voxel_face_uvs[]) {
-    for (unsigned char a = 0; a < voxel_face_indicies_length; a++) {
-        add_to_int_array_d(indicies, vertices->size + voxel_face_indicies[a]);
-    }
-    for (unsigned char a = 0; a < voxel_face_vertices_length; a++) {
-        float3 vertex_position = voxel_face_vertices[a];
-        float3_multiply_float_p(&vertex_position, voxel_scale);
-        float3_add_float3_p(&vertex_position, vertex_position_offset);
-        float3_add_float3_p(&vertex_position, center_mesh_offset);    
-        add_to_float3_array_d(vertices, vertex_position);
-        add_to_float2_array_d(uvs, voxel_face_uvs[a]);
-    }
+    expand_capacity_int_array_d(indicies, voxel_face_indicies_length);
+        add_voxel_face_uvs_indicies(0)
+        add_voxel_face_uvs_indicies(1)
+        add_voxel_face_uvs_indicies(2)
+        add_voxel_face_uvs_indicies(3)
+        add_voxel_face_uvs_indicies(4)
+        add_voxel_face_uvs_indicies(5)
+    indicies->size += voxel_face_indicies_length;
+    expand_capacity_float3_array_d(vertices, voxel_face_vertices_length);
+        add_voxel_face_uvs_vertices(0)
+        add_voxel_face_uvs_vertices(1)
+        add_voxel_face_uvs_vertices(2)
+        add_voxel_face_uvs_vertices(3)
+    vertices->size += voxel_face_vertices_length;
+    expand_capacity_float2_array_d(uvs, voxel_face_vertices_length);
+        add_voxel_face_uvs_uvs(0)
+        add_voxel_face_uvs_uvs(1)
+        add_voxel_face_uvs_uvs(2)
+        add_voxel_face_uvs_uvs(3)
+    uvs->size += voxel_face_vertices_length;
 }
 
-#define zoxel_octree_build_face_d(direction, is_positive) \
-    zoxel_octree_check(direction) {\
+#define zoxel_octree_build_face_d(direction_name, is_positive) \
+{\
+    if (!is_adjacent_all_solid(direction##_##direction_name, root_node, parent_node, neighbors,\
+        octree_position, node_index, node_position, depth, max_depth, neighbors_max_depths)) {\
         add_voxel_face_uvs_d(indicies, vertices, uvs, vertex_position_offset, center_mesh_offset,\
-            voxel_scale, get_voxel_indices(is_positive), voxel_face_vertices##_##direction, voxel_face_uvs);\
-    }
+            voxel_scale, get_voxel_indices(is_positive), voxel_face_vertices##_##direction_name, voxel_face_uvs);\
+    }\
+}
+
+#define build_octree_chunk_child_node(i)\
+    if (chunk_octree->nodes[i].value != 0)\
+        build_octree_chunk_d(root_node, chunk_octree, &chunk_octree->nodes[i],\
+            neighbors, neighbors_max_depths, indicies, vertices, uvs, max_depth, depth,\
+            int3_add(octree_position, octree_positions[i]), i);
 
 void build_octree_chunk_d(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree,
     const ChunkOctree *neighbors[], const unsigned char *neighbors_max_depths,
@@ -30,9 +84,9 @@ void build_octree_chunk_d(const ChunkOctree *root_node, const ChunkOctree *paren
     const unsigned char max_depth, unsigned char depth, int3 octree_position, const unsigned char node_index) {
     if (depth >= max_depth || chunk_octree->nodes == NULL) {
         if (chunk_octree->value != 0) {
-            float3 vertex_position_offset = float3_from_int3(octree_position);
-            float voxel_scale = octree_scales2[depth] * (overall_voxel_scale / ((float) octree_node_size));
-            float3_multiply_float_p(&vertex_position_offset, voxel_scale);
+            // float3_multiply_float_p(&vertex_position_offset, voxel_scale);
+            float voxel_scale = octree_scales3[depth]; // * (overall_voxel_scale / ((float) octree_node_size));
+            float3 vertex_position_offset = { octree_position.x * voxel_scale, octree_position.y * voxel_scale, octree_position.z * voxel_scale }; //float3_from_int3(octree_position);
             byte3 node_position = octree_positions_b[node_index];
             zoxel_octree_build_face_d(left, 0)
             zoxel_octree_build_face_d(right, 1)
@@ -44,13 +98,14 @@ void build_octree_chunk_d(const ChunkOctree *root_node, const ChunkOctree *paren
     } else {
         depth++;
         int3_multiply_int_p(&octree_position, 2);
-        for (unsigned char i = 0; i < octree_length; i++) {
-            if (chunk_octree->nodes[i].value != 0) {
-                int3 child_octree_position = int3_add(octree_position, octree_positions[i]);
-                build_octree_chunk_d(root_node, chunk_octree, &chunk_octree->nodes[i], neighbors,
-                    neighbors_max_depths, indicies, vertices, uvs, max_depth, depth, child_octree_position, i);
-            }
-        }
+        build_octree_chunk_child_node(0)
+        build_octree_chunk_child_node(1)
+        build_octree_chunk_child_node(2)
+        build_octree_chunk_child_node(3)
+        build_octree_chunk_child_node(4)
+        build_octree_chunk_child_node(5)
+        build_octree_chunk_child_node(6)
+        build_octree_chunk_child_node(7)
     }
 }
 
@@ -176,3 +231,22 @@ for (int a = indicies->size - voxel_face_indicies_length; a < indicies->size; a+
 }*/
 // add_block_to_float2_array_d2(uvs, voxel_face_uvs, voxel_face_vertices_length);
 // add_block_to_float3_array_d(uvs, vertices, voxel_face_vertices_length);
+
+/*for (unsigned char i = 0; i < octree_length; i++) {
+    if (chunk_octree->nodes[i].value != 0)
+        build_octree_chunk_d(root_node, chunk_octree, &chunk_octree->nodes[i],
+            neighbors, neighbors_max_depths, indicies, vertices, uvs, max_depth, depth,
+            int3_add(octree_position, octree_positions[i]), i);
+}*/
+    /*for (unsigned char a = 0; a < voxel_face_indicies_length; a++) {
+        add_to_int_array_d(indicies, vertices->size + voxel_face_indicies[a]);
+    }*/
+
+    /*for (unsigned char a = 0; a < voxel_face_vertices_length; a++) {
+        float3 vertex_position = voxel_face_vertices[a];
+        float3_multiply_float_p(&vertex_position, voxel_scale);
+        float3_add_float3_p(&vertex_position, vertex_position_offset);
+        float3_add_float3_p(&vertex_position, center_mesh_offset);    
+        add_to_float3_array_d(vertices, vertex_position);
+        add_to_float2_array_d(uvs, voxel_face_uvs[a]);
+    }*/

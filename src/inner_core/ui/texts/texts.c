@@ -41,10 +41,16 @@ zoxel_define_memory_component(FontData)
 zoxel_define_memory_component(ZextData)
 zoxel_filter(zextDirtyQuery, world, [none] Zext, [in] ZextDirty)
 zoxel_filter(generateTextureQuery, world, [none] FontTexture, [in] GenerateTexture)
-zoxel_system_main_thread(world, AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
-zoxel_system_ctx_main_thread(world, ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
-    [in] ZextData, [in] ZextSize, [in] Layer2D, [in] Position2D, [in] PixelSize, [out] Children)
-zoxel_system_ctx(world, FontTextureSystem, EcsOnUpdate, generateTextureQuery, [none] FontTexture, [out] TextureDirty,
+// zoxel_system_main_thread(world, AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
+zoxel_system(world, AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
+#ifdef main_thread_zext_update_system
+    zoxel_system_ctx_main_thread(world, ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
+        [in] ZextData, [in] ZextSize, [in] Layer2D, [in] Position2D, [in] PixelSize, [out] Children)
+#else
+    zoxel_system_ctx(world, ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
+        [in] ZextData, [in] ZextSize, [in] Layer2D, [in] Position2D, [in] PixelSize, [out] Children)
+#endif
+zoxel_system_ctx(world, FontTextureSystem, EcsPreStore, generateTextureQuery, [none] FontTexture, [out] TextureDirty,
     [out] Texture, [in] TextureSize, [in] GenerateTexture, [in] ZigelIndex)
 zoxel_define_reset_system(ZextDirtyResetSystem, ZextDirty)
 spawn_font_style_prefab(world);

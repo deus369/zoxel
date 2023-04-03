@@ -5,6 +5,9 @@ void ZextUpdateSystem(ecs_iter_t *it) {
         // printf("ZextUpdateSystem: changeQuery didn't change\n");
         return;
     }
+    #ifdef zoxel_time_zext_update_system
+        begin_timing()
+    #endif
     // printf("ZextUpdateSystem: changeQuery changed\n");
     // ecs_query_skip(it); //! Resetting doesn't cause table changes.
     const ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
@@ -26,7 +29,14 @@ void ZextUpdateSystem(ecs_iter_t *it) {
         const Position2D *position2D = &position2Ds[i];
         const PixelSize *pixelSize = &pixelSizes[i];
         Children *children = &childrens[i];
+        // zoxel_log(" + updating zigels on zext\n");
         spawn_zext_zigels(world, e, children, zextData, zextSize->value, layer2D->value, position2D->value, pixelSize->value);
+        #ifdef zoxel_time_zext_update_system
+            did_do_timing()
+        #endif
     }
+    #ifdef zoxel_time_zext_update_system
+        end_timing("    - zext_update_system")
+    #endif
 }
 zoxel_declare_system(ZextUpdateSystem)

@@ -1,5 +1,5 @@
 int3 get_voxel_position(float3 real_position) {
-    float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };        
+    // float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };        
     return (int3) {
         (int) round((real_position.x) - center_mesh_offset.x / 2.0f) - 1,
         (int) round((real_position.y) - center_mesh_offset.y / 2.0f) - 1,

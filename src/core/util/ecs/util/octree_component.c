@@ -1,5 +1,6 @@
 #define octree_length 8
-#define octree_node_size 2
+// #define octree_node_size 2
+const unsigned char octree_node_size = 2;
 #define octree_node_size3 (int3) { 2, 2, 2 }
 
 #define direction_left 0

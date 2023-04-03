@@ -10,7 +10,8 @@
 #include "texts/texts.c"
 #include "elements/elements.c"
 #include "game/game_ui.c"
-#include "util/test_uis.c"
+// #include "util/test_uis.c"
+#include "fun/spawn_test_window.c"
 
 zoxel_begin_module(UI)
 zoxel_import_module(UICore)

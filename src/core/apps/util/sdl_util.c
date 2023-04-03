@@ -2,10 +2,16 @@ const char *iconFilename = resources_folder_name"textures/game_icon.png";
 int2 screen_dimensions = { 720, 480 };
 
 // links to input and camera modules
-extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event);
-extern void input_extract_from_sdl_per_frame(ecs_world_t *world);
-extern void resize_cameras(int width, int height);
-extern void uis_on_viewport_resized(ecs_world_t *world, int width, int height);
+#ifdef zoxel_inputs
+    extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event, int2 screen_dimensions);
+    extern void input_extract_from_sdl_per_frame(ecs_world_t *world);
+#endif
+#ifdef zoxel_cameras
+    extern void resize_cameras(int width, int height);
+#endif
+#ifdef zoxel_ui
+    extern void uis_on_viewport_resized(ecs_world_t *world, int width, int height);
+#endif
 
 //! Print debug info!
 void print_sdl() {
@@ -189,16 +195,24 @@ void on_viewport_resized(ecs_world_t *world, int width, int height) {
     if(screen_dimensions.y <= 0) {
         screen_dimensions.y = 1;
     }
-    resize_cameras(width, height);
-    uis_on_viewport_resized(world, width, height);
+    #ifdef zoxel_cameras
+        resize_cameras(width, height);
+    #endif
+    #ifdef zoxel_ui
+        uis_on_viewport_resized(world, width, height);
+    #endif
 }
 
 //! handles sdl events including keys
 void update_sdl(ecs_world_t *world) {
-    input_extract_from_sdl_per_frame(world);
+    #ifdef zoxel_inputs
+        input_extract_from_sdl_per_frame(world);
+    #endif
     SDL_Event event = { 0 };
     while (SDL_PollEvent(&event)) {
-        input_extract_from_sdl(world, event);
+        #ifdef zoxel_inputs
+            input_extract_from_sdl(world, event, screen_dimensions);
+        #endif
         int eventType = event.type;
         if (eventType == SDL_QUIT) {
             // handles application close button

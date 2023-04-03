@@ -6,7 +6,9 @@ int engine_begin(int argc, char* argv[]) {
 void engine_end() {
     zoxel_log(" > ending zoxel_engine\n");
     close_core();
-    dispose_vox_files();
+    #ifdef zoxel_voxels
+        dispose_vox_files();
+    #endif
 }
 
 void engine_update() {

@@ -14,7 +14,7 @@ void spawn_prefab_character2D(ecs_world_t *world, int2 textureSize) {
     add_seed(world, e, 444);
     zoxel_add(world, e, Brightness);
     add_dirty(world, e);
-    add_texture(world, e, textureSize);
+    add_texture(world, e, textureSize, 1);
     add_animated_noise_texture(world, e);
     add_gpu_material(world, e);
     add_gpu_texture(world, e);

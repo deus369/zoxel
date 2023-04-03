@@ -25,7 +25,7 @@ zoxel_define_component(Euler)
 zoxel_define_component(EulerLimitX)
 zoxel_define_component(EulerLimitZ)
 zoxel_system(world, EulerLimitXSystem, EcsOnUpdate, [in] EulerLimitX, [out] Euler)
-zoxel_system(world, EulerLimitZSystem, EcsOnUpdate, [in] EulerLimitZ, [out] Euler) // Rotation3D)
+zoxel_system(world, EulerLimitZSystem, EcsOnUpdate, [in] EulerLimitZ, [out] Euler)
 zoxel_system(world, EulerOverrideSystem, EcsOnUpdate, [none] EulerOverride, [in] Euler, [out] Rotation3D)
 zoxel_end_module(Transforms3D)
 

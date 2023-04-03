@@ -1,4 +1,4 @@
-extern void add_texture(ecs_world_t *world, ecs_entity_t e, int2 textureSize);
+extern void add_texture(ecs_world_t *world, ecs_entity_t e, int2 textureSize, unsigned char generate);
 
 ecs_entity_t prefab_cube_textured;
 
@@ -7,7 +7,7 @@ ecs_entity_t spawn_prefab_cube_textured(ecs_world_t *world) {
     ecs_defer_begin(world);
     // ecs_entity_t e = spawn_prefab_cube(world);
     ecs_entity_t e = ecs_clone(world, 0, prefab_cube, 1);
-    add_texture(world, e, texture_size);
+    add_texture(world, e, texture_size, 1);
     add_noise_texture(world, e);
     add_gpu_texture(world, e);
     ecs_defer_end(world);

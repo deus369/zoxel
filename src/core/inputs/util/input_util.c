@@ -7,9 +7,9 @@ void spawn_connected_devices(ecs_world_t *world) {
     }
 }
 
-void input_extract_from_sdl(ecs_world_t *world, SDL_Event event) {
+void input_extract_from_sdl(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) {
     extract_keyboard(world, event);
-    extract_mouse(world, event);
+    extract_mouse(world, event, screen_dimensions);
     // extract_gamepad(world, event);
     if (event.type == SDL_JOYDEVICEADDED)
     {

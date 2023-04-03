@@ -11,13 +11,15 @@
             }
             const Mouse *mouse = &mouses[i];
             if (mouse->left.pressed_this_frame) {
+                // zoxel_log(" > button clicked [%lu]\n", raycasterTarget->value);
                 // if (ecs_has(it->world, raycasterTarget->value, CloseButton))
-                //  printf("Clicked UI: [%lu]\n", (long int) raycasterTarget->value);
+                // printf("Clicked UI: [%lu]\n", (long int) raycasterTarget->value);
                 if (ecs_has(world, raycasterTarget->value, Clickable)) {
                     // ecs_set(world, raycasterTarget->value, ClickableState, { 1 });
                     ClickableState *clickableState = ecs_get_mut(world, raycasterTarget->value, ClickableState);
                     clickableState->value = 1;
                     ecs_modified(world, raycasterTarget->value, ClickableState);
+                    // zoxel_log("     + button Clickable\n", raycasterTarget->value);
                 }
                 // how to do this best way?
                 if (ecs_has(world, raycasterTarget->value, Dragable)) {

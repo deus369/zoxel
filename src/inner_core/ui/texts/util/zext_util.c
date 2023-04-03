@@ -32,9 +32,9 @@ void set_zigel_position(ecs_world_t *world, ecs_entity_t zigel, unsigned char zi
 //! Dynamically updates zext by spawning/destroying zigels and updating remaining.
 int spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children, const ZextData *zextData,
     int font_size, unsigned char zext_layer, float2 parent_position, int2 parent_pixel_size) {
-    int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
-    float2 anchor = (float2) { 0.5f, 0.5f };
-    ecs_defer_begin(world);
+    const int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
+    const float2 anchor = (float2) { 0.5f, 0.5f };
+    // ecs_defer_begin(world);
     int reuse_count = integer_min(children->length, zextData->length);
     #ifdef zoxel_debug_zext_updates
         zoxel_log("spawn_zext_zigels :: [%i] -> [%i]; reuse [%i];\n", children->length, zextData->length, reuse_count);
@@ -44,12 +44,19 @@ int spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children,
         // re set all old zigels, if index changes, regenerate font texture
         ecs_entity_t old_zigel = children->value[i];
         const ZigelIndex *zigelIndex = ecs_get(world, old_zigel, ZigelIndex);
+        // ZigelIndex *zigelIndex2 = ecs_get_mut(world, old_zigel, ZigelIndex);
         if (zigelIndex->value != zextData->value[i]) {
             #ifdef zoxel_debug_zigel_updates
                 zoxel_log("    - zig updated [%i] [%i] -> [%i]\n", i, zigelIndex->value, zextData->value[i]);
             #endif
-            ecs_set(world, old_zigel, ZigelIndex, { zextData->value[i] });
-            ecs_set(world, old_zigel, GenerateTexture, { 1 });
+            //ecs_set(world, old_zigel, ZigelIndex, { zextData->value[i] });
+            //ecs_set(world, old_zigel, GenerateTexture, { 1 });
+            ZigelIndex *zigelIndex2 = ecs_get_mut(world, old_zigel, ZigelIndex);
+            GenerateTexture *generateTexture = ecs_get_mut(world, old_zigel, GenerateTexture);
+            zigelIndex2->value = zextData->value[i];
+            generateTexture->value = 1;
+            ecs_modified(world, old_zigel, ZigelIndex);
+            ecs_modified(world, old_zigel, GenerateTexture);
         }
     }
     if (children->length != zextData->length) {
@@ -64,8 +71,7 @@ int spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children,
         for (unsigned char i = 0; i < int_min(old_children_length, new_children_length); i++) {
             ecs_entity_t old_zigel = old_children[i];
             new_children[i] = old_zigel;
-            set_zigel_position(world, old_zigel, i,
-                font_size, anchor, new_children_length,
+            set_zigel_position(world, old_zigel, i, font_size, anchor, new_children_length,
                 parent_position, parent_pixel_size, canvas_size);
         }
         if (new_children_length > old_children_length) {
@@ -100,6 +106,6 @@ int spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children,
             zoxel_log("    - zext remained the same [%i]\n", zextData->length);
         }
     #endif
-    ecs_defer_end(world);
+    // ecs_defer_end(world);
     return 0;
 }

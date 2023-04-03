@@ -106,29 +106,31 @@ void FontTextureSystem(ecs_iter_t *it) {
             continue;
         }
         #ifdef zoxel_debug_zigel_updates
-        zoxel_log("zigel font is updating [%lu]\n", (long int) it->entities[i]);
+            zoxel_log("zigel font is updating [%lu]\n", (long int) it->entities[i]);
         #endif
         TextureDirty *textureDirty = &textureDirtys[i];
         if (textureDirty->value != 0) {
             continue;
         }
         textureDirty->value = 1;
-        Texture *texture = &textures[i];
-        const TextureSize *textureSize = &textureSizes[i];
-        int newLength = textureSize->value.x * textureSize->value.y;
-        re_initialize_memory_component(texture, color, newLength);
+        // zoxel_log(" 2 zigel font is updating [%lu]\n", (long int) it->entities[i]);
         // get font based on zigel index
         const ZigelIndex *zigelIndex = &zigelIndexs[i];
         if (zigelIndex->value >= font_styles_length) {
             continue;
         }
+        Texture *texture = &textures[i];
+        const TextureSize *textureSize = &textureSizes[i];
+        int newLength = textureSize->value.x * textureSize->value.y;
+        re_initialize_memory_component(texture, color, newLength);
         ecs_entity_t zigel_font_entity = font_style_children->value[zigelIndex->value];
-        // if (zigel_font_entity == 0 || !ecs_is_valid(it->world, zigel_font_entity) || !ecs_is_alive(it->world, zigel_font_entity))
-        // {
-        //     continue;
-        // }
         const FontData *fontData = ecs_get(world, zigel_font_entity, FontData);
         generate_font_texture(texture, textureSize, fontData);
     }
 }
 zoxel_declare_system(FontTextureSystem)
+
+// if (zigel_font_entity == 0 || !ecs_is_valid(it->world, zigel_font_entity) || !ecs_is_alive(it->world, zigel_font_entity))
+// {
+//     continue;
+// }

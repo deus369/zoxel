@@ -1,7 +1,8 @@
 #ifndef zoxel_voxels_core
 #define zoxel_voxels_core
 
-#define overall_voxel_scale 32.0f // 64.0f; // 4.0f // 2.0f;
+const float overall_voxel_scale = 32.0f; // 64.0f; // 4.0f // 2.0f;
+const float3 center_mesh_offset = { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
 const int chunk_length = 16;
 const int3 chunk_size = { chunk_length, chunk_length, chunk_length };
 const double noiseChunkAnimateSpeed = 0.5; // 1 / 8.0;
@@ -51,7 +52,8 @@ if (!headless) {
     zoxel_system_ctx(world, ChunkColorsBuildSystem, EcsOnUpdate, generateChunkQuery, [in] ChunkDirty, [in] ChunkData,
         [in] ChunkSize, [in] Colors, [out] MeshIndicies, [out] MeshVertices, [out] MeshColors, [out] MeshDirty, [none] !MeshUVs)
 }
-zoxel_system_main_thread(world, AnimateChunkSystem, EcsOnLoad, [out] AnimateChunk, [out] GenerateChunk)
+// _main_thread
+zoxel_system(world, AnimateChunkSystem, EcsOnLoad, [out] AnimateChunk, [out] GenerateChunk)
 zoxel_filter(generateNoiseChunkQuery, world, [none] NoiseChunk, [in] GenerateChunk)
 zoxel_system_ctx(world, NoiseChunkSystem, EcsPostLoad, generateNoiseChunkQuery, [none] NoiseChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] GenerateChunk)
 spawn_voxel_chunk_mesh_prefab(world);

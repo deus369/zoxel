@@ -13,6 +13,9 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         ecs_entity_t ui_selected = 0;
         SelectableState *ui_selected_selectableState = NULL;
         const int2 position = raycaster->value;
+        #ifdef zoxel_debug_element_raycasting
+            zoxel_log("    ui raycasting [%ix%i]\n", position.x, position.y);
+        #endif
         ecs_iter_t uis_it = ecs_query_iter(world, it->ctx);
         while(ecs_query_next(&uis_it)) {
             // printf("    - uis_it.count [%i] - (%i)\n", i, uis_it.count);
@@ -27,18 +30,19 @@ void ElementRaycastSystem(ecs_iter_t *it) {
                 const int2 canvasPixelPosition = canvasPixelPosition2->value;
                 const int2 pixelSize = pixelSize2->value;
                 // printf("ui raycasting [%lu] - [%i]\n", (long int) uis_it.entities[j], layer2D->value);
+                int4 ui_bounds = { canvasPixelPosition.x - pixelSize.x / 2, canvasPixelPosition.x + pixelSize.x / 2,
+                    canvasPixelPosition.y - pixelSize.y / 2,  canvasPixelPosition.y + pixelSize.y / 2};
+                // zoxel_log("        - ui [%ix%ix%ix%i]\n", ui_bounds.x, ui_bounds.y, ui_bounds.z, ui_bounds.w);
                 // centered
                 SelectableState *selectableState = &selectableStates[j];
-                unsigned char was_raycasted = position.x >= canvasPixelPosition.x - pixelSize.x / 2
-                    && position.x <= canvasPixelPosition.x + pixelSize.x / 2
-                    && position.y >= canvasPixelPosition.y - pixelSize.y / 2
-                    && position.y <= canvasPixelPosition.y + pixelSize.y / 2;
+                unsigned char was_raycasted = position.x >= ui_bounds.x
+                    && position.x <= ui_bounds.y && position.y >= ui_bounds.z && position.y <= ui_bounds.w;
                 if (was_raycasted && layer2D->value > ui_layer) {
                     ui_layer = layer2D->value;
                     ui_selected = uis_it.entities[j];
                     ui_selected_selectableState = selectableState;
                     #ifdef zoxel_debug_element_raycasting
-                        zoxel_log("ui [%lu] raycasting position [%ix%i] ray([%ix%i]) :: size [%ix%i] Hit? %s screenSize [%ix%i]\n",
+                        zoxel_log("     > ui [%lu] raycasting position [%ix%i] ray([%ix%i]) :: size [%ix%i] Hit? %s screenSize [%ix%i]\n",
                             (long int) uis_it.entities[j], canvasPixelPosition.x, canvasPixelPosition.y, raycaster->value.x, raycaster->value.y,
                             pixelSize.x, pixelSize.y, was_raycasted ? "true" : "false", screen_dimensions.x, screen_dimensions.y);
                     #endif
