@@ -17,7 +17,7 @@
 
 // 0 | 1
 #define is_full_screen 1
-#define is_opengl_es 0
+#define is_opengl_es 1
 
 // Define the parameters for the indirect draw command
 struct DrawArraysIndirectCommand {
