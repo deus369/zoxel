@@ -156,3 +156,23 @@ unsigned char is_indirect_supported() {
 //glVertexAttribPointer(position_attrib, vertex_count, GL_FLOAT, GL_FALSE, single_data_length, (void*) 0);
 // GLuint position_attrib = glGetAttribLocation(shader_program, "position");
 // zoxel_log("    > position attrib [%i]\n", position_attrib);
+
+void print_opengl_extensions() {
+    const char* extensions = (const char*) glGetString(GL_EXTENSIONS);
+    if (!extensions) {
+        printf("    - Error: Could not retrieve OpenGL extensions.\n");
+        return;
+    }
+    printf("    > OpenGL extensions:\n");
+    // Iterate through the extensions string and print each extension
+    const char* start = extensions;
+    const char* end;
+    while (*start) {
+        end = start;
+        while (*end && *end != ' ') {
+            end++;
+        }
+        printf("        - %.*s\n", (int)(end - start), start);
+        start = (*end) ? (end + 1) : end;
+    }
+}
