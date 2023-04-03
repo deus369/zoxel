@@ -1,3 +1,5 @@
+const int position_pack_size = 3;
+
 // a simple 3D point
 typedef struct {
     float x;
@@ -72,17 +74,13 @@ void attach_buffer_to_render_program(GLuint render_program, GLuint buffer) {
 }
 
 GLuint create_vertex_buffer(GLuint shader_program, int vertex_count, int single_data_length) {
-    const GLuint position_attrib = 0; // glGetAttribLocation(shader_program, "position");
-    GLuint vbo = 0;
-    zoxel_log("    > position attrib [%i]\n", position_attrib);
+    const GLuint position_attrib = 0;
+    GLuint vbo;
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glEnableVertexAttribArray(position_attrib);
-    // Copy vertex data to buffer
-    glBufferData(GL_ARRAY_BUFFER, vertex_count * single_data_length, NULL, GL_DYNAMIC_DRAW);
-    // Set up vertex attributes
-    glVertexAttribPointer(position_attrib, vertex_count, GL_FLOAT, GL_FALSE, single_data_length, (void*) 0);
-    // Unbind buffer
+    glBufferData(GL_ARRAY_BUFFER, vertex_count * single_data_length, NULL, GL_STATIC_DRAW);
+    glVertexAttribPointer(position_attrib, position_pack_size, GL_FLOAT, GL_FALSE, 0, (void*) 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     check_opengl_error("create_vertex_buffer");
     return vbo;
@@ -125,5 +123,24 @@ void render_material(GLuint shader_program, GLuint vbo, int vertex_count) {
     glDrawArrays(GL_TRIANGLES, 0, vertex_count);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glUseProgram(0);
-    // check_opengl_error("render_material");
+    check_opengl_error("render_material");
 }
+
+void indirect_render_material(GLuint shader_program, GLuint vbo, GLuint ibo) {
+    glUseProgram(shader_program);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBindBuffer(GL_DRAW_INDIRECT_BUFFER, ibo);
+    glDrawArraysIndirect(GL_TRIANGLES, 0);
+    // glDrawArraysInstanced(GL_TRIANGLES, 0, 3, 0);
+    // glMultiDrawArraysIndirect(GL_TRIANGLES, NULL, 1, 0);
+    glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glUseProgram(0);
+    check_opengl_error("indirect_render_material glDrawArraysIndirect");
+}
+
+
+
+//glVertexAttribPointer(position_attrib, vertex_count, GL_FLOAT, GL_FALSE, single_data_length, (void*) 0);
+// GLuint position_attrib = glGetAttribLocation(shader_program, "position");
+// zoxel_log("    > position attrib [%i]\n", position_attrib);

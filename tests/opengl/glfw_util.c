@@ -3,25 +3,21 @@
 int screen_width = 256;
 int screen_height = 256;
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    if (action == GLFW_PRESS)
-    {
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if (action == GLFW_PRESS) {
         if (key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Z) {
             glfwSetWindowShouldClose(window, GLFW_TRUE);
         }
     }
 }
 
-void window_pos_callback(GLFWwindow* window, int xpos, int ypos)
-{
-    zoxel_log("> glfw window position set to [%d, %d]\n", xpos, ypos);
+void window_pos_callback(GLFWwindow* window, int xpos, int ypos) {
+    // zoxel_log("> glfw window position set to [%d, %d]\n", xpos, ypos);
 }
 
-void window_size_callback(GLFWwindow* window, int width, int height)
-{
+void window_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
-    zoxel_log("> glfw window size set to [%d, %d]\n", width, height);
+    // zoxel_log("> glfw window size set to [%d, %d]\n", width, height);
 }
 
 void check_glfw() {
@@ -41,36 +37,37 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     }
+    /*else {
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    }*/
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
     screen_width = mode->width;
     screen_height = mode->height;
-    if (!fullscreen)
-    {
+    if (!fullscreen) {
         monitor = NULL;
-        glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE); // prevent fullscreen
-        glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+        // glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE); // prevent fullscreen
+        // glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
         screen_width /= 2;
         screen_height /= 2;
     }
     zoxel_log("> spawning glfw window: size [%ix%i]\n", screen_width, screen_height);
     GLFWwindow* window = glfwCreateWindow(screen_width, screen_height, "gpu_compute", monitor, NULL);
-    if (!window)
-    {
+    if (!window) {
         return NULL;
     }
-    if (!fullscreen)
-    {
+    /*if (!fullscreen) {
         glfwSetWindowAttrib(window, GLFW_MAXIMIZED, GLFW_FALSE);
         glfwSetWindowAttrib(window, GLFW_DECORATED, GLFW_FALSE);
-    }
+    }*/
     glfwSwapInterval(1);    // vsync
     glfwMakeContextCurrent(window);
-    // call backs
     glfwSetWindowPosCallback(window, window_pos_callback);
     glfwSetWindowSizeCallback(window, window_size_callback);
     glfwSetKeyCallback(window, key_callback);
-    // check_opengl_error("setup_window");
+    check_opengl_error("setup_window");
     return window;
 }
 
