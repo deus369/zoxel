@@ -26,6 +26,24 @@ void check_glfw() {
     zoxel_log("> glfw version [%d.%d.%d]\n", major, minor, rev);
 }
 
+void print_supported_renderer_drivers() {
+    /*int num_glfw_vendors;
+    const char** glfw_vendors = glfwGetGLVendors(&num_glfw_vendors);
+    printf(" > found [%i] GL vendors\n", num_glfw_vendors);
+    for (int i = 0; i < num_glfw_vendors; i++) {
+        const char* vendor = glfw_vendors[i];
+        printf("     + GL vendor [%s]\n", vendor);
+        int num_glfw_versions;
+        const int* glfw_versions = glfwGetGLVersions((const char*) vendor, &num_glfw_versions);
+        for (int j = 0; j < num_glfw_versions; j++) {
+            int major = glfwVersions[j] / 1000;
+            int minor = (glfwVersions[j] % 1000) / 10;
+            printf("         - supports OpenGL version %d.%d\n", major, minor);
+        }
+    }*/
+}
+
+
 GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     check_glfw();
     if (!glfwInit()) {
@@ -35,8 +53,8 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     if (is_es) {
         printf("    > setting glfw to opengl es 3.1\n");
         glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-        // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     } else {
         printf("    > setting glfw to opengl api 4.6\n");
         glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);

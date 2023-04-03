@@ -115,6 +115,7 @@ int main() {
     const int vertex_count = 3;
     const int single_data_length = 3 * 4;    // 24 * 16
     const int data_length = vertex_count * 3 * 4;    // 24 * 16
+    print_supported_renderer_drivers();
     GLFWwindow* window = open_glfw_window(is_opengl_es, is_full_screen);
     initialize_glew();
     print_opengl_version();

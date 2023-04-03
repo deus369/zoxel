@@ -93,6 +93,16 @@ unsigned char opengl_es_supported() {
     return is_supported;
 }
 
+void print_supported_renderers() {
+    int num_render_drivers = SDL_GetNumRenderDrivers();
+    printf(" > found [%i] render drivers\n", num_render_drivers);
+    for (int i = 0; i < num_render_drivers; i++) {
+        SDL_RendererInfo info;
+        SDL_GetRenderDriverInfo(i, &info);
+        printf("     + render driver [%s]\n", info.name);
+    }
+}
+
 int init_sdl() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         zoxel_log(" - failed to initialize sdl [%s]\n", SDL_GetError());
