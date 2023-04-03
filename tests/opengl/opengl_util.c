@@ -141,7 +141,11 @@ void indirect_render_material(GLuint shader_program, GLuint vbo, GLuint ibo) {
 
 unsigned char is_indirect_supported() {
     const char* extensions = (const char*) glGetString(GL_EXTENSIONS);
-    if (extensions != NULL && strstr(extensions, "GL_EXT_draw_instanced") != NULL) {
+    if (extensions == NULL) {
+        return EXIT_FAILURE;
+    }
+    if (strstr(extensions, "GL_EXT_draw_instanced") != NULL &&
+        strstr(extensions, "GL_ARB_draw_indirect") != NULL) {
         return EXIT_SUCCESS;
     } else {
         return EXIT_FAILURE;

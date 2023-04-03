@@ -12,10 +12,12 @@
 #include "glfw_util.c"
 #include "glew_util.c"
 #include "opengl_util.c"
+// #include "GL/glext.h"
+#include "GL/glcorearb.h"
 
- // 0 | 1
+// 0 | 1
 #define is_full_screen 1
-#define is_opengl_es 1
+#define is_opengl_es 0
 
 // Define the parameters for the indirect draw command
 struct DrawArraysIndirectCommand {
@@ -74,12 +76,12 @@ void main()\
 
 void run_compute_shader_debug(GLuint compute_program, GLuint vbo, GLuint position_buffer, int data_length, int vertex_count) {
     begin_timing_absolute()
-    zoxel_log("    > Running compute\n");
+    // zoxel_log("    > Running compute\n");
     double time = 100.0 * get_time_seconds();
-    zoxel_log("        > current time [%d]\n", time);
+    // zoxel_log("        > current time [%d]\n", time);
     run_compute_shader(compute_program, vertex_count, time);
     // copy_buffer_to_render_shader(vbo, position_buffer, 0, data_length);
-    end_timing("        > trigger compute time")
+    end_timing("    + compute timing")
 }
 
 GLuint create_simple_vbo() {
