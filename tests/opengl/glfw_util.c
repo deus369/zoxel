@@ -35,8 +35,45 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     if (is_es) {
         printf("    > setting glfw to opengl es 3.1\n");
         glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+        // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    } else {
+        printf("    > setting glfw to opengl api 4.6\n");
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+        // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+        /*int major_version = 4;
+        int minor_version = 6;
+        // Check for other available versions
+        if (glfwExtensionSupported("GL_ARB_ES3_2_compatibility")) {
+            printf("    > setting glfw to opengl api 4.6 with ES 3.2 compatibility\n");
+            major_version = 4;
+            minor_version = 6;
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, major_version);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor_version);
+            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+            glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+            // glfwWindowHint(GLFW_CONTEXT_FLAGS, GLFW_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT);
+        } else if (glfwExtensionSupported("GL_ARB_compatibility")) {
+            printf("    > setting glfw to opengl api 2.1 with compatibility profile\n");
+            major_version = 2;
+            minor_version = 1;
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, major_version);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor_version);
+            glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+        } else {
+            printf("    > setting glfw to opengl api 4.6\n");
+            glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, major_version);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor_version);
+            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+            //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+            // glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+            // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, GLFW_DONT_CARE);
+            // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, GLFW_DONT_CARE);
+            // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        }*/
     }
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);

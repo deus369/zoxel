@@ -153,6 +153,11 @@ unsigned char is_indirect_supported() {
 }
 
 
+void print_opengl_version () {
+    const char* version = (const char*) glGetString(GL_VERSION);
+    printf("    > OpenGL version [%s]\n", version);
+}
+
 //glVertexAttribPointer(position_attrib, vertex_count, GL_FLOAT, GL_FALSE, single_data_length, (void*) 0);
 // GLuint position_attrib = glGetAttribLocation(shader_program, "position");
 // zoxel_log("    > position attrib [%i]\n", position_attrib);

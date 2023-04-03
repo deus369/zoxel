@@ -15,7 +15,7 @@
 
 // 0 | 1
 #define is_full_screen 1
-#define is_opengl_es 1
+#define is_opengl_es 0
 
 // Define the parameters for the indirect draw command
 struct DrawArraysIndirectCommand {
@@ -117,9 +117,8 @@ int main() {
     const int data_length = vertex_count * 3 * 4;    // 24 * 16
     GLFWwindow* window = open_glfw_window(is_opengl_es, is_full_screen);
     initialize_glew();
-    const char* version = (const char*) glGetString(GL_VERSION);
-    printf("    > OpenGL version [%s]\n", version);
-    print_opengl_extensions();
+    print_opengl_version();
+    // print_opengl_extensions();
     int supports_compute = check_compute_shader_support();
     if (supports_compute == EXIT_FAILURE) {
         printf("    - compute shaders is not supported\n");
