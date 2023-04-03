@@ -144,7 +144,7 @@ unsigned char is_indirect_supported() {
     if (extensions == NULL) {
         return EXIT_FAILURE;
     }
-    if (strstr(extensions, "GL_EXT_draw_instanced") != NULL &&
+    if (// strstr(extensions, "GL_EXT_draw_instanced") != NULL &&
         strstr(extensions, "GL_ARB_draw_indirect") != NULL) {
         return EXIT_SUCCESS;
     } else {

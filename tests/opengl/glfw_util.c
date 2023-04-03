@@ -33,15 +33,11 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     }
     // glfwWindowHint(GLFW_SAMPLES, 0);
     if (is_es) {
+        printf("    > setting glfw to opengl es 3.1\n");
         glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     }
-    /*else {
-        glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    }*/
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
     screen_width = mode->width;
@@ -68,6 +64,7 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     glfwSetWindowSizeCallback(window, window_size_callback);
     glfwSetKeyCallback(window, key_callback);
     check_opengl_error("setup_window");
+
     return window;
 }
 

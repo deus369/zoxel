@@ -12,12 +12,10 @@
 #include "glfw_util.c"
 #include "glew_util.c"
 #include "opengl_util.c"
-// #include "GL/glext.h"
-#include "GL/glcorearb.h"
 
 // 0 | 1
 #define is_full_screen 1
-#define is_opengl_es 1
+#define is_opengl_es 0
 
 // Define the parameters for the indirect draw command
 struct DrawArraysIndirectCommand {
@@ -125,11 +123,15 @@ int main() {
         close_glfw_window(window);
         return 1;
     }
+    printf("    + compute shaders are supported\n");
     if (is_indirect_supported() == EXIT_FAILURE) {
         printf("    - indirect opengl rendering is not supported\n");
         close_glfw_window(window);
         return 1;
     }
+    printf("    + indirect rendering is supported\n");
+    const char* version = (const char*) glGetString(GL_VERSION);
+    printf("    > OpenGL version [%s]\n", version);
     GLuint ibo = create_ibo();
     GLuint position_buffer = setup_storage_buffer(data_length);
     GLuint compute_program = setup_compute_buffer(compute_shader_source);
