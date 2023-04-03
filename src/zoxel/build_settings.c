@@ -1,5 +1,5 @@
 // -- debugs --
-#define zox_logs                    // enables logging
+// #define zox_logs                    // enables logging
 // #define log_to_file              // logs go to a file
 // #define zoxel_debug_sdl          // debugs sdl app
 // #define zoxel_debug_opengl       // debugs opengl

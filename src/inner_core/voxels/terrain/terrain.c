@@ -2,8 +2,8 @@
 #define zoxel_voxels_terrain
 
 #ifndef WEB_BUILD
-    #define terrain_spawn_distance 16   // for release, just incase
-    #define inner_render_buffer 2       // 2, will lag too much if too high
+    #define terrain_spawn_distance 14   // for release, just incase
+    #define inner_render_buffer 1       // 2, will lag too much if too high
     #define max_octree_depth 4
 #else
     #define terrain_spawn_distance 10

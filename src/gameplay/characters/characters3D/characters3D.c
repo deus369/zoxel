@@ -1,7 +1,7 @@
 #ifndef zoxel_characters3D
 #define zoxel_characters3D
 
-#define spawn_characters3D_count 24
+#define spawn_characters3D_count 8
 #define spawn_many_radius 0.8f         // 0.5
 #define spawn_many_y 1.2f           // 0.7f
 #define model_scale 0.0006f         // 0.015f
