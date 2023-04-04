@@ -10,6 +10,7 @@ unsigned char vsync = 1;
 unsigned char fullscreen = 1; // set full screen default option here
 unsigned char halfscreen = 0;
 unsigned char is_split_screen = 0;
+unsigned char override_opengl_es = 0;
 SDL_Window* main_window;
 SDL_GLContext* main_gl_context;
 zoxel_declare_tag(App)

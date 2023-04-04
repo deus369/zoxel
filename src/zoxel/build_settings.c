@@ -1,8 +1,8 @@
 // -- debugs --
 #define zox_logs                    // enables logging
 // #define log_to_file              // logs go to a file
-// #define zoxel_debug_sdl          // debugs sdl app
-// #define zoxel_debug_opengl       // debugs opengl
+#define zoxel_debug_sdl          // debugs sdl app
+#define zoxel_debug_opengl       // debugs opengl
 // #define zoxel_debug_audio        // debugs sdl audio
 // #define zoxel_debug_input        // debugs sdl input
 // #define zoxel_entity_names       // sets entity names
@@ -23,7 +23,7 @@
 // #define zoxel_log_frame_ms
 // #define zoxel_log_frames_per_second
 // #define zoxel_time_render_loop
-#define zoxel_time_main_loop                    // enables time debugging of main loop
+// #define zoxel_time_main_loop                    // enables time debugging of main loop
 //  > target fps is 30 then 33.33 is the ms required, 16.66 if 60 fps
 #define zoxel_time_main_loop_cutoff 16.66f       // 1000 / 60 = 16.66 | 1000 / 30 = 33.33
 // #define zoxel_time_main_loop_cutoff 0.001

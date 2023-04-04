@@ -4,7 +4,8 @@
 #define max_cameras 16
 const float camera_far_distance = 6000;
 int main_cameras_count = 1;
-const int camera_fov = 90;
+const int camera_fov = 90;  // 60
+const float camera_limit_x = 1.25f; // 0.8f
 ecs_entity_t main_cameras[max_cameras];
 ecs_entity_t ui_cameras[1];
 zoxel_declare_tag(Camera)

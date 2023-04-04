@@ -150,7 +150,6 @@ unsigned char is_indirect_supported() {
     }
 }
 
-
 void print_opengl_version () {
     const char* version = (const char*) glGetString(GL_VERSION);
     printf("    > OpenGL version [%s]\n", version);

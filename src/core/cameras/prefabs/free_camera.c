@@ -26,7 +26,7 @@ ecs_entity_t spawn_free_camera(ecs_world_t *world, float3 position, float4 rotat
         ecs_set(world, e, Euler, { quaternion_to_euler(rotation) });
         zoxel_add_tag(world, e, EulerOverride);
         // adds a limit, - half pi to + half pi, 0.8 is around half that
-        zoxel_set(world, e, EulerLimitX, { { -0.8f, 0.8f } });
+        zoxel_set(world, e, EulerLimitX, { { -camera_limit_x, camera_limit_x } });
     #endif
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns

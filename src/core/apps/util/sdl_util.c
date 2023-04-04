@@ -114,24 +114,22 @@ int init_sdl() {
 
 //! Initialize SDL things, thingy things. 32bit color, 24bit depth
 int set_sdl_attributes() {
-    /*SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);*/
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); // 24 | 32
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, sdl_gl_major);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, sdl_gl_minor);
-    if (opengl_es_supported()) {
-        #ifdef zoxel_debug_opengl
-            zoxel_log(" + GL_ES detected\n");
-        #endif
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-    } else {
-        #ifdef zoxel_debug_opengl
-            zoxel_log(" - GL_ES unavilable\n");
-        #endif
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    if (override_opengl_es) {
+        if (opengl_es_supported()) {
+            #ifdef zoxel_debug_opengl
+                zoxel_log(" + GL_ES detected\n");
+            #endif
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+        } else {
+            #ifdef zoxel_debug_opengl
+                zoxel_log(" - GL_ES unavilable\n");
+            #endif
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+        }
     }
     return EXIT_SUCCESS;
 }
@@ -249,3 +247,7 @@ if (displays > 1 && window_index != -1 && window_index < displays) {
 }*/
 // SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN
 // SDL_RENDERER_SOFTWARE SDL_RENDERER_ACCELERATED
+/*SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);*/

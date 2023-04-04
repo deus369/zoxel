@@ -18,6 +18,7 @@ void print_help_menu(const char* arg0) {
     zoxel_log("        -v --vsync       enable vsync\n");
     zoxel_log("        -p --profiler       enable profiler\n");
     zoxel_log("        -x --server       enable server mode\n");
+    zoxel_log("        -e --opengles       enables opengl es\n");
     zoxel_log("\n");
     zoxel_log("-=-=-=-=-=--=-=-=-=-=--=-=-=-=-=--=-=-=-=-=-\n");
     zoxel_log("\n");
@@ -29,27 +30,22 @@ int process_arguments(int argc, char* argv[]) {
         if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
             print_help_menu(argv[0]);
             return EXIT_FAILURE;
-        }
-        if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--fullscreen") == 0) {
+        } else if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--fullscreen") == 0) {
             fullscreen = 1;
-        }
-        if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--halfscreen") == 0) {
+        } else if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--halfscreen") == 0) {
             halfscreen = 1;
-        }
-        if (strcmp(argv[i], "-s") == 0 || strcmp(argv[i], "--splitscreen") == 0) {
+        } else if (strcmp(argv[i], "-s") == 0 || strcmp(argv[i], "--splitscreen") == 0) {
             is_split_screen = 1;
-        }
-        if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--vsync") == 0) {
+        } else if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--vsync") == 0) {
             vsync = 1;
-        }
-        if (strcmp(argv[i], "-p") == 0 || strcmp(argv[i], "--profiler") == 0) {
+        } else if (strcmp(argv[i], "-p") == 0 || strcmp(argv[i], "--profiler") == 0) {
             profiler = 1;
-        }
-        if (strcmp(argv[i], "-z") == 0 || strcmp(argv[i], "--headless") == 0) {
+        } else if (strcmp(argv[i], "-z") == 0 || strcmp(argv[i], "--headless") == 0) {
             headless = 1;
-        }
-        if (strcmp(argv[i], "-x") == 0 || strcmp(argv[i], "--server") == 0) {
+        } else if (strcmp(argv[i], "-x") == 0 || strcmp(argv[i], "--server") == 0) {
             server_mode = 1;
+        } else if (strcmp(argv[i], "-e") == 0 || strcmp(argv[i], "--opengles") == 0) {
+            override_opengl_es = 1;
         }
     }
     return EXIT_SUCCESS;
