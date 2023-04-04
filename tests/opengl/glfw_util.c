@@ -51,12 +51,12 @@ GLFWwindow* open_glfw_window(int is_es, int fullscreen) {
     }
     // glfwWindowHint(GLFW_SAMPLES, 0);
     if (is_es) {
-        printf("    > setting glfw to opengl es 3.1\n");
+        printf("    > setting glfw to opengl es\n"); //  3.1\n");
         glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+        // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     } else {
-        printf("    > setting glfw to opengl api 4.6\n");
+        printf("    > setting glfw to opengl api\n");
         glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
         // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);

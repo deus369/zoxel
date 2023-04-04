@@ -67,7 +67,7 @@ void attach_buffer_to_compute_program(GLuint material, GLuint buffer) {
 void attach_buffer_to_render_program(GLuint render_program, GLuint buffer) {
     glUseProgram(render_program);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(0, position_pack_size, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(0);
     glUseProgram(0);
     check_opengl_error("attach_buffer_to_render_program");
@@ -106,12 +106,12 @@ void copy_buffer_to_render_shader(GLuint vbo, GLuint buffer, GLuint variable_ind
 }
 
 // Dispatch compute shader to generate vertex positions
-void run_compute_shader(GLuint compute_program, int vertex_count, double time) {
+void run_compute_shader(GLuint compute_program, int run_count_x, double time) {
     // double time_atm = (double) ((int) get_time_seconds());
     glUseProgram(compute_program);
     const GLuint time_attribute = 0;
     glUniform1f(time_attribute, time);
-    glDispatchCompute(vertex_count, 1, 1);
+    glDispatchCompute(run_count_x, 1, 1);
     // glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
     glUseProgram(0);
     // check_opengl_error("run_compute_shader");
@@ -131,8 +131,6 @@ void indirect_render_material(GLuint shader_program, GLuint vbo, GLuint ibo) {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBindBuffer(GL_DRAW_INDIRECT_BUFFER, ibo);
     glDrawArraysIndirect(GL_TRIANGLES, 0);
-    // glDrawArraysInstanced(GL_TRIANGLES, 0, 3, 0);
-    // glMultiDrawArraysIndirect(GL_TRIANGLES, NULL, 1, 0);
     glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glUseProgram(0);
