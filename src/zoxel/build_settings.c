@@ -1,5 +1,5 @@
 // -- debugs --
-// #define zox_logs                    // enables logging
+#define zox_logs                    // enables logging
 // #define log_to_file              // logs go to a file
 // #define zoxel_debug_sdl          // debugs sdl app
 // #define zoxel_debug_opengl       // debugs opengl
@@ -25,7 +25,7 @@
 // #define zoxel_time_render_loop
 #define zoxel_time_main_loop                    // enables time debugging of main loop
 //  > target fps is 30 then 33.33 is the ms required, 16.66 if 60 fps
-#define zoxel_time_main_loop_cutoff 16.66       // 1000 / 60 = 16.66 | 1000 / 30 = 33.33
+#define zoxel_time_main_loop_cutoff 16.66f       // 1000 / 60 = 16.66 | 1000 / 30 = 33.33
 // #define zoxel_time_main_loop_cutoff 0.001
 // #define zoxel_time_main_loop_cutoff 0
 // #define zoxel_time_always
@@ -34,13 +34,14 @@
 // #define main_thread_zext_update_system
 // #define main_thread_projection_matrix_system
 // voxels timing
-// #define zoxel_time_stream_point_system
+// #define zoxel_time_stream_point_system           
 // #define zoxel_time_terrain_chunk_system
-// #define zoxel_time_chunk_uvs_builds_system
+// #define zoxel_time_chunk_uvs_builds_system       // for non octree chunk building
 // voxel octrees timing
-// #define zoxel_time_octree_terrain_chunk_system
-// #define zoxel_time_octree_chunk_builds_system
-// #define zoxel_time_mesh_uvs_update_system
+// #define zoxel_time_octree_terrain_chunk_system      // for octree terrain generation
+#define zoxel_time_octree_chunk_builds_system    // for octree chunk building
+#define zoxel_time_octree_chunk_builds_system_cutoff 8.0f
+// #define zoxel_time_mesh_uvs_update_system        // uploading terrain chunk mesh data
 // idea: generate terrain too at lesser resolutions
 // #define zoxel_time_render_3d_uvs
 // audio

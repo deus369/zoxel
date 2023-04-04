@@ -30,7 +30,7 @@ zoxel_byte_component(ChunkDivision)                     //! The resolution of ea
 #include "systems/chunk_colors_build_system.c"
 #include "systems/chunk_link_system.c"
 zoxel_reset_system(GenerateChunkResetSystem, GenerateChunk)
-zoxel_reset_system(ChunkDirtyResetSystem, ChunkDirty)
+// zoxel_reset_system(ChunkDirtyResetSystem, ChunkDirty)
 
 zoxel_begin_module(VoxelsCore)
 zoxel_define_tag(LinkChunk)
@@ -43,13 +43,13 @@ zoxel_define_memory_component(ChunkNeighbors)
 zoxel_octree_component_define(ChunkOctree)
 zoxel_define_component(AnimateChunk)    // move to another module
 zoxel_define_reset_system(GenerateChunkResetSystem, GenerateChunk)
-zoxel_define_reset_system(ChunkDirtyResetSystem, ChunkDirty)
+// zoxel_define_reset_system(ChunkDirtyResetSystem, ChunkDirty)
 zoxel_system(world, ChunkLinkSystem, EcsPostUpdate, [none] LinkChunk, [in] Position3D, [out] ChunkPosition, [out] ChunkLink)
 if (!headless) {
     zoxel_filter(generateChunkQuery, world, [in] GenerateChunk)
-    zoxel_system_ctx(world, ChunkBuildSystem, EcsOnUpdate, generateChunkQuery, [in] ChunkDirty, [in] ChunkData, [in] ChunkSize,
+    zoxel_system_ctx(world, ChunkBuildSystem, EcsOnUpdate, generateChunkQuery, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize,
         [out] MeshIndicies, [out] MeshVertices, [out] MeshDirty, [none] !MeshUVs, [none] !MeshColors)
-    zoxel_system_ctx(world, ChunkColorsBuildSystem, EcsOnUpdate, generateChunkQuery, [in] ChunkDirty, [in] ChunkData,
+    zoxel_system_ctx(world, ChunkColorsBuildSystem, EcsOnUpdate, generateChunkQuery, [out] ChunkDirty, [in] ChunkData,
         [in] ChunkSize, [in] Colors, [out] MeshIndicies, [out] MeshVertices, [out] MeshColors, [out] MeshDirty, [none] !MeshUVs)
 }
 // _main_thread

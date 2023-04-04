@@ -1,3 +1,5 @@
+int cpu_core_count;
+
 void update_core() {
     begin_timing_absolute()
     if (!headless) {
@@ -29,8 +31,8 @@ int begin_core(int argc, char* argv[]) {
     if (didFail == EXIT_FAILURE) {
         return EXIT_FAILURE;
     }
-    int cpuCoreCount = SDL_GetCPUCount();
-    world = open_ecs(argc, argv, profiler, cpuCoreCount); // begin ecs
+    cpu_core_count = SDL_GetCPUCount();
+    world = open_ecs(argc, argv, profiler, cpu_core_count); // begin ecs
     return EXIT_SUCCESS;
 }
 

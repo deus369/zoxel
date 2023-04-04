@@ -1,25 +1,28 @@
 #ifndef zoxel_voxels_terrain
 #define zoxel_voxels_terrain
 
+int terrain_spawn_distance;
+int terrain_vertical = 2;
+double terrain_amplifier = 64.0;
+int lowest_voxel_height = -24;
+const int lod_division_dividor = 5;
+const int max_chunks_build_per_frame = 32;
 #ifndef WEB_BUILD
-    #define terrain_spawn_distance 14   // for release, just incase
     #define inner_render_buffer 1       // 2, will lag too much if too high
     #define max_octree_depth 4
 #else
-    #define terrain_spawn_distance 10
     #define inner_render_buffer 1
     #define max_octree_depth 4
     #define voxels_disable_streaming
 #endif
-#define terrain_vertical 2
 #define octree_min_height -1.995f // 0.005f
 #define noise_positiver2 32000
-#define terrain_amplifier 64.0
+// #define terrain_amplifier 64.0
 #define terrain_minus_amplifier 0.0
 #ifdef voxel_octrees
-    #define terrain_frequency 0.028216 // 0.026216
+    double terrain_frequency = 0.028216; // 0.026216
 #else
-    #define terrain_frequency 0.00216 // 0.004216
+    double terrain_frequency = 0.00216; // 0.004216
 #endif
 #define terrain_texture_resolution 16 // 32
 const int3 terrain_chunk_size = { chunk_length, 8 * chunk_length, chunk_length };
@@ -32,7 +35,8 @@ zoxel_declare_tag(TerrainWorld)
 zoxel_declare_tag(TerrainChunk)
 zoxel_declare_tag(ChunkTerrain)
 zoxel_declare_tag(Streamer)
-zoxel_component(StreamPoint, int3)                        //! A stream point in the terrain module.
+zoxel_component(StreamPoint, int3)
+zoxel_byte_component(ChunkDirtier)
 #include "prefabs/terrain.c"
 #include "prefabs/terrain_chunk.c"
 #include "prefabs/terrain_chunk_octree.c"
@@ -51,6 +55,7 @@ zoxel_define_tag(TerrainChunk)
 zoxel_define_tag(ChunkTerrain)
 zoxel_define_tag(Streamer)
 zoxel_define_component(StreamPoint)
+zoxel_define_component(ChunkDirtier)
 zoxel_filter(generateTerrainChunkQuery, world, [none] TerrainChunk, [in] GenerateChunk)
 zoxel_filter(generateChunkQuery, world, [in] GenerateChunk)
 zoxel_system_ctx(world, TerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
@@ -61,14 +66,16 @@ zoxel_filter(terrain_chunks_query, world,
     [none] TerrainChunk, [in] ChunkPosition, [in] ChunkNeighbors, [out] ChunkDivision, [out] ChunkDirty)
 zoxel_system_ctx_main_thread(world, StreamPointSystem, EcsOnUpdate, terrain_chunks_query,
     [none] Streamer, [in] Position3D, [out] StreamPoint)
-zoxel_system_ctx(world, ChunkUVsBuildSystem, EcsOnUpdate, generateChunkQuery, [in] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ChunkNeighbors,
+zoxel_system_ctx(world, ChunkUVsBuildSystem, EcsOnUpdate, generateChunkQuery, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ChunkNeighbors,
     [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty, [none] !MeshColors)
 zoxel_system_ctx(world, OctreeChunkBuildSystem, EcsOnUpdate, generateChunkQuery,
-    [in] ChunkDirty, [in] ChunkOctree, [in] ChunkDivision, [in] ChunkNeighbors,
-    [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty, [none] !MeshColors)
+    [out] ChunkDirty, [in] ChunkOctree, [in] ChunkDivision, [in] ChunkNeighbors,
+    [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] ChunkDirtier, [none] !MeshColors)
+zoxel_system(world, OctreeChunkMeshPushSystem, EcsPreUpdate, [out] ChunkDirtier, [in] ChunkNeighbors, [out] MeshDirty)
 spawn_prefab_terrain(world);
 spawn_prefab_terrain_chunk(world, terrain_chunk_size);
 spawn_prefab_terrain_chunk_octree(world, terrain_chunk_size);
+set_terrain_render_distance(cpu_core_count);
 zoxel_end_module(Terrain)
 
 // todo: move texture to terrain entity and not terrain chunks

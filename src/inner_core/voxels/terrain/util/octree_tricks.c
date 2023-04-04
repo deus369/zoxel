@@ -67,14 +67,17 @@ unsigned char get_max_depth_from_division(unsigned char chunk_division) {
     #ifdef zoxel_voxel_disable_distance_division
         unsigned char max_depth = max_octree_depth;
     #else
-        unsigned char depth_addition = chunk_division / 2;
+        unsigned char depth_addition = chunk_division / lod_division_dividor;
         unsigned char max_depth;
         if (depth_addition < inner_render_buffer) {
             max_depth = max_octree_depth;
-        } else if ((depth_addition - inner_render_buffer) > max_octree_depth) {
-            max_depth = 0;
         } else {
-            max_depth = max_octree_depth - (depth_addition - inner_render_buffer);
+            unsigned char difference = depth_addition - inner_render_buffer;
+            if (difference > max_octree_depth) {
+                max_depth = 0;
+            } else {
+                max_depth = max_octree_depth - difference;
+            }
         }
     #endif
     return max_depth;

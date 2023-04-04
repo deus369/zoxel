@@ -18,9 +18,6 @@ void MeshUvsUpdateSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         MeshDirty *meshDirty = &meshDirtys[i];
         if (meshDirty->value == 1) {
-        /*if (meshDirty->value == 1) {
-            meshDirty->value = 2;
-        } else if (meshDirty->value == 2) {*/
             meshDirty->value = 0;
             const MeshGPULink *meshGPULink = &meshGPULinks[i];
             const MaterialGPULink *materialGPULink = &materialGPULinks[i];

@@ -226,6 +226,7 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
                         noise_positiver2 + chunk_position_float3.x + (voxel_position.x / map_size_f.x), 
                         noise_positiver2 + chunk_position_float3.z + (voxel_position.z / map_size_f.y),
                         terrain_frequency, terrain_seed, terrain_octaves));
+                    if (global_height < lowest_voxel_height) global_height = lowest_voxel_height;
                 #endif
                 int local_height = (int) (global_height - (chunk_position_float3.y * chunk_voxel_length));
                 if (local_height > 0) {

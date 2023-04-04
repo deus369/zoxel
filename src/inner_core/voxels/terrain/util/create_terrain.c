@@ -1,3 +1,24 @@
+void set_terrain_render_distance(int core_count) {
+    if (core_count > 8) {
+        zoxel_log(" > high core count detected [%i]\n", core_count);
+        terrain_spawn_distance = 32;
+        terrain_vertical = 4;
+        terrain_amplifier = 96.0;
+        terrain_frequency = 0.036216;
+        lowest_voxel_height = - terrain_vertical * 14;
+    } else if (core_count > 6) {
+        zoxel_log(" > average core count detected [%i]\n", core_count);
+        terrain_spawn_distance = 20;
+    } else if (core_count > 4) {
+        zoxel_log(" > low (-) core count detected [%i]\n", core_count);
+        terrain_spawn_distance = 12;
+    } else {
+        zoxel_log(" > lowest core count detected [%i]\n", core_count);
+        terrain_spawn_distance = 8;
+    }
+    zoxel_log(" > terrain render distance set to [%i]\n", terrain_spawn_distance);
+}
+
 int get_chunk_index(int i, int j, int rows) {
     return (i + rows) * (rows + rows + 1) + (j + rows);
 }

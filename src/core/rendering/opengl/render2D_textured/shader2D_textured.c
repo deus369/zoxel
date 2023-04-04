@@ -201,8 +201,7 @@ void render_entity_material2D_and_mesh(const float4x4 viewMatrix, GLuint2 mesh, 
 }
 
 void opengl_upload_shader2D_textured(GLuint2 mesh_buffer, GLuint material_buffer,
-    const int *indicies, int indicies_length,
-    const float2 *verts, const float2 *uvs, int verts_length) {
+    const int *indicies, int indicies_length, const float2 *verts, const float2 *uvs, int verts_length) {
     MaterialTextured2D materialTextured2D = initialize_material2D_textured(material_buffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * 4, indicies, GL_STATIC_DRAW);
@@ -210,8 +209,7 @@ void opengl_upload_shader2D_textured(GLuint2 mesh_buffer, GLuint material_buffer
     int float_per_data = 4;
     int floats_length = verts_length * float_per_data;
     float combined_verts[floats_length];
-    for (int i = 0; i < verts_length; i++)
-    {
+    for (int i = 0; i < verts_length; i++) {
         float2 vert = verts[i];
         float2 uv = uvs[i];
         combined_verts[i * float_per_data + 0] = vert.x;

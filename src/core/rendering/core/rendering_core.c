@@ -73,22 +73,16 @@ ecs_set_hooks(world, UvsGPULink, { .dtor = ecs_dtor(UvsGPULink) });
 #endif
 // gpu uploads
 mesh_update_pipeline2 = mesh_update_pipeline;
-zoxel_system_main_thread(world, MeshUpdateSystem, mesh_update_pipeline,
-    [out] MeshDirty, [in] MeshIndicies,[in] MeshVertices,
+zoxel_system_main_thread(world, MeshUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices,
     [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColors);
-zoxel_system_main_thread(world, Mesh2DUpdateSystem, mesh_update_pipeline,
-    [out] MeshDirty, [in] MeshIndicies,[in] MeshVertices2D,
+zoxel_system_main_thread(world, Mesh2DUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D,
     [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColors);
-zoxel_system_main_thread(world, MeshUvsUpdateSystem, mesh_update_pipeline,
-    [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshUVs,
-    [in] MeshGPULink, [in] MaterialGPULink, [in] UvsGPULink,
-    [none] !MeshColors);
-zoxel_system_main_thread(world, Mesh2DUvsUpdateSystem, mesh_update_pipeline,
-    [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshUVs,
-    [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshColors);
-zoxel_system_main_thread(world, MeshColorsUpdateSystem, mesh_update_pipeline,
-    [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshColors,
-    [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs);
+zoxel_system_main_thread(world, MeshUvsUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies,
+    [in] MeshVertices, [in] MeshUVs, [in] MeshGPULink, [in] MaterialGPULink, [in] UvsGPULink, [none] !MeshColors);
+zoxel_system_main_thread(world, Mesh2DUvsUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies,
+    [in] MeshVertices2D, [in] MeshUVs, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshColors);
+zoxel_system_main_thread(world, MeshColorsUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies,
+    [in] MeshVertices, [in] MeshColors, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs);
 // zoxel_define_reset_system(MeshDirtySystem, MeshDirty);
 zoxel_end_module(RenderingCore)
 

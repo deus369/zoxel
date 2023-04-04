@@ -35,7 +35,7 @@ out highp vec4 color; \
 void main() { \
     color = texture(tex, uv) * brightness; \
     highp vec4 backgroundColor = vec4(2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f, 1);\
-    highp float fog_density = 0.0086;\
+    highp float fog_density = 0.0076;\
     highp float fogBlend = 1.0 - exp2(-fog_density * fog_density * fog_level * fog_level);\
     color = mix(color, backgroundColor, fogBlend);\
 }";
@@ -122,7 +122,6 @@ void opengl_shader3D_textured_set_camera_view_matrix(const float4x4 view_matrix,
 
 void opengl_upload_shader3D_textured(GLuint2 mesh_buffer, GLuint uv_buffer, GLuint material_buffer,
     const int *indicies, int indicies_length, const float3 *verts, int verts_length, const float2 *uvs) {
-    tri_count += indicies_length / 3;
     // Bind the index buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);

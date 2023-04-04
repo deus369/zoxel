@@ -46,15 +46,11 @@ void build_chunk_mesh(const ChunkData *chunk, const ChunkSize *chunkSize,
     //const float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f,
     //    - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
     // precount our face data for initialization
-    for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++)
-    {
-        for (local_position.y = 0; local_position.y < chunkSize->value.y; local_position.y++)
-        {
-            for (local_position.z = 0; local_position.z < chunkSize->value.z; local_position.z++)
-            {
+    for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++) {
+        for (local_position.y = 0; local_position.y < chunkSize->value.y; local_position.y++) {
+            for (local_position.z = 0; local_position.z < chunkSize->value.z; local_position.z++) {
                 array_index = int3_array_index(local_position, chunkSize->value);
-                if (chunk->value[array_index] != 0)
-                {
+                if (chunk->value[array_index] != 0) {
                     #ifndef disable_voxel_left
                     zoxel_check_faces(left)
                     #endif
@@ -80,12 +76,9 @@ void build_chunk_mesh(const ChunkData *chunk, const ChunkSize *chunkSize,
     re_initialize_memory_component(meshIndicies, int, indicies_count);
     re_initialize_memory_component(meshVertices, float3, verticies_count);
     array_index = 0;
-    for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++)
-    {
-        for (local_position.y = 0; local_position.y < chunkSize->value.y; local_position.y++)
-        {
-            for (local_position.z = 0; local_position.z < chunkSize->value.z; local_position.z++)
-            {
+    for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++) {
+        for (local_position.y = 0; local_position.y < chunkSize->value.y; local_position.y++) {
+            for (local_position.z = 0; local_position.z < chunkSize->value.z; local_position.z++) {
                 array_index = int3_array_index(local_position, chunkSize->value);
                 if (chunk->value[array_index] != 0)
                 {
@@ -118,29 +111,26 @@ void build_chunk_mesh(const ChunkData *chunk, const ChunkSize *chunkSize,
 void ChunkBuildSystem(ecs_iter_t *it) {
     if (disable_chunk_systems) return;
     ecs_query_t *changeQuery = it->ctx;
-    if (!changeQuery || !ecs_query_changed(changeQuery, NULL))
-    {
+    if (!changeQuery || !ecs_query_changed(changeQuery, NULL)) {
         return;
     }
     // printf("[ChunkBuildSystem] GenerateChunk was changed.\n");
-    const ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
+    ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
     const ChunkData *chunks = ecs_field(it, ChunkData, 2);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 3);
     MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 4);
     MeshVertices *meshVertices = ecs_field(it, MeshVertices, 5);
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 6);
-    for (int i = 0; i < it->count; i++)
-    {
-        const ChunkDirty *chunkDirty = &chunkDirtys[i];
-        if (chunkDirty->value == 0)
-        {
+    for (int i = 0; i < it->count; i++) {
+        ChunkDirty *chunkDirty = &chunkDirtys[i];
+        if (chunkDirty->value == 0) {
             continue;
         }
         MeshDirty *meshDirty = &meshDirtys[i];
-        if (meshDirty->value != 0)
-        {
+        if (meshDirty->value != 0) {
             continue;
         }
+        chunkDirty->value = 0;
         meshDirty->value = 1;
         const ChunkData *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];

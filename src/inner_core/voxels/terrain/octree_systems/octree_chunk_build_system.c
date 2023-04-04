@@ -11,15 +11,6 @@ const float octree_scales3[] = {
     0.015625f * octree_scales3_multiplier,
     0.0078125f * octree_scales3_multiplier
 };
-// making these static is hard...
-/*typedef struct {
-    float3 *verts_left;
-    float3 *verts_right;
-    float3 *verts_down;
-    float3 *verts_up;
-    float3 *verts_back;
-    float3 *verts_front;
-} cube_verts;*/
 
 #define add_voxel_face_uvs_indicies(index)\
     indicies->data[indicies->size + index] = vertices->size + voxel_face_indicies[index];
@@ -63,8 +54,7 @@ void add_voxel_face_uvs_d(int_array_d *indicies, float3_array_d* vertices, float
     uvs->size += voxel_face_vertices_length;
 }
 
-#define zoxel_octree_build_face_d(direction_name, is_positive) \
-{\
+#define zoxel_octree_build_face_d(direction_name, is_positive) {\
     if (!is_adjacent_all_solid(direction##_##direction_name, root_node, parent_node, neighbors,\
         octree_position, node_index, node_position, depth, max_depth, neighbors_max_depths)) {\
         add_voxel_face_uvs_d(indicies, vertices, uvs, vertex_position_offset, center_mesh_offset,\
@@ -74,18 +64,15 @@ void add_voxel_face_uvs_d(int_array_d *indicies, float3_array_d* vertices, float
 
 #define build_octree_chunk_child_node(i)\
     if (chunk_octree->nodes[i].value != 0)\
-        build_octree_chunk_d(root_node, chunk_octree, &chunk_octree->nodes[i],\
-            neighbors, neighbors_max_depths, indicies, vertices, uvs, max_depth, depth,\
-            int3_add(octree_position, octree_positions[i]), i);
+        build_octree_chunk_d(root_node, chunk_octree, &chunk_octree->nodes[i], neighbors, neighbors_max_depths,\
+            indicies, vertices, uvs, max_depth, depth, int3_add(octree_position, octree_positions[i]), i);
 
 void build_octree_chunk_d(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree,
-    const ChunkOctree *neighbors[], const unsigned char *neighbors_max_depths,
-    int_array_d *indicies, float3_array_d* vertices, float2_array_d* uvs,
-    const unsigned char max_depth, unsigned char depth, int3 octree_position, const unsigned char node_index) {
+    const ChunkOctree *neighbors[], const unsigned char *neighbors_max_depths, int_array_d *indicies, float3_array_d* vertices,
+    float2_array_d* uvs, const unsigned char max_depth, unsigned char depth, int3 octree_position, const unsigned char node_index) {
     if (depth >= max_depth || chunk_octree->nodes == NULL) {
         if (chunk_octree->value != 0) {
-            // float3_multiply_float_p(&vertex_position_offset, voxel_scale);
-            float voxel_scale = octree_scales3[depth]; // * (overall_voxel_scale / ((float) octree_node_size));
+            float voxel_scale = octree_scales3[depth];
             float3 vertex_position_offset = { octree_position.x * voxel_scale, octree_position.y * voxel_scale, octree_position.z * voxel_scale }; //float3_from_int3(octree_position);
             byte3 node_position = octree_positions_b[node_index];
             zoxel_octree_build_face_d(left, 0)
@@ -116,8 +103,7 @@ void build_octree_chunk_mesh_uvs(const ChunkOctree *chunk_octree, MeshIndicies *
         int_array_d* indicies = create_int_array_d();
         float3_array_d* vertices = create_float3_array_d();
         float2_array_d* uvs = create_float2_array_d();
-        build_octree_chunk_d(chunk_octree, NULL, chunk_octree, neighbors, neighbors_max_depths, indicies, vertices, uvs,
-            max_depth, 0, int3_zero, 0); // , byte3_zero);
+        build_octree_chunk_d(chunk_octree, NULL, chunk_octree, neighbors, neighbors_max_depths, indicies, vertices, uvs, max_depth, 0, int3_zero, 0);
         if (meshIndicies->length != 0) {
             free(meshIndicies->value);
         }
@@ -152,76 +138,114 @@ void OctreeChunkBuildSystem(ecs_iter_t *it) {
     #ifdef zoxel_time_octree_chunk_builds_system
         begin_timing()
     #endif
-    const ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
+    ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
     const ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 2);
     const ChunkDivision *chunkDivisions = ecs_field(it, ChunkDivision, 3);
     const ChunkNeighbors *chunkNeighbors = ecs_field(it, ChunkNeighbors, 4);
     MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 5);
     MeshVertices *meshVertices = ecs_field(it, MeshVertices, 6);
     MeshUVs *meshUVs = ecs_field(it, MeshUVs, 7);
-    MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 8);
+    ChunkDirtier *chunkDirtiers = ecs_field(it, ChunkDirtier, 8);
+    int chunks_built = 0;
     for (int i = 0; i < it->count; i++) {
-        const ChunkDirty *chunkDirty = &chunkDirtys[i];
-        if (chunkDirty->value == 0) {
-            continue;
+        ChunkDirty *chunkDirty = &chunkDirtys[i];
+        if (chunkDirty->value == 1) { // && meshDirty->value == 0) {
+            // time_cycle_begin()
+            ChunkDirtier *chunkDirtier = &chunkDirtiers[i];
+            const ChunkOctree *chunkOctree = &chunkOctrees[i];
+            const ChunkDivision *chunkDivision = &chunkDivisions[i];
+            const ChunkNeighbors *chunkNeighbors2 = &chunkNeighbors[i];
+            MeshIndicies *meshIndicies2 = &meshIndicies[i];
+            MeshVertices *meshVertices2 = &meshVertices[i];
+            MeshUVs *meshUVs2 = &meshUVs[i];
+            const ChunkOctree *chunk_left = chunkNeighbors2->value[0] == 0 ?
+                NULL : ecs_get(it->world, chunkNeighbors2->value[0], ChunkOctree);
+            const ChunkOctree *chunk_right = chunkNeighbors2->value[1] == 0 ?
+                NULL : ecs_get(it->world, chunkNeighbors2->value[1], ChunkOctree);
+            const ChunkOctree *chunk_down = chunkNeighbors2->value[2] == 0 ?
+                NULL : ecs_get(it->world, chunkNeighbors2->value[2], ChunkOctree);
+            const ChunkOctree *chunk_up = chunkNeighbors2->value[3] == 0 ?
+                NULL : ecs_get(it->world, chunkNeighbors2->value[3], ChunkOctree);
+            const ChunkOctree *chunk_back = chunkNeighbors2->value[4] == 0 ?
+                NULL : ecs_get(it->world, chunkNeighbors2->value[4], ChunkOctree);
+            const ChunkOctree *chunk_front = chunkNeighbors2->value[5] == 0 ?
+                NULL : ecs_get(it->world, chunkNeighbors2->value[5], ChunkOctree);
+            const ChunkOctree *neighbors[] =  { chunk_left, chunk_right, chunk_down, chunk_up, chunk_back, chunk_front };
+            unsigned char chunk_left_max_distance = chunkNeighbors2->value[0] == 0 ?
+                0 : ecs_get(it->world, chunkNeighbors2->value[0], ChunkDivision)->value;
+            unsigned char chunk_right_max_distance = chunkNeighbors2->value[1] == 0 ?
+                0 : ecs_get(it->world, chunkNeighbors2->value[1], ChunkDivision)->value;
+            unsigned char chunk_down_max_distance = chunkNeighbors2->value[2] == 0 ?
+                0 : ecs_get(it->world, chunkNeighbors2->value[2], ChunkDivision)->value;
+            unsigned char chunk_up_max_distance = chunkNeighbors2->value[3] == 0 ?
+                0 : ecs_get(it->world, chunkNeighbors2->value[3], ChunkDivision)->value;
+            unsigned char chunk_back_max_distance = chunkNeighbors2->value[4] == 0 ?
+                0 : ecs_get(it->world, chunkNeighbors2->value[4], ChunkDivision)->value;
+            unsigned char chunk_front_max_distance = chunkNeighbors2->value[5] == 0 ?
+                0 : ecs_get(it->world, chunkNeighbors2->value[5], ChunkDivision)->value;
+            unsigned char *neighbors_max_depths = malloc(6);
+            neighbors_max_depths[0] = get_max_depth_from_division(chunk_left_max_distance);
+            neighbors_max_depths[1] = get_max_depth_from_division(chunk_right_max_distance);
+            neighbors_max_depths[2] = get_max_depth_from_division(chunk_down_max_distance);
+            neighbors_max_depths[3] = get_max_depth_from_division(chunk_up_max_distance);
+            neighbors_max_depths[4] = get_max_depth_from_division(chunk_back_max_distance);
+            neighbors_max_depths[5] = get_max_depth_from_division(chunk_front_max_distance);
+            chunkDirty->value = 0;
+            chunkDirtier->value = 1;
+            if (meshIndicies2->length != 0) {
+                tri_count -= meshIndicies2->length / 3;
+            }
+            build_octree_chunk_mesh_uvs(chunkOctree, meshIndicies2, meshVertices2, meshUVs2, chunkDivision->value, neighbors, neighbors_max_depths);
+            if (meshIndicies2->length != 0) {
+                tri_count += meshIndicies2->length / 3;
+            }
+            free(neighbors_max_depths);
+            // time_cycle_end("       - octree_chunk_build_cycle")
+            #ifdef zoxel_time_octree_chunk_builds_system
+                did_do_timing()
+            #endif
+            chunks_built++;
+            if (chunks_built >= max_chunks_build_per_frame) {
+                break;
+            }
         }
-        MeshDirty *meshDirty = &meshDirtys[i];
-        if (meshDirty->value != 0) {
-            continue;
-        }
-        meshDirty->value = 1;
-        const ChunkOctree *chunkOctree = &chunkOctrees[i];
-        const ChunkDivision *chunkDivision = &chunkDivisions[i];
-        const ChunkNeighbors *chunkNeighbors2 = &chunkNeighbors[i];
-        MeshIndicies *meshIndicies2 = &meshIndicies[i];
-        MeshVertices *meshVertices2 = &meshVertices[i];
-        MeshUVs *meshUVs2 = &meshUVs[i];
-        if (meshIndicies2->length != 0) {
-            tri_count -= meshIndicies2->length / 3;
-        }
-        const ChunkOctree *chunk_left = chunkNeighbors2->value[0] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[0], ChunkOctree);
-        const ChunkOctree *chunk_right = chunkNeighbors2->value[1] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[1], ChunkOctree);
-        const ChunkOctree *chunk_down = chunkNeighbors2->value[2] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[2], ChunkOctree);
-        const ChunkOctree *chunk_up = chunkNeighbors2->value[3] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[3], ChunkOctree);
-        const ChunkOctree *chunk_back = chunkNeighbors2->value[4] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[4], ChunkOctree);
-        const ChunkOctree *chunk_front = chunkNeighbors2->value[5] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[5], ChunkOctree);
-        const ChunkOctree *neighbors[] =  { chunk_left, chunk_right, chunk_down, chunk_up, chunk_back, chunk_front };
-        unsigned char chunk_left_max_distance = chunkNeighbors2->value[0] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[0], ChunkDivision)->value;
-        unsigned char chunk_right_max_distance = chunkNeighbors2->value[1] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[1], ChunkDivision)->value;
-        unsigned char chunk_down_max_distance = chunkNeighbors2->value[2] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[2], ChunkDivision)->value;
-        unsigned char chunk_up_max_distance = chunkNeighbors2->value[3] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[3], ChunkDivision)->value;
-        unsigned char chunk_back_max_distance = chunkNeighbors2->value[4] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[4], ChunkDivision)->value;
-        unsigned char chunk_front_max_distance = chunkNeighbors2->value[5] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[5], ChunkDivision)->value;
-        unsigned char *neighbors_max_depths = malloc(6);
-        neighbors_max_depths[0] = get_max_depth_from_division(chunk_left_max_distance);
-        neighbors_max_depths[1] = get_max_depth_from_division(chunk_right_max_distance);
-        neighbors_max_depths[2] = get_max_depth_from_division(chunk_down_max_distance);
-        neighbors_max_depths[3] = get_max_depth_from_division(chunk_up_max_distance);
-        neighbors_max_depths[4] = get_max_depth_from_division(chunk_back_max_distance);
-        neighbors_max_depths[5] = get_max_depth_from_division(chunk_front_max_distance);
-        build_octree_chunk_mesh_uvs(chunkOctree, meshIndicies2, meshVertices2, meshUVs2, chunkDivision->value, neighbors, neighbors_max_depths);
-        free(neighbors_max_depths);
-        #ifdef zoxel_time_octree_chunk_builds_system
-            did_do_timing()
-        #endif
     }
     #ifdef zoxel_time_octree_chunk_builds_system
-        end_timing("    - octree_chunk_build_system")
+        end_timing_cutoff("    - octree_chunk_build_system", zoxel_time_octree_chunk_builds_system_cutoff)
     #endif
 }
 zoxel_declare_system(OctreeChunkBuildSystem)
+
+// only update mesh when none of neighbors are dirty
+void OctreeChunkMeshPushSystem(ecs_iter_t *it) {
+    ChunkDirtier *chunkDirtiers = ecs_field(it, ChunkDirtier, 1);
+    const ChunkNeighbors *chunkNeighbors = ecs_field(it, ChunkNeighbors, 2);
+    MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 3);
+    for (int i = 0; i < it->count; i++) {
+        ChunkDirtier *chunkDirtier = &chunkDirtiers[i];
+        if (chunkDirtier->value == 1) {
+            const ChunkNeighbors *chunkNeighbors2 = &chunkNeighbors[i];
+            const unsigned char dirty_left = chunkNeighbors2->value[0] == 0 ?
+                0 : ecs_get(it->world, chunkNeighbors2->value[0], ChunkDirty)->value;
+            const unsigned char dirty_right = chunkNeighbors2->value[1] == 0 ?
+                0 : ecs_get(it->world, chunkNeighbors2->value[1], ChunkDirty)->value;
+            const unsigned char dirty_down = chunkNeighbors2->value[2] == 0 ?
+                0 : ecs_get(it->world, chunkNeighbors2->value[2], ChunkDirty)->value;
+            const unsigned char dirty_up = chunkNeighbors2->value[3] == 0 ?
+                0 : ecs_get(it->world, chunkNeighbors2->value[3], ChunkDirty)->value;
+            const unsigned char dirty_back = chunkNeighbors2->value[4] == 0 ?
+                0 : ecs_get(it->world, chunkNeighbors2->value[4], ChunkDirty)->value;
+            const unsigned char dirty_front = chunkNeighbors2->value[5] == 0 ?
+                0 : ecs_get(it->world, chunkNeighbors2->value[5], ChunkDirty)->value;
+            if (dirty_left == 0 && dirty_left == 0 && dirty_down == 0 && dirty_up == 0 && dirty_back == 0 && dirty_front == 0) {
+                MeshDirty *meshDirty = &meshDirtys[i];
+                chunkDirtier->value = 0;
+                meshDirty->value = 1;
+            }
+        }
+    }
+}
+zoxel_declare_system(OctreeChunkMeshPushSystem)
 
 /*add_block_to_int_array_d(indicies, voxel_face_indicies, voxel_face_indicies_length);
 int vertices_size = vertices->size;
@@ -250,3 +274,12 @@ for (int a = indicies->size - voxel_face_indicies_length; a < indicies->size; a+
         add_to_float3_array_d(vertices, vertex_position);
         add_to_float2_array_d(uvs, voxel_face_uvs[a]);
     }*/
+// making these static is hard...
+/*typedef struct {
+    float3 *verts_left;
+    float3 *verts_right;
+    float3 *verts_down;
+    float3 *verts_up;
+    float3 *verts_back;
+    float3 *verts_front;
+} cube_verts;*/

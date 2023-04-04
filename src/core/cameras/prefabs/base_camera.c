@@ -12,7 +12,7 @@ ecs_entity_t spawn_camera_base_prefab(ecs_world_t *world) {
     zoxel_set(world, e, ViewMatrix, { float4x4_identity() });
     zoxel_set(world, e, ScreenDimensions, { { 0, 0 } });
     zoxel_set(world, e, ScreenPosition, { { 0, 0 } });
-    zoxel_set(world, e, FieldOfView, { 60 });
+    zoxel_set(world, e, FieldOfView, { camera_fov });
     zoxel_set(world, e, CameraNearDistance, { 0.01f });
     ecs_defer_end(world);
     prefab_base_camera = e;

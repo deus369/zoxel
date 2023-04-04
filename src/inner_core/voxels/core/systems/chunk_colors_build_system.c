@@ -148,7 +148,7 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         return;
     }
     // printf("[ChunkBuildSystem] GenerateChunk was changed.\n");
-    const ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
+    ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
     const ChunkData *chunks = ecs_field(it, ChunkData, 2);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 3);
     const Colors *colors = ecs_field(it, Colors, 4);
@@ -158,7 +158,7 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 8);
     for (int i = 0; i < it->count; i++)
     {
-        const ChunkDirty *chunkDirty = &chunkDirtys[i];
+        ChunkDirty *chunkDirty = &chunkDirtys[i];
         if (chunkDirty->value == 0)
         {
             continue;
@@ -168,6 +168,7 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         {
             continue;
         }
+        chunkDirty->value = 0;
         meshDirty->value = 1;
         const ChunkData *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];

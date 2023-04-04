@@ -80,18 +80,16 @@ void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,
     }
 }
 
-//! Builds a mesh data from the chunk!
 void ChunkUVsBuildSystem(ecs_iter_t *it) {
     if (disable_chunk_systems) return;
-    if (!ecs_query_changed(it->ctx, NULL))
-    {
+    if (!ecs_query_changed(it->ctx, NULL)) {
         return;
     }
     #ifdef zoxel_time_chunk_uvs_builds_system
         begin_timing()
     #endif
     // printf("[ChunkBuildSystem] GenerateChunk was changed.\n");
-    const ChunkDirty *entityDirtys = ecs_field(it, ChunkDirty, 1);
+    ChunkDirty *entityDirtys = ecs_field(it, ChunkDirty, 1);
     const ChunkData *chunks = ecs_field(it, ChunkData, 2);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 3);
     const ChunkNeighbors *chunkNeighbors = ecs_field(it, ChunkNeighbors, 4);
@@ -99,19 +97,15 @@ void ChunkUVsBuildSystem(ecs_iter_t *it) {
     MeshVertices *meshVertices = ecs_field(it, MeshVertices, 6);
     MeshUVs *meshUVs = ecs_field(it, MeshUVs, 7);
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 8);
-    for (int i = 0; i < it->count; i++)
-    {
-        const ChunkDirty *chunkDirty = &entityDirtys[i];
-        if (chunkDirty->value == 0)
-        {
+    for (int i = 0; i < it->count; i++) {
+        ChunkDirty *chunkDirty = &entityDirtys[i];
+        if (chunkDirty->value == 0) {
             continue;
         }
         MeshDirty *meshDirty = &meshDirtys[i];
-        if (meshDirty->value != 0)
-        {
+        if (meshDirty->value != 0) {
             continue;
         }
-        meshDirty->value = 1;
         const ChunkData *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
         const ChunkNeighbors *chunkNeighbors2 = &chunkNeighbors[i];
@@ -126,6 +120,8 @@ void ChunkUVsBuildSystem(ecs_iter_t *it) {
             NULL : ecs_get(it->world, chunkNeighbors2->value[2], ChunkData);
         const ChunkData *chunk_front = chunkNeighbors2->value[3] == 0 ?
             NULL : ecs_get(it->world, chunkNeighbors2->value[3], ChunkData);
+        chunkDirty->value = 0;
+        meshDirty->value = 1;
         build_chunk_mesh_uvs(chunk, chunkSize, meshIndicies2, meshVertices2, meshUVs2,
             chunk_left, chunk_right, chunk_back, chunk_front);
         // printf("Building ChunkData UVs Mesh [%lu]\n", (long int) it->entities[i]);
