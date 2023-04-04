@@ -16,7 +16,7 @@
 // 0 | 1
 #define is_full_screen 1
 // #define is_opengl_es 0
-const int triangles_generate_count = 100;
+const int triangles_generate_count = 10;
 const int MAX_VERTICES = triangles_generate_count * 3;
 const int compute_run_times = triangles_generate_count; // 10; // 1;
 const float sky_r = 0.03f;
@@ -78,7 +78,7 @@ void main() {\
     vec3z v3 = vec3z(0, 0.3 + random_number, 0);\
     v1.x += 0.6 * random_number;\
     v2.x -= 0.6 * random_number;\
-    v3.x = -0.5 + 0.01 * this_index;\
+    v3.x = -0.5 + 0.1 * this_index;\
     vertices[this_index * 3] = v3;\
     vertices[this_index * 3 + 1] = v2;\
     vertices[this_index * 3 + 2] = v1;\
