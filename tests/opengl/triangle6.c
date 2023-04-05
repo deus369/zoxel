@@ -13,48 +13,55 @@
 #include "glew_util.c"
 #include "opengl_util.c"
 
-// 0 | 1
-#define is_full_screen 1
-// #define is_opengl_es 0
-const int triangles_generate_count = 20;
-const int MAX_VERTICES = triangles_generate_count * 3;
-const int compute_run_times = triangles_generate_count;
+// #define debug_triangle6_timing
+#define is_full_screen 1            // 0 | 1
+const int MAX_VERTICES = 3000;      // MAX_VERTICES / 3 = total triangles;
+const int compute_run_times = 36;
 const float sky_r = 0.03f;
 const float sky_g = 0.35f;
 const float sky_b = 0.28f;
-
-// Define the parameters for the indirect draw command
+double time_passed = 0.0;
+double update_rate = 0.125;
+double last_time_passed = -666;
+struct vec3{
+    float x;
+    float y;
+    float z;
+};
 typedef struct {
     GLuint count;
     GLuint instanceCount;
     GLuint first;
     GLuint baseInstance;
 } DrawArraysIndirectCommand;
-DrawArraysIndirectCommand drawCommand = { 0, 1, 0, 0 };
-
 const char* compute_shader_source = "\
 #version 430\n\
-layout(location = 0) uniform float time_passed;\
+const uint MAX_VERTICES = 3000;\
+const float random_strength = 0.0;\
+const float sin_strength = 0.04;\
+const float sizex = 0.914;\
+const float sizey = 0.998;\
+const float size_per_index = 0.05f;\
+const float sin_speed = 100.0f;\
 \
 struct vec3z {\
     float x;\
     float y;\
     float z;\
 };\
-layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;\
-layout(std430, binding = 0) buffer PositionBuffer {\
-    vec3z vertices[];\
-};\
-layout(std430, binding = 1) buffer MyAtomicCounter {\
-    uint counter;\
-};\
 struct DrawArraysIndirectCommand {\
-    int count;\
+    uint count;\
     int instanceCount;\
     int first;\
     int baseInstance;\
 };\
-layout(std430, binding = 2) buffer DrawArraysIndirectCommandBuffer {\
+\
+layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;\
+layout(location = 0) uniform float time_passed;\
+layout(std430, binding = 0) buffer PositionBuffer {\
+    vec3z vertices[];\
+};\
+layout(std430, binding = 1) buffer DrawArraysIndirectCommandBuffer {\
     DrawArraysIndirectCommand drawCommand;\
 };\
 \
@@ -63,28 +70,27 @@ float random(vec2 st) {\
 }\
 \
 void main() {\
-    const float random_strength = 0.02;\
-    const float sin_strength = 0.2;\
-    const float sizex = 0.814;\
-    const float sizey = 0.998;\
     vec2 st = vec2(float(gl_WorkGroupID.x) + time_passed, int(gl_WorkGroupID.y));\
-    float random_addition = 2.0 * random(st) - 1.0;\
-    if (gl_WorkGroupID.x > 2 && random_addition <= 0.5) return;\
-    uint index = atomicAdd(counter, 3u);\
-    drawCommand.count = 3;\
-    random_addition = sizex * (random_strength * random_addition + sin_strength * sin(time_passed));\
+    float random_add = 2.0 * random(st) - 1.0;\
+    if (random_add < 0) random_add = -random_add;\
+    if (random_add < 0.6) return;\
+    if (drawCommand.count + 3u > MAX_VERTICES) return;\
+    uint index = atomicAdd(drawCommand.count, 3u);\
+    float sin_add = sin_strength + sin_strength * sin(sin_speed * time_passed);\
+    random_add = random_strength * random_add;\
     vec3z v1 = vec3z(-sizex, -sizey, 0);\
     vec3z v2 = vec3z(sizex, -sizey, 0);\
-    vec3z v3 = vec3z(0, 0.4 + random_addition, 0);\
-    v3.x = -0.5 + 0.1 * int(index / 3);\
+    vec3z v3 = vec3z(0, 0.8 + random_add + sin_add, 0);\
+    v3.x = -0.9 + size_per_index * int(index / 3);\
     vertices[index] = v3;\
     vertices[index + 1] = v2;\
     vertices[index + 2] = v1;\
-    atomicAdd(drawCommand.count, 3);\
+    drawCommand.instanceCount = 1;\
 }";
 const char* vertex_shader_source = "\
 #version 310 es\n\
 layout(location = 0) in lowp vec4 position;\
+\
 void main()\
 {\
     gl_Position = position;\
@@ -92,65 +98,43 @@ void main()\
 const char* fragment_shader_source = "\
 #version 310 es\n\
 out lowp vec4 fragColor;\
+\
 void main()\
 {\
     fragColor = vec4(0.47f, 0.03f, 0.03f, 1.0f);\
 }";
 
-// not needed !
-void manual_update_vertex_count(GLuint count_buffer, GLuint ibo) {
-    // Make sure the compute shader has finished executing before we read the counter value
-    glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
-    // Read the counter value from the SSBO
-    GLuint vertex_count;
-    glBindBuffer(GL_SHADER_STORAGE_BUFFER, count_buffer);
-    glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(GLuint), &vertex_count);
+void clear_triangle_buffer(GLuint triangle_buffer) {
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, triangle_buffer);
+    glClearBufferData(GL_SHADER_STORAGE_BUFFER, GL_R32UI, GL_RED, GL_UNSIGNED_INT, NULL);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-    // Update the draw command with the vertex count
-    drawCommand.count = vertex_count;
-    // printf("new vertex count found from buffer: %i\n", vertex_count);
-    // Bind the indirect buffer and update it with the new draw command
-    glBindBuffer(GL_DRAW_INDIRECT_BUFFER, ibo);
-    glBufferData(GL_DRAW_INDIRECT_BUFFER, sizeof(drawCommand), &drawCommand, GL_DYNAMIC_DRAW);
-    // glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, sizeof(drawCommand), &drawCommand);
-    glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
-    // DrawArraysIndirectCommand commandBuffer;
-    // glBindBuffer(GL_SHADER_STORAGE_BUFFER, count_buffer);
-    // glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 2, sizeof(DrawArraysIndirectCommand), &commandBuffer);
-    // printf("new count %i\n", commandBuffer.count);
 }
 
-void run_compute_shader_debug(GLuint compute_program, GLuint triangle_buffer, GLuint count_buffer, GLuint ibo, int run_count) {
-    begin_timing_absolute()
-    // double time_passed = 100.0 * get_time_seconds();
-    double time_passed = get_time_seconds();
+void clear_ibo(GLuint ibo) {
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ibo);
+    glClearBufferData(GL_SHADER_STORAGE_BUFFER, GL_R32UI, GL_RED, GL_UNSIGNED_INT, NULL);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+}
+
+void run_compute_shader_2(GLuint compute_program, GLuint triangle_buffer, GLuint ibo, int run_count) {
+    #ifdef debug_triangle6_timing
+        begin_timing_absolute()
+    #endif
+    clear_triangle_buffer(triangle_buffer);
+    clear_ibo(ibo);
     glUseProgram(compute_program);
     GLuint time_attribute = 0; // glGetUniformLocation(triangle_buffer, "time_passed");
-    glUniform1f(time_attribute, (float) time_passed);
+    glUniform1f(time_attribute, (float) get_time_seconds());
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, triangle_buffer);
-    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, count_buffer);
-    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, ibo);
-    GLuint zero = 0;
-    glClearBufferData(GL_ATOMIC_COUNTER_BUFFER, GL_R32UI, GL_RED_INTEGER, GL_UNSIGNED_INT, &zero);
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ibo);
     glDispatchCompute(run_count, 1, 1);
-    // manual_update_vertex_count(count_buffer, ibo);
     glUseProgram(0);
-    // check_opengl_error("run_compute_shader_debug");
-    // zoxel_log("time_passed [%f]\n", (float) time_passed);
-    end_timing("    + compute timing")
+    check_opengl_error("run_compute_shader_2");
+    #ifdef debug_triangle6_timing
+        end_timing("    + compute timing")
+    #endif
 }
 
-GLuint create_simple_vbo() {
-    GLuint vbo;
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    return vbo;
-}
-
-// used for commands
 GLuint create_ibo() {
     GLuint ibo;
     glGenBuffers(1, &ibo);
@@ -158,34 +142,27 @@ GLuint create_ibo() {
     DrawArraysIndirectCommand drawCommand = { 0, 1, 0, 0 };
     glBufferData(GL_DRAW_INDIRECT_BUFFER, sizeof(drawCommand), &drawCommand, GL_DYNAMIC_DRAW);
     glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
+    check_opengl_error("create_ibo");
     return ibo;
 }
 
-GLuint create_ssbo(int max_size) {
+GLuint create_ssbo(int bytes_allocated) {
     GLuint buffer;
     glCreateBuffers(1, &buffer);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, buffer);
-    glBufferData(GL_SHADER_STORAGE_BUFFER, max_size, NULL, GL_DYNAMIC_DRAW);
-    check_opengl_error("create_dynamic_storage_buffer");
+    glBufferData(GL_SHADER_STORAGE_BUFFER, bytes_allocated, NULL, GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+    check_opengl_error("create_ssbo");
     return buffer;
 }
 
-GLuint create_count_buffer() { 
-    GLuint countBuffer;
-    glGenBuffers(1, &countBuffer);
-    glBindBufferBase(GL_ATOMIC_COUNTER_BUFFER, 0, countBuffer);
-    GLuint zero = 0;
-    glBufferData(GL_ATOMIC_COUNTER_BUFFER, sizeof(GLuint), &zero, GL_DYNAMIC_DRAW);
-    return countBuffer;
-}
-
-GLuint create_command_buffer() {
-    GLuint command_buffer;
-    glGenBuffers(1, &command_buffer);
-    glBindBuffer(GL_SHADER_STORAGE_BUFFER, command_buffer);
-    glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(DrawArraysIndirectCommand), NULL, GL_DYNAMIC_DRAW);
-    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-    return command_buffer;
+void indirect_render_material(GLuint shader_program, GLuint ibo) {
+    glUseProgram(shader_program);
+    glBindBuffer(GL_DRAW_INDIRECT_BUFFER, ibo);
+    glDrawArraysIndirect(GL_TRIANGLES, 0);
+    glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
+    glUseProgram(0);
+    check_opengl_error("indirect_render_material glDrawArraysIndirect");
 }
 
 int main(int argc, char *argv[]) {
@@ -218,28 +195,69 @@ int main(int argc, char *argv[]) {
     glClearColor(sky_r, sky_g, sky_b, 1.0f); //0.13f, 0.24f, 0.66f, 1.0f);
     GLuint compute_program = setup_compute_buffer(compute_shader_source);
     GLuint shader_program = create_material(vertex_shader_source, fragment_shader_source);
+    GLuint ssbo = create_ssbo(MAX_VERTICES * sizeof(vec3));
+    attach_buffer_to_compute_program(compute_program, ssbo);
+    attach_buffer_to_render_program(shader_program, ssbo);
     GLuint ibo = create_ibo();
-    GLuint vbo = create_simple_vbo();
-    GLuint count_buffer = create_count_buffer();
-    GLuint triangle_buffer = create_ssbo(MAX_VERTICES * 3 * 4);
-    attach_buffer_to_compute_program(compute_program, triangle_buffer);
-    attach_buffer_to_render_program(shader_program, triangle_buffer);
     while (loop_glfw_window(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
-        run_compute_shader_debug(compute_program, triangle_buffer, count_buffer, ibo, compute_run_times);
-        indirect_render_material(shader_program, vbo, ibo);
+        time_passed = get_time_seconds() * 100;
+        // printf("time_passed: %f\n", (float) time_passed);
+        if (time_passed - last_time_passed >= update_rate) {
+            last_time_passed = time_passed;
+            // printf("last time: %f\n", (float) last_time_passed);
+            run_compute_shader_2(compute_program, ssbo, ibo, compute_run_times);
+        }
+        indirect_render_material(shader_program, ibo);
         updated_glfw_render(window);
         update_glfw_window();
     }
-    glDeleteBuffers(1, &count_buffer);
-    glDeleteBuffers(1, &triangle_buffer);
-    glDeleteBuffers(1, &vbo);
+    glDeleteBuffers(1, &ssbo);
     glDeleteBuffers(1, &ibo);
     glDeleteProgram(compute_program);
     glDeleteProgram(shader_program);
     close_glfw_window(window);
     return 0;
 }
+
+
+/*GLuint create_vbo() {
+    GLuint vbo;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    // glEnableVertexAttribArray(0);
+    // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    check_opengl_error("create_vbo");
+    return vbo;
+}*/
+// glBindBuffer(GL_ARRAY_BUFFER, vbo);
+// glBindBuffer(GL_ARRAY_BUFFER, 0);
+// GLuint vbo = create_vbo();
+// glDeleteBuffers(1, &vbo);
+// not needed !
+// manual_update_vertex_count(count_buffer, ibo);
+/*void manual_update_vertex_count(GLuint count_buffer, GLuint ibo) {
+    // Make sure the compute shader has finished executing before we read the counter value
+    glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+    // Read the counter value from the SSBO
+    GLuint vertex_count;
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, count_buffer);
+    glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(GLuint), &vertex_count);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+    // Update the draw command with the vertex count
+    drawCommand.count = vertex_count;
+    // printf("new vertex count found from buffer: %i\n", vertex_count);
+    // Bind the indirect buffer and update it with the new draw command
+    glBindBuffer(GL_DRAW_INDIRECT_BUFFER, ibo);
+    glBufferData(GL_DRAW_INDIRECT_BUFFER, sizeof(drawCommand), &drawCommand, GL_DYNAMIC_DRAW);
+    // glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, sizeof(drawCommand), &drawCommand);
+    glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
+    // DrawArraysIndirectCommand commandBuffer;
+    // glBindBuffer(GL_SHADER_STORAGE_BUFFER, count_buffer);
+    // glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 2, sizeof(DrawArraysIndirectCommand), &commandBuffer);
+    // printf("new count %i\n", commandBuffer.count);
+}*/
 
 /*void upload_verts(GLuint vbo) {
     GLfloat vertices[] = {
@@ -314,3 +332,40 @@ glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);*/
 //  * random_addition
 // v1.x += 0.5;
 // v2.x -= 0.5;  + random_addition
+
+/*GLuint create_command_buffer() {
+    GLuint command_buffer;
+    glGenBuffers(1, &command_buffer);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, command_buffer);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(DrawArraysIndirectCommand), NULL, GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+    return command_buffer;
+}*/
+
+// DrawArraysIndirectCommand drawCommand = { 0, 1, 0, 0 };
+// atomicAdd(counter, 3u);
+/*layout(std430, binding = 1) buffer MyAtomicCounter {
+    uint counter;
+};
+GLuint count_buffer = create_count_buffer();
+count_buffer, 
+glDeleteBuffers(1, &count_buffer);
+
+void clear_atomic_buffer_data(GLuint count_buffer) {
+    glBindBuffer(GL_ATOMIC_COUNTER_BUFFER, count_buffer);
+    glClearBufferData(GL_ATOMIC_COUNTER_BUFFER, GL_R32UI, GL_RED_INTEGER, GL_UNSIGNED_INT, 0);
+    glBindBuffer(GL_ATOMIC_COUNTER_BUFFER, 0); 
+}
+
+GLuint create_count_buffer() { 
+    GLuint countBuffer;
+    GLuint zero = 0;
+    glGenBuffers(1, &countBuffer);
+    glBindBufferBase(GL_ATOMIC_COUNTER_BUFFER, 1, countBuffer);
+    glBufferData(GL_ATOMIC_COUNTER_BUFFER, sizeof(GLuint), &zero, GL_DYNAMIC_DRAW);
+    check_opengl_error("create_count_buffer");
+    return countBuffer;
+}
+// clear_atomic_buffer_data(count_buffer); GLuint count_buffer, 
+// glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, count_buffer);
+*/

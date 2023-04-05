@@ -126,17 +126,6 @@ void render_material(GLuint shader_program, GLuint vbo, int vertex_count) {
     check_opengl_error("render_material");
 }
 
-void indirect_render_material(GLuint shader_program, GLuint vbo, GLuint ibo) {
-    glUseProgram(shader_program);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBindBuffer(GL_DRAW_INDIRECT_BUFFER, ibo);
-    glDrawArraysIndirect(GL_TRIANGLES, 0);
-    glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glUseProgram(0);
-    check_opengl_error("indirect_render_material glDrawArraysIndirect");
-}
-
 unsigned char is_indirect_supported() {
     const char* extensions = (const char*) glGetString(GL_EXTENSIONS);
     if (extensions == NULL) {
