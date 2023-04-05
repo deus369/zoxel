@@ -23,9 +23,10 @@
 // #define zoxel_log_frame_ms
 // #define zoxel_log_frames_per_second
 // #define zoxel_time_render_loop
-// #define zoxel_time_main_loop                    // enables time debugging of main loop
+#define zoxel_time_main_loop                    // enables time debugging of main loop
 //  > target fps is 30 then 33.33 is the ms required, 16.66 if 60 fps
-#define zoxel_time_main_loop_cutoff 16.66f       // 1000 / 60 = 16.66 | 1000 / 30 = 33.33
+#define zoxel_time_main_loop_cutoff 33.33f       // 1000 / 60 = 16.66 | 1000 / 30 = 33.33
+// #define zoxel_time_main_loop_cutoff 16.66f       // 1000 / 60 = 16.66 | 1000 / 30 = 33.33
 // #define zoxel_time_main_loop_cutoff 0.001
 // #define zoxel_time_main_loop_cutoff 0
 // #define zoxel_time_always
@@ -40,7 +41,7 @@
 // voxel octrees timing
 // #define zoxel_time_octree_terrain_chunk_system      // for octree terrain generation
 #define zoxel_time_octree_chunk_builds_system    // for octree chunk building
-#define zoxel_time_octree_chunk_builds_system_cutoff 8.0f
+#define zoxel_time_octree_chunk_builds_system_cutoff 12.0f
 // #define zoxel_time_mesh_uvs_update_system        // uploading terrain chunk mesh data
 // idea: generate terrain too at lesser resolutions
 // #define zoxel_time_render_3d_uvs
@@ -57,7 +58,6 @@
 // #define debug_ui_positioning
 // -- testing --
 // #define zoxel_test_chickens
-#define zoxel_test_character3Ds     // spawn 100 penguins
 // #define zoxel_test_lines3D
 // #define zoxel_test_networking
 // #define zoxel_test_brain
@@ -79,14 +79,15 @@
 #define voxels_close_octree_nodes       // closes nodes in terrain gen
 #define voxels_hide_terrain_edge        // hides faces on edge of map
 #define zoxel_voxels_dynamic_array      // used in mesh generation
-// #define zoxel_is_flat_height
 // #define voxels_terrain_multi_material
 // #define zoxel_disable_close_nodes
 // #define voxels_disable_streaming
-// #define voxels_flat_land
 // #define zoxel_voxel_disable_distance_division
 // #define voxels_use_octree_pooling
 // -- zoxel game --
 #define voxels_spawn_terrain
 // #define zoxel_quaternion_camera
 // #define zoxel_debug_vox_read
+// #define zoxel_is_flat_height
+#define zoxel_test_character3Ds             // spawn x penguins
+// #define zoxel_test_character3Ds_single   // spawn 1 penguin

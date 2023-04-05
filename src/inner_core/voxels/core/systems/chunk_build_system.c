@@ -17,13 +17,11 @@ void add_voxel_face(MeshIndicies *meshIndicies2, MeshVertices *meshVertices2,
     const int voxel_face_indicies[], int voxel_face_indicies_length,
     const float3 voxel_face_vertices[], int voxel_face_vertices_length) {
     int indicies_offset = start2.y;
-    for (int a = 0, b = start2.x; a < voxel_face_indicies_length; a++, b++)
-    {
+    for (int a = 0, b = start2.x; a < voxel_face_indicies_length; a++, b++) {
         meshIndicies2->value[b] = indicies_offset + voxel_face_indicies[a];
     }
     // add verts
-    for (int a = 0, b = start2.y; a < voxel_face_vertices_length; a++, b = b + 1)
-    {
+    for (int a = 0, b = start2.y; a < voxel_face_vertices_length; a++, b = b + 1) {
         float3 vertex_position = voxel_face_vertices[a]; // (float3) { cubeVertices[a + 0], cubeVertices[a + 1], cubeVertices[a + 2] };
         vertex_position = float3_multiply_float(vertex_position, voxel_scale);          // scale vertex
         vertex_position = float3_add(vertex_position, vertex_position_offset);   // offset vertex by voxel position in chunk

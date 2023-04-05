@@ -10,7 +10,7 @@ void spawn_many_characters3D(ecs_world_t *world) {
         zoxel_log(" - mr penguin corrupted\n");
         return;
     }
-    zoxel_log("spawn_many_characters3D [%i]\n", spawn_characters3D_count);
+    zoxel_log(" > spawning many characters [%i]\n", spawn_characters3D_count);
     float cameraY = spawn_many_y * overall_voxel_scale; // ecs_get(world, main_cameras[0], Position3D)->value.y; //  100.0f;
     float radius = spawn_many_radius * overall_voxel_scale; // 16.0f;
     for (int i = 0; i < spawn_characters3D_count; i++) {
@@ -18,9 +18,9 @@ void spawn_many_characters3D(ecs_world_t *world) {
         vox = vox_files[vox_file_index];
         float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
         float3 position = (float3) {
-            - radius + ((rand() % 100) / 101.0f) * radius * 2.0f,
+            spawn_many_offset.x + - radius + ((rand() % 100) / 101.0f) * radius * 2.0f,
             cameraY,
-            - radius + ((rand() % 100) / 101.0f) * radius * 2.0f };
+            spawn_many_offset.z + - radius + ((rand() % 100) / 101.0f) * radius * 2.0f };
         spawn_character3D(world, character3D_prefab, &vox, position, rotation, model_scale * overall_voxel_scale);
     }
 }

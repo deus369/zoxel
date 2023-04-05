@@ -1,24 +1,3 @@
-void set_terrain_render_distance(int core_count) {
-    if (core_count > 8) {
-        zoxel_log(" > high core count detected [%i]\n", core_count);
-        terrain_spawn_distance = 32;
-        terrain_vertical = 4;
-        terrain_amplifier = 96.0;
-        terrain_frequency = 0.036216;
-        lowest_voxel_height = - terrain_vertical * 14;
-    } else if (core_count > 6) {
-        zoxel_log(" > average core count detected [%i]\n", core_count);
-        terrain_spawn_distance = 20;
-    } else if (core_count > 4) {
-        zoxel_log(" > low (-) core count detected [%i]\n", core_count);
-        terrain_spawn_distance = 12;
-    } else {
-        zoxel_log(" > lowest core count detected [%i]\n", core_count);
-        terrain_spawn_distance = 8;
-    }
-    zoxel_log(" > terrain render distance set to [%i]\n", terrain_spawn_distance);
-}
-
 int get_chunk_index(int i, int j, int rows) {
     return (i + rows) * (rows + rows + 1) + (j + rows);
 }
@@ -59,12 +38,8 @@ void create_terrain(ecs_world_t *world) {
                 #ifdef voxel_octrees
                 int index = get_chunk_index_2(i, j, k, terrain_spawn_distance, terrain_vertical);
                 int3 chunk_position = (int3) { i, j, k };
-                chunks[index] = spawn_terrain_chunk_octree(world,
-                    prefab_terrain_chunk_octree,
-                    terrain_world,
-                    chunk_position,
-                    (float3) { i * chunk_real_size, j * chunk_real_size, k * chunk_real_size },
-                    0.5f);
+                chunks[index] = spawn_terrain_chunk_octree(world, prefab_terrain_chunk_octree, terrain_world,
+                    chunk_position, (float3) { i * chunk_real_size, j * chunk_real_size, k * chunk_real_size }, 0.5f);
                 chunk_positions[index] = chunk_position;
                 #else
                 chunks[get_chunk_index_2(i, j, k, terrain_spawn_distance, 0)] = spawn_terrain_chunk(world, prefab_terrain_chunk,
@@ -104,12 +79,13 @@ void create_terrain(ecs_world_t *world) {
         int3_hash_map_add(chunkLinks.value, chunk_positions[i], chunks[i]);
     }
     ecs_set(world, terrain_world, ChunkLinks, { chunkLinks.value });
-    /*ChunkLinks chunkLinks = { };
-    initialize_memory_component_non_pointer(chunkLinks, ecs_entity_t, chunks_total_length);
-    for (int i = 0; i < chunks_total_length; i++) {
-        chunkLinks.value[i] = chunks[i];
-    }
-    ecs_set(world, terrain_world, ChunkLinks, { chunkLinks.length, chunkLinks.value });*/
     main_terrain_world = terrain_world;
     ecs_defer_end(world);
 }
+
+/*ChunkLinks chunkLinks = { };
+initialize_memory_component_non_pointer(chunkLinks, ecs_entity_t, chunks_total_length);
+for (int i = 0; i < chunks_total_length; i++) {
+    chunkLinks.value[i] = chunks[i];
+}
+ecs_set(world, terrain_world, ChunkLinks, { chunkLinks.length, chunkLinks.value });*/

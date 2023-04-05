@@ -16,7 +16,7 @@ void GenerateChunkTerrain(ChunkData* chunk, const int3 chunkSize, const int3 chu
             int terrain_height2 = terrain_min_height +
                 // int_floor(terrain_amplifier * simplex_fun_2D(noise_point, terrain_frequency));
                 // int_floor(terrain_amplifier * perlin_noise(noise_point.x, noise_point.y, terrain_frequency, seed));
-                int_floor(terrain_amplifier * perlin_terrain(noise_point.x, noise_point.y,
+                int_floor(terrain_boost + terrain_amplifier * perlin_terrain(noise_point.x, noise_point.y,
                     terrain_frequency, terrain_seed, terrain_octaves));
                 // int_floor(terrain_amplifier * generate_noise_2D(noise_point, terrain_frequency));
             if (terrain_height2 < terrain_min_height) {

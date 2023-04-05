@@ -123,3 +123,36 @@ unsigned char get_octree_voxel(const ChunkOctree *node, byte3 *position, unsigne
             return get_octree_voxel(&node->nodes[i], new_position, depth - 1);
         }
     }*/
+
+//! Closes all solid nodes, as well as air nodes, after terrain system generates it.
+void close_solid_nodes(ChunkOctree *node) {
+    // for all children nodes - only check higher nodes if closed children
+    if (node->nodes != NULL) {
+        for (unsigned char i = 0; i < octree_length; i++) {
+            close_solid_nodes(&node->nodes[i]);
+        }
+    }
+    if (node->nodes != NULL) {
+        unsigned char all_solid = 1;
+        for (unsigned char i = 0; i < octree_length; i++) {
+            if (node->nodes[i].nodes != NULL || node->nodes[i].value == 0) {
+                all_solid = 0;
+                break;
+            }
+        }
+        if (all_solid) {
+            close_ChunkOctree(node);
+        } else {
+            unsigned char all_air = 1;
+            for (unsigned char i = 0; i < octree_length; i++) {
+                if (node->nodes[i].nodes != NULL || node->nodes[i].value != 0) {
+                    all_air = 0;
+                    break;
+                }
+            }
+            if (all_air) {
+                close_ChunkOctree(node);
+            }
+        }
+    }
+}

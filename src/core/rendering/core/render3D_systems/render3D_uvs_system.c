@@ -22,7 +22,7 @@ void Render3DUvsSystem(ecs_iter_t *it) {
         if (meshIndicies2->length == 0) {
             continue;
         }
-        const Position3D *position = &positions[i];
+        const Position3D *position3D = &positions[i];
         const Rotation3D *rotation = &rotations[i];
         const Scale1D *scale1D = &scale1Ds[i];
         const Brightness *brightness = &brightnesses[i];
@@ -47,7 +47,7 @@ void Render3DUvsSystem(ecs_iter_t *it) {
                 opengl_shader3D_textured_set_camera_view_matrix(main_camera_matrix, &attributes);
                 opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes);
             }
-            opengl_set_material3D_uvs_position(position->value, &attributes);
+            opengl_set_material3D_uvs_position(position3D->value, &attributes);
             opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, &attributes);
             opengl_set_mesh_indicies(meshGPULink->value.x);
             opengl_draw_triangles(meshIndicies2->length);
@@ -68,7 +68,7 @@ void Render3DUvsSystem(ecs_iter_t *it) {
             opengl_shader3D_textured_set_camera_view_matrix(main_camera_matrix, &attributes);
             opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, &attributes);
             opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes);
-            opengl_set_material3D_uvs_position(position->value, &attributes);
+            opengl_set_material3D_uvs_position(position3D->value, &attributes);
             opengl_draw_triangles(meshIndicies2->length);
         #endif
     }

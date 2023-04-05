@@ -3,16 +3,16 @@
 
 int terrain_spawn_distance;
 int terrain_vertical = 2;
+const unsigned char terrain_min_height = 8;
 double terrain_amplifier = 64.0;
+double terrain_boost = 0.0;
 int lowest_voxel_height = -24;
-const int lod_division_dividor = 5;
+int max_octree_depth = 4;
+int inner_render_buffer = 1;
+int lod_division_dividor = 3;
 const int max_chunks_build_per_frame = 32;
 #ifndef WEB_BUILD
-    #define inner_render_buffer 1       // 2, will lag too much if too high
-    #define max_octree_depth 4
 #else
-    #define inner_render_buffer 1
-    #define max_octree_depth 4
     #define voxels_disable_streaming
 #endif
 #define octree_min_height -1.995f // 0.005f
@@ -27,7 +27,6 @@ const int max_chunks_build_per_frame = 32;
 #define terrain_texture_resolution 16 // 32
 const int3 terrain_chunk_size = { chunk_length, 8 * chunk_length, chunk_length };
 float chunk_real_size = overall_voxel_scale / 2.0f; // 1.0f;   // size achunk takes up
-const unsigned char terrain_min_height = 8;
 const int terrain_octaves = 12;
 const uint32_t terrain_seed = 32666;
 const int2 chunk_texture_size = { terrain_texture_resolution, terrain_texture_resolution };
@@ -47,7 +46,9 @@ zoxel_byte_component(ChunkDirtier)
 #include "systems/stream_point_system.c"
 #include "octree_systems/octree_terrain_chunk_system.c"
 #include "octree_systems/octree_chunk_build_system.c"
+#include "octree_systems/octree_chunk_mesh_system.c"
 #include "util/create_terrain.c"
+#include "fun/settings.c"
 
 zoxel_begin_module(Terrain)
 zoxel_define_tag(TerrainWorld)
@@ -71,7 +72,7 @@ zoxel_system_ctx(world, ChunkUVsBuildSystem, EcsOnUpdate, generateChunkQuery, [o
 zoxel_system_ctx(world, OctreeChunkBuildSystem, EcsOnUpdate, generateChunkQuery,
     [out] ChunkDirty, [in] ChunkOctree, [in] ChunkDivision, [in] ChunkNeighbors,
     [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] ChunkDirtier, [none] !MeshColors)
-zoxel_system(world, OctreeChunkMeshPushSystem, EcsPreUpdate, [out] ChunkDirtier, [in] ChunkNeighbors, [out] MeshDirty)
+zoxel_system(world, OctreeChunkMeshSystem, EcsPreUpdate, [out] ChunkDirtier, [in] ChunkNeighbors, [out] MeshDirty)
 spawn_prefab_terrain(world);
 spawn_prefab_terrain_chunk(world, terrain_chunk_size);
 spawn_prefab_terrain_chunk_octree(world, terrain_chunk_size);

@@ -23,7 +23,7 @@ void boot_zoxel_game(ecs_world_t *world) {
         #ifdef zoxel_voxels
             #ifdef voxels_spawn_terrain
                 #ifdef voxel_octrees
-                    camera_begin_position = (float3) { 0, 0.26f * 2 * overall_voxel_scale, 0 };
+                    camera_begin_position = (float3) { 0, -0.06f * 2 * overall_voxel_scale, 0 };
                 #else
                     camera_begin_position = (float3) { 0, 0.52f * 2 * overall_voxel_scale, 0 };
                 #endif

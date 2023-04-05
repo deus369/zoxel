@@ -2,7 +2,8 @@
 #define zoxel_voxels_core
 
 const float overall_voxel_scale = 32.0f; // 64.0f; // 4.0f // 2.0f;
-const float3 center_mesh_offset = { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
+// const float3 center_mesh_offset = { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
+const float3 center_mesh_offset = { 0, 0, 0 };
 const int chunk_length = 16;
 const int3 chunk_size = { chunk_length, chunk_length, chunk_length };
 const double noiseChunkAnimateSpeed = 0.5; // 1 / 8.0;

@@ -6,9 +6,22 @@
 
 uint32_t get_int3_hash(int3 input) {
     uint32_t hash = 17;
-    hash = hash * 23 + (uint32_t) input.x;
-    hash = hash * 23 + (uint32_t) input.y;
-    hash = hash * 23 + (uint32_t) input.z;
+    hash = hash * 23 + ((uint32_t) input.x);
+    hash = hash * 23 + ((uint32_t) input.y);
+    hash = hash * 23 + ((uint32_t) input.z);
+
+    /*uint32_t x = (uint32_t)input.x;
+    uint32_t y = (uint32_t)input.y;
+    uint32_t z = (uint32_t)input.z;
+    // A good prime number for hashing
+    uint32_t prime = 4294967291;
+    // Initialize hash value to a random number
+    uint32_t hash = 2166136261;
+    // Mix input values with hash using a good hash function
+    hash = (hash ^ x) * prime;
+    hash = (hash ^ y) * prime;
+    hash = (hash ^ z) * prime;*/
+
     return hash;
 }
 
