@@ -243,7 +243,7 @@ android-dev-debug:
 $(flecs_target):
 	set -e ; \
 	bash bash/flecs/check_flecs_source.sh && bash bash/flecs/download_flecs_source.sh && cp include/flecs/flecs.h include; \
-	cd build && $(make_flecs) && $(make_flecs_lib) && cd .. && cp build/libflecs.a lib; \
+	cd build && $(make_flecs) && $(make_flecs_lib) && cd .. && cp build/libflecs.a lib && cp include/flecs/flecs.h include; \
 	echo "  > installed flecs library"
 
 install-sdl:
