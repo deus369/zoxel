@@ -21,14 +21,6 @@ find_module_filepaths() {
     echo "${module_files[@]}"
 }
 
-module_files=$(find_module_filepaths src)
-
-# Check if any module files were found
-if [ ${#module_files[@]} -eq 0 ]; then
-    echo "  - no module files found"
-    exit 0
-fi
-
 find_module_names() {
     local module_files=("$@")
     local module_names=()
@@ -44,8 +36,6 @@ find_module_names() {
     echo "${module_names[@]}"
 }
 
-module_names=($(find_module_names "${module_files[@]}"))
-
 # echo " === Zoxel Modules [${#module_names[@]}] ==="
 # i=0
 # for module_file in ${module_files[@]}; do
@@ -53,3 +43,45 @@ module_names=($(find_module_names "${module_files[@]}"))
 #     i=$(($i + 1))
 #     echo "    + module [$module_name] at [$module_file]"
 # done
+
+module_files=$(find_module_filepaths src)
+
+# Check if any module files were found
+if [ ${#module_files[@]} -eq 0 ]; then
+    echo "  - no module files found"
+    exit 0
+fi
+
+module_names=($(find_module_names "${module_files[@]}"))
+
+find_module_names() {
+    local module_names=("$@")
+    echo "  > modules found [${#module_names[@]}]" >&2
+    echo " === select a module ===" >&2
+    selected_module=""
+    select module_name in "${module_names[@]}"; do
+        if [[ -n $module_name ]]; then
+            selected_module=$module_name
+            break
+        else
+            echo "Invalid selection. Please try again." >&2
+        fi
+    done
+    echo $selected_module
+}
+
+find_module_path() {
+    local selected_module=$1
+    selected_module_filename=""
+    i=0
+    for module_file in ${module_files[@]}; do
+        module_name=${module_names[i]}
+        # echo "    + module [$module_name] at [$module_file]" >&2
+        if [[ ${module_names[$i]} == $selected_module ]]; then
+            selected_module_filename=$module_file
+            break
+        fi
+        i=$(($i + 1))
+    done
+    echo $selected_module_filename
+}

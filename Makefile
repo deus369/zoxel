@@ -299,6 +299,9 @@ clean:
 create-system:
 	bash bash/zoxel/create_system.sh
 
+list-systems:
+	bash bash/zoxel/list_systems.sh
+
 count:
 	@echo "Counting Source Files"
 	bash bash/count/count_source.sh
