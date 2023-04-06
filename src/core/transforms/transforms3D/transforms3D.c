@@ -24,9 +24,9 @@ zoxel_define_component(Matrix)
 zoxel_define_component(Euler)
 zoxel_define_component(EulerLimitX)
 zoxel_define_component(EulerLimitZ)
-zoxel_system(world, EulerLimitXSystem, EcsOnUpdate, [in] EulerLimitX, [out] Euler)
-zoxel_system(world, EulerLimitZSystem, EcsOnUpdate, [in] EulerLimitZ, [out] Euler)
-zoxel_system(world, EulerOverrideSystem, EcsOnUpdate, [none] EulerOverride, [in] Euler, [out] Rotation3D)
+zoxel_system(EulerLimitXSystem, EcsOnUpdate, [in] EulerLimitX, [out] Euler)
+zoxel_system(EulerLimitZSystem, EcsOnUpdate, [in] EulerLimitZ, [out] Euler)
+zoxel_system(EulerOverrideSystem, EcsOnUpdate, [none] EulerOverride, [in] Euler, [out] Rotation3D)
 zoxel_end_module(Transforms3D)
 
 // todo: remove euler use, and find a way to limit quaternion rotations used for camera atm

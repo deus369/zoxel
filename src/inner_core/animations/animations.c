@@ -6,7 +6,7 @@ zoxel_component(EternalRotation, float4)
 
 zoxel_begin_module(Animations)
 zoxel_define_component(EternalRotation)
-zoxel_system(world, EternalRotationSystem, EcsOnUpdate, [out] Rotation3D, [in] EternalRotation);  // _main_thread
+zoxel_system(EternalRotationSystem, EcsOnUpdate, [out] Rotation3D, [in] EternalRotation)
 zoxel_end_module(Animations)
 
 #endif

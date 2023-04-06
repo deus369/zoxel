@@ -55,7 +55,7 @@ zoxel_define_component(GenericEvent)
 zoxel_define_reset_system(EntityDirtyResetSystem, EntityDirty)
 zoxel_define_reset_system(ClickableStateResetSystem, ClickableState)
 zoxel_define_reset_system(EntityInitializeResetSystem, EntityInitialize)
-zoxel_system(world, DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
+zoxel_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
 spawn_prefab_generic_event(world);
 zoxel_end_module(Generic)
 

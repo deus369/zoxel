@@ -78,7 +78,7 @@ typedef struct\
 ECS_COMPONENT_DECLARE(name)
 
 //! Multithreaded System Definition
-#define zoxel_system(world, id_, phase, ...)\
+#define zoxel_system(id_, phase, ...)\
 { \
     ecs_system_desc_t desc = {0}; \
     ecs_entity_desc_t edesc = {0}; \
@@ -220,8 +220,8 @@ int main(int argc, char *argv[])
     ECS_COMPONENT_DEFINE(world, ChunkGenerate);
     ECS_COMPONENT_DEFINE(world, ChunkDirty);
     // spawn system
-    zoxel_system(world, ChunkGenerateSystem, EcsPostLoad, [out] ChunkGenerate, [out] ChunkDirty, [out] Chunk);
-    zoxel_system(world, ChunkBuildSystem, EcsOnUpdate, [out] ChunkDirty, [in] Chunk, [in] ChunkNeighbors);
+    zoxel_system(ChunkGenerateSystem, EcsPostLoad, [out] ChunkGenerate, [out] ChunkDirty, [out] Chunk);
+    zoxel_system(ChunkBuildSystem, EcsOnUpdate, [out] ChunkDirty, [in] Chunk, [in] ChunkNeighbors);
     // spawn 2 chunks
     ecs_entity_t chunk_prefab = ecs_new_prefab(world, "chunk_prefab");
     zoxel_add(world, chunk_prefab, Chunk);

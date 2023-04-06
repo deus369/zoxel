@@ -30,9 +30,9 @@ zoxel_define_component(Weight)
 zoxel_define_component(Signal)
 zoxel_define_component(SignalStrength)
 zoxel_define_component(ConnectionData)
-zoxel_system(world, FeedForwardSystem, EcsOnUpdate, [none] Connection, [in] ConnectionData, [in] Weight, [out] Signal, [out] SignalStrength)
-zoxel_system(world, ConnectionRenderSystem, EcsOnUpdate, [none] Connection, [in] ConnectionData, [in] Weight, [in] Signal, [in] SignalStrength)
-zoxel_system(world, NeuronRenderSystem, EcsOnUpdate, [none] Neuron, [in] Weight, [in] Position2D)
+zoxel_system(FeedForwardSystem, EcsOnUpdate, [none] Connection, [in] ConnectionData, [in] Weight, [out] Signal, [out] SignalStrength)
+zoxel_system(ConnectionRenderSystem, EcsOnUpdate, [none] Connection, [in] ConnectionData, [in] Weight, [in] Signal, [in] SignalStrength)
+zoxel_system(NeuronRenderSystem, EcsOnUpdate, [none] Neuron, [in] Weight, [in] Position2D)
 spawn_prefab_brain(world);
 spawn_prefab_neuron(world);
 spawn_prefab_connection(world);

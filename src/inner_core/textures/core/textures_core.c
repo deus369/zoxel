@@ -37,11 +37,11 @@ zoxel_define_component(AnimateTexture)
 zoxel_define_component(TextureDirty)
 zoxel_define_memory_component(Texture)
 // zoxel_system_main_thread(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture)
-zoxel_system(world, AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture)
+zoxel_system(AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture)
 zoxel_texture_generation_system(NoiseTexture, NoiseTextureSystem)
 zoxel_texture_generation_system(FrameTexture, FrameTextureSystem)
 // zoxel_system_main_thread(world, TextureSaveSystem, texture_update_pipeline, [in] TextureDirty, [in] Texture, [in] TextureSize, [none] SaveTexture)
-// zoxel_system(world, TextureSaveSystem, texture_update_pipeline, [in] TextureDirty, [in] Texture, [in] TextureSize, [none] SaveTexture)
+// zoxel_system(TextureSaveSystem, texture_update_pipeline, [in] TextureDirty, [in] Texture, [in] TextureSize, [none] SaveTexture)
 if (!headless) {
     zoxel_system_main_thread(world, TextureUpdateSystem, texture_update_pipeline, [out] TextureDirty, [in] Texture, [in] TextureSize, [in] TextureGPULink)
     texture_update_system_id = ecs_id(TextureUpdateSystem);

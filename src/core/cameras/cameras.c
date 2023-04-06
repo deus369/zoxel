@@ -45,10 +45,10 @@ zoxel_define_component(FreeRoam)
 #ifdef main_thread_projection_matrix_system
     zoxel_system_main_thread(world, ProjectionMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
 #else
-    zoxel_system(world, ProjectionMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
+    zoxel_system(ProjectionMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
 #endif
-zoxel_system(world, ViewMatrixSystem, EcsOnUpdate, [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)
-zoxel_system(world, CameraFollow2DSystem, EcsOnUpdate, [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D)
+zoxel_system(ViewMatrixSystem, EcsOnUpdate, [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)
+zoxel_system(CameraFollow2DSystem, EcsOnUpdate, [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D)
 spawn_camera_base_prefab(world);
 spawn_prefab_free_camera(world);
 spawn_camera2D_follower_prefab(world);

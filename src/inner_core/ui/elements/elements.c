@@ -26,9 +26,9 @@ zoxel_define_tag(Header)
 zoxel_define_tag(CloseButton)
 zoxel_define_tag(PlayGameButton)
 zoxel_define_tag(ExitGameButton)
-zoxel_system(world, ButtonClickSoundSystem, EcsOnUpdate, [none] Button, [in] ClickableState);
-zoxel_system(world, WindowCloseSystem, EcsPostUpdate, [none] CloseButton, [in] ClickableState);
-zoxel_system(world, HeaderDragSystem, EcsPostLoad, [none] Header, [in] DragableState, [in] DraggingDelta, [in] ParentLink);
+zoxel_system(ButtonClickSoundSystem, EcsOnUpdate, [none] Button, [in] ClickableState)
+zoxel_system(WindowCloseSystem, EcsPostUpdate, [none] CloseButton, [in] ClickableState)
+zoxel_system(HeaderDragSystem, EcsPostLoad, [none] Header, [in] DragableState, [in] DraggingDelta, [in] ParentLink)
 spawn_prefab_label(world);
 spawn_prefab_button(world);
 spawn_prefab_window(world);

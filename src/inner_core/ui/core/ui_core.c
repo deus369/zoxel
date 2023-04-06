@@ -35,13 +35,12 @@ zoxel_filter(pixel_positions_query, world, [none] Element, [in] PixelPosition,
 zoxel_system_ctx(world, ElementPositionSystem, EcsPreUpdate, pixel_positions_query, [none] Element, [in] PixelPosition,
     [in] ParentLink, [in] Anchor, [in] CanvasLink, [out] Position2D, [out] CanvasPixelPosition)
 zoxel_system_ctx(world, ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [out] RaycasterTarget)
-zoxel_system(world, ElementSelectedSystem, EcsOnUpdate, [out] Element, [in] SelectableState, [out] Brightness)
+zoxel_system(ElementSelectedSystem, EcsOnUpdate, [out] Element, [in] SelectableState, [out] Brightness)
 if (!headless) {
     #ifdef zoxel_inputs
-        zoxel_system(world, ElementActivateSystem, EcsPostUpdate, [in] Mouse, [in] RaycasterTarget);
+        zoxel_system(ElementActivateSystem, EcsPostUpdate, [in] Mouse, [in] RaycasterTarget)
     #endif
-    zoxel_system_main_thread(world, ElementMeshSystem, ui_mesh_pipeline, [none] Element, [in] PixelSize,
-        [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture)
+    zoxel_system_main_thread(world, ElementMeshSystem, ui_mesh_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture)
     element_mesh_system_id = ecs_id(ElementMeshSystem);
 }
 spawn_prefab_canvas(world);

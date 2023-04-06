@@ -51,10 +51,10 @@ zoxel_system_ctx(world, FreeCameraDisableMovementSystem, EcsOnUpdate, playerChar
 //#if zoxel_particles2D
 //! Needed for bulk spawning. Still crashes.
 // zoxel_system_main_thread(world, Player2DTestSystem, EcsOnUpdate, [in] Keyboard)
-// zoxel_system(world, Player2DTestSystem, EcsOnUpdate, [in] Keyboard)
+// zoxel_system(Player2DTestSystem, EcsOnUpdate, [in] Keyboard)
 // ecs_system(world, { .entity = ecs_id(Player2DTestSystem), .no_readonly = 1 });
 // this has to update after reset systems (as gen is stuck on main thread, running before everything)
-// zoxel_system(world, Player2DTestMainThreadSystem, EcsOnStore, [in] Keyboard)
+// zoxel_system(Player2DTestMainThreadSystem, EcsOnStore, [in] Keyboard)
 zoxel_end_module(Players)
 
 // \todo Spawning Queries in Initialize function as they depend on other Modules

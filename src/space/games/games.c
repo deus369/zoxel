@@ -11,7 +11,7 @@ zoxel_begin_module(Games)
 zoxel_define_tag(Game)
 zoxel_define_component(GameState)
 spawn_prefab_game(world);
-zoxel_system(world, PlayGameSystem, EcsPostUpdate, [in] GenericEvent)
+zoxel_system(PlayGameSystem, EcsPostUpdate, [in] GenericEvent)
 zoxel_end_module(Games)
 
 #endif

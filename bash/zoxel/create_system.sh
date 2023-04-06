@@ -167,7 +167,7 @@ output_component_names_string=$(printf ", [out] %s" "${output_component_names[@]
 echo "      + add zoxel_system($system_name_camel, EcsOnUpdate$input_component_names_string$output_component_names_string)"
 echo " === system creation complete ==="
 
-# zoxel_system(world, ProjectionMatrixSystem, EcsOnUpdate, [in] input_components, [out] output_components)
+# zoxel_system(ProjectionMatrixSystem, EcsOnUpdate, [in] input_components, [out] output_components)
 
 # now add include statements to the module file
 # also add a zoxel_system call between begin and end module lines

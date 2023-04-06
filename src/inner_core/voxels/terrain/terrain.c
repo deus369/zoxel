@@ -72,7 +72,7 @@ zoxel_system_ctx(world, ChunkUVsBuildSystem, EcsOnUpdate, generateChunkQuery, [o
 zoxel_system_ctx(world, OctreeChunkBuildSystem, EcsOnUpdate, generateChunkQuery,
     [out] ChunkDirty, [in] ChunkOctree, [in] ChunkDivision, [in] ChunkNeighbors,
     [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] ChunkDirtier, [none] !MeshColors)
-zoxel_system(world, OctreeChunkMeshSystem, EcsPreUpdate, [out] ChunkDirtier, [in] ChunkNeighbors, [out] MeshDirty)
+zoxel_system(OctreeChunkMeshSystem, EcsPreUpdate, [out] ChunkDirtier, [in] ChunkNeighbors, [out] MeshDirty)
 spawn_prefab_terrain(world);
 spawn_prefab_terrain_chunk(world, terrain_chunk_size);
 spawn_prefab_terrain_chunk_octree(world, terrain_chunk_size);

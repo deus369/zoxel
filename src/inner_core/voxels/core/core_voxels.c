@@ -45,7 +45,7 @@ zoxel_octree_component_define(ChunkOctree)
 zoxel_define_component(AnimateChunk)    // move to another module
 zoxel_define_reset_system(GenerateChunkResetSystem, GenerateChunk)
 // zoxel_define_reset_system(ChunkDirtyResetSystem, ChunkDirty)
-zoxel_system(world, ChunkLinkSystem, EcsPostUpdate, [none] LinkChunk, [in] Position3D, [out] ChunkPosition, [out] ChunkLink)
+zoxel_system(ChunkLinkSystem, EcsPostUpdate, [none] LinkChunk, [in] Position3D, [out] ChunkPosition, [out] ChunkLink)
 if (!headless) {
     zoxel_filter(generateChunkQuery, world, [in] GenerateChunk)
     zoxel_system_ctx(world, ChunkBuildSystem, EcsOnUpdate, generateChunkQuery, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize,
@@ -54,7 +54,7 @@ if (!headless) {
         [in] ChunkSize, [in] Colors, [out] MeshIndicies, [out] MeshVertices, [out] MeshColors, [out] MeshDirty, [none] !MeshUVs)
 }
 // _main_thread
-zoxel_system(world, AnimateChunkSystem, EcsOnLoad, [out] AnimateChunk, [out] GenerateChunk)
+zoxel_system(AnimateChunkSystem, EcsOnLoad, [out] AnimateChunk, [out] GenerateChunk)
 zoxel_filter(generateNoiseChunkQuery, world, [none] NoiseChunk, [in] GenerateChunk)
 zoxel_system_ctx(world, NoiseChunkSystem, EcsPostLoad, generateNoiseChunkQuery, [none] NoiseChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] GenerateChunk)
 spawn_voxel_chunk_mesh_prefab(world);

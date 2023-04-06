@@ -8,7 +8,7 @@ zoxel_component(DestroyInTime, double)      //! Used to set the brightness of an
 
 zoxel_begin_module(Timing)
 zoxel_define_component(DestroyInTime)
-zoxel_system(world, DestroyInTimeSystem, EcsOnUpdate, [out] DestroyInTime)
+zoxel_system(DestroyInTimeSystem, EcsOnUpdate, [out] DestroyInTime)
 zoxel_end_module(Timing)
 
 #endif

@@ -13,12 +13,10 @@ Chose one pipeline tag for each type of system.
     EcsOnStore
 */
 
-#define zoxel_declare_system(name)\
-    ECS_SYSTEM_DECLARE(name);
+#define zoxel_declare_system(name) ECS_SYSTEM_DECLARE(name);
 
 //! Multithreaded System Definitions.
-#define zoxel_system(world, id_, phase, ...)\
-{ \
+#define zoxel_system(id_, phase, ...) { \
     ecs_system_desc_t desc = {0}; \
     ecs_entity_desc_t edesc = {0}; \
     edesc.id = ecs_id(id_);\
@@ -33,8 +31,7 @@ Chose one pipeline tag for each type of system.
 } \
 ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
-#define zoxel_system_main_thread(world, id_, phase, ...)\
-{ \
+#define zoxel_system_main_thread(world, id_, phase, ...) { \
     ecs_system_desc_t desc = {0}; \
     ecs_entity_desc_t edesc = {0}; \
     edesc.id = ecs_id(id_);\
@@ -50,8 +47,7 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
 
 //! Multithreaded System Definitions.
-#define zoxel_system_ctx(world, id_, phase, ctx_, ...)\
-{ \
+#define zoxel_system_ctx(world, id_, phase, ctx_, ...) { \
     ecs_system_desc_t desc = {0}; \
     ecs_entity_desc_t edesc = {0}; \
     edesc.id = ecs_id(id_);\
@@ -67,8 +63,7 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 } \
 ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
-#define zoxel_system_ctx_main_thread(world, id_, phase, ctx_, ...)\
-{ \
+#define zoxel_system_ctx_main_thread(world, id_, phase, ctx_, ...) { \
     ecs_system_desc_t desc = {0}; \
     ecs_entity_desc_t edesc = {0}; \
     edesc.id = ecs_id(id_);\
@@ -83,8 +78,8 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 } \
 ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
-#define ZOXEL_SYSTEM_MULTITHREADED_CTX2(world, id_, phase, ctx1, ctx2, ...)\
-{ \
+/*
+#define ZOXEL_SYSTEM_MULTITHREADED_CTX2(world, id_, phase, ctx1, ctx2, ...) { \
     ecs_system_desc_t desc = {0}; \
     ecs_entity_desc_t edesc = {0}; \
     edesc.id = ecs_id(id_);\
@@ -100,36 +95,30 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
     ecs_id(id_) = ecs_system_init(world, &desc); \
 } \
 ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
+*/
 
-#define zoxel_texture_generation_system(texture_tag, system)\
-{\
+#define zoxel_texture_generation_system(texture_tag, system) {\
     zoxel_filter(generateTextureQuery, world, [none] texture_tag, [in] GenerateTexture);\
     zoxel_system_ctx(world, system, EcsOnUpdate, generateTextureQuery,\
         [none] texture_tag, [out] TextureDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture);\
 }
 
-#define zoxel_button_system(system, tag)\
-    zoxel_system(world, system, EcsPostUpdate, [none] tag, [in] ClickableState);
+#define zoxel_button_system(system, tag) zoxel_system(system, EcsPostUpdate, [none] tag, [in] ClickableState);
 
-#define zoxel_button_system2(system, tag, pipeline)\
-    zoxel_system(world, system, pipeline, [none] tag, [in] ClickableState);
+#define zoxel_button_system2(system, tag, pipeline) zoxel_system(system, pipeline, [none] tag, [in] ClickableState);
 
 // EcsPreFrame, EcsOnLoad, EcsPostLoad, EcsPreUpdate, EcsOnUpdate
     
 #define zoxel_reset_system(system_name, component_name)\
-void system_name(ecs_iter_t *it)\
-{\
-    if (!ecs_query_changed(NULL, it))\
-    {\
+void system_name(ecs_iter_t *it) {\
+    if (!ecs_query_changed(NULL, it)) {\
         return;\
     }\
     ecs_query_skip(it);\
     component_name *components = ecs_field(it, component_name, 1);\
-    for (int i = 0; i < it->count; i++)\
-    {\
+    for (int i = 0; i < it->count; i++) {\
         component_name *component = &components[i];\
-        if (component->value == 1)\
-        {\
+        if (component->value == 1) {\
             component->value = 0;\
         }\
     }\
@@ -139,7 +128,6 @@ ECS_SYSTEM_DECLARE(system_name);
 //! Used at the end to reset systems.
 #define zoxel_define_reset_system(system_name, component_name)\
     zoxel_system_main_thread(world, system_name, EcsOnStore, [out] component_name);
-
 
 // the idea is to move the element before the ui is raycasted
 // mouse exact - outside loop before it
