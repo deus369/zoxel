@@ -17,7 +17,7 @@ zoxel_filter(line2Ds_query, world, [none] Line2D, [in] LineElementData, [none] C
 zoxel_system_ctx(world, Line2DElementSystem, EcsPreUpdate, line2Ds_query, [none] Line2D, [in] LineElementData, [in] CanvasLink, [out] LineData2D)
 if (!headless) {
     initialize_shader_line2D();
-    zoxel_system_main_thread(world, Line2DRenderSystem, EcsOnStore, [none] Line2D, [in] LineData2D, [in] LineThickness, [in] Color)
+    zoxel_system_1(Line2DRenderSystem, EcsOnStore, [none] Line2D, [in] LineData2D, [in] LineThickness, [in] Color)
 }
 spawn_prefab_line2D(world);
 spawn_prefab_ui_line2D(world);

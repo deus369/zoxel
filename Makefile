@@ -253,10 +253,13 @@ install-flecs:
 	bash bash/flecs/download_flecs_source.sh
 
 remove-flecs:
-	bash remove_flecs.sh
+	bash  bash/flecs/remove_flecs.sh
 
 get-nightly-flecs:
 	bash bash/flecs/nightly_flecs.sh
+
+get-flecs-version:
+	bash bash/flecs/download_flecs_version.sh
 
 revert-nightly-flecs:
 	bash bash/flecs/nightly_revert_source.sh

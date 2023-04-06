@@ -14,7 +14,7 @@ typedef struct {
     ecs_query_t *query2;
 } QueryContainer2;
 
-int32_t ecs_count_id_with_up(const ecs_world_t *world, ecs_entity_t id) {
+/*int32_t ecs_count_id_with_up(const ecs_world_t *world, ecs_entity_t id) {
     ecs_check(world != NULL, ECS_INVALID_PARAMETER, NULL);
     if (!id) {
         return 0;
@@ -26,7 +26,7 @@ int32_t ecs_count_id_with_up(const ecs_world_t *world, ecs_entity_t id) {
     return ecs_iter_count(&it);
 error:
     return 0;
-}
+}*/
 
 char *long_int_itoa(char *str, long int num) {
     if (str == NULL) {

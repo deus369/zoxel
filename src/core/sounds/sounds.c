@@ -60,8 +60,8 @@ zoxel_define_memory_component(SoundData)
 ecs_set_hooks(world, SDLSound, { .dtor = ecs_dtor(SDLSound) });
 zoxel_system(SoundGenerateSystem, EcsOnValidate, [none] Sound, [in] GenerateSound, [in] SoundLength, [in] SoundFrequency, [in] InstrumentType, [out] SoundData, [out] SoundDirty)
 #ifdef SDL_MIXER
-    zoxel_system_main_thread(world, SoundUpdateSystem, EcsPreStore, [none] Sound, [in] SoundDirty, [in] SoundData, [out] SDLSound)
-    zoxel_system_main_thread(world, PlaySoundSystem, EcsPreStore, [none] Sound, [in] TriggerSound, [in] SoundLength, [in] SDLSound)
+    zoxel_system_1(SoundUpdateSystem, EcsPreStore, [none] Sound, [in] SoundDirty, [in] SoundData, [out] SDLSound)
+    zoxel_system_1(PlaySoundSystem, EcsPreStore, [none] Sound, [in] TriggerSound, [in] SoundLength, [in] SDLSound)
 #endif
 zoxel_define_reset_system(PlaySoundResetSystem, TriggerSound)
 zoxel_define_reset_system(GenerateSoundResetSystem, GenerateSound)

@@ -1,0 +1,1 @@
+#define ZOXEL_EVENTS_PLAY_GAME 1

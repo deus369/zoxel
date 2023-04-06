@@ -43,7 +43,7 @@ zoxel_define_component(FieldOfView)
 zoxel_define_component(CameraNearDistance)
 zoxel_define_component(FreeRoam)
 #ifdef main_thread_projection_matrix_system
-    zoxel_system_main_thread(world, ProjectionMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
+    zoxel_system_1(ProjectionMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
 #else
     zoxel_system(ProjectionMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
 #endif

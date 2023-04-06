@@ -36,14 +36,6 @@ find_module_names() {
     echo "${module_names[@]}"
 }
 
-# echo " === Zoxel Modules [${#module_names[@]}] ==="
-# i=0
-# for module_file in ${module_files[@]}; do
-#     module_name=${module_names[i]}
-#     i=$(($i + 1))
-#     echo "    + module [$module_name] at [$module_file]"
-# done
-
 module_files=$(find_module_filepaths src)
 
 # Check if any module files were found
@@ -85,3 +77,11 @@ find_module_path() {
     done
     echo $selected_module_filename
 }
+
+# echo " === Zoxel Modules [${#module_names[@]}] ==="
+# i=0
+# for module_file in ${module_files[@]}; do
+#     module_name=${module_names[i]}
+#     i=$(($i + 1))
+#     echo "    + module [$module_name] at [$module_file]"
+# done

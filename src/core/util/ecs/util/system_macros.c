@@ -31,7 +31,7 @@ Chose one pipeline tag for each type of system.
 } \
 ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
-#define zoxel_system_main_thread(world, id_, phase, ...) { \
+#define zoxel_system_1(id_, phase, ...) { \
     ecs_system_desc_t desc = {0}; \
     ecs_entity_desc_t edesc = {0}; \
     edesc.id = ecs_id(id_);\
@@ -127,7 +127,7 @@ ECS_SYSTEM_DECLARE(system_name);
 
 //! Used at the end to reset systems.
 #define zoxel_define_reset_system(system_name, component_name)\
-    zoxel_system_main_thread(world, system_name, EcsOnStore, [out] component_name);
+    zoxel_system_1(system_name, EcsOnStore, [out] component_name);
 
 // the idea is to move the element before the ui is raycasted
 // mouse exact - outside loop before it
@@ -140,5 +140,5 @@ ECS_SYSTEM_DECLARE(system_name);
 
 //! Used to respond to first level events.
 #define zoxel_event_respond_system_main_thread(system_name, tag_name, event_component_name)\
-    zoxel_system_main_thread(world, system_name, EcsPreStore, [out] tag_name, [in] event_component_name);
+    zoxel_system_1(system_name, EcsPreStore, [out] tag_name, [in] event_component_name);
 

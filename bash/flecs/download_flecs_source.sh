@@ -1,28 +1,7 @@
 #!/bin/bash
 
-version="3.1.3"
+# this is updated to the latest tested version of flecs
 
-# check if include directory exists
-if [ ! -d "include" ]; then
-  # create include directory if it does not exist
-  mkdir -p include
-fi
-
-# check if include/flecs directory exists
-if [ ! -d "include/flecs" ]; then
-  # create include/flecs directory if it does not exist
-  mkdir -p include/flecs
-fi
-
-# check if flecs.c and flecs.h already exist in include/flecs
-if [ ! -f "include/flecs/flecs.c" ] || [ ! -f "include/flecs/flecs.h" ]; then
-    echo "  > downloading flecs [v$version]"
-    # download zip file
-    wget https://github.com/SanderMertens/flecs/archive/refs/tags/v$version.zip
-    # extract zip file
-    unzip -j v$version.zip flecs-$version/flecs.c flecs-$version/flecs.h -d include/flecs
-    # delete downloaded zip and extracted folder
-    rm v$version.zip
-fi
-
-echo "  > flecs [v$version] source is downloaded"
+source bash/flecs/flecs_util.sh
+version="3.2.0"   # version="3.1.3"
+download_flecs_source $version

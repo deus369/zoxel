@@ -16,7 +16,7 @@ void PlayGameButtonSystem(ecs_iter_t *it) {
             delete_hierarchy(world, window);
             // ecs_delete(it->world, window);
             // create play game event
-            spawn_generic_event(it->world, 1);
+            spawn_generic_event(it->world, ZOXEL_EVENTS_PLAY_GAME);
         }
     }
 }

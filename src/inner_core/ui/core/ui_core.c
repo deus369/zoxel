@@ -40,7 +40,7 @@ if (!headless) {
     #ifdef zoxel_inputs
         zoxel_system(ElementActivateSystem, EcsPostUpdate, [in] Mouse, [in] RaycasterTarget)
     #endif
-    zoxel_system_main_thread(world, ElementMeshSystem, ui_mesh_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture)
+    zoxel_system_1(ElementMeshSystem, ui_mesh_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture)
     element_mesh_system_id = ecs_id(ElementMeshSystem);
 }
 spawn_prefab_canvas(world);
