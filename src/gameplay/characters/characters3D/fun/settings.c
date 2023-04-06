@@ -12,6 +12,7 @@ void set_character_settings(int core_count) {
     } else if (core_count > 6) {
         spawn_characters3D_count = 128;
         spawn_many_radius = 1.4f;
+        spawn_many_y = 0.06f;
     } else if (core_count > 4) {
         spawn_characters3D_count = 32;
         spawn_many_radius = 0.8f;

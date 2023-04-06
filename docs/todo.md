@@ -6,16 +6,81 @@
 
 -----
 
-## core
+the core game: voxels > physics3D > devices > players > game
 
-- [ ] multiple apps for network testing
-- [ ] get a working change filter working for flecs
-    - using a simple byte component to check when it changes
-    - next replicate onto my systems
+flesh out core: ui > blueprints > skeletons > animations > sounds > music
+
+gameplay elements: stats > items > actions > skills > quests > dialogue
+
+-----
+
+## voxels
+
+- [-]
+
+    ### core
+
+    - [ ] speed up terrain generation OctreeTerrainChunkSystem
+    - [x] speed up mesh building on cpu OctreeChunkUVsBuildSystem
+    - [ ] stream functions, loading new/unloading chunks based on camera
+    - [ ] frustrum camera culling with chunk bounds
+
+        #### gpu meshing
+
+        - [x] bake mesh on gpu test
+        - [ ] bake a voxel mesh on gpu test
+        - [ ] bake voxels on gpu (implementation)
+
+    ### terrain
+
+    - [x] rewrite terrain function in octree
+    - [ ] voxel lighting
+    - [ ] voxel gravity
+    - [ ] voxel logic (redstone)
+
+    ### voxes
+
+    - [ ] use octree chunks for vox models
+    - [ ] greedy mesh to cull faces
+    - [ ] ambient occlusion on models
+    - [ ] optional black outline like before
+
+## physics3D
+
+- [x] basic voxel collision system
+- [ ] variable gravity
+- [ ] interact with chunk gravity fields
+
+## devices
+
+- [ ] remake data links for player with multiple devices
+
+    ### ui
+
+    - [ ] a devices ui that shows connected devices
+    - [ ] a connect ui, when opened, shows all not connected devices
+
+## players
+
+- [ ] a fps controller, spawns a child camera and links to player character3D for movement
+
+## game
+
+- [-]
+
+    ### core
+
+    - [ ] save games
+
+    ### ui
+
+    - [ ] load save game ui, with new game, delete game buttons
+    - [ ] new game ui
+    - [ ] confirm ui for deletion
 
 ## ui
 
-- [ ] -
+- [-]
 
     ### core
 
@@ -33,10 +98,6 @@
     - [ ] ui style so buttons have same or similar color/s
     - [ ] animate font with slight jiggly
 
-## debug
-
-- [ ] fps frame rate viewer - line ui for last x (3) seconds
-
 ## blueprints
 
 - [ ] blueprint entities, prefabs, module, etc
@@ -52,90 +113,23 @@
     - [ ] full screen toggle
     - [ ] save/load blueprints to binary files
 
-## networking
+## vox skeletons
 
-- [ ] finish sub modules
-
-    ### ui
-
-    - [ ] lobby ui
-    - [ ] chat ui
-
-## devices
-
-- [ ] remake data links for player with multiple devices
+- [ ] bone entities
+- [ ] bone debug tool - overlay over vox model
+- [ ] bone shader and deformation for bone matrices (bone deformation)
 
     ### ui
 
-    - [ ] a devices ui that shows connected devices
-    - [ ] a connect ui, when opened, shows all not connected devices
+    - [ ] animation viewer for testing
+    - [ ] space key to toggle animation
 
-## options
+## animations
 
-- [ ] a master volume option that effects all others, using curve values from 0 to 10
-- [ ] music volume option
-- [ ] sound volume option
-- [ ] render distance option
-- [ ] options entities that save these simple settings with ids
-- [ ] option meta data that links ids saved to names / functions
-- [ ] save / load options to user file
-
-    ### ui
-
-    - [ ] an options ui with sliders for the above options, generically for option entities
-
-## voxels
-
-- [ ] -
-
-    ### core
-
-    - [ ] speed up terrain generation OctreeTerrainChunkSystem
-    - [ ] speed up mesh building on cpu OctreeChunkUVsBuildSystem
-    - [ ] stream functions, loading new/unloading chunks based on camera
-    - [ ] camera culling with chunk bounds
-
-        #### gpu meshing
-
-        - [x] bake mesh on gpu test
-        - [ ] bake a voxel mesh on gpu test
-        - [ ] bake voxels on gpu (implementation)
-
-    ### terrain
-
-    - [x] rewrite terrain function in octree
-    - [ ] voxel lighting systems
-
-    ### vox
-
-    - [ ] use octree chunks for vox models
-    - [ ] greedy mesh to cull faces
-    - [ ] ambient occlusion on models
-
-    ## skeletons
-
-    - [ ] bone entities
-    - [ ] bone debug tool - overlay over vox model
-    - [ ] bone shader and deformation for bone matrices (bone deformation)
-
-        ### ui
-
-        - [ ] animation viewer for testing
-        - [ ] space key to toggle animation
-
-    ### extra
-
-    - [ ] fog of war, to encourage player exploration
-    - [ ] place entity inside chunk, entity has a bounds, gets closest position available
-
-## physics3D
-
-- [ ] voxel collision system
-- [ ] voxel collision response system
-
-## players
-
-- [ ] a fps controller, spawns a child camera and links to player character3D for movement
+- [ ] animation curves on bones
+- [ ] curve viewer
+- [ ] blending between anims
+- [ ] possibly a animation controller
 
 ## sounds
 
@@ -143,40 +137,13 @@
 
 ## music
 
-- [ ] -
+- [-]
 
     ### ui
 
     - [ ] music editor / viewer ui showing notes and sound types
     - [ ] space key to toggle music playing
     - [ ] tooltip ui
-
-## portals
-
-- [ ] render textures
-- [ ] portal camera and portal entities
-- [ ] portal camera position systems
-
-## post processing
-
-- [ ] noise effect (adds noise on top)
-- [ ] vignette effect (dark edges, exponential foggy)
-- [ ] depth of field (add blur on distance)
-- [ ] bloom (make sunny suns)
-
-## game
-
-- [ ] -
-
-    ### core
-
-    - [ ] save games
-
-    ### ui
-
-    - [ ] load save game ui, with new game, delete game buttons
-    - [ ] new game ui
-    - [ ] confirm ui for deletion
 
 ## stats
 
@@ -231,3 +198,55 @@
 ## lore
 
 - [ ] basic entities, module, prefabs, etc
+
+## options
+
+- [ ] a master volume option that effects all others, using curve values from 0 to 10
+- [ ] music volume option
+- [ ] sound volume option
+- [ ] render distance option
+- [ ] options entities that save these simple settings with ids
+- [ ] option meta data that links ids saved to names / functions
+- [ ] save / load options to user file
+
+    ### ui
+
+    - [ ] an options ui with sliders for the above options, generically for option entities
+
+## networking
+
+- [ ] finish sub modules
+
+    ### ui
+
+    - [ ] lobby ui
+    - [ ] chat ui
+
+## portals
+
+- [ ] render textures
+- [ ] portal camera and portal entities
+- [ ] portal camera position systems
+
+## post processing
+
+- [ ] noise effect (adds noise on top)
+- [ ] vignette effect (dark edges, exponential foggy)
+- [ ] depth of field (add blur on distance)
+- [ ] bloom (make sunny suns)
+
+## core
+
+- [ ] multiple apps for network testing
+- [ ] get a working change filter working for flecs
+    - using a simple byte component to check when it changes
+    - next replicate onto my systems
+
+## extra
+
+- [ ] fog of war, to encourage player exploration
+- [ ] place entity inside chunk, entity has a bounds, gets closest position available ??
+
+## debug
+
+- [ ] fps frame rate viewer - line ui for last x (3) seconds

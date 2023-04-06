@@ -296,46 +296,54 @@ clean:
 
 # util #
 
-create-system:
-	bash bash/zoxel/create_system.sh
+count:
+	@echo "Counting Source Files"
+	bash bash/count/count_source.sh
 
 list-systems:
 	bash bash/zoxel/list_systems.sh
 
-count:
-	@echo "Counting Source Files"
-	bash bash/count/count_source.sh
+create-system:
+	bash bash/zoxel/create_system.sh
 
 # lost ones #
 
 help:
 	@echo "zoxel -> an open source voxel engine"
-	@echo "  make $(flecs_target)	builds flecs"
-	@echo "  make			builds zoxel"
+	@echo "	latest @ https://codeberg.org/deus/zoxel"
+	@echo "  > linux & windows"
 	@echo "  make <target>"
-	@echo "    $(target_dev)			builds dev"
+	@echo "    $(target_dev)			builds development"
+	@echo "    <empty>  			builds release"
+	@echo "    run				runs $(TARGET)"
+	@echo "    run-profiler		runs $(TARGET) --profiler"
+	@echo "    run-dev			runs $(target_dev)"
+	@echo "    run-dev-debug		runs valgrind $(target_dev)"
+	@echo "    run-dev-profiler		runs $(target_dev) --profiler"
+	@echo "  > web"
+	@echo "    install-web-sdk		installs tools for web build"
 	@echo "    $(target_web)		builds zoxel-web"
-	@echo "    run			runs $(TARGET)"
-	@echo "    run-profiler	runs $(TARGET) --profiler"
-	@echo "    run-dev		runs $(target_dev)"
-	@echo "    run-dev-debug	runs valgrind $(target_dev)"
-	@echo "    run-dev-profiler	runs $(target_dev) --profiler"
-	@echo "    run-web		runs $(target_web)"
-	@echo "    clean		removes all build files"
-	@echo "    count		counts total lines in all source"
-	@echo "    install		installs zoxel"
-	@echo "    uninstall		inuninstalls zoxel"
-	@echo "    install-sdl		installs sdl"
-	@echo "    install-web-sdk	installs tools for web build"
-	@echo "    install-android-sdk	installs tools for android build"
-	@echo "    android		builds & runs android release"
-	@echo "    android-dev		builds & runs android debug"
-	@echo "    android-dev-debug	builds & runs android debug with logcat"
-	@echo "    install-required	installs required libraries for debian systems"
-	@echo "    create-ssh		creates a ssh key to add to git servers"
-	@echo "    git-pull		pulls latest git"
-	@echo "    git-push		pushes git updates - if has ssh access"
-	@echo "find latest at -> https://codeberg.org/deus/zoxel"
+	@echo "    run-web			runs $(target_web)"
+	@echo "  > android"
+	@echo "    install-android-sdk		installs tools for android build"
+	@echo "    android			builds & runs android release"
+	@echo "    android-dev			builds & runs android debug"
+	@echo "    android-dev-debug		builds & runs android debug with logcat"
+	@echo "  > setup"
+	@echo "    make $(flecs_target)	builds flecs"
+	@echo "    install-required		installs required libraries for debian systems"
+	@echo "    install-sdl			installs sdl"
+	@echo "    install			installs zoxel"
+	@echo "    uninstall			inuninstalls zoxel"
+	@echo "    clean			removes all build files"
+	@echo "  > util"
+	@echo "    count			counts total lines in all source"
+	@echo "    list-systems		lists all found zoxel systems in a module"
+	@echo "    create-system		creates a new system in a module"
+	@echo "  > git"
+	@echo "    create-ssh			creates a ssh key to add to git servers"
+	@echo "    git-pull			pulls latest git"
+	@echo "    git-push			pushes git updates (requires ssh access)"
 
 # todo: clean more
 # ignore resources directory and gitignore in build?
