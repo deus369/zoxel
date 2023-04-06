@@ -1,5 +1,7 @@
-#ifndef zoxel_voxels_vox
-#define zoxel_voxels_vox
+#ifndef zoxel_voxes
+#define zoxel_voxes
+
+#define zoxel_voxes_octrees
 
 zoxel_declare_tag(Vox)
 #include "data/vox_file.c"
