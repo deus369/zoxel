@@ -49,7 +49,6 @@ void fill_octree(ChunkOctree* node, unsigned char voxel, unsigned char depth) {
 }
 
 void OctreeTerrainChunkSystem(ecs_iter_t *it) {
-    if (disable_chunk_systems) return;
     if (!ecs_query_changed(it->ctx, NULL)) {
         return;
     }

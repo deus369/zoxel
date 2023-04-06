@@ -81,7 +81,6 @@ void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,
 }
 
 void ChunkUVsBuildSystem(ecs_iter_t *it) {
-    if (disable_chunk_systems) return;
     if (!ecs_query_changed(it->ctx, NULL)) {
         return;
     }

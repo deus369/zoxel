@@ -1,3 +1,5 @@
+ecs_entity_t main_terrain_world;
+
 int get_chunk_index(int i, int j, int rows) {
     return (i + rows) * (rows + rows + 1) + (j + rows);
 }

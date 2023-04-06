@@ -142,9 +142,7 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
 
 //! Builds a mesh data from the chunk!
 void ChunkColorsBuildSystem(ecs_iter_t *it) {
-    if (disable_chunk_systems) return;
-    if (!ecs_query_changed(it->ctx, NULL))
-    {
+    if (!ecs_query_changed(it->ctx, NULL)) {
         return;
     }
     // printf("[ChunkBuildSystem] GenerateChunk was changed.\n");
@@ -156,16 +154,13 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
     MeshVertices *meshVertices = ecs_field(it, MeshVertices, 6);
     MeshColors *meshColors = ecs_field(it, MeshColors, 7);
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 8);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         ChunkDirty *chunkDirty = &chunkDirtys[i];
-        if (chunkDirty->value == 0)
-        {
+        if (chunkDirty->value == 0) {
             continue;
         }
         MeshDirty *meshDirty = &meshDirtys[i];
-        if (meshDirty->value != 0)
-        {
+        if (meshDirty->value != 0) {
             continue;
         }
         chunkDirty->value = 0;

@@ -39,26 +39,21 @@ void GenerateChunkNoise(ChunkData* chunk, const ChunkSize *chunkSize) {
 }
 
 void NoiseChunkSystem(ecs_iter_t *it) {
-    if (disable_chunk_systems) return;
-    if (!ecs_query_changed(it->ctx, NULL))
-    {
+    if (!ecs_query_changed(it->ctx, NULL)) {
         return;
     }
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
     ChunkData *chunks = ecs_field(it, ChunkData, 3);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 4);
     const GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 5);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         const GenerateChunk *generateChunk = &generateChunks[i];
         //! Only rebuild if GenerateChunk is set to 1 and EntityDirty is false.
-        if (generateChunk->value == 0)
-        {
+        if (generateChunk->value == 0) {
             continue;
         }
         ChunkDirty *chunkDirty = &chunkDirtys[i];
-        if (chunkDirty->value != 0)
-        {
+        if (chunkDirty->value != 0) {
             continue;
         }
         chunkDirty->value = 1;

@@ -8,9 +8,10 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     add_seed(world, e, 999);
     add_physics3D_basic(world, e);
     zoxel_add(world, e, VoxelPosition)
+    zoxel_add_tag(world, e, LinkChunk)
+    zoxel_add(world, e, VoxLink)
     zoxel_add(world, e, ChunkLink)
     zoxel_add(world, e, ChunkPosition)
-    zoxel_add_tag(world, e, LinkChunk)
     ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs
         zoxel_log("spawn_prefab character3D [%lu].\n", (long int) (e));
@@ -24,9 +25,10 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file
     ecs_entity_t e = spawn_voxel_chunk_mesh(world, prefab, position, scale);
     set_vox_from_vox_file(world, e, vox);
     zoxel_set(world, e, Rotation3D, { rotation });
-    zoxel_set(world, e, VoxelPosition, {{ 0, 0, 0 }});
+    zoxel_set(world, e, VoxLink, { main_terrain_world });
     zoxel_set(world, e, ChunkLink, { 0 });
     zoxel_set(world, e, ChunkPosition, { int3_zero });
+    zoxel_set(world, e, VoxelPosition, {{ 0, 0, 0 }});
     ecs_defer_end(world);
     return e;
 }
