@@ -1,8 +1,7 @@
 #ifndef zoxel_crafting
 #define zoxel_crafting
 
+zoxel_begin_module(Crafting)
+zoxel_end_module(Crafting)
 
-void CraftingImport(ecs_world_t *world) {
-    zoxel_module(Crafting)
-}
 #endif

@@ -2,7 +2,7 @@
 #define zoxel_combat
 
 // damage systems, death, states, etc
-void CombatImport(ecs_world_t *world) {
-    zoxel_module(Combat)
-}
+zoxel_begin_module(Combat)
+zoxel_end_module(Combat)
+
 #endif

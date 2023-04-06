@@ -1,8 +1,7 @@
 #ifndef zoxel_farming
 #define zoxel_farming
 
+zoxel_begin_module(Farming)
+zoxel_end_module(Farming)
 
-void FarmingImport(ecs_world_t *world) {
-    zoxel_module(Farming)
-}
 #endif

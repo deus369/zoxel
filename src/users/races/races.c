@@ -1,8 +1,7 @@
 #ifndef zoxel_races
 #define zoxel_races
 
+zoxel_begin_module(Races)
+zoxel_end_module(Races)
 
-void RacesImport(ecs_world_t *world) {
-    zoxel_module(Races)
-}
 #endif

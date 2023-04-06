@@ -30,33 +30,32 @@ unsigned char is_opengl_running() {
     return main_gl_context != NULL;
 }
 
-void AppsImport(ecs_world_t *world) {
-    zoxel_module(Apps)
-    zoxel_define_tag(App)
-    zoxel_define_component(SDLWindow)
-    zoxel_define_component(Context)
-    zoxel_define_component(Renderer)
-    ecs_set_hooks(world, SDLWindow, { .dtor = ecs_dtor(SDLWindow) });
-    ecs_set_hooks(world, Context, { .dtor = ecs_dtor(Context) });
-    ecs_set_hooks(world, Renderer, { .dtor = ecs_dtor(Renderer) });
-    spawn_app_prefab(world);
-    set_data_path();
-    if (init_sdl() == EXIT_SUCCESS) {
-        SDL_Window* window = spawn_sdl_window();
-        SDL_GLContext* gl_context = create_sdl_context(window);
-        spawn_app(world, window, gl_context);
-        main_window = window;
-        #ifndef WEB_BUILD
-            #ifndef ANDROID_BUILD
-                if (fullscreen) {
-                    sdl_toggle_fullscreen(main_window);
-                }
-            #endif
+zoxel_begin_module(Apps)
+zoxel_define_tag(App)
+zoxel_define_component(SDLWindow)
+zoxel_define_component(Context)
+zoxel_define_component(Renderer)
+ecs_set_hooks(world, SDLWindow, { .dtor = ecs_dtor(SDLWindow) });
+ecs_set_hooks(world, Context, { .dtor = ecs_dtor(Context) });
+ecs_set_hooks(world, Renderer, { .dtor = ecs_dtor(Renderer) });
+spawn_app_prefab(world);
+set_data_path();
+if (init_sdl() == EXIT_SUCCESS) {
+    SDL_Window* window = spawn_sdl_window();
+    SDL_GLContext* gl_context = create_sdl_context(window);
+    spawn_app(world, window, gl_context);
+    main_window = window;
+    #ifndef WEB_BUILD
+        #ifndef ANDROID_BUILD
+            if (fullscreen) {
+                sdl_toggle_fullscreen(main_window);
+            }
         #endif
-        main_gl_context = gl_context;
-        if (main_gl_context == NULL) {
-            running = false;
-        }
+    #endif
+    main_gl_context = gl_context;
+    if (main_gl_context == NULL) {
+        running = false;
     }
 }
+zoxel_end_module(Apps)
 #endif

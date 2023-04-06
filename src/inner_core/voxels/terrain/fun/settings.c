@@ -3,12 +3,13 @@ void set_terrain_render_distance(int core_count) {
         zoxel_log(" > high core count detected [%i]\n", core_count);
         terrain_spawn_distance = 18; // 28;
         terrain_vertical = 3;
-        terrain_amplifier = 80.0;
+        // terrain_amplifier = 80.0;
         lod_division_dividor = 5;
         // max_octree_depth = 5;
     } else if (core_count > 6) {
         zoxel_log(" > average core count detected [%i]\n", core_count);
-        terrain_spawn_distance = 20;
+        terrain_spawn_distance = 18;
+        lod_division_dividor = 3;
     } else if (core_count > 4) {
         zoxel_log(" > low (-) core count detected [%i]\n", core_count);
         terrain_spawn_distance = 12;
@@ -19,7 +20,7 @@ void set_terrain_render_distance(int core_count) {
     #ifdef zoxel_is_flat_height
         terrain_vertical = 1;
     #endif
-    terrain_frequency = max_octree_depth * 0.003216;
+    terrain_frequency = max_octree_depth * 0.008216;
     terrain_boost = -16 * terrain_vertical;
     terrain_amplifier = terrain_vertical * 24;
     lowest_voxel_height = - terrain_vertical * 16 + 1;

@@ -1,8 +1,8 @@
 #ifndef zoxel_collisions3D
 #define zoxel_collisions3D
 
-#define bounce_multiplier 4.0f
-#define bounce_lost_force 0.42f
+#define bounce_multiplier 1.0f
+#define bounce_lost_force 0.32f
 zoxel_component(BasicCollider, float)
 #include "systems/basic_collision3D_system.c"
 

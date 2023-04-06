@@ -1,10 +1,13 @@
 // #define zoxel_debug_basic_collision3D_system
 
+const float bounce_threshold = 0.001f;
+
 // todo seperate voxel position, and chunk position updates outside of this
 // todo check normal of voxel position difference, base bounce velocity off that instead of just y axis
 void BasicCollision3DSystem(ecs_iter_t *it) {
     unsigned char bounds = powers_of_two_byte[max_octree_depth];
-    double deltaTime = (double) it->delta_time;
+    double delta_time = zoxel_delta_time;
+    // double delta_time = (double) it->delta_time;
     const int3 chunk_size = (int3) { 16, 16, 16 };
     const ChunkLink *chunkLinks = ecs_field(it, ChunkLink, 1);
     const ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 2);
@@ -41,12 +44,20 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
                                 zoxel_log(" > voxel collided %i\n", voxel);
                             #endif
                             Velocity3D *velocity3D = &velocity3Ds[i];
-                            position3D->value.x -= velocity3D->value.x * deltaTime * bounce_multiplier;
-                            position3D->value.y -= velocity3D->value.y * deltaTime * bounce_multiplier;
-                            position3D->value.z -= velocity3D->value.z * deltaTime * bounce_multiplier;
+                            position3D->value.x -= velocity3D->value.x * delta_time * bounce_multiplier;
+                            position3D->value.y -= velocity3D->value.y * delta_time * bounce_multiplier;
+                            position3D->value.z -= velocity3D->value.z * delta_time * bounce_multiplier;
                             // get normal of collision here
-                            velocity3D->value.y *= -1.0f * bounce_lost_force;
+                            velocity3D->value.y *= -bounce_lost_force;
+                            if (velocity3D->value.y > -bounce_threshold && velocity3D->value.y < bounce_threshold) {
+                                velocity3D->value.y = 0;
+                            }
+                            // velocity3D->value.y = 0;
                             // float3_subtract_float3_p(&position3D->value, velocity3D->value);
+                            if (position3D->value.y < -100) {
+                                zoxel_log(" - npc is too far deep %lu\n", it->entities[i]);
+                                ecs_delete(world, it->entities[i]);
+                            }
                         }
                     }
                 }

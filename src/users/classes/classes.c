@@ -2,7 +2,7 @@
 #define zoxel_classes
 
 
-void ClassesImport(ecs_world_t *world) {
-    zoxel_module(Classes)
-}
+zoxel_begin_module(Classes)
+zoxel_end_module(Classes)
+
 #endif

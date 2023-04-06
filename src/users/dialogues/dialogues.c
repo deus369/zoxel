@@ -2,7 +2,7 @@
 #define zoxel_dialogues
 
 
-void DialoguesImport(ecs_world_t *world) {
-    zoxel_module(Dialogues)
-}
+zoxel_begin_module(Dialogues)
+zoxel_end_module(Dialogues)
+
 #endif
