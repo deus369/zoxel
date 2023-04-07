@@ -24,10 +24,9 @@ void add_noise_chunk(ecs_world_t *world, ecs_entity_t e) {
 
 ecs_entity_t spawn_chunk_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
-    const int3 size = { 16, 16, 16 };
     ecs_entity_t e = ecs_new_prefab(world, "chunk_prefab");
     add_seed(world, e, 666);
-    add_chunk(world, e, size);
+    add_chunk(world, e, default_chunk_size);
     add_noise_chunk(world, e);
     ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs

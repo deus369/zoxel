@@ -1,5 +1,5 @@
 // const float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
-const float octree_scales3_multiplier = overall_voxel_scale / ((float) octree_node_size);
+
 const float octree_scales3[] = {
     2.0f * octree_scales3_multiplier,
     1.0f * octree_scales3_multiplier,

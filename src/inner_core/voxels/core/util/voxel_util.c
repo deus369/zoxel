@@ -11,15 +11,27 @@ void chunk_position_fix2(float3 real_position, int3 *chunk_position) {
 }
 
 int3 get_voxel_position(float3 real_position) {
+    // divides by scale of chunk meshes
+    // multiplies by voxel chunk lengths
+    float multiplier = default_chunk_length / octree_scales3_multiplier;
     int3 voxel_position = (int3) {
-        (int) floor(real_position.x),
-        (int) floor(real_position.y),
-        (int) floor(real_position.z) };
+        (int) floor(real_position.x * multiplier),
+        (int) floor(real_position.y * multiplier),
+        (int) floor(real_position.z * multiplier) };
     return voxel_position;
 }
 
 int3 get_chunk_position(float3 real_position, int3 chunk_size) {
     int3 voxel_position = get_voxel_position(real_position);
+    if (real_position.x < 0) {
+        voxel_position.x += 1;
+    }
+    if (real_position.y < 0) {
+        voxel_position.y += 1;
+    }
+    if (real_position.z < 0) {
+        voxel_position.z += 1;
+    }
     // zoxel_log("voxelpos [%ix%ix%i]\n", voxel_position.x, voxel_position.y, voxel_position.z);
     int3 chunk_position = (int3) { voxel_position.x / chunk_size.x, voxel_position.y / chunk_size.y, voxel_position.z / chunk_size.z };
     // zoxel_log("chunk_position [%ix%ix%i]\n", chunk_position.x, chunk_position.y, chunk_position.z);
@@ -27,16 +39,18 @@ int3 get_chunk_position(float3 real_position, int3 chunk_size) {
     return chunk_position;
 }
 
-int3 voxel_chunk_position(int3 chunk_position, int3 chunk_size) {
-    int3 voxel_position = int3_multiply_int3(chunk_position, chunk_size);
+int3 get_local_position(int3 voxel_position, int3 chunk_position, int3 chunk_size) {
+    voxel_position.x %= chunk_size.x;
+    voxel_position.y %= chunk_size.y;
+    voxel_position.z %= chunk_size.z;
     if (voxel_position.x < 0) {
-        voxel_position.x += 1;
+        voxel_position.x = chunk_size.x + voxel_position.x;
     }
     if (voxel_position.y < 0) {
-        voxel_position.y += 1;
+        voxel_position.y = chunk_size.y + voxel_position.y;
     }
     if (voxel_position.z < 0) {
-        voxel_position.z += 1;
+        voxel_position.z = chunk_size.z + voxel_position.z;
     }
     return voxel_position;
 }
@@ -48,22 +62,6 @@ int3 voxel_chunk_position_xz(int3 chunk_position, int3 chunk_size) {
     }
     if (voxel_position.z < 0) {
         voxel_position.z += 1;
-    }
-    return voxel_position;
-}
-
-int3 get_local_position(int3 voxel_position, int3 chunk_position, int3 chunk_size) {
-    voxel_position.x %= chunk_size.x;
-    voxel_position.y %= chunk_size.y;
-    voxel_position.z %= chunk_size.z;
-    if (voxel_position.x < 0) {
-        voxel_position.x += chunk_size.x;
-    }
-    if (voxel_position.y < 0) {
-        voxel_position.y += chunk_size.y;
-    }
-    if (voxel_position.z < 0) {
-        voxel_position.z += chunk_size.z;
     }
     return voxel_position;
 }
@@ -112,4 +110,18 @@ int3 get_local_position(int3 voxel_position, int3 chunk_position, int3 chunk_siz
         chunk_position.z += 1;
     }
     return chunk_position;
+}*/
+
+/*int3 voxel_chunk_position(int3 chunk_position, int3 chunk_size) {
+    int3 voxel_position = int3_multiply_int3(chunk_position, chunk_size);
+    if (voxel_position.x < 0) {
+        voxel_position.x += 1;
+    }
+    if (voxel_position.y < 0) {
+        voxel_position.y += 1;
+    }
+    if (voxel_position.z < 0) {
+        voxel_position.z += 1;
+    }
+    return voxel_position;
 }*/

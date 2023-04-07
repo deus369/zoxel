@@ -1,12 +1,9 @@
 // colors version
 
-#define zoxel_add_faces_colors(direction, is_positive)\
-{\
+#define zoxel_add_faces_colors(direction, is_positive) {\
     unsigned char that_voxel = get_voxel##_##direction(local_position, chunk, chunkSize, NULL);\
-    if (that_voxel == 0)\
-    {\
-        if (is_positive)\
-        {\
+    if (that_voxel == 0) {\
+        if (is_positive) {\
             add_voxel_face_colors(meshIndicies, meshVertices,\
                 meshColors, voxel_color, \
                 vertex_position_offset, center_mesh_offset, voxel_scale,\
@@ -14,9 +11,7 @@
                 voxel_face_indicies_reversed,\
                 voxel_face_indicies_length,\
                 voxel_face_vertices##_##direction, voxel_face_vertices_length);\
-        }\
-        else\
-        {\
+        } else {\
             add_voxel_face_colors(meshIndicies, meshVertices,\
                 meshColors, voxel_color, \
                 vertex_position_offset, center_mesh_offset, voxel_scale,\
@@ -36,13 +31,11 @@ void add_voxel_face_colors(MeshIndicies *meshIndicies, MeshVertices *meshVertice
     const int voxel_face_indicies[], int voxel_face_indicies_length,
     const float3 voxel_face_vertices[], int voxel_face_vertices_length) {
     int indicies_offset = start2.y;
-    for (int a = 0, b = start2.x; a < voxel_face_indicies_length; a++, b++)
-    {
+    for (int a = 0, b = start2.x; a < voxel_face_indicies_length; a++, b++) {
         meshIndicies->value[b] = indicies_offset + voxel_face_indicies[a];
     }
     // add verts
-    for (int a = 0, b = start2.y; a < voxel_face_vertices_length; a++, b = b + 1)
-    {
+    for (int a = 0, b = start2.y; a < voxel_face_vertices_length; a++, b = b + 1) {
         float3 vertex_position = voxel_face_vertices[a]; // (float3) { cubeVertices[a + 0], cubeVertices[a + 1], cubeVertices[a + 2] };
         vertex_position = float3_multiply_float(vertex_position, voxel_scale);          // scale vertex
         vertex_position = float3_add(vertex_position, vertex_position_offset);   // offset vertex by voxel position in chunk
@@ -62,19 +55,13 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
     int verticies_count = 0;
     int3 local_position;
     int2 start = { };
-    float voxel_scale = overall_voxel_scale / ((float) chunkSize->value.x); // 16.0f;
-    // float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f,
-    //    - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
+    float voxel_scale = overall_voxel_scale / ((float) chunkSize->value.x);
     // precount our face data for initialization
-    for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++)
-    {
-        for (local_position.y = 0; local_position.y < chunkSize->value.y; local_position.y++)
-        {
-            for (local_position.z = 0; local_position.z < chunkSize->value.z; local_position.z++)
-            {
+    for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++) {
+        for (local_position.y = 0; local_position.y < chunkSize->value.y; local_position.y++) {
+            for (local_position.z = 0; local_position.z < chunkSize->value.z; local_position.z++) {
                 array_index = int3_array_index(local_position, chunkSize->value);
-                if (chunk->value[array_index] != 0)
-                {
+                if (chunk->value[array_index] != 0) {
                     #ifndef disable_voxel_left
                     zoxel_check_faces(left)
                     #endif
@@ -103,16 +90,12 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
     array_index = 0;
     unsigned char voxel = 0;
     color voxel_color = (color) { 255, 255, 255, 255 };
-    for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++)
-    {
-        for (local_position.y = 0; local_position.y < chunkSize->value.y; local_position.y++)
-        {
-            for (local_position.z = 0; local_position.z < chunkSize->value.z; local_position.z++)
-            {
+    for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++) {
+        for (local_position.y = 0; local_position.y < chunkSize->value.y; local_position.y++) {
+            for (local_position.z = 0; local_position.z < chunkSize->value.z; local_position.z++) {
                 array_index = int3_array_index(local_position, chunkSize->value);
                 voxel = chunk->value[array_index];
-                if (voxel != 0)
-                {
+                if (voxel != 0) {
                     voxel_color = colors->value[voxel - 1];
                     // get color based on pallete voxel_color
                     float3 vertex_position_offset = float3_multiply_float(float3_from_int3(local_position), voxel_scale);
@@ -140,7 +123,6 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
     }
 }
 
-//! Builds a mesh data from the chunk!
 void ChunkColorsBuildSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(it->ctx, NULL)) {
         return;
@@ -163,14 +145,14 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         if (meshDirty->value != 0) {
             continue;
         }
-        chunkDirty->value = 0;
-        meshDirty->value = 1;
         const ChunkData *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
         const Colors *colors2 = &colors[i];
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
         MeshColors *meshColors2 = &meshColors[i];
+        chunkDirty->value = 0;
+        meshDirty->value = 1;
         build_chunk_mesh_colors(chunk, chunkSize, colors2, meshIndicies2, meshVertices2, meshColors2);
         //printf("Building ChunkData Colors Mesh [%lu] - [%i] [%i]\n",
         //    (long int) it->entities[i], meshIndicies2->length, meshVertices2->length);

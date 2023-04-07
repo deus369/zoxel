@@ -1,7 +1,6 @@
 ecs_entity_t prefab_terrain;
 
 ecs_entity_t spawn_prefab_terrain(ecs_world_t *world) {
-    // int2 texture_size = { 16, 16 };
     ecs_defer_begin(world);
     // ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, voxel_prefab);
     ecs_entity_t e = ecs_new_prefab(world, "");

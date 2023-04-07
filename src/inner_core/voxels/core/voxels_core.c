@@ -2,12 +2,14 @@
 #define zoxel_voxels_core
 
 const float overall_voxel_scale = 32.0f; // 64.0f; // 4.0f // 2.0f;
+const float octree_scales3_multiplier = 16.0f; // overall_voxel_scale / ((float) octree_node_size);
 const float3 center_mesh_offset = { 0, 0, 0 };
-const int chunk_length = 16;
-const int3 chunk_size = { chunk_length, chunk_length, chunk_length };
 const double noiseChunkAnimateSpeed = 0.5; // 1 / 8.0;
 const int dissapearChance = 92;
 const float spawnRange = 0.96f;
+int max_octree_depth = 4;
+int default_chunk_length; // = powers_of_two[max_octree_depth];
+int3 default_chunk_size; // = (int3) { default_chunk_length, default_chunk_length, default_chunk_length };
 
 // zoxel_component_includes
 zoxel_declare_tag(LinkChunk)
@@ -39,6 +41,13 @@ zoxel_byte_component(ChunkDivision)                     //! The resolution of ea
 #include "systems/chunk_link_system.c"
 zoxel_reset_system(GenerateChunkResetSystem, GenerateChunk)
 
+void set_max_octree_length(unsigned char new_max_octree_depth) {
+    max_octree_depth = new_max_octree_depth;
+    default_chunk_length = powers_of_two[max_octree_depth];
+    default_chunk_size = (int3) { default_chunk_length, default_chunk_length, default_chunk_length };
+    zoxel_log(" > set max octree depth [%i] - chunk length [%i] \n", max_octree_depth, default_chunk_length);
+}
+
 zoxel_begin_module(VoxelsCore)
 
 // zoxel_component_defines
@@ -66,6 +75,7 @@ spawn_prefab_noise_chunk(world);
 #ifdef zoxel_test_voxels
 test_noise_chunks();
 #endif
+set_max_octree_length(max_octree_depth);
 
 zoxel_end_module(VoxelsCore)
 

@@ -18,9 +18,8 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size) {
     #endif
     zoxel_set(world, e, MeshDirty, { 0 });
     zoxel_set(world, e, Brightness, { 1.4f });
-    // zoxel_set(world, e, EntityDirty, { 1 });    // replace with MeshDirty
     add_seed(world, e, 666);
-    add_chunk_octree(world, e, chunk_size);
+    add_chunk_octree(world, e, default_chunk_size);
     add_generate_chunk(world, e);
     if (!headless) {
         zoxel_add(world, e, MeshIndicies);

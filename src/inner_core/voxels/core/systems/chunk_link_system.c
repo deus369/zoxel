@@ -1,5 +1,3 @@
-// #define zoxel_debug_chunk_link_system
-
 void set_entity_terrain_chunk_position(ecs_world_t *world, const VoxLink *voxLink, ChunkLink *chunkLink, ChunkPosition *chunkPosition, int3 chunk_position) {
     chunkPosition->value = chunk_position;
     const ChunkLinks *chunkLinks = ecs_get(world, voxLink->value, ChunkLinks);
@@ -11,10 +9,15 @@ void set_entity_terrain_chunk_position(ecs_world_t *world, const VoxLink *voxLin
         const ChunkPosition *chunkPosition2 = ecs_get(world, chunkLink->value, ChunkPosition);
         zoxel_log("     > test chunk position [%ix%ix%i]\n", chunkPosition2->value.x, chunkPosition2->value.y, chunkPosition2->value.z);
     #endif
+    #ifdef zoxel_debug_chunk_link_system_test
+        const ChunkPosition *chunkPosition2 = ecs_get(world, chunkLink->value, ChunkPosition);
+        if (!int3_equals(chunkPosition2->value, chunk_position)) {
+            zoxel_log("     - chunk position is not equal to set one\n");
+        }
+    #endif
 }
 
 void ChunkLinkSystem(ecs_iter_t *it) {
-    const int3 chunk_size = (int3) { 16, 16, 16 };
     const VoxLink *voxLinks = ecs_field(it, VoxLink, 2);
     const Position3D *position3Ds = ecs_field(it, Position3D, 3);
     ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 4);
@@ -24,7 +27,7 @@ void ChunkLinkSystem(ecs_iter_t *it) {
         ChunkLink *chunkLink = &chunkLinks[i];
         const Position3D *position3D = &position3Ds[i];
         const VoxLink *voxLink = &voxLinks[i];
-        int3 new_chunk_position = get_chunk_position(position3D->value, chunk_size);
+        int3 new_chunk_position = get_chunk_position(position3D->value, default_chunk_size);
         if (chunkLink->value == 0) {
             set_entity_terrain_chunk_position(world, voxLink, chunkLink, chunkPosition, new_chunk_position);
         } else {

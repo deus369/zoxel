@@ -12,8 +12,7 @@ const unsigned char octree_node_size = 2;
 
 #ifndef is_int3
     #define is_int3
-    typedef struct
-    {
+    typedef struct {
         int x;
         int y;
         int z;

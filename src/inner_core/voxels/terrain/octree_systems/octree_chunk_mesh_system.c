@@ -1,8 +1,8 @@
 // only update mesh when none of neighbors are dirty
 void OctreeChunkMeshSystem(ecs_iter_t *it) {
     ChunkDirtier *chunkDirtiers = ecs_field(it, ChunkDirtier, 1);
-    const ChunkNeighbors *chunkNeighbors = ecs_field(it, ChunkNeighbors, 2);
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 3);
+    // const ChunkNeighbors *chunkNeighbors = ecs_field(it, ChunkNeighbors, 2);
     for (int i = 0; i < it->count; i++) {
         ChunkDirtier *chunkDirtier = &chunkDirtiers[i];
         if (chunkDirtier->value == 1) {

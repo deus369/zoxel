@@ -9,8 +9,7 @@ typedef struct {
 float4x4 float4x4_zero() {
     float4x4 identity; // = malloc(16 * 4);
     float* identity2 = (float*) &identity;
-    for (int i = 0; i < 16; i++)
-    {
+    for (int i = 0; i < 16; i++) {
         identity2[i] = 0;
     }
     return identity;
@@ -30,8 +29,7 @@ float4x4 float4x4_multiply(const float4x4 a, const float4x4 b) {
     float* a2 = (float*) &a;
     float* b2 = (float*) &b;
     float* c2 = (float*) &c;
-    for (unsigned j = 0; j < 16; j++)
-    {
+    for (unsigned j = 0; j < 16; j++) {
         unsigned i = j % 4;
         unsigned j4 = j & 12;
         c2[j] = a2[j4 + 0] * b2[i + 0] + a2[j4 + 1] * b2[i + 4]

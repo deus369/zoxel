@@ -1,7 +1,3 @@
-
-
-
-
 #define zoxel_octree_add_face_counts(direction_name) {\
     zoxel_octree_check(direction_name) {\
         zoxel_add_voxel_face_counts()\

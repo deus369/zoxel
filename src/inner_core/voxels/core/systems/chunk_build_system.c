@@ -40,9 +40,7 @@ void build_chunk_mesh(const ChunkData *chunk, const ChunkSize *chunkSize,
     int verticies_count = 0;
     int3 local_position;
     int2 start = { };
-    float voxel_scale = overall_voxel_scale / ((float) chunkSize->value.x); // 16.0f;
-    //const float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f,
-    //    - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
+    float voxel_scale = overall_voxel_scale / ((float) chunkSize->value.x);
     // precount our face data for initialization
     for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++) {
         for (local_position.y = 0; local_position.y < chunkSize->value.y; local_position.y++) {
@@ -78,8 +76,7 @@ void build_chunk_mesh(const ChunkData *chunk, const ChunkSize *chunkSize,
         for (local_position.y = 0; local_position.y < chunkSize->value.y; local_position.y++) {
             for (local_position.z = 0; local_position.z < chunkSize->value.z; local_position.z++) {
                 array_index = int3_array_index(local_position, chunkSize->value);
-                if (chunk->value[array_index] != 0)
-                {
+                if (chunk->value[array_index] != 0) {
                     float3 vertex_position_offset = float3_multiply_float(float3_from_int3(local_position), voxel_scale);
                     #ifndef disable_voxel_left
                     zoxel_add_faces(left, 0)

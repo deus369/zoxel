@@ -81,7 +81,7 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
             for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
                 #ifdef zoxel_is_flat_height
-                    int global_height = int_floor(terrain_amplifier * 0.2f);
+                    int global_height = int_floor(terrain_amplifier * flat_height_level);
                 #else
                     int global_height = int_floor(terrain_boost + -terrain_minus_amplifier + terrain_amplifier * perlin_terrain(
                         noise_positiver2 + chunk_position_float3.x + (voxel_position.x / map_size_f.x), 

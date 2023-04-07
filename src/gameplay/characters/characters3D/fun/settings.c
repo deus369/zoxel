@@ -6,9 +6,9 @@ float spawn_many_y = 0.6f;
 
 void set_character_settings(int core_count) {
     if (core_count > 8) {
-        spawn_characters3D_count = 256; // 2048;
-        spawn_many_radius = 2.0f;
-        spawn_many_y = 0.2f;
+        spawn_characters3D_count = 512; // 2048;
+        spawn_many_radius = 4.0f;
+        spawn_many_y = 0.6f;
     } else if (core_count > 6) {
         spawn_characters3D_count = 128;
         spawn_many_radius = 1.4f;

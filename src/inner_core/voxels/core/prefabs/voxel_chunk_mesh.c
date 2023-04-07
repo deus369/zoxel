@@ -9,9 +9,8 @@ ecs_entity_t spawn_voxel_chunk_mesh_prefab(ecs_world_t *world) {
     #endif
     zoxel_set(world, e, MeshDirty, { 0 });
     zoxel_set(world, e, Brightness, { 1.4f });
-    // zoxel_set(world, e, EntityDirty, { 1 });    // replace with MeshDirty
     add_seed(world, e, 666);
-    add_chunk(world, e, chunk_size);
+    add_chunk(world, e, default_chunk_size);
     add_generate_chunk(world, e);
     if (!headless) {
         zoxel_add(world, e, MeshIndicies);

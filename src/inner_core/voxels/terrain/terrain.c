@@ -1,35 +1,7 @@
 #ifndef zoxel_voxels_terrain
 #define zoxel_voxels_terrain
 
-int terrain_spawn_distance;
-int terrain_vertical = 2;
-const unsigned char terrain_min_height = 8;
-double terrain_amplifier = 64.0;
-double terrain_boost = 0.0;
-int lowest_voxel_height = -24;
-int max_octree_depth = 4;
-int inner_render_buffer = 1;
-int lod_division_dividor = 3;
-const int max_chunks_build_per_frame = 32;
-#ifndef WEB_BUILD
-#else
-    #define voxels_disable_streaming
-#endif
-#define octree_min_height -1.995f // 0.005f
-#define noise_positiver2 32000
-// #define terrain_amplifier 64.0
-#define terrain_minus_amplifier 0.0
-#ifdef voxel_octrees
-    double terrain_frequency = 0.028216; // 0.026216
-#else
-    double terrain_frequency = 0.00216; // 0.004216
-#endif
-#define terrain_texture_resolution 16 // 32
-const int3 terrain_chunk_size = { chunk_length, 8 * chunk_length, chunk_length };
-float chunk_real_size = overall_voxel_scale / 2.0f; // 1.0f;   // size achunk takes up
-const int terrain_octaves = 12;
-const uint32_t terrain_seed = 32666;
-const int2 chunk_texture_size = { terrain_texture_resolution, terrain_texture_resolution };
+#include "fun/settings.c"
 zoxel_declare_tag(TerrainWorld)
 zoxel_declare_tag(TerrainChunk)
 zoxel_declare_tag(ChunkTerrain)
@@ -48,7 +20,6 @@ zoxel_byte_component(ChunkDirtier)
 #include "octree_systems/octree_chunk_build_system.c"
 #include "octree_systems/octree_chunk_mesh_system.c"
 #include "util/create_terrain.c"
-#include "fun/settings.c"
 
 zoxel_begin_module(Terrain)
 zoxel_define_tag(TerrainWorld)
@@ -74,6 +45,7 @@ zoxel_system_ctx(world, OctreeChunkBuildSystem, EcsOnUpdate, generateChunkQuery,
     [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] ChunkDirtier, [none] !MeshColors)
 zoxel_system(OctreeChunkMeshSystem, EcsPreUpdate, [out] ChunkDirtier, [in] ChunkNeighbors, [out] MeshDirty)
 spawn_prefab_terrain(world);
+int3 terrain_chunk_size = { default_chunk_length, 8 * default_chunk_length, default_chunk_length };
 spawn_prefab_terrain_chunk(world, terrain_chunk_size);
 spawn_prefab_terrain_chunk_octree(world, terrain_chunk_size);
 set_terrain_render_distance(cpu_core_count);

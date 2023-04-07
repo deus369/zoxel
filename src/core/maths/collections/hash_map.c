@@ -5,28 +5,76 @@
 
 // uses prime numbers:
 // 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, etc
+// 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173
+// uint32_t get_int3_hash(int3 input) {
+//     /*uint32_t hash = 17;
+//     hash = hash * 23 + ((uint32_t) input.x);
+//     hash = hash * 23 + ((uint32_t) input.y);
+//     hash = hash * 23 + ((uint32_t) input.z);*/
+//     /*uint32_t hash = 61;
+//     hash = hash * 71 + ((uint32_t) input.x);
+//     hash = hash * 71 + ((uint32_t) input.y);
+//     hash = hash * 71 + ((uint32_t) input.z);*/
+//     uint32_t prime = 173;
+//     uint32_t hash = 163;
+//     // uint32_t hash = ;
+//     /*hash = hash * prime + ((uint32_t) input.x);
+//     hash = hash * prime + ((uint32_t) input.y);
+//     hash = hash * prime + ((uint32_t) input.z);*/
+//     hash = (hash ^ ((uint32_t) input.x)) * prime;
+//     hash = (hash ^ ((uint32_t) input.y)) * prime;
+//     hash = (hash ^ ((uint32_t) input.z)) * prime;
+//     /*hash = (hash ^ input.x) * prime;
+//     hash = (hash ^ input.y) * prime;
+//     hash = (hash ^ input.z) * prime;*/
+//     /*uint32_t x = (uint32_t)input.x;
+//     uint32_t y = (uint32_t)input.y;
+//     uint32_t z = (uint32_t)input.z;
+//     // A good prime number for hashing
+//     uint32_t prime = 4294967291;
+//     // Initialize hash value to a random number
+//     uint32_t hash = 2166136261;
+//     // Mix input values with hash using a good hash function
+//     hash = (hash ^ x) * prime;
+//     hash = (hash ^ y) * prime;
+//     hash = (hash ^ z) * prime;*/
+//     return hash;
+// }
+
+// uint32_t get_int3_hash(int3 input) {
+//     input.x = 1619 * input.x ^ 1013 * input.y ^ 1987 * input.z;
+//     input.y = 4237 * input.x ^ 2777 * input.y ^ 1667 * input.z;
+//     input.z = 5021 * input.x ^ 3617 * input.y ^ 2791 * input.z;
+//     input.x = (input.x << 16) ^ (input.x >> 16);
+//     input.y = (input.y << 16) ^ (input.y >> 16);
+//     input.z = (input.z << 16) ^ (input.z >> 16);
+//     return input.x ^ input.y ^ input.z;
+// }
+
+// #define HASH_PRIME1 31
+// #define HASH_PRIME2 73856093
+
+// uint32_t hash_int(int input) {
+//     uint32_t hash = (uint32_t)(input * HASH_PRIME1);
+//     hash = hash % HASH_PRIME2;
+//     return hash;
+// }
+    /*const int m = 1540483477;
+    uint32_t X0 = 0;
+    uint32_t X1 = (hash_int(input.x) ^ X0) * m;
+    uint32_t X2 = (hash_int(input.y) ^ X1) * m;
+    uint32_t X3 = (hash_int(input.z) ^ X2) * m;*/
+
+uint32_t hash_constant = 0x5bd1e995;
+
 uint32_t get_int3_hash(int3 input) {
-    /*uint32_t hash = 17;
-    hash = hash * 23 + ((uint32_t) input.x);
-    hash = hash * 23 + ((uint32_t) input.y);
-    hash = hash * 23 + ((uint32_t) input.z);*/
-    uint32_t hash = 61;
-    hash = hash * 71 + ((uint32_t) input.x);
-    hash = hash * 71 + ((uint32_t) input.y);
-    hash = hash * 71 + ((uint32_t) input.z);
-    /*uint32_t x = (uint32_t)input.x;
-    uint32_t y = (uint32_t)input.y;
-    uint32_t z = (uint32_t)input.z;
-    // A good prime number for hashing
-    uint32_t prime = 4294967291;
-    // Initialize hash value to a random number
-    uint32_t hash = 2166136261;
-    // Mix input values with hash using a good hash function
-    hash = (hash ^ x) * prime;
-    hash = (hash ^ y) * prime;
-    hash = (hash ^ z) * prime;*/
+    uint32_t hash = hash_constant;
+    hash = hash * 163 + ((uint32_t) input.x);
+    hash = hash * 109 + ((uint32_t) input.y);
+    hash = hash * 139 + ((uint32_t) input.z);
     return hash;
 }
+
 
 /*uint32_t murmur3_32(const void* key, size_t len, uint32_t seed) {
     const uint8_t* data = (const uint8_t*)key;

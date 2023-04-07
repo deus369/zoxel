@@ -3,7 +3,6 @@ void StreamPointSystem(ecs_iter_t *it) {
         return;
     #endif
     unsigned char did_update = 0;
-    const int3 chunk_size = (int3) { 16, 16, 16 };
     ecs_query_t *chunks_query = it->ctx;
     ecs_iter_t chunks_iterator = ecs_query_iter(it->world, chunks_query);
     ecs_query_next(&chunks_iterator);
@@ -22,7 +21,7 @@ void StreamPointSystem(ecs_iter_t *it) {
     StreamPoint *streamPoints = ecs_field(it, StreamPoint, 3);
     for (int i = 0; i < it->count; i++) {
         const Position3D *position3D = &position3Ds[i];
-        int3 new_position = get_chunk_position(position3D->value, chunk_size);  // translate position to int3 chunk position
+        int3 new_position = get_chunk_position(position3D->value, default_chunk_size);  // translate position to int3 chunk position
         // printf("Checking Streamer position3D: [%fx%fx%f] \n", position3D->value.x, position3D->value.y, position3D->value.z);
         StreamPoint *streamPoint = &streamPoints[i];
         if (!int3_equals(new_position, streamPoint->value)) {
