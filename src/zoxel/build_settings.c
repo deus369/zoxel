@@ -40,7 +40,7 @@
 // #define zoxel_time_chunk_uvs_builds_system       // for non octree chunk building
 // voxel octrees timing
 // #define zoxel_time_octree_terrain_chunk_system      // for octree terrain generation
-#define zoxel_time_octree_chunk_builds_system    // for octree chunk building
+// #define zoxel_time_octree_chunk_builds_system    // for octree chunk building
 #define zoxel_time_octree_chunk_builds_system_cutoff 12.0f
 // #define zoxel_time_mesh_uvs_update_system        // uploading terrain chunk mesh data
 // idea: generate terrain too at lesser resolutions

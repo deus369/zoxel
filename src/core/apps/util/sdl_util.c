@@ -211,6 +211,8 @@ void on_viewport_resized(ecs_world_t *world, int width, int height) {
     #endif
 }
 
+extern ecs_entity_t main_menu;
+
 //! handles sdl events including keys
 void update_sdl(ecs_world_t *world) {
     #ifdef zoxel_inputs
@@ -236,6 +238,10 @@ void update_sdl(ecs_world_t *world) {
                 // handles escape key
                 // todo: move this to engine code
                 exit_game();
+            }
+            if (key == SDLK_j) {
+                zoxel_log("deleting main menu\n");
+                ecs_delete(world, main_menu);
             }
         }
     }

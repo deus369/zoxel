@@ -3,13 +3,17 @@
     // return 0;
 }*/
 
-
+// uses prime numbers:
+// 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, etc
 uint32_t get_int3_hash(int3 input) {
-    uint32_t hash = 17;
+    /*uint32_t hash = 17;
     hash = hash * 23 + ((uint32_t) input.x);
     hash = hash * 23 + ((uint32_t) input.y);
-    hash = hash * 23 + ((uint32_t) input.z);
-
+    hash = hash * 23 + ((uint32_t) input.z);*/
+    uint32_t hash = 61;
+    hash = hash * 71 + ((uint32_t) input.x);
+    hash = hash * 71 + ((uint32_t) input.y);
+    hash = hash * 71 + ((uint32_t) input.z);
     /*uint32_t x = (uint32_t)input.x;
     uint32_t y = (uint32_t)input.y;
     uint32_t z = (uint32_t)input.z;
@@ -21,7 +25,6 @@ uint32_t get_int3_hash(int3 input) {
     hash = (hash ^ x) * prime;
     hash = (hash ^ y) * prime;
     hash = (hash ^ z) * prime;*/
-
     return hash;
 }
 

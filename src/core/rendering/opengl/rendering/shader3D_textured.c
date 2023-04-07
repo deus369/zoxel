@@ -35,7 +35,7 @@ out highp vec4 color; \
 void main() { \
     color = texture(tex, uv) * brightness; \
     highp vec4 backgroundColor = vec4(2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f, 1);\
-    highp float fog_density = 0.0036;\
+    highp float fog_density = 0.0126;\
     highp float fogBlend = 1.0 - exp2(-fog_density * fog_density * fog_level * fog_level);\
     color = mix(color, backgroundColor, fogBlend);\
 }";

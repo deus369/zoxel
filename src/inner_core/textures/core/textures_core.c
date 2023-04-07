@@ -3,7 +3,7 @@
 
 #define texture_update_pipeline 0      // 0 | EcsOnStore | EcsPostUpdate | EcsOnValidate
 long int texture_update_system_id;
-#define is_texture_outlines 1 // 0 no outline, 1 full outline, 2 half outline, 3 5/6 outline
+#define is_texture_outlines 0 // 0 no outline, 1 full outline, 2 half outline, 3 5/6 outline
 const double noise_animation_speed = 0.5;
 zoxel_declare_tag(NoiseTexture)
 zoxel_declare_tag(FrameTexture)

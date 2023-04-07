@@ -238,7 +238,6 @@ android-dev-debug:
 
 # flecs #
 
-# $(flecs_source)
 # downloads source into include, installs library into lib
 $(flecs_target):
 	set -e ; \

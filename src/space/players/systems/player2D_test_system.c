@@ -56,7 +56,8 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it) {
                 fps_display = spawn_fps_display(world, main_canvas, 32);
             } else {
                 zoxel_log("Hiding fps display.\n");
-                delete_hierarchy(world, fps_display);
+                // delete_hierarchy(world, fps_display);
+                ecs_delete(it->world, fps_display);
                 fps_display = 0;
             }
         } else if (keyboard->p.pressed_this_frame) {
@@ -65,7 +66,8 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it) {
                 quads_label = spawn_quad_count_label(world, main_canvas, 32);
             } else {
                 zoxel_log("Hiding quads_label.\n");
-                delete_hierarchy(world, quads_label);
+                // delete_hierarchy(world, quads_label);
+                ecs_delete(it->world, quads_label);
                 quads_label = 0;
             }
         } else if (keyboard->c.pressed_this_frame) {
@@ -96,7 +98,11 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it) {
                 ecs_set(world, children->value[i], MeshDirty, { 1 });
                 ecs_set(world, children->value[i], TextureDirty, { 1 });
             }
-        } /*else if (keyboard->n.pressed_this_frame) {
+        }/* else if (keyboard->j.pressed_this_frame) {
+            zoxel_log("deleting main menu\n");
+            ecs_delete(world, main_menu);
+        }*/
+        /*else if (keyboard->n.pressed_this_frame) {
             const Position3D *position3D = ecs_get(world, latest_character3D, Position3D);
             const Rotation3D *rotation = ecs_get(world, latest_character3D, Rotation3D);
             const Scale1D *scale1D = ecs_get(world, latest_character3D, Scale1D);

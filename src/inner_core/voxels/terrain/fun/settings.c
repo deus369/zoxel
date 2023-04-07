@@ -1,7 +1,7 @@
 void set_terrain_render_distance(int core_count) {
     if (core_count > 8) {
         zoxel_log(" > high core count detected [%i]\n", core_count);
-        terrain_spawn_distance = 18; // 28;
+        terrain_spawn_distance = 30;
         terrain_vertical = 3;
         // terrain_amplifier = 80.0;
         lod_division_dividor = 5;
