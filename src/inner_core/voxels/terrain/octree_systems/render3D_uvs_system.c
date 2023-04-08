@@ -1,10 +1,16 @@
+// #define zoxel_render3D_uvs_system_overdebug
 extern float4x4 main_camera_matrix;
 
 void Render3DUvsSystem(ecs_iter_t *it) {
     #ifdef zoxel_time_render_3d_uvs
         begin_timing_absolute()
     #endif
-    // check_opengl_error("[pre Render3DUvsSystem Error]");
+    #ifdef zoxel_render3D_uvs_system_overdebug
+        check_opengl_error("[pre render3D_uvs_system Error]");
+        GLint memory_used, memory_total;
+        glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &memory_used);
+        glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &memory_total);
+    #endif
     const Position3D *positions = ecs_field(it, Position3D, 1);
     const Rotation3D *rotations = ecs_field(it, Rotation3D, 2);
     const Scale1D *scale1Ds = ecs_field(it, Scale1D, 3);
@@ -58,22 +64,37 @@ void Render3DUvsSystem(ecs_iter_t *it) {
                 attributes.scale = glGetUniformLocation(materialGPULink->value, "scale");
                 attributes.brightness = glGetUniformLocation(materialGPULink->value, "brightness");
                 opengl_set_material(materialGPULink->value);
-                //    check_opengl_error("[opengl_set_material Error]");
+                #ifdef zoxel_render3D_uvs_system_overdebug
+                    check_opengl_error("[render3D_uvs_system opengl_set_material Error]");
+                #endif
                 opengl_set_texture(textureGPULink->value, false);
-                //    check_opengl_error("[opengl_set_texture Error]");
+                #ifdef zoxel_render3D_uvs_system_overdebug
+                    check_opengl_error("[render3D_uvs_system opengl_set_texture Error]");
+                #endif
                 opengl_shader3D_textured_set_camera_view_matrix(main_camera_matrix, &attributes);
-                //    check_opengl_error("[opengl_shader3D_textured_set_camera_view_matrix Error]");
+                #ifdef zoxel_render3D_uvs_system_overdebug
+                    check_opengl_error("[render3D_uvs_system opengl_shader3D_textured_set_camera_view_matrix Error]");
+                #endif
                 opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes);
-                //    check_opengl_error("[opengl_set_material3D_uvs_properties Error]");
+                #ifdef zoxel_render3D_uvs_system_overdebug
+                    check_opengl_error("[render3D_uvs_system opengl_set_material3D_uvs_properties Error]");
+                #endif
             }
             opengl_set_material3D_uvs_position(position3D->value, &attributes);
             //    check_opengl_error("[opengl_set_material3D_uvs_position Error]");
             opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, &attributes);
             //    check_opengl_error("[opengl_set_buffer_attributes Error]");
             opengl_set_mesh_indicies(meshGPULink->value.x);
-            //    check_opengl_error("[opengl_set_mesh_indicies Error]");
+            #ifdef zoxel_render3D_uvs_system_overdebug
+                check_opengl_error("[render3D_uvs_system opengl_set_mesh_indicies Error]");
+            #endif
             opengl_draw_triangles(meshIndicies2->length);
-            //    check_opengl_error("[opengl_draw_triangles Error]");
+            #ifdef zoxel_render3D_uvs_system_overdebug
+                if (check_opengl_error("[render3D_uvs_system opengl_draw_triangles Error]")) {
+                    zoxel_log(" !!! indicies length is: %i\n", meshIndicies2->length);
+                    zoxel_log(" !!! GPU Memory Usage [%d MB / %d MB]\n", memory_used / 1024, memory_total / 1024);
+                }
+            #endif
         #else
             Material3DTextured attributes = (Material3DTextured) { 
                 glGetAttribLocation(materialGPULink->value, "vertexPosition"),
@@ -98,7 +119,7 @@ void Render3DUvsSystem(ecs_iter_t *it) {
     opengl_unset_mesh();
     opengl_disable_texture(false);
     opengl_disable_opengl_program();
-    #ifdef ANDROID_BUILD
+    #ifdef zoxel_render3D_uvs_system_overdebug
         check_opengl_error("[render3D_uvs_system Error]");
     #endif
     #ifdef zoxel_time_render_3d_uvs

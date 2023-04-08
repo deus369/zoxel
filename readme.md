@@ -16,7 +16,7 @@ Experience the thrill of discovery and adventure in this procedurally generated 
 </h2>
 
 <p align="center">
-  <img src="docs/latest_screenshot.png?raw=false" alt="Zoxel" width="90%"/>
+  <img src="docs/latest_screenshot.png?raw=false" alt="Zoxel" width="98%"/>
   <!--<img src="https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/zoxel_unity_00.png?raw=false" alt="Unity Zoxel" width="400"/> width="420" -->
 </p>
 

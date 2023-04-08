@@ -266,17 +266,17 @@ void update_sdl(ecs_world_t *world) {
                 zoxel_log(" > window was minimized\n");
                 // SDL_HideWindow(main_window);
                 rendering = 0;
-                #ifdef ANDROID_BUILD
+                //#ifdef ANDROID_BUILD
                     delete_all_opengl_resources(world);
-                #endif
+                //#endif
             } else if (event.window.event == SDL_WINDOWEVENT_RESTORED) {
                 zoxel_log(" > window was restored\n");
                 // SDL_ShowWindow(main_window);
                 // SDL_OnWindowRestored(main_window);
                 rendering = 1;
-                #ifdef ANDROID_BUILD
+                //#ifdef ANDROID_BUILD
                     restore_all_opengl_resources(world);
-                #endif
+                //#endif
             }
         } else if (eventType == SDL_KEYUP) {
             SDL_Keycode key = event.key.keysym.sym;

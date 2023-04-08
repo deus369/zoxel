@@ -139,17 +139,16 @@ int get_int3_hash(int3 pos) {
 // zoxel_log(" - index [%i]\n", index);
 
 #define zoxel_hash_map(name, type, type_zero, key_type, convert_to_hash)\
-typedef struct type##_##hash_pair type##_##hash_pair;\
-struct type##_##hash_pair\
-{\
+typedef struct name##_##pair name##_##pair;\
+struct name##_##pair {\
     int key;\
     type value;\
-    struct type##_##hash_pair* next;\
+    struct name##_##pair* next;\
 };\
 \
 typedef struct {\
     int size;\
-    type##_##hash_pair **data;\
+    name##_##pair **data;\
 } name;\
 \
 int type##_##hash(int key, int size) {\
@@ -159,14 +158,14 @@ int type##_##hash(int key, int size) {\
 name* create##_##name(int size) {\
     name* map = malloc(sizeof(name));\
     map->size = size;\
-    map->data = calloc(size, sizeof(type##_##hash_pair*));\
+    map->data = calloc(size, sizeof(name##_##pair*));\
     return map;\
 }\
 \
 void name##_##add(name* map, key_type key_raw, type value) {\
     int key = convert_to_hash(key_raw);\
     int index = type##_##hash(key, map->size);\
-    type##_##hash_pair* pair = malloc(sizeof(type##_##hash_pair));\
+    name##_##pair* pair = malloc(sizeof(name##_##pair));\
     pair->key = key;\
     pair->value = value;\
     pair->next = map->data[index];\
@@ -176,7 +175,7 @@ void name##_##add(name* map, key_type key_raw, type value) {\
 type name##_##get(name* map, key_type key_raw) {\
     int key = convert_to_hash(key_raw);\
     int index = type##_##hash(key, map->size);\
-    type##_##hash_pair* pair = map->data[index];\
+    name##_##pair* pair = map->data[index];\
     while (pair != NULL) {\
         if (pair->key == key) {\
             return pair->value;\
@@ -189,8 +188,8 @@ type name##_##get(name* map, key_type key_raw) {\
 void name##_##remove(name* map, key_type key_raw) {\
     int key = convert_to_hash(key_raw);\
     int index = type##_##hash(key, map->size);\
-    type##_##hash_pair* pair = map->data[index];\
-    type##_##hash_pair* prev_pair = NULL;\
+    name##_##pair* pair = map->data[index];\
+    name##_##pair* prev_pair = NULL;\
     while (pair != NULL) {\
         if (pair->key == key) {\
             if (prev_pair == NULL) {\
@@ -208,9 +207,9 @@ void name##_##remove(name* map, key_type key_raw) {\
 \
 void name##_##dispose(name* map) {\
     for (int i = 0; i < map->size; i++) {\
-        type##_##hash_pair* pair = map->data[i];\
+        name##_##pair* pair = map->data[i];\
         while (pair != NULL) {\
-            type##_##hash_pair* next_pair = pair->next;\
+            name##_##pair* next_pair = pair->next;\
             free(pair);\
             pair = next_pair;\
         }\
