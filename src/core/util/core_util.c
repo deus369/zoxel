@@ -1,4 +1,21 @@
 int cpu_core_count;
+unsigned char cpu_tier;
+
+unsigned char get_cpu_tier(int core_count) {
+    if (core_count > 8) {
+        zoxel_log(" > high core count detected [%i]\n", core_count);
+        return 3;
+    } else if (core_count > 6) {
+        zoxel_log(" > average core count detected [%i]\n", core_count);
+        return 2;
+    } else if (core_count > 4) {
+        zoxel_log(" > low (-) core count detected [%i]\n", core_count);
+        return 1;
+    } else {
+        zoxel_log(" > lowest core count detected [%i]\n", core_count);
+        return 0;
+    }
+}
 
 void update_core() {
     begin_timing_absolute()
@@ -10,7 +27,9 @@ void update_core() {
         #ifdef WEB_BUILD
             update_web_canvas(world);   // handles resize event
         #endif
-        render_pre_loop();
+        if (rendering) {
+            render_pre_loop();
+        }
     }
     // ecs_log_set_level(1);    // use this to debug system pipelines
     ecs_progress(world, 0);
@@ -18,7 +37,9 @@ void update_core() {
         #ifdef zoxel_cameras
             set_mouse_constrained(get_mouse_constrained(), screen_dimensions);
         #endif
-        render_loop();
+        if (rendering) {
+            render_loop();
+        }
     }
     zoxel_delta_time = get_timing_passed();
     #ifdef zoxel_log_frame_ms
@@ -32,6 +53,7 @@ int begin_core(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
     cpu_core_count = SDL_GetCPUCount();
+    cpu_tier = get_cpu_tier(cpu_core_count);
     world = open_ecs(argc, argv, profiler, cpu_core_count); // begin ecs
     return EXIT_SUCCESS;
 }

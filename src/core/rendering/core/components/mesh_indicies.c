@@ -1,6 +1,5 @@
 #define zoxel_memory_component_mesh_indicies(name, type)\
-typedef struct\
-{\
+typedef struct {\
     int length;\
     type *value;\
 } name;\

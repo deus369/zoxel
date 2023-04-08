@@ -26,7 +26,7 @@ void PlayGameSystem(ecs_iter_t *it) {
             #ifdef voxels_spawn_terrain
             //    create_terrain(world);
             #endif
-            #ifdef zoxel_test_character3Ds
+            #ifdef zoxel_spawn_character3Ds
                 spawn_many_characters3D(world);
             #endif
         }

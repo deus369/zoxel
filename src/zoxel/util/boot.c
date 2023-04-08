@@ -52,16 +52,11 @@ void boot_zoxel_game(ecs_world_t *world) {
     #endif
     #ifdef zoxel_ui
         spawn_canvas(world, screen_dimensions2);
-        #ifdef zoxel_lines2D
-            spawn_canvas_edge_lines(world, main_canvas);
-        #endif
         #ifdef zoxel_texts
             spawn_font_style(world);
         #endif
         #ifdef zoxel_game_ui
             spawn_zoxel_main_menu(world);
-            fps_display = spawn_fps_display(world, main_canvas, 32);
-            quads_label = spawn_quad_count_label(world, main_canvas, 32);
         #endif
     #endif
     #ifdef zoxel_voxels

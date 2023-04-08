@@ -214,6 +214,9 @@ install-android-sdk:
 android:
 	bash bash/android/install.sh
 
+android-debug:
+	bash bash/android/install.sh && bash bash/android/debug_android.sh
+
 android-create-key:
 	bash bash/android/generate_keystore.sh
 
@@ -226,7 +229,7 @@ android-uninstall:
 android-clean:
 	bash bash/android/gradle_clean.sh
 
-android-debug:
+debug-android:
 	bash bash/android/debug_android.sh
 
 android-update-settings:
@@ -331,6 +334,7 @@ help:
 	@echo "    android			builds & runs android release"
 	@echo "    android-dev			builds & runs android debug"
 	@echo "    android-dev-debug		builds & runs android debug with logcat"
+	@echo "	   debug-android			debugs running android game"
 	@echo "  > setup"
 	@echo "    make $(flecs_target)	builds flecs"
 	@echo "    install-required		installs required libraries for debian systems"

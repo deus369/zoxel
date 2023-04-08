@@ -56,7 +56,6 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it) {
                 fps_display = spawn_fps_display(world, main_canvas, 32);
             } else {
                 zoxel_log("Hiding fps display.\n");
-                // delete_hierarchy(world, fps_display);
                 ecs_delete(it->world, fps_display);
                 fps_display = 0;
             }
@@ -66,7 +65,6 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it) {
                 quads_label = spawn_quad_count_label(world, main_canvas, 32);
             } else {
                 zoxel_log("Hiding quads_label.\n");
-                // delete_hierarchy(world, quads_label);
                 ecs_delete(it->world, quads_label);
                 quads_label = 0;
             }

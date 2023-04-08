@@ -13,7 +13,6 @@ int2 screen_dimensions = { 720, 480 };
     extern void uis_on_viewport_resized(ecs_world_t *world, int width, int height);
 #endif
 
-//! Print debug info!
 void print_sdl() {
     #ifdef zoxel_debug_sdl
         zoxel_log(" > sdl stats\n");
@@ -83,7 +82,6 @@ unsigned char opengl_es_supported() {
                 zoxel_log("     + render driver [%s]\n", info.name);
             #endif
             is_supported = 1;
-            // return 1; 
         } else {
             #ifdef zoxel_debug_opengl
                 zoxel_log("     - render driver [%s]\n", info.name);
@@ -153,8 +151,8 @@ SDL_Window* spawn_sdl_window() {
     unsigned char is_resizeable = 1;
     unsigned long window_flags = SDL_WINDOW_OPENGL;
     #ifdef ANDROID_BUILD
-        window_flags = SDL_WINDOW_FULLSCREEN_DESKTOP;
-        is_resizeable = false;
+        window_flags = SDL_WINDOW_FULLSCREEN_DESKTOP; //  | SDL_WINDOW_HIDDEN;
+        is_resizeable = 0;
     #endif
     int2 app_position = (int2) { 0, 0 };
     SDL_Window* window = SDL_CreateWindow("Zoxel", app_position.x, app_position.y,
@@ -164,7 +162,6 @@ SDL_Window* spawn_sdl_window() {
         return window;
     }
     int didFail = set_sdl_attributes();
-    print_sdl();
     if (didFail == EXIT_FAILURE) {
         zoxel_log("Failed to set_sdl_attributes.");
         return NULL;
@@ -195,23 +192,54 @@ SDL_GLContext* create_sdl_context(SDL_Window* window) {
 }
 
 void on_viewport_resized(ecs_world_t *world, int width, int height) {
-    #ifdef debug_viewport_resize
-    zoxel_log("Viewport was resized [%ix%i]\n", width, height);
-    #endif
-    screen_dimensions.x = width;
-    screen_dimensions.y = height;
-    if(screen_dimensions.y <= 0) {
-        screen_dimensions.y = 1;
+    if (!(screen_dimensions.x == width && screen_dimensions.y == height)) {
+        //#ifdef debug_viewport_resize
+            zoxel_log(" > viewport was resized [%ix%i]\n", width, height);
+        //#endif
+        screen_dimensions.x = width;
+        screen_dimensions.y = height;
+        if(screen_dimensions.y <= 0) {
+            screen_dimensions.y = 1;
+        }
+        #ifdef zoxel_cameras
+            resize_cameras(width, height);
+        #endif
+        #ifdef zoxel_ui
+            uis_on_viewport_resized(world, width, height);
+        #endif
     }
-    #ifdef zoxel_cameras
-        resize_cameras(width, height);
-    #endif
-    #ifdef zoxel_ui
-        uis_on_viewport_resized(world, width, height);
+}
+
+unsigned char is_opengl_running() {
+    return main_gl_context != NULL;
+}
+
+void create_main_window() {
+    SDL_Window* window = spawn_sdl_window();
+    SDL_GLContext* gl_context = create_sdl_context(window);
+    spawn_app(world, window, gl_context);
+    main_window = window;
+    main_gl_context = gl_context;
+    if (main_gl_context == NULL) {
+        running = false;
+    }
+    #ifndef WEB_BUILD
+        #ifndef ANDROID_BUILD
+            if (fullscreen) {
+                sdl_toggle_fullscreen(main_window);
+            }
+        #endif
     #endif
 }
 
-extern ecs_entity_t main_menu;
+void recreate_main_window(ecs_world_t *world) {
+    ecs_delete(world, main_app);
+    create_main_window();
+}
+
+extern int check_opengl_error(char* function_name);
+extern void delete_all_opengl_resources(ecs_world_t *world);
+extern void restore_all_opengl_resources(ecs_world_t *world);
 
 //! handles sdl events including keys
 void update_sdl(ecs_world_t *world) {
@@ -225,23 +253,35 @@ void update_sdl(ecs_world_t *world) {
         #endif
         int eventType = event.type;
         if (eventType == SDL_QUIT) {
-            // handles application close button
+            zoxel_log(" > window was quit\n");
             exit_game();
         } else if (eventType == SDL_WINDOWEVENT) {
             // handles application resizing
             if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                on_viewport_resized(world, event.window.data1, event.window.data2);
+                // zoxel_log(" > window was changed size\n");
+                if (rendering) {
+                    on_viewport_resized(world, event.window.data1, event.window.data2);
+                }
+            } else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) {
+                zoxel_log(" > window was minimized\n");
+                // SDL_HideWindow(main_window);
+                rendering = 0;
+                #ifdef ANDROID_BUILD
+                    delete_all_opengl_resources(world);
+                #endif
+            } else if (event.window.event == SDL_WINDOWEVENT_RESTORED) {
+                zoxel_log(" > window was restored\n");
+                // SDL_ShowWindow(main_window);
+                // SDL_OnWindowRestored(main_window);
+                rendering = 1;
+                #ifdef ANDROID_BUILD
+                    restore_all_opengl_resources(world);
+                #endif
             }
         } else if (eventType == SDL_KEYUP) {
             SDL_Keycode key = event.key.keysym.sym;
             if (key == SDLK_ESCAPE) {
-                // handles escape key
-                // todo: move this to engine code
-                exit_game();
-            }
-            if (key == SDLK_j) {
-                zoxel_log("deleting main menu\n");
-                ecs_delete(world, main_menu);
+                exit_game(); // todo: move this to engine code
             }
         }
     }
@@ -257,3 +297,6 @@ if (displays > 1 && window_index != -1 && window_index < displays) {
 SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
 SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
 SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);*/
+/*SDL_MinimizeWindow(main_window);
+SDL_Delay(1000);
+SDL_RestoreWindow(main_window);*/

@@ -18,7 +18,9 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label, int2 
     int font_size = 28;
     int header_margins = 4;
     #ifdef ANDROID_BUILD
-    // window_size.y = 160;
+        if (anchor.y == 1) {
+            position.y -= android_header_size;
+        }
     #endif
     // scale the ui!
     window_size.x *= ui_scale;

@@ -13,7 +13,7 @@ zoxel_component(Character3DLink, ecs_entity_t)
 #include "fun/spawn_many.c"
 
 zoxel_begin_module(Characters3D)
-set_character_settings(cpu_core_count);
+set_character_settings();
 
 // zoxel_component_defines
 zoxel_define_tag(Character3D)

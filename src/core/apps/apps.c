@@ -4,6 +4,7 @@
 #define sdl_gl_major 3
 #define sdl_gl_minor 0
 unsigned char running = 1;
+unsigned char rendering = 1;
 unsigned char headless = 0;
 const int window_index = 0; // 1;
 unsigned char vsync = 1;
@@ -26,10 +27,6 @@ zoxel_component(Context, SDL_GLContext*)
 #include "util/cleanup_util.c"
 #include "util/mouse_util.c"
 
-unsigned char is_opengl_running() {
-    return main_gl_context != NULL;
-}
-
 zoxel_begin_module(Apps)
 zoxel_define_tag(App)
 zoxel_define_component(SDLWindow)
@@ -41,21 +38,8 @@ ecs_set_hooks(world, Renderer, { .dtor = ecs_dtor(Renderer) });
 spawn_app_prefab(world);
 set_data_path();
 if (init_sdl() == EXIT_SUCCESS) {
-    SDL_Window* window = spawn_sdl_window();
-    SDL_GLContext* gl_context = create_sdl_context(window);
-    spawn_app(world, window, gl_context);
-    main_window = window;
-    #ifndef WEB_BUILD
-        #ifndef ANDROID_BUILD
-            if (fullscreen) {
-                sdl_toggle_fullscreen(main_window);
-            }
-        #endif
-    #endif
-    main_gl_context = gl_context;
-    if (main_gl_context == NULL) {
-        running = false;
-    }
+    create_main_window();
+    print_sdl();
 }
 zoxel_end_module(Apps)
 #endif

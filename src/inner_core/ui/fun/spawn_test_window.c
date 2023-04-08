@@ -1,10 +1,8 @@
 ecs_entity_t zoxel_window;
 
 void spawn_zoxel_window(ecs_world_t *world) {
-    if (zoxel_window != 0 && ecs_is_alive(world, zoxel_window))
-    {
+    if (zoxel_window != 0 && ecs_is_alive(world, zoxel_window)) {
         zoxel_log("Hiding zoxel window.\n");
-        // delete_hierarchy(world, zoxel_window);
         ecs_delete(world, zoxel_window);
         zoxel_window = 0;
         return;

@@ -13,7 +13,6 @@ zoxel_memory_component(Texture, color)  //! A texture with pixels!
 zoxel_component(TextureSize, int2)      //! A texture with pixels!
 zoxel_byte_component(GenerateTexture)  //! A state for generating textures.
 zoxel_component(AnimateTexture, double) //! A state for animating textures.
-zoxel_byte_component(TextureDirty)
 #include "util/textures_sdl_util.c"
 #include "util/textures_util.c"
 #include "prefabs/noise_texture.c"
@@ -34,7 +33,6 @@ zoxel_define_tag(DirtTexture)
 zoxel_define_component(TextureSize)
 zoxel_define_component(GenerateTexture)
 zoxel_define_component(AnimateTexture)
-zoxel_define_component(TextureDirty)
 zoxel_define_memory_component(Texture)
 // zoxel_system_1(AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture)
 zoxel_system(AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture)

@@ -214,13 +214,13 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
 void uis_on_viewport_resized(ecs_world_t *world, int width, int height) {
     int2 canvas_size = { width, height };
     ecs_set(world, main_canvas, PixelSize, { canvas_size });
-    #ifdef debug_viewport_resize
+    //#ifdef debug_viewport_resize
         zoxel_log("On Viewport Resized to dimensions: [%ix%i]\n", canvas_size.x, canvas_size.y);
-    #endif
+    //#endif
     for (int i = 0; i < ui_entities_count; i++) {
         ecs_entity_t e = ui_entities[i];
         #ifdef debug_viewport_resize
-        zoxel_log("    e [%i] - [%lu]\n", i, (long int) e);
+            zoxel_log("    e [%i] - [%lu]\n", i, (long int) e);
         #endif
         set_ui_transform(world, e, main_canvas, 0, canvas_size);
     }

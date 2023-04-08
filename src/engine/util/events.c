@@ -1,1 +1,1 @@
-#define ZOXEL_EVENTS_PLAY_GAME 1
+#define zoxel_event_play_game 1

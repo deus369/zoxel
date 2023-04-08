@@ -29,9 +29,59 @@ zoxel_reset_system(MeshDirtySystem, MeshDirty)
 #include "render2D_systems/render2D_mesh_system.c"
 #include "render2D_systems/render2D_instance_system.c"
 #include "render3D_systems/render3D_system.c"
-#include "render3D_systems/render3D_uvs_system.c"
 #include "render3D_systems/render3D_instance_system.c"
 #include "util/render_loop.c"
+
+extern ecs_entity_t main_terrain_world;
+extern ecs_entity_t *terrain_chunks;
+extern int terrain_chunks_count;
+
+void delete_all_opengl_resources(ecs_world_t *world) {
+    // delete opengl resources
+    // shaders, textures,
+    dispose_opengl();
+    const MaterialGPULink *materialGPULink = ecs_get(world, main_terrain_world, MaterialGPULink);
+    if (materialGPULink->value != 0) {
+        glDeleteProgram(materialGPULink->value);
+    }
+    const TextureGPULink *textureGPULink = ecs_get(world, main_terrain_world, TextureGPULink);
+    if (textureGPULink->value != 0) {
+        glDeleteTextures(1, &textureGPULink->value);
+    }
+    for (int i = 0; i < terrain_chunks_count; i++) {
+        ecs_entity_t terrain_chunk = terrain_chunks[i];
+        // zoxel_log("     + setting chunk [%lu] to material [%i]\n", terrain_chunk, material_id);
+        ecs_set(world, terrain_chunk, MeshDirty, { 1 });
+        const MeshGPULink *meshGPULink = ecs_get(world, terrain_chunk, MeshGPULink);
+        if (meshGPULink->value.x != 0) {
+            glDeleteBuffers(1, &meshGPULink->value.x);
+        }
+        if (meshGPULink->value.y != 0) {
+            glDeleteBuffers(1, &meshGPULink->value.y);
+        }
+        const UvsGPULink *uvsGPULink = ecs_get(world, terrain_chunk, UvsGPULink);
+        if (uvsGPULink->value != 0) {
+            glDeleteBuffers(1, &uvsGPULink->value);
+        }
+    }
+}
+
+void restore_all_opengl_resources(ecs_world_t *world) {
+    // restore opengl resources here
+    zoxel_log(" > restoring all opengl resources\n");
+    load_all_shaders();
+    #ifndef voxels_terrain_multi_material
+        GLuint material_id = spawn_gpu_material_program(shader3D_textured);
+        ecs_set(world, main_terrain_world, MaterialGPULink, { material_id });
+        ecs_set(world, main_terrain_world, TextureDirty, { 1 });
+    #endif
+    for (int i = 0; i < terrain_chunks_count; i++) {
+        ecs_entity_t terrain_chunk = terrain_chunks[i];
+        // zoxel_log("     + setting chunk [%lu] to material [%i]\n", terrain_chunk, material_id);
+        ecs_set(world, terrain_chunk, MeshDirty, { 1 });
+        // ecs_set(world, terrain_chunk, TextureDirty, { 1 });
+    }
+}
 
 zoxel_begin_module(RenderingCore)
 zoxel_define_component(MaterialGPULink)
@@ -64,10 +114,6 @@ ecs_set_hooks(world, UvsGPULink, { .dtor = ecs_dtor(UvsGPULink) });
         [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness,
         [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies,
         [none] !UvsGPULink);
-    zoxel_system_1(Render3DUvsSystem, render3D_update_pipeline, // EcsOnStore,
-        [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness,
-        [in] MeshGPULink, [in] MaterialGPULink, [in] UvsGPULink,
-        [in] TextureGPULink, [in] MeshIndicies);
     zoxel_system_1(InstanceRender3DSystem, render3D_update_pipeline,
         [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink);
 #endif

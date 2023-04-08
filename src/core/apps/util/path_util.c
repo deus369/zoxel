@@ -1,6 +1,15 @@
 
 #ifdef ANDROID_BUILD
-    #define resources_folder_name "android-resources/"
+    // i will have to manually add in the resource directories for android until ndk updates
+    #define resources_folder_name "/resources/"  // assets/
+    #define voxes_folder_path "voxes"  // assets/
+    #define textures_folder_path "textures"  // assets/
+    #include <SDL_system.h>
+    #include <android/asset_manager.h>
+    #include <android/asset_manager_jni.h>
+    #include <sys/stat.h>
+    #include <sys/types.h>
+    // #define resources_folder_name "android-resources/"
 #else
     #ifdef WINDOWS_BUILD
         #define resources_folder_name "resources\\"
@@ -10,19 +19,148 @@
 #endif
 #include <dirent.h>
 #include <errno.h>
-char *data_path = NULL;
+const char *data_path = NULL;
 char *resources_path = NULL;
+
+#ifdef ANDROID_BUILD
+
+    void delete_directory_recursive(const char* path) {
+        DIR* dir = opendir(path);
+        if (dir != NULL) {
+            struct dirent* entry;
+            while ((entry = readdir(dir)) != NULL) {
+                if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+                    continue;
+                }
+                char* sub_path = (char*) malloc(strlen(path) + strlen(entry->d_name) + 2);
+                sprintf(sub_path, "%s/%s", path, entry->d_name);
+                if (entry->d_type == DT_DIR) {
+                    delete_directory_recursive(sub_path);
+                } else {
+                    remove(sub_path);
+                }
+                free(sub_path);
+            }
+            closedir(dir);
+            rmdir(path);
+        } else {
+            zoxel_log("Error opening directory %s: %s\n", path, strerror(errno));
+        }
+    }
+
+    unsigned char create_directory(const char* path) {
+        if (mkdir(path, 0777) != 0) {
+            zoxel_log(" !!! directory failed to create [%s]\n", path);
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    AAssetManager* get_asset_manager() {
+        JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject) SDL_AndroidGetActivity();
+        jclass activityClass = (*env)->GetObjectClass(env, activity);
+        jmethodID methodID = (*env)->GetMethodID(env, activityClass, "getAssets", "()Landroid/content/res/AssetManager;");
+        jobject assetManager = (*env)->CallObjectMethod(env, activity, methodID);
+        AAssetManager* asset_manager = AAssetManager_fromJava(env, assetManager);
+        return asset_manager;
+    }
+
+    void copy_resources_directory(AAssetManager* asset_manager, const char* destination_path, const char* source_path) {
+        zoxel_log(" > copy resources from [%s] to [%s]\n", source_path, destination_path);
+        create_directory(destination_path);
+        AAssetDir* asset_directory = AAssetManager_openDir(asset_manager, source_path);
+        if (asset_directory == NULL) {
+            zoxel_log("     - asset directory is null [%s]\n", source_path);
+            return;
+        }
+        zoxel_log("     + asset directory exists [%s]\n", source_path);
+        // zoxel_log("     + directory has sub directories count [%i]\n", num_of_directories);
+        const char* filename = NULL;
+        // Iterate over all the files in the directory and copy them to the destination path
+        while ((filename = AAssetDir_getNextFileName(asset_directory)) != NULL) {
+            char full_source_path[512]; // asset folder
+            char full_destination_path[512];    // internal storage
+            sprintf(full_source_path, "%s/%s", source_path, filename);
+            sprintf(full_destination_path, "%s/%s", destination_path, filename);
+            // If the file is a directory, recursively copy its contents
+            // zoxel_log("     > is directory? [%s]\n", full_source_path);
+            zoxel_log("     > copy file [%s] to [%s]\n", full_source_path, full_destination_path);
+            // Open the source file in the APK's assets folder
+            AAsset* asset = AAssetManager_open(asset_manager, full_source_path, AASSET_MODE_BUFFER);
+            if (asset != NULL) {
+                const void* data = AAsset_getBuffer(asset);
+                if (data != NULL) {
+                    size_t size = AAsset_getLength(asset);
+                    zoxel_log("         - asset opened [%s] of size [%i]\n", full_source_path, (int) size);
+                    // Open the destination file on the device's internal storage
+                    FILE* destination_file = fopen(full_destination_path, "wb");
+                    if (destination_file != NULL) {
+                        // zoxel_log("         - file opened [%s]\n", full_destination_path);
+                        fwrite(data, size, 1, destination_file);
+                        fclose(destination_file);
+                        // zoxel_log("         - file contents copied [%s]\n", full_destination_path);
+                    } else {
+                        zoxel_log("         - file opened is null [%s]\n", full_destination_path);
+                    }
+                } else {
+                    zoxel_log("         - asset data is null [%s]\n", full_source_path);
+                }
+                AAsset_close(asset);
+            } else {
+                zoxel_log("         - asset failed to open [%s]\n", full_source_path);
+            }
+        }
+        AAssetDir_close(asset_directory);
+    }
+
+    void decompress_android_resources() {
+        delete_directory_recursive(resources_path);
+        create_directory(resources_path);
+        char *path2 = malloc(strlen(resources_path) + strlen(voxes_folder_path) + 1);
+        strcpy(path2, resources_path);
+        strcat(path2, voxes_folder_path);
+        char *path3 = malloc(strlen(resources_path) + strlen(textures_folder_path) + 1);
+        strcpy(path3, resources_path);
+        strcat(path3, textures_folder_path);
+        //create_directory(path2);
+        //create_directory(path3);
+        copy_resources_directory(get_asset_manager(), path2, "resources/"voxes_folder_path);
+        copy_resources_directory(get_asset_manager(), path3, "resources/"textures_folder_path);
+        // copy_resources_directory(get_asset_manager(), resources_path, "resources");
+        free(path2);
+        free(path3);
+    }
+#endif
+
+void debug_base_path(const char *base_path) {
+    DIR *dir;
+    struct dirent *entry;
+    if ((dir = opendir(base_path)) != NULL) {
+        zoxel_log(" > directories and files in [%s]\n", base_path);
+        while ((entry = readdir(dir)) != NULL) {
+            zoxel_log("     + [%s]\n", entry->d_name);
+        }
+        closedir(dir);
+    } else {
+        zoxel_log(" - failed to open directory [%s]\n", base_path);
+    }
+}
 
 void set_data_path() {
     #ifdef ANDROID_BUILD
-        char *base_path = SDL_GetPrefPath("libsdl", "app");
+        const char* base_path = SDL_AndroidGetInternalStoragePath();
+        // char *base_path = SDL_GetPrefPath("libsdl", "app");
+        // char *base_path = SDL_GetPrefPath("libsdl", "assets");
         /*char *android_path = SDL_GetBasePath(); // SDL_AndroidGetInternalStoragePath();
         char *base_path = malloc(strlen(android_path) + 1 + 0); // 1
         strcpy(base_path, android_path);
         strcat(base_path, "");  // /*/
     #else
-        char *base_path = SDL_GetBasePath();
+        const char *base_path = SDL_GetBasePath();
     #endif
+    debug_base_path(base_path);
     if (base_path) {
         data_path = base_path;
     } else {
@@ -30,27 +168,15 @@ void set_data_path() {
     }
     DIR* dir = opendir(base_path);
     if (dir) {
-        #ifdef zoxel_debug_pathing
-        zoxel_log("SDL data_path (EXISTS): %s\n", data_path);
-        #endif
-        /*char *path_test = malloc(strlen(base_path) + 1 + 1);
-        strcpy(path_test, base_path);
-        strcat(path_test, ".");
-        DIR* dir3 = opendir(path_test);
-        if (dir3)
-        {
-            zoxel_log(" -> path_test [%s]\n", path_test);
-            struct dirent *dir3_data;
-            while ((dir3_data = readdir(dir3)) != NULL)
-            {
-                zoxel_log("     -> child path [%s]\n", dir3_data->d_name);
-            }
-            closedir(dir3);
-        }
-        free(path_test);*/
-        resources_path = malloc(strlen(base_path) + strlen(resources_folder_name) + 1); // char *
+        // #ifdef zoxel_debug_pathing
+            zoxel_log(" + base path exists [%s]\n", data_path);
+        // #endif
+        resources_path = malloc(strlen(base_path) + strlen(resources_folder_name) + 1);
         strcpy(resources_path, base_path);
         strcat(resources_path, resources_folder_name);
+        #ifdef ANDROID_BUILD
+            decompress_android_resources();
+        #endif
         DIR* dir2 = opendir(resources_path);
         if (dir2) {
             //#ifdef zoxel_debug_pathing
@@ -58,7 +184,7 @@ void set_data_path() {
             //#endif
             closedir(dir2);
         } else {
-            zoxel_log("resources_path (DOES NOT EXIST): %s\n", resources_path);
+            zoxel_log(" !!! resources_path does not exist [%s]\n", resources_path);
         }
         // free(resources_path);
     } else if (ENOENT == errno) {
@@ -87,3 +213,26 @@ char* concat_file_path(char* resources_path, char* file_path) {
     strcat(full_file_path, file_path);
     return full_file_path;
 }
+
+/*char *path_test = malloc(strlen(base_path) + 1 + 1);
+strcpy(path_test, base_path);
+strcat(path_test, ".");
+DIR* dir3 = opendir(path_test);
+if (dir3)
+{
+    zoxel_log(" -> path_test [%s]\n", path_test);
+    struct dirent *dir3_data;
+    while ((dir3_data = readdir(dir3)) != NULL)
+    {
+        zoxel_log("     -> child path [%s]\n", dir3_data->d_name);
+    }
+    closedir(dir3);
+}
+free(path_test);*/
+            /*char *resources_path2 = NULL;
+            resources_path2 = malloc(strlen(base_path) + strlen(resources_folder_name2) + 1);
+            strcpy(resources_path2, base_path);
+            strcat(resources_path2, resources_folder_name2);
+            copy_resources_directory(get_asset_manager(), resources_path2, "resources/voxes/monsters");*/
+        //mkdir("/data/data/org.libsdl.app/files/resources", 0777);
+        //mkdir("/data/data/org.libsdl.app/files/resources/voxes", 0777);

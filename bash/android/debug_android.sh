@@ -5,20 +5,21 @@ package_name="org.libsdl.app"
 
 echo "  > debugging zoxel android [$log_tag]."
 while true; do
-    adb logcat -s org.libsdl.app
+    # adb logcat -s $package_name
+    adb logcat -s $log_tag color
     sleep 1
 done
 
 echo "  > finished debugging zoxel android"
 
-    # adb logcat -s "$log_tag" color *:V
-    # adb logcat *:V # $package_name *:V
-    # adb logcat $package_name Zoxel:V
-    # adb logcat $log_tag:verbose *:V
-    # adb logcat
-    # adb logcat $log_tag:verbose *:S
-    # adb logcat -s SDL
-    # adb logcat -v color *:V
+# adb logcat -s "$log_tag" color *:V
+# adb logcat *:V # $package_name *:V
+# adb logcat $package_name Zoxel:V
+# adb logcat $log_tag:verbose *:V
+# adb logcat
+# adb logcat $log_tag:verbose *:S
+# adb logcat -s SDL
+# adb logcat -v color *:V
 
 # sleep 333
 

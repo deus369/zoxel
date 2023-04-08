@@ -1,6 +1,7 @@
-#define vox_file_chicken "voxes/monsters/chicken.vox"
-#define vox_file_slime "voxes/monsters/slime.vox"
-#define vox_file_mrpenguin "voxes/monsters/mrpenguin.vox"
+#define monsters_directory "voxes/" // monsters/
+#define vox_file_chicken monsters_directory"chicken.vox"
+#define vox_file_slime monsters_directory"slime.vox"
+#define vox_file_mrpenguin monsters_directory"mrpenguin.vox"
 
 int vox_files_count = 0;
 //! load a bunch of vox files from resources/voxes

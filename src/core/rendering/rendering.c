@@ -9,6 +9,7 @@ float4x4 main_camera_matrix2;
 zoxel_declare_tag(Mesh)
 zoxel_declare_tag(ElementRender)
 zoxel_byte_component(MeshDirty)
+zoxel_byte_component(TextureDirty)
 zoxel_component(Brightness, float)
 #include "opengl/opengl.c"
 #include "core/rendering_core.c"
@@ -16,8 +17,9 @@ zoxel_component(Brightness, float)
 zoxel_begin_module(Rendering)
 zoxel_define_tag(Mesh)
 zoxel_define_tag(ElementRender)
-zoxel_define_component(Brightness)
 zoxel_define_component(MeshDirty)
+zoxel_define_component(TextureDirty)
+zoxel_define_component(Brightness)
 if (!headless && is_opengl_running()) {
     zoxel_import_module(OpenGL)
     zoxel_import_module(RenderingCore)

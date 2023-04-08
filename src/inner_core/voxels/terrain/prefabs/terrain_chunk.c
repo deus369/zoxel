@@ -10,14 +10,19 @@ ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, int3 size) {
     zoxel_set(world, e, ChunkSize, { size });
     zoxel_add_tag(world, e, TerrainChunk);
     zoxel_set(world, e, ChunkNeighbors, { 0, NULL });
-    add_texture(world, e, chunk_texture_size, 1);
-    add_noise_texture(world, e);
-    zoxel_add_tag(world, e, DirtTexture);
     if (!headless) {
         zoxel_add(world, e, MeshUVs);
     }
     add_gpu_uvs(world, e);
-    add_gpu_texture(world, e);
+    #ifdef voxels_terrain_multi_material
+        add_gpu_material(world, e);
+        zoxel_add_tag(world, e, DirtTexture);
+        add_texture(world, e, chunk_texture_size, 1);
+        add_noise_texture(world, e);
+        add_gpu_texture(world, e);
+    #else
+        ecs_remove(world, e, MaterialGPULink);
+    #endif
     ecs_defer_end(world);
     prefab_terrain_chunk = e;
     return e;
@@ -32,9 +37,11 @@ ecs_entity_t spawn_terrain_chunk(ecs_world_t *world, ecs_entity_t prefab, int3 c
     ecs_set(world, e, Scale1D, { scale });
     if (!headless) {
         spawn_gpu_mesh(world, e);
-        spawn_gpu_material(world, e, shader3D_textured);
         spawn_gpu_uvs(world, e);
-        spawn_gpu_texture(world, e);
+        #ifdef voxels_terrain_multi_material
+            spawn_gpu_material(world, e, shader3D_textured);
+            spawn_gpu_texture(world, e);
+        #endif
     }
     ecs_defer_end(world);
     return e;

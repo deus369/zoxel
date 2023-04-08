@@ -1,4 +1,5 @@
-ecs_entity_t main_terrain_world;
+ecs_entity_t *terrain_chunks;
+int terrain_chunks_count;
 
 int get_chunk_index(int i, int j, int rows) {
     return (i + rows) * (rows + rows + 1) + (j + rows);
@@ -30,22 +31,22 @@ void create_terrain(ecs_world_t *world) {
     for (int i = -terrain_spawn_distance; i <= terrain_spawn_distance; i++) {
         for (int k = -terrain_spawn_distance; k <= terrain_spawn_distance; k++) {
             #ifdef voxel_octrees
-            for (int j = -terrain_vertical; j <= terrain_vertical; j++)
+                for (int j = -terrain_vertical; j <= terrain_vertical; j++)
             #else
-            int j = 0;
+                int j = 0;
             #endif
             {
                 // printf("%ix%i index is %i\n", i, j, get_chunk_index(i, j, terrain_spawn_distance));
                 // printf("%ix%ix%i index is %i out of %i\n", i, j, k, get_chunk_index_2(i, j, k, terrain_spawn_distance), chunks_total_length)
                 #ifdef voxel_octrees
-                int index = get_chunk_index_2(i, j, k, terrain_spawn_distance, terrain_vertical);
-                int3 chunk_position = (int3) { i, j, k };
-                chunks[index] = spawn_terrain_chunk_octree(world, prefab_terrain_chunk_octree, terrain_world,
-                    chunk_position, (float3) { i * chunk_real_size, j * chunk_real_size, k * chunk_real_size }, 0.5f);
-                chunk_positions[index] = chunk_position;
+                    int index = get_chunk_index_2(i, j, k, terrain_spawn_distance, terrain_vertical);
+                    int3 chunk_position = (int3) { i, j, k };
+                    chunks[index] = spawn_terrain_chunk_octree(world, prefab_terrain_chunk_octree, terrain_world,
+                        chunk_position, (float3) { i * chunk_real_size, j * chunk_real_size, k * chunk_real_size }, 0.5f);
+                    chunk_positions[index] = chunk_position;
                 #else
-                chunks[get_chunk_index_2(i, j, k, terrain_spawn_distance, 0)] = spawn_terrain_chunk(world, prefab_terrain_chunk,
-                    (int3) { i, 0, k }, (float3) { i * chunk_real_size, 0, k * chunk_real_size }, 0.5f);
+                    chunks[get_chunk_index_2(i, j, k, terrain_spawn_distance, 0)] = spawn_terrain_chunk(world, prefab_terrain_chunk,
+                        (int3) { i, 0, k }, (float3) { i * chunk_real_size, 0, k * chunk_real_size }, 0.5f);
                 #endif
             }
         }
@@ -75,13 +76,17 @@ void create_terrain(ecs_world_t *world) {
             #endif
         }
     }
+    terrain_chunks = malloc(sizeof(ecs_entity_t) * chunks_total_length);
+    for (int i = 0; i < chunks_total_length; i++) {
+        terrain_chunks [i] = chunks[i];
+    }
+    terrain_chunks_count = chunks_total_length;
     ChunkLinks chunkLinks = { };
     chunkLinks.value = create_int3_hash_map(chunks_total_length);
     for (int i = 0; i < chunks_total_length; i++) {
         int3_hash_map_add(chunkLinks.value, chunk_positions[i], chunks[i]);
     }
     ecs_set(world, terrain_world, ChunkLinks, { chunkLinks.value });
-    main_terrain_world = terrain_world;
     ecs_defer_end(world);
 }
 
