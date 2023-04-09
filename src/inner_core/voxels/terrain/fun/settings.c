@@ -30,17 +30,17 @@ const float flat_height_level = -0.56f; // 0.2f;
 
 void set_terrain_render_distance() {
     if (cpu_tier == 3) {
-        terrain_spawn_distance = 18; // 26;
+        terrain_spawn_distance = 16; // 26;
         terrain_vertical = 3; // 4;
         lod_division_dividor = 4; // 5;
         // set_max_octree_length(5);
     } else if (cpu_tier == 2) {
-        terrain_spawn_distance = 16;
+        terrain_spawn_distance = 12;
         lod_division_dividor = 3;
     } else if (cpu_tier == 1) {
-        terrain_spawn_distance = 12;
-    } else {
         terrain_spawn_distance = 8;
+    } else {
+        terrain_spawn_distance = 4;
     }
     terrain_frequency = max_octree_depth * 2 * 0.008216;
     terrain_boost = -12 * terrain_vertical + max_octree_depth * 4;
