@@ -85,6 +85,8 @@
 // #define voxels_use_octree_pooling
 // -- zoxel game --
 #define voxels_spawn_terrain
+#define zoxel_test_lines3D
+// #define zoxel_voxes_color_randomize
 // #define zoxel_quaternion_camera
 // #define zoxel_debug_vox_read
 // #define zoxel_spawn_character3Ds             // spawn x penguins
@@ -93,4 +95,3 @@
 // #define zoxel_debug_chunk_link_system
 // #define zoxel_debug_chunk_link_system_test
 // #define zoxel_debug_basic_collision3D_system
-#define zoxel_test_lines3D

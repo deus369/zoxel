@@ -1,4 +1,3 @@
-// #define zoxel_catch_opengl_errors
 // first, get working on pc
 //  then, move texture updating to the entity system
 // texture issues
@@ -37,12 +36,7 @@ GLuint2 spawn_gpu_mesh_buffers() {
     glGenBuffers(1, &mesh.x);
     glGenBuffers(1, &mesh.y);
     #ifdef zoxel_catch_opengl_errors
-        GLenum err = glGetError();
-        if (err != GL_NO_ERROR)
-        {
-            zoxel_log("GL ERROR with spawn_gpu_mesh_buffers [%i] - glGenBuffers\n",
-                (int) err);
-        }
+        check_opengl_error("spawn_gpu_mesh_buffers");
     #endif
     return mesh;
 }
@@ -60,11 +54,7 @@ unsigned char opengl_set_material(GLuint material) {
     }
     glUseProgram(material);
     #ifdef zoxel_catch_opengl_errors
-        GLenum err = glGetError();
-        if (err != GL_NO_ERROR) {
-            zoxel_log("GL ERROR with opengl_set_material [%i]\n", material);
-            return 0;
-        }
+        check_opengl_error("opengl_set_material");
     #endif
     return 1;
 }
@@ -90,11 +80,7 @@ void opengl_unset_mesh() {
 void opengl_draw_triangles(int indicies_length) {
     glDrawElements(GL_TRIANGLES, indicies_length, GL_UNSIGNED_INT, NULL);
     #ifdef zoxel_catch_opengl_errors
-        GLenum err = glGetError();
-        if (err != GL_NO_ERROR)
-        {
-            zoxel_log("GL ERROR with opengl_draw_triangles.\n");
-        }
+        check_opengl_error("opengl_draw_triangles");
     #endif
 }
 
@@ -119,19 +105,10 @@ Multiple textures:
     glBindTexture(GL_TEXTURE_2D, texture2);
 
 */
-    // glActiveTexture(GL_TEXTURE0);
-    // glUniform1i(texture, 0);
-    // glEnableTexture(texture);
-    // glActiveTexture(GL_TEXTURE0);
-    // glUniform1i(texture, 0);
 
-/*
-#ifdef zoxel_catch_opengl_errors
-    if (!glIsProgram(entityMaterial))
-    {
-        printf("GL Is not program %i\n", entityMaterial);
-        return;
-    }
-#endif
-*/
-    // Error 0x500/1280 means GL_INVALID_ENUM
+// glActiveTexture(GL_TEXTURE0);
+// glUniform1i(texture, 0);
+// glEnableTexture(texture);
+// glActiveTexture(GL_TEXTURE0);
+// glUniform1i(texture, 0);
+// Error 0x500/1280 means GL_INVALID_ENUM

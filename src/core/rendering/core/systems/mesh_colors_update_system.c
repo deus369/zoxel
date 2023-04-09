@@ -22,7 +22,7 @@ void MeshColorsUpdateSystem(ecs_iter_t *it) {
                 // printf("Issue with %i mesh colors.\n", i);
                 continue;
             }
-            set_gpu_mesh_colors(meshGPULink->value,  materialGPULink->value, meshIndicies2->value, meshIndicies2->length,
+            set_gpu_mesh_colors(meshGPULink->value, materialGPULink->value, meshIndicies2->value, meshIndicies2->length,
                 meshVertices2->value, meshVertices2->length, meshColors2->value);
         }
     }

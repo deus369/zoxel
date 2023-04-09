@@ -8,7 +8,7 @@ void FreeCameraMoveSystem(ecs_iter_t *it) {
         return;
     }
     unsigned char did_update = 0;
-    double movement_power = zoxel_delta_time; //  (double) (it->delta_time) * movement_multiplier;
+    double movement_power = zoxel_delta_time;
     movement_power *= movement_multiplier;
     #ifdef WEB_BUILD
         movement_power *= 10.0f;

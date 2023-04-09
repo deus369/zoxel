@@ -2,13 +2,18 @@
 #define zoxel_opengl
 
 #include "dynamic/opengl_functions.c"
-#include "shaders/colored3D.c"
 #include "util/error_util.c"
 #include "util/primitive_square.c"
 #include "util/primitive_mesh_util.c"
-#include "util/shaders_util.c"    // uses initialize_mesh
+#include "util/shaders_util.c"
 #include "util/opengl_util.c"
 #include "util/compute_util.c"
+// shaders
+#include "shaders/colored3D.c"
+#include "shaders/instanced2D.c"
+#include "shaders/instanced3D.c"
+#include "shaders/textured2D.c"
+#include "shaders/textured3D.c"
 // render2D
 #include "render2D/material2D.c"
 #include "render2D/instanced2D_material.c"

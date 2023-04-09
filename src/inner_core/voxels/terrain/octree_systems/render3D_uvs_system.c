@@ -80,14 +80,14 @@ void Render3DUvsSystem(ecs_iter_t *it) {
                     check_opengl_error("[render3D_uvs_system opengl_set_material3D_uvs_properties Error]");
                 #endif
             }
-            opengl_set_material3D_uvs_position(position3D->value, &attributes);
-            //    check_opengl_error("[opengl_set_material3D_uvs_position Error]");
             opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, &attributes);
             //    check_opengl_error("[opengl_set_buffer_attributes Error]");
             opengl_set_mesh_indicies(meshGPULink->value.x);
             #ifdef zoxel_render3D_uvs_system_overdebug
                 check_opengl_error("[render3D_uvs_system opengl_set_mesh_indicies Error]");
             #endif
+            opengl_set_material3D_uvs_position(position3D->value, &attributes);
+            //    check_opengl_error("[opengl_set_material3D_uvs_position Error]");
             opengl_draw_triangles(meshIndicies2->length);
             #ifdef zoxel_render3D_uvs_system_overdebug
                 if (check_opengl_error("[render3D_uvs_system opengl_draw_triangles Error]")) {

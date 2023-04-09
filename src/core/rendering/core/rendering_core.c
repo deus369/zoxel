@@ -30,6 +30,7 @@ zoxel_reset_system(MeshDirtySystem, MeshDirty)
 #include "render2D_systems/render2D_instance_system.c"
 #include "render3D_systems/render3D_system.c"
 #include "render3D_systems/render3D_instance_system.c"
+#include "render3D_systems/render3D_colored_system.c"
 #include "fun/render_loop.c"
 #include "fun/resource_management.c"
 
@@ -60,10 +61,10 @@ ecs_set_hooks(world, UvsGPULink, { .dtor = ecs_dtor(UvsGPULink) });
         [in] MaterialGPULink, [in] TextureGPULink);
 #endif
 #ifdef zoxel_transforms3D
-    zoxel_system_1(Render3DSystem, render3D_update_pipeline, // EcsOnStore,
-        [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness,
-        [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies,
-        [none] !UvsGPULink);
+    zoxel_system_1(Render3DSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D,
+        [in] Brightness, [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] !MeshColors);
+    zoxel_system_1(Render3DColoredSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D,
+        [in] Brightness, [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] MeshColors);
     zoxel_system_1(InstanceRender3DSystem, render3D_update_pipeline,
         [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink);
 #endif

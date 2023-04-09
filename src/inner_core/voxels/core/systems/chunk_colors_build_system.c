@@ -1,4 +1,6 @@
 // colors version
+const unsigned char voxel_color_rand = 8;
+const unsigned char voxel_color_rand2 = 16;
 
 #define zoxel_add_faces_colors(direction, is_positive) {\
     unsigned char that_voxel = get_voxel##_##direction(local_position, chunk, chunkSize, NULL);\
@@ -97,6 +99,12 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
                 voxel = chunk->value[array_index];
                 if (voxel != 0) {
                     voxel_color = colors->value[voxel - 1];
+                    // randomize color
+                    #ifdef zoxel_voxes_color_randomize
+                        voxel_color.r -= voxel_color_rand + rand() % voxel_color_rand2;
+                        voxel_color.g -= voxel_color_rand + rand() % voxel_color_rand2;
+                        voxel_color.b -= voxel_color_rand + rand() % voxel_color_rand2;
+                    #endif
                     // get color based on pallete voxel_color
                     float3 vertex_position_offset = float3_multiply_float(float3_from_int3(local_position), voxel_scale);
                     #ifndef disable_voxel_left

@@ -20,11 +20,7 @@ int load_all_shaders() {
         printf("Error [load_shader3D_textured]\n");
     }
     #ifdef zoxel_catch_opengl_errors
-        GLenum err = glGetError();
-        if (err != GL_NO_ERROR) {
-            zoxel_log("GL ERROR with load_all_shaders [%i]\n", err);
-            return false;
-        }
+        check_opengl_error("load_all_shaders");
     #endif
     return 0;
 }

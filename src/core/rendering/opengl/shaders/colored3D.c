@@ -15,14 +15,13 @@ vec3 float4_rotate_float3(vec4 rotation, vec3 value) { \
     vec3 crossB = cross(rotationXYZ, t); \
     vec3 scaledT = t * rotation.w; \
     return value + scaledT + crossB; \
-} \
+}\
 \
 void main() {\
     gl_Position = viewMatrix * vec4(position + float4_rotate_float3(rotation, vertexPosition * scale), 1.0); \
     vertexColorOutput = vertexColor;\
     fog_level = gl_Position.z;\
-}\
-";
+}";
 
 const GLchar* shader3D_colored_frag_buffer = "\
 #version 300 es\n\
@@ -31,11 +30,10 @@ uniform highp float brightness; \
 out highp vec4 color;\
 in highp float fog_level;\
 \
-void main() { \
+void main() {\
     color = vertexColorOutput * brightness; \
     highp vec4 backgroundColor = vec4(2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f, 1);\
     highp float fog_density = 0.0126;\
     highp float fogBlend = 1.0 - exp2(-fog_density * fog_density * fog_level * fog_level);\
     color = mix(color, backgroundColor, fogBlend);\
-} \
-";
+}";

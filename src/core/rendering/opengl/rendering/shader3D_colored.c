@@ -8,11 +8,7 @@ void dispose_shader3D_colored() {
 int load_shader3D_colored() {
     shader3D_colored = spawn_gpu_shader_inline(shader3D_colored_vert_buffer, shader3D_colored_frag_buffer);
     #ifdef zoxel_catch_opengl_errors
-        GLenum err = glGetError();
-        if (err != GL_NO_ERROR) {
-            zoxel_log("GL ERROR with load_shader3D_colored [%i]\n", err);
-            return false;
-        }
+        check_opengl_error("load_shader3D_colored");
     #endif
     return 0;
 }
@@ -52,24 +48,27 @@ void set_gpu_mesh_colors(GLuint2 mesh, GLuint material, const int *indicies, int
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-int opengl_set_material3D_colors_properties(GLuint material,
-    float3 position, float4 rotation, float scale, float brightness) {
-    MaterialColored3D materialColored3D = spawn_material3D_colored_properties(material);
-    glEnableVertexAttribArray(materialColored3D.vertexPosition);
+void set_color_vertex_layout(MaterialColored3D *materialColored3D) {
+    // MaterialColored3D materialColored3D = spawn_material3D_colored_properties(material);
+    glEnableVertexAttribArray(materialColored3D->vertexPosition);
+    glEnableVertexAttribArray(materialColored3D->vertexColor);
+    glVertexAttribPointer(materialColored3D->vertexPosition, 3, GL_FLOAT, GL_FALSE, 4 * 7, 0);
+    glVertexAttribPointer(materialColored3D->vertexColor, 4, GL_FLOAT, GL_FALSE, 4 * 7, (GLvoid*)(3 * sizeof(float)));
+}
+
+int opengl_set_material3D_colors_properties(MaterialColored3D *materialColored3D, float3 position, float4 rotation) {
+    glUniform3f(materialColored3D->position, position.x, position.y, position.z);
+    glUniform4f(materialColored3D->rotation, rotation.x, rotation.y, rotation.z, rotation.w);
+    //, float scale, float brightness) {
+    // MaterialColored3D materialColored3D = spawn_material3D_colored_properties(material);
+    /*glEnableVertexAttribArray(materialColored3D.vertexPosition);
     glEnableVertexAttribArray(materialColored3D.vertexColor);
     glVertexAttribPointer(materialColored3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 4 * 7, 0);
-    glVertexAttribPointer(materialColored3D.vertexColor, 4, GL_FLOAT, GL_FALSE, 4 * 7, (GLvoid*)(3 * sizeof(float)));
-    glUniform3f(materialColored3D.position, position.x, position.y, position.z);
-    glUniform4f(materialColored3D.rotation, rotation.x, rotation.y, rotation.z, rotation.w);
-    glUniform1f(materialColored3D.scale, scale);
-    glUniform1f(materialColored3D.brightness, brightness);
+    glVertexAttribPointer(materialColored3D.vertexColor, 4, GL_FLOAT, GL_FALSE, 4 * 7, (GLvoid*)(3 * sizeof(float)));*/
+    // glUniform1f(materialColored3D.scale, scale);
+    // glUniform1f(materialColored3D.brightness, brightness);
     #ifdef zoxel_catch_opengl_errors
-        GLenum err = glGetError();
-        if (err != GL_NO_ERROR)
-        {
-            zoxel_log("GL ERROR - opengl_set_material3D_colors_properties [%i]\n", (int) err);
-            return -1;
-        }
+        check_opengl_error("opengl_set_material3D_colors_properties");
     #endif
     return 0;
 }
