@@ -27,6 +27,10 @@ else
     sudo mkdir $zoxel_install_directory
 fi
 
+
+echo "  > removing old resources [$zoxel_install_directory/resources]"
+sudo rm -R $zoxel_install_directory/resources
+
 echo "  Copying [$zoxel_directory/$file_name], resources & icon to [$zoxel_install_directory]"
 sudo cp $binary_path $zoxel_install_directory/$file_name
 sudo cp -R $resources_directory $zoxel_install_directory/resources
