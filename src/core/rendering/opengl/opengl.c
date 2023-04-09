@@ -2,6 +2,7 @@
 #define zoxel_opengl
 
 #include "dynamic/opengl_functions.c"
+#include "shaders/colored3D.c"
 #include "util/error_util.c"
 #include "util/primitive_square.c"
 #include "util/primitive_mesh_util.c"

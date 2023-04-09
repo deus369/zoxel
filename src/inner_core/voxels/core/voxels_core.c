@@ -2,7 +2,7 @@
 #define zoxel_voxels_core
 
 const float overall_voxel_scale = 32.0f; // 64.0f; // 4.0f // 2.0f;
-const float octree_scales3_multiplier = 16.0f; // overall_voxel_scale / ((float) octree_node_size);
+const float real_chunk_scale = 16.0f; // overall_voxel_scale / ((float) octree_node_size);
 const float3 center_mesh_offset = { 0, 0, 0 };
 const double noiseChunkAnimateSpeed = 0.5; // 1 / 8.0;
 const int dissapearChance = 92;

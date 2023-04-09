@@ -1,13 +1,10 @@
 // handles unloading and loading of gpu data
-
 extern ecs_entity_t main_canvas;
 extern ecs_entity_t *characters;
 extern int characters_count;
-
 extern void restore_opengl_resources_terrain(ecs_world_t *world);
 extern void dispose_opengl_resources_terrain(ecs_world_t *world);
-
-// todo: write this as systems and just run it once during the function
+// todo: write these as systems and just run it once during the function like render_loop
 
 void dispose_material_resources(ecs_world_t *world, ecs_entity_t e) {
     if (ecs_has(world, e, MaterialGPULink)) {
@@ -108,16 +105,3 @@ void restore_all_opengl_resources(ecs_world_t *world) {
         restore_material_resources(world, character, shader3D_colored);
     }
 }
-
-/*for (int i = 0; i < terrain_chunks_count; i++) {
-    ecs_entity_t terrain_chunk = terrain_chunks[i];
-    restore_mesh_resources(world, terrain_chunk);
-    #ifdef voxels_terrain_multi_material
-        restore_material_resources(world, terrain_chunk, shader3D_textured);
-    #endif
-}*/
-/*dispose_material_resources(world, main_terrain_world);
-for (int i = 0; i < terrain_chunks_count; i++) {
-    ecs_entity_t terrain_chunk = terrain_chunks[i];
-    dispose_mesh_resources(world, terrain_chunk);
-}*/

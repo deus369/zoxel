@@ -13,7 +13,7 @@ void chunk_position_fix2(float3 real_position, int3 *chunk_position) {
 int3 get_voxel_position(float3 real_position) {
     // divides by scale of chunk meshes
     // multiplies by voxel chunk lengths
-    float multiplier = default_chunk_length / octree_scales3_multiplier;
+    float multiplier = default_chunk_length / real_chunk_scale;
     int3 voxel_position = (int3) {
         (int) floor(real_position.x * multiplier),
         (int) floor(real_position.y * multiplier),

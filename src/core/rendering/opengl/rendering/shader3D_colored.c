@@ -1,41 +1,4 @@
-
 GLuint2 shader3D_colored;
-const GLchar* shader3D_colored_vert_buffer = "\
-#version 300 es\n\
-in highp vec3 vertexPosition; \
-in highp vec4 vertexColor; \
-uniform highp mat4 viewMatrix; \
-uniform highp vec3 position; \
-uniform highp vec4 rotation; \
-uniform highp float scale; \
-out highp vec4 vertexColorOutput; \
-\
-vec3 float4_rotate_float3(vec4 rotation, vec3 value) \
-{ \
-    vec3 rotationXYZ = rotation.xyz; \
-    vec3 t = cross(rotationXYZ, value) * 2.0f; \
-    vec3 crossB = cross(rotationXYZ, t); \
-    vec3 scaledT = t * rotation.w; \
-    return value + scaledT + crossB; \
-} \
-\
-void main()\
-{\
-    gl_Position = viewMatrix * vec4(position + float4_rotate_float3(rotation, vertexPosition * scale), 1.0); \
-    vertexColorOutput = vertexColor; \
-}\
-";
-const GLchar* shader3D_colored_frag_buffer = "\
-#version 300 es\n\
-in highp vec4 vertexColorOutput;\
-uniform highp float brightness; \
-out highp vec4 color; \
- \
-void main() \
-{ \
-    color = vertexColorOutput * brightness; \
-} \
-";
 
 void dispose_shader3D_colored() {
     glDeleteShader(shader3D_colored.x);
@@ -46,8 +9,7 @@ int load_shader3D_colored() {
     shader3D_colored = spawn_gpu_shader_inline(shader3D_colored_vert_buffer, shader3D_colored_frag_buffer);
     #ifdef zoxel_catch_opengl_errors
         GLenum err = glGetError();
-        if (err != GL_NO_ERROR)
-        {
+        if (err != GL_NO_ERROR) {
             zoxel_log("GL ERROR with load_shader3D_colored [%i]\n", err);
             return false;
         }
@@ -67,8 +29,7 @@ void set_gpu_mesh_colors(GLuint2 mesh, GLuint material, const int *indicies, int
     int float_per_data = 7;
     int floats_length = verts_length * float_per_data;
     float combined_verts[floats_length];
-    for (int i = 0; i < verts_length; i++)
-    {
+    for (int i = 0; i < verts_length; i++) {
         float3 vert = verts[i];
         color vert_color = colors[i];
         // vert_color.r = rand() % 256;
@@ -81,10 +42,6 @@ void set_gpu_mesh_colors(GLuint2 mesh, GLuint material, const int *indicies, int
         combined_verts[i * float_per_data + 4] = vert_color_float4.y;
         combined_verts[i * float_per_data + 5] = vert_color_float4.z;
         combined_verts[i * float_per_data + 6] = vert_color_float4.w;
-        /*if (i < 16)
-        {
-            printf("    vert_color [%fx%fx%f] \n", vert_color_float4.x, vert_color_float4.y, vert_color_float4.z);
-        }*/
     }
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * 4, indicies, GL_STATIC_DRAW);
     glBufferData(GL_ARRAY_BUFFER, floats_length * 4, combined_verts, GL_STATIC_DRAW);

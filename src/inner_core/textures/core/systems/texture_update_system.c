@@ -25,11 +25,3 @@ void TextureUpdateSystem(ecs_iter_t *it) {
     }
 }
 zoxel_declare_system(TextureUpdateSystem)
-
-//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-//! Generate random noise texture.
-/**
- * Once main thread is fixed, update to gpu in this system.
- * \todo update to gpu here?
-*/

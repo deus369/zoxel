@@ -21,7 +21,7 @@ vec3 float4_rotate_float3(vec4 rotation, vec3 value) {\
 void main() {\
     gl_Position = view_matrix * vec4(position + float4_rotate_float3(rotation, vertexPosition * scale), 1.0);\
     uv = vertexUV;\
-    fog_level = (view_matrix * vec4(position + float4_rotate_float3(rotation, vertexPosition * scale), 1.0)).z;\
+    fog_level = gl_Position.z;\
 }\
 ";
 const GLchar* shader3D_textured_frag_buffer = "\

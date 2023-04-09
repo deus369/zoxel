@@ -1,12 +1,14 @@
 //ecs_entity_t *terrain_chunks;
 //int terrain_chunks_count;
 
+//  + 1
 int get_chunk_index(int i, int j, int rows) {
-    return (i + rows) * (rows + rows + 1) + (j + rows);
+    return (i + rows + 1) * (rows + rows + 1) + (j + rows + 1);
 }
 
-int get_terrain_chunks_count(int rows, int vertical_rows) {
-    return (vertical_rows + vertical_rows + 1) * (rows + rows + 1) * (rows + rows + 1);
+// vertical_rows + vertical_rows +  - rows + rows + 1
+int get_terrain_chunks_count(int rows, int slabs) {
+    return (slabs + slabs + 1) * (rows + rows + 1) * (rows + rows + 1);
 }
 
 int get_chunk_index_2(int i, int j, int k, int rows, int vertical) {
@@ -42,11 +44,11 @@ void create_terrain(ecs_world_t *world) {
                     int index = get_chunk_index_2(i, j, k, terrain_spawn_distance, terrain_vertical);
                     int3 chunk_position = (int3) { i, j, k };
                     chunks[index] = spawn_terrain_chunk_octree(world, prefab_terrain_chunk_octree, terrain_world,
-                        chunk_position, (float3) { i * chunk_real_size, j * chunk_real_size, k * chunk_real_size }, 0.5f);
+                        chunk_position, (float3) { i * real_chunk_scale, j * real_chunk_scale, k * real_chunk_scale }, 0.5f);
                     chunk_positions[index] = chunk_position;
                 #else
                     chunks[get_chunk_index_2(i, j, k, terrain_spawn_distance, 0)] = spawn_terrain_chunk(world, prefab_terrain_chunk,
-                        (int3) { i, 0, k }, (float3) { i * chunk_real_size, 0, k * chunk_real_size }, 0.5f);
+                        (int3) { i, 0, k }, (float3) { i * real_chunk_scale, 0, k * real_chunk_scale }, 0.5f);
                 #endif
             }
         }
@@ -123,38 +125,3 @@ void restore_opengl_resources_terrain(ecs_world_t *world) {
         }
     }
 }
-
-/*while (pair != NULL) {
-    ecs_entity_t terrain_chunk = pair->value;
-    dispose_mesh_resources(world, terrain_chunk);
-    pair = pair->next;
-}*/
-/*for (int i = 0; i < terrain_chunks_count; i++) {
-    ecs_entity_t terrain_chunk = terrain_chunks[i];
-    dispose_mesh_resources(world, terrain_chunk);
-}*/
-
-/*
-int3_hash_map_pair* pair = chunkLinks->value->data[0];
-while (pair != NULL) {
-    ecs_entity_t terrain_chunk = pair->value;
-    restore_mesh_resources(world, terrain_chunk);
-    #ifdef voxels_terrain_multi_material
-        restore_material_resources(world, terrain_chunk, shader3D_textured);
-    #endif
-    pair = pair->next;
-}*/
-/*for (int i = 0; i < terrain_chunks_count; i++) {
-    ecs_entity_t terrain_chunk = terrain_chunks[i];
-    restore_mesh_resources(world, terrain_chunk);
-    #ifdef voxels_terrain_multi_material
-        restore_material_resources(world, terrain_chunk, shader3D_textured);
-    #endif
-}*/
-
-/*ChunkLinks chunkLinks = { };
-initialize_memory_component_non_pointer(chunkLinks, ecs_entity_t, chunks_total_length);
-for (int i = 0; i < chunks_total_length; i++) {
-    chunkLinks.value[i] = chunks[i];
-}
-ecs_set(world, terrain_world, ChunkLinks, { chunkLinks.length, chunkLinks.value });*/

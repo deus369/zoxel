@@ -64,6 +64,11 @@ void boot_zoxel_game(ecs_world_t *world) {
             create_terrain(world);
         #endif
     #endif
+    #ifdef zoxel_lines3D
+        #ifdef zoxel_test_lines3D
+            spawn_terrain_grid(real_chunk_scale);
+        #endif
+    #endif
     #ifdef zoxel_musics
         spawn_music(world, instrument_piano);
     #endif

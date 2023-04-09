@@ -1,22 +1,3 @@
-
-const char* line3D_source_vert = "\
-    #version 300 es\n\
-    in lowp vec3 position;\
-    uniform lowp mat4 camera_matrix; \
-    \
-    void main()\
-    {\
-        gl_Position = camera_matrix * vec4(position, 1);\
-    }";
-const GLchar* line3D_source_frag = "\
-    #version 300 es\n\
-    uniform lowp vec4 color;\
-    out lowp vec4 color_output;\
-    \
-    void main()\
-    {\
-        color_output = color;\
-    }";
 GLuint2 line3D_shader;
 GLuint line3D_shader_frag;
 GLuint line3D_material;

@@ -1,7 +1,11 @@
 const char *iconFilename = resources_folder_name"textures/game_icon.png";
 int2 screen_dimensions = { 720, 480 };
 
-// links to input and camera modules
+// links to other modules
+// todo: find a cleaner way to do this
+extern int check_opengl_error(char* function_name);
+extern void delete_all_opengl_resources(ecs_world_t *world);
+extern void restore_all_opengl_resources(ecs_world_t *world);
 #ifdef zoxel_inputs
     extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event, int2 screen_dimensions);
     extern void input_extract_from_sdl_per_frame(ecs_world_t *world);
@@ -237,10 +241,6 @@ void recreate_main_window(ecs_world_t *world) {
     create_main_window();
 }
 
-extern int check_opengl_error(char* function_name);
-extern void delete_all_opengl_resources(ecs_world_t *world);
-extern void restore_all_opengl_resources(ecs_world_t *world);
-
 //! handles sdl events including keys
 void update_sdl(ecs_world_t *world) {
     #ifdef zoxel_inputs
@@ -264,19 +264,12 @@ void update_sdl(ecs_world_t *world) {
                 }
             } else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) {
                 zoxel_log(" > window was minimized\n");
-                // SDL_HideWindow(main_window);
                 rendering = 0;
-                //#ifdef ANDROID_BUILD
-                    delete_all_opengl_resources(world);
-                //#endif
+                delete_all_opengl_resources(world);
             } else if (event.window.event == SDL_WINDOWEVENT_RESTORED) {
                 zoxel_log(" > window was restored\n");
-                // SDL_ShowWindow(main_window);
-                // SDL_OnWindowRestored(main_window);
                 rendering = 1;
-                //#ifdef ANDROID_BUILD
-                    restore_all_opengl_resources(world);
-                //#endif
+                restore_all_opengl_resources(world);
             }
         } else if (eventType == SDL_KEYUP) {
             SDL_Keycode key = event.key.keysym.sym;
@@ -286,17 +279,3 @@ void update_sdl(ecs_world_t *world) {
         }
     }
 }
-
-/*int displays = SDL_GetNumVideoDisplays();
-if (displays > 1 && window_index != -1 && window_index < displays) {
-    app_position.x = screen_dimensions.x * window_index;
-}*/
-// SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN
-// SDL_RENDERER_SOFTWARE SDL_RENDERER_ACCELERATED
-/*SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
-SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
-SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
-SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);*/
-/*SDL_MinimizeWindow(main_window);
-SDL_Delay(1000);
-SDL_RestoreWindow(main_window);*/

@@ -1,4 +1,3 @@
-//! Each entity will impact all other entities.
 void Gravity3DSystem(ecs_iter_t *it) {
     const Gravity3D *gravity3Ds = ecs_field(it, Gravity3D, 1);
     Acceleration3D *acceleration3Ds = ecs_field(it, Acceleration3D, 2);

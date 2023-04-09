@@ -1,6 +1,4 @@
-//! Causes friction upon movement.
 void Friction3DSystem(ecs_iter_t *it) {
-    const float frictionValue = 8.0f;  // 0.002
     const Velocity3D *velocity3Ds = ecs_field(it, Velocity3D, 2);
     Acceleration3D *acceleration3Ds = ecs_field(it, Acceleration3D, 3);
     for (int i = 0; i < it->count; i++) {

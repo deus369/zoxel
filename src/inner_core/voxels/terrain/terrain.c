@@ -25,14 +25,12 @@ long int Render3DUvsSystem_id;
 
 zoxel_begin_module(Terrain)
 set_terrain_render_distance();
-
 zoxel_define_tag(TerrainWorld)
 zoxel_define_tag(TerrainChunk)
 zoxel_define_tag(ChunkTerrain)
 zoxel_define_tag(Streamer)
 zoxel_define_component(StreamPoint)
 zoxel_define_component(ChunkDirtier)
-
 zoxel_filter(generateTerrainChunkQuery, world, [none] TerrainChunk, [in] GenerateChunk)
 zoxel_filter(generateChunkQuery, world, [in] GenerateChunk)
 zoxel_system_ctx(world, TerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
@@ -58,12 +56,10 @@ zoxel_system_1(Render3DUvsSystem, render3D_update_pipeline, // EcsOnStore,
         [in] VoxLink);
     #endif
 Render3DUvsSystem_id = ecs_id(Render3DUvsSystem);
-
 spawn_prefab_terrain(world);
 int3 terrain_chunk_size = { default_chunk_length, 8 * default_chunk_length, default_chunk_length };
 spawn_prefab_terrain_chunk(world, terrain_chunk_size);
 spawn_prefab_terrain_chunk_octree(world, terrain_chunk_size);
-
 zoxel_end_module(Terrain)
 
 // todo: move texture to terrain entity and not terrain chunks

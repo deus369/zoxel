@@ -1,9 +1,12 @@
-const float bounce_threshold = 0.001f;
 
 // todo seperate voxel position, and chunk position updates outside of this
 // todo check normal of voxel position difference, base bounce velocity off that instead of just y axis
 void BasicCollision3DSystem(ecs_iter_t *it) {
     double delta_time = zoxel_delta_time;
+    /*if (delta_time > zoxel_max_delta_time) {
+        delta_time = delta_time;
+    }*/
+    // if (delta_time > 0.01f) delta_time = 0;
     const ChunkLink *chunkLinks = ecs_field(it, ChunkLink, 1);
     const ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 2);
     Position3D *position3Ds = ecs_field(it, Position3D, 3);
@@ -56,8 +59,8 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
                             }
                             // velocity3D->value.y = 0;
                             // float3_subtract_float3_p(&position3D->value, velocity3D->value);
-                            if (position3D->value.y < -100) {
-                                zoxel_log(" !!! npc is too far deep %lu\n", it->entities[i]);
+                            if (position3D->value.y < -256) {
+                                // zoxel_log(" !!! npc is too far deep %lu\n", it->entities[i]);
                                 ecs_delete(world, it->entities[i]);
                             }
                         }

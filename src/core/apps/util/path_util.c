@@ -1,3 +1,6 @@
+// #define zoxel_debug_base_path
+// todo: make sure to copy folder, with bash, resources into:
+//      > /build/android-build/app/src/main/assets/resources
 
 #ifdef ANDROID_BUILD
     // i will have to manually add in the resource directories for android until ndk updates
@@ -160,7 +163,9 @@ void set_data_path() {
     #else
         const char *base_path = SDL_GetBasePath();
     #endif
-    debug_base_path(base_path);
+    #ifdef zoxel_debug_base_path
+        debug_base_path(base_path);
+    #endif
     if (base_path) {
         data_path = base_path;
     } else {
