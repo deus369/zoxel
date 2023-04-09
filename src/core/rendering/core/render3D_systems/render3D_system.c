@@ -18,7 +18,7 @@ void Render3DSystem(ecs_iter_t *it) {
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         // printf(" - Rendering 3D Mesh [%lu]\n", (long int) it->entities[i]);
         if (opengl_set_material(materialGPULink->value)) {
-            opengl_set_mesh(meshGPULink->value);
+            opengl_bind_mesh(meshGPULink->value);
             set_basic_vert_layout(materialGPULink->value);
             // unsigned char has_mesh_colors = ecs_has(world, it->entities[i], MeshColors);
             /*if (has_mesh_colors) {

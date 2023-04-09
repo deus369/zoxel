@@ -20,6 +20,9 @@ void spawn_many_characters3D(ecs_world_t *world) {
     characters_count = spawn_characters3D_count;
     for (int i = 0; i < spawn_characters3D_count; i++) {
         vox_file_index = rand() % vox_files_count;
+        //#ifdef zoxel_test_single_character3Ds
+        //    vox_file_index = 0;
+        //#endif
         vox = vox_files[vox_file_index];
         float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
         float3 position = (float3) { spawn_many_offset.x + - radius + ((rand() % 100) / 101.0f) * radius * 2.0f,

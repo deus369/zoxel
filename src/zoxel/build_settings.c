@@ -89,9 +89,9 @@
 // #define zoxel_voxes_color_randomize
 // #define zoxel_quaternion_camera
 // #define zoxel_debug_vox_read
-// #define zoxel_spawn_character3Ds             // spawn x penguins
-// #define zoxel_test_single_character3Ds   // spawn 1 penguin
 // #define zoxel_is_flat_height
 // #define zoxel_debug_chunk_link_system
 // #define zoxel_debug_chunk_link_system_test
 // #define zoxel_debug_basic_collision3D_system
+// #define zoxel_spawn_character3Ds             // spawn x penguins
+// #define zoxel_test_single_character3Ds   // spawn 1 penguin

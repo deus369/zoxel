@@ -69,6 +69,7 @@ void render_loop() {
     #ifdef zoxel_time_render_loop
         begin_timing_absolute()
     #endif
+    gpu_data_updates();
     #ifdef zoxel_cameras
         if (ecs_is_valid(world, ui_cameras[0])) {
             ui_camera_matrix = ecs_get(world, ui_cameras[0], ViewMatrix)->value;
@@ -82,7 +83,6 @@ void render_loop() {
         }
     #endif
     finish_opengl_rendering(world);
-    gpu_data_updates();
     #ifdef zoxel_time_render_loop
         end_timing_absolute("    - render_loop")
     #endif

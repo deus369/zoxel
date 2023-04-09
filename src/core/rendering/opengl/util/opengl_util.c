@@ -41,10 +41,10 @@ GLuint2 spawn_gpu_mesh_buffers() {
     return mesh;
 }
 
-GLuint spawn_gpu_uvs_buffers() {
-    GLuint uvs;
-    glGenBuffers(1, &uvs);
-    return uvs;
+GLuint spawn_gpu_generic_buffer() {
+    GLuint buffer;
+    glGenBuffers(1, &buffer);
+    return buffer;
 }
 
 unsigned char opengl_set_material(GLuint material) {
@@ -59,7 +59,7 @@ unsigned char opengl_set_material(GLuint material) {
     return 1;
 }
 
-void opengl_set_mesh(GLuint2 mesh) {
+void opengl_bind_mesh(GLuint2 mesh) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);    // for indices
     glBindBuffer(GL_ARRAY_BUFFER, mesh.y);            // for vertex coordinates
 }

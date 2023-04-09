@@ -32,7 +32,8 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
                 int vox_file_index = rand() % vox_files_count;
                 vox_file vox = vox_files[vox_file_index];
                 float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
-                ecs_entity_t e = spawn_character3D(world, character3D_prefab, &vox, position, rotation, model_scale * overall_voxel_scale);
+                spawn_character3D(world, character3D_prefab, &vox, position, rotation, model_scale * overall_voxel_scale);
+                // ecs_entity_t e = 
                 // zoxel_log(" + chunk spawning character [%fx%fx%f] \n", position.x, position.y, position.z);
                 // characters[i] = e;
             }

@@ -11,13 +11,9 @@ void add_gpu_uvs(ecs_world_t *world, ecs_entity_t prefab) {
     }
 }
 
-//! Grab from opengl part.
-extern GLuint2 spawn_gpu_mesh_buffers();
-
 void spawn_gpu_uvs(ecs_world_t *world, ecs_entity_t e) {
     if (!headless) {
-        GLuint buffers = spawn_gpu_uvs_buffers();
-        ecs_set(world, e, UvsGPULink, { buffers });
+        ecs_set(world, e, UvsGPULink, { spawn_gpu_generic_buffer() });
     }
 }
 

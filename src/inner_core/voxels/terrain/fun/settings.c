@@ -30,7 +30,7 @@ const float flat_height_level = -0.56f; // 0.2f;
 
 void set_terrain_render_distance() {
     if (cpu_tier == 3) {
-        terrain_spawn_distance = 16; // 26;
+        terrain_spawn_distance =16; // 26;
         terrain_vertical = 3; // 4;
         lod_division_dividor = 4; // 5;
         // set_max_octree_length(5);

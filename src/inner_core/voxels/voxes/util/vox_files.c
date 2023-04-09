@@ -1,4 +1,5 @@
 #define monsters_directory "voxes/" // monsters/
+#define vox_file_littlecube monsters_directory"littlecube.vox"
 #define vox_file_chicken monsters_directory"chicken.vox"
 #define vox_file_slime monsters_directory"slime.vox"
 #define vox_file_mrpenguin monsters_directory"mrpenguin.vox"
@@ -14,10 +15,27 @@ void dispose_vox_files() {
     free(vox_files);
 }
 
+void load_vox_file(int index, char* filename) {
+    vox_file loaded_vox;
+    char* vox_path = concat_file_path(resources_path, filename);
+    if (read_vox(vox_path, &loaded_vox) == EXIT_SUCCESS) {
+        vox_files[index] = loaded_vox;
+    } else {
+        zoxel_log(" !!! failed loading file %s\n", filename);
+    }
+    free(vox_path);
+}
+
 void load_vox_files() {
-    vox_files_count = 3;
+    vox_files_count = 4;
     vox_files = malloc(sizeof(vox_file) * vox_files_count);
-    vox_file chicken_vox;
+    load_vox_file(0, vox_file_littlecube);
+    load_vox_file(1, vox_file_chicken);
+    load_vox_file(2, vox_file_slime);
+    load_vox_file(3, vox_file_mrpenguin);
+}
+
+    /*vox_file chicken_vox;
     char* chicken_vox_path = concat_file_path(resources_path, vox_file_chicken);
     if (read_vox(chicken_vox_path, &chicken_vox) == EXIT_SUCCESS) {
         vox_files[0] = chicken_vox;
@@ -34,5 +52,4 @@ void load_vox_files() {
     if (read_vox(mrpenguin_vox_path, &vox_mrpenguin) == EXIT_SUCCESS) {
         vox_files[2] = vox_mrpenguin;
     }
-    free(mrpenguin_vox_path);
-}
+    free(mrpenguin_vox_path);*/
