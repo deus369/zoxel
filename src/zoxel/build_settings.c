@@ -1,8 +1,9 @@
 // -- debugs --
 #define zox_logs                    // enables logging
 // #define log_to_file              // logs go to a file
-#define zoxel_debug_sdl          // debugs sdl app
-#define zoxel_debug_opengl       // debugs opengl
+// #define zoxel_debug_sdl             // debugs sdl app
+// #define zoxel_debug_opengl          // debugs opengl
+// #define zoxel_debug_settings        // debugs zoxel settings
 // #define zoxel_debug_audio        // debugs sdl audio
 // #define zoxel_debug_input        // debugs sdl input
 // #define zoxel_entity_names       // sets entity names
@@ -95,3 +96,4 @@
 // #define zoxel_debug_basic_collision3D_system
 // #define zoxel_spawn_character3Ds             // spawn x penguins
 // #define zoxel_test_single_character3Ds   // spawn 1 penguin
+// Fixed color shader gpu things and systems

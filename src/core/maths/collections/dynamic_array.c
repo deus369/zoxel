@@ -77,5 +77,6 @@ data_type* finalize##_##data_type##_##array_d(data_type##_##array_d* dynamic_arr
 zoxel_dynamic_array(int)
 zoxel_dynamic_array(float3)
 zoxel_dynamic_array(float2)
+zoxel_dynamic_array(ecs_entity_t)
 
 // todo: make into a macro, then define float3_array_d type with zoxel_dynamic_array(float3)

@@ -25,6 +25,7 @@ zoxel_memory_component(MeshColors, color)
 #include "systems/mesh_uvs_update_system.c"
 #include "systems/mesh2D_update_system.c"
 #include "systems/mesh2D_uvs_update_system.c"
+#include "systems/mesh_dispose_system.c"
 zoxel_reset_system(MeshDirtySystem, MeshDirty)
 #include "render2D_systems/render2D_system.c"
 #include "render2D_systems/render2D_mesh_system.c"
@@ -70,6 +71,8 @@ ecs_set_hooks(world, ColorsGPULink, { .dtor = ecs_dtor(ColorsGPULink) });
         [in] Brightness, [in] MeshGPULink, [in] ColorsGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] MeshColors);
     zoxel_system_1(InstanceRender3DSystem, render3D_update_pipeline,
         [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink);
+    zoxel_system_1(MeshGPUDisposeSystem, 0, [in] MeshGPULink, [in] ColorsGPULink);
+    zoxel_system_1(MeshGPURestoreSystem, 0, [out] MeshDirty);
 #endif
 // gpu uploads
 mesh_update_pipeline2 = mesh_update_pipeline;

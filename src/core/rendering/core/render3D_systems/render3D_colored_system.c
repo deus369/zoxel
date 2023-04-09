@@ -10,16 +10,16 @@ void Render3DColoredSystem(ecs_iter_t *it) {
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 7);
     unsigned char has_set_single_material = 0;
     for (int i = 0; i < it->count; i++) {
+        const MeshGPULink *meshGPULink = &meshGPULinks[i];
+        if (meshGPULink->value.x == 0) {
+            continue;
+        }
         const Position3D *position = &positions[i];
         const Rotation3D *rotation = &rotations[i];
         const Scale1D *scale1D = &scale1Ds[i];
         const Brightness *brightness = &brightnesses[i];
-        const MeshGPULink *meshGPULink = &meshGPULinks[i];
-        const MeshIndicies *meshIndicies2 = &meshIndicies[i];
-        if (meshGPULink->value.x == 0) {
-            continue;
-        }
         const ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
+        const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         if (!has_set_single_material) {
             has_set_single_material = 1;
             opengl_set_material(colored3D_material);
@@ -39,39 +39,3 @@ void Render3DColoredSystem(ecs_iter_t *it) {
     opengl_disable_opengl_program();
 }
 zoxel_declare_system(Render3DColoredSystem)
-
-        // opengl_bind_mesh(meshGPULink->value);
-        //glBindBuffer(GL_ARRAY_BUFFER, colorsGPULink->value);
-        //glEnableVertexAttribArray(materialColored3D.vertexColor);
-        // glVertexAttribPointer(materialColored3D.vertexColor, 4, GL_UNSIGNED_BYTE, GL_FALSE, 4, 0);
-        // set_color_vertex_layout();
-
-// glUniformMatrix4fv(materialColored3D.view_matrix, 1, GL_FALSE, (float*) &main_camera_matrix);
-// opengl_set_material(materialGPULink->value);
-// const MaterialGPULink *materialGPULinks = ecs_field(it, MaterialGPULink, 6);
-// MaterialColored3D materialColored3D = spawn_material3D_colored_properties(colored3D_material);
-//const MaterialGPULink *materialGPULink = &materialGPULinks[i];
-
-/*if (!has_mesh_colors) {
-    if (opengl_set_material3D_properties(materialGPULink->value,
-        position->value, rotation->value, scale1D->value, brightness->value) == -1) {
-        return;
-    }
-} else {
-    if (opengl_set_material3D_colors_properties(materialGPULink->value,
-        position->value, rotation->value, scale1D->value, brightness->value) == -1) {
-        return;
-    }
-}*/
-//if (opengl_set_material(materialGPULink->value)) {
-// unsigned char has_mesh_colors = ecs_has(world, it->entities[i], MeshColors);
-// set_color_vertex_layout(materialGPULink->value);
-/*if (opengl_set_material3D_properties(materialGPULink->value,
-position->value, rotation->value, scale1D->value, brightness->value) == -1) {
-return;
-}*/
-// opengl_set_camera_view_matrix(materialGPULink->value, main_camera_matrix);
-//}
-        // glBindBuffer(GL_ARRAY_BUFFER, meshGPULink->value.y);
-        // opengl_set_mesh_indicies(meshGPULink->value.x);
-            // opengl_set_camera_view_matrix(materialGPULink->value, main_camera_matrix);

@@ -1,7 +1,5 @@
 // handles unloading and loading of gpu data
 extern ecs_entity_t main_canvas;
-extern ecs_entity_t *characters;
-extern int characters_count;
 extern void restore_opengl_resources_terrain(ecs_world_t *world);
 extern void dispose_opengl_resources_terrain(ecs_world_t *world);
 // todo: write these as systems and just run it once during the function like render_loop
@@ -35,6 +33,12 @@ void dispose_mesh_resources(ecs_world_t *world, ecs_entity_t e) {
         const UvsGPULink *uvsGPULink = ecs_get(world, e, UvsGPULink);
         if (uvsGPULink->value != 0) {
             glDeleteBuffers(1, &uvsGPULink->value);
+        }
+    }
+    if (ecs_has(world, e, ColorsGPULink)) {
+        const ColorsGPULink *colorsGPULink = ecs_get(world, e, ColorsGPULink);
+        if (colorsGPULink->value != 0) {
+            glDeleteBuffers(1, &colorsGPULink->value);
         }
     }
 }
@@ -86,11 +90,7 @@ void delete_all_opengl_resources(ecs_world_t *world) {
     dispose_opengl();
     dispose_children_resources(world, main_canvas);
     dispose_opengl_resources_terrain(world);
-    for (int i = 0; i < characters_count; i++) {
-        ecs_entity_t character = characters[i];
-        dispose_mesh_resources(world, character);
-        dispose_material_resources(world, character);
-    }
+    ecs_run(world, ecs_id(MeshGPUDisposeSystem), 0, NULL);
 }
 
 // restore opengl resources here
@@ -99,9 +99,16 @@ void restore_all_opengl_resources(ecs_world_t *world) {
     load_all_shaders();
     restore_children_resources(world, main_canvas);
     restore_opengl_resources_terrain(world);
-    for (int i = 0; i < characters_count; i++) {
-        ecs_entity_t character = characters[i];
-        restore_mesh_resources(world, character);
-        restore_material_resources(world, character, shader3D_colored);
-    }
+    ecs_run(world, ecs_id(MeshGPURestoreSystem), 0, NULL);
 }
+
+/*for (int i = 0; i < characters->size; i++) {
+    ecs_entity_t character = characters->data[i];
+    dispose_mesh_resources(world, character);
+    // dispose_material_resources(world, character);
+}*/
+/*for (int i = 0; i < characters->size; i++) {
+    ecs_entity_t character = characters->data[i];
+    restore_mesh_resources(world, character);
+    // restore_material_resources(world, character, shader3D_colored);
+}*/

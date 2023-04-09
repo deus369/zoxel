@@ -27,6 +27,8 @@ void set_character_settings() {
         spawn_many_offset.z = 8.5f;
         spawn_many_y = 1.0f;
     #endif
-    zoxel_log(" > character settings set\n");
-    zoxel_log("     + character spawn count is [%i]\n", spawn_characters3D_count);
+    #ifdef zoxel_debug_settings
+        zoxel_log(" > character settings set\n");
+        zoxel_log("     + character spawn count is [%i]\n", spawn_characters3D_count);
+    #endif
 }

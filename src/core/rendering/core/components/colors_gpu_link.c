@@ -8,7 +8,7 @@ void add_gpu_colors(ecs_world_t *world, ecs_entity_t prefab) {
 
 void spawn_gpu_colors(ecs_world_t *world, ecs_entity_t e) {
     if (!headless) {
-        ecs_set(world, e, UvsGPULink, { spawn_gpu_generic_buffer() });
+        ecs_set(world, e, ColorsGPULink, { spawn_gpu_generic_buffer() });
     }
 }
 

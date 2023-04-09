@@ -8,7 +8,7 @@ void dispose_shader3D_textured() {
 int load_shader3D_textured() {
     shader3D_textured = spawn_gpu_shader_inline(shader3D_textured_vert_buffer, shader3D_textured_frag_buffer);
     #ifdef zoxel_debug_opengl
-        zoxel_log(" > loaded shader3D textured");
+        zoxel_log(" > loaded shader3D textured\n");
     #endif
     GLuint material = spawn_gpu_material_program(shader3D_textured);
     shader_attributes_material_textured3D = (Material3DTextured) { 
@@ -21,13 +21,13 @@ int load_shader3D_textured() {
         glGetUniformLocation(material, "brightness"),
         glGetUniformLocation(material, "tex")
     };
-    #ifdef zoxel_debug_opengl
+    glDeleteProgram(material);
+    /*#ifdef zoxel_debug_opengl
         zoxel_log("     + vertexPosition location: %i\n", shader_attributes_material_textured3D.vertexPosition);
         zoxel_log("     + vertexUV location: %i\n", shader_attributes_material_textured3D.vertexUV);
         zoxel_log("     + view_matrix location: %i\n", shader_attributes_material_textured3D.view_matrix);
         zoxel_log("     + texture location: %i\n", shader_attributes_material_textured3D.texture);
-    #endif
-    glDeleteProgram(material);
+    #endif*/
     return 0;
 }
 

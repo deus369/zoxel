@@ -30,31 +30,33 @@ const float flat_height_level = -0.56f; // 0.2f;
 
 void set_terrain_render_distance() {
     if (cpu_tier == 3) {
-        terrain_spawn_distance =16; // 26;
+        terrain_spawn_distance = 20;
         terrain_vertical = 3; // 4;
         lod_division_dividor = 4; // 5;
         // set_max_octree_length(5);
     } else if (cpu_tier == 2) {
-        terrain_spawn_distance = 12;
+        terrain_spawn_distance = 14;
         lod_division_dividor = 3;
     } else if (cpu_tier == 1) {
-        terrain_spawn_distance = 8;
+        terrain_spawn_distance = 10;
     } else {
-        terrain_spawn_distance = 4;
+        terrain_spawn_distance = 6;
     }
     terrain_frequency = max_octree_depth * 2 * 0.008216;
     terrain_boost = -12 * terrain_vertical + max_octree_depth * 4;
     terrain_amplifier = terrain_vertical * 16;
     lowest_voxel_height = - terrain_vertical * 16 + 1;
-    zoxel_log(" > terrain settings set\n");
-    zoxel_log("     + octree depth is [%i]\n", max_octree_depth);
-    zoxel_log("     + render distance is [%i]\n", terrain_spawn_distance);
-    zoxel_log("     + terrain vertical is [%i]\n", terrain_vertical);
-    zoxel_log("     + lod dividor is [%i]\n", lod_division_dividor);
-    zoxel_log("     + height amplifier is [%d]\n", terrain_amplifier);
-    zoxel_log("     + height noise frequency is [%d]\n", terrain_frequency);
-    zoxel_log("     + height boost is [%d]\n", terrain_boost);
-    zoxel_log("     + lowest low is [%d]\n", lowest_voxel_height);
+    #ifdef zoxel_debug_settings
+        zoxel_log(" > terrain settings set\n");
+        zoxel_log("     + octree depth is [%i]\n", max_octree_depth);
+        zoxel_log("     + render distance is [%i]\n", terrain_spawn_distance);
+        zoxel_log("     + terrain vertical is [%i]\n", terrain_vertical);
+        zoxel_log("     + lod dividor is [%i]\n", lod_division_dividor);
+        zoxel_log("     + height amplifier is [%d]\n", terrain_amplifier);
+        zoxel_log("     + height noise frequency is [%d]\n", terrain_frequency);
+        zoxel_log("     + height boost is [%d]\n", terrain_boost);
+        zoxel_log("     + lowest low is [%d]\n", lowest_voxel_height);
+    #endif
 }
 
 // inner_render_buffer = 1;
