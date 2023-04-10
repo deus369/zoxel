@@ -2,6 +2,7 @@
 #define zoxel_generic
 
 #include "data/color.c"
+#include "data/color_rgb.c"
 zoxel_declare_tag(Selectable)
 zoxel_declare_tag(Clickable)
 zoxel_declare_tag(Dragable)

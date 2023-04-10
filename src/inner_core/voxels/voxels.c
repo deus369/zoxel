@@ -9,7 +9,6 @@ zoxel_component(VoxelPosition, int3)
 zoxel_component(VoxLink, ecs_entity_t)
 zoxel_component(ChunkLink, ecs_entity_t)
 zoxel_hashmap_component(ChunkLinks, int3)
-
 // zoxel_module_includes
 #include "core/voxels_core.c"
 #include "terrain/terrain.c"
@@ -25,13 +24,11 @@ zoxel_define_component(VoxelPosition)
 zoxel_define_component(VoxLink)
 zoxel_define_component(ChunkLink)
 zoxel_define_hashmap_component(ChunkLinks)
-
 // zoxel_module_defines
 zoxel_import_module(VoxelsCore)
 zoxel_import_module(Terrain)
 zoxel_import_module(Vox)
 zoxel_import_module(VoxelsAnimations)
-
 zoxel_end_module(Voxels)
 
 #endif

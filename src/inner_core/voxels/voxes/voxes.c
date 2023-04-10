@@ -1,8 +1,6 @@
 #ifndef zoxel_voxes
 #define zoxel_voxes
 
-#define zoxel_voxes_octrees
-
 zoxel_declare_tag(Vox)
 #include "data/vox_file.c"
 #include "util/vox_read_util.c"

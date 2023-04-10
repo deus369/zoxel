@@ -2,41 +2,14 @@
 const unsigned char voxel_color_rand = 8;
 const unsigned char voxel_color_rand2 = 16;
 
-#define zoxel_add_faces_colors(direction, is_positive) {\
-    unsigned char that_voxel = get_voxel##_##direction(local_position, chunk, chunkSize, NULL);\
-    if (that_voxel == 0) {\
-        if (is_positive) {\
-            add_voxel_face_colors(meshIndicies, meshVertices,\
-                meshColors, voxel_color, \
-                vertex_position_offset, center_mesh_offset, voxel_scale,\
-                &start, start,\
-                voxel_face_indicies_reversed,\
-                voxel_face_indicies_length,\
-                voxel_face_vertices##_##direction, voxel_face_vertices_length);\
-        } else {\
-            add_voxel_face_colors(meshIndicies, meshVertices,\
-                meshColors, voxel_color, \
-                vertex_position_offset, center_mesh_offset, voxel_scale,\
-                &start, start,\
-                voxel_face_indicies_normal,\
-                voxel_face_indicies_length,\
-                voxel_face_vertices##_##direction, voxel_face_vertices_length);\
-        }\
-    }\
-}
-
-
-void add_voxel_face_colors(MeshIndicies *meshIndicies, MeshVertices *meshVertices,
-    MeshColors *meshColors, color voxel_color,
-    float3 vertex_position_offset, float3 center_mesh_offset, float voxel_scale,
-    int2 *start, int2 start2,
-    const int voxel_face_indicies[], int voxel_face_indicies_length,
-    const float3 voxel_face_vertices[], int voxel_face_vertices_length) {
+void add_voxel_face_colors(MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColors *meshColors,
+    color voxel_color, float3 vertex_position_offset, float3 center_mesh_offset, float voxel_scale,
+    int2 *start, int2 start2, const int voxel_face_indicies[], int voxel_face_indicies_length,
+    const float3 voxel_face_vertices[], int voxel_face_vertices_length, unsigned char direction) {
     int indicies_offset = start2.y;
     for (int a = 0, b = start2.x; a < voxel_face_indicies_length; a++, b++) {
         meshIndicies->value[b] = indicies_offset + voxel_face_indicies[a];
     }
-    // add verts
     for (int a = 0, b = start2.y; a < voxel_face_vertices_length; a++, b = b + 1) {
         float3 vertex_position = voxel_face_vertices[a]; // (float3) { cubeVertices[a + 0], cubeVertices[a + 1], cubeVertices[a + 2] };
         vertex_position = float3_multiply_float(vertex_position, voxel_scale);          // scale vertex
@@ -44,9 +17,37 @@ void add_voxel_face_colors(MeshIndicies *meshIndicies, MeshVertices *meshVertice
         vertex_position = float3_add(vertex_position, center_mesh_offset);       // add total mesh offset
         meshVertices->value[b] = vertex_position;
         meshColors->value[b] = voxel_color;
+        if (direction == direction_left || direction == direction_down || direction == direction_back) {
+            color_multiply_float(&meshColors->value[b], 0.6f);
+        } else if (direction == direction_right || direction == direction_front) {
+            color_multiply_float(&meshColors->value[b], 0.8f);
+        }
     }
     start->x += voxel_face_indicies_length;
     start->y += voxel_face_vertices_length * 1;
+}
+
+#define zoxel_get_adjacent_face(direction)\
+    unsigned char voxel##_##direction = get_voxel##_##direction(local_position, chunk, chunkSize, NULL);
+
+// unsigned char that_voxel = get_voxel##_##direction(local_position, chunk, chunkSize, NULL);
+
+#define zoxel_add_faces_colors(direction_facing, is_positive) {\
+    if (voxel##_##direction_facing == 0) {\
+        if (is_positive) {\
+            add_voxel_face_colors(meshIndicies, meshVertices, meshColors, voxel_color, \
+                vertex_position_offset, center_mesh_offset, voxel_scale,\
+                &start, start, voxel_face_indicies_reversed, voxel_face_indicies_length,\
+                voxel_face_vertices##_##direction_facing, voxel_face_vertices_length,\
+                direction##_##direction_facing);\
+        } else {\
+            add_voxel_face_colors(meshIndicies, meshVertices, meshColors, voxel_color, \
+                vertex_position_offset, center_mesh_offset, voxel_scale,\
+                &start, start, voxel_face_indicies_normal,voxel_face_indicies_length,\
+                voxel_face_vertices##_##direction_facing, voxel_face_vertices_length,\
+                direction##_##direction_facing);\
+        }\
+    }\
 }
 
 void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize, const Colors *colors,
@@ -107,23 +108,29 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
                     #endif
                     // get color based on pallete voxel_color
                     float3 vertex_position_offset = float3_multiply_float(float3_from_int3(local_position), voxel_scale);
+                    zoxel_get_adjacent_face(left)
+                    zoxel_get_adjacent_face(right)
+                    zoxel_get_adjacent_face(down)
+                    zoxel_get_adjacent_face(up)
+                    zoxel_get_adjacent_face(back)
+                    zoxel_get_adjacent_face(front)
                     #ifndef disable_voxel_left
-                    zoxel_add_faces_colors(left, 0)
+                        zoxel_add_faces_colors(left, 0)
                     #endif
                     #ifndef disable_voxel_right
-                    zoxel_add_faces_colors(right, 1)
+                        zoxel_add_faces_colors(right, 1)
                     #endif
                     #ifndef disable_voxel_down
-                    zoxel_add_faces_colors(down, 1)
+                        zoxel_add_faces_colors(down, 1)
                     #endif
                     #ifndef disable_voxel_up
-                    zoxel_add_faces_colors(up, 0)
+                        zoxel_add_faces_colors(up, 0)
                     #endif
                     #ifndef disable_voxel_back
-                    zoxel_add_faces_colors(back, 0)
+                        zoxel_add_faces_colors(back, 0)
                     #endif
                     #ifndef disable_voxel_front
-                    zoxel_add_faces_colors(front, 1)
+                        zoxel_add_faces_colors(front, 1)
                     #endif
                 }
             }

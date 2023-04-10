@@ -17,3 +17,9 @@ float4 color_to_float4(color input) {
         (int) input.b / 255.0f,
         (int) input.a / 255.0f };
 }
+
+void color_multiply_float(color *input, float multiplier) {
+    input->r = (unsigned char) (input->r * multiplier);
+    input->g = (unsigned char) (input->g * multiplier);
+    input->b = (unsigned char) (input->b * multiplier);
+}

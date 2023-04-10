@@ -34,12 +34,16 @@ void Render3DUvsSystem(ecs_iter_t *it) {
         if (meshIndicies2->length == 0) {
             continue;
         }
+        const MeshGPULink *meshGPULink = &meshGPULinks[i];
+        if (meshGPULink->value.x == 0) {
+            zoxel_log(" !!! mesh is 0\n");
+            continue;
+        }
+        const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
         const Position3D *position3D = &positions[i];
         const Rotation3D *rotation = &rotations[i];
         const Scale1D *scale1D = &scale1Ds[i];
         const Brightness *brightness = &brightnesses[i];
-        const MeshGPULink *meshGPULink = &meshGPULinks[i];
-        const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
         #ifdef voxels_terrain_multi_material
             const MaterialGPULink *materialGPULink = &materialGPULinks[i];
             const TextureGPULink *textureGPULink = &textureGPULinks[i];

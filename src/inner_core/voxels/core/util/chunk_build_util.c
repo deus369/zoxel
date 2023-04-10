@@ -74,9 +74,8 @@ const float3 voxel_face_vertices_front[] = {
 //! Add vertices and uvs to the chunk one.
 void add_voxel_face_uvs(MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
     float3 vertex_position_offset, float3 center_mesh_offset, float voxel_scale, int2 *mesh_start,
-    const int voxel_face_indicies[], int voxel_face_indicies_length,
-    const float3 voxel_face_vertices[], int voxel_face_vertices_length,
-    const float2 voxel_face_uvs[]) {
+    const int voxel_face_indicies[], int voxel_face_indicies_length, const float3 voxel_face_vertices[],
+    int voxel_face_vertices_length, const float2 voxel_face_uvs[]) {
     for (int a = 0, b = mesh_start->x; a < voxel_face_indicies_length; a++, b++) {
         // printf("b [%i]\n", b);
         meshIndicies->value[b] = mesh_start->y + voxel_face_indicies[a];
@@ -94,13 +93,13 @@ void add_voxel_face_uvs(MeshIndicies *meshIndicies, MeshVertices *meshVertices, 
     mesh_start->y += voxel_face_vertices_length;
 }
 
-// printf("Error in get_voxel_direction (chunk_other->value == NULL) [%ix%ix%i]\n", local_position.x, local_position.y, local_position.z);
-// printf("Error in get_voxel_direction (chunk_other->length == 0) [%ix%ix%i]\n", local_position.x, local_position.y, local_position.z);
-
 //! Create functions with macros to get voxels.
 /**
 *   \todo chunk_other should never be non null and have value == null as all chunks should be built at once..
 */
+// printf("Error in get_voxel_direction (chunk_other->value == NULL) [%ix%ix%i]\n", local_position.x, local_position.y, local_position.z);
+// printf("Error in get_voxel_direction (chunk_other->length == 0) [%ix%ix%i]\n", local_position.x, local_position.y, local_position.z);
+
 #define zoxel_get_voxel_direction(direction, dimension, is_positive)\
 unsigned char get_voxel##_##direction(int3 local_position, const ChunkData *chunk, const ChunkSize *chunkSize, const ChunkData *chunk_other) {\
     if ((is_positive && local_position.dimension == chunkSize->value.dimension - 1)\
@@ -108,8 +107,7 @@ unsigned char get_voxel##_##direction(int3 local_position, const ChunkData *chun
         if (chunk_other == NULL || chunk_other->value == NULL || chunk_other->length == 0) {\
             return 0;\
         }\
-        return chunk_other->value[int3_array_index(\
-            int3_reverse##_##direction(local_position, chunkSize->value),\
+        return chunk_other->value[int3_array_index(int3_reverse##_##direction(local_position, chunkSize->value),\
             chunkSize->value)];\
     } else {\
         return chunk->value[int3_array_index(int3##_##direction(local_position), chunkSize->value)];\
@@ -145,19 +143,13 @@ zoxel_get_voxel_direction(front, z, 1)      // creates get_voxel_front
     if (is_positive) {\
         add_voxel_face_uvs(meshIndicies, meshVertices, meshUVs,\
             vertex_position_offset, center_mesh_offset, voxel_scale,\
-            start,\
-            voxel_face_indicies_reversed,\
-            voxel_face_indicies_length,\
-            voxel_face_vertices##_##direction, voxel_face_vertices_length,\
-            voxel_face_uvs);\
+            start, voxel_face_indicies_reversed, voxel_face_indicies_length,\
+            voxel_face_vertices##_##direction, voxel_face_vertices_length, voxel_face_uvs);\
     } else {\
         add_voxel_face_uvs(meshIndicies, meshVertices, meshUVs,\
             vertex_position_offset, center_mesh_offset, voxel_scale,\
-            start,\
-            voxel_face_indicies_normal,\
-            voxel_face_indicies_length,\
-            voxel_face_vertices##_##direction, voxel_face_vertices_length,\
-            voxel_face_uvs);\
+            start, voxel_face_indicies_normal, voxel_face_indicies_length,\
+            voxel_face_vertices##_##direction, voxel_face_vertices_length, voxel_face_uvs);\
     }
 
 #define zoxel_add_faces_with_uvs(direction, is_positive) {\
@@ -166,7 +158,6 @@ zoxel_get_voxel_direction(front, z, 1)      // creates get_voxel_front
         zoxel_add_voxel_face_uvs(direction, is_positive)\
     }\
 }
-// start,
 
 #define zoxel_add_faces_no_chunk(direction, is_positive) {\
     unsigned char that_voxel = get_voxel##_##direction(local_position, chunk, chunkSize, NULL);\
@@ -174,19 +165,13 @@ zoxel_get_voxel_direction(front, z, 1)      // creates get_voxel_front
         if (is_positive) {\
             add_voxel_face_uvs(meshIndicies, meshVertices, meshUVs,\
                 vertex_position_offset, center_mesh_offset, voxel_scale,\
-                start,\
-                voxel_face_indicies_reversed,\
-                voxel_face_indicies_length,\
-                voxel_face_vertices##_##direction, voxel_face_vertices_length,\
-                voxel_face_uvs);\
+                start, voxel_face_indicies_reversed, voxel_face_indicies_length,\
+                voxel_face_vertices##_##direction, voxel_face_vertices_length, voxel_face_uvs);\
         } else {\
             add_voxel_face_uvs(meshIndicies, meshVertices, meshUVs,\
                 vertex_position_offset, center_mesh_offset, voxel_scale,\
-                start,\
-                voxel_face_indicies_normal,\
-                voxel_face_indicies_length,\
-                voxel_face_vertices##_##direction, voxel_face_vertices_length,\
-                voxel_face_uvs);\
+                start, voxel_face_indicies_normal, voxel_face_indicies_length,\
+                voxel_face_vertices##_##direction, voxel_face_vertices_length, voxel_face_uvs);\
         }\
     }\
 }
@@ -203,18 +188,12 @@ zoxel_get_voxel_direction(front, z, 1)      // creates get_voxel_front
     unsigned char that_voxel = get_voxel##_##direction(local_position, chunk, chunkSize, NULL);\
     if (that_voxel == 0) {\
         if (is_positive) {\
-            add_voxel_face(meshIndicies, meshVertices,\
-                vertex_position_offset, center_mesh_offset, voxel_scale,\
-                &start, start,\
-                voxel_face_indicies_reversed,\
-                voxel_face_indicies_length,\
+            add_voxel_face(meshIndicies, meshVertices, vertex_position_offset, center_mesh_offset, voxel_scale,\
+                &start, start, voxel_face_indicies_reversed, voxel_face_indicies_length,\
                 voxel_face_vertices##_##direction, voxel_face_vertices_length);\
         } else {\
-            add_voxel_face(meshIndicies, meshVertices,\
-                vertex_position_offset, center_mesh_offset, voxel_scale,\
-                &start, start,\
-                voxel_face_indicies_normal,\
-                voxel_face_indicies_length,\
+            add_voxel_face(meshIndicies, meshVertices, vertex_position_offset, center_mesh_offset, voxel_scale,\
+                &start, start, voxel_face_indicies_normal, voxel_face_indicies_length,\
                 voxel_face_vertices##_##direction, voxel_face_vertices_length);\
         }\
     }\
