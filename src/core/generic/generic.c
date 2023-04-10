@@ -15,14 +15,16 @@ zoxel_byte_component(DragableState)
 zoxel_component(DraggerLink, ecs_entity_t)
 zoxel_component(DraggingDelta, int2)
 zoxel_component(ID, int)                        //! An unique ID, possibly use GUID?
-zoxel_component(Seed, long int)                 //! A unique Seed for generation.
-zoxel_component(Raycaster, int2)                //! Contains the raycast mouse position.
-zoxel_component(RaycasterTarget, ecs_entity_t)  //! A target entity for the Raycaster.
-zoxel_component(Layer2D, unsigned char)         //! A 2D Layer for a entity.
-zoxel_component(Color, color)                   //! A generic entity color.
-zoxel_component(SecondaryColor, color)                   //! A generic entity color.
-zoxel_memory_component(Colors, color)           //! A generic entity colors.
-zoxel_byte_component(GenericEvent)             //! Used for game and other events, genetic
+zoxel_component(Seed, long int)                 //! A unique Seed for generation
+zoxel_component(Raycaster, int2)                //! Contains the raycast mouse position
+zoxel_component(RaycasterTarget, ecs_entity_t)  //! A target entity for the Raycaster
+zoxel_component(Layer2D, unsigned char)         //! A 2D Layer for a entity
+zoxel_component(ColorRGB, color_rgb)
+zoxel_component(Color, color)                   //! A generic entity color
+zoxel_component(SecondaryColor, color)          //! A generic entity color
+zoxel_memory_component(ColorRGBs, color_rgb)           //! A generic entity colorRGBs
+zoxel_memory_component(Colors, color)           //! A generic entity colorRGBs
+zoxel_byte_component(GenericEvent)              //! Used for game and other events, genetic
 zoxel_reset_system(EntityDirtyResetSystem, EntityDirty)
 zoxel_reset_system(ClickableStateResetSystem, ClickableState)
 zoxel_reset_system(EntityInitializeResetSystem, EntityInitialize)
@@ -49,8 +51,10 @@ zoxel_define_component(Raycaster)
 zoxel_define_component(RaycasterTarget)
 zoxel_define_component(EntityInitialize)
 zoxel_define_component(Layer2D)
+zoxel_define_component(ColorRGB)
 zoxel_define_component(Color)
 zoxel_define_component(SecondaryColor)
+zoxel_define_memory_component(ColorRGBs)
 zoxel_define_memory_component(Colors)
 zoxel_define_component(GenericEvent)
 zoxel_define_reset_system(EntityDirtyResetSystem, EntityDirty)

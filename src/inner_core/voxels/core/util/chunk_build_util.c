@@ -102,13 +102,11 @@ void add_voxel_face_uvs(MeshIndicies *meshIndicies, MeshVertices *meshVertices, 
 
 #define zoxel_get_voxel_direction(direction, dimension, is_positive)\
 unsigned char get_voxel##_##direction(int3 local_position, const ChunkData *chunk, const ChunkSize *chunkSize, const ChunkData *chunk_other) {\
-    if ((is_positive && local_position.dimension == chunkSize->value.dimension - 1)\
-        || (!is_positive && local_position.dimension == 0)) {\
+    if ((is_positive && local_position.dimension == chunkSize->value.dimension - 1) || (!is_positive && local_position.dimension == 0)) {\
         if (chunk_other == NULL || chunk_other->value == NULL || chunk_other->length == 0) {\
             return 0;\
         }\
-        return chunk_other->value[int3_array_index(int3_reverse##_##direction(local_position, chunkSize->value),\
-            chunkSize->value)];\
+        return chunk_other->value[int3_array_index(int3_reverse##_##direction(local_position, chunkSize->value), chunkSize->value)];\
     } else {\
         return chunk->value[int3_array_index(int3##_##direction(local_position), chunkSize->value)];\
     }\

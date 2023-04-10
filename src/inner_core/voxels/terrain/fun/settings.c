@@ -34,7 +34,7 @@ void set_terrain_render_distance() {
         terrain_vertical = 3; // 4;
         lod_division_dividor = 4; // 5;
         // set_max_octree_length(5);
-        fog_density *= 0.31f;
+        fog_density *= 0.3f;    // .3 for now to cover up transitions
     } else if (cpu_tier == 2) {
         terrain_spawn_distance = 12;
         fog_density *= 0.56f;
@@ -44,10 +44,10 @@ void set_terrain_render_distance() {
     } else {
         terrain_spawn_distance = 6;
     }
-    terrain_frequency = max_octree_depth * 2 * 0.008216;
-    terrain_boost = -12 * terrain_vertical + max_octree_depth * 4;
-    terrain_amplifier = terrain_vertical * 16;
-    lowest_voxel_height = - terrain_vertical * 16 + 1;
+    terrain_frequency = max_octree_depth * 0.008216;
+    terrain_boost = -8 * terrain_vertical; //  + max_octree_depth * 4;
+    terrain_amplifier = 16 + terrain_vertical * 16;
+    lowest_voxel_height = - (terrain_vertical) * 16 + 1;
     #ifdef zoxel_debug_settings
         zoxel_log(" > terrain settings set\n");
         zoxel_log("     + octree depth is [%i]\n", max_octree_depth);

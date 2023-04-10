@@ -48,7 +48,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         }
     }
     if (did_do) {
-        zoxel_log(" > total characters[%i]\n", characters_count);
+        zoxel_log(" + characters [%i]\n", characters_count);
     }
 }
 zoxel_declare_system(Characters3DSpawnSystem)

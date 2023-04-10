@@ -11,6 +11,7 @@ zoxel_memory_component(MeshVertices, float3)
 zoxel_memory_component(MeshVertices2D, float2)
 zoxel_memory_component(MeshUVs, float2)
 zoxel_memory_component(MeshColors, color)
+zoxel_memory_component(MeshColorRGBs, color_rgb)
 #include "components/mesh_indicies.c"
 #include "components/material_gpu_link.c"
 #include "components/texture_gpu_link.c"
@@ -47,6 +48,7 @@ zoxel_define_memory_component(MeshVertices)
 zoxel_define_memory_component(MeshVertices2D)
 zoxel_define_memory_component(MeshUVs)
 zoxel_define_memory_component(MeshColors)
+zoxel_define_memory_component(MeshColorRGBs)
 ecs_set_hooks(world, MaterialGPULink, { .dtor = ecs_dtor(MaterialGPULink) });
 ecs_set_hooks(world, TextureGPULink, { .dtor = ecs_dtor(TextureGPULink) });
 ecs_set_hooks(world, MeshGPULink, { .dtor = ecs_dtor(MeshGPULink) });
@@ -66,9 +68,9 @@ ecs_set_hooks(world, ColorsGPULink, { .dtor = ecs_dtor(ColorsGPULink) });
 #endif
 #ifdef zoxel_transforms3D
     zoxel_system_1(Render3DSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D,
-        [in] Brightness, [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] !MeshColors);
+        [in] Brightness, [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] !MeshColorRGBs);
     zoxel_system_1(Render3DColoredSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D,
-        [in] Brightness, [in] MeshGPULink, [in] ColorsGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] MeshColors);
+        [in] Brightness, [in] MeshGPULink, [in] ColorsGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] MeshColorRGBs);
     zoxel_system_1(InstanceRender3DSystem, render3D_update_pipeline,
         [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink);
     zoxel_system_1(MeshGPUDisposeSystem, 0, [in] MeshGPULink, [in] ColorsGPULink);
@@ -77,16 +79,16 @@ ecs_set_hooks(world, ColorsGPULink, { .dtor = ecs_dtor(ColorsGPULink) });
 // gpu uploads
 mesh_update_pipeline2 = mesh_update_pipeline;
 zoxel_system_1(MeshUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices,
-    [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColors);
+    [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs);
 zoxel_system_1(Mesh2DUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D,
-    [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColors);
+    [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs);
 zoxel_system_1(MeshUvsUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies,
-    [in] MeshVertices, [in] MeshUVs, [in] MeshGPULink, [in] UvsGPULink, [none] !MeshColors);
+    [in] MeshVertices, [in] MeshUVs, [in] MeshGPULink, [in] UvsGPULink, [none] !MeshColorRGBs);
 zoxel_system_1(Mesh2DUvsUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies,
-    [in] MeshVertices2D, [in] MeshUVs, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshColors);
+    [in] MeshVertices2D, [in] MeshUVs, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshColorRGBs);
 // [in] MaterialGPULink, 
 zoxel_system_1(MeshColorsUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies,
-    [in] MeshVertices, [in] MeshColors, [out] MeshGPULink, [out] ColorsGPULink, [none] !MeshUVs);
+    [in] MeshVertices, [in] MeshColorRGBs, [out] MeshGPULink, [out] ColorsGPULink, [none] !MeshUVs);
 // zoxel_define_reset_system(MeshDirtySystem, MeshDirty);
 zoxel_end_module(RenderingCore)
 

@@ -1,2 +1,2 @@
-// render vox with vert colors
-// before this, set color data on vox entity as component - Colors (memory component)
+// render vox with vert colorRGBs
+// before this, set color data on vox entity as component - ColorRGBs (memory component)

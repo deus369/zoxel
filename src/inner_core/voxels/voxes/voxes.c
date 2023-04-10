@@ -2,6 +2,7 @@
 #define zoxel_voxes
 
 zoxel_declare_tag(Vox)
+#include "data/default_palette.c"
 #include "data/vox_file.c"
 #include "util/vox_read_util.c"
 #include "util/vox_files.c"

@@ -13,3 +13,7 @@ void color_rgb_multiply_float(color_rgb *input, float multiplier) {
     input->g = (unsigned char) (input->g * multiplier);
     input->b = (unsigned char) (input->b * multiplier);
 }
+
+float3 color_rgb_to_float3(color_rgb input) {
+    return (float3) { input.r / 255.0f, input.g / 255.0f, input.b / 255.0f };
+}

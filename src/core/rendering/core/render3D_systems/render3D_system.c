@@ -20,7 +20,7 @@ void Render3DSystem(ecs_iter_t *it) {
         if (opengl_set_material(materialGPULink->value)) {
             opengl_bind_mesh(meshGPULink->value);
             set_basic_vert_layout(materialGPULink->value);
-            // unsigned char has_mesh_colors = ecs_has(world, it->entities[i], MeshColors);
+            // unsigned char has_mesh_colors = ecs_has(world, it->entities[i], MeshColorRGBs);
             /*if (has_mesh_colors) {
                 set_color_vertex_layout(materialGPULink->value);
             } else {

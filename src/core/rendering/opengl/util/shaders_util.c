@@ -49,7 +49,7 @@ int compile_shader(GLenum shaderType, GLuint* shader2, const GLchar* buffer) {
         GLchar* info_log = malloc(info_log_length);
         glGetShaderInfoLog(shader, info_log_length, NULL, info_log);
         // zoxel_log(stderr, "Failed to compile shader:\n%s\n", info_log);
-        zoxel_log("Failed to compile shader:\n%s\n", info_log);
+        zoxel_log(" !!! failed to compile shader [%s]\n", info_log);
         free(info_log);
         return -1;
     }

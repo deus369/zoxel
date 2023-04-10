@@ -1,9 +1,9 @@
-// colors version
+// colorRGBs version
 const unsigned char voxel_color_rand = 8;
 const unsigned char voxel_color_rand2 = 16;
 
-void add_voxel_face_colors(MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColors *meshColors,
-    color voxel_color, float3 vertex_position_offset, float3 center_mesh_offset, float voxel_scale,
+void add_voxel_face_colors(MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColorRGBs *meshColorRGBs,
+    color_rgb voxel_color, float3 vertex_position_offset, float3 center_mesh_offset, float voxel_scale,
     int2 *start, int2 start2, const int voxel_face_indicies[], int voxel_face_indicies_length,
     const float3 voxel_face_vertices[], int voxel_face_vertices_length, unsigned char direction) {
     int indicies_offset = start2.y;
@@ -16,11 +16,11 @@ void add_voxel_face_colors(MeshIndicies *meshIndicies, MeshVertices *meshVertice
         vertex_position = float3_add(vertex_position, vertex_position_offset);   // offset vertex by voxel position in chunk
         vertex_position = float3_add(vertex_position, center_mesh_offset);       // add total mesh offset
         meshVertices->value[b] = vertex_position;
-        meshColors->value[b] = voxel_color;
+        meshColorRGBs->value[b] = voxel_color;
         if (direction == direction_left || direction == direction_down || direction == direction_back) {
-            color_multiply_float(&meshColors->value[b], 0.6f);
+            color_rgb_multiply_float(&meshColorRGBs->value[b], 0.6f);
         } else if (direction == direction_right || direction == direction_front) {
-            color_multiply_float(&meshColors->value[b], 0.8f);
+            color_rgb_multiply_float(&meshColorRGBs->value[b], 0.8f);
         }
     }
     start->x += voxel_face_indicies_length;
@@ -35,13 +35,13 @@ void add_voxel_face_colors(MeshIndicies *meshIndicies, MeshVertices *meshVertice
 #define zoxel_add_faces_colors(direction_facing, is_positive) {\
     if (voxel##_##direction_facing == 0) {\
         if (is_positive) {\
-            add_voxel_face_colors(meshIndicies, meshVertices, meshColors, voxel_color, \
+            add_voxel_face_colors(meshIndicies, meshVertices, meshColorRGBs, voxel_color, \
                 vertex_position_offset, center_mesh_offset, voxel_scale,\
                 &start, start, voxel_face_indicies_reversed, voxel_face_indicies_length,\
                 voxel_face_vertices##_##direction_facing, voxel_face_vertices_length,\
                 direction##_##direction_facing);\
         } else {\
-            add_voxel_face_colors(meshIndicies, meshVertices, meshColors, voxel_color, \
+            add_voxel_face_colors(meshIndicies, meshVertices, meshColorRGBs, voxel_color, \
                 vertex_position_offset, center_mesh_offset, voxel_scale,\
                 &start, start, voxel_face_indicies_normal,voxel_face_indicies_length,\
                 voxel_face_vertices##_##direction_facing, voxel_face_vertices_length,\
@@ -50,8 +50,8 @@ void add_voxel_face_colors(MeshIndicies *meshIndicies, MeshVertices *meshVertice
     }\
 }
 
-void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize, const Colors *colors,
-    MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColors *meshColors) {
+void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize, const ColorRGBs *colorRGBs,
+    MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColorRGBs *meshColorRGBs) {
     // go through and add a top face for each voxel position that is solid
     int array_index = 0;
     int indicies_count = 0;
@@ -89,17 +89,17 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
     }
     re_initialize_memory_component(meshIndicies, int, indicies_count);
     re_initialize_memory_component(meshVertices, float3, verticies_count);
-    re_initialize_memory_component(meshColors, color, verticies_count);
+    re_initialize_memory_component(meshColorRGBs, color_rgb, verticies_count);
     array_index = 0;
     unsigned char voxel = 0;
-    color voxel_color = (color) { 255, 255, 255, 255 };
+    color_rgb voxel_color = (color_rgb) { 255, 255, 255 };
     for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++) {
         for (local_position.y = 0; local_position.y < chunkSize->value.y; local_position.y++) {
             for (local_position.z = 0; local_position.z < chunkSize->value.z; local_position.z++) {
                 array_index = int3_array_index(local_position, chunkSize->value);
                 voxel = chunk->value[array_index];
                 if (voxel != 0) {
-                    voxel_color = colors->value[voxel - 1];
+                    voxel_color = colorRGBs->value[voxel - 1];
                     // randomize color
                     #ifdef zoxel_voxes_color_randomize
                         voxel_color.r -= voxel_color_rand + rand() % voxel_color_rand2;
@@ -146,10 +146,10 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
     const ChunkData *chunks = ecs_field(it, ChunkData, 2);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 3);
-    const Colors *colors = ecs_field(it, Colors, 4);
+    const ColorRGBs *colorRGBs = ecs_field(it, ColorRGBs, 4);
     MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 5);
     MeshVertices *meshVertices = ecs_field(it, MeshVertices, 6);
-    MeshColors *meshColors = ecs_field(it, MeshColors, 7);
+    MeshColorRGBs *meshColorRGBs = ecs_field(it, MeshColorRGBs, 7);
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 8);
     for (int i = 0; i < it->count; i++) {
         ChunkDirty *chunkDirty = &chunkDirtys[i];
@@ -162,14 +162,14 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         }
         const ChunkData *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
-        const Colors *colors2 = &colors[i];
+        const ColorRGBs *colors2 = &colorRGBs[i];
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
-        MeshColors *meshColors2 = &meshColors[i];
+        MeshColorRGBs *meshColors2 = &meshColorRGBs[i];
         chunkDirty->value = 0;
         meshDirty->value = 1;
         build_chunk_mesh_colors(chunk, chunkSize, colors2, meshIndicies2, meshVertices2, meshColors2);
-        //printf("Building ChunkData Colors Mesh [%lu] - [%i] [%i]\n",
+        //printf("Building ChunkData ColorRGBs Mesh [%lu] - [%i] [%i]\n",
         //    (long int) it->entities[i], meshIndicies2->length, meshVertices2->length);
     }
 }

@@ -37,11 +37,11 @@ void Line2DRenderSystem(ecs_iter_t *it) {
     glEnableVertexAttribArray(line2D_position_location);
     const LineData2D *lineData2Ds = ecs_field(it, LineData2D, 2);
     const LineThickness *lineThicknesss = ecs_field(it, LineThickness, 3);
-    const Color *colors = ecs_field(it, Color, 4);
+    const Color *colorRGBs = ecs_field(it, Color, 4);
     for (int i = 0; i < it->count; i++) {
         const LineData2D *lineData2D = &lineData2Ds[i];
         const LineThickness *lineThickness = &lineThicknesss[i];
-        const Color *color = &colors[i];
+        const Color *color = &colorRGBs[i];
         float line_data[] = { lineData2D->value.x, lineData2D->value.y, lineData2D->value.z, lineData2D->value.w };
         float4 color_float4 = color_to_float4(color->value);
         glLineWidth(lineThickness->value);

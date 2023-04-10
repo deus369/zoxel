@@ -7,7 +7,7 @@
 /*typedef struct {
     float3 *vertices;
     float3 *normals;
-    float3 *colors;
+    float3 *colorRGBs;
     float2 *uvs;
 } Mesh;
 ECS_COMPONENT_DECLARE(MeshVertices);*/
@@ -15,7 +15,7 @@ ECS_COMPONENT_DECLARE(MeshVertices);*/
 /*typedef struct {
     float3 *vertices;
     float3 *normals;
-    float3 *colors;
+    float3 *colorRGBs;
     float2 *uvs;
 } Mesh;
 ECS_COMPONENT_DECLARE(Mesh);*/

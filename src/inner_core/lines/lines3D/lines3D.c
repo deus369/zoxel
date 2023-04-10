@@ -15,7 +15,7 @@ zoxel_define_tag(Line3D)
 zoxel_define_component(LineData3D)
 if (!headless) {
     initialize_shader_line3D();
-    zoxel_system_1(Line3DRenderSystem, 0, [none] Line3D, [in] LineData3D, [in] LineThickness, [in] Color)
+    zoxel_system_1(Line3DRenderSystem, 0, [none] Line3D, [in] LineData3D, [in] LineThickness, [in] ColorRGB)
     line3D_render_system_id = ecs_id(Line3DRenderSystem);
 }
 spawn_prefab_line3D(world);

@@ -30,12 +30,6 @@ float float4_length(float4 v) {
     return sqrt(float4_dot(v, v));
 }
 
-/*float4 float4_normalize2(float4 input) {
-    float length = float4_length(input);
-    float4_divide(&input, length);
-    return length > 0 ? input : (float4) { 0, 0, 0, 1 };
-}*/
-
 float4 float4_normalize(float4 q) {
     float length = sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
     return float4_multiply_divide(q, length);
@@ -94,3 +88,9 @@ void float4_multiply_float_p(float4* input, float mul) {
     input->z *= mul;
     input->w *= mul;
 }
+
+/*float4 float4_normalize2(float4 input) {
+    float length = float4_length(input);
+    float4_divide(&input, length);
+    return length > 0 ? input : (float4) { 0, 0, 0, 1 };
+}*/

@@ -32,13 +32,13 @@ int load_shader3D_colored() {
 }
 
 void set_gpu_mesh_colors(GLuint2 mesh, GLuint color_buffer, const int *indicies, int indicies_length,
-    const float3 *verts, int verts_length, const color *colors) {
+    const float3 *verts, int verts_length, const color_rgb *color_rgbs) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, mesh.y);
     glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float3), verts, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
-    glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(color), colors, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(color_rgb), color_rgbs, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -49,7 +49,7 @@ void opengl_set_buffer_attributes_colors(GLuint vertex_buffer, GLuint color_buff
     glVertexAttribPointer(materialColored3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 0, 0); // sizeof(float3), 0);
     glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
     glEnableVertexAttribArray(materialColored3D.vertexColor);
-    glVertexAttribPointer(materialColored3D.vertexColor, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0); // 4 * sizeof(GLubyte), 0);
+    glVertexAttribPointer(materialColored3D.vertexColor, sizeof(color_rgb), GL_UNSIGNED_BYTE, GL_TRUE, 0, 0); // 4 * sizeof(GLubyte), 0);
 }
 
 int opengl_set_material3D_colors_properties(float3 position, float4 rotation) {

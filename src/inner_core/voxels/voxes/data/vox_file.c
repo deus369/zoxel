@@ -39,7 +39,9 @@ typedef struct {
     char name[4];
     int chunk_content;
     int chunk_nums;
+    int values_length;
     color *values;
+    color_rgb *values_rgb;
 } vox_file_palette;
 
 typedef struct {
