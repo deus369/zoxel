@@ -11,14 +11,13 @@ void main() {\
 
 const GLchar* line3D_source_frag = "\
 #version 300 es\n\
-uniform highp vec4 color;\
-out highp vec4 color_output;\
 in highp float fog_level;\
+uniform lowp vec4 color;\
+uniform lowp vec4 fog_data;\
+out lowp vec4 color2;\
 \
 void main() {\
-    color_output = color;\
-    highp vec4 backgroundColor = vec4(2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f, 1);\
-    highp float fog_density = 0.0126;\
-    highp float fogBlend = 1.0 - exp2(-fog_density * fog_density * fog_level * fog_level);\
-    color_output = mix(color_output, backgroundColor, fogBlend);\
+    color2 = color;\
+    lowp float fog_blend = 1.0 - exp2(-fog_data.w * fog_data.w * fog_level * fog_level);\
+    color2 = mix(color2, vec4(fog_data.x, fog_data.y, fog_data.z, 1), fog_blend);\
 }";

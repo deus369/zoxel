@@ -30,15 +30,18 @@ const float flat_height_level = -0.56f; // 0.2f;
 
 void set_terrain_render_distance() {
     if (cpu_tier == 3) {
-        terrain_spawn_distance = 20;
+        terrain_spawn_distance = 18;
         terrain_vertical = 3; // 4;
         lod_division_dividor = 4; // 5;
         // set_max_octree_length(5);
+        fog_density *= 0.34f;
     } else if (cpu_tier == 2) {
         terrain_spawn_distance = 14;
         lod_division_dividor = 3;
+        fog_density *= 0.56f;
     } else if (cpu_tier == 1) {
         terrain_spawn_distance = 10;
+        fog_density *= 0.79f;
     } else {
         terrain_spawn_distance = 6;
     }

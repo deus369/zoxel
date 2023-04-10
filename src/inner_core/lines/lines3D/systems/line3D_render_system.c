@@ -4,6 +4,7 @@ GLuint line3D_material;
 GLuint line3D_position_location;
 GLuint line3D_color_location;
 GLuint line3D_camera_matrix_location;
+GLuint line3D_fog_data_location;
 
 int initialize_shader_line3D() {
     if (is_opengl_running()) {
@@ -12,6 +13,7 @@ int initialize_shader_line3D() {
         line3D_position_location = glGetAttribLocation(line3D_material, "position");
         line3D_color_location = glGetUniformLocation(line3D_material, "color");
         line3D_camera_matrix_location = glGetUniformLocation(line3D_material, "camera_matrix");
+        line3D_fog_data_location = glGetUniformLocation(line3D_material, "fog_data");
     }
     return 0;
 }
@@ -19,6 +21,7 @@ int initialize_shader_line3D() {
 void Line3DRenderSystem(ecs_iter_t *it) {
     glUseProgram(line3D_material);
     glEnableVertexAttribArray(line3D_position_location);
+    glUniform4f(line3D_fog_data_location, fog_color.x, fog_color.y, fog_color.z, fog_density);
     const LineData3D *lineData3Ds = ecs_field(it, LineData3D, 2);
     const LineThickness *lineThicknesss = ecs_field(it, LineThickness, 3);
     const Color *colors = ecs_field(it, Color, 4);

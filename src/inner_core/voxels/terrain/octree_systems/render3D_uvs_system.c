@@ -59,33 +59,20 @@ void Render3DUvsSystem(ecs_iter_t *it) {
             if (!has_set_single_material) {
                 has_set_single_material = 1;
                 const TextureGPULink *textureGPULink = ecs_get(it->world, voxLink->value, TextureGPULink);
+                attributes.fog_data = glGetUniformLocation(materialGPULink->value, "fog_data");
                 attributes.view_matrix = glGetUniformLocation(materialGPULink->value, "view_matrix");
                 attributes.rotation = glGetUniformLocation(materialGPULink->value, "rotation");
                 attributes.scale = glGetUniformLocation(materialGPULink->value, "scale");
                 attributes.brightness = glGetUniformLocation(materialGPULink->value, "brightness");
                 opengl_set_material(materialGPULink->value);
-                #ifdef zoxel_render3D_uvs_system_overdebug
-                    check_opengl_error("[render3D_uvs_system opengl_set_material Error]");
-                #endif
+                glUniform4f(attributes.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
                 opengl_set_texture(textureGPULink->value, false);
-                #ifdef zoxel_render3D_uvs_system_overdebug
-                    check_opengl_error("[render3D_uvs_system opengl_set_texture Error]");
-                #endif
                 opengl_shader3D_textured_set_camera_view_matrix(main_camera_matrix, &attributes);
-                #ifdef zoxel_render3D_uvs_system_overdebug
-                    check_opengl_error("[render3D_uvs_system opengl_shader3D_textured_set_camera_view_matrix Error]");
-                #endif
                 opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes);
-                #ifdef zoxel_render3D_uvs_system_overdebug
-                    check_opengl_error("[render3D_uvs_system opengl_set_material3D_uvs_properties Error]");
-                #endif
             }
             opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, &attributes);
             //    check_opengl_error("[opengl_set_buffer_attributes Error]");
             opengl_set_mesh_indicies(meshGPULink->value.x);
-            #ifdef zoxel_render3D_uvs_system_overdebug
-                check_opengl_error("[render3D_uvs_system opengl_set_mesh_indicies Error]");
-            #endif
             opengl_set_material3D_uvs_position(position3D->value, &attributes);
             //    check_opengl_error("[opengl_set_material3D_uvs_position Error]");
             opengl_draw_triangles(meshIndicies2->length);

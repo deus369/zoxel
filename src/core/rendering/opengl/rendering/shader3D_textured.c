@@ -157,12 +157,6 @@ glVertexAttribPointer(material3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 8, 0);*/
     printf("floats_length greater than 65536 [%i]\n", floats_length);
 }*/
 
-//  
-// highp float fog_level = fogDensity * (gl_FragCoord.z / gl_FragCoord.w);
-// in highp float fog_level;
-// color = mix(color, fogColor, fog_level);
-// color = mix(color, fogColor, smoothstep(4.0,32.0,fogBlend));
-
 /*
 layout(location = 0) in highp vec3 vertexPosition;\
 layout(location = 1) in highp vec2 vertexUV;\

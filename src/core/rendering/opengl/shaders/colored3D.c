@@ -3,12 +3,12 @@
 const GLchar* shader3D_colored_vert_buffer = "\
 #version 300 es\n\
 in highp vec3 vertexPosition; \
-in highp vec4 vertexColor; \
+in highp vec3 vertexColor; \
 uniform highp mat4 viewMatrix; \
 uniform highp vec3 position; \
 uniform highp vec4 rotation; \
 uniform highp float scale; \
-out highp vec4 frag_color;\
+out lowp vec3 frag_color;\
 out highp float fog_level;\
 \
 vec3 float4_rotate_float3(vec4 rotation, vec3 value) { \
@@ -27,18 +27,14 @@ void main() {\
 
 const GLchar* shader3D_colored_frag_buffer = "\
 #version 300 es\n\
-in highp vec4 frag_color;\
-uniform highp float brightness; \
-out highp vec4 color;\
+in lowp vec3 frag_color;\
 in highp float fog_level;\
+uniform lowp float brightness; \
+uniform lowp vec4 fog_data;\
+out highp vec3 color;\
 \
 void main() {\
     color = frag_color * brightness; \
-    highp vec4 backgroundColor = vec4(2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f, 1);\
-    highp float fog_density = 0.0126;\
-    highp float fogBlend = 1.0 - exp2(-fog_density * fog_density * fog_level * fog_level);\
-    color = mix(color, backgroundColor, fogBlend);\
+    lowp float fog_blend = 1.0 - exp2(-fog_data.w * fog_data.w * fog_level * fog_level);\
+    color = mix(color, vec3(fog_data.x, fog_data.y, fog_data.z), fog_blend);\
 }";
-
-// frag_color = vec4(vertexColor) / 255.0; frag_color.w = 1.0;
-//  vec4(vertexColor) / 255.0;

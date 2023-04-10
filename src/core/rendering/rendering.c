@@ -2,6 +2,8 @@
 #define zoxel_rendering
 
 int tri_count = 0;
+float3 fog_color = (float3) { 2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f };
+float fog_density = 0.0326f;
 #include "data/GLuint2.c"
 float4x4 main_camera_matrix; 
 float4x4 ui_camera_matrix; 

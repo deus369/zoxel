@@ -7,6 +7,7 @@ typedef struct {
     GLuint scale;
     GLuint brightness;
     GLuint texture;
+    GLuint fog_data;
 } Material3DTextured;
 
 Material3DTextured shader_attributes_material_textured3D;
