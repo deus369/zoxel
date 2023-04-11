@@ -12,19 +12,23 @@ void MeshUvsUpdateSystem(ecs_iter_t *it) {
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 2);
     const MeshVertices *meshVertices = ecs_field(it, MeshVertices, 3);
     const MeshUVs *meshUVs = ecs_field(it, MeshUVs, 4);
-    const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 5);
-    const UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 6);
+    const MeshColorRGBs *meshColorRGBs = ecs_field(it, MeshColorRGBs, 5);
+    const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 6);
+    const UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 7);
+    const ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 8);
     for (int i = 0; i < it->count; i++) {
         MeshDirty *meshDirty = &meshDirtys[i];
         if (meshDirty->value == 1) {
             meshDirty->value = 0;
             const MeshGPULink *meshGPULink = &meshGPULinks[i];
             const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
+            const ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
             const MeshIndicies *meshIndicies2 = &meshIndicies[i];
             const MeshVertices *meshVertices2 = &meshVertices[i];
             const MeshUVs *meshUVs2 = &meshUVs[i];
-            opengl_upload_shader3D_textured(meshGPULink->value, uvsGPULink->value, meshIndicies2->value,
-                meshIndicies2->length, meshVertices2->value, meshVertices2->length, meshUVs2->value);
+            const MeshColorRGBs *meshColorRGBs2 = &meshColorRGBs[i];
+            opengl_upload_shader3D_textured(meshGPULink->value, uvsGPULink->value, colorsGPULink->value, meshIndicies2->value,
+                meshIndicies2->length, meshVertices2->value, meshVertices2->length, meshUVs2->value, meshColorRGBs2->value);
             #ifdef zoxel_time_mesh_uvs_update_system
                 did_do_timing()
                 update_count++;

@@ -2,7 +2,7 @@ unsigned char characters_per_chunk_count = 4;
 
 void set_character_terrain_settings() {
     if (cpu_tier == 3) {
-        characters_per_chunk_count = 4;
+        characters_per_chunk_count = 3;
     } else if (cpu_tier == 2) {
         characters_per_chunk_count = 2;
     } else if (cpu_tier == 1) {

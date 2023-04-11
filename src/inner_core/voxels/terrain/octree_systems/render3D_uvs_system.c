@@ -17,12 +17,13 @@ void Render3DUvsSystem(ecs_iter_t *it) {
     const Brightness *brightnesses = ecs_field(it, Brightness, 4);
     const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 5);
     const UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 6);
-    const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 7);
+    const ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 7);
+    const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 8);
     #ifdef voxels_terrain_multi_material
-        const MaterialGPULink *materialGPULinks = ecs_field(it, MaterialGPULink, 8);
-        const TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 9);
+        const MaterialGPULink *materialGPULinks = ecs_field(it, MaterialGPULink, 9);
+        const TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 10);
     #else
-        const VoxLink *voxLinks = ecs_field(it, VoxLink, 8);
+        const VoxLink *voxLinks = ecs_field(it, VoxLink, 9);
     #endif
     // later store commands per material to optimize this process
     // zoxel_log("rendering chunks: %i\n", it->count);
@@ -35,11 +36,12 @@ void Render3DUvsSystem(ecs_iter_t *it) {
             continue;
         }
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
-        if (meshGPULink->value.x == 0) {
+        /*if (meshGPULink->value.x == 0) {
             zoxel_log(" !!! mesh is 0\n");
             continue;
-        }
+        }*/
         const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
+        const ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
         const Position3D *position3D = &positions[i];
         const Rotation3D *rotation = &rotations[i];
         const Scale1D *scale1D = &scale1Ds[i];
@@ -57,7 +59,8 @@ void Render3DUvsSystem(ecs_iter_t *it) {
             // const MaterialGPULink *materialGPULink = ecs_get(it->world, voxLink->value, MaterialGPULink);
             Material3DTextured attributes = (Material3DTextured) { 
                 glGetAttribLocation(materialGPULink->value, "vertexPosition"),
-                glGetAttribLocation(materialGPULink->value, "vertexUV"), 0,
+                glGetAttribLocation(materialGPULink->value, "vertexUV"),
+                glGetAttribLocation(materialGPULink->value, "vertex_color"), 0,
                 glGetUniformLocation(materialGPULink->value, "position"), 0, 0, 0, 0
             };
             if (!has_set_single_material) {
@@ -74,7 +77,7 @@ void Render3DUvsSystem(ecs_iter_t *it) {
                 opengl_shader3D_textured_set_camera_view_matrix(main_camera_matrix, &attributes);
                 opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes);
             }
-            opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, &attributes);
+            opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, colorsGPULink->value, &attributes);
             //    check_opengl_error("[opengl_set_buffer_attributes Error]");
             opengl_set_mesh_indicies(meshGPULink->value.x);
             opengl_set_material3D_uvs_position(position3D->value, &attributes);

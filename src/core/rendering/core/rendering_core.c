@@ -83,7 +83,7 @@ zoxel_system_1(MeshUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] Mes
 zoxel_system_1(Mesh2DUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D,
     [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs);
 zoxel_system_1(MeshUvsUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies,
-    [in] MeshVertices, [in] MeshUVs, [in] MeshGPULink, [in] UvsGPULink, [none] !MeshColorRGBs);
+    [in] MeshVertices, [in] MeshUVs, [in] MeshColorRGBs, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink);
 zoxel_system_1(Mesh2DUvsUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies,
     [in] MeshVertices2D, [in] MeshUVs, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshColorRGBs);
 // [in] MaterialGPULink, 

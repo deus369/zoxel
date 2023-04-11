@@ -15,6 +15,7 @@ void add_voxel_face_colors(int_array_d *indicies, float3_array_d* vertices, colo
         float3 vertex_position = voxel_face_vertices[a];
         float3_multiply_float_p(&vertex_position, voxel_scale);
         float3_add_float3_p(&vertex_position, vertex_position_offset);
+        add_to_float3_array_d(vertices, vertex_position);
         color_rgb vertex_color = voxel_color;
         if (direction == direction_down) {
             color_rgb_multiply_float(&vertex_color, 0.33f);
@@ -27,7 +28,6 @@ void add_voxel_face_colors(int_array_d *indicies, float3_array_d* vertices, colo
         } else if (direction == direction_right) {
             color_rgb_multiply_float(&vertex_color, 0.76f);
         }
-        add_to_float3_array_d(vertices, vertex_position);
         add_to_color_rgb_array_d(color_rgbs, vertex_color);
     }
 }
@@ -145,10 +145,10 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         const ColorRGBs *colors2 = &colorRGBs[i];
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
-        MeshColorRGBs *meshColors2 = &meshColorRGBs[i];
+        MeshColorRGBs *meshColorRGBs2 = &meshColorRGBs[i];
         chunkDirty->value = 0;
         meshDirty->value = 1;
-        build_chunk_mesh_colors(chunk, chunkSize, colors2, meshIndicies2, meshVertices2, meshColors2);
+        build_chunk_mesh_colors(chunk, chunkSize, colors2, meshIndicies2, meshVertices2, meshColorRGBs2);
         //printf("Building ChunkData ColorRGBs Mesh [%lu] - [%i] [%i]\n", (long int) it->entities[i], meshIndicies2->length, meshVertices2->length);
         #ifdef zoxel_time_chunk_colors_builds_system
             did_do_timing()

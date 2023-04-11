@@ -45,16 +45,14 @@ zoxel_system_ctx(world, ChunkUVsBuildSystem, EcsOnUpdate, generateChunkQuery, [o
     [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty, [none] !MeshColorRGBs)
 zoxel_system_ctx(world, OctreeChunkBuildSystem, EcsOnUpdate, generateChunkQuery,
     [out] ChunkDirty, [in] ChunkOctree, [in] ChunkDivision, [in] ChunkNeighbors,
-    [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] ChunkDirtier, [none] !MeshColorRGBs)
+    [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] ChunkDirtier)
 zoxel_system(OctreeChunkMeshSystem, EcsPreUpdate, [out] ChunkDirtier, [in] ChunkNeighbors, [out] MeshDirty)
-zoxel_system_1(Render3DUvsSystem, render3D_update_pipeline, // EcsOnStore,
-    [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness,
-    [in] MeshGPULink, [in] UvsGPULink, [in] MeshIndicies,
-    #ifdef voxels_terrain_multi_material
-        [in] MaterialGPULink, [in] TextureGPULink);
-    #else
-        [in] VoxLink);
-    #endif
+zoxel_system_1(Render3DUvsSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies,
+#ifdef voxels_terrain_multi_material
+    [in] MaterialGPULink, [in] TextureGPULink);
+#else
+    [in] VoxLink);
+#endif
 Render3DUvsSystem_id = ecs_id(Render3DUvsSystem);
 spawn_prefab_terrain(world);
 int3 terrain_chunk_size = { default_chunk_length, 8 * default_chunk_length, default_chunk_length };

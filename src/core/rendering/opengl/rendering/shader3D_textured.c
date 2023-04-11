@@ -73,29 +73,31 @@ void opengl_shader3D_textured_set_camera_view_matrix(const float4x4 view_matrix,
 // glEnableVertexAttribArray(materialTextured3D.vertexPosition);
 // glVertexAttribPointer(materialTextured3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 12, 0); // 4 * 3
 
-void opengl_upload_shader3D_textured(GLuint2 mesh_buffer, GLuint uv_buffer,
-    const int *indicies, int indicies_length, const float3 *verts, int verts_length, const float2 *uvs) {
-    // Bind the index buffer
+void opengl_upload_shader3D_textured(GLuint2 mesh_buffer, GLuint uv_buffer, GLuint color_buffer,
+    const int *indicies, int indicies_length, const float3 *verts, int verts_length,
+    const float2 *uvs, const color_rgb *color_rgbs) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);
-    // Bind the vertex buffer
     glBindBuffer(GL_ARRAY_BUFFER, mesh_buffer.y);
     glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float3), verts, GL_STATIC_DRAW);
-    // Bind the UV buffer
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
     glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float2), uvs, GL_STATIC_DRAW);
-    // Unbind the buffers
+    glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
+    glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(color_rgb), color_rgbs, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void opengl_set_buffer_attributes(GLuint vertex_buffer, GLuint uv_buffer, Material3DTextured *attributes) {
+void opengl_set_buffer_attributes(GLuint vertex_buffer, GLuint uv_buffer, GLuint color_buffer, Material3DTextured *attributes) {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glEnableVertexAttribArray(attributes->vertexPosition);
     glVertexAttribPointer(attributes->vertexPosition, 3, GL_FLOAT, GL_FALSE, 0, 0); // 12, 0);
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
     glEnableVertexAttribArray(attributes->vertexUV);
     glVertexAttribPointer(attributes->vertexUV, 2, GL_FLOAT, GL_FALSE,  0, 0); // 8, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
+    glEnableVertexAttribArray(attributes->vertex_color);
+    glVertexAttribPointer(attributes->vertex_color, sizeof(color_rgb), GL_UNSIGNED_BYTE, GL_TRUE, 0, 0); // 4 * sizeof(GLubyte), 0);
 }
 
 /*
