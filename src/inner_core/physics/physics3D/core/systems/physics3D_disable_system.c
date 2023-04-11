@@ -1,6 +1,9 @@
 const unsigned char physics_disable_frames = 8;
 
 void Physics3DDisableSystem(ecs_iter_t *it) {
+    #ifdef zoxel_disable_velocity
+        return;
+    #endif
     double delta_time = zoxel_delta_time;
     InitializePhysics3D *initializePhysics3Ds = ecs_field(it, InitializePhysics3D, 1);
     Position3D *position3Ds = ecs_field(it, Position3D, 2);

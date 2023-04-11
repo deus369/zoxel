@@ -2,15 +2,13 @@ extern int terrain_spawn_distance;
 extern int terrain_vertical;
 
 void spawn_terrain_grid(float real_chunk_scale) {
-    float voxel_scale = real_chunk_scale; // 16.0f; // overall_voxel_scale;
-    float spacing = voxel_scale; // voxel_scale / 4.0f;
-    float thickness = 2.0f; // voxel_scale; //  2.0f;
-    float bottom_bounds = - voxel_scale * terrain_vertical - voxel_scale * 0.5f; // + voxel_scale * 0.5f; // voxel_scale; //  * (1.0f / 2.0f); // 2.0f; // 0.5f;
-    float top_bounds = - bottom_bounds;
-    // bottom_bounds -= voxel_scale;
-    float radius = (terrain_spawn_distance) * (voxel_scale) + thickness * 0.01f;
-    float radius2 = (terrain_spawn_distance + 1) * (voxel_scale) + thickness * 0.01f;
-    for (int i = bottom_bounds; i <= top_bounds; i += voxel_scale) {
+    float bottom_bounds = - real_chunk_scale * terrain_vertical; // - real_chunk_scale * 0.5f; // + real_chunk_scale * 0.5f; // real_chunk_scale; //  * (1.0f / 2.0f); // 2.0f; // 0.5f;
+    float top_bounds = - bottom_bounds + real_chunk_scale;
+    float spacing = real_chunk_scale;
+    float thickness = 2.0f;
+    float radius = (terrain_spawn_distance) * (real_chunk_scale) + thickness * 0.01f;
+    float radius2 = (terrain_spawn_distance + 1) * (real_chunk_scale) + thickness * 0.01f;
+    for (int i = bottom_bounds; i <= top_bounds; i += spacing) {
         spawn_line3D(world, (float3) { -radius, i, -radius }, (float3) { -radius, i, radius2 }, thickness, 0);
         spawn_line3D(world, (float3) { -radius, i, radius2 }, (float3) { radius2, i, radius2 }, thickness, 0);
         spawn_line3D(world, (float3) { radius2, i, radius2 }, (float3) { radius2, i, -radius }, thickness, 0);

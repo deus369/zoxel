@@ -1,7 +1,3 @@
-//ecs_entity_t *terrain_chunks;
-//int terrain_chunks_count;
-
-//  + 1
 int get_chunk_index(int i, int j, int rows) {
     return (i + rows + 1) * (rows + rows + 1) + (j + rows + 1);
 }
@@ -85,12 +81,6 @@ void create_terrain(ecs_world_t *world) {
     }
     ecs_set(world, terrain_world, ChunkLinks, { chunkLinks.value });
     ecs_defer_end(world);
-    // quick reference
-    /*terrain_chunks = malloc(sizeof(ecs_entity_t) * chunks_total_length);
-    for (int i = 0; i < chunks_total_length; i++) {
-        terrain_chunks [i] = chunks[i];
-    }
-    terrain_chunks_count = chunks_total_length;*/
 }
 
 void dispose_opengl_resources_terrain(ecs_world_t *world) {

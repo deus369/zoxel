@@ -1,7 +1,7 @@
 #ifndef zoxel_voxels_terrain
 #define zoxel_voxels_terrain
 
-#include "fun/settings.c"
+#include "settings/settings.c"
 zoxel_declare_tag(TerrainWorld)
 zoxel_declare_tag(TerrainChunk)
 zoxel_declare_tag(ChunkTerrain)

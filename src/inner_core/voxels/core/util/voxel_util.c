@@ -65,6 +65,11 @@ int3 voxel_chunk_position_xz(int3 chunk_position, int3 chunk_size) {
     }
     return voxel_position;
 }
+
+int3 get_chunk_voxel_position(int3 chunk_position, int3 chunk_size) {
+    int3 voxel_position = int3_multiply_int3(chunk_position, chunk_size);
+    return voxel_position;
+}
     
     // float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };        
     /*return (int3) {

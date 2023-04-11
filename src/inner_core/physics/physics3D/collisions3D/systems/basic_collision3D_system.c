@@ -2,11 +2,10 @@
 // todo seperate voxel position, and chunk position updates outside of this
 // todo check normal of voxel position difference, base bounce velocity off that instead of just y axis
 void BasicCollision3DSystem(ecs_iter_t *it) {
+    #ifdef zoxel_disable_velocity
+        return;
+    #endif
     double delta_time = zoxel_delta_time;
-    /*if (delta_time > zoxel_max_delta_time) {
-        delta_time = delta_time;
-    }*/
-    // if (delta_time > 0.01f) delta_time = 0;
     const ChunkLink *chunkLinks = ecs_field(it, ChunkLink, 1);
     const ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 2);
     Position3D *position3Ds = ecs_field(it, Position3D, 3);

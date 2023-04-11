@@ -1,6 +1,6 @@
 // profiling: make build/dev && make run-dev-profiler
 // #include "core/util/ecs/util/profiler_defines.c"
-#include "zoxel/build_settings.c"
+#include "zoxel/settings/build_settings.c"
 #include "engine/engine.c"
 #include "zoxel/zoxel.c"
 

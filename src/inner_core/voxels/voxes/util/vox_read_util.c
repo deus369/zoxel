@@ -32,7 +32,9 @@ int read_vox(const char* filename, vox_file *vox) {
     if (filename == NULL) {
         return EXIT_FAILURE;
     }
-    zoxel_log(" > importing in file [%s]\n", filename);
+    #ifdef zoxel_log_files
+        zoxel_log(" + loading file [%s]\n", filename);
+    #endif
     // Open the vox file for reading
     FILE *file = fopen(filename, "r");
     // Check if the file was opened successfully
@@ -42,7 +44,7 @@ int read_vox(const char* filename, vox_file *vox) {
         return EXIT_FAILURE;
     }
     #ifdef zoxel_debug_vox_read
-    zoxel_log("Success Opening vox file [%s]\n", filename);
+        zoxel_log("Success Opening vox file [%s]\n", filename);
     #endif
     // vox_file vox;
     if (fread(&vox->header, sizeof(vox_file_header), 1, file) != 1) {

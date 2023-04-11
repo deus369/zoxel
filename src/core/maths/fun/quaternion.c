@@ -97,9 +97,7 @@ float4 quaternion_from_euler(float3 euler) {
     return q;
 }
 
-float4 quaternion_identity() {
-    return (float4) { 0, 0, 0, 1 };
-}
+#define quaternion_identity (float4) { 0, 0, 0, 1 }
 
 /*euler.x /= degreesToRadians;
 euler.y /= degreesToRadians;

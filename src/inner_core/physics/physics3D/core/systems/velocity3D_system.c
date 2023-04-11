@@ -1,10 +1,8 @@
-//! Veloco Rapters!
-void Velocity3DSystem(ecs_iter_t *it) {
+void Velocity3DSystem(ecs_iter_t *it) { //! Veloco Rapters!
+    #ifdef zoxel_disable_velocity
+        return;
+    #endif
     double delta_time = zoxel_delta_time;
-    /*if (delta_time > zoxel_max_delta_time) {
-        delta_time = delta_time;
-    }*/
-    // if (delta_time > 0.01f) delta_time = 0;
     Position3D *positions = ecs_field(it, Position3D, 1);
     const Velocity3D *velocity3Ds = ecs_field(it, Velocity3D, 2);
     for (int i = 0; i < it->count; i++) {

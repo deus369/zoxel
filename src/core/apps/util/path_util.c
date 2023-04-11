@@ -173,9 +173,9 @@ void set_data_path() {
     }
     DIR* dir = opendir(base_path);
     if (dir) {
-        // #ifdef zoxel_debug_pathing
+        #ifdef zoxel_debug_pathing
             zoxel_log(" + base path exists [%s]\n", data_path);
-        // #endif
+        #endif
         resources_path = malloc(strlen(base_path) + strlen(resources_folder_name) + 1);
         strcpy(resources_path, base_path);
         strcat(resources_path, resources_folder_name);
@@ -184,9 +184,9 @@ void set_data_path() {
         #endif
         DIR* dir2 = opendir(resources_path);
         if (dir2) {
-            //#ifdef zoxel_debug_pathing
-                zoxel_log(" > resources path is [%s]\n", resources_path);
-            //#endif
+            #ifdef zoxel_debug_pathing
+                zoxel_log("     + resources path is [%s]\n", resources_path);
+            #endif
             closedir(dir2);
         } else {
             zoxel_log(" !!! resources_path does not exist [%s]\n", resources_path);

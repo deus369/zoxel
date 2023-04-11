@@ -22,6 +22,10 @@ void byte3_modulus_byte(byte3 *value, unsigned char moduli) {
     value->z %= moduli;
 }
 
+int3 int3_from_byte3(byte3 input) {
+    return (int3) { input.x, input.y, input.z };
+}
+
 const byte3 octree_positions_b[] = {
     { 0, 0, 0},
     { 0, 0, 1},

@@ -44,6 +44,9 @@ void set_terrain_render_distance() {
     } else {
         terrain_spawn_distance = 6;
     }
+    // testing
+    //terrain_spawn_distance = 0;
+    //terrain_vertical = 0;
     terrain_frequency = max_octree_depth * 0.008216;
     terrain_boost = -8 * terrain_vertical; //  + max_octree_depth * 4;
     terrain_amplifier = 16 + terrain_vertical * 16;

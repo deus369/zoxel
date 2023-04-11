@@ -23,7 +23,13 @@
 // ecs_add_id(world, entity, ecs_id(T));
 // ecs_override_id(world, entity, ecs_id(T))
 
+#define zoxel_add_new(world, entity, T, ...)\
+    ecs_set_id(world, entity, ecs_id(T), sizeof(T), &(T)__VA_ARGS__);\
+    ecs_override_id(world, entity, ecs_id(T));
+
 //! Adds a component with data and also adds override to an entity.
+// todo: remove override id from here, as it should only be done for the prefab
+
 #define zoxel_set(world, entity, T, ...)\
     ecs_set_id(world, entity, ecs_id(T), sizeof(T), &(T)__VA_ARGS__);\
     ecs_override_id(world, entity, ecs_id(T));
