@@ -32,6 +32,28 @@ void Player2DTestSystem(ecs_iter_t *it) {
             ecs_set(world, main_music, MusicSpeed, { music_speed });
             ecs_set(world, main_music, GenerateMusic, { 1 });
             printf("Generating new music with speed [%f].\n", music_speed);
+        } else if (keyboard->p.pressed_this_frame) {
+            // parent camera to character
+            ecs_entity_t main_camera = main_cameras[0];
+            const ParentLink *parentLink = ecs_get(world, main_camera, ParentLink);
+            if (parentLink->value == 0) {
+                zoxel_log(" > attaching to character\n");
+                float vox_scale = model_scale * overall_voxel_scale * 16;
+                ecs_set(world, main_camera, ParentLink, { main_character3D });
+                const Position3D *position3D = ecs_get(world, main_character3D, Position3D);
+                ecs_set(world, main_camera, Position3D, { position3D->value });
+                const Rotation3D *rotation3D = ecs_get(world, main_character3D, Rotation3D);
+                ecs_set(world, main_camera, Rotation3D, { rotation3D->value });
+                // zoxel_set(world, main_camera, LocalPosition3D, { 0, 0, vox_scale / 2.0f });
+                // ecs_set(world, main_camera, LocalPosition3D, { vox_scale / 2.0f, vox_scale + vox_scale / 2.0f, vox_scale });
+                ecs_set(world, main_camera, LocalPosition3D, { vox_scale, vox_scale * 1.5f, 0.0f });
+                ecs_set(world, main_camera, LocalRotation3D, { quaternion_identity });
+                // ecs_set(world, main_camera, LocalEuler3D, { float3_zero });
+                zoxel_log("scale %f\n", vox_scale);
+            } else {
+                zoxel_log(" > detaching from character\n");
+                ecs_set(world, main_camera, ParentLink, { 0 });
+            }
         }
         /*else if (keyboard->p.pressed_this_frame)
         {

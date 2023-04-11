@@ -7,6 +7,9 @@ ecs_entity_t spawn_camera_base_prefab(ecs_world_t *world) {
     zoxel_add_tag(world, e, Camera);
     zoxel_add(world, e, Position3D);
     zoxel_add(world, e, Rotation3D);
+    zoxel_set(world, e, ParentLink, { 0 });
+    zoxel_add(world, e, LocalPosition3D);
+    zoxel_set(world, e, LocalRotation3D, { quaternion_identity });
     zoxel_set(world, e, Euler, { { 0, 0, 0 } });
     zoxel_set(world, e, ProjectionMatrix, { float4x4_identity() });
     zoxel_set(world, e, ViewMatrix, { float4x4_identity() });

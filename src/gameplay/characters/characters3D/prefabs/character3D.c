@@ -1,4 +1,5 @@
 ecs_entity_t character3D_prefab;
+ecs_entity_t main_character3D;
 // ecs_entity_t_array_d* characters;
 
 ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
@@ -40,6 +41,7 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file
         spawn_gpu_colors(world, e);
     }*/
     ecs_defer_end(world);
+    main_character3D = e;
     return e;
 }
 
