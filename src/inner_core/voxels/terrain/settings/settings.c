@@ -39,10 +39,10 @@ void set_terrain_render_distance() {
         terrain_spawn_distance = 12;
         fog_density *= 0.56f;
     } else if (cpu_tier == 1) {
-        terrain_spawn_distance = 8;
-        fog_density *= 0.74f;
-    } else {
         terrain_spawn_distance = 6;
+        fog_density *= 0.8f;
+    } else {
+        terrain_spawn_distance = 4;
     }
     // testing
     //terrain_spawn_distance = 0;
