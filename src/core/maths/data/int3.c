@@ -59,44 +59,44 @@ int3 int3_left(int3 input) {
     return (int3) { input.x - 1, input.y, input.z };
 }
 
-int3 int3_reverse_left(int3 input, int3 size) {
-    return (int3) { size.x - 1, input.y, input.z };
-}
-
 int3 int3_right(int3 input) {
     return (int3) { input.x + 1, input.y, input.z };
-}
-
-int3 int3_reverse_right(int3 input, int3 size) {
-    return (int3) { 0, input.y, input.z };
 }
 
 int3 int3_down(int3 input) {
     return (int3) { input.x, input.y - 1, input.z };
 }
 
-int3 int3_reverse_down(int3 input, int3 size) {
-    return (int3) { input.x, size.y - 1, input.z };
-}
-
 int3 int3_up(int3 input) {
     return (int3) { input.x, input.y + 1, input.z };
-}
-
-int3 int3_reverse_up(int3 input, int3 size) {
-    return (int3) { input.x, 0, input.z };
 }
 
 int3 int3_back(int3 input) {
     return (int3) { input.x, input.y, input.z - 1 };
 }
 
-int3 int3_reverse_back(int3 input, int3 size) {
-    return (int3) { input.x, input.y, size.z - 1 };
-}
-
 int3 int3_front(int3 input) {
     return (int3) { input.x, input.y, input.z + 1 };
+}
+
+int3 int3_reverse_left(int3 input, int3 size) {
+    return (int3) { size.x - 1, input.y, input.z };
+}
+
+int3 int3_reverse_right(int3 input, int3 size) {
+    return (int3) { 0, input.y, input.z };
+}
+
+int3 int3_reverse_down(int3 input, int3 size) {
+    return (int3) { input.x, size.y - 1, input.z };
+}
+
+int3 int3_reverse_up(int3 input, int3 size) {
+    return (int3) { input.x, 0, input.z };
+}
+
+int3 int3_reverse_back(int3 input, int3 size) {
+    return (int3) { input.x, input.y, size.z - 1 };
 }
 
 int3 int3_reverse_front(int3 input, int3 size) {

@@ -12,5 +12,5 @@ void set_max_octree_length(unsigned char new_max_octree_depth) {
     max_octree_depth = new_max_octree_depth;
     default_chunk_length = powers_of_two[max_octree_depth];
     default_chunk_size = (int3) { default_chunk_length, default_chunk_length, default_chunk_length };
-    zoxel_log(" > set max octree depth [%i] - chunk length [%i] \n", max_octree_depth, default_chunk_length);
+    // zoxel_log(" > set max octree depth [%i] - chunk length [%i] \n", max_octree_depth, default_chunk_length);
 }

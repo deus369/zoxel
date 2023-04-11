@@ -7,7 +7,6 @@ int lowest_voxel_height = -24;
 int inner_render_buffer = 1;
 int lod_division_dividor = 3;
 const int max_chunks_build_per_frame = 32;
-// float real_chunk_scale = overall_voxel_scale / 2.0f; // 1.0f;   // size achunk takes up
 #define terrain_texture_resolution 32 // 16
 const int2 chunk_texture_size = { terrain_texture_resolution, terrain_texture_resolution };
 #ifndef WEB_BUILD
@@ -16,43 +15,40 @@ const int2 chunk_texture_size = { terrain_texture_resolution, terrain_texture_re
 #endif
 #define octree_min_height -1.995f // 0.005f
 #define noise_positiver2 32000
-// #define terrain_amplifier 64.0
 #define terrain_minus_amplifier 0.0
 #ifdef voxel_octrees
     double terrain_frequency = 0.028216; // 0.026216
 #else
     double terrain_frequency = 0.00216; // 0.004216
 #endif
-// const int3 terrain_chunk_size = { chunk_length, 8 * chunk_length, chunk_length };
 const int terrain_octaves = 12;
-const uint32_t terrain_seed = 32666;
+uint32_t terrain_seed = 32666;
 const float flat_height_level = -0.56f; // 0.2f;
 
 void set_terrain_render_distance() {
     if (cpu_tier == 3) {
-        terrain_spawn_distance = 18;
+        terrain_spawn_distance = 16;
         terrain_vertical = 3; // 4;
         lod_division_dividor = 4; // 5;
+        fog_density *= 0.5f;    // .3 for now to cover up transitions
         // set_max_octree_length(5);
-        fog_density *= 0.3f;    // .3 for now to cover up transitions
     } else if (cpu_tier == 2) {
         terrain_spawn_distance = 12;
-        fog_density *= 0.56f;
+        fog_density *= 0.75f;
     } else if (cpu_tier == 1) {
         terrain_spawn_distance = 6;
-        fog_density *= 0.8f;
+        fog_density *= 0.9f;
     } else {
         terrain_spawn_distance = 4;
     }
-    // testing
-    //terrain_spawn_distance = 0;
-    //terrain_vertical = 0;
     terrain_frequency = max_octree_depth * 0.008216;
-    terrain_boost = -8 * terrain_vertical; //  + max_octree_depth * 4;
+    terrain_boost = 0; // -8 * terrain_vertical; //  + max_octree_depth * 4;
     terrain_amplifier = 16 + terrain_vertical * 16;
     lowest_voxel_height = - (terrain_vertical) * 16 + 1;
+    terrain_seed = get_unique_time_seed();
     #ifdef zoxel_debug_settings
         zoxel_log(" > terrain settings set\n");
+        zoxel_log("     + terrain seed is [%i]\n", (int) terrain_seed);
         zoxel_log("     + octree depth is [%i]\n", max_octree_depth);
         zoxel_log("     + render distance is [%i]\n", terrain_spawn_distance);
         zoxel_log("     + terrain vertical is [%i]\n", terrain_vertical);
@@ -63,7 +59,3 @@ void set_terrain_render_distance() {
         zoxel_log("     + lowest low is [%d]\n", lowest_voxel_height);
     #endif
 }
-
-// inner_render_buffer = 1;
-// terrain_frequency = 0.016216;
-// terrain_frequency = 0.136216;

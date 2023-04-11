@@ -8,7 +8,7 @@ zoxel_component(LineData3D, float6)     //! The two points in a line3D.
 #include "prefabs/line3D.c"
 #include "shaders/line3D_shader.c"
 #include "systems/line3D_render_system.c"
-#include "util/test_lines3D.c"
+#include "util/terrain_grid.c"
 
 zoxel_begin_module(Lines3D)
 zoxel_define_tag(Line3D)

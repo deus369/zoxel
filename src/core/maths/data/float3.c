@@ -82,3 +82,7 @@ float float3_dot(float3 a, float3 b) {
 float float3_length(float3 v) {
     return sqrt(float3_dot(v, v));
 }
+
+float3 float3_from_byte3(byte3 input) {
+    return (float3) { input.x, input.y, input.z };
+}

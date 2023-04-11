@@ -49,7 +49,6 @@ void TerrainChunkSystem(ecs_iter_t *it) {
     const GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 6);
     for (int i = 0; i < it->count; i++) {
         const GenerateChunk *generateChunk = &generateChunks[i];
-        //! Only rebuild if GenerateChunk is set to 1 and EntityDirty is false.
         if (generateChunk->value == 0) {
             continue;
         }

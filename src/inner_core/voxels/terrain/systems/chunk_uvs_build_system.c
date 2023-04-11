@@ -4,20 +4,17 @@ void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,
     const ChunkData *chunk_back, const ChunkData *chunk_front) {
     int2 *mesh_count = &((int2){ 0, 0 });
     int2 *start = &((int2) { 0, 0 });
-    int3 local_position;
     float voxel_scale = overall_voxel_scale / ((float) chunkSize->value.x);
     // float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f,
     //    - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
     //! Precount our index and vertex array lengths.
-    for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++)
-    {
-        for (local_position.y = 0; local_position.y < chunkSize->value.y; local_position.y++)
-        {
-            for (local_position.z = 0; local_position.z < chunkSize->value.z; local_position.z++)
-            {
-                int array_index = int3_array_index(local_position, chunkSize->value);
-                if (chunk->value[array_index] != 0)
-                {
+    byte3 chunk_size = (byte3) { chunkSize->value.x, chunkSize->value.y, chunkSize->value.z };
+    byte3 local_position;
+    for (local_position.x = 0; local_position.x < chunk_size.x; local_position.x++) {
+        for (local_position.y = 0; local_position.y < chunk_size.y; local_position.y++) {
+            for (local_position.z = 0; local_position.z < chunk_size.z; local_position.z++) {
+                int array_index = byte3_array_index(local_position, chunk_size);
+                if (chunk->value[array_index] != 0) {
                     // add faces - based on neighbor voxels.
                     #ifndef disable_voxel_left
                     zoxel_check_faces_with_uvs(left)
@@ -45,18 +42,15 @@ void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,
     re_initialize_memory_component(meshIndicies, int, mesh_count->x);
     re_initialize_memory_component(meshVertices, float3, mesh_count->y);
     re_initialize_memory_component(meshUVs, float2, mesh_count->y);
-    for (local_position.x = 0; local_position.x < chunkSize->value.x; local_position.x++)
-    {
-        for (local_position.y = 0; local_position.y < chunkSize->value.y; local_position.y++)
-        {
-            for (local_position.z = 0; local_position.z < chunkSize->value.z; local_position.z++)
-            {
-                int array_index = int3_array_index(local_position, chunkSize->value);
-                if (chunk->value[array_index] == 0)
-                {
+    for (local_position.x = 0; local_position.x < chunk_size.x; local_position.x++) {
+        for (local_position.y = 0; local_position.y < chunk_size.y; local_position.y++) {
+            for (local_position.z = 0; local_position.z < chunk_size.z; local_position.z++) {
+                int array_index = byte3_array_index(local_position, chunk_size);
+                if (chunk->value[array_index] == 0) {
                     continue;
                 }
-                float3 vertex_position_offset = float3_multiply_float(float3_from_int3(local_position), voxel_scale);
+                float3 vertex_position_offset = float3_from_byte3(local_position);
+                float3_multiply_float_p(&vertex_position_offset, voxel_scale);
                 #ifndef disable_voxel_left
                 zoxel_add_faces_with_uvs(left, 0)
                 #endif
