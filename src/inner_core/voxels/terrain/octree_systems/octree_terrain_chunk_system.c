@@ -1,3 +1,4 @@
+#define grass_spawn_chance 80
 #define octree_random_spawn_chance 90
 // todo: rewrite algorithm, it's too slow atm for xyz chunks
 
@@ -77,6 +78,7 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
         float3 chunk_position_float3 = float3_from_int3(chunkPosition->value);
         fill_octree(chunkOctree, 0, target_depth);
         const byte2 set_octree_data = (byte2) { 1, target_depth };
+        const byte2 set_grass = (byte2) { 2, target_depth };
         byte3 voxel_position;
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
             for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
@@ -91,12 +93,21 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
                 #endif
                 int local_height = (int) (global_height - (chunk_position_float3.y * chunk_voxel_length));
                 if (local_height > 0) {
-                    if (local_height > chunk_voxel_length) {
+                    unsigned char chunk_below_max = local_height > chunk_voxel_length;
+                    if (chunk_below_max) {
                         local_height = chunk_voxel_length;
                     }
                     for (voxel_position.y = 0; voxel_position.y < local_height; voxel_position.y++) {
                         byte3 node_position = voxel_position;
-                        set_octree_voxel(chunkOctree, &node_position, &set_octree_data, 0);
+                        if (!chunk_below_max && voxel_position.y == local_height - 1) {
+                            if (rand() % 100 < grass_spawn_chance) {
+                                set_octree_voxel(chunkOctree, &node_position, &set_grass, 0);
+                            } else {
+                                set_octree_voxel(chunkOctree, &node_position, &set_octree_data, 0);
+                            }
+                        } else {
+                            set_octree_voxel(chunkOctree, &node_position, &set_octree_data, 0);
+                        }
                     }
                 }
             }

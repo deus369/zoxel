@@ -20,6 +20,15 @@ const int* get_voxel_indices(unsigned char is_positive) {
 
 const float2 voxel_face_uvs[] = { { 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 0 } };
 
+#define voxel_face_uvs_create(index, offset_x, offset_y, size_x, size_y)\
+const float2 voxel_uvs##_##index[] = { { offset_x, offset_y }, { offset_x, offset_y + size_y },\
+    { offset_x + size_x, offset_y + size_y }, { offset_x + size_x, offset_y } };
+
+voxel_face_uvs_create(0, 0, 0, 0.5f, 0.5f)
+voxel_face_uvs_create(1, 0.5f, 0, 0.5f, 0.5f)
+voxel_face_uvs_create(2, 0, 0.5f, 0.5f, 0.5f)
+voxel_face_uvs_create(3, 0.5f, 0.5f, 0.5f, 0.5f)
+
 // left
 const float3 voxel_face_vertices_left[] = {
     { 0, 0, 0 },    //4

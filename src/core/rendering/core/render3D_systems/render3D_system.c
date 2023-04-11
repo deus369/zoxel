@@ -20,12 +20,6 @@ void Render3DSystem(ecs_iter_t *it) {
         if (opengl_set_material(materialGPULink->value)) {
             opengl_bind_mesh(meshGPULink->value);
             set_basic_vert_layout(materialGPULink->value);
-            // unsigned char has_mesh_colors = ecs_has(world, it->entities[i], MeshColorRGBs);
-            /*if (has_mesh_colors) {
-                set_color_vertex_layout(materialGPULink->value);
-            } else {
-                set_basic_vert_layout(materialGPULink->value);
-            }*/
             if (opengl_set_material3D_properties(materialGPULink->value,
                 position->value, rotation->value, scale1D->value, brightness->value) == -1) {
                 return;
@@ -38,15 +32,3 @@ void Render3DSystem(ecs_iter_t *it) {
     opengl_disable_opengl_program();
 }
 zoxel_declare_system(Render3DSystem)
-
-/*if (!has_mesh_colors) {
-    if (opengl_set_material3D_properties(materialGPULink->value,
-        position->value, rotation->value, scale1D->value, brightness->value) == -1) {
-        return;
-    }
-} else {
-    if (opengl_set_material3D_colors_properties(materialGPULink->value,
-        position->value, rotation->value, scale1D->value, brightness->value) == -1) {
-        return;
-    }
-}*/

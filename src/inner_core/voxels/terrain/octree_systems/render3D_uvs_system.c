@@ -56,7 +56,6 @@ void Render3DUvsSystem(ecs_iter_t *it) {
                 vox_entity = voxLink->value;
                 materialGPULink = ecs_get(it->world, voxLink->value, MaterialGPULink);
             }
-            // const MaterialGPULink *materialGPULink = ecs_get(it->world, voxLink->value, MaterialGPULink);
             Material3DTextured attributes = (Material3DTextured) { 
                 glGetAttribLocation(materialGPULink->value, "vertexPosition"),
                 glGetAttribLocation(materialGPULink->value, "vertexUV"),

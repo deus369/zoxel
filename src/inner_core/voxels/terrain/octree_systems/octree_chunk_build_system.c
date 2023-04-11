@@ -1,3 +1,6 @@
+// add uv splitting here based on voxel uvs - voxel_face_uvs based on voxel
+// for now lets try 
+
 // const float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
 const color_rgb color_rgb_white = (color_rgb) { 255, 255, 255 };
 const float octree_scales3[] = {
@@ -28,7 +31,7 @@ const float octree_scales3[] = {
 // this takes 14ms on a 24core cpu, 6ms though during streaming
 // scales vertex, offsets vertex by voxel position in chunk, adds total mesh offset
 void add_voxel_face_uvs_d(int_array_d *indicies, float3_array_d* vertices, float2_array_d* uvs, color_rgb_array_d* color_rgbs,
-    float3 vertex_position_offset, float3 center_mesh_offset, float voxel_scale,
+    float3 vertex_position_offset, unsigned char voxel, float voxel_scale,
     const int* voxel_face_indicies, const float3 voxel_face_vertices[], const float2 voxel_face_uvs[], unsigned char direction) {
     expand_capacity_int_array_d(indicies, voxel_face_indicies_length);
         add_voxel_face_uvs_indicies(0)
@@ -67,11 +70,12 @@ void add_voxel_face_uvs_d(int_array_d *indicies, float3_array_d* vertices, float
     }
 }
 
-#define zoxel_octree_build_face_d(direction_name, is_positive)\
+#define zoxel_octree_build_face_d(direction_name, is_positive, voxel_uvs)\
 if (!is_adjacent_all_solid(direction##_##direction_name, root_node, parent_node, neighbors,\
     octree_position, node_index, node_position, depth, max_depth, neighbors_max_depths)) {\
-    add_voxel_face_uvs_d(indicies, vertices, uvs, color_rgbs, vertex_position_offset, center_mesh_offset,\
-        voxel_scale, get_voxel_indices(is_positive), voxel_face_vertices##_##direction_name, voxel_face_uvs, direction##_##direction_name);\
+    add_voxel_face_uvs_d(indicies, vertices, uvs, color_rgbs, vertex_position_offset, voxel,\
+    voxel_scale, get_voxel_indices(is_positive), voxel_face_vertices##_##direction_name,\
+    voxel_uvs, direction##_##direction_name);\
 }
 
 #define build_octree_chunk_child_node(i)\
@@ -89,12 +93,22 @@ void build_octree_chunk_d(const ChunkOctree *root_node, const ChunkOctree *paren
             float voxel_scale = octree_scales3[depth];
             float3 vertex_position_offset = { octree_position.x * voxel_scale, octree_position.y * voxel_scale, octree_position.z * voxel_scale }; //float3_from_int3(octree_position);
             byte3 node_position = octree_positions_b[node_index];
-            zoxel_octree_build_face_d(left, 0)
-            zoxel_octree_build_face_d(right, 1)
-            zoxel_octree_build_face_d(down, 1)
-            zoxel_octree_build_face_d(up, 0)
-            zoxel_octree_build_face_d(back, 0)
-            zoxel_octree_build_face_d(front, 1)
+            unsigned char voxel = chunk_octree->value;
+            if (voxel == 1) {
+                zoxel_octree_build_face_d(left, 0, voxel_uvs_0)
+                zoxel_octree_build_face_d(right, 1, voxel_uvs_0)
+                zoxel_octree_build_face_d(down, 1, voxel_uvs_0)
+                zoxel_octree_build_face_d(up, 0, voxel_uvs_0)
+                zoxel_octree_build_face_d(back, 0, voxel_uvs_0)
+                zoxel_octree_build_face_d(front, 1, voxel_uvs_0)
+            } else { // if (voxel == 2) {
+                zoxel_octree_build_face_d(left, 0, voxel_uvs_1)
+                zoxel_octree_build_face_d(right, 1, voxel_uvs_1)
+                zoxel_octree_build_face_d(down, 1, voxel_uvs_1)
+                zoxel_octree_build_face_d(up, 0, voxel_uvs_1)
+                zoxel_octree_build_face_d(back, 0, voxel_uvs_1)
+                zoxel_octree_build_face_d(front, 1, voxel_uvs_1)
+            }
         }
     } else {
         depth++;

@@ -28,6 +28,11 @@ void GenerateNoise(Texture* texture, const TextureSize *textureSize, unsigned ch
             texture->value[index].g = greenRange.x + rand() % (greenRange.y - greenRange.x);
             texture->value[index].b = blueRange.x + rand() % (blueRange.y - blueRange.x);
             texture->value[index].a = alphaRange.x + rand() % (alphaRange.y - alphaRange.x);
+            if (j >= textureSize->value.x / 2 && k < textureSize->value.y / 2) {
+                texture->value[index].g *= 2;
+                texture->value[index].b = texture->value[index].r - 30;
+                texture->value[index].r /= 2;
+            }
             // texture->value[index].a = rand() % 256;
             // debug sides of texture, starts at top left
             if (!is_dirt) {
