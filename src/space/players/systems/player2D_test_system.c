@@ -1,6 +1,34 @@
 extern ecs_entity_t local_player;
 const int particleSpawnCount = 266;
 
+void attach_to_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t character) {
+    zoxel_log(" > attaching to character\n");
+    float vox_scale = model_scale * overall_voxel_scale * 16;
+    const Position3D *position3D = ecs_get(world, character, Position3D);
+    const Rotation3D *rotation3D = ecs_get(world, character, Rotation3D);
+    ecs_set(world, camera, ParentLink, { character });
+    ecs_set(world, camera, Position3D, { position3D->value });
+    ecs_set(world, camera, Rotation3D, { rotation3D->value });
+    ecs_set(world, camera, LocalPosition3D, {{ vox_scale, vox_scale * 1.8f, 0.0f }});
+    ecs_set(world, camera, LocalRotation3D, { quaternion_identity });
+    zoxel_set(world, character, DisableMovement, { 0 });
+    ecs_add(world, character, PlayerCharacter3D);
+    ecs_remove(world, camera, FreeRoam);
+    ecs_remove(world, camera, EulerOverride);
+    // zoxel_set(world, main_camera, LocalPosition3D, { 0, 0, vox_scale / 2.0f });
+    // ecs_set(world, main_camera, LocalPosition3D, { vox_scale / 2.0f, vox_scale + vox_scale / 2.0f, vox_scale });
+    // ecs_set(world, main_camera, LocalEuler3D, { float3_zero });
+    zoxel_log("scale %f\n", vox_scale);
+}
+
+void detatch_from_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t character) {
+    zoxel_log(" > [%lu] is detaching from character [%lu]\n", camera, character);
+    ecs_remove(world, character, PlayerCharacter3D);
+    ecs_add(world, camera, EulerOverride);
+    ecs_set(world, camera, FreeRoam, { 0 });
+    ecs_set(world, camera, ParentLink, { 0 });
+}
+
 void Player2DTestSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
     const Keyboard *keyboards = ecs_field(it, Keyboard, 1);
@@ -37,22 +65,9 @@ void Player2DTestSystem(ecs_iter_t *it) {
             ecs_entity_t main_camera = main_cameras[0];
             const ParentLink *parentLink = ecs_get(world, main_camera, ParentLink);
             if (parentLink->value == 0) {
-                zoxel_log(" > attaching to character\n");
-                float vox_scale = model_scale * overall_voxel_scale * 16;
-                ecs_set(world, main_camera, ParentLink, { main_character3D });
-                const Position3D *position3D = ecs_get(world, main_character3D, Position3D);
-                ecs_set(world, main_camera, Position3D, { position3D->value });
-                const Rotation3D *rotation3D = ecs_get(world, main_character3D, Rotation3D);
-                ecs_set(world, main_camera, Rotation3D, { rotation3D->value });
-                // zoxel_set(world, main_camera, LocalPosition3D, { 0, 0, vox_scale / 2.0f });
-                // ecs_set(world, main_camera, LocalPosition3D, { vox_scale / 2.0f, vox_scale + vox_scale / 2.0f, vox_scale });
-                ecs_set(world, main_camera, LocalPosition3D, { vox_scale, vox_scale * 1.5f, 0.0f });
-                ecs_set(world, main_camera, LocalRotation3D, { quaternion_identity });
-                // ecs_set(world, main_camera, LocalEuler3D, { float3_zero });
-                zoxel_log("scale %f\n", vox_scale);
+                attach_to_character(world, main_camera, main_character3D);
             } else {
-                zoxel_log(" > detaching from character\n");
-                ecs_set(world, main_camera, ParentLink, { 0 });
+                detatch_from_character(world, main_camera, main_character3D);
             }
         }
         /*else if (keyboard->p.pressed_this_frame)

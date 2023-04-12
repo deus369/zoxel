@@ -28,7 +28,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file *vox,
-    float3 position, float4 rotation, float scale) { //, unsigned char is_multithread) {
+    float3 position, float4 rotation, float scale) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
     zoxel_set(world, e, Position3D, { position })
@@ -36,15 +36,12 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file
     zoxel_set(world, e, Rotation3D, { rotation })
     zoxel_set(world, e, VoxLink, { main_terrain_world })
     set_vox_from_vox_file(world, e, vox);
-    /*if (!headless && !is_multithread) {
-        spawn_gpu_mesh(world, e);
-        spawn_gpu_colors(world, e);
-    }*/
     ecs_defer_end(world);
-    main_character3D = e;
+    /*if (position.x >= 0 && position.x <= real_chunk_scale && position.z >= 0 && position.z <= real_chunk_scale) {
+        main_character3D = e;
+    }*/
+    if (position.x >= -real_chunk_scale && position.x <= real_chunk_scale && position.z >= -real_chunk_scale && position.z <= real_chunk_scale) {
+        main_character3D = e;
+    }
     return e;
 }
-
-// zoxel_add(world, e, VoxelPosition)
-// zoxel_add(world, e, ChunkLink)
-// zoxel_add(world, e, ChunkPosition)

@@ -12,7 +12,7 @@ void FreeCameraToggleSystem(ecs_iter_t *it) {
         const Mouse *mouse = &mouses[i];
         for (int j = 0; j < cameraIter.count; j++) {
             FreeRoam *freeRoam = &freeRoams[j];
-            if (mouse->left.pressed_this_frame) {
+            if (mouse->left.pressed_this_frame || mouse->right.pressed_this_frame) {
                 if (freeRoam->value == 0) {
                     freeRoam->value = 1;
                 } else {

@@ -32,7 +32,7 @@ zoxel_filter(playerCharacter2DQuery2, world, [none] PlayerCharacter2D, [out] Acc
 zoxel_system_ctx(world, Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2, [in] Keyboard)
 #endif
 #ifdef zoxel_physics3D
-zoxel_filter(playerCharacter3DQuery, world, [none] PlayerCharacter3D, [out] Acceleration3D, [in] Velocity3D, [in] physics.DisableMovement)
+zoxel_filter(playerCharacter3DQuery, world, [none] PlayerCharacter3D, [out] Acceleration3D, [in] Velocity3D, [in] physics.DisableMovement, [in] Rotation3D)
 zoxel_system_ctx(world, Player3DMoveSystem, EcsOnUpdate, playerCharacter3DQuery, [in] Keyboard)
 #endif
 zoxel_filter(cameraQuery, world, [none] cameras.Camera, [in] cameras.FreeRoam, [out] Position3D, [out] Rotation3D)

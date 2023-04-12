@@ -22,6 +22,7 @@ void PlayGameSystem(ecs_iter_t *it) {
             ecs_add(world, main_cameras[0], StreamPoint);
             ecs_set(world, main_cameras[0], VoxLink, { main_terrain_world });
             main_camera_matrix = first_view_matrix;
+            attach_to_character(world, main_cameras[0], main_character3D);
             // \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cameras
             #ifdef voxels_spawn_terrain
             //    create_terrain(world);
