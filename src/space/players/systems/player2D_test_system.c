@@ -2,7 +2,7 @@ extern ecs_entity_t local_player;
 const int particleSpawnCount = 266;
 
 void attach_to_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t character) {
-    zoxel_log(" > attaching to character\n");
+    // zoxel_log(" > attaching to character\n");
     float vox_scale = model_scale * overall_voxel_scale * 16;
     const Position3D *position3D = ecs_get(world, character, Position3D);
     const Rotation3D *rotation3D = ecs_get(world, character, Rotation3D);
@@ -18,11 +18,11 @@ void attach_to_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t c
     // zoxel_set(world, main_camera, LocalPosition3D, { 0, 0, vox_scale / 2.0f });
     // ecs_set(world, main_camera, LocalPosition3D, { vox_scale / 2.0f, vox_scale + vox_scale / 2.0f, vox_scale });
     // ecs_set(world, main_camera, LocalEuler3D, { float3_zero });
-    zoxel_log("scale %f\n", vox_scale);
+    // zoxel_log("scale %f\n", vox_scale);
 }
 
 void detatch_from_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t character) {
-    zoxel_log(" > [%lu] is detaching from character [%lu]\n", camera, character);
+    // zoxel_log(" > [%lu] is detaching from character [%lu]\n", camera, character);
     ecs_remove(world, character, PlayerCharacter3D);
     ecs_add(world, camera, EulerOverride);
     ecs_set(world, camera, FreeRoam, { 0 });
@@ -69,6 +69,10 @@ void Player2DTestSystem(ecs_iter_t *it) {
             } else {
                 detatch_from_character(world, main_camera, main_character3D);
             }
+        } else if (keyboard->r.is_pressed) {
+            ecs_set(world, main_character3D, Alpha3D, { 0, 4, 0, 1 });
+        } else if (keyboard->t.is_pressed) {
+            ecs_set(world, main_character3D, Alpha3D, { 0, -4, 0, 1 });
         }
         /*else if (keyboard->p.pressed_this_frame)
         {
@@ -96,7 +100,7 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it) {
                 ecs_delete(it->world, fps_display);
                 fps_display = 0;
             }
-        } else if (keyboard->p.pressed_this_frame) {
+        } else if (keyboard->o.pressed_this_frame) {
             if (quads_label == 0) {
                 zoxel_log("Showing quads_label.\n");
                 quads_label = spawn_quad_count_label(world, main_canvas, 32);

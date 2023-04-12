@@ -35,16 +35,12 @@ float4 float4_normalize(float4 q) {
     return float4_multiply_divide(q, length);
 }
 
-void quaternion_rotate_quaternion_p(float4 *q1, float4 q2) { 
-    float4 output;
-    output.w = q1->w * q2.w - q1->x * q2.x - q1->y * q2.y - q1->z * q2.z;
-    output.x = q1->w * q2.x + q1->x * q2.w + q1->y * q2.z - q1->z * q2.y;
-    output.y = q1->w * q2.y - q1->x * q2.z + q1->y * q2.w + q1->z * q2.x;
-    output.z = q1->w * q2.z + q1->x * q2.y - q1->y * q2.x + q1->z * q2.w;
-    q1->x = output.x;
-    q1->y = output.y;
-    q1->z = output.z;
-    q1->w = output.w;
+void quaternion_rotate_quaternion_p(float4 *output, float4 q2) { 
+    float4 q1 = *output;
+    output->w = q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z;
+    output->x = q1.w * q2.x + q1.x * q2.w + q1.y * q2.z - q1.z * q2.y;
+    output->y = q1.w * q2.y - q1.x * q2.z + q1.y * q2.w + q1.z * q2.x;
+    output->z = q1.w * q2.z + q1.x * q2.y - q1.y * q2.x + q1.z * q2.w;
 }
 
 float4 quaternion_rotate(float4 q1, float4 q2) { 

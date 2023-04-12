@@ -97,10 +97,11 @@
 // #define zoxel_debug_chunk_link_system
 // #define zoxel_debug_chunk_link_system_test
 // #define zoxel_debug_basic_collision3D_system
-// #define zoxel_spawn_character3Ds             // spawn x penguins
-// #define zoxel_test_single_character3Ds   // spawn 1 penguin
 // Fixed color shader gpu things and systems
 // #define zoxel_log_characters_count
 // #define zoxel_log_files
 // #define zoxel_disable_velocity       // disables all movement, used to debug spawning
 #define zoxel_voxes_octrees
+// #define zoxel_disable_attach_on_start
+// #define zoxel_spawn_character3Ds         // spawn x penguins
+// #define zoxel_test_single_character3Ds   // spawn 1 penguin

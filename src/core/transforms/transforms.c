@@ -13,6 +13,4 @@ zoxel_import_module(Transforms2D)
 zoxel_import_module(Transforms3D)
 zoxel_end_module(Transforms)
 
-// \todo Check out on_delete hooks for children deletions
-
 #endif

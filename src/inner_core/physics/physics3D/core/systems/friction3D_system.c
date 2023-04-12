@@ -5,7 +5,7 @@ void Friction3DSystem(ecs_iter_t *it) {
         const Velocity3D *velocity3D = &velocity3Ds[i];
         Acceleration3D *acceleration3D = &acceleration3Ds[i];
         acceleration3D->value.x -= velocity3D->value.x * frictionValue;
-        acceleration3D->value.y -= velocity3D->value.y * frictionValue;
+        // acceleration3D->value.y -= velocity3D->value.y * frictionValue;
         acceleration3D->value.z -= velocity3D->value.z * frictionValue;
     }
 }

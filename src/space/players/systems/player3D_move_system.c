@@ -3,9 +3,9 @@
  * Only affects player characters that arn't disabled (DisableMovement).
 */
 void Player3DMoveSystem(ecs_iter_t *it) {
-    const double movementPower = 1.8f;
     const double jump_power = 4.0;
-    const float2 maxVelocity = { 12.6f, 12.6f };
+    const double movement_power = 24;
+    const float2 max_velocity = { 80, 80 };
     ecs_query_t *playerCharacterQuery = it->ctx;
     ecs_iter_t playerCharacterIterator = ecs_query_iter(it->world, playerCharacterQuery);
     ecs_query_next(&playerCharacterIterator);
@@ -36,8 +36,8 @@ void Player3DMoveSystem(ecs_iter_t *it) {
             movement.y = jump_power;
         }
         if (!(movement.x == 0 && movement.y == 0 && movement.z == 0)) {
-            movement.x *= movementPower;
-            movement.z *= movementPower;
+            movement.x *= movement_power;
+            movement.z *= movement_power;
             //! \todo Link directly to player characters from player.
             for (int j = 0; j < playerCharacterIterator.count; j++) {
                 const DisableMovement *disableMovement = &disableMovements[j];
@@ -50,20 +50,20 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                 float3 rotated_movement = float4_rotate_float3(rotation3D->value, movement);
                 float3 rotated_velocity = float4_rotate_float3(float4_inverse(rotation3D->value), velocity3D->value);
                 // todo: get rotated velocity to test max
-                if (rotated_movement.x > 0 && rotated_velocity.x < maxVelocity.x) {
+                if (rotated_movement.x > 0 && rotated_velocity.x < max_velocity.x) {
                     acceleration3D->value.x += rotated_movement.x;
-                } else if (rotated_movement.x < 0 && rotated_velocity.x > -maxVelocity.x) {
+                } else if (rotated_movement.x < 0 && rotated_velocity.x > -max_velocity.x) {
                     acceleration3D->value.x += rotated_movement.x;
                 }
                 acceleration3D->value.y += rotated_movement.y;
-                if (rotated_movement.z > 0 && rotated_velocity.z < maxVelocity.y) {
+                if (rotated_movement.z > 0 && rotated_velocity.z < max_velocity.y) {
                     acceleration3D->value.z += rotated_movement.z;
-                } else if (rotated_movement.z < 0 && rotated_velocity.z > -maxVelocity.y) {
+                } else if (rotated_movement.z < 0 && rotated_velocity.z > -max_velocity.y) {
                     acceleration3D->value.z += rotated_movement.z;
                 }
-                /*if (movement.y > 0 && velocity3D->value.y < maxVelocity.y) {
+                /*if (movement.y > 0 && velocity3D->value.y < max_velocity.y) {
                     acceleration3D->value.y += movement.y;
-                } else if (movement.y < 0 && velocity3D->value.y > -maxVelocity.y) {
+                } else if (movement.y < 0 && velocity3D->value.y > -max_velocity.y) {
                     acceleration3D->value.y += movement.y;
                 }*/
             }

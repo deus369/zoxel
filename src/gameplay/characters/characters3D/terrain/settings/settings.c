@@ -13,7 +13,6 @@ void set_character_terrain_settings() {
     #ifdef zoxel_test_single_character3Ds
         characters_per_chunk_count = 0;
     #endif
-    characters_per_chunk_count = 5; // testing
     #ifdef zoxel_debug_settings
         zoxel_log(" > character terrain settings set\n");
         zoxel_log("     + character per chunk is [%i]\n", characters_per_chunk_count);

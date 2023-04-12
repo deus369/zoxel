@@ -177,6 +177,29 @@ unsigned char test_quaternion_math(float4 input) {
     }
 }
 
+float4 quaternion_from_axis_angle(float angle, float x, float y, float z) {
+    float4 q;
+    float s = sin(angle / 2.0f);
+    q.x = x * s;
+    q.y = y * s;
+    q.z = z * s;
+    q.w = cos(angle / 2.0f);
+    return q;
+}
+
+float quaternion_magnitude(float4 quaternion) {
+    return sqrt(quaternion.x * quaternion.x + quaternion.y * quaternion.y + quaternion.z * quaternion.z);
+}
+
+float4 quaternion_normalized(float4 quaternion, float magnitude) {
+    return (float4) { quaternion.x / magnitude, quaternion.y / magnitude, quaternion.z / magnitude, 0.0f };
+}
+
+float4 get_delta_rotation(float4 quaternion, float magnitude, double delta_time) {
+    float4 normalized = quaternion_normalized(quaternion, magnitude);
+    return quaternion_from_axis_angle(magnitude * delta_time, normalized.x, normalized.y, normalized.z);     
+}
+
 /*float yaw = euler.x;
 float pitch = euler.y;
 float roll = euler.z;

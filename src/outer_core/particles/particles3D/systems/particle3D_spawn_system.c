@@ -61,7 +61,7 @@ void Particle3DSpawnSystem(ecs_world_t *world, float3 bobPosition, int spawnCoun
             ecs_id(Velocity3D),
             ecs_id(Acceleration3D),
             ecs_id(Rotation3D),
-            ecs_id(Torque3D),
+            // ecs_id(Torque3D),
             ecs_id(Scale1D),
             ecs_id(Brightness),
             ecs_id(DestroyInTime)
@@ -73,7 +73,7 @@ void Particle3DSpawnSystem(ecs_world_t *world, float3 bobPosition, int spawnCoun
             velocity3Ds,
             NULL,           // Acceleration3D
             NULL,           // Rotation3D
-            NULL,           // Torque3D
+            // NULL,           // Torque3D
             scale1Ds,
             brightnesses,
             destroyInTimes
