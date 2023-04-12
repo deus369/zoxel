@@ -6,7 +6,7 @@
 unsigned char running = 1;
 unsigned char rendering = 1;
 unsigned char headless = 0;
-const int window_index = 0; // 1;
+// const int window_index = 0; // 1;
 unsigned char vsync = 1;
 unsigned char fullscreen = 1; // set full screen default option here
 unsigned char halfscreen = 0;

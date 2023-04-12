@@ -102,6 +102,11 @@
 // #define zoxel_log_files
 // #define zoxel_disable_velocity       // disables all movement, used to debug spawning
 #define zoxel_voxes_octrees
-// #define zoxel_disable_attach_on_start
 // #define zoxel_spawn_character3Ds         // spawn x penguins
-// #define zoxel_test_single_character3Ds   // spawn 1 penguin
+// player testing
+/*
+#define zoxel_testing_tiny_terrain
+#define zoxel_disable_attach_on_start
+#define zoxel_test_single_character3Ds      // spawn 1 penguin
+#define zoxel_tests_rotate_by_keys
+*/

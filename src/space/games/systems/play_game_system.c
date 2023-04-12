@@ -25,6 +25,9 @@ void PlayGameSystem(ecs_iter_t *it) {
             #ifdef zoxel_spawn_character3Ds
                 spawn_many_characters3D(world);
             #endif
+            #ifdef zoxel_test_single_character3Ds
+                spawn_many_characters3D(world);
+            #endif
             #ifdef zoxel_disable_attach_on_start
                 continue;
             #endif

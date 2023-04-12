@@ -187,6 +187,16 @@ float4 quaternion_from_axis_angle(float angle, float x, float y, float z) {
     return q;
 }
 
+void quaternion_normalize(float4 *quaternion) {
+    float magnitude = sqrt(quaternion->x * quaternion->x + quaternion->y * quaternion->y + quaternion->z * quaternion->z + quaternion->w * quaternion->w);
+    if (magnitude != 0.0f) {
+        quaternion->x /= magnitude;
+        quaternion->y /= magnitude;
+        quaternion->z /= magnitude;
+        quaternion->w /= magnitude;
+    }
+}
+
 float quaternion_magnitude(float4 quaternion) {
     return sqrt(quaternion.x * quaternion.x + quaternion.y * quaternion.y + quaternion.z * quaternion.z);
 }

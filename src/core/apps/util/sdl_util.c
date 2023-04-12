@@ -61,11 +61,12 @@ void set_screen_size() {
 }
 
 void sdl_toggle_fullscreen(SDL_Window* window) {
-    #ifndef ANDROID_BUILD
+    Uint32 fullscreen_flag = SDL_WINDOW_FULLSCREEN;
+    /*#ifndef ANDROID_BUILD
         Uint32 fullscreen_flag = SDL_WINDOW_FULLSCREEN_DESKTOP; // SDL_WINDOW_FULLSCREEN;
     #else
         Uint32 fullscreen_flag = SDL_WINDOW_FULLSCREEN;
-    #endif
+    #endif*/
     unsigned char isFullscreen = SDL_GetWindowFlags(window) & fullscreen_flag;
     SDL_SetWindowFullscreen(window, isFullscreen ? 0 : fullscreen_flag);
     // SDL_ShowCursor(isFullscreen);
@@ -158,8 +159,12 @@ SDL_Window* spawn_sdl_window() {
         window_flags = SDL_WINDOW_FULLSCREEN_DESKTOP; //  | SDL_WINDOW_HIDDEN;
         is_resizeable = 0;
     #endif
-    int2 app_position = (int2) { 0, 0 };
-    SDL_Window* window = SDL_CreateWindow("Zoxel", app_position.x, app_position.y,
+    // int2 app_position = (int2) { 0, 0 };
+    //SDL_DisplayMode dm;
+    //SDL_GetCurrentDisplayMode(0, &dm);
+    SDL_Window* window = SDL_CreateWindow("Zoxel",
+        SDL_WINDOWPOS_UNDEFINED_DISPLAY(0), SDL_WINDOWPOS_UNDEFINED_DISPLAY(0),
+        // app_position.x, app_position.y,
         screen_dimensions.x, screen_dimensions.y, window_flags);
     if (window == NULL) {
         zoxel_log(" - failed to create sdl window [%s]\n", SDL_GetError());

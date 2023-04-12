@@ -41,6 +41,10 @@ void set_terrain_render_distance() {
     } else {
         terrain_spawn_distance = 4;
     }
+    #ifdef zoxel_testing_tiny_terrain
+        terrain_spawn_distance = 1;
+        terrain_vertical = 1;
+    #endif
     terrain_frequency = max_octree_depth * 0.002216; // 0.008216
     terrain_boost = 0; // -8 * terrain_vertical; //  + max_octree_depth * 4;
     terrain_amplifier = 16 + terrain_vertical * 16;
