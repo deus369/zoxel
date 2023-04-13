@@ -43,19 +43,21 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
                                 zoxel_log(" > voxel collided %i\n", voxel);
                             #endif
                             Velocity3D *velocity3D = &velocity3Ds[i];
-                            position3D->value.x -= velocity3D->value.x * delta_time * bounce_multiplier;
-                            position3D->value.y -= velocity3D->value.y * delta_time * bounce_multiplier;
-                            position3D->value.z -= velocity3D->value.z * delta_time * bounce_multiplier;
-                            // get normal of collision here
-                            if (old_voxel_position.x != voxelPosition->value.x) {
-                                velocity3D->value.x *= -bounce_lost_force;
-                            }
                             if (old_voxel_position.y != voxelPosition->value.y) {
+                                position3D->value.y -= velocity3D->value.y * delta_time * bounce_multiplier;
                                 velocity3D->value.y *= -bounce_lost_force;
                             }
-                            if (old_voxel_position.z != voxelPosition->value.z) {
-                                velocity3D->value.z *= -bounce_lost_force;
-                            }
+                            // get normal of collision here
+                            #ifndef zoxel_disable_non_vertical_bounce
+                                if (old_voxel_position.x != voxelPosition->value.x) {
+                                    position3D->value.x -= velocity3D->value.x * delta_time * bounce_multiplier;
+                                    velocity3D->value.x *= -bounce_lost_force;
+                                }
+                                if (old_voxel_position.z != voxelPosition->value.z) {
+                                    position3D->value.z -= velocity3D->value.z * delta_time * bounce_multiplier;
+                                    velocity3D->value.z *= -bounce_lost_force;
+                                }
+                            #endif
                             // velocity3D->value.y = 0;
                             // float3_subtract_float3_p(&position3D->value, velocity3D->value);
                             if (position3D->value.y < -256) {

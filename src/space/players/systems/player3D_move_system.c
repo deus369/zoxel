@@ -1,11 +1,9 @@
-//! Adds acceleration based on user input.
-/**
- * Only affects player characters that arn't disabled (DisableMovement).
-*/
+const double jump_power = 4.0;
+const double movement_power = 16;
+const double run_speed = 1.6;
+const float2 max_velocity = { 80, 80 };
+
 void Player3DMoveSystem(ecs_iter_t *it) {
-    const double jump_power = 4.0;
-    const double movement_power = 24;
-    const float2 max_velocity = { 80, 80 };
     ecs_query_t *playerCharacterQuery = it->ctx;
     ecs_iter_t playerCharacterIterator = ecs_query_iter(it->world, playerCharacterQuery);
     ecs_query_next(&playerCharacterIterator);
@@ -31,6 +29,10 @@ void Player3DMoveSystem(ecs_iter_t *it) {
         }
         if (keyboard->d.is_pressed) {
             movement.x = 1;
+        }
+        if (keyboard->left_shift.is_pressed) {
+            movement.x *= run_speed;
+            movement.z *= run_speed;
         }
         if (keyboard->space.is_pressed) {
             movement.y = jump_power;
