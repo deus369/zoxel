@@ -5,15 +5,15 @@
 	<br>
 </p>
 
-<h2 align="center">
+<p align="center">
   [<a href="https://deus369.github.io/zoxel-play">play now
   <img width="16" src="build/resources/textures/game_icon.png"></a>]
-</h2>
+</p>
 
-<h1 align="center">A Procedural Simulation Game</h1>
+<h1 align="center">a procedural simulation game</h1>
 
 <p align="center">
-Experience the thrill of discovery and adventure in this procedurally generated voxel RPG!
+> experience the thrill of discovery and adventure in this procedurally generated voxel rpg <
 </p>
 
 <p align="center">
@@ -69,7 +69,7 @@ Experience the thrill of discovery and adventure in this procedurally generated 
 
 -----
 <p align="center">
-  on [
+  code on [
   <a href="https://codeberg.org/deus/zoxel">codeberg</a>
   <a style="margin-left: 10px;"> | </a>
   <a href="https://github.com/deus369/zoxel">github</a>
