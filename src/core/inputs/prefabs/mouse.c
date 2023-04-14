@@ -6,7 +6,7 @@ ecs_entity_t spawn_prefab_mouse(ecs_world_t *world) {
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "mouse_prefab");
     zoxel_add_tag(world, e, Device);
-    zoxel_set(world, e, Mouse, mouse_zero);
+    zoxel_add(world, e, Mouse);
     zoxel_set(world, e, Raycaster, { { 0, 0 } });
     zoxel_set(world, e, RaycasterTarget, { 0 });
     ecs_defer_end(world);

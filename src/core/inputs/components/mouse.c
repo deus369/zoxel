@@ -10,7 +10,7 @@ typedef struct {
     PhysicalButton middle;
     PhysicalButton right;
 } Mouse;
-ECS_COMPONENT_DECLARE(Mouse);
+zoxel_custom_component(Mouse)
 
 #define mouse_zero {\
     (int2) { 0, 0 },\

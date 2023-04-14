@@ -28,3 +28,7 @@ ECS_COMPONENT_DECLARE(name);
 #define zoxel_define_hashmap_component(name)\
     zoxel_define_component(name)\
     ecs_set_hooks(world, name, { .dtor = ecs_dtor(name) });
+
+
+
+#define zoxel_custom_component(name) ECS_COMPONENT_DECLARE(name);

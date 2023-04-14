@@ -1,16 +1,19 @@
-//! A gamepad representation. \todo Add axis data.
 typedef struct {
     PhysicalButton a;
     PhysicalButton b;
     PhysicalButton x;
     PhysicalButton y;
-    PhysicalButton rb;
-    PhysicalButton rs;
     PhysicalButton lb;
-    PhysicalButton ls;
+    PhysicalButton rb;
+    PhysicalButton lt;
+    PhysicalButton rt;
     PhysicalButton start;
     PhysicalButton select;
-    PhysicalButton left_joystick_push;
-    PhysicalButton right_joystick_push;
+    PhysicalButton left_stick_push;
+    PhysicalButton right_stick_push;
+    PhysicalStick left_stick;
+    PhysicalStick right_stick;
 } Gamepad;
-ECS_COMPONENT_DECLARE(Gamepad);
+zoxel_custom_component(Gamepad)
+
+// todo: Add axis data - joysticks

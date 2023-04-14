@@ -4,3 +4,7 @@ typedef struct {
     unsigned char pressed_this_frame;
     unsigned char released_this_frame;
 } PhysicalButton;
+
+typedef struct {
+    float2 value;
+} PhysicalStick;

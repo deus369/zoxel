@@ -35,8 +35,13 @@ zoxel_system_ctx(world, Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2
 #ifdef zoxel_physics3D
 zoxel_filter(playerCharacter3DQuery, world, [none] PlayerCharacter3D, [out] Acceleration3D, [in] Velocity3D, [in] physics.DisableMovement, [in] Rotation3D)
 zoxel_system_ctx(world, Player3DMoveSystem, EcsOnUpdate, playerCharacter3DQuery, [in] Keyboard)
+zoxel_system_ctx(world, Player3DMoveSystem2, EcsOnUpdate, playerCharacter3DQuery, [in] Gamepad)
 zoxel_filter(playerCharacter3DQuery2, world, [none] PlayerCharacter3D, [out] Alpha3D, [in] physics.DisableMovement)
 zoxel_system_ctx(world, Player3DRotateSystem, EcsOnUpdate, playerCharacter3DQuery2, [in] Mouse)
+zoxel_system_ctx(world, Player3DRotateSystem2, EcsOnUpdate, playerCharacter3DQuery2, [in] Gamepad)
+zoxel_filter(gamepad_query, world, [in] Gamepad)
+zoxel_system_ctx(world, PlayerPlayButtonSystem, EcsOnUpdate, gamepad_query, [none] elements.PlayGameButton, [out] ClickableState)
+
 #endif
 zoxel_filter(cameraQuery, world, [none] cameras.Camera, [in] cameras.FreeRoam, [out] Position3D, [out] Rotation3D)
 zoxel_filter(cameraQuery2, world, [none] cameras.Camera, [in] cameras.FreeRoam,
