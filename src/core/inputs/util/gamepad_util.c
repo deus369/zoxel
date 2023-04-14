@@ -1,13 +1,6 @@
-SDL_Joystick *joystick; // todo: connect this to gamepad
+SDL_Joystick *joystick;         // todo: connect this to gamepad
 int joysticks_count;
 float joystick_buffer = 0.1f;
-// #define zoxel_inputs_debug_gamepad
-// #define zoxel_inputs_debug_gamepad_sos
-
-/*#define key_case(sdl_event, key)\
-    case sdl_event:\
-        set_key(key, eventType);\
-        break;*/
 
 void initialize_sdl_gamepads() {
     if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
@@ -46,6 +39,41 @@ void set_gamepad_axis(PhysicalStick *stick, SDL_Joystick *joystick, int index) {
     stick->value.y = y_axis / 32768.0f;
 }
 
+void set_gamepad_dpad(SDL_Joystick *joystick, int index) {
+    Uint8 hatState = SDL_JoystickGetHat(joystick, 0);
+    // Check the state of the D-pad
+    switch (hatState) {
+        case SDL_HAT_UP:
+            // Handle up input
+            break;
+        case SDL_HAT_DOWN:
+            // Handle down input
+            break;
+        case SDL_HAT_LEFT:
+            // Handle left input
+            break;
+        case SDL_HAT_RIGHT:
+            // Handle right input
+            break;
+        case SDL_HAT_LEFTUP:
+            // Handle diagonal input
+            break;
+        case SDL_HAT_RIGHTUP:
+            // Handle diagonal input
+            break;
+        case SDL_HAT_LEFTDOWN:
+            // Handle diagonal input
+            break;
+        case SDL_HAT_RIGHTDOWN:
+            // Handle diagonal input
+            break;
+        case SDL_HAT_CENTERED:
+            // Handle no input
+            break;
+        // Handle other diagonal and invalid input states here
+    }
+}
+
 void debug_button(const PhysicalButton *button, const char *button_name) {
     if (button->pressed_this_frame) {
         zoxel_log(" > [%s] button pushed\n", button_name);
@@ -76,20 +104,7 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world) {
         // - next, add a disconnection ui until reconnected
         return;
     }
-    // zoxel_log("+ checking joystick!\n");
-    // ecs_defer_begin(world);
-    // Read joystick input
-    // Gamepad gamepad = { }
     Gamepad *gamepad = ecs_get_mut(world, gamepad_entity, Gamepad);
-    // left joystick axis
-    //int left_x_axis = SDL_JoystickGetAxis(joystick, 0);
-    //int left_y_axis = SDL_JoystickGetAxis(joystick, 1);
-    // right joystick axis
-    //int right_x_axis = SDL_JoystickGetAxis(joystick, 2);
-    //int right_y_axis = SDL_JoystickGetAxis(joystick, 3);
-    // triggers
-    //int left_trigger = SDL_JoystickGetAxis(joystick, 4);
-    //int right_trigger = SDL_JoystickGetAxis(joystick, 5);
     if (is_xbox_gamepad(joystick)) {
         set_gamepad_button(&gamepad->a, joystick, 0);
         set_gamepad_button(&gamepad->b, joystick, 1);
@@ -117,6 +132,7 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world) {
     }
     set_gamepad_axis(&gamepad->left_stick, joystick, 0);
     set_gamepad_axis(&gamepad->right_stick, joystick, 2);
+    set_gamepad_dpad(joystick, 0);
     ecs_modified(world, gamepad_entity, Gamepad);
     // ecs_defer_end(world);
     #ifdef zoxel_inputs_debug_gamepad
@@ -134,7 +150,7 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world) {
         debug_button(&gamepad->right_stick_push, "right_stick_push");
     #endif
     #ifdef zoxel_inputs_debug_gamepad_sos
-        for (int i = 0; i < 18; i++) {
+        for (int i = 0; i < 32; i++) {
             if (SDL_JoystickGetButton(joystick, i)) {
                 zoxel_log(" > button pushed at [%i]\n", i);
             }
@@ -179,3 +195,16 @@ gamepad->left_stick_push.is_pressed = SDL_JoystickGetButton(joystick, 9);
 gamepad->right_stick_push.is_pressed = SDL_JoystickGetButton(joystick, 10);*/
     //if (axisValue != 0)
     //    zoxel_log(" > joystick [%i]: %i\n", index, axisValue);
+    // zoxel_log("+ checking joystick!\n");
+    // ecs_defer_begin(world);
+    // Read joystick input
+    // Gamepad gamepad = { }
+    // left joystick axis
+    //int left_x_axis = SDL_JoystickGetAxis(joystick, 0);
+    //int left_y_axis = SDL_JoystickGetAxis(joystick, 1);
+    // right joystick axis
+    //int right_x_axis = SDL_JoystickGetAxis(joystick, 2);
+    //int right_y_axis = SDL_JoystickGetAxis(joystick, 3);
+    // triggers
+    //int left_trigger = SDL_JoystickGetAxis(joystick, 4);
+    //int right_trigger = SDL_JoystickGetAxis(joystick, 5);

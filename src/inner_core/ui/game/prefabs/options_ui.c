@@ -16,7 +16,7 @@ ecs_entity_t spawn_options_ui(ecs_world_t *world, const char *header_label, int2
     float ui_scale = default_ui_scale;
     int font_size = 28;
     int header_margins = 4;
-    #ifdef ANDROID_BUILD
+    #ifdef zoxel_on_android
         window_size.y = 160;
     #endif
     // scale the ui!
@@ -27,7 +27,7 @@ ecs_entity_t spawn_options_ui(ecs_world_t *world, const char *header_label, int2
     int2 play_button_position = (int2) { 0, font_size * 2 };
     int2 options_button_position = (int2) { 0, 0 };
     int2 header_position = (int2) { 0, - font_size / 2 - header_margins / 2 };
-    #ifdef ANDROID_BUILD
+    #ifdef zoxel_on_android
         play_button_position.y = font_size;
         options_button_position.y = -font_size;
     #endif
@@ -38,7 +38,7 @@ ecs_entity_t spawn_options_ui(ecs_world_t *world, const char *header_label, int2
     float2 position2D = initialize_ui_components(world, e, main_canvas, position, window_size, anchor, 0, ecs_get(world, main_canvas, PixelSize)->value);
     Children children = { };
     int children_count = 4;
-    #ifdef ANDROID_BUILD
+    #ifdef zoxel_on_android
         children_count = 3;
     #endif
     initialize_memory_component_non_pointer(children, ecs_entity_t, children_count);
@@ -63,7 +63,7 @@ ecs_entity_t spawn_options_ui(ecs_world_t *world, const char *header_label, int2
         (float2) { 0.5f, 0.5f },
         "Options", font_size, 1,
         position2D, window_size);
-    #ifndef ANDROID_BUILD
+    #ifndef zoxel_on_android
     children.value[3] = spawn_button(world, e,
         (int2) { 0, - font_size * 2 },
         (int2) { font_size * 6, font_size },

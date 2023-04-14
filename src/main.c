@@ -4,12 +4,12 @@
 #include "engine/engine.c"
 #include "zoxel/zoxel.c"
 
-#ifdef ANDROID_BUILD
+#ifdef zoxel_on_android
     #include <android/log.h>
     #define APPNAME "Zoxel"
 #endif
 
-#ifdef WINDOWS_BUILD
+#ifdef zoxel_on_windows
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
     int argc = 0;
     char** argv = NULL;

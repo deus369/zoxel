@@ -10,7 +10,7 @@ void FreeCameraMoveSystem(ecs_iter_t *it) {
     unsigned char did_update = 0;
     double movement_power = zoxel_delta_time;
     movement_power *= movement_multiplier;
-    #ifdef WEB_BUILD
+    #ifdef zoxel_on_web
         movement_power *= 10.0f;
     #endif
     const FreeRoam *freeRoams = ecs_field(&cameras_it, FreeRoam, 2);

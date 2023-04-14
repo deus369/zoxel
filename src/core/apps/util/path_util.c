@@ -2,7 +2,7 @@
 // todo: make sure to copy folder, with bash, resources into:
 //      > /build/android-build/app/src/main/assets/resources
 
-#ifdef ANDROID_BUILD
+#ifdef zoxel_on_android
     // i will have to manually add in the resource directories for android until ndk updates
     #define resources_folder_name "/resources/"  // assets/
     #define voxes_folder_path "voxes"  // assets/
@@ -14,7 +14,7 @@
     #include <sys/types.h>
     // #define resources_folder_name "android-resources/"
 #else
-    #ifdef WINDOWS_BUILD
+    #ifdef zoxel_on_windows
         #define resources_folder_name "resources\\"
     #else
         #define resources_folder_name "resources/"
@@ -25,7 +25,7 @@
 const char *data_path = NULL;
 char *resources_path = NULL;
 
-#ifdef ANDROID_BUILD
+#ifdef zoxel_on_android
 
     void delete_directory_recursive(const char* path) {
         DIR* dir = opendir(path);
@@ -152,7 +152,7 @@ void debug_base_path(const char *base_path) {
 }
 
 void set_data_path() {
-    #ifdef ANDROID_BUILD
+    #ifdef zoxel_on_android
         const char* base_path = SDL_AndroidGetInternalStoragePath();
         // char *base_path = SDL_GetPrefPath("libsdl", "app");
         // char *base_path = SDL_GetPrefPath("libsdl", "assets");
@@ -179,7 +179,7 @@ void set_data_path() {
         resources_path = malloc(strlen(base_path) + strlen(resources_folder_name) + 1);
         strcpy(resources_path, base_path);
         strcat(resources_path, resources_folder_name);
-        #ifdef ANDROID_BUILD
+        #ifdef zoxel_on_android
             decompress_android_resources();
         #endif
         DIR* dir2 = opendir(resources_path);

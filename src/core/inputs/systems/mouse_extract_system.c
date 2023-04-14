@@ -40,7 +40,7 @@ void extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) 
             //! Reverse mouse position, so bottom is 0 and top is 1.
             // mouse->position.y = screen_dimensions.y - mouse->position.y;
             //printf("    position: %i x %i\n", mouse->position.x, mouse->position.y);
-#ifdef WEB_BUILD
+#ifdef zoxel_on_web
             //! Reverse position X in web
             // mouse->position.x = screenDimensions.x - mouse->position.x;
             // printf("Mouse: %ix%i\n", mouse->position.x, mouse->position.y);

@@ -17,6 +17,14 @@ extern void restore_all_opengl_resources(ecs_world_t *world);
     extern void uis_on_viewport_resized(ecs_world_t *world, int width, int height);
 #endif
 
+unsigned char is_steam_deck() {
+    if (getenv("STEAMOS_SESSIONTYPE") != NULL && strcmp(getenv("STEAMOS_SESSIONTYPE"), "steam") == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 void print_sdl() {
     #ifdef zoxel_debug_sdl
         zoxel_log(" > sdl stats\n");
@@ -49,7 +57,7 @@ int2 get_sdl_screen_size() {
 extern int2 get_webasm_screen_size();
 
 void set_screen_size() {
-    #ifdef WEB_BUILD
+    #ifdef zoxel_on_web
         screen_dimensions = get_webasm_screen_size();
     #else
         screen_dimensions = get_sdl_screen_size();
@@ -62,7 +70,7 @@ void set_screen_size() {
 
 void sdl_toggle_fullscreen(SDL_Window* window) {
     Uint32 fullscreen_flag = SDL_WINDOW_FULLSCREEN;
-    /*#ifndef ANDROID_BUILD
+    /*#ifndef zoxel_on_android
         Uint32 fullscreen_flag = SDL_WINDOW_FULLSCREEN_DESKTOP; // SDL_WINDOW_FULLSCREEN;
     #else
         Uint32 fullscreen_flag = SDL_WINDOW_FULLSCREEN;
@@ -155,7 +163,7 @@ SDL_Window* spawn_sdl_window() {
     set_screen_size();
     unsigned char is_resizeable = 1;
     unsigned long window_flags = SDL_WINDOW_OPENGL;
-    #ifdef ANDROID_BUILD
+    #ifdef zoxel_on_android
         window_flags = SDL_WINDOW_FULLSCREEN_DESKTOP; //  | SDL_WINDOW_HIDDEN;
         is_resizeable = 0;
     #endif
@@ -232,8 +240,8 @@ void create_main_window() {
     if (main_gl_context == NULL) {
         running = false;
     }
-    #ifndef WEB_BUILD
-        #ifndef ANDROID_BUILD
+    #ifndef zoxel_on_web
+        #ifndef zoxel_on_android
             if (fullscreen) {
                 sdl_toggle_fullscreen(main_window);
             }

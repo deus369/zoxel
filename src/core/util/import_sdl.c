@@ -1,11 +1,11 @@
-#ifdef WEB_BUILD
+#ifdef zoxel_on_web
     #include <emscripten.h>
 #endif
 #ifdef USE_SDL_3
     #include <SDL3/SDL.h>
     #include <SDL3/SDL_opengl.h>
 #else
-    #ifdef ANDROID_BUILD
+    #ifdef zoxel_on_android
         #include <SDL.h>
         #include <SDL_opengl.h>
     #else
@@ -13,7 +13,7 @@
         #include <SDL2/SDL_opengl.h>
     #endif
 #endif
-#ifdef ANDROID_BUILD
+#ifdef zoxel_on_android
     #ifdef SDL_IMAGES
         #include <SDL_image.h>
     #endif

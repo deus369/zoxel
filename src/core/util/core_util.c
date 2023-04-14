@@ -24,7 +24,7 @@ void update_core() {
             reset_input_devices(world);
         #endif
         update_sdl(world);
-        #ifdef WEB_BUILD
+        #ifdef zoxel_on_web
             update_web_canvas(world);   // handles resize event
         #endif
         if (rendering) {

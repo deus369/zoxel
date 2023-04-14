@@ -2,7 +2,7 @@
 #define zoxel_sounds
 
 #ifdef SDL_MIXER
-    #ifdef ANDROID_BUILD
+    #ifdef zoxel_on_android
 		  #include <SDL_mixer.h>
     #else
 		  #include <SDL2/SDL_mixer.h>

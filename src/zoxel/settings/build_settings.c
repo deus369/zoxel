@@ -111,3 +111,6 @@
 // #define zoxel_test_single_character3Ds      // spawn 1 penguin
 // #define zoxel_tests_rotate_by_keys
 // #define zoxel_disable_non_vertical_bounce
+
+#define zoxel_inputs_debug_gamepad
+// #define zoxel_inputs_debug_gamepad_sos

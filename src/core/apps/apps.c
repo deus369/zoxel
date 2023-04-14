@@ -6,7 +6,6 @@
 unsigned char running = 1;
 unsigned char rendering = 1;
 unsigned char headless = 0;
-// const int window_index = 0; // 1;
 unsigned char vsync = 1;
 unsigned char fullscreen = 1; // set full screen default option here
 unsigned char halfscreen = 0;
@@ -26,6 +25,7 @@ zoxel_component(Context, SDL_GLContext*)
 #include "util/webasm_util.c"
 #include "util/cleanup_util.c"
 #include "util/mouse_util.c"
+#include "util/platform_util.c"
 
 zoxel_begin_module(Apps)
 zoxel_define_tag(App)
@@ -36,10 +36,14 @@ ecs_set_hooks(world, SDLWindow, { .dtor = ecs_dtor(SDLWindow) });
 ecs_set_hooks(world, Context, { .dtor = ecs_dtor(Context) });
 ecs_set_hooks(world, Renderer, { .dtor = ecs_dtor(Renderer) });
 spawn_app_prefab(world);
+debug_platform();
 set_data_path();
 if (init_sdl() == EXIT_SUCCESS) {
     create_main_window();
     print_sdl();
 }
 zoxel_end_module(Apps)
+
+// const int window_index = 0; // 1;
+
 #endif

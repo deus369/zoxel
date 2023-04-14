@@ -1,4 +1,4 @@
-#ifdef WEB_BUILD
+#ifdef zoxel_on_web
 // emscripten app functions
 
     EM_JS(int, get_canvas_width, (), { return window.innerWidth; });

@@ -26,7 +26,7 @@ ecs_entity_t spawn_fps_display(ecs_world_t *world, ecs_entity_t parent, int font
     int2 position = { - pixel_size.x / 2, - font_size / 2 };
     int layer = 1;
     const PixelSize *parent_pixel_size = ecs_get(world, parent, PixelSize);
-    #ifdef ANDROID_BUILD
+    #ifdef zoxel_on_android
         if (anchor.y == 1) {
             position.y -= android_header_size;
         }

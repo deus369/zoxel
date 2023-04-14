@@ -17,7 +17,7 @@ int clear_zoxel_log() {
     return 0;
 }
 
-#ifdef ANDROID_BUILD
+#ifdef zoxel_on_android
     #include <android/log.h>
     #define APPNAME "Zoxel"
     // #define zoxel_log(debug_line) __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, debug_line);
