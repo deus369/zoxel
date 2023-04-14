@@ -5,7 +5,7 @@
 	<br>
 </p>
 
-<h2 align="center">a procedural simulation game</h2>
+<h3 align="center">a procedural simulation game</h3>
 
 <p align="center">
 + inspired by warcraft, minecraft and cube world +
@@ -27,7 +27,7 @@
   <!--<img src="https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/zoxel_unity_00.png?raw=false" alt="Unity Zoxel" width="400"/> width="420" -->
 </p>
 
-<h2 align="center">build a zoxel</h2>
+<h3 align="center">build a zoxel</h3>
 
 <p align="center">
 + engine modules: core, inner_core, outer_core, users, gameplay & space +
