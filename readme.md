@@ -38,14 +38,6 @@
 </p>
 
 <p align="center">
-  + code on [
-  <a href="https://codeberg.org/deus/zoxel">codeberg</a>
-  <a style="margin-left: 10px;"> | </a>
-  <a href="https://github.com/deus369/zoxel">github</a>
-  ] +
-</p>
-
-<p align="center">
   [
   <a href="docs/build_guide.md">
     build guide
@@ -74,4 +66,14 @@
   <a style="margin-left: 10px;"> | </a>
   <a href="https://linktr.ee/lorddeus">linktree</a>
   ]
+</p>
+
+-----
+
+<p align="center">
+  - code on [
+  <a href="https://codeberg.org/deus/zoxel">codeberg</a>
+  <a style="margin-left: 10px;"> | </a>
+  <a href="https://github.com/deus369/zoxel">github</a>
+  ] -
 </p>
