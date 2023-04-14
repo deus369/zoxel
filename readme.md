@@ -5,15 +5,21 @@
 	<br>
 </p>
 
+<h2 align="center">a procedural simulation game</h2>
+
+<p align="center">
++ inspired by warcraft, minecraft and cube world +
+</p>
+<p align="center">
++ with voxels, stats, skills, quests, dialogue, magic & more +
+</p>
+<p align="center">
++ experience the thrill of discovery & adventure +
+</p>
+
 <p align="center">
   [<a href="https://deus369.github.io/zoxel-play">play now
   <img width="16" src="build/resources/textures/game_icon.png"></a>]
-</p>
-
-<h1 align="center">a procedural simulation game</h1>
-
-<p align="center">
-> experience the thrill of discovery and adventure in this procedurally generated voxel rpg <
 </p>
 
 <p align="center">
@@ -21,16 +27,22 @@
   <!--<img src="https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/zoxel_unity_00.png?raw=false" alt="Unity Zoxel" width="400"/> width="420" -->
 </p>
 
-<h3 align="center">zoxel</h3>
+<h2 align="center">build a zoxel</h2>
 
-<p align="center">
-+ inspired by warcraft, minecraft and cube world +
-</p>
 <p align="center">
 + engine modules: core, inner_core, outer_core, users, gameplay & space +
 </p>
+
 <p align="center">
 + gpl license: allows for open-source collaboration and innovation +
+</p>
+
+<p align="center">
+  + code on [
+  <a href="https://codeberg.org/deus/zoxel">codeberg</a>
+  <a style="margin-left: 10px;"> | </a>
+  <a href="https://github.com/deus369/zoxel">github</a>
+  ] +
 </p>
 
 <p align="center">
@@ -49,10 +61,7 @@
   ]
 </p>
 
------
-<p align="center">
-- follow me on social media -
-</p>
+<h3 align="center">follow me on socials</h3>
 <p align="center">
   [
   <a href="https://mastodon.gamedev.place/@deus">mastodon</a>
@@ -64,14 +73,5 @@
   <a href="https://www.youtube.com/watch?v=Yb5DiXVt1k0.mp4">youtube</a>
   <a style="margin-left: 10px;"> | </a>
   <a href="https://linktr.ee/lorddeus">linktree</a>
-  ]
-</p>
-
------
-<p align="center">
-  code on [
-  <a href="https://codeberg.org/deus/zoxel">codeberg</a>
-  <a style="margin-left: 10px;"> | </a>
-  <a href="https://github.com/deus369/zoxel">github</a>
   ]
 </p>
