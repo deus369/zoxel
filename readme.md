@@ -4,32 +4,33 @@
 	</a>
 	<br>
 </p>
+
+<h2 align="center">
+  [<a href="https://deus369.github.io/zoxel-play">play now
+  <img width="16" src="build/resources/textures/game_icon.png"></a>]
+</h2>
+
 <h1 align="center">A Procedural Simulation Game</h1>
 
 <p align="center">
 Experience the thrill of discovery and adventure in this procedurally generated voxel RPG!
 </p>
 
-<h2 align="center">
-  [<a href="https://deus369.github.io/zoxel-play">play
-  <img width="16" src="build/resources/textures/game_icon.png"></a>]
-</h2>
-
 <p align="center">
   <img src="docs/latest_screenshot.png?raw=false" alt="Zoxel" width="98%"/>
   <!--<img src="https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/zoxel_unity_00.png?raw=false" alt="Unity Zoxel" width="400"/> width="420" -->
 </p>
 
-<h3 align="center">Zoxel Engine</h3>
+<h3 align="center">zoxel</h3>
 
 <p align="center">
-The game's design is inspired by Warcraft, Minecraft and Cube World.
++ inspired by warcraft, minecraft and cube world +
 </p>
 <p align="center">
-The engine module has six main modules: core, inner_core, outer_core, users, gameplay, and space.
++ engine modules: core, inner_core, outer_core, users, gameplay & space +
 </p>
 <p align="center">
-Zoxel uses the GPL license, which allows for open-source collaboration and innovation within the software community.
++ gpl license: allows for open-source collaboration and innovation +
 </p>
 
 <p align="center">
@@ -50,7 +51,7 @@ Zoxel uses the GPL license, which allows for open-source collaboration and innov
 
 -----
 <p align="center">
-Stay up to date on my development journey by following me on social media.
+- follow me on social media -
 </p>
 <p align="center">
   [
@@ -66,13 +67,11 @@ Stay up to date on my development journey by following me on social media.
   ]
 </p>
 
+-----
 <p align="center">
-  [
+  on [
   <a href="https://codeberg.org/deus/zoxel">codeberg</a>
   <a style="margin-left: 10px;"> | </a>
   <a href="https://github.com/deus369/zoxel">github</a>
   ]
-</p>
-<p align="center">
-  <img width="64" src="build/resources/textures/game_icon.png">
 </p>
