@@ -18,7 +18,7 @@ void FreeCameraToggleSystem(ecs_iter_t *it) {
                 } else {
                     freeRoam->value = 0;
                 }
-                zoxel_log(" > free camera toggled [%s]\n", freeRoam->value ? "on" : "off");
+                // zoxel_log(" > free camera toggled [%s]\n", freeRoam->value ? "on" : "off");
             }
         }
     }

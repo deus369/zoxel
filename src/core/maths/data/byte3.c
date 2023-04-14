@@ -4,6 +4,10 @@ typedef struct {
     unsigned char z;
 } byte3;
 
+unsigned char byte3_equals(byte3 a, byte3 b) {
+    return a.x == b.x && a.y == b.y && a.z == b.z;
+}
+
 const byte3 byte3_zero = (byte3) { 0, 0, 0 };
 
 // 255 * 255 > 255
@@ -84,4 +88,12 @@ byte3 byte3_reverse_back(byte3 input, byte3 size) {
 
 byte3 byte3_reverse_front(byte3 input, byte3 size) {
     return (byte3) { input.x, input.y, 0 };
+}
+
+byte3 int3_to_byte3(int3 input) {
+    return (byte3) { input.x, input.y, input.z };
+}
+
+int3 byte3_to_int3(byte3 input) {
+    return (int3) { input.x, input.y, input.z };
 }

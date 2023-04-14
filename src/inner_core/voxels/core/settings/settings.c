@@ -7,10 +7,13 @@ const float spawnRange = 0.96f;
 int max_octree_depth = 4;
 int default_chunk_length; // = powers_of_two[max_octree_depth];
 int3 default_chunk_size; // = (int3) { default_chunk_length, default_chunk_length, default_chunk_length };
+byte3 default_chunk_size_byte3;
 
 void set_max_octree_length(unsigned char new_max_octree_depth) {
     max_octree_depth = new_max_octree_depth;
     default_chunk_length = powers_of_two[max_octree_depth];
     default_chunk_size = (int3) { default_chunk_length, default_chunk_length, default_chunk_length };
+    unsigned char default_chunk_length2 = powers_of_two_byte[max_octree_depth];
+    default_chunk_size_byte3 = (byte3) { default_chunk_length2, default_chunk_length2, default_chunk_length2 };
     // zoxel_log(" > set max octree depth [%i] - chunk length [%i] \n", max_octree_depth, default_chunk_length);
 }
