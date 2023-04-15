@@ -18,8 +18,7 @@ void engine_loop() {
         emscripten_set_main_loop(&engine_update, -1, 1); // old - 60, 1);
     #else
         signal(SIGINT, sigint_handler);     // Handles closing from control + c
-        while (running)
-        {
+        while (running) {
             engine_update();
         }
     #endif

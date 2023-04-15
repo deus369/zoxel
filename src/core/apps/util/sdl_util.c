@@ -238,7 +238,7 @@ void create_main_window() {
     main_window = window;
     main_gl_context = gl_context;
     if (main_gl_context == NULL) {
-        running = false;
+        running = 0;
     }
     #ifndef zoxel_on_web
         #ifndef zoxel_on_android
@@ -284,7 +284,9 @@ void update_sdl(ecs_world_t *world) {
                 rendering = 1;
                 restore_all_opengl_resources(world);
             }
-        } else if (eventType == SDL_KEYUP) {
+        }
+        // for now while no pause ui
+        else if (eventType == SDL_KEYUP) {
             SDL_Keycode key = event.key.keysym.sym;
             if (key == SDLK_ESCAPE) {
                 exit_game(); // todo: move this to engine code

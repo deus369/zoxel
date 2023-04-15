@@ -2,8 +2,13 @@ SDL_Joystick *joystick;         // todo: connect this to gamepad
 int joysticks_count;
 float joystick_buffer = 0.1f;
 
+unsigned char is_steamdeck_gamepad(SDL_Joystick *joystick) {
+    const char* joystickName = SDL_JoystickName(joystick);
+    return strstr(joystickName, "X-Box") != NULL;
+}
+
 unsigned char is_xbox_gamepad(SDL_Joystick *joystick) {
-    const char* joystickName = SDL_JoystickName(joystick); // get the joystick name
+    const char* joystickName = SDL_JoystickName(joystick);
     if (strstr(joystickName, "Xbox") != NULL || strstr(joystickName, "X360") != NULL
         || strstr(joystickName, "X-Box") != NULL) {
         return 1;
@@ -145,7 +150,11 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world) {
         set_gamepad_button(&gamepad->right_stick_push, joystick, 14);
     }
     set_gamepad_axis(&gamepad->left_stick, joystick, 0);
-    set_gamepad_axis(&gamepad->right_stick, joystick, 2);
+    if (!is_steamdeck_gamepad(joystick)) {
+        set_gamepad_axis(&gamepad->right_stick, joystick, 2);
+    } else {
+        set_gamepad_axis(&gamepad->right_stick, joystick, 4);
+    }
     set_gamepad_dpad(joystick, 0);
     ecs_modified(world, gamepad_entity, Gamepad);
     // ecs_defer_end(world);
