@@ -286,11 +286,11 @@ void update_sdl(ecs_world_t *world) {
             }
         }
         // for now while no pause ui
-        else if (eventType == SDL_KEYUP) {
+        /*else if (eventType == SDL_KEYUP) {
             SDL_Keycode key = event.key.keysym.sym;
             if (key == SDLK_ESCAPE) {
                 exit_game(); // todo: move this to engine code
             }
-        }
+        }*/
     }
 }

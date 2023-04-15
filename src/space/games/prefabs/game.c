@@ -1,3 +1,6 @@
+#define zoxel_game_state_main_menu 0
+#define zoxel_game_state_playing 1
+
 ecs_entity_t prefab_game;
 
 ecs_entity_t spawn_prefab_game(ecs_world_t *world) {
@@ -5,7 +8,7 @@ ecs_entity_t spawn_prefab_game(ecs_world_t *world) {
     ecs_entity_t e = ecs_new_prefab(world, ""); // prefab_game");
     set_unique_entity_name(world, e, "prefab_game");
     zoxel_add_tag(world, e, Game);
-    zoxel_set(world, e, GameState, { 0 });
+    zoxel_set(world, e, GameState, { zoxel_game_state_main_menu });
     ecs_defer_end(world);
     prefab_game = e;
     #ifdef zoxel_debug_prefabs

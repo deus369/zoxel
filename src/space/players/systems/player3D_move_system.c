@@ -76,7 +76,6 @@ zoxel_declare_system(Player3DMoveSystem)
 
 // do this until I get a player -> deviceLinks setup going
 
-
 void Player3DMoveSystem2(ecs_iter_t *it) {
     ecs_query_t *playerCharacterQuery = it->ctx;
     ecs_iter_t playerCharacterIterator = ecs_query_iter(it->world, playerCharacterQuery);

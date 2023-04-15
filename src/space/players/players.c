@@ -11,6 +11,7 @@ ecs_entity_t local_player;
 #include "prefabs/player_character3D.c"
 #include "util/player_character2D.c"
 #include "util/player_character3D.c"
+#include "util/attach3D.c"
 #include "systems/player2D_move_system.c"
 #include "systems/player2D_test_system.c"
 #include "systems/player3D_move_system.c"
@@ -19,6 +20,7 @@ ecs_entity_t local_player;
 #include "systems/free_camera_rotate_system.c"
 #include "systems/free_camera_toggle_system.c"
 #include "systems/free_camera_disable_movement_system.c"
+#include "systems/player_pause_system.c"
 
 zoxel_begin_module(Players)
 zoxel_define_tag(Player2D)
@@ -58,6 +60,8 @@ zoxel_system_ctx(world, FreeCameraToggleSystem, EcsOnUpdate, cameraQuery3, [in] 
 zoxel_system_ctx(world, FreeCameraDisableMovementSystem, EcsOnUpdate, playerCharacter2DQuery3, [in] Mouse)
 zoxel_system(Player2DTestSystem, EcsOnUpdate, [in] Keyboard)
 zoxel_system(Player2DTestMainThreadSystem, EcsOnStore, [in] Keyboard)
+zoxel_system(PlayerPauseSystem, EcsOnUpdate, [in] Keyboard)
+zoxel_system(PlayerPauseSystem2, EcsOnUpdate, [in] Gamepad)
 zoxel_end_module(Players)
 
 //#if zoxel_particles2D
