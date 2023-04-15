@@ -29,7 +29,7 @@ void initialize_sdl_gamepads() {
             const char* joystick_name = SDL_JoystickName(joystick);
             zoxel_log("     + joystick name [%s]\n", joystick_name);
             if (is_xbox_gamepad(joystick)) {
-                zoxel_log("     + xbox controller [%s]\n", joystick_name);
+                zoxel_log("     + xbox controller detected\n");
             }
             break;
         }
@@ -128,6 +128,8 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world) {
         set_gamepad_button(&gamepad->start, joystick, 7);
         set_gamepad_button(&gamepad->left_stick_push, joystick, 9);
         set_gamepad_button(&gamepad->right_stick_push, joystick, 10);
+        set_gamepad_button(&gamepad->lt, joystick, 11);
+        set_gamepad_button(&gamepad->rt, joystick, 12);
     } else {
         set_gamepad_button(&gamepad->a, joystick, 0);
         set_gamepad_button(&gamepad->b, joystick, 1);

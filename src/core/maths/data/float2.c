@@ -4,6 +4,8 @@ typedef struct {
     float y;
 } float2;
 
+#define float2_zero (float2) { 0, 0 }
+
 float2 float2_multiply_float(float2 input, float mul) {
     input.x *= mul;
     input.y *= mul;
