@@ -16,6 +16,8 @@ void initialize_sdl_gamepads() {
             fprintf(stderr, "Error: Unable to open joystick: %s\n", SDL_GetError());
         } else {
             zoxel_log(" > joystick [%i] has been initialized\n", i);
+            const char* joystick_name = SDL_JoystickName(joystick);
+            zoxel_log("     + joystick name [%s]\n", joystick_name);
             break;
         }
     }

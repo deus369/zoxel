@@ -4,6 +4,7 @@
 zoxel_declare_tag(Device)
 #include "data/finger.c"
 #include "data/physical_button.c"
+#include "data/physical_stick.c"
 #include "components/keyboard.c"
 #include "components/mouse.c"
 #include "components/gamepad.c"
