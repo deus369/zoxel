@@ -2,6 +2,16 @@ SDL_Joystick *joystick;         // todo: connect this to gamepad
 int joysticks_count;
 float joystick_buffer = 0.1f;
 
+unsigned char is_xbox_gamepad(SDL_Joystick *joystick) {
+    const char* joystickName = SDL_JoystickName(joystick); // get the joystick name
+    if (strstr(joystickName, "Xbox") != NULL || strstr(joystickName, "X360") != NULL
+        || strstr(joystickName, "X-Box") != NULL) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 void initialize_sdl_gamepads() {
     if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
         fprintf(stderr, "Error: Unable to initialize SDL joystick subsystem: %s\n", SDL_GetError());
@@ -18,6 +28,9 @@ void initialize_sdl_gamepads() {
             zoxel_log(" > joystick [%i] has been initialized\n", i);
             const char* joystick_name = SDL_JoystickName(joystick);
             zoxel_log("     + joystick name [%s]\n", joystick_name);
+            if (is_xbox_gamepad(joystick)) {
+                zoxel_log("     + xbox controller [%s]\n", joystick_name);
+            }
             break;
         }
     }
@@ -84,12 +97,9 @@ void debug_button(const PhysicalButton *button, const char *button_name) {
     }
 }
 
-unsigned char is_xbox_gamepad(SDL_Joystick *joystick) {
-    const char* joystickName = SDL_JoystickName(joystick); // get the joystick name
-    if (strstr(joystickName, "Xbox") != NULL || strstr(joystickName, "X360") != NULL) {
-        return 1;
-    } else {
-        return 0;
+void debug_stick(const PhysicalStick *physical_stick, const char *button_name) {
+    if (float_abs(physical_stick->value.x) > joystick_buffer && float_abs(physical_stick->value.y) > joystick_buffer) {
+        zoxel_log(" > [%s] stick pushed [%fx%f]\n", button_name, physical_stick->value.x, physical_stick->value.y);
     }
 }
 
@@ -150,6 +160,8 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world) {
         debug_button(&gamepad->rt, "rt");
         debug_button(&gamepad->left_stick_push, "left_stick_push");
         debug_button(&gamepad->right_stick_push, "right_stick_push");
+        debug_stick(&gamepad->left_stick, "left_stick");
+        debug_stick(&gamepad->right_stick, "right_stick");
     #endif
     #ifdef zoxel_inputs_debug_gamepad_sos
         for (int i = 0; i < 32; i++) {
