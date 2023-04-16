@@ -1,6 +1,6 @@
 // this will handle resume game & exit game & options
-
 ecs_entity_t pause_ui_prefab;
+ecs_entity_t pause_ui;
 
 ecs_entity_t spawn_prefab_pause_ui(ecs_world_t *world) {
     ecs_defer_begin(world);
@@ -13,7 +13,12 @@ ecs_entity_t spawn_prefab_pause_ui(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_pause_ui(ecs_world_t *world, const char *header_label, int2 position, int2 window_size, float2 anchor, unsigned char is_close_button) {
+ecs_entity_t spawn_pause_ui(ecs_world_t *world, int2 position, int2 window_size, float2 anchor) {
+    const char *header_label = "paused";
+    const char *button_label_1 = "return";
+    const char *button_label_2 = "options";
+    const char *button_label_3 = "exit";
+    const unsigned char is_close_button = 0;
     float ui_scale = default_ui_scale;
     int font_size = 28;
     int header_margins = 4;
@@ -47,16 +52,16 @@ ecs_entity_t spawn_pause_ui(ecs_world_t *world, const char *header_label, int2 p
         (int2) { window_size.x, font_size + header_margins}, (float2) { 0.5f, 1.0f },
         header_label, font_size, header_margins, 1, position2D, window_size, is_close_button);
     // spawn buttons!
-    children.value[1] = spawn_button(world, e, play_button_position, (int2) { font_size * 6, font_size },
-        (float2) { 0.5f, 0.5f }, "Unpause", font_size, 1, position2D, window_size);
-    zoxel_add_tag(world, children.value[1], PlayGameButton);
+    children.value[1] = spawn_button(world, e, play_button_position, (int2) { font_size * strlen(button_label_1), font_size },
+        (float2) { 0.5f, 0.5f }, button_label_1, font_size, 1, position2D, window_size);
+    // zoxel_add_tag(world, children.value[1], PlayGameButton);
     children.value[2] = spawn_button(world, e, options_button_position,
-        (int2) { font_size * 8, font_size }, (float2) { 0.5f, 0.5f },
-        "Options", font_size, 1, position2D, window_size);
+        (int2) { font_size * strlen(button_label_2), font_size }, (float2) { 0.5f, 0.5f },
+        button_label_2, font_size, 1, position2D, window_size);
     #ifndef zoxel_on_android
     children.value[3] = spawn_button(world, e, (int2) { 0, - font_size * 2 },
-        (int2) { font_size * 6, font_size }, (float2) { 0.5f, 0.5f },
-        "Quit", font_size, 1, position2D, window_size);
+        (int2) { font_size * strlen(button_label_3), font_size }, (float2) { 0.5f, 0.5f },
+        button_label_3, font_size, 1, position2D, window_size);
     zoxel_add_tag(world, children.value[3], ExitGameButton);
     #endif
     ecs_set(world, e, Children, { children.length, children.value });
@@ -64,5 +69,6 @@ ecs_entity_t spawn_pause_ui(ecs_world_t *world, const char *header_label, int2 p
     #ifdef zoxel_debug_spawns
         zoxel_log("Spawned main menu [%lu]\n", (long int) e);
     #endif
+    pause_ui = e;
     return e;
 }

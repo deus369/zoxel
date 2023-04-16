@@ -13,6 +13,7 @@ zoxel_component(Anchor, float2)             //! An anchor, used to get base posi
 zoxel_component(CanvasLink, ecs_entity_t)   //! A link to a canvas
 zoxel_byte_component(InitializeEntityMesh)
 #include "util/ui_util.c"
+#include "util/anchor_util.c"
 #include "prefabs/canvas.c"
 #include "prefabs/element.c"
 #include "systems/element_raycast_system.c"

@@ -1,3 +1,5 @@
+extern void attach_to_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t character);
+
 void PlayGameSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
     const GenericEvent *genericEvents = ecs_field(it, GenericEvent, 1);

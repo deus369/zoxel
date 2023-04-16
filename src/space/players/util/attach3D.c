@@ -1,5 +1,3 @@
-
-
 void attach_to_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t character) {
     // zoxel_log(" > attaching to character\n");
     float vox_scale = model_scale * overall_voxel_scale * 16;

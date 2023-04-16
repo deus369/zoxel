@@ -1,5 +1,4 @@
-union bridge
-{
+union bridge {
     void* object_ptr;
     void (*function_ptr)(void);
 };
@@ -44,17 +43,15 @@ union bridge
     opengl_function(glGetIntegeri_v, PFNGLGETINTEGERI_VPROC)
 
 #define opengl_declare(func_name, func_type)    \
-    func_type func_name __attribute__((weak))  = NULL;
+    func_type func_name __attribute__((weak)) = NULL;
 
 #define opengl_load_function(func_name, func_type)                  \
-    func_name = (func_type)(union bridge)                           \
-    {                                                               \
+    func_name = (func_type)(union bridge) {                         \
         .object_ptr = SDL_GL_GetProcAddress(#func_name)             \
     }.function_ptr;                                                 \
-    if (func_name == NULL)                                          \
-    {                                                               \
+    if (func_name == NULL) {                                        \
         fprintf(stderr, "failed to load func: %s\n", #func_name);   \
-        return false;                                               \
+        return 0;                                               \
     }
 
 

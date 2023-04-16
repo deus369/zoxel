@@ -1,5 +1,5 @@
 // things
-const unsigned char isForceDefaults = false;
+const unsigned char isForceDefaults = 0;
 
 unsigned char LinkShaderProgram(GLuint program, GLuint vertShader, GLuint fragShader) {
     glAttachShader(program, vertShader);

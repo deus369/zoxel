@@ -17,30 +17,33 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label, int2 
     float ui_scale = default_ui_scale;
     int font_size = 28;
     int header_margins = 4;
-    #ifdef zoxel_on_android
+    /*#ifdef zoxel_on_android
         if (anchor.y == 1) {
             position.y -= android_header_size;
         }
-    #endif
+    #endif*/
     // scale the ui!
     window_size.x *= ui_scale;
     window_size.y *= ui_scale;
     font_size *= ui_scale;
     header_margins *= ui_scale;
-    if (anchor.x == 0) {
+    /*if (anchor.x == 0) {
         position.x += window_size.x / 2.0f;
     }
     if (anchor.y == 1.0f) {
         position.y -= (window_size.y + (font_size + header_margins) * 2) / 2.0f;
-    }
+    }*/
+    float header_height = (font_size + header_margins); //  * 2;
+    anchor_position2D(&position, window_size, anchor, header_height);
     int2 play_button_position = (int2) { 0, font_size * 2 };
-    int2 options_button_position = (int2) { 0, 0 };
-    int2 header_position = (int2) { 0, - font_size / 2 - header_margins / 2 };
+    int2 options_button_position = int2_zero; // (int2) { 0, 0 };
+    int2 header_position = (int2) { 0, header_height / 2 };
+    //int2 header_position = (int2) { 0, - font_size / 2 - header_margins / 2 };
+    //header_position.y = font_size / 2 + header_margins / 2;
     #ifdef zoxel_on_android
         play_button_position.y = font_size;
         options_button_position.y = -font_size;
     #endif
-    header_position.y = font_size / 2 + header_margins / 2;
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, main_menu_prefab);
     set_unique_entity_name(world, e, "main_menu");
