@@ -15,11 +15,17 @@ void toggle_pause_ui(ecs_world_t *world) {
     // initialize_memory_component_non_pointer(children, ecs_entity_t, 3);
     // add this entity to canvas children
     if (!ecs_is_alive(world, pause_ui)) {
+        // pause game
         spawn_pause_ui(world, window_position, window_size, window_anchor);
         ecs_set(world, local_game, GameState, { zoxel_game_state_paused });
+        ecs_set(world, main_cameras[0], FreeRoam, { 0 });
+        ecs_set(world, mouse_entity, MouseLock, { 0 });
+        ecs_set(world, main_character3D, DisableMovement, { 1 });
     } else {
         ecs_delete(world, pause_ui);
         ecs_set(world, local_game, GameState, { zoxel_game_state_playing });
+        ecs_set(world, mouse_entity, MouseLock, { 1 });
+        ecs_set(world, main_character3D, DisableMovement, { 0 });
     }
     // exit_game();
 

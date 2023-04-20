@@ -9,7 +9,7 @@ float4 mouse_delta_to_rotation(float deltaX, float deltaY) {
 }
 
 void Player3DRotateSystem(ecs_iter_t *it) {
-    if (joystick != NULL) return;
+    // if (joystick != NULL) return;
     ecs_query_t *playerCharacterQuery = it->ctx;
     ecs_iter_t playerCharacterIterator = ecs_query_iter(it->world, playerCharacterQuery);
     ecs_query_next(&playerCharacterIterator);

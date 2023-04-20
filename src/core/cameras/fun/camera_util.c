@@ -18,7 +18,8 @@ void set_main_cameras(int new_count) {
 }
 
 unsigned char get_mouse_constrained() {
-    ecs_entity_t main_camera = main_cameras[0];
+    return ecs_get(world, mouse_entity, MouseLock)->value;
+    /*ecs_entity_t main_camera = main_cameras[0];
     if (!ecs_is_valid(world, main_camera)) {
         return 0;
     }
@@ -26,5 +27,5 @@ unsigned char get_mouse_constrained() {
         return 1;
     } else {
         return 0;
-    }
+    }*/
 }

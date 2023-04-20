@@ -2,6 +2,7 @@
 #define zoxel_inputs
 
 zoxel_declare_tag(Device)
+zoxel_byte_component(MouseLock)
 #include "data/finger.c"
 #include "data/physical_button.c"
 #include "data/physical_stick.c"
@@ -26,6 +27,7 @@ zoxel_define_component(Keyboard)
 zoxel_define_component(Mouse)
 zoxel_define_component(Gamepad)
 zoxel_define_component(Touchscreen)
+zoxel_define_component(MouseLock)
 zoxel_system(MouseRaycasterSystem, EcsOnUpdate, [in] Mouse, [out] Raycaster)
 zoxel_system(DraggerEndSystem, EcsOnLoad, [out] DragableState, [out] DraggerLink, [out] DraggingDelta)
 spawn_prefab_mouse(world);

@@ -9,6 +9,7 @@ ecs_entity_t spawn_prefab_mouse(ecs_world_t *world) {
     zoxel_add(world, e, Mouse);
     zoxel_set(world, e, Raycaster, { { 0, 0 } });
     zoxel_set(world, e, RaycasterTarget, { 0 });
+    zoxel_set(world, e, MouseLock, { 0 });
     ecs_defer_end(world);
     mouse_prefab = e;
     #ifdef zoxel_debug_prefabs

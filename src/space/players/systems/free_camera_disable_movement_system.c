@@ -8,9 +8,9 @@ void FreeCameraDisableMovementSystem(ecs_iter_t *it) {
     DisableMovement *disableMovements = ecs_field(&playerIter, DisableMovement, 2);
     for (int i = 0; i < it->count; i++) {
         const Mouse *mouse = &mouses[i];
-        for (int j = 0; j < playerIter.count; j++) {
-            DisableMovement *disableMovement = &disableMovements[j];
-            if (mouse->left.pressed_this_frame) {
+        if (mouse->left.pressed_this_frame) {
+            for (int j = 0; j < playerIter.count; j++) {
+                DisableMovement *disableMovement = &disableMovements[j];
                 disableMovement->value = !disableMovement->value;
                 // printf("DisableMovement Toggled [%s]\n", disableMovement->value ? "true" : "false");
             }

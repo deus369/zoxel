@@ -9,6 +9,7 @@ const float camera_limit_x = 1.25f; // 0.8f
 ecs_entity_t main_cameras[max_cameras];
 ecs_entity_t ui_cameras[1];
 zoxel_declare_tag(Camera)
+zoxel_declare_tag(FirstPersonCamera)
 zoxel_declare_tag(CameraFollower2D)  // a tag for a camera that follows a Character2D
 zoxel_declare_tag(UICamera)
 zoxel_component(ProjectionMatrix, float4x4) //! Used for the cameras frustrum.
@@ -31,6 +32,7 @@ zoxel_byte_component(FreeRoam)             //! Used to free roam a camera.
 
 zoxel_begin_module(Cameras)
 zoxel_define_tag(Camera)
+zoxel_define_tag(FirstPersonCamera)
 zoxel_define_tag(CameraFollower2D) // Until fix is found. \todo Fix this, readd it back here where it belongs.
 zoxel_define_tag(UICamera)
 zoxel_define_component(CameraLink)
