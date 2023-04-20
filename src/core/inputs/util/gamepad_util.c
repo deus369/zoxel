@@ -1,6 +1,6 @@
 SDL_Joystick *joystick;         // todo: connect this to gamepad
 int joysticks_count;
-float joystick_buffer = 0.1f;
+float joystick_buffer = 0.02f;  // 0.1
 
 unsigned char is_steamdeck_gamepad(SDL_Joystick *joystick) {
     const char* joystickName = SDL_JoystickName(joystick);
@@ -157,9 +157,9 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world) {
     if (!is_steamdeck_gamepad(joystick)) {
         set_gamepad_axis(&gamepad->right_stick, joystick, 2);
     } else {
-        // set_gamepad_axis(&gamepad->right_stick, joystick, 4);
-        gamepad->right_stick.value.x = get_gamepad_axis(joystick, 3);
-        gamepad->right_stick.value.y = get_gamepad_axis(joystick, 4);
+        set_gamepad_axis(&gamepad->right_stick, joystick, 3);
+        //gamepad->right_stick.value.x = get_gamepad_axis(joystick, 3);
+        //gamepad->right_stick.value.y = get_gamepad_axis(joystick, 4);
     }
     set_gamepad_dpad(joystick, 0);
     ecs_modified(world, gamepad_entity, Gamepad);
@@ -189,6 +189,12 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world) {
     #endif
     /*if (!(gamepad->left_stick.value.x == 0 && gamepad->left_stick.value.y == 0)) {
         zoxel_log(" > left_stick [%fx%f]\n", gamepad->left_stick.value.x, gamepad->left_stick.value.y);
+    }*/
+    /*if (!(float_abs(gamepad->left_stick.value.x) < 0.1f && float_abs(gamepad->left_stick.value.y) < 0.1f)) {
+        zoxel_log(" > joystick l [%fx%f]\n", gamepad->left_stick.value.x, gamepad->left_stick.value.y);
+    }
+    if (!(float_abs(gamepad->right_stick.value.x) < 0.1f && float_abs(gamepad->right_stick.value.y) < 0.1f)) {
+        zoxel_log(" > joystick r [%fx%f]\n", gamepad->right_stick.value.x, gamepad->right_stick.value.y);
     }*/
 }
 

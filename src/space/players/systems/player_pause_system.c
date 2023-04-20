@@ -49,7 +49,7 @@ void PlayerPauseSystem2(ecs_iter_t *it) {
     const Gamepad *gamepads = ecs_field(it, Gamepad, 1);
     for (int i = 0; i < it->count; i++) {
         const Gamepad *gamepad = &gamepads[i];
-        if (gamepad->select.pressed_this_frame) {
+        if (gamepad->start.pressed_this_frame || gamepad->select.pressed_this_frame) {
             toggle_pause_ui(world);
         }
     }
