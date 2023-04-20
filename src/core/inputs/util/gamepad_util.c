@@ -158,8 +158,8 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world) {
         set_gamepad_axis(&gamepad->right_stick, joystick, 2);
     } else {
         // set_gamepad_axis(&gamepad->right_stick, joystick, 4);
-        gamepad->right_stick.x = get_gamepad_axis(joystick, 5);
-        gamepad->right_stick.y = get_gamepad_axis(joystick, 5);
+        gamepad->right_stick.value.x = get_gamepad_axis(joystick, 5);
+        gamepad->right_stick.value.y = get_gamepad_axis(joystick, 5);
     }
     set_gamepad_dpad(joystick, 0);
     ecs_modified(world, gamepad_entity, Gamepad);
