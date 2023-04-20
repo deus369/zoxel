@@ -21,6 +21,7 @@ ecs_entity_t local_player;
 #include "systems/free_camera_toggle_system.c"
 #include "systems/free_camera_disable_movement_system.c"
 #include "systems/player_pause_system.c"
+#include "systems/player_start_system.c"
 
 zoxel_begin_module(Players)
 zoxel_define_tag(Player2D)

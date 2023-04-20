@@ -59,6 +59,10 @@ void set_gamepad_axis(PhysicalStick *stick, SDL_Joystick *joystick, int index) {
     stick->value.y = y_axis / 32768.0f;
 }
 
+float get_gamepad_axis(SDL_Joystick *joystick, int index) {
+    return SDL_JoystickGetAxis(joystick, index) / 32768.0f;
+}
+
 void set_gamepad_dpad(SDL_Joystick *joystick, int index) {
     Uint8 hatState = SDL_JoystickGetHat(joystick, 0);
     // Check the state of the D-pad
@@ -153,7 +157,9 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world) {
     if (!is_steamdeck_gamepad(joystick)) {
         set_gamepad_axis(&gamepad->right_stick, joystick, 2);
     } else {
-        set_gamepad_axis(&gamepad->right_stick, joystick, 4);
+        // set_gamepad_axis(&gamepad->right_stick, joystick, 4);
+        gamepad->right_stick.x = get_gamepad_axis(joystick, 5);
+        gamepad->right_stick.y = get_gamepad_axis(joystick, 5);
     }
     set_gamepad_dpad(joystick, 0);
     ecs_modified(world, gamepad_entity, Gamepad);
