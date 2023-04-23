@@ -2,7 +2,7 @@
 #define zoxel_core_physics3D
 
 #define physics3D_gravity -1.97f
-const float frictionValue = 8.0f;  // 0.002
+const float friction3D = 6.0f;  // 0.002
 zoxel_component(Velocity3D, float3)     //! Velocity movement of a 3D Entity.
 zoxel_component(Acceleration3D, float3) //! How fast Velocity moves over time.
 // zoxel_component(Torque3D, float4)
