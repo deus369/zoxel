@@ -19,9 +19,11 @@ int initialize_shader_line3D() {
 }
 
 void Line3DRenderSystem(ecs_iter_t *it) {
+    return;
     glUseProgram(line3D_material);
     glEnableVertexAttribArray(line3D_position_location);
     glUniform4f(line3D_fog_data_location, fog_color.x, fog_color.y, fog_color.z, fog_density);
+    glUniformMatrix4fv(line3D_camera_matrix_location, 1, GL_FALSE, (float*) &main_camera_matrix);
     const LineData3D *lineData3Ds = ecs_field(it, LineData3D, 2);
     const LineThickness *lineThicknesss = ecs_field(it, LineThickness, 3);
     const ColorRGB *colorRGBs = ecs_field(it, ColorRGB, 4);
@@ -33,7 +35,6 @@ void Line3DRenderSystem(ecs_iter_t *it) {
             lineData3D->value.w, lineData3D->value.u, lineData3D->value.v };
         glLineWidth(lineThickness->value);
         glVertexAttribPointer(line3D_position_location, 3, GL_FLOAT, GL_FALSE, 0, line_data);
-        glUniformMatrix4fv(line3D_camera_matrix_location, 1, GL_FALSE, (float*) &main_camera_matrix);
         float3 color_rgb_f3 = color_rgb_to_float3(colorRGB->value);
         glUniform3f(line3D_color_location, color_rgb_f3.x, color_rgb_f3.y, color_rgb_f3.z);
         glDrawArrays(GL_LINES, 0, 3);

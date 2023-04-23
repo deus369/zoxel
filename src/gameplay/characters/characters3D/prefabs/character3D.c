@@ -7,7 +7,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     ecs_add_id(world, e, EcsPrefab);
     set_unique_entity_name(world, e, "prefab_character3D");
     add_seed(world, e, 999);
-    add_physics3D_basic(world, e);
+    add_physics3D(world, e);
     if (!headless) {
         ecs_remove(world, e, MaterialGPULink);
         add_gpu_colors(world, e);
@@ -25,8 +25,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file *vox,
-    float3 position, float4 rotation, float scale) {
+ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file *vox, float3 position, float4 rotation, float scale) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
     zoxel_set(world, e, Position3D, { position })
