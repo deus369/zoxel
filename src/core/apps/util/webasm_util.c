@@ -26,7 +26,7 @@
         int2 canvas_size = get_canvas_size();
         if (screen_dimensions.x != canvas_size.x || screen_dimensions.y != canvas_size.y) {
             zoxel_log("update_web_canvas: Canvas size has changed [%i x %i]\n", canvas_size.x, canvas_size.y);
-            on_viewport_resized(world, canvas_size.x, canvas_size.y);
+            on_viewport_resized(world, (int2) { canvas_size.x, canvas_size.y });
             return 1;
         }
         return 0;

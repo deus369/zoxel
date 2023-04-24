@@ -10,12 +10,13 @@ extern void restore_all_opengl_resources(ecs_world_t *world);
     extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event, int2 screen_dimensions);
     extern void input_extract_from_sdl_per_frame(ecs_world_t *world);
 #endif
-#ifdef zoxel_cameras
-    extern void resize_cameras(int width, int height);
-#endif
-#ifdef zoxel_ui
-    extern void uis_on_viewport_resized(ecs_world_t *world, int width, int height);
-#endif
+//#ifdef zoxel_cameras
+extern void resize_cameras(int2 screen_size);
+//#endif
+//#ifdef zoxel_ui
+extern void uis_on_viewport_resized(ecs_world_t *world, int2 screen_size);
+//#endif
+extern int2 get_webasm_screen_size();
 
 unsigned char is_steam_deck() {
     if (getenv("STEAMOS_SESSIONTYPE") != NULL && strcmp(getenv("STEAMOS_SESSIONTYPE"), "steam") == 0) {
@@ -54,30 +55,50 @@ int2 get_sdl_screen_size() {
     return screen_size;
 }
 
-extern int2 get_webasm_screen_size();
+int2 get_current_screen_size() {
+    #ifdef zoxel_on_web
+        return get_webasm_screen_size();
+    #else
+        return get_sdl_screen_size();
+    #endif
+}
 
 void set_screen_size() {
-    #ifdef zoxel_on_web
-        screen_dimensions = get_webasm_screen_size();
-    #else
-        screen_dimensions = get_sdl_screen_size();
-    #endif
+    screen_dimensions = get_current_screen_size();
     if (halfscreen) {
         screen_dimensions.x /= 2;
         screen_dimensions.y /= 2;
     }
 }
 
-void sdl_toggle_fullscreen(SDL_Window* window) {
+void on_viewport_resized(ecs_world_t *world, int2 new_screen_dimensions) {
+    if (!(screen_dimensions.x == new_screen_dimensions.x && screen_dimensions.y == new_screen_dimensions.y)) {
+        screen_dimensions = new_screen_dimensions;
+        if(screen_dimensions.y <= 0) {
+            screen_dimensions.y = 1;
+        }
+        //#ifdef debug_viewport_resize
+            zoxel_log(" > viewport was resized [%ix%i]\n", screen_dimensions.x, screen_dimensions.y);
+        //#endif
+        //#ifdef zoxel_cameras
+        resize_cameras(screen_dimensions);
+        //#endif
+        //#ifdef zoxel_ui
+        uis_on_viewport_resized(world, screen_dimensions);
+        //#endif
+    }
+}
+
+void sdl_toggle_fullscreen(ecs_world_t *world, SDL_Window* window) {
     Uint32 fullscreen_flag = SDL_WINDOW_FULLSCREEN;
-    /*#ifndef zoxel_on_android
-        Uint32 fullscreen_flag = SDL_WINDOW_FULLSCREEN_DESKTOP; // SDL_WINDOW_FULLSCREEN;
-    #else
-        Uint32 fullscreen_flag = SDL_WINDOW_FULLSCREEN;
-    #endif*/
-    unsigned char isFullscreen = SDL_GetWindowFlags(window) & fullscreen_flag;
-    SDL_SetWindowFullscreen(window, isFullscreen ? 0 : fullscreen_flag);
-    // SDL_ShowCursor(isFullscreen);
+    unsigned char is_fullscreen = SDL_GetWindowFlags(window) & fullscreen_flag;
+    if (!is_fullscreen) {
+        zoxel_log(" > setting to fullscreen now.\n");
+        on_viewport_resized(world, get_current_screen_size());
+        SDL_SetWindowSize(window, screen_dimensions.x, screen_dimensions.y);
+    }
+    // todo: restore should set to pre window size
+    SDL_SetWindowFullscreen(window, is_fullscreen ? 0 : fullscreen_flag);
 }
 
 // checks es is supported
@@ -172,7 +193,6 @@ SDL_Window* spawn_sdl_window() {
     //SDL_GetCurrentDisplayMode(0, &dm);
     SDL_Window* window = SDL_CreateWindow("Zoxel",
         SDL_WINDOWPOS_UNDEFINED_DISPLAY(0), SDL_WINDOWPOS_UNDEFINED_DISPLAY(0),
-        // app_position.x, app_position.y,
         screen_dimensions.x, screen_dimensions.y, window_flags);
     if (window == NULL) {
         zoxel_log(" - failed to create sdl window [%s]\n", SDL_GetError());
@@ -208,25 +228,6 @@ SDL_GLContext* create_sdl_context(SDL_Window* window) {
     return context;
 }
 
-void on_viewport_resized(ecs_world_t *world, int width, int height) {
-    if (!(screen_dimensions.x == width && screen_dimensions.y == height)) {
-        //#ifdef debug_viewport_resize
-            zoxel_log(" > viewport was resized [%ix%i]\n", width, height);
-        //#endif
-        screen_dimensions.x = width;
-        screen_dimensions.y = height;
-        if(screen_dimensions.y <= 0) {
-            screen_dimensions.y = 1;
-        }
-        #ifdef zoxel_cameras
-            resize_cameras(width, height);
-        #endif
-        #ifdef zoxel_ui
-            uis_on_viewport_resized(world, width, height);
-        #endif
-    }
-}
-
 unsigned char is_opengl_running() {
     return main_gl_context != NULL;
 }
@@ -243,7 +244,7 @@ void create_main_window() {
     #ifndef zoxel_on_web
         #ifndef zoxel_on_android
             if (fullscreen) {
-                sdl_toggle_fullscreen(main_window);
+                sdl_toggle_fullscreen(world, main_window);
             }
         #endif
     #endif
@@ -273,7 +274,7 @@ void update_sdl(ecs_world_t *world) {
             if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
                 // zoxel_log(" > window was changed size\n");
                 if (rendering) {
-                    on_viewport_resized(world, event.window.data1, event.window.data2);
+                    on_viewport_resized(world, (int2) { event.window.data1, event.window.data2 });
                 }
             } else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) {
                 zoxel_log(" > window was minimized\n");
@@ -285,12 +286,5 @@ void update_sdl(ecs_world_t *world) {
                 restore_all_opengl_resources(world);
             }
         }
-        // for now while no pause ui
-        /*else if (eventType == SDL_KEYUP) {
-            SDL_Keycode key = event.key.keysym.sym;
-            if (key == SDLK_ESCAPE) {
-                exit_game(); // todo: move this to engine code
-            }
-        }*/
     }
 }

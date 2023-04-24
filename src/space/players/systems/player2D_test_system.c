@@ -10,7 +10,7 @@ void Player2DTestSystem(ecs_iter_t *it) {
         const Keyboard *keyboard = &keyboards[i];
         // toggle player connected application
         if ((keyboard->left_alt.is_pressed || keyboard->right_alt.is_pressed) && keyboard->enter.pressed_this_frame) {
-            sdl_toggle_fullscreen(main_window);
+            sdl_toggle_fullscreen(world, main_window);
         }
         /* else if (keyboard->space.is_pressed || keyboard->f.is_pressed) {
             if (local_player != 0 && ecs_has(world, local_player, Position2D)) {

@@ -6,8 +6,10 @@ void attach_to_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t c
     ecs_set(world, camera, ParentLink, { character });
     ecs_set(world, camera, Position3D, { position3D->value });
     ecs_set(world, camera, Rotation3D, { rotation3D->value });
-    ecs_set(world, camera, LocalPosition3D, {{ 0, vox_scale * 1.2f, vox_scale * 1.6f }});
-    ecs_set(world, camera, LocalRotation3D, { quaternion_identity });
+    ecs_set(world, camera, LocalPosition3D, {{ 0, vox_scale * 1.6f, - vox_scale * 2.2f }});
+    float3 euler = (float3) { 0, 180 * degreesToRadians, 0 };
+    float4 rotation = quaternion_from_euler(euler); // quaternion_identity
+    ecs_set(world, camera, LocalRotation3D, { rotation });
     ecs_add(world, camera, FirstPersonCamera);
     ecs_remove(world, camera, FreeRoam);
     ecs_remove(world, camera, EulerOverride);

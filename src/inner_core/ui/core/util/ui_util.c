@@ -187,7 +187,7 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
             zoxel_log("        -> to [%ix%i]\n", global_pixel_position.x, global_pixel_position.y);
         #endif
     } else {
-        zoxel_log("UI doesn't have pixel position: %lu\n", (long int) e);
+        zoxel_log(" ! set_ui_transform - ui PixelPosition not found [%lu]\n", (long int) e);
     }
     //! Resize (if visible)
     if (!headless && is_valid && ecs_has(world, e, MeshVertices2D)) {
@@ -211,17 +211,17 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
 }
 
 //! Reposition uis after viewport resizes.
-void uis_on_viewport_resized(ecs_world_t *world, int width, int height) {
-    int2 canvas_size = { width, height };
-    ecs_set(world, main_canvas, PixelSize, { canvas_size });
-    //#ifdef debug_viewport_resize
-        zoxel_log("On Viewport Resized to dimensions: [%ix%i]\n", canvas_size.x, canvas_size.y);
-    //#endif
+void uis_on_viewport_resized(ecs_world_t *world, int2 screen_size) {
+    // int2 canvas_size = { width, height };
+    ecs_set(world, main_canvas, PixelSize, { screen_size });
+    #ifdef debug_viewport_resize
+        zoxel_log(" > viewport resized to dimensions: [%ix%i]\n", screen_size.x, screen_size.y);
+    #endif
     for (int i = 0; i < ui_entities_count; i++) {
         ecs_entity_t e = ui_entities[i];
         #ifdef debug_viewport_resize
             zoxel_log("    e [%i] - [%lu]\n", i, (long int) e);
         #endif
-        set_ui_transform(world, e, main_canvas, 0, canvas_size);
+        set_ui_transform(world, e, main_canvas, 0, screen_size);
     }
 }

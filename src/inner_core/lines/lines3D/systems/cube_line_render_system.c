@@ -17,7 +17,6 @@ void render_line3D(float3 position_a, float3 position_b) {
 }
 
 void CubeLineRenderSystem(ecs_iter_t *it) {
-    // zoxel_log("cube lines [%i]\n", it->count);
     glUseProgram(line3D_material);
     glEnableVertexAttribArray(line3D_position_location);
     glUniform4f(line3D_fog_data_location, fog_color.x, fog_color.y, fog_color.z, fog_density);
@@ -34,26 +33,30 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
         const Rotation3D *rotation3D = &rotation3Ds[i];
         const Bounds3D *bounds3D = &bounds3Ds[i];
         set_line3D_thickness(cubeLinesThickness->value);
-        /*render_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + cube_lines_length, position3D->value.z });
-        
+        // up axis
+        set_line3D_color(colorRGB->value);
+        // render_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + cube_lines_length, position3D->value.z });
+        float3 up_vector = (float3) { 0, cube_lines_length, 0 };
+        float4_rotate_float3_p(rotation3D->value, &up_vector);
+        float3_add_float3_p(&up_vector, position3D->value);
+        render_line3D(position3D->value, up_vector);
+        // forward axis
         set_line3D_color((color_rgb) { colorRGB->value.b, colorRGB->value.g, colorRGB->value.r });
         float3 forward_vector = (float3) { 0, 0, cube_lines_length };
         float4_rotate_float3_p(rotation3D->value, &forward_vector);
         float3_add_float3_p(&forward_vector, position3D->value);
         render_line3D(position3D->value, forward_vector);
-
+        // right axis
         set_line3D_color((color_rgb) { colorRGB->value.g, colorRGB->value.r, colorRGB->value.b });
         float3 right_vector = (float3) { cube_lines_length, 0, 0 };
         float4_rotate_float3_p(rotation3D->value, &right_vector);
         float3_add_float3_p(&right_vector, position3D->value);
-        render_line3D(position3D->value, right_vector);*/
-
-        set_line3D_color(colorRGB->value);
+        render_line3D(position3D->value, right_vector);
+        // up | down for collision
+        /*set_line3D_color(colorRGB->value);
         render_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y - bounds3D->value.y, position3D->value.z });
         set_line3D_color((color_rgb) { colorRGB->value.g, colorRGB->value.r, colorRGB->value.b });
-        render_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + bounds3D->value.y, position3D->value.z });
-        
-
+        render_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + bounds3D->value.y, position3D->value.z });*/
         // zoxel_log(" + cls [%i] - [%lu] position [%fx%fx%f]\n", i, it->entities[i], position3D->value.x, position3D->value.y, position3D->value.z);
     }
     glDisableVertexAttribArray(line3D_position_location);

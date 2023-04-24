@@ -6,6 +6,7 @@
 #define VOX_FILE_RGBA "RGBA"
 #define VOX_SIZE_INT 32
 #define VOX_SUPPORTED_VERSION 150
+#define zoxel_voxel_vox_flipz
 
 int peek(FILE* file) {
     int c = fgetc(file);
@@ -209,6 +210,10 @@ int read_vox(const char* filename, vox_file *vox) {
         for (int j = 0; j < bytes_length; j += 4) {
             // int3 position = (int3) { voxel_bytes[j + 0], voxel_bytes[j + 1], voxel_bytes[j + 2] };
             int3 position = (int3) { voxel_bytes[j + 0], voxel_bytes[j + 2], voxel_bytes[j + 1] };
+            // flip z, on vox file import it flips z voxels
+            #ifdef zoxel_voxel_vox_flipz
+                position.z = chunk.size.xyz.z - 1 - position.z;
+            #endif
             // int array_index = int3_array_index2(position, chunk.size.xyz);
             int array_index = int3_array_index(position, chunk.size.xyz);
             chunk.xyzi.voxels[array_index] = voxel_bytes[j + 3];
