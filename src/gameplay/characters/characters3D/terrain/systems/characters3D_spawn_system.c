@@ -2,7 +2,7 @@
 int characters_count = 0;
 
 void Characters3DSpawnSystem(ecs_iter_t *it) {
-    float vox_scale = model_scale * overall_voxel_scale;
+    float vox_scale = model_scale; //  * overall_voxel_scale;
     // vox_scale = (1.0f / 16.0f) / 2.0f;
     int3 chunk_size = (int3) { default_chunk_length, default_chunk_length, default_chunk_length };
     unsigned char did_do = 0;

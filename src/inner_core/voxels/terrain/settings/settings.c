@@ -1,3 +1,5 @@
+#define terrain_texture_resolution 16 // 64 // 16
+const int2 chunk_texture_size = { terrain_texture_resolution, terrain_texture_resolution };
 int terrain_spawn_distance;
 int terrain_vertical = 2;
 const unsigned char terrain_min_height = 8;
@@ -7,8 +9,6 @@ int lowest_voxel_height = -24;
 int inner_render_buffer = 1;
 int lod_division_dividor = 3;
 const int max_chunks_build_per_frame = 32;
-#define terrain_texture_resolution 32 // 16
-const int2 chunk_texture_size = { terrain_texture_resolution, terrain_texture_resolution };
 #ifndef zoxel_on_web
 #else
     #define voxels_disable_streaming

@@ -25,6 +25,7 @@ zoxel_component(SecondaryColor, color)          //! A generic entity color
 zoxel_memory_component(ColorRGBs, color_rgb)           //! A generic entity colorRGBs
 zoxel_memory_component(Colors, color)           //! A generic entity colorRGBs
 zoxel_byte_component(GenericEvent)              //! Used for game and other events, genetic
+zoxel_component(Bounds3D, float3)
 zoxel_reset_system(EntityDirtyResetSystem, EntityDirty)
 zoxel_reset_system(ClickableStateResetSystem, ClickableState)
 zoxel_reset_system(EntityInitializeResetSystem, EntityInitialize)
@@ -57,6 +58,7 @@ zoxel_define_component(SecondaryColor)
 zoxel_define_memory_component(ColorRGBs)
 zoxel_define_memory_component(Colors)
 zoxel_define_component(GenericEvent)
+zoxel_define_component(Bounds3D)
 zoxel_define_reset_system(EntityDirtyResetSystem, EntityDirty)
 zoxel_define_reset_system(ClickableStateResetSystem, ClickableState)
 zoxel_define_reset_system(EntityInitializeResetSystem, EntityInitialize)

@@ -2,7 +2,6 @@ int spawn_characters3D_count = 8;
 float spawn_many_radius = 0.5f;
 float3 spawn_many_offset = (float3) { 0, 0, 0 };
 float spawn_many_y = 0.6f;
-#define model_scale 0.0006f         // 0.015f
 
 void set_character_settings() {
     if (cpu_tier == 3) {

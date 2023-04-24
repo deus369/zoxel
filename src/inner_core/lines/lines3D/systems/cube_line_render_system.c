@@ -26,14 +26,15 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
     const ColorRGB *colorRGBs = ecs_field(it, ColorRGB, 3);
     const Position3D *position3Ds = ecs_field(it, Position3D, 4);
     const Rotation3D *rotation3Ds = ecs_field(it, Rotation3D, 5);
+    const Bounds3D *bounds3Ds = ecs_field(it, Bounds3D, 6);
     for (int i = 0; i < it->count; i++) {
         const CubeLinesThickness *cubeLinesThickness = &cubeLinesThicknesss[i];
         const ColorRGB *colorRGB = &colorRGBs[i];
         const Position3D *position3D = &position3Ds[i];
         const Rotation3D *rotation3D = &rotation3Ds[i];
-        set_line3D_color(colorRGB->value);
+        const Bounds3D *bounds3D = &bounds3Ds[i];
         set_line3D_thickness(cubeLinesThickness->value);
-        render_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + cube_lines_length, position3D->value.z });
+        /*render_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + cube_lines_length, position3D->value.z });
         
         set_line3D_color((color_rgb) { colorRGB->value.b, colorRGB->value.g, colorRGB->value.r });
         float3 forward_vector = (float3) { 0, 0, cube_lines_length };
@@ -45,7 +46,13 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
         float3 right_vector = (float3) { cube_lines_length, 0, 0 };
         float4_rotate_float3_p(rotation3D->value, &right_vector);
         float3_add_float3_p(&right_vector, position3D->value);
-        render_line3D(position3D->value, right_vector);
+        render_line3D(position3D->value, right_vector);*/
+
+        set_line3D_color(colorRGB->value);
+        render_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y - bounds3D->value.y, position3D->value.z });
+        set_line3D_color((color_rgb) { colorRGB->value.g, colorRGB->value.r, colorRGB->value.b });
+        render_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + bounds3D->value.y, position3D->value.z });
+        
 
         // zoxel_log(" + cls [%i] - [%lu] position [%fx%fx%f]\n", i, it->entities[i], position3D->value.x, position3D->value.y, position3D->value.z);
     }

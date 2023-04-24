@@ -40,14 +40,16 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
     Velocity3D *velocity3Ds = ecs_field(it, Velocity3D, 4);
     VoxelPosition *voxelPositions = ecs_field(it, VoxelPosition, 5);
     ChunkLink *chunkLinks = ecs_field(it, ChunkLink, 6);
+    const Bounds3D *bounds3Ds = ecs_field(it, Bounds3D, 7);
     for (int i = 0; i < it->count; i++) {
         ChunkPosition *chunkPosition = &chunkPositions[i];
         ChunkLink *chunkLink = &chunkLinks[i];
         Position3D *position3D = &position3Ds[i];
         VoxelPosition *voxelPosition = &voxelPositions[i];
+        const Bounds3D *bounds3D = &bounds3Ds[i];
         byte3 old_voxel_position = int3_to_byte3(voxelPosition->value);
         float3 real_position = position3D->value;
-        real_position.y -= 0.25f;
+        real_position.y -= bounds3D->value.y; //  0.25f;
         int3 global_voxel_position = get_voxel_position(real_position);
         int3 chunk_position = get_chunk_position(real_position, default_chunk_size);
         byte3 new_position = get_local_position_byte3(global_voxel_position, chunk_position, default_chunk_size_byte3);
