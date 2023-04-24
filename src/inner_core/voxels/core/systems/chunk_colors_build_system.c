@@ -43,7 +43,7 @@ if (voxel##_##direction_facing == 0) {\
 }
 
 void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize, const ColorRGBs *colorRGBs,
-    MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColorRGBs *meshColorRGBs) {
+    MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColorRGBs *meshColorRGBs, float3 total_mesh_offset) {
     // go through and add a top face for each voxel position that is solid
     float voxel_scale = overall_voxel_scale / ((float) chunkSize->value.x);
     int_array_d* indicies = create_int_array_d();
@@ -71,6 +71,7 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
                     // get color based on pallete voxel_color
                     float3 vertex_position_offset = float3_from_byte3(local_position);
                     float3_multiply_float_p(&vertex_position_offset, voxel_scale);
+                    float3_add_float3_p(&vertex_position_offset, total_mesh_offset);
                     zoxel_get_adjacent_face(left)
                     zoxel_get_adjacent_face(right)
                     zoxel_get_adjacent_face(down)
@@ -148,7 +149,9 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         MeshColorRGBs *meshColorRGBs2 = &meshColorRGBs[i];
         chunkDirty->value = 0;
         meshDirty->value = 1;
-        build_chunk_mesh_colors(chunk, chunkSize, colors2, meshIndicies2, meshVertices2, meshColorRGBs2);
+        float3 total_mesh_offset = float3_from_int3(chunkSize->value);
+        float3_multiply_float_p(&total_mesh_offset, -0.5f);
+        build_chunk_mesh_colors(chunk, chunkSize, colors2, meshIndicies2, meshVertices2, meshColorRGBs2, total_mesh_offset);
         //printf("Building ChunkData ColorRGBs Mesh [%lu] - [%i] [%i]\n", (long int) it->entities[i], meshIndicies2->length, meshVertices2->length);
         #ifdef zoxel_time_chunk_colors_builds_system
             did_do_timing()

@@ -23,11 +23,13 @@ void ChunkLinkSystem(ecs_iter_t *it) {
     ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 4);
     ChunkLink *chunkLinks = ecs_field(it, ChunkLink, 5);
     for (int i = 0; i < it->count; i++) {
-        ChunkPosition *chunkPosition = &chunkPositions[i];
-        ChunkLink *chunkLink = &chunkLinks[i];
         const Position3D *position3D = &position3Ds[i];
         const VoxLink *voxLink = &voxLinks[i];
-        int3 new_chunk_position = get_chunk_position(position3D->value, default_chunk_size);
+        ChunkPosition *chunkPosition = &chunkPositions[i];
+        ChunkLink *chunkLink = &chunkLinks[i];
+        float3 real_position = position3D->value;
+        // real_position.y -= 0.25f;
+        int3 new_chunk_position = get_chunk_position(real_position, default_chunk_size);
         if (chunkLink->value == 0) {
             set_entity_terrain_chunk_position(world, voxLink, chunkLink, chunkPosition, new_chunk_position);
         } else {

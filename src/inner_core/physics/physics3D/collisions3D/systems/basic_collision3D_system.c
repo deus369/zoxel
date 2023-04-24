@@ -45,10 +45,12 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
         ChunkLink *chunkLink = &chunkLinks[i];
         Position3D *position3D = &position3Ds[i];
         VoxelPosition *voxelPosition = &voxelPositions[i];
-        int3 global_voxel_position = get_voxel_position(position3D->value);
-        int3 chunk_position = get_chunk_position(position3D->value, default_chunk_size);
-        byte3 new_position = get_local_position_byte3(global_voxel_position, chunk_position, default_chunk_size_byte3);
         byte3 old_voxel_position = int3_to_byte3(voxelPosition->value);
+        float3 real_position = position3D->value;
+        real_position.y -= 0.25f;
+        int3 global_voxel_position = get_voxel_position(real_position);
+        int3 chunk_position = get_chunk_position(real_position, default_chunk_size);
+        byte3 new_position = get_local_position_byte3(global_voxel_position, chunk_position, default_chunk_size_byte3);
         if (!byte3_equals(new_position, old_voxel_position)) {
             // actually here I should check if makes it through to new voxel_position
             voxelPosition->value = byte3_to_int3(new_position);
@@ -58,11 +60,11 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
                     zoxel_log(" !> chunk_position [%ix%ix%i]\n", chunk_position.x, chunk_position.y, chunk_position.z);
                     zoxel_log("     !+ global voxel position [%ix%ix%i]\n", global_voxel_position.x, global_voxel_position.y, global_voxel_position.z);
                     zoxel_log("     !+ local voxel position [%ix%ix%i]\n", new_position.x, new_position.y, new_position.z);
-                    zoxel_log("     !+ real position [%fx%fx%f]\n", position3D->value.x, position3D->value.y, position3D->value.z);
+                    zoxel_log("     !+ real position [%fx%fx%f]\n", real_position.x, real_position.y, real_position.z);
                 } else {
                     zoxel_log(" > chunk_position [%ix%ix%i]\n", chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z);
                     zoxel_log("     + voxel position updated [%ix%ix%i]\n", new_position.x, new_position.y, new_position.z);
-                    zoxel_log("     + real position was [%fx%fx%f]\n", position3D->value.x, position3D->value.y, position3D->value.z);
+                    zoxel_log("     + real position was [%fx%fx%f]\n", real_position.x, real_position.y, real_position.z);
                 }
             #endif
             const VoxLink *voxLink = &voxLinks[i];
@@ -73,9 +75,11 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
             Velocity3D *velocity3D = &velocity3Ds[i];
             // get last position
             unsigned char did_collide = 0;
-            float3 real_position = position3D->value;
-            float3 last_real_position = (float3) { real_position.x - velocity3D->value.x * delta_time,
-                real_position.y - velocity3D->value.y * delta_time, real_position.z - velocity3D->value.z * delta_time };
+            // float3 real_position = position3D->value;
+            float3 last_real_position = (float3) {
+                position3D->value.x - velocity3D->value.x * delta_time,
+                position3D->value.y - velocity3D->value.y * delta_time,
+                position3D->value.z - velocity3D->value.z * delta_time };
 
             // todo: handle between chunks here, if new voxel is in another chunk
             // i should really displace it based on the difference of how far in the object is into the voxel
@@ -84,12 +88,12 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
             handle_collision_axis(z)
 
             if (did_collide) {
-                int3 new_chunk_position = get_chunk_position(position3D->value, default_chunk_size);
+                int3 new_chunk_position = get_chunk_position(real_position, default_chunk_size);
                 if (!int3_equals(chunkPosition->value, new_chunk_position)) {
                     chunkPosition->value = new_chunk_position;
                     chunkLink->value = int3_hash_map_get(chunkLinks->value, new_chunk_position);
                 }
-                int3 new_global_voxel_position = get_voxel_position(position3D->value);
+                int3 new_global_voxel_position = get_voxel_position(real_position);
                 byte3 new_voxel_position = get_local_position_byte3(new_global_voxel_position, chunkPosition->value, default_chunk_size_byte3);
                 voxelPosition->value = byte3_to_int3(new_position);
                 #ifdef zoxel_debug_basic_collision3D_system
@@ -97,7 +101,7 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
                         zoxel_log(" !!! voxel position set out of bounds\n");
                         zoxel_log(" ! > chunk_position [%ix%ix%i]\n", chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z);
                         zoxel_log("     ! + voxel position updated [%ix%ix%i]\n", new_position.x, new_position.y, new_position.z);
-                        zoxel_log("     ! + real position was [%fx%fx%f]\n", position3D->value.x, position3D->value.y, position3D->value.z);
+                        zoxel_log("     ! + real position was [%fx%fx%f]\n", real_position.x, real_position.y, real_position.z);
                     }
                 #endif
             }

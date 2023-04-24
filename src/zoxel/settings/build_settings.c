@@ -115,4 +115,4 @@
 // #define zoxel_inputs_debug_gamepad_sos
 
 // #define zoxel_disable_attach_on_start
-// #define zoxel_debug_bounds
+#define zoxel_debug_bounds
