@@ -24,29 +24,40 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
                 chunk_voxel_position.x, chunk_voxel_position.y, chunk_voxel_position.z);*/
             // find if chunk has any air position - free place to spawn
             // spawn characters in this chunk
+            const ChunkPosition *chunkPosition = &chunkPositions[i];
+            int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, chunk_size);
             for (unsigned char j = 0; j < characters_per_chunk_count; j++) {
-                byte3 local_position = (byte3) { rand() % default_chunk_length, rand() % default_chunk_length, rand() % default_chunk_length };    // rand() % 16
-                byte3 local_position2 = local_position;
-                unsigned char voxel = get_octree_voxel(chunkOctree, &local_position2, max_octree_depth);
+                byte3 local_position = (byte3) { rand() % default_chunk_length, default_chunk_length - 1, rand() % default_chunk_length };    // rand() % 16
+                byte3 local_position_temp = local_position;
+                unsigned char voxel = get_octree_voxel(chunkOctree, &local_position_temp, max_octree_depth);
                 if (voxel != 0) {
+                    continue;
+                }
+                // now get ground position
+                unsigned char did_find_ground = 0;
+                for (local_position.y = default_chunk_length - 2; local_position.y >= 0; local_position.y--) {
+                    local_position_temp = local_position;
+                    voxel = get_octree_voxel(chunkOctree, &local_position_temp, max_octree_depth);
+                    if (voxel != 0) {
+                        local_position.y++;
+                        did_find_ground = 1;
+                        // zoxel_log(" > found ground! [%i]\n", local_position.y);
+                        break;
+                    }
+                    if (local_position.y == 0) {
+                        break;
+                    }
+                }
+                if (!did_find_ground) {
                     continue;
                 }
                 int vox_file_index = rand() % vox_files_count;
                 vox_file vox = vox_files[vox_file_index];
-                const ChunkPosition *chunkPosition = &chunkPositions[i];
-                int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, chunk_size);
                 float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
                 int3 global_voxel_position = int3_add(chunk_voxel_position, int3_from_byte3(local_position));
                 float3 position = (float3) { global_voxel_position.x, global_voxel_position.y, global_voxel_position.z };
-                // until we get meshes centering sorted 
-                /*position.x += 0.5f;
-                position.y += 0.5f;
-                position.z += 0.5f;*/
-                /*zoxel_log("     + character at [%fx%fx%f] - [%ix%ix%i] \n",
-                    position.x, position.y, position.z,
-                    local_position.x, local_position.y, local_position.z);*/
+                position.y += 0.5f; // can we use bounds before spawning?
                 spawn_character3D(it->world, character3D_prefab, &vox, position, rotation, vox_scale);
-                // add_to_ecs_entity_t_array_d(characters, e);
                 // zoxel_log(" + chunk spawning character [%fx%fx%f] \n", position.x, position.y, position.z);
                 characters_count++;
             }
@@ -60,3 +71,12 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
     }
 }
 zoxel_declare_system(Characters3DSpawnSystem)
+
+// add_to_ecs_entity_t_array_d(characters, e);
+// until we get meshes centering sorted 
+/*position.x += 0.5f;
+position.y += 0.5f;
+position.z += 0.5f;*/
+/*zoxel_log("     + character at [%fx%fx%f] - [%ix%ix%i] \n",
+    position.x, position.y, position.z,
+    local_position.x, local_position.y, local_position.z);*/

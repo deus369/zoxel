@@ -205,9 +205,14 @@ float4 quaternion_normalized(float4 quaternion, float magnitude) {
     return (float4) { quaternion.x / magnitude, quaternion.y / magnitude, quaternion.z / magnitude, 0.0f };
 }
 
+// is there a way to do this with just quaternions without messing up the magnitude??
 float4 get_delta_rotation(float4 quaternion, float magnitude, double delta_time) {
-    float4 normalized = quaternion_normalized(quaternion, magnitude);
-    return quaternion_from_axis_angle(magnitude * delta_time, normalized.x, normalized.y, normalized.z);     
+    //float4 normalized = quaternion_normalized(quaternion, magnitude);
+    //return quaternion_from_axis_angle(magnitude * delta_time, normalized.x, normalized.y, normalized.z);
+    float3 euler = quaternion_to_euler(quaternion);
+    float3_multiply_float_p(&euler, magnitude);
+    return quaternion_from_euler(euler);
+    // return (float4) { magnitude * quaternion.x, magnitude * quaternion.y, magnitude * quaternion.z, magnitude * quaternion.w };
 }
 
 /*float yaw = euler.x;

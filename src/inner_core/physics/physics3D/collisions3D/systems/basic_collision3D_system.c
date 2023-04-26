@@ -25,7 +25,7 @@
 }
 
 // chunkPosition->value.dimension = chunk_position.dimension;
-//  chunkLink->value = chunk_axis;
+// chunkLink->value = chunk_axis;
 // voxelPosition->value.dimension = old_voxel_position.dimension;
 
 void BasicCollision3DSystem(ecs_iter_t *it) {

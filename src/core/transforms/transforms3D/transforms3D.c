@@ -19,6 +19,7 @@ zoxel_component(LocalRotation3D, float4)
 #include "systems/euler_limit_z_system.c"
 #include "systems/euler_override_system.c"
 #include "systems/parent_position_system.c"
+#include "systems/parent_rotation_system.c"
 
 zoxel_begin_module(Transforms3D)
 // zoxel_component_defines
@@ -37,8 +38,8 @@ zoxel_define_component(LocalRotation3D)
 zoxel_system(EulerLimitXSystem, EcsOnUpdate, [in] EulerLimitX, [out] Euler)
 zoxel_system(EulerLimitZSystem, EcsOnUpdate, [in] EulerLimitZ, [out] Euler)
 zoxel_system(EulerOverrideSystem, EcsOnUpdate, [none] EulerOverride, [in] Euler, [out] Rotation3D)
-zoxel_system(ParentPositionSystem, EcsPostUpdate, [in] ParentLink, [in] LocalPosition3D, [out] Position3D)
 zoxel_system(ParentRotationSystem, EcsPostUpdate, [in] ParentLink, [in] LocalRotation3D, [out] Rotation3D)
+zoxel_system(ParentPositionSystem, EcsPostUpdate, [in] ParentLink, [in] LocalPosition3D, [out] Position3D)
 zoxel_end_module(Transforms3D)
 
 // todo: remove euler use, and find a way to limit quaternion rotations used for camera atm

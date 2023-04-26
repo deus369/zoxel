@@ -1,23 +1,15 @@
 const float friction_threshold = 0.001f;
-const float rotation_friction = 8.0f;
+const float rotation_friction = -0.54f;
 
 float4 calculate_dissipation(const float4 omega3D) {
-    // the rotational velocity quaternion
     float mag = sqrt(omega3D.x * omega3D.x + omega3D.y * omega3D.y + omega3D.z * omega3D.z + omega3D.w * omega3D.w);
     if (mag < friction_threshold) {
         return quaternion_identity;
     }
-    // Calculate the friction factor
-    float factor = rotation_friction * mag / (mag * mag + 1e-6);
-    // Apply friction to each component of the quaternion
-    float4 dissipation = {
-        .w = omega3D.w * factor,
-        .x = omega3D.x * factor,
-        .y = omega3D.y * factor,
-        .z = omega3D.z * factor
-    };
-    // quaternion_normalize(&dissipation);
-    return dissipation;
+    float factor = (rotation_friction * mag) / (mag * mag + 1e-6);
+    float3 euler = quaternion_to_euler(omega3D);
+    float3_multiply_float_p(&euler, factor);
+    return quaternion_from_euler(euler);
 }
 
 void Dissipation3DSystem(ecs_iter_t *it) {
@@ -27,7 +19,6 @@ void Dissipation3DSystem(ecs_iter_t *it) {
         const Omega3D *omega3D = &omega3Ds[i];
         Alpha3D *alpha3D = &apha3Ds[i];
         quaternion_rotate_quaternion_p(&alpha3D->value, calculate_dissipation(omega3D->value));
-        // zoxel_log("omega is dissipating\n");
     }
 }
 zoxel_declare_system(Dissipation3DSystem)
@@ -98,3 +89,20 @@ dissipation.w /= norm;*/
     dissipation.w = c;
     return dissipation;
 }*/
+    // return quaternion_identity;
+    // the rotational velocity quaternion
+    /*float mag = sqrt(omega3D.x * omega3D.x + omega3D.y * omega3D.y + omega3D.z * omega3D.z + omega3D.w * omega3D.w);
+    if (mag < friction_threshold) {
+        return quaternion_identity;
+    }
+    // Calculate the friction factor
+    float factor = rotation_friction * (mag / (mag * mag + 1e-6));
+    // Apply friction to each component of the quaternion
+    float4 dissipation = {
+        .w = omega3D.w * factor,
+        .x = omega3D.x * factor,
+        .y = omega3D.y * factor,
+        .z = omega3D.z * factor 
+    };
+    // quaternion_normalize(&dissipation);
+    return dissipation;*/

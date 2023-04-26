@@ -19,7 +19,6 @@ int initialize_shader_line3D() {
 }
 
 void Line3DRenderSystem(ecs_iter_t *it) {
-    return;
     glUseProgram(line3D_material);
     glEnableVertexAttribArray(line3D_position_location);
     glUniform4f(line3D_fog_data_location, fog_color.x, fog_color.y, fog_color.z, fog_density);

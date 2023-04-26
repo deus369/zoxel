@@ -89,7 +89,7 @@
 // #define voxels_use_octree_pooling
 // -- zoxel game --
 #define voxels_spawn_terrain
-#define zoxel_test_lines3D
+#define zoxel_terrain_grid
 // #define zoxel_voxes_color_randomize
 // #define zoxel_quaternion_camera
 // #define zoxel_debug_vox_read

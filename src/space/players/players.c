@@ -39,7 +39,7 @@ zoxel_system_ctx(world, Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2
 zoxel_filter(playerCharacter3DQuery, world, [none] PlayerCharacter3D, [out] Acceleration3D, [in] Velocity3D, [in] physics.DisableMovement, [in] Rotation3D)
 zoxel_system_ctx(world, Player3DMoveSystem, EcsOnUpdate, playerCharacter3DQuery, [in] Keyboard)
 zoxel_system_ctx(world, Player3DMoveSystem2, EcsOnUpdate, playerCharacter3DQuery, [in] Gamepad)
-zoxel_filter(playerCharacter3DQuery2, world, [none] PlayerCharacter3D, [out] Alpha3D, [in] physics.DisableMovement)
+zoxel_filter(playerCharacter3DQuery2, world, [none] PlayerCharacter3D, [out] Alpha3D, [in] Omega3D, [in] physics.DisableMovement)
 zoxel_system_ctx(world, Player3DRotateSystem, EcsOnUpdate, playerCharacter3DQuery2, [in] Mouse)
 zoxel_system_ctx(world, Player3DRotateSystem2, EcsOnUpdate, playerCharacter3DQuery2, [in] Gamepad)
 zoxel_filter(gamepad_query, world, [in] Gamepad)
