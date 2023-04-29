@@ -1,8 +1,9 @@
 void spawn_connected_devices(ecs_world_t *world) {
     spawn_keyboard(world);
     spawn_mouse(world);
-    spawn_gamepad(world);
+    spawn_sdl_gamepads();
     //if (joysticks_count > 0) {
+        spawn_gamepad(world);
     //}
 }
 
@@ -21,6 +22,6 @@ void input_extract_from_sdl(ecs_world_t *world, SDL_Event event, int2 screen_dim
 
 void reset_input_devices(ecs_world_t *world) {
     reset_gamepad(world, gamepad_entity);
-    reset_keyboard(world, keyboardEntity);
+    reset_keyboard(world, keyboard_entity);
     reset_mouse(world);
 }

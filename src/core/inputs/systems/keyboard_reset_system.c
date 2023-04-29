@@ -1,4 +1,3 @@
-//! Resets a single key!
 void reset_key(PhysicalButton *key) {
     if (key->pressed_this_frame) {
         key->pressed_this_frame = 0;

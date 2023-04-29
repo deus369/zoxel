@@ -1,11 +1,14 @@
 #ifndef zoxel_inputs
 #define zoxel_inputs
 
-zoxel_declare_tag(Device)
-zoxel_byte_component(MouseLock)
 #include "data/finger.c"
 #include "data/physical_button.c"
 #include "data/physical_stick.c"
+zoxel_declare_tag(Device)
+zoxel_byte_component(MouseLock)
+// 0 Disconnected, 1 KeyboardMouse, 2 Gamepad, 3 Touch, 4 Shared ???
+zoxel_byte_component(DeviceMode)
+zoxel_memory_component(DeviceLinks, ecs_entity_t)
 #include "components/keyboard.c"
 #include "components/mouse.c"
 #include "components/gamepad.c"
@@ -23,18 +26,21 @@ zoxel_byte_component(MouseLock)
 
 zoxel_begin_module(Inputs)
 zoxel_define_tag(Device)
+zoxel_define_component(MouseLock)
+zoxel_define_component(DeviceMode)
+zoxel_define_memory_component(DeviceLinks)
 zoxel_define_component(Keyboard)
 zoxel_define_component(Mouse)
 zoxel_define_component(Gamepad)
 zoxel_define_component(Touchscreen)
-zoxel_define_component(MouseLock)
-zoxel_system(MouseRaycasterSystem, EcsOnUpdate, [in] Mouse, [out] Raycaster)
-zoxel_system(DraggerEndSystem, EcsOnLoad, [out] DragableState, [out] DraggerLink, [out] DraggingDelta)
+spawn_prefab_keyboard(world);
 spawn_prefab_mouse(world);
 spawn_prefab_gamepad(world);
-initialize_sdl_gamepads();
+zoxel_system(MouseRaycasterSystem, EcsOnUpdate, [in] Mouse, [out] Raycaster)
+zoxel_system(DraggerEndSystem, EcsOnLoad, [out] DragableState, [out] DraggerLink, [out] DraggingDelta)
 zoxel_end_module(Inputs)
 
-// \todo Add Extract systems to mainthread
+// todo: spawn/destroy device entity upon connection/removal
+// todo: Add extract systems as systems
 
 #endif

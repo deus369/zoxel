@@ -2,9 +2,6 @@
 int characters_count = 0;
 
 void Characters3DSpawnSystem(ecs_iter_t *it) {
-    float vox_scale = model_scale; //  * overall_voxel_scale;
-    // vox_scale = (1.0f / 16.0f) / 2.0f;
-    int3 chunk_size = (int3) { default_chunk_length, default_chunk_length, default_chunk_length };
     unsigned char did_do = 0;
     const GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 2);
     const ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 3);
@@ -25,7 +22,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             // find if chunk has any air position - free place to spawn
             // spawn characters in this chunk
             const ChunkPosition *chunkPosition = &chunkPositions[i];
-            int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, chunk_size);
+            int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, default_chunk_size);
             for (unsigned char j = 0; j < characters_per_chunk_count; j++) {
                 byte3 local_position = (byte3) { rand() % default_chunk_length, default_chunk_length - 1, rand() % default_chunk_length };    // rand() % 16
                 byte3 local_position_temp = local_position;
@@ -56,8 +53,12 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
                 float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
                 int3 global_voxel_position = int3_add(chunk_voxel_position, int3_from_byte3(local_position));
                 float3 position = (float3) { global_voxel_position.x, global_voxel_position.y, global_voxel_position.z };
-                position.y += 0.5f; // can we use bounds before spawning?
-                spawn_character3D(it->world, character3D_prefab, &vox, position, rotation, vox_scale);
+                float3_multiply_float_p(&position, terrain_voxel_scale);
+                // scale voxel position by terrain scale
+                // float terrain_voxel_scale = get_terrain_voxel_scale(max_octree_depth);
+                position.y += 0.5f; // can we use character bounds before spawning?
+                // position.y += 1.5f; // can we use bounds before spawning?
+                spawn_character3D(it->world, character3D_prefab, &vox, position, rotation, model_scale);
                 // zoxel_log(" + chunk spawning character [%fx%fx%f] \n", position.x, position.y, position.z);
                 characters_count++;
             }

@@ -9,15 +9,14 @@ unsigned char is_steamdeck_gamepad(SDL_Joystick *joystick) {
 
 unsigned char is_xbox_gamepad(SDL_Joystick *joystick) {
     const char* joystickName = SDL_JoystickName(joystick);
-    if (strstr(joystickName, "Xbox") != NULL || strstr(joystickName, "X360") != NULL
-        || strstr(joystickName, "X-Box") != NULL) {
+    if (strstr(joystickName, "Xbox") != NULL || strstr(joystickName, "X360") != NULL || strstr(joystickName, "X-Box") != NULL) {
         return 1;
     } else {
         return 0;
     }
 }
 
-void initialize_sdl_gamepads() {
+void spawn_sdl_gamepads() {
     if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
         fprintf(stderr, "Error: Unable to initialize SDL joystick subsystem: %s\n", SDL_GetError());
     }

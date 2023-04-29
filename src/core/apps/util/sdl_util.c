@@ -89,16 +89,19 @@ void on_viewport_resized(ecs_world_t *world, int2 new_screen_dimensions) {
     }
 }
 
+void sdl_set_fullscreen(SDL_Window* window, unsigned char is_fullscreen) {
+    SDL_SetWindowFullscreen(window, is_fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
+}
+
 void sdl_toggle_fullscreen(ecs_world_t *world, SDL_Window* window) {
-    Uint32 fullscreen_flag = SDL_WINDOW_FULLSCREEN;
-    unsigned char is_fullscreen = SDL_GetWindowFlags(window) & fullscreen_flag;
+    unsigned char is_fullscreen = SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN;
     if (!is_fullscreen) {
-        zoxel_log(" > setting to fullscreen now.\n");
+        zoxel_log(" > setting to fullscreen\n");
         on_viewport_resized(world, get_current_screen_size());
         SDL_SetWindowSize(window, screen_dimensions.x, screen_dimensions.y);
     }
     // todo: restore should set to pre window size
-    SDL_SetWindowFullscreen(window, is_fullscreen ? 0 : fullscreen_flag);
+    sdl_set_fullscreen(window, !is_fullscreen);
 }
 
 // checks es is supported
@@ -244,7 +247,7 @@ void create_main_window() {
     #ifndef zoxel_on_web
         #ifndef zoxel_on_android
             if (fullscreen) {
-                sdl_toggle_fullscreen(world, main_window);
+                sdl_set_fullscreen(main_window, 1);
             }
         #endif
     #endif

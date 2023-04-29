@@ -3,17 +3,6 @@
 
 // const float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
 const color_rgb color_rgb_white = (color_rgb) { 255, 255, 255 };
-const float octree_scales3[] = {
-    2.0f * real_chunk_scale,
-    1.0f * real_chunk_scale,
-    0.5f * real_chunk_scale,
-    0.25f * real_chunk_scale,
-    0.125f * real_chunk_scale,
-    0.0625f * real_chunk_scale,
-    0.03125f * real_chunk_scale,
-    0.015625f * real_chunk_scale,
-    0.0078125f * real_chunk_scale
-};
 
 #define add_voxel_face_uvs_indicies(index)\
     indicies->data[indicies->size + index] = vertices->size + voxel_face_indicies[index];
@@ -156,8 +145,7 @@ void build_octree_chunk_mesh_uvs(const ChunkOctree *chunk_octree, MeshIndicies *
         re_initialize_memory_component(meshIndicies, int, mesh_count.x);
         re_initialize_memory_component(meshVertices, float3, mesh_count.y);
         re_initialize_memory_component(meshUVs, float2, mesh_count.y);
-        build_octree_chunk(chunk_octree, NULL, chunk_octree, neighbors, neighbors_max_depths, meshIndicies, meshVertices,
-            meshUVs, start, 0, max_depth, int3_zero, 0, int3_zero);
+        build_octree_chunk(chunk_octree, NULL, chunk_octree, neighbors, neighbors_max_depths, meshIndicies, meshVertices, meshUVs, start, 0, max_depth, int3_zero, 0, int3_zero);
     #endif
 }
 

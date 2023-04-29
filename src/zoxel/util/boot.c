@@ -50,6 +50,9 @@ void boot_zoxel_game(ecs_world_t *world) {
         }
         // spawn_player_character3D(world, get_main_camera());
     #endif
+    #ifdef zoxel_players
+        spawn_player(world);
+    #endif
     #ifdef zoxel_ui
         spawn_canvas(world, screen_dimensions2);
         #ifdef zoxel_texts

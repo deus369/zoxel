@@ -24,16 +24,11 @@
     }\
 }
 
-// chunkPosition->value.dimension = chunk_position.dimension;
-// chunkLink->value = chunk_axis;
-// voxelPosition->value.dimension = old_voxel_position.dimension;
-
 void BasicCollision3DSystem(ecs_iter_t *it) {
     #ifdef zoxel_disable_velocity
         return;
     #endif
     double delta_time = zoxel_delta_time;
-    // const ChunkLink *chunkLinks = ecs_field(it, ChunkLink, 1);
     const VoxLink *voxLinks = ecs_field(it, VoxLink, 1);
     ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 2);
     Position3D *position3Ds = ecs_field(it, Position3D, 3);
@@ -66,6 +61,7 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
                 } else {
                     zoxel_log(" > chunk_position [%ix%ix%i]\n", chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z);
                     zoxel_log("     + voxel position updated [%ix%ix%i]\n", new_position.x, new_position.y, new_position.z);
+                    zoxel_log("     + global voxel position [%ix%ix%i]\n", global_voxel_position.x, global_voxel_position.y, global_voxel_position.z);
                     zoxel_log("     + real position was [%fx%fx%f]\n", real_position.x, real_position.y, real_position.z);
                 }
             #endif
@@ -77,18 +73,15 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
             Velocity3D *velocity3D = &velocity3Ds[i];
             // get last position
             unsigned char did_collide = 0;
-            // float3 real_position = position3D->value;
             float3 last_real_position = (float3) {
                 position3D->value.x - velocity3D->value.x * delta_time,
                 position3D->value.y - velocity3D->value.y * delta_time,
                 position3D->value.z - velocity3D->value.z * delta_time };
-
             // todo: handle between chunks here, if new voxel is in another chunk
             // i should really displace it based on the difference of how far in the object is into the voxel
             handle_collision_axis(y)
             handle_collision_axis(x)
             handle_collision_axis(z)
-
             if (did_collide) {
                 int3 new_chunk_position = get_chunk_position(real_position, default_chunk_size);
                 if (!int3_equals(chunkPosition->value, new_chunk_position)) {

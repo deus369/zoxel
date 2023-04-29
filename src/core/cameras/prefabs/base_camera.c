@@ -20,7 +20,7 @@ ecs_entity_t spawn_camera_base_prefab(ecs_world_t *world) {
     ecs_defer_end(world);
     prefab_base_camera = e;
     #ifdef zoxel_debug_prefabs
-        zoxel_log("spawn_prefab camera_base [%lu].\n", (long int) (e));
+        zoxel_log(" + spawned prefab camera_base [%lu].\n", (long int) (e));
     #endif
     return e;
 }
@@ -35,7 +35,7 @@ ecs_entity_t spawn_base_camera(ecs_world_t *world, float3 position, float4 rotat
     ecs_set(world, e, ScreenPosition, { screen_position });
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
-        zoxel_log("Spawned base camera [%lu]\n", (long int) e);
+        zoxel_log(" + spawned base camera [%lu]\n", (long int) e);
     #endif
     return e;
 }

@@ -38,6 +38,9 @@ zoxel_define_component(ChunkDivision)
 zoxel_define_memory_component(ChunkData)
 zoxel_define_memory_component(ChunkNeighbors)
 zoxel_octree_component_define(ChunkOctree)
+// zoxel_prefab_defines
+spawn_voxel_chunk_mesh_prefab(world);
+spawn_prefab_noise_chunk(world);
 // zoxel_system_defines
 zoxel_define_reset_system(GenerateChunkResetSystem, GenerateChunk)
 zoxel_system(ChunkLinkSystem, EcsPostUpdate, [none] LinkChunk, [in] VoxLink, [in] Position3D, [out] ChunkPosition, [out] ChunkLink)
@@ -46,15 +49,11 @@ if (!headless) {
     zoxel_system_ctx(world, ChunkBuildSystem, EcsOnUpdate, generateChunkQuery, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices, [out] MeshDirty, [none] !MeshUVs, [none] !MeshColorRGBs)
     zoxel_system_ctx(world, ChunkColorsBuildSystem, EcsOnUpdate, generateChunkQuery, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ColorRGBs, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] !MeshUVs)
 }
-// zoxel_prefab_defines
-spawn_voxel_chunk_mesh_prefab(world);
-spawn_prefab_noise_chunk(world);
+// zoxel_testing
 #ifdef zoxel_test_voxels
 test_noise_chunks();
 #endif
 set_max_octree_length(max_octree_depth);
 zoxel_end_module(VoxelsCore)
-
-// const float3 center_mesh_offset = { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
 
 #endif

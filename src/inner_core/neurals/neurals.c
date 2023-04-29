@@ -12,7 +12,7 @@ zoxel_component(Weight, float)                  //! The weight of the neural con
 zoxel_byte_component(Signal)                   //! If the signal is sending
 zoxel_component(SignalStrength, float)          //! The signal value of a connection
 zoxel_component(ConnectionData, ecs_entity_2)   //! The weight of the neural connection
-// zoxel_memory_component(Connections, ecs_entity_t);   //! A brain holds an array of connections.
+// zoxel_memory_component(Connections, ecs_entity_t);
 #include "prefabs/brain.c"
 #include "prefabs/neuron.c"
 #include "prefabs/connection.c"
@@ -30,12 +30,12 @@ zoxel_define_component(Weight)
 zoxel_define_component(Signal)
 zoxel_define_component(SignalStrength)
 zoxel_define_component(ConnectionData)
-zoxel_system(FeedForwardSystem, EcsOnUpdate, [none] Connection, [in] ConnectionData, [in] Weight, [out] Signal, [out] SignalStrength)
-zoxel_system(ConnectionRenderSystem, EcsOnUpdate, [none] Connection, [in] ConnectionData, [in] Weight, [in] Signal, [in] SignalStrength)
-zoxel_system(NeuronRenderSystem, EcsOnUpdate, [none] Neuron, [in] Weight, [in] Position2D)
 spawn_prefab_brain(world);
 spawn_prefab_neuron(world);
 spawn_prefab_connection(world);
+zoxel_system(FeedForwardSystem, EcsOnUpdate, [none] Connection, [in] ConnectionData, [in] Weight, [out] Signal, [out] SignalStrength)
+zoxel_system(ConnectionRenderSystem, EcsOnUpdate, [none] Connection, [in] ConnectionData, [in] Weight, [in] Signal, [in] SignalStrength)
+zoxel_system(NeuronRenderSystem, EcsOnUpdate, [none] Neuron, [in] Weight, [in] Position2D)
 #ifdef zoxel_test_brain
 spawn_brain(world);
 #endif

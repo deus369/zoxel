@@ -17,21 +17,30 @@ void Player3DRotateSystem(ecs_iter_t *it) {
     if (playerCharacterIterator.count == 0) {
         return;
     }
-    Mouse *mouses = ecs_field(it, Mouse, 1);
+    const DeviceLinks *deviceLinks = ecs_field(it, DeviceLinks, 2);
+    // Mouse *mouses = ecs_field(it, Mouse, 1);
     Alpha3D *alpha3Ds = ecs_field(&playerCharacterIterator, Alpha3D, 2);
     const Omega3D *omega3Ds = ecs_field(&playerCharacterIterator, Omega3D, 3);
     const DisableMovement *disableMovements = ecs_field(&playerCharacterIterator, DisableMovement, 4);
     for (int i = 0; i < it->count; i++) {
-        const Mouse *mouse = &mouses[i];
-        float3 euler = { 0, -mouse->delta.x }; // * 0.12f };
+        const DeviceLinks *deviceLinks2 = &deviceLinks[i];
+        // const Mouse *mouse = &mouses[i];
+        float2 euler = { 0, 0 }; // * 0.12f };
+        for (int j = 0; j < deviceLinks2->length; j++) {
+            ecs_entity_t device_entity = deviceLinks2->value[j];
+            if (ecs_has(world, device_entity, Mouse)) {
+                const Mouse *mouse = ecs_get(world, device_entity, Mouse);
+                euler.y = -mouse->delta.x * rotate_power_mouse;
+            } else if (ecs_has(world, device_entity, Gamepad)) {
+                const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
+                if (gamepad->right_stick.value.x < -joystick_buffer) {
+                    euler.y = -gamepad->right_stick.value.x * rotate_power;
+                } else if (gamepad->right_stick.value.x > joystick_buffer) {
+                    euler.y = -gamepad->right_stick.value.x * rotate_power;
+                }
+            }
+        }
         if (!(euler.x == 0 && euler.y == 0)) {
-            // euler.x *= rotate_power;
-            /*if (euler.y > 0) {
-                euler.y = rotate_power_mouse;
-            } else {
-                euler.y = -rotate_power_mouse;
-            }*/
-            euler.y *= rotate_power_mouse;
             float4 quaternion = mouse_delta_to_rotation(euler.x, euler.y);
             for (int j = 0; j < playerCharacterIterator.count; j++) {
                 const DisableMovement *disableMovement = &disableMovements[j];
@@ -50,7 +59,7 @@ void Player3DRotateSystem(ecs_iter_t *it) {
 }
 zoxel_declare_system(Player3DRotateSystem)
 
-void Player3DRotateSystem2(ecs_iter_t *it) {
+/*void Player3DRotateSystem2(ecs_iter_t *it) {
     ecs_query_t *playerCharacterQuery = it->ctx;
     ecs_iter_t playerCharacterIterator = ecs_query_iter(it->world, playerCharacterQuery);
     ecs_query_next(&playerCharacterIterator);
@@ -88,4 +97,12 @@ void Player3DRotateSystem2(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(Player3DRotateSystem2)
+zoxel_declare_system(Player3DRotateSystem2)*/
+
+            // euler.x *= rotate_power;
+            /*if (euler.y > 0) {
+                euler.y = rotate_power_mouse;
+            } else {
+                euler.y = -rotate_power_mouse;
+            }*/
+            // euler.y *= rotate_power_mouse;
