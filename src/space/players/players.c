@@ -24,6 +24,7 @@ ecs_entity_t local_player;
 #include "systems/free_camera_disable_movement_system.c"
 #include "systems/player_pause_system.c"
 #include "systems/player_start_system.c"
+#include "systems/device_mode_response_system.c"
 
 zoxel_begin_module(Players)
 zoxel_define_tag(Player)
@@ -64,6 +65,7 @@ zoxel_system(Player2DTestSystem, EcsOnUpdate, [in] Keyboard)
 zoxel_system(Player2DTestMainThreadSystem, EcsOnStore, [in] Keyboard)
 zoxel_system(PlayerPauseSystem, EcsOnUpdate, [in] Keyboard)
 zoxel_system(PlayerPauseSystem2, EcsOnUpdate, [in] Gamepad)
+zoxel_system(DeviceModeResponseSystem, EcsOnUpdate, [in] DeviceMode)
 zoxel_end_module(Players)
 
 //#if zoxel_particles2D

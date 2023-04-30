@@ -2,7 +2,42 @@
 /**
  * Creates an external event when selects a entity. Can be used by AI to select ui too.
 */
+
+void raycaster_deselect_ui(ecs_world_t *world, const RaycasterTarget *raycasterTarget) {
+    if (raycasterTarget->value != 0 && ecs_is_alive(world, raycasterTarget->value)) {
+        // ecs_set(it->world, raycasterTarget->value, SelectableState, { 0 });
+        SelectableState *selectableState = ecs_get_mut(world, raycasterTarget->value, SelectableState);
+        selectableState->value = 0;
+        ecs_modified(world, raycasterTarget->value, SelectableState);
+    }
+}
+
+void raycaster_select_ui(ecs_world_t *world, RaycasterTarget *raycasterTarget, ecs_entity_t ui) {
+    raycaster_deselect_ui(world, raycasterTarget);
+    raycasterTarget->value = ui;
+}
+
+void raycaster_select_ui_mut(ecs_world_t *world, ecs_entity_t raycaster_entity, ecs_entity_t ui) {
+    RaycasterTarget *raycasterTarget = ecs_get_mut(world, raycaster_entity, RaycasterTarget);
+    if (raycasterTarget->value != ui) {
+        // zoxel_log(" > selecting [%lu] from [%lu]\n", ui, raycasterTarget->value);
+        raycaster_select_ui(world, raycasterTarget, ui);
+        ecs_modified(world, raycaster_entity, RaycasterTarget);
+        if (ui != 0) {
+            // ecs_set(it->world, play_button_entity, SelectableState, { 1 });
+            SelectableState *selectableState = ecs_get_mut(world, ui, SelectableState);
+            selectableState->value = 1;
+            ecs_modified(world, ui, SelectableState);
+        }
+    }
+}
+
+extern ecs_entity_t main_player;
+
 void ElementRaycastSystem(ecs_iter_t *it) {
+    // todo: refactor this inside the system
+    const DeviceMode *deviceMode = ecs_get(it->world, main_player, DeviceMode);
+    if (deviceMode->value != zox_device_mode_keyboardmouse) return;
     ecs_world_t *world = it->world;
     const Raycaster *raycasters = ecs_field(it, Raycaster, 1);
     RaycasterTarget *raycasterTargets = ecs_field(it, RaycasterTarget, 2);
@@ -47,25 +82,17 @@ void ElementRaycastSystem(ecs_iter_t *it) {
                             pixelSize.x, pixelSize.y, was_raycasted ? "true" : "false", screen_dimensions.x, screen_dimensions.y);
                     #endif
                 }
-                /*if (was_raycasted)
-                {
+                /*if (was_raycasted) {
                     printf("selectableState ui was raycasted [%lu]\n", (long int) uis_it.entities[j]);
-                }
-                else if (!was_raycasted)
-                {
+                } else if (!was_raycasted) {
                     printf("selectableState ui was un raycasted [%lu]\n", (long int) uis_it.entities[j]);
                 }*/
             }
         }
         if (raycasterTarget->value != ui_selected) {
-            //! Deselect last ui.
-            if (raycasterTarget->value != 0 && ecs_is_alive(world, raycasterTarget->value)) {
-                // ecs_set(it->world, raycasterTarget->value, SelectableState, { 0 });
-                SelectableState *selectableState = ecs_get_mut(world, raycasterTarget->value, SelectableState);
-                selectableState->value = 0;
-                ecs_modified(world, raycasterTarget->value, SelectableState);
-            }
-            raycasterTarget->value = ui_selected;
+            raycaster_select_ui(world, raycasterTarget, ui_selected);
+            //deselect_last_ui(world, raycasterTarget);
+            //raycasterTarget->value = ui_selected;
             if (ui_layer != -1) {
                 ui_selected_selectableState->value = 1;
             }

@@ -1,5 +1,6 @@
 SDL_Joystick *joystick;         // todo: connect this to gamepad
 int joysticks_count;
+const float joystick_min_cutoff = 0.08f;
 float joystick_buffer = 0.14f;
 
 unsigned char is_steamdeck_gamepad(SDL_Joystick *joystick) {
@@ -51,15 +52,17 @@ void set_gamepad_button(PhysicalButton *key, SDL_Joystick *joystick, int index) 
     key->is_pressed = is_pressed;
 }
 
-void set_gamepad_axis(PhysicalStick *stick, SDL_Joystick *joystick, int index) {
-    int x_axis = SDL_JoystickGetAxis(joystick, index);
-    int y_axis = SDL_JoystickGetAxis(joystick, index + 1);
-    stick->value.x = x_axis / 32768.0f;
-    stick->value.y = y_axis / 32768.0f;
+float get_gamepad_axis(SDL_Joystick *joystick, int index) {
+    float axis_value = SDL_JoystickGetAxis(joystick, index) / 32768.0f;
+    if (axis_value >= -joystick_min_cutoff && axis_value <= joystick_min_cutoff) {
+        axis_value = 0.0f;
+    }
+    return axis_value;
 }
 
-float get_gamepad_axis(SDL_Joystick *joystick, int index) {
-    return SDL_JoystickGetAxis(joystick, index) / 32768.0f;
+void set_gamepad_axis(PhysicalStick *stick, SDL_Joystick *joystick, int index) {
+    stick->value.x = get_gamepad_axis(joystick, index);
+    stick->value.y = get_gamepad_axis(joystick, index + 1);
 }
 
 void set_gamepad_dpad(SDL_Joystick *joystick, int index) {
@@ -164,12 +167,12 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world) {
     ecs_modified(world, gamepad_entity, Gamepad);
     // ecs_defer_end(world);
     #ifdef zoxel_inputs_debug_gamepad
+        debug_button(&gamepad->select, "select");
+        debug_button(&gamepad->start, "start");
         debug_button(&gamepad->a, "a");
         debug_button(&gamepad->b, "b");
         debug_button(&gamepad->x, "x");
         debug_button(&gamepad->y, "y");
-        debug_button(&gamepad->select, "select");
-        debug_button(&gamepad->start, "start");
         debug_button(&gamepad->lb, "lb");
         debug_button(&gamepad->rb, "rb");
         debug_button(&gamepad->lt, "lt");
@@ -244,3 +247,7 @@ gamepad->right_stick_push.is_pressed = SDL_JoystickGetButton(joystick, 10);*/
     // triggers
     //int left_trigger = SDL_JoystickGetAxis(joystick, 4);
     //int right_trigger = SDL_JoystickGetAxis(joystick, 5);
+    /*int x_axis = SDL_JoystickGetAxis(joystick, index);
+    int y_axis = SDL_JoystickGetAxis(joystick, index + 1);
+    stick->value.x = x_axis / 32768.0f;
+    stick->value.y = y_axis / 32768.0f;*/

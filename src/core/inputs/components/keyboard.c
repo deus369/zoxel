@@ -10,7 +10,7 @@ typedef struct {
     PhysicalButton left_alt;
     PhysicalButton right_alt;
     PhysicalButton tab;
-    PhysicalButton capsLock;
+    PhysicalButton capslock;
     PhysicalButton a;
     PhysicalButton b;
     PhysicalButton c;
@@ -53,5 +53,15 @@ typedef struct {
     PhysicalButton right;
 } Keyboard;
 zoxel_custom_component(Keyboard)
+
+unsigned char keyboard_is_any_input(const Keyboard *keyboard) {
+    return (keyboard->enter.is_pressed ||
+        keyboard->backspace.is_pressed ||
+        keyboard->w.is_pressed ||
+        keyboard->a.is_pressed ||
+        keyboard->s.is_pressed ||
+        keyboard->d.is_pressed ||
+        keyboard->space.is_pressed);
+}
 
 // todo: use a hashmap with keys keyboard->keys['a'] for more dynamic access

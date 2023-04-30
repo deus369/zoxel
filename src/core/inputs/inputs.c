@@ -1,6 +1,10 @@
 #ifndef zoxel_inputs
 #define zoxel_inputs
 
+#define zox_device_mode_none 0
+#define zox_device_mode_keyboardmouse 1
+#define zox_device_mode_gamepad 2
+
 #include "data/finger.c"
 #include "data/physical_button.c"
 #include "data/physical_stick.c"
@@ -21,6 +25,7 @@ zoxel_memory_component(DeviceLinks, ecs_entity_t)
 #include "systems/mouse_extract_system.c"
 #include "systems/mouse_raycaster_system.c"
 #include "systems/dragger_end_system.c"
+#include "systems/device_mode_system.c"
 #include "util/gamepad_util.c"
 #include "util/input_util.c"
 
@@ -36,6 +41,7 @@ zoxel_define_component(Touchscreen)
 spawn_prefab_keyboard(world);
 spawn_prefab_mouse(world);
 spawn_prefab_gamepad(world);
+zoxel_system(DeviceModeSystem, EcsOnLoad, [in] DeviceLinks, [out] DeviceMode)
 zoxel_system(MouseRaycasterSystem, EcsOnUpdate, [in] Mouse, [out] Raycaster)
 zoxel_system(DraggerEndSystem, EcsOnLoad, [out] DragableState, [out] DraggerLink, [out] DraggingDelta)
 zoxel_end_module(Inputs)

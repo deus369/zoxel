@@ -8,6 +8,7 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     set_unique_entity_name(world, e, "prefab_player");
     zoxel_add_tag(world, e, Player);
     zoxel_add(world, e, DeviceLinks);
+    zoxel_set(world, e, DeviceMode, { 0 });
     ecs_defer_end(world);
     prefab_player = e;
     #ifdef zoxel_debug_prefabs

@@ -5,9 +5,9 @@ void ElementSelectedSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const SelectableState *selectableState = &selectableStates[i];
         if (selectableState->value == 1) {
-            brightness->value = 1.2f;
+            brightness->value = 1.4f;
         } else {
-            brightness->value = 0.8f;
+            brightness->value = 0.6f;
         }
     }
 }

@@ -3,20 +3,33 @@
 *   \todo Use a hashmap with keys keyboard->keys['a'] for more dynamic access.
 */
 typedef struct {
-    int2 position;
-    int2 delta;
-    int2 wheel;
     PhysicalButton left;
     PhysicalButton middle;
     PhysicalButton right;
+    int2 position;
+    int2 delta;
+    int2 wheel;
 } Mouse;
 zoxel_custom_component(Mouse)
 
 #define mouse_zero {\
-    (int2) { 0, 0 },\
-    (int2) { 0, 0 },\
-    (int2) { 0, 0 },\
-    (PhysicalButton) { 0, 0, 0 },\
-    (PhysicalButton) { 0, 0, 0 },\
-    (PhysicalButton) { 0, 0, 0 }\
+    .left = (PhysicalButton) { 0, 0, 0 },\
+    .middle = (PhysicalButton) { 0, 0, 0 },\
+    .right = (PhysicalButton) { 0, 0, 0 },\
+    .position = (int2) { 0, 0 },\
+    .delta = (int2) { 0, 0 },\
+    .wheel = (int2) { 0, 0 }\
+}
+
+unsigned char mouse_is_any_input(const Mouse *mouse) {
+    /*if (mouse->left.is_pressed) zoxel_log(" > mouse->left\n");
+    if (mouse->middle.is_pressed) zoxel_log(" > mouse->middle\n");
+    if (mouse->right.is_pressed) zoxel_log(" > mouse->right\n");*/
+    return (mouse->left.is_pressed ||
+        mouse->middle.is_pressed ||
+        mouse->right.is_pressed ||
+        mouse->delta.x != 0 ||
+        mouse->delta.y != 0 ||
+        mouse->wheel.x != 0 ||
+        mouse->wheel.y != 0);
 }
