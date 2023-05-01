@@ -32,16 +32,17 @@ void raycaster_select_ui_mut(ecs_world_t *world, ecs_entity_t raycaster_entity, 
     }
 }
 
-extern ecs_entity_t main_player;
-
+// uses layers
 void ElementRaycastSystem(ecs_iter_t *it) {
-    // todo: refactor this inside the system
-    const DeviceMode *deviceMode = ecs_get(it->world, main_player, DeviceMode);
-    if (deviceMode->value != zox_device_mode_keyboardmouse) return;
-    ecs_world_t *world = it->world;
     const Raycaster *raycasters = ecs_field(it, Raycaster, 1);
-    RaycasterTarget *raycasterTargets = ecs_field(it, RaycasterTarget, 2);
+    const DeviceMode *deviceModes = ecs_field(it, DeviceMode, 2);
+    RaycasterTarget *raycasterTargets = ecs_field(it, RaycasterTarget, 3);
     for (int i = 0; i < it->count; i++) {
+        const DeviceMode *deviceMode = &deviceModes[i];
+        if (deviceMode->value != zox_device_mode_keyboardmouse &&
+            deviceMode->value != zox_device_mode_touchscreen) {
+            continue;
+        }
         const Raycaster *raycaster = &raycasters[i];
         RaycasterTarget *raycasterTarget = &raycasterTargets[i];
         int ui_layer = -1;
@@ -51,7 +52,7 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         #ifdef zoxel_debug_element_raycasting
             zoxel_log("    ui raycasting [%ix%i]\n", position.x, position.y);
         #endif
-        ecs_iter_t uis_it = ecs_query_iter(world, it->ctx);
+        ecs_iter_t uis_it = ecs_query_iter(it->world, it->ctx);
         while(ecs_query_next(&uis_it)) {
             // printf("    - uis_it.count [%i] - (%i)\n", i, uis_it.count);
             const CanvasPixelPosition *canvasPixelPositions = ecs_field(&uis_it, CanvasPixelPosition, 2);
@@ -90,8 +91,8 @@ void ElementRaycastSystem(ecs_iter_t *it) {
             }
         }
         if (raycasterTarget->value != ui_selected) {
-            raycaster_select_ui(world, raycasterTarget, ui_selected);
-            //deselect_last_ui(world, raycasterTarget);
+            raycaster_select_ui(it->world, raycasterTarget, ui_selected);
+            //deselect_last_ui(it->world, raycasterTarget);
             //raycasterTarget->value = ui_selected;
             if (ui_layer != -1) {
                 ui_selected_selectableState->value = 1;

@@ -1,11 +1,18 @@
 //! Simply pushes mouse data into Raycaster component
 void MouseRaycasterSystem(ecs_iter_t *it) {
-    const Mouse *mouses = ecs_field(it, Mouse, 1);
+    const DeviceLinks *deviceLinks = ecs_field(it, DeviceLinks, 1);
     Raycaster *raycasters = ecs_field(it, Raycaster, 2);
     for (int i = 0; i < it->count; i++) {
-        const Mouse *mouse = &mouses[i];
+        const DeviceLinks *deviceLinks2 = &deviceLinks[i];
         Raycaster *raycaster = &raycasters[i];
-        raycaster->value = mouse->position;
+        for (int j = 0; j < deviceLinks2->length; j++) {
+            ecs_entity_t device_entity = deviceLinks2->value[j];
+            if (ecs_has(world, device_entity, Mouse)) {
+                const Mouse *mouse = ecs_get(world, device_entity, Mouse);
+                raycaster->value = mouse->position;
+                break;
+            }
+        }
     }
 }
 zoxel_declare_system(MouseRaycasterSystem)

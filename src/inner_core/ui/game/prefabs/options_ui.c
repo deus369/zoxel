@@ -13,7 +13,7 @@ ecs_entity_t spawn_prefab_options_ui(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_options_ui(ecs_world_t *world, const char *header_label, int2 position, int2 window_size, float2 anchor, unsigned char is_close_button) {
-    float ui_scale = default_ui_scale;
+    /*float ui_scale = default_ui_scale;
     int font_size = 28;
     int header_margins = 4;
     #ifdef zoxel_on_android
@@ -77,5 +77,6 @@ ecs_entity_t spawn_options_ui(ecs_world_t *world, const char *header_label, int2
     #ifdef zoxel_debug_spawns
     zoxel_log("Spawned main menu [%lu]\n", (long int) e);
     #endif
-    return e;
+    return e;*/
+    return 0;
 }

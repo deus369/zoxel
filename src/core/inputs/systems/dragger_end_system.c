@@ -1,5 +1,4 @@
-// DraggerLink - get mouse
-//! Simply pushes mouse data into Raycaster component
+// pushes mouse->delta into DraggingDelta's ui component
 void DraggerEndSystem(ecs_iter_t *it) {
     // printf("MouseRaycasterSystem [%i]\n", it->count);
     DragableState *dragableStates = ecs_field(it, DragableState, 1);
@@ -11,14 +10,22 @@ void DraggerEndSystem(ecs_iter_t *it) {
             continue;
         }
         DraggingDelta *draggingDelta = &draggingDeltas[i];
-        const Mouse *mouse = ecs_get(it->world, draggerLink->value, Mouse);
-        if (mouse->left.released_this_frame) {
-            DragableState *dragableState = &dragableStates[i];
-            dragableState->value = 0;
-            draggerLink->value = 0;
-            draggingDelta->value = (int2) { 0, 0 };
-        } else {
-            draggingDelta->value = mouse->delta;
+        ecs_entity_t player_entity = draggerLink->value;
+        const DeviceLinks *deviceLinks = ecs_get(it->world, player_entity, DeviceLinks);
+        // zoxel_log(" > raycasterTarget->value %lu\n", raycasterTarget->value);
+        for (int j = 0; j < deviceLinks->length; j++) {
+            ecs_entity_t device_entity = deviceLinks->value[j];
+            if (ecs_has(world, device_entity, Mouse)) {
+                const Mouse *mouse = ecs_get(world, device_entity, Mouse);
+                if (mouse->left.released_this_frame) {
+                    DragableState *dragableState = &dragableStates[i];
+                    dragableState->value = 0;
+                    draggerLink->value = 0;
+                    draggingDelta->value = (int2) { 0, 0 };
+                } else {
+                    draggingDelta->value = mouse->delta;
+                }
+            }
         }
     }
 }

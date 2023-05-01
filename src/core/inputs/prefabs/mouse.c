@@ -7,9 +7,10 @@ ecs_entity_t spawn_prefab_mouse(ecs_world_t *world) {
     set_unique_entity_name(world, e, "prefab_mouse");
     zoxel_add_tag(world, e, Device);
     zoxel_set(world, e, Mouse, mouse_zero);
-    zoxel_set(world, e, Raycaster, { { 0, 0 } });
-    zoxel_set(world, e, RaycasterTarget, { 0 });
     zoxel_set(world, e, MouseLock, { 0 });
+    // todo: refactor these components out of Mouse and into player
+    //zoxel_set(world, e, Raycaster, { { 0, 0 } });
+    //zoxel_set(world, e, RaycasterTarget, { 0 });
     ecs_defer_end(world);
     prefab_mouse = e;
     #ifdef zoxel_debug_prefabs

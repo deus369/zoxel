@@ -7,40 +7,48 @@
         }
     }
 
+    // should we check input mode here first?
     //! Using mouse - or action - activate a ui element.
     void ElementActivateSystem(ecs_iter_t *it) {
         ecs_world_t *world = it->world;
-        const Mouse *mouses = ecs_field(it, Mouse, 1);
+        const DeviceLinks *deviceLinks = ecs_field(it, DeviceLinks, 1);
         const RaycasterTarget *raycasterTargets = ecs_field(it, RaycasterTarget, 2);
         for (int i = 0; i < it->count; i++) {
             const RaycasterTarget *raycasterTarget = &raycasterTargets[i];
             if (raycasterTarget->value == 0) {
                 continue;
             }
+            const DeviceLinks *deviceLinks2 = &deviceLinks[i];
             // zoxel_log(" > raycasterTarget->value %lu\n", raycasterTarget->value);
-            const Mouse *mouse = &mouses[i];
-            if (mouse->left.pressed_this_frame) {
-                // zoxel_log(" > button clicked [%lu]\n", raycasterTarget->value);
-                // printf("Clicked UI: [%lu]\n", (long int) raycasterTarget->value);
-                set_ui_clicked_mut(world, raycasterTarget->value);
-                // zoxel_log("     + button Clickable\n", raycasterTarget->value);
-                // how to do this best way?
-                if (ecs_has(world, raycasterTarget->value, Dragable)) {
-                    DragableState *dragableState = ecs_get_mut(world, raycasterTarget->value, DragableState);
-                    DraggerLink *draggerLink = ecs_get_mut(world, raycasterTarget->value, DraggerLink);
-                    dragableState->value = 1;
-                    draggerLink->value = it->entities[i];
-                    ecs_modified(world, raycasterTarget->value, DragableState);
-                    ecs_modified(world, raycasterTarget->value, DraggerLink);
-                    //ecs_set(it->world, raycasterTarget->value, DragableState, { 1 });
-                    //ecs_set(it->world, raycasterTarget->value, DraggerLink, { it->entities[i] });
+            for (int j = 0; j < deviceLinks2->length; j++) {
+                ecs_entity_t device_entity = deviceLinks2->value[j];
+                if (ecs_has(world, device_entity, Mouse)) {
+                    const Mouse *mouse = ecs_get(world, device_entity, Mouse);
+                    if (mouse->left.pressed_this_frame) {
+                        // set_ui_clicked_mut(world, raycasterTarget->value);
+                        // zoxel_log(" > button clicked [%lu]\n", raycasterTarget->value);
+                        // printf("Clicked UI: [%lu]\n", (long int) raycasterTarget->value);
+                        // zoxel_log("     + button Clickable\n", raycasterTarget->value);
+                        // how to do this best way?
+                        if (ecs_has(world, raycasterTarget->value, Dragable)) {
+                            DragableState *dragableState = ecs_get_mut(world, raycasterTarget->value, DragableState);
+                            DraggerLink *draggerLink = ecs_get_mut(world, raycasterTarget->value, DraggerLink);
+                            dragableState->value = 1;
+                            draggerLink->value = it->entities[i];
+                            ecs_modified(world, raycasterTarget->value, DragableState);
+                            ecs_modified(world, raycasterTarget->value, DraggerLink);
+                            //ecs_set(it->world, raycasterTarget->value, DragableState, { 1 });
+                            //ecs_set(it->world, raycasterTarget->value, DraggerLink, { it->entities[i] });
+                        }
+                    } else if (mouse->left.released_this_frame) {
+                        set_ui_clicked_mut(world, raycasterTarget->value);
+                    }
+                } else if (ecs_has(world, device_entity, Gamepad)) {
+                    const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
+                    if (gamepad->a.released_this_frame) {    // pressed_this_frame
+                        set_ui_clicked_mut(world, raycasterTarget->value);
+                    }
                 }
-            }
-            // temporary - todo: rework raycaster data links
-            const Gamepad *gamepad = ecs_get(world, gamepad_entity, Gamepad);
-            if (gamepad->a.pressed_this_frame) {
-                zoxel_log(" > boom\n");
-                set_ui_clicked_mut(world, raycasterTarget->value);
             }
         }
     }

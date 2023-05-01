@@ -4,13 +4,14 @@
 #define zox_device_mode_none 0
 #define zox_device_mode_keyboardmouse 1
 #define zox_device_mode_gamepad 2
+#define zox_device_mode_touchscreen 3
+// #define zox_device_mode_shared 4 // mix between controller and idk?
 
 #include "data/finger.c"
 #include "data/physical_button.c"
 #include "data/physical_stick.c"
 zoxel_declare_tag(Device)
 zoxel_byte_component(MouseLock)
-// 0 Disconnected, 1 KeyboardMouse, 2 Gamepad, 3 Touch, 4 Shared ???
 zoxel_byte_component(DeviceMode)
 zoxel_memory_component(DeviceLinks, ecs_entity_t)
 #include "components/keyboard.c"
@@ -42,7 +43,7 @@ spawn_prefab_keyboard(world);
 spawn_prefab_mouse(world);
 spawn_prefab_gamepad(world);
 zoxel_system(DeviceModeSystem, EcsOnLoad, [in] DeviceLinks, [out] DeviceMode)
-zoxel_system(MouseRaycasterSystem, EcsOnUpdate, [in] Mouse, [out] Raycaster)
+zoxel_system(MouseRaycasterSystem, EcsOnUpdate, [in] DeviceLinks, [out] Raycaster)
 zoxel_system(DraggerEndSystem, EcsOnLoad, [out] DragableState, [out] DraggerLink, [out] DraggingDelta)
 zoxel_end_module(Inputs)
 
