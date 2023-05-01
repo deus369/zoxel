@@ -23,8 +23,7 @@ ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, int2 position
     children.value[0] = spawn_zext(world, zext_prefab, e, zext_position, zext_anchor, text, font_size, layer + 1, position2D, size);
     if (is_close_button) {
         children.value[1] = spawn_button(world, e, (int2) { - (font_size / 2) - header_margins / 2, 0 },
-            button_padding, // (int2) { font_size, font_size },
-            (float2) { 1.0f, 0.5f }, "X", font_size, layer + 1, position2D, size, canvas_size);
+            button_padding, (float2) { 1.0f, 0.5f }, "X", font_size, layer + 1, position2D, size, canvas_size);
         zoxel_add_tag(world, children.value[1], CloseButton);
         /*printf("--- Spawned close button [%lu] ---\n", (long int) children.value[1]);
         printf("--- Spawned header [%lu] ---\n", (long int) e);

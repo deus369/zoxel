@@ -2,8 +2,6 @@
 #define zoxel_texts
 
 const double zext_animation_speed = 10.0;
-ecs_entity_t zigel_prefab;
-ecs_entity_t zext_prefab;
 zoxel_declare_tag(FontStyle)                    //! Contains a bunch of fonts!
 zoxel_declare_tag(Font)                         //! A basic tag for a UI Element.
 zoxel_declare_tag(Zigel)                        //! An individual text character entity.
@@ -16,11 +14,10 @@ zoxel_component(AnimateZext, double)            //! A Zext that animates.
 zoxel_memory_component(FontData, byte2)         //! An array of points used for generating a font texture.
 zoxel_memory_component(ZextData, unsigned char) //! An array of bytes for characters.
 #include "util/default_font.c"
-#include "util/zigel_util.c"
-#include "util/zext_util.c"
 #include "prefabs/font.c"
 #include "prefabs/font_style.c"
 #include "prefabs/zigel.c"
+#include "util/zext_util.c"
 #include "prefabs/zext.c"
 #include "systems/font_texture_system.c"
 #include "systems/zext_update_system.c"
@@ -39,6 +36,10 @@ zoxel_define_component(ZextDirty)
 zoxel_define_component(AnimateZext)
 zoxel_define_memory_component(FontData)
 zoxel_define_memory_component(ZextData)
+spawn_font_style_prefab(world);
+spawn_font_prefab(world);
+spawn_zigel_prefab(world);
+spawn_zext_prefab(world);
 zoxel_filter(zextDirtyQuery, world, [none] Zext, [in] ZextDirty)
 zoxel_filter(generateTextureQuery, world, [none] FontTexture, [in] GenerateTexture)
 // zoxel_system_1(AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
@@ -47,16 +48,12 @@ zoxel_system(AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty,
     zoxel_system_ctx_main_thread(world, ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
         [in] ZextData, [in] ZextSize, [in] Layer2D, [in] Position2D, [in] PixelSize, [out] Children)
 #else
-    zoxel_system_ctx(world, ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
+    zoxel_system_ctx(ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
         [in] ZextData, [in] ZextSize, [in] Layer2D, [in] Position2D, [in] PixelSize, [out] Children)
 #endif
-zoxel_system_ctx(world, FontTextureSystem, EcsPreStore, generateTextureQuery, [none] FontTexture, [out] TextureDirty,
-    [out] Texture, [in] TextureSize, [in] GenerateTexture, [in] ZigelIndex)
+zoxel_system_ctx(FontTextureSystem, EcsPreStore, generateTextureQuery, [none] FontTexture, [out] TextureDirty,
+    [out] Texture, [in] TextureSize, [in] GenerateTexture, [in] ZigelIndex, [in] Color)
 zoxel_define_reset_system(ZextDirtyResetSystem, ZextDirty)
-spawn_font_style_prefab(world);
-spawn_font_prefab(world);
-zigel_prefab = spawn_zigel_prefab(world);
-zext_prefab = spawn_zext_prefab(world);
 zoxel_end_module(Texts)
 
 // \todo Display a UI Element anchored, with a pixel position.

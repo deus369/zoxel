@@ -7,6 +7,7 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
     add_ui_plus_components(world, e);
     zoxel_add_tag(world, e, Header);
     zoxel_add_tag(world, e, FrameTexture);
+    zoxel_set(world, e, Color, {{ 77, 44, 33, 255 }});
     zoxel_add(world, e, Children);
     zoxel_add_tag(world, e, Selectable);
     zoxel_set(world, e, SelectableState, { 0 });

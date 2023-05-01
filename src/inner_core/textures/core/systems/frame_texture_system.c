@@ -24,26 +24,32 @@ unsigned char check_texture(Texture* texture, const TextureSize *textureSize, in
 }
 
 //! Our function that creates a texture.
-void generate_frame_texture(Texture* texture, const TextureSize *textureSize) {
+void generate_frame_texture(Texture* texture, const TextureSize *textureSize, const Color *color2) {
     const int empty_buffer = 6;
     const int frame_thickness = 2;
-    const int2 redRange = { 15, 244 };
+    /*const int2 redRange = { 15, 244 };
     const int2 greenRange = { 15, 122 };
     const int2 blueRange = { 15, 122 };
     const int2 alphaRange = { 144, 256 };
     const int2 alphaRange2 = { 222, 256 };
-    color base = { 
+    color fill_color = { 
         redRange.x + rand() % (redRange.y - redRange.x),
         greenRange.x + rand() % (greenRange.y - greenRange.x),
         blueRange.x + rand() % (blueRange.y - blueRange.x),
         alphaRange.x + rand() % (alphaRange.y - alphaRange.x)
     };
-    color darker = { 
+    color outline_color = { 
         redRange.x + rand() % (redRange.y - redRange.x),
         greenRange.x + rand() % (greenRange.y - greenRange.x),
         blueRange.x + rand() % (blueRange.y - blueRange.x),
         alphaRange2.x + rand() % (alphaRange2.y - alphaRange2.x)
-    };
+    };*/
+    color fill_color = color2->value;
+    color outline_color = {
+        fill_color.g + 25 + rand() % 25,
+        fill_color.b + 25 + rand() % 25,
+        fill_color.r + 25 + rand() % 25,
+        255 };
     color empty = { 0, 0, 0, 0 };
     int index = 0;
     int2 pixel_position = { 0, 0 };
@@ -58,7 +64,7 @@ void generate_frame_texture(Texture* texture, const TextureSize *textureSize) {
                 || distance_to_corner_c <= empty_buffer || distance_to_corner_d <= empty_buffer) {
                 texture->value[index] = empty;
             } else {
-                texture->value[index] = base;
+                texture->value[index] = fill_color;
             }
             index++;
         }
@@ -67,7 +73,7 @@ void generate_frame_texture(Texture* texture, const TextureSize *textureSize) {
     index = 0;
     for (pixel_position.y = 0; pixel_position.y < textureSize->value.y; pixel_position.y++) {
         for (pixel_position.x = 0; pixel_position.x < textureSize->value.x; pixel_position.x++) {
-            if (!color_equal(texture->value[index], base)) {
+            if (!color_equal(texture->value[index], fill_color)) {
                 index++;
                 continue;
             }
@@ -75,9 +81,27 @@ void generate_frame_texture(Texture* texture, const TextureSize *textureSize) {
                 pixel_position.y <= frame_thickness ||
                 pixel_position.x >= textureSize->value.x - 1 - frame_thickness ||
                 pixel_position.y >= textureSize->value.y - 1 - frame_thickness) {
-                texture->value[index] = darker;
+                texture->value[index] = outline_color;
             } else if (check_texture(texture, textureSize, pixel_position, empty, frame_thickness)) {
-                texture->value[index] = darker;
+                texture->value[index] = outline_color;
+            }
+            index++;
+        }
+    }
+    // add noise to fill parts
+    index = 0;
+    const int fill_noise_addition = 55;
+    const int outline_noise_addition = 25;
+    for (pixel_position.y = 0; pixel_position.y < textureSize->value.y; pixel_position.y++) {
+        for (pixel_position.x = 0; pixel_position.x < textureSize->value.x; pixel_position.x++) {
+            if (color_equal(texture->value[index], fill_color)) {
+                texture->value[index].r += rand() % fill_noise_addition;
+                texture->value[index].g += rand() % fill_noise_addition;
+                texture->value[index].b += rand() % fill_noise_addition;
+            } else if (color_equal(texture->value[index], outline_color)) {
+                texture->value[index].r += rand() % outline_noise_addition;
+                texture->value[index].g += rand() % outline_noise_addition;
+                texture->value[index].b += rand() % outline_noise_addition;
             }
             index++;
         }
@@ -89,13 +113,13 @@ void FrameTextureSystem(ecs_iter_t *it) {
     if (!changeQuery || !ecs_query_changed(changeQuery, NULL)) {
         return;
     }
-    TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 2);
-    Texture *textures = ecs_field(it, Texture, 3);
-    const TextureSize *textureSizes = ecs_field(it, TextureSize, 4);
-    const GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 5);
+    const GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 2);
+    const TextureSize *textureSizes = ecs_field(it, TextureSize, 3);
+    const Color *colors = ecs_field(it, Color, 4);
+    Texture *textures = ecs_field(it, Texture, 5);
+    TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 6);
     for (int i = 0; i < it->count; i++) {
         const GenerateTexture *generateTexture = &generateTextures[i];
-        //! Only rebuild if GenerateTexture is set to 1 and EntityDirty is false.
         if (generateTexture->value == 0) {
             continue;
         }
@@ -103,12 +127,13 @@ void FrameTextureSystem(ecs_iter_t *it) {
         if (textureDirty->value != 0) {
             continue;
         }
-        textureDirty->value = 1;
         Texture *texture = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
+        const Color *color2 = &colors[i];
         int newLength = textureSize->value.x * textureSize->value.y;
+        textureDirty->value = 1;
         re_initialize_memory_component(texture, color, newLength);
-        generate_frame_texture(texture, textureSize);
+        generate_frame_texture(texture, textureSize, color2);
     }
 }
 zoxel_declare_system(FrameTextureSystem)

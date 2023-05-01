@@ -14,7 +14,7 @@ zoxel_define_tag(Line2D)
 zoxel_define_component(LineData2D)
 zoxel_define_component(LineElementData)
 zoxel_filter(line2Ds_query, world, [none] Line2D, [in] LineElementData, [none] CanvasLink, [none] LineData2D)
-zoxel_system_ctx(world, Line2DElementSystem, EcsPreUpdate, line2Ds_query, [none] Line2D, [in] LineElementData, [in] CanvasLink, [out] LineData2D)
+zoxel_system_ctx(Line2DElementSystem, EcsPreUpdate, line2Ds_query, [none] Line2D, [in] LineElementData, [in] CanvasLink, [out] LineData2D)
 if (!headless) {
     initialize_shader_line2D();
     zoxel_system_1(Line2DRenderSystem, EcsOnStore, [none] Line2D, [in] LineData2D, [in] LineThickness, [in] Color)

@@ -15,8 +15,12 @@ void spawn_zoxel_main_menu(ecs_world_t *world) {
         Children children = { };
         initialize_memory_component_non_pointer(children, ecs_entity_t, 3);
         zoxel_main_menu = spawn_main_menu(world, "Zoxel", window_position, window_size, window_anchor, 0);
-        fps_display = spawn_fps_display(world, main_canvas, 32);
-        quads_label = spawn_quad_count_label(world, main_canvas, 32);
+        #ifdef zoxel_debug_fps
+            fps_display = spawn_fps_display(world, main_canvas, 32);
+        #endif
+        #ifdef zoxel_debug_quads
+            quads_label = spawn_quad_count_label(world, main_canvas, 32);
+        #endif
 
         children.value[0] = zoxel_main_menu;
         children.value[1] = fps_display;

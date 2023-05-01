@@ -47,7 +47,7 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
 
 //! Multithreaded System Definitions.
-#define zoxel_system_ctx(world, id_, phase, ctx_, ...) { \
+#define zoxel_system_ctx(id_, phase, ctx_, ...) { \
     ecs_system_desc_t desc = {0}; \
     ecs_entity_desc_t edesc = {0}; \
     edesc.id = ecs_id(id_);\
@@ -99,7 +99,7 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
 #define zoxel_texture_generation_system(texture_tag, system) {\
     zoxel_filter(generateTextureQuery, world, [none] texture_tag, [in] GenerateTexture);\
-    zoxel_system_ctx(world, system, EcsOnUpdate, generateTextureQuery,\
+    zoxel_system_ctx(system, EcsOnUpdate, generateTextureQuery,\
         [none] texture_tag, [out] TextureDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture);\
 }
 

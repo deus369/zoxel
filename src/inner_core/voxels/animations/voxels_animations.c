@@ -21,7 +21,7 @@ zoxel_define_component(AnimateChunk)
 // zoxel_system_defines
 zoxel_system(AnimateChunkSystem, EcsOnLoad, [out] AnimateChunk, [out] GenerateChunk)
 zoxel_filter(generateNoiseChunkQuery, world, [none] NoiseChunk, [in] GenerateChunk)
-zoxel_system_ctx(world, NoiseChunkSystem, EcsPostLoad, generateNoiseChunkQuery, [none] NoiseChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] GenerateChunk)
+zoxel_system_ctx(NoiseChunkSystem, EcsPostLoad, generateNoiseChunkQuery, [none] NoiseChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] GenerateChunk)
 
 // zoxel_prefab_defines
 

@@ -17,7 +17,7 @@ ECS_COMPONENT_DECLARE(name)
     ecs_query_t *name = ecs_query_init(world, &(ecs_query_desc_t) { \
         .filter.expr = #__VA_ARGS__});
         
-#define zoxel_system_ctx(world, id_, phase, ctx_, ...)\
+#define zoxel_system_ctx(id_, phase, ctx_, ...)\
 { \
     ecs_system_desc_t desc = {0}; \
     ecs_entity_desc_t edesc = {0}; \
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 
     // initialize system with change query
     zoxel_filter(change_query, world, [in] TestComponent);
-    zoxel_system_ctx(world, TestChangeQuerySystem, EcsPostUpdate, change_query, [in] TestComponent);
+    zoxel_system_ctx(TestChangeQuerySystem, EcsPostUpdate, change_query, [in] TestComponent);
 
     // add entities
     ecs_entity_t test_entity;

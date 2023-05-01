@@ -6,6 +6,7 @@ ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     set_unique_entity_name(world, e, "prefab_window");
     zoxel_add_tag(world, e, Window);
     zoxel_add_tag(world, e, FrameTexture);
+    zoxel_set(world, e, Color, {{ 66, 35, 25, 255 }});
     // zoxel_set(world, e, SelectableState, { 0 });
     add_ui_plus_components(world, e);
     zoxel_add(world, e, Children);

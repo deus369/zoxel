@@ -6,7 +6,7 @@ const unsigned char terrain_min_height = 8;
 double terrain_amplifier = 64.0;
 double terrain_boost = 0.0;
 int lowest_voxel_height = -24;
-int inner_render_buffer = 1;
+int inner_render_buffer = 0; // 1;
 int lod_division_dividor = 3; // 2;
 const int max_chunks_build_per_frame = 32;
 #define octree_min_height -1.995f // 0.005f

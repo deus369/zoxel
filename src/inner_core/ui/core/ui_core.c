@@ -33,9 +33,9 @@ zoxel_define_component(InitializeEntityMesh)
 zoxel_filter(ui_query, world, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [out] SelectableState)
 zoxel_filter(pixel_positions_query, world, [none] Element, [in] PixelPosition,
     [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPixelPosition)
-zoxel_system_ctx(world, ElementPositionSystem, EcsPreUpdate, pixel_positions_query, [none] Element, [in] PixelPosition,
+zoxel_system_ctx(ElementPositionSystem, EcsPreUpdate, pixel_positions_query, [none] Element, [in] PixelPosition,
     [in] ParentLink, [in] Anchor, [in] CanvasLink, [out] Position2D, [out] CanvasPixelPosition)
-zoxel_system_ctx(world, ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [in] DeviceMode, [out] RaycasterTarget)
+zoxel_system_ctx(ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [in] DeviceMode, [out] RaycasterTarget)
 zoxel_system(ElementSelectedSystem, EcsOnUpdate, [out] Element, [in] SelectableState, [out] Brightness)
 if (!headless) {
     #ifdef zoxel_inputs

@@ -1,3 +1,5 @@
+ecs_entity_t zext_prefab;
+
 // the ui text entity that holds zigels.
 ecs_entity_t spawn_zext_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
@@ -13,6 +15,7 @@ ecs_entity_t spawn_zext_prefab(ecs_world_t *world) {
     // zoxel_set(world, e, MeshDirty, { 0 });
     // zoxel_add(world, e, AnimateZext);
     ecs_defer_end(world);
+    zext_prefab = e;
     #ifdef zoxel_debug_prefabs
         printf("spawn_prefab zext [%lu].\n", (long int) (e));
     #endif

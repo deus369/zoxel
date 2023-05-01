@@ -9,7 +9,6 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     zoxel_add_tag(world, e, Player);
     zoxel_add(world, e, DeviceLinks);
     zoxel_set(world, e, DeviceMode, { 0 });
-    // moving these
     zoxel_set(world, e, Raycaster, { { 0, 0 } });
     zoxel_set(world, e, RaycasterTarget, { 0 });
     ecs_defer_end(world);

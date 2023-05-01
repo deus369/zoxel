@@ -20,11 +20,11 @@ ecs_entity_t spawn_pause_ui(ecs_world_t *world, int2 position, int2 window_size,
     const char *header_label = "paused";
     const char *button_label_1 = "return";
     const char *button_label_2 = "options";
-    const char *button_label_3 = "exit";
+    const char *button_label_3 = "leave";
     const unsigned char is_close_button = 0;
     float ui_scale = default_ui_scale;
     int font_size = 28;
-    int header_margins = 4;
+    int header_margins = 12;
     #ifdef zoxel_on_android
         window_size.y = 160;
     #endif
@@ -62,9 +62,9 @@ ecs_entity_t spawn_pause_ui(ecs_world_t *world, int2 position, int2 window_size,
     // zoxel_add_tag(world, children.value[1], PlayGameButton);
     children.value[2] = spawn_button(world, e, options_button_position, button_padding,
         (float2) { 0.5f, 0.5f }, button_label_2, font_size, 1, position2D, window_size, canvas_size);
+    children.value[3] = spawn_button(world, e, (int2) { 0, - font_size * 2 }, button_padding,
+        (float2) { 0.5f, 0.5f }, button_label_3, font_size, 1, position2D, window_size, canvas_size);
     #ifndef zoxel_on_android
-        children.value[3] = spawn_button(world, e, (int2) { 0, - font_size * 2 }, button_padding,
-            (float2) { 0.5f, 0.5f }, button_label_3, font_size, 1, position2D, window_size, canvas_size);
         zoxel_add_tag(world, children.value[3], ExitGameButton);
     #endif
     ecs_set(world, e, Children, { children.length, children.value });

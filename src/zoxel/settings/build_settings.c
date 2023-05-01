@@ -1,3 +1,7 @@
+// -- in game ui debugs --
+// #define zoxel_debug_fps
+// #define zoxel_debug_quads
+
 // -- debugs --
 #define zox_logs                    // enables logging
 // #define log_to_file              // logs go to a file

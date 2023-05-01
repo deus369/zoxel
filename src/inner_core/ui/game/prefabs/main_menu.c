@@ -21,7 +21,7 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label, int2 
     const char *button_label_3 = "exit";
     float ui_scale = default_ui_scale;
     int font_size = 28;
-    int header_margins = 4;
+    int header_margins = 12;
     // scale the ui!
     window_size.x *= ui_scale;
     window_size.y *= ui_scale;

@@ -19,7 +19,7 @@ void DeviceModeSystem(ecs_iter_t *it) {
                     const Mouse *mouse = ecs_get(world, device_entity, Mouse);
                     if (mouse_is_any_input(mouse)) {
                         deviceMode->value = zox_device_mode_keyboardmouse;
-                        zoxel_log(" > input mode changed to keyboardmouse [m]\n");
+                        // zoxel_log(" > input mode changed to keyboardmouse [m]\n");
                     }
                 }
             } else if (ecs_has(world, device_entity, Gamepad)) {
@@ -27,7 +27,7 @@ void DeviceModeSystem(ecs_iter_t *it) {
                     const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
                     if (gamepad_is_any_input(gamepad)) {
                         deviceMode->value = zox_device_mode_gamepad;
-                        zoxel_log(" > input mode changed to gamepad\n");
+                        // zoxel_log(" > input mode changed to gamepad\n");
                     }
                 }
             }

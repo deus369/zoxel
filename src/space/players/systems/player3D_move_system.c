@@ -1,10 +1,10 @@
-const double jump_power = 4.0;
-const double movement_power = 32;
-const double movement_power_x = 24;
-const double movement_power_z = 32;
+const double jump_power = 12.0;
+// const double movement_power = 32;
+const double movement_power_x = 16;
+const double movement_power_z = 24;
 const float2 max_velocity = { 60 * 60, 160 * 60 };
-const double run_speed = 1.6;
-const float backwards_multiplier = 0.6f;
+const double run_speed = 1.3;
+const float backwards_multiplier = 0.7f;
 // do this until I get a player -> deviceLinks setup going
 // todo: get rotated velocity to test max
 // todo: Link directly to player characters from player

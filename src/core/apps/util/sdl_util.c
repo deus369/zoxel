@@ -1,5 +1,6 @@
 const char *iconFilename = resources_folder_name"textures/game_icon.png";
 int2 screen_dimensions = { 720, 480 };
+const int sdl_fullscreen_byte = SDL_WINDOW_FULLSCREEN_DESKTOP; // SDL_WINDOW_FULLSCREEN;
 
 // links to other modules
 // todo: find a cleaner way to do this
@@ -90,11 +91,11 @@ void on_viewport_resized(ecs_world_t *world, int2 new_screen_dimensions) {
 }
 
 void sdl_set_fullscreen(SDL_Window* window, unsigned char is_fullscreen) {
-    SDL_SetWindowFullscreen(window, is_fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
+    SDL_SetWindowFullscreen(window, is_fullscreen ? sdl_fullscreen_byte : 0);
 }
 
 void sdl_toggle_fullscreen(ecs_world_t *world, SDL_Window* window) {
-    unsigned char is_fullscreen = SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN;
+    unsigned char is_fullscreen = SDL_GetWindowFlags(window) & sdl_fullscreen_byte;
     if (!is_fullscreen) {
         zoxel_log(" > setting to fullscreen\n");
         on_viewport_resized(world, get_current_screen_size());

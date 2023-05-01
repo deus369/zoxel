@@ -38,29 +38,29 @@ spawn_player_character2D_prefab(world);
 spawn_player_character3D_prefab(world);
 #ifdef zoxel_physics2D
     zoxel_filter(playerCharacter2DQuery2, world, [none] PlayerCharacter2D, [out] Acceleration2D, [in] Velocity2D, [in] physics.DisableMovement)
-    zoxel_system_ctx(world, Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2, [in] Keyboard)
+    zoxel_system_ctx(Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2, [in] Keyboard)
 #endif
 #ifdef zoxel_physics3D
     zoxel_filter(player_character3Ds2, world, [none] PlayerCharacter3D, [out] Acceleration3D, [in] Velocity3D, [in] physics.DisableMovement, [in] Rotation3D)
-    zoxel_system_ctx(world, Player3DMoveSystem, EcsOnUpdate, player_character3Ds2, [none] Player, [in] DeviceLinks)
+    zoxel_system_ctx(Player3DMoveSystem, EcsOnUpdate, player_character3Ds2, [none] Player, [in] DeviceLinks)
     zoxel_filter(playerCharacter3DQuery2, world, [none] PlayerCharacter3D, [out] Alpha3D, [in] Omega3D, [in] physics.DisableMovement)
-    zoxel_system_ctx(world, Player3DRotateSystem, EcsOnUpdate, playerCharacter3DQuery2, [none] Player, [in] DeviceLinks)
+    zoxel_system_ctx(Player3DRotateSystem, EcsOnUpdate, playerCharacter3DQuery2, [none] Player, [in] DeviceLinks)
     zoxel_filter(gamepad_query, world, [in] Gamepad)
-    zoxel_system_ctx(world, PlayerPlayButtonSystem, EcsOnUpdate, gamepad_query, [none] elements.PlayGameButton, [out] ClickableState)
+    zoxel_system_ctx(PlayerPlayButtonSystem, EcsOnUpdate, gamepad_query, [none] elements.PlayGameButton, [out] ClickableState)
 #endif
 zoxel_filter(cameras, world, [none] cameras.Camera, [in] cameras.FreeRoam, [out] Position3D, [out] Rotation3D)
-zoxel_system_ctx(world, FreeCameraMoveSystem, EcsOnUpdate, cameras, [in] Keyboard)
+zoxel_system_ctx(FreeCameraMoveSystem, EcsOnUpdate, cameras, [in] Keyboard)
 zoxel_filter(cameras2, world, [none] cameras.Camera, [in] cameras.FreeRoam,
 #ifndef zoxel_quaternion_camera
     [out] Euler)
 #else
     [out] Rotation3D)
 #endif
-zoxel_system_ctx(world, FreeCameraRotateSystem, EcsOnUpdate, cameras2, [in] Mouse)
+zoxel_system_ctx(FreeCameraRotateSystem, EcsOnUpdate, cameras2, [in] Mouse)
 zoxel_filter(free_roam_cameras, world, [none] cameras.Camera, [out] cameras.FreeRoam, [none] !cameras.FirstPersonCamera)
-zoxel_system_ctx(world, FreeCameraToggleSystem, EcsOnUpdate, free_roam_cameras, [in] Mouse, [out] MouseLock)
+zoxel_system_ctx(FreeCameraToggleSystem, EcsOnUpdate, free_roam_cameras, [in] Mouse, [out] MouseLock)
 zoxel_filter(player_character3Ds, world, [none] PlayerCharacter, [out] physics.DisableMovement)
-zoxel_system_ctx(world, FreeCameraDisableMovementSystem, EcsOnUpdate, player_character3Ds, [in] Mouse)
+zoxel_system_ctx(FreeCameraDisableMovementSystem, EcsOnUpdate, player_character3Ds, [in] Mouse)
 zoxel_system(Player2DTestSystem, EcsOnUpdate, [in] Keyboard)
 zoxel_system(Player2DTestMainThreadSystem, EcsOnStore, [in] Keyboard)
 zoxel_system(PlayerPauseSystem, EcsOnUpdate, [in] Keyboard)
