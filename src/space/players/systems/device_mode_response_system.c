@@ -1,7 +1,7 @@
 void DeviceModeResponseSystem(ecs_iter_t *it) {
-    /*if (!ecs_query_changed(NULL, it)) {
-        return;
-    }*/
+    if (!ecs_query_changed(NULL, it)) return;
+    // if (!ecs_query_changed(it->ctx, NULL)) return;
+    // zoxel_log(" +++ Device Mode changed..\n");
     ecs_entity_t first_navivgation_ui = 0;
     if (ecs_is_alive(it->world, main_menu)) {
         const Children *ui_children = ecs_get(it->world, main_menu, Children);

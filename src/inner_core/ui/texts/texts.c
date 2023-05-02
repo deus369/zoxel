@@ -45,7 +45,7 @@ zoxel_filter(generateTextureQuery, world, [none] FontTexture, [in] GenerateTextu
 // zoxel_system_1(AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
 zoxel_system(AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
 #ifdef main_thread_zext_update_system
-    zoxel_system_ctx_main_thread(world, ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
+    zoxel_system_ctx_1(ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
         [in] ZextData, [in] ZextSize, [in] Layer2D, [in] Position2D, [in] PixelSize, [out] Children)
 #else
     zoxel_system_ctx(ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,

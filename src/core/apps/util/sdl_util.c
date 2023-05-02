@@ -1,31 +1,18 @@
 const char *iconFilename = resources_folder_name"textures/game_icon.png";
 int2 screen_dimensions = { 720, 480 };
 const int sdl_fullscreen_byte = SDL_WINDOW_FULLSCREEN_DESKTOP; // SDL_WINDOW_FULLSCREEN;
-
-// links to other modules
-// todo: find a cleaner way to do this
+extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event, int2 screen_dimensions);
+extern void input_extract_from_sdl_per_frame(ecs_world_t *world);
+extern int2 get_webasm_screen_size();
+// todo: find a cleaner way to link to other modules
+// rendering
 extern int check_opengl_error(char* function_name);
 extern void delete_all_opengl_resources(ecs_world_t *world);
 extern void restore_all_opengl_resources(ecs_world_t *world);
-#ifdef zoxel_inputs
-    extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event, int2 screen_dimensions);
-    extern void input_extract_from_sdl_per_frame(ecs_world_t *world);
-#endif
-//#ifdef zoxel_cameras
+// cameras
 extern void resize_cameras(int2 screen_size);
-//#endif
-//#ifdef zoxel_ui
+// uis
 extern void uis_on_viewport_resized(ecs_world_t *world, int2 screen_size);
-//#endif
-extern int2 get_webasm_screen_size();
-
-unsigned char is_steam_deck() {
-    if (getenv("STEAMOS_SESSIONTYPE") != NULL && strcmp(getenv("STEAMOS_SESSIONTYPE"), "steam") == 0) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
 
 void print_sdl() {
     #ifdef zoxel_debug_sdl
@@ -259,7 +246,6 @@ void recreate_main_window(ecs_world_t *world) {
     create_main_window();
 }
 
-//! handles sdl events including keys
 void update_sdl(ecs_world_t *world) {
     #ifdef zoxel_inputs
         input_extract_from_sdl_per_frame(world);

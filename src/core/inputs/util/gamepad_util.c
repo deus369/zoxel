@@ -57,7 +57,7 @@ float get_gamepad_axis(SDL_Joystick *joystick, int index) {
     if (axis_value >= -joystick_min_cutoff && axis_value <= joystick_min_cutoff) {
         axis_value = 0.0f;
     }
-    return axis_value;
+    return -axis_value; // invert as sdl inverts it first?
 }
 
 void set_gamepad_axis(PhysicalStick *stick, SDL_Joystick *joystick, int index) {

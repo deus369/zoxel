@@ -15,7 +15,6 @@ ecs_entity_t main_menu;
 
 ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label, int2 position, int2 window_size, float2 anchor, unsigned char is_close_button) {
     int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
-    // const char *header_label = "paused";
     const char *button_label_1 = "play";
     const char *button_label_2 = "options";
     const char *button_label_3 = "exit";

@@ -1,4 +1,4 @@
-//! Simply pushes mouse data into Raycaster component
+// pushes mouse data into Raycaster component
 void MouseRaycasterSystem(ecs_iter_t *it) {
     const DeviceLinks *deviceLinks = ecs_field(it, DeviceLinks, 1);
     Raycaster *raycasters = ecs_field(it, Raycaster, 2);

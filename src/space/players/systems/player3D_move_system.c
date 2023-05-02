@@ -56,10 +56,10 @@ void Player3DMoveSystem(ecs_iter_t *it) {
             } else if (ecs_has(world, device_entity, Gamepad)) {
                 const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
                 if (float_abs(gamepad->left_stick.value.x) >= joystick_buffer) {
-                    movement.x = -gamepad->left_stick.value.x;
+                    movement.x = gamepad->left_stick.value.x;
                 }
                 if (float_abs(gamepad->left_stick.value.y) >= joystick_buffer) {
-                    movement.z = -gamepad->left_stick.value.y;
+                    movement.z = gamepad->left_stick.value.y;
                 }
                 if (gamepad->lb.is_pressed || gamepad->rb.is_pressed) {
                     movement.x *= run_speed;

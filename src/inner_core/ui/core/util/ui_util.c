@@ -120,8 +120,6 @@ float2 initialize_ui_components(ecs_world_t *world, ecs_entity_t e, ecs_entity_t
         ui_entities[ui_entities_count] = e;
         ui_entities_count++;
     }
-    // set scale
-    // const PixelSize *canvasSize = ecs_get(world, main_canvas, PixelSize);
     float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
     float aspectRatio = canvasSizef.x / canvasSizef.y;
     float2 position2D = get_ui_real_position2D(world, e, parent, local_pixel_position, anchor, canvas_size);

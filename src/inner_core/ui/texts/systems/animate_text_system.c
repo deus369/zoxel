@@ -1,5 +1,4 @@
 void AnimateTextSystem(ecs_iter_t *it) {
-    // printf("AnimateZext: %i\n", it->count);
     double deltaTime = it->delta_time;
     AnimateZext *animateZexts = ecs_field(it, AnimateZext, 1);
     ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
@@ -19,7 +18,6 @@ void AnimateTextSystem(ecs_iter_t *it) {
                 #ifdef zoxel_debug_zext_updates
                     printf("AnimateZext :: [%lu]\n", (long int) it->entities[i]);
                 #endif
-                // update text to new thing
                 ZextData *zextData = &zextDatas[i];
                 int index = rand() % zextData->length;
                 zextData->value[index] = 1 + rand() % 52;

@@ -35,7 +35,6 @@ ecs_entity_t spawn_chunk_prefab(ecs_world_t *world) {
     return e;
 }
 
-//! Spawn a ChunkData.
 ecs_entity_t spawn_chunk(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, chunk_prefab);

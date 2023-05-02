@@ -12,6 +12,7 @@ zoxel_component(CanvasPixelPosition, int2)
 zoxel_component(Anchor, float2)             //! An anchor, used to get base position using canvas
 zoxel_component(CanvasLink, ecs_entity_t)   //! A link to a canvas
 zoxel_byte_component(InitializeEntityMesh)
+zoxel_time_component(NavigatorTimer)
 #include "util/ui_util.c"
 #include "util/anchor_util.c"
 #include "prefabs/canvas.c"
@@ -19,6 +20,7 @@ zoxel_byte_component(InitializeEntityMesh)
 #include "systems/element_raycast_system.c"
 #include "systems/element_selected_system.c"
 #include "systems/element_activate_system.c"
+#include "systems/element_navigation_system.c"
 #include "systems/element_position_system.c"
 #include "systems/element_mesh_system.c"
 
@@ -30,6 +32,7 @@ zoxel_define_component(CanvasPixelPosition)
 zoxel_define_component(Anchor)
 zoxel_define_component(CanvasLink)
 zoxel_define_component(InitializeEntityMesh)
+zoxel_define_component(NavigatorTimer)
 zoxel_filter(ui_query, world, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [out] SelectableState)
 zoxel_filter(pixel_positions_query, world, [none] Element, [in] PixelPosition,
     [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPixelPosition)
@@ -40,6 +43,7 @@ zoxel_system(ElementSelectedSystem, EcsOnUpdate, [out] Element, [in] SelectableS
 if (!headless) {
     #ifdef zoxel_inputs
         zoxel_system(ElementActivateSystem, EcsPostUpdate, [in] DeviceLinks, [in] RaycasterTarget)
+        zoxel_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [out] NavigatorTimer, [out] RaycasterTarget)
     #endif
     zoxel_system_1(ElementMeshSystem, ui_mesh_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture)
     element_mesh_system_id = ecs_id(ElementMeshSystem);

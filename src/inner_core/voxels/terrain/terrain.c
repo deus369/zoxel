@@ -46,7 +46,7 @@ zoxel_system_ctx(OctreeTerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuer
     [none] TerrainChunk, [in] ChunkPosition, [in] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree)
 zoxel_filter(terrain_chunks_query, world,
     [none] TerrainChunk, [in] ChunkPosition, [in] ChunkNeighbors, [out] ChunkDivision, [out] ChunkDirty)
-zoxel_system_ctx_main_thread(world, StreamPointSystem, EcsOnUpdate, terrain_chunks_query,
+zoxel_system_ctx_1(StreamPointSystem, EcsOnUpdate, terrain_chunks_query,
     [none] Streamer, [in] Position3D, [out] StreamPoint)
 zoxel_system_ctx(ChunkUVsBuildSystem, EcsOnUpdate, generateChunkQuery, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ChunkNeighbors,
     [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty, [none] !MeshColorRGBs)

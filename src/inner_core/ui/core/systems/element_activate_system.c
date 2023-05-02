@@ -19,17 +19,11 @@
                 continue;
             }
             const DeviceLinks *deviceLinks2 = &deviceLinks[i];
-            // zoxel_log(" > raycasterTarget->value %lu\n", raycasterTarget->value);
             for (int j = 0; j < deviceLinks2->length; j++) {
                 ecs_entity_t device_entity = deviceLinks2->value[j];
                 if (ecs_has(world, device_entity, Mouse)) {
                     const Mouse *mouse = ecs_get(world, device_entity, Mouse);
                     if (mouse->left.pressed_this_frame) {
-                        // set_ui_clicked_mut(world, raycasterTarget->value);
-                        // zoxel_log(" > button clicked [%lu]\n", raycasterTarget->value);
-                        // printf("Clicked UI: [%lu]\n", (long int) raycasterTarget->value);
-                        // zoxel_log("     + button Clickable\n", raycasterTarget->value);
-                        // how to do this best way?
                         if (ecs_has(world, raycasterTarget->value, Dragable)) {
                             DragableState *dragableState = ecs_get_mut(world, raycasterTarget->value, DragableState);
                             DraggerLink *draggerLink = ecs_get_mut(world, raycasterTarget->value, DraggerLink);
@@ -37,8 +31,6 @@
                             draggerLink->value = it->entities[i];
                             ecs_modified(world, raycasterTarget->value, DragableState);
                             ecs_modified(world, raycasterTarget->value, DraggerLink);
-                            //ecs_set(it->world, raycasterTarget->value, DragableState, { 1 });
-                            //ecs_set(it->world, raycasterTarget->value, DraggerLink, { it->entities[i] });
                         }
                     } else if (mouse->left.released_this_frame) {
                         set_ui_clicked_mut(world, raycasterTarget->value);

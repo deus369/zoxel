@@ -44,6 +44,4 @@ if (init_sdl() == EXIT_SUCCESS) {
 }
 zoxel_end_module(Apps)
 
-// const int window_index = 0; // 1;
-
 #endif

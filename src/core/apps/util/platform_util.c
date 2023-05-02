@@ -1,3 +1,11 @@
+unsigned char is_steam_deck() {
+    if (getenv("STEAMOS_SESSIONTYPE") != NULL && strcmp(getenv("STEAMOS_SESSIONTYPE"), "steam") == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 void debug_platform() {
     if (is_steam_deck()) {
         zoxel_log(" > running on steamdeck\n");

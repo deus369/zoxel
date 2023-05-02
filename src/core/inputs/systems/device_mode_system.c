@@ -1,4 +1,5 @@
 void DeviceModeSystem(ecs_iter_t *it) {
+    unsigned char did_update = 0;
     const DeviceLinks *deviceLinks = ecs_field(it, DeviceLinks, 1);
     DeviceMode *deviceModes = ecs_field(it, DeviceMode, 2);
     for (int i = 0; i < it->count; i++) {
@@ -11,7 +12,8 @@ void DeviceModeSystem(ecs_iter_t *it) {
                     const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
                     if (keyboard_is_any_input(keyboard)) {
                         deviceMode->value = zox_device_mode_keyboardmouse;
-                        zoxel_log(" > input mode changed to keyboardmouse [k]\n");
+                        did_update = 1;
+                        // zoxel_log(" > input mode changed to keyboardmouse [k]\n");
                     }
                 }
             } else if (ecs_has(world, device_entity, Mouse)) {
@@ -19,6 +21,7 @@ void DeviceModeSystem(ecs_iter_t *it) {
                     const Mouse *mouse = ecs_get(world, device_entity, Mouse);
                     if (mouse_is_any_input(mouse)) {
                         deviceMode->value = zox_device_mode_keyboardmouse;
+                        did_update = 1;
                         // zoxel_log(" > input mode changed to keyboardmouse [m]\n");
                     }
                 }
@@ -27,11 +30,17 @@ void DeviceModeSystem(ecs_iter_t *it) {
                     const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
                     if (gamepad_is_any_input(gamepad)) {
                         deviceMode->value = zox_device_mode_gamepad;
+                        did_update = 1;
                         // zoxel_log(" > input mode changed to gamepad\n");
                     }
                 }
             }
         }
     }
+    if (!did_update) {
+        ecs_query_skip(it);
+    }/* else {
+        zoxel_log(" ===+++ updated device mode +++===\n");
+    }*/
 }
 zoxel_declare_system(DeviceModeSystem)

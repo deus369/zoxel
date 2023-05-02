@@ -13,22 +13,28 @@ void raycaster_deselect_ui(ecs_world_t *world, const RaycasterTarget *raycasterT
 }
 
 void raycaster_select_ui(ecs_world_t *world, RaycasterTarget *raycasterTarget, ecs_entity_t ui) {
-    raycaster_deselect_ui(world, raycasterTarget);
-    raycasterTarget->value = ui;
+    if (raycasterTarget->value != ui) {
+        // zoxel_log(" > raycaster_select_ui : selecting [%lu] from [%lu]\n", ui, raycasterTarget->value);
+        raycaster_deselect_ui(world, raycasterTarget);
+        raycasterTarget->value = ui;
+    }
+}
+
+void set_ui_selected_mut(ecs_world_t *world, ecs_entity_t ui) {
+    if (ui != 0) {
+        SelectableState *selectableState = ecs_get_mut(world, ui, SelectableState);
+        selectableState->value = 1;
+        ecs_modified(world, ui, SelectableState);
+    }
 }
 
 void raycaster_select_ui_mut(ecs_world_t *world, ecs_entity_t raycaster_entity, ecs_entity_t ui) {
     RaycasterTarget *raycasterTarget = ecs_get_mut(world, raycaster_entity, RaycasterTarget);
     if (raycasterTarget->value != ui) {
-        // zoxel_log(" > selecting [%lu] from [%lu]\n", ui, raycasterTarget->value);
+        // zoxel_log(" > raycaster_select_ui_mut : selecting [%lu] from [%lu]\n", ui, raycasterTarget->value);
         raycaster_select_ui(world, raycasterTarget, ui);
         ecs_modified(world, raycaster_entity, RaycasterTarget);
-        if (ui != 0) {
-            // ecs_set(it->world, play_button_entity, SelectableState, { 1 });
-            SelectableState *selectableState = ecs_get_mut(world, ui, SelectableState);
-            selectableState->value = 1;
-            ecs_modified(world, ui, SelectableState);
-        }
+        set_ui_selected_mut(world, ui);
     }
 }
 
@@ -92,11 +98,10 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         }
         if (raycasterTarget->value != ui_selected) {
             raycaster_select_ui(it->world, raycasterTarget, ui_selected);
-            //deselect_last_ui(it->world, raycasterTarget);
-            //raycasterTarget->value = ui_selected;
             if (ui_layer != -1) {
                 ui_selected_selectableState->value = 1;
             }
+            // zoxel_log(" > mouse raycasting new ui\n");
             // printf("    -> new target ui [%lu] \n", (long int) raycasterTarget->value);
         }
     }

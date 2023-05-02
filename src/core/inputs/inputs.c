@@ -42,11 +42,12 @@ zoxel_define_component(Touchscreen)
 spawn_prefab_keyboard(world);
 spawn_prefab_mouse(world);
 spawn_prefab_gamepad(world);
-zoxel_system(DeviceModeSystem, EcsOnLoad, [in] DeviceLinks, [out] DeviceMode)
+zoxel_system_1(DeviceModeSystem, EcsOnLoad, [in] DeviceLinks, [out] DeviceMode)
 zoxel_system(MouseRaycasterSystem, EcsOnUpdate, [in] DeviceLinks, [out] Raycaster)
 zoxel_system(DraggerEndSystem, EcsOnLoad, [out] DragableState, [out] DraggerLink, [out] DraggingDelta)
 zoxel_end_module(Inputs)
 
+// todo: get change filters to work in multithreaded systems
 // todo: spawn/destroy device entity upon connection/removal
 // todo: Add extract systems as systems
 

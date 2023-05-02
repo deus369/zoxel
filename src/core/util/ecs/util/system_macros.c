@@ -60,10 +60,10 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
     desc.multi_threaded = 1; \
     desc.ctx = ctx_; \
     ecs_id(id_) = ecs_system_init(world, &desc); \
-} \
+}\
 ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
-#define zoxel_system_ctx_main_thread(world, id_, phase, ctx_, ...) { \
+#define zoxel_system_ctx_1(id_, phase, ctx_, ...) { \
     ecs_system_desc_t desc = {0}; \
     ecs_entity_desc_t edesc = {0}; \
     edesc.id = ecs_id(id_);\
@@ -98,9 +98,9 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 */
 
 #define zoxel_texture_generation_system(texture_tag, system) {\
-    zoxel_filter(generateTextureQuery, world, [none] texture_tag, [in] GenerateTexture);\
+    zoxel_filter(generateTextureQuery, world, [none] texture_tag, [in] GenerateTexture)\
     zoxel_system_ctx(system, EcsOnUpdate, generateTextureQuery,\
-        [none] texture_tag, [out] TextureDirty, [out] TextureData, [in] TextureSize, [in] GenerateTexture);\
+        [none] texture_tag, [out] TextureDirty, [out] TextureData, [in] TextureSize, [in] GenerateTexture)\
 }
 
 #define zoxel_button_system(system, tag) zoxel_system(system, EcsPostUpdate, [none] tag, [in] ClickableState);

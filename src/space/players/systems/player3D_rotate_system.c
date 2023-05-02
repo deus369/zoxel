@@ -34,9 +34,9 @@ void Player3DRotateSystem(ecs_iter_t *it) {
             } else if (ecs_has(world, device_entity, Gamepad)) {
                 const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
                 if (gamepad->right_stick.value.x < -joystick_buffer) {
-                    euler.y = -gamepad->right_stick.value.x * rotate_power;
+                    euler.y = gamepad->right_stick.value.x * rotate_power;
                 } else if (gamepad->right_stick.value.x > joystick_buffer) {
-                    euler.y = -gamepad->right_stick.value.x * rotate_power;
+                    euler.y = gamepad->right_stick.value.x * rotate_power;
                 }
             }
         }

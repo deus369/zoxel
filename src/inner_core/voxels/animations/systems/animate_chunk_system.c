@@ -2,7 +2,7 @@ void AnimateChunkSystem(ecs_iter_t *it) {
     double deltaTime = it->delta_time;
     AnimateChunk *animateTextures = ecs_field(it, AnimateChunk, 1);
     GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 2);
-    unsigned char changed = 0;   //! Skip changes if textureData isn't updated.
+    unsigned char changed = 0;
     for (int i = 0; i < it->count; i++) {
         AnimateChunk *animateChunk = &animateTextures[i];
         animateChunk->value -= deltaTime;

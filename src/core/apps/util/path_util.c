@@ -218,26 +218,3 @@ char* concat_file_path(char* resources_path, char* file_path) {
     strcat(full_file_path, file_path);
     return full_file_path;
 }
-
-/*char *path_test = malloc(strlen(base_path) + 1 + 1);
-strcpy(path_test, base_path);
-strcat(path_test, ".");
-DIR* dir3 = opendir(path_test);
-if (dir3)
-{
-    zoxel_log(" -> path_test [%s]\n", path_test);
-    struct dirent *dir3_data;
-    while ((dir3_data = readdir(dir3)) != NULL)
-    {
-        zoxel_log("     -> child path [%s]\n", dir3_data->d_name);
-    }
-    closedir(dir3);
-}
-free(path_test);*/
-            /*char *resources_path2 = NULL;
-            resources_path2 = malloc(strlen(base_path) + strlen(resources_folder_name2) + 1);
-            strcpy(resources_path2, base_path);
-            strcat(resources_path2, resources_folder_name2);
-            copy_resources_directory(get_asset_manager(), resources_path2, "resources/voxes/monsters");*/
-        //mkdir("/data/data/org.libsdl.app/files/resources", 0777);
-        //mkdir("/data/data/org.libsdl.app/files/resources/voxes", 0777);

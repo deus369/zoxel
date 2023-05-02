@@ -65,7 +65,10 @@ zoxel_system(Player2DTestSystem, EcsOnUpdate, [in] Keyboard)
 zoxel_system(Player2DTestMainThreadSystem, EcsOnStore, [in] Keyboard)
 zoxel_system(PlayerPauseSystem, EcsOnUpdate, [in] Keyboard)
 zoxel_system(PlayerPauseSystem2, EcsOnUpdate, [in] Gamepad)
-zoxel_system(DeviceModeResponseSystem, EcsOnUpdate, [in] DeviceMode)
+{
+    // zoxel_filter(players, world, [in] DeviceMode)
+    zoxel_system_1(DeviceModeResponseSystem, EcsOnUpdate, [in] DeviceMode)
+}
 zoxel_end_module(Players)
 
 //#if zoxel_particles2D

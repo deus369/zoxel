@@ -83,9 +83,7 @@ void generate_font_texture(TextureData* textureData, const TextureSize *textureS
     random.NextFloat(pointNoise.y * 2) - pointNoise.y };*/
 
 void FontTextureSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(it->ctx, NULL)) {
-        return;
-    }
+    if (!ecs_query_changed(it->ctx, NULL)) return;
     const Children *font_style_children = ecs_get(world, font_style_entity, Children);
     TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 2);
     TextureData *textures = ecs_field(it, TextureData, 3);

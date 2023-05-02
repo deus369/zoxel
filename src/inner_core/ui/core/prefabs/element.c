@@ -7,7 +7,6 @@ ecs_entity_t spawn_prefab_element(ecs_world_t *world) {
     zoxel_set(world, e, Color, {{ 66, 35, 25, 255 }});
     zoxel_set(world, e, SelectableState, { 0 });
     add_ui_plus_components(world, e);
-    // zoxel_log("Spawned test_custom_mesh [%lu].\n", (long int) (e));
     // zoxel_add_tag(world, e, SaveTexture);
     ecs_defer_end(world);
     element_prefab = e;
