@@ -1,4 +1,3 @@
-//! Every noise_animation_speed it makes the texture update.
 void AnimateNoiseSystem(ecs_iter_t *it) {
     double deltaTime = it->delta_time;
     AnimateTexture *animateTextures = ecs_field(it, AnimateTexture, 1);

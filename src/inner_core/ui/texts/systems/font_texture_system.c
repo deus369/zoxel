@@ -1,9 +1,4 @@
-// when font is dirty, update it
-// generate font texture based on byte2 points
-// #define debug_font_texture
-
-//! Our function that creates a texture.
-void generate_font_texture(Texture* texture, const TextureSize *textureSize, const FontData *fontData, const Color *color2) {
+void generate_font_texture(TextureData* textureData, const TextureSize *textureSize, const FontData *fontData, const Color *color2) {
     const unsigned char is_background = 0;
     const color nothing = { 0, 0, 0, 0 };
     // use FontData byte2 data.
@@ -31,19 +26,16 @@ void generate_font_texture(Texture* texture, const TextureSize *textureSize, con
     for (int k = 0; k < textureSize->value.y; k++) {
         for (int j = 0; j < textureSize->value.x; j++) {
             if (!is_background) {
-                texture->value[index] = nothing;
+                textureData->value[index] = nothing;
             } else if (j <= frame_thickness || k <= frame_thickness || j >= textureSize->value.x - 1 - frame_thickness || k >= textureSize->value.y - 1 - frame_thickness) {
-                texture->value[index] = base;
+                textureData->value[index] = base;
             } else {
-                texture->value[index] = darker;
+                textureData->value[index] = darker;
             }
             index++;
         }
     }
     // point A to B
-    // var random = generateFontTexture.random;
-    // var size = new int3(texture.size.x, texture.size.y, 0);
-    // int2 size = (int2) { 1, 1 };
     for (int i = 0; i < fontData->length; i += 2) {
         int2 pointA = get_from_byte2(fontData->value[i]);
         int2 pointB = get_from_byte2(fontData->value[i + 1]);
@@ -77,7 +69,7 @@ void generate_font_texture(Texture* texture, const TextureSize *textureSize, con
                     int2 drawPoint = (int2) { splash_point.x + k, splash_point.y + l};
                     if (drawPoint.x >= 0 && drawPoint.x < textureSize->value.x
                         && drawPoint.y >= 0 && drawPoint.y < textureSize->value.y) {
-                        texture->value[int2_array_index(drawPoint, textureSize->value)] = font_color;
+                        textureData->value[int2_array_index(drawPoint, textureSize->value)] = font_color;
                     }
                 }
             }
@@ -96,7 +88,7 @@ void FontTextureSystem(ecs_iter_t *it) {
     }
     const Children *font_style_children = ecs_get(world, font_style_entity, Children);
     TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 2);
-    Texture *textures = ecs_field(it, Texture, 3);
+    TextureData *textures = ecs_field(it, TextureData, 3);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 4);
     const GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 5);
     const ZigelIndex *zigelIndexs = ecs_field(it, ZigelIndex, 6);
@@ -121,19 +113,14 @@ void FontTextureSystem(ecs_iter_t *it) {
         if (zigelIndex->value >= font_styles_length) {
             continue;
         }
-        Texture *texture = &textures[i];
+        TextureData *textureData = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
         const Color *color2 = &colors[i];
         ecs_entity_t zigel_font_entity = font_style_children->value[zigelIndex->value];
         const FontData *fontData = ecs_get(world, zigel_font_entity, FontData);
         int newLength = textureSize->value.x * textureSize->value.y;
-        re_initialize_memory_component(texture, color, newLength);
-        generate_font_texture(texture, textureSize, fontData, color2);
+        re_initialize_memory_component(textureData, color, newLength);
+        generate_font_texture(textureData, textureSize, fontData, color2);
     }
 }
 zoxel_declare_system(FontTextureSystem)
-
-// if (zigel_font_entity == 0 || !ecs_is_valid(it->world, zigel_font_entity) || !ecs_is_alive(it->world, zigel_font_entity))
-// {
-//     continue;
-// }

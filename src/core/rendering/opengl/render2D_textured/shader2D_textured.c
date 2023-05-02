@@ -1,19 +1,8 @@
-//! Keep property reference in material, upon creation.
-// first, get working on pc
-//  then, move texture updating to the entity system
-// texture issues
-//  https://www.reddit.com/r/opengl/comments/ydsqkn/textured_square_works_on_pinephone_pro_but_not_pc/
-//  https://github.com/edo9300/edopro/issues/151
-// const char *playerCharacterTextureName = "resources/textures/Test.png";
 const float shader_depth_multiplier = 0.001f; // 0.0001f;
 const unsigned char disableTextureLoaded = 0;
 int textureType = GL_NEAREST; // GL_LINEAR
-//! \todo Move these references to MaterialGPULink
-//! \todo Update texture based on Player Entity texture updateing
 GLuint2 shader2D_textured;
-// MaterialGPULink and properties
 GLuint texturedMaterial;
-//! Mesh B - Buffers/Texture
 GLuint2 squareTexturedMesh;
 GLuint squareTexturedModelUVs;
 
@@ -72,8 +61,7 @@ GLuint spawn_gpu_texture_buffers() {
     return textureID;
 }
 
-void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint texture,
-    float2 position, float angle, float scale, float brightness) {
+void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint texture, float2 position, float angle, float scale, float brightness) {
     if (material == 0) {
         // printf("render_entity_material2D material is 0.\n");
         return;
@@ -104,8 +92,7 @@ void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint
     #endif
 }
 
-void render_entity_material2D_and_mesh(const float4x4 viewMatrix, GLuint2 mesh, GLuint material, GLuint texture,
-    float2 position, float angle, float scale, float brightness, unsigned char layer) {
+void render_entity_material2D_and_mesh(const float4x4 viewMatrix, GLuint2 mesh, GLuint material, GLuint texture, float2 position, float angle, float scale, float brightness, unsigned char layer) {
     if (material == 0) {
         // printf("render_entity_material2D material is 0.\n");
         return;

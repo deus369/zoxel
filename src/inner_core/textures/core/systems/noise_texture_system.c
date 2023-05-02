@@ -1,5 +1,5 @@
-//! Our function that creates a texture.
-void GenerateNoise(Texture* texture, const TextureSize *textureSize, unsigned char is_dirt) {
+//! Our function that creates a textureData.
+void GenerateNoise(TextureData* textureData, const TextureSize *textureSize, unsigned char is_dirt) {
     int2 redRange = { 15, 244 };
     int2 greenRange = { 15, 122 };
     int2 blueRange = { 15, 122 };
@@ -17,59 +17,59 @@ void GenerateNoise(Texture* texture, const TextureSize *textureSize, unsigned ch
                 int distanceToMidX = abs_integer(textureSize->value.x / 2 - j);
                 int distanceToMidY = abs_integer(textureSize->value.y / 2 - k);
                 if (distanceToMidX + distanceToMidY >= textureSize->value.x / 2) {
-                    texture->value[index].r = 0;
-                    texture->value[index].g = 0;
-                    texture->value[index].b = 0;
-                    texture->value[index].a = 0;
+                    textureData->value[index].r = 0;
+                    textureData->value[index].g = 0;
+                    textureData->value[index].b = 0;
+                    textureData->value[index].a = 0;
                     continue;
                 }
             }
-            texture->value[index].r = redRange.x + rand() % (redRange.y - redRange.x);
-            texture->value[index].g = greenRange.x + rand() % (greenRange.y - greenRange.x);
-            texture->value[index].b = blueRange.x + rand() % (blueRange.y - blueRange.x);
-            texture->value[index].a = alphaRange.x + rand() % (alphaRange.y - alphaRange.x);
+            textureData->value[index].r = redRange.x + rand() % (redRange.y - redRange.x);
+            textureData->value[index].g = greenRange.x + rand() % (greenRange.y - greenRange.x);
+            textureData->value[index].b = blueRange.x + rand() % (blueRange.y - blueRange.x);
+            textureData->value[index].a = alphaRange.x + rand() % (alphaRange.y - alphaRange.x);
             if (j >= textureSize->value.x / 2 && k < textureSize->value.y / 2) {
-                texture->value[index].g *= 2;
-                texture->value[index].b = texture->value[index].r - 30;
-                texture->value[index].r /= 2;
+                textureData->value[index].g *= 2;
+                textureData->value[index].b = textureData->value[index].r - 30;
+                textureData->value[index].r /= 2;
             }
-            // texture->value[index].a = rand() % 256;
-            // debug sides of texture, starts at top left
+            // textureData->value[index].a = rand() % 256;
+            // debug sides of textureData, starts at top left
             if (!is_dirt) {
                 if (j == 0) {
-                    texture->value[index].r = 255;
+                    textureData->value[index].r = 255;
                 } else if (k == 0) {
-                    texture->value[index].g = 255;
+                    textureData->value[index].g = 255;
                 } else if (j == textureSize->value.x - 1) {
-                    texture->value[index].b = 255;
+                    textureData->value[index].b = 255;
                 } else if (k == textureSize->value.y - 1) {
-                    texture->value[index].r = 255;
-                    texture->value[index].g = 255;
+                    textureData->value[index].r = 255;
+                    textureData->value[index].g = 255;
                 }
             } else if (is_texture_outlines == 1) {
                 // outline voxel textures
                 if (j == 0 || k == 0 || j == textureSize->value.x - 1 || k == textureSize->value.y - 1) {
-                    texture->value[index].r = 0;
-                    texture->value[index].g = 0;
-                    texture->value[index].b = 0;
+                    textureData->value[index].r = 0;
+                    textureData->value[index].g = 0;
+                    textureData->value[index].b = 0;
                 }
             } else if (is_texture_outlines == 2) {
                 if (j == 0 || k == 0 || j == textureSize->value.x - 1 || k == textureSize->value.y - 1) {
-                    texture->value[index].r /= 2;
-                    texture->value[index].g /= 2;
-                    texture->value[index].b /= 2;
+                    textureData->value[index].r /= 2;
+                    textureData->value[index].g /= 2;
+                    textureData->value[index].b /= 2;
                 }
             } else if (is_texture_outlines == 3) {
                 if (j == 0 || k == 0 || j == textureSize->value.x - 1 || k == textureSize->value.y - 1) {
-                    texture->value[index].r *= 5;
-                    texture->value[index].g *= 5;
-                    texture->value[index].b *= 5;
-                    texture->value[index].r /= 6;
-                    texture->value[index].g /= 6;
-                    texture->value[index].b /= 6;
+                    textureData->value[index].r *= 5;
+                    textureData->value[index].g *= 5;
+                    textureData->value[index].b *= 5;
+                    textureData->value[index].r /= 6;
+                    textureData->value[index].g /= 6;
+                    textureData->value[index].b /= 6;
                 }
             }
-            // printf("texture value: %i\n", texture->value[index].r);
+            // printf("textureData value: %i\n", textureData->value[index].r);
         }
     }
 }
@@ -86,7 +86,7 @@ void NoiseTextureSystem(ecs_iter_t *it) {
     // while (ecs_query_next(&changeIterator));
     // printf("NoiseTextureSystem: [GenerateTexture Changed]\n");
     TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 2);
-    Texture *textures = ecs_field(it, Texture, 3);
+    TextureData *textures = ecs_field(it, TextureData, 3);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 4);
     const GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 5);
     for (int i = 0; i < it->count; i++) {
@@ -100,13 +100,13 @@ void NoiseTextureSystem(ecs_iter_t *it) {
             continue;
         }
         textureDirty->value = 1;
-        Texture *texture = &textures[i];
+        TextureData *textureData = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
         int newLength = textureSize->value.x * textureSize->value.y;
-        re_initialize_memory_component(texture, color, newLength);
+        re_initialize_memory_component(textureData, color, newLength);
         unsigned char is_dirt = ecs_has(it->world, it->entities[i], DirtTexture);
-        GenerateNoise(texture, textureSize, is_dirt);
-        // printf("Noise Texture Generated: [%lu] \n", (long int) it->entities[i]);
+        GenerateNoise(textureData, textureSize, is_dirt);
+        // printf("Noise TextureData Generated: [%lu] \n", (long int) it->entities[i]);
     }
 }
 zoxel_declare_system(NoiseTextureSystem)

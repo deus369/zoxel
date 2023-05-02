@@ -135,10 +135,10 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it) {
                 const CanvasPixelPosition *canvasPixelPosition = ecs_get(world, children->value[i], CanvasPixelPosition);
                 const ParentLink *parentLink = ecs_get(world, children->value[i], ParentLink);
                 const TextureSize *textureSize = ecs_get(world, children->value[i], TextureSize);
-                const Texture *texture = ecs_get(world, children->value[i], Texture);
-                zoxel_log("    [%i] is [%fx%f] - zigelIndex [%i] - canvasPixelPosition [%ix%i] - parentLink [%lu] - texture [%ix%i:%i]\n",
+                const TextureData *textureData = ecs_get(world, children->value[i], TextureData);
+                zoxel_log("    [%i] is [%fx%f] - zigelIndex [%i] - canvasPixelPosition [%ix%i] - parentLink [%lu] - textureData [%ix%i:%i]\n",
                     i, position2D->value.x, position2D->value.y, zigelIndex->value, canvasPixelPosition->value.x, canvasPixelPosition->value.y,
-                    (long int) parentLink->value, textureSize->value.x, textureSize->value.y, texture->length);
+                    (long int) parentLink->value, textureSize->value.x, textureSize->value.y, textureData->length);
                 ecs_set(world, children->value[i], GenerateTexture, { 1 });
                 ecs_set(world, children->value[i], MeshDirty, { 1 });
                 ecs_set(world, children->value[i], TextureDirty, { 1 });

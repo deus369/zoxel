@@ -41,7 +41,7 @@ int spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children,
     #endif
     // update the reused ones.
     for (unsigned char i = 0; i < reuse_count; i++) {
-        // re set all old zigels, if index changes, regenerate font texture
+        // re set all old zigels, if index changes, regenerate font textureData
         ecs_entity_t old_zigel = children->value[i];
         const ZigelIndex *zigelIndex = ecs_get(world, old_zigel, ZigelIndex);
         // ZigelIndex *zigelIndex2 = ecs_get_mut(world, old_zigel, ZigelIndex);

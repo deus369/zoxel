@@ -1,11 +1,3 @@
-// first, get working on pc
-//  then, move texture updating to the entity system
-// texture issues
-//  https://www.reddit.com/r/opengl/comments/ydsqkn/textured_square_works_on_pinephone_pro_but_not_pc/
-//  https://github.com/edo9300/edopro/issues/151
-// float3 backgroundColor = { 16.0f / 255.0f, 24.0f / 255.0f, 32.0f / 255.0f };
-// float3 backgroundColor = { 99.0f / 255.0f, 190.0f / 255.0f, 191.0f / 255.0f };
-// float3 backgroundColor = { 9.0f / 255.0f, 70.0f / 255.0f, 75.0f / 255.0f };//
 float3 backgroundColor = { 2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f };
 
 void print_opengl() {

@@ -1,4 +1,3 @@
-//! Basic noise texture.
 ecs_entity_t noise_texture_prefab;
 
 void add_noise_texture(ecs_world_t *world, ecs_entity_t e) {

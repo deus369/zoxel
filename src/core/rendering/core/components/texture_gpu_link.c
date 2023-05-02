@@ -1,4 +1,3 @@
-//! Contains a link to the Texture on the GPU.
 zoxel_component(TextureGPULink, GLuint)
 
 extern GLuint spawn_gpu_texture_buffers();

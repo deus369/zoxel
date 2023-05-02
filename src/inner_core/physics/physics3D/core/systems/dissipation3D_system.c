@@ -1,5 +1,5 @@
 const float friction_threshold = 0.001f;
-const float rotation_friction = -0.54f;
+const float rotation_friction = -0.7f;
 
 float4 calculate_dissipation(const float4 omega3D) {
     float mag = sqrt(omega3D.x * omega3D.x + omega3D.y * omega3D.y + omega3D.z * omega3D.z + omega3D.w * omega3D.w);

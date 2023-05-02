@@ -1,4 +1,3 @@
-//! Basic noise texture.
 ecs_entity_t chunk_prefab;
 
 void add_chunk(ecs_world_t *world, ecs_entity_t prefab, int3 size) {
@@ -41,7 +40,7 @@ ecs_entity_t spawn_chunk(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, chunk_prefab);
     zoxel_add_tag(world, e, NoiseChunk);
-    zoxel_log("Spawned Texture [%lu]\n", (long unsigned int) e);
+    zoxel_log("Spawned TextureData [%lu]\n", (long unsigned int) e);
     ecs_defer_end(world);
     return e;
 }

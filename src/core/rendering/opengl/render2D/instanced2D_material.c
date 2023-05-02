@@ -1,12 +1,3 @@
-// #define zoxel_catch_opengl_errors
-// first, get working on pc
-//  then, move texture updating to the entity system
-// texture issues
-//  https://www.reddit.com/r/opengl/comments/ydsqkn/textured_square_works_on_pinephone_pro_but_not_pc/
-//  https://github.com/edo9300/edopro/issues/151
-//! Mesh A - Buffers
-//const char* basicRender2DVertFilepath = resources_folder_name"shaders/2D/basic2D.vert";
-//const char* basicRender2DFragFilepath = resources_folder_name"shaders/2D/basic2D.frag";
 GLuint2 shader2D_basic;
 GLuint square2DMaterial;
 Material2D material2D;

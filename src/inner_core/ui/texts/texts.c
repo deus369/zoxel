@@ -5,13 +5,13 @@ const double zext_animation_speed = 10.0;
 zoxel_declare_tag(FontStyle)                    //! Contains a bunch of fonts!
 zoxel_declare_tag(Font)                         //! A basic tag for a UI Element.
 zoxel_declare_tag(Zigel)                        //! An individual text character entity.
-zoxel_declare_tag(FontTexture)                  //! A basic tag for a Font Texture. Generated on a Zigel.
+zoxel_declare_tag(FontTexture)                  //! A basic tag for a Font TextureData. Generated on a Zigel.
 zoxel_declare_tag(Zext)                         //! Holds all the zigels.
 zoxel_component(ZigelIndex, unsigned char)      //! A character index per zigel.
 zoxel_component(ZextSize, int)                  //! The size of the font in a Zext.
 zoxel_component(ZextDirty, unsigned char)       //! A state event for when Zext is dirty.
 zoxel_component(AnimateZext, double)            //! A Zext that animates.
-zoxel_memory_component(FontData, byte2)         //! An array of points used for generating a font texture.
+zoxel_memory_component(FontData, byte2)         //! An array of points used for generating a font texture
 zoxel_memory_component(ZextData, unsigned char) //! An array of bytes for characters.
 #include "util/default_font.c"
 #include "prefabs/font.c"
@@ -52,7 +52,7 @@ zoxel_system(AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty,
         [in] ZextData, [in] ZextSize, [in] Layer2D, [in] Position2D, [in] PixelSize, [out] Children)
 #endif
 zoxel_system_ctx(FontTextureSystem, EcsPreStore, generateTextureQuery, [none] FontTexture, [out] TextureDirty,
-    [out] Texture, [in] TextureSize, [in] GenerateTexture, [in] ZigelIndex, [in] Color)
+    [out] TextureData, [in] TextureSize, [in] GenerateTexture, [in] ZigelIndex, [in] Color)
 zoxel_define_reset_system(ZextDirtyResetSystem, ZextDirty)
 zoxel_end_module(Texts)
 

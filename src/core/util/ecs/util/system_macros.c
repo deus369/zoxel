@@ -100,7 +100,7 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 #define zoxel_texture_generation_system(texture_tag, system) {\
     zoxel_filter(generateTextureQuery, world, [none] texture_tag, [in] GenerateTexture);\
     zoxel_system_ctx(system, EcsOnUpdate, generateTextureQuery,\
-        [none] texture_tag, [out] TextureDirty, [out] Texture, [in] TextureSize, [in] GenerateTexture);\
+        [none] texture_tag, [out] TextureDirty, [out] TextureData, [in] TextureSize, [in] GenerateTexture);\
 }
 
 #define zoxel_button_system(system, tag) zoxel_system(system, EcsPostUpdate, [none] tag, [in] ClickableState);

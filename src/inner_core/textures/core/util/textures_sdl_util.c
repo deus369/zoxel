@@ -3,7 +3,7 @@
  * https://wiki.libsdl.org/SDL_CreateTexture
  * https://wiki.libsdl.org/SDL_UpdateTexture
 */
-void save_texture_png(const Texture *texture, const TextureSize *textureSize, const char *outputTextureName) {
+void save_texture_png(const TextureData *textureData, const TextureSize *textureSize, const char *outputTextureName) {
     // https://wiki.libsdl.org/SDL_PixelFormatEnum
     // int req_format = STBI_rgb_alpha;
     int rmask, gmask, bmask, amask;
@@ -21,7 +21,7 @@ void save_texture_png(const Texture *texture, const TextureSize *textureSize, co
     #endif
     int depth = 32;
     int pitch = textureSize->value.x * 4;
-    SDL_Surface* surface = SDL_CreateRGBSurfaceFrom((void*)texture->value, textureSize->value.x, textureSize->value.y,
+    SDL_Surface* surface = SDL_CreateRGBSurfaceFrom((void*) textureData->value, textureSize->value.x, textureSize->value.y,
         depth, pitch, rmask, gmask, bmask, amask);
     #ifdef SDL_IMAGES
     if(IMG_SavePNG(surface, outputTextureName) != 0)
@@ -46,5 +46,5 @@ SDL_Texture* sdlTexture = SDL_CreateTexture(
     textureSize->value.y);*/
 
 // SDL_Rect sdlRect = { 0, 0, textureSize->value.x, textureSize->value.y };
-// SDL_UpdateTexture(sdlTexture, &sdlRect, &texture->value, textureSize->value.x * 4);
+// SDL_UpdateTexture(sdlTexture, &sdlRect, &textureData->value, textureSize->value.x * 4);
 // SDL_Surface* surface = SDL_LoadBMP("image.bmp");

@@ -5,17 +5,17 @@ ecs_entity_t testTextureEntity;
 ecs_entity_t SpawnTexture(ecs_world_t *world, ecs_entity_t prefab) {
     ecs_defer_begin(world);
     ecs_entity_t textureEntity = ecs_new_w_pair(world, EcsIsA, prefab);
-    printf("Spawned Texture [%lu]\n", (long unsigned int) textureEntity);
+    printf("Spawned TextureData [%lu]\n", (long unsigned int) textureEntity);
     ecs_defer_end(world);
     return textureEntity;
 }
 
 void TestDestroyTexture(ecs_world_t *world) {
     if (testTextureEntity && ecs_is_alive(world, testTextureEntity)) {
-        printf("Deleting Texture.\n");
+        printf("Deleting TextureData.\n");
         ecs_delete(world, testTextureEntity);
     } else {
-        printf("Spawning Texture.\n");
+        printf("Spawning TextureData.\n");
         testTextureEntity = SpawnTexture(world, noise_texture_prefab);
     }
 }

@@ -37,7 +37,6 @@ const float squareUVs[] = {
 };
 
 const float squareTexturedVerts[] = {
-    // positions                    // texture coords
     -squareSize, -squareSize,       0, 0,   // top right
     -squareSize, squareSize,        1, 0,   // bottom right
     squareSize, squareSize,         1, 1,   // bottom left
@@ -57,10 +56,3 @@ const float2 square_vertices[] = {
     { 1, 1 },       // bottom left
     { 1, 0 }       // top left 
 };
-
-// positions  // texture coords
-/*0, 0,       0, 0,   // top right
-0, 1,       1, 0,   // bottom right
-1, 1,       1, 1,   // bottom left
-1, 0,       0, 1    // top left 
-*/
