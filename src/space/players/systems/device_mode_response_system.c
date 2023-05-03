@@ -17,11 +17,9 @@ void DeviceModeResponseSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const DeviceMode *deviceMode = &deviceModes[i];
         if (deviceMode->value == zox_device_mode_gamepad) {
-            // select main menu ui
-            // also set player selected ui target
+            // select main menu ui - also set player selected ui target
             raycaster_select_ui_mut(it->world, main_player, first_navivgation_ui);
         } else if (deviceMode->value == zox_device_mode_keyboardmouse) {
-            // ecs_set(it->world, play_button_entity, SelectableState, { 0 });
             raycaster_select_ui_mut(it->world, main_player, 0);
         }
     }

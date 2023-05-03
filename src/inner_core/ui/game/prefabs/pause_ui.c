@@ -13,6 +13,7 @@ ecs_entity_t spawn_prefab_pause_ui(ecs_world_t *world) {
     return e;
 }
 
+extern ecs_entity_t main_player;
 // todo: return to gameplay button
 // todo: return to main menu button instead of exit game
 ecs_entity_t spawn_pause_ui(ecs_world_t *world, int2 position, int2 window_size, float2 anchor) {
@@ -73,5 +74,15 @@ ecs_entity_t spawn_pause_ui(ecs_world_t *world, int2 position, int2 window_size,
     #ifdef zoxel_debug_spawns
         zoxel_log("Spawned main menu [%lu]\n", (long int) e);
     #endif
+    // put here for now
+    // if player device mode is gamepad, select pause ui
+    const DeviceMode *deviceMode = ecs_get(world, main_player, DeviceMode);
+    if (deviceMode->value == zox_device_mode_gamepad) {
+        ecs_entity_t first_button = children.value[1];
+        zoxel_log(" > selecting first pause ui button [%lu]\n", first_button);
+        // const Children *children = ecs_get(world, pause_ui, Children);
+        // zoxel_log("AWJEOAIWEJOIAWE [%i]\n", children->length);
+        raycaster_select_ui_mut(world, main_player, first_button);
+    }
     return e;
 }

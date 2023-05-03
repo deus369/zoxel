@@ -1,5 +1,5 @@
 void PlayerPlayButtonSystem(ecs_iter_t *it) {
-    ecs_query_t *query = it->ctx;
+    /*ecs_query_t *query = it->ctx;
     ecs_iter_t iter2 = ecs_query_iter(it->world, query);
     ecs_query_next(&iter2);
     if (iter2.count == 0) {
@@ -18,6 +18,6 @@ void PlayerPlayButtonSystem(ecs_iter_t *it) {
             }
 
         }
-    }
+    }*/
 }
 zoxel_declare_system(PlayerPlayButtonSystem)

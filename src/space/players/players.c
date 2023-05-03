@@ -63,8 +63,8 @@ zoxel_filter(player_character3Ds, world, [none] PlayerCharacter, [out] physics.D
 zoxel_system_ctx(FreeCameraDisableMovementSystem, EcsOnUpdate, player_character3Ds, [in] Mouse)
 zoxel_system(Player2DTestSystem, EcsOnUpdate, [in] Keyboard)
 zoxel_system(Player2DTestMainThreadSystem, EcsOnStore, [in] Keyboard)
-zoxel_system(PlayerPauseSystem, EcsOnUpdate, [in] Keyboard)
-zoxel_system(PlayerPauseSystem2, EcsOnUpdate, [in] Gamepad)
+zoxel_system(PlayerPauseSystem, EcsOnUpdate, [out] Player, [in] DeviceLinks)
+// zoxel_system(PlayerPauseSystem2, EcsOnUpdate, [in] Gamepad)
 {
     // zoxel_filter(players, world, [in] DeviceMode)
     zoxel_system_1(DeviceModeResponseSystem, EcsOnUpdate, [in] DeviceMode)

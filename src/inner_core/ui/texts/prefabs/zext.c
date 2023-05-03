@@ -7,6 +7,7 @@ ecs_entity_t spawn_zext_prefab(ecs_world_t *world) {
     zoxel_add_tag(world, e, Zext);
     zoxel_add(world, e, ZextData);
     zoxel_add(world, e, ZextSize);
+    zoxel_set(world, e, ZextAlignment, { 0 });
     zoxel_set(world, e, ZextDirty, { 0 });
     zoxel_add(world, e, Children);
     add_transform2Ds(world, e);
@@ -30,7 +31,8 @@ void set_zext(ZextData *zext_data, const char* text) {
 }
 
 ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t parent, int2 position, float2 anchor,
-    const char* text, int font_size, unsigned char layer, float2 parent_position2D, int2 parent_pixel_size) {
+    const char* text, int font_size, unsigned char alignment, unsigned char layer, float2 parent_position2D, int2 parent_pixel_size) {
+    // unsigned char alignment = 0; // zox_zext_alignment_centred;
     int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
     ecs_defer_begin(world);
     int textLength = strlen(text);
@@ -38,6 +40,7 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t pa
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
     set_unique_entity_name(world, e, "zext");
     ecs_set(world, e, ZextSize, { font_size });
+    ecs_set(world, e, ZextAlignment, { alignment });
     float2 position2D = initialize_ui_components_2(world, e, parent, position, zext_size, anchor, layer,
         parent_position2D, parent_pixel_size, ecs_get(world, main_canvas, PixelSize)->value);
     ZextData zextData = { };
@@ -48,7 +51,7 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t pa
         unsigned char zigel_index = convert_ascii(text[i]);
         zextData.value[i] = zigel_index;
         children.value[i] = spawn_zext_zigel(world, e, layer + 1, i, textLength,
-            zigel_index, font_size, position2D, zext_size, canvas_size);
+            zigel_index, font_size, alignment, position2D, zext_size, canvas_size);
         // printf("Is %i [%lu] valid: %s\n", i, (long int) children.value[i], ecs_is_valid(world, children.value[i]) ? "Yes" : "No");
     }
     ecs_set(world, e, ZextData, { zextData.length, zextData.value });

@@ -42,11 +42,13 @@
                             if (gamepad->left_stick.value.y >= ui_navigation_joystick_cutoff && k > 1) {
                                 // zoxel_log("     > moved up ui to [%i] - %lu\n", (k - 1), children->value[k - 1]);
                                 raycaster_select_ui(world, raycasterTarget, children->value[k - 1]);
-                                set_ui_selected_mut(world, raycasterTarget->value);
+                                // set_ui_selected_mut(world, raycasterTarget->value);
+                                set_selectable_state_mut(world, raycasterTarget->value, 1);
                             } else if (gamepad->left_stick.value.y <= -ui_navigation_joystick_cutoff && k != children->length - 1) {
                                 // zoxel_log("     > moved down ui to [%i] - %lu\n", (k + 1), children->value[k + 1]);
                                 raycaster_select_ui(world, raycasterTarget, children->value[k + 1]);
-                                set_ui_selected_mut(world, raycasterTarget->value);
+                                // set_ui_selected_mut(world, raycasterTarget->value);
+                                set_selectable_state_mut(world, raycasterTarget->value, 1);
                             }
                             break;
                         }

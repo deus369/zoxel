@@ -15,11 +15,11 @@ ecs_entity_t spawn_quad_count_label(ecs_world_t *world, ecs_entity_t parent, int
     int textLength = 3;
     int2 pixel_size = (int2) { font_size * textLength, font_size };
     float2 anchor = { 1.0f, 0.0f };
-    int2 position = { - 4 * (pixel_size.x / 2), font_size / 2 };
+    int2 position = { 0, font_size / 2 }; // - 4 * (pixel_size.x / 2), font_size / 2 };
     int layer = 1;
     const PixelSize *parent_pixel_size = ecs_get(world, parent, PixelSize);
-    ecs_entity_t e = spawn_label(world, prefab_quad_count_label, parent, position, anchor, "", font_size, layer,
-        (float2) { }, parent_pixel_size->value);
+    ecs_entity_t e = spawn_label(world, prefab_quad_count_label, parent, position, anchor, "", font_size,
+        zox_zext_alignment_right, layer, float2_zero, parent_pixel_size->value);
     quads_label = e;
     return e;
 }

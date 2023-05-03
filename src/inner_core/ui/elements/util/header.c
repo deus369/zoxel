@@ -20,7 +20,7 @@ ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, int2 position
         parent_position2D, parent_pixel_size, canvas_size);
     Children children = { };
     initialize_memory_component_non_pointer(children, ecs_entity_t, children_length);
-    children.value[0] = spawn_zext(world, zext_prefab, e, zext_position, zext_anchor, text, font_size, layer + 1, position2D, size);
+    children.value[0] = spawn_zext(world, zext_prefab, e, zext_position, zext_anchor, text, font_size, 0, layer + 1, position2D, size);
     if (is_close_button) {
         children.value[1] = spawn_button(world, e, (int2) { - (font_size / 2) - header_margins / 2, 0 },
             button_padding, (float2) { 1.0f, 0.5f }, "X", font_size, layer + 1, position2D, size, canvas_size);

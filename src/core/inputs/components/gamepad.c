@@ -46,8 +46,8 @@ unsigned char gamepad_is_any_input(const Gamepad *gamepad) {
         gamepad->rt.is_pressed ||
         gamepad->left_stick_push.is_pressed ||
         gamepad->right_stick_push.is_pressed ||
-        gamepad->left_stick.value.x != 0 ||
-        gamepad->left_stick.value.y != 0 ||
-        gamepad->right_stick.value.x != 0 ||
-        gamepad->right_stick.value.y != 0;
+        float_abs(gamepad->left_stick.value.x) >= joystick_min_cutoff ||
+        float_abs(gamepad->left_stick.value.y) >= joystick_min_cutoff ||
+        float_abs(gamepad->right_stick.value.x) >= joystick_min_cutoff ||
+        float_abs(gamepad->right_stick.value.y) >= joystick_min_cutoff;
 }

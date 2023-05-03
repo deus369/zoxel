@@ -1,6 +1,5 @@
 SDL_Joystick *joystick;         // todo: connect this to gamepad
 int joysticks_count;
-const float joystick_min_cutoff = 0.08f;
 float joystick_buffer = 0.14f;
 
 unsigned char is_steamdeck_gamepad(SDL_Joystick *joystick) {

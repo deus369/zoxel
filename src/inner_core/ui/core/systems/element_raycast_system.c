@@ -3,39 +3,51 @@
  * Creates an external event when selects a entity. Can be used by AI to select ui too.
 */
 
-void raycaster_deselect_ui(ecs_world_t *world, const RaycasterTarget *raycasterTarget) {
-    if (raycasterTarget->value != 0 && ecs_is_alive(world, raycasterTarget->value)) {
-        // ecs_set(it->world, raycasterTarget->value, SelectableState, { 0 });
-        SelectableState *selectableState = ecs_get_mut(world, raycasterTarget->value, SelectableState);
-        selectableState->value = 0;
-        ecs_modified(world, raycasterTarget->value, SelectableState);
+// #define zoxel_debug_ui_selectable_states
+
+void set_selectable_state_mut(ecs_world_t *world, ecs_entity_t ui_entity, unsigned char state) {
+    // flecs quirk: after just spawning, it seems to show false for these...
+    if (ui_entity != 0) { // && ecs_is_alive(world, ui_entity) && ecs_has(world, ui_entity, SelectableState)) {
+        SelectableState *selectableState = ecs_get_mut(world, ui_entity, SelectableState);
+        if (selectableState->value != state) {
+            selectableState->value = state;
+            ecs_modified(world, ui_entity, SelectableState);
+            zoxel_log(" > setting [%lu]'s state %i\n", ui_entity, state);
+        }
+        #ifdef zoxel_debug_ui_selectable_states
+            else {
+                zoxel_log(" ! [%lu]'s state was already %i\n", ui_entity, state);
+            }
+        #endif
     }
+    #ifdef zoxel_debug_ui_selectable_states
+        else {
+            zoxel_log(" ! [%lu]'s ui had no selectable state!\n", ui_entity);
+        }
+    #endif
 }
 
 void raycaster_select_ui(ecs_world_t *world, RaycasterTarget *raycasterTarget, ecs_entity_t ui) {
     if (raycasterTarget->value != ui) {
         // zoxel_log(" > raycaster_select_ui : selecting [%lu] from [%lu]\n", ui, raycasterTarget->value);
-        raycaster_deselect_ui(world, raycasterTarget);
+        set_selectable_state_mut(world, raycasterTarget->value, 0);
         raycasterTarget->value = ui;
     }
 }
 
-void set_ui_selected_mut(ecs_world_t *world, ecs_entity_t ui) {
-    if (ui != 0) {
-        SelectableState *selectableState = ecs_get_mut(world, ui, SelectableState);
-        selectableState->value = 1;
-        ecs_modified(world, ui, SelectableState);
-    }
-}
-
-void raycaster_select_ui_mut(ecs_world_t *world, ecs_entity_t raycaster_entity, ecs_entity_t ui) {
+void raycaster_select_ui_mut(ecs_world_t *world, ecs_entity_t raycaster_entity, ecs_entity_t ui_entity) {
     RaycasterTarget *raycasterTarget = ecs_get_mut(world, raycaster_entity, RaycasterTarget);
-    if (raycasterTarget->value != ui) {
+    if (raycasterTarget->value != ui_entity) {
         // zoxel_log(" > raycaster_select_ui_mut : selecting [%lu] from [%lu]\n", ui, raycasterTarget->value);
-        raycaster_select_ui(world, raycasterTarget, ui);
+        raycaster_select_ui(world, raycasterTarget, ui_entity);
         ecs_modified(world, raycaster_entity, RaycasterTarget);
-        set_ui_selected_mut(world, ui);
+        set_selectable_state_mut(world, ui_entity, 1);
     }
+    #ifdef zoxel_debug_ui_selectable_states
+        else {
+            zoxel_log(" ! [%lu]'s was already set\n", ui_entity);
+        }
+    #endif
 }
 
 // uses layers
@@ -107,3 +119,16 @@ void ElementRaycastSystem(ecs_iter_t *it) {
     }
 }
 zoxel_declare_system(ElementRaycastSystem)
+    /*if (ui_entity != 0 && ecs_is_alive(world, ui_entity) && ecs_has(world, ui_entity, SelectableState)) {
+        SelectableState *selectableState = ecs_get_mut(world, ui_entity, SelectableState);
+        selectableState->value = 0;
+        ecs_modified(world, ui_entity, SelectableState);
+    }*/
+
+/*void set_ui_selected_mut(ecs_world_t *world, ecs_entity_t ui) {
+    if (ui != 0 && ecs_has(world, ui, SelectableState)) {
+        SelectableState *selectableState = ecs_get_mut(world, ui, SelectableState);
+        selectableState->value = 1;
+        ecs_modified(world, ui, SelectableState);
+    }
+}*/

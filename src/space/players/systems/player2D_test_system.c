@@ -92,10 +92,9 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it) {
     const Keyboard *keyboards = ecs_field(it, Keyboard, 1);
     for (int i = 0; i < it->count; i++) {
         const Keyboard *keyboard = &keyboards[i];
-        /*if (keyboard->z.pressed_this_frame) {
+        if (keyboard->z.pressed_this_frame) {
             spawn_zoxel_window(world);
-        } else*/
-        if (keyboard->x.pressed_this_frame) {
+        } else if (keyboard->x.pressed_this_frame) {
             if (fps_display == 0) {
                 zoxel_log(" > showing fps display.\n");
                 fps_display = spawn_fps_display(world, main_canvas, 32);
@@ -104,7 +103,7 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it) {
                 ecs_delete(it->world, fps_display);
                 fps_display = 0;
             }
-        } else if (keyboard->o.pressed_this_frame) {
+        } else if (keyboard->c.pressed_this_frame) {
             if (quads_label == 0) {
                 zoxel_log(" > showing quads_label.\n");
                 quads_label = spawn_quad_count_label(world, main_canvas, 32);
@@ -113,16 +112,17 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it) {
                 ecs_delete(it->world, quads_label);
                 quads_label = 0;
             }
-        } else if (keyboard->c.pressed_this_frame) {
+        } else if (keyboard->m.pressed_this_frame) {
+            zoxel_log(" > generated new music\n");
+            ecs_set(world, main_music, GenerateMusic, { 1 });
+        }
+        /*else if (keyboard->c.pressed_this_frame) {
             zoxel_log(" > spawned new sound\n");
             // spawn_sound(it->world);
             spawn_generated_sound(world, note_frequencies[rand() % 42], 0.8 + 0.4 * (rand() % 101) / 100.0, instrument_violin);
         } else if (keyboard->v.pressed_this_frame) {
             zoxel_log(" > total tris [%i]\n", tri_count);
-        } else if (keyboard->m.pressed_this_frame) {
-            zoxel_log(" > generated new music\n");
-            ecs_set(world, main_music, GenerateMusic, { 1 });
-        }
+        }*/
         /*else if (keyboard->b.pressed_this_frame) {
             spawn_many_characters3D(world);
         }*/

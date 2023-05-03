@@ -10,9 +10,10 @@ zoxel_declare_tag(Zext)                         //! Holds all the zigels.
 zoxel_component(ZigelIndex, unsigned char)      //! A character index per zigel.
 zoxel_component(ZextSize, int)                  //! The size of the font in a Zext.
 zoxel_component(ZextDirty, unsigned char)       //! A state event for when Zext is dirty.
-zoxel_component(AnimateZext, double)            //! A Zext that animates.
+zoxel_component(AnimateZext, double)            //! A Zext that animates
+zoxel_byte_component(ZextAlignment)
 zoxel_memory_component(FontData, byte2)         //! An array of points used for generating a font texture
-zoxel_memory_component(ZextData, unsigned char) //! An array of bytes for characters.
+zoxel_memory_component(ZextData, unsigned char) //! An array of bytes for characters
 #include "util/default_font.c"
 #include "prefabs/font.c"
 #include "prefabs/font_style.c"
@@ -34,6 +35,7 @@ zoxel_define_component(ZigelIndex)
 zoxel_define_component(ZextSize)
 zoxel_define_component(ZextDirty)
 zoxel_define_component(AnimateZext)
+zoxel_define_component(ZextAlignment)
 zoxel_define_memory_component(FontData)
 zoxel_define_memory_component(ZextData)
 spawn_font_style_prefab(world);
@@ -46,10 +48,10 @@ zoxel_filter(generateTextureQuery, world, [none] FontTexture, [in] GenerateTextu
 zoxel_system(AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
 #ifdef main_thread_zext_update_system
     zoxel_system_ctx_1(ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
-        [in] ZextData, [in] ZextSize, [in] Layer2D, [in] Position2D, [in] PixelSize, [out] Children)
+        [in] ZextData, [in] ZextSize, [in] Layer2D, [in] Position2D, [in] PixelSize, [in] ZextAlignment, [out] Children)
 #else
     zoxel_system_ctx(ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
-        [in] ZextData, [in] ZextSize, [in] Layer2D, [in] Position2D, [in] PixelSize, [out] Children)
+        [in] ZextData, [in] ZextSize, [in] Layer2D, [in] Position2D, [in] PixelSize, [in] ZextAlignment, [out] Children)
 #endif
 zoxel_system_ctx(FontTextureSystem, EcsPreStore, generateTextureQuery, [none] FontTexture, [out] TextureDirty,
     [out] TextureData, [in] TextureSize, [in] GenerateTexture, [in] ZigelIndex, [in] Color)
