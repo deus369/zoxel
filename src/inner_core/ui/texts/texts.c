@@ -14,6 +14,7 @@ zoxel_component(AnimateZext, double)            //! A Zext that animates
 zoxel_byte_component(ZextAlignment)
 zoxel_memory_component(FontData, byte2)         //! An array of points used for generating a font texture
 zoxel_memory_component(ZextData, unsigned char) //! An array of bytes for characters
+zoxel_component(ZextPadding, byte2)
 #include "util/default_font.c"
 #include "prefabs/font.c"
 #include "prefabs/font_style.c"
@@ -22,6 +23,7 @@ zoxel_memory_component(ZextData, unsigned char) //! An array of bytes for charac
 #include "prefabs/zext.c"
 #include "systems/font_texture_system.c"
 #include "systems/zext_update_system.c"
+#include "systems/zext_background_update_system.c"
 #include "systems/animate_text_system.c"
 zoxel_reset_system(ZextDirtyResetSystem, ZextDirty)
 
@@ -38,6 +40,7 @@ zoxel_define_component(AnimateZext)
 zoxel_define_component(ZextAlignment)
 zoxel_define_memory_component(FontData)
 zoxel_define_memory_component(ZextData)
+zoxel_define_component(ZextPadding)
 spawn_font_style_prefab(world);
 spawn_font_prefab(world);
 spawn_zigel_prefab(world);
@@ -48,13 +51,13 @@ zoxel_filter(generateTextureQuery, world, [none] FontTexture, [in] GenerateTextu
 zoxel_system(AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
 #ifdef main_thread_zext_update_system
     zoxel_system_ctx_1(ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
-        [in] ZextData, [in] ZextSize, [in] Layer2D, [in] Position2D, [in] PixelSize, [in] ZextAlignment, [out] Children)
+        [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] Position2D, [in] PixelSize, [in] ZextAlignment, [out] Children)
 #else
     zoxel_system_ctx(ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
-        [in] ZextData, [in] ZextSize, [in] Layer2D, [in] Position2D, [in] PixelSize, [in] ZextAlignment, [out] Children)
+        [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] Position2D, [in] PixelSize, [in] ZextAlignment, [out] Children)
 #endif
-zoxel_system_ctx(FontTextureSystem, EcsPreStore, generateTextureQuery, [none] FontTexture, [out] TextureDirty,
-    [out] TextureData, [in] TextureSize, [in] GenerateTexture, [in] ZigelIndex, [in] Color)
+zoxel_system(ZextBackgroundUpdateSystem, EcsOnUpdate, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] CanvasLink, [out] PixelSize, [out] TextureSize, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshDirty)
+zoxel_system_ctx(FontTextureSystem, EcsPreStore, generateTextureQuery, [none] FontTexture, [out] TextureDirty, [out] TextureData, [in] TextureSize, [in] GenerateTexture, [in] ZigelIndex, [in] Color)
 zoxel_define_reset_system(ZextDirtyResetSystem, ZextDirty)
 zoxel_end_module(Texts)
 

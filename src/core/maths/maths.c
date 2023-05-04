@@ -33,6 +33,7 @@
 #include "util/noise_2.c"
 #include "util/unique_seed.c"
 #include "fun/quaternion.c"
+#include "fun/conversion.c"
 #include "tests/test_quadrants.c"
 
 zoxel_begin_module(Maths)

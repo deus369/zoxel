@@ -3,6 +3,7 @@ typedef struct {
     unsigned char y;
 } byte2;
 
+#define byte2_zero (byte2) { 0, 0 }
 
 byte2 byte2_multiply_int(byte2 input, int mul) {
     return (byte2) { input.x * mul, input.y * mul };

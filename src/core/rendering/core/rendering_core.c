@@ -20,7 +20,6 @@ zoxel_memory_component(MeshColorRGBs, color_rgb)
 #include "components/colors_gpu_link.c"
 #include "components/shader_gpu_link.c"
 #include "util/mesh_util.c"
-#include "util/render_util.c"
 #include "systems/mesh_update_system.c"
 #include "systems/mesh_colors_update_system.c"
 #include "systems/mesh_uvs_update_system.c"

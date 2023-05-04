@@ -9,6 +9,7 @@ zoxel_declare_tag(CloseButton)      //! A ui window close button.
 zoxel_declare_tag(PlayGameButton)
 zoxel_declare_tag(ExitGameButton)
 #include "prefabs/label.c"
+#include "prefabs/label_background.c"
 #include "prefabs/button.c"
 #include "prefabs/header.c"
 #include "prefabs/window.c"
@@ -30,6 +31,7 @@ zoxel_system(ButtonClickSoundSystem, EcsOnUpdate, [none] Button, [in] ClickableS
 zoxel_system(WindowCloseSystem, EcsPostUpdate, [none] CloseButton, [in] ClickableState)
 zoxel_system(HeaderDragSystem, EcsPostLoad, [none] Header, [in] DragableState, [in] DraggingDelta, [in] ParentLink)
 spawn_prefab_label(world);
+spawn_prefab_label_background(world);
 spawn_prefab_button(world);
 spawn_prefab_window(world);
 spawn_prefab_header(world);

@@ -12,7 +12,7 @@ ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, int2 position
         zext_anchor.x = 0.5f;
         zext_position.x = 0;
     }
-    int2 button_padding = (int2) { (int) (font_size * 0.3f), (int) (font_size * 0.3f) };
+    int2 padding = (int2) { (int) (font_size * 0.3f), (int) (font_size * 0.3f) };
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, header_prefab);
     set_unique_entity_name(world, e, "header");
@@ -20,10 +20,10 @@ ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, int2 position
         parent_position2D, parent_pixel_size, canvas_size);
     Children children = { };
     initialize_memory_component_non_pointer(children, ecs_entity_t, children_length);
-    children.value[0] = spawn_zext(world, zext_prefab, e, zext_position, zext_anchor, text, font_size, 0, layer + 1, position2D, size);
+    children.value[0] = spawn_zext(world, zext_prefab, e, zext_position, zext_anchor, int2_to_byte2(padding), text, font_size, 0, layer + 1, position2D, size);
     if (is_close_button) {
         children.value[1] = spawn_button(world, e, (int2) { - (font_size / 2) - header_margins / 2, 0 },
-            button_padding, (float2) { 1.0f, 0.5f }, "X", font_size, layer + 1, position2D, size, canvas_size);
+            padding, (float2) { 1.0f, 0.5f }, "X", font_size, layer + 1, position2D, size, canvas_size);
         zoxel_add_tag(world, children.value[1], CloseButton);
         /*printf("--- Spawned close button [%lu] ---\n", (long int) children.value[1]);
         printf("--- Spawned header [%lu] ---\n", (long int) e);

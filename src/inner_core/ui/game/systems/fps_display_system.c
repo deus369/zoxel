@@ -11,10 +11,10 @@ void FpsDisplaySystem(ecs_iter_t *it) {
         FPSDisplayTicker *fpsDisplayTicker = &fpsDisplayTickers[i];
         fpsDisplayTicker->value -= delta_time;
         if (fpsDisplayTicker->value <= 0.0) {
+            changed = 1;
             // printf("Checking FPS Ticker Ticked.\n");
             ZextDirty *zextDirty = &zextDirtys[i];
             zextDirty->value = 1;
-            changed = 1;
             fpsDisplayTicker->value += frame_rate_update_speed;
             if (fpsDisplayTicker->value <= -frame_rate_update_speed) {
                 fpsDisplayTicker->value = 0;

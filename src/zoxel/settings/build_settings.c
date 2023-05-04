@@ -118,3 +118,7 @@
 // #define zoxel_inputs_debug_gamepad_sos
 // #define zoxel_debug_bounds  // renders a bounding box rotated for characters (by default)
 // #define zoxel_debug_transforms  // renders an axis for movement of characters
+
+
+
+#define canvas_edge_size 4

@@ -6,7 +6,7 @@ void QuadsLabelSystem(ecs_iter_t *it) {
         last_quads = tri_count;
         changed = 1;
         char buffer[20];
-        snprintf(buffer, sizeof(buffer), "Tris %i", tri_count);
+        snprintf(buffer, sizeof(buffer), "Triangles %i", tri_count);
         const char* text = buffer;
         ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
         ZextData *zextDatas = ecs_field(it, ZextData, 3);

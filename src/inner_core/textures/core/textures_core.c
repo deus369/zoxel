@@ -38,8 +38,7 @@ zoxel_system(AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] Genera
 zoxel_texture_generation_system(NoiseTexture, NoiseTextureSystem)
 // zoxel_texture_generation_system(FrameTexture, FrameTextureSystem)
 zoxel_filter(generate_textures2, world, [none] FrameTexture, [in] GenerateTexture)
-zoxel_system_ctx(FrameTextureSystem, EcsPreStore, generate_textures2, [none] FrameTexture,
-    [in] GenerateTexture, [in] TextureSize, [in] Color, [out] TextureData, [out] TextureDirty)
+zoxel_system_ctx(FrameTextureSystem, EcsPreStore, generate_textures2, [none] FrameTexture, [in] GenerateTexture, [in] TextureSize, [in] Color, [out] TextureData, [out] TextureDirty)
 // zoxel_system_1(TextureSaveSystem, texture_update_pipeline, [in] TextureDirty, [in] TextureData, [in] TextureSize, [none] SaveTexture)
 // zoxel_system(TextureSaveSystem, texture_update_pipeline, [in] TextureDirty, [in] TextureData, [in] TextureSize, [none] SaveTexture)
 if (!headless) {

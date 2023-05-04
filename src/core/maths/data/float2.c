@@ -12,10 +12,25 @@ float2 float2_multiply_float(float2 input, float mul) {
     return input;
 }
 
+void float2_multiply_float_p(float2 *input, float mul) {
+    input->x *= mul;
+    input->y *= mul;
+}
+
+void float2_multiply_float2_p(float2 *input, const float2 mul) {
+    input->x *= mul.x;
+    input->y *= mul.y;
+}
+
 float2 float2_divide(float2 input, float div) {
     input.x /= div;
     input.y /= div;
     return input;
+}
+
+void float2_add_float2_p(float2 *input, const float2 mul) {
+    input->x += mul.x;
+    input->y += mul.y;
 }
 
 float2 float2_from_int2(int2 input) {

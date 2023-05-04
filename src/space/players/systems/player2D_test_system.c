@@ -106,7 +106,7 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it) {
         } else if (keyboard->c.pressed_this_frame) {
             if (quads_label == 0) {
                 zoxel_log(" > showing quads_label.\n");
-                quads_label = spawn_quad_count_label(world, main_canvas, 32);
+                quads_label = spawn_quad_count_label(world, main_canvas, 24);
             } else {
                 zoxel_log(" > hiding quads_label.\n");
                 ecs_delete(it->world, quads_label);

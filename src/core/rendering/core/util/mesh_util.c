@@ -28,10 +28,12 @@ void set_mesh_vertices_world(ecs_world_t *world, ecs_entity_t e, const float3 ve
 void scale_mesh2D_vertices(ecs_world_t *world, ecs_entity_t e, float2 scale2D) {
     MeshVertices2D *meshVertices = ecs_get_mut(world, e, MeshVertices2D);
     for (int i = 0; i < meshVertices->length; i++) {
-        meshVertices->value[i].x *= scale2D.x;
-        meshVertices->value[i].x -= (scale2D.x / 2.0f);
-        meshVertices->value[i].y *= scale2D.y;
-        meshVertices->value[i].y -= (scale2D.y / 2.0f);
+        float2_multiply_float2_p(&meshVertices->value[i], scale2D);
+        // float2_add_float2_p(&meshVertices->value[i], float2_multiply_float(scale2D, -0.5f));
+        // meshVertices->value[i].x *= scale2D.x;
+        // meshVertices->value[i].y *= scale2D.y;
+        // meshVertices->value[i].x -= (scale2D.x / 2.0f);
+        // meshVertices->value[i].y -= (scale2D.y / 2.0f);
     }
     ecs_modified(world, e, MeshVertices2D);
 }
