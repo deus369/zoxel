@@ -108,17 +108,14 @@
 // #define zoxel_disable_attach_on_start
 // #define zoxel_spawn_character3Ds         // spawn x penguins
 // player testing
-//#define zoxel_debug_basic_collision3D_system
-//#define zoxel_test_single_character3Ds      // spawn 1 penguin
-//#define zoxel_testing_tiny_terrain
-// #define zoxel_testing_small_terrain
+// #define zoxel_debug_basic_collision3D_system
+// #define zoxel_test_single_character3Ds      // spawn 1 penguin
 // #define zoxel_tests_rotate_by_keys
 // #define zoxel_disable_non_vertical_bounce
 // #define zoxel_inputs_debug_gamepad
 // #define zoxel_inputs_debug_gamepad_sos
 // #define zoxel_debug_bounds  // renders a bounding box rotated for characters (by default)
 // #define zoxel_debug_transforms  // renders an axis for movement of characters
-
-
-
+// #define zoxel_testing_tiny_terrain
+// #define zoxel_testing_small_terrain
 #define canvas_edge_size 4

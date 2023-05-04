@@ -1,23 +1,3 @@
-GLuint2 line3D_shader;
-GLuint line3D_shader_frag;
-GLuint line3D_material;
-GLuint line3D_position_location;
-GLuint line3D_color_location;
-GLuint line3D_camera_matrix_location;
-GLuint line3D_fog_data_location;
-
-int initialize_shader_line3D() {
-    if (is_opengl_running()) {
-        line3D_shader = spawn_gpu_shader_inline(line3D_source_vert, line3D_source_frag);
-        line3D_material = spawn_gpu_material_program((const GLuint2) { line3D_shader.x, line3D_shader.y });
-        line3D_position_location = glGetAttribLocation(line3D_material, "position");
-        line3D_color_location = glGetUniformLocation(line3D_material, "color");
-        line3D_camera_matrix_location = glGetUniformLocation(line3D_material, "camera_matrix");
-        line3D_fog_data_location = glGetUniformLocation(line3D_material, "fog_data");
-    }
-    return 0;
-}
-
 void Line3DRenderSystem(ecs_iter_t *it) {
     glUseProgram(line3D_material);
     glEnableVertexAttribArray(line3D_position_location);

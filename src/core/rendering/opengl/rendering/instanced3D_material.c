@@ -1,3 +1,4 @@
+// todo: set the verts like I do in 3D shader!
 GLuint2 shader3D;
 GLuint materialInstance3D;
 Material3D material3D;
@@ -28,7 +29,6 @@ void initialize_cube_mesh(GLuint material) {
 int load_shader3D_basic() {
     shader3D = spawn_gpu_shader_inline(shader3D_vert_buffer, shader3D_frag_buffer);
     materialInstance3D = spawn_gpu_material_program((const GLuint2) { shader3D.x, shader3D.y });
-    // materialInstance3D = load_gpu_shader(&shader3D, basicRender3DVertFilepath, basicRender3DFragFilepath);
     material3D = spawn_material3D_properties(materialInstance3D);
     initialize_cube_mesh(materialInstance3D);
     return 0;
@@ -68,8 +68,7 @@ void set_gpu_mesh(GLuint2 mesh, GLuint material, const int *indicies, int indici
     int float_per_data = 3;
     int floats_length = verts_length * float_per_data;
     float combined_verts[floats_length];
-    for (int i = 0; i < verts_length; i++)
-    {
+    for (int i = 0; i < verts_length; i++) {
         float3 vert = verts[i];
         combined_verts[i * float_per_data + 0] = vert.x;
         combined_verts[i * float_per_data + 1] = vert.y;
@@ -96,8 +95,7 @@ void set_gpu_mesh2D(GLuint2 mesh, GLuint material, const int *indicies, int indi
     int float_per_data = 2;
     int floats_length = verts_length * float_per_data;
     float combined_verts[floats_length];
-    for (int i = 0; i < verts_length; i++)
-    {
+    for (int i = 0; i < verts_length; i++) {
         float2 vert = verts[i];
         combined_verts[i * float_per_data + 0] = vert.x;
         combined_verts[i * float_per_data + 1] = vert.y;

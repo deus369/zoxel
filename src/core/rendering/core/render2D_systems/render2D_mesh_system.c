@@ -12,11 +12,9 @@ void RenderMeshMaterial2DSystem(ecs_iter_t *it) {
     MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 6);
     MaterialGPULink *materialGPULinks = ecs_field(it, MaterialGPULink, 7);
     TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 8);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         const Layer2D *layer2D = &layer2Ds[i];
-        if (layer2D->value != renderer_layer)
-        {
+        if (layer2D->value != renderer_layer) {
             continue;
         }
         const Position2D *position = &position2Ds[i];
@@ -26,28 +24,21 @@ void RenderMeshMaterial2DSystem(ecs_iter_t *it) {
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
         const MaterialGPULink *materialGPULink = &materialGPULinks[i];
         const TextureGPULink *textureGPULink = &textureGPULinks[i];
-        if (materialGPULink->value == 0)
-        {
+        if (materialGPULink->value == 0) {
             if (isDebugRenderMaterial2DSystem)
             {
                 zoxel_log("RenderMaterial2DSystem Material Error: At [%i]. Entity [%lu].\n", i, (long int) (it->entities[i]));
             }
             continue;
-        }
-        else
-        {
-            if (isDebugRenderMaterial2DSystem)
-            {
+        } else {
+            if (isDebugRenderMaterial2DSystem) {
                 zoxel_log("RenderMaterial2DSystem Material: At [%i]. Entity [%lu].\n", i, (long int) (it->entities[i]));
             }
         }
         float4x4 viewMatrix;
-        if (!ecs_has(it->world, it->entities[i], ElementRender))
-        {
+        if (!ecs_has(it->world, it->entities[i], ElementRender)) {
             viewMatrix = main_camera_matrix;
-        }
-        else
-        {
+        } else {
             viewMatrix = ui_camera_matrix;
         }
         render_entity_material2D_and_mesh(viewMatrix, meshGPULink->value, materialGPULink->value, textureGPULink->value,

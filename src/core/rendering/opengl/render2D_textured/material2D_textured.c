@@ -15,7 +15,7 @@ typedef struct {
 
 MaterialTextured2D initialize_material2D_textured(GLuint material) {
     MaterialTextured2D materialTextured2D;
-    materialTextured2D.view_matrix = glGetUniformLocation(material, "viewMatrix");
+    materialTextured2D.view_matrix = glGetUniformLocation(material, "camera_matrix");
     materialTextured2D.positionX = glGetUniformLocation(material, "positionX");
     materialTextured2D.positionY = glGetUniformLocation(material, "positionY");
     materialTextured2D.positionZ = glGetUniformLocation(material, "positionZ");
