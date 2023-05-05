@@ -4,4 +4,4 @@ Comment=A Voxely Game
 Categories=Game;
 Type=Application
 Exec=/usr/local/games/zoxel/zoxel
-Icon=/usr/local/games/zoxel/zoxel_icon.png
+Icon=/usr/local/games/zoxel/resources/textures/zoxel_icon.png
