@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=Zoxel
+Name=Zoxel Updater
 Comment=A Voxely Game
 Categories=Game;
 Type=Application
-Exec=/usr/local/games/zoxel/zoxel
+Exec=/usr/local/games/zoxel/updater.sh
 Icon=/usr/local/games/zoxel/zoxel_icon.png
