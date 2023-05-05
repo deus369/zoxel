@@ -3,5 +3,5 @@ Name=Zoxel Updater
 Comment=A Voxely Game
 Categories=Game;
 Type=Application
-Exec=/usr/local/games/zoxel/updater.sh
-Icon=/usr/local/games/zoxel/resources/textures/updater_icon.png
+Exec=/usr/games/zoxel/updater.sh
+Icon=/usr/games/zoxel/resources/textures/updater_icon.png

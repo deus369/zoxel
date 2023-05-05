@@ -2,7 +2,7 @@
 # copies zoxel binary, resources folder, and game icon
 
 echo "  > installing zoxel" #  from zoxel directory [$PWD]"
-install_directory="/usr/local/games" # /usr/games
+install_directory="/usr/games" # /usr/local/games
 echo "  > install directory is [$install_directory]"
 # zoxel_directory=$PWD
 shortcut_file_name=zoxel.desktop
@@ -11,7 +11,7 @@ shortcut_directory=$HOME/.local/share/applications
 # echo "Filename [$file_name]"
 binary_path=build/zoxel
 resources_directory=build/resources
-game_icon_file_name=$resources_directory/textures/game_icon.png
+# game_icon_file_name=$resources_directory/textures/game_icon.png
 zoxel_install_directory=$install_directory/zoxel
 install_resource_directory=$zoxel_install_directory/resources
 file_name=zoxel
@@ -35,21 +35,16 @@ fi
 if [[ -d $zoxel_install_directory ]]; then
     echo "  + copying [$file_name], resources & icon to [$zoxel_install_directory]"
     cp $binary_path $zoxel_install_directory/$file_name
-
     if [[ -d $install_resource_directory ]]; then
         echo "  > removing old resources [$install_resource_directory]"
         rm -R $install_resource_directory
     fi
-
     echo "  + copying [$resources_directory], resources & icon to [$install_resource_directory]"
     cp -R $resources_directory $install_resource_directory
-
-    echo "  + copying [$game_icon_file_name], resources & icon to [$zoxel_install_directory/zoxel_icon.png]"
-    cp $game_icon_file_name $zoxel_install_directory/zoxel_icon.png
-
+    # echo "  + copying [$game_icon_file_name], resources & icon to [$zoxel_install_directory/zoxel_icon.png]"
+    # cp $game_icon_file_name $zoxel_install_directory/zoxel_icon.png
     echo "  + copying shortcut [$shortcut_file_name] to [$shortcut_directory]"
     cp bash/install/$shortcut_file_name $shortcut_directory/$shortcut_file_name
-
     echo "  + copying [$updater_shell_name] to [$zoxel_install_directory/updater.sh]"
     cp $updater_shell_name $zoxel_install_directory/updater.sh
     echo "  + add executeable permissions to [$zoxel_install_directory/updater.sh]"
@@ -61,7 +56,5 @@ else
 fi
 
 # source bash/install/install_to_terminal.sh
-
 # xdg-open $shortcut_directory
-
 echo "  > finished installing zoxel"

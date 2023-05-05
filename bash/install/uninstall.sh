@@ -16,7 +16,6 @@ if [[ -d $zoxel_install_directory ]]; then
 else
 	echo "  Zoxel is not installed at [$zoxel_install_directory]"
 fi
-
 if [[ -d $old_zoxel_install_directory ]]; then
     echo "  - removing old zoxel directory at [$old_zoxel_install_directory]"
     sudo rm -R $old_zoxel_install_directory
