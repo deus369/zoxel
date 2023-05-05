@@ -68,7 +68,7 @@ void boot_zoxel_game(ecs_world_t *world) {
         #endif
     #endif
     #ifdef zoxel_lines3D
-        #ifdef zoxel_terrain_grid
+        #ifdef zox_spawn_terrain_grid
             spawn_terrain_grid(real_chunk_scale);
         #endif
     #endif

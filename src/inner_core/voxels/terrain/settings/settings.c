@@ -6,7 +6,7 @@ const unsigned char terrain_min_height = 8;
 double terrain_amplifier = 64.0;
 double terrain_boost = 0.0;
 int lowest_voxel_height = -24;
-int inner_render_buffer = 0; // 1;
+int inner_render_buffer = 1; // 1;
 int lod_division_dividor = 3; // 2;
 const int max_chunks_build_per_frame = 32;
 #define octree_min_height -1.995f // 0.005f
@@ -29,11 +29,11 @@ void set_terrain_render_distance() {
         terrain_spawn_distance = 18; // 24;
         terrain_vertical = 3;
         // lod_division_dividor = 2; // 5;
-        fog_density *= 0.42f;    // .3 for now to cover up transitions
+        fog_density *= 0.5f;    // .3 for now to cover up transitions
         // set_max_octree_length(5);
     } else if (cpu_tier == 2) {
         terrain_spawn_distance = 12;
-        fog_density *= 0.75f;
+        fog_density *= 0.7f;
     } else if (cpu_tier == 1) {
         terrain_spawn_distance = 6;
         fog_density *= 0.9f;
