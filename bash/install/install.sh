@@ -52,6 +52,8 @@ if [[ -d $zoxel_install_directory ]]; then
 
     echo "  + copying [$updater_shell_name] to [$zoxel_install_directory/updater.sh]"
     cp $updater_shell_name $zoxel_install_directory/updater.sh
+    echo "  + add executeable permissions to [$zoxel_install_directory/updater.sh]"
+    chmod +x $zoxel_install_directory/updater.sh # add executeable permissions to updater.sh
     echo "  + copying updater [bash/install/$updater_file_name] to [$shortcut_directory/$updater_file_name]"
     cp bash/install/$updater_file_name $shortcut_directory/$updater_file_name
 else
