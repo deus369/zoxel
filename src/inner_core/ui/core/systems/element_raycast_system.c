@@ -12,7 +12,7 @@ void set_selectable_state_mut(ecs_world_t *world, ecs_entity_t ui_entity, unsign
         if (selectableState->value != state) {
             selectableState->value = state;
             ecs_modified(world, ui_entity, SelectableState);
-            zoxel_log(" > setting [%lu]'s state %i\n", ui_entity, state);
+            // zoxel_log(" > setting [%lu]'s state %i\n", ui_entity, state);
         }
         #ifdef zoxel_debug_ui_selectable_states
             else {

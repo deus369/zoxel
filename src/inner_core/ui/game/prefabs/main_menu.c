@@ -27,7 +27,7 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label, int2 
     font_size *= ui_scale;
     header_margins *= ui_scale;
     int2 button_padding = (int2) { (int) (font_size * 0.6f), (int) (font_size * 0.3f) };
-    float header_height = (font_size + header_margins); //  * 2;
+    int header_height = (font_size + header_margins - 1); //  * 2;
     anchor_position2D(&position, window_size, anchor, header_height);
     // positions
     int2 play_button_position = (int2) { 0, font_size * 2 };
@@ -48,18 +48,18 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label, int2 
     #endif
     initialize_memory_component_non_pointer(children, ecs_entity_t, children_count);
     // header
-    children.value[0] = spawn_header(world, e, header_position, (int2) { window_size.x, font_size + header_margins},
+    children.value[0] = spawn_header(world, e, header_position, (int2) { window_size.x, font_size + header_margins },
         (float2) { 0.5f, 1.0f }, header_label, font_size, header_margins, 1, position2D, window_size, is_close_button, canvas_size);
     // buttons
     children.value[1] = spawn_button(world, e, play_button_position, button_padding,
         (float2) { 0.5f, 0.5f }, button_label_1, font_size, 1, position2D, window_size, canvas_size);
-    zoxel_add_tag(world, children.value[1], PlayGameButton);
+    zoxel_set(world, children.value[1], ClickEvent, { &button_event_play_game });
     children.value[2] = spawn_button(world, e, options_button_position, button_padding,
         (float2) { 0.5f, 0.5f }, button_label_2, font_size, 1, position2D, window_size, canvas_size);
     #ifndef zoxel_on_android
         children.value[3] = spawn_button(world, e, (int2) { 0, - font_size * 2 }, button_padding,
             (float2) { 0.5f, 0.5f }, button_label_3, font_size, 1, position2D, window_size, canvas_size);
-        zoxel_add_tag(world, children.value[3], ExitGameButton);
+        zoxel_set(world, children.value[3], ClickEvent, { &button_event_exit_game });
     #endif
     ecs_set(world, e, Children, { children.length, children.value });
     ecs_defer_end(world);

@@ -14,6 +14,12 @@ typedef struct {\
 } name;\
 ECS_COMPONENT_DECLARE(name);
 
+#define zoxel_function_component(name, return_type, ...)\
+typedef struct {\
+    return_type (*value)(__VA_ARGS__);\
+} name;\
+ECS_COMPONENT_DECLARE(name);
+
 #define zoxel_byte_component(name) zoxel_component(name, unsigned char)
 
 #define zoxel_time_component(name) zoxel_component(name, double)

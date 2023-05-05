@@ -46,7 +46,6 @@ spawn_player_character3D_prefab(world);
     zoxel_filter(playerCharacter3DQuery2, world, [none] PlayerCharacter3D, [out] Alpha3D, [in] Omega3D, [in] physics.DisableMovement)
     zoxel_system_ctx(Player3DRotateSystem, EcsOnUpdate, playerCharacter3DQuery2, [none] Player, [in] DeviceLinks)
     zoxel_filter(gamepad_query, world, [in] Gamepad)
-    zoxel_system_ctx(PlayerPlayButtonSystem, EcsOnUpdate, gamepad_query, [none] elements.PlayGameButton, [out] ClickableState)
 #endif
 zoxel_filter(cameras, world, [none] cameras.Camera, [in] cameras.FreeRoam, [out] Position3D, [out] Rotation3D)
 zoxel_system_ctx(FreeCameraMoveSystem, EcsOnUpdate, cameras, [in] Keyboard)

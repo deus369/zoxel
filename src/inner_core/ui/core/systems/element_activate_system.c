@@ -46,9 +46,3 @@
     }
     zoxel_declare_system(ElementActivateSystem)
 #endif
-
-// ecs_set(world, raycasterTarget->value, ClickableState, { 1 });
-/*ClickableState *clickableState = ecs_get_mut(world, raycasterTarget->value, ClickableState);
-clickableState->value = 1;
-ecs_modified(world, raycasterTarget->value, ClickableState);*/
-// if (ecs_has(it->world, raycasterTarget->value, CloseButton))

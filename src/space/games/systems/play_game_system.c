@@ -1,41 +1,68 @@
 extern void attach_to_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t character);
 
+ecs_entity_t respawn_camera(ecs_world_t *world) {
+    ecs_entity_t old_camera_entity = main_cameras[0];
+    float3 camera_position = ecs_get(world, old_camera_entity, Position3D)->value;
+    float4 camera_rotation = ecs_get(world, old_camera_entity, Rotation3D)->value;
+    int2 camera_screen_dimensions = ecs_get(world, old_camera_entity, ScreenDimensions)->value;
+    float4x4 view_matrix = ecs_get(world, old_camera_entity, ViewMatrix)->value;
+    // spawn new free roam camera
+    ecs_delete(world, old_camera_entity);
+    ecs_entity_t e = spawn_free_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { });
+    ecs_set(world, e, ViewMatrix, { view_matrix });
+    main_camera_matrix = view_matrix;   // do I still need main_camera_matrix?
+    return e;
+}
+
+ecs_entity_t respawn_base_camera(ecs_world_t *world) {
+    ecs_entity_t old_camera_entity = main_cameras[0];
+    float3 camera_position = ecs_get(world, old_camera_entity, Position3D)->value;
+    float4 camera_rotation = ecs_get(world, old_camera_entity, Rotation3D)->value;
+    int2 camera_screen_dimensions = ecs_get(world, old_camera_entity, ScreenDimensions)->value;
+    float4x4 view_matrix = ecs_get(world, old_camera_entity, ViewMatrix)->value;
+    // spawn new free roam camera
+    ecs_delete(world, old_camera_entity);
+    ecs_entity_t e = spawn_base_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { });
+    ecs_set(world, e, ViewMatrix, { view_matrix });
+    main_camera_matrix = view_matrix;   // do I still need main_camera_matrix?
+    return e;
+}
+
+void stop_playing_game(ecs_world_t *world) {
+    ecs_set(world, local_game, GameState, { zoxel_game_state_main_menu });
+    main_cameras[0] = respawn_base_camera(world);
+}
+
+void play_game(ecs_world_t *world) {
+    // start game
+    ecs_set(world, local_game, GameState, { zoxel_game_state_playing });
+    // get previous camera data
+    main_cameras[0] = respawn_camera(world);
+    ecs_add(world, main_cameras[0], Streamer);
+    ecs_add(world, main_cameras[0], StreamPoint);
+    ecs_set(world, main_cameras[0], VoxLink, { main_terrain_world });
+    // \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cameras
+    #ifdef zoxel_spawn_character3Ds
+        spawn_many_characters3D(world);
+    #endif
+    #ifdef zoxel_test_single_character3Ds
+        spawn_many_characters3D(world);
+    #endif
+    #ifdef zoxel_disable_attach_on_start
+        continue;
+    #endif
+    attach_to_character(world, main_cameras[0], main_character3D);
+}
+
+
 void PlayGameSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
     const GenericEvent *genericEvents = ecs_field(it, GenericEvent, 1);
     for (int i = 0; i < it->count; i++) {
         const GenericEvent *genericEvent = &genericEvents[i];
         if (genericEvent->value == 1) {
-            // start game
-            ecs_set(world, local_game, GameState, { zoxel_game_state_playing });
+            play_game(world);
             // zoxel_log(" > game play begins [%lu]\n", it->entities[i]);
-            // destroy ai camera
-            ecs_entity_t first_camera = main_cameras[0];
-            float3 first_camera_position = ecs_get(world, first_camera, Position3D)->value;
-            float4 first_camera_rotation = ecs_get(world, first_camera, Rotation3D)->value;
-            float4x4 first_view_matrix = ecs_get(world, first_camera, ViewMatrix)->value;
-            int2 first_camera_screen_dimensions = ecs_get(world, first_camera, ScreenDimensions)->value;
-            ecs_delete(world, first_camera);
-            // spawn free roam camera
-            // \todo I believe the flickering is due to the matrix not being set in time.
-            main_cameras[0] = spawn_free_camera(world, first_camera_position, // (float3) { 0, 3.6f, 0.62f },
-                first_camera_rotation, first_camera_screen_dimensions, (int2) { });
-            ecs_set(world, main_cameras[0], ViewMatrix, { first_view_matrix });
-            ecs_add(world, main_cameras[0], Streamer);
-            ecs_add(world, main_cameras[0], StreamPoint);
-            ecs_set(world, main_cameras[0], VoxLink, { main_terrain_world });
-            main_camera_matrix = first_view_matrix;
-            // \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cameras
-            #ifdef zoxel_spawn_character3Ds
-                spawn_many_characters3D(world);
-            #endif
-            #ifdef zoxel_test_single_character3Ds
-                spawn_many_characters3D(world);
-            #endif
-            #ifdef zoxel_disable_attach_on_start
-                continue;
-            #endif
-            attach_to_character(world, main_cameras[0], main_character3D);
         }
     }
 }

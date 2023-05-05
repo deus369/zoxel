@@ -1,4 +1,5 @@
-//! Spawns a header element.
+extern void button_event_close_window(ecs_world_t *world, ecs_entity_t trigger_entity);
+
 ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, int2 position, int2 size, float2 anchor, const char* text, int font_size,
     int header_margins, unsigned char layer, float2 parent_position2D,int2 parent_pixel_size, unsigned char is_close_button, int2 canvas_size) {
     int children_length = 1;
@@ -25,6 +26,7 @@ ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, int2 position
         children.value[1] = spawn_button(world, e, (int2) { - (font_size / 2) - header_margins / 2, 0 },
             padding, (float2) { 1.0f, 0.5f }, "X", font_size, layer + 1, position2D, size, canvas_size);
         zoxel_add_tag(world, children.value[1], CloseButton);
+        zoxel_set(world, children.value[1], ClickEvent, { &button_event_close_window });
         /*printf("--- Spawned close button [%lu] ---\n", (long int) children.value[1]);
         printf("--- Spawned header [%lu] ---\n", (long int) e);
         printf("    size [%ix%i]\n", size.x, size.y);*/
