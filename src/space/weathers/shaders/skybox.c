@@ -29,7 +29,7 @@ out lowp vec4 color;\
 \
 void main() {\
     lowp vec3 sky_color_top = vec3(0.2, 0.6, 0.9);\
-    lowp vec3 fog_color = vec3(0.9, 0.95, 0.98);\
+    lowp vec3 fog_color = vec3(0.5, 0.55, 0.58);\
     lowp float gradient = clamp((mesh_pos.y + 0.0) * 4.0, 0.0, 1.0);\
     if (mesh_pos.y > 0.0) {\
         if (abs(mesh_pos.x) > abs(mesh_pos.z)) {\
