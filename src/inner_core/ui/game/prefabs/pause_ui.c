@@ -16,12 +16,13 @@ ecs_entity_t spawn_prefab_pause_ui(ecs_world_t *world) {
 extern ecs_entity_t main_player;
 // todo: return to gameplay button
 // todo: return to main menu button instead of exit game
-ecs_entity_t spawn_pause_ui(ecs_world_t *world, int2 position, int2 window_size, float2 anchor) {
+ecs_entity_t spawn_pause_ui(ecs_world_t *world, int2 position, float2 anchor) {
     int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
     const char *header_label = "paused";
     const char *button_label_1 = "return";
     const char *button_label_2 = "options";
     const char *button_label_3 = "leave";
+    int2 window_size = { 260, 220 };
     const unsigned char is_close_button = 0;
     float ui_scale = default_ui_scale;
     int font_size = 28;
@@ -35,14 +36,12 @@ ecs_entity_t spawn_pause_ui(ecs_world_t *world, int2 position, int2 window_size,
     font_size *= ui_scale;
     header_margins *= ui_scale;
     int2 button_padding = (int2) { (int) (font_size * 0.6f), (int) (font_size * 0.3f) };
+    int header_height = (font_size + header_margins - 1); //  * 2;
+    anchor_position2D(&position, window_size, anchor, header_height);
     // positions
     int2 play_button_position = (int2) { 0, font_size * 2 };
     int2 options_button_position = (int2) { 0, 0 };
-    int2 header_position = (int2) { 0, - font_size / 2 - header_margins / 2 };
-    //#ifdef zoxel_on_android
-    //    play_button_position.y = font_size;
-    //    options_button_position.y = -font_size;
-    //#endif
+    int2 header_position = (int2) { 0, header_height / 2.0f }; //- font_size / 2 - header_margins / 2 };
     header_position.y = font_size / 2 + header_margins / 2;
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, pause_ui_prefab);

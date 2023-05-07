@@ -20,7 +20,7 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
     glUseProgram(line3D_material);
     glEnableVertexAttribArray(line3D_position_location);
     glUniform4f(line3D_fog_data_location, fog_color.x, fog_color.y, fog_color.z, fog_density);
-    glUniformMatrix4fv(line3D_camera_matrix_location, 1, GL_FALSE, (float*) &main_camera_matrix);
+    glUniformMatrix4fv(line3D_camera_matrix_location, 1, GL_FALSE, (float*) &render_camera_matrix);
     const CubeLinesThickness *cubeLinesThicknesss = ecs_field(it, CubeLinesThickness, 2);
     const ColorRGB *colorRGBs = ecs_field(it, ColorRGB, 3);
     const Position3D *position3Ds = ecs_field(it, Position3D, 4);

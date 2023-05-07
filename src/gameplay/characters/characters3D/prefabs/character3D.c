@@ -8,6 +8,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     set_unique_entity_name(world, e, "prefab_character3D");
     add_seed(world, e, 999);
     add_physics3D(world, e);
+    zoxel_set(world, e, Bounds3D, {{ 1, 1, 1 }})
     zoxel_set(world, e, Scale1D, { 1 })
     if (!headless) {
         ecs_remove(world, e, MaterialGPULink);
@@ -27,20 +28,20 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file *vox, float3 position, float4 rotation, float scale) {
+    #ifdef zox_disable_characters3D
+        if (main_character3D != 0) {
+            return 0;
+        }
+    #endif
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
     zoxel_set(world, e, Position3D, { position })
-    // zoxel_set(world, e, Scale1D, { scale })
     zoxel_set(world, e, Rotation3D, { rotation })
     zoxel_set(world, e, VoxLink, { main_terrain_world })
-    set_vox_from_vox_file(world, e, vox);
+    #ifndef zox_disable_characters3D_voxes
+        set_vox_from_vox_file(world, e, vox);
+    #endif
     ecs_defer_end(world);
     main_character3D = e;
-    /*if (position.x >= 0 && position.x <= real_chunk_scale && position.z >= 0 && position.z <= real_chunk_scale) {
-        main_character3D = e;
-    }*/
-    /*if (position.x >= -real_chunk_scale && position.x <= real_chunk_scale && position.z >= -real_chunk_scale && position.z <= real_chunk_scale) {
-        main_character3D = e;
-    }*/
     return e;
 }

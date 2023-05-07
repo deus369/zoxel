@@ -21,8 +21,8 @@ void boot_zoxel_game(ecs_world_t *world) {
         }
         float3 camera_begin_position = { 0, 0.0f, 0.0f };
         #ifdef zoxel_voxels
-            #ifdef voxels_spawn_terrain
-                #ifdef voxel_octrees
+            #ifndef zox_disable_spawn_terrain
+                #ifndef zox_disable_terrain_octrees
                     camera_begin_position = (float3) { 0, 0.26f * 2 * overall_voxel_scale, 0 };
                 #else
                     camera_begin_position = (float3) { 0, 0.52f * 2 * overall_voxel_scale, 0 };
@@ -63,7 +63,7 @@ void boot_zoxel_game(ecs_world_t *world) {
         #endif
     #endif
     #ifdef zoxel_voxels
-        #ifdef voxels_spawn_terrain
+        #ifndef zox_disable_spawn_terrain
             create_terrain(world);
         #endif
     #endif

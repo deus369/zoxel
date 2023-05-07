@@ -25,7 +25,7 @@ void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, vox_file *vox) {
     int colors_length = vox->palette.values_length;
     initialize_memory_component_non_pointer(chunk, unsigned char, voxels_length);
     initialize_memory_component_non_pointer(colorRGBs, color_rgb, colors_length);
-    memcpy(chunk.value, vox->chunks[0].xyzi.voxels, voxels_length);
+    memcpy(chunk.value, vox->chunks[0].xyzi.voxels, voxels_length);     // this lags it hard...
     memcpy(colorRGBs.value, vox->palette.values_rgb, colors_length * sizeof(color_rgb));
     ecs_set(world, e, ChunkSize, { chunkSize.value });
     ecs_set(world, e, ChunkData, { chunk.length, chunk.value });

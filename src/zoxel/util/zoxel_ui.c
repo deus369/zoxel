@@ -11,11 +11,11 @@ void spawn_zoxel_main_menu(ecs_world_t *world) {
         initialize_memory_component_non_pointer(children, ecs_entity_t, 3);
         // main menu
         const int edge_buffer = 8 * default_ui_scale;
-        int2 window_size = { 260, 220 };
+        // int2 window_size = { 260, 220 };
         float2 window_anchor = { 0.0f, 1.0f };
         int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
         const char *game_name = "zoxel";
-        zoxel_main_menu = spawn_main_menu(world, game_name, window_position, window_size, window_anchor, 0);
+        zoxel_main_menu = spawn_main_menu(world, game_name, window_position, window_anchor, 0);
         #ifdef zoxel_debug_fps
             fps_display = spawn_fps_display(world, main_canvas, 32);
         #endif

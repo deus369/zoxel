@@ -1,4 +1,4 @@
-extern float4x4 main_camera_matrix;
+extern float4x4 render_camera_matrix;
 
 void Render3DColoredSystem(ecs_iter_t *it) {
     const Position3D *positions = ecs_field(it, Position3D, 1);
@@ -14,16 +14,19 @@ void Render3DColoredSystem(ecs_iter_t *it) {
         if (meshGPULink->value.x == 0) {
             continue;
         }
+        const MeshIndicies *meshIndicies2 = &meshIndicies[i];
+        if (meshIndicies2->length == 0) {
+            continue;
+        }
         const Position3D *position = &positions[i];
         const Rotation3D *rotation = &rotations[i];
         const Scale1D *scale1D = &scale1Ds[i];
         const Brightness *brightness = &brightnesses[i];
         const ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
-        const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         if (!has_set_single_material) {
             has_set_single_material = 1;
             opengl_set_material(colored3D_material);
-            glUniformMatrix4fv(materialColored3D.view_matrix, 1, GL_FALSE, (float*) &main_camera_matrix);
+            glUniformMatrix4fv(materialColored3D.view_matrix, 1, GL_FALSE, (float*) &render_camera_matrix);
             glUniform1f(materialColored3D.scale, scale1D->value);
             glUniform1f(materialColored3D.brightness, brightness->value);
             GLuint fog_data_location = glGetUniformLocation(colored3D_material, "fog_data");

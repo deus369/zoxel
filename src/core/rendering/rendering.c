@@ -7,9 +7,10 @@ float3 fog_color = (float3) { 0.5f, 0.55f, 0.58f };
 // float3 fog_color = (float3) { 2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f };
 float fog_density = 0.0326f;
 #include "data/GLuint2.c"
-float4x4 main_camera_matrix; 
+// todo: replace this with a render stack, which can easily be used in a camera_render_system
+//      > it can also be sorted better for z issues on translucent materials
+float4x4 render_camera_matrix; 
 float4x4 ui_camera_matrix; 
-float4x4 main_camera_matrix2;
 zoxel_declare_tag(Mesh)
 zoxel_declare_tag(ElementRender)
 zoxel_byte_component(MeshDirty)
@@ -30,6 +31,6 @@ if (!headless && is_opengl_running()) {
 }
 zoxel_end_module(Rendering)
 
-// todo: use realm cameras instead of singleton data main_camera_matrix
+// todo: use realm cameras instead of singleton data render_camera_matrix
 
 #endif

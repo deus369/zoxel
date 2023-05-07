@@ -15,7 +15,7 @@ int get_chunk_index_2(int i, int j, int k, int rows, int vertical) {
 }
 
 void create_terrain(ecs_world_t *world) {
-    #ifdef voxel_octrees
+    #ifndef zox_disable_terrain_octrees
         int chunks_total_length = get_terrain_chunks_count(terrain_spawn_distance, terrain_vertical);
     #else
         int chunks_total_length = get_terrain_chunks_count(terrain_spawn_distance, 0);
@@ -28,7 +28,7 @@ void create_terrain(ecs_world_t *world) {
     int3 chunk_positions[chunks_total_length];
     for (int i = -terrain_spawn_distance; i <= terrain_spawn_distance; i++) {
         for (int k = -terrain_spawn_distance; k <= terrain_spawn_distance; k++) {
-            #ifdef voxel_octrees
+            #ifndef zox_disable_terrain_octrees
                 for (int j = -terrain_vertical; j <= terrain_vertical; j++)
             #else
                 int j = 0;
@@ -36,7 +36,7 @@ void create_terrain(ecs_world_t *world) {
             {
                 // printf("%ix%i index is %i\n", i, j, get_chunk_index(i, j, terrain_spawn_distance));
                 // printf("%ix%ix%i index is %i out of %i\n", i, j, k, get_chunk_index_2(i, j, k, terrain_spawn_distance), chunks_total_length)
-                #ifdef voxel_octrees
+                #ifndef zox_disable_terrain_octrees
                     int index = get_chunk_index_2(i, j, k, terrain_spawn_distance, terrain_vertical);
                     int3 chunk_position = (int3) { i, j, k };
                     chunks[index] = spawn_terrain_chunk_octree(world, prefab_terrain_chunk_octree, terrain_world,
@@ -52,7 +52,7 @@ void create_terrain(ecs_world_t *world) {
     // now for all of them, set their neighbors
     for (int i = -terrain_spawn_distance; i <= terrain_spawn_distance; i++) {
         for (int k = -terrain_spawn_distance; k <= terrain_spawn_distance; k++) {
-            #ifdef voxel_octrees
+            #ifndef zox_disable_terrain_octrees
                 for (int j = -terrain_vertical; j <= terrain_vertical; j++) {
                     set_chunk_neighbors_six_directions(world,
                         chunks[get_chunk_index_2(i, j, k, terrain_spawn_distance, terrain_vertical)],

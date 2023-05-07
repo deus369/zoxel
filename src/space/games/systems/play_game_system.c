@@ -1,4 +1,5 @@
 extern void attach_to_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t character);
+// do I still need render_camera_matrix? - yes - used to insert matrix in each camera system run
 
 ecs_entity_t respawn_camera(ecs_world_t *world) {
     ecs_entity_t old_camera_entity = main_cameras[0];
@@ -10,7 +11,7 @@ ecs_entity_t respawn_camera(ecs_world_t *world) {
     ecs_delete(world, old_camera_entity);
     ecs_entity_t e = spawn_free_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { });
     ecs_set(world, e, ViewMatrix, { view_matrix });
-    main_camera_matrix = view_matrix;   // do I still need main_camera_matrix?
+    render_camera_matrix = view_matrix;
     return e;
 }
 
@@ -24,7 +25,7 @@ ecs_entity_t respawn_base_camera(ecs_world_t *world) {
     ecs_delete(world, old_camera_entity);
     ecs_entity_t e = spawn_base_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { });
     ecs_set(world, e, ViewMatrix, { view_matrix });
-    main_camera_matrix = view_matrix;   // do I still need main_camera_matrix?
+    render_camera_matrix = view_matrix;
     return e;
 }
 

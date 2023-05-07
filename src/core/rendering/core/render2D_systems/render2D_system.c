@@ -1,6 +1,6 @@
 //! External data/function.
 const unsigned char isDebugRenderMaterial2DSystem = 0;
-extern float4x4 main_camera_matrix;
+extern float4x4 render_camera_matrix;
 extern void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint texture, float2 position,
     float angle, float scale, float brightness);
 
@@ -33,7 +33,7 @@ void RenderMaterial2DSystem(ecs_iter_t *it) {
         }
         float4x4 viewMatrix;
         if (!ecs_has(it->world, it->entities[i], ElementRender)) {
-            viewMatrix = main_camera_matrix;
+            viewMatrix = render_camera_matrix;
         } else {
             viewMatrix = ui_camera_matrix;
         }

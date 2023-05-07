@@ -81,8 +81,9 @@
 // #define disable_voxel_front
 // #define disable_voxel_down
 // -- settings --
+#define canvas_edge_size 4
 // voxels
-#define voxel_octrees                   // use octrees instead of arrays
+// #define zox_disable_terrain_octrees  // disables octrees, uses arrays
 #define voxels_close_octree_nodes       // closes nodes in terrain gen
 #define voxels_hide_terrain_edge        // hides faces on edge of map
 #define zoxel_voxels_dynamic_array      // used in mesh generation
@@ -92,7 +93,7 @@
 // #define zoxel_voxel_disable_distance_division
 // #define voxels_use_octree_pooling
 // -- zoxel game --
-#define voxels_spawn_terrain
+// #define zox_disable_spawn_terrain
 // #define zox_spawn_terrain_grid
 // #define zoxel_voxes_color_randomize
 // #define zoxel_quaternion_camera
@@ -114,8 +115,9 @@
 // #define zoxel_disable_non_vertical_bounce
 // #define zoxel_inputs_debug_gamepad
 // #define zoxel_inputs_debug_gamepad_sos
-// #define zoxel_debug_bounds  // renders a bounding box rotated for characters (by default)
-// #define zoxel_debug_transforms  // renders an axis for movement of characters
+// #define zoxel_debug_bounds          // renders a bounding box rotated for characters (by default)
+// #define zoxel_debug_transforms      // renders an axis for movement of characters
 // #define zoxel_testing_tiny_terrain
 // #define zoxel_testing_small_terrain
-#define canvas_edge_size 4
+// #define zox_disable_characters3D
+// #define zox_disable_characters3D_voxes

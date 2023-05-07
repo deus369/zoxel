@@ -20,9 +20,9 @@ void render_pre_loop() {
 
 //! This renders all render systems per camera, by externally setting the camera matrix this will be uploaded to all materials.
 void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, int2 size) {
-    main_camera_matrix = camera_matrix;
+    render_camera_matrix = camera_matrix;
     glViewport(position.x, position.y, size.x, size.y);
-    opengl_instance3D_begin(main_camera_matrix);
+    opengl_instance3D_begin(render_camera_matrix);
     if (render3D_update_pipeline == 0) {
         ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
         opengl_disable_opengl_program();
@@ -35,7 +35,7 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     if (render2D_update_pipeline == 0) {
         // glDisable(GL_DEPTH_TEST);
         glClear(GL_DEPTH_BUFFER_BIT);
-        shader2D_instance_begin(main_camera_matrix);
+        shader2D_instance_begin(render_camera_matrix);
         ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
         shader2D_instance_end();
         ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);

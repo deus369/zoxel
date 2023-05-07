@@ -12,7 +12,7 @@ const int max_chunks_build_per_frame = 32;
 #define octree_min_height -1.995f // 0.005f
 #define noise_positiver2 32000
 #define terrain_minus_amplifier 0.0
-#ifdef voxel_octrees
+#ifndef zox_disable_terrain_octrees
     double terrain_frequency = 0.028216; // 0.026216
 #else
     double terrain_frequency = 0.00216; // 0.004216

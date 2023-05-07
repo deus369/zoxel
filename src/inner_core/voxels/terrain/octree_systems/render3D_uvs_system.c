@@ -1,5 +1,5 @@
 // #define zoxel_render3D_uvs_system_overdebug
-extern float4x4 main_camera_matrix;
+extern float4x4 render_camera_matrix;
 
 void Render3DUvsSystem(ecs_iter_t *it) {
     #ifdef zoxel_time_render_3d_uvs
@@ -73,7 +73,7 @@ void Render3DUvsSystem(ecs_iter_t *it) {
                 opengl_set_material(materialGPULink->value);
                 glUniform4f(attributes.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
                 opengl_set_texture(textureGPULink->value, false);
-                opengl_shader3D_textured_set_camera_view_matrix(main_camera_matrix, &attributes);
+                opengl_shader3D_textured_set_camera_view_matrix(render_camera_matrix, &attributes);
                 opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes);
             }
             opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, colorsGPULink->value, &attributes);
@@ -102,7 +102,7 @@ void Render3DUvsSystem(ecs_iter_t *it) {
             opengl_set_material(materialGPULink->value);
             opengl_set_texture_only(textureGPULink->value);
             opengl_set_mesh_indicies(meshGPULink->value.x);
-            opengl_shader3D_textured_set_camera_view_matrix(main_camera_matrix, &attributes);
+            opengl_shader3D_textured_set_camera_view_matrix(render_camera_matrix, &attributes);
             opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, &attributes);
             opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes);
             opengl_set_material3D_uvs_position(position3D->value, &attributes);

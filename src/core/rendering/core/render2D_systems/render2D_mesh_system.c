@@ -37,7 +37,7 @@ void RenderMeshMaterial2DSystem(ecs_iter_t *it) {
         }
         float4x4 viewMatrix;
         if (!ecs_has(it->world, it->entities[i], ElementRender)) {
-            viewMatrix = main_camera_matrix;
+            viewMatrix = render_camera_matrix;
         } else {
             viewMatrix = ui_camera_matrix;
         }

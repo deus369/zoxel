@@ -57,7 +57,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
                 // scale voxel position by terrain scale
                 // float terrain_voxel_scale = get_terrain_voxel_scale(max_octree_depth);
                 position.y += 0.5f; // can we use character bounds before spawning?
-                // position.y += 1.5f; // can we use bounds before spawning?
+                position.y += 0.25f; // can we use bounds before spawning?
                 spawn_character3D(it->world, character3D_prefab, &vox, position, rotation, model_scale);
                 // zoxel_log(" + chunk spawning character [%fx%fx%f] \n", position.x, position.y, position.z);
                 characters_count++;
