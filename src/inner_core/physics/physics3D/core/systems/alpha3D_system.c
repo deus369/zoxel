@@ -1,7 +1,7 @@
 // #define zoxel_debug_alpha3D_system
 
 void Alpha3DSystem(ecs_iter_t *it) {
-    double delta_time = zoxel_delta_time;
+    double delta_time = zox_delta_time;
     Alpha3D *alpha3Ds = ecs_field(it, Alpha3D, 1);
     Omega3D *omega3Ds = ecs_field(it, Omega3D, 2);
     for (int i = 0; i < it->count; i++) {

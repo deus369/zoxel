@@ -1,37 +1,26 @@
-//! Our function that creates a chunk.
-void GenerateChunkNoise(ChunkData* chunk, const ChunkSize *chunkSize) {
+void generate_chunk_noise(ChunkData* chunkData, const ChunkSize *chunkSize) {
     // const int2 valueRange = { 0, 2 };   // < max
     int array_index = 0;
-    for (int j = 0; j < chunkSize->value.x; j++)
-    {
-        for (int k = 0; k < chunkSize->value.y; k++)
-        {
-            for (int l = 0; l < chunkSize->value.z; l++)
-            {
+    for (int j = 0; j < chunkSize->value.x; j++) {
+        for (int k = 0; k < chunkSize->value.y; k++) {
+            for (int l = 0; l < chunkSize->value.z; l++) {
                 // int array_index = (j + k * chunkSize->value.x)  * chunkSize->value.y + l;
                 int distanceToMidX = abs_integer(chunkSize->value.x / 2 - j);
                 int distanceToMidY = abs_integer(chunkSize->value.y / 2 - k);
                 int distanceToMidZ = abs_integer(chunkSize->value.z / 2 - l);
                 if (distanceToMidX + distanceToMidY >= chunkSize->value.x / 2
                     || distanceToMidX + distanceToMidZ >= chunkSize->value.x / 2
-                    || distanceToMidZ + distanceToMidY >= chunkSize->value.x / 2)
-                {
-                    chunk->value[array_index] = 0;
+                    || distanceToMidZ + distanceToMidY >= chunkSize->value.x / 2) {
+                    chunkData->value[array_index] = 0;
                     array_index++;
                     continue;
                 }
-                if (rand() % 100 <= dissapearChance)
-                {
-                    chunk->value[array_index] = 0;
+                if (rand() % 100 <= dissapearChance) {
+                    chunkData->value[array_index] = 0;
                     array_index++;
                     continue;
                 }
-                chunk->value[array_index] = 1;
-                // valueRange.x + rand() % (valueRange.y - valueRange.x);
-                /*if (k == 0 && l == 0)
-                    chunk->value[array_index] = 1;
-                else
-                    chunk->value[array_index] = 0;*/
+                chunkData->value[array_index] = 1;
                 array_index++;
             }
         }
@@ -39,9 +28,7 @@ void GenerateChunkNoise(ChunkData* chunk, const ChunkSize *chunkSize) {
 }
 
 void NoiseChunkSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(it->ctx, NULL)) {
-        return;
-    }
+    if (!ecs_query_changed(it->ctx, NULL)) return;
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
     ChunkData *chunks = ecs_field(it, ChunkData, 3);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 4);
@@ -54,14 +41,22 @@ void NoiseChunkSystem(ecs_iter_t *it) {
         }
         ChunkDirty *chunkDirty = &chunkDirtys[i];
         if (chunkDirty->value != 0) {
+            // zoxel_log(" ! ChunkDirty [%lu] at [%f]\n", it->entities[i], get_total_time_seconds());
             continue;
         }
         chunkDirty->value = 1;
         ChunkData *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
-        re_initialize_memory_component(chunk, unsigned char, chunkSize->value.x * chunkSize->value.y * chunkSize->value.z);
-        GenerateChunkNoise(chunk, chunkSize);
-        // printf("Noise ChunkData Generated: [%lu] \n", (long int) it->entities[i]);
+        int voxels_array_size = chunkSize->value.x * chunkSize->value.y * chunkSize->value.z;
+        re_initialize_memory_component(chunk, unsigned char, voxels_array_size);
+        generate_chunk_noise(chunk, chunkSize);
+        zoxel_log(" > chunk [noise] generated [%lu] at [%f]\n", it->entities[i], get_total_time_seconds());
     }
 }
 zoxel_declare_system(NoiseChunkSystem)
+
+// valueRange.x + rand() % (valueRange.y - valueRange.x);
+/*if (k == 0 && l == 0)
+    chunk->value[array_index] = 1;
+else
+    chunk->value[array_index] = 0;*/

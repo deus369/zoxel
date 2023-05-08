@@ -17,7 +17,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
         return;
     }
     ecs_world_t *world = it->world;
-    double delta_time = zoxel_delta_time;
+    double delta_time = zox_delta_time;
     float2 max_delta_velocity = max_velocity;
     max_delta_velocity.x *= delta_time;
     max_delta_velocity.y *= delta_time;
@@ -110,7 +110,7 @@ zoxel_declare_system(Player3DMoveSystem)
     if (playerCharacterIterator.count == 0) {
         return;
     }
-    double delta_time = zoxel_delta_time;
+    double delta_time = zox_delta_time;
     float2 max_delta_velocity = max_velocity;
     Gamepad *gamepads = ecs_field(it, Gamepad, 1);
     Acceleration3D *acceleration3Ds = ecs_field(&playerCharacterIterator, Acceleration3D, 2);

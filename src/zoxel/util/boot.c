@@ -14,14 +14,14 @@ void boot_zoxel_game(ecs_world_t *world) {
         ecs_set(world, game, RealmLink, { realm });
     #endif
     int2 screen_dimensions2 = screen_dimensions;
+    float3 camera_begin_position = { 0, 0.0f, 0.0f };
     #ifdef zoxel_cameras
         if (is_split_screen) {
             screen_dimensions2.x /= 2;
             set_main_cameras(2);
         }
-        float3 camera_begin_position = { 0, 0.0f, 0.0f };
         #ifdef zoxel_voxels
-            #ifndef zox_disable_spawn_terrain
+            #ifndef zox_disable_terrain
                 #ifndef zox_disable_terrain_octrees
                     camera_begin_position = (float3) { 0, 0.26f * 2 * overall_voxel_scale, 0 };
                 #else
@@ -63,17 +63,20 @@ void boot_zoxel_game(ecs_world_t *world) {
         #endif
     #endif
     #ifdef zoxel_voxels
-        #ifndef zox_disable_spawn_terrain
+        #ifndef zox_disable_terrain
             create_terrain(world);
         #endif
     #endif
     #ifdef zoxel_lines3D
-        #ifdef zox_spawn_terrain_grid
+        #ifdef zox_disable_terrain_grid
             spawn_terrain_grid(real_chunk_scale);
         #endif
     #endif
     #ifdef zoxel_musics
         spawn_music(world, instrument_piano);
+    #endif
+    #ifdef zox_test_voxel_mesh
+        test_animating_chunks(world, camera_begin_position);
     #endif
     zoxel_log(" > [zoxel] begins to run\n");
 }

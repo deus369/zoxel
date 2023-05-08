@@ -1,8 +1,7 @@
 void FpsDisplaySystem(ecs_iter_t *it) {
     // zoxel_log("target fps %i\n", it->world->target_fps);
     const unsigned char number_0_start = 60;
-    double delta_time = zoxel_delta_time; // it->delta_time;
-    // zoxel_delta_time = delta_time; // delta_time; // it->delta_system_time;
+    double delta_time = zox_delta_time;
     FPSDisplayTicker *fpsDisplayTickers = ecs_field(it, FPSDisplayTicker, 1);
     ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
     ZextData *zextDatas = ecs_field(it, ZextData, 3);

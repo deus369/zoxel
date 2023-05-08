@@ -15,7 +15,6 @@ void engine_update() {
     #ifdef zoxel_time_main_loop
         begin_timing()
     #endif
-    iterate_fps_time();
     update_core();
     #ifdef zoxel_time_main_loop
         did_do_timing()

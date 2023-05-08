@@ -1,8 +1,6 @@
 #ifndef zoxel_weather
 #define zoxel_weather
 
-#define zox_testing_skybox
-
 zoxel_declare_tag(Weather)
 #include "shaders/skybox.c"
 #include "prefabs/skybox.c"
@@ -13,7 +11,7 @@ spawn_prefab_skybox(world);
 if (!headless) {
     initialize_shader_skybox();
 }
-#ifdef zox_testing_skybox
+#ifndef zox_disable_skybox
     spawn_skybox(world);
 #endif
 // systems

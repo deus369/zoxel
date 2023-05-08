@@ -1,5 +1,5 @@
 void EternalRotationSystem(ecs_iter_t *it) {
-    double delta_time = zoxel_delta_time;
+    double delta_time = zox_delta_time;
     Rotation3D *rotations = ecs_field(it, Rotation3D, 1);
     const EternalRotation *eternalRotations = ecs_field(it, EternalRotation, 2);
     for (int i = 0; i < it->count; i++) {

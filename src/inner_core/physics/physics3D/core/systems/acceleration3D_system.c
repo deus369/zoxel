@@ -1,5 +1,5 @@
 void Acceleration3DSystem(ecs_iter_t *it) {
-    double delta_time = zoxel_delta_time;
+    double delta_time = zox_delta_time;
     Acceleration3D *acceleration3Ds = ecs_field(it, Acceleration3D, 1);
     Velocity3D *velocity3Ds = ecs_field(it, Velocity3D, 2);
     for (int i = 0; i < it->count; i++) {

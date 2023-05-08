@@ -15,7 +15,7 @@ ecs_entity_t spawn_prefab_noise_chunk(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_voxel_noise_chunk_mesh(ecs_world_t *world, ecs_entity_t prefab, float3 position, float scale) {
-    ecs_entity_t e = spawn_voxel_chunk_mesh(world, prefab, position, scale);
-    // zoxel_set(world, e, AnimateChunk, { (((rand() % 100) / 100.0f) * noiseChunkAnimateSpeed) }); // 0.0 });
+    ecs_entity_t e = spawn_chunk(world, prefab, position, scale);
+    // zoxel_set(world, e, AnimateChunk, { (((rand() % 100) / 100.0f) * animating_chunk_speed) }); // 0.0 });
     return e;
 }

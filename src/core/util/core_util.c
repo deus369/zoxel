@@ -41,9 +41,9 @@ void update_core() {
             render_loop();
         }
     }
-    zoxel_delta_time = get_timing_passed();
+    iterate_time();
     #ifdef zoxel_log_frame_ms
-        zoxel_log(" > frame time [%fms]\n", (float) (zoxel_delta_time * 1000.0f));
+        zoxel_log(" > frame time [%fms]\n", (float) (zox_delta_time * 1000.0f));
     #endif
 }
 

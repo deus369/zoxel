@@ -49,7 +49,6 @@
 // #define zoxel_time_octree_chunk_builds_system    // for octree chunk building
 // #define zoxel_time_chunk_colors_builds_system
 #define zoxel_time_octree_chunk_builds_system_cutoff 0 //12.0f
-
 // #define zoxel_time_mesh_uvs_update_system        // uploading terrain chunk mesh data
 // idea: generate terrain too at lesser resolutions
 // #define zoxel_time_render_3d_uvs
@@ -71,7 +70,6 @@
 // #define zoxel_test_character2Ds
 // #define zoxel_test_cubes             // Failing atm, gl error at opengl_draw_triangles
 // #define zoxel_test_cubes_textured    // wip
-// #define zoxel_test_voxels
 // #define zoxel_test_uis
 // -- disables --
 // #define zoxel_disable_music
@@ -84,6 +82,7 @@
 #define canvas_edge_size 4
 // voxels
 // #define zox_disable_terrain_octrees  // disables octrees, uses arrays
+// #define zox_disable_vox_octrees
 #define voxels_close_octree_nodes       // closes nodes in terrain gen
 #define voxels_hide_terrain_edge        // hides faces on edge of map
 #define zoxel_voxels_dynamic_array      // used in mesh generation
@@ -93,8 +92,7 @@
 // #define zoxel_voxel_disable_distance_division
 // #define voxels_use_octree_pooling
 // -- zoxel game --
-// #define zox_disable_spawn_terrain
-// #define zox_spawn_terrain_grid
+// #define zox_disable_terrain_grid
 // #define zoxel_voxes_color_randomize
 // #define zoxel_quaternion_camera
 // #define zoxel_debug_vox_read
@@ -105,8 +103,6 @@
 // #define zoxel_log_characters_count
 // #define zoxel_log_files
 // #define zoxel_disable_velocity       // disables all movement, used to debug spawning
-#define zoxel_voxes_octrees
-// #define zoxel_disable_attach_on_start
 // #define zoxel_spawn_character3Ds         // spawn x penguins
 // player testing
 // #define zoxel_debug_basic_collision3D_system
@@ -117,7 +113,13 @@
 // #define zoxel_inputs_debug_gamepad_sos
 // #define zoxel_debug_bounds          // renders a bounding box rotated for characters (by default)
 // #define zoxel_debug_transforms      // renders an axis for movement of characters
-// #define zoxel_testing_tiny_terrain
-// #define zoxel_testing_small_terrain
 // #define zox_disable_characters3D
+// #define zoxel_testing_tiny_terrain
+// test settings
 // #define zox_disable_characters3D_voxes
+// #define zox_disable_terrain
+// #define zoxel_disable_attach_on_start
+// #define zox_disable_skybox
+// #define zox_disable_fog // todo: make work
+// #define zoxel_testing_small_terrain
+// #define zox_test_voxel_mesh

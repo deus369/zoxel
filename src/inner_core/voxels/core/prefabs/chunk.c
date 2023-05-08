@@ -1,45 +1,37 @@
-ecs_entity_t chunk_prefab;
-
-void add_chunk(ecs_world_t *world, ecs_entity_t prefab, int3 size) {
-    zoxel_add_tag(world, prefab, Chunk);
-    zoxel_add(world, prefab, ChunkData);
-    zoxel_set(world, prefab, ChunkSize, { size });
-    zoxel_set(world, prefab, ChunkDirty, { 0 });
-    zoxel_set(world, prefab, ChunkPosition, { { 0, 0, 0 } });
-    zoxel_set(world, prefab, VoxLink, { 0 });
-}
-
-void add_generate_chunk(ecs_world_t *world, ecs_entity_t e) {
-    zoxel_set(world, e, EntityDirty, { 0 });
-    zoxel_set(world, e, GenerateChunk, { 1 });
-}
-
-void add_noise_chunk(ecs_world_t *world, ecs_entity_t e) {
-    zoxel_add_tag(world, e, NoiseChunk);
-    zoxel_set(world, e, EntityDirty, { 0 });
-    zoxel_set(world, e, GenerateChunk, { 1 });
-    // zoxel_set(world, e, AnimateTexture, { 0.0 });
-}
+ecs_entity_t voxel_prefab;
 
 ecs_entity_t spawn_chunk_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_prefab(world, "chunk_prefab");
+    ecs_entity_t e = ecs_new_prefab(world, "");
+    #ifdef zoxel_transforms3D
+        add_transform3Ds(world, e);
+        zoxel_set(world, e, Scale1D, { 0.05f });
+    #endif
+    zoxel_set(world, e, MeshDirty, { 0 });
+    zoxel_set(world, e, Brightness, { 1.4f });
     add_seed(world, e, 666);
     add_chunk(world, e, default_chunk_size);
-    add_noise_chunk(world, e);
+    add_generate_chunk(world, e);
+    if (!headless) {
+        zoxel_add(world, e, MeshIndicies);
+        zoxel_add(world, e, MeshVertices);
+    }
+    add_gpu_mesh(world, e);
+    add_gpu_material(world, e);
     ecs_defer_end(world);
-    #ifdef zoxel_debug_prefabs
-    zoxel_log("spawn_prefab chunk_prefab [%lu].\n", (long int) (e));
-    #endif
-    chunk_prefab = e;
+    voxel_prefab = e;
     return e;
 }
 
-ecs_entity_t spawn_chunk(ecs_world_t *world) {
+ecs_entity_t spawn_chunk(ecs_world_t *world, ecs_entity_t prefab, float3 position, float scale) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, chunk_prefab);
-    zoxel_add_tag(world, e, NoiseChunk);
-    zoxel_log("Spawned TextureData [%lu]\n", (long unsigned int) e);
+    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
+    ecs_set(world, e, Position3D, { position });
+    ecs_set(world, e, Scale1D, { scale });
+    if (!headless) {
+        spawn_gpu_mesh(world, e);
+        spawn_gpu_material(world, e, shader3D_colored);
+    }
     ecs_defer_end(world);
     return e;
 }

@@ -3,7 +3,7 @@
     #define ui_navigation_timing 0.3
 
     void ElementNavigationSystem(ecs_iter_t *it) {
-        double delta_time = zoxel_delta_time;
+        double delta_time = zox_delta_time;
         ecs_world_t *world = it->world;
         const DeviceLinks *deviceLinks = ecs_field(it, DeviceLinks, 1);
         NavigatorTimer *navigatorTimers = ecs_field(it, NavigatorTimer, 2);

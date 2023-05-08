@@ -28,7 +28,7 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
     #ifdef zoxel_disable_velocity
         return;
     #endif
-    double delta_time = zoxel_delta_time;
+    double delta_time = zox_delta_time;
     const VoxLink *voxLinks = ecs_field(it, VoxLink, 1);
     ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 2);
     Position3D *position3Ds = ecs_field(it, Position3D, 3);

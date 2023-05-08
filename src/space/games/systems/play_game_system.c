@@ -49,10 +49,9 @@ void play_game(ecs_world_t *world) {
     #ifdef zoxel_test_single_character3Ds
         spawn_many_characters3D(world);
     #endif
-    #ifdef zoxel_disable_attach_on_start
-        continue;
+    #ifndef zoxel_disable_attach_on_start
+        attach_to_character(world, main_cameras[0], main_character3D);
     #endif
-    attach_to_character(world, main_cameras[0], main_character3D);
 }
 
 

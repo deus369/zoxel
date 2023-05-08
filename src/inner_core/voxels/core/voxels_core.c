@@ -13,16 +13,15 @@ zoxel_octree_component(ChunkOctree, unsigned char, 0)   //! A chunk that stores 
 zoxel_byte_component(ChunkDivision)                     //! The resolution of each chunk, distance to nearest camera.
 // zoxel_util_includes
 #include "util/voxel_mesh_util.c"
+#include "util/chunk_util.c"
 #include "util/chunk_build_util.c"
 #include "util/voxel_util.c"
 // zoxel_prefab_includes
 #include "prefabs/chunk.c"
-#include "prefabs/voxel_chunk_mesh.c"
 #include "prefabs/noise_chunk.c"
 // zoxel_fun_includes
 #include "fun/test_noise_chunks.c"
 // zoxel_system_includes
-#include "systems/noise_chunk_system.c"
 #include "systems/chunk_build_system.c"
 #include "systems/chunk_colors_build_system.c"
 #include "systems/chunk_link_system.c"
@@ -39,7 +38,7 @@ zoxel_define_memory_component(ChunkData)
 zoxel_define_memory_component(ChunkNeighbors)
 zoxel_octree_component_define(ChunkOctree)
 // zoxel_prefab_defines
-spawn_voxel_chunk_mesh_prefab(world);
+spawn_chunk_prefab(world);
 spawn_prefab_noise_chunk(world);
 // zoxel_system_defines
 zoxel_define_reset_system(GenerateChunkResetSystem, GenerateChunk)
@@ -49,10 +48,6 @@ if (!headless) {
     zoxel_system_ctx(ChunkBuildSystem, EcsOnUpdate, generateChunkQuery, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices, [out] MeshDirty, [none] !MeshUVs, [none] !MeshColorRGBs)
     zoxel_system_ctx(ChunkColorsBuildSystem, EcsOnUpdate, generateChunkQuery, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ColorRGBs, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] !MeshUVs)
 }
-// zoxel_testing
-#ifdef zoxel_test_voxels
-test_noise_chunks();
-#endif
 set_max_octree_length(max_octree_depth);
 zoxel_end_module(VoxelsCore)
 
