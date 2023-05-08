@@ -123,3 +123,4 @@
 // #define zox_disable_fog // todo: make work
 // #define zoxel_testing_small_terrain
 // #define zox_test_voxel_mesh
+// #define zox_grayboxing

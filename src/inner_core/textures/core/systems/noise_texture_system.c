@@ -1,3 +1,20 @@
+void generate_texture_graybox(TextureData* textureData, const TextureSize *textureSize, int2 position, int2 size) {
+    for (int j = position.x; j < position.x + size.x; j++) {
+        for (int k = position.y; k < position.y + size.y; k++) {
+            int index = j + k * textureSize->value.x;
+            if (j == position.x || k == position.y || j == position.x + size.x - 1 || k == position.y + size.y - 1) {
+                textureData->value[index].r = 0;
+                textureData->value[index].g = 0;
+                textureData->value[index].b = 0;
+            } else {
+                textureData->value[index].r = 125;
+                textureData->value[index].g = 125;
+                textureData->value[index].b = 125;
+            }
+        }
+    }
+}
+
 //! Our function that creates a textureData.
 void GenerateNoise(TextureData* textureData, const TextureSize *textureSize, unsigned char is_dirt) {
     int2 redRange = { 15, 244 };
@@ -10,6 +27,12 @@ void GenerateNoise(TextureData* textureData, const TextureSize *textureSize, uns
         blueRange = (int2) { 7, 27 };  // 17
         alphaRange = (int2) { 255, 256 };
     }
+    #ifdef zox_grayboxing
+        generate_texture_graybox(textureData, textureSize, (int2) { 0, 0 }, (int2) { textureSize->value.x / 2, textureSize->value.y / 2 });
+        generate_texture_graybox(textureData, textureSize, (int2) { textureSize->value.x / 2, 0 }, (int2) { textureSize->value.x / 2, textureSize->value.y / 2 });
+        generate_texture_graybox(textureData, textureSize, (int2) { textureSize->value.x / 2, textureSize->value.y / 2 }, (int2) { textureSize->value.x / 2, textureSize->value.y / 2 });
+        generate_texture_graybox(textureData, textureSize, (int2) { 0, textureSize->value.y / 2 }, (int2) { textureSize->value.x / 2, textureSize->value.y / 2 });
+    #else
     for (int j = 0; j < textureSize->value.x; j++) {
         for (int k = 0; k < textureSize->value.y; k++) {
             int index = j + k * textureSize->value.x;
@@ -72,6 +95,7 @@ void GenerateNoise(TextureData* textureData, const TextureSize *textureSize, uns
             // printf("textureData value: %i\n", textureData->value[index].r);
         }
     }
+    #endif
 }
 
 void NoiseTextureSystem(ecs_iter_t *it) {
