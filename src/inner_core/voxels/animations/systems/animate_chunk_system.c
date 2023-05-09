@@ -1,9 +1,6 @@
-// double animate_chunk_system_time = 0.0;
-
 void AnimateChunkSystem(ecs_iter_t *it) {
     double current_time = zox_current_time;
     // double delta_time = zox_delta_time;
-    // animate_chunk_system_time += delta_time;
     AnimateChunk *animateChunks = ecs_field(it, AnimateChunk, 1);
     GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 2);
     unsigned char changed = 0;
@@ -29,8 +26,6 @@ void AnimateChunkSystem(ecs_iter_t *it) {
     }
     if (!changed) {
         ecs_query_skip(it);
-    }/* else {
-        zoxel_log("> animating chunks [%f :: %i]\n", (float) animate_chunk_system_time, it->count);
-    }*/
+    }
 }
 zoxel_declare_system(AnimateChunkSystem)

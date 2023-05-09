@@ -1,4 +1,4 @@
-ecs_entity_t voxel_prefab;
+ecs_entity_t prefab_chunk;
 
 ecs_entity_t spawn_chunk_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
@@ -19,7 +19,7 @@ ecs_entity_t spawn_chunk_prefab(ecs_world_t *world) {
     add_gpu_mesh(world, e);
     add_gpu_material(world, e);
     ecs_defer_end(world);
-    voxel_prefab = e;
+    prefab_chunk = e;
     return e;
 }
 

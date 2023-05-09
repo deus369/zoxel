@@ -58,9 +58,7 @@ ecs_entity_t spawn_terrain_chunk_octree(ecs_world_t *world, ecs_entity_t prefab,
     set_unique_entity_name(world, e, "terrain_chunk_octree");
     ecs_set(world, e, ChunkDivision, { get_chunk_division(int3_zero, chunk_position) });
     ecs_set(world, e, VoxLink, { terrain });
-    if (!headless) {
-        spawn_gpu_colors(world, e);
-    }
+    spawn_gpu_colors(world, e);
     ecs_defer_end(world);
     return e;
 }

@@ -2,8 +2,8 @@ ecs_entity_t prefab_terrain_chunk;
 
 ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, int3 size) {
     ecs_defer_begin(world);
-    // ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, voxel_prefab);
-    ecs_entity_t e = ecs_clone(world, 0, voxel_prefab, 1);
+    // ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_chunk);
+    ecs_entity_t e = ecs_clone(world, 0, prefab_chunk, 1);
     ecs_add_id(world, e, EcsPrefab);
     // set_unique_entity_name(world, e, "prefab_terrain_chunk");
     // ecs_set_name(world, e, "prefab_terrain_chunk");

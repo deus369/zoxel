@@ -1,7 +1,5 @@
 void MeshUpdateSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(NULL, it)) {
-        return;
-    }
+    if (!ecs_query_changed(NULL, it)) return;
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 1);
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 2);
     const MeshVertices *meshVertices = ecs_field(it, MeshVertices, 3);

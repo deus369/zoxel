@@ -45,7 +45,6 @@ if (voxel##_##direction_facing == 0) {\
 void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize, const ColorRGBs *colorRGBs,
     MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColorRGBs *meshColorRGBs, float3 total_mesh_offset) {
     // go through and add a top face for each voxel position that is solid
-    // float voxel_scale = overall_voxel_scale / ((float) chunkSize->value.x);
     float voxel_scale = model_scale;
     int_array_d* indicies = create_int_array_d();
     float3_array_d* vertices = create_float3_array_d();
@@ -121,9 +120,7 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
 extern float3 calculate_vox_bounds(int3 chunk_size);
 
 void ChunkColorsBuildSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(it->ctx, NULL)) {
-        return;
-    }
+    if (!ecs_query_changed(it->ctx, NULL)) return;
     #ifdef zoxel_time_chunk_colors_builds_system
         begin_timing()
     #endif
@@ -142,26 +139,23 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         }
         MeshDirty *meshDirty = &meshDirtys[i];
         if (meshDirty->value != 0) {
+            // zoxel_log(" ! meshDirty [%lu] at [%f]\n", it->entities[i], get_total_time_seconds());
             continue;
         }
+        // zoxel_log(" > built ChunkData ColorRGBs Mesh\n");
         const ChunkData *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
         const ColorRGBs *colors2 = &colorRGBs[i];
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
         MeshColorRGBs *meshColorRGBs2 = &meshColorRGBs[i];
-        chunkDirty->value = 0;
-        meshDirty->value = 1;
         // maybe use bounds here directly
         float3 total_mesh_offset = calculate_vox_bounds(chunkSize->value);
         float3_multiply_float_p(&total_mesh_offset, -1);
-        //float3 total_mesh_offset = (float3) { -0.5f * chunkSize->value.x * model_scale,
-        //    -0.5f * chunkSize->value.y * model_scale, -0.5f * chunkSize->value.z * model_scale };
-        //float3 total_mesh_offset = float3_from_int3(chunkSize->value);
-        //float3_multiply_float_p(&total_mesh_offset, -0.5f * model_scale);
-        // zoxel_log(" > total_mesh_offset.y %f\n", total_mesh_offset.y);
         build_chunk_mesh_colors(chunk, chunkSize, colors2, meshIndicies2, meshVertices2, meshColorRGBs2, total_mesh_offset);
-        //printf("Building ChunkData ColorRGBs Mesh [%lu] - [%i] [%i]\n", (long int) it->entities[i], meshIndicies2->length, meshVertices2->length);
+        // zoxel_log(" > built ChunkData ColorRGBs Mesh [%lu] - [%i] [%i]\n", (long int) it->entities[i], meshIndicies2->length, meshVertices2->length);
+        chunkDirty->value = 0;
+        meshDirty->value = 1;
         #ifdef zoxel_time_chunk_colors_builds_system
             did_do_timing()
         #endif
@@ -171,3 +165,9 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
     #endif
 }
 zoxel_declare_system(ChunkColorsBuildSystem)
+
+//float3 total_mesh_offset = (float3) { -0.5f * chunkSize->value.x * model_scale,
+//    -0.5f * chunkSize->value.y * model_scale, -0.5f * chunkSize->value.z * model_scale };
+//float3 total_mesh_offset = float3_from_int3(chunkSize->value);
+//float3_multiply_float_p(&total_mesh_offset, -0.5f * model_scale);
+// zoxel_log(" > total_mesh_offset.y %f\n", total_mesh_offset.y);

@@ -116,11 +116,11 @@
 // #define zox_disable_characters3D
 // #define zoxel_testing_tiny_terrain
 // test settings
+// #define zox_test_voxel_mesh
 // #define zox_disable_characters3D_voxes
 // #define zox_disable_terrain
-// #define zoxel_disable_attach_on_start
 // #define zox_disable_skybox
+// #define zoxel_disable_attach_on_start
 // #define zox_disable_fog // todo: make work
 // #define zoxel_testing_small_terrain
-// #define zox_test_voxel_mesh
 // #define zox_grayboxing

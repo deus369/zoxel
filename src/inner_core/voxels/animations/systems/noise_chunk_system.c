@@ -1,5 +1,6 @@
 void generate_chunk_noise(ChunkData* chunkData, const ChunkSize *chunkSize) {
-    // const int2 valueRange = { 0, 2 };   // < max
+    // zoxel_log("     = [%i]\n", chunkSize->value.x);
+    int voxels_count = 0;
     int array_index = 0;
     for (int j = 0; j < chunkSize->value.x; j++) {
         for (int k = 0; k < chunkSize->value.y; k++) {
@@ -22,9 +23,11 @@ void generate_chunk_noise(ChunkData* chunkData, const ChunkSize *chunkSize) {
                 }
                 chunkData->value[array_index] = 1;
                 array_index++;
+                voxels_count++;
             }
         }
     }
+    // zoxel_log("     + voxels [%i]\n", voxels_count);
 }
 
 void NoiseChunkSystem(ecs_iter_t *it) {
@@ -44,19 +47,13 @@ void NoiseChunkSystem(ecs_iter_t *it) {
             // zoxel_log(" ! ChunkDirty [%lu] at [%f]\n", it->entities[i], get_total_time_seconds());
             continue;
         }
-        chunkDirty->value = 1;
-        ChunkData *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
+        ChunkData *chunk = &chunks[i];
         int voxels_array_size = chunkSize->value.x * chunkSize->value.y * chunkSize->value.z;
         re_initialize_memory_component(chunk, unsigned char, voxels_array_size);
         generate_chunk_noise(chunk, chunkSize);
-        zoxel_log(" > chunk [noise] generated [%lu] at [%f]\n", it->entities[i], get_total_time_seconds());
+        chunkDirty->value = 1;
+        // zoxel_log(" > chunk [noise] generated [%lu] at [%f]\n", it->entities[i], get_total_time_seconds());
     }
 }
 zoxel_declare_system(NoiseChunkSystem)
-
-// valueRange.x + rand() % (valueRange.y - valueRange.x);
-/*if (k == 0 && l == 0)
-    chunk->value[array_index] = 1;
-else
-    chunk->value[array_index] = 0;*/
