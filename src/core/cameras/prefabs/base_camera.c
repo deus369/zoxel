@@ -4,7 +4,7 @@ ecs_entity_t spawn_camera_base_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "prefab_base_camera");
-    zoxel_add_tag(world, e, Camera);
+    zoxel_add_tag(e, Camera);
     zoxel_add(world, e, Position3D);
     zoxel_add(world, e, Rotation3D);
     zoxel_set(world, e, ParentLink, { 0 });

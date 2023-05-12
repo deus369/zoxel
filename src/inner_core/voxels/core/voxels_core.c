@@ -3,6 +3,7 @@
 
 #include "settings/settings.c"
 // zoxel_component_includes
+zoxel_declare_tag(ColorChunk)
 zoxel_declare_tag(LinkChunk)
 zoxel_component(ChunkSize, int3)                        //! A simple chunk with an array of voxels.
 zoxel_byte_component(GenerateChunk)                     //! A state for generating chunks.
@@ -25,10 +26,12 @@ zoxel_byte_component(ChunkDivision)                     //! The resolution of ea
 #include "systems/chunk_build_system.c"
 #include "systems/chunk_colors_build_system.c"
 #include "systems/chunk_link_system.c"
+#include "systems/chunk_octree_colors_build_system.c"
 zoxel_reset_system(GenerateChunkResetSystem, GenerateChunk)
 
 zoxel_begin_module(VoxelsCore)
 // zoxel_component_defines
+zoxel_define_tag(ColorChunk)
 zoxel_define_tag(LinkChunk)
 zoxel_define_component(ChunkDirty)
 zoxel_define_component(ChunkSize)
@@ -41,13 +44,16 @@ zoxel_octree_component_define(ChunkOctree)
 spawn_chunk_prefab(world);
 spawn_prefab_noise_chunk(world);
 // zoxel_system_defines
+zoxel_filter(chunks_generating, world, [in] GenerateChunk)
 zoxel_define_reset_system(GenerateChunkResetSystem, GenerateChunk)
 zoxel_system(ChunkLinkSystem, EcsPostUpdate, [none] LinkChunk, [in] VoxLink, [in] Position3D, [out] ChunkPosition, [out] ChunkLink)
 if (!headless) {
-    zoxel_filter(generateChunkQuery, world, [in] GenerateChunk)
-    zoxel_system_ctx(ChunkBuildSystem, EcsOnUpdate, generateChunkQuery, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices, [out] MeshDirty, [none] !MeshUVs, [none] !MeshColorRGBs)
-    zoxel_system_ctx(ChunkColorsBuildSystem, EcsOnUpdate, generateChunkQuery, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ColorRGBs, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] !MeshUVs)
+    zoxel_system_ctx(ChunkBuildSystem, EcsOnUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices, [out] MeshDirty, [none] !MeshUVs, [none] !MeshColorRGBs)
+    zoxel_system_ctx(ChunkColorsBuildSystem, EcsOnUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ColorRGBs, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] !MeshUVs)
 }
+zoxel_system_ctx(ChunkOctreeColorsBuildSystem, EcsPostUpdate, chunks_generating,
+    [out] ChunkDirty, [in] ChunkOctree, [in] ChunkDivision, [in] ChunkNeighbors, [in] ColorRGBs,
+    [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] ColorChunk, [none] !MeshUVs)
 set_max_octree_length(max_octree_depth);
 zoxel_end_module(VoxelsCore)
 

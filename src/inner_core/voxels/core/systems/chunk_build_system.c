@@ -107,9 +107,7 @@ void build_chunk_mesh(const ChunkData *chunk, const ChunkSize *chunkSize,
 //! Builds a mesh data from the chunk!
 void ChunkBuildSystem(ecs_iter_t *it) {
     ecs_query_t *changeQuery = it->ctx;
-    if (!changeQuery || !ecs_query_changed(changeQuery, NULL)) {
-        return;
-    }
+    if (!changeQuery || !ecs_query_changed(changeQuery, NULL)) return;
     // printf("[ChunkBuildSystem] GenerateChunk was changed.\n");
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
     const ChunkData *chunks = ecs_field(it, ChunkData, 2);
@@ -119,13 +117,9 @@ void ChunkBuildSystem(ecs_iter_t *it) {
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 6);
     for (int i = 0; i < it->count; i++) {
         ChunkDirty *chunkDirty = &chunkDirtys[i];
-        if (chunkDirty->value == 0) {
-            continue;
-        }
+        if (chunkDirty->value == 0) continue;
         MeshDirty *meshDirty = &meshDirtys[i];
-        if (meshDirty->value != 0) {
-            continue;
-        }
+        if (meshDirty->value != 0) continue;
         chunkDirty->value = 0;
         meshDirty->value = 1;
         const ChunkData *chunk = &chunks[i];

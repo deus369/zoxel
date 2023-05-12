@@ -4,11 +4,11 @@ ecs_entity_t spawn_prefab_button(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "prefab_button");
-    zoxel_add_tag(world, e, Button);
-    zoxel_add_tag(world, e, FrameTexture);
+    zoxel_add_tag(e, Button);
+    zoxel_add_tag(e, FrameTexture);
     zoxel_set(world, e, Color, {{ 35, 88, 66, 255 }});
-    zoxel_add_tag(world, e, Selectable);
-    zoxel_add_tag(world, e, Clickable);
+    zoxel_add_tag(e, Selectable);
+    zoxel_add_tag(e, Clickable);
     zoxel_add(world, e, Children);
     add_ui_plus_components(world, e);
     zoxel_set(world, e, SelectableState, { 0 });

@@ -14,7 +14,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
         ecs_remove(world, e, MaterialGPULink);
         add_gpu_colors(world, e);
     }
-    // zoxel_add_tag(world, e, LinkChunk)
+    // zoxel_add_tag(e, LinkChunk)
     zoxel_add(world, e, VoxLink)
     zoxel_set(world, e, ChunkLink, { 0 })
     zoxel_set(world, e, ChunkPosition, { int3_zero })

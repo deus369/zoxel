@@ -1,6 +1,6 @@
 void add_physics3D(ecs_world_t *world, ecs_entity_t e) {
     zoxel_set(world, e, InitializePhysics3D, { 0 });
-    zoxel_add_tag(world, e, Frictioned);
+    zoxel_add_tag(e, Frictioned);
     zoxel_set(world, e, Velocity3D, { { 0, 0, 0 } });
     zoxel_set(world, e, Acceleration3D, { { 0, 0, 0 } });
     zoxel_set(world, e, Omega3D, { quaternion_identity });
@@ -11,7 +11,7 @@ void add_physics3D(ecs_world_t *world, ecs_entity_t e) {
     #ifdef zoxel_debug_bounds
         // can i add children and then use observers to copy children accross??
         //  so the children get initialized too..?
-        zoxel_add_tag(world, e, CubeLines);
+        zoxel_add_tag(e, CubeLines);
         zoxel_set(world, e, CubeLinesThickness, { 4 });
         zoxel_set(world, e, ColorRGB, {{ 0, 255, 255 }});
         // zoxel_set(world, e, ColorRGB, {{ 255, 0, 0 }});

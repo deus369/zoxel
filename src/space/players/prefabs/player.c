@@ -6,7 +6,7 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     ecs_entity_t e = ecs_new_prefab(world, "");
     ecs_add_id(world, e, EcsPrefab);
     set_unique_entity_name(world, e, "prefab_player");
-    zoxel_add_tag(world, e, Player);
+    zoxel_add_tag(e, Player);
     zoxel_add(world, e, DeviceLinks);
     zoxel_set(world, e, DeviceMode, { 0 });
     zoxel_set(world, e, Raycaster, { { 0, 0 } });

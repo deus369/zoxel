@@ -1,7 +1,7 @@
 // #define zoxel_time_terrain_chunk_system
 #define noise_positiver 3200
 
-void GenerateChunkTerrain(ChunkData* chunk, const int3 chunkSize, const int3 chunkPosition) {
+void generate_chunk_terrain(ChunkData* chunk, const int3 chunkSize, const int3 chunkPosition) {
     // srand(666);
     int3 local_position;
     int3 global_position;
@@ -36,9 +36,7 @@ void GenerateChunkTerrain(ChunkData* chunk, const int3 chunkSize, const int3 chu
 }
 
 void TerrainChunkSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(it->ctx, NULL)) {
-        return;
-    }
+    if (!ecs_query_changed(it->ctx, NULL)) return;
     #ifdef zoxel_time_terrain_chunk_system
         begin_timing()
     #endif
@@ -49,19 +47,15 @@ void TerrainChunkSystem(ecs_iter_t *it) {
     const GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 6);
     for (int i = 0; i < it->count; i++) {
         const GenerateChunk *generateChunk = &generateChunks[i];
-        if (generateChunk->value == 0) {
-            continue;
-        }
+        if (generateChunk->value == 0) continue;
         ChunkDirty *chunkDirty = &chunkDirtys[i];
-        if (chunkDirty->value != 0) {
-            continue;
-        }
+        if (chunkDirty->value != 0) continue;
         chunkDirty->value = 1;
         ChunkData *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
         const ChunkPosition *chunkPosition = &chunkPositions[i];
         re_initialize_memory_component(chunk, unsigned char, chunkSize->value.x * chunkSize->value.y * chunkSize->value.z);
-        GenerateChunkTerrain(chunk, chunkSize->value, chunkPosition->value);
+        generate_chunk_terrain(chunk, chunkSize->value, chunkPosition->value);
         // printf("Terrain ChunkData Generated: [%lu] \n", (long int) it->entities[i]);
         #ifdef zoxel_time_terrain_chunk_system
             did_do_timing()

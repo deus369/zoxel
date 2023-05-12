@@ -8,15 +8,14 @@ ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, int3 size) {
     // set_unique_entity_name(world, e, "prefab_terrain_chunk");
     // ecs_set_name(world, e, "prefab_terrain_chunk");
     zoxel_set(world, e, ChunkSize, { size });
-    zoxel_add_tag(world, e, TerrainChunk);
-    zoxel_set(world, e, ChunkNeighbors, { 0, NULL });
+    zoxel_add_tag(e, TerrainChunk);
     if (!headless) {
         zoxel_add(world, e, MeshUVs);
     }
     add_gpu_uvs(world, e);
     #ifdef voxels_terrain_multi_material
         add_gpu_material(world, e);
-        zoxel_add_tag(world, e, DirtTexture);
+        zoxel_add_tag(e, DirtTexture);
         add_texture(world, e, chunk_texture_size, 1);
         add_noise_texture(world, e);
         add_gpu_texture(world, e);

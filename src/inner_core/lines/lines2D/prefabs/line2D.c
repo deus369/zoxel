@@ -5,7 +5,7 @@ ecs_entity_t spawn_prefab_line2D(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "prefab_line2D");
-    zoxel_add_tag(world, e, Line2D);
+    zoxel_add_tag(e, Line2D);
     zoxel_set(world, e, LineData2D, { { 0, 0, 0, 0 } });
     zoxel_set(world, e, LineThickness, { 1 });
     zoxel_set(world, e, Color, { { 0, 255, 255, 255 } });

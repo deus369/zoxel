@@ -5,7 +5,7 @@ ecs_entity_t spawn_prefab_main_menu(ecs_world_t *world) {
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, window_prefab);
     ecs_add_id(world, e, EcsPrefab);
     set_unique_entity_name(world, e, "prefab_main_menu");
-    zoxel_add_tag(world, e, MainMenu);
+    zoxel_add_tag(e, MainMenu);
     main_menu_prefab = e;
     ecs_defer_end(world);
     return e;

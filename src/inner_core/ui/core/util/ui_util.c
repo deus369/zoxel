@@ -2,7 +2,7 @@ ecs_entity_t ui_entities[256];  // a quick & dirty lookup for uis
 int ui_entities_count = 0;
 
 void add_ui_components(ecs_world_t *world, ecs_entity_t e) {
-    zoxel_add_tag(world, e, Element);
+    zoxel_add_tag(e, Element);
     zoxel_set(world, e, PixelPosition, { { } });
     zoxel_set(world, e, PixelSize, { { } });
     zoxel_set(world, e, CanvasPixelPosition, { { } });
@@ -11,7 +11,7 @@ void add_ui_components(ecs_world_t *world, ecs_entity_t e) {
     zoxel_set(world, e, Layer2D, { 0 });
     zoxel_set(world, e, InitializeEntityMesh, { 1 });
     if (!headless) {
-        zoxel_add_tag(world, e, ElementRender);
+        zoxel_add_tag(e, ElementRender);
     }
 }
 

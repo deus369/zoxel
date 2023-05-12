@@ -1,11 +1,11 @@
 ecs_entity_t noise_texture_prefab;
 
 void add_noise_texture(ecs_world_t *world, ecs_entity_t e) {
-    zoxel_add_tag(world, e, NoiseTexture);
+    zoxel_add_tag(e, NoiseTexture);
 }
 
 void add_animated_noise_texture(ecs_world_t *world, ecs_entity_t e) {
-    zoxel_add_tag(world, e, NoiseTexture);
+    zoxel_add_tag(e, NoiseTexture);
     zoxel_set(world, e, AnimateTexture, { 0.0 });
 }
 

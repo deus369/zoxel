@@ -10,14 +10,20 @@ ecs_entity_t spawn_chunk_prefab(ecs_world_t *world) {
     zoxel_set(world, e, MeshDirty, { 0 });
     zoxel_set(world, e, Brightness, { 1.4f });
     add_seed(world, e, 666);
-    add_chunk(world, e, default_chunk_size);
+    #ifdef zox_disable_vox_octrees
+        add_chunk(world, e, default_chunk_size);
+    #else
+        add_chunk_octree(world, e, default_chunk_size);
+    #endif
     add_generate_chunk(world, e);
     if (!headless) {
         zoxel_add(world, e, MeshIndicies);
         zoxel_add(world, e, MeshVertices);
+        add_gpu_mesh(world, e);
+        add_gpu_material(world, e);
+        zoxel_add(world, e, MeshColorRGBs);
+        zoxel_add(world, e, ColorsGPULink);
     }
-    add_gpu_mesh(world, e);
-    add_gpu_material(world, e);
     ecs_defer_end(world);
     prefab_chunk = e;
     return e;

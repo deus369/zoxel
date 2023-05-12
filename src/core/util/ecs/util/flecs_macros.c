@@ -15,7 +15,7 @@ ecs_query_t *name = ecs_query_init(world, &(ecs_query_desc_t) { .filter.expr = #
     ecs_set_id(world, entity, ecs_id(T), sizeof(T), &(T)__VA_ARGS__);\
     ecs_override_id(world, entity, ecs_id(T));
 
-#define zoxel_add_tag(world, entity, T)\
+#define zoxel_add_tag(entity, T)\
     ecs_add_id(world, entity, ecs_id(T));
 
 //! Creates a simple Filter with components.

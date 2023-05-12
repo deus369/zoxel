@@ -7,9 +7,7 @@ void StreamPointSystem(ecs_iter_t *it) {
     ecs_iter_t chunks_iterator = ecs_query_iter(it->world, chunks_query);
     ecs_query_next(&chunks_iterator);
     int total_chunks = chunks_iterator.count;
-    if (total_chunks == 0) {
-        return;
-    }
+    if (total_chunks == 0) return;
     #ifdef zoxel_time_stream_point_system
         begin_timing()
     #endif

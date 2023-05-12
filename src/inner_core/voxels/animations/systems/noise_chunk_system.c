@@ -39,14 +39,9 @@ void NoiseChunkSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const GenerateChunk *generateChunk = &generateChunks[i];
         //! Only rebuild if GenerateChunk is set to 1 and EntityDirty is false.
-        if (generateChunk->value == 0) {
-            continue;
-        }
+        if (generateChunk->value == 0) continue;
         ChunkDirty *chunkDirty = &chunkDirtys[i];
-        if (chunkDirty->value != 0) {
-            // zoxel_log(" ! ChunkDirty [%lu] at [%f]\n", it->entities[i], get_total_time_seconds());
-            continue;
-        }
+        if (chunkDirty->value != 0) continue;
         const ChunkSize *chunkSize = &chunkSizes[i];
         ChunkData *chunk = &chunks[i];
         int voxels_array_size = chunkSize->value.x * chunkSize->value.y * chunkSize->value.z;
@@ -57,3 +52,24 @@ void NoiseChunkSystem(ecs_iter_t *it) {
     }
 }
 zoxel_declare_system(NoiseChunkSystem)
+
+void NoiseChunkOctreeSystem(ecs_iter_t *it) {
+    if (!ecs_query_changed(it->ctx, NULL)) return;
+    ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
+    ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 3);
+    const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 4);
+    const GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 5);
+    for (int i = 0; i < it->count; i++) {
+        const GenerateChunk *generateChunk = &generateChunks[i];
+        //! Only rebuild if GenerateChunk is set to 1 and EntityDirty is false.
+        if (generateChunk->value == 0) continue;
+        ChunkDirty *chunkDirty = &chunkDirtys[i];
+        if (chunkDirty->value != 0) continue;
+        const ChunkSize *chunkSize = &chunkSizes[i];
+        ChunkOctree *chunkOctree = &chunkOctrees[i];
+        random_fill_octree(chunkOctree, 1, 5);
+        chunkDirty->value = 1;
+        // zoxel_log(" > chunk octree [noise] generated [%lu] at [%f]\n", it->entities[i], get_total_time_seconds());
+    }
+}
+zoxel_declare_system(NoiseChunkOctreeSystem)

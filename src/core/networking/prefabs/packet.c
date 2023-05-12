@@ -4,9 +4,9 @@ ecs_entity_t spawn_prefab_net_player(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "prefab_net_player");
     set_unique_entity_name(world, e, "prefab_net_player");
-    zoxel_add_tag(world, e, NetPlayer);
-    zoxel_add_tag(world, e, PacketReciever);
-    zoxel_add_tag(world, e, PacketSender);
+    zoxel_add_tag(e, NetPlayer);
+    zoxel_add_tag(e, PacketReciever);
+    zoxel_add_tag(e, PacketSender);
     zoxel_add(world, e, NetAddress);
     zoxel_add(world, e, TargetNetAddress);
     zoxel_set(world, e, SocketLink, { -1 });

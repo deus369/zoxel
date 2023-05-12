@@ -5,7 +5,7 @@ ecs_entity_t spawn_prefab_label(ecs_world_t *world) {
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, zext_prefab);
     // set_unique_entity_name(world, e, "prefab_label");
     ecs_add_id(world, e, EcsPrefab);
-    zoxel_add_tag(world, e, Label);
+    zoxel_add_tag(e, Label);
     ecs_defer_end(world);
     label_prefab = e;
     #ifdef zoxel_debug_prefabs

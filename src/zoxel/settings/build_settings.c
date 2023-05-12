@@ -82,7 +82,6 @@
 #define canvas_edge_size 4
 // voxels
 // #define zox_disable_terrain_octrees  // disables octrees, uses arrays
-// #define zox_disable_vox_octrees
 #define voxels_close_octree_nodes       // closes nodes in terrain gen
 #define voxels_hide_terrain_edge        // hides faces on edge of map
 #define zoxel_voxels_dynamic_array      // used in mesh generation
@@ -116,11 +115,12 @@
 // #define zox_disable_characters3D
 // #define zoxel_testing_tiny_terrain
 // test settings
-// #define zox_test_voxel_mesh
 // #define zox_disable_characters3D_voxes
-// #define zox_disable_terrain
-// #define zox_disable_skybox
-// #define zoxel_disable_attach_on_start
 // #define zox_disable_fog // todo: make work
 // #define zoxel_testing_small_terrain
 // #define zox_grayboxing
+// #define zox_disable_vox_octrees
+// #define zox_test_voxel_mesh
+// #define zox_disable_terrain
+// #define zox_disable_skybox
+// #define zoxel_disable_attach_on_start

@@ -4,7 +4,7 @@ ecs_entity_t spawn_prefab_neuron(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "prefab_neuron");
-    zoxel_add_tag(world, e, Neuron);
+    zoxel_add_tag(e, Neuron);
     zoxel_add(world, e, ParentLink);
     zoxel_set(world, e, Weight, { 0 });
     // this is only used for rendering / debugging
@@ -34,11 +34,11 @@ ecs_entity_t spawn_neuron(ecs_world_t *world, ecs_entity_t brain, float2 positio
     zoxel_set(world, e, Position2D, { render_position });
     if (position.x == 0)
     {
-        zoxel_add_tag(world, e, InputNeuron);
+        zoxel_add_tag(e, InputNeuron);
     }
     else if (position.x == 7)
     {
-        zoxel_add_tag(world, e, OutputNeuron);
+        zoxel_add_tag(e, OutputNeuron);
     }
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns

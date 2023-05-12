@@ -4,9 +4,9 @@ ecs_entity_t spawn_zigel_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "zigel_prefab");
     set_unique_entity_name(world, e, "zigel_prefab");
-    zoxel_add_tag(world, e, Zigel);
+    zoxel_add_tag(e, Zigel);
     zoxel_set(world, e, ZigelIndex, { 0 });
-    zoxel_add_tag(world, e, FontTexture);
+    zoxel_add_tag(e, FontTexture);
     add_ui_plus_components(world, e);
     zoxel_set(world, e, Color, {{ 55, 185, 125, 255 }});
     ecs_defer_end(world);

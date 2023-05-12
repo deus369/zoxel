@@ -4,7 +4,7 @@ ecs_entity_t spawn_prefab_connection(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "prefab_connection");
-    zoxel_add_tag(world, e, Connection);
+    zoxel_add_tag(e, Connection);
     zoxel_add(world, e, ConnectionData);
     zoxel_set(world, e, Signal, { 0 });
     zoxel_set(world, e, SignalStrength, { 0 });

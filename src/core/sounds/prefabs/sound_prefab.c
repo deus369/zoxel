@@ -4,7 +4,7 @@ ecs_entity_t spawn_prefab_sound(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "prefab_sound");
-    zoxel_add_tag(world, e, Sound);
+    zoxel_add_tag(e, Sound);
     zoxel_set(world, e, TriggerSound, { 1 });
     zoxel_set(world, e, SDLSound, { NULL });
     // zoxel_set(world, e, SoundFrequency, { 146.83f });

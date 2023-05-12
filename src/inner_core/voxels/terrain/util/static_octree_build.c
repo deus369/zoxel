@@ -1,3 +1,7 @@
+#define zoxel_octree_check(direction_name)\
+    if (!is_adjacent_all_solid(direction##_##direction_name, root_node, parent_node, neighbors,\
+        octree_position, node_index, node_position, depth, max_depth, neighbors_max_depths, 0))
+
 #define zoxel_octree_add_face_counts(direction_name) {\
     zoxel_octree_check(direction_name) {\
         zoxel_add_voxel_face_counts()\

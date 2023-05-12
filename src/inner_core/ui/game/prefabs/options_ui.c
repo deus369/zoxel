@@ -6,7 +6,7 @@ ecs_entity_t spawn_prefab_options_ui(ecs_world_t *world) {
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, window_prefab);
     ecs_add_id(world, e, EcsPrefab);
     set_unique_entity_name(world, e, "prefab_options_ui");
-    zoxel_add_tag(world, e, PauseUI);
+    zoxel_add_tag(e, PauseUI);
     ecs_defer_end(world);
     options_ui_prefab = e;
     return e;
@@ -56,7 +56,7 @@ ecs_entity_t spawn_options_ui(ecs_world_t *world, const char *header_label, int2
         (float2) { 0.5f, 0.5f },
         "Unpause", font_size, 1,
         position2D, window_size);
-    zoxel_add_tag(world, children.value[1], PlayGameButton);
+    zoxel_add_tag(children.value[1], PlayGameButton);
     children.value[2] = spawn_button(world, e,
         options_button_position,
         (int2) { font_size * 8, font_size },
@@ -70,7 +70,7 @@ ecs_entity_t spawn_options_ui(ecs_world_t *world, const char *header_label, int2
         (float2) { 0.5f, 0.5f },
         "Quit", font_size, 1,
         position2D, window_size);
-    zoxel_add_tag(world, children.value[3], ExitGameButton);
+    zoxel_add_tag(children.value[3], ExitGameButton);
     #endif
     ecs_set(world, e, Children, { children.length, children.value });
     ecs_defer_end(world);

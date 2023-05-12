@@ -75,9 +75,7 @@ void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,
 }
 
 void ChunkUVsBuildSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(it->ctx, NULL)) {
-        return;
-    }
+    if (!ecs_query_changed(it->ctx, NULL)) return;
     #ifdef zoxel_time_chunk_uvs_builds_system
         begin_timing()
     #endif
@@ -92,13 +90,9 @@ void ChunkUVsBuildSystem(ecs_iter_t *it) {
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 8);
     for (int i = 0; i < it->count; i++) {
         ChunkDirty *chunkDirty = &entityDirtys[i];
-        if (chunkDirty->value == 0) {
-            continue;
-        }
+        if (chunkDirty->value == 0) continue;
         MeshDirty *meshDirty = &meshDirtys[i];
-        if (meshDirty->value != 0) {
-            continue;
-        }
+        if (meshDirty->value != 0) continue;
         const ChunkData *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
         const ChunkNeighbors *chunkNeighbors2 = &chunkNeighbors[i];

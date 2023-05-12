@@ -25,7 +25,7 @@ ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, int2 position
     if (is_close_button) {
         children.value[1] = spawn_button(world, e, (int2) { - (font_size / 2) - header_margins / 2, 0 },
             padding, (float2) { 1.0f, 0.5f }, "X", font_size, layer + 1, position2D, size, canvas_size);
-        zoxel_add_tag(world, children.value[1], CloseButton);
+        zoxel_add_tag(children.value[1], CloseButton);
         zoxel_set(world, children.value[1], ClickEvent, { &button_event_close_window });
         /*printf("--- Spawned close button [%lu] ---\n", (long int) children.value[1]);
         printf("--- Spawned header [%lu] ---\n", (long int) e);

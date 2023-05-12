@@ -4,7 +4,7 @@ ecs_entity_t spawn_prefab_stat(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "prefab_stat");
-    zoxel_add_tag(world, e, Stat);
+    zoxel_add_tag(e, Stat);
     // zoxel_add(world, e, ZoxName);
     ecs_defer_end(world);
     prefab_stat = e;
