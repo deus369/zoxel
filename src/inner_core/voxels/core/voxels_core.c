@@ -15,6 +15,7 @@ zoxel_byte_component(ChunkDivision)                     //! The resolution of ea
 // zoxel_util_includes
 #include "util/voxel_mesh_util.c"
 #include "util/chunk_util.c"
+#include "util/chunk_octree_util.c"
 #include "util/chunk_build_util.c"
 #include "util/voxel_util.c"
 // zoxel_prefab_includes

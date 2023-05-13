@@ -13,8 +13,8 @@ zoxel_hashmap_component(ChunkLinks, int3)
 // zoxel_module_includes
 #include "core/voxels_core.c"
 #include "terrain/terrain.c"
-#include "voxes/voxes.c"
 #include "animations/voxels_animations.c"
+#include "voxes/voxes.c"
 
 zoxel_begin_module(Voxels)
 // zoxel_component_defines
@@ -28,8 +28,8 @@ zoxel_define_hashmap_component(ChunkLinks)
 // zoxel_module_defines
 zoxel_import_module(VoxelsCore)
 zoxel_import_module(Terrain)
-zoxel_import_module(Vox)
 zoxel_import_module(VoxelsAnimations)
+zoxel_import_module(Vox)
 zoxel_end_module(Voxels)
 
 #endif

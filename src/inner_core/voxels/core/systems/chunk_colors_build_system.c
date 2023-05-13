@@ -137,7 +137,6 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         if (chunkDirty->value == 0) continue;
         MeshDirty *meshDirty = &meshDirtys[i];
         if (meshDirty->value != 0) continue;
-        // zoxel_log(" > built ChunkData ColorRGBs Mesh\n");
         const ChunkData *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
         const ColorRGBs *colors2 = &colorRGBs[i];
@@ -151,6 +150,7 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         // zoxel_log(" > built ChunkData ColorRGBs Mesh [%lu] - [%i] [%i]\n", (long int) it->entities[i], meshIndicies2->length, meshVertices2->length);
         chunkDirty->value = 0;
         meshDirty->value = 1;
+        // zoxel_log(" > built ChunkData ColorRGBs Mesh\n");
         #ifdef zoxel_time_chunk_colors_builds_system
             did_do_timing()
         #endif

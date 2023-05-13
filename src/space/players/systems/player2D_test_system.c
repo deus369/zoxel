@@ -96,19 +96,19 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it) {
             spawn_zoxel_window(world);
         } else if (keyboard->x.pressed_this_frame) {
             if (fps_display == 0) {
-                zoxel_log(" > showing fps display.\n");
+                //zoxel_log(" > showing fps display.\n");
                 fps_display = spawn_fps_display(world, main_canvas, 32);
             } else {
-                zoxel_log(" > hiding fps display.\n");
+                //zoxel_log(" > hiding fps display.\n");
                 ecs_delete(it->world, fps_display);
                 fps_display = 0;
             }
         } else if (keyboard->c.pressed_this_frame) {
             if (quads_label == 0) {
-                zoxel_log(" > showing quads_label.\n");
+                //zoxel_log(" > showing quads_label.\n");
                 quads_label = spawn_quad_count_label(world, main_canvas, 24);
             } else {
-                zoxel_log(" > hiding quads_label.\n");
+                //zoxel_log(" > hiding quads_label.\n");
                 ecs_delete(it->world, quads_label);
                 quads_label = 0;
             }

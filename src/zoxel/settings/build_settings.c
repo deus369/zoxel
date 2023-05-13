@@ -121,6 +121,8 @@
 // #define zox_grayboxing
 // #define zox_disable_vox_octrees
 // #define zox_test_voxel_mesh
+// --- latest test here below ---
+// #define zox_test_voxes
 // #define zox_disable_terrain
 // #define zox_disable_skybox
 // #define zoxel_disable_attach_on_start

@@ -55,7 +55,7 @@ void RenderEntity3D(float3 position, float4 rotation, float scale1D, float brigh
 
 //! Set the mesh on the gpu by uploading indicies and vert buffers.
 void set_gpu_mesh(GLuint2 mesh, GLuint material, const int *indicies, int indicies_length, const float3 *verts, int verts_length) {
-    tri_count += indicies_length / 3;
+    // tri_count += indicies_length / 3;
     // zoxel_log("set_gpu_mesh - adding tris\n");
     Material3D material3D = spawn_material3D_properties(material);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);
@@ -83,7 +83,7 @@ void set_gpu_mesh(GLuint2 mesh, GLuint material, const int *indicies, int indici
 }
 
 void set_gpu_mesh2D(GLuint2 mesh, GLuint material, const int *indicies, int indicies_length, const float2 *verts, int verts_length) {
-    tri_count += indicies_length / 3;
+    // tri_count += indicies_length / 3;
     Material3D material3D = spawn_material3D_properties(material);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);
     glBindBuffer(GL_ARRAY_BUFFER, mesh.y);

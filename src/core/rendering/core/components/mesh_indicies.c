@@ -14,7 +14,6 @@ ECS_DTOR(MeshIndicies, ptr,\
     if (ptr->value)\
     {\
         free(ptr->value);\
-        tri_count -= ptr->length;\
     }\
 })\
 ECS_MOVE(name, dst, src,\
@@ -46,3 +45,5 @@ ECS_COPY(name, dst, src, {\
 })
 // define mesh indicies with custom destruction function
 zoxel_memory_component_mesh_indicies(MeshIndicies, int)
+
+// tri_count -= ptr->length;

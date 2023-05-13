@@ -78,5 +78,8 @@ void boot_zoxel_game(ecs_world_t *world) {
     #ifdef zox_test_voxel_mesh
         test_animating_chunks(world, camera_begin_position);
     #endif
+    #ifdef zox_test_voxes
+        test_voxes(world, camera_begin_position);
+    #endif
     zoxel_log(" > [zoxel] begins to run\n");
 }

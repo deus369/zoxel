@@ -57,17 +57,21 @@ void NoiseChunkOctreeSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(it->ctx, NULL)) return;
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
     ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 3);
-    const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 4);
+    const ChunkDivision *chunkDivisions = ecs_field(it, ChunkDivision, 4);
     const GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 5);
     for (int i = 0; i < it->count; i++) {
         const GenerateChunk *generateChunk = &generateChunks[i];
-        //! Only rebuild if GenerateChunk is set to 1 and EntityDirty is false.
+        //! Only rebuild if GenerateChunk is set to 1 and EntityDirty is false
         if (generateChunk->value == 0) continue;
         ChunkDirty *chunkDirty = &chunkDirtys[i];
         if (chunkDirty->value != 0) continue;
-        const ChunkSize *chunkSize = &chunkSizes[i];
+        const ChunkDivision *chunkDivision = &chunkDivisions[i];
         ChunkOctree *chunkOctree = &chunkOctrees[i];
-        random_fill_octree(chunkOctree, 1, 5);
+        unsigned char chunk_depth = colors_get_max_depth_from_division(chunkDivision->value); // 5
+        random_fill_octree(chunkOctree, 1, chunk_depth);
+        #ifdef voxels_close_octree_nodes
+            close_solid_nodes(chunkOctree);
+        #endif
         chunkDirty->value = 1;
         // zoxel_log(" > chunk octree [noise] generated [%lu] at [%f]\n", it->entities[i], get_total_time_seconds());
     }
