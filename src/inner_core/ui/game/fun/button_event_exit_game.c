@@ -13,4 +13,4 @@ void button_event_exit_game(ecs_world_t *world, ecs_entity_t trigger_entity) {
         }
     }
 }
-zoxel_declare_system(ExitGameButtonSystem)*/
+zox_declare_system(ExitGameButtonSystem)*/

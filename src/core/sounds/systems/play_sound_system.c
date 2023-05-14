@@ -20,4 +20,4 @@ void PlaySoundSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(PlaySoundSystem);
+zox_declare_system(PlaySoundSystem);

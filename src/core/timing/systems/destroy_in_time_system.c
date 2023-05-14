@@ -9,4 +9,4 @@ void DestroyInTimeSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(DestroyInTimeSystem)
+zox_declare_system(DestroyInTimeSystem)

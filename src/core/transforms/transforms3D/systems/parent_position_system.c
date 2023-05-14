@@ -16,4 +16,4 @@ void ParentPositionSystem(ecs_iter_t *it) {
         float3_add_float3_p(&position3D->value, parent_position);
     }
 }
-zoxel_declare_system(ParentPositionSystem)
+zox_declare_system(ParentPositionSystem)

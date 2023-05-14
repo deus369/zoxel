@@ -20,4 +20,4 @@
         }
     }
 }
-zoxel_declare_system(PlayerPlayButtonSystem)*/
+zox_declare_system(PlayerPlayButtonSystem)*/

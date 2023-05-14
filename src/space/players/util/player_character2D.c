@@ -8,7 +8,7 @@ ecs_entity_t spawn_player_character2D(ecs_world_t *world, ecs_entity_t camera) {
     spawn_gpu_material(world, e, shader2D_textured);
     spawn_gpu_texture(world, e);
     // can be disabled
-    zoxel_set(world, e, DisableMovement, { 0 });
+    zox_set(e, DisableMovement, { 0 });
     // make sure to link
     ecs_set(world, e, CameraLink, { camera });
     ecs_set(world, camera, CameraTarget, { e });

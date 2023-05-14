@@ -13,4 +13,4 @@ void ParentRotationSystem(ecs_iter_t *it) {
         quaternion_rotate_quaternion_p(&rotation3D->value, localRotation3D->value);
     }
 }
-zoxel_declare_system(ParentRotationSystem)
+zox_declare_system(ParentRotationSystem)

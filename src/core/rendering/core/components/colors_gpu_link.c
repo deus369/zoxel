@@ -2,7 +2,7 @@ zoxel_component(ColorsGPULink, GLuint);
 
 void add_gpu_colors(ecs_world_t *world, ecs_entity_t prefab) {
     if (!headless) {
-        zoxel_set(world, prefab, ColorsGPULink, { 0 });
+        zox_set(prefab, ColorsGPULink, { 0 });
     }
 }
 

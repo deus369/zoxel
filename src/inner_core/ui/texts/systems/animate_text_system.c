@@ -30,4 +30,4 @@ void AnimateTextSystem(ecs_iter_t *it) {
         ecs_query_skip(it);
     }
 }
-zoxel_declare_system(AnimateTextSystem)
+zox_declare_system(AnimateTextSystem)

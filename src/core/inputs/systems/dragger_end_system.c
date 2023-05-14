@@ -27,4 +27,4 @@ void DraggerEndSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(DraggerEndSystem)
+zox_declare_system(DraggerEndSystem)

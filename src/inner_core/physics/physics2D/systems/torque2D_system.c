@@ -12,4 +12,4 @@ void Torque2DSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(Torque2DSystem)
+zox_declare_system(Torque2DSystem)

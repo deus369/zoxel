@@ -24,4 +24,4 @@ void DeviceModeResponseSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(DeviceModeResponseSystem)
+zox_declare_system(DeviceModeResponseSystem)

@@ -4,9 +4,9 @@ void spawn_prefab_generic_event(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "generic_event_prefab");
-    // zoxel_add_tag(e, Event);
-    zoxel_add_tag(e, DestroyInFrame);
-    zoxel_set(world, e, GenericEvent, { 0 });
+    // zox_add_tag(e, Event);
+    zox_add_tag(e, DestroyInFrame);
+    zox_set(e, GenericEvent, { 0 });
     ecs_defer_end(world);
     generic_event_prefab = e;
     #ifdef zoxel_debug_prefabs

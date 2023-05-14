@@ -43,4 +43,4 @@ void DeviceModeSystem(ecs_iter_t *it) {
         zoxel_log(" ===+++ updated device mode +++===\n");
     }*/
 }
-zoxel_declare_system(DeviceModeSystem)
+zox_declare_system(DeviceModeSystem)

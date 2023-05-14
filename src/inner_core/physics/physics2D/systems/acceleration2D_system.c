@@ -12,4 +12,4 @@ void Acceleration2DSystem(ecs_iter_t *it) {
         acceleration2D->value.y = 0;
     }
 }
-zoxel_declare_system(Acceleration2DSystem)
+zox_declare_system(Acceleration2DSystem)

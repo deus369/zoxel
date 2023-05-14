@@ -88,4 +88,4 @@ void PacketRecieveSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(PacketRecieveSystem)
+zox_declare_system(PacketRecieveSystem)

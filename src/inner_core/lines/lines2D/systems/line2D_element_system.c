@@ -57,7 +57,7 @@ void Line2DElementSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(Line2DElementSystem);
+zox_declare_system(Line2DElementSystem);
 
 
 

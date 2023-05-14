@@ -57,7 +57,7 @@ void Player3DRotateSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(Player3DRotateSystem)
+zox_declare_system(Player3DRotateSystem)
 
 /*void Player3DRotateSystem2(ecs_iter_t *it) {
     ecs_query_t *playerCharacterQuery = it->ctx;
@@ -97,7 +97,7 @@ zoxel_declare_system(Player3DRotateSystem)
         }
     }
 }
-zoxel_declare_system(Player3DRotateSystem2)*/
+zox_declare_system(Player3DRotateSystem2)*/
 
             // euler.x *= rotate_power;
             /*if (euler.y > 0) {

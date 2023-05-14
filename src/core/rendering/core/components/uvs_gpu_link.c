@@ -7,7 +7,7 @@ zoxel_component(UvsGPULink, GLuint);
 
 void add_gpu_uvs(ecs_world_t *world, ecs_entity_t prefab) {
     if (!headless) {
-        zoxel_set(world, prefab, UvsGPULink, { 0 });
+        zox_set(prefab, UvsGPULink, { 0 });
     }
 }
 

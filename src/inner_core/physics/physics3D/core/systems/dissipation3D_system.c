@@ -21,7 +21,7 @@ void Dissipation3DSystem(ecs_iter_t *it) {
         quaternion_rotate_quaternion_p(&alpha3D->value, calculate_dissipation(omega3D->value));
     }
 }
-zoxel_declare_system(Dissipation3DSystem)
+zox_declare_system(Dissipation3DSystem)
 
 /*float norm = sqrt(pow(alpha3D.x, 2) + pow(alpha3D.y, 2) + pow(alpha3D.z, 2) + pow(alpha3D.w, 2));
 // float norm = sqrt(pow(omega3D.x, 2) + pow(omega3D.y, 2) + pow(omega3D.z, 2) + pow(omega3D.w, 2));

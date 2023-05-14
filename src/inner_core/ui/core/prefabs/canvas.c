@@ -4,9 +4,9 @@ ecs_entity_t spawn_prefab_canvas(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "canvas_prefab");
-    zoxel_add_tag(e, Canvas);
-    zoxel_add(world, e, PixelSize);
-    zoxel_add(world, e, Children);
+    zox_add_tag(e, Canvas);
+    zox_add(e, PixelSize);
+    zox_add(e, Children);
     ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs
         zoxel_log(" > spawn_prefab canvas [%lu]\n", (long int) (e));

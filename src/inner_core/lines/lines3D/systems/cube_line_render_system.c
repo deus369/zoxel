@@ -107,7 +107,7 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
     glDisableVertexAttribArray(line3D_position_location);
     glUseProgram(0);
 }
-zoxel_declare_system(CubeLineRenderSystem)
+zox_declare_system(CubeLineRenderSystem)
 
 // up and forward line for now
 // float line_data[] = { position3D->value.x, position3D->value.y, position3D->value.z,

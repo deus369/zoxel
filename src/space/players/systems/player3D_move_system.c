@@ -101,7 +101,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(Player3DMoveSystem)
+zox_declare_system(Player3DMoveSystem)
 
 /*void Player3DMoveSystem2(ecs_iter_t *it) {
     ecs_query_t *playerCharacterQuery = it->ctx;
@@ -159,4 +159,4 @@ zoxel_declare_system(Player3DMoveSystem)
         }
     }
 }
-zoxel_declare_system(Player3DMoveSystem2)*/
+zox_declare_system(Player3DMoveSystem2)*/

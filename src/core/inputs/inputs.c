@@ -42,9 +42,9 @@ zoxel_define_component(Touchscreen)
 spawn_prefab_keyboard(world);
 spawn_prefab_mouse(world);
 spawn_prefab_gamepad(world);
-zoxel_system_1(DeviceModeSystem, EcsOnLoad, [in] DeviceLinks, [out] DeviceMode)
-zoxel_system(MouseRaycasterSystem, EcsOnUpdate, [in] DeviceLinks, [out] Raycaster)
-zoxel_system(DraggerEndSystem, EcsOnLoad, [out] DragableState, [out] DraggerLink, [out] DraggingDelta)
+zox_system_1(DeviceModeSystem, EcsOnLoad, [in] DeviceLinks, [out] DeviceMode)
+zox_system(MouseRaycasterSystem, EcsOnUpdate, [in] DeviceLinks, [out] Raycaster)
+zox_system(DraggerEndSystem, EcsOnLoad, [out] DragableState, [out] DraggerLink, [out] DraggingDelta)
 zoxel_end_module(Inputs)
 
 // todo: get change filters to work in multithreaded systems

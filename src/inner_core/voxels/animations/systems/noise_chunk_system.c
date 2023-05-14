@@ -51,7 +51,7 @@ void NoiseChunkSystem(ecs_iter_t *it) {
         // zoxel_log(" > chunk [noise] generated [%lu] at [%f]\n", it->entities[i], get_total_time_seconds());
     }
 }
-zoxel_declare_system(NoiseChunkSystem)
+zox_declare_system(NoiseChunkSystem)
 
 void NoiseChunkOctreeSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(it->ctx, NULL)) return;
@@ -76,4 +76,4 @@ void NoiseChunkOctreeSystem(ecs_iter_t *it) {
         // zoxel_log(" > chunk octree [noise] generated [%lu] at [%f]\n", it->entities[i], get_total_time_seconds());
     }
 }
-zoxel_declare_system(NoiseChunkOctreeSystem)
+zox_declare_system(NoiseChunkOctreeSystem)

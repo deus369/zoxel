@@ -65,5 +65,5 @@
             }
         }
     }
-    zoxel_declare_system(ElementNavigationSystem)
+    zox_declare_system(ElementNavigationSystem)
 #endif

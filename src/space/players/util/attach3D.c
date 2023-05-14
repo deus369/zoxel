@@ -13,7 +13,7 @@ void attach_to_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t c
     ecs_add(world, camera, FirstPersonCamera);
     ecs_remove(world, camera, FreeRoam);
     ecs_remove(world, camera, EulerOverride);
-    zoxel_set(world, character, DisableMovement, { 0 });
+    zox_set(character, DisableMovement, { 0 });
     ecs_add(world, character, PlayerCharacter3D);
     ecs_set(world, mouse_entity, MouseLock, { 1 });
     // ecs_set(world, camera, LocalPosition3D, { 0, 0, vox_scale / 2.0f }); // zoxel_set

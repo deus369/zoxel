@@ -51,4 +51,4 @@ void Line2DRenderSystem(ecs_iter_t *it) {
     }
     // glUseProgram(0);
 }
-zoxel_declare_system(Line2DRenderSystem)
+zox_declare_system(Line2DRenderSystem)

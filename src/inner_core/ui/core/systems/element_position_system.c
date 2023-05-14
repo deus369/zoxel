@@ -63,7 +63,7 @@ void ElementPositionSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(ElementPositionSystem)
+zox_declare_system(ElementPositionSystem)
 
 //   \done Make this instantaneous for children uis as well
 //   \todo This needs to also account for child uis

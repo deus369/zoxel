@@ -5,12 +5,12 @@ ecs_entity_t spawn_prefab_music(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "prefab_music");
     set_unique_entity_name(world, e, "prefab_music");
-    zoxel_add_tag(e, Music);
-    zoxel_set(world, e, GenerateMusic, { 1 });
-    zoxel_add(world, e, MusicData);
-    zoxel_set(world, e, MusicTime, { 0 });
-    zoxel_set(world, e, MusicSpeed, { 0.5 });
-    zoxel_set(world, e, InstrumentType, { instrument_piano });
+    zox_add_tag(e, Music);
+    zox_set(e, GenerateMusic, { 1 });
+    zox_add(e, MusicData);
+    zox_set(e, MusicTime, { 0 });
+    zox_set(e, MusicSpeed, { 0.5 });
+    zox_set(e, InstrumentType, { instrument_piano });
     ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs
     zoxel_log("spawn_prefab music [%lu].\n", (long int) (e));

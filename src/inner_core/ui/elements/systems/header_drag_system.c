@@ -35,4 +35,4 @@ void HeaderDragSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(HeaderDragSystem)
+zox_declare_system(HeaderDragSystem)

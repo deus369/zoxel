@@ -43,9 +43,9 @@ zoxel_byte_component(SoundDirty)
 	#include "systems/play_sound_system.c"
     #include "systems/sound_update_system.c"
 #endif
-zoxel_reset_system(PlaySoundResetSystem, TriggerSound)
-zoxel_reset_system(GenerateSoundResetSystem, GenerateSound)
-zoxel_reset_system(SoundDirtyResetSystem, SoundDirty)
+zox_reset_system(PlaySoundResetSystem, TriggerSound)
+zox_reset_system(GenerateSoundResetSystem, GenerateSound)
+zox_reset_system(SoundDirtyResetSystem, SoundDirty)
 
 zoxel_begin_module(Sounds)
 zoxel_define_tag(Sound)
@@ -58,14 +58,14 @@ zoxel_define_component(SDLSound)
 zoxel_define_component(SoundDirty)
 zoxel_define_memory_component(SoundData)
 ecs_set_hooks(world, SDLSound, { .dtor = ecs_dtor(SDLSound) });
-zoxel_system(SoundGenerateSystem, EcsOnValidate, [none] Sound, [in] GenerateSound, [in] SoundLength, [in] SoundFrequency, [in] InstrumentType, [out] SoundData, [out] SoundDirty)
+zox_system(SoundGenerateSystem, EcsOnValidate, [none] Sound, [in] GenerateSound, [in] SoundLength, [in] SoundFrequency, [in] InstrumentType, [out] SoundData, [out] SoundDirty)
 #ifdef SDL_MIXER
-    zoxel_system_1(SoundUpdateSystem, EcsPreStore, [none] Sound, [in] SoundDirty, [in] SoundData, [out] SDLSound)
-    zoxel_system_1(PlaySoundSystem, EcsPreStore, [none] Sound, [in] TriggerSound, [in] SoundLength, [in] SDLSound)
+    zox_system_1(SoundUpdateSystem, EcsPreStore, [none] Sound, [in] SoundDirty, [in] SoundData, [out] SDLSound)
+    zox_system_1(PlaySoundSystem, EcsPreStore, [none] Sound, [in] TriggerSound, [in] SoundLength, [in] SDLSound)
 #endif
-zoxel_define_reset_system(PlaySoundResetSystem, TriggerSound)
-zoxel_define_reset_system(GenerateSoundResetSystem, GenerateSound)
-zoxel_define_reset_system(SoundDirtyResetSystem, SoundDirty)
+zox_define_reset_system(PlaySoundResetSystem, TriggerSound)
+zox_define_reset_system(GenerateSoundResetSystem, GenerateSound)
+zox_define_reset_system(SoundDirtyResetSystem, SoundDirty)
 spawn_prefab_sound(world);
 load_audio_sdl();
 zoxel_end_module(Sounds)

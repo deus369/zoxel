@@ -46,4 +46,4 @@ void RenderMeshMaterial2DSystem(ecs_iter_t *it) {
         // zoxel_log("Rendering 2D mesh material [%lu]\n", (long int) it->entities[i]);
     }
 }
-zoxel_declare_system(RenderMeshMaterial2DSystem)
+zox_declare_system(RenderMeshMaterial2DSystem)

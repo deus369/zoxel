@@ -43,4 +43,4 @@ void ZextUpdateSystem(ecs_iter_t *it) {
         end_timing("    - zext_update_system")
     #endif
 }
-zoxel_declare_system(ZextUpdateSystem)
+zox_declare_system(ZextUpdateSystem)

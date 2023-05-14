@@ -1,8 +1,8 @@
 //! Add a seed component with override.
 void add_seed(ecs_world_t *world, ecs_entity_t prefab, int seed) {
-    zoxel_set(world, prefab, Seed, { seed });
+    zox_set(prefab, Seed, { seed });
 }
 
 void add_dirty(ecs_world_t *world, ecs_entity_t e) {
-    zoxel_set(world, e, EntityDirty, { 0 });
+    zox_set(e, EntityDirty, { 0 });
 }

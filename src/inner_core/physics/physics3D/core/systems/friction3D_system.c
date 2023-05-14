@@ -11,4 +11,4 @@ void Friction3DSystem(ecs_iter_t *it) {
         acceleration3D->value.z -= velocity3D->value.z * friction3D;
     }
 }
-zoxel_declare_system(Friction3DSystem)
+zox_declare_system(Friction3DSystem)

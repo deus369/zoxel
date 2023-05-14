@@ -26,9 +26,9 @@ zoxel_memory_component(ColorRGBs, color_rgb)           //! A generic entity colo
 zoxel_memory_component(Colors, color)           //! A generic entity colorRGBs
 zoxel_byte_component(GenericEvent)              //! Used for game and other events, genetic
 zoxel_component(Bounds3D, float3)
-zoxel_reset_system(EntityDirtyResetSystem, EntityDirty)
-zoxel_reset_system(ClickableStateResetSystem, ClickableState)
-zoxel_reset_system(EntityInitializeResetSystem, EntityInitialize)
+zox_reset_system(EntityDirtyResetSystem, EntityDirty)
+zox_reset_system(ClickableStateResetSystem, ClickableState)
+zox_reset_system(EntityInitializeResetSystem, EntityInitialize)
 #include "util/generic_util.c"
 #include "util/convert_ascii.c"
 #include "util/convert_to_ascii.c"
@@ -59,10 +59,10 @@ zoxel_define_memory_component(ColorRGBs)
 zoxel_define_memory_component(Colors)
 zoxel_define_component(GenericEvent)
 zoxel_define_component(Bounds3D)
-zoxel_define_reset_system(EntityDirtyResetSystem, EntityDirty)
-zoxel_define_reset_system(ClickableStateResetSystem, ClickableState)
-zoxel_define_reset_system(EntityInitializeResetSystem, EntityInitialize)
-zoxel_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
+zox_define_reset_system(EntityDirtyResetSystem, EntityDirty)
+zox_define_reset_system(ClickableStateResetSystem, ClickableState)
+zox_define_reset_system(EntityInitializeResetSystem, EntityInitialize)
+zox_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
 spawn_prefab_generic_event(world);
 zoxel_end_module(Generic)
 

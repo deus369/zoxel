@@ -28,4 +28,4 @@ void AnimateChunkSystem(ecs_iter_t *it) {
         ecs_query_skip(it);
     }
 }
-zoxel_declare_system(AnimateChunkSystem)
+zox_declare_system(AnimateChunkSystem)

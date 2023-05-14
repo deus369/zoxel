@@ -16,4 +16,4 @@ void ViewMatrixSystem(ecs_iter_t *it) {
         viewMatrix->value = float4x4_multiply(cameraViewMatrix, projectionMatrix->value);
     }
 }
-zoxel_declare_system(ViewMatrixSystem)
+zox_declare_system(ViewMatrixSystem)

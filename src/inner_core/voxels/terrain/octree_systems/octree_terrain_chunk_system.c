@@ -107,7 +107,7 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
         end_timing("    - octree_terrain_chunk_system")
     #endif
 }
-zoxel_declare_system(OctreeTerrainChunkSystem)
+zox_declare_system(OctreeTerrainChunkSystem)
 
 // fill_octree(chunkOctree, 1, target_depth);
 // generate_height_map(height_map, chunk_position_float3, map_size);

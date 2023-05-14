@@ -4,18 +4,18 @@ void spawn_prefab_particle3D(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "particle3D_prefab");
-    zoxel_add_tag(e, Particle3D);
+    zox_add_tag(e, Particle3D);
     // ecs_override(world, prefab, Particle2D);
-    zoxel_set(world, e, Position3D, { { 0, 0, 0 } });
-    zoxel_set(world, e, Rotation3D, { { 0, 0, 0, 1 } });
-    zoxel_set(world, e, Scale1D, { 1 });
+    zox_set(e, Position3D, { { 0, 0, 0 } });
+    zox_set(e, Rotation3D, { { 0, 0, 0, 1 } });
+    zox_set(e, Scale1D, { 1 });
     // rendering
-    zoxel_add(world, e, Brightness);
+    zox_add(e, Brightness);
     // timing
-    zoxel_add(world, e, DestroyInTime);
+    zox_add(e, DestroyInTime);
     #ifdef zoxel_physics
-        zoxel_set(world, e, Velocity3D, { 0 });
-        zoxel_set(world, e, Acceleration3D, { { 0, 0 } });
+        zox_set(e, Velocity3D, { 0 });
+        zox_set(e, Acceleration3D, { { 0, 0 } });
         // ecs_set(world, prefab, Torque, { 0 });
         // ecs_override(world, prefab, Torque);
     #endif

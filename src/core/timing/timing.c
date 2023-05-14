@@ -8,7 +8,7 @@ zoxel_component(DestroyInTime, double)
 
 zoxel_begin_module(Timing)
 zoxel_define_component(DestroyInTime)
-zoxel_system(DestroyInTimeSystem, EcsOnUpdate, [out] DestroyInTime)
+zox_system(DestroyInTimeSystem, EcsOnUpdate, [out] DestroyInTime)
 initialize_time();
 zoxel_end_module(Timing)
 

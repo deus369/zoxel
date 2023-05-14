@@ -69,7 +69,7 @@ void FreeCameraMoveSystem(ecs_iter_t *it) {
         // ecs_query_skip(&cameras_it);
     }
 }
-zoxel_declare_system(FreeCameraMoveSystem)
+zox_declare_system(FreeCameraMoveSystem)
 
 //printf("Before Movement: %fx%fx%f - [%fx%fx%fx%f]\n", movement.x, movement.y, movement.z,
 //    rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);

@@ -13,11 +13,11 @@ zoxel_begin_module(Lines2D)
 zoxel_define_tag(Line2D)
 zoxel_define_component(LineData2D)
 zoxel_define_component(LineElementData)
-zoxel_filter(line2Ds_query, world, [none] Line2D, [in] LineElementData, [none] CanvasLink, [none] LineData2D)
-zoxel_system_ctx(Line2DElementSystem, EcsPreUpdate, line2Ds_query, [none] Line2D, [in] LineElementData, [in] CanvasLink, [out] LineData2D)
+zox_filter(line2Ds_query, [none] Line2D, [in] LineElementData, [none] CanvasLink, [none] LineData2D)
+zox_system_ctx(Line2DElementSystem, EcsPreUpdate, line2Ds_query, [none] Line2D, [in] LineElementData, [in] CanvasLink, [out] LineData2D)
 if (!headless) {
     initialize_shader_line2D();
-    zoxel_system_1(Line2DRenderSystem, EcsOnStore, [none] Line2D, [in] LineData2D, [in] LineThickness, [in] Color)
+    zox_system_1(Line2DRenderSystem, EcsOnStore, [none] Line2D, [in] LineData2D, [in] LineThickness, [in] Color)
 }
 spawn_prefab_line2D(world);
 spawn_prefab_ui_line2D(world);

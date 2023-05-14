@@ -63,4 +63,4 @@ void FeedForwardSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(FeedForwardSystem)
+zox_declare_system(FeedForwardSystem)

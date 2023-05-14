@@ -4,8 +4,8 @@ ecs_entity_t spawn_prefab_brain(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "prefab_brain");
     set_unique_entity_name(world, e, "prefab_brain");
-    zoxel_add_tag(e, Brain);
-    zoxel_add(world, e, Children);
+    zox_add_tag(e, Brain);
+    zox_add(e, Children);
     ecs_defer_end(world);
     prefab_brain = e;
     #ifdef zoxel_debug_prefabs

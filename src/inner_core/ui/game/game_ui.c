@@ -25,8 +25,8 @@ zoxel_define_tag(PauseUI)
 zoxel_define_tag(FPSDisplay)
 zoxel_define_tag(QuadsCountLabel)
 zoxel_define_component(FPSDisplayTicker)
-zoxel_system(FpsDisplaySystem, EcsPreUpdate, [out] FPSDisplayTicker, [out] ZextDirty, [out] ZextData)
-zoxel_system(QuadsLabelSystem, EcsPreUpdate, [none] QuadsCountLabel, [out] ZextDirty, [out] ZextData)
+zox_system(FpsDisplaySystem, EcsPreUpdate, [out] FPSDisplayTicker, [out] ZextDirty, [out] ZextData)
+zox_system(QuadsLabelSystem, EcsPreUpdate, [none] QuadsCountLabel, [out] ZextDirty, [out] ZextData)
 spawn_prefab_main_menu(world);
 spawn_prefab_fps_display(world);
 spawn_prefab_pause_ui(world);

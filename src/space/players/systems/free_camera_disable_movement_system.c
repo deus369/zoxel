@@ -17,4 +17,4 @@ void FreeCameraDisableMovementSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(FreeCameraDisableMovementSystem)
+zox_declare_system(FreeCameraDisableMovementSystem)

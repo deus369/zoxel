@@ -21,4 +21,4 @@ void Line3DRenderSystem(ecs_iter_t *it) {
     glDisableVertexAttribArray(line3D_position_location);
     glUseProgram(0);
 }
-zoxel_declare_system(Line3DRenderSystem)
+zox_declare_system(Line3DRenderSystem)

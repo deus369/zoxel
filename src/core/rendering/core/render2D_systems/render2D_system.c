@@ -40,4 +40,4 @@ void RenderMaterial2DSystem(ecs_iter_t *it) {
         render_entity_material2D(viewMatrix, materialGPULink->value, textureGPULink->value, position->value, rotation2D->value, scale1D->value, brightness->value);
     }
 }
-zoxel_declare_system(RenderMaterial2DSystem)
+zox_declare_system(RenderMaterial2DSystem)

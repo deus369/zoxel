@@ -17,7 +17,7 @@ ecs_entity_t spawn_chunk_prefab(ecs_world_t *world) {
 ecs_entity_t spawn_chunk(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, chunk_prefab);
-    zoxel_add_tag(e, NoiseChunk);
+    zox_add_tag(e, NoiseChunk);
     zoxel_log("Spawned TextureData [%lu]\n", (long unsigned int) e);
     ecs_defer_end(world);
     return e;

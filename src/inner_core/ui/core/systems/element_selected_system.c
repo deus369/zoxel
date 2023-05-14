@@ -11,4 +11,4 @@ void ElementSelectedSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(ElementSelectedSystem)
+zox_declare_system(ElementSelectedSystem)

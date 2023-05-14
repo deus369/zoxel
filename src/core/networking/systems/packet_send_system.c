@@ -50,4 +50,4 @@ void PacketSendSystem(ecs_iter_t *it) {
         free(send_buffer_2);
     }
 }
-zoxel_declare_system(PacketSendSystem)
+zox_declare_system(PacketSendSystem)

@@ -9,4 +9,4 @@ void Gravity3DSystem(ecs_iter_t *it) {
         acceleration3D->value.z += gravity3D->value.z;
     } 
 }
-zoxel_declare_system(Gravity3DSystem)
+zox_declare_system(Gravity3DSystem)

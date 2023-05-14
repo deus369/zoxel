@@ -42,7 +42,7 @@ void MeshUvsUpdateSystem(ecs_iter_t *it) {
         }
     #endif
 }
-zoxel_declare_system(MeshUvsUpdateSystem)
+zox_declare_system(MeshUvsUpdateSystem)
 
 //  const MaterialGPULink *materialGPULink = &materialGPULinks[i];
 // const MaterialGPULink *materialGPULinks = ecs_field(it, MaterialGPULink, 6);

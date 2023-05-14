@@ -33,9 +33,9 @@ zoxel_define_component(ConnectionData)
 spawn_prefab_brain(world);
 spawn_prefab_neuron(world);
 spawn_prefab_connection(world);
-zoxel_system(FeedForwardSystem, EcsOnUpdate, [none] Connection, [in] ConnectionData, [in] Weight, [out] Signal, [out] SignalStrength)
-zoxel_system(ConnectionRenderSystem, EcsOnUpdate, [none] Connection, [in] ConnectionData, [in] Weight, [in] Signal, [in] SignalStrength)
-zoxel_system(NeuronRenderSystem, EcsOnUpdate, [none] Neuron, [in] Weight, [in] Position2D)
+zox_system(FeedForwardSystem, EcsOnUpdate, [none] Connection, [in] ConnectionData, [in] Weight, [out] Signal, [out] SignalStrength)
+zox_system(ConnectionRenderSystem, EcsOnUpdate, [none] Connection, [in] ConnectionData, [in] Weight, [in] Signal, [in] SignalStrength)
+zox_system(NeuronRenderSystem, EcsOnUpdate, [none] Neuron, [in] Weight, [in] Position2D)
 #ifdef zoxel_test_brain
 spawn_brain(world);
 #endif

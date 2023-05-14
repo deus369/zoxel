@@ -5,10 +5,10 @@ ecs_entity_t spawn_prefab_animating_chunk(ecs_world_t *world) {
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_noise_chunk);
     ecs_add_id(world, e, EcsPrefab);
     add_chunk_colors(world, e);
-    zoxel_set(world, e, ChunkSize, {{ 16, 16, 16 }})
-    zoxel_set(world, e, AnimateChunk, { 1.0 })
-    zoxel_set(world, e, ChunkDirty, { 0 })
-    zoxel_set(world, e, MeshDirty, { 0 })
+    zox_set(e, ChunkSize, {{ 16, 16, 16 }})
+    zox_set(e, AnimateChunk, { 1.0 })
+    zox_set(e, ChunkDirty, { 0 })
+    zox_set(e, MeshDirty, { 0 })
     add_gpu_colors(world, e);
     // set colors
     ColorRGBs *colorRGBs = ecs_get_mut(world, e, ColorRGBs);

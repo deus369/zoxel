@@ -11,7 +11,7 @@ void EternalRotationSystem(ecs_iter_t *it) {
         rotation3D->value = quaternion_rotate(rotate_speed, rotation3D->value);
     }
 }
-zoxel_declare_system(EternalRotationSystem)
+zox_declare_system(EternalRotationSystem)
 
 // #define main_camera_rotation_speed 60 * 0.14f
 // float4 rotate_speed = eternalRotation->value; // float4_multiply_float2(eternalRotation->value, delta_time);

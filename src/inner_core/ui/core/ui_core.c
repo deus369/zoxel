@@ -36,22 +36,22 @@ zoxel_define_component(CanvasLink)
 zoxel_define_component(ClickEvent)
 zoxel_define_component(InitializeEntityMesh)
 zoxel_define_component(NavigatorTimer)
-zoxel_filter(ui_query, world, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [out] SelectableState)
-zoxel_filter(pixel_positions_query, world, [none] Element, [in] PixelPosition,
+zox_filter(ui_query, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [out] SelectableState)
+zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition,
     [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPixelPosition)
-zoxel_system_ctx(ElementPositionSystem, EcsPreUpdate, pixel_positions_query, [none] Element, [in] PixelPosition,
+zox_system_ctx(ElementPositionSystem, EcsPreUpdate, pixel_positions_query, [none] Element, [in] PixelPosition,
     [in] ParentLink, [in] Anchor, [in] CanvasLink, [out] Position2D, [out] CanvasPixelPosition)
-zoxel_system_ctx(ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [in] DeviceMode, [out] RaycasterTarget)
-zoxel_system(ElementSelectedSystem, EcsOnUpdate, [none] Element, [in] SelectableState, [out] Brightness)
+zox_system_ctx(ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [in] DeviceMode, [out] RaycasterTarget)
+zox_system(ElementSelectedSystem, EcsOnUpdate, [none] Element, [in] SelectableState, [out] Brightness)
 if (!headless) {
     #ifdef zoxel_inputs
-        zoxel_system(ElementActivateSystem, EcsPostUpdate, [in] DeviceLinks, [in] RaycasterTarget)
-        zoxel_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [out] NavigatorTimer, [out] RaycasterTarget)
+        zox_system(ElementActivateSystem, EcsPostUpdate, [in] DeviceLinks, [in] RaycasterTarget)
+        zox_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [out] NavigatorTimer, [out] RaycasterTarget)
     #endif
-    zoxel_system_1(ElementMeshSystem, ui_mesh_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture)
+    zox_system_1(ElementMeshSystem, ui_mesh_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture)
     element_mesh_system_id = ecs_id(ElementMeshSystem);
 }
-zoxel_system(ButtonClickEventSystem, EcsPreStore, [none] Element, [in] ClickableState, [in] ClickEvent)
+zox_system(ButtonClickEventSystem, EcsPreStore, [none] Element, [in] ClickableState, [in] ClickEvent)
 spawn_prefab_canvas(world);
 spawn_prefab_element(world);
 zoxel_end_module(UICore)

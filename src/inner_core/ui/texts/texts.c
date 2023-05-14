@@ -25,7 +25,7 @@ zoxel_component(ZextPadding, byte2)
 #include "systems/zext_update_system.c"
 #include "systems/zext_background_update_system.c"
 #include "systems/animate_text_system.c"
-zoxel_reset_system(ZextDirtyResetSystem, ZextDirty)
+zox_reset_system(ZextDirtyResetSystem, ZextDirty)
 
 zoxel_begin_module(Texts)
 zoxel_define_tag(Font)
@@ -45,20 +45,20 @@ spawn_font_style_prefab(world);
 spawn_font_prefab(world);
 spawn_zigel_prefab(world);
 spawn_zext_prefab(world);
-zoxel_filter(zextDirtyQuery, world, [none] Zext, [in] ZextDirty)
-zoxel_filter(generateTextureQuery, world, [none] FontTexture, [in] GenerateTexture)
-// zoxel_system_1(AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
-zoxel_system(AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
+zox_filter(zextDirtyQuery, [none] Zext, [in] ZextDirty)
+zox_filter(generateTextureQuery, [none] FontTexture, [in] GenerateTexture)
+// zox_system_1(AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
+zox_system(AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
 #ifdef main_thread_zext_update_system
-    zoxel_system_ctx_1(ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
+    zox_system_ctx_1(ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
         [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] Position2D, [in] PixelSize, [in] ZextAlignment, [out] Children)
 #else
-    zoxel_system_ctx(ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
+    zox_system_ctx(ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
         [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] Position2D, [in] PixelSize, [in] ZextAlignment, [out] Children)
 #endif
-zoxel_system(ZextBackgroundUpdateSystem, EcsOnUpdate, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] CanvasLink, [out] PixelSize, [out] TextureSize, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshDirty)
-zoxel_system_ctx(FontTextureSystem, EcsPreStore, generateTextureQuery, [none] FontTexture, [out] TextureDirty, [out] TextureData, [in] TextureSize, [in] GenerateTexture, [in] ZigelIndex, [in] Color)
-zoxel_define_reset_system(ZextDirtyResetSystem, ZextDirty)
+zox_system(ZextBackgroundUpdateSystem, EcsOnUpdate, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] CanvasLink, [out] PixelSize, [out] TextureSize, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshDirty)
+zox_system_ctx(FontTextureSystem, EcsPreStore, generateTextureQuery, [none] FontTexture, [out] TextureDirty, [out] TextureData, [in] TextureSize, [in] GenerateTexture, [in] ZigelIndex, [in] Color)
+zox_define_reset_system(ZextDirtyResetSystem, ZextDirty)
 zoxel_end_module(Texts)
 
 // \todo Display a UI Element anchored, with a pixel position.

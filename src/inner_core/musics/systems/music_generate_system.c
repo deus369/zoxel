@@ -77,4 +77,4 @@ void MusicGenerateSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(MusicGenerateSystem);
+zox_declare_system(MusicGenerateSystem);

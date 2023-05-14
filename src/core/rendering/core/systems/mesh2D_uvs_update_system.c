@@ -24,4 +24,4 @@ void Mesh2DUvsUpdateSystem(ecs_iter_t *it) {
         // printf("Uploaded shader2D data %i.\n", meshIndicies2->length);
     }
 }
-zoxel_declare_system(Mesh2DUvsUpdateSystem)
+zox_declare_system(Mesh2DUvsUpdateSystem)

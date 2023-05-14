@@ -41,4 +41,4 @@ void ZextBackgroundUpdateSystem(ecs_iter_t *it) {
         // zoxel_log(" > zoxel label background is updating [%i]\n", zextData->length);
     }
 }
-zoxel_declare_system(ZextBackgroundUpdateSystem)
+zox_declare_system(ZextBackgroundUpdateSystem)

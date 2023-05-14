@@ -85,7 +85,7 @@ void Player2DTestSystem(ecs_iter_t *it) {
         }*/
     }
 }
-zoxel_declare_system(Player2DTestSystem);
+zox_declare_system(Player2DTestSystem);
 
 void Player2DTestMainThreadSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
@@ -166,4 +166,4 @@ void Player2DTestMainThreadSystem(ecs_iter_t *it) {
         }*/
     }
 }
-zoxel_declare_system(Player2DTestMainThreadSystem)
+zox_declare_system(Player2DTestMainThreadSystem)

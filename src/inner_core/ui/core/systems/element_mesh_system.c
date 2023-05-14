@@ -27,7 +27,7 @@ void ElementMeshSystem(ecs_iter_t *it) {
         spawn_gpu_texture(world, e);
     }
 }
-zoxel_declare_system(ElementMeshSystem)
+zox_declare_system(ElementMeshSystem)
 
 // set_mesh_indicies_world(world, e, square_indicies, 6);
 // set_mesh_vertices_world_scale2D(world, e, square_vertices, 4, scaledSize2D);  // scale the mesh

@@ -121,4 +121,4 @@ void FontTextureSystem(ecs_iter_t *it) {
         generate_font_texture(textureData, textureSize, fontData, color2);
     }
 }
-zoxel_declare_system(FontTextureSystem)
+zox_declare_system(FontTextureSystem)

@@ -26,7 +26,7 @@ zoxel_memory_component(MeshColorRGBs, color_rgb)
 #include "systems/mesh2D_update_system.c"
 #include "systems/mesh2D_uvs_update_system.c"
 #include "systems/mesh_dispose_system.c"
-zoxel_reset_system(MeshDirtySystem, MeshDirty)
+zox_reset_system(MeshDirtySystem, MeshDirty)
 #include "render2D_systems/render2D_system.c"
 #include "render2D_systems/render2D_mesh_system.c"
 #include "render2D_systems/render2D_instance_system.c"
@@ -54,41 +54,41 @@ ecs_set_hooks(world, MeshGPULink, { .dtor = ecs_dtor(MeshGPULink) });
 ecs_set_hooks(world, UvsGPULink, { .dtor = ecs_dtor(UvsGPULink) });
 ecs_set_hooks(world, ColorsGPULink, { .dtor = ecs_dtor(ColorsGPULink) });
 #ifdef zoxel_transforms2D
-    zoxel_system_1(InstanceRender2DSystem, render2D_update_pipeline,
+    zox_system_1(InstanceRender2DSystem, render2D_update_pipeline,
         [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink,
         [none] !MeshGPULink);
-    zoxel_system_1(RenderMaterial2DSystem, render2D_update_pipeline,
+    zox_system_1(RenderMaterial2DSystem, render2D_update_pipeline,
         [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MaterialGPULink,
         [in] TextureGPULink, [none] !MeshGPULink);
-    zoxel_system_1(RenderMeshMaterial2DSystem, render2D_update_pipeline,
+    zox_system_1(RenderMeshMaterial2DSystem, render2D_update_pipeline,
         [in] Position2D, [in] Rotation2D, [in] Scale1D,
         [in] Layer2D, [in] Brightness, [in] MeshGPULink,
         [in] MaterialGPULink, [in] TextureGPULink);
 #endif
 #ifdef zoxel_transforms3D
-    zoxel_system_1(Render3DSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D,
+    zox_system_1(Render3DSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D,
         [in] Brightness, [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] !MeshColorRGBs);
-    zoxel_system_1(Render3DColoredSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D,
+    zox_system_1(Render3DColoredSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D,
         [in] Brightness, [in] MeshGPULink, [in] ColorsGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] MeshColorRGBs);
-    zoxel_system_1(InstanceRender3DSystem, render3D_update_pipeline,
+    zox_system_1(InstanceRender3DSystem, render3D_update_pipeline,
         [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink);
-    zoxel_system_1(MeshGPUDisposeSystem, 0, [in] MeshGPULink, [in] ColorsGPULink);
-    zoxel_system_1(MeshGPURestoreSystem, 0, [out] MeshDirty);
+    zox_system_1(MeshGPUDisposeSystem, 0, [in] MeshGPULink, [in] ColorsGPULink);
+    zox_system_1(MeshGPURestoreSystem, 0, [out] MeshDirty);
 #endif
 // gpu uploads
 mesh_update_pipeline2 = mesh_update_pipeline;
-zoxel_system_1(MeshUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices,
+zox_system_1(MeshUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices,
     [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs);
-zoxel_system_1(Mesh2DUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D,
+zox_system_1(Mesh2DUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D,
     [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs);
-zoxel_system_1(MeshUvsUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies,
+zox_system_1(MeshUvsUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies,
     [in] MeshVertices, [in] MeshUVs, [in] MeshColorRGBs, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink);
-zoxel_system_1(Mesh2DUvsUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies,
+zox_system_1(Mesh2DUvsUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies,
     [in] MeshVertices2D, [in] MeshUVs, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshColorRGBs);
 // [in] MaterialGPULink, 
-zoxel_system_1(MeshColorsUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies,
+zox_system_1(MeshColorsUpdateSystem, mesh_update_pipeline, [out] MeshDirty, [in] MeshIndicies,
     [in] MeshVertices, [in] MeshColorRGBs, [out] MeshGPULink, [out] ColorsGPULink, [none] !MeshUVs);
-// zoxel_define_reset_system(MeshDirtySystem, MeshDirty);
+// zox_define_reset_system(MeshDirtySystem, MeshDirty);
 zoxel_end_module(RenderingCore)
 
 //! \todo Create a Cube with unique mesh - for chunk - add these components and update mesh for voxel chunk.

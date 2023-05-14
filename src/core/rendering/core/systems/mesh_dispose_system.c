@@ -17,7 +17,7 @@ void MeshGPUDisposeSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(MeshGPUDisposeSystem)
+zox_declare_system(MeshGPUDisposeSystem)
 
 void MeshGPURestoreSystem(ecs_iter_t *it) {
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 1);
@@ -26,5 +26,5 @@ void MeshGPURestoreSystem(ecs_iter_t *it) {
         meshDirty->value = 1;
     }
 }
-zoxel_declare_system(MeshGPURestoreSystem)
+zox_declare_system(MeshGPURestoreSystem)
 

@@ -118,7 +118,7 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(ElementRaycastSystem)
+zox_declare_system(ElementRaycastSystem)
     /*if (ui_entity != 0 && ecs_is_alive(world, ui_entity) && ecs_has(world, ui_entity, SelectableState)) {
         SelectableState *selectableState = ecs_get_mut(world, ui_entity, SelectableState);
         selectableState->value = 0;

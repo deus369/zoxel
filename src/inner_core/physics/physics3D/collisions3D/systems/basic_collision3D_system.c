@@ -103,7 +103,7 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(BasicCollision3DSystem)
+zox_declare_system(BasicCollision3DSystem)
 
 /*const ChunkLink *chunkLink = &chunkLinks[i];
 if (chunkLink->value == 0) {

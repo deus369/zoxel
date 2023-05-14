@@ -32,29 +32,28 @@ zoxel_define_tag(ChunkTerrain)
 zoxel_define_tag(Streamer)
 zoxel_define_component(StreamPoint)
 // zoxel_define_component(ChunkDirtier)
-zoxel_filter(generateTerrainChunkQuery, world, [none] TerrainChunk, [in] GenerateChunk)
-zoxel_filter(chunks_generating, world, [in] GenerateChunk)
+zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [in] GenerateChunk)
+zox_filter(chunks_generating, [in] GenerateChunk)
+zox_filter(terrain_chunks_query, [none] TerrainChunk, [in] ChunkPosition, [in] ChunkNeighbors, [out] ChunkDivision, [out] ChunkDirty)
 // zoxel_prefab_defines
 spawn_prefab_terrain(world);
 int3 terrain_chunk_size = { default_chunk_length, 8 * default_chunk_length, default_chunk_length };
 spawn_prefab_terrain_chunk(world, terrain_chunk_size);
 spawn_prefab_terrain_chunk_octree(world, terrain_chunk_size);
 // zoxel_system_defines
-zoxel_system_ctx(TerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
+zox_system_ctx(TerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
     [none] TerrainChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] ChunkPosition, [in] GenerateChunk)
-zoxel_system_ctx(OctreeTerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
+zox_system_ctx(OctreeTerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
     [none] TerrainChunk, [in] ChunkPosition, [in] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree)
-zoxel_filter(terrain_chunks_query, world,
-    [none] TerrainChunk, [in] ChunkPosition, [in] ChunkNeighbors, [out] ChunkDivision, [out] ChunkDirty)
-zoxel_system_ctx_1(StreamPointSystem, EcsOnUpdate, terrain_chunks_query,
+zox_system_ctx_1(StreamPointSystem, EcsOnUpdate, terrain_chunks_query,
     [none] Streamer, [in] Position3D, [out] StreamPoint)
-zoxel_system_ctx(ChunkUVsBuildSystem, EcsOnUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ChunkNeighbors,
+zox_system_ctx(ChunkUVsBuildSystem, EcsOnUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ChunkNeighbors,
     [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty, [none] !MeshColorRGBs)
-zoxel_system_ctx(ChunkOctreeBuildSystem, EcsOnUpdate, chunks_generating,
+zox_system_ctx(ChunkOctreeBuildSystem, EcsOnUpdate, chunks_generating,
     [out] ChunkDirty, [in] ChunkOctree, [in] ChunkDivision, [in] ChunkNeighbors,
     [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty)
-// zoxel_system(OctreeChunkMeshSystem, EcsPreUpdate, [out] MeshDirty, [in] ChunkNeighbors, [out] MeshDirty)
-zoxel_system_1(Render3DUvsSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies,
+// zox_system(OctreeChunkMeshSystem, EcsPreUpdate, [out] MeshDirty, [in] ChunkNeighbors, [out] MeshDirty)
+zox_system_1(Render3DUvsSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies,
 #ifdef voxels_terrain_multi_material
     [in] MaterialGPULink, [in] TextureGPULink);
 #else

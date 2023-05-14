@@ -5,8 +5,8 @@ ecs_entity_t spawn_prefab_keyboard(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "prefab_keyboard");
-    zoxel_add_tag(e, Device);
-    zoxel_add(world, e, Keyboard);
+    zox_add_tag(e, Device);
+    zox_add(e, Keyboard);
     ecs_defer_end(world);
     prefab_keyboard = e;
     #ifdef zoxel_debug_prefabs

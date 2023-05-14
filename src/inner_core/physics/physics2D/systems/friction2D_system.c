@@ -10,4 +10,4 @@ void Friction2DSystem(ecs_iter_t *it) {
         acceleration2D->value.y -= velocity2D->value.y * frictionValue;
     }
 }
-zoxel_declare_system(Friction2DSystem)
+zox_declare_system(Friction2DSystem)

@@ -23,4 +23,4 @@ void AnimateNoiseSystem(ecs_iter_t *it) {
         ecs_query_skip(it);
     }
 }
-zoxel_declare_system(AnimateNoiseSystem)
+zox_declare_system(AnimateNoiseSystem)

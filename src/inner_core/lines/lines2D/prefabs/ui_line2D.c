@@ -5,18 +5,18 @@ void spawn_prefab_ui_line2D(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "prefab_ui_line2D");
-    zoxel_add_tag(e, Line2D);
-    zoxel_set(world, e, LineData2D, { { 0, 0, 0, 0 } });
-    zoxel_set(world, e, LineElementData, { { 0, 0, 0, 0 } });
-    zoxel_set(world, e, LineThickness, { 1 });
-    zoxel_set(world, e, CanvasLink, { });
-    zoxel_set(world, e, Layer2D, { 0 });    // use to render in order during ui render process
-    zoxel_set(world, e, Color, { { 255, 0, 0, 255 } });
+    zox_add_tag(e, Line2D);
+    zox_set(e, LineData2D, { { 0, 0, 0, 0 } });
+    zox_set(e, LineElementData, { { 0, 0, 0, 0 } });
+    zox_set(e, LineThickness, { 1 });
+    zox_set(e, CanvasLink, { });
+    zox_set(e, Layer2D, { 0 });    // use to render in order during ui render process
+    zox_set(e, Color, { { 255, 0, 0, 255 } });
     // temp
     ecs_entity_t e2 = ecs_new_w_pair(world, EcsIsA, e);
     ecs_add_id(world, e2, EcsPrefab);
     set_unique_entity_name(world, e2, "prefab_temporary_ui_line2D");
-    zoxel_set(world, e2, DestroyInTime, { 0 });
+    zox_set(e2, DestroyInTime, { 0 });
     ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs
     zoxel_log("spawn_prefab ui_line2D [%lu].\n", (long int) (e));
@@ -37,7 +37,7 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point
         // printf("Spawning temporary_ui_line2D! %f\n", life_time);
         e = ecs_new_w_pair(world, EcsIsA, prefab_temporary_ui_line2D);
     }
-    zoxel_set(world, e, Color, { line_color });
+    zox_set(e, Color, { line_color });
     // set_unique_entity_name(world, e, "line2D");
     ecs_set(world, e, LineThickness, { thickness });
     ecs_set(world, e, LineElementData, { { point_a.x, point_a.y, point_b.x, point_b.y } });

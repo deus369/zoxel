@@ -6,11 +6,11 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world) {
     ecs_add_id(world, e, EcsPrefab);
     set_unique_entity_name(world, e, "prefab_vox");
     add_chunk_colors(world, e);
-    zoxel_set(world, e, Scale1D, { 1.0f })
+    zox_set(e, Scale1D, { 1.0f })
     // because we set the data on spawn, no need to generate here
-    zoxel_set(world, e, GenerateChunk, { 0 })
-    zoxel_set(world, e, ChunkDirty, { 1 })
-    zoxel_set(world, e, MeshDirty, { 0 })
+    zox_set(e, GenerateChunk, { 0 })
+    zox_set(e, ChunkDirty, { 1 })
+    zox_set(e, MeshDirty, { 0 })
     add_gpu_colors(world, e);
     ecs_defer_end(world);
     prefab_vox = e;
@@ -66,8 +66,8 @@ void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, vox_file *vox) {
 ecs_entity_t spawn_vox(ecs_world_t *world, vox_file *vox, float3 position, unsigned char division) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_vox);
-    zoxel_set(world, e, Position3D, { position })
-    zoxel_set(world, e, ChunkDivision, { division })
+    zox_set(e, Position3D, { position })
+    zox_set(e, ChunkDivision, { division })
     set_vox_from_vox_file(world, e, vox);
     spawn_gpu_colors(world, e);
     ecs_defer_end(world);
@@ -89,7 +89,7 @@ void test_voxes(ecs_world_t *world, float3 position) {
     set_vox_from_vox_file(world, e, vox);
     ecs_set(world, e, Rotation3D, { rotation });
     float4 rotationer = quaternion_from_euler( (float3) { 0, 0.2f * degreesToRadians, 0 });
-    zoxel_set(world, e, EternalRotation, { rotationer });
+    zox_set(e, EternalRotation, { rotationer });
     ecs_defer_end(world);
     return e;
 }*/

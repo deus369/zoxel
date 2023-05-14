@@ -7,12 +7,12 @@ void spawn_prefab_character2D(ecs_world_t *world, int2 textureSize) {
         add_transform2Ds(world, e);
     #endif
     #ifdef zoxel_physics2D
-        zoxel_add_tag(e, Frictioned);
+        zox_add_tag(e, Frictioned);
         add_physics2D(world, e);
     #endif
     // Rendering2D
     add_seed(world, e, 444);
-    zoxel_add(world, e, Brightness);
+    zox_add(e, Brightness);
     add_dirty(world, e);
     add_texture(world, e, textureSize, 1);
     add_animated_noise_texture(world, e);

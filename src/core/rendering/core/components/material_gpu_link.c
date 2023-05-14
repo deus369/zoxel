@@ -5,7 +5,7 @@ extern GLuint spawn_gpu_material_program(const GLuint2 shader);
 
 void add_gpu_material(ecs_world_t *world, ecs_entity_t prefab) {
     if (!headless) {
-        zoxel_set(world, prefab, MaterialGPULink, { 0 });
+        zox_set(prefab, MaterialGPULink, { 0 });
     }
 }
 

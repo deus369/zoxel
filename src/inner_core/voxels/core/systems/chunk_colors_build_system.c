@@ -159,7 +159,7 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         end_timing("    - chunk_colors_builds_system")
     #endif
 }
-zoxel_declare_system(ChunkColorsBuildSystem)
+zox_declare_system(ChunkColorsBuildSystem)
 
 //float3 total_mesh_offset = (float3) { -0.5f * chunkSize->value.x * model_scale,
 //    -0.5f * chunkSize->value.y * model_scale, -0.5f * chunkSize->value.z * model_scale };

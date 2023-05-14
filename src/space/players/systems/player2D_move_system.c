@@ -55,4 +55,4 @@ void Player2DMoveSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(Player2DMoveSystem);
+zox_declare_system(Player2DMoveSystem);

@@ -24,7 +24,7 @@ void Omega3DSystem(ecs_iter_t *it) {
         #endif
     }
 }
-zoxel_declare_system(Omega3DSystem)
+zox_declare_system(Omega3DSystem)
 
 // float4 rotation_delta = omega3D->value;
 // float4_multiply_float_p(&rotation_delta, delta_time);

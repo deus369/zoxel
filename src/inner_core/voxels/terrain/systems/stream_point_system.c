@@ -81,4 +81,4 @@ void StreamPointSystem(ecs_iter_t *it) {
         end_timing("StreamPointSystem")
     #endif
 }
-zoxel_declare_system(StreamPointSystem)
+zox_declare_system(StreamPointSystem)

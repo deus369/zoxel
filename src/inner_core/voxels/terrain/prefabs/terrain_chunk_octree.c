@@ -3,23 +3,23 @@ ecs_entity_t prefab_terrain_chunk_octree;
 ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, ""); // , "prefab_cube");
-    zoxel_add_tag(e, TerrainChunk);
+    zox_add_tag(e, TerrainChunk);
     #ifdef zoxel_transforms3D
         add_transform3Ds(world, e);
-        zoxel_set(world, e, Scale1D, { 0.05f });
+        zox_set(e, Scale1D, { 0.05f });
     #endif
-    zoxel_set(world, e, MeshDirty, { 0 });
-    zoxel_set(world, e, Brightness, { 1.4f });
+    zox_set(e, MeshDirty, { 0 });
+    zox_set(e, Brightness, { 1.4f });
     add_seed(world, e, 666);
     add_chunk_octree(world, e, size); // default_chunk_size);
     add_generate_chunk(world, e);
-    // zoxel_set(world, e, ChunkSize, { size });
+    // zox_set(e, ChunkSize, { size });
     if (!headless) {
-        zoxel_add(world, e, MeshIndicies);
-        zoxel_add(world, e, MeshVertices);
-        zoxel_add(world, e, MeshUVs);
-        zoxel_add(world, e, MeshColorRGBs);
-        zoxel_add(world, e, ColorsGPULink);
+        zox_add(e, MeshIndicies);
+        zox_add(e, MeshVertices);
+        zox_add(e, MeshUVs);
+        zox_add(e, MeshColorRGBs);
+        zox_add(e, ColorsGPULink);
         add_gpu_mesh(world, e);
         add_gpu_material(world, e);
         add_gpu_uvs(world, e);
@@ -28,7 +28,7 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size) {
     // rest
     // add_texture(world, e, chunk_texture_size, 1);
     // add_noise_texture(world, e);
-    // zoxel_add_tag(e, DirtTexture);
+    // zox_add_tag(e, DirtTexture);
     ecs_defer_end(world);
     prefab_terrain_chunk_octree = e;
     return e;

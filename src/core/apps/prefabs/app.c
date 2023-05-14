@@ -5,10 +5,10 @@ ecs_entity_t spawn_app_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "app_prefab");
-    zoxel_add_tag(e, App);
-    // zoxel_add_tag(e, ViewPort);
-    zoxel_add(world, e, SDLWindow);
-    zoxel_add(world, e, Context);
+    zox_add_tag(e, App);
+    // zox_add_tag(e, ViewPort);
+    zox_add(e, SDLWindow);
+    zox_add(e, Context);
     ecs_defer_end(world);
     app_prefab = e;
     #ifdef zoxel_debug_prefabs

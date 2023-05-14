@@ -17,4 +17,4 @@ void Bounds2DSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(Bounds2DSystem)
+zox_declare_system(Bounds2DSystem)

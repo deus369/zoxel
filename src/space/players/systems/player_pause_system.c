@@ -67,7 +67,7 @@ void PlayerPauseSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(PlayerPauseSystem)
+zox_declare_system(PlayerPauseSystem)
 
 /*void PlayerPauseSystem2(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
@@ -79,4 +79,4 @@ zoxel_declare_system(PlayerPauseSystem)
         }
     }
 }
-zoxel_declare_system(PlayerPauseSystem2)*/
+zox_declare_system(PlayerPauseSystem2)*/

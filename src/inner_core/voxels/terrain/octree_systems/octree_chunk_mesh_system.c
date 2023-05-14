@@ -14,7 +14,7 @@
         }
     }
 }
-zoxel_declare_system(OctreeChunkMeshSystem)*/
+zox_declare_system(OctreeChunkMeshSystem)*/
 
 /*const ChunkNeighbors *chunkNeighbors2 = &chunkNeighbors[i];
 const unsigned char dirty_left = chunkNeighbors2->value[0] == 0 ?

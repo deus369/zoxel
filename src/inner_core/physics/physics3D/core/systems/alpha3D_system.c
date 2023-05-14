@@ -22,4 +22,4 @@ void Alpha3DSystem(ecs_iter_t *it) {
         alpha3D->value = quaternion_identity;
     }
 }
-zoxel_declare_system(Alpha3DSystem)
+zox_declare_system(Alpha3DSystem)

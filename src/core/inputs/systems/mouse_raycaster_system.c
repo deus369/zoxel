@@ -15,4 +15,4 @@ void MouseRaycasterSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(MouseRaycasterSystem)
+zox_declare_system(MouseRaycasterSystem)

@@ -42,7 +42,7 @@ void EulerLimitZSystem(ecs_iter_t *it) {
         // zoxel_log("euler limitations! [%fx%fx%f] - [%f-%f]\n", euler->value.x, euler->value.y, euler->value.z, eulerLimitZ->value.x, eulerLimitZ->value.y);
     }
 }
-zoxel_declare_system(EulerLimitZSystem)
+zox_declare_system(EulerLimitZSystem)
 
 void EulerLimitXSystem(ecs_iter_t *it) {
     const EulerLimitX *eulerLimitXs = ecs_field(it, EulerLimitX, 1);
@@ -59,4 +59,4 @@ void EulerLimitXSystem(ecs_iter_t *it) {
         // zoxel_log("euler limitations! [%fx%fx%f] - [%f-%f]\n", euler->value.x, euler->value.y, euler->value.z, eulerLimitZ->value.x, eulerLimitZ->value.y);
     }
 }
-zoxel_declare_system(EulerLimitXSystem)
+zox_declare_system(EulerLimitXSystem)

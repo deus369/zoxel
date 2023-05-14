@@ -1,12 +1,12 @@
 void add_chunk_octree(ecs_world_t *world, ecs_entity_t e, int3 size) {
-    zoxel_add_tag(e, Chunk)
-    zoxel_add(world, e, ChunkOctree)
-    zoxel_set(world, e, ChunkSize, { size })
-    zoxel_set(world, e, ChunkDirty, { 0 })
-    zoxel_set(world, e, ChunkPosition, { int3_zero })
-    zoxel_set(world, e, ChunkDivision, { 0 })
-    zoxel_set(world, e, VoxLink, { 0 })
-    // zoxel_set(world, e, ChunkNeighbors, { 0, NULL });
+    zox_add_tag(e, Chunk)
+    zox_add(e, ChunkOctree)
+    zox_set(e, ChunkSize, { size })
+    zox_set(e, ChunkDirty, { 0 })
+    zox_set(e, ChunkPosition, { int3_zero })
+    zox_set(e, ChunkDivision, { 0 })
+    zox_set(e, VoxLink, { 0 })
+    // zox_set(e, ChunkNeighbors, { 0, NULL });
     ChunkNeighbors chunkNeighbors = { };
     initialize_memory_component_non_pointer(chunkNeighbors, ecs_entity_t, 6);
     chunkNeighbors.value[0] = 0;

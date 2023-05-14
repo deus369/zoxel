@@ -65,4 +65,4 @@ void TerrainChunkSystem(ecs_iter_t *it) {
         end_timing("TerrainChunkSystem")
     #endif
 }
-zoxel_declare_system(TerrainChunkSystem)
+zox_declare_system(TerrainChunkSystem)

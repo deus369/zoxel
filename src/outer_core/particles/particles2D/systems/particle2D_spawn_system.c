@@ -76,7 +76,7 @@ void Particle2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCoun
     free(destroyInTimes);
     ecs_defer_end(world);
 }
-zoxel_declare_system(Particle2DSpawnSystem)
+zox_declare_system(Particle2DSpawnSystem)
 
 /*int GetParticles2DCount(ecs_world_t *world) {
     return ecs_count_id_with_up(world, ecs_id(Particle2D)); // count;

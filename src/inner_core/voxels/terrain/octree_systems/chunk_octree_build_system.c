@@ -232,7 +232,7 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         end_timing_cutoff("    - octree_chunk_build_system", zoxel_time_octree_chunk_builds_system_cutoff)
     #endif
 }
-zoxel_declare_system(ChunkOctreeBuildSystem)
+zox_declare_system(ChunkOctreeBuildSystem)
 
 /*add_block_to_int_array_d(indicies, voxel_face_indicies, voxel_face_indicies_length);
 int vertices_size = vertices->size;

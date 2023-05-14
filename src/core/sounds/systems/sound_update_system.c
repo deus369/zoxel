@@ -33,7 +33,7 @@ void SoundUpdateSystem(ecs_iter_t *it) {
         #endif
     }
 }
-zoxel_declare_system(SoundUpdateSystem);
+zox_declare_system(SoundUpdateSystem);
 
 // Uses SDL mixer to play sounds
 // Mix_Chunk *sound

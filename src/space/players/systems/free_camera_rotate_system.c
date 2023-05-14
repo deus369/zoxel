@@ -76,7 +76,7 @@ void FreeCameraRotateSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(FreeCameraRotateSystem)
+zox_declare_system(FreeCameraRotateSystem)
 
     // eulerAddition.x == 0 && eulerAddition.y == 0 && eulerAddition.z == 0)) {
         // float3 eulerAddition = { mouse->delta.y, -mouse->delta.x, 0 };

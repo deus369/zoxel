@@ -24,5 +24,5 @@ void Physics3DDisableSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(Physics3DDisableSystem)
+zox_declare_system(Physics3DDisableSystem)
 

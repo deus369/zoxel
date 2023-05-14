@@ -8,11 +8,11 @@ ecs_entity_t spawn_prefab_cube(ecs_world_t *world) {
         add_transform3Ds(world, e);
     #endif
     #ifdef zoxel_rendering
-        zoxel_add(world, e, Brightness);
-        zoxel_set(world, e, MeshDirty, { 1 });
+        zox_add(e, Brightness);
+        zox_set(e, MeshDirty, { 1 });
         if (!headless) {
-            zoxel_add(world, e, MeshIndicies);
-            zoxel_add(world, e, MeshVertices);
+            zox_add(e, MeshIndicies);
+            zox_add(e, MeshVertices);
         }
         add_gpu_mesh(world, e);
         add_gpu_material(world, e);
@@ -33,7 +33,7 @@ ecs_entity_t spawn_cube(ecs_world_t *world, ecs_entity_t prefab, float3 position
     ecs_set(world, e, Scale1D, { 0.05f });
     ecs_set(world, e, Brightness, { 1.4f });
     float4 rotationer = quaternion_from_euler( (float3) { 0.1f * degreesToRadians, 0.2f * degreesToRadians, 0 });
-    zoxel_set(world, e, EternalRotation, { rotationer });
+    zox_set(e, EternalRotation, { rotationer });
     if (!headless) {
         spawn_gpu_mesh(world, e);
         spawn_gpu_material(world, e, shader3D);

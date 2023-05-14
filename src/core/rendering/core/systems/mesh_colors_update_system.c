@@ -35,7 +35,7 @@ void MeshColorsUpdateSystem(ecs_iter_t *it) {
     }
     // check_opengl_error("MeshColorsUpdateSystem");
 }
-zoxel_declare_system(MeshColorsUpdateSystem)
+zox_declare_system(MeshColorsUpdateSystem)
 
 // const MaterialGPULink *materialGPULinks = ecs_field(it, MaterialGPULink, 6);
 // const MaterialGPULink *materialGPULink = &materialGPULinks[i];

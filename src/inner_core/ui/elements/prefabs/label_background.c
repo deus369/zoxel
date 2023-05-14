@@ -5,9 +5,9 @@ ecs_entity_t spawn_prefab_label_background(ecs_world_t *world) {
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, zext_prefab);
     // set_unique_entity_name(world, e, "prefab_label");
     ecs_add_id(world, e, EcsPrefab);
-    zoxel_add_tag(e, Label);
-    zoxel_add_tag(e, FrameTexture);
-    zoxel_set(world, e, Color, {{ 35, 88, 66, 255 }});
+    zox_add_tag(e, Label);
+    zox_add_tag(e, FrameTexture);
+    zox_set(e, Color, {{ 35, 88, 66, 255 }});
     add_ui_plus_components(world, e);
     ecs_defer_end(world);
     label_background_prefab = e;

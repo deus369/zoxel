@@ -10,8 +10,8 @@ ecs_entity_t spawn_font_style_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "font_style_prefab");
-    zoxel_add_tag(e, FontStyle);
-    zoxel_add(world, e, Children);
+    zox_add_tag(e, FontStyle);
+    zox_add(e, Children);
     ecs_defer_end(world);
     font_style_prefab = e;
     return e;

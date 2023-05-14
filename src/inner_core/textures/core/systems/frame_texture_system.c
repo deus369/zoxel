@@ -136,7 +136,7 @@ void FrameTextureSystem(ecs_iter_t *it) {
         generate_frame_texture(textureData, textureSize, color2);
     }
 }
-zoxel_declare_system(FrameTextureSystem)
+zox_declare_system(FrameTextureSystem)
 
 
 /* || color_equal(textureData->value[int2_array_index(int2_down(pixel_position), textureSize->value)], empty) ||

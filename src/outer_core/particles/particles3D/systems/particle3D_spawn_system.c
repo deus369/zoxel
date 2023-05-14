@@ -87,4 +87,4 @@ void Particle3DSpawnSystem(ecs_world_t *world, float3 bobPosition, int spawnCoun
     free(destroyInTimes);
     ecs_defer_end(world);
 }
-zoxel_declare_system(Particle3DSpawnSystem)
+zox_declare_system(Particle3DSpawnSystem)

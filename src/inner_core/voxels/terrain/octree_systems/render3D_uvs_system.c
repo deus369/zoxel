@@ -119,4 +119,4 @@ void Render3DUvsSystem(ecs_iter_t *it) {
         end_timing("Render3DUvsSystem")
     #endif
 }
-zoxel_declare_system(Render3DUvsSystem)
+zox_declare_system(Render3DUvsSystem)

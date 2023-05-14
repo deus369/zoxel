@@ -23,8 +23,8 @@ zoxel_define_tag(Button)
 zoxel_define_tag(Window)
 zoxel_define_tag(Header)
 zoxel_define_tag(CloseButton)
-zoxel_system(ButtonClickSoundSystem, EcsPreStore, [none] Button, [in] ClickableState)   // EcsOnUpdate
-zoxel_system(HeaderDragSystem, EcsPostLoad, [none] Header, [in] DragableState, [in] DraggingDelta, [in] ParentLink)
+zox_system(ButtonClickSoundSystem, EcsPreStore, [none] Button, [in] ClickableState)   // EcsOnUpdate
+zox_system(HeaderDragSystem, EcsPostLoad, [none] Header, [in] DragableState, [in] DraggingDelta, [in] ParentLink)
 spawn_prefab_label(world);
 spawn_prefab_label_background(world);
 spawn_prefab_button(world);

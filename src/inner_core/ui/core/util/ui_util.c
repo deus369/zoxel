@@ -2,27 +2,27 @@ ecs_entity_t ui_entities[256];  // a quick & dirty lookup for uis
 int ui_entities_count = 0;
 
 void add_ui_components(ecs_world_t *world, ecs_entity_t e) {
-    zoxel_add_tag(e, Element);
-    zoxel_set(world, e, PixelPosition, { { } });
-    zoxel_set(world, e, PixelSize, { { } });
-    zoxel_set(world, e, CanvasPixelPosition, { { } });
-    zoxel_set(world, e, Anchor, { { } });
-    zoxel_set(world, e, CanvasLink, { });
-    zoxel_set(world, e, Layer2D, { 0 });
-    zoxel_set(world, e, InitializeEntityMesh, { 1 });
+    zox_add_tag(e, Element);
+    zox_set(e, PixelPosition, { { } });
+    zox_set(e, PixelSize, { { } });
+    zox_set(e, CanvasPixelPosition, { { } });
+    zox_set(e, Anchor, { { } });
+    zox_set(e, CanvasLink, { });
+    zox_set(e, Layer2D, { 0 });
+    zox_set(e, InitializeEntityMesh, { 1 });
     if (!headless) {
-        zoxel_add_tag(e, ElementRender);
+        zox_add_tag(e, ElementRender);
     }
 }
 
 void add_ui_mesh_components(ecs_world_t *world, ecs_entity_t e) {
-    zoxel_set(world, e, Brightness, { 1 });
+    zox_set(e, Brightness, { 1 });
     add_gpu_mesh(world, e);
     add_gpu_material(world, e);
     add_gpu_texture(world, e);
-    zoxel_add(world, e, MeshVertices2D);
-    zoxel_add(world, e, MeshIndicies);
-    zoxel_add(world, e, MeshUVs);
+    zox_add(e, MeshVertices2D);
+    zox_add(e, MeshIndicies);
+    zox_add(e, MeshUVs);
     // Why can't i just set in prefab and reuse same memory array? write a test for this
     // set_mesh_uvs(world, e, square_vertices, 4);
     set_mesh_indicies_world(world, e, square_indicies, 6);
@@ -41,7 +41,7 @@ void add_ui_plus_components(ecs_world_t *world, ecs_entity_t e) {
     add_texture(world, e, (int2) { }, 0);
     if (!headless) {
         add_ui_mesh_components(world, e);
-        zoxel_set(world, e, MeshDirty, { 0 });
+        zox_set(e, MeshDirty, { 0 });
     }
 }
 

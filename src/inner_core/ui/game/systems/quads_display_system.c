@@ -23,4 +23,4 @@ void QuadsLabelSystem(ecs_iter_t *it) {
         ecs_query_skip(it);
     }
 }
-zoxel_declare_system(QuadsLabelSystem)
+zox_declare_system(QuadsLabelSystem)

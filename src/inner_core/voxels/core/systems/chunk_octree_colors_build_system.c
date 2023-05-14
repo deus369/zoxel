@@ -213,4 +213,4 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         end_timing_cutoff("    - octree_chunk_build_system", zoxel_time_octree_chunk_builds_system_cutoff)
     #endif
 }
-zoxel_declare_system(ChunkOctreeColorsBuildSystem)
+zox_declare_system(ChunkOctreeColorsBuildSystem)

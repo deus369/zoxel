@@ -4,13 +4,13 @@ ecs_entity_t spawn_prefab_net_room(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_prefab(world, "");
     set_unique_entity_name(world, e, "prefab_net_room");
-    zoxel_add_tag(e, NetRoom);
-    zoxel_add_tag(e, PacketReciever);
-    zoxel_add_tag(e, PacketSender);
-    zoxel_add(world, e, NetAddress);
-    zoxel_add(world, e, NetPort);
-    zoxel_set(world, e, SocketLink, { -1 });
-    zoxel_set(world, e, Children, { 0, NULL}); // net players will be children of a room
+    zox_add_tag(e, NetRoom);
+    zox_add_tag(e, PacketReciever);
+    zox_add_tag(e, PacketSender);
+    zox_add(e, NetAddress);
+    zox_add(e, NetPort);
+    zox_set(e, SocketLink, { -1 });
+    zox_set(e, Children, { 0, NULL}); // net players will be children of a room
     ecs_defer_end(world);
     prefab_net_room = e;
     #ifdef zoxel_debug_prefabs

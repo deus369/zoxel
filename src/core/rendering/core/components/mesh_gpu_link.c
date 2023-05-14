@@ -3,7 +3,7 @@ zoxel_component(MeshGPULink, GLuint2)
 
 void add_gpu_mesh(ecs_world_t *world, ecs_entity_t prefab) {
     if (!headless) {
-        zoxel_set(world, prefab, MeshGPULink, { 0 });
+        zox_set(prefab, MeshGPULink, { 0 });
     }
 }
 

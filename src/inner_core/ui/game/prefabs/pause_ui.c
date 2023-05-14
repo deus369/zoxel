@@ -7,7 +7,7 @@ ecs_entity_t spawn_prefab_pause_ui(ecs_world_t *world) {
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, window_prefab);
     ecs_add_id(world, e, EcsPrefab);
     set_unique_entity_name(world, e, "prefab_pause_ui");
-    zoxel_add_tag(e, PauseUI);
+    zox_add_tag(e, PauseUI);
     ecs_defer_end(world);
     pause_ui_prefab = e;
     return e;
@@ -59,15 +59,15 @@ ecs_entity_t spawn_pause_ui(ecs_world_t *world, int2 position, float2 anchor) {
     // buttons
     children.value[1] = spawn_button(world, e, play_button_position, button_padding,
         (float2) { 0.5f, 0.5f }, button_label_1, font_size, 1, position2D, window_size, canvas_size);
-    zoxel_set(world, children.value[1], ClickEvent, { &button_event_return_to_game });
-    // zoxel_add_tag(children.value[1], PlayGameButton);
+    zox_set(children.value[1], ClickEvent, { &button_event_return_to_game });
+    // zox_add_tag(children.value[1], PlayGameButton);
     children.value[2] = spawn_button(world, e, options_button_position, button_padding,
         (float2) { 0.5f, 0.5f }, button_label_2, font_size, 1, position2D, window_size, canvas_size);
     children.value[3] = spawn_button(world, e, (int2) { 0, - font_size * 2 }, button_padding,
         (float2) { 0.5f, 0.5f }, button_label_3, font_size, 1, position2D, window_size, canvas_size);
-    zoxel_set(world, children.value[3], ClickEvent, { &button_event_stop_playing_game });
+    zox_set(children.value[3], ClickEvent, { &button_event_stop_playing_game });
     //#ifndef zoxel_on_android
-    // zoxel_add_tag(children.value[3], ExitGameButton);
+    // zox_add_tag(children.value[3], ExitGameButton);
     //#endif
     ecs_set(world, e, Children, { children.length, children.value });
     ecs_defer_end(world);

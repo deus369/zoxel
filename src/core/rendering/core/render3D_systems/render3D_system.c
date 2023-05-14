@@ -34,4 +34,4 @@ void Render3DSystem(ecs_iter_t *it) {
     opengl_unset_mesh();
     opengl_disable_opengl_program();
 }
-zoxel_declare_system(Render3DSystem)
+zox_declare_system(Render3DSystem)

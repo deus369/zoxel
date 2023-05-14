@@ -131,4 +131,4 @@ void ChunkBuildSystem(ecs_iter_t *it) {
         //    (long int) it->entities[i], meshIndicies2->length, meshVertices2->length);
     }
 }
-zoxel_declare_system(ChunkBuildSystem)
+zox_declare_system(ChunkBuildSystem)

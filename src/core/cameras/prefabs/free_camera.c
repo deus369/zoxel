@@ -4,7 +4,7 @@ ecs_entity_t spawn_prefab_free_camera(ecs_world_t *world) {
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_base_camera);
     ecs_add_id(world, e, EcsPrefab);
-    zoxel_set(world, e, FreeRoam, { 0 });
+    zox_set(e, FreeRoam, { 0 });
     ecs_defer_end(world);
     prefab_free_camera = e;
     #ifdef zoxel_debug_prefabs
@@ -24,9 +24,9 @@ ecs_entity_t spawn_free_camera(ecs_world_t *world, float3 position, float4 rotat
     ecs_set(world, e, ScreenPosition, { screen_position });
     #ifndef zoxel_quaternion_camera
         ecs_set(world, e, Euler, { quaternion_to_euler(rotation) });
-        zoxel_add_tag(e, EulerOverride);
+        zox_add_tag(e, EulerOverride);
         // adds a limit, - half pi to + half pi, 0.8 is around half that
-        zoxel_set(world, e, EulerLimitX, { { -camera_limit_x, camera_limit_x } });
+        zox_set(e, EulerLimitX, { { -camera_limit_x, camera_limit_x } });
     #endif
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
@@ -38,4 +38,4 @@ ecs_entity_t spawn_free_camera(ecs_world_t *world, float3 position, float4 rotat
     /*if (test_quaternion_math(rotation)) {
         // ecs_set(world, e, Euler, { quaternion_to_euler(rotation) });
     }*/
-    // zoxel_set(world, e, FreeRoam, { 0 });
+    // zox_set(e, FreeRoam, { 0 });

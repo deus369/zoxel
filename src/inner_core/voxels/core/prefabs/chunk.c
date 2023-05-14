@@ -5,10 +5,10 @@ ecs_entity_t spawn_chunk_prefab(ecs_world_t *world) {
     ecs_entity_t e = ecs_new_prefab(world, "");
     #ifdef zoxel_transforms3D
         add_transform3Ds(world, e);
-        zoxel_set(world, e, Scale1D, { 0.05f });
+        zox_set(e, Scale1D, { 0.05f });
     #endif
-    zoxel_set(world, e, MeshDirty, { 0 });
-    zoxel_set(world, e, Brightness, { 1.4f });
+    zox_set(e, MeshDirty, { 0 });
+    zox_set(e, Brightness, { 1.4f });
     add_seed(world, e, 666);
     #ifdef zox_disable_vox_octrees
         add_chunk(world, e, default_chunk_size);
@@ -17,12 +17,12 @@ ecs_entity_t spawn_chunk_prefab(ecs_world_t *world) {
     #endif
     add_generate_chunk(world, e);
     if (!headless) {
-        zoxel_add(world, e, MeshIndicies);
-        zoxel_add(world, e, MeshVertices);
+        zox_add(e, MeshIndicies);
+        zox_add(e, MeshVertices);
         add_gpu_mesh(world, e);
         add_gpu_material(world, e);
-        zoxel_add(world, e, MeshColorRGBs);
-        zoxel_add(world, e, ColorsGPULink);
+        zox_add(e, MeshColorRGBs);
+        zox_add(e, ColorsGPULink);
     }
     ecs_defer_end(world);
     prefab_chunk = e;

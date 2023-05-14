@@ -66,4 +66,4 @@ void PlayGameSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(PlayGameSystem)
+zox_declare_system(PlayGameSystem)

@@ -5,7 +5,7 @@ ecs_entity_t spawn_prefab_main_menu(ecs_world_t *world) {
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, window_prefab);
     ecs_add_id(world, e, EcsPrefab);
     set_unique_entity_name(world, e, "prefab_main_menu");
-    zoxel_add_tag(e, MainMenu);
+    zox_add_tag(e, MainMenu);
     main_menu_prefab = e;
     ecs_defer_end(world);
     return e;
@@ -54,13 +54,13 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label, int2 
     // buttons
     children.value[1] = spawn_button(world, e, play_button_position, button_padding,
         (float2) { 0.5f, 0.5f }, button_label_1, font_size, 1, position2D, window_size, canvas_size);
-    zoxel_set(world, children.value[1], ClickEvent, { &button_event_play_game });
+    zox_set(children.value[1], ClickEvent, { &button_event_play_game });
     children.value[2] = spawn_button(world, e, options_button_position, button_padding,
         (float2) { 0.5f, 0.5f }, button_label_2, font_size, 1, position2D, window_size, canvas_size);
     #ifndef zoxel_on_android
         children.value[3] = spawn_button(world, e, (int2) { 0, - font_size * 2 }, button_padding,
             (float2) { 0.5f, 0.5f }, button_label_3, font_size, 1, position2D, window_size, canvas_size);
-        zoxel_set(world, children.value[3], ClickEvent, { &button_event_exit_game });
+        zox_set(children.value[3], ClickEvent, { &button_event_exit_game });
     #endif
     ecs_set(world, e, Children, { children.length, children.value });
     ecs_defer_end(world);

@@ -55,8 +55,8 @@ zoxel_define_component(TargetNetPort)
 zoxel_define_component(SocketLink)
 zoxel_define_memory_component(PacketData);
 ecs_set_hooks(world, SocketLink, { .dtor = ecs_dtor(SocketLink) });
-zoxel_system(PacketRecieveSystem, EcsOnUpdate, [none] PacketReciever, [in] SocketLink)
-zoxel_system(PacketSendSystem, EcsOnUpdate, [none] PacketSender, [in] SocketLink, [in] TargetNetAddress, [in] TargetNetPort)
+zox_system(PacketRecieveSystem, EcsOnUpdate, [none] PacketReciever, [in] SocketLink)
+zox_system(PacketSendSystem, EcsOnUpdate, [none] PacketSender, [in] SocketLink, [in] TargetNetAddress, [in] TargetNetPort)
 spawn_prefab_net_player(world);
 spawn_prefab_net_room(world);
 #ifdef zoxel_test_networking

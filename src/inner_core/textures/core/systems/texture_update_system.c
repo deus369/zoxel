@@ -23,4 +23,4 @@ void TextureUpdateSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(TextureUpdateSystem)
+zox_declare_system(TextureUpdateSystem)

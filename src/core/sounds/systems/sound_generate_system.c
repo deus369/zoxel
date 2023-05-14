@@ -84,7 +84,7 @@ void SoundGenerateSystem(ecs_iter_t *it) {
         end_timing("SoundGenerateSystem")
     #endif
 }
-zoxel_declare_system(SoundGenerateSystem)
+zox_declare_system(SoundGenerateSystem)
 
 // instrument_piano
 // instrument_organ

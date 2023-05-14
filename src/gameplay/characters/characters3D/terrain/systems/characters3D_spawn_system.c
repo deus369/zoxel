@@ -71,7 +71,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         #endif
     }
 }
-zoxel_declare_system(Characters3DSpawnSystem)
+zox_declare_system(Characters3DSpawnSystem)
 
 // add_to_ecs_entity_t_array_d(characters, e);
 // until we get meshes centering sorted 

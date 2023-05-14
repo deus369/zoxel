@@ -22,4 +22,4 @@ void Mesh2DUpdateSystem(ecs_iter_t *it) {
             meshVertices2->value, meshVertices2->length);
     }
 }
-zoxel_declare_system(Mesh2DUpdateSystem)
+zox_declare_system(Mesh2DUpdateSystem)

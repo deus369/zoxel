@@ -11,4 +11,4 @@ void ButtonClickEventSystem(ecs_iter_t *it) {
         }
     }
 }
-zoxel_declare_system(ButtonClickEventSystem)
+zox_declare_system(ButtonClickEventSystem)

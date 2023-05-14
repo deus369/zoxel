@@ -11,7 +11,7 @@ extern int mesh_update_pipeline2;
 // \todo Create a queue of 3D models to render, including materials, etc
 //  - each type of render queue has different data based on the shaders
 //  - inside ecs systems, can run multithread, add things to queues to render
-// zoxel_declare_system(RenderMaterial2DSystem);
+// zox_declare_system(RenderMaterial2DSystem);
 
 void render_pre_loop() {
     opengl_clear();             // cannot just clear in a view port with opengl?

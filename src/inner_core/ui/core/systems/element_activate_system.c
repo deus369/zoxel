@@ -44,5 +44,5 @@
             }
         }
     }
-    zoxel_declare_system(ElementActivateSystem)
+    zox_declare_system(ElementActivateSystem)
 #endif
