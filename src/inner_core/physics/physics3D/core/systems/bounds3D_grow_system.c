@@ -1,6 +1,7 @@
 float3 calculate_vox_bounds(int3 chunk_size) {
-    return (float3) { 0.5f * chunk_size.x * model_scale,
-        0.5f * chunk_size.y * model_scale, 0.5f * chunk_size.z * model_scale };
+    float3 vox_bounds = float3_from_int3(chunk_size);
+    float3_multiply_float_p(&vox_bounds, 0.5f * model_scale);
+    return vox_bounds;
 }
 
 void Bounds3DGrowSystem(ecs_iter_t *it) {

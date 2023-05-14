@@ -1,5 +1,3 @@
-float3 backgroundColor = { 2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f };
-
 void print_opengl() {
     #ifdef zoxel_debug_opengl
         zoxel_log(" > opengl\n");
@@ -15,7 +13,7 @@ void print_opengl() {
 }
 
 void opengl_clear() {
-    glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, 1.0f);
+    glClearColor(opengl_clear_color.x, opengl_clear_color.y, opengl_clear_color.z, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);       // Clears the buffer ?
     glEnable(GL_DEPTH_TEST);        // cull for 3D things
     glEnable(GL_CULL_FACE);

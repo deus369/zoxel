@@ -1,6 +1,9 @@
 #ifndef zoxel_opengl
 #define zoxel_opengl
 
+// float3 opengl_clear_color = { 2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f };
+float3 opengl_clear_color = { 125 / 255.0f, 125 / 255.0f, 125 / 255.0f };
+
 #include "dynamic/opengl_functions.c"
 #include "util/error_util.c"
 #include "util/primitive_square.c"

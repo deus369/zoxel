@@ -9,12 +9,10 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     add_seed(world, e, 999);
     add_physics3D(world, e);
     zoxel_set(world, e, Bounds3D, {{ 1, 1, 1 }})
-    zoxel_set(world, e, Scale1D, { 1 })
     if (!headless) {
         ecs_remove(world, e, MaterialGPULink);
         add_gpu_colors(world, e);
     }
-    // zoxel_add_tag(e, LinkChunk)
     zoxel_add(world, e, VoxLink)
     zoxel_set(world, e, ChunkLink, { 0 })
     zoxel_set(world, e, ChunkPosition, { int3_zero })
@@ -27,7 +25,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file *vox, float3 position, float4 rotation, float scale) {
+ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file *vox, float3 position, float4 rotation) {
     #ifdef zox_disable_characters3D
         if (main_character3D != 0) {
             return 0;
@@ -41,6 +39,7 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file
     #ifndef zox_disable_characters3D_voxes
         set_vox_from_vox_file(world, e, vox);
     #endif
+    zoxel_set(world, e, ChunkDivision, { 1 })
     ecs_defer_end(world);
     main_character3D = e;
     return e;
