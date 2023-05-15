@@ -13,9 +13,8 @@ void extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_dimens
             int2_flip_y(&new_position, screen_dimensions);
             touchscreen->primary_touch.position = new_position;
             #ifdef zox_debug_log_extract_touchscreen
-                zoxel_log(" > touchscreen moved to position [%ix%i]\n",
-                    touchscreen->primary_touch.position.x, touchscreen->primary_touch.position.y);
-                zoxel_log("     > touchscreen delta [%ix%i]\n",
+                zoxel_log("     > touchscreen moved to position [%ix%i] with delta [%ix%i]\n",
+                    touchscreen->primary_touch.position.x, touchscreen->primary_touch.position.y,
                     touchscreen->primary_touch.delta.x, touchscreen->primary_touch.delta.y);
             #endif
         } else if (event.type == SDL_FINGERDOWN || event.type == SDL_FINGERUP) {
@@ -23,6 +22,10 @@ void extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_dimens
             touchscreen->primary_touch.value.released_this_frame = event.type == SDL_FINGERUP;
             if (touchscreen->primary_touch.value.pressed_this_frame) {
                 touchscreen->primary_touch.value.is_pressed = 1;
+                int2 new_position = (int2) { (int) (event.tfinger.x * screen_dimensions.x),
+                    (int) (event.tfinger.y * screen_dimensions.y) };
+                int2_flip_y(&new_position, screen_dimensions);
+                touchscreen->primary_touch.position = new_position;
                 #ifdef zox_debug_log_extract_touchscreen
                     zoxel_log(" > touchscreen pressed_this_frame\n");
                 #endif
@@ -32,10 +35,6 @@ void extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_dimens
                     zoxel_log(" > touchscreen released_this_frame\n");
                 #endif
             }
-            int2 new_position = (int2) { (int) (event.tfinger.x * screen_dimensions.x),
-                (int) (event.tfinger.y * screen_dimensions.y) };
-            int2_flip_y(&new_position, screen_dimensions);
-            touchscreen->primary_touch.position = new_position;
             #ifdef zox_debug_log_extract_touchscreen
                 zoxel_log(" > touchscreen down at position [%ix%i]\n", touchscreen->primary_touch.position.x, touchscreen->primary_touch.position.y);
             #endif

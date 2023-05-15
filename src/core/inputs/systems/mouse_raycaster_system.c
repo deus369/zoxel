@@ -13,9 +13,9 @@ void MouseRaycasterSystem(ecs_iter_t *it) {
                 int2_add_int2_p(&raycaster->value, mouse->position);
             } else if (ecs_has(world, device_entity, Touchscreen)) {
                 const Touchscreen *touchscreen = ecs_get(world, device_entity, Touchscreen);
-                if (touchscreen->primary_touch.value.is_pressed || touchscreen->primary_touch.value.released_this_frame) {
+                //if (touchscreen->primary_touch.value.is_pressed) { // || touchscreen->primary_touch.value.released_this_frame) {
                     int2_add_int2_p(&raycaster->value, touchscreen->primary_touch.position);
-                }
+                //}
             }
         }
     }

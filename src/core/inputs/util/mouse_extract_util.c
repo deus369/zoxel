@@ -26,9 +26,6 @@ void extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) 
             // don't trigger events if touch input
             SDL_MouseButtonEvent* button_event = (SDL_MouseButtonEvent*)&event;
             if (button_event->which == SDL_TOUCH_MOUSEID) return; 
-            int2 new_position = (int2) { event.motion.x, event.motion.y };
-            int2_flip_y(&new_position, screen_dimensions);
-            mouse->position = new_position;
             SDL_MouseButtonEvent *mouseEvent = &event.button;
             Uint8 button = mouseEvent->button;
             if (button == SDL_BUTTON_LEFT) {
@@ -38,6 +35,9 @@ void extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) 
             } else if (button == SDL_BUTTON_RIGHT) {
                 set_mouse_button(&mouse->right, event.type);
             }
+            int2 new_position = (int2) { event.motion.x, event.motion.y };
+            int2_flip_y(&new_position, screen_dimensions);
+            mouse->position = new_position;
             // zoxel_log(" > mouse button event\n");
             // zoxel_log(" > mouse down at position [%ix%i]\n", mouse->position.x, mouse->position.y);
         } else if (event.type == SDL_MOUSEWHEEL) {
