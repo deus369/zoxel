@@ -21,6 +21,12 @@ unsigned char byte3_octree_array_index(byte3 input) {
 
 const byte3 octree_node_size4 = (byte3) { 2, 2, 2 };
 
+void byte3_add_byte3_p(byte3 *value, const byte3 add) {
+    value->x += add.x;
+    value->y += add.y;
+    value->z += add.z;
+}
+
 void byte3_modulus_byte(byte3 *value, unsigned char moduli) {
     value->x %= moduli;
     value->y %= moduli;

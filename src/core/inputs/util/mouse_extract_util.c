@@ -11,7 +11,7 @@ void reset_mouse(ecs_world_t *world) {
     ecs_modified(world, mouse_entity, Mouse);
 }
 
-void SetMouseKey(PhysicalButton *key, int eventType) {
+void set_mouse_button(PhysicalButton *key, int eventType) {
     unsigned char keyDown = eventType == SDL_MOUSEBUTTONDOWN;
     unsigned char keyReleased = eventType == SDL_MOUSEBUTTONUP;
     key->pressed_this_frame = keyDown;
@@ -32,6 +32,10 @@ void extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) 
         // SDL_Keycode key = event.key.keysym.sym;
         Mouse *mouse = ecs_get_mut(world, mouse_entity, Mouse);
         if (eventType == SDL_MOUSEMOTION) {
+            SDL_MouseMotionEvent event_data = event.motion;
+            if (event_data.which == SDL_TOUCH_MOUSEID) {
+                return; // don't trigger events if touch input
+            }
             int2 new_mouse_position = (int2) { event.motion.x, event.motion.y };
             new_mouse_position.y = screen_dimensions.y - new_mouse_position.y;
             mouse->position = new_mouse_position;
@@ -56,16 +60,16 @@ void extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) 
             SDL_MouseButtonEvent *mouseEvent = &event.button;
             Uint8 button = mouseEvent->button;
             if (button == SDL_BUTTON_LEFT) {
-                SetMouseKey(&mouse->left, eventType);
+                set_mouse_button(&mouse->left, eventType);
                 /*if (eventType == SDL_MOUSEBUTTONDOWN)
                 {
                     mouse_begin = mouse->position;
                     relative_mouse_2 = (int2) { 0, 0 };
                 }*/
             } else if (button == SDL_BUTTON_MIDDLE) {
-                SetMouseKey(&mouse->middle, eventType);
+                set_mouse_button(&mouse->middle, eventType);
             } else if (button == SDL_BUTTON_RIGHT) {
-                SetMouseKey(&mouse->right, eventType);
+                set_mouse_button(&mouse->right, eventType);
             }
         } else if (eventType == SDL_MOUSEWHEEL) {
             mouse->wheel = (int2) { event.wheel.x, event.wheel.y };

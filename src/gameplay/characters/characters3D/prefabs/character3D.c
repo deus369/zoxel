@@ -1,5 +1,6 @@
 ecs_entity_t character3D_prefab;
 ecs_entity_t main_character3D;
+const unsigned char character3D_start_division = 1;
 
 ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     ecs_defer_begin(world);
@@ -39,7 +40,7 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file
     #ifndef zox_disable_characters3D_voxes
         set_vox_from_vox_file(world, e, vox);
     #endif
-    zox_set(e, ChunkDivision, { 1 })
+    zox_set(e, ChunkDivision, { character3D_start_division })
     ecs_defer_end(world);
     main_character3D = e;
     return e;

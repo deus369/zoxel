@@ -33,11 +33,14 @@ void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, vox_file *vox) {
         fill_octree(&chunkOctree, fill_type, target_depth);
         byte2 set_octree_data = (byte2) { 1, target_depth };
         int vox_index = 0;
+        // byte3 offset = (byte3) { (32 - vox_size.x) / 2, (32 - vox_size.y) / 2, (32 - vox_size.z) / 2 };
+        //zoxel_log(" > setting vox [%ix%ix%i] - offset [%ix%ix%i]\n", vox_size.x, vox_size.y, vox_size.z, offset.x, offset.y, offset.z);
         for (int i = 0; i < vox_size.x; i++) {
             for (int j = 0; j < vox_size.y; j++) {
                 for (int k = 0; k < vox_size.z; k++) {
                     set_octree_data.x = voxels[vox_index];
                     byte3 node_position = (byte3) { i, j, k };
+                    // byte3_add_byte3_p(&node_position, offset);
                     set_octree_voxel_final(&chunkOctree, &node_position, &set_octree_data, 0);
                     vox_index++;
                 }
@@ -46,7 +49,7 @@ void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, vox_file *vox) {
         optimize_solid_nodes(&chunkOctree);
         close_same_nodes(&chunkOctree);
         ecs_set(world, e, ChunkOctree, { chunkOctree.value, chunkOctree.nodes });
-        ecs_set(world, e, ChunkSize, { vox->chunks[0].size.xyz });
+        ecs_set(world, e, ChunkSize, { vox_size });
     #else
         ChunkSize chunkSize = { vox->chunks[0].size.xyz };
         int voxels_length = chunkSize.value.x * chunkSize.value.y * chunkSize.value.z;
@@ -82,14 +85,3 @@ void test_voxes(ecs_world_t *world, float3 position) {
     spawn_vox(world, &vox, (float3) { position.x + 1.5f, position.y, position.z + 1 }, 1);
     spawn_vox(world, &vox, (float3) { position.x + 3, position.y, position.z + 1 }, 0);
 }
-
-/*ecs_entity_t spawn_vox_from_file(ecs_world_t *world, vox_file *vox, float3 position, float4 rotation, float scale) {
-    ecs_defer_begin(world);
-    ecs_entity_t e = spawn_chunk(world, prefab_vox, position, scale);
-    set_vox_from_vox_file(world, e, vox);
-    ecs_set(world, e, Rotation3D, { rotation });
-    float4 rotationer = quaternion_from_euler( (float3) { 0, 0.2f * degreesToRadians, 0 });
-    zox_set(e, EternalRotation, { rotationer });
-    ecs_defer_end(world);
-    return e;
-}*/

@@ -53,7 +53,6 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 } \
 ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
-
 //! Multithreaded System Definitions
 #define zox_system_ctx(id_, phase, ctx_, ...) { \
     ecs_system_desc_t desc = {0}; \
