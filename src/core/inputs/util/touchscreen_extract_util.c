@@ -4,30 +4,28 @@ void extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_dimens
         // SDL_Keycode key = event.key.keysym.sym;
         Touchscreen *touchscreen = ecs_get_mut(world, touchscreen_entity, Touchscreen);
         if (event.type == SDL_FINGERMOTION) {
-            // if (event.motion.which != SDL_TOUCH_MOUSEID) return; // don't trigger events if not touch input
-            // new_position.y = screen_dimensions.y - new_position.y;
             touchscreen->primary_touch.position = (int2) {
                 (int) (event.tfinger.x * screen_dimensions.x),
                 (int) (event.tfinger.y * screen_dimensions.y) };
-            zoxel_log(" > touchscreen position [%ix%i]\n",
-                touchscreen->primary_touch.position.x, touchscreen->primary_touch.position.y);
-            // event.motion.x, event.motion.y };
             int2_add_int2_p(&touchscreen->primary_touch.delta, (int2) {
                 (int) (event.tfinger.dx * screen_dimensions.x),
                 (int) (event.tfinger.dy * screen_dimensions.y) });
-            //event.motion.xrel, - event.motion.yrel });
+            /*zoxel_log(" > touchscreen position [%ix%i]\n",
+                touchscreen->primary_touch.position.x, touchscreen->primary_touch.position.y);
             zoxel_log(" > touchscreen delta [%ix%i]\n",
-                touchscreen->primary_touch.delta.x, touchscreen->primary_touch.delta.y);
+                touchscreen->primary_touch.delta.x, touchscreen->primary_touch.delta.y);*/
         } else if (event.type == SDL_FINGERDOWN || event.type == SDL_FINGERUP) {
-            touchscreen->primary_touch.position = (int2) { event.motion.x, event.motion.y };
+            // touchscreen->primary_touch.position = (int2) { event.motion.x, event.motion.y };
             touchscreen->primary_touch.value.pressed_this_frame = event.type == SDL_FINGERDOWN;
             touchscreen->primary_touch.value.released_this_frame = event.type == SDL_FINGERUP;
             if (touchscreen->primary_touch.value.pressed_this_frame) {
                 touchscreen->primary_touch.value.is_pressed = 1;
+                zoxel_log(" > touchscreen pressed_this_frame\n");
             } else if (touchscreen->primary_touch.value.released_this_frame) {
                 touchscreen->primary_touch.value.is_pressed = 0;
+                zoxel_log(" > touchscreen released_this_frame\n");
             }
-            zoxel_log(" > touchscreen is_pressed [%i]\n", touchscreen->primary_touch.value.is_pressed);
+            zoxel_log("     + touchscreen is_pressed [%i]\n", touchscreen->primary_touch.value.is_pressed);
         }
         ecs_modified(world, touchscreen_entity, Touchscreen);
     }

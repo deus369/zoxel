@@ -11,9 +11,7 @@ void ZextBackgroundUpdateSystem(ecs_iter_t *it) {
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 11);
     for (int i = 0; i < it->count; i++) {
         const ZextDirty *zextDirty = &zextDirtys[i];
-        if (zextDirty->value != 1) {
-            continue;
-        }
+        if (zextDirty->value != 1) continue;
         const ZextData *zextData = &zextDatas[i];
         const ZextSize *zextSize = &zextSizes[i];
         const CanvasLink *canvasLink = &canvasLinks[i];
@@ -26,12 +24,9 @@ void ZextBackgroundUpdateSystem(ecs_iter_t *it) {
         const PixelSize *canvasSize = ecs_get(world, canvasLink->value, PixelSize);
         int font_size = zextSize->value;
         float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
-        // int2 text_padding = ; // (int2) { (int) (font_size * 0.3f), (int) (font_size * 0.3f) };
-        // set texture
         pixelSize->value = (int2) { font_size * zextData->length + zextPadding->value.x * 2, font_size + zextPadding->value.y * 2 };
         textureSize->value = pixelSize->value;
         generateTexture->value = 1;
-        // set mesh
         float2 scale2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
         for (int i = 0; i < meshVertices2D->length; i++) {
             meshVertices2D->value[i] = square_vertices_left_aligned[i];
