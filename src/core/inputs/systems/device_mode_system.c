@@ -13,7 +13,7 @@ void DeviceModeSystem(ecs_iter_t *it) {
                     if (keyboard_is_any_input(keyboard)) {
                         deviceMode->value = zox_device_mode_keyboardmouse;
                         did_update = 1;
-                        // zoxel_log(" > input mode changed to keyboardmouse [k]\n");
+                        zoxel_log(" > input mode changed to keyboardmouse [k]\n");
                     }
                 }
             } else if (ecs_has(world, device_entity, Mouse)) {
@@ -22,7 +22,7 @@ void DeviceModeSystem(ecs_iter_t *it) {
                     if (mouse_is_any_input(mouse)) {
                         deviceMode->value = zox_device_mode_keyboardmouse;
                         did_update = 1;
-                        // zoxel_log(" > input mode changed to keyboardmouse [m]\n");
+                        zoxel_log(" > input mode changed to keyboardmouse [m]\n");
                     }
                 }
             } else if (ecs_has(world, device_entity, Gamepad)) {
@@ -31,7 +31,7 @@ void DeviceModeSystem(ecs_iter_t *it) {
                     if (gamepad_is_any_input(gamepad)) {
                         deviceMode->value = zox_device_mode_gamepad;
                         did_update = 1;
-                        // zoxel_log(" > input mode changed to gamepad\n");
+                        zoxel_log(" > input mode changed to gamepad\n");
                     }
                 }
             } else if (ecs_has(world, device_entity, Touchscreen)) {
@@ -40,7 +40,7 @@ void DeviceModeSystem(ecs_iter_t *it) {
                     if (touchscreen_is_any_input(touchscreen)) {
                         deviceMode->value = zox_device_mode_touchscreen;
                         did_update = 1;
-                        zoxel_log(" > input mode changed to gamepad\n");
+                        zoxel_log(" > input mode changed to touschreen\n");
                     }
                 }
             }
