@@ -3,9 +3,9 @@
         set_key(key, event.type);\
         break;
 
-void set_key(PhysicalButton *key, int event.type) {
-    unsigned char key_down = event.type == SDL_KEYDOWN;
-    unsigned char key_released = event.type == SDL_KEYUP;
+void set_key(PhysicalButton *key, int event_type) {
+    unsigned char key_down = event_type == SDL_KEYDOWN;
+    unsigned char key_released = event_type == SDL_KEYUP;
     if (!key->is_pressed && key_down) {
         key->pressed_this_frame = 1;
     }
