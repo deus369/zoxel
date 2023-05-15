@@ -1,4 +1,4 @@
-#define zox_debug_log_extract_mouse
+// #define zox_debug_log_extract_mouse
 
 void extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) {
     if (!mouse_entity || !ecs_is_alive(world, mouse_entity)) return;

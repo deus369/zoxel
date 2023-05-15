@@ -1,4 +1,4 @@
-#define zox_debug_log_extract_touchscreen
+// #define zox_debug_log_extract_touchscreen
 
 void extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) {
     if (!touchscreen_entity || !ecs_is_alive(world, touchscreen_entity)) return;

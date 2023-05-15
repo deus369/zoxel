@@ -1,4 +1,4 @@
-#define zox_debug_log_device_mode_system
+// #define zox_debug_log_device_mode_system
 
 void DeviceModeSystem(ecs_iter_t *it) {
     unsigned char did_update = 0;
