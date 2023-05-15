@@ -20,7 +20,7 @@ void DraggerEndSystem(ecs_iter_t *it) {
                     dragableState->value = 0;
                     draggerLink->value = 0;
                     draggingDelta->value = (int2) { 0, 0 };
-                } else {
+                } else if (mouse->left.is_pressed) {
                     draggingDelta->value = mouse->delta;
                 }
             } else if (ecs_has(world, device_entity, Touchscreen)) {
@@ -30,7 +30,7 @@ void DraggerEndSystem(ecs_iter_t *it) {
                     dragableState->value = 0;
                     draggerLink->value = 0;
                     draggingDelta->value = (int2) { 0, 0 };
-                } else {
+                } else if (touchscreen->primary_touch.value.is_pressed) {
                     draggingDelta->value = touchscreen->primary_touch.delta;
                 }
             }

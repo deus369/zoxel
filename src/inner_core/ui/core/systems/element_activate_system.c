@@ -15,9 +15,7 @@
         const RaycasterTarget *raycasterTargets = ecs_field(it, RaycasterTarget, 2);
         for (int i = 0; i < it->count; i++) {
             const RaycasterTarget *raycasterTarget = &raycasterTargets[i];
-            if (raycasterTarget->value == 0) {
-                continue;
-            }
+            if (raycasterTarget->value == 0) continue;
             const DeviceLinks *deviceLinks2 = &deviceLinks[i];
             for (int j = 0; j < deviceLinks2->length; j++) {
                 ecs_entity_t device_entity = deviceLinks2->value[j];
@@ -35,14 +33,23 @@
                     } else if (mouse->left.released_this_frame) {
                         set_ui_clicked_mut(world, raycasterTarget->value);
                     }
+                } else if (ecs_has(world, device_entity, Touchscreen)) {
+                    const Touchscreen *touchscreen = ecs_get(world, device_entity, Touchscreen);
+                    if (touchscreen->primary_touch.value.pressed_this_frame) {
+                        if (ecs_has(world, raycasterTarget->value, Dragable)) {
+                            DragableState *dragableState = ecs_get_mut(world, raycasterTarget->value, DragableState);
+                            DraggerLink *draggerLink = ecs_get_mut(world, raycasterTarget->value, DraggerLink);
+                            dragableState->value = 1;
+                            draggerLink->value = it->entities[i];
+                            ecs_modified(world, raycasterTarget->value, DragableState);
+                            ecs_modified(world, raycasterTarget->value, DraggerLink);
+                        }
+                    } else if (touchscreen->primary_touch.value.released_this_frame) {
+                        set_ui_clicked_mut(world, raycasterTarget->value);
+                    }
                 } else if (ecs_has(world, device_entity, Gamepad)) {
                     const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
                     if (gamepad->a.released_this_frame) {    // pressed_this_frame
-                        set_ui_clicked_mut(world, raycasterTarget->value);
-                    }
-                } else if (ecs_has(world, device_entity, Touchscreen)) {
-                    const Touchscreen *touchscreen = ecs_get(world, device_entity, Touchscreen);
-                    if (touchscreen->primary_touch.value.released_this_frame) {    // pressed_this_frame
                         set_ui_clicked_mut(world, raycasterTarget->value);
                     }
                 }

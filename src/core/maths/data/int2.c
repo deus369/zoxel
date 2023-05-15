@@ -6,6 +6,11 @@ typedef struct {
 
 #define int2_zero (int2) { 0, 0 }
 
+void int2_add_int2_p(int2 *value, int2 add) {
+    value->x += add.x;
+    value->y += add.y;
+}
+
 int2 int2_multiply_float(int2 input, float mult) {
     return (int2) { (int) ((float) input.x * mult), (int) ((float) input.y * mult) };
 }
