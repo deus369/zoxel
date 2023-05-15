@@ -81,7 +81,7 @@ void Player2DTestSystem(ecs_iter_t *it) {
         {
             zoxel_log("[Printing Debug]\n");
             DebugParticlesSpawned(world);
-            // PrintKeyboard(world);
+            // print_keyboard(world);
         }*/
     }
 }

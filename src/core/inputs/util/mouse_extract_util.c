@@ -1,7 +1,5 @@
 void reset_mouse(ecs_world_t *world) {
-    if (!mouse_entity || !ecs_is_alive(world, mouse_entity)) {
-        return;
-    }
+    if (!mouse_entity || !ecs_is_alive(world, mouse_entity)) return;
     Mouse *mouse = ecs_get_mut(world, mouse_entity, Mouse);
     reset_key(&mouse->left);
     reset_key(&mouse->middle);
@@ -24,32 +22,19 @@ void set_mouse_button(PhysicalButton *key, int eventType) {
 }
 
 void extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) {
-    if (!mouse_entity || !ecs_is_alive(world, mouse_entity)) {
-        return;
-    }
+    if (!mouse_entity || !ecs_is_alive(world, mouse_entity)) return;
     int eventType = event.type;
     if (eventType == SDL_MOUSEBUTTONDOWN || eventType == SDL_MOUSEBUTTONUP || eventType == SDL_MOUSEWHEEL || eventType == SDL_MOUSEMOTION) {
         // SDL_Keycode key = event.key.keysym.sym;
         Mouse *mouse = ecs_get_mut(world, mouse_entity, Mouse);
         if (eventType == SDL_MOUSEMOTION) {
-            SDL_MouseMotionEvent event_data = event.motion;
-            if (event_data.which == SDL_TOUCH_MOUSEID) {
-                return; // don't trigger events if touch input
-            }
+            if (event.motion.which == SDL_TOUCH_MOUSEID) return; // don't trigger events if touch input
             int2 new_mouse_position = (int2) { event.motion.x, event.motion.y };
             new_mouse_position.y = screen_dimensions.y - new_mouse_position.y;
             mouse->position = new_mouse_position;
             mouse->delta = int2_add(mouse->delta, (int2) { event.motion.xrel, - event.motion.yrel });
-            // printf("Delta: %i x %i\n", mouse->delta.x, mouse->delta.y);
-            //! Reverse mouse position, so bottom is 0 and top is 1.
-            // mouse->position.y = screen_dimensions.y - mouse->position.y;
-            //printf("    position: %i x %i\n", mouse->position.x, mouse->position.y);
-#ifdef zoxel_on_web
-            //! Reverse position X in web
-            // mouse->position.x = screenDimensions.x - mouse->position.x;
-            // printf("Mouse: %ix%i\n", mouse->position.x, mouse->position.y);
-#endif
         } else if (eventType == SDL_MOUSEBUTTONDOWN || eventType == SDL_MOUSEBUTTONUP) {
+            if (event.motion.which == SDL_TOUCH_MOUSEID) return; // don't trigger events if touch input
             int2 new_mouse_position = (int2) { event.motion.x, event.motion.y };
             new_mouse_position.y = screen_dimensions.y - new_mouse_position.y;
             mouse->position = new_mouse_position;
@@ -77,3 +62,13 @@ void extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) 
         ecs_modified(world, mouse_entity, Mouse);
     }
 }
+
+/*// printf("Delta: %i x %i\n", mouse->delta.x, mouse->delta.y);
+//! Reverse mouse position, so bottom is 0 and top is 1.
+// mouse->position.y = screen_dimensions.y - mouse->position.y;
+//printf("    position: %i x %i\n", mouse->position.x, mouse->position.y);
+#ifdef zoxel_on_web
+//! Reverse position X in web
+// mouse->position.x = screenDimensions.x - mouse->position.x;
+// printf("Mouse: %ix%i\n", mouse->position.x, mouse->position.y);
+#endif*/
