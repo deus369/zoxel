@@ -11,6 +11,10 @@ void int2_add_int2_p(int2 *value, int2 add) {
     value->y += add.y;
 }
 
+void int2_flip_y(int2 *value, int2 max_value) {
+    value->y = max_value.y - value->y;
+}
+
 int2 int2_multiply_float(int2 input, float mult) {
     return (int2) { (int) ((float) input.x * mult), (int) ((float) input.y * mult) };
 }

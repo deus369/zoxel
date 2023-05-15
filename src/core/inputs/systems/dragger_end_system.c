@@ -5,9 +5,7 @@ void DraggerEndSystem(ecs_iter_t *it) {
     DraggingDelta *draggingDeltas = ecs_field(it, DraggingDelta, 3);
     for (int i = 0; i < it->count; i++) {
         DraggerLink *draggerLink = &draggerLinks[i];
-        if (draggerLink->value == 0) {
-            continue;
-        }
+        if (draggerLink->value == 0) continue;
         DraggingDelta *draggingDelta = &draggingDeltas[i];
         ecs_entity_t player_entity = draggerLink->value;
         const DeviceLinks *deviceLinks = ecs_get(it->world, player_entity, DeviceLinks);
