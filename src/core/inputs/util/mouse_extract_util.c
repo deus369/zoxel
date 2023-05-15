@@ -21,7 +21,10 @@ void extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) 
             mouse->position = new_mouse_position;
             mouse->delta = int2_add(mouse->delta, (int2) { event.motion.xrel, - event.motion.yrel });
         } else if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
-            if (event.motion.which == SDL_TOUCH_MOUSEID) return; // don't trigger events if touch input
+            //if (event.motion.which == SDL_TOUCH_MOUSEID) return; // don't trigger events if touch input
+            SDL_MouseButtonEvent* button_event = (SDL_MouseButtonEvent*)&event;
+            if (button_event->which == SDL_TOUCH_MOUSEID) return; // don't trigger events if touch input
+            zoxel_log(" > mouse button event\n");
             int2 new_mouse_position = (int2) { event.motion.x, event.motion.y };
             new_mouse_position.y = screen_dimensions.y - new_mouse_position.y;
             mouse->position = new_mouse_position;
