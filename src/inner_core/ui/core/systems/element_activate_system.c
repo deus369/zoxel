@@ -36,6 +36,9 @@
                 } else if (ecs_has(world, device_entity, Touchscreen)) {
                     const Touchscreen *touchscreen = ecs_get(world, device_entity, Touchscreen);
                     if (touchscreen->primary_touch.value.pressed_this_frame) {
+                        set_ui_clicked_mut(world, raycasterTarget->value);
+                    }
+                    if (touchscreen->primary_touch.value.pressed_this_frame) {
                         if (ecs_has(world, raycasterTarget->value, Dragable)) {
                             DragableState *dragableState = ecs_get_mut(world, raycasterTarget->value, DragableState);
                             DraggerLink *draggerLink = ecs_get_mut(world, raycasterTarget->value, DraggerLink);
@@ -43,11 +46,11 @@
                             draggerLink->value = it->entities[i];
                             ecs_modified(world, raycasterTarget->value, DragableState);
                             ecs_modified(world, raycasterTarget->value, DraggerLink);
-                            zoxel_log(" > ui dragging at [%f]\n", (float) zox_current_time);
+                            // zoxel_log(" > ui dragging at [%f]\n", (float) zox_current_time);
                         }
                     } else if (touchscreen->primary_touch.value.released_this_frame) {
-                        set_ui_clicked_mut(world, raycasterTarget->value);
-                        zoxel_log(" > ui activated at [%f]\n", (float) zox_current_time);
+                        // set_ui_clicked_mut(world, raycasterTarget->value);
+                        // zoxel_log(" > ui activated at [%f]\n", (float) zox_current_time);
                     }
                 } else if (ecs_has(world, device_entity, Gamepad)) {
                     const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
