@@ -57,10 +57,7 @@ void ElementRaycastSystem(ecs_iter_t *it) {
     RaycasterTarget *raycasterTargets = ecs_field(it, RaycasterTarget, 3);
     for (int i = 0; i < it->count; i++) {
         const DeviceMode *deviceMode = &deviceModes[i];
-        if (deviceMode->value != zox_device_mode_keyboardmouse &&
-            deviceMode->value != zox_device_mode_touchscreen) {
-            continue;
-        }
+        if (deviceMode->value != zox_device_mode_keyboardmouse && deviceMode->value != zox_device_mode_touchscreen) continue;
         const Raycaster *raycaster = &raycasters[i];
         RaycasterTarget *raycasterTarget = &raycasterTargets[i];
         int ui_layer = -1;
