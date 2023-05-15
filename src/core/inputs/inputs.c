@@ -45,7 +45,7 @@ spawn_prefab_mouse(world);
 spawn_prefab_gamepad(world);
 spawn_prefab_touchscreen(world);
 zox_system_1(DeviceModeSystem, EcsOnLoad, [in] DeviceLinks, [out] DeviceMode)
-zox_system(MouseRaycasterSystem, EcsPreUpdate, [in] DeviceLinks, [out] Raycaster)
+zox_system(MouseRaycasterSystem, EcsPreUpdate, [in] DeviceLinks, [in] DeviceMode, [out] Raycaster)
 zox_system(DraggerEndSystem, EcsOnLoad, [out] DragableState, [out] DraggerLink, [out] DraggingDelta)
 zoxel_end_module(Inputs)
 
