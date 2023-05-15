@@ -197,7 +197,7 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world) {
     }*/
 }
 
-void reset_gamepad(ecs_world_t *world, ecs_entity_t gamepad_entity) {
+void device_reset_gamepad(ecs_world_t *world, ecs_entity_t gamepad_entity) {
     if (!gamepad_entity || !ecs_is_alive(world, gamepad_entity)) return;
     ecs_defer_begin(world);
     Gamepad *gamepad = ecs_get_mut(world, gamepad_entity, Gamepad);

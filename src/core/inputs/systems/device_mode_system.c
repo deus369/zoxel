@@ -1,4 +1,4 @@
-// #define zox_debug_log_device_mode_system
+#define zox_debug_log_device_mode_system
 
 void DeviceModeSystem(ecs_iter_t *it) {
     unsigned char did_update = 0;
@@ -46,19 +46,17 @@ void DeviceModeSystem(ecs_iter_t *it) {
         #ifdef zox_debug_log_device_mode_system
             if (did_update) {
                 if (deviceMode->value == zox_device_mode_keyboardmouse) {
-                    zoxel_log(" > input mode changed to keyboardmouse\n");
+                    zoxel_log(" === input mode changed to keyboardmouse ===\n");
                 } else if (deviceMode->value == zox_device_mode_touchscreen) {
-                    zoxel_log(" > input mode changed to touschreen\n");
+                    zoxel_log(" === input mode changed to touschreen ===\n");
                 } else if (deviceMode->value == zox_device_mode_gamepad) {
-                    zoxel_log(" > input mode changed to gamepad\n");
+                    zoxel_log(" === input mode changed to gamepad ===\n");
                 }
             }
         #endif
     }
     if (!did_update) {
         ecs_query_skip(it);
-    }/* else {
-        zoxel_log(" ===+++ updated device mode +++===\n");
-    }*/
+    }
 }
 zox_declare_system(DeviceModeSystem)

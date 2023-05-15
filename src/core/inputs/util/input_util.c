@@ -23,8 +23,8 @@ void input_extract_from_sdl(ecs_world_t *world, SDL_Event event, int2 screen_dim
 }
 
 void reset_input_devices(ecs_world_t *world) {
-    reset_gamepad(world, gamepad_entity);
-    reset_keyboard(world, keyboard_entity);
-    reset_mouse(world);
-    reset_touchscreen(world, touchscreen_entity);
+    device_reset_gamepad(world, gamepad_entity);
+    device_reset_keyboard(world, keyboard_entity);
+    device_reset_mouse(world);
+    device_reset_touchscreen(world, touchscreen_entity);
 }

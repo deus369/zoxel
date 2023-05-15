@@ -65,15 +65,7 @@ void print_keyboard(ecs_world_t *world) {
     print_keyboard_key(&keyboard->w, "w");
 }
 
-void reset_key(PhysicalButton *key) {
-    if (key->pressed_this_frame) {
-        key->pressed_this_frame = 0;
-    } else if (key->released_this_frame) {
-        key->released_this_frame = 0;
-    }
-}
-
-void reset_keyboard(ecs_world_t *world, ecs_entity_t keyboard_entity) {
+void device_reset_keyboard(ecs_world_t *world, ecs_entity_t keyboard_entity) {
     if (!keyboard_entity || !ecs_is_alive(world, keyboard_entity)) return;
     ecs_defer_begin(world);
     Keyboard *keyboard = ecs_get_mut(world, keyboard_entity, Keyboard);

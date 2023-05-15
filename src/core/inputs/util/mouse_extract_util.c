@@ -1,4 +1,4 @@
-void reset_mouse(ecs_world_t *world) {
+void device_reset_mouse(ecs_world_t *world) {
     if (!mouse_entity || !ecs_is_alive(world, mouse_entity)) return;
     Mouse *mouse = ecs_get_mut(world, mouse_entity, Mouse);
     reset_key(&mouse->left);
