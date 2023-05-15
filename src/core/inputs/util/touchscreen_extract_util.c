@@ -9,7 +9,7 @@ void extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_dimens
             new_position.y = screen_dimensions.y - new_position.y;
             touchscreen->primary_touch.position = new_position;
             touchscreen->primary_touch.delta = int2_add(touchscreen->primary_touch.delta, (int2) { event.motion.xrel, - event.motion.yrel });
-        } else if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
+        } /*else if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
             if (event.motion.which != SDL_TOUCH_MOUSEID) return; // don't trigger events if not touch input
             int2 new_position = (int2) { event.motion.x, event.motion.y };
             new_position.y = screen_dimensions.y - new_position.y;
@@ -19,6 +19,15 @@ void extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_dimens
             if (button == SDL_BUTTON_LEFT) {
                 set_mouse_button(&touchscreen->primary_touch.value, event.type);
             }
+        }*/ else if (event.type == SDL_FINGERDOWN || event.type == SDL_FINGERUP) {
+            touchscreen->primary_touch.value.pressed_this_frame = event.type == SDL_FINGERDOWN;
+            touchscreen->primary_touch.value.released_this_frame = event.type == SDL_FINGERUP;
+            if (touchscreen->primary_touch.value.pressed_this_frame) {
+                touchscreen->primary_touch.value.is_pressed = 1;
+            } else if (touchscreen->primary_touch.value.released_this_frame) {
+                touchscreen->primary_touch.value.is_pressed = 0;
+            }
+            ecs_modified(world, keyboard_entity, Keyboard);
         }
         ecs_modified(world, touchscreen_entity, Touchscreen);
     }
