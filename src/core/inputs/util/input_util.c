@@ -5,11 +5,13 @@ void spawn_connected_devices(ecs_world_t *world) {
     //if (joysticks_count > 0) {
         spawn_gamepad(world);
     //}
+    spawn_touchscreen(world);
 }
 
 void input_extract_from_sdl(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) {
     extract_keyboard(world, event);
     extract_mouse(world, event, screen_dimensions);
+    extract_touchscreen(world, event, screen_dimensions);
     // extract_gamepad(world, event);
     if (event.type == SDL_JOYDEVICEADDED) {
         if (joystick == NULL) {
@@ -24,4 +26,5 @@ void reset_input_devices(ecs_world_t *world) {
     reset_gamepad(world, gamepad_entity);
     reset_keyboard(world, keyboard_entity);
     reset_mouse(world);
+    reset_touchscreen(world, touchscreen_entity);
 }

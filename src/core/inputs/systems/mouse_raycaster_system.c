@@ -10,7 +10,12 @@ void MouseRaycasterSystem(ecs_iter_t *it) {
             if (ecs_has(world, device_entity, Mouse)) {
                 const Mouse *mouse = ecs_get(world, device_entity, Mouse);
                 raycaster->value = mouse->position;
-                break;
+                // break;
+            } else if (ecs_has(world, device_entity, Touchscreen)) {
+                const Touchscreen *touchscreen = ecs_get(world, device_entity, Touchscreen);
+                if (touchscreen->primary_touch.value.is_pressed) {
+                    raycaster->value = touchscreen->primary_touch.position;
+                }
             }
         }
     }

@@ -23,6 +23,16 @@ void DraggerEndSystem(ecs_iter_t *it) {
                 } else {
                     draggingDelta->value = mouse->delta;
                 }
+            } else if (ecs_has(world, device_entity, Touchscreen)) {
+                const Touchscreen *touchscreen = ecs_get(world, device_entity, Touchscreen);
+                if (touchscreen->primary_touch.value.released_this_frame) {
+                    DragableState *dragableState = &dragableStates[i];
+                    dragableState->value = 0;
+                    draggerLink->value = 0;
+                    draggingDelta->value = (int2) { 0, 0 };
+                } else {
+                    draggingDelta->value = touchscreen->primary_touch.delta;
+                }
             }
         }
     }

@@ -3,18 +3,6 @@
         set_key(key, event.type);\
         break;
 
-void set_key(PhysicalButton *key, int event_type) {
-    unsigned char key_down = event_type == SDL_KEYDOWN;
-    unsigned char key_released = event_type == SDL_KEYUP;
-    if (!key->is_pressed && key_down) {
-        key->pressed_this_frame = 1;
-    }
-    if (key->is_pressed && key_released) {
-        key->released_this_frame = 1;
-    }
-    key->is_pressed = key_down;
-}
-
 void extract_keyboard(ecs_world_t *world, SDL_Event event) {
     if (!keyboard_entity || !ecs_is_alive(world, keyboard_entity)) return;
     if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
@@ -93,8 +81,7 @@ void print_keyboard(ecs_world_t *world) {
 void reset_key(PhysicalButton *key) {
     if (key->pressed_this_frame) {
         key->pressed_this_frame = 0;
-    }
-    if (key->released_this_frame) {
+    } else if (key->released_this_frame) {
         key->released_this_frame = 0;
     }
 }

@@ -7,9 +7,9 @@
 #define zox_device_mode_touchscreen 3
 // #define zox_device_mode_shared 4 // mix between controller and idk?
 
-#include "data/finger.c"
 #include "data/physical_button.c"
 #include "data/physical_stick.c"
+#include "data/finger.c"
 zoxel_declare_tag(Device)
 zoxel_byte_component(MouseLock)
 zoxel_byte_component(DeviceMode)
@@ -21,12 +21,14 @@ zoxel_memory_component(DeviceLinks, ecs_entity_t)
 #include "prefabs/mouse.c"
 #include "prefabs/keyboard.c"
 #include "prefabs/gamepad.c"
+#include "prefabs/touchscreen.c"
 #include "systems/mouse_raycaster_system.c"
 #include "systems/dragger_end_system.c"
 #include "systems/device_mode_system.c"
 #include "util/keyboard_extract_util.c"
 #include "util/mouse_extract_util.c"
 #include "util/gamepad_util.c"
+#include "util/touchscreen_extract_util.c"
 #include "util/input_util.c"
 
 zoxel_begin_module(Inputs)
@@ -41,6 +43,7 @@ zoxel_define_component(Touchscreen)
 spawn_prefab_keyboard(world);
 spawn_prefab_mouse(world);
 spawn_prefab_gamepad(world);
+spawn_prefab_touchscreen(world);
 zox_system_1(DeviceModeSystem, EcsOnLoad, [in] DeviceLinks, [out] DeviceMode)
 zox_system(MouseRaycasterSystem, EcsOnUpdate, [in] DeviceLinks, [out] Raycaster)
 zox_system(DraggerEndSystem, EcsOnLoad, [out] DragableState, [out] DraggerLink, [out] DraggingDelta)

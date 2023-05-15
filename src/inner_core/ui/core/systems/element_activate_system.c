@@ -40,6 +40,11 @@
                     if (gamepad->a.released_this_frame) {    // pressed_this_frame
                         set_ui_clicked_mut(world, raycasterTarget->value);
                     }
+                } else if (ecs_has(world, device_entity, Touchscreen)) {
+                    const Touchscreen *touchscreen = ecs_get(world, device_entity, Touchscreen);
+                    if (touchscreen->primary_touch.value.released_this_frame) {    // pressed_this_frame
+                        set_ui_clicked_mut(world, raycasterTarget->value);
+                    }
                 }
             }
         }

@@ -4,59 +4,37 @@ void reset_mouse(ecs_world_t *world) {
     reset_key(&mouse->left);
     reset_key(&mouse->middle);
     reset_key(&mouse->right);
-    mouse->wheel = (int2) { 0, 0 };
-    mouse->delta = (int2) { 0, 0 };
+    mouse->delta = int2_zero;
+    mouse->wheel = int2_zero;
     ecs_modified(world, mouse_entity, Mouse);
-}
-
-void set_mouse_button(PhysicalButton *key, int eventType) {
-    unsigned char keyDown = eventType == SDL_MOUSEBUTTONDOWN;
-    unsigned char keyReleased = eventType == SDL_MOUSEBUTTONUP;
-    key->pressed_this_frame = keyDown;
-    key->released_this_frame = keyReleased;
-    if (keyDown) {
-        key->is_pressed = 1;
-    } else if (keyReleased) {
-        key->is_pressed = 0;
-    }
 }
 
 void extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) {
     if (!mouse_entity || !ecs_is_alive(world, mouse_entity)) return;
-    int eventType = event.type;
-    if (eventType == SDL_MOUSEBUTTONDOWN || eventType == SDL_MOUSEBUTTONUP || eventType == SDL_MOUSEWHEEL || eventType == SDL_MOUSEMOTION) {
+    if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP || event.type == SDL_MOUSEWHEEL || event.type == SDL_MOUSEMOTION) {
         // SDL_Keycode key = event.key.keysym.sym;
         Mouse *mouse = ecs_get_mut(world, mouse_entity, Mouse);
-        if (eventType == SDL_MOUSEMOTION) {
+        if (event.type == SDL_MOUSEMOTION) {
             if (event.motion.which == SDL_TOUCH_MOUSEID) return; // don't trigger events if touch input
             int2 new_mouse_position = (int2) { event.motion.x, event.motion.y };
             new_mouse_position.y = screen_dimensions.y - new_mouse_position.y;
             mouse->position = new_mouse_position;
             mouse->delta = int2_add(mouse->delta, (int2) { event.motion.xrel, - event.motion.yrel });
-        } else if (eventType == SDL_MOUSEBUTTONDOWN || eventType == SDL_MOUSEBUTTONUP) {
+        } else if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
             if (event.motion.which == SDL_TOUCH_MOUSEID) return; // don't trigger events if touch input
             int2 new_mouse_position = (int2) { event.motion.x, event.motion.y };
             new_mouse_position.y = screen_dimensions.y - new_mouse_position.y;
             mouse->position = new_mouse_position;
-            /*if (eventType == SDL_MOUSEBUTTONDOWN)
-            {
-                mouse->delta = (int2) { 0, 0 };
-            }*/
             SDL_MouseButtonEvent *mouseEvent = &event.button;
             Uint8 button = mouseEvent->button;
             if (button == SDL_BUTTON_LEFT) {
-                set_mouse_button(&mouse->left, eventType);
-                /*if (eventType == SDL_MOUSEBUTTONDOWN)
-                {
-                    mouse_begin = mouse->position;
-                    relative_mouse_2 = (int2) { 0, 0 };
-                }*/
+                set_mouse_button(&mouse->left, event.type);
             } else if (button == SDL_BUTTON_MIDDLE) {
-                set_mouse_button(&mouse->middle, eventType);
+                set_mouse_button(&mouse->middle, event.type);
             } else if (button == SDL_BUTTON_RIGHT) {
-                set_mouse_button(&mouse->right, eventType);
+                set_mouse_button(&mouse->right, event.type);
             }
-        } else if (eventType == SDL_MOUSEWHEEL) {
+        } else if (event.type == SDL_MOUSEWHEEL) {
             mouse->wheel = (int2) { event.wheel.x, event.wheel.y };
         }
         ecs_modified(world, mouse_entity, Mouse);
@@ -72,3 +50,12 @@ void extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) 
 // mouse->position.x = screenDimensions.x - mouse->position.x;
 // printf("Mouse: %ix%i\n", mouse->position.x, mouse->position.y);
 #endif*/
+/*if (event.type == SDL_MOUSEBUTTONDOWN)
+{
+    mouse->delta = (int2) { 0, 0 };
+}*/
+/*if (event.type == SDL_MOUSEBUTTONDOWN)
+{
+    mouse_begin = mouse->position;
+    relative_mouse_2 = (int2) { 0, 0 };
+}*/
