@@ -1,7 +1,5 @@
-//! A system that casts a ray into the ui elements.
-/**
- * Creates an external event when selects a entity. Can be used by AI to select ui too.
-*/
+// A system that casts a ray into the ui elements
+//  Creates an external event when selects a entity. Can be used by AI to select ui too
 
 // #define zoxel_debug_ui_selectable_states
 
@@ -64,8 +62,9 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         ecs_entity_t ui_selected = 0;
         SelectableState *ui_selected_selectableState = NULL;
         const int2 position = raycaster->value;
-        #ifdef zoxel_debug_element_raycasting
-            zoxel_log("    ui raycasting [%ix%i]\n", position.x, position.y);
+        #ifdef zox_debug_log_element_raycasting
+            zoxel_log(" > ui raycasting [%ix%i] screen size [%ix%i]\n",
+                position.x, position.y, screen_dimensions.x, screen_dimensions.y);
         #endif
         ecs_iter_t uis_it = ecs_query_iter(it->world, it->ctx);
         while(ecs_query_next(&uis_it)) {
@@ -92,10 +91,9 @@ void ElementRaycastSystem(ecs_iter_t *it) {
                     ui_layer = layer2D->value;
                     ui_selected = uis_it.entities[j];
                     ui_selected_selectableState = selectableState;
-                    #ifdef zoxel_debug_element_raycasting
-                        zoxel_log("     > ui [%lu] raycasting position [%ix%i] ray([%ix%i]) :: size [%ix%i] Hit? %s screenSize [%ix%i]\n",
-                            (long int) uis_it.entities[j], canvasPixelPosition.x, canvasPixelPosition.y, raycaster->value.x, raycaster->value.y,
-                            pixelSize.x, pixelSize.y, was_raycasted ? "true" : "false", screen_dimensions.x, screen_dimensions.y);
+                    #ifdef zox_debug_log_element_raycasting
+                        zoxel_log("     + ui [%lu] position [%ix%i] size [%ix%i]\n", (long int) uis_it.entities[j],
+                            canvasPixelPosition.x, canvasPixelPosition.y, pixelSize.x, pixelSize.y);
                     #endif
                 }
                 /*if (was_raycasted) {

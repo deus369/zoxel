@@ -21,7 +21,7 @@
 // #define zoxel_debug_spawns
 // #define debug_element_position_change_query
 // #define debug_viewport_resize
-// #define zoxel_debug_element_raycasting
+// #define zox_debug_log_element_raycasting
 // #define debug_ui_positioning
 // #define debug_ui_scaling
 // Timings

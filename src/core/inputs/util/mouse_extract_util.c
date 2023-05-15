@@ -18,7 +18,7 @@ void extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) 
         } else if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
             // don't trigger events if touch input
             SDL_MouseButtonEvent* button_event = (SDL_MouseButtonEvent*) &event;
-            // if (button_event->which == SDL_TOUCH_MOUSEID) return;
+            if (button_event->which == SDL_TOUCH_MOUSEID) return;
             SDL_MouseButtonEvent *mouseEvent = &event.button;
             Uint8 button = mouseEvent->button;
             if (button == SDL_BUTTON_LEFT) {
