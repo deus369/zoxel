@@ -35,8 +35,7 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size) {
 }
 
 unsigned char get_chunk_division(int3 camera_position, int3 chunk_position) {
-    unsigned char distance = int_max(int_abs(chunk_position.x - camera_position.x), int_abs(chunk_position.z - camera_position.z));
-    return distance;
+    return int_max(int_abs(chunk_position.x - camera_position.x), int_abs(chunk_position.z - camera_position.z));
 }
 
 ecs_entity_t spawn_terrain_chunk_octree(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t terrain, int3 chunk_position, float3 position, float scale) {

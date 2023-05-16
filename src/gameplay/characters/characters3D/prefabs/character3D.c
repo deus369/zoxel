@@ -1,6 +1,25 @@
 ecs_entity_t character3D_prefab;
 ecs_entity_t main_character3D;
-const unsigned char character3D_start_division = 1;
+const unsigned char character3D_start_division = 0; // 1;
+const int initial_character_division_addition = 1;
+const int character_division_dividor = 2;
+
+unsigned char get_character_division(int3 chunk_position, int3 camera_position) {
+    unsigned char distance_to_camera = get_chunk_division(camera_position, chunk_position);
+    unsigned char division = 255;
+    if (distance_to_camera < initial_character_division_addition + character_division_dividor) {
+        division = character3D_start_division;
+    } else if (distance_to_camera < initial_character_division_addition + character_division_dividor * 2) {
+        division = character3D_start_division + 1;
+    } else if (distance_to_camera < initial_character_division_addition + character_division_dividor * 3) {
+        division = character3D_start_division + 2;
+    } else if (distance_to_camera < initial_character_division_addition + character_division_dividor * 4) {
+        division = character3D_start_division + 3;
+    } else if (distance_to_camera < initial_character_division_addition + character_division_dividor * 5) {
+        division = 4;
+    }
+    return division;
+}
 
 ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     ecs_defer_begin(world);
@@ -40,7 +59,9 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file
     #ifndef zox_disable_characters3D_voxes
         set_vox_from_vox_file(world, e, vox);
     #endif
-    zox_set(e, ChunkDivision, { character3D_start_division })
+    // zox_set(e, ChunkDivision, { character3D_start_division })
+    int3 chunk_position = get_chunk_position(position, default_chunk_size);
+    zox_set(e, ChunkDivision, { get_character_division(chunk_position, int3_zero) })
     ecs_defer_end(world);
     main_character3D = e;
     return e;

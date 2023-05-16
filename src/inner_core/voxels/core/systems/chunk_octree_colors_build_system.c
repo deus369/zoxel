@@ -1,4 +1,5 @@
 const unsigned char color_edge_voxel = 0;
+const int max_color_chunks_build_per_frame = 32;
 
 unsigned char colors_get_max_depth_from_division(unsigned char chunk_division) {
     unsigned char max_depth = max_octree_depth;
@@ -144,14 +145,29 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         ChunkDirty *chunkDirty = &chunkDirtys[i];
         if (chunkDirty->value != 1) continue;
         MeshDirty *meshDirty = &meshDirtys[i];
-        const ChunkOctree *chunkOctree = &chunkOctrees[i];
         const ChunkDivision *chunkDivision = &chunkDivisions[i];
-        const ChunkNeighbors *chunkNeighbors2 = &chunkNeighbors[i];
-        const ColorRGBs *colorRGBs2 = &colorRGBs[i];
-        const ChunkSize *chunkSize = &chunkSizes[i];
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
         MeshColorRGBs *meshColorRGBs2 = &meshColorRGBs[i];
+        // hide mesh
+        if (chunkDivision->value == 255) {
+            if (meshIndicies2->length != 0) {
+                tri_count -= meshIndicies2->length / 3;
+            }
+            if (meshIndicies->length != 0) free(meshIndicies->value);
+            if (meshVertices->length != 0) free(meshVertices->value);
+            if (meshColorRGBs->length != 0) free(meshColorRGBs->value);
+            meshIndicies->value = NULL;
+            meshVertices->value = NULL;
+            meshColorRGBs->value = NULL;
+            chunkDirty->value = 0;
+            meshDirty->value = 1;
+            continue;
+        }
+        const ChunkOctree *chunkOctree = &chunkOctrees[i];
+        const ChunkNeighbors *chunkNeighbors2 = &chunkNeighbors[i];
+        const ColorRGBs *colorRGBs2 = &colorRGBs[i];
+        const ChunkSize *chunkSize = &chunkSizes[i];
         const ChunkOctree *chunk_left = chunkNeighbors2->value[0] == 0 ?
             NULL : ecs_get(it->world, chunkNeighbors2->value[0], ChunkOctree);
         const ChunkOctree *chunk_right = chunkNeighbors2->value[1] == 0 ?
@@ -203,7 +219,7 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         // time_cycle_end("       - octree_chunk_build_cycle")
         chunks_built++;
         // zoxel_log("     + built chunk octree colors - indicies[%i]\n", meshIndicies2->length);
-        // if (chunks_built >= max_chunks_build_per_frame) break;
+        if (chunks_built >= max_color_chunks_build_per_frame) break;
         // zoxel_log(" > built ChunkOctree ColorRGBs Mesh\n");
         #ifdef zoxel_time_octree_chunk_builds_system
             did_do_timing()
