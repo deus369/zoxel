@@ -1,8 +1,8 @@
 const GLchar* skybox_shader_source_vert = "\
 #version 300 es\n\
 in lowp vec3 vertexPosition;\
-uniform lowp mat4 camera_matrix;\
-uniform lowp vec3 position;\
+uniform highp mat4 camera_matrix;\
+uniform highp vec3 position;\
 uniform lowp vec4 rotation;\
 uniform lowp float scale;\
 out lowp vec3 mesh_pos;\
