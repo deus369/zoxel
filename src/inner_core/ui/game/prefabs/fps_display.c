@@ -20,7 +20,7 @@ ecs_entity_t spawn_prefab_fps_display(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_fps_display(ecs_world_t *world, ecs_entity_t parent, int font_size) {
-    const char *label = "FPS";
+    // const char *label = "FPS";
     byte2 padding = (byte2) { 12, 8 };
     int edge_line_thickness = canvas_edge_size * 2 + 2;
     // int2 pixel_size = (int2) { font_size * sizeof(label) + padding.x * 2, font_size + padding.y * 2 };

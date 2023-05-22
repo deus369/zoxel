@@ -43,7 +43,7 @@ spawn_player_character3D_prefab(world);
 #ifdef zoxel_physics3D
     zox_filter(player_character3Ds2, [none] PlayerCharacter3D, [out] Acceleration3D, [in] Velocity3D, [in] physics.DisableMovement, [in] Rotation3D)
     zox_filter(playerCharacter3DQuery2, [none] PlayerCharacter3D, [out] Alpha3D, [in] Omega3D, [in] physics.DisableMovement)
-    zox_filter(gamepad_query, [in] Gamepad)
+    // zox_filter(gamepad_query, [in] Gamepad)
     zox_system_ctx(Player3DMoveSystem, EcsOnUpdate, player_character3Ds2, [none] Player, [in] DeviceLinks)
     zox_system_ctx(Player3DRotateSystem, EcsOnUpdate, playerCharacter3DQuery2, [none] Player, [in] DeviceLinks)
 #endif

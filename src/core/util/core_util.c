@@ -18,7 +18,7 @@ unsigned char get_cpu_tier(int core_count) {
 }
 
 void update_core() {
-    begin_timing_absolute()
+    // begin_timing_absolute()
     if (!headless) {
         #ifdef zoxel_inputs
             reset_input_devices(world);

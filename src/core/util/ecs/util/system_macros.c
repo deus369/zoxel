@@ -19,8 +19,7 @@ Chose one pipeline tag for each type of system.
 // respond to raycasting ui - EcsOnValidate
 // respond to click events - WindowCloseSystem - EcsPostUpdate
 //! Used to respond to first level events.
-//#define zoxel_event_respond_system_main_thread(system_name, tag_name, event_component_name)\
-//    zox_system_1(system_name, EcsPreStore, [out] tag_name, [in] event_component_name);
+// #define zoxel_event_respond_system_main_thread(system_name, tag_name, event_component_name) zox_system_1(system_name, EcsPreStore, [out] tag_name, [in] event_component_name);
 
 #define zox_declare_system(name) ECS_SYSTEM_DECLARE(name);
 //! Multithreaded System Definitions

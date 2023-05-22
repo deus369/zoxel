@@ -88,8 +88,8 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
                     chunkPosition->value = new_chunk_position;
                     chunkLink->value = int3_hash_map_get(chunkLinks->value, new_chunk_position);
                 }
-                int3 new_global_voxel_position = get_voxel_position(real_position);
-                byte3 new_voxel_position = get_local_position_byte3(new_global_voxel_position, chunkPosition->value, default_chunk_size_byte3);
+                // int3 new_global_voxel_position = get_voxel_position(real_position);
+                // byte3 new_voxel_position = get_local_position_byte3(new_global_voxel_position, chunkPosition->value, default_chunk_size_byte3);
                 voxelPosition->value = byte3_to_int3(new_position);
                 #ifdef zoxel_debug_basic_collision3D_system
                     if (voxelPosition->value.x >= default_chunk_length || voxelPosition->value.y >= default_chunk_length || voxelPosition->value.z >= default_chunk_length) {

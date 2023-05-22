@@ -43,7 +43,7 @@ void main() {\
 }";
 
 // color.z -= color.x * 0.5;
-// sky_color_top = vec3(0.2, 0.6, 0.9);\
+// sky_color_top = vec3(0.2, 0.6, 0.9);
 // mesh_y = (vertexPosition.y + 0.02) * 4.0;
 // lowp vec3 fog_color = vec3(2.0f / 255.0, 16.0f / 255.0, 24.0f / 255.0 );
 // lowp vec3 fog_color = vec3(0.9, 0.95, 0.98);

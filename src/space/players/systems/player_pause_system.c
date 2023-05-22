@@ -16,8 +16,8 @@ void toggle_pause_ui(ecs_world_t *world) {
     // initialize_memory_component_non_pointer(children, ecs_entity_t, 3);
     // add this entity to canvas children
     if (!ecs_is_alive(world, pause_ui)) {
-        // pause game
-        ecs_entity_t pause_ui = spawn_pause_ui(world, window_position, window_anchor);
+        // pause game ecs_entity_t pause_ui = s
+        spawn_pause_ui(world, window_position, window_anchor);
         ecs_set(world, local_game, GameState, { zoxel_game_state_paused });
         ecs_set(world, main_cameras[0], FreeRoam, { 0 });
         ecs_set(world, mouse_entity, MouseLock, { 0 });

@@ -106,7 +106,7 @@ void optimize_solid_nodes(ChunkOctree *node) {
             optimize_solid_nodes(&node->nodes[i]);
         }
         // zoxel_log(" > depth [%i]\n", depth);
-        unsigned char all_solid = 0;
+        // unsigned char all_solid = 0;
         unsigned char voxel_types = 0;
         byte2 *voxel_counts = malloc(sizeof(byte2) * octree_length);
         for (unsigned char i = 0; i < octree_length; i++) {

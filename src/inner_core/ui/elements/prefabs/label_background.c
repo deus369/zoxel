@@ -24,6 +24,6 @@ ecs_entity_t spawn_label_background(ecs_world_t *world, ecs_entity_t prefab, ecs
     int2 size = (int2) { font_size * sizeof(text) + padding.x * 2, font_size + padding.y * 2 };
     ecs_entity_t e = spawn_zext(world, prefab, parent, position, anchor, padding, text, font_size, alignment, layer, parent_position2D, parent_pixel_size);
     set_unique_entity_name(world, e, "label_background");
-    float2 position2D = initialize_ui_components_2(world, e, parent, position, size, anchor, layer, parent_position2D, parent_pixel_size, canvas_size);
+    initialize_ui_components_2(world, e, parent, position, size, anchor, layer, parent_position2D, parent_pixel_size, canvas_size);
     return e;
 }

@@ -49,7 +49,7 @@ void Player3DRotateSystem(ecs_iter_t *it) {
                 }
                 const Omega3D *omega3D = &omega3Ds[j];
                 if ((euler.y > 0 && quaternion_to_euler_y(omega3D->value) < max_rotate_speed) ||
-                    euler.y < 0 && quaternion_to_euler_y(omega3D->value) > -max_rotate_speed) {
+                    (euler.y < 0 && quaternion_to_euler_y(omega3D->value) > -max_rotate_speed)) {
                     Alpha3D *alpha3D = &alpha3Ds[j];
                     quaternion_rotate_quaternion_p(&alpha3D->value, quaternion);
                 }

@@ -36,7 +36,7 @@ ecs_entity_t spawn_animating_chunk(ecs_world_t *world, float3 position, float sc
 
 void test_animating_chunks(ecs_world_t *world, float3 position) {
     const float spawn_scale = 1.0f;
-    const float spawnRange = 0.5f;
+    // const float spawnRange = 0.5f;
     spawn_animating_chunk(world, (float3) { position.x - 3, position.y, position.z + 1 }, spawn_scale, 0);
     spawn_animating_chunk(world, (float3) { position.x - 1.5f, position.y, position.z + 1 }, spawn_scale, 1);
     spawn_animating_chunk(world, (float3) { position.x, position.y, position.z + 1 }, spawn_scale, 2);

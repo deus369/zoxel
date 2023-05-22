@@ -1,7 +1,7 @@
 void attach_to_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t character) {
     // zoxel_log(" > attaching to character\n");
     float vox_scale = model_scale * 16; //  * overall_voxel_scale * 16;
-    const Position3D *position3D = ecs_get(world, character, Position3D);
+    // const Position3D *position3D = ecs_get(world, character, Position3D);
     const Rotation3D *rotation3D = ecs_get(world, character, Rotation3D);
     ecs_set(world, camera, ParentLink, { character });
     // ecs_set(world, camera, Position3D, { position3D->value });
