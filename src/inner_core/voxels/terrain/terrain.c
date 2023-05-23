@@ -49,7 +49,7 @@ zox_system_ctx_1(StreamPointSystem, EcsOnUpdate, terrain_chunks_query,
     [none] Streamer, [in] Position3D, [out] StreamPoint)
 zox_system_ctx(ChunkUVsBuildSystem, EcsOnUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ChunkNeighbors,
     [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty, [none] !MeshColorRGBs)
-zox_system_ctx(ChunkOctreeBuildSystem, EcsOnUpdate, chunks_generating,
+zox_system_ctx(ChunkOctreeBuildSystem, EcsPostUpdate, chunks_generating,
     [out] ChunkDirty, [in] ChunkOctree, [in] ChunkDivision, [in] ChunkNeighbors,
     [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty)
 // zox_system(OctreeChunkMeshSystem, EcsPreUpdate, [out] MeshDirty, [in] ChunkNeighbors, [out] MeshDirty)

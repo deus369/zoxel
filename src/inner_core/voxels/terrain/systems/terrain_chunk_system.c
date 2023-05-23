@@ -15,13 +15,7 @@ void generate_chunk_terrain(ChunkData* chunk, const int3 chunkSize, const int3 c
                 perlin_terrain(noise_point.x, noise_point.y, terrain_frequency, terrain_seed, terrain_octaves));
             if (terrain_height2 < terrain_min_height) terrain_height2 = terrain_min_height;
             for (local_position.y = 0; local_position.y < chunkSize.y; local_position.y++) {
-                int array_index = int3_array_index(local_position, chunkSize);
-                chunk->value[array_index] = (local_position.y <= terrain_height2) ? 1 : 0;
-                /*if (local_position.y <= terrain_height2) {
-                    chunk->value[array_index] = 1;
-                } else {
-                    chunk->value[array_index] = 0;
-                }*/
+                chunk->value[int3_array_index(local_position, chunkSize)] = (local_position.y <= terrain_height2) ? 1 : 0;
             }
         }
     }
@@ -58,11 +52,3 @@ void TerrainChunkSystem(ecs_iter_t *it) {
     #endif
 }
 zox_declare_system(TerrainChunkSystem)
-
-// srand(666);
-// unsigned char terrain_height2 = terrain_height + rand() % terrain_height_amplifier;
-// printf("global_position [%ix%ix%i]\n", global_position.x, global_position.y, global_position.z);
-// printf("global_position: [%fx%fx%f]\n", global_position.x, global_position.y, global_position.z);
-// int_floor(terrain_amplifier * simplex_fun_2D(noise_point, terrain_frequency));
-// int_floor(terrain_amplifier * perlin_noise(noise_point.x, noise_point.y, terrain_frequency, seed));
-// int_floor(terrain_amplifier * generate_noise_2D(noise_point, terrain_frequency));

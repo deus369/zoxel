@@ -11,7 +11,8 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size) {
     zox_set(e, MeshDirty, { 0 });
     zox_set(e, Brightness, { 1.4f });
     add_seed(world, e, 666);
-    add_chunk_octree(world, e, size); // default_chunk_size);
+    add_chunk_octree(world, e, size);
+    zox_set(e, EntityLinks, { 0, NULL })
     add_generate_chunk(world, e);
     // zox_set(e, ChunkSize, { size });
     if (!headless) {

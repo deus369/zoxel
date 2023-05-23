@@ -44,18 +44,18 @@ zoxel_octree_component_define(ChunkOctree)
 // zoxel_prefab_defines
 spawn_chunk_prefab(world);
 spawn_prefab_noise_chunk(world);
+set_max_octree_length(max_octree_depth);
 // zoxel_system_defines
 zox_filter(chunks_generating, [in] GenerateChunk)
 zox_define_reset_system(GenerateChunkResetSystem, GenerateChunk)
-zox_system(ChunkLinkSystem, EcsPostUpdate, [none] LinkChunk, [in] VoxLink, [in] Position3D, [out] ChunkPosition, [out] ChunkLink)
 if (!headless) {
     zox_system_ctx(ChunkBuildSystem, EcsOnUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices, [out] MeshDirty, [none] !MeshUVs, [none] !MeshColorRGBs)
     zox_system_ctx(ChunkColorsBuildSystem, EcsOnUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ColorRGBs, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] !MeshUVs)
 }
-zox_system_ctx(ChunkOctreeColorsBuildSystem, EcsOnUpdate, chunks_generating,
+zox_system_ctx(ChunkOctreeColorsBuildSystem, EcsPostUpdate, chunks_generating,
     [out] ChunkDirty, [in] ChunkOctree, [in] ChunkDivision, [in] ChunkNeighbors, [in] ColorRGBs, [in] ChunkSize,
     [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] ColorChunk, [none] !MeshUVs)
-set_max_octree_length(max_octree_depth);
+zox_system(ChunkLinkSystem, EcsPostUpdate, [none] LinkChunk, [in] VoxLink, [in] Position3D, [out] ChunkPosition, [out] ChunkLink)
 zoxel_end_module(VoxelsCore)
 
 #endif

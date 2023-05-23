@@ -44,6 +44,10 @@ void set_terrain_render_distance() {
         terrain_spawn_distance = 1;
         terrain_vertical = 1;
     #endif
+    #ifdef zoxel_testing_tiny_terrain2
+        terrain_spawn_distance = 3;
+        terrain_vertical = 1;
+    #endif
     #ifdef zoxel_testing_small_terrain
         terrain_spawn_distance = 6;
         terrain_vertical = 2;

@@ -126,3 +126,4 @@
 // #define zox_disable_terrain
 // #define zox_disable_skybox
 // #define zoxel_disable_attach_on_start
+// #define zoxel_testing_tiny_terrain2

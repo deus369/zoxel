@@ -107,8 +107,7 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
     component.length = length_;\
     component.value = (dataType*) malloc(length_ * sizeof(dataType));
 
-#define initialize_memory_component(component, dataType, length_)\
-{\
+#define initialize_memory_component(component, dataType, length_) {\
     component->length = length_;\
     component->value = (dataType*) malloc(length_ * sizeof(dataType));\
 }
@@ -119,40 +118,33 @@ zoxel_component(ChunkGenerate, unsigned char);
 zoxel_component(ChunkDirty, unsigned char);
 
 // Randomizes chunk data
-void set_chunk_data(ecs_world_t *world, ecs_entity_t e)
-{
+void set_chunk_data(ecs_world_t *world, ecs_entity_t e) {
     Chunk chunk = { };
     initialize_memory_component_non_pointer(chunk, unsigned char, chunk_array_length);
-    for (int i = 0; i < chunk_array_length; i++)
-    {
+    for (int i = 0; i < chunk_array_length; i++) {
         chunk.value[0] = rand() % 256;
     }
     ecs_set(world, e, Chunk, { chunk.length, chunk.value });
 }
 
-void set_chunk_neighbors(ecs_world_t *world, ecs_entity_t e, ecs_entity_t chunk_other)
-{
+void set_chunk_neighbors(ecs_world_t *world, ecs_entity_t e, ecs_entity_t chunk_other) {
     ChunkNeighbors chunkNeighbors = { };
     initialize_memory_component_non_pointer(chunkNeighbors, ecs_entity_t, 1);
     chunkNeighbors.value[0] = chunk_other;
     ecs_set(world, e, ChunkNeighbors, { chunkNeighbors.length, chunkNeighbors.value });
 }
 
-void ChunkGenerateSystem(ecs_iter_t *it)
-{
+void ChunkGenerateSystem(ecs_iter_t *it) {
     ChunkGenerate *chunkGenerates = ecs_field(it, ChunkGenerate, 1);
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
     Chunk *chunks = ecs_field(it, Chunk, 3);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         ChunkGenerate *chunkGenerate = &chunkGenerates[i];
-        if (chunkGenerate->value != 1)
-        {
+        if (chunkGenerate->value != 1) {
             continue;
         }
         ChunkDirty *chunkDirty = &chunkDirtys[i];
-        if (chunkDirty->value != 0)
-        {
+        if (chunkDirty->value != 0) {
             continue;
         }
         chunkGenerate->value = 0;
@@ -160,11 +152,9 @@ void ChunkGenerateSystem(ecs_iter_t *it)
         Chunk *chunk = &chunks[i];
         initialize_memory_component(chunk, unsigned char, chunk_array_length);
         printf("Generating chunk [%lu]\n", (long int) it->entities[i]);
-        for (int j = 0; j < chunk_array_length; j++)
-        {
+        for (int j = 0; j < chunk_array_length; j++) {
             chunk->value[j] = rand() % 256;
-            if (j < 16)
-            {
+            if (j < 16) {
                 printf("     [%i]\n", (int) chunk->value[j]);
             }
         }
@@ -174,17 +164,14 @@ void ChunkGenerateSystem(ecs_iter_t *it)
 ECS_SYSTEM_DECLARE(ChunkGenerateSystem);
 
 //! Builds a mesh data from the chunk!
-void ChunkBuildSystem(ecs_iter_t *it)
-{
+void ChunkBuildSystem(ecs_iter_t *it) {
     // printf("[ChunkBuildSystem] GenerateChunk was changed.\n");
     ChunkDirty *entityDirtys = ecs_field(it, ChunkDirty, 1);
     const Chunk *chunks = ecs_field(it, Chunk, 2);
     const ChunkNeighbors *chunkNeighbors = ecs_field(it, ChunkNeighbors, 3);
-    for (int i = 0; i < it->count; i++)
-    {
+    for (int i = 0; i < it->count; i++) {
         ChunkDirty *chunkDirty = &entityDirtys[i];
-        if (chunkDirty->value != 1)
-        {
+        if (chunkDirty->value != 1) {
             continue;
         }
         chunkDirty->value = 0;
@@ -196,14 +183,10 @@ void ChunkBuildSystem(ecs_iter_t *it)
         //const Chunk *chunk_other = NULL;
         // now just test by accessing other chunks array
         printf("Building chunk [%lu]\n", (long int) it->entities[i]);
-        if (chunk_other == NULL)
-        {
+        if (chunk_other == NULL) {
             printf("    -> chunk_other is NULL\n");
-        }
-        else
-        {
-            for (int j = 0; j < 16; j++)
-            {
+        } else {
+            for (int j = 0; j < 16; j++) {
                 printf("     [%i]\n", (int) chunk_other->value[j]);
             }
         }
@@ -212,8 +195,7 @@ void ChunkBuildSystem(ecs_iter_t *it)
 }
 ECS_SYSTEM_DECLARE(ChunkBuildSystem);
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     ecs_world_t *world = ecs_init_w_args(argc, argv);
     zoxel_define_memory_component(world, Chunk);
     zoxel_define_memory_component(world, ChunkNeighbors);
@@ -241,8 +223,7 @@ int main(int argc, char *argv[])
     set_chunk_neighbors(world, e1, e2);
     set_chunk_neighbors(world, e2, 0); // e1);
     // progress once
-    for (int i = 0; i < 16; i++)
-    {
+    for (int i = 0; i < 16; i++) {
         ecs_progress(world, 0);
     }
     // le end - if made it this far it's a success

@@ -6,7 +6,7 @@ void toggle_pause_ui(ecs_world_t *world) {
     if (!(gameState->value == zoxel_game_state_playing || gameState->value == zoxel_game_state_paused)) {
         return;
     }
-    zoxel_log(" > todo: toggle pause ui\n");
+    // zoxel_log(" > todo: toggle pause ui\n");
     const int edge_buffer = 8 * default_ui_scale;
     // const int2 window_size = { 260, 220 };
     // const float2 window_anchor = { 0.5f, 0.5f };
@@ -29,7 +29,6 @@ void toggle_pause_ui(ecs_world_t *world) {
         ecs_set(world, main_character3D, DisableMovement, { 0 });
     }
     // exit_game();
-
     // i should also disable player mouse and movement
 }
 

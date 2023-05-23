@@ -2,10 +2,9 @@ ecs_entity_t character3D_prefab;
 ecs_entity_t main_character3D;
 const unsigned char character3D_start_division = 0; // 1;
 const int initial_character_division_addition = 1;
-const int character_division_dividor = 2;
+const int character_division_dividor = 1; // 2;
 
-unsigned char get_character_division(int3 chunk_position, int3 camera_position) {
-    unsigned char distance_to_camera = get_chunk_division(camera_position, chunk_position);
+unsigned char get_character_division_from_camera(unsigned char distance_to_camera) {
     unsigned char division = 255;
     if (distance_to_camera < initial_character_division_addition + character_division_dividor) {
         division = character3D_start_division;
@@ -19,6 +18,11 @@ unsigned char get_character_division(int3 chunk_position, int3 camera_position) 
         division = 4;
     }
     return division;
+}
+
+unsigned char get_character_division(int3 chunk_position, int3 camera_position) {
+    unsigned char distance_to_camera = get_chunk_division(camera_position, chunk_position);
+    return get_character_division_from_camera(distance_to_camera);
 }
 
 ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
@@ -45,13 +49,14 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file *vox, float3 position, float4 rotation) {
+ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file *vox,
+    float3 position, float4 rotation, unsigned char lod) {
     #ifdef zox_disable_characters3D
         if (main_character3D != 0) {
             return 0;
         }
     #endif
-    ecs_defer_begin(world);
+    // ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
     zox_set(e, Position3D, { position })
     zox_set(e, Rotation3D, { rotation })
@@ -60,9 +65,10 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file
         set_vox_from_vox_file(world, e, vox);
     #endif
     // zox_set(e, ChunkDivision, { character3D_start_division })
-    int3 chunk_position = get_chunk_position(position, default_chunk_size);
-    zox_set(e, ChunkDivision, { get_character_division(chunk_position, int3_zero) })
-    ecs_defer_end(world);
+    // int3 chunk_position = get_chunk_position(position, default_chunk_size);
+    // zox_set(e, ChunkDivision, { get_character_division(chunk_position, int3_zero) })
+    zox_set(e, ChunkDivision, { lod })
+    // ecs_defer_end(world);
     main_character3D = e;
     return e;
 }

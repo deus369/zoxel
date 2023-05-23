@@ -1,5 +1,5 @@
 #define zoxel_entities_component(name)\
-zoxel_memory_component(Children, ecs_entity_t)\
+zoxel_memory_component(name, ecs_entity_t)\
 void on_destroyed##_##name(ecs_iter_t *it) {\
     const name *children = ecs_field(it, name, 1);\
     for (int i = 0; i < it->count; i++) {\

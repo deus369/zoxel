@@ -103,17 +103,17 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
     if (meshIndicies->length != 0) {
         free(meshIndicies->value);
     }
+    meshIndicies->length = indicies->size;
+    meshIndicies->value = finalize_int_array_d(indicies);
     if (meshVertices->length != 0) {
         free(meshVertices->value);
     }
+    meshVertices->length = vertices->size;
+    meshVertices->value = finalize_float3_array_d(vertices);
     if (meshColorRGBs->length != 0) {
         free(meshColorRGBs->value);
     }
-    meshIndicies->length = indicies->size;
-    meshVertices->length = vertices->size;
     meshColorRGBs->length = color_rgbs->size;
-    meshIndicies->value = finalize_int_array_d(indicies);
-    meshVertices->value = finalize_float3_array_d(vertices);
     meshColorRGBs->value = finalize_color_rgb_array_d(color_rgbs);
 }
 

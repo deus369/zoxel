@@ -36,9 +36,13 @@ zoxel_define_component(CanvasLink)
 zoxel_define_component(ClickEvent)
 zoxel_define_component(InitializeEntityMesh)
 zoxel_define_component(NavigatorTimer)
+spawn_prefab_canvas(world);
+spawn_prefab_element(world);
+// filters
 zox_filter(ui_query, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [out] SelectableState)
 zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition,
     [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPixelPosition)
+// systems
 zox_system_ctx(ElementPositionSystem, EcsPreUpdate, pixel_positions_query, [none] Element, [in] PixelPosition,
     [in] ParentLink, [in] Anchor, [in] CanvasLink, [out] Position2D, [out] CanvasPixelPosition)
 zox_system_ctx(ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [in] DeviceMode, [out] RaycasterTarget)
@@ -52,8 +56,6 @@ if (!headless) {
     element_mesh_system_id = ecs_id(ElementMeshSystem);
 }
 zox_system(ButtonClickEventSystem, EcsPreStore, [none] Element, [in] ClickableState, [in] ClickEvent)
-spawn_prefab_canvas(world);
-spawn_prefab_element(world);
 zoxel_end_module(UICore)
 
 // \todo Display a UI Element anchored, with a pixel position.

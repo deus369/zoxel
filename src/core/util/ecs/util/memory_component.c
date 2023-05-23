@@ -6,28 +6,22 @@
 
 //! Define a Memory component, with an array of a single data type.
 #define zoxel_memory_component(name, type)\
-typedef struct\
-{\
+typedef struct {\
     int length;\
     type *value;\
 } name;\
 ECS_COMPONENT_DECLARE(name);\
-ECS_CTOR(name, ptr,\
-{\
+ECS_CTOR(name, ptr, {\
     ptr->length = 0;\
     ptr->value = NULL;\
 })\
-ECS_DTOR(name, ptr,\
-{\
-    if (ptr->value)\
-    {\
+ECS_DTOR(name, ptr, {\
+    if (ptr->value) {\
         free(ptr->value);\
     }\
 })\
-ECS_MOVE(name, dst, src,\
-{\
-    if (dst->length != 0)\
-    {\
+ECS_MOVE(name, dst, src, {\
+    if (dst->length != 0) {\
         free(dst->value);\
     }\
     dst->value = src->value;\
@@ -36,17 +30,14 @@ ECS_MOVE(name, dst, src,\
     src->length = 0;\
 })\
 ECS_COPY(name, dst, src, {\
-    if (src->value)\
-    {\
-        if (dst->length != 0)\
-        {\
+    if (src->value) {\
+        if (dst->length != 0) {\
             free(dst->value);\
         }\
         int memory_length = src->length * sizeof(type);\
         dst->length = src->length;\
         dst->value = malloc(memory_length);\
-        if (dst->value != NULL) \
-        {\
+        if (dst->value != NULL) {\
             dst->value = memcpy(dst->value, src->value, memory_length);\
         }\
     }\
@@ -61,22 +52,31 @@ ECS_COPY(name, dst, src, {\
         .dtor = ecs_dtor(name)\
     });
 
-#define initialize_memory_component(component, dataType, length_)\
-{\
-    component->length = length_;\
-    component->value = (dataType*) malloc(length_ * sizeof(dataType));\
+#define initialize_memory_component(component, dataType, _length) {\
+    if (component->length != _length) {\
+        if (component->value != NULL) {\
+            free(component->value);\
+        }\
+        component->length = _length;\
+        component->value = (dataType*) malloc(_length * sizeof(dataType));\
+    }\
+}
+
+#define clear_memory_component(component) {\
+    if (component->length != 0) {\
+        free(component->value);\
+        component->value = NULL;\
+        component->length = 0;\
+    }\
 }
 
 #define initialize_memory_component_non_pointer(component, dataType, length_)\
     component.length = length_;\
     component.value = (dataType*) malloc(length_ * sizeof(dataType));
 
-#define re_initialize_memory_component(component, dataType, length_)\
-{\
-    if (component->length != length_)\
-    {\
-        if (component->length != 0 && component->value)\
-        {\
+#define re_initialize_memory_component(component, dataType, length_) {\
+    if (component->length != length_) {\
+        if (component->length != 0 && component->value) {\
             free(component->value);\
         }\
         component->length = length_;\
@@ -84,28 +84,9 @@ ECS_COPY(name, dst, src, {\
     }\
 }
 
-#define re_initialize_memory_component_no_free(component, dataType, length_)\
-{\
-    if (component->length != length_)\
-    {\
+#define re_initialize_memory_component_no_free(component, dataType, length_) {\
+    if (component->length != length_) {\
         component->length = length_;\
         component->value = (dataType*) malloc(length_ * sizeof(dataType));\
     }\
 }
-
-/*
-        printf("Coping %i from %i.\n", dst->length, src->length);\
-        for (int i = 0; i < dst->length; i++)\
-        {\
-            dst->value[i] = src->value[i];\
-        }\
-        if (dst->value != NULL) \
-        {\
-            dst->value = memcpy(dst->value, src->value, src->length);\
-        }\
-*/
-
-
-// memset(component->value, 0, length_ * stride);
-// printf("Freeing component %i.\n", component->length);
-// printf("Freeing memory_component at [%p] - [%i]\n", (void *)component, component->length);

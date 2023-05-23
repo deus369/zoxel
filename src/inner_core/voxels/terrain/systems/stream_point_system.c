@@ -64,6 +64,7 @@ void StreamPointSystem(ecs_iter_t *it) {
                     ChunkDirty *chunkDirty = &chunkDirtys[j];
                     chunkDivision->value = changed[j];
                     chunkDirty->value = 1;
+                    // Chunk's EntityLinks can be dirty here
                 }
             }
             free(changed);

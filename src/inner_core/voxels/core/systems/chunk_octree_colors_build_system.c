@@ -1,5 +1,5 @@
 const unsigned char color_edge_voxel = 0;
-const int max_color_chunks_build_per_frame = 32;
+const int max_color_chunks_build_per_frame = 16; // 32;
 
 unsigned char colors_get_max_depth_from_division(unsigned char chunk_division) {
     unsigned char max_depth = max_octree_depth;
@@ -149,17 +149,13 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
         MeshColorRGBs *meshColorRGBs2 = &meshColorRGBs[i];
-        // hide mesh
-        if (chunkDivision->value == 255) {
+        if (chunkDivision->value == 255) { // hides mesh
             if (meshIndicies2->length != 0) {
                 tri_count -= meshIndicies2->length / 3;
             }
-            if (meshIndicies->length != 0) free(meshIndicies->value);
-            if (meshVertices->length != 0) free(meshVertices->value);
-            if (meshColorRGBs->length != 0) free(meshColorRGBs->value);
-            meshIndicies->value = NULL;
-            meshVertices->value = NULL;
-            meshColorRGBs->value = NULL;
+            clear_memory_component(meshIndicies)
+            clear_memory_component(meshVertices)
+            clear_memory_component(meshColorRGBs)
             chunkDirty->value = 0;
             meshDirty->value = 1;
             continue;

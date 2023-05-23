@@ -6,7 +6,6 @@ void add_chunk_octree(ecs_world_t *world, ecs_entity_t e, int3 size) {
     zox_set(e, ChunkPosition, { int3_zero })
     zox_set(e, ChunkDivision, { 0 })
     zox_set(e, VoxLink, { 0 })
-    // zox_set(e, ChunkNeighbors, { 0, NULL });
     ChunkNeighbors chunkNeighbors = { };
     initialize_memory_component_non_pointer(chunkNeighbors, ecs_entity_t, 6);
     chunkNeighbors.value[0] = 0;
@@ -180,10 +179,6 @@ unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *
     }
     return 1;
 } 
-
-/*else if (depth == max_depth) {
-    return 1; // edge_voxel; // adjacent_node->value;
-}*/ 
 
 const int fill_octree_random_rate = 50;
 const int fill_octree_random_rate2 = 40;
