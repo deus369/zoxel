@@ -52,9 +52,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
 ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file *vox,
     float3 position, float4 rotation, unsigned char lod) {
     #ifdef zox_disable_characters3D
-        if (main_character3D != 0) {
-            return 0;
-        }
+        if (main_character3D != 0) return 0;
     #endif
     // ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
@@ -64,11 +62,12 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file
     #ifndef zox_disable_characters3D_voxes
         set_vox_from_vox_file(world, e, vox);
     #endif
-    // zox_set(e, ChunkDivision, { character3D_start_division })
-    // int3 chunk_position = get_chunk_position(position, default_chunk_size);
-    // zox_set(e, ChunkDivision, { get_character_division(chunk_position, int3_zero) })
     zox_set(e, ChunkDivision, { lod })
     // ecs_defer_end(world);
     main_character3D = e;
     return e;
 }
+
+// zox_set(e, ChunkDivision, { character3D_start_division })
+// int3 chunk_position = get_chunk_position(position, default_chunk_size);
+// zox_set(e, ChunkDivision, { get_character_division(chunk_position, int3_zero) })

@@ -25,7 +25,7 @@ void main() {\
 const int data_count = 1;
 const int single_data_length = sizeof(int);
 const int data_length = data_count * single_data_length;
-GLuint compute_shader, compute_program, vertex_buffer;
+uint compute_shader, compute_program, vertex_buffer;
 
 // position buffer used for vertex positions
 void create_position_buffer() {

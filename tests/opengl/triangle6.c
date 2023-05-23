@@ -31,10 +31,10 @@ struct vec3{
 };
 
 typedef struct {
-    GLuint count;
-    GLuint instanceCount;
-    GLuint first;
-    GLuint baseInstance;
+    uint count;
+    uint instanceCount;
+    uint first;
+    uint baseInstance;
 } DrawArraysIndirectCommand;
 
 const char* compute_shader_source = "\
@@ -110,26 +110,26 @@ void main() {\
     fragColor = vec4(71.0f / 255.0f, 48.0f / 255.0f, 28.0f / 255.0f, 1.0f);\
 }";
 
-void clear_triangle_buffer(GLuint triangle_buffer) {
+void clear_triangle_buffer(uint triangle_buffer) {
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, triangle_buffer);
     glClearBufferData(GL_SHADER_STORAGE_BUFFER, GL_R32UI, GL_RED, GL_UNSIGNED_INT, NULL);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 }
 
-void clear_ibo(GLuint ibo) {
+void clear_ibo(uint ibo) {
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ibo);
     glClearBufferData(GL_SHADER_STORAGE_BUFFER, GL_R32UI, GL_RED, GL_UNSIGNED_INT, NULL);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 }
 
-void run_compute_shader_2(GLuint compute_program, GLuint triangle_buffer, GLuint ibo, int run_count) {
+void run_compute_shader_2(uint compute_program, uint triangle_buffer, uint ibo, int run_count) {
     #ifdef debug_triangle6_timing
         begin_timing_absolute()
     #endif
     clear_triangle_buffer(triangle_buffer);
     clear_ibo(ibo);
     glUseProgram(compute_program);
-    GLuint time_attribute = 0; // glGetUniformLocation(triangle_buffer, "time_passed");
+    uint time_attribute = 0; // glGetUniformLocation(triangle_buffer, "time_passed");
     glUniform1f(time_attribute, (float) get_time_seconds());
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, triangle_buffer);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ibo);
@@ -141,8 +141,8 @@ void run_compute_shader_2(GLuint compute_program, GLuint triangle_buffer, GLuint
     #endif
 }
 
-GLuint create_ibo() {
-    GLuint ibo;
+uint create_ibo() {
+    uint ibo;
     glGenBuffers(1, &ibo);
     glBindBuffer(GL_DRAW_INDIRECT_BUFFER, ibo);
     DrawArraysIndirectCommand drawCommand = { 0, 1, 0, 0 };
@@ -152,8 +152,8 @@ GLuint create_ibo() {
     return ibo;
 }
 
-GLuint create_ssbo(int bytes_allocated) {
-    GLuint buffer;
+uint create_ssbo(int bytes_allocated) {
+    uint buffer;
     glCreateBuffers(1, &buffer);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, buffer);
     glBufferData(GL_SHADER_STORAGE_BUFFER, bytes_allocated, NULL, GL_DYNAMIC_DRAW);
@@ -162,7 +162,7 @@ GLuint create_ssbo(int bytes_allocated) {
     return buffer;
 }
 
-void indirect_render_material(GLuint shader_program, GLuint ibo) {
+void indirect_render_material(uint shader_program, uint ibo) {
     glUseProgram(shader_program);
     glBindBuffer(GL_DRAW_INDIRECT_BUFFER, ibo);
     glDrawArraysIndirect(GL_TRIANGLES, 0);
@@ -199,12 +199,12 @@ int main(int argc, char *argv[]) {
     }
     printf("    + indirect rendering is supported\n");
     glClearColor(sky_r, sky_g, sky_b, 1.0f); //0.13f, 0.24f, 0.66f, 1.0f);
-    GLuint compute_program = setup_compute_buffer(compute_shader_source);
-    GLuint shader_program = create_material(vertex_shader_source, fragment_shader_source);
-    GLuint ssbo = create_ssbo(MAX_VERTICES * sizeof(vec3));
+    uint compute_program = setup_compute_buffer(compute_shader_source);
+    uint shader_program = create_material(vertex_shader_source, fragment_shader_source);
+    uint ssbo = create_ssbo(MAX_VERTICES * sizeof(vec3));
     attach_buffer_to_compute_program(compute_program, ssbo);
     attach_buffer_to_render_program(shader_program, ssbo);
-    GLuint ibo = create_ibo();
+    uint ibo = create_ibo();
     while (loop_glfw_window(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
         time_passed = get_time_seconds() * 100;

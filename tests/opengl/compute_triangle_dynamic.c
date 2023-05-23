@@ -25,10 +25,10 @@ const float sky_b = 0.28f;
 
 // Define the parameters for the indirect draw command
 struct DrawArraysIndirectCommand {
-    GLuint count;
-    GLuint instanceCount;
-    GLuint first;
-    GLuint baseInstance;
+    uint count;
+    uint instanceCount;
+    uint first;
+    uint baseInstance;
 } drawCommand = { MAX_VERTICES, 1, 0, 0 };
 // 3 | 0
 // , offset = 0
@@ -98,7 +98,7 @@ void main()\
     fragColor = vec4(0.47f, 0.03f, 0.03f, 1.0f);\
 }";
 
-void upload_verts(GLuint vbo) {
+void upload_verts(uint vbo) {
     GLfloat vertices[] = {
         0.0f, 0.5f, 0.0f,
         0.5f, -0.5f, 0.0f,
@@ -109,7 +109,7 @@ void upload_verts(GLuint vbo) {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void run_compute_shader_debug(GLuint compute_program, GLuint vbo, GLuint triangle_buffer, int run_count) {
+void run_compute_shader_debug(uint compute_program, uint vbo, uint triangle_buffer, int run_count) {
     //begin_timing_absolute()
     double time = 100.0 * get_time_seconds();
     run_compute_shader(compute_program, run_count, time);
@@ -117,8 +117,8 @@ void run_compute_shader_debug(GLuint compute_program, GLuint vbo, GLuint triangl
     //end_timing("    + compute timing")
 }
 
-GLuint create_ibo() {
-    GLuint ibo;
+uint create_ibo() {
+    uint ibo;
     glGenBuffers(1, &ibo);
     glBindBuffer(GL_DRAW_INDIRECT_BUFFER, ibo);
     glBufferData(GL_DRAW_INDIRECT_BUFFER, sizeof(drawCommand), &drawCommand, GL_DYNAMIC_DRAW);
@@ -126,8 +126,8 @@ GLuint create_ibo() {
     return ibo;
 }
 
-GLuint create_simple_vbo() {
-    GLuint vbo;
+uint create_simple_vbo() {
+    uint vbo;
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glEnableVertexAttribArray(0);
@@ -136,17 +136,17 @@ GLuint create_simple_vbo() {
     return vbo;
 }
 
-GLuint create_count_buffer() { 
-    GLuint countBuffer;
+uint create_count_buffer() { 
+    uint countBuffer;
     glGenBuffers(1, &countBuffer);
     glBindBufferBase(GL_ATOMIC_COUNTER_BUFFER, 0, countBuffer);
-    GLuint zero = 0;
-    glBufferData(GL_ATOMIC_COUNTER_BUFFER, sizeof(GLuint), &zero, GL_DYNAMIC_DRAW);
+    uint zero = 0;
+    glBufferData(GL_ATOMIC_COUNTER_BUFFER, sizeof(uint), &zero, GL_DYNAMIC_DRAW);
     return countBuffer;
 }
 
-GLuint create_dynamic_storage_buffer() {
-    GLuint buffer;
+uint create_dynamic_storage_buffer() {
+    uint buffer;
     glCreateBuffers(1, &buffer);
     glNamedBufferStorage(buffer, MAX_VERTICES * 4 * 3, NULL, GL_DYNAMIC_STORAGE_BIT);
     // glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, buffer);
@@ -184,12 +184,11 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     printf("    + indirect rendering is supported\n");
-    GLuint compute_program = setup_compute_buffer(compute_shader_source);
-    GLuint shader_program = create_material(vertex_shader_source, fragment_shader_source);
-    GLuint ibo = create_ibo();
-    GLuint vbo = create_simple_vbo();
-    // GLuint count_buffer = create_count_buffer();
-    GLuint triangle_buffer = create_dynamic_storage_buffer();
+    uint compute_program = setup_compute_buffer(compute_shader_source);
+    uint shader_program = create_material(vertex_shader_source, fragment_shader_source);
+    uint ibo = create_ibo();
+    uint vbo = create_simple_vbo();
+    uint triangle_buffer = create_dynamic_storage_buffer();
     attach_buffer_to_compute_program(compute_program, triangle_buffer);
     attach_buffer_to_render_program(shader_program, triangle_buffer);
     glClearColor(sky_r, sky_g, sky_b, 1.0f); //0.13f, 0.24f, 0.66f, 1.0f);
@@ -210,13 +209,3 @@ int main(int argc, char *argv[]) {
     close_glfw_window(window);
     return 0;
 }
-
-// GLuint vbo = create_vertex_buffer(shader_program, vertex_count, single_data_length);
-// upload_verts(vbo);
-
-// Generate a vertex buffer object (VBO)
-/*glGenBuffers(1, &vbo);
-glBindBuffer(GL_ARRAY_BUFFER, vbo);
-// glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
-glEnableVertexAttribArray(0);
-glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);*/

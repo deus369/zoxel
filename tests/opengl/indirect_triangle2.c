@@ -4,10 +4,10 @@
 
 // Define the parameters for the indirect draw command
 struct DrawArraysIndirectCommand {
-    GLuint count;
-    GLuint instanceCount;
-    GLuint first;
-    GLuint baseInstance;
+    uint count;
+    uint instanceCount;
+    uint first;
+    uint baseInstance;
 } drawCommand = { 3, 1, 0, 0 };
 
 int main() {
@@ -37,7 +37,7 @@ int main() {
     };
 
     // Generate a vertex buffer object (VBO)
-    GLuint vbo;
+    uint vbo;
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -45,7 +45,7 @@ int main() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
     // Generate an indirect buffer object (IBO)
-    GLuint ibo;
+    uint ibo;
     glGenBuffers(1, &ibo);
     glBindBuffer(GL_DRAW_INDIRECT_BUFFER, ibo);
     glBufferData(GL_DRAW_INDIRECT_BUFFER, sizeof(drawCommand), &drawCommand, GL_STATIC_DRAW);

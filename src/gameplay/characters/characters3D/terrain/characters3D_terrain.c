@@ -12,7 +12,6 @@
 zoxel_begin_module(Characters3DTerrain)
 set_character_terrain_settings();
 // zoxel_system_defines
-// EcsPostUpdate, EcsOnLoad
 // todo: spawn characters on thread instead
 zox_system_1(Characters3DSpawnSystem, EcsPreUpdate, [none] terrain.TerrainChunk, [in] GenerateChunk, [in] ChunkOctree, [in] ChunkPosition, [in] ChunkDivision, [out] EntityLinks)
 zox_system(ChunkCharactersUpdateSystem, EcsOnUpdate, [none] terrain.TerrainChunk, [in] ChunkDirty, [in] ChunkDivision, [in] EntityLinks)
@@ -21,3 +20,5 @@ zox_system(ChunkCharactersUpdateSystem, EcsOnUpdate, [none] terrain.TerrainChunk
 zoxel_end_module(Characters3DTerrain)
 
 #endif
+
+// EcsPostUpdate, EcsOnLoad

@@ -29,7 +29,7 @@ void Render3DColoredSystem(ecs_iter_t *it) {
             glUniformMatrix4fv(materialColored3D.view_matrix, 1, GL_FALSE, (float*) &render_camera_matrix);
             glUniform1f(materialColored3D.scale, scale1D->value);
             glUniform1f(materialColored3D.brightness, brightness->value);
-            GLuint fog_data_location = glGetUniformLocation(colored3D_material, "fog_data");
+            uint fog_data_location = glGetUniformLocation(colored3D_material, "fog_data");
             glUniform4f(fog_data_location, fog_color.x, fog_color.y, fog_color.z, fog_density);
             // glUniform4f(materialColored3D.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
             // zoxel_log(" - Rendering 3D Colored Mesh [%lu]\n", (long int) it->entities[i]);

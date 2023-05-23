@@ -1,24 +1,18 @@
 //! Contains a link to the MaterialGPULink on the GPU.
-zoxel_component(MaterialGPULink, GLuint);
+zoxel_component(MaterialGPULink, uint)
 
-extern GLuint spawn_gpu_material_program(const GLuint2 shader);
+extern uint spawn_gpu_material_program(const uint2 shader);
 
-void add_gpu_material(ecs_world_t *world, ecs_entity_t prefab) {
-    if (!headless) {
-        zox_set(prefab, MaterialGPULink, { 0 });
-    }
+void add_gpu_material(ecs_world_t *world, ecs_entity_t e) {
+    if (!headless) zox_set(e, MaterialGPULink, { 0 })
 }
 
-void spawn_gpu_material(ecs_world_t *world, ecs_entity_t e, const GLuint2 shader) {
-    if (!headless) {
-        ecs_set(world, e, MaterialGPULink, { spawn_gpu_material_program(shader) });
-    }
+void spawn_gpu_material(ecs_world_t *world, ecs_entity_t e, const uint2 shader) {
+    if (!headless) ecs_set(world, e, MaterialGPULink, { spawn_gpu_material_program(shader) });
 }
 
 ECS_DTOR(MaterialGPULink, ptr, {
-    if (ptr->value != 0) {
-        glDeleteProgram(ptr->value);
-    }
+    if (ptr->value != 0) glDeleteProgram(ptr->value);
 })
 
 /*

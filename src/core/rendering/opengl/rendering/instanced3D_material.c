@@ -1,8 +1,8 @@
 // todo: set the verts like I do in 3D shader!
-GLuint2 shader3D;
-GLuint materialInstance3D;
+uint2 shader3D;
+uint materialInstance3D;
 Material3D material3D;
-GLuint2 materialInstance3D_mesh;
+uint2 materialInstance3D_mesh;
 
 void dispose_shader3D_instance_material() {
     glDeleteShader(shader3D.x);
@@ -12,7 +12,7 @@ void dispose_shader3D_instance_material() {
     glDeleteProgram(materialInstance3D);
 }
 
-void initialize_cube_mesh(GLuint material) {
+void initialize_cube_mesh(uint material) {
     glGenBuffers(1, &materialInstance3D_mesh.x);
     glGenBuffers(1, &materialInstance3D_mesh.y);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, materialInstance3D_mesh.x);
@@ -28,7 +28,7 @@ void initialize_cube_mesh(GLuint material) {
 
 int load_shader3D_basic() {
     shader3D = spawn_gpu_shader_inline(shader3D_vert_buffer, shader3D_frag_buffer);
-    materialInstance3D = spawn_gpu_material_program((const GLuint2) { shader3D.x, shader3D.y });
+    materialInstance3D = spawn_gpu_material_program((const uint2) { shader3D.x, shader3D.y });
     material3D = spawn_material3D_properties(materialInstance3D);
     initialize_cube_mesh(materialInstance3D);
     return 0;
@@ -54,7 +54,7 @@ void RenderEntity3D(float3 position, float4 rotation, float scale1D, float brigh
 }
 
 //! Set the mesh on the gpu by uploading indicies and vert buffers.
-void set_gpu_mesh(GLuint2 mesh, GLuint material, const int *indicies, int indicies_length, const float3 *verts, int verts_length) {
+void set_gpu_mesh(uint2 mesh, uint material, const int *indicies, int indicies_length, const float3 *verts, int verts_length) {
     // tri_count += indicies_length / 3;
     // zoxel_log("set_gpu_mesh - adding tris\n");
     Material3D material3D = spawn_material3D_properties(material);
@@ -82,7 +82,7 @@ void set_gpu_mesh(GLuint2 mesh, GLuint material, const int *indicies, int indici
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void set_gpu_mesh2D(GLuint2 mesh, GLuint material, const int *indicies, int indicies_length, const float2 *verts, int verts_length) {
+void set_gpu_mesh2D(uint2 mesh, uint material, const int *indicies, int indicies_length, const float2 *verts, int verts_length) {
     // tri_count += indicies_length / 3;
     Material3D material3D = spawn_material3D_properties(material);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);

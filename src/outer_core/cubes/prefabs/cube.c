@@ -11,8 +11,8 @@ ecs_entity_t spawn_prefab_cube(ecs_world_t *world) {
         zox_add(e, Brightness);
         zox_set(e, MeshDirty, { 1 });
         if (!headless) {
-            zox_add(e, MeshIndicies);
-            zox_add(e, MeshVertices);
+            prefab_set_mesh_indicies(world, e, cubeIndicies, 36);
+            prefab_set_mesh_vertices(world, e, cubeVertices, 24);
         }
         add_gpu_mesh(world, e);
         add_gpu_material(world, e);
@@ -37,8 +37,6 @@ ecs_entity_t spawn_cube(ecs_world_t *world, ecs_entity_t prefab, float3 position
     if (!headless) {
         spawn_gpu_mesh(world, e);
         spawn_gpu_material(world, e, shader3D);
-        set_mesh_indicies_world(world, e, cubeIndicies, 36);
-        set_mesh_vertices_world(world, e, cubeVertices, 24);
     }
     ecs_defer_end(world);
     // zoxel_log("Spawned Character2D [%lu]\n", (long unsigned int) e);

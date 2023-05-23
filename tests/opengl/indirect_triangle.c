@@ -11,8 +11,8 @@ struct DrawArraysIndirectCommand {
 };
 
 struct IndirectRenderData {
-    GLuint vbo;
-    GLuint command_buffer;
+    uint vbo;
+    uint command_buffer;
     struct DrawArraysIndirectCommand command;
     GLfloat vertices[];
 };

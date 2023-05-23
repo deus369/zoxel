@@ -13,7 +13,7 @@ ecs_entity_t spawn_prefab_fps_display(ecs_world_t *world) {
     // has EcsPrefab?
     zox_add_tag(e, FPSDisplay);
     zox_set(e, FPSDisplayTicker, { 0 });
-    set_mesh2D_vertices_world(world, e, square_vertices_left_aligned, 4);
+    prefab_set_mesh2D_vertices(world, e, square_vertices_left_aligned, 4);
     ecs_defer_end(world);
     fps_display_prefab = e;
     return e;

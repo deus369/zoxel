@@ -1,5 +1,5 @@
 extern unsigned char renderer_layer;
-extern void render_entity_material2D_and_mesh(const float4x4 viewMatrix, GLuint2 mesh, GLuint material, GLuint texture, float2 position,
+extern void render_entity_material2D_and_mesh(const float4x4 viewMatrix, uint2 mesh, uint material, uint texture, float2 position,
     float angle, float scale, float brightness, unsigned char layer);
 
 //! Render 2D entities.

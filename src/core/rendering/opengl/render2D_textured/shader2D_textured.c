@@ -1,10 +1,10 @@
 const float shader_depth_multiplier = 0.001f; // 0.0001f;
 const unsigned char disableTextureLoaded = 0;
 int textureType = GL_NEAREST; // GL_LINEAR
-GLuint2 shader2D_textured;
-GLuint texturedMaterial;
-GLuint2 squareTexturedMesh;
-GLuint squareTexturedModelUVs;
+uint2 shader2D_textured;
+uint texturedMaterial;
+uint2 squareTexturedMesh;
+uint squareTexturedModelUVs;
 
 void dispose_shader2D_textured() {
     glDeleteBuffers(1, &squareTexturedMesh.x);
@@ -19,7 +19,7 @@ void dispose_shader2D_textured() {
     #endif
 }
 
-void initialize_texture_mesh(GLuint material) {
+void initialize_texture_mesh(uint material) {
     MaterialTextured2D materialTextured2D = initialize_material2D_textured(material);
     // gen buffers
     glGenBuffers(1, &squareTexturedMesh.x);
@@ -43,14 +43,14 @@ void initialize_texture_mesh(GLuint material) {
 
 int load_shader2D_textured() {
     shader2D_textured = spawn_gpu_shader_inline(shader2D_textured_vert_buffer, shader2D_textured_frag_buffer);
-    texturedMaterial = spawn_gpu_material_program((const GLuint2) { shader2D_textured.x, shader2D_textured.y });
+    texturedMaterial = spawn_gpu_material_program((const uint2) { shader2D_textured.x, shader2D_textured.y });
     // texturedMaterial = load_gpu_shader(&shader2D_textured, shader2D_textured_filepath_vert, shader2D_textured_filepath_frag);
     initialize_texture_mesh(texturedMaterial);
     return 0;
 }
 
-GLuint spawn_gpu_texture_buffers() {
-    GLuint textureID;
+uint spawn_gpu_texture_buffers() {
+    uint textureID;
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -61,7 +61,7 @@ GLuint spawn_gpu_texture_buffers() {
     return textureID;
 }
 
-void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint texture, float2 position, float angle, float scale, float brightness) {
+void render_entity_material2D(const float4x4 viewMatrix, uint material, uint texture, float2 position, float angle, float scale, float brightness) {
     if (material == 0) {
         // printf("render_entity_material2D material is 0.\n");
         return;
@@ -92,7 +92,7 @@ void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint
     #endif
 }
 
-void render_entity_material2D_and_mesh(const float4x4 viewMatrix, GLuint2 mesh, GLuint material, GLuint texture, float2 position, float angle, float scale, float brightness, unsigned char layer) {
+void render_entity_material2D_and_mesh(const float4x4 viewMatrix, uint2 mesh, uint material, uint texture, float2 position, float angle, float scale, float brightness, unsigned char layer) {
     if (material == 0) {
         // printf("render_entity_material2D material is 0.\n");
         return;
@@ -129,7 +129,7 @@ void render_entity_material2D_and_mesh(const float4x4 viewMatrix, GLuint2 mesh, 
     #endif
 }
 
-void opengl_upload_shader2D_textured(GLuint2 mesh_buffer, GLuint material_buffer,
+void opengl_upload_shader2D_textured(uint2 mesh_buffer, uint material_buffer,
     const int *indicies, int indicies_length, const float2 *verts, const float2 *uvs, int verts_length) {
     MaterialTextured2D materialTextured2D = initialize_material2D_textured(material_buffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);

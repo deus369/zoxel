@@ -7,7 +7,6 @@ zoxel_declare_tag(TerrainChunk)
 zoxel_declare_tag(ChunkTerrain)
 zoxel_declare_tag(Streamer)
 zoxel_component(StreamPoint, int3)
-// zoxel_byte_component(ChunkDirtier)
 #include "prefabs/terrain.c"
 #include "prefabs/terrain_chunk.c"
 #include "prefabs/terrain_chunk_octree.c"
@@ -31,7 +30,6 @@ zoxel_define_tag(TerrainChunk)
 zoxel_define_tag(ChunkTerrain)
 zoxel_define_tag(Streamer)
 zoxel_define_component(StreamPoint)
-// zoxel_define_component(ChunkDirtier)
 zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [in] GenerateChunk)
 zox_filter(chunks_generating, [in] GenerateChunk)
 zox_filter(terrain_chunks_query, [none] TerrainChunk, [in] ChunkPosition, [in] ChunkNeighbors, [out] ChunkDivision, [out] ChunkDirty)

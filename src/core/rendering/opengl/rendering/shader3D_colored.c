@@ -1,8 +1,8 @@
-GLuint2 shader3D_colored;
-GLuint colored3D_material;
+uint2 shader3D_colored;
+uint colored3D_material;
 MaterialColored3D materialColored3D;
 
-MaterialColored3D spawn_material3D_colored_properties(GLuint material) {
+MaterialColored3D spawn_material3D_colored_properties(uint material) {
     MaterialColored3D materialColored3D;
     materialColored3D.view_matrix = glGetUniformLocation(material, "camera_matrix");
     materialColored3D.position = glGetUniformLocation(material, "position");
@@ -31,7 +31,7 @@ int load_shader3D_colored() {
     return 0;
 }
 
-void set_gpu_mesh_colors(GLuint2 mesh, GLuint color_buffer, const int *indicies, int indicies_length,
+void set_gpu_mesh_colors(uint2 mesh, uint color_buffer, const int *indicies, int indicies_length,
     const float3 *verts, int verts_length, const color_rgb *color_rgbs) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);
@@ -43,7 +43,7 @@ void set_gpu_mesh_colors(GLuint2 mesh, GLuint color_buffer, const int *indicies,
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void opengl_set_buffer_attributes_colors(GLuint vertex_buffer, GLuint color_buffer) {
+void opengl_set_buffer_attributes_colors(uint vertex_buffer, uint color_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glEnableVertexAttribArray(materialColored3D.vertexPosition);
     glVertexAttribPointer(materialColored3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 0, 0); // sizeof(float3), 0);

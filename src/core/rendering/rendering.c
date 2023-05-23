@@ -6,7 +6,7 @@ float3 fog_color = (float3) { 0.5f, 0.55f, 0.58f };
 // float3 fog_color = (float3) { 0.9f, 0.95f, 0.98f };
 // float3 fog_color = (float3) { 2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f };
 float fog_density = 0.0326f;
-#include "data/GLuint2.c"
+#include "data/uint2.c"
 // todo: replace this with a render stack, which can easily be used in a camera_render_system
 //      > it can also be sorted better for z issues on translucent materials
 float4x4 render_camera_matrix; 

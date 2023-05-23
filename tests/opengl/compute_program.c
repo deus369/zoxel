@@ -44,7 +44,7 @@ typedef struct {
     float y;
     float z;
 } vec3;
-GLuint compute_shader, compute_program, vertex_buffer;
+uint compute_shader, compute_program, vertex_buffer;
 
 GLFWwindow* setup_window() {
     if (!glfwInit()) {

@@ -48,8 +48,7 @@ void StreamPointSystem(ecs_iter_t *it) {
                         get_chunk_division(new_position, int3_back(chunkPosition->value)))  ||
                     (chunkNeighbors->value[5] != 0 && 
                         ecs_get(it->world, chunkNeighbors->value[5], ChunkDivision)->value !=
-                        get_chunk_division(new_position, int3_front(chunkPosition->value))))
-                {
+                        get_chunk_division(new_position, int3_front(chunkPosition->value)))) {
                     changed[j] = new_chunk_division;
                     #ifdef zoxel_time_stream_point_system
                         updated_count++;

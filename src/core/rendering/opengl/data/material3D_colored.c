@@ -1,10 +1,10 @@
 typedef struct {
     GLint vertexPosition;
     GLint vertexColor;
-    GLuint view_matrix;
-    GLuint position;
-    GLuint rotation;
-    GLuint scale;
-    GLuint brightness;
-    GLuint fog_data;
+    uint view_matrix;
+    uint position;
+    uint rotation;
+    uint scale;
+    uint brightness;
+    uint fog_data;
 } MaterialColored3D;

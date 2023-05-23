@@ -1,7 +1,7 @@
 //! External data/function.
 const unsigned char isDebugRenderMaterial2DSystem = 0;
 extern float4x4 render_camera_matrix;
-extern void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint texture, float2 position,
+extern void render_entity_material2D(const float4x4 viewMatrix, uint material, uint texture, float2 position,
     float angle, float scale, float brightness);
 
 //! Render 2D entities.

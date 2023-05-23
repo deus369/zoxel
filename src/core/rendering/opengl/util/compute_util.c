@@ -92,7 +92,7 @@ int check_compute_shader_support() {
 }
 
 int test_compute_shader() {
-    GLuint compute_shader = glCreateShader(GL_COMPUTE_SHADER);
+    uint compute_shader = glCreateShader(GL_COMPUTE_SHADER);
     if (compute_shader == 0) {
         zoxel_log("    - compute shader creation failed\n");
         return EXIT_FAILURE;

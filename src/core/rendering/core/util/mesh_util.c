@@ -1,28 +1,29 @@
-void set_mesh_indicies_world(ecs_world_t *world, ecs_entity_t e, const int indicies[], int length) {
-    MeshIndicies *meshIndicies = ecs_get_mut(world, e, MeshIndicies);
-    re_initialize_memory_component(meshIndicies, int, length);
-    for (int i = 0; i < meshIndicies->length; i++) {
-        meshIndicies->value[i] = indicies[i];
-    }
-    ecs_modified(world, e, MeshIndicies);
+void prefab_set_mesh_indicies(ecs_world_t *world, ecs_entity_t e, const int indicies[], int length) {
+    MeshIndicies meshIndicies = { };
+    initialize_memory_component_non_pointer(meshIndicies, int, length);
+    memcpy(meshIndicies.value, indicies, length * sizeof(int));
+    zox_set(e, MeshIndicies, { meshIndicies.length, meshIndicies.value });
 }
 
-void set_mesh2D_vertices_world(ecs_world_t *world, ecs_entity_t e, const float2 vertices[], int length) {
-    MeshVertices2D *meshVertices = ecs_get_mut(world, e, MeshVertices2D);
-    re_initialize_memory_component(meshVertices, float2, length);
-    for (int i = 0; i < meshVertices->length; i++) {
-        meshVertices->value[i] = vertices[i];
-    }
-    ecs_modified(world, e, MeshVertices2D);
+void prefab_set_mesh2D_vertices(ecs_world_t *world, ecs_entity_t e, const float2 vertices[], int length) {
+    MeshVertices2D meshVertices = { };
+    initialize_memory_component_non_pointer(meshVertices, float2, length);
+    memcpy(meshVertices.value, vertices, length * sizeof(float2));
+    zox_set(e, MeshVertices2D, { meshVertices.length, meshVertices.value });
 }
 
-void set_mesh_vertices_world(ecs_world_t *world, ecs_entity_t e, const float3 vertices[], int length) {
-    MeshVertices *meshVertices = ecs_get_mut(world, e, MeshVertices);
-    initialize_memory_component(meshVertices, float3, length);
-    for (int i = 0; i < meshVertices->length; i++) {
-        meshVertices->value[i] = (float3) { vertices[i].x, vertices[i].y, vertices[i].z };
-    }
-    ecs_modified(world, e, MeshVertices);
+void prefab_set_mesh_uvs(ecs_world_t *world, ecs_entity_t e, const float2 uvs[], int length) {
+    MeshUVs meshUVs = { };
+    initialize_memory_component_non_pointer(meshUVs, float2, length);
+    memcpy(meshUVs.value, uvs, length * sizeof(float2));
+    zox_set(e, MeshUVs, { meshUVs.length, meshUVs.value });
+}
+
+void prefab_set_mesh_vertices(ecs_world_t *world, ecs_entity_t e, const float3 vertices[], int length) {
+    MeshVertices meshVertices = { };
+    initialize_memory_component_non_pointer(meshVertices, float3, length);
+    memcpy(meshVertices.value, vertices, length * sizeof(float3));
+    zox_set(e, MeshVertices, { meshVertices.length, meshVertices.value });
 }
 
 void scale_mesh2D_vertices(ecs_world_t *world, ecs_entity_t e, float2 scale2D) {
@@ -41,11 +42,4 @@ void set_mesh_vertices_world_scale2D(ecs_world_t *world, ecs_entity_t e, const f
         float2_multiply_float2_p(&meshVertices2D->value[i], scale2D);
     }
     ecs_modified(world, e, MeshVertices2D);
-}
-
-void set_mesh_indicies(MeshIndicies* meshIndicies, const int indicies[], int length) {
-    re_initialize_memory_component(meshIndicies, int, length);
-    for (int i = 0; i < meshIndicies->length; i++) {
-        meshIndicies->value[i] = indicies[i];
-    }
 }

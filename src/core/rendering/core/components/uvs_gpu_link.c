@@ -3,7 +3,7 @@
 *   Materials are shader program instances.
 *   \todo Seperate mesh data into different files.
 */
-zoxel_component(UvsGPULink, GLuint);
+zoxel_component(UvsGPULink, uint) // uint);
 
 void add_gpu_uvs(ecs_world_t *world, ecs_entity_t prefab) {
     if (!headless) {

@@ -61,7 +61,7 @@ void restore_mesh_resources(ecs_world_t *world, ecs_entity_t e) {
     }
 }
 
-void restore_material_resources(ecs_world_t *world, ecs_entity_t e, GLuint2 shader) {
+void restore_material_resources(ecs_world_t *world, ecs_entity_t e, uint2 shader) {
     if (ecs_has(world, e, MaterialGPULink)) {
         ecs_set(world, e, MaterialGPULink, { spawn_gpu_material_program(shader) });
     }

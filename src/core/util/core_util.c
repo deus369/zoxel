@@ -18,7 +18,6 @@ unsigned char get_cpu_tier(int core_count) {
 }
 
 void update_core() {
-    // begin_timing_absolute()
     if (!headless) {
         #ifdef zoxel_inputs
             reset_input_devices(world);
@@ -27,9 +26,7 @@ void update_core() {
         #ifdef zoxel_on_web
             update_web_canvas(world);   // handles resize event
         #endif
-        if (rendering) {
-            render_pre_loop();
-        }
+        if (rendering) render_pre_loop();
     }
     // ecs_log_set_level(1);    // use this to debug system pipelines
     ecs_progress(world, 0);
@@ -49,21 +46,17 @@ void update_core() {
 
 int begin_core(int argc, char* argv[]) {
     int didFail = process_arguments(argc, argv);
-    if (didFail == EXIT_FAILURE) {
-        return EXIT_FAILURE;
-    }
+    if (didFail == EXIT_FAILURE) return EXIT_FAILURE;
     cpu_core_count = SDL_GetCPUCount();
     cpu_tier = get_cpu_tier(cpu_core_count);
-    world = open_ecs(argc, argv, profiler, cpu_core_count); // begin ecs
+    world = open_ecs(argc, argv, profiler, cpu_core_count);
     return EXIT_SUCCESS;
 }
 
 void close_core() {
-    if (!headless) {
-        dispose_opengl();
-    }
     close_ecs();
     if (!headless) {
+        dispose_opengl();
         close_audio_sdl();
         SDL_Quit();
     }

@@ -2,7 +2,7 @@ ecs_entity_t prefab_terrain_chunk_octree;
 
 ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_prefab(world, ""); // , "prefab_cube");
+    ecs_entity_t e = ecs_new_prefab(world, "");
     zox_add_tag(e, TerrainChunk);
     #ifdef zoxel_transforms3D
         add_transform3Ds(world, e);
@@ -12,9 +12,8 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size) {
     zox_set(e, Brightness, { 1.4f });
     add_seed(world, e, 666);
     add_chunk_octree(world, e, size);
-    zox_set(e, EntityLinks, { 0, NULL })
+    zox_set(e, EntityLinks, { 0, NULL })    // character and minivox links
     add_generate_chunk(world, e);
-    // zox_set(e, ChunkSize, { size });
     if (!headless) {
         zox_add(e, MeshIndicies);
         zox_add(e, MeshVertices);
@@ -26,10 +25,6 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size) {
         add_gpu_uvs(world, e);
         add_gpu_texture(world, e);
     }
-    // rest
-    // add_texture(world, e, chunk_texture_size, 1);
-    // add_noise_texture(world, e);
-    // zox_add_tag(e, DirtTexture);
     ecs_defer_end(world);
     prefab_terrain_chunk_octree = e;
     return e;
@@ -49,6 +44,3 @@ ecs_entity_t spawn_terrain_chunk_octree(ecs_world_t *world, ecs_entity_t prefab,
     ecs_defer_end(world);
     return e;
 }
-
-// unsigned char distance = ((int_abs(chunk_position.x) + int_abs(chunk_position.z)) / 2);
-// unsigned char distance = int_max(int_abs(chunk_position.x), int_abs(chunk_position.z));

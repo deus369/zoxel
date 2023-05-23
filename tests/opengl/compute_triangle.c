@@ -61,7 +61,7 @@ void main() {\
     positions[index] = position;\
 }";
 
-void run_compute_shader_debug(GLuint compute_program, GLuint vbo, GLuint position_buffer, int data_length, int vertex_count) {
+void run_compute_shader_debug(uint compute_program, uint vbo, uint position_buffer, int data_length, int vertex_count) {
     begin_timing_absolute()
     zoxel_log("    > Running compute\n");
     double time = 100.0 * get_time_seconds();
@@ -82,11 +82,11 @@ int main() {
         close_glfw_window(window);
         return 1;
     }
-    GLuint position_buffer = setup_storage_buffer(data_length);
-    GLuint compute_program = setup_compute_buffer(compute_shader_source);
+    uint position_buffer = setup_storage_buffer(data_length);
+    uint compute_program = setup_compute_buffer(compute_shader_source);
     attach_buffer_to_compute_program(compute_program, position_buffer);
-    GLuint shader_program = create_material(vertex_shader_source, fragment_shader_source);
-    GLuint vbo = create_vertex_buffer(shader_program, vertex_count, single_data_length);
+    uint shader_program = create_material(vertex_shader_source, fragment_shader_source);
+    uint vbo = create_vertex_buffer(shader_program, vertex_count, single_data_length);
     attach_buffer_to_render_program(shader_program, position_buffer);
     // Use shader program and bind vertex buffer for rendering
     while (loop_glfw_window(window)) {

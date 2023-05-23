@@ -1,7 +1,7 @@
-GLuint2 shader2D_basic;
-GLuint square2DMaterial;
+uint2 shader2D_basic;
+uint square2DMaterial;
 Material2D material2D;
-GLuint2 squareMesh;
+uint2 squareMesh;
 
 void dispose_shader2D_instance_material() {
     glDeleteShader(shader2D_basic.x);
@@ -11,7 +11,7 @@ void dispose_shader2D_instance_material() {
     glDeleteProgram(square2DMaterial);
 }
 
-void initialize_mesh(GLuint material) {
+void initialize_mesh(uint material) {
     glGenBuffers(1, &squareMesh.x);
     glGenBuffers(1, &squareMesh.y);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareMesh.x);
@@ -32,7 +32,7 @@ void initialize_mesh(GLuint material) {
 
 int load_instance2D_material() {
     shader2D_basic = spawn_gpu_shader_inline(shader2D_basic_vert_buffer, shader2D_basic_frag_buffer);
-    square2DMaterial = spawn_gpu_material_program((const GLuint2) { shader2D_basic.x, shader2D_basic.y });
+    square2DMaterial = spawn_gpu_material_program((const uint2) { shader2D_basic.x, shader2D_basic.y });
     initialize_material2D_properties(&material2D, square2DMaterial);
     initialize_mesh(square2DMaterial);
     return 0;

@@ -1,4 +1,4 @@
-GLuint2 shader3D_textured;
+uint2 shader3D_textured;
 
 void dispose_shader3D_textured() {
     glDeleteShader(shader3D_textured.x);
@@ -13,11 +13,11 @@ int load_shader3D_textured() {
     return 0;
 }
 
-void opengl_set_texture_only(GLuint texture_buffer) {
+void opengl_set_texture_only(uint texture_buffer) {
     glBindTexture(GL_TEXTURE_2D, texture_buffer);
 }
 
-void opengl_set_texture(GLuint texture_buffer, unsigned char isBlend) {
+void opengl_set_texture(uint texture_buffer, unsigned char isBlend) {
     if (isBlend) {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_BLEND);
@@ -55,7 +55,7 @@ void opengl_shader3D_textured_set_camera_view_matrix(const float4x4 view_matrix,
 // glEnableVertexAttribArray(materialTextured3D.vertexPosition);
 // glVertexAttribPointer(materialTextured3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 12, 0); // 4 * 3
 
-void opengl_upload_shader3D_textured(GLuint2 mesh_buffer, GLuint uv_buffer, GLuint color_buffer,
+void opengl_upload_shader3D_textured(uint2 mesh_buffer, uint uv_buffer, uint color_buffer,
     const int *indicies, int indicies_length, const float3 *verts, int verts_length,
     const float2 *uvs, const color_rgb *color_rgbs) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
@@ -70,7 +70,7 @@ void opengl_upload_shader3D_textured(GLuint2 mesh_buffer, GLuint uv_buffer, GLui
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void opengl_set_buffer_attributes(GLuint vertex_buffer, GLuint uv_buffer, GLuint color_buffer, Material3DTextured *attributes) {
+void opengl_set_buffer_attributes(uint vertex_buffer, uint uv_buffer, uint color_buffer, Material3DTextured *attributes) {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glEnableVertexAttribArray(attributes->vertexPosition);
     glVertexAttribPointer(attributes->vertexPosition, 3, GL_FLOAT, GL_FALSE, 0, 0); // 12, 0);
@@ -89,7 +89,7 @@ glVertexAttribPointer(materialTextured3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 
 glVertexAttribPointer(materialTextured3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 20, (GLvoid*)(12));*/
 
 /*void opengl_upload_shader3D_textured(
-    GLuint2 mesh_buffer, GLuint material_buffer,
+    uint2 mesh_buffer, uint material_buffer,
     const int *indicies, int indicies_length,
     const float3 *verts, int verts_length,
     const float2 *uvs, int uvs_length) {
@@ -159,7 +159,7 @@ layout(location = 7) uniform sampler2D tex;\
     // Enable the vertex attribute arrays
     // glEnableVertexAttribArray(shader_attributes_material_textured3D.vertexPosition);
     // glEnableVertexAttribArray(shader_attributes_material_textured3D.vertexUV);
-    /*GLuint material = spawn_gpu_material_program(shader3D_textured);
+    /*uint material = spawn_gpu_material_program(shader3D_textured);
     shader_attributes_material_textured3D = (Material3DTextured) { 
         glGetAttribLocation(material, "vertexPosition"),
         glGetAttribLocation(material, "vertexUV"),

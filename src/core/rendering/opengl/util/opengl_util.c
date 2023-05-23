@@ -21,8 +21,8 @@ void opengl_clear() {
 }
 
 //! Spawns the buffers for a mesh indicies and verts on the gpu.
-GLuint2 spawn_gpu_mesh_buffers() {
-    GLuint2 mesh;
+uint2 spawn_gpu_mesh_buffers() {
+    uint2 mesh;
     glGenBuffers(1, &mesh.x);
     glGenBuffers(1, &mesh.y);
     #ifdef zoxel_catch_opengl_errors
@@ -31,13 +31,13 @@ GLuint2 spawn_gpu_mesh_buffers() {
     return mesh;
 }
 
-GLuint spawn_gpu_generic_buffer() {
-    GLuint buffer;
+uint spawn_gpu_generic_buffer() {
+    uint buffer;
     glGenBuffers(1, &buffer);
     return buffer;
 }
 
-unsigned char opengl_set_material(GLuint material) {
+unsigned char opengl_set_material(uint material) {
     if (material == 0) {
         // printf("render_entity_material2D material is 0.\n");
         return 0;
@@ -49,16 +49,16 @@ unsigned char opengl_set_material(GLuint material) {
     return 1;
 }
 
-void opengl_bind_mesh(GLuint2 mesh) {
+void opengl_bind_mesh(uint2 mesh) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);    // for indices
     glBindBuffer(GL_ARRAY_BUFFER, mesh.y);            // for vertex coordinates
 }
 
-void opengl_set_mesh_indicies(GLuint indices_buffer) {
+void opengl_set_mesh_indicies(uint indices_buffer) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_buffer);    // for indices
 }
 
-void opengl_set_mesh_uvs(GLuint uv_buffer) {
+void opengl_set_mesh_uvs(uint uv_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);         // for UV coordinates
 }
 
@@ -78,8 +78,8 @@ void opengl_disable_opengl_program() {
     glUseProgram(0);
 }
 
-void opengl_set_camera_view_matrix(GLuint material, const float4x4 view_matrix) {
-    GLuint view_matrix_location = glGetUniformLocation(material, "camera_matrix");
+void opengl_set_camera_view_matrix(uint material, const float4x4 view_matrix) {
+    uint view_matrix_location = glGetUniformLocation(material, "camera_matrix");
     // glUniformMatrix4fv(view_matrix_location, 1, GL_FALSE, (const GLfloat*) ((float*) &view_matrix));
     glUniformMatrix4fv(view_matrix_location, 1, GL_FALSE, (float*) &view_matrix);
 }

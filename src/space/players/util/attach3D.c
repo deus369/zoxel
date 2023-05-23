@@ -16,10 +16,6 @@ void attach_to_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t c
     zox_set(character, DisableMovement, { 0 });
     ecs_add(world, character, PlayerCharacter3D);
     ecs_set(world, mouse_entity, MouseLock, { 1 });
-    // ecs_set(world, camera, LocalPosition3D, { 0, 0, vox_scale / 2.0f }); // zoxel_set
-    // ecs_set(world, camera, LocalPosition3D, { vox_scale / 2.0f, vox_scale + vox_scale / 2.0f, vox_scale });
-    // ecs_set(world, camera, LocalEuler3D, { float3_zero });
-    // zoxel_log("scale %f\n", vox_scale);
 }
 
 void detatch_from_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t character) {
@@ -30,3 +26,8 @@ void detatch_from_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_
     ecs_set(world, camera, ParentLink, { 0 });
     ecs_remove(world, camera, FirstPersonCamera);
 }
+
+// ecs_set(world, camera, LocalPosition3D, { 0, 0, vox_scale / 2.0f }); // zoxel_set
+// ecs_set(world, camera, LocalPosition3D, { vox_scale / 2.0f, vox_scale + vox_scale / 2.0f, vox_scale });
+// ecs_set(world, camera, LocalEuler3D, { float3_zero });
+// zoxel_log("scale %f\n", vox_scale);

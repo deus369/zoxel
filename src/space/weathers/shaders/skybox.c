@@ -52,8 +52,8 @@ void main() {\
 // color.x = color.y = 0.0; color.z = mesh_y;
 // color = vec4(0, 0.6, 0.4, 1) * brightness;
 
-GLuint2 shader_skybox;
-GLuint material_skybox;
+uint2 shader_skybox;
+uint material_skybox;
 
 // todo: call dispose_line3D_shader / move it to a shader entity
 void dispose_shader_skybox() {
@@ -65,7 +65,7 @@ void dispose_shader_skybox() {
 int initialize_shader_skybox() {
     if (is_opengl_running()) {
         shader_skybox = spawn_gpu_shader_inline(skybox_shader_source_vert, skybox_shader_source_frag);
-        material_skybox = spawn_gpu_material_program((const GLuint2) { shader_skybox.x, shader_skybox.y });
+        material_skybox = spawn_gpu_material_program((const uint2) { shader_skybox.x, shader_skybox.y });
     }
     return 0;
 }
