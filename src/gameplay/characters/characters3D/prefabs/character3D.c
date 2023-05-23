@@ -67,7 +67,3 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file
     main_character3D = e;
     return e;
 }
-
-// zox_set(e, ChunkDivision, { character3D_start_division })
-// int3 chunk_position = get_chunk_position(position, default_chunk_size);
-// zox_set(e, ChunkDivision, { get_character_division(chunk_position, int3_zero) })

@@ -62,6 +62,42 @@ ECS_COPY(name, dst, src, {\
     }\
 }
 
+#define add_to_memory_component(component, dataType, data) {\
+    if (component->value != NULL) {\
+        unsigned char has_data = 0;\
+        for (int i = 0; i < component->length; i++) {\
+            if (component->value[i] == data) {\
+                has_data = 1;\
+                break;\
+            }\
+        }\
+        if (!has_data) {\
+            component->length++;\
+            component->value = realloc(component->value, component->length * sizeof(dataType));\
+            component->value[component->length - 1] = data;\
+        }\
+    }\
+}
+
+#define remove_from_memory_component(component, dataType, data) {\
+    if (component->value != NULL) {\
+        int index = -1;\
+        for (int i = 0; i < component->length; i++) {\
+            if (component->value[i] == data) {\
+                index = i;\
+                break;\
+            }\
+        }\
+        if (index != -1) {\
+            for (int i = index; i < component->length - 1; i++) {\
+                component->value[i] = component->value[i + 1];\
+            }\
+            component->length--;\
+            component->value = realloc(component->value, component->length * sizeof(dataType));\
+        }\
+    }\
+}
+
 #define clear_memory_component(component) {\
     if (component->length != 0) {\
         free(component->value);\

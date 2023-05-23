@@ -29,6 +29,7 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
         return;
     #endif
     double delta_time = zox_delta_time;
+    ecs_world_t *world = it->world;
     const VoxLink *voxLinks = ecs_field(it, VoxLink, 1);
     ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 2);
     Position3D *position3Ds = ecs_field(it, Position3D, 3);
@@ -66,9 +67,7 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
                 }
             #endif
             const VoxLink *voxLink = &voxLinks[i];
-            if (voxLink->value == 0) {
-                continue;
-            }
+            if (voxLink->value == 0) continue;
             const ChunkLinks *chunkLinks = ecs_get(world, voxLink->value, ChunkLinks);
             Velocity3D *velocity3D = &velocity3Ds[i];
             // get last position
@@ -82,12 +81,20 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
             handle_collision_axis(y)
             handle_collision_axis(x)
             handle_collision_axis(z)
+
+            int3 new_chunk_position = get_chunk_position(real_position, default_chunk_size);
+            if (!int3_equals(chunkPosition->value, new_chunk_position)) {
+                chunkPosition->value = new_chunk_position;
+                set_entity_chunk(world, it->entities[i], chunkLink, int3_hash_map_get(chunkLinks->value, new_chunk_position));
+                // chunkLink->value = int3_hash_map_get(chunkLinks->value, new_chunk_position);
+            }
             if (did_collide) {
-                int3 new_chunk_position = get_chunk_position(real_position, default_chunk_size);
+                /*int3 new_chunk_position = get_chunk_position(real_position, default_chunk_size);
                 if (!int3_equals(chunkPosition->value, new_chunk_position)) {
                     chunkPosition->value = new_chunk_position;
-                    chunkLink->value = int3_hash_map_get(chunkLinks->value, new_chunk_position);
-                }
+                    set_entity_chunk(world, it->entities[i], chunkLink, int3_hash_map_get(chunkLinks->value, new_chunk_position));
+                    // chunkLink->value = int3_hash_map_get(chunkLinks->value, new_chunk_position);
+                }*/
                 // int3 new_global_voxel_position = get_voxel_position(real_position);
                 // byte3 new_voxel_position = get_local_position_byte3(new_global_voxel_position, chunkPosition->value, default_chunk_size_byte3);
                 voxelPosition->value = byte3_to_int3(new_position);

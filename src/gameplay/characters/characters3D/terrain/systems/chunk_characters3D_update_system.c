@@ -24,6 +24,3 @@ void ChunkCharactersUpdateSystem(ecs_iter_t *it) {
     }
 }
 zox_declare_system(ChunkCharactersUpdateSystem)
-
-// update character divisions
-// if (entityLinks2->length >= 128) continue;
