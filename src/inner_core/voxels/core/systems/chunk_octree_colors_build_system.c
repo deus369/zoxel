@@ -1,5 +1,5 @@
 const unsigned char color_edge_voxel = 0;
-const int max_color_chunks_build_per_frame = 16; // 32;
+const int max_color_chunks_build_per_frame = 16;
 
 unsigned char colors_get_max_depth_from_division(unsigned char chunk_division) {
     unsigned char max_depth = max_octree_depth;

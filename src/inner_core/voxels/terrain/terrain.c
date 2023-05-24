@@ -17,7 +17,6 @@ zox_component(StreamPoint, int3)
 #include "systems/stream_point_system.c"
 #include "octree_systems/chunk_octree_build_system.c"
 #include "octree_systems/octree_terrain_chunk_system.c"
-#include "octree_systems/octree_chunk_mesh_system.c"
 #include "octree_systems/render3D_uvs_system.c"
 #include "util/create_terrain.c"
 long int Render3DUvsSystem_id;

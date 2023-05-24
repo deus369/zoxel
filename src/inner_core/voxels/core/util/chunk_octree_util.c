@@ -8,12 +8,7 @@ void add_chunk_octree(ecs_world_t *world, ecs_entity_t e, int3 size) {
     zox_set(e, VoxLink, { 0 })
     ChunkNeighbors chunkNeighbors = { };
     initialize_memory_component_non_pointer(chunkNeighbors, ecs_entity_t, 6);
-    chunkNeighbors.value[0] = 0;
-    chunkNeighbors.value[1] = 0;
-    chunkNeighbors.value[2] = 0;
-    chunkNeighbors.value[3] = 0;
-    chunkNeighbors.value[4] = 0;
-    chunkNeighbors.value[5] = 0;
+    for (unsigned char i = 0; i < 6; i++) chunkNeighbors.value[i] = 0;
     ecs_set(world, e, ChunkNeighbors, { chunkNeighbors.length, chunkNeighbors.value });
 }
 
@@ -93,9 +88,7 @@ void close_same_nodes(ChunkOctree *node) {
                 break;
             }
         }
-        if (all_same) {
-            close_ChunkOctree(node);
-        }
+        if (all_same) close_ChunkOctree(node);
     }
 }
 
@@ -127,12 +120,9 @@ void optimize_solid_nodes(ChunkOctree *node) {
         }
         byte2 biggest_count = byte2_zero;
         for (unsigned char j = 0; j < voxel_types; j++) {
-            if (voxel_counts[j].y > biggest_count.y) {
-                biggest_count = voxel_counts[j];
-            }
+            if (voxel_counts[j].y > biggest_count.y) biggest_count = voxel_counts[j];
         }
-        if (biggest_count.x != 0)
-            node->value = biggest_count.x;
+        if (biggest_count.x != 0) node->value = biggest_count.x;
         free(voxel_counts);
     }
 }
@@ -178,7 +168,7 @@ unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *
         }
     }
     return 1;
-} 
+}
 
 const int fill_octree_random_rate = 50;
 const int fill_octree_random_rate2 = 40;

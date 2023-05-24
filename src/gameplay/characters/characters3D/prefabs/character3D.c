@@ -1,6 +1,5 @@
 ecs_entity_t prefab_character3D;
 ecs_entity_t main_character3D;
-// const unsigned char init_character3D_lod = 0; // 1;
 const int init_character3D_lod = 1;
 const int character3D_lod_dividor = 1; // 2;
 

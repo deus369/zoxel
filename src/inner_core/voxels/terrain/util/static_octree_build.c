@@ -70,10 +70,3 @@ void build_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_
         }
     }
 }
-
-/*int3 local_position;
-for (local_position.x = 0; local_position.x < octree_node_size; local_position.x++) {
-    for (local_position.y = 0; local_position.y < octree_node_size; local_position.y++) {
-        for (local_position.z = 0; local_position.z < octree_node_size; local_position.z++) {
-            int array_index = int3_array_index(local_position, octree_node_size3);
-            ChunkOctree node = chunk_octree->nodes[array_index];*/

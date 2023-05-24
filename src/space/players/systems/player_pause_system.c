@@ -10,13 +10,12 @@ void toggle_pause_ui(ecs_world_t *world) {
     const int edge_buffer = 8 * default_ui_scale;
     // const int2 window_size = { 260, 220 };
     // const float2 window_anchor = { 0.5f, 0.5f };
-    const float2 window_anchor = { 1.0f, 0.0f };
-    const int2 window_position = { 0 - edge_buffer, 0 + edge_buffer };
+    const float2 window_anchor = { 0.0f, 1.0f };
+    const int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
     // Children children = { };
     // initialize_memory_component_non_pointer(children, ecs_entity_t, 3);
     // add this entity to canvas children
     if (!ecs_is_alive(world, pause_ui)) {
-        // pause game ecs_entity_t pause_ui = s
         spawn_pause_ui(world, window_position, window_anchor);
         ecs_set(world, local_game, GameState, { zoxel_game_state_paused });
         ecs_set(world, main_cameras[0], FreeRoam, { 0 });

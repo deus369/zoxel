@@ -1,8 +1,5 @@
 // add uv splitting here based on voxel uvs - voxel_face_uvs based on voxel
-// for now lets try 
-
-// const float3 center_mesh_offset = (float3) { - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f, - overall_voxel_scale / 2.0f };
-const color_rgb color_rgb_white = (color_rgb) { 255, 255, 255 };
+// for now lets try
 
 #define add_voxel_face_uvs_indicies(index)\
     indicies->data[indicies->size + index] = vertices->size + voxel_face_indicies[index];
@@ -235,40 +232,3 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
     #endif
 }
 zox_declare_system(ChunkOctreeBuildSystem)
-
-/*add_block_to_int_array_d(indicies, voxel_face_indicies, voxel_face_indicies_length);
-int vertices_size = vertices->size;
-for (int a = indicies->size - voxel_face_indicies_length; a < indicies->size; a++) {
-    indicies->data[a] += vertices_size;
-    // add_to_int_array_d(indicies, vertices->size + voxel_face_indicies[a]);
-}*/
-// add_block_to_float2_array_d2(uvs, voxel_face_uvs, voxel_face_vertices_length);
-// add_block_to_float3_array_d(uvs, vertices, voxel_face_vertices_length);
-
-/*for (unsigned char i = 0; i < octree_length; i++) {
-    if (chunk_octree->nodes[i].value != 0)
-        build_octree_chunk_d(root_node, chunk_octree, &chunk_octree->nodes[i],
-            neighbors, neighbor_lods, indicies, vertices, uvs, lod, depth,
-            int3_add(octree_position, octree_positions[i]), i);
-}*/
-    /*for (unsigned char a = 0; a < voxel_face_indicies_length; a++) {
-        add_to_int_array_d(indicies, vertices->size + voxel_face_indicies[a]);
-    }*/
-
-    /*for (unsigned char a = 0; a < voxel_face_vertices_length; a++) {
-        float3 vertex_position = voxel_face_vertices[a];
-        float3_multiply_float_p(&vertex_position, voxel_scale);
-        float3_add_float3_p(&vertex_position, vertex_position_offset);
-        float3_add_float3_p(&vertex_position, center_mesh_offset);    
-        add_to_float3_array_d(vertices, vertex_position);
-        add_to_float2_array_d(uvs, voxel_face_uvs[a]);
-    }*/
-// making these static is hard...
-/*typedef struct {
-    float3 *verts_left;
-    float3 *verts_right;
-    float3 *verts_down;
-    float3 *verts_up;
-    float3 *verts_back;
-    float3 *verts_front;
-} cube_verts;*/
