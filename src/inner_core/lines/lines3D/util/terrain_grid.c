@@ -1,5 +1,5 @@
-extern int terrain_spawn_distance;
-extern int terrain_vertical;
+extern unsigned char terrain_spawn_distance;
+extern unsigned char terrain_vertical;
 
 void spawn_terrain_grid(float real_chunk_scale) {
     float bottom_bounds = - real_chunk_scale * terrain_vertical; // - real_chunk_scale * 0.5f; // + real_chunk_scale * 0.5f; // real_chunk_scale; //  * (1.0f / 2.0f); // 2.0f; // 0.5f;

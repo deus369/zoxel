@@ -1,13 +1,13 @@
 #define terrain_texture_resolution 32
 const int2 chunk_texture_size = { terrain_texture_resolution, terrain_texture_resolution };
-int terrain_spawn_distance;
-int terrain_vertical = 2;
+unsigned char terrain_spawn_distance;
+unsigned char terrain_vertical = 2;
 const unsigned char terrain_min_height = 8;
 double terrain_amplifier = 64.0;
 double terrain_boost = 0.0;
 int lowest_voxel_height = -24;
-int inner_render_buffer = 1; // 1;
-int lod_division_dividor = 2; // 2;
+unsigned char init_terrain_lod = 1; // 1;
+unsigned char lod_division_dividor = 2; // 2;
 const int max_chunks_build_per_frame = 32;
 #define octree_min_height -1.995f // 0.005f
 #define noise_positiver2 32000

@@ -1,20 +1,20 @@
 ecs_entity_t prefab_character3D;
 ecs_entity_t main_character3D;
-const unsigned char character3D_start_division = 0; // 1;
-const int initial_character_division_addition = 1;
-const int character_division_dividor = 1; // 2;
+// const unsigned char init_character3D_lod = 0; // 1;
+const int init_character3D_lod = 1;
+const int character3D_lod_dividor = 1; // 2;
 
 unsigned char get_character_division_from_camera(unsigned char distance_to_camera) {
     unsigned char division = 255;
-    if (distance_to_camera < initial_character_division_addition + character_division_dividor) {
-        division = character3D_start_division;
-    } else if (distance_to_camera < initial_character_division_addition + character_division_dividor * 2) {
-        division = character3D_start_division + 1;
-    } else if (distance_to_camera < initial_character_division_addition + character_division_dividor * 3) {
-        division = character3D_start_division + 2;
-    } else if (distance_to_camera < initial_character_division_addition + character_division_dividor * 4) {
-        division = character3D_start_division + 3;
-    } else if (distance_to_camera < initial_character_division_addition + character_division_dividor * 5) {
+    if (distance_to_camera <= init_character3D_lod) {
+        division = 0;
+    } else if (distance_to_camera <= init_character3D_lod + character3D_lod_dividor * 1) {
+        division = 1;
+    } else if (distance_to_camera <= init_character3D_lod + character3D_lod_dividor * 2) {
+        division = 2;
+    } else if (distance_to_camera <= init_character3D_lod + character3D_lod_dividor * 3) {
+        division = 3;
+    } else if (distance_to_camera <= init_character3D_lod + character3D_lod_dividor * 4) {
         division = 4;
     }
     return division;

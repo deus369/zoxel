@@ -1,23 +1,25 @@
+const int terrain_lod_dividor = 3;
 
-
-unsigned char get_max_depth_from_division(unsigned char chunk_division) {
+unsigned char get_terrain_lod_from_camera_distance(unsigned char distance_to_camera) {
     #ifdef zoxel_voxel_disable_distance_division
-        unsigned char max_depth = max_octree_depth;
+        unsigned char lod = max_octree_depth;
     #else
-        unsigned char depth_addition = chunk_division / lod_division_dividor;
-        unsigned char max_depth;
-        if (depth_addition < inner_render_buffer) {
-            max_depth = max_octree_depth;
-        } else {
-            unsigned char difference = depth_addition - inner_render_buffer;
-            if (difference > max_octree_depth) {
-                max_depth = 0;
-            } else {
-                max_depth = max_octree_depth - difference;
-            }
+        unsigned char lod = 255;
+        if (distance_to_camera <= init_terrain_lod) {
+            lod = max_octree_depth;
+        } else if (distance_to_camera <= init_terrain_lod + terrain_lod_dividor) {
+            lod = max_octree_depth - 1;
+        } else if (distance_to_camera <= init_terrain_lod + terrain_lod_dividor * 2) {
+            lod = max_octree_depth - 2;
+        } else if (distance_to_camera <= init_terrain_lod + terrain_lod_dividor * 3) {
+            lod = max_octree_depth - 3;
+        } else if (distance_to_camera <= init_terrain_lod + terrain_lod_dividor * 4) {
+            lod = max_octree_depth - 4;
+        } else if (distance_to_camera <= init_terrain_lod + terrain_lod_dividor * 5) {
+            lod = 0;
         }
     #endif
-    return max_depth;
+    return lod;
 }
 
         // zoxel_log("Found at depth: %i\n", depth);
@@ -39,3 +41,15 @@ unsigned char get_max_depth_from_division(unsigned char chunk_division) {
             return get_octree_voxel(&node->nodes[i], new_position, depth - 1);
         }
     }*/
+        /*unsigned char depth_addition = distance_to_camera / lod_division_dividor;
+        unsigned char lod;
+        if (depth_addition < init_terrain_lod) {
+            lod = max_octree_depth;
+        } else {
+            unsigned char difference = depth_addition - init_terrain_lod;
+            if (difference > max_octree_depth) {
+                lod = 0;
+            } else {
+                lod = max_octree_depth - difference;
+            }
+        }*/

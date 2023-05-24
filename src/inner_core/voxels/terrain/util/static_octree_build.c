@@ -1,6 +1,6 @@
 #define zoxel_octree_check(direction_name)\
     if (!is_adjacent_all_solid(direction##_##direction_name, root_node, parent_node, neighbors,\
-        octree_position, node_index, node_position, depth, max_depth, neighbors_max_depths, 0))
+        octree_position, node_index, node_position, depth, max_depth, neighbor_lods, 0))
 
 #define zoxel_octree_add_face_counts(direction_name) {\
     zoxel_octree_check(direction_name) {\
@@ -15,7 +15,7 @@
 }
 
 void count_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[],
-    unsigned char *neighbors_max_depths, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, int2 *mesh_count,
+    unsigned char *neighbor_lods, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, int2 *mesh_count,
     unsigned char depth, unsigned char max_depth, int3 octree_position, unsigned char node_index, byte3 node_position) {
     if (depth >= max_depth || chunk_octree->nodes == NULL) {
         if (chunk_octree->value) {
@@ -34,7 +34,7 @@ void count_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_
             for (unsigned char i = 0; i < octree_length; i++) {
                 int3 child_octree_position = int3_add(octree_position, octree_positions[i]);
                 count_octree_chunk(root_node, chunk_octree, &chunk_octree->nodes[i],
-                    neighbors, neighbors_max_depths, meshIndicies, meshVertices, meshUVs, mesh_count,
+                    neighbors, neighbor_lods, meshIndicies, meshVertices, meshUVs, mesh_count,
                     depth, max_depth, child_octree_position, i, octree_positions_b[i]);
             }
         }
@@ -42,7 +42,7 @@ void count_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_
 }
 
 void build_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[],
-    unsigned char *neighbors_max_depths, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
+    unsigned char *neighbor_lods, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
     int2 *start, unsigned char depth, unsigned char max_depth, int3 octree_position, unsigned char node_index, byte3 node_position) {
     if (depth >= max_depth || chunk_octree->nodes == NULL) {
         if (chunk_octree->value) {
@@ -64,7 +64,7 @@ void build_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_
             if (chunk_octree->nodes[i].value != 0) {
                 int3 child_octree_position = int3_add(octree_position, octree_positions[i]);
                 build_octree_chunk(root_node, chunk_octree, &chunk_octree->nodes[i],
-                    neighbors, neighbors_max_depths, meshIndicies, meshVertices, meshUVs,
+                    neighbors, neighbor_lods, meshIndicies, meshVertices, meshUVs,
                     start, depth, max_depth, child_octree_position, i, octree_positions_b[i]);
             }
         }
