@@ -18,7 +18,7 @@
     } name;\
     ECS_COMPONENT_DECLARE(name);
 
-#define zoxel_byte_component(name) zox_component(name, unsigned char)
+#define zox_byte_component(name) zox_component(name, unsigned char)
 
 #define zox_time_component(name) zox_component(name, double)
 

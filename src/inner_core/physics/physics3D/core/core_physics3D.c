@@ -9,7 +9,7 @@ zox_component(Acceleration3D, float3) //! How fast Velocity moves over time.
 zox_component(Omega3D, float4)
 zox_component(Alpha3D, float4)
 zox_component(Gravity3D, float3)      //! A constant acceleration towards something
-zoxel_byte_component(InitializePhysics3D)
+zox_byte_component(InitializePhysics3D)
 #include "util/physics3D_util.c"
 #include "systems/velocity3D_system.c"
 #include "systems/acceleration3D_system.c"

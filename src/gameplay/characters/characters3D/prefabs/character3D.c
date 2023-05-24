@@ -1,4 +1,4 @@
-ecs_entity_t character3D_prefab;
+ecs_entity_t prefab_character3D;
 ecs_entity_t main_character3D;
 const unsigned char character3D_start_division = 0; // 1;
 const int initial_character_division_addition = 1;
@@ -27,8 +27,9 @@ unsigned char get_character_division(int3 chunk_position, int3 camera_position) 
 
 ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     ecs_defer_begin(world);
+    // ecs_entity_t e = ecs_clone(world, 0, prefab_vox, 1);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_vox);
-    ecs_add_id(world, e, EcsPrefab);
+    zox_make_prefab(e)
     set_unique_entity_name(world, e, "prefab_character3D");
     add_seed(world, e, 999);
     add_physics3D(world, e);
@@ -42,27 +43,28 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     zox_set(e, ChunkPosition, { int3_zero })
     zox_set(e, VoxelPosition, {{ 0, 0, 0 }})
     ecs_defer_end(world);
+    prefab_character3D = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log("spawn_prefab character3D [%lu].\n", (long int) (e));
     #endif
-    character3D_prefab = e;
     return e;
 }
 
-ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file *vox,
-    float3 position, float4 rotation, unsigned char lod) {
+ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file *vox, float3 position, float4 rotation, unsigned char lod) {
     #ifdef zox_disable_characters3D
         if (main_character3D != 0) return 0;
     #endif
     // ecs_defer_begin(world);
+    // ecs_entity_t e = ecs_clone(world, 0, prefab, 1);
+    // ecs_remove_id(world, e, EcsPrefab);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
-    zox_set(e, Position3D, { position })
-    zox_set(e, Rotation3D, { rotation })
-    zox_set(e, VoxLink, { main_terrain })
+    zox_set_only(e, Position3D, { position })
+    zox_set_only(e, Rotation3D, { rotation })
+    zox_set_only(e, VoxLink, { main_terrain })
     #ifndef zox_disable_characters3D_voxes
         set_vox_from_vox_file(world, e, vox);
     #endif
-    zox_set(e, RenderLod, { lod })
+    zox_set_only(e, RenderLod, { lod })
     // ecs_defer_end(world);
     main_character3D = e;
     return e;

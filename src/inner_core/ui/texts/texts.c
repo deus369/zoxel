@@ -11,7 +11,7 @@ zox_component(ZigelIndex, unsigned char)      //! A character index per zigel.
 zox_component(ZextSize, int)                  //! The size of the font in a Zext.
 zox_component(ZextDirty, unsigned char)       //! A state event for when Zext is dirty.
 zox_component(AnimateZext, double)            //! A Zext that animates
-zoxel_byte_component(ZextAlignment)
+zox_byte_component(ZextAlignment)
 zox_memory_component(FontData, byte2)         //! An array of points used for generating a font texture
 zox_memory_component(ZextData, unsigned char) //! An array of bytes for characters
 zox_component(ZextPadding, byte2)

@@ -2,7 +2,7 @@
 #define zoxel_games
 
 zox_declare_tag(Game)
-zoxel_byte_component(GameState);
+zox_byte_component(GameState);
 #include "prefabs/game.c"
 #include "util/game_states.c"
 #include "systems/play_game_system.c"

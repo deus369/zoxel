@@ -11,8 +11,8 @@
 #include "data/physical_stick.c"
 #include "data/finger.c"
 zox_declare_tag(Device)
-zoxel_byte_component(MouseLock)
-zoxel_byte_component(DeviceMode)
+zox_byte_component(MouseLock)
+zox_byte_component(DeviceMode)
 zox_memory_component(DeviceLinks, ecs_entity_t)
 #include "components/keyboard.c"
 #include "components/mouse.c"

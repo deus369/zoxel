@@ -7,11 +7,11 @@ zox_declare_tag(Selectable)
 zox_declare_tag(Clickable)
 zox_declare_tag(Dragable)
 zox_declare_tag(DestroyInFrame)
-zoxel_byte_component(EntityDirty)
-zoxel_byte_component(EntityInitialize)
-zoxel_byte_component(SelectableState)
-zoxel_byte_component(ClickableState)
-zoxel_byte_component(DragableState)
+zox_byte_component(EntityDirty)
+zox_byte_component(EntityInitialize)
+zox_byte_component(SelectableState)
+zox_byte_component(ClickableState)
+zox_byte_component(DragableState)
 zox_component(DraggerLink, ecs_entity_t)
 zox_component(DraggingDelta, int2)
 zox_component(ID, int)                        //! An unique ID, possibly use GUID?
@@ -24,7 +24,7 @@ zox_component(Color, color)                   //! A generic entity color
 zox_component(SecondaryColor, color)          //! A generic entity color
 zox_memory_component(ColorRGBs, color_rgb)           //! A generic entity colorRGBs
 zox_memory_component(Colors, color)           //! A generic entity colorRGBs
-zoxel_byte_component(GenericEvent)              //! Used for game and other events, genetic
+zox_byte_component(GenericEvent)              //! Used for game and other events, genetic
 zox_component(Bounds3D, float3)
 zox_entities_component(EntityLinks)
 zox_reset_system(EntityDirtyResetSystem, EntityDirty)

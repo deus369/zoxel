@@ -26,9 +26,9 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     if (render3D_update_pipeline == 0) {
         ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
         opengl_disable_opengl_program();
+        ecs_run(world, Render3DUvsSystem_id, 0, NULL);
         ecs_run(world, ecs_id(Render3DSystem), 0, NULL);
         ecs_run(world, ecs_id(Render3DColoredSystem), 0, NULL);
-        ecs_run(world, Render3DUvsSystem_id, 0, NULL);
         ecs_run(world, line3D_render_system_id, 0, NULL);
         ecs_run(world, cube_lines_render_system_id, 0, NULL);
     }

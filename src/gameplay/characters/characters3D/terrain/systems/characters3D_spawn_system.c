@@ -51,7 +51,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             float3_multiply_float_p(&position, terrain_voxel_scale);
             // todo: use character bounds before spawning, scale voxel position by terrain scale
             position.y += 0.75f;
-            ecs_entity_t e = spawn_character3D(it->world, character3D_prefab, &vox, position, rotation, character_lod);
+            ecs_entity_t e = spawn_character3D(it->world, prefab_character3D, &vox, position, rotation, character_lod);
             // entityLinks2->value[j] = e;
             // add to a dynamic list here, as not always do we add characters
             // entities.add(e);

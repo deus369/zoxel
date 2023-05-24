@@ -2,7 +2,7 @@ ecs_entity_t player_character3D_prefab;
 
 ecs_entity_t spawn_player_character3D_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, character3D_prefab);
+    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_character3D);
     ecs_add_id(world, e, EcsPrefab);
     set_unique_entity_name(world, e, "player_character3D_prefab");
     zox_add_tag(e, PlayerCharacter);

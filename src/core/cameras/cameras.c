@@ -20,7 +20,7 @@ zox_component(FieldOfView, float)         //! Used to calculate a camera frustru
 zox_component(CameraNearDistance, float)
 zox_component(CameraLink, ecs_entity_t)   //! A link to a Camera
 zox_component(CameraTarget, ecs_entity_t) //! A link to a Camera Target entity.
-zoxel_byte_component(FreeRoam)             //! Used to free roam a camera.
+zox_byte_component(FreeRoam)             //! Used to free roam a camera.
 #include "prefabs/base_camera.c"
 #include "prefabs/camera2D.c"
 #include "prefabs/ui_camera.c"

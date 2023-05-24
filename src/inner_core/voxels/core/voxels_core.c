@@ -6,8 +6,8 @@
 zox_declare_tag(ColorChunk)
 zox_declare_tag(LinkChunk)
 zox_component(ChunkSize, int3)                        //! A simple chunk with an array of voxels.
-zoxel_byte_component(GenerateChunk)                     //! A state for generating chunks.
-zoxel_byte_component(ChunkDirty)                        //! A state for generating chunk meshes.
+zox_byte_component(GenerateChunk)                     //! A state for generating chunks.
+zox_byte_component(ChunkDirty)                        //! A state for generating chunk meshes.
 zox_memory_component(ChunkData, unsigned char)        //! A simple chunk with an array of voxels.
 zox_memory_component(ChunkNeighbors, ecs_entity_t)    //! A list to all chunks in a Vox model.
 zoxel_octree_component(ChunkOctree, unsigned char, 0)   //! A chunk that stores voxels in an octree.

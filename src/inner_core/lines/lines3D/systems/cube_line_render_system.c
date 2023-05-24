@@ -21,13 +21,16 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
     glEnableVertexAttribArray(line3D_position_location);
     glUniform4f(line3D_fog_data_location, fog_color.x, fog_color.y, fog_color.z, fog_density);
     glUniformMatrix4fv(line3D_camera_matrix_location, 1, GL_FALSE, (float*) &render_camera_matrix);
-    const CubeLinesThickness *cubeLinesThicknesss = ecs_field(it, CubeLinesThickness, 2);
-    const ColorRGB *colorRGBs = ecs_field(it, ColorRGB, 3);
-    const Position3D *position3Ds = ecs_field(it, Position3D, 4);
-    const Rotation3D *rotation3Ds = ecs_field(it, Rotation3D, 5);
-    const Bounds3D *bounds3Ds = ecs_field(it, Bounds3D, 6);
-    const RenderLod *renderLods = ecs_field(it, RenderLod, 7);
+    const DebugCubeLines *debugCubeLiness = ecs_field(it, DebugCubeLines, 2);
+    const CubeLinesThickness *cubeLinesThicknesss = ecs_field(it, CubeLinesThickness, 3);
+    const ColorRGB *colorRGBs = ecs_field(it, ColorRGB, 4);
+    const Position3D *position3Ds = ecs_field(it, Position3D, 5);
+    const Rotation3D *rotation3Ds = ecs_field(it, Rotation3D, 6);
+    const Bounds3D *bounds3Ds = ecs_field(it, Bounds3D, 7);
+    const RenderLod *renderLods = ecs_field(it, RenderLod, 8);
     for (int i = 0; i < it->count; i++) {
+        const DebugCubeLines *debugCubeLines = &debugCubeLiness[i];
+        if (debugCubeLines->value == 0) continue;
         const RenderLod *renderLod = &renderLods[i];
         if (renderLod->value == 255) continue;
         const CubeLinesThickness *cubeLinesThickness = &cubeLinesThicknesss[i];
@@ -57,7 +60,11 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
             float3_add_float3_p(&right_vector, position3D->value);
             render_line3D(position3D->value, right_vector);
         #else
-            set_line3D_color(colorRGB->value);
+            color_rgb cube_color = colorRGB->value;
+            cube_color.r += 30 * renderLod->value;
+            cube_color.g -= 20 * renderLod->value;
+            cube_color.b -= 20 * renderLod->value;
+            set_line3D_color(cube_color);
             // get corners of cube
             float3 top_right = (float3) { bounds3D->value.x, bounds3D->value.y, bounds3D->value.z };
             float3 top_left = (float3) { - bounds3D->value.x, bounds3D->value.y, bounds3D->value.z };

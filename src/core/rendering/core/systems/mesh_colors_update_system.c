@@ -10,12 +10,12 @@ void MeshColorsUpdateSystem(ecs_iter_t *it) {
         MeshDirty *meshDirty = &meshDirtys[i];
         if (meshDirty->value == 0) continue;
         meshDirty->value = 0;
-        MeshGPULink *meshGPULink = &meshGPULinks[i];
-        ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
-        const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         const MeshVertices *meshVertices2 = &meshVertices[i];
         const MeshColorRGBs *meshColors2 = &meshColorRGBs[i];
         if (meshColors2->length != meshVertices2->length) continue;
+        const MeshIndicies *meshIndicies2 = &meshIndicies[i];
+        MeshGPULink *meshGPULink = &meshGPULinks[i];
+        ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
         if (meshGPULink->value.x == 0) meshGPULink->value = spawn_gpu_mesh_buffers();
         if (colorsGPULink->value == 0) colorsGPULink->value = spawn_gpu_generic_buffer();
         // zoxel_log(" + mesh gpu created [%ix%i]\n", meshGPULink->value.x, meshGPULink->value.y);
@@ -26,6 +26,3 @@ void MeshColorsUpdateSystem(ecs_iter_t *it) {
     // check_opengl_error("MeshColorsUpdateSystem");
 }
 zox_declare_system(MeshColorsUpdateSystem)
-
-// const MaterialGPULink *materialGPULinks = ecs_field(it, MaterialGPULink, 6);
-// const MaterialGPULink *materialGPULink = &materialGPULinks[i];

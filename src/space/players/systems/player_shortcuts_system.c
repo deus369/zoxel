@@ -2,13 +2,18 @@ unsigned char debug_colliders = 0;
 
 void toggle_collision_debug(ecs_world_t *world) {
     debug_colliders = !debug_colliders;
+    ecs_defer_begin(world);
+    if (debug_colliders) {
+        add_physics_debug(world, prefab_character3D);
+    } else {
+        remove_physics_debug(world, prefab_character3D);
+    }
     const ChunkLinks *chunkLinks = ecs_get(world, main_terrain, ChunkLinks);
     // for every chunk, use entity links, add or remove physics debug components
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hash_map_pair* pair = chunkLinks->value->data[i];
         while (pair != NULL) {
-            ecs_entity_t chunk_entity = pair->value;
-            const EntityLinks *entityLinks = ecs_get(world, chunk_entity, EntityLinks);
+            const EntityLinks *entityLinks = ecs_get(world, pair->value, EntityLinks);
             for (int j = 0; j < entityLinks->length; j++) {
                 ecs_entity_t character_entity = entityLinks->value[j];
                 if (debug_colliders) {
@@ -16,10 +21,12 @@ void toggle_collision_debug(ecs_world_t *world) {
                 } else {
                     remove_physics_debug(world, character_entity);
                 }
+                // zoxel_log(" - character_entity [%lu]\n", character_entity);
             }
             pair = pair->next;
         }
     }
+    ecs_defer_end(world);
 }
 
 void PlayerShortcutsSystem(ecs_iter_t *it) {

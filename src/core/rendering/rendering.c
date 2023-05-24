@@ -13,10 +13,10 @@ float4x4 render_camera_matrix;
 float4x4 ui_camera_matrix; 
 zox_declare_tag(Mesh)
 zox_declare_tag(ElementRender)
-zoxel_byte_component(MeshDirty)
-zoxel_byte_component(TextureDirty)
+zox_byte_component(MeshDirty)
+zox_byte_component(TextureDirty)
 zox_component(Brightness, float)
-zoxel_byte_component(RenderLod) // The resolution of each chunk, distance to nearest camera
+zox_byte_component(RenderLod) // The resolution of each chunk, distance to nearest camera
 #include "opengl/opengl.c"
 #include "core/rendering_core.c"
 

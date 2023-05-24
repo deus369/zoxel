@@ -11,7 +11,7 @@ zox_declare_tag(ElementRaycaster)
 zox_component(CanvasPixelPosition, int2)
 zox_component(Anchor, float2)             //! An anchor, used to get base position using canvas
 zox_component(CanvasLink, ecs_entity_t)   //! A link to a canvas
-zoxel_byte_component(InitializeEntityMesh)
+zox_byte_component(InitializeEntityMesh)
 zox_time_component(NavigatorTimer)
 zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t)
 #include "util/ui_prefab_util.c"

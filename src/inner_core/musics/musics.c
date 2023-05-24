@@ -6,7 +6,7 @@ zox_declare_tag(Looping)
 zox_component(MusicTime, double)
 zox_component(MusicSpeed, double)
 zox_memory_component(MusicData, int)
-zoxel_byte_component(GenerateMusic)
+zox_byte_component(GenerateMusic)
 zox_reset_system(GenerateMusicResetSystem, GenerateMusic)
 #include "util/music_palette.c"
 #include "prefabs/music.c"

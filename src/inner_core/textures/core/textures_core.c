@@ -9,7 +9,7 @@ zox_declare_tag(SaveTexture)
 zox_declare_tag(DirtTexture)
 zox_memory_component(TextureData, color)
 zox_component(TextureSize, int2)
-zoxel_byte_component(GenerateTexture) 
+zox_byte_component(GenerateTexture) 
 zox_component(AnimateTexture, double)
 #include "util/textures_sdl_util.c"
 #include "util/textures_util.c"

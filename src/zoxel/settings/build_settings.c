@@ -114,7 +114,7 @@
 // #define zoxel_testing_tiny_terrain
 // test settings
 // #define zox_disable_characters3D_voxes
-// #define zox_disable_fog // todo: make work
+// #define zox_disable_fog      // todo: make work
 // #define zoxel_testing_small_terrain
 // #define zox_grayboxing
 // #define zox_disable_vox_octrees

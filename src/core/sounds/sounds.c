@@ -17,14 +17,14 @@
     #define sound_display_end 1.0f
 #endif
 zox_declare_tag(Sound)
-zoxel_byte_component(InstrumentType)
+zox_byte_component(InstrumentType)
 zox_memory_component(SoundData, float)   //! A sound has an array of bytes.
 zox_component(SoundLength, double)       //! The length of a sound.
 zox_component(SoundFrequency, float)     //! The frequency of the generated sound.
-zoxel_byte_component(GenerateSound)        //! A state event for generating sounds.
-zoxel_byte_component(TriggerSound)         //! A state event for playing sounds.
+zox_byte_component(GenerateSound)        //! A state event for generating sounds.
+zox_byte_component(TriggerSound)         //! A state event for playing sounds.
 // renamed PlaySound to TriggerSound temporarily, cause of windows.h conflict
-zoxel_byte_component(SoundDirty)
+zox_byte_component(SoundDirty)
 #include "components/SDLSound.c"
 #include "prefabs/sound_prefab.c"
 #include "util/static_sound_util.c"
