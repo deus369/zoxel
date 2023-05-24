@@ -70,7 +70,7 @@ ecs_entity_t spawn_vox(ecs_world_t *world, vox_file *vox, float3 position, unsig
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_vox);
     zox_set(e, Position3D, { position })
-    zox_set(e, ChunkDivision, { division })
+    zox_set(e, RenderLod, { division })
     set_vox_from_vox_file(world, e, vox);
     spawn_gpu_colors(world, e);
     ecs_defer_end(world);

@@ -13,11 +13,11 @@
 // #include "util/test_uis.c"
 #include "fun/spawn_test_window.c"
 
-zoxel_begin_module(UI)
-zoxel_import_module(UICore)
-zoxel_import_module(Texts)
-zoxel_import_module(Elements)
-zoxel_import_module(GameUI)
+zox_begin_module(UI)
+zox_import_module(UICore)
+zox_import_module(Texts)
+zox_import_module(Elements)
+zox_import_module(GameUI)
 zoxel_end_module(UI)
 
 #endif

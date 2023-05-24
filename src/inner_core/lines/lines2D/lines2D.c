@@ -1,18 +1,18 @@
 #ifndef zoxel_lines2D
 #define zoxel_lines2D
 
-zoxel_declare_tag(Line2D)
-zoxel_component(LineData2D, float4)     //! The two points in a line2D.
-zoxel_component(LineElementData, int4)  //! The two ui points in a line2D.
+zox_declare_tag(Line2D)
+zox_component(LineData2D, float4)     //! The two points in a line2D.
+zox_component(LineElementData, int4)  //! The two ui points in a line2D.
 #include "prefabs/line2D.c"
 #include "prefabs/ui_line2D.c"
 #include "systems/line2D_element_system.c"
 #include "systems/line2D_render_system.c"
 
-zoxel_begin_module(Lines2D)
-zoxel_define_tag(Line2D)
-zoxel_define_component(LineData2D)
-zoxel_define_component(LineElementData)
+zox_begin_module(Lines2D)
+zox_define_tag(Line2D)
+zox_define_component(LineData2D)
+zox_define_component(LineElementData)
 zox_filter(line2Ds_query, [none] Line2D, [in] LineElementData, [none] CanvasLink, [none] LineData2D)
 zox_system_ctx(Line2DElementSystem, EcsPreUpdate, line2Ds_query, [none] Line2D, [in] LineElementData, [in] CanvasLink, [out] LineData2D)
 if (!headless) {

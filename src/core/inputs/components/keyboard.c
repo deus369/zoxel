@@ -52,7 +52,7 @@ typedef struct {
     PhysicalButton left;
     PhysicalButton right;
 } Keyboard;
-zoxel_custom_component(Keyboard)
+zox_custom_component(Keyboard)
 
 unsigned char keyboard_is_any_input(const Keyboard *keyboard) {
     return (keyboard->enter.is_pressed ||

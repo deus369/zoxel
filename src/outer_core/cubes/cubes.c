@@ -6,7 +6,7 @@ const float2 spawnBounds = { 2.2f, 1.2f };
 #include "prefabs/cube.c"
 #include "prefabs/cube_textured.c"
 
-zoxel_begin_module(Cubes)
+zox_begin_module(Cubes)
 spawn_prefab_cube(world);
 spawn_prefab_cube_textured(world);
 #ifdef zoxel_test_cubes

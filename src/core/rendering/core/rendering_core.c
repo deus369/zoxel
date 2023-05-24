@@ -7,11 +7,11 @@ int mesh_update_pipeline2;
 // 0 | EcsOnStore
 #define render3D_update_pipeline 0     
 #define render2D_update_pipeline 0
-zoxel_memory_component(MeshVertices, float3)
-zoxel_memory_component(MeshVertices2D, float2)
-zoxel_memory_component(MeshUVs, float2)
-zoxel_memory_component(MeshColors, color)
-zoxel_memory_component(MeshColorRGBs, color_rgb)
+zox_memory_component(MeshVertices, float3)
+zox_memory_component(MeshVertices2D, float2)
+zox_memory_component(MeshUVs, float2)
+zox_memory_component(MeshColors, color)
+zox_memory_component(MeshColorRGBs, color_rgb)
 #include "components/mesh_indicies.c"
 #include "components/material_gpu_link.c"
 #include "components/texture_gpu_link.c"
@@ -36,18 +36,18 @@ zox_reset_system(MeshDirtySystem, MeshDirty)
 #include "fun/render_loop.c"
 #include "fun/resource_management.c"
 
-zoxel_begin_module(RenderingCore)
-zoxel_define_component(MaterialGPULink)
-zoxel_define_component(TextureGPULink)
-zoxel_define_component(MeshGPULink)
-zoxel_define_component(UvsGPULink)
-zoxel_define_component(ColorsGPULink)
-zoxel_define_memory_component(MeshIndicies)
-zoxel_define_memory_component(MeshVertices)
-zoxel_define_memory_component(MeshVertices2D)
-zoxel_define_memory_component(MeshUVs)
-zoxel_define_memory_component(MeshColors)
-zoxel_define_memory_component(MeshColorRGBs)
+zox_begin_module(RenderingCore)
+zox_define_component(MaterialGPULink)
+zox_define_component(TextureGPULink)
+zox_define_component(MeshGPULink)
+zox_define_component(UvsGPULink)
+zox_define_component(ColorsGPULink)
+zox_define_memory_component(MeshIndicies)
+zox_define_memory_component(MeshVertices)
+zox_define_memory_component(MeshVertices2D)
+zox_define_memory_component(MeshUVs)
+zox_define_memory_component(MeshColors)
+zox_define_memory_component(MeshColorRGBs)
 ecs_set_hooks(world, MaterialGPULink, { .dtor = ecs_dtor(MaterialGPULink) });
 ecs_set_hooks(world, TextureGPULink, { .dtor = ecs_dtor(TextureGPULink) });
 ecs_set_hooks(world, MeshGPULink, { .dtor = ecs_dtor(MeshGPULink) });

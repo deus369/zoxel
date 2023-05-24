@@ -1,4 +1,5 @@
 ecs_entity_t main_menu_prefab;
+ecs_entity_t main_menu;
 
 ecs_entity_t spawn_prefab_main_menu(ecs_world_t *world) {
     ecs_defer_begin(world);
@@ -10,8 +11,6 @@ ecs_entity_t spawn_prefab_main_menu(ecs_world_t *world) {
     ecs_defer_end(world);
     return e;
 }
-
-ecs_entity_t main_menu;
 
 ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label, int2 position, float2 anchor, unsigned char is_close_button) {
     int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;

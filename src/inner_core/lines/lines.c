@@ -1,16 +1,16 @@
 #ifndef zoxel_lines
 #define zoxel_lines
 
-zoxel_declare_tag(Line)
-zoxel_component(LineThickness, float)
+zox_declare_tag(Line)
+zox_component(LineThickness, float)
 #include "lines2D/lines2D.c"
 #include "lines3D/lines3D.c"
 
-zoxel_begin_module(Lines)
-zoxel_define_tag(Line)
-zoxel_define_component(LineThickness)
-zoxel_import_module(Lines2D)
-zoxel_import_module(Lines3D)
+zox_begin_module(Lines)
+zox_define_tag(Line)
+zox_define_component(LineThickness)
+zox_import_module(Lines2D)
+zox_import_module(Lines3D)
 zoxel_end_module(Lines)
 
 #endif

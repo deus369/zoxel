@@ -41,7 +41,7 @@ void play_game(ecs_world_t *world) {
     main_cameras[0] = respawn_camera(world);
     ecs_add(world, main_cameras[0], Streamer);
     ecs_add(world, main_cameras[0], StreamPoint);
-    ecs_set(world, main_cameras[0], VoxLink, { main_terrain_world });
+    ecs_set(world, main_cameras[0], VoxLink, { main_terrain });
     // \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cameras
     #ifdef zoxel_spawn_character3Ds
         spawn_many_characters3D(world);

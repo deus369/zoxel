@@ -133,7 +133,7 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
     int chunks_built = 0;
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
     const ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 2);
-    const ChunkDivision *chunkDivisions = ecs_field(it, ChunkDivision, 3);
+    const RenderLod *renderLods = ecs_field(it, RenderLod, 3);
     const ChunkNeighbors *chunkNeighbors = ecs_field(it, ChunkNeighbors, 4);
     const ColorRGBs *colorRGBs = ecs_field(it, ColorRGBs, 5);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 6);
@@ -145,14 +145,12 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         ChunkDirty *chunkDirty = &chunkDirtys[i];
         if (chunkDirty->value != 1) continue;
         MeshDirty *meshDirty = &meshDirtys[i];
-        const ChunkDivision *chunkDivision = &chunkDivisions[i];
+        const RenderLod *renderLod = &renderLods[i];
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
         MeshColorRGBs *meshColorRGBs2 = &meshColorRGBs[i];
-        if (chunkDivision->value == 255) { // hides mesh
-            if (meshIndicies2->length != 0) {
-                tri_count -= meshIndicies2->length / 3;
-            }
+        if (renderLod->value == 255) { // hides mesh
+            tri_count -= meshIndicies2->length / 3;
             clear_memory_component(meshIndicies)
             clear_memory_component(meshVertices)
             clear_memory_component(meshColorRGBs)
@@ -178,17 +176,17 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
             NULL : ecs_get(it->world, chunkNeighbors2->value[5], ChunkOctree);
         const ChunkOctree *neighbors[] =  { chunk_left, chunk_right, chunk_down, chunk_up, chunk_back, chunk_front };
         unsigned char chunk_left_max_distance = chunkNeighbors2->value[0] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[0], ChunkDivision)->value;
+            0 : ecs_get(it->world, chunkNeighbors2->value[0], RenderLod)->value;
         unsigned char chunk_right_max_distance = chunkNeighbors2->value[1] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[1], ChunkDivision)->value;
+            0 : ecs_get(it->world, chunkNeighbors2->value[1], RenderLod)->value;
         unsigned char chunk_down_max_distance = chunkNeighbors2->value[2] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[2], ChunkDivision)->value;
+            0 : ecs_get(it->world, chunkNeighbors2->value[2], RenderLod)->value;
         unsigned char chunk_up_max_distance = chunkNeighbors2->value[3] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[3], ChunkDivision)->value;
+            0 : ecs_get(it->world, chunkNeighbors2->value[3], RenderLod)->value;
         unsigned char chunk_back_max_distance = chunkNeighbors2->value[4] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[4], ChunkDivision)->value;
+            0 : ecs_get(it->world, chunkNeighbors2->value[4], RenderLod)->value;
         unsigned char chunk_front_max_distance = chunkNeighbors2->value[5] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[5], ChunkDivision)->value;
+            0 : ecs_get(it->world, chunkNeighbors2->value[5], RenderLod)->value;
         unsigned char *neighbors_max_depths = malloc(6);
         neighbors_max_depths[0] = colors_get_max_depth_from_division(chunk_left_max_distance);
         neighbors_max_depths[1] = colors_get_max_depth_from_division(chunk_right_max_distance);
@@ -200,15 +198,11 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         // int3 chunk_size = (int3) { chunk_length, chunk_length, chunk_length };
         float3 total_mesh_offset = calculate_vox_bounds(chunkSize->value);
         float3_multiply_float_p(&total_mesh_offset, -1); // * 4.0f);
-        unsigned char chunk_depth = colors_get_max_depth_from_division(chunkDivision->value);
+        unsigned char chunk_depth = colors_get_max_depth_from_division(renderLod->value);
         // zoxel_log(" > mesh offset [%fx%fx%f] - [%i]\n", total_mesh_offset.x, total_mesh_offset.y, total_mesh_offset.z, chunk_length);
-        if (meshIndicies2->length != 0) {
-            tri_count -= meshIndicies2->length / 3;
-        }
+        tri_count -= meshIndicies2->length / 3;
         build_chunk_octree_mesh_colors(chunkOctree, colorRGBs2, meshIndicies2, meshVertices2, meshColorRGBs2, chunk_depth, neighbors, neighbors_max_depths, total_mesh_offset);
-        if (meshIndicies2->length != 0) {
-            tri_count += meshIndicies2->length / 3;
-        }
+        tri_count += meshIndicies2->length / 3;
         chunkDirty->value = 0;
         meshDirty->value = 1;
         free(neighbors_max_depths);

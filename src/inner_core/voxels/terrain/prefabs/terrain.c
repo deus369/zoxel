@@ -1,5 +1,5 @@
 ecs_entity_t prefab_terrain;
-ecs_entity_t main_terrain_world;
+ecs_entity_t main_terrain;
 
 ecs_entity_t spawn_prefab_terrain(ecs_world_t *world) {
     ecs_defer_begin(world);
@@ -33,6 +33,6 @@ ecs_entity_t spawn_terrain(ecs_world_t *world, ecs_entity_t prefab, float3 posit
         spawn_gpu_texture(world, e);
     #endif
     ecs_defer_end(world);
-    main_terrain_world = e;
+    main_terrain = e;
     return e;
 }

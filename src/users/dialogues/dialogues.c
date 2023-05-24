@@ -3,7 +3,7 @@
 
 // zoxel_system_includes
 
-zoxel_begin_module(Dialogues)
+zox_begin_module(Dialogues)
 
 // zoxel_system_defines
 

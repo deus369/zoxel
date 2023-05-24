@@ -6,7 +6,7 @@
 #include "stdio.h"
 
 // macros, imported from zoxel
-#define zoxel_component(name, type)\
+#define zox_component(name, type)\
 typedef struct\
 {\
     type value;\
@@ -34,9 +34,9 @@ ECS_COMPONENT_DECLARE(name)
 } \
 ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
-zoxel_component(TestComponent, int);
-zoxel_component(TestComponentA, bool);
-zoxel_component(TestComponentB, bool);
+zox_component(TestComponent, int);
+zox_component(TestComponentA, bool);
+zox_component(TestComponentB, bool);
 
 void TestChangeQuerySystem(ecs_iter_t *it)
 {

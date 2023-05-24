@@ -24,13 +24,13 @@ unsigned char server_mode = 0;
 #include "../space/space.c"
 #include "util/engine_util.c"
 
-zoxel_begin_module(ZoxelEngine)
-zoxel_import_module(Core)
-zoxel_import_module(InnerCore)
-zoxel_import_module(OuterCore)
-zoxel_import_module(Users)
-zoxel_import_module(Gameplay)
-zoxel_import_module(Space)
+zox_begin_module(ZoxelEngine)
+zox_import_module(Core)
+zox_import_module(InnerCore)
+zox_import_module(OuterCore)
+zox_import_module(Users)
+zox_import_module(Gameplay)
+zox_import_module(Space)
 zoxel_end_module(ZoxelEngine)
 
 // todo: move some things to sdl module in core

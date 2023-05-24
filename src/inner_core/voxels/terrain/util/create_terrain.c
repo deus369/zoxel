@@ -14,7 +14,7 @@ int get_chunk_index_2(int i, int j, int k, int rows, int vertical) {
     return i * (rows + rows + 1) + j * (rows + rows + 1) * (rows + rows + 1) + k;
 }
 
-void create_terrain(ecs_world_t *world) {
+ecs_entity_t create_terrain(ecs_world_t *world) {
     #ifndef zox_disable_terrain_octrees
         int chunks_total_length = get_terrain_chunks_count(terrain_spawn_distance, terrain_vertical);
     #else
@@ -81,13 +81,14 @@ void create_terrain(ecs_world_t *world) {
     }
     ecs_set(world, terrain_world, ChunkLinks, { chunkLinks.value });
     ecs_defer_end(world);
+    return terrain_world;
 }
 
 void dispose_opengl_resources_terrain(ecs_world_t *world) {
     #ifndef voxels_terrain_multi_material
-        dispose_material_resources(world, main_terrain_world);
+        dispose_material_resources(world, main_terrain);
     #endif
-    const ChunkLinks *chunkLinks = ecs_get(world, main_terrain_world, ChunkLinks);
+    const ChunkLinks *chunkLinks = ecs_get(world, main_terrain, ChunkLinks);
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hash_map_pair* pair = chunkLinks->value->data[i];
         while (pair != NULL) {
@@ -100,9 +101,9 @@ void dispose_opengl_resources_terrain(ecs_world_t *world) {
 
 void restore_opengl_resources_terrain(ecs_world_t *world) {
     #ifndef voxels_terrain_multi_material
-        restore_material_resources(world, main_terrain_world, shader3D_textured);
+        restore_material_resources(world, main_terrain, shader3D_textured);
     #endif
-    const ChunkLinks *chunkLinks = ecs_get(world, main_terrain_world, ChunkLinks);
+    const ChunkLinks *chunkLinks = ecs_get(world, main_terrain, ChunkLinks);
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hash_map_pair* pair = chunkLinks->value->data[i];
         while (pair != NULL) {

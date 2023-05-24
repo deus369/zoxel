@@ -1,4 +1,4 @@
-zoxel_component(TextureGPULink, uint)
+zox_component(TextureGPULink, uint)
 
 extern uint spawn_gpu_texture_buffers();
 

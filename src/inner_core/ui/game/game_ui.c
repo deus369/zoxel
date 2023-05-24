@@ -1,12 +1,12 @@
 #ifndef zoxel_game_ui
 #define zoxel_game_ui
 
-zoxel_declare_tag(MainMenu)
-zoxel_declare_tag(OptionsUI)
-zoxel_declare_tag(PauseUI)
-zoxel_declare_tag(FPSDisplay)
-zoxel_declare_tag(QuadsCountLabel)
-zoxel_component(FPSDisplayTicker, double)
+zox_declare_tag(MainMenu)
+zox_declare_tag(OptionsUI)
+zox_declare_tag(PauseUI)
+zox_declare_tag(FPSDisplay)
+zox_declare_tag(QuadsCountLabel)
+zox_component(FPSDisplayTicker, double)
 #include "fun/button_event_play_game.c"
 #include "fun/button_event_exit_game.c"
 #include "fun/button_event_return_to_game.c"
@@ -18,13 +18,13 @@ zoxel_component(FPSDisplayTicker, double)
 #include "systems/fps_display_system.c"
 #include "systems/quads_display_system.c"
 
-zoxel_begin_module(GameUI)
-zoxel_define_tag(MainMenu)
-zoxel_define_tag(OptionsUI)
-zoxel_define_tag(PauseUI)
-zoxel_define_tag(FPSDisplay)
-zoxel_define_tag(QuadsCountLabel)
-zoxel_define_component(FPSDisplayTicker)
+zox_begin_module(GameUI)
+zox_define_tag(MainMenu)
+zox_define_tag(OptionsUI)
+zox_define_tag(PauseUI)
+zox_define_tag(FPSDisplay)
+zox_define_tag(QuadsCountLabel)
+zox_define_component(FPSDisplayTicker)
 zox_system(FpsDisplaySystem, EcsPreUpdate, [out] FPSDisplayTicker, [out] ZextDirty, [out] ZextData)
 zox_system(QuadsLabelSystem, EcsPreUpdate, [none] QuadsCountLabel, [out] ZextDirty, [out] ZextData)
 spawn_prefab_main_menu(world);

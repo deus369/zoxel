@@ -2,23 +2,23 @@
 #define zoxel_transforms2D
 
 // zoxel_component_includes
-zoxel_component(Position2D, float2)
-zoxel_component(Rotation2D, float)
-zoxel_component(Scale2D, float2)
-zoxel_component(PixelPosition, int2)
-zoxel_component(PixelSize, int2)
+zox_component(Position2D, float2)
+zox_component(Rotation2D, float)
+zox_component(Scale2D, float2)
+zox_component(PixelPosition, int2)
+zox_component(PixelSize, int2)
 
 // zoxel_util_includes
 #include "util/transform2D_util.c"
 
-zoxel_begin_module(Transforms2D)
+zox_begin_module(Transforms2D)
 
 // zoxel_component_defines
-zoxel_define_component(Position2D)
-zoxel_define_component(Rotation2D)
-zoxel_define_component(Scale2D)
-zoxel_define_component(PixelPosition)
-zoxel_define_component(PixelSize)
+zox_define_component(Position2D)
+zox_define_component(Rotation2D)
+zox_define_component(Scale2D)
+zox_define_component(PixelPosition)
+zox_define_component(PixelSize)
 
 zoxel_end_module(Transforms2D)
 

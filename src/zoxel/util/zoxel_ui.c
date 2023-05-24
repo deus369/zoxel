@@ -17,10 +17,10 @@ void spawn_zoxel_main_menu(ecs_world_t *world) {
         const char *game_name = "zoxel";
         zoxel_main_menu = spawn_main_menu(world, game_name, window_position, window_anchor, 0);
         #ifdef zoxel_debug_fps
-            fps_display = spawn_fps_display(world, main_canvas, 32);
+            fps_display = spawn_fps_display(world, main_canvas);
         #endif
         #ifdef zoxel_debug_quads
-            quads_label = spawn_quad_count_label(world, main_canvas, 32);
+            quads_label = spawn_quad_count_label(world, main_canvas);
         #endif
         children.value[0] = zoxel_main_menu;
         children.value[1] = fps_display;

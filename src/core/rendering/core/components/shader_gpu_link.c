@@ -1,1 +1,1 @@
-zoxel_component(ShaderGPULink, uint)
+zox_component(ShaderGPULink, uint)

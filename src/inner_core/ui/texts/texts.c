@@ -2,19 +2,19 @@
 #define zoxel_texts
 
 const double zext_animation_speed = 10.0;
-zoxel_declare_tag(FontStyle)                    //! Contains a bunch of fonts!
-zoxel_declare_tag(Font)                         //! A basic tag for a UI Element.
-zoxel_declare_tag(Zigel)                        //! An individual text character entity.
-zoxel_declare_tag(FontTexture)                  //! A basic tag for a Font TextureData. Generated on a Zigel.
-zoxel_declare_tag(Zext)                         //! Holds all the zigels.
-zoxel_component(ZigelIndex, unsigned char)      //! A character index per zigel.
-zoxel_component(ZextSize, int)                  //! The size of the font in a Zext.
-zoxel_component(ZextDirty, unsigned char)       //! A state event for when Zext is dirty.
-zoxel_component(AnimateZext, double)            //! A Zext that animates
+zox_declare_tag(FontStyle)                    //! Contains a bunch of fonts!
+zox_declare_tag(Font)                         //! A basic tag for a UI Element.
+zox_declare_tag(Zigel)                        //! An individual text character entity.
+zox_declare_tag(FontTexture)                  //! A basic tag for a Font TextureData. Generated on a Zigel.
+zox_declare_tag(Zext)                         //! Holds all the zigels.
+zox_component(ZigelIndex, unsigned char)      //! A character index per zigel.
+zox_component(ZextSize, int)                  //! The size of the font in a Zext.
+zox_component(ZextDirty, unsigned char)       //! A state event for when Zext is dirty.
+zox_component(AnimateZext, double)            //! A Zext that animates
 zoxel_byte_component(ZextAlignment)
-zoxel_memory_component(FontData, byte2)         //! An array of points used for generating a font texture
-zoxel_memory_component(ZextData, unsigned char) //! An array of bytes for characters
-zoxel_component(ZextPadding, byte2)
+zox_memory_component(FontData, byte2)         //! An array of points used for generating a font texture
+zox_memory_component(ZextData, unsigned char) //! An array of bytes for characters
+zox_component(ZextPadding, byte2)
 #include "util/default_font.c"
 #include "prefabs/font.c"
 #include "prefabs/font_style.c"
@@ -27,20 +27,20 @@ zoxel_component(ZextPadding, byte2)
 #include "systems/animate_text_system.c"
 zox_reset_system(ZextDirtyResetSystem, ZextDirty)
 
-zoxel_begin_module(Texts)
-zoxel_define_tag(Font)
-zoxel_define_tag(Zigel)
-zoxel_define_tag(FontTexture)
-zoxel_define_tag(Zext)
-zoxel_define_tag(FontStyle)
-zoxel_define_component(ZigelIndex)
-zoxel_define_component(ZextSize)
-zoxel_define_component(ZextDirty)
-zoxel_define_component(AnimateZext)
-zoxel_define_component(ZextAlignment)
-zoxel_define_memory_component(FontData)
-zoxel_define_memory_component(ZextData)
-zoxel_define_component(ZextPadding)
+zox_begin_module(Texts)
+zox_define_tag(Font)
+zox_define_tag(Zigel)
+zox_define_tag(FontTexture)
+zox_define_tag(Zext)
+zox_define_tag(FontStyle)
+zox_define_component(ZigelIndex)
+zox_define_component(ZextSize)
+zox_define_component(ZextDirty)
+zox_define_component(AnimateZext)
+zox_define_component(ZextAlignment)
+zox_define_memory_component(FontData)
+zox_define_memory_component(ZextData)
+zox_define_component(ZextPadding)
 spawn_font_style_prefab(world);
 spawn_font_prefab(world);
 spawn_zigel_prefab(world);

@@ -3,30 +3,30 @@
 
 #include "data/color.c"
 #include "data/color_rgb.c"
-zoxel_declare_tag(Selectable)
-zoxel_declare_tag(Clickable)
-zoxel_declare_tag(Dragable)
-zoxel_declare_tag(DestroyInFrame)
+zox_declare_tag(Selectable)
+zox_declare_tag(Clickable)
+zox_declare_tag(Dragable)
+zox_declare_tag(DestroyInFrame)
 zoxel_byte_component(EntityDirty)
 zoxel_byte_component(EntityInitialize)
 zoxel_byte_component(SelectableState)
 zoxel_byte_component(ClickableState)
 zoxel_byte_component(DragableState)
-zoxel_component(DraggerLink, ecs_entity_t)
-zoxel_component(DraggingDelta, int2)
-zoxel_component(ID, int)                        //! An unique ID, possibly use GUID?
-zoxel_component(Seed, long int)                 //! A unique Seed for generation
-zoxel_component(Raycaster, int2)                //! Contains the raycast mouse position
-zoxel_component(RaycasterTarget, ecs_entity_t)  //! A target entity for the Raycaster
-zoxel_component(Layer2D, unsigned char)         //! A 2D Layer for a entity
-zoxel_component(ColorRGB, color_rgb)
-zoxel_component(Color, color)                   //! A generic entity color
-zoxel_component(SecondaryColor, color)          //! A generic entity color
-zoxel_memory_component(ColorRGBs, color_rgb)           //! A generic entity colorRGBs
-zoxel_memory_component(Colors, color)           //! A generic entity colorRGBs
+zox_component(DraggerLink, ecs_entity_t)
+zox_component(DraggingDelta, int2)
+zox_component(ID, int)                        //! An unique ID, possibly use GUID?
+zox_component(Seed, long int)                 //! A unique Seed for generation
+zox_component(Raycaster, int2)                //! Contains the raycast mouse position
+zox_component(RaycasterTarget, ecs_entity_t)  //! A target entity for the Raycaster
+zox_component(Layer2D, unsigned char)         //! A 2D Layer for a entity
+zox_component(ColorRGB, color_rgb)
+zox_component(Color, color)                   //! A generic entity color
+zox_component(SecondaryColor, color)          //! A generic entity color
+zox_memory_component(ColorRGBs, color_rgb)           //! A generic entity colorRGBs
+zox_memory_component(Colors, color)           //! A generic entity colorRGBs
 zoxel_byte_component(GenericEvent)              //! Used for game and other events, genetic
-zoxel_component(Bounds3D, float3)
-zoxel_entities_component(EntityLinks)
+zox_component(Bounds3D, float3)
+zox_entities_component(EntityLinks)
 zox_reset_system(EntityDirtyResetSystem, EntityDirty)
 zox_reset_system(ClickableStateResetSystem, ClickableState)
 zox_reset_system(EntityInitializeResetSystem, EntityInitialize)
@@ -36,31 +36,31 @@ zox_reset_system(EntityInitializeResetSystem, EntityInitialize)
 #include "prefabs/generic_event.c"
 #include "systems/destroy_in_frame_system.c"
 
-zoxel_begin_module(Generic)
-zoxel_define_tag(Selectable)
-zoxel_define_tag(Clickable)
-zoxel_define_tag(Dragable)
-zoxel_define_tag(DestroyInFrame)
-zoxel_define_component(EntityDirty)
-zoxel_define_component(SelectableState)
-zoxel_define_component(ClickableState)
-zoxel_define_component(DragableState)
-zoxel_define_component(DraggerLink)
-zoxel_define_component(DraggingDelta)
-zoxel_define_component(ID)
-zoxel_define_component(Seed)
-zoxel_define_component(Raycaster)
-zoxel_define_component(RaycasterTarget)
-zoxel_define_component(EntityInitialize)
-zoxel_define_component(Layer2D)
-zoxel_define_component(ColorRGB)
-zoxel_define_component(Color)
-zoxel_define_component(SecondaryColor)
-zoxel_define_memory_component(ColorRGBs)
-zoxel_define_memory_component(Colors)
-zoxel_define_component(GenericEvent)
-zoxel_define_component(Bounds3D)
-zoxel_define_entities_component(EntityLinks, [in] EntityLinks)
+zox_begin_module(Generic)
+zox_define_tag(Selectable)
+zox_define_tag(Clickable)
+zox_define_tag(Dragable)
+zox_define_tag(DestroyInFrame)
+zox_define_component(EntityDirty)
+zox_define_component(SelectableState)
+zox_define_component(ClickableState)
+zox_define_component(DragableState)
+zox_define_component(DraggerLink)
+zox_define_component(DraggingDelta)
+zox_define_component(ID)
+zox_define_component(Seed)
+zox_define_component(Raycaster)
+zox_define_component(RaycasterTarget)
+zox_define_component(EntityInitialize)
+zox_define_component(Layer2D)
+zox_define_component(ColorRGB)
+zox_define_component(Color)
+zox_define_component(SecondaryColor)
+zox_define_memory_component(ColorRGBs)
+zox_define_memory_component(Colors)
+zox_define_component(GenericEvent)
+zox_define_component(Bounds3D)
+zox_define_entities_component(EntityLinks, [in] EntityLinks)
 zox_define_reset_system(EntityDirtyResetSystem, EntityDirty)
 zox_define_reset_system(ClickableStateResetSystem, ClickableState)
 zox_define_reset_system(EntityInitializeResetSystem, EntityInitialize)

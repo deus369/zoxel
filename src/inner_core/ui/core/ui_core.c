@@ -5,15 +5,16 @@
 #define ui_mesh_pipeline 0
 long int element_mesh_system_id;
 ecs_entity_t main_canvas;
-zoxel_declare_tag(Element)                  //! A basic tag for a UI Element.
-zoxel_declare_tag(Canvas)
-zoxel_declare_tag(ElementRaycaster)
-zoxel_component(CanvasPixelPosition, int2)
-zoxel_component(Anchor, float2)             //! An anchor, used to get base position using canvas
-zoxel_component(CanvasLink, ecs_entity_t)   //! A link to a canvas
+zox_declare_tag(Element)                  //! A basic tag for a UI Element.
+zox_declare_tag(Canvas)
+zox_declare_tag(ElementRaycaster)
+zox_component(CanvasPixelPosition, int2)
+zox_component(Anchor, float2)             //! An anchor, used to get base position using canvas
+zox_component(CanvasLink, ecs_entity_t)   //! A link to a canvas
 zoxel_byte_component(InitializeEntityMesh)
-zoxel_time_component(NavigatorTimer)
-zoxel_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t)
+zox_time_component(NavigatorTimer)
+zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t)
+#include "util/ui_prefab_util.c"
 #include "util/ui_util.c"
 #include "util/anchor_util.c"
 #include "prefabs/canvas.c"
@@ -26,16 +27,16 @@ zoxel_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t)
 #include "systems/element_position_system.c"
 #include "systems/element_mesh_system.c"
 
-zoxel_begin_module(UICore)
-zoxel_define_tag(Element)
-zoxel_define_tag(Canvas)
-zoxel_define_tag(ElementRaycaster)
-zoxel_define_component(CanvasPixelPosition)
-zoxel_define_component(Anchor)
-zoxel_define_component(CanvasLink)
-zoxel_define_component(ClickEvent)
-zoxel_define_component(InitializeEntityMesh)
-zoxel_define_component(NavigatorTimer)
+zox_begin_module(UICore)
+zox_define_tag(Element)
+zox_define_tag(Canvas)
+zox_define_tag(ElementRaycaster)
+zox_define_component(CanvasPixelPosition)
+zox_define_component(Anchor)
+zox_define_component(CanvasLink)
+zox_define_component(ClickEvent)
+zox_define_component(InitializeEntityMesh)
+zox_define_component(NavigatorTimer)
 spawn_prefab_canvas(world);
 spawn_prefab_element(world);
 // filters

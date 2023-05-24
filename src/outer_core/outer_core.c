@@ -5,10 +5,10 @@
 #include "ai/ai.c"
 #include "particles/particles.c"
 
-zoxel_begin_module(OuterCore)
-zoxel_import_module(Cubes)
-zoxel_import_module(AI)
-zoxel_import_module(Particles)
+zox_begin_module(OuterCore)
+zox_import_module(Cubes)
+zox_import_module(AI)
+zox_import_module(Particles)
 zoxel_end_module(OuterCore)
 
 #endif

@@ -32,7 +32,7 @@ float3 opengl_clear_color = { 125 / 255.0f, 125 / 255.0f, 125 / 255.0f };
 #include "rendering/shader3D_colored.c"
 #include "util/opengl_main_util.c"
 
-zoxel_begin_module(OpenGL)
+zox_begin_module(OpenGL)
 opengl_load_functions();
 print_opengl();
 if (check_compute_shader_support() == EXIT_FAILURE) {

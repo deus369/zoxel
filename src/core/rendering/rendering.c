@@ -11,23 +11,25 @@ float fog_density = 0.0326f;
 //      > it can also be sorted better for z issues on translucent materials
 float4x4 render_camera_matrix; 
 float4x4 ui_camera_matrix; 
-zoxel_declare_tag(Mesh)
-zoxel_declare_tag(ElementRender)
+zox_declare_tag(Mesh)
+zox_declare_tag(ElementRender)
 zoxel_byte_component(MeshDirty)
 zoxel_byte_component(TextureDirty)
-zoxel_component(Brightness, float)
+zox_component(Brightness, float)
+zoxel_byte_component(RenderLod) // The resolution of each chunk, distance to nearest camera
 #include "opengl/opengl.c"
 #include "core/rendering_core.c"
 
-zoxel_begin_module(Rendering)
-zoxel_define_tag(Mesh)
-zoxel_define_tag(ElementRender)
-zoxel_define_component(MeshDirty)
-zoxel_define_component(TextureDirty)
-zoxel_define_component(Brightness)
+zox_begin_module(Rendering)
+zox_define_tag(Mesh)
+zox_define_tag(ElementRender)
+zox_define_component(MeshDirty)
+zox_define_component(TextureDirty)
+zox_define_component(Brightness)
+zox_define_component(RenderLod)
 if (!headless && is_opengl_running()) {
-    zoxel_import_module(OpenGL)
-    zoxel_import_module(RenderingCore)
+    zox_import_module(OpenGL)
+    zox_import_module(RenderingCore)
 }
 zoxel_end_module(Rendering)
 

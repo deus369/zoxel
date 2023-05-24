@@ -27,6 +27,7 @@
 #include "data/ecs_entity_2.c"
 #include "collections/dynamic_array.c"
 #include "collections/hash_map.c"
+#include "collections/int3_hash_map.c"
 #include "util/math.c"
 #include "util/integer_util.c"
 #include "util/noise.c"
@@ -36,7 +37,7 @@
 #include "fun/conversion.c"
 #include "tests/test_quadrants.c"
 
-zoxel_begin_module(Maths)
+zox_begin_module(Maths)
 unsigned long seed = get_unique_time_seed();
 #ifdef zoxel_seed_666
     seed = 666;

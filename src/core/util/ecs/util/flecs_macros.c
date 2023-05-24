@@ -1,16 +1,19 @@
-#define zox_filter(name, ...)\
-ecs_query_t *name = ecs_query_init(world, &(ecs_query_desc_t) { .filter.expr = #__VA_ARGS__});
+#define zox_filter(name, ...) ecs_query_t *name = ecs_query_init(world, &(ecs_query_desc_t) { .filter.expr = #__VA_ARGS__});
 
 #define zox_add(entity, T) {\
     ecs_add(world, entity, T);\
     ecs_override(world, entity, T);\
 }
 
-#define zoxel_remove(entity, T) ecs_remove(world, entity, T);
+#define zox_remove(entity, T) ecs_remove(world, entity, T);
 
 #define zox_add_new(entity, T, ...) {\
     ecs_set_id(world, entity, ecs_id(T), sizeof(T), &(T)__VA_ARGS__);\
     ecs_override_id(world, entity, ecs_id(T));\
+}
+
+#define zox_set_only(entity, T, ...) {\
+    ecs_set_id(world, entity, ecs_id(T), sizeof(T), &(T)__VA_ARGS__);\
 }
 
 #define zox_set(entity, T, ...) {\
@@ -19,6 +22,8 @@ ecs_query_t *name = ecs_query_init(world, &(ecs_query_desc_t) { .filter.expr = #
 }
 
 #define zox_add_tag(entity, T) ecs_add_id(world, entity, ecs_id(T));
+
+#define zox_has(e, T) ecs_has(world, e, T)
 
 //! Creates a simple Filter with components.
 //! Adds a component but also adds override to an entity.

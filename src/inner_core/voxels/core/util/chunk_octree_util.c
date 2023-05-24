@@ -4,7 +4,7 @@ void add_chunk_octree(ecs_world_t *world, ecs_entity_t e, int3 size) {
     zox_set(e, ChunkSize, { size })
     zox_set(e, ChunkDirty, { 0 })
     zox_set(e, ChunkPosition, { int3_zero })
-    zox_set(e, ChunkDivision, { 0 })
+    zox_set(e, RenderLod, { 0 })
     zox_set(e, VoxLink, { 0 })
     ChunkNeighbors chunkNeighbors = { };
     initialize_memory_component_non_pointer(chunkNeighbors, ecs_entity_t, 6);

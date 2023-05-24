@@ -158,7 +158,7 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
     int chunks_built = 0;
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
     const ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 2);
-    const ChunkDivision *chunkDivisions = ecs_field(it, ChunkDivision, 3);
+    const RenderLod *renderLods = ecs_field(it, RenderLod, 3);
     const ChunkNeighbors *chunkNeighbors = ecs_field(it, ChunkNeighbors, 4);
     MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 5);
     MeshVertices *meshVertices = ecs_field(it, MeshVertices, 6);
@@ -171,7 +171,7 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         // time_cycle_begin()
         MeshDirty *meshDirty = &meshDirtys[i];
         const ChunkOctree *chunkOctree = &chunkOctrees[i];
-        const ChunkDivision *chunkDivision = &chunkDivisions[i];
+        const RenderLod *renderLod = &renderLods[i];
         const ChunkNeighbors *chunkNeighbors2 = &chunkNeighbors[i];
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
@@ -191,17 +191,17 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
             NULL : ecs_get(it->world, chunkNeighbors2->value[5], ChunkOctree);
         const ChunkOctree *neighbors[] =  { chunk_left, chunk_right, chunk_down, chunk_up, chunk_back, chunk_front };
         unsigned char chunk_left_max_distance = chunkNeighbors2->value[0] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[0], ChunkDivision)->value;
+            0 : ecs_get(it->world, chunkNeighbors2->value[0], RenderLod)->value;
         unsigned char chunk_right_max_distance = chunkNeighbors2->value[1] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[1], ChunkDivision)->value;
+            0 : ecs_get(it->world, chunkNeighbors2->value[1], RenderLod)->value;
         unsigned char chunk_down_max_distance = chunkNeighbors2->value[2] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[2], ChunkDivision)->value;
+            0 : ecs_get(it->world, chunkNeighbors2->value[2], RenderLod)->value;
         unsigned char chunk_up_max_distance = chunkNeighbors2->value[3] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[3], ChunkDivision)->value;
+            0 : ecs_get(it->world, chunkNeighbors2->value[3], RenderLod)->value;
         unsigned char chunk_back_max_distance = chunkNeighbors2->value[4] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[4], ChunkDivision)->value;
+            0 : ecs_get(it->world, chunkNeighbors2->value[4], RenderLod)->value;
         unsigned char chunk_front_max_distance = chunkNeighbors2->value[5] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[5], ChunkDivision)->value;
+            0 : ecs_get(it->world, chunkNeighbors2->value[5], RenderLod)->value;
         unsigned char *neighbors_max_depths = malloc(6);
         neighbors_max_depths[0] = get_max_depth_from_division(chunk_left_max_distance);
         neighbors_max_depths[1] = get_max_depth_from_division(chunk_right_max_distance);
@@ -212,7 +212,7 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         if (meshIndicies2->length != 0) {
             tri_count -= meshIndicies2->length / 3;
         }
-        build_chunk_octree_mesh_uvs(chunkOctree, meshIndicies2, meshVertices2, meshUVs2, meshColorRGBs2, chunkDivision->value, neighbors, neighbors_max_depths);
+        build_chunk_octree_mesh_uvs(chunkOctree, meshIndicies2, meshVertices2, meshUVs2, meshColorRGBs2, renderLod->value, neighbors, neighbors_max_depths);
         if (meshIndicies2->length != 0) {
             tri_count += meshIndicies2->length / 3;
         }

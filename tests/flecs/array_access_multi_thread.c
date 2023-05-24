@@ -12,7 +12,7 @@ const int chunk_array_length = 16 * 128 * 16;
 // First define the macros I am using
 
 //! Define a Memory component, with an array of a single data type.
-#define zoxel_memory_component(name, type)\
+#define zox_memory_component(name, type)\
 typedef struct\
 {\
     int length;\
@@ -59,7 +59,7 @@ ECS_COPY(name, dst, src, {\
     }\
 })
 
-#define zoxel_define_memory_component(world, ComponentName)\
+#define zox_define_memory_component(world, ComponentName)\
 {\
     ECS_COMPONENT_DEFINE(world, ComponentName);\
     ecs_set_hooks(world, ComponentName, {\
@@ -70,7 +70,7 @@ ECS_COPY(name, dst, src, {\
     });\
 }
 
-#define zoxel_component(name, type)\
+#define zox_component(name, type)\
 typedef struct\
 {\
     type value;\
@@ -112,10 +112,10 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
     component->value = (dataType*) malloc(length_ * sizeof(dataType));\
 }
 
-zoxel_memory_component(Chunk, unsigned char);
-zoxel_memory_component(ChunkNeighbors, ecs_entity_t);
-zoxel_component(ChunkGenerate, unsigned char);
-zoxel_component(ChunkDirty, unsigned char);
+zox_memory_component(Chunk, unsigned char);
+zox_memory_component(ChunkNeighbors, ecs_entity_t);
+zox_component(ChunkGenerate, unsigned char);
+zox_component(ChunkDirty, unsigned char);
 
 // Randomizes chunk data
 void set_chunk_data(ecs_world_t *world, ecs_entity_t e) {
@@ -197,8 +197,8 @@ ECS_SYSTEM_DECLARE(ChunkBuildSystem);
 
 int main(int argc, char *argv[]) {
     ecs_world_t *world = ecs_init_w_args(argc, argv);
-    zoxel_define_memory_component(world, Chunk);
-    zoxel_define_memory_component(world, ChunkNeighbors);
+    zox_define_memory_component(world, Chunk);
+    zox_define_memory_component(world, ChunkNeighbors);
     ECS_COMPONENT_DEFINE(world, ChunkGenerate);
     ECS_COMPONENT_DEFINE(world, ChunkDirty);
     // spawn system

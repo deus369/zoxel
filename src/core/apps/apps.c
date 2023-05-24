@@ -13,10 +13,10 @@ unsigned char is_split_screen = 0;
 unsigned char override_opengl_es = 0;
 SDL_Window* main_window;
 SDL_GLContext* main_gl_context;
-zoxel_declare_tag(App)
-zoxel_component(SDLWindow, SDL_Window*)
-zoxel_component(Renderer, SDL_Renderer*)
-zoxel_component(Context, SDL_GLContext*)
+zox_declare_tag(App)
+zox_component(SDLWindow, SDL_Window*)
+zox_component(Renderer, SDL_Renderer*)
+zox_component(Context, SDL_GLContext*)
 #include "prefabs/app.c"
 #include "util/main_loop_util.c"
 #include "util/path_util.c"
@@ -27,11 +27,11 @@ zoxel_component(Context, SDL_GLContext*)
 #include "util/mouse_util.c"
 #include "util/platform_util.c"
 
-zoxel_begin_module(Apps)
-zoxel_define_tag(App)
-zoxel_define_component(SDLWindow)
-zoxel_define_component(Context)
-zoxel_define_component(Renderer)
+zox_begin_module(Apps)
+zox_define_tag(App)
+zox_define_component(SDLWindow)
+zox_define_component(Context)
+zox_define_component(Renderer)
 ecs_set_hooks(world, SDLWindow, { .dtor = ecs_dtor(SDLWindow) });
 ecs_set_hooks(world, Context, { .dtor = ecs_dtor(Context) });
 ecs_set_hooks(world, Renderer, { .dtor = ecs_dtor(Renderer) });

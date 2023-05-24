@@ -10,8 +10,8 @@ find_module_filepaths() {
     # find $search_directory -name "*.c" | while read file; do
     while read -r file; do
         # echo "  > checking file: $file"
-        # checks if the file has zoxel_begin_module at the beginning of any line
-        if grep -q "^zoxel_begin_module" "$file"; then
+        # checks if the file has zox_begin_module at the beginning of any line
+        if grep -q "^zox_begin_module" "$file"; then
             # echo "    + module file [$file]" >&2
             # echo "  size is ${#module_files[@]}" >&2
             module_files+=("$file")
@@ -25,10 +25,10 @@ find_module_names() {
     local module_files=("$@")
     local module_names=()
     # echo "  > extracting module names with [${#module_files[@]}] files" >&2
-    # Loop through the module files and extract the parameter of zoxel_begin_module
+    # Loop through the module files and extract the parameter of zox_begin_module
     for module_file in ${module_files[@]}; do
-        # Get the parameter of zoxel_begin_module(Apps)
-        module_name=$(grep "^zoxel_begin_module" "$module_file" | sed -n 's/^zoxel_begin_module(\([^)]*\)).*$/\1/p')
+        # Get the parameter of zox_begin_module(Apps)
+        module_name=$(grep "^zox_begin_module" "$module_file" | sed -n 's/^zox_begin_module(\([^)]*\)).*$/\1/p')
         module_names+=("$module_name")
         # Print the filename and parameter of the module
         # echo "    + module [$module_name]" >&2

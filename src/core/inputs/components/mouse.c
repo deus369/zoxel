@@ -6,7 +6,7 @@ typedef struct {
     int2 delta;
     int2 wheel;
 } Mouse;
-zoxel_custom_component(Mouse)
+zox_custom_component(Mouse)
 
 #define mouse_zero {\
     .left = (PhysicalButton) { 0, 0, 0 },\

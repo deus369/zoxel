@@ -13,18 +13,18 @@
 #include "voxels/voxels.c"
 #include "physics/physics.c"
 
-zoxel_begin_module(InnerCore)
-zoxel_import_module(Textures)
-zoxel_import_module(Musics)
-zoxel_import_module(Animations)
-zoxel_import_module(UI)
-zoxel_import_module(Lines)
-zoxel_import_module(Blueprints)
-zoxel_import_module(Genetics)
-zoxel_import_module(Neurals)
-zoxel_import_module(Tiles)
-zoxel_import_module(Voxels)
-zoxel_import_module(Physics)
+zox_begin_module(InnerCore)
+zox_import_module(Textures)
+zox_import_module(Musics)
+zox_import_module(Animations)
+zox_import_module(UI)
+zox_import_module(Lines)
+zox_import_module(Blueprints)
+zox_import_module(Genetics)
+zox_import_module(Neurals)
+zox_import_module(Tiles)
+zox_import_module(Voxels)
+zox_import_module(Physics)
 zoxel_end_module(InnerCore)
 
 #endif

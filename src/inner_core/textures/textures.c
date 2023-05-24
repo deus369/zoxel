@@ -3,8 +3,8 @@
 
 #include "core/textures_core.c"
 
-zoxel_begin_module(Textures)
-zoxel_import_module(TexturesCore)
+zox_begin_module(Textures)
+zox_import_module(TexturesCore)
 zoxel_end_module(Textures)
 
 // \todo Blueprints (Nodes) + UI

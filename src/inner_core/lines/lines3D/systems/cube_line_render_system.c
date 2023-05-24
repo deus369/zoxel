@@ -26,7 +26,10 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
     const Position3D *position3Ds = ecs_field(it, Position3D, 4);
     const Rotation3D *rotation3Ds = ecs_field(it, Rotation3D, 5);
     const Bounds3D *bounds3Ds = ecs_field(it, Bounds3D, 6);
+    const RenderLod *renderLods = ecs_field(it, RenderLod, 7);
     for (int i = 0; i < it->count; i++) {
+        const RenderLod *renderLod = &renderLods[i];
+        if (renderLod->value == 255) continue;
         const CubeLinesThickness *cubeLinesThickness = &cubeLinesThicknesss[i];
         const ColorRGB *colorRGB = &colorRGBs[i];
         const Position3D *position3D = &position3Ds[i];

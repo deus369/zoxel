@@ -6,16 +6,16 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
     const GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 2);
     const ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 3);
     const ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 4);
-    const ChunkDivision *chunkDivisions = ecs_field(it, ChunkDivision, 5);
+    const RenderLod *renderLods = ecs_field(it, RenderLod, 5);
     EntityLinks *entityLinks = ecs_field(it, EntityLinks, 6); // set characters
     for (int i = 0; i < it->count; i++) {
         const GenerateChunk *generateChunk = &generateChunks[i];
         if (generateChunk->value == 0) continue;
         const ChunkOctree *chunkOctree = &chunkOctrees[i];
         if (chunkOctree->nodes == NULL) continue;   // if basically all air or solid, no need to spawn
-        const ChunkDivision *chunkDivision = &chunkDivisions[i];
+        const RenderLod *renderLod = &renderLods[i];
         EntityLinks *entityLinks2 = &entityLinks[i];
-        unsigned char camera_distance = chunkDivision->value;
+        unsigned char camera_distance = renderLod->value;
         unsigned char character_lod = get_character_division_from_camera(camera_distance);
         did_do = 1;
         // zoxel_log("characters spawning in chunk %lu\n", it->entities[i]);

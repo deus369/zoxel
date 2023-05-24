@@ -110,8 +110,6 @@
 // #define zoxel_disable_non_vertical_bounce
 // #define zoxel_inputs_debug_gamepad
 // #define zoxel_inputs_debug_gamepad_sos
-// #define zoxel_debug_bounds          // renders a bounding box rotated for characters (by default)
-// #define zoxel_debug_transforms      // renders an axis for movement of characters
 // #define zox_disable_characters3D
 // #define zoxel_testing_tiny_terrain
 // test settings
@@ -121,6 +119,8 @@
 // #define zox_grayboxing
 // #define zox_disable_vox_octrees
 // #define zox_test_voxel_mesh
+// #define zoxel_debug_bounds          // renders a bounding box rotated for characters (by default)
+// #define zoxel_debug_transforms      // renders an axis for movement of characters
 // --- latest test here below ---
 // #define zox_test_voxes
 // #define zox_disable_terrain

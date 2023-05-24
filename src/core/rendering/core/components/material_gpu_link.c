@@ -1,5 +1,5 @@
 //! Contains a link to the MaterialGPULink on the GPU.
-zoxel_component(MaterialGPULink, uint)
+zox_component(MaterialGPULink, uint)
 
 extern uint spawn_gpu_material_program(const uint2 shader);
 

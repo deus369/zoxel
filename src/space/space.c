@@ -6,11 +6,11 @@
 #include "realms/realms.c"
 #include "players/players.c"
 
-zoxel_begin_module(Space)
-zoxel_import_module(Games)
-zoxel_import_module(Weathers)
-zoxel_import_module(Realms)
-if (!headless) zoxel_import_module(Players)
+zox_begin_module(Space)
+zox_import_module(Games)
+zox_import_module(Weathers)
+zox_import_module(Realms)
+if (!headless) zox_import_module(Players)
 zoxel_end_module(Space)
 
 #endif

@@ -1,4 +1,4 @@
-zoxel_component(SDLSound, Mix_Chunk*);
+zox_component(SDLSound, Mix_Chunk*);
 
 void free_sdl_sound(SDLSound *ptr) {
     if (ptr->value != NULL && ptr->value->abuf != NULL) {

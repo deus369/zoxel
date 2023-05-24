@@ -14,19 +14,19 @@
 #include "lores/lores.c"
 #include "achievements/achievements.c"
 
-zoxel_begin_module(Users)
-zoxel_import_module(Stats)
-zoxel_import_module(Skills)
-zoxel_import_module(Items)
-zoxel_import_module(Actions)
-zoxel_import_module(Dialogues)
-zoxel_import_module(Quests)
-zoxel_import_module(Classes)
-zoxel_import_module(Jobs)
-zoxel_import_module(Races)
-zoxel_import_module(Clans)
-zoxel_import_module(Lores)
-zoxel_import_module(Achievements)
+zox_begin_module(Users)
+zox_import_module(Stats)
+zox_import_module(Skills)
+zox_import_module(Items)
+zox_import_module(Actions)
+zox_import_module(Dialogues)
+zox_import_module(Quests)
+zox_import_module(Classes)
+zox_import_module(Jobs)
+zox_import_module(Races)
+zox_import_module(Clans)
+zox_import_module(Lores)
+zox_import_module(Achievements)
 zoxel_end_module(Users)
 
 #endif

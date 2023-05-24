@@ -16,11 +16,11 @@
     #define sound_display_start 0.0f
     #define sound_display_end 1.0f
 #endif
-zoxel_declare_tag(Sound)
+zox_declare_tag(Sound)
 zoxel_byte_component(InstrumentType)
-zoxel_memory_component(SoundData, float)   //! A sound has an array of bytes.
-zoxel_component(SoundLength, double)       //! The length of a sound.
-zoxel_component(SoundFrequency, float)     //! The frequency of the generated sound.
+zox_memory_component(SoundData, float)   //! A sound has an array of bytes.
+zox_component(SoundLength, double)       //! The length of a sound.
+zox_component(SoundFrequency, float)     //! The frequency of the generated sound.
 zoxel_byte_component(GenerateSound)        //! A state event for generating sounds.
 zoxel_byte_component(TriggerSound)         //! A state event for playing sounds.
 // renamed PlaySound to TriggerSound temporarily, cause of windows.h conflict
@@ -47,16 +47,16 @@ zox_reset_system(PlaySoundResetSystem, TriggerSound)
 zox_reset_system(GenerateSoundResetSystem, GenerateSound)
 zox_reset_system(SoundDirtyResetSystem, SoundDirty)
 
-zoxel_begin_module(Sounds)
-zoxel_define_tag(Sound)
-zoxel_define_component(InstrumentType)
-zoxel_define_component(SoundLength)
-zoxel_define_component(GenerateSound)
-zoxel_define_component(SoundFrequency)
-zoxel_define_component(TriggerSound)
-zoxel_define_component(SDLSound)
-zoxel_define_component(SoundDirty)
-zoxel_define_memory_component(SoundData)
+zox_begin_module(Sounds)
+zox_define_tag(Sound)
+zox_define_component(InstrumentType)
+zox_define_component(SoundLength)
+zox_define_component(GenerateSound)
+zox_define_component(SoundFrequency)
+zox_define_component(TriggerSound)
+zox_define_component(SDLSound)
+zox_define_component(SoundDirty)
+zox_define_memory_component(SoundData)
 ecs_set_hooks(world, SDLSound, { .dtor = ecs_dtor(SDLSound) });
 zox_system(SoundGenerateSystem, EcsOnValidate, [none] Sound, [in] GenerateSound, [in] SoundLength, [in] SoundFrequency, [in] InstrumentType, [out] SoundData, [out] SoundDirty)
 #ifdef SDL_MIXER

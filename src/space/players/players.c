@@ -1,13 +1,12 @@
 #ifndef zoxel_players
 #define zoxel_players
 
-zoxel_declare_tag(Player)
-zoxel_declare_tag(Player2D)
-zoxel_declare_tag(Player3D)
-zoxel_declare_tag(PlayerCharacter)
-zoxel_declare_tag(PlayerCharacter2D)
-zoxel_declare_tag(PlayerCharacter3D)
-ecs_entity_t local_player;
+zox_declare_tag(Player)
+zox_declare_tag(Player2D)
+zox_declare_tag(Player3D)
+zox_declare_tag(PlayerCharacter)
+zox_declare_tag(PlayerCharacter2D)
+zox_declare_tag(PlayerCharacter3D)
 #include "prefabs/player.c"
 #include "prefabs/player_character2D.c"
 #include "prefabs/player_character3D.c"
@@ -25,14 +24,15 @@ ecs_entity_t local_player;
 #include "systems/player_pause_system.c"
 #include "systems/player_start_system.c"
 #include "systems/device_mode_response_system.c"
+#include "systems/player_shortcuts_system.c"
 
-zoxel_begin_module(Players)
-zoxel_define_tag(Player)
-zoxel_define_tag(Player2D)
-zoxel_define_tag(Player3D)
-zoxel_define_tag(PlayerCharacter)
-zoxel_define_tag(PlayerCharacter2D)
-zoxel_define_tag(PlayerCharacter3D)
+zox_begin_module(Players)
+zox_define_tag(Player)
+zox_define_tag(Player2D)
+zox_define_tag(Player3D)
+zox_define_tag(PlayerCharacter)
+zox_define_tag(PlayerCharacter2D)
+zox_define_tag(PlayerCharacter3D)
 spawn_prefab_player(world);
 spawn_player_character2D_prefab(world);
 spawn_player_character3D_prefab(world);
@@ -61,11 +61,9 @@ zox_system_ctx(FreeCameraRotateSystem, EcsOnUpdate, cameras2, [in] Mouse)
 zox_system_ctx(FreeCameraToggleSystem, EcsOnUpdate, free_roam_cameras, [in] Mouse, [out] MouseLock)
 zox_system_ctx(FreeCameraDisableMovementSystem, EcsOnUpdate, player_character3Ds, [in] Mouse)
 zox_system(Player2DTestSystem, EcsOnUpdate, [in] Keyboard)
-zox_system(Player2DTestMainThreadSystem, EcsOnStore, [in] Keyboard)
+zox_system(PlayerShortcutsSystem, EcsOnStore, [in] Keyboard)
 zox_system(PlayerPauseSystem, EcsOnUpdate, [out] Player, [in] DeviceLinks)
-{
-    zox_system_1(DeviceModeResponseSystem, EcsOnUpdate, [in] DeviceMode)
-}
+zox_system_1(DeviceModeResponseSystem, EcsOnUpdate, [in] DeviceMode)
 zoxel_end_module(Players)
 
 //#if zoxel_particles2D

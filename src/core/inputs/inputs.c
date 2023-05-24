@@ -10,10 +10,10 @@
 #include "data/physical_button.c"
 #include "data/physical_stick.c"
 #include "data/finger.c"
-zoxel_declare_tag(Device)
+zox_declare_tag(Device)
 zoxel_byte_component(MouseLock)
 zoxel_byte_component(DeviceMode)
-zoxel_memory_component(DeviceLinks, ecs_entity_t)
+zox_memory_component(DeviceLinks, ecs_entity_t)
 #include "components/keyboard.c"
 #include "components/mouse.c"
 #include "components/gamepad.c"
@@ -31,15 +31,15 @@ zoxel_memory_component(DeviceLinks, ecs_entity_t)
 #include "util/touchscreen_extract_util.c"
 #include "util/input_util.c"
 
-zoxel_begin_module(Inputs)
-zoxel_define_tag(Device)
-zoxel_define_component(MouseLock)
-zoxel_define_component(DeviceMode)
-zoxel_define_memory_component(DeviceLinks)
-zoxel_define_component(Keyboard)
-zoxel_define_component(Mouse)
-zoxel_define_component(Gamepad)
-zoxel_define_component(Touchscreen)
+zox_begin_module(Inputs)
+zox_define_tag(Device)
+zox_define_component(MouseLock)
+zox_define_component(DeviceMode)
+zox_define_memory_component(DeviceLinks)
+zox_define_component(Keyboard)
+zox_define_component(Mouse)
+zox_define_component(Gamepad)
+zox_define_component(Touchscreen)
 spawn_prefab_keyboard(world);
 spawn_prefab_mouse(world);
 spawn_prefab_gamepad(world);

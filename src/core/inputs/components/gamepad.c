@@ -14,7 +14,7 @@ typedef struct {
     PhysicalStick left_stick;
     PhysicalStick right_stick;
 } Gamepad;
-zoxel_custom_component(Gamepad)
+zox_custom_component(Gamepad)
 
 #define gamepad_zero {\
     .start = (PhysicalButton) { 0, 0, 0 },\

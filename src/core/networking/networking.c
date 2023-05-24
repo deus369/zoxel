@@ -17,16 +17,16 @@
 #define BUFFER_SIZE 128 // 1024 // the size of the buffer to use for receiving and sending data
 //! \todo Convert url to public IP4 address
 #define ZOXEL_URL "https://zoxel.duckdns.org"
-zoxel_declare_tag(Packet)
-zoxel_declare_tag(NetRoom)
-zoxel_declare_tag(NetPlayer)
-zoxel_declare_tag(PacketReciever)
-zoxel_declare_tag(PacketSender)
-zoxel_component(NetAddress, byte4)
-zoxel_component(NetPort, int)
-zoxel_component(TargetNetAddress, byte4)
-zoxel_component(TargetNetPort, int)
-zoxel_memory_component(PacketData, unsigned char)
+zox_declare_tag(Packet)
+zox_declare_tag(NetRoom)
+zox_declare_tag(NetPlayer)
+zox_declare_tag(PacketReciever)
+zox_declare_tag(PacketSender)
+zox_component(NetAddress, byte4)
+zox_component(NetPort, int)
+zox_component(TargetNetAddress, byte4)
+zox_component(TargetNetPort, int)
+zox_memory_component(PacketData, unsigned char)
 #include "util/ip_util.c"
 #include "util/socket_util.c"
 #include "components/socket_link.c"
@@ -38,22 +38,22 @@ zoxel_memory_component(PacketData, unsigned char)
 #include "systems/packet_send_system.c"
 #include "systems/packet_recieve_system.c"
 
-zoxel_begin_module(Networking)
+zox_begin_module(Networking)
 if (server_mode) {
     zoxel_log("Server mode activated.\n");
     zoxel_log("Recieving packets.\n");
 }
-zoxel_define_tag(Packet)
-zoxel_define_tag(NetRoom)
-zoxel_define_tag(NetPlayer)
-zoxel_define_tag(PacketReciever)
-zoxel_define_tag(PacketSender)
-zoxel_define_component(NetAddress)
-zoxel_define_component(NetPort)
-zoxel_define_component(TargetNetAddress)
-zoxel_define_component(TargetNetPort)
-zoxel_define_component(SocketLink)
-zoxel_define_memory_component(PacketData);
+zox_define_tag(Packet)
+zox_define_tag(NetRoom)
+zox_define_tag(NetPlayer)
+zox_define_tag(PacketReciever)
+zox_define_tag(PacketSender)
+zox_define_component(NetAddress)
+zox_define_component(NetPort)
+zox_define_component(TargetNetAddress)
+zox_define_component(TargetNetPort)
+zox_define_component(SocketLink)
+zox_define_memory_component(PacketData);
 ecs_set_hooks(world, SocketLink, { .dtor = ecs_dtor(SocketLink) });
 zox_system(PacketRecieveSystem, EcsOnUpdate, [none] PacketReciever, [in] SocketLink)
 zox_system(PacketSendSystem, EcsOnUpdate, [none] PacketSender, [in] SocketLink, [in] TargetNetAddress, [in] TargetNetPort)

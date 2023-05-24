@@ -2,7 +2,7 @@
 #define zoxel_classes
 
 
-zoxel_begin_module(Classes)
+zox_begin_module(Classes)
 zoxel_end_module(Classes)
 
 #endif

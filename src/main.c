@@ -17,7 +17,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 int main(int argc, char* argv[]) {
 #endif
     if (engine_begin(argc, argv) == EXIT_SUCCESS) {
-        zoxel_import_module(Zoxel)
+        zox_import_module(Zoxel)
         engine_loop();
         engine_end();
     }

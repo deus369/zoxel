@@ -18,16 +18,16 @@ ecs_world_t *world;
 #include "sounds/sounds.c"
 #include "util/core_util.c"
 
-zoxel_begin_module(Core)
-zoxel_import_module(Generic)
-zoxel_import_module(Maths)
-zoxel_import_module(Timing)
-zoxel_import_module(Transforms)
-// zoxel_import_module(Networking)
-if (!headless) zoxel_import_module(Apps)
-if (!headless) zoxel_import_module(Inputs)
-zoxel_import_module(Rendering)
-zoxel_import_module(Sounds)
-zoxel_import_module(Cameras)
+zox_begin_module(Core)
+zox_import_module(Generic)
+zox_import_module(Maths)
+zox_import_module(Timing)
+zox_import_module(Transforms)
+// zox_import_module(Networking)
+if (!headless) zox_import_module(Apps)
+if (!headless) zox_import_module(Inputs)
+zox_import_module(Rendering)
+zox_import_module(Sounds)
+zox_import_module(Cameras)
 zoxel_end_module(Core)
 #endif

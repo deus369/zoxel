@@ -3,7 +3,7 @@
 
 // used for the npcs to make decisions and plan actions
 
-zoxel_begin_module(AI)
+zox_begin_module(AI)
 // components & systems
 zoxel_end_module(AI)
 

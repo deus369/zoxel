@@ -12,7 +12,8 @@ ecs_entity_t spawn_prefab_quad_count_label(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_quad_count_label(ecs_world_t *world, ecs_entity_t parent, int font_size) {
+ecs_entity_t spawn_quad_count_label(ecs_world_t *world, ecs_entity_t parent) {
+    unsigned char font_size = 24;
     byte2 padding = (byte2) { 12, 8 };
     int edge_line_thickness = canvas_edge_size * 2 + 2; // this is real size.. convert to pixel size?
     float2 anchor = { 1.0f, 0.0f };
