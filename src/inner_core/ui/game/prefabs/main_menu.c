@@ -7,8 +7,8 @@ ecs_entity_t spawn_prefab_main_menu(ecs_world_t *world) {
     ecs_add_id(world, e, EcsPrefab);
     set_unique_entity_name(world, e, "prefab_main_menu");
     zox_add_tag(e, MainMenu);
-    main_menu_prefab = e;
     ecs_defer_end(world);
+    main_menu_prefab = e;
     return e;
 }
 
@@ -67,5 +67,6 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label, int2 
     #ifdef zoxel_debug_spawns
         zoxel_log("Spawned main menu [%lu]\n", (long int) e);
     #endif
+    select_first_button(world, children.value[1]);
     return e;
 }
