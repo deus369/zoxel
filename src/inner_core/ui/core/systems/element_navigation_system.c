@@ -1,24 +1,27 @@
 #ifdef zoxel_inputs
     #define ui_navigation_joystick_cutoff 0.6f
     #define ui_navigation_timing 0.3
+    #define restore_joystick_cutoff 0.06f
 
     void ElementNavigationSystem(ecs_iter_t *it) {
         double delta_time = zox_delta_time;
         ecs_world_t *world = it->world;
         const DeviceLinks *deviceLinks = ecs_field(it, DeviceLinks, 1);
         const DeviceMode *deviceModes = ecs_field(it, DeviceMode, 2);
-        NavigatorState *navigatorStates = ecs_field(it, NavigatorState, 2);
-        NavigatorTimer *navigatorTimers = ecs_field(it, NavigatorTimer, 2);
-        RaycasterTarget *raycasterTargets = ecs_field(it, RaycasterTarget, 3);
+        NavigatorState *navigatorStates = ecs_field(it, NavigatorState, 3);
+        NavigatorTimer *navigatorTimers = ecs_field(it, NavigatorTimer, 4);
+        RaycasterTarget *raycasterTargets = ecs_field(it, RaycasterTarget, 5);
         for (int i = 0; i < it->count; i++) {
             RaycasterTarget *raycasterTarget = &raycasterTargets[i];
-            if (raycasterTarget->value == 0 || !ecs_is_alive(world, raycasterTarget->value)) continue;
             const DeviceMode *deviceMode = &deviceModes[i];
             NavigatorState *navigatorState = &navigatorStates[i];
             NavigatorTimer *navigatorTimer = &navigatorTimers[i];
             if (deviceMode->value != zox_device_mode_gamepad) {
-                navigatorState->value = 1;
-                navigatorTimer->value = 0;
+                if (navigatorState->value == 0) {
+                    // zoxel_log("   > gamepad state disabled [%i]\n", navigatorState->value);
+                    navigatorState->value = 1;
+                    navigatorTimer->value = 0;
+                }
                 continue;
             }
             const DeviceLinks *deviceLinks2 = &deviceLinks[i];
@@ -27,19 +30,23 @@
                 ecs_entity_t device_entity = deviceLinks2->value[j];
                 if (ecs_has(world, device_entity, Gamepad)) {
                     const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
-                    // if stops input
-                    if (float_abs(gamepad->left_stick.value.y) < ui_navigation_joystick_cutoff) {
+                    if (float_abs(gamepad->left_stick.value.y) < restore_joystick_cutoff) {
+                        // if (navigatorState->value == 1) zoxel_log("     > reset gamepad left stick\n");
                         navigatorState->value = 0;
-                        navigatorTimer->value = 0;
-                        break;
-                    } else if (navigatorState->value != 0) {
+                    }
+                    // if stops input
+                    if (navigatorState->value != 0) {
                         // here we are waiting for gamepad to stop moving, as didn't start within gamepad mode
+                        break;
+                    } else if (float_abs(gamepad->left_stick.value.y) < ui_navigation_joystick_cutoff) {
+                        navigatorTimer->value = 0;
                         break;
                     } else if (navigatorTimer->value > 0) {
                         navigatorTimer->value -= delta_time;
                         if (navigatorTimer->value < 0) navigatorTimer->value = 0;
                         break;
                     }
+                    if (raycasterTarget->value == 0 || !ecs_is_alive(world, raycasterTarget->value)) break;
                     //zoxel_log(" > left_stick.value.y: %f\n", gamepad->left_stick.value.y);
                     ecs_entity_t parent_entity = ecs_get(world, raycasterTarget->value, ParentLink)->value;
                     const Children *children = ecs_get(world, parent_entity, Children);
