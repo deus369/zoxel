@@ -12,6 +12,7 @@ zox_component(CanvasPixelPosition, int2)
 zox_component(Anchor, float2)             //! An anchor, used to get base position using canvas
 zox_component(CanvasLink, ecs_entity_t)   //! A link to a canvas
 zox_byte_component(InitializeEntityMesh)
+zox_byte_component(NavigatorState)
 zox_time_component(NavigatorTimer)
 zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t)
 #include "util/ui_prefab_util.c"
@@ -36,6 +37,7 @@ zox_define_component(Anchor)
 zox_define_component(CanvasLink)
 zox_define_component(ClickEvent)
 zox_define_component(InitializeEntityMesh)
+zox_define_component(NavigatorState)
 zox_define_component(NavigatorTimer)
 spawn_prefab_canvas(world);
 spawn_prefab_element(world);
@@ -51,7 +53,7 @@ zox_system(ElementSelectedSystem, EcsOnUpdate, [none] Element, [in] SelectableSt
 if (!headless) {
     #ifdef zoxel_inputs
         zox_system(ElementActivateSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterTarget)
-        zox_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [out] NavigatorTimer, [out] RaycasterTarget)
+        zox_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [out] NavigatorState, [out] NavigatorTimer, [out] RaycasterTarget)
     #endif
     zox_system_1(ElementMeshSystem, ui_mesh_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture)
     element_mesh_system_id = ecs_id(ElementMeshSystem);

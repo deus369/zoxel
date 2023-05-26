@@ -6,28 +6,38 @@
         double delta_time = zox_delta_time;
         ecs_world_t *world = it->world;
         const DeviceLinks *deviceLinks = ecs_field(it, DeviceLinks, 1);
+        const DeviceMode *deviceModes = ecs_field(it, DeviceMode, 2);
+        NavigatorState *navigatorStates = ecs_field(it, NavigatorState, 2);
         NavigatorTimer *navigatorTimers = ecs_field(it, NavigatorTimer, 2);
         RaycasterTarget *raycasterTargets = ecs_field(it, RaycasterTarget, 3);
         for (int i = 0; i < it->count; i++) {
             RaycasterTarget *raycasterTarget = &raycasterTargets[i];
-            if (raycasterTarget->value == 0 || !ecs_is_alive(world, raycasterTarget->value)) {
+            if (raycasterTarget->value == 0 || !ecs_is_alive(world, raycasterTarget->value)) continue;
+            const DeviceMode *deviceMode = &deviceModes[i];
+            NavigatorState *navigatorState = &navigatorStates[i];
+            NavigatorTimer *navigatorTimer = &navigatorTimers[i];
+            if (deviceMode->value != zox_device_mode_gamepad) {
+                navigatorState->value = 1;
+                navigatorTimer->value = 0;
                 continue;
             }
             const DeviceLinks *deviceLinks2 = &deviceLinks[i];
-            NavigatorTimer *navigatorTimer = &navigatorTimers[i];
             // zoxel_log(" > raycasterTarget->value %lu\n", raycasterTarget->value);
             for (int j = 0; j < deviceLinks2->length; j++) {
                 ecs_entity_t device_entity = deviceLinks2->value[j];
                 if (ecs_has(world, device_entity, Gamepad)) {
                     const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
+                    // if stops input
                     if (float_abs(gamepad->left_stick.value.y) < ui_navigation_joystick_cutoff) {
+                        navigatorState->value = 0;
                         navigatorTimer->value = 0;
+                        break;
+                    } else if (navigatorState->value != 0) {
+                        // here we are waiting for gamepad to stop moving, as didn't start within gamepad mode
                         break;
                     } else if (navigatorTimer->value > 0) {
                         navigatorTimer->value -= delta_time;
-                        if (navigatorTimer->value < 0) {
-                            navigatorTimer->value = 0;
-                        }
+                        if (navigatorTimer->value < 0) navigatorTimer->value = 0;
                         break;
                     }
                     //zoxel_log(" > left_stick.value.y: %f\n", gamepad->left_stick.value.y);

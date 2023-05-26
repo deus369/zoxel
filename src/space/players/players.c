@@ -61,9 +61,9 @@ zox_system_ctx(FreeCameraRotateSystem, EcsOnUpdate, cameras2, [in] Mouse)
 zox_system_ctx(FreeCameraToggleSystem, EcsOnUpdate, free_roam_cameras, [in] Mouse, [out] MouseLock)
 zox_system_ctx(FreeCameraDisableMovementSystem, EcsOnUpdate, player_character3Ds, [in] Mouse)
 zox_system(Player2DTestSystem, EcsOnUpdate, [in] Keyboard)
-zox_system(PlayerShortcutsSystem, EcsOnStore, [in] Keyboard)
 zox_system(PlayerPauseSystem, EcsOnUpdate, [out] Player, [in] DeviceLinks)
-zox_system_1(DeviceModeResponseSystem, EcsOnUpdate, [in] DeviceMode)
+zox_system(DeviceModeResponseSystem, EcsOnUpdate, [in] DeviceMode, [in] DeviceModeDirty)
+zox_system(PlayerShortcutsSystem, EcsOnStore, [in] Keyboard)
 zoxel_end_module(Players)
 
 //#if zoxel_particles2D

@@ -5,8 +5,8 @@ void Render3DColoredSystem(ecs_iter_t *it) {
     if (colored3D_material == 0 || it->count == 0) return;
     const Position3D *positions = ecs_field(it, Position3D, 1);
     const Rotation3D *rotations = ecs_field(it, Rotation3D, 2);
-    const Scale1D *scale1Ds = ecs_field(it, Scale1D, 3);
-    const Brightness *brightnesses = ecs_field(it, Brightness, 4);
+    // const Scale1D *scale1Ds = ecs_field(it, Scale1D, 3);
+    // const Brightness *brightnesses = ecs_field(it, Brightness, 4);
     const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 5);
     const ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 6);
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 7);
@@ -36,8 +36,8 @@ void Render3DColoredSystem(ecs_iter_t *it) {
         const Position3D *position = &positions[i];
         const Rotation3D *rotation = &rotations[i];
         const ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
-        const Scale1D *scale1D = &scale1Ds[i];
-        const Brightness *brightness = &brightnesses[i];
+        // const Scale1D *scale1D = &scale1Ds[i];
+        // const Brightness *brightness = &brightnesses[i];
         // glUniform1f(materialColored3D.scale, scale1D->value);
         // glUniform1f(materialColored3D.brightness, brightness->value);
         opengl_set_buffer_attributes_colors(meshGPULink->value.y, colorsGPULink->value);
