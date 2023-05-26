@@ -51,7 +51,7 @@
                     }
                 } else if (ecs_has(world, device_entity, Gamepad)) {
                     const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
-                    if (gamepad->a.released_this_frame) {    // pressed_this_frame
+                    if (gamepad->a.pressed_this_frame) {    // pressed_this_frame released_this_frame
                         set_ui_clicked_mut(world, raycasterTarget->value);
                     }
                 }

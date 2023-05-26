@@ -1,11 +1,9 @@
 void toggle_pause_ui(ecs_world_t *world) {
     const GameState *gameState = ecs_get(world, local_game, GameState);
     if (!(gameState->value == zoxel_game_state_playing || gameState->value == zoxel_game_state_paused)) return;
-    // zoxel_log(" > todo: toggle pause ui\n");
     const int edge_buffer = 8 * default_ui_scale;
     const float2 window_anchor = { 0.0f, 1.0f };
     const int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
-    // add this entity to canvas children
     if (!ecs_is_alive(world, pause_ui)) {
         spawn_pause_ui(world, window_position, window_anchor);
         ecs_set(world, local_game, GameState, { zoxel_game_state_paused });

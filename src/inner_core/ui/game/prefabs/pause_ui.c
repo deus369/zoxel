@@ -1,4 +1,3 @@
-// this will handle resume game & exit game & options
 ecs_entity_t pause_ui_prefab;
 ecs_entity_t pause_ui;
 
@@ -13,8 +12,6 @@ ecs_entity_t spawn_prefab_pause_ui(ecs_world_t *world) {
     return e;
 }
 
-// todo: return to gameplay button
-// todo: return to main menu button instead of exit game
 ecs_entity_t spawn_pause_ui(ecs_world_t *world, int2 position, float2 anchor) {
     int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
     const char *header_label = "paused";
@@ -48,9 +45,6 @@ ecs_entity_t spawn_pause_ui(ecs_world_t *world, int2 position, float2 anchor) {
     float2 position2D = initialize_ui_components(world, e, main_canvas, position, window_size, anchor, 0, canvas_size);
     Children children = { };
     int children_count = 4;
-    //#ifdef zoxel_on_android
-    //    children_count = 3;
-    //#endif
     initialize_memory_component_non_pointer(children, ecs_entity_t, children_count);
     // header
     children.value[0] = spawn_header(world, e, header_position, (int2) { window_size.x, font_size + header_margins},
@@ -65,9 +59,6 @@ ecs_entity_t spawn_pause_ui(ecs_world_t *world, int2 position, float2 anchor) {
     children.value[3] = spawn_button(world, e, (int2) { 0, - font_size * 2 }, button_padding,
         (float2) { 0.5f, 0.5f }, button_label_3, font_size, 1, position2D, window_size, canvas_size);
     zox_set(children.value[3], ClickEvent, { &button_event_stop_playing_game });
-    //#ifndef zoxel_on_android
-    // zox_add_tag(children.value[3], ExitGameButton);
-    //#endif
     ecs_set(world, e, Children, { children.length, children.value });
     ecs_defer_end(world);
     pause_ui = e;

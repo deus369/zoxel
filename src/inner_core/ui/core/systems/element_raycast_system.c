@@ -1,10 +1,8 @@
 // A system that casts a ray into the ui elements
 //  Creates an external event when selects a entity. Can be used by AI to select ui too
-
 // #define zoxel_debug_ui_selectable_states
 
 void set_selectable_state_mut(ecs_world_t *world, ecs_entity_t ui_entity, unsigned char state) {
-    // flecs quirk: after just spawning, it seems to show false for these...
     if (ui_entity != 0) { // && ecs_is_alive(world, ui_entity) && ecs_has(world, ui_entity, SelectableState)) {
         SelectableState *selectableState = ecs_get_mut(world, ui_entity, SelectableState);
         if (selectableState->value != state) {
@@ -48,7 +46,6 @@ void raycaster_select_ui_mut(ecs_world_t *world, ecs_entity_t raycaster_entity, 
     #endif
 }
 
-// uses layers
 void ElementRaycastSystem(ecs_iter_t *it) {
     const Raycaster *raycasters = ecs_field(it, Raycaster, 1);
     const DeviceMode *deviceModes = ecs_field(it, DeviceMode, 2);
@@ -105,25 +102,10 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         }
         if (raycasterTarget->value != ui_selected) {
             raycaster_select_ui(it->world, raycasterTarget, ui_selected);
-            if (ui_layer != -1) {
-                ui_selected_selectableState->value = 1;
-            }
+            if (ui_layer != -1)  ui_selected_selectableState->value = 1;
             // zoxel_log(" > mouse raycasting new ui\n");
             // printf("    -> new target ui [%lu] \n", (long int) raycasterTarget->value);
         }
     }
 }
 zox_declare_system(ElementRaycastSystem)
-    /*if (ui_entity != 0 && ecs_is_alive(world, ui_entity) && ecs_has(world, ui_entity, SelectableState)) {
-        SelectableState *selectableState = ecs_get_mut(world, ui_entity, SelectableState);
-        selectableState->value = 0;
-        ecs_modified(world, ui_entity, SelectableState);
-    }*/
-
-/*void set_ui_selected_mut(ecs_world_t *world, ecs_entity_t ui) {
-    if (ui != 0 && ecs_has(world, ui, SelectableState)) {
-        SelectableState *selectableState = ecs_get_mut(world, ui, SelectableState);
-        selectableState->value = 1;
-        ecs_modified(world, ui, SelectableState);
-    }
-}*/
