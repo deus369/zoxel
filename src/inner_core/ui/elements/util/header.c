@@ -16,7 +16,7 @@ ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, int2 position
     int2 padding = (int2) { (int) (font_size * 0.3f), (int) (font_size * 0.3f) };
     ecs_defer_begin(world);
     zox_instance(header_prefab)
-    set_unique_entity_name(world, e, "header");
+    zox_name("header")
     float2 position2D = initialize_ui_components_2(world, e, parent, position, size, anchor, layer, parent_position2D, parent_pixel_size, canvas_size);
     Children children = { };
     initialize_memory_component_non_pointer(children, ecs_entity_t, children_length)

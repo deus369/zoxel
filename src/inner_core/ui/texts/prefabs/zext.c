@@ -2,15 +2,15 @@ ecs_entity_t zext_prefab;
 
 ecs_entity_t spawn_zext_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_prefab(world, "");
-    set_unique_entity_name(world, e, "zext_prefab");
-    zox_add_tag(e, Zext);
-    zox_add(e, ZextData);
-    zox_add(e, ZextSize);
-    zox_add(e, ZextPadding);
-    zox_set(e, ZextAlignment, { 0 });
-    zox_set(e, ZextDirty, { 0 });
-    zox_add(e, Children);
+    zox_prefab()
+    zox_name("zext_prefab")
+    zox_add_tag(e, Zext)
+    zox_add(e, ZextData)
+    zox_add(e, ZextSize)
+    zox_add(e, ZextPadding)
+    zox_set(e, ZextAlignment, { 0 })
+    zox_set(e, ZextDirty, { 0 })
+    zox_add(e, Children)
     add_transform2Ds(world, e);
     add_ui_plus_components_invisible(world, e);
     ecs_defer_end(world);
@@ -23,12 +23,8 @@ ecs_entity_t spawn_zext_prefab(ecs_world_t *world) {
 
 void set_zext(ZextData *zext_data, const char* text) {
     unsigned char text_length = strlen(text);
-    if (zext_data->length != text_length) {
-        re_initialize_memory_component(zext_data, unsigned char, text_length);
-    }
-    for (unsigned char i = 0; i < text_length; i++) {
-        zext_data->value[i] = convert_ascii(text[i]);
-    }
+    if (zext_data->length != text_length) re_initialize_memory_component(zext_data, unsigned char, text_length)
+    for (unsigned char i = 0; i < text_length; i++) zext_data->value[i] = convert_ascii(text[i]);
 }
 
 ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t parent, int2 position, float2 anchor, byte2 padding,
@@ -38,11 +34,11 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t pa
     ecs_defer_begin(world);
     int textLength = strlen(text);
     int2 zext_size = (int2) { font_size * textLength, font_size };
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
-    set_unique_entity_name(world, e, "zext");
-    ecs_set(world, e, ZextSize, { font_size });
-    ecs_set(world, e, ZextPadding, { padding });
-    ecs_set(world, e, ZextAlignment, { alignment });
+    zox_instance(prefab)
+    zox_name("zext")
+    zox_set_only(e, ZextSize, { font_size })
+    zox_set_only(e, ZextPadding, { padding })
+    zox_set_only(e, ZextAlignment, { alignment })
     float2 position2D = initialize_ui_components_2(world, e, parent, position, zext_size, anchor, layer,
         parent_position2D, parent_pixel_size, canvas_size);
     ZextData zextData = { };
@@ -55,8 +51,8 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t pa
         children.value[i] = spawn_zext_zigel(world, e, layer + 1, i, textLength, zigel_index, font_size, alignment, padding, position2D, zext_size, canvas_size);
         // printf("Is %i [%lu] valid: %s\n", i, (long int) children.value[i], ecs_is_valid(world, children.value[i]) ? "Yes" : "No");
     }
-    ecs_set(world, e, ZextData, { zextData.length, zextData.value });
-    ecs_set(world, e, Children, { children.length, children.value });
+    zox_set_only(e, ZextData, { zextData.length, zextData.value })
+    zox_set_only(e, Children, { children.length, children.value })
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
         printf("Spawned zext [%lu]\n", (long int) e);

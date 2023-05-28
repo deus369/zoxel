@@ -3,7 +3,7 @@ ecs_entity_t prefab_realm;
 ecs_entity_t spawn_prefab_realm(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    set_unique_entity_name(world, e, "prefab_realm");
+    zox_name("prefab_realm")
     zox_add_tag(e, Realm);
     zox_set(e, VoxelLinks, { 0, NULL })
     ecs_defer_end(world);
@@ -19,7 +19,7 @@ ecs_entity_t local_realm;
 ecs_entity_t spawn_realm(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_instance(prefab_realm)
-    set_unique_entity_name(world, e, "realm");
+    zox_name("realm")
     // spawn voxels
     VoxelLinks voxelLinks = { };
     initialize_memory_component_non_pointer(voxelLinks, ecs_entity_t, 8)

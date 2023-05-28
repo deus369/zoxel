@@ -3,9 +3,8 @@ ecs_entity_t main_menu;
 
 ecs_entity_t spawn_prefab_main_menu(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, window_prefab);
-    ecs_add_id(world, e, EcsPrefab);
-    set_unique_entity_name(world, e, "prefab_main_menu");
+    zox_prefab_child(window_prefab)
+    zox_name("prefab_main_menu")
     zox_add_tag(e, MainMenu);
     ecs_defer_end(world);
     main_menu_prefab = e;
@@ -38,8 +37,8 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label, int2 
         options_button_position.y = -font_size;
     #endif
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, main_menu_prefab);
-    set_unique_entity_name(world, e, "main_menu");
+    zox_instance(main_menu_prefab)
+    zox_name("main_menu")
     float2 position2D = initialize_ui_components(world, e, main_canvas, position, window_size, anchor, 0, canvas_size);
     Children children = { };
     int children_count = 4;

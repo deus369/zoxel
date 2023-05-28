@@ -8,8 +8,8 @@ const int fonts_used = 71;
 //! meta data for a font character
 ecs_entity_t spawn_font_style_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_prefab(world, "");
-    set_unique_entity_name(world, e, "font_style_prefab");
+    zox_prefab()
+    zox_name("prefab_font_style")
     zox_add_tag(e, FontStyle);
     zox_add(e, Children);
     ecs_defer_end(world);
@@ -19,8 +19,8 @@ ecs_entity_t spawn_font_style_prefab(ecs_world_t *world) {
 
 ecs_entity_t spawn_font_style(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, font_style_prefab);
-    set_unique_entity_name(world, e, "font_style");
+    zox_instance(font_style_prefab)
+    zox_name("font_style")
     Children children = { };
     initialize_memory_component_non_pointer(children, ecs_entity_t, font_styles_length);
     children.value[0] = spawn_font(world, font_question_mark, font_question_mark_length);

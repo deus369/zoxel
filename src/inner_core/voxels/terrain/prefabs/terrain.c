@@ -3,16 +3,12 @@ ecs_entity_t main_terrain;
 
 ecs_entity_t spawn_prefab_terrain(ecs_world_t *world) {
     ecs_defer_begin(world);
-    // ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_chunk);
-    ecs_entity_t e = ecs_new_prefab(world, "");
-    // ecs_entity_t e = ecs_new(world, 0, prefab_chunk, 1);
-    // ecs_add_id(world, e, EcsPrefab);
-    // set_unique_entity_name(world, e, "prefab_terrain_chunk");
-    // ecs_set_name(world, e, "prefab_terrain_chunk");
+    zox_prefab()
+    zox_name("prefab_terrain")
     zox_add_tag(e, TerrainWorld)
     zox_add(e, ChunkLinks)
     #ifndef voxels_terrain_multi_material
-        zox_add_tag(e, DirtTexture);
+        zox_add_tag(e, DirtTexture)
         add_texture(world, e, chunk_texture_size, 1);
         add_noise_texture(world, e);
         add_gpu_texture(world, e);
@@ -24,10 +20,10 @@ ecs_entity_t spawn_prefab_terrain(ecs_world_t *world) {
 
 ecs_entity_t spawn_terrain(ecs_world_t *world, ecs_entity_t prefab, float3 position, float scale) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
-    set_unique_entity_name(world, e, "terrain");
-    ecs_set(world, e, Position3D, { position });
-    ecs_set(world, e, Scale1D, { scale });
+    zox_instance(prefab)
+    zox_name("terrain")
+    zox_set_only(e, Position3D, { position })
+    zox_set_only(e, Scale1D, { scale })
     #ifndef voxels_terrain_multi_material
         spawn_gpu_material(world, e, shader3D_textured);
         spawn_gpu_texture(world, e);

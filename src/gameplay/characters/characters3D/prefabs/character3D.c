@@ -29,7 +29,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     // ecs_entity_t e = ecs_clone(world, 0, prefab_vox, 1);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_vox);
     zox_make_prefab(e)
-    set_unique_entity_name(world, e, "prefab_character3D");
+    zox_name("prefab_character3D")
     add_seed(world, e, 999);
     add_physics3D(world, e);
     zox_set(e, Bounds3D, {{ 1, 1, 1 }})

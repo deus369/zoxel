@@ -34,6 +34,8 @@
 #define zox_prefab_child(prefab) zox_instance(prefab)\
     zox_make_prefab(e)
 
+#define zox_name(label) set_unique_entity_name(world, e, label);
+
 //! Creates a simple Filter with components.
 //! Adds a component but also adds override to an entity.
 //! Adds a simple tag to an entity.

@@ -3,8 +3,8 @@ ecs_entity_t main_app;
 
 ecs_entity_t spawn_app_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_prefab(world, "");
-    set_unique_entity_name(world, e, "app_prefab");
+    zox_prefab()
+    zox_name("prefab_app")
     zox_add_tag(e, App)
     // zox_add_tag(e, ViewPort)
     zox_add(e, SDLWindow)
@@ -19,7 +19,7 @@ ecs_entity_t spawn_app_prefab(ecs_world_t *world) {
 
 ecs_entity_t spawn_app(ecs_world_t *world, SDL_Window* window, SDL_GLContext* context) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, app_prefab);
+    zox_instance(app_prefab)
     zox_set_only(e, SDLWindow, { window })
     zox_set_only(e, Context, { context })
     ecs_defer_end(world);
@@ -30,7 +30,5 @@ ecs_entity_t spawn_app(ecs_world_t *world, SDL_Window* window, SDL_GLContext* co
 
 void finish_opengl_rendering(ecs_world_t *world) {
     const SDLWindow *window = ecs_get(world, main_app, SDLWindow);
-    if (window->value) {
-        SDL_GL_SwapWindow(window->value);
-    }
+    if (window->value) SDL_GL_SwapWindow(window->value);
 }

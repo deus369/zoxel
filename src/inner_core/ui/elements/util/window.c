@@ -4,8 +4,8 @@ ecs_entity_t spawn_window(ecs_world_t *world, const char *header_label, int2 pos
     int font_size = 28;
     int header_margins = 4;
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, window_prefab);
-    set_unique_entity_name(world, e, "window");
+    zox_instance(window_prefab)
+    zox_name("window")
     float2 position2D = initialize_ui_components(world, e, canvas, position, pixel_size, anchor, 0, canvas_size);
     Children children = { };
     initialize_memory_component_non_pointer(children, ecs_entity_t, 1);

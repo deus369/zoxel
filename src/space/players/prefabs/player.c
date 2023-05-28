@@ -4,9 +4,8 @@ ecs_entity_t local_player;
 
 ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_prefab(world, "");
-    ecs_add_id(world, e, EcsPrefab);
-    set_unique_entity_name(world, e, "prefab_player");
+    zox_prefab()
+    zox_name("prefab_player")
     zox_add_tag(e, Player)
     zox_add(e, DeviceLinks)
     zox_set(e, DeviceMode, { 0 })
@@ -25,8 +24,8 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
 
 ecs_entity_t spawn_player(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_player);
-    set_unique_entity_name(world, e, "player");
+    zox_instance(prefab_player)
+    zox_name("player")
     DeviceLinks deviceLinks = { };
     initialize_memory_component_non_pointer(deviceLinks, ecs_entity_t, 4);
     deviceLinks.value[0] = keyboard_entity;

@@ -2,8 +2,8 @@ ecs_entity_t prefab_skill;
 
 ecs_entity_t spawn_prefab_skill(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_prefab(world, "");
-    set_unique_entity_name(world, e, "prefab_skill");
+    zox_prefab()
+    zox_name("prefab_skill")
     zox_add_tag(e, Skill);
     // zox_add(e, ZoxName);
     ecs_defer_end(world);
@@ -16,8 +16,8 @@ ecs_entity_t spawn_prefab_skill(ecs_world_t *world) {
 
 ecs_entity_t spawn_skill(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_skill);
-    set_unique_entity_name(world, e, "skill");
+    zox_instance(prefab_skill)
+    zox_name("skill")
     // ecs_set(world, e, Position3D, { position });
     ecs_defer_end(world);
     #ifdef zoxel_debug_spawns

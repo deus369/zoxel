@@ -3,9 +3,8 @@ ecs_entity_t options_ui_prefab;
 
 ecs_entity_t spawn_prefab_options_ui(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, window_prefab);
-    ecs_add_id(world, e, EcsPrefab);
-    set_unique_entity_name(world, e, "prefab_options_ui");
+    zox_prefab_child(window_prefab)
+    zox_name("prefab_options_ui")
     zox_add_tag(e, PauseUI);
     ecs_defer_end(world);
     options_ui_prefab = e;
@@ -34,7 +33,7 @@ ecs_entity_t spawn_options_ui(ecs_world_t *world, const char *header_label, int2
     header_position.y = font_size / 2 + header_margins / 2;
     ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, options_ui_prefab);
-    set_unique_entity_name(world, e, "options_ui");
+    zox_name("options_ui")
     float2 position2D = initialize_ui_components(world, e, main_canvas, position, window_size, anchor, 0, ecs_get(world, main_canvas, PixelSize)->value);
     Children children = { };
     int children_count = 4;

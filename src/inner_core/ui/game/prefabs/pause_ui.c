@@ -3,9 +3,8 @@ ecs_entity_t pause_ui;
 
 ecs_entity_t spawn_prefab_pause_ui(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, window_prefab);
-    ecs_add_id(world, e, EcsPrefab);
-    set_unique_entity_name(world, e, "prefab_pause_ui");
+    zox_prefab_child(window_prefab)
+    zox_name("prefab_pause_ui")
     zox_add_tag(e, PauseUI);
     ecs_defer_end(world);
     pause_ui_prefab = e;
@@ -40,8 +39,8 @@ ecs_entity_t spawn_pause_ui(ecs_world_t *world, int2 position, float2 anchor) {
     int2 header_position = (int2) { 0, header_height / 2.0f }; //- font_size / 2 - header_margins / 2 };
     header_position.y = font_size / 2 + header_margins / 2;
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, pause_ui_prefab);
-    set_unique_entity_name(world, e, "pause_ui");
+    zox_instance(pause_ui_prefab)
+    zox_name("pause_ui")
     float2 position2D = initialize_ui_components(world, e, main_canvas, position, window_size, anchor, 0, canvas_size);
     Children children = { };
     int children_count = 4;
