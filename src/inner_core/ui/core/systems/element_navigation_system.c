@@ -2,6 +2,8 @@
     #define ui_navigation_joystick_cutoff 0.6f
     #define ui_navigation_timing 0.3
     #define restore_joystick_cutoff 0.06f
+    // select left and right later directions
+    // also, use a stored selection, NavigatorSelected component
 
     void ElementNavigationSystem(ecs_iter_t *it) {
         double delta_time = zox_delta_time;
@@ -77,7 +79,6 @@
                     /*if (!did_find) {
                         zoxel_log(" ! selectable not found out of [%i]\n", children->length);
                     }*/
-                    // select left and right later
                 }
             }
         }

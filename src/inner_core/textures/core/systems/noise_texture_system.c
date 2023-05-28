@@ -102,13 +102,7 @@ void NoiseTextureSystem(ecs_iter_t *it) {
     //! This breaks the updates. \todo Fix this. Find out why it doesn't work properly.
     //! This doesn't work because the table writes all changes in the first iteration which is for one entity.
     //!     Possible fix: Make a second system that writes changes at the end of the loop
-    ecs_query_t *changeQuery = it->ctx;
-    if (!changeQuery || !ecs_query_changed(changeQuery, NULL)) {
-        return;
-    }
-    // ecs_iter_t changeIterator = ecs_query_iter(it->world, changeQuery);
-    // while (ecs_query_next(&changeIterator));
-    // printf("NoiseTextureSystem: [GenerateTexture Changed]\n");
+    if (!ecs_query_changed(it->ctx, NULL)) return;
     TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 2);
     TextureData *textures = ecs_field(it, TextureData, 3);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 4);
@@ -116,13 +110,9 @@ void NoiseTextureSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const GenerateTexture *generateTexture = &generateTextures[i];
         //! Only rebuild if GenerateTexture is set to 1 and EntityDirty is false.
-        if (generateTexture->value == 0) {
-            continue;
-        }
+        if (generateTexture->value == 0) continue;
         TextureDirty *textureDirty = &textureDirtys[i];
-        if (textureDirty->value != 0) {
-            continue;
-        }
+        if (textureDirty->value != 0) continue;
         textureDirty->value = 1;
         TextureData *textureData = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];

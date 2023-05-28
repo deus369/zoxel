@@ -2,8 +2,7 @@ ecs_entity_t prefab_vox;
 
 ecs_entity_t spawn_prefab_vox(ecs_world_t *world) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_chunk);
-    ecs_add_id(world, e, EcsPrefab);
+    zox_prefab_child(prefab_chunk)
     set_unique_entity_name(world, e, "prefab_vox");
     add_chunk_colors(world, e);
     zox_set(e, Scale1D, { 1.0f })
@@ -48,27 +47,27 @@ void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, vox_file *vox) {
         }
         optimize_solid_nodes(&chunkOctree);
         close_same_nodes(&chunkOctree);
-        ecs_set(world, e, ChunkOctree, { chunkOctree.value, chunkOctree.nodes });
-        ecs_set(world, e, ChunkSize, { vox_size });
+        zox_set_only(e, ChunkOctree, { chunkOctree.value, chunkOctree.nodes })
+        zox_set_only(e, ChunkSize, { vox_size })
     #else
         ChunkSize chunkSize = { vox->chunks[0].size.xyz };
         int voxels_length = chunkSize.value.x * chunkSize.value.y * chunkSize.value.z;
         ChunkData chunk = { };
         ColorRGBs colorRGBs = { };
         int colors_length = vox->palette.values_length;
-        initialize_memory_component_non_pointer(chunk, unsigned char, voxels_length);
-        initialize_memory_component_non_pointer(colorRGBs, color_rgb, colors_length);
+        initialize_memory_component_non_pointer(chunk, unsigned char, voxels_length)
+        initialize_memory_component_non_pointer(colorRGBs, color_rgb, colors_length)
         memcpy(chunk.value, vox->chunks[0].xyzi.voxels, voxels_length);     // this lags it hard...
         memcpy(colorRGBs.value, vox->palette.values_rgb, colors_length * sizeof(color_rgb));
-        ecs_set(world, e, ChunkSize, { chunkSize.value });
-        ecs_set(world, e, ChunkData, { chunk.length, chunk.value });
-        ecs_set(world, e, ColorRGBs, { colorRGBs.length, colorRGBs.value });
+        zox_set_only(e, ChunkSize, { chunkSize.value })
+        zox_set_only(e, ChunkData, { chunk.length, chunk.value })
+        zox_set_only(e, ColorRGBs, { colorRGBs.length, colorRGBs.value })
     #endif
 }
 
 ecs_entity_t spawn_vox(ecs_world_t *world, vox_file *vox, float3 position, unsigned char division) {
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_vox);
+    zox_instance(prefab_vox)
     zox_set(e, Position3D, { position })
     zox_set(e, RenderLod, { division })
     set_vox_from_vox_file(world, e, vox);

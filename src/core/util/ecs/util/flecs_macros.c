@@ -27,6 +27,13 @@
 
 #define zox_has(e, T) ecs_has(world, e, T)
 
+#define zox_prefab() ecs_entity_t e = ecs_new_prefab(world, "");
+
+#define zox_instance(prefab) ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
+
+#define zox_prefab_child(prefab) zox_instance(prefab)\
+    zox_make_prefab(e)
+
 //! Creates a simple Filter with components.
 //! Adds a component but also adds override to an entity.
 //! Adds a simple tag to an entity.
