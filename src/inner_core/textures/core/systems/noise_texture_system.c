@@ -15,8 +15,7 @@ void generate_texture_graybox(TextureData* textureData, const TextureSize *textu
     }
 }
 
-//! Our function that creates a textureData.
-void GenerateNoise(TextureData* textureData, const TextureSize *textureSize, unsigned char is_dirt) {
+void generate_texture_noise(TextureData* textureData, const TextureSize *textureSize, unsigned char is_dirt) {
     int2 redRange = { 15, 244 };
     int2 greenRange = { 15, 122 };
     int2 blueRange = { 15, 122 };
@@ -99,9 +98,6 @@ void GenerateNoise(TextureData* textureData, const TextureSize *textureSize, uns
 }
 
 void NoiseTextureSystem(ecs_iter_t *it) {
-    //! This breaks the updates. \todo Fix this. Find out why it doesn't work properly.
-    //! This doesn't work because the table writes all changes in the first iteration which is for one entity.
-    //!     Possible fix: Make a second system that writes changes at the end of the loop
     if (!ecs_query_changed(it->ctx, NULL)) return;
     TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 2);
     TextureData *textures = ecs_field(it, TextureData, 3);
@@ -109,18 +105,20 @@ void NoiseTextureSystem(ecs_iter_t *it) {
     const GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 5);
     for (int i = 0; i < it->count; i++) {
         const GenerateTexture *generateTexture = &generateTextures[i];
-        //! Only rebuild if GenerateTexture is set to 1 and EntityDirty is false.
         if (generateTexture->value == 0) continue;
         TextureDirty *textureDirty = &textureDirtys[i];
         if (textureDirty->value != 0) continue;
-        textureDirty->value = 1;
         TextureData *textureData = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
-        int newLength = textureSize->value.x * textureSize->value.y;
-        re_initialize_memory_component(textureData, color, newLength);
         unsigned char is_dirt = ecs_has(it->world, it->entities[i], DirtTexture);
-        GenerateNoise(textureData, textureSize, is_dirt);
-        // printf("Noise TextureData Generated: [%lu] \n", (long int) it->entities[i]);
+        re_initialize_memory_component(textureData, color, textureSize->value.x * textureSize->value.y);
+        generate_texture_noise(textureData, textureSize, is_dirt);
+        textureDirty->value = 1;
+        // if (is_dirt) zoxel_log("    > dirt generated [%lu]\n", it->entities[i]);
     }
 }
 zox_declare_system(NoiseTextureSystem)
+
+//! This breaks the updates. \todo Fix this. Find out why it doesn't work properly.
+//! This doesn't work because the table writes all changes in the first iteration which is for one entity.
+//!     Possible fix: Make a second system that writes changes at the end of the loop

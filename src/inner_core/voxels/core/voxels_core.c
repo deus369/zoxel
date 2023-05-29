@@ -6,12 +6,12 @@
 zox_declare_tag(Voxel)
 zox_declare_tag(ColorChunk)
 zox_declare_tag(LinkChunk)
-zox_component(ChunkSize, int3)                        //! A simple chunk with an array of voxels
-zox_byte_component(GenerateChunk)                     //! A state for generating chunks
-zox_byte_component(ChunkDirty)                        //! A state for generating chunk meshes
-zox_memory_component(ChunkData, unsigned char)        //! A simple chunk with an array of voxels
-zox_memory_component(ChunkNeighbors, ecs_entity_t)    //! A list to all chunks in a Vox model
-zoxel_octree_component(ChunkOctree, unsigned char, 0)   //! A chunk that stores voxels in an octree
+zox_component(ChunkSize, int3)
+zox_byte_component(GenerateChunk)
+zox_byte_component(ChunkDirty)
+zox_memory_component(ChunkData, unsigned char)
+zox_memory_component(ChunkNeighbors, ecs_entity_t)
+zoxel_octree_component(ChunkOctree, unsigned char, 0)
 zox_entities_component(VoxelLinks)
 // zoxel_util_includes
 #include "util/voxel_mesh_util.c"
@@ -33,6 +33,8 @@ zox_entities_component(VoxelLinks)
 zox_reset_system(GenerateChunkResetSystem, GenerateChunk)
 
 zox_begin_module(VoxelsCore)
+// zoxel_settings_defines
+set_max_octree_length(max_octree_depth);
 // zoxel_component_defines
 zox_define_tag(Voxel)
 zox_define_tag(ColorChunk)
@@ -48,9 +50,9 @@ zox_define_entities_component(VoxelLinks, [in] VoxelLinks)
 spawn_prefab_voxel(world);
 spawn_prefab_chunk(world);
 spawn_prefab_noise_chunk(world);
-set_max_octree_length(max_octree_depth);
-// zoxel_system_defines
+// zoxel_filter_defines
 zox_filter(chunks_generating, [in] GenerateChunk)
+// zoxel_system_defines
 zox_define_reset_system(GenerateChunkResetSystem, GenerateChunk)
 if (!headless) {
     zox_system_ctx(ChunkBuildSystem, EcsOnUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices, [out] MeshDirty, [none] !MeshUVs, [none] !MeshColorRGBs)

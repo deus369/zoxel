@@ -9,7 +9,7 @@ ecs_entity_t spawn_prefab_realm(ecs_world_t *world) {
     ecs_defer_end(world);
     prefab_realm = e;
     #ifdef zoxel_debug_prefabs
-        zoxel_log("spawn_prefab realm [%lu].\n", (long int) (e));
+        zoxel_log(" + spawn_prefab realm [%lu].\n", (long int) (e));
     #endif
     return e;
 }
@@ -31,7 +31,7 @@ ecs_entity_t spawn_realm(ecs_world_t *world) {
     ecs_defer_end(world);
     local_realm = e;
     #ifdef zoxel_debug_spawns
-        zoxel_log("Spawned realm [%lu]\n", (long int) e);
+        zoxel_log(" + spawned realm [%lu]\n", (long int) e);
     #endif
     return e;
 }

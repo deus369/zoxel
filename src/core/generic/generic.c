@@ -20,11 +20,11 @@ zox_component(Raycaster, int2)                //! Contains the raycast mouse pos
 zox_component(RaycasterTarget, ecs_entity_t)  //! A target entity for the Raycaster
 zox_component(Layer2D, unsigned char)         //! A 2D Layer for a entity
 zox_component(ColorRGB, color_rgb)
-zox_component(Color, color)                   //! A generic entity color
-zox_component(SecondaryColor, color)          //! A generic entity color
-zox_memory_component(ColorRGBs, color_rgb)           //! A generic entity colorRGBs
-zox_memory_component(Colors, color)           //! A generic entity colorRGBs
-zox_byte_component(GenericEvent)              //! Used for game and other events, genetic
+zox_component(Color, color)
+zox_component(SecondaryColor, color)
+zox_memory_component(ColorRGBs, color_rgb)
+zox_memory_component(Colors, color)
+zox_byte_component(GenericEvent)
 zox_component(Bounds3D, float3)
 zox_entities_component(EntityLinks)
 zox_reset_system(EntityDirtyResetSystem, EntityDirty)
