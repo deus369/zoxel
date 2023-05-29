@@ -22,9 +22,9 @@ ecs_entity_t spawn_realm(ecs_world_t *world) {
     zox_name("realm")
     // spawn voxels
     VoxelLinks voxelLinks = { };
-    initialize_memory_component_non_pointer(voxelLinks, ecs_entity_t, 8)
-    for (int i = 0; i < 8; i++) {
-        ecs_entity_t voxel_entity = spawn_voxel(world);
+    initialize_memory_component_non_pointer(voxelLinks, ecs_entity_t, 4)
+    for (unsigned char i = 0; i < voxelLinks.length; i++) {
+        ecs_entity_t voxel_entity = spawn_voxel(world, i);
         voxelLinks.value[i] = voxel_entity;
     }
     zox_set_only(e, VoxelLinks, { voxelLinks.length, voxelLinks.value })

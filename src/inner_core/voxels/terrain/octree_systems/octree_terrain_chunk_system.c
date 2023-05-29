@@ -1,5 +1,6 @@
 #define grass_spawn_chance 80
 #define octree_random_spawn_chance 90
+const int sand_height = 5;
 // todo: rewrite algorithm, it's too slow atm for xyz chunks
 
 void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 position, float scale) {
@@ -60,8 +61,9 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
         const ChunkPosition *chunkPosition = &chunkPositions[i];
         float3 chunk_position_float3 = float3_from_int3(chunkPosition->value);
         fill_octree(chunkOctree, 0, target_depth);
-        const byte2 set_octree_data = (byte2) { 1, target_depth };
+        const byte2 set_dirt = (byte2) { 1, target_depth };
         const byte2 set_grass = (byte2) { 2, target_depth };
+        const byte2 set_sand = (byte2) { 3, target_depth };
         byte3 voxel_position;
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
             for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
@@ -74,7 +76,8 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
                         terrain_frequency, terrain_seed, terrain_octaves));
                     if (global_height < lowest_voxel_height) global_height = lowest_voxel_height;
                 #endif
-                int local_height = (int) (global_height - (chunk_position_float3.y * chunk_voxel_length));
+                int global_position_y = (int) (chunk_position_float3.y * chunk_voxel_length);
+                int local_height = (int) (global_height - global_position_y);
                 if (local_height > 0) {
                     unsigned char chunk_below_max = local_height > chunk_voxel_length;
                     if (chunk_below_max) {
@@ -82,14 +85,18 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
                     }
                     for (voxel_position.y = 0; voxel_position.y < local_height; voxel_position.y++) {
                         byte3 node_position = voxel_position;
+                        // if top voxel
                         if (!chunk_below_max && voxel_position.y == local_height - 1) {
-                            if (rand() % 100 < grass_spawn_chance) {
+                            if (global_position_y + voxel_position.y < sand_height) {
+                                // zoxel_log(" > sand voxel created\n");
+                                set_octree_voxel(chunkOctree, &node_position, &set_sand, 0);
+                            } else if (rand() % 100 < grass_spawn_chance) {
                                 set_octree_voxel(chunkOctree, &node_position, &set_grass, 0);
                             } else {
-                                set_octree_voxel(chunkOctree, &node_position, &set_octree_data, 0);
+                                set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);
                             }
                         } else {
-                            set_octree_voxel(chunkOctree, &node_position, &set_octree_data, 0);
+                            set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);
                         }
                     }
                 }

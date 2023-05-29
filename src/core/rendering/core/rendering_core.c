@@ -54,16 +54,9 @@ ecs_set_hooks(world, MeshGPULink, { .dtor = ecs_dtor(MeshGPULink) });
 ecs_set_hooks(world, UvsGPULink, { .dtor = ecs_dtor(UvsGPULink) });
 ecs_set_hooks(world, ColorsGPULink, { .dtor = ecs_dtor(ColorsGPULink) });
 #ifdef zoxel_transforms2D
-    zox_system_1(InstanceRender2DSystem, render2D_update_pipeline,
-        [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink,
-        [none] !MeshGPULink);
-    zox_system_1(RenderMaterial2DSystem, render2D_update_pipeline,
-        [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MaterialGPULink,
-        [in] TextureGPULink, [none] !MeshGPULink);
-    zox_system_1(RenderMeshMaterial2DSystem, render2D_update_pipeline,
-        [in] Position2D, [in] Rotation2D, [in] Scale1D,
-        [in] Layer2D, [in] Brightness, [in] MeshGPULink,
-        [in] MaterialGPULink, [in] TextureGPULink);
+    zox_system_1(InstanceRender2DSystem, render2D_update_pipeline, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink);
+    zox_system_1(RenderMaterial2DSystem, render2D_update_pipeline, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MaterialGPULink, [in] TextureGPULink, [none] !MeshGPULink);
+    zox_system_1(RenderMeshMaterial2DSystem, render2D_update_pipeline, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D, [in] Brightness, [in] MeshGPULink, [in] MaterialGPULink, [in] TextureGPULink);
 #endif
 #ifdef zoxel_transforms3D
     zox_system_1(Render3DSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D,

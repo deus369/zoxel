@@ -93,13 +93,27 @@ void build_octree_chunk_d(const ChunkOctree *root_node, const ChunkOctree *paren
                 zoxel_octree_build_face_d(up, 0, voxel_uvs_0)
                 zoxel_octree_build_face_d(back, 0, voxel_uvs_0)
                 zoxel_octree_build_face_d(front, 1, voxel_uvs_0)
-            } else { // if (voxel == 2) {
+            } else if (voxel == 2) {
                 zoxel_octree_build_face_d(left, 0, voxel_uvs_1)
                 zoxel_octree_build_face_d(right, 1, voxel_uvs_1)
                 zoxel_octree_build_face_d(down, 1, voxel_uvs_1)
                 zoxel_octree_build_face_d(up, 0, voxel_uvs_1)
                 zoxel_octree_build_face_d(back, 0, voxel_uvs_1)
                 zoxel_octree_build_face_d(front, 1, voxel_uvs_1)
+            } else if (voxel == 3) {
+                zoxel_octree_build_face_d(left, 0, voxel_uvs_2)
+                zoxel_octree_build_face_d(right, 1, voxel_uvs_2)
+                zoxel_octree_build_face_d(down, 1, voxel_uvs_2)
+                zoxel_octree_build_face_d(up, 0, voxel_uvs_2)
+                zoxel_octree_build_face_d(back, 0, voxel_uvs_2)
+                zoxel_octree_build_face_d(front, 1, voxel_uvs_2)
+            } else {    // default is dirt
+                zoxel_octree_build_face_d(left, 0, voxel_uvs_0)
+                zoxel_octree_build_face_d(right, 1, voxel_uvs_0)
+                zoxel_octree_build_face_d(down, 1, voxel_uvs_0)
+                zoxel_octree_build_face_d(up, 0, voxel_uvs_0)
+                zoxel_octree_build_face_d(back, 0, voxel_uvs_0)
+                zoxel_octree_build_face_d(front, 1, voxel_uvs_0)
             }
         }
     } else {

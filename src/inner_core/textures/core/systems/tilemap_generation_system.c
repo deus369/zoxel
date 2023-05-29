@@ -5,6 +5,7 @@ void generate_tilemap(ecs_world_t *world, TextureData *textureData, const Tilema
 }
 
 void TilemapGenerationSystem(ecs_iter_t *it) {
+    int2 texture_size = (int2) { 16, 16 };
     const TilemapSize *tilemapSizes = ecs_field(it, TilemapSize, 2);
     const TextureLinks *textureLinkss = ecs_field(it, TextureLinks, 3);
     const GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 4);
@@ -24,9 +25,54 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         textureSize->value.x = tilemapSize->value.x * 16;
         textureSize->value.y = tilemapSize->value.y * 16;
         re_initialize_memory_component(textureData, color, textureSize->value.x * textureSize->value.y);
+        // set random color for now
+        for (int j = 0; j < textureData->length; j++) {
+            textureData->value[j].r = 145;
+            textureData->value[j].g = 24;
+            textureData->value[j].b = 133;
+        }
+        int texture_entity_index = 0;
+        int2 texture_position = int2_zero;
+        for (texture_position.y = 0; texture_position.y < tilemapSize->value.y; texture_position.y++) {
+            for (texture_position.x = 0; texture_position.x < tilemapSize->value.x; texture_position.x++) {
+                int2 tilemap_position = (int2) { texture_position.x * 16, texture_position.y * 16 };
+                ecs_entity_t texture_entity = textureLinks->value[texture_entity_index];
+                const TextureData *voxel_texture_data = ecs_get(it->world, texture_entity, TextureData);
+                int2 pixel_position = int2_zero;
+                for (pixel_position.x = 0; pixel_position.x < 16; pixel_position.x++) {
+                    for (pixel_position.y = 0; pixel_position.y < 16; pixel_position.y++) {
+                        int2 tilemap_pixel_position = int2_add(pixel_position, tilemap_position);
+                        int tilemap_index = int2_array_index(tilemap_pixel_position, textureSize->value);
+                        int texture_index = int2_array_index(pixel_position, texture_size);     // voxel_texture_size->value);
+                        // todo: debug why these go out of bounds!
+                        if (tilemap_index >= textureData->length) continue;
+                        if (texture_index >= voxel_texture_data->length) continue;
+                        textureData->value[tilemap_index] = voxel_texture_data->value[texture_index];
+                    }
+                }
+                // zoxel_log(" + placing tile [%i] at [%ix%i]\n", texture_entity_index, tilemap_position.x, tilemap_position.y);
+                texture_entity_index++;
+                if (texture_entity_index >= textureLinks->length) {
+                    texture_position.x = tilemapSize->value.x;
+                    texture_position.y = tilemapSize->value.y;
+                    // zoxel_log(" ! finished placing at [%i]\n", texture_entity_index);
+                }
+            }
+        }
         // generate_tilemap(it->world, textureData, tilemapSize, textures);
         textureDirty->value = 1;
-        // if (is_dirt) zoxel_log("    > tilemap generated [%lu]\n", it->entities[i]);
+        // zoxel_log("    > tilemap generated [%lu] textures [%i]\n", it->entities[i], textureLinks->length);
     }
 }
 zox_declare_system(TilemapGenerationSystem)
+
+// for (int j = 0; j < textureLinks->length; j++) {
+// if (!ecs_is_valid(it->world, texture_entity)) zoxel_log("issue with texture at [%i]\n", j);
+// if (!ecs_is_valid(it->world, texture_entity)) continue;
+// if (voxel_texture_data->length == 0) zoxel_log("    ! issue with texture at [%i] - %lu\n", j, texture_entity);
+// if (voxel_texture_data->length == 0) continue;
+// const TextureSize *voxel_texture_size = ecs_get(it->world, texture_entity, TextureSize);
+//
+/*if (texture_index >= voxel_texture_data->length) zoxel_log("texture_index out of bounds [%i / %i]\n", texture_index, voxel_texture_data->length);
+if (texture_index >= voxel_texture_data->length) textureData->value[j].r = 233;
+*/

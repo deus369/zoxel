@@ -15,7 +15,7 @@ void generate_texture_graybox(TextureData* textureData, const TextureSize *textu
     }
 }
 
-void generate_texture_noise(TextureData* textureData, const TextureSize *textureSize, unsigned char is_dirt) {
+void generate_texture_noise(TextureData* textureData, const TextureSize *textureSize, unsigned char is_dirt, unsigned char is_grass, unsigned char is_sand) {
     int2 redRange = { 15, 244 };
     int2 greenRange = { 15, 122 };
     int2 blueRange = { 15, 122 };
@@ -25,6 +25,24 @@ void generate_texture_noise(TextureData* textureData, const TextureSize *texture
         greenRange = (int2) { 37, 57 };  // 47
         blueRange = (int2) { 7, 27 };  // 17
         alphaRange = (int2) { 255, 256 };
+        // if (rand() % 100 >= 50) {
+        if (is_grass) {
+            //zoxel_log(" > grass texture created\n");
+            greenRange.x *= 2;
+            greenRange.y *= 2;
+            blueRange.x = redRange.x - 30;
+            blueRange.y = redRange.y - 30;
+            redRange.x /= 2;
+            redRange.y /= 2;
+        } else if (is_sand) {
+            // zoxel_log(" > sand texture created\n");
+            redRange.x = redRange.y = 206;
+            greenRange.x = greenRange.y = 179;
+            blueRange.x = blueRange.y = 59;
+            redRange.x -= 10 + rand() % 30;
+            greenRange.x -= 10 + rand() % 30;
+            blueRange.x -= 10 + rand() % 30;
+        }
     }
     #ifdef zox_grayboxing
         generate_texture_graybox(textureData, textureSize, (int2) { 0, 0 }, (int2) { textureSize->value.x / 2, textureSize->value.y / 2 });
@@ -50,11 +68,11 @@ void generate_texture_noise(TextureData* textureData, const TextureSize *texture
             textureData->value[index].g = greenRange.x + rand() % (greenRange.y - greenRange.x);
             textureData->value[index].b = blueRange.x + rand() % (blueRange.y - blueRange.x);
             textureData->value[index].a = alphaRange.x + rand() % (alphaRange.y - alphaRange.x);
-            if (j >= textureSize->value.x / 2 && k < textureSize->value.y / 2) {
+            /*if (j >= textureSize->value.x / 2 && k < textureSize->value.y / 2) {
                 textureData->value[index].g *= 2;
                 textureData->value[index].b = textureData->value[index].r - 30;
                 textureData->value[index].r /= 2;
-            }
+            }*/
             // textureData->value[index].a = rand() % 256;
             // debug sides of textureData, starts at top left
             if (!is_dirt) {
@@ -111,8 +129,10 @@ void NoiseTextureSystem(ecs_iter_t *it) {
         TextureData *textureData = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
         unsigned char is_dirt = ecs_has(it->world, it->entities[i], DirtTexture);
+        unsigned char is_grass = ecs_has(it->world, it->entities[i], GrassTexture);
+        unsigned char is_sand = ecs_has(it->world, it->entities[i], SandTexture);
         re_initialize_memory_component(textureData, color, textureSize->value.x * textureSize->value.y);
-        generate_texture_noise(textureData, textureSize, is_dirt);
+        generate_texture_noise(textureData, textureSize, is_dirt, is_grass, is_sand);
         textureDirty->value = 1;
         // if (is_dirt) zoxel_log("    > dirt generated [%lu]\n", it->entities[i]);
     }
