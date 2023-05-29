@@ -1,6 +1,3 @@
-// add uv splitting here based on voxel uvs - voxel_face_uvs based on voxel
-// for now lets try
-
 #define add_voxel_face_uvs_indicies(index)\
     indicies->data[indicies->size + index] = vertices->size + voxel_face_indicies[index];
 
@@ -92,36 +89,6 @@ void build_octree_chunk_d(const ChunkOctree *root_node, const TilemapUVs *tilema
             zoxel_octree_build_face_d(up, 0, voxel_uvs)
             zoxel_octree_build_face_d(back, 0, voxel_uvs)
             zoxel_octree_build_face_d(front, 1, voxel_uvs)
-            /*if (voxel == 1) {
-                const float2 *voxel_uvs = &tilemapUVs->value[(voxel - 1) * 4];
-                zoxel_octree_build_face_d(left, 0, voxel_uvs_0)
-                zoxel_octree_build_face_d(right, 1, voxel_uvs_0)
-                zoxel_octree_build_face_d(down, 1, voxel_uvs_0)
-                zoxel_octree_build_face_d(up, 0, voxel_uvs_0)
-                zoxel_octree_build_face_d(back, 0, voxel_uvs_0)
-                zoxel_octree_build_face_d(front, 1, voxel_uvs_0)
-            } else if (voxel == 2) {
-                zoxel_octree_build_face_d(left, 0, voxel_uvs_1)
-                zoxel_octree_build_face_d(right, 1, voxel_uvs_1)
-                zoxel_octree_build_face_d(down, 1, voxel_uvs_1)
-                zoxel_octree_build_face_d(up, 0, voxel_uvs_1)
-                zoxel_octree_build_face_d(back, 0, voxel_uvs_1)
-                zoxel_octree_build_face_d(front, 1, voxel_uvs_1)
-            } else if (voxel == 3) {
-                zoxel_octree_build_face_d(left, 0, voxel_uvs_2)
-                zoxel_octree_build_face_d(right, 1, voxel_uvs_2)
-                zoxel_octree_build_face_d(down, 1, voxel_uvs_2)
-                zoxel_octree_build_face_d(up, 0, voxel_uvs_2)
-                zoxel_octree_build_face_d(back, 0, voxel_uvs_2)
-                zoxel_octree_build_face_d(front, 1, voxel_uvs_2)
-            } else {    // default is dirt
-                zoxel_octree_build_face_d(left, 0, voxel_uvs_0)
-                zoxel_octree_build_face_d(right, 1, voxel_uvs_0)
-                zoxel_octree_build_face_d(down, 1, voxel_uvs_0)
-                zoxel_octree_build_face_d(up, 0, voxel_uvs_0)
-                zoxel_octree_build_face_d(back, 0, voxel_uvs_0)
-                zoxel_octree_build_face_d(front, 1, voxel_uvs_0)
-            }*/
         }
     } else {
         depth++;
@@ -256,3 +223,34 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
     #endif
 }
 zox_declare_system(ChunkOctreeBuildSystem)
+
+/*if (voxel == 1) {
+    const float2 *voxel_uvs = &tilemapUVs->value[(voxel - 1) * 4];
+    zoxel_octree_build_face_d(left, 0, voxel_uvs_0)
+    zoxel_octree_build_face_d(right, 1, voxel_uvs_0)
+    zoxel_octree_build_face_d(down, 1, voxel_uvs_0)
+    zoxel_octree_build_face_d(up, 0, voxel_uvs_0)
+    zoxel_octree_build_face_d(back, 0, voxel_uvs_0)
+    zoxel_octree_build_face_d(front, 1, voxel_uvs_0)
+} else if (voxel == 2) {
+    zoxel_octree_build_face_d(left, 0, voxel_uvs_1)
+    zoxel_octree_build_face_d(right, 1, voxel_uvs_1)
+    zoxel_octree_build_face_d(down, 1, voxel_uvs_1)
+    zoxel_octree_build_face_d(up, 0, voxel_uvs_1)
+    zoxel_octree_build_face_d(back, 0, voxel_uvs_1)
+    zoxel_octree_build_face_d(front, 1, voxel_uvs_1)
+} else if (voxel == 3) {
+    zoxel_octree_build_face_d(left, 0, voxel_uvs_2)
+    zoxel_octree_build_face_d(right, 1, voxel_uvs_2)
+    zoxel_octree_build_face_d(down, 1, voxel_uvs_2)
+    zoxel_octree_build_face_d(up, 0, voxel_uvs_2)
+    zoxel_octree_build_face_d(back, 0, voxel_uvs_2)
+    zoxel_octree_build_face_d(front, 1, voxel_uvs_2)
+} else {    // default is dirt
+    zoxel_octree_build_face_d(left, 0, voxel_uvs_0)
+    zoxel_octree_build_face_d(right, 1, voxel_uvs_0)
+    zoxel_octree_build_face_d(down, 1, voxel_uvs_0)
+    zoxel_octree_build_face_d(up, 0, voxel_uvs_0)
+    zoxel_octree_build_face_d(back, 0, voxel_uvs_0)
+    zoxel_octree_build_face_d(front, 1, voxel_uvs_0)
+}*/

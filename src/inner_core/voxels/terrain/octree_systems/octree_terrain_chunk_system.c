@@ -8,8 +8,7 @@ void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 pos
     if (octree_noise < octree_min_height) {
         octree_noise = octree_min_height;
     }
-    // octree_noise += octree_height_addition * octree_perlin_noise(position.x, position.y, position.z,
-    //    octree_persistence, octree_frequency);
+    // octree_noise += octree_height_addition * octree_perlin_noise(position.x, position.y, position.z, octree_persistence, octree_frequency);
     if (position.y <= octree_noise) {
         chunk_octree->value = 1;
     } else {

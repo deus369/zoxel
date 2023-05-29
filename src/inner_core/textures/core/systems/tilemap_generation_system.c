@@ -2,9 +2,9 @@
 //  todo: system before that sets texture links from voxel links
 // todo: debug why array indexes go out of bounds!
 
-void generate_tilemap(ecs_world_t *world, TextureData *textureData, const TilemapSize *tilemapSize) {
+/*void generate_tilemap(ecs_world_t *world, TextureData *textureData, const TilemapSize *tilemapSize) {
 
-}
+}*/
 
 void TilemapGenerationSystem(ecs_iter_t *it) {
     int2 texture_size = (int2) { 16, 16 };
@@ -31,7 +31,6 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         textureSize->value.y = tilemapSize->value.y * 16;
         re_initialize_memory_component(textureData, color, textureSize->value.x * textureSize->value.y);
         re_initialize_memory_component(tilemapUVs, float2, textureLinks->length * 4);
-        
         // set random color for now
         /*for (int j = 0; j < textureData->length; j++) {
             textureData->value[j].r = 145;
@@ -63,8 +62,7 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
                     }
                 }
                 // add uvs here
-                float2 tile_uv = (float2) { tilemap_position.x / (float) textureSize->value.x,
-                    tilemap_position.y / (float) textureSize->value.y };
+                float2 tile_uv = (float2) { tilemap_position.x / (float) textureSize->value.x, tilemap_position.y / (float) textureSize->value.y };
                 tilemapUVs->value[texture_entity_index * 4 + 0] = (float2) { tile_uv.x, tile_uv.y };
                 tilemapUVs->value[texture_entity_index * 4 + 1] = (float2) { tile_uv.x, tile_uv.y + tile_size };
                 tilemapUVs->value[texture_entity_index * 4 + 2] = (float2) { tile_uv.x + tile_size, tile_uv.y + tile_size };
