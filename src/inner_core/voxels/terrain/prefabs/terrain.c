@@ -8,13 +8,12 @@ ecs_entity_t spawn_prefab_terrain(ecs_world_t *world) {
     zox_add_tag(e, TerrainWorld)
     zox_add(e, ChunkLinks)
     #ifndef voxels_terrain_multi_material
-        // zox_add_tag(e, DirtTexture)
-        // add_noise_texture(world, e);
         add_texture(world, e, chunk_texture_size, 1);
         add_gpu_texture(world, e);
         zox_add_tag(e, Tilemap)
         zox_set(e, TilemapSize, {{ 1, 1 }})
         zox_set(e, TextureLinks, { 0, NULL })
+        zox_set(e, TilemapUVs, { 0, NULL })
     #endif
     ecs_defer_end(world);
     prefab_terrain = e;

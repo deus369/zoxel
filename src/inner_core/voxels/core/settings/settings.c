@@ -31,6 +31,5 @@ void set_max_octree_length(unsigned char new_max_octree_depth) {
     unsigned char default_chunk_length_b = powers_of_two_byte[max_octree_depth];
     default_chunk_size_byte3 = (byte3) { default_chunk_length_b, default_chunk_length_b, default_chunk_length_b };
     set_terrain_voxel_scale(max_octree_depth);
-    zoxel_log(" > set max octree depth [%i] - chunk length [%i] - voxel scale [%f]\n", max_octree_depth,
-        default_chunk_length, terrain_voxel_scale);
+    // zoxel_log(" > set max octree depth [%i] - chunk length [%i] - voxel scale [%f]\n", max_octree_depth, default_chunk_length, terrain_voxel_scale);
 }

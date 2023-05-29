@@ -1,4 +1,6 @@
+const unsigned char realm_voxels = 5;
 ecs_entity_t prefab_realm;
+ecs_entity_t local_realm;
 
 ecs_entity_t spawn_prefab_realm(ecs_world_t *world) {
     ecs_defer_begin(world);
@@ -14,15 +16,13 @@ ecs_entity_t spawn_prefab_realm(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t local_realm;
-
 ecs_entity_t spawn_realm(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_instance(prefab_realm)
     zox_name("realm")
     // spawn voxels
     VoxelLinks voxelLinks = { };
-    initialize_memory_component_non_pointer(voxelLinks, ecs_entity_t, 4)
+    initialize_memory_component_non_pointer(voxelLinks, ecs_entity_t, realm_voxels)
     for (unsigned char i = 0; i < voxelLinks.length; i++) {
         ecs_entity_t voxel_entity = spawn_voxel(world, i);
         voxelLinks.value[i] = voxel_entity;

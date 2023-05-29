@@ -4,7 +4,7 @@ ecs_entity_t spawn_prefab_texture_dirt(ecs_world_t *world) {
     int2 texture_size = (int2) { 16, 16 };
     zox_prefab()
     zox_name("prefab_texture_dirt")
-    zox_add_tag(e, DirtTexture)
+    // zox_add_tag(e, DirtTexture)
     add_seed(world, e, 666);
     add_texture(world, e, texture_size, 1);
     add_noise_texture(world, e);

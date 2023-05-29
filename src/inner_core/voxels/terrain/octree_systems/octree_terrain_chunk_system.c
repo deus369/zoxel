@@ -1,6 +1,6 @@
 #define grass_spawn_chance 80
 #define octree_random_spawn_chance 90
-const int sand_height = 5;
+const int sand_height = -7;
 // todo: rewrite algorithm, it's too slow atm for xyz chunks
 
 void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 position, float scale) {
@@ -64,6 +64,8 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
         const byte2 set_dirt = (byte2) { 1, target_depth };
         const byte2 set_grass = (byte2) { 2, target_depth };
         const byte2 set_sand = (byte2) { 3, target_depth };
+        const byte2 set_stone = (byte2) { 4, target_depth };
+        const byte2 set_obsidian = (byte2) { 5, target_depth };
         byte3 voxel_position;
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
             for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
@@ -90,10 +92,17 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
                             if (global_position_y + voxel_position.y < sand_height) {
                                 // zoxel_log(" > sand voxel created\n");
                                 set_octree_voxel(chunkOctree, &node_position, &set_sand, 0);
-                            } else if (rand() % 100 < grass_spawn_chance) {
-                                set_octree_voxel(chunkOctree, &node_position, &set_grass, 0);
                             } else {
-                                set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);
+                                int rando = rand() % 100;
+                                if (rando < grass_spawn_chance) {
+                                    set_octree_voxel(chunkOctree, &node_position, &set_grass, 0);
+                                } else if (rando < grass_spawn_chance + 6) {
+                                    set_octree_voxel(chunkOctree, &node_position, &set_stone, 0);
+                                } else if (rando < grass_spawn_chance + 6 + 6) {
+                                    set_octree_voxel(chunkOctree, &node_position, &set_obsidian, 0);
+                                } else {
+                                    set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);
+                                }
                             }
                         } else {
                             set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);

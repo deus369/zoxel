@@ -10,6 +10,8 @@ zox_declare_tag(SaveTexture)
 zox_declare_tag(DirtTexture)
 zox_declare_tag(GrassTexture)
 zox_declare_tag(SandTexture)
+zox_declare_tag(StoneTexture)
+zox_declare_tag(ObsidianTexture)
 zox_declare_tag(Tilemap)
 zox_memory_component(TextureData, color)
 zox_component(TextureSize, int2)
@@ -17,6 +19,7 @@ zox_component(TilemapSize, int2)
 zox_byte_component(GenerateTexture) 
 zox_component(AnimateTexture, double)
 zox_entities_component(TextureLinks)
+zox_memory_component(TilemapUVs, float2)
 // zoxel_util_includes
 #include "util/textures_sdl_util.c"
 #include "util/textures_util.c"
@@ -43,6 +46,8 @@ zox_define_tag(SaveTexture)
 zox_define_tag(DirtTexture)
 zox_define_tag(GrassTexture)
 zox_define_tag(SandTexture)
+zox_define_tag(StoneTexture)
+zox_define_tag(ObsidianTexture)
 zox_define_tag(Tilemap)
 zox_define_component(TextureSize)
 zox_define_component(GenerateTexture)
@@ -50,6 +55,7 @@ zox_define_component(AnimateTexture)
 zox_define_component(TilemapSize)
 zox_define_memory_component(TextureData)
 zox_define_entities_component(TextureLinks, [in] TextureLinks)
+zox_define_memory_component(TilemapUVs)
 // zoxel_prefab_defines
 spawn_prefab_noise_texture(world);
 spawn_prefab_texture_dirt(world);
@@ -63,7 +69,7 @@ if (!headless) {
     zox_system_1(TextureUpdateSystem, texture_update_pipeline, [out] TextureDirty, [in] TextureData, [in] TextureSize, [in] TextureGPULink)
     texture_update_system_id = ecs_id(TextureUpdateSystem);
 }
-zox_system(TilemapGenerationSystem, EcsPostUpdate, [none] Tilemap, [in] TilemapSize, [in] TextureLinks, [in] GenerateTexture, [out] TextureSize, [out] TextureData, [out] TextureDirty)
+zox_system(TilemapGenerationSystem, EcsPostUpdate, [none] Tilemap, [in] TilemapSize, [in] TextureLinks, [in] GenerateTexture, [out] TextureSize, [out] TextureData, [out] TextureDirty, [out] TilemapUVs)
 // zox_system_1(TextureSaveSystem, EcsOnUpdate, [in] TextureDirty, [in] TextureData, [in] TextureSize, [none] SaveTexture)
 // zox_system_1(AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture)
 zox_define_reset_system(GenerateTextureResetSystem, GenerateTexture)

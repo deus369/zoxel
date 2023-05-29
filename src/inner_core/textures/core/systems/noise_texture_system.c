@@ -1,3 +1,10 @@
+#define zox_texture_none 0
+#define zox_texture_dirt 1
+#define zox_texture_grass 2
+#define zox_texture_sand 3
+#define zox_texture_stone 4
+#define zox_texture_obsidian 5
+
 void generate_texture_graybox(TextureData* textureData, const TextureSize *textureSize, int2 position, int2 size) {
     for (int j = position.x; j < position.x + size.x; j++) {
         for (int k = position.y; k < position.y + size.y; k++) {
@@ -15,18 +22,18 @@ void generate_texture_graybox(TextureData* textureData, const TextureSize *textu
     }
 }
 
-void generate_texture_noise(TextureData* textureData, const TextureSize *textureSize, unsigned char is_dirt, unsigned char is_grass, unsigned char is_sand) {
+void generate_texture_noise(TextureData* textureData, const TextureSize *textureSize, unsigned char texture_type) {
     int2 redRange = { 15, 244 };
     int2 greenRange = { 15, 122 };
     int2 blueRange = { 15, 122 };
     int2 alphaRange = { 144, 256 };
-    if (is_dirt) {
+    if (texture_type != zox_texture_none) { // }== zox_texture_dirt) {
         redRange = (int2) { 53, 93 };  // 73
         greenRange = (int2) { 37, 57 };  // 47
         blueRange = (int2) { 7, 27 };  // 17
         alphaRange = (int2) { 255, 256 };
         // if (rand() % 100 >= 50) {
-        if (is_grass) {
+        if (texture_type == zox_texture_grass) {
             //zoxel_log(" > grass texture created\n");
             greenRange.x *= 2;
             greenRange.y *= 2;
@@ -34,14 +41,29 @@ void generate_texture_noise(TextureData* textureData, const TextureSize *texture
             blueRange.y = redRange.y - 30;
             redRange.x /= 2;
             redRange.y /= 2;
-        } else if (is_sand) {
+        } else if (texture_type == zox_texture_sand) {
             // zoxel_log(" > sand texture created\n");
-            redRange.x = redRange.y = 206;
-            greenRange.x = greenRange.y = 179;
-            blueRange.x = blueRange.y = 59;
+            redRange.x = redRange.y = 206 - 50;
+            greenRange.x = greenRange.y = 179 - 50;
+            blueRange.x = blueRange.y = 59 - 30;
             redRange.x -= 10 + rand() % 30;
             greenRange.x -= 10 + rand() % 30;
-            blueRange.x -= 10 + rand() % 30;
+            blueRange.x -= 10 + rand() % 20;
+        } else if (texture_type == zox_texture_stone) {
+            // zoxel_log(" > sand texture created\n");
+            redRange.x = redRange.y = 100;
+            greenRange.x = greenRange.y = 100;
+            blueRange.x = blueRange.y = 100;
+            redRange.x -= 10 + rand() % 20;
+            greenRange.x -= 10 + rand() % 20;
+            blueRange.x -= 10 + rand() % 20;
+        } else if (zox_texture_obsidian) {
+            redRange.x = redRange.y = 42;
+            greenRange.x = greenRange.y = 42;
+            blueRange.x = blueRange.y = 42;
+            redRange.x -= 6 + rand() % 12;
+            greenRange.x -= 6 + rand() % 12;
+            blueRange.x -= 6 + rand() % 12;
         }
     }
     #ifdef zox_grayboxing
@@ -53,7 +75,7 @@ void generate_texture_noise(TextureData* textureData, const TextureSize *texture
     for (int j = 0; j < textureSize->value.x; j++) {
         for (int k = 0; k < textureSize->value.y; k++) {
             int index = j + k * textureSize->value.x;
-            if (!is_dirt) {
+            if (texture_type == zox_texture_none) {
                 int distanceToMidX = abs_integer(textureSize->value.x / 2 - j);
                 int distanceToMidY = abs_integer(textureSize->value.y / 2 - k);
                 if (distanceToMidX + distanceToMidY >= textureSize->value.x / 2) {
@@ -75,7 +97,7 @@ void generate_texture_noise(TextureData* textureData, const TextureSize *texture
             }*/
             // textureData->value[index].a = rand() % 256;
             // debug sides of textureData, starts at top left
-            if (!is_dirt) {
+            if (texture_type == zox_texture_none) {
                 if (j == 0) {
                     textureData->value[index].r = 255;
                 } else if (k == 0) {
@@ -128,11 +150,20 @@ void NoiseTextureSystem(ecs_iter_t *it) {
         if (textureDirty->value != 0) continue;
         TextureData *textureData = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
-        unsigned char is_dirt = ecs_has(it->world, it->entities[i], DirtTexture);
-        unsigned char is_grass = ecs_has(it->world, it->entities[i], GrassTexture);
-        unsigned char is_sand = ecs_has(it->world, it->entities[i], SandTexture);
+        unsigned char texture_type = zox_texture_none;
+        if (ecs_has(it->world, it->entities[i], DirtTexture)) {
+            texture_type = zox_texture_dirt;
+        } else if (ecs_has(it->world, it->entities[i], GrassTexture)) {
+            texture_type = zox_texture_grass;
+        } else if (ecs_has(it->world, it->entities[i], SandTexture)) {
+            texture_type = zox_texture_sand;
+        } else if (ecs_has(it->world, it->entities[i], StoneTexture)) {
+            texture_type = zox_texture_stone;
+        } else if (ecs_has(it->world, it->entities[i], ObsidianTexture)) {
+            texture_type = zox_texture_obsidian;
+        }
         re_initialize_memory_component(textureData, color, textureSize->value.x * textureSize->value.y);
-        generate_texture_noise(textureData, textureSize, is_dirt, is_grass, is_sand);
+        generate_texture_noise(textureData, textureSize, texture_type);
         textureDirty->value = 1;
         // if (is_dirt) zoxel_log("    > dirt generated [%lu]\n", it->entities[i]);
     }

@@ -21,10 +21,16 @@ ecs_entity_t spawn_voxel(ecs_world_t *world, unsigned char index) {
     initialize_memory_component_non_pointer(textureLinks, ecs_entity_t, 1)
     for (int i = 0; i < 1; i++) {
         ecs_entity_t texture_entity = spawn_texture_dirt(world);
-        if (index == 1) {
+        if (index == 0) {
+            zox_add_tag(texture_entity, DirtTexture)
+        } else if (index == 1) {
             zox_add_tag(texture_entity, GrassTexture)
         } else if (index == 2) {
             zox_add_tag(texture_entity, SandTexture)
+        } else if (index == 3) {
+            zox_add_tag(texture_entity, StoneTexture)
+        } else if (index == 4) {
+            zox_add_tag(texture_entity, ObsidianTexture)
         }
         textureLinks.value[i] = texture_entity;
     }

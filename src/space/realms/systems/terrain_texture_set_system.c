@@ -10,8 +10,10 @@ void TerrainTextureSetSystem(ecs_iter_t *it) {
         TilemapSize *tilemapSize = &tilemapSizes[i];
         TextureLinks *textureLinks = &textureLinkss[i];
         // set first voxel texture for now
-        tilemapSize->value.y = 2;
-        tilemapSize->value.x = voxelLinks->length / tilemapSize->value.y;
+        int tilemap_length = 2 * (int) (voxelLinks->length / 2);
+        zoxel_log(" + tilemap length %i\n", tilemap_length);
+        tilemapSize->value.x = tilemap_length;
+        tilemapSize->value.y = tilemap_length;
         initialize_memory_component(textureLinks, ecs_entity_t, voxelLinks->length) // * tilemapSize->value.y)
         for (int j = 0; j < voxelLinks->length; j++) {
             ecs_entity_t voxel_entity = voxelLinks->value[j];
