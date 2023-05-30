@@ -8,10 +8,11 @@ extern unsigned char is_split_screen;
 //! Spawns our first game entities.
 void boot_zoxel_game(ecs_world_t *world) {
     zoxel_log(" > [zoxel] begins to boot\n");
+    ecs_entity_t realm = 0;
     #ifdef zoxel_space
-        ecs_entity_t realm = spawn_realm(world);
+        realm = spawn_realm(world);
         ecs_entity_t game = spawn_game(world);
-        ecs_set(world, game, RealmLink, { realm });
+        zox_set_only(game, RealmLink, { realm })
     #endif
     int2 screen_dimensions2 = screen_dimensions;
     float3 camera_begin_position = { 0, 0.0f, 0.0f };
@@ -64,7 +65,8 @@ void boot_zoxel_game(ecs_world_t *world) {
     #endif
     #ifdef zoxel_voxels
         #ifndef zox_disable_terrain
-            create_terrain(world);
+            ecs_entity_t terrain = create_terrain(world);
+            zox_set_only(terrain, RealmLink, { realm })
         #endif
     #endif
     #ifdef zoxel_lines3D

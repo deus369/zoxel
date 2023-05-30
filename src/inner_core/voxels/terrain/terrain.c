@@ -1,6 +1,7 @@
 #ifndef zoxel_voxels_terrain
 #define zoxel_voxels_terrain
 
+long int render3D_uvs_system_id;
 #include "settings/settings.c"
 zox_declare_tag(TerrainWorld)
 zox_declare_tag(TerrainChunk)
@@ -19,7 +20,6 @@ zox_component(StreamPoint, int3)
 #include "octree_systems/octree_terrain_chunk_system.c"
 #include "octree_systems/render3D_uvs_system.c"
 #include "util/create_terrain.c"
-long int Render3DUvsSystem_id;
 
 zox_begin_module(Terrain)
 set_terrain_render_distance();
@@ -56,18 +56,7 @@ zox_system_1(Render3DUvsSystem, render3D_update_pipeline, [in] Position3D, [in] 
 #else
     [in] VoxLink);
 #endif
-Render3DUvsSystem_id = ecs_id(Render3DUvsSystem);
+render3D_uvs_system_id = ecs_id(Render3DUvsSystem);
 zoxel_end_module(Terrain)
-
-/*  terrain_spawn_distance
-    1,      // 0
-    2,      // 1
-    4,      // 2
-    8,      // 3
-    16,     // 4
-    32,     // 5
-    64,     // 6
-    128     // 7
-*/
 
 #endif

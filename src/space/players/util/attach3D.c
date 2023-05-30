@@ -1,3 +1,21 @@
+void toggle_camera_perspective(ecs_world_t *world, ecs_entity_t character) {
+    if (ecs_is_valid(world, character) && ecs_has(world, character, CameraLink)) {
+        const CameraLink *cameraLink = ecs_get(world, character, CameraLink);
+        if (ecs_is_valid(world, cameraLink->value) && cameraLink->value != 0) {
+            // zoxel_log(" > switching camera view\n");
+            float vox_scale = model_scale * 16;
+            const LocalPosition3D *localPosition3D = ecs_get(world, cameraLink->value, LocalPosition3D);
+            if (localPosition3D->value.z == vox_scale * 0.5f) {
+                zox_set_only(cameraLink->value, LocalPosition3D, {{ 0, vox_scale * 2.2f, - vox_scale * 3.6f }})
+                zox_set_only(cameraLink->value, LocalRotation3D, { quaternion_from_euler((float3) { 25, 180 * degreesToRadians, 0 }) })
+            } else {
+                zox_set_only(cameraLink->value, LocalPosition3D, {{ 0, vox_scale * 0.5f, vox_scale * 0.5f }})
+                zox_set_only(cameraLink->value, LocalRotation3D, { quaternion_from_euler((float3) { 0, 180 * degreesToRadians, 0 }) })
+            }
+        }
+    }
+}
+
 void attach_to_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t character) {
     // zoxel_log(" > attaching to character\n");
     float vox_scale = model_scale * 16;

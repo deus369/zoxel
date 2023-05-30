@@ -6,7 +6,7 @@ extern long int cube_lines_render_system_id;
 extern long int element_mesh_system_id;
 extern long int texture_update_system_id;
 extern long int mesh_uvs_update_system_id;
-extern long int Render3DUvsSystem_id;
+extern long int render3D_uvs_system_id;
 extern int mesh_update_pipeline2;
 // \todo Create a queue of 3D models to render, including materials, etc
 //  - each type of render queue has different data based on the shaders
@@ -26,7 +26,7 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     if (render3D_update_pipeline == 0) {
         ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
         opengl_disable_opengl_program();
-        ecs_run(world, Render3DUvsSystem_id, 0, NULL);
+        ecs_run(world, render3D_uvs_system_id, 0, NULL);
         ecs_run(world, ecs_id(Render3DSystem), 0, NULL);
         ecs_run(world, ecs_id(Render3DColoredSystem), 0, NULL);
         ecs_run(world, line3D_render_system_id, 0, NULL);

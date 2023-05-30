@@ -66,7 +66,8 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
             }
         }
         if (is_toggle_camera) {
-            if (ecs_is_valid(world, main_character3D) && ecs_has(world, main_character3D, CameraLink)) {
+            toggle_camera_perspective(world, main_character3D);
+            /*if (ecs_is_valid(world, main_character3D) && ecs_has(world, main_character3D, CameraLink)) {
                 const CameraLink *cameraLink = ecs_get(world, main_character3D, CameraLink);
                 if (ecs_is_valid(world, cameraLink->value) && cameraLink->value != 0) {
                     // zoxel_log(" > switching camera view\n");
@@ -80,7 +81,7 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
                         zox_set_only(cameraLink->value, LocalRotation3D, { quaternion_from_euler((float3) { 0, 180 * degreesToRadians, 0 }) })
                     }
                 }
-            }
+            }*/
         }
     }
 }

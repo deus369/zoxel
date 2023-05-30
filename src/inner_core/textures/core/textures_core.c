@@ -69,7 +69,7 @@ if (!headless) {
     zox_system_1(TextureUpdateSystem, texture_update_pipeline, [out] TextureDirty, [in] TextureData, [in] TextureSize, [in] TextureGPULink)
     texture_update_system_id = ecs_id(TextureUpdateSystem);
 }
-zox_system(TilemapGenerationSystem, EcsPostUpdate, [none] Tilemap, [in] TilemapSize, [in] TextureLinks, [in] GenerateTexture, [out] TextureSize, [out] TextureData, [out] TextureDirty, [out] TilemapUVs)
+zox_system(TilemapGenerationSystem, EcsOnUpdate, [none] Tilemap, [in] TilemapSize, [in] TextureLinks, [in] GenerateTexture, [out] TextureSize, [out] TextureData, [out] TextureDirty, [out] TilemapUVs)
 // zox_system_1(TextureSaveSystem, EcsOnUpdate, [in] TextureDirty, [in] TextureData, [in] TextureSize, [none] SaveTexture)
 // zox_system_1(AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture)
 zox_define_reset_system(GenerateTextureResetSystem, GenerateTexture)
