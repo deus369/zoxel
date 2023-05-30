@@ -2,15 +2,13 @@ void attach_to_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t c
     // zoxel_log(" > attaching to character\n");
     float vox_scale = model_scale * 16;
     const Rotation3D *rotation3D = ecs_get(world, character, Rotation3D);
-    float3 euler = (float3) { 25, 180 * degreesToRadians, 0 };
-    float4 rotation = quaternion_from_euler(euler);
     zox_add_tag(camera, FirstPersonCamera)
     zox_add_tag(character, PlayerCharacter3D)
     zox_set_only(camera, ParentLink, { character })
     zox_set_only(character, CameraLink, { camera })
     zox_set_only(camera, Rotation3D, { rotation3D->value })
     zox_set_only(camera, LocalPosition3D, {{ 0, vox_scale * 2.2f, - vox_scale * 3.6f }})
-    zox_set_only(camera, LocalRotation3D, { rotation })
+    zox_set_only(camera, LocalRotation3D, { quaternion_from_euler((float3) { 25, 180 * degreesToRadians, 0 }) })
     zox_set_only(character, DisableMovement, { 0 })
     zox_set_only(mouse_entity, MouseLock, { 1 })
     zox_remove(camera, FreeRoam)

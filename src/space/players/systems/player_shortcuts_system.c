@@ -66,18 +66,18 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
             }
         }
         if (is_toggle_camera) {
-            if (ecs_is_valid(world, main_character3D)) {
+            if (ecs_is_valid(world, main_character3D) && ecs_has(world, main_character3D, CameraLink)) {
                 const CameraLink *cameraLink = ecs_get(world, main_character3D, CameraLink);
-                if (cameraLink->value != 0) {
+                if (ecs_is_valid(world, cameraLink->value) && cameraLink->value != 0) {
                     // zoxel_log(" > switching camera view\n");
                     float vox_scale = model_scale * 16;
                     const LocalPosition3D *localPosition3D = ecs_get(world, cameraLink->value, LocalPosition3D);
                     if (localPosition3D->value.z == vox_scale * 0.5f) {
-                        zox_set_only(cameraLink->value, LocalPosition3D,
-                            {{ 0, vox_scale * 2.2f, - vox_scale * 3.6f }})
+                        zox_set_only(cameraLink->value, LocalPosition3D, {{ 0, vox_scale * 2.2f, - vox_scale * 3.6f }})
+                        zox_set_only(cameraLink->value, LocalRotation3D, { quaternion_from_euler((float3) { 25, 180 * degreesToRadians, 0 }) })
                     } else {
-                        zox_set_only(cameraLink->value, LocalPosition3D,
-                            {{ 0, vox_scale * 0.5f, vox_scale * 0.5f }})
+                        zox_set_only(cameraLink->value, LocalPosition3D, {{ 0, vox_scale * 0.5f, vox_scale * 0.5f }})
+                        zox_set_only(cameraLink->value, LocalRotation3D, { quaternion_from_euler((float3) { 0, 180 * degreesToRadians, 0 }) })
                     }
                 }
             }
