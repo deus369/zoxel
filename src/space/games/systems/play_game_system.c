@@ -8,9 +8,9 @@ ecs_entity_t respawn_camera(ecs_world_t *world) {
     int2 camera_screen_dimensions = ecs_get(world, old_camera_entity, ScreenDimensions)->value;
     float4x4 view_matrix = ecs_get(world, old_camera_entity, ViewMatrix)->value;
     // spawn new free roam camera
-    ecs_delete(world, old_camera_entity);
+    zox_delete(old_camera_entity)
     ecs_entity_t e = spawn_free_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { });
-    ecs_set(world, e, ViewMatrix, { view_matrix });
+    zox_set_only(e, ViewMatrix, { view_matrix })
     render_camera_matrix = view_matrix;
     return e;
 }
@@ -22,26 +22,26 @@ ecs_entity_t respawn_base_camera(ecs_world_t *world) {
     int2 camera_screen_dimensions = ecs_get(world, old_camera_entity, ScreenDimensions)->value;
     float4x4 view_matrix = ecs_get(world, old_camera_entity, ViewMatrix)->value;
     // spawn new free roam camera
-    ecs_delete(world, old_camera_entity);
+    zox_delete(old_camera_entity)
     ecs_entity_t e = spawn_base_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { });
-    ecs_set(world, e, ViewMatrix, { view_matrix });
+    zox_set_only(e, ViewMatrix, { view_matrix })
     render_camera_matrix = view_matrix;
     return e;
 }
 
 void stop_playing_game(ecs_world_t *world) {
-    ecs_set(world, local_game, GameState, { zoxel_game_state_main_menu });
+    zox_set_only(local_game, GameState, { zoxel_game_state_main_menu })
     main_cameras[0] = respawn_base_camera(world);
 }
 
 void play_game(ecs_world_t *world) {
     // start game
-    ecs_set(world, local_game, GameState, { zoxel_game_state_playing });
+    zox_set_only(local_game, GameState, { zoxel_game_state_playing })
     // get previous camera data
     main_cameras[0] = respawn_camera(world);
-    ecs_add(world, main_cameras[0], Streamer);
-    ecs_add(world, main_cameras[0], StreamPoint);
-    ecs_set(world, main_cameras[0], VoxLink, { main_terrain });
+    zox_add_only(main_cameras[0], Streamer)
+    zox_add_only(main_cameras[0], StreamPoint)
+    zox_set_only(main_cameras[0], VoxLink, { main_terrain })
     // \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cameras
     #ifdef zoxel_spawn_character3Ds
         spawn_many_characters3D(world);
@@ -60,10 +60,8 @@ void PlayGameSystem(ecs_iter_t *it) {
     const GenericEvent *genericEvents = ecs_field(it, GenericEvent, 1);
     for (int i = 0; i < it->count; i++) {
         const GenericEvent *genericEvent = &genericEvents[i];
-        if (genericEvent->value == 1) {
-            play_game(world);
-            // zoxel_log(" > game play begins [%lu]\n", it->entities[i]);
-        }
+        if (genericEvent->value == 1) play_game(world);
+        // zoxel_log(" > game play begins [%lu]\n", it->entities[i]);
     }
 }
 zox_declare_system(PlayGameSystem)

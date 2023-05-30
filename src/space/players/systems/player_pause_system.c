@@ -6,15 +6,15 @@ void toggle_pause_ui(ecs_world_t *world) {
     const int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
     if (!ecs_is_alive(world, pause_ui)) {
         spawn_pause_ui(world, window_position, window_anchor);
-        ecs_set(world, local_game, GameState, { zoxel_game_state_paused });
-        ecs_set(world, main_cameras[0], FreeRoam, { 0 });
-        ecs_set(world, mouse_entity, MouseLock, { 0 });
-        ecs_set(world, main_character3D, DisableMovement, { 1 });
+        zox_set_only(local_game, GameState, { zoxel_game_state_paused })
+        zox_set_only(main_cameras[0], FreeRoam, { 0 })
+        zox_set_only(mouse_entity, MouseLock, { 0 })
+        zox_set_only(main_character3D, DisableMovement, { 1 })
     } else {
-        ecs_delete(world, pause_ui);
-        ecs_set(world, local_game, GameState, { zoxel_game_state_playing });
-        ecs_set(world, mouse_entity, MouseLock, { 1 });
-        ecs_set(world, main_character3D, DisableMovement, { 0 });
+        zox_delete(pause_ui)
+        zox_set_only(local_game, GameState, { zoxel_game_state_playing })
+        zox_set_only(mouse_entity, MouseLock, { 1 })
+        zox_set_only(main_character3D, DisableMovement, { 0 })
     }
     // exit_game();
     // i should also disable player mouse and movement
@@ -22,12 +22,12 @@ void toggle_pause_ui(ecs_world_t *world) {
 
 void PlayerPauseSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
-    const DeviceLinks *deviceLinks = ecs_field(it, DeviceLinks, 2);
+    const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
     for (int i = 0; i < it->count; i++) {
-        const DeviceLinks *deviceLinks2 = &deviceLinks[i];
         unsigned char did_toggle_pause = 0;
-        for (int j = 0; j < deviceLinks2->length; j++) {
-            ecs_entity_t device_entity = deviceLinks2->value[j];
+        const DeviceLinks *deviceLinks = &deviceLinkss[i];
+        for (int j = 0; j < deviceLinks->length; j++) {
+            ecs_entity_t device_entity = deviceLinks->value[j];
             if (ecs_has(world, device_entity, Keyboard)) {
                 const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
                 if (keyboard->escape.pressed_this_frame || keyboard->enter.pressed_this_frame) {

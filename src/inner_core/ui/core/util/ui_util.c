@@ -163,7 +163,7 @@ void toggle_ui(ecs_world_t *world, ecs_entity_t *e, ecs_entity_t (*spawn_ui)(ecs
         ecs_entity_t e2 = (*spawn_ui)(world, main_canvas);
         *e = e2;
     } else {
-        ecs_delete(world, *e);
+        zox_delete(*e)
         *e = 0;
     }
 }

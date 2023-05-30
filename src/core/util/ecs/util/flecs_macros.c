@@ -5,6 +5,8 @@
     ecs_override(world, e, T);\
 }
 
+#define zox_add_only(e, T) ecs_add(world, e, T);
+
 #define zox_remove(e, T) ecs_remove(world, e, T);
 
 #define zox_add_new(e, T, ...) {\
@@ -20,6 +22,8 @@
     ecs_set_id(world, e, ecs_id(T), sizeof(T), &(T)__VA_ARGS__);\
     ecs_override_id(world, e, ecs_id(T));\
 }
+
+#define zox_delete(e) ecs_delete(world, e);
 
 #define zox_add_tag(e, T) ecs_add_id(world, e, ecs_id(T));
 

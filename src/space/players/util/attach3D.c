@@ -1,12 +1,13 @@
 void attach_to_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t character) {
     // zoxel_log(" > attaching to character\n");
-    float vox_scale = model_scale * 16; //  * overall_voxel_scale * 16;
+    float vox_scale = model_scale * 16;
     const Rotation3D *rotation3D = ecs_get(world, character, Rotation3D);
     float3 euler = (float3) { 25, 180 * degreesToRadians, 0 };
-    float4 rotation = quaternion_from_euler(euler); // quaternion_identity
+    float4 rotation = quaternion_from_euler(euler);
     zox_add_tag(camera, FirstPersonCamera)
     zox_add_tag(character, PlayerCharacter3D)
     zox_set_only(camera, ParentLink, { character })
+    zox_set_only(character, CameraLink, { camera })
     zox_set_only(camera, Rotation3D, { rotation3D->value })
     zox_set_only(camera, LocalPosition3D, {{ 0, vox_scale * 2.2f, - vox_scale * 3.6f }})
     zox_set_only(camera, LocalRotation3D, { rotation })
@@ -21,8 +22,9 @@ void detatch_from_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_
     zox_add_tag(camera, EulerOverride)
     zox_set_only(camera, FreeRoam, { 0 })
     zox_set_only(camera, ParentLink, { 0 })
-    zox_remove(character, PlayerCharacter3D)
     zox_remove(camera, FirstPersonCamera)
+    zox_remove(character, PlayerCharacter3D)
+    zox_set_only(character, CameraLink, { 0 })
     // fix caera rotation to be the same
 }
 

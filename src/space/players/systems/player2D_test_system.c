@@ -10,8 +10,7 @@ void Player2DTestSystem(ecs_iter_t *it) {
         // toggle player connected application
         if ((keyboard->left_alt.is_pressed || keyboard->right_alt.is_pressed) && keyboard->enter.pressed_this_frame) {
             sdl_toggle_fullscreen(world, main_window);
-        }
-        else if (keyboard->p.pressed_this_frame) {
+        } else if (keyboard->p.pressed_this_frame) {
             // parent camera to character
             ecs_entity_t main_camera = main_cameras[0];
             const ParentLink *parentLink = ecs_get(world, main_camera, ParentLink);

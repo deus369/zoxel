@@ -3,7 +3,7 @@ ecs_entity_t zoxel_main_menu;
 void spawn_zoxel_main_menu(ecs_world_t *world) {
     #ifdef zoxel_game_ui
         if (zoxel_main_menu != 0 && ecs_is_alive(world, zoxel_main_menu)) {
-            ecs_delete(world, zoxel_window);
+            zox_delete(zoxel_window)
             zoxel_main_menu = 0;
             return;
         }

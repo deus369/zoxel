@@ -238,7 +238,7 @@ void create_main_window() {
 }
 
 void recreate_main_window(ecs_world_t *world) {
-    ecs_delete(world, main_app);
+    zox_delete(main_app)
     create_main_window();
 }
 

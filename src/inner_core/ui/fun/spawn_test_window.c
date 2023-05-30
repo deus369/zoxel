@@ -3,7 +3,7 @@ ecs_entity_t zoxel_window;
 void spawn_zoxel_window(ecs_world_t *world) {
     if (zoxel_window != 0 && ecs_is_alive(world, zoxel_window)) {
         zoxel_log("Hiding zoxel window.\n");
-        ecs_delete(world, zoxel_window);
+        zox_delete(zoxel_window)
         zoxel_window = 0;
         return;
     }

@@ -13,7 +13,7 @@ ecs_entity_t SpawnTexture(ecs_world_t *world, ecs_entity_t prefab) {
 void TestDestroyTexture(ecs_world_t *world) {
     if (testTextureEntity && ecs_is_alive(world, testTextureEntity)) {
         printf("Deleting TextureData.\n");
-        ecs_delete(world, testTextureEntity);
+        zox_delete(testTextureEntity)
     } else {
         printf("Spawning TextureData.\n");
         testTextureEntity = SpawnTexture(world, noise_texture_prefab);

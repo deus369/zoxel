@@ -107,10 +107,9 @@ int spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children,
             #ifdef zoxel_debug_zext_updates
                 zoxel_log("    - deleting old_children [%i].\n", (old_children_length - new_children_length));
             #endif
-            for (int i = new_children_length; i < old_children_length; i++)
-            {
+            for (int i = new_children_length; i < old_children_length; i++) {
                 // destroy old zigels, if resizing to less
-                ecs_delete(world, old_children[i]);
+                zox_delete(old_children[i])
             }
         }
         if (old_children) {
