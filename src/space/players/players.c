@@ -41,11 +41,10 @@ spawn_player_character3D_prefab(world);
     zox_system_ctx(Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2, [in] Keyboard)
 #endif
 #ifdef zoxel_physics3D
-    zox_filter(player_character3Ds2, [none] PlayerCharacter3D, [out] Acceleration3D, [in] Velocity3D, [in] physics.DisableMovement, [in] Rotation3D)
-    zox_filter(playerCharacter3DQuery2, [none] PlayerCharacter3D, [out] Alpha3D, [in] Omega3D, [in] physics.DisableMovement)
-    // zox_filter(gamepad_query, [in] Gamepad)
-    zox_system_ctx(Player3DMoveSystem, EcsOnUpdate, player_character3Ds2, [none] Player, [in] DeviceLinks)
-    zox_system_ctx(Player3DRotateSystem, EcsOnUpdate, playerCharacter3DQuery2, [none] Player, [in] DeviceLinks)
+    zox_filter(player_characters, [none] PlayerCharacter3D, [out] Acceleration3D, [in] Velocity3D, [in] physics.DisableMovement, [in] Rotation3D)
+    zox_filter(player_characters2, [none] PlayerCharacter3D, [out] Alpha3D, [in] Omega3D, [in] physics.DisableMovement)
+    zox_system_ctx(Player3DMoveSystem, EcsOnUpdate, player_characters, [none] Player, [in] DeviceLinks, [in] CharacterLink)
+    zox_system_ctx(Player3DRotateSystem, EcsOnUpdate, player_characters2, [none] Player, [in] DeviceLinks)
 #endif
 zox_filter(cameras, [none] cameras.Camera, [in] cameras.FreeRoam, [out] Position3D, [out] Rotation3D)
 zox_system_ctx(FreeCameraMoveSystem, EcsOnUpdate, cameras, [in] Keyboard)
@@ -65,12 +64,5 @@ zox_system(PlayerPauseSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks)
 zox_system(DeviceModeResponseSystem, EcsOnUpdate, [in] DeviceMode, [in] DeviceModeDirty)
 zox_system(PlayerShortcutsSystem, EcsOnStore, [none] Player, [in] DeviceLinks)
 zoxel_end_module(Players)
-
-//#if zoxel_particles2D
-//! Needed for bulk spawning. Still crashes.
-// \todo Spawning Queries in Initialize function as they depend on other Modules
-// zox_system_1(Player2DTestSystem, EcsOnUpdate, [in] Keyboard)
-// ecs_system(world, { .entity = ecs_id(Player2DTestSystem), .no_readonly = 1 });
-// this has to update after reset systems (as gen is stuck on main thread, running before everything)
 
 #endif

@@ -16,7 +16,7 @@ void toggle_camera_perspective(ecs_world_t *world, ecs_entity_t character) {
     }
 }
 
-void attach_to_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t character) {
+void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character) {
     // zoxel_log(" > attaching to character\n");
     float vox_scale = model_scale * 16;
     const Rotation3D *rotation3D = ecs_get(world, character, Rotation3D);
@@ -31,10 +31,12 @@ void attach_to_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t c
     zox_set_only(mouse_entity, MouseLock, { 1 })
     zox_remove(camera, FreeRoam)
     zox_remove(camera, EulerOverride)
+    zox_set_only(player, CharacterLink, { character })
 }
 
-void detatch_from_character(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t character) {
+void detatch_from_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character) {
     // zoxel_log(" > [%lu] is detaching from character [%lu]\n", camera, character);
+    zox_set_only(player, CharacterLink, { 0 })
     zox_add_tag(camera, EulerOverride)
     zox_set_only(camera, FreeRoam, { 0 })
     zox_set_only(camera, ParentLink, { 0 })

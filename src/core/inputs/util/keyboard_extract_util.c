@@ -109,18 +109,3 @@ void device_reset_keyboard(ecs_world_t *world, ecs_entity_t keyboard_entity) {
     ecs_modified(world, keyboard_entity, Keyboard);
     ecs_defer_end(world);
 }
-
-/* else if (event.type == SDL_FINGERDOWN || event.type == SDL_FINGERUP) {
-    //! Links touch events to space key press
-    // todo: remove this part and create a touchscreen device
-    Keyboard *keyboard = ecs_get_mut(world, keyboard_entity, Keyboard);
-    PhysicalButton *key = &keyboard->space;
-    key->pressed_this_frame = event.type == SDL_FINGERDOWN;
-    key->released_this_frame = event.type == SDL_FINGERUP;
-    if (key->pressed_this_frame) {
-        key->is_pressed = 1;
-    } else if (key->released_this_frame) {
-        key->is_pressed = 0;
-    }
-    ecs_modified(world, keyboard_entity, Keyboard);
-}*/

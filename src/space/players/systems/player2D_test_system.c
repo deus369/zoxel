@@ -15,9 +15,9 @@ void Player2DTestSystem(ecs_iter_t *it) {
             ecs_entity_t main_camera = main_cameras[0];
             const ParentLink *parentLink = ecs_get(world, main_camera, ParentLink);
             if (parentLink->value == 0) {
-                attach_to_character(world, main_camera, main_character3D);
+                attach_to_character(world, main_player, main_camera, main_character3D);
             } else {
-                detatch_from_character(world, main_camera, main_character3D);
+                detatch_from_character(world, main_player, main_camera, main_character3D);
             }
         }
         #ifdef zoxel_tests_rotate_by_keys
