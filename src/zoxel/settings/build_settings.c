@@ -2,6 +2,9 @@
 // #define zoxel_debug_fps
 // #define zoxel_debug_quads
 
+// -- settings --
+#define canvas_edge_size 4
+
 // -- debugs --
 #define zox_logs                    // enables logging
 // #define log_to_file              // logs go to a file
@@ -78,8 +81,6 @@
 // #define disable_voxel_back
 // #define disable_voxel_front
 // #define disable_voxel_down
-// -- settings --
-#define canvas_edge_size 4
 // voxels
 // #define zox_disable_terrain_octrees  // disables octrees, uses arrays
 #define voxels_close_octree_nodes       // closes nodes in terrain gen

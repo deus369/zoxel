@@ -1,5 +1,15 @@
 #!/bin/bash
 
+is_steam_deck() {
+    if [[ $(uname -m) == "x86_64" && $(cat /sys/class/dmi/id/sys_vendor) == "Valve" ]]; then
+        echo "  > steam deck detected"
+        return 0
+    else
+        echo "  - not on steam deck"
+        return 1
+    fi
+}
+
 function has_library {
     libraries=("$@")
     for library in "${libraries[@]}"; do

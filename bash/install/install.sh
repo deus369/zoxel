@@ -1,8 +1,11 @@
 #!/bin/bash
 # copies zoxel binary, resources folder, and game icon
 
+install_directory_1=/usr/local/games
+install_directory_2=/usr/games
+
 echo "  > installing zoxel" #  from zoxel directory [$PWD]"
-install_directory="/usr/games" # /usr/local/games
+install_directory=$install_directory_1
 echo "  > install directory is [$install_directory]"
 # zoxel_directory=$PWD
 shortcut_file_name=zoxel.desktop
