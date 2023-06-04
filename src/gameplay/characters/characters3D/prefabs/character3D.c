@@ -58,6 +58,7 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file
     // ecs_remove_id(world, e, EcsPrefab);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
     zox_set_only(e, Position3D, { position })
+    zox_set_only(e, LastPosition3D, { position })
     zox_set_only(e, Rotation3D, { rotation })
     zox_set_only(e, VoxLink, { main_terrain })
     #ifndef zox_disable_characters3D_voxes

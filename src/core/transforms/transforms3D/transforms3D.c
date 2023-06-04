@@ -3,7 +3,8 @@
 
 // zoxel_component_includes
 zox_declare_tag(EulerOverride)
-zox_component(Position3D, float3)     //! A 3D Position3D component
+zox_component(Position3D, float3)
+zox_component(LastPosition3D, float3)
 zox_component(Rotation3D, float4)     //! A quaternion rotation
 zox_component(Scale, float3)          //! A Non Uniform 3D Scale
 zox_component(UniformScale, float)    //! A Uniform scale used generically
@@ -25,6 +26,7 @@ zox_begin_module(Transforms3D)
 // zoxel_component_defines
 zox_define_tag(EulerOverride)
 zox_define_component(Position3D)
+zox_define_component(LastPosition3D)
 zox_define_component(Rotation3D)
 zox_define_component(Scale)
 zox_define_component(UniformScale)

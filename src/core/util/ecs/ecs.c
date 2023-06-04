@@ -24,7 +24,7 @@ ecs_world_t* open_ecs(int argc, char* argv[], unsigned char profiler, int core_c
         zoxel_log(" > found [%i] processor cores\n", core_count);
     #endif
     if (core_count > 1) ecs_set_threads(world, core_count); // enable multi threading
-    ecs_set_target_fps(world, 0);
+    ecs_set_target_fps(world, target_frame_rate);
     return world;
 }
 

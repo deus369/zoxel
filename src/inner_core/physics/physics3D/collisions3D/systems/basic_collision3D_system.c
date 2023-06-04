@@ -1,24 +1,34 @@
 // todo: time this function
 // done seperated voxel position, and chunk position updates outside of this
 // done check normal of voxel position difference, base bounce velocity off that instead of just y axis
+// zoxel_log(" dimension_delta [%f]\n", dimension_delta);
+// zoxel_log(" dimension_delta [%f] - new pos [%f] - last [%f -> %f]\n", dimension_delta, position3D->value.d, real_position.d, last_position.d);
+// the 0.5f scale should be based on terrain voxel scale
+const float collision_precision = 0.999f;
 
-#define handle_collision_axis(dimension) {\
-    float3 position_axis = last_real_position;\
-    position_axis.dimension = real_position.dimension;\
-    int3 chunk_position = get_chunk_position(position_axis, default_chunk_size);\
+#define handle_collision_axis(d) {\
+    const float terrain_voxel_scale = 0.5f;\
+    const float terrain_voxel_scale_inverse = 1 / terrain_voxel_scale;\
+    float3 moved_position = last_position;\
+    moved_position.d = real_position.d;\
+    int3 chunk_position = get_chunk_position(moved_position, default_chunk_size);\
     ecs_entity_t chunk_axis = int3_hash_map_get(chunkLinks->value, chunk_position);\
     const ChunkOctree *chunkOctree = ecs_get(world, chunk_axis, ChunkOctree);\
-    if (chunkOctree != NULL) {\
-        int3 global_voxel_position_axis = get_voxel_position(position_axis);\
-        byte3 local_voxel_position_axis = get_local_position_byte3(global_voxel_position_axis, chunkPosition->value, default_chunk_size_byte3);\
-        if (local_voxel_position_axis.dimension != old_voxel_position.dimension) {\
-            if (local_voxel_position_axis.x < default_chunk_length && local_voxel_position_axis.y < default_chunk_length && local_voxel_position_axis.z < default_chunk_length) {\
-                unsigned char voxel_axis = get_octree_voxel(chunkOctree, &local_voxel_position_axis, max_octree_depth);\
-                if (voxel_axis != 0) {\
-                    position3D->value.dimension = last_real_position.dimension;\
-                    velocity3D->value.dimension *= -bounce_lost_force;\
-                    did_collide = 1;\
-                }\
+    if (chunkOctree == NULL) return;\
+    int3 global_voxel_position_axis = get_voxel_position(moved_position);\
+    byte3 local_voxel_position_axis = get_local_position_byte3(global_voxel_position_axis, chunkPosition->value, default_chunk_size_byte3);\
+    if (local_voxel_position_axis.d != old_voxel_position.d) {\
+        if (local_voxel_position_axis.x < default_chunk_length && local_voxel_position_axis.y < default_chunk_length && local_voxel_position_axis.z < default_chunk_length) {\
+            unsigned char voxel_axis = get_octree_voxel(chunkOctree, &local_voxel_position_axis, max_octree_depth);\
+            if (voxel_axis != 0) {\
+                float voxel_side_position = 0;\
+                float dimension_delta = real_position.d - last_position.d;\
+                if (dimension_delta < 0) voxel_side_position = floor(terrain_voxel_scale_inverse * last_position.d);\
+                else voxel_side_position = ceil(terrain_voxel_scale_inverse * last_position.d);\
+                dimension_delta = terrain_voxel_scale * (terrain_voxel_scale_inverse * last_position.d - voxel_side_position);\
+                position3D->value.d = lastPosition3D->value.d - dimension_delta * collision_precision;\
+                velocity3D->value.d *= -bounce_lost_force;\
+                did_collide = 1;\
             }\
         }\
     }\
@@ -28,7 +38,6 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
     #ifdef zoxel_disable_velocity
         return;
     #endif
-    double delta_time = zox_delta_time;
     ecs_world_t *world = it->world;
     const VoxLink *voxLinks = ecs_field(it, VoxLink, 1);
     ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 2);
@@ -36,16 +45,21 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
     Velocity3D *velocity3Ds = ecs_field(it, Velocity3D, 4);
     VoxelPosition *voxelPositions = ecs_field(it, VoxelPosition, 5);
     ChunkLink *chunkLinks = ecs_field(it, ChunkLink, 6);
-    const Bounds3D *bounds3Ds = ecs_field(it, Bounds3D, 7);
+    LastPosition3D *lastPosition3Ds = ecs_field(it, LastPosition3D, 7);
+    const Bounds3D *bounds3Ds = ecs_field(it, Bounds3D, 8);
     for (int i = 0; i < it->count; i++) {
         ChunkPosition *chunkPosition = &chunkPositions[i];
         ChunkLink *chunkLink = &chunkLinks[i];
         Position3D *position3D = &position3Ds[i];
+        LastPosition3D *lastPosition3D = &lastPosition3Ds[i];
         VoxelPosition *voxelPosition = &voxelPositions[i];
         const Bounds3D *bounds3D = &bounds3Ds[i];
         byte3 old_voxel_position = int3_to_byte3(voxelPosition->value);
         float3 real_position = position3D->value;
-        real_position.y -= bounds3D->value.y; //  0.25f;
+        float3 last_position = lastPosition3D->value;
+        real_position.y -= bounds3D->value.y;
+        // last_position.y -= bounds3D->value.y - 1;
+        last_position.y -= bounds3D->value.y;
         int3 global_voxel_position = get_voxel_position(real_position);
         int3 chunk_position = get_chunk_position(real_position, default_chunk_size);
         byte3 new_position = get_local_position_byte3(global_voxel_position, chunk_position, default_chunk_size_byte3);
@@ -72,16 +86,12 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
             Velocity3D *velocity3D = &velocity3Ds[i];
             // get last position
             unsigned char did_collide = 0;
-            float3 last_real_position = (float3) {
-                position3D->value.x - velocity3D->value.x * delta_time,
-                position3D->value.y - velocity3D->value.y * delta_time,
-                position3D->value.z - velocity3D->value.z * delta_time };
             // todo: handle between chunks here, if new voxel is in another chunk
             // i should really displace it based on the difference of how far in the object is into the voxel
             handle_collision_axis(y)
             handle_collision_axis(x)
             handle_collision_axis(z)
-
+            lastPosition3D->value = position3D->value;
             int3 new_chunk_position = get_chunk_position(real_position, default_chunk_size);
             if (!int3_equals(chunkPosition->value, new_chunk_position)) {
                 chunkPosition->value = new_chunk_position;
@@ -112,6 +122,11 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
 }
 zox_declare_system(BasicCollision3DSystem)
 
+            /*float3 last_position = (float3) {
+                position3D->value.x - velocity3D->value.x * delta_time,
+                position3D->value.y - velocity3D->value.y * delta_time,
+                position3D->value.z - velocity3D->value.z * delta_time };*/
+
 /*const ChunkLink *chunkLink = &chunkLinks[i];
 if (chunkLink->value == 0) {
     continue;
@@ -128,7 +143,7 @@ if (chunkOctree == NULL) {
 
 
 /*
-float3 position_axis_x = last_real_position;
+float3 position_axis_x = last_position;
 position_axis_x.x = position3D->value.x;
 int3 global_voxel_position_x = get_voxel_position(position_axis_x);
 byte3 local_voxel_position_x = get_local_position_byte3(global_voxel_position_x, chunkPosition->value, default_chunk_size_byte3);
@@ -144,7 +159,7 @@ if (local_voxel_position_x.x != old_voxel_position.x) {
     }
 }
 
-float3 position_axis_y = last_real_position;
+float3 position_axis_y = last_position;
 position_axis_y.y = position3D->value.y;
 int3 global_voxel_position_y = get_voxel_position(position_axis_y);
 byte3 local_voxel_position_y = get_local_position_byte3(global_voxel_position_y, chunkPosition->value, default_chunk_size_byte3);
@@ -160,7 +175,7 @@ if (local_voxel_position_y.y != old_voxel_position.y) {
     }
 }
 
-float3 position_axis_z = last_real_position;
+float3 position_axis_z = last_position;
 position_axis_z.z = position3D->value.z;
 int3 global_voxel_position_z = get_voxel_position(position_axis_z);
 byte3 local_voxel_position_z = get_local_position_byte3(global_voxel_position_z, chunkPosition->value, default_chunk_size_byte3);

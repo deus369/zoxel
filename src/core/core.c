@@ -1,8 +1,9 @@
 #ifndef zoxel_core
 #define zoxel_core
 
-unsigned char profiler = 0;
 ecs_world_t *world;
+unsigned char target_frame_rate = 0;    // set to 30 to test on low end devices
+unsigned char profiler = 0;
 #include "util/import_sdl.c"    // sdl is here
 #include "util/logs.c"
 #include "util/ecs/ecs.c"
@@ -10,7 +11,7 @@ ecs_world_t *world;
 #include "generic/generic.c"
 #include "timing/timing.c"
 #include "transforms/transforms.c"
-// #include "networking/networking.c"
+#include "networking/networking.c"
 #include "inputs/inputs.c"
 #include "apps/apps.c"
 #include "cameras/cameras.c"
@@ -23,11 +24,12 @@ zox_import_module(Generic)
 zox_import_module(Maths)
 zox_import_module(Timing)
 zox_import_module(Transforms)
-// zox_import_module(Networking)
+zox_import_module(Networking)
 if (!headless) zox_import_module(Apps)
 if (!headless) zox_import_module(Inputs)
 zox_import_module(Rendering)
 zox_import_module(Sounds)
 zox_import_module(Cameras)
 zoxel_end_module(Core)
+
 #endif
