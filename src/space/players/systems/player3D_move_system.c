@@ -1,10 +1,10 @@
 const double jump_power = 12.0;
-// const double movement_power = 32;
 const double movement_power_x = 16;
 const double movement_power_z = 24;
 const float2 max_velocity = { 60 * 60, 160 * 60 };
 const double run_speed = 1.3;
 const float backwards_multiplier = 0.7f;
+// #define zox_floating_movement
 
 void Player3DMoveSystem(ecs_iter_t *it) {
     ecs_query_t *playerCharacterQuery = it->ctx;
@@ -35,11 +35,13 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                 if (keyboard->s.is_pressed) movement.z -= 1;
                 if (keyboard->a.is_pressed) movement.x += 1;
                 if (keyboard->d.is_pressed) movement.x += -1;
-                if (keyboard->space.is_pressed) movement.y = jump_power;
                 if (keyboard->left_shift.is_pressed) {
                     movement.x *= run_speed;
                     movement.z *= run_speed;
                 }
+                #ifdef zox_floating_movement
+                    if (keyboard->space.is_pressed) movement.y = jump_power;
+                #endif
             } else if (ecs_has(world, device_entity, Gamepad)) {
                 const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
                 if (float_abs(gamepad->left_stick.value.x) >= joystick_buffer) movement.x = gamepad->left_stick.value.x;
@@ -48,7 +50,9 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                     movement.x *= run_speed;
                     movement.z *= run_speed;
                 }
-                if (gamepad->a.is_pressed) movement.y = jump_power;
+                #ifdef zox_floating_movement
+                    if (gamepad->a.is_pressed) movement.y = jump_power;
+                #endif
             }
         }
         if (movement.x == 0 && movement.y == 0 && movement.z == 0) continue;
@@ -70,7 +74,6 @@ void Player3DMoveSystem(ecs_iter_t *it) {
     }
 }
 zox_declare_system(Player3DMoveSystem)
-
 // do this until I get a player -> deviceLinks setup going
 // todo: get rotated velocity to test max
 // todo: Link directly to player characters from player

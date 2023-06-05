@@ -23,6 +23,7 @@ zox_declare_tag(PlayerCharacter3D)
 #include "systems/free_camera_disable_movement_system.c"
 #include "systems/player_pause_system.c"
 #include "systems/player_start_system.c"
+#include "systems/player3D_jump_system.c"
 #include "systems/device_mode_response_system.c"
 #include "systems/player_shortcuts_system.c"
 
@@ -61,6 +62,7 @@ zox_system_ctx(FreeCameraToggleSystem, EcsOnUpdate, free_roam_cameras, [in] Mous
 zox_system_ctx(FreeCameraDisableMovementSystem, EcsOnUpdate, player_character3Ds, [in] Mouse)
 zox_system(Player2DTestSystem, EcsOnUpdate, [in] Keyboard)
 zox_system(PlayerPauseSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks)
+zox_system(Player3DJumpSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks, [in] CharacterLink)
 zox_system(DeviceModeResponseSystem, EcsOnUpdate, [in] DeviceMode, [in] DeviceModeDirty)
 zox_system(PlayerShortcutsSystem, EcsOnStore, [none] Player, [in] DeviceLinks)
 zoxel_end_module(Players)

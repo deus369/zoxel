@@ -21,6 +21,8 @@ void add_physics3D(ecs_world_t *world, ecs_entity_t e) {
     zox_set(e, Alpha3D, { quaternion_identity })
     zox_set(e, Gravity3D, { { 0.0f, physics3D_gravity, 0.0f } })
     zox_set(e, Bounds3D, { { 0.5f, 0.5f, 0.5f } })
+    zox_set(e, Grounded, { 0 })
+    zox_set(e, Jump, { 0 })
     // spawn lines around
     zox_add_tag(e, CubeLines)
     zox_set(e, CubeLinesThickness, { 4 })

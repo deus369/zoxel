@@ -4,7 +4,8 @@
 // zoxel_log(" dimension_delta [%f]\n", dimension_delta);
 // zoxel_log(" dimension_delta [%f] - new pos [%f] - last [%f -> %f]\n", dimension_delta, position3D->value.d, real_position.d, last_position.d);
 // the 0.5f scale should be based on terrain voxel scale
-const float collision_precision = 0.999f;
+const float collision_precision = 1.0f; // 0.999f;    // 9
+const float lowest_velocity_threshold = 0.001f;
 
 #define handle_collision_axis(d) {\
     const float terrain_voxel_scale = 0.5f;\
@@ -24,10 +25,11 @@ const float collision_precision = 0.999f;
                 float voxel_side_position = 0;\
                 float dimension_delta = real_position.d - last_position.d;\
                 if (dimension_delta < 0) voxel_side_position = floor(terrain_voxel_scale_inverse * last_position.d);\
-                else voxel_side_position = ceil(terrain_voxel_scale_inverse * last_position.d);\
-                dimension_delta = terrain_voxel_scale * (terrain_voxel_scale_inverse * last_position.d - voxel_side_position);\
+                else voxel_side_position = ceil((float) (terrain_voxel_scale_inverse * last_position.d));\
+                dimension_delta = terrain_voxel_scale * ((terrain_voxel_scale_inverse * last_position.d) - voxel_side_position);\
                 position3D->value.d = lastPosition3D->value.d - dimension_delta * collision_precision;\
                 velocity3D->value.d *= -bounce_lost_force;\
+                if (abs(velocity3D->value.d) < lowest_velocity_threshold) velocity3D->value.d = 0.0f;\
                 did_collide = 1;\
             }\
         }\
@@ -108,6 +110,13 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
                 // int3 new_global_voxel_position = get_voxel_position(real_position);
                 // byte3 new_voxel_position = get_local_position_byte3(new_global_voxel_position, chunkPosition->value, default_chunk_size_byte3);
                 voxelPosition->value = byte3_to_int3(new_position);
+                if (ecs_has(world, it->entities[i], Grounded)) {
+                    Grounded *grounded = ecs_get_mut(world, it->entities[i], Grounded);
+                    if (grounded->value == 0) {
+                        grounded->value = 1;
+                        ecs_modified(world, it->entities[i], Grounded);
+                    }
+                }
                 #ifdef zoxel_debug_basic_collision3D_system
                     if (voxelPosition->value.x >= default_chunk_length || voxelPosition->value.y >= default_chunk_length || voxelPosition->value.z >= default_chunk_length) {
                         zoxel_log(" !!! voxel position set out of bounds\n");
@@ -121,26 +130,6 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
     }
 }
 zox_declare_system(BasicCollision3DSystem)
-
-            /*float3 last_position = (float3) {
-                position3D->value.x - velocity3D->value.x * delta_time,
-                position3D->value.y - velocity3D->value.y * delta_time,
-                position3D->value.z - velocity3D->value.z * delta_time };*/
-
-/*const ChunkLink *chunkLink = &chunkLinks[i];
-if (chunkLink->value == 0) {
-    continue;
-}
-// get voxel from new position
-const ChunkOctree *chunkOctree = ecs_get(world, chunkLink->value, ChunkOctree);
-if (chunkOctree == NULL) {
-    continue;
-}*/
-
-/*#ifdef zoxel_debug_basic_collision3D_system\
-    zoxel_log("     + collision [%i move to %i]\n", old_voxel_position.v, local_voxel_position_axis.v);\
-#endif*/
-
 
 /*
 float3 position_axis_x = last_position;
