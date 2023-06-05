@@ -111,10 +111,13 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
                 // byte3 new_voxel_position = get_local_position_byte3(new_global_voxel_position, chunkPosition->value, default_chunk_size_byte3);
                 voxelPosition->value = byte3_to_int3(new_position);
                 if (ecs_has(world, it->entities[i], Grounded)) {
-                    Grounded *grounded = ecs_get_mut(world, it->entities[i], Grounded);
-                    if (grounded->value == 0) {
-                        grounded->value = 1;
-                        ecs_modified(world, it->entities[i], Grounded);
+                    const Jump *jump = ecs_get(world, it->entities[i], Jump);
+                    if (jump->value == 0) {
+                        Grounded *grounded = ecs_get_mut(world, it->entities[i], Grounded);
+                        if (grounded->value == 0) {
+                            grounded->value = 1;
+                            ecs_modified(world, it->entities[i], Grounded);
+                        }
                     }
                 }
                 #ifdef zoxel_debug_basic_collision3D_system
