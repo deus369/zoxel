@@ -60,7 +60,6 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
         float3 real_position = position3D->value;
         float3 last_position = lastPosition3D->value;
         real_position.y -= bounds3D->value.y;
-        // last_position.y -= bounds3D->value.y - 1;
         last_position.y -= bounds3D->value.y;
         int3 global_voxel_position = get_voxel_position(real_position);
         int3 chunk_position = get_chunk_position(real_position, default_chunk_size);
@@ -101,22 +100,15 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
                 // chunkLink->value = int3_hash_map_get(chunkLinks->value, new_chunk_position);
             }
             if (did_collide) {
-                /*int3 new_chunk_position = get_chunk_position(real_position, default_chunk_size);
-                if (!int3_equals(chunkPosition->value, new_chunk_position)) {
-                    chunkPosition->value = new_chunk_position;
-                    set_entity_chunk(world, it->entities[i], chunkLink, int3_hash_map_get(chunkLinks->value, new_chunk_position));
-                    // chunkLink->value = int3_hash_map_get(chunkLinks->value, new_chunk_position);
-                }*/
-                // int3 new_global_voxel_position = get_voxel_position(real_position);
-                // byte3 new_voxel_position = get_local_position_byte3(new_global_voxel_position, chunkPosition->value, default_chunk_size_byte3);
                 voxelPosition->value = byte3_to_int3(new_position);
-                if (ecs_has(world, it->entities[i], Grounded)) {
+                if (ecs_has(world, it->entities[i], Grounded) && velocity3D->value.y == 0) {
                     const Jump *jump = ecs_get(world, it->entities[i], Jump);
                     if (jump->value == 0) {
                         Grounded *grounded = ecs_get_mut(world, it->entities[i], Grounded);
                         if (grounded->value == 0) {
                             grounded->value = 1;
                             ecs_modified(world, it->entities[i], Grounded);
+                            // velocity3D->value.y *= 0.06f;
                         }
                     }
                 }
@@ -133,6 +125,16 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
     }
 }
 zox_declare_system(BasicCollision3DSystem)
+
+
+/*int3 new_chunk_position = get_chunk_position(real_position, default_chunk_size);
+if (!int3_equals(chunkPosition->value, new_chunk_position)) {
+    chunkPosition->value = new_chunk_position;
+    set_entity_chunk(world, it->entities[i], chunkLink, int3_hash_map_get(chunkLinks->value, new_chunk_position));
+    // chunkLink->value = int3_hash_map_get(chunkLinks->value, new_chunk_position);
+}*/
+// int3 new_global_voxel_position = get_voxel_position(real_position);
+// byte3 new_voxel_position = get_local_position_byte3(new_global_voxel_position, chunkPosition->value, default_chunk_size_byte3);
 
 /*
 float3 position_axis_x = last_position;
