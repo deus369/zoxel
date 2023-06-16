@@ -268,7 +268,7 @@ revert-nightly-flecs:
 
 # ssh & git #
 
-create-ssh:
+git-keys:
 	bash bash/ssh/create_ssh.sh
 
 git-push: ## installs zoxel into /usr/games directory
@@ -334,7 +334,7 @@ help:
 	@echo "    android			builds & runs android release"
 	@echo "    android-dev			builds & runs android debug"
 	@echo "    android-dev-debug		builds & runs android debug with logcat"
-	@echo "	   debug-android			debugs running android game"
+	@echo "    debug-android			debugs running android game"
 	@echo "  > setup"
 	@echo "    make $(flecs_target)	builds flecs"
 	@echo "    install-required		installs required libraries for debian systems"
@@ -347,9 +347,9 @@ help:
 	@echo "    list-systems		lists all found zoxel systems in a module"
 	@echo "    create-system		creates a new system in a module"
 	@echo "  > git"
-	@echo "    create-ssh			creates a ssh key to add to git servers"
 	@echo "    git-pull			pulls latest git"
 	@echo "    git-push			pushes git updates (requires ssh access)"
+	@echo "    git-keys			creates a ssh key to add to git servers"
 
 # todo: clean more
 # ignore resources directory and gitignore in build?
