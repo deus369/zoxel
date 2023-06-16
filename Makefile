@@ -272,6 +272,7 @@ git-keys:
 	bash bash/ssh/create_ssh.sh
 
 git-push: ## installs zoxel into /usr/games directory
+	bash bash/git/git_update_config.sh
 	bash bash/git/git_push.sh
 
 git-pull: ## installs zoxel into /usr/games directory
