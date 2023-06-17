@@ -36,7 +36,12 @@ zox_reset_system(EntityInitializeResetSystem, EntityInitialize)
 #include "prefabs/generic_event.c"
 #include "systems/destroy_in_frame_system.c"
 
+void spawn_prefabs_generic(ecs_world_t *world) {
+    spawn_prefab_generic_event(world);
+}
+
 zox_begin_module(Generic)
+// components
 zox_define_tag(Selectable)
 zox_define_tag(Clickable)
 zox_define_tag(Dragable)
@@ -61,11 +66,11 @@ zox_define_memory_component(Colors)
 zox_define_component(GenericEvent)
 zox_define_component(Bounds3D)
 zox_define_entities_component(EntityLinks, [in] EntityLinks)
+// systems
+zox_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
 zox_define_reset_system(EntityDirtyResetSystem, EntityDirty)
 zox_define_reset_system(ClickableStateResetSystem, ClickableState)
 zox_define_reset_system(EntityInitializeResetSystem, EntityInitialize)
-zox_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
-spawn_prefab_generic_event(world);
 zoxel_end_module(Generic)
 
 #endif

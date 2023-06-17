@@ -1,8 +1,7 @@
 #define zox_define_component(name)\
     ECS_COMPONENT_DEFINE(world, name);
 
-#define zox_declare_tag(name)\
-    ECS_DECLARE(name);
+#define zox_declare_tag(name) ECS_DECLARE(name);
 
 #define zox_define_tag(name) ECS_TAG_DEFINE(world, name);
 

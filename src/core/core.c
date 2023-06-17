@@ -19,6 +19,10 @@ unsigned char profiler = 0;
 #include "sounds/sounds.c"
 #include "util/core_util.c"
 
+void spawn_prefabs_core(ecs_world_t *world) {
+    spawn_prefabs_generic(world);
+}
+
 zox_begin_module(Core)
 zox_import_module(Generic)
 zox_import_module(Maths)

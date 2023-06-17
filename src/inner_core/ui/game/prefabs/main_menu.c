@@ -13,10 +13,15 @@ ecs_entity_t spawn_prefab_main_menu(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label, int2 position, float2 anchor, unsigned char is_close_button) {
-    int labels_count = 3;
+    /*int labels_count = 3;
     const text_group labels[] = { { "play" }, { "options" }, { "exit" } };
-    ClickEvent events[] = { { &button_event_play_game }, { NULL }, { &button_event_exit_game } };
-    return spawn_ui_list(world, prefab_main_menu, "zoxel", labels_count, labels, events, position, anchor, is_close_button);
+    ClickEvent events[] = { { &button_event_play_game }, { NULL }, { &button_event_exit_game } };*/
+    int labels_count = 2;
+    const text_group labels[] = { { "play" }, { "exit" } };
+    ClickEvent events[] = { { &button_event_play_game }, { &button_event_exit_game } };
+    ecs_entity_t e = spawn_ui_list(world, prefab_main_menu, "zoxel", labels_count, labels, events, position, anchor, is_close_button);
+    main_menu = e;
+    return e;
 }
 
 /*int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;

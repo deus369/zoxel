@@ -21,7 +21,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, const char *
     float ui_scale = default_ui_scale;
     int font_size = 28;
     int header_margins = 12;
-    int2 window_size = { 260, 100 + 40 * list_count };
+    int2 window_size = { 260, 60 + 40 * list_count };
     window_size.x *= ui_scale;
     window_size.y *= ui_scale;
     font_size *= ui_scale;
@@ -41,6 +41,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, const char *
         header_label, font_size, header_margins, 1, position2D, window_size, is_close_button, canvas_size);
     for (int i = 0; i < list_count; i++) {
         int2 label_position = (int2) { 0, font_size * 2 - i * font_size * 2 };
+        if (list_count % 2 == 0) label_position.y -= font_size;
         const char* label = labels[i].text;
         int array_index = 1 + i;
         children.value[array_index] = spawn_button(world, e, label_position, button_padding,

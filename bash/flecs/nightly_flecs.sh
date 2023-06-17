@@ -4,7 +4,7 @@
 
 # update the flecs.c & flecs.h in include folder
 
-echo "Installing flecs nightly from zoxel directory [$PWD]"
+echo "  > installing flecs nightly from zoxel directory [$PWD]"
 
 source bash/flecs/remove_flecs.sh
 
@@ -15,6 +15,8 @@ flecs_h_url="https://raw.githubusercontent.com/SanderMertens/flecs/master/flecs.
 flecs_c_file_location=include/flecs/flecs.c
 
 flecs_h_file_location=include/flecs/flecs.h
+
+mkdir include/flecs
 
 wget -O $flecs_c_file_location $flecs_c_url
 
