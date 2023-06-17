@@ -255,7 +255,7 @@ install-flecs:
 	bash bash/flecs/download_flecs_source.sh
 
 remove-flecs:
-	bash  bash/flecs/remove_flecs.sh
+	bash bash/flecs/remove_flecs.sh
 
 get-nightly-flecs:
 	bash bash/flecs/nightly_flecs.sh
@@ -347,6 +347,11 @@ help:
 	@echo "    count			counts total lines in all source"
 	@echo "    list-systems		lists all found zoxel systems in a module"
 	@echo "    create-system		creates a new system in a module"
+	@echo "  > flecs"
+	@echo "    build/libflecs.a		builds flecs library"
+	@echo "    remove-flecs		removes flecs library"
+	@echo "    get-nightly-flecs		gets latest flecs"
+	
 	@echo "  > git"
 	@echo "    git-pull			pulls latest git"
 	@echo "    git-push			pushes git updates (requires ssh access)"
