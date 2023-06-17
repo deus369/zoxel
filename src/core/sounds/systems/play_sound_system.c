@@ -1,11 +1,10 @@
-//! Plays sounds on main thread.
 void PlaySoundSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
-    const TriggerSound *playSounds = ecs_field(it, TriggerSound, 2);
+    TriggerSound *playSounds = ecs_field(it, TriggerSound, 2);
     const SoundLength *soundLengths = ecs_field(it, SoundLength, 3);
     const SDLSound *sdlSounds = ecs_field(it, SDLSound, 4);
     for (int i = 0; i < it->count; i++) {
-        const TriggerSound *triggerSound = &playSounds[i];
+        TriggerSound *triggerSound = &playSounds[i];
         if (triggerSound->value != 1) continue;
         const SDLSound *sdlSound = &sdlSounds[i];
         const SoundLength *soundLength = &soundLengths[i];
@@ -14,9 +13,15 @@ void PlaySoundSystem(ecs_iter_t *it) {
                 zoxel_log(" - playing sound failed [%s]\n", Mix_GetError());
                 zox_delete(it->entities[i])
             } else {
-                zox_set_only(it->entities[i], DestroyInTime, { soundLength->value })
+                if (soundLength->value == 0) {
+                    zox_delete(it->entities[i])
+                } else {
+                    zox_set_only(it->entities[i], DestroyInTime, { soundLength->value })
+                    // zoxel_log(" > playing sound [%lu]\n", it->entities[i]);
+                }
             }
         }
+        triggerSound->value = 0;
     }
 }
-zox_declare_system(PlaySoundSystem);
+zox_declare_system(PlaySoundSystem)

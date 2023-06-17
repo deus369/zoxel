@@ -1,22 +1,25 @@
 extern ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 pointB, float thickness, double life_time);
 
 void SoundUpdateSystem(ecs_iter_t *it) {
-    const SoundDirty *soundDirtys = ecs_field(it, SoundDirty, 2);
-    const SoundData *soundDatas = ecs_field(it, SoundData, 3);
+    const SoundData *soundDatas = ecs_field(it, SoundData, 2);
+    SoundDirty *soundDirtys = ecs_field(it, SoundDirty, 3);
     SDLSound *sdlSounds = ecs_field(it, SDLSound, 4);
     for (int i = 0; i < it->count; i++) {
-        const SoundDirty *soundDirty = &soundDirtys[i];
+        // zoxel_log(" ! updated sound [%lu]\n", it->entities[i]);
+        SoundDirty *soundDirty = &soundDirtys[i];
         if (soundDirty->value != 1) continue;
         const SoundData *soundData = &soundDatas[i];
         if (soundData->value == NULL) continue;
         SDLSound *sdlSound = &sdlSounds[i];
-        if (soundData->value != NULL) free_sdl_sound(sdlSound);   // free previous
+        free_sdl_sound(sdlSound);
         sdlSound->value = (Mix_Chunk *) malloc(sizeof(Mix_Chunk));
         sdlSound->value->volume = 128;
         sdlSound->value->allocated = 1;
         sdlSound->value->alen = soundData->length * 4;
         sdlSound->value->abuf = (Uint8*) malloc(soundData->length * 4 * sizeof(Uint8));
         memcpy(sdlSound->value->abuf, soundData->value, sdlSound->value->alen);
+        soundDirty->value = 0;
+        // zoxel_log(" > updated sound [%lu]\n", it->entities[i]);
         // this is the debug feature
         #ifdef zoxel_debug_sounds
             double decay_time = soundData->length / sample_rate_f; // 6.0 + rand() % 6;

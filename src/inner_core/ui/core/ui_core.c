@@ -60,6 +60,7 @@ if (!headless) {
     zox_system_1(ElementMeshSystem, ui_mesh_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture)
     element_mesh_system_id = ecs_id(ElementMeshSystem);
 }
+// EcsPreStore EcsOnStore
 zox_system(ButtonClickEventSystem, EcsPreStore, [none] Element, [in] ClickableState, [in] ClickEvent)
 zoxel_end_module(UICore)
 

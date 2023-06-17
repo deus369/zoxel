@@ -26,7 +26,7 @@ zox_byte_component(TriggerSound)         //! A state event for playing sounds.
 // renamed PlaySound to TriggerSound temporarily, cause of windows.h conflict
 zox_byte_component(SoundDirty)
 #include "components/SDLSound.c"
-#include "prefabs/sound_prefab.c"
+#include "prefabs/sound.c"
 #include "util/static_sound_util.c"
 #include "util/sdl_mix_util.c"
 #include "instruments/note_frequencies.c"
@@ -43,9 +43,14 @@ zox_byte_component(SoundDirty)
 	#include "systems/play_sound_system.c"
     #include "systems/sound_update_system.c"
 #endif
-zox_reset_system(PlaySoundResetSystem, TriggerSound)
-zox_reset_system(GenerateSoundResetSystem, GenerateSound)
-zox_reset_system(SoundDirtyResetSystem, SoundDirty)
+// zox_reset_system(PlaySoundResetSystem, TriggerSound)
+// zox_reset_system(GenerateSoundResetSystem, GenerateSound)
+
+void spawn_prefabs_sounds(ecs_world_t *world) {
+    spawn_prefab_sound(world);
+    spawn_prefab_generated_sound(world);
+    load_audio_sdl();
+}
 
 zox_begin_module(Sounds)
 zox_define_tag(Sound)
@@ -58,16 +63,13 @@ zox_define_component(SDLSound)
 zox_define_component(SoundDirty)
 zox_define_memory_component(SoundData)
 ecs_set_hooks(world, SDLSound, { .dtor = ecs_dtor(SDLSound) });
-zox_system(SoundGenerateSystem, EcsOnValidate, [none] Sound, [in] GenerateSound, [in] SoundLength, [in] SoundFrequency, [in] InstrumentType, [out] SoundData, [out] SoundDirty)
+zox_system(SoundGenerateSystem, EcsOnValidate, [none] Sound, [out] GenerateSound, [in] SoundLength, [in] SoundFrequency, [in] InstrumentType, [out] SoundData, [out] SoundDirty)
 #ifdef SDL_MIXER
-    zox_system_1(SoundUpdateSystem, EcsPreStore, [none] Sound, [in] SoundDirty, [in] SoundData, [out] SDLSound)
-    zox_system_1(PlaySoundSystem, EcsPreStore, [none] Sound, [in] TriggerSound, [in] SoundLength, [in] SDLSound)
+    zox_system(SoundUpdateSystem, EcsPreStore, [none] Sound, [in] SoundData, [out] SoundDirty, [out] SDLSound)
+    zox_system(PlaySoundSystem, EcsOnStore, [none] Sound, [out] TriggerSound, [in] SoundLength, [in] SDLSound)
 #endif
-zox_define_reset_system(PlaySoundResetSystem, TriggerSound)
-zox_define_reset_system(GenerateSoundResetSystem, GenerateSound)
-zox_define_reset_system(SoundDirtyResetSystem, SoundDirty)
-spawn_prefab_sound(world);
-load_audio_sdl();
+// zox_define_reset_system(PlaySoundResetSystem, TriggerSound)
+// zox_define_reset_system(GenerateSoundResetSystem, GenerateSound)
 zoxel_end_module(Sounds)
 
 #endif

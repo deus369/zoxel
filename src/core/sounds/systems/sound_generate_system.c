@@ -7,30 +7,22 @@ void SoundGenerateSystem(ecs_iter_t *it) {
     #endif
     // const float sound_bounds = 1.0f;
     const float volume = 1.0f; // 0.8f;
-    const GenerateSound *generateSounds = ecs_field(it, GenerateSound, 2);
+    GenerateSound *generateSounds = ecs_field(it, GenerateSound, 2);
     const SoundLength *soundLengths = ecs_field(it, SoundLength, 3);
     const SoundFrequency *soundFrequencys = ecs_field(it, SoundFrequency, 4);
     const InstrumentType *instrumentTypes = ecs_field(it, InstrumentType, 5);
     SoundData *soundDatas = ecs_field(it, SoundData, 6);
     SoundDirty *soundDirtys = ecs_field(it, SoundDirty, 7);
     for (int i = 0; i < it->count; i++) {
-        const GenerateSound *generateSound = &generateSounds[i];
-        if (generateSound->value != 1) {
-            continue;
-        }
+        GenerateSound *generateSound = &generateSounds[i];
+        if (generateSound->value != 1) continue;
+        // zoxel_log(" > sound generated ?\n");
         SoundDirty *soundDirty = &soundDirtys[i];
-        if (soundDirty->value != 0) {
-            continue;
-        }
-        soundDirty->value = 1;
+        if (soundDirty->value != 0) continue;
         SoundData *soundData = &soundDatas[i];
         const SoundLength *soundLength = &soundLengths[i];
         const SoundFrequency *soundFrequency = &soundFrequencys[i];
         const InstrumentType *instrumentType = &instrumentTypes[i];
-        #ifdef zoxel_log_sound_generation
-            printf("Sound played. Instrument [%i]. Frequency [%f]. Length [%f].\n",
-                instrumentType->value, soundFrequency->value, soundLength->value);
-        #endif
         // random.InitState((uint) seed.seed);
         double sound_time_length = soundLength->value; // soundData.sound_time_length;
         float frequency = soundFrequency->value;
@@ -39,10 +31,10 @@ void SoundGenerateSystem(ecs_iter_t *it) {
         //float attack = 0.002f;
         float attack = attack_multiplier * sound_time_length; //  0.02f * sound_time_length;
         float dampen = dampen_multiplier * sound_time_length;
-        int total_sound_samples = (int) ( sound_sample_rate * sound_time_length );
-        initialize_memory_component(soundData, float, total_sound_samples);
-        for (int i = 0; i < total_sound_samples; i++) {
-            float time = (float) (i / sample_rate_f);
+        int total_sound_samples = (int) (sound_sample_rate * sound_time_length);
+        re_initialize_memory_component(soundData, float, total_sound_samples)
+        for (int j = 0; j < total_sound_samples; j++) {
+            float time = (float) (j / sample_rate_f);
             float value = 0.0f;
             if (instrument_type == instrument_piano) {
                 value = piano_sound(time, frequency);
@@ -64,18 +56,21 @@ void SoundGenerateSystem(ecs_iter_t *it) {
                 value = saxophone_sound(time, frequency);
             } else if (instrument_type ==  instrument_trumpet) {
                 value = trumpet_sound(time, frequency);
-            } else {
+            }/* else {
                 break;
                 continue;
-            }
-            if (noise != 0) {
-                value += noise * ((rand() / (float) RAND_MAX) * 2.0f - 1.0f);
-            }
+            }*/
+            if (noise != 0) value += noise * ((rand() / (float) RAND_MAX) * 2.0f - 1.0f);
             value *= envelope(time, sound_time_length, attack, dampen);
             value *= volume;
             // value = float_clamp(value, -sound_bounds, sound_bounds);
-            soundData->value[i] = value;
+            soundData->value[j] = value;
         }
+        generateSound->value = 0;
+        soundDirty->value = 1;
+        #ifdef zoxel_log_sound_generation
+            zoxel_log(" > sound generated: instrument [%i] frequency [%f] length [%f]\n", instrumentType->value, soundFrequency->value, soundLength->value);
+        #endif
         #ifdef zoxel_time_sound_generate_system
             did_do_timing()
         #endif

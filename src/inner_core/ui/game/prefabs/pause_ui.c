@@ -12,7 +12,14 @@ ecs_entity_t spawn_prefab_pause_ui(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_pause_ui(ecs_world_t *world, int2 position, float2 anchor) {
-    int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
+    int labels_count = 2;
+    const text_group labels[] = { { "return" }, { "leave" } };
+    ClickEvent events[] = { { &button_event_return_to_game }, { &button_event_stop_playing_game } };
+    ecs_entity_t e = spawn_ui_list(world, prefab_main_menu, "paused", labels_count, labels, events, position, anchor, 0);
+    pause_ui = e;
+    return e;
+
+    /*int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
     const char *header_label = "paused";
     const char *button_label_1 = "return";
     const char *button_label_2 = "options";
@@ -64,5 +71,5 @@ ecs_entity_t spawn_pause_ui(ecs_world_t *world, int2 position, float2 anchor) {
         zoxel_log("Spawned main menu [%lu]\n", (long int) e);
     #endif
     select_first_button(world, children.value[1]);
-    return e;
+    return e;*/
 }

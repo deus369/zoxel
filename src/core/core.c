@@ -21,6 +21,7 @@ unsigned char profiler = 0;
 
 void spawn_prefabs_core(ecs_world_t *world) {
     spawn_prefabs_generic(world);
+    spawn_prefabs_sounds(world);
 }
 
 zox_begin_module(Core)

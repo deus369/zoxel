@@ -13,6 +13,10 @@ zox_reset_system(GenerateMusicResetSystem, GenerateMusic)
 #include "systems/music_play_system.c"
 #include "systems/music_generate_system.c"
 
+void spawn_prefabs_musics(ecs_world_t *world) {
+    spawn_prefab_music(world);
+}
+
 zox_begin_module(Musics)
 zox_define_tag(Music)
 zox_define_tag(Looping)
@@ -23,7 +27,6 @@ zox_define_memory_component(MusicData)
 zox_system(MusicGenerateSystem, EcsPostUpdate, [none] Music, [in] GenerateMusic, [out] MusicData, [out] InstrumentType)
 zox_system(MusicPlaySystem, EcsOnUpdate, [none] Music, [in] MusicData, [in] MusicSpeed, [in] InstrumentType, [out] MusicTime)
 zox_define_reset_system(GenerateMusicResetSystem, GenerateMusic)
-spawn_prefab_music(world);
 zoxel_end_module(Musics)
 
 //! \todo MusicPlayer -> play a music and pick a new one when song ends

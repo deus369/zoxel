@@ -90,21 +90,22 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
     zox_system_ctx(system, EcsOnUpdate, generateTextureQuery, [none] texture_tag, [out] TextureDirty, [out] TextureData, [in] TextureSize, [in] GenerateTexture)\
 }
 
-#define zox_define_reset_system(system_name, component_name) zox_system_1(system_name, EcsOnStore, [out] component_name);
+// _1
+
+#define zox_define_reset_system(system_name, component_name) zox_system(system_name, EcsOnStore, [out] component_name);
+
+// if (!ecs_query_changed(NULL, it)) return;
+// ecs_query_skip(it);
 
 #define zox_reset_system(system_name, component_name)\
-    void system_name(ecs_iter_t *it) {\
-        if (!ecs_query_changed(NULL, it)) return;\
-        ecs_query_skip(it);\
-        component_name *components = ecs_field(it, component_name, 1);\
-        for (int i = 0; i < it->count; i++) {\
-            component_name *component = &components[i];\
-            if (component->value == 1) {\
-                component->value = 0;\
-            }\
-        }\
+void system_name(ecs_iter_t *it) {\
+    component_name *components = ecs_field(it, component_name, 1);\
+    for (int i = 0; i < it->count; i++) {\
+        component_name *component = &components[i];\
+        if (component->value == 1) component->value = 0;\
     }\
-    ECS_SYSTEM_DECLARE(system_name);
+}\
+ECS_SYSTEM_DECLARE(system_name);
 
 // #define zoxel_button_system(system, tag) zox_system(system, EcsPostUpdate, [none] tag, [in] ClickableState);
 // #define zoxel_button_system2(system, tag, pipeline) zox_system(system, pipeline, [none] tag, [in] ClickableState);
