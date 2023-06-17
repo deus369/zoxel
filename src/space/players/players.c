@@ -20,13 +20,17 @@ zox_declare_tag(PlayerCharacter2D)
 #include "systems/player2D_test_system.c"
 #include "systems/player_shortcuts_system.c"
 
+void spawn_prefabs_players(ecs_world_t *world) {
+    spawn_prefab_player(world);
+    spawn_player_character2D_prefab(world);
+    spawn_prefabs_players3D(world);
+}
+
 zox_begin_module(Players)
 zox_define_tag(Player)
 zox_define_tag(Player2D)
 zox_define_tag(PlayerCharacter)
 zox_define_tag(PlayerCharacter2D)
-spawn_prefab_player(world);
-spawn_player_character2D_prefab(world);
 #ifdef zoxel_physics2D
     zox_filter(playerCharacter2DQuery2, [none] PlayerCharacter2D, [out] Acceleration2D, [in] Velocity2D, [in] physics.DisableMovement)
     zox_system_ctx(Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2, [in] Keyboard)

@@ -12,13 +12,15 @@ zox_component(Character3DLink, ecs_entity_t)
 // zoxel_module_includes
 #include "terrain/characters3D_terrain.c"
 
+void spawn_prefabs_characters3D(ecs_world_t *world) {
+    spawn_prefab_character3D(world);
+}
+
 zox_begin_module(Characters3D)
 set_character_settings();
 // zoxel_component_defines
 zox_define_tag(Character3D)
 zox_define_component(Character3DLink)
-// zoxel_prefab_defnies
-spawn_prefab_character3D(world);
 // zoxel_module_defines
 zox_import_module(Characters3DTerrain)
 zoxel_end_module(Characters3D)

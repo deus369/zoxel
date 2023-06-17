@@ -1,4 +1,5 @@
 void set_element_position(ecs_world_t *world, ecs_entity_t e, float2 parent_position, int2 parent_pixel_size, float2 canvas_size_f, float aspect_ratio) {
+    if (e == 0) return; // || !ecs_is_valid(world, e)) return;  
     int2 pixel_position = ecs_get(world, e, PixelPosition)->value;
     float2 anchor = ecs_get(world, e, Anchor)->value;
     Position2D *position2D = ecs_get_mut(world, e, Position2D);
@@ -7,15 +8,10 @@ void set_element_position(ecs_world_t *world, ecs_entity_t e, float2 parent_posi
     CanvasPixelPosition *canvasPixelPosition = ecs_get_mut(world, e, CanvasPixelPosition);
     canvasPixelPosition->value = (int2) { ceil((position2D->value.x / aspect_ratio + 0.5f) * canvas_size_f.x), ((position2D->value.y + 0.5f) * canvas_size_f.y) };
     ecs_modified(world, e, CanvasPixelPosition);
-    // set all children as well.
     if (ecs_has(world, e, Children)) {
         int2 pixel_size = ecs_get(world, e, PixelSize)->value;
         const Children *children = ecs_get(world, e, Children);
-        for (int i = 0; i < children->length; i++) {
-            set_element_position(world, children->value[i],
-                position2D->value, pixel_size,
-                canvas_size_f, aspect_ratio);
-        }
+        for (int i = 0; i < children->length; i++) set_element_position(world, children->value[i], position2D->value, pixel_size, canvas_size_f, aspect_ratio);
     }
 }
 
@@ -23,9 +19,7 @@ void ElementPositionSystem(ecs_iter_t *it) {
     ecs_query_t *changeQuery = it->ctx;
     ecs_iter_t change_iter = ecs_query_iter(it->world, changeQuery);
     while (ecs_query_next(&change_iter)) {
-        if (change_iter.table != it->table) {
-            ecs_query_skip(&change_iter);
-        }
+        if (change_iter.table != it->table) ecs_query_skip(&change_iter);
     }
     ecs_world_t *world = it->world;
     const PixelPosition *pixelPositions = ecs_field(it, PixelPosition, 2);
@@ -40,17 +34,14 @@ void ElementPositionSystem(ecs_iter_t *it) {
         const ParentLink *parentLink = &parentLinks[i];
         const Anchor *anchor = &anchors[i];
         const CanvasLink *canvasLink = &canvasLinks[i];
-        if (!ecs_is_valid(world, canvasLink->value) || parentLink->value != canvasLink->value) {
-            continue;
-        }
+        if (!ecs_is_valid(world, canvasLink->value) || parentLink->value != canvasLink->value) continue;
         int2 canvas_size = ecs_get(world, canvasLink->value, PixelSize)->value;
         float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
         float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
         Position2D *position2D = &position2Ds[i];
         CanvasPixelPosition *canvasPixelPosition = &canvasPixelPositions[i];
         position2D->value = get_ui_real_position2D_canvas(pixelPosition->value, anchor->value, canvas_size_f, aspect_ratio);
-        canvasPixelPosition->value = (int2) { ceil((position2D->value.x / aspect_ratio + 0.5f) * canvas_size_f.x),
-            ((position2D->value.y + 0.5f) * canvas_size_f.y) };
+        canvasPixelPosition->value = (int2) { ceil((position2D->value.x / aspect_ratio + 0.5f) * canvas_size_f.x), ((position2D->value.y + 0.5f) * canvas_size_f.y) };
         #ifdef debug_element_position_change_query
             zoxel_log("    - PixelPosition Updated [%lu]\n", (long int) e);
         #endif

@@ -28,9 +28,7 @@ void prefab_set_mesh_vertices(ecs_world_t *world, ecs_entity_t e, const float3 v
 
 void scale_mesh2D_vertices(ecs_world_t *world, ecs_entity_t e, float2 scale2D) {
     MeshVertices2D *meshVertices2D = ecs_get_mut(world, e, MeshVertices2D);
-    for (int i = 0; i < meshVertices2D->length; i++) {
-        float2_multiply_float2_p(&meshVertices2D->value[i], scale2D);
-    }
+    for (int i = 0; i < meshVertices2D->length; i++) float2_multiply_float2_p(&meshVertices2D->value[i], scale2D);
     ecs_modified(world, e, MeshVertices2D);
 }
 

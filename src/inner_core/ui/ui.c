@@ -13,6 +13,13 @@
 // #include "util/test_uis.c"
 #include "fun/spawn_test_window.c"
 
+void spawn_prefabs_ui(ecs_world_t *world) {
+    spawn_prefabs_ui_core(world);
+    spawn_prefabs_texts(world);
+    spawn_prefabs_elements(world);
+    spawn_prefabs_game_ui(world);
+}
+
 zox_begin_module(UI)
 zox_import_module(UICore)
 zox_import_module(Texts)

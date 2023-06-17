@@ -18,7 +18,8 @@ ecs_entity_t spawn_font_style_prefab(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_font_style(ecs_world_t *world) {
-    ecs_defer_begin(world);
+    // ecs_defer_begin(world);
+    // zox_clone(font_style_prefab)
     zox_instance(font_style_prefab)
     zox_name("font_style")
     Children children = { };
@@ -97,11 +98,9 @@ ecs_entity_t spawn_font_style(ecs_world_t *world) {
     children.value[67] = spawn_font(world, number_7, number_7_length);
     children.value[68] = spawn_font(world, number_8, number_8_length);
     children.value[69] = spawn_font(world, number_9, number_9_length);
-    for (int i = fonts_used; i < font_styles_length; i++) {
-        children.value[i] = spawn_font(world, font_question_mark, font_question_mark_length);
-    }
+    for (int i = fonts_used; i < font_styles_length; i++) children.value[i] = spawn_font(world, font_question_mark, font_question_mark_length);
     ecs_set(world, e, Children, { children.length, children.value });
-    ecs_defer_end(world);
+    // ecs_defer_end(world);
     font_style_entity = e;
     return e;
 }

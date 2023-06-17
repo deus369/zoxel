@@ -18,6 +18,14 @@ zox_component(FPSDisplayTicker, double)
 #include "systems/fps_display_system.c"
 #include "systems/quads_display_system.c"
 
+void spawn_prefabs_game_ui(ecs_world_t *world) {
+    spawn_prefab_main_menu(world);
+    spawn_prefab_fps_display(world);
+    spawn_prefab_pause_ui(world);
+    spawn_prefab_options_ui(world);
+    spawn_prefab_quad_count_label(world);
+}
+
 zox_begin_module(GameUI)
 zox_define_tag(MainMenu)
 zox_define_tag(OptionsUI)
@@ -27,11 +35,6 @@ zox_define_tag(QuadsCountLabel)
 zox_define_component(FPSDisplayTicker)
 zox_system(FpsDisplaySystem, EcsPreUpdate, [out] FPSDisplayTicker, [out] ZextDirty, [out] ZextData)
 zox_system(QuadsLabelSystem, EcsPreUpdate, [none] QuadsCountLabel, [out] ZextDirty, [out] ZextData)
-spawn_prefab_main_menu(world);
-spawn_prefab_fps_display(world);
-spawn_prefab_pause_ui(world);
-spawn_prefab_options_ui(world);
-spawn_prefab_quad_count_label(world);
 zoxel_end_module(GameUI)
 
 // todo: fps display to be multithreaded

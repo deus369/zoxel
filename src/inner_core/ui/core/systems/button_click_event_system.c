@@ -5,9 +5,7 @@ void ButtonClickEventSystem(ecs_iter_t *it) {
         const ClickableState *clickableState = &clickableStates[i];
         if (clickableState->value == 1) {
             const ClickEvent *clickEvent = &clickEvents[i];
-            if (clickEvent->value != NULL) {
-                (*clickEvent->value)(it->world, it->entities[i]);
-            }
+            if (clickEvent->value != NULL) (*clickEvent->value)(it->world, it->entities[i]);
         }
     }
 }

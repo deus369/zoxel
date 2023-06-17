@@ -7,6 +7,7 @@ extern unsigned char is_split_screen;
 
 //! Spawns our first game entities.
 void boot_zoxel_game(ecs_world_t *world) {
+    if (!running) return;
     zoxel_log(" > [zoxel] begins to boot\n");
     ecs_entity_t realm = 0;
     #ifdef zoxel_space

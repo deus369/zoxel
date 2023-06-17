@@ -21,6 +21,13 @@ zox_component(StreamPoint, int3)
 #include "octree_systems/render3D_uvs_system.c"
 #include "util/create_terrain.c"
 
+void spawn_prefabs_terrain(ecs_world_t *world) {
+    spawn_prefab_terrain(world);
+    int3 terrain_chunk_size = { default_chunk_length, 8 * default_chunk_length, default_chunk_length };
+    spawn_prefab_terrain_chunk(world, terrain_chunk_size);
+    spawn_prefab_terrain_chunk_octree(world, terrain_chunk_size);
+}
+
 zox_begin_module(Terrain)
 set_terrain_render_distance();
 // zoxel_component_defines
@@ -32,11 +39,6 @@ zox_define_component(StreamPoint)
 zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [in] GenerateChunk)
 zox_filter(chunks_generating, [in] GenerateChunk)
 zox_filter(terrain_chunks_query, [none] TerrainChunk, [in] ChunkPosition, [in] ChunkNeighbors, [out] RenderLod, [out] ChunkDirty)
-// zoxel_prefab_defines
-spawn_prefab_terrain(world);
-int3 terrain_chunk_size = { default_chunk_length, 8 * default_chunk_length, default_chunk_length };
-spawn_prefab_terrain_chunk(world, terrain_chunk_size);
-spawn_prefab_terrain_chunk_octree(world, terrain_chunk_size);
 // zoxel_system_defines
 zox_system_ctx(TerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery,
     [none] TerrainChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] ChunkPosition, [in] GenerateChunk)

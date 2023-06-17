@@ -24,6 +24,13 @@ unsigned char server_mode = 0;
 #include "../space/space.c"
 #include "util/engine_util.c"
 
+void spawn_prefabs_engine(ecs_world_t *world) {
+    // spawn_prefabs_core(world);
+    spawn_prefabs_inner_core(world);
+    spawn_prefabs_gameplay(world);
+    spawn_prefabs_space(world);
+}
+
 zox_begin_module(ZoxelEngine)
 zox_import_module(Core)
 zox_import_module(InnerCore)

@@ -13,6 +13,11 @@
 #include "voxels/voxels.c"
 #include "physics/physics.c"
 
+void spawn_prefabs_inner_core(ecs_world_t *world) {
+    spawn_prefabs_ui(world);
+    spawn_prefabs_voxels(world);
+}
+
 zox_begin_module(InnerCore)
 zox_import_module(Textures)
 zox_import_module(Musics)

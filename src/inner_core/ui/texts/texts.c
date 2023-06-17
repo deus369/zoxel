@@ -27,6 +27,13 @@ zox_component(ZextPadding, byte2)
 #include "systems/animate_text_system.c"
 zox_reset_system(ZextDirtyResetSystem, ZextDirty)
 
+void spawn_prefabs_texts(ecs_world_t *world) {
+    spawn_font_style_prefab(world);
+    spawn_font_prefab(world);
+    spawn_zigel_prefab(world);
+    spawn_zext_prefab(world);
+}
+
 zox_begin_module(Texts)
 zox_define_tag(Font)
 zox_define_tag(Zigel)
@@ -41,10 +48,7 @@ zox_define_component(ZextAlignment)
 zox_define_memory_component(FontData)
 zox_define_memory_component(ZextData)
 zox_define_component(ZextPadding)
-spawn_font_style_prefab(world);
-spawn_font_prefab(world);
-spawn_zigel_prefab(world);
-spawn_zext_prefab(world);
+// spawn_prefabs_texts(world);
 zox_filter(zextDirtyQuery, [none] Zext, [in] ZextDirty)
 zox_filter(generateTextureQuery, [none] FontTexture, [in] GenerateTexture)
 // zox_system_1(AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)

@@ -13,9 +13,19 @@ zox_declare_tag(CloseButton)      //! A ui window close button.
 #include "prefabs/window.c"
 #include "util/header.c"
 #include "util/window.c"
+#include "prefabs/ui_list.c"
 #include "systems/button_click_sound_system.c"
 #include "systems/header_drag_system.c"
 #include "fun/button_event_close_window.c"
+
+void spawn_prefabs_elements(ecs_world_t *world) {
+    spawn_prefab_label(world);
+    spawn_prefab_label_background(world);
+    spawn_prefab_button(world);
+    spawn_prefab_window(world);
+    spawn_prefab_header(world);
+    spawn_prefab_ui_list(world);
+}
 
 zox_begin_module(Elements)
 zox_define_tag(Label)
@@ -23,13 +33,8 @@ zox_define_tag(Button)
 zox_define_tag(Window)
 zox_define_tag(Header)
 zox_define_tag(CloseButton)
-zox_system(ButtonClickSoundSystem, EcsPreStore, [none] Button, [in] ClickableState)   // EcsOnUpdate
+zox_system(ButtonClickSoundSystem, EcsPreStore, [none] Button, [in] ClickableState)
 zox_system(HeaderDragSystem, EcsPostLoad, [none] Header, [in] DragableState, [in] DraggingDelta, [in] ParentLink)
-spawn_prefab_label(world);
-spawn_prefab_label_background(world);
-spawn_prefab_button(world);
-spawn_prefab_window(world);
-spawn_prefab_header(world);
 zoxel_end_module(Elements)
 
 #endif

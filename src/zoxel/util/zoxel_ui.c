@@ -9,9 +9,7 @@ void spawn_zoxel_main_menu(ecs_world_t *world) {
         }
         Children children = { };
         initialize_memory_component_non_pointer(children, ecs_entity_t, 3);
-        // main menu
         const int edge_buffer = 8 * default_ui_scale;
-        // int2 window_size = { 260, 220 };
         float2 window_anchor = { 0.0f, 1.0f };
         int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
         const char *game_name = "zoxel";

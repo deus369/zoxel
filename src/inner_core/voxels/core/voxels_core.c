@@ -32,6 +32,12 @@ zox_entities_component(VoxelLinks)
 #include "systems/chunk_octree_colors_build_system.c"
 zox_reset_system(GenerateChunkResetSystem, GenerateChunk)
 
+void spawn_prefabs_voxels_core(ecs_world_t *world) {
+    spawn_prefab_voxel(world);
+    spawn_prefab_chunk(world);
+    spawn_prefab_noise_chunk(world);
+}
+
 zox_begin_module(VoxelsCore)
 // zoxel_settings_defines
 set_max_octree_length(max_octree_depth);
@@ -46,10 +52,6 @@ zox_define_memory_component(ChunkData)
 zox_define_memory_component(ChunkNeighbors)
 zoxel_octree_component_define(ChunkOctree)
 zox_define_entities_component(VoxelLinks, [in] VoxelLinks)
-// zoxel_prefab_defines
-spawn_prefab_voxel(world);
-spawn_prefab_chunk(world);
-spawn_prefab_noise_chunk(world);
 // zoxel_filter_defines
 zox_filter(chunks_generating, [in] GenerateChunk)
 // zoxel_system_defines

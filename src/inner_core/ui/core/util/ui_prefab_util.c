@@ -1,11 +1,11 @@
 void add_ui_components(ecs_world_t *world, ecs_entity_t e) {
     zox_add_tag(e, Element)
     if (!headless) zox_add_tag(e, ElementRender)
-    zox_set(e, PixelPosition, { { } })
-    zox_set(e, PixelSize, { { } })
-    zox_set(e, CanvasPixelPosition, { { } })
-    zox_set(e, Anchor, { { } })
-    zox_set(e, CanvasLink, { })
+    zox_set(e, PixelPosition, { int2_zero })
+    zox_set(e, PixelSize, { int2_zero })
+    zox_set(e, CanvasPixelPosition, { int2_zero })
+    zox_set(e, Anchor, { { 0 } })
+    zox_set(e, CanvasLink, { 0 })
     zox_set(e, Layer2D, { 0 })
     zox_set(e, InitializeEntityMesh, { 1 })
 }

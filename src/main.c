@@ -18,6 +18,8 @@ int main(int argc, char* argv[]) {
 #endif
     if (engine_begin(argc, argv) == EXIT_SUCCESS) {
         zox_import_module(Zoxel)
+        spawn_prefabs_engine(world);
+        boot_zoxel_game(world);
         engine_loop();
         engine_end();
     }

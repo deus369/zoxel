@@ -9,10 +9,13 @@ zox_component(Character2DLink, ecs_entity_t)
 #include "util/spawn_many.c"
 #include "systems/bob_spawn_system.c"
 
+void spawn_prefabs_characters2D(ecs_world_t *world) {
+    spawn_prefab_character2D(world, character2DTextureSize);
+}
+
 zox_begin_module(Characters2D)
 zox_define_tag(Character2D)
 zox_define_component(Character2DLink)
-spawn_prefab_character2D(world, character2DTextureSize);
 #ifdef zoxel_test_character2Ds
 spawn_many_characters2D();
 #endif

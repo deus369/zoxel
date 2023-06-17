@@ -28,6 +28,11 @@ zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t)
 #include "systems/element_position_system.c"
 #include "systems/element_mesh_system.c"
 
+void spawn_prefabs_ui_core(ecs_world_t *world) {
+    spawn_prefab_canvas(world);
+    spawn_prefab_element(world);
+}
+
 zox_begin_module(UICore)
 zox_define_tag(Element)
 zox_define_tag(Canvas)
@@ -39,12 +44,9 @@ zox_define_component(ClickEvent)
 zox_define_component(InitializeEntityMesh)
 zox_define_component(NavigatorState)
 zox_define_component(NavigatorTimer)
-spawn_prefab_canvas(world);
-spawn_prefab_element(world);
 // filters
 zox_filter(ui_query, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [out] SelectableState)
-zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition,
-    [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPixelPosition)
+zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition, [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPixelPosition)
 // systems
 zox_system_ctx(ElementPositionSystem, EcsPreUpdate, pixel_positions_query, [none] Element, [in] PixelPosition,
     [in] ParentLink, [in] Anchor, [in] CanvasLink, [out] Position2D, [out] CanvasPixelPosition)

@@ -15,13 +15,14 @@ ecs_entity_t spawn_font_prefab(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_font(ecs_world_t *world, const byte2 points[], unsigned char length) {
-    ecs_defer_begin(world);
+    // ecs_defer_begin(world);
     zox_instance(font_prefab)
+    // zox_clone(font_prefab)
     zox_name("font")
     FontData fontData = { };
     initialize_memory_component_non_pointer(fontData, byte2, length);
     for (int i = 0; i < length; i++) fontData.value[i] = (byte2) { points[i].x, points[i].y };
     zox_set_only(e, FontData, { fontData.length, fontData.value })
-    ecs_defer_end(world);
+    // ecs_defer_end(world);
     return e;
 }

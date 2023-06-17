@@ -1,4 +1,4 @@
-ecs_entity_t canvas_prefab;
+ecs_entity_t prefab_canvas;
 
 ecs_entity_t spawn_prefab_canvas(ecs_world_t *world) {
     ecs_defer_begin(world);
@@ -7,17 +7,20 @@ ecs_entity_t spawn_prefab_canvas(ecs_world_t *world) {
     zox_add_tag(e, Canvas)
     zox_add(e, PixelSize)
     zox_add(e, Children)
+    //zox_set(e, PixelSize, { int2_zero })
+    //zox_set(e, Children, { 0, NULL })
     ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs
         zoxel_log(" > spawn_prefab canvas [%lu]\n", (long int) (e));
     #endif
-    canvas_prefab = e;
+    prefab_canvas = e;
     return e;
 }
 
 ecs_entity_t spawn_canvas(ecs_world_t *world, int2 size) {
     ecs_defer_begin(world);
-    zox_instance(canvas_prefab)
+    // zox_clone(prefab_canvas)
+    zox_instance(prefab_canvas)
     zox_name("canvas")
     zox_set_only(e, PixelSize, { size })
     ecs_defer_end(world);

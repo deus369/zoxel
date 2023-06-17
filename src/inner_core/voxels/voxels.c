@@ -16,6 +16,13 @@ zox_hashmap_component(ChunkLinks, int3)
 #include "animations/voxels_animations.c"
 #include "voxes/voxes.c"
 
+void spawn_prefabs_voxels(ecs_world_t *world) {
+    spawn_prefabs_voxels_core(world);
+    spawn_prefabs_terrain(world);
+    spawn_prefabs_voxel_animations(world);
+    spawn_prefabs_voxes(world);
+}
+
 zox_begin_module(Voxels)
 // zoxel_component_defines
 zox_define_tag(Chunk)

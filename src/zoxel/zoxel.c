@@ -10,10 +10,5 @@ void ZoxelImport(ecs_world_t *world) {
     // zoxel_log("Importing [Zoxel Game]\n");
     ECS_MODULE(world, Zoxel);
     ECS_IMPORT(world, ZoxelEngine); // import engine
-    if (running) {
-        boot_zoxel_game(world);        // spawn game entities
-    } else {
-        zoxel_log(" - not successful booting\n");
-    }
 }
 #endif
