@@ -1,11 +1,13 @@
 #ifndef zoxel_musics
 #define zoxel_musics
 
+const int music_note_skip = 84;
 zox_declare_tag(Music)
 zox_declare_tag(Looping)
 zox_component(MusicTime, double)
 zox_component(MusicSpeed, double)
 zox_memory_component(MusicData, int)
+zox_byte_component(MusicNote)
 zox_byte_component(GenerateMusic)
 zox_reset_system(GenerateMusicResetSystem, GenerateMusic)
 #include "util/music_palette.c"
@@ -20,12 +22,13 @@ void spawn_prefabs_musics(ecs_world_t *world) {
 zox_begin_module(Musics)
 zox_define_tag(Music)
 zox_define_tag(Looping)
+zox_define_component(MusicNote)
 zox_define_component(GenerateMusic)
 zox_define_component(MusicTime)
 zox_define_component(MusicSpeed)
 zox_define_memory_component(MusicData)
 zox_system(MusicGenerateSystem, EcsPostUpdate, [none] Music, [in] GenerateMusic, [out] MusicData, [out] InstrumentType)
-zox_system(MusicPlaySystem, EcsOnUpdate, [none] Music, [in] MusicData, [in] MusicSpeed, [in] InstrumentType, [out] MusicTime)
+zox_system(MusicPlaySystem, EcsOnUpdate, [none] Music, [in] MusicData, [in] MusicSpeed, [in] InstrumentType, [out] MusicNote, [out] MusicTime)
 zox_define_reset_system(GenerateMusicResetSystem, GenerateMusic)
 zoxel_end_module(Musics)
 

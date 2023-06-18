@@ -5,7 +5,6 @@ void SoundUpdateSystem(ecs_iter_t *it) {
     SoundDirty *soundDirtys = ecs_field(it, SoundDirty, 3);
     SDLSound *sdlSounds = ecs_field(it, SDLSound, 4);
     for (int i = 0; i < it->count; i++) {
-        // zoxel_log(" ! updated sound [%lu]\n", it->entities[i]);
         SoundDirty *soundDirty = &soundDirtys[i];
         if (soundDirty->value != 1) continue;
         const SoundData *soundData = &soundDatas[i];

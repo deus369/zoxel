@@ -10,7 +10,6 @@
 
 ecs_world_t* open_ecs(int argc, char* argv[], unsigned char profiler, int core_count) {
     ecs_world_t* world = ecs_init_w_args(argc, argv);
-    // ecs_world_t* world = ecs_init();
     if (profiler) {
         #if defined (FLECS_REST) && defined (FLECS_MONITOR)
             zox_import_module(FlecsMonitor)

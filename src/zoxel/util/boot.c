@@ -2,10 +2,8 @@ extern unsigned char is_split_screen;
 #ifdef zoxel_ui
     extern ecs_entity_t fps_display;
 #endif
-
 #define main_camera_rotation_speed 60 * 0.22f
 
-//! Spawns our first game entities.
 void boot_zoxel_game(ecs_world_t *world) {
     if (!running) return;
     zoxel_log(" > [zoxel] begins to boot\n");
@@ -47,9 +45,7 @@ void boot_zoxel_game(ecs_world_t *world) {
         spawn_ui_camera(world, screen_dimensions2);
     #endif
     #ifdef zoxel_inputs
-        if (!headless) {
-            spawn_connected_devices(world);
-        }
+        if (!headless) spawn_connected_devices(world);
         // spawn_player_character3D(world, get_main_camera());
     #endif
     #ifdef zoxel_players

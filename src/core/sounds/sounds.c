@@ -16,6 +16,10 @@
     #define sound_display_start 0.0f
     #define sound_display_end 1.0f
 #endif
+const float sound_attack_multiplier = 0.02f; // 0.04f
+const float sound_dampen_multiplier = 0.7f; // 0.92f
+const float sound_noise = 0.02f; // 0.04
+
 zox_declare_tag(Sound)
 zox_byte_component(InstrumentType)
 zox_memory_component(SoundData, float)   //! A sound has an array of bytes.
@@ -27,6 +31,7 @@ zox_byte_component(TriggerSound)         //! A state event for playing sounds.
 zox_byte_component(SoundDirty)
 #include "components/SDLSound.c"
 #include "prefabs/sound.c"
+#include "prefabs/generated_sound.c"
 #include "util/static_sound_util.c"
 #include "util/sdl_mix_util.c"
 #include "instruments/note_frequencies.c"
@@ -43,8 +48,6 @@ zox_byte_component(SoundDirty)
 	#include "systems/play_sound_system.c"
     #include "systems/sound_update_system.c"
 #endif
-// zox_reset_system(PlaySoundResetSystem, TriggerSound)
-// zox_reset_system(GenerateSoundResetSystem, GenerateSound)
 
 void spawn_prefabs_sounds(ecs_world_t *world) {
     spawn_prefab_sound(world);
@@ -68,8 +71,6 @@ zox_system(SoundGenerateSystem, EcsOnValidate, [none] Sound, [out] GenerateSound
     zox_system(SoundUpdateSystem, EcsPreStore, [none] Sound, [in] SoundData, [out] SoundDirty, [out] SDLSound)
     zox_system(PlaySoundSystem, EcsOnStore, [none] Sound, [out] TriggerSound, [in] SoundLength, [in] SDLSound)
 #endif
-// zox_define_reset_system(PlaySoundResetSystem, TriggerSound)
-// zox_define_reset_system(GenerateSoundResetSystem, GenerateSound)
 zoxel_end_module(Sounds)
 
 #endif
