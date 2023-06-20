@@ -10,21 +10,17 @@ void Render3DSystem(ecs_iter_t *it) {
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 7);
     for (int i = 0; i < it->count; i++) {
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
-        if (meshIndicies2->length == 0) {
-            continue;
-        }
+        if (meshIndicies2->length == 0) continue;
         const Position3D *position = &positions[i];
         const Rotation3D *rotation = &rotations[i];
         const Scale1D *scale1D = &scale1Ds[i];
         const Brightness *brightness = &brightnesses[i];
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
         const MaterialGPULink *materialGPULink = &materialGPULinks[i];
-        // printf(" - Rendering 3D Mesh [%lu]\n", (long int) it->entities[i]);
         if (opengl_set_material(materialGPULink->value)) {
             opengl_bind_mesh(meshGPULink->value);
             set_basic_vert_layout(materialGPULink->value);
-            if (opengl_set_material3D_properties(materialGPULink->value,
-                position->value, rotation->value, scale1D->value, brightness->value) == -1) {
+            if (opengl_set_material3D_properties(materialGPULink->value, position->value, rotation->value, scale1D->value, brightness->value) == -1) {
                 return;
             }
             opengl_set_camera_view_matrix(materialGPULink->value, render_camera_matrix);

@@ -5,6 +5,10 @@
 #include "ai/ai.c"
 #include "particles/particles.c"
 
+void spawn_prefabs_outer_core(ecs_world_t *world) {
+    spawn_prefabs_cubes(world);
+}
+
 zox_begin_module(OuterCore)
 zox_import_module(Cubes)
 zox_import_module(AI)

@@ -7,16 +7,13 @@ void MeshUpdateSystem(ecs_iter_t *it) {
     const MaterialGPULink *materialGPULinks = ecs_field(it, MaterialGPULink, 5);
     for (int i = 0; i < it->count; i++) {
         MeshDirty *meshDirty = &meshDirtys[i];
-        if (meshDirty->value != 1) {
-            continue;
-        }
+        if (meshDirty->value != 1) continue;
         meshDirty->value = 0;
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
         const MaterialGPULink *materialGPULink = &materialGPULinks[i];
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         const MeshVertices *meshVertices2 = &meshVertices[i];
-        set_gpu_mesh(meshGPULink->value,  materialGPULink->value, meshIndicies2->value, meshIndicies2->length,
-            meshVertices2->value, meshVertices2->length);
+        set_gpu_mesh(meshGPULink->value,  materialGPULink->value, meshIndicies2->value, meshIndicies2->length, meshVertices2->value, meshVertices2->length);
     }
 }
 zox_declare_system(MeshUpdateSystem)

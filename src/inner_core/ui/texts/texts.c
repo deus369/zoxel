@@ -1,7 +1,9 @@
 #ifndef zoxel_texts
 #define zoxel_texts
 
+// zoxel_settings
 const double zext_animation_speed = 10.0;
+// zoxel_component_defines
 zox_declare_tag(FontStyle)                    //! Contains a bunch of fonts!
 zox_declare_tag(Font)                         //! A basic tag for a UI Element.
 zox_declare_tag(Zigel)                        //! An individual text character entity.
@@ -15,12 +17,15 @@ zox_byte_component(ZextAlignment)
 zox_memory_component(FontData, byte2)         //! An array of points used for generating a font texture
 zox_memory_component(ZextData, unsigned char) //! An array of bytes for characters
 zox_component(ZextPadding, byte2)
+// zoxel_util_includes
 #include "util/default_font.c"
+// zoxel_prefab_includes
 #include "prefabs/font.c"
 #include "prefabs/font_style.c"
 #include "prefabs/zigel.c"
 #include "util/zext_util.c"
 #include "prefabs/zext.c"
+// zoxel_system_declares
 #include "systems/font_texture_system.c"
 #include "systems/zext_update_system.c"
 #include "systems/zext_background_update_system.c"
@@ -35,6 +40,7 @@ void spawn_prefabs_texts(ecs_world_t *world) {
 }
 
 zox_begin_module(Texts)
+// zoxel_component_defines
 zox_define_tag(Font)
 zox_define_tag(Zigel)
 zox_define_tag(FontTexture)
@@ -48,10 +54,10 @@ zox_define_component(ZextAlignment)
 zox_define_memory_component(FontData)
 zox_define_memory_component(ZextData)
 zox_define_component(ZextPadding)
-// spawn_prefabs_texts(world);
+// zoxel_filter_defines
 zox_filter(zextDirtyQuery, [none] Zext, [in] ZextDirty)
 zox_filter(generateTextureQuery, [none] FontTexture, [in] GenerateTexture)
-// zox_system_1(AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
+// zoxel_system_defines
 zox_system(AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
 #ifdef main_thread_zext_update_system
     zox_system_ctx_1(ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,

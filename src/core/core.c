@@ -21,6 +21,8 @@ unsigned char profiler = 0;
 
 void spawn_prefabs_core(ecs_world_t *world) {
     spawn_prefabs_generic(world);
+    // spawn_prefabs_apps(world);
+    spawn_prefabs_inputs(world);
     spawn_prefabs_sounds(world);
 }
 

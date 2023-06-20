@@ -45,7 +45,7 @@ void opengl_instance3D_begin(const float4x4 viewMatrix) {
 }
 
 //! Set variables, can this be done using a filtered / system ?
-void RenderEntity3D(float3 position, float4 rotation, float scale1D, float brightness) {
+void render_entity_3D(float3 position, float4 rotation, float scale1D, float brightness) {
     glUniform3f(material3D.position, position.x, position.y, position.z);
     glUniform4f(material3D.rotation, rotation.x, rotation.y, rotation.z, rotation.w);
     glUniform1f(material3D.scale, scale1D);

@@ -1,4 +1,4 @@
-extern void RenderEntity3D(float3 position, float4 rotation, float scale1D, float brightness);
+extern void render_entity_3D(float3 position, float4 rotation, float scale1D, float brightness);
 
 void InstanceRender3DSystem(ecs_iter_t *it) {
     const Position3D *positions = ecs_field(it, Position3D, 1);
@@ -10,8 +10,7 @@ void InstanceRender3DSystem(ecs_iter_t *it) {
         const Rotation3D *rotation = &rotations[i];
         const Scale1D *scale1D = &scale1Ds[i];
         const Brightness *brightness = &brightnesses[i];
-        // printf("    Bob's Position2D is {%f, %f}\n", position.value.x, position.value.y);
-        RenderEntity3D(position->value, rotation->value, scale1D->value, brightness->value);
+        render_entity_3D(position->value, rotation->value, scale1D->value, brightness->value);
     }
 }
 zox_declare_system(InstanceRender3DSystem)

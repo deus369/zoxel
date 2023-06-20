@@ -4,9 +4,7 @@ void ParentRotationSystem(ecs_iter_t *it) {
     Rotation3D *rotation3Ds = ecs_field(it, Rotation3D, 3);
     for (int i = 0; i < it->count; i++) {
         const ParentLink *parentLink = &parentLinks[i];
-        if (!ecs_is_valid(world, parentLink->value)) {
-            continue;
-        }
+        if (!ecs_is_valid(world, parentLink->value)) continue;
         const LocalRotation3D *localRotation3D = &localRotation3Ds[i];
         Rotation3D *rotation3D = &rotation3Ds[i];
         rotation3D->value = ecs_get(world, parentLink->value, Rotation3D)->value;

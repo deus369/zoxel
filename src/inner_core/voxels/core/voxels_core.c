@@ -2,7 +2,7 @@
 #define zoxel_voxels_core
 
 #include "settings/settings.c"
-// zoxel_component_includes
+// zoxel_component_declares
 zox_declare_tag(Voxel)
 zox_declare_tag(ColorChunk)
 zox_declare_tag(LinkChunk)
@@ -56,13 +56,9 @@ zox_define_entities_component(VoxelLinks, [in] VoxelLinks)
 zox_filter(chunks_generating, [in] GenerateChunk)
 // zoxel_system_defines
 zox_define_reset_system(GenerateChunkResetSystem, GenerateChunk)
-if (!headless) {
-    zox_system_ctx(ChunkBuildSystem, EcsOnUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices, [out] MeshDirty, [none] !MeshUVs, [none] !MeshColorRGBs)
-    zox_system_ctx(ChunkColorsBuildSystem, EcsOnUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ColorRGBs, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] !MeshUVs)
-}
-zox_system_ctx(ChunkOctreeColorsBuildSystem, EcsPostUpdate, chunks_generating,
-    [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] ColorRGBs, [in] ChunkSize,
-    [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] ColorChunk, [none] !MeshUVs)
+if (!headless) zox_system_ctx(ChunkBuildSystem, EcsOnUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices, [out] MeshDirty, [none] !MeshUVs, [none] !MeshColorRGBs)
+if (!headless) zox_system_ctx(ChunkColorsBuildSystem, EcsOnUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ColorRGBs, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] !MeshUVs)
+zox_system_ctx(ChunkOctreeColorsBuildSystem, EcsPostUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] ColorRGBs, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] ColorChunk, [none] !MeshUVs)
 zox_system(ChunkLinkSystem, EcsPostUpdate, [none] LinkChunk, [in] VoxLink, [in] Position3D, [out] ChunkPosition, [out] ChunkLink)
 zoxel_end_module(VoxelsCore)
 

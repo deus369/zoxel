@@ -219,27 +219,23 @@ unsigned char is_opengl_running() {
     return main_gl_context != NULL;
 }
 
-void create_main_window() {
+void create_main_window(ecs_world_t *world) {
     SDL_Window* window = spawn_sdl_window();
     SDL_GLContext* gl_context = create_sdl_context(window);
     spawn_app(world, window, gl_context);
     main_window = window;
     main_gl_context = gl_context;
-    if (main_gl_context == NULL) {
-        running = 0;
-    }
+    if (main_gl_context == NULL) running = 0;
     #ifndef zoxel_on_web
         #ifndef zoxel_on_android
-            if (fullscreen) {
-                sdl_set_fullscreen(main_window, 1);
-            }
+            if (fullscreen) sdl_set_fullscreen(main_window, 1);
         #endif
     #endif
 }
 
 void recreate_main_window(ecs_world_t *world) {
     zox_delete(main_app)
-    create_main_window();
+    create_main_window(world);
 }
 
 void update_sdl(ecs_world_t *world) {

@@ -1,7 +1,7 @@
 ecs_entity_t app_prefab;
 ecs_entity_t main_app;
 
-ecs_entity_t spawn_app_prefab(ecs_world_t *world) {
+ecs_entity_t spawn_prefab_app(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
     zox_name("prefab_app")

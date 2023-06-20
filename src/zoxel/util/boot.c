@@ -5,6 +5,7 @@ extern unsigned char is_split_screen;
 #define main_camera_rotation_speed 60 * 0.22f
 
 void boot_zoxel_game(ecs_world_t *world) {
+    // create_main_window(world);
     if (!running) return;
     zoxel_log(" > [zoxel] begins to boot\n");
     ecs_entity_t realm = 0;

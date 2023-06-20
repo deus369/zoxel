@@ -7,39 +7,27 @@ extern void dispose_opengl_resources_terrain(ecs_world_t *world);
 void dispose_material_resources(ecs_world_t *world, ecs_entity_t e) {
     if (ecs_has(world, e, MaterialGPULink)) {
         const MaterialGPULink *materialGPULink = ecs_get(world, e, MaterialGPULink);
-        if (materialGPULink->value != 0) {
-            glDeleteProgram(materialGPULink->value);
-        }
+        if (materialGPULink->value != 0) glDeleteProgram(materialGPULink->value);
     }
     if (ecs_has(world, e, TextureGPULink)) {
         const TextureGPULink *textureGPULink = ecs_get(world, e, TextureGPULink);
-        if (textureGPULink->value != 0) {
-            glDeleteTextures(1, &textureGPULink->value);
-        }
+        if (textureGPULink->value != 0) glDeleteTextures(1, &textureGPULink->value);
     }
 }
 
 void dispose_mesh_resources(ecs_world_t *world, ecs_entity_t e) {
     if (ecs_has(world, e, MeshGPULink)) {
         const MeshGPULink *meshGPULink = ecs_get(world, e, MeshGPULink);
-        if (meshGPULink->value.x != 0) {
-            glDeleteBuffers(1, &meshGPULink->value.x);
-        }
-        if (meshGPULink->value.y != 0) {
-            glDeleteBuffers(1, &meshGPULink->value.y);
-        }
+        if (meshGPULink->value.x != 0) glDeleteBuffers(1, &meshGPULink->value.x);
+        if (meshGPULink->value.y != 0) glDeleteBuffers(1, &meshGPULink->value.y);
     }
     if (ecs_has(world, e, UvsGPULink)) {
         const UvsGPULink *uvsGPULink = ecs_get(world, e, UvsGPULink);
-        if (uvsGPULink->value != 0) {
-            glDeleteBuffers(1, &uvsGPULink->value);
-        }
+        if (uvsGPULink->value != 0) glDeleteBuffers(1, &uvsGPULink->value);
     }
     if (ecs_has(world, e, ColorsGPULink)) {
         const ColorsGPULink *colorsGPULink = ecs_get(world, e, ColorsGPULink);
-        if (colorsGPULink->value != 0) {
-            glDeleteBuffers(1, &colorsGPULink->value);
-        }
+        if (colorsGPULink->value != 0) glDeleteBuffers(1, &colorsGPULink->value);
     }
 }
 
@@ -56,9 +44,7 @@ void dispose_children_resources(ecs_world_t *world, ecs_entity_t e) {
 }
 
 void restore_mesh_resources(ecs_world_t *world, ecs_entity_t e) {
-    if (ecs_has(world, e, MeshDirty)) {
-        ecs_set(world, e, MeshDirty, { 1 });
-    }
+    if (ecs_has(world, e, MeshDirty)) ecs_set(world, e, MeshDirty, { 1 });
 }
 
 void restore_material_resources(ecs_world_t *world, ecs_entity_t e, uint2 shader) {

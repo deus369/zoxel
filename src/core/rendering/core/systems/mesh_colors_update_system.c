@@ -19,8 +19,7 @@ void MeshColorsUpdateSystem(ecs_iter_t *it) {
         if (meshGPULink->value.x == 0) meshGPULink->value = spawn_gpu_mesh_buffers();
         if (colorsGPULink->value == 0) colorsGPULink->value = spawn_gpu_generic_buffer();
         // zoxel_log(" + mesh gpu created [%ix%i]\n", meshGPULink->value.x, meshGPULink->value.y);
-        set_gpu_mesh_colors(meshGPULink->value, colorsGPULink->value, meshIndicies2->value, meshIndicies2->length,
-            meshVertices2->value, meshVertices2->length, meshColors2->value);
+        set_gpu_mesh_colors(meshGPULink->value, colorsGPULink->value, meshIndicies2->value, meshIndicies2->length, meshVertices2->value, meshVertices2->length, meshColors2->value);
         // check_opengl_error("set_gpu_mesh_colors");
     }
     // check_opengl_error("MeshColorsUpdateSystem");

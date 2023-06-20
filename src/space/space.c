@@ -8,6 +8,7 @@
 
 void spawn_prefabs_space(ecs_world_t *world) {
     spawn_prefabs_players(world);
+    spawn_prefabs_weather(world);
     spawn_prefabs_realms(world);
 }
 

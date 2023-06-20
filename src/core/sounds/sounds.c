@@ -1,6 +1,7 @@
 #ifndef zoxel_sounds
 #define zoxel_sounds
 
+// zoxel_settings
 #ifdef SDL_MIXER
     #ifdef zoxel_on_android
 		  #include <SDL_mixer.h>
@@ -19,7 +20,7 @@
 const float sound_attack_multiplier = 0.02f; // 0.04f
 const float sound_dampen_multiplier = 0.7f; // 0.92f
 const float sound_noise = 0.02f; // 0.04
-
+// zoxel_prefab_declares
 zox_declare_tag(Sound)
 zox_byte_component(InstrumentType)
 zox_memory_component(SoundData, float)   //! A sound has an array of bytes.
@@ -30,8 +31,10 @@ zox_byte_component(TriggerSound)         //! A state event for playing sounds.
 // renamed PlaySound to TriggerSound temporarily, cause of windows.h conflict
 zox_byte_component(SoundDirty)
 #include "components/SDLSound.c"
+// zoxel_prefab_includes
 #include "prefabs/sound.c"
 #include "prefabs/generated_sound.c"
+// zoxel_util_includes
 #include "util/static_sound_util.c"
 #include "util/sdl_mix_util.c"
 #include "instruments/note_frequencies.c"
@@ -43,6 +46,7 @@ zox_byte_component(SoundDirty)
 #include "instruments/noise_waves.c"
 #include "instruments/instruments.c"
 #include "instruments/envelop.c"
+// zoxel_system_declares
 #include "systems/sound_generate_system.c"
 #ifdef SDL_MIXER
 	#include "systems/play_sound_system.c"
@@ -62,10 +66,9 @@ zox_define_component(SoundLength)
 zox_define_component(GenerateSound)
 zox_define_component(SoundFrequency)
 zox_define_component(TriggerSound)
-zox_define_component(SDLSound)
+zox_define_component_w_dest(SDLSound)
 zox_define_component(SoundDirty)
 zox_define_memory_component(SoundData)
-ecs_set_hooks(world, SDLSound, { .dtor = ecs_dtor(SDLSound) });
 zox_system(SoundGenerateSystem, EcsOnValidate, [none] Sound, [out] GenerateSound, [in] SoundLength, [in] SoundFrequency, [in] InstrumentType, [out] SoundData, [out] SoundDirty)
 #ifdef SDL_MIXER
     zox_system(SoundUpdateSystem, EcsPreStore, [none] Sound, [in] SoundData, [out] SoundDirty, [out] SDLSound)
