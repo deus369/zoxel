@@ -8,9 +8,12 @@ zox_declare_tag(Vox)
 #include "util/vox_files.c"
 #include "prefabs/vox.c"
 
+void load_resources_voxes(ecs_world_t *world) {
+    load_vox_files();
+}
+
 void spawn_prefabs_voxes(ecs_world_t *world) {
     spawn_prefab_vox(world);
-    load_vox_files();
 }
 
 zox_begin_module(Vox)

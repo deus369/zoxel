@@ -63,5 +63,5 @@ unsigned char opengl_load_functions() {
     #define opengl_function opengl_load_function
         opengl_functions
     #undef opengl_functions
-    return 1;
+    return EXIT_SUCCESS;
 }

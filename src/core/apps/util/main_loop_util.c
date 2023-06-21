@@ -1,10 +1,9 @@
 extern void engine_update();
 
-//! Quits the application from running indefinitely.
 void exit_game() {
     running = 0;
     #ifdef zoxel_on_web    
-    emscripten_cancel_main_loop();
+        emscripten_cancel_main_loop();
     #endif
 }
 
@@ -18,8 +17,6 @@ void engine_loop() {
         emscripten_set_main_loop(&engine_update, -1, 1); // old - 60, 1);
     #else
         signal(SIGINT, sigint_handler);     // Handles closing from control + c
-        while (running) {
-            engine_update();
-        }
+        while (running) engine_update();
     #endif
 }

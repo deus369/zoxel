@@ -1,9 +1,9 @@
 #ifndef zoxel_opengl
 #define zoxel_opengl
 
+// zoxel_settings
 // float3 opengl_clear_color = { 2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f };
 float3 opengl_clear_color = { 125 / 255.0f, 125 / 255.0f, 125 / 255.0f };
-
 #include "dynamic/opengl_functions.c"
 #include "util/error_util.c"
 #include "util/primitive_square.c"
@@ -32,21 +32,22 @@ float3 opengl_clear_color = { 125 / 255.0f, 125 / 255.0f, 125 / 255.0f };
 #include "rendering/shader3D_colored.c"
 #include "util/opengl_main_util.c"
 
-zox_begin_module(OpenGL)
-opengl_load_functions();
-print_opengl();
-if (check_compute_shader_support() == EXIT_FAILURE) {
-    zoxel_log(" - compute is not supported\n");
+unsigned char initialize_opengl(ecs_world_t *world) {
+    if (opengl_load_functions() == EXIT_FAILURE) {
+        zoxel_log(" - opengl failed to load [opengl_load_functions]\n");
+        return EXIT_FAILURE;
+    }
+    print_opengl();
+    // load shaders?
+    if (check_compute_shader_support() == EXIT_FAILURE) zoxel_log(" - compute is not supported\n");
+    if (load_all_shaders() == EXIT_FAILURE) {
+        zoxel_log(" - failed to load all shaders\n");
+        return EXIT_FAILURE;
+    }
+    return EXIT_SUCCESS;
 }
-if (load_all_shaders() == EXIT_FAILURE) {
-    zoxel_log(" - failed to load all shaders\n");
-    return;
-}
-zoxel_end_module(OpenGL)
 
-/*if (test_compute_shader() == EXIT_FAILURE) {
-    zoxel_log(" - failed to create compute shader\n");
-    return;
-}*/
+zox_begin_module(OpenGL)
+zoxel_end_module(OpenGL)
 
 #endif

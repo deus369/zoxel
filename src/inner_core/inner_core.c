@@ -13,7 +13,12 @@
 #include "voxels/voxels.c"
 #include "physics/physics.c"
 
+void load_resources_inner_core(ecs_world_t *world) {
+    load_resources_voxes(world);
+}
+
 void spawn_prefabs_inner_core(ecs_world_t *world) {
+    spawn_prefabs_textures_core(world);
     spawn_prefabs_ui(world);
     spawn_prefabs_musics(world);
     spawn_prefabs_voxels(world);

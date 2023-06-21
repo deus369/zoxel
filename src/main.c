@@ -22,6 +22,8 @@ int main(int argc, char* argv[]) {
         boot_zoxel_game(world);
         engine_loop();
         engine_end();
+    } else {
+        zoxel_log(" ! engine failed to start\n");
     }
     return 0;
 }

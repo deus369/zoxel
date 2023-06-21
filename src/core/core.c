@@ -1,6 +1,7 @@
 #ifndef zoxel_core
 #define zoxel_core
 
+// zoxel_settings
 ecs_world_t *world;
 unsigned char target_frame_rate = 0;    // set to 30 to test on low end devices
 unsigned char profiler = 0;
@@ -21,9 +22,11 @@ unsigned char profiler = 0;
 
 void spawn_prefabs_core(ecs_world_t *world) {
     spawn_prefabs_generic(world);
-    // spawn_prefabs_apps(world);
+    spawn_prefabs_networking(world);
+    spawn_prefabs_apps(world);
     spawn_prefabs_inputs(world);
     spawn_prefabs_sounds(world);
+    spawn_prefabs_cameras(world);
 }
 
 zox_begin_module(Core)

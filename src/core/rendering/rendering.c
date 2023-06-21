@@ -27,7 +27,7 @@ zox_define_component(MeshDirty)
 zox_define_component(TextureDirty)
 zox_define_component(Brightness)
 zox_define_component(RenderLod)
-if (!headless && is_opengl_running()) {
+if (!headless) {
     zox_import_module(OpenGL)
     zox_import_module(RenderingCore)
 }

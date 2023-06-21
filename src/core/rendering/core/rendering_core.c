@@ -82,10 +82,4 @@ zoxel_end_module(RenderingCore)
 //      - Animate rotate the cube - for testing
 //! \todo GPU Meshes?
 
-/*ecs_set_hooks(world, MaterialGPULink, { .dtor = ecs_dtor(MaterialGPULink) });
-ecs_set_hooks(world, TextureGPULink, { .dtor = ecs_dtor(TextureGPULink) });
-ecs_set_hooks(world, MeshGPULink, { .dtor = ecs_dtor(MeshGPULink) });
-ecs_set_hooks(world, UvsGPULink, { .dtor = ecs_dtor(UvsGPULink) });
-ecs_set_hooks(world, ColorsGPULink, { .dtor = ecs_dtor(ColorsGPULink) });*/
-
 #endif

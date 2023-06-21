@@ -38,6 +38,18 @@ zox_memory_component(PacketData, unsigned char)
 #include "systems/packet_send_system.c"
 #include "systems/packet_recieve_system.c"
 
+void spawn_prefabs_networking(ecs_world_t *world) {
+    spawn_prefab_net_player(world);
+    spawn_prefab_net_room(world);
+    #ifdef zoxel_test_networking
+        if (server_mode) {
+            spawn_net_room(world, SERVER_PORT);
+        } else {
+            spawn_net_player(world, PORT, IP_TO, SERVER_PORT);
+        }
+    #endif
+}
+
 zox_begin_module(Networking)
 if (server_mode) {
     zoxel_log("Server mode activated.\n");
@@ -57,15 +69,6 @@ zox_define_memory_component(PacketData);
 ecs_set_hooks(world, SocketLink, { .dtor = ecs_dtor(SocketLink) });
 zox_system(PacketRecieveSystem, EcsOnUpdate, [none] PacketReciever, [in] SocketLink)
 zox_system(PacketSendSystem, EcsOnUpdate, [none] PacketSender, [in] SocketLink, [in] TargetNetAddress, [in] TargetNetPort)
-spawn_prefab_net_player(world);
-spawn_prefab_net_room(world);
-#ifdef zoxel_test_networking
-if (server_mode) {
-    spawn_net_room(world, SERVER_PORT);
-} else {
-    spawn_net_player(world, PORT, IP_TO, SERVER_PORT);
-}
-#endif
 zoxel_end_module(Networking)
 
 #endif

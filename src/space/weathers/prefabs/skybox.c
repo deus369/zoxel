@@ -11,10 +11,8 @@ ecs_entity_t spawn_prefab_skybox(ecs_world_t *world) {
     #ifdef zoxel_rendering
         zox_add(e, Brightness)
         zox_set(e, MeshDirty, { 1 })
-        if (!headless) {
-            prefab_set_mesh_indicies(world, e, cube_indicies_inverted, 36);
-            prefab_set_mesh_vertices(world, e, cubeVertices, 24);
-        }
+        if (!headless) prefab_set_mesh_indicies(world, e, cube_indicies_inverted, 36);
+        if (!headless) prefab_set_mesh_vertices(world, e, cubeVertices, 24);
         add_gpu_mesh(world, e);
         add_gpu_material(world, e);
     #endif
@@ -27,17 +25,13 @@ ecs_entity_t spawn_prefab_skybox(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_skybox(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_instance(prefab_skybox)
     zox_name("skybox")
     zox_set_only(e, Position3D, { float3_zero })
     zox_set_only(e, Scale1D, { skybox_scale })
     zox_set_only(e, Brightness, { 1.0f })
-    if (!headless) {
-        spawn_gpu_mesh(world, e);
-        spawn_gpu_material(world, e, shader_skybox);
-    }
-    ecs_defer_end(world);
+    if (!headless) spawn_gpu_mesh(world, e);
+    if (!headless) spawn_gpu_material(world, e, shader_skybox);
     #ifdef zoxel_debug_spawns
         zoxel_log(" + spawned skybox [%lu]\n", (long int) e);
     #endif

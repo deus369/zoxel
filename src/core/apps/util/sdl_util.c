@@ -5,14 +5,12 @@ extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event, int2 scr
 extern void input_extract_from_sdl_per_frame(ecs_world_t *world);
 extern int2 get_webasm_screen_size();
 // todo: find a cleaner way to link to other modules
-// rendering
+//  > rendering
 extern int check_opengl_error(char* function_name);
 extern void delete_all_opengl_resources(ecs_world_t *world);
 extern void restore_all_opengl_resources(ecs_world_t *world);
-// cameras
-extern void resize_cameras(int2 screen_size);
-// uis
-extern void uis_on_viewport_resized(ecs_world_t *world, int2 screen_size);
+extern void resize_cameras(int2 screen_size);   // > cameras
+extern void uis_on_viewport_resized(ecs_world_t *world, int2 screen_size);  // > uis
 
 void print_sdl() {
     #ifdef zoxel_debug_sdl
@@ -60,21 +58,12 @@ void set_screen_size() {
 }
 
 void on_viewport_resized(ecs_world_t *world, int2 new_screen_dimensions) {
-    if (!(screen_dimensions.x == new_screen_dimensions.x && screen_dimensions.y == new_screen_dimensions.y)) {
-        screen_dimensions = new_screen_dimensions;
-        if(screen_dimensions.y <= 0) {
-            screen_dimensions.y = 1;
-        }
-        //#ifdef debug_viewport_resize
-            zoxel_log(" > viewport was resized [%ix%i]\n", screen_dimensions.x, screen_dimensions.y);
-        //#endif
-        //#ifdef zoxel_cameras
-        resize_cameras(screen_dimensions);
-        //#endif
-        //#ifdef zoxel_ui
-        uis_on_viewport_resized(world, screen_dimensions);
-        //#endif
-    }
+    if (screen_dimensions.x == new_screen_dimensions.x && screen_dimensions.y == new_screen_dimensions.y) return;
+    screen_dimensions = new_screen_dimensions;
+    if(screen_dimensions.y <= 0) screen_dimensions.y = 1;
+    zoxel_log(" > viewport was resized [%ix%i]\n", screen_dimensions.x, screen_dimensions.y);
+    resize_cameras(screen_dimensions);
+    uis_on_viewport_resized(world, screen_dimensions);
 }
 
 void sdl_set_fullscreen(SDL_Window* window, unsigned char is_fullscreen) {
@@ -163,9 +152,7 @@ void load_app_icon(SDL_Window* window) {
     char* fullpath = get_full_file_path(iconFilename);
     SDL_Surface *surface = IMG_Load(iconFilename); // IMG_Load(buffer);
     free(fullpath);
-    // The icon is attached to the window pointer
-    SDL_SetWindowIcon(window, surface);
-    // ...and the surface containing the icon pixel data is no longer required.
+    SDL_SetWindowIcon(window, surface); // The icon is attached to the window pointer
     SDL_FreeSurface(surface);
 #endif
 }
@@ -198,9 +185,7 @@ SDL_Window* spawn_sdl_window() {
 }
 
 SDL_GLContext* create_sdl_context(SDL_Window* window) {
-    if (window == NULL) {
-        return NULL;
-    }
+    if (window == NULL) return NULL;
     SDL_GLContext* context = SDL_GL_CreateContext(window);
     if (context == NULL) {
         zoxel_log(" - failed to create opengl context [%s]\n", SDL_GetError());
@@ -208,10 +193,7 @@ SDL_GLContext* create_sdl_context(SDL_Window* window) {
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         context = SDL_GL_CreateContext(window);
     }
-    if (context == NULL) {
-        // zoxel_log(stderr, "Failed to Create OpenGL Context: %s\n", SDL_GetError());
-        zoxel_log(" - failed again to create opengl context [%s]\n", SDL_GetError());
-    }
+    if (context == NULL) zoxel_log(" - failed again to create opengl context [%s]\n", SDL_GetError());
     return context;
 }
 
@@ -219,18 +201,20 @@ unsigned char is_opengl_running() {
     return main_gl_context != NULL;
 }
 
-void create_main_window(ecs_world_t *world) {
+unsigned char create_main_window(ecs_world_t *world) {
     SDL_Window* window = spawn_sdl_window();
     SDL_GLContext* gl_context = create_sdl_context(window);
     spawn_app(world, window, gl_context);
     main_window = window;
     main_gl_context = gl_context;
-    if (main_gl_context == NULL) running = 0;
+    unsigned char app_success = main_gl_context != NULL ? EXIT_SUCCESS : EXIT_FAILURE;
+    if (main_gl_context != NULL) running = 1;
     #ifndef zoxel_on_web
         #ifndef zoxel_on_android
             if (fullscreen) sdl_set_fullscreen(main_window, 1);
         #endif
     #endif
+    return app_success;
 }
 
 void recreate_main_window(ecs_world_t *world) {
@@ -255,9 +239,7 @@ void update_sdl(ecs_world_t *world) {
             // handles application resizing
             if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
                 // zoxel_log(" > window was changed size\n");
-                if (rendering) {
-                    on_viewport_resized(world, (int2) { event.window.data1, event.window.data2 });
-                }
+                if (rendering) on_viewport_resized(world, (int2) { event.window.data1, event.window.data2 });
             } else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) {
                 zoxel_log(" > window was minimized\n");
                 rendering = 0;

@@ -24,12 +24,22 @@ unsigned char server_mode = 0;
 #include "../space/space.c"
 #include "util/engine_util.c"
 
+void load_resources_engine(ecs_world_t *world) {
+    load_resources_inner_core(world);
+}
+
 void spawn_prefabs_engine(ecs_world_t *world) {
+    // zoxel_log(" + spawning prefabs core\n");
     spawn_prefabs_core(world);
+    // zoxel_log(" + spawning prefabs inner core\n");
     spawn_prefabs_inner_core(world);
+    // zoxel_log(" + spawning prefabs outer core\n");
     spawn_prefabs_outer_core(world);
+    // zoxel_log(" + spawning prefabs gameplay\n");
     spawn_prefabs_gameplay(world);
+    // zoxel_log(" + spawning prefabs space\n");
     spawn_prefabs_space(world);
+    zoxel_log(" + spawned all prefabs\n");
 }
 
 zox_begin_module(ZoxelEngine)

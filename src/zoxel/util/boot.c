@@ -5,14 +5,17 @@ extern unsigned char is_split_screen;
 #define main_camera_rotation_speed 60 * 0.22f
 
 void boot_zoxel_game(ecs_world_t *world) {
-    // create_main_window(world);
-    if (!running) return;
     zoxel_log(" > [zoxel] begins to boot\n");
+    if (initialize_apps(world) == EXIT_FAILURE) return;
+    if (initialize_opengl(world) == EXIT_FAILURE) return;
+    load_resources_engine(world);
+    zoxel_log(" > [zoxel] success initializing sdl window\n");
     ecs_entity_t realm = 0;
     #ifdef zoxel_space
         realm = spawn_realm(world);
         ecs_entity_t game = spawn_game(world);
         zox_set_only(game, RealmLink, { realm })
+        spawn_weather(world);
     #endif
     int2 screen_dimensions2 = screen_dimensions;
     float3 camera_begin_position = { 0, 0.0f, 0.0f };

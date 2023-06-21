@@ -151,7 +151,7 @@ void debug_base_path(const char *base_path) {
     }
 }
 
-void set_data_path() {
+void initialize_pathing() {
     #ifdef zoxel_on_android
         const char* base_path = SDL_AndroidGetInternalStoragePath();
         // char *base_path = SDL_GetPrefPath("libsdl", "app");

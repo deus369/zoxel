@@ -38,6 +38,11 @@ zox_reset_system(TextureDirtyResetSystem, TextureDirty)
 zox_reset_system(GenerateTextureResetSystem, GenerateTexture)
 #include "tests/test_texture.c"
 
+void spawn_prefabs_textures_core(ecs_world_t *world) {
+    spawn_prefab_noise_texture(world);
+    spawn_prefab_texture_dirt(world);
+}
+
 zox_begin_module(TexturesCore)
 // zoxel_component_defines
 zox_define_tag(Texture)
@@ -57,9 +62,6 @@ zox_define_component(TilemapSize)
 zox_define_memory_component(TextureData)
 zox_define_entities_component(TextureLinks, [in] TextureLinks)
 zox_define_memory_component(TilemapUVs)
-// zoxel_prefab_defines
-spawn_prefab_noise_texture(world);
-spawn_prefab_texture_dirt(world);
 // zoxel_filter_defines
 zox_filter(generate_textures2, [none] FrameTexture, [in] GenerateTexture)
 // zoxel_system_defines
