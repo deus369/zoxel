@@ -196,7 +196,7 @@ SDL_Window* spawn_sdl_window() {
         is_resizeable = 0;
     #endif
     if (is_vulkan) {
-        window_flags = SDL_WINDOW_VULKAN;
+        window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_VULKAN;
     }
     SDL_Window* window = create_sdl_window(window_flags);
     if (window == NULL && is_vulkan) {
@@ -258,10 +258,16 @@ unsigned char create_main_window(ecs_world_t *world) {
     } else {
         #ifdef zoxel_include_vulkan
             zoxel_log(" > creating vulkan surface\n");
-            VkInstance instance;
-            VkSurfaceKHR surface;
+            // Load Vulkan library
+            if (SDL_Vulkan_LoadLibrary(NULL) != 0) {
+                // Error handling
+                zoxel_log(" ! failed to load vulkan library [%s]\n", SDL_GetError());
+                return EXIT_FAILURE;
+            }
             VkInstanceCreateInfo instanceCreateInfo = { };
             instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+            VkInstance instance;
+            VkSurfaceKHR surface;
             vkCreateInstance(&instanceCreateInfo, NULL, &instance);
             if (!SDL_Vulkan_CreateSurface(window, instance, &surface)) {
                 zoxel_log(" ! failed to create vulkan surface [%s]\n", SDL_GetError());
