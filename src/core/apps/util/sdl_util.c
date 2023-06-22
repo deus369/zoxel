@@ -201,7 +201,7 @@ SDL_Window* spawn_sdl_window() {
     }
     SDL_Window* window = create_sdl_window(window_flags);
     if (window == NULL && is_vulkan) {
-        zoxel_log(" ! vulkan is not supported on this device, defaulting to opengl.\n");
+        zoxel_log(" ! vulkan is not supported on this device, defaulting to [SDL_WINDOW_OPENGL]\n");
         is_vulkan = 0;
         window_flags = SDL_WINDOW_OPENGL;
         window = create_sdl_window(window_flags);
@@ -210,16 +210,14 @@ SDL_Window* spawn_sdl_window() {
         zoxel_log(" ! failed to create sdl window [%s]\n", SDL_GetError());
         return window;
     }
+    SDL_SetWindowResizable(window, is_resizeable);
+    load_app_icon(window);
     if (!is_vulkan) {
         SDL_GL_SwapWindow(window);
         SDL_GL_SetSwapInterval(vsync);
     }
-    SDL_SetWindowResizable(window, is_resizeable);
-    load_app_icon(window);
-    #ifndef zoxel_on_web
-        #ifndef zoxel_on_android
-            if (fullscreen) sdl_set_fullscreen(window, 1);
-        #endif
+    #if !defined(zoxel_on_web) && !defined(zoxel_on_android)
+        sdl_set_fullscreen(window, fullscreen);
     #endif
     return window;
 }
@@ -287,21 +285,16 @@ unsigned char create_main_window(ecs_world_t *world) {
     } else {
         #ifdef zoxel_include_vulkan
             zoxel_log(" > creating vulkan surface\n");
-            if (SDL_Vulkan_LoadLibrary(NULL) != 0) {
-                zoxel_log(" ! failed to load vulkan library [%s]\n", SDL_GetError());
-                return EXIT_FAILURE;
-            }
             VkInstanceCreateInfo instanceCreateInfo = { };
             instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
             VkInstance instance;
             VkSurfaceKHR surface;
             VkResult result = vkCreateInstance(&instanceCreateInfo, NULL, &instance);
             if (result != VK_SUCCESS) {
-                // Error handling
                 zoxel_log(" ! failed to create vulkan instance [%s]\n", vulkan_result_to_string(result));
                 return EXIT_FAILURE;
             }
-            if (SDL_Vulkan_CreateSurface(window, instance, &surface) == 0) {
+            if (!SDL_Vulkan_CreateSurface(window, instance, &surface)) {
                 zoxel_log(" ! failed to create vulkan surface [%s]\n", SDL_GetError());
                 return EXIT_FAILURE;
             }

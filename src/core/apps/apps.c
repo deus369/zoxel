@@ -44,6 +44,12 @@ unsigned char initialize_apps(ecs_world_t *world) {
     initialize_pathing();
     unsigned char is_vulkan_supported = vulkan_supported();
     if (is_vulkan && !is_vulkan_supported) is_vulkan = 0;
+    #ifdef zoxel_include_vulkan
+        if (is_vulkan && SDL_Vulkan_LoadLibrary(NULL) != 0) {
+            zoxel_log(" ! failed to load vulkan library [%s]\n", SDL_GetError());
+            return EXIT_FAILURE;
+        }
+    #endif
     debug_platform();
     print_sdl();
     return create_main_window(world);
