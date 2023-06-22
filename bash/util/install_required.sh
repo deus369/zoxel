@@ -34,6 +34,9 @@ if is_steam_deck; then
     # fi
 fi
 
-# sudo apt install gcc
+echo "> installing vulkan"
+if ! has_library "libvulkan-dev"; then
+    install_library "libvulkan-dev"
+fi
 
 bash bash/sdl/install_sdl.sh

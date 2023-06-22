@@ -1,7 +1,7 @@
 // -- in game ui debugs --
 // #define zoxel_debug_fps
 // #define zoxel_debug_quads
-// #define zoxel_include_vulkan
+#define zoxel_include_vulkan
 // -- settings --
 #define canvas_edge_size 4
 // -- debugs --

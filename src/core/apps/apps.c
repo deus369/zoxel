@@ -35,6 +35,10 @@ zox_component(Context, SDL_GLContext*)
 unsigned char initialize_apps(ecs_world_t *world) {
     init_sdl();
     initialize_pathing();
+    unsigned char is_vulkan_supported = vulkan_supported();
+    if (is_vulkan && !is_vulkan_supported) {
+        is_vulkan = 0;
+    }
     return create_main_window(world);
 }
 

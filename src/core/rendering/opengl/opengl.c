@@ -38,7 +38,7 @@ unsigned char initialize_opengl(ecs_world_t *world) {
         return EXIT_FAILURE;
     }
     print_opengl();
-    if (check_compute_shader_support() == EXIT_FAILURE) zoxel_log(" - compute is not supported\n");
+    if (check_compute_shader_support() == EXIT_FAILURE) zoxel_log(" ! compute is not supported\n");
     if (load_all_shaders() == EXIT_FAILURE) {
         zoxel_log(" - failed to load all shaders\n");
         return EXIT_FAILURE;

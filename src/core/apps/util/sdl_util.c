@@ -117,12 +117,10 @@ unsigned char opengl_es_supported() {
 
 unsigned char vulkan_supported() {
     #ifdef zoxel_include_vulkan
-        // Query the supported Vulkan instance extensions
         uint32_t extensionCount = 0;
         vkEnumerateInstanceExtensionProperties(NULL, &extensionCount, NULL);
         VkExtensionProperties* extensions = (VkExtensionProperties*)malloc(sizeof(VkExtensionProperties) * extensionCount);
         vkEnumerateInstanceExtensionProperties(NULL, &extensionCount, extensions);
-        // Check if the VK_KHR_surface extension is supported
         int surfaceExtensionSupported = 0;
         for (uint32_t i = 0; i < extensionCount; ++i) {
             if (strcmp(extensions[i].extensionName, VK_KHR_SURFACE_EXTENSION_NAME) == 0) {
@@ -130,14 +128,12 @@ unsigned char vulkan_supported() {
                 break;
             }
         }
-        // Free the allocated memory
         free(extensions);
-        // Print the result
         if (surfaceExtensionSupported) {
-            zoxel_log(" > vulkan extension is supported\n");
+            zoxel_log(" > vulkan is supported\n");
             return 1;
         } else {
-            zoxel_log(" ! vulkan extension is NOT supported\n");
+            zoxel_log(" ! vulkan is not supported\n");
             return 0;
         }
     #else
@@ -213,11 +209,6 @@ SDL_Window* spawn_sdl_window() {
         zoxel_log(" ! failed to create sdl window [%s]\n", SDL_GetError());
         return window;
     }
-    int didFail = set_sdl_attributes();
-    if (didFail == EXIT_FAILURE) {
-        zoxel_log("Failed to set_sdl_attributes.");
-        return NULL;
-    }
     SDL_SetWindowResizable(window, is_resizeable);
     SDL_GL_SwapWindow(window);
     SDL_GL_SetSwapInterval(vsync);
@@ -232,6 +223,11 @@ SDL_Window* spawn_sdl_window() {
 
 SDL_GLContext* create_sdl_context(SDL_Window* window) {
     if (window == NULL) return NULL;
+    int didFail = set_sdl_attributes();
+    if (didFail == EXIT_FAILURE) {
+        zoxel_log("Failed to set_sdl_attributes.");
+        return NULL;
+    }
     SDL_GLContext* context = SDL_GL_CreateContext(window);
     if (context == NULL) {
         zoxel_log(" - failed to create opengl context [%s]\n", SDL_GetError());
@@ -248,11 +244,6 @@ unsigned char is_opengl_running() {
 }
 
 unsigned char create_main_window(ecs_world_t *world) {
-    if (is_vulkan) {
-        if (!vulkan_supported()) {
-            is_vulkan = 0;
-        }
-    }
     SDL_Window* window = spawn_sdl_window();
     main_window = window;
     if (!is_vulkan) {

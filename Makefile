@@ -59,9 +59,8 @@ LDLIBS += -lopengl32
 # win sockets
 LDLIBS2 += -lws2_32
 else
-# opengl linux
-LDLIBS += -lGL
-# LDLIBS += -lvulkan
+LDLIBS += -lGL	# opengl linux
+LDLIBS += -lvulkan # vulkan on linux
 endif
 # add sdl2 includes
 ifeq ($(SYSTEM), Windows)
