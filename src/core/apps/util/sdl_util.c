@@ -245,6 +245,34 @@ unsigned char is_opengl_running() {
     return main_gl_context != NULL;
 }
 
+#ifdef zoxel_include_vulkan
+    const char* vulkan_result_to_string(VkResult result) {
+        switch (result) {
+            case VK_SUCCESS:
+                return "VK_SUCCESS";
+            case VK_NOT_READY:
+                return "VK_NOT_READY";
+            case VK_TIMEOUT:
+                return "VK_TIMEOUT";
+            case VK_EVENT_SET:
+                return "VK_EVENT_SET";
+            case VK_EVENT_RESET:
+                return "VK_EVENT_RESET";
+            case VK_INCOMPLETE:
+                return "VK_INCOMPLETE";
+            case VK_ERROR_OUT_OF_HOST_MEMORY:
+                return "VK_ERROR_OUT_OF_HOST_MEMORY";
+            case VK_ERROR_OUT_OF_DEVICE_MEMORY:
+                return "VK_ERROR_OUT_OF_DEVICE_MEMORY";
+            case VK_ERROR_INITIALIZATION_FAILED:
+                return "VK_ERROR_INITIALIZATION_FAILED";
+            // Handle other specific error codes as needed
+            default:
+                return "Unknown VkResult";
+        }
+    }
+#endif
+
 unsigned char create_main_window(ecs_world_t *world) {
     SDL_Window* window = spawn_sdl_window();
     main_window = window;
@@ -268,7 +296,12 @@ unsigned char create_main_window(ecs_world_t *world) {
             instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
             VkInstance instance;
             VkSurfaceKHR surface;
-            vkCreateInstance(&instanceCreateInfo, NULL, &instance);
+            VkResult result = vkCreateInstance(&instanceCreateInfo, NULL, &instance);
+            if (result != VK_SUCCESS) {
+                // Error handling
+                zoxel_log(" ! failed to create vulkan instance [%s]\n", vulkan_result_to_string(result));
+                return EXIT_FAILURE;
+            }
             if (!SDL_Vulkan_CreateSurface(window, instance, &surface)) {
                 zoxel_log(" ! failed to create vulkan surface [%s]\n", SDL_GetError());
                 return EXIT_FAILURE;
