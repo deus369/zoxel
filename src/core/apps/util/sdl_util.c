@@ -287,9 +287,7 @@ unsigned char create_main_window(ecs_world_t *world) {
     } else {
         #ifdef zoxel_include_vulkan
             zoxel_log(" > creating vulkan surface\n");
-            // Load Vulkan library
             if (SDL_Vulkan_LoadLibrary(NULL) != 0) {
-                // Error handling
                 zoxel_log(" ! failed to load vulkan library [%s]\n", SDL_GetError());
                 return EXIT_FAILURE;
             }
@@ -303,7 +301,7 @@ unsigned char create_main_window(ecs_world_t *world) {
                 zoxel_log(" ! failed to create vulkan instance [%s]\n", vulkan_result_to_string(result));
                 return EXIT_FAILURE;
             }
-            if (!SDL_Vulkan_CreateSurface(window, instance, &surface)) {
+            if (SDL_Vulkan_CreateSurface(window, instance, &surface) == 0) {
                 zoxel_log(" ! failed to create vulkan surface [%s]\n", SDL_GetError());
                 return EXIT_FAILURE;
             }
