@@ -22,3 +22,7 @@
         #include <SDL2/SDL_image.h>
     #endif
 #endif
+#ifdef zoxel_include_vulkan
+    #include <SDL2/SDL_vulkan.h>
+    #include <vulkan/vulkan.h>
+#endif

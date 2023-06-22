@@ -61,6 +61,7 @@ LDLIBS2 += -lws2_32
 else
 # opengl linux
 LDLIBS += -lGL
+# LDLIBS += -lvulkan
 endif
 # add sdl2 includes
 ifeq ($(SYSTEM), Windows)

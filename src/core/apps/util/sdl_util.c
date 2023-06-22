@@ -1,3 +1,4 @@
+const char *sdl_window_name = "zoxel";
 const char *iconFilename = resources_folder_name"textures/game_icon.png";
 int2 screen_dimensions = { 720, 480 };
 const int sdl_fullscreen_byte = SDL_WINDOW_FULLSCREEN_DESKTOP; // SDL_WINDOW_FULLSCREEN;
@@ -81,7 +82,16 @@ void sdl_toggle_fullscreen(ecs_world_t *world, SDL_Window* window) {
     sdl_set_fullscreen(window, !is_fullscreen);
 }
 
-// checks es is supported
+void load_app_icon(SDL_Window* window) {
+    #ifdef SDL_IMAGES
+        char* fullpath = get_full_file_path(iconFilename);
+        SDL_Surface *surface = IMG_Load(iconFilename); // IMG_Load(buffer);
+        free(fullpath);
+        SDL_SetWindowIcon(window, surface); // The icon is attached to the window pointer
+        SDL_FreeSurface(surface);
+    #endif
+}
+
 unsigned char opengl_es_supported() {
     unsigned char is_supported = 0;
     int num_render_drivers = SDL_GetNumRenderDrivers();
@@ -105,6 +115,36 @@ unsigned char opengl_es_supported() {
     return is_supported;
 }
 
+unsigned char vulkan_supported() {
+    #ifdef zoxel_include_vulkan
+        // Query the supported Vulkan instance extensions
+        uint32_t extensionCount = 0;
+        vkEnumerateInstanceExtensionProperties(NULL, &extensionCount, NULL);
+        VkExtensionProperties* extensions = (VkExtensionProperties*)malloc(sizeof(VkExtensionProperties) * extensionCount);
+        vkEnumerateInstanceExtensionProperties(NULL, &extensionCount, extensions);
+        // Check if the VK_KHR_surface extension is supported
+        int surfaceExtensionSupported = 0;
+        for (uint32_t i = 0; i < extensionCount; ++i) {
+            if (strcmp(extensions[i].extensionName, VK_KHR_SURFACE_EXTENSION_NAME) == 0) {
+                surfaceExtensionSupported = 1;
+                break;
+            }
+        }
+        // Free the allocated memory
+        free(extensions);
+        // Print the result
+        if (surfaceExtensionSupported) {
+            zoxel_log(" > vulkan extension is supported\n");
+            return 1;
+        } else {
+            zoxel_log(" ! vulkan extension is NOT supported\n");
+            return 0;
+        }
+    #else
+        return 0;
+    #endif
+}
+
 void print_supported_renderers() {
     int num_render_drivers = SDL_GetNumRenderDrivers();
     printf(" > found [%i] render drivers\n", num_render_drivers);
@@ -124,7 +164,6 @@ int init_sdl() {
     }
 }
 
-//! Initialize SDL things, thingy things. 32bit color, 24bit depth
 int set_sdl_attributes() {
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); // 24 | 32
@@ -146,18 +185,12 @@ int set_sdl_attributes() {
     return EXIT_SUCCESS;
 }
 
-//! Loads a Game Icon from the ui-icons folder.
-void load_app_icon(SDL_Window* window) {
-#ifdef SDL_IMAGES
-    char* fullpath = get_full_file_path(iconFilename);
-    SDL_Surface *surface = IMG_Load(iconFilename); // IMG_Load(buffer);
-    free(fullpath);
-    SDL_SetWindowIcon(window, surface); // The icon is attached to the window pointer
-    SDL_FreeSurface(surface);
-#endif
+SDL_Window* create_sdl_window(unsigned char flags) {
+    return SDL_CreateWindow(sdl_window_name,
+        SDL_WINDOWPOS_UNDEFINED_DISPLAY(0), SDL_WINDOWPOS_UNDEFINED_DISPLAY(0),
+        screen_dimensions.x, screen_dimensions.y, flags);
 }
 
-//! Spawn the SDLWindow.
 SDL_Window* spawn_sdl_window() {
     set_screen_size();
     unsigned char is_resizeable = 1;
@@ -166,10 +199,18 @@ SDL_Window* spawn_sdl_window() {
         window_flags = SDL_WINDOW_FULLSCREEN_DESKTOP; //  | SDL_WINDOW_HIDDEN;
         is_resizeable = 0;
     #endif
-    SDL_Window* window = SDL_CreateWindow("Zoxel", SDL_WINDOWPOS_UNDEFINED_DISPLAY(0), SDL_WINDOWPOS_UNDEFINED_DISPLAY(0),
-        screen_dimensions.x, screen_dimensions.y, window_flags);
+    if (is_vulkan) {
+        window_flags = SDL_WINDOW_VULKAN;
+    }
+    SDL_Window* window = create_sdl_window(window_flags);
+    if (window == NULL && is_vulkan) {
+        zoxel_log(" !!! vulkan is not supported on this device, defaulting to opengl.\n");
+        is_vulkan = 0;
+        window_flags = SDL_WINDOW_OPENGL;
+        window = create_sdl_window(window_flags);
+    }
     if (window == NULL) {
-        zoxel_log(" - failed to create sdl window [%s]\n", SDL_GetError());
+        zoxel_log(" ! failed to create sdl window [%s]\n", SDL_GetError());
         return window;
     }
     int didFail = set_sdl_attributes();
@@ -181,6 +222,11 @@ SDL_Window* spawn_sdl_window() {
     SDL_GL_SwapWindow(window);
     SDL_GL_SetSwapInterval(vsync);
     load_app_icon(window);
+    #ifndef zoxel_on_web
+        #ifndef zoxel_on_android
+            if (fullscreen) sdl_set_fullscreen(window, 1);
+        #endif
+    #endif
     return window;
 }
 
@@ -202,19 +248,40 @@ unsigned char is_opengl_running() {
 }
 
 unsigned char create_main_window(ecs_world_t *world) {
+    if (is_vulkan) {
+        if (!vulkan_supported()) {
+            is_vulkan = 0;
+        }
+    }
     SDL_Window* window = spawn_sdl_window();
-    SDL_GLContext* gl_context = create_sdl_context(window);
-    spawn_app(world, window, gl_context);
     main_window = window;
-    main_gl_context = gl_context;
-    unsigned char app_success = main_gl_context != NULL ? EXIT_SUCCESS : EXIT_FAILURE;
-    if (main_gl_context != NULL) running = 1;
-    #ifndef zoxel_on_web
-        #ifndef zoxel_on_android
-            if (fullscreen) sdl_set_fullscreen(main_window, 1);
+    if (!is_vulkan) {
+        SDL_GLContext* gl_context = create_sdl_context(window);
+        spawn_app(world, window, gl_context);
+        main_gl_context = gl_context;
+        unsigned char app_success = main_gl_context != NULL ? EXIT_SUCCESS : EXIT_FAILURE;
+        if (main_gl_context != NULL) running = 1;
+        return app_success;
+    } else {
+        // sudo apt install libvulkan-dev
+        // Initialize Vulkan
+        #ifdef zoxel_include_vulkan
+            VkInstance instance;
+            VkSurfaceKHR surface;
+            VkInstanceCreateInfo instanceCreateInfo = {};
+            instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+            vkCreateInstance(&instanceCreateInfo, NULL, &instance);
+            if (!SDL_Vulkan_CreateSurface(window, instance, &surface)) {
+                printf("    !!! failed to create vulkan surface [%s]\n", SDL_GetError());
+                return EXIT_FAILURE;
+            }
+            // spawn_app_vulkan(world, window, surface);
+            // main_vulkan_context = surface;
+            return EXIT_SUCCESS;
+        #else
+            return EXIT_FAILURE;
         #endif
-    #endif
-    return app_success;
+    }
 }
 
 void recreate_main_window(ecs_world_t *world) {

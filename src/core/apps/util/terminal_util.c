@@ -19,6 +19,7 @@ void print_help_menu(const char* arg0) {
     zoxel_log("        -p --profiler       enable profiler\n");
     zoxel_log("        -x --server       enable server mode\n");
     zoxel_log("        -e --opengles       enables opengl es\n");
+    zoxel_log("        -b --vulkan       enables vulkan\n");
     zoxel_log("\n");
     zoxel_log("-=-=-=-=-=--=-=-=-=-=--=-=-=-=-=--=-=-=-=-=-\n");
     zoxel_log("\n");
@@ -46,6 +47,8 @@ int process_arguments(int argc, char* argv[]) {
             server_mode = 1;
         } else if (strcmp(argv[i], "-e") == 0 || strcmp(argv[i], "--opengles") == 0) {
             override_opengl_es = 1;
+        } else if (strcmp(argv[i], "-b") == 0 || strcmp(argv[i], "--vulkan") == 0) {
+            is_vulkan = 1;
         }
     }
     return EXIT_SUCCESS;

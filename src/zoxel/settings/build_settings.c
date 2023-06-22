@@ -1,10 +1,9 @@
 // -- in game ui debugs --
 // #define zoxel_debug_fps
 // #define zoxel_debug_quads
-
+// #define zoxel_include_vulkan
 // -- settings --
 #define canvas_edge_size 4
-
 // -- debugs --
 #define zox_logs                    // enables logging
 // #define log_to_file              // logs go to a file
@@ -69,7 +68,7 @@
 // -- testing --
 // #define zoxel_test_chickens
 // #define zoxel_test_networking
-// #define zoxel_test_brain
+// #define zoxel_test_brain         // testing a brain
 // #define zoxel_test_character2Ds
 // #define zoxel_test_cubes             // Failing atm, gl error at opengl_draw_triangles
 // #define zoxel_test_cubes_textured    // wip

@@ -4,10 +4,10 @@ extern unsigned char is_split_screen;
 #endif
 #define main_camera_rotation_speed 60 * 0.22f
 
-void boot_zoxel_game(ecs_world_t *world) {
+unsigned char boot_zoxel_game(ecs_world_t *world) {
     zoxel_log(" > [zoxel] begins to boot\n");
-    if (initialize_apps(world) == EXIT_FAILURE) return;
-    if (initialize_opengl(world) == EXIT_FAILURE) return;
+    if (initialize_apps(world) == EXIT_FAILURE) return EXIT_FAILURE;
+    if (initialize_rendering(world) == EXIT_FAILURE) return EXIT_FAILURE;
     load_resources_engine(world);
     zoxel_log(" > [zoxel] success initializing sdl window\n");
     ecs_entity_t realm = 0;
@@ -85,4 +85,5 @@ void boot_zoxel_game(ecs_world_t *world) {
         test_voxes(world, camera_begin_position);
     #endif
     zoxel_log(" > [zoxel] begins to run\n");
+    return EXIT_SUCCESS;
 }
