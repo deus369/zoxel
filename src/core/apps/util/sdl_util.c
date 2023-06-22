@@ -197,6 +197,7 @@ SDL_Window* spawn_sdl_window() {
     #endif
     if (is_vulkan) {
         window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_VULKAN;
+        zoxel_log(" > windows_flags is set with [SDL_WINDOW_VULKAN]\n");
     }
     SDL_Window* window = create_sdl_window(window_flags);
     if (window == NULL && is_vulkan) {
@@ -209,11 +210,11 @@ SDL_Window* spawn_sdl_window() {
         zoxel_log(" ! failed to create sdl window [%s]\n", SDL_GetError());
         return window;
     }
-    SDL_SetWindowResizable(window, is_resizeable);
     if (!is_vulkan) {
         SDL_GL_SwapWindow(window);
         SDL_GL_SetSwapInterval(vsync);
     }
+    SDL_SetWindowResizable(window, is_resizeable);
     load_app_icon(window);
     #ifndef zoxel_on_web
         #ifndef zoxel_on_android
