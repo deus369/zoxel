@@ -24,7 +24,6 @@ ecs_entity_t spawn_app(ecs_world_t *world, SDL_Window* window, SDL_GLContext* co
     zox_set_only(e, Context, { context })
     ecs_defer_end(world);
     main_app = e;
-    // zoxel_log("Spawned Camera [%lu]\n", (long unsigned int) e);
     return e;
 }
 
@@ -32,3 +31,15 @@ void finish_opengl_rendering(ecs_world_t *world) {
     const SDLWindow *window = ecs_get(world, main_app, SDLWindow);
     if (window->value) SDL_GL_SwapWindow(window->value);
 }
+
+#ifdef zoxel_include_vulkan
+    ecs_entity_t spawn_app_vulkan(ecs_world_t *world, SDL_Window* window, VkSurfaceKHR* surface) {
+        ecs_defer_begin(world);
+        zox_instance(app_prefab)
+        zox_set_only(e, SDLWindow, { window })
+        zox_set_only(e, VulkanSurface, { surface })
+        ecs_defer_end(world);
+        main_app = e;
+        return e;
+    }
+#endif

@@ -9,7 +9,7 @@ if ! has_library "gcc"; then
 fi
 
 echo "> installing vulkan"
-install_first_library "libvulkan-dev" "vulkan-devel"
+install_first_library "libvulkan-dev" "vulkan-devel" "vulkan-headers"
 
 if is_steam_deck; then
     # for some reason had to manually install gcc

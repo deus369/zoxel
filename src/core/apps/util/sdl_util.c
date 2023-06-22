@@ -254,20 +254,19 @@ unsigned char create_main_window(ecs_world_t *world) {
         if (main_gl_context != NULL) running = 1;
         return app_success;
     } else {
-        // sudo apt install libvulkan-dev
-        // Initialize Vulkan
         #ifdef zoxel_include_vulkan
-            VkInstance instance;
-            VkSurfaceKHR surface;
+            VkInstance* instance;
+            VkSurfaceKHR* surface;
             VkInstanceCreateInfo instanceCreateInfo = {};
             instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-            vkCreateInstance(&instanceCreateInfo, NULL, &instance);
-            if (!SDL_Vulkan_CreateSurface(window, instance, &surface)) {
+            vkCreateInstance(&instanceCreateInfo, NULL, instance);
+            if (!SDL_Vulkan_CreateSurface(window, *instance, surface)) {
                 printf("    !!! failed to create vulkan surface [%s]\n", SDL_GetError());
                 return EXIT_FAILURE;
             }
-            // spawn_app_vulkan(world, window, surface);
-            // main_vulkan_context = surface;
+            spawn_app_vulkan(world, window, surface);
+            main_vulkan_context = surface;
+            main_vulkan_instance = instance;
             return EXIT_SUCCESS;
         #else
             return EXIT_FAILURE;

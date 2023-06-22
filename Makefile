@@ -161,6 +161,9 @@ uninstall:
 run:
 	cd build && ./../$(TARGET)
 
+run-vulkan:
+	./$(TARGET) --vulkan
+
 # run development
 run-dev:
 	cd build && ./../$(target_dev)
@@ -323,6 +326,7 @@ help:
 	@echo "    $(target_dev)			builds development"
 	@echo "    <empty>  			builds release"
 	@echo "    run				runs $(TARGET)"
+	@echo "    run-vulkan			runs $(TARGET) with vulkan"
 	@echo "    run-profiler		runs $(TARGET) --profiler"
 	@echo "    run-dev			runs $(target_dev)"
 	@echo "    run-dev-debug		runs valgrind $(target_dev)"
@@ -336,7 +340,7 @@ help:
 	@echo "    android			builds & runs android release"
 	@echo "    android-dev			builds & runs android debug"
 	@echo "    android-dev-debug		builds & runs android debug with logcat"
-	@echo "    debug-android			debugs running android game"
+	@echo "    debug-android		debugs running android game"
 	@echo "  > setup"
 	@echo "    make $(flecs_target)	builds flecs"
 	@echo "    install-required		installs required libraries for debian systems"
