@@ -12,14 +12,14 @@ void print_help_menu(const char* arg0) {
     zoxel_log("\n");
     zoxel_log("        -h --help        print this help\n");
     zoxel_log("        -z --headless       enable headless\n");
+    zoxel_log("        -v --vulkan       enables vulkan\n");
     zoxel_log("        -f --fullscreen  fullscreen window\n");
     zoxel_log("        -g --halfscreen  halfscreen window\n");
     zoxel_log("        -s --splitscreen split screen local coop\n");
-    zoxel_log("        -v --vsync       enable vsync\n");
     zoxel_log("        -p --profiler       enable profiler\n");
     zoxel_log("        -x --server       enable server mode\n");
     zoxel_log("        -e --opengles       enables opengl es\n");
-    zoxel_log("        -b --vulkan       enables vulkan\n");
+    zoxel_log("        -b --vsync       enable vsync\n");
     zoxel_log("\n");
     zoxel_log("-=-=-=-=-=--=-=-=-=-=--=-=-=-=-=--=-=-=-=-=-\n");
     zoxel_log("\n");
@@ -37,7 +37,7 @@ int process_arguments(int argc, char* argv[]) {
             halfscreen = 1;
         } else if (strcmp(argv[i], "-s") == 0 || strcmp(argv[i], "--splitscreen") == 0) {
             is_split_screen = 1;
-        } else if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--vsync") == 0) {
+        } else if (strcmp(argv[i], "-b") == 0 || strcmp(argv[i], "--vsync") == 0) {
             vsync = 1;
         } else if (strcmp(argv[i], "-p") == 0 || strcmp(argv[i], "--profiler") == 0) {
             profiler = 1;
@@ -47,7 +47,7 @@ int process_arguments(int argc, char* argv[]) {
             server_mode = 1;
         } else if (strcmp(argv[i], "-e") == 0 || strcmp(argv[i], "--opengles") == 0) {
             override_opengl_es = 1;
-        } else if (strcmp(argv[i], "-b") == 0 || strcmp(argv[i], "--vulkan") == 0) {
+        } else if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--vulkan") == 0) {
             is_vulkan = 1;
         }
     }

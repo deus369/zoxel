@@ -8,6 +8,9 @@ if ! has_library "gcc"; then
     install_library "gcc"
 fi
 
+echo "> installing vulkan"
+install_first_library "libvulkan-dev" "vulkan-devel"
+
 if is_steam_deck; then
     # for some reason had to manually install gcc
     # for linux/assert.h
@@ -32,11 +35,6 @@ if is_steam_deck; then
     # if ! has_library "base-devel"; then
     #     install_library "base-devel"
     # fi
-fi
-
-echo "> installing vulkan"
-if ! has_library "libvulkan-dev"; then
-    install_library "libvulkan-dev"
 fi
 
 bash bash/sdl/install_sdl.sh
