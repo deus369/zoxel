@@ -73,7 +73,7 @@ void restore_children_resources(ecs_world_t *world, ecs_entity_t e) {
 
 // delete opengl resources, shaders, textures,
 void delete_all_opengl_resources(ecs_world_t *world) {
-    dispose_opengl();
+    dispose_shaders();
     dispose_children_resources(world, main_canvas);
     dispose_opengl_resources_terrain(world);
     ecs_run(world, ecs_id(MeshGPUDisposeSystem), 0, NULL);

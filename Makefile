@@ -168,6 +168,9 @@ run-vulkan:
 run-dev:
 	cd build && ./../$(target_dev)
 
+run-dev-vulkan:
+	./$(target_dev) --vulkan
+
 # run development + valgrind
 run-dev-debug:
 	cd build && valgrind ./../$(target_dev)

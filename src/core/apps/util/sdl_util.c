@@ -221,7 +221,7 @@ SDL_Window* spawn_sdl_window() {
     return window;
 }
 
-SDL_GLContext* create_sdl_context(SDL_Window* window) {
+SDL_GLContext* create_sdl_opengl_context(SDL_Window* window) {
     if (window == NULL) return NULL;
     int didFail = set_sdl_attributes();
     if (didFail == EXIT_FAILURE) {
@@ -247,7 +247,7 @@ unsigned char create_main_window(ecs_world_t *world) {
     SDL_Window* window = spawn_sdl_window();
     main_window = window;
     if (!is_vulkan) {
-        SDL_GLContext* gl_context = create_sdl_context(window);
+        SDL_GLContext* gl_context = create_sdl_opengl_context(window);
         spawn_app(world, window, gl_context);
         main_gl_context = gl_context;
         unsigned char app_success = main_gl_context != NULL ? EXIT_SUCCESS : EXIT_FAILURE;
@@ -255,18 +255,19 @@ unsigned char create_main_window(ecs_world_t *world) {
         return app_success;
     } else {
         #ifdef zoxel_include_vulkan
-            VkInstance* instance;
-            VkSurfaceKHR* surface;
-            VkInstanceCreateInfo instanceCreateInfo = {};
+            zoxel_log("    > creating vulkan surface\n");
+            VkInstance instance;
+            VkSurfaceKHR surface;
+            VkInstanceCreateInfo instanceCreateInfo = { };
             instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-            vkCreateInstance(&instanceCreateInfo, NULL, instance);
-            if (!SDL_Vulkan_CreateSurface(window, *instance, surface)) {
-                printf("    !!! failed to create vulkan surface [%s]\n", SDL_GetError());
+            vkCreateInstance(&instanceCreateInfo, NULL, &instance);
+            if (!SDL_Vulkan_CreateSurface(window, instance, &surface)) {
+                zoxel_log("    !!! failed to create vulkan surface [%s]\n", SDL_GetError());
                 return EXIT_FAILURE;
             }
-            spawn_app_vulkan(world, window, surface);
-            main_vulkan_context = surface;
-            main_vulkan_instance = instance;
+            spawn_app_vulkan(world, window, &surface);
+            main_vulkan_context = &surface;
+            main_vulkan_instance = &instance;
             return EXIT_SUCCESS;
         #else
             return EXIT_FAILURE;

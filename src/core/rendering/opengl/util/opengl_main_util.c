@@ -5,19 +5,19 @@
 
 int load_all_shaders() {
     if (load_instance2D_material() != 0) {
-        printf("    ! error loading [instance2D_material]\n");
+        zoxel_log("    ! error loading [instance2D_material]\n");
     }
     if (load_shader2D_textured() != 0) {
-        printf("    ! error loading [shader2D_textured]\n");
+        zoxel_log("    ! error loading [shader2D_textured]\n");
     }
     if (load_shader3D_basic() != 0) {
-        printf("    ! error loading [shader3D_basic]\n");
+        zoxel_log("    ! error loading [shader3D_basic]\n");
     }
     if (load_shader3D_colored() != 0) {
-        printf("    ! error loading [load_shader3D_colored]\n");
+        zoxel_log("    ! error loading [load_shader3D_colored]\n");
     }
     if (load_shader3D_textured()) {
-        printf("    ! error loading [load_shader3D_textured]\n");
+        zoxel_log("    ! error loading [load_shader3D_textured]\n");
     }
     #ifdef zoxel_catch_opengl_errors
         check_opengl_error("load_all_shaders");
@@ -25,12 +25,10 @@ int load_all_shaders() {
     return 0;
 }
 
-void dispose_opengl() {
-    if (main_gl_context) {
-        dispose_shader2D_instance_material();
-        dispose_shader2D_textured();
-        dispose_shader3D_instance_material();
-        dispose_shader3D_textured();
-        dispose_shader3D_colored();
-    }
+void dispose_shaders() {
+    dispose_shader2D_instance_material();
+    dispose_shader2D_textured();
+    dispose_shader3D_instance_material();
+    dispose_shader3D_textured();
+    dispose_shader3D_colored();
 }
