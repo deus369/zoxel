@@ -200,7 +200,7 @@ SDL_Window* spawn_sdl_window() {
     }
     SDL_Window* window = create_sdl_window(window_flags);
     if (window == NULL && is_vulkan) {
-        zoxel_log(" !!! vulkan is not supported on this device, defaulting to opengl.\n");
+        zoxel_log(" ! vulkan is not supported on this device, defaulting to opengl.\n");
         is_vulkan = 0;
         window_flags = SDL_WINDOW_OPENGL;
         window = create_sdl_window(window_flags);
@@ -210,8 +210,10 @@ SDL_Window* spawn_sdl_window() {
         return window;
     }
     SDL_SetWindowResizable(window, is_resizeable);
-    SDL_GL_SwapWindow(window);
-    SDL_GL_SetSwapInterval(vsync);
+    if (!is_vulkan) {
+        SDL_GL_SwapWindow(window);
+        SDL_GL_SetSwapInterval(vsync);
+    }
     load_app_icon(window);
     #ifndef zoxel_on_web
         #ifndef zoxel_on_android
@@ -255,14 +257,14 @@ unsigned char create_main_window(ecs_world_t *world) {
         return app_success;
     } else {
         #ifdef zoxel_include_vulkan
-            zoxel_log("    > creating vulkan surface\n");
+            zoxel_log(" > creating vulkan surface\n");
             VkInstance instance;
             VkSurfaceKHR surface;
             VkInstanceCreateInfo instanceCreateInfo = { };
             instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
             vkCreateInstance(&instanceCreateInfo, NULL, &instance);
             if (!SDL_Vulkan_CreateSurface(window, instance, &surface)) {
-                zoxel_log("    !!! failed to create vulkan surface [%s]\n", SDL_GetError());
+                zoxel_log(" ! failed to create vulkan surface [%s]\n", SDL_GetError());
                 return EXIT_FAILURE;
             }
             spawn_app_vulkan(world, window, &surface);
