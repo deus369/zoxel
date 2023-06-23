@@ -319,6 +319,9 @@ list-systems:
 create-system:
 	bash bash/zoxel/create_system.sh
 
+zip-build:
+	bash bash/util/zip_build.sh
+
 # lost ones #
 
 help:
@@ -355,6 +358,7 @@ help:
 	@echo "    count			counts total lines in all source"
 	@echo "    list-systems		lists all found zoxel systems in a module"
 	@echo "    create-system		creates a new system in a module"
+	@echo "    zip-build		zips zoxel build and resources"
 	@echo "  > flecs"
 	@echo "    install-flecs		installs flecs 3.1.3"
 	@echo "    build/libflecs.a		builds flecs library"
