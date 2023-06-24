@@ -64,9 +64,8 @@ zox_define_component(NetAddress)
 zox_define_component(NetPort)
 zox_define_component(TargetNetAddress)
 zox_define_component(TargetNetPort)
-zox_define_component(SocketLink)
+zox_define_component_w_dest(SocketLink)
 zox_define_memory_component(PacketData);
-ecs_set_hooks(world, SocketLink, { .dtor = ecs_dtor(SocketLink) });
 zox_system(PacketRecieveSystem, EcsOnUpdate, [none] PacketReciever, [in] SocketLink)
 zox_system(PacketSendSystem, EcsOnUpdate, [none] PacketSender, [in] SocketLink, [in] TargetNetAddress, [in] TargetNetPort)
 zoxel_end_module(Networking)

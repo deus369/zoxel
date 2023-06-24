@@ -1,6 +1,3 @@
-
-
-//! Zoxel can also be a command tool... Wuut?!?!!
 void print_help_menu(const char* arg0) {
     zoxel_log("\n");
     zoxel_log("-=-=-=-=-=--=-=-=-=-=--=-=-=-=-=--=-=-=-=-=-\n");
@@ -25,7 +22,6 @@ void print_help_menu(const char* arg0) {
     zoxel_log("\n");
 }
 
-//! Convert starting arguments to Settings.
 int process_arguments(int argc, char* argv[]) {
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
