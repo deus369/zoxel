@@ -151,11 +151,22 @@ void print_supported_renderers() {
     }
 }
 
-int init_sdl() {
+int initialize_sdl() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         zoxel_log(" - failed to initialize sdl [%s]\n", SDL_GetError());
         return EXIT_FAILURE;
     } else {
+        #ifdef zoxel_include_vulkan
+            if (SDL_Vulkan_LoadLibrary(NULL) != 0) {
+                zoxel_log(" ! failed to load vulkan library [%s]\n", SDL_GetError());
+                return EXIT_FAILURE;
+            }
+            unsigned char is_vulkan_supported = vulkan_supported();
+            if (is_vulkan && !is_vulkan_supported) is_vulkan = 0;
+        #else
+            is_vulkan = 0;
+        #endif
+        print_sdl();
         return EXIT_SUCCESS;
     }
 }
@@ -285,11 +296,31 @@ unsigned char create_main_window(ecs_world_t *world) {
     } else {
         #ifdef zoxel_include_vulkan
             zoxel_log(" > creating vulkan surface\n");
-            VkInstanceCreateInfo instanceCreateInfo = { };
-            instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+            
+            // VkInstanceCreateInfo instanceCreateInfo = { };
+            // instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+            unsigned int extensionCount;
+            if (!SDL_Vulkan_GetInstanceExtensions(window, &extensionCount, NULL)) {
+                // Handle error
+            }
+            const char** extensions = malloc(extensionCount * sizeof(const char*));
+            if (!SDL_Vulkan_GetInstanceExtensions(window, &extensionCount, extensions)) {
+                // Handle error
+            }
+            VkInstanceCreateInfo instanceCreateInfo = {
+                VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO, // sType
+                NULL,                                // pNext
+                0,                                      // flags
+                NULL,                                // pApplicationInfo
+                0,                                      // enabledLayerCount
+                NULL,                                // ppEnabledLayerNames
+                extensionCount,                         // enabledExtensionCount
+                extensions,                         // ppEnabledExtensionNames
+            };
             VkInstance instance;
             VkSurfaceKHR surface;
             VkResult result = vkCreateInstance(&instanceCreateInfo, NULL, &instance);
+            free(extensions);
             if (result != VK_SUCCESS) {
                 zoxel_log(" ! failed to create vulkan instance [%s]\n", vulkan_result_to_string(result));
                 return EXIT_FAILURE;

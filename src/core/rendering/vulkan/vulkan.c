@@ -9,12 +9,6 @@
 
 unsigned char initialize_vulkan(ecs_world_t *world) {
     // load shaders, vulkan load shader
-    #ifdef zoxel_include_vulkan
-        if (SDL_Vulkan_LoadLibrary(NULL) != 0) {
-            zoxel_log(" ! failed to load vulkan library [%s]\n", SDL_GetError());
-            return EXIT_FAILURE;
-        }
-    #endif
     return EXIT_SUCCESS;
 }
 
