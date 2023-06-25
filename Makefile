@@ -61,6 +61,7 @@ LDLIBS2 += -lws2_32
 else
 LDLIBS += -lGL	# opengl linux
 LDLIBS += -lvulkan # vulkan on linux
+# -lwayland-client
 endif
 # add sdl2 includes
 ifeq ($(SYSTEM), Windows)
@@ -322,6 +323,9 @@ create-system:
 zip-build:
 	bash bash/util/zip_build.sh
 
+play:
+	gcc tests/glut/play_button.c -o build/play_button -lglut -lGL -lGLU && ./build/play_button &
+
 # lost ones #
 
 help:
@@ -329,6 +333,7 @@ help:
 	@echo "	latest @ https://codeberg.org/deus/zoxel"
 	@echo "  > linux & windows"
 	@echo "  make <target>"
+	@echo "    play			runs a play button"
 	@echo "    $(target_dev)			builds development"
 	@echo "    <empty>  			builds release"
 	@echo "    run				runs $(TARGET)"

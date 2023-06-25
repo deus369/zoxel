@@ -25,4 +25,6 @@
 #ifdef zoxel_include_vulkan
     #include <vulkan/vulkan.h>
     #include <SDL2/SDL_vulkan.h>
+    #include <vulkan/vulkan_wayland.h>
+    // #include <wayland-client.h>
 #endif

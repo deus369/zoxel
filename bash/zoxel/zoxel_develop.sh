@@ -1,15 +1,10 @@
 #!/bin/bash
-
-
 cd ..
-
 echo "Inside ($PWD)"
-
 running=true
 quit_command="q"
 run_command="r"
 quit_time=3
-
 while [ $running ]; do
 	sleep 0.5
 	echo "Developing Zoxel Loop"
