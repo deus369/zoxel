@@ -1,5 +1,5 @@
 ecs_entity_t prefab_line2D;
-ecs_entity_t prefab_temporary_line2D;
+extern ecs_entity_t prefab_temporary_line2D;
 
 ecs_entity_t spawn_prefab_line2D(ecs_world_t *world) {
     ecs_defer_begin(world);
@@ -9,17 +9,10 @@ ecs_entity_t spawn_prefab_line2D(ecs_world_t *world) {
     zox_set(e, LineData2D, { { 0, 0, 0, 0 } })
     zox_set(e, LineThickness, { 1 })
     zox_set(e, Color, { { 0, 255, 255, 255 } })
-    // create a temporary line, similar to the previous one
-    ecs_entity_t e2 = ecs_new_w_pair(world, EcsIsA, e);
-    ecs_add_id(world, e2, EcsPrefab);
-    set_unique_entity_name(world, e2, "prefab_temporary_line2D");
-    zox_set(e2, DestroyInTime, { 0 })
-    ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs
     zoxel_log("spawn_prefab line2D [%lu].\n", (long int) (e));
     #endif
     prefab_line2D = e;
-    prefab_temporary_line2D = e2;
     return e;
 }
 

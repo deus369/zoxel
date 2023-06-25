@@ -1,4 +1,3 @@
-//! A basic x2 building block.
 typedef struct {
     float x;
     float y;
@@ -103,9 +102,3 @@ void float4_multiply_float_p(float4* input, float mul) {
     input->z *= mul;
     input->w *= mul;
 }
-
-/*float4 float4_normalize2(float4 input) {
-    float length = float4_length(input);
-    float4_divide(&input, length);
-    return length > 0 ? input : (float4) { 0, 0, 0, 1 };
-}*/

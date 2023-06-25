@@ -22,6 +22,10 @@ float3 float3_add(float3 inputA, float3 inputB) {
     return (float3) { inputA.x + inputB.x, inputA.y + inputB.y, inputA.z + inputB.z };
 }
 
+float3 float3_subtract_float3(float3 inputA, float3 inputB) {
+    return (float3) { inputA.x - inputB.x, inputA.y - inputB.y, inputA.z - inputB.z };
+}
+
 void float3_multiply_float_p(float3* input, float mul) {
     input->x *= mul;
     input->y *= mul;

@@ -37,6 +37,4 @@ zox_system(FpsDisplaySystem, EcsPreUpdate, [out] FPSDisplayTicker, [out] ZextDir
 zox_system(QuadsLabelSystem, EcsPreUpdate, [none] QuadsCountLabel, [out] ZextDirty, [out] ZextData)
 zoxel_end_module(GameUI)
 
-// todo: fps display to be multithreaded
-
 #endif
