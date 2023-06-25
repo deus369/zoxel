@@ -1,7 +1,6 @@
 // sudo apt-get install libglew-dev libglfw3-dev
 // cc -std=c99 tests/opengl/compute_triangle.c -o build/compute_triangle -lGL -lGLEW -lglfw && ./build/compute_triangle
 // sudo pacman -S glew glfw-x11
-#define zox_logs
 #include <stdio.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>

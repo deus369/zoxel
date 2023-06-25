@@ -1,43 +1,60 @@
 // Here? select which zoxel modules I shall use?
 #define zoxel_include_vulkan
 
+// === Disables ===
+
+// #define zox_disable_logs
+// #define zox_disable_terrain
+// #define zox_disable_skybox
+// #define zox_disable_characters3D
+
+
+// === Debugs ===
+
 // -- in game ui debugs --
 // #define zoxel_debug_fps
 // #define zoxel_debug_quads
-// -- settings --
-#define canvas_edge_size 4
-// -- debugs --
-#define zox_logs                    // enables logging
-// #define log_to_file              // logs go to a file
 // #define zoxel_debug_sdl             // debugs sdl app
 // #define zoxel_debug_opengl          // debugs opengl
 // #define zoxel_debug_settings        // debugs zoxel settings
 // #define zoxel_debug_audio        // debugs sdl audio
 // #define zoxel_debug_input        // debugs sdl input
-// #define zoxel_entity_names       // sets entity names
 // #define zoxel_debug_eternal_rotation    // debugs euler in main menu
-// #define zoxel_catch_opengl_errors
-// #define zoxel_debug_vox_read
-#define zoxel_seed_666  // tests seed at 666
-//! \todo Fix pathing for android, cannot get resources there.
 // #define zoxel_debug_pathing 
 // #define zoxel_debug_prefabs
 // #define zoxel_debug_spawns
+// #define debug_ui_positioning
+// #define debug_ui_scaling
+
+// === Settings ===
+
+// #define zoxel_seed_666  // tests seed at 666
+// #define log_to_file              // logs go to a file
+
+
+// === Tests ===
+
+// #define zox_test_quaternion_camera
+
+
+
+// -- debugs --
+// #define zoxel_entity_names       // sets entity names
+// #define zoxel_catch_opengl_errors
+// #define zoxel_debug_vox_read
+//! \todo Fix pathing for android, cannot get resources there.
 // #define debug_element_position_change_query
 // #define debug_viewport_resize
 // #define zox_debug_log_element_raycasting
-// #define debug_ui_positioning
-// #define debug_ui_scaling
 // Timings
 // #define zoxel_log_frame_ms
 // #define zoxel_log_frames_per_second
 // #define zoxel_time_render_loop
 // #define zoxel_time_main_loop                    // enables time debugging of main loop
 // > target fps is 30 then 33.33 is the ms required, 16.66 if 60 fps
-#define zoxel_time_main_loop_cutoff 33.33f       // 1000 / 60 = 16.66 | 1000 / 30 = 33.33
+// #define zoxel_time_main_loop_cutoff 33.33f       // 1000 / 60 = 16.66 | 1000 / 30 = 33.33
 // #define zoxel_time_main_loop_cutoff 16.66f       // 1000 / 60 = 16.66 | 1000 / 30 = 33.33
 // #define zoxel_time_main_loop_cutoff 0.001
-// #define zoxel_time_main_loop_cutoff 0
 // #define zoxel_time_always
 // #define zoxel_time_zext_update_system
 // tests for single thread systems, I get alot more ms timing there
@@ -52,7 +69,7 @@
 // #define zoxel_time_octree_terrain_chunk_system      // for octree terrain generation
 // #define zoxel_time_octree_chunk_builds_system    // for octree chunk building
 // #define zoxel_time_chunk_colors_builds_system
-#define zoxel_time_octree_chunk_builds_system_cutoff 0 //12.0f
+// #define zoxel_time_octree_chunk_builds_system_cutoff 0 //12.0f
 // #define zoxel_time_mesh_uvs_update_system        // uploading terrain chunk mesh data
 // idea: generate terrain too at lesser resolutions
 // #define zoxel_time_render_3d_uvs
@@ -84,9 +101,9 @@
 // #define disable_voxel_down
 // voxels
 // #define zox_disable_terrain_octrees  // disables octrees, uses arrays
-#define voxels_close_octree_nodes       // closes nodes in terrain gen
-#define voxels_hide_terrain_edge        // hides faces on edge of map
-#define zoxel_voxels_dynamic_array      // used in mesh generation
+// #define zox_disable_closing_octree_nodes
+// #define zox_disable_hidden_terrain_edge        // hides faces on edge of map
+// #define zox_disable_voxels_dynamic_array      // used in mesh generation
 // #define voxels_terrain_multi_material
 // #define zoxel_disable_close_nodes
 // #define voxels_disable_streaming
@@ -95,7 +112,6 @@
 // -- zoxel game --
 // #define zox_disable_terrain_grid
 // #define zoxel_voxes_color_randomize
-// #define zoxel_quaternion_camera
 // #define zoxel_debug_vox_read
 // #define zoxel_is_flat_height
 // #define zoxel_debug_chunk_link_system
@@ -123,9 +139,6 @@
 // #define zoxel_debug_transforms      // renders an axis for movement of characters
 // --- latest test here below ---
 // #define zox_test_voxes
-// #define zox_disable_terrain
-// #define zox_disable_skybox
-// #define zox_disable_characters3D
 // #define zoxel_test_single_character3Ds      // spawn 1 penguin
 // #define zoxel_disable_attach_on_start
 // #define zoxel_testing_tiny_terrain

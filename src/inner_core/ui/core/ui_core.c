@@ -2,6 +2,7 @@
 #define zoxel_ui_core
 
 // 0 | EcsPostUpdate
+#define canvas_edge_size 4
 #define ui_mesh_pipeline 0
 long int element_mesh_system_id;
 ecs_entity_t main_canvas;

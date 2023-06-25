@@ -323,6 +323,9 @@ create-system:
 zip-build:
 	bash bash/util/zip_build.sh
 
+install-play:
+	bash bash/install/install_play_button.sh
+
 play:
 	gcc tests/glut/play_button.c -o build/play_button -lglut -lGL -lGLU && ./build/play_button &
 
@@ -334,6 +337,7 @@ help:
 	@echo "  > linux & windows"
 	@echo "  make <target>"
 	@echo "    play			runs a play button"
+	@echo "    install-play			installs a play button"
 	@echo "    $(target_dev)			builds development"
 	@echo "    <empty>  			builds release"
 	@echo "    run				runs $(TARGET)"

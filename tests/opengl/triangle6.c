@@ -1,7 +1,6 @@
 // sudo apt-get install libglew-dev libglfw3-dev
 // cc -std=c99 tests/opengl/triangle6.c -o build/triangle6 -lGL -lGLEW -lglfw && ./build/triangle6
 // todo: create triangle without knowing vertex_count
-#define zox_logs
 #include <stdio.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>

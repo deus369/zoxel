@@ -21,7 +21,7 @@ ecs_entity_t spawn_free_camera(ecs_world_t *world, float3 position, float4 rotat
     zox_set_only(e, Rotation3D, { rotation })
     zox_set_only(e, ScreenDimensions, { screen_dimensions })
     zox_set_only(e, ScreenPosition, { screen_position })
-    #ifndef zoxel_quaternion_camera
+    #ifndef zox_test_quaternion_camera
         zox_set_only(e, Euler, { quaternion_to_euler(rotation) })
         zox_add_tag(e, EulerOverride)
         zox_set(e, EulerLimitX, { { -camera_limit_x, camera_limit_x } }) // adds a limit, - half pi to + half pi, 0.8 is around half that

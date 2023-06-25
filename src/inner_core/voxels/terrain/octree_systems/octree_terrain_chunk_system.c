@@ -111,7 +111,7 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
             }
         }
         // now close all solid ground nodes
-        #ifdef voxels_close_octree_nodes
+        #ifndef zox_disable_closing_octree_nodes
             close_solid_nodes(chunkOctree);
         #endif
         #ifdef zoxel_time_octree_terrain_chunk_system

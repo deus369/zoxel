@@ -1,7 +1,7 @@
 // different platform based logs
 
 //! Included Libraries for App
-#ifdef zox_logs
+#ifndef zox_disable_logs
     #include <stdlib.h>
     #include <stdio.h>
     #include <stdarg.h>
@@ -24,7 +24,7 @@ int clear_zoxel_log() {
     // #define zoxel_log(debug_line, ...) __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, debug_line, __VA_ARGS__);
     // #define zoxel_log(debug_line, ...) __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, debug_line);
     void zoxel_log(const char* msg, ...) {
-        #ifdef zox_logs
+        #ifndef zox_disable_logs
             va_list a;
             va_start(a, msg);
             char msg2[1024] = { 0 };
@@ -42,7 +42,7 @@ int clear_zoxel_log() {
     // #define zoxel_log(debug_line) printf(debug_line);
     // #define zoxel_log(debug_line, ...) printf(debug_line, __VA_ARGS__); // #
     void zoxel_log(const char* msg, ...) {
-        #ifdef zox_logs
+        #ifndef zox_disable_logs
             va_list a;
             va_start(a, msg);
             char msg2[1024] = { 0 };
@@ -61,7 +61,7 @@ int clear_zoxel_log() {
     }
 
     int zoxel_log_error(void *stream, const char *msg, ...) {
-        #ifdef zox_logs
+        #ifndef zox_disable_logs
         //    return fprintf((FILE*) stream, msg, __VA_ARGS__);
         #endif
         return 0;

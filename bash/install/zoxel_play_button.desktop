@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Zoxel Play Button
+Categories=Game;
+Type=Application
+Exec=/usr/local/games/zoxel/play_button
+Icon=/usr/local/games/zoxel/resources/textures/play_icon.png

@@ -1,4 +1,4 @@
-#ifdef voxels_hide_terrain_edge
+#ifndef zox_disable_hidden_terrain_edge
     const unsigned char edge_voxel = 1;
 #else
     const unsigned char edge_voxel = 0;
@@ -103,7 +103,7 @@ void build_octree_chunk_d(const ChunkOctree *root_node, const TilemapUVs *tilema
 
 void build_chunk_octree_mesh_uvs(const ChunkOctree *chunk_octree, const TilemapUVs *tilemapUVs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, MeshColorRGBs *meshColorRGBs,
     unsigned char lod, const ChunkOctree *neighbors[], unsigned char *neighbor_lods) {
-    #ifdef zoxel_voxels_dynamic_array
+    #ifndef zox_disable_voxels_dynamic_array
         int_array_d* indicies = create_int_array_d();
         float3_array_d* vertices = create_float3_array_d();
         float2_array_d* uvs = create_float2_array_d();

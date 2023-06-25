@@ -20,10 +20,10 @@ void FreeCameraRotateSystem(ecs_iter_t *it) {
     }
     Mouse *mouses = ecs_field(it, Mouse, 1);
     const FreeRoam *freeRoams = ecs_field(&cameraIter, FreeRoam, 2);
-    #ifndef zoxel_quaternion_camera
-        Euler *eulers = ecs_field(&cameraIter, Euler, 3);
-    #else
+    #ifdef zox_test_quaternion_camera
         Rotation3D *rotation3Ds = ecs_field(&cameraIter, Rotation3D, 3);
+    #else
+        Euler *eulers = ecs_field(&cameraIter, Euler, 3);
     #endif
     unsigned char can_rotate_cameras = 0;
     for (int j = 0; j < cameraIter.count; j++) {
@@ -46,11 +46,7 @@ void FreeCameraRotateSystem(ecs_iter_t *it) {
             for (int j = 0; j < cameraIter.count; j++) {
                 const FreeRoam *freeRoam = &freeRoams[j];
                 if (freeRoam->value == 1) {
-                    #ifndef zoxel_quaternion_camera
-                        float3 eulerAddition = { mouse->delta.y * rotate_power, -mouse->delta.x * rotate_power, 0 };
-                        Euler *euler = &eulers[j];
-                        euler->value = float3_add(euler->value, eulerAddition);
-                    #else
+                    #ifdef zox_test_quaternion_camera
                         Rotation3D *rotation3D = &rotation3Ds[j];
                         float dx = - mouse->delta.x * camera_quaternion_speed;
                         float dy = mouse->delta.y * camera_quaternion_speed;
@@ -67,6 +63,10 @@ void FreeCameraRotateSystem(ecs_iter_t *it) {
                         rotation_matrix.y.x = 0;
                         rotation_matrix.y.z = 0;
                         rotation3D->value = float3x3_to_float4(rotation_matrix);*/
+                    #else
+                        float3 eulerAddition = { mouse->delta.y * rotate_power, -mouse->delta.x * rotate_power, 0 };
+                        Euler *euler = &eulers[j];
+                        euler->value = float3_add(euler->value, eulerAddition);
                     #endif
                     // zoxel_log("mouse->delta eulerAddition [%ix%i]\n", mouse->delta.x, mouse->delta.y);
                     // float3 euler2 = quaternion_to_euler(quaternion_from_euler(euler->value));

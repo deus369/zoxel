@@ -69,7 +69,7 @@ void NoiseChunkOctreeSystem(ecs_iter_t *it) {
         ChunkOctree *chunkOctree = &chunkOctrees[i];
         unsigned char chunk_depth = colors_get_max_depth_from_division(renderLod->value); // 5
         random_fill_octree(chunkOctree, 1, chunk_depth);
-        #ifdef voxels_close_octree_nodes
+        #ifndef zox_disable_closing_octree_nodes
             close_solid_nodes(chunkOctree);
         #endif
         chunkDirty->value = 1;

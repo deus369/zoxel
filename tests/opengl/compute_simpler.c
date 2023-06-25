@@ -1,5 +1,4 @@
 // cc -std=c99 tests/opengl/compute_simpler.c -o compute_simpler -lGL -lGLEW -lglfw && ./compute_simpler
-#define zox_logs
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

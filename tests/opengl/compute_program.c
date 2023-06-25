@@ -1,5 +1,4 @@
 // cc -std=c99 tests/opengl/compute_program.c -o compute_program -lGL -lGLEW -lglfw && ./compute_program
-#define zox_logs
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
