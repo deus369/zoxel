@@ -48,15 +48,9 @@ void restore_mesh_resources(ecs_world_t *world, ecs_entity_t e) {
 }
 
 void restore_material_resources(ecs_world_t *world, ecs_entity_t e, uint2 shader) {
-    if (ecs_has(world, e, MaterialGPULink)) {
-        ecs_set(world, e, MaterialGPULink, { spawn_gpu_material_program(shader) });
-    }
-    if (ecs_has(world, e, TextureGPULink)) {
-        ecs_set(world, e, TextureGPULink, { spawn_gpu_texture_buffers() });
-    }
-    if (ecs_has(world, e, TextureDirty)) {
-        ecs_set(world, e, TextureDirty, { 1 });
-    }
+    if (ecs_has(world, e, MaterialGPULink)) ecs_set(world, e, MaterialGPULink, { spawn_gpu_material_program(shader) });
+    if (ecs_has(world, e, TextureGPULink)) ecs_set(world, e, TextureGPULink, { spawn_gpu_texture_buffers() });
+    if (ecs_has(world, e, TextureDirty)) ecs_set(world, e, TextureDirty, { 1 });
 }
 
 void restore_children_resources(ecs_world_t *world, ecs_entity_t e) {
@@ -87,14 +81,3 @@ void restore_all_opengl_resources(ecs_world_t *world) {
     restore_opengl_resources_terrain(world);
     ecs_run(world, ecs_id(MeshGPURestoreSystem), 0, NULL);
 }
-
-/*for (int i = 0; i < characters->size; i++) {
-    ecs_entity_t character = characters->data[i];
-    dispose_mesh_resources(world, character);
-    // dispose_material_resources(world, character);
-}*/
-/*for (int i = 0; i < characters->size; i++) {
-    ecs_entity_t character = characters->data[i];
-    restore_mesh_resources(world, character);
-    // restore_material_resources(world, character, shader3D_colored);
-}*/

@@ -25,6 +25,7 @@
 // #define zoxel_debug_spawns
 // #define debug_ui_positioning
 // #define debug_ui_scaling
+// #define zox_debug_ui_trails      // shows a line from the ui holder to the ui
 
 // === Settings ===
 
@@ -35,8 +36,6 @@
 // === Tests ===
 
 // #define zox_test_quaternion_camera
-
-
 
 // -- debugs --
 // #define zoxel_entity_names       // sets entity names
@@ -141,4 +140,4 @@
 // #define zox_test_voxes
 // #define zoxel_test_single_character3Ds      // spawn 1 penguin
 // #define zoxel_disable_attach_on_start
-// #define zoxel_testing_tiny_terrain
+#define zoxel_testing_tiny_terrain

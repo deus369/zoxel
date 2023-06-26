@@ -1,12 +1,7 @@
-//! External data/function.
 const unsigned char isDebugRenderMaterial2DSystem = 0;
-extern float4x4 render_camera_matrix;
-extern void render_entity_material2D(const float4x4 viewMatrix, uint material, uint texture, float2 position,
-    float angle, float scale, float brightness);
+extern void render_entity_material2D(const float4x4 viewMatrix, uint material, uint texture, float2 position, float angle, float scale, float brightness);
 
-//! Render 2D entities.
 void RenderMaterial2DSystem(ecs_iter_t *it) {
-    // printf("RenderMaterial2DSystem %i.\n", it->count);
     Position2D *position2Ds = ecs_field(it, Position2D, 1);
     Rotation2D *rotation2Ds = ecs_field(it, Rotation2D, 2);
     Scale1D *scale2Ds = ecs_field(it, Scale1D, 3);
@@ -20,14 +15,11 @@ void RenderMaterial2DSystem(ecs_iter_t *it) {
         const Brightness *brightness = &brightnesses[i];
         const MaterialGPULink *materialGPULink = &materialGPULinks[i];
         const TextureGPULink *textureGPULink = &textureGPULinks[i];
-        if (materialGPULink->value == 0) {
-            if (isDebugRenderMaterial2DSystem) {
+        if (isDebugRenderMaterial2DSystem) {
+            if (materialGPULink->value == 0) {
                 zoxel_log("RenderMaterial2DSystem Material Error: At [%i]. Entity [%lu].\n", i, (long int) (it->entities[i]));
-            }
-            continue;
-        } else {
-            if (isDebugRenderMaterial2DSystem)
-            {
+                continue;
+            } else {
                 zoxel_log("RenderMaterial2DSystem Material: At [%i]. Entity [%lu].\n", i, (long int) (it->entities[i]));
             }
         }
@@ -39,5 +31,4 @@ void RenderMaterial2DSystem(ecs_iter_t *it) {
         }
         render_entity_material2D(viewMatrix, materialGPULink->value, textureGPULink->value, position->value, rotation2D->value, scale1D->value, brightness->value);
     }
-}
-zox_declare_system(RenderMaterial2DSystem)
+} zox_declare_system(RenderMaterial2DSystem)

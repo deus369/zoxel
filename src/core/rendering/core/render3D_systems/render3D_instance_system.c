@@ -12,5 +12,4 @@ void InstanceRender3DSystem(ecs_iter_t *it) {
         const Brightness *brightness = &brightnesses[i];
         render_entity_3D(position->value, rotation->value, scale1D->value, brightness->value);
     }
-}
-zox_declare_system(InstanceRender3DSystem)
+} zox_declare_system(InstanceRender3DSystem)

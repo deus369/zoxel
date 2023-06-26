@@ -2,7 +2,6 @@ void toggle_camera_perspective(ecs_world_t *world, ecs_entity_t character) {
     if (ecs_is_valid(world, character) && ecs_has(world, character, CameraLink)) {
         const CameraLink *cameraLink = ecs_get(world, character, CameraLink);
         if (ecs_is_valid(world, cameraLink->value) && cameraLink->value != 0) {
-            // zoxel_log(" > switching camera view\n");
             float vox_scale = model_scale * 16;
             const LocalPosition3D *localPosition3D = ecs_get(world, cameraLink->value, LocalPosition3D);
             if (localPosition3D->value.z == vox_scale * 0.5f) {

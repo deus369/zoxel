@@ -1,5 +1,4 @@
 // #define zox_debug_render3D_colored
-extern float4x4 render_camera_matrix;
 
 void Render3DColoredSystem(ecs_iter_t *it) {
     if (colored3D_material == 0 || it->count == 0) return;
@@ -56,8 +55,7 @@ void Render3DColoredSystem(ecs_iter_t *it) {
     // check_opengl_error("Render3DColoredSystem");
     opengl_unset_mesh();
     opengl_disable_opengl_program();
-}
-zox_declare_system(Render3DColoredSystem)
+} zox_declare_system(Render3DColoredSystem)
 
 // unsigned char has_set_single_material = 0;
 /*if (!has_set_single_material) {

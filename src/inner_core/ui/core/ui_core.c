@@ -22,7 +22,7 @@ zox_component(UIHolderLink, ecs_entity_t)
 zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t)
 // zoxel_include_util
 #include "util/ui_prefab_util.c"
-#include "util/ui_util.c"
+#include "util/ui_transform_util.c"
 #include "util/anchor_util.c"
 // zoxel_include_prefabs
 #include "prefabs/canvas.c"
@@ -38,6 +38,10 @@ zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t)
 #include "systems/element_mesh_system.c"
 #include "systems/billboard_system.c"
 #include "systems/ui_trail_system.c"
+#include "systems/resize_element_system.c"
+// zoxel_more_util
+#include "util/toggle_util.c"
+#include "util/resize_util.c"
 
 void spawn_prefabs_ui_core(ecs_world_t *world) {
     spawn_prefab_canvas(world);
@@ -72,12 +76,14 @@ if (!headless) {
         zox_system(ElementActivateSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterTarget)
         zox_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [out] NavigatorState, [out] NavigatorTimer, [out] RaycasterTarget)
     #endif
-    zox_system_1(ElementMeshSystem, ui_mesh_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture)
+    zox_system_1(ElementMeshSystem, ui_mesh_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshGPULink, [out] MaterialGPULink, [out] TextureGPULink, [none] !Position3D)
     element_mesh_system_id = ecs_id(ElementMeshSystem);
+    zox_system_1(ElementMesh3DSystem, EcsPostUpdate, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture, [none] Position3D)
 }
 zox_system(ButtonClickEventSystem, EcsPreStore, [none] Element, [in] ClickableState, [in] ClickEvent) // EcsPreStore EcsOnStore
-zox_system(UITrailSystem, EcsOnUpdate, [in] UIHolderLink, [in] UITrail, [out] Position3D)
+zox_system(UITrailSystem, EcsPreStore, [in] UIHolderLink, [in] UITrail, [out] Position3D)
 zox_system(BillboardSystem, EcsOnUpdate, [none] ElementBillboard, [in] CameraLink, [in] Position3D, [out] Rotation3D)
+zox_system(ResizeElementSystem, 0, [in] CanvasLink, [in] ParentLink)
 zoxel_end_module(UICore)
 
 // \todo Display a UI Element anchored, with a pixel position.

@@ -31,6 +31,7 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
         ecs_run(world, ecs_id(Render3DColoredSystem), 0, NULL);
         ecs_run(world, line3D_render_system_id, 0, NULL);
         ecs_run(world, cube_lines_render_system_id, 0, NULL);
+        ecs_run(world, ecs_id(Render3DTexturedSystem), 0, NULL);
     }
     if (render2D_update_pipeline == 0) {
         // glDisable(GL_DEPTH_TEST);
@@ -39,8 +40,7 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
         ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
         shader2D_instance_end();
         ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);
-        // render all ui, layer at a time..
-        for (int i = 0; i < max_render_layers; i++) {
+        for (int i = 0; i < max_render_layers; i++) { // render all ui, layer at a time..
             renderer_layer = i;
             ecs_run(world, ecs_id(RenderMeshMaterial2DSystem), 0, NULL);    // render for all tables..
         }
@@ -85,16 +85,3 @@ void render_loop() {
         end_timing_absolute("    - render_loop")
     #endif
 }
-
-// timing the render loop
-/*#ifdef zoxel_time_render_loop
-#include <time.h>
-const double min_render_loop_timing = 0;    // set to higher to check for spikes
-#endif*/
-
-// clock_t t = clock();
-/*t = clock() - t;
-double t2 =  (((double) 1000.0 * t) / CLOCKS_PER_SEC);
-if (t2 >= min_render_loop_timing) {
-    zoxel_log("Render Time [%fms]\n", t2);
-}*/

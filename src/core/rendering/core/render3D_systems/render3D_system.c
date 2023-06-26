@@ -1,5 +1,3 @@
-extern float4x4 render_camera_matrix;
-
 void Render3DSystem(ecs_iter_t *it) {
     const Position3D *positions = ecs_field(it, Position3D, 1);
     const Rotation3D *rotations = ecs_field(it, Rotation3D, 2);
@@ -20,14 +18,11 @@ void Render3DSystem(ecs_iter_t *it) {
         if (opengl_set_material(materialGPULink->value)) {
             opengl_bind_mesh(meshGPULink->value);
             set_basic_vert_layout(materialGPULink->value);
-            if (opengl_set_material3D_properties(materialGPULink->value, position->value, rotation->value, scale1D->value, brightness->value) == -1) {
-                return;
-            }
+            if (opengl_set_material3D_properties(materialGPULink->value, position->value, rotation->value, scale1D->value, brightness->value) == -1) return;
             opengl_set_camera_view_matrix(materialGPULink->value, render_camera_matrix);
             opengl_draw_triangles(meshIndicies2->length);
         }
     }
     opengl_unset_mesh();
     opengl_disable_opengl_program();
-}
-zox_declare_system(Render3DSystem)
+} zox_declare_system(Render3DSystem)

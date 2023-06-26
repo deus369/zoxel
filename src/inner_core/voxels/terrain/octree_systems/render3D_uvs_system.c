@@ -1,5 +1,4 @@
 // #define zoxel_render3D_uvs_system_overdebug
-extern float4x4 render_camera_matrix;
 
 void Render3DUvsSystem(ecs_iter_t *it) {
     #ifdef zoxel_time_render_3d_uvs
@@ -26,20 +25,14 @@ void Render3DUvsSystem(ecs_iter_t *it) {
         const VoxLink *voxLinks = ecs_field(it, VoxLink, 9);
     #endif
     // later store commands per material to optimize this process
-    // zoxel_log("rendering chunks: %i\n", it->count);
     unsigned char has_set_single_material = 0;
     ecs_entity_t vox_entity = 0;
     const MaterialGPULink *materialGPULink;
     for (int i = 0; i < it->count; i++) {
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
-        if (meshIndicies2->length == 0) {
-            continue;
-        }
+        if (meshIndicies2->length == 0) continue;
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
-        /*if (meshGPULink->value.x == 0) {
-            zoxel_log(" !!! mesh is 0\n");
-            continue;
-        }*/
+        if (meshGPULink->value.x == 0) continue;
         const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
         const ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
         const Position3D *position3D = &positions[i];
@@ -72,7 +65,7 @@ void Render3DUvsSystem(ecs_iter_t *it) {
                 attributes.brightness = glGetUniformLocation(materialGPULink->value, "brightness");
                 opengl_set_material(materialGPULink->value);
                 glUniform4f(attributes.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
-                opengl_set_texture(textureGPULink->value, false);
+                opengl_set_texture(textureGPULink->value, 0);
                 opengl_shader3D_textured_set_camera_view_matrix(render_camera_matrix, &attributes);
                 opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes);
             }
@@ -118,5 +111,4 @@ void Render3DUvsSystem(ecs_iter_t *it) {
     #ifdef zoxel_time_render_3d_uvs
         end_timing("Render3DUvsSystem")
     #endif
-}
-zox_declare_system(Render3DUvsSystem)
+} zox_declare_system(Render3DUvsSystem)

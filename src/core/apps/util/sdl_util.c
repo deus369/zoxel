@@ -11,7 +11,7 @@ extern int check_opengl_error(char* function_name);
 extern void delete_all_opengl_resources(ecs_world_t *world);
 extern void restore_all_opengl_resources(ecs_world_t *world);
 extern void resize_cameras(int2 screen_size);   // > cameras
-extern void uis_on_viewport_resized(ecs_world_t *world, int2 screen_size);  // > uis
+extern void resize_ui_canvases(ecs_world_t *world, int2 screen_size);  // > uis
 
 void print_sdl() {
     #ifdef zoxel_debug_sdl
@@ -62,9 +62,9 @@ void on_viewport_resized(ecs_world_t *world, int2 new_screen_dimensions) {
     if (screen_dimensions.x == new_screen_dimensions.x && screen_dimensions.y == new_screen_dimensions.y) return;
     screen_dimensions = new_screen_dimensions;
     if(screen_dimensions.y <= 0) screen_dimensions.y = 1;
-    zoxel_log(" > viewport was resized [%ix%i]\n", screen_dimensions.x, screen_dimensions.y);
+    // zoxel_log(" > viewport was resized [%ix%i]\n", screen_dimensions.x, screen_dimensions.y);
     resize_cameras(screen_dimensions);
-    uis_on_viewport_resized(world, screen_dimensions);
+    resize_ui_canvases(world, screen_dimensions);
 }
 
 void sdl_set_fullscreen(SDL_Window* window, unsigned char is_fullscreen) {

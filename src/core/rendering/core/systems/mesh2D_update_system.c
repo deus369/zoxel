@@ -16,5 +16,4 @@ void Mesh2DUpdateSystem(ecs_iter_t *it) {
         const MeshVertices2D *meshVertices2 = &meshVertices[i];
         set_gpu_mesh2D(meshGPULink->value, materialGPULink->value, meshIndicies2->value, meshIndicies2->length, meshVertices2->value, meshVertices2->length);
     }
-}
-zox_declare_system(Mesh2DUpdateSystem)
+} zox_declare_system(Mesh2DUpdateSystem)

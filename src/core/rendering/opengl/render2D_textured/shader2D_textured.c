@@ -2,7 +2,7 @@ const float shader_depth_multiplier = 0.001f; // 0.0001f;
 const unsigned char disableTextureLoaded = 0;
 int textureType = GL_NEAREST; // GL_LINEAR
 uint2 shader2D_textured;
-uint texturedMaterial;
+uint material2D_textured;
 uint2 squareTexturedMesh;
 uint squareTexturedModelUVs;
 
@@ -13,7 +13,7 @@ void dispose_shader2D_textured() {
     // glDeleteTextures(1, &textureID);
     glDeleteShader(shader2D_textured.x);
     glDeleteShader(shader2D_textured.y);
-    glDeleteProgram(texturedMaterial);
+    glDeleteProgram(material2D_textured);
     #ifdef zoxel_catch_opengl_errors
         check_opengl_error("dispose_shader2D_textured");
     #endif
@@ -43,9 +43,9 @@ void initialize_texture_mesh(uint material) {
 
 int load_shader2D_textured() {
     shader2D_textured = spawn_gpu_shader_inline(shader2D_textured_vert_buffer, shader2D_textured_frag_buffer);
-    texturedMaterial = spawn_gpu_material_program((const uint2) { shader2D_textured.x, shader2D_textured.y });
-    // texturedMaterial = load_gpu_shader(&shader2D_textured, shader2D_textured_filepath_vert, shader2D_textured_filepath_frag);
-    initialize_texture_mesh(texturedMaterial);
+    material2D_textured = spawn_gpu_material_program((const uint2) { shader2D_textured.x, shader2D_textured.y });
+    // material2D_textured = load_gpu_shader(&shader2D_textured, shader2D_textured_filepath_vert, shader2D_textured_filepath_frag);
+    initialize_texture_mesh(material2D_textured);
     return 0;
 }
 

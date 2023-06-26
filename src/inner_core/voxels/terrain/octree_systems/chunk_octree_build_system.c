@@ -172,31 +172,19 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         if (tilemapUVs->length == 0) continue; // waits for tilemap generation to be done
         const ChunkOctree *chunkOctree = &chunkOctrees[i];
         const ChunkNeighbors *chunkNeighbors2 = &chunkNeighbors[i];
-        const ChunkOctree *chunk_left = chunkNeighbors2->value[0] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[0], ChunkOctree);
-        const ChunkOctree *chunk_right = chunkNeighbors2->value[1] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[1], ChunkOctree);
-        const ChunkOctree *chunk_down = chunkNeighbors2->value[2] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[2], ChunkOctree);
-        const ChunkOctree *chunk_up = chunkNeighbors2->value[3] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[3], ChunkOctree);
-        const ChunkOctree *chunk_back = chunkNeighbors2->value[4] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[4], ChunkOctree);
-        const ChunkOctree *chunk_front = chunkNeighbors2->value[5] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[5], ChunkOctree);
+        const ChunkOctree *chunk_left = chunkNeighbors2->value[0] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[0], ChunkOctree);
+        const ChunkOctree *chunk_right = chunkNeighbors2->value[1] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[1], ChunkOctree);
+        const ChunkOctree *chunk_down = chunkNeighbors2->value[2] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[2], ChunkOctree);
+        const ChunkOctree *chunk_up = chunkNeighbors2->value[3] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[3], ChunkOctree);
+        const ChunkOctree *chunk_back = chunkNeighbors2->value[4] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[4], ChunkOctree);
+        const ChunkOctree *chunk_front = chunkNeighbors2->value[5] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[5], ChunkOctree);
         const ChunkOctree *neighbors[] =  { chunk_left, chunk_right, chunk_down, chunk_up, chunk_back, chunk_front };
-        unsigned char chunk_left_max_distance = chunkNeighbors2->value[0] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[0], RenderLod)->value;
-        unsigned char chunk_right_max_distance = chunkNeighbors2->value[1] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[1], RenderLod)->value;
-        unsigned char chunk_down_max_distance = chunkNeighbors2->value[2] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[2], RenderLod)->value;
-        unsigned char chunk_up_max_distance = chunkNeighbors2->value[3] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[3], RenderLod)->value;
-        unsigned char chunk_back_max_distance = chunkNeighbors2->value[4] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[4], RenderLod)->value;
-        unsigned char chunk_front_max_distance = chunkNeighbors2->value[5] == 0 ?
-            0 : ecs_get(it->world, chunkNeighbors2->value[5], RenderLod)->value;
+        unsigned char chunk_left_max_distance = chunkNeighbors2->value[0] == 0 ? 0 : ecs_get(it->world, chunkNeighbors2->value[0], RenderLod)->value;
+        unsigned char chunk_right_max_distance = chunkNeighbors2->value[1] == 0 ? 0 : ecs_get(it->world, chunkNeighbors2->value[1], RenderLod)->value;
+        unsigned char chunk_down_max_distance = chunkNeighbors2->value[2] == 0 ? 0 : ecs_get(it->world, chunkNeighbors2->value[2], RenderLod)->value;
+        unsigned char chunk_up_max_distance = chunkNeighbors2->value[3] == 0 ? 0 : ecs_get(it->world, chunkNeighbors2->value[3], RenderLod)->value;
+        unsigned char chunk_back_max_distance = chunkNeighbors2->value[4] == 0 ? 0 : ecs_get(it->world, chunkNeighbors2->value[4], RenderLod)->value;
+        unsigned char chunk_front_max_distance = chunkNeighbors2->value[5] == 0 ? 0 : ecs_get(it->world, chunkNeighbors2->value[5], RenderLod)->value;
         unsigned char *neighbor_lods = malloc(6);
         neighbor_lods[0] = get_terrain_lod_from_camera_distance(chunk_left_max_distance);
         neighbor_lods[1] = get_terrain_lod_from_camera_distance(chunk_right_max_distance);
@@ -219,5 +207,4 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
     #ifdef zoxel_time_octree_chunk_builds_system
         end_timing_cutoff("    - octree_chunk_build_system", zoxel_time_octree_chunk_builds_system_cutoff)
     #endif
-}
-zox_declare_system(ChunkOctreeBuildSystem)
+} zox_declare_system(ChunkOctreeBuildSystem)

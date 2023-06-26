@@ -19,6 +19,9 @@ void Player2DTestSystem(ecs_iter_t *it) {
             } else {
                 detatch_from_character(world, main_player, main_camera, main_character3D);
             }
+        } else if (keyboard->b.pressed_this_frame) {
+            zoxel_log("testing world ui on character %lu\n", main_character3D);
+            spawn_element_world(world, main_character3D);
         }
         #ifdef zoxel_tests_rotate_by_keys
             else if (keyboard->r.is_pressed) {

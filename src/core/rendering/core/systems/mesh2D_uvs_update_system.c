@@ -16,7 +16,6 @@ void Mesh2DUvsUpdateSystem(ecs_iter_t *it) {
         const MeshVertices2D *meshVertices2 = &meshVertices[i];
         const MeshUVs *meshUVs2 = &meshUVs[i];
         opengl_upload_shader2D_textured(meshGPULink->value, materialGPULink->value, meshIndicies2->value, meshIndicies2->length, meshVertices2->value, meshUVs2->value, meshVertices2->length);
-        // printf("Uploaded shader2D data %i.\n", meshIndicies2->length);
+        // zoxel_log("Uploaded shader2D data %i.\n", meshIndicies2->length);
     }
-}
-zox_declare_system(Mesh2DUvsUpdateSystem)
+} zox_declare_system(Mesh2DUvsUpdateSystem)

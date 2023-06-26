@@ -1,35 +1,29 @@
-// things
-const unsigned char isForceDefaults = 0;
-
-unsigned char LinkShaderProgram(uint program, uint vertShader, uint fragShader) {
-    glAttachShader(program, vertShader);
-    glAttachShader(program, fragShader);
-    glLinkProgram(program);
+unsigned char initialize_material(uint material, uint vert_shader, uint frag_shader) {
+    glAttachShader(material, vert_shader);
+    glAttachShader(material, frag_shader);
+    glLinkProgram(material);
     GLint success;
-    glGetProgramiv(program, GL_LINK_STATUS, &success);
+    glGetProgramiv(material, GL_LINK_STATUS, &success);
     if (success != GL_TRUE) {
         GLint info_log_length;
-        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &info_log_length);
+        glGetProgramiv(material, GL_INFO_LOG_LENGTH, &info_log_length);
         GLchar* info_log = malloc(info_log_length);
-        glGetProgramInfoLog(program, info_log_length, NULL, info_log);
-        // fprintf(stderr, " - failed to link program:\n%s\n", info_log);
-        zoxel_log("Failed to link [%i], program:\n%s\n", (int) program, info_log);
+        glGetProgramInfoLog(material, info_log_length, NULL, info_log);
+        zoxel_log(" ! failed to initialize material [%i] - [%s]\n", (int) material, info_log);
         free(info_log);
-        glDetachShader(program, vertShader);
-        glDetachShader(program, fragShader);
+        glDetachShader(material, vert_shader);
+        glDetachShader(material, frag_shader);
         return 0;
     }
-    glDetachShader(program, vertShader);
-    glDetachShader(program, fragShader);
+    glDetachShader(material, vert_shader);
+    glDetachShader(material, frag_shader);
     return 0;
 }
 
 uint spawn_gpu_material_program(const uint2 shader) {
-    if (shader.x == 0 || shader.y == 0) {
-        return 0;
-    }
+    if (shader.x == 0 || shader.y == 0) return 0;
     uint material = glCreateProgram();
-    LinkShaderProgram(material, shader.x, shader.y);
+    initialize_material(material, shader.x, shader.y);
     #ifdef zoxel_catch_opengl_errors
         check_opengl_error("spawn_gpu_material_program");
     #endif
@@ -48,7 +42,6 @@ int compile_shader(GLenum shaderType, uint* shader2, const GLchar* buffer) {
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &info_log_length);
         GLchar* info_log = malloc(info_log_length);
         glGetShaderInfoLog(shader, info_log_length, NULL, info_log);
-        // zoxel_log(stderr, "Failed to compile shader:\n%s\n", info_log);
         zoxel_log(" !!! failed to compile shader [%s]\n", info_log);
         free(info_log);
         return -1;
@@ -63,13 +56,12 @@ int load_shader(const char* filepath, GLenum shaderType, uint* shader2) {
         return -1;
     }
     char* fullpath = get_full_file_path(filepath);
-    GLchar *buffer = (GLchar*) SDL_LoadFile(fullpath, NULL); //filepath, NULL);
+    GLchar *buffer = (GLchar*) SDL_LoadFile(fullpath, NULL);
     free(fullpath);
     if (!buffer) {
         zoxel_log("Loading shader (SDL_LoadFile) returned null at [%s].\n", filepath);
         return -1;
     }
-    // this is causing crashes...
     if (compile_shader(shaderType, shader2, buffer) != 0) {
         free(buffer);
         return -1;

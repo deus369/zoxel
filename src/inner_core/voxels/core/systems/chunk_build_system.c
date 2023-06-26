@@ -108,7 +108,6 @@ void build_chunk_mesh(const ChunkData *chunk, const ChunkSize *chunkSize,
 void ChunkBuildSystem(ecs_iter_t *it) {
     ecs_query_t *changeQuery = it->ctx;
     if (!changeQuery || !ecs_query_changed(changeQuery, NULL)) return;
-    // printf("[ChunkBuildSystem] GenerateChunk was changed.\n");
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
     const ChunkData *chunks = ecs_field(it, ChunkData, 2);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 3);
@@ -127,8 +126,6 @@ void ChunkBuildSystem(ecs_iter_t *it) {
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
         build_chunk_mesh(chunk, chunkSize, meshIndicies2, meshVertices2);
-        // printf("Building ChunkData Mesh [%lu] - [%i] [%i]\n",
-        //    (long int) it->entities[i], meshIndicies2->length, meshVertices2->length);
+        // zoxel_log("Building ChunkData Mesh [%lu] - [%i] [%i]\n", (long int) it->entities[i], meshIndicies2->length, meshVertices2->length);
     }
-}
-zox_declare_system(ChunkBuildSystem)
+} zox_declare_system(ChunkBuildSystem)
