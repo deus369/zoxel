@@ -12,7 +12,7 @@ ecs_entity_t spawn_prefab_element_world(ecs_world_t *world) {
     zox_add_tag(e, SingleMaterial)
     zox_set(e, CameraLink, { 0 })
     zox_set(e, UIHolderLink, { 0 })
-    zox_set(e, UITrail, {{ 0, 0.25f, 0 }})
+    zox_set(e, UITrail, {{ 0, 0.33f, 0 }})
     ecs_defer_end(world);
     prefab_element_world = e;
     #ifdef zoxel_debug_prefabs

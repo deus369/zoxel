@@ -31,6 +31,7 @@ void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t c
     zox_remove(camera, FreeRoam)
     zox_remove(camera, EulerOverride)
     zox_set_only(player, CharacterLink, { character })
+    spawn_element_world(world, character);  // todo: also add this to character's UILinks
 }
 
 void detatch_from_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character) {

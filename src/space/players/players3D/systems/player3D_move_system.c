@@ -1,6 +1,6 @@
 const double jump_power = 12.0;
-const double movement_power_x = 16;
-const double movement_power_z = 24;
+const double movement_power_x = 12; // 16;
+const double movement_power_z = 16; // 24;
 const float2 max_velocity = { 60 * 60, 160 * 60 };
 const double run_speed = 1.3;
 const float backwards_multiplier = 0.7f;
@@ -72,8 +72,8 @@ void Player3DMoveSystem(ecs_iter_t *it) {
             break;
         }
     }
-}
-zox_declare_system(Player3DMoveSystem)
+} zox_declare_system(Player3DMoveSystem)
+
 // do this until I get a player -> deviceLinks setup going
 // todo: get rotated velocity to test max
 // todo: Link directly to player characters from player

@@ -10,6 +10,7 @@ void set_character_terrain_settings() {
     } else {
         characters_per_chunk_count = 1;
     }
+    characters_per_chunk_count *= 3;
     #ifdef zoxel_test_single_character3Ds
         characters_per_chunk_count = 0;
     #endif

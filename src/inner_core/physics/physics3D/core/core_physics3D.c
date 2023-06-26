@@ -3,12 +3,14 @@
 
 #define physics3D_gravity -9.8f // 3.97f
 #define physics3D_jump 24.0f
-const float friction3D = 6.0f;  // 0.002
-zox_component(Velocity3D, float3)     //! Velocity movement of a 3D Entity
-zox_component(Acceleration3D, float3) //! How fast Velocity moves over time
+const float friction3D = 4.0f; // 6.0f;  // 0.002
+const float dissipation_threshold = 0.001f;
+const float rotation_friction = 0.42f; // 0.7f;
+zox_component(Velocity3D, float3)
+zox_component(Acceleration3D, float3)
 zox_component(Omega3D, float4)
 zox_component(Alpha3D, float4)
-zox_component(Gravity3D, float3)      //! A constant acceleration towards something
+zox_component(Gravity3D, float3)
 zox_byte_component(InitializePhysics3D)
 zox_byte_component(Grounded)
 zox_time_component(Jump)

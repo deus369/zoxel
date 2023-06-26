@@ -215,6 +215,29 @@ float4 get_delta_rotation(float4 quaternion, float magnitude, double delta_time)
     // return (float4) { magnitude * quaternion.x, magnitude * quaternion.y, magnitude * quaternion.z, magnitude * quaternion.w };
 }
 
+// this seems to be okay?
+float4 float3_to_quaternion(float3 normal) {
+    float3 axis;
+    float4 quaternion;
+    // Step 1: Normalize the normal vector
+    float length = sqrt(normal.x * normal.x + normal.y * normal.y + normal.z * normal.z);
+    normal.x /= length;
+    normal.y /= length;
+    normal.z /= length;
+    // Step 2: Calculate the angle of rotation
+    float angle = acos(normal.z); // dot(normal, (0, 0, 1)) = normal.z
+    // Step 3: Calculate the axis of rotation
+    axis.x = -normal.y;
+    axis.y = normal.x;
+    axis.z = 0;
+    // Step 4: Create the quaternion
+    quaternion.x = axis.x * sin(angle / 2);
+    quaternion.y = axis.y * sin(angle / 2);
+    quaternion.z = axis.z * sin(angle / 2);
+    quaternion.w = cos(angle / 2);
+    return quaternion;
+}
+
 /*float yaw = euler.x;
 float pitch = euler.y;
 float roll = euler.z;

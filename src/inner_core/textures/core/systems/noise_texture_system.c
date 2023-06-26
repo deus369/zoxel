@@ -167,8 +167,7 @@ void NoiseTextureSystem(ecs_iter_t *it) {
         textureDirty->value = 1;
         // if (is_dirt) zoxel_log("    > dirt generated [%lu]\n", it->entities[i]);
     }
-}
-zox_declare_system(NoiseTextureSystem)
+} zox_declare_system(NoiseTextureSystem)
 
 //! This breaks the updates. \todo Fix this. Find out why it doesn't work properly.
 //! This doesn't work because the table writes all changes in the first iteration which is for one entity.

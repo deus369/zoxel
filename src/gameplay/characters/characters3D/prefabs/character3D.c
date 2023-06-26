@@ -27,8 +27,9 @@ unsigned char get_character_division(int3 chunk_position, int3 camera_position) 
 ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     ecs_defer_begin(world);
     // ecs_entity_t e = ecs_clone(world, 0, prefab_vox, 1);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_vox);
-    zox_make_prefab(e)
+    // ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_vox);
+    // zox_make_prefab(e)
+    zox_prefab_child(prefab_vox)
     zox_name("prefab_character3D")
     add_seed(world, e, 999);
     add_physics3D(world, e);
@@ -53,10 +54,10 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file
     #ifdef zox_disable_characters3D
         if (main_character3D != 0) return 0;
     #endif
-    // ecs_defer_begin(world);
     // ecs_entity_t e = ecs_clone(world, 0, prefab, 1);
     // ecs_remove_id(world, e, EcsPrefab);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
+    zox_instance(prefab)
+    // ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
     zox_set_only(e, Position3D, { position })
     zox_set_only(e, LastPosition3D, { position })
     zox_set_only(e, Rotation3D, { rotation })
@@ -65,7 +66,7 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file
         set_vox_from_vox_file(world, e, vox);
     #endif
     zox_set_only(e, RenderLod, { lod })
-    // ecs_defer_end(world);
+    // spawn_element_world(world, e);
     main_character3D = e;
     return e;
 }

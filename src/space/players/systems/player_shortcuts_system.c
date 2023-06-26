@@ -60,9 +60,7 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
                 }
             } else if (ecs_has(world, device_entity, Gamepad)) {
                 const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
-                if (gamepad->right_stick_push.pressed_this_frame) {
-                    is_toggle_camera = 1;
-                }
+                if (gamepad->right_stick_push.pressed_this_frame) is_toggle_camera = 1;
             }
         }
         if (is_toggle_camera) {

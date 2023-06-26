@@ -13,5 +13,4 @@ void Velocity3DSystem(ecs_iter_t *it) { //! Veloco Rapters!
         position3D->value.z += velocity3D->value.z * delta_time;
         // zoxel_log(" + vs [%i] - [%lu] position [%fx%fx%f]\n", i, it->entities[i], position3D->value.x, position3D->value.y, position3D->value.z);
     }
-}
-zox_declare_system(Velocity3DSystem)
+} zox_declare_system(Velocity3DSystem)

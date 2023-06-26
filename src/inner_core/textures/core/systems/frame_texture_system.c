@@ -27,8 +27,7 @@ void generate_frame_texture(TextureData* textureData, const TextureSize *texture
             int distance_to_corner_b = (textureSize->value.x - 1 - pixel_position.x) + pixel_position.y;
             int distance_to_corner_c = (textureSize->value.x - 1 - pixel_position.x) + (textureSize->value.y - 1 - pixel_position.y);
             int distance_to_corner_d = pixel_position.x + (textureSize->value.y - 1 - pixel_position.y);
-            if (distance_to_corner_a <= empty_buffer || distance_to_corner_b <= empty_buffer
-                || distance_to_corner_c <= empty_buffer || distance_to_corner_d <= empty_buffer) {
+            if (distance_to_corner_a <= empty_buffer || distance_to_corner_b <= empty_buffer || distance_to_corner_c <= empty_buffer || distance_to_corner_d <= empty_buffer) {
                 textureData->value[index] = empty;
             } else {
                 textureData->value[index] = fill_color;
@@ -90,14 +89,12 @@ void FrameTextureSystem(ecs_iter_t *it) {
         TextureData *textureData = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
         const Color *color2 = &colors[i];
-        int newLength = textureSize->value.x * textureSize->value.y;
+        int length = textureSize->value.x * textureSize->value.y;
         textureDirty->value = 1;
-        re_initialize_memory_component(textureData, color, newLength)
+        re_initialize_memory_component(textureData, color, length)
         generate_frame_texture(textureData, textureSize, color2);
-        // zoxel_log(" > generated frame texture\n");
     }
-}
-zox_declare_system(FrameTextureSystem)
+} zox_declare_system(FrameTextureSystem)
 
 
 /* || color_equal(textureData->value[int2_array_index(int2_down(pixel_position), textureSize->value)], empty) ||

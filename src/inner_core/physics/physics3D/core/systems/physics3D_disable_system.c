@@ -23,6 +23,5 @@ void Physics3DDisableSystem(ecs_iter_t *it) {
             // zoxel_log("disabling physics 3D [%lu]\n", it->entities[i]);
         }
     }
-}
-zox_declare_system(Physics3DDisableSystem)
+} zox_declare_system(Physics3DDisableSystem)
 

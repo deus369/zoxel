@@ -1,12 +1,7 @@
-const float friction_threshold = 0.001f;
-const float rotation_friction = -0.7f;
-
 float4 calculate_dissipation(const float4 omega3D) {
     float mag = sqrt(omega3D.x * omega3D.x + omega3D.y * omega3D.y + omega3D.z * omega3D.z + omega3D.w * omega3D.w);
-    if (mag < friction_threshold) {
-        return quaternion_identity;
-    }
-    float factor = (rotation_friction * mag) / (mag * mag + 1e-6);
+    if (mag < dissipation_threshold) return quaternion_identity;
+    float factor = (-rotation_friction * mag) / (mag * mag + 1e-6);
     float3 euler = quaternion_to_euler(omega3D);
     float3_multiply_float_p(&euler, factor);
     return quaternion_from_euler(euler);
@@ -20,8 +15,7 @@ void Dissipation3DSystem(ecs_iter_t *it) {
         Alpha3D *alpha3D = &apha3Ds[i];
         quaternion_rotate_quaternion_p(&alpha3D->value, calculate_dissipation(omega3D->value));
     }
-}
-zox_declare_system(Dissipation3DSystem)
+} zox_declare_system(Dissipation3DSystem)
 
 /*float norm = sqrt(pow(alpha3D.x, 2) + pow(alpha3D.y, 2) + pow(alpha3D.z, 2) + pow(alpha3D.w, 2));
 // float norm = sqrt(pow(omega3D.x, 2) + pow(omega3D.y, 2) + pow(omega3D.z, 2) + pow(omega3D.w, 2));

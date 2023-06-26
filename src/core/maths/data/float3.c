@@ -56,6 +56,7 @@ float3 float3_divide_float(float3 input, float div) {
 
 float3 float3_normalize(float3 input) {
     float length = sqrt(input.x * input.x + input.y * input.y + input.z * input.z);
+    if (abs(length) <= 0.00001f) return input;
     return float3_divide_float(input, length);
 }
 

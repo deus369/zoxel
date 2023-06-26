@@ -10,5 +10,4 @@ void Jump3DSystem(ecs_iter_t *it) {
         jump->value -= delta_time;
         if (jump->value < 0) jump->value = 0;
     } 
-}
-zox_declare_system(Jump3DSystem)
+} zox_declare_system(Jump3DSystem)

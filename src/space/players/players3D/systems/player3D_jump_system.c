@@ -31,5 +31,4 @@ void Player3DJumpSystem(ecs_iter_t *it) {
             ecs_modified(world, characterLink->value, Grounded);
         }
     }
-}
-zox_declare_system(Player3DJumpSystem)
+} zox_declare_system(Player3DJumpSystem)

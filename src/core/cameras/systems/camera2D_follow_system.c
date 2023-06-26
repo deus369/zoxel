@@ -3,7 +3,6 @@ void CameraFollow2DSystem(ecs_iter_t *it) {
     const CameraTarget *cameraTargets = ecs_field(it, CameraTarget, 3);
     Position3D *positions = ecs_field(it, Position3D, 4);
     Rotation3D *rotations = ecs_field(it, Rotation3D, 5);
-    // player positions
     for (int i = 0; i < it->count; i++) {
         const FreeRoam *freeRoam = &freeRoams[i];
         if (freeRoam->value == 0) {
@@ -27,5 +26,4 @@ void CameraFollow2DSystem(ecs_iter_t *it) {
             rosition->value = float4_identity();
         }
     }
-}
-zox_declare_system(CameraFollow2DSystem)
+} zox_declare_system(CameraFollow2DSystem)

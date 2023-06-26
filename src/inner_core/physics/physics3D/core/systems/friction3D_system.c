@@ -1,5 +1,4 @@
 // todo: only do this when scraping against a surface
-
 void Friction3DSystem(ecs_iter_t *it) {
     const Velocity3D *velocity3Ds = ecs_field(it, Velocity3D, 2);
     Acceleration3D *acceleration3Ds = ecs_field(it, Acceleration3D, 3);
@@ -10,5 +9,4 @@ void Friction3DSystem(ecs_iter_t *it) {
         // acceleration3D->value.y -= velocity3D->value.y * friction3D;
         acceleration3D->value.z -= velocity3D->value.z * friction3D;
     }
-}
-zox_declare_system(Friction3DSystem)
+} zox_declare_system(Friction3DSystem)

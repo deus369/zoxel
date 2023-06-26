@@ -140,4 +140,5 @@
 // #define zox_test_voxes
 // #define zoxel_test_single_character3Ds      // spawn 1 penguin
 // #define zoxel_disable_attach_on_start
-#define zoxel_testing_tiny_terrain
+// #define zoxel_testing_tiny_terrain
+// #define zoxel_testing_tiny_terrain2

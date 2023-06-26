@@ -20,7 +20,7 @@ void ElementMeshSystem(ecs_iter_t *it) {
         if (initializeEntityMesh->value != 1) continue;
         const CanvasLink *canvasLink = &canvasLinks[i];
         if (canvasLink->value == 0) continue;
-        ecs_entity_t e = it->entities[i];
+        // ecs_entity_t e = it->entities[i];
         const PixelSize *pixelSize = &pixelSizes[i];
         MeshDirty *meshDirty = &meshDirtys[i];
         GenerateTexture *generateTexture = &generateTextures[i];
@@ -55,7 +55,7 @@ void ElementMeshSystem(ecs_iter_t *it) {
 } zox_declare_system(ElementMeshSystem)
 
 void ElementMesh3DSystem(ecs_iter_t *it) {
-    const PixelSize *pixelSizes = ecs_field(it, PixelSize, 2);
+    // const PixelSize *pixelSizes = ecs_field(it, PixelSize, 2);
     const CanvasLink *canvasLinks = ecs_field(it, CanvasLink, 3);
     InitializeEntityMesh *initializeEntityMeshs = ecs_field(it, InitializeEntityMesh, 4);
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 5);
@@ -67,7 +67,7 @@ void ElementMesh3DSystem(ecs_iter_t *it) {
         if (canvasLink->value == 0) continue;
         // const PixelSize *canvasSize = ecs_get(world, canvasLink->value, PixelSize);
         ecs_entity_t e = it->entities[i];
-        const PixelSize *pixelSize = &pixelSizes[i];
+        // const PixelSize *pixelSize = &pixelSizes[i];
         MeshDirty *meshDirty = &meshDirtys[i];
         GenerateTexture *generateTexture = &generateTextures[i];
         // float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
@@ -81,6 +81,6 @@ void ElementMesh3DSystem(ecs_iter_t *it) {
         initializeEntityMesh->value = 0;
         meshDirty->value = 1;
         generateTexture->value = 1;
-        zoxel_log(" o> mesh_3D spawned [%lu]\n", it->entities[i]);
+        // zoxel_log(" o> mesh_3D spawned [%lu]\n", it->entities[i]);
     }
 } zox_declare_system(ElementMesh3DSystem)
