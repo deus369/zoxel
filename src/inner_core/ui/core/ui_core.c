@@ -43,6 +43,17 @@ zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t)
 #include "util/toggle_util.c"
 #include "util/resize_util.c"
 
+unsigned char can_render_ui(ecs_world_t *world, ecs_entity_t e) {
+    if (ecs_has(world, e, UIHolderLink)) {
+        const UIHolderLink *uiHolderLink = ecs_get(world, e, UIHolderLink);
+        if (ecs_has(world, uiHolderLink->value, RenderLod)) {
+            const RenderLod *renderLod = ecs_get(world, uiHolderLink->value, RenderLod);
+            if (renderLod->value == 255 || renderLod->value > 1) return 0;
+        }
+    }
+    return 1;
+}
+
 void spawn_prefabs_ui_core(ecs_world_t *world) {
     spawn_prefab_canvas(world);
     spawn_prefab_element(world);

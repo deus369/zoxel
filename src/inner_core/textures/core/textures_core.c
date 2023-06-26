@@ -21,6 +21,8 @@ zox_byte_component(GenerateTexture)
 zox_component(AnimateTexture, double)
 zox_entities_component(TextureLinks)
 zox_memory_component(TilemapUVs, float2)
+zox_byte_component(OutlineThickness)
+zox_byte_component(FrameCorner)
 // zoxel_util_includes
 #include "util/textures_sdl_util.c"
 #include "util/textures_util.c"
@@ -59,6 +61,8 @@ zox_define_component(TextureSize)
 zox_define_component(GenerateTexture)
 zox_define_component(AnimateTexture)
 zox_define_component(TilemapSize)
+zox_define_component(OutlineThickness)
+zox_define_component(FrameCorner)
 zox_define_memory_component(TextureData)
 zox_define_entities_component(TextureLinks, [in] TextureLinks)
 zox_define_memory_component(TilemapUVs)
@@ -67,7 +71,7 @@ zox_filter(generate_textures2, [none] FrameTexture, [in] GenerateTexture)
 // zoxel_system_defines
 zox_system(AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture)
 zox_texture_generation_system(NoiseTexture, NoiseTextureSystem)
-zox_system_ctx(FrameTextureSystem, EcsPreStore, generate_textures2, [none] FrameTexture, [in] GenerateTexture, [in] TextureSize, [in] Color, [out] TextureData, [out] TextureDirty)
+zox_system_ctx(FrameTextureSystem, EcsPreStore, generate_textures2, [none] FrameTexture, [in] GenerateTexture, [in] TextureSize, [in] Color, [in] OutlineThickness, [in] FrameCorner, [out] TextureData, [out] TextureDirty)
 zox_system(TilemapGenerationSystem, EcsOnUpdate, [none] Tilemap, [in] TilemapSize, [in] TextureLinks, [in] GenerateTexture, [out] TextureSize, [out] TextureData, [out] TextureDirty, [out] TilemapUVs)
 if (!headless) {
     zox_system_1(TextureUpdateSystem, texture_update_pipeline, [out] TextureDirty, [in] TextureData, [in] TextureSize, [in] TextureGPULink)

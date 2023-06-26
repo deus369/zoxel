@@ -11,10 +11,9 @@ unsigned char check_texture(TextureData* textureData, const TextureSize *texture
     return 0;
 }
 
-//! Our function that creates a textureData.
-void generate_frame_texture(TextureData* textureData, const TextureSize *textureSize, const Color *color2) {
-    const int empty_buffer = 6;
-    const int frame_thickness = 2;
+void generate_frame_texture(TextureData* textureData, const TextureSize *textureSize, const Color *color2, unsigned char frame_thickness, unsigned char corner_size) {
+    // const int corner_size = 5; // 7
+    // const int frame_thickness = 2;
     color fill_color = color2->value;
     color outline_color = { fill_color.g + 25 + rand() % 25, fill_color.b + 25 + rand() % 25, fill_color.r + 25 + rand() % 25, 255 };
     color empty = { 0, 0, 0, 0 };
@@ -22,12 +21,11 @@ void generate_frame_texture(TextureData* textureData, const TextureSize *texture
     int2 pixel_position = { 0, 0 };
     for (pixel_position.y = 0; pixel_position.y < textureSize->value.y; pixel_position.y++) {
         for (pixel_position.x = 0; pixel_position.x < textureSize->value.x; pixel_position.x++) {
-            // corner
             int distance_to_corner_a = pixel_position.x + pixel_position.y;
             int distance_to_corner_b = (textureSize->value.x - 1 - pixel_position.x) + pixel_position.y;
             int distance_to_corner_c = (textureSize->value.x - 1 - pixel_position.x) + (textureSize->value.y - 1 - pixel_position.y);
             int distance_to_corner_d = pixel_position.x + (textureSize->value.y - 1 - pixel_position.y);
-            if (distance_to_corner_a <= empty_buffer || distance_to_corner_b <= empty_buffer || distance_to_corner_c <= empty_buffer || distance_to_corner_d <= empty_buffer) {
+            if (distance_to_corner_a < corner_size || distance_to_corner_b < corner_size || distance_to_corner_c < corner_size || distance_to_corner_d < corner_size) {
                 textureData->value[index] = empty;
             } else {
                 textureData->value[index] = fill_color;
@@ -43,10 +41,7 @@ void generate_frame_texture(TextureData* textureData, const TextureSize *texture
                 index++;
                 continue;
             }
-            if (pixel_position.x <= frame_thickness ||
-                pixel_position.y <= frame_thickness ||
-                pixel_position.x >= textureSize->value.x - 1 - frame_thickness ||
-                pixel_position.y >= textureSize->value.y - 1 - frame_thickness) {
+            if (pixel_position.x < frame_thickness || pixel_position.y < frame_thickness || pixel_position.x > textureSize->value.x - 1 - frame_thickness || pixel_position.y > textureSize->value.y - 1 - frame_thickness) {
                 textureData->value[index] = outline_color;
             } else if (check_texture(textureData, textureSize, pixel_position, empty, frame_thickness)) {
                 textureData->value[index] = outline_color;
@@ -79,20 +74,24 @@ void FrameTextureSystem(ecs_iter_t *it) {
     const GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 2);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 3);
     const Color *colors = ecs_field(it, Color, 4);
-    TextureData *textures = ecs_field(it, TextureData, 5);
-    TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 6);
+    const OutlineThickness *outlineThicknesss = ecs_field(it, OutlineThickness, 5);
+    const FrameCorner *frameEdges = ecs_field(it, FrameCorner, 6);
+    TextureData *textures = ecs_field(it, TextureData, 7);
+    TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 8);
     for (int i = 0; i < it->count; i++) {
         const GenerateTexture *generateTexture = &generateTextures[i];
         if (generateTexture->value == 0) continue;
         TextureDirty *textureDirty = &textureDirtys[i];
         if (textureDirty->value != 0) continue;
-        TextureData *textureData = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
         const Color *color2 = &colors[i];
+        const OutlineThickness *outlineThickness = &outlineThicknesss[i];
+        const FrameCorner *frameEdge = &frameEdges[i];
+        TextureData *textureData = &textures[i];
         int length = textureSize->value.x * textureSize->value.y;
-        textureDirty->value = 1;
         re_initialize_memory_component(textureData, color, length)
-        generate_frame_texture(textureData, textureSize, color2);
+        generate_frame_texture(textureData, textureSize, color2, outlineThickness->value, frameEdge->value);
+        textureDirty->value = 1;
     }
 } zox_declare_system(FrameTextureSystem)
 
@@ -101,8 +100,8 @@ void FrameTextureSystem(ecs_iter_t *it) {
 color_equal(textureData->value[int2_array_index(int2_up(pixel_position), textureSize->value)], empty) ||
 color_equal(textureData->value[int2_array_index(int2_left(pixel_position), textureSize->value)], empty) ||
 color_equal(textureData->value[int2_array_index(int2_right(pixel_position), textureSize->value)], empty)*/
-//if (j <= empty_buffer || j >= textureSize->value.x - 1 - empty_buffer
-//    || k <= empty_buffer || k >= textureSize->value.y - 1 - empty_buffer)
+//if (j <= corner_size || j >= textureSize->value.x - 1 - corner_size
+//    || k <= corner_size || k >= textureSize->value.y - 1 - corner_size)
 /*else if (j <= frame_thickness || k <= frame_thickness || j >= textureSize->value.x - 1 - frame_thickness || k >= textureSize->value.y - 1 - frame_thickness)
 {
     textureData->value[index] = darker;

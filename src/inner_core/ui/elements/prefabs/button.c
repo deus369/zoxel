@@ -6,6 +6,8 @@ ecs_entity_t spawn_prefab_button(ecs_world_t *world) {
     zox_name("prefab_button")
     zox_add_tag(e, Button)
     zox_add_tag(e, FrameTexture)
+    zox_set(e, FrameCorner, { 7 })
+    zox_set(e, OutlineThickness, { 3 })
     zox_set(e, Color, {{ 35, 88, 66, 255 }})
     zox_add_tag(e, Selectable)
     zox_add_tag(e, Clickable)

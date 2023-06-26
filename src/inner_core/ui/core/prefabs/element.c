@@ -4,6 +4,8 @@ ecs_entity_t spawn_prefab_element(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
     zox_add_tag(e, FrameTexture)
+    zox_set(e, FrameCorner, { 7 })
+    zox_set(e, OutlineThickness, { 3 })
     zox_set(e, Color, {{ 66, 35, 25, 255 }})
     zox_set(e, SelectableState, { 0 })
     add_ui_plus_components(world, e);

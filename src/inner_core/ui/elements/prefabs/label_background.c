@@ -6,6 +6,8 @@ ecs_entity_t spawn_prefab_label_background(ecs_world_t *world) {
     zox_name("prefab_label_background")
     zox_add_tag(e, Label)
     zox_add_tag(e, FrameTexture)
+    zox_set(e, FrameCorner, { 7 })
+    zox_set(e, OutlineThickness, { 3 })
     zox_set(e, Color, {{ 35, 88, 66, 255 }})
     add_ui_plus_components(world, e);
     ecs_defer_end(world);
