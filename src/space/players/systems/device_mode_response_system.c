@@ -2,10 +2,10 @@ ecs_entity_t get_first_ui(ecs_world_t *world) {
     ecs_entity_t first_ui = 0;
     if (ecs_is_alive(world, main_menu)) {
         const Children *ui_children = ecs_get(world, main_menu, Children);
-        first_ui = ui_children->value[1];
-    } else if (ecs_is_alive(world, pause_ui)) {
+        if (ui_children->length >= 1) first_ui = ui_children->value[1];
+    } else if (pause_ui != 0 && ecs_is_alive(world, pause_ui)) {
         const Children *ui_children = ecs_get(world, pause_ui, Children);
-        first_ui = ui_children->value[1];
+        if (ui_children->length >= 1) first_ui = ui_children->value[1];
     }
     return first_ui;
 }

@@ -15,11 +15,11 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label, int2 
 #ifdef zoxel_on_android
     int labels_count = 1;
     const text_group labels[] = { { "play" } };
-    ClickEvent events[] = { { &button_event_play_game } };
+    const ClickEvent events[] = { { &button_event_play_game } };
 #else
     int labels_count = 2;
     const text_group labels[] = { { "play" }, { "exit" } };
-    ClickEvent events[] = { { &button_event_play_game }, { &button_event_exit_app } };
+    const ClickEvent events[] = { { &button_event_play_game }, { &button_event_exit_app } };
     /*int labels_count = 3;
     const text_group labels[] = { { "play" }, { "options" }, { "exit" } };
     ClickEvent events[] = { { &button_event_play_game }, { NULL }, { &button_event_exit_app } };*/

@@ -33,10 +33,8 @@ zox_define_tag(PlayerCharacter)
 zox_define_tag(PlayerCharacter2D)
 #ifdef zoxel_physics2D
     zox_filter(playerCharacter2DQuery2, [none] PlayerCharacter2D, [out] Acceleration2D, [in] Velocity2D, [in] physics.DisableMovement)
-    zox_system_ctx(Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2, [in] Keyboard)
 #endif
 zox_filter(cameras, [none] cameras.Camera, [in] cameras.FreeRoam, [out] Position3D, [out] Rotation3D)
-zox_system_ctx(FreeCameraMoveSystem, EcsOnUpdate, cameras, [in] Keyboard)
 #ifdef zox_test_quaternion_camera
     zox_filter(cameras2, [none] cameras.Camera, [in] cameras.FreeRoam,[out] Rotation3D)
 #else
@@ -44,14 +42,19 @@ zox_system_ctx(FreeCameraMoveSystem, EcsOnUpdate, cameras, [in] Keyboard)
 #endif
 zox_filter(free_roam_cameras, [none] cameras.Camera, [out] cameras.FreeRoam, [none] !cameras.FirstPersonCamera)
 zox_filter(player_character3Ds, [none] PlayerCharacter, [out] physics.DisableMovement)
+#ifdef zoxel_physics2D
+    zox_system_ctx(Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2, [in] Keyboard)
+#endif
+zox_system_ctx(FreeCameraMoveSystem, EcsOnUpdate, cameras, [in] Keyboard)
 zox_system_ctx(FreeCameraRotateSystem, EcsOnUpdate, cameras2, [in] Mouse)
 zox_system_ctx(FreeCameraToggleSystem, EcsOnUpdate, free_roam_cameras, [in] Mouse, [out] MouseLock)
 zox_system_ctx(FreeCameraDisableMovementSystem, EcsOnUpdate, player_character3Ds, [in] Mouse)
 zox_system(Player2DTestSystem, EcsOnUpdate, [in] Keyboard)
 zox_system(DeviceModeResponseSystem, EcsOnUpdate, [in] DeviceMode, [in] DeviceModeDirty)
 zox_system(PlayerShortcutsSystem, EcsPreStore, [none] Player, [in] DeviceLinks)
-zox_system_1(PlayerPauseSystem, EcsPreStore, [none] Player, [in] DeviceLinks)   // todo: make this work in threading... worked in 3.1.3
 zox_import_module(Players3D)
+// todo: make this work in threading... worked in 3.1.3 - EcsPreStore | EcsOnUpdate
+zox_system_1(PlayerPauseSystem, EcsPreStore, [none] Player, [in] DeviceLinks)
 zoxel_end_module(Players)
 
 #endif

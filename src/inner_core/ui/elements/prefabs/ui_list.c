@@ -14,9 +14,7 @@ ecs_entity_t spawn_prefab_ui_list(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, const char *header_label,
-    int list_count, const text_group labels[], const ClickEvent events[],
-    int2 position, float2 anchor, unsigned char is_close_button) {
+ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, const char *header_label, int list_count, const text_group labels[], const ClickEvent events[], int2 position, float2 anchor, unsigned char is_close_button) {
     int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
     float ui_scale = default_ui_scale;
     int font_size = 28;
@@ -42,9 +40,9 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, const char *
         const char* label = labels[i].text;
         int array_index = 1 + i;
         children.value[array_index] = spawn_button(world, e, label_position, button_padding, (float2) { 0.5f, 0.5f }, label, font_size, 1, position2D, window_size, canvas_size);
-        zox_set(children.value[array_index], ClickEvent, { events[i].value })
+        zox_set_only(children.value[array_index], ClickEvent, { events[i].value })
     }
-    ecs_set(world, e, Children, { children.length, children.value });
+    zox_set_only(e, Children, { children.length, children.value })
     #ifdef zoxel_include_players
         if (list_count > 0) select_first_button(world, children.value[1]);
     #endif

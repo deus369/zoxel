@@ -9,8 +9,7 @@ ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     zox_set(e, FrameCorner, { 7 })
     zox_set(e, OutlineThickness, { 3 })
     zox_set(e, Color, {{ 66, 35, 25, 255 }})
-    zox_add(e, Children)
-    // zox_set(e, SelectableState, { 0 })
+    zox_set(e, Children, { 0, NULL })
     add_ui_plus_components(world, e);
     ecs_defer_end(world);
     window_prefab = e;
