@@ -25,6 +25,4 @@ void toggle_pause_ui(ecs_world_t *world) {
         zox_delete(pause_ui)
         pause_ui = 0;
     }
-    // spawning doesn't work on multithreaded systems anymore
-    //zoxel_log(" > alive ui? %s\n", ecs_is_alive(world, pause_ui) ? "alive" : "dead");
 }

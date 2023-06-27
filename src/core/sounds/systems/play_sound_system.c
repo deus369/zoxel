@@ -1,10 +1,6 @@
 void PlaySoundSystem(ecs_iter_t *it) {
-    int group = -1;  // -1 indicates all channels
-    int channels_available = Mix_GroupAvailable(group);
-    if (channels_available == 0) {
-        // printf("No free channels available!\n");
-        return;
-    }
+    int channels_available = Mix_GroupAvailable(-1); // -1 indicates all channels
+    if (channels_available == 0) return;
     ecs_world_t *world = it->world;
     TriggerSound *playSounds = ecs_field(it, TriggerSound, 2);
     const SoundLength *soundLengths = ecs_field(it, SoundLength, 3);

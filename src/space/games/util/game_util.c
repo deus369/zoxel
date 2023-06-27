@@ -7,8 +7,7 @@ ecs_entity_t respawn_camera(ecs_world_t *world, ecs_entity_t old_camera_entity) 
     int2 camera_screen_dimensions = ecs_get(world, old_camera_entity, ScreenDimensions)->value;
     float4x4 view_matrix = ecs_get(world, old_camera_entity, ViewMatrix)->value;
     render_camera_matrix = view_matrix;
-    // spawn new free roam camera
-    ecs_entity_t e = spawn_free_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { });
+    ecs_entity_t e = spawn_free_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { }); // spawn new free roam camera
     zox_set_only(e, ViewMatrix, { view_matrix })
     zox_delete(old_camera_entity)
     return e;
@@ -20,8 +19,7 @@ ecs_entity_t respawn_base_camera(ecs_world_t *world, ecs_entity_t old_camera_ent
     int2 camera_screen_dimensions = ecs_get(world, old_camera_entity, ScreenDimensions)->value;
     float4x4 view_matrix = ecs_get(world, old_camera_entity, ViewMatrix)->value;
     render_camera_matrix = view_matrix;
-    // spawn new free roam camera
-    ecs_entity_t e = spawn_base_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { });
+    ecs_entity_t e = spawn_base_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { }); // spawn new free roam camera
     zox_set_only(e, ViewMatrix, { view_matrix })
     zox_delete(old_camera_entity)
     return e;
@@ -29,7 +27,6 @@ ecs_entity_t respawn_base_camera(ecs_world_t *world, ecs_entity_t old_camera_ent
 
 void end_game(ecs_world_t *world) {
     zoxel_log(" > game state => [playing] to [main_menu]\n");
-    // zoxel_log(" > deleting pause ui [%lu]\n", pause_ui);
     zox_delete(pause_ui)
     const int edge_buffer = 8 * default_ui_scale;
     const char *game_name = "zoxel";
