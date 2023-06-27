@@ -9,7 +9,9 @@ if ! has_library "gcc"; then
 fi
 
 echo "> installing vulkan"
-install_first_library "libvulkan-dev" "vulkan-devel" "vulkan-tools" "vulkan-headers"
+install_first_library "libvulkan-dev" "vulkan-devel" "vulkan-headers" # "vulkan-tools"
+
+bash bash/sdl/install_sdl.sh
 
 if is_steam_deck; then
     # for some reason had to manually install gcc
@@ -36,5 +38,3 @@ if is_steam_deck; then
     #     install_library "base-devel"
     # fi
 fi
-
-bash bash/sdl/install_sdl.sh
