@@ -56,14 +56,9 @@ zox_define_component(ScreenPosition)
 zox_define_component(FieldOfView)
 zox_define_component(CameraNearDistance)
 zox_define_component(FreeRoam)
-// zoxel_system_defines
-#ifdef main_thread_projection_matrix_system
-    zox_system_1(ProjectionMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
-#else
-    zox_system(ProjectionMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
-#endif
-zox_system(ViewMatrixSystem, EcsPostUpdate, [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)
 zox_system(CameraFollow2DSystem, EcsOnUpdate, [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D)
+zox_system(ViewMatrixSystem, EcsPostUpdate, [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)
+zox_system(ProjectionMatrixSystem, EcsPreStore, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
 zoxel_end_module(Cameras)
 
 //   todo: Custom name for namespaces used in flecs

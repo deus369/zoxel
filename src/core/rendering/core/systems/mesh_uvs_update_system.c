@@ -1,6 +1,5 @@
 // Once main thread is fixed, update to gpu in this system.
 // extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
-
 // todo: update this in thread
 void MeshUvsUpdateSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(NULL, it)) return;

@@ -28,8 +28,8 @@ zox_define_component(MusicTime)
 zox_define_component(MusicSpeed)
 zox_define_memory_component(MusicData)
 zox_system(MusicGenerateSystem, EcsPostUpdate, [none] Music, [in] GenerateMusic, [out] MusicData, [out] InstrumentType)
-zox_system(MusicPlaySystem, EcsOnUpdate, [none] Music, [in] MusicData, [in] MusicSpeed, [in] InstrumentType, [out] MusicNote, [out] MusicTime)
 zox_define_reset_system(GenerateMusicResetSystem, GenerateMusic)
+zox_system_1(MusicPlaySystem, main_thread_pipeline, [none] Music, [in] MusicData, [in] MusicSpeed, [in] InstrumentType, [out] MusicNote, [out] MusicTime)
 zoxel_end_module(Musics)
 
 //! \todo MusicPlayer -> play a music and pick a new one when song ends

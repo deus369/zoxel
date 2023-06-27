@@ -8,9 +8,7 @@ int2 get_zigel_position(unsigned char index, unsigned char total_length, unsigne
     int half_size = zigel_size.x * total_length / 2.0f;
     int2 zigel_position = (int2) { (zigel_size.x * index - half_size) + zigel_size.x / 2, 0 };
     // default was centred
-    /*if (text_alignment == zox_zext_alignment_centred) {
-
-    } else*/
+    /*if (text_alignment == zox_zext_alignment_centred) { } else*/
     if (text_alignment == zox_zext_alignment_right) {
         zigel_position.x -= half_size;
         zigel_position.x -= text_padding.x;

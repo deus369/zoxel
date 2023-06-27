@@ -30,5 +30,4 @@ void MusicPlaySystem(ecs_iter_t *it) {
             #endif
         }
     }
-}
-zox_declare_system(MusicPlaySystem)
+} zox_declare_system(MusicPlaySystem)

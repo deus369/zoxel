@@ -3,7 +3,7 @@
 
 // zoxel_settings
 ecs_world_t *world;
-unsigned char target_frame_rate = 0;    // set to 30 to test on low end devices
+unsigned char target_frame_rate = 0;
 unsigned char profiler = 0;
 #include "util/import_sdl.c"    // sdl is here
 #include "util/logs.c"

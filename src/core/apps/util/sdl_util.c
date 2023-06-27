@@ -410,7 +410,6 @@ unsigned char create_main_window(ecs_world_t *world) {
                 return EXIT_FAILURE;
             }
             VkSurfaceKHR surface = create_vulkan_surface(window, instance);
-            /**/
             spawn_app_vulkan(world, window, &surface);
             main_vulkan_context = &surface;
             main_vulkan_instance = &instance;

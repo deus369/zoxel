@@ -18,11 +18,9 @@ ecs_entity_t spawn_prefab_app(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_app(ecs_world_t *world, SDL_Window* window, SDL_GLContext* context) {
-    ecs_defer_begin(world);
     zox_instance(app_prefab)
     zox_set_only(e, SDLWindow, { window })
     zox_set_only(e, Context, { context })
-    ecs_defer_end(world);
     main_app = e;
     return e;
 }

@@ -1,9 +1,7 @@
 // #define zox_debug_billboard_system
-
 #ifdef zox_debug_billboard_system
     extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
 #endif
-
 void BillboardSystem(ecs_iter_t *it) {
     ecs_entity_t main_camera = main_cameras[0];
     // float4 flip_rotation = quaternion_from_euler((float3) { 0, 180 * degreesToRadians, 0 });

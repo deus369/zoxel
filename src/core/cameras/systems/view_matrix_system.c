@@ -1,5 +1,4 @@
-// todo: this should only update when either ScreenDimensions or FieldOfView changes
-//      do a test function for this change perhaps
+// todo: this should only update when either ScreenDimensions or FieldOfView changes - do a test function for this change perhaps
 void ViewMatrixSystem(ecs_iter_t *it) {
     const Position3D *positions = ecs_field(it, Position3D, 1);
     const Rotation3D *rotations = ecs_field(it, Rotation3D, 2);
@@ -15,5 +14,4 @@ void ViewMatrixSystem(ecs_iter_t *it) {
         float4x4 cameraViewMatrix = float4x4_multiply(cameraPositionMatrix, quaternion_to_matrix(rotation->value));
         viewMatrix->value = float4x4_multiply(cameraViewMatrix, projectionMatrix->value);
     }
-}
-zox_declare_system(ViewMatrixSystem)
+} zox_declare_system(ViewMatrixSystem)

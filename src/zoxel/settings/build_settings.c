@@ -66,7 +66,6 @@
 // #define zoxel_time_zext_update_system
 // tests for single thread systems, I get alot more ms timing there
 // #define main_thread_zext_update_system
-// #define main_thread_projection_matrix_system
 // voxels timing
 // #define zoxel_time_stream_point_system           
 // #define zoxel_time_terrain_chunk_system

@@ -1,4 +1,3 @@
-//! Calculate the view matrix
 void calculate_frustrum_matrix(float4x4 *matrix, float left, float right, float bottom, float top, float znear, float zfar) {
     float temp, temp2, temp3, temp4;
     temp = 2.0 * znear;
@@ -27,10 +26,7 @@ void calculate_frustrum_matrix(float4x4 *matrix, float left, float right, float 
 // This should only update when either ScreenDimensions or FieldOfView changes
 void ProjectionMatrixSystem(ecs_iter_t *it) {
     #ifdef main_thread_projection_matrix_system
-        if (!ecs_query_changed(NULL, it)) {  // this doesn't work in multithreaded
-            // printf("A Component has not changed.\n");
-            return;
-        }
+        if (!ecs_query_changed(NULL, it)) return;
     #endif
     // printf("ProjectionMatrixSystem Updated\n");
     const ScreenDimensions *screenDimensions = ecs_field(it, ScreenDimensions, 1);
@@ -42,9 +38,7 @@ void ProjectionMatrixSystem(ecs_iter_t *it) {
         const ScreenDimensions *screenDimensions2 = &screenDimensions[i];
         int screenWidth = screenDimensions2->value.x;
         int screenHeight = screenDimensions2->value.y;
-        if(screenHeight <= 0) {
-            continue;
-        }
+        if(screenHeight <= 0) continue;
         const FieldOfView *fieldOfView = &fieldOfViews[i];
         const CameraNearDistance *cameraNearDistance = &cameraNearDistances[i];
         ProjectionMatrix *projectionMatrix = &projectionMatrixs[i];
@@ -57,5 +51,4 @@ void ProjectionMatrixSystem(ecs_iter_t *it) {
         // float4x4_print(view_matrix->value);
         // printf("    Perspective Updated [%ix%i]\n", screenWidth, screenHeight);
     }
-}
-zox_declare_system(ProjectionMatrixSystem)
+} zox_declare_system(ProjectionMatrixSystem)

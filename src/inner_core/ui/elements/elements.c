@@ -33,8 +33,8 @@ zox_define_tag(Button)
 zox_define_tag(Window)
 zox_define_tag(Header)
 zox_define_tag(CloseButton)
-zox_system(ButtonClickSoundSystem, EcsPostUpdate, [none] Button, [in] ClickableState)
 zox_system(HeaderDragSystem, EcsPostLoad, [none] Header, [in] DragableState, [in] DraggingDelta, [in] ParentLink)
+zox_system(ButtonClickSoundSystem, EcsPostUpdate, [none] Button, [in] ClickableState)
 zoxel_end_module(Elements)
 
 #endif

@@ -55,9 +55,13 @@ int begin_core(int argc, char* argv[]) {
 
 void close_core() {
     close_ecs();
+    zoxel_log(" > closed flecs\n");
     if (!headless) {
         dispose_shaders();
+        zoxel_log(" > closed shaders\n");
         close_audio_sdl();
+        zoxel_log(" > closed sdl audio\n");
         SDL_Quit();
+        zoxel_log(" > closed sdl\n");
     }
 }

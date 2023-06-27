@@ -3,8 +3,6 @@
 
 // zoxel_seettings
 #define canvas_edge_size 4
-#define ui_mesh_pipeline 0  // 0 | EcsPostUpdate
-// long int element_mesh_system_id;
 ecs_entity_t main_canvas;
 // zoxel_declare_components
 zox_declare_tag(Element)
@@ -88,12 +86,12 @@ if (!headless) {
         zox_system(ElementActivateSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterTarget)
         zox_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [out] NavigatorState, [out] NavigatorTimer, [out] RaycasterTarget)
     #endif
-    zox_system_1(ElementMeshSystem, EcsOnStore, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshGPULink, [out] MaterialGPULink, [out] TextureGPULink, [none] !Position3D)
-    zox_system_1(ElementMesh3DSystem, EcsOnStore, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture, [none] Position3D)
+    zox_system_1(ElementMeshSystem, main_thread_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshGPULink, [out] MaterialGPULink, [out] TextureGPULink, [none] !Position3D)
+    zox_system_1(ElementMesh3DSystem, main_thread_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture, [none] Position3D)
 }
 zox_system(ButtonClickEventSystem, EcsPostUpdate, [none] Element, [in] ClickableState, [in] ClickEvent) // EcsPostUpdate EcsPreStore EcsOnStore
-zox_system(UITrailSystem, EcsPreStore, [in] UIHolderLink, [in] UITrail, [out] Position3D)
-zox_system(BillboardSystem, EcsOnUpdate, [none] ElementBillboard, [in] CameraLink, [in] Position3D, [out] Rotation3D)
+zox_system(BillboardSystem, EcsOnStore, [none] ElementBillboard, [in] CameraLink, [in] Position3D, [out] Rotation3D)
+zox_system(UITrailSystem, EcsOnStore, [in] UIHolderLink, [in] UITrail, [out] Position3D)    // todo: put back to EcsPostUpdate - can't find out where character position updates atm
 zox_system(ResizeElementSystem, 0, [in] CanvasLink, [in] ParentLink)
 zoxel_end_module(UICore)
 

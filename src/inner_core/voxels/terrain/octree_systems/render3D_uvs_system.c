@@ -1,5 +1,4 @@
 // #define zoxel_render3D_uvs_system_overdebug
-
 void Render3DUvsSystem(ecs_iter_t *it) {
     #ifdef zoxel_time_render_3d_uvs
         begin_timing_absolute()

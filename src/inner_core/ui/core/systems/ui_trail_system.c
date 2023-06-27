@@ -3,7 +3,6 @@
     float ui_trail_debug_thickness = 2.0f;
     extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
 #endif
-
 void UITrailSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
     const UIHolderLink *uiHolderLinks = ecs_field(it, UIHolderLink, 1);

@@ -1,4 +1,7 @@
-//! A bunch of flecs system macros.
+//! A bunch of flecs system macros
+
+#define main_thread_pipeline EcsOnStore
+
 /**
 Chose one pipeline tag for each type of system.
     EcsOnLoad
