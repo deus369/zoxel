@@ -17,7 +17,7 @@ function has_library {
             echo "  [$library] is installed with dpkg"
             return 0
         fi
-        if [ pacman -Q "$library" ]; then
+        if ! pacman -Q "$library" 2>&1 | grep -q "was not found"; then
             echo "  [$library] is installed"
             return 0
         fi
