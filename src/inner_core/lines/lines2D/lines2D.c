@@ -27,9 +27,7 @@ zox_define_component(LineData2D)
 zox_define_component(LineElementData)
 zox_filter(line2Ds_query, [none] Line2D, [in] LineElementData, [none] CanvasLink, [none] LineData2D)
 zox_system_ctx(Line2DElementSystem, EcsPreUpdate, line2Ds_query, [none] Line2D, [in] LineElementData, [in] CanvasLink, [out] LineData2D)
-if (!headless) {
-    zox_system_1(Line2DRenderSystem, EcsOnStore, [none] Line2D, [in] LineData2D, [in] LineThickness, [in] Color)
-}
+if (!headless) zox_system_1(Line2DRenderSystem, EcsOnStore, [none] Line2D, [in] LineData2D, [in] LineThickness, [in] Color)
 zoxel_end_module(Lines2D)
 
 // testing

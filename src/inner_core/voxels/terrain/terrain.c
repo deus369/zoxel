@@ -47,7 +47,7 @@ zox_filter(terrain_chunks_query, [none] TerrainChunk, [in] ChunkPosition, [in] C
 // zoxel_system_defines
 zox_system_ctx(TerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery, [none] TerrainChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] ChunkPosition, [in] GenerateChunk)
 zox_system_ctx(OctreeTerrainChunkSystem, EcsPostLoad, generateTerrainChunkQuery, [none] TerrainChunk, [in] ChunkPosition, [in] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree)
-zox_system_ctx_1(StreamPointSystem, EcsOnUpdate, terrain_chunks_query, [none] Streamer, [in] Position3D, [out] StreamPoint)
+zox_system_ctx(StreamPointSystem, EcsOnUpdate, terrain_chunks_query, [none] Streamer, [in] Position3D, [out] StreamPoint)
 zox_system_ctx(ChunkUVsBuildSystem, EcsOnUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ChunkNeighbors, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshDirty, [none] !MeshColorRGBs)
 zox_system_ctx(ChunkOctreeBuildSystem, EcsPostUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] VoxLink, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty)
 zox_system_1(Render3DUvsSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies,

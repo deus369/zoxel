@@ -31,8 +31,8 @@ zox_define_component(LineData3D)
 zox_define_component(CubeLinesThickness)
 if (!headless) {
     zox_system_1(Line3DRenderSystem, 0, [none] Line3D, [in] LineData3D, [in] LineThickness, [in] ColorRGB)
-    line3D_render_system_id = ecs_id(Line3DRenderSystem);
     zox_system_1(CubeLineRenderSystem, 0, [none] CubeLines, [in] DebugCubeLines, [in] CubeLinesThickness, [in] ColorRGB, [in] Position3D, [in] Rotation3D, [in] Bounds3D, [in] RenderLod)
+    line3D_render_system_id = ecs_id(Line3DRenderSystem);
     cube_lines_render_system_id = ecs_id(CubeLineRenderSystem);
 }
 zoxel_end_module(Lines3D)

@@ -9,9 +9,7 @@ void AnimateTextSystem(ecs_iter_t *it) {
         animateZext->value -= deltaTime;
         if (animateZext->value <= 0.0) {
             animateZext->value += zext_animation_speed;
-            if (animateZext->value <= -zext_animation_speed) {
-                animateZext->value = 0;
-            }
+            if (animateZext->value <= -zext_animation_speed) animateZext->value = 0;
             ZextDirty *zextDirty = &zextDirtys[i];
             if (zextDirty->value == 0) {
                 zextDirty->value = 1;
@@ -26,8 +24,5 @@ void AnimateTextSystem(ecs_iter_t *it) {
             }
         }
     }
-    if (!changed) {
-        ecs_query_skip(it);
-    }
-}
-zox_declare_system(AnimateTextSystem)
+    if (!changed) ecs_query_skip(it);
+} zox_declare_system(AnimateTextSystem)

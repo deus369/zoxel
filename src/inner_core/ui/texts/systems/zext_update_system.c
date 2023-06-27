@@ -1,16 +1,11 @@
 //! When ui text updates, spawn/destroy font entities
 void ZextUpdateSystem(ecs_iter_t *it) {
-    ecs_query_t *changeQuery = it->ctx;
-    if (!changeQuery || !ecs_query_changed(changeQuery, NULL)) {
-        // printf("ZextUpdateSystem: changeQuery didn't change\n");
-        return;
-    }
+    if (!it->ctx || !ecs_query_changed(it->ctx, NULL)) return;
     #ifdef zoxel_time_zext_update_system
         begin_timing()
     #endif
-    // printf("ZextUpdateSystem: changeQuery changed\n");
-    // ecs_query_skip(it); //! Resetting doesn't cause table changes.
-    const ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
+    ecs_world_t *world = it->world;
+    ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
     const ZextData *zextDatas = ecs_field(it, ZextData, 3);
     const ZextSize *zextSizes = ecs_field(it, ZextSize, 4);
     const ZextPadding *zextPaddings = ecs_field(it, ZextPadding, 5);
@@ -20,10 +15,8 @@ void ZextUpdateSystem(ecs_iter_t *it) {
     const ZextAlignment *zextAlignments = ecs_field(it, ZextAlignment, 9);
     Children *childrens = ecs_field(it, Children, 10);
     for (int i = 0; i < it->count; i++) {
-        const ZextDirty *zextDirty = &zextDirtys[i];
-        if (zextDirty->value != 1) {
-            continue;
-        }
+        ZextDirty *zextDirty = &zextDirtys[i];
+        if (zextDirty->value != 1) continue;
         ecs_entity_t e = it->entities[i];
         const ZextData *zextData = &zextDatas[i];
         const ZextSize *zextSize = &zextSizes[i];
@@ -33,8 +26,11 @@ void ZextUpdateSystem(ecs_iter_t *it) {
         const PixelSize *pixelSize = &pixelSizes[i];
         const ZextAlignment *zextAlignment = &zextAlignments[i];
         Children *children = &childrens[i];
-        // zoxel_log(" + updating zigels on zext\n");
         spawn_zext_zigels(world, e, children, zextData, zextSize->value, zextAlignment->value, zextPadding->value, layer2D->value, position2D->value, pixelSize->value);
+        zextDirty->value = 0;
+        #ifdef zoxel_debug_zigel_updates
+            zoxel_log(" > zext is updating [%lu]\n", (long int) it->entities[i]);
+        #endif
         #ifdef zoxel_time_zext_update_system
             did_do_timing()
         #endif
@@ -42,5 +38,4 @@ void ZextUpdateSystem(ecs_iter_t *it) {
     #ifdef zoxel_time_zext_update_system
         end_timing("    - zext_update_system")
     #endif
-}
-zox_declare_system(ZextUpdateSystem)
+} zox_declare_system(ZextUpdateSystem)

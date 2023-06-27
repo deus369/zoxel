@@ -6,6 +6,7 @@ zox_declare_tag(OptionsUI)
 zox_declare_tag(PauseUI)
 zox_declare_tag(FPSDisplay)
 zox_declare_tag(QuadsCountLabel)
+zox_component(QuadsCount, int)
 zox_component(FPSDisplayTicker, double)
 #include "fun/button_event_play_game.c"
 #include "fun/button_event_exit_app.c"
@@ -32,9 +33,10 @@ zox_define_tag(OptionsUI)
 zox_define_tag(PauseUI)
 zox_define_tag(FPSDisplay)
 zox_define_tag(QuadsCountLabel)
+zox_define_component(QuadsCount)
 zox_define_component(FPSDisplayTicker)
-zox_system(FpsDisplaySystem, EcsPreUpdate, [out] FPSDisplayTicker, [out] ZextDirty, [out] ZextData)
-zox_system(QuadsLabelSystem, EcsPreUpdate, [none] QuadsCountLabel, [out] ZextDirty, [out] ZextData)
+zox_system(FpsDisplaySystem, EcsOnUpdate, [out] FPSDisplayTicker, [out] ZextDirty, [out] ZextData)
+zox_system(QuadsLabelSystem, EcsOnUpdate, [none] QuadsCountLabel, [out] QuadsCount, [out] ZextDirty, [out] ZextData)
 zoxel_end_module(GameUI)
 
 #endif

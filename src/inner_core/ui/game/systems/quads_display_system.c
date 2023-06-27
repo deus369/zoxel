@@ -1,26 +1,24 @@
-int last_quads;
-
 void QuadsLabelSystem(ecs_iter_t *it) {
-    unsigned char changed = 0;   //! Skip changes if isn't updated.
-    if (last_quads != tri_count) {
-        last_quads = tri_count;
-        changed = 1;
-        char buffer[20];
-        snprintf(buffer, sizeof(buffer), "Triangles %i", tri_count);
-        const char* text = buffer;
-        ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
-        ZextData *zextDatas = ecs_field(it, ZextData, 3);
-        for (int i = 0; i < it->count; i++) {
-            ZextDirty *zextDirty = &zextDirtys[i];
-            ZextData *zextData = &zextDatas[i];
-            zextDirty->value = 1;
-            set_zext(zextData, text);
-            // printf("    zext data: %i\n", zextData->length);
+    unsigned char updated = 0;   //! Skip changes if isn't updated.
+    char buffer[20];
+    // const char* text = buffer;
+    QuadsCount *quadsCount = ecs_field(it, QuadsCount, 2);
+    ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 3);
+    ZextData *zextDatas = ecs_field(it, ZextData, 4);
+    for (int i = 0; i < it->count; i++) {
+        if (quadsCount->value == tri_count) continue;
+        ZextDirty *zextDirty = &zextDirtys[i];
+        ZextData *zextData = &zextDatas[i];
+        quadsCount->value = tri_count;
+        if (!updated) {
+            updated = 1;
+            snprintf(buffer, sizeof(buffer), "Triangles %i", tri_count);
         }
-        // printf("QuadsLabelSystem -: %i [%s]\n", tri_count, buffer);
+        set_zext(zextData, buffer);
+        zextDirty->value = 1;
     }
-    if (!changed) {
+    if (!updated) {
         ecs_query_skip(it);
+        // free(buffer);
     }
-}
-zox_declare_system(QuadsLabelSystem)
+} zox_declare_system(QuadsLabelSystem)

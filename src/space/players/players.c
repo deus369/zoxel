@@ -51,10 +51,11 @@ zox_system_ctx(FreeCameraToggleSystem, EcsOnUpdate, free_roam_cameras, [in] Mous
 zox_system_ctx(FreeCameraDisableMovementSystem, EcsOnUpdate, player_character3Ds, [in] Mouse)
 zox_system(Player2DTestSystem, EcsOnUpdate, [in] Keyboard)
 zox_system(DeviceModeResponseSystem, EcsOnUpdate, [in] DeviceMode, [in] DeviceModeDirty)
-zox_system(PlayerShortcutsSystem, EcsPreStore, [none] Player, [in] DeviceLinks)
+zox_system(PlayerShortcutsSystem, EcsPostUpdate, [none] Player, [in] DeviceLinks)
 zox_import_module(Players3D)
 // todo: make this work in threading... worked in 3.1.3 - EcsPreStore | EcsOnUpdate
-zox_system_1(PlayerPauseSystem, EcsPreStore, [none] Player, [in] DeviceLinks)
+zox_system_1(PlayerShortcutsSingleSystem, EcsOnStore, [none] Player, [in] DeviceLinks)
+zox_system_1(PlayerPauseSystem, EcsOnStore, [none] Player, [in] DeviceLinks)
 zoxel_end_module(Players)
 
 #endif

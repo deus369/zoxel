@@ -13,7 +13,11 @@ is_steam_deck() {
 function has_library {
     libraries=("$@")
     for library in "${libraries[@]}"; do
-        if dpkg -s "$library" > /dev/null 2>&1 || pacman -Qs "$library" > /dev/null 2>&1; then
+        if dpkg -s "$library" > /dev/null 2>&1; then
+            echo "  [$library] is installed with dpkg"
+            return 0
+        fi
+        if [ pacman -Q "$library" ]; then
             echo "  [$library] is installed"
             return 0
         fi

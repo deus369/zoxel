@@ -3,11 +3,10 @@ const unsigned char max_render_layers = 8;
 unsigned char renderer_layer;
 extern long int line3D_render_system_id;
 extern long int cube_lines_render_system_id;
-extern long int element_mesh_system_id;
-extern long int texture_update_system_id;
+// extern long int element_mesh_system_id;
+// extern long int texture_update_system_id;
 extern long int mesh_uvs_update_system_id;
 extern long int render3D_uvs_system_id;
-extern int mesh_update_pipeline2;
 // \todo Create a queue of 3D models to render, including materials, etc
 //  - each type of render queue has different data based on the shaders
 //  - inside ecs systems, can run multithread, add things to queues to render
@@ -50,7 +49,7 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     // ecs_run(world, ecs_id(Line2DRenderSystem), 0, NULL);
 }
 
-void gpu_data_updates() {
+/*void gpu_data_updates() {
     // these get reset first, make them reset during update
     if (mesh_update_pipeline2 == 0) {
         ecs_run(world, ecs_id(MeshUpdateSystem), 0, NULL);
@@ -59,15 +58,14 @@ void gpu_data_updates() {
         ecs_run(world, ecs_id(Mesh2DUvsUpdateSystem), 0, NULL);
         ecs_run(world, ecs_id(MeshColorsUpdateSystem), 0, NULL);
     }
-    ecs_run(world, texture_update_system_id, 0, NULL);
-    ecs_run(world, element_mesh_system_id, 0, NULL);
-}
+    // ecs_run(world, element_mesh_system_id, 0, NULL);
+}*/
 
 void render_loop() {
     #ifdef zoxel_time_render_loop
         begin_timing_absolute()
     #endif
-    gpu_data_updates();
+    // gpu_data_updates();
     #ifdef zoxel_cameras
         if (ecs_is_valid(world, ui_cameras[0])) {
             ui_camera_matrix = ecs_get(world, ui_cameras[0], ViewMatrix)->value;

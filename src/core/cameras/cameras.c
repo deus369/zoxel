@@ -62,7 +62,7 @@ zox_define_component(FreeRoam)
 #else
     zox_system(ProjectionMatrixSystem, EcsOnUpdate, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
 #endif
-zox_system(ViewMatrixSystem, EcsPreStore, [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)
+zox_system(ViewMatrixSystem, EcsPostUpdate, [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)
 zox_system(CameraFollow2DSystem, EcsOnUpdate, [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D)
 zoxel_end_module(Cameras)
 

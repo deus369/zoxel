@@ -29,7 +29,7 @@ void toggle_collision_debug(ecs_world_t *world) {
     ecs_defer_end(world);
 }
 
-void PlayerShortcutsSystem(ecs_iter_t *it) {
+void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
     const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
     for (int i = 0; i < it->count; i++) {
@@ -47,11 +47,6 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
                     toggle_ui(world, &quads_label, &spawn_quad_count_label);
                 } else if (keyboard->z.pressed_this_frame) {
                     toggle_collision_debug(world);
-                } else if (keyboard->m.pressed_this_frame) {
-                    zoxel_log(" > generated new music\n");
-                    double music_speed = 0.2 + (rand() % 100) * 0.008;
-                    zox_set_only(main_music, MusicSpeed, { music_speed });
-                    zox_set_only(main_music, GenerateMusic, { 1 });
                 }
             } else if (ecs_has(world, device_entity, Mouse)) {
                 const Mouse *mouse = ecs_get(world, device_entity, Mouse);
@@ -65,6 +60,26 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
         }
         if (is_toggle_camera) {
             toggle_camera_perspective(world, main_character3D);
+        }
+    }
+} zox_declare_system(PlayerShortcutsSingleSystem)
+
+void PlayerShortcutsSystem(ecs_iter_t *it) {
+    ecs_world_t *world = it->world;
+    const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
+    for (int i = 0; i < it->count; i++) {
+        const DeviceLinks *deviceLinks = &deviceLinkss[i];
+        for (int j = 0; j < deviceLinks->length; j++) {
+            ecs_entity_t device_entity = deviceLinks->value[j];
+            if (ecs_has(world, device_entity, Keyboard)) {
+                const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
+                if (keyboard->m.pressed_this_frame) {
+                    zoxel_log(" > generated new music\n");
+                    double music_speed = 0.2 + (rand() % 100) * 0.008;
+                    zox_set_only(main_music, MusicSpeed, { music_speed });
+                    zox_set_only(main_music, GenerateMusic, { 1 });
+                }
+            }
         }
     }
 } zox_declare_system(PlayerShortcutsSystem)

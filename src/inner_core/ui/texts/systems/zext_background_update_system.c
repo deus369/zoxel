@@ -1,4 +1,5 @@
 void ZextBackgroundUpdateSystem(ecs_iter_t *it) {
+    ecs_world_t *world = it->world;
     const ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
     const ZextData *zextDatas = ecs_field(it, ZextData, 3);
     const ZextSize *zextSizes = ecs_field(it, ZextSize, 4);
@@ -23,17 +24,21 @@ void ZextBackgroundUpdateSystem(ecs_iter_t *it) {
         MeshDirty *meshDirty = &meshDirtys[i];
         const PixelSize *canvasSize = ecs_get(world, canvasLink->value, PixelSize);
         int font_size = zextSize->value;
-        float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
         pixelSize->value = (int2) { font_size * zextData->length + zextPadding->value.x * 2, font_size + zextPadding->value.y * 2 };
         textureSize->value = pixelSize->value;
-        generateTexture->value = 1;
-        float2 scale2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
-        for (int i = 0; i < meshVertices2D->length; i++) {
-            meshVertices2D->value[i] = square_vertices_left_aligned[i];
-            float2_multiply_float2_p(&meshVertices2D->value[i], scale2D);
+        const InitializeEntityMesh *initializeEntityMesh = ecs_get(world, it->entities[i], InitializeEntityMesh);
+        if (initializeEntityMesh->value == 0) {
+            float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
+            float2 scale2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
+            memcpy(meshVertices2D->value, square_vertices_right_aligned, meshVertices2D->length * sizeof(float2));
+            for (int i = 0; i < meshVertices2D->length; i++) {
+                // meshVertices2D->value[i] = square_vertices_right_aligned[i];
+                float2_multiply_float2_p(&meshVertices2D->value[i], scale2D);
+            }
         }
+        generateTexture->value = 1;
         meshDirty->value = 1;
+        // zoxel_log(" >  [%lu] zext_background_update_system: scale2D [%fx%f]\n", it->entities[i], scale2D.x, scale2D.y);
         // zoxel_log(" > zoxel label background is updating [%i]\n", zextData->length);
     }
-}
-zox_declare_system(ZextBackgroundUpdateSystem)
+} zox_declare_system(ZextBackgroundUpdateSystem)

@@ -17,5 +17,4 @@ void Bounds3DGrowSystem(ecs_iter_t *it) {
             // zoxel_log(" > bounds3D->value.y %f\n", bounds3D->value.y);
         }
     }
-}
-zox_declare_system(Bounds3DGrowSystem)
+} zox_declare_system(Bounds3DGrowSystem)

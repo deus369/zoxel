@@ -1,7 +1,6 @@
 void generate_font_texture(TextureData* textureData, const TextureSize *textureSize, const FontData *fontData, const Color *color2) {
     const unsigned char is_background = 0;
     const color nothing = { 0, 0, 0, 0 };
-    // use FontData byte2 data.
     const int frame_thickness = textureSize->value.x / 4;
     const int2 redRange = { 15, 244 };
     const int2 greenRange = { 15, 122 };
@@ -35,7 +34,7 @@ void generate_font_texture(TextureData* textureData, const TextureSize *textureS
             index++;
         }
     }
-    // point A to B
+    // point A to B - use FontData byte2 data.
     for (int i = 0; i < fontData->length; i += 2) {
         int2 pointA = get_from_byte2(fontData->value[i]);
         int2 pointB = get_from_byte2(fontData->value[i + 1]);
@@ -55,14 +54,12 @@ void generate_font_texture(TextureData* textureData, const TextureSize *textureS
         int2 splash_point = pointA;
         for (int j = 0; j <= distance; j++) {
             int2 splash_point_check = int2_add(get_int2_from_float2(float2_multiply_float(direction, (float) j)), pointA);
-            if (int2_equal(splash_point, splash_point_check)) {
-                continue;
-            }
+            if (int2_equal(splash_point, splash_point_check)) continue;
             splash_point = splash_point_check;
             // add noise later to this
             int pointSize2 = 1 + rand() % 1; // math.floor(random.NextFloat(pointSize.x, pointSize.y));
             #ifdef debug_font_texture
-            zoxel_log("    - j %i splash_point %ix%i size %i\n", j, splash_point.x, splash_point.y, pointSize2);
+                zoxel_log("    - j %i splash_point %ix%i size %i\n", j, splash_point.x, splash_point.y, pointSize2);
             #endif
             for (int k = -pointSize2; k <= pointSize2; k++) {
                 for (int l = -pointSize2; l <= pointSize2; l++) {
@@ -78,10 +75,6 @@ void generate_font_texture(TextureData* textureData, const TextureSize *textureS
     }
 }
 
-/*(int2) {
-    random.NextFloat(pointNoise.x * 2) - pointNoise.x, 
-    random.NextFloat(pointNoise.y * 2) - pointNoise.y };*/
-
 void FontTextureSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(it->ctx, NULL)) return;
     const Children *font_style_children = ecs_get(world, font_style_entity, Children);
@@ -93,24 +86,12 @@ void FontTextureSystem(ecs_iter_t *it) {
     const Color *colors = ecs_field(it, Color, 7);
     for (int i = 0; i < it->count; i++) {
         const GenerateTexture *generateTexture = &generateTextures[i];
-        //! Only rebuild if GenerateTexture is set to 1 and EntityDirty is false.
-        if (generateTexture->value == 0) {
-            continue;
-        }
-        #ifdef zoxel_debug_zigel_updates
-            zoxel_log("zigel font is updating [%lu]\n", (long int) it->entities[i]);
-        #endif
+        if (generateTexture->value == 0) continue;
         TextureDirty *textureDirty = &textureDirtys[i];
-        if (textureDirty->value != 0) {
-            continue;
-        }
-        textureDirty->value = 1;
-        // zoxel_log(" 2 zigel font is updating [%lu]\n", (long int) it->entities[i]);
+        if (textureDirty->value != 0) continue;
         // get font based on zigel index
         const ZigelIndex *zigelIndex = &zigelIndexs[i];
-        if (zigelIndex->value >= font_styles_length) {
-            continue;
-        }
+        if (zigelIndex->value >= font_styles_length) continue;
         TextureData *textureData = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
         const Color *color2 = &colors[i];
@@ -119,6 +100,13 @@ void FontTextureSystem(ecs_iter_t *it) {
         int newLength = textureSize->value.x * textureSize->value.y;
         re_initialize_memory_component(textureData, color, newLength);
         generate_font_texture(textureData, textureSize, fontData, color2);
+        textureDirty->value = 1;
+        #ifdef zoxel_debug_zigel_updates
+            zoxel_log("     > zigel font is updating [%lu]\n", (long int) it->entities[i]);
+        #endif
     }
-}
-zox_declare_system(FontTextureSystem)
+} zox_declare_system(FontTextureSystem)
+
+/*(int2) {
+    random.NextFloat(pointNoise.x * 2) - pointNoise.x, 
+    random.NextFloat(pointNoise.y * 2) - pointNoise.y };*/

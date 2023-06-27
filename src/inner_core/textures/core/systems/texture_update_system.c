@@ -17,5 +17,4 @@ void TextureUpdateSystem(ecs_iter_t *it) {
         glBindTexture(GL_TEXTURE_2D, 0);
         // zoxel_log(" + uploaded entity [%lu] textureData [%i] to gpu\n", it->entities[i], textureGPULink->value);
     }
-}
-zox_declare_system(TextureUpdateSystem)
+} zox_declare_system(TextureUpdateSystem)

@@ -12,7 +12,7 @@ ecs_entity_t spawn_prefab_fps_display(ecs_world_t *world) {
     // has EcsPrefab?
     zox_add_tag(e, FPSDisplay);
     zox_set(e, FPSDisplayTicker, { 0 });
-    prefab_set_mesh2D_vertices(world, e, square_vertices_left_aligned, 4);
+    prefab_set_mesh2D_vertices(world, e, square_vertices_right_aligned, 4);
     ecs_defer_end(world);
     fps_display_prefab = e;
     return e;
@@ -27,11 +27,7 @@ ecs_entity_t spawn_fps_display(ecs_world_t *world, ecs_entity_t parent) {
     int layer = 1;
     const PixelSize *parent_pixel_size = ecs_get(world, parent, PixelSize);
     #ifdef zoxel_on_android
-        if (anchor.y == 1) {
-            position.y -= android_header_size;
-        }
+        if (anchor.y == 1) position.y -= android_header_size;
     #endif
-    ecs_entity_t e = spawn_label_background(world, fps_display_prefab, parent, position, anchor, padding, "FPS", font_size,
-        zox_zext_alignment_right, layer, (float2) { }, parent_pixel_size->value);
-    return e;
+    return spawn_label_background(world, fps_display_prefab, parent, position, anchor, padding, "FPS", font_size, zox_zext_alignment_right, layer, (float2) { }, parent_pixel_size->value);
 }

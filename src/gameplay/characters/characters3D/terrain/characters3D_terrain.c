@@ -13,6 +13,7 @@ zox_begin_module(Characters3DTerrain)
 set_character_terrain_settings();
 // zoxel_system_defines
 // todo: spawn characters on thread instead
+// use GenerateChunkCharacters here instead of GenerateChunk
 zox_system_1(Characters3DSpawnSystem, EcsPreUpdate, [none] terrain.TerrainChunk, [in] GenerateChunk, [in] ChunkOctree, [in] ChunkPosition, [in] RenderLod, [out] EntityLinks)
 zox_system(ChunkCharactersUpdateSystem, EcsOnUpdate, [none] terrain.TerrainChunk, [in] ChunkDirty, [in] RenderLod, [in] EntityLinks)
 // zoxel_component_defines

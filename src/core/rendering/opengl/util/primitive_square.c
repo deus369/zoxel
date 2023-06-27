@@ -49,7 +49,7 @@ const float2 square_vertices[] = {
 };
 
 // where y is centred
-const float2 square_vertices_left_aligned[] = {
+const float2 square_vertices_right_aligned[] = {
     { -1, -0.5f },
     { -1, 0.5f },
     { 0, 0.5f },
@@ -70,7 +70,7 @@ const float2 square_uvs[] = {
     { 1, 0 }       // top left 
 };
 
-const float2 square_vertices_left_aligned[] = {
+const float2 square_vertices_right_aligned[] = {
     { -0.5f, -0.5f },
     { -0.5f, 0.5f },
     { 0.5f, 0.5f },

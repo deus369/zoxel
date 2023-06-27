@@ -4,19 +4,19 @@
 // zoxel_settings
 const double zext_animation_speed = 10.0;
 // zoxel_component_defines
-zox_declare_tag(FontStyle)                    //! Contains a bunch of fonts!
-zox_declare_tag(Font)                         //! A basic tag for a UI Element.
-zox_declare_tag(Zigel)                        //! An individual text character entity.
-zox_declare_tag(FontTexture)                  //! A basic tag for a Font TextureData. Generated on a Zigel.
-zox_declare_tag(Zext)                         //! Holds all the zigels.
-zox_component(ZigelIndex, unsigned char)      //! A character index per zigel.
-zox_component(ZextSize, int)                  //! The size of the font in a Zext.
-zox_component(ZextDirty, unsigned char)       //! A state event for when Zext is dirty.
-zox_component(AnimateZext, double)            //! A Zext that animates
+zox_declare_tag(FontStyle) //! Contains a bunch of fonts!
+zox_declare_tag(Font)
+zox_declare_tag(FontTexture)
+zox_memory_component(FontData, byte2) //! An array of points used for generating a font texture
+zox_declare_tag(Zigel) //! An individual text character entity.
+zox_declare_tag(Zext)  //! UI text, holds zigels
+zox_memory_component(ZextData, unsigned char)  //! Holds zigel indexes
+zox_component(ZigelIndex, unsigned char)      //! an index for which font we will use
+zox_component(ZextSize, int)
+zox_component(ZextDirty, unsigned char)
 zox_byte_component(ZextAlignment)
-zox_memory_component(FontData, byte2)         //! An array of points used for generating a font texture
-zox_memory_component(ZextData, unsigned char) //! An array of bytes for characters
 zox_component(ZextPadding, byte2)
+zox_component(AnimateZext, double) 
 // zoxel_util_includes
 #include "util/default_font.c"
 // zoxel_prefab_includes
@@ -55,23 +55,17 @@ zox_define_memory_component(FontData)
 zox_define_memory_component(ZextData)
 zox_define_component(ZextPadding)
 // zoxel_filter_defines
-zox_filter(zextDirtyQuery, [none] Zext, [in] ZextDirty)
-zox_filter(generateTextureQuery, [none] FontTexture, [in] GenerateTexture)
+zox_filter(zexts, [none] Zext, [in] ZextDirty)
+zox_filter(fonts, [none] FontTexture, [in] GenerateTexture)
 // zoxel_system_defines
 zox_system(AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
-#ifdef main_thread_zext_update_system
-    zox_system_ctx_1(ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
-        [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] Position2D, [in] PixelSize, [in] ZextAlignment, [out] Children)
-#else
-    zox_system_ctx(ZextUpdateSystem, EcsOnUpdate, zextDirtyQuery, [none] Zext, [in] ZextDirty,
-        [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] Position2D, [in] PixelSize, [in] ZextAlignment, [out] Children)
-#endif
-zox_system(ZextBackgroundUpdateSystem, EcsOnUpdate, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] CanvasLink, [out] PixelSize, [out] TextureSize, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshDirty)
-zox_system_ctx(FontTextureSystem, EcsPreStore, generateTextureQuery, [none] FontTexture, [out] TextureDirty, [out] TextureData, [in] TextureSize, [in] GenerateTexture, [in] ZigelIndex, [in] Color)
-zox_define_reset_system(ZextDirtyResetSystem, ZextDirty)
+zox_system_ctx(FontTextureSystem, EcsPostUpdate, fonts, [none] FontTexture, [out] TextureDirty, [out] TextureData, [in] TextureSize, [in] GenerateTexture, [in] ZigelIndex, [in] Color)
+zox_system(ZextBackgroundUpdateSystem, EcsPostUpdate, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] CanvasLink, [out] PixelSize, [out] TextureSize, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshDirty)
+zox_system_ctx_1(ZextUpdateSystem, EcsOnStore, zexts, [none] Zext, [out] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] Position2D, [in] PixelSize, [in] ZextAlignment, [out] Children)
 zoxel_end_module(Texts)
 
 // \todo Display a UI Element anchored, with a pixel position.
-// \todo Change colour when ray hits a button.
+// \todo Change colour when ray hits a button
+// zox_define_reset_system(ZextDirtyResetSystem, ZextDirty)
 
 #endif

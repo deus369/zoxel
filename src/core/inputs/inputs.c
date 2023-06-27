@@ -61,7 +61,7 @@ zox_define_component(Touchscreen)
 zox_system(DeviceModeSystem, EcsOnLoad, [in] DeviceLinks, [in] DeviceMode, [out] DeviceModeDirty)
 zox_system(MouseRaycasterSystem, EcsPreUpdate, [in] DeviceLinks, [in] DeviceMode, [out] Raycaster)
 zox_system(DraggerEndSystem, EcsOnLoad, [out] DragableState, [out] DraggerLink, [out] DraggingDelta)
-zox_system(DeviceModeDirtySystem, EcsOnStore, [out] DeviceMode, [out] DeviceModeDirty)
+zox_system(DeviceModeDirtySystem, EcsPostUpdate, [out] DeviceMode, [out] DeviceModeDirty)
 zoxel_end_module(Inputs)
 
 // todo: get change filters to work in multithreaded systems
