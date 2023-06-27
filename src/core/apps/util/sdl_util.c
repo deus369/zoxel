@@ -438,7 +438,7 @@ void update_sdl(ecs_world_t *world) {
         int eventType = event.type;
         if (eventType == SDL_QUIT) {
             zoxel_log(" > window was quit\n");
-            exit_game();
+            exit_app();
         } else if (eventType == SDL_WINDOWEVENT) {
             // handles application resizing
             if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {

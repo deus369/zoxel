@@ -14,7 +14,7 @@ ecs_entity_t spawn_prefab_pause_ui(ecs_world_t *world) {
 ecs_entity_t spawn_pause_ui(ecs_world_t *world, int2 position, float2 anchor) {
     int labels_count = 2;
     const text_group labels[] = { { "return" }, { "leave" } };
-    ClickEvent events[] = { { &button_event_return_to_game }, { &button_event_stop_playing_game } };
+    ClickEvent events[] = { { &button_event_return_to_game }, { &button_event_end_game } };
     ecs_entity_t e = spawn_ui_list(world, prefab_main_menu, "paused", labels_count, labels, events, position, anchor, 0);
     pause_ui = e;
     return e;

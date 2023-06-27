@@ -1,5 +1,5 @@
 void set_element_position(ecs_world_t *world, ecs_entity_t e, float2 parent_position, int2 parent_pixel_size, float2 canvas_size_f, float aspect_ratio) {
-    if (e == 0) return; // || !ecs_is_valid(world, e)) return;  
+    if (e == 0 || !ecs_is_alive(world, e)) return; // || !ecs_is_valid(world, e)
     int2 pixel_position = ecs_get(world, e, PixelPosition)->value;
     float2 anchor = ecs_get(world, e, Anchor)->value;
     Position2D *position2D = ecs_get_mut(world, e, Position2D);
@@ -53,8 +53,7 @@ void ElementPositionSystem(ecs_iter_t *it) {
             }
         }
     }
-}
-zox_declare_system(ElementPositionSystem)
+} zox_declare_system(ElementPositionSystem)
 
 //   \done Make this instantaneous for children uis as well
 //   \todo This needs to also account for child uis

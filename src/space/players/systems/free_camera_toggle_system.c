@@ -17,5 +17,4 @@ void FreeCameraToggleSystem(ecs_iter_t *it) {
             }
         }
     }
-}
-zox_declare_system(FreeCameraToggleSystem)
+} zox_declare_system(FreeCameraToggleSystem)

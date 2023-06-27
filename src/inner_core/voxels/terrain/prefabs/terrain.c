@@ -10,6 +10,7 @@ ecs_entity_t spawn_prefab_terrain(ecs_world_t *world) {
     #ifndef voxels_terrain_multi_material
         add_texture(world, e, chunk_texture_size, 1);
         add_gpu_texture(world, e);
+        // todo: make tilemap a seperate entity
         zox_add_tag(e, Tilemap)
         zox_set(e, TilemapSize, {{ 1, 1 }})
         zox_set(e, TextureLinks, { 0, NULL })

@@ -14,17 +14,11 @@ void spawn_prefab_generic_event(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_generic_event(ecs_world_t *world, unsigned char state) {
-    // ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, generic_event_prefab);
     zox_name("event")
     zox_set_only(e, GenericEvent, { state })
-    // ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned event [%lu]\n", (long int) e);
     #endif
     return e;
 }
-
-/*ecs_entity_t e = ecs_new_entity(world, "");
-ecs_add(world, e, DestroyInFrame);
-ecs_set(world, e, GenericEvent, { state });*/

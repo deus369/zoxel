@@ -91,7 +91,7 @@ if (!headless) {
     element_mesh_system_id = ecs_id(ElementMeshSystem);
     zox_system_1(ElementMesh3DSystem, EcsPostUpdate, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture, [none] Position3D)
 }
-zox_system(ButtonClickEventSystem, EcsPreStore, [none] Element, [in] ClickableState, [in] ClickEvent) // EcsPreStore EcsOnStore
+zox_system(ButtonClickEventSystem, EcsPreStore, [none] Element, [in] ClickableState, [in] ClickEvent) // EcsPostUpdate EcsPreStore EcsOnStore
 zox_system(UITrailSystem, EcsPreStore, [in] UIHolderLink, [in] UITrail, [out] Position3D)
 zox_system(BillboardSystem, EcsOnUpdate, [none] ElementBillboard, [in] CameraLink, [in] Position3D, [out] Rotation3D)
 zox_system(ResizeElementSystem, 0, [in] CanvasLink, [in] ParentLink)

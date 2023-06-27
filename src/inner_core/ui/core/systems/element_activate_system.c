@@ -1,9 +1,10 @@
 #ifdef zoxel_inputs
     void set_ui_clicked_mut(ecs_world_t *world, ecs_entity_t ui) {
         if (ecs_has(world, ui, Clickable)) {
-            ClickableState *clickableState = ecs_get_mut(world, ui, ClickableState);
+            zox_set_only(ui, ClickableState, { 1 })
+            /*ClickableState *clickableState = ecs_get_mut(world, ui, ClickableState);
             clickableState->value = 1;
-            ecs_modified(world, ui, ClickableState);
+            ecs_modified(world, ui, ClickableState);*/
         }
     }
 
@@ -51,12 +52,9 @@
                     }
                 } else if (deviceMode->value == zox_device_mode_gamepad && ecs_has(world, device_entity, Gamepad)) {
                     const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
-                    if (gamepad->a.pressed_this_frame) {    // pressed_this_frame released_this_frame
-                        set_ui_clicked_mut(world, raycasterTarget->value);
-                    }
+                    if (gamepad->a.pressed_this_frame) set_ui_clicked_mut(world, raycasterTarget->value);
                 }
             }
         }
-    }
-    zox_declare_system(ElementActivateSystem)
+    } zox_declare_system(ElementActivateSystem)
 #endif

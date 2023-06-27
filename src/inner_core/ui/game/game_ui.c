@@ -8,7 +8,7 @@ zox_declare_tag(FPSDisplay)
 zox_declare_tag(QuadsCountLabel)
 zox_component(FPSDisplayTicker, double)
 #include "fun/button_event_play_game.c"
-#include "fun/button_event_exit_game.c"
+#include "fun/button_event_exit_app.c"
 #include "fun/button_event_return_to_game.c"
 #include "prefabs/main_menu.c"
 #include "prefabs/fps_display.c"

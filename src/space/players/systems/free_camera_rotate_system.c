@@ -15,9 +15,7 @@ void FreeCameraRotateSystem(ecs_iter_t *it) {
     }
     ecs_iter_t cameraIter = ecs_query_iter(it->world, cameraQuery);
     ecs_query_next(&cameraIter);
-    if (cameraIter.count == 0) {
-        return;
-    }
+    if (cameraIter.count == 0) return;
     Mouse *mouses = ecs_field(it, Mouse, 1);
     const FreeRoam *freeRoams = ecs_field(&cameraIter, FreeRoam, 2);
     #ifdef zox_test_quaternion_camera
@@ -33,15 +31,10 @@ void FreeCameraRotateSystem(ecs_iter_t *it) {
             break;
         }
     }
-    if (!can_rotate_cameras) {
-        return;
-    }
+    if (!can_rotate_cameras) return;
     for (int i = 0; i < it->count; i++) {
         const Mouse *mouse = &mouses[i];
-        if (int_abs(mouse->delta.x) + int_abs(mouse->delta.y) >= max_mouse_delta) {
-            // zoxel_log("mouse delta out of bounds [%ix%i]\n", mouse->delta.x, mouse->delta.y);
-            continue;
-        }
+        if (int_abs(mouse->delta.x) + int_abs(mouse->delta.y) >= max_mouse_delta) continue;
         if (!(mouse->delta.x == 0 && mouse->delta.y == 0)) {
             for (int j = 0; j < cameraIter.count; j++) {
                 const FreeRoam *freeRoam = &freeRoams[j];
@@ -75,11 +68,4 @@ void FreeCameraRotateSystem(ecs_iter_t *it) {
             }
         }
     }
-}
-zox_declare_system(FreeCameraRotateSystem)
-
-    // eulerAddition.x == 0 && eulerAddition.y == 0 && eulerAddition.z == 0)) {
-        // float3 eulerAddition = { mouse->delta.y, -mouse->delta.x, 0 };
-                        // float3 euler = quaternion_to_euler(rotation3D->value);
-                        // euler.x = 0;
-                        // rotation3D->value = quaternion_from_euler(euler);
+} zox_declare_system(FreeCameraRotateSystem)

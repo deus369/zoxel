@@ -8,9 +8,7 @@ void Player2DMoveSystem(ecs_iter_t *it) {
     ecs_query_t *playerCharacterQuery = it->ctx;
     ecs_iter_t playerCharacterIterator = ecs_query_iter(it->world, playerCharacterQuery);
     ecs_query_next(&playerCharacterIterator);
-    if (playerCharacterIterator.count == 0) {
-        return;
-    }
+    if (playerCharacterIterator.count == 0) return;
     Keyboard *keyboards = ecs_field(it, Keyboard, 1);
     Acceleration2D *acceleration2Ds = ecs_field(&playerCharacterIterator, Acceleration2D, 2);
     const Velocity2D *velocity2Ds = ecs_field(&playerCharacterIterator, Velocity2D, 3);
@@ -54,5 +52,4 @@ void Player2DMoveSystem(ecs_iter_t *it) {
             }
         }
     }
-}
-zox_declare_system(Player2DMoveSystem);
+} zox_declare_system(Player2DMoveSystem);

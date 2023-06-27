@@ -4,9 +4,7 @@ const double shift_movement_multiplier = 3.0;
 void FreeCameraMoveSystem(ecs_iter_t *it) {
     ecs_iter_t cameras_it = ecs_query_iter(it->world, it->ctx);
     ecs_query_next(&cameras_it);
-    if (cameras_it.count == 0) {
-        return;
-    }
+    if (cameras_it.count == 0) return;
     unsigned char did_update = 0;
     double movement_power = zox_delta_time;
     movement_power *= movement_multiplier;
@@ -68,8 +66,7 @@ void FreeCameraMoveSystem(ecs_iter_t *it) {
     if (!did_update) {
         // ecs_query_skip(&cameras_it);
     }
-}
-zox_declare_system(FreeCameraMoveSystem)
+} zox_declare_system(FreeCameraMoveSystem)
 
 //printf("Before Movement: %fx%fx%f - [%fx%fx%fx%f]\n", movement.x, movement.y, movement.z,
 //    rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);

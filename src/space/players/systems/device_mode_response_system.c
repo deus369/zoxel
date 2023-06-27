@@ -28,7 +28,6 @@ void DeviceModeResponseSystem(ecs_iter_t *it) {
             }
         }
     }
-}
-zox_declare_system(DeviceModeResponseSystem)
+} zox_declare_system(DeviceModeResponseSystem)
 
 // if (!ecs_query_changed(it->ctx, NULL)) return;

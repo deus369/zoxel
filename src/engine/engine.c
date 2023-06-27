@@ -1,6 +1,8 @@
 #ifndef zoxel_engine
 #define zoxel_engine
 
+// todo: position confusing, move to above directory for easier to understand navigation
+
 #define FLECS_CUSTOM_BUILD
 #define FLECS_MODULE
 #define FLECS_SYSTEM 
@@ -29,15 +31,10 @@ void load_resources_engine(ecs_world_t *world) {
 }
 
 void spawn_prefabs_engine(ecs_world_t *world) {
-    // zoxel_log(" + spawning prefabs core\n");
     spawn_prefabs_core(world);
-    // zoxel_log(" + spawning prefabs inner core\n");
     spawn_prefabs_inner_core(world);
-    // zoxel_log(" + spawning prefabs outer core\n");
     spawn_prefabs_outer_core(world);
-    // zoxel_log(" + spawning prefabs gameplay\n");
     spawn_prefabs_gameplay(world);
-    // zoxel_log(" + spawning prefabs space\n");
     spawn_prefabs_space(world);
     zoxel_log(" + spawned all prefabs\n");
 }

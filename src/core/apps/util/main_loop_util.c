@@ -1,6 +1,6 @@
 extern void engine_update();
 
-void exit_game() {
+void exit_app() {
     running = 0;
     #ifdef zoxel_on_web    
         emscripten_cancel_main_loop();
@@ -9,7 +9,7 @@ void exit_game() {
 
 void sigint_handler(int sig) {
     zoxel_log(" > zoxel engine is exiting [control + c]\n");
-    exit_game();
+    exit_app();
 }
 
 void engine_loop() {

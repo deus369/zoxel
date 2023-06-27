@@ -8,13 +8,13 @@ zox_declare_tag(PlayerCharacter2D)
 #include "prefabs/player.c"
 #include "prefabs/player_character2D.c"
 #include "util/player_character2D.c"
+#include "util/pause_util.c"
 #include "systems/player2D_move_system.c"
 #include "systems/free_camera_move_system.c"
 #include "systems/free_camera_rotate_system.c"
 #include "systems/free_camera_toggle_system.c"
 #include "systems/free_camera_disable_movement_system.c"
 #include "systems/player_pause_system.c"
-#include "systems/player_start_system.c"
 #include "systems/device_mode_response_system.c"
 #include "players3D/players3D.c"
 #include "systems/player2D_test_system.c"
@@ -48,9 +48,9 @@ zox_system_ctx(FreeCameraRotateSystem, EcsOnUpdate, cameras2, [in] Mouse)
 zox_system_ctx(FreeCameraToggleSystem, EcsOnUpdate, free_roam_cameras, [in] Mouse, [out] MouseLock)
 zox_system_ctx(FreeCameraDisableMovementSystem, EcsOnUpdate, player_character3Ds, [in] Mouse)
 zox_system(Player2DTestSystem, EcsOnUpdate, [in] Keyboard)
-zox_system(PlayerPauseSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks)
 zox_system(DeviceModeResponseSystem, EcsOnUpdate, [in] DeviceMode, [in] DeviceModeDirty)
-zox_system(PlayerShortcutsSystem, EcsOnStore, [none] Player, [in] DeviceLinks)
+zox_system(PlayerShortcutsSystem, EcsPreStore, [none] Player, [in] DeviceLinks)
+zox_system_1(PlayerPauseSystem, EcsPreStore, [none] Player, [in] DeviceLinks)   // todo: make this work in threading... worked in 3.1.3
 zox_import_module(Players3D)
 zoxel_end_module(Players)
 

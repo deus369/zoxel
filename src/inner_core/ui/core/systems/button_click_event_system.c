@@ -6,6 +6,6 @@ void ButtonClickEventSystem(ecs_iter_t *it) {
         if (clickableState->value != 1) continue;
         const ClickEvent *clickEvent = &clickEvents[i];
         if (clickEvent->value != NULL) (*clickEvent->value)(it->world, it->entities[i]);
+        // zoxel_log(" > click event  clicking\n");
     }
-}
-zox_declare_system(ButtonClickEventSystem)
+} zox_declare_system(ButtonClickEventSystem)

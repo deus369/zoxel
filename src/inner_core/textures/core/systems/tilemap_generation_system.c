@@ -17,6 +17,10 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         TextureDirty *textureDirty = &textureDirtys[i];
         if (textureDirty->value != 0) continue;
         const TextureLinks *textureLinks = &textureLinkss[i];
+        if (textureLinks->length == 0) {
+            textureDirty->value = 1;
+            continue;
+        }
         const TilemapSize *tilemapSize = &tilemapSizes[i];
         TextureData *textureData = &textureDatas[i];
         TextureSize *textureSize = &textureSizes[i];
@@ -70,8 +74,7 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         textureDirty->value = 1;
         zoxel_log("    > tilemap generated [%lu] textures [%i]\n", it->entities[i], textureLinks->length);
     }
-}
-zox_declare_system(TilemapGenerationSystem)
+} zox_declare_system(TilemapGenerationSystem)
 
 // for (int j = 0; j < textureLinks->length; j++) {
 // if (!ecs_is_valid(it->world, texture_entity)) zoxel_log("issue with texture at [%i]\n", j);

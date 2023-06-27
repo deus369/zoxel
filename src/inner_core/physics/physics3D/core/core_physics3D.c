@@ -5,7 +5,7 @@
 #define physics3D_jump 24.0f
 const float friction3D = 4.0f; // 6.0f;  // 0.002
 const float dissipation_threshold = 0.001f;
-const float rotation_friction = 0.42f; // 0.7f;
+const float rotation_friction = 0.56f; // 0.7f;
 zox_component(Velocity3D, float3)
 zox_component(Acceleration3D, float3)
 zox_component(Omega3D, float4)

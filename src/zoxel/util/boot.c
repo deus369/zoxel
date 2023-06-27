@@ -11,7 +11,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     load_resources_engine(world);
     zoxel_log(" > [zoxel] success initializing sdl window\n");
     ecs_entity_t realm = 0;
-    #ifdef zoxel_space
+    #ifdef zoxel_include_players
         realm = spawn_realm(world);
         ecs_entity_t game = spawn_game(world);
         zox_set_only(game, RealmLink, { realm })
@@ -67,7 +67,9 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     #ifdef zoxel_voxels
         #ifndef zox_disable_terrain
             ecs_entity_t terrain = create_terrain(world);
-            zox_set_only(terrain, RealmLink, { realm })
+            #ifdef zoxel_space
+                zox_set_only(terrain, RealmLink, { realm })
+            #endif
         #endif
     #endif
     #ifdef zoxel_lines3D

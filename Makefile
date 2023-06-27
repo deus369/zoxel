@@ -369,7 +369,7 @@ help:
 	@echo "    create-system		creates a new system in a module"
 	@echo "    zip-build			zips zoxel build and resources"
 	@echo "  > flecs"
-	@echo "    install-flecs		installs flecs 3.1.3"
+	@echo "    install-flecs		installs flecs 3.2.4"
 	@echo "    build/libflecs.a		builds flecs library"
 	@echo "    remove-flecs		removes flecs library"
 	@echo "    get-flecs-version		get a flecs by version"

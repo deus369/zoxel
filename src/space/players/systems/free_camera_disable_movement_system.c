@@ -1,9 +1,7 @@
 void FreeCameraDisableMovementSystem(ecs_iter_t *it) {
     ecs_iter_t playerIter = ecs_query_iter(it->world, it->ctx);
     ecs_query_next(&playerIter);
-    if (playerIter.count == 0) {
-        return;
-    }
+    if (playerIter.count == 0) return;
     Mouse *mouses = ecs_field(it, Mouse, 1);
     DisableMovement *disableMovements = ecs_field(&playerIter, DisableMovement, 2);
     for (int i = 0; i < it->count; i++) {
@@ -16,5 +14,4 @@ void FreeCameraDisableMovementSystem(ecs_iter_t *it) {
             }
         }
     }
-}
-zox_declare_system(FreeCameraDisableMovementSystem)
+} zox_declare_system(FreeCameraDisableMovementSystem)

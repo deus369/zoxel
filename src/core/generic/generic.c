@@ -36,6 +36,7 @@ zox_entities_component(EntityLinks)
 #include "prefabs/generic_event.c"
 // zoxel_system_includes
 #include "systems/destroy_in_frame_system.c"
+#include "systems/generic_event_debug_system.c"
 zox_reset_system(EntityDirtyResetSystem, EntityDirty)
 zox_reset_system(ClickableStateResetSystem, ClickableState)
 zox_reset_system(EntityInitializeResetSystem, EntityInitialize)
@@ -71,6 +72,9 @@ zox_define_component(GenericEvent)
 zox_define_component(Bounds3D)
 zox_define_entities_component(EntityLinks, [in] EntityLinks)
 // zoxel_system_defines
+/*#ifdef zox_debug_generic_events
+    zox_system(GenericEventDebugSystem, EcsOnUpdate, [in] GenericEvent)
+#endif*/
 zox_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
 zox_define_reset_system(EntityDirtyResetSystem, EntityDirty)
 zox_define_reset_system(ClickableStateResetSystem, ClickableState)

@@ -1,5 +1,6 @@
 // Here? select which zoxel modules I shall use?
 #define zoxel_include_vulkan
+#define zoxel_include_players
 
 // === Disables ===
 
@@ -27,6 +28,11 @@
 // #define debug_ui_scaling
 // #define zox_debug_ui_trails      // shows a line from the ui holder to the ui
 
+// === Logging Debugs ===
+
+// #define zox_debug_generic_events
+
+
 // === Settings ===
 
 // #define zoxel_seed_666  // tests seed at 666
@@ -35,6 +41,8 @@
 
 // === Tests ===
 
+// #define zoxel_testing_tiny_terrain
+// #define zox_test_game_keys
 // #define zox_test_quaternion_camera
 
 // -- debugs --
@@ -140,5 +148,4 @@
 // #define zox_test_voxes
 // #define zoxel_test_single_character3Ds      // spawn 1 penguin
 // #define zoxel_disable_attach_on_start
-// #define zoxel_testing_tiny_terrain
 // #define zoxel_testing_tiny_terrain2

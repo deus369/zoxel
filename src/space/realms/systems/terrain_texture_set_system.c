@@ -23,8 +23,7 @@ void TerrainTextureSetSystem(ecs_iter_t *it) {
         }
         // zoxel_log("    > tilemap textures linked [%lu] - count [%i]\n", it->entities[i], voxelLinks->length);
     }
-}
-zox_declare_system(TerrainTextureSetSystem)
+} zox_declare_system(TerrainTextureSetSystem)
 
 /*if (!ecs_is_valid(it->world, first_voxel)) {
     zoxel_log("    > voxel [0] is invalid [%lu]\n", it->entities[i]);

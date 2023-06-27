@@ -123,9 +123,7 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
             }
         }
     }
-}
-zox_declare_system(BasicCollision3DSystem)
-
+} zox_declare_system(BasicCollision3DSystem)
 
 /*int3 new_chunk_position = get_chunk_position(real_position, default_chunk_size);
 if (!int3_equals(chunkPosition->value, new_chunk_position)) {
