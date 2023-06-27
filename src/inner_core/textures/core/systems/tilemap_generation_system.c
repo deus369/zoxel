@@ -72,7 +72,7 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         }
         // generate_tilemap(it->world, textureData, tilemapSize, textures);
         textureDirty->value = 1;
-        zoxel_log("    > tilemap generated [%lu] textures [%i]\n", it->entities[i], textureLinks->length);
+        // zoxel_log("    > tilemap generated [%lu] textures [%i]\n", it->entities[i], textureLinks->length);
     }
 } zox_declare_system(TilemapGenerationSystem)
 

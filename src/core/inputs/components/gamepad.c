@@ -34,6 +34,8 @@ zox_custom_component(Gamepad)
 }
 
 unsigned char gamepad_is_any_input(const Gamepad *gamepad) {
+    // zoxel_log(" > gamepad left_stick [%fx%f]\n", gamepad->left_stick.value.x, gamepad->left_stick.value.y);
+    // zoxel_log(" > gamepad right_stick [%fx%f]\n", gamepad->right_stick.value.x, gamepad->right_stick.value.y);
     return gamepad->start.is_pressed ||
         gamepad->select.is_pressed ||
         gamepad->a.is_pressed ||
@@ -49,5 +51,5 @@ unsigned char gamepad_is_any_input(const Gamepad *gamepad) {
         float_abs(gamepad->left_stick.value.x) >= joystick_min_cutoff ||
         float_abs(gamepad->left_stick.value.y) >= joystick_min_cutoff ||
         float_abs(gamepad->right_stick.value.x) >= joystick_min_cutoff ||
-        float_abs(gamepad->right_stick.value.y) >= joystick_min_cutoff;
+        float_abs(gamepad->right_stick.value.y) >= joystick_min_cutoff; 
 }

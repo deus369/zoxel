@@ -11,7 +11,6 @@ ecs_entity_t get_first_ui(ecs_world_t *world) {
 }
 
 void DeviceModeResponseSystem(ecs_iter_t *it) {
-    // if (!ecs_query_changed(NULL, it)) return;
     const DeviceMode *deviceModes = ecs_field(it, DeviceMode, 1);
     const DeviceModeDirty *deviceModeDirtys = ecs_field(it, DeviceModeDirty, 2);
     for (int i = 0; i < it->count; i++) {
@@ -29,5 +28,3 @@ void DeviceModeResponseSystem(ecs_iter_t *it) {
         }
     }
 } zox_declare_system(DeviceModeResponseSystem)
-
-// if (!ecs_query_changed(it->ctx, NULL)) return;

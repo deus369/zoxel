@@ -9,17 +9,11 @@ unsigned char is_steamdeck_gamepad(SDL_Joystick *joystick) {
 
 unsigned char is_xbox_gamepad(SDL_Joystick *joystick) {
     const char* joystickName = SDL_JoystickName(joystick);
-    if (strstr(joystickName, "Xbox") != NULL || strstr(joystickName, "X360") != NULL || strstr(joystickName, "X-Box") != NULL) {
-        return 1;
-    } else {
-        return 0;
-    }
+    return strstr(joystickName, "Xbox") != NULL || strstr(joystickName, "X360") != NULL || strstr(joystickName, "X-Box") != NULL;
 }
 
-void spawn_sdl_gamepads() {
-    if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
-        fprintf(stderr, "Error: Unable to initialize SDL joystick subsystem: %s\n", SDL_GetError());
-    }
+void initialize_sdl_gamepads() {
+    if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0)fprintf(stderr, "  ! failed SDL joystick subsystem: %s\n", SDL_GetError());
     joysticks_count = SDL_NumJoysticks();
     //#ifdef zoxel_debug_input
         zoxel_log(" > joysticks connected [%d]\n", joysticks_count);
@@ -53,9 +47,7 @@ void set_gamepad_button(PhysicalButton *key, SDL_Joystick *joystick, int index) 
 
 float get_gamepad_axis(SDL_Joystick *joystick, int index) {
     float axis_value = SDL_JoystickGetAxis(joystick, index) / 32768.0f;
-    if (axis_value >= -joystick_min_cutoff && axis_value <= joystick_min_cutoff) {
-        axis_value = 0.0f;
-    }
+    if (axis_value >= -joystick_min_cutoff && axis_value <= joystick_min_cutoff) axis_value = 0.0f;
     return -axis_value; // invert as sdl inverts it first?
 }
 
@@ -124,6 +116,8 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world) {
         // - next, add a disconnection ui until reconnected
         return;
     }
+    // zoxel_log(" > Joystick Name: %s\n", SDL_JoystickName(joystick));
+    // zoxel_log(" > Number of Axes: %d\n", SDL_JoystickNumAxes(joystick));
     Gamepad *gamepad = ecs_get_mut(world, gamepad_entity, Gamepad);
     if (is_xbox_gamepad(joystick)) {
         set_gamepad_button(&gamepad->a, joystick, 0);
@@ -157,12 +151,9 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world) {
         set_gamepad_axis(&gamepad->right_stick, joystick, 2);
     } else {
         set_gamepad_axis(&gamepad->right_stick, joystick, 3);
-        //gamepad->right_stick.value.x = get_gamepad_axis(joystick, 3);
-        //gamepad->right_stick.value.y = get_gamepad_axis(joystick, 4);
     }
     set_gamepad_dpad(joystick, 0);
     ecs_modified(world, gamepad_entity, Gamepad);
-    // ecs_defer_end(world);
     #ifdef zoxel_inputs_debug_gamepad
         debug_button(&gamepad->select, "select");
         debug_button(&gamepad->start, "start");
@@ -182,8 +173,13 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world) {
     #ifdef zoxel_inputs_debug_gamepad_sos
         for (int i = 0; i < 32; i++) {
             if (SDL_JoystickGetButton(joystick, i)) {
-                zoxel_log(" > button pushed at [%i]\n", i);
+                zoxel_log(" > button [%i] pushed\n", i);
             }
+        }
+        for (int i = 0; i < 12; i++) {
+            float value = get_gamepad_axis(joystick, i);
+            // if (value != 0) 
+            zoxel_log(" > joystick [%i] [%f]\n", i, value);
         }
     #endif
     /*if (!(gamepad->left_stick.value.x == 0 && gamepad->left_stick.value.y == 0)) {

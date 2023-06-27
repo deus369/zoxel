@@ -1,7 +1,7 @@
 void spawn_connected_devices(ecs_world_t *world) {
     spawn_keyboard(world);
     spawn_mouse(world);
-    spawn_sdl_gamepads();
+    initialize_sdl_gamepads();
     //if (joysticks_count > 0)
         spawn_gamepad(world);
     spawn_touchscreen(world);
