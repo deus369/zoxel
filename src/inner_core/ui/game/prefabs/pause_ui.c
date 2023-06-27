@@ -17,6 +17,6 @@ ecs_entity_t spawn_pause_ui(ecs_world_t *world, int2 position, float2 anchor) {
     const ClickEvent events[] = { { &button_event_return_to_game }, { &button_event_end_game } };
     ecs_entity_t e = spawn_ui_list(world, prefab_pause_ui, "paused", labels_count, labels, events, position, anchor, 0);
     pause_ui = e;
-    zoxel_log(" > spawn_pause_ui alive ui? %s\n", ecs_is_alive(world, pause_ui) ? "alive" : "dead");
+    // zoxel_log(" > spawn_pause_ui alive ui? %s\n", ecs_is_alive(world, pause_ui) ? "alive" : "dead");
     return e;
 }

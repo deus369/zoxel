@@ -41,7 +41,7 @@
 
 // === Tests ===
 
-#define zoxel_testing_tiny_terrain
+// #define zoxel_testing_tiny_terrain
 // #define zox_test_game_keys
 // #define zox_test_quaternion_camera
 
