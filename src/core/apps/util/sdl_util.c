@@ -156,17 +156,18 @@ int initialize_sdl() {
         zoxel_log(" - failed to initialize sdl [%s]\n", SDL_GetError());
         return EXIT_FAILURE;
     } else {
+        print_sdl();
         #ifdef zoxel_include_vulkan
-            if (SDL_Vulkan_LoadLibrary(NULL) != 0) {
-                zoxel_log(" ! failed to load vulkan library [%s]\n", SDL_GetError());
-                return EXIT_FAILURE;
-            }
             unsigned char is_vulkan_supported = vulkan_supported();
-            if (is_vulkan && !is_vulkan_supported) is_vulkan = 0;
+            if (is_vulkan_supported) {
+                if (SDL_Vulkan_LoadLibrary(NULL) != 0) {
+                    zoxel_log(" ! failed to load vulkan library [%s]\n", SDL_GetError());
+                    return EXIT_FAILURE;
+                }
+            } else if (!is_vulkan_supported && is_vulkan) is_vulkan = 0;
         #else
             is_vulkan = 0;
         #endif
-        print_sdl();
         return EXIT_SUCCESS;
     }
 }

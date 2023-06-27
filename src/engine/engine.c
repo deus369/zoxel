@@ -36,7 +36,7 @@ void spawn_prefabs_engine(ecs_world_t *world) {
     spawn_prefabs_outer_core(world);
     spawn_prefabs_gameplay(world);
     spawn_prefabs_space(world);
-    zoxel_log(" + spawned all prefabs\n");
+    // zoxel_log(" + spawned all prefabs\n");
 }
 
 zox_begin_module(ZoxelEngine)

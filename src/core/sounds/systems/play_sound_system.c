@@ -1,4 +1,10 @@
 void PlaySoundSystem(ecs_iter_t *it) {
+    int group = -1;  // -1 indicates all channels
+    int channels_available = Mix_GroupAvailable(group);
+    if (channels_available == 0) {
+        // printf("No free channels available!\n");
+        return;
+    }
     ecs_world_t *world = it->world;
     TriggerSound *playSounds = ecs_field(it, TriggerSound, 2);
     const SoundLength *soundLengths = ecs_field(it, SoundLength, 3);
@@ -10,7 +16,7 @@ void PlaySoundSystem(ecs_iter_t *it) {
         const SoundLength *soundLength = &soundLengths[i];
         if (sdlSound->value != NULL) {
             if (Mix_PlayChannel(-1, sdlSound->value, 0) == -1) {
-                zoxel_log(" - playing sound failed [%s]\n", Mix_GetError());
+                zoxel_log(" ! playing sound failed [%s]\n", Mix_GetError());
                 zox_delete(it->entities[i])
             } else {
                 if (soundLength->value == 0) {
@@ -23,5 +29,4 @@ void PlaySoundSystem(ecs_iter_t *it) {
         }
         triggerSound->value = 0;
     }
-}
-zox_declare_system(PlaySoundSystem)
+} zox_declare_system(PlaySoundSystem)

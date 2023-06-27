@@ -4,6 +4,10 @@
 
 -----
 
+## spawning 
+
+- spawning in multi t hreaded systems since > 3.1.3 has been removed as a feature
+
 ## component data and spawning
 
 - by default entitys using a prefab don't copy new component data in memory

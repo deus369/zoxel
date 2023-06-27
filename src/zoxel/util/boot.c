@@ -5,11 +5,11 @@ extern unsigned char is_split_screen;
 #define main_camera_rotation_speed 60 * 0.22f
 
 unsigned char boot_zoxel_game(ecs_world_t *world) {
-    zoxel_log(" > [zoxel] begins to boot\n");
+    // zoxel_log(" > [zoxel] begins to boot\n");
     if (initialize_apps(world) == EXIT_FAILURE) return EXIT_FAILURE;
     if (initialize_rendering(world) == EXIT_FAILURE) return EXIT_FAILURE;
     load_resources_engine(world);
-    zoxel_log(" > [zoxel] success initializing sdl window\n");
+    // zoxel_log(" > [zoxel] success initializing sdl window\n");
     ecs_entity_t realm = 0;
     #ifdef zoxel_include_players
         realm = spawn_realm(world);
@@ -86,6 +86,6 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     #ifdef zox_test_voxes
         test_voxes(world, camera_begin_position);
     #endif
-    zoxel_log(" > [zoxel] begins to run\n");
+    // zoxel_log(" > [zoxel] begins to run\n");
     return EXIT_SUCCESS;
 }

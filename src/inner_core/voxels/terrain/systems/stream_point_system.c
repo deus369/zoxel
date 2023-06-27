@@ -2,7 +2,7 @@ void StreamPointSystem(ecs_iter_t *it) {
     #ifdef voxels_disable_streaming
         return;
     #endif
-    unsigned char did_update = 0;
+    //unsigned char did_update = 0;
     ecs_query_t *chunks_query = it->ctx;
     ecs_iter_t chunks_iterator = ecs_query_iter(it->world, chunks_query);
     ecs_query_next(&chunks_iterator);
@@ -24,7 +24,7 @@ void StreamPointSystem(ecs_iter_t *it) {
         StreamPoint *streamPoint = &streamPoints[i];
         if (!int3_equals(new_position, streamPoint->value)) {
             streamPoint->value = new_position;
-            did_update = 1;
+            // did_update = 1;
             #ifdef zoxel_time_stream_point_system
                 int updated_count = 0;
             #endif
@@ -59,7 +59,6 @@ void StreamPointSystem(ecs_iter_t *it) {
                     ChunkDirty *chunkDirty = &chunkDirtys[j];
                     renderLod->value = changed[j];
                     chunkDirty->value = 1;
-                    // Chunk's EntityLinks can be dirty here
                 }
             }
             free(changed);
@@ -71,7 +70,7 @@ void StreamPointSystem(ecs_iter_t *it) {
     }
     // skip table updates here if no updates
     //if (!did_update) {
-        // ecs_query_skip(it);
+    // ecs_query_skip(it);
     //}
     #ifdef zoxel_time_stream_point_system
         end_timing("StreamPointSystem")

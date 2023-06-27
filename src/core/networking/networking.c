@@ -9,6 +9,7 @@
     #include <sys/socket.h>
 #endif
 #include <fcntl.h>  // F_SETFL etc
+#include <unistd.h> // close function kept here
 // atm using 127.0.0.1 for same machine testing
 // later for secure packets, keep sending with udp every x seconds
 #define IP_TO (byte4) { 127, 0, 0, 1 }  //  "192.0.2.1"
@@ -39,8 +40,9 @@ zox_memory_component(PacketData, unsigned char)
 #include "systems/packet_recieve_system.c"
 
 void spawn_prefabs_networking(ecs_world_t *world) {
-    spawn_prefab_net_player(world);
     spawn_prefab_net_room(world);
+    spawn_prefab_net_player(world);
+    zox_define_destruction(SocketLink)  // for some reason it calls destruction when making prefabs
     #ifdef zoxel_test_networking
         if (server_mode) {
             spawn_net_room(world, SERVER_PORT);
@@ -64,8 +66,9 @@ zox_define_component(NetAddress)
 zox_define_component(NetPort)
 zox_define_component(TargetNetAddress)
 zox_define_component(TargetNetPort)
-zox_define_component_w_dest(SocketLink)
-zox_define_memory_component(PacketData);
+zox_define_memory_component(PacketData)
+// zox_define_component_w_dest(SocketLink)
+zox_define_component(SocketLink)
 zox_system(PacketRecieveSystem, EcsOnUpdate, [none] PacketReciever, [in] SocketLink)
 zox_system(PacketSendSystem, EcsOnUpdate, [none] PacketSender, [in] SocketLink, [in] TargetNetAddress, [in] TargetNetPort)
 zoxel_end_module(Networking)

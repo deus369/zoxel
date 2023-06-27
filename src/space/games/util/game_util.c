@@ -28,7 +28,7 @@ ecs_entity_t respawn_base_camera(ecs_world_t *world, ecs_entity_t old_camera_ent
 }
 
 void end_game(ecs_world_t *world) {
-    zoxel_log(" > game stops playing\n");
+    zoxel_log(" > game state => [playing] to [main_menu]\n");
     // zoxel_log(" > deleting pause ui [%lu]\n", pause_ui);
     zox_delete(pause_ui)
     const int edge_buffer = 8 * default_ui_scale;
@@ -41,7 +41,7 @@ void end_game(ecs_world_t *world) {
 }
 
 void play_game(ecs_world_t *world) {
-    zoxel_log(" > game starts playing\n");
+    zoxel_log(" > game state => [main_menu] to [playing]\n");
     zox_delete(main_menu)   // close main menu
     zox_set_only(local_game, GameState, { zoxel_game_state_playing }) // start game
     ecs_entity_t new_camera = respawn_camera(world, main_cameras[0]);

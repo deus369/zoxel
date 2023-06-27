@@ -25,10 +25,10 @@ extern unsigned char is_vulkan;
 
 unsigned char initialize_rendering(ecs_world_t *world) {
     if (is_vulkan) {
-        zoxel_log(" > initializing vulkan\n");
+        // zoxel_log(" > initializing vulkan\n");
         return initialize_vulkan(world); // SDL_WINDOW_VULKAN
     } else {
-        zoxel_log(" > initializing opengl\n");
+        // zoxel_log(" > initializing opengl\n");
         return initialize_opengl(world);
     }
 }

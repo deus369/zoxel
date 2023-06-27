@@ -15,17 +15,16 @@ unsigned char is_xbox_gamepad(SDL_Joystick *joystick) {
 void initialize_sdl_gamepads() {
     if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0)fprintf(stderr, "  ! failed SDL joystick subsystem: %s\n", SDL_GetError());
     joysticks_count = SDL_NumJoysticks();
-    //#ifdef zoxel_debug_input
+    #ifdef zoxel_debug_input
         zoxel_log(" > joysticks connected [%d]\n", joysticks_count);
-    //#endif
+    #endif
     for (int i = 0; i < joysticks_count; i++) {
         joystick = SDL_JoystickOpen(i);
         if (!joystick) {
             fprintf(stderr, "Error: Unable to open joystick: %s\n", SDL_GetError());
         } else {
-            zoxel_log(" > joystick [%i] has been initialized\n", i);
             const char* joystick_name = SDL_JoystickName(joystick);
-            zoxel_log("     + joystick name [%s]\n", joystick_name);
+            zoxel_log(" > joystick [%i]:[%s] has been initialized\n", i, joystick_name);
             if (is_xbox_gamepad(joystick)) {
                 zoxel_log("     + xbox controller detected\n");
             }
@@ -182,15 +181,6 @@ void input_extract_from_sdl_per_frame(ecs_world_t *world) {
             zoxel_log(" > joystick [%i] [%f]\n", i, value);
         }
     #endif
-    /*if (!(gamepad->left_stick.value.x == 0 && gamepad->left_stick.value.y == 0)) {
-        zoxel_log(" > left_stick [%fx%f]\n", gamepad->left_stick.value.x, gamepad->left_stick.value.y);
-    }*/
-    /*if (!(float_abs(gamepad->left_stick.value.x) < 0.1f && float_abs(gamepad->left_stick.value.y) < 0.1f)) {
-        zoxel_log(" > joystick l [%fx%f]\n", gamepad->left_stick.value.x, gamepad->left_stick.value.y);
-    }
-    if (!(float_abs(gamepad->right_stick.value.x) < 0.1f && float_abs(gamepad->right_stick.value.y) < 0.1f)) {
-        zoxel_log(" > joystick r [%fx%f]\n", gamepad->right_stick.value.x, gamepad->right_stick.value.y);
-    }*/
 }
 
 void device_reset_gamepad(ecs_world_t *world, ecs_entity_t gamepad_entity) {
@@ -223,22 +213,32 @@ gamepad->select.is_pressed = SDL_JoystickGetButton(joystick, 6);
 gamepad->start.is_pressed = SDL_JoystickGetButton(joystick, 7);
 gamepad->left_stick_push.is_pressed = SDL_JoystickGetButton(joystick, 9);
 gamepad->right_stick_push.is_pressed = SDL_JoystickGetButton(joystick, 10);*/
-    //if (axisValue != 0)
-    //    zoxel_log(" > joystick [%i]: %i\n", index, axisValue);
-    // zoxel_log("+ checking joystick!\n");
-    // ecs_defer_begin(world);
-    // Read joystick input
-    // Gamepad gamepad = { }
-    // left joystick axis
-    //int left_x_axis = SDL_JoystickGetAxis(joystick, 0);
-    //int left_y_axis = SDL_JoystickGetAxis(joystick, 1);
-    // right joystick axis
-    //int right_x_axis = SDL_JoystickGetAxis(joystick, 2);
-    //int right_y_axis = SDL_JoystickGetAxis(joystick, 3);
-    // triggers
-    //int left_trigger = SDL_JoystickGetAxis(joystick, 4);
-    //int right_trigger = SDL_JoystickGetAxis(joystick, 5);
-    /*int x_axis = SDL_JoystickGetAxis(joystick, index);
-    int y_axis = SDL_JoystickGetAxis(joystick, index + 1);
-    stick->value.x = x_axis / 32768.0f;
-    stick->value.y = y_axis / 32768.0f;*/
+//if (axisValue != 0)
+//    zoxel_log(" > joystick [%i]: %i\n", index, axisValue);
+// zoxel_log("+ checking joystick!\n");
+// ecs_defer_begin(world);
+// Read joystick input
+// Gamepad gamepad = { }
+// left joystick axis
+//int left_x_axis = SDL_JoystickGetAxis(joystick, 0);
+//int left_y_axis = SDL_JoystickGetAxis(joystick, 1);
+// right joystick axis
+//int right_x_axis = SDL_JoystickGetAxis(joystick, 2);
+//int right_y_axis = SDL_JoystickGetAxis(joystick, 3);
+// triggers
+//int left_trigger = SDL_JoystickGetAxis(joystick, 4);
+//int right_trigger = SDL_JoystickGetAxis(joystick, 5);
+/*int x_axis = SDL_JoystickGetAxis(joystick, index);
+int y_axis = SDL_JoystickGetAxis(joystick, index + 1);
+stick->value.x = x_axis / 32768.0f;
+stick->value.y = y_axis / 32768.0f;*/
+
+/*if (!(gamepad->left_stick.value.x == 0 && gamepad->left_stick.value.y == 0)) {
+    zoxel_log(" > left_stick [%fx%f]\n", gamepad->left_stick.value.x, gamepad->left_stick.value.y);
+}*/
+/*if (!(float_abs(gamepad->left_stick.value.x) < 0.1f && float_abs(gamepad->left_stick.value.y) < 0.1f)) {
+    zoxel_log(" > joystick l [%fx%f]\n", gamepad->left_stick.value.x, gamepad->left_stick.value.y);
+}
+if (!(float_abs(gamepad->right_stick.value.x) < 0.1f && float_abs(gamepad->right_stick.value.y) < 0.1f)) {
+    zoxel_log(" > joystick r [%fx%f]\n", gamepad->right_stick.value.x, gamepad->right_stick.value.y);
+}*/

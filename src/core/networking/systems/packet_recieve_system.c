@@ -1,13 +1,10 @@
 unsigned char peek_packet_type(int socket, struct sockaddr_in *recv_addr) {
     socklen_t recv_addr_len = sizeof(recv_addr);
     unsigned char recv_buffer[1];
-    ssize_t recv_size = recvfrom(socket, (char *) recv_buffer, 1, MSG_PEEK,
-        (struct sockaddr*) recv_addr, &recv_addr_len);
+    ssize_t recv_size = recvfrom(socket, (char *) recv_buffer, 1, MSG_PEEK, (struct sockaddr*) recv_addr, &recv_addr_len);
     if (recv_size < 0) {
         // these errors handle no data recieved
-        if (!(errno == EAGAIN || errno == EWOULDBLOCK)) {
-            perror("PacketRecieveSystem: recvfrom");    // an error occurred, print the error and exit
-        }
+        if (!(errno == EAGAIN || errno == EWOULDBLOCK)) perror("PacketRecieveSystem: recvfrom");    // an error occurred, print the error and exit
         return 0;
     } else if (recv_size == 0) {
         return 0;
@@ -22,9 +19,7 @@ void PacketRecieveSystem(ecs_iter_t *it) {
     // player positions
     for (int i = 0; i < it->count; i++) {
         const SocketLink *socketLink = &socketLinks[i];
-        if (socketLink->value == 0) {
-            continue;
-        }
+        if (socketLink->value == 0) continue;
         // do the thing
         ssize_t recv_size;
         struct sockaddr_in recv_addr;
@@ -87,5 +82,4 @@ void PacketRecieveSystem(ecs_iter_t *it) {
             break;  // no more packets to read
         }
     }
-}
-zox_declare_system(PacketRecieveSystem)
+} zox_declare_system(PacketRecieveSystem)

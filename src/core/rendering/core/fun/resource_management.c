@@ -76,7 +76,7 @@ void delete_all_opengl_resources(ecs_world_t *world) {
 // restore opengl resources here
 void restore_all_opengl_resources(ecs_world_t *world) {
     zoxel_log(" > restoring all opengl resources\n");
-    load_all_shaders();
+    opengl_load_shaders();
     restore_children_resources(world, main_canvas);
     restore_opengl_resources_terrain(world);
     ecs_run(world, ecs_id(MeshGPURestoreSystem), 0, NULL);

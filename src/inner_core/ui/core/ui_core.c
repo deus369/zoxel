@@ -89,10 +89,10 @@ if (!headless) {
     zox_system_1(ElementMeshSystem, main_thread_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshGPULink, [out] MaterialGPULink, [out] TextureGPULink, [none] !Position3D)
     zox_system_1(ElementMesh3DSystem, main_thread_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture, [none] Position3D)
 }
-zox_system(ButtonClickEventSystem, EcsPostUpdate, [none] Element, [in] ClickableState, [in] ClickEvent) // EcsPostUpdate EcsPreStore EcsOnStore
 zox_system(BillboardSystem, EcsOnStore, [none] ElementBillboard, [in] CameraLink, [in] Position3D, [out] Rotation3D)
 zox_system(UITrailSystem, EcsOnStore, [in] UIHolderLink, [in] UITrail, [out] Position3D)    // todo: put back to EcsPostUpdate - can't find out where character position updates atm
 zox_system(ResizeElementSystem, 0, [in] CanvasLink, [in] ParentLink)
+zox_system_1(ButtonClickEventSystem, main_thread_pipeline, [none] Element, [out] ClickableState, [in] ClickEvent) // EcsPostUpdate EcsPreStore EcsOnStore
 zoxel_end_module(UICore)
 
 // \todo Display a UI Element anchored, with a pixel position.

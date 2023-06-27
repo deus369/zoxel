@@ -3,7 +3,7 @@
 // https://stackoverflow.com/questions/12682950/is-there-a-webgl-equivalent-of-glgenvertexarrays-and-glbindvertexarrays
 // #include <GLFW/glfw3.h>
 
-int load_all_shaders() {
+int opengl_load_shaders() {
     if (load_instance2D_material() != 0) {
         zoxel_log("    ! error loading [instance2D_material]\n");
     }
@@ -20,7 +20,7 @@ int load_all_shaders() {
         zoxel_log("    ! error loading [load_shader3D_textured]\n");
     }
     #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("load_all_shaders");
+        check_opengl_error("opengl_load_shaders");
     #endif
     return 0;
 }

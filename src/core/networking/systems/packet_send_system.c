@@ -1,13 +1,11 @@
 double last_time_send = 0;
 const int test_send_packet_length = 1; // 100;    // 3
 
-//! Atm this is just testing sending to server and getting replies.
+//! Atm this is just testing sending to server and getting replies
 void PacketSendSystem(ecs_iter_t *it) {
     // every 3 seconds send one packet!
     last_time_send += it->delta_time;
-    if (last_time_send < 3.0) {
-        return;
-    }
+    if (last_time_send < 3.0) return;
     last_time_send -= 3.0;
     const SocketLink *socketLinks = ecs_field(it, SocketLink, 2);
     const TargetNetAddress *targetNetAddresss = ecs_field(it, TargetNetAddress, 3);
@@ -49,5 +47,4 @@ void PacketSendSystem(ecs_iter_t *it) {
         }
         free(send_buffer_2);
     }
-}
-zox_declare_system(PacketSendSystem)
+} zox_declare_system(PacketSendSystem)

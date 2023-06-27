@@ -11,14 +11,14 @@ void toggle_pause_ui(ecs_world_t *world) {
     //zoxel_log(" > alive ui? %s\n", ecs_is_alive(world, pause_ui) ? "alive" : "dead");
     unsigned char is_paused = ecs_is_alive(world, pause_ui); // pause_ui != 0; // ecs_is_alive(world, pause_ui2);
     if (!is_paused) {
-        zoxel_log(" > pausing game\n");
+        zoxel_log(" > game state => [playing] to [paused]\n");
         zox_set_only(local_game, GameState, { zoxel_game_state_paused })
         zox_set_only(main_cameras[0], FreeRoam, { 0 })
         zox_set_only(mouse_entity, MouseLock, { 0 })
         zox_set_only(main_character3D, DisableMovement, { 1 })
         pause_ui = spawn_pause_ui(world, window_position, window_anchor);
     } else {
-        zoxel_log(" > resuming game\n");
+        zoxel_log(" > game [paused] to [playing]\n");
         zox_set_only(local_game, GameState, { zoxel_game_state_playing })
         zox_set_only(mouse_entity, MouseLock, { 1 })
         zox_set_only(main_character3D, DisableMovement, { 0 })
