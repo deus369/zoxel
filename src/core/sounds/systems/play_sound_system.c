@@ -15,12 +15,8 @@ void PlaySoundSystem(ecs_iter_t *it) {
                 zoxel_log(" ! playing sound failed [%s]\n", Mix_GetError());
                 zox_delete(it->entities[i])
             } else {
-                if (soundLength->value == 0) {
-                    zox_delete(it->entities[i])
-                } else {
-                    zox_set_only(it->entities[i], DestroyInTime, { soundLength->value })
-                    // zoxel_log(" > playing sound [%lu]\n", it->entities[i]);
-                }
+                if (soundLength->value == 0) zox_delete(it->entities[i])
+                else zox_set_only(it->entities[i], DestroyInTime, { soundLength->value })
             }
         }
         triggerSound->value = 0;

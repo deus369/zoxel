@@ -1,5 +1,5 @@
-ecs_entity_t prefab_character3D;
-ecs_entity_t main_character3D;
+ecs_entity_t prefab_character3D = 0;
+ecs_entity_t main_character3D = 0;
 const int init_character3D_lod = 1;
 const int character3D_lod_dividor = 1; // 2;
 
@@ -48,9 +48,6 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file *vox, float3 position, float4 rotation, unsigned char lod) {
-    #ifdef zox_disable_characters3D
-        if (main_character3D != 0) return 0;
-    #endif
     zox_instance(prefab)
     zox_set_only(e, Position3D, { position })
     zox_set_only(e, LastPosition3D, { position })

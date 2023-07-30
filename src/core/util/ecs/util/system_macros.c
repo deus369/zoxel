@@ -103,8 +103,7 @@ void system_name(ecs_iter_t *it) {\
         component_name *component = &components[i];\
         if (component->value == 1) component->value = 0;\
     }\
-}\
-zox_declare_system(system_name)
+} zox_declare_system(system_name)
 
 // because these don't work in multithreading
 // zox_system_1

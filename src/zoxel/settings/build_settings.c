@@ -8,7 +8,7 @@
 // #define zox_disable_terrain
 // #define zox_disable_skybox
 // #define zox_disable_characters3D
-
+// #define zox_disable_characters3D_voxes
 
 // === Debugs ===
 
@@ -32,7 +32,6 @@
 
 // #define zox_debug_generic_events
 
-
 // === Settings ===
 
 // #define zoxel_seed_666  // tests seed at 666
@@ -41,7 +40,7 @@
 
 // === Tests ===
 
-// #define zoxel_testing_tiny_terrain
+// #define zoxel_testing_tiny_terrain2
 // #define zox_test_game_keys
 // #define zox_test_quaternion_camera
 
@@ -135,7 +134,6 @@
 // #define zoxel_inputs_debug_gamepad_sos
 // #define zoxel_testing_tiny_terrain
 // test settings
-// #define zox_disable_characters3D_voxes
 // #define zox_disable_fog      // todo: make work
 // #define zoxel_testing_small_terrain
 // #define zox_grayboxing

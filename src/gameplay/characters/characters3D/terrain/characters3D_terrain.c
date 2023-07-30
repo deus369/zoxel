@@ -1,8 +1,8 @@
 #ifndef zoxel_characters3D_terrain
 #define zoxel_characters3D_terrain
 
-// zoxel_component_includes
 #include "settings/settings.c"
+// zoxel_component_includes
 // zoxel_prefab_includes
 // zoxel_system_includes
 #include "systems/characters3D_spawn_system.c"
@@ -13,9 +13,10 @@ zox_begin_module(Characters3DTerrain)
 set_character_terrain_settings();
 // zoxel_system_defines
 // todo: spawn characters on thread instead
-// use GenerateChunkCharacters here instead of GenerateChunk
-zox_system_1(Characters3DSpawnSystem, EcsPreUpdate, [none] terrain.TerrainChunk, [in] GenerateChunk, [in] ChunkOctree, [in] ChunkPosition, [in] RenderLod, [out] EntityLinks)
-zox_system(ChunkCharactersUpdateSystem, EcsOnUpdate, [none] terrain.TerrainChunk, [in] ChunkDirty, [in] RenderLod, [in] EntityLinks)
+// use GenerateChunkEntities here instead of GenerateChunk
+zox_system_1(Characters3DSpawnSystem, main_thread_pipeline, [none] terrain.TerrainChunk, [in] GenerateChunk, [in] ChunkOctree, [in] ChunkPosition, [in] RenderLod, [out] EntityLinks, [out] GenerateChunkEntities)
+zox_system(ChunkCharactersTriggerSystem, EcsOnUpdate, [none] terrain.TerrainChunk, [in] ChunkDirty, [out] GenerateChunkEntities)
+zox_system(ChunkCharactersUpdateSystem, EcsOnLoad, [none] terrain.TerrainChunk, [in] RenderLod, [in] EntityLinks, [out] GenerateChunkEntities)
 // zoxel_component_defines
 // zoxel_prefab_defines
 zoxel_end_module(Characters3DTerrain)

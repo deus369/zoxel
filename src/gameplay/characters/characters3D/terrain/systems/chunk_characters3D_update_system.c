@@ -1,20 +1,22 @@
 // when terrain lod updates, it will update character lods
 void ChunkCharactersUpdateSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
-    const ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
-    const RenderLod *renderLods = ecs_field(it, RenderLod, 3);
-    const EntityLinks *entityLinks = ecs_field(it, EntityLinks, 4);
+    const RenderLod *renderLods = ecs_field(it, RenderLod, 2);
+    const EntityLinks *entityLinks = ecs_field(it, EntityLinks, 3);
+    GenerateChunkEntities *generateChunkEntities = ecs_field(it, GenerateChunkEntities, 4);
     for (int i = 0; i < it->count; i++) {
-        const ChunkDirty *chunkDirty = &chunkDirtys[i];
-        if (chunkDirty->value == 0) continue;
+        GenerateChunkEntities *generateChunkEntities2 = &generateChunkEntities[i];
+        if (generateChunkEntities2->value != 2) continue;
         const EntityLinks *entityLinks2 = &entityLinks[i];
         if (entityLinks2->length == 0) continue;
+        // zoxel_log(" > entityLinks2->length: %i\n", entityLinks2->length);
         const RenderLod *renderLod = &renderLods[i];
         unsigned char camera_distance = renderLod->value;
         unsigned char character_depth = get_character_division_from_camera(camera_distance);
+        // if (entityLinks2->value[0] == 0) zoxel_log("issues with character entity\n");
+        if (entityLinks2->value[0] == 0) continue;
         unsigned char character_chunk_division = ecs_get(world, entityLinks2->value[0], RenderLod)->value;
-        // check if characters division is changed from chunks
-        if (character_chunk_division == character_depth) continue;
+        if (character_chunk_division == character_depth) continue;  // check if characters division is changed from chunks
         //zoxel_log(" > characters in chunk updating %lu > %i [depth %i to %i]\n", it->entities[i],
         //    entityLinks2->length, character_chunk_division, character_depth);
         for (int j = 0; j < entityLinks2->length; j++) {
@@ -22,6 +24,20 @@ void ChunkCharactersUpdateSystem(ecs_iter_t *it) {
             ecs_set(world, character_entity, RenderLod, { character_depth });
             ecs_set(world, character_entity, ChunkDirty, { 1 });
         }
+        generateChunkEntities2->value = 0;
+        // zoxel_log(" > chunk characters were updated %i\n", entityLinks2->length);
     }
-}
-zox_declare_system(ChunkCharactersUpdateSystem)
+} zox_declare_system(ChunkCharactersUpdateSystem)
+
+void ChunkCharactersTriggerSystem(ecs_iter_t *it) {
+    const ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
+    GenerateChunkEntities *generateChunkEntities = ecs_field(it, GenerateChunkEntities, 3);
+    for (int i = 0; i < it->count; i++) {
+        const ChunkDirty *chunkDirtys2 = &chunkDirtys[i];
+        if (chunkDirtys2->value == 0) continue;
+        GenerateChunkEntities *generateChunkEntities2 = &generateChunkEntities[i];
+        if (generateChunkEntities2->value != 0) continue;
+        generateChunkEntities2->value = 1;
+        // zoxel_log(" > chunk entities was triggered!\n");
+    }
+} zox_declare_system(ChunkCharactersTriggerSystem)

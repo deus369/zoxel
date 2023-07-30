@@ -86,5 +86,4 @@ void SoundGenerateSystem(ecs_iter_t *it) {
     #ifdef zoxel_time_sound_generate_system
         end_timing("SoundGenerateSystem")
     #endif
-}
-zox_declare_system(SoundGenerateSystem)
+} zox_declare_system(SoundGenerateSystem)

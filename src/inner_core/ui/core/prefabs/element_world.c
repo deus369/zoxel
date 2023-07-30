@@ -32,7 +32,6 @@ ecs_entity_t spawn_element_world(ecs_world_t *world, ecs_entity_t ui_holder) {
     zox_set_only(e, CanvasLink, { main_canvas })
     zox_set_only(e, PixelSize, { pixel_size })
     zox_set_only(e, TextureSize, { pixel_size })
-    // initialize_ui_components(world, e, parent, position, size, anchor, 0, canvas_size);
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned prefab element_world [%lu]\n", (long int) e);
     #endif

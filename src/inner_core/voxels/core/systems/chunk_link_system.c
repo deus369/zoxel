@@ -58,19 +58,4 @@ void ChunkLinkSystem(ecs_iter_t *it) {
             }
         }
     }
-}
-zox_declare_system(ChunkLinkSystem)
-
-/*ecs_entity_t old_chunk = chunkLink->value;
-chunkLink->value = int3_hash_map_get(chunkLinks->value, chunk_position);
-if (old_chunk != chunkLink->value) {
-    zoxel_log("entity %lu moving chunks\n", e);
-    // remove entity from old chunk
-    // add entity to new chunk
-    EntityLinks *entityLinks = ecs_get_mut(world, old_chunk, EntityLinks);
-    remove_from_memory_component(entityLinks, ecs_entity_t, e)
-    ecs_modified(world, old_chunk, EntityLinks);
-    EntityLinks *entityLinks2 = ecs_get_mut(world, chunkLink->value, EntityLinks);
-    add_to_memory_component(entityLinks2, ecs_entity_t, e)
-    ecs_modified(world, chunkLink->value, EntityLinks);
-}*/
+} zox_declare_system(ChunkLinkSystem)
