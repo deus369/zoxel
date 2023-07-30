@@ -56,7 +56,7 @@ int begin_core(int argc, char* argv[]) {
 void close_core() {
     close_ecs();
     if (!headless) {
-        dispose_shaders();
+        opengl_dispose_shaders();
         close_audio_sdl();
         SDL_Quit();
     }
