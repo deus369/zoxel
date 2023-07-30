@@ -11,6 +11,7 @@
 #define degreesToRadians (M_PI * 2) / 360.0f
 #endif
 #include <math.h>       // for sqrt
+#include "util/float_util.c"
 #include "data/byte2.c"
 #include "data/byte3.c"
 #include "data/byte4.c"

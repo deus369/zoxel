@@ -1,5 +1,6 @@
 const float skybox_scale = 1024.0f;
 ecs_entity_t prefab_skybox;
+ecs_entity_t skybox;
 
 ecs_entity_t spawn_prefab_skybox(ecs_world_t *world) {
     ecs_defer_begin(world);
@@ -32,6 +33,7 @@ ecs_entity_t spawn_skybox(ecs_world_t *world) {
     zox_set_only(e, Brightness, { 1.0f })
     if (!headless) spawn_gpu_mesh(world, e);
     if (!headless) spawn_gpu_material(world, e, shader_skybox);
+    skybox = e;
     #ifdef zoxel_debug_spawns
         zoxel_log(" + spawned skybox [%lu]\n", (long int) e);
     #endif

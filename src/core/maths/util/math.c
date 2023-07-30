@@ -1,13 +1,5 @@
 // Find more math inspiration at https://gist.github.com/mattatz/86fff4b32d198d0928d0fa4ff32cf6fa
 
-float float_abs(float input) {
-    if (input < 0) {
-        return -input;
-    } else {
-        return input;
-    }
-}
-
 double double_abs(double input) {
     if (input < 0) {
         return -input;

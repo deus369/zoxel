@@ -6,7 +6,6 @@ zox_declare_tag(Weather)
 #include "prefabs/skybox.c"
 
 void spawn_weather(ecs_world_t *world) {
-    if (!headless) initialize_shader_skybox();  // needs to load shaders after sdl runs
     #ifndef zox_disable_skybox
         spawn_skybox(world);
     #endif

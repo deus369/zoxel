@@ -1,5 +1,5 @@
 // Here? select which zoxel modules I shall use?
-#define zoxel_include_vulkan
+// #define zoxel_include_vulkan
 #define zoxel_include_players
 
 // === Disables ===

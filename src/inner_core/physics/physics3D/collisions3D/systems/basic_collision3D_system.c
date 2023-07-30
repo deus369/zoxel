@@ -29,7 +29,7 @@ const float lowest_velocity_threshold = 0.001f;
                 dimension_delta = terrain_voxel_scale * ((terrain_voxel_scale_inverse * last_position.d) - voxel_side_position);\
                 position3D->value.d = lastPosition3D->value.d - dimension_delta * collision_precision;\
                 velocity3D->value.d *= -bounce_lost_force;\
-                if (abs(velocity3D->value.d) < lowest_velocity_threshold) velocity3D->value.d = 0.0f;\
+                if (float_abs(velocity3D->value.d) < lowest_velocity_threshold) velocity3D->value.d = 0.0f;\
                 did_collide = 1;\
             }\
         }\

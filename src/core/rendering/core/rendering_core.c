@@ -29,6 +29,7 @@ zox_memory_component(MeshColorRGBs, color_rgb)
 #include "systems/mesh_uvs_update_system.c"
 #include "systems/mesh2D_update_system.c"
 #include "systems/mesh2D_uvs_update_system.c"
+#include "systems/mesh_restore_system.c"
 #include "systems/mesh_dispose_system.c"
 // zox_reset_system(MeshDirtySystem, MeshDirty)
 #include "render2D_systems/render2D_system.c"

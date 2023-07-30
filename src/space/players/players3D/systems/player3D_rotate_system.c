@@ -35,9 +35,9 @@ void Player3DRotateSystem(ecs_iter_t *it) {
                 // if (mouse_delta != 0) zoxel_log(" > mouse_delta: %f\n", mouse_delta);
                 if (mouse_delta < -max_mouse_delta2) mouse_delta = -max_mouse_delta;
                 else if (mouse_delta > max_mouse_delta2) mouse_delta = max_mouse_delta;
-                if (abs(mouse_delta) >= max_mouse_delta3) mouse_delta *= 1.2f;
-                if (abs(mouse_delta) >= max_mouse_delta4) mouse_delta *= 1.4f;
-                else if (abs(mouse_delta) <= min_mouse_delta3) mouse_delta = 0;
+                if (float_abs(mouse_delta) >= max_mouse_delta3) mouse_delta *= 1.2f;
+                if (float_abs(mouse_delta) >= max_mouse_delta4) mouse_delta *= 1.4f;
+                else if (float_abs(mouse_delta) <= min_mouse_delta3) mouse_delta = 0;
                 if (mouse_delta != 0) {
                     if (mouse_delta > 0 && mouse_delta < min_mouse_delta2) mouse_delta = min_mouse_delta2;
                     else if (mouse_delta < 0 && mouse_delta > -min_mouse_delta2) mouse_delta = -min_mouse_delta2;

@@ -1,6 +1,6 @@
 void anchor_position2D(int2 *position, int2 window_size, float2 anchor, float header_height) {
     #ifdef zoxel_on_android
-        if (anchor->y == 1) {
+        if (anchor.y == 1) {
             position->y -= android_header_size;
         }
     #endif
