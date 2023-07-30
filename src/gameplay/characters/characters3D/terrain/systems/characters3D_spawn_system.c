@@ -4,13 +4,12 @@
 #endif
 
 void Characters3DSpawnSystem(ecs_iter_t *it) {
-    const ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 3);
-    const ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 4);
-    const RenderLod *renderLods = ecs_field(it, RenderLod, 5);
-    EntityLinks *entityLinks = ecs_field(it, EntityLinks, 6); // set characters
-    GenerateChunkEntities *generateChunkEntities = ecs_field(it, GenerateChunkEntities, 7);
+    const ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 2);
+    const ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 3);
+    const RenderLod *renderLods = ecs_field(it, RenderLod, 4);
+    EntityLinks *entityLinks = ecs_field(it, EntityLinks, 5); // set characters
+    GenerateChunkEntities *generateChunkEntities = ecs_field(it, GenerateChunkEntities, 6);
     for (int i = 0; i < it->count; i++) {
-        // const GenerateChunk *generateChunk = &generateChunks[i];
         GenerateChunkEntities *generateChunkEntities2 = &generateChunkEntities[i];
         if (generateChunkEntities2->value != 1) continue;
         const ChunkOctree *chunkOctree = &chunkOctrees[i];
@@ -28,8 +27,6 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         // find if chunk has any air position - free place to spawn - spawn characters in this chunk
         const ChunkPosition *chunkPosition = &chunkPositions[i];
         int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, default_chunk_size);
-        // initialize_memory_component(entityLinks2, ecs_entity_t, characters_per_chunk_count);
-        // int k = 0;
         ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d();
         for (unsigned char j = 0; j < characters_per_chunk_count; j++) {
             byte3 local_position = (byte3) { rand() % default_chunk_length, default_chunk_length - 1, rand() % default_chunk_length };    // rand() % 16
@@ -60,7 +57,6 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             #ifndef zox_disable_characters3D
                 ecs_entity_t e = spawn_character3D(it->world, prefab_character3D, &vox, position, rotation, character_lod);
                 add_to_ecs_entity_t_array_d(entities, e);
-                // zoxel_log(" > e: %lu\n", e);
                 #ifdef zoxel_log_characters_count
                     characters_count++;
                 #endif

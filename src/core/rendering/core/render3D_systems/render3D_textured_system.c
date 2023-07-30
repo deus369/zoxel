@@ -54,7 +54,6 @@ void Render3DTexturedSystem(ecs_iter_t *it) {
             opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes);
         }
         opengl_set_texture(textureGPULink->value, 0);
-        // opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, &attributes);
         opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, colorsGPULink->value, &attributes);
         glUniform4f(attributes.rotation, rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
         opengl_set_material3D_uvs_position(position3D->value, &attributes);

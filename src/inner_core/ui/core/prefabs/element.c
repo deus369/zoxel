@@ -29,4 +29,4 @@ ecs_entity_t spawn_element(ecs_world_t *world, ecs_entity_t parent, int2 positio
     return e;
 }
 
-// zox_add_tag(e, SaveTexture);
+// zox_add_tag(e, SaveTexture)

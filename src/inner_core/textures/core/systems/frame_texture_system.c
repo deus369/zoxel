@@ -1,3 +1,5 @@
+// #define zox_time_frame_texture_system
+
 unsigned char check_texture(TextureData* textureData, const TextureSize *textureSize, int2 pixel_position, color find_color, int distance) {
     if (!int2_in_bounds(pixel_position, textureSize->value)) return 0;
     if (color_equal(find_color, textureData->value[int2_array_index(pixel_position, textureSize->value)])) return 1;
@@ -43,8 +45,15 @@ void generate_frame_texture(TextureData* textureData, const TextureSize *texture
             }
             if (pixel_position.x < frame_thickness || pixel_position.y < frame_thickness || pixel_position.x > textureSize->value.x - 1 - frame_thickness || pixel_position.y > textureSize->value.y - 1 - frame_thickness) {
                 textureData->value[index] = outline_color;
-            } else if (check_texture(textureData, textureSize, pixel_position, empty, frame_thickness)) {
-                textureData->value[index] = outline_color;
+            }
+            // only floodfill check corners of the texture to save processing time
+            else if ((pixel_position.x < corner_size && pixel_position.y < corner_size) ||
+                (pixel_position.x > textureSize->value.x - corner_size && pixel_position.y < corner_size) ||
+                (pixel_position.x > textureSize->value.x - corner_size && pixel_position.y > textureSize->value.y - corner_size) ||
+                (pixel_position.x < corner_size && pixel_position.y > textureSize->value.y - corner_size)) {
+                if (check_texture(textureData, textureSize, pixel_position, empty, frame_thickness)) {
+                    textureData->value[index] = outline_color;
+                }
             }
             index++;
         }
@@ -71,6 +80,9 @@ void generate_frame_texture(TextureData* textureData, const TextureSize *texture
 
 void FrameTextureSystem(ecs_iter_t *it) {
     if (!it->ctx || !ecs_query_changed(it->ctx, NULL)) return;
+    #ifdef zox_time_frame_texture_system
+        begin_timing()
+    #endif
     const GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 2);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 3);
     const Color *colors = ecs_field(it, Color, 4);
@@ -92,7 +104,13 @@ void FrameTextureSystem(ecs_iter_t *it) {
         re_initialize_memory_component(textureData, color, length)
         generate_frame_texture(textureData, textureSize, color2, outlineThickness->value, frameEdge->value);
         textureDirty->value = 1;
+        #ifdef zox_time_frame_texture_system
+            did_do_timing()
+        #endif
     }
+    #ifdef zox_time_frame_texture_system
+        end_timing("    - frame_texture_system")
+    #endif
 } zox_declare_system(FrameTextureSystem)
 
 

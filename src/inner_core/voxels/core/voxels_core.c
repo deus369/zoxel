@@ -13,7 +13,6 @@ zox_memory_component(ChunkData, unsigned char)
 zox_memory_component(ChunkNeighbors, ecs_entity_t)
 zoxel_octree_component(ChunkOctree, unsigned char, 0)
 zox_entities_component(VoxelLinks)
-zox_byte_component(GenerateChunkEntities)
 // zoxel_util_includes
 #include "util/voxel_mesh_util.c"
 #include "util/chunk_util.c"
@@ -53,7 +52,6 @@ zox_define_memory_component(ChunkData)
 zox_define_memory_component(ChunkNeighbors)
 zoxel_octree_component_define(ChunkOctree)
 zox_define_entities_component(VoxelLinks, [in] VoxelLinks)
-zox_define_component(GenerateChunkEntities)
 // zoxel_filter_defines
 zox_filter(chunks_generating, [in] GenerateChunk)
 // zoxel_system_defines

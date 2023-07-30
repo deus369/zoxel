@@ -36,9 +36,11 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
         ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
         shader2D_instance_end();
         ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);
+        ecs_run(world, ecs_id(RenderMaterial2DSystem2), 0, NULL);
         for (int i = 0; i < max_render_layers; i++) { // render all ui, layer at a time..
             renderer_layer = i;
             ecs_run(world, ecs_id(RenderMeshMaterial2DSystem), 0, NULL);    // render for all tables..
+            ecs_run(world, ecs_id(RenderMeshMaterial2DSystem2), 0, NULL);    // render for all tables..
         }
         opengl_unset_mesh();    // for RenderMeshMaterial2DSystem
         opengl_disable_opengl_program();

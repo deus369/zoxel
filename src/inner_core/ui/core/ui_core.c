@@ -86,7 +86,7 @@ if (!headless) {
         zox_system(ElementActivateSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterTarget)
         zox_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [out] NavigatorState, [out] NavigatorTimer, [out] RaycasterTarget)
     #endif
-    zox_system_1(ElementMeshSystem, main_thread_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshGPULink, [out] MaterialGPULink, [out] TextureGPULink, [none] !Position3D)
+    zox_system_1(ElementMeshSystem, main_thread_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshGPULink, [out] MaterialInstancedGPULink, [out] TextureGPULink, [out] UvsGPULink, [none] !Position3D)
     zox_system_1(ElementMesh3DSystem, main_thread_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture, [none] Position3D)
 }
 zox_system(BillboardSystem, EcsOnStore, [none] ElementBillboard, [in] CameraLink, [in] Position3D, [out] Rotation3D)

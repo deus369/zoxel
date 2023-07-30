@@ -99,8 +99,8 @@ void render_entity_material2D_and_mesh(const float4x4 viewMatrix, uint2 mesh, ui
     }
     MaterialTextured2D materialTextured2D = initialize_material2D_textured(material);
     glUseProgram(material);   // invalid operation
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    // glEnable(GL_BLEND);
+    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     // glEnable(GL_DEPTH_TEST);
     // glDepthFunc(GL_LESS);
     // glEnable(GL_ALPHA_TEST);
@@ -119,15 +119,73 @@ void render_entity_material2D_and_mesh(const float4x4 viewMatrix, uint2 mesh, ui
     glUniform1f(materialTextured2D.scale, scale);
     glUniform1f(materialTextured2D.brightness, brightness);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glUseProgram(0);
-    glDisable(GL_BLEND);
+    // glBindTexture(GL_TEXTURE_2D, 0);
+    // glDisable(GL_BLEND);
+    // glUseProgram(0);
     // glDisable(GL_ALPHA_TEST);
     // glDisable(GL_DEPTH_TEST);
     #ifdef zoxel_catch_opengl_errors
         check_opengl_error("render_entity_material2D_and_mesh");
     #endif
 }
+
+void render_entity_material2D_and_mesh2(const float4x4 viewMatrix, uint2 mesh, uint material, uint uvs_gpu_link, uint texture, float2 position, float angle, float scale, float brightness, unsigned char layer) {
+    if (material == 0) {
+        // printf("render_entity_material2D material is 0.\n");
+        return;
+    }
+    MaterialTextured2D materialTextured2D = initialize_material2D_textured(material);
+    glUseProgram(material);   // invalid operation
+    // glEnable(GL_BLEND);
+    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    // glEnable(GL_DEPTH_TEST);
+    // glDepthFunc(GL_LESS);
+    // glEnable(GL_ALPHA_TEST);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);    // for indices
+    glBindBuffer(GL_ARRAY_BUFFER, mesh.y);            // for vertex coordinates
+    glEnableVertexAttribArray(materialTextured2D.vertexPosition);
+    glVertexAttribPointer(materialTextured2D.vertexPosition, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(0 * sizeof(float)));
+    glBindBuffer(GL_ARRAY_BUFFER, uvs_gpu_link);            // for vertex coordinates
+    glEnableVertexAttribArray(materialTextured2D.vertexUV);
+    glVertexAttribPointer(materialTextured2D.vertexUV, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(2 * sizeof(float)));
+    glUniformMatrix4fv(materialTextured2D.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
+    glUniform1f(materialTextured2D.positionX, position.x);
+    glUniform1f(materialTextured2D.positionY, position.y);
+    glUniform1f(materialTextured2D.positionZ, ((int) layer) * shader_depth_multiplier);
+    glUniform1f(materialTextured2D.angle, angle);
+    glUniform1f(materialTextured2D.scale, scale);
+    glUniform1f(materialTextured2D.brightness, brightness);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+    // glBindTexture(GL_TEXTURE_2D, 0);
+    // glDisable(GL_BLEND);
+    // glUseProgram(0);
+    // glDisable(GL_ALPHA_TEST);
+    // glDisable(GL_DEPTH_TEST);
+    #ifdef zoxel_catch_opengl_errors
+        check_opengl_error("render_entity_material2D_and_mesh");
+    #endif
+}
+
+void opengl_set_buffer_attributes2D(uint vertex_buffer, uint uv_buffer, MaterialTextured2D *attributes) {
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+    glEnableVertexAttribArray(attributes->vertexPosition);
+    glVertexAttribPointer(attributes->vertexPosition, 2, GL_FLOAT, GL_FALSE, 0, 0); // 12, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
+    glEnableVertexAttribArray(attributes->vertexUV);
+    glVertexAttribPointer(attributes->vertexUV, 2, GL_FLOAT, GL_FALSE,  0, 0); // 8, 0);
+}
+
+/*void opengl_upload_shader2D_textured(uint2 mesh_buffer, uint uv_buffer, const int *indicies, int indicies_length, const float2 *verts, const float2 *uvs, int verts_length) {
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
+    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, mesh_buffer.y);
+    glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float2), verts, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
+    glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float2), uvs, GL_STATIC_DRAW);
+    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}*/
 
 void opengl_upload_shader2D_textured(uint2 mesh_buffer, uint material_buffer,
     const int *indicies, int indicies_length, const float2 *verts, const float2 *uvs, int verts_length) {

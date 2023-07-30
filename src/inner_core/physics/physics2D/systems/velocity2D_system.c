@@ -9,5 +9,4 @@ void Velocity2DSystem(ecs_iter_t *it) {
         position2D->value.x += velocity2D->value.x * deltaTime;
         position2D->value.y += velocity2D->value.y * deltaTime;
     }
-}
-zox_declare_system(Velocity2DSystem)
+} zox_declare_system(Velocity2DSystem)

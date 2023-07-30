@@ -16,5 +16,4 @@ void Bounds2DSystem(ecs_iter_t *it) {
             position2D->value.y += bounds2D->value.y * 2.0f;
         }
     }
-}
-zox_declare_system(Bounds2DSystem)
+} zox_declare_system(Bounds2DSystem)

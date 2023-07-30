@@ -21,7 +21,14 @@ void iterate_time() {
     zox_current_time = current_time_in_seconds() - time_begin;
     zox_delta_time = zox_current_time - last_time;
     zox_current_time_check += zox_delta_time;
+    #ifdef zox_check_current_time
+        if (zox_current_time != zox_current_time_check) {
+            zoxel_log("current time and check not equal: %f - %f\n", zox_current_time, zox_current_time_check);
+        }
+    #endif
     // zoxel_log("current time [%d]\n", zox_current_time);
+    // zoxel_log("delta time [%f]\n", zox_delta_time * 1000.0);
+    if (zox_delta_time >=  1.0 / 10.0) zox_delta_time = 0.0;
     frames_count++;
     frames_per_second_time += zox_delta_time;
     if (frames_per_second_time >= 1.0) {

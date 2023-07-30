@@ -51,6 +51,7 @@ void restore_material_resources(ecs_world_t *world, ecs_entity_t e, uint2 shader
     if (ecs_has(world, e, MaterialGPULink)) ecs_set(world, e, MaterialGPULink, { spawn_gpu_material_program(shader) });
     if (ecs_has(world, e, TextureGPULink)) ecs_set(world, e, TextureGPULink, { spawn_gpu_texture_buffers() });
     if (ecs_has(world, e, TextureDirty)) ecs_set(world, e, TextureDirty, { 1 });
+    // todo: restore for MaterialInstancedGPULink
 }
 
 void restore_children_resources(ecs_world_t *world, ecs_entity_t e) {

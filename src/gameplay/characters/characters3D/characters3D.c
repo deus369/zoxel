@@ -14,6 +14,7 @@ zox_component(Character3DLink, ecs_entity_t)
 
 void spawn_prefabs_characters3D(ecs_world_t *world) {
     spawn_prefab_character3D(world);
+    spawn_prefabs_characters3D_terrain(world);
 }
 
 zox_begin_module(Characters3D)

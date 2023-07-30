@@ -66,8 +66,7 @@ void extract_keyboard(ecs_world_t *world, SDL_Event event) {
 }
 
 void print_keyboard_key(const PhysicalButton *key, char* name) {
-    zoxel_log("    key %s [%s - %s - %s]\n", name, (key->pressed_this_frame ? "true" : "false"),
-        (key->is_pressed ? "true" : "false"), (key->released_this_frame ? "true" : "false"));
+    zoxel_log("    key %s [%s - %s - %s]\n", name, (key->pressed_this_frame ? "true" : "false"), (key->is_pressed ? "true" : "false"), (key->released_this_frame ? "true" : "false"));
 }
 
 void print_keyboard(ecs_world_t *world) {
