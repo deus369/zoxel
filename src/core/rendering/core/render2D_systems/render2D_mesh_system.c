@@ -1,5 +1,5 @@
 extern unsigned char renderer_layer;
-extern void render_entity_material2D_and_mesh(const float4x4 viewMatrix, uint2 mesh, uint material, uint texture, float2 position, float angle, float scale, float brightness, unsigned char layer);
+// extern void render_entity_material2D_and_mesh(const float4x4 viewMatrix, uint2 mesh, uint material, uint texture, float2 position, float angle, float scale, float brightness, unsigned char layer);
 
 void RenderMeshMaterial2DSystem(ecs_iter_t *it) {
     /*Position2D *position2Ds = ecs_field(it, Position2D, 1);
@@ -95,9 +95,11 @@ void RenderMeshMaterial2DSystem2(ecs_iter_t *it) {
         glUniform1f(attributes.brightness, brightness->value);
         // opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_draw_triangles(6); // meshIndicies2->length);*/
-        render_entity_material2D_and_mesh(viewMatrix, meshGPULink->value, materialInstanceGPULink->value, textureGPULink->value, position2D->value, rotation2D->value, scale1D->value, brightness->value, layer2D->value);
         // if (uvsGPULink->value == 0) continue;
-        // render_entity_material2D_and_mesh2(viewMatrix, meshGPULink->value, materialInstanceGPULink->value, uvsGPULink->value, textureGPULink->value, position2D->value, rotation2D->value, scale1D->value, brightness->value, layer2D->value);
+
+        // render_entity_material2D_and_mesh(materialInstanceGPULink->value, meshGPULink->value, textureGPULink->value, viewMatrix, position2D->value, rotation2D->value, scale1D->value, brightness->value, layer2D->value);
+        render_entity_material2D_and_mesh2(materialInstanceGPULink->value, meshGPULink->value, uvsGPULink->value, textureGPULink->value, viewMatrix, position2D->value, rotation2D->value, scale1D->value, brightness->value, layer2D->value);
+        
         // zoxel_log(" > rendering 2D mesh material [%lu]\n", (long int) it->entities[i]);
     }
     opengl_unset_mesh();

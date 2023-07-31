@@ -40,8 +40,8 @@
 
 // === Tests ===
 
-#define zox_play_game_on_start
-#define zoxel_testing_tiny_terrain2
+// #define zox_play_game_on_start
+// #define zoxel_testing_tiny_terrain2
 // #define zox_test_game_keys
 // #define zox_test_quaternion_camera
 
