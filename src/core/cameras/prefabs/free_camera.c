@@ -1,3 +1,6 @@
+// from now not needed... just change settings in base camera to remove any frame issues
+// later to swap cameras ill probably need to switch them over a frame or something fancier
+// as i need to control when it updates exactly
 ecs_entity_t prefab_free_camera;
 
 ecs_entity_t spawn_prefab_free_camera(ecs_world_t *world) {
@@ -12,8 +15,7 @@ ecs_entity_t spawn_prefab_free_camera(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_free_camera(ecs_world_t *world, float3 position, float4 rotation,
-    int2 screen_dimensions, int2 screen_position) {
+ecs_entity_t spawn_free_camera(ecs_world_t *world, float3 position, float4 rotation, int2 screen_dimensions, int2 screen_position) {
     ecs_defer_begin(world);
     zox_instance(prefab_free_camera)
     zox_name("free_camera")

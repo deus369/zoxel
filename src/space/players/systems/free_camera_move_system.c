@@ -18,24 +18,12 @@ void FreeCameraMoveSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const Keyboard *keyboard = &keyboards[i];
         float3 movement = { 0, 0, 0 };
-        if (keyboard->a.is_pressed) {
-            movement.x += -1;
-        }
-        if (keyboard->d.is_pressed) {
-            movement.x += 1;
-        }
-        if (keyboard->w.is_pressed) {
-            movement.z = -1;
-        }
-        if (keyboard->s.is_pressed) {
-            movement.z += 1;
-        }
-        if (keyboard->q.is_pressed) {
-            movement.y += -1;
-        }
-        if (keyboard->e.is_pressed) {
-            movement.y = 1;
-        }
+        if (keyboard->a.is_pressed) movement.x += -1;
+        if (keyboard->d.is_pressed) movement.x += 1;
+        if (keyboard->w.is_pressed) movement.z = -1;
+        if (keyboard->s.is_pressed) movement.z += 1;
+        if (keyboard->q.is_pressed) movement.y += -1;
+        if (keyboard->e.is_pressed) movement.y = 1;
         if (!(movement.x == 0 && movement.y == 0 && movement.z == 0)) {
             did_update = 1;
             // printf("Bob Accel %f x %f \n", movement.x, movement.y);

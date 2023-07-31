@@ -17,6 +17,7 @@ ecs_entity_t spawn_camera_base_prefab(ecs_world_t *world) {
     zox_set(e, ScreenPosition, { { 0, 0 } })
     zox_set(e, FieldOfView, { camera_fov })
     zox_set(e, CameraNearDistance, { 0.01f })
+    zox_set(e, FreeRoam, { 0 }) // newer
     ecs_defer_end(world);
     prefab_base_camera = e;
     #ifdef zoxel_debug_prefabs
