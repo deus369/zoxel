@@ -180,52 +180,52 @@ float trumpet_sound(float time, float frequency) {
         sin_wave_8(time, frequency, sin_wave_9(time, frequency, 2.0f));
 }
 
-    /*
-    float tremolo_frequency = 8.0f;
-    float vibrato_frequency = 4.0f;
-    return 0.7f * (0.5f * sin(frequency * M_PI * time + pi_offset)
-        + 0.5f * sin_wave_3(time, frequency, pi_offset)
-        + 0.25f * sin_wave_4(time, frequency, pi_offset)
-        + 0.5f * pow(sin_wave_5(time, frequency, pi_offset), 2.0f)
-        + 0.2f * sin_wave_6(time, frequency, pi_offset)
-        + 0.1f * sin_wave_7(time, frequency, pi_offset)
-        + 0.1f * sin_wave_8(time, frequency, pi_offset)
-        + 0.1f * sin_wave_9(time, frequency, pi_offset)
-        + 0.1f * sin_wave_0(time, tremolo_frequency, pi_offset)
-        + 0.1f * sin_wave_1(time, vibrato_frequency, pi_offset));*/
+/*
+float tremolo_frequency = 8.0f;
+float vibrato_frequency = 4.0f;
+return 0.7f * (0.5f * sin(frequency * M_PI * time + pi_offset)
+    + 0.5f * sin_wave_3(time, frequency, pi_offset)
+    + 0.25f * sin_wave_4(time, frequency, pi_offset)
+    + 0.5f * pow(sin_wave_5(time, frequency, pi_offset), 2.0f)
+    + 0.2f * sin_wave_6(time, frequency, pi_offset)
+    + 0.1f * sin_wave_7(time, frequency, pi_offset)
+    + 0.1f * sin_wave_8(time, frequency, pi_offset)
+    + 0.1f * sin_wave_9(time, frequency, pi_offset)
+    + 0.1f * sin_wave_0(time, tremolo_frequency, pi_offset)
+    + 0.1f * sin_wave_1(time, vibrato_frequency, pi_offset));*/
 
-    // This is a simple flute sound generator that uses a combination of 
-    // sine and square waves to create a realistic flute sound.
-    // The parameters of the sine and square waves can be adjusted to 
-    // change the timbre of the instrument.
+// This is a simple flute sound generator that uses a combination of 
+// sine and square waves to create a realistic flute sound.
+// The parameters of the sine and square waves can be adjusted to 
+// change the timbre of the instrument.
 
-    /*float pi_offset = 0.0f;
-    return (sin_wave_0(time, frequency, pi_offset) + 
-            square_wave_0(time, frequency, pi_offset) + 
-            sin_wave_1(time, frequency, pi_offset) + 
-            square_wave_1(time, frequency, pi_offset))/4;*/
-            
-    // This is an advanced flute sound generator that uses a combination of 
-    // sine, square, sawtooth, triangle and FM synthesis waves to create a realistic flute sound.
-    // The parameters of the waves can be adjusted to 
-    // change the timbre of the instrument.
-    
-    /*float pi_offset = 0.0f;
-    float breathy_comp = (sawtooth_wave_0(time, frequency / 2, 0)
-        + triangle_wave_0(time, frequency / 4, 0)) / 4;
-    float tone_comp = (sin_wave_0(time, frequency, pi_offset) + 
-            square_wave_0(time, frequency, pi_offset) + 
-            sin_wave_1(time, frequency, pi_offset) + 
-            square_wave_1(time, frequency, pi_offset) +
-            fm_synthesis_0(time, frequency)) / 5.0f;    // , frequency*1.01, 0.01
-    return (breathy_comp + tone_comp); //  * envelope_function(time, frequency);
-    */
-    /*float pi_offset = 0.0f;
-    float breathy_comp = (sawtooth_wave_0(time, frequency/2, pi_offset)
-        + triangle_wave_0(time, frequency/4, pi_offset))/4;
-    float tone_comp = (sin_wave_0(time, frequency, pi_offset) + 
-            square_wave_0(time, frequency, pi_offset) + 
-            sin_wave_1(time, frequency, pi_offset) + 
-            square_wave_1(time, frequency, pi_offset) +
-            fm_synthesis_0(time, frequency, frequency*1.01, 0.01))/5;
-    return (breathy_comp + tone_comp);*/
+/*float pi_offset = 0.0f;
+return (sin_wave_0(time, frequency, pi_offset) + 
+        square_wave_0(time, frequency, pi_offset) + 
+        sin_wave_1(time, frequency, pi_offset) + 
+        square_wave_1(time, frequency, pi_offset))/4;*/
+        
+// This is an advanced flute sound generator that uses a combination of 
+// sine, square, sawtooth, triangle and FM synthesis waves to create a realistic flute sound.
+// The parameters of the waves can be adjusted to 
+// change the timbre of the instrument.
+
+/*float pi_offset = 0.0f;
+float breathy_comp = (sawtooth_wave_0(time, frequency / 2, 0)
+    + triangle_wave_0(time, frequency / 4, 0)) / 4;
+float tone_comp = (sin_wave_0(time, frequency, pi_offset) + 
+        square_wave_0(time, frequency, pi_offset) + 
+        sin_wave_1(time, frequency, pi_offset) + 
+        square_wave_1(time, frequency, pi_offset) +
+        fm_synthesis_0(time, frequency)) / 5.0f;    // , frequency*1.01, 0.01
+return (breathy_comp + tone_comp); //  * envelope_function(time, frequency);
+*/
+/*float pi_offset = 0.0f;
+float breathy_comp = (sawtooth_wave_0(time, frequency/2, pi_offset)
+    + triangle_wave_0(time, frequency/4, pi_offset))/4;
+float tone_comp = (sin_wave_0(time, frequency, pi_offset) + 
+        square_wave_0(time, frequency, pi_offset) + 
+        sin_wave_1(time, frequency, pi_offset) + 
+        square_wave_1(time, frequency, pi_offset) +
+        fm_synthesis_0(time, frequency, frequency*1.01, 0.01))/5;
+return (breathy_comp + tone_comp);*/
