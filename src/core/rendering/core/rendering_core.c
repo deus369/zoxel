@@ -41,7 +41,8 @@ zox_memory_component(MeshColorRGBs, color_rgb)
 #include "render3D_systems/render3D_textured_system.c"
 // zoxel_function_includes
 #include "fun/render_loop.c"
-#include "fun/resource_management.c"
+#include "fun/gpu_dispose.c"
+#include "fun/gpu_restore.c"
 
 zox_begin_module(RenderingCore)
 // zoxel_component_defines

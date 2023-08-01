@@ -1,12 +1,9 @@
 // #define zox_time_element_mesh_system
-// const unsigned char max_material_spawn_count = 255;
 
 void ElementMeshSystem(ecs_iter_t *it) {
-    // if (max_material_spawn_count == 0) return;
     #ifdef zox_time_element_mesh_system
         begin_timing()
     #endif
-    // unsigned char material_spawn_count = 0;
     const PixelSize *pixelSizes = ecs_field(it, PixelSize, 2);
     const CanvasLink *canvasLinks = ecs_field(it, CanvasLink, 3);
     InitializeEntityMesh *initializeEntityMeshs = ecs_field(it, InitializeEntityMesh, 4);
@@ -28,10 +25,12 @@ void ElementMeshSystem(ecs_iter_t *it) {
         MeshVertices2D *meshVertices2D = &meshVertices2Ds[i];
         UvsGPULink *uvsGPULink = &uvsGPULinks[i];
         const PixelSize *canvasSize = ecs_get(world, canvasLink->value, PixelSize);
+        // rescale verts if scale changes, todo: make this in a new system?
         float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
         float2 scale2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
         scale_mesh2D_vertices_p(meshVertices2D, scale2D);
-        if (!headless)  {
+        // spawn gpu bufers
+        if (!headless) {
             MeshGPULink *meshGPULink = &meshGPULinks[i];
             MaterialInstancedGPULink *materialInstancedGPULink = &materialInstancedGPULinks[i];
             TextureGPULink *textureGPULink = &textureGPULinks[i];

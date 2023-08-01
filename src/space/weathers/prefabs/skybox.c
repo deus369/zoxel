@@ -17,6 +17,8 @@ ecs_entity_t spawn_prefab_skybox(ecs_world_t *world) {
         add_gpu_mesh(world, e);
         add_gpu_material(world, e);
     #endif
+    zox_set_only(e, Position3D, { float3_zero })
+    zox_set_only(e, Brightness, { 1.0f })
     ecs_defer_end(world);
     prefab_skybox = e;
     #ifdef zoxel_debug_prefabs
@@ -28,9 +30,7 @@ ecs_entity_t spawn_prefab_skybox(ecs_world_t *world) {
 ecs_entity_t spawn_skybox(ecs_world_t *world) {
     zox_instance(prefab_skybox)
     zox_name("skybox")
-    zox_set_only(e, Position3D, { float3_zero })
     zox_set_only(e, Scale1D, { skybox_scale })
-    zox_set_only(e, Brightness, { 1.0f })
     if (!headless) spawn_gpu_mesh(world, e);
     if (!headless) spawn_gpu_material(world, e, shader_skybox);
     skybox = e;

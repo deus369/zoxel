@@ -63,9 +63,9 @@ void dispose_shader_skybox() {
 }
 
 int load_shader_skybox() {
-    if (is_opengl_running()) {
+    //if (is_opengl_running()) {
         shader_skybox = spawn_gpu_shader_inline(skybox_shader_source_vert, skybox_shader_source_frag);
         material_skybox = spawn_gpu_material_program((const uint2) { shader_skybox.x, shader_skybox.y });
-    }
+    //}
     return 0;
 }

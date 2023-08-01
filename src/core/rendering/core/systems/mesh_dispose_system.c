@@ -16,7 +16,6 @@ void MeshUvsGPUDisposeSystem(ecs_iter_t *it) {
     }
 } zox_declare_system(MeshUvsGPUDisposeSystem)
 
-
 void MeshColorsGPUDisposeSystem(ecs_iter_t *it) {
     const ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 1);
     for (int i = 0; i < it->count; i++) {
