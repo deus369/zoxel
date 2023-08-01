@@ -5,6 +5,7 @@ uint2 shader2D_textured;
 uint material2D_textured;
 uint2 squareTexturedMesh;
 uint squareTexturedModelUVs;
+MaterialTextured2D shader2D_textured_attributes;
 
 void dispose_shader2D_textured() {
     glDeleteBuffers(1, &squareTexturedMesh.x);
@@ -20,7 +21,7 @@ void dispose_shader2D_textured() {
 }
 
 void initialize_texture_mesh(uint material) {
-    MaterialTextured2D materialTextured2D = initialize_material2D_textured(material);
+    // MaterialTextured2D materialTextured2D = initialize_material2D_textured(material);
     // gen buffers
     glGenBuffers(1, &squareTexturedMesh.x);
     glGenBuffers(1, &squareTexturedMesh.y);  // generate a new VBO and get the associated ID
@@ -29,11 +30,6 @@ void initialize_texture_mesh(uint material) {
     glBindBuffer(GL_ARRAY_BUFFER, squareTexturedMesh.y);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(square_indicies), square_indicies, GL_STATIC_DRAW);
     glBufferData(GL_ARRAY_BUFFER, sizeof(squareTexturedVerts), squareTexturedVerts, GL_STATIC_DRAW); 
-    glVertexAttribPointer(materialTextured2D.vertexPosition, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(0 * sizeof(float)));
-    glVertexAttribPointer(materialTextured2D.vertexUV, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(2 * sizeof(float)));
-    glEnableVertexAttribArray(materialTextured2D.vertexPosition);
-    glEnableVertexAttribArray(materialTextured2D.vertexUV);
-    // printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", squareTexturedMesh.x, squareTexturedMesh.y);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     #ifdef zoxel_catch_opengl_errors
@@ -41,14 +37,12 @@ void initialize_texture_mesh(uint material) {
     #endif
 }
 
-MaterialTextured2D shader2D_textured_attributes;
-
 int load_shader2D_textured() {
     shader2D_textured = spawn_gpu_shader_inline(shader2D_textured_vert_buffer, shader2D_textured_frag_buffer);
     material2D_textured = spawn_gpu_material_program((const uint2) { shader2D_textured.x, shader2D_textured.y });
+    shader2D_textured_attributes = initialize_material2D_textured(material2D_textured);
     // material2D_textured = load_gpu_shader(&shader2D_textured, shader2D_textured_filepath_vert, shader2D_textured_filepath_frag);
     initialize_texture_mesh(material2D_textured);
-    shader2D_textured_attributes = initialize_material2D_textured(material2D_textured);
     return 0;
 }
 
@@ -65,10 +59,7 @@ uint spawn_gpu_texture_buffers() {
 }
 
 void render_entity_material2D(const float4x4 viewMatrix, uint material, uint texture, float2 position, float angle, float scale, float brightness) {
-    if (material == 0) {
-        // printf("render_entity_material2D material is 0.\n");
-        return;
-    }
+    if (material == 0) return;
     MaterialTextured2D materialTextured2D = initialize_material2D_textured(material);
     glUseProgram(material);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -95,29 +86,6 @@ void render_entity_material2D(const float4x4 viewMatrix, uint material, uint tex
     #endif
 }
 
-void render_entity_material2D_and_mesh(uint material, uint2 mesh, uint texture, const float4x4 viewMatrix, float2 position, float angle, float scale, float brightness, unsigned char layer) {
-    if (material == 0) return;
-    glUseProgram(material);   // invalid operation
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);    // for indices
-    glBindBuffer(GL_ARRAY_BUFFER, mesh.y);            // for vertex coordinates
-    glEnableVertexAttribArray(shader2D_textured_attributes.vertexPosition);
-    glVertexAttribPointer(shader2D_textured_attributes.vertexPosition, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float2), 0);
-    glEnableVertexAttribArray(shader2D_textured_attributes.vertexUV);
-    glVertexAttribPointer(shader2D_textured_attributes.vertexUV, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float2), (GLvoid*)(2 * sizeof(float)));
-    glUniformMatrix4fv(shader2D_textured_attributes.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
-    glUniform1f(shader2D_textured_attributes.positionX, position.x);
-    glUniform1f(shader2D_textured_attributes.positionY, position.y);
-    glUniform1f(shader2D_textured_attributes.positionZ, ((int) layer) * shader_depth_multiplier);
-    glUniform1f(shader2D_textured_attributes.angle, angle);
-    glUniform1f(shader2D_textured_attributes.scale, scale);
-    glUniform1f(shader2D_textured_attributes.brightness, brightness);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
-    #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("render_entity_material2D_and_mesh");
-    #endif
-}
-
 void opengl_set_buffer_attributes2D(uint vertex_buffer, uint uv_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glEnableVertexAttribArray(shader2D_textured_attributes.vertexPosition);
@@ -127,7 +95,7 @@ void opengl_set_buffer_attributes2D(uint vertex_buffer, uint uv_buffer) {
     glVertexAttribPointer(shader2D_textured_attributes.vertexUV, 2, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
-void render_entity_material2D_and_mesh2(uint material, uint2 mesh, uint uvs_gpu_link, uint texture, const float4x4 viewMatrix, float2 position, float angle, float scale, float brightness, unsigned char layer) {
+void render_entity_material2D_and_mesh(uint material, uint2 mesh, uint uvs_gpu_link, uint texture, const float4x4 viewMatrix, float2 position, float angle, float scale, float brightness, unsigned char layer) {
     if (material == 0) return;
     glUseProgram(material);   // invalid operation
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -142,7 +110,7 @@ void render_entity_material2D_and_mesh2(uint material, uint2 mesh, uint uvs_gpu_
     glUniform1f(shader2D_textured_attributes.brightness, brightness);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
     #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("render_entity_material2D_and_mesh2");
+        check_opengl_error("render_entity_material2D_and_mesh");
     #endif
 }
 
@@ -212,3 +180,31 @@ void opengl_upload_shader2D_textured(uint2 mesh_buffer, uint uv_buffer, const in
     // glUseProgram(0);
     // glDisable(GL_ALPHA_TEST);
     // glDisable(GL_DEPTH_TEST);
+
+/*void render_entity_material2D_and_mesh(uint material, uint2 mesh, uint texture, const float4x4 viewMatrix, float2 position, float angle, float scale, float brightness, unsigned char layer) {
+    if (material == 0) return;
+    glUseProgram(material);   // invalid operation
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);    // for indices
+    glBindBuffer(GL_ARRAY_BUFFER, mesh.y);            // for vertex coordinates
+    glEnableVertexAttribArray(shader2D_textured_attributes.vertexPosition);
+    glVertexAttribPointer(shader2D_textured_attributes.vertexPosition, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float2), 0);
+    glEnableVertexAttribArray(shader2D_textured_attributes.vertexUV);
+    glVertexAttribPointer(shader2D_textured_attributes.vertexUV, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float2), (GLvoid*)(2 * sizeof(float)));
+    glUniformMatrix4fv(shader2D_textured_attributes.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
+    glUniform1f(shader2D_textured_attributes.positionX, position.x);
+    glUniform1f(shader2D_textured_attributes.positionY, position.y);
+    glUniform1f(shader2D_textured_attributes.positionZ, ((int) layer) * shader_depth_multiplier);
+    glUniform1f(shader2D_textured_attributes.angle, angle);
+    glUniform1f(shader2D_textured_attributes.scale, scale);
+    glUniform1f(shader2D_textured_attributes.brightness, brightness);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+    #ifdef zoxel_catch_opengl_errors
+        check_opengl_error("render_entity_material2D_and_mesh");
+    #endif
+}*/
+    /*glVertexAttribPointer(shader2D_textured_attributes.vertexPosition, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(0 * sizeof(float)));
+    glVertexAttribPointer(shader2D_textured_attributes.vertexUV, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(2 * sizeof(float)));
+    glEnableVertexAttribArray(shader2D_textured_attributes.vertexPosition);
+    glEnableVertexAttribArray(shader2D_textured_attributes.vertexUV);*/
+    // printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", squareTexturedMesh.x, squareTexturedMesh.y);

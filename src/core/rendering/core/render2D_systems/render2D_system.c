@@ -33,7 +33,7 @@ void RenderMaterial2DSystem(ecs_iter_t *it) {
     }
 } zox_declare_system(RenderMaterial2DSystem)
 
-void RenderMaterial2DSystem2(ecs_iter_t *it) {
+/*void RenderMaterial2DSystem2(ecs_iter_t *it) {
     zoxel_log("rendering uis (2 2) ? [%i]\n", it->count);
     Position2D *position2Ds = ecs_field(it, Position2D, 1);
     Rotation2D *rotation2Ds = ecs_field(it, Rotation2D, 2);
@@ -64,4 +64,4 @@ void RenderMaterial2DSystem2(ecs_iter_t *it) {
         }
         render_entity_material2D(viewMatrix, materiaInstancedGPULink->value, textureGPULink->value, position->value, rotation2D->value, scale1D->value, brightness->value);
     }
-} zox_declare_system(RenderMaterial2DSystem2)
+} zox_declare_system(RenderMaterial2DSystem2)*/

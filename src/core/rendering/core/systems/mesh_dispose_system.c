@@ -1,5 +1,3 @@
-extern ecs_entity_t skybox;
-
 // used for resource management
 void MeshGPUDisposeSystem(ecs_iter_t *it) {
     const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 1);
@@ -8,9 +6,6 @@ void MeshGPUDisposeSystem(ecs_iter_t *it) {
         if (meshGPULink->value.x != 0) glDeleteBuffers(1, &meshGPULink->value.x);
         if (meshGPULink->value.y != 0) glDeleteBuffers(1, &meshGPULink->value.y);
     }
-    // skybox temp fix:
-    ecs_world_t *world = it->world;
-    zox_delete(skybox)
 } zox_declare_system(MeshGPUDisposeSystem)
 
 void MeshUvsGPUDisposeSystem(ecs_iter_t *it) {

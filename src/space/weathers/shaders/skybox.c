@@ -57,9 +57,9 @@ uint material_skybox;
 
 // todo: call dispose_line3D_shader / move it to a shader entity
 void dispose_shader_skybox() {
-    glDeleteShader(line3D_shader.x);
-    glDeleteShader(line3D_shader.y);
-    glDeleteProgram(line3D_material);
+    glDeleteShader(shader_skybox.x);
+    glDeleteShader(shader_skybox.y);
+    glDeleteProgram(material_skybox);
 }
 
 int load_shader_skybox() {

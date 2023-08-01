@@ -2,6 +2,7 @@
 extern ecs_entity_t main_canvas;
 extern void restore_opengl_resources_terrain(ecs_world_t *world);
 extern void dispose_opengl_resources_terrain(ecs_world_t *world);
+extern ecs_entity_t skybox;
 // todo: write these as systems and just run it once during the function like render_loop
 
 void dispose_material_resources(ecs_world_t *world, ecs_entity_t e) {
@@ -44,13 +45,14 @@ void dispose_children_resources(ecs_world_t *world, ecs_entity_t e) {
 }
 
 void restore_mesh_resources(ecs_world_t *world, ecs_entity_t e) {
-    if (ecs_has(world, e, MeshDirty)) ecs_set(world, e, MeshDirty, { 1 });
+    if (ecs_has(world, e, MeshDirty)) zox_set_only(e, MeshDirty, { 1 })
 }
 
 void restore_material_resources(ecs_world_t *world, ecs_entity_t e, uint2 shader) {
-    if (ecs_has(world, e, MaterialGPULink)) ecs_set(world, e, MaterialGPULink, { spawn_gpu_material_program(shader) });
-    if (ecs_has(world, e, TextureGPULink)) ecs_set(world, e, TextureGPULink, { spawn_gpu_texture_buffers() });
-    if (ecs_has(world, e, TextureDirty)) ecs_set(world, e, TextureDirty, { 1 });
+    if (ecs_has(world, e, MaterialGPULink)) zox_set_only(e, MaterialGPULink, { spawn_gpu_material_program(shader) })
+    if (ecs_has(world, e, TextureGPULink)) zox_set_only(e, TextureGPULink, { spawn_gpu_texture_buffers() })
+    if (ecs_has(world, e, TextureDirty)) zox_set_only(e, TextureDirty, { 1 })
+    if (ecs_has(world, e, MaterialInstancedGPULink)) zox_set_only(e, MaterialInstancedGPULink, { material2D_textured })
     // todo: restore for MaterialInstancedGPULink
 }
 
@@ -74,7 +76,10 @@ void delete_all_opengl_resources(ecs_world_t *world) {
     ecs_run(world, ecs_id(MeshGPUDisposeSystem), 0, NULL);
     ecs_run(world, ecs_id(MeshColorsGPUDisposeSystem), 0, NULL);
     ecs_run(world, ecs_id(MeshUvsGPUDisposeSystem), 0, NULL);
+    zox_delete(skybox)  // temp fix for now
 }
+
+extern ecs_entity_t spawn_skybox(ecs_world_t *world);
 
 // restore opengl resources here
 void restore_all_opengl_resources(ecs_world_t *world) {
@@ -83,4 +88,5 @@ void restore_all_opengl_resources(ecs_world_t *world) {
     restore_children_resources(world, main_canvas);
     restore_opengl_resources_terrain(world);
     ecs_run(world, ecs_id(MeshGPURestoreSystem), 0, NULL);
+    spawn_skybox(world);     // temp fix for now
 }

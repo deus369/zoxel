@@ -93,7 +93,7 @@ void dispose_opengl_resources_terrain(ecs_world_t *world) {
         int3_hash_map_pair* pair = chunkLinks->value->data[i];
         while (pair != NULL) {
             ecs_entity_t terrain_chunk = pair->value;
-                dispose_mesh_resources(world, terrain_chunk);
+            dispose_mesh_resources(world, terrain_chunk);
             pair = pair->next;
         }
     }
