@@ -10,7 +10,6 @@ void Mesh2DUvsUpdateSystem(ecs_iter_t *it) {
         MeshDirty *meshDirty = &meshDirtys[i];
         if (meshDirty->value != 1) continue;
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
-        // const MaterialGPULink *materialGPULink = &materialGPULinks[i];
         const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         const MeshVertices2D *meshVertices2 = &meshVertices[i];

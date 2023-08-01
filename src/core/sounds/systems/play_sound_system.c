@@ -1,6 +1,6 @@
 void PlaySoundSystem(ecs_iter_t *it) {
-    int channels_available = Mix_GroupAvailable(-1); // -1 indicates all channels
-    if (channels_available == 0) return;
+    int channel_available = Mix_GroupAvailable(-1); // -1 indicates all channels
+    if (channel_available == -1) return;
     ecs_world_t *world = it->world;
     TriggerSound *playSounds = ecs_field(it, TriggerSound, 2);
     const SoundLength *soundLengths = ecs_field(it, SoundLength, 3);
@@ -11,12 +11,13 @@ void PlaySoundSystem(ecs_iter_t *it) {
         const SDLSound *sdlSound = &sdlSounds[i];
         const SoundLength *soundLength = &soundLengths[i];
         if (sdlSound->value != NULL) {
-            if (Mix_PlayChannel(-1, sdlSound->value, 0) == -1) {
+            if (Mix_PlayChannel(channel_available, sdlSound->value, 0) == -1) {
                 zoxel_log(" ! playing sound failed [%s]\n", Mix_GetError());
                 zox_delete(it->entities[i])
             } else {
                 if (soundLength->value == 0) zox_delete(it->entities[i])
                 else zox_set_only(it->entities[i], DestroyInTime, { soundLength->value })
+                // zoxel_log("  > played sound\n");
             }
         }
         triggerSound->value = 0;

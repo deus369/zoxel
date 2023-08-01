@@ -72,6 +72,8 @@ void delete_all_opengl_resources(ecs_world_t *world) {
     dispose_children_resources(world, main_canvas);
     dispose_opengl_resources_terrain(world);
     ecs_run(world, ecs_id(MeshGPUDisposeSystem), 0, NULL);
+    ecs_run(world, ecs_id(MeshColorsGPUDisposeSystem), 0, NULL);
+    ecs_run(world, ecs_id(MeshUvsGPUDisposeSystem), 0, NULL);
 }
 
 // restore opengl resources here

@@ -27,7 +27,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         #ifdef zoxel_voxels
             #ifndef zox_disable_terrain
                 #ifndef zox_disable_terrain_octrees
-                    camera_begin_position = (float3) { 0, 0.26f * 2 * overall_voxel_scale, 0 };
+                    camera_begin_position = (float3) { 0, 0.32f * overall_voxel_scale, 0 };
                 #else
                     camera_begin_position = (float3) { 0, 0.52f * 2 * overall_voxel_scale, 0 };
                 #endif
@@ -78,7 +78,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         #endif
     #endif
     #ifdef zoxel_musics
-        spawn_music(world, instrument_piano);
+        spawn_music(world, instrument_piano_square);
     #endif
     #ifdef zox_test_voxel_mesh
         test_animating_chunks(world, camera_begin_position);

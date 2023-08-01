@@ -54,9 +54,12 @@ zox_byte_component(SoundDirty)
 #endif
 
 void spawn_prefabs_sounds(ecs_world_t *world) {
+    load_audio_sdl();
+    int channel_available = Mix_GroupAvailable(-1); // -1 indicates all channels
+    if (channel_available == -1) zoxel_log("  ! sdl audio error: no channels available\n");
+    else zoxel_log("  > sdl channel available [%i]\n", channel_available);
     spawn_prefab_sound(world);
     spawn_prefab_generated_sound(world);
-    load_audio_sdl();
 }
 
 zox_begin_module(Sounds)
