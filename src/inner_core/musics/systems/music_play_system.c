@@ -2,6 +2,7 @@ void MusicPlaySystem(ecs_iter_t *it) {
     #ifdef zoxel_disable_music
         return;
     #endif
+    double delta_time = zox_delta_time;
     const double music_speed = 2.0;
     ecs_world_t *world = it->world;
     const MusicData *musicDatas = ecs_field(it, MusicData, 2);
@@ -15,7 +16,7 @@ void MusicPlaySystem(ecs_iter_t *it) {
         const InstrumentType *instrumentType = &instrumentTypes[i];
         MusicNote *musicNote = &musicNotes[i];
         MusicTime *musicTime = &musicTimes[i];
-        musicTime->value += it->delta_time / musicSpeed->value;
+        musicTime->value += delta_time / musicSpeed->value;
         if (musicData->length > 0 && musicTime->value >= music_speed) {
             musicTime->value -= music_speed;
             musicNote->value++;

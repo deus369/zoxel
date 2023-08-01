@@ -53,7 +53,8 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         // spawn_player_character3D(world, get_main_camera());
     #endif
     #ifdef zoxel_players
-        spawn_player(world);
+        ecs_entity_t player = spawn_player(world);
+        zox_set_only(player, CameraLink, { main_cameras[0] })
     #endif
     #ifdef zoxel_ui
         spawn_canvas(world, screen_dimensions2);

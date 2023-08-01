@@ -40,14 +40,16 @@ zox_filter(cameras, [none] cameras.Camera, [in] cameras.FreeRoam, [out] Position
 #else
     zox_filter(cameras2, [none] cameras.Camera, [in] cameras.FreeRoam,[out] Euler)
 #endif
-zox_filter(free_roam_cameras, [none] cameras.Camera, [out] cameras.FreeRoam, [none] !cameras.FirstPersonCamera)
+// zox_filter(free_roam_cameras, [none] cameras.Camera, [in] cameras.CanFreeRoam, [out] cameras.FreeRoam) // , [none] !cameras.FirstPersonCamera)
 zox_filter(player_character3Ds, [none] PlayerCharacter, [out] physics.DisableMovement)
 #ifdef zoxel_physics2D
     zox_system_ctx(Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2, [in] Keyboard)
 #endif
-zox_system_ctx(FreeCameraMoveSystem, EcsOnUpdate, cameras, [in] Keyboard)
-zox_system_ctx(FreeCameraRotateSystem, EcsOnUpdate, cameras2, [in] Mouse)
-// zox_system_ctx(FreeCameraToggleSystem, EcsOnUpdate, free_roam_cameras, [in] Mouse, [out] MouseLock)
+// zox_system_ctx(FreeCameraMoveSystem, EcsOnUpdate, cameras, [in] Keyboard)
+// zox_system_ctx(FreeCameraRotateSystem, EcsOnUpdate, cameras2, [in] Mouse)
+zox_system(FreeCameraMoveSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks, [in] cameras.CameraLink)
+zox_system(FreeCameraRotateSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks, [in] cameras.CameraLink)
+zox_system(FreeCameraToggleSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks, [in] cameras.CameraLink) // free_roam_cameras, [in] Mouse, [out] MouseLock)
 zox_system_ctx(FreeCameraDisableMovementSystem, EcsOnUpdate, player_character3Ds, [in] Mouse)
 zox_system(Player2DTestSystem, EcsOnUpdate, [in] Keyboard)
 zox_system(DeviceModeResponseSystem, EcsOnUpdate, [in] DeviceMode, [in] DeviceModeDirty)

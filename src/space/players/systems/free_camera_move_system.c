@@ -2,16 +2,61 @@ const double movement_multiplier = 0.08 * 100;
 const double shift_movement_multiplier = 3.0;
 
 void FreeCameraMoveSystem(ecs_iter_t *it) {
-    ecs_iter_t cameras_it = ecs_query_iter(it->world, it->ctx);
-    ecs_query_next(&cameras_it);
-    if (cameras_it.count == 0) return;
     unsigned char did_update = 0;
     double movement_power = zox_delta_time;
     movement_power *= movement_multiplier;
     #ifdef zoxel_on_web
         movement_power *= 10.0f;
     #endif
-    const FreeRoam *freeRoams = ecs_field(&cameras_it, FreeRoam, 2);
+    ecs_world_t *world = it->world;
+    const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
+    const CameraLink *cameraLinks = ecs_field(it, CameraLink, 3);
+    for (int i = 0; i < it->count; i++) {
+        const CameraLink *cameraLink = &cameraLinks[i];
+        if (cameraLink->value == 0) continue;
+        const FreeRoam *freeRoam = ecs_get(world, cameraLink->value, FreeRoam);
+        if (freeRoam->value == 0) continue;
+        const DeviceLinks *deviceLinks = &deviceLinkss[i];
+        unsigned char is_triggered = 0;
+        ecs_entity_t mouse_entity = 0;
+        float3 movement = { 0, 0, 0 };
+        for (int j = 0; j < deviceLinks->length; j++) {
+            ecs_entity_t device_entity = deviceLinks->value[j];
+            if (ecs_has(world, device_entity, Keyboard)) {
+                const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
+                if (keyboard->a.is_pressed) movement.x += -1;
+                if (keyboard->d.is_pressed) movement.x += 1;
+                if (keyboard->w.is_pressed) movement.z = -1;
+                if (keyboard->s.is_pressed) movement.z += 1;
+                if (keyboard->q.is_pressed) movement.y += -1;
+                if (keyboard->e.is_pressed) movement.y = 1;
+                if (keyboard->left_shift.is_pressed) {
+                    movement.x *= shift_movement_multiplier;
+                    movement.y *= shift_movement_multiplier;
+                    movement.z *= shift_movement_multiplier;
+                }
+            }
+        }
+        if (movement.x == 0 && movement.y == 0 && movement.z == 0) continue;
+        movement = float3_multiply_float(movement, movement_power);
+        const Rotation3D *rotation3D = ecs_get(world, cameraLink->value, Rotation3D);
+        movement = float4_rotate_float3(rotation3D->value, movement);
+        Position3D *position3D = ecs_get_mut(world, cameraLink->value, Position3D);
+        position3D->value = float3_add(position3D->value, movement);
+        ecs_modified(world, cameraLink->value, Position3D);
+    }
+} zox_declare_system(FreeCameraMoveSystem)
+
+//printf("Before Movement: %fx%fx%f - [%fx%fx%fx%f]\n", movement.x, movement.y, movement.z,
+//    rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
+// float4_print_euler(rotation->value);
+// float3 rotatedMovement2 = float3_multiply_float(rotatedMovement, 10000);
+// printf("Moving [%i x %i x %i]\n", (int) rotatedMovement2.x, (int) rotatedMovement2.y, (int) rotatedMovement2.z);
+// printf("    Rotation3D [%f x %f x %f x %f]\n", rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
+    /*ecs_iter_t cameras_it = ecs_query_iter(it->world, it->ctx);
+    ecs_query_next(&cameras_it);
+    if (cameras_it.count == 0) return;*/
+    /*const FreeRoam *freeRoams = ecs_field(&cameras_it, FreeRoam, 2);
     Position3D *positions = ecs_field(&cameras_it, Position3D, 3);
     Rotation3D *rotations = ecs_field(&cameras_it, Rotation3D, 4);
     const Keyboard *keyboards = ecs_field(it, Keyboard, 1);
@@ -53,12 +98,4 @@ void FreeCameraMoveSystem(ecs_iter_t *it) {
     }
     if (!did_update) {
         // ecs_query_skip(&cameras_it);
-    }
-} zox_declare_system(FreeCameraMoveSystem)
-
-//printf("Before Movement: %fx%fx%f - [%fx%fx%fx%f]\n", movement.x, movement.y, movement.z,
-//    rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
-// float4_print_euler(rotation->value);
-// float3 rotatedMovement2 = float3_multiply_float(rotatedMovement, 10000);
-// printf("Moving [%i x %i x %i]\n", (int) rotatedMovement2.x, (int) rotatedMovement2.y, (int) rotatedMovement2.z);
-// printf("    Rotation3D [%f x %f x %f x %f]\n", rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
+    }*/

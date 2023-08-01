@@ -23,6 +23,7 @@ zox_component(CameraNearDistance, float)
 zox_component(CameraLink, ecs_entity_t)
 zox_component(CameraTarget, ecs_entity_t)
 zox_byte_component(FreeRoam)
+zox_byte_component(CanFreeRoam)
 // zoxel_prefab_includes
 #include "prefabs/base_camera.c"
 #include "prefabs/camera2D.c"
@@ -56,6 +57,7 @@ zox_define_component(ScreenPosition)
 zox_define_component(FieldOfView)
 zox_define_component(CameraNearDistance)
 zox_define_component(FreeRoam)
+zox_define_component(CanFreeRoam)
 zox_system(CameraFollow2DSystem, EcsOnUpdate, [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D)
 zox_system(ViewMatrixSystem, EcsPostUpdate, [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)
 zox_system(ProjectionMatrixSystem, EcsPreStore, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
