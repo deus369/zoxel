@@ -15,11 +15,10 @@ void engine_end() {
 
 void engine_update() {
     #ifdef zoxel_time_main_loop
-        begin_timing()
+        begin_timing_absolute()
     #endif
     update_core();
     #ifdef zoxel_time_main_loop
-        did_do_timing()
         end_timing_cutoff(" - engine update lagged", zoxel_time_main_loop_cutoff)
     #endif
 }

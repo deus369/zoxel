@@ -1,3 +1,4 @@
+// #define zox_log_jumping
 const double jump_timing = 0.21;
 
 void Player3DJumpSystem(ecs_iter_t *it) {
@@ -27,7 +28,9 @@ void Player3DJumpSystem(ecs_iter_t *it) {
         if (jump->value == 0) {
             ecs_set(world, characterLink->value, Jump, { jump_timing });
             ecs_set(world, characterLink->value, Grounded, { 0 });
-            // zoxel_log(" > in air [%lu] again (%f)\n", characterLink->value, zox_current_time);
+            #ifdef zox_log_jumping
+                zoxel_log(" > in air [%lu] again (%f)\n", characterLink->value, zox_current_time);
+            #endif
         }
     }
 } zox_declare_system(Player3DJumpSystem)

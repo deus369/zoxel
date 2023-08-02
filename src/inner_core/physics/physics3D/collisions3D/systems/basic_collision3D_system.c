@@ -107,9 +107,13 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
                 voxelPosition->value = byte3_to_int3(new_position);
                 if (float_abs(velocity3D->value.y) < 0.05f) { // ecs_has(world, e, Grounded) &&
                     if (grounded->value == 0) {
-                        grounded->value = 1;
-                        is_grounded = 1;
-                        // zoxel_log(" > grounded [%lu] again (%f)\n", e, zox_current_time);
+                        if (!ecs_has(world, e, Jump) || ecs_get(world, e, Jump)->value == 0) {
+                            grounded->value = 1;
+                            is_grounded = 1;
+                            #ifdef zox_log_jumping
+                                zoxel_log(" > grounded [%lu] again (%f)\n", e, zox_current_time);
+                            #endif
+                        }
                     }
                 }
                 #ifdef zoxel_debug_basic_collision3D_system
@@ -126,14 +130,13 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
     }
 } zox_declare_system(BasicCollision3DSystem)
 
-                    //const Jump *jump = ecs_get(world, e, Jump);
-                    //if (jump->value == 0) {
-                        //Grounded *grounded = ecs_get_mut(world, e, Grounded);
-                        //
-                            //ecs_modified(world, e, Grounded);
-                            // velocity3D->value.y *= 0.06f;
-                        //}
-                    //}
+//
+    //Grounded *grounded = ecs_get_mut(world, e, Grounded);
+    //
+        //ecs_modified(world, e, Grounded);
+        // velocity3D->value.y *= 0.06f;
+    //}
+//}
                     
 /*int3 new_chunk_position = get_chunk_position(real_position, default_chunk_size);
 if (!int3_equals(chunkPosition->value, new_chunk_position)) {

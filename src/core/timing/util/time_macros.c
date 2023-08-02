@@ -1,9 +1,8 @@
 // timing system macros
 #include <time.h>
 
-#define clocks_per_second 1000000.0 // 0
+#define clocks_per_second 10000000.0 // 0
 double time_app_started = 0;
-#define cycle_clocks_per_second 1000000.0 // 0
 
 #define begin_timing()\
 unsigned char did_do = 0;\
@@ -16,8 +15,7 @@ clock_t time_start = clock();
     did_do_timing()
 
 double get_time_seconds() {
-    if (time_app_started == 0)
-        time_app_started = (double) (clock() / clocks_per_second);
+    if (time_app_started == 0) time_app_started = (double) (clock() / clocks_per_second);
     return ((double) (clock() / clocks_per_second) - time_app_started);
 }
 
@@ -74,7 +72,7 @@ long double time_taken = ((long double) 0.1) * ((long double) (clock() - time_st
 
 #define time_cycle_begin() clock_t cycle_start = clock();
 #define time_cycle_end(system_name)\
-double cycle_delta = (double) (clock() - cycle_start) / cycle_clocks_per_second;\
+double cycle_delta = (double) (clock() - cycle_start) / clocks_per_second;\
 if (cycle_delta >= 1.0) {\
     zoxel_log("%s [%fs]\n", system_name, cycle_delta);\
 } else {\
