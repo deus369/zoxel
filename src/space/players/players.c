@@ -45,8 +45,6 @@ zox_filter(player_character3Ds, [none] PlayerCharacter, [out] physics.DisableMov
 #ifdef zoxel_physics2D
     zox_system_ctx(Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2, [in] Keyboard)
 #endif
-// zox_system_ctx(FreeCameraMoveSystem, EcsOnUpdate, cameras, [in] Keyboard)
-// zox_system_ctx(FreeCameraRotateSystem, EcsOnUpdate, cameras2, [in] Mouse)
 zox_system(FreeCameraMoveSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks, [in] cameras.CameraLink)
 zox_system(FreeCameraRotateSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks, [in] cameras.CameraLink)
 zox_system(FreeCameraToggleSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks, [in] cameras.CameraLink) // free_roam_cameras, [in] Mouse, [out] MouseLock)

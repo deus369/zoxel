@@ -3,6 +3,7 @@
 // https://stackoverflow.com/questions/12682950/is-there-a-webgl-equivalent-of-glgenvertexarrays-and-glbindvertexarrays
 // #include <GLFW/glfw3.h>
 
+// todo: create a event data structure that higher level modules can just add functions too
 extern int load_shader_skybox();
 extern void dispose_shader_skybox();
 

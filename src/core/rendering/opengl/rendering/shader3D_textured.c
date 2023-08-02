@@ -29,9 +29,7 @@ void opengl_set_texture(uint texture_buffer, unsigned char isBlend) {
 }
 
 void opengl_disable_texture(unsigned char isBlend) {
-    if (isBlend) {
-        glDisable(GL_BLEND);
-    }
+    if (isBlend) glDisable(GL_BLEND);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -49,11 +47,6 @@ void opengl_set_material3D_uvs_position(float3 position, Material3DTextured *att
 void opengl_shader3D_textured_set_camera_view_matrix(const float4x4 view_matrix, Material3DTextured *attributes) {
     glUniformMatrix4fv(attributes->view_matrix, 1, GL_FALSE, (float*) &view_matrix);
 }
-
-// printf("Rendering Cube [%ix%i]\n", mesh.x, mesh.y);
-// printf("    - Rendering Cube [%ix%i]\n", squareTexturedMesh.x, squareTexturedMesh.y);
-// glEnableVertexAttribArray(materialTextured3D.vertexPosition);
-// glVertexAttribPointer(materialTextured3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 12, 0); // 4 * 3
 
 void opengl_upload_shader3D_textured(uint2 mesh_buffer, uint uv_buffer, uint color_buffer,
     const int *indicies, int indicies_length, const float3 *verts, int verts_length,
@@ -81,99 +74,3 @@ void opengl_set_buffer_attributes(uint vertex_buffer, uint uv_buffer, uint color
     glEnableVertexAttribArray(attributes->vertex_color);
     glVertexAttribPointer(attributes->vertex_color, sizeof(color_rgb), GL_UNSIGNED_BYTE, GL_TRUE, 0, 0); // 4 * sizeof(GLubyte), 0);
 }
-
-/*
-glEnableVertexAttribArray(materialTextured3D.vertexPosition);
-glEnableVertexAttribArray(materialTextured3D.vertexUV);
-glVertexAttribPointer(materialTextured3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 20, 0);
-glVertexAttribPointer(materialTextured3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 20, (GLvoid*)(12));*/
-
-/*void opengl_upload_shader3D_textured(
-    uint2 mesh_buffer, uint material_buffer,
-    const int *indicies, int indicies_length,
-    const float3 *verts, int verts_length,
-    const float2 *uvs, int uvs_length) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * 4, indicies, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, mesh_buffer.y);
-    int float_per_data = 5;
-    int floats_length = verts_length * float_per_data;
-    float combined_verts[floats_length];
-    for (int i = 0; i < verts_length; i++)
-    {
-        float3 vert = verts[i];
-        float2 uv = uvs[i];
-        combined_verts[i * float_per_data + 0] = vert.x;
-        combined_verts[i * float_per_data + 1] = vert.y;
-        combined_verts[i * float_per_data + 2] = vert.z;
-        combined_verts[i * float_per_data + 3] = uv.x;
-        combined_verts[i * float_per_data + 4] = uv.y;
-    }
-    glBufferData(GL_ARRAY_BUFFER, floats_length * 4, combined_verts, GL_STATIC_DRAW);
-    
-    glVertexAttribPointer(material3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 4 * float_per_data, (GLvoid*)(0 * sizeof(float)));
-    glVertexAttribPointer(material3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 4 * float_per_data, (GLvoid*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(material3D.vertexPosition);
-    glEnableVertexAttribArray(material3D.vertexUV);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-}*/
-
-// printf("Binding Data %i %i\n", indicies_length, verts_length);
-
-/*glBufferData(GL_ARRAY_BUFFER, verts_length * 3, verts, GL_STATIC_DRAW);
-// uvs - combine with verts... this won't work?
-glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
-glEnableVertexAttribArray(material3D.vertexUV);
-glVertexAttribPointer(material3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 8, 0);*/
-// glVertexAttribPointer(material3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 8, (GLvoid*)(3 * sizeof(float)));
-// glBufferData(GL_ARRAY_BUFFER, uvs_length * 4, uvs, GL_STATIC_DRAW);
-// printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", mesh.x, mesh.y);
-// disable bindings
-
-// glEnableVertexAttribArray(material3D.vertexPosition);
-// glVertexAttribPointer(material3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 12, 0);
-//! This recreates vertex data during upload
-//! \todo Can I upload a non combined one? This isn't efficient.
-// int proper_verts_length = verts_length; //  / 3);
-// \todo Even this size of array crashed web build! stackSize > 655360
-/*if (floats_length > 15536) // 6) {
-    printf("floats_length greater than 65536 [%i]\n", floats_length);
-}*/
-
-/*
-layout(location = 0) in highp vec3 vertexPosition;\
-layout(location = 1) in highp vec2 vertexUV;\
-layout(location = 2) uniform highp mat4 view_matrix;\
-layout(location = 3) uniform highp vec3 position;\
-layout(location = 4) uniform highp vec4 rotation;\
-layout(location = 5) uniform highp float scale;\
-
-layout(location = 6) uniform highp float brightness;\
-layout(location = 7) uniform sampler2D tex;\
-*/
-
-    // Set the vertex attribute pointers
-    // glVertexAttribPointer(shader_attributes_material_textured3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    // glVertexAttribPointer(shader_attributes_material_textured3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 0, (GLvoid*)(sizeof(float3) * verts_length));
-    // Enable the vertex attribute arrays
-    // glEnableVertexAttribArray(shader_attributes_material_textured3D.vertexPosition);
-    // glEnableVertexAttribArray(shader_attributes_material_textured3D.vertexUV);
-    /*uint material = spawn_gpu_material_program(shader3D_textured);
-    shader_attributes_material_textured3D = (Material3DTextured) { 
-        glGetAttribLocation(material, "vertexPosition"),
-        glGetAttribLocation(material, "vertexUV"),
-        glGetUniformLocation(material, "view_matrix"),
-        glGetUniformLocation(material, "position"),
-        glGetUniformLocation(material, "rotation"),
-        glGetUniformLocation(material, "scale"),
-        glGetUniformLocation(material, "brightness"),
-        glGetUniformLocation(material, "tex")
-    };
-    glDeleteProgram(material);*/
-    /*#ifdef zoxel_debug_opengl
-        zoxel_log("     + vertexPosition location: %i\n", shader_attributes_material_textured3D.vertexPosition);
-        zoxel_log("     + vertexUV location: %i\n", shader_attributes_material_textured3D.vertexUV);
-        zoxel_log("     + view_matrix location: %i\n", shader_attributes_material_textured3D.view_matrix);
-        zoxel_log("     + texture location: %i\n", shader_attributes_material_textured3D.texture);
-    #endif*/

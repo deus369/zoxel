@@ -1,4 +1,3 @@
-
 void Mesh2DUpdateSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(NULL, it)) return;
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 1);
@@ -19,7 +18,7 @@ void Mesh2DUpdateSystem(ecs_iter_t *it) {
 } zox_declare_system(Mesh2DUpdateSystem)
 
 
-void Mesh2DUpdateSystem2(ecs_iter_t *it) {
+void Mesh2DInstancedUpdateSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(NULL, it)) return;
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 1);
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 2);
@@ -36,4 +35,4 @@ void Mesh2DUpdateSystem2(ecs_iter_t *it) {
         set_gpu_mesh2D(meshGPULink->value, materialGPULink->value, meshIndicies2->value, meshIndicies2->length, meshVertices2->value, meshVertices2->length);
         meshDirty->value = 0;
     }
-} zox_declare_system(Mesh2DUpdateSystem2)
+} zox_declare_system(Mesh2DInstancedUpdateSystem)

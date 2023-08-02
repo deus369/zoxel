@@ -22,13 +22,12 @@ void Player3DJumpSystem(ecs_iter_t *it) {
             }
         }
         if (is_jump_triggered == 0) continue;
-        Jump *jump = ecs_get_mut(world, characterLink->value, Jump);
+        const Jump *jump = ecs_get(world, characterLink->value, Jump);
+        // zoxel_log(" > jump was triggered\n");
         if (jump->value == 0) {
-            jump->value = jump_timing;
-            ecs_modified(world, characterLink->value, Jump);
-            Grounded *grounded2 = ecs_get_mut(world, characterLink->value, Grounded);
-            grounded2->value = 0;
-            ecs_modified(world, characterLink->value, Grounded);
+            ecs_set(world, characterLink->value, Jump, { jump_timing });
+            ecs_set(world, characterLink->value, Grounded, { 0 });
+            // zoxel_log(" > in air [%lu] again (%f)\n", characterLink->value, zox_current_time);
         }
     }
 } zox_declare_system(Player3DJumpSystem)
