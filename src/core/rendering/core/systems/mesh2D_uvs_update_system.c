@@ -14,7 +14,6 @@ void Mesh2DUvsUpdateSystem(ecs_iter_t *it) {
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         const MeshVertices2D *meshVertices2 = &meshVertices[i];
         const MeshUVs *meshUVs2 = &meshUVs[i];
-        // uint2 mesh_buffer, uint uv_buffer, const int *indicies, int indicies_length, const float2 *verts, int verts_length, const float2 *uvs
         opengl_upload_shader2D_textured(meshGPULink->value, uvsGPULink->value, meshIndicies2->value, meshIndicies2->length, meshVertices2->value, meshUVs2->value, meshVertices2->length);
         meshDirty->value = 0;
     }

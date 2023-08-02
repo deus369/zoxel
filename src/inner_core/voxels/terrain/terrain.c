@@ -9,7 +9,7 @@ zox_declare_tag(TerrainChunk)
 zox_declare_tag(ChunkTerrain)
 zox_declare_tag(Streamer)
 zox_component(StreamPoint, int3)
-// zoxel_prefab_declares
+// zoxel_prefab_includes
 #include "prefabs/terrain.c"
 #include "prefabs/terrain_chunk.c"
 #include "prefabs/terrain_chunk_octree.c"

@@ -1,17 +1,14 @@
-int render_queue_count = 0;
+// \todo Create a queue of 3D models to render, including materials, etc
+//  - each type of render queue has different data based on the shaders
+//  - inside ecs systems, can run multithread, add things to queues to render
 const unsigned char max_render_layers = 8;
 unsigned char renderer_layer;
 extern long int render3D_uvs_system_id;
 extern long int line3D_render_system_id;
 extern long int cube_lines_render_system_id;
-// \todo Create a queue of 3D models to render, including materials, etc
-//  - each type of render queue has different data based on the shaders
-//  - inside ecs systems, can run multithread, add things to queues to render
-// zox_declare_system(RenderMaterial2DSystem);
 
 void render_pre_loop() {
     opengl_clear();             // cannot just clear in a view port with opengl?
-    render_queue_count = 0;
 }
 
 //! This renders all render systems per camera, by externally setting the camera matrix this will be uploaded to all materials.
@@ -51,17 +48,12 @@ void render_loop() {
     #ifdef zoxel_time_render_loop
         begin_timing_absolute()
     #endif
-    // gpu_data_updates();
     #ifdef zoxel_cameras
-        if (ecs_is_valid(world, ui_cameras[0])) {
-            ui_camera_matrix = ecs_get(world, ui_cameras[0], ViewMatrix)->value;
-        }
+        if (ecs_is_valid(world, ui_cameras[0])) ui_camera_matrix = ecs_get(world, ui_cameras[0], ViewMatrix)->value;
         for (int i = 0; i < main_cameras_count; i++) {
             ecs_entity_t camera = main_cameras[i];
-            if (ecs_is_valid(world, camera)) {
-                render_camera(world, ecs_get(world, camera, ViewMatrix)->value,
-                    ecs_get(world, camera, ScreenPosition)->value, ecs_get(world, camera, ScreenDimensions)->value);
-            }
+            if (!ecs_is_valid(world, camera)) continue;
+            render_camera(world, ecs_get(world, camera, ViewMatrix)->value, ecs_get(world, camera, ScreenPosition)->value, ecs_get(world, camera, ScreenDimensions)->value);
         }
     #endif
     finish_opengl_rendering(world);

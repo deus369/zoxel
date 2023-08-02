@@ -1,14 +1,18 @@
 #ifndef zoxel_players
 #define zoxel_players
 
+// zoxel_component_declares
 zox_declare_tag(Player)
 zox_declare_tag(Player2D)
 zox_declare_tag(PlayerCharacter)
 zox_declare_tag(PlayerCharacter2D)
+// zoxel_prefab_includes
 #include "prefabs/player.c"
 #include "prefabs/player_character2D.c"
+// zoxel_util_includes
 #include "util/player_character2D.c"
 #include "util/pause_util.c"
+// zoxel_system_includes
 #include "systems/player2D_move_system.c"
 #include "systems/free_camera_move_system.c"
 #include "systems/free_camera_rotate_system.c"
@@ -16,6 +20,7 @@ zox_declare_tag(PlayerCharacter2D)
 #include "systems/free_camera_disable_movement_system.c"
 #include "systems/player_pause_system.c"
 #include "systems/device_mode_response_system.c"
+// zoxel_module_includes
 #include "players3D/players3D.c"
 #include "systems/player2D_test_system.c"
 #include "systems/player_shortcuts_system.c"
@@ -40,7 +45,6 @@ zox_filter(cameras, [none] cameras.Camera, [in] cameras.FreeRoam, [out] Position
 #else
     zox_filter(cameras2, [none] cameras.Camera, [in] cameras.FreeRoam,[out] Euler)
 #endif
-// zox_filter(free_roam_cameras, [none] cameras.Camera, [in] cameras.CanFreeRoam, [out] cameras.FreeRoam) // , [none] !cameras.FirstPersonCamera)
 zox_filter(player_character3Ds, [none] PlayerCharacter, [out] physics.DisableMovement)
 #ifdef zoxel_physics2D
     zox_system_ctx(Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2, [in] Keyboard)

@@ -2,10 +2,7 @@
 #define zoxel_rendering_core
 
 // zoxel_settings
-// 0 | EcsPreStore | EcsOnValidate
-// #define mesh_update_pipeline 0
-// 0 | EcsOnStore
-#define render3D_update_pipeline 0     
+#define render3D_update_pipeline 0
 #define render2D_update_pipeline 0
 // zoxel_component_includes
 zox_declare_tag(SingleMaterial)
@@ -82,11 +79,5 @@ zox_system_1(MeshUvsUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] Me
 zox_system_1(Mesh2DUvsUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshUVs, [in] MeshGPULink, [in] UvsGPULink, [none] !MeshColorRGBs)
 zox_system_1(MeshColorsUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshColorRGBs, [out] MeshGPULink, [out] ColorsGPULink, [none] !MeshUVs)
 zoxel_end_module(RenderingCore)
-
-//! \todo Create a Cube with unique mesh - for chunk - add these components and update mesh for voxel chunk.
-//      - Test Mesh - simply create a test entity now with mesh and set to dirty
-//      - set data as cube and render
-//      - Animate rotate the cube - for testing
-//! \todo GPU Meshes?
 
 #endif

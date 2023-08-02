@@ -1,5 +1,4 @@
 const unsigned char isDebugRenderMaterial2DSystem = 0;
-// extern void render_entity_material2D(const float4x4 viewMatrix, uint material, uint texture, float2 position, float angle, float scale, float brightness);
 
 void RenderMaterial2DSystem(ecs_iter_t *it) {
     Position2D *position2Ds = ecs_field(it, Position2D, 1);
