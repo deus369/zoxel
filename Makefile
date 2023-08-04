@@ -310,6 +310,12 @@ clean:
 
 # util #
 
+codeberg:
+	open https://codeberg.org/deus/zoxel &
+
+github:
+	open https://github.com/deus369/zoxel &
+
 count:
 	@echo "Counting Source Files"
 	bash bash/count/count_source.sh
@@ -368,6 +374,8 @@ help:
 	@echo "    list-systems		lists all found zoxel systems in a module"
 	@echo "    create-system		creates a new system in a module"
 	@echo "    zip-build			zips zoxel build and resources"
+	@echo "    github			opens zoxel on github"
+	@echo "    codeberg			opens zoxel on codeberg"
 	@echo "  > flecs"
 	@echo "    install-flecs		installs flecs 3.2.4"
 	@echo "    build/libflecs.a		builds flecs library"
