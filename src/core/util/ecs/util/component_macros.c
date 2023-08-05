@@ -25,6 +25,8 @@ ECS_COMPONENT_DECLARE(name);
 
 #define zox_time_component(name) zox_component(name, double)
 
+#define zox_entity_component(name) zox_component(name, ecs_entity_t)
+
 #define zox_hashmap_component(name, type)\
 zox_component(name, type##_##hash_map*)\
 ECS_DTOR(name, ptr, {\

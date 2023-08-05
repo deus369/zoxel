@@ -102,14 +102,14 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
                 set_entity_chunk(world, e, chunkLink, int3_hash_map_get(chunkLinks->value, new_chunk_position));
                 // chunkLink->value = int3_hash_map_get(chunkLinks->value, new_chunk_position);
             }
-            unsigned char is_grounded = 0;
+            // unsigned char is_grounded = 0;
             if (did_collide) {
                 voxelPosition->value = byte3_to_int3(new_position);
                 if (float_abs(velocity3D->value.y) < 0.05f) { // ecs_has(world, e, Grounded) &&
                     if (grounded->value == 0) {
                         if (!ecs_has(world, e, Jump) || ecs_get(world, e, Jump)->value == 0) {
                             grounded->value = 1;
-                            is_grounded = 1;
+                            // is_grounded = 1;
                             #ifdef zox_log_jumping
                                 zoxel_log(" > grounded [%lu] again (%f)\n", e, zox_current_time);
                             #endif

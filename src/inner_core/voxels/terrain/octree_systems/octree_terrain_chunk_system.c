@@ -5,15 +5,10 @@ const int sand_height = -7;
 
 void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 position, float scale) {
     double octree_noise = perlin_terrain(position.x + noise_positiver2, position.z + noise_positiver2, terrain_frequency, terrain_seed, terrain_octaves);
-    if (octree_noise < octree_min_height) {
-        octree_noise = octree_min_height;
-    }
+    if (octree_noise < octree_min_height) octree_noise = octree_min_height;
     // octree_noise += octree_height_addition * octree_perlin_noise(position.x, position.y, position.z, octree_persistence, octree_frequency);
-    if (position.y <= octree_noise) {
-        chunk_octree->value = 1;
-    } else {
-        chunk_octree->value = 0;
-    }
+    if (position.y <= octree_noise) chunk_octree->value = 1;
+    else chunk_octree->value = 0;
     if (depth < max_octree_depth && chunk_octree->value) {
         depth++;
         scale = scale * 0.5f;
@@ -31,9 +26,7 @@ void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 pos
                     break;
                 }
             }
-            if (is_all_solid) {
-                close_ChunkOctree(chunk_octree);
-            }
+            if (is_all_solid) close_ChunkOctree(chunk_octree);
         #endif
     }
 }
@@ -81,9 +74,7 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
                 int local_height = (int) (global_height - global_position_y);
                 if (local_height > 0) {
                     unsigned char chunk_below_max = local_height > chunk_voxel_length;
-                    if (chunk_below_max) {
-                        local_height = chunk_voxel_length;
-                    }
+                    if (chunk_below_max) local_height = chunk_voxel_length;
                     for (voxel_position.y = 0; voxel_position.y < local_height; voxel_position.y++) {
                         byte3 node_position = voxel_position;
                         // if top voxel
@@ -121,8 +112,7 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
     #ifdef zoxel_time_octree_terrain_chunk_system
         end_timing("    - octree_terrain_chunk_system")
     #endif
-}
-zox_declare_system(OctreeTerrainChunkSystem)
+} zox_declare_system(OctreeTerrainChunkSystem)
 
 // fill_octree(chunkOctree, 1, target_depth);
 // generate_height_map(height_map, chunk_position_float3, map_size);

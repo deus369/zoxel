@@ -15,36 +15,27 @@ int get_chunk_index_2(int i, int j, int k, int rows, int vertical) {
 }
 
 ecs_entity_t create_terrain(ecs_world_t *world) {
-    #ifndef zox_disable_terrain_octrees
-        int chunks_total_length = get_terrain_chunks_count(terrain_spawn_distance, terrain_vertical);
-    #else
-        int chunks_total_length = get_terrain_chunks_count(terrain_spawn_distance, 0);
+    #ifdef zox_time_create_terrain
+        begin_timing_absolute()
     #endif
-    // printf("Spawning Terrain Chunks [%i]\n\n", chunks_total_length); 
-    // todo: create a hashmap here
-    ecs_defer_begin(world);
-    ecs_entity_t terrain_world = spawn_terrain(world, prefab_terrain, float3_zero, 1.0f);  // todo link world to chunks and vice versa
+    #ifdef zox_disable_terrain_octrees
+        terrain_vertical = 0;
+    #endif
+    ecs_entity_t tilemap = spawn_tilemap(world);
+    int chunks_total_length = get_terrain_chunks_count(terrain_spawn_distance, terrain_vertical);
+    ecs_entity_t terrain_world = spawn_terrain(world, prefab_terrain, tilemap, float3_zero, 1.0f);  // todo link world to chunks and vice versa
     ecs_entity_t chunks[chunks_total_length];
     int3 chunk_positions[chunks_total_length];
     for (int i = -terrain_spawn_distance; i <= terrain_spawn_distance; i++) {
         for (int k = -terrain_spawn_distance; k <= terrain_spawn_distance; k++) {
-            #ifndef zox_disable_terrain_octrees
-                for (int j = -terrain_vertical; j <= terrain_vertical; j++)
-            #else
-                int j = 0;
-            #endif
-            {
-                // printf("%ix%i index is %i\n", i, j, get_chunk_index(i, j, terrain_spawn_distance));
-                // printf("%ix%ix%i index is %i out of %i\n", i, j, k, get_chunk_index_2(i, j, k, terrain_spawn_distance), chunks_total_length)
+            for (int j = -terrain_vertical; j <= terrain_vertical; j++) {
+                int3 chunk_position = (int3) { i, j, k };
+                int index = get_chunk_index_2(i, j, k, terrain_spawn_distance, terrain_vertical);
                 #ifndef zox_disable_terrain_octrees
-                    int index = get_chunk_index_2(i, j, k, terrain_spawn_distance, terrain_vertical);
-                    int3 chunk_position = (int3) { i, j, k };
-                    chunks[index] = spawn_terrain_chunk_octree(world, prefab_terrain_chunk_octree, terrain_world,
-                        chunk_position, (float3) { i * real_chunk_scale, j * real_chunk_scale, k * real_chunk_scale }, 0.5f);
+                    chunks[index] = spawn_terrain_chunk_octree(world, prefab_terrain_chunk_octree, terrain_world, chunk_position, (float3) { i * real_chunk_scale, j * real_chunk_scale, k * real_chunk_scale }, 0.5f);
                     chunk_positions[index] = chunk_position;
                 #else
-                    chunks[get_chunk_index_2(i, j, k, terrain_spawn_distance, 0)] = spawn_terrain_chunk(world, prefab_terrain_chunk,
-                        (int3) { i, 0, k }, (float3) { i * real_chunk_scale, 0, k * real_chunk_scale }, 0.5f);
+                    chunks[index] = spawn_terrain_chunk(world, prefab_terrain_chunk, chunk_position, (float3) { i * real_chunk_scale, 0, k * real_chunk_scale }, 0.5f);
                 #endif
             }
         }
@@ -52,8 +43,8 @@ ecs_entity_t create_terrain(ecs_world_t *world) {
     // now for all of them, set their neighbors
     for (int i = -terrain_spawn_distance; i <= terrain_spawn_distance; i++) {
         for (int k = -terrain_spawn_distance; k <= terrain_spawn_distance; k++) {
-            #ifndef zox_disable_terrain_octrees
-                for (int j = -terrain_vertical; j <= terrain_vertical; j++) {
+            for (int j = -terrain_vertical; j <= terrain_vertical; j++) {
+                #ifndef zox_disable_terrain_octrees
                     set_chunk_neighbors_six_directions(world,
                         chunks[get_chunk_index_2(i, j, k, terrain_spawn_distance, terrain_vertical)],
                         i == -terrain_spawn_distance ? 0 : chunks[get_chunk_index_2(i - 1, j, k, terrain_spawn_distance, terrain_vertical)],
@@ -62,25 +53,24 @@ ecs_entity_t create_terrain(ecs_world_t *world) {
                         j == terrain_vertical ? 0 : chunks[get_chunk_index_2(i, j + 1, k, terrain_spawn_distance, terrain_vertical)],
                         k == -terrain_spawn_distance ? 0 : chunks[get_chunk_index_2(i, j, k - 1, terrain_spawn_distance, terrain_vertical)],
                         k == terrain_spawn_distance ? 0 : chunks[get_chunk_index_2(i, j, k + 1, terrain_spawn_distance, terrain_vertical)]);
-                }
-            #else
-                int j = 0;
-                set_chunk_neighbors(world,
+                #else
+                    set_chunk_neighbors(world,
                         chunks[get_chunk_index_2(i, j, k, terrain_spawn_distance, 0)],
                         i == -terrain_spawn_distance ? 0 : chunks[get_chunk_index_2(i - 1, j, k, terrain_spawn_distance, 0)],
                         i == terrain_spawn_distance ? 0 : chunks[get_chunk_index_2(i + 1, j, k, terrain_spawn_distance, 0)],
                         k == -terrain_spawn_distance ? 0 : chunks[get_chunk_index_2(i, j, k - 1, terrain_spawn_distance, 0)],
                         k == terrain_spawn_distance ? 0 : chunks[get_chunk_index_2(i, j, k + 1, terrain_spawn_distance, 0)]);
-            #endif
+                #endif
+            }
         }
     }
     ChunkLinks chunkLinks = { };
     chunkLinks.value = create_int3_hash_map(chunks_total_length);
-    for (int i = 0; i < chunks_total_length; i++) {
-        int3_hash_map_add(chunkLinks.value, chunk_positions[i], chunks[i]);
-    }
+    for (int i = 0; i < chunks_total_length; i++) int3_hash_map_add(chunkLinks.value, chunk_positions[i], chunks[i]);
     ecs_set(world, terrain_world, ChunkLinks, { chunkLinks.value });
-    ecs_defer_end(world);
+    #ifdef zox_time_create_terrain
+        end_timing_absolute("    - create_terrain")
+    #endif
     return terrain_world;
 }
 

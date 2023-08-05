@@ -14,6 +14,7 @@ zox_declare_tag(SandTexture)
 zox_declare_tag(StoneTexture)
 zox_declare_tag(ObsidianTexture)
 zox_declare_tag(Tilemap)
+zox_entity_component(TilemapLink)
 zox_memory_component(TextureData, color)
 zox_component(TextureSize, int2)
 zox_component(TilemapSize, int2)
@@ -29,6 +30,7 @@ zox_byte_component(FrameCorner)
 // zoxel_prefab_includes
 #include "prefabs/noise_texture.c"
 #include "prefabs/dirt_texture.c"
+#include "prefabs/tilemap.c"
 // zoxel_system_includes
 #include "systems/animate_noise_system.c"
 #include "systems/texture_update_system.c"
@@ -43,6 +45,7 @@ zox_reset_system(GenerateTextureResetSystem, GenerateTexture)
 void spawn_prefabs_textures_core(ecs_world_t *world) {
     spawn_prefab_noise_texture(world);
     spawn_prefab_texture_dirt(world);
+    spawn_prefab_tilemap(world);
 }
 
 zox_begin_module(TexturesCore)
@@ -57,6 +60,7 @@ zox_define_tag(SandTexture)
 zox_define_tag(StoneTexture)
 zox_define_tag(ObsidianTexture)
 zox_define_tag(Tilemap)
+zox_define_component(TilemapLink)
 zox_define_component(TextureSize)
 zox_define_component(GenerateTexture)
 zox_define_component(AnimateTexture)
@@ -72,14 +76,9 @@ zox_filter(generate_textures2, [none] FrameTexture, [in] GenerateTexture)
 zox_system(AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture)
 zox_texture_generation_system(NoiseTexture, NoiseTextureSystem)
 zox_system_ctx(FrameTextureSystem, EcsPostUpdate, generate_textures2, [none] FrameTexture, [in] GenerateTexture, [in] TextureSize, [in] Color, [in] OutlineThickness, [in] FrameCorner, [out] TextureData, [out] TextureDirty)
-zox_system(TilemapGenerationSystem, EcsOnUpdate, [none] Tilemap, [in] TilemapSize, [in] TextureLinks, [in] GenerateTexture, [out] TextureSize, [out] TextureData, [out] TextureDirty, [out] TilemapUVs)
+zox_system(TilemapGenerationSystem, EcsPostUpdate, [none] Tilemap, [in] TilemapSize, [in] TextureLinks, [in] GenerateTexture, [out] TextureSize, [out] TextureData, [out] TextureDirty, [out] TilemapUVs)
 zox_define_reset_system(GenerateTextureResetSystem, GenerateTexture)
 if (!headless) zox_system_1(TextureUpdateSystem, main_thread_pipeline, [out] TextureDirty, [in] TextureData, [in] TextureSize, [in] TextureGPULink)
 zoxel_end_module(TexturesCore)
-
-// zox_system_1(TextureSaveSystem, EcsOnUpdate, [in] TextureDirty, [in] TextureData, [in] TextureSize, [none] SaveTexture)
-// zox_system_1(AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture)
-// #include <cstdint> ? https://stackoverflow.com/questions/20024690/is-there-byte-data-type-in-c
-// \todo Multithreaded change filters? zox_system
 
 #endif

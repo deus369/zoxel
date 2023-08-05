@@ -1,9 +1,8 @@
 // \todo Create a queue of 3D models to render, including materials, etc
 //  - each type of render queue has different data based on the shaders
 //  - inside ecs systems, can run multithread, add things to queues to render
-const unsigned char max_render_layers = 8;
 unsigned char renderer_layer;
-extern long int render3D_uvs_system_id;
+extern long int render_terrain_chunks_system_id;
 extern long int line3D_render_system_id;
 extern long int cube_lines_render_system_id;
 
@@ -14,34 +13,33 @@ void render_pre_loop() {
 //! This renders all render systems per camera, by externally setting the camera matrix this will be uploaded to all materials.
 void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, int2 size) {
     render_camera_matrix = camera_matrix;
+    // if (check_opengl_error("[pre glViewport Error]")) return;
     glViewport(position.x, position.y, size.x, size.y);
-    opengl_instance3D_begin(render_camera_matrix);
+    // opengl_instance3D_begin(render_camera_matrix);
     if (render3D_update_pipeline == 0) {
-        ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
-        opengl_disable_opengl_program();
-        ecs_run(world, render3D_uvs_system_id, 0, NULL);
-        ecs_run(world, ecs_id(Render3DSystem), 0, NULL);
+        //if (check_opengl_error("[pre render_camera Error]")) return;
+        // ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
+        // opengl_disable_opengl_program();
+        ecs_run(world, ecs_id(Render3DSystem), 0, NULL);    // skybox
+        ecs_run(world, render_terrain_chunks_system_id, 0, NULL);
         ecs_run(world, ecs_id(Render3DColoredSystem), 0, NULL);
-        ecs_run(world, ecs_id(Render3DTexturedSystem), 0, NULL);
-        ecs_run(world, line3D_render_system_id, 0, NULL);
-        ecs_run(world, cube_lines_render_system_id, 0, NULL);
+        // ecs_run(world, ecs_id(Render3DTexturedSystem), 0, NULL);
+        // ecs_run(world, line3D_render_system_id, 0, NULL);
+        // ecs_run(world, cube_lines_render_system_id, 0, NULL);
+        //if (check_opengl_error("[post 3D render_camera Error]")) return;
     }
     if (render2D_update_pipeline == 0) {
         // glDisable(GL_DEPTH_TEST);
         glClear(GL_DEPTH_BUFFER_BIT);
-        shader2D_instance_begin(render_camera_matrix);
+        render_ui_in_layers(world);
+        /*shader2D_instance_begin(render_camera_matrix);
         ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
         shader2D_instance_end();
-        ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);
+        ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);*/
         // ecs_run(world, ecs_id(RenderMaterial2DSystem2), 0, NULL);
-        for (int i = 0; i < max_render_layers; i++) { // render all ui, layer at a time..
-            renderer_layer = i;
-            ecs_run(world, ecs_id(RenderMeshMaterial2DSystem), 0, NULL);    // render for all tables..
-        }
-        opengl_unset_mesh();    // for RenderMeshMaterial2DSystem
-        opengl_disable_opengl_program();
     }
     // ecs_run(world, ecs_id(Line2DRenderSystem), 0, NULL);
+    // check_opengl_error("render_camera");
 }
 
 void render_loop() {

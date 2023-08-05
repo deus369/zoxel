@@ -54,9 +54,9 @@ void render_entity_3D(float3 position, float4 rotation, float scale1D, float bri
 }
 
 //! Set the mesh on the gpu by uploading indicies and vert buffers.
-void set_gpu_mesh(uint2 mesh, uint material, const int *indicies, int indicies_length, const float3 *verts, int verts_length) {
+void opengl_upload_mesh(uint2 mesh, uint material, const int *indicies, int indicies_length, const float3 *verts, int verts_length) {
     // tri_count += indicies_length / 3;
-    // zoxel_log("set_gpu_mesh - adding tris\n");
+    // zoxel_log("opengl_upload_mesh - adding tris\n");
     Material3D material3D = spawn_material3D_properties(material);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);
     glBindBuffer(GL_ARRAY_BUFFER, mesh.y);
@@ -65,7 +65,7 @@ void set_gpu_mesh(uint2 mesh, uint material, const int *indicies, int indicies_l
     // printf("Binding Data %i %i\n", indicies_length, verts_length);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * 4, indicies, GL_STATIC_DRAW);
     // glBufferData(GL_ARRAY_BUFFER, verts_length * 4, verts, GL_STATIC_DRAW);
-    int float_per_data = 3;
+    /*int float_per_data = 3;
     int floats_length = verts_length * float_per_data;
     float combined_verts[floats_length];
     for (int i = 0; i < verts_length; i++) {
@@ -73,13 +73,17 @@ void set_gpu_mesh(uint2 mesh, uint material, const int *indicies, int indicies_l
         combined_verts[i * float_per_data + 0] = vert.x;
         combined_verts[i * float_per_data + 1] = vert.y;
         combined_verts[i * float_per_data + 2] = vert.z;
-    }
-    glBufferData(GL_ARRAY_BUFFER, floats_length * 4, combined_verts, GL_STATIC_DRAW);
-    glVertexAttribPointer(material3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 4 * float_per_data, (GLvoid*)(0 * sizeof(float)));
+    }*/
+    glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float), verts, GL_STATIC_DRAW);
+    // glBufferData(GL_ARRAY_BUFFER, floats_length * 4, combined_verts, GL_STATIC_DRAW);
+    glVertexAttribPointer(material3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (GLvoid*)(0 * sizeof(float)));
     // glVertexAttribPointer(material3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 4 * 5, (GLvoid*)(3 * sizeof(float)));
     // printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", mesh.x, mesh.y);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    #ifdef zoxel_catch_opengl_errors
+        check_opengl_error("opengl_upload_mesh");
+    #endif
 }
 
 void set_gpu_mesh2D(uint2 mesh, uint material, const int *indicies, int indicies_length, const float2 *verts, int verts_length) {

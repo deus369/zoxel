@@ -12,7 +12,7 @@ void MeshUpdateSystem(ecs_iter_t *it) {
         const MaterialGPULink *materialGPULink = &materialGPULinks[i];
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         const MeshVertices *meshVertices2 = &meshVertices[i];
-        set_gpu_mesh(meshGPULink->value,  materialGPULink->value, meshIndicies2->value, meshIndicies2->length, meshVertices2->value, meshVertices2->length);
+        opengl_upload_mesh(meshGPULink->value, materialGPULink->value, meshIndicies2->value, meshIndicies2->length, meshVertices2->value, meshVertices2->length);
         meshDirty->value = 0;
     }
 } zox_declare_system(MeshUpdateSystem)

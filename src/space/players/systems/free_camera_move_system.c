@@ -2,7 +2,7 @@ const double movement_multiplier = 0.08 * 100;
 const double shift_movement_multiplier = 3.0;
 
 void FreeCameraMoveSystem(ecs_iter_t *it) {
-    unsigned char did_update = 0;
+    // unsigned char did_update = 0;
     double movement_power = zox_delta_time;
     movement_power *= movement_multiplier;
     #ifdef zoxel_on_web
@@ -17,8 +17,8 @@ void FreeCameraMoveSystem(ecs_iter_t *it) {
         const FreeRoam *freeRoam = ecs_get(world, cameraLink->value, FreeRoam);
         if (freeRoam->value == 0) continue;
         const DeviceLinks *deviceLinks = &deviceLinkss[i];
-        unsigned char is_triggered = 0;
-        ecs_entity_t mouse_entity = 0;
+        // unsigned char is_triggered = 0;
+        // ecs_entity_t mouse_entity = 0;
         float3 movement = { 0, 0, 0 };
         for (int j = 0; j < deviceLinks->length; j++) {
             ecs_entity_t device_entity = deviceLinks->value[j];

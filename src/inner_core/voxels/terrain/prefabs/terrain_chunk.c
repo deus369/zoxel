@@ -25,7 +25,6 @@ ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, int3 size) {
 }
 
 ecs_entity_t spawn_terrain_chunk(ecs_world_t *world, ecs_entity_t prefab, int3 chunk_position, float3 position, float scale) {
-    ecs_defer_begin(world);
     zox_instance(prefab)
     zox_name("terrain_chunk")
     zox_set_only(e, ChunkPosition, { chunk_position })
@@ -39,7 +38,6 @@ ecs_entity_t spawn_terrain_chunk(ecs_world_t *world, ecs_entity_t prefab, int3 c
             spawn_gpu_texture(world, e);
         #endif
     }
-    ecs_defer_end(world);
     return e;
 }
 

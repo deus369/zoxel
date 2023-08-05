@@ -99,18 +99,13 @@ void ChunkUVsBuildSystem(ecs_iter_t *it) {
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
         MeshUVs *meshUVs2 = &meshUVs[i];
-        const ChunkData *chunk_left = chunkNeighbors2->value[0] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[0], ChunkData);
-        const ChunkData *chunk_right = chunkNeighbors2->value[1] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[1], ChunkData);
-        const ChunkData *chunk_back = chunkNeighbors2->value[2] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[2], ChunkData);
-        const ChunkData *chunk_front = chunkNeighbors2->value[3] == 0 ?
-            NULL : ecs_get(it->world, chunkNeighbors2->value[3], ChunkData);
+        const ChunkData *chunk_left = chunkNeighbors2->value[0] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[0], ChunkData);
+        const ChunkData *chunk_right = chunkNeighbors2->value[1] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[1], ChunkData);
+        const ChunkData *chunk_back = chunkNeighbors2->value[2] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[2], ChunkData);
+        const ChunkData *chunk_front = chunkNeighbors2->value[3] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[3], ChunkData);
         chunkDirty->value = 0;
         meshDirty->value = 1;
-        build_chunk_mesh_uvs(chunk, chunkSize, meshIndicies2, meshVertices2, meshUVs2,
-            chunk_left, chunk_right, chunk_back, chunk_front);
+        build_chunk_mesh_uvs(chunk, chunkSize, meshIndicies2, meshVertices2, meshUVs2, chunk_left, chunk_right, chunk_back, chunk_front);
         // printf("Building ChunkData UVs Mesh [%lu]\n", (long int) it->entities[i]);
         #ifdef zoxel_time_chunk_uvs_builds_system
             did_do_timing()

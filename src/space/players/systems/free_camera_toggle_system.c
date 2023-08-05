@@ -13,13 +13,6 @@ void FreeCameraToggleSystem(ecs_iter_t *it) {
         ecs_entity_t mouse_entity = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
             ecs_entity_t device_entity = deviceLinks->value[j];
-            /*if (ecs_has(world, device_entity, Keyboard)) {
-                const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
-                if (keyboard->space.is_pressed) is_triggered = 1;
-            } else if (ecs_has(world, device_entity, Gamepad)) {
-                const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
-                if (gamepad->a.pressed_this_frame) is_triggered = 1;
-            }*/
             if (ecs_has(world, device_entity, Mouse)) {
                 const Mouse *mouse = ecs_get(world, device_entity, Mouse);
                 if (mouse->left.pressed_this_frame) is_triggered = 1;
@@ -62,3 +55,11 @@ void FreeCameraToggleSystem(ecs_iter_t *it) {
         }
     }*/
 } zox_declare_system(FreeCameraToggleSystem)
+
+/*if (ecs_has(world, device_entity, Keyboard)) {
+    const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
+    if (keyboard->space.is_pressed) is_triggered = 1;
+} else if (ecs_has(world, device_entity, Gamepad)) {
+    const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
+    if (gamepad->a.pressed_this_frame) is_triggered = 1;
+}*/

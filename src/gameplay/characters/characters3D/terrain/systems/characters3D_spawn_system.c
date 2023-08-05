@@ -48,13 +48,13 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             if (!did_find_ground) continue;
             int vox_file_index = rand() % vox_files_count;
             vox_file vox = vox_files[vox_file_index];
-            float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
             int3 global_voxel_position = int3_add(chunk_voxel_position, int3_from_byte3(local_position));
             float3 position = (float3) { global_voxel_position.x, global_voxel_position.y, global_voxel_position.z };
             float3_multiply_float_p(&position, terrain_voxel_scale);
             // todo: use character bounds before spawning, scale voxel position by terrain scale
             position.y += 0.75f;
             #ifndef zox_disable_characters3D
+                float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
                 ecs_entity_t e = spawn_character3D(it->world, prefab_character3D, &vox, position, rotation, character_lod);
                 add_to_ecs_entity_t_array_d(entities, e);
                 #ifdef zoxel_log_characters_count

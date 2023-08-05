@@ -1,3 +1,5 @@
+#define zox_octree_chunk_build_limits
+
 #ifndef zox_disable_hidden_terrain_edge
     const unsigned char edge_voxel = 1;
 #else
@@ -56,8 +58,7 @@ void add_voxel_face_uvs_d(int_array_d *indicies, float3_array_d* vertices, float
 }
 
 #define zoxel_octree_build_face_d(direction_name, is_positive, voxel_uvs)\
-if (!is_adjacent_all_solid(direction##_##direction_name, root_node, parent_node, neighbors,\
-    octree_position, node_index, node_position, depth, lod, neighbor_lods, edge_voxel)) {\
+if (!is_adjacent_all_solid(direction##_##direction_name, root_node, parent_node, neighbors, octree_position, node_index, node_position, depth, lod, neighbor_lods, edge_voxel)) {\
     add_voxel_face_uvs_d(indicies, vertices, uvs, color_rgbs, vertex_position_offset, voxel,\
         voxel_scale, get_voxel_indices(is_positive), voxel_face_vertices##_##direction_name,\
         voxel_uvs, direction##_##direction_name);\
@@ -80,6 +81,7 @@ void build_octree_chunk_d(const ChunkOctree *root_node, const TilemapUVs *tilema
             float3 vertex_position_offset = { octree_position.x * voxel_scale, octree_position.y * voxel_scale, octree_position.z * voxel_scale }; //float3_from_int3(octree_position);
             byte3 node_position = octree_positions_b[node_index];
             const float2 *voxel_uvs = &tilemapUVs->value[(voxel - 1) * 4];
+            // const float2 *voxel_uvs = &(float2) { 0, 0 };
             zoxel_octree_build_face_d(left, 0, voxel_uvs)
             zoxel_octree_build_face_d(right, 1, voxel_uvs)
             zoxel_octree_build_face_d(down, 1, voxel_uvs)
@@ -101,8 +103,7 @@ void build_octree_chunk_d(const ChunkOctree *root_node, const TilemapUVs *tilema
     }
 }
 
-void build_chunk_octree_mesh_uvs(const ChunkOctree *chunk_octree, const TilemapUVs *tilemapUVs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, MeshColorRGBs *meshColorRGBs,
-    unsigned char lod, const ChunkOctree *neighbors[], unsigned char *neighbor_lods) {
+void build_chunk_octree_mesh_uvs(const ChunkOctree *chunk_octree, const TilemapUVs *tilemapUVs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, MeshColorRGBs *meshColorRGBs, unsigned char lod, const ChunkOctree *neighbors[], unsigned char *neighbor_lods) {
     #ifndef zox_disable_voxels_dynamic_array
         int_array_d* indicies = create_int_array_d();
         float3_array_d* vertices = create_float3_array_d();
@@ -136,7 +137,10 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
     #ifdef zoxel_time_octree_chunk_builds_system
         begin_timing()
     #endif
-    int chunks_built = 0;
+    ecs_world_t *world = it->world;
+    #ifdef zox_octree_chunk_build_limits
+        int chunks_built = 0;
+    #endif
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
     const ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 2);
     const RenderLod *renderLods = ecs_field(it, RenderLod, 3);
@@ -149,7 +153,7 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 10);
     for (int i = 0; i < it->count; i++) {
         ChunkDirty *chunkDirty = &chunkDirtys[i];
-        if (chunkDirty->value != 1) continue;
+        if (chunkDirty->value == 0) continue;
         const RenderLod *renderLod = &renderLods[i];
         unsigned char lod = get_terrain_lod_from_camera_distance(renderLod->value);
         MeshDirty *meshDirty = &meshDirtys[i];
@@ -168,8 +172,11 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
             continue;
         }
         const VoxLink *voxLink = &voxLinks[i];
-        const TilemapUVs *tilemapUVs = ecs_get(it->world, voxLink->value, TilemapUVs);
-        if (tilemapUVs->length == 0) continue; // waits for tilemap generation to be done
+        // waits for tilemap generation to finish
+        const TilemapLink *tilemapLink = ecs_get(world, voxLink->value, TilemapLink);
+        const TilemapUVs *tilemapUVs = ecs_get(world, tilemapLink->value, TilemapUVs);
+        // waits for tilemap generation to be done
+        if (tilemapUVs->value == NULL || tilemapUVs->length == 0) continue;
         const ChunkOctree *chunkOctree = &chunkOctrees[i];
         const ChunkNeighbors *chunkNeighbors2 = &chunkNeighbors[i];
         const ChunkOctree *chunk_left = chunkNeighbors2->value[0] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[0], ChunkOctree);
@@ -198,8 +205,10 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         free(neighbor_lods);
         chunkDirty->value = 0;
         meshDirty->value = 1;
-        chunks_built++;
-        if (chunks_built >= max_chunks_build_per_frame) break;
+        #ifdef zox_octree_chunk_build_limits
+            chunks_built++;
+            if (chunks_built >= max_chunks_build_per_frame) break;
+        #endif
         #ifdef zoxel_time_octree_chunk_builds_system
             did_do_timing()
         #endif

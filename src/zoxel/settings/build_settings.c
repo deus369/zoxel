@@ -5,12 +5,16 @@
 // === Disables ===
 
 // #define zox_disable_logs
-// #define zox_disable_terrain
 // #define zox_disable_skybox
+// #define zox_disable_terrain
 // #define zox_disable_characters3D
 // #define zox_disable_characters3D_voxes
 
 // === Debugs ===
+
+// #define zox_time_create_terrain
+// #define zox_disable_render2D
+// #define zox_disable_render3D_colored
 
 // -- in game ui debugs --
 // #define zoxel_debug_fps
@@ -42,6 +46,7 @@
 
 // #define zox_play_game_on_start
 // #define zoxel_testing_tiny_terrain2
+#define zoxel_testing_tiny_terrain3
 // #define zox_test_game_keys
 // #define zox_test_quaternion_camera
 
@@ -153,4 +158,3 @@
 // #define zox_test_voxes
 // #define zoxel_test_single_character3Ds      // spawn 1 penguin
 // #define zoxel_disable_attach_on_start
-// #define zoxel_testing_tiny_terrain2

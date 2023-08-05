@@ -39,12 +39,12 @@ zox_define_tag(PlayerCharacter2D)
 #ifdef zoxel_physics2D
     zox_filter(playerCharacter2DQuery2, [none] PlayerCharacter2D, [out] Acceleration2D, [in] Velocity2D, [in] physics.DisableMovement)
 #endif
-zox_filter(cameras, [none] cameras.Camera, [in] cameras.FreeRoam, [out] Position3D, [out] Rotation3D)
-#ifdef zox_test_quaternion_camera
+// zox_filter(cameras, [none] cameras.Camera, [in] cameras.FreeRoam, [out] Position3D, [out] Rotation3D)
+/*#ifdef zox_test_quaternion_camera
     zox_filter(cameras2, [none] cameras.Camera, [in] cameras.FreeRoam,[out] Rotation3D)
 #else
     zox_filter(cameras2, [none] cameras.Camera, [in] cameras.FreeRoam,[out] Euler)
-#endif
+#endif*/
 zox_filter(player_character3Ds, [none] PlayerCharacter, [out] physics.DisableMovement)
 #ifdef zoxel_physics2D
     zox_system_ctx(Player2DMoveSystem, EcsOnUpdate, playerCharacter2DQuery2, [in] Keyboard)

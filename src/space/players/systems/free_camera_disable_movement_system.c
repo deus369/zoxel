@@ -10,7 +10,7 @@ void FreeCameraDisableMovementSystem(ecs_iter_t *it) {
             for (int j = 0; j < playerIter.count; j++) {
                 DisableMovement *disableMovement = &disableMovements[j];
                 disableMovement->value = !disableMovement->value;
-                // printf("DisableMovement Toggled [%s]\n", disableMovement->value ? "true" : "false");
+                zoxel_log(" > DisableMovement Toggled [%s]\n", disableMovement->value ? "true" : "false");
             }
         }
     }

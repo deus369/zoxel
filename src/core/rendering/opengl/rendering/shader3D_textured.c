@@ -28,11 +28,6 @@ void opengl_set_texture(uint texture_buffer, unsigned char isBlend) {
     glBindTexture(GL_TEXTURE_2D, texture_buffer);
 }
 
-void opengl_disable_texture(unsigned char isBlend) {
-    if (isBlend) glDisable(GL_BLEND);
-    glBindTexture(GL_TEXTURE_2D, 0);
-}
-
 void opengl_set_material3D_uvs_properties(float4 rotation, float scale, float brightness, Material3DTextured *attributes) {
     // glUniform3f(materialTextured3D->position, position.x, position.y, position.z);
     glUniform4f(attributes->rotation, rotation.x, rotation.y, rotation.z, rotation.w);
@@ -48,9 +43,7 @@ void opengl_shader3D_textured_set_camera_view_matrix(const float4x4 view_matrix,
     glUniformMatrix4fv(attributes->view_matrix, 1, GL_FALSE, (float*) &view_matrix);
 }
 
-void opengl_upload_shader3D_textured(uint2 mesh_buffer, uint uv_buffer, uint color_buffer,
-    const int *indicies, int indicies_length, const float3 *verts, int verts_length,
-    const float2 *uvs, const color_rgb *color_rgbs) {
+void opengl_upload_shader3D_textured(uint2 mesh_buffer, uint uv_buffer, uint color_buffer, const int *indicies, int indicies_length, const float3 *verts, int verts_length, const float2 *uvs, const color_rgb *color_rgbs) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -61,6 +54,9 @@ void opengl_upload_shader3D_textured(uint2 mesh_buffer, uint uv_buffer, uint col
     glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
     glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(color_rgb), color_rgbs, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    #ifdef zoxel_catch_opengl_errors
+        check_opengl_error("opengl_upload_shader3D_textured");
+    #endif
 }
 
 void opengl_set_buffer_attributes(uint vertex_buffer, uint uv_buffer, uint color_buffer, Material3DTextured *attributes) {

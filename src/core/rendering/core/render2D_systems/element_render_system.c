@@ -1,8 +1,7 @@
-extern unsigned char renderer_layer;
+unsigned char renderer_layer;
+const unsigned char max_render_layers = 8;
 
-void RenderMeshMaterial2DSystem(ecs_iter_t *it) {
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+void ElementRenderSystem(ecs_iter_t *it) {
     const Position2D *position2Ds = ecs_field(it, Position2D, 1);
     const Rotation2D *rotation2Ds = ecs_field(it, Rotation2D, 2);
     const Scale1D *scale2Ds = ecs_field(it, Scale1D, 3);
@@ -12,6 +11,7 @@ void RenderMeshMaterial2DSystem(ecs_iter_t *it) {
     const UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 7);
     const MaterialInstancedGPULink *materialGPULinks = ecs_field(it, MaterialInstancedGPULink, 8);
     const TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 9);
+    opengl_enable_blend();
     for (int i = 0; i < it->count; i++) {
         const Layer2D *layer2D = &layer2Ds[i];
         if (layer2D->value != renderer_layer) continue;
@@ -44,4 +44,10 @@ void RenderMeshMaterial2DSystem(ecs_iter_t *it) {
     opengl_unset_mesh();
     opengl_disable_texture(1);
     opengl_disable_opengl_program();
-} zox_declare_system(RenderMeshMaterial2DSystem)
+} zox_declare_system(ElementRenderSystem)
+
+void render_ui_in_layers(ecs_world_t *world) {
+    for (renderer_layer = 0; renderer_layer < max_render_layers; renderer_layer++) { // render all ui, layer at a time.
+        ecs_run(world, ecs_id(ElementRenderSystem), 0, NULL);    // render for all tables..
+    }
+}

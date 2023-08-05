@@ -12,6 +12,16 @@ void print_opengl() {
     #endif
 }
 
+void opengl_enable_blend() {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+void opengl_disable_texture(unsigned char isBlend) {
+    if (isBlend) glDisable(GL_BLEND);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 void opengl_clear() {
     glClearColor(opengl_clear_color.x, opengl_clear_color.y, opengl_clear_color.z, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);       // Clears the buffer ?

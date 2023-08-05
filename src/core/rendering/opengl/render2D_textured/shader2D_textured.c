@@ -86,6 +86,20 @@ void render_entity_material2D(const float4x4 viewMatrix, uint material, uint tex
     #endif
 }
 
+void opengl_upload_shader2D_textured(uint2 mesh_buffer, uint uv_buffer, const int *indicies, int indicies_length, const float2 *verts, const float2 *uvs, int verts_length) {
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, mesh_buffer.y);
+    glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float2), verts, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
+    glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float2), uvs, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    #ifdef zoxel_catch_opengl_errors
+        check_opengl_error("opengl_upload_shader2D_textured");
+    #endif
+}
+
 void opengl_set_buffer_attributes2D(uint vertex_buffer, uint uv_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glEnableVertexAttribArray(shader2D_textured_attributes.vertexPosition);
@@ -96,7 +110,7 @@ void opengl_set_buffer_attributes2D(uint vertex_buffer, uint uv_buffer) {
 }
 
 void render_entity_material2D_and_mesh(uint material, uint2 mesh, uint uvs_gpu_link, uint texture, const float4x4 viewMatrix, float2 position, float angle, float scale, float brightness, unsigned char layer) {
-    if (material == 0) return;
+    if (material == 0 || mesh.x == 0 || mesh.y == 0 || uvs_gpu_link == 0 || texture == 0) return;
     glUseProgram(material);   // invalid operation
     glBindTexture(GL_TEXTURE_2D, texture);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);    // for indices
@@ -108,19 +122,10 @@ void render_entity_material2D_and_mesh(uint material, uint2 mesh, uint uvs_gpu_l
     glUniform1f(shader2D_textured_attributes.angle, angle);
     glUniform1f(shader2D_textured_attributes.scale, scale);
     glUniform1f(shader2D_textured_attributes.brightness, brightness);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+    #ifndef zox_disable_render2D
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+    #endif
     #ifdef zoxel_catch_opengl_errors
         check_opengl_error("render_entity_material2D_and_mesh");
     #endif
-}
-
-void opengl_upload_shader2D_textured(uint2 mesh_buffer, uint uv_buffer, const int *indicies, int indicies_length, const float2 *verts, const float2 *uvs, int verts_length) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, mesh_buffer.y);
-    glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float2), verts, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
-    glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float2), uvs, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
