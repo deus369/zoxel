@@ -26,35 +26,43 @@ const float flat_height_level = -0.56f; // 0.2f;
 
 void set_terrain_render_distance() {
     if (cpu_tier == 3) {
-        terrain_spawn_distance = 18; // 24;
-        terrain_vertical = 3;
+        terrain_spawn_distance = 7; // 24;
+        terrain_vertical = 1; // 3;
         // lod_division_dividor = 2; // 5;
         fog_density *= 0.5f;    // .3 for now to cover up transitions
         // set_max_octree_length(5);
     } else if (cpu_tier == 2) {
-        terrain_spawn_distance = 12;
+        terrain_spawn_distance = 7;
+        terrain_vertical = 2;
         fog_density *= 0.7f;
     } else if (cpu_tier == 1) {
         terrain_spawn_distance = 6;
+        terrain_vertical = 2;
         fog_density *= 0.9f;
     } else {
         terrain_spawn_distance = 4;
+        terrain_vertical = 1;
     }
-    #ifdef zoxel_testing_tiny_terrain
+    // preset settings
+    #ifdef zox_terrain_preset_tiny
         terrain_spawn_distance = 1;
         terrain_vertical = 1;
     #endif
-    #ifdef zoxel_testing_tiny_terrain2
+    #ifdef zox_terrain_preset_small
         terrain_spawn_distance = 3;
         terrain_vertical = 1;
     #endif
-    #ifdef zoxel_testing_tiny_terrain3
+    #ifdef zox_terrain_preset_medium
         terrain_spawn_distance = 5;
         terrain_vertical = 1;
     #endif
-    #ifdef zoxel_testing_small_terrain
-        terrain_spawn_distance = 6;
+    #ifdef zox_terrain_preset_large
+        terrain_spawn_distance = 7;
         terrain_vertical = 2;
+    #endif
+    #ifdef zox_terrain_preset_enormous
+        terrain_spawn_distance =12;
+        terrain_vertical = 3;
     #endif
     terrain_frequency = max_octree_depth * 0.003216; // 0.002216 // 0.008216
     terrain_boost = 0; // -8 * terrain_vertical; //  + max_octree_depth * 4;

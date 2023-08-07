@@ -3,7 +3,7 @@
 extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
 extern unsigned char can_render_ui(ecs_world_t *world, ecs_entity_t e);
 
-/*void Render3DTexturedSystem(ecs_iter_t *it) {
+void Render3DTexturedSystem(ecs_iter_t *it) {
     #ifdef zox_time_render3D_textured_system
         begin_timing()
     #endif
@@ -69,7 +69,7 @@ extern unsigned char can_render_ui(ecs_world_t *world, ecs_entity_t e);
         end_timing("    - render3D_textured_system")
         // zoxel_log("         > count [%i]\n", it->count);
     #endif
-} zox_declare_system(Render3DTexturedSystem)*/
+} zox_declare_system(Render3DTexturedSystem)
 
 /*zoxel_log(" o> rendering mesh3D_textured [%lu]\n", it->entities[i]);
 zoxel_log("     o> materialGPULink [%i] textureGPULink [%i] meshGPULink [%ix%i] uvsGPULink [%i] colorsGPULink [%i]\n", materialGPULink->value, textureGPULink->value,

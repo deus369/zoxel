@@ -23,9 +23,9 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
         ecs_run(world, ecs_id(Render3DSystem), 0, NULL);    // skybox
         ecs_run(world, render_terrain_chunks_system_id, 0, NULL);
         ecs_run(world, ecs_id(Render3DColoredSystem), 0, NULL);
-        // ecs_run(world, ecs_id(Render3DTexturedSystem), 0, NULL);
-        // ecs_run(world, line3D_render_system_id, 0, NULL);
-        // ecs_run(world, cube_lines_render_system_id, 0, NULL);
+        ecs_run(world, ecs_id(Render3DTexturedSystem), 0, NULL);    // statbars
+        ecs_run(world, line3D_render_system_id, 0, NULL);
+        ecs_run(world, cube_lines_render_system_id, 0, NULL);
         //if (check_opengl_error("[post 3D render_camera Error]")) return;
     }
     if (render2D_update_pipeline == 0) {

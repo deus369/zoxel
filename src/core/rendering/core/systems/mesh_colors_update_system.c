@@ -13,12 +13,22 @@ void MeshColorsUpdateSystem(ecs_iter_t *it) {
         const MeshVertices *meshVertices2 = &meshVertices[i];
         const MeshColorRGBs *meshColors2 = &meshColorRGBs[i];
         if (meshColors2->length != meshVertices2->length) continue;
-        const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshGPULink *meshGPULink = &meshGPULinks[i];
         ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
+        const MeshIndicies *meshIndicies2 = &meshIndicies[i];
+        if (meshIndicies2->length == 0) {
+            if (meshGPULink->value.x != 0 && meshGPULink->value.y != 0 && colorsGPULink->value != 0) {
+                // clear mesh and colors buffer if zero again?
+                //zoxel_log(" + mesh gpu deleted [%ix%i] -> indicies [%i]\n", meshGPULink->value.x, meshGPULink->value.y, meshIndicies2->length);
+                // opengl_clear_mesh_colored3D(meshGPULink->value, colorsGPULink->value);
+                clear_gpu_mesh(&meshGPULink->value);
+                clear_regular_buffer(&colorsGPULink->value);
+            }
+            continue;
+        }
         if (meshGPULink->value.x == 0) meshGPULink->value = spawn_gpu_mesh_buffers();
         if (colorsGPULink->value == 0) colorsGPULink->value = spawn_gpu_generic_buffer();
         opengl_upload_mesh_colors(meshGPULink->value, colorsGPULink->value, meshIndicies2->value, meshIndicies2->length, meshVertices2->value, meshVertices2->length, meshColors2->value);
-        // zoxel_log(" + mesh gpu created [%ix%i]\n", meshGPULink->value.x, meshGPULink->value.y);
+        //zoxel_log(" + mesh gpu created [%ix%i] -> indicies [%i]\n", meshGPULink->value.x, meshGPULink->value.y, meshIndicies2->length);
     }
 } zox_declare_system(MeshColorsUpdateSystem)

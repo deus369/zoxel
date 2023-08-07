@@ -6,22 +6,10 @@ void Render3DColoredSystem(ecs_iter_t *it) {
     if (colored3D_material == 0 || it->count == 0) return;
     const Position3D *positions = ecs_field(it, Position3D, 1);
     const Rotation3D *rotations = ecs_field(it, Rotation3D, 2);
-    // const Scale1D *scale1Ds = ecs_field(it, Scale1D, 3);
-    // const Brightness *brightnesses = ecs_field(it, Brightness, 4);
     const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 5);
     const ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 6);
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 7);
-    // set fog and camera for material
-    opengl_unset_mesh();
-    opengl_disable_texture(false);
-    opengl_set_material(colored3D_material);
-    glUniformMatrix4fv(materialColored3D.view_matrix, 1, GL_FALSE, (float*) &render_camera_matrix);
-    uint fog_data_location = glGetUniformLocation(colored3D_material, "fog_data");
-    glUniform4f(fog_data_location, fog_color.x, fog_color.y, fog_color.z, fog_density);
-    glUniform1f(materialColored3D.scale, 1.0f);
-    glUniform1f(materialColored3D.brightness, 1.0f);
-    // glUniform4f(materialColored3D.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
-    // zoxel_log(" - Rendering 3D Colored Mesh [%lu]\n", (long int) it->entities[i]);
+    unsigned char is_set_material = 0;
     #ifdef zox_debug_render3D_colored
         int zero_meshes = 0;
         int meshes = 0;
@@ -39,8 +27,17 @@ void Render3DColoredSystem(ecs_iter_t *it) {
         if (colorsGPULink->value == 0) continue;
         const Position3D *position = &positions[i];
         const Rotation3D *rotation = &rotations[i];
-        render_colored3D_mesh(meshGPULink->value, colorsGPULink->value, meshIndicies2->length, position->value, rotation->value);
-        // check_opengl_error("Render3DColoredSystem");
+        if (!is_set_material) {
+            is_set_material = 1;
+            // set fog and camera for material
+            opengl_set_material(colored3D_material);
+            glUniformMatrix4fv(materialColored3D.view_matrix, 1, GL_FALSE, (float*) &render_camera_matrix);
+            uint fog_data_location = glGetUniformLocation(colored3D_material, "fog_data");
+            glUniform4f(fog_data_location, fog_color.x, fog_color.y, fog_color.z, fog_density);
+            glUniform1f(materialColored3D.scale, 1.0f);
+            glUniform1f(materialColored3D.brightness, 1.0f);
+        }
+        render_colored3D(meshGPULink->value, colorsGPULink->value, meshIndicies2->length, position->value, rotation->value);
         #ifdef zox_debug_render3D_colored
             meshes++;
             tris_rendered += meshIndicies2->length / 3;
@@ -50,11 +47,17 @@ void Render3DColoredSystem(ecs_iter_t *it) {
         zoxel_log("  > rendered meshes [%i] unused meshes [%i] tris [%i]\n", meshes, zero_meshes, tris_rendered);
     #endif
     // check_opengl_error("Render3DColoredSystem");
-    opengl_unset_mesh();
-    opengl_disable_opengl_program();
+    if (is_set_material) {
+        opengl_unset_mesh();
+        opengl_disable_opengl_program();
+    }
     // if (check_opengl_error("[Render3DColoredSystem Error]")) return;
 } zox_declare_system(Render3DColoredSystem)
 
+    // opengl_unset_mesh();
+    // opengl_disable_texture(false);
+    // glUniform4f(materialColored3D.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
+    // zoxel_log(" - Rendering 3D Colored Mesh [%lu]\n", (long int) it->entities[i]);
 // unsigned char has_set_single_material = 0;
 /*if (!has_set_single_material) {
     has_set_single_material = 1;
@@ -72,3 +75,10 @@ void Render3DColoredSystem(ecs_iter_t *it) {
 // const Brightness *brightness = &brightnesses[i];
 // glUniform1f(materialColored3D.scale, scale1D->value);
 // glUniform1f(materialColored3D.brightness, brightness->value);
+        /*if (check_opengl_error("[render_colored3D Error]")) {
+            zoxel_log(" ! meshIndicies2->length [%i]\n", meshIndicies2->length);
+            break;
+        }*/
+        /* else {
+            zoxel_log(" > meshIndicies2->length [%i]\n", meshIndicies2->length);
+        }*/

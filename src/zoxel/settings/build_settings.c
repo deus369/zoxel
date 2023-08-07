@@ -2,6 +2,11 @@
 // #define zoxel_include_vulkan
 #define zoxel_include_players
 
+// temp
+// #define zox_terrain_preset_tiny
+// #define zox_terrain_preset_large
+// #define zox_terrain_preset_enormous
+
 // === Disables ===
 
 // #define zox_disable_logs
@@ -15,12 +20,13 @@
 // #define zox_time_create_terrain
 // #define zox_disable_render2D
 // #define zox_disable_render3D_colored
+// #define zox_disable_render_terrain_chunks
 
 // -- in game ui debugs --
 // #define zoxel_debug_fps
 // #define zoxel_debug_quads
-// #define zoxel_debug_sdl             // debugs sdl app
-// #define zoxel_debug_opengl          // debugs opengl
+#define zoxel_debug_sdl             // debugs sdl app
+#define zoxel_debug_opengl          // debugs opengl
 // #define zoxel_debug_settings        // debugs zoxel settings
 // #define zoxel_debug_audio        // debugs sdl audio
 // #define zoxel_debug_input        // debugs sdl input
@@ -45,8 +51,8 @@
 // === Tests ===
 
 // #define zox_play_game_on_start
-// #define zoxel_testing_tiny_terrain2
-#define zoxel_testing_tiny_terrain3
+// #define zox_terrain_preset_small
+// #define zox_terrain_preset_medium
 // #define zox_test_game_keys
 // #define zox_test_quaternion_camera
 
@@ -145,10 +151,10 @@
 // #define zoxel_disable_non_vertical_bounce
 // #define zoxel_inputs_debug_gamepad
 // #define zoxel_inputs_debug_gamepad_sos
-// #define zoxel_testing_tiny_terrain
+// #define zox_terrain_preset_tiny
 // test settings
 // #define zox_disable_fog      // todo: make work
-// #define zoxel_testing_small_terrain
+// #define zox_terrain_preset_large
 // #define zox_grayboxing
 // #define zox_disable_vox_octrees
 // #define zox_test_voxel_mesh

@@ -70,7 +70,10 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_set_material3D_uvs_position(position3D->value, &attributes);
         //    check_opengl_error("[opengl_set_material3D_uvs_position Error]");
-        opengl_draw_triangles(meshIndicies2->length);
+
+        #ifndef zox_disable_render_terrain_chunks
+            opengl_draw_triangles(meshIndicies2->length);
+        #endif
         #ifdef zoxel_render3D_uvs_system_overdebug
             if (check_opengl_error("[render3D_uvs_system opengl_draw_triangles Error]")) {
                 zoxel_log(" !!! indicies length is: %i\n", meshIndicies2->length);

@@ -31,44 +31,47 @@ int load_shader3D_colored() {
     return 0;
 }
 
+void opengl_clear_mesh_colored3D(uint2 mesh, uint color_buffer) {
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 0, NULL, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, mesh.y);
+    glBufferData(GL_ARRAY_BUFFER, 0, NULL, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
+    glBufferData(GL_ARRAY_BUFFER, 0, NULL, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 void opengl_upload_mesh_colors(uint2 mesh, uint color_buffer, const int *indicies, int indicies_length, const float3 *verts, int verts_length, const color_rgb *color_rgbs) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, mesh.y);
     glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float3), verts, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
     glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(color_rgb), color_rgbs, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     #ifdef zoxel_catch_opengl_errors
         check_opengl_error("opengl_upload_mesh_colors");
     #endif
 }
 
-void opengl_set_buffer_attributes_colors(uint vertex_buffer, uint color_buffer) {
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+void render_colored3D(uint2 mesh, uint color_buffer, int mesh_indicies_length, float3 position, float4 rotation) {
+    // if (check_opengl_error("[render_colored3D Error]")) return;
+    opengl_set_mesh_indicies(mesh.x);
+    // bind buffers
+    glBindBuffer(GL_ARRAY_BUFFER, mesh.y);
     glEnableVertexAttribArray(materialColored3D.vertexPosition);
-    glVertexAttribPointer(materialColored3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 0, 0); // sizeof(float3), 0);
+    glVertexAttribPointer(materialColored3D.vertexPosition, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
     glEnableVertexAttribArray(materialColored3D.vertexColor);
-    glVertexAttribPointer(materialColored3D.vertexColor, sizeof(color_rgb), GL_UNSIGNED_BYTE, GL_TRUE, 0, 0); // 4 * sizeof(GLubyte), 0);
-}
-
-int opengl_set_material3D_colors_properties(float3 position, float4 rotation) {
+    glVertexAttribPointer(materialColored3D.vertexColor, 3, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
+    // set variables per instance
     glUniform3f(materialColored3D.position, position.x, position.y, position.z);
     glUniform4f(materialColored3D.rotation, rotation.x, rotation.y, rotation.z, rotation.w);
-    #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("opengl_set_material3D_colors_properties");
-    #endif
-    return 0;
-}
-
-void render_colored3D_mesh(uint2 mesh_buffer, uint color_buffer, int mesh_indicies_length, float3 position, float4 rotation) {
-    // if (check_opengl_error("[render_colored3D_mesh Error]")) return;
-    opengl_set_buffer_attributes_colors(mesh_buffer.y, color_buffer);
-    opengl_set_mesh_indicies(mesh_buffer.x);
-    opengl_set_material3D_colors_properties(position, rotation);
     #ifndef zox_disable_render3D_colored
         opengl_draw_triangles(mesh_indicies_length);
     #endif
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    // check_opengl_error("[render_colored3D Error]");
 }
