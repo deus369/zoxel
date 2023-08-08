@@ -19,8 +19,8 @@ void initialize_mesh(uint material) {
     // printf("A Binding Data %i %i\n", sizeof(square_indicies), sizeof(square_vertices));
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(square_indicies), square_indicies, GL_STATIC_DRAW);
     glBufferData(GL_ARRAY_BUFFER, sizeof(square_vertices), square_vertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(material2D.vertexPosition);
-    glVertexAttribPointer(material2D.vertexPosition, 2, GL_FLOAT, GL_FALSE, 8, 0);
+    glEnableVertexAttribArray(material2D.vertex_position);
+    glVertexAttribPointer(material2D.vertex_position, 2, GL_FLOAT, GL_FALSE, 8, 0);
     // printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", squareMesh.x, squareMesh.y);
     // reset
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -47,8 +47,8 @@ void shader2D_instance_begin(const float4x4 viewMatrix) {
     glUseProgram(square2DMaterial);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareMesh.x);    // for indices
     glBindBuffer(GL_ARRAY_BUFFER, squareMesh.y);            // for vertex coordinates
-    glEnableVertexAttribArray(material2D.vertexPosition);
-    glVertexAttribPointer(material2D.vertexPosition, 2, GL_FLOAT, GL_FALSE, 8, 0);  // 2 * 4
+    glEnableVertexAttribArray(material2D.vertex_position);
+    glVertexAttribPointer(material2D.vertex_position, 2, GL_FLOAT, GL_FALSE, 8, 0);  // 2 * 4
     glUniformMatrix4fv(material2D.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
 }
 

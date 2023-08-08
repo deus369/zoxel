@@ -46,7 +46,7 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
             if (textureGPULink->value == 0) break;
         }
         Material3DTextured attributes = (Material3DTextured) { 
-            glGetAttribLocation(materialGPULink->value, "vertexPosition"),
+            glGetAttribLocation(materialGPULink->value, "vertex_position"),
             glGetAttribLocation(materialGPULink->value, "vertexUV"),
             glGetAttribLocation(materialGPULink->value, "vertex_color"), 0,
             glGetUniformLocation(materialGPULink->value, "position"), 0, 0, 0, 0
@@ -99,7 +99,7 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         //#ifndef voxels_terrain_multi_material
         /*#else
             Material3DTextured attributes = (Material3DTextured) { 
-                glGetAttribLocation(materialGPULink->value, "vertexPosition"),
+                glGetAttribLocation(materialGPULink->value, "vertex_position"),
                 glGetAttribLocation(materialGPULink->value, "vertexUV"),
                 glGetUniformLocation(materialGPULink->value, "view_matrix"),
                 glGetUniformLocation(materialGPULink->value, "position"),

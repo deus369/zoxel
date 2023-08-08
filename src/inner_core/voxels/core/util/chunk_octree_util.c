@@ -131,16 +131,14 @@ void optimize_solid_nodes(ChunkOctree *node) {
 // max_depth is per chunk... refactor that
 // Fix issues between chunks of different levels of division
 // function to check all adjacent voxels are solid on the face
-unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *neighbors[],
-    int3 octree_position, unsigned char node_index, byte3 node_position, unsigned char depth, const unsigned char max_depth, const unsigned char *neighbor_lods,
-    unsigned char edge_voxel) {
+unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *neighbors[], int3 octree_position, unsigned char node_index, byte3 node_position, unsigned char depth, const unsigned char max_depth, const unsigned char *neighbor_lods, unsigned char edge_voxel) {
     unsigned char chunk_index = 0;
     const ChunkOctree *adjacent_node = find_adjacent_ChunkOctree(root_node, parent_node, octree_position, node_index, node_position, depth, direction, neighbors, &chunk_index);
     if (adjacent_node == NULL) { // || depth == max_depth) {
         return edge_voxel;
     } else if (adjacent_node->value == 0) {
         return 0;
-    } else if (adjacent_node->nodes &&
+    } else if (adjacent_node->nodes != NULL &&
         ((chunk_index == 0 && depth < max_depth) || 
         (chunk_index != 0 && depth < neighbor_lods[chunk_index - 1]))) {
         depth++;

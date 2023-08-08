@@ -36,7 +36,7 @@ void Render3DTexturedSystem(ecs_iter_t *it) {
         if (!is_set) {
             is_set = 1;
             attributes = (Material3DTextured) { 
-                .vertexPosition = glGetAttribLocation(materialGPULink->value, "vertexPosition"),
+                .vertex_position = glGetAttribLocation(materialGPULink->value, "vertex_position"),
                 .vertexUV = glGetAttribLocation(materialGPULink->value, "vertexUV"),
                 .vertex_color = glGetAttribLocation(materialGPULink->value, "vertex_color"),
                 .view_matrix = glGetUniformLocation(materialGPULink->value, "view_matrix"),

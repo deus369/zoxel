@@ -1,6 +1,6 @@
 const GLchar* shader3D_vert_buffer = "\
 #version 300 es\n\
-in lowp vec3 vertexPosition;\
+in lowp vec3 vertex_position;\
 uniform lowp mat4 camera_matrix;\
 uniform lowp vec3 position;\
 uniform lowp vec4 rotation;\
@@ -15,7 +15,7 @@ vec3 float4_rotate_float3(vec4 rotation, vec3 value) {\
 }\
 \
 void main() {\
-    gl_Position = camera_matrix * vec4(position + float4_rotate_float3(rotation, vertexPosition * scale), 1.0); \
+    gl_Position = camera_matrix * vec4(position + float4_rotate_float3(rotation, vertex_position * scale), 1.0); \
 }";
 
 const GLchar* shader3D_frag_buffer = "\

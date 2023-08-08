@@ -77,7 +77,7 @@ void opengl_unset_mesh() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void opengl_draw_triangles(int indicies_length) {
+void opengl_draw_triangles(uint indicies_length) {
     glDrawElements(GL_TRIANGLES, indicies_length, GL_UNSIGNED_INT, NULL);
     #ifdef zoxel_catch_opengl_errors
         check_opengl_error("opengl_draw_triangles");

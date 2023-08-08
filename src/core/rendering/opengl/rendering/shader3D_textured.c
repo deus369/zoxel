@@ -61,8 +61,8 @@ void opengl_upload_shader3D_textured(uint2 mesh_buffer, uint uv_buffer, uint col
 
 void opengl_set_buffer_attributes(uint vertex_buffer, uint uv_buffer, uint color_buffer, Material3DTextured *attributes) {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glEnableVertexAttribArray(attributes->vertexPosition);
-    glVertexAttribPointer(attributes->vertexPosition, 3, GL_FLOAT, GL_FALSE, 0, 0); // 12, 0);
+    glEnableVertexAttribArray(attributes->vertex_position);
+    glVertexAttribPointer(attributes->vertex_position, 3, GL_FLOAT, GL_FALSE, 0, 0); // 12, 0);
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
     glEnableVertexAttribArray(attributes->vertexUV);
     glVertexAttribPointer(attributes->vertexUV, 2, GL_FLOAT, GL_FALSE,  0, 0); // 8, 0);

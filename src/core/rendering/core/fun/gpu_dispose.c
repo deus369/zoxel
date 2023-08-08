@@ -49,7 +49,6 @@ void delete_all_opengl_resources(ecs_world_t *world) {
     ecs_run(world, ecs_id(MeshGPUDisposeSystem), 0, NULL);
     ecs_run(world, ecs_id(MeshColorsGPUDisposeSystem), 0, NULL);
     ecs_run(world, ecs_id(MeshUvsGPUDisposeSystem), 0, NULL);
-    // zox_delete(skybox)  // temp fix for now
     dispose_material_resources(world, skybox);
     dispose_mesh_resources(world, skybox);
 }

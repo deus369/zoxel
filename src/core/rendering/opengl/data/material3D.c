@@ -1,6 +1,6 @@
 //! Links to locations inside a base material.
 typedef struct {
-    GLint vertexPosition;
+    GLint vertex_position;
     uint view_matrix;
     uint position;
     uint rotation;
@@ -15,6 +15,6 @@ Material3D spawn_material3D_properties(uint material) {
     material3D.rotation = glGetUniformLocation(material, "rotation");
     material3D.scale = glGetUniformLocation(material, "scale");
     material3D.brightness = glGetUniformLocation(material, "brightness");
-    material3D.vertexPosition = glGetAttribLocation(material, "vertexPosition");
+    material3D.vertex_position = glGetAttribLocation(material, "vertex_position");
     return material3D;
 }

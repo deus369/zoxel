@@ -1,5 +1,5 @@
 typedef struct {
-    GLint vertexPosition;
+    GLint vertex_position;
     GLint vertexUV;
     GLint vertex_color;
     uint view_matrix;

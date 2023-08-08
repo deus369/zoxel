@@ -1,6 +1,6 @@
 //! Links to locations inside a base material.
 typedef struct {
-    GLint vertexPosition;
+    GLint vertex_position;
     uint view_matrix;
     uint positionX;
     uint positionY;
@@ -23,7 +23,7 @@ MaterialTextured2D initialize_material2D_textured(uint material) {
     materialTextured2D.scale = glGetUniformLocation(material, "scale");
     // materialTextured2D.scale2 = glGetUniformLocation(material, "scale2");
     materialTextured2D.brightness = glGetUniformLocation(material, "brightness");
-    materialTextured2D.vertexPosition = glGetAttribLocation(material, "vertexPosition");
+    materialTextured2D.vertex_position = glGetAttribLocation(material, "vertex_position");
     // textured
     materialTextured2D.vertexUV = glGetAttribLocation(material, "vertexUV");
     materialTextured2D.texture = glGetUniformLocation(material, "tex");

@@ -1,6 +1,6 @@
 const GLchar* skybox_shader_source_vert = "\
 #version 300 es\n\
-in lowp vec3 vertexPosition;\
+in lowp vec3 vertex_position;\
 uniform highp mat4 camera_matrix;\
 uniform highp vec3 position;\
 uniform lowp vec4 rotation;\
@@ -16,9 +16,9 @@ vec3 float4_rotate_float3(vec4 rotation, vec3 value) {\
 }\
 \
 void main() {\
-    gl_Position = camera_matrix * vec4(position + float4_rotate_float3(rotation, vertexPosition * scale), 1.0);\
-    lowp vec3 vertex_position2 = position + float4_rotate_float3(rotation, vertexPosition * scale);\
-    mesh_pos = vertexPosition;\
+    gl_Position = camera_matrix * vec4(position + float4_rotate_float3(rotation, vertex_position * scale), 1.0);\
+    lowp vec3 vertex_position2 = position + float4_rotate_float3(rotation, vertex_position * scale);\
+    mesh_pos = vertex_position;\
 }";
 
 const GLchar* skybox_shader_source_frag = "\
@@ -44,7 +44,7 @@ void main() {\
 
 // color.z -= color.x * 0.5;
 // sky_color_top = vec3(0.2, 0.6, 0.9);
-// mesh_y = (vertexPosition.y + 0.02) * 4.0;
+// mesh_y = (vertex_position.y + 0.02) * 4.0;
 // lowp vec3 fog_color = vec3(2.0f / 255.0, 16.0f / 255.0, 24.0f / 255.0 );
 // lowp vec3 fog_color = vec3(0.9, 0.95, 0.98);
 // float3 fog_color = (float3) { 2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f };

@@ -1,6 +1,6 @@
 typedef struct {
-    GLint vertexPosition;
-    GLint vertexColor;
+    GLint vertex_position;
+    GLint vertex_color;
     uint view_matrix;
     uint position;
     uint rotation;

@@ -1,6 +1,6 @@
 //! Links to locations inside a base material->
 typedef struct {
-    GLint vertexPosition;
+    GLint vertex_position;
     uint view_matrix;
     uint positionX;
     uint positionY;
@@ -16,5 +16,5 @@ void initialize_material2D_properties(Material2D *material2D, uint material) {
     material2D->brightness = glGetUniformLocation(material, "brightness");
     material2D->positionX = glGetUniformLocation(material, "positionX");
     material2D->positionY = glGetUniformLocation(material, "positionY");
-    material2D->vertexPosition = glGetAttribLocation(material, "vertexPosition");
+    material2D->vertex_position = glGetAttribLocation(material, "vertex_position");
 }

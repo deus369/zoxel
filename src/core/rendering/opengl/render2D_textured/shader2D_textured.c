@@ -67,9 +67,9 @@ void render_entity_material2D(const float4x4 viewMatrix, uint material, uint tex
     glBindTexture(GL_TEXTURE_2D, texture);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedMesh.x);    // for indices
     glBindBuffer(GL_ARRAY_BUFFER, squareTexturedMesh.y);            // for vertex buffer data
-    glEnableVertexAttribArray(materialTextured2D.vertexPosition);
+    glEnableVertexAttribArray(materialTextured2D.vertex_position);
     glEnableVertexAttribArray(materialTextured2D.vertexUV);
-    glVertexAttribPointer(materialTextured2D.vertexPosition, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(0 * sizeof(float)));
+    glVertexAttribPointer(materialTextured2D.vertex_position, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(0 * sizeof(float)));
     glVertexAttribPointer(materialTextured2D.vertexUV, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(2 * sizeof(float)));
     glUniformMatrix4fv(materialTextured2D.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
     glUniform1f(materialTextured2D.positionX, position.x);
@@ -102,8 +102,8 @@ void opengl_upload_shader2D_textured(uint2 mesh_buffer, uint uv_buffer, const in
 
 void opengl_set_buffer_attributes2D(uint vertex_buffer, uint uv_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glEnableVertexAttribArray(shader2D_textured_attributes.vertexPosition);
-    glVertexAttribPointer(shader2D_textured_attributes.vertexPosition, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(shader2D_textured_attributes.vertex_position);
+    glVertexAttribPointer(shader2D_textured_attributes.vertex_position, 2, GL_FLOAT, GL_FALSE, 0, 0);
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
     glEnableVertexAttribArray(shader2D_textured_attributes.vertexUV);
     glVertexAttribPointer(shader2D_textured_attributes.vertexUV, 2, GL_FLOAT, GL_FALSE, 0, 0);
