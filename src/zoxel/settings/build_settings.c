@@ -25,7 +25,7 @@
 // -- in game ui debugs --
 // #define zoxel_debug_fps
 // #define zoxel_debug_quads
-#define zoxel_debug_sdl             // debugs sdl app
+#define zox_print_sdl             // debugs sdl app
 #define zoxel_debug_opengl          // debugs opengl
 // #define zoxel_debug_settings        // debugs zoxel settings
 // #define zoxel_debug_audio        // debugs sdl audio

@@ -9,7 +9,7 @@ typedef struct {
     uint scale;
     uint brightness;
     // textured
-    GLint vertexUV;
+    GLint vertex_uv;
     uint texture;
 } MaterialTextured2D;
 
@@ -25,7 +25,7 @@ MaterialTextured2D initialize_material2D_textured(uint material) {
     materialTextured2D.brightness = glGetUniformLocation(material, "brightness");
     materialTextured2D.vertex_position = glGetAttribLocation(material, "vertex_position");
     // textured
-    materialTextured2D.vertexUV = glGetAttribLocation(material, "vertexUV");
+    materialTextured2D.vertex_uv = glGetAttribLocation(material, "vertex_uv");
     materialTextured2D.texture = glGetUniformLocation(material, "tex");
     return materialTextured2D;
 }

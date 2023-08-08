@@ -18,7 +18,7 @@ ecs_world_t* open_ecs(int argc, char* argv[], unsigned char profiler, int core_c
             zoxel_log("Error: Cannot import FlecsMonitor. Make sure to define FLECS_REST & FLECS_MONITOR.\n");
         #endif
     }
-    #ifdef zoxel_debug_sdl
+    #ifdef zox_print_sdl
         zoxel_log(" > found [%i] processor cores\n", core_count);
     #endif
     if (core_count > 1) ecs_set_threads(world, core_count); // enable multi threading

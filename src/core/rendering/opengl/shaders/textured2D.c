@@ -2,7 +2,7 @@
 const GLchar* shader2D_textured_vert_buffer = "\
 #version 300 es\n\
 in lowp vec2 vertex_position;\
-in lowp vec2 vertexUV;\
+in lowp vec2 vertex_uv;\
 uniform lowp mat4 camera_matrix;\
 uniform lowp float positionX;\
 uniform lowp float positionY;\
@@ -15,7 +15,7 @@ void main() {\
     vec2 position = vec2(positionX, positionY);\
     mat2 rotate = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));\
     gl_Position = camera_matrix * vec4(position + (rotate * vertex_position) * scale, positionZ, 1.0);\
-    uv = vertexUV;\
+    uv = vertex_uv;\
 }";
 
 const GLchar* shader2D_textured_frag_buffer = "\

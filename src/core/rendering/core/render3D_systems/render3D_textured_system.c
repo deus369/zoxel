@@ -37,7 +37,7 @@ void Render3DTexturedSystem(ecs_iter_t *it) {
             is_set = 1;
             attributes = (Material3DTextured) { 
                 .vertex_position = glGetAttribLocation(materialGPULink->value, "vertex_position"),
-                .vertexUV = glGetAttribLocation(materialGPULink->value, "vertexUV"),
+                .vertex_uv = glGetAttribLocation(materialGPULink->value, "vertex_uv"),
                 .vertex_color = glGetAttribLocation(materialGPULink->value, "vertex_color"),
                 .view_matrix = glGetUniformLocation(materialGPULink->value, "view_matrix"),
                 .position = glGetUniformLocation(materialGPULink->value, "position"),
@@ -50,21 +50,23 @@ void Render3DTexturedSystem(ecs_iter_t *it) {
             opengl_set_material(materialGPULink->value);
             glUniform4f(attributes.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
             opengl_shader3D_textured_set_camera_view_matrix(render_camera_matrix, &attributes);
-            opengl_set_mesh_indicies(meshGPULink->value.x);
             opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes);
         }
+        opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_set_texture(textureGPULink->value, 0);
-        opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, colorsGPULink->value, &attributes);
+        opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, colorsGPULink->value);
+        glUniform3f(attributes.position, position3D->value.x, position3D->value.y, position3D->value.z);
         glUniform4f(attributes.rotation, rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
-        opengl_set_material3D_uvs_position(position3D->value, &attributes);
-        opengl_draw_triangles(meshIndicies2->length);
+        opengl_draw_triangles(6);   // meshIndicies2->length
         #ifdef zox_time_render3D_textured_system
             did_do_timing()
         #endif
     }
-    opengl_unset_mesh();
-    opengl_disable_texture(false);
-    opengl_disable_opengl_program();
+    if (is_set) {
+        opengl_unset_mesh();
+        opengl_disable_texture(false);
+        opengl_disable_opengl_program();
+    }
     #ifdef zox_time_render3D_textured_system
         end_timing("    - render3D_textured_system")
         // zoxel_log("         > count [%i]\n", it->count);

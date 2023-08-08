@@ -22,7 +22,8 @@ ecs_entity_t spawn_tilemap(ecs_world_t *world) {
     zox_instance(prefab_tilemap)
     zox_name("tilemap")
     // zox_set_only(e, TextureSize, { texture_size })
-    spawn_gpu_material(world, e, shader3D_textured);
+    uint gpu_material = spawn_gpu_material(world, e, shader3D_textured);
+    spawn_attributes_textured3D(gpu_material);
     spawn_gpu_texture(world, e);
     #ifdef zoxel_debug_spawns
         zoxel_log(" + spawned tilemap [%lu]\n", (long int) e);

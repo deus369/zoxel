@@ -1,7 +1,7 @@
 const GLchar* shader3D_textured_vert_buffer = "\
 #version 300 es\n\
 in highp vec3 vertex_position;\
-in lowp vec2 vertexUV;\
+in lowp vec2 vertex_uv;\
 in lowp vec3 vertex_color;\
 uniform highp mat4 view_matrix;\
 uniform highp vec3 position;\
@@ -22,7 +22,7 @@ vec3 float4_rotate_float3(vec4 rotation, vec3 value) {\
 void main() {\
     gl_Position = view_matrix * vec4(position + float4_rotate_float3(rotation, vertex_position * scale), 1.0);\
     fog_level = gl_Position.z;\
-    uv = vertexUV;\
+    uv = vertex_uv;\
     vert_color = vertex_color;\
 }";
 

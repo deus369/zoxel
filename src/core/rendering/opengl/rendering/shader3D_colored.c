@@ -60,18 +60,4 @@ void render_colored3D(uint2 mesh, uint color_buffer, uint mesh_indicies_length, 
         // zoxel_log(" > mesh_indicies_length: %i\n", mesh_indicies_length);
         opengl_draw_triangles(mesh_indicies_length);
     #endif
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    //glBindBuffer(GL_ARRAY_BUFFER, 0);
-    // check_opengl_error("[render_colored3D Error]");
 }
-
-/*void opengl_clear_mesh_colored3D(uint2 mesh, uint color_buffer) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 0, NULL, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, mesh.y);
-    glBufferData(GL_ARRAY_BUFFER, 0, NULL, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
-    glBufferData(GL_ARRAY_BUFFER, 0, NULL, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-}*/

@@ -1,6 +1,9 @@
 // #define zox_debug_render3D_colored
 
 void Render3DColoredSystem(ecs_iter_t *it) {
+    #ifdef zox_disable_render3D_colored
+        return;
+    #endif
     // if (check_opengl_error("[Render3DColoredSystem Error]")) return;
     // OpenGL error GL_OUT_OF_MEMORY?
     if (colored3D_material == 0 || it->count == 0) return;

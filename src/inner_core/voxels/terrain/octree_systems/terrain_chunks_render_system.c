@@ -1,6 +1,9 @@
 // #define zoxel_render3D_uvs_system_overdebug
 
 void TerrainChunksRenderSystem(ecs_iter_t *it) {
+    #ifdef zox_disable_render_terrain_chunks
+        return;
+    #endif
     #ifdef zoxel_time_render_3d_uvs
         begin_timing_absolute()
     #endif
@@ -21,7 +24,8 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 8);
     const VoxLink *voxLinks = ecs_field(it, VoxLink, 9);
     // later store commands per material to optimize this process
-    unsigned char has_set_single_material = 0;
+    unsigned char has_set_material = 0;
+    // Material3DTextured attributes;
     ecs_entity_t vox_entity = 0;
     const MaterialGPULink *materialGPULink;
     const TextureGPULink *textureGPULink;
@@ -45,35 +49,15 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
             textureGPULink = ecs_get(world, tilemapLink->value, TextureGPULink);
             if (textureGPULink->value == 0) break;
         }
-        Material3DTextured attributes = (Material3DTextured) { 
-            glGetAttribLocation(materialGPULink->value, "vertex_position"),
-            glGetAttribLocation(materialGPULink->value, "vertexUV"),
-            glGetAttribLocation(materialGPULink->value, "vertex_color"), 0,
-            glGetUniformLocation(materialGPULink->value, "position"), 0, 0, 0, 0
-        };
-        if (!has_set_single_material) {
-            has_set_single_material = 1;
-            // const TextureGPULink *textureGPULink = ecs_get(it->world, voxLink->value, TextureGPULink);
-            attributes.fog_data = glGetUniformLocation(materialGPULink->value, "fog_data");
-            attributes.view_matrix = glGetUniformLocation(materialGPULink->value, "view_matrix");
-            attributes.rotation = glGetUniformLocation(materialGPULink->value, "rotation");
-            attributes.scale = glGetUniformLocation(materialGPULink->value, "scale");
-            attributes.brightness = glGetUniformLocation(materialGPULink->value, "brightness");
+        if (!has_set_material) {
+            has_set_material = 1;
             opengl_set_material(materialGPULink->value);
-            glUniform4f(attributes.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
+            glUniform4f(attributes_textured3D.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
             opengl_set_texture(textureGPULink->value, 0);
-            opengl_shader3D_textured_set_camera_view_matrix(render_camera_matrix, &attributes);
-            opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes);
+            opengl_shader3D_textured_set_camera_view_matrix(render_camera_matrix, &attributes_textured3D);
+            opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes_textured3D);
         }
-        opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, colorsGPULink->value, &attributes);
-        //    check_opengl_error("[opengl_set_buffer_attributes Error]");
-        opengl_set_mesh_indicies(meshGPULink->value.x);
-        opengl_set_material3D_uvs_position(position3D->value, &attributes);
-        //    check_opengl_error("[opengl_set_material3D_uvs_position Error]");
-
-        #ifndef zox_disable_render_terrain_chunks
-            opengl_draw_triangles(meshIndicies2->length);
-        #endif
+        render_textured3D(meshGPULink->value, uvsGPULink->value, colorsGPULink->value, meshIndicies2->length, position3D->value);
         #ifdef zoxel_render3D_uvs_system_overdebug
             if (check_opengl_error("[render3D_uvs_system opengl_draw_triangles Error]")) {
                 zoxel_log(" !!! indicies length is: %i\n", meshIndicies2->length);
@@ -81,9 +65,11 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
             }
         #endif
     }
-    opengl_unset_mesh();
-    opengl_disable_texture(false);
-    opengl_disable_opengl_program();
+    if (has_set_material) {
+        opengl_unset_mesh();
+        opengl_disable_texture(false);
+        opengl_disable_opengl_program();
+    }
     #ifdef zoxel_render3D_uvs_system_overdebug
         check_opengl_error("[render3D_uvs_system Error]");
     #endif
@@ -100,7 +86,7 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         /*#else
             Material3DTextured attributes = (Material3DTextured) { 
                 glGetAttribLocation(materialGPULink->value, "vertex_position"),
-                glGetAttribLocation(materialGPULink->value, "vertexUV"),
+                glGetAttribLocation(materialGPULink->value, "vertex_uv"),
                 glGetUniformLocation(materialGPULink->value, "view_matrix"),
                 glGetUniformLocation(materialGPULink->value, "position"),
                 glGetUniformLocation(materialGPULink->value, "rotation"),
@@ -122,3 +108,14 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
     const TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 10);
 #else*/
 //#endif
+            /*attributes = (Material3DTextured) { 
+                glGetAttribLocation(materialGPULink->value, "vertex_position"),
+                glGetAttribLocation(materialGPULink->value, "vertex_uv"),
+                glGetAttribLocation(materialGPULink->value, "vertex_color"), 0,
+                glGetUniformLocation(materialGPULink->value, "position"), 0, 0, 0, 0
+            };
+            attributes.fog_data = glGetUniformLocation(materialGPULink->value, "fog_data");
+            attributes.view_matrix = glGetUniformLocation(materialGPULink->value, "view_matrix");
+            attributes.rotation = glGetUniformLocation(materialGPULink->value, "rotation");
+            attributes.scale = glGetUniformLocation(materialGPULink->value, "scale");
+            attributes.brightness = glGetUniformLocation(materialGPULink->value, "brightness");*/

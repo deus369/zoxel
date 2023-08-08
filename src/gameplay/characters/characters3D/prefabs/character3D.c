@@ -2,6 +2,7 @@ ecs_entity_t prefab_character3D = 0;
 ecs_entity_t main_character3D = 0;
 const int init_character3D_lod = 1;
 const int character3D_lod_dividor = 1; // 2;
+const unsigned char max_character_division = 0; // 0;
 
 unsigned char get_character_division_from_camera(unsigned char distance_to_camera) {
     unsigned char division = 255;
@@ -16,6 +17,7 @@ unsigned char get_character_division_from_camera(unsigned char distance_to_camer
     } else if (distance_to_camera <= init_character3D_lod + character3D_lod_dividor * 4) {
         division = 4;
     }
+    if (max_character_division != 0 && division < max_character_division) division = max_character_division;
     return division;
 }
 

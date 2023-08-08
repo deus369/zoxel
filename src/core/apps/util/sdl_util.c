@@ -14,17 +14,17 @@ extern void resize_cameras(int2 screen_size);   // > cameras
 extern void resize_ui_canvases(ecs_world_t *world, int2 screen_size);  // > uis
 
 void print_sdl() {
-    #ifdef zoxel_debug_sdl
+    #ifdef zox_print_sdl
         zoxel_log(" > sdl stats\n");
         zoxel_log("     + platform:     %s\n", SDL_GetPlatform());
         zoxel_log("     + cpu count:    %d\n", SDL_GetCPUCount());
         zoxel_log("     + ram:          %d MB\n", SDL_GetSystemRAM());
         zoxel_log("     + screen:       %ix%i\n", screen_dimensions.x, screen_dimensions.y);
-        zoxel_log("     + sse:          %s\n", (SDL_HasSSE() ? "true" : "false"));
+        /*zoxel_log("     + sse:          %s\n", (SDL_HasSSE() ? "true" : "false"));
         zoxel_log("     + sse2:         %s\n", (SDL_HasSSE2() ? "true" : "false"));
         zoxel_log("     + sse3:         %s\n", (SDL_HasSSE3() ? "true" : "false"));
         zoxel_log("     + sse4.1:       %s\n", (SDL_HasSSE41() ? "true" : "false"));
-        zoxel_log("     + sse4.2:       %s\n", (SDL_HasSSE42() ? "true" : "false"));
+        zoxel_log("     + sse4.2:       %s\n", (SDL_HasSSE42() ? "true" : "false"));*/
     #endif
 }
 
@@ -156,6 +156,7 @@ int initialize_sdl() {
         zoxel_log(" - failed to initialize sdl [%s]\n", SDL_GetError());
         return EXIT_FAILURE;
     } else {
+        set_screen_size();
         print_sdl();
         #ifdef zoxel_include_vulkan
             unsigned char is_vulkan_supported = vulkan_supported();
@@ -200,7 +201,6 @@ SDL_Window* create_sdl_window(unsigned char flags) {
 }
 
 SDL_Window* spawn_sdl_window() {
-    set_screen_size();
     unsigned char is_resizeable = 1;
     unsigned long window_flags = SDL_WINDOW_OPENGL;
     #ifdef zoxel_on_android

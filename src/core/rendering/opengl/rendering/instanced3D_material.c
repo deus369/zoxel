@@ -77,7 +77,7 @@ void opengl_upload_mesh(uint2 mesh, uint material, const int *indicies, int indi
     glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float), verts, GL_STATIC_DRAW);
     // glBufferData(GL_ARRAY_BUFFER, floats_length * 4, combined_verts, GL_STATIC_DRAW);
     glVertexAttribPointer(material3D.vertex_position, 3, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (GLvoid*)(0 * sizeof(float)));
-    // glVertexAttribPointer(material3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 4 * 5, (GLvoid*)(3 * sizeof(float)));
+    // glVertexAttribPointer(material3D.vertex_uv, 2, GL_FLOAT, GL_FALSE, 4 * 5, (GLvoid*)(3 * sizeof(float)));
     // printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", mesh.x, mesh.y);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -106,7 +106,7 @@ void set_gpu_mesh2D(uint2 mesh, uint material, const int *indicies, int indicies
     }
     glBufferData(GL_ARRAY_BUFFER, floats_length * 4, combined_verts, GL_STATIC_DRAW);
     glVertexAttribPointer(material3D.vertex_position, 2, GL_FLOAT, GL_FALSE, 4 * float_per_data, (GLvoid*)(0 * sizeof(float)));
-    // glVertexAttribPointer(material3D.vertexUV, 2, GL_FLOAT, GL_FALSE, 4 * 5, (GLvoid*)(3 * sizeof(float)));
+    // glVertexAttribPointer(material3D.vertex_uv, 2, GL_FLOAT, GL_FALSE, 4 * 5, (GLvoid*)(3 * sizeof(float)));
     // printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", mesh.x, mesh.y);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);

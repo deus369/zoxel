@@ -1,4 +1,19 @@
 uint2 shader3D_textured;
+Material3DTextured attributes_textured3D;
+
+void spawn_attributes_textured3D(uint material) {
+    attributes_textured3D = (Material3DTextured) { 
+        .vertex_position = glGetAttribLocation(material, "vertex_position"),
+        .vertex_uv = glGetAttribLocation(material, "vertex_uv"),
+        .vertex_color = glGetAttribLocation(material, "vertex_color"),
+        .position = glGetUniformLocation(material, "position"),
+        .fog_data = glGetUniformLocation(material, "fog_data"),
+        .view_matrix = glGetUniformLocation(material, "view_matrix"),
+        .rotation = glGetUniformLocation(material, "rotation"),
+        .scale = glGetUniformLocation(material, "scale"),
+        .brightness = glGetUniformLocation(material, "brightness")
+    };
+}
 
 void dispose_shader3D_textured() {
     glDeleteShader(shader3D_textured.x);
@@ -59,14 +74,34 @@ void opengl_upload_shader3D_textured(uint2 mesh_buffer, uint uv_buffer, uint col
     #endif
 }
 
-void opengl_set_buffer_attributes(uint vertex_buffer, uint uv_buffer, uint color_buffer, Material3DTextured *attributes) {
+void opengl_set_buffer_attributes(uint vertex_buffer, uint uv_buffer, uint color_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glEnableVertexAttribArray(attributes->vertex_position);
-    glVertexAttribPointer(attributes->vertex_position, 3, GL_FLOAT, GL_FALSE, 0, 0); // 12, 0);
+    glEnableVertexAttribArray(attributes_textured3D.vertex_position);
+    glVertexAttribPointer(attributes_textured3D.vertex_position, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
-    glEnableVertexAttribArray(attributes->vertexUV);
-    glVertexAttribPointer(attributes->vertexUV, 2, GL_FLOAT, GL_FALSE,  0, 0); // 8, 0);
+    glEnableVertexAttribArray(attributes_textured3D.vertex_uv);
+    glVertexAttribPointer(attributes_textured3D.vertex_uv, 2, GL_FLOAT, GL_FALSE,  0, 0);
     glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
-    glEnableVertexAttribArray(attributes->vertex_color);
-    glVertexAttribPointer(attributes->vertex_color, sizeof(color_rgb), GL_UNSIGNED_BYTE, GL_TRUE, 0, 0); // 4 * sizeof(GLubyte), 0);
+    glEnableVertexAttribArray(attributes_textured3D.vertex_color);
+    glVertexAttribPointer(attributes_textured3D.vertex_color, sizeof(color_rgb), GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
+}
+
+void render_textured3D(uint2 mesh_buffer, uint uv_buffer, uint color_buffer, uint mesh_indicies_length, float3 position) {
+    opengl_set_mesh_indicies(mesh_buffer.x);
+    opengl_set_buffer_attributes(mesh_buffer.y, uv_buffer, color_buffer);
+    glUniform3f(attributes_textured3D.position, position.x, position.y, position.z);
+    /*glBindBuffer(GL_ARRAY_BUFFER, mesh.y);
+    glEnableVertexAttribArray(attributes_textured3D.vertex_position);
+    glVertexAttribPointer(attributes_textured3D.vertex_position, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
+    glEnableVertexAttribArray(attributes_textured3D.vertex_uv);
+    glVertexAttribPointer(attributes_textured3D.vertex_uv, 2, GL_FLOAT, GL_FALSE,  0, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
+    glEnableVertexAttribArray(attributes_textured3D.vertex_color);
+    glVertexAttribPointer(attributes_textured3D.vertex_color, sizeof(color_rgb), GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);*/
+    // glUniform4f(materialColored3D.rotation, rotation.x, rotation.y, rotation.z, rotation.w);
+    // opengl_set_material3D_uvs_position(position3D->value, &attributes);
+    #ifndef zox_disable_render_terrain_chunks
+        opengl_draw_triangles(mesh_indicies_length);
+    #endif
 }
