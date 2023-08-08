@@ -58,6 +58,8 @@ else
 	echo "  ! failed to create install directory [$zoxel_install_directory]"
 fi
 
-# source bash/install/install_to_terminal.sh
+source bash/install/install_to_terminal.sh
+
 # xdg-open $shortcut_directory
+
 echo "  > finished installing zoxel"
