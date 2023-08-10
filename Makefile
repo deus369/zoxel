@@ -61,6 +61,7 @@ LDLIBS2 += -lws2_32
 else
 LDLIBS += -lGL	# opengl linux
 LDLIBS += -lvulkan # vulkan on linux
+LDLIBS += -lGLEW
 # -lwayland-client
 endif
 # add sdl2 includes
@@ -110,6 +111,7 @@ cflags_web += -s STACK_SIZE=365536
 cflags_web += -s EXPORTED_FUNCTIONS=['_main','_ntohs']
 # libraries used in web build
 ldlibs_web = -lGL
+ldlibs_web += -lGLEW
 ldlibs_web += -lSDL
 ldlibs_web += -s USE_SDL=2
 ldlibs_web += -s USE_SDL_IMAGE=2

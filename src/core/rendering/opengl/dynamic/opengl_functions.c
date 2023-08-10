@@ -3,7 +3,7 @@ union bridge {
     void (*function_ptr)(void);
 };
 
-#define GL_GLEXT_PROTOTYPES
+// #define GL_GLEXT_PROTOTYPES
 
 // loads all these functions
 #define opengl_functions                                                            \
@@ -51,7 +51,7 @@ union bridge {
     }.function_ptr;                                                 \
     if (func_name == NULL) {                                        \
         fprintf(stderr, "failed to load func: %s\n", #func_name);   \
-        return 0;                                               \
+        return 0;                                                   \
     }
 
 

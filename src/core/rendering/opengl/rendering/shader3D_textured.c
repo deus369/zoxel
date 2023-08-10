@@ -90,17 +90,6 @@ void render_textured3D(uint2 mesh_buffer, uint uv_buffer, uint color_buffer, uin
     opengl_set_mesh_indicies(mesh_buffer.x);
     opengl_set_buffer_attributes(mesh_buffer.y, uv_buffer, color_buffer);
     glUniform3f(attributes_textured3D.position, position.x, position.y, position.z);
-    /*glBindBuffer(GL_ARRAY_BUFFER, mesh.y);
-    glEnableVertexAttribArray(attributes_textured3D.vertex_position);
-    glVertexAttribPointer(attributes_textured3D.vertex_position, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
-    glEnableVertexAttribArray(attributes_textured3D.vertex_uv);
-    glVertexAttribPointer(attributes_textured3D.vertex_uv, 2, GL_FLOAT, GL_FALSE,  0, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
-    glEnableVertexAttribArray(attributes_textured3D.vertex_color);
-    glVertexAttribPointer(attributes_textured3D.vertex_color, sizeof(color_rgb), GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);*/
-    // glUniform4f(materialColored3D.rotation, rotation.x, rotation.y, rotation.z, rotation.w);
-    // opengl_set_material3D_uvs_position(position3D->value, &attributes);
     #ifndef zox_disable_render_terrain_chunks
         opengl_draw_triangles(mesh_indicies_length);
     #endif

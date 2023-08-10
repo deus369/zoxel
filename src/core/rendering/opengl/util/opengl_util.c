@@ -9,12 +9,17 @@ void print_opengl() {
         glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &memory_used);
         glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &memory_total);
         zoxel_log("     + GPU Memory Usage [%d MB / %d MB]\n", memory_used / 1024, memory_total / 1024);
+        check_opengl_error("[print_opengl Error]");
     #endif
 }
 
 void opengl_enable_blend() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+void opengl_disable_blend() {
+    glDisable(GL_BLEND);
 }
 
 void opengl_disable_texture(unsigned char isBlend) {
@@ -78,6 +83,7 @@ void opengl_unset_mesh() {
 }
 
 void opengl_draw_triangles(uint indicies_length) {
+    // zoxel_log(" > mesh_indicies_length: %i\n", indicies_length);
     glDrawElements(GL_TRIANGLES, indicies_length, GL_UNSIGNED_INT, NULL);
     #ifdef zoxel_catch_opengl_errors
         check_opengl_error("opengl_draw_triangles");

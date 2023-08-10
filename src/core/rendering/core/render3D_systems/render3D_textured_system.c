@@ -57,7 +57,11 @@ void Render3DTexturedSystem(ecs_iter_t *it) {
         opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, colorsGPULink->value);
         glUniform3f(attributes.position, position3D->value.x, position3D->value.y, position3D->value.z);
         glUniform4f(attributes.rotation, rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
-        opengl_draw_triangles(6);   // meshIndicies2->length
+        #ifndef zox_disable_render3D_textured
+            // zoxel_log(" > meshIndicies2->length [%i]\n", meshIndicies2->length);
+            opengl_draw_triangles(meshIndicies2->length);
+            // if (check_opengl_error("[Render3DTexturedSystem Error]")) return;
+        #endif
         #ifdef zox_time_render3D_textured_system
             did_do_timing()
         #endif

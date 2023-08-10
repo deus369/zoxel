@@ -1,9 +1,7 @@
 // #define zoxel_render3D_uvs_system_overdebug
+// later store commands per material to optimize this process
 
 void TerrainChunksRenderSystem(ecs_iter_t *it) {
-    #ifdef zox_disable_render_terrain_chunks
-        return;
-    #endif
     #ifdef zoxel_time_render_3d_uvs
         begin_timing_absolute()
     #endif
@@ -23,9 +21,7 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
     const ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 7);
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 8);
     const VoxLink *voxLinks = ecs_field(it, VoxLink, 9);
-    // later store commands per material to optimize this process
     unsigned char has_set_material = 0;
-    // Material3DTextured attributes;
     ecs_entity_t vox_entity = 0;
     const MaterialGPULink *materialGPULink;
     const TextureGPULink *textureGPULink;

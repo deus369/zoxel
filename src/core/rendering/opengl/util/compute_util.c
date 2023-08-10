@@ -30,6 +30,7 @@ int check_compute_shader_support_from_version() {
 
 // debugs compute shader support
 int check_compute_shader_support() {
+    check_opengl_error("[pre check_compute_shader_support Error]");
     // Check whether compute shaders are supported
     if (!glUseProgram) {
         zoxel_log(" - [glUseProgram] is not supported.\n");

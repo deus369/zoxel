@@ -28,6 +28,49 @@ void print_sdl() {
     #endif
 }
 
+unsigned char opengl_es_supported() {
+    unsigned char is_supported = 0;
+    int num_render_drivers = SDL_GetNumRenderDrivers();
+    #ifdef zoxel_debug_opengl
+        zoxel_log(" > found [%i] render drivers\n", num_render_drivers);
+    #endif
+    for (int i = 0; i < num_render_drivers; i++) {
+        SDL_RendererInfo info;
+        SDL_GetRenderDriverInfo(i, &info);
+        if (strstr(info.name, "opengles")) {
+            #ifdef zoxel_debug_opengl
+                zoxel_log("     + render driver [%s]\n", info.name);
+            #endif
+            is_supported = 1;
+        } else {
+            #ifdef zoxel_debug_opengl
+                zoxel_log("     - render driver [%s]\n", info.name);
+            #endif
+        }
+    }
+    return is_supported;
+}
+
+void set_sdl_attributes() {
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); // 24 | 32
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, sdl_gl_major);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, sdl_gl_minor);
+    if (override_opengl_es) {
+        if (opengl_es_supported()) {
+            #ifdef zoxel_debug_opengl
+                zoxel_log(" + GL_ES detected\n");
+            #endif
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+        } else {
+            #ifdef zoxel_debug_opengl
+                zoxel_log(" - GL_ES unavilable\n");
+            #endif
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+        }
+    }
+}
+
 int2 get_sdl_screen_size() {
     int2 screen_size = int2_zero;
     SDL_DisplayMode displayMode;
@@ -92,29 +135,6 @@ void load_app_icon(SDL_Window* window) {
     #endif
 }
 
-unsigned char opengl_es_supported() {
-    unsigned char is_supported = 0;
-    int num_render_drivers = SDL_GetNumRenderDrivers();
-    #ifdef zoxel_debug_opengl
-        zoxel_log(" > found [%i] render drivers\n", num_render_drivers);
-    #endif
-    for (int i = 0; i < num_render_drivers; i++) {
-        SDL_RendererInfo info;
-        SDL_GetRenderDriverInfo(i, &info);
-        if (strstr(info.name, "opengles")) {
-            #ifdef zoxel_debug_opengl
-                zoxel_log("     + render driver [%s]\n", info.name);
-            #endif
-            is_supported = 1;
-        } else {
-            #ifdef zoxel_debug_opengl
-                zoxel_log("     - render driver [%s]\n", info.name);
-            #endif
-        }
-    }
-    return is_supported;
-}
-
 unsigned char vulkan_supported() {
     #ifdef zoxel_include_vulkan
         uint32_t extensionCount = 0;
@@ -169,29 +189,9 @@ int initialize_sdl() {
         #else
             is_vulkan = 0;
         #endif
+        if (!is_vulkan) set_sdl_attributes();
         return EXIT_SUCCESS;
     }
-}
-
-int set_sdl_attributes() {
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); // 24 | 32
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, sdl_gl_major);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, sdl_gl_minor);
-    if (override_opengl_es) {
-        if (opengl_es_supported()) {
-            #ifdef zoxel_debug_opengl
-                zoxel_log(" + GL_ES detected\n");
-            #endif
-            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-        } else {
-            #ifdef zoxel_debug_opengl
-                zoxel_log(" - GL_ES unavilable\n");
-            #endif
-            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-        }
-    }
-    return EXIT_SUCCESS;
 }
 
 SDL_Window* create_sdl_window(unsigned char flags) {
@@ -236,11 +236,6 @@ SDL_Window* spawn_sdl_window() {
 
 SDL_GLContext* create_sdl_opengl_context(SDL_Window* window) {
     if (window == NULL) return NULL;
-    int didFail = set_sdl_attributes();
-    if (didFail == EXIT_FAILURE) {
-        zoxel_log("Failed to set_sdl_attributes.");
-        return NULL;
-    }
     SDL_GLContext* context = SDL_GL_CreateContext(window);
     if (context == NULL) {
         zoxel_log(" - failed to create opengl context [%s]\n", SDL_GetError());
