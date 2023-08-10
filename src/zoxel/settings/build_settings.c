@@ -4,6 +4,7 @@
 
 // temp
 // #define zox_terrain_preset_tiny
+// #define zox_terrain_preset_small
 // #define zox_terrain_preset_large
 // #define zox_terrain_preset_enormous
 
@@ -152,7 +153,6 @@
 // #define zoxel_disable_non_vertical_bounce
 // #define zoxel_inputs_debug_gamepad
 // #define zoxel_inputs_debug_gamepad_sos
-// #define zox_terrain_preset_tiny
 // test settings
 // #define zox_disable_fog      // todo: make work
 // #define zox_terrain_preset_large

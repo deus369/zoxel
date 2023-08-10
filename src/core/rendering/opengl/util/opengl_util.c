@@ -1,10 +1,10 @@
 void print_opengl() {
     #ifdef zoxel_debug_opengl
         zoxel_log(" > opengl\n");
-        zoxel_log("     + version:  %s\n", glGetString(GL_VERSION));
-        zoxel_log("     + glsl version:    %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
-        zoxel_log("     + vendor:   %s\n", glGetString(GL_VENDOR));
-        zoxel_log("     + renderer: %s\n", glGetString(GL_RENDERER));
+        zoxel_log("     + version   [%s]\n", glGetString(GL_VERSION));
+        zoxel_log("     + glsl      [%s]\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+        zoxel_log("     + vendor    [%s]\n", glGetString(GL_VENDOR));
+        zoxel_log("     + renderer  [%s]\n", glGetString(GL_RENDERER));
         GLint memory_used, memory_total;
         glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &memory_used);
         glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &memory_total);
