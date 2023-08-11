@@ -83,7 +83,7 @@ void opengl_set_buffer_attributes(uint vertex_buffer, uint uv_buffer, uint color
     glVertexAttribPointer(attributes_textured3D.vertex_uv, 2, GL_FLOAT, GL_FALSE,  0, 0);
     glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
     glEnableVertexAttribArray(attributes_textured3D.vertex_color);
-    glVertexAttribPointer(attributes_textured3D.vertex_color, sizeof(color_rgb), GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
+    glVertexAttribPointer(attributes_textured3D.vertex_color, 3, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
 }
 
 void render_textured3D(uint2 mesh_buffer, uint uv_buffer, uint color_buffer, uint mesh_indicies_length, float3 position) {

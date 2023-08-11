@@ -35,6 +35,19 @@ void opengl_clear() {
     // glCullFace(GL_BACK); // defaults to this
 }
 
+uint spawn_gpu_texture_buffers() {
+    const int textureType = GL_NEAREST; // GL_LINEAR
+    uint textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureType);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureType);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    return textureID;
+}
+
 //! Spawns the buffers for a mesh indicies and verts on the gpu.
 uint2 spawn_gpu_mesh_buffers() {
     uint2 mesh;

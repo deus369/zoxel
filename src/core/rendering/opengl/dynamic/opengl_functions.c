@@ -1,4 +1,4 @@
-union bridge {
+/*union bridge {
     void* object_ptr;
     void (*function_ptr)(void);
 };
@@ -64,4 +64,4 @@ unsigned char opengl_load_functions() {
         opengl_functions
     #undef opengl_functions
     return EXIT_SUCCESS;
-}
+}*/

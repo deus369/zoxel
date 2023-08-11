@@ -1,18 +1,18 @@
 uint2 shader3D_colored;
 uint colored3D_material;
-MaterialColored3D materialColored3D;
+MaterialColored3D attributes_colored3D;
 
-MaterialColored3D spawn_material3D_colored_properties(uint material) {
-    MaterialColored3D materialColored3D;
-    materialColored3D.view_matrix = glGetUniformLocation(material, "camera_matrix");
-    materialColored3D.position = glGetUniformLocation(material, "position");
-    materialColored3D.rotation = glGetUniformLocation(material, "rotation");
-    materialColored3D.scale = glGetUniformLocation(material, "scale");
-    materialColored3D.brightness = glGetUniformLocation(material, "brightness");
-    materialColored3D.vertex_position = glGetAttribLocation(material, "vertex_position");
-    materialColored3D.vertex_color = glGetAttribLocation(material, "vertex_color");
-    materialColored3D.fog_data = glGetAttribLocation(material, "fog_data");
-    return materialColored3D;
+void spawn_material3D_colored_properties(uint material) {
+    attributes_colored3D = (MaterialColored3D) {
+        .view_matrix = glGetUniformLocation(material, "camera_matrix"),
+        .position = glGetUniformLocation(material, "position"),
+        .rotation = glGetUniformLocation(material, "rotation"),
+        .scale = glGetUniformLocation(material, "scale"),
+        .brightness = glGetUniformLocation(material, "brightness"),
+        .vertex_position = glGetAttribLocation(material, "vertex_position"),
+        .vertex_color = glGetAttribLocation(material, "vertex_color"),
+        .fog_data = glGetAttribLocation(material, "fog_data")
+    };
 }
 
 void dispose_shader3D_colored() {
@@ -24,7 +24,7 @@ void dispose_shader3D_colored() {
 int load_shader3D_colored() {
     shader3D_colored = spawn_gpu_shader_inline(shader3D_colored_vert_buffer, shader3D_colored_frag_buffer);
     colored3D_material = spawn_gpu_material_program(shader3D_colored);
-    materialColored3D = spawn_material3D_colored_properties(colored3D_material);
+    spawn_material3D_colored_properties(colored3D_material);
     #ifdef zoxel_catch_opengl_errors
         check_opengl_error("load_shader3D_colored");
     #endif
@@ -45,19 +45,30 @@ void opengl_upload_mesh_colors(uint2 mesh, uint color_buffer, const int *indicie
     #endif
 }
 
-void render_colored3D(uint2 mesh, uint color_buffer, uint mesh_indicies_length, float3 position, float4 rotation) {
-    // if (check_opengl_error("[render_colored3D Error]")) return;
-    opengl_set_mesh_indicies(mesh.x);
-    glBindBuffer(GL_ARRAY_BUFFER, mesh.y);
-    glEnableVertexAttribArray(materialColored3D.vertex_position);
-    glVertexAttribPointer(materialColored3D.vertex_position, 3, GL_FLOAT, GL_FALSE, 0, 0);
+void opengl_set_colored3D_buffers(uint vertex_buffer, uint color_buffer) {
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+    glEnableVertexAttribArray(attributes_colored3D.vertex_position);
+    glVertexAttribPointer(attributes_colored3D.vertex_position, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
-    glEnableVertexAttribArray(materialColored3D.vertex_color);
-    glVertexAttribPointer(materialColored3D.vertex_color, 3, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
-    glUniform3f(materialColored3D.position, position.x, position.y, position.z);
-    glUniform4f(materialColored3D.rotation, rotation.x, rotation.y, rotation.z, rotation.w);
-    #ifndef zox_disable_render3D_colored
+    glEnableVertexAttribArray(attributes_colored3D.vertex_color);
+    glVertexAttribPointer(attributes_colored3D.vertex_color, 3, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
+}
+
+void render_colored3D(uint2 mesh, uint color_buffer, uint mesh_indicies_length, float3 position, float4 rotation) {
+    opengl_set_mesh_indicies(mesh.x);
+    opengl_set_colored3D_buffers(mesh.y, color_buffer);
+    glUniform3f(attributes_colored3D.position, position.x, position.y, position.z);
+    glUniform4f(attributes_colored3D.rotation, rotation.x, rotation.y, rotation.z, rotation.w);
+    #ifndef zox_disable_render_characters
         // zoxel_log(" > mesh_indicies_length: %i\n", mesh_indicies_length);
         opengl_draw_triangles(mesh_indicies_length);
+        // opengl_draw_triangles(0);
     #endif
 }
+
+    /*glBindBuffer(GL_ARRAY_BUFFER, mesh.y);
+    glEnableVertexAttribArray(attributes_colored3D.vertex_position);
+    glVertexAttribPointer(attributes_colored3D.vertex_position, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
+    glEnableVertexAttribArray(attributes_colored3D.vertex_color);
+    glVertexAttribPointer(attributes_colored3D.vertex_color, 3, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);*/

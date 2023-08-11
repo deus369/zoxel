@@ -1,6 +1,5 @@
 const float shader_depth_multiplier = 0.001f; // 0.0001f;
 const unsigned char disableTextureLoaded = 0;
-int textureType = GL_NEAREST; // GL_LINEAR
 uint2 shader2D_textured;
 uint material2D_textured;
 uint2 squareTexturedMesh;
@@ -20,9 +19,7 @@ void dispose_shader2D_textured() {
     #endif
 }
 
-void initialize_texture_mesh(uint material) {
-    // MaterialTextured2D materialTextured2D = initialize_material2D_textured(material);
-    // gen buffers
+void initialize_shader2D_textured(uint material) {
     glGenBuffers(1, &squareTexturedMesh.x);
     glGenBuffers(1, &squareTexturedMesh.y);  // generate a new VBO and get the associated ID
     glGenBuffers(1, &squareTexturedModelUVs);  // generate a new VBO and get the associated ID
@@ -33,7 +30,7 @@ void initialize_texture_mesh(uint material) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("initialize_texture_mesh");
+        check_opengl_error("initialize_shader2D_textured");
     #endif
 }
 
@@ -41,21 +38,8 @@ int load_shader2D_textured() {
     shader2D_textured = spawn_gpu_shader_inline(shader2D_textured_vert_buffer, shader2D_textured_frag_buffer);
     material2D_textured = spawn_gpu_material_program((const uint2) { shader2D_textured.x, shader2D_textured.y });
     shader2D_textured_attributes = initialize_material2D_textured(material2D_textured);
-    // material2D_textured = load_gpu_shader(&shader2D_textured, shader2D_textured_filepath_vert, shader2D_textured_filepath_frag);
-    initialize_texture_mesh(material2D_textured);
+    initialize_shader2D_textured(material2D_textured);
     return 0;
-}
-
-uint spawn_gpu_texture_buffers() {
-    uint textureID;
-    glGenTextures(1, &textureID);
-    glBindTexture(GL_TEXTURE_2D, textureID);
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureType);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureType);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    return textureID;
 }
 
 void render_entity_material2D(const float4x4 viewMatrix, uint material, uint texture, float2 position, float angle, float scale, float brightness) {
@@ -123,7 +107,7 @@ void render_entity_material2D_and_mesh(uint material, uint2 mesh, uint uvs_gpu_l
     glUniform1f(shader2D_textured_attributes.angle, angle);
     glUniform1f(shader2D_textured_attributes.scale, scale);
     glUniform1f(shader2D_textured_attributes.brightness, brightness);
-    #ifndef zox_disable_render2D
+    #ifndef zox_disable_render_ui
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
     #endif
     #ifdef zoxel_catch_opengl_errors

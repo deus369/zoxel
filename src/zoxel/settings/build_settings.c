@@ -19,10 +19,10 @@
 // === Debugs ===
 
 // #define zox_time_create_terrain
-// #define zox_disable_render2D
+// #define zox_disable_render_ui
 // #define zox_disable_render_terrain_chunks
-// #define zox_disable_render3D_colored
-// #define zox_disable_render3D_textured
+// #define zox_disable_render_characters
+// #define zox_disable_render_ui_3D
 #define zox_print_sdl                       // debugs sdl app
 #define zoxel_debug_opengl                  // debugs opengl
 
