@@ -23,6 +23,7 @@
 // #define zox_disable_render_terrain_chunks
 // #define zox_disable_render_characters
 // #define zox_disable_render_ui_3D
+
 #define zox_print_sdl                       // debugs sdl app
 #define zoxel_debug_opengl                  // debugs opengl
 

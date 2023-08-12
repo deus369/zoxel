@@ -17,16 +17,14 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     glViewport(position.x, position.y, size.x, size.y);
     // opengl_instance3D_begin(render_camera_matrix);
     if (render3D_update_pipeline == 0) {
-        //if (check_opengl_error("[pre render_camera Error]")) return;
         // ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
         // opengl_disable_opengl_program();
         ecs_run(world, ecs_id(Render3DSystem), 0, NULL);    // skybox
         ecs_run(world, render_terrain_chunks_system_id, 0, NULL);
-        ecs_run(world, ecs_id(Render3DColoredSystem), 0, NULL);
+        ecs_run(world, ecs_id(RenderCharacters3DSystem), 0, NULL);
         ecs_run(world, ecs_id(Render3DTexturedSystem), 0, NULL);    // statbars
         ecs_run(world, line3D_render_system_id, 0, NULL);
         ecs_run(world, cube_lines_render_system_id, 0, NULL);
-        //if (check_opengl_error("[post 3D render_camera Error]")) return;
     }
     if (render2D_update_pipeline == 0) {
         // glDisable(GL_DEPTH_TEST);
@@ -40,7 +38,7 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     }
     // ecs_run(world, ecs_id(Line2DRenderSystem), 0, NULL);
     // check_opengl_error("render_camera");
-    check_opengl_error("issues with opengl, in [render_camera]");
+    check_opengl_error("[render_camera]");
 }
 
 void render_loop() {

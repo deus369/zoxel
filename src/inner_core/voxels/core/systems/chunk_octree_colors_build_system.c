@@ -145,9 +145,10 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         MeshColorRGBs *meshColorRGBs2 = &meshColorRGBs[i];
         if (renderLod->value == 255) { // hides mesh
             tri_count -= meshIndicies2->length / 3;
-            clear_mesh(meshIndicies, meshVertices, meshColorRGBs);
+            clear_mesh(meshIndicies2, meshVertices2, meshColorRGBs2);
             chunkDirty->value = 0;
             meshDirty->value = 1;
+            // zoxel_log(" > cleared character [%i]\n", meshIndicies2->length);
             continue;
         }
         const ChunkOctree *chunkOctree = &chunkOctrees[i];
@@ -183,6 +184,7 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         chunkDirty->value = 0;
         meshDirty->value = 1;
         free(neighbor_lods);
+        // zoxel_log(" > built character [%lu] [%i]\n", it->entities[i], meshIndicies2->length);
         chunks_built++;
         if (chunks_built >= max_color_chunks_build_per_frame) break;
         #ifdef zoxel_time_octree_chunk_builds_system

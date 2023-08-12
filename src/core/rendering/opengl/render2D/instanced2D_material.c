@@ -15,15 +15,12 @@ void initialize_mesh(uint material) {
     glGenBuffers(1, &squareMesh.x);
     glGenBuffers(1, &squareMesh.y);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareMesh.x);
-    glBindBuffer(GL_ARRAY_BUFFER, squareMesh.y);
-    // printf("A Binding Data %i %i\n", sizeof(square_indicies), sizeof(square_vertices));
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(square_indicies), square_indicies, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, squareMesh.y);
     glBufferData(GL_ARRAY_BUFFER, sizeof(square_vertices), square_vertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(material2D.vertex_position);
     glVertexAttribPointer(material2D.vertex_position, 2, GL_FLOAT, GL_FALSE, 8, 0);
-    // printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", squareMesh.x, squareMesh.y);
-    // reset
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     #ifdef zoxel_catch_opengl_errors
         check_opengl_error("initialize_mesh");
@@ -60,7 +57,6 @@ void render_instance2D(float2 position, float angle, float scale, float brightne
     glUniform1f(material2D.scale, scale);
     glUniform1f(material2D.angle, angle);
     glUniform1f(material2D.brightness, brightness);
-    // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
     opengl_draw_triangles(6);
 }
 

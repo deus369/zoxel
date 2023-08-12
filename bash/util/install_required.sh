@@ -8,8 +8,14 @@ if ! has_library "gcc"; then
     install_library "gcc"
 fi
 
+echo "> installing opengl"
+install_first_library "libgl"
+
+echo "> installing glew"
+install_first_library "glew" "libglew-dev"
+
 echo "> installing vulkan"
-install_first_library "libvulkan-dev" "vulkan-devel" "vulkan-headers" # "vulkan-tools"
+install_first_library "libvulkan-dev" "vulkan-devel" "vulkan-headers"
 
 bash bash/sdl/install_sdl.sh
 
