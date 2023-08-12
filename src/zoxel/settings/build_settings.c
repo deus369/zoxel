@@ -69,8 +69,8 @@
 // === Timing ===
 
 // > target fps is 30 then 33.33 is the ms required, 16.66 if 60 fps
-// #define zoxel_time_main_loop_cutoff 33.33f       // 1000 / 60 = 16.66 | 1000 / 30 = 33.33
-#define zoxel_time_main_loop_cutoff 16.66f       // 1000 / 60 = 16.66 | 1000 / 30 = 33.33
+#define zoxel_time_main_loop_cutoff 33.33f       // 1000 / 60 = 16.66 | 1000 / 30 = 33.33
+// #define zoxel_time_main_loop_cutoff 16.66f       // 1000 / 60 = 16.66 | 1000 / 30 = 33.33
 #define zoxel_time_main_loop                    // enables time debugging of main loop
 // #define zoxel_time_main_loop_cutoff 0.001
 // #define zoxel_time_always
