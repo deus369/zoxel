@@ -38,7 +38,7 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     }
     // ecs_run(world, ecs_id(Line2DRenderSystem), 0, NULL);
     // check_opengl_error("render_camera");
-    check_opengl_error("[render_camera]");
+    // check_opengl_error("[render_camera]");
 }
 
 void render_loop() {

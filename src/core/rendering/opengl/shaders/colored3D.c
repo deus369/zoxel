@@ -18,9 +18,9 @@ vec3 float4_rotate_float3(vec4 rotation, vec3 value) {\
 }\
 \
 void main() {\
-    vert_color = vertex_color;\
     gl_Position = camera_matrix * vec4(position + float4_rotate_float3(rotation, vertex_position * scale), 1.0);\
     fog_level = gl_Position.z;\
+    vert_color = vertex_color;\
 }";
 
 const GLchar* shader3D_colored_frag_buffer = "\
@@ -32,5 +32,7 @@ uniform lowp vec4 fog_data;\
 out lowp vec3 color;\
 \
 void main() {\
-    color = mix(vert_color * brightness, vec3(fog_data.x, fog_data.y, fog_data.z), 1.0 - exp2(-fog_data.w * fog_data.w * fog_level * fog_level));\
+    color = vert_color * brightness;\
+    lowp float fog_blend = 1.0 - exp2(-fog_data.w * fog_data.w * fog_level * fog_level);\
+    color = mix(color, vec3(fog_data.x, fog_data.y, fog_data.z), fog_blend);\
 }";

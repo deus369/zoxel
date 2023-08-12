@@ -3,11 +3,11 @@
 
 void RenderCharacters3DSystem(ecs_iter_t *it) {
     if (it->count == 0) return;
-    const Position3D *positions = ecs_field(it, Position3D, 3);
-    const Rotation3D *rotations = ecs_field(it, Rotation3D, 4);
-    const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 5);
-    const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 6);
-    const ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 7);
+    const Position3D *positions = ecs_field(it, Position3D, 2);
+    const Rotation3D *rotations = ecs_field(it, Rotation3D, 3);
+    const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 4);
+    const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 5);
+    const ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 6);
     unsigned char has_set_material = 0;
     #ifdef zox_debug_render3D_colored
         int zero_meshes = 0;
@@ -20,14 +20,17 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
             if (meshIndicies2->length == 0) zero_meshes++;
         #endif
         if (meshIndicies2->length == 0) continue;
-        if (meshIndicies2->length < 0) {
+
+        // testing
+        /*if (meshIndicies2->length < 0) {
             zoxel_log(" > character mesh is negative [%lu]: [%i]\n", it->entities[i], meshIndicies2->length);
             continue;
         }
         if (meshIndicies2->length > max_character_mesh_indicies) {
             zoxel_log(" > character mesh too large [%lu]: [%i]\n", it->entities[i], meshIndicies2->length);
             continue;
-        }
+        }*/
+
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
         if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) continue;
         const ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
@@ -45,7 +48,9 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         render_character3D(meshIndicies2->length, meshGPULink->value, colorsGPULink->value, position->value, rotation->value);
         /*if (check_opengl_error("[render_characters - render_character3D]") != 0) {
             zoxel_log(" > rendered character [%lu]: [%i]\n", it->entities[i], meshIndicies2->length);
+            // break;
         }*/
+        // zoxel_log(" > rendered character [%lu]: [%i]\n", it->entities[i], meshIndicies2->length);
         #ifdef zox_debug_render3D_colored
             meshes++;
             tris_rendered += meshIndicies2->length / 3;

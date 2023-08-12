@@ -32,7 +32,6 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     zox_name("prefab_character3D")
     add_seed(world, e, 999);
     add_physics3D(world, e);
-    zox_set_only(e, MeshIndicies, { 0, NULL })
     zox_set(e, Bounds3D, {{ 1, 1, 1 }})
     zox_add(e, VoxLink)
     zox_set(e, ChunkLink, { 0 })

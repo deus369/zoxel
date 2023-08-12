@@ -64,7 +64,7 @@ zox_define_memory_component(MeshColorRGBs)
 #endif
 #ifdef zoxel_transforms3D
     zox_system_1(Render3DSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] !MeshColorRGBs)
-    zox_system_1(RenderCharacters3DSystem, render3D_update_pipeline, [none] MeshColorRGBs, [none] !UvsGPULink, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink)
+    zox_system_1(RenderCharacters3DSystem, render3D_update_pipeline, [none] MeshColorRGBs, [in] Position3D, [in] Rotation3D, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [none] !UvsGPULink)   // , [in] Scale1D, [in] Brightness
     zox_system_1(InstanceRender3DSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink)
     zox_system_1(Render3DTexturedSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] MaterialGPULink, [in] TextureGPULink, [none] SingleMaterial)
     zox_system_1(MeshGPUDisposeSystem, 0, [in] MeshGPULink)

@@ -13,7 +13,7 @@ void spawn_gpu_mesh(ecs_world_t *world, ecs_entity_t e) {
 
 void clear_regular_buffer(uint *gpu_buffer) {
     if (gpu_buffer != 0) glDeleteBuffers(1, gpu_buffer);
-    gpu_buffer = 0;
+    *gpu_buffer = 0;
 }
 
 void clear_gpu_mesh(uint2 *gpu_mesh) {

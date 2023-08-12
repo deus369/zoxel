@@ -178,7 +178,7 @@ void free##_##name(name* octree) {\
     }\
 }\
 \
-void clone##_##name(name* dst, name* src) {\
+void clone##_##name(name* dst, const name* src) {\
     dst->value = src->value;\
     if (src->nodes) {\
         dst->nodes = malloc(sizeof(name) * octree_length);\
