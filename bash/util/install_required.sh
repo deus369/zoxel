@@ -12,7 +12,7 @@ echo "> installing opengl"
 install_first_library "libgl"
 
 echo "> installing glew"
-install_first_library "glew" "libglew-dev"
+install_first_library "libglew-dev" "glew" "libglew"
 
 echo "> installing vulkan"
 install_first_library "libvulkan-dev" "vulkan-devel" "vulkan-headers"

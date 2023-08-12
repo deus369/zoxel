@@ -1,11 +1,11 @@
 void MeshColorsUpdateSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(NULL, it)) return;
-    MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 1);
-    const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 2);
-    const MeshVertices *meshVertices = ecs_field(it, MeshVertices, 3);
-    const MeshColorRGBs *meshColorRGBs = ecs_field(it, MeshColorRGBs, 4);
-    MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 5);
-    ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 6);
+    MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 2);
+    const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 3);
+    const MeshVertices *meshVertices = ecs_field(it, MeshVertices, 4);
+    const MeshColorRGBs *meshColorRGBs = ecs_field(it, MeshColorRGBs, 5);
+    MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 6);
+    ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 7);
     for (int i = 0; i < it->count; i++) {
         MeshDirty *meshDirty = &meshDirtys[i];
         if (meshDirty->value == 0) continue;

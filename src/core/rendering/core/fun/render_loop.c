@@ -12,17 +12,17 @@ void render_pre_loop() {
 
 //! This renders all render systems per camera, by externally setting the camera matrix this will be uploaded to all materials.
 void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, int2 size) {
+    check_opengl_error("[pre render_camera]");
     render_camera_matrix = camera_matrix;
-    // if (check_opengl_error("[pre glViewport Error]")) return;
     glViewport(position.x, position.y, size.x, size.y);
-    // opengl_instance3D_begin(render_camera_matrix);
     if (render3D_update_pipeline == 0) {
+        // opengl_instance3D_begin(render_camera_matrix);
         // ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
         // opengl_disable_opengl_program();
         ecs_run(world, ecs_id(Render3DSystem), 0, NULL);    // skybox
         ecs_run(world, render_terrain_chunks_system_id, 0, NULL);
         ecs_run(world, ecs_id(RenderCharacters3DSystem), 0, NULL);
-        ecs_run(world, ecs_id(Render3DTexturedSystem), 0, NULL);    // statbars
+        ecs_run(world, ecs_id(RenderElements3DSystem), 0, NULL);    // statbars
         ecs_run(world, line3D_render_system_id, 0, NULL);
         ecs_run(world, cube_lines_render_system_id, 0, NULL);
     }

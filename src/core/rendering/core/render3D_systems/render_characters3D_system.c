@@ -31,6 +31,8 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
             continue;
         }*/
 
+        // if (ecs_get(it->world, it->entities[i], MeshDirty)->value) continue;
+
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
         if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) continue;
         const ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
@@ -45,12 +47,14 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
             glUniform1f(attributes_colored3D.scale, 1.0f);
             glUniform1f(attributes_colored3D.brightness, 1.0f);
         }
+
         render_character3D(meshIndicies2->length, meshGPULink->value, colorsGPULink->value, position->value, rotation->value);
-        /*if (check_opengl_error("[render_characters - render_character3D]") != 0) {
-            zoxel_log(" > rendered character [%lu]: [%i]\n", it->entities[i], meshIndicies2->length);
+        
+        /*if (check_opengl_error("[RenderCharacters3DSystem]") != 0) {
+            zoxel_log(" > rendered character [%lu]: [%i] - [%ix%i:%i]\n", it->entities[i], meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value);
             // break;
         }*/
-        // zoxel_log(" > rendered character [%lu]: [%i]\n", it->entities[i], meshIndicies2->length);
+
         #ifdef zox_debug_render3D_colored
             meshes++;
             tris_rendered += meshIndicies2->length / 3;
@@ -63,5 +67,4 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         opengl_unset_mesh();
         opengl_disable_opengl_program();
     }
-    // check_opengl_error("[render_characters]");
 } zox_declare_system(RenderCharacters3DSystem)
