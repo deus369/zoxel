@@ -20,7 +20,7 @@ void PlayerPauseSystem(ecs_iter_t *it) {
                 }
             }
         }
-        if (did_toggle_pause) toggle_pause_ui(world);
+        if (did_toggle_pause) toggle_pause_ui(world, it->entities[i]);
         // zoxel_log(" > alive ui? %s\n", ecs_is_alive(world, pause_ui) ? "alive" : "dead");
     }
 } zox_declare_system(PlayerPauseSystem)

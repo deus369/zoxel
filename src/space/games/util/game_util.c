@@ -1,29 +1,6 @@
 extern void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character);
+extern ecs_entity_t main_character3D;
 // do I still need render_camera_matrix? - yes - used to insert matrix in each camera system run
-
-/*ecs_entity_t respawn_camera(ecs_world_t *world, ecs_entity_t old_camera_entity) {
-    float3 camera_position = ecs_get(world, old_camera_entity, Position3D)->value;
-    float4 camera_rotation = ecs_get(world, old_camera_entity, Rotation3D)->value;
-    int2 camera_screen_dimensions = ecs_get(world, old_camera_entity, ScreenDimensions)->value;
-    float4x4 view_matrix = ecs_get(world, old_camera_entity, ViewMatrix)->value;
-    render_camera_matrix = view_matrix;
-    ecs_entity_t e = spawn_free_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { }); // spawn new free roam camera
-    zox_set_only(e, ViewMatrix, { view_matrix })
-    zox_delete(old_camera_entity)
-    return e;
-}
-
-ecs_entity_t respawn_base_camera(ecs_world_t *world, ecs_entity_t old_camera_entity) {
-    float3 camera_position = ecs_get(world, old_camera_entity, Position3D)->value;
-    float4 camera_rotation = ecs_get(world, old_camera_entity, Rotation3D)->value;
-    int2 camera_screen_dimensions = ecs_get(world, old_camera_entity, ScreenDimensions)->value;
-    float4x4 view_matrix = ecs_get(world, old_camera_entity, ViewMatrix)->value;
-    // render_camera_matrix = view_matrix;
-    ecs_entity_t e = spawn_base_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { }); // spawn new free roam camera
-    zox_set_only(e, ViewMatrix, { view_matrix })
-    zox_delete(old_camera_entity)
-    return e;
-}*/
 
 void end_game(ecs_world_t *world) {
     zoxel_log(" > game state => [playing] to [main_menu]\n");
@@ -60,3 +37,28 @@ void play_game(ecs_world_t *world) {
         attach_to_character(world, main_player, main_cameras[0], main_character3D);
     #endif
 }
+
+
+/*ecs_entity_t respawn_camera(ecs_world_t *world, ecs_entity_t old_camera_entity) {
+    float3 camera_position = ecs_get(world, old_camera_entity, Position3D)->value;
+    float4 camera_rotation = ecs_get(world, old_camera_entity, Rotation3D)->value;
+    int2 camera_screen_dimensions = ecs_get(world, old_camera_entity, ScreenDimensions)->value;
+    float4x4 view_matrix = ecs_get(world, old_camera_entity, ViewMatrix)->value;
+    render_camera_matrix = view_matrix;
+    ecs_entity_t e = spawn_free_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { }); // spawn new free roam camera
+    zox_set_only(e, ViewMatrix, { view_matrix })
+    zox_delete(old_camera_entity)
+    return e;
+}
+
+ecs_entity_t respawn_base_camera(ecs_world_t *world, ecs_entity_t old_camera_entity) {
+    float3 camera_position = ecs_get(world, old_camera_entity, Position3D)->value;
+    float4 camera_rotation = ecs_get(world, old_camera_entity, Rotation3D)->value;
+    int2 camera_screen_dimensions = ecs_get(world, old_camera_entity, ScreenDimensions)->value;
+    float4x4 view_matrix = ecs_get(world, old_camera_entity, ViewMatrix)->value;
+    // render_camera_matrix = view_matrix;
+    ecs_entity_t e = spawn_base_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { }); // spawn new free roam camera
+    zox_set_only(e, ViewMatrix, { view_matrix })
+    zox_delete(old_camera_entity)
+    return e;
+}*/

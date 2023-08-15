@@ -7,7 +7,7 @@
 extern void button_event_play_game(ecs_world_t *world, ecs_entity_t trigger_entity);
 extern void button_event_end_game(ecs_world_t *world, ecs_entity_t trigger_entity);
 extern void button_event_exit_app(ecs_world_t *world, ecs_entity_t trigger_entity);
-extern void toggle_pause_ui(ecs_world_t *world);
+extern void toggle_pause_ui(ecs_world_t *world, ecs_entity_t player);
 
 void extract_keyboard(ecs_world_t *world, SDL_Event event) {
     if (!keyboard_entity || !ecs_is_alive(world, keyboard_entity)) return;
@@ -58,7 +58,7 @@ void extract_keyboard(ecs_world_t *world, SDL_Event event) {
         ecs_modified(world, keyboard_entity, Keyboard);
         #if defined(zox_test_game_keys)
             if (keyboard->t.pressed_this_frame) button_event_play_game(world, 0);
-            if (keyboard->y.pressed_this_frame) toggle_pause_ui(world);
+            if (keyboard->y.pressed_this_frame) toggle_pause_ui(world, main_player);
             if (keyboard->u.pressed_this_frame) button_event_end_game(world, 0);
             if (keyboard->i.pressed_this_frame) button_event_exit_app(world, 0);
         #endif

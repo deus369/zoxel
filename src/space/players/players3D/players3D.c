@@ -18,10 +18,8 @@ zox_begin_module(Players3D)
 zox_define_tag(Player3D)
 zox_define_tag(PlayerCharacter3D)
 #ifdef zoxel_physics3D
-    zox_filter(player_characters, [none] PlayerCharacter3D, [out] Acceleration3D, [in] Velocity3D, [in] physics.DisableMovement, [in] Rotation3D)
-    zox_filter(player_characters2, [none] PlayerCharacter3D, [out] Alpha3D, [in] Omega3D, [in] physics.DisableMovement)
-    zox_system_ctx(Player3DMoveSystem, EcsPreUpdate, player_characters, [none] players.Player, [in] DeviceLinks, [in] CharacterLink)
-    zox_system_ctx(Player3DRotateSystem, EcsPreUpdate, player_characters2, [none] players.Player, [in] DeviceLinks)
+    zox_system(Player3DMoveSystem, EcsPreUpdate, [none] players.Player, [in] DeviceLinks, [in] CharacterLink)
+    zox_system(Player3DRotateSystem, EcsPreUpdate, [none] players.Player, [in] DeviceLinks, [in] CharacterLink)
     zox_system(Player3DJumpSystem, EcsPreUpdate, [none] players.Player, [in] DeviceLinks, [in] CharacterLink)
 #endif
 zoxel_end_module(Players3D)

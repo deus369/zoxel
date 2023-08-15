@@ -1,6 +1,7 @@
 const int particleSpawnCount = 266;
 const float debug_rotation_speed = 12;
 const float debug_rotation_addition = 5;
+extern ecs_entity_t main_character3D;
 
 void Player2DTestSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
