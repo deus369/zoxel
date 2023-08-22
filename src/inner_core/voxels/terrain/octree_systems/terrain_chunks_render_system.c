@@ -48,9 +48,9 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         if (!has_set_material) {
             has_set_material = 1;
             opengl_set_material(materialGPULink->value);
+            opengl_shader3D_textured_set_camera_view_matrix(render_camera_matrix, &attributes_textured3D);
             glUniform4f(attributes_textured3D.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
             opengl_set_texture(textureGPULink->value, 0);
-            opengl_shader3D_textured_set_camera_view_matrix(render_camera_matrix, &attributes_textured3D);
             opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes_textured3D);
         }
         render_textured3D(meshGPULink->value, uvsGPULink->value, colorsGPULink->value, meshIndicies2->length, position3D->value);
@@ -83,7 +83,7 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
             Material3DTextured attributes = (Material3DTextured) { 
                 glGetAttribLocation(materialGPULink->value, "vertex_position"),
                 glGetAttribLocation(materialGPULink->value, "vertex_uv"),
-                glGetUniformLocation(materialGPULink->value, "view_matrix"),
+                glGetUniformLocation(materialGPULink->value, "camera_matrix"),
                 glGetUniformLocation(materialGPULink->value, "position"),
                 glGetUniformLocation(materialGPULink->value, "rotation"),
                 glGetUniformLocation(materialGPULink->value, "scale"),
@@ -111,7 +111,7 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
                 glGetUniformLocation(materialGPULink->value, "position"), 0, 0, 0, 0
             };
             attributes.fog_data = glGetUniformLocation(materialGPULink->value, "fog_data");
-            attributes.view_matrix = glGetUniformLocation(materialGPULink->value, "view_matrix");
+            attributes.camera_matrix = glGetUniformLocation(materialGPULink->value, "camera_matrix");
             attributes.rotation = glGetUniformLocation(materialGPULink->value, "rotation");
             attributes.scale = glGetUniformLocation(materialGPULink->value, "scale");
             attributes.brightness = glGetUniformLocation(materialGPULink->value, "brightness");*/

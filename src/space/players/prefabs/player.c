@@ -25,17 +25,15 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_player(ecs_world_t *world) {
-    // ecs_defer_begin(world);
     zox_instance(prefab_player)
     zox_name("player")
     DeviceLinks deviceLinks = { };
-    initialize_memory_component_non_pointer(deviceLinks, ecs_entity_t, 4);
+    initialize_memory_component_non_pointer(deviceLinks, ecs_entity_t, 4)
     deviceLinks.value[0] = keyboard_entity;
     deviceLinks.value[1] = mouse_entity;
     deviceLinks.value[2] = gamepad_entity;
     deviceLinks.value[3] = touchscreen_entity;
-    ecs_set(world, e, DeviceLinks, { deviceLinks.length, deviceLinks.value });
-    // ecs_defer_end(world);
+    zox_set_only(e, DeviceLinks, { deviceLinks.length, deviceLinks.value })
     main_player = e;
     #ifdef zoxel_debug_spawns
         zoxel_log(" + spawned player [%lu]\n", (long int) e);

@@ -55,7 +55,7 @@ void render_entity_material2D(const float4x4 viewMatrix, uint material, uint tex
     glEnableVertexAttribArray(materialTextured2D.vertex_uv);
     glVertexAttribPointer(materialTextured2D.vertex_position, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(0 * sizeof(float)));
     glVertexAttribPointer(materialTextured2D.vertex_uv, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(2 * sizeof(float)));
-    glUniformMatrix4fv(materialTextured2D.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
+    glUniformMatrix4fv(materialTextured2D.camera_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
     glUniform1f(materialTextured2D.positionX, position.x);
     glUniform1f(materialTextured2D.positionY, position.y);
     glUniform1f(materialTextured2D.angle, angle);
@@ -100,7 +100,7 @@ void render_entity_material2D_and_mesh(uint material, uint2 mesh, uint uvs_gpu_l
     glBindTexture(GL_TEXTURE_2D, texture);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);    // for indices
     opengl_set_buffer_attributes2D(mesh.y, uvs_gpu_link);
-    glUniformMatrix4fv(shader2D_textured_attributes.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
+    glUniformMatrix4fv(shader2D_textured_attributes.camera_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
     glUniform1f(shader2D_textured_attributes.positionX, position.x);
     glUniform1f(shader2D_textured_attributes.positionY, position.y);
     glUniform1f(shader2D_textured_attributes.positionZ, ((int) layer) * shader_depth_multiplier);

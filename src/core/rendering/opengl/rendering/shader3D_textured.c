@@ -6,13 +6,14 @@ void spawn_attributes_textured3D(uint material) {
         .vertex_position = glGetAttribLocation(material, "vertex_position"),
         .vertex_uv = glGetAttribLocation(material, "vertex_uv"),
         .vertex_color = glGetAttribLocation(material, "vertex_color"),
+        .camera_matrix = glGetUniformLocation(material, "camera_matrix"),
         .position = glGetUniformLocation(material, "position"),
         .fog_data = glGetUniformLocation(material, "fog_data"),
-        .view_matrix = glGetUniformLocation(material, "view_matrix"),
         .rotation = glGetUniformLocation(material, "rotation"),
         .scale = glGetUniformLocation(material, "scale"),
         .brightness = glGetUniformLocation(material, "brightness")
     };
+    zoxel_log(" > created attributes_textured3D [%i]: vertex_position [%i] vertex_uv [%i] vertex_color [%i]\n", material, attributes_textured3D.vertex_position, attributes_textured3D.vertex_uv, attributes_textured3D.vertex_color);
 }
 
 void dispose_shader3D_textured() {
@@ -55,7 +56,7 @@ void opengl_set_material3D_uvs_position(float3 position, Material3DTextured *att
 }
 
 void opengl_shader3D_textured_set_camera_view_matrix(const float4x4 view_matrix, Material3DTextured *attributes) {
-    glUniformMatrix4fv(attributes->view_matrix, 1, GL_FALSE, (float*) &view_matrix);
+    glUniformMatrix4fv(attributes->camera_matrix, 1, GL_FALSE, (float*) &view_matrix);
 }
 
 void opengl_upload_shader3D_textured(uint2 mesh_buffer, uint uv_buffer, uint color_buffer, const int *indicies, int indicies_length, const float3 *verts, int verts_length, const float2 *uvs, const color_rgb *color_rgbs) {
@@ -84,12 +85,14 @@ void opengl_set_buffer_attributes(uint vertex_buffer, uint uv_buffer, uint color
     glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
     glEnableVertexAttribArray(attributes_textured3D.vertex_color);
     glVertexAttribPointer(attributes_textured3D.vertex_color, 3, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void render_textured3D(uint2 mesh_buffer, uint uv_buffer, uint color_buffer, uint mesh_indicies_length, float3 position) {
     opengl_set_mesh_indicies(mesh_buffer.x);
     opengl_set_buffer_attributes(mesh_buffer.y, uv_buffer, color_buffer);
     glUniform3f(attributes_textured3D.position, position.x, position.y, position.z);
+    // should i pass in bytes for chunks instead?
     #ifndef zox_disable_render_terrain_chunks
         opengl_draw_triangles(mesh_indicies_length);
     #endif

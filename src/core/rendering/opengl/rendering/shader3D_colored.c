@@ -1,18 +1,23 @@
 uint2 shader3D_colored;
-uint colored3D_material;
+GLuint colored3D_material;
 MaterialColored3D attributes_colored3D;
 
-void spawn_material3D_colored_properties(uint material) {
+void spawn_material3D_colored_properties(GLuint material) {
     attributes_colored3D = (MaterialColored3D) {
-        .view_matrix = glGetUniformLocation(material, "camera_matrix"),
+        .vertex_position = glGetAttribLocation(material, "vertex_position"),
+        .vertex_color = glGetAttribLocation(material, "vertex_color"),
+        .camera_matrix = glGetUniformLocation(material, "camera_matrix"),
         .position = glGetUniformLocation(material, "position"),
         .rotation = glGetUniformLocation(material, "rotation"),
         .scale = glGetUniformLocation(material, "scale"),
-        .brightness = glGetUniformLocation(material, "brightness"),
-        .vertex_position = glGetAttribLocation(material, "vertex_position"),
-        .vertex_color = glGetAttribLocation(material, "vertex_color"),
-        .fog_data = glGetAttribLocation(material, "fog_data")
+        .fog_data = glGetUniformLocation(material, "fog_data"),
+        .brightness = glGetUniformLocation(material, "brightness")
     };
+    zoxel_log(" > created attributes_colored3D [%i]: vertex_position [%i] vertex_color [%i]\n", material, attributes_colored3D.vertex_position, attributes_colored3D.vertex_color);
+    if (attributes_colored3D.vertex_color == -1) {
+        zoxel_log(" ! error with vertex_color\n");
+        attributes_colored3D.vertex_color = 1;
+    }
 }
 
 void dispose_shader3D_colored() {
@@ -23,6 +28,8 @@ void dispose_shader3D_colored() {
 
 int load_shader3D_colored() {
     shader3D_colored = spawn_gpu_shader_inline(shader3D_colored_vert_buffer, shader3D_colored_frag_buffer);
+    // glBindAttribLocation(shader3D_colored.x, 0, "vertex_position");
+    // glBindAttribLocation(shader3D_colored.x, 1, "vertex_color");
     colored3D_material = spawn_gpu_material_program(shader3D_colored);
     spawn_material3D_colored_properties(colored3D_material);
     #ifdef zoxel_catch_opengl_errors

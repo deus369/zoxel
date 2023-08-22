@@ -27,6 +27,15 @@ void FreeCameraToggleSystem(ecs_iter_t *it) {
             zox_set_only(cameraLink->value, FreeRoam, { new_value })
         }
     }
+} zox_declare_system(FreeCameraToggleSystem)
+
+/*if (ecs_has(world, device_entity, Keyboard)) {
+    const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
+    if (keyboard->space.is_pressed) is_triggered = 1;
+} else if (ecs_has(world, device_entity, Gamepad)) {
+    const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
+    if (gamepad->a.pressed_this_frame) is_triggered = 1;
+}*/
     /*ecs_iter_t cameraIter = ecs_query_iter(it->world, it->ctx);
     ecs_query_next(&cameraIter);
     if (cameraIter.count == 0) return;
@@ -54,12 +63,3 @@ void FreeCameraToggleSystem(ecs_iter_t *it) {
             }
         }
     }*/
-} zox_declare_system(FreeCameraToggleSystem)
-
-/*if (ecs_has(world, device_entity, Keyboard)) {
-    const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
-    if (keyboard->space.is_pressed) is_triggered = 1;
-} else if (ecs_has(world, device_entity, Gamepad)) {
-    const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
-    if (gamepad->a.pressed_this_frame) is_triggered = 1;
-}*/

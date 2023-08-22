@@ -34,6 +34,6 @@ ecs_entity_t spawn_chunk(ecs_world_t *world, ecs_entity_t prefab_chunk, float3 p
     zox_set_only(e, Position3D, { position })
     zox_set_only(e, Scale1D, { scale })
     spawn_gpu_mesh(world, e);
-    spawn_gpu_material(world, e, shader3D_colored);
+    // spawn_gpu_material(world, e, shader3D_colored);
     return e;
 }

@@ -1,7 +1,7 @@
 //! Links to locations inside a base material.
 typedef struct {
     GLint vertex_position;
-    uint view_matrix;
+    uint camera_matrix;
     uint position;
     uint rotation;
     uint scale;
@@ -10,7 +10,7 @@ typedef struct {
 
 Material3D spawn_material3D_properties(uint material) {
     Material3D material3D;
-    material3D.view_matrix = glGetUniformLocation(material, "camera_matrix");
+    material3D.camera_matrix = glGetUniformLocation(material, "camera_matrix");
     material3D.position = glGetUniformLocation(material, "position");
     material3D.rotation = glGetUniformLocation(material, "rotation");
     material3D.scale = glGetUniformLocation(material, "scale");

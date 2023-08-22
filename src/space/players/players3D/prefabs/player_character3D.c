@@ -9,8 +9,6 @@ ecs_entity_t spawn_player_character3D_prefab(ecs_world_t *world) {
     zox_add(e, CameraLink)
     zox_set(e, DisableMovement, { 0 })
     zox_remove(e, AnimateChunk)
-    // ecs_remove(world, e, AnimateChunk);
-    // printf("Has AnimateChunk? %b\n", ecs_has(world, e, AnimateChunk));
     ecs_defer_end(world);
     player_character3D_prefab = e;
     #ifdef zoxel_debug_prefabs

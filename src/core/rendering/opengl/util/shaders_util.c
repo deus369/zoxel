@@ -20,9 +20,9 @@ unsigned char initialize_material(uint material, uint vert_shader, uint frag_sha
     return 0;
 }
 
-uint spawn_gpu_material_program(const uint2 shader) {
+GLuint spawn_gpu_material_program(const uint2 shader) {
     if (shader.x == 0 || shader.y == 0) return 0;
-    uint material = glCreateProgram();
+    GLuint material = glCreateProgram();
     initialize_material(material, shader.x, shader.y);
     #ifdef zoxel_catch_opengl_errors
         check_opengl_error("spawn_gpu_material_program");

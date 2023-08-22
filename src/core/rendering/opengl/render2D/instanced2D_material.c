@@ -46,7 +46,7 @@ void shader2D_instance_begin(const float4x4 viewMatrix) {
     glBindBuffer(GL_ARRAY_BUFFER, squareMesh.y);            // for vertex coordinates
     glEnableVertexAttribArray(material2D.vertex_position);
     glVertexAttribPointer(material2D.vertex_position, 2, GL_FLOAT, GL_FALSE, 8, 0);  // 2 * 4
-    glUniformMatrix4fv(material2D.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
+    glUniformMatrix4fv(material2D.camera_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
 }
 
 // does this per material!

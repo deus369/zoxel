@@ -5,11 +5,9 @@ const float2 max_velocity = { 60 * 60, 160 * 60 };
 const double run_speed = 1.3;
 const float backwards_multiplier = 0.7f;
 // #define zox_floating_movement
+// todo: get rotated velocity to test max
+
 void Player3DMoveSystem(ecs_iter_t *it) {
-    /*ecs_query_t *playerCharacterQuery = it->ctx;
-    ecs_iter_t characters_iter = ecs_query_iter(it->world, playerCharacterQuery);
-    ecs_query_next(&characters_iter);
-    if (characters_iter.count == 0) return;*/
     ecs_world_t *world = it->world;
     double delta_time = zox_delta_time;
     float2 max_delta_velocity = max_velocity;
@@ -17,10 +15,6 @@ void Player3DMoveSystem(ecs_iter_t *it) {
     max_delta_velocity.y *= delta_time;
     const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
     const CharacterLink *characterLinks = ecs_field(it, CharacterLink, 3);
-    /*Acceleration3D *acceleration3Ds = ecs_field(&characters_iter, Acceleration3D, 2);
-    const Velocity3D *velocity3Ds = ecs_field(&characters_iter, Velocity3D, 3);
-    const DisableMovement *disableMovements = ecs_field(&characters_iter, DisableMovement, 4);
-    const Rotation3D *rotation3Ds = ecs_field(&characters_iter, Rotation3D, 5);*/
     for (int i = 0; i < it->count; i++) {
         const CharacterLink *characterLink = &characterLinks[i];
         if (characterLink->value == 0) continue;
@@ -58,37 +52,15 @@ void Player3DMoveSystem(ecs_iter_t *it) {
         }
         if (movement.x == 0 && movement.y == 0 && movement.z == 0) continue;
         if (movement.z < 0) movement.z *= backwards_multiplier;
-        
         // const Omega3D *omega3D = ecs_get(world, characterLink->value, Omega3D);
         const Rotation3D *rotation3D = ecs_get(world, characterLink->value, Rotation3D);
         const Velocity3D *velocity3D = ecs_get(world, characterLink->value, Velocity3D);
         Acceleration3D *acceleration3D = ecs_get_mut(world, characterLink->value, Acceleration3D);
-
         float3 rotated_movement = float4_rotate_float3(rotation3D->value, movement);
         float3 rotated_velocity = float4_rotate_float3(float4_inverse(rotation3D->value), velocity3D->value);
         if (float_abs(rotated_velocity.x) < max_delta_velocity.x) acceleration3D->value.x += rotated_movement.x * movement_power_x;
         if (float_abs(rotated_velocity.z) < max_delta_velocity.y) acceleration3D->value.z += rotated_movement.z * movement_power_z;
         acceleration3D->value.y += rotated_movement.y;
-        
         ecs_modified(world, characterLink->value, Acceleration3D);
-
-        /*for (int j = 0; j < characters_iter.count; j++) {
-            if (characters_iter.entities[j] != characterLink->value) continue;
-            const DisableMovement *disableMovement = &disableMovements[j];
-            if (disableMovement->value) continue;
-            const Rotation3D *rotation3D = &rotation3Ds[j];
-            const Velocity3D *velocity3D = &velocity3Ds[j];
-            Acceleration3D *acceleration3D = &acceleration3Ds[j];
-            float3 rotated_movement = float4_rotate_float3(rotation3D->value, movement);
-            float3 rotated_velocity = float4_rotate_float3(float4_inverse(rotation3D->value), velocity3D->value);
-            if (float_abs(rotated_velocity.x) < max_delta_velocity.x) acceleration3D->value.x += rotated_movement.x * movement_power_x;
-            if (float_abs(rotated_velocity.z) < max_delta_velocity.y) acceleration3D->value.z += rotated_movement.z * movement_power_z;
-            acceleration3D->value.y += rotated_movement.y;
-            break;
-        }*/
     }
 } zox_declare_system(Player3DMoveSystem)
-
-// do this until I get a player -> deviceLinks setup going
-// todo: get rotated velocity to test max
-// todo: Link directly to player characters from player

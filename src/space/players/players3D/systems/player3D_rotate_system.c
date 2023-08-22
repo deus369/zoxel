@@ -17,15 +17,8 @@ float4 mouse_delta_to_rotation(float deltaX, float deltaY) {
 
 void Player3DRotateSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
-    /*ecs_query_t *playerCharacterQuery = it->ctx;
-    ecs_iter_t playerCharacterIterator = ecs_query_iter(it->world, playerCharacterQuery);
-    ecs_query_next(&playerCharacterIterator);
-    if (playerCharacterIterator.count == 0) return;*/
     const DeviceLinks *deviceLinks = ecs_field(it, DeviceLinks, 2);
     const CharacterLink *characterLinks = ecs_field(it, CharacterLink, 3);
-    /*Alpha3D *alpha3Ds = ecs_field(&playerCharacterIterator, Alpha3D, 2);
-    const Omega3D *omega3Ds = ecs_field(&playerCharacterIterator, Omega3D, 3);
-    const DisableMovement *disableMovements = ecs_field(&playerCharacterIterator, DisableMovement, 4);*/
     for (int i = 0; i < it->count; i++) {
         const CharacterLink *characterLink = &characterLinks[i];
         if (characterLink->value == 0) continue;
@@ -68,15 +61,5 @@ void Player3DRotateSystem(ecs_iter_t *it) {
             quaternion_rotate_quaternion_p(&alpha3D->value, quaternion);
             ecs_modified(world, characterLink->value, Alpha3D);
         }
-        /*for (int j = 0; j < playerCharacterIterator.count; j++) {
-            const DisableMovement *disableMovement = &disableMovements[j];
-            // Alpha3D *alpha3D = &alpha3Ds[j];
-            if (disableMovement->value) continue;
-            const Omega3D *omega3D = &omega3Ds[j];
-            if ((euler.y > 0 && quaternion_to_euler_y(omega3D->value) < max_rotate_speed) || (euler.y < 0 && quaternion_to_euler_y(omega3D->value) > -max_rotate_speed)) {
-                Alpha3D *alpha3D = &alpha3Ds[j];
-                quaternion_rotate_quaternion_p(&alpha3D->value, quaternion);
-            }
-        }*/
     }
 } zox_declare_system(Player3DRotateSystem)

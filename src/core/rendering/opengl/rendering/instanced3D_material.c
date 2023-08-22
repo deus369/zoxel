@@ -41,7 +41,7 @@ void opengl_instance3D_begin(const float4x4 viewMatrix) {
     glBindBuffer(GL_ARRAY_BUFFER, materialInstance3D_mesh.y);            // for vertex coordinates
     glEnableVertexAttribArray(material3D.vertex_position);
     glVertexAttribPointer(material3D.vertex_position, 2, GL_FLOAT, GL_FALSE, 8, 0);
-    glUniformMatrix4fv(material3D.view_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
+    glUniformMatrix4fv(material3D.camera_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
 }
 
 //! Set variables, can this be done using a filtered / system ?

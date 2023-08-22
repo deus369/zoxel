@@ -1,7 +1,7 @@
 //! Links to locations inside a base material.
 typedef struct {
     GLint vertex_position;
-    uint view_matrix;
+    uint camera_matrix;
     uint positionX;
     uint positionY;
     uint positionZ;
@@ -15,7 +15,7 @@ typedef struct {
 
 MaterialTextured2D initialize_material2D_textured(uint material) {
     MaterialTextured2D materialTextured2D;
-    materialTextured2D.view_matrix = glGetUniformLocation(material, "camera_matrix");
+    materialTextured2D.camera_matrix = glGetUniformLocation(material, "camera_matrix");
     materialTextured2D.positionX = glGetUniformLocation(material, "positionX");
     materialTextured2D.positionY = glGetUniformLocation(material, "positionY");
     materialTextured2D.positionZ = glGetUniformLocation(material, "positionZ");

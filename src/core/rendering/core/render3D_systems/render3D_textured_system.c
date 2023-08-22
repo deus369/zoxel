@@ -39,7 +39,7 @@ void RenderElements3DSystem(ecs_iter_t *it) {
                 .vertex_position = glGetAttribLocation(materialGPULink->value, "vertex_position"),
                 .vertex_uv = glGetAttribLocation(materialGPULink->value, "vertex_uv"),
                 .vertex_color = glGetAttribLocation(materialGPULink->value, "vertex_color"),
-                .view_matrix = glGetUniformLocation(materialGPULink->value, "view_matrix"),
+                .camera_matrix = glGetUniformLocation(materialGPULink->value, "camera_matrix"),
                 .position = glGetUniformLocation(materialGPULink->value, "position"),
                 .rotation = glGetUniformLocation(materialGPULink->value, "rotation"),
                 .scale = glGetUniformLocation(materialGPULink->value, "scale"),
