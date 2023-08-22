@@ -16,7 +16,7 @@ void Player3DJumpSystem(ecs_iter_t *it) {
             ecs_entity_t device_entity = deviceLinks->value[j];
             if (ecs_has(world, device_entity, Keyboard)) {
                 const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
-                if (keyboard->space.is_pressed) is_jump_triggered = 1;
+                if (keyboard->space.pressed_this_frame) is_jump_triggered = 1;
             } else if (ecs_has(world, device_entity, Gamepad)) {
                 const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
                 if (gamepad->a.pressed_this_frame) is_jump_triggered = 1;

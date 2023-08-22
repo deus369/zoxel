@@ -7,7 +7,8 @@
 #define zox_device_mode_gamepad 2
 #define zox_device_mode_touchscreen 3
 #define zox_device_mode_max 4
-const float joystick_min_cutoff = 0.03f;
+const float joystick_min_cutoff = 0.01f;
+const float joystick_cutoff_buffer = 0.14f;
 // #define zox_device_mode_shared 4 // mix between controller and idk?
 // zoxel_component_declares
 #include "data/physical_button.c"

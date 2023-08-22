@@ -1,6 +1,5 @@
 SDL_Joystick *joystick;         // todo: connect this to gamepad
 int joysticks_count;
-float joystick_buffer = 0.14f;
 
 unsigned char is_steamdeck_gamepad(SDL_Joystick *joystick) {
     const char* joystickName = SDL_JoystickName(joystick);
@@ -13,7 +12,8 @@ unsigned char is_xbox_gamepad(SDL_Joystick *joystick) {
 }
 
 void initialize_sdl_gamepads() {
-    if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0)fprintf(stderr, "  ! failed SDL joystick subsystem: %s\n", SDL_GetError());
+    // SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
+    if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) fprintf(stderr, "  ! failed SDL joystick subsystem: %s\n", SDL_GetError());
     joysticks_count = SDL_NumJoysticks();
     #ifdef zoxel_debug_input
         zoxel_log(" > joysticks connected [%d]\n", joysticks_count);
@@ -44,10 +44,56 @@ void set_gamepad_button(PhysicalButton *key, SDL_Joystick *joystick, int index) 
     key->is_pressed = is_pressed;
 }
 
+const float joystick_deadzone_time = 6.0f;
+unsigned char joystick_deadzones[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+double joystick_deadzone_times[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+float joystick_deadzones_values[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+float joystick_deadzones_new_values[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
 float get_gamepad_axis(SDL_Joystick *joystick, int index) {
+    if (index < 0 || index > 10) return 0;
     float axis_value = SDL_JoystickGetAxis(joystick, index) / 32768.0f;
     if (axis_value >= -joystick_min_cutoff && axis_value <= joystick_min_cutoff) axis_value = 0.0f;
-    return -axis_value; // invert as sdl inverts it first?
+    if (axis_value < -1.0f || axis_value > 1.0f) axis_value = 0;
+    axis_value = -axis_value;
+    // checks for deadzones
+    if (joystick_deadzones[index] == 0) {
+        // can start deadzoning?
+        if (axis_value == joystick_deadzones_new_values[index]) {
+            if (axis_value != joystick_deadzones_values[index] && float_abs(axis_value) < 0.4f) { // 
+                joystick_deadzones[index] = 1;
+                joystick_deadzone_times[index] = zox_current_time;
+                // zoxel_log(" > joystick probing possible deadzone [%i::%f]\n", index, axis_value);
+            }
+        }
+        joystick_deadzones_new_values[index] = axis_value;
+    } else {
+        // if deadzonining and value is still the same for x seconds, set new deadzon
+        if (joystick_deadzones_new_values[index] == axis_value) {
+            // zoxel_log(" > joystick probing deadzone [%i] time passed: %f\n", index, (zox_current_time - joystick_deadzone_times[index]));
+            if (zox_current_time - joystick_deadzone_times[index] >= joystick_deadzone_time) {
+                joystick_deadzones[index] = 0;
+                joystick_deadzones_values[index] = axis_value;
+                zoxel_log(" > joystick deadzone set [%i::%f]\n", index, axis_value);
+            }
+        } else {
+            // cancel it
+            joystick_deadzones[index] = 0;
+            joystick_deadzones_new_values[index] = axis_value;
+            // zoxel_log(" > joystick reset deadzone [%i] set: %f\n", index, axis_value);
+        }
+    }
+    axis_value -= joystick_deadzones_values[index];
+    /*if (joystick_deadzone_times[index] - zox_current_time >= joystick_deadzone_time) {
+        joystick_deadzone_times[index] = zox_current_time;
+        joystick_deadzones[index] = axis_value;
+        zoxel_log("new deadzone set: %i\n", axis_value);
+    }
+    // initialize deadzone checking
+    else if (axis_value != joystick_deadzones_previous[index]) {
+        joystick_deadzone_times[index] = zox_current_time;
+    }*/
+    return axis_value; // invert as sdl inverts it first?
 }
 
 void set_gamepad_axis(PhysicalStick *stick, SDL_Joystick *joystick, int index) {
@@ -99,7 +145,7 @@ void debug_button(const PhysicalButton *button, const char *button_name) {
 }
 
 void debug_stick(const PhysicalStick *physical_stick, const char *button_name) {
-    if (float_abs(physical_stick->value.x) > joystick_buffer && float_abs(physical_stick->value.y) > joystick_buffer) {
+    if (float_abs(physical_stick->value.x) > joystick_cutoff_buffer && float_abs(physical_stick->value.y) > joystick_cutoff_buffer) {
         zoxel_log(" > [%s] stick pushed [%fx%f]\n", button_name, physical_stick->value.x, physical_stick->value.y);
     }
 }

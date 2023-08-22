@@ -17,7 +17,7 @@ void DeviceModeResponseSystem(ecs_iter_t *it) {
         const DeviceMode *deviceMode = &deviceModes[i];
         const DeviceModeDirty *deviceModeDirty = &deviceModeDirtys[i];
         if (deviceModeDirty->value != 0 && deviceModeDirty->value != deviceMode->value) {
-            // zoxel_log("     > devicemode response [%i -> %i]\n", deviceModeDirty->value, deviceMode->value);
+            zoxel_log("     > devicemode response [%i -> %i]\n", deviceModeDirty->value, deviceMode->value);
             if (deviceModeDirty->value == zox_device_mode_gamepad) {
                 // select main menu ui - also set player selected ui target
                 ecs_entity_t first_ui = get_first_ui(it->world);

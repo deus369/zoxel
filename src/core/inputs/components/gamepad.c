@@ -51,5 +51,5 @@ unsigned char gamepad_is_any_input(const Gamepad *gamepad) {
         float_abs(gamepad->left_stick.value.x) >= joystick_min_cutoff ||
         float_abs(gamepad->left_stick.value.y) >= joystick_min_cutoff ||
         float_abs(gamepad->right_stick.value.x) >= joystick_min_cutoff ||
-        float_abs(gamepad->right_stick.value.y) >= joystick_min_cutoff; 
+        float_abs(gamepad->right_stick.value.y) >= joystick_min_cutoff;
 }
