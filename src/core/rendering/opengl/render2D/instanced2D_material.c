@@ -57,7 +57,7 @@ void render_instance2D(float2 position, float angle, float scale, float brightne
     glUniform1f(material2D.scale, scale);
     glUniform1f(material2D.angle, angle);
     glUniform1f(material2D.brightness, brightness);
-    opengl_draw_triangles(6);
+    opengl_render(6);
 }
 
 void shader2D_instance_end() {

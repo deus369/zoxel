@@ -55,19 +55,19 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
             opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes_textured3D);
         }
         opengl_set_mesh_indicies(meshGPULink->value.x);
-        opengl_enable_vertex_buffer(meshGPULink->value.y);
-        opengl_enable_uv_buffer(uvsGPULink->value);
-        opengl_enable_color_buffer(colorsGPULink->value);
+        opengl_enable_vertex_buffer(attributes_textured3D.vertex_position, meshGPULink->value.y);
+        opengl_enable_uv_buffer(attributes_textured3D.vertex_uv, uvsGPULink->value);
+        opengl_enable_color_buffer(attributes_textured3D.vertex_color, colorsGPULink->value);
         glUniform3f(attributes_textured3D.position, position3D->value.x, position3D->value.y, position3D->value.z);
         #ifndef zox_disable_render_terrain_chunks
-            opengl_draw_triangles(meshIndicies2->length);
+            opengl_render(meshIndicies2->length);
             /*if (check_opengl_error("[render_terrain]")) {
                 zoxel_log("     -> i (%i), rendered (%i), entity [%lu], length [%i], gpu links [%i] x [%i]\n", i, rendered_count, it->entities[i], meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y);
                 return;
             }*/
         #endif
         #ifdef zoxel_render3D_uvs_system_overdebug
-            if (check_opengl_error("[render3D_uvs_system opengl_draw_triangles Error]")) {
+            if (check_opengl_error("[render3D_uvs_system opengl_render Error]")) {
                 zoxel_log(" !!! indicies length is: %i\n", meshIndicies2->length);
                 zoxel_log(" !!! GPU Memory Usage [%d MB / %d MB]\n", memory_used / 1024, memory_total / 1024);
             }
@@ -111,7 +111,7 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
             opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, &attributes);
             opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes);
             opengl_set_material3D_uvs_position(position3D->value, &attributes);
-            opengl_draw_triangles(meshIndicies2->length);
+            opengl_render(meshIndicies2->length);
         #endif*/
 /*#ifdef voxels_terrain_multi_material
     const MaterialGPULink *materialGPULinks = ecs_field(it, MaterialGPULink, 9);

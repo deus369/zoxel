@@ -66,6 +66,40 @@ if (!(chunk_octree->nodes[i].nodes == NULL && chunk_octree->nodes[i].value == 0)
     build_octree_chunk_colors_d(root_node, chunk_octree, &chunk_octree->nodes[i], neighbors, neighbor_lods, colorRGBs, indicies, vertices, color_rgbs, max_depth, depth, int3_add(octree_position, octree_positions[i]), i, total_mesh_offset);\
 }
 
+// test function builds one cube
+
+void test_build_octree_chunk_colors_d(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[], const unsigned char *neighbor_lods, const ColorRGBs *colorRGBs, int_array_d *indicies, float3_array_d* vertices, color_rgb_array_d* color_rgbs, const unsigned char max_depth, unsigned char depth, int3 octree_position, const unsigned char node_index, float3 total_mesh_offset) {
+    float voxel_scale = octree_scales3[depth] * model_scale;
+    float3 vertex_position_offset = float3_from_int3(octree_position);
+    float3_multiply_float_p(&vertex_position_offset, voxel_scale);
+    float3_add_float3_p(&vertex_position_offset, total_mesh_offset);
+    byte3 node_position = octree_positions_b[node_index];
+    unsigned char voxel = chunk_octree->value;
+    color_rgb voxel_color = colorRGBs->value[voxel - 1];
+    zoxel_octree_colors_build_face_d(left, 0)
+    zoxel_octree_colors_build_face_d(right, 1)
+    zoxel_octree_colors_build_face_d(down, 1)
+    zoxel_octree_colors_build_face_d(up, 0)
+    zoxel_octree_colors_build_face_d(back, 0)
+    zoxel_octree_colors_build_face_d(front, 1)
+}
+
+void test_build_chunk_octree_mesh_colors(const ChunkOctree *chunk_octree, const ColorRGBs *colorRGBs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColorRGBs *meshColorRGBs, unsigned char chunk_depth, const ChunkOctree *neighbors[], unsigned char *neighbor_lods, float3 total_mesh_offset) {
+    int_array_d* indicies = create_int_array_d();
+    float3_array_d* vertices = create_float3_array_d();
+    color_rgb_array_d* color_rgbs = create_color_rgb_array_d();
+    test_build_octree_chunk_colors_d(chunk_octree, NULL, chunk_octree, neighbors, neighbor_lods, colorRGBs, indicies, vertices, color_rgbs, chunk_depth, 0, int3_zero, 0, total_mesh_offset);
+    if (meshIndicies->length != 0) free(meshIndicies->value);
+    if (meshVertices->length != 0) free(meshVertices->value);
+    if (meshColorRGBs->length != 0) free(meshColorRGBs->value);
+    meshIndicies->length = indicies->size;
+    meshVertices->length = vertices->size;
+    meshColorRGBs->length = color_rgbs->size;
+    meshIndicies->value = finalize_int_array_d(indicies);
+    meshVertices->value = finalize_float3_array_d(vertices);
+    meshColorRGBs->value = finalize_color_rgb_array_d(color_rgbs);
+}
+
 void build_octree_chunk_colors_d(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[], const unsigned char *neighbor_lods, const ColorRGBs *colorRGBs, int_array_d *indicies, float3_array_d* vertices, color_rgb_array_d* color_rgbs, const unsigned char max_depth, unsigned char depth, int3 octree_position, const unsigned char node_index, float3 total_mesh_offset) {
     if (depth >= max_depth || chunk_octree->nodes == NULL) {
         if (chunk_octree->value != 0) {
@@ -179,7 +213,11 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         float3_multiply_float_p(&total_mesh_offset, -1); // * 4.0f);
         unsigned char chunk_depth = colors_get_max_depth_from_division(renderLod->value);
         tri_count -= meshIndicies2->length / 3;
-        build_chunk_octree_mesh_colors(chunkOctree, colorRGBs2, meshIndicies2, meshVertices2, meshColorRGBs2, chunk_depth, neighbors, neighbor_lods, total_mesh_offset);
+        #ifdef zox_lowres_render_characters
+            test_build_chunk_octree_mesh_colors(chunkOctree, colorRGBs2, meshIndicies2, meshVertices2, meshColorRGBs2, chunk_depth, neighbors, neighbor_lods, total_mesh_offset);
+        #else
+            build_chunk_octree_mesh_colors(chunkOctree, colorRGBs2, meshIndicies2, meshVertices2, meshColorRGBs2, chunk_depth, neighbors, neighbor_lods, total_mesh_offset);
+        #endif
         tri_count += meshIndicies2->length / 3;
         chunkDirty->value = 0;
         meshDirty->value = 1;

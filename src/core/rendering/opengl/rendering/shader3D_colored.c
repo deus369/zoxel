@@ -51,23 +51,3 @@ void opengl_upload_mesh_colors(uint2 mesh, uint color_buffer, const int *indicie
         check_opengl_error("opengl_upload_mesh_colors");
     #endif
 }
-
-void opengl_set_colored3D_buffers(uint vertex_buffer, uint color_buffer) {
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glEnableVertexAttribArray(attributes_colored3D.vertex_position);
-    glVertexAttribPointer(attributes_colored3D.vertex_position, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
-    glEnableVertexAttribArray(attributes_colored3D.vertex_color);
-    glVertexAttribPointer(attributes_colored3D.vertex_color, 3, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-void render_character3D(int render_length, uint2 mesh, uint color_buffer, float3 position, float4 rotation) {
-    opengl_set_mesh_indicies(mesh.x);
-    opengl_set_colored3D_buffers(mesh.y, color_buffer);
-    glUniform3f(attributes_colored3D.position, position.x, position.y, position.z);
-    glUniform4f(attributes_colored3D.rotation, rotation.x, rotation.y, rotation.z, rotation.w);
-    #ifndef zox_disable_render_characters
-        opengl_draw_triangles(render_length);
-    #endif
-}

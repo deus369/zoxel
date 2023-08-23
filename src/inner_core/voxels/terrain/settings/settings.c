@@ -26,7 +26,7 @@ const float flat_height_level = -0.56f; // 0.2f;
 
 void set_terrain_render_distance() {
     if (cpu_tier == 3) {
-        terrain_spawn_distance = 20;
+        terrain_spawn_distance = 18;
         terrain_vertical = 3;
         fog_density *= 0.5f;    // .3 for now to cover up transitions
         // set_max_octree_length(5);
@@ -44,19 +44,19 @@ void set_terrain_render_distance() {
     }
     // preset settings
     #ifdef zox_terrain_preset_tiny
-        terrain_spawn_distance = 1;
+        terrain_spawn_distance = 2;
         terrain_vertical = 1;
     #endif
     #ifdef zox_terrain_preset_small
-        terrain_spawn_distance = 3;
+        terrain_spawn_distance = 4;
         terrain_vertical = 1;
     #endif
     #ifdef zox_terrain_preset_medium
-        terrain_spawn_distance = 5;
+        terrain_spawn_distance = 6;
         terrain_vertical = 1;
     #endif
     #ifdef zox_terrain_preset_large
-        terrain_spawn_distance = 7;
+        terrain_spawn_distance = 8;
         terrain_vertical = 2;
     #endif
     #ifdef zox_terrain_preset_enormous

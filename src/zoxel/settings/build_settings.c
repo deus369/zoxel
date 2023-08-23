@@ -5,7 +5,7 @@
 // temp
 // #define zox_terrain_preset_tiny
 // #define zox_terrain_preset_small
-// #define zox_terrain_preset_medium // pc can handle this only
+#define zox_terrain_preset_medium // pc can handle this only
 // #define zox_terrain_preset_large
 // #define zox_terrain_preset_enormous
 
@@ -22,8 +22,13 @@
 // #define zox_time_create_terrain
 // #define zox_disable_render_ui
 // #define zox_disable_render_terrain_chunks
-// #define zox_disable_render_characters
+
 // #define zox_disable_render_ui_3D
+// #define zox_errorcheck_render_ui_3D
+
+// #define zox_disable_render_characters
+// #define zox_errorcheck_render_characters_3D
+// #define zox_lowres_render_characters
 
 // #define zox_check_render_camera_errors
 
@@ -119,7 +124,7 @@
 // #define zoxel_test_networking
 // #define zoxel_test_brain         // testing a brain
 // #define zoxel_test_character2Ds
-// #define zoxel_test_cubes             // Failing atm, gl error at opengl_draw_triangles
+// #define zoxel_test_cubes             // Failing atm, gl error at opengl_render
 // #define zoxel_test_cubes_textured    // wip
 // #define zoxel_test_uis
 // -- disables --

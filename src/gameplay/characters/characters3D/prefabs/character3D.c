@@ -58,6 +58,5 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file
         set_vox_from_vox_file(world, e, vox);
     #endif
     spawn_element_world(world, e);
-    main_character3D = e;
     return e;
 }

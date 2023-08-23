@@ -51,7 +51,7 @@ void render_entity_3D(float3 position, float4 rotation, float scale1D, float bri
     glUniform1f(material3D.scale, scale1D);
     glUniform1f(material3D.brightness, brightness);
     // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
-    opengl_draw_triangles(6);
+    opengl_render(6);
 }
 
 //! Set the mesh on the gpu by uploading indicies and vert buffers.

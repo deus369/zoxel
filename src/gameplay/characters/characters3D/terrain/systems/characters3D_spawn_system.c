@@ -2,6 +2,7 @@
 #ifdef zoxel_log_characters_count
     int characters_count = 0;
 #endif
+unsigned char has_spawned_main_character = 0;
 
 void Characters3DSpawnSystem(ecs_iter_t *it) {
     const ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 2);
@@ -60,6 +61,10 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
                 #ifdef zoxel_log_characters_count
                     characters_count++;
                 #endif
+                if (!has_spawned_main_character) {
+                    has_spawned_main_character = 1;
+                    main_character3D = e;
+                }
             #endif
         }
         if (entityLinks2->length != 0) free(entityLinks2->value);

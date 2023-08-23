@@ -42,19 +42,22 @@ void RenderElements3DSystem(ecs_iter_t *it) {
             // scale1D->value, brightness->value
         }
         opengl_set_mesh_indicies(meshGPULink->value.x);
-        opengl_enable_vertex_buffer(meshGPULink->value.y);
-        opengl_enable_uv_buffer(uvsGPULink->value);
-        opengl_enable_color_buffer(colorsGPULink->value);
+        opengl_enable_vertex_buffer(attributes_textured3D.vertex_position, meshGPULink->value.y);
+        opengl_enable_uv_buffer(attributes_textured3D.vertex_uv, uvsGPULink->value);
+        opengl_enable_color_buffer(attributes_textured3D.vertex_color, colorsGPULink->value);
         opengl_bind_texture(textureGPULink->value);
         glUniform3f(attributes_textured3D.position, position3D->value.x, position3D->value.y, position3D->value.z);
         glUniform4f(attributes_textured3D.rotation, rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
         #ifndef zox_disable_render_ui_3D
             // zoxel_log("     -> i (%i), rendering (%i), entity [%lu], length [%i], gpu links (%i) [%i] x [%i]\n", i, rendered_count, it->entities[i], meshIndicies2->length, textured3D_material, meshGPULink->value.x, meshGPULink->value.y);
-            opengl_draw_triangles(meshIndicies2->length);
-            /*if (check_opengl_error("[render_elements]")) {
-                zoxel_log("     -> i (%i), rendered (%i), entity [%lu], length [%i], gpu links (%i) [%i] x [%i]\n", i, rendered_count, it->entities[i], meshIndicies2->length, textured3D_material, meshGPULink->value.x, meshGPULink->value.y);
-                return;
-            }*/
+            opengl_render(meshIndicies2->length);
+            // glDrawElements(GL_TRIANGLES, meshIndicies2->length, GL_UNSIGNED_INT, meshIndicies2->value);
+            #ifdef zox_errorcheck_render_ui_3D
+                if (check_opengl_error("[render_elements]")) {
+                    // zoxel_log("     -> i (%i), rendered (%i), entity [%lu], length [%i], gpu links (%i) [%i] x [%i]\n", i, rendered_count, it->entities[i], meshIndicies2->length, textured3D_material, meshGPULink->value.x, meshGPULink->value.y);
+                    return;
+                }
+            #endif
         #endif
         #ifdef zox_time_render3D_textured_system
             did_do_timing()
@@ -71,7 +74,9 @@ void RenderElements3DSystem(ecs_iter_t *it) {
         end_timing("    - render3D_textured_system")
         // zoxel_log("         > count [%i]\n", it->count);
     #endif
-    // if (rendered_count > 0) zoxel_log(" > rendered elements [%i]\n", rendered_count);
+    #ifdef zox_errorcheck_render_ui_3D
+        if (rendered_count > 0) zoxel_log(" > rendered elements [%i]\n", rendered_count);
+    #endif
 } zox_declare_system(RenderElements3DSystem)
 
 // const Scale1D *scale1Ds = ecs_field(it, Scale1D, 3);

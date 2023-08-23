@@ -62,7 +62,7 @@ void render_entity_material2D(const float4x4 viewMatrix, uint material, uint tex
     glUniform1f(materialTextured2D.scale, scale);
     glUniform1f(materialTextured2D.brightness, brightness);
     // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
-    opengl_draw_triangles(6);
+    opengl_render(6);
     glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_BLEND);
     glUseProgram(0);

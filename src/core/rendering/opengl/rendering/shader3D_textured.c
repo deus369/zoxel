@@ -80,26 +80,25 @@ void opengl_upload_shader3D_textured(uint2 mesh_buffer, uint uv_buffer, uint col
     #endif
 }
 
-void opengl_enable_vertex_buffer(uint vertex_buffer) {
+void opengl_enable_vertex_buffer(uint shader_index, uint vertex_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glEnableVertexAttribArray(attributes_textured3D.vertex_position);
-    glVertexAttribPointer(attributes_textured3D.vertex_position, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    // glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glEnableVertexAttribArray(shader_index);
+    glVertexAttribPointer(shader_index, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
-void opengl_enable_uv_buffer(uint uv_buffer) {
+void opengl_enable_uv_buffer(uint shader_index, uint uv_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
-    glEnableVertexAttribArray(attributes_textured3D.vertex_uv);
-    glVertexAttribPointer(attributes_textured3D.vertex_uv, 2, GL_FLOAT, GL_FALSE,  0, 0);
+    glEnableVertexAttribArray(shader_index);
+    glVertexAttribPointer(shader_index, 2, GL_FLOAT, GL_FALSE,  0, 0);
 }
 
-void opengl_enable_color_buffer(uint color_buffer) {
+void opengl_enable_color_buffer(uint shader_index, uint color_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
-    glEnableVertexAttribArray(attributes_textured3D.vertex_color);
-    glVertexAttribPointer(attributes_textured3D.vertex_color, 3, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
+    glEnableVertexAttribArray(shader_index);
+    glVertexAttribPointer(shader_index, 3, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
 }
 
-void opengl_set_buffer_attributes(uint vertex_buffer, uint uv_buffer, uint color_buffer) {
+/*void opengl_set_buffer_attributes(uint vertex_buffer, uint uv_buffer, uint color_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glEnableVertexAttribArray(attributes_textured3D.vertex_position);
     glVertexAttribPointer(attributes_textured3D.vertex_position, 3, GL_FLOAT, GL_FALSE, 0, 0);
@@ -110,4 +109,4 @@ void opengl_set_buffer_attributes(uint vertex_buffer, uint uv_buffer, uint color
     glEnableVertexAttribArray(attributes_textured3D.vertex_color);
     glVertexAttribPointer(attributes_textured3D.vertex_color, 3, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
+}*/

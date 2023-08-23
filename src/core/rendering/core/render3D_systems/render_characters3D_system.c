@@ -1,5 +1,5 @@
 // #define zox_debug_render3D_colored
-#define max_character_mesh_indicies 1000000
+// #define max_character_mesh_indicies 1000000
 
 void RenderCharacters3DSystem(ecs_iter_t *it) {
     if (attributes_colored3D.vertex_position < 0 || attributes_colored3D.vertex_color < 0) return;
@@ -20,16 +20,6 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
             if (meshIndicies2->length == 0) zero_meshes++;
         #endif
         if (meshIndicies2->length == 0) continue;
-        // testing
-        /*if (meshIndicies2->length < 0) {
-            zoxel_log(" > character mesh is negative [%lu]: [%i]\n", it->entities[i], meshIndicies2->length);
-            continue;
-        }
-        if (meshIndicies2->length > max_character_mesh_indicies) {
-            zoxel_log(" > character mesh too large [%lu]: [%i]\n", it->entities[i], meshIndicies2->length);
-            continue;
-        }*/
-        // if (ecs_get(it->world, it->entities[i], MeshDirty)->value) continue;
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
         if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) continue;
         const ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
@@ -44,11 +34,20 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
             glUniform4f(attributes_colored3D.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
             glUniform1f(attributes_colored3D.brightness, 1.0f);
         }
-        render_character3D(meshIndicies2->length, meshGPULink->value, colorsGPULink->value, position->value, rotation->value);
-        /*if (check_opengl_error("[RenderCharacters3DSystem 1]") != 0) {
-            zoxel_log(" > rendered character [%lu]: [%i] - [%ix%i:%i]\n", it->entities[i], meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value);
-            // break;
-        }*/
+        opengl_set_mesh_indicies(meshGPULink->value.x);
+        opengl_enable_vertex_buffer(attributes_colored3D.vertex_position, meshGPULink->value.y);
+        opengl_enable_color_buffer(attributes_colored3D.vertex_color, colorsGPULink->value);
+        glUniform3f(attributes_colored3D.position, position->value.x, position->value.y, position->value.z);
+        glUniform4f(attributes_colored3D.rotation, rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
+        #ifndef zox_disable_render_characters
+            opengl_render(meshIndicies2->length);
+            #ifdef zox_errorcheck_render_characters_3D
+                if (check_opengl_error("[render_characters]") != 0) {
+                    // zoxel_log(" > rendered character [%lu]: [%i] - [%ix%i:%i]\n", it->entities[i], meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value);
+                    break;
+                }
+            #endif
+        #endif
         #ifdef zox_debug_render3D_colored
             meshes++;
             tris_rendered += meshIndicies2->length / 3;

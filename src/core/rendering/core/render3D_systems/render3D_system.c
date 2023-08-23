@@ -20,7 +20,7 @@ void Render3DSystem(ecs_iter_t *it) {
             set_basic_vert_layout(materialGPULink->value);
             if (opengl_set_material3D_properties(materialGPULink->value, position->value, rotation->value, scale1D->value, brightness->value) == -1) return;
             opengl_set_camera_view_matrix(materialGPULink->value, render_camera_matrix);
-            opengl_draw_triangles(meshIndicies2->length);
+            opengl_render(meshIndicies2->length);
         }
     }
     opengl_unset_mesh();
