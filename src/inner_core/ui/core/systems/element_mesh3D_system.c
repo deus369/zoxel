@@ -1,4 +1,4 @@
-void ElementMesh3DSystem(ecs_iter_t *it) {
+void Element3DMeshSystem(ecs_iter_t *it) {
     const CanvasLink *canvasLinks = ecs_field(it, CanvasLink, 3);
     InitializeEntityMesh *initializeEntityMeshs = ecs_field(it, InitializeEntityMesh, 4);
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 5);
@@ -31,7 +31,7 @@ void ElementMesh3DSystem(ecs_iter_t *it) {
         generateTexture->value = 1;
         // zoxel_log(" o> mesh_3D spawned [%lu]\n", it->entities[i]);
     }
-} zox_declare_system(ElementMesh3DSystem)
+} zox_declare_system(Element3DMeshSystem)
 
 // const PixelSize *pixelSizes = ecs_field(it, PixelSize, 2);
 // const PixelSize *canvasSize = ecs_get(world, canvasLink->value, PixelSize);

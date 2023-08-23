@@ -20,10 +20,10 @@ void MeshUvsUpdateSystem(ecs_iter_t *it) {
         if (meshDirty->value != 1) continue;
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         const MeshVertices *meshVertices2 = &meshVertices[i];
-        const MeshGPULink *meshGPULink = &meshGPULinks[i];
         const MeshUVs *meshUVs2 = &meshUVs[i];
-        const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
         const MeshColorRGBs *meshColorRGBs2 = &meshColorRGBs[i];
+        const MeshGPULink *meshGPULink = &meshGPULinks[i];
+        const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
         const ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
         opengl_upload_shader3D_textured(meshGPULink->value, uvsGPULink->value, colorsGPULink->value, meshIndicies2->value, meshIndicies2->length, meshVertices2->value, meshVertices2->length, meshUVs2->value, meshColorRGBs2->value);
         meshDirty->value = 0;
