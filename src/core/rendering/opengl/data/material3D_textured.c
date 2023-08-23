@@ -6,7 +6,7 @@ typedef struct {
     GLuint position;
     GLuint rotation;
     GLuint scale;
-    GLuint brightness;
     GLuint texture;
     GLuint fog_data;
+    GLuint brightness;
 } Material3DTextured;

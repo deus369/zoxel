@@ -34,7 +34,7 @@ zox_memory_component(MeshColorRGBs, color_rgb)
 #include "render3D_systems/render3D_system.c"
 #include "render3D_systems/render3D_instance_system.c"
 #include "render3D_systems/render_characters3D_system.c"
-#include "render3D_systems/render3D_textured_system.c"
+#include "render3D_systems/elements3D_render_system.c"
 #include "render2D_systems/element_render_system.c" // move to ui core
 // zoxel_function_includes
 #include "fun/render_loop.c"
@@ -66,7 +66,7 @@ zox_define_memory_component(MeshColorRGBs)
     zox_system_1(Render3DSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] !MeshColorRGBs)
     zox_system_1(RenderCharacters3DSystem, render3D_update_pipeline, [none] MeshColorRGBs, [in] Position3D, [in] Rotation3D, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [none] !UvsGPULink)   // , [in] Scale1D, [in] Brightness
     zox_system_1(InstanceRender3DSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink)
-    zox_system_1(RenderElements3DSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] MaterialGPULink, [in] TextureGPULink, [none] SingleMaterial)
+    zox_system_1(RenderElements3DSystem, render3D_update_pipeline, [none] SingleMaterial, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] TextureGPULink)
     zox_system_1(MeshGPUDisposeSystem, 0, [in] MeshGPULink)
     zox_system_1(MeshColorsGPUDisposeSystem, 0,[in] ColorsGPULink)
     zox_system_1(MeshUvsGPUDisposeSystem, 0,[in] UvsGPULink)

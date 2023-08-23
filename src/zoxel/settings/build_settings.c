@@ -5,6 +5,7 @@
 // temp
 // #define zox_terrain_preset_tiny
 // #define zox_terrain_preset_small
+// #define zox_terrain_preset_medium // pc can handle this only
 // #define zox_terrain_preset_large
 // #define zox_terrain_preset_enormous
 

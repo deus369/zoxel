@@ -12,17 +12,16 @@ void render_pre_loop() {
 
 //! This renders all render systems per camera, by externally setting the camera matrix this will be uploaded to all materials.
 void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, int2 size) {
-    check_opengl_error("[pre render_camera]");
+    #ifdef zox_check_render_camera_errors
+        check_opengl_error("[pre render_camera]");
+    #endif
     render_camera_matrix = camera_matrix;
     glViewport(position.x, position.y, size.x, size.y);
     if (render3D_update_pipeline == 0) {
-        // opengl_instance3D_begin(render_camera_matrix);
-        // ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
-        // opengl_disable_opengl_program();
-        ecs_run(world, ecs_id(Render3DSystem), 0, NULL);    // skybox
         ecs_run(world, render_terrain_chunks_system_id, 0, NULL);
+        ecs_run(world, ecs_id(RenderElements3DSystem), 0, NULL);
+        ecs_run(world, ecs_id(Render3DSystem), 0, NULL);    // skybox
         ecs_run(world, ecs_id(RenderCharacters3DSystem), 0, NULL);
-        ecs_run(world, ecs_id(RenderElements3DSystem), 0, NULL);    // statbars
         ecs_run(world, line3D_render_system_id, 0, NULL);
         ecs_run(world, cube_lines_render_system_id, 0, NULL);
     }
@@ -30,11 +29,6 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
         // glDisable(GL_DEPTH_TEST);
         glClear(GL_DEPTH_BUFFER_BIT);
         render_ui_in_layers(world);
-        /*shader2D_instance_begin(render_camera_matrix);
-        ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
-        shader2D_instance_end();
-        ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);*/
-        // ecs_run(world, ecs_id(RenderMaterial2DSystem2), 0, NULL);
     }
     // ecs_run(world, ecs_id(Line2DRenderSystem), 0, NULL);
     // check_opengl_error("render_camera");
@@ -60,3 +54,11 @@ void render_loop() {
         end_timing_absolute("    - render_loop")
     #endif
 }
+        // opengl_instance3D_begin(render_camera_matrix);
+        // ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
+        // opengl_disable_opengl_program();
+        /*shader2D_instance_begin(render_camera_matrix);
+        ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
+        shader2D_instance_end();
+        ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);*/
+        // ecs_run(world, ecs_id(RenderMaterial2DSystem2), 0, NULL);

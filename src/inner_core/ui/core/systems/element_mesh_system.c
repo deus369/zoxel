@@ -23,7 +23,6 @@ void ElementMeshSystem(ecs_iter_t *it) {
         MeshDirty *meshDirty = &meshDirtys[i];
         GenerateTexture *generateTexture = &generateTextures[i];
         MeshVertices2D *meshVertices2D = &meshVertices2Ds[i];
-        UvsGPULink *uvsGPULink = &uvsGPULinks[i];
         const PixelSize *canvasSize = ecs_get(world, canvasLink->value, PixelSize);
         // rescale verts if scale changes, todo: make this in a new system?
         float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
@@ -31,15 +30,16 @@ void ElementMeshSystem(ecs_iter_t *it) {
         scale_mesh2D_vertices_p(meshVertices2D, scale2D);
         // spawn gpu bufers
         if (!headless) {
-            MeshGPULink *meshGPULink = &meshGPULinks[i];
             MaterialInstancedGPULink *materialInstancedGPULink = &materialInstancedGPULinks[i];
+            MeshGPULink *meshGPULink = &meshGPULinks[i];
+            UvsGPULink *uvsGPULink = &uvsGPULinks[i];
             TextureGPULink *textureGPULink = &textureGPULinks[i];
             materialInstancedGPULink->value = material2D_textured;
-            // materialGPULink->value = spawn_gpu_material_program(shader2D_textured);
             meshGPULink->value = spawn_gpu_mesh_buffers();
             textureGPULink->value = spawn_gpu_texture_buffers();
             uvsGPULink->value = spawn_gpu_generic_buffer();
-            // zoxel_log(" ui spawned uvsGPULink->value: %i\n", uvsGPULink->value);
+            // materialGPULink->value = spawn_gpu_material_program(shader2D_textured);
+            // zoxel_log(" > entity [%lu] ui spawned [%i, %i, %i]\n", it->entities[i], meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value);
         }
         initializeEntityMesh->value = 0;
         meshDirty->value = 1;

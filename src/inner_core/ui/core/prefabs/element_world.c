@@ -4,6 +4,7 @@ ecs_entity_t prefab_element_world;
 ecs_entity_t spawn_prefab_element_world(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
+    zox_add_tag(e, Element3D)
     zox_add_tag(e, ElementBillboard)
     add_ui_components_world(world, e);
     zox_add_tag(e, FrameTexture)

@@ -12,6 +12,7 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &memory_total);
     #endif
     ecs_world_t *world = it->world;
+    int rendered_count = 0;
     const Position3D *positions = ecs_field(it, Position3D, 1);
     const Rotation3D *rotations = ecs_field(it, Rotation3D, 2);
     const Scale1D *scale1Ds = ecs_field(it, Scale1D, 3);
@@ -50,16 +51,28 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
             opengl_set_material(materialGPULink->value);
             opengl_shader3D_textured_set_camera_view_matrix(render_camera_matrix, &attributes_textured3D);
             glUniform4f(attributes_textured3D.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
-            opengl_set_texture(textureGPULink->value, 0);
+            opengl_bind_texture(textureGPULink->value);
             opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes_textured3D);
         }
-        render_textured3D(meshGPULink->value, uvsGPULink->value, colorsGPULink->value, meshIndicies2->length, position3D->value);
+        opengl_set_mesh_indicies(meshGPULink->value.x);
+        opengl_enable_vertex_buffer(meshGPULink->value.y);
+        opengl_enable_uv_buffer(uvsGPULink->value);
+        opengl_enable_color_buffer(colorsGPULink->value);
+        glUniform3f(attributes_textured3D.position, position3D->value.x, position3D->value.y, position3D->value.z);
+        #ifndef zox_disable_render_terrain_chunks
+            opengl_draw_triangles(meshIndicies2->length);
+            /*if (check_opengl_error("[render_terrain]")) {
+                zoxel_log("     -> i (%i), rendered (%i), entity [%lu], length [%i], gpu links [%i] x [%i]\n", i, rendered_count, it->entities[i], meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y);
+                return;
+            }*/
+        #endif
         #ifdef zoxel_render3D_uvs_system_overdebug
             if (check_opengl_error("[render3D_uvs_system opengl_draw_triangles Error]")) {
                 zoxel_log(" !!! indicies length is: %i\n", meshIndicies2->length);
                 zoxel_log(" !!! GPU Memory Usage [%d MB / %d MB]\n", memory_used / 1024, memory_total / 1024);
             }
         #endif
+        rendered_count++;
     }
     if (has_set_material) {
         opengl_unset_mesh();
@@ -72,6 +85,7 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
     #ifdef zoxel_time_render_3d_uvs
         end_timing("TerrainChunksRenderSystem")
     #endif
+    // if (rendered_count > 0) zoxel_log(" > rendered chunks [%i]\n", rendered_count);
 } zox_declare_system(TerrainChunksRenderSystem)
 
         /*#ifdef voxels_terrain_multi_material
@@ -91,7 +105,7 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
                 glGetUniformLocation(materialGPULink->value, "tex")
             };
             opengl_set_material(materialGPULink->value);
-            opengl_set_texture_only(textureGPULink->value);
+            opengl_bind_texture(textureGPULink->value);
             opengl_set_mesh_indicies(meshGPULink->value.x);
             opengl_shader3D_textured_set_camera_view_matrix(render_camera_matrix, &attributes);
             opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, &attributes);

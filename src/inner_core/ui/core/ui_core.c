@@ -6,6 +6,7 @@
 ecs_entity_t main_canvas;
 // zoxel_declare_components
 zox_declare_tag(Element)
+zox_declare_tag(Element3D)
 zox_declare_tag(Canvas)
 zox_declare_tag(ElementRaycaster)
 zox_declare_tag(ElementBillboard)
@@ -52,6 +53,7 @@ void spawn_prefabs_ui_core(ecs_world_t *world) {
 zox_begin_module(UICore)
 // zoxel_define_components
 zox_define_tag(Element)
+zox_define_tag(Element3D)
 zox_define_tag(Canvas)
 zox_define_tag(ElementRaycaster)
 zox_define_tag(ElementBillboard)
@@ -76,8 +78,8 @@ if (!headless) {
         zox_system(ElementActivateSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterTarget)
         zox_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [out] NavigatorState, [out] NavigatorTimer, [out] RaycasterTarget)
     #endif
-    zox_system_1(ElementMeshSystem, main_thread_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshGPULink, [out] MaterialInstancedGPULink, [out] TextureGPULink, [out] UvsGPULink, [none] !Position3D)
-    zox_system_1(ElementMesh3DSystem, main_thread_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture, [none] Position3D)
+    zox_system_1(ElementMeshSystem, main_thread_pipeline, [none] Element, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshGPULink, [out] MaterialInstancedGPULink, [out] TextureGPULink, [out] UvsGPULink, [none] !Element3D)
+    zox_system_1(ElementMesh3DSystem, main_thread_pipeline, [none] Element3D, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture,  [out] MeshGPULink, [out] UvsGPULink, [out] ColorsGPULink, [out] TextureGPULink) // , [none] Position3D)
 }
 zox_system(BillboardSystem, EcsOnStore, [none] ElementBillboard, [in] CameraLink, [in] Position3D, [out] Rotation3D)
 zox_system(UITrailSystem, EcsOnStore, [in] UIHolderLink, [in] UITrail, [out] Position3D)    // todo: put back to EcsPostUpdate - can't find out where character position updates atm
