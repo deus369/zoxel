@@ -2,9 +2,11 @@
 // #define zoxel_include_vulkan
 #define zoxel_include_players
 
-// #define zox_debug_color_shader
+// temp for pc with shitty gpu issues
+// #define zox_disable_render_ui_3D
+// #define zox_disable_render_characters
+
 // #define zox_log_jumping
-// #define zox_disable_characters3D
 
 // === Disables ===
 
@@ -22,8 +24,10 @@
 // #define zox_disable_render_ui_3D
 // #define zox_errorcheck_render_ui_3D
 
+// #define zox_disable_characters3D
 // #define zox_disable_render_characters
 // #define zox_errorcheck_render_characters_3D
+// #define zox_debug_color_shader
 
 // #define zox_print_sdl                       // debugs sdl app
 // #define zoxel_debug_opengl                  // debugs opengl

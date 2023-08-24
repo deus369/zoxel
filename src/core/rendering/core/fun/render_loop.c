@@ -1,16 +1,15 @@
 // \todo Create a queue of 3D models to render, including materials, etc
 //  - each type of render queue has different data based on the shaders
 //  - inside ecs systems, can run multithread, add things to queues to render
-unsigned char renderer_layer;
 extern long int render_terrain_chunks_system_id;
 extern long int line3D_render_system_id;
 extern long int cube_lines_render_system_id;
 
 void render_pre_loop() {
-    opengl_clear();             // cannot just clear in a view port with opengl?
+    opengl_clear(); // cannot just clear in a view port with opengl?
 }
 
-//! This renders all render systems per camera, by externally setting the camera matrix this will be uploaded to all materials.
+// This renders all render systems per camera, by externally setting the camera matrix this will be uploaded to all materials
 void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, int2 size) {
     #ifdef zox_check_render_camera_errors
         check_opengl_error("[pre render_camera]");
@@ -20,13 +19,12 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     if (render3D_update_pipeline == 0) {
         ecs_run(world, render_terrain_chunks_system_id, 0, NULL);
         ecs_run(world, ecs_id(RenderElements3DSystem), 0, NULL);
-        ecs_run(world, ecs_id(Render3DSystem), 0, NULL);    // skybox
+        ecs_run(world, ecs_id(Render3DSystem), 0, NULL);
         ecs_run(world, ecs_id(RenderCharacters3DSystem), 0, NULL);
         ecs_run(world, line3D_render_system_id, 0, NULL);
         ecs_run(world, cube_lines_render_system_id, 0, NULL);
     }
     if (render2D_update_pipeline == 0) {
-        // glDisable(GL_DEPTH_TEST);
         glClear(GL_DEPTH_BUFFER_BIT);
         render_ui_in_layers(world);
     }
@@ -63,3 +61,4 @@ ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
 shader2D_instance_end();
 ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);*/
 // ecs_run(world, ecs_id(RenderMaterial2DSystem2), 0, NULL);
+// glDisable(GL_DEPTH_TEST);

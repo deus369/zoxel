@@ -1,8 +1,8 @@
 
 const GLchar* shader2D_textured_vert_buffer = "\
 #version 300 es\n\
-in lowp vec2 vertex_position;\
-in lowp vec2 vertex_uv;\
+layout(location=0) in lowp vec2 vertex_position;\
+layout(location=1) in lowp vec2 vertex_uv;\
 uniform lowp mat4 camera_matrix;\
 uniform lowp float positionX;\
 uniform lowp float positionY;\

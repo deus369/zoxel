@@ -66,6 +66,9 @@ void RenderElements3DSystem(ecs_iter_t *it) {
         // if (!has_rendered_elements) has_rendered_elements = 1;
     }
     if (has_set_material) {
+        opengl_disable_buffer(attributes_textured3D.vertex_color);
+        opengl_disable_buffer(attributes_textured3D.vertex_uv);
+        opengl_disable_buffer(attributes_textured3D.vertex_position);
         opengl_unset_mesh();
         opengl_disable_texture(false);
         opengl_disable_opengl_program();

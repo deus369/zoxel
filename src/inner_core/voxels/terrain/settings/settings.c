@@ -60,7 +60,7 @@ void set_terrain_render_distance() {
         terrain_vertical = 1;
     }
     if (terrain_mode == terrain_mode_large) {
-        terrain_spawn_distance = 12;
+        terrain_spawn_distance = 8;
         terrain_vertical = 2;
     }
     #ifdef zox_terrain_preset_large

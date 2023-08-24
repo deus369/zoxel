@@ -93,24 +93,3 @@ void opengl_set_buffer_attributes2D(uint vertex_buffer, uint uv_buffer) {
     glEnableVertexAttribArray(shader2D_textured_attributes.vertex_uv);
     glVertexAttribPointer(shader2D_textured_attributes.vertex_uv, 2, GL_FLOAT, GL_FALSE, 0, 0);
 }
-
-void render_entity_material2D_and_mesh(uint material, uint2 mesh, uint uvs_gpu_link, uint texture, const float4x4 viewMatrix, float2 position, float angle, float scale, float brightness, unsigned char layer) {
-    if (material == 0 || mesh.x == 0 || mesh.y == 0 || uvs_gpu_link == 0 || texture == 0) return;
-    glUseProgram(material);   // invalid operation
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);    // for indices
-    opengl_set_buffer_attributes2D(mesh.y, uvs_gpu_link);
-    glUniformMatrix4fv(shader2D_textured_attributes.camera_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
-    glUniform1f(shader2D_textured_attributes.positionX, position.x);
-    glUniform1f(shader2D_textured_attributes.positionY, position.y);
-    glUniform1f(shader2D_textured_attributes.positionZ, ((int) layer) * shader_depth_multiplier);
-    glUniform1f(shader2D_textured_attributes.angle, angle);
-    glUniform1f(shader2D_textured_attributes.scale, scale);
-    glUniform1f(shader2D_textured_attributes.brightness, brightness);
-    #ifndef zox_disable_render_ui
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
-    #endif
-    #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("render_entity_material2D_and_mesh");
-    #endif
-}

@@ -193,9 +193,7 @@ void clone##_##name(name* dst, const name* src) {\
 void open##_##name(name* octree) {\
     if (octree->nodes == NULL) {\
         octree->nodes = malloc(sizeof(name) * octree_length);\
-        for (unsigned char i = 0; i < octree_length; i++) {\
-            octree->nodes[i].nodes = NULL;\
-        }\
+        for (unsigned char i = 0; i < octree_length; i++) octree->nodes[i].nodes = NULL;\
     }\
 }\
 \

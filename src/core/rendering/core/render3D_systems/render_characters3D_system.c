@@ -2,7 +2,6 @@
 // #define max_character_mesh_indicies 1000000
 
 void RenderCharacters3DSystem(ecs_iter_t *it) {
-    // if (attributes_colored3D.vertex_position < 0 || attributes_colored3D.vertex_color < 0) return;
     const Position3D *positions = ecs_field(it, Position3D, 2);
     const Rotation3D *rotations = ecs_field(it, Rotation3D, 3);
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 4);
@@ -59,8 +58,6 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
                 }
             #endif
         #endif
-        // opengl_disable_buffer(attributes_colored3D.vertex_color);
-        // opengl_disable_buffer(attributes_colored3D.vertex_position);
         #ifdef zox_debug_render3D_colored
             meshes++;
             tris_rendered += meshIndicies2->length / 3;
@@ -71,6 +68,8 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         zoxel_log("  > rendered meshes [%i] unused meshes [%i] tris [%i]\n", meshes, zero_meshes, tris_rendered);
     #endif
     if (has_set_material) {
+        opengl_disable_buffer(attributes_colored3D.vertex_color);
+        opengl_disable_buffer(attributes_colored3D.vertex_position);
         opengl_unset_mesh();
         opengl_disable_opengl_program();
     }
