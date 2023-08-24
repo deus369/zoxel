@@ -22,7 +22,7 @@ ecs_entity_t spawn_prefab_chunk(ecs_world_t *world) {
         zox_add(e, MeshColorRGBs)
         zox_add(e, ColorsGPULink)
         add_gpu_mesh(world, e);
-        add_gpu_material(world, e);
+        // add_gpu_material(world, e); // remove this...!
     }
     ecs_defer_end(world);
     prefab_chunk = e;

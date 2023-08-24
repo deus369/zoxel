@@ -49,7 +49,7 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         if (!has_set_material) {
             has_set_material = 1;
             opengl_set_material(materialGPULink->value);
-            opengl_shader3D_textured_set_camera_view_matrix(render_camera_matrix, &attributes_textured3D);
+            opengl_set_matrix(attributes_textured3D.camera_matrix, render_camera_matrix);
             glUniform4f(attributes_textured3D.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
             opengl_bind_texture(textureGPULink->value);
             opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes_textured3D);
@@ -87,45 +87,3 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
     #endif
     // if (rendered_count > 0) zoxel_log(" > rendered chunks [%i]\n", rendered_count);
 } zox_declare_system(TerrainChunksRenderSystem)
-
-        /*#ifdef voxels_terrain_multi_material
-            const MaterialGPULink *materialGPULink = &materialGPULinks[i];
-            const TextureGPULink *textureGPULink = &textureGPULinks[i];
-        #endif*/
-        //#ifndef voxels_terrain_multi_material
-        /*#else
-            Material3DTextured attributes = (Material3DTextured) { 
-                glGetAttribLocation(materialGPULink->value, "vertex_position"),
-                glGetAttribLocation(materialGPULink->value, "vertex_uv"),
-                glGetUniformLocation(materialGPULink->value, "camera_matrix"),
-                glGetUniformLocation(materialGPULink->value, "position"),
-                glGetUniformLocation(materialGPULink->value, "rotation"),
-                glGetUniformLocation(materialGPULink->value, "scale"),
-                glGetUniformLocation(materialGPULink->value, "brightness"),
-                glGetUniformLocation(materialGPULink->value, "tex")
-            };
-            opengl_set_material(materialGPULink->value);
-            opengl_bind_texture(textureGPULink->value);
-            opengl_set_mesh_indicies(meshGPULink->value.x);
-            opengl_shader3D_textured_set_camera_view_matrix(render_camera_matrix, &attributes);
-            opengl_set_buffer_attributes(meshGPULink->value.y, uvsGPULink->value, &attributes);
-            opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes);
-            opengl_set_material3D_uvs_position(position3D->value, &attributes);
-            opengl_render(meshIndicies2->length);
-        #endif*/
-/*#ifdef voxels_terrain_multi_material
-    const MaterialGPULink *materialGPULinks = ecs_field(it, MaterialGPULink, 9);
-    const TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 10);
-#else*/
-//#endif
-            /*attributes = (Material3DTextured) { 
-                glGetAttribLocation(materialGPULink->value, "vertex_position"),
-                glGetAttribLocation(materialGPULink->value, "vertex_uv"),
-                glGetAttribLocation(materialGPULink->value, "vertex_color"), 0,
-                glGetUniformLocation(materialGPULink->value, "position"), 0, 0, 0, 0
-            };
-            attributes.fog_data = glGetUniformLocation(materialGPULink->value, "fog_data");
-            attributes.camera_matrix = glGetUniformLocation(materialGPULink->value, "camera_matrix");
-            attributes.rotation = glGetUniformLocation(materialGPULink->value, "rotation");
-            attributes.scale = glGetUniformLocation(materialGPULink->value, "scale");
-            attributes.brightness = glGetUniformLocation(materialGPULink->value, "brightness");*/

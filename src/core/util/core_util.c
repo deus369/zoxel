@@ -34,9 +34,7 @@ void update_core() {
         #ifdef zoxel_cameras
             set_mouse_constrained(get_mouse_constrained(), screen_dimensions);
         #endif
-        if (rendering) {
-            render_loop();
-        }
+        if (rendering) render_loop();
     }
     iterate_time();
     #ifdef zoxel_log_frame_ms

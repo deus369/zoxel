@@ -2,13 +2,6 @@
 // #define zoxel_include_vulkan
 #define zoxel_include_players
 
-// temp
-// #define zox_terrain_preset_tiny
-// #define zox_terrain_preset_small
-#define zox_terrain_preset_medium // pc can handle this only
-// #define zox_terrain_preset_large
-// #define zox_terrain_preset_enormous
-
 // === Disables ===
 
 // #define zox_disable_logs
@@ -30,11 +23,11 @@
 // #define zox_errorcheck_render_characters_3D
 // #define zox_lowres_render_characters
 
-// #define zox_check_render_camera_errors
-
 // #define zox_print_sdl                       // debugs sdl app
 // #define zoxel_debug_opengl                  // debugs opengl
 // #define zoxel_catch_opengl_errors        // opengl test
+// #define zox_check_render_camera_errors
+// #define zox_debug_sdl_audio
 
 // -- in game ui debugs --
 // #define zoxel_debug_fps

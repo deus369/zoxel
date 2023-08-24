@@ -13,11 +13,13 @@ void spawn_material3D_colored_properties(GLuint material) {
         .fog_data = glGetUniformLocation(material, "fog_data"),
         .brightness = glGetUniformLocation(material, "brightness")
     };
-    zoxel_log(" > created attributes_colored3D [%i]: vertex_position [%i] vertex_color [%i]\n", material, attributes_colored3D.vertex_position, attributes_colored3D.vertex_color);
-    if (attributes_colored3D.vertex_color == -1) {
-        zoxel_log(" ! error with vertex_color\n");
-        attributes_colored3D.vertex_color = 1;
-    }
+    #ifdef zoxel_debug_opengl
+        zoxel_log(" > created attributes_colored3D [%i]: vertex_position [%i] vertex_color [%i]\n", material, attributes_colored3D.vertex_position, attributes_colored3D.vertex_color);
+        if (attributes_colored3D.vertex_color == -1) {
+            zoxel_log(" ! error with vertex_color\n");
+            attributes_colored3D.vertex_color = 1;
+        }
+    #endif
 }
 
 void dispose_shader3D_colored() {

@@ -36,7 +36,7 @@ void RenderElements3DSystem(ecs_iter_t *it) {
         if (!has_set_material) {
             has_set_material = 1;
             opengl_set_material(textured3D_material);
-            opengl_shader3D_textured_set_camera_view_matrix(render_camera_matrix, &attributes_textured3D);
+            opengl_set_matrix(attributes_textured3D.camera_matrix, render_camera_matrix);
             glUniform4f(attributes_textured3D.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
             opengl_set_material3D_uvs_properties(rotation->value, 1, 1, &attributes_textured3D);
             // scale1D->value, brightness->value

@@ -57,6 +57,10 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file
     #ifndef zox_disable_characters3D_voxes
         set_vox_from_vox_file(world, e, vox);
     #endif
+    // spawn the  mesh gpu stuff here
+    spawn_gpu_mesh(world, e);
+    spawn_gpu_colors(world, e);
+    // spawn the ui
     spawn_element_world(world, e);
     return e;
 }

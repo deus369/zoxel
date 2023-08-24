@@ -54,11 +54,12 @@ void render_loop() {
         end_timing_absolute("    - render_loop")
     #endif
 }
-        // opengl_instance3D_begin(render_camera_matrix);
-        // ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
-        // opengl_disable_opengl_program();
-        /*shader2D_instance_begin(render_camera_matrix);
-        ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
-        shader2D_instance_end();
-        ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);*/
-        // ecs_run(world, ecs_id(RenderMaterial2DSystem2), 0, NULL);
+
+// opengl_instance3D_begin(render_camera_matrix);
+// ecs_run(world, ecs_id(InstanceRender3DSystem), 0, NULL);
+// opengl_disable_opengl_program();
+/*shader2D_instance_begin(render_camera_matrix);
+ecs_run(world, ecs_id(InstanceRender2DSystem), 0, NULL);
+shader2D_instance_end();
+ecs_run(world, ecs_id(RenderMaterial2DSystem), 0, NULL);*/
+// ecs_run(world, ecs_id(RenderMaterial2DSystem2), 0, NULL);

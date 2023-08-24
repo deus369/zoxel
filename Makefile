@@ -164,6 +164,9 @@ uninstall:
 run:
 	cd build && ./../$(TARGET)
 
+run-tiny:
+	cd build && ./../$(TARGET) --tiny
+
 run-vulkan:
 	./$(TARGET) --vulkan
 

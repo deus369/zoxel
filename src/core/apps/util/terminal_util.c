@@ -21,6 +21,8 @@ void print_help_menu(const char* arg0) {
     zoxel_log("-=-=-=-=-=--=-=-=-=-=--=-=-=-=-=--=-=-=-=-=-\n");
     zoxel_log("\n");
 }
+extern unsigned char terrain_mode;
+#define terrain_mode_tiny 1
 
 int process_arguments(int argc, char* argv[]) {
     for (int i = 1; i < argc; i++) {
@@ -45,6 +47,8 @@ int process_arguments(int argc, char* argv[]) {
             override_opengl_es = 1;
         } else if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--vulkan") == 0) {
             is_vulkan = 1;
+        } else if (strcmp(argv[i], "--tiny") == 0) {
+            terrain_mode = terrain_mode_tiny;
         }
     }
     return EXIT_SUCCESS;

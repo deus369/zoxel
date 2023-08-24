@@ -34,3 +34,13 @@ int check_opengl_error(char* function_name) {
     }
     return is_error;
 }
+
+unsigned char check_opengl_error_unlogged() {
+    unsigned char is_error = 0;
+    GLenum error_code = glGetError();
+    while (error_code != GL_NO_ERROR) {
+        is_error = 1;
+        error_code = glGetError();
+    }
+    return is_error;
+}

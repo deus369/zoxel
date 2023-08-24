@@ -33,7 +33,9 @@ float3 opengl_clear_color = { 125 / 255.0f, 125 / 255.0f, 125 / 255.0f };
 #include "util/opengl_main_util.c"
 
 unsigned char initialize_opengl(ecs_world_t *world) {
-    zoxel_log(" > initializing opengl\n");
+    #ifdef zoxel_debug_opengl
+        zoxel_log(" > initializing opengl\n");
+    #endif
     glewExperimental = GL_TRUE;
     GLenum err = glewInit();
     if (err != GLEW_OK) {

@@ -66,10 +66,7 @@ uint spawn_gpu_generic_buffer() {
 }
 
 unsigned char opengl_set_material(uint material) {
-    if (material == 0) {
-        // printf("render_entity_material2D material is 0.\n");
-        return 0;
-    }
+    if (material == 0) return 0;
     glUseProgram(material);
     #ifdef zoxel_catch_opengl_errors
         check_opengl_error("opengl_set_material");
@@ -107,10 +104,7 @@ void opengl_disable_opengl_program() {
     glUseProgram(0);
 }
 
-void opengl_set_camera_view_matrix(uint material, const float4x4 view_matrix) {
-    // glUniformMatrix4fv(view_matrix_location, 1, GL_FALSE, (const GLfloat*) ((float*) &view_matrix));
-    glUniformMatrix4fv(glGetUniformLocation(material, "camera_matrix"), 1, GL_FALSE, (float*) &view_matrix);
-}
+// glUniformMatrix4fv(view_matrix_location, 1, GL_FALSE, (const GLfloat*) ((float*) &view_matrix));
 
 /*
 Multiple textures:
@@ -130,3 +124,32 @@ Multiple textures:
 // glActiveTexture(GL_TEXTURE0);
 // glUniform1i(texture, 0);
 // Error 0x500/1280 means GL_INVALID_ENUM
+
+void opengl_enable_vertex_buffer(uint shader_index, uint vertex_buffer) {
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+    glEnableVertexAttribArray(shader_index);
+    glVertexAttribPointer(shader_index, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    // glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void opengl_enable_uv_buffer(uint shader_index, uint uv_buffer) {
+    glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
+    glEnableVertexAttribArray(shader_index);
+    glVertexAttribPointer(shader_index, 2, GL_FLOAT, GL_FALSE,  0, 0);
+    // glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void opengl_enable_color_buffer(uint shader_index, uint color_buffer) {
+    glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
+    glEnableVertexAttribArray(shader_index);
+    glVertexAttribPointer(shader_index, 3, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
+    // glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void opengl_disable_buffer(uint shader_index) {
+    glDisableVertexAttribArray(shader_index);
+}
+
+void opengl_set_matrix(uint shader_index, const float4x4 view_matrix) {
+    glUniformMatrix4fv(shader_index, 1, GL_FALSE, (float*) &view_matrix);
+}

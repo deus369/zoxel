@@ -28,6 +28,7 @@ ecs_entity_t spawn_app(ecs_world_t *world, SDL_Window* window, SDL_GLContext* co
 void finish_opengl_rendering(ecs_world_t *world) {
     const SDLWindow *window = ecs_get(world, main_app, SDLWindow);
     if (window->value) SDL_GL_SwapWindow(window->value);
+    else zoxel_log("    ! did not swap opengl window\n");
 }
 
 #ifdef zoxel_include_vulkan

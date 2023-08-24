@@ -66,13 +66,11 @@ void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, vox_file *vox) {
 }
 
 ecs_entity_t spawn_vox(ecs_world_t *world, vox_file *vox, float3 position, unsigned char division) {
-    ecs_defer_begin(world);
     zox_instance(prefab_vox)
     zox_set(e, Position3D, { position })
     zox_set(e, RenderLod, { division })
     set_vox_from_vox_file(world, e, vox);
     spawn_gpu_colors(world, e);
-    ecs_defer_end(world);
     return e;
 }
 

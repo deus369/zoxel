@@ -1,3 +1,9 @@
+unsigned char terrain_mode = 0;
+#define terrain_mode_tiny 1
+// #define zox_terrain_preset_small
+// #define zox_terrain_preset_medium // pc can handle this only
+// #define zox_terrain_preset_large
+// #define zox_terrain_preset_enormous
 #define terrain_texture_resolution 32
 const int2 chunk_texture_size = { terrain_texture_resolution, terrain_texture_resolution };
 unsigned char terrain_spawn_distance;
@@ -43,10 +49,10 @@ void set_terrain_render_distance() {
         terrain_vertical = 1;
     }
     // preset settings
-    #ifdef zox_terrain_preset_tiny
+    if (terrain_mode == terrain_mode_tiny) {
         terrain_spawn_distance = 2;
         terrain_vertical = 1;
-    #endif
+    }
     #ifdef zox_terrain_preset_small
         terrain_spawn_distance = 4;
         terrain_vertical = 1;

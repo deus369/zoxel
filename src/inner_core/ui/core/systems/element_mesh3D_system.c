@@ -12,7 +12,7 @@ void Element3DMeshSystem(ecs_iter_t *it) {
         if (initializeEntityMesh->value != 1) continue;
         const CanvasLink *canvasLink = &canvasLinks[i];
         if (canvasLink->value == 0) continue;
-        ecs_entity_t e = it->entities[i];
+        // ecs_entity_t e = it->entities[i];
         MeshDirty *meshDirty = &meshDirtys[i];
         GenerateTexture *generateTexture = &generateTextures[i];
         if (!headless) {
