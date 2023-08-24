@@ -4,7 +4,18 @@
 #endif
 unsigned char has_spawned_main_character = 0;
 
+ecs_entity_t spawn_chunk_character(ecs_world_t *world, ecs_entity_t_array_d* entities, vox_file *vox, float3 position, unsigned char character_lod) {
+    float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
+    ecs_entity_t e = spawn_character3D(world, prefab_character3D, vox, position, rotation, character_lod);
+    add_to_ecs_entity_t_array_d(entities, e);
+    #ifdef zoxel_log_characters_count
+        characters_count++;
+    #endif
+    return e;
+}
+
 void Characters3DSpawnSystem(ecs_iter_t *it) {
+    ecs_world_t *world = it->world;
     const ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 2);
     const ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 3);
     const RenderLod *renderLods = ecs_field(it, RenderLod, 4);
@@ -54,17 +65,12 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             float3_multiply_float_p(&position, terrain_voxel_scale);
             // todo: use character bounds before spawning, scale voxel position by terrain scale
             position.y += 0.75f;
+            if (!has_spawned_main_character && int2_equals((int2) { chunkPosition->value.x, chunkPosition->value.z }, int2_zero)) {
+                has_spawned_main_character = 1;
+                main_character3D = spawn_chunk_character(world, entities, &vox, position, character_lod);
+            }
             #ifndef zox_disable_characters3D
-                float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
-                ecs_entity_t e = spawn_character3D(it->world, prefab_character3D, &vox, position, rotation, character_lod);
-                add_to_ecs_entity_t_array_d(entities, e);
-                #ifdef zoxel_log_characters_count
-                    characters_count++;
-                #endif
-                if (!has_spawned_main_character) {
-                    has_spawned_main_character = 1;
-                    main_character3D = e;
-                }
+                spawn_chunk_character(world, entities, &vox, position, character_lod);
             #endif
         }
         if (entityLinks2->length != 0) free(entityLinks2->value);

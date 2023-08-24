@@ -15,7 +15,25 @@ void toggle_camera_perspective(ecs_world_t *world, ecs_entity_t character) {
     }
 }
 
+void detatch_from_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character) {
+    zox_set_only(player, CharacterLink, { 0 })
+    zox_add_tag(camera, EulerOverride)
+    // zox_set_only(camera, FreeRoam, { 0 })
+    zox_set_only(camera, ParentLink, { 0 })
+    zox_remove(camera, FirstPersonCamera)
+    zox_set_only(camera, CanFreeRoam, { 1 })
+    zox_set_only(mouse_entity, MouseLock, { 0 })
+    if (character != 0) {
+        zox_remove(character, PlayerCharacter3D)
+        zox_set_only(character, CameraLink, { 0 })
+    }
+    // fix caera rotation to be the same
+    zoxel_log(" > [%lu] is detaching from character [%lu]\n", camera, character);
+}
+
 void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character) {
+    if (character == 0) detatch_from_character(world, player, camera, character);
+    if (character == 0) return;
     // zoxel_log(" > attaching to character\n");
     float vox_scale = model_scale * 16;
     const Rotation3D *rotation3D = ecs_get(world, character, Rotation3D);
@@ -34,20 +52,6 @@ void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t c
     zox_set_only(mouse_entity, MouseLock, { 1 })
     // spawn_element_world(world, character);  // todo: also add this to character's UILinks
     zoxel_log(" > [%lu] is ataching to character [%lu]\n", camera, character);
-}
-
-void detatch_from_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character) {
-    zox_set_only(player, CharacterLink, { 0 })
-    zox_add_tag(camera, EulerOverride)
-    // zox_set_only(camera, FreeRoam, { 0 })
-    zox_set_only(camera, ParentLink, { 0 })
-    zox_remove(camera, FirstPersonCamera)
-    zox_set_only(camera, CanFreeRoam, { 1 })
-    zox_remove(character, PlayerCharacter3D)
-    zox_set_only(character, CameraLink, { 0 })
-    zox_set_only(mouse_entity, MouseLock, { 0 })
-    // fix caera rotation to be the same
-    zoxel_log(" > [%lu] is detaching from character [%lu]\n", camera, character);
 }
 
 // ecs_set(world, camera, LocalPosition3D, { 0, 0, vox_scale / 2.0f }); // zoxel_set

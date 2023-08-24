@@ -29,7 +29,11 @@ void dispose_shader3D_colored() {
 }
 
 int load_shader3D_colored() {
-    shader3D_colored = spawn_gpu_shader_inline(shader3D_colored_vert_buffer, shader3D_colored_frag_buffer);
+    #ifndef zox_debug_color_shader
+        shader3D_colored = spawn_gpu_shader_inline(shader3D_colored_vert_buffer, shader3D_colored_frag_buffer);
+    #else
+        shader3D_colored = spawn_gpu_shader_inline(debug_shader3D_colored_vert_buffer, debug_shader3D_colored_frag_buffer);
+    #endif
     // glBindAttribLocation(shader3D_colored.x, 0, "vertex_position");
     // glBindAttribLocation(shader3D_colored.x, 1, "vertex_color");
     colored3D_material = spawn_gpu_material_program(shader3D_colored);

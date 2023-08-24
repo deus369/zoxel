@@ -167,6 +167,12 @@ run:
 run-tiny:
 	cd build && ./../$(TARGET) --tiny
 
+run-medium:
+	cd build && ./../$(TARGET) --medium
+
+run-large:
+	cd build && ./../$(TARGET) --large
+
 run-vulkan:
 	./$(TARGET) --vulkan
 

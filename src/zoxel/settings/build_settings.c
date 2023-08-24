@@ -2,12 +2,15 @@
 // #define zoxel_include_vulkan
 #define zoxel_include_players
 
+// #define zox_debug_color_shader
+// #define zox_log_jumping
+// #define zox_disable_characters3D
+
 // === Disables ===
 
 // #define zox_disable_logs
 // #define zox_disable_skybox
 // #define zox_disable_terrain
-// #define zox_disable_characters3D
 // #define zox_disable_characters3D_voxes
 
 // === Debugs ===
@@ -21,7 +24,6 @@
 
 // #define zox_disable_render_characters
 // #define zox_errorcheck_render_characters_3D
-// #define zox_lowres_render_characters
 
 // #define zox_print_sdl                       // debugs sdl app
 // #define zoxel_debug_opengl                  // debugs opengl

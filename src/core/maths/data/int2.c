@@ -6,6 +6,10 @@ typedef struct {
 
 #define int2_zero (int2) { 0, 0 }
 
+unsigned char int2_equals(int2 a, int2 b) {
+    return a.x == b.x && a.y == b.y;
+}
+
 void int2_add_int2_p(int2 *value, int2 add) {
     value->x += add.x;
     value->y += add.y;

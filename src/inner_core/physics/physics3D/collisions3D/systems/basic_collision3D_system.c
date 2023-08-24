@@ -105,9 +105,9 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
             // unsigned char is_grounded = 0;
             if (did_collide) {
                 voxelPosition->value = byte3_to_int3(new_position);
-                if (float_abs(velocity3D->value.y) < 0.05f) { // ecs_has(world, e, Grounded) &&
-                    if (grounded->value == 0) {
-                        if (!ecs_has(world, e, Jump) || ecs_get(world, e, Jump)->value == 0) {
+                if (float_abs(velocity3D->value.y) < 0.12f) { // ecs_has(world, e, Grounded) &&
+                    if (!grounded->value) {
+                        if (!ecs_has(world, e, Jump) || !ecs_get(world, e, Jump)->value) {
                             grounded->value = 1;
                             // is_grounded = 1;
                             #ifdef zox_log_jumping

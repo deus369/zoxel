@@ -1,5 +1,7 @@
 unsigned char terrain_mode = 0;
 #define terrain_mode_tiny 1
+#define terrain_mode_medium 2
+#define terrain_mode_large 3
 // #define zox_terrain_preset_small
 // #define zox_terrain_preset_medium // pc can handle this only
 // #define zox_terrain_preset_large
@@ -50,17 +52,17 @@ void set_terrain_render_distance() {
     }
     // preset settings
     if (terrain_mode == terrain_mode_tiny) {
-        terrain_spawn_distance = 2;
+        terrain_spawn_distance = 3;
         terrain_vertical = 1;
     }
-    #ifdef zox_terrain_preset_small
-        terrain_spawn_distance = 4;
-        terrain_vertical = 1;
-    #endif
-    #ifdef zox_terrain_preset_medium
+    if (terrain_mode == terrain_mode_medium) {
         terrain_spawn_distance = 6;
         terrain_vertical = 1;
-    #endif
+    }
+    if (terrain_mode == terrain_mode_large) {
+        terrain_spawn_distance = 12;
+        terrain_vertical = 2;
+    }
     #ifdef zox_terrain_preset_large
         terrain_spawn_distance = 8;
         terrain_vertical = 2;
