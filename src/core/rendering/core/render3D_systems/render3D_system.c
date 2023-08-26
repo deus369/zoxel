@@ -15,14 +15,13 @@ void Render3DSystem(ecs_iter_t *it) {
         const Brightness *brightness = &brightnesses[i];
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
         const MaterialGPULink *materialGPULink = &materialGPULinks[i];
-        if (opengl_set_material(materialGPULink->value)) {
-            opengl_bind_mesh(meshGPULink->value);
-            set_basic_vert_layout(materialGPULink->value);
-            if (opengl_set_material3D_properties(materialGPULink->value, position->value, rotation->value, scale1D->value, brightness->value) == -1) return;
-            // opengl_set_camera_view_matrix(materialGPULink->value, render_camera_matrix);
-            glUniformMatrix4fv(glGetUniformLocation(materialGPULink->value, "camera_matrix"), 1, GL_FALSE, (float*) &render_camera_matrix);
-            opengl_render(meshIndicies2->length);
-        }
+        opengl_set_material(materialGPULink->value);
+        opengl_bind_mesh(meshGPULink->value);
+        set_basic_vert_layout(materialGPULink->value);
+        if (opengl_set_material3D_properties(materialGPULink->value, position->value, rotation->value, scale1D->value, brightness->value) == -1) return;
+        // opengl_set_camera_view_matrix(materialGPULink->value, render_camera_matrix);
+        glUniformMatrix4fv(glGetUniformLocation(materialGPULink->value, "camera_matrix"), 1, GL_FALSE, (float*) &render_camera_matrix);
+        opengl_render(meshIndicies2->length);
     }
     opengl_unset_mesh();
     opengl_disable_opengl_program();

@@ -2,6 +2,10 @@
 #define zoxel_opengl
 
 #include <GL/glew.h>    // used to import opengl functions
+typedef struct {
+    GLuint x;
+    GLuint y;
+} GLuint2;
 // zoxel_settings
 float3 opengl_clear_color = { 125 / 255.0f, 125 / 255.0f, 125 / 255.0f };
 // zoxel_util
@@ -20,8 +24,8 @@ float3 opengl_clear_color = { 125 / 255.0f, 125 / 255.0f, 125 / 255.0f };
 // render2D
 #include "render2D/material2D.c"
 #include "render2D/instanced2D_material.c"
-#include "render2D_textured/material2D_textured.c"
-#include "render2D_textured/shader2D_textured.c"
+#include "render2D_textured/textured2D_material.c"
+#include "render2D_textured/shader_textured2D.c"
 // render3D
 #include "data/material3D.c"
 #include "rendering/instanced3D_material.c"

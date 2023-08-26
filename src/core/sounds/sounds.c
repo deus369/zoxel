@@ -23,11 +23,12 @@ const float sound_noise = 0.02f; // 0.04
 // zoxel_prefab_declares
 zox_declare_tag(Sound)
 zox_byte_component(InstrumentType)
-zox_memory_component(SoundData, float)   //! A sound has an array of bytes.
-zox_component(SoundLength, double)       //! The length of a sound.
-zox_component(SoundFrequency, float)     //! The frequency of the generated sound.
-zox_byte_component(GenerateSound)        //! A state event for generating sounds.
-zox_byte_component(TriggerSound)         //! A state event for playing sounds.
+zox_memory_component(SoundData, float)   //! A sound has an array of bytes
+zox_component(SoundLength, double)       //! The length of a sound
+zox_component(SoundFrequency, float)     //! The frequency of the generated sound
+zox_component(SoundVolume, float)     //! The frequency of the generated sound
+zox_byte_component(GenerateSound)        //! A state event for generating sounds
+zox_byte_component(TriggerSound)         //! A state event for playing sounds
 // renamed PlaySound to TriggerSound temporarily, cause of windows.h conflict
 zox_byte_component(SoundDirty)
 #include "components/SDLSound.c"
@@ -70,11 +71,12 @@ zox_define_component(InstrumentType)
 zox_define_component(SoundLength)
 zox_define_component(GenerateSound)
 zox_define_component(SoundFrequency)
+zox_define_component(SoundVolume)
 zox_define_component(TriggerSound)
 zox_define_component_w_dest(SDLSound)
 zox_define_component(SoundDirty)
 zox_define_memory_component(SoundData)
-zox_system(SoundGenerateSystem, EcsOnValidate, [none] Sound, [out] GenerateSound, [in] SoundLength, [in] SoundFrequency, [in] InstrumentType, [out] SoundData, [out] SoundDirty)
+zox_system(SoundGenerateSystem, EcsOnValidate, [none] Sound, [out] GenerateSound, [in] SoundLength, [in] SoundFrequency, [in] SoundVolume, [in] InstrumentType, [out] SoundData, [out] SoundDirty)
 #ifdef SDL_MIXER
     zox_system(SoundUpdateSystem, EcsPostUpdate, [none] Sound, [in] SoundData, [out] SoundDirty, [out] SDLSound)
     zox_system(PlaySoundSystem, EcsPostUpdate, [none] Sound, [out] TriggerSound, [in] SoundLength, [in] SDLSound)

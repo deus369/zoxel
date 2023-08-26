@@ -15,13 +15,14 @@ void SoundGenerateSystem(ecs_iter_t *it) {
         begin_timing()
     #endif
     // const float sound_bounds = 1.0f;
-    const float volume = 1.0f; // 0.8f;
+    // const float volume = 1.0f; // 0.8f;
     GenerateSound *generateSounds = ecs_field(it, GenerateSound, 2);
     const SoundLength *soundLengths = ecs_field(it, SoundLength, 3);
     const SoundFrequency *soundFrequencys = ecs_field(it, SoundFrequency, 4);
-    const InstrumentType *instrumentTypes = ecs_field(it, InstrumentType, 5);
-    SoundData *soundDatas = ecs_field(it, SoundData, 6);
-    SoundDirty *soundDirtys = ecs_field(it, SoundDirty, 7);
+    const SoundVolume *soundVolumes = ecs_field(it, SoundVolume, 5);
+    const InstrumentType *instrumentTypes = ecs_field(it, InstrumentType, 6);
+    SoundData *soundDatas = ecs_field(it, SoundData, 7);
+    SoundDirty *soundDirtys = ecs_field(it, SoundDirty, 8);
     for (int i = 0; i < it->count; i++) {
         GenerateSound *generateSound = &generateSounds[i];
         if (generateSound->value != 1) continue;
@@ -32,6 +33,8 @@ void SoundGenerateSystem(ecs_iter_t *it) {
         const SoundLength *soundLength = &soundLengths[i];
         const SoundFrequency *soundFrequency = &soundFrequencys[i];
         const InstrumentType *instrumentType = &instrumentTypes[i];
+        const SoundVolume *soundVolume = &soundVolumes[i];
+        float volume = soundVolume->value;
         // random.InitState((uint) seed.seed);
         double sound_time_length = soundLength->value; // soundData.sound_time_length;
         float frequency = soundFrequency->value;

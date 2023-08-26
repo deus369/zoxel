@@ -61,6 +61,6 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file
     spawn_gpu_mesh(world, e);
     spawn_gpu_colors(world, e);
     // spawn the ui
-    spawn_element_world(world, e);
+    spawn_element3D(world, e);
     return e;
 }

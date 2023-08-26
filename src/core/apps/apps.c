@@ -13,6 +13,7 @@ unsigned char halfscreen = 0;
 unsigned char is_split_screen = 0;
 unsigned char override_opengl_es = 0;
 unsigned char is_vulkan = 0;
+unsigned char is_multithreading = 1;
 SDL_Window* main_window;
 SDL_GLContext* main_gl_context;
 #ifdef zoxel_include_vulkan

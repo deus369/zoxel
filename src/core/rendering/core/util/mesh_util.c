@@ -17,9 +17,12 @@ void prefab_set_mesh3D_vertices(ecs_world_t *world, ecs_entity_t e, const float2
     initialize_memory_component_non_pointer(meshVertices, float3, length)
     for (int i = 0; i < length; i++) meshVertices.value[i] = (float3) { vertices[i].x * 0.2f, vertices[i].y * 0.05f, 0 };
     zox_set(e, MeshVertices, { meshVertices.length, meshVertices.value })
+}
+
+void prefab_set_mesh_colors_rgb(ecs_world_t *world, ecs_entity_t e, color_rgb color, int length) {
     MeshColorRGBs meshColorRGBs = { };
     initialize_memory_component_non_pointer(meshColorRGBs, color_rgb, length)
-    for (int i = 0; i < length; i++) meshColorRGBs.value[i] = (color_rgb) { 255, 255, 255 };
+    for (int i = 0; i < length; i++) meshColorRGBs.value[i] = color;
     zox_set(e, MeshColorRGBs, { meshColorRGBs.length, meshColorRGBs.value })
 }
 

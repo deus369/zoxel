@@ -1,15 +1,15 @@
 //! Links to locations inside a base material->
 typedef struct {
     GLint vertex_position;
-    uint camera_matrix;
-    uint positionX;
-    uint positionY;
-    uint angle;
-    uint scale;
-    uint brightness;
+    GLuint camera_matrix;
+    GLuint positionX;
+    GLuint positionY;
+    GLuint angle;
+    GLuint scale;
+    GLuint brightness;
 } Material2D;
 
-void initialize_material2D_properties(Material2D *material2D, uint material) {
+void initialize_material2D_properties(Material2D *material2D, GLuint material) {
     material2D->camera_matrix = glGetUniformLocation(material, "camera_matrix");
     material2D->angle = glGetUniformLocation(material, "angle");
     material2D->scale = glGetUniformLocation(material, "scale");

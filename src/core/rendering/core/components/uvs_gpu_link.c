@@ -1,4 +1,4 @@
-zox_component(UvsGPULink, uint)
+zox_component(UvsGPULink, GLuint)
 
 void add_gpu_uvs(ecs_world_t *world, ecs_entity_t e) {
     if (!headless) zox_set(e, UvsGPULink, { 0 })

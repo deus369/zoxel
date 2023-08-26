@@ -1,4 +1,4 @@
-uint2 shader3D_colored;
+GLuint2 shader3D_colored;
 GLuint colored3D_material;
 MaterialColored3D attributes_colored3D;
 
@@ -44,7 +44,7 @@ int load_shader3D_colored() {
     return 0;
 }
 
-void opengl_upload_mesh_colors(uint2 mesh, uint color_buffer, const int *indicies, int indicies_length, const float3 *verts, const color_rgb *color_rgbs, int verts_length) {
+void opengl_upload_mesh_colors(GLuint2 mesh, GLuint color_buffer, const int *indicies, int indicies_length, const float3 *verts, const color_rgb *color_rgbs, int verts_length) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

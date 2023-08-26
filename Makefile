@@ -388,7 +388,7 @@ help:
 	@echo "    github			opens zoxel on github"
 	@echo "    codeberg			opens zoxel on codeberg"
 	@echo "  > flecs"
-	@echo "    install-flecs		installs latest flecs (3.2.5)"
+	@echo "    install-flecs		installs latest flecs (3.2.6)"
 	@echo "    build/libflecs.a		builds flecs library"
 	@echo "    remove-flecs		removes flecs library"
 	@echo "    get-flecs-version		get a flecs by version"

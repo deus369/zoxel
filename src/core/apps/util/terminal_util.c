@@ -59,6 +59,8 @@ int process_arguments(int argc, char* argv[]) {
             terrain_mode = terrain_mode_large;
         } else if (strcmp(argv[i], "--lowrescharacters") == 0) {
             zox_lowres_characters_mode = 1;
+        } else if (strcmp(argv[i], "--singlethread") == 0) {
+            is_multithreading = 0;
         }
     }
     return EXIT_SUCCESS;

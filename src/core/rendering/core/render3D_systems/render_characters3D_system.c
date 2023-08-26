@@ -9,9 +9,6 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
     const ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 6);
     unsigned char has_set_material = 0;
     int rendered_count = 0;
-    #ifdef zox_errorcheck_render_characters_3D
-        unsigned char did_bug_out = 0;
-    #endif
     #ifdef zox_debug_render3D_colored
         int zero_meshes = 0;
         int meshes = 0;
@@ -49,20 +46,20 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         glUniform4f(attributes_colored3D.rotation, rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
         #ifndef zox_disable_render_characters
             opengl_render(meshIndicies2->length);
-            #ifdef zox_errorcheck_render_characters_3D
-                if (check_opengl_error_unlogged() != 0) {
-                    did_bug_out = 1;
-                    // if (check_opengl_error("[render_characters]") != 0) {
-                    // zoxel_log(" > rendered character [%lu]: [%i] - [%ix%i:%i]\n", it->entities[i], meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value);
-                    break;
-                }
-            #endif
+        #endif
+        #ifdef zoxel_catch_opengl_errors
+            if (check_opengl_error_unlogged() != 0) {
+                zoxel_log(" > could not render character [%i]: indicies [%i] - [%ix%i:%i]\n", rendered_count, meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value);
+                // zoxel_log(" > could not render character [%i]: indicies [%i] - [%ix%i:%i]\n", i, meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value);
+                break;
+            }
         #endif
         #ifdef zox_debug_render3D_colored
             meshes++;
             tris_rendered += meshIndicies2->length / 3;
         #endif
         rendered_count++;
+        break;
     }
     #ifdef zox_debug_render3D_colored
         zoxel_log("  > rendered meshes [%i] unused meshes [%i] tris [%i]\n", meshes, zero_meshes, tris_rendered);
@@ -73,7 +70,7 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         opengl_unset_mesh();
         opengl_disable_opengl_program();
     }
-    #ifdef zox_errorcheck_render_characters_3D
+    /*#ifdef zoxel_catch_opengl_errors
         if (rendered_count > 0) zoxel_log(" > rendered characters [%i] - %s\n", rendered_count, did_bug_out ? "buggy" : "fine");
-    #endif
+    #endif*/
 } zox_declare_system(RenderCharacters3DSystem)

@@ -18,7 +18,7 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     glViewport(position.x, position.y, size.x, size.y);
     if (render3D_update_pipeline == 0) {
         ecs_run(world, render_terrain_chunks_system_id, 0, NULL);
-        ecs_run(world, ecs_id(RenderElements3DSystem), 0, NULL);
+        ecs_run(world, ecs_id(Elements3DRenderSystem), 0, NULL);
         ecs_run(world, ecs_id(Render3DSystem), 0, NULL);
         ecs_run(world, ecs_id(RenderCharacters3DSystem), 0, NULL);
         ecs_run(world, line3D_render_system_id, 0, NULL);

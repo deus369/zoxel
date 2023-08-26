@@ -50,7 +50,7 @@ void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t c
     zox_set_only(character, DisableMovement, { 0 })
     zox_set_only(player, CharacterLink, { character })
     zox_set_only(mouse_entity, MouseLock, { 1 })
-    // spawn_element_world(world, character);  // todo: also add this to character's UILinks
+    // spawn_element3D(world, character);  // todo: also add this to character's UILinks
     zoxel_log(" > [%lu] is ataching to character [%lu]\n", camera, character);
 }
 

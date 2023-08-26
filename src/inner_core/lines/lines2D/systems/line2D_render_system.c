@@ -16,16 +16,16 @@ const GLchar* line2D_source_frag = "\
     {\
         color_output = color;\
     }";
-uint2 line2D_shader;
-uint line2D_shader_frag;
-uint line2D_material;
-uint line2D_position_location;
-uint line2D_color_location;
+GLuint2 line2D_shader;
+GLuint line2D_shader_frag;
+GLuint line2D_material;
+GLuint line2D_position_location;
+GLuint line2D_color_location;
 
 int initialize_shader_line2D() {
     if (is_opengl_running()) {
         line2D_shader = spawn_gpu_shader_inline(line2D_source_vert, line2D_source_frag);
-        line2D_material = spawn_gpu_material_program((const uint2) { line2D_shader.x, line2D_shader.y });
+        line2D_material = spawn_gpu_material_program((const GLuint2) { line2D_shader.x, line2D_shader.y });
         line2D_position_location = glGetAttribLocation(line2D_material, "position");
         line2D_color_location = glGetUniformLocation(line2D_material, "color");
     }

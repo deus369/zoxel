@@ -52,6 +52,7 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
     desc.entity = ecs_entity_init(world, &edesc);\
     desc.query.filter.expr = #__VA_ARGS__;\
     desc.callback = id_;\
+    desc.multi_threaded = 0;\
     ecs_id(id_) = ecs_system_init(world, &desc);\
 }\
 ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);

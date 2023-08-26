@@ -1,8 +1,8 @@
-uint2 shader3D_textured;
+GLuint2 shader3D_textured;
 GLuint textured3D_material;
 Material3DTextured attributes_textured3D;
 
-void spawn_attributes_textured3D(uint material) {
+void spawn_attributes_textured3D(GLuint material) {
     attributes_textured3D = (Material3DTextured) { 
         .vertex_position = glGetAttribLocation(material, "vertex_position"),
         .vertex_uv = glGetAttribLocation(material, "vertex_uv"),
@@ -36,11 +36,11 @@ int load_shader3D_textured() {
     return 0;
 }
 
-void opengl_bind_texture(uint texture_buffer) {
+void opengl_bind_texture(GLuint texture_buffer) {
     glBindTexture(GL_TEXTURE_2D, texture_buffer);
 }
 
-void opengl_set_texture(uint texture_buffer, unsigned char isBlend) {
+void opengl_set_texture(GLuint texture_buffer, unsigned char isBlend) {
     if (isBlend) {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_BLEND);
@@ -62,7 +62,7 @@ void opengl_set_material3D_uvs_position(float3 position, Material3DTextured *att
     glUniform3f(attributes->position, position.x, position.y, position.z);
 }
 
-void opengl_upload_shader3D_textured(uint2 mesh_buffer, uint uv_buffer, uint color_buffer, const int *indicies, int indicies_length, const float3 *verts, int verts_length, const float2 *uvs, const color_rgb *color_rgbs) {
+void opengl_upload_shader3D_textured(GLuint2 mesh_buffer, GLuint uv_buffer, GLuint color_buffer, const int *indicies, int indicies_length, const float3 *verts, int verts_length, const float2 *uvs, const color_rgb *color_rgbs) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

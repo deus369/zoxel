@@ -47,7 +47,7 @@ zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t)
 void spawn_prefabs_ui_core(ecs_world_t *world) {
     spawn_prefab_canvas(world);
     spawn_prefab_element(world);
-    spawn_prefab_element_world(world);
+    spawn_prefab_element3D(world);
 }
 
 zox_begin_module(UICore)

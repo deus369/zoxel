@@ -61,15 +61,11 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         glUniform3f(attributes_textured3D.position, position3D->value.x, position3D->value.y, position3D->value.z);
         #ifndef zox_disable_render_terrain_chunks
             opengl_render(meshIndicies2->length);
-            /*if (check_opengl_error("[render_terrain]")) {
-                zoxel_log("     -> i (%i), rendered (%i), entity [%lu], length [%i], gpu links [%i] x [%i]\n", i, rendered_count, it->entities[i], meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y);
-                return;
-            }*/
         #endif
-        #ifdef zoxel_render3D_uvs_system_overdebug
-            if (check_opengl_error("[render3D_uvs_system opengl_render Error]")) {
-                zoxel_log(" !!! indicies length is: %i\n", meshIndicies2->length);
-                zoxel_log(" !!! GPU Memory Usage [%d MB / %d MB]\n", memory_used / 1024, memory_total / 1024);
+        #ifdef zoxel_catch_opengl_errors
+            if (check_opengl_error_unlogged() != 0) {
+                zoxel_log(" > could not render terrain [%i]: indicies [%i] - [%ix%i:%i]\n", rendered_count, meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value);
+                break;
             }
         #endif
         rendered_count++;
@@ -90,3 +86,10 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
     #endif
     // if (rendered_count > 0) zoxel_log(" > rendered chunks [%i]\n", rendered_count);
 } zox_declare_system(TerrainChunksRenderSystem)
+
+/*#ifdef zoxel_render3D_uvs_system_overdebug
+    if (check_opengl_error("[render3D_uvs_system opengl_render Error]")) {
+        zoxel_log(" !!! indicies length is: %i\n", meshIndicies2->length);
+        zoxel_log(" !!! GPU Memory Usage [%d MB / %d MB]\n", memory_used / 1024, memory_total / 1024);
+    }
+#endif*/

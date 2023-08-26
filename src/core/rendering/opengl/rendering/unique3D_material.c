@@ -1,10 +1,10 @@
-void set_basic_vert_layout(uint material) {
+void set_basic_vert_layout(GLuint material) {
     Material3D material3D = spawn_material3D_properties(material);
     glEnableVertexAttribArray(material3D.vertex_position);
     glVertexAttribPointer(material3D.vertex_position, 3, GL_FLOAT, GL_FALSE, 4 * 3, 0);
 }
 
-int opengl_set_material3D_properties(uint material,
+int opengl_set_material3D_properties(GLuint material,
     float3 position, float4 rotation, float scale, float brightness) {
     Material3D material3D = spawn_material3D_properties(material);
     //glEnableVertexAttribArray(material3D.vertex_position);

@@ -1,9 +1,9 @@
 const float shader_depth_multiplier = 0.001f; // 0.0001f;
 const unsigned char disableTextureLoaded = 0;
-uint2 shader2D_textured;
-uint material2D_textured;
-uint2 squareTexturedMesh;
-uint squareTexturedModelUVs;
+GLuint2 shader2D_textured;
+GLuint textured2D_material;
+GLuint2 squareTexturedMesh;
+GLuint squareTexturedModelUVs;
 MaterialTextured2D shader2D_textured_attributes;
 
 void dispose_shader2D_textured() {
@@ -13,13 +13,13 @@ void dispose_shader2D_textured() {
     // glDeleteTextures(1, &textureID);
     glDeleteShader(shader2D_textured.x);
     glDeleteShader(shader2D_textured.y);
-    glDeleteProgram(material2D_textured);
+    glDeleteProgram(textured2D_material);
     #ifdef zoxel_catch_opengl_errors
         check_opengl_error("dispose_shader2D_textured");
     #endif
 }
 
-void initialize_shader2D_textured(uint material) {
+void initialize_shader2D_textured(GLuint material) {
     glGenBuffers(1, &squareTexturedMesh.x);
     glGenBuffers(1, &squareTexturedMesh.y);  // generate a new VBO and get the associated ID
     glGenBuffers(1, &squareTexturedModelUVs);  // generate a new VBO and get the associated ID
@@ -36,13 +36,13 @@ void initialize_shader2D_textured(uint material) {
 
 int load_shader2D_textured() {
     shader2D_textured = spawn_gpu_shader_inline(shader2D_textured_vert_buffer, shader2D_textured_frag_buffer);
-    material2D_textured = spawn_gpu_material_program((const uint2) { shader2D_textured.x, shader2D_textured.y });
-    shader2D_textured_attributes = initialize_material2D_textured(material2D_textured);
-    initialize_shader2D_textured(material2D_textured);
+    textured2D_material = spawn_gpu_material_program((const GLuint2) { shader2D_textured.x, shader2D_textured.y });
+    shader2D_textured_attributes = initialize_material2D_textured(textured2D_material);
+    initialize_shader2D_textured(textured2D_material);
     return 0;
 }
 
-void render_entity_material2D(const float4x4 viewMatrix, uint material, uint texture, float2 position, float angle, float scale, float brightness) {
+void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint texture, float2 position, float angle, float scale, float brightness) {
     if (material == 0) return;
     MaterialTextured2D materialTextured2D = initialize_material2D_textured(material);
     glUseProgram(material);
@@ -71,7 +71,7 @@ void render_entity_material2D(const float4x4 viewMatrix, uint material, uint tex
     #endif
 }
 
-void opengl_upload_shader2D_textured(uint2 mesh_buffer, uint uv_buffer, const int *indicies, int indicies_length, const float2 *verts, const float2 *uvs, int verts_length) {
+void opengl_upload_shader2D_textured(GLuint2 mesh_buffer, GLuint uv_buffer, const int *indicies, int indicies_length, const float2 *verts, const float2 *uvs, int verts_length) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -81,11 +81,13 @@ void opengl_upload_shader2D_textured(uint2 mesh_buffer, uint uv_buffer, const in
     glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float2), uvs, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("opengl_upload_shader2D_textured");
+        if (check_opengl_error("opengl_upload_shader2D_textured")) {
+            zoxel_log("     > [%ix%i:%i]\n", mesh_buffer.x, mesh_buffer.y, uv_buffer);
+        }
     #endif
 }
 
-void opengl_set_buffer_attributes2D(uint vertex_buffer, uint uv_buffer) {
+void opengl_set_buffer_attributes2D(GLuint vertex_buffer, GLuint uv_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glEnableVertexAttribArray(shader2D_textured_attributes.vertex_position);
     glVertexAttribPointer(shader2D_textured_attributes.vertex_position, 2, GL_FLOAT, GL_FALSE, 0, 0);

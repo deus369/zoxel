@@ -34,7 +34,7 @@ void ElementMeshSystem(ecs_iter_t *it) {
             MeshGPULink *meshGPULink = &meshGPULinks[i];
             UvsGPULink *uvsGPULink = &uvsGPULinks[i];
             TextureGPULink *textureGPULink = &textureGPULinks[i];
-            materialInstancedGPULink->value = material2D_textured;
+            materialInstancedGPULink->value = textured2D_material;
             meshGPULink->value = spawn_gpu_mesh_buffers();
             textureGPULink->value = spawn_gpu_texture_buffers();
             uvsGPULink->value = spawn_gpu_generic_buffer();

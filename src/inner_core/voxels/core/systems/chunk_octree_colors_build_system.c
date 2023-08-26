@@ -76,7 +76,7 @@ void test_build_octree_chunk_colors_d(const ChunkOctree *root_node, const ChunkO
     float3_multiply_float_p(&vertex_position_offset, voxel_scale);
     float3_add_float3_p(&vertex_position_offset, total_mesh_offset);
     byte3 node_position = octree_positions_b[node_index];
-    if (voxel != 0) {
+    //if (voxel != 0) {
         color_rgb voxel_color = colorRGBs->value[voxel - 1];
         zoxel_octree_colors_build_face_d(left, 0)
         zoxel_octree_colors_build_face_d(right, 1)
@@ -84,7 +84,7 @@ void test_build_octree_chunk_colors_d(const ChunkOctree *root_node, const ChunkO
         zoxel_octree_colors_build_face_d(up, 0)
         zoxel_octree_colors_build_face_d(back, 0)
         zoxel_octree_colors_build_face_d(front, 1)
-    }
+    //}
 }
 
 void test_build_chunk_octree_mesh_colors(const ChunkOctree *chunk_octree, const ColorRGBs *colorRGBs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColorRGBs *meshColorRGBs, unsigned char chunk_depth, const ChunkOctree *neighbors[], unsigned char *neighbor_lods, float3 total_mesh_offset) {

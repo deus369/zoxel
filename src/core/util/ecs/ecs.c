@@ -8,6 +8,8 @@
 #include "util/octree_component.c"
 #include "util/user_data.c"
 
+extern unsigned char is_multithreading;
+
 ecs_world_t* open_ecs(int argc, char* argv[], unsigned char profiler, int core_count) {
     ecs_world_t* world = ecs_init_w_args(argc, argv);
     if (profiler) {
@@ -21,7 +23,7 @@ ecs_world_t* open_ecs(int argc, char* argv[], unsigned char profiler, int core_c
     #ifdef zox_print_sdl
         zoxel_log(" > found [%i] processor cores\n", core_count);
     #endif
-    if (core_count > 1) ecs_set_threads(world, core_count); // enable multi threading
+    if (core_count > 1 && is_multithreading) ecs_set_threads(world, core_count); // enable multi threading
     ecs_set_target_fps(world, target_frame_rate);
     return world;
 }

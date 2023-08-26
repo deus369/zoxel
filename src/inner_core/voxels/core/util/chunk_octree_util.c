@@ -1,6 +1,6 @@
 void add_chunk_octree(ecs_world_t *world, ecs_entity_t e, int3 size) {
     zox_add_tag(e, Chunk)
-    zox_add(e, ChunkOctree)
+    zox_set(e, ChunkOctree, { 0, NULL })
     zox_set(e, ChunkSize, { size })
     zox_set(e, ChunkDirty, { 0 })
     zox_set(e, ChunkPosition, { int3_zero })

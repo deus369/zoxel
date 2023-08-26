@@ -43,7 +43,7 @@ typedef struct {
     float y;
     float z;
 } vec3;
-uint compute_shader, compute_program, vertex_buffer;
+GLuint compute_shader, compute_program, vertex_buffer;
 
 GLFWwindow* setup_window() {
     if (!glfwInit()) {
@@ -204,4 +204,3 @@ int main()
 // 430 | 300 es
 // 300 es uses 
 // note, vec3 in compute shader is packed as vec4s
-// uint index = gl_GlobalInvocationID.x; -> int index = gl_WorkGroupID.x;

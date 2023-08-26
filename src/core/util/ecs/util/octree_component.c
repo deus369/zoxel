@@ -170,9 +170,7 @@ struct name {\
 ECS_COMPONENT_DECLARE(name);\
 void free##_##name(name* octree) {\
     if (octree->nodes != NULL) {\
-        for (unsigned char i = 0; i < octree_length; i++) {\
-            free##_##name(&octree->nodes[i]);\
-        }\
+        for (unsigned char i = 0; i < octree_length; i++) free##_##name(&octree->nodes[i]);\
         free(octree->nodes);\
         octree->nodes = NULL;\
     }\

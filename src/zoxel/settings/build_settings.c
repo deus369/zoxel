@@ -2,10 +2,12 @@
 // #define zoxel_include_vulkan
 #define zoxel_include_players
 
-// temp for pc with shitty gpu issues
+// #define zoxel_catch_opengl_errors        // opengl test
+// #define zox_disable_render_terrain_chunks
 // #define zox_disable_render_ui_3D
 // #define zox_disable_render_characters
 
+// temp for pc with shitty gpu issues
 // #define zox_log_jumping
 
 // === Disables ===
@@ -17,21 +19,19 @@
 
 // === Debugs ===
 
-// #define zox_time_create_terrain
-// #define zox_disable_render_ui
-// #define zox_disable_render_terrain_chunks
 
-// #define zox_disable_render_ui_3D
+// #define zox_disable_render_ui
+
+// #define zox_time_create_terrain
+
 // #define zox_errorcheck_render_ui_3D
 
-// #define zox_disable_characters3D
-// #define zox_disable_render_characters
 // #define zox_errorcheck_render_characters_3D
 // #define zox_debug_color_shader
+// #define zox_disable_characters3D
 
 // #define zox_print_sdl                       // debugs sdl app
 // #define zoxel_debug_opengl                  // debugs opengl
-// #define zoxel_catch_opengl_errors        // opengl test
 // #define zox_check_render_camera_errors
 // #define zox_debug_sdl_audio
 

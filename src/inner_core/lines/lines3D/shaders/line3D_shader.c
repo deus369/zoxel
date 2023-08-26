@@ -22,12 +22,12 @@ void main() {\
     color2 = mix(color2, vec3(fog_data.x, fog_data.y, fog_data.z), fog_blend);\
 }";
 
-uint2 line3D_shader;
-uint line3D_material;
-uint line3D_position_location;
-uint line3D_color_location;
-uint line3D_camera_matrix_location;
-uint line3D_fog_data_location;
+GLuint2 line3D_shader;
+GLuint line3D_material;
+GLuint line3D_position_location;
+GLuint line3D_color_location;
+GLuint line3D_camera_matrix_location;
+GLuint line3D_fog_data_location;
 
 // todo: call dispose_line3D_shader / move it to a shader entity
 void dispose_shader_line3D() {
@@ -39,7 +39,7 @@ void dispose_shader_line3D() {
 int initialize_shader_line3D() {
     if (is_opengl_running()) {
         line3D_shader = spawn_gpu_shader_inline(line3D_source_vert, line3D_source_frag);
-        line3D_material = spawn_gpu_material_program((const uint2) { line3D_shader.x, line3D_shader.y });
+        line3D_material = spawn_gpu_material_program((const GLuint2) { line3D_shader.x, line3D_shader.y });
         line3D_position_location = glGetAttribLocation(line3D_material, "position");
         line3D_color_location = glGetUniformLocation(line3D_material, "color");
         line3D_camera_matrix_location = glGetUniformLocation(line3D_material, "camera_matrix");

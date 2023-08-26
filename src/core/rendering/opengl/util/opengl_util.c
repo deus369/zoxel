@@ -35,9 +35,9 @@ void opengl_clear() {
     // glCullFace(GL_BACK); // defaults to this
 }
 
-uint spawn_gpu_texture_buffers() {
+GLuint spawn_gpu_texture_buffers() {
     const int textureType = GL_NEAREST; // GL_LINEAR
-    uint textureID;
+    GLuint textureID;
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -49,8 +49,8 @@ uint spawn_gpu_texture_buffers() {
 }
 
 //! Spawns the buffers for a mesh indicies and verts on the gpu.
-uint2 spawn_gpu_mesh_buffers() {
-    uint2 mesh;
+GLuint2 spawn_gpu_mesh_buffers() {
+    GLuint2 mesh;
     glGenBuffers(1, &mesh.x);
     glGenBuffers(1, &mesh.y);
     #ifdef zoxel_catch_opengl_errors
@@ -59,31 +59,29 @@ uint2 spawn_gpu_mesh_buffers() {
     return mesh;
 }
 
-uint spawn_gpu_generic_buffer() {
-    uint buffer;
+GLuint spawn_gpu_generic_buffer() {
+    GLuint buffer;
     glGenBuffers(1, &buffer);
     return buffer;
 }
 
-unsigned char opengl_set_material(uint material) {
-    if (material == 0) return 0;
+void opengl_set_material(GLuint material) {
     glUseProgram(material);
     #ifdef zoxel_catch_opengl_errors
         check_opengl_error("opengl_set_material");
     #endif
-    return 1;
 }
 
-void opengl_bind_mesh(uint2 mesh) {
+void opengl_bind_mesh(GLuint2 mesh) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);    // for indices
     glBindBuffer(GL_ARRAY_BUFFER, mesh.y);            // for vertex coordinates
 }
 
-void opengl_set_mesh_indicies(uint indices_buffer) {
+void opengl_set_mesh_indicies(GLuint indices_buffer) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_buffer);    // for indices
 }
 
-void opengl_set_mesh_uvs(uint uv_buffer) {
+void opengl_set_mesh_uvs(GLuint uv_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);         // for UV coordinates
 }
 
@@ -92,12 +90,12 @@ void opengl_unset_mesh() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void opengl_render(int indicies_length) {
+void opengl_render(GLint indicies_length) {
     // zoxel_log(" > mesh_indicies_length: %i\n", indicies_length);
     glDrawElements(GL_TRIANGLES, indicies_length, GL_UNSIGNED_INT, NULL);
-    #ifdef zoxel_catch_opengl_errors
+    /*#ifdef zoxel_catch_opengl_errors
         check_opengl_error("opengl_render");
-    #endif
+    #endif*/
 }
 
 void opengl_disable_opengl_program() {
@@ -125,31 +123,31 @@ Multiple textures:
 // glUniform1i(texture, 0);
 // Error 0x500/1280 means GL_INVALID_ENUM
 
-void opengl_enable_vertex_buffer(uint shader_index, uint vertex_buffer) {
+void opengl_enable_vertex_buffer(GLuint shader_index, GLuint vertex_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glEnableVertexAttribArray(shader_index);
     glVertexAttribPointer(shader_index, 3, GL_FLOAT, GL_FALSE, 0, 0);
     // glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void opengl_enable_uv_buffer(uint shader_index, uint uv_buffer) {
+void opengl_enable_uv_buffer(GLuint shader_index, GLuint uv_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
     glEnableVertexAttribArray(shader_index);
     glVertexAttribPointer(shader_index, 2, GL_FLOAT, GL_FALSE,  0, 0);
     // glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void opengl_enable_color_buffer(uint shader_index, uint color_buffer) {
+void opengl_enable_color_buffer(GLuint shader_index, GLuint color_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
     glEnableVertexAttribArray(shader_index);
     glVertexAttribPointer(shader_index, 3, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
     // glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void opengl_disable_buffer(uint shader_index) {
+void opengl_disable_buffer(GLuint shader_index) {
     glDisableVertexAttribArray(shader_index);
 }
 
-void opengl_set_matrix(uint shader_index, const float4x4 view_matrix) {
+void opengl_set_matrix(GLuint shader_index, const float4x4 view_matrix) {
     glUniformMatrix4fv(shader_index, 1, GL_FALSE, (float*) &view_matrix);
 }

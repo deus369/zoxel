@@ -5,12 +5,10 @@ extern unsigned char can_render_ui(ecs_world_t *world, ecs_entity_t e);
 unsigned char has_rendered_elements = 0;
 // todo: this produces a memory leak on newer nvidia driver... not sure why
 
-void RenderElements3DSystem(ecs_iter_t *it) {
+void Elements3DRenderSystem(ecs_iter_t *it) {
     #ifdef zox_time_render3D_textured_system
         begin_timing()
     #endif
-    // check_opengl_error("[pre render_elements error]");
-    // if (has_rendered_elements) return;
     unsigned char has_set_material = 0;
     int rendered_count = 0;
     const Position3D *positions = ecs_field(it, Position3D, 2);
@@ -49,21 +47,19 @@ void RenderElements3DSystem(ecs_iter_t *it) {
         glUniform3f(attributes_textured3D.position, position3D->value.x, position3D->value.y, position3D->value.z);
         glUniform4f(attributes_textured3D.rotation, rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
         #ifndef zox_disable_render_ui_3D
-            // zoxel_log("     -> i (%i), rendering (%i), entity [%lu], length [%i], gpu links (%i) [%i] x [%i]\n", i, rendered_count, it->entities[i], meshIndicies2->length, textured3D_material, meshGPULink->value.x, meshGPULink->value.y);
             opengl_render(meshIndicies2->length);
-            // glDrawElements(GL_TRIANGLES, meshIndicies2->length, GL_UNSIGNED_INT, meshIndicies2->value);
-            #ifdef zox_errorcheck_render_ui_3D
-                if (check_opengl_error("[render_elements]")) {
-                    // zoxel_log("     -> i (%i), rendered (%i), entity [%lu], length [%i], gpu links (%i) [%i] x [%i]\n", i, rendered_count, it->entities[i], meshIndicies2->length, textured3D_material, meshGPULink->value.x, meshGPULink->value.y);
-                    return;
-                }
-            #endif
+        #endif
+        #ifdef zoxel_catch_opengl_errors
+            if (check_opengl_error_unlogged() != 0) {
+                zoxel_log(" > failed to render element3D [%lu]: [%i] - [%ix%i:%i]\n", it->entities[i], meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value);
+                break;
+            }
         #endif
         #ifdef zox_time_render3D_textured_system
             did_do_timing()
         #endif
         rendered_count++;
-        // if (!has_rendered_elements) has_rendered_elements = 1;
+        if (rendered_count >= 100) break;
     }
     if (has_set_material) {
         opengl_disable_buffer(attributes_textured3D.vertex_color);
@@ -80,7 +76,7 @@ void RenderElements3DSystem(ecs_iter_t *it) {
     #ifdef zox_errorcheck_render_ui_3D
         if (rendered_count > 0) zoxel_log(" > rendered elements [%i]\n", rendered_count);
     #endif
-} zox_declare_system(RenderElements3DSystem)
+} zox_declare_system(Elements3DRenderSystem)
 
 // const Scale1D *scale1Ds = ecs_field(it, Scale1D, 3);
 // const Brightness *brightnesses = ecs_field(it, Brightness, 4);
