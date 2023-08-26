@@ -1,3 +1,11 @@
+// todo: make a better way for modules to add terminal options
+extern unsigned char game_rule_attach_to_character;
+extern unsigned char zox_lowres_characters_mode;
+extern unsigned char terrain_mode;
+#define terrain_mode_tiny 1
+#define terrain_mode_medium 2
+#define terrain_mode_large 3
+
 void print_help_menu(const char* arg0) {
     zoxel_log("\n");
     zoxel_log("-=-=-=-=-=--=-=-=-=-=--=-=-=-=-=--=-=-=-=-=-\n");
@@ -7,26 +15,29 @@ void print_help_menu(const char* arg0) {
     zoxel_log("\n");
     zoxel_log("    Options:\n");
     zoxel_log("\n");
-    zoxel_log("        -h --help        print this help\n");
-    zoxel_log("        -z --headless       enable headless\n");
-    zoxel_log("        -v --vulkan       enables vulkan\n");
-    zoxel_log("        -f --fullscreen  fullscreen window\n");
-    zoxel_log("        -g --halfscreen  halfscreen window\n");
-    zoxel_log("        -s --splitscreen split screen local coop\n");
-    zoxel_log("        -p --profiler       enable profiler\n");
-    zoxel_log("        -x --server       enable server mode\n");
-    zoxel_log("        -e --opengles       enables opengl es\n");
-    zoxel_log("        -b --vsync       enable vsync\n");
+    zoxel_log("        -h --help            print this help\n");
+    zoxel_log("        -z --headless        enable headless\n");
+    zoxel_log("        -v --vulkan          enables vulkan\n");
+    zoxel_log("        -f --fullscreen      fullscreen window\n");
+    zoxel_log("        -g --halfscreen      halfscreen window\n");
+    zoxel_log("        -s --splitscreen     split screen local coop\n");
+    zoxel_log("        -p --profiler        enable profiler\n");
+    zoxel_log("        -x --server          enable server mode\n");
+    zoxel_log("        -e --opengles        enables opengl es\n");
+    zoxel_log("        -b --vsync           enable vsync\n");
+    zoxel_log("        --singlethread       run with only one thread\n");
+    zoxel_log("\n");
+    zoxel_log("    Extras:\n");
+    zoxel_log("\n");
+    zoxel_log("        --freeroam           freeroam camera on game start\n");
+    zoxel_log("        --tiny               set game terrain size to 2\n");
+    zoxel_log("        --medium             set game terrain size to 6\n");
+    zoxel_log("        --large              set game terrain size to 12\n");
+    zoxel_log("        --lowrescharacters   set characters to lowest resolution\n");
     zoxel_log("\n");
     zoxel_log("-=-=-=-=-=--=-=-=-=-=--=-=-=-=-=--=-=-=-=-=-\n");
     zoxel_log("\n");
 }
-
-extern unsigned char zox_lowres_characters_mode;
-extern unsigned char terrain_mode;
-#define terrain_mode_tiny 1
-#define terrain_mode_medium 2
-#define terrain_mode_large 3
 
 int process_arguments(int argc, char* argv[]) {
     for (int i = 1; i < argc; i++) {
@@ -61,6 +72,8 @@ int process_arguments(int argc, char* argv[]) {
             zox_lowres_characters_mode = 1;
         } else if (strcmp(argv[i], "--singlethread") == 0) {
             is_multithreading = 0;
+        } else if (strcmp(argv[i], "--freeroam") == 0) {
+            game_rule_attach_to_character = 0;
         }
     }
     return EXIT_SUCCESS;

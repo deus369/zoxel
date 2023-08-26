@@ -2,10 +2,10 @@
 // #define zoxel_include_vulkan
 #define zoxel_include_players
 
-// #define zoxel_catch_opengl_errors        // opengl test
+// #define zoxel_catch_opengl_errors
 // #define zox_disable_render_terrain_chunks
-// #define zox_disable_render_ui_3D
 // #define zox_disable_render_characters
+// #define zox_disable_render_ui_3D
 
 // temp for pc with shitty gpu issues
 // #define zox_log_jumping
@@ -172,4 +172,3 @@
 // --- latest test here below ---
 // #define zox_test_voxes
 // #define zoxel_test_single_character3Ds      // spawn 1 penguin
-// #define zoxel_disable_attach_on_start

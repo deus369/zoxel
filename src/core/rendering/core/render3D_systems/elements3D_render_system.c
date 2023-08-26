@@ -59,7 +59,6 @@ void Elements3DRenderSystem(ecs_iter_t *it) {
             did_do_timing()
         #endif
         rendered_count++;
-        if (rendered_count >= 100) break;
     }
     if (has_set_material) {
         opengl_disable_buffer(attributes_textured3D.vertex_color);

@@ -1,5 +1,6 @@
 extern void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character);
 extern ecs_entity_t main_character3D;
+unsigned char game_rule_attach_to_character = 1;
 // do I still need render_camera_matrix? - yes - used to insert matrix in each camera system run
 
 void end_game(ecs_world_t *world) {
@@ -33,11 +34,14 @@ void play_game(ecs_world_t *world) {
     #ifdef zoxel_test_single_character3Ds
         spawn_many_characters3D(world);
     #endif
-    #if !defined(zoxel_disable_attach_on_start) && defined(zoxel_include_players)
-        attach_to_character(world, main_player, main_cameras[0], main_character3D);
+    #if defined(zoxel_include_players)
+        if (game_rule_attach_to_character) {
+            attach_to_character(world, main_player, main_cameras[0], main_character3D);
+        } else {
+            attach_to_character(world, main_player, main_cameras[0], 0);
+        }
     #endif
 }
-
 
 /*ecs_entity_t respawn_camera(ecs_world_t *world, ecs_entity_t old_camera_entity) {
     float3 camera_position = ecs_get(world, old_camera_entity, Position3D)->value;

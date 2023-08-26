@@ -5,6 +5,10 @@ void PlayerToggleCameraSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const CharacterLink *characterLink = &characterLinks[i];
         if (characterLink->value == 0) continue;
+        if (!ecs_has(world, characterLink->value, DisableMovement)) {
+            zoxel_log(" ! attached character [%lu] has no DisableMovement\n", characterLink->value);
+            continue;
+        }
         const DisableMovement *disableMovement = ecs_get(world, characterLink->value, DisableMovement);
         if (disableMovement->value) continue;
         unsigned char is_toggle_camera = 0;

@@ -15,7 +15,6 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         int tris_rendered = 0;
     #endif
     for (int i = 0; i < it->count; i++) {
-        // if (ecs_get(world, it->entities[i], MeshDirty)->value) continue;
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         #ifdef zox_debug_render3D_colored
             if (meshIndicies2->length == 0) zero_meshes++;
@@ -69,7 +68,4 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         opengl_unset_mesh();
         opengl_disable_opengl_program();
     }
-    /*#ifdef zoxel_catch_opengl_errors
-        if (rendered_count > 0) zoxel_log(" > rendered characters [%i] - %s\n", rendered_count, did_bug_out ? "buggy" : "fine");
-    #endif*/
 } zox_declare_system(RenderCharacters3DSystem)
