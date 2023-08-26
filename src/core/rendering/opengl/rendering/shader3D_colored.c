@@ -34,8 +34,6 @@ int load_shader3D_colored() {
     #else
         shader3D_colored = spawn_gpu_shader_inline(debug_shader3D_colored_vert_buffer, debug_shader3D_colored_frag_buffer);
     #endif
-    // glBindAttribLocation(shader3D_colored.x, 0, "vertex_position");
-    // glBindAttribLocation(shader3D_colored.x, 1, "vertex_color");
     colored3D_material = spawn_gpu_material_program(shader3D_colored);
     spawn_material3D_colored_properties(colored3D_material);
     #ifdef zoxel_catch_opengl_errors

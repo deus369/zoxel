@@ -59,7 +59,6 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
             tris_rendered += meshIndicies2->length / 3;
         #endif
         rendered_count++;
-        break;
     }
     #ifdef zox_debug_render3D_colored
         zoxel_log("  > rendered meshes [%i] unused meshes [%i] tris [%i]\n", meshes, zero_meshes, tris_rendered);
