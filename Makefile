@@ -180,12 +180,18 @@ run-vulkan:
 run-dev:
 	cd build && ./../$(target_dev)
 
+run-dev-tiny:
+	cd build && ./../$(target_dev) --tiny
+
 run-dev-vulkan:
 	./$(target_dev) --vulkan
 
 # run development + valgrind
 run-dev-debug:
-	cd build && valgrind ./../$(target_dev)
+	cd build && valgrind --leak-check=full ./../$(target_dev)
+
+run-dev-debug-tiny:
+	cd build && valgrind --leak-check=full ./../$(target_dev) --tiny
 
 # run release + flecs profiler
 run-profiler:

@@ -4,8 +4,9 @@
 
 // #define zoxel_catch_opengl_errors
 // #define zox_disable_render_terrain_chunks
-// #define zox_disable_render_characters
 // #define zox_disable_render_ui_3D
+// #define zox_disable_render_characters
+// #define zox_characters_as_cubes
 
 // temp for pc with shitty gpu issues
 // #define zox_log_jumping
@@ -18,7 +19,6 @@
 // #define zox_disable_characters3D_voxes
 
 // === Debugs ===
-
 
 // #define zox_disable_render_ui
 

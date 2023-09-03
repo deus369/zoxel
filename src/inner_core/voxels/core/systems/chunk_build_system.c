@@ -22,7 +22,7 @@ void add_voxel_face(MeshIndicies *meshIndicies2, MeshVertices *meshVertices2,
     }
     // add verts
     for (int a = 0, b = start2.y; a < voxel_face_vertices_length; a++, b = b + 1) {
-        float3 vertex_position = voxel_face_vertices[a]; // (float3) { cubeVertices[a + 0], cubeVertices[a + 1], cubeVertices[a + 2] };
+        float3 vertex_position = voxel_face_vertices[a]; // (float3) { cube_vertices[a + 0], cube_vertices[a + 1], cube_vertices[a + 2] };
         vertex_position = float3_multiply_float(vertex_position, voxel_scale);          // scale vertex
         vertex_position = float3_add(vertex_position, vertex_position_offset);   // offset vertex by voxel position in chunk
         vertex_position = float3_add(vertex_position, center_mesh_offset);       // add total mesh offset

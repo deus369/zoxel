@@ -35,12 +35,11 @@ void ElementRenderSystem(ecs_iter_t *it) {
             // glUniform1f(shader2D_textured_attributes.scale, 1);
             // glUniform1f(shader2D_textured_attributes.brightness, 1);
         }
+        float positionZ = ((int) layer2D->value) * shader_depth_multiplier;
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_set_buffer_attributes2D(meshGPULink->value.y, uvsGPULink->value);
         opengl_bind_texture(textureGPULink->value);
-        glUniform1f(shader2D_textured_attributes.positionZ, ((int) layer2D->value) * shader_depth_multiplier);
-        glUniform1f(shader2D_textured_attributes.positionX, position2D->value.x);
-        glUniform1f(shader2D_textured_attributes.positionY, position2D->value.y);
+        glUniform3f(shader2D_textured_attributes.position, position2D->value.x, position2D->value.y, positionZ);
         glUniform1f(shader2D_textured_attributes.angle, rotation2D->value);
         glUniform1f(shader2D_textured_attributes.scale, scale1D->value);
         glUniform1f(shader2D_textured_attributes.brightness, brightness->value);

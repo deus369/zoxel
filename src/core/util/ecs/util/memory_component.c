@@ -95,9 +95,10 @@
     }\
 }
 
-#define initialize_memory_component_non_pointer(component, dataType, length_)\
+#define initialize_memory_component_non_pointer(component, data_type, length_) {\
     component.length = length_;\
-    component.value = (dataType*) malloc(length_ * sizeof(dataType));
+    component.value = (data_type*) malloc(length_ * sizeof(data_type));\
+}
 
 #define re_initialize_memory_component(component, dataType, length_) {\
     if (component->length != length_) {\

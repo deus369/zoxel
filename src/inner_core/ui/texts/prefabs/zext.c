@@ -27,11 +27,9 @@ void set_zext(ZextData *zext_data, const char* text) {
     for (unsigned char i = 0; i < text_length; i++) zext_data->value[i] = convert_ascii(text[i]);
 }
 
-ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t parent, int2 position, float2 anchor, byte2 padding,
-    const char* text, int font_size, unsigned char alignment, unsigned char layer, float2 parent_position2D, int2 parent_pixel_size) {
+ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t parent, int2 position, float2 anchor, byte2 padding, const char* text, int font_size, unsigned char alignment, unsigned char layer, float2 parent_position2D, int2 parent_pixel_size) {
     // unsigned char alignment = 0; // zox_zext_alignment_centred;
     int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
-    // ecs_defer_begin(world);
     int textLength = strlen(text);
     int2 zext_size = (int2) { font_size * textLength, font_size };
     zox_instance(prefab)
@@ -53,7 +51,6 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t pa
     }
     zox_set_only(e, ZextData, { zextData.length, zextData.value })
     zox_set_only(e, Children, { children.length, children.value })
-    // ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
         printf("Spawned zext [%lu]\n", (long int) e);
     #endif

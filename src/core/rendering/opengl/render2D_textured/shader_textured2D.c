@@ -1,3 +1,14 @@
+typedef struct {
+    GLint vertex_position;
+    GLuint camera_matrix;
+    GLuint position;
+    GLuint angle;
+    GLuint scale;
+    GLuint brightness;
+    GLint vertex_uv;
+    GLuint texture;
+} MaterialTextured2D;
+
 const float shader_depth_multiplier = 0.001f; // 0.0001f;
 const unsigned char disableTextureLoaded = 0;
 GLuint2 shader2D_textured;
@@ -5,6 +16,19 @@ GLuint textured2D_material;
 GLuint2 squareTexturedMesh;
 GLuint squareTexturedModelUVs;
 MaterialTextured2D shader2D_textured_attributes;
+
+MaterialTextured2D initialize_material2D_textured(GLuint material) {
+    MaterialTextured2D materialTextured2D;
+    materialTextured2D.vertex_position = glGetAttribLocation(material, "vertex_position");
+    materialTextured2D.vertex_uv = glGetAttribLocation(material, "vertex_uv");
+    materialTextured2D.camera_matrix = glGetUniformLocation(material, "camera_matrix");
+    materialTextured2D.position = glGetUniformLocation(material, "position");
+    materialTextured2D.angle = glGetUniformLocation(material, "angle");
+    materialTextured2D.scale = glGetUniformLocation(material, "scale");
+    materialTextured2D.brightness = glGetUniformLocation(material, "brightness");
+    materialTextured2D.texture = glGetUniformLocation(material, "tex");
+    return materialTextured2D;
+}
 
 void dispose_shader2D_textured() {
     glDeleteBuffers(1, &squareTexturedMesh.x);
@@ -40,35 +64,6 @@ int load_shader2D_textured() {
     shader2D_textured_attributes = initialize_material2D_textured(textured2D_material);
     initialize_shader2D_textured(textured2D_material);
     return 0;
-}
-
-void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint texture, float2 position, float angle, float scale, float brightness) {
-    if (material == 0) return;
-    MaterialTextured2D materialTextured2D = initialize_material2D_textured(material);
-    glUseProgram(material);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_BLEND);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedMesh.x);    // for indices
-    glBindBuffer(GL_ARRAY_BUFFER, squareTexturedMesh.y);            // for vertex buffer data
-    glEnableVertexAttribArray(materialTextured2D.vertex_position);
-    glEnableVertexAttribArray(materialTextured2D.vertex_uv);
-    glVertexAttribPointer(materialTextured2D.vertex_position, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(0 * sizeof(float)));
-    glVertexAttribPointer(materialTextured2D.vertex_uv, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(2 * sizeof(float)));
-    glUniformMatrix4fv(materialTextured2D.camera_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
-    glUniform1f(materialTextured2D.positionX, position.x);
-    glUniform1f(materialTextured2D.positionY, position.y);
-    glUniform1f(materialTextured2D.angle, angle);
-    glUniform1f(materialTextured2D.scale, scale);
-    glUniform1f(materialTextured2D.brightness, brightness);
-    // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
-    opengl_render(6);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glDisable(GL_BLEND);
-    glUseProgram(0);
-    #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("render_entity_material2D");
-    #endif
 }
 
 void opengl_upload_shader2D_textured(GLuint2 mesh_buffer, GLuint uv_buffer, const int *indicies, int indicies_length, const float2 *verts, const float2 *uvs, int verts_length) {

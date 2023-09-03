@@ -127,21 +127,21 @@ void opengl_enable_vertex_buffer(GLuint shader_index, GLuint vertex_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glEnableVertexAttribArray(shader_index);
     glVertexAttribPointer(shader_index, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    // glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void opengl_enable_uv_buffer(GLuint shader_index, GLuint uv_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
     glEnableVertexAttribArray(shader_index);
     glVertexAttribPointer(shader_index, 2, GL_FLOAT, GL_FALSE,  0, 0);
-    // glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void opengl_enable_color_buffer(GLuint shader_index, GLuint color_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
     glEnableVertexAttribArray(shader_index);
     glVertexAttribPointer(shader_index, 3, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
-    // glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void opengl_disable_buffer(GLuint shader_index) {

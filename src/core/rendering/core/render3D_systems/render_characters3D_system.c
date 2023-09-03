@@ -19,7 +19,9 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         #ifdef zox_debug_render3D_colored
             if (meshIndicies2->length == 0) zero_meshes++;
         #endif
-        if (meshIndicies2->length == 0) continue;
+        #ifndef zox_characters_as_cubes
+            if (meshIndicies2->length == 0) continue;
+        #endif
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
         if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) continue;
         const ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
@@ -29,7 +31,7 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         if (!has_set_material) {
             has_set_material = 1;
             opengl_set_material(colored3D_material);
-            glUniformMatrix4fv(attributes_colored3D.camera_matrix, 1, GL_FALSE, (float*) &render_camera_matrix);
+            opengl_set_matrix(attributes_colored3D.camera_matrix, render_camera_matrix);
             #ifndef zox_debug_color_shader
                 glUniform1f(attributes_colored3D.scale, 1.0f);
                 glUniform4f(attributes_colored3D.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
@@ -44,7 +46,11 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         glUniform3f(attributes_colored3D.position, position->value.x, position->value.y, position->value.z);
         glUniform4f(attributes_colored3D.rotation, rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
         #ifndef zox_disable_render_characters
-            opengl_render(meshIndicies2->length);
+            #ifdef zox_characters_as_cubes
+                opengl_render(36);
+            #else
+                opengl_render(meshIndicies2->length);
+            #endif
         #endif
         #ifdef zoxel_catch_opengl_errors
             if (check_opengl_error_unlogged() != 0) {

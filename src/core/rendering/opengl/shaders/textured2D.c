@@ -3,18 +3,16 @@ const GLchar* shader2D_textured_vert_buffer = "\
 #version 300 es\n\
 layout(location=0) in lowp vec2 vertex_position;\
 layout(location=1) in lowp vec2 vertex_uv;\
-uniform lowp mat4 camera_matrix;\
-uniform lowp float positionX;\
-uniform lowp float positionY;\
-uniform lowp float positionZ;\
+uniform highp mat4 camera_matrix;\
+uniform lowp vec3 position;\
 uniform lowp float angle;\
 uniform lowp float scale;\
 out lowp vec2 uv;\
 \
 void main() {\
-    vec2 position = vec2(positionX, positionY);\
+    vec2 position2 = vec2(position.x, position.y);\
     mat2 rotate = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));\
-    gl_Position = camera_matrix * vec4(position + (rotate * vertex_position) * scale, positionZ, 1.0);\
+    gl_Position = camera_matrix * vec4(position2 + (rotate * vertex_position) * scale, position.z, 1.0);\
     uv = vertex_uv;\
 }";
 

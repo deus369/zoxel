@@ -15,6 +15,7 @@ void set_element_position(ecs_world_t *world, ecs_entity_t e, float2 parent_posi
     }
 }
 
+// moves ui around after repositioning the pixel position
 void ElementPositionSystem(ecs_iter_t *it) {
     ecs_query_t *changeQuery = it->ctx;
     ecs_iter_t change_iter = ecs_query_iter(it->world, changeQuery);

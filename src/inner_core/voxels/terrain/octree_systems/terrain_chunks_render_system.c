@@ -50,8 +50,8 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
             has_set_material = 1;
             opengl_set_material(materialGPULink->value);
             opengl_set_matrix(attributes_textured3D.camera_matrix, render_camera_matrix);
-            glUniform4f(attributes_textured3D.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
             opengl_bind_texture(textureGPULink->value);
+            glUniform4f(attributes_textured3D.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
             opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes_textured3D);
         }
         opengl_set_mesh_indicies(meshGPULink->value.x);
@@ -61,6 +61,7 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         glUniform3f(attributes_textured3D.position, position3D->value.x, position3D->value.y, position3D->value.z);
         #ifndef zox_disable_render_terrain_chunks
             opengl_render(meshIndicies2->length);
+            // opengl_render(36);
         #endif
         #ifdef zoxel_catch_opengl_errors
             if (check_opengl_error_unlogged() != 0) {

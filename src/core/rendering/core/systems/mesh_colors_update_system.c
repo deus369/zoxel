@@ -12,27 +12,30 @@ void CharacterMeshUploadSystem(ecs_iter_t *it) {
         const MeshVertices *meshVertices2 = &meshVertices[i];
         const MeshColorRGBs *meshColors2 = &meshColorRGBs[i];
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
-        // if (meshIndicies2->length > 80) continue;
         meshDirty->value = 0;
-        if (meshColors2->length != meshVertices2->length) zoxel_log("WAEIJWEOIWEJWEOJW\n");
-        if (meshColors2->length != meshVertices2->length) continue;
+        // if (meshColors2->length != meshVertices2->length) continue;
         MeshGPULink *meshGPULink = &meshGPULinks[i];
         ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
-        if (meshIndicies2->length == 0) {
-            // clear mesh and colors buffer if zero again
-            // zoxel_log(" + mesh gpu deleted [%ix%i:%i] -> indicies [%i]\n", meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value, meshIndicies2->length);
-            if (meshGPULink->value.x != 0 && meshGPULink->value.y != 0 && colorsGPULink->value != 0) {
+        #ifndef zox_characters_as_cubes
+            if (meshIndicies2->length == 0) {
+                // clear mesh and colors buffer if zero again
                 // zoxel_log(" + mesh gpu deleted [%ix%i:%i] -> indicies [%i]\n", meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value, meshIndicies2->length);
-                clear_gpu_mesh(&meshGPULink->value);
-                clear_regular_buffer(&colorsGPULink->value);
-                // zoxel_log(" + mesh gpu deleted 2 [%ix%i:%i] -> indicies [%i]\n", meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value, meshIndicies2->length);
+                if (meshGPULink->value.x != 0 && meshGPULink->value.y != 0 && colorsGPULink->value != 0) {
+                    // zoxel_log(" + mesh gpu deleted [%ix%i:%i] -> indicies [%i]\n", meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value, meshIndicies2->length);
+                    clear_regular_buffer(&meshGPULink->value.x);
+                    clear_regular_buffer(&meshGPULink->value.y);
+                    clear_regular_buffer(&colorsGPULink->value);
+                    // zoxel_log(" + mesh gpu deleted 2 [%ix%i:%i] -> indicies [%i]\n", meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value, meshIndicies2->length);
+                }
+                continue;
             }
-            continue;
-        }
+        #endif
         if (meshGPULink->value.x == 0 && meshGPULink->value.y == 0 && colorsGPULink->value == 0) {
-            // zoxel_log("  > character did not have gpu mesh buffers\n");
-            meshGPULink->value = spawn_gpu_mesh_buffers();
+            // meshGPULink->value = spawn_gpu_mesh_buffers();
+            meshGPULink->value.x = spawn_gpu_generic_buffer();
+            meshGPULink->value.y = spawn_gpu_generic_buffer();
             colorsGPULink->value = spawn_gpu_generic_buffer();
+            // zoxel_log("  > character did not have gpu mesh buffers\n");
         }
         opengl_upload_mesh_colors(meshGPULink->value, colorsGPULink->value, meshIndicies2->value, meshIndicies2->length, meshVertices2->value, meshColors2->value, meshVertices2->length);
         #ifdef zox_errorcheck_render_characters_3D
