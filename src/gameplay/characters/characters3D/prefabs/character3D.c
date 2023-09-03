@@ -3,6 +3,7 @@ ecs_entity_t main_character3D = 0;
 const int init_character3D_lod = 1;
 const int character3D_lod_dividor = 1; // 2;
 const unsigned char max_character_division = 0; // 0;
+int characters_count = 0;
 
 unsigned char get_character_division_from_camera(unsigned char distance_to_camera) {
     unsigned char division = 255;
@@ -54,13 +55,12 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file
     zox_set_only(e, Rotation3D, { rotation })
     zox_set_only(e, VoxLink, { main_terrain })
     zox_set_only(e, RenderLod, { lod })
+    spawn_gpu_mesh(world, e);
+    spawn_gpu_colors(world, e);
+    spawn_element3D(world, e);  // spawn the uis
     #ifndef zox_disable_characters3D_voxes
         set_vox_from_vox_file(world, e, vox);
     #endif
-    // spawn the  mesh gpu stuff here
-    spawn_gpu_mesh(world, e);
-    spawn_gpu_colors(world, e);
-    // spawn the ui
-    spawn_element3D(world, e);
+    characters_count++;
     return e;
 }

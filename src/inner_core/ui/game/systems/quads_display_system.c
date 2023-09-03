@@ -1,5 +1,5 @@
 void QuadsLabelSystem(ecs_iter_t *it) {
-    unsigned char updated = 0;   //! Skip changes if isn't updated.
+    unsigned char has_set = 0;   //! Skip changes if isn't has_set.
     char buffer[20];
     // const char* text = buffer;
     QuadsCount *quadsCount = ecs_field(it, QuadsCount, 2);
@@ -10,14 +10,14 @@ void QuadsLabelSystem(ecs_iter_t *it) {
         ZextDirty *zextDirty = &zextDirtys[i];
         ZextData *zextData = &zextDatas[i];
         quadsCount->value = tri_count;
-        if (!updated) {
-            updated = 1;
+        if (!has_set) {
+            has_set = 1;
             snprintf(buffer, sizeof(buffer), "Triangles %i", tri_count);
         }
         set_zext(zextData, buffer);
         zextDirty->value = 1;
     }
-    if (!updated) {
+    if (!has_set) {
         ecs_query_skip(it);
         // free(buffer);
     }

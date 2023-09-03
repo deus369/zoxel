@@ -15,7 +15,7 @@ void FreeCameraToggleSystem(ecs_iter_t *it) {
             ecs_entity_t device_entity = deviceLinks->value[j];
             if (ecs_has(world, device_entity, Mouse)) {
                 const Mouse *mouse = ecs_get(world, device_entity, Mouse);
-                if (mouse->left.pressed_this_frame) is_triggered = 1;
+                if (mouse->right.pressed_this_frame) is_triggered = 1;
                 mouse_entity = device_entity;
             }
         }

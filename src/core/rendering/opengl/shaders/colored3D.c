@@ -1,12 +1,12 @@
 const GLchar* shader3D_colored_vert_buffer = "\
 #version 300 es\n\
-layout(location=0) in lowp vec3 vertex_position;\
-layout(location=1) in lowp vec3 vertex_color;\
+layout(location=0) in highp vec3 vertex_position;\
+layout(location=1) in highp vec3 vertex_color;\
 uniform highp mat4 camera_matrix;\
 uniform highp vec3 position;\
 uniform highp vec4 rotation;\
 uniform highp float scale;\
-out lowp vec3 vertex_color_frag;\
+out highp vec3 vertex_color_frag;\
 out highp float fog_level;\
 \
 vec3 float4_rotate_float3(vec4 rotation, vec3 value) {\
@@ -25,11 +25,11 @@ void main() {\
 
 const GLchar* shader3D_colored_frag_buffer = "\
 #version 300 es\n\
-uniform lowp vec4 fog_data;\
+uniform highp vec4 fog_data;\
 uniform lowp float brightness;\
-in lowp vec3 vertex_color_frag;\
+in highp vec3 vertex_color_frag;\
 in highp float fog_level;\
-out lowp vec3 color;\
+out highp vec3 color;\
 \
 void main() {\
     color = vertex_color_frag * brightness;\

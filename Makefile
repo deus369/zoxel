@@ -188,10 +188,10 @@ run-dev-vulkan:
 
 # run development + valgrind
 run-dev-debug:
-	cd build && valgrind --leak-check=full ./../$(target_dev)
+	cd build && valgrind -s --leak-check=full ./../$(target_dev)
 
 run-dev-debug-tiny:
-	cd build && valgrind --leak-check=full ./../$(target_dev) --tiny
+	cd build && valgrind -s --leak-check=full ./../$(target_dev) --tiny
 
 # run release + flecs profiler
 run-profiler:

@@ -21,6 +21,17 @@ ecs_entity_t spawn_zext_prefab(ecs_world_t *world) {
     return e;
 }
 
+unsigned char is_zext(ZextData *zext_data, const char* text) {
+    unsigned char text_length = strlen(text);
+    if (zext_data->length != text_length) return 0;
+    for (int i = 0; i < text_length; i++) {
+        if (convert_ascii(text[i]) != zext_data->value[i]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 void set_zext(ZextData *zext_data, const char* text) {
     unsigned char text_length = strlen(text);
     if (zext_data->length != text_length) re_initialize_memory_component(zext_data, unsigned char, text_length)

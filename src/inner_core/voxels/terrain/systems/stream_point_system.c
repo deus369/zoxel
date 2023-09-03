@@ -37,14 +37,10 @@ void StreamPointSystem(ecs_iter_t *it) {
                 const ChunkNeighbors *chunkNeighbors = &chunkNeighbors2[j];
                 if (renderLod->value != new_chunk_division ||
                     // check if neighbors changed division
-                    (chunkNeighbors->value[0] != 0 && ecs_get(it->world, chunkNeighbors->value[0], RenderLod)->value !=
-                        get_chunk_division(new_position, int3_left(chunkPosition->value))) ||
-                    (chunkNeighbors->value[1] != 0 && ecs_get(it->world, chunkNeighbors->value[1], RenderLod)->value !=
-                        get_chunk_division(new_position, int3_right(chunkPosition->value))) ||
-                    (chunkNeighbors->value[4] != 0 && ecs_get(it->world, chunkNeighbors->value[4], RenderLod)->value !=
-                        get_chunk_division(new_position, int3_back(chunkPosition->value)))  ||
-                    (chunkNeighbors->value[5] != 0 && ecs_get(it->world, chunkNeighbors->value[5], RenderLod)->value !=
-                        get_chunk_division(new_position, int3_front(chunkPosition->value)))) {
+                    (chunkNeighbors->value[0] != 0 && ecs_get(it->world, chunkNeighbors->value[0], RenderLod)->value != get_chunk_division(new_position, int3_left(chunkPosition->value))) ||
+                    (chunkNeighbors->value[1] != 0 && ecs_get(it->world, chunkNeighbors->value[1], RenderLod)->value != get_chunk_division(new_position, int3_right(chunkPosition->value))) ||
+                    (chunkNeighbors->value[4] != 0 && ecs_get(it->world, chunkNeighbors->value[4], RenderLod)->value != get_chunk_division(new_position, int3_back(chunkPosition->value)))  ||
+                    (chunkNeighbors->value[5] != 0 && ecs_get(it->world, chunkNeighbors->value[5], RenderLod)->value != get_chunk_division(new_position, int3_front(chunkPosition->value)))) {
                     changed[j] = new_chunk_division;
                     #ifdef zoxel_time_stream_point_system
                         updated_count++;

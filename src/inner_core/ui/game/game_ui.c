@@ -1,23 +1,30 @@
 #ifndef zoxel_game_ui
 #define zoxel_game_ui
 
+// components
 zox_declare_tag(MainMenu)
 zox_declare_tag(OptionsUI)
 zox_declare_tag(PauseUI)
 zox_declare_tag(FPSDisplay)
 zox_declare_tag(QuadsCountLabel)
+zox_declare_tag(GameDebugLabel)
 zox_component(QuadsCount, int)
 zox_component(FPSDisplayTicker, double)
+// functions
 #include "fun/button_event_play_game.c"
 #include "fun/button_event_exit_app.c"
 #include "fun/button_event_return_to_game.c"
+// prefabs
 #include "prefabs/main_menu.c"
 #include "prefabs/fps_display.c"
 #include "prefabs/pause_ui.c"
 #include "prefabs/options_ui.c"
 #include "prefabs/quad_count_label.c"
+#include "prefabs/game_debug_label.c"
+// systems
 #include "systems/fps_display_system.c"
 #include "systems/quads_display_system.c"
+#include "systems/game_debug_label_system.c"
 
 void spawn_prefabs_game_ui(ecs_world_t *world) {
     spawn_prefab_main_menu(world);
@@ -25,6 +32,7 @@ void spawn_prefabs_game_ui(ecs_world_t *world) {
     spawn_prefab_pause_ui(world);
     spawn_prefab_options_ui(world);
     spawn_prefab_quad_count_label(world);
+    spawn_prefab_game_debug_label(world);
 }
 
 zox_begin_module(GameUI)
@@ -33,10 +41,12 @@ zox_define_tag(OptionsUI)
 zox_define_tag(PauseUI)
 zox_define_tag(FPSDisplay)
 zox_define_tag(QuadsCountLabel)
+zox_define_tag(GameDebugLabel)
 zox_define_component(QuadsCount)
 zox_define_component(FPSDisplayTicker)
 zox_system(FpsDisplaySystem, EcsOnUpdate, [out] FPSDisplayTicker, [out] ZextDirty, [out] ZextData)
 zox_system(QuadsLabelSystem, EcsOnUpdate, [none] QuadsCountLabel, [out] QuadsCount, [out] ZextDirty, [out] ZextData)
+zox_system(GameDebugLabelSystem, EcsOnUpdate, [none] GameDebugLabel, [out] ZextDirty, [out] ZextData)
 zoxel_end_module(GameUI)
 
 #endif

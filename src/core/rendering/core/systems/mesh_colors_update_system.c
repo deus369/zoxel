@@ -29,14 +29,14 @@ void CharacterMeshUploadSystem(ecs_iter_t *it) {
                 }
                 continue;
             }
+            if (meshGPULink->value.x == 0 && meshGPULink->value.y == 0 && colorsGPULink->value == 0) {
+                // meshGPULink->value = spawn_gpu_mesh_buffers();
+                meshGPULink->value.x = spawn_gpu_generic_buffer();
+                meshGPULink->value.y = spawn_gpu_generic_buffer();
+                colorsGPULink->value = spawn_gpu_generic_buffer();
+                // zoxel_log("  > character did not have gpu mesh buffers\n");
+            }
         #endif
-        if (meshGPULink->value.x == 0 && meshGPULink->value.y == 0 && colorsGPULink->value == 0) {
-            // meshGPULink->value = spawn_gpu_mesh_buffers();
-            meshGPULink->value.x = spawn_gpu_generic_buffer();
-            meshGPULink->value.y = spawn_gpu_generic_buffer();
-            colorsGPULink->value = spawn_gpu_generic_buffer();
-            // zoxel_log("  > character did not have gpu mesh buffers\n");
-        }
         opengl_upload_mesh_colors(meshGPULink->value, colorsGPULink->value, meshIndicies2->value, meshIndicies2->length, meshVertices2->value, meshColors2->value, meshVertices2->length);
         #ifdef zox_errorcheck_render_characters_3D
             zoxel_log(" + character mesh gpu uploaded [%ix%i:%i] -> indicies [%i]\n", meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value, meshIndicies2->length);

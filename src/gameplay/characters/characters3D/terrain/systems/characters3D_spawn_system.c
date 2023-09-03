@@ -1,16 +1,10 @@
 // notes: to test, set terrain to 1x1x1 chunks, disable physics, enable this systems logging
-#ifdef zoxel_log_characters_count
-    int characters_count = 0;
-#endif
 unsigned char has_spawned_main_character = 0;
 
 ecs_entity_t spawn_chunk_character(ecs_world_t *world, ecs_entity_t_array_d* entities, vox_file *vox, float3 position, unsigned char character_lod) {
     float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
     ecs_entity_t e = spawn_character3D(world, prefab_character3D, vox, position, rotation, character_lod);
     add_to_ecs_entity_t_array_d(entities, e);
-    #ifdef zoxel_log_characters_count
-        characters_count++;
-    #endif
     return e;
 }
 
@@ -23,14 +17,14 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
     GenerateChunkEntities *generateChunkEntities = ecs_field(it, GenerateChunkEntities, 6);
     for (int i = 0; i < it->count; i++) {
         GenerateChunkEntities *generateChunkEntities2 = &generateChunkEntities[i];
-        if (generateChunkEntities2->value != 1) continue;
+        if (generateChunkEntities2->value != zox_chunk_entities_state_triggered) continue;
         const ChunkOctree *chunkOctree = &chunkOctrees[i];
         if (chunkOctree->nodes == NULL) continue;   // if basically all air or solid, no need to spawn
         const RenderLod *renderLod = &renderLods[i];
         EntityLinks *entityLinks2 = &entityLinks[i];
         if (entityLinks2->length != 0) {
             // if already spawned, skip spawning, only update LODs
-            generateChunkEntities2->value = 2;
+            generateChunkEntities2->value = zox_chunk_entities_state_spawned;
             continue;
         }
         unsigned char camera_distance = renderLod->value;
@@ -64,7 +58,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             float3 position = (float3) { global_voxel_position.x, global_voxel_position.y, global_voxel_position.z };
             float3_multiply_float_p(&position, terrain_voxel_scale);
             // todo: use character bounds before spawning, scale voxel position by terrain scale
-            position.y += 0.75f;
+            position.y += 0.26f; // 0.75f;
             if (!has_spawned_main_character) {
                 if (int2_equals((int2) { chunkPosition->value.x, chunkPosition->value.z }, int2_zero) || int2_equals((int2) { chunkPosition->value.x, chunkPosition->value.z + 1 }, int2_zero)) {
                     has_spawned_main_character = 1;
@@ -78,12 +72,10 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         if (entityLinks2->length != 0) free(entityLinks2->value);
         entityLinks2->length = entities->size;
         entityLinks2->value = finalize_ecs_entity_t_array_d(entities);
-        generateChunkEntities2->value = 2;
+        generateChunkEntities2->value = zox_chunk_entities_state_spawned;
         // zoxel_log(" > chunk characters were triggered %i\n", entityLinks2->length);
     }
     #ifdef zoxel_log_characters_count
-        if (characters_count != 0) {
-            zoxel_log(" + characters [%i]\n", characters_count);
-        }
+        if (characters_count != 0) zoxel_log(" + characters [%i]\n", characters_count);
     #endif
 } zox_declare_system(Characters3DSpawnSystem)

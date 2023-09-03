@@ -39,14 +39,17 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
             if (ecs_has(world, device_entity, Keyboard)) {
                 const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
                 if (keyboard->v.pressed_this_frame) {
-                    spawn_zoxel_window(world);
+                    toggle_ui(world, &game_debug_label, &spawn_game_debug_label);
                 } else if (keyboard->x.pressed_this_frame) {
                     toggle_ui(world, &fps_display, &spawn_fps_display);
                 } else if (keyboard->c.pressed_this_frame) {
                     toggle_ui(world, &quads_label, &spawn_quad_count_label);
                 } else if (keyboard->z.pressed_this_frame) {
                     toggle_collision_debug(world);
+                } else if (keyboard->m.pressed_this_frame) {
+                    spawn_zoxel_window(world);
                 }
+                
             }
         }
     }

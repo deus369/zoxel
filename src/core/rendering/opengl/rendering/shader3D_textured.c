@@ -63,17 +63,6 @@ void opengl_set_material3D_uvs_position(float3 position, Material3DTextured *att
 }
 
 void opengl_upload_shader3D_textured(GLuint2 mesh_buffer, GLuint uv_buffer, GLuint color_buffer, const int *indicies, int indicies_length, const float3 *verts, int verts_length, const float2 *uvs, const color_rgb *color_rgbs) {
-    /*glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cube_indicies), cube_indicies, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, mesh_buffer.y);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(cube_vertices), cube_vertices, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(cube_uvs), cube_uvs, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(cube_colors), cube_colors, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);*/
-    // zoxel_log(" > sizes: %ix%ix%i\n", sizeof(cube_vertices), sizeof(cube_uvs), sizeof(cube_colors));
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -84,8 +73,19 @@ void opengl_upload_shader3D_textured(GLuint2 mesh_buffer, GLuint uv_buffer, GLui
     glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
     glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(color_rgb), color_rgbs, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    
     #ifdef zoxel_catch_opengl_errors
         check_opengl_error("opengl_upload_shader3D_textured");
     #endif
 }
+
+/*glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
+glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cube_indicies), cube_indicies, GL_STATIC_DRAW);
+glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+glBindBuffer(GL_ARRAY_BUFFER, mesh_buffer.y);
+glBufferData(GL_ARRAY_BUFFER, sizeof(cube_vertices), cube_vertices, GL_STATIC_DRAW);
+glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
+glBufferData(GL_ARRAY_BUFFER, sizeof(cube_uvs), cube_uvs, GL_STATIC_DRAW);
+glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
+glBufferData(GL_ARRAY_BUFFER, sizeof(cube_colors), cube_colors, GL_STATIC_DRAW);
+glBindBuffer(GL_ARRAY_BUFFER, 0);*/
+// zoxel_log(" > sizes: %ix%ix%i\n", sizeof(cube_vertices), sizeof(cube_uvs), sizeof(cube_colors));
