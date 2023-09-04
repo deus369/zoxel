@@ -25,13 +25,8 @@ extern unsigned char is_vulkan;
 
 unsigned char initialize_rendering(ecs_world_t *world) {
     if (headless) return EXIT_SUCCESS;
-    if (is_vulkan) {
-        // zoxel_log(" > initializing vulkan\n");
-        return initialize_vulkan(world); // SDL_WINDOW_VULKAN
-    } else {
-        // zoxel_log(" > initializing opengl\n");
-        return initialize_opengl(world);
-    }
+    if (is_vulkan) return initialize_vulkan(world); // SDL_WINDOW_VULKAN
+    else return initialize_opengl(world);
 }
 
 zox_begin_module(Rendering)
@@ -44,11 +39,8 @@ zox_define_component(Brightness)
 zox_define_component(RenderLod)
 // zoxel_import_modules
 if (!headless) {
-    if (is_vulkan) {
-        zox_import_module(Vulkan)
-    } else {
-        zox_import_module(OpenGL)
-    }
+    if (is_vulkan) zox_import_module(Vulkan)
+    else zox_import_module(OpenGL)
     zox_import_module(RenderingCore)
 }
 zoxel_end_module(Rendering)

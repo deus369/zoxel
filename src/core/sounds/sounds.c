@@ -2,24 +2,8 @@
 #define zoxel_sounds
 
 // zoxel_settings
-#ifdef SDL_MIXER
-    #ifdef zoxel_on_android
-		  #include <SDL_mixer.h>
-    #else
-		  #include <SDL2/SDL_mixer.h>
-    #endif
-#endif
-#define sound_sample_rate 44100 // / 2
-#define sample_rate_f 44100.0f // / 2.0f
-#define static_sounds_length 5
-#ifdef zoxel_debug_sounds
-    #define sound_display_skip_rate 35
-    #define sound_display_start 0.0f
-    #define sound_display_end 1.0f
-#endif
-const float sound_attack_multiplier = 0.02f; // 0.04f
-const float sound_dampen_multiplier = 0.7f; // 0.92f
-const float sound_noise = 0.02f; // 0.04
+#include "util/import_sdl_mixer.c"
+#include "settings/settings.c"
 // zoxel_prefab_declares
 zox_declare_tag(Sound)
 zox_byte_component(InstrumentType)
@@ -66,6 +50,7 @@ void spawn_prefabs_sounds(ecs_world_t *world) {
 }
 
 zox_begin_module(Sounds)
+// zoxel_define_components
 zox_define_tag(Sound)
 zox_define_component(InstrumentType)
 zox_define_component(SoundLength)
@@ -76,6 +61,7 @@ zox_define_component(TriggerSound)
 zox_define_component_w_dest(SDLSound)
 zox_define_component(SoundDirty)
 zox_define_memory_component(SoundData)
+// zoxel_define_systems
 zox_system(SoundGenerateSystem, EcsOnValidate, [none] Sound, [out] GenerateSound, [in] SoundLength, [in] SoundFrequency, [in] SoundVolume, [in] InstrumentType, [out] SoundData, [out] SoundDirty)
 #ifdef SDL_MIXER
     zox_system(SoundUpdateSystem, EcsPostUpdate, [none] Sound, [in] SoundData, [out] SoundDirty, [out] SDLSound)

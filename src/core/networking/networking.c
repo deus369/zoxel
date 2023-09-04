@@ -1,7 +1,23 @@
 #ifndef zoxel_networking
 #define zoxel_networking
 
-// todo:
+// backend todo:
+//      - use raw packets for relaying character positions (per frame data)
+//      > create a test packet system, similar to the send system, used to test limits of packets
+
+// connections / pinging todo:
+//      > create an entity for a connection
+//      > create a ping client system, that keeps bouncing packets to a connection, if no reply back for x seconds, disconnect
+//      > create ping host system, recieves pings, replies
+//      > create ping host disconnect system, if no pings for x seconds, disconnect
+
+// secured packets todo:
+//      - use this for connecting to host and messages
+//      > secure sending -> uses a unique id on a packet, keeps sending
+//      > secure recieving -> stores dictionary of packets recieved for up to x seconds, removes duplicates
+//      > secure packet host clean system -> removes stored secured packets after x seconds
+
+// front end todo:
 //      > create a chat ui, it creates a net player room
 //      > when window closes, destroy room, including all players
 //      > when connecting confirmed, server will send all other netplayer data to the new client
@@ -41,8 +57,7 @@ extern unsigned char headless;
 void spawn_prefabs_networking(ecs_world_t *world) {
     spawn_prefab_net_room(world);
     spawn_prefab_net_player(world);
-    // for some reason it calls destruction when making prefabs, so we put these after
-    zox_define_destruction(SocketLink)
+    zox_define_destruction(SocketLink)  // for some reason it calls destruction when making prefabs, so we put these after
     // #ifdef zoxel_test_networking
     if (headless) {
         if (server_mode) spawn_net_room(world, SERVER_PORT);

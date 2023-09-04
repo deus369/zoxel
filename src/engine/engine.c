@@ -8,7 +8,6 @@
 #define FLECS_SYSTEM 
 #define FLECS_PIPELINE
 #include "../../include/flecs.h"
-// #define SDL_IMAGES
 #define SDL_MIXER
 // #define USE_SDL_3
 #include <signal.h> // used for detecting cancel
@@ -35,7 +34,6 @@ void spawn_prefabs_engine(ecs_world_t *world) {
     spawn_prefabs_outer_core(world);
     spawn_prefabs_gameplay(world);
     spawn_prefabs_space(world);
-    // zoxel_log(" + spawned all prefabs\n");
 }
 
 zox_begin_module(ZoxelEngine)

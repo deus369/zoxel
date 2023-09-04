@@ -1,6 +1,8 @@
 #ifndef zoxel_apps
 #define zoxel_apps
 
+// zoxel apps: handles os windows, using (sdl, glut) libraries
+
 // zoxel_settings
 #include "settings/settings.c"
 // app variables

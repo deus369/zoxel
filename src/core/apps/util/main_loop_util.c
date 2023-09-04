@@ -1,3 +1,5 @@
+// todo: move this to engine code
+
 extern void engine_update();
 
 void exit_app() {

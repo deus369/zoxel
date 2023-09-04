@@ -1,7 +1,7 @@
 zox_component(SocketLink, int)
 
 void set_new_socket(ecs_world_t *world, ecs_entity_t e, int port) {
-    ecs_set(world, e, SocketLink, { open_socket(port) });
+    zox_set_only(e, SocketLink, { open_socket(port) })
 }
 
 ECS_DTOR(SocketLink, ptr, {
