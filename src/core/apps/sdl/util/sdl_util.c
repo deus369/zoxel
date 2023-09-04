@@ -217,7 +217,6 @@ SDL_Window* spawn_sdl_window() {
     #if !defined(zoxel_on_web) && !defined(zoxel_on_android)
         sdl_set_fullscreen(window, fullscreen);
     #endif
-    // load_app_icon(window);
     return window;
 }
 

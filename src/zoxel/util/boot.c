@@ -3,6 +3,7 @@ extern unsigned char is_split_screen;
     extern ecs_entity_t fps_display;
 #endif
 #define main_camera_rotation_speed 60 * 0.22f
+const char *icon_filepath;
 
 unsigned char boot_zoxel_game(ecs_world_t *world) {
     // zoxel_log(" > [zoxel] begins to boot\n");
@@ -14,6 +15,11 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     if (initialize_rendering(world) == EXIT_FAILURE) return EXIT_FAILURE;
     zoxel_log(" > [zoxel] success initializing rendering\n");
     load_resources_engine(world);
+
+    icon_filepath = resources_folder_name"textures/game_icon.png";
+    zoxel_log(" > icon_filepath set to [%s]\n", icon_filepath);
+    load_app_icon(main_window, icon_filepath);
+
     // zoxel_log(" > [zoxel] success initializing sdl window\n");
     ecs_entity_t realm = 0;
     #ifdef zoxel_include_players

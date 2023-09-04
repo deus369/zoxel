@@ -8,6 +8,7 @@
 #include "util/touchscreen_extract_util.c"
 #include "util/gamepad_extract_util.c"
 #include "util/input_util.c"
+#include "util/mouse_util.c"
 
 zox_begin_module(AppsInputs)
 // unique sdl attributes?

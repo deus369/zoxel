@@ -3,7 +3,6 @@
 //      > /build/android-build/app/src/main/assets/resources
 const char *data_path = NULL;
 char *resources_path = NULL;
-extern const char *icon_filepath;
 // const char *icon_filepath = resources_folder_name"textures/game_icon.png";
 
 #ifndef zoxel_on_android
@@ -207,8 +206,6 @@ unsigned char initialize_pathing() {
     } else {
         zoxel_log("SDL data_path (MYSTERIOUSLY DOES NOT EXIST): %s\n", data_path);
     }
-    icon_filepath = resources_folder_name"textures/game_icon.png";
-    zoxel_log(" > icon_filepath set to [%s]\n", icon_filepath);
     return EXIT_SUCCESS;
 }
 

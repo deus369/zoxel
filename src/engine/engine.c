@@ -8,7 +8,7 @@
 #define FLECS_SYSTEM 
 #define FLECS_PIPELINE
 #include "../../include/flecs.h"
-#define SDL_IMAGES
+// #define SDL_IMAGES
 #define SDL_MIXER
 // #define USE_SDL_3
 #include <signal.h> // used for detecting cancel

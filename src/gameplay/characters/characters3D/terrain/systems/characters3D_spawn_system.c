@@ -59,14 +59,17 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             float3_multiply_float_p(&position, terrain_voxel_scale);
             // todo: use character bounds before spawning, scale voxel position by terrain scale
             position.y += 0.26f; // 0.75f;
+            unsigned char did_spawn_main = 0;
             if (!has_spawned_main_character) {
-                if (int2_equals((int2) { chunkPosition->value.x, chunkPosition->value.z }, int2_zero) || int2_equals((int2) { chunkPosition->value.x, chunkPosition->value.z + 1 }, int2_zero)) {
+                // todo: fix the character lodding breaking when attaching to this character
+                //if (int2_equals((int2) { chunkPosition->value.x, chunkPosition->value.z }, int2_zero)) { // || int2_equals((int2) { chunkPosition->value.x, chunkPosition->value.z + 1 }, int2_zero)) {
                     has_spawned_main_character = 1;
                     main_character3D = spawn_chunk_character(world, entities, &vox, position, character_lod);
-                }
+                    did_spawn_main = 1;
+                //}
             }
             #ifndef zox_disable_characters3D
-                spawn_chunk_character(world, entities, &vox, position, character_lod);
+                if (!did_spawn_main) spawn_chunk_character(world, entities, &vox, position, character_lod);
             #endif
         }
         if (entityLinks2->length != 0) free(entityLinks2->value);

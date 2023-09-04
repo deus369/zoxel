@@ -7,7 +7,6 @@
 zox_declare_tag(Texture)
 zox_declare_tag(NoiseTexture)
 zox_declare_tag(FrameTexture)
-zox_declare_tag(SaveTexture)
 zox_declare_tag(DirtTexture)
 zox_declare_tag(GrassTexture)
 zox_declare_tag(SandTexture)
@@ -34,7 +33,6 @@ zox_byte_component(FrameCorner)
 // zoxel_system_includes
 #include "systems/animate_noise_system.c"
 #include "systems/texture_update_system.c"
-#include "systems/texture_save_system.c"
 #include "systems/noise_texture_system.c"
 #include "systems/frame_texture_system.c"
 #include "systems/tilemap_generation_system.c"
@@ -53,7 +51,6 @@ zox_begin_module(TexturesCore)
 zox_define_tag(Texture)
 zox_define_tag(NoiseTexture)
 zox_define_tag(FrameTexture)
-zox_define_tag(SaveTexture)
 zox_define_tag(DirtTexture)
 zox_define_tag(GrassTexture)
 zox_define_tag(SandTexture)

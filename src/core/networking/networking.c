@@ -1,6 +1,13 @@
 #ifndef zoxel_networking
 #define zoxel_networking
 
+// todo:
+//      > create a chat ui, it creates a net player room
+//      > when window closes, destroy room, including all players
+//      > when connecting confirmed, server will send all other netplayer data to the new client
+//      > when new player joins, server will send all the new player data to all other clients
+//      > debug connected players using game debug ui, or a new debug ui module with a label type prefab and system
+
 // zoxel_settings_includes
 #include "settings/includes.c"
 #include "settings/settings.c"
@@ -38,16 +45,10 @@ void spawn_prefabs_networking(ecs_world_t *world) {
     zox_define_destruction(SocketLink)
     // #ifdef zoxel_test_networking
     if (headless) {
-        if (server_mode) {
-            spawn_net_room(world, SERVER_PORT);
-        } else {
-            spawn_net_player(world, PORT, IP_TO, SERVER_PORT);
-        }
-        if (server_mode) {
-            zoxel_log(" > network server mode activated\n");
-        } else {
-            zoxel_log(" > network client mode activated\n");
-        }
+        if (server_mode) spawn_net_room(world, SERVER_PORT);
+        else spawn_net_player(world, PORT, IP_TO, SERVER_PORT);
+        if (server_mode) zoxel_log(" > network server mode activated\n");
+        else zoxel_log(" > network client mode activated\n");
     }
 }
 
@@ -69,12 +70,5 @@ zox_define_component(SocketLink)
 zox_system(PacketRecieveSystem, EcsOnUpdate, [none] PacketReciever, [in] SocketLink)
 zox_system(PacketSendSystem, EcsOnUpdate, [none] PacketSender, [in] SocketLink, [in] TargetNetAddress, [in] TargetNetPort)
 zoxel_end_module(Networking)
-
-// todo:
-//      > create a chat ui, it creates a net player room
-//      > when window closes, destroy room, including all players
-//      > when connecting confirmed, server will send all other netplayer data to the new client
-//      > when new player joins, server will send all the new player data to all other clients
-//      > debug connected players using game debug ui, or a new debug ui module with a label type prefab and system
 
 #endif

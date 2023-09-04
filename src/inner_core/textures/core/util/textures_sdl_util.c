@@ -1,40 +1,11 @@
+
 //! Save PNG to file using SDL
 /**
  * https://wiki.libsdl.org/SDL_CreateTexture
  * https://wiki.libsdl.org/SDL_UpdateTexture
 */
-void save_texture_png(const TextureData *textureData, const TextureSize *textureSize, const char *outputTextureName) {
-    // https://wiki.libsdl.org/SDL_PixelFormatEnum
-    // int req_format = STBI_rgb_alpha;
-    int rmask, gmask, bmask, amask;
-    #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    int shift = 0; // (req_format == STBI_rgb) ? 8 : 0;
-    rmask = 0xff000000 >> shift;
-    gmask = 0x00ff0000 >> shift;
-    bmask = 0x0000ff00 >> shift;
-    amask = 0x000000ff >> shift;
-    #else // little endian, like x86
-    rmask = 0x000000ff;
-    gmask = 0x0000ff00;
-    bmask = 0x00ff0000;
-    amask = 0; // (req_format == STBI_rgb) ? 0 : 0xff000000;
-    #endif
-    int depth = 32;
-    int pitch = textureSize->value.x * 4;
-    SDL_Surface* surface = SDL_CreateRGBSurfaceFrom((void*) textureData->value, textureSize->value.x, textureSize->value.y,
-        depth, pitch, rmask, gmask, bmask, amask);
-    #ifdef SDL_IMAGES
-    if(IMG_SavePNG(surface, outputTextureName) != 0)
-    {
-        // Error saving bitmap
-        printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
-    }
-    #endif
-    // when you don't need the surface anymore, free it..
-    SDL_FreeSurface(surface);
-}
-
-
+// https://wiki.libsdl.org/SDL_PixelFormatEnum
+// int req_format = STBI_rgb_alpha;
 
 /*
 extern SDL_Renderer *renderer;

@@ -20,12 +20,10 @@ ecs_entity_t spawn_prefab_net_room(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_net_room(ecs_world_t *world, int port) {
-    // ecs_defer_begin(world);
     zox_instance(prefab_net_room)
     zox_name("net_room")
     zox_set_only(e, NetPort, { port })
     set_new_socket(world, e, port);
-    // ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned net_room [%lu]\n", (long int) e);
     #endif
