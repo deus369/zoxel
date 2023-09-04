@@ -17,7 +17,6 @@
 #include <stdio.h>  // just for sprintf and perror
 unsigned char server_mode = 0;
 #include "util/events.c"
-#include "util/platforms_util.c"
 #include "../core/core.c"
 #include "../inner_core/inner_core.c"
 #include "../outer_core/outer_core.c"

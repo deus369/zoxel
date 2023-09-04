@@ -1,7 +1,7 @@
 // #define zox_debug_log_extract_touchscreen
 // #define zox_debug_log_element_raycasting
 
-void extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) {
+void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) {
     if (!touchscreen_entity || !ecs_is_alive(world, touchscreen_entity)) return;
     if (event.type == SDL_FINGERMOTION || event.type == SDL_FINGERDOWN || event.type == SDL_FINGERUP) {
         Touchscreen *touchscreen = ecs_get_mut(world, touchscreen_entity, Touchscreen);
@@ -43,14 +43,6 @@ void extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_dimens
     }
 }
 
-void device_reset_touchscreen(ecs_world_t *world, ecs_entity_t e) {
-    if (!touchscreen_entity || !ecs_is_alive(world, e)) return;
-    Touchscreen *touchscreen = ecs_get_mut(world, e, Touchscreen);
-    reset_key(&touchscreen->primary_touch.value);
-    touchscreen->primary_touch.delta = int2_zero;
-    ecs_modified(world, e, Touchscreen);
-}
-
  /*else if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
     if (event.motion.which != SDL_TOUCH_MOUSEID) return; // don't trigger events if not touch input
     int2 new_position = (int2) { event.motion.x, event.motion.y };
@@ -59,7 +51,7 @@ void device_reset_touchscreen(ecs_world_t *world, ecs_entity_t e) {
     SDL_MouseButtonEvent *touchscreenEvent = &event.button;
     Uint8 button = touchscreenEvent->button;
     if (button == SDL_BUTTON_LEFT) {
-        set_mouse_button(&touchscreen->primary_touch.value, event.type);
+        set_sdl_mouse_button(&touchscreen->primary_touch.value, event.type);
     }
 }*/ 
 // touchscreen->primary_touch.delta = int2_add(touchscreen->primary_touch.delta, );

@@ -39,8 +39,8 @@ Chose one pipeline tag for each type of system.
     desc.callback = id_;\
     desc.multi_threaded = 1;\
     ecs_id(id_) = ecs_system_init(world, &desc);\
-}\
-ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
+}
+// ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
 #define zox_system_1(id_, phase, ...) {\
     ecs_system_desc_t desc = {0};\
@@ -54,8 +54,9 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
     desc.callback = id_;\
     desc.multi_threaded = 0;\
     ecs_id(id_) = ecs_system_init(world, &desc);\
-}\
-ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
+}
+
+// ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
 //! Multithreaded System Definitions
 #define zox_system_ctx(id_, phase, ctx_, ...) {\
@@ -71,8 +72,9 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
     desc.multi_threaded = 1;\
     desc.ctx = ctx_; \
     ecs_id(id_) = ecs_system_init(world, &desc);\
-}\
-ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
+}
+
+// ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
 #define zox_system_ctx_1(id_, phase, ctx_, ...) {\
     ecs_system_desc_t desc = {0};\
@@ -86,8 +88,9 @@ ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
     desc.callback = id_;\
     desc.ctx = ctx_;\
     ecs_id(id_) = ecs_system_init(world, &desc);\
-}\
-ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
+}
+
+// ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
 #define zox_texture_generation_system(texture_tag, system) {\
     zox_filter(generateTextureQuery, [none] texture_tag, [in] GenerateTexture)\

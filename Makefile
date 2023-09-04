@@ -164,6 +164,12 @@ uninstall:
 run:
 	cd build && ./../$(TARGET)
 
+run-headless:
+	cd build && ./../$(TARGET) --headless
+
+run-server:
+	cd build && ./../$(TARGET) --headless --server
+
 run-tiny:
 	cd build && ./../$(TARGET) --tiny
 
@@ -179,6 +185,12 @@ run-vulkan:
 # run development
 run-dev:
 	cd build && ./../$(target_dev)
+
+run-dev-headless:
+	cd build && ./../$(target_dev) --headless
+
+run-dev-server:
+	cd build && ./../$(target_dev) --headless --server
 
 run-dev-tiny:
 	cd build && ./../$(target_dev) --tiny

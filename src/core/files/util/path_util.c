@@ -1,8 +1,18 @@
 // #define zoxel_debug_base_path
 // todo: make sure to copy folder, with bash, resources into:
 //      > /build/android-build/app/src/main/assets/resources
+const char *data_path = NULL;
+char *resources_path = NULL;
+extern const char *icon_filepath;
+// const char *icon_filepath = resources_folder_name"textures/game_icon.png";
 
-#ifdef zoxel_on_android
+#ifndef zoxel_on_android
+    #ifdef zoxel_on_windows
+        #define resources_folder_name "resources\\"
+    #else
+        #define resources_folder_name "resources/"
+    #endif
+#else
     // i will have to manually add in the resource directories for android until ndk updates
     #define resources_folder_name "/resources/"  // assets/
     #define voxes_folder_path "voxes"  // assets/
@@ -12,36 +22,16 @@
     #include <android/asset_manager_jni.h>
     #include <sys/stat.h>
     #include <sys/types.h>
-    // #define resources_folder_name "android-resources/"
-#else
-    #ifdef zoxel_on_windows
-        #define resources_folder_name "resources\\"
-    #else
-        #define resources_folder_name "resources/"
-    #endif
-#endif
-#include <dirent.h>
-#include <errno.h>
-const char *data_path = NULL;
-char *resources_path = NULL;
-
-#ifdef zoxel_on_android
-
     void delete_directory_recursive(const char* path) {
         DIR* dir = opendir(path);
         if (dir != NULL) {
             struct dirent* entry;
             while ((entry = readdir(dir)) != NULL) {
-                if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
-                    continue;
-                }
+                if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) continue;
                 char* sub_path = (char*) malloc(strlen(path) + strlen(entry->d_name) + 2);
                 sprintf(sub_path, "%s/%s", path, entry->d_name);
-                if (entry->d_type == DT_DIR) {
-                    delete_directory_recursive(sub_path);
-                } else {
-                    remove(sub_path);
-                }
+                if (entry->d_type == DT_DIR) delete_directory_recursive(sub_path);
+                else remove(sub_path);
                 free(sub_path);
             }
             closedir(dir);
@@ -61,8 +51,13 @@ char *resources_path = NULL;
     }
 
     AAssetManager* get_asset_manager() {
-        JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
-        jobject activity = (jobject) SDL_AndroidGetActivity();
+        #ifdef zoxel_using_sdl
+            JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
+            jobject activity = (jobject) SDL_AndroidGetActivity();
+        #else
+            JNIEnv* env = NULL;
+            jobject activity = NULL;
+        #endif
         jclass activityClass = (*env)->GetObjectClass(env, activity);
         jmethodID methodID = (*env)->GetMethodID(env, activityClass, "getAssets", "()Landroid/content/res/AssetManager;");
         jobject assetManager = (*env)->CallObjectMethod(env, activity, methodID);
@@ -142,35 +137,50 @@ void debug_base_path(const char *base_path) {
     struct dirent *entry;
     if ((dir = opendir(base_path)) != NULL) {
         zoxel_log(" > directories and files in [%s]\n", base_path);
-        while ((entry = readdir(dir)) != NULL) {
-            zoxel_log("     + [%s]\n", entry->d_name);
-        }
+        while ((entry = readdir(dir)) != NULL) zoxel_log("     + [%s]\n", entry->d_name);
         closedir(dir);
     } else {
         zoxel_log(" - failed to open directory [%s]\n", base_path);
     }
 }
 
-void initialize_pathing() {
-    #ifdef zoxel_on_android
-        const char* base_path = SDL_AndroidGetInternalStoragePath();
-        // char *base_path = SDL_GetPrefPath("libsdl", "app");
-        // char *base_path = SDL_GetPrefPath("libsdl", "assets");
-        /*char *android_path = SDL_GetBasePath(); // SDL_AndroidGetInternalStoragePath();
-        char *base_path = malloc(strlen(android_path) + 1 + 0); // 1
-        strcpy(base_path, android_path);
-        strcat(base_path, "");  // /*/
+char* concat_file_path(char* resources_path, char* file_path) {
+    if (resources_path == NULL || file_path == NULL) return NULL;
+    char* full_file_path = malloc(strlen(resources_path) + strlen(file_path) + 1);
+    strcpy(full_file_path, resources_path);
+    strcat(full_file_path, file_path);
+    return full_file_path;
+}
+
+char* get_full_file_path(const char* filepath) {
+    char* fullpath = malloc(strlen(data_path) + strlen(filepath) + 1);
+    strcpy(fullpath, data_path);
+    strcat(fullpath, filepath);
+    #ifdef zoxel_debug_pathing
+        zoxel_log("fullpath: %s\n", fullpath);
+    #endif
+    return fullpath;
+}
+
+unsigned char initialize_pathing() {
+    #ifdef zoxel_using_sdl
+        #ifdef zoxel_on_android
+            const char* base_path = SDL_AndroidGetInternalStoragePath();
+        #else
+            const char *base_path = SDL_GetBasePath();
+        #endif
     #else
-        const char *base_path = SDL_GetBasePath();
+        // const char *base_path = NULL;   // can i use a base path here based on platform?
+        return EXIT_FAILURE;
     #endif
     #ifdef zoxel_debug_base_path
         debug_base_path(base_path);
     #endif
-    if (base_path) {
-        data_path = base_path;
-    } else {
-        data_path = SDL_strdup("./");
-    }
+    if (base_path) data_path = base_path;
+    #ifdef zoxel_using_sdl
+        else data_path = SDL_strdup("./");
+    #endif
+    zoxel_log(" + opening base_path [%s]\n", base_path);
     DIR* dir = opendir(base_path);
     if (dir) {
         #ifdef zoxel_debug_pathing
@@ -197,24 +207,15 @@ void initialize_pathing() {
     } else {
         zoxel_log("SDL data_path (MYSTERIOUSLY DOES NOT EXIST): %s\n", data_path);
     }
+    icon_filepath = resources_folder_name"textures/game_icon.png";
+    zoxel_log(" > icon_filepath set to [%s]\n", icon_filepath);
+    return EXIT_SUCCESS;
 }
 
-char* get_full_file_path(const char* filepath) {
-    char* fullpath = malloc(strlen(data_path) + strlen(filepath) + 1);
-    strcpy(fullpath, data_path);
-    strcat(fullpath, filepath);
-    #ifdef zoxel_debug_pathing
-        zoxel_log("fullpath: %s\n", fullpath);
-    #endif
-    return fullpath;
-}
-
-char* concat_file_path(char* resources_path, char* file_path) {
-    if (resources_path == NULL || file_path == NULL) {
-        return NULL;
-    }
-    char* full_file_path = malloc(strlen(resources_path) + strlen(file_path) + 1);
-    strcpy(full_file_path, resources_path);
-    strcat(full_file_path, file_path);
-    return full_file_path;
-}
+// char *base_path = SDL_GetPrefPath("libsdl", "app");
+// char *base_path = SDL_GetPrefPath("libsdl", "assets");
+/*char *android_path = SDL_GetBasePath(); // SDL_AndroidGetInternalStoragePath();
+char *base_path = malloc(strlen(android_path) + 1 + 0); // 1
+strcpy(base_path, android_path);
+strcat(base_path, "");  // /*/
+// #define resources_folder_name "android-resources/"

@@ -17,8 +17,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 int main(int argc, char* argv[]) {
 #endif
     if (engine_begin(argc, argv) == EXIT_SUCCESS) {
-        zox_import_module(Zoxel)
-        spawn_prefabs_engine(world);
+        zox_import_module(Zoxel)        // define our components and systems
+        spawn_prefabs_engine(world);    // spawn all our prefabs
         if (boot_zoxel_game(world) == EXIT_SUCCESS) {
             engine_loop();
         } else {

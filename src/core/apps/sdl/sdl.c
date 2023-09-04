@@ -1,0 +1,1 @@
+// when creating a sdl app

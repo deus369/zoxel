@@ -1,3 +1,5 @@
+#define zoxel_using_sdl
+
 #ifdef zoxel_on_web
     #include <emscripten.h>
 #endif

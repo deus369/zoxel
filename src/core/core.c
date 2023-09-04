@@ -2,41 +2,46 @@
 #define zoxel_core
 
 // zoxel_settings
-ecs_world_t *world;
-unsigned char target_frame_rate = 0;
-unsigned char profiler = 0;
-#include "util/import_sdl.c"    // sdl is here
 #include "util/logs.c"
-#include "util/ecs/ecs.c"
+#include "ecs/ecs.c"
 #include "maths/maths.c"
+#include "platforms/platforms.c"
 #include "generic/generic.c"
 #include "timing/timing.c"
 #include "transforms/transforms.c"
 #include "networking/networking.c"
+#include "terminals/terminals.c"
 #include "inputs/inputs.c"
-#include "apps/apps.c"
+#include "apps/apps.c"          // test removing sdl for engine stability
+#include "files/files.c"        // uses sdl path function atm
 #include "cameras/cameras.c"
 #include "rendering/rendering.c"
 #include "sounds/sounds.c"
 #include "util/core_util.c"
 
 void spawn_prefabs_core(ecs_world_t *world) {
+    spawn_prefabs_platforms(world);
     spawn_prefabs_generic(world);
+    spawn_prefabs_files(world);
+    spawn_prefabs_terminals(world);
     spawn_prefabs_networking(world);
-    spawn_prefabs_apps(world);
     spawn_prefabs_inputs(world);
+    if (!headless) spawn_prefabs_apps(world); // sdl
     spawn_prefabs_sounds(world);
     spawn_prefabs_cameras(world);
 }
 
 zox_begin_module(Core)
+zox_import_module(Platforms)
 zox_import_module(Generic)
 zox_import_module(Maths)
 zox_import_module(Timing)
 zox_import_module(Transforms)
+zox_import_module(Files)
+zox_import_module(Terminals)
 zox_import_module(Networking)
-if (!headless) zox_import_module(Apps)
-if (!headless) zox_import_module(Inputs)
+zox_import_module(Inputs)
+if (!headless) zox_import_module(Apps) // sdl
 zox_import_module(Rendering)
 zox_import_module(Sounds)
 zox_import_module(Cameras)

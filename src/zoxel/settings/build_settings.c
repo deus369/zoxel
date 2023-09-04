@@ -2,6 +2,8 @@
 // #define zoxel_include_vulkan
 #define zoxel_include_players
 
+#define zoxel_test_networking
+
 // #define zoxel_catch_opengl_errors
 // #define zox_disable_render_terrain_chunks
 // #define zox_disable_render_ui_3D
@@ -120,7 +122,6 @@
 // #define debug_ui_positioning
 // -- testing --
 // #define zoxel_test_chickens
-// #define zoxel_test_networking
 // #define zoxel_test_brain         // testing a brain
 // #define zoxel_test_character2Ds
 // #define zoxel_test_cubes             // Failing atm, gl error at opengl_render

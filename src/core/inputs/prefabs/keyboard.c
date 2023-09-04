@@ -16,11 +16,9 @@ ecs_entity_t spawn_prefab_keyboard(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_keyboard(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_instance(prefab_keyboard)
     zox_name("keyboard")
     zox_set_only(e, Keyboard, { })  // zeros it out?
-    ecs_defer_end(world);
     keyboard_entity = e;
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned mouse [%lu].\n", (long int) (e));

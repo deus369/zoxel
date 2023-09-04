@@ -6,8 +6,13 @@ extern unsigned char is_split_screen;
 
 unsigned char boot_zoxel_game(ecs_world_t *world) {
     // zoxel_log(" > [zoxel] begins to boot\n");
+    // todo: initialize_engine
+    if (initialize_pathing() == EXIT_FAILURE) return EXIT_FAILURE;
+    zoxel_log(" > [zoxel] success initializing pathing\n");
     if (initialize_apps(world) == EXIT_FAILURE) return EXIT_FAILURE;
+    zoxel_log(" > [zoxel] success initializing app\n");
     if (initialize_rendering(world) == EXIT_FAILURE) return EXIT_FAILURE;
+    zoxel_log(" > [zoxel] success initializing rendering\n");
     load_resources_engine(world);
     // zoxel_log(" > [zoxel] success initializing sdl window\n");
     ecs_entity_t realm = 0;
@@ -53,8 +58,10 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         // spawn_player_character3D(world, get_main_camera());
     #endif
     #ifdef zoxel_players
-        ecs_entity_t player = spawn_player(world);
-        zox_set_only(player, CameraLink, { main_cameras[0] })
+        if (!headless) {
+            ecs_entity_t player = spawn_player(world);
+            zox_set_only(player, CameraLink, { main_cameras[0] })
+        }
     #endif
     #ifdef zoxel_ui
         spawn_canvas(world, screen_dimensions2);
@@ -79,7 +86,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         #endif
     #endif
     #ifdef zoxel_musics
-        spawn_music(world, instrument_piano_square);
+        if (!headless) spawn_music(world, instrument_piano_square);
     #endif
     #ifdef zox_test_voxel_mesh
         test_animating_chunks(world, camera_begin_position);

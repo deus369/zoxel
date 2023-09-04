@@ -34,10 +34,7 @@ zox_memory_component(DeviceLinks, ecs_entity_t)
 #include "systems/device_mode_system.c"
 #include "systems/device_mode_dirty_system.c"
 // zoxel_util_includes
-#include "util/keyboard_extract_util.c"
-#include "util/mouse_extract_util.c"
-#include "util/gamepad_util.c"
-#include "util/touchscreen_extract_util.c"
+#include "util/deadzone_util.c"
 #include "util/input_util.c"
 
 void spawn_prefabs_inputs(ecs_world_t *world) {

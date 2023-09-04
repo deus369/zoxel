@@ -1,7 +1,16 @@
 // todo: make a better way for modules to add terminal options
+extern unsigned char fullscreen;
+extern unsigned char halfscreen;
+extern unsigned char is_split_screen;
+extern unsigned char vsync;
+extern unsigned char override_opengl_es;
+extern unsigned char is_vulkan;
 extern unsigned char game_rule_attach_to_character;
 extern unsigned char zox_lowres_characters_mode;
+extern unsigned char headless;
 extern unsigned char terrain_mode;
+extern unsigned char is_multithreading;
+extern unsigned char profiler;
 #define terrain_mode_tiny 1
 #define terrain_mode_medium 2
 #define terrain_mode_large 3
@@ -44,6 +53,8 @@ int process_arguments(int argc, char* argv[]) {
         if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
             print_help_menu(argv[0]);
             return EXIT_FAILURE;
+        } else if (strcmp(argv[i], "--singlethread") == 0) {
+            is_multithreading = 0;
         } else if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--fullscreen") == 0) {
             fullscreen = 1;
         } else if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--halfscreen") == 0) {
@@ -70,8 +81,6 @@ int process_arguments(int argc, char* argv[]) {
             terrain_mode = terrain_mode_large;
         } else if (strcmp(argv[i], "--lowrescharacters") == 0) {
             zox_lowres_characters_mode = 1;
-        } else if (strcmp(argv[i], "--singlethread") == 0) {
-            is_multithreading = 0;
         } else if (strcmp(argv[i], "--freeroam") == 0) {
             game_rule_attach_to_character = 0;
         }

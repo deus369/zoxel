@@ -53,3 +53,21 @@ unsigned char gamepad_is_any_input(const Gamepad *gamepad) {
         float_abs(gamepad->right_stick.value.x) >= joystick_min_cutoff ||
         float_abs(gamepad->right_stick.value.y) >= joystick_min_cutoff;
 }
+
+void device_reset_gamepad(ecs_world_t *world, ecs_entity_t gamepad_entity) {
+    if (!gamepad_entity || !ecs_is_alive(world, gamepad_entity)) return;
+    Gamepad *gamepad = ecs_get_mut(world, gamepad_entity, Gamepad);
+    reset_key(&gamepad->a);
+    reset_key(&gamepad->b);
+    reset_key(&gamepad->x);
+    reset_key(&gamepad->y);
+    reset_key(&gamepad->select);
+    reset_key(&gamepad->start);
+    reset_key(&gamepad->lb);
+    reset_key(&gamepad->rb);
+    reset_key(&gamepad->lt);
+    reset_key(&gamepad->rt);
+    reset_key(&gamepad->left_stick_push);
+    reset_key(&gamepad->right_stick_push);
+    ecs_modified(world, gamepad_entity, Gamepad);
+}

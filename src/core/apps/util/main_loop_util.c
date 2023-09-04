@@ -1,6 +1,7 @@
 extern void engine_update();
 
 void exit_app() {
+    zoxel_log(" > zoxel is exiting\n");
     running = 0;
     #ifdef zoxel_on_web    
         emscripten_cancel_main_loop();

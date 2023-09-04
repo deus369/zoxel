@@ -26,3 +26,14 @@ unsigned char mouse_is_any_input(const Mouse *mouse) {
         mouse->wheel.x != 0 ||
         mouse->wheel.y != 0);
 }
+
+void device_reset_mouse(ecs_world_t *world, ecs_entity_t mouse_entity) {
+    if (!mouse_entity || !ecs_is_alive(world, mouse_entity)) return;
+    Mouse *mouse = ecs_get_mut(world, mouse_entity, Mouse);
+    reset_key(&mouse->left);
+    reset_key(&mouse->middle);
+    reset_key(&mouse->right);
+    mouse->delta = int2_zero;
+    mouse->wheel = int2_zero;
+    ecs_modified(world, mouse_entity, Mouse);
+}

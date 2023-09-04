@@ -21,6 +21,7 @@ void spawn_prefabs_ui(ecs_world_t *world) {
 }
 
 zox_begin_module(UI)
+// zoxel_module_imports
 zox_import_module(UICore)
 zox_import_module(Texts)
 zox_import_module(Elements)

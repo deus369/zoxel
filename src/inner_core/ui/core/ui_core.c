@@ -23,6 +23,7 @@ zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t)
 #include "util/ui_prefab_util.c"
 #include "util/ui_transform_util.c"
 #include "util/anchor_util.c"
+#include "util/prefab_util_world_ui.c"
 // zoxel_include_prefabs
 #include "prefabs/canvas.c"
 #include "prefabs/element.c"
@@ -71,10 +72,10 @@ zox_filter(ui_query, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [
 zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition, [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPixelPosition)
 // zoxel_define_systems
 zox_system_ctx(ElementPositionSystem, EcsPreUpdate, pixel_positions_query, [none] Element, [in] PixelPosition, [in] ParentLink, [in] Anchor, [in] CanvasLink, [out] Position2D, [out] CanvasPixelPosition)
-zox_system_ctx(ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [in] DeviceMode, [out] RaycasterTarget)
 zox_system(ElementSelectedSystem, EcsOnUpdate, [none] Element, [in] SelectableState, [out] Brightness)
 if (!headless) {
     #ifdef zoxel_inputs
+        zox_system_ctx(ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [in] DeviceMode, [out] RaycasterTarget)
         zox_system(ElementActivateSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterTarget)
         zox_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [out] NavigatorState, [out] NavigatorTimer, [out] RaycasterTarget)
     #endif

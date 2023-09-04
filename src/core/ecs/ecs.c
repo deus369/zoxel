@@ -1,3 +1,10 @@
+// flecs useage, create an ecs world
+ecs_world_t *world;
+// settings
+unsigned char is_multithreading = 1;
+unsigned char target_frame_rate = 0;
+unsigned char profiler = 0;
+// util helper functions
 #include "util/module_macros.c"
 #include "util/component_macros.c"
 #include "util/system_macros.c"
@@ -7,8 +14,6 @@
 #include "util/memory_component.c"
 #include "util/octree_component.c"
 #include "util/user_data.c"
-
-extern unsigned char is_multithreading;
 
 ecs_world_t* open_ecs(int argc, char* argv[], unsigned char profiler, int core_count) {
     ecs_world_t* world = ecs_init_w_args(argc, argv);

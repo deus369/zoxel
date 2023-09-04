@@ -44,7 +44,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, const char *
     }
     zox_set_only(e, Children, { children.length, children.value })
     #ifdef zoxel_include_players
-        if (list_count > 0) select_first_button(world, children.value[1]);
+        if (!headless && list_count > 0) select_first_button(world, children.value[1]);
     #endif
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned ui list [%lu]\n", (long int) e);

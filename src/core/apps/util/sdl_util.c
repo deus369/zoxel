@@ -1,17 +1,14 @@
-const char *sdl_window_name = "zoxel";
-const char *iconFilename = resources_folder_name"textures/game_icon.png";
-int2 screen_dimensions = { 720, 480 };
-const int sdl_fullscreen_byte = SDL_WINDOW_FULLSCREEN_DESKTOP; // SDL_WINDOW_FULLSCREEN;
-extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event, int2 screen_dimensions);
-extern void input_extract_from_sdl_per_frame(ecs_world_t *world);
-extern int2 get_webasm_screen_size();
 // todo: find a cleaner way to link to other modules
-//  > rendering
-extern int check_opengl_error(char* function_name);
+// extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event, int2 screen_dimensions);
+extern int2 get_webasm_screen_size();
+extern int check_opengl_error(char* function_name); //  > rendering
 extern void delete_all_opengl_resources(ecs_world_t *world);
 extern void restore_all_opengl_resources(ecs_world_t *world);
 extern void resize_cameras(int2 screen_size);   // > cameras
 extern void resize_ui_canvases(ecs_world_t *world, int2 screen_size);  // > uis
+const char *sdl_window_name = "zoxel";
+const int sdl_fullscreen_byte = SDL_WINDOW_FULLSCREEN_DESKTOP; // SDL_WINDOW_FULLSCREEN
+int2 screen_dimensions = { 720, 480 };
 
 void print_sdl() {
     #ifdef zox_print_sdl
@@ -125,16 +122,6 @@ void sdl_toggle_fullscreen(ecs_world_t *world, SDL_Window* window) {
     sdl_set_fullscreen(window, !is_fullscreen);
 }
 
-void load_app_icon(SDL_Window* window) {
-    #ifdef SDL_IMAGES
-        char* fullpath = get_full_file_path(iconFilename);
-        SDL_Surface *surface = IMG_Load(iconFilename); // IMG_Load(buffer);
-        free(fullpath);
-        SDL_SetWindowIcon(window, surface); // The icon is attached to the window pointer
-        SDL_FreeSurface(surface);
-    #endif
-}
-
 unsigned char vulkan_supported() {
     #ifdef zoxel_include_vulkan
         uint32_t extensionCount = 0;
@@ -223,7 +210,6 @@ SDL_Window* spawn_sdl_window() {
         return window;
     }
     SDL_SetWindowResizable(window, is_resizeable);
-    load_app_icon(window);
     if (!is_vulkan) {
         SDL_GL_SwapWindow(window);
         SDL_GL_SetSwapInterval(vsync);
@@ -231,6 +217,7 @@ SDL_Window* spawn_sdl_window() {
     #if !defined(zoxel_on_web) && !defined(zoxel_on_android)
         sdl_set_fullscreen(window, fullscreen);
     #endif
+    // load_app_icon(window);
     return window;
 }
 
@@ -368,7 +355,8 @@ unsigned char create_main_window(ecs_world_t *world) {
         spawn_app(world, window, gl_context);
         main_gl_context = gl_context;
         unsigned char app_success = main_gl_context != NULL ? EXIT_SUCCESS : EXIT_FAILURE;
-        if (main_gl_context != NULL) running = 1;
+        if (main_gl_context == NULL) zoxel_log("    ! opengl did not create context, exiting zoxel\n");
+        if (main_gl_context == NULL) running = 0;
         return app_success;
     } else {
         #ifdef zoxel_include_vulkan
@@ -422,14 +410,14 @@ void recreate_main_window(ecs_world_t *world) {
 }
 
 void update_sdl(ecs_world_t *world) {
-    #ifdef zoxel_inputs
-        input_extract_from_sdl_per_frame(world);
-    #endif
+    //#ifdef zoxel_inputs
+    sdl_extract_gamepad(world, gamepad_entity);
+    //#endif
     SDL_Event event = { 0 };
     while (SDL_PollEvent(&event)) {
-        #ifdef zoxel_inputs
-            input_extract_from_sdl(world, event, screen_dimensions);
-        #endif
+        //#ifdef zoxel_inputs
+        input_extract_from_sdl(world, event, screen_dimensions);
+        //#endif
         int eventType = event.type;
         if (eventType == SDL_QUIT) {
             zoxel_log(" > window was quit\n");

@@ -1,19 +1,10 @@
 #ifndef zoxel_apps
 #define zoxel_apps
 
+#include "util/import_sdl.c" // sdl is here
 // zoxel_settings
-#define sdl_gl_major 3
-#define sdl_gl_minor 0
-unsigned char running;
-unsigned char rendering = 1;
-unsigned char headless = 0;
-unsigned char vsync = 1;
-unsigned char fullscreen = 1; // set full screen default option here
-unsigned char halfscreen = 0;
-unsigned char is_split_screen = 0;
-unsigned char override_opengl_es = 0;
-unsigned char is_vulkan = 0;
-unsigned char is_multithreading = 1;
+#include "settings/settings.c"
+// app variables
 SDL_Window* main_window;
 SDL_GLContext* main_gl_context;
 #ifdef zoxel_include_vulkan
@@ -32,19 +23,20 @@ zox_component(Context, SDL_GLContext*)
 #include "prefabs/app.c"
 // zoxel_util_includes
 #include "util/main_loop_util.c"
-#include "util/path_util.c"
-#include "util/terminal_util.c"
-#include "util/sdl_util.c"
-#include "util/webasm_util.c"
+#include "util/app_icon.c"
 #include "util/cleanup_util.c"
 #include "util/mouse_util.c"
-#include "util/platform_util.c"
+// sdl input sub module
+#include "sdl/inputs/inputs.c"
+// the rest?
+#include "util/sdl_util.c"
 
 unsigned char initialize_apps(ecs_world_t *world) {
-    initialize_pathing();
+    if (headless) return EXIT_SUCCESS;
     debug_platform();
     initialize_sdl();
-    return create_main_window(world);
+    create_main_window(world);
+    return EXIT_SUCCESS;
 }
 
 void spawn_prefabs_apps(ecs_world_t *world) {

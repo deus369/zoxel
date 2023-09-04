@@ -24,6 +24,7 @@ zox_byte_component(RenderLod) // The resolution of each chunk, distance to neare
 extern unsigned char is_vulkan;
 
 unsigned char initialize_rendering(ecs_world_t *world) {
+    if (headless) return EXIT_SUCCESS;
     if (is_vulkan) {
         // zoxel_log(" > initializing vulkan\n");
         return initialize_vulkan(world); // SDL_WINDOW_VULKAN

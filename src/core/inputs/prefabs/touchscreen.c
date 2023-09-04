@@ -16,10 +16,8 @@ ecs_entity_t spawn_prefab_touchscreen(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_touchscreen(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_instance(prefab_touchscreen)
     zox_name("touchscreen")
-    ecs_defer_end(world);
     touchscreen_entity = e;
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned touchscreen [%lu].\n", (long int) (e));
