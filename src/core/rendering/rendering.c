@@ -1,6 +1,8 @@
 #ifndef zoxel_rendering
 #define zoxel_rendering
 
+// todo: use realm cameras instead of singleton data render_camera_matrix
+
 // zoxel_settings
 int tri_count = 0;
 float3 fog_color = (float3) { 0.5f, 0.55f, 0.58f };
@@ -44,12 +46,10 @@ zox_define_component(MeshAlignment)
 zox_define_component(RenderLod)
 // zoxel_import_modules
 if (!headless) {
-    if (is_vulkan) zox_import_module(Vulkan)
-    else zox_import_module(OpenGL)
+    if (is_vulkan) { zox_import_module(Vulkan) }
+    else { zox_import_module(OpenGL) }
     zox_import_module(RenderingCore)
 }
 zoxel_end_module(Rendering)
-
-// todo: use realm cameras instead of singleton data render_camera_matrix
 
 #endif
