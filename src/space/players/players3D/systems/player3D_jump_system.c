@@ -18,8 +18,18 @@ void Player3DJumpSystem(ecs_iter_t *it) {
                 const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
                 if (keyboard->space.pressed_this_frame) is_jump_triggered = 1;
             } else if (ecs_has(world, device_entity, Gamepad)) {
-                const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
-                if (gamepad->a.pressed_this_frame) is_jump_triggered = 1;
+                const Children *device_buttons = ecs_get(world, device_entity, Children);
+                for (int k = 0; k < device_buttons->length; k++) {
+                    ecs_entity_t device_button_entity = device_buttons->value[k];
+                    if (ecs_has(world, device_button_entity, DeviceButton)) {
+                        const DeviceButtonType *deviceButtonType = ecs_get(world, device_button_entity, DeviceButtonType);
+                        if (deviceButtonType->value == zox_device_button_a) {
+                            const DeviceButton *deviceButton = ecs_get(world, device_button_entity, DeviceButton);
+                            if (devices_get_pressed_this_frame(deviceButton->value)) is_jump_triggered = 1;
+                            break;
+                        }
+                    }
+                }
             }
         }
         if (is_jump_triggered == 0) continue;
@@ -34,3 +44,6 @@ void Player3DJumpSystem(ecs_iter_t *it) {
         }
     }
 } zox_declare_system(Player3DJumpSystem)
+
+// const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
+// if (gamepad->a.pressed_this_frame) is_jump_triggered = 1;

@@ -51,10 +51,23 @@
                         // zoxel_log(" > ui activated at [%f]\n", (float) zox_current_time);
                     }
                 } else if (deviceMode->value == zox_device_mode_gamepad && ecs_has(world, device_entity, Gamepad)) {
-                    const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
-                    if (gamepad->a.pressed_this_frame) set_ui_clicked_mut(world, raycasterTarget->value);
+                    const Children *device_buttons = ecs_get(world, device_entity, Children);
+                    for (int k = 0; k < device_buttons->length; k++) {
+                        ecs_entity_t device_button_entity = device_buttons->value[k];
+                        if (ecs_has(world, device_button_entity, DeviceButton)) {
+                            const DeviceButtonType *deviceButtonType = ecs_get(world, device_button_entity, DeviceButtonType);
+                            if (deviceButtonType->value == zox_device_button_a) {
+                                const DeviceButton *deviceButton = ecs_get(world, device_button_entity, DeviceButton);
+                                if (devices_get_pressed_this_frame(deviceButton->value)) set_ui_clicked_mut(world, raycasterTarget->value);
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
     } zox_declare_system(ElementActivateSystem)
 #endif
+
+// const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
+// if (gamepad->a.pressed_this_frame) set_ui_clicked_mut(world, raycasterTarget->value);

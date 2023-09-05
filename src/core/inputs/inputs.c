@@ -15,15 +15,24 @@ const float joystick_cutoff_buffer = 0.14f;
 #include "data/physical_stick.c"
 #include "data/finger.c"
 zox_declare_tag(Device)
+zox_declare_tag(Gamepad)
+zox_byte_component(DeviceButton)
+zox_component(DeviceStick, float2)
+zox_byte_component(DeviceButtonType)
+zox_byte_component(RealButtonIndex)
+zox_byte_component(DeviceLayout)
 zox_byte_component(MouseLock)
 zox_byte_component(DeviceMode)
 zox_byte_component(DeviceModeDirty)
+zox_memory_component(DeviceButtonLinks, ecs_entity_t)
 zox_memory_component(DeviceLinks, ecs_entity_t)
 #include "components/keyboard.c"
 #include "components/mouse.c"
 #include "components/gamepad.c"
 #include "components/touchscreen.c"
 // zoxel_prefab_includes
+#include "prefabs/device_button.c"
+#include "prefabs/device_stick.c"
 #include "prefabs/mouse.c"
 #include "prefabs/keyboard.c"
 #include "prefabs/gamepad.c"
@@ -38,6 +47,8 @@ zox_memory_component(DeviceLinks, ecs_entity_t)
 #include "util/input_util.c"
 
 void spawn_prefabs_inputs(ecs_world_t *world) {
+    spawn_prefab_device_button(world);
+    spawn_prefab_device_stick(world);
     spawn_prefab_keyboard(world);
     spawn_prefab_mouse(world);
     spawn_prefab_gamepad(world);
@@ -47,13 +58,19 @@ void spawn_prefabs_inputs(ecs_world_t *world) {
 zox_begin_module(Inputs)
 // zoxel_component_defines
 zox_define_tag(Device)
+zox_define_tag(Gamepad)
+zox_define_component(DeviceButton)
+zox_define_component(DeviceStick)
+zox_define_component(DeviceButtonType)
+zox_define_component(RealButtonIndex)
+zox_define_component(DeviceLayout)
 zox_define_component(MouseLock)
 zox_define_component(DeviceMode)
 zox_define_component(DeviceModeDirty)
 zox_define_memory_component(DeviceLinks)
 zox_define_component(Keyboard)
 zox_define_component(Mouse)
-zox_define_component(Gamepad)
+// zox_define_component(Gamepad)
 zox_define_component(Touchscreen)
 // zoxel_system_defines
 zox_system(DeviceModeSystem, EcsOnLoad, [in] DeviceLinks, [in] DeviceMode, [out] DeviceModeDirty)

@@ -13,10 +13,22 @@ void PlayerPauseSystem(ecs_iter_t *it) {
                     break;
                 }
             } else if (ecs_has(world, device_entity, Gamepad)) {
-                const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
+                /*const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
                 if (gamepad->start.pressed_this_frame || gamepad->select.pressed_this_frame) {
                     did_toggle_pause = 1;
                     break;
+                }*/
+                const Children *device_buttons = ecs_get(world, device_entity, Children);
+                for (int k = 0; k < device_buttons->length; k++) {
+                    ecs_entity_t device_button_entity = device_buttons->value[k];
+                    if (ecs_has(world, device_button_entity, DeviceButton)) {
+                        const DeviceButtonType *deviceButtonType = ecs_get(world, device_button_entity, DeviceButtonType);
+                        if (deviceButtonType->value == zox_device_button_start || deviceButtonType->value == zox_device_button_select) {
+                            const DeviceButton *deviceButton = ecs_get(world, device_button_entity, DeviceButton);
+                            if (devices_get_pressed_this_frame(deviceButton->value)) did_toggle_pause = 1;
+                            // break;
+                        }
+                    }
                 }
             }
         }

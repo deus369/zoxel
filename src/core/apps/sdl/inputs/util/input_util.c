@@ -7,7 +7,9 @@ void spawn_connected_devices(ecs_world_t *world) {
     spawn_keyboard(world);
     spawn_mouse(world);
     //if (joysticks_count > 0)
-    spawn_gamepad(world);
+    unsigned char gamepad_type = 0;
+    if (joysticks_count > 0) gamepad_type = is_xbox_gamepad(joystick);
+    spawn_gamepad(world, gamepad_type);
     spawn_touchscreen(world);
 }
 

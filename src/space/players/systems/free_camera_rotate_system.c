@@ -49,14 +49,6 @@ void FreeCameraRotateSystem(ecs_iter_t *it) {
 
     // double rotate_power = zox_delta_time;
 
-            /*if (ecs_has(world, device_entity, Keyboard)) {
-                const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
-                if (keyboard->space.is_pressed) is_triggered = 1;
-            } else if (ecs_has(world, device_entity, Gamepad)) {
-                const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
-                if (gamepad->a.pressed_this_frame) is_triggered = 1;
-            }*/
-
 /*float3x3 rotation_matrix = quaternion_to_float3x3(rotation3D->value);
 rotation_matrix.y.x = 0;
 rotation_matrix.y.z = 0;

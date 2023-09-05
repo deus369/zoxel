@@ -1,4 +1,4 @@
-typedef struct {
+/*typedef struct {
     PhysicalButton start;
     PhysicalButton select;
     PhysicalButton a;
@@ -31,9 +31,9 @@ zox_custom_component(Gamepad)
     .right_stick_push = (PhysicalButton) { 0, 0, 0 },\
     .left_stick = (PhysicalStick) { .value = float2_zero },\
     .right_stick = (PhysicalStick) { .value = float2_zero }\
-}
+}*/
 
-unsigned char gamepad_is_any_input(const Gamepad *gamepad) {
+/*unsigned char gamepad_is_any_input(const Gamepad *gamepad) {
     // zoxel_log(" > gamepad left_stick [%fx%f]\n", gamepad->left_stick.value.x, gamepad->left_stick.value.y);
     // zoxel_log(" > gamepad right_stick [%fx%f]\n", gamepad->right_stick.value.x, gamepad->right_stick.value.y);
     return gamepad->start.is_pressed ||
@@ -52,11 +52,9 @@ unsigned char gamepad_is_any_input(const Gamepad *gamepad) {
         float_abs(gamepad->left_stick.value.y) >= joystick_min_cutoff ||
         float_abs(gamepad->right_stick.value.x) >= joystick_min_cutoff ||
         float_abs(gamepad->right_stick.value.y) >= joystick_min_cutoff;
-}
+}*/
 
-void device_reset_gamepad(ecs_world_t *world, ecs_entity_t gamepad_entity) {
-    if (!gamepad_entity || !ecs_is_alive(world, gamepad_entity)) return;
-    Gamepad *gamepad = ecs_get_mut(world, gamepad_entity, Gamepad);
+    /*Gamepad *gamepad = ecs_get_mut(world, gamepad_entity, Gamepad);
     reset_key(&gamepad->a);
     reset_key(&gamepad->b);
     reset_key(&gamepad->x);
@@ -69,5 +67,4 @@ void device_reset_gamepad(ecs_world_t *world, ecs_entity_t gamepad_entity) {
     reset_key(&gamepad->rt);
     reset_key(&gamepad->left_stick_push);
     reset_key(&gamepad->right_stick_push);
-    ecs_modified(world, gamepad_entity, Gamepad);
-}
+    ecs_modified(world, gamepad_entity, Gamepad);*/

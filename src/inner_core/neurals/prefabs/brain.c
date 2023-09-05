@@ -18,7 +18,6 @@ extern ecs_entity_t spawn_neuron(ecs_world_t *world, ecs_entity_t brain, float2 
 extern ecs_entity_t spawn_connection(ecs_world_t *world, ecs_entity_t neuronA, ecs_entity_t neuronB, float weight);
 
 ecs_entity_t spawn_brain(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_instance(prefab_brain)
     zox_name("brain")
     int connections_length = (neurons_length - 1);
@@ -39,7 +38,6 @@ ecs_entity_t spawn_brain(ecs_world_t *world) {
         }
     }
     zox_set_only(e, Children, { children.length, children.value })
-    ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
         zoxel_log("Spawned brain [%lu]\n", (long int) e);
     #endif

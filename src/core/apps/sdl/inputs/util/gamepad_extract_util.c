@@ -47,13 +47,6 @@ void debug_stick(const PhysicalStick *physical_stick, const char *button_name) {
     }
 }
 
-void set_gamepad_button(PhysicalButton *key, SDL_Joystick *joystick, int index) {
-    unsigned char is_pressed = SDL_JoystickGetButton(joystick, index);
-    if (!key->is_pressed && is_pressed) key->pressed_this_frame = 1;
-    if (key->is_pressed && !is_pressed) key->released_this_frame = 1;
-    key->is_pressed = is_pressed;
-}
-
 float get_gamepad_axis(SDL_Joystick *joystick, int index) {
     if (index < 0 || index > 10) return 0;
     float axis_value = SDL_JoystickGetAxis(joystick, index) / 32768.0f;
@@ -62,11 +55,6 @@ float get_gamepad_axis(SDL_Joystick *joystick, int index) {
     axis_value = -axis_value;
     axis_value = apply_joystick_deadzone(index, axis_value);
     return axis_value; // invert as sdl inverts it first?
-}
-
-void set_gamepad_axis(PhysicalStick *stick, SDL_Joystick *joystick, int index) {
-    stick->value.x = get_gamepad_axis(joystick, index);
-    stick->value.y = get_gamepad_axis(joystick, index + 1);
 }
 
 void set_gamepad_dpad(SDL_Joystick *joystick, int index) {
@@ -104,8 +92,45 @@ void set_gamepad_dpad(SDL_Joystick *joystick, int index) {
     }
 }
 
-void sdl_extract_gamepad(ecs_world_t *world, ecs_entity_t gamepad_entity) {
+void set_gamepad_button(PhysicalButton *key, SDL_Joystick *joystick, int index) {
+    unsigned char is_pressed = SDL_JoystickGetButton(joystick, index);
+    if (!key->is_pressed && is_pressed) key->pressed_this_frame = 1;
+    if (key->is_pressed && !is_pressed) key->released_this_frame = 1;
+    key->is_pressed = is_pressed;
+}
+
+void set_gamepad_axis(PhysicalStick *stick, SDL_Joystick *joystick, int index) {
+    stick->value.x = get_gamepad_axis(joystick, index);
+    stick->value.y = get_gamepad_axis(joystick, index + 1);
+}
+
+unsigned char set_gamepad_axis2(DeviceStick *deviceStick, SDL_Joystick *joystick, int index) {
+    float2 previous_value = deviceStick->value;
+    deviceStick->value.x = get_gamepad_axis(joystick, index);
+    deviceStick->value.y = get_gamepad_axis(joystick, index + 1);
+    // if (!(deviceStick->value.x == 0 && deviceStick->value.y == 0)) zoxel_log(" > stick: %fx%f\n", deviceStick->value.x, deviceStick->value.y);
+    // else zoxel_log("no input for joystick [%i]\n", index);
+    return !(deviceStick->value.x == previous_value.x && deviceStick->value.y == previous_value.y);
+}
+
+unsigned char set_gamepad_button2(DeviceButton *deviceButton, SDL_Joystick *joystick, int index) {
+    unsigned char old_value = deviceButton->value;
+    unsigned char new_is_pressed = SDL_JoystickGetButton(joystick, index);
+    unsigned char is_pressed = devices_get_is_pressed(deviceButton->value);
+    // if (!is_pressed && new_is_pressed) zoxel_log("  [%i] is pressed this frame\n", index);
+    if (!is_pressed && new_is_pressed) deviceButton->value = devices_set_pressed_this_frame(deviceButton->value, 1);
+    if (is_pressed && !new_is_pressed) deviceButton->value = devices_set_released_this_frame(deviceButton->value, 1);
+    deviceButton->value = devices_set_is_pressed(deviceButton->value, new_is_pressed);
+    // if (new_is_pressed) zoxel_log("  [%i] new_is_pressed? [%i]\n", index, devices_get_is_pressed(deviceButton->value));
+    /*if (!key->is_pressed && is_pressed) key->pressed_this_frame = 1;
+    if (key->is_pressed && !is_pressed) key->released_this_frame = 1;
+    key->is_pressed = is_pressed;*/
+    return deviceButton->value != old_value;
+}
+
+void sdl_extract_gamepad(ecs_world_t *world, ecs_entity_t gamepad) {
     if (gamepad_entity == 0 || joystick == NULL) return;
+    // handle disconnection in another system?
     if (!SDL_JoystickGetAttached(joystick)) {
         int joystick_id = SDL_JoystickInstanceID(joystick);
         fprintf(stderr, "   > gamepad [%d] has disconnected\n", joystick_id);
@@ -115,9 +140,26 @@ void sdl_extract_gamepad(ecs_world_t *world, ecs_entity_t gamepad_entity) {
         // - next, add a disconnection ui until reconnected
         return;
     }
+
+    const Children *children = ecs_get(world, gamepad, Children);
+    for (int i = 0; i < children->length; i++) {
+        ecs_entity_t e = children->value[i];
+        const RealButtonIndex *realButtonIndex = ecs_get(world, e, RealButtonIndex);
+        if (ecs_has(world, e, DeviceStick)) {
+            // zoxel_log(" > device stick found [%i] %lu\n", i, e);
+            DeviceStick *deviceStick = ecs_get_mut(world, e, DeviceStick);
+            if (set_gamepad_axis2(deviceStick, joystick, realButtonIndex->value)) ecs_modified(world, e, DeviceStick);
+            // if (ecs_has(world, e, DeviceButton)) zoxel_log("    ! error with device stick, contains device button data[%i]\n", e);
+        } else if (ecs_has(world, e, DeviceButton)) {
+            // zoxel_log(" > device button found [%i] %lu\n", i, e);
+            DeviceButton *deviceButton = ecs_get_mut(world, e, DeviceButton);
+            if (set_gamepad_button2(deviceButton, joystick, realButtonIndex->value)) ecs_modified(world, e, DeviceButton);
+        }
+    }
+
     // zoxel_log(" > Joystick Name: %s\n", SDL_JoystickName(joystick));
     // zoxel_log(" > Number of Axes: %d\n", SDL_JoystickNumAxes(joystick));
-    Gamepad *gamepad = ecs_get_mut(world, gamepad_entity, Gamepad);
+    /*Gamepad *gamepad = ecs_get_mut(world, gamepad_entity, Gamepad);
     if (is_xbox_gamepad(joystick)) {
         set_gamepad_button(&gamepad->a, joystick, 0);
         set_gamepad_button(&gamepad->b, joystick, 1);
@@ -180,7 +222,7 @@ void sdl_extract_gamepad(ecs_world_t *world, ecs_entity_t gamepad_entity) {
             // if (value != 0) 
             zoxel_log(" > joystick [%i] [%f]\n", i, value);
         }
-    #endif
+    #endif*/
 }
 
 /*gamepad->a.is_pressed = SDL_JoystickGetButton(joystick, 0);

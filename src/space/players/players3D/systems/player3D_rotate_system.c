@@ -45,11 +45,25 @@ void Player3DRotateSystem(ecs_iter_t *it) {
                 // if (mouse_delta != 0) zoxel_log("     > mouse_delta: %f\n", mouse_delta);
                 euler.y = - mouse_delta * mouse_rotate_multiplier;
             } else if (ecs_has(world, device_entity, Gamepad)) {
-                const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
-                if (gamepad->right_stick.value.x < -joystick_cutoff_buffer) {
-                    euler.y = gamepad->right_stick.value.x * gamepad_rotate_multiplier;
-                } else if (gamepad->right_stick.value.x > joystick_cutoff_buffer) {
-                    euler.y = gamepad->right_stick.value.x * gamepad_rotate_multiplier;
+                float2 right_stick = float2_zero;
+                const Children *device_buttons = ecs_get(world, device_entity, Children);
+                for (int k = 0; k < device_buttons->length; k++) {
+                    ecs_entity_t device_button_entity = device_buttons->value[k];
+                    const DeviceButtonType *deviceButtonType = ecs_get(world, device_button_entity, DeviceButtonType);
+                    if (ecs_has(world, device_button_entity, DeviceStick)) {
+                        if (deviceButtonType->value == zox_device_stick_right) {
+                            const DeviceStick *deviceStick = ecs_get(world, device_button_entity, DeviceStick);
+                            right_stick = deviceStick->value;
+                            break;
+                        }
+                    }
+                }
+                if (float_abs(right_stick.x) >= joystick_cutoff_buffer) {
+                    if (right_stick.x < -joystick_cutoff_buffer) {
+                        euler.y = right_stick.x * gamepad_rotate_multiplier;
+                    } else if (right_stick.x > joystick_cutoff_buffer) {
+                        euler.y = right_stick.x * gamepad_rotate_multiplier;
+                    }
                 }
             }
         }

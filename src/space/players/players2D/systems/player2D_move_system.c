@@ -27,10 +27,26 @@ void Player2DMoveSystem(ecs_iter_t *it) {
                     movement.y *= run_speed;
                 }
             } else if (ecs_has(world, device_entity, Gamepad)) {
-                const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
-                if (float_abs(gamepad->left_stick.value.x) >= joystick_cutoff_buffer) movement.x = gamepad->left_stick.value.x;
-                if (float_abs(gamepad->left_stick.value.y) >= joystick_cutoff_buffer) movement.y = gamepad->left_stick.value.y;
-                if (gamepad->lb.is_pressed || gamepad->rb.is_pressed) {
+                float2 left_stick = float2_zero;
+                unsigned char is_run = 0;
+                const Children *device_buttons = ecs_get(world, device_entity, Children);
+                for (int k = 0; k < device_buttons->length; k++) {
+                    ecs_entity_t device_button_entity = device_buttons->value[k];
+                    if (ecs_has(world, device_button_entity, DeviceStick)) {
+                        const DeviceStick *deviceStick = ecs_get(world, device_button_entity, DeviceStick);
+                        left_stick = deviceStick->value;
+                    } else if (ecs_has(world, device_button_entity, DeviceButton)) {
+                        const DeviceButtonType *deviceButtonType = ecs_get(world, device_button_entity, DeviceButtonType);
+                        if (deviceButtonType->value == zox_device_button_lb || deviceButtonType->value == zox_device_button_rb) {
+                            const DeviceButton *deviceButton = ecs_get(world, device_button_entity, DeviceButton);
+                            if (!is_run && devices_get_is_pressed(deviceButton->value)) is_run = 1;
+                        }
+                    }
+                }
+                /*const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);*/
+                if (float_abs(left_stick.x) >= joystick_cutoff_buffer) movement.x = left_stick.x;
+                if (float_abs(left_stick.y) >= joystick_cutoff_buffer) movement.y = left_stick.y;
+                if (is_run) { // gamepad->lb.is_pressed || gamepad->rb.is_pressed) {
                     movement.x *= run_speed;
                     movement.y *= run_speed;
                 }
