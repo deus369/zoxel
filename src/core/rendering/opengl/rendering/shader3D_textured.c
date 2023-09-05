@@ -1,5 +1,12 @@
-GLuint2 shader3D_textured;
-GLuint textured3D_material;
+extern GLuint2 get_shader_value(ecs_world_t *world, ecs_entity_t shader);
+extern ecs_entity_t spawn_shader(ecs_world_t *world, const GLchar* vert_buffer, const GLchar* frag_buffer);
+extern ecs_entity_t spawn_material(ecs_world_t *world, GLuint2 shader);
+extern GLuint get_material_value(ecs_world_t *world, ecs_entity_t material);
+extern void restore_shader(ecs_world_t *world, ecs_entity_t e, const GLchar* vert_buffer, const GLchar* frag_buffer);
+extern void restore_material(ecs_world_t *world, ecs_entity_t e, GLuint2 shader);
+ecs_entity_t shader3D_textured;
+ecs_entity_t textured3D_material;
+// GLuint2 shader3D_textured2;
 Material3DTextured attributes_textured3D;
 
 void spawn_attributes_textured3D(GLuint material) {
@@ -20,35 +27,36 @@ void spawn_attributes_textured3D(GLuint material) {
     #endif
 }
 
-void dispose_shader3D_textured() {
-    glDeleteShader(shader3D_textured.x);
-    glDeleteShader(shader3D_textured.y);
-    glDeleteProgram(textured3D_material);
+GLuint2 get_shader3D_textured_value(ecs_world_t *world) {
+    return get_shader_value(world, shader3D_textured);
+    // return ecs_get(world, shader3D_textured, ShaderGPULink)->value;
 }
 
-int load_shader3D_textured() {
-    shader3D_textured = spawn_gpu_shader_inline(shader3D_textured_vert_buffer, shader3D_textured_frag_buffer);
-    textured3D_material = spawn_gpu_material_program(shader3D_textured);
-    spawn_attributes_textured3D(textured3D_material);
+GLuint get_textured3D_material_value(ecs_world_t *world) {
+    return get_material_value(world, textured3D_material);
+}
+
+void dispose_shader3D_textured(ecs_world_t *world) {
+    // shaders will be deleted on ecs closing
+    // zox_delete(shader3D_textured)
+    // zox_delete(textured3D_material)
+}
+
+void restore_textured3D_shader(ecs_world_t *world) {
+    restore_shader(world, shader3D_textured, shader3D_textured_vert_buffer, shader3D_textured_frag_buffer);
+    restore_material(world, textured3D_material, get_shader3D_textured_value(world));
+}
+
+int load_shader3D_textured(ecs_world_t *world) {
+    if (shader3D_textured == 0) {
+        shader3D_textured = spawn_shader(world, shader3D_textured_vert_buffer, shader3D_textured_frag_buffer);
+        textured3D_material = spawn_material(world, get_shader3D_textured_value(world));
+        spawn_attributes_textured3D(textured3D_material);
+    }
     #ifdef zoxel_debug_opengl
         zoxel_log(" > loaded shader3D textured\n");
     #endif
     return 0;
-}
-
-void opengl_bind_texture(GLuint texture_buffer) {
-    glBindTexture(GL_TEXTURE_2D, texture_buffer);
-}
-
-void opengl_set_texture(GLuint texture_buffer, unsigned char isBlend) {
-    if (isBlend) {
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glEnable(GL_BLEND);
-    } else {
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glDisable(GL_BLEND);
-    }
-    glBindTexture(GL_TEXTURE_2D, texture_buffer);
 }
 
 void opengl_set_material3D_uvs_properties(float4 rotation, float scale, float brightness, Material3DTextured *attributes) {
@@ -89,3 +97,17 @@ glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
 glBufferData(GL_ARRAY_BUFFER, sizeof(cube_colors), cube_colors, GL_STATIC_DRAW);
 glBindBuffer(GL_ARRAY_BUFFER, 0);*/
 // zoxel_log(" > sizes: %ix%ix%i\n", sizeof(cube_vertices), sizeof(cube_uvs), sizeof(cube_colors));
+
+/*void opengl_set_texture(GLuint texture_buffer, unsigned char isBlend) {
+    if (isBlend) {
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_BLEND);
+    } else {
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDisable(GL_BLEND);
+    }
+    glBindTexture(GL_TEXTURE_2D, texture_buffer);
+}*/
+    // glDeleteShader(shader3D_textured.x);
+    // glDeleteShader(shader3D_textured.y);
+    // glDeleteProgram(textured3D_material);

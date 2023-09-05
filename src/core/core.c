@@ -27,6 +27,7 @@ void spawn_prefabs_core(ecs_world_t *world) {
     spawn_prefabs_networking(world);
     spawn_prefabs_inputs(world);
     if (!headless) spawn_prefabs_apps(world); // sdl
+    spawn_prefabs_rendering(world);
     spawn_prefabs_sounds(world);
     spawn_prefabs_cameras(world);
 }

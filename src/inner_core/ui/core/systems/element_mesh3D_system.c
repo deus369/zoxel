@@ -32,15 +32,3 @@ void Element3DMeshSystem(ecs_iter_t *it) {
         // zoxel_log(" o> mesh_3D spawned [%lu]\n", it->entities[i]);
     }
 } zox_declare_system(Element3DMeshSystem)
-
-// const PixelSize *pixelSizes = ecs_field(it, PixelSize, 2);
-// const PixelSize *canvasSize = ecs_get(world, canvasLink->value, PixelSize);
-// const PixelSize *pixelSize = &pixelSizes[i];
-// float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
-// float2 scale2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
-// scale_mesh2D_vertices(world, e, scale2D);
-// spawn_gpu_material(world, e, shader3D_textured);
-// spawn_gpu_mesh(world, e);
-// spawn_gpu_uvs(world, e);
-// spawn_gpu_colors(world, e);
-// spawn_gpu_texture(world, e);

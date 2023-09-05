@@ -52,9 +52,9 @@ int begin_core(int argc, char* argv[]) {
 }
 
 void close_core() {
+    if (!headless) opengl_dispose_shaders(world);
     close_ecs();
     if (!headless) {
-        opengl_dispose_shaders();
         close_audio_sdl();
         SDL_Quit();
     }

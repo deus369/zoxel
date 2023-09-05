@@ -44,15 +44,20 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
             materialGPULink = ecs_get(world, tilemapLink->value, MaterialGPULink);
             if (materialGPULink->value == 0) break;
             textureGPULink = ecs_get(world, tilemapLink->value, TextureGPULink);
+            // if (textureGPULink->value == 0) zoxel_log("tilemap has no texture\n");
             if (textureGPULink->value == 0) break;
         }
         if (!has_set_material) {
             has_set_material = 1;
             opengl_set_material(materialGPULink->value);
+            // opengl_set_material(get_textured3D_material_value(world));
+            // zoxel_log(" > get_textured3D_material_value [%i]\n", get_textured3D_material_value(world));
+            // zoxel_log(" > textureGPULink [%i]\n", textureGPULink->value);
             opengl_set_matrix(attributes_textured3D.camera_matrix, render_camera_matrix);
             opengl_bind_texture(textureGPULink->value);
             glUniform4f(attributes_textured3D.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
             opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes_textured3D);
+            // zoxel_log(" > render terrain [%i] - [%ix%i:%i:%i]\n", materialGPULink->value, meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value, colorsGPULink->value);
         }
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_enable_vertex_buffer(attributes_textured3D.vertex_position, meshGPULink->value.y);
@@ -61,7 +66,6 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         glUniform3f(attributes_textured3D.position, position3D->value.x, position3D->value.y, position3D->value.z);
         #ifndef zox_disable_render_terrain_chunks
             opengl_render(meshIndicies2->length);
-            // opengl_render(36);
         #endif
         #ifdef zoxel_catch_opengl_errors
             if (check_opengl_error_unlogged() != 0) {

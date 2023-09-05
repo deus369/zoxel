@@ -4,12 +4,12 @@ const int square_indicies[] = {
     2, 1, 0,    0, 3, 2
 };
 
-const float square_vertices2[] = {
+/*const float square_vertices2[] = {
     -1, -1,
     -1, 1,
     1, 1,
     1, -1
-};
+};*/
 
 // createt cube floats
 const float squareVerts3D[] = {

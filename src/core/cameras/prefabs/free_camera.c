@@ -16,7 +16,6 @@ ecs_entity_t spawn_prefab_free_camera(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_free_camera(ecs_world_t *world, float3 position, float4 rotation, int2 screen_dimensions, int2 screen_position) {
-    ecs_defer_begin(world);
     zox_instance(prefab_free_camera)
     zox_name("free_camera")
     zox_set_only(e, Position3D, { position })
@@ -28,7 +27,6 @@ ecs_entity_t spawn_free_camera(ecs_world_t *world, float3 position, float4 rotat
         zox_add_tag(e, EulerOverride)
         zox_set(e, EulerLimitX, { { -camera_limit_x, camera_limit_x } }) // adds a limit, - half pi to + half pi, 0.8 is around half that
     #endif
-    ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
         zoxel_log("Spawned Free Camera [%lu]\n", (long int) e);
     #endif

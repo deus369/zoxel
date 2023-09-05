@@ -23,3 +23,12 @@ void MeshColorsGPUDisposeSystem(ecs_iter_t *it) {
         if (colorsGPULink->value != 0) glDeleteBuffers(1, &colorsGPULink->value);
     }
 } zox_declare_system(MeshColorsGPUDisposeSystem)
+
+void ShaderGPUDisposeSystem(ecs_iter_t *it) {
+    const ShaderGPULink *shaderGPULinks = ecs_field(it, ShaderGPULink, 1);
+    for (int i = 0; i < it->count; i++) {
+        const ShaderGPULink *shaderGPULink = &shaderGPULinks[i];
+        if (shaderGPULink->value.x != 0) glDeleteShader(shaderGPULink->value.x);
+        if (shaderGPULink->value.y != 0) glDeleteShader(shaderGPULink->value.y);
+    }
+} zox_declare_system(ShaderGPUDisposeSystem)

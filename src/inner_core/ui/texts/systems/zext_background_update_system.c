@@ -41,13 +41,3 @@ void ZextBackgroundUpdateSystem(ecs_iter_t *it) {
         // zoxel_log(" > zoxel label background is updating [%i]\n", zextData->length);
     }
 } zox_declare_system(ZextBackgroundUpdateSystem)
-
-            /*if (zextAlignment->value == zox_mesh_alignment_centred) {
-                memcpy(meshVertices2D->value, square_vertices, meshVertices2D->length * sizeof(float2));
-            } else if (zextAlignment->value == zox_mesh_alignment_centred) {
-                memcpy(meshVertices2D->value, square_vertices_right_aligned, meshVertices2D->length * sizeof(float2));
-            }
-            for (int i = 0; i < meshVertices2D->length; i++) {
-                // meshVertices2D->value[i] = square_vertices_right_aligned[i];
-                float2_multiply_float2_p(&meshVertices2D->value[i], scale2D);
-            }*/

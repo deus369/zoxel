@@ -22,13 +22,9 @@ ecs_entity_t spawn_prefab_ui_line2D(ecs_world_t *world) {
 
 
 ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point_a, int2 point_b, color line_color, float thickness, double life_time) {
-    ecs_defer_begin(world);
     ecs_entity_t e;
-    if (life_time == 0.0) {
-        e = ecs_new_w_pair(world, EcsIsA, prefab_ui_line2D);
-    } else {
-        e = ecs_new_w_pair(world, EcsIsA, prefab_temporary_ui_line2D);
-    }
+    if (life_time == 0.0) e = ecs_new_w_pair(world, EcsIsA, prefab_ui_line2D);
+    else e = ecs_new_w_pair(world, EcsIsA, prefab_temporary_ui_line2D);
     // set_unique_entity_name(world, e, "line2D");
     int2 canvas_size = screen_dimensions;
     if (canvas != 0) {
@@ -45,7 +41,6 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point
     zox_set_only(e, LineElementData, { { point_a.x, point_a.y, point_b.x, point_b.y } })
     zox_set_only(e, LineData2D, { lineData2D.value })
     if (life_time != 0.0f) zox_set_only(e, DestroyInTime, { life_time })
-    ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
         zoxel_log("Spawned ui_line2D [%lu]\n", (long int) e);
     #endif

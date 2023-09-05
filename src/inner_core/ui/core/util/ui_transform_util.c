@@ -97,11 +97,14 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
     }
     if (!headless && is_valid && zox_has(e, MeshVertices2D)) {  //! Resize (if visible)
         const PixelSize *pixelSize = ecs_get(world, e, PixelSize);
-        float2 scaledSize2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
-        set_mesh_vertices_world_scale2D(world, e, square_vertices, 4, scaledSize2D);  // scale the mesh
+        const MeshAlignment *meshAlignment = ecs_get(world, e, MeshAlignment);
+        float2 scale2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
+        MeshVertices2D *meshVertices2D = ecs_get_mut(world, e, MeshVertices2D);
+        set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, scale2D);
+        ecs_modified(world, e, MeshVertices2D);
         zox_set_only(e, MeshDirty, { 1 })
         #ifdef debug_ui_scaling
-            zoxel_log("        -> Scaling: [%fx%f]\n", scaledSize2D.x, scaledSize2D.y);
+            zoxel_log("        -> Scaling: [%fx%f]\n", scale2D.x, scale2D.y);
         #endif
     }
     if (is_valid && zox_has(e, Children)) {

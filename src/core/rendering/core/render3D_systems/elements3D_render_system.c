@@ -9,6 +9,7 @@ void Elements3DRenderSystem(ecs_iter_t *it) {
     #ifdef zox_time_render3D_textured_system
         begin_timing()
     #endif
+    ecs_world_t *world = it->world;
     unsigned char has_set_material = 0;
     int rendered_count = 0;
     const Position3D *positions = ecs_field(it, Position3D, 2);
@@ -33,7 +34,7 @@ void Elements3DRenderSystem(ecs_iter_t *it) {
         const TextureGPULink *textureGPULink = &textureGPULinks[i];
         if (!has_set_material) {
             has_set_material = 1;
-            opengl_set_material(textured3D_material);
+            opengl_set_material(get_textured3D_material_value(world));
             opengl_set_matrix(attributes_textured3D.camera_matrix, render_camera_matrix);
             glUniform4f(attributes_textured3D.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
             opengl_set_material3D_uvs_properties(rotation->value, 1, 1, &attributes_textured3D);

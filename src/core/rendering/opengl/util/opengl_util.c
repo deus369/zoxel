@@ -13,6 +13,10 @@ void print_opengl() {
     #endif
 }
 
+void opengl_bind_texture(GLuint texture_buffer) {
+    glBindTexture(GL_TEXTURE_2D, texture_buffer);
+}
+
 void opengl_enable_blend() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

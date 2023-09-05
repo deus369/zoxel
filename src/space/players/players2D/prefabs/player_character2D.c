@@ -29,7 +29,3 @@ ecs_entity_t spawn_player_character2D(ecs_world_t *world, ecs_entity_t camera) {
     local_player = e;
     return e;
 }
-
-// ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_player_character2D)
-// ecs_add_pair(world, e, CameraLink, mainCamera);
-// ecs_add_pair(world, mainCamera, Character2DLink, e);

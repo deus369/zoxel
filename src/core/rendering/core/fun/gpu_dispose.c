@@ -13,6 +13,14 @@ void dispose_material_resources(ecs_world_t *world, ecs_entity_t e) {
     }
 }
 
+void dispose_shader_resources(ecs_world_t *world, ecs_entity_t e) {
+    if (ecs_has(world, e, ShaderGPULink)) {
+        const ShaderGPULink *shaderGPULink = ecs_get(world, e, ShaderGPULink);
+        if (shaderGPULink->value.x != 0) glDeleteShader(shaderGPULink->value.x);
+        if (shaderGPULink->value.y != 0) glDeleteShader(shaderGPULink->value.y);
+    }
+}
+
 void dispose_mesh_resources(ecs_world_t *world, ecs_entity_t e) {
     if (ecs_has(world, e, MeshGPULink)) {
         const MeshGPULink *meshGPULink = ecs_get(world, e, MeshGPULink);
@@ -43,9 +51,10 @@ void dispose_children_resources(ecs_world_t *world, ecs_entity_t e) {
 
 // delete opengl resources, shaders, textures,
 void delete_all_opengl_resources(ecs_world_t *world) {
-    opengl_dispose_shaders();
+    opengl_dispose_shaders(world);
     dispose_children_resources(world, main_canvas);
     dispose_opengl_resources_terrain(world);
+    ecs_run(world, ecs_id(ShaderGPUDisposeSystem), 0, NULL);
     ecs_run(world, ecs_id(MeshGPUDisposeSystem), 0, NULL);
     ecs_run(world, ecs_id(MeshColorsGPUDisposeSystem), 0, NULL);
     ecs_run(world, ecs_id(MeshUvsGPUDisposeSystem), 0, NULL);

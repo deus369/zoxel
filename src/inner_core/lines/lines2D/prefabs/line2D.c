@@ -19,11 +19,8 @@ ecs_entity_t spawn_prefab_line2D(ecs_world_t *world) {
 ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 pointB, float thickness, double life_time) {
     ecs_defer_begin(world);
     ecs_entity_t e;
-    if (life_time == 0.0) {
-        e = ecs_new_w_pair(world, EcsIsA, prefab_line2D);
-    } else {
-        e = ecs_new_w_pair(world, EcsIsA, prefab_temporary_line2D);
-    }
+    if (life_time == 0.0) e = ecs_new_w_pair(world, EcsIsA, prefab_line2D);
+    else e = ecs_new_w_pair(world, EcsIsA, prefab_temporary_line2D);
     // set_unique_entity_name(world, e, "line2D");
     zox_set_only(e, LineData2D, { { pointA.x, pointA.y, pointB.x, pointB.y } })
     zox_set_only(e, LineThickness, { thickness })

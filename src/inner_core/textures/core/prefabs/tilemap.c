@@ -25,7 +25,7 @@ ecs_entity_t spawn_tilemap(ecs_world_t *world) {
     zox_name("tilemap")
     // zox_set_only(e, TextureSize, { texture_size })
     if (!headless) {
-        GLuint gpu_material = spawn_gpu_material(world, e, shader3D_textured);
+        GLuint gpu_material = spawn_gpu_material(world, e, get_shader3D_textured_value(world));
         spawn_attributes_textured3D(gpu_material);
         spawn_gpu_texture(world, e);
     }

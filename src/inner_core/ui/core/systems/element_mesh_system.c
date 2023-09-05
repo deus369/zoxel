@@ -30,13 +30,6 @@ void ElementMeshSystem(ecs_iter_t *it) {
         float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
         float2 scale2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
         set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, scale2D);
-        /*if (meshAlignment->value == zox_mesh_alignment_centred) {
-            set_mesh_vertices_scale2D(meshVertices2D, square_vertices, 4, scale2D);  // scale the mesh
-        } else if (meshAlignment->value == zox_mesh_alignment_right) {
-            set_mesh_vertices_scale2D(meshVertices2D, square_vertices_right_aligned, 4, scale2D);  // scale the mesh
-        }*/
-        //zoxel_log(" > mesh scale: %fx%f - pixel [%ix%i] - canvas [%ix%i]\n", scale2D.x, scale2D.y, pixelSize->value.x, pixelSize->value.y, canvasSize->value.x, canvasSize->value.y);
-        //set_mesh_vertices_scale2D(meshVertices2D, square_vertices, 4, scale2D);  // scale the mesh
         // spawn gpu bufers
         if (!headless) {
             MeshGPULink *meshGPULink = &meshGPULinks[i];

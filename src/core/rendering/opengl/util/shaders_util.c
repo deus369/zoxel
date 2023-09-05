@@ -1,3 +1,15 @@
+void clear_regular_buffer(GLuint *gpu_buffer) {
+    if (gpu_buffer != 0) {
+        glDeleteBuffers(1, gpu_buffer);
+        *gpu_buffer = 0;
+    }
+}
+
+/*void delete_shader(GLuint2 value) {
+    if (value.x != 0) glDeleteShader(1, &value.x);
+    if (value.y != 0) glDeleteShader(1, &value.y);
+}*/
+
 unsigned char initialize_material(GLuint material, GLuint vert_shader, GLuint frag_shader) {
     glAttachShader(material, vert_shader);
     glAttachShader(material, frag_shader);

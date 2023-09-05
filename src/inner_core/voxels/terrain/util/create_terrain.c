@@ -75,10 +75,8 @@ ecs_entity_t create_terrain(ecs_world_t *world) {
 }
 
 void dispose_opengl_resources_terrain(ecs_world_t *world) {
-    #ifndef voxels_terrain_multi_material
-        const TilemapLink *tilemapLink = ecs_get(world, main_terrain, TilemapLink);
-        dispose_material_resources(world, tilemapLink->value);
-    #endif
+    const TilemapLink *tilemapLink = ecs_get(world, main_terrain, TilemapLink);
+    dispose_material_resources(world, tilemapLink->value);
     const ChunkLinks *chunkLinks = ecs_get(world, main_terrain, ChunkLinks);
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hash_map_pair* pair = chunkLinks->value->data[i];
@@ -91,10 +89,7 @@ void dispose_opengl_resources_terrain(ecs_world_t *world) {
 }
 
 void restore_opengl_resources_terrain(ecs_world_t *world) {
-    #ifndef voxels_terrain_multi_material
-        const TilemapLink *tilemapLink = ecs_get(world, main_terrain, TilemapLink);
-        restore_material_resources(world, tilemapLink->value, shader3D_textured);
-    #endif
+    // zoxel_log(" > shader restore [%ix%i]\n", get_shader3D_textured_value(world).x, get_shader3D_textured_value(world).y);
     const ChunkLinks *chunkLinks = ecs_get(world, main_terrain, ChunkLinks);
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hash_map_pair* pair = chunkLinks->value->data[i];
@@ -104,8 +99,6 @@ void restore_opengl_resources_terrain(ecs_world_t *world) {
             pair = pair->next;
         }
     }
+    const TilemapLink *tilemapLink = ecs_get(world, main_terrain, TilemapLink);
+    restore_material_resources(world, tilemapLink->value, get_shader3D_textured_value(world));
 }
-
-/*#ifdef voxels_terrain_multi_material
-    restore_material_resources(world, terrain_chunk, shader3D_textured);
-#endif*/

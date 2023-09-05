@@ -35,6 +35,10 @@ unsigned char initialize_rendering(ecs_world_t *world) {
     else return initialize_opengl(world);
 }
 
+void spawn_prefabs_rendering(ecs_world_t *world) {
+    spawn_prefabs_rendering_core(world);
+}
+
 zox_begin_module(Rendering)
 // zoxel_define_components
 zox_define_tag(Mesh)

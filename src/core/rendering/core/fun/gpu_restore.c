@@ -3,15 +3,18 @@ extern ecs_entity_t main_canvas;
 extern GLuint2 shader_skybox;
 
 void restore_mesh_resources(ecs_world_t *world, ecs_entity_t e) {
+    if (ecs_has(world, e, MeshGPULink)) zox_set_only(e, MeshGPULink, { spawn_gpu_mesh_buffers() })
+    if (ecs_has(world, e, ColorsGPULink)) zox_set_only(e, ColorsGPULink, { spawn_gpu_generic_buffer() })
+    if (ecs_has(world, e, UvsGPULink)) zox_set_only(e, UvsGPULink, { spawn_gpu_generic_buffer() })
     if (ecs_has(world, e, MeshDirty)) zox_set_only(e, MeshDirty, { 1 })
 }
 
 void restore_material_resources(ecs_world_t *world, ecs_entity_t e, GLuint2 shader) {
-    if (ecs_has(world, e, MaterialGPULink)) zox_set_only(e, MaterialGPULink, { spawn_gpu_material_program(shader) })
     if (ecs_has(world, e, TextureGPULink)) zox_set_only(e, TextureGPULink, { spawn_gpu_texture_buffers() })
     if (ecs_has(world, e, TextureDirty)) zox_set_only(e, TextureDirty, { 1 })
-    if (ecs_has(world, e, MaterialInstancedGPULink)) zox_set_only(e, MaterialInstancedGPULink, { textured2D_material })
+    if (ecs_has(world, e, MaterialGPULink) && shader.x != 0 && shader.y != 0) zox_set_only(e, MaterialGPULink, { spawn_gpu_material_program(shader) })
     // todo: restore for MaterialInstancedGPULink
+    if (ecs_has(world, e, MaterialInstancedGPULink)) zox_set_only(e, MaterialInstancedGPULink, { textured2D_material })
 }
 
 void restore_children_resources(ecs_world_t *world, ecs_entity_t e) {
@@ -29,7 +32,8 @@ void restore_children_resources(ecs_world_t *world, ecs_entity_t e) {
 // restore opengl resources here
 void restore_all_opengl_resources(ecs_world_t *world) {
     zoxel_log(" > restoring all opengl resources\n");
-    opengl_load_shaders();
+    opengl_load_shaders(world);
+    restore_textured3D_shader(world);
     restore_material_resources(world, skybox, shader_skybox);
     restore_children_resources(world, main_canvas);
     restore_opengl_resources_terrain(world);
