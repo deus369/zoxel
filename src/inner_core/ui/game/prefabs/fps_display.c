@@ -25,7 +25,7 @@ ecs_entity_t spawn_fps_display(ecs_world_t *world, ecs_entity_t parent) {
     #ifdef zoxel_on_android
         if (anchor.y == 1) position.y -= android_header_size;
     #endif
-    return spawn_label_background(world, fps_display_prefab, parent, position, anchor, padding, "FPS", font_size, zox_zext_alignment_right, layer, (float2) { }, parent_pixel_size->value);
+    return spawn_label_background(world, fps_display_prefab, parent, position, anchor, padding, "FPS", font_size, zox_mesh_alignment_right, layer, (float2) { }, parent_pixel_size->value);
 }
 
 /*ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, label_prefab);

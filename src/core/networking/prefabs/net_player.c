@@ -24,9 +24,9 @@ ecs_entity_t spawn_net_player(ecs_world_t *world, int port, byte4 target_ip, int
     zox_instance(prefab_net_player)
     zox_name("net_player")
     zox_set_only(e, NetPort, { port })
-    set_new_socket(world, e, port);
     zox_set_only(e, TargetNetAddress, { target_ip })
     zox_set_only(e, TargetNetPort, { target_port })
+    set_new_socket(world, e, port);
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned net_player [%lu]\n", (long int) e);
     #endif

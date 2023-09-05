@@ -22,7 +22,7 @@ ecs_entity_t spawn_quad_count_label(ecs_world_t *world, ecs_entity_t parent) {
     int layer = 1;
     const PixelSize *parent_pixel_size = ecs_get(world, parent, PixelSize);
     ecs_entity_t e = spawn_label_background(world, prefab_quad_count_label, parent, position, anchor, padding, "", font_size,
-        zox_zext_alignment_right, layer, float2_zero, parent_pixel_size->value);
+        zox_mesh_alignment_right, layer, float2_zero, parent_pixel_size->value);
     quads_label = e;
     return e;
 }

@@ -12,7 +12,7 @@ void ZextUpdateSystem(ecs_iter_t *it) {
     const Layer2D *layer2Ds = ecs_field(it, Layer2D, 6);
     const Position2D *position2Ds = ecs_field(it, Position2D, 7);
     const PixelSize *pixelSizes = ecs_field(it, PixelSize, 8);
-    const ZextAlignment *zextAlignments = ecs_field(it, ZextAlignment, 9);
+    const MeshAlignment *meshAlignments = ecs_field(it, MeshAlignment, 9);
     Children *childrens = ecs_field(it, Children, 10);
     for (int i = 0; i < it->count; i++) {
         ZextDirty *zextDirty = &zextDirtys[i];
@@ -24,9 +24,9 @@ void ZextUpdateSystem(ecs_iter_t *it) {
         const Layer2D *layer2D = &layer2Ds[i];
         const Position2D *position2D = &position2Ds[i];
         const PixelSize *pixelSize = &pixelSizes[i];
-        const ZextAlignment *zextAlignment = &zextAlignments[i];
+        const MeshAlignment *meshAlignment = &meshAlignments[i];
         Children *children = &childrens[i];
-        spawn_zext_zigels(world, e, children, zextData, zextSize->value, zextAlignment->value, zextPadding->value, layer2D->value, position2D->value, pixelSize->value);
+        spawn_zext_zigels(world, e, children, zextData, zextSize->value, meshAlignment->value, zextPadding->value, layer2D->value, position2D->value, pixelSize->value);
         zextDirty->value = 0;
         #ifdef zoxel_debug_zigel_updates
             zoxel_log(" > zext is updating [%lu]\n", (long int) it->entities[i]);

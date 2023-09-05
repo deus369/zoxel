@@ -5,6 +5,9 @@
 int tri_count = 0;
 float3 fog_color = (float3) { 0.5f, 0.55f, 0.58f };
 float fog_density = 0.0326f;
+#define zox_mesh_alignment_centred 0
+#define zox_mesh_alignment_right 1
+#define zox_mesh_alignment_left 2
 #include "data/uint2.c"
 // todo: replace this with a render stack, which can easily be used in a camera_render_system
 //      > it can also be sorted better for z issues on translucent materials
@@ -16,6 +19,7 @@ zox_declare_tag(ElementRender)
 zox_byte_component(MeshDirty)
 zox_byte_component(TextureDirty)
 zox_component(Brightness, float)
+zox_byte_component(MeshAlignment)
 zox_byte_component(RenderLod) // The resolution of each chunk, distance to nearest camera
 #include "opengl/opengl.c"
 #include "vulkan/vulkan.c"
@@ -36,6 +40,7 @@ zox_define_tag(ElementRender)
 zox_define_component(MeshDirty)
 zox_define_component(TextureDirty)
 zox_define_component(Brightness)
+zox_define_component(MeshAlignment)
 zox_define_component(RenderLod)
 // zoxel_import_modules
 if (!headless) {

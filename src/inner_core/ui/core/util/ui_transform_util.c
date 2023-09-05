@@ -56,9 +56,7 @@ float2 initialize_ui_components(ecs_world_t *world, ecs_entity_t e, ecs_entity_t
     return position2D;
 }
 
-float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent,
-    int2 local_pixel_position, int2 pixel_size, float2 anchor, unsigned char layer,
-    float2 parent_position, int2 parent_pixel_size, int2 canvas_size) {
+float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, int2 local_pixel_position, int2 pixel_size, float2 anchor, unsigned char layer, float2 parent_position, int2 parent_pixel_size, int2 canvas_size) {
     float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
     float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
     float2 position2D = get_ui_real_position2D_parent(local_pixel_position, anchor, parent_position, parent_pixel_size, canvas_size_f, aspect_ratio);

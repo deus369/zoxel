@@ -8,7 +8,6 @@ ecs_entity_t spawn_zext_prefab(ecs_world_t *world) {
     zox_add(e, ZextData)
     zox_add(e, ZextSize)
     zox_add(e, ZextPadding)
-    zox_set(e, ZextAlignment, { 0 })
     zox_set(e, ZextDirty, { 0 })
     zox_add(e, Children)
     add_transform2Ds(world, e);
@@ -25,9 +24,7 @@ unsigned char is_zext(ZextData *zext_data, const char* text) {
     unsigned char text_length = strlen(text);
     if (zext_data->length != text_length) return 0;
     for (int i = 0; i < text_length; i++) {
-        if (convert_ascii(text[i]) != zext_data->value[i]) {
-            return 0;
-        }
+        if (convert_ascii(text[i]) != zext_data->value[i]) return 0;
     }
     return 1;
 }
@@ -39,7 +36,7 @@ void set_zext(ZextData *zext_data, const char* text) {
 }
 
 ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t parent, int2 position, float2 anchor, byte2 padding, const char* text, int font_size, unsigned char alignment, unsigned char layer, float2 parent_position2D, int2 parent_pixel_size) {
-    // unsigned char alignment = 0; // zox_zext_alignment_centred;
+    // unsigned char alignment = 0; // zox_mesh_alignment_centred;
     int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
     int textLength = strlen(text);
     int2 zext_size = (int2) { font_size * textLength, font_size };
@@ -47,9 +44,8 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t pa
     zox_name("zext")
     zox_set_only(e, ZextSize, { font_size })
     zox_set_only(e, ZextPadding, { padding })
-    zox_set_only(e, ZextAlignment, { alignment })
-    float2 position2D = initialize_ui_components_2(world, e, parent, position, zext_size, anchor, layer,
-        parent_position2D, parent_pixel_size, canvas_size);
+    zox_set_only(e, MeshAlignment, { alignment })
+    float2 position2D = initialize_ui_components_2(world, e, parent, position, zext_size, anchor, layer, parent_position2D, parent_pixel_size, canvas_size);
     ZextData zextData = { };
     Children children = { };
     initialize_memory_component_non_pointer(zextData, unsigned char, textLength);

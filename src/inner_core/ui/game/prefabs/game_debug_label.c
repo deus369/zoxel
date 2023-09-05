@@ -21,7 +21,7 @@ ecs_entity_t spawn_game_debug_label(ecs_world_t *world, ecs_entity_t parent) {
     int2 position = { -edge_line_thickness / 3, (font_size / 2) + edge_line_thickness };
     int layer = 1;
     const PixelSize *parent_pixel_size = ecs_get(world, parent, PixelSize);
-    ecs_entity_t e = spawn_label_background(world, prefab_game_debug_label, parent, position, anchor, padding, "", font_size, zox_zext_alignment_right, layer, float2_zero, parent_pixel_size->value);
+    ecs_entity_t e = spawn_label_background(world, prefab_game_debug_label, parent, position, anchor, padding, "", font_size, zox_mesh_alignment_right, layer, float2_zero, parent_pixel_size->value);
     game_debug_label = e;
     return e;
 }

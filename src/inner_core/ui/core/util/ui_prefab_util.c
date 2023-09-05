@@ -7,6 +7,7 @@ void add_ui_components(ecs_world_t *world, ecs_entity_t e) {
     zox_set(e, Anchor, { { 0 } })
     zox_set(e, CanvasLink, { 0 })
     zox_set(e, Layer2D, { 0 })
+    zox_set(e, MeshAlignment, { 0 })
     zox_set(e, InitializeEntityMesh, { 1 })
 }
 

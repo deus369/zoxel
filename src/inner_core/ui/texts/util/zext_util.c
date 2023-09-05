@@ -1,18 +1,15 @@
 // #define zoxel_debug_zext_updates
-#define zox_zext_alignment_centred 0
-#define zox_zext_alignment_right 1
-#define zox_zext_alignment_left 2
 
 int2 get_zigel_position(unsigned char index, unsigned char total_length, unsigned char font_size, unsigned char text_alignment, byte2 text_padding) {
     int2 zigel_size = (int2) { font_size, font_size };
     int half_size = zigel_size.x * total_length / 2.0f;
     int2 zigel_position = (int2) { (zigel_size.x * index - half_size) + zigel_size.x / 2, 0 };
     // default was centred
-    /*if (text_alignment == zox_zext_alignment_centred) { } else*/
-    if (text_alignment == zox_zext_alignment_right) {
+    /*if (text_alignment == zox_mesh_alignment_centred) { } else*/
+    if (text_alignment == zox_mesh_alignment_right) {
         zigel_position.x -= half_size;
         zigel_position.x -= text_padding.x;
-    } else if (text_alignment == zox_zext_alignment_left) {
+    } else if (text_alignment == zox_mesh_alignment_left) {
         zigel_position.x += half_size;
         zigel_position.x += text_padding.x;
     }
