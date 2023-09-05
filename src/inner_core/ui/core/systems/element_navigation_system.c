@@ -37,6 +37,8 @@
                     for (int k = 0; k < zevices->length; k++) {
                         ecs_entity_t zevice_entity = zevices->value[k];
                         if (ecs_has(world, zevice_entity, DeviceStick)) {
+                            const ZeviceDisabled *zeviceDisabled = ecs_get(world, zevice_entity, ZeviceDisabled);
+                            if (zeviceDisabled->value) continue;
                             const DeviceStick *deviceStick = ecs_get(world, zevice_entity, DeviceStick);
                             left_stick = deviceStick->value;
                             break;

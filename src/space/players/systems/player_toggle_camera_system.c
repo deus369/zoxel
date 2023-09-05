@@ -25,6 +25,8 @@ void PlayerToggleCameraSystem(ecs_iter_t *it) {
                 for (int k = 0; k < zevices->length; k++) {
                     ecs_entity_t zevice_entity = zevices->value[k];
                     if (ecs_has(world, zevice_entity, DeviceButton)) {
+                        const ZeviceDisabled *zeviceDisabled = ecs_get(world, zevice_entity, ZeviceDisabled);
+                        if (zeviceDisabled->value) continue;
                         const DeviceButtonType *deviceButtonType = ecs_get(world, zevice_entity, DeviceButtonType);
                         if (deviceButtonType->value == zox_device_button_right_stick_push) {
                             const DeviceButton *deviceButton = ecs_get(world, zevice_entity, DeviceButton);

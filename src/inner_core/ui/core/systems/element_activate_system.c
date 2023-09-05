@@ -57,6 +57,8 @@
                         if (ecs_has(world, zevice_entity, DeviceButton)) {
                             const DeviceButtonType *deviceButtonType = ecs_get(world, zevice_entity, DeviceButtonType);
                             if (deviceButtonType->value == zox_device_button_a) {
+                                const ZeviceDisabled *zeviceDisabled = ecs_get(world, zevice_entity, ZeviceDisabled);
+                                if (zeviceDisabled->value) continue;
                                 const DeviceButton *deviceButton = ecs_get(world, zevice_entity, DeviceButton);
                                 if (devices_get_pressed_this_frame(deviceButton->value)) set_ui_clicked_mut(world, raycasterTarget->value);
                                 break;
