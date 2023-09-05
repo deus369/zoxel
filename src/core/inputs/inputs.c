@@ -1,6 +1,10 @@
 #ifndef zoxel_inputs
 #define zoxel_inputs
 
+// todo: get change filters to work in multithreaded systems
+// todo: spawn/destroy device entity upon connection/removal
+// todo: Add extract systems as systems
+
 // zoxel_settings
 #define zox_device_mode_none 0
 #define zox_device_mode_keyboardmouse 1
@@ -84,9 +88,5 @@ zox_system(DraggerEndSystem, EcsOnLoad, [out] DragableState, [out] DraggerLink, 
 zox_system(MouseRaycasterSystem, EcsPreUpdate, [in] DeviceLinks, [in] DeviceMode, [out] Raycaster)
 zox_system(DeviceModeDirtySystem, EcsPostUpdate, [out] DeviceMode, [out] DeviceModeDirty)
 zoxel_end_module(Inputs)
-
-// todo: get change filters to work in multithreaded systems
-// todo: spawn/destroy device entity upon connection/removal
-// todo: Add extract systems as systems
 
 #endif

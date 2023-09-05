@@ -1,4 +1,4 @@
-void disable_player_inputs(ecs_world_t *world, ecs_entity_t player) {
+void disable_inputs_until_release(ecs_world_t *world, ecs_entity_t player) {
     const DeviceLinks *deviceLinks = ecs_get(world, player, DeviceLinks);
     for (int j = 0; j < deviceLinks->length; j++) {
         ecs_entity_t device_entity = deviceLinks->value[j];

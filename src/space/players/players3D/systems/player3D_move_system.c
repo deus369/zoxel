@@ -60,7 +60,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                 }
                 if (float_abs(left_stick.x) > joystick_cutoff_buffer) movement.x = left_stick.x;
                 if (float_abs(left_stick.y) > joystick_cutoff_buffer) movement.z = left_stick.y;
-                if (is_run) { // gamepad->lb.is_pressed || gamepad->rb.is_pressed) {
+                if (is_run) {
                     movement.x *= run_speed;
                     movement.z *= run_speed;
                 }

@@ -32,7 +32,7 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, unsigned char gamepad_type) {
     for (unsigned char i = 0; i < 14; i++) {
         // use gamepad layout
         unsigned char joystick_index = 0;
-        if (gamepad_type == zox_gamepad_layout_type_xbox) {
+        if (gamepad_type == zox_gamepad_layout_type_xbox || gamepad_type == zox_gamepad_layout_type_steamdeck) {
             if (i == zox_device_button_lt) joystick_index = 11;
             else if (i == zox_device_button_rt) joystick_index = 12;
             else if (i == zox_device_button_select) joystick_index = 6;
@@ -56,7 +56,9 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, unsigned char gamepad_type) {
         children.value[i] = spawn_device_button(world, i, joystick_index);
     }
     for (unsigned char i = 0, j = 14; j < 16; i++, j++) {
-        children.value[j] = spawn_device_stick(world, i, i * 2);
+        unsigned char joystick_index = i * 2;
+        if (i == 1 && gamepad_type == zox_gamepad_layout_type_steamdeck) joystick_index++;
+        children.value[j] = spawn_device_stick(world, i, joystick_index);
     }
     /*if (is_xbox_gamepad(joystick)) {
         set_gamepad_button(&gamepad->a, joystick, 0);

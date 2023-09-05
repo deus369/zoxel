@@ -6,9 +6,11 @@ void spawn_connected_devices(ecs_world_t *world) {
     initialize_sdl_gamepads();
     spawn_keyboard(world);
     spawn_mouse(world);
-    //if (joysticks_count > 0)
     unsigned char gamepad_type = 0;
-    if (joysticks_count > 0) gamepad_type = is_xbox_gamepad(joystick);
+    if (joysticks_count > 0) {
+        if (is_xbox_gamepad(joystick)) gamepad_type = zox_gamepad_layout_type_xbox;
+        if (is_steamdeck_gamepad(joystick)) gamepad_type = zox_gamepad_layout_type_steamdeck;
+    }
     spawn_gamepad(world, gamepad_type);
     spawn_touchscreen(world);
 }

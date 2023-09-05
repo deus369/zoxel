@@ -23,7 +23,6 @@ void Player3DRotateSystem(ecs_iter_t *it) {
         const CharacterLink *characterLink = &characterLinks[i];
         if (characterLink->value == 0) continue;
         const DisableMovement *disableMovement = ecs_get(world, characterLink->value, DisableMovement);
-        // if (disableMovement->value) zoxel_log(" > movement is disabled\n");
         if (disableMovement->value) continue;
         const DeviceLinks *deviceLinks2 = &deviceLinks[i];
         float2 euler = { 0, 0 };

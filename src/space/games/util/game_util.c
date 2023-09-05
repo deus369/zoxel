@@ -13,7 +13,7 @@ void end_game(ecs_world_t *world) {
     spawn_main_menu(world, game_name, window_position, window_anchor, 0);
     zox_set_only(local_game, GameState, { zoxel_game_state_main_menu })
     // main_cameras[0] = respawn_base_camera(world, main_cameras[0]);
-    disable_player_inputs(world, main_player);
+    disable_inputs_until_release(world, main_player);
 }
 
 void play_game(ecs_world_t *world) {
@@ -42,7 +42,7 @@ void play_game(ecs_world_t *world) {
             attach_to_character(world, main_player, main_cameras[0], 0);
         }
     #endif
-    disable_player_inputs(world, main_player);
+    disable_inputs_until_release(world, main_player);
 }
 
 /*ecs_entity_t respawn_camera(ecs_world_t *world, ecs_entity_t old_camera_entity) {

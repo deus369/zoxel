@@ -8,6 +8,7 @@ void DeviceModeDirtySystem(ecs_iter_t *it) {
             // zoxel_log("     > devicemode dirty [%i] -> [%i]\n", deviceModeDirty->value, deviceMode->value);
             deviceMode->value = deviceModeDirty->value;
             deviceModeDirty->value = 0;
+            disable_inputs_until_release(it->world, it->entities[i]);
         }
     }
 } zox_declare_system(DeviceModeDirtySystem)
