@@ -26,7 +26,7 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, unsigned char gamepad_type) {
     zox_instance(prefab_gamepad)
     zox_name("gamepad")
     zox_set_only(e, DeviceLayout, { gamepad_type })
-    zoxel_log("gamepad_type [%i]\n", gamepad_type);
+    // zoxel_log("gamepad_type [%i]\n", gamepad_type);
     Children children = { };
     initialize_memory_component_non_pointer(children, ecs_entity_t, 16)
     for (unsigned char i = 0; i < 14; i++) {

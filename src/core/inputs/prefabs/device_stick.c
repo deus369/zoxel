@@ -7,6 +7,8 @@ ecs_entity_t spawn_prefab_device_stick(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
     zox_name("prefab_device_stick")
+    zox_add_tag(e, Zevice)
+    zox_set(e, ZeviceDisabled, { 0 })
     zox_set(e, DeviceStick, { float2_zero })
     zox_set(e, DeviceButtonType, { 0 })
     zox_set(e, RealButtonIndex, { 0 })

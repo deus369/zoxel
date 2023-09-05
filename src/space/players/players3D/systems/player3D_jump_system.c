@@ -8,8 +8,10 @@ void Player3DJumpSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const CharacterLink *characterLink = &characterLinks[i];
         if (characterLink->value == 0) continue;
+        const DisableMovement *disableMovement = ecs_get(world, characterLink->value, DisableMovement);
+        if (disableMovement->value == 1) continue;
         const Grounded *grounded = ecs_get(world, characterLink->value, Grounded);
-        if (grounded->value == 0) return;
+        if (grounded->value == 0) continue;
         const DeviceLinks *deviceLinks = &deviceLinkss[i];
         unsigned char is_jump_triggered = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
@@ -18,14 +20,18 @@ void Player3DJumpSystem(ecs_iter_t *it) {
                 const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
                 if (keyboard->space.pressed_this_frame) is_jump_triggered = 1;
             } else if (ecs_has(world, device_entity, Gamepad)) {
-                const Children *device_buttons = ecs_get(world, device_entity, Children);
-                for (int k = 0; k < device_buttons->length; k++) {
-                    ecs_entity_t device_button_entity = device_buttons->value[k];
-                    if (ecs_has(world, device_button_entity, DeviceButton)) {
-                        const DeviceButtonType *deviceButtonType = ecs_get(world, device_button_entity, DeviceButtonType);
+                const Children *zevices = ecs_get(world, device_entity, Children);
+                for (int k = 0; k < zevices->length; k++) {
+                    ecs_entity_t zevice_entity = zevices->value[k];
+                    if (ecs_has(world, zevice_entity, DeviceButton)) {
+                        const DeviceButtonType *deviceButtonType = ecs_get(world, zevice_entity, DeviceButtonType);
                         if (deviceButtonType->value == zox_device_button_a) {
-                            const DeviceButton *deviceButton = ecs_get(world, device_button_entity, DeviceButton);
-                            if (devices_get_pressed_this_frame(deviceButton->value)) is_jump_triggered = 1;
+                            const ZeviceDisabled *zeviceDisabled = ecs_get(world, zevice_entity, ZeviceDisabled);
+                            if (zeviceDisabled->value) continue;
+                            const DeviceButton *deviceButton = ecs_get(world, zevice_entity, DeviceButton);
+                            // if (devices_get_pressed_this_frame(deviceButton->value)) is_jump_triggered = 1;
+                            // if (devices_get_is_pressed(deviceButton->value)) zoxel_log(" = jump activated [%lu] at %f\n", zevice_entity, zox_current_time);
+                            if (devices_get_is_pressed(deviceButton->value)) is_jump_triggered = 1;
                             break;
                         }
                     }

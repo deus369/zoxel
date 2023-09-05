@@ -33,11 +33,11 @@
                 if (ecs_has(world, device_entity, Gamepad)) {
                     // const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
                     float2 left_stick = float2_zero;
-                    const Children *device_buttons = ecs_get(world, device_entity, Children);
-                    for (int k = 0; k < device_buttons->length; k++) {
-                        ecs_entity_t device_button_entity = device_buttons->value[k];
-                        if (ecs_has(world, device_button_entity, DeviceStick)) {
-                            const DeviceStick *deviceStick = ecs_get(world, device_button_entity, DeviceStick);
+                    const Children *zevices = ecs_get(world, device_entity, Children);
+                    for (int k = 0; k < zevices->length; k++) {
+                        ecs_entity_t zevice_entity = zevices->value[k];
+                        if (ecs_has(world, zevice_entity, DeviceStick)) {
+                            const DeviceStick *deviceStick = ecs_get(world, zevice_entity, DeviceStick);
                             left_stick = deviceStick->value;
                             break;
                         }

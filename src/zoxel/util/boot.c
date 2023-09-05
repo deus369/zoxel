@@ -17,7 +17,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     load_resources_engine(world);
 
     icon_filepath = resources_folder_name"textures/game_icon.png";
-    zoxel_log(" > icon_filepath set to [%s]\n", icon_filepath);
+    // zoxel_log(" > icon_filepath set to [%s]\n", icon_filepath);
     load_app_icon(main_window, icon_filepath);
 
     // zoxel_log(" > [zoxel] success initializing sdl window\n");

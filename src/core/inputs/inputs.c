@@ -16,7 +16,9 @@ const float joystick_cutoff_buffer = 0.14f;
 #include "data/finger.c"
 zox_declare_tag(Device)
 zox_declare_tag(Gamepad)
+zox_declare_tag(Zevice)
 zox_byte_component(DeviceButton)
+zox_byte_component(ZeviceDisabled)
 zox_component(DeviceStick, float2)
 zox_byte_component(DeviceButtonType)
 zox_byte_component(RealButtonIndex)
@@ -38,6 +40,7 @@ zox_memory_component(DeviceLinks, ecs_entity_t)
 #include "prefabs/gamepad.c"
 #include "prefabs/touchscreen.c"
 // zoxel_system_declares
+#include "systems/zevice_button_enable_system.c"
 #include "systems/mouse_raycaster_system.c"
 #include "systems/dragger_end_system.c"
 #include "systems/device_mode_system.c"
@@ -59,6 +62,7 @@ zox_begin_module(Inputs)
 // zoxel_component_defines
 zox_define_tag(Device)
 zox_define_tag(Gamepad)
+zox_define_tag(Zevice)
 zox_define_component(DeviceButton)
 zox_define_component(DeviceStick)
 zox_define_component(DeviceButtonType)
@@ -70,12 +74,14 @@ zox_define_component(DeviceModeDirty)
 zox_define_memory_component(DeviceLinks)
 zox_define_component(Keyboard)
 zox_define_component(Mouse)
-// zox_define_component(Gamepad)
 zox_define_component(Touchscreen)
+zox_define_component(ZeviceDisabled)
 // zoxel_system_defines
+zox_system(ZeviceButtonEnableSystem, EcsOnLoad, [in] DeviceButton, [out] ZeviceDisabled)
+zox_system(ZeviceStickEnableSystem, EcsOnLoad, [in] DeviceStick, [out] ZeviceDisabled)
 zox_system(DeviceModeSystem, EcsOnLoad, [in] DeviceLinks, [in] DeviceMode, [out] DeviceModeDirty)
-zox_system(MouseRaycasterSystem, EcsPreUpdate, [in] DeviceLinks, [in] DeviceMode, [out] Raycaster)
 zox_system(DraggerEndSystem, EcsOnLoad, [out] DragableState, [out] DraggerLink, [out] DraggingDelta)
+zox_system(MouseRaycasterSystem, EcsPreUpdate, [in] DeviceLinks, [in] DeviceMode, [out] Raycaster)
 zox_system(DeviceModeDirtySystem, EcsPostUpdate, [out] DeviceMode, [out] DeviceModeDirty)
 zoxel_end_module(Inputs)
 

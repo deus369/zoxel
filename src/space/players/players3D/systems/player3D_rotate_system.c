@@ -46,13 +46,13 @@ void Player3DRotateSystem(ecs_iter_t *it) {
                 euler.y = - mouse_delta * mouse_rotate_multiplier;
             } else if (ecs_has(world, device_entity, Gamepad)) {
                 float2 right_stick = float2_zero;
-                const Children *device_buttons = ecs_get(world, device_entity, Children);
-                for (int k = 0; k < device_buttons->length; k++) {
-                    ecs_entity_t device_button_entity = device_buttons->value[k];
-                    const DeviceButtonType *deviceButtonType = ecs_get(world, device_button_entity, DeviceButtonType);
-                    if (ecs_has(world, device_button_entity, DeviceStick)) {
+                const Children *zevices = ecs_get(world, device_entity, Children);
+                for (int k = 0; k < zevices->length; k++) {
+                    ecs_entity_t zevice_entity = zevices->value[k];
+                    const DeviceButtonType *deviceButtonType = ecs_get(world, zevice_entity, DeviceButtonType);
+                    if (ecs_has(world, zevice_entity, DeviceStick)) {
                         if (deviceButtonType->value == zox_device_stick_right) {
-                            const DeviceStick *deviceStick = ecs_get(world, device_button_entity, DeviceStick);
+                            const DeviceStick *deviceStick = ecs_get(world, zevice_entity, DeviceStick);
                             right_stick = deviceStick->value;
                             break;
                         }
