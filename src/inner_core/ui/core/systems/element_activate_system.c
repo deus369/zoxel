@@ -18,6 +18,7 @@
             if (raycasterTarget->value == 0) continue;
             const DeviceLinks *deviceLinks2 = &deviceLinks[i];
             const DeviceMode *deviceMode = &deviceModes[i];
+            unsigned char did_activate = 0;
             for (int j = 0; j < deviceLinks2->length; j++) {
                 ecs_entity_t device_entity = deviceLinks2->value[j];
                 if (deviceMode->value == zox_device_mode_keyboardmouse && ecs_has(world, device_entity, Mouse)) {
@@ -32,7 +33,7 @@
                             ecs_modified(world, raycasterTarget->value, DraggerLink);
                         }
                     } else if (mouse->left.released_this_frame) {
-                        set_ui_clicked_mut(world, raycasterTarget->value);
+                        did_activate = 1;
                     }
                 } else if (deviceMode->value == zox_device_mode_touchscreen && ecs_has(world, device_entity, Touchscreen)) {
                     const Touchscreen *touchscreen = ecs_get(world, device_entity, Touchscreen);
@@ -46,10 +47,7 @@
                             ecs_modified(world, raycasterTarget->value, DraggerLink);
                             // zoxel_log(" > ui dragging at [%f]\n", (float) zox_current_time);
                         }
-                    } else if (touchscreen->primary_touch.value.released_this_frame) {
-                        set_ui_clicked_mut(world, raycasterTarget->value);
-                        // zoxel_log(" > ui activated at [%f]\n", (float) zox_current_time);
-                    }
+                    } else if (touchscreen->primary_touch.value.released_this_frame) did_activate = 1;
                 } else if (deviceMode->value == zox_device_mode_gamepad && ecs_has(world, device_entity, Gamepad)) {
                     const Children *zevices = ecs_get(world, device_entity, Children);
                     for (int k = 0; k < zevices->length; k++) {
@@ -58,15 +56,17 @@
                             const DeviceButtonType *deviceButtonType = ecs_get(world, zevice_entity, DeviceButtonType);
                             if (deviceButtonType->value == zox_device_button_a) {
                                 const ZeviceDisabled *zeviceDisabled = ecs_get(world, zevice_entity, ZeviceDisabled);
-                                if (zeviceDisabled->value) continue;
-                                const DeviceButton *deviceButton = ecs_get(world, zevice_entity, DeviceButton);
-                                if (devices_get_pressed_this_frame(deviceButton->value)) set_ui_clicked_mut(world, raycasterTarget->value);
+                                if (!zeviceDisabled->value) {
+                                    const DeviceButton *deviceButton = ecs_get(world, zevice_entity, DeviceButton);
+                                    if (devices_get_pressed_this_frame(deviceButton->value)) did_activate = 1;
+                                }
                                 break;
                             }
                         }
                     }
                 }
             }
+            if (did_activate) set_ui_clicked_mut(world, raycasterTarget->value);
         }
     } zox_declare_system(ElementActivateSystem)
 #endif

@@ -83,6 +83,10 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, unsigned char gamepad_type) {
     return e;
 }
 
+unsigned char zevice_stick_has_input(const DeviceStick *deviceStick) {
+    return float_abs(deviceStick->value.x) > joystick_min_cutoff2 || float_abs(deviceStick->value.y) > joystick_min_cutoff2;
+}
+
 void device_reset_gamepad(ecs_world_t *world, ecs_entity_t gamepad) {
     if (!gamepad || !ecs_is_alive(world, gamepad)) return;
     const Children *children = ecs_get(world, gamepad, Children);
@@ -102,7 +106,7 @@ unsigned char gamepad_is_any_input(ecs_world_t *world, ecs_entity_t gamepad) {
         if (ecs_has(world, e, DeviceStick)) {
             const DeviceStick *deviceStick = ecs_get(world, e, DeviceStick);
             // if (set_gamepad_axis2(deviceStick, joystick, realButtonIndex->value)) ecs_modified(world, e, DeviceStick);
-            return float_abs(deviceStick->value.x) >= joystick_min_cutoff || float_abs(deviceStick->value.y) >= joystick_min_cutoff;
+            return zevice_stick_has_input(deviceStick); // float_abs(deviceStick->value.x) >= joystick_min_cutoff2 || float_abs(deviceStick->value.y) >= joystick_min_cutoff2;
         } else if (ecs_has(world, e, DeviceButton)) {
             const DeviceButton *deviceButton = ecs_get(world, e, DeviceButton);
             if (devices_get_pressed_this_frame(deviceButton->value)) return 1;

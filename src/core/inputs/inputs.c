@@ -12,7 +12,9 @@
 #define zox_device_mode_touchscreen 3
 #define zox_device_mode_max 4
 const float joystick_min_cutoff = 0.01f;
+const float joystick_min_cutoff2 = 0.04f;
 const float joystick_cutoff_buffer = 0.14f;
+// const float joystick_cutoff_buffer2 = 0.01f;
 // #define zox_device_mode_shared 4 // mix between controller and idk?
 // zoxel_component_declares
 #include "data/physical_button.c"
@@ -81,12 +83,12 @@ zox_define_component(Mouse)
 zox_define_component(Touchscreen)
 zox_define_component(ZeviceDisabled)
 // zoxel_system_defines
-zox_system(ZeviceButtonEnableSystem, EcsOnLoad, [in] DeviceButton, [out] ZeviceDisabled)
-zox_system(ZeviceStickEnableSystem, EcsOnLoad, [in] DeviceStick, [out] ZeviceDisabled)
 zox_system(DeviceModeSystem, EcsOnLoad, [in] DeviceLinks, [in] DeviceMode, [out] DeviceModeDirty)
 zox_system(DraggerEndSystem, EcsOnLoad, [out] DragableState, [out] DraggerLink, [out] DraggingDelta)
 zox_system(MouseRaycasterSystem, EcsPreUpdate, [in] DeviceLinks, [in] DeviceMode, [out] Raycaster)
 zox_system(DeviceModeDirtySystem, EcsPostUpdate, [out] DeviceMode, [out] DeviceModeDirty)
+zox_system(ZeviceButtonEnableSystem, EcsOnStore, [in] DeviceButton, [out] ZeviceDisabled)
+zox_system(ZeviceStickEnableSystem, EcsOnStore, [in] DeviceStick, [out] ZeviceDisabled)
 zoxel_end_module(Inputs)
 
 #endif

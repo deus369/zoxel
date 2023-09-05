@@ -50,11 +50,12 @@ void Player3DRotateSystem(ecs_iter_t *it) {
                     ecs_entity_t zevice_entity = zevices->value[k];
                     const DeviceButtonType *deviceButtonType = ecs_get(world, zevice_entity, DeviceButtonType);
                     if (ecs_has(world, zevice_entity, DeviceStick)) {
-                        const ZeviceDisabled *zeviceDisabled = ecs_get(world, zevice_entity, ZeviceDisabled);
-                        if (zeviceDisabled->value) continue;
                         if (deviceButtonType->value == zox_device_stick_right) {
-                            const DeviceStick *deviceStick = ecs_get(world, zevice_entity, DeviceStick);
-                            right_stick = deviceStick->value;
+                            const ZeviceDisabled *zeviceDisabled = ecs_get(world, zevice_entity, ZeviceDisabled);
+                            if (!zeviceDisabled->value) {
+                                const DeviceStick *deviceStick = ecs_get(world, zevice_entity, DeviceStick);
+                                right_stick = deviceStick->value;
+                            }
                             break;
                         }
                     }
