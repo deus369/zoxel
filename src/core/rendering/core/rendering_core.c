@@ -1,9 +1,6 @@
 #ifndef zoxel_rendering_core
 #define zoxel_rendering_core
 
-// zoxel_settings
-#define render3D_update_pipeline 0
-#define render2D_update_pipeline 0
 // zoxel_component_includes
 zox_declare_tag(Shader)
 zox_declare_tag(Material)
@@ -69,9 +66,10 @@ zox_define_memory_component(MeshColors)
 zox_define_memory_component(MeshColorRGBs)
 // zoxel_system_defines
 #ifdef zoxel_transforms2D
-    zox_system_1(InstanceRender2DSystem, render2D_update_pipeline, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink)
-    zox_system_1(RenderMaterial2DSystem, render2D_update_pipeline, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MaterialGPULink, [in] TextureGPULink, [none] !MeshGPULink)
-    zox_system_1(ElementRenderSystem, render2D_update_pipeline, [none] ElementRender, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] MaterialInstancedGPULink, [in] TextureGPULink, [in] MeshDirty)
+    zox_system_1(InstanceRender2DSystem, 0, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink)
+    zox_system_1(RenderMaterial2DSystem, 0, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MaterialGPULink, [in] TextureGPULink, [none] !MeshGPULink)
+    zox_system_1(ElementRenderSystem, 0, [none] ElementRender, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] MaterialInstancedGPULink, [in] TextureGPULink, [in] MeshDirty)
+    add_to_render2D_loop(ecs_id(ElementRenderSystem));
 #endif
 // gpu restore/dispose
 zox_system_1(MeshGPUDisposeSystem, 0, [in] MeshGPULink)

@@ -79,14 +79,3 @@ void RenderElements3DSystem(ecs_iter_t *it) {
         if (rendered_count > 0) zoxel_log(" > rendered elements [%i]\n", rendered_count);
     #endif
 } zox_declare_system(RenderElements3DSystem)
-
-// const Scale1D *scale1Ds = ecs_field(it, Scale1D, 3);
-// const Brightness *brightnesses = ecs_field(it, Brightness, 4);
-// const Scale1D *scale1D = &scale1Ds[i];
-// const Brightness *brightness = &brightnesses[i];
-/*zoxel_log(" o> rendering mesh3D_textured [%lu]\n", it->entities[i]);
-zoxel_log("     o> materialGPULink [%i] textureGPULink [%i] meshGPULink [%ix%i] uvsGPULink [%i] colorsGPULink [%i]\n", materialGPULink->value, textureGPULink->value,
-    meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value, colorsGPULink->value);
-zoxel_log("     o> scale1D [%f] position3D [%fx%fx%f] rotation3D [%fx%fx%fx%f]\n", scale1D->value,
-    position3D->value.x, position3D->value.y, position3D->value.z, rotation3D->value.x, rotation3D->value.y, rotation3D->value.z, rotation3D->value.w);*/
-// spawn_line3D(world, position3D->value, float3_add(position3D->value, (float3) { 0, 0, 0.5 }), 2, 6);

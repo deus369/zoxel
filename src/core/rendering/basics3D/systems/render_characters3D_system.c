@@ -55,7 +55,6 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         #ifdef zoxel_catch_opengl_errors
             if (check_opengl_error_unlogged() != 0) {
                 zoxel_log(" > could not render character [%i]: indicies [%i] - [%ix%i:%i]\n", rendered_count, meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value);
-                // zoxel_log(" > could not render character [%i]: indicies [%i] - [%ix%i:%i]\n", i, meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value);
                 break;
             }
         #endif

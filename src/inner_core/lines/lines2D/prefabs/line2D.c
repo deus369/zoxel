@@ -10,26 +10,21 @@ ecs_entity_t spawn_prefab_line2D(ecs_world_t *world) {
     zox_set(e, LineThickness, { 1 })
     zox_set(e, Color, { { 0, 255, 255, 255 } })
     #ifdef zoxel_debug_prefabs
-    zoxel_log("spawn_prefab line2D [%lu].\n", (long int) (e));
+        zoxel_log("spawn_prefab line2D [%lu].\n", (long int) (e));
     #endif
     prefab_line2D = e;
     return e;
 }
 
 ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 pointB, float thickness, double life_time) {
-    ecs_defer_begin(world);
     ecs_entity_t e;
     if (life_time == 0.0) e = ecs_new_w_pair(world, EcsIsA, prefab_line2D);
     else e = ecs_new_w_pair(world, EcsIsA, prefab_temporary_line2D);
-    // set_unique_entity_name(world, e, "line2D");
     zox_set_only(e, LineData2D, { { pointA.x, pointA.y, pointB.x, pointB.y } })
     zox_set_only(e, LineThickness, { thickness })
-    if (life_time != 0.0f) {
-        zox_set_only(e, DestroyInTime, { life_time })
-    }
-    ecs_defer_end(world);
+    if (life_time != 0.0f) zox_set_only(e, DestroyInTime, { life_time })
     #ifdef zoxel_debug_spawns
-    zoxel_log("Spawned line2D [%lu]\n", (long int) e);
+        zoxel_log(" > spawned line2D [%lu]\n", (long int) e);
     #endif
     return e;
 }

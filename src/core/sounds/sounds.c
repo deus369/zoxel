@@ -36,6 +36,7 @@ zox_byte_component(SoundDirty)
 #ifdef SDL_MIXER
 	#include "systems/play_sound_system.c"
     #include "systems/sound_update_system.c"
+    #include "systems/sound_debug_system.c"
 #endif
 
 void spawn_prefabs_sounds(ecs_world_t *world) {
@@ -64,6 +65,9 @@ zox_define_memory_component(SoundData)
 // zoxel_define_systems
 zox_system(SoundGenerateSystem, EcsOnValidate, [none] Sound, [out] GenerateSound, [in] SoundLength, [in] SoundFrequency, [in] SoundVolume, [in] InstrumentType, [out] SoundData, [out] SoundDirty)
 #ifdef SDL_MIXER
+    //#ifdef zox_visualize_sounds
+    zox_system_1(SoundDebugSystem, EcsPostUpdate, [none] Sound, [in] SoundData, [in] SoundDirty)
+    //#endif
     zox_system(SoundUpdateSystem, EcsPostUpdate, [none] Sound, [in] SoundData, [out] SoundDirty, [out] SDLSound)
     zox_system(PlaySoundSystem, EcsPostUpdate, [none] Sound, [out] TriggerSound, [in] SoundLength, [in] SDLSound)
 #endif

@@ -1,5 +1,3 @@
-extern ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 pointB, float thickness, double life_time);
-
 void SoundUpdateSystem(ecs_iter_t *it) {
     const SoundData *soundDatas = ecs_field(it, SoundData, 2);
     SoundDirty *soundDirtys = ecs_field(it, SoundDirty, 3);
@@ -18,21 +16,6 @@ void SoundUpdateSystem(ecs_iter_t *it) {
         sdlSound->value->abuf = (Uint8*) malloc(soundData->length * 4 * sizeof(Uint8));
         memcpy(sdlSound->value->abuf, soundData->value, sdlSound->value->alen);
         soundDirty->value = 0;
-        // zoxel_log(" > updated sound [%lu]\n", it->entities[i]);
-        // this is the debug feature
-        #ifdef zoxel_debug_sounds
-            double decay_time = soundData->length / sample_rate_f; // 6.0 + rand() % 6;
-            int start_position = sound_display_start * soundData->length;
-            int end_position = sound_display_end * soundData->length;
-            int total_displaying = end_position - start_position;
-            for (int i = start_position; i < end_position; i += sound_display_skip_rate) {
-                float x_position = (i - start_position) / (float) total_displaying;
-                // float x_position = (float) i / (float) soundData->length;
-                x_position *= 2.0f;
-                x_position -= 1.0f;
-                spawn_line2D(world, (float2) { x_position, 0 }, (float2) { x_position, soundData->value[i] }, 0.1f, decay_time);
-            }
-        #endif
     }
 } zox_declare_system(SoundUpdateSystem)
 

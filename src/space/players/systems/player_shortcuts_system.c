@@ -48,6 +48,8 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
                     toggle_collision_debug(world);
                 } else if (keyboard->m.pressed_this_frame) {
                     spawn_zoxel_window(world);
+                } else if (keyboard->n.pressed_this_frame) {
+                    zox_visualize_sounds = !zox_visualize_sounds;
                 }
                 
             }

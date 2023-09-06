@@ -48,11 +48,10 @@ zox_begin_module(RenderingBasics3D)
 zox_define_component(Textured3DAttributes)
 // zoxel_define_systems
 #ifdef zoxel_transforms3D
-    zox_system_1(Render3DSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] !MeshColorRGBs)
-    zox_system_1(RenderCharacters3DSystem, render3D_update_pipeline, [none] MeshColorRGBs, [in] Position3D, [in] Rotation3D, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [none] !UvsGPULink)   // , [in] Scale1D, [in] Brightness
-    zox_system_1(InstanceRender3DSystem, render3D_update_pipeline, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink)
-    zox_system_1(RenderElements3DSystem, render3D_update_pipeline, [none] rendering.core.SingleMaterial, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] TextureGPULink)
-
+    zox_system_1(Render3DSystem, 0, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] !MeshColorRGBs)
+    zox_system_1(RenderCharacters3DSystem, 0, [none] MeshColorRGBs, [in] Position3D, [in] Rotation3D, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [none] !UvsGPULink)   // , [in] Scale1D, [in] Brightness
+    zox_system_1(InstanceRender3DSystem, 0, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink)
+    zox_system_1(RenderElements3DSystem, 0, [none] rendering.core.SingleMaterial, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] TextureGPULink)
     add_to_render3D_loop(ecs_id(RenderCharacters3DSystem));
     add_to_render3D_loop(ecs_id(RenderElements3DSystem));
     add_to_render3D_loop(ecs_id(Render3DSystem));

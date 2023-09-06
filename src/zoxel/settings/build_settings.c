@@ -3,6 +3,7 @@
 #define zoxel_include_players
 
 #define zoxel_test_networking
+// #define zox_visualize_sounds
 
 // #define zoxel_catch_opengl_errors
 // #define zox_disable_render_terrain_chunks
@@ -110,7 +111,6 @@
 // idea: generate terrain too at lesser resolutions
 // #define zoxel_time_render_3d_uvs
 // audio
-// #define zoxel_debug_sounds
 // #define zoxel_debug_music
 // #define zoxel_log_sound_generation
 // #define zoxel_log_music_playing

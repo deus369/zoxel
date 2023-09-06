@@ -1,21 +1,18 @@
-
 const char* line2D_source_vert = "\
-    #version 300 es\n\
-    in lowp vec2 position;\
-    \
-    void main()\
-    {\
-        gl_Position = vec4(position, 0, 1);\
-    }";
+#version 300 es\n\
+in lowp vec2 position;\
+\
+void main() {\
+    gl_Position = vec4(position, 0, 1);\
+}";
 const GLchar* line2D_source_frag = "\
-    #version 300 es\n\
-    uniform lowp vec4 color;\
-    out lowp vec4 color_output;\
-    \
-    void main()\
-    {\
-        color_output = color;\
-    }";
+#version 300 es\n\
+uniform lowp vec4 color;\
+out lowp vec4 color_output;\
+\
+void main() {\
+    color_output = color;\
+}";
 GLuint2 line2D_shader;
 GLuint line2D_shader_frag;
 GLuint line2D_material;
@@ -33,6 +30,7 @@ int initialize_shader_line2D() {
 }
 
 void Line2DRenderSystem(ecs_iter_t *it) {
+    if (renderer_layer != 0) return;
     glUseProgram(line2D_material);
     glEnableVertexAttribArray(line2D_position_location);
     const LineData2D *lineData2Ds = ecs_field(it, LineData2D, 2);

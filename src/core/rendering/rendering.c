@@ -1,7 +1,9 @@
 #ifndef zoxel_rendering
 #define zoxel_rendering
 
-// todo: use realm cameras instead of singleton data render_camera_matrix
+// todo: create a render stack?
+// todo: use realm cameras instead of singleton data render_camera_matrix, ui_camera_matrix
+// todo: remove core functions into rendering outer core, make core all the extra data i've got in here
 
 // zoxel_settings
 int tri_count = 0;
@@ -35,7 +37,6 @@ unsigned char initialize_rendering(ecs_world_t *world) {
 }
 
 void on_close_rendering(ecs_world_t *world) {
-
     opengl_dispose_shaders(world);
 }
 

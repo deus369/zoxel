@@ -65,9 +65,6 @@ void ElementRenderSystem(ecs_iter_t *it) {
 } zox_declare_system(ElementRenderSystem)
 
 // render all ui, layer at a time
-void render_ui_in_layers(ecs_world_t *world) {
-    for (renderer_layer = 0; renderer_layer < max_render_layers; renderer_layer++) ecs_run(world, ecs_id(ElementRenderSystem), 0, NULL);
-}
 
 /*
 float4x4 viewMatrix = ui_camera_matrix;

@@ -29,7 +29,7 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point
     int2 canvas_size = screen_dimensions;
     if (canvas != 0) {
         canvas_size = ecs_get(world, canvas, PixelSize)->value;
-        ecs_set(world, e, CanvasLink, { canvas });
+        zox_set_only(e, CanvasLink, { canvas })
     }
     float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
     float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
