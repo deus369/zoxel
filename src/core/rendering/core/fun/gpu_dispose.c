@@ -51,7 +51,7 @@ void dispose_children_resources(ecs_world_t *world, ecs_entity_t e) {
 
 // delete opengl resources, shaders, textures,
 void delete_all_opengl_resources(ecs_world_t *world) {
-    opengl_dispose_shaders(world);
+    opengl_dispose_shaders();
     dispose_children_resources(world, main_canvas);
     dispose_opengl_resources_terrain(world);
     ecs_run(world, ecs_id(ShaderGPUDisposeSystem), 0, NULL);

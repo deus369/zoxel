@@ -1,5 +1,3 @@
-#include <string.h>
-
 // uses opengl version to check iif compute is supported
 int check_compute_shader_support_from_version() {
     const char* version_str = (const char*) glGetString(GL_VERSION);
@@ -32,14 +30,14 @@ int check_compute_shader_support_from_version() {
 int check_compute_shader_support() {
     check_opengl_error("[pre check_compute_shader_support Error]");
     // Check whether compute shaders are supported
-    if (!glUseProgram) {
+    /*if (!glUseProgram) {
         zoxel_log(" - [glUseProgram] is not supported.\n");
         return EXIT_FAILURE;
     }
     if (!glDispatchCompute) {
         zoxel_log(" - [glDispatchCompute] is not supported.\n");
         return EXIT_FAILURE;
-    }
+    }*/
     if (check_compute_shader_support_from_version() == EXIT_FAILURE) {
         return EXIT_FAILURE;
     }
@@ -47,7 +45,7 @@ int check_compute_shader_support() {
         zoxel_log("    > opengl compute stats\n");
     #endif
     // Get the maximum number of compute work groups
-    GLint max_compute_group_count[3];
+    /*GLint max_compute_group_count[3];
     glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0, &max_compute_group_count[0]);
     glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1, &max_compute_group_count[1]);
     glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2, &max_compute_group_count[2]);
@@ -88,7 +86,7 @@ int check_compute_shader_support() {
             zoxel_log(" - GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS is not supported\n");
         #endif
         return EXIT_FAILURE;
-    }
+    }*/
     return EXIT_SUCCESS;
 }
 

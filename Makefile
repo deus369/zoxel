@@ -61,7 +61,7 @@ LDLIBS2 += -lws2_32
 else
 LDLIBS += -lGL	# opengl linux
 LDLIBS += -lvulkan # vulkan on linux
-LDLIBS += -lGLEW
+# LDLIBS += -lGLEW
 # -lwayland-client
 endif
 # add sdl2 includes

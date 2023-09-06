@@ -32,17 +32,15 @@ void ElementRenderSystem(ecs_iter_t *it) {
             opengl_enable_blend();
             opengl_set_material(textured2D_material);
             opengl_set_matrix(shader2D_textured_attributes.camera_matrix, ui_camera_matrix);
-            // glUniform1f(shader2D_textured_attributes.scale, 1);
-            // glUniform1f(shader2D_textured_attributes.brightness, 1);
         }
         float positionZ = ((int) layer2D->value) * shader_depth_multiplier;
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_set_buffer_attributes2D(meshGPULink->value.y, uvsGPULink->value);
         opengl_bind_texture(textureGPULink->value);
-        glUniform3f(shader2D_textured_attributes.position, position2D->value.x, position2D->value.y, positionZ);
-        glUniform1f(shader2D_textured_attributes.angle, rotation2D->value);
-        glUniform1f(shader2D_textured_attributes.scale, scale1D->value);
-        glUniform1f(shader2D_textured_attributes.brightness, brightness->value);
+        opengl_set_float3(shader2D_textured_attributes.position, (float3) { position2D->value.x, position2D->value.y, positionZ });
+        opengl_set_float(shader2D_textured_attributes.angle, rotation2D->value);
+        opengl_set_float(shader2D_textured_attributes.scale, scale1D->value);
+        opengl_set_float(shader2D_textured_attributes.brightness, brightness->value);
         #ifndef zox_disable_render_ui
             opengl_render(6);
         #endif
@@ -63,25 +61,3 @@ void ElementRenderSystem(ecs_iter_t *it) {
         opengl_disable_opengl_program();
     }
 } zox_declare_system(ElementRenderSystem)
-
-// render all ui, layer at a time
-
-/*
-float4x4 viewMatrix = ui_camera_matrix;
-if (!ecs_has(it->world, it->entities[i], ElementRender)) {
-    viewMatrix = render_camera_matrix;
-} else {
-    viewMatrix = ui_camera_matrix;
-}*/
-/*if (isDebugRenderMaterial2DSystem) {
-    if (materialInstanceGPULink->value == 0) {
-        zoxel_log("RenderMaterial2DSystem Material Error: At [%i]. Entity [%lu].\n", i, (long int) (it->entities[i]));
-        continue;
-    } else {
-        zoxel_log("RenderMaterial2DSystem Material: At [%i]. Entity [%lu].\n", i, (long int) (it->entities[i]));
-    }
-}*/
-// glBindTexture(GL_TEXTURE_2D, textureGPULink->value);
-// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshGPULink->value.x);    // for indices
-// opengl_set_matrix(shader2D_textured_attributes.camera_matrix, ui_camera_matrix);
-// glUniformMatrix4fv(shader2D_textured_attributes.camera_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &ui_camera_matrix));

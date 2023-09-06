@@ -5,11 +5,6 @@ void clear_regular_buffer(GLuint *gpu_buffer) {
     }
 }
 
-/*void delete_shader(GLuint2 value) {
-    if (value.x != 0) glDeleteShader(1, &value.x);
-    if (value.y != 0) glDeleteShader(1, &value.y);
-}*/
-
 unsigned char initialize_material(GLuint material, GLuint vert_shader, GLuint frag_shader) {
     glAttachShader(material, vert_shader);
     glAttachShader(material, frag_shader);
@@ -119,3 +114,8 @@ GLuint load_gpu_shader(GLuint2* shader, const char* vertFilepath, const char* fr
     }
     return spawn_gpu_material_program((const GLuint2) { shader->x, shader->y });
 }
+
+/*void delete_shader(GLuint2 value) {
+    if (value.x != 0) glDeleteShader(1, &value.x);
+    if (value.y != 0) glDeleteShader(1, &value.y);
+}*/
