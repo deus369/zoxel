@@ -1,3 +1,5 @@
+// removed compute test for now, broke on android version
+
 // uses opengl version to check iif compute is supported
 int check_compute_shader_support_from_version() {
     const char* version_str = (const char*) glGetString(GL_VERSION);

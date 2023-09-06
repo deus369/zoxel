@@ -11,6 +11,7 @@ extern unsigned char headless;
 extern unsigned char terrain_mode;
 extern unsigned char is_multithreading;
 extern unsigned char profiler;
+extern unsigned char server_mode;
 #define terrain_mode_tiny 1
 #define terrain_mode_medium 2
 #define terrain_mode_large 3

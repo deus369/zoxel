@@ -2,7 +2,11 @@
 #define zoxel_engine
 
 // todo: position confusing, move to above directory for easier to understand navigation
-
+// engine imports, besides sub modules, it's core is flecs
+#include <signal.h> // used for detecting cancel
+#include <string.h> // who uses this?
+#include <stdlib.h> // for malloc & free
+#include <stdio.h>  // just for sprintf and perror
 #define FLECS_CUSTOM_BUILD
 #define FLECS_MODULE
 #define FLECS_SYSTEM 
@@ -10,11 +14,6 @@
 #include "../../include/flecs.h"
 #define SDL_MIXER
 // #define USE_SDL_3
-#include <signal.h> // used for detecting cancel
-#include <string.h> // who uses this?
-#include <stdlib.h> // for malloc & free
-#include <stdio.h>  // just for sprintf and perror
-unsigned char server_mode = 0;
 #include "util/events.c"
 #include "../core/core.c"
 #include "../inner_core/inner_core.c"

@@ -1,6 +1,9 @@
 // \todo Create a queue of 3D models to render, including materials, etc
 //  - each type of render queue has different data based on the shaders
 //  - inside ecs systems, can run multithread, add things to queues to render
+// > can i make a viewport an entity, and then run this in a viewport system?!
+//      > yes, using the glViewport -> position.x, position.y, size.x, size.y
+//          > with render systems as data, camera view data, etc
 int_array_d* render3D_systems;
 int_array_d* render2D_systems;
 
@@ -35,12 +38,10 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     glViewport(position.x, position.y, size.x, size.y);
     for (int i = 0; i < render3D_systems->size; i++) ecs_run(world, render3D_systems->data[i], 0, NULL);
     glClear(GL_DEPTH_BUFFER_BIT);
+    // remember to check renderer_layer in each 2D  render system
     for (renderer_layer = 0; renderer_layer < max_render_layers; renderer_layer++) {
         for (int i = 0; i < render2D_systems->size; i++) ecs_run(world, render2D_systems->data[i], 0, NULL);
-        // ecs_run(world, ecs_id(ElementRenderSystem), 0, NULL);
     }
-    // ecs_run(world, ecs_id(Line2DRenderSystem), 0, NULL);
-    // check_opengl_error("render_camera");
     #ifdef zox_check_render_camera_errors
         check_opengl_error("[render_camera]");
     #endif

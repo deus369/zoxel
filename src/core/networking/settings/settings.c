@@ -6,3 +6,4 @@
 #define BUFFER_SIZE 128 // 1024 // the size of the buffer to use for receiving and sending data
 //! \todo Convert url to public IP4 address
 #define ZOXEL_URL "https://zoxel.duckdns.org"
+unsigned char server_mode = 0;
