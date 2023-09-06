@@ -1,16 +1,7 @@
 #ifndef zoxel_opengl
 #define zoxel_opengl
 
-#define GL_GLEXT_PROTOTYPES
-#ifdef USE_SDL_3
-    #include <SDL3/SDL_opengl.h>
-#else
-    #ifdef zoxel_on_android
-        #include <SDL_opengl.h>
-    #else
-        #include <SDL2/SDL_opengl.h>
-    #endif
-#endif
+#include "util/import_opengl.c"
 // zoxel_settings
 float3 opengl_clear_color = { 125 / 255.0f, 125 / 255.0f, 125 / 255.0f };
 // zoxel_data
@@ -36,12 +27,6 @@ unsigned char initialize_opengl(ecs_world_t *world) {
     #ifdef zoxel_debug_opengl
         zoxel_log(" > initializing opengl\n");
     #endif
-    /*glewExperimental = GL_TRUE;
-    GLenum err = glewInit();
-    if (err != GLEW_OK) {
-        fprintf(stderr, "   ! error initializing GLEW: %s\n", glewGetErrorString(err));
-        exit(1);
-    }*/
     print_opengl();
     if (check_compute_shader_support() == EXIT_FAILURE) zoxel_log(" ! compute is not supported\n");
     if (opengl_load_shaders(world) == EXIT_FAILURE) {
