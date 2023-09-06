@@ -107,5 +107,4 @@ void ElementRaycastSystem(ecs_iter_t *it) {
             // printf("    -> new target ui [%lu] \n", (long int) raycasterTarget->value);
         }
     }
-}
-zox_declare_system(ElementRaycastSystem)
+} zox_declare_system(ElementRaycastSystem)

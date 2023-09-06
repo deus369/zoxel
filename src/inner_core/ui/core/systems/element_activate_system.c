@@ -16,6 +16,7 @@
         for (int i = 0; i < it->count; i++) {
             const RaycasterTarget *raycasterTarget = &raycasterTargets[i];
             if (raycasterTarget->value == 0) continue;
+            ecs_entity_t e = it->entities[i];
             const DeviceLinks *deviceLinks2 = &deviceLinks[i];
             const DeviceMode *deviceMode = &deviceModes[i];
             unsigned char did_activate = 0;
@@ -26,28 +27,15 @@
                     if (mouse->left.pressed_this_frame) {
                         if (ecs_has(world, raycasterTarget->value, Dragable)) {
                             DragableState *dragableState = ecs_get_mut(world, raycasterTarget->value, DragableState);
-                            DraggerLink *draggerLink = ecs_get_mut(world, raycasterTarget->value, DraggerLink);
                             dragableState->value = 1;
-                            draggerLink->value = it->entities[i];
                             ecs_modified(world, raycasterTarget->value, DragableState);
+                            DraggerLink *draggerLink = ecs_get_mut(world, raycasterTarget->value, DraggerLink);
+                            draggerLink->value = e;
                             ecs_modified(world, raycasterTarget->value, DraggerLink);
                         }
                     } else if (mouse->left.released_this_frame) {
                         did_activate = 1;
                     }
-                } else if (deviceMode->value == zox_device_mode_touchscreen && ecs_has(world, device_entity, Touchscreen)) {
-                    const Touchscreen *touchscreen = ecs_get(world, device_entity, Touchscreen);
-                    if (touchscreen->primary_touch.value.pressed_this_frame) {
-                        if (ecs_has(world, raycasterTarget->value, Dragable)) {
-                            DragableState *dragableState = ecs_get_mut(world, raycasterTarget->value, DragableState);
-                            DraggerLink *draggerLink = ecs_get_mut(world, raycasterTarget->value, DraggerLink);
-                            dragableState->value = 1;
-                            draggerLink->value = it->entities[i];
-                            ecs_modified(world, raycasterTarget->value, DragableState);
-                            ecs_modified(world, raycasterTarget->value, DraggerLink);
-                            // zoxel_log(" > ui dragging at [%f]\n", (float) zox_current_time);
-                        }
-                    } else if (touchscreen->primary_touch.value.released_this_frame) did_activate = 1;
                 } else if (deviceMode->value == zox_device_mode_gamepad && ecs_has(world, device_entity, Gamepad)) {
                     const Children *zevices = ecs_get(world, device_entity, Children);
                     for (int k = 0; k < zevices->length; k++) {
@@ -62,6 +50,29 @@
                                 }
                                 break;
                             }
+                        }
+                    }
+                } else if (deviceMode->value == zox_device_mode_touchscreen && ecs_has(world, device_entity, Touchscreen)) {
+                    const Children *zevices = ecs_get(world, device_entity, Children);
+                    for (int k = 0; k < zevices->length; k++) {
+                        ecs_entity_t zevice_entity = zevices->value[k];
+                        if (ecs_has(world, zevice_entity, ZevicePointer)) {
+                            const ZevicePointer *zevicePointer = ecs_get(world, zevice_entity, ZevicePointer);
+                            if (devices_get_pressed_this_frame(zevicePointer->value)) {
+                                if (ecs_has(world, raycasterTarget->value, Dragable)) {
+                                    // todo: zox_set_mut => the next 3 lines basically, component, entity, new_value
+                                    DragableState *dragableState = ecs_get_mut(world, raycasterTarget->value, DragableState);
+                                    dragableState->value = 1;
+                                    ecs_modified(world, raycasterTarget->value, DragableState);
+                                    DraggerLink *draggerLink = ecs_get_mut(world, raycasterTarget->value, DraggerLink);
+                                    draggerLink->value = e;
+                                    ecs_modified(world, raycasterTarget->value, DraggerLink);
+                                    // zoxel_log(" > ui dragging at [%f]\n", (float) zox_current_time);
+                                }
+                            } else if (devices_get_released_this_frame(zevicePointer->value)) {
+                                did_activate = 1;
+                            }
+                            break;
                         }
                     }
                 }

@@ -1,4 +1,5 @@
 // pushes mouse->delta into DraggingDelta's ui component
+// todo: check device mode here or device enabled states
 void DraggerEndSystem(ecs_iter_t *it) {
     DragableState *dragableStates = ecs_field(it, DragableState, 1);
     DraggerLink *draggerLinks = ecs_field(it, DraggerLink, 2);
@@ -22,17 +23,34 @@ void DraggerEndSystem(ecs_iter_t *it) {
                     draggingDelta->value = mouse->delta;
                 }
             } else if (ecs_has(world, device_entity, Touchscreen)) {
-                const Touchscreen *touchscreen = ecs_get(world, device_entity, Touchscreen);
-                if (touchscreen->primary_touch.value.released_this_frame) {
-                    DragableState *dragableState = &dragableStates[i];
-                    dragableState->value = 0;
-                    draggerLink->value = 0;
-                    draggingDelta->value = (int2) { 0, 0 };
-                } else if (touchscreen->primary_touch.value.is_pressed) {
-                    draggingDelta->value = touchscreen->primary_touch.delta;
+                const Children *zevices = ecs_get(world, device_entity, Children);
+                for (int k = 0; k < zevices->length; k++) {
+                    ecs_entity_t zevice_entity = zevices->value[k];
+                    if (ecs_has(world, zevice_entity, ZevicePointer)) {
+                        const ZevicePointer *zevicePointer = ecs_get(world, zevice_entity, ZevicePointer);
+                        if (devices_get_released_this_frame(zevicePointer->value)) {
+                            DragableState *dragableState = &dragableStates[i];
+                            dragableState->value = 0;
+                            draggerLink->value = 0;
+                            draggingDelta->value = (int2) { 0, 0 };
+                        } else if (devices_get_is_pressed(zevicePointer->value)) {
+                            const ZevicePointerDelta *zevicePointerDelta = ecs_get(world, zevice_entity, ZevicePointerDelta);
+                            draggingDelta->value = zevicePointerDelta->value;
+                        }
+                        break;
+                    }
                 }
             }
         }
     }
-}
-zox_declare_system(DraggerEndSystem)
+} zox_declare_system(DraggerEndSystem)
+
+/*const Touchscreen *touchscreen = ecs_get(world, device_entity, Touchscreen);
+if (touchscreen->primary_touch.value.released_this_frame) {
+    DragableState *dragableState = &dragableStates[i];
+    dragableState->value = 0;
+    draggerLink->value = 0;
+    draggingDelta->value = (int2) { 0, 0 };
+} else if (touchscreen->primary_touch.value.is_pressed) {
+    draggingDelta->value = touchscreen->primary_touch.delta;
+}*/

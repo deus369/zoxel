@@ -68,34 +68,34 @@ unsigned char devices_get_is_pressed(unsigned char value) {
     return value & zox_device_is_pressed;
 }
 
-unsigned char devices_set_is_pressed(unsigned char value, unsigned char new_state) {
-    if (new_state == 0) return value & ~zox_device_is_pressed;  // removes the flag
-    else return value | zox_device_is_pressed;
+void devices_set_is_pressed(unsigned char *value, unsigned char new_state) {
+    if (new_state == 0) *value = *value & ~zox_device_is_pressed;  // removes the flag
+    else *value = *value | zox_device_is_pressed;
+}
+
+void devices_set_pressed_this_frame(unsigned char *value, unsigned char new_state) {
+    if (new_state == 0) *value = *value & ~zox_device_pressed_this_frame;  // removes the flag
+    else *value = *value | zox_device_pressed_this_frame;
+}
+
+void devices_set_released_this_frame(unsigned char *value, unsigned char new_state) {
+    if (new_state == 0) *value = *value & ~zox_device_released_this_frame;  // removes the flag
+    else *value = *value | zox_device_released_this_frame;
 }
 
 unsigned char devices_get_pressed_this_frame(unsigned char value) {
     return value & zox_device_pressed_this_frame;
 }
 
-unsigned char devices_set_pressed_this_frame(unsigned char value, unsigned char new_state) {
-    if (new_state == 0) return value & ~zox_device_pressed_this_frame;  // removes the flag
-    else return value | zox_device_pressed_this_frame;
-}
-
 unsigned char devices_get_released_this_frame(unsigned char value) {
     return value & zox_device_released_this_frame;
-}
-
-unsigned char devices_set_released_this_frame(unsigned char value, unsigned char new_state) {
-    if (new_state == 1) return value & ~zox_device_released_this_frame;  // removes the flag
-    else return value | zox_device_released_this_frame;
 }
 
 // todo: put this in a system on load instead
 unsigned char reset_device_button(DeviceButton *deviceButton) {
     unsigned char previous_value = deviceButton->value;
-    if (devices_get_pressed_this_frame(deviceButton->value)) deviceButton->value = devices_set_pressed_this_frame(deviceButton->value, 0);
-    else if (devices_get_released_this_frame(deviceButton->value)) deviceButton->value = devices_set_released_this_frame(deviceButton->value, 0);
+    if (devices_get_pressed_this_frame(deviceButton->value)) devices_set_pressed_this_frame(&deviceButton->value, 0);
+    else if (devices_get_released_this_frame(deviceButton->value)) devices_set_released_this_frame(&deviceButton->value, 0);
     return previous_value != deviceButton->value;
     // if (key->pressed_this_frame) key->pressed_this_frame = 0;
     // else if (key->released_this_frame) key->released_this_frame = 0;

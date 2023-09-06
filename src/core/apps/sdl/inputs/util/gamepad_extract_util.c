@@ -118,9 +118,9 @@ unsigned char set_gamepad_button2(DeviceButton *deviceButton, SDL_Joystick *joys
     unsigned char new_is_pressed = SDL_JoystickGetButton(joystick, index);
     unsigned char is_pressed = devices_get_is_pressed(deviceButton->value);
     // if (!is_pressed && new_is_pressed) zoxel_log("  [%i] is pressed this frame\n", index);
-    if (!is_pressed && new_is_pressed) deviceButton->value = devices_set_pressed_this_frame(deviceButton->value, 1);
-    if (is_pressed && !new_is_pressed) deviceButton->value = devices_set_released_this_frame(deviceButton->value, 1);
-    deviceButton->value = devices_set_is_pressed(deviceButton->value, new_is_pressed);
+    if (!is_pressed && new_is_pressed) devices_set_pressed_this_frame(&deviceButton->value, 1);
+    if (is_pressed && !new_is_pressed) devices_set_released_this_frame(&deviceButton->value, 1);
+    devices_set_is_pressed(&deviceButton->value, new_is_pressed);
     // if (new_is_pressed) zoxel_log("  [%i] new_is_pressed? [%i]\n", index, devices_get_is_pressed(deviceButton->value));
     /*if (!key->is_pressed && is_pressed) key->pressed_this_frame = 1;
     if (key->is_pressed && !is_pressed) key->released_this_frame = 1;

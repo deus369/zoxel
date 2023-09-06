@@ -1,11 +1,6 @@
-void drag_ui(ecs_world_t *world, ecs_entity_t e, int2 drag_value) {
-    if (!ecs_is_valid(world, e)) {
-        return;
-    }
-    /*int2 pixel_position = ecs_get(world, e, PixelPosition)->value;
-    pixel_position.x += drag_value.x;
-    pixel_position.y += drag_value.y;
-    ecs_set(world, e, PixelPosition, { pixel_position });*/
+void drag_element(ecs_world_t *world, ecs_entity_t e, int2 drag_value) {
+    if (!ecs_is_valid(world, e)) return;
+    // todo: limit element within a 'constraints' component
     PixelPosition *pixel_position = ecs_get_mut(world, e, PixelPosition);
     pixel_position->value.x += drag_value.x;
     pixel_position->value.y += drag_value.y;
@@ -19,7 +14,7 @@ void drag_ui(ecs_world_t *world, ecs_entity_t e, int2 drag_value) {
 // if it updates, also update any childrens positions too
 // has to also move children and their children
 //! Plays a Sound when button is clicked
-void HeaderDragSystem(ecs_iter_t *it) {
+void ElementDragSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
     const DragableState *dragableStates = ecs_field(it, DragableState, 2);
     const DraggingDelta *draggingDeltas = ecs_field(it, DraggingDelta, 3);
@@ -30,9 +25,8 @@ void HeaderDragSystem(ecs_iter_t *it) {
             const DraggingDelta *draggingDelta = &draggingDeltas[i];
             if (draggingDelta->value.x != 0 || draggingDelta->value.y != 0) {
                 const ParentLink *parentLink = &parentLinks[i];
-                drag_ui(world, parentLink->value, draggingDelta->value);
+                drag_element(world, parentLink->value, draggingDelta->value);
             }
         }
     }
-}
-zox_declare_system(HeaderDragSystem)
+} zox_declare_system(ElementDragSystem)

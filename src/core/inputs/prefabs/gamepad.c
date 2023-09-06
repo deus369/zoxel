@@ -60,7 +60,7 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, unsigned char gamepad_type) {
         if (i == 1 && gamepad_type == zox_gamepad_layout_type_steamdeck) joystick_index++;
         children.value[j] = spawn_device_stick(world, i, joystick_index);
     }
-    /*if (is_xbox_gamepad(joystick)) {
+    /*
         set_gamepad_button(&gamepad->a, joystick, 0);
         set_gamepad_button(&gamepad->b, joystick, 1);
         set_gamepad_button(&gamepad->x, joystick, 2);
@@ -73,8 +73,7 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, unsigned char gamepad_type) {
         set_gamepad_button(&gamepad->right_stick_push, joystick, 10);
         set_gamepad_button(&gamepad->lt, joystick, 11);
         set_gamepad_button(&gamepad->rt, joystick, 12);
-    } else {
-    }*/
+    */
     zox_set_only(e, Children, { children.length, children.value })
     gamepad_entity = e;
     #ifdef zoxel_debug_spawns
@@ -83,8 +82,8 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, unsigned char gamepad_type) {
     return e;
 }
 
-unsigned char zevice_stick_has_input(const DeviceStick *deviceStick) {
-    return float_abs(deviceStick->value.x) > joystick_min_cutoff2 || float_abs(deviceStick->value.y) > joystick_min_cutoff2;
+unsigned char zevice_stick_has_input(const DeviceStick *deviceStick, float cutoff) {
+    return float_abs(deviceStick->value.x) > cutoff || float_abs(deviceStick->value.y) > cutoff;
 }
 
 void device_reset_gamepad(ecs_world_t *world, ecs_entity_t gamepad) {
@@ -106,7 +105,7 @@ unsigned char gamepad_is_any_input(ecs_world_t *world, ecs_entity_t gamepad) {
         if (ecs_has(world, e, DeviceStick)) {
             const DeviceStick *deviceStick = ecs_get(world, e, DeviceStick);
             // if (set_gamepad_axis2(deviceStick, joystick, realButtonIndex->value)) ecs_modified(world, e, DeviceStick);
-            return zevice_stick_has_input(deviceStick); // float_abs(deviceStick->value.x) >= joystick_min_cutoff2 || float_abs(deviceStick->value.y) >= joystick_min_cutoff2;
+            return zevice_stick_has_input(deviceStick, joystick_min_cutoff2); // float_abs(deviceStick->value.x) >= joystick_min_cutoff2 || float_abs(deviceStick->value.y) >= joystick_min_cutoff2;
         } else if (ecs_has(world, e, DeviceButton)) {
             const DeviceButton *deviceButton = ecs_get(world, e, DeviceButton);
             if (devices_get_pressed_this_frame(deviceButton->value)) return 1;

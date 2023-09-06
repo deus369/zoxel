@@ -250,6 +250,12 @@ install-android-sdk:
 android:
 	bash bash/android/install.sh
 
+android-run:
+	bash bash/android/gradle_run.sh
+
+android-install:
+	bash bash/android/gradle_install.sh
+
 android-debug:
 	bash bash/android/install.sh && bash bash/android/debug_android.sh
 
@@ -388,6 +394,8 @@ help:
 	@echo "  > android"
 	@echo "    install-android-sdk		installs tools for android build"
 	@echo "    android			builds & runs android release"
+	@echo "    android-install		installs zoxel apk"
+	@echo "    android-run		runs the zoxel apk"
 	@echo "    android-dev			builds & runs android debug"
 	@echo "    android-dev-debug		builds & runs android debug with logcat"
 	@echo "    debug-android		debugs running android game"

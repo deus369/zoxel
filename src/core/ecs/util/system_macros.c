@@ -16,7 +16,7 @@ Chose one pipeline tag for each type of system.
 // the idea is to move the element before the ui is raycasted
 // mouse exact - outside loop before it
 // mouse drag - DraggerEndSystem - EcsOnLoad
-// HeaderDragSystem - EcsPostLoad
+// ElementDragSystem - EcsPostLoad
 // position ui children - ElementPositionSystem - EcsPreUpdate
 // raycast new positioned ones - ElementRaycastSystem - EcsOnUpdate
 // respond to raycasting ui - EcsOnValidate

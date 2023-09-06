@@ -1,4 +1,4 @@
-typedef struct {
+/*typedef struct {
     PhysicalButton value;
     int2 position;
     int2 delta;
@@ -12,4 +12,4 @@ typedef struct {
 
 unsigned char finger_is_any_input(const Finger *finger) {
     return finger->value.is_pressed;
-}
+}*/

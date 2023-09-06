@@ -27,7 +27,6 @@ void DeviceModeSystem(ecs_iter_t *it) {
                 }
             } else if (deviceMode->value == zox_device_mode_gamepad) {
                 if (ecs_has(world, device_entity, Gamepad)) {
-                    // const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
                     if (gamepad_is_any_input(world, device_entity)) {
                         using_current_inputs = 1;
                         break;
@@ -35,8 +34,7 @@ void DeviceModeSystem(ecs_iter_t *it) {
                 }
             } else if (deviceMode->value == zox_device_mode_touchscreen) {
                 if (ecs_has(world, device_entity, Touchscreen)) {
-                    const Touchscreen *touchscreen = ecs_get(world, device_entity, Touchscreen);
-                    if (touchscreen_is_any_input(touchscreen)) {
+                    if (touchscreen_is_any_input(world, device_entity)) {
                         using_current_inputs = 1;
                         break;
                     }
@@ -66,15 +64,13 @@ void DeviceModeSystem(ecs_iter_t *it) {
             }
             if (deviceMode->value != zox_device_mode_gamepad) {
                 if (ecs_has(world, device_entity, Gamepad)) {
-                    // const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
                     if (gamepad_is_any_input(world, device_entity)) deviceModeDirty->value = zox_device_mode_gamepad;
                     continue;
                 }
             }
             if (deviceMode->value != zox_device_mode_touchscreen) {
                 if (ecs_has(world, device_entity, Touchscreen)) {
-                    const Touchscreen *touchscreen = ecs_get(world, device_entity, Touchscreen);
-                    if (touchscreen_is_any_input(touchscreen)) deviceModeDirty->value = zox_device_mode_touchscreen;
+                    if (touchscreen_is_any_input(world, device_entity)) deviceModeDirty->value = zox_device_mode_touchscreen;
                     continue;
                 }
             }
