@@ -3,7 +3,7 @@ int engine_begin(int argc, char* argv[]) {
     return begin_core(argc, argv);
 }
 
-void engine_end() {
+void on_engine_end() {
     // zoxel_log(" > ending zoxel_engine\n");
     close_core();
     #ifdef zoxel_voxels

@@ -9,4 +9,5 @@ typedef struct {
     GLuint texture;
     GLuint fog_data;
     GLuint brightness;
-} Material3DTextured;
+} Textured3DAttributes;
+zox_custom_component(Textured3DAttributes)

@@ -1,7 +1,7 @@
 // Once main thread is fixed, update to gpu in this system.
 // extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
 // todo: update this in thread
-void MeshUvsUpdateSystem(ecs_iter_t *it) {
+void MeshUpdateTextured3DSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(NULL, it)) return;
     #ifdef zoxel_time_mesh_uvs_update_system
         int update_count = 0;
@@ -40,4 +40,4 @@ void MeshUvsUpdateSystem(ecs_iter_t *it) {
         end_timing("    - mesh_uvs_update_system")
         if (did_do) zoxel_log("        - updated chunk meshes [%i]\n", update_count);
     #endif
-} zox_declare_system(MeshUvsUpdateSystem)
+} zox_declare_system(MeshUpdateTextured3DSystem)

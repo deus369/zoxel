@@ -1,19 +1,20 @@
-int cpu_core_count;
-unsigned char cpu_tier;
 
-unsigned char get_cpu_tier(int core_count) {
-    if (core_count > 8) {
-        zoxel_log(" > high core count detected [%i]\n", core_count);
-        return 3;
-    } else if (core_count > 6) {
-        zoxel_log(" > average core count detected [%i]\n", core_count);
-        return 2;
-    } else if (core_count > 4) {
-        zoxel_log(" > low (-) core count detected [%i]\n", core_count);
-        return 1;
-    } else {
-        zoxel_log(" > lowest core count detected [%i]\n", core_count);
-        return 0;
+
+int begin_core(int argc, char* argv[]) {
+    int didFail = process_arguments(argc, argv);
+    if (didFail == EXIT_FAILURE) return EXIT_FAILURE;
+    int cpu_core_count = SDL_GetCPUCount();
+    begin_platforms(cpu_core_count);
+    world = open_ecs(argc, argv, profiler, cpu_core_count);
+    return EXIT_SUCCESS;
+}
+
+void close_core() {
+    if (!headless) on_close_rendering(world);
+    close_ecs();
+    if (!headless) {
+        close_audio_sdl();
+        SDL_Quit();
     }
 }
 
@@ -40,22 +41,4 @@ void update_core() {
     #ifdef zoxel_log_frame_ms
         zoxel_log(" > frame time [%fms]\n", (float) (zox_delta_time * 1000.0f));
     #endif
-}
-
-int begin_core(int argc, char* argv[]) {
-    int didFail = process_arguments(argc, argv);
-    if (didFail == EXIT_FAILURE) return EXIT_FAILURE;
-    cpu_core_count = SDL_GetCPUCount();
-    cpu_tier = get_cpu_tier(cpu_core_count);
-    world = open_ecs(argc, argv, profiler, cpu_core_count);
-    return EXIT_SUCCESS;
-}
-
-void close_core() {
-    if (!headless) opengl_dispose_shaders(world);
-    close_ecs();
-    if (!headless) {
-        close_audio_sdl();
-        SDL_Quit();
-    }
 }

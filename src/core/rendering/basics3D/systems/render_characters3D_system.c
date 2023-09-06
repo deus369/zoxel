@@ -26,16 +26,16 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) continue;
         const ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
         if (colorsGPULink->value == 0) continue;
-        const Position3D *position = &positions[i];
-        const Rotation3D *rotation = &rotations[i];
+        const Position3D *position3D = &positions[i];
+        const Rotation3D *rotation3D = &rotations[i];
         if (!has_set_material) {
             has_set_material = 1;
             opengl_set_material(colored3D_material);
             opengl_set_matrix(attributes_colored3D.camera_matrix, render_camera_matrix);
             #ifndef zox_debug_color_shader
-                glUniform1f(attributes_colored3D.scale, 1.0f);
-                glUniform4f(attributes_colored3D.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
-                glUniform1f(attributes_colored3D.brightness, 1.0f);
+                opengl_set_float(attributes_colored3D.scale, 1);
+                opengl_set_float4(attributes_colored3D.fog_data, (float4) { fog_color.x, fog_color.y, fog_color.z, fog_density });
+                opengl_set_float(attributes_colored3D.brightness, 1);
             #endif
         }
         opengl_set_mesh_indicies(meshGPULink->value.x);
@@ -43,8 +43,8 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         #ifndef zox_debug_color_shader
             opengl_enable_color_buffer(attributes_colored3D.vertex_color, colorsGPULink->value);
         #endif
-        glUniform3f(attributes_colored3D.position, position->value.x, position->value.y, position->value.z);
-        glUniform4f(attributes_colored3D.rotation, rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w);
+        opengl_set_float3(attributes_colored3D.position, position3D->value);
+        opengl_set_float4(attributes_colored3D.rotation, rotation3D->value);
         #ifndef zox_disable_render_characters
             #ifdef zox_characters_as_cubes
                 opengl_render(36);

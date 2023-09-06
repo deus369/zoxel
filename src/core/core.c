@@ -2,6 +2,7 @@
 #define zoxel_core
 
 // zoxel_settings
+unsigned char cpu_tier;
 #include "util/logs.c"
 #include "ecs/ecs.c"
 #include "maths/maths.c"

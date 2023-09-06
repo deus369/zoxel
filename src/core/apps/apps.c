@@ -19,7 +19,6 @@ zox_declare_tag(App)
 // zoxel_prefab_includes
 #include "prefabs/app.c"
 // zoxel_util_includes
-#include "util/main_loop_util.c"
 // sdl input sub module
 #include "sdl/sdl.c"
 

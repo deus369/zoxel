@@ -76,39 +76,3 @@ void opengl_upload_mesh(GLuint2 mesh, GLuint material, const int *indicies, int 
         check_opengl_error("opengl_upload_mesh");
     #endif
 }
-
-void set_gpu_mesh2D(GLuint2 mesh, GLuint material, const int *indicies, int indicies_length, const float2 *verts, int verts_length) {
-    // tri_count += indicies_length / 3;
-    Material3D material3D = spawn_material3D_properties(material);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);
-    glBindBuffer(GL_ARRAY_BUFFER, mesh.y);
-    glEnableVertexAttribArray(material3D.vertex_position);
-    // glVertexAttribPointer(material3D.vertex_position, 2, GL_FLOAT, GL_FALSE, 4 * 3, 0);
-    // printf("Binding Data %i %i\n", indicies_length, verts_length);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * 4, indicies, GL_STATIC_DRAW);
-    // glBufferData(GL_ARRAY_BUFFER, verts_length * 4, verts, GL_STATIC_DRAW);
-    int float_per_data = 2;
-    int floats_length = verts_length * float_per_data;
-    float combined_verts[floats_length];
-    for (int i = 0; i < verts_length; i++) {
-        float2 vert = verts[i];
-        combined_verts[i * float_per_data + 0] = vert.x;
-        combined_verts[i * float_per_data + 1] = vert.y;
-    }
-    glBufferData(GL_ARRAY_BUFFER, floats_length * 4, combined_verts, GL_STATIC_DRAW);
-    glVertexAttribPointer(material3D.vertex_position, 2, GL_FLOAT, GL_FALSE, 4 * float_per_data, (GLvoid*)(0 * sizeof(float)));
-    // glVertexAttribPointer(material3D.vertex_uv, 2, GL_FLOAT, GL_FALSE, 4 * 5, (GLvoid*)(3 * sizeof(float)));
-    // printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", mesh.x, mesh.y);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-    // glBufferData(GL_ARRAY_BUFFER, verts_length * 4, verts, GL_STATIC_DRAW);
-    /*int float_per_data = 3;
-    int floats_length = verts_length * float_per_data;
-    float combined_verts[floats_length];
-    for (int i = 0; i < verts_length; i++) {
-        float3 vert = verts[i];
-        combined_verts[i * float_per_data + 0] = vert.x;
-        combined_verts[i * float_per_data + 1] = vert.y;
-        combined_verts[i * float_per_data + 2] = vert.z;
-    }*/

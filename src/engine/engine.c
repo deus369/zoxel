@@ -23,6 +23,7 @@ unsigned char server_mode = 0;
 #include "../gameplay/gameplay.c"
 #include "../space/space.c"
 #include "util/engine_util.c"
+#include "util/main_loop_util.c"
 
 void load_resources_engine(ecs_world_t *world) {
     load_resources_inner_core(world);

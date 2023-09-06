@@ -15,7 +15,7 @@ data_type##_##array_d* create##_##data_type##_##array_d() {\
     return dynamic_array;\
 }\
 \
-void destroy##_##data_type##_##array_d(data_type##_##array_d* dynamic_array) {\
+void dispose##_##data_type##_##array_d(data_type##_##array_d* dynamic_array) {\
     free(dynamic_array->data);\
     free(dynamic_array);\
 }\
@@ -61,7 +61,7 @@ void add_block_to##_##data_type##_##array_d2(data_type##_##array_d* dynamic_arra
 \
 data_type* finalize##_##data_type##_##array_d(data_type##_##array_d* dynamic_array) {\
     if (dynamic_array->size == 0) {\
-        destroy##_##data_type##_##array_d(dynamic_array);\
+        dispose##_##data_type##_##array_d(dynamic_array);\
         return NULL;\
     } else if (dynamic_array->size == dynamic_array->capacity) {\
         data_type* data = dynamic_array->data;\
@@ -75,6 +75,7 @@ data_type* finalize##_##data_type##_##array_d(data_type##_##array_d* dynamic_arr
 }
 
 zoxel_dynamic_array(int)
+// zoxel_dynamic_array(long int)
 zoxel_dynamic_array(float3)
 zoxel_dynamic_array(float2)
 zoxel_dynamic_array(ecs_entity_t)

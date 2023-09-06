@@ -61,3 +61,8 @@ void delete_all_opengl_resources(ecs_world_t *world) {
     dispose_material_resources(world, skybox);
     dispose_mesh_resources(world, skybox);
 }
+
+void opengl_delete_resources(ecs_world_t *world) {
+    rendering = 0;
+    delete_all_opengl_resources(world);
+}

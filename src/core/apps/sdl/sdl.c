@@ -5,6 +5,7 @@
 #include "util/import_sdl.c" // sdl is here
 // #include "sdl/textures/textures.c"
 // variables
+const int sdl_fullscreen_byte = SDL_WINDOW_FULLSCREEN_DESKTOP; // SDL_WINDOW_FULLSCREEN
 SDL_Window* main_window;
 SDL_GLContext* main_gl_context;
 // zoxel_component_includes
@@ -18,6 +19,7 @@ ECS_DTOR(Context, ptr, { if (ptr->value != 0) SDL_GL_DeleteContext(ptr->value); 
 // zoxel_prefab_includes
 #include "prefabs/app.c"
 #include "inputs/inputs.c"
+#include "util/vulkan_util.c"
 #include "util/sdl_util.c"
 
 unsigned char initialize_apps_sdl(ecs_world_t *world) {

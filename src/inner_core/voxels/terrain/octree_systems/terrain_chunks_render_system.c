@@ -12,6 +12,7 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &memory_total);
     #endif
     ecs_world_t *world = it->world;
+    const Textured3DAttributes *attributes_textured3D = get_textured3D_material_attributes(world);
     int rendered_count = 0;
     const Position3D *positions = ecs_field(it, Position3D, 1);
     const Rotation3D *rotations = ecs_field(it, Rotation3D, 2);
@@ -51,19 +52,19 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
             has_set_material = 1;
             opengl_set_material(materialGPULink->value);
             // opengl_set_material(get_textured3D_material_value(world));
-            // zoxel_log(" > get_textured3D_material_value [%i]\n", get_textured3D_material_value(world));
-            // zoxel_log(" > textureGPULink [%i]\n", textureGPULink->value);
-            opengl_set_matrix(attributes_textured3D.camera_matrix, render_camera_matrix);
+            opengl_set_matrix(attributes_textured3D->camera_matrix, render_camera_matrix);
             opengl_bind_texture(textureGPULink->value);
-            glUniform4f(attributes_textured3D.fog_data, fog_color.x, fog_color.y, fog_color.z, fog_density);
-            opengl_set_material3D_uvs_properties(rotation->value, scale1D->value, brightness->value, &attributes_textured3D);
+            opengl_set_float4(attributes_textured3D->fog_data, (float4) { fog_color.x, fog_color.y, fog_color.z, fog_density });
+            opengl_set_float4(attributes_textured3D->rotation, rotation->value);
+            opengl_set_float(attributes_textured3D->scale, 0.5f);
+            opengl_set_float(attributes_textured3D->brightness, 1);
             // zoxel_log(" > render terrain [%i] - [%ix%i:%i:%i]\n", materialGPULink->value, meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value, colorsGPULink->value);
         }
+        opengl_set_float3(attributes_textured3D->position, position3D->value);
         opengl_set_mesh_indicies(meshGPULink->value.x);
-        opengl_enable_vertex_buffer(attributes_textured3D.vertex_position, meshGPULink->value.y);
-        opengl_enable_uv_buffer(attributes_textured3D.vertex_uv, uvsGPULink->value);
-        opengl_enable_color_buffer(attributes_textured3D.vertex_color, colorsGPULink->value);
-        glUniform3f(attributes_textured3D.position, position3D->value.x, position3D->value.y, position3D->value.z);
+        opengl_enable_vertex_buffer(attributes_textured3D->vertex_position, meshGPULink->value.y);
+        opengl_enable_uv_buffer(attributes_textured3D->vertex_uv, uvsGPULink->value);
+        opengl_enable_color_buffer(attributes_textured3D->vertex_color, colorsGPULink->value);
         #ifndef zox_disable_render_terrain_chunks
             opengl_render(meshIndicies2->length);
         #endif
@@ -76,9 +77,9 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         rendered_count++;
     }
     if (has_set_material) {
-        opengl_disable_buffer(attributes_textured3D.vertex_color);
-        opengl_disable_buffer(attributes_textured3D.vertex_uv);
-        opengl_disable_buffer(attributes_textured3D.vertex_position);
+        opengl_disable_buffer(attributes_textured3D->vertex_color);
+        opengl_disable_buffer(attributes_textured3D->vertex_uv);
+        opengl_disable_buffer(attributes_textured3D->vertex_position);
         opengl_unset_mesh();
         opengl_disable_texture(false);
         opengl_disable_opengl_program();
@@ -98,3 +99,6 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         zoxel_log(" !!! GPU Memory Usage [%d MB / %d MB]\n", memory_used / 1024, memory_total / 1024);
     }
 #endif*/
+// zoxel_log(" > get_textured3D_material_value [%i]\n", get_textured3D_material_value(world));
+// zoxel_log(" > textureGPULink [%i]\n", textureGPULink->value);
+// glUniform3f(attributes_textured3D->position, position3D->value.x, position3D->value.y, position3D->value.z);

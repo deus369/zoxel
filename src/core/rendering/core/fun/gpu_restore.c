@@ -32,8 +32,7 @@ void restore_children_resources(ecs_world_t *world, ecs_entity_t e) {
 // restore opengl resources here
 void restore_all_opengl_resources(ecs_world_t *world) {
     zoxel_log(" > restoring all opengl resources\n");
-    opengl_load_shaders(world);
-    restore_textured3D_shader(world);
+    opengl_restore_shaders();
     restore_material_resources(world, skybox, shader_skybox);
     restore_children_resources(world, main_canvas);
     restore_opengl_resources_terrain(world);
@@ -41,3 +40,8 @@ void restore_all_opengl_resources(ecs_world_t *world) {
 }
 
 // restore_mesh_resources(world, skybox);
+
+void opengl_load_resources(ecs_world_t *world) {
+    rendering = 1;
+    restore_all_opengl_resources(world);
+}

@@ -12,6 +12,7 @@
 #endif
 #include <math.h>       // for sqrt
 #include "util/float_util.c"
+// data types
 #include "data/byte2.c"
 #include "data/byte3.c"
 #include "data/byte4.c"
@@ -26,6 +27,9 @@
 #include "data/float4x4.c"
 #include "data/double2.c"
 #include "data/ecs_entity_2.c"
+#include "data/uint2.c"
+#include "data/uint3.c"
+// collections & functions
 #include "collections/dynamic_array.c"
 #include "collections/hash_map.c"
 #include "collections/int3_hash_map.c"

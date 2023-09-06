@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_sound(ecs_world_t *world) {
     zox_set(e, DestroyInTime, { 0 })
     zox_set(e, TriggerSound, { 1 })
     zox_set(e, SoundDirty, { 0 })
-    zox_set(e, SoundVolume, { 0.1f })
+    zox_set(e, SoundVolume, { 0.5f })
     // zox_set(e, SoundFrequency, { 146.83f });
     ecs_defer_end(world);
     prefab_sound = e;

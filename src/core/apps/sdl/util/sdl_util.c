@@ -1,14 +1,15 @@
 // todo: find a cleaner way to link to other modules
 // extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event, int2 screen_dimensions);
-extern int2 get_webasm_screen_size();
-extern int check_opengl_error(char* function_name); //  > rendering
-extern void delete_all_opengl_resources(ecs_world_t *world);
-extern void restore_all_opengl_resources(ecs_world_t *world);
-extern void resize_cameras(int2 screen_size);   // > cameras
-extern void resize_ui_canvases(ecs_world_t *world, int2 screen_size);  // > uis
-const char *sdl_window_name = "zoxel";
-const int sdl_fullscreen_byte = SDL_WINDOW_FULLSCREEN_DESKTOP; // SDL_WINDOW_FULLSCREEN
-int2 screen_dimensions = { 720, 480 };
+// extern int2 get_webasm_screen_size(); // platforms
+// rendering
+extern void opengl_delete_resources(ecs_world_t *world);
+extern void opengl_load_resources(ecs_world_t *world);
+// engine
+extern void engine_end();
+// cameras
+extern void resize_cameras(int2 screen_size);
+// uis
+extern void resize_ui_canvases(ecs_world_t *world, int2 screen_size);
 
 void print_sdl() {
     #ifdef zox_print_sdl
@@ -237,115 +238,6 @@ unsigned char is_opengl_running() {
     return main_gl_context != NULL;
 }
 
-#ifdef zoxel_include_vulkan
-    const char* vulkan_result_to_string(VkResult result) {
-        switch (result) {
-            case VK_SUCCESS:
-                return "VK_SUCCESS";
-            case VK_NOT_READY:
-                return "VK_NOT_READY";
-            case VK_TIMEOUT:
-                return "VK_TIMEOUT";
-            case VK_EVENT_SET:
-                return "VK_EVENT_SET";
-            case VK_EVENT_RESET:
-                return "VK_EVENT_RESET";
-            case VK_INCOMPLETE:
-                return "VK_INCOMPLETE";
-            case VK_ERROR_OUT_OF_HOST_MEMORY:
-                return "VK_ERROR_OUT_OF_HOST_MEMORY";
-            case VK_ERROR_OUT_OF_DEVICE_MEMORY:
-                return "VK_ERROR_OUT_OF_DEVICE_MEMORY";
-            case VK_ERROR_INITIALIZATION_FAILED:
-                return "VK_ERROR_INITIALIZATION_FAILED";
-            // Handle other specific error codes as needed
-            default:
-                return "Unknown VkResult";
-        }
-    }
-#endif
-
-
-#ifdef zoxel_include_vulkan
-    VkSurfaceKHR create_vulkan_surface( SDL_Window* window, VkInstance instance) {
-        VkSurfaceKHR surface;
-        if (!SDL_Vulkan_CreateSurface(window, instance, &surface)) {
-            zoxel_log(" ! failed to create vulkan surface [%s]\n", SDL_GetError());
-            return VK_NULL_HANDLE;
-        }
-        return surface;
-
-        // Initialize Wayland display
-        /*struct wl_display *display = wl_display_connect(NULL);
-        if (display == NULL) {
-            return VK_NULL_HANDLE;
-        }
-
-        // Initialize Wayland surface
-        struct wl_surface *surface = wl_compositor_create_surface(compositor);
-        if (surface == NULL) {
-            return VK_NULL_HANDLE;
-        }
-        PFN_vkGetInstanceProcAddr vkGetInstanceProcAddr = wl_display_get_vk_proc_addr(display);
-        if (!vkGetInstanceProcAddr) {
-            return VK_NULL_HANDLE;
-        }
-
-        PFN_vkCreateWaylandSurfaceKHR vkCreateWaylandSurfaceKHR =
-            (PFN_vkCreateWaylandSurfaceKHR)vkGetInstanceProcAddr(instance, "vkCreateWaylandSurfaceKHR");
-        if (!vkCreateWaylandSurfaceKHR) {
-            return VK_NULL_HANDLE;
-        }
-        
-        VkWaylandSurfaceCreateInfoKHR surfaceCreateInfo = {
-            .sType = VK_STRUCTURE_TYPE_WAYLAND_SURFACE_CREATE_INFO_KHR,
-            .pNext = NULL,
-            .flags = 0,
-            .display = display,
-            .surface = surface
-        };
-
-        VkSurfaceKHR vkSurface;
-        VkResult result = vkCreateWaylandSurfaceKHR(instance, &surfaceCreateInfo, NULL, &vkSurface);
-        if (result != VK_SUCCESS) {
-            return VK_NULL_HANDLE;
-        }
-        return vkSurface;*/
-
-        /*VkSurfaceKHR surface;
-        const char* waylandDisplay = getenv("WAYLAND_DISPLAY");
-        if (waylandDisplay != NULL) {
-            // Running on Wayland
-            VkWaylandSurfaceCreateInfoKHR createInfo = {
-                .sType = VK_STRUCTURE_TYPE_WAYLAND_SURFACE_CREATE_INFO_KHR,
-                .pNext = NULL,
-                .flags = 0,
-                .display = display,
-                .surface = wl_compositor_create_surface(wl_display_get_compositor(display), NULL)
-            };
-            if (vkCreateWaylandSurfaceKHR(instance, &createInfo, NULL, &surface) != VK_SUCCESS) {
-                fprintf(stderr, "Failed to create Vulkan surface\n");
-                return VK_NULL_HANDLE;
-            }
-        } else {
-            // Running on X11
-            return VK_NULL_HANDLE;
-        }*/
-        /*VkWaylandSurfaceCreateInfoKHR createInfo = {
-            .sType = VK_STRUCTURE_TYPE_WAYLAND_SURFACE_CREATE_INFO_KHR,
-            .pNext = NULL,
-            .flags = 0,
-            .display = display,
-            .surface = SDL_waylandCreateSurface(window)
-        };
-        if (vkCreateWaylandSurfaceKHR(instance, &createInfo, NULL, &surface) != VK_SUCCESS) {
-            fprintf(stderr, "Failed to create Vulkan surface\n");
-            return VK_NULL_HANDLE;
-        }*/
-        // wl_display_disconnect(display);
-    }
-#endif
-
 unsigned char create_main_window(ecs_world_t *world) {
     SDL_Window* window = spawn_sdl_window();
     main_window = window;
@@ -359,44 +251,7 @@ unsigned char create_main_window(ecs_world_t *world) {
         return app_success;
     } else {
         #ifdef zoxel_include_vulkan
-            zoxel_log(" > creating vulkan surface\n");
-            // VkInstanceCreateInfo instanceCreateInfo = { };
-            // instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-            unsigned int extensionCount;
-            if (!SDL_Vulkan_GetInstanceExtensions(window, &extensionCount, NULL)) {
-                // Handle error
-            }
-            const char** extensions = malloc(extensionCount * sizeof(const char*));
-            if (!SDL_Vulkan_GetInstanceExtensions(window, &extensionCount, extensions)) {
-                // Handle error
-            }
-            // Print the obtained extensions
-            zoxel_log(" > vulkan instance extensions [%i]:\n", extensionCount);
-            for (unsigned int i = 0; i < extensionCount; i++) {
-                zoxel_log("     [%i]: %s\n", i, extensions[i]);
-            }
-            VkInstanceCreateInfo instanceCreateInfo = {
-                VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO, // sType
-                NULL,                                   // pNext
-                0,                                      // flags
-                NULL,                                   // pApplicationInfo
-                0,                                      // enabledLayerCount
-                NULL,                                   // ppEnabledLayerNames
-                extensionCount,                         // enabledExtensionCount
-                extensions,                             // ppEnabledExtensionNames
-            };
-            VkInstance instance;
-            VkResult result = vkCreateInstance(&instanceCreateInfo, NULL, &instance);
-            free(extensions);
-            if (result != VK_SUCCESS) {
-                zoxel_log(" ! failed to create vulkan instance [%s]\n", vulkan_result_to_string(result));
-                return EXIT_FAILURE;
-            }
-            VkSurfaceKHR surface = create_vulkan_surface(window, instance);
-            spawn_app_vulkan(world, window, &surface);
-            main_vulkan_context = &surface;
-            main_vulkan_instance = &instance;
-            return EXIT_SUCCESS;
+            return create_main_window_vulkan(world);
         #else
             return EXIT_FAILURE;
         #endif
@@ -409,31 +264,25 @@ void recreate_main_window(ecs_world_t *world) {
 }
 
 void update_sdl(ecs_world_t *world) {
-    //#ifdef zoxel_inputs
     sdl_extract_gamepad(world, gamepad_entity);
-    //#endif
     SDL_Event event = { 0 };
     while (SDL_PollEvent(&event)) {
-        //#ifdef zoxel_inputs
         input_extract_from_sdl(world, event, screen_dimensions);
-        //#endif
         int eventType = event.type;
         if (eventType == SDL_QUIT) {
             zoxel_log(" > window was quit\n");
-            exit_app();
+            engine_end();
         } else if (eventType == SDL_WINDOWEVENT) {
-            // handles application resizing
-            if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                // zoxel_log(" > window was changed size\n");
-                if (rendering) on_viewport_resized(world, (int2) { event.window.data1, event.window.data2 });
+            if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) { // handles application resizing
+                if (!rendering) continue;
+                int2 new_screen_size = (int2) { event.window.data1, event.window.data2 };
+                on_viewport_resized(world, new_screen_size);
             } else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) {
                 zoxel_log(" > window was minimized\n");
-                rendering = 0;
-                delete_all_opengl_resources(world);
+                opengl_delete_resources(world);
             } else if (event.window.event == SDL_WINDOWEVENT_RESTORED) {
                 zoxel_log(" > window was restored\n");
-                rendering = 1;
-                restore_all_opengl_resources(world);
+                opengl_load_resources(world);
             }
         }
     }

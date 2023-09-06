@@ -1,4 +1,4 @@
-void CharacterMeshUploadSystem(ecs_iter_t *it) {
+void MeshUpdateCharacters3DSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(NULL, it)) return;
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 2);
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 3);
@@ -42,4 +42,4 @@ void CharacterMeshUploadSystem(ecs_iter_t *it) {
             zoxel_log(" + character mesh gpu uploaded [%ix%i:%i] -> indicies [%i]\n", meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value, meshIndicies2->length);
         #endif
     }
-} zox_declare_system(CharacterMeshUploadSystem)
+} zox_declare_system(MeshUpdateCharacters3DSystem)

@@ -23,7 +23,7 @@ ecs_entity_t spawn_prefab_music(ecs_world_t *world) {
 ecs_entity_t spawn_music(ecs_world_t *world, unsigned char instrument_type) {
     zox_instance(prefab_music)
     zox_name("music")
-    double music_speed = 0.2 + (rand() % 100) * 0.008;
+    double music_speed = 0.14 + (rand() % 100) * 0.008;
     #ifdef zoxel_slow_music
         music_speed *= 6.0;
     #endif

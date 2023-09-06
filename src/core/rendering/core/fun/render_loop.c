@@ -1,9 +1,19 @@
 // \todo Create a queue of 3D models to render, including materials, etc
 //  - each type of render queue has different data based on the shaders
 //  - inside ecs systems, can run multithread, add things to queues to render
-extern long int render_terrain_chunks_system_id;
-extern long int line3D_render_system_id;
-extern long int cube_lines_render_system_id;
+int_array_d* render3D_systems;
+
+void initialize_render_loop() {
+    render3D_systems = create_int_array_d();
+}
+
+void dispose_render_loop() {
+    dispose_int_array_d(render3D_systems);
+}
+
+void add_to_render3D_loop(long int id) {
+    add_to_int_array_d(render3D_systems, id);
+}
 
 void render_pre_loop() {
     opengl_clear(); // cannot just clear in a view port with opengl?
@@ -17,18 +27,13 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     render_camera_matrix = camera_matrix;
     glViewport(position.x, position.y, size.x, size.y);
     if (render3D_update_pipeline == 0) {
-        ecs_run(world, render_terrain_chunks_system_id, 0, NULL);
-        ecs_run(world, ecs_id(Elements3DRenderSystem), 0, NULL);
-        ecs_run(world, ecs_id(Render3DSystem), 0, NULL);
-        ecs_run(world, ecs_id(RenderCharacters3DSystem), 0, NULL);
-        ecs_run(world, line3D_render_system_id, 0, NULL);
-        ecs_run(world, cube_lines_render_system_id, 0, NULL);
+        for (int i = 0; i < render3D_systems->size; i++) ecs_run(world, render3D_systems->data[i], 0, NULL);
     }
     if (render2D_update_pipeline == 0) {
         glClear(GL_DEPTH_BUFFER_BIT);
         render_ui_in_layers(world);
+        // ecs_run(world, ecs_id(Line2DRenderSystem), 0, NULL);
     }
-    // ecs_run(world, ecs_id(Line2DRenderSystem), 0, NULL);
     // check_opengl_error("render_camera");
     #ifdef zox_check_render_camera_errors
         check_opengl_error("[render_camera]");
