@@ -5,7 +5,7 @@ void DeviceModeDirtySystem(ecs_iter_t *it) {
         DeviceMode *deviceMode = &deviceModes[i];
         DeviceModeDirty *deviceModeDirty = &deviceModeDirtys[i];
         if (deviceModeDirty->value != 0) {
-            zoxel_log("     > devicemode dirty [%i] -> [%i]\n", deviceModeDirty->value, deviceMode->value);
+            // zoxel_log("     > devicemode dirty [%i] -> [%i]\n", deviceModeDirty->value, deviceMode->value);
             deviceMode->value = deviceModeDirty->value;
             deviceModeDirty->value = 0;
             disable_inputs_until_release(it->world, it->entities[i]);

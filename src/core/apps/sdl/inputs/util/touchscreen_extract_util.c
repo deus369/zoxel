@@ -13,8 +13,6 @@ void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_di
         ecs_modified(world, zevice_pointer_entity, ZevicePointerPosition);
         if (event.type == SDL_FINGERDOWN || event.type == SDL_FINGERUP) {
             ZevicePointer *zevicePointer = ecs_get_mut(world, zevice_pointer_entity, ZevicePointer);
-            // devices_set_pressed_this_frame(&zevicePointer->value, 0);
-            // devices_set_released_this_frame(&zevicePointer->value, 0);
             if (event.type == SDL_FINGERDOWN) {
                 devices_set_pressed_this_frame(&zevicePointer->value, 1);
                 devices_set_is_pressed(&zevicePointer->value, 1);

@@ -22,13 +22,13 @@ void PlayerToggleCameraSystem(ecs_iter_t *it) {
                 const Children *zevices = ecs_get(world, device_entity, Children);
                 for (int k = 0; k < zevices->length; k++) {
                     ecs_entity_t zevice_entity = zevices->value[k];
-                    if (ecs_has(world, zevice_entity, DeviceButton)) {
+                    if (ecs_has(world, zevice_entity, ZeviceButton)) {
                         const ZeviceDisabled *zeviceDisabled = ecs_get(world, zevice_entity, ZeviceDisabled);
                         if (zeviceDisabled->value) continue;
                         const DeviceButtonType *deviceButtonType = ecs_get(world, zevice_entity, DeviceButtonType);
                         if (deviceButtonType->value == zox_device_button_right_stick_push) {
-                            const DeviceButton *deviceButton = ecs_get(world, zevice_entity, DeviceButton);
-                            if (devices_get_pressed_this_frame(deviceButton->value)) is_toggle_camera = 1;
+                            const ZeviceButton *zeviceButton = ecs_get(world, zevice_entity, ZeviceButton);
+                            if (devices_get_pressed_this_frame(zeviceButton->value)) is_toggle_camera = 1;
                         }
                     }
                 }

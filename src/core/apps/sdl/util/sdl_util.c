@@ -1,6 +1,4 @@
 // todo: find a cleaner way to link to other modules
-// extern void input_extract_from_sdl(ecs_world_t *world, SDL_Event event, int2 screen_dimensions);
-// extern int2 get_webasm_screen_size(); // platforms
 // rendering
 extern void opengl_delete_resources(ecs_world_t *world);
 extern void opengl_load_resources(ecs_world_t *world);
@@ -264,7 +262,7 @@ void recreate_main_window(ecs_world_t *world) {
 }
 
 void update_sdl(ecs_world_t *world) {
-    sdl_extract_gamepad(world, gamepad_entity);
+    // sdl_extract_gamepad(world, gamepad_entity);
     SDL_Event event = { 0 };
     while (SDL_PollEvent(&event)) {
         input_extract_from_sdl(world, event, screen_dimensions);

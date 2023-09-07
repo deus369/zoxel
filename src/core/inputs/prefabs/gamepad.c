@@ -82,43 +82,44 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, unsigned char gamepad_type) {
     return e;
 }
 
-unsigned char zevice_stick_has_input(const DeviceStick *deviceStick, float cutoff) {
-    return float_abs(deviceStick->value.x) > cutoff || float_abs(deviceStick->value.y) > cutoff;
+unsigned char zevice_stick_has_input(const ZeviceStick *zeviceStick, float cutoff) {
+    return float_abs(zeviceStick->value.x) > cutoff || float_abs(zeviceStick->value.y) > cutoff;
 }
 
-void device_reset_gamepad(ecs_world_t *world, ecs_entity_t gamepad) {
+/*void device_reset_gamepad(ecs_world_t *world, ecs_entity_t gamepad) {
     if (!gamepad || !ecs_is_alive(world, gamepad)) return;
     const Children *children = ecs_get(world, gamepad, Children);
     for (int i = 0; i < children->length; i++) {
         ecs_entity_t e = children->value[i];
-        if (ecs_has(world, e, DeviceButton)) {
-            DeviceButton *deviceButton = ecs_get_mut(world, e, DeviceButton);
-            if (reset_device_button(deviceButton)) ecs_modified(world, e, DeviceButton);
+        if (ecs_has(world, e, ZeviceButton)) {
+            ZeviceButton *zeviceButton = ecs_get_mut(world, e, ZeviceButton);
+            if (reset_device_button(zeviceButton)) ecs_modified(world, e, ZeviceButton);
         }
     }
-}
+}*/
 
 unsigned char gamepad_is_any_input(ecs_world_t *world, ecs_entity_t gamepad) {
     const Children *children = ecs_get(world, gamepad, Children);
     for (int i = 0; i < children->length; i++) {
         ecs_entity_t e = children->value[i];
-        if (ecs_has(world, e, DeviceStick)) {
-            const DeviceStick *deviceStick = ecs_get(world, e, DeviceStick);
-            // if (set_gamepad_axis2(deviceStick, joystick, realButtonIndex->value)) ecs_modified(world, e, DeviceStick);
-            return zevice_stick_has_input(deviceStick, joystick_min_cutoff2); // float_abs(deviceStick->value.x) >= joystick_min_cutoff2 || float_abs(deviceStick->value.y) >= joystick_min_cutoff2;
-        } else if (ecs_has(world, e, DeviceButton)) {
-            const DeviceButton *deviceButton = ecs_get(world, e, DeviceButton);
-            if (devices_get_pressed_this_frame(deviceButton->value)) return 1;
+        if (ecs_has(world, e, ZeviceStick)) {
+            const ZeviceStick *zeviceStick = ecs_get(world, e, ZeviceStick);
+            // if (set_gamepad_axis2(zeviceStick, joystick, realButtonIndex->value)) ecs_modified(world, e, ZeviceStick);
+            return zevice_stick_has_input(zeviceStick, joystick_min_cutoff2); // float_abs(zeviceStick->value.x) >= joystick_min_cutoff2 || float_abs(zeviceStick->value.y) >= joystick_min_cutoff2;
+        } else if (ecs_has(world, e, ZeviceButton)) {
+            const ZeviceButton *zeviceButton = ecs_get(world, e, ZeviceButton);
+            if (devices_get_pressed_this_frame(zeviceButton->value)) return 1;
         }
     }
     return 0;
 }
-        /*DeviceButton *deviceButton = ecs_get_mut(world, e, DeviceButton);
-        reset_device_button(deviceButton);
-        ecs_modified(world, e, DeviceButton);*/
-        /*if (ecs_has(world, e, DeviceStick)) {
-            // zoxel_log(" > device stick found [%i] %lu\n", i, e);
-            DeviceStick *deviceStick = ecs_get_mut(world, e, DeviceStick);
-            if (set_gamepad_axis2(deviceStick, joystick, realButtonIndex->value)) ecs_modified(world, e, DeviceStick);
-            // if (ecs_has(world, e, DeviceButton)) zoxel_log("    ! error with device stick, contains device button data[%i]\n", e);
-        } else */
+
+/*ZeviceButton *zeviceButton = ecs_get_mut(world, e, ZeviceButton);
+reset_device_button(zeviceButton);
+ecs_modified(world, e, ZeviceButton);*/
+/*if (ecs_has(world, e, ZeviceStick)) {
+    // zoxel_log(" > device stick found [%i] %lu\n", i, e);
+    ZeviceStick *zeviceStick = ecs_get_mut(world, e, ZeviceStick);
+    if (set_gamepad_axis2(zeviceStick, joystick, realButtonIndex->value)) ecs_modified(world, e, ZeviceStick);
+    // if (ecs_has(world, e, ZeviceButton)) zoxel_log("    ! error with device stick, contains device button data[%i]\n", e);
+} else */

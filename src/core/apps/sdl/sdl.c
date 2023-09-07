@@ -34,6 +34,8 @@ zox_begin_module(AppsSDL)
 zox_define_component_w_dest(SDLWindow)
 zox_define_component_w_dest(Context)
 zox_define_component_w_dest(Renderer)
+// sub modules
+zox_import_module(AppsInputs)
 zoxel_end_module(AppsSDL)
 
 #endif

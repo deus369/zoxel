@@ -36,11 +36,11 @@
                     const Children *zevices = ecs_get(world, device_entity, Children);
                     for (int k = 0; k < zevices->length; k++) {
                         ecs_entity_t zevice_entity = zevices->value[k];
-                        if (ecs_has(world, zevice_entity, DeviceStick)) {
+                        if (ecs_has(world, zevice_entity, ZeviceStick)) {
                             const ZeviceDisabled *zeviceDisabled = ecs_get(world, zevice_entity, ZeviceDisabled);
                             if (zeviceDisabled->value) continue;
-                            const DeviceStick *deviceStick = ecs_get(world, zevice_entity, DeviceStick);
-                            left_stick = deviceStick->value;
+                            const ZeviceStick *zeviceStick = ecs_get(world, zevice_entity, ZeviceStick);
+                            left_stick = zeviceStick->value;
                             break;
                         }
                     }

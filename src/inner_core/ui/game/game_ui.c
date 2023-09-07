@@ -1,6 +1,11 @@
 #ifndef zoxel_game_ui
 #define zoxel_game_ui
 
+// settings
+const color virtual_joystick_color = (color) { 180, 180, 180, 125 };
+const color virtual_joystick_pointer_color = (color) { 88, 88, 88, 165 };
+const int2 virtual_joystick_size = (int2) { 180 * 2, 180 * 2 };
+const int2 virtual_joystick_pointer_size = (int2) { 80 * 2, 80 * 2 };
 // zoxel_declare_components
 zox_declare_tag(MainMenu)
 zox_declare_tag(OptionsUI)
@@ -21,6 +26,8 @@ zox_component(FPSDisplayTicker, double)
 #include "prefabs/options_ui.c"
 #include "prefabs/quad_count_label.c"
 #include "prefabs/game_debug_label.c"
+#include "prefabs/virtual_joystick_pointer.c"
+#include "prefabs/virtual_joystick.c"
 // zoxel_include_systems
 #include "systems/fps_display_system.c"
 #include "systems/quads_display_system.c"
@@ -33,6 +40,8 @@ void spawn_prefabs_game_ui(ecs_world_t *world) {
     spawn_prefab_options_ui(world);
     spawn_prefab_quad_count_label(world);
     spawn_prefab_game_debug_label(world);
+    spawn_prefab_virtual_joystick_pointer(world);
+    spawn_prefab_virtual_joystick(world);
 }
 
 zox_begin_module(GameUI)

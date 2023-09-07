@@ -35,11 +35,3 @@ void MouseRaycasterSystem(ecs_iter_t *it) {
         }
     }
 } zox_declare_system(MouseRaycasterSystem)
-
-/*const Touchscreen *touchscreen = ecs_get(world, device_entity, Touchscreen);
-if (touchscreen->primary_touch.value.is_pressed || touchscreen->primary_touch.value.released_this_frame) {
-    // int2_add_int2_p(&raycaster->value, touchscreen->primary_touch.position);
-    raycaster->value = touchscreen->primary_touch.position;
-} else {
-    raycaster->value = (int2) { -10000, -10000 };
-}*/

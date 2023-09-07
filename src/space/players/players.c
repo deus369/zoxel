@@ -16,6 +16,7 @@ zox_memory_component(PlayerLinks, ecs_entity_t)
 #include "systems/free_camera_disable_movement_system.c"
 #include "systems/player_pause_system.c"
 #include "systems/device_mode_response_system.c"
+#include "systems/virtual_joystick_system.c"
 // zoxel_module_includes
 #include "players3D/players3D.c"
 #include "players2D/players2D.c"
@@ -49,6 +50,7 @@ zox_import_module(Players3D)
 zox_system(PlayerToggleCameraSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks, [in] CharacterLink)
 zox_system_1(PlayerShortcutsSingleSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks)
 zox_system_1(PlayerPauseSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks)
+zox_system_1(VirtualJoystickSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks, [in] DeviceMode)
 zoxel_end_module(Players)
 
 #endif

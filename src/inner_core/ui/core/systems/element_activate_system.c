@@ -40,13 +40,13 @@
                     const Children *zevices = ecs_get(world, device_entity, Children);
                     for (int k = 0; k < zevices->length; k++) {
                         ecs_entity_t zevice_entity = zevices->value[k];
-                        if (ecs_has(world, zevice_entity, DeviceButton)) {
+                        if (ecs_has(world, zevice_entity, ZeviceButton)) {
                             const DeviceButtonType *deviceButtonType = ecs_get(world, zevice_entity, DeviceButtonType);
                             if (deviceButtonType->value == zox_device_button_a) {
                                 const ZeviceDisabled *zeviceDisabled = ecs_get(world, zevice_entity, ZeviceDisabled);
                                 if (!zeviceDisabled->value) {
-                                    const DeviceButton *deviceButton = ecs_get(world, zevice_entity, DeviceButton);
-                                    if (devices_get_pressed_this_frame(deviceButton->value)) did_activate = 1;
+                                    const ZeviceButton *zeviceButton = ecs_get(world, zevice_entity, ZeviceButton);
+                                    if (devices_get_pressed_this_frame(zeviceButton->value)) did_activate = 1;
                                 }
                                 break;
                             }
@@ -81,6 +81,3 @@
         }
     } zox_declare_system(ElementActivateSystem)
 #endif
-
-// const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
-// if (gamepad->a.pressed_this_frame) set_ui_clicked_mut(world, raycasterTarget->value);

@@ -57,8 +57,8 @@ void device_reset_touchscreen(ecs_world_t *world, ecs_entity_t touchscreen) {
     for (int i = 0; i < children->length; i++) {
         ecs_entity_t e = children->value[i];
         if (ecs_has(world, e, ZevicePointer)) {
-            ZevicePointer *deviceButton = ecs_get_mut(world, e, ZevicePointer);
-            if (reset_device_pointer(deviceButton)) ecs_modified(world, e, ZevicePointer);
+            ZevicePointer *zeviceButton = ecs_get_mut(world, e, ZevicePointer);
+            if (reset_device_pointer(zeviceButton)) ecs_modified(world, e, ZevicePointer);
             ZevicePointerDelta *zevicePointerDelta = ecs_get_mut(world, e, ZevicePointerDelta);
             if (!(zevicePointerDelta->value.x == 0 && zevicePointerDelta->value.y == 0)) {
                 zevicePointerDelta->value = int2_zero;

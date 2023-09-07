@@ -22,37 +22,9 @@ void FreeCameraToggleSystem(ecs_iter_t *it) {
         if (is_triggered && mouse_entity != 0) {
             const MouseLock *mouseLock = ecs_get(world, mouse_entity, MouseLock);
             unsigned char new_value = !mouseLock->value;
-            zoxel_log(" > free camera toggled [%s]\n", new_value ? "on" : "off");
+            // zoxel_log(" > free camera toggled [%s]\n", new_value ? "on" : "off");
             zox_set_only(mouse_entity, MouseLock, { new_value })
             zox_set_only(cameraLink->value, FreeRoam, { new_value })
         }
     }
 } zox_declare_system(FreeCameraToggleSystem)
-
-    /*ecs_iter_t cameraIter = ecs_query_iter(it->world, it->ctx);
-    ecs_query_next(&cameraIter);
-    if (cameraIter.count == 0) return;
-    const Mouse *mouses = ecs_field(it, Mouse, 1);
-    MouseLock *mouseLocks = ecs_field(it, MouseLock, 2);
-    const CanFreeRoam *canFreeRoams = ecs_field(&cameraIter, CanFreeRoam, 2);
-    FreeRoam *freeRoams = ecs_field(&cameraIter, FreeRoam, 3);
-    for (int i = 0; i < it->count; i++) {
-        const Mouse *mouse = &mouses[i];
-        if (mouse->left.pressed_this_frame || mouse->right.pressed_this_frame) {
-            zoxel_log(" > clickity clicky click\n");
-            MouseLock *mouseLock = &mouseLocks[i];
-            unsigned char new_value = !mouseLock->value;
-            // zoxel_log(" > free camera toggled [%s]\n", mouseLock->value ? "on" : "off");
-            for (int j = 0; j < cameraIter.count; j++) {
-                const CanFreeRoam *canFreeRoam = &canFreeRoams[j];
-                if (canFreeRoam->value) {
-                    FreeRoam *freeRoam = &freeRoams[j];
-                    mouseLock->value = new_value;
-                    freeRoam->value = new_value;
-                    zoxel_log(" > free camera toggled [%s]\n", new_value ? "on" : "off");
-                } else {
-                    zoxel_log(" > canot free roam [%lu]\n", cameraIter.entities[j]);
-                }
-            }
-        }
-    }*/

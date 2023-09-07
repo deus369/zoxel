@@ -46,15 +46,15 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                     const ZeviceDisabled *zeviceDisabled = ecs_get(world, zevice_entity, ZeviceDisabled);
                     if (!zeviceDisabled->value) {
                         const DeviceButtonType *deviceButtonType = ecs_get(world, zevice_entity, DeviceButtonType);
-                        if (ecs_has(world, zevice_entity, DeviceStick)) {
+                        if (ecs_has(world, zevice_entity, ZeviceStick)) {
                             if (deviceButtonType->value == zox_device_stick_left) {
-                                const DeviceStick *deviceStick = ecs_get(world, zevice_entity, DeviceStick);
-                                left_stick = deviceStick->value;
+                                const ZeviceStick *zeviceStick = ecs_get(world, zevice_entity, ZeviceStick);
+                                left_stick = zeviceStick->value;
                             }
-                        } else if (ecs_has(world, zevice_entity, DeviceButton)) {
+                        } else if (ecs_has(world, zevice_entity, ZeviceButton)) {
                             if (deviceButtonType->value == zox_device_button_lb || deviceButtonType->value == zox_device_button_rb) {
-                                const DeviceButton *deviceButton = ecs_get(world, zevice_entity, DeviceButton);
-                                if (!is_run && devices_get_is_pressed(deviceButton->value)) is_run = 1;
+                                const ZeviceButton *zeviceButton = ecs_get(world, zevice_entity, ZeviceButton);
+                                if (!is_run && devices_get_is_pressed(zeviceButton->value)) is_run = 1;
                             }
                         }
                     }
