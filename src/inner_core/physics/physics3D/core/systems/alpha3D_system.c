@@ -6,9 +6,7 @@ void Alpha3DSystem(ecs_iter_t *it) {
     Omega3D *omega3Ds = ecs_field(it, Omega3D, 2);
     for (int i = 0; i < it->count; i++) {
         Alpha3D *alpha3D = &alpha3Ds[i];
-        if (alpha3D->value.x == 0 && alpha3D->value.y == 0 && alpha3D->value.z == 0 && alpha3D->value.w == 1) {
-            continue;
-        }
+        if (alpha3D->value.x == 0 && alpha3D->value.y == 0 && alpha3D->value.z == 0 && alpha3D->value.w == 1) continue;
         float magnitude = quaternion_magnitude(alpha3D->value);
         if (magnitude != 0.0f) {
             Omega3D *omega3D = &omega3Ds[i];

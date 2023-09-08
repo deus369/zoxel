@@ -19,7 +19,6 @@ void toggle_camera_perspective(ecs_world_t *world, ecs_entity_t character) {
 
 void detatch_from_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character) {
     zox_set_only(player, CharacterLink, { 0 })
-    zox_add_tag(camera, EulerOverride)
     // zox_set_only(camera, FreeRoam, { 0 })
     #ifdef zoxel_topdown_camera
         zox_set_only(camera, CameraFollowLink, { 0 })
@@ -30,9 +29,20 @@ void detatch_from_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_
     //float4 rotationer = quaternion_from_euler( (float3) { 0, -main_camera_rotation_speed * degreesToRadians, 0 });
     //zox_set_only(camera, EternalRotation, { rotationer })
     zox_set_only(camera, CanFreeRoam, { 1 })
+    zox_add_tag(camera, EulerOverride)
+    // float4 rotation = quaternion_from_euler(ecs_get(world, camera, Euler)->value);
+    // zox_set_only(camera, Rotation3D, { rotation })
+    float4 camera_rotation3D = ecs_get(world, camera, Rotation3D)->value;
+    float3 euler = quaternion_to_euler(camera_rotation3D);
+    // zoxel_log(" > camera euler [%fx%fx%f]\n", euler.x, euler.y, euler.z);
+    // float4 camera_rotation2 = quaternion_from_euler(euler);
+    // float3 euler2 = quaternion_to_euler(camera_rotation2);
+    // zoxel_log(" > camera euler2 [%fx%fx%f]\n", euler2.x, euler2.y, euler2.z);
+    // zox_set_only(camera, Euler, {  quaternion_to_euler_x(camera_rotation3D), quaternion_to_euler_y(camera_rotation3D), 0 })
+    zox_set_only(camera, Euler, { euler })
     zox_set_only(mouse_entity, MouseLock, { 0 })
     if (character != 0) {
-        zox_remove(character, PlayerCharacter3D)
+        // zox_remove(character, PlayerCharacter3D)
         zox_set_only(character, CameraLink, { 0 })
     }
     // fix caera rotation to be the same
@@ -51,9 +61,20 @@ void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t c
     float4 local_rotation = quaternion_from_euler((float3) { 25 * degreesToRadians, 180 * degreesToRadians, 0 });
     #ifdef zoxel_topdown_camera
         local_camera_position.x = 0;
-        local_camera_position.y = vox_scale * 12;
+        local_camera_position.y = vox_scale * 16;
         local_camera_position.z = 0;
-        local_rotation = quaternion_from_euler((float3) { -90 * degreesToRadians, 180 * degreesToRadians, 0 });
+        float3 local_euler = (float3) { -90, 180, 0 };
+        // make ortho
+        #ifdef zoxel_ortho_camera
+            local_euler.x += 45;
+            local_euler.y += 45;
+            local_camera_position.y -= vox_scale * 4;
+            local_camera_position.x -= vox_scale * 8;
+            local_camera_position.z -= vox_scale * 8;
+        #endif
+
+        float3_multiply_float_p(&local_euler, degreesToRadians);
+        local_rotation = quaternion_from_euler(local_euler);
     #endif
     zox_add_tag(camera, FirstPersonCamera)
     zox_set_only(camera, CanFreeRoam, { 0 })
@@ -79,7 +100,7 @@ void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t c
     zox_set_only(camera, EternalRotation, { quaternion_identity })
     zox_remove(camera, EulerOverride)
     // character
-    zox_add_tag(character, PlayerCharacter3D)
+    // zox_add_tag(character, PlayerCharacter3D)
     zox_set_only(character, CameraLink, { camera })
     zox_set_only(character, DisableMovement, { 0 })
     // link character

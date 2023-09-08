@@ -12,6 +12,7 @@ void Dissipation3DSystem(ecs_iter_t *it) {
     Alpha3D *apha3Ds = ecs_field(it, Alpha3D, 3);
     for (int i = 0; i < it->count; i++) {
         const Omega3D *omega3D = &omega3Ds[i];
+        if (omega3D->value.x == 0 && omega3D->value.y == 0 && omega3D->value.z == 0 && omega3D->value.w == 1) continue;
         Alpha3D *alpha3D = &apha3Ds[i];
         quaternion_rotate_quaternion_p(&alpha3D->value, calculate_dissipation(omega3D->value));
     }

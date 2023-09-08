@@ -5,7 +5,13 @@
 #define max_cameras 16
 const float camera_far_distance = 6000;
 int main_cameras_count = 1;
-const int camera_fov = 90;
+#ifdef zoxel_ortho_camera
+    const int camera_fov = 45;
+#elif defined(zoxel_topdown_camera)
+    const int camera_fov = 60;
+#else
+    const int camera_fov = 90;
+#endif
 const float camera_limit_x = 1.25f;
 ecs_entity_t main_cameras[max_cameras];
 ecs_entity_t ui_cameras[1];
@@ -36,6 +42,7 @@ zox_byte_component(CanFreeRoam)
 #include "systems/projection_matrix_system.c"
 #include "systems/view_matrix_system.c"
 #include "systems/camera2D_follow_system.c"
+#include "systems/camera3D_follow_system.c"
 
 void spawn_prefabs_cameras(ecs_world_t *world) {
     spawn_camera_base_prefab(world);
@@ -60,8 +67,8 @@ zox_define_component(CameraNearDistance)
 zox_define_component(FreeRoam)
 zox_define_component(CanFreeRoam)
 zox_define_component(CameraFollowLink)
-zox_system(CameraFollow2DSystem, EcsOnUpdate, [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D)
-zox_system(CameraFollowSystem, EcsOnUpdate, [in] CameraFollowLink, [in] LocalPosition3D, [out] Position3D)
+zox_system(Camera2DFollowSystem, EcsPostUpdate, [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D)
+zox_system(Camera3DFollowSystem, EcsPostUpdate, [in] CameraFollowLink, [in] LocalPosition3D, [out] Position3D)
 zox_system(ViewMatrixSystem, EcsPostUpdate, [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)
 zox_system(ProjectionMatrixSystem, EcsPreStore, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
 zoxel_end_module(Cameras)

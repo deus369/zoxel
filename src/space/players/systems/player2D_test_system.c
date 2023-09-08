@@ -16,14 +16,15 @@ void Player2DTestSystem(ecs_iter_t *it) {
         if ((keyboard->left_alt.is_pressed || keyboard->right_alt.is_pressed) && keyboard->enter.pressed_this_frame) {
             sdl_toggle_fullscreen(world, main_window);
         } else if (keyboard->p.pressed_this_frame) {
-            // parent camera to character
-            ecs_entity_t main_camera = main_cameras[0];
-            const ParentLink *parentLink = ecs_get(world, main_camera, ParentLink);
-            if (parentLink->value == 0) {
-                attach_to_character(world, main_player, main_camera, main_character3D);
-            } else {
-                detatch_from_character(world, main_player, main_camera, main_character3D);
-            }
+            ecs_entity_t main_camera = main_cameras[0]; // get player camera link instead
+            ecs_entity_t character = 0;
+            #ifdef zoxel_topdown_camera
+                character = ecs_get(world, main_camera, CameraFollowLink)->value;
+            #else
+                character = ecs_get(world, main_camera, ParentLink)->value;
+            #endif
+            if (character == 0) attach_to_character(world, main_player, main_camera, main_character3D);
+            else  detatch_from_character(world, main_player, main_camera, main_character3D);
         } else if (keyboard->b.pressed_this_frame) {
             zoxel_log("testing world ui on character %lu\n", main_character3D);
             spawn_element3D(world, main_character3D);

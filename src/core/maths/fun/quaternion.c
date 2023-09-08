@@ -1,3 +1,5 @@
+#define quaternion_identity (float4) { 0, 0, 0, 1 }
+
 float quaternion_to_euler_y(float4 q) {
     double sinp = 2 * (q.w * q.y - q.z * q.x);
     if (double_abs(sinp) >= 1) {
@@ -23,45 +25,61 @@ float quaternion_to_euler_z(float4 q) {
     }
 }
 
+// #define debug_quadrant_correctnion
+// this is used to get exact quadrants by removing significant bit errors
+// wow i've come along way
+const float significant_digits_check = 100000.0f;
+#define quaternion_pi_2 1.5707f
+
 void correct_euler_quadrant(float3* euler) {
     // quadrant corrections
-    if (euler->x > M_PI_2 && euler->z > M_PI_2) {
-        // printf("    in 3rd quadrant! [%fx%fx%f]\n", euler.x, euler.y, euler.z);
+    float euler_x = (int) ceil(euler->x * significant_digits_check) / significant_digits_check;
+    float euler_z = (int) ceil(euler->z * significant_digits_check) / significant_digits_check;
+    if (euler_x >= quaternion_pi_2 && euler_z >= quaternion_pi_2) {
         euler->x -= M_PI;
         euler->y = - euler->y + M_PI;
         euler->z -= M_PI;
-    } else if (euler->x < -M_PI_2 && euler->z < -M_PI_2) {
+        #ifdef debug_quadrant_correctnion
+            zoxel_log(" +> in 3rd quadrant! [%fx%fx%f]\n", euler->x, euler->y, euler->z);
+        #endif
+    } else if (euler_x <= -quaternion_pi_2 && euler_z <= -quaternion_pi_2) {
         // printf("    in 4th quadrant! - M_PI - M_PI\n");
         euler->x += M_PI;
         euler->y = - euler->y + M_PI;
         euler->z += M_PI;
-    } else if (euler->x < -M_PI_2 && euler->z > M_PI_2) {
+        #ifdef debug_quadrant_correctnion
+            zoxel_log(" +> in 4thrd quadrant! [%fx%fx%f]\n", euler->x, euler->y, euler->z);
+        #endif
+    } else if (euler_x <= -quaternion_pi_2 && euler_z >= quaternion_pi_2) {
         euler->x += M_PI;
         euler->y = - euler->y + M_PI;
         euler->z -= M_PI;
-        // printf("    loom\n");
-    } else if (euler->x > M_PI_2 && euler->z < -M_PI_2) {
+        #ifdef debug_quadrant_correctnion
+            zoxel_log(" +> in 1st quadrant! [%fx%fx%f]\n", euler->x, euler->y, euler->z);
+        #endif
+    } else if (euler_x >= quaternion_pi_2 && euler_z <= -quaternion_pi_2) {
         euler->x -= M_PI;
         euler->y = - euler->y - M_PI;
         euler->z += M_PI;
-        // printf("    boom\n");
+        #ifdef debug_quadrant_correctnion
+            zoxel_log(" +> in 2nd quadrant! [%fx%fx%f]\n", euler->x, euler->y, euler->z);
+        #endif
+    } else {
+        #ifdef debug_quadrant_correctnion
+            zoxel_log(" +> in no quadrant! [%fx%fx%f]\n", euler->x, euler->y, euler->z);
+        #endif
     }
-    if (euler->y < -M_PI) {
-        euler->y += 2 * M_PI;
-    }
-    if (euler->y > M_PI) {
-        euler->y -= 2 * M_PI;
-    }
+    // +> in no quadrant! [1.570796x-0.000000x-3.141593]
+
+    if (euler->y < -M_PI) euler->y += 2 * M_PI;
+    else if (euler->y > M_PI) euler->y -= 2 * M_PI;
 }
 
 float3 quaternion_to_euler(float4 q) {
     float3 euler = { };
-    // roll (x-axis rotation)
-    euler.x = quaternion_to_euler_x(q);
-    // pitch (y-axis rotation)
-    euler.y = quaternion_to_euler_y(q);
-    // yaw (z-axis rotation)
-    euler.z = quaternion_to_euler_z(q);
+    euler.x = quaternion_to_euler_x(q); // roll (x-axis rotation)
+    euler.y = quaternion_to_euler_y(q); // pitch (y-axis rotation)
+    euler.z = quaternion_to_euler_z(q); // yaw (z-axis rotation)
     correct_euler_quadrant(&euler);
     return euler;
 }
@@ -69,17 +87,12 @@ float3 quaternion_to_euler(float4 q) {
 unsigned char quaternion_to_quadrant(float4 q) {
     float degree = quaternion_to_euler(q).y * (180.0f / M_PI);
     // float degree = quaternion_to_euler_y(q) * (180.0f / M_PI);
-    if (degree < 0) {
-         degree += 360;
-    }
+    if (degree < 0) degree += 360;
     // printf("    - degree [%f]\n", degree);
     return (unsigned char)((degree + 0.1f) / 90) % 4;  // 0.1 = 45 before
 }
 
 float4 quaternion_from_euler(float3 euler) {
-    /*float yaw = euler.x;
-    float pitch = euler.y;
-    float roll = euler.z;*/
     float roll = euler.x;
     float pitch = euler.y;
     float yaw = euler.z;
@@ -96,12 +109,6 @@ float4 quaternion_from_euler(float3 euler) {
     q.z = cr * cp * sy - sr * sp * cy;
     return q;
 }
-
-#define quaternion_identity (float4) { 0, 0, 0, 1 }
-
-/*euler.x /= degreesToRadians;
-euler.y /= degreesToRadians;
-euler.z /= degreesToRadians;*/
 
 void print_quadrant(float4 q) {
     unsigned char quadrant = quaternion_to_quadrant(q);

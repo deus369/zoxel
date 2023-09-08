@@ -19,9 +19,12 @@ void Player3DRotateSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
     const DeviceLinks *deviceLinks = ecs_field(it, DeviceLinks, 2);
     const CharacterLink *characterLinks = ecs_field(it, CharacterLink, 3);
+    const PlayerState *playerStates = ecs_field(it, PlayerState, 4);
     for (int i = 0; i < it->count; i++) {
         const CharacterLink *characterLink = &characterLinks[i];
         if (characterLink->value == 0) continue;
+        const PlayerState *playerState = &playerStates[i];
+        if (playerState->value != zox_player_state_first_person) continue;
         const DisableMovement *disableMovement = ecs_get(world, characterLink->value, DisableMovement);
         if (disableMovement->value) continue;
         const DeviceLinks *deviceLinks2 = &deviceLinks[i];

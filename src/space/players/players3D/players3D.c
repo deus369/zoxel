@@ -25,7 +25,7 @@ zox_define_tag(PlayerCharacter3D)
 // zoxel_system_defines
 #ifdef zoxel_physics3D
     zox_system(Player3DMoveSystem, EcsPreUpdate, [none] players.Player, [in] DeviceLinks, [in] CharacterLink)
-    zox_system(Player3DRotateSystem, EcsPreUpdate, [none] players.Player, [in] DeviceLinks, [in] CharacterLink)
+    zox_system(Player3DRotateSystem, EcsPreUpdate, [none] players.Player, [in] DeviceLinks, [in] CharacterLink, [in] PlayerState)
     zox_system(Player3DJumpSystem, EcsPreUpdate, [none] players.Player, [in] DeviceLinks, [in] CharacterLink)
 #endif
 zoxel_end_module(Players3D)
