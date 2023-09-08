@@ -54,7 +54,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         main_cameras[0] = spawn_base_camera(world, camera_begin_position, camera_spawn_rotation, screen_dimensions2, (int2) { });
         #ifdef zoxel_animations
             float4 rotationer = quaternion_from_euler( (float3) { 0, -main_camera_rotation_speed * degreesToRadians, 0 });
-            zox_set(main_cameras[0], EternalRotation, { rotationer });
+            zox_set(main_cameras[0], EternalRotation, { rotationer })
         #endif
         if (is_split_screen) {
             //! \todo connect a gamepad to this camera

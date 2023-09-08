@@ -1,3 +1,5 @@
+#define main_camera_rotation_speed 60 * 0.22f
+
 void toggle_camera_perspective(ecs_world_t *world, ecs_entity_t character) {
     if (ecs_is_valid(world, character) && ecs_has(world, character, CameraLink)) {
         const CameraLink *cameraLink = ecs_get(world, character, CameraLink);
@@ -19,8 +21,14 @@ void detatch_from_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_
     zox_set_only(player, CharacterLink, { 0 })
     zox_add_tag(camera, EulerOverride)
     // zox_set_only(camera, FreeRoam, { 0 })
-    zox_set_only(camera, ParentLink, { 0 })
+    #ifdef zoxel_topdown_camera
+        zox_set_only(camera, CameraFollowLink, { 0 })
+    #else
+        zox_set_only(camera, ParentLink, { 0 })
+    #endif
     zox_remove(camera, FirstPersonCamera)
+    //float4 rotationer = quaternion_from_euler( (float3) { 0, -main_camera_rotation_speed * degreesToRadians, 0 });
+    //zox_set_only(camera, EternalRotation, { rotationer })
     zox_set_only(camera, CanFreeRoam, { 1 })
     zox_set_only(mouse_entity, MouseLock, { 0 })
     if (character != 0) {
@@ -37,21 +45,38 @@ void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t c
     if (character == 0) return;
     // zoxel_log(" > attaching to character\n");
     // attach the camera with transform restraints
+    const Position3D *position3D = ecs_get(world, character, Position3D);
     const Rotation3D *rotation3D = ecs_get(world, character, Rotation3D);
     float3 local_camera_position = (float3) { 0, vox_scale * 2.2f, - vox_scale * 3.6f };
     float4 local_rotation = quaternion_from_euler((float3) { 25 * degreesToRadians, 180 * degreesToRadians, 0 });
     #ifdef zoxel_topdown_camera
-        local_camera_position.y = vox_scale * 16.0f;
+        local_camera_position.x = 0;
+        local_camera_position.y = vox_scale * 12;
         local_camera_position.z = 0;
         local_rotation = quaternion_from_euler((float3) { -90 * degreesToRadians, 180 * degreesToRadians, 0 });
     #endif
     zox_add_tag(camera, FirstPersonCamera)
     zox_set_only(camera, CanFreeRoam, { 0 })
-    zox_set_only(camera, ParentLink, { character })
-    zox_set_only(camera, Rotation3D, { rotation3D->value })
+    #ifdef zoxel_topdown_camera
+        zox_set_only(camera, CameraFollowLink, { character })
+    #else
+        zox_set_only(camera, ParentLink, { character })
+    #endif
+    #ifdef zoxel_topdown_camera
+        zox_set_only(camera, Rotation3D, { quaternion_identity })
+    #else
+        zox_set_only(camera, Rotation3D, { rotation3D->value })
+    #endif
+    zox_set_only(camera, Position3D, { float3_add(position3D->value, local_camera_position) })
+    zox_set_only(camera, Rotation3D, { local_rotation }) // rotation3D->value })
     zox_set_only(camera, LocalPosition3D, { local_camera_position })
-    zox_set_only(camera, LocalRotation3D, { local_rotation })
+    #ifdef zoxel_topdown_camera
+        zox_set_only(character, Rotation3D, { quaternion_identity }) // rotation3D->value })
+    #else
+        zox_set_only(camera, LocalRotation3D, { local_rotation })
+    #endif
     // zox_remove(camera, FreeRoam)
+    zox_set_only(camera, EternalRotation, { quaternion_identity })
     zox_remove(camera, EulerOverride)
     // character
     zox_add_tag(character, PlayerCharacter3D)
