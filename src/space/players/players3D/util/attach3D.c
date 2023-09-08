@@ -39,12 +39,18 @@ void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t c
     // attach the camera with transform restraints
     const Rotation3D *rotation3D = ecs_get(world, character, Rotation3D);
     float3 local_camera_position = (float3) { 0, vox_scale * 2.2f, - vox_scale * 3.6f };
+    float4 local_rotation = quaternion_from_euler((float3) { 25 * degreesToRadians, 180 * degreesToRadians, 0 });
+    #ifdef zoxel_topdown_camera
+        local_camera_position.y = vox_scale * 16.0f;
+        local_camera_position.z = 0;
+        local_rotation = quaternion_from_euler((float3) { -90 * degreesToRadians, 180 * degreesToRadians, 0 });
+    #endif
     zox_add_tag(camera, FirstPersonCamera)
     zox_set_only(camera, CanFreeRoam, { 0 })
     zox_set_only(camera, ParentLink, { character })
     zox_set_only(camera, Rotation3D, { rotation3D->value })
     zox_set_only(camera, LocalPosition3D, { local_camera_position })
-    zox_set_only(camera, LocalRotation3D, { quaternion_from_euler((float3) { 25, 180 * degreesToRadians, 0 }) })
+    zox_set_only(camera, LocalRotation3D, { local_rotation })
     // zox_remove(camera, FreeRoam)
     zox_remove(camera, EulerOverride)
     // character

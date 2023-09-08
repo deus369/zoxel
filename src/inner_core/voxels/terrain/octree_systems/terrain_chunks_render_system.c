@@ -16,8 +16,8 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
     int rendered_count = 0;
     const Position3D *positions = ecs_field(it, Position3D, 1);
     const Rotation3D *rotations = ecs_field(it, Rotation3D, 2);
-    const Scale1D *scale1Ds = ecs_field(it, Scale1D, 3);
-    const Brightness *brightnesses = ecs_field(it, Brightness, 4);
+    //const Scale1D *scale1Ds = ecs_field(it, Scale1D, 3);
+    //const Brightness *brightnesses = ecs_field(it, Brightness, 4);
     const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 5);
     const UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 6);
     const ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 7);
@@ -36,8 +36,8 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         const ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
         const Position3D *position3D = &positions[i];
         const Rotation3D *rotation = &rotations[i];
-        const Scale1D *scale1D = &scale1Ds[i];
-        const Brightness *brightness = &brightnesses[i];
+        //const Scale1D *scale1D = &scale1Ds[i];
+        //const Brightness *brightness = &brightnesses[i];
         const VoxLink *voxLink = &voxLinks[i];
         if (vox_entity != voxLink->value) {
             vox_entity = voxLink->value;

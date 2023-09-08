@@ -6,3 +6,8 @@ void resize_ui_canvases(ecs_world_t *world, int2 screen_size) {
         zoxel_log(" > viewport resized to dimensions: [%ix%i]\n", screen_size.x, screen_size.y);
     #endif
 }
+
+void fix_for_screen_size(int2 *pixel_size, int2 screen_size) {
+    pixel_size->x = (int) ((pixel_size->x / 1920.0f) * screen_size.x);
+    pixel_size->y = (int) ((pixel_size->y / 1080.0f) * screen_size.y);
+}

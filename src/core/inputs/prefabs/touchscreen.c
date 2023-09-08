@@ -1,5 +1,7 @@
 ecs_entity_t prefab_touchscreen;
 ecs_entity_t touchscreen_entity;
+const unsigned char fingers_count = 1;
+const unsigned char virtual_joysticks_count = 1;
 
 ecs_entity_t spawn_prefab_touchscreen(ecs_world_t *world) {
     ecs_defer_begin(world);
@@ -7,7 +9,6 @@ ecs_entity_t spawn_prefab_touchscreen(ecs_world_t *world) {
     zox_name("touchscreen_prefab")
     zox_add_tag(e, Device)
     zox_add_tag(e, Touchscreen)
-    // zox_set(e, Touchscreen, touchscreen_zero)
     zox_set(e, DeviceLayout, { 0 })
     zox_set(e, Children, { 0, NULL })
     ecs_defer_end(world);
@@ -21,10 +22,12 @@ ecs_entity_t spawn_prefab_touchscreen(ecs_world_t *world) {
 ecs_entity_t spawn_touchscreen(ecs_world_t *world) {
     zox_instance(prefab_touchscreen)
     zox_name("touchscreen")
-    const unsigned char fingers_count = 2;
     Children children = { };
-    initialize_memory_component_non_pointer(children, ecs_entity_t, fingers_count)
+    initialize_memory_component_non_pointer(children, ecs_entity_t, fingers_count + virtual_joysticks_count)
     for (unsigned char i = 0; i < fingers_count; i++) {
+        children.value[i] = spawn_zevice_pointer(world, i, i);
+    }
+    for (unsigned char i = fingers_count; i < fingers_count + virtual_joysticks_count; i++) {
         children.value[i] = spawn_zevice_pointer(world, i, i);
     }
     zox_set_only(e, Children, { children.length, children.value })
@@ -56,7 +59,7 @@ void device_reset_touchscreen(ecs_world_t *world, ecs_entity_t touchscreen) {
     const Children *children = ecs_get(world, touchscreen, Children);
     for (int i = 0; i < children->length; i++) {
         ecs_entity_t e = children->value[i];
-        if (ecs_has(world, e, ZevicePointer)) {
+        if (ecs_exists(world, e) && ecs_has(world, e, ZevicePointer)) {
             ZevicePointer *zeviceButton = ecs_get_mut(world, e, ZevicePointer);
             if (reset_device_pointer(zeviceButton)) ecs_modified(world, e, ZevicePointer);
             ZevicePointerDelta *zevicePointerDelta = ecs_get_mut(world, e, ZevicePointerDelta);

@@ -15,6 +15,13 @@ void int2_add_int2_p(int2 *value, int2 add) {
     value->y += add.y;
 }
 
+void int2_limit(int2 *value, const int2 limits) {
+    if (value->x > limits.x) value->x = limits.x;
+    else if (value->x < -limits.x) value->x = -limits.x;
+    if (value->y > limits.y) value->y = limits.y;
+    else if (value->y < -limits.y) value->y = -limits.y;
+}
+
 void int2_flip_y(int2 *value, int2 max_value) {
     value->y = max_value.y - value->y;
 }

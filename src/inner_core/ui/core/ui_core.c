@@ -18,6 +18,7 @@ zox_time_component(NavigatorTimer)
 zox_component(UITrail, float3)
 zox_component(CanvasLink, ecs_entity_t)
 zox_component(UIHolderLink, ecs_entity_t)
+zox_entities_component(ElementLinks)
 zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t)
 // zoxel_include_util
 #include "util/ui_prefab_util.c"
@@ -67,6 +68,7 @@ zox_define_component(UITrail)
 zox_define_component(CanvasLink)
 zox_define_component(UIHolderLink)
 zox_define_component(ClickEvent)
+zox_define_entities_component(ElementLinks, [in] ElementLinks)
 // zoxel_define_filters
 zox_filter(ui_query, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [out] SelectableState)
 zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition, [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPixelPosition)

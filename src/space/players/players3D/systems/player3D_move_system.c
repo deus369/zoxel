@@ -20,55 +20,74 @@ void Player3DMoveSystem(ecs_iter_t *it) {
         if (characterLink->value == 0) continue;
         const DisableMovement *disableMovement = ecs_get(world, characterLink->value, DisableMovement);
         if (disableMovement->value) continue;
-        float3 movement = { 0, 0, 0 };
+        unsigned char is_run = 0;
+        float2 left_stick = float2_zero;
         const DeviceLinks *deviceLinks = &deviceLinkss[i];
         for (int j = 0; j < deviceLinks->length; j++) {
             ecs_entity_t device_entity = deviceLinks->value[j];
             if (ecs_has(world, device_entity, Keyboard)) {
                 const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
-                if (keyboard->w.is_pressed) movement.z += 1;
-                if (keyboard->s.is_pressed) movement.z -= 1;
-                if (keyboard->a.is_pressed) movement.x += 1;
-                if (keyboard->d.is_pressed) movement.x += -1;
-                if (keyboard->left_shift.is_pressed) {
-                    movement.x *= run_speed;
-                    movement.z *= run_speed;
-                }
-                #ifdef zox_floating_movement
+                if (keyboard->w.is_pressed) left_stick.y += 1;
+                if (keyboard->s.is_pressed) left_stick.y -= 1;
+                if (keyboard->a.is_pressed) left_stick.x += - 1;
+                if (keyboard->d.is_pressed) left_stick.x += 1;
+                if (keyboard->left_shift.is_pressed) is_run = 1;
+                /*#ifdef zox_floating_movement
                     if (keyboard->space.is_pressed) movement.y = jump_power;
-                #endif
+                #endif*/
             } else if (ecs_has(world, device_entity, Gamepad)) {
-                float2 left_stick = float2_zero;
-                unsigned char is_run = 0;
                 const Children *zevices = ecs_get(world, device_entity, Children);
                 for (int k = 0; k < zevices->length; k++) {
                     ecs_entity_t zevice_entity = zevices->value[k];
                     const ZeviceDisabled *zeviceDisabled = ecs_get(world, zevice_entity, ZeviceDisabled);
-                    if (!zeviceDisabled->value) {
-                        const DeviceButtonType *deviceButtonType = ecs_get(world, zevice_entity, DeviceButtonType);
-                        if (ecs_has(world, zevice_entity, ZeviceStick)) {
-                            if (deviceButtonType->value == zox_device_stick_left) {
-                                const ZeviceStick *zeviceStick = ecs_get(world, zevice_entity, ZeviceStick);
-                                left_stick = zeviceStick->value;
-                            }
-                        } else if (ecs_has(world, zevice_entity, ZeviceButton)) {
-                            if (deviceButtonType->value == zox_device_button_lb || deviceButtonType->value == zox_device_button_rb) {
-                                const ZeviceButton *zeviceButton = ecs_get(world, zevice_entity, ZeviceButton);
-                                if (!is_run && devices_get_is_pressed(zeviceButton->value)) is_run = 1;
-                            }
+                    if (zeviceDisabled->value) continue;
+                    const DeviceButtonType *deviceButtonType = ecs_get(world, zevice_entity, DeviceButtonType);
+                    if (ecs_has(world, zevice_entity, ZeviceStick)) {
+                        if (deviceButtonType->value == zox_device_stick_left) {
+                            const ZeviceStick *zeviceStick = ecs_get(world, zevice_entity, ZeviceStick);
+                            left_stick.x += zeviceStick->value.x * - 1; // joysticks are weird
+                            left_stick.y += zeviceStick->value.y;
+                        }
+                    } else if (ecs_has(world, zevice_entity, ZeviceButton)) {
+                        if (deviceButtonType->value == zox_device_button_lb || deviceButtonType->value == zox_device_button_rb) {
+                            const ZeviceButton *zeviceButton = ecs_get(world, zevice_entity, ZeviceButton);
+                            if (!is_run && devices_get_is_pressed(zeviceButton->value)) is_run = 1;
                         }
                     }
                 }
-                if (float_abs(left_stick.x) > joystick_cutoff_buffer) movement.x = left_stick.x;
-                if (float_abs(left_stick.y) > joystick_cutoff_buffer) movement.z = left_stick.y;
-                if (is_run) {
-                    movement.x *= run_speed;
-                    movement.z *= run_speed;
+            } else if (ecs_has(world, device_entity, Touchscreen)) {
+                const Children *zevices = ecs_get(world, device_entity, Children);
+                for (int k = 0; k < zevices->length; k++) {
+                    if (k < fingers_count) continue;
+                    ecs_entity_t zevice_entity = zevices->value[k];
+                    const ZeviceDisabled *zeviceDisabled = ecs_get(world, zevice_entity, ZeviceDisabled);
+                    if (zeviceDisabled->value) continue;
+                    //const DeviceButtonType *deviceButtonType = ecs_get(world, zevice_entity, DeviceButtonType);
+                    if (ecs_has(world, zevice_entity, ZeviceStick)) {
+                        //if (deviceButtonType->value == zox_device_stick_left) {
+                            const ZeviceStick *zeviceStick = ecs_get(world, zevice_entity, ZeviceStick);
+                            left_stick.x += zeviceStick->value.x;
+                            left_stick.y += zeviceStick->value.y;
+                        //}
+                    }
+                    /*else if (ecs_has(world, zevice_entity, ZeviceButton)) {
+                        if (deviceButtonType->value == zox_device_button_lb || deviceButtonType->value == zox_device_button_rb) {
+                            const ZeviceButton *zeviceButton = ecs_get(world, zevice_entity, ZeviceButton);
+                            if (!is_run && devices_get_is_pressed(zeviceButton->value)) is_run = 1;
+                        }
+                    }*/
                 }
             }
         }
+        if (left_stick.x == 0 && left_stick.y == 0) continue;
+        float3 movement = { left_stick.x, 0, left_stick.y };
         if (movement.x == 0 && movement.y == 0 && movement.z == 0) continue;
+        if (is_run) {
+            movement.x *= run_speed;
+            movement.z *= run_speed;
+        }
         if (movement.z < 0) movement.z *= backwards_multiplier;
+        movement.x *= -1;
         // const Omega3D *omega3D = ecs_get(world, characterLink->value, Omega3D);
         const Rotation3D *rotation3D = ecs_get(world, characterLink->value, Rotation3D);
         const Velocity3D *velocity3D = ecs_get(world, characterLink->value, Velocity3D);
@@ -92,3 +111,6 @@ if (gamepad->lb.is_pressed || gamepad->rb.is_pressed) {
 #ifdef zox_floating_movement
     if (gamepad->a.is_pressed) movement.y = jump_power;
 #endif*/
+
+                //if (float_abs(left_stick.x) > joystick_cutoff_buffer) movement.x = left_stick.x;
+                //if (float_abs(left_stick.y) > joystick_cutoff_buffer) movement.z = left_stick.y;

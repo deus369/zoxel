@@ -28,14 +28,12 @@ ecs_entity_t spawn_camera_base_prefab(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_base_camera(ecs_world_t *world, float3 position, float4 rotation, int2 screen_dimensions, int2 screen_position) {
-    ecs_defer_begin(world);
     zox_instance(prefab_base_camera)
     zox_name("base_camera")
     zox_set_only(e, Position3D, { position })
     zox_set_only(e, Rotation3D, { rotation })
     zox_set_only(e, ScreenDimensions, { screen_dimensions })
     zox_set_only(e, ScreenPosition, { screen_position })
-    ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
         zoxel_log(" + spawned base camera [%lu]\n", (long int) e);
     #endif

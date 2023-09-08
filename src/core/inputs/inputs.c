@@ -46,8 +46,6 @@ zox_memory_component(DeviceButtonLinks, ecs_entity_t)
 zox_memory_component(DeviceLinks, ecs_entity_t)
 #include "components/keyboard.c"
 #include "components/mouse.c"
-#include "components/gamepad.c"
-#include "components/touchscreen.c"
 // zoxel_prefab_includes
 #include "prefabs/zevice_button.c"
 #include "prefabs/zevice_stick.c"

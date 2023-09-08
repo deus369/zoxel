@@ -16,6 +16,7 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     zox_set(e, NavigatorTimer, { 0 })
     zox_set(e, CharacterLink, { 0 })
     zox_set(e, CameraLink, { 0 })
+    zox_set(e, ElementLinks, { 0, NULL })
     ecs_defer_end(world);
     prefab_player = e;
     #ifdef zoxel_debug_prefabs

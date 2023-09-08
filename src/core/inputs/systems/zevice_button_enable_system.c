@@ -61,7 +61,7 @@ void ZeviceStickEnableSystem(ecs_iter_t *it) {
         ZeviceDisabled *zeviceDisabled = &zeviceDisableds[i];
         if (!zeviceDisabled->value) continue;
         const ZeviceStick *zeviceStick = &deviceSticks[i];
-        unsigned char has_input = zevice_stick_has_input(zeviceStick, joystick_min_cutoff2 * 0.5f);
+        unsigned char has_input = zevice_stick_has_input(zeviceStick, joystick_min_cutoff2 * 2.0f);
         #ifdef zox_debug_zevice_states
             if (!has_input) zoxel_log("   = joystick reenabled [%lu] at %f\n", it->entities[i], zox_current_time);
         #endif

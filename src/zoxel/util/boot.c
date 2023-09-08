@@ -46,6 +46,10 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         #endif
         float rot_x = -0.2f;
         float rot_y = -M_PI_2 + M_PI * (rand() % 101) / 100.0f;
+        #ifdef zoxel_topdown_camera
+            rot_x = -M_PI_2 * 0.8f;
+            camera_begin_position.y += 0.32f * overall_voxel_scale;
+        #endif
         float4 camera_spawn_rotation = quaternion_from_euler((float3) { rot_x, rot_y, 0 });  // quaternion_identity()
         main_cameras[0] = spawn_base_camera(world, camera_begin_position, camera_spawn_rotation, screen_dimensions2, (int2) { });
         #ifdef zoxel_animations

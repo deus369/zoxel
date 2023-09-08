@@ -2,6 +2,10 @@
 // #define zoxel_include_vulkan
 #define zoxel_include_players
 
+#define zoxel_topdown_camera
+//#define mouse_has_virtual_joysticks
+//#define zoxel_disable_mouse_lock
+
 #define zoxel_test_networking
 // #define zox_visualize_sounds
 

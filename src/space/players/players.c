@@ -38,7 +38,7 @@ zox_define_memory_component(PlayerLinks)
 // zoxel_system_defines
 zox_system(FreeCameraMoveSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks, [in] cameras.CameraLink)
 zox_system(FreeCameraRotateSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks, [in] cameras.CameraLink)
-zox_system(FreeCameraToggleSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks, [in] cameras.CameraLink) // free_roam_cameras, [in] Mouse, [out] MouseLock)
+zox_system(FreeCameraToggleSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks, [in] cameras.CameraLink)
 // is this still used? weird
 // zox_system(FreeCameraDisableMovementSystem, EcsPreUpdate, [none] players.Player, [in] DeviceLinks, [in] CharacterLink)
 zox_system(Player2DTestSystem, EcsOnUpdate, [in] Keyboard)
