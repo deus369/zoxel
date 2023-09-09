@@ -26,6 +26,7 @@ zox_time_component(Jump)
 #include "systems/jump3D_system.c"
 #include "systems/physics3D_disable_system.c"
 #include "systems/bounds3D_grow_system.c"
+#include "systems/random_jump3D_system.c"
 
 zox_begin_module(CorePhysics3D)
 zox_define_component(Velocity3D)
@@ -41,6 +42,7 @@ zox_system(Omega3DSystem, EcsOnUpdate, [in] Omega3D, [out] Rotation3D)
 zox_system(Physics3DDisableSystem, EcsOnUpdate, [out] InitializePhysics3D, [out] Position3D, [out] Velocity3D)
 zox_system(Gravity3DSystem, EcsOnUpdate, [in] Gravity3D, [out] Acceleration3D)
 zox_system(Jump3DSystem, EcsOnUpdate, [out] Jump, [out] Acceleration3D)
+zox_system(RandomJump3DSystem, EcsOnUpdate, [out] Jump, [out] Grounded)
 zox_system(Friction3DSystem, EcsOnUpdate, [none] physics.Frictioned, [in] Velocity3D, [out] Acceleration3D)
 zox_system(Dissipation3DSystem, EcsOnUpdate, [none] physics.Frictioned, [in] Omega3D, [out] Alpha3D)
 zox_system(Acceleration3DSystem, EcsOnUpdate, [out] Acceleration3D, [out] Velocity3D)

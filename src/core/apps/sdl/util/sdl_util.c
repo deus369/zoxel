@@ -190,7 +190,7 @@ SDL_Window* spawn_sdl_window() {
     unsigned char is_resizeable = 1;
     unsigned long window_flags = SDL_WINDOW_OPENGL;
     #ifdef zoxel_on_android
-        window_flags = SDL_WINDOW_FULLSCREEN_DESKTOP; //  | SDL_WINDOW_HIDDEN;
+        window_flags = SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE; // SDL_WINDOW_FULLSCREEN_DESKTOP; //  | SDL_WINDOW_HIDDEN;
         is_resizeable = 0;
     #endif
     if (is_vulkan) {

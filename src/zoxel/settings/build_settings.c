@@ -10,6 +10,7 @@
 #define zoxel_start_with_debug_ui
 // #define zoxel_mouse_emulate_touch
 #define zoxel_test_networking
+#define zoxel_has_random_jumping
 // #define zox_visualize_sounds
 
 // #define zoxel_catch_opengl_errors
