@@ -13,7 +13,7 @@ void set_main_cameras(int new_count) {
 }
 
 unsigned char get_mouse_constrained() {
-    #ifdef zoxel_disable_mouse_lock
+    #ifdef zoxel_mouse_emulate_touch
         return 0;
     #endif
     return ecs_get(world, mouse_entity, MouseLock)->value;

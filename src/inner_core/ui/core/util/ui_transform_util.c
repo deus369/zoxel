@@ -29,12 +29,14 @@ float2 get_ui_real_position2D_canvas(int2 local_pixel_position, float2 anchor, f
 }
 
 float2 get_ui_real_position2D_parent(int2 local_pixel_position, float2 anchor, float2 parent_position2D, int2 parent_pixel_size, float2 canvas_size_f, float aspect_ratio) {
-    float2 position2D = parent_position2D;
-    position2D = float2_add(position2D, (float2) { (local_pixel_position.x  / canvas_size_f.x) * aspect_ratio, (local_pixel_position.y  / canvas_size_f.y)});
     float2 parent_pixel_ratio = (float2) { parent_pixel_size.x / canvas_size_f.y, parent_pixel_size.y / canvas_size_f.y };
-    position2D = float2_add(position2D, (float2) { - (parent_pixel_ratio.x / 2.0f) + parent_pixel_ratio.x * anchor.x, - (parent_pixel_ratio.y / 2.0f) + parent_pixel_ratio.y * anchor.y });
+    float2 position2D = parent_position2D;
+    float2 add_1 = (float2) { (local_pixel_position.x  / canvas_size_f.x) * aspect_ratio, (local_pixel_position.y  / canvas_size_f.y)};
+    float2 add_2 = (float2) { - (parent_pixel_ratio.x / 2.0f) + parent_pixel_ratio.x * anchor.x, - (parent_pixel_ratio.y / 2.0f) + parent_pixel_ratio.y * anchor.y };
+    float2_add_float2_p(&position2D, add_1);
+    float2_add_float2_p(&position2D, add_2);
     #ifdef debug_ui_positioning
-        zoxel_log("-> (parent) Position2D : %fx%f\n", position2D.x, position2D.y);
+        zoxel_log(" -> (parent) Position2D : %fx%f\n", position2D.x, position2D.y);
     #endif
     return position2D;
 }

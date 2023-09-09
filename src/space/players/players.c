@@ -54,7 +54,7 @@ zox_import_module(Players3D)
 zox_system(PlayerToggleCameraSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks, [in] CharacterLink)
 zox_system_1(PlayerShortcutsSingleSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks)
 zox_system_1(PlayerPauseSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks)
-zox_system_1(VirtualJoystickSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks, [in] DeviceMode)
+zox_system_1(VirtualJoystickSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterResult)
 zoxel_end_module(Players)
 
 #endif

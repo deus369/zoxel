@@ -14,8 +14,8 @@ ecs_entity_t spawn_prefab_button(ecs_world_t *world) {
     zox_set(e, ClickEvent, { NULL })
     zox_set(e, Children, { 0, NULL })
     add_ui_plus_components(world, e);
-    zox_set(e, SelectableState, { 0 })
-    zox_set(e, ClickableState, { 0 })
+    zox_set(e, SelectState, { 0 })
+    zox_set(e, ClickState, { 0 })
     ecs_defer_end(world);
     prefab_button = e;
     #ifdef zoxel_debug_prefabs
@@ -33,6 +33,27 @@ ecs_entity_t spawn_button(ecs_world_t *world, ecs_entity_t parent, int2 position
     Children children = { };
     initialize_memory_component_non_pointer(children, ecs_entity_t, 1);
     children.value[0] = spawn_zext(world, zext_prefab, e, (int2) { 0, 0 }, (float2) { 0.5f, 0.5f }, int2_to_byte2(padding), text, font_size, 0, (layer + 1), position2D, zext_size);
+    zox_set_only(e, Children, { children.length, children.value })
+    #ifdef zoxel_debug_spawns
+        zoxel_log("Spawned button [%lu]\n", (long int) e);
+    #endif
+    return e;
+}
+
+ecs_entity_t spawn_button_on_canvas(ecs_world_t *world, ecs_entity_t canvas, int2 position, byte2 padding, const color color, const char* text, int font_size, float2 anchor, const ClickEvent event) {
+    const unsigned char layer = 6;
+    fix_text_for_screen_size(&position, &font_size, screen_dimensions);
+    int2 zext_size = (int2) { font_size * strlen(text), font_size };
+    int2 pixel_size = (int2) { zext_size.x + padding.x * 2, zext_size.y + padding.y * 2 };
+    int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
+    zox_instance(prefab_button)
+    zox_name("button")
+    zox_set(e, Color, { color })
+    zox_set_only(e, ClickEvent, { event.value })
+    float2 position2D = initialize_ui_components(world, e, main_canvas, position, pixel_size, anchor, 0, canvas_size);
+    Children children = { };
+    initialize_memory_component_non_pointer(children, ecs_entity_t, 1);
+    children.value[0] = spawn_zext(world, zext_prefab, e, (int2) { 0, 0 }, (float2) { 0.5f, 0.5f }, padding, text, font_size, 0, (layer + 1), position2D, zext_size);
     zox_set_only(e, Children, { children.length, children.value })
     #ifdef zoxel_debug_spawns
         zoxel_log("Spawned button [%lu]\n", (long int) e);

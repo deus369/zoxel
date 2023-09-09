@@ -114,5 +114,5 @@ void system_name(ecs_iter_t *it) {\
 // if (!ecs_query_changed(NULL, it)) return;
 // ecs_query_skip(it);
 
-// #define zoxel_button_system(system, tag) zox_system(system, EcsPostUpdate, [none] tag, [in] ClickableState);
-// #define zoxel_button_system2(system, tag, pipeline) zox_system(system, pipeline, [none] tag, [in] ClickableState);
+// #define zoxel_button_system(system, tag) zox_system(system, EcsPostUpdate, [none] tag, [in] ClickState);
+// #define zoxel_button_system2(system, tag, pipeline) zox_system(system, pipeline, [none] tag, [in] ClickState);

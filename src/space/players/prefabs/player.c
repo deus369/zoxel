@@ -16,6 +16,7 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     zox_set(e, DeviceModeDirty, { 0 })
     zox_set(e, Raycaster, { { 0, 0 } })
     zox_set(e, RaycasterTarget, { 0 })
+    zox_set(e, RaycasterResult, { 0 })
     zox_set(e, NavigatorState, { 0 })
     zox_set(e, NavigatorTimer, { 0 })
     zox_set(e, CharacterLink, { 0 })

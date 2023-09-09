@@ -12,7 +12,7 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
     zox_set(e, Color, {{ 77, 44, 33, 255 }})
     zox_add(e, Children)
     zox_add_tag(e, Selectable)
-    zox_set(e, SelectableState, { 0 })
+    zox_set(e, SelectState, { 0 })
     zox_add_tag(e, Dragable)
     zox_set(e, DragableState, { 0 })
     zox_set(e, DraggerLink, { 0 })

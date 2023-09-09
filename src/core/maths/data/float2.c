@@ -28,9 +28,9 @@ float2 float2_divide(float2 input, float div) {
     return input;
 }
 
-void float2_add_float2_p(float2 *input, const float2 mul) {
-    input->x += mul.x;
-    input->y += mul.y;
+void float2_add_float2_p(float2 *input, const float2 add) {
+    input->x += add.x;
+    input->y += add.y;
 }
 
 float2 float2_from_int2(int2 input) {

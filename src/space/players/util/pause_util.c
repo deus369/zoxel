@@ -1,3 +1,7 @@
+void button_event_pause_game(ecs_world_t *world, ecs_entity_t trigger_entity) {
+    toggle_pause_ui(world, main_player);
+}
+
 void toggle_pause_ui(ecs_world_t *world, ecs_entity_t player) {
     const GameState *gameState = ecs_get(world, local_game, GameState);
     #ifdef zox_play_game_on_start
@@ -21,6 +25,7 @@ void toggle_pause_ui(ecs_world_t *world, ecs_entity_t player) {
         zox_set_only(mouse_entity, MouseLock, { 0 })
         zox_set_only(character3D, DisableMovement, { 1 })
         pause_ui = spawn_pause_ui(world, window_position, window_anchor);
+        dispose_in_game_ui(world);
     } else {
         // zoxel_log(" > game [paused] to [playing] for [%lu]\n", character3D);
         zox_set_only(local_game, GameState, { zoxel_game_state_playing })
@@ -29,5 +34,6 @@ void toggle_pause_ui(ecs_world_t *world, ecs_entity_t player) {
         zox_set_only(character3D, DisableMovement, { 0 })
         zox_delete(pause_ui)
         pause_ui = 0;
+        spawn_in_game_ui(world);
     }
 }

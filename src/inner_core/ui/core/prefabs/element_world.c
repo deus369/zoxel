@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_element3D(ecs_world_t *world) {
     zox_add_tag(e, FrameTexture)
     zox_set(e, FrameCorner, { 0 })
     zox_set(e, OutlineThickness, { 1 })
-    zox_set(e, SelectableState, { 0 })
+    zox_set(e, SelectState, { 0 })
     zox_set(e, Color, {{ 125, 125, 125, 255 }})
     zox_add_tag(e, SingleMaterial)
     zox_set(e, CameraLink, { 0 })

@@ -70,15 +70,15 @@ zox_define_component(UIHolderLink)
 zox_define_component(ClickEvent)
 zox_define_entities_component(ElementLinks, [in] ElementLinks)
 // zoxel_define_filters
-zox_filter(ui_query, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [out] SelectableState)
+zox_filter(ui_query, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [out] SelectState)
 zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition, [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPixelPosition)
 // zoxel_define_systems
 zox_system_ctx(ElementPositionSystem, EcsPreUpdate, pixel_positions_query, [none] Element, [in] PixelPosition, [in] ParentLink, [in] Anchor, [in] CanvasLink, [out] Position2D, [out] CanvasPixelPosition)
-zox_system(ElementSelectedSystem, EcsOnUpdate, [none] Element, [in] SelectableState, [out] Brightness)
+zox_system(ElementSelectedSystem, EcsOnUpdate, [none] Element, [in] SelectState, [out] Brightness)
 if (!headless) {
     #ifdef zoxel_inputs
         zox_system_ctx(ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [in] DeviceMode, [out] RaycasterTarget)
-        zox_system(ElementActivateSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterTarget)
+        zox_system(ElementActivateSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterTarget, [out] RaycasterResult)
         zox_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [out] NavigatorState, [out] NavigatorTimer, [out] RaycasterTarget)
     #endif
     // [out] MaterialInstancedGPULink, 
@@ -88,7 +88,7 @@ if (!headless) {
 zox_system(BillboardSystem, EcsOnStore, [none] ElementBillboard, [in] CameraLink, [in] Position3D, [out] Rotation3D)
 zox_system(UITrailSystem, EcsOnStore, [in] UIHolderLink, [in] UITrail, [out] Position3D)    // todo: put back to EcsPostUpdate - can't find out where character position updates atm
 zox_system(ResizeElementSystem, 0, [in] CanvasLink, [in] ParentLink)
-zox_system_1(ButtonClickEventSystem, main_thread_pipeline, [none] Element, [out] ClickableState, [in] ClickEvent) // EcsPostUpdate EcsPreStore EcsOnStore
+zox_system_1(ButtonClickEventSystem, main_thread_pipeline, [none] Element, [out] ClickState, [in] ClickEvent) // EcsPostUpdate EcsPreStore EcsOnStore
 zoxel_end_module(UICore)
 
 // \todo Display a UI Element anchored, with a pixel position.

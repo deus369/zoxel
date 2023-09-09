@@ -10,8 +10,8 @@ zox_declare_tag(Dragable)
 zox_declare_tag(DestroyInFrame)
 zox_byte_component(EntityDirty)
 zox_byte_component(EntityInitialize)
-zox_byte_component(SelectableState)
-zox_byte_component(ClickableState)
+zox_byte_component(SelectState)
+zox_byte_component(ClickState)
 zox_byte_component(DragableState)
 zox_component(DraggerLink, ecs_entity_t)
 zox_component(DraggingDelta, int2)
@@ -19,6 +19,7 @@ zox_component(ID, int)                        //! An unique ID, possibly use GUI
 zox_component(Seed, long int)                 //! A unique Seed for generation
 zox_component(Raycaster, int2)                //! Contains the raycast mouse position
 zox_component(RaycasterTarget, ecs_entity_t)  //! A target entity for the Raycaster
+zox_byte_component(RaycasterResult)
 zox_component(Layer2D, unsigned char)         //! A 2D Layer for a entity
 zox_component(ColorRGB, color_rgb)
 zox_component(Color, color)
@@ -38,7 +39,7 @@ zox_entities_component(EntityLinks)
 #include "systems/destroy_in_frame_system.c"
 #include "systems/generic_event_debug_system.c"
 zox_reset_system(EntityDirtyResetSystem, EntityDirty)
-// zox_reset_system(ClickableStateResetSystem, ClickableState)
+// zox_reset_system(ClickableStateResetSystem, ClickState)
 zox_reset_system(EntityInitializeResetSystem, EntityInitialize)
 
 void spawn_prefabs_generic(ecs_world_t *world) {
@@ -52,8 +53,8 @@ zox_define_tag(Clickable)
 zox_define_tag(Dragable)
 zox_define_tag(DestroyInFrame)
 zox_define_component(EntityDirty)
-zox_define_component(SelectableState)
-zox_define_component(ClickableState)
+zox_define_component(SelectState)
+zox_define_component(ClickState)
 zox_define_component(DragableState)
 zox_define_component(DraggerLink)
 zox_define_component(DraggingDelta)
@@ -61,6 +62,7 @@ zox_define_component(ID)
 zox_define_component(Seed)
 zox_define_component(Raycaster)
 zox_define_component(RaycasterTarget)
+zox_define_component(RaycasterResult)
 zox_define_component(EntityInitialize)
 zox_define_component(Layer2D)
 zox_define_component(ColorRGB)
@@ -77,7 +79,7 @@ zox_define_entities_component(EntityLinks, [in] EntityLinks)
 #endif*/
 zox_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
 zox_define_reset_system(EntityDirtyResetSystem, EntityDirty)
-// zox_define_reset_system(ClickableStateResetSystem, ClickableState)
+// zox_define_reset_system(ClickableStateResetSystem, ClickState)
 zox_define_reset_system(EntityInitializeResetSystem, EntityInitialize)
 zoxel_end_module(Generic)
 

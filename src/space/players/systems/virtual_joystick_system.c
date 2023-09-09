@@ -1,7 +1,7 @@
 // if player is using touchscreen, and touches, then create the joystick ui in new position
 // check if touches an invisible ui area
 // todo: add to players ui links (ElementLinks)
-// #define mouse_has_virtual_joysticks
+// #define zoxel_mouse_emulate_touch
 // #define zoxel_disable_mouse_lock
 
 void delete_virtual_joystick(ecs_world_t *world) {
@@ -51,7 +51,11 @@ void VirtualJoystickSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
     const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
     const DeviceMode *deviceModes = ecs_field(it, DeviceMode, 3);
+    const RaycasterResult *raycasterResults = ecs_field(it, RaycasterResult, 4);
     for (int i = 0; i < it->count; i++) {
+        const RaycasterResult *raycasterResult = &raycasterResults[i];
+        // if (raycasterResult->value) zoxel_log(" > racasterResult is 1\n");
+        if (raycasterResult->value) continue;   // if raycasted ui, don't process
         const DeviceLinks *deviceLinks = &deviceLinkss[i];
         const DeviceMode *deviceMode = &deviceModes[i];
         for (int j = 0; j < deviceLinks->length; j++) {
@@ -70,7 +74,7 @@ void VirtualJoystickSystem(ecs_iter_t *it) {
                     }
                 }
             }
-            #ifdef mouse_has_virtual_joysticks
+            #ifdef zoxel_mouse_emulate_touch
                 else if (deviceMode->value == zox_device_mode_keyboardmouse) {
                     if (ecs_has(world, device_entity, Mouse)) {
                         const Mouse *mouse = ecs_get(world, device_entity, Mouse);

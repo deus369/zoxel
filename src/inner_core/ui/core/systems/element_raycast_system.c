@@ -3,11 +3,11 @@
 // #define zoxel_debug_ui_selectable_states
 
 void set_selectable_state_mut(ecs_world_t *world, ecs_entity_t ui_entity, unsigned char state) {
-    if (ui_entity != 0) { // && ecs_is_alive(world, ui_entity) && ecs_has(world, ui_entity, SelectableState)) {
-        SelectableState *selectableState = ecs_get_mut(world, ui_entity, SelectableState);
-        if (selectableState->value != state) {
-            selectableState->value = state;
-            ecs_modified(world, ui_entity, SelectableState);
+    if (ui_entity != 0) { // && ecs_is_alive(world, ui_entity) && ecs_has(world, ui_entity, SelectState)) {
+        SelectState *selectState = ecs_get_mut(world, ui_entity, SelectState);
+        if (selectState->value != state) {
+            selectState->value = state;
+            ecs_modified(world, ui_entity, SelectState);
             // zoxel_log(" > setting [%lu]'s state %i\n", ui_entity, state);
         }
         #ifdef zoxel_debug_ui_selectable_states
@@ -57,7 +57,7 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         RaycasterTarget *raycasterTarget = &raycasterTargets[i];
         int ui_layer = -1;
         ecs_entity_t ui_selected = 0;
-        SelectableState *ui_selected_selectableState = NULL;
+        SelectState *ui_selected_selectableState = NULL;
         const int2 position = raycaster->value;
         #ifdef zox_debug_log_element_raycasting
             zoxel_log(" > ui raycasting [%ix%i] screen size [%ix%i]\n",
@@ -69,7 +69,7 @@ void ElementRaycastSystem(ecs_iter_t *it) {
             const CanvasPixelPosition *canvasPixelPositions = ecs_field(&uis_it, CanvasPixelPosition, 2);
             const PixelSize *pixelSizes = ecs_field(&uis_it, PixelSize, 3);
             const Layer2D *layer2Ds = ecs_field(&uis_it, Layer2D, 4);
-            SelectableState *selectableStates = ecs_field(&uis_it, SelectableState, 5);
+            SelectState *selectableStates = ecs_field(&uis_it, SelectState, 5);
             for (int j = 0; j < uis_it.count; j++) {
                 const CanvasPixelPosition *canvasPixelPosition2 = &canvasPixelPositions[j];
                 const PixelSize *pixelSize2 = &pixelSizes[j];
@@ -81,22 +81,22 @@ void ElementRaycastSystem(ecs_iter_t *it) {
                     canvasPixelPosition.y - pixelSize.y / 2,  canvasPixelPosition.y + pixelSize.y / 2};
                 // zoxel_log("        - ui [%ix%ix%ix%i]\n", ui_bounds.x, ui_bounds.y, ui_bounds.z, ui_bounds.w);
                 // centered
-                SelectableState *selectableState = &selectableStates[j];
+                SelectState *selectState = &selectableStates[j];
                 unsigned char was_raycasted = position.x >= ui_bounds.x
                     && position.x <= ui_bounds.y && position.y >= ui_bounds.z && position.y <= ui_bounds.w;
                 if (was_raycasted && layer2D->value > ui_layer) {
                     ui_layer = layer2D->value;
                     ui_selected = uis_it.entities[j];
-                    ui_selected_selectableState = selectableState;
+                    ui_selected_selectableState = selectState;
                     #ifdef zox_debug_log_element_raycasting
                         zoxel_log("     + ui [%lu] position [%ix%i] size [%ix%i]\n", (long int) uis_it.entities[j],
                             canvasPixelPosition.x, canvasPixelPosition.y, pixelSize.x, pixelSize.y);
                     #endif
                 }
                 /*if (was_raycasted) {
-                    printf("selectableState ui was raycasted [%lu]\n", (long int) uis_it.entities[j]);
+                    printf("selectState ui was raycasted [%lu]\n", (long int) uis_it.entities[j]);
                 } else if (!was_raycasted) {
-                    printf("selectableState ui was un raycasted [%lu]\n", (long int) uis_it.entities[j]);
+                    printf("selectState ui was un raycasted [%lu]\n", (long int) uis_it.entities[j]);
                 }*/
             }
         }

@@ -15,7 +15,7 @@ ecs_entity_t spawn_zext_prefab(ecs_world_t *world) {
     ecs_defer_end(world);
     zext_prefab = e;
     #ifdef zoxel_debug_prefabs
-        printf("spawn_prefab zext [%lu].\n", (long int) (e));
+        zoxel_log("    > spawn_prefab zext [%lu].\n", (long int) (e));
     #endif
     return e;
 }
@@ -23,9 +23,7 @@ ecs_entity_t spawn_zext_prefab(ecs_world_t *world) {
 unsigned char is_zext(ZextData *zext_data, const char* text) {
     unsigned char text_length = strlen(text);
     if (zext_data->length != text_length) return 0;
-    for (int i = 0; i < text_length; i++) {
-        if (convert_ascii(text[i]) != zext_data->value[i]) return 0;
-    }
+    for (int i = 0; i < text_length; i++) if (convert_ascii(text[i]) != zext_data->value[i]) return 0;
     return 1;
 }
 
@@ -54,12 +52,12 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t pa
         unsigned char zigel_index = convert_ascii(text[i]);
         zextData.value[i] = zigel_index;
         children.value[i] = spawn_zext_zigel(world, e, layer + 1, i, textLength, zigel_index, font_size, alignment, padding, position2D, zext_size, canvas_size);
-        // printf("Is %i [%lu] valid: %s\n", i, (long int) children.value[i], ecs_is_valid(world, children.value[i]) ? "Yes" : "No");
+        // zoxel_log("Is %i [%lu] valid: %s\n", i, (long int) children.value[i], ecs_is_valid(world, children.value[i]) ? "Yes" : "No");
     }
     zox_set_only(e, ZextData, { zextData.length, zextData.value })
     zox_set_only(e, Children, { children.length, children.value })
     #ifdef zoxel_debug_spawns
-        printf("Spawned zext [%lu]\n", (long int) e);
+        zoxel_log(" > spawned zext [%lu]\n", (long int) e);
     #endif
     return e;
 }
