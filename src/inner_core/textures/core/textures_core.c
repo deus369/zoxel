@@ -36,8 +36,8 @@ zox_byte_component(FrameCorner)
 #include "systems/noise_texture_system.c"
 #include "systems/frame_texture_system.c"
 #include "systems/tilemap_generation_system.c"
-zox_reset_system(TextureDirtyResetSystem, TextureDirty)
-zox_reset_system(GenerateTextureResetSystem, GenerateTexture)
+// zox_reset_system(TextureDirtyResetSystem, TextureDirty)
+// zox_reset_system(GenerateTextureResetSystem, GenerateTexture)
 #include "tests/test_texture.c"
 
 void spawn_prefabs_textures_core(ecs_world_t *world) {
@@ -68,16 +68,13 @@ zox_define_memory_component(TextureData)
 zox_define_entities_component(TextureLinks, [in] TextureLinks)
 zox_define_memory_component(TilemapUVs)
 // zoxel_filter_defines
-zox_filter(generate_textures2, [none] FrameTexture, [in] GenerateTexture)
+zox_filter(generate_textures2, [none] FrameTexture, [out] GenerateTexture)
 // zoxel_system_defines
 zox_system(AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture)
 zox_texture_generation_system(NoiseTexture, NoiseTextureSystem)
-zox_system_ctx(FrameTextureSystem, EcsPostUpdate, generate_textures2, [none] FrameTexture, [in] GenerateTexture, [in] TextureSize, [in] Color, [in] OutlineThickness, [in] FrameCorner, [out] TextureData, [out] TextureDirty)
-zox_system(TilemapGenerationSystem, EcsPostUpdate, [none] Tilemap, [in] TilemapSize, [in] TextureLinks, [in] GenerateTexture, [out] TextureSize, [out] TextureData, [out] TextureDirty, [out] TilemapUVs)
-if (headless) zoxel_log("headless mode is active\n");
-if (!headless) zoxel_log("headless mode is not active\n");
+zox_system_ctx(FrameTextureSystem, EcsPostUpdate, generate_textures2, [none] FrameTexture, [out] GenerateTexture, [in] TextureSize, [in] Color, [in] OutlineThickness, [in] FrameCorner, [out] TextureData, [out] TextureDirty)
+zox_system(TilemapGenerationSystem, EcsPostUpdate, [none] Tilemap, [in] TilemapSize, [in] TextureLinks, [out] GenerateTexture, [out] TextureSize, [out] TextureData, [out] TextureDirty, [out] TilemapUVs)
 if (!headless) zox_system_1(TextureUpdateSystem, main_thread_pipeline, [out] TextureDirty, [in] TextureData, [in] TextureSize, [in] TextureGPULink)
-zox_define_reset_system(GenerateTextureResetSystem, GenerateTexture)
 zoxel_end_module(TexturesCore)
 
 #endif

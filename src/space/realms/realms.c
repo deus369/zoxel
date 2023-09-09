@@ -18,7 +18,7 @@ zox_begin_module(Realms)
 zox_define_tag(Realm)
 zox_define_component(RealmLink)
 // zoxel_system_defines
-zox_system(TerrainTextureSetSystem, EcsPreUpdate, [none] textures.core.Tilemap, [in] GenerateTexture, [out] TilemapSize, [out] TextureLinks)
+zox_system(TerrainTextureSetSystem, EcsPreUpdate, [none] textures.core.Tilemap, [out] GenerateTexture, [out] TilemapSize, [out] TextureLinks)
 zoxel_end_module(Realms)
 
 #endif

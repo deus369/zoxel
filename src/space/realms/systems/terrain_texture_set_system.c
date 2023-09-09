@@ -2,11 +2,11 @@ void TerrainTextureSetSystem(ecs_iter_t *it) {
     // todo: link directly to a voxelLinks holder instead of using local_realm (use terrain ones)
     if (!ecs_is_valid(it->world, local_realm)) return;
     const VoxelLinks *voxelLinks = ecs_get(it->world, local_realm, VoxelLinks);
-    const GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 2);
+    GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 2);
     TilemapSize *tilemapSizes = ecs_field(it, TilemapSize, 3);
     TextureLinks *textureLinkss = ecs_field(it, TextureLinks, 4);
     for (int i = 0; i < it->count; i++) {
-        const GenerateTexture *generateTexture = &generateTextures[i];
+        GenerateTexture *generateTexture = &generateTextures[i];
         if (generateTexture->value == 0) continue;
         TilemapSize *tilemapSize = &tilemapSizes[i];
         TextureLinks *textureLinks = &textureLinkss[i];

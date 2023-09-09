@@ -12,6 +12,7 @@
 #define zoxel_test_networking
 #define zoxel_has_random_jumping
 // #define zox_visualize_sounds
+// #define zox_grayboxing
 
 // #define zoxel_catch_opengl_errors
 // #define zox_disable_render_terrain_chunks
@@ -172,7 +173,6 @@
 // test settings
 // #define zox_disable_fog      // todo: make work
 // #define zox_terrain_preset_large
-// #define zox_grayboxing
 // #define zox_disable_vox_octrees
 // #define zox_test_voxel_mesh
 // #define zoxel_debug_bounds          // renders a bounding box rotated for characters (by default)

@@ -3,11 +3,12 @@ void PlayerToggleCameraSystem(ecs_iter_t *it) {
     const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
     const CharacterLink *characterLinks = ecs_field(it, CharacterLink, 3);
     for (int i = 0; i < it->count; i++) {
+        // todo: use player GameLink here
+        const GameState *gameState = ecs_get(world, local_game, GameState);
+        if (gameState->value != zoxel_game_state_playing) continue;
         const CharacterLink *characterLink = &characterLinks[i];
         if (characterLink->value == 0) continue;
         if (ecs_has(world, characterLink->value, DisableMovement)) {
-            // zoxel_log(" ! attached character [%lu] has no DisableMovement\n", characterLink->value);
-            // continue;
             const DisableMovement *disableMovement = ecs_get(world, characterLink->value, DisableMovement);
             if (disableMovement->value) continue;
         }

@@ -1,9 +1,4 @@
-#define zox_texture_none 0
-#define zox_texture_dirt 1
-#define zox_texture_grass 2
-#define zox_texture_sand 3
-#define zox_texture_stone 4
-#define zox_texture_obsidian 5
+
 
 void generate_texture_graybox(TextureData* textureData, const TextureSize *textureSize, int2 position, int2 size) {
     for (int j = position.x; j < position.x + size.x; j++) {
@@ -22,7 +17,7 @@ void generate_texture_graybox(TextureData* textureData, const TextureSize *textu
     }
 }
 
-void generate_texture_noise(TextureData* textureData, const TextureSize *textureSize, unsigned char texture_type) {
+void generate_texture_noise(TextureData* textureData, const TextureSize *textureSize, unsigned char texture_type, unsigned char outline_type) {
     int2 redRange = { 15, 244 };
     int2 greenRange = { 15, 122 };
     int2 blueRange = { 15, 122 };
@@ -66,106 +61,113 @@ void generate_texture_noise(TextureData* textureData, const TextureSize *texture
             blueRange.x -= 6 + rand() % 12;
         }
     }
-    #ifdef zox_grayboxing
-        generate_texture_graybox(textureData, textureSize, (int2) { 0, 0 }, (int2) { textureSize->value.x / 2, textureSize->value.y / 2 });
-        generate_texture_graybox(textureData, textureSize, (int2) { textureSize->value.x / 2, 0 }, (int2) { textureSize->value.x / 2, textureSize->value.y / 2 });
-        generate_texture_graybox(textureData, textureSize, (int2) { textureSize->value.x / 2, textureSize->value.y / 2 }, (int2) { textureSize->value.x / 2, textureSize->value.y / 2 });
-        generate_texture_graybox(textureData, textureSize, (int2) { 0, textureSize->value.y / 2 }, (int2) { textureSize->value.x / 2, textureSize->value.y / 2 });
-    #else
-    for (int j = 0; j < textureSize->value.x; j++) {
-        for (int k = 0; k < textureSize->value.y; k++) {
-            int index = j + k * textureSize->value.x;
-            if (texture_type == zox_texture_none) {
-                int distanceToMidX = abs_integer(textureSize->value.x / 2 - j);
-                int distanceToMidY = abs_integer(textureSize->value.y / 2 - k);
-                if (distanceToMidX + distanceToMidY >= textureSize->value.x / 2) {
-                    textureData->value[index].r = 0;
-                    textureData->value[index].g = 0;
-                    textureData->value[index].b = 0;
-                    textureData->value[index].a = 0;
-                    continue;
+    if (texture_type == zox_texture_graybox) {
+        generate_texture_graybox(textureData, textureSize, int2_zero, textureSize->value);
+        //generate_texture_graybox(textureData, textureSize, (int2) { 0, 0 }, (int2) { textureSize->value.x / 2, textureSize->value.y / 2 });
+        //generate_texture_graybox(textureData, textureSize, (int2) { textureSize->value.x / 2, 0 }, (int2) { textureSize->value.x / 2, textureSize->value.y / 2 });
+        //generate_texture_graybox(textureData, textureSize, (int2) { textureSize->value.x / 2, textureSize->value.y / 2 }, (int2) { textureSize->value.x / 2, textureSize->value.y / 2 });
+        //generate_texture_graybox(textureData, textureSize, (int2) { 0, textureSize->value.y / 2 }, (int2) { textureSize->value.x / 2, textureSize->value.y / 2 });
+    } else {
+        for (int j = 0; j < textureSize->value.x; j++) {
+            for (int k = 0; k < textureSize->value.y; k++) {
+                int index = j + k * textureSize->value.x;
+                if (texture_type == zox_texture_none) {
+                    int distanceToMidX = abs_integer(textureSize->value.x / 2 - j);
+                    int distanceToMidY = abs_integer(textureSize->value.y / 2 - k);
+                    if (distanceToMidX + distanceToMidY >= textureSize->value.x / 2) {
+                        textureData->value[index].r = 0;
+                        textureData->value[index].g = 0;
+                        textureData->value[index].b = 0;
+                        textureData->value[index].a = 0;
+                        continue;
+                    }
                 }
-            }
-            textureData->value[index].r = redRange.x + rand() % (redRange.y - redRange.x);
-            textureData->value[index].g = greenRange.x + rand() % (greenRange.y - greenRange.x);
-            textureData->value[index].b = blueRange.x + rand() % (blueRange.y - blueRange.x);
-            textureData->value[index].a = alphaRange.x + rand() % (alphaRange.y - alphaRange.x);
-            /*if (j >= textureSize->value.x / 2 && k < textureSize->value.y / 2) {
-                textureData->value[index].g *= 2;
-                textureData->value[index].b = textureData->value[index].r - 30;
-                textureData->value[index].r /= 2;
-            }*/
-            // textureData->value[index].a = rand() % 256;
-            // debug sides of textureData, starts at top left
-            if (texture_type == zox_texture_none) {
-                if (j == 0) {
-                    textureData->value[index].r = 255;
-                } else if (k == 0) {
-                    textureData->value[index].g = 255;
-                } else if (j == textureSize->value.x - 1) {
-                    textureData->value[index].b = 255;
-                } else if (k == textureSize->value.y - 1) {
-                    textureData->value[index].r = 255;
-                    textureData->value[index].g = 255;
-                }
-            } else if (is_texture_outlines == 1) {
-                // outline voxel textures
-                if (j == 0 || k == 0 || j == textureSize->value.x - 1 || k == textureSize->value.y - 1) {
-                    textureData->value[index].r = 0;
-                    textureData->value[index].g = 0;
-                    textureData->value[index].b = 0;
-                }
-            } else if (is_texture_outlines == 2) {
-                if (j == 0 || k == 0 || j == textureSize->value.x - 1 || k == textureSize->value.y - 1) {
+                textureData->value[index].r = redRange.x + rand() % (redRange.y - redRange.x);
+                textureData->value[index].g = greenRange.x + rand() % (greenRange.y - greenRange.x);
+                textureData->value[index].b = blueRange.x + rand() % (blueRange.y - blueRange.x);
+                textureData->value[index].a = alphaRange.x + rand() % (alphaRange.y - alphaRange.x);
+                /*if (j >= textureSize->value.x / 2 && k < textureSize->value.y / 2) {
+                    textureData->value[index].g *= 2;
+                    textureData->value[index].b = textureData->value[index].r - 30;
                     textureData->value[index].r /= 2;
-                    textureData->value[index].g /= 2;
-                    textureData->value[index].b /= 2;
+                }*/
+                // textureData->value[index].a = rand() % 256;
+                // debug sides of textureData, starts at top left
+                if (texture_type == zox_texture_none) {
+                    if (j == 0) {
+                        textureData->value[index].r = 255;
+                    } else if (k == 0) {
+                        textureData->value[index].g = 255;
+                    } else if (j == textureSize->value.x - 1) {
+                        textureData->value[index].b = 255;
+                    } else if (k == textureSize->value.y - 1) {
+                        textureData->value[index].r = 255;
+                        textureData->value[index].g = 255;
+                    }
                 }
-            } else if (is_texture_outlines == 3) {
-                if (j == 0 || k == 0 || j == textureSize->value.x - 1 || k == textureSize->value.y - 1) {
-                    textureData->value[index].r *= 5;
-                    textureData->value[index].g *= 5;
-                    textureData->value[index].b *= 5;
-                    textureData->value[index].r /= 6;
-                    textureData->value[index].g /= 6;
-                    textureData->value[index].b /= 6;
+                if (outline_type == zox_outline_type_full) {
+                    // outline voxel textures
+                    if (j == 0 || k == 0 || j == textureSize->value.x - 1 || k == textureSize->value.y - 1) {
+                        textureData->value[index].r = 0;
+                        textureData->value[index].g = 0;
+                        textureData->value[index].b = 0;
+                    }
+                } else if (outline_type == zox_outline_type_half) {
+                    if (j == 0 || k == 0 || j == textureSize->value.x - 1 || k == textureSize->value.y - 1) {
+                        textureData->value[index].r /= 2;
+                        textureData->value[index].g /= 2;
+                        textureData->value[index].b /= 2;
+                    }
+                } else if (outline_type == zox_outline_type_faded) {
+                    if (j == 0 || k == 0 || j == textureSize->value.x - 1 || k == textureSize->value.y - 1) {
+                        textureData->value[index].r *= 5;
+                        textureData->value[index].g *= 5;
+                        textureData->value[index].b *= 5;
+                        textureData->value[index].r /= 6;
+                        textureData->value[index].g /= 6;
+                        textureData->value[index].b /= 6;
+                    }
                 }
+                // printf("textureData value: %i\n", textureData->value[index].r);
             }
-            // printf("textureData value: %i\n", textureData->value[index].r);
         }
     }
-    #endif
 }
 
 void NoiseTextureSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(it->ctx, NULL)) return;
+    ecs_world_t *world = it->world;
     TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 2);
     TextureData *textures = ecs_field(it, TextureData, 3);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 4);
-    const GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 5);
+    GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 5);
     for (int i = 0; i < it->count; i++) {
-        const GenerateTexture *generateTexture = &generateTextures[i];
+        GenerateTexture *generateTexture = &generateTextures[i];
         if (generateTexture->value == 0) continue;
         TextureDirty *textureDirty = &textureDirtys[i];
-        if (textureDirty->value != 0) continue;
-        TextureData *textureData = &textures[i];
+        // if (textureDirty->value != 0) continue;
         const TextureSize *textureSize = &textureSizes[i];
+        TextureData *textureData = &textures[i];
+        ecs_entity_t e = it->entities[i];
         unsigned char texture_type = zox_texture_none;
-        if (ecs_has(it->world, it->entities[i], DirtTexture)) {
+        if (texture_mode == zox_texture_mode_graybox) {
+            texture_type = zox_texture_graybox;
+        } else if (ecs_has(world, it->entities[i], DirtTexture)) {
             texture_type = zox_texture_dirt;
-        } else if (ecs_has(it->world, it->entities[i], GrassTexture)) {
+        } else if (ecs_has(world, e, GrassTexture)) {
             texture_type = zox_texture_grass;
-        } else if (ecs_has(it->world, it->entities[i], SandTexture)) {
+        } else if (ecs_has(world, e, SandTexture)) {
             texture_type = zox_texture_sand;
-        } else if (ecs_has(it->world, it->entities[i], StoneTexture)) {
+        } else if (ecs_has(world, e, StoneTexture)) {
             texture_type = zox_texture_stone;
-        } else if (ecs_has(it->world, it->entities[i], ObsidianTexture)) {
+        } else if (ecs_has(world, e, ObsidianTexture)) {
             texture_type = zox_texture_obsidian;
         }
-        re_initialize_memory_component(textureData, color, textureSize->value.x * textureSize->value.y);
-        generate_texture_noise(textureData, textureSize, texture_type);
-        textureDirty->value = 1;
-        // if (is_dirt) zoxel_log("    > dirt generated [%lu]\n", it->entities[i]);
+        re_initialize_memory_component(textureData, color, textureSize->value.x * textureSize->value.y)
+        generate_texture_noise(textureData, textureSize, texture_type, terrain_texture_outline_type);
+        // zoxel_log("    > voxel texture generated [%lu] texture_mode [%i]\n", it->entities[i], texture_mode);
+        generateTexture->value = 0;
+        textureDirty->value = 1; // actually this only gets uploaded if has GPUTextureLink!
     }
 } zox_declare_system(NoiseTextureSystem)
 

@@ -1,4 +1,3 @@
-
 //! Save PNG to file using SDL
 /**
  * https://wiki.libsdl.org/SDL_CreateTexture

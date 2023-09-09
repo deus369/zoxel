@@ -43,16 +43,25 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
                     toggle_ui(world, &quads_label, &spawn_quad_count_label);
                 } else if (keyboard->z.pressed_this_frame) {
                     toggle_collision_debug(world);
-                } else if (keyboard->m.pressed_this_frame) {
+                } else if (keyboard->v.pressed_this_frame) {
                     spawn_zoxel_window(world);
-                } else if (keyboard->n.pressed_this_frame) {
-                    zox_visualize_sounds = !zox_visualize_sounds;
                 }
-                
             }
         }
     }
 } zox_declare_system(PlayerShortcutsSingleSystem)
+
+void on_terrain_settings_changed(ecs_world_t *world) {
+    const VoxelLinks *voxelLinks = ecs_get(world, local_realm, VoxelLinks);
+    for (int k = 0; k < voxelLinks->length; k++) {
+        // zoxel_log("     > voxel texture renewed [%i]\n", k);
+        ecs_entity_t voxel = voxelLinks->value[k];
+        const TextureLinks *textureLinks = ecs_get(world, voxel, TextureLinks);
+        zox_set_only(textureLinks->value[0], GenerateTexture, { 1 })
+    }
+    const TilemapLink *tilemapLink = ecs_get(world, main_terrain, TilemapLink);
+    zox_set_only(tilemapLink->value, GenerateTexture, { 1 })
+}
 
 void PlayerShortcutsSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
@@ -68,6 +77,20 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
                     double music_speed = 0.2 + (rand() % 100) * 0.008;
                     zox_set_only(main_music, MusicSpeed, { music_speed });
                     zox_set_only(main_music, GenerateMusic, { 1 });
+                } else if (keyboard->n.pressed_this_frame) {
+                    zox_visualize_sounds = !zox_visualize_sounds;
+                } else if (keyboard->o.pressed_this_frame) {
+                    texture_mode = !texture_mode;
+                    zoxel_log("    > texture_mode set [%i]\n", texture_mode);
+                    // set all voxels to regenerate textures
+                    // set tilemap dirty
+                    on_terrain_settings_changed(world);
+                } else if (keyboard->p.pressed_this_frame) {
+                    terrain_texture_outline_type = !terrain_texture_outline_type;
+                    zoxel_log("    > terrain_texture_outline_type set [%i]\n", terrain_texture_outline_type);
+                    // set all voxels to regenerate textures
+                    // set tilemap dirty
+                    on_terrain_settings_changed(world);
                 }
             }
         }

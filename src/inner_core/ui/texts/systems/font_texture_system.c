@@ -81,11 +81,11 @@ void FontTextureSystem(ecs_iter_t *it) {
     TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 2);
     TextureData *textures = ecs_field(it, TextureData, 3);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 4);
-    const GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 5);
+    GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 5);
     const ZigelIndex *zigelIndexs = ecs_field(it, ZigelIndex, 6);
     const Color *colors = ecs_field(it, Color, 7);
     for (int i = 0; i < it->count; i++) {
-        const GenerateTexture *generateTexture = &generateTextures[i];
+        GenerateTexture *generateTexture = &generateTextures[i];
         if (generateTexture->value == 0) continue;
         TextureDirty *textureDirty = &textureDirtys[i];
         if (textureDirty->value != 0) continue;
@@ -98,9 +98,10 @@ void FontTextureSystem(ecs_iter_t *it) {
         ecs_entity_t zigel_font_entity = font_style_children->value[zigelIndex->value];
         const FontData *fontData = ecs_get(world, zigel_font_entity, FontData);
         int newLength = textureSize->value.x * textureSize->value.y;
-        re_initialize_memory_component(textureData, color, newLength);
+        re_initialize_memory_component(textureData, color, newLength)
         generate_font_texture(textureData, textureSize, fontData, color2);
         textureDirty->value = 1;
+        generateTexture->value = 0;
         #ifdef zoxel_debug_zigel_updates
             zoxel_log("     > zigel font is updating [%lu]\n", (long int) it->entities[i]);
         #endif

@@ -17,7 +17,6 @@ ecs_entity_t spawn_prefab_realm(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_realm(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_instance(prefab_realm)
     zox_name("realm")
     // spawn voxels
@@ -28,7 +27,6 @@ ecs_entity_t spawn_realm(ecs_world_t *world) {
         voxelLinks.value[i] = voxel_entity;
     }
     zox_set_only(e, VoxelLinks, { voxelLinks.length, voxelLinks.value })
-    ecs_defer_end(world);
     local_realm = e;
     #ifdef zoxel_debug_spawns
         zoxel_log(" + spawned realm [%lu]\n", (long int) e);

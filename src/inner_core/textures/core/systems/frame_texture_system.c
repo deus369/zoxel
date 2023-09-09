@@ -83,7 +83,7 @@ void FrameTextureSystem(ecs_iter_t *it) {
     #ifdef zox_time_frame_texture_system
         begin_timing()
     #endif
-    const GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 2);
+    GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 2);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 3);
     const Color *colors = ecs_field(it, Color, 4);
     const OutlineThickness *outlineThicknesss = ecs_field(it, OutlineThickness, 5);
@@ -91,7 +91,7 @@ void FrameTextureSystem(ecs_iter_t *it) {
     TextureData *textures = ecs_field(it, TextureData, 7);
     TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 8);
     for (int i = 0; i < it->count; i++) {
-        const GenerateTexture *generateTexture = &generateTextures[i];
+        GenerateTexture *generateTexture = &generateTextures[i];
         if (generateTexture->value == 0) continue;
         TextureDirty *textureDirty = &textureDirtys[i];
         if (textureDirty->value != 0) continue;
@@ -104,6 +104,7 @@ void FrameTextureSystem(ecs_iter_t *it) {
         re_initialize_memory_component(textureData, color, length)
         generate_frame_texture(textureData, textureSize, color2, outlineThickness->value, frameEdge->value);
         textureDirty->value = 1;
+        generateTexture->value = 0;
         #ifdef zox_time_frame_texture_system
             did_do_timing()
         #endif

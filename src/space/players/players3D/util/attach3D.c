@@ -19,7 +19,6 @@ void toggle_camera_perspective(ecs_world_t *world, ecs_entity_t character) {
 
 void detatch_from_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character) {
     zox_set_only(player, CharacterLink, { 0 })
-    // zox_set_only(camera, FreeRoam, { 0 })
     #ifdef zoxel_topdown_camera
         zox_set_only(camera, CameraFollowLink, { 0 })
     #else
@@ -61,14 +60,14 @@ void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t c
     float4 local_rotation = quaternion_from_euler((float3) { 25 * degreesToRadians, 180 * degreesToRadians, 0 });
     #ifdef zoxel_topdown_camera
         local_camera_position.x = 0;
-        local_camera_position.y = vox_scale * 16;
+        local_camera_position.y = vox_scale * 22;
         local_camera_position.z = 0;
         float3 local_euler = (float3) { -90, 180, 0 };
         // make ortho
         #ifdef zoxel_ortho_camera
             local_euler.x += 45;
             local_euler.y += 45;
-            local_camera_position.y -= vox_scale * 4;
+            local_camera_position.y = vox_scale * 12;
             local_camera_position.x -= vox_scale * 8;
             local_camera_position.z -= vox_scale * 8;
         #endif

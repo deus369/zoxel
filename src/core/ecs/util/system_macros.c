@@ -93,8 +93,8 @@ Chose one pipeline tag for each type of system.
 // ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
 #define zox_texture_generation_system(texture_tag, system) {\
-    zox_filter(generateTextureQuery, [none] texture_tag, [in] GenerateTexture)\
-    zox_system_ctx(system, EcsOnUpdate, generateTextureQuery, [none] texture_tag, [out] TextureDirty, [out] TextureData, [in] TextureSize, [in] GenerateTexture)\
+    zox_filter(generateTextureQuery, [none] texture_tag, [out] GenerateTexture)\
+    zox_system_ctx(system, EcsPostUpdate, generateTextureQuery, [none] texture_tag, [out] TextureDirty, [out] TextureData, [in] TextureSize, [out] GenerateTexture)\
 }
 
 // EcsOnStore

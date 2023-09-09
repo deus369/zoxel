@@ -6,16 +6,16 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
     int2 texture_size = (int2) { 16, 16 };
     const TilemapSize *tilemapSizes = ecs_field(it, TilemapSize, 2);
     const TextureLinks *textureLinkss = ecs_field(it, TextureLinks, 3);
-    const GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 4);
+    GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 4);
     TextureSize *textureSizes = ecs_field(it, TextureSize, 5);
     TextureData *textureDatas = ecs_field(it, TextureData, 6);
     TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 7);
     TilemapUVs *tilemapUVss = ecs_field(it, TilemapUVs, 8);
     for (int i = 0; i < it->count; i++) {
-        const GenerateTexture *generateTexture = &generateTextures[i];
-        if (generateTexture->value == 0) continue;
+        GenerateTexture *generateTexture = &generateTextures[i];
+        if (!generateTexture->value) continue;
         TextureDirty *textureDirty = &textureDirtys[i];
-        if (textureDirty->value != 0) continue;
+        if (textureDirty->value) continue;
         const TextureLinks *textureLinks = &textureLinkss[i];
         if (textureLinks->length == 0) {
             textureDirty->value = 1;
@@ -29,8 +29,8 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         // generate textureSize based on TilemapSize
         textureSize->value.x = tilemapSize->value.x * 16;
         textureSize->value.y = tilemapSize->value.y * 16;
-        re_initialize_memory_component(textureData, color, textureSize->value.x * textureSize->value.y);
-        re_initialize_memory_component(tilemapUVs, float2, textureLinks->length * 4);
+        re_initialize_memory_component(textureData, color, textureSize->value.x * textureSize->value.y)
+        re_initialize_memory_component(tilemapUVs, float2, textureLinks->length * 4)
         // todo: set uvs per each texture, float2 x 4 per texture
         //  get the float size by dividing 1.0f by the rows count
         //  use the tilemap_pixel_position when placing them
@@ -71,6 +71,8 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
             }
         }
         textureDirty->value = 1;
+        generateTexture->value = 0;
+        // zoxel_log("    > tilemap texture generated [%lu]\n", it->entities[i]);
         // generate_tilemap(it->world, textureData, tilemapSize, textures);
         // zoxel_log("    > tilemap generated [%lu] textures [%i] tilemapUVs [%i]\n", it->entities[i], textureLinks->length, tilemapUVs->length);
     }
