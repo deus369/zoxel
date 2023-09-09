@@ -3,11 +3,8 @@ unsigned char debug_colliders = 0;
 void toggle_collision_debug(ecs_world_t *world) {
     debug_colliders = !debug_colliders;
     ecs_defer_begin(world);
-    if (debug_colliders) {
-        add_physics_debug(world, prefab_character3D);
-    } else {
-        remove_physics_debug(world, prefab_character3D);
-    }
+    if (debug_colliders) add_physics_debug(world, prefab_character3D);
+    else remove_physics_debug(world, prefab_character3D);
     const ChunkLinks *chunkLinks = ecs_get(world, main_terrain, ChunkLinks);
     // for every chunk, use entity links, add or remove physics debug components
     for (int i = 0; i < chunkLinks->value->size; i++) {

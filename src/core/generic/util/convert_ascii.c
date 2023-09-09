@@ -1,35 +1,9 @@
-#define zoxel_convert_ascii(char, number)\
-else if (input == char)\
-{\
-    return number;\
-}
+#define zoxel_convert_ascii(char, number) else if (input == char) return number;
 
 //! \todo use a Hash Map to convert these
 unsigned char convert_ascii(char input) {
     // special characters
-    if (input == '?')
-    {
-        return 0;
-    }
-    zoxel_convert_ascii(' ', 55)
-    zoxel_convert_ascii('.', 56)
-    zoxel_convert_ascii(',', 57)
-    zoxel_convert_ascii('/', 58)
-    zoxel_convert_ascii('\\', 59)
-    zoxel_convert_ascii('.', 56)
-    // more special
-    zoxel_convert_ascii('_', 70)
-    // numbers
-    zoxel_convert_ascii('0', 60)
-    zoxel_convert_ascii('1', 61)
-    zoxel_convert_ascii('2', 62)
-    zoxel_convert_ascii('3', 63)
-    zoxel_convert_ascii('4', 64)
-    zoxel_convert_ascii('5', 65)
-    zoxel_convert_ascii('6', 66)
-    zoxel_convert_ascii('7', 67)
-    zoxel_convert_ascii('8', 68)
-    zoxel_convert_ascii('9', 69)
+    if (input == '?') return 0;
     // lower case
     zoxel_convert_ascii('a', 1)
     zoxel_convert_ascii('b', 2)
@@ -84,6 +58,26 @@ unsigned char convert_ascii(char input) {
     zoxel_convert_ascii('X', 50)
     zoxel_convert_ascii('Y', 51)
     zoxel_convert_ascii('Z', 52)
+    // special
+    zoxel_convert_ascii(' ', 55)
+    zoxel_convert_ascii('.', 56)
+    zoxel_convert_ascii(',', 57)
+    zoxel_convert_ascii('/', 58)
+    zoxel_convert_ascii('\\', 59)
+    zoxel_convert_ascii('_', 70)
+    zoxel_convert_ascii('[', 71)
+    zoxel_convert_ascii(']', 72)
+    // numbers
+    zoxel_convert_ascii('0', 60)
+    zoxel_convert_ascii('1', 61)
+    zoxel_convert_ascii('2', 62)
+    zoxel_convert_ascii('3', 63)
+    zoxel_convert_ascii('4', 64)
+    zoxel_convert_ascii('5', 65)
+    zoxel_convert_ascii('6', 66)
+    zoxel_convert_ascii('7', 67)
+    zoxel_convert_ascii('8', 68)
+    zoxel_convert_ascii('9', 69)
     return 0;
 }
 

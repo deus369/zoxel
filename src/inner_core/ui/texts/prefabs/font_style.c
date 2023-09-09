@@ -1,9 +1,7 @@
 ecs_entity_t font_style_prefab;
 ecs_entity_t font_style_entity;
 const int font_styles_length = 256;
-const int fonts_used = 71;
-// #define font_styles_length 256
-// #define fonts_used 71
+const int fonts_used = 73;
 
 //! meta data for a font character
 ecs_entity_t spawn_font_style_prefab(ecs_world_t *world) {
@@ -24,6 +22,7 @@ ecs_entity_t spawn_font_style(ecs_world_t *world) {
     Children children = { };
     initialize_memory_component_non_pointer(children, ecs_entity_t, font_styles_length)
     children.value[0] = spawn_font(world, font_question_mark, font_question_mark_length);
+    // lower case
     children.value[1] = spawn_font(world, font_lower_a, font_lower_a_length);
     children.value[2] = spawn_font(world, font_lower_b, font_lower_b_length);
     children.value[3] = spawn_font(world, font_lower_c, font_lower_c_length);
@@ -50,6 +49,7 @@ ecs_entity_t spawn_font_style(ecs_world_t *world) {
     children.value[24] = spawn_font(world, font_lower_x, font_lower_x_length);
     children.value[25] = spawn_font(world, font_lower_y, font_lower_y_length);
     children.value[26] = spawn_font(world, font_lower_z, font_lower_z_length);
+    // upper case
     children.value[27] = spawn_font(world, font_upper_a, font_upper_a_length);
     children.value[28] = spawn_font(world, font_upper_b, font_upper_b_length);
     children.value[29] = spawn_font(world, font_upper_c, font_upper_c_length);
@@ -76,17 +76,7 @@ ecs_entity_t spawn_font_style(ecs_world_t *world) {
     children.value[50] = spawn_font(world, font_upper_x, font_upper_x_length);
     children.value[51] = spawn_font(world, font_upper_y, font_upper_y_length);
     children.value[52] = spawn_font(world, font_upper_z, font_upper_z_length);
-    children.value[55] = spawn_font(world, font_space, font_space_length);
-    //! \todo these
-    children.value[53] = spawn_font(world, font_question_mark, font_question_mark_length);
-    children.value[54] = spawn_font(world, font_question_mark, font_question_mark_length);
-    children.value[56] = spawn_font(world, font_question_mark, font_question_mark_length);
-    children.value[57] = spawn_font(world, font_question_mark, font_question_mark_length);
-    children.value[58] = spawn_font(world, font_question_mark, font_question_mark_length);
-    children.value[59] = spawn_font(world, font_question_mark, font_question_mark_length);
-    // more special
-    children.value[70] = spawn_font(world, font_underscore, underscore_length);
-    // do these
+    // numbers
     children.value[60] = spawn_font(world, number_0, number_0_length);
     children.value[61] = spawn_font(world, number_1, number_1_length);
     children.value[62] = spawn_font(world, number_2, number_2_length);
@@ -97,8 +87,20 @@ ecs_entity_t spawn_font_style(ecs_world_t *world) {
     children.value[67] = spawn_font(world, number_7, number_7_length);
     children.value[68] = spawn_font(world, number_8, number_8_length);
     children.value[69] = spawn_font(world, number_9, number_9_length);
+    // special
+    children.value[53] = spawn_font(world, font_question_mark, font_question_mark_length);
+    children.value[54] = spawn_font(world, font_question_mark, font_question_mark_length);
+    children.value[55] = spawn_font(world, font_space, font_space_length);
+    children.value[56] = spawn_font(world, font_question_mark, font_question_mark_length);
+    children.value[57] = spawn_font(world, font_question_mark, font_question_mark_length);
+    children.value[58] = spawn_font(world, font_question_mark, font_question_mark_length);
+    children.value[59] = spawn_font(world, font_question_mark, font_question_mark_length);
+    children.value[70] = spawn_font(world, font_underscore, underscore_length);
+    children.value[71] = spawn_font(world, left_square_bracket, left_square_bracket_length);
+    children.value[72] = spawn_font(world, right_square_bracket, right_square_bracket_length);
+    // finished
     for (int i = fonts_used; i < font_styles_length; i++) children.value[i] = spawn_font(world, font_question_mark, font_question_mark_length);
-    ecs_set(world, e, Children, { children.length, children.value });
+    zox_set_only(e, Children, { children.length, children.value })
     font_style_entity = e;
     return e;
 }

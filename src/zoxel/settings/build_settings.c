@@ -3,6 +3,7 @@
 #define zoxel_include_players
 
 #define zoxel_topdown_camera
+#define zoxel_start_with_debug_ui
 // #define zoxel_ortho_camera
 // #define mouse_has_virtual_joysticks
 // #define zoxel_disable_mouse_lock

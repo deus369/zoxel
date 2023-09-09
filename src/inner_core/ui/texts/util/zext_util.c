@@ -97,22 +97,3 @@ int spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children,
     #endif
     return 0;
 }
-
-/*int2 zigel_size = (int2) { font_size, font_size };
-int half_size = (int) ((zigel_size.x * new_children_length) / 2.0f);
-int2 local_pixel_position = (int2) {
-    // (int) (((float) zigel_size.x * zigel_index) - half_size)
-    zigel_size.x * zigel_index - half_size
-    + zigel_size.x / 2, 0 };
-// text alignment on right side
-if (anchor.x == 1) {
-    local_pixel_position.x -= half_size;
-    zoxel_log("aligning text to right [%i]\n", half_size);
-}*/
-/*
-float half_size = (zigel_size.x * total_length) / 2.0f;
-int2 zigel_position = (int2) { (int) (((float) zigel_size.x * i) - half_size) + zigel_size.x / 2, 0 };*/
-// ZigelIndex *zigelIndex2 = ecs_get_mut(world, old_zigel, ZigelIndex);
-//ecs_set(world, old_zigel, ZigelIndex, { zextData->value[i] });
-//ecs_set(world, old_zigel, GenerateTexture, { 1 });
-// printf("Spawning new zigel at [%i]: %i\n", i, (int) zextData->value[i]);

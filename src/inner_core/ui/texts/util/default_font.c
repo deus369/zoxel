@@ -38,6 +38,20 @@ const byte2 font_underscore[] = {
     { font_left_side, font_bottom_side }, { font_right_side, font_bottom_side }
 };
 
+const unsigned char left_square_bracket_length = 3 * 2;
+const byte2 left_square_bracket[] = {
+    { font_left_side, font_top_side }, { middleSideX, font_top_side },
+    { font_left_side, font_top_side }, { font_left_side, font_bottom_side },
+    { font_left_side, font_bottom_side }, { middleSideX, font_bottom_side },
+};
+
+const unsigned char right_square_bracket_length = 3 * 2;
+const byte2 right_square_bracket[] = {
+    { font_right_side, font_top_side }, { middleSideX, font_top_side },
+    { font_right_side, font_top_side }, { font_right_side, font_bottom_side },
+    { font_right_side, font_bottom_side }, { middleSideX, font_bottom_side },
+};
+
 const unsigned char number_0_length = 4 * 2;
 const byte2 number_0[] = {
     { font_left_side, font_top_side }, { font_right_side, font_top_side },

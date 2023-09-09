@@ -1,3 +1,5 @@
+// todo: use a hashmap with keys keyboard->keys['a'] for more dynamic access
+
 typedef struct {
     PhysicalButton enter;
     PhysicalButton space;
@@ -117,5 +119,3 @@ void print_keyboard(ecs_world_t *world, ecs_entity_t keyboard_entity) {
     print_keyboard_key(&keyboard->p, "p");
     print_keyboard_key(&keyboard->w, "w");
 }
-
-// todo: use a hashmap with keys keyboard->keys['a'] for more dynamic access

@@ -81,6 +81,9 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         #ifdef zoxel_game_ui
             spawn_zoxel_main_menu(world);
         #endif
+        #ifdef zoxel_start_with_debug_ui
+            toggle_ui(world, &game_debug_label, &spawn_game_debug_label);
+        #endif
     #endif
     #ifdef zoxel_voxels
         #ifndef zox_disable_terrain
