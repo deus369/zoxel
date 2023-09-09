@@ -24,9 +24,6 @@ ecs_entity_t spawn_virtual_joystick(ecs_world_t *world, int2 position) {
     int2 pixel_size = virtual_joystick_size;
     fix_for_screen_size(&pixel_size, screen_dimensions);
     float2 anchor = float2_zero;
-    // ecs_entity_t parent = 0;
-    //float2 parent_position2D = float2_zero;
-    //int2 parent_pixel_size = int2_zero;
     const unsigned char layer = 4;
     int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
     zox_instance(prefab_virtual_joystick)

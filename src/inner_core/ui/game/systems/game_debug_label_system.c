@@ -1,7 +1,6 @@
 extern int characters_count;
 
 void GameDebugLabelSystem(ecs_iter_t *it) {
-    // get player mode
     if (main_player == 0) return;
     const DeviceMode *deviceMode = ecs_get(it->world, main_player, DeviceMode);
     ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);

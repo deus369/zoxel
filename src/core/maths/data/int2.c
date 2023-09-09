@@ -46,6 +46,16 @@ int2 int2_sub(int2 a, int2 b) {
     return (int2) { a.x - b.x, a.y - b.y };
 }
 
+int int2_max(int2 value) {
+    if (value.x >= value.y) return value.x;
+    else return value.y;
+}
+
+int int2_min(int2 value) {
+    if (value.x <= value.y) return value.x;
+    else return value.y;
+}
+
 unsigned char int2_equal(int2 a, int2 b) {
     return a.x == b.x && a.y == b.y;
 }

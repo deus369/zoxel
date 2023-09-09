@@ -6,13 +6,16 @@ void spawn_connected_devices(ecs_world_t *world) {
     initialize_sdl_gamepads();
     spawn_keyboard(world);
     spawn_mouse(world);
-    unsigned char gamepad_type = 0;
-    if (joysticks_count > 0) {
-        if (is_xbox_gamepad(joystick)) gamepad_type = zox_gamepad_layout_type_xbox;
-        if (is_steamdeck_gamepad(joystick)) gamepad_type = zox_gamepad_layout_type_steamdeck;
-    }
-    spawn_gamepad(world, gamepad_type);
     spawn_touchscreen(world);
+    #ifndef zoxel_disable_gamepads
+        unsigned char gamepad_type = 0;
+        if (joysticks_count > 0) {
+            if (is_xbox_gamepad(joystick)) gamepad_type = zox_gamepad_layout_type_xbox;
+            if (is_steamdeck_gamepad(joystick)) gamepad_type = zox_gamepad_layout_type_steamdeck;
+        }
+        // todo: use SDL_JoystickNumButtons to set gamepad up
+        spawn_gamepad(world, gamepad_type);
+    #endif
 }
 
 void input_extract_from_sdl(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) {
