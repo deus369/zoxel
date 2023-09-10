@@ -60,7 +60,7 @@ float4 float4_inverse(float4 input) {
     return (float4) { -input.x, -input.y, -input.z, input.w };
 }
 
-float4 quaternion_conjugate(float4 q) {
+float4 quaternion_inverse(float4 q) {
     float sqr = sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
     return float4_multiply_divide(q, sqr);
 }
@@ -80,7 +80,7 @@ float3 float4_xyz(float4 input) {
 */
 float3 float4_rotate_float3(float4 rotation, float3 value) {
     /*float4 value4 = float3_to_float4(value3);
-    float4 conjRotation = quaternion_conjugate(rotation);
+    float4 conjRotation = quaternion_inverse(rotation);
     return float4_xyz(quaternion_rotate(rotation, quaternion_rotate(value4, conjRotation)));*/
     float3 rotationXYZ = float4_xyz(rotation);
     float3 t = float3_multiply_float(float3_cross(rotationXYZ, value), 2.0f);

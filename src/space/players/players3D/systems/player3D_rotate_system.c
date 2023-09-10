@@ -35,10 +35,11 @@ void Player3DRotateSystem(ecs_iter_t *it) {
                 const Mouse *mouse = ecs_get(world, device_entity, Mouse);
                 float mouse_delta = mouse->delta.x;
                 // if (mouse_delta != 0) zoxel_log(" > mouse_delta: %f\n", mouse_delta);
+                // this is all pretty shit ay haha... fuck mouses
                 if (mouse_delta < -max_mouse_delta2) mouse_delta = -max_mouse_delta;
                 else if (mouse_delta > max_mouse_delta2) mouse_delta = max_mouse_delta;
                 if (float_abs(mouse_delta) >= max_mouse_delta3) mouse_delta *= 1.2f;
-                if (float_abs(mouse_delta) >= max_mouse_delta4) mouse_delta *= 1.4f;
+                else if (float_abs(mouse_delta) >= max_mouse_delta4) mouse_delta *= 1.4f;
                 else if (float_abs(mouse_delta) <= min_mouse_delta3) mouse_delta = 0;
                 if (mouse_delta != 0) {
                     if (mouse_delta > 0 && mouse_delta < min_mouse_delta2) mouse_delta = min_mouse_delta2;

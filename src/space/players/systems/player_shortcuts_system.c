@@ -79,13 +79,13 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
                     zox_set_only(main_music, GenerateMusic, { 1 });
                 } else if (keyboard->n.pressed_this_frame) {
                     zox_visualize_sounds = !zox_visualize_sounds;
-                } else if (keyboard->o.pressed_this_frame) {
+                } else if (keyboard->i.pressed_this_frame) {
                     texture_mode = !texture_mode;
                     zoxel_log("    > texture_mode set [%i]\n", texture_mode);
                     // set all voxels to regenerate textures
                     // set tilemap dirty
                     on_terrain_settings_changed(world);
-                } else if (keyboard->p.pressed_this_frame) {
+                } else if (keyboard->o.pressed_this_frame) {
                     terrain_texture_outline_type = !terrain_texture_outline_type;
                     zoxel_log("    > terrain_texture_outline_type set [%i]\n", terrain_texture_outline_type);
                     // set all voxels to regenerate textures

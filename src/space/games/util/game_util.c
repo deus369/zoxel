@@ -25,9 +25,20 @@ void spawn_in_game_ui(ecs_world_t *world) {    // spawn game uis
     }
 }
 
+extern void detatch_from_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character);
 void end_game(ecs_world_t *world) {
     zoxel_log(" > game state => [playing] to [main_menu]\n");
     zox_delete(pause_ui)
+    // detatch character
+    ecs_entity_t main_camera = main_cameras[0]; // get player camera link instead
+    ecs_entity_t character = 0;
+    #ifdef zoxel_topdown_camera
+        character = ecs_get(world, main_camera, CameraFollowLink)->value;
+    #else
+        character = ecs_get(world, main_camera, ParentLink)->value;
+    #endif
+    if (character != 0) detatch_from_character(world, main_player, main_camera, main_character3D);
+
     const int edge_buffer = 8 * default_ui_scale;
     const char *game_name = "zoxel";
     float2 window_anchor = { 0.0f, 1.0f };

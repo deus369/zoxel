@@ -91,7 +91,7 @@ void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t c
     zox_set_only(camera, Rotation3D, { local_rotation }) // rotation3D->value })
     zox_set_only(camera, LocalPosition3D, { local_camera_position })
     #ifdef zoxel_topdown_camera
-        zox_set_only(character, Rotation3D, { quaternion_identity }) // rotation3D->value })
+        // zox_set_only(character, Rotation3D, { quaternion_identity }) // rotation3D->value })
     #else
         zox_set_only(camera, LocalRotation3D, { local_rotation })
     #endif

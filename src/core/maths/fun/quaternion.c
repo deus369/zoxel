@@ -1,12 +1,14 @@
 #define quaternion_identity (float4) { 0, 0, 0, 1 }
+// #define debug_quadrant_correctnion
+// this is used to get exact quadrants by removing significant bit errors
+// wow i've come along way
+const float significant_digits_check = 100000.0f;
+#define quaternion_pi_2 1.5707f
 
 float quaternion_to_euler_y(float4 q) {
     double sinp = 2 * (q.w * q.y - q.z * q.x);
-    if (double_abs(sinp) >= 1) {
-        return copysign(M_PI / 2, sinp); // use 90 degrees if out of range
-    } else {
-        return asin(sinp);
-    }
+    if (double_abs(sinp) >= 1) return copysign(M_PI / 2, sinp); // use 90 degrees if out of range
+    else return asin(sinp);
 }
 
 float quaternion_to_euler_x(float4 q) {
@@ -18,18 +20,9 @@ float quaternion_to_euler_x(float4 q) {
 float quaternion_to_euler_z(float4 q) {
     float cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z);
     float siny_cosp = 2 * (q.w * q.z + q.x * q.y);
-    if (fabs(cosy_cosp) < 1e-6) {
-        return 0.0f;
-    } else {
-        return atan2(siny_cosp, cosy_cosp);
-    }
+    if (fabs(cosy_cosp) < 1e-6) return 0.0f;
+    else return atan2(siny_cosp, cosy_cosp);
 }
-
-// #define debug_quadrant_correctnion
-// this is used to get exact quadrants by removing significant bit errors
-// wow i've come along way
-const float significant_digits_check = 100000.0f;
-#define quaternion_pi_2 1.5707f
 
 void correct_euler_quadrant(float3* euler) {
     // quadrant corrections

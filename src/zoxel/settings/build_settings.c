@@ -6,7 +6,7 @@
 // #define zoxel_disable_gamepads
 
 #define zoxel_topdown_camera
-// #define zoxel_ortho_camera
+#define zoxel_ortho_camera
 #define zoxel_start_with_debug_ui
 // #define zoxel_mouse_emulate_touch
 #define zoxel_test_networking
