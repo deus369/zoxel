@@ -19,10 +19,10 @@ yes | sdkmanager --license
 # bash bash/android/install_android_ndk.sh
 
 bash bash/android/install_sdl.sh
-source $PWD/bash/android/android_copy_android_project.sh
-source $PWD/bash/android/copy_settings.sh
-source $PWD/bash/android/android_copy_sdl.sh
-source $PWD/bash/android/copy_source.sh
+source bash/android/android_copy_android_project.sh
+source bash/android/copy_settings.sh
+source bash/android/android_copy_sdl.sh
+source bash/android/copy_source.sh
 # will this update gradle? or do I need installDebug as input
 # source $PWD/bash/android/gradle_set_paths.sh
 cd build/android-build && bash gradlew # installDebug

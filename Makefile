@@ -248,7 +248,10 @@ install-android-sdk:
 	bash bash/android/install_required.sh
 
 android:
+	bash bash/android/copy_settings.sh
 	bash bash/android/install.sh
+
+# bash bash/android/android_copy_sdl.sh
 
 android-run:
 	bash bash/android/gradle_run.sh

@@ -2,7 +2,9 @@
 
 # copies SDL2 and SDL_image src, include and Application into android project
 
-source $PWD/bash/android/gradle_set_paths.sh
+source bash/android/gradle_set_paths.sh
+
+echo "=> copying android sdl"
 
 # sdl - base
 # sdl_directory=$HOME/SDL/SDL2
@@ -22,33 +24,33 @@ destination_directory2=$destination_directory/SDL2_image
 destination_directory3=$destination_directory/SDL2_mixer
 
 # first remove source files from new directory
-echo Removing old SDL2 and SDL2_image
+echo "  > removing old sdl directories"
 rm -R $destination_directory1
 rm -R $destination_directory2
 rm -R $destination_directory3
 
-echo Making directory 1 $destination_directory1
+echo "  > making directory 1 [$destination_directory1]"
 mkdir $destination_directory1
-echo Copying $sdl_directory to $destination_directory1
+echo "  > copying [$sdl_directory] to [$destination_directory1]"
 cp -R $sdl2_1 $destination_directory1
 cp -R $sdl2_2 $destination_directory1
 cp -R $sdl2_3 $destination_directory1
 
-echo Making directory 2 $destination_directory2
+echo "  > making directory 2 [$destination_directory2]"
 mkdir $destination_directory2
-echo Copying $sdl_image_directory to $destination_directory2
+echo "  > copying [$sdl_image_directory] to [$destination_directory2]"
 cp $sdl_image_directory/* $destination_directory2
 
-echo Making directory 3 $destination_directory3
+echo "  > making directory 3 [$destination_directory3]"
 mkdir $destination_directory3
-echo Copying $sdl_mixer_directory to $destination_directory3
+echo "  > copying [$sdl_mixer_directory] to [$destination_directory3]"
 cp $sdl_mixer_directory/* $destination_directory3
-echo Copying $sdl2_mixer_directory_src to $destination_directory3
+echo "  > copying [$sdl2_mixer_directory_src] to [$destination_directory3]"
 cp -R $sdl2_mixer_directory_src $destination_directory3
-echo Copying $sdl2_mixer_directory_include to $destination_directory3
+echo "  > copying [$sdl2_mixer_directory_include] to [$destination_directory3]"
 cp -R $sdl2_mixer_directory_include $destination_directory3
 
-echo Finished copying SDL files
+# echo Finished copying SDL files
 # sleep 2
 # echo Make sure to set AndroidBuild in include file at $new_source_directory0/src
 # sleep 3 # 15

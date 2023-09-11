@@ -4,7 +4,7 @@ typedef struct {
     float y;
 } float2;
 
-#define float2_zero (float2) { 0, 0 }
+#define float2_zero (float2) { 0.0f, 0.0f }
 
 float2 float2_multiply_float(float2 input, float mul) {
     input.x *= mul;
@@ -28,6 +28,11 @@ float2 float2_divide(float2 input, float div) {
     return input;
 }
 
+void float2_divide_p(float2 *input, float div) {
+    input->x /= div;
+    input->y /= div;
+}
+
 void float2_add_float2_p(float2 *input, const float2 add) {
     input->x += add.x;
     input->y += add.y;
@@ -43,6 +48,11 @@ int2 get_int2_from_float2(float2 input) {
 
 float2 float2_sub(float2 a, float2 b) {
     return (float2) { a.x - b.x, a.y - b.y };
+}
+
+void float2_normalize_p(float2 *input) {
+    float length = sqrt(input->x * input->x + input->y * input->y);
+    float2_divide_p(input, length);
 }
 
 float2 float2_normalize(float2 input) {

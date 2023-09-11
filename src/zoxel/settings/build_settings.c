@@ -9,11 +9,11 @@
 #define zoxel_topdown_camera
 #define zoxel_ortho_camera
 #define zoxel_start_with_debug_ui
-// #define zoxel_mouse_emulate_touch
-#define zoxel_test_networking
 #define zoxel_has_random_jumping
+// #define zoxel_mouse_emulate_touch
 // #define zox_visualize_sounds
 // #define zox_grayboxing
+// #define zoxel_test_networking
 
 // #define zoxel_catch_opengl_errors
 // #define zox_disable_render_terrain_chunks
