@@ -13,5 +13,4 @@ void ParentPositionSystem(ecs_iter_t *it) {
         float4_rotate_float3_p(parent_rotation, &position3D->value);
         float3_add_float3_p(&position3D->value, parent_position);
     }
-}
-zox_declare_system(ParentPositionSystem)
+} zox_declare_system(ParentPositionSystem)

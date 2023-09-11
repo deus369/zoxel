@@ -5,6 +5,8 @@ typedef struct {
     float w;
 } float4;
 
+#define float4_zero (float4) { 0, 0, 0, 0 }
+
 void print_float4(const float4 input) {
     zoxel_log("    Float4 [%f %f %f %f]\n", input.x, input.y, input.z, input.w);
 }

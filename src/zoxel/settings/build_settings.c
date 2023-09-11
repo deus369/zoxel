@@ -4,6 +4,7 @@
 
 // used for samsung phone, it's buggy af
 // #define zoxel_disable_gamepads
+#define zox_disable_gamepad_stick_as_any_input
 
 #define zoxel_topdown_camera
 #define zoxel_ortho_camera

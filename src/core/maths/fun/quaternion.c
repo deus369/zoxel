@@ -5,6 +5,24 @@
 const float significant_digits_check = 100000.0f;
 #define quaternion_pi_2 1.5707f
 
+void quaternion_normalize(float4 *quaternion) {
+    float magnitude = sqrt(quaternion->x * quaternion->x + quaternion->y * quaternion->y + quaternion->z * quaternion->z + quaternion->w * quaternion->w);
+    if (magnitude != 0.0f) {
+        quaternion->x /= magnitude;
+        quaternion->y /= magnitude;
+        quaternion->z /= magnitude;
+        quaternion->w /= magnitude;
+    }
+}
+
+float quaternion_magnitude(float4 quaternion) {
+    return sqrt(quaternion.x * quaternion.x + quaternion.y * quaternion.y + quaternion.z * quaternion.z);
+}
+
+float4 quaternion_normalized(float4 quaternion, float magnitude) {
+    return (float4) { quaternion.x / magnitude, quaternion.y / magnitude, quaternion.z / magnitude, 0.0f };
+}
+
 float quaternion_to_euler_y(float4 q) {
     double sinp = 2 * (q.w * q.y - q.z * q.x);
     if (double_abs(sinp) >= 1) return copysign(M_PI / 2, sinp); // use 90 degrees if out of range
@@ -103,6 +121,40 @@ float4 quaternion_from_euler(float3 euler) {
     return q;
 }
 
+float4 quaternion_from_between_vectors(float3 u, float3 v) {
+    float4 output = float4_zero;
+    float3 cross = float3_cross(u, v);
+    output.x = cross.x;
+    output.y = cross.y;
+    output.z = cross.z;
+    output.w = sqrt(pow(float3_length(u), 2) * pow(float3_length(v), 2)) + float3_dot(u, v);
+    quaternion_normalize(&output);
+    return output;
+}
+
+// this seems to be okay?
+float4 quaternion_from_normal(float3 normal) {
+    float3 axis;
+    float4 quaternion;
+    // Step 1: Normalize the normal vector
+    float length = sqrt(normal.x * normal.x + normal.y * normal.y + normal.z * normal.z);
+    normal.x /= length;
+    normal.y /= length;
+    normal.z /= length;
+    // Step 2: Calculate the angle of rotation
+    float angle = acos(normal.z); // dot(normal, (0, 0, 1)) = normal.z
+    // Step 3: Calculate the axis of rotation
+    axis.x = -normal.y;
+    axis.y = normal.x;
+    axis.z = 0;
+    // Step 4: Create the quaternion
+    quaternion.x = axis.x * sin(angle / 2);
+    quaternion.y = axis.y * sin(angle / 2);
+    quaternion.z = axis.z * sin(angle / 2);
+    quaternion.w = cos(angle / 2);
+    return quaternion;
+}
+
 void print_quadrant(float4 q) {
     unsigned char quadrant = quaternion_to_quadrant(q);
     // unsigned char quadrant = get_quadrant(quaternion_to_euler(q));
@@ -187,24 +239,6 @@ float4 quaternion_from_axis_angle(float angle, float x, float y, float z) {
     return q;
 }
 
-void quaternion_normalize(float4 *quaternion) {
-    float magnitude = sqrt(quaternion->x * quaternion->x + quaternion->y * quaternion->y + quaternion->z * quaternion->z + quaternion->w * quaternion->w);
-    if (magnitude != 0.0f) {
-        quaternion->x /= magnitude;
-        quaternion->y /= magnitude;
-        quaternion->z /= magnitude;
-        quaternion->w /= magnitude;
-    }
-}
-
-float quaternion_magnitude(float4 quaternion) {
-    return sqrt(quaternion.x * quaternion.x + quaternion.y * quaternion.y + quaternion.z * quaternion.z);
-}
-
-float4 quaternion_normalized(float4 quaternion, float magnitude) {
-    return (float4) { quaternion.x / magnitude, quaternion.y / magnitude, quaternion.z / magnitude, 0.0f };
-}
-
 // is there a way to do this with just quaternions without messing up the magnitude??
 float4 get_delta_rotation(float4 quaternion, float magnitude, double delta_time) {
     //float4 normalized = quaternion_normalized(quaternion, magnitude);
@@ -213,29 +247,6 @@ float4 get_delta_rotation(float4 quaternion, float magnitude, double delta_time)
     float3_multiply_float_p(&euler, magnitude);
     return quaternion_from_euler(euler);
     // return (float4) { magnitude * quaternion.x, magnitude * quaternion.y, magnitude * quaternion.z, magnitude * quaternion.w };
-}
-
-// this seems to be okay?
-float4 float3_to_quaternion(float3 normal) {
-    float3 axis;
-    float4 quaternion;
-    // Step 1: Normalize the normal vector
-    float length = sqrt(normal.x * normal.x + normal.y * normal.y + normal.z * normal.z);
-    normal.x /= length;
-    normal.y /= length;
-    normal.z /= length;
-    // Step 2: Calculate the angle of rotation
-    float angle = acos(normal.z); // dot(normal, (0, 0, 1)) = normal.z
-    // Step 3: Calculate the axis of rotation
-    axis.x = -normal.y;
-    axis.y = normal.x;
-    axis.z = 0;
-    // Step 4: Create the quaternion
-    quaternion.x = axis.x * sin(angle / 2);
-    quaternion.y = axis.y * sin(angle / 2);
-    quaternion.z = axis.z * sin(angle / 2);
-    quaternion.w = cos(angle / 2);
-    return quaternion;
 }
 
 /*float yaw = euler.x;

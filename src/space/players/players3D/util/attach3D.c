@@ -64,14 +64,14 @@ void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t c
         local_camera_position.z = 0;
         float3 local_euler = (float3) { -90, 180, 0 };
         // make ortho
+        // todo: base zoom on perspetive
         #ifdef zoxel_ortho_camera
             local_euler.x += 45;
             local_euler.y += 45;
-            local_camera_position.y = vox_scale * 12;
-            local_camera_position.x -= vox_scale * 8;
-            local_camera_position.z -= vox_scale * 8;
+            local_camera_position.y = vox_scale * 12 * 2;
+            local_camera_position.x -= vox_scale * 8 * 2;
+            local_camera_position.z -= vox_scale * 8 * 2;
         #endif
-
         float3_multiply_float_p(&local_euler, degreesToRadians);
         local_rotation = quaternion_from_euler(local_euler);
     #endif

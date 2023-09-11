@@ -10,5 +10,4 @@ void ParentRotationSystem(ecs_iter_t *it) {
         rotation3D->value = ecs_get(world, parentLink->value, Rotation3D)->value;
         quaternion_rotate_quaternion_p(&rotation3D->value, localRotation3D->value);
     }
-}
-zox_declare_system(ParentRotationSystem)
+} zox_declare_system(ParentRotationSystem)
