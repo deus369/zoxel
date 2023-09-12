@@ -221,9 +221,7 @@ ECS_COPY(name, dst, src, {\
 \
 const name* find_node##_##name(const name* node, int3 octree_position, unsigned char depth) {\
     /* if depth finish or if closed node, return node early */ \
-    if (depth == 0 || node->nodes == NULL) {\
-        return node;\
-    }\
+    if (depth == 0 || node->nodes == NULL) return node;\
     depth--;\
     unsigned char dividor = powers_of_two[depth];\
     int3 local_position = (int3) { octree_position.x / dividor, octree_position.y / dividor, octree_position.z / dividor };\
@@ -231,49 +229,80 @@ const name* find_node##_##name(const name* node, int3 octree_position, unsigned 
     return find_node##_##name(&node->nodes[get_node_index(local_position)], child_octree_position, depth);\
 }\
 \
+/* maybe make below function use this if it isn't in the non root node */\
+const name* find_root_adjacent##_##name(const name* root, int3 position, unsigned char depth, unsigned char direction,\
+    const name *neighbors[], unsigned char *chunk_index) {\
+    if (direction == direction_left) position.x--;\
+    else if (direction == direction_right) position.x++;\
+    else if (direction == direction_down) position.y--;\
+    else if (direction == direction_up) position.y++;\
+    else if (direction == direction_back) position.z--;\
+    else if (direction == direction_front) position.z++;\
+    unsigned char position_bounds = powers_of_two[depth];\
+    if (position.x >= 0 && position.x < position_bounds && position.y >= 0 && position.y < position_bounds && position.z >= 0 && position.z < position_bounds) {\
+        return find_node##_##name(root, position, depth);\
+    } else {\
+        /* special case for adjacent nodes, flips position and crosses to neighbor chunk */\
+        *chunk_index = direction + 1;\
+        if (direction == direction_left) {\
+            if (neighbors[direction] != NULL) {\
+                position.x = position_bounds - 1;\
+                return find_node##_##name(neighbors[direction], position, depth);\
+            }\
+        } else if (direction == direction_right) {\
+            if (neighbors[direction] != NULL) {\
+                position.x = 0;\
+                return find_node##_##name(neighbors[direction], position, depth);\
+            }\
+        } else if (direction == direction_down) {\
+            if (neighbors[direction] != NULL) {\
+                position.y = position_bounds - 1;\
+                return find_node##_##name(neighbors[direction], position, depth);\
+            }\
+        } else if (direction == direction_up) {\
+            if (neighbors[direction] != NULL) {\
+                position.y = 0;\
+                return find_node##_##name(neighbors[direction], position, depth);\
+            }\
+        } else if (direction == direction_back) {\
+            if (neighbors[direction] != NULL) {\
+                position.z = position_bounds - 1;\
+                return find_node##_##name(neighbors[direction], position, depth);\
+            }\
+        } else if (direction == direction_front) {\
+            if (neighbors[direction] != NULL) {\
+                position.z = 0;\
+                return find_node##_##name(neighbors[direction], position, depth);\
+            }\
+        }\
+        return NULL;\
+    }\
+}\
+\
 const name* find_adjacent##_##name(const name* root, const name* node, int3 octree_position, unsigned char node_index, byte3 node_position,\
     unsigned char depth, unsigned char direction, const name *neighbors[], unsigned char *chunk_index) {\
     if (node != NULL) {\
         if (direction == direction_left) {\
-            if (node_position.x != 0) {\
-                return &node->nodes[node_index_with_left[node_index]];\
-            }\
+            if (node_position.x != 0) return &node->nodes[node_index_with_left[node_index]];\
         } else if (direction == direction_right) {\
-            if (node_position.x != 1) {\
-                return &node->nodes[node_index_with_right[node_index]];\
-            }\
+            if (node_position.x != 1) return &node->nodes[node_index_with_right[node_index]];\
         } else if (direction == direction_down) {\
-            if (node_position.y != 0) {\
-                return &node->nodes[node_index_with_down[node_index]];\
-            }\
+            if (node_position.y != 0) return &node->nodes[node_index_with_down[node_index]];\
         } else if (direction == direction_up) {\
-            if (node_position.y != 1) {\
-                return &node->nodes[node_index_with_up[node_index]];\
-            }\
+            if (node_position.y != 1) return &node->nodes[node_index_with_up[node_index]];\
         } else if (direction == direction_back) {\
-            if (node_position.z != 0) {\
-                return &node->nodes[node_index_with_back[node_index]];\
-            }\
+            if (node_position.z != 0) return &node->nodes[node_index_with_back[node_index]];\
         } else if (direction == direction_front) {\
-            if (node_position.z != 1) {\
-                return &node->nodes[node_index_with_front[node_index]];\
-            }\
+            if (node_position.z != 1) return &node->nodes[node_index_with_front[node_index]];\
         }\
     }\
-    if (direction == direction_left) {\
-        octree_position.x--;\
-    } else if (direction == direction_right) {\
-        octree_position.x++;\
-    } else if (direction == direction_down) {\
-        octree_position.y--;\
-    } else if (direction == direction_up) {\
-        octree_position.y++;\
-    } else if (direction == direction_back) {\
-        octree_position.z--;\
-    } else if (direction == direction_front) {\
-        octree_position.z++;\
-    }\
-    unsigned char position_bounds = powers_of_two[depth];\
+    if (direction == direction_left) octree_position.x--;\
+    else if (direction == direction_right) octree_position.x++;\
+    else if (direction == direction_down) octree_position.y--;\
+    else if (direction == direction_up) octree_position.y++;\
+    else if (direction == direction_back) octree_position.z--;\
+    else if (direction == direction_front) octree_position.z++;\
+    const unsigned char position_bounds = powers_of_two[depth];\
     if (octree_position.x >= 0 && octree_position.x < position_bounds && octree_position.y >= 0 && octree_position.y < position_bounds && octree_position.z >= 0 && octree_position.z < position_bounds) {\
         return find_node##_##name(root, octree_position, depth);\
     } else {\

@@ -160,6 +160,18 @@ unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *
     return 1;
 }
 
+// single voxel check!
+unsigned char is_adjacent_solid(unsigned char direction, const ChunkOctree *root_node, const ChunkOctree *neighbors[], int3 position, unsigned char depth, const unsigned char edge_voxel) {
+    unsigned char chunk_index = 0;
+    const ChunkOctree *adjacent_node = find_root_adjacent_ChunkOctree(root_node, position, depth, direction, neighbors, &chunk_index);
+    // if (adjacent_node == NULL) zoxel_log("  > adjacent node is null: %ix%ix%i - depth %i\n", position.x, position.y, position.z, depth);
+    if (adjacent_node == NULL) return edge_voxel;
+    //if (adjacent_node->value) zoxel_log("  > adjacent node is solid: %ix%ix%i - depth %i - direction %i\n", position.x, position.y, position.z, depth, direction);
+    //if (!adjacent_node->value) zoxel_log("  > adjacent node is air: %ix%ix%i - depth %i - direction %i\n", position.x, position.y, position.z, depth, direction);
+    if (adjacent_node->value) return 1;
+    else return 0;
+}
+
 const int fill_octree_random_rate = 50;
 const int fill_octree_random_rate2 = 40;
 const int fill_octree_random_rate3 = 30;

@@ -52,19 +52,43 @@ void zox_build_voxel_face(int_array_d *indicies, float3_array_d* vertices, float
     }
 }
 
+/*
+if (amplify_position != 1) {\
+    zoxel_log(" > depth_difference %i, amplify_position %i\n", depth_difference, amplify_position);
+    zoxel_log("     - octree_position %ix%ix%i\n", octree_position.x, octree_position.y, octree_position.z);
+    zoxel_log("     - octree_position2 %ix%ix%i\n", octree_position2.x, octree_position2.y, octree_position2.z);
+}
+zoxel_log(" === adjacent is air %ix%ix%i\n", octree_position3.x, octree_position3.y, octree_position3.z)
+*/
+
 #define zox_build_if_adjacent_voxel(direction_name, is_positive, voxel_uvs)\
 if (!is_adjacent_all_solid(direction##_##direction_name, root_node, parent_node, neighbors, octree_position, node_index, node_position, depth, lod, neighbor_lods, edge_voxel)) {\
     if (zox_build_all_faces && distance_to_camera <= 1) {\
+        /* so far just increasing face draw resolution for up faces */\
         if (direction##_##direction_name == direction_up) {\
-            float3 offset2 = float3_zero;\
-            offset2.y += (voxel_scale - 1.0f);\
-            for (offset2.x = 0; offset2.x < voxel_scale; offset2.x += 1.0f) {\
-                for (offset2.z = 0; offset2.z < voxel_scale; offset2.z += 1.0f) {\
-                    float3 offset3 = offset2;\
-                    float3_add_float3_p(&offset3, vertex_position_offset);\
-                    zox_build_voxel_face(indicies, vertices, uvs, color_rgbs, offset3,\
-                        voxel, 1.0f, get_voxel_indices(is_positive),\
-                        voxel_face_vertices##_##direction_name, voxel_uvs, direction##_##direction_name);\
+            int depth_difference = max_octree_depth - depth;\
+            if (depth_difference == 0) {\
+                zox_build_voxel_face(indicies, vertices, uvs, color_rgbs, vertex_position_offset, voxel,\
+                    voxel_scale, get_voxel_indices(is_positive), voxel_face_vertices##_##direction_name,\
+                    voxel_uvs, direction##_##direction_name);\
+            } else {\
+                /* this checks per voxel position if voxel is solid next to it */\
+                int amplify_position = pow(2, depth_difference);\
+                int3 octree_position2 = octree_position;\
+                if (amplify_position != 1) int3_multiply_int_p(&octree_position2, amplify_position);\
+                float3 offset2 = float3_zero;\
+                offset2.y += (voxel_scale - 1.0f);\
+                for (offset2.x = 0; offset2.x < voxel_scale; offset2.x += 1.0f) {\
+                    for (offset2.z = 0; offset2.z < voxel_scale; offset2.z += 1.0f) {\
+                        int3 octree_position3 = octree_position2;\
+                        int3_add_int3(&octree_position3, (int3) { (int) offset2.x, (int) offset2.y, (int) offset2.z });\
+                        if (is_adjacent_solid(direction##_##direction_name, root_node, neighbors,\
+                            octree_position3, max_octree_depth, edge_voxel)) continue;\
+                        float3 offset3 = offset2;\
+                        float3_add_float3_p(&offset3, vertex_position_offset);\
+                        zox_build_voxel_face(indicies, vertices, uvs, color_rgbs, offset3, voxel, 1, get_voxel_indices(is_positive),\
+                            voxel_face_vertices##_##direction_name, voxel_uvs, direction##_##direction_name);\
+                    }\
                 }\
             }\
         } else {\

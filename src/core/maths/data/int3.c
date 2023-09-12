@@ -24,6 +24,12 @@ int3 int3_add(int3 a, int3 b) {
     return (int3) { a.x + b.x, a.y + b.y, a.z + b.z };
 }
 
+void int3_add_int3(int3 *a, int3 b) {
+    a->x += b.x;
+    a->y += b.y;
+    a->z += b.z;
+}
+
 int3 int3_multiply_int(int3 a, int b) {
     return (int3) { a.x * b, a.y * b, a.z * b };
 }
