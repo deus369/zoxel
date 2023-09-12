@@ -93,7 +93,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                 if (cameraLink->value) {
                     const Rotation3D *camera_rotation = ecs_get(world, cameraLink->value, Rotation3D);
                     float4 camera_rotation2 = quaternion_from_euler((float3) { 0, -quaternion_to_euler_y(camera_rotation->value), 0 });
-                    if (movement.z == -movement.x) movement.x *= 0.99f; // this hack fixes the rotation
+                    if (movement.z == -movement.x) movement.x *= 0.999f; // this hack fixes the rotation
                     movement = float4_rotate_float3(camera_rotation2, movement);
                     movement.y = 0;
                     // movement = float3_normalize(movement);

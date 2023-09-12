@@ -21,14 +21,12 @@ void initialize_sdl_gamepads() {
     for (int i = 0; i < joysticks_count; i++) {
         joystick = SDL_JoystickOpen(i);
         if (!joystick) {
-            fprintf(stderr, "Error: Unable to open joystick: %s\n", SDL_GetError());
+            fprintf(stderr, "   ! joystick error: %s\n", SDL_GetError());
         } else {
             const char* joystick_name = SDL_JoystickName(joystick);
-            zoxel_log(" > joystick [%i]:[%s] has been initialized\n", i, joystick_name);
-            if (is_xbox_gamepad(joystick)) {
-                zoxel_log("     + xbox controller detected\n");
-            }
-            break;
+            zoxel_log(" > joystick [%i:%s] has initialized\n", i, joystick_name);
+            // if (is_xbox_gamepad(joystick)) zoxel_log("     + xbox controller detected\n");
+            break; 
         }
     }
 }

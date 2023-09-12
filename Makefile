@@ -259,6 +259,10 @@ android-run:
 android-install:
 	bash bash/android/gradle_install.sh
 
+android-install-run:
+	bash bash/android/gradle_install.sh
+	bash bash/android/gradle_run.sh
+
 android-debug:
 	bash bash/android/install.sh && bash bash/android/debug_android.sh
 

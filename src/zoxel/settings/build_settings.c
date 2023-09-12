@@ -4,7 +4,7 @@
 
 // used for samsung phone, it's buggy af
 // #define zoxel_disable_gamepads
-// #define zox_disable_gamepad_stick_as_any_input
+#define zox_disable_gamepad_stick_as_any_input
 
 #define zoxel_topdown_camera
 #define zoxel_ortho_camera
@@ -146,10 +146,10 @@
 // #define disable_voxel_down
 // voxels
 // #define zox_disable_terrain_octrees  // disables octrees, uses arrays
-// #define zox_disable_closing_octree_nodes
+#define zox_disable_closing_octree_nodes
+#define zoxel_disable_close_nodes
 // #define zox_disable_hidden_terrain_edge        // hides faces on edge of map
 // #define zox_disable_voxels_dynamic_array      // used in mesh generation
-// #define zoxel_disable_close_nodes
 // #define voxels_disable_streaming
 // #define zoxel_voxel_disable_distance_division
 // #define voxels_use_octree_pooling

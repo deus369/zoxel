@@ -42,61 +42,53 @@ unsigned char get_octree_voxel(const ChunkOctree *node, byte3 *position, unsigne
 
 //! Closes all solid nodes, as well as air nodes, after terrain system generates it.
 void close_solid_nodes(ChunkOctree *node) {
+    if (node->nodes == NULL) return;
     // for all children nodes - only check higher nodes if closed children
-    if (node->nodes != NULL) {
-        for (unsigned char i = 0; i < octree_length; i++) {
-            close_solid_nodes(&node->nodes[i]);
+    //if (node->nodes != NULL) {
+    for (unsigned char i = 0; i < octree_length; i++) close_solid_nodes(&node->nodes[i]);
+    //}
+    //if (node->nodes != NULL) {
+    unsigned char all_solid = 1;
+    for (unsigned char i = 0; i < octree_length; i++) {
+        if (node->nodes[i].nodes != NULL || !node->nodes[i].value) {
+            all_solid = 0;
+            break;
         }
     }
-    if (node->nodes != NULL) {
-        unsigned char all_solid = 1;
+    if (all_solid) {
+        close_ChunkOctree(node);
+    } else {
+        unsigned char all_air = 1;
         for (unsigned char i = 0; i < octree_length; i++) {
-            if (node->nodes[i].nodes != NULL || node->nodes[i].value == 0) {
-                all_solid = 0;
+            if (node->nodes[i].nodes != NULL || node->nodes[i].value) {
+                all_air = 0;
                 break;
             }
         }
-        if (all_solid) {
-            close_ChunkOctree(node);
-        } else {
-            unsigned char all_air = 1;
-            for (unsigned char i = 0; i < octree_length; i++) {
-                if (node->nodes[i].nodes != NULL || node->nodes[i].value != 0) {
-                    all_air = 0;
-                    break;
-                }
-            }
-            if (all_air) {
-                close_ChunkOctree(node);
-            }
-        }
+        if (all_air) close_ChunkOctree(node);
     }
+    //}
 }
 
 void close_same_nodes(ChunkOctree *node) {
-    if (node->nodes != NULL) {
-        for (unsigned char i = 0; i < octree_length; i++) {
-            close_same_nodes(&node->nodes[i]);
+    if (node->nodes == NULL) return;
+    for (unsigned char i = 0; i < octree_length; i++) close_same_nodes(&node->nodes[i]);
+    unsigned char all_same = 1;
+    unsigned char first_type = node->nodes[0].value;
+    for (unsigned char i = 1; i < octree_length; i++) {
+        // cannot close this node, as it's nodes have nodes (grand nodes)
+        if (node->nodes[i].nodes != NULL) return;
+        if (first_type != node->nodes[i].value) {
+            all_same = 0;
+            break;
         }
     }
-    if (node->nodes != NULL) {
-        unsigned char all_same = 1;
-        unsigned char first_type = node->nodes[0].value;
-        for (unsigned char i = 1; i < octree_length; i++) {
-            if (node->nodes[i].nodes != NULL || first_type != node->nodes[i].value) {
-                all_same = 0;
-                break;
-            }
-        }
-        if (all_same) close_ChunkOctree(node);
-    }
+    if (all_same) close_ChunkOctree(node);
 }
 
 void optimize_solid_nodes(ChunkOctree *node) {
     if (node->nodes != NULL) {
-        for (unsigned char i = 0; i < octree_length; i++) {
-            optimize_solid_nodes(&node->nodes[i]);
-        }
+        for (unsigned char i = 0; i < octree_length; i++) optimize_solid_nodes(&node->nodes[i]);
         // zoxel_log(" > depth [%i]\n", depth);
         // unsigned char all_solid = 0;
         unsigned char voxel_types = 0;

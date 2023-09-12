@@ -7,6 +7,7 @@
 
 void spawn_prefabs_outer_core(ecs_world_t *world) {
     spawn_prefabs_cubes(world);
+    spawn_prefabs_particles(world);
 }
 
 zox_begin_module(OuterCore)

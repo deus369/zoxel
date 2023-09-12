@@ -1,6 +1,6 @@
 ecs_entity_t particle2DPrefab;
 
-void SpawnPrefabParticle2D(ecs_world_t *world) {
+void spawn_prefab_particle2D(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
     zox_name("prefab_particle2D")

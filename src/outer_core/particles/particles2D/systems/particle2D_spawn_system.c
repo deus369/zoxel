@@ -26,16 +26,10 @@ void Particle2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCoun
         velocity2Ds[i].value = (float2) { ((rand() % 101) / 100.0f) * 1.0f - 0.5f, ((rand() % 101) / 100.0f) * 1.0f - 0.5f };
         velocity2Ds[i].value = normalize2D(velocity2Ds[i].value);
         velocity2Ds[i].value = float2_multiply_float(velocity2Ds[i].value, (velocityBounds.y - velocityBounds.x));
-        if (velocity2Ds[i].value.x < 0) {
-            velocity2Ds[i].value.x -= velocityBounds.x;
-        } else {
-            velocity2Ds[i].value.x += velocityBounds.x;
-        }
-        if (velocity2Ds[i].value.y < 0) {
-            velocity2Ds[i].value.y -= velocityBounds.x;
-        } else {
-            velocity2Ds[i].value.y += velocityBounds.x;
-        }
+        if (velocity2Ds[i].value.x < 0) velocity2Ds[i].value.x -= velocityBounds.x;
+        else velocity2Ds[i].value.x += velocityBounds.x;
+        if (velocity2Ds[i].value.y < 0) velocity2Ds[i].value.y -= velocityBounds.x;
+        else velocity2Ds[i].value.y += velocityBounds.x;
         torque2Ds[i].value = ((rand() % 101) / 100.0f) * torqueBounds - (torqueBounds / 2.0f);
         scale1Ds[i].value = scaleBounds.x + ((rand() % 101) / 100.0f) * (scaleBounds.y - scaleBounds.x);
         brightnesses[i].value = brightnessBounds.x + ((rand() % 101) / 100.0f) * (brightnessBounds.y - brightnessBounds.x);
@@ -75,8 +69,7 @@ void Particle2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCoun
     free(brightnesses);
     free(destroyInTimes);
     ecs_defer_end(world);
-}
-zox_declare_system(Particle2DSpawnSystem)
+} zox_declare_system(Particle2DSpawnSystem)
 
 /*int GetParticles2DCount(ecs_world_t *world) {
     return ecs_count_id_with_up(world, ecs_id(Particle2D)); // count;
