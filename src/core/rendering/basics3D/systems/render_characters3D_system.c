@@ -34,7 +34,7 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
             opengl_set_matrix(attributes_colored3D.camera_matrix, render_camera_matrix);
             #ifndef zox_debug_color_shader
                 opengl_set_float(attributes_colored3D.scale, 1);
-                opengl_set_float4(attributes_colored3D.fog_data, (float4) { fog_color.x, fog_color.y, fog_color.z, fog_density });
+                opengl_set_float4(attributes_colored3D.fog_data, (float4) { fog_color.x, fog_color.y, fog_color.z, get_fog_density() });
                 opengl_set_float(attributes_colored3D.brightness, 1);
             #endif
         }

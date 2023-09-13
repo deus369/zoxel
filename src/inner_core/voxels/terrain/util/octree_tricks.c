@@ -5,17 +5,17 @@ unsigned char get_terrain_lod_from_camera_distance(unsigned char distance_to_cam
         unsigned char lod = max_octree_depth;
     #else
         unsigned char lod = 255;
-        if (distance_to_camera <= init_terrain_lod) {
+        if (distance_to_camera <= initial_terrain_lod) {
             lod = max_octree_depth;
-        } else if (distance_to_camera <= init_terrain_lod + terrain_lod_dividor) {
+        } else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor) {
             lod = max_octree_depth - 1;
-        } else if (distance_to_camera <= init_terrain_lod + terrain_lod_dividor * 2) {
+        } else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 2) {
             lod = max_octree_depth - 2;
-        } else if (distance_to_camera <= init_terrain_lod + terrain_lod_dividor * 3) {
+        } else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 3) {
             lod = max_octree_depth - 3;
-        } else if (distance_to_camera <= init_terrain_lod + terrain_lod_dividor * 4) {
+        } else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 4) {
             lod = max_octree_depth - 4;
-        } else if (distance_to_camera <= init_terrain_lod + terrain_lod_dividor * 5) {
+        } else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 5) {
             lod = 0;
         }
     #endif
@@ -43,10 +43,10 @@ unsigned char get_terrain_lod_from_camera_distance(unsigned char distance_to_cam
     }*/
         /*unsigned char depth_addition = distance_to_camera / lod_division_dividor;
         unsigned char lod;
-        if (depth_addition < init_terrain_lod) {
+        if (depth_addition < initial_terrain_lod) {
             lod = max_octree_depth;
         } else {
-            unsigned char difference = depth_addition - init_terrain_lod;
+            unsigned char difference = depth_addition - initial_terrain_lod;
             if (difference > max_octree_depth) {
                 lod = 0;
             } else {

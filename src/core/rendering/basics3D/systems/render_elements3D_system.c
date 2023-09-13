@@ -35,7 +35,7 @@ void RenderElements3DSystem(ecs_iter_t *it) {
             has_set_material = 1;
             opengl_set_material(get_textured3D_material_value(world));
             opengl_set_matrix(attributes_textured3D->camera_matrix, render_camera_matrix);
-            opengl_set_float4(attributes_textured3D->fog_data, (float4) { fog_color.x, fog_color.y, fog_color.z, fog_density });
+            opengl_set_float4(attributes_textured3D->fog_data, (float4) { fog_color.x, fog_color.y, fog_color.z, get_fog_density() });
             opengl_set_float(attributes_textured3D->scale, 1);
             opengl_set_float(attributes_textured3D->brightness, 1);
             // scale1D->value, brightness->value

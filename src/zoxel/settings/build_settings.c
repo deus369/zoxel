@@ -146,7 +146,7 @@
 // #define disable_voxel_down
 // voxels
 // #define zox_disable_terrain_octrees  // disables octrees, uses arrays
-#define zox_disable_closing_octree_nodes
+// #define zox_disable_closing_octree_nodes
 #define zoxel_disable_close_nodes
 // #define zox_disable_hidden_terrain_edge        // hides faces on edge of map
 // #define zox_disable_voxels_dynamic_array      // used in mesh generation

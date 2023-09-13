@@ -91,6 +91,10 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
                     // set all voxels to regenerate textures
                     // set tilemap dirty
                     on_terrain_settings_changed(world);
+                } else if (keyboard->u.pressed_this_frame) {
+                    // toggle fog
+                    is_render_fog = !is_render_fog;
+                    zoxel_log("    > is_render_fog set [%i]\n", is_render_fog);
                 }
             }
         }

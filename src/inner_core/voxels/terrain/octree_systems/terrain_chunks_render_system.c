@@ -54,7 +54,7 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
             // opengl_set_material(get_textured3D_material_value(world));
             opengl_set_matrix(attributes_textured3D->camera_matrix, render_camera_matrix);
             opengl_bind_texture(textureGPULink->value);
-            opengl_set_float4(attributes_textured3D->fog_data, (float4) { fog_color.x, fog_color.y, fog_color.z, fog_density });
+            opengl_set_float4(attributes_textured3D->fog_data, (float4) { fog_color.x, fog_color.y, fog_color.z, get_fog_density() });
             opengl_set_float4(attributes_textured3D->rotation, rotation->value);
             opengl_set_float(attributes_textured3D->scale, 0.5f);
             opengl_set_float(attributes_textured3D->brightness, 1);

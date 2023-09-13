@@ -74,15 +74,17 @@ void close_same_nodes(ChunkOctree *node) {
     if (node->nodes == NULL) return;
     for (unsigned char i = 0; i < octree_length; i++) close_same_nodes(&node->nodes[i]);
     unsigned char all_same = 1;
-    unsigned char first_type = node->nodes[0].value;
-    for (unsigned char i = 1; i < octree_length; i++) {
-        // cannot close this node, as it's nodes have nodes (grand nodes)
-        if (node->nodes[i].nodes != NULL) return;
-        if (first_type != node->nodes[i].value) {
+    unsigned char first_node_value = 255;
+    for (unsigned char i = 0; i < octree_length; i++) {
+        if (node->nodes[i].nodes != NULL) return; // if a child node is open, then don't close this node
+        const unsigned char node_value = node->nodes[i].value;
+        if (first_node_value == 255) first_node_value = node_value;
+        else if (first_node_value != node_value) {
             all_same = 0;
             break;
         }
     }
+    // if (all_same && first_node_value != 0) zoxel_log("  > closing same node [%i]\n", first_node_value);
     if (all_same) close_ChunkOctree(node);
 }
 
@@ -194,7 +196,7 @@ void random_fill_octree(ChunkOctree* node, unsigned char voxel, unsigned char de
     }
 }
 
-void fill_octree(ChunkOctree* node, unsigned char voxel, unsigned char depth) {
+void fill_octree(ChunkOctree* node, const unsigned char voxel, unsigned char depth) {
     node->value = voxel;
     if (depth > 0) {
         depth--;

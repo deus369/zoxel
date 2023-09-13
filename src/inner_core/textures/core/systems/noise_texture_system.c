@@ -22,13 +22,20 @@ void generate_texture_noise(TextureData* textureData, const TextureSize *texture
     int2 greenRange = { 15, 122 };
     int2 blueRange = { 15, 122 };
     int2 alphaRange = { 144, 256 };
-    if (texture_type != zox_texture_none) { // }== zox_texture_dirt) {
+    if (texture_type != zox_texture_none) {
         redRange = (int2) { 53, 93 };  // 73
         greenRange = (int2) { 37, 57 };  // 47
         blueRange = (int2) { 7, 27 };  // 17
         alphaRange = (int2) { 255, 256 };
         // if (rand() % 100 >= 50) {
-        if (texture_type == zox_texture_grass) {
+        if (texture_type == zox_texture_dirt) {
+            redRange.x += 32;
+            redRange.y += 64;
+            greenRange.x += 16;
+            greenRange.y += 32;
+            blueRange.x += 16;
+            blueRange.y += 32;
+        } else if (texture_type == zox_texture_grass) {
             //zoxel_log(" > grass texture created\n");
             greenRange.x *= 2;
             greenRange.y *= 2;
@@ -152,7 +159,7 @@ void NoiseTextureSystem(ecs_iter_t *it) {
         unsigned char texture_type = zox_texture_none;
         if (texture_mode == zox_texture_mode_graybox) {
             texture_type = zox_texture_graybox;
-        } else if (ecs_has(world, it->entities[i], DirtTexture)) {
+        } else if (ecs_has(world, e, DirtTexture)) {
             texture_type = zox_texture_dirt;
         } else if (ecs_has(world, e, GrassTexture)) {
             texture_type = zox_texture_grass;

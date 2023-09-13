@@ -77,13 +77,20 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
                     if (chunk_below_max) local_height = chunk_voxel_length;
                     for (voxel_position.y = 0; voxel_position.y < local_height; voxel_position.y++) {
                         byte3 node_position = voxel_position;
-                        // if top voxel
                         if (!chunk_below_max && voxel_position.y == local_height - 1) {
-                            if (global_position_y + voxel_position.y < sand_height) {
+                            // if top voxel
+                            int current_position_y = global_position_y + voxel_position.y;
+                            if (current_position_y < sand_height) {
                                 // zoxel_log(" > sand voxel created\n");
                                 set_octree_voxel(chunkOctree, &node_position, &set_sand, 0);
                             } else {
-                                int rando = rand() % 100;
+                                if (rand() % 100 >= 96) set_octree_voxel(chunkOctree, &node_position, &set_grass, 0);
+                                else set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);
+                                //
+                                // set_octree_voxel(chunkOctree, &node_position, &set_obsidian, 0);
+                                // set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);
+                                // if (rand() % 100 > 30)
+                                /*int rando = rand() % 100;
                                 if (rando < grass_spawn_chance) {
                                     set_octree_voxel(chunkOctree, &node_position, &set_grass, 0);
                                 } else if (rando < grass_spawn_chance + 6) {
@@ -92,7 +99,7 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
                                     set_octree_voxel(chunkOctree, &node_position, &set_obsidian, 0);
                                 } else {
                                     set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);
-                                }
+                                }*/
                             }
                         } else {
                             set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);
@@ -102,10 +109,10 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
             }
         }
         // now close all solid ground nodes
-        /*#ifndef zox_disable_closing_octree_nodes
-        #endif*/
-        close_solid_nodes(chunkOctree);
-        close_same_nodes(chunkOctree);
+        #ifndef zox_disable_closing_octree_nodes
+            close_same_nodes(chunkOctree);
+        #endif
+        // close_solid_nodes(chunkOctree);
         #ifdef zoxel_time_octree_terrain_chunk_system
             did_do_timing()
         #endif

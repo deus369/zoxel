@@ -75,5 +75,4 @@ void NoiseChunkOctreeSystem(ecs_iter_t *it) {
         chunkDirty->value = 1;
         // zoxel_log(" > chunk octree [noise] generated [%lu] at [%f]\n", it->entities[i], get_total_time_seconds());
     }
-}
-zox_declare_system(NoiseChunkOctreeSystem)
+} zox_declare_system(NoiseChunkOctreeSystem)

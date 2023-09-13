@@ -7,8 +7,13 @@
 
 // zoxel_settings
 int tri_count = 0;
+unsigned char is_render_fog = 1;
 float3 fog_color = (float3) { 0.5f, 0.55f, 0.58f };
 float fog_density = 0.0326f;
+float get_fog_density() {
+    if (is_render_fog) return fog_density;
+    else return 0.0f;
+}
 #include "data/mesh_alignment_types.c"
 // todo: replace this with a render stack, which can easily be used in a camera_render_system
 //      > it can also be sorted better for z issues on translucent materials
