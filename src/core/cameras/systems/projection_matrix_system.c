@@ -23,6 +23,10 @@ void calculate_frustrum_matrix(float4x4 *matrix, float left, float right, float 
     matrix->w.w = 0.0;
 }
 
+void calculate_orthographic_projection_matrix(float4x4 *matrix) {
+
+}
+
 // This should only update when either ScreenDimensions or FieldOfView changes
 void ProjectionMatrixSystem(ecs_iter_t *it) {
     #ifdef main_thread_projection_matrix_system
@@ -36,19 +40,19 @@ void ProjectionMatrixSystem(ecs_iter_t *it) {
     // ecs_query_changed(it->query, &it, ScreenDimensions) || ecs_query_changed(q_read, &it, ScreenDimensions)
     for (int i = 0; i < it->count; i++) {
         const ScreenDimensions *screenDimensions2 = &screenDimensions[i];
-        int screenWidth = screenDimensions2->value.x;
-        int screenHeight = screenDimensions2->value.y;
-        if(screenHeight <= 0) continue;
+        int screen_width = screenDimensions2->value.x;
+        int screen_height = screenDimensions2->value.y;
+        if(screen_height <= 0) continue;
         const FieldOfView *fieldOfView = &fieldOfViews[i];
         const CameraNearDistance *cameraNearDistance = &cameraNearDistances[i];
         ProjectionMatrix *projectionMatrix = &projectionMatrixs[i];
         float znear = cameraNearDistance->value;
         float zfar = camera_far_distance;
-        float aspect_ratio = ((float) screenWidth) / ((float) screenHeight);
+        float aspect_ratio = ((float) screen_width) / ((float) screen_height);
         float ymax = znear * tanf(fieldOfView->value * M_PI / 360.0);
         float xmax = ymax * aspect_ratio;
         calculate_frustrum_matrix(&projectionMatrix->value, -xmax, xmax, -ymax, ymax, znear, zfar);
         // float4x4_print(view_matrix->value);
-        // printf("    Perspective Updated [%ix%i]\n", screenWidth, screenHeight);
+        // printf("    Perspective Updated [%ix%i]\n", screen_width, screen_height);
     }
 } zox_declare_system(ProjectionMatrixSystem)

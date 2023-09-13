@@ -2,17 +2,16 @@
 // #define zoxel_include_vulkan
 #define zoxel_include_players
 
-// used for samsung phone, it's buggy af
+// #define zoxel_set_camera_ortho
+// #define zoxel_set_camera_topdown
+#define zoxel_set_camera_firstperson
+#define zox_disable_gamepad_stick_as_any_input // used for samsung phone, it's buggy af
 // #define zoxel_disable_gamepads
-#define zox_disable_gamepad_stick_as_any_input
-
-#define zoxel_topdown_camera
-#define zoxel_ortho_camera
 #define zoxel_start_with_debug_ui
 #define zoxel_has_random_jumping
+
 // #define zoxel_mouse_emulate_touch
 // #define zox_visualize_sounds
-// #define zox_grayboxing
 // #define zoxel_test_networking
 
 // #define zoxel_catch_opengl_errors

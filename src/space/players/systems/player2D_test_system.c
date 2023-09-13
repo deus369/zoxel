@@ -20,11 +20,8 @@ void Player2DTestSystem(ecs_iter_t *it) {
             if (gameState->value == zoxel_game_state_playing) {
                 ecs_entity_t main_camera = main_cameras[0]; // get player camera link instead
                 ecs_entity_t character = 0;
-                #ifdef zoxel_topdown_camera
-                    character = ecs_get(world, main_camera, CameraFollowLink)->value;
-                #else
-                    character = ecs_get(world, main_camera, ParentLink)->value;
-                #endif
+                if (camera_mode == zox_camera_mode_first_person) character = ecs_get(world, main_camera, ParentLink)->value;
+                else character = ecs_get(world, main_camera, CameraFollowLink)->value;
                 if (character == 0) attach_to_character(world, main_player, main_camera, main_character3D);
                 else detatch_from_character(world, main_player, main_camera, main_character3D);
             }

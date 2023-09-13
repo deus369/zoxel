@@ -16,6 +16,7 @@ float4 mouse_delta_to_rotation(float deltaX, float deltaY) {
 }
 
 void Player3DRotateSystem(ecs_iter_t *it) {
+    // if (camera_mode != zox_camera_mode_first_person) return;
     ecs_world_t *world = it->world;
     const DeviceLinks *deviceLinks = ecs_field(it, DeviceLinks, 2);
     const CharacterLink *characterLinks = ecs_field(it, CharacterLink, 3);

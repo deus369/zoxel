@@ -87,7 +87,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
         const Rotation3D *rotation3D = ecs_get(world, characterLink->value, Rotation3D);
         const Velocity3D *velocity3D = ecs_get(world, characterLink->value, Velocity3D);
         Acceleration3D *acceleration3D = ecs_get_mut(world, characterLink->value, Acceleration3D);
-        #ifdef zoxel_topdown_camera // now we rotate by camera
+        if (camera_mode == zox_camera_mode_topdown || camera_mode == zox_camera_mode_ortho) {
             if (ecs_has(world, characterLink->value, CameraLink)) {
                 const CameraLink *cameraLink = ecs_get(world, characterLink->value, CameraLink);
                 if (cameraLink->value) {
@@ -117,9 +117,9 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                     #endif
                 }
             }
-        #else
+        } else {
             movement = float4_rotate_float3(rotation3D->value, movement);
-        #endif
+        }
         if (is_running) {
             movement.x *= run_speed;
             movement.z *= run_speed;
@@ -143,41 +143,41 @@ if (gamepad->lb.is_pressed || gamepad->rb.is_pressed) {
     if (gamepad->a.is_pressed) movement.y = jump_power;
 #endif*/
 
-                //if (float_abs(left_stick.x) > joystick_cutoff_buffer) movement.x = left_stick.x;
-                //if (float_abs(left_stick.y) > joystick_cutoff_buffer) movement.z = left_stick.y;
-                    // movement_rotation = quaternion_rotate(reverse_rotation, movement_rotation);
-                    // float euler_y = quaternion_to_euler(movement_rotation).y;
-                    // movement_rotation = quaternion_inverse(movement_rotation);
-                    // float4 new_rotation = quaternion_from_euler((float3) { 0, euler_y, 0 });
-                    // float4 reverse_rotation = (quaternion_from_euler((float3) { 0, 1, 0 })); // quaternion_inverse
-                    // float3 movement2 = float4_rotate_float3(reverse_rotation, normalized_movement);
-                    // movement = float4_rotate_float3(quaternion_inverse(rotation3D->value), movement);
-                    // movement = float4_rotate_float3(camera_rotation->value, movement);
-                    /*
-                    float3 camera_euler = quaternion_to_euler(camera_rotation->value);
-                    camera_euler.x = 0;
-                    camera_euler.z = 0;
-                    float4 camera_rotation2 = quaternion_from_euler(camera_euler);  // the y axis
-                    */
-                    
-                    //movement = float4_rotate_float3(float4_inverse(rotation3D->value), movement);
-                    //movement = float4_rotate_float3(camera_rotation->value, float3_multiply_float(movement, -1.0f));
-                    // set character to rotate here too, towards the direction
-                    // float4 quaternion = mouse_delta_to_rotation(euler.x, euler.y);
-                    // float4 quaternion = quaternion_from_euler(float3_normalize(movement));
-                    
-                    // quaternion_rotate_quaternion_p(&movement_rotation, quaternion_from_euler((float3) { 90 * degreesToRadians, 90 * degreesToRadians, 0 }));
-                    // quaternion_rotate_quaternion_p(&movement_rotation, quaternion_from_euler((float3) { 0, 90 * degreesToRadians, 0 }));
-                    // zoxel_log("     > normalized_movement: %fx%fx%f\n", normalized_movement.x, normalized_movement.y, normalized_movement.z);
-                    // zoxel_log("     > euler_y: %f\n", euler_y);
-                    // rotate towards looking direction
-                        // float3 direction_vector = float4_rotate_float3(camera_rotation2, (float3) { 0, 1, 0 }); // 
-                        // float4 quaternion2 = quaternion_rotate(quaternion_inverse(rotation3D->value), quaternion);
-                        /*float3 direction_vector = quaternion_to_euler(movement_rotation);
-                        direction_vector.y = 0;
-                        direction_vector = float3_normalize(direction_vector);*/
-                    // float4 movement_rotation = quaternion_from_normal(movement); // quaternion_from_euler(movement);
-                    // float4 movement_rotation = quaternion_from_between_vectors(float3_zero, movement);
-                /*#ifdef zox_floating_movement
-                    if (keyboard->space.is_pressed) movement.y = jump_power;
-                #endif*/
+//if (float_abs(left_stick.x) > joystick_cutoff_buffer) movement.x = left_stick.x;
+//if (float_abs(left_stick.y) > joystick_cutoff_buffer) movement.z = left_stick.y;
+    // movement_rotation = quaternion_rotate(reverse_rotation, movement_rotation);
+    // float euler_y = quaternion_to_euler(movement_rotation).y;
+    // movement_rotation = quaternion_inverse(movement_rotation);
+    // float4 new_rotation = quaternion_from_euler((float3) { 0, euler_y, 0 });
+    // float4 reverse_rotation = (quaternion_from_euler((float3) { 0, 1, 0 })); // quaternion_inverse
+    // float3 movement2 = float4_rotate_float3(reverse_rotation, normalized_movement);
+    // movement = float4_rotate_float3(quaternion_inverse(rotation3D->value), movement);
+    // movement = float4_rotate_float3(camera_rotation->value, movement);
+    /*
+    float3 camera_euler = quaternion_to_euler(camera_rotation->value);
+    camera_euler.x = 0;
+    camera_euler.z = 0;
+    float4 camera_rotation2 = quaternion_from_euler(camera_euler);  // the y axis
+    */
+    
+    //movement = float4_rotate_float3(float4_inverse(rotation3D->value), movement);
+    //movement = float4_rotate_float3(camera_rotation->value, float3_multiply_float(movement, -1.0f));
+    // set character to rotate here too, towards the direction
+    // float4 quaternion = mouse_delta_to_rotation(euler.x, euler.y);
+    // float4 quaternion = quaternion_from_euler(float3_normalize(movement));
+    
+    // quaternion_rotate_quaternion_p(&movement_rotation, quaternion_from_euler((float3) { 90 * degreesToRadians, 90 * degreesToRadians, 0 }));
+    // quaternion_rotate_quaternion_p(&movement_rotation, quaternion_from_euler((float3) { 0, 90 * degreesToRadians, 0 }));
+    // zoxel_log("     > normalized_movement: %fx%fx%f\n", normalized_movement.x, normalized_movement.y, normalized_movement.z);
+    // zoxel_log("     > euler_y: %f\n", euler_y);
+    // rotate towards looking direction
+        // float3 direction_vector = float4_rotate_float3(camera_rotation2, (float3) { 0, 1, 0 }); // 
+        // float4 quaternion2 = quaternion_rotate(quaternion_inverse(rotation3D->value), quaternion);
+        /*float3 direction_vector = quaternion_to_euler(movement_rotation);
+        direction_vector.y = 0;
+        direction_vector = float3_normalize(direction_vector);*/
+    // float4 movement_rotation = quaternion_from_normal(movement); // quaternion_from_euler(movement);
+    // float4 movement_rotation = quaternion_from_between_vectors(float3_zero, movement);
+/*#ifdef zox_floating_movement
+    if (keyboard->space.is_pressed) movement.y = jump_power;
+#endif*/

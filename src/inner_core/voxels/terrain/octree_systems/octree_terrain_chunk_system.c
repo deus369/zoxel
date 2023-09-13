@@ -86,7 +86,6 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
                             } else {
                                 if (rand() % 100 >= 96) set_octree_voxel(chunkOctree, &node_position, &set_grass, 0);
                                 else set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);
-                                //
                                 // set_octree_voxel(chunkOctree, &node_position, &set_obsidian, 0);
                                 // set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);
                                 // if (rand() % 100 > 30)

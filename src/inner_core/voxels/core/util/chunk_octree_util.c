@@ -132,9 +132,7 @@ unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *
         return edge_voxel;
     } else if (adjacent_node->value == 0) {
         return 0;
-    } else if (adjacent_node->nodes != NULL &&
-        ((chunk_index == 0 && depth < max_depth) || 
-        (chunk_index != 0 && depth < neighbor_lods[chunk_index - 1]))) {
+    } else if (adjacent_node->nodes != NULL && ((chunk_index == 0 && depth < max_depth) || (chunk_index != 0 && depth < neighbor_lods[chunk_index - 1]))) {
         depth++;
         int3_multiply_int_p(&octree_position, 2);
         for (unsigned char i = 0; i < octree_length; i++) {

@@ -32,13 +32,9 @@ void end_game(ecs_world_t *world) {
     // detatch character
     ecs_entity_t main_camera = main_cameras[0]; // get player camera link instead
     ecs_entity_t character = 0;
-    #ifdef zoxel_topdown_camera
-        character = ecs_get(world, main_camera, CameraFollowLink)->value;
-    #else
-        character = ecs_get(world, main_camera, ParentLink)->value;
-    #endif
+    if (camera_follow_mode == zox_camera_follow_mode_attach) character = ecs_get(world, main_camera, ParentLink)->value;
+    else if (camera_follow_mode == zox_camera_follow_mode_follow_xz) character = ecs_get(world, main_camera, CameraFollowLink)->value;
     if (character != 0) detatch_from_character(world, main_player, main_camera, main_character3D);
-
     const int edge_buffer = 8 * default_ui_scale;
     const char *game_name = "zoxel";
     float2 window_anchor = { 0.0f, 1.0f };

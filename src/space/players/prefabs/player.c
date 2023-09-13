@@ -7,10 +7,7 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     zox_prefab()
     zox_name("prefab_player")
     zox_add_tag(e, Player)
-    zox_set(e, PlayerState, { zox_player_state_first_person })
-    #ifdef zoxel_topdown_camera
-        zox_set(e, PlayerState, { zox_player_state_top_down })
-    #endif
+    zox_set(e, PlayerState, { camera_mode })
     zox_add(e, DeviceLinks)
     zox_set(e, DeviceMode, { 0 })
     zox_set(e, DeviceModeDirty, { 0 })
@@ -33,6 +30,7 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
 ecs_entity_t spawn_player(ecs_world_t *world) {
     zox_instance(prefab_player)
     zox_name("player")
+    zox_set_only(e, PlayerState, { camera_mode })
     DeviceLinks deviceLinks = { };
     initialize_memory_component_non_pointer(deviceLinks, ecs_entity_t, 4)
     deviceLinks.value[0] = keyboard_entity;

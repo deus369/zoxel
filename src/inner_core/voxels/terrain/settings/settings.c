@@ -1,40 +1,30 @@
-unsigned char terrain_mode = 0;
 #define terrain_mode_tiny 1
 #define terrain_mode_medium 2
 #define terrain_mode_large 3
-// #define zox_terrain_preset_small
-// #define zox_terrain_preset_medium // pc can handle this only
-// #define zox_terrain_preset_large
-// #define zox_terrain_preset_enormous
 #define terrain_texture_resolution 32
+#define octree_min_height -1.995f // 0.005f
+#define noise_positiver2 32000
+#define terrain_minus_amplifier 0.0
+#ifdef zoxel_on_web
+    #define voxels_disable_streaming
+#endif
 const int2 chunk_texture_size = { terrain_texture_resolution, terrain_texture_resolution };
+const unsigned char terrain_min_height = 8;
+const int max_chunks_build_per_frame = 32;
+const double terrain_frequency2 = 0.004216; // 0.026216
+const int terrain_octaves = 12;
+const float flat_height_level = -0.56f; // 0.2f;
+unsigned char terrain_mode = 0;
 unsigned char terrain_spawn_distance;
 unsigned char terrain_vertical = 2;
-const unsigned char terrain_min_height = 8;
 double terrain_amplifier = 64.0;
 double terrain_boost = 0.0;
 int lowest_voxel_height = -24;
 unsigned char high_resolution_terain_lod = 2; // 2 | 1
 unsigned char initial_terrain_lod = 3; // 3 | 2
 unsigned char lod_division_dividor = 2; // 2 | 3
-const int max_chunks_build_per_frame = 32;
-#define octree_min_height -1.995f // 0.005f
-#define noise_positiver2 32000
-#define terrain_minus_amplifier 0.0
-//#ifndef zox_disable_terrain_octrees
-    // double terrain_frequency = 0.028216; // 0.026216
-//#else
-    //double terrain_frequency = 0.00216; // 0.004216
-//#endif
-// const double terrain_frequency2 = 0.003216; // 0.026216
 double terrain_frequency = 0.038216; // 0.026216
-const double terrain_frequency2 = 0.004216; // 0.026216
-const int terrain_octaves = 12;
 uint32_t terrain_seed = 32666;
-const float flat_height_level = -0.56f; // 0.2f;
-#ifdef zoxel_on_web
-    #define voxels_disable_streaming
-#endif
 
 void set_terrain_render_distance() {
     if (cpu_tier == 3) {
@@ -93,3 +83,14 @@ void set_terrain_render_distance() {
         zoxel_log("     + lowest low is [%d]\n", lowest_voxel_height);
     #endif
 }
+
+//#ifndef zox_disable_terrain_octrees
+    // double terrain_frequency = 0.028216; // 0.026216
+//#else
+    //double terrain_frequency = 0.00216; // 0.004216
+//#endif
+// const double terrain_frequency2 = 0.003216; // 0.026216
+// #define zox_terrain_preset_small
+// #define zox_terrain_preset_medium // pc can handle this only
+// #define zox_terrain_preset_large
+// #define zox_terrain_preset_enormous

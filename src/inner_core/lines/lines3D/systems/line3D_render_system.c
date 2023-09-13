@@ -10,8 +10,7 @@ void Line3DRenderSystem(ecs_iter_t *it) {
         const LineData3D *lineData3D = &lineData3Ds[i];
         const LineThickness *lineThickness = &lineThicknesss[i];
         const ColorRGB *colorRGB = &colorRGBs[i];
-        float line_data[] = { lineData3D->value.x, lineData3D->value.y, lineData3D->value.z,
-            lineData3D->value.w, lineData3D->value.u, lineData3D->value.v };
+        float line_data[] = { lineData3D->value.x, lineData3D->value.y, lineData3D->value.z, lineData3D->value.w, lineData3D->value.u, lineData3D->value.v };
         glLineWidth(lineThickness->value);
         glVertexAttribPointer(line3D_position_location, 3, GL_FLOAT, GL_FALSE, 0, line_data);
         float3 color_rgb_f3 = color_rgb_to_float3(colorRGB->value);

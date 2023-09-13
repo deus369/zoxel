@@ -2,17 +2,7 @@
 #define zoxel_cameras
 
 // zoxel_settings
-#define max_cameras 16
-const float camera_far_distance = 6000;
-int main_cameras_count = 1;
-#ifdef zoxel_ortho_camera
-    const int camera_fov = 45;
-#elif defined(zoxel_topdown_camera)
-    const int camera_fov = 60;
-#else
-    const int camera_fov = 90;
-#endif
-const float camera_limit_x = 1.25f;
+#include "settings/settings.c"
 ecs_entity_t main_cameras[max_cameras];
 ecs_entity_t ui_cameras[1];
 // zoxel_component_declares

@@ -5,6 +5,24 @@ extern unsigned char is_split_screen;
 #define main_camera_rotation_speed 60 * 0.22f
 const char *icon_filepath;
 
+void set_camera_mode_first_person() {
+    camera_mode = zox_camera_mode_first_person;
+camera_follow_mode = zox_camera_follow_mode_attach;
+    camera_fov = 90;
+}
+
+void set_camera_mode_ortho() {
+    camera_mode = zox_camera_mode_ortho;
+camera_follow_mode = zox_camera_follow_mode_follow_xz;
+    camera_fov = 45;
+}
+
+void set_camera_mode_topdown() {
+    camera_mode = zox_camera_mode_topdown;
+camera_follow_mode = zox_camera_follow_mode_follow_xz;
+    camera_fov = 60;
+}
+
 unsigned char boot_zoxel_game(ecs_world_t *world) {
     // zoxel_log(" > [zoxel] begins to boot\n");
     // todo: initialize_engine
@@ -15,11 +33,9 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     if (initialize_rendering(world) == EXIT_FAILURE) return EXIT_FAILURE;
     zoxel_log(" > [zoxel] success initializing rendering\n");
     load_resources_engine(world);
-
     icon_filepath = resources_folder_name"textures/game_icon.png";
     // zoxel_log(" > icon_filepath set to [%s]\n", icon_filepath);
     load_app_icon(main_window, icon_filepath);
-
     // zoxel_log(" > [zoxel] success initializing sdl window\n");
     ecs_entity_t realm = 0;
     #ifdef zoxel_include_players
@@ -27,6 +43,13 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         ecs_entity_t game = spawn_game(world);
         zox_set_only(game, RealmLink, { realm })
         spawn_weather(world);
+    #endif
+    #ifdef zoxel_set_camera_firstperson
+        set_camera_mode_first_person();
+    #elif defined(zoxel_set_camera_ortho)
+        set_camera_mode_ortho();
+    #elif defined(zoxel_set_camera_topdown)
+        set_camera_mode_topdown();
     #endif
     int2 screen_dimensions2 = screen_dimensions;
     float3 camera_begin_position = { 0, 0.0f, 0.0f };
@@ -46,7 +69,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         #endif
         float rot_x = -0.2f;
         float rot_y = -M_PI_2 + M_PI * (rand() % 101) / 100.0f;
-        #ifdef zoxel_topdown_camera
+        #ifndef zoxel_set_camera_firstperson
             rot_x = -M_PI_2 * 0.8f;
             camera_begin_position.y += 0.32f * overall_voxel_scale;
         #endif
