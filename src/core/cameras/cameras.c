@@ -8,6 +8,8 @@ ecs_entity_t main_cameras[max_cameras];
 ecs_entity_t ui_cameras[1];
 // zoxel_component_declares
 zox_declare_tag(Camera)
+zox_declare_tag(Camera2D)
+zox_declare_tag(Camera3D)
 zox_declare_tag(FirstPersonCamera)
 zox_declare_tag(CameraFollower2D)
 zox_declare_tag(UICamera)
@@ -46,6 +48,8 @@ zox_begin_module(Cameras)
 // for (int i = 0; i < max_cameras; i++) main_cameras[i] = 0;
 // zoxel_component_defines
 zox_define_tag(Camera)
+zox_define_tag(Camera2D)
+zox_define_tag(Camera3D)
 zox_define_tag(FirstPersonCamera)
 zox_define_tag(CameraFollower2D) // Until fix is found. \todo Fix this, readd it back here where it belongs.
 zox_define_tag(UICamera)

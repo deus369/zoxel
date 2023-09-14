@@ -15,7 +15,7 @@ void set_id(ecs_world_t *world, ecs_entity_t e, int new_id) {
 void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) {
     if (!(event.type == SDL_FINGERMOTION || event.type == SDL_FINGERDOWN || event.type == SDL_FINGERUP)) return; // sets finger position
     if (!touchscreen_entity || !ecs_is_alive(world, touchscreen_entity)) return;
-    const SDL_TouchFingerEvent   = event.tfinger;
+    const SDL_TouchFingerEvent finger_event = event.tfinger;
     const Children *zevices = ecs_get(world, touchscreen_entity, Children);
     ecs_entity_t zevice_pointer_entity = zevices->value[0];
     const ID *id = ecs_get(world, zevice_pointer_entity, ID);

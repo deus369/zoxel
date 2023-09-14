@@ -31,7 +31,7 @@ void ElementRenderSystem(ecs_iter_t *it) {
             has_set_material = 1;
             opengl_enable_blend();
             opengl_set_material(textured2D_material);
-            opengl_set_matrix(shader2D_textured_attributes.camera_matrix, ui_camera_matrix);
+            opengl_set_matrix(shader2D_textured_attributes.camera_matrix, render_camera_matrix);
         }
         float positionZ = ((int) layer2D->value) * shader_depth_multiplier;
         opengl_set_mesh_indicies(meshGPULink->value.x);

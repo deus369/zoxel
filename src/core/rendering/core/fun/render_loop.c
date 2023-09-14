@@ -39,6 +39,7 @@ void render_camera(ecs_world_t *world, float4x4 camera_matrix, int2 position, in
     for (int i = 0; i < render3D_systems->size; i++) ecs_run(world, render3D_systems->data[i], 0, NULL);
     glClear(GL_DEPTH_BUFFER_BIT);
     // remember to check renderer_layer in each 2D  render system
+    if (ecs_is_valid(world, ui_cameras[0])) render_camera_matrix = ecs_get(world, ui_cameras[0], ViewMatrix)->value;
     for (renderer_layer = 0; renderer_layer < max_render_layers; renderer_layer++) {
         for (int i = 0; i < render2D_systems->size; i++) ecs_run(world, render2D_systems->data[i], 0, NULL);
     }
@@ -52,7 +53,6 @@ void render_loop() {
         begin_timing_absolute()
     #endif
     #ifdef zoxel_cameras
-        if (ecs_is_valid(world, ui_cameras[0])) ui_camera_matrix = ecs_get(world, ui_cameras[0], ViewMatrix)->value;
         for (int i = 0; i < main_cameras_count; i++) {
             ecs_entity_t camera = main_cameras[i];
             if (!ecs_is_valid(world, camera)) continue;

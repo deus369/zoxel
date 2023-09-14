@@ -18,7 +18,7 @@ float get_fog_density() {
 // todo: replace this with a render stack, which can easily be used in a camera_render_system
 //      > it can also be sorted better for z issues on translucent materials
 float4x4 render_camera_matrix; 
-float4x4 ui_camera_matrix; 
+// float4x4 ui_camera_matrix; 
 // zoxel_declare_components
 // todo: move these to 'core', make core load despite opengl, before it
 zox_declare_tag(Mesh)

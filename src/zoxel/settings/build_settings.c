@@ -2,6 +2,7 @@
 // #define zoxel_include_vulkan
 #define zoxel_include_players
 
+// #define zox_use_orthographic_projection // used for different projection matrix
 #define zoxel_set_camera_ortho
 // #define zoxel_set_camera_topdown
 // #define zoxel_set_camera_firstperson

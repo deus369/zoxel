@@ -50,12 +50,6 @@ void RenderMaterial2DSystem(ecs_iter_t *it) {
                 zoxel_log("RenderMaterial2DSystem Material: At [%i]. Entity [%lu].\n", i, (long int) (it->entities[i]));
             }
         }
-        float4x4 viewMatrix;
-        if (!ecs_has(it->world, it->entities[i], ElementRender)) {
-            viewMatrix = render_camera_matrix;
-        } else {
-            viewMatrix = ui_camera_matrix;
-        }
-        render_entity_material2D(viewMatrix, materialGPULink->value, textureGPULink->value, position->value, rotation2D->value, scale1D->value, brightness->value);
+        render_entity_material2D(render_camera_matrix, materialGPULink->value, textureGPULink->value, position->value, rotation2D->value, scale1D->value, brightness->value);
     }
 } zox_declare_system(RenderMaterial2DSystem)
