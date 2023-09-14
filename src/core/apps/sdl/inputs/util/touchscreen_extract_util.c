@@ -27,7 +27,7 @@ void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_di
             devices_set_pressed_this_frame(&zevicePointer->value, 1);
             devices_set_is_pressed(&zevicePointer->value, 1);
             ecs_modified(world, zevice_pointer_entity, ZevicePointer);
-            zox_set_only(zevice_pointer_entity, ZevicePointer, { zevicePointer->value })
+            zox_touchscreen_has_lifted = 1;
             /*#ifdef zox_debug_log_extract_touchscreen
                 zoxel_log(" > touchscreen pressed at [%f]\n", (float) zox_current_time);
                 zoxel_log("     + touchscreen down [%ix%i]\n", zevicePointerPosition->value.x, zevicePointerPosition->value.y);
@@ -37,6 +37,7 @@ void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_di
         }
     } else if (event.type == SDL_FINGERUP) {
         if (id->value == new_id) {
+            if (zox_touchscreen_has_lifted) return;
             finger_id = 0;
             set_id(world, zevice_pointer_entity, 0);
             // try set instead
@@ -44,10 +45,12 @@ void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_di
             devices_set_released_this_frame(&value, 1);
             devices_set_is_pressed(&value, 0);
             zox_set_only(zevice_pointer_entity, ZevicePointer, { value })*/
-            ZevicePointer *zevicePointer = ecs_get_mut(world, zevice_pointer_entity, ZevicePointer);
+            
+            /*ZevicePointer *zevicePointer = ecs_get_mut(world, zevice_pointer_entity, ZevicePointer);
             devices_set_released_this_frame(&zevicePointer->value, 1);
             devices_set_is_pressed(&zevicePointer->value, 0);
-            ecs_modified(world, zevice_pointer_entity, ZevicePointer);
+            ecs_modified(world, zevice_pointer_entity, ZevicePointer);*/
+
             /*#ifdef zox_debug_log_extract_touchscreen
                 zoxel_log(" > touchscreen released at [%f]\n", (float) zox_current_time);
             #endif*/
