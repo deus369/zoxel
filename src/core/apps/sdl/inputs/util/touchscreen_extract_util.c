@@ -11,33 +11,41 @@ void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_di
         int2_flip_y(&new_position, screen_dimensions);
         zevicePointerPosition->value = new_position;
         ecs_modified(world, zevice_pointer_entity, ZevicePointerPosition);
-        if (event.type == SDL_FINGERDOWN || event.type == SDL_FINGERUP) {
+        const SDL_TouchFingerEvent finger_event = event.tfinger;
+        if (event.type == SDL_FINGERDOWN) {
             ZevicePointer *zevicePointer = ecs_get_mut(world, zevice_pointer_entity, ZevicePointer);
-            if (event.type == SDL_FINGERDOWN) {
-                devices_set_pressed_this_frame(&zevicePointer->value, 1);
-                devices_set_is_pressed(&zevicePointer->value, 1);
-                #ifdef zox_debug_log_extract_touchscreen
-                    zoxel_log(" > touchscreen pressed at [%f]\n", (float) zox_current_time);
-                #endif
-            } else {
+            devices_set_pressed_this_frame(&zevicePointer->value, 1);
+            devices_set_is_pressed(&zevicePointer->value, 1);
+            zox_set(zevice_pointer_entity, ID, { finger_event.fingerId })
+            #ifdef zox_debug_log_extract_touchscreen
+                zoxel_log(" > touchscreen pressed at [%f]\n", (float) zox_current_time);
+            #endif
+            ecs_modified(world, zevice_pointer_entity, ZevicePointer);
+            #ifdef zox_debug_log_extract_touchscreen
+                zoxel_log("     + touchscreen down [%ix%i]\n", zevicePointerPosition->value.x, zevicePointerPosition->value.y);
+            #endif
+        } else if (event.type == SDL_FINGERUP) {
+            const ID *id = ecs_get(world, zevice_pointer_entity, ID);
+            if (id->value == finger_event.fingerId) {
+                ZevicePointer *zevicePointer = ecs_get_mut(world, zevice_pointer_entity, ZevicePointer);
                 devices_set_released_this_frame(&zevicePointer->value, 1);
                 devices_set_is_pressed(&zevicePointer->value, 0);
                 #ifdef zox_debug_log_extract_touchscreen
                     zoxel_log(" > touchscreen released at [%f]\n", (float) zox_current_time);
                 #endif
+                ecs_modified(world, zevice_pointer_entity, ZevicePointer);
             }
-            ecs_modified(world, zevice_pointer_entity, ZevicePointer);
-            #ifdef zox_debug_log_extract_touchscreen
-                zoxel_log("     + touchscreen down [%ix%i]\n", zevicePointerPosition->value.x, zevicePointerPosition->value.y);
-            #endif
         } else { // if (event.type == SDL_FINGERMOTION) {
-            ZevicePointerDelta *zevicePointerDelta = ecs_get_mut(world, zevice_pointer_entity, ZevicePointerDelta);
-            int2 motion_value = (int2) { (int) (event.tfinger.dx * screen_dimensions.x), (int) (- event.tfinger.dy * screen_dimensions.y) };
-            int2_add_int2_p(&zevicePointerDelta->value, motion_value);
-            ecs_modified(world, zevice_pointer_entity, ZevicePointerDelta);
-            #ifdef zox_debug_log_extract_touchscreen
-                zoxel_log(" - touchscreen moved [%ix%i]\n       - delta [%ix%i]\n", zevicePointerPosition->value.x, zevicePointerPosition->value.y, zevicePointerDelta->value.x, zevicePointerDelta->value.y);
-            #endif
+            const ID *id = ecs_get(world, zevice_pointer_entity, ID);
+            if (id->value == finger_event.fingerId) {
+                ZevicePointerDelta *zevicePointerDelta = ecs_get_mut(world, zevice_pointer_entity, ZevicePointerDelta);
+                int2 motion_value = (int2) { (int) (event.tfinger.dx * screen_dimensions.x), (int) (- event.tfinger.dy * screen_dimensions.y) };
+                int2_add_int2_p(&zevicePointerDelta->value, motion_value);
+                ecs_modified(world, zevice_pointer_entity, ZevicePointerDelta);
+                #ifdef zox_debug_log_extract_touchscreen
+                    zoxel_log(" - touchscreen moved [%ix%i]\n       - delta [%ix%i]\n", zevicePointerPosition->value.x, zevicePointerPosition->value.y, zevicePointerDelta->value.x, zevicePointerDelta->value.y);
+                #endif
+            }
         }
     }
 }

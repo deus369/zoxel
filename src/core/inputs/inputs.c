@@ -79,6 +79,7 @@ void spawn_prefabs_inputs(ecs_world_t *world) {
     spawn_prefab_mouse(world);
     spawn_prefab_gamepad(world);
     spawn_prefab_touchscreen(world);
+    // test_device_button_flags();
 }
 
 zox_begin_module(Inputs)

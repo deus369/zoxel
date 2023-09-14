@@ -5,6 +5,7 @@ ecs_entity_t spawn_prefab_zevice_pointer(ecs_world_t *world) {
     zox_prefab()
     zox_name("prefab_zevice_pointer")
     zox_add_tag(e, Zevice)
+    zox_set(e, ID, { 0 })
     zox_set(e, ZeviceDisabled, { 0 })
     zox_set(e, ZevicePointer, { 0 })
     zox_set(e, ZevicePointerPosition, { int2_zero })

@@ -26,7 +26,7 @@ void handle_touch_drag(ecs_world_t *world, ecs_entity_t zevice_entity, ecs_entit
         ecs_modified(world, linked_virtual_joystick, ZeviceStick);
         delete_virtual_joystick(world);
     } else if (devices_get_is_pressed(zevicePointer->value) && virtual_joystick) {
-        /*const ZevicePointerPosition *zevicePointerPosition = ecs_get(world, zevice_entity, ZevicePointerPosition);
+        const ZevicePointerPosition *zevicePointerPosition = ecs_get(world, zevice_entity, ZevicePointerPosition);
         const PixelPosition *virtual_joystick_position = ecs_get(world, virtual_joystick, PixelPosition);
         const Children *ui_children = ecs_get(world, virtual_joystick, Children);
         int2 delta_position = int2_sub(zevicePointerPosition->value, virtual_joystick_position->value);
@@ -44,7 +44,7 @@ void handle_touch_drag(ecs_world_t *world, ecs_entity_t zevice_entity, ecs_entit
         float2 input_value = (float2) { pixel_position->value.x / (float) size_limits.x, pixel_position->value.y / (float) size_limits.y };
         ZeviceStick *zeviceStick = ecs_get_mut(world, linked_virtual_joystick, ZeviceStick);
         zeviceStick->value = input_value;
-        ecs_modified(world, linked_virtual_joystick, ZeviceStick);*/
+        ecs_modified(world, linked_virtual_joystick, ZeviceStick);
     }
 }
 
