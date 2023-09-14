@@ -17,7 +17,7 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         } else if (deviceMode->value == zox_device_mode_gamepad) {
             snprintf(buffer, sizeof(buffer), "[gamepad]");
         } else if (deviceMode->value == zox_device_mode_touchscreen) {
-            snprintf(buffer, sizeof(buffer), "[touchscreen]");
+            snprintf(buffer, sizeof(buffer), "[touchscreen %i]", finger_id);
         }
         if (!is_zext(zextData, buffer)) {
             set_zext(zextData, buffer);
