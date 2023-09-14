@@ -12,6 +12,7 @@ void set_id(ecs_world_t *world, ecs_entity_t e, int new_id) {
     }
 }
 
+// note: for some reason steamdeck, seems to call SDL_FINGERDOWN and SDL_FINGERUP in same frame...
 void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) {
     if (!(event.type == SDL_FINGERMOTION || event.type == SDL_FINGERDOWN || event.type == SDL_FINGERUP)) return; // sets finger position
     if (!touchscreen_entity || !ecs_is_alive(world, touchscreen_entity)) return;
@@ -37,12 +38,14 @@ void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_di
         }
     } else if (event.type == SDL_FINGERUP) {
         if (id->value == new_id) {
-            if (zox_touchscreen_has_lifted) return;
-            set_id(world, zevice_pointer_entity, 0);
+            // if (zox_touchscreen_has_lifted) return;
             ZevicePointer *zevicePointer = ecs_get_mut(world, zevice_pointer_entity, ZevicePointer);
+            // this shouldn't happen... but on Steam Deck it does
+            if (devices_get_pressed_this_frame(zevicePointer->value)) return;
             devices_set_released_this_frame(&zevicePointer->value, 1);
             devices_set_is_pressed(&zevicePointer->value, 0);
             ecs_modified(world, zevice_pointer_entity, ZevicePointer);
+            set_id(world, zevice_pointer_entity, 0);
 
             // try set instead
             /*unsigned char value = ecs_get(world, zevice_pointer_entity, ZevicePointer)->value;
