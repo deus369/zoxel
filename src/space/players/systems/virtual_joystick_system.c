@@ -21,10 +21,10 @@ void handle_touch_drag(ecs_world_t *world, ecs_entity_t zevice_entity, ecs_entit
         const ZevicePointerPosition *zevicePointerPosition = ecs_get(world, zevice_entity, ZevicePointerPosition);
         if (is_playing) spawn_virtual_joystick(world, zevicePointerPosition->value);
     } else if (devices_get_released_this_frame(zevicePointer->value)) {
-        delete_virtual_joystick(world);
         ZeviceStick *zeviceStick = ecs_get_mut(world, linked_virtual_joystick, ZeviceStick);
         zeviceStick->value = float2_zero;
         ecs_modified(world, linked_virtual_joystick, ZeviceStick);
+        delete_virtual_joystick(world);
     } else if (devices_get_is_pressed(zevicePointer->value) && virtual_joystick) {
         /*const ZevicePointerPosition *zevicePointerPosition = ecs_get(world, zevice_entity, ZevicePointerPosition);
         const PixelPosition *virtual_joystick_position = ecs_get(world, virtual_joystick, PixelPosition);

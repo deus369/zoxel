@@ -31,6 +31,13 @@ ecs_entity_t spawn_zevice_pointer(ecs_world_t *world, unsigned char type, unsign
     return e;
 }
 
+unsigned char reset_device_pointer2(unsigned char *value) {
+    unsigned char previous_value = *value;
+    if (devices_get_pressed_this_frame(previous_value)) devices_set_pressed_this_frame(value, 0);
+    else if (devices_get_released_this_frame(previous_value)) devices_set_released_this_frame(value, 0);
+    return previous_value != *value;
+}
+
 unsigned char reset_device_pointer(ZevicePointer *zevicePointer) {
     unsigned char previous_value = zevicePointer->value;
     if (devices_get_pressed_this_frame(zevicePointer->value)) devices_set_pressed_this_frame(&zevicePointer->value, 0);
