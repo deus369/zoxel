@@ -1,6 +1,8 @@
+// todo: add to players ui links (ElementLinks)
+// todo: link each finger pointer to it's own virtual joystick entity
+// todo: link each virtual joystick entity to it's own virtual joystick ui
 // if player is using touchscreen, and touches, then create the joystick ui in new position
 // check if touches an invisible ui area
-// todo: add to players ui links (ElementLinks)
 // #define zoxel_mouse_emulate_touch
 // #define zoxel_disable_mouse_lock
 
@@ -19,12 +21,12 @@ void handle_touch_drag(ecs_world_t *world, ecs_entity_t zevice_entity, ecs_entit
         const ZevicePointerPosition *zevicePointerPosition = ecs_get(world, zevice_entity, ZevicePointerPosition);
         if (is_playing) spawn_virtual_joystick(world, zevicePointerPosition->value);
     } else if (devices_get_released_this_frame(zevicePointer->value)) {
-        delete_virtual_joystick(world);
+        /*delete_virtual_joystick(world);
         ZeviceStick *zeviceStick = ecs_get_mut(world, linked_virtual_joystick, ZeviceStick);
         zeviceStick->value = float2_zero;
-        ecs_modified(world, linked_virtual_joystick, ZeviceStick);
-    } else if (devices_get_is_pressed(zevicePointer->value) && virtual_joystick != 0) {
-        const ZevicePointerPosition *zevicePointerPosition = ecs_get(world, zevice_entity, ZevicePointerPosition);
+        ecs_modified(world, linked_virtual_joystick, ZeviceStick);*/
+    } else if (devices_get_is_pressed(zevicePointer->value) && virtual_joystick) {
+        /*const ZevicePointerPosition *zevicePointerPosition = ecs_get(world, zevice_entity, ZevicePointerPosition);
         const PixelPosition *virtual_joystick_position = ecs_get(world, virtual_joystick, PixelPosition);
         const Children *ui_children = ecs_get(world, virtual_joystick, Children);
         int2 delta_position = int2_sub(zevicePointerPosition->value, virtual_joystick_position->value);
@@ -42,7 +44,7 @@ void handle_touch_drag(ecs_world_t *world, ecs_entity_t zevice_entity, ecs_entit
         float2 input_value = (float2) { pixel_position->value.x / (float) size_limits.x, pixel_position->value.y / (float) size_limits.y };
         ZeviceStick *zeviceStick = ecs_get_mut(world, linked_virtual_joystick, ZeviceStick);
         zeviceStick->value = input_value;
-        ecs_modified(world, linked_virtual_joystick, ZeviceStick);
+        ecs_modified(world, linked_virtual_joystick, ZeviceStick);*/
     }
 }
 
@@ -67,7 +69,6 @@ void VirtualJoystickSystem(ecs_iter_t *it) {
                     const Children *zevices = ecs_get(world, device_entity, Children);
                     ecs_entity_t virtual_joystick = zevices->value[fingers_count]; // get linked virtual joystick
                     for (int k = 0; k < zevices->length; k++) {
-                        if (k >= fingers_count) continue;
                         ecs_entity_t zevice_entity = zevices->value[k];
                         if (ecs_has(world, zevice_entity, ZevicePointer)) {
                             handle_touch_drag(world, zevice_entity, virtual_joystick, is_playing);
