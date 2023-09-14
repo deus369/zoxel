@@ -2,6 +2,15 @@
 // #define zox_debug_log_element_raycasting
 int finger_id = 0;
 
+void set_id(ecs_world_t *world, ecs_entity_t e, int new_id) {
+    // zox_set(e, ID, { new_id })
+    ID *id = ecs_get_mut(world, e, ID);
+    if (id->value != new_id) {
+        id->value = new_id;
+        ecs_modified(world, e, ID);
+    }
+}
+
 void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) {
     if (!(event.type == SDL_FINGERMOTION || event.type == SDL_FINGERDOWN || event.type == SDL_FINGERUP)) return; // sets finger position
     if (!touchscreen_entity || !ecs_is_alive(world, touchscreen_entity)) return;
@@ -13,14 +22,12 @@ void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_di
     if (event.type == SDL_FINGERDOWN) {
         if (id->value == 0) {
             finger_id = new_id;
-            // zox_set(zevice_pointer_entity, ID, { new_id })
-            ID *id = ecs_get_mut(world, zevice_pointer_entity, ID);
-            id->value = new_id;
-            ecs_modified(world, zevice_pointer_entity, ID);
+            set_id(world, zevice_pointer_entity, new_id);
             ZevicePointer *zevicePointer = ecs_get_mut(world, zevice_pointer_entity, ZevicePointer);
             devices_set_pressed_this_frame(&zevicePointer->value, 1);
             devices_set_is_pressed(&zevicePointer->value, 1);
             ecs_modified(world, zevice_pointer_entity, ZevicePointer);
+            zox_set_only(zevice_pointer_entity, ZevicePointer, { zevicePointer->value })
             /*#ifdef zox_debug_log_extract_touchscreen
                 zoxel_log(" > touchscreen pressed at [%f]\n", (float) zox_current_time);
                 zoxel_log("     + touchscreen down [%ix%i]\n", zevicePointerPosition->value.x, zevicePointerPosition->value.y);
@@ -31,17 +38,12 @@ void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_di
     } else if (event.type == SDL_FINGERUP) {
         if (id->value == new_id) {
             finger_id = 0;
-            // zox_set(zevice_pointer_entity, ID, { 0 })
-            ID *id = ecs_get_mut(world, zevice_pointer_entity, ID);
-            id->value = 0;
-            ecs_modified(world, zevice_pointer_entity, ID);
-
+            set_id(world, zevice_pointer_entity, 0);
             // try set instead
             /*unsigned char value = ecs_get(world, zevice_pointer_entity, ZevicePointer)->value;
             devices_set_released_this_frame(&value, 1);
             devices_set_is_pressed(&value, 0);
             zox_set_only(zevice_pointer_entity, ZevicePointer, { value })*/
-
             ZevicePointer *zevicePointer = ecs_get_mut(world, zevice_pointer_entity, ZevicePointer);
             devices_set_released_this_frame(&zevicePointer->value, 1);
             devices_set_is_pressed(&zevicePointer->value, 0);

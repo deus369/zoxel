@@ -2,12 +2,10 @@
 #define zoxel_game_ui
 
 // settings
-//const color virtual_joystick_color = (color) { 180, 180, 180, 125 };
-//const color virtual_joystick_pointer_color = (color) { 88, 88, 88, 165 };
 const color virtual_joystick_color = (color) { 44, 33, 33, 55 };
 const color virtual_joystick_pointer_color = (color) { 88, 22, 22, 200 };
-const int2 virtual_joystick_size = (int2) { 240, 240 };
-const int2 virtual_joystick_pointer_size = (int2) { 100, 100 };
+const int2 virtual_joystick_size = (int2) { 300, 300 }; // 240
+const int2 virtual_joystick_pointer_size = (int2) { 120, 120 }; // 100
 // zoxel_declare_components
 zox_declare_tag(MainMenu)
 zox_declare_tag(OptionsUI)
