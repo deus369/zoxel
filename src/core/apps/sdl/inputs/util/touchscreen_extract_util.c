@@ -23,7 +23,6 @@ void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_di
     int new_id = finger_event.fingerId + 1;
     if (event.type == SDL_FINGERDOWN) {
         if (id->value == 0) {
-            zox_touchscreen_has_lifted = 1; // make sure doesn't release in same frame
             set_id(world, zevice_pointer_entity, new_id);
             ZevicePointer *zevicePointer = ecs_get_mut(world, zevice_pointer_entity, ZevicePointer);
             devices_set_pressed_this_frame(&zevicePointer->value, 1);
@@ -38,7 +37,6 @@ void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_di
         }
     } else if (event.type == SDL_FINGERUP) {
         if (id->value == new_id) {
-            // if (zox_touchscreen_has_lifted) return;
             ZevicePointer *zevicePointer = ecs_get_mut(world, zevice_pointer_entity, ZevicePointer);
             // this shouldn't happen... but on Steam Deck it does
             if (devices_get_pressed_this_frame(zevicePointer->value)) return;
@@ -46,13 +44,11 @@ void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_di
             devices_set_is_pressed(&zevicePointer->value, 0);
             ecs_modified(world, zevice_pointer_entity, ZevicePointer);
             set_id(world, zevice_pointer_entity, 0);
-
             // try set instead
             /*unsigned char value = ecs_get(world, zevice_pointer_entity, ZevicePointer)->value;
             devices_set_released_this_frame(&value, 1);
             devices_set_is_pressed(&value, 0);
             zox_set_only(zevice_pointer_entity, ZevicePointer, { value })*/
-
             /*#ifdef zox_debug_log_extract_touchscreen
                 zoxel_log(" > touchscreen released at [%f]\n", (float) zox_current_time);
             #endif*/
@@ -67,7 +63,6 @@ void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_di
             int2 motion_value = (int2) { (int) (finger_event.dx * screen_dimensions.x), (int) (- finger_event.dy * screen_dimensions.y) };
             int2_add_int2_p(&zevicePointerDelta->value, motion_value);
             ecs_modified(world, zevice_pointer_entity, ZevicePointerDelta);
-
             /*#ifdef zox_debug_log_extract_touchscreen
                 zoxel_log(" - touchscreen moved [%ix%i]\n       - delta [%ix%i]\n", zevicePointerPosition->value.x, zevicePointerPosition->value.y, zevicePointerDelta->value.x, zevicePointerDelta->value.y);
             #endif*/
@@ -85,7 +80,7 @@ void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_di
     #endif
 }
 
- /*else if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
+/*else if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
     if (event.motion.which != SDL_TOUCH_MOUSEID) return; // don't trigger events if not touch input
     int2 new_position = (int2) { event.motion.x, event.motion.y };
     new_position.y = screen_dimensions.y - new_position.y;
@@ -95,5 +90,5 @@ void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_di
     if (button == SDL_BUTTON_LEFT) {
         set_sdl_mouse_button(&touchscreen->primary_touch.value, event.type);
     }
-}*/ 
+}*/
 // touchscreen->primary_touch.delta = int2_add(touchscreen->primary_touch.delta, );

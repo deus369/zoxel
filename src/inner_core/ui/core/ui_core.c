@@ -81,14 +81,14 @@ if (!headless) {
         zox_system(ElementActivateSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterTarget, [out] RaycasterResult)
         zox_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [out] NavigatorState, [out] NavigatorTimer, [out] RaycasterTarget)
     #endif
-    // [out] MaterialInstancedGPULink, 
     zox_system_1(ElementMeshSystem, main_thread_pipeline, [none] Element, [in] PixelSize, [in] MeshAlignment, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshGPULink, [out] TextureGPULink, [out] UvsGPULink, [none] !Element3D)
     zox_system_1(Element3DMeshSystem, main_thread_pipeline, [none] Element3D, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture,  [out] MeshGPULink, [out] UvsGPULink, [out] ColorsGPULink, [out] TextureGPULink) // , [none] Position3D)
 }
-zox_system(BillboardSystem, EcsOnStore, [none] ElementBillboard, [in] CameraLink, [in] Position3D, [out] Rotation3D)
-zox_system(UITrailSystem, EcsOnStore, [in] UIHolderLink, [in] UITrail, [out] Position3D)    // todo: put back to EcsPostUpdate - can't find out where character position updates atm
-zox_system(ResizeElementSystem, 0, [in] CanvasLink, [in] ParentLink)
+// EcsOnStore EcsOnUpdate
+zox_system(BillboardSystem, zox_transforms_stage, [none] ElementBillboard, [in] CameraLink, [in] Position3D, [out] Rotation3D)
+zox_system(UITrailSystem, zox_transforms_stage, [in] UIHolderLink, [in] UITrail, [out] Position3D)    // todo: put back to EcsPostUpdate - can't find out where character position updates atm
 zox_system_1(ButtonClickEventSystem, main_thread_pipeline, [none] Element, [out] ClickState, [in] ClickEvent) // EcsPostUpdate EcsPreStore EcsOnStore
+zox_system(ResizeElementSystem, 0, [in] CanvasLink, [in] ParentLink)
 zoxel_end_module(UICore)
 
 // \todo Display a UI Element anchored, with a pixel position.

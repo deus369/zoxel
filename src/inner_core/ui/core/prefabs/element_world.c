@@ -6,12 +6,12 @@ ecs_entity_t spawn_prefab_element3D(ecs_world_t *world) {
     zox_prefab()
     zox_add_tag(e, Element3D)
     zox_add_tag(e, ElementBillboard)
-    add_ui_components_world(world, e);
-    zox_add_tag(e, FrameTexture)
+    add_ui_components_world(world, e, (float2) { 0.2f, 0.05f });
+    zox_add_tag(e, FillTexture)
     zox_set(e, FrameCorner, { 0 })
     zox_set(e, OutlineThickness, { 1 })
     zox_set(e, SelectState, { 0 })
-    zox_set(e, Color, {{ 125, 125, 125, 255 }})
+    zox_set(e, Color, {{ 66, 12, 12, 0 }}) // todo: add alpha to a texture3D shader variant
     zox_add_tag(e, SingleMaterial)
     zox_set(e, CameraLink, { 0 })
     zox_set(e, UIHolderLink, { 0 })
@@ -26,7 +26,7 @@ ecs_entity_t spawn_prefab_element3D(ecs_world_t *world) {
 
 // , ecs_entity_t camera, float3 offset
 ecs_entity_t spawn_element3D(ecs_world_t *world, ecs_entity_t ui_holder) {
-    int2 pixel_size = (int2) { 32, 8 }; // 8
+    int2 pixel_size = (int2) { 32, 8 };
     zox_instance(prefab_element_world)
     zox_set_only(e, UIHolderLink, { ui_holder })
     zox_set_only(e, CameraLink, { main_cameras[0] })
@@ -38,3 +38,25 @@ ecs_entity_t spawn_element3D(ecs_world_t *world, ecs_entity_t ui_holder) {
     #endif
     return e;
 }
+
+// used atm for statbar front bar
+ecs_entity_t spawn_element3D_attach(ecs_world_t *world, ecs_entity_t ui_holder, ecs_entity_t parent, float3 offset) {
+    int2 pixel_size = (int2) { 12, 6 };
+    float2 mesh_scale = (float2) { 0.17f, 0.034f };
+    zox_instance(prefab_element_world)
+    zox_set(e, ParentLink, { parent })
+    zox_set(e, LocalPosition3D, { offset })
+    zox_set_only(e, CameraLink, { main_cameras[0] })
+    zox_set_only(e, CanvasLink, { main_canvas })
+    zox_set_only(e, PixelSize, { pixel_size })
+    zox_set_only(e, TextureSize, { pixel_size })
+    zox_set_only(e, Color, {{ 188, 25, 25, 255 }})
+    prefab_set_mesh3D_vertices(world, e, square_vertices, 4, mesh_scale);
+    #ifdef zoxel_debug_spawns
+        zoxel_log(" > spawned prefab element_world [%lu]\n", (long int) e);
+    #endif
+    return e;
+}
+
+//zox_set_only(e, UIHolderLink, { ui_holder })
+//zox_set(e, UITrail, { offset })

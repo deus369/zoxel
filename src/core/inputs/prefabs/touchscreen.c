@@ -53,10 +53,7 @@ unsigned char touchscreen_is_any_input(ecs_world_t *world, ecs_entity_t touchscr
     return 0;
 }
 
-unsigned char zox_touchscreen_has_lifted = 0;
-
 void device_reset_touchscreen(ecs_world_t *world, ecs_entity_t touchscreen) {
-    zox_touchscreen_has_lifted = 0;
     if (!touchscreen || !ecs_is_alive(world, touchscreen)) return;
     const Children *children = ecs_get(world, touchscreen, Children);
     for (int i = 0; i < children->length; i++) {
@@ -71,6 +68,3 @@ void device_reset_touchscreen(ecs_world_t *world, ecs_entity_t touchscreen) {
         }
     }
 }
-
-//unsigned char pointer_value = ecs_get(world, e, ZevicePointer)->value;
-//if (reset_device_pointer2(&pointer_value)) zox_set_only(e, ZevicePointer, { pointer_value })

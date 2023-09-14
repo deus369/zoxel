@@ -38,6 +38,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     zox_set(e, ChunkLink, { 0 })
     zox_set(e, ChunkPosition, { int3_zero })
     zox_set(e, VoxelPosition, {{ 0, 0, 0 }})
+    zox_set(e, ElementLinks, { 0, NULL})
     if (!headless) ecs_remove(world, e, MaterialGPULink);
     if (!headless) add_gpu_colors(world, e);
     ecs_defer_end(world);
@@ -57,7 +58,12 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file
     zox_set_only(e, RenderLod, { lod })
     spawn_gpu_mesh(world, e);
     spawn_gpu_colors(world, e);
-    spawn_element3D(world, e);  // spawn the uis
+    ecs_entity_t statbar = spawn_statbar3D(world, e);
+    ElementLinks elementLinks = { };
+    initialize_memory_component_non_pointer(elementLinks, ecs_entity_t, 1);
+    elementLinks.value[0] = statbar;
+    zox_set_only(e, ElementLinks, { elementLinks.length, elementLinks.value })
+    // spawn_element3D(world, e);  // spawn the uis
     #ifndef zox_disable_characters3D_voxes
         set_vox_from_vox_file(world, e, vox);
     #endif

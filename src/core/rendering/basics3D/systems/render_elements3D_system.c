@@ -1,8 +1,8 @@
 // this for 3D uis
 // #define zox_time_render3D_textured_system
-extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
+// extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
 extern unsigned char can_render_ui(ecs_world_t *world, ecs_entity_t e);
-unsigned char has_rendered_elements = 0;
+// unsigned char has_rendered_elements = 0;
 // todo: this produces a memory leak on newer nvidia driver... not sure why
 
 void RenderElements3DSystem(ecs_iter_t *it) {
@@ -47,8 +47,6 @@ void RenderElements3DSystem(ecs_iter_t *it) {
         opengl_bind_texture(textureGPULink->value);
         opengl_set_float3(attributes_textured3D->position, position3D->value);
         opengl_set_float4(attributes_textured3D->rotation, rotation3D->value);
-        // glUniform3f(attributes_textured3D->position, position3D->value.x, position3D->value.y, position3D->value.z);
-        // glUniform4f(attributes_textured3D->rotation, rotation3D->value.x, rotation3D->value.y, rotation3D->value.z, rotation3D->value.w);
         #ifndef zox_disable_render_ui_3D
             opengl_render(meshIndicies2->length);
         #endif

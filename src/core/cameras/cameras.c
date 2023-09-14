@@ -2,6 +2,8 @@
 #define zoxel_cameras
 
 // zoxel_settings
+// EcsPreStore | EcsPostUpdate
+#define zox_camera_stage EcsPreStore
 #include "settings/settings.c"
 // shared data
 ecs_entity_t main_cameras[max_cameras];
@@ -68,8 +70,8 @@ zox_define_component(CameraMode)
 // zoxel_system_defines
 zox_system(Camera2DFollowSystem, EcsPostUpdate, [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D)
 zox_system(Camera3DFollowSystem, EcsPostUpdate, [in] CameraFollowLink, [in] LocalPosition3D, [out] Position3D)
-zox_system(ViewMatrixSystem, EcsPostUpdate, [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)
-zox_system(ProjectionMatrixSystem, EcsPreStore, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
+zox_system(ViewMatrixSystem, zox_camera_stage, [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)
+zox_system(ProjectionMatrixSystem, zox_camera_stage, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
 zoxel_end_module(Cameras)
 
 //   todo: Custom name for namespaces used in flecs

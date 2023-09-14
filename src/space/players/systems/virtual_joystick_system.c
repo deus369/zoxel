@@ -58,7 +58,6 @@ void VirtualJoystickSystem(ecs_iter_t *it) {
     const RaycasterResult *raycasterResults = ecs_field(it, RaycasterResult, 4);
     for (int i = 0; i < it->count; i++) {
         const RaycasterResult *raycasterResult = &raycasterResults[i];
-        // if (raycasterResult->value) zoxel_log(" > racasterResult is 1\n");
         if (raycasterResult->value) continue;   // if raycasted ui, don't process
         const DeviceLinks *deviceLinks = &deviceLinkss[i];
         const DeviceMode *deviceMode = &deviceModes[i];
@@ -111,11 +110,3 @@ void VirtualJoystickSystem(ecs_iter_t *it) {
         }
     }
 } zox_declare_system(VirtualJoystickSystem)
-
-//float add_abs = float_abs(input_value.x) + float_abs(input_value.y);
-//if (add_abs > 1.0f) float2_divide_p(&input_value, add_abs);
-// input_value.x *= 0.98f;
-// input_value.y *= 0.98f;
-//if (add_abs > 1.0f) float2_normalize_p(&input_value);
-//input_value.x *= 0.7f;
-//input_value.y *= 0.7f;

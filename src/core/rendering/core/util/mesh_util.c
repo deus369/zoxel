@@ -12,10 +12,10 @@ void prefab_set_mesh2D_vertices(ecs_world_t *world, ecs_entity_t e, const float2
     zox_set(e, MeshVertices2D, { meshVertices.length, meshVertices.value })
 }
 
-void prefab_set_mesh3D_vertices(ecs_world_t *world, ecs_entity_t e, const float2 vertices[], int length) {
+void prefab_set_mesh3D_vertices(ecs_world_t *world, ecs_entity_t e, const float2 vertices[], int length, float2 scale) {
     MeshVertices meshVertices = { };
     initialize_memory_component_non_pointer(meshVertices, float3, length)
-    for (int i = 0; i < length; i++) meshVertices.value[i] = (float3) { vertices[i].x * 0.2f, vertices[i].y * 0.05f, 0 };
+    for (int i = 0; i < length; i++) meshVertices.value[i] = (float3) { vertices[i].x * scale.x, vertices[i].y * scale.y, 0 };
     zox_set(e, MeshVertices, { meshVertices.length, meshVertices.value })
 }
 
