@@ -1,7 +1,8 @@
 ecs_entity_t prefab_texture_dirt;
 
 ecs_entity_t spawn_prefab_texture_dirt(ecs_world_t *world) {
-    int2 texture_size = (int2) { 16, 16 };
+    // int2 texture_size = (int2) { 16, 16 };
+    int2 texture_size = (int2) { 32, 32 };
     zox_prefab()
     zox_name("prefab_texture_dirt")
     // zox_add_tag(e, DirtTexture)

@@ -15,7 +15,7 @@ ecs_entity_t spawn_prefab_statbar3D(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_statbar3D(ecs_world_t *world, ecs_entity_t ui_holder) {
-    int2 pixel_size = (int2) { 12, 6 };
+    int2 pixel_size = (int2) { 1, 1 }; // 12, 6
     zox_instance(prefab_statbar3D)
     zox_set_only(e, UIHolderLink, { ui_holder })
     zox_set_only(e, CameraLink, { main_cameras[0] })
@@ -25,7 +25,7 @@ ecs_entity_t spawn_statbar3D(ecs_world_t *world, ecs_entity_t ui_holder) {
     // spawn child, percentage overlay
     Children children = { };
     initialize_memory_component_non_pointer(children, ecs_entity_t, 1);
-    children.value[0] = spawn_element3D_attach(world, ui_holder, e, (float3) { 0, 0.0f, 0.006f });
+    children.value[0] = spawn_element3D_attach(world, ui_holder, e, (float3) { 0, 0.0f, 0.010f }); // 0.006
     zox_set_only(e, Children, { children.length, children.value })
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned prefab element_world [%lu]\n", (long int) e);

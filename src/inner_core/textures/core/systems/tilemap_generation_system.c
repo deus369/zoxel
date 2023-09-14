@@ -3,7 +3,8 @@
 // todo: debug why array indexes go out of bounds!
 
 void TilemapGenerationSystem(ecs_iter_t *it) {
-    int2 texture_size = (int2) { 16, 16 };
+    int2 default_texture_size = (int2) { 32, 32 }; // 16
+    ecs_world_t *world = it->world;
     const TilemapSize *tilemapSizes = ecs_field(it, TilemapSize, 2);
     const TextureLinks *textureLinkss = ecs_field(it, TextureLinks, 3);
     GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 4);
@@ -27,8 +28,10 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         TilemapUVs *tilemapUVs = &tilemapUVss[i];
         float tile_size = 1.0f / ((float) tilemapSize->value.x);
         // generate textureSize based on TilemapSize
-        textureSize->value.x = tilemapSize->value.x * 16;
-        textureSize->value.y = tilemapSize->value.y * 16;
+
+        const TextureSize *first_texture_size = ecs_get(world, textureLinks->value[0], TextureSize);
+        textureSize->value.x = tilemapSize->value.x * first_texture_size->value.x;
+        textureSize->value.y = tilemapSize->value.y * first_texture_size->value.y;
         re_initialize_memory_component(textureData, color, textureSize->value.x * textureSize->value.y)
         re_initialize_memory_component(tilemapUVs, float2, textureLinks->length * 4)
         // todo: set uvs per each texture, float2 x 4 per texture
@@ -39,18 +42,19 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         int2 texture_position = int2_zero;
         for (texture_position.y = 0; texture_position.y < tilemapSize->value.y; texture_position.y++) {
             for (texture_position.x = 0; texture_position.x < tilemapSize->value.x; texture_position.x++) {
-                int2 tilemap_position = (int2) { texture_position.x * 16, texture_position.y * 16 };
+                int2 tilemap_position = (int2) { texture_position.x * first_texture_size->value.x, texture_position.y * first_texture_size->value.y };
                 // call function here to place texture in tilemap
                 // perhaps just list all the float2s per texture inside a float2 array called TilemapUVs
                 ecs_entity_t texture_entity = textureLinks->value[texture_entity_index];
-                const TextureData *voxel_texture_data = ecs_get(it->world, texture_entity, TextureData);
+                const TextureData *voxel_texture_data = ecs_get(world, texture_entity, TextureData);
+                const TextureSize *voxel_texture_size = ecs_get(world, texture_entity, TextureSize);
                 int2 pixel_position = int2_zero;
-                for (pixel_position.x = 0; pixel_position.x < 16; pixel_position.x++) {
-                    for (pixel_position.y = 0; pixel_position.y < 16; pixel_position.y++) {
+                for (pixel_position.x = 0; pixel_position.x < voxel_texture_size->value.x; pixel_position.x++) {
+                    for (pixel_position.y = 0; pixel_position.y < voxel_texture_size->value.y; pixel_position.y++) {
                         int2 tilemap_pixel_position = int2_add(pixel_position, tilemap_position);
                         int tilemap_index = int2_array_index(tilemap_pixel_position, textureSize->value);
                         if (tilemap_index >= textureData->length) continue;
-                        int texture_index = int2_array_index(pixel_position, texture_size);     // voxel_texture_size->value);
+                        int texture_index = int2_array_index(pixel_position, voxel_texture_size->value);
                         if (texture_index >= voxel_texture_data->length) continue;
                         textureData->value[tilemap_index] = voxel_texture_data->value[texture_index];
                     }
