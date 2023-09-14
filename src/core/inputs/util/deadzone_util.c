@@ -7,6 +7,9 @@ float joystick_deadzones_values[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 float joystick_deadzones_new_values[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 float apply_joystick_deadzone(int index, float axis_value) {
+    #if defined(zox_disable_gamepad_deadzones)
+        return axis_value;
+    #endif
     // checks for deadzones
     if (joystick_deadzones[index] == 0) {
         // can start deadzoning?

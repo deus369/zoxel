@@ -1,3 +1,4 @@
+// #define zox_log_gamepad_button_pressed
 SDL_Joystick *joystick;         // todo: connect this to gamepad
 int joysticks_count;
 
@@ -101,14 +102,22 @@ unsigned char set_gamepad_button2(ZeviceButton *zeviceButton, SDL_Joystick *joys
     unsigned char old_value = zeviceButton->value;
     unsigned char new_is_pressed = SDL_JoystickGetButton(joystick, index);
     unsigned char is_pressed = devices_get_is_pressed(zeviceButton->value);
-    // if (!is_pressed && new_is_pressed) zoxel_log("  [%i] is pressed this frame\n", index);
+    #ifdef zox_log_gamepad_button_pressed
+        if (!is_pressed && new_is_pressed) zoxel_log("  [%i] is pressed this frame\n", index);
+    #endif
     if (!is_pressed && new_is_pressed) devices_set_pressed_this_frame(&zeviceButton->value, 1);
     if (is_pressed && !new_is_pressed) devices_set_released_this_frame(&zeviceButton->value, 1);
     devices_set_is_pressed(&zeviceButton->value, new_is_pressed);
-    // if (new_is_pressed) zoxel_log("  [%i] new_is_pressed? [%i]\n", index, devices_get_is_pressed(zeviceButton->value));
+    /*#ifdef zox_log_gamepad_button_pressed
+        if (new_is_pressed) zoxel_log("  [%i] new_is_pressed? [%i]\n", index, devices_get_is_pressed(zeviceButton->value));
+    #endif*/
+    // 
     /*if (!key->is_pressed && is_pressed) key->pressed_this_frame = 1;
     if (key->is_pressed && !is_pressed) key->released_this_frame = 1;
     key->is_pressed = is_pressed;*/
+    #ifdef zox_log_gamepad_button_pressed
+        if (zeviceButton->value != old_value) zoxel_log("  [%i] has updated state\n", index);
+    #endif
     return zeviceButton->value != old_value;
 }
 

@@ -2,10 +2,11 @@
 // #define zoxel_include_vulkan
 #define zoxel_include_players
 
-// #define zoxel_set_camera_ortho
+#define zoxel_set_camera_ortho
 // #define zoxel_set_camera_topdown
-#define zoxel_set_camera_firstperson
+// #define zoxel_set_camera_firstperson
 #define zox_disable_gamepad_stick_as_any_input // used for samsung phone, it's buggy af
+#define zox_disable_gamepad_deadzones
 // #define zoxel_disable_gamepads
 #define zoxel_start_with_debug_ui
 #define zoxel_has_random_jumping

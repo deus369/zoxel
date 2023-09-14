@@ -40,13 +40,6 @@ void handle_touch_drag(ecs_world_t *world, ecs_entity_t zevice_entity, ecs_entit
         int2_limit(&pixel_position->value, size_limits);
         ecs_modified(world, joystick_pointer, PixelPosition);
         float2 input_value = (float2) { pixel_position->value.x / (float) size_limits.x, pixel_position->value.y / (float) size_limits.y };
-        //float add_abs = float_abs(input_value.x) + float_abs(input_value.y);
-        //if (add_abs > 1.0f) float2_divide_p(&input_value, add_abs);
-        // input_value.x *= 0.98f;
-        // input_value.y *= 0.98f;
-        //if (add_abs > 1.0f) float2_normalize_p(&input_value);
-        //input_value.x *= 0.7f;
-        //input_value.y *= 0.7f;
         ZeviceStick *zeviceStick = ecs_get_mut(world, linked_virtual_joystick, ZeviceStick);
         zeviceStick->value = input_value;
         ecs_modified(world, linked_virtual_joystick, ZeviceStick);
@@ -117,3 +110,11 @@ void VirtualJoystickSystem(ecs_iter_t *it) {
         }
     }
 } zox_declare_system(VirtualJoystickSystem)
+
+//float add_abs = float_abs(input_value.x) + float_abs(input_value.y);
+//if (add_abs > 1.0f) float2_divide_p(&input_value, add_abs);
+// input_value.x *= 0.98f;
+// input_value.y *= 0.98f;
+//if (add_abs > 1.0f) float2_normalize_p(&input_value);
+//input_value.x *= 0.7f;
+//input_value.y *= 0.7f;

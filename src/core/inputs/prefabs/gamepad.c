@@ -60,20 +60,6 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, unsigned char gamepad_type) {
         if (i == 1 && gamepad_type == zox_gamepad_layout_type_steamdeck) joystick_index++;
         children.value[j] = spawn_device_stick(world, i, joystick_index);
     }
-    /*
-        set_gamepad_button(&gamepad->a, joystick, 0);
-        set_gamepad_button(&gamepad->b, joystick, 1);
-        set_gamepad_button(&gamepad->x, joystick, 2);
-        set_gamepad_button(&gamepad->y, joystick, 3);
-        set_gamepad_button(&gamepad->lb, joystick, 4);
-        set_gamepad_button(&gamepad->rb, joystick, 5);
-        set_gamepad_button(&gamepad->select, joystick, 6);
-        set_gamepad_button(&gamepad->start, joystick, 7);
-        set_gamepad_button(&gamepad->left_stick_push, joystick, 9);
-        set_gamepad_button(&gamepad->right_stick_push, joystick, 10);
-        set_gamepad_button(&gamepad->lt, joystick, 11);
-        set_gamepad_button(&gamepad->rt, joystick, 12);
-    */
     zox_set_only(e, Children, { children.length, children.value })
     gamepad_entity = e;
     #ifdef zoxel_debug_spawns
@@ -85,18 +71,6 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, unsigned char gamepad_type) {
 unsigned char zevice_stick_has_input(const ZeviceStick *zeviceStick, float cutoff) {
     return float_abs(zeviceStick->value.x) > cutoff || float_abs(zeviceStick->value.y) > cutoff;
 }
-
-/*void device_reset_gamepad(ecs_world_t *world, ecs_entity_t gamepad) {
-    if (!gamepad || !ecs_is_alive(world, gamepad)) return;
-    const Children *children = ecs_get(world, gamepad, Children);
-    for (int i = 0; i < children->length; i++) {
-        ecs_entity_t e = children->value[i];
-        if (ecs_has(world, e, ZeviceButton)) {
-            ZeviceButton *zeviceButton = ecs_get_mut(world, e, ZeviceButton);
-            if (reset_device_button(zeviceButton)) ecs_modified(world, e, ZeviceButton);
-        }
-    }
-}*/
 
 unsigned char gamepad_is_any_input(ecs_world_t *world, ecs_entity_t gamepad) {
     const Children *children = ecs_get(world, gamepad, Children);
@@ -111,6 +85,7 @@ unsigned char gamepad_is_any_input(ecs_world_t *world, ecs_entity_t gamepad) {
         #endif
         if (ecs_has(world, e, ZeviceButton)) {
             const ZeviceButton *zeviceButton = ecs_get(world, e, ZeviceButton);
+            // if (devices_get_pressed_this_frame(zeviceButton->value)) zoxel_log("    > %i pressed, gamepad has input\n", i);
             if (devices_get_pressed_this_frame(zeviceButton->value)) return 1;
         }
     }
@@ -126,3 +101,29 @@ ecs_modified(world, e, ZeviceButton);*/
     if (set_gamepad_axis2(zeviceStick, joystick, realButtonIndex->value)) ecs_modified(world, e, ZeviceStick);
     // if (ecs_has(world, e, ZeviceButton)) zoxel_log("    ! error with device stick, contains device button data[%i]\n", e);
 } else */
+    /*
+        set_gamepad_button(&gamepad->a, joystick, 0);
+        set_gamepad_button(&gamepad->b, joystick, 1);
+        set_gamepad_button(&gamepad->x, joystick, 2);
+        set_gamepad_button(&gamepad->y, joystick, 3);
+        set_gamepad_button(&gamepad->lb, joystick, 4);
+        set_gamepad_button(&gamepad->rb, joystick, 5);
+        set_gamepad_button(&gamepad->select, joystick, 6);
+        set_gamepad_button(&gamepad->start, joystick, 7);
+        set_gamepad_button(&gamepad->left_stick_push, joystick, 9);
+        set_gamepad_button(&gamepad->right_stick_push, joystick, 10);
+        set_gamepad_button(&gamepad->lt, joystick, 11);
+        set_gamepad_button(&gamepad->rt, joystick, 12);
+    */
+
+/*void device_reset_gamepad(ecs_world_t *world, ecs_entity_t gamepad) {
+    if (!gamepad || !ecs_is_alive(world, gamepad)) return;
+    const Children *children = ecs_get(world, gamepad, Children);
+    for (int i = 0; i < children->length; i++) {
+        ecs_entity_t e = children->value[i];
+        if (ecs_has(world, e, ZeviceButton)) {
+            ZeviceButton *zeviceButton = ecs_get_mut(world, e, ZeviceButton);
+            if (reset_device_button(zeviceButton)) ecs_modified(world, e, ZeviceButton);
+        }
+    }
+}*/

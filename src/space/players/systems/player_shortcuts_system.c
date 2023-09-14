@@ -95,6 +95,11 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
                     // toggle fog
                     is_render_fog = !is_render_fog;
                     zoxel_log("    > is_render_fog set [%i]\n", is_render_fog);
+                } else if (keyboard->y.pressed_this_frame) {
+                    // toggle fog
+                    unsigned char new_camera_mode = camera_mode + 1;
+                    if (new_camera_mode > zox_camera_mode_topdown) new_camera_mode = 0;
+                    set_camera_mode(world, new_camera_mode);
                 }
             }
         }

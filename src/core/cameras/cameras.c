@@ -3,6 +3,7 @@
 
 // zoxel_settings
 #include "settings/settings.c"
+// shared data
 ecs_entity_t main_cameras[max_cameras];
 ecs_entity_t ui_cameras[1];
 // zoxel_component_declares
@@ -21,6 +22,7 @@ zox_entity_component(CameraTarget)
 zox_entity_component(CameraFollowLink)
 zox_byte_component(FreeRoam)
 zox_byte_component(CanFreeRoam)
+zox_byte_component(CameraMode)
 // zoxel_prefab_includes
 #include "prefabs/base_camera.c"
 #include "prefabs/camera2D.c"
@@ -41,6 +43,7 @@ void spawn_prefabs_cameras(ecs_world_t *world) {
 }
 
 zox_begin_module(Cameras)
+// for (int i = 0; i < max_cameras; i++) main_cameras[i] = 0;
 // zoxel_component_defines
 zox_define_tag(Camera)
 zox_define_tag(FirstPersonCamera)
@@ -57,6 +60,8 @@ zox_define_component(CameraNearDistance)
 zox_define_component(FreeRoam)
 zox_define_component(CanFreeRoam)
 zox_define_component(CameraFollowLink)
+zox_define_component(CameraMode)
+// zoxel_system_defines
 zox_system(Camera2DFollowSystem, EcsPostUpdate, [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D)
 zox_system(Camera3DFollowSystem, EcsPostUpdate, [in] CameraFollowLink, [in] LocalPosition3D, [out] Position3D)
 zox_system(ViewMatrixSystem, EcsPostUpdate, [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)

@@ -52,43 +52,17 @@ void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t c
     if (character == 0) return;
     // zoxel_log(" > attaching to character\n");
     // attach the camera with transform restraints
-    const Position3D *position3D = ecs_get(world, character, Position3D);
-    const Rotation3D *character3D_rotation3D = ecs_get(world, character, Rotation3D);
-    float3 local_camera_position;
-    float4 local_rotation;
-    float4 new_rotation;
-    if (camera_mode == zox_camera_mode_topdown || camera_mode == zox_camera_mode_ortho) {
-        local_camera_position.x = 0;
-        local_camera_position.y = vox_scale * 22;
-        local_camera_position.z = 0;
-        float3 local_euler = (float3) { -90, 180, 0 };
-        // todo: base zoom on phone orientation
-        if (camera_mode == zox_camera_mode_ortho) {
-            local_euler.x += 45;
-            local_euler.y += 45;
-            local_camera_position.y = vox_scale * 12 * 2;
-            local_camera_position.x -= vox_scale * 8 * 2;
-            local_camera_position.z -= vox_scale * 8 * 2;
-        }
-        float3_multiply_float_p(&local_euler, degreesToRadians);
-        local_rotation = quaternion_from_euler(local_euler);
-        new_rotation = quaternion_identity;
-    } else {
-        local_camera_position = (float3) { 0, vox_scale * 2.2f, - vox_scale * 3.6f };
-        local_rotation = quaternion_from_euler((float3) { -25 * degreesToRadians, 180 * degreesToRadians, 0 });
-        new_rotation = character3D_rotation3D->value;
-    }
+    // const Position3D *position3D = ecs_get(world, character, Position3D);
+    // const Rotation3D *character3D_rotation3D = ecs_get(world, character, Rotation3D);
+    set_camera_transform(world, camera, character, camera_mode);
+    // now set things
     zox_add_tag(camera, FirstPersonCamera)
     zox_set_only(camera, CanFreeRoam, { 0 })
     if (camera_follow_mode == zox_camera_follow_mode_attach) {
         zox_set_only(camera, ParentLink, { character })
-        zox_set_only(camera, LocalRotation3D, { local_rotation })
     } else if (camera_follow_mode == zox_camera_follow_mode_follow_xz) {
         zox_set_only(camera, CameraFollowLink, { character })
     }
-    zox_set_only(camera, LocalPosition3D, { local_camera_position })
-    zox_set_only(camera, Position3D, { float3_add(position3D->value, local_camera_position) })
-    zox_set_only(camera, Rotation3D, { new_rotation })
     zox_set_only(camera, EternalRotation, { quaternion_identity })
     zox_remove(camera, EulerOverride)
     // character
@@ -118,5 +92,5 @@ const Position3D *character_position = ecs_get(world, character, Position3D);
 zox_set_only(camera, Position3D, {{ character_position->value.x, character_position->value.y + vox_scale * 2.2f, character_position->value.z - vox_scale * 3.6f }})
 return;*/
 
-    // zox_set_only(camera, Rotation3D, { new_rotation })
+    // zox_set_only(camera, Rotation3D, { camera_global_rotation })
     // zox_remove(camera, FreeRoam)
