@@ -3,20 +3,30 @@ void ElementBarSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
     const ElementBar *elementBars = ecs_field(it, ElementBar, 1);
     const ElementBarSize *elementBarSizes = ecs_field(it, ElementBarSize, 2);
-    MeshVertices *meshVertices3Ds = ecs_field(it, MeshVertices, 3);
-    MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 4);
+    const Children *childrens = ecs_field(it, Children, 3);
     for (int i = 0; i < it->count; i++) {
+        const Children *childrenss = &childrens[i];
+        if (childrenss->length == 0) continue;
+        ecs_entity_t dirty_bar = childrenss->value[0];
+        MeshDirty *meshDirty = ecs_get_mut(world, dirty_bar, MeshDirty);
+        if (meshDirty->value) continue;
         ecs_entity_t e = it->entities[i];
+        if (!can_render_ui(world, e)) continue;
         const ElementBar *elementBar = &elementBars[i];
         const ElementBarSize *elementBarSize = &elementBarSizes[i];
-        MeshDirty *meshDirty = &meshDirtys[i];
-        MeshVertices *meshVertices3D = &meshVertices3Ds[i];
-        if (meshDirty->value) continue;
+        MeshVertices *meshVertices = ecs_get_mut(world, dirty_bar, MeshVertices);
         float2 scale = elementBarSize->value;
-        // todo: get scale from component
         float left_offset = - scale.x * (1.0f - elementBar->value) * 0.5f;
         scale.x *= elementBar->value;
-        for (int i = 0; i < 4; i++) meshVertices3D->value[i] = (float3) { left_offset + square_vertices[i].x * scale.x, square_vertices[i].y * scale.y, 0 };
+        for (unsigned char j = 0; j < 4; j++) meshVertices->value[j] = (float3) { left_offset + square_vertices[j].x * scale.x, square_vertices[j].y * scale.y, 0 };
         meshDirty->value = 1;
+        ecs_modified(world, dirty_bar, MeshDirty);
+        ecs_modified(world, dirty_bar, MeshVertices);
+        // zoxel_log("         = new elementBar value is: %f\n", elementBar->value);
     }
 } zox_declare_system(ElementBarSystem)
+
+    // MeshVertices *meshVertices3Ds = ecs_field(it, MeshVertices, 3);
+    // MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 3);
+        // MeshVertices *meshVertices = &meshVertices3Ds[i];
+        // MeshDirty *meshDirty = &meshDirtys[i];

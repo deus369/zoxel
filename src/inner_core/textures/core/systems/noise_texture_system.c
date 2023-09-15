@@ -31,12 +31,12 @@ void generate_texture_noise(TextureData* textureData, const TextureSize *texture
         alphaRange = (int2) { 255, 256 };
         // if (rand() % 100 >= 50) {
         if (texture_type == zox_texture_dirt) {
-            redRange.x += 32;
-            redRange.y += 64;
-            greenRange.x += 16;
-            greenRange.y += 32;
-            blueRange.x += 16;
-            blueRange.y += 32;
+            redRange.x += 16;
+            redRange.y += 32;
+            greenRange.x += 8;
+            greenRange.y += 16;
+            blueRange.x += 8;
+            blueRange.y += 16;
         } else if (texture_type == zox_texture_grass) {
             //zoxel_log(" > grass texture created\n");
             greenRange.x *= 2;

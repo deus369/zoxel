@@ -9,6 +9,8 @@ ecs_entity_t spawn_prefab_statbar3D(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab_child(prefab_element_world)
     zox_name("prefab_statbar")
+    zox_set(e, ElementBar, { 1 })
+    zox_set(e, ElementBarSize, { float2_zero })
     // zox_add_tag(e, Statbar)
     zox_set(e, Children, { 0, NULL })
     ecs_defer_end(world);
@@ -26,8 +28,6 @@ ecs_entity_t spawn_prefab_statbar3D_front(ecs_world_t *world) {
     zox_remove(e, ElementBillboard)
     zox_remove(e, UIHolderLink)
     // zox_add_tag(e, Statbar)
-    zox_set(e, ElementBar, { 1 })
-    zox_set(e, ElementBarSize, { float2_zero })
     zox_set(e, ParentLink, { 0 })
     zox_set(e, LocalPosition3D, { float3_zero })
     prefab_set_mesh3D_vertices(world, e, square_vertices, 4, statbar_front_mesh_scale);
@@ -73,8 +73,8 @@ ecs_entity_t spawn_statbar3D(ecs_world_t *world, ecs_entity_t ui_holder) {
     initialize_memory_component_non_pointer(children, ecs_entity_t, 1);
     children.value[0] = spawn_statbar3D_front(world, ui_holder, e, (float3) { 0, 0, depth_difference });
     zox_set_only(e, Children, { children.length, children.value })
-    zox_set_only(children.value[0], ElementBar, { percentage_test })
-    zox_set_only(children.value[0], ElementBarSize, { statbar_front_mesh_scale })
+    zox_set_only(e, ElementBar, { percentage_test })
+    zox_set_only(e, ElementBarSize, { statbar_front_mesh_scale })
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned prefab element_world [%lu]\n", (long int) e);
     #endif

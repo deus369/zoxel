@@ -1,7 +1,9 @@
 #ifndef zoxel_engine
 #define zoxel_engine
 
+// todo: move some things to sdl module in core
 // todo: position confusing, move to above directory for easier to understand navigation
+
 // engine imports, besides sub modules, it's core is flecs
 #include <signal.h> // used for detecting cancel
 #include <string.h> // who uses this?
@@ -32,6 +34,7 @@ void spawn_prefabs_engine(ecs_world_t *world) {
     spawn_prefabs_core(world);
     spawn_prefabs_inner_core(world);
     spawn_prefabs_outer_core(world);
+    spawn_prefabs_users(world);
     spawn_prefabs_gameplay(world);
     spawn_prefabs_space(world);
 }
@@ -44,7 +47,5 @@ zox_import_module(Users)
 zox_import_module(Gameplay)
 zox_import_module(Space)
 zoxel_end_module(ZoxelEngine)
-
-// todo: move some things to sdl module in core
 
 #endif

@@ -19,7 +19,7 @@ void RenderElements3DSystem(ecs_iter_t *it) {
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 9);
     const TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 10);
     for (int i = 0; i < it->count; i++) {
-        if (!can_render_ui(it->world, it->entities[i])) continue;
+        if (!can_render_ui(world, it->entities[i])) continue;
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         if (meshIndicies2->length == 0) continue;
         const MeshGPULink *meshGPULink = &meshGPULinks[i];

@@ -50,6 +50,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file *vox, float3 position, float4 rotation, unsigned char lod) {
+    float percentage_test = 0.02f + 0.98f * ((rand() % 100) * 0.01f);
     zox_instance(prefab)
     zox_set_only(e, Position3D, { position })
     zox_set_only(e, LastPosition3D, { position })
@@ -58,11 +59,22 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file
     zox_set_only(e, RenderLod, { lod })
     spawn_gpu_mesh(world, e);
     spawn_gpu_colors(world, e);
+    // spawn stats
+    ecs_entity_t user_stat = spawn_user_stat(world);
+    UserStatLinks userStatLinks = { };
+    initialize_memory_component_non_pointer(userStatLinks, ecs_entity_t, 1);
+    userStatLinks.value[0] = user_stat;
+    zox_set_only(e, UserStatLinks, { userStatLinks.length, userStatLinks.value })
+    zox_set(user_stat, StatValue, { percentage_test * 8.0f })
+    zox_set(user_stat, StatValueMax, { 10.0f })
+
     ecs_entity_t statbar = spawn_statbar3D(world, e);
     ElementLinks elementLinks = { };
     initialize_memory_component_non_pointer(elementLinks, ecs_entity_t, 1);
     elementLinks.value[0] = statbar;
     zox_set_only(e, ElementLinks, { elementLinks.length, elementLinks.value })
+    zox_set(statbar, UserStatLink, { user_stat })
+
     // spawn_element3D(world, e);  // spawn the uis
     #ifndef zox_disable_characters3D_voxes
         set_vox_from_vox_file(world, e, vox);

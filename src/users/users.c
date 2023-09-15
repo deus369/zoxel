@@ -14,6 +14,10 @@
 #include "lores/lores.c"
 #include "achievements/achievements.c"
 
+void spawn_prefabs_users(ecs_world_t *world) {
+    spawn_prefabs_stats(world);
+}
+
 zox_begin_module(Users)
 zox_import_module(Stats)
 zox_import_module(Skills)
