@@ -38,26 +38,3 @@ ecs_entity_t spawn_element3D(ecs_world_t *world, ecs_entity_t ui_holder) {
     #endif
     return e;
 }
-
-// used atm for statbar front bar
-ecs_entity_t spawn_element3D_attach(ecs_world_t *world, ecs_entity_t ui_holder, ecs_entity_t parent, float3 offset) {
-    int2 pixel_size = (int2) { 1, 1 };
-    float2 mesh_scale = (float2) { 0.17f, 0.028f };
-    zox_instance(prefab_element_world)
-    zox_set(e, ParentLink, { parent })
-    zox_set(e, LocalPosition3D, { offset })
-    zox_set_only(e, CameraLink, { main_cameras[0] })
-    zox_set_only(e, CanvasLink, { main_canvas })
-    zox_set_only(e, PixelSize, { pixel_size })
-    zox_set_only(e, TextureSize, { pixel_size })
-    zox_set_only(e, Color, {{ 188, 25, 25, 255 }})
-    prefab_set_mesh3D_vertices(world, e, square_vertices, 4, mesh_scale);
-    // remove from normal prefab
-    zox_remove(e, ElementBillboard)
-    zox_remove(e, UIHolderLink)
-    // zoxel_log("has ui holder link still? %i \n", ecs_has(world, e, UIHolderLink));
-    #ifdef zoxel_debug_spawns
-        zoxel_log(" > spawned prefab element_world [%lu]\n", (long int) e);
-    #endif
-    return e;
-}

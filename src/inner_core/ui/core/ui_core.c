@@ -28,6 +28,7 @@ zox_component(UIHolderLink, ecs_entity_t)
 zox_entities_component(ElementLinks)
 zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t)
 zox_component(ElementBar, float)
+zox_component(ElementBarSize, float2)
 // zoxel_include_util
 #include "util/ui_prefab_util.c"
 #include "util/ui_transform_util.c"
@@ -78,6 +79,7 @@ zox_define_component(CanvasLink)
 zox_define_component(UIHolderLink)
 zox_define_component(ClickEvent)
 zox_define_component(ElementBar)
+zox_define_component(ElementBarSize)
 zox_define_entities_component(ElementLinks, [in] ElementLinks)
 // zoxel_define_filters
 zox_filter(ui_query, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [out] SelectState)
@@ -94,7 +96,7 @@ if (!headless) {
     zox_system_1(ElementMeshSystem, main_thread_pipeline, [none] Element, [in] PixelSize, [in] MeshAlignment, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshGPULink, [out] TextureGPULink, [out] UvsGPULink, [none] !Element3D)
     zox_system_1(Element3DMeshSystem, main_thread_pipeline, [none] Element3D, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture,  [out] MeshGPULink, [out] UvsGPULink, [out] ColorsGPULink, [out] TextureGPULink) // , [none] Position3D)
 }
-zox_system_1(ElementBarSystem, EcsPreStore, [in] ElementBar, [out] MeshVertices, [out] MeshDirty) // todo make multithreading
+zox_system_1(ElementBarSystem, EcsPreStore, [in] ElementBar, [in] ElementBarSize, [out] MeshVertices, [out] MeshDirty) // todo make multithreading
 // EcsOnStore EcsOnUpdate
 zox_system(BillboardSystem, zox_transforms_stage, [none] ElementBillboard, [in] CameraLink, [in] Position3D, [out] Rotation3D)
 zox_system(UITrailSystem, zox_transforms_stage, [in] UIHolderLink, [in] UITrail, [out] Position3D)    // todo: put back to EcsPostUpdate - can't find out where character position updates atm

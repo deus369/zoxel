@@ -31,6 +31,7 @@ void spawn_prefabs_elements(ecs_world_t *world) {
     spawn_prefab_header(world);
     spawn_prefab_ui_list(world);
     spawn_prefab_statbar3D(world);
+    spawn_prefab_statbar3D_front(world);
 }
 
 zox_begin_module(Elements)
