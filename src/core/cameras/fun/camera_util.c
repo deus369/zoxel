@@ -28,8 +28,9 @@ void set_camera_transform(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t 
         camera_euler = (float3) { -90, 180, 0 };
         camera_position = (float3) { 0, 22, 0 };
     } else if (camera_mode == zox_camera_mode_ortho) {
+        float height = 24;  // 30
         camera_euler = (float3) { -45, 225, 0 };
-        camera_position = (float3) { -20, 30, -20 };
+        camera_position = (float3) { -height * (0.66f), height, -height * (0.66f) };
     } else if (camera_mode == zox_camera_mode_first_person) {
         camera_euler = (float3) { -25, 180, 0 };
         camera_position = (float3) { 0, 2.2f, -3.6f };

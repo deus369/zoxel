@@ -1,6 +1,10 @@
 #ifndef zoxel_cameras
 #define zoxel_cameras
 
+//   todo: Custom name for namespaces used in flecs
+//       const char* nm_zoxel_cameras = "Zoxel.cameras";
+//       zox_module(world, cameras, nm_zoxel_cameras);
+
 // zoxel_settings
 // EcsPreStore | EcsPostUpdate
 #define zox_camera_stage EcsPreStore
@@ -73,9 +77,5 @@ zox_system(Camera3DFollowSystem, EcsPostUpdate, [in] CameraFollowLink, [in] Loca
 zox_system(ViewMatrixSystem, zox_camera_stage, [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)
 zox_system(ProjectionMatrixSystem, zox_camera_stage, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
 zoxel_end_module(Cameras)
-
-//   todo: Custom name for namespaces used in flecs
-//       const char* nm_zoxel_cameras = "Zoxel.cameras";
-//       zox_module(world, cameras, nm_zoxel_cameras);
 
 #endif

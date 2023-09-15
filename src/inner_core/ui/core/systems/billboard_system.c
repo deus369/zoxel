@@ -18,6 +18,17 @@ void BillboardSystem(ecs_iter_t *it) {
         const Rotation3D *target_rotation = ecs_get(world, camera, Rotation3D);
         // rotation3D->value = quaternion_rotate(flip_rotation, target_rotation->value);
         rotation3D->value = target_rotation->value;
+        ecs_entity_t e = it->entities[i];
+        if (ecs_has(world, e, Children)) {
+            const Children *children = ecs_get(world, e, Children);
+            for (int j = 0; j < children->length; j++) {
+                ecs_entity_t child = children->value[j];
+                const LocalRotation3D *child_local_rotation3D = ecs_get_mut(world, child, LocalRotation3D);
+                Rotation3D *child_rotation3D = ecs_get_mut(world, child, Rotation3D);
+                set_rotation_from_parents(world, e, &child_rotation3D->value, child_local_rotation3D->value);
+                ecs_modified(world, child, Rotation3D);
+            }
+        }
         #ifdef zox_debug_billboard_system
             // spawn_line3D(world, position3D->value, float3_add(position3D->value, normal), 2, 1);
         #endif

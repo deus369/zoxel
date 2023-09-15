@@ -1,4 +1,6 @@
-
+//! This breaks the updates. \todo Fix this. Find out why it doesn't work properly.
+//! This doesn't work because the table writes all changes in the first iteration which is for one entity.
+//!     Possible fix: Make a second system that writes changes at the end of the loop
 
 void generate_texture_graybox(TextureData* textureData, const TextureSize *textureSize, int2 position, int2 size) {
     for (int j = position.x; j < position.x + size.x; j++) {
@@ -213,7 +215,3 @@ void FillTextureSystem(ecs_iter_t *it) {
         textureDirty->value = 1; // actually this only gets uploaded if has GPUTextureLink!
     }
 } zox_declare_system(FillTextureSystem)
-
-//! This breaks the updates. \todo Fix this. Find out why it doesn't work properly.
-//! This doesn't work because the table writes all changes in the first iteration which is for one entity.
-//!     Possible fix: Make a second system that writes changes at the end of the loop

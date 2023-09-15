@@ -1,5 +1,5 @@
-ecs_entity_t prefab_element_world;
 // todo: remove any canvas elements, these will just be world transform uis
+ecs_entity_t prefab_element_world;
 
 ecs_entity_t spawn_prefab_element3D(ecs_world_t *world) {
     ecs_defer_begin(world);
@@ -61,6 +61,3 @@ ecs_entity_t spawn_element3D_attach(ecs_world_t *world, ecs_entity_t ui_holder, 
     #endif
     return e;
 }
-
-//zox_set_only(e, UIHolderLink, { ui_holder })
-//zox_set(e, UITrail, { offset })

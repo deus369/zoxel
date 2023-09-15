@@ -2,6 +2,21 @@
 //  todo: system before that sets texture links from voxel links
 // todo: debug why array indexes go out of bounds!
 
+// for (int j = 0; j < textureLinks->length; j++) {
+// if (!ecs_is_valid(it->world, texture_entity)) zoxel_log("issue with texture at [%i]\n", j);
+// if (!ecs_is_valid(it->world, texture_entity)) continue;
+// if (voxel_texture_data->length == 0) zoxel_log("    ! issue with texture at [%i] - %lu\n", j, texture_entity);
+// if (voxel_texture_data->length == 0) continue;
+// const TextureSize *voxel_texture_size = ecs_get(it->world, texture_entity, TextureSize);
+/*if (texture_index >= voxel_texture_data->length) zoxel_log("texture_index out of bounds [%i / %i]\n", texture_index, voxel_texture_data->length);
+if (texture_index >= voxel_texture_data->length) textureData->value[j].r = 233;*/
+// set random color for now
+/*for (int j = 0; j < textureData->length; j++) {
+    textureData->value[j].r = 145;
+    textureData->value[j].g = 24;
+    textureData->value[j].b = 133;
+}*/
+
 void TilemapGenerationSystem(ecs_iter_t *it) {
     int2 default_texture_size = (int2) { 32, 32 }; // 16
     ecs_world_t *world = it->world;
@@ -81,18 +96,3 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         // zoxel_log("    > tilemap generated [%lu] textures [%i] tilemapUVs [%i]\n", it->entities[i], textureLinks->length, tilemapUVs->length);
     }
 } zox_declare_system(TilemapGenerationSystem)
-
-// for (int j = 0; j < textureLinks->length; j++) {
-// if (!ecs_is_valid(it->world, texture_entity)) zoxel_log("issue with texture at [%i]\n", j);
-// if (!ecs_is_valid(it->world, texture_entity)) continue;
-// if (voxel_texture_data->length == 0) zoxel_log("    ! issue with texture at [%i] - %lu\n", j, texture_entity);
-// if (voxel_texture_data->length == 0) continue;
-// const TextureSize *voxel_texture_size = ecs_get(it->world, texture_entity, TextureSize);
-/*if (texture_index >= voxel_texture_data->length) zoxel_log("texture_index out of bounds [%i / %i]\n", texture_index, voxel_texture_data->length);
-if (texture_index >= voxel_texture_data->length) textureData->value[j].r = 233;*/
-// set random color for now
-/*for (int j = 0; j < textureData->length; j++) {
-    textureData->value[j].r = 145;
-    textureData->value[j].g = 24;
-    textureData->value[j].b = 133;
-}*/

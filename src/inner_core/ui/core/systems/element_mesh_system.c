@@ -51,14 +51,3 @@ void ElementMeshSystem(ecs_iter_t *it) {
         end_timing("    - element_mesh_system")
     #endif
 } zox_declare_system(ElementMeshSystem)
-
-// MaterialInstancedGPULink *materialInstancedGPULinks = ecs_field(it, MaterialInstancedGPULink, 9);
-// MaterialInstancedGPULink *materialInstancedGPULink = &materialInstancedGPULinks[i];
-// materialInstancedGPULink->value = textured2D_material;
-// zoxel_log(" > [%lu] scale2D [%fx%f]\n", it->entities[i], scale2D.x, scale2D.y);
-// zoxel_log(" > [%lu] element_mesh_system: scale2D [%fx%f]\n", it->entities[i], scale2D.x, scale2D.y);
-// material_spawn_count++;
-// if (material_spawn_count >= max_material_spawn_count) break;
-// materialGPULink->value = spawn_gpu_material_program(shader2D_textured);
-// zoxel_log(" > entity [%lu] ui spawned [%i, %i, %i]\n", it->entities[i], meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value);
-        

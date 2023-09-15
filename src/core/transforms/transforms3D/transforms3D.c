@@ -1,6 +1,9 @@
 #ifndef zoxel_transforms3D
 #define zoxel_transforms3D
 
+// todo: remove euler use, and find a way to limit quaternion rotations used for camera atm
+//      ai mentioned something about using axis and angle of a quaternion
+
 // EcsPostUpdate | EcsPreStore
 #define zox_transforms_stage EcsPreStore
 // zoxel_component_includes
@@ -45,8 +48,5 @@ zox_system(EulerOverrideSystem, EcsOnUpdate, [none] EulerOverride, [in] Euler, [
 zox_system(ParentRotationSystem, zox_transforms_stage, [in] ParentLink, [in] LocalRotation3D, [out] Rotation3D)
 zox_system(ParentPositionSystem, zox_transforms_stage, [in] ParentLink, [in] LocalPosition3D, [out] Position3D)
 zoxel_end_module(Transforms3D)
-
-// todo: remove euler use, and find a way to limit quaternion rotations used for camera atm
-//      ai mentioned something about using axis and angle of a quaternion
 
 #endif

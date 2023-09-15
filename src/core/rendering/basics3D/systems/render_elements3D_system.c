@@ -1,8 +1,6 @@
+extern unsigned char can_render_ui(ecs_world_t *world, ecs_entity_t e);
 // this for 3D uis
 // #define zox_time_render3D_textured_system
-// extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
-extern unsigned char can_render_ui(ecs_world_t *world, ecs_entity_t e);
-// unsigned char has_rendered_elements = 0;
 // todo: this produces a memory leak on newer nvidia driver... not sure why
 
 void RenderElements3DSystem(ecs_iter_t *it) {
