@@ -9,7 +9,7 @@
 // canvas: still uses 2D posti
 
 // zoxel_settings
-#define canvas_edge_size 4
+#define canvas_edge_size 8
 ecs_entity_t main_canvas;
 // zoxel_declare_components
 zox_declare_tag(Element)

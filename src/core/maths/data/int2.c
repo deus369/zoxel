@@ -46,6 +46,21 @@ int2 int2_sub(int2 a, int2 b) {
     return (int2) { a.x - b.x, a.y - b.y };
 }
 
+void int2_add_p(int2 *a, int2 b) {
+    a->x += b.x;
+    a->y += b.y;
+}
+
+void int2_subtract(int2 *a, int2 b) {
+    a->x -= b.x;
+    a->y -= b.y;
+}
+
+void int2_divide_int_p(int2 *a, int div) {
+    a->x /= div;
+    a->y /= div;
+}
+
 int int2_max(int2 value) {
     if (value.x >= value.y) return value.x;
     else return value.y;

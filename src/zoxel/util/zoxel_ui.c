@@ -25,7 +25,7 @@ void spawn_zoxel_main_menu(ecs_world_t *world) {
         children.value[2] = quads_label;
         ecs_set(world, main_canvas, Children, { children.length, children.value });
         #ifdef zoxel_lines2D
-        //    spawn_canvas_edge_lines(world, main_canvas);
+            spawn_canvas_edge_lines(world, main_canvas);
         #endif
     #endif
 }

@@ -27,8 +27,7 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
 
 extern void button_event_close_window(ecs_world_t *world, ecs_entity_t trigger_entity);
 
-ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, int2 position, int2 size, float2 anchor, const char* text, int font_size,
-    int header_margins, unsigned char layer, float2 parent_position2D,int2 parent_pixel_size, unsigned char is_close_button, int2 canvas_size) {
+ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, int2 position, int2 size, float2 anchor, const char* text, int font_size, int header_margins, unsigned char layer, float2 parent_position2D,int2 parent_pixel_size, unsigned char is_close_button, int2 canvas_size) {
     int children_length = 1;
     if (is_close_button) children_length++;
     int string_length = strlen(text);

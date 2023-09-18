@@ -43,7 +43,7 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
                     toggle_ui(world, &quads_label, &spawn_quad_count_label);
                 } else if (keyboard->z.pressed_this_frame) {
                     toggle_collision_debug(world);
-                } else if (keyboard->v.pressed_this_frame) {
+                } else if (keyboard->b.pressed_this_frame) {
                     spawn_zoxel_window(world);
                 }
             }

@@ -9,6 +9,7 @@ ecs_entity_t spawn_prefab_line2D(ecs_world_t *world) {
     zox_set(e, LineData2D, { { 0, 0, 0, 0 } })
     zox_set(e, LineThickness, { 1 })
     zox_set(e, Color, { { 0, 255, 255, 255 } })
+    zox_set(e, Layer2D, { 0 })
     #ifdef zoxel_debug_prefabs
         zoxel_log("spawn_prefab line2D [%lu].\n", (long int) (e));
     #endif

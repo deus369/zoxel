@@ -30,13 +30,15 @@ int initialize_shader_line2D() {
 }
 
 void Line2DRenderSystem(ecs_iter_t *it) {
-    if (renderer_layer != 0) return;
     glUseProgram(line2D_material);
     glEnableVertexAttribArray(line2D_position_location);
     const LineData2D *lineData2Ds = ecs_field(it, LineData2D, 2);
     const LineThickness *lineThicknesss = ecs_field(it, LineThickness, 3);
     const Color *colorRGBs = ecs_field(it, Color, 4);
+    const Layer2D *layer2Ds = ecs_field(it, Layer2D, 5);
     for (int i = 0; i < it->count; i++) {
+        const Layer2D *layer2D = &layer2Ds[i];
+        if (layer2D->value != renderer_layer) continue;
         const LineData2D *lineData2D = &lineData2Ds[i];
         const LineThickness *lineThickness = &lineThicknesss[i];
         const Color *color = &colorRGBs[i];
@@ -48,5 +50,4 @@ void Line2DRenderSystem(ecs_iter_t *it) {
         glDrawArrays(GL_LINES, 0, 2);
     }
     // glUseProgram(0);
-}
-zox_declare_system(Line2DRenderSystem)
+} zox_declare_system(Line2DRenderSystem)
