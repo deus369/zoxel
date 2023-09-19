@@ -3,7 +3,8 @@ double time_begin, zox_current_time, zox_delta_time = 0.0;
 double frames_per_second_time = 0.0;
 int frames_count, frames_per_second = 0;
 double zox_current_time_check = 0.0;
-double zox_delta_times[60];
+const int record_frames_count = 120;
+double zox_delta_times[120];
 
 double current_time_in_seconds() {
     struct timespec current_time;
@@ -22,8 +23,8 @@ void iterate_time() {
     zox_current_time = current_time_in_seconds() - time_begin;
     zox_delta_time = zox_current_time - last_time;
     zox_current_time_check += zox_delta_time;
-    for (int i = 0; i <= 58; i++) zox_delta_times[i] = zox_delta_times[i + 1];
-    zox_delta_times[59] = zox_delta_time;
+    for (int i = 0; i < record_frames_count - 1; i++) zox_delta_times[i] = zox_delta_times[i + 1];
+    zox_delta_times[record_frames_count - 1] = zox_delta_time;
     #ifdef zox_check_current_time
         if (zox_current_time != zox_current_time_check) {
             zoxel_log("current time and check not equal: %f - %f\n", zox_current_time, zox_current_time_check);
@@ -31,7 +32,7 @@ void iterate_time() {
     #endif
     // zoxel_log("current time [%d]\n", zox_current_time);
     // zoxel_log("delta time [%f]\n", zox_delta_time * 1000.0);
-    if (zox_delta_time >=  1.0 / 10.0) zox_delta_time = 0.0;
+    // if (zox_delta_time >=  1.0 / 10.0) zox_delta_time = 0.0;
     frames_count++;
     frames_per_second_time += zox_delta_time;
     if (frames_per_second_time >= 1.0) {

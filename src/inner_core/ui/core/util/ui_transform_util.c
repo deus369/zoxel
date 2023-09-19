@@ -94,9 +94,9 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
         #ifdef debug_ui_scaling
             zoxel_log("        -> to [%ix%i]\n", global_pixel_position.x, global_pixel_position.y);
         #endif
-    } else {
+    } /*else {
         zoxel_log(" ! set_ui_transform - ui PixelPosition not found [%lu]\n", (long int) e);
-    }
+    }*/
     if (!headless && is_valid && zox_has(e, MeshVertices2D)) {  //! Resize (if visible)
         const PixelSize *pixelSize = ecs_get(world, e, PixelSize);
         const MeshAlignment *meshAlignment = ecs_get(world, e, MeshAlignment);
