@@ -16,12 +16,6 @@ void set_ui_line_position(LineData2D *lineData2D, int4 linePosition2D, float2 ca
     // lineData2D->value = (float4) { -1.0f, 0, 1.0f, 0 };
 }
 
-//! Sets real position when pixel position updates
-/**
-*   \done Make this instantaneous for children uis as well.
-*   \todo This needs to also account for child uis
-*   \todo Change queries still not working, make a better test function with more components.
-*/
 void Line2DElementSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
     /*ecs_query_t *changeQuery = it->ctx;
@@ -36,20 +30,26 @@ void Line2DElementSystem(ecs_iter_t *it) {
     LineData2D *lineData2Ds = ecs_field(it, LineData2D, 4);
     for (int i = 0; i < it->count; i++) {
         const CanvasLink *canvasLink = &canvasLinks[i];
-        if (ecs_is_valid(world, canvasLink->value)) {
-            int2 canvas_size = ecs_get(world, canvasLink->value, PixelSize)->value;
-            float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
-            float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
-            const LinePosition2D *linePosition2D = &lineElementDatas[i];
-            LineData2D *lineData2D = &lineData2Ds[i];
-            // set render position based on canvas
-            set_ui_line_position(lineData2D, linePosition2D->value, canvas_size_f, aspect_ratio);
-        }
+        if (!ecs_is_valid(world, canvasLink->value)) continue;
+        int2 canvas_size = ecs_get(world, canvasLink->value, PixelSize)->value;
+        float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
+        float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
+        const LinePosition2D *linePosition2D = &lineElementDatas[i];
+        LineData2D *lineData2D = &lineData2Ds[i];
+        // set render position based on canvas
+        set_ui_line_position(lineData2D, linePosition2D->value, canvas_size_f, aspect_ratio);
     }
     // zoxel_log(" > lines updated\n");
 } zox_declare_system(Line2DElementSystem)
 
 
+
+//! Sets real position when pixel position updates
+/**
+*   \done Make this instantaneous for children uis as well.
+*   \todo This needs to also account for child uis
+*   \todo Change queries still not working, make a better test function with more components.
+*/
 
 /*float2 point_a = get_ui_real_position2D_canvas_no_anchor(
     (int2) { linePosition2D->value.x, linePosition2D->value.y }, canvas_size_f, aspect_ratio);
