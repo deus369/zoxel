@@ -5,6 +5,11 @@ extern unsigned char is_split_screen;
 #define main_camera_rotation_speed 60 * 0.22f
 const char *icon_filepath;
 
+// move spawning to first frame, game systems, etc
+// spawning:
+//      > main menu
+//      > terrain
+
 unsigned char boot_zoxel_game(ecs_world_t *world) {
     // zoxel_log(" > [zoxel] begins to boot\n");
     // todo: initialize_engine
@@ -34,13 +39,18 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         set_camera_mode_topdown(world);
     #endif
     int2 screen_dimensions2 = screen_dimensions;
-    float3 camera_begin_position = { 0, 0.0f, 0.0f };
     #ifdef zoxel_cameras
         if (is_split_screen) {
             screen_dimensions2.x /= 2;
             set_main_cameras(2);
         }
-        #ifdef zoxel_voxels
+    #endif
+    float3 camera_begin_position = float3_zero;
+    #ifdef zoxel_cameras
+        float4 camera_spawn_rotation = quaternion_identity;
+        get_camera_start_transform(&camera_begin_position, &camera_spawn_rotation);
+
+        /*#ifdef zoxel_voxels
             #ifndef zox_disable_terrain
                 #ifndef zox_disable_terrain_octrees
                     camera_begin_position = (float3) { 0, 0.32f * overall_voxel_scale, 0 };
@@ -56,6 +66,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
             camera_begin_position.y += 0.32f * overall_voxel_scale;
         #endif
         float4 camera_spawn_rotation = quaternion_from_euler((float3) { rot_x, rot_y, 0 });  // quaternion_identity()
+        */
         main_cameras[0] = spawn_base_camera(world, camera_begin_position, camera_spawn_rotation, screen_dimensions2, (int2) { });
         #ifdef zoxel_animations
             float4 rotationer = quaternion_from_euler( (float3) { 0, -main_camera_rotation_speed * degreesToRadians, 0 });
@@ -83,19 +94,17 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         #ifdef zoxel_texts
             spawn_font_style(world);
         #endif
-        #ifdef zoxel_game_ui
+        #ifdef zox_on_startup_spawn_main_menu
             spawn_zoxel_main_menu(world);
         #endif
         #ifdef zoxel_start_with_debug_ui
             toggle_ui(world, &game_debug_label, &spawn_game_debug_label);
         #endif
     #endif
-    #ifdef zoxel_voxels
-        #ifndef zox_disable_terrain
-            ecs_entity_t terrain = create_terrain(world);
-            #ifdef zoxel_space
-                zox_set_only(terrain, RealmLink, { realm })
-            #endif
+    #ifdef zox_spawn_terrain_on_startup
+        ecs_entity_t terrain = create_terrain(world);
+        #ifdef zoxel_space
+            zox_set_only(terrain, RealmLink, { realm })
         #endif
     #endif
     #ifdef zoxel_lines3D

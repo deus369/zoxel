@@ -28,12 +28,12 @@ uint32_t terrain_seed = 32666;
 
 void set_terrain_render_distance() {
     if (cpu_tier == 3) {
-        terrain_spawn_distance = 16;
+        terrain_spawn_distance = 12;
         terrain_vertical = 2;
         fog_density *= 0.5f;    // .3 for now to cover up transitions
         // set_max_octree_length(5);
     } else if (cpu_tier == 2) {
-        terrain_spawn_distance = 12;
+        terrain_spawn_distance = 10;
         terrain_vertical = 2;
         fog_density *= 0.6f;
     } else if (cpu_tier == 1) {

@@ -1,16 +1,24 @@
 // Here? select which zoxel modules I shall use?
+
+// module includes
 // #define zoxel_include_vulkan
 #define zoxel_include_players
+#define zox_on_startup_spawn_main_menu
+#define zox_on_play_spawn_terrain
+// #define zox_bulk_spawn_terrain
 
-// #define zox_use_orthographic_projection // used for different projection matrix
+// settings
 #define zoxel_set_camera_ortho
 // #define zoxel_set_camera_topdown
 // #define zoxel_set_camera_firstperson
+// #define zox_use_orthographic_projection // used for different projection matrix
+#define zoxel_has_random_jumping
+// #define zox_spawn_terrain_on_startup
+
 #define zox_disable_gamepad_stick_as_any_input // used for samsung phone, it's buggy af
 #define zox_disable_gamepad_deadzones
 // #define zoxel_disable_gamepads
-#define zoxel_start_with_debug_ui
-#define zoxel_has_random_jumping
+// #define zoxel_start_with_debug_ui
 
 // #define zoxel_mouse_emulate_touch
 // #define zox_visualize_sounds
@@ -20,6 +28,8 @@
 // #define zox_disable_render_terrain_chunks
 // #define zox_disable_render_ui_3D
 // #define zox_disable_render_characters
+// #define zox_disable_render_ui
+
 // #define zox_characters_as_cubes
 
 // temp for pc with shitty gpu issues
@@ -33,8 +43,6 @@
 // #define zox_disable_characters3D_voxes
 
 // === Debugs ===
-
-// #define zox_disable_render_ui
 
 // #define zox_time_create_terrain
 

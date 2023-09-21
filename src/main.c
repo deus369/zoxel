@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
         spawn_prefabs_engine(world);    // spawn all our prefabs
         if (boot_zoxel_game(world) == EXIT_SUCCESS) engine_loop();
         else zoxel_log(" ! booting zoxel failed\n");
-        on_engine_end();
+        on_engine_end(world);
     } else {
         zoxel_log(" ! engine failed to start\n");
     }

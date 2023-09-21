@@ -38,7 +38,7 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point
     // parent_real_position.y -= 1 / 2.0f;
     int4 local_line_position2D = (int4) { point_a.x, point_a.y, point_b.x, point_b.y };
     int4 line_position2D = get_new_line_position(parent_real_position, canvas_size_f, aspect_ratio, parent_position, local_line_position2D);
-    const LinePosition2D linePosition2D = (LinePosition2D) { line_position2D };
+    // const LinePosition2D linePosition2D = (LinePosition2D) { line_position2D };
     // zoxel_log(" > line [%ix%ix%ix%i]\n", line_position2D.x, line_position2D.y, line_position2D.z, line_position2D.w);
     //  { point_a.x, point_a.y, point_b.x, point_b.y } };
     LineData2D lineData2D;

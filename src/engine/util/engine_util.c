@@ -3,14 +3,14 @@ int engine_begin(int argc, char* argv[]) {
     return begin_core(argc, argv);
 }
 
-void on_engine_end() {
-    // zoxel_log(" > ending zoxel_engine\n");
+void on_engine_end(ecs_world_t *world) {
+    /*const Children *font_children = ecs_get(world, font_style_entity, Children);
+    for (int i = 0; i < font_children->length; i++) zox_delete(font_children->value[i])
+    zox_delete(font_style_entity)*/
     close_core();
     #ifdef zoxel_voxels
         dispose_vox_files();
     #endif
-    // zoxel_log(" > closed inner_core\n");
-    // zoxel_log(" > ended zoxel_engine\n");
 }
 
 void engine_update() {

@@ -15,6 +15,7 @@ int get_chunk_index_2(int i, int j, int k, int rows, int vertical) {
 }
 
 ecs_entity_t create_terrain(ecs_world_t *world) {
+    ecs_defer_begin(world);
     #ifdef zox_time_create_terrain
         begin_timing_absolute()
     #endif
@@ -32,7 +33,9 @@ ecs_entity_t create_terrain(ecs_world_t *world) {
                 int3 chunk_position = (int3) { i, j, k };
                 int index = get_chunk_index_2(i, j, k, terrain_spawn_distance, terrain_vertical);
                 #ifndef zox_disable_terrain_octrees
-                    chunks[index] = spawn_terrain_chunk_octree(world, prefab_terrain_chunk_octree, terrain_world, chunk_position, (float3) { i * real_chunk_scale, j * real_chunk_scale, k * real_chunk_scale }, 0.5f);
+                    #ifndef zox_bulk_spawn_terrain
+                        chunks[index] = spawn_terrain_chunk_octree(world, prefab_terrain_chunk_octree, terrain_world, chunk_position, (float3) { i * real_chunk_scale, j * real_chunk_scale, k * real_chunk_scale }, 0.5f);
+                    #endif
                     chunk_positions[index] = chunk_position;
                 #else
                     chunks[index] = spawn_terrain_chunk(world, prefab_terrain_chunk, chunk_position, (float3) { i * real_chunk_scale, 0, k * real_chunk_scale }, 0.5f);
@@ -40,6 +43,62 @@ ecs_entity_t create_terrain(ecs_world_t *world) {
             }
         }
     }
+
+    #ifdef zox_bulk_spawn_terrain
+        ChunkPosition *chunkPositions = malloc(sizeof(ChunkPosition) * chunks_total_length);
+        Position3D *position3Ds = malloc(sizeof(Position3D) * chunks_total_length);
+        RenderLod *renderLods = malloc(sizeof(RenderLod) * chunks_total_length);
+        VoxLink *voxLinks = malloc(sizeof(VoxLink) * chunks_total_length);
+        MeshGPULink *meshGPULinks = malloc(sizeof(MeshGPULink) * chunks_total_length);
+        UvsGPULink *uvsGPULinks = malloc(sizeof(UvsGPULink) * chunks_total_length);
+        ColorsGPULink *colorsGPULinks = malloc(sizeof(ColorsGPULink) * chunks_total_length);
+        for (int i = 0; i < chunks_total_length; i++) {
+            const int3 chunk_position = chunk_positions[i];
+            chunkPositions[i].value = chunk_position;
+            position3Ds[i].value = float3_multiply_float(float3_from_int3(chunk_position), real_chunk_scale);
+            renderLods[i].value = get_chunk_division(int3_zero, chunk_position);
+            voxLinks[i].value = terrain_world;
+            if (!headless) {
+                meshGPULinks[i].value = spawn_gpu_mesh_buffers();
+                uvsGPULinks[i].value = spawn_gpu_generic_buffer();
+                colorsGPULinks[i].value = spawn_gpu_generic_buffer();
+            }
+        }
+        // const ecs_entity_t *particles2DArray = 
+        const ecs_entity_t *entities = ecs_bulk_init(world, &(ecs_bulk_desc_t) {
+            .count = chunks_total_length,
+            .ids = {
+                ecs_pair(EcsIsA, prefab_terrain_chunk_octree),
+                ecs_id(ChunkPosition),
+                ecs_id(Position3D),
+                ecs_id(RenderLod),
+                ecs_id(VoxLink),
+                ecs_id(MeshGPULink),
+                ecs_id(UvsGPULink),
+                ecs_id(ColorsGPULink)
+            },
+            // provide data for each id
+            .data = (void*[]) {       
+                NULL,           // Prefab pair, what is it used for?
+                chunkPositions,
+                position3Ds,
+                renderLods,
+                voxLinks,
+                meshGPULinks,
+                uvsGPULinks,
+                colorsGPULinks
+            }
+        });
+        for (int i = 0; i < chunks_total_length; i++) chunks[i] = entities[i];
+        free(chunkPositions);
+        free(position3Ds);
+        free(renderLods);
+        free(voxLinks);
+        free(meshGPULinks);
+        free(uvsGPULinks);
+        free(colorsGPULinks);
+    #endif
+
     // now for all of them, set their neighbors
     for (int i = -terrain_spawn_distance; i <= terrain_spawn_distance; i++) {
         for (int k = -terrain_spawn_distance; k <= terrain_spawn_distance; k++) {
@@ -71,13 +130,14 @@ ecs_entity_t create_terrain(ecs_world_t *world) {
     #ifdef zox_time_create_terrain
         end_timing_absolute("    - create_terrain")
     #endif
+    ecs_defer_end(world);
     return terrain_world;
 }
 
 void dispose_opengl_resources_terrain(ecs_world_t *world) {
-    const TilemapLink *tilemapLink = ecs_get(world, main_terrain, TilemapLink);
+    const TilemapLink *tilemapLink = ecs_get(world, local_terrain, TilemapLink);
     dispose_material_resources(world, tilemapLink->value);
-    const ChunkLinks *chunkLinks = ecs_get(world, main_terrain, ChunkLinks);
+    const ChunkLinks *chunkLinks = ecs_get(world, local_terrain, ChunkLinks);
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hash_map_pair* pair = chunkLinks->value->data[i];
         while (pair != NULL) {
@@ -90,7 +150,7 @@ void dispose_opengl_resources_terrain(ecs_world_t *world) {
 
 void restore_opengl_resources_terrain(ecs_world_t *world) {
     // zoxel_log(" > shader restore [%ix%i]\n", get_shader3D_textured_value(world).x, get_shader3D_textured_value(world).y);
-    const ChunkLinks *chunkLinks = ecs_get(world, main_terrain, ChunkLinks);
+    const ChunkLinks *chunkLinks = ecs_get(world, local_terrain, ChunkLinks);
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hash_map_pair* pair = chunkLinks->value->data[i];
         while (pair != NULL) {
@@ -99,6 +159,6 @@ void restore_opengl_resources_terrain(ecs_world_t *world) {
             pair = pair->next;
         }
     }
-    const TilemapLink *tilemapLink = ecs_get(world, main_terrain, TilemapLink);
+    const TilemapLink *tilemapLink = ecs_get(world, local_terrain, TilemapLink);
     restore_material_resources(world, tilemapLink->value, get_shader3D_textured_value(world));
 }

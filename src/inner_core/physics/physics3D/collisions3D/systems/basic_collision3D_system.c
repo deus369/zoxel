@@ -96,8 +96,9 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
                 }
             #endif
             const VoxLink *voxLink = &voxLinks[i];
-            if (voxLink->value == 0) continue;
+            if (!voxLink->value) continue;
             const ChunkLinks *chunkLinks = ecs_get(world, voxLink->value, ChunkLinks);
+            if (chunkLinks == NULL) continue;
             Velocity3D *velocity3D = &velocity3Ds[i];
             // get last position
             unsigned char did_collide = 0;

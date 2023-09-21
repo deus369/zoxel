@@ -21,7 +21,9 @@ unsigned char get_mouse_constrained() {
 
 void set_camera_transform(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t character, unsigned char camera_mode) {
     if (!camera || !character) return;
+    float3 target_position = float3_zero;
     const Position3D *position3D = ecs_get(world, character, Position3D);
+    if (position3D != NULL) target_position = position3D->value;
     float3 camera_position;
     float3 camera_euler;
     if (camera_mode == zox_camera_mode_topdown) {
@@ -41,7 +43,7 @@ void set_camera_transform(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t 
     float3_multiply_float_p(&camera_euler, degreesToRadians);
     float4 camera_rotation = quaternion_from_euler(camera_euler);
     zox_set_only(camera, LocalPosition3D, { camera_position })
-    zox_set_only(camera, Position3D, { float3_add(position3D->value, camera_position) })
+    zox_set_only(camera, Position3D, { float3_add(target_position, camera_position) })
     if (camera_follow_mode == zox_camera_follow_mode_attach) zox_set_only(camera, LocalRotation3D, { camera_rotation })
     else zox_set_only(camera, Rotation3D, { camera_rotation })
 }
@@ -106,4 +108,37 @@ void set_camera_mode_ortho(ecs_world_t *world) {
 
 void set_camera_mode_topdown(ecs_world_t *world) {
     set_camera_mode(world, zox_camera_mode_topdown);
+}
+
+// extern float overall_voxel_scale;
+
+void get_camera_start_transform(float3 *camera_position, float4 *camera_rotation) {
+    const float overall_voxel_scale = 32.0f;
+    camera_position->x = overall_voxel_scale / 2.0f;
+    camera_position->y = 0;
+    camera_position->z = overall_voxel_scale / 2.0f;
+    camera_rotation->x = 0;
+    camera_rotation->y = 0;
+    camera_rotation->z = 0;
+    camera_rotation->w = 1;
+    #ifdef zoxel_voxels
+        #ifndef zox_disable_terrain
+            #ifndef zox_disable_terrain_octrees
+                camera_position->y = 0.32f * overall_voxel_scale;
+            #else
+                camera_position->y = 0.52f * 2 * overall_voxel_scale;
+            #endif
+        #endif
+    #endif
+    float rot_x = -0.2f;
+    float rot_y = -M_PI_2 + M_PI * (rand() % 101) / 100.0f;
+    #ifndef zoxel_set_camera_firstperson
+        rot_x = -M_PI_2 * 0.8f;
+        camera_position->y += 0.32f * overall_voxel_scale;
+    #endif
+    float4 camera_rotation2 = quaternion_from_euler((float3) { rot_x, rot_y, 0 });  // quaternion_identity()
+    camera_rotation->x = camera_rotation2.x;
+    camera_rotation->y = camera_rotation2.y;
+    camera_rotation->z = camera_rotation2.z;
+    camera_rotation->w = camera_rotation2.w;
 }

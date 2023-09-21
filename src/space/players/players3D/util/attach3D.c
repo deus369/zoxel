@@ -43,26 +43,20 @@ void detatch_from_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_
         zox_set_only(character, CameraLink, { 0 })
     }
     // fix caera rotation to be the same
-    zoxel_log(" > [%lu] is detaching from character [%lu]\n", camera, character);
+    // zoxel_log(" > [%lu] is detaching from character [%lu]\n", camera, character);
 }
 
 void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character) {
-    const float vox_scale = model_scale * 16;
-    if (character == 0) detatch_from_character(world, player, camera, character);
-    if (character == 0) return;
-    // zoxel_log(" > attaching to character\n");
-    // attach the camera with transform restraints
-    // const Position3D *position3D = ecs_get(world, character, Position3D);
-    // const Rotation3D *character3D_rotation3D = ecs_get(world, character, Rotation3D);
-    set_camera_transform(world, camera, character, camera_mode);
-    // now set things
+    // const float vox_scale = model_scale * 16;
+    if (!character) {
+        detatch_from_character(world, player, camera, character);
+        return;
+    }
+    set_camera_transform(world, camera, character, camera_mode); // attach the camera with transform restraints
     zox_add_tag(camera, FirstPersonCamera)
     zox_set_only(camera, CanFreeRoam, { 0 })
-    if (camera_follow_mode == zox_camera_follow_mode_attach) {
-        zox_set_only(camera, ParentLink, { character })
-    } else if (camera_follow_mode == zox_camera_follow_mode_follow_xz) {
-        zox_set_only(camera, CameraFollowLink, { character })
-    }
+    if (camera_follow_mode == zox_camera_follow_mode_attach) zox_set_only(camera, ParentLink, { character })
+    else if (camera_follow_mode == zox_camera_follow_mode_follow_xz) zox_set_only(camera, CameraFollowLink, { character })
     zox_set_only(camera, EternalRotation, { quaternion_identity })
     zox_remove(camera, EulerOverride)
     // character
@@ -74,7 +68,7 @@ void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t c
     // lock mouse since attached
     zox_set_only(mouse_entity, MouseLock, { 1 })
     // spawn_element3D(world, character);  // todo: also add this to character's UILinks
-    zoxel_log(" > [%lu] is ataching to character [%lu]\n", camera, character);
+    // zoxel_log(" > [%lu] is ataching to character [%lu]\n", camera, character);
 }
 
 // ecs_set(world, camera, LocalPosition3D, { 0, 0, vox_scale / 2.0f }); // zoxel_set

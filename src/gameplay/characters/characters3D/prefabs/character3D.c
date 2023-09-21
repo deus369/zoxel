@@ -49,13 +49,13 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, vox_file *vox, float3 position, float4 rotation, unsigned char lod) {
+ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vox_file *vox, float3 position, float4 rotation, unsigned char lod) {
     float percentage_test = 0.02f + 0.98f * ((rand() % 100) * 0.01f);
     zox_instance(prefab)
     zox_set_only(e, Position3D, { position })
     zox_set_only(e, LastPosition3D, { position })
     zox_set_only(e, Rotation3D, { rotation })
-    zox_set_only(e, VoxLink, { main_terrain })
+    zox_set_only(e, VoxLink, { local_terrain })
     zox_set_only(e, RenderLod, { lod })
     spawn_gpu_mesh(world, e);
     spawn_gpu_colors(world, e);

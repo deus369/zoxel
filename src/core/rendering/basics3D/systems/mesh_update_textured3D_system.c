@@ -24,6 +24,7 @@ void MeshUpdateTextured3DSystem(ecs_iter_t *it) {
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
         const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
         const ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
+        if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) continue;
         opengl_upload_shader3D_textured(meshGPULink->value, uvsGPULink->value, colorsGPULink->value, meshIndicies2->value, meshIndicies2->length, meshVertices2->value, meshVertices2->length, meshUVs2->value, meshColorRGBs2->value);
         meshDirty->value = 0;
         /*zoxel_log(" o> mesh3D_textured built [%lu] [%i:%i:%i:%i]\n", it->entities[i], meshIndicies2->length, meshVertices2->length, meshUVs2->length, meshColorRGBs2->length);

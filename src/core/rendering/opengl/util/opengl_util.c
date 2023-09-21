@@ -95,11 +95,10 @@ void opengl_unset_mesh() {
 }
 
 void opengl_render(GLint indicies_length) {
-    // zoxel_log(" > mesh_indicies_length: %i\n", indicies_length);
     glDrawElements(GL_TRIANGLES, indicies_length, GL_UNSIGNED_INT, NULL);
-    /*#ifdef zoxel_catch_opengl_errors
+    #ifdef zoxel_catch_opengl_errors
         check_opengl_error("opengl_render");
-    #endif*/
+    #endif
 }
 
 void opengl_disable_opengl_program() {

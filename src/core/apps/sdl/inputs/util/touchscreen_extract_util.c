@@ -1,4 +1,4 @@
-#define zox_debug_log_extract_touchscreen
+// #define zox_debug_log_extract_touchscreen
 // #define zox_debug_log_element_raycasting
 int finger_id = 0;
 

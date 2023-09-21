@@ -32,8 +32,8 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const char *header_labe
     Children children = { };
     initialize_memory_component_non_pointer(children, ecs_entity_t, 1 + lines_count)
     children.value[0] = spawn_header(world, e, (int2) { 0, - font_size / 2 - header_margins / 2 }, (int2) { pixel_size.x, font_size + header_margins}, (float2) { 0.5f, 1.0f }, header_label, font_size, header_margins, header_layer, real_position2D, pixel_size, 1, canvas_size);
-    color edge_color = (color) { 33, 155, 155, 155 };
-    int edge_size = 4;
+    // color edge_color = (color) { 33, 155, 155, 155 };
+    // int edge_size = 4;
     for (int i = 0; i < lines_count; i++) {
         int position_x = line_margins + i * line_spacing;
         children.value[1 + i] = spawn_ui_line2D(world, main_canvas, (int2) { position_x, lines_min_height }, (int2) { position_x, lines_max_height }, line_color, lines_thickness, 0.0, real_position2D, pixel_position2D, lines_layer);

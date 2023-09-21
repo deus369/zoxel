@@ -26,6 +26,7 @@ void spawn_in_game_ui(ecs_world_t *world) {    // spawn game uis
 }
 
 extern void detatch_from_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character);
+
 void end_game(ecs_world_t *world) {
     zoxel_log(" > game state => [playing] to [main_menu]\n");
     zox_delete(pause_ui)
@@ -37,21 +38,41 @@ void end_game(ecs_world_t *world) {
     if (character != 0) detatch_from_character(world, main_player, main_camera, main_character3D);
     const int edge_buffer = 8 * default_ui_scale;
     const char *game_name = "zoxel";
-    float2 window_anchor = { 0.0f, 1.0f };
-    int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
-    spawn_main_menu(world, game_name, window_position, window_anchor, 0);
+    // float2 window_anchor = { 0.0f, 1.0f };
+    // int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
+    float2 main_menu_anchor = { 0.5f, 0.5f };
+    int2 main_menu_position = int2_zero;
+    spawn_main_menu(world, game_name, main_menu_position, main_menu_anchor, 0);
     zox_set_only(local_game, GameState, { zoxel_game_state_main_menu })
-    // main_cameras[0] = respawn_base_camera(world, main_cameras[0]);
+
+    set_sky_color(world, menu_sky_color, menu_sky_bottom_color);
+    float3 camera_position = float3_zero;
+    float4 camera_rotation = quaternion_identity;
+    get_camera_start_transform(&camera_position, &camera_rotation);
+    zox_set_only(main_camera, Position3D, { camera_position })
+    zox_set_only(main_camera, Rotation3D, { camera_rotation })
+    
     disable_inputs_until_release(world, main_player);
     dispose_in_game_ui(world);
+    #ifdef zox_on_play_spawn_terrain
+        zox_delete(local_terrain)
+        local_terrain = 0;
+    #endif
+    main_character3D = 0;
 }
 
 void play_game(ecs_world_t *world) {
     zoxel_log(" > game state => [main_menu] to [playing]\n");
     zox_delete(main_menu)   // close main menu
+    #ifdef zox_on_play_spawn_terrain
+        ecs_entity_t terrain = create_terrain(world);
+        #ifdef zoxel_space
+            zox_set_only(terrain, RealmLink, { local_realm })
+        #endif
+    #endif
     zox_set_only(local_game, GameState, { zoxel_game_state_playing }) // start game
     ecs_entity_t camera_entity = main_cameras[0];
-    zox_set_only(camera_entity, VoxLink, { main_terrain })
+    zox_set_only(camera_entity, VoxLink, { local_terrain })
     if (!ecs_has(world, camera_entity, Streamer)) {
         zox_add_only(camera_entity, Streamer)
         zox_add_only(camera_entity, StreamPoint)
@@ -64,10 +85,17 @@ void play_game(ecs_world_t *world) {
         spawn_many_characters3D(world);
     #endif
     #if defined(zoxel_include_players)
-        if (game_rule_attach_to_character) attach_to_character(world, main_player, main_cameras[0], main_character3D);
-        else attach_to_character(world, main_player, main_cameras[0], 0);
+        if (game_rule_attach_to_character) {
+            float3 spawn_position = ecs_get(world, camera_entity, Position3D)->value;
+            float4 spawn_rotation = quaternion_identity; // ecs_get(world, camera_entity, Rotation3D)->value;
+            const vox_file vox = vox_files[3];
+            main_character3D = spawn_chunk_character2(world, &vox, spawn_position, spawn_rotation, 0);
+            // zoxel_log("attaching to character[%lu]\n", main_character3D);
+            attach_to_character(world, main_player, camera_entity, main_character3D);
+        } else attach_to_character(world, main_player, camera_entity, 0);
     #endif
     disable_inputs_until_release(world, main_player);
+    set_sky_color(world, game_sky_color, game_sky_bottom_color);
     spawn_in_game_ui(world);
 }
 

@@ -34,6 +34,7 @@ ecs_entity_t spawn_skybox(ecs_world_t *world) {
     if (!headless) spawn_gpu_mesh(world, e);
     if (!headless) spawn_gpu_material(world, e, shader_skybox);
     skybox = e;
+    set_sky_color(world, menu_sky_color, menu_sky_bottom_color);
     #ifdef zoxel_debug_spawns
         zoxel_log(" + spawned skybox [%lu]\n", (long int) e);
     #endif

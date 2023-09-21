@@ -29,6 +29,7 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size) {
         add_gpu_texture(world, e);
         add_gpu_colors(world, e);
     }
+    zox_set_only(e, Scale1D, { 0.5f })
     ecs_defer_end(world);
     prefab_terrain_chunk_octree = e;
     return e;

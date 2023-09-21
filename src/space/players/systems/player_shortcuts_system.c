@@ -5,7 +5,7 @@ void toggle_collision_debug(ecs_world_t *world) {
     ecs_defer_begin(world);
     if (debug_colliders) add_physics_debug(world, prefab_character3D);
     else remove_physics_debug(world, prefab_character3D);
-    const ChunkLinks *chunkLinks = ecs_get(world, main_terrain, ChunkLinks);
+    const ChunkLinks *chunkLinks = ecs_get(world, local_terrain, ChunkLinks);
     // for every chunk, use entity links, add or remove physics debug components
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hash_map_pair* pair = chunkLinks->value->data[i];
@@ -46,6 +46,15 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
                 } else if (keyboard->b.pressed_this_frame) {
                     spawn_zoxel_window(world);
                 }
+                #ifndef zox_on_startup_spawn_main_menu
+                    else if (keyboard->g.pressed_this_frame) {
+                        const int edge_buffer = 8 * default_ui_scale;
+                        float2 window_anchor = { 0.0f, 1.0f };
+                        int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
+                        const char *game_name = "zoxel";
+                        spawn_main_menu(world, game_name, window_position, window_anchor, 0);
+                    }
+                #endif
             }
         }
     }
@@ -59,7 +68,7 @@ void on_terrain_settings_changed(ecs_world_t *world) {
         const TextureLinks *textureLinks = ecs_get(world, voxel, TextureLinks);
         zox_set_only(textureLinks->value[0], GenerateTexture, { 1 })
     }
-    const TilemapLink *tilemapLink = ecs_get(world, main_terrain, TilemapLink);
+    const TilemapLink *tilemapLink = ecs_get(world, local_terrain, TilemapLink);
     zox_set_only(tilemapLink->value, GenerateTexture, { 1 })
 }
 

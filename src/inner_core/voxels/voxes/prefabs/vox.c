@@ -16,7 +16,7 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world) {
     return e;
 }
 
-void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, vox_file *vox) {
+void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, const vox_file *vox) {
     #ifndef zox_disable_vox_octrees
         const unsigned char fill_type = 0;
         int3 vox_size = vox->chunks[0].size.xyz;

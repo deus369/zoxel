@@ -14,12 +14,12 @@ ecs_entity_t spawn_prefab_ui_list(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, const char *header_label, int list_count, const text_group labels[], const ClickEvent events[], int2 position, float2 anchor, unsigned char is_close_button) {
+ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, const char *header_label, int list_count, const text_group labels[], const ClickEvent events[], int2 position, float2 anchor, unsigned char is_close_button, unsigned char font_size) {
     int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
     float ui_scale = default_ui_scale;
-    int font_size = 28;
+    // int font_size = 28;
     int header_margins = 12;
-    int2 window_size = { 260, 60 + 40 * list_count };
+    int2 window_size = { 260, 60 + (font_size * 1.5f) * list_count };
     window_size.x *= ui_scale;
     window_size.y *= ui_scale;
     font_size *= ui_scale;

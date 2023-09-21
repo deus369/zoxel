@@ -31,7 +31,7 @@ zox_define_component(ChunkPosition)
 zox_define_component(VoxelPosition)
 zox_define_component(VoxLink)
 zox_define_component(ChunkLink)
-zox_define_hashmap_component(ChunkLinks)
+zox_define_hashmap_component(ChunkLinks, [in] ChunkLinks)
 // zoxel_module_defines
 zox_import_module(VoxelsCore)
 zox_import_module(Terrain)

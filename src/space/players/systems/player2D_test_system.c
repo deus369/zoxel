@@ -12,6 +12,10 @@ void Player2DTestSystem(ecs_iter_t *it) {
             has_rendered_elements = 0;
             zoxel_log(" === rendering elements ===\n");
         }*/
+
+        if (keyboard->f.is_pressed) {
+            Particle2DSpawnSystem(world, float2_zero, particleSpawnCount);
+        }
         // toggle player connected application
         if ((keyboard->left_alt.is_pressed || keyboard->right_alt.is_pressed) && keyboard->enter.pressed_this_frame) {
             sdl_toggle_fullscreen(world, main_window);

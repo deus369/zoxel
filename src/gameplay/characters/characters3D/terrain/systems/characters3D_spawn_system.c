@@ -1,9 +1,14 @@
 // notes: to test, set terrain to 1x1x1 chunks, disable physics, enable this systems logging
 unsigned char has_spawned_main_character = 0;
 
-ecs_entity_t spawn_chunk_character(ecs_world_t *world, ecs_entity_t_array_d* entities, vox_file *vox, float3 position, float4 rotation, unsigned char character_lod) {
+ecs_entity_t spawn_chunk_character(ecs_world_t *world, ecs_entity_t_array_d* entities, const vox_file *vox, float3 position, float4 rotation, unsigned char character_lod) {
     ecs_entity_t e = spawn_character3D(world, prefab_character3D, vox, position, rotation, character_lod);
     add_to_ecs_entity_t_array_d(entities, e);
+    return e;
+}
+
+ecs_entity_t spawn_chunk_character2(ecs_world_t *world, const vox_file *vox, float3 position, float4 rotation, unsigned char character_lod) {
+    ecs_entity_t e = spawn_character3D(world, prefab_character3D, vox, position, rotation, character_lod);
     return e;
 }
 
@@ -60,7 +65,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             // todo: use character bounds before spawning, scale voxel position by terrain scale
             position.y += 0.26f; // 0.75f;
             unsigned char did_spawn_main = 0;
-            if (!has_spawned_main_character) {
+            /*if (!has_spawned_main_character) {
                 // todo: fix the character lodding breaking when attaching to this character
                 //if (int2_equals((int2) { chunkPosition->value.x, chunkPosition->value.z }, int2_zero)) { // || int2_equals((int2) { chunkPosition->value.x, chunkPosition->value.z + 1 }, int2_zero)) {
                     has_spawned_main_character = 1;
@@ -68,7 +73,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
                     main_character3D = spawn_chunk_character(world, entities, &vox, position, rotation, character_lod);
                     did_spawn_main = 1;
                 //}
-            }
+            }*/
             #ifndef zox_disable_characters3D
                 if (!did_spawn_main) spawn_chunk_character(world, entities, &vox, position, rotation, character_lod);
             #endif

@@ -20,7 +20,9 @@ ecs_entity_t spawn_font(ecs_world_t *world, const byte2 points[], unsigned char 
     zox_name("font")
     FontData fontData = { };
     initialize_memory_component_non_pointer(fontData, byte2, length)
-    for (int i = 0; i < length; i++) fontData.value[i] = (byte2) { points[i].x, points[i].y };
+    memcpy(fontData.value, points, length * sizeof(byte2));
     zox_set_only(e, FontData, { fontData.length, fontData.value })
     return e;
 }
+
+// for (unsigned char i = 0; i < length; i++) fontData.value[i] = points[i]; // (byte2) { points[i].x, points[i].y };

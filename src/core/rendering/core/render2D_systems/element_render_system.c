@@ -46,7 +46,7 @@ void ElementRenderSystem(ecs_iter_t *it) {
         #endif
         #ifdef zoxel_catch_opengl_errors
             if (check_opengl_error_unlogged() != 0) {
-                zoxel_log(" > failed to render element2D [%lu]: [%i] - [%ix%i:%i]\n", it->entities[i], 6, meshGPULink->value.x, meshGPULink->value.y); // , colorsGPULink->value);
+                zoxel_log(" > failed to render element2D [%lu]: [%i] - [%ix%i:%i]\n", it->entities[i], 6, meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value); // , colorsGPULink->value);
                 break;
             }
         #endif

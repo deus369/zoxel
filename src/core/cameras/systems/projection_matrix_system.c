@@ -46,7 +46,9 @@ void ProjectionMatrixSystem(ecs_iter_t *it) {
     #ifdef main_thread_projection_matrix_system
         if (!ecs_query_changed(NULL, it)) return;
     #endif
-    ecs_world_t *world = it->world;
+    #ifdef zox_use_orthographic_projection
+        ecs_world_t *world = it->world;
+    #endif
     const ScreenDimensions *screenDimensions = ecs_field(it, ScreenDimensions, 1);
     const FieldOfView *fieldOfViews = ecs_field(it, FieldOfView, 2);
     const CameraNearDistance *cameraNearDistances = ecs_field(it, CameraNearDistance, 3);
