@@ -49,24 +49,6 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     #ifdef zoxel_cameras
         float4 camera_spawn_rotation = quaternion_identity;
         get_camera_start_transform(&camera_begin_position, &camera_spawn_rotation);
-
-        /*#ifdef zoxel_voxels
-            #ifndef zox_disable_terrain
-                #ifndef zox_disable_terrain_octrees
-                    camera_begin_position = (float3) { 0, 0.32f * overall_voxel_scale, 0 };
-                #else
-                    camera_begin_position = (float3) { 0, 0.52f * 2 * overall_voxel_scale, 0 };
-                #endif
-            #endif
-        #endif
-        float rot_x = -0.2f;
-        float rot_y = -M_PI_2 + M_PI * (rand() % 101) / 100.0f;
-        #ifndef zoxel_set_camera_firstperson
-            rot_x = -M_PI_2 * 0.8f;
-            camera_begin_position.y += 0.32f * overall_voxel_scale;
-        #endif
-        float4 camera_spawn_rotation = quaternion_from_euler((float3) { rot_x, rot_y, 0 });  // quaternion_identity()
-        */
         main_cameras[0] = spawn_base_camera(world, camera_begin_position, camera_spawn_rotation, screen_dimensions2, (int2) { });
         #ifdef zoxel_animations
             float4 rotationer = quaternion_from_euler( (float3) { 0, -main_camera_rotation_speed * degreesToRadians, 0 });

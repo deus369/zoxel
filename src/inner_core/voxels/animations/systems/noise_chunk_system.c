@@ -35,9 +35,9 @@ void NoiseChunkSystem(ecs_iter_t *it) {
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
     ChunkData *chunks = ecs_field(it, ChunkData, 3);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 4);
-    const GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 5);
+    GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 5);
     for (int i = 0; i < it->count; i++) {
-        const GenerateChunk *generateChunk = &generateChunks[i];
+        GenerateChunk *generateChunk = &generateChunks[i];
         //! Only rebuild if GenerateChunk is set to 1 and EntityDirty is false.
         if (generateChunk->value == 0) continue;
         ChunkDirty *chunkDirty = &chunkDirtys[i];
@@ -47,6 +47,7 @@ void NoiseChunkSystem(ecs_iter_t *it) {
         int voxels_array_size = chunkSize->value.x * chunkSize->value.y * chunkSize->value.z;
         re_initialize_memory_component(chunk, unsigned char, voxels_array_size);
         generate_chunk_noise(chunk, chunkSize);
+        generateChunk->value = 0;
         chunkDirty->value = 1;
         // zoxel_log(" > chunk [noise] generated [%lu] at [%f]\n", it->entities[i], get_total_time_seconds());
     }
@@ -58,9 +59,9 @@ void NoiseChunkOctreeSystem(ecs_iter_t *it) {
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
     ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 3);
     const RenderLod *renderLods = ecs_field(it, RenderLod, 4);
-    const GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 5);
+    GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 5);
     for (int i = 0; i < it->count; i++) {
-        const GenerateChunk *generateChunk = &generateChunks[i];
+        GenerateChunk *generateChunk = &generateChunks[i];
         //! Only rebuild if GenerateChunk is set to 1 and EntityDirty is false
         if (generateChunk->value == 0) continue;
         ChunkDirty *chunkDirty = &chunkDirtys[i];
@@ -72,6 +73,7 @@ void NoiseChunkOctreeSystem(ecs_iter_t *it) {
         #ifndef zox_disable_closing_octree_nodes
             close_solid_nodes(chunkOctree);
         #endif
+        generateChunk->value = 0;
         chunkDirty->value = 1;
         // zoxel_log(" > chunk octree [noise] generated [%lu] at [%f]\n", it->entities[i], get_total_time_seconds());
     }

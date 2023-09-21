@@ -37,18 +37,17 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
         begin_timing()
     #endif
     const ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 2);
-    const GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 3);
+    GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 3);
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 4);
     ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 5);
     unsigned char target_depth = max_octree_depth; //  - 1;
     unsigned char chunk_voxel_length = powers_of_two_byte[target_depth];
     float2 map_size_f = (float2) { chunk_voxel_length, chunk_voxel_length };
     for (int i = 0; i < it->count; i++) {
-        const GenerateChunk *generateChunk = &generateChunks[i];
+        GenerateChunk *generateChunk = &generateChunks[i];
         if (generateChunk->value == 0) continue;
         ChunkDirty *chunkDirty = &chunkDirtys[i];
         if (chunkDirty->value != 0) continue;
-        chunkDirty->value = 1;
         ChunkOctree *chunkOctree = &chunkOctrees[i];
         const ChunkPosition *chunkPosition = &chunkPositions[i];
         float3 chunk_position_float3 = float3_from_int3(chunkPosition->value);
@@ -115,6 +114,8 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
         #ifdef zoxel_time_octree_terrain_chunk_system
             did_do_timing()
         #endif
+        generateChunk->value = 0;
+        chunkDirty->value = 1;
     }
     #ifdef zoxel_time_octree_terrain_chunk_system
         end_timing("    - octree_terrain_chunk_system")

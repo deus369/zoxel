@@ -1,6 +1,6 @@
 const GLchar* skybox_shader_source_vert = "\
 #version 300 es\n\
-#extension GL_ARB_explicit_uniform_location : require\n\
+#extension GL_ARB_explicit_uniform_location : enable\n\
 in lowp vec3 vertex_position;\
 layout(location=0) uniform highp mat4 camera_matrix;\
 layout(location=1) uniform highp vec3 position;\
@@ -24,7 +24,7 @@ void main() {\
 
 const GLchar* skybox_shader_source_frag = "\
 #version 300 es\n\
-#extension GL_ARB_explicit_uniform_location : require\n\
+#extension GL_ARB_explicit_uniform_location : enable\n\
 layout(location=4) uniform lowp float brightness;\
 layout(location=5) uniform lowp vec3 sky_color;\
 layout(location=6) uniform lowp vec3 sky_bottom_color;\

@@ -2,6 +2,7 @@
 zox_memory_component(name, ecs_entity_t)\
 void on_destroyed##_##name(ecs_iter_t *it) {\
     ecs_world_t *world = it->world;\
+    ecs_defer_begin(world);\
     const name *children = ecs_field(it, name, 1);\
     for (int i = 0; i < it->count; i++) {\
         const name *children2 = &children[i];\
@@ -9,6 +10,7 @@ void on_destroyed##_##name(ecs_iter_t *it) {\
             zox_delete(children2->value[j]);\
         }\
     }\
+    ecs_defer_end(world);\
 }
 
 #define zox_define_entities_component(name, ...)\

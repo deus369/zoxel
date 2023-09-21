@@ -30,7 +30,7 @@ zox_entities_component(VoxelLinks)
 #include "systems/chunk_colors_build_system.c"
 #include "systems/chunk_link_system.c"
 #include "systems/chunk_octree_colors_build_system.c"
-zox_reset_system(GenerateChunkResetSystem, GenerateChunk)
+// zox_reset_system(GenerateChunkResetSystem, GenerateChunk)
 
 void spawn_prefabs_voxels_core(ecs_world_t *world) {
     spawn_prefab_voxel(world);
@@ -55,7 +55,7 @@ zox_define_entities_component(VoxelLinks, [in] VoxelLinks)
 // zoxel_filter_defines
 zox_filter(chunks_generating, [in] GenerateChunk)
 // zoxel_system_defines
-zox_define_reset_system(GenerateChunkResetSystem, GenerateChunk)
+// zox_define_reset_system(GenerateChunkResetSystem, GenerateChunk)
 // if (!headless) zox_system_ctx(ChunkBuildSystem, EcsOnUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices, [out] MeshDirty, [none] !MeshUVs, [none] !MeshColorRGBs)
 // if (!headless) zox_system_ctx(ChunkColorsBuildSystem, EcsOnUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkData, [in] ChunkSize, [in] ColorRGBs, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] !MeshUVs)
 if (!headless) zox_system_ctx(ChunkOctreeColorsBuildSystem, EcsPostUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] ColorRGBs, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] ColorChunk, [none] !MeshUVs)
