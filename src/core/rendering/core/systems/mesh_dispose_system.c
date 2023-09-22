@@ -32,3 +32,11 @@ void ShaderGPUDisposeSystem(ecs_iter_t *it) {
         if (shaderGPULink->value.y != 0) glDeleteShader(shaderGPULink->value.y);
     }
 } zox_declare_system(ShaderGPUDisposeSystem)
+
+void MaterialGPUDisposeSystem(ecs_iter_t *it) {
+    const MaterialGPULink *materialGPULinks = ecs_field(it, MaterialGPULink, 1);
+    for (int i = 0; i < it->count; i++) {
+        const MaterialGPULink *materialGPULink = &materialGPULinks[i];
+        if (materialGPULink->value != 0) glDeleteProgram(materialGPULink->value);
+    }
+} zox_declare_system(MaterialGPUDisposeSystem)

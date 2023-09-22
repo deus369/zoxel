@@ -21,8 +21,11 @@ void spawn_prefabs_weather(ecs_world_t *world) {
 }
 
 zox_begin_module(Weathers)
+add_load_shader_function((funfun) { &load_shader_skybox });
+add_restore_shader_function((funfun) { &restore_shader_skybox });
+// zox_define_components
 zox_define_tag(Weather)
-// systems
+// zox_define_systems
 zoxel_end_module(Weathers)
 
 #endif

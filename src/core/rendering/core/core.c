@@ -32,6 +32,7 @@ zox_memory_component(MeshColorRGBs, color_rgb)
 #include "render2D_systems/render2D_instance_system.c"
 #include "render2D_systems/element_render_system.c" // move to ui core
 // zoxel_function_includes
+#include "util/shader_loading.c"
 #include "fun/render_loop.c"
 #include "fun/gpu_dispose.c"
 #include "fun/gpu_restore.c"
@@ -43,10 +44,12 @@ void spawn_prefabs_rendering_core(ecs_world_t *world) {
 
 void on_close_rendering_core(ecs_world_t *world) {
     dispose_render_loop();
+    dispose_shader_loading();
 }
 
 zox_begin_module(RenderingCore)
 initialize_render_loop();
+initialize_shader_loading();
 // zoxel_component_defines
 zox_define_tag(Shader)
 zox_define_tag(Material)
@@ -76,7 +79,11 @@ zox_system_1(MeshGPUDisposeSystem, 0, [in] MeshGPULink)
 zox_system_1(MeshColorsGPUDisposeSystem, 0,[in] ColorsGPULink)
 zox_system_1(MeshUvsGPUDisposeSystem, 0,[in] UvsGPULink)
 zox_system_1(ShaderGPUDisposeSystem, 0, [in] ShaderGPULink)
-zox_system_1(MeshGPURestoreSystem, 0, [out] MeshDirty)
+zox_system_1(MaterialGPUDisposeSystem, 0, [in] MaterialGPULink)
+zox_system_1(MeshDirtyRestoreSystem, 0, [out] MeshDirty)
+zox_system_1(MeshGPURestoreSystem, 0, [out] MeshGPULink)
+zox_system_1(UvsGPULinkRestoreSystem, 0, [out] UvsGPULink)
+zox_system_1(ColorsGPULinkRestoreSystem, 0, [out] ColorsGPULink)
 zox_system_1(Mesh2DUvsUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshUVs, [in] MeshGPULink, [in] UvsGPULink, [none] !MeshColorRGBs)
 zoxel_end_module(RenderingCore)
 

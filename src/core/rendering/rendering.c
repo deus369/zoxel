@@ -30,7 +30,7 @@ zox_byte_component(MeshAlignment)
 zox_byte_component(RenderLod) // The resolution of each chunk, distance to nearest camera
 #include "opengl/opengl.c"
 #include "vulkan/vulkan.c"
-#include "core/rendering_core.c"
+#include "core/core.c"
 #include "basics3D/basics3D.c"
 
 extern unsigned char is_vulkan;

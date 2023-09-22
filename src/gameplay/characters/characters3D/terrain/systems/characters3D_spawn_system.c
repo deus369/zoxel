@@ -70,7 +70,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
                 //if (int2_equals((int2) { chunkPosition->value.x, chunkPosition->value.z }, int2_zero)) { // || int2_equals((int2) { chunkPosition->value.x, chunkPosition->value.z + 1 }, int2_zero)) {
                     has_spawned_main_character = 1;
                     vox = vox_files[3];
-                    main_character3D = spawn_chunk_character(world, entities, &vox, position, rotation, character_lod);
+                    local_character3D = spawn_chunk_character(world, entities, &vox, position, rotation, character_lod);
                     did_spawn_main = 1;
                 //}
             }*/

@@ -1,3 +1,5 @@
+// #extension GL_ARB_explicit_uniform_location : enable\n
+
 const GLchar* skybox_shader_source_vert = "\
 #version 300 es\n\
 #extension GL_ARB_explicit_uniform_location : enable\n\
@@ -58,12 +60,10 @@ void main() {\
 // color.x = color.y = 0.0; color.z = mesh_y;
 // color = vec4(0, 0.6, 0.4, 1) * brightness;
 
-GLuint2 shader_skybox;
+ecs_entity_t shader_skybox;
 
-// todo: call dispose_line3D_shader / move it to a shader entity
-void dispose_shader_skybox() {
-    glDeleteShader(shader_skybox.x);
-    glDeleteShader(shader_skybox.y);
+void load_shader_skybox(ecs_world_t *world) {
+    shader_skybox = spawn_shader(world, skybox_shader_source_vert, skybox_shader_source_frag);
 }
 
 void set_sky_color(ecs_world_t *world, float3 top_color, float3 bottom_color) {
@@ -72,10 +72,28 @@ void set_sky_color(ecs_world_t *world, float3 top_color, float3 bottom_color) {
     opengl_set_float3(5, top_color);
     opengl_set_float3(6, bottom_color);
     opengl_set_material(0);
+    zox_set_only(skybox, ColorRGB, { color_rgb_from_float3(top_color) })
+    zox_set_only(skybox, SecondaryColorRGB, { color_rgb_from_float3(bottom_color) })
+    // zoxel_log(" > set sky colors [%fx%fx%f] [%fx%fx%f]\n", top_color.x, top_color.y, top_color.z, bottom_color.x, bottom_color.y, bottom_color.z);
     // zoxel_log(" > set sky color [%fx%fx%f]\n", color.x, color.y, color.z);
 }
 
-int load_shader_skybox() {
-    shader_skybox = spawn_gpu_shader_inline(skybox_shader_source_vert, skybox_shader_source_frag);
-    return 0;
+void restore_skybox_material(ecs_world_t *world) {
+    GLuint2 shader_skybox_value = get_shader_value(world, shader_skybox);
+    GLuint sky_material = spawn_gpu_material_program(shader_skybox_value);
+    float3 top_color = color_rgb_to_float3(ecs_get(world, skybox, ColorRGB)->value);
+    float3 bottom_color = color_rgb_to_float3(ecs_get(world, skybox, SecondaryColorRGB)->value);
+    opengl_set_material(sky_material);
+    opengl_set_float3(5, top_color);
+    opengl_set_float3(6, bottom_color);
+    opengl_set_material(0);
+    zox_set_only(skybox, MaterialGPULink, { sky_material })
+    // set_sky_color(world, top_color, bottom_color);
+    // zoxel_log(" > restoring sky colors [%fx%fx%f] [%fx%fx%f]\n", top_color.x, top_color.y, top_color.z, bottom_color.x, bottom_color.y, bottom_color.z);
+}
+
+void restore_shader_skybox(ecs_world_t *world) {
+    // todo: link shader code to the shader gpu link, use system for restoring them
+    restore_shader(world, shader_skybox, skybox_shader_source_vert, skybox_shader_source_frag);
+    restore_skybox_material(world);
 }

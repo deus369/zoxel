@@ -15,6 +15,11 @@ typedef struct {\
 } name;\
 ECS_COMPONENT_DECLARE(name);
 
+#define zox_event_type(name, return_type, ...)\
+typedef struct {\
+    return_type (*value)(__VA_ARGS__);\
+} name;
+
 #define zox_function_component(name, return_type, ...)\
 typedef struct {\
     return_type (*value)(__VA_ARGS__);\

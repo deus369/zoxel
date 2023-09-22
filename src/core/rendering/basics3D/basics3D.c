@@ -38,12 +38,14 @@ void rendering_load_basic_shaders3D(ecs_world_t *world) {
 }
 
 void rendering_restore_basic_shaders3D(ecs_world_t *world) {
-    restore_textured3D_shader(world);
+    restore_shader_textured3D(world);
     if (load_shader3D_basic() != 0) zoxel_log("    ! error loading [shader3D_basic]\n");
     if (load_shader3D_colored() != 0) zoxel_log("    ! error loading [load_shader3D_colored]\n");
 }
 
 zox_begin_module(RenderingBasics3D)
+add_load_shader_function((funfun) { &rendering_load_basic_shaders3D });
+add_restore_shader_function((funfun) { &rendering_restore_basic_shaders3D });
 // zoxel_define_components
 zox_define_component(Textured3DAttributes)
 // zoxel_define_systems

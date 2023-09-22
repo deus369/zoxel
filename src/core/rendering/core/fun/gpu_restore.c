@@ -1,6 +1,5 @@
 extern void restore_opengl_resources_terrain(ecs_world_t *world);
 extern ecs_entity_t main_canvas;
-extern GLuint2 shader_skybox;
 
 void restore_mesh_resources(ecs_world_t *world, ecs_entity_t e) {
     if (ecs_has(world, e, MeshGPULink)) zox_set_only(e, MeshGPULink, { spawn_gpu_mesh_buffers() })
@@ -32,14 +31,15 @@ void restore_children_resources(ecs_world_t *world, ecs_entity_t e) {
 // restore opengl resources here
 void restore_all_opengl_resources(ecs_world_t *world) {
     zoxel_log(" > restoring all opengl resources\n");
-    opengl_restore_shaders();
-    restore_material_resources(world, skybox, shader_skybox);
+    restore_shaders_dynamic(world);
+    rendering_restore_basic_shaders2D(world);   // replace eventually
     restore_children_resources(world, main_canvas);
     restore_opengl_resources_terrain(world);
     ecs_run(world, ecs_id(MeshGPURestoreSystem), 0, NULL);
+    ecs_run(world, ecs_id(UvsGPULinkRestoreSystem), 0, NULL);
+    ecs_run(world, ecs_id(ColorsGPULinkRestoreSystem), 0, NULL);
+    ecs_run(world, ecs_id(MeshDirtyRestoreSystem), 0, NULL);
 }
-
-// restore_mesh_resources(world, skybox);
 
 void opengl_load_resources(ecs_world_t *world) {
     rendering = 1;

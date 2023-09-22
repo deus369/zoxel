@@ -115,8 +115,8 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
     }
 } zox_declare_system(PlayerShortcutsSystem)
 
-/*if (ecs_is_valid(world, main_character3D) && ecs_has(world, main_character3D, CameraLink)) {
-    const CameraLink *cameraLink = ecs_get(world, main_character3D, CameraLink);
+/*if (ecs_is_valid(world, local_character3D) && ecs_has(world, local_character3D, CameraLink)) {
+    const CameraLink *cameraLink = ecs_get(world, local_character3D, CameraLink);
     if (ecs_is_valid(world, cameraLink->value) && cameraLink->value != 0) {
         // zoxel_log(" > switching camera view\n");
         float vox_scale = model_scale * 16;

@@ -1,5 +1,5 @@
 ecs_entity_t prefab_character3D = 0;
-ecs_entity_t main_character3D = 0;
+ecs_entity_t local_character3D = 0;
 const int init_character3D_lod = 1;
 const int character3D_lod_dividor = 1; // 2;
 const unsigned char max_character_division = 0; // 0;

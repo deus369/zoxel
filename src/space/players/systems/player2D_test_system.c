@@ -1,7 +1,7 @@
 const int particleSpawnCount = 266;
 const float debug_rotation_speed = 12;
 const float debug_rotation_addition = 5;
-extern ecs_entity_t main_character3D;
+extern ecs_entity_t local_character3D;
 
 void Player2DTestSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
@@ -26,42 +26,42 @@ void Player2DTestSystem(ecs_iter_t *it) {
                 ecs_entity_t character = 0;
                 if (camera_mode == zox_camera_mode_first_person) character = ecs_get(world, main_camera, ParentLink)->value;
                 else character = ecs_get(world, main_camera, CameraFollowLink)->value;
-                if (character == 0) attach_to_character(world, main_player, main_camera, main_character3D);
-                else detatch_from_character(world, main_player, main_camera, main_character3D);
+                if (character == 0) attach_to_character(world, main_player, main_camera, local_character3D);
+                else detatch_from_character(world, main_player, main_camera, local_character3D);
             }
         } /*else if (keyboard->b.pressed_this_frame) {
-            zoxel_log("testing world ui on character %lu\n", main_character3D);
-            spawn_element3D(world, main_character3D);
+            zoxel_log("testing world ui on character %lu\n", local_character3D);
+            spawn_element3D(world, local_character3D);
         }*/
         #ifdef zoxel_tests_rotate_by_keys
             else if (keyboard->r.is_pressed) {
                 float3 euler = (float3) { 0, 90 * degreesToRadians, 0 * degreesToRadians };
                 //float4 quaternion = (float4) { 0, debug_rotation_speed, 0, 1 };
                 //quaternion_normalize(&quaternion);
-                ecs_set(world, main_character3D, Alpha3D, { quaternion_from_euler(euler) });
+                ecs_set(world, local_character3D, Alpha3D, { quaternion_from_euler(euler) });
             } else if (keyboard->t.is_pressed) {
                 float3 euler = (float3) { 0, -90 * degreesToRadians, 0 * degreesToRadians };
                 //float4 quaternion = (float4) { 0, -debug_rotation_speed, 0, 1 };
                 //quaternion_normalize(&quaternion);
-                ecs_set(world, main_character3D, Alpha3D, { quaternion_from_euler(euler) });
+                ecs_set(world, local_character3D, Alpha3D, { quaternion_from_euler(euler) });
             } else if (keyboard->y.pressed_this_frame) {
                 float3 euler = (float3) { 0 * degreesToRadians, (-90 + debug_rotation_addition) * degreesToRadians, 0 * degreesToRadians };
-                ecs_set(world, main_character3D, Rotation3D, { quaternion_from_euler(euler) });
+                ecs_set(world, local_character3D, Rotation3D, { quaternion_from_euler(euler) });
             } else if (keyboard->u.pressed_this_frame) {
                 float3 euler = (float3) { 0 * degreesToRadians, (0 + debug_rotation_addition) * degreesToRadians, 0 * degreesToRadians };
-                ecs_set(world, main_character3D, Rotation3D, { quaternion_from_euler(euler) });
+                ecs_set(world, local_character3D, Rotation3D, { quaternion_from_euler(euler) });
             } else if (keyboard->i.pressed_this_frame) {
                 float3 euler = (float3) { 0 * degreesToRadians, (90 + debug_rotation_addition) * degreesToRadians, 0 * degreesToRadians };
-                ecs_set(world, main_character3D, Rotation3D, { quaternion_from_euler(euler) });
+                ecs_set(world, local_character3D, Rotation3D, { quaternion_from_euler(euler) });
             } else if (keyboard->o.pressed_this_frame) {
                 float3 euler = (float3) { 0 * degreesToRadians, (180 + debug_rotation_addition) * degreesToRadians, 0 * degreesToRadians };
-                ecs_set(world, main_character3D, Rotation3D, { quaternion_from_euler(euler) });
+                ecs_set(world, local_character3D, Rotation3D, { quaternion_from_euler(euler) });
             } else if (keyboard->f.pressed_this_frame) {
                 zoxel_log(" > reset omega3D\n");
-                ecs_set(world, main_character3D, Omega3D, { quaternion_identity });
+                ecs_set(world, local_character3D, Omega3D, { quaternion_identity });
             } else if (keyboard->g.pressed_this_frame) {
                 zoxel_log(" > reset alpha3D\n");
-                ecs_set(world, main_character3D, Alpha3D, { quaternion_identity });
+                ecs_set(world, local_character3D, Alpha3D, { quaternion_identity });
             }
         #endif
     }

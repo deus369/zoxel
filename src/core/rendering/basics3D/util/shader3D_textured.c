@@ -20,7 +20,7 @@ const Textured3DAttributes* get_textured3D_material_attributes(ecs_world_t *worl
     return ecs_get(world, textured3D_material, Textured3DAttributes);
 }
 
-void restore_textured3D_shader(ecs_world_t *world) {
+void restore_shader_textured3D(ecs_world_t *world) {
     // todo: link shader code to the shader gpu link, use system for restoring them
     restore_shader(world, shader3D_textured, shader3D_textured_vert_buffer, shader3D_textured_frag_buffer);
     // todo: link shader link to the material gpu link, use system for restoring them

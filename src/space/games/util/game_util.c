@@ -1,6 +1,6 @@
 extern void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character);
 extern void button_event_pause_game(ecs_world_t *world, ecs_entity_t trigger_entity);
-extern ecs_entity_t main_character3D;
+extern ecs_entity_t local_character3D;
 unsigned char game_rule_attach_to_character = 1;
 // do I still need render_camera_matrix? - yes - used to insert matrix in each camera system run
 ecs_entity_t game_ui = 0;
@@ -35,7 +35,7 @@ void end_game(ecs_world_t *world) {
     ecs_entity_t character = 0;
     if (camera_follow_mode == zox_camera_follow_mode_attach) character = ecs_get(world, main_camera, ParentLink)->value;
     else if (camera_follow_mode == zox_camera_follow_mode_follow_xz) character = ecs_get(world, main_camera, CameraFollowLink)->value;
-    if (character != 0) detatch_from_character(world, main_player, main_camera, main_character3D);
+    if (character != 0) detatch_from_character(world, main_player, main_camera, local_character3D);
     const int edge_buffer = 8 * default_ui_scale;
     const char *game_name = "zoxel";
     // float2 window_anchor = { 0.0f, 1.0f };
@@ -56,9 +56,9 @@ void end_game(ecs_world_t *world) {
     dispose_in_game_ui(world);
     #ifdef zox_on_play_spawn_terrain
         zox_delete(local_terrain)
-        local_terrain = 0;
     #endif
-    main_character3D = 0;
+    local_character3D = 0;
+    local_terrain = 0;
 }
 
 void play_game(ecs_world_t *world) {
@@ -89,9 +89,9 @@ void play_game(ecs_world_t *world) {
             float3 spawn_position = ecs_get(world, camera_entity, Position3D)->value;
             float4 spawn_rotation = quaternion_identity; // ecs_get(world, camera_entity, Rotation3D)->value;
             const vox_file vox = vox_files[3];
-            main_character3D = spawn_chunk_character2(world, &vox, spawn_position, spawn_rotation, 0);
-            // zoxel_log("attaching to character[%lu]\n", main_character3D);
-            attach_to_character(world, main_player, camera_entity, main_character3D);
+            local_character3D = spawn_chunk_character2(world, &vox, spawn_position, spawn_rotation, 0);
+            // zoxel_log("attaching to character[%lu]\n", local_character3D);
+            attach_to_character(world, main_player, camera_entity, local_character3D);
         } else attach_to_character(world, main_player, camera_entity, 0);
     #endif
     disable_inputs_until_release(world, main_player);
