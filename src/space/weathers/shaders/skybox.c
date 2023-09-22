@@ -1,13 +1,13 @@
 // #extension GL_ARB_explicit_uniform_location : enable\n
+// layout(location=4) 
 
 const GLchar* skybox_shader_source_vert = "\
 #version 300 es\n\
-#extension GL_ARB_explicit_uniform_location : enable\n\
 in lowp vec3 vertex_position;\
-layout(location=0) uniform highp mat4 camera_matrix;\
-layout(location=1) uniform highp vec3 position;\
-layout(location=2) uniform lowp vec4 rotation;\
-layout(location=3) uniform lowp float scale;\
+uniform highp mat4 camera_matrix;\
+uniform highp vec3 position;\
+uniform lowp vec4 rotation;\
+uniform lowp float scale;\
 out lowp vec3 mesh_pos;\
 \
 vec3 float4_rotate_float3(vec4 rotation, vec3 value) {\
@@ -26,25 +26,24 @@ void main() {\
 
 const GLchar* skybox_shader_source_frag = "\
 #version 300 es\n\
-#extension GL_ARB_explicit_uniform_location : enable\n\
-layout(location=4) uniform lowp float brightness;\
-layout(location=5) uniform lowp vec3 sky_color;\
-layout(location=6) uniform lowp vec3 sky_bottom_color;\
+uniform lowp float brightness;\
+uniform lowp vec3 sky_top_color;\
+uniform lowp vec3 sky_bottom_color;\
 in lowp vec3 mesh_pos;\
 out lowp vec3 color;\
 \
 void main() {\
-    lowp vec3 sky_top_color = sky_color;\
+    lowp vec3 sky_top_color2 = sky_top_color;\
     lowp float gradient = clamp((mesh_pos.y + 0.0) * 4.0, 0.0, 1.0);\
     if (mesh_pos.y > 0.0) {\
         if (abs(mesh_pos.x) > abs(mesh_pos.z)) {\
-            sky_top_color.x = 1.0 - (abs(mesh_pos.x));\
+            sky_top_color2.x = 1.0 - (abs(mesh_pos.x));\
         } else {\
-            sky_top_color.x = 1.0 - (abs(mesh_pos.z));\
+            sky_top_color2.x = 1.0 - (abs(mesh_pos.z));\
         }\
-        sky_top_color.x -= 0.5 - mesh_pos.y;\
+        sky_top_color2.x -= 0.5 - mesh_pos.y;\
     }\
-    color = vec3(mix(sky_bottom_color, sky_top_color, gradient)) * brightness;\
+    color = vec3(mix(sky_bottom_color, sky_top_color2, gradient)) * brightness;\
 }";
 
 // lowp vec3 fog_color = vec3(0.7, 0.55, 0.58);
@@ -69,8 +68,8 @@ void load_shader_skybox(ecs_world_t *world) {
 void set_sky_color(ecs_world_t *world, float3 top_color, float3 bottom_color) {
     GLuint material = ecs_get(world, skybox, MaterialGPULink)->value;
     opengl_set_material(material);
-    opengl_set_float3(5, top_color);
-    opengl_set_float3(6, bottom_color);
+    opengl_set_float3(glGetUniformLocation(material, "sky_top_color"), top_color);
+    opengl_set_float3(glGetUniformLocation(material, "sky_bottom_color"), bottom_color);
     opengl_set_material(0);
     zox_set_only(skybox, ColorRGB, { color_rgb_from_float3(top_color) })
     zox_set_only(skybox, SecondaryColorRGB, { color_rgb_from_float3(bottom_color) })
