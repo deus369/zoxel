@@ -1,6 +1,3 @@
-unsigned char renderer_layer;
-const unsigned char max_render_layers = 8;
-
 void ElementRenderSystem(ecs_iter_t *it) {
     unsigned char has_set_material = 0;
     const Position2D *position2Ds = ecs_field(it, Position2D, 2);

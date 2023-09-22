@@ -24,6 +24,7 @@ void StreamPointSystem(ecs_iter_t *it) {
         StreamPoint *streamPoint = &streamPoints[i];
         if (!int3_equals(new_position, streamPoint->value)) {
             streamPoint->value = new_position;
+            // zoxel_log(" > stream terrain from [%lu] at [%ix%ix%i]\n", it->entities[i], new_position.x, new_position.y, new_position.z);
             // did_update = 1;
             #ifdef zoxel_time_stream_point_system
                 int updated_count = 0;
@@ -64,10 +65,7 @@ void StreamPointSystem(ecs_iter_t *it) {
             #endif
         }
     }
-    // skip table updates here if no updates
-    //if (!did_update) {
-    // ecs_query_skip(it);
-    //}
+    //if (!did_update) ecs_query_skip(it); // skip table updates here if no updates
     #ifdef zoxel_time_stream_point_system
         end_timing("StreamPointSystem")
     #endif

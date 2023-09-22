@@ -24,6 +24,7 @@ void set_camera_transform(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t 
     float3 target_position = float3_zero;
     const Position3D *position3D = ecs_get(world, character, Position3D);
     if (position3D != NULL) target_position = position3D->value;
+    else target_position = (float3) { 8, 0, 8 };
     float3 camera_position;
     float3 camera_euler;
     if (camera_mode == zox_camera_mode_topdown) {
@@ -114,22 +115,13 @@ void set_camera_mode_topdown(ecs_world_t *world) {
 
 void get_camera_start_transform(float3 *camera_position, float4 *camera_rotation) {
     const float overall_voxel_scale = 32.0f;
-    camera_position->x = overall_voxel_scale / 2.0f;
-    camera_position->y = 0;
-    camera_position->z = overall_voxel_scale / 2.0f;
+    camera_position->x = 0.25f * overall_voxel_scale;
+    camera_position->y = 0.1f * overall_voxel_scale;
+    camera_position->z = 0.25f * overall_voxel_scale;
     camera_rotation->x = 0;
     camera_rotation->y = 0;
     camera_rotation->z = 0;
     camera_rotation->w = 1;
-    #ifdef zoxel_voxels
-        #ifndef zox_disable_terrain
-            #ifndef zox_disable_terrain_octrees
-                camera_position->y = 0.32f * overall_voxel_scale;
-            #else
-                camera_position->y = 0.52f * 2 * overall_voxel_scale;
-            #endif
-        #endif
-    #endif
     float rot_x = -0.2f;
     float rot_y = -M_PI_2 + M_PI * (rand() % 101) / 100.0f;
     #ifndef zoxel_set_camera_firstperson

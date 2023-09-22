@@ -62,22 +62,23 @@ void end_game(ecs_world_t *world) {
 }
 
 void play_game(ecs_world_t *world) {
-    zoxel_log(" > game state => [main_menu] to [playing]\n");
-    zox_delete(main_menu)   // close main menu
-    #ifdef zox_on_play_spawn_terrain
-        ecs_entity_t terrain = create_terrain(world);
-        #ifdef zoxel_space
-            zox_set_only(terrain, RealmLink, { local_realm })
-        #endif
-    #endif
-    zox_set_only(local_game, GameState, { zoxel_game_state_playing }) // start game
+    ecs_entity_t main_camera = main_cameras[0]; // get player camera link instead
     ecs_entity_t camera_entity = main_cameras[0];
+    zoxel_log(" > game state => [main_menu] to [playing]\n");
+    zox_set_only(local_game, GameState, { zoxel_game_state_playing }) // start game
+    zox_delete(main_menu)   // close main menu
     zox_set_only(camera_entity, VoxLink, { local_terrain })
     if (!ecs_has(world, camera_entity, Streamer)) {
         zox_add_only(camera_entity, Streamer)
         zox_add_only(camera_entity, StreamPoint)
     }
     // \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cameras
+    #ifdef zox_on_play_spawn_terrain
+        ecs_entity_t terrain = create_terrain(world);
+        #ifdef zoxel_space
+            zox_set_only(terrain, RealmLink, { local_realm })
+        #endif
+    #endif
     #ifdef zoxel_spawn_character3Ds
         spawn_many_characters3D(world);
     #endif
@@ -87,10 +88,12 @@ void play_game(ecs_world_t *world) {
     #if defined(zoxel_include_players)
         if (game_rule_attach_to_character) {
             float3 spawn_position = ecs_get(world, camera_entity, Position3D)->value;
+            spawn_position.x = 8;
+            spawn_position.z = 8;
             float4 spawn_rotation = quaternion_identity; // ecs_get(world, camera_entity, Rotation3D)->value;
             const vox_file vox = vox_files[3];
             local_character3D = spawn_chunk_character2(world, &vox, spawn_position, spawn_rotation, 0);
-            // zoxel_log("attaching to character[%lu]\n", local_character3D);
+            zoxel_log(" > spawned local_character3D [%lu] - spawn_position [%fx%fx%f]\n", local_character3D, spawn_position.x, spawn_position.y, spawn_position.z);
             attach_to_character(world, main_player, camera_entity, local_character3D);
         } else attach_to_character(world, main_player, camera_entity, 0);
     #endif

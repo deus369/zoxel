@@ -25,12 +25,6 @@ zox_memory_component(MeshColorRGBs, color_rgb)
 // zoxel_system_includes
 #include "systems/mesh_restore_system.c"
 #include "systems/mesh_dispose_system.c"
-// zox_reset_system(MeshDirtySystem, MeshDirty)
-#include "render2D_systems/mesh2D_update_system.c"
-#include "render2D_systems/mesh2D_uvs_update_system.c"
-#include "render2D_systems/render2D_system.c"
-#include "render2D_systems/render2D_instance_system.c"
-#include "render2D_systems/element_render_system.c" // move to ui core
 // zoxel_function_includes
 #include "util/shader_loading.c"
 #include "fun/render_loop.c"
@@ -68,12 +62,6 @@ zox_define_memory_component(MeshUVs)
 zox_define_memory_component(MeshColors)
 zox_define_memory_component(MeshColorRGBs)
 // zoxel_system_defines
-#ifdef zoxel_transforms2D
-    zox_system_1(InstanceRender2DSystem, 0, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink)
-    zox_system_1(RenderMaterial2DSystem, 0, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MaterialGPULink, [in] TextureGPULink, [none] !MeshGPULink)
-    zox_system_1(ElementRenderSystem, 0, [none] ElementRender, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] MaterialInstancedGPULink, [in] TextureGPULink, [in] MeshDirty)
-    add_to_render2D_loop(ecs_id(ElementRenderSystem));
-#endif
 // gpu restore/dispose
 zox_system_1(MeshGPUDisposeSystem, 0, [in] MeshGPULink)
 zox_system_1(MeshColorsGPUDisposeSystem, 0,[in] ColorsGPULink)
@@ -84,10 +72,6 @@ zox_system_1(MeshDirtyRestoreSystem, 0, [out] MeshDirty)
 zox_system_1(MeshGPURestoreSystem, 0, [out] MeshGPULink)
 zox_system_1(UvsGPULinkRestoreSystem, 0, [out] UvsGPULink)
 zox_system_1(ColorsGPULinkRestoreSystem, 0, [out] ColorsGPULink)
-zox_system_1(Mesh2DUvsUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshUVs, [in] MeshGPULink, [in] UvsGPULink, [none] !MeshColorRGBs)
 zoxel_end_module(RenderingCore)
 
 #endif
-
-// zox_system_1(Mesh2DUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs)
-// zox_system_1(Mesh2DInstancedUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshGPULink, [in] MaterialInstancedGPULink, [none] !MeshUVs, [none] !MeshColorRGBs)

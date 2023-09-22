@@ -31,6 +31,7 @@ zox_byte_component(RenderLod) // The resolution of each chunk, distance to neare
 #include "opengl/opengl.c"
 #include "vulkan/vulkan.c"
 #include "core/core.c"
+#include "basics2D/basics2D.c"
 #include "basics3D/basics3D.c"
 
 extern unsigned char is_vulkan;
@@ -63,6 +64,7 @@ if (!headless) {
     if (is_vulkan) { zox_import_module(Vulkan) }
     else { zox_import_module(OpenGL) }
     zox_import_module(RenderingCore)
+    zox_import_module(RenderingBasics2D)
     zox_import_module(RenderingBasics3D)
 }
 zoxel_end_module(Rendering)

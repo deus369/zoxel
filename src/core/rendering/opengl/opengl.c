@@ -13,13 +13,6 @@ float3 opengl_clear_color = { 125 / 255.0f, 125 / 255.0f, 125 / 255.0f };
 #include "util/shaders_util.c"
 #include "util/opengl_util.c"
 #include "util/compute_util.c"
-// basics 2D
-#include "shaders/instanced2D.c"
-#include "shaders/textured2D.c"
-#include "render2D/material2D.c"
-#include "render2D/instanced2D_material.c"
-#include "render2D_textured/textured2D_material.c"
-#include "render2D_textured/shader_textured2D.c"
 // loads / disposes all shaders, move to higher level
 #include "util/opengl_main_util.c"
 
