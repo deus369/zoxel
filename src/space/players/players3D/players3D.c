@@ -15,7 +15,7 @@ zox_declare_tag(PlayerCharacter3D)
 #include "systems/player3D_jump_system.c"
 
 void spawn_prefabs_players3D(ecs_world_t *world) {
-    spawn_player_character3D_prefab(world);
+    spawn_prefab_player_character3D(world);
 }
 
 zox_begin_module(Players3D)

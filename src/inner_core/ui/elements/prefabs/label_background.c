@@ -3,7 +3,7 @@ ecs_entity_t label_background_prefab;
 ecs_entity_t spawn_prefab_label_background(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab_child(zext_prefab)
-    zox_name("prefab_label_background")
+    zox_prefab_name("prefab_label_background")
     zox_add_tag(e, Label)
     zox_add_tag(e, FrameTexture)
     zox_set(e, FrameCorner, { 7 })

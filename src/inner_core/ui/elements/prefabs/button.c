@@ -3,7 +3,7 @@ ecs_entity_t prefab_button;
 ecs_entity_t spawn_prefab_button(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_button")
+    zox_prefab_name("prefab_button")
     zox_add_tag(e, Button)
     zox_add_tag(e, FrameTexture)
     zox_set(e, FrameCorner, { 7 })

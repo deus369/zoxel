@@ -3,7 +3,7 @@ ecs_entity_t prefab_brain;
 ecs_entity_t spawn_prefab_brain(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_brain")
+    zox_prefab_name("prefab_brain")
     zox_add_tag(e, Brain)
     zox_add(e, Children)
     ecs_defer_end(world);

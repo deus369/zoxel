@@ -40,8 +40,6 @@
 
 #define zox_clone(prefab) ecs_entity_t e = ecs_clone(world, 0, prefab, 1);
 
-#define zox_name(label) set_unique_entity_name(world, e, label);
-
 //! Creates a simple Filter with components.
 //! Adds a component but also adds override to an entity.
 //! Adds a simple tag to an entity.

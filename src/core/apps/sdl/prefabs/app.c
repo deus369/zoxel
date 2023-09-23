@@ -4,7 +4,7 @@ ecs_entity_t main_app;
 ecs_entity_t spawn_prefab_app(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_app")
+    zox_prefab_name("prefab_app")
     zox_add_tag(e, App)
     // zox_add_tag(e, ViewPort)
     zox_add(e, SDLWindow)
@@ -19,6 +19,7 @@ ecs_entity_t spawn_prefab_app(ecs_world_t *world) {
 
 ecs_entity_t spawn_app(ecs_world_t *world, SDL_Window* window, SDL_GLContext* context) {
     zox_instance(app_prefab)
+    zox_name("app")
     zox_set_only(e, SDLWindow, { window })
     zox_set_only(e, Context, { context })
     main_app = e;

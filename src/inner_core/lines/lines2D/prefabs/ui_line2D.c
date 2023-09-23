@@ -5,7 +5,7 @@ extern void set_ui_line_position(LineData2D *lineData2D, int4 linePosition2D, fl
 ecs_entity_t spawn_prefab_ui_line2D(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_ui_line2D")
+    zox_prefab_name("prefab_ui_line2D")
     zox_add_tag(e, Line2D);
     zox_set(e, LineData2D, { { 0, 0, 0, 0 } })
     zox_set(e, LineLocalPosition2D, { int4_zero })
@@ -53,7 +53,7 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point
     zox_set_only(e, Layer2D, { layer })
     if (life_time != 0.0f) zox_set_only(e, DestroyInTime, { life_time })
     #ifdef zoxel_debug_spawns
-        zoxel_log("Spawned ui_line2D [%lu]\n", (long int) e);
+        zoxel_log(" > spawned ui_line2D [%lu]\n", (long int) e);
     #endif
     return e;
 }

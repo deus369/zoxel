@@ -36,7 +36,7 @@ void end_game(ecs_world_t *world) {
     if (camera_follow_mode == zox_camera_follow_mode_attach) character = ecs_get(world, main_camera, ParentLink)->value;
     else if (camera_follow_mode == zox_camera_follow_mode_follow_xz) character = ecs_get(world, main_camera, CameraFollowLink)->value;
     if (character != 0) detatch_from_character(world, main_player, main_camera, local_character3D);
-    const int edge_buffer = 8 * default_ui_scale;
+    // const int edge_buffer = 8 * default_ui_scale;
     const char *game_name = "zoxel";
     // float2 window_anchor = { 0.0f, 1.0f };
     // int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
@@ -63,14 +63,13 @@ void end_game(ecs_world_t *world) {
 
 void play_game(ecs_world_t *world) {
     ecs_entity_t main_camera = main_cameras[0]; // get player camera link instead
-    ecs_entity_t camera_entity = main_cameras[0];
     zoxel_log(" > game state => [main_menu] to [playing]\n");
     zox_set_only(local_game, GameState, { zoxel_game_state_playing }) // start game
     zox_delete(main_menu)   // close main menu
-    zox_set_only(camera_entity, VoxLink, { local_terrain })
-    if (!ecs_has(world, camera_entity, Streamer)) {
-        zox_add_only(camera_entity, Streamer)
-        zox_add_only(camera_entity, StreamPoint)
+    zox_set_only(main_camera, VoxLink, { local_terrain })
+    if (!ecs_has(world, main_camera, Streamer)) {
+        zox_add_only(main_camera, Streamer)
+        zox_add_only(main_camera, StreamPoint)
     }
     // \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cameras
     #ifdef zox_on_play_spawn_terrain
@@ -87,15 +86,15 @@ void play_game(ecs_world_t *world) {
     #endif
     #if defined(zoxel_include_players)
         if (game_rule_attach_to_character) {
-            float3 spawn_position = ecs_get(world, camera_entity, Position3D)->value;
+            float3 spawn_position = ecs_get(world, main_camera, Position3D)->value;
             spawn_position.x = 8;
             spawn_position.z = 8;
-            float4 spawn_rotation = quaternion_identity; // ecs_get(world, camera_entity, Rotation3D)->value;
+            float4 spawn_rotation = quaternion_identity; // ecs_get(world, main_camera, Rotation3D)->value;
             const vox_file vox = vox_files[3];
             local_character3D = spawn_chunk_character2(world, &vox, spawn_position, spawn_rotation, 0);
-            zoxel_log(" > spawned local_character3D [%lu] - spawn_position [%fx%fx%f]\n", local_character3D, spawn_position.x, spawn_position.y, spawn_position.z);
-            attach_to_character(world, main_player, camera_entity, local_character3D);
-        } else attach_to_character(world, main_player, camera_entity, 0);
+            // zoxel_log(" > spawned local_character3D [%lu] - spawn_position [%fx%fx%f]\n", local_character3D, spawn_position.x, spawn_position.y, spawn_position.z);
+            attach_to_character(world, main_player, main_camera, local_character3D);
+        } else attach_to_character(world, main_player, main_camera, 0);
     #endif
     disable_inputs_until_release(world, main_player);
     set_sky_color(world, game_sky_color, game_sky_bottom_color);

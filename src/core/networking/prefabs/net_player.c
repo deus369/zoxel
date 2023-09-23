@@ -3,7 +3,7 @@ ecs_entity_t prefab_net_player;
 ecs_entity_t spawn_prefab_net_player(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_net_player")
+    zox_prefab_name("prefab_net_player")
     zox_add_tag(e, NetPlayer)
     zox_add_tag(e, PacketReciever)
     zox_add_tag(e, PacketSender)

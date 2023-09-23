@@ -7,7 +7,7 @@ ecs_entity_t local_game;
 ecs_entity_t spawn_prefab_game(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_game")
+    zox_prefab_name("prefab_game")
     zox_add_tag(e, Game)
     zox_set(e, GameState, { zoxel_game_state_main_menu })
     ecs_defer_end(world);

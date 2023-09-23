@@ -6,7 +6,7 @@ void spawn_camera2D_follower_prefab(ecs_world_t *world) {
     // ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_base_camera);
     zox_prefab_child(prefab_base_camera)
     ecs_add_id(world, e, EcsPrefab);
-    zox_name("prefab_camera2D_follower")
+    zox_prefab_name("prefab_camera2D_follower")
     zox_add_tag(e, CameraFollower2D);
     zox_add(e, CameraTarget);
     ecs_defer_end(world);

@@ -105,7 +105,7 @@
 // #define zoxel_time_render_loop
 
 // -- debugs --
-// #define zoxel_entity_names       // sets entity names
+// #define zox_profile_entity_names       // sets entity names
 // #define zoxel_debug_vox_read
 //! \todo Fix pathing for android, cannot get resources there.
 // #define debug_element_position_change_query

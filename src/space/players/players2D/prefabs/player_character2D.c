@@ -3,7 +3,7 @@ ecs_entity_t prefab_player_character2D;
 ecs_entity_t spawn_prefab_player_character2D(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab_child(character2D_prefab)
-    zox_name("prefab_player_character2D")
+    zox_prefab_name("prefab_player_character2D")
     zox_add_tag(e, PlayerCharacter)
     zox_add_tag(e, PlayerCharacter2D)
     zox_add(e, CameraLink)

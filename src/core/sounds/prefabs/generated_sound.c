@@ -3,7 +3,7 @@ ecs_entity_t prefab_generated_sound;
 ecs_entity_t spawn_prefab_generated_sound(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab_child(prefab_sound)
-    zox_name("prefab_generated_sound")
+    zox_prefab_name("prefab_generated_sound")
     zox_set(e, SoundData, { 0, NULL })
     zox_set(e, SoundFrequency, { 0 })
     zox_set(e, InstrumentType, { 0 })

@@ -3,7 +3,7 @@ ecs_entity_t zext_prefab;
 ecs_entity_t spawn_zext_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("zext_prefab")
+    zox_prefab_name("zext_prefab")
     zox_add_tag(e, Zext)
     zox_add(e, ZextData)
     zox_add(e, ZextSize)

@@ -8,7 +8,7 @@ ecs_entity_t gamepad_entity;
 ecs_entity_t spawn_prefab_gamepad(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("gamepad_prefab")
+    zox_prefab_name("prefab_gamepad")
     zox_add_tag(e, Device)
     zox_add_tag(e, Gamepad)
     zox_set(e, DeviceLayout, { 0 })

@@ -8,7 +8,7 @@ const float2 statbar_front_mesh_scale = (float2) { 0.17f, 0.028f };
 ecs_entity_t spawn_prefab_statbar3D(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab_child(prefab_element_world)
-    zox_name("prefab_statbar")
+    zox_prefab_name("prefab_statbar")
     zox_set(e, ElementBar, { 1 })
     zox_set(e, ElementBarSize, { float2_zero })
     // zox_add_tag(e, Statbar)
@@ -24,7 +24,7 @@ ecs_entity_t spawn_prefab_statbar3D(ecs_world_t *world) {
 ecs_entity_t spawn_prefab_statbar3D_front(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab_child(prefab_element_world)
-    zox_name("prefab_statbar_front")
+    zox_prefab_name("prefab_statbar_front")
     zox_remove(e, ElementBillboard)
     zox_remove(e, UIHolderLink)
     // zox_add_tag(e, Statbar)

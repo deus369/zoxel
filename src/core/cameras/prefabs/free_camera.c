@@ -6,6 +6,7 @@ ecs_entity_t prefab_free_camera;
 ecs_entity_t spawn_prefab_free_camera(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab_child(prefab_base_camera)
+    zox_prefab_name("prefab_free_camera")
     zox_set(e, FreeRoam, { 0 })
     ecs_defer_end(world);
     prefab_free_camera = e;

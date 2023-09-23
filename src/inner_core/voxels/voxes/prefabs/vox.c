@@ -3,7 +3,7 @@ ecs_entity_t prefab_vox;
 ecs_entity_t spawn_prefab_vox(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab_child(prefab_chunk)
-    zox_name("prefab_vox")
+    zox_prefab_name("prefab_vox")
     add_chunk_colors(world, e);
     zox_set(e, Scale1D, { 1.0f })
     // because we set the data on spawn, no need to generate here

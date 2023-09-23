@@ -4,22 +4,16 @@ ecs_entity_t prefab_temporary_line3D;
 ecs_entity_t spawn_prefab_line3D(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_line3D")
+    zox_prefab_name("prefab_line3D")
     zox_add_tag(e, Line3D)
     zox_set(e, LineData3D, { { 0, 0, 0, 0, 0, 0 } })
     zox_set(e, LineThickness, { 1 })
     zox_set(e, ColorRGB, { { 22, 122, 44 } })
-    // create a temporary line, similar to the previous one
-    ecs_entity_t e2 = ecs_new_w_pair(world, EcsIsA, e);
-    ecs_add_id(world, e2, EcsPrefab);
-    set_unique_entity_name(world, e2, "prefab_temporary_line3D");
-    zox_set(e2, DestroyInTime, { 0 })
     ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs
         zoxel_log("spawn_prefab line3D [%lu].\n", (long int) (e));
     #endif
     prefab_line3D = e;
-    prefab_temporary_line3D = e2;
     return e;
 }
 
@@ -34,7 +28,7 @@ ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, floa
     zox_set_only(e, LineThickness, { thickness })
     if (life_time != 0.0f) zox_set_only(e, DestroyInTime, { life_time })
     #ifdef zoxel_debug_spawns
-        zoxel_log("Spawned line3D [%lu]\n", (long int) e);
+        zoxel_log(" > spawned line3D [%lu]\n", (long int) e);
     #endif
     return e;
 }

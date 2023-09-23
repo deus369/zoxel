@@ -4,7 +4,7 @@ ecs_entity_t pause_ui;
 ecs_entity_t spawn_prefab_pause_ui(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab_child(prefab_ui_list)
-    zox_name("prefab_pause_ui")
+    zox_prefab_name("prefab_pause_ui")
     zox_add_tag(e, PauseUI)
     ecs_defer_end(world);
     prefab_pause_ui = e;

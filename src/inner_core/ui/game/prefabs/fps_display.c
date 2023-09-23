@@ -5,7 +5,7 @@ ecs_entity_t spawn_prefab_fps_display(ecs_world_t *world) {
     ecs_defer_begin(world);
     // ecs_entity_t e = ecs_new_entity(world, "prefab_fps_display");
     ecs_entity_t e = ecs_clone(world, 0, label_background_prefab, 1);
-    zox_name("prefab_fps_display")
+    zox_prefab_name("prefab_fps_display")
     zox_add_tag(e, FPSDisplay)
     zox_set(e, FPSDisplayTicker, { 0 })
     if (!headless) prefab_set_mesh2D_vertices(world, e, square_vertices_right_aligned, 4);

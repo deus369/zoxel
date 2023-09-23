@@ -3,7 +3,7 @@ ecs_entity_t prefab_base_camera;
 ecs_entity_t spawn_camera_base_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_base_camera")
+    zox_prefab_name("prefab_base_camera")
     zox_add_tag(e, Camera)
     zox_add(e, Position3D)
     zox_add(e, Rotation3D)

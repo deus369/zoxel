@@ -3,7 +3,7 @@ ecs_entity_t prefab_window;
 ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_window")
+    zox_prefab_name("prefab_window")
     zox_add_tag(e, Window)
     zox_add_tag(e, FrameTexture)
     zox_set(e, FrameCorner, { 7 })

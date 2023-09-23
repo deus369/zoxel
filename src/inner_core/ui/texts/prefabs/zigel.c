@@ -3,7 +3,7 @@ ecs_entity_t zigel_prefab;
 ecs_entity_t spawn_zigel_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_zigel")
+    zox_prefab_name("prefab_zigel")
     zox_add_tag(e, Zigel)
     zox_add_tag(e, FontTexture)
     zox_set(e, ZigelIndex, { 0 })

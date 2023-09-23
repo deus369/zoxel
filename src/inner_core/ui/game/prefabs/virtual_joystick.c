@@ -4,7 +4,7 @@ ecs_entity_t virtual_joystick;  // reference for now
 ecs_entity_t spawn_prefab_virtual_joystick(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_virtual_joystick")
+    zox_prefab_name("prefab_virtual_joystick")
     zox_add_tag(e, Button)
     zox_add_tag(e, FrameTexture)
     zox_set(e, FrameCorner, { 2 })

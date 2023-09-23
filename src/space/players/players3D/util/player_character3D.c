@@ -1,7 +1,7 @@
 ecs_entity_t spawn_player_character3D(ecs_world_t *world, ecs_entity_t camera) {
     // child prefabs don't seem to inherit tags
     ecs_defer_begin(world);
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, player_character3D_prefab);
+    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_player_character3D);
     ecs_set(world, e, CameraLink, { camera });
     ecs_set(world, camera, CameraTarget, { e });
     ecs_set(world, camera, Character2DLink, { e });

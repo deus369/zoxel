@@ -3,7 +3,7 @@ ecs_entity_t header_prefab;
 ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_header")
+    zox_prefab_name("prefab_header")
     add_ui_plus_components(world, e);
     zox_add_tag(e, Header)
     zox_add_tag(e, FrameTexture)

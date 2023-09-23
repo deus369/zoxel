@@ -4,7 +4,7 @@ ecs_entity_t local_terrain;
 ecs_entity_t spawn_prefab_terrain(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_terrain")
+    zox_prefab_name("prefab_terrain")
     zox_add_tag(e, TerrainWorld)
     zox_add(e, ChunkLinks)
     zox_set(e, TilemapLink, { 0 })

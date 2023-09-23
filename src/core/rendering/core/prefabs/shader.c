@@ -4,7 +4,7 @@ ecs_entity_t prefab_shader;
 ecs_entity_t spawn_prefab_shader(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_shader")
+    zox_prefab_name("prefab_shader")
     zox_add_tag(e, Shader)
     // zox_add(e, ShaderGPULink)
     add_gpu_shader(world, e);
@@ -18,6 +18,7 @@ ecs_entity_t spawn_prefab_shader(ecs_world_t *world) {
 
 ecs_entity_t spawn_shader(ecs_world_t *world, const GLchar* vert_buffer, const GLchar* frag_buffer) {
     zox_instance(prefab_shader)
+    zox_name("shader")
     zox_set_only(e, ShaderGPULink, { spawn_gpu_shader_inline(vert_buffer, frag_buffer) })
     /*ShaderGPULink *shaderGPULink = ecs_get_mut(world, e, ShaderGPULink);
     shaderGPULink->value = value;

@@ -2,7 +2,7 @@ ecs_entity_t prefab_tilemap;
 
 ecs_entity_t spawn_prefab_tilemap(ecs_world_t *world) {
     zox_prefab()
-    zox_name("prefab_tilemap")
+    zox_prefab_name("prefab_tilemap")
     zox_add_tag(e, Tilemap)
     zox_set(e, TilemapSize, {{ 1, 1 }})
     zox_set(e, TextureLinks, { 0, NULL })

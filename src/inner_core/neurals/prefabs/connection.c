@@ -3,7 +3,7 @@ ecs_entity_t prefab_connection;
 ecs_entity_t spawn_prefab_connection(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_connection")
+    zox_prefab_name("prefab_connection")
     zox_add_tag(e, Connection)
     zox_add(e, ConnectionData)
     zox_set(e, Signal, { 0 })

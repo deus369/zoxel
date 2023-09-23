@@ -215,6 +215,10 @@ run-dev-profiler:
 	sleep 3 && open https://www.flecs.dev/explorer &
 	cd build && ./../$(target_dev) --profiler
 
+run-dev-profiler-tiny:
+	sleep 3 && open https://www.flecs.dev/explorer &
+	cd build && ./../$(target_dev) --profiler --tiny
+
 # web #
 
 install-web-sdk:

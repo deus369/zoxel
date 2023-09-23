@@ -4,7 +4,7 @@ ecs_entity_t main_menu;
 ecs_entity_t spawn_prefab_main_menu(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab_child(prefab_ui_list)    // prefab_window
-    zox_name("prefab_main_menu")
+    zox_prefab_name("prefab_main_menu")
     zox_add_tag(e, MainMenu)
     ecs_defer_end(world);
     prefab_main_menu = e;

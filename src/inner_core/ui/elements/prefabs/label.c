@@ -3,7 +3,7 @@ ecs_entity_t label_prefab;
 ecs_entity_t spawn_prefab_label(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab_child(zext_prefab)
-    zox_name("prefab_label")
+    zox_prefab_name("prefab_label")
     zox_add_tag(e, Label)
     ecs_defer_end(world);
     label_prefab = e;

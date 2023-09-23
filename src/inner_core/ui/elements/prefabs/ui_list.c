@@ -7,7 +7,7 @@ ecs_entity_t prefab_ui_list;
 ecs_entity_t spawn_prefab_ui_list(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab_child(prefab_window)
-    zox_name("prefab_ui_list")
+    zox_prefab_name("prefab_ui_list")
     // zox_add_tag(e, UIList)
     ecs_defer_end(world);
     prefab_ui_list = e;

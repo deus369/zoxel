@@ -3,7 +3,7 @@ ecs_entity_t prefab_neuron;
 ecs_entity_t spawn_prefab_neuron(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_neuron")
+    zox_prefab_name("prefab_neuron")
     zox_add_tag(e, Neuron)
     zox_add(e, ParentLink)
     zox_set(e, Weight, { 0 })

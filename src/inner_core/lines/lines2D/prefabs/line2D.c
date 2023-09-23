@@ -4,7 +4,7 @@ extern ecs_entity_t prefab_temporary_line2D;
 ecs_entity_t spawn_prefab_line2D(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_line2D")
+    zox_prefab_name("prefab_line2D")
     zox_add_tag(e, Line2D)
     zox_set(e, LineData2D, { { 0, 0, 0, 0 } })
     zox_set(e, LineThickness, { 1 })

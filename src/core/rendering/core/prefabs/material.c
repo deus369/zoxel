@@ -4,7 +4,7 @@ ecs_entity_t prefab_material;
 ecs_entity_t spawn_prefab_material(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_material")
+    zox_prefab_name("prefab_material")
     zox_add_tag(e, Material)
     // zox_add(e, ShaderGPULink)
     add_gpu_material(world, e);
@@ -18,6 +18,7 @@ ecs_entity_t spawn_prefab_material(ecs_world_t *world) {
 
 ecs_entity_t spawn_material(ecs_world_t *world, GLuint2 shader) {
     zox_instance(prefab_material)
+    zox_name("material")
     spawn_gpu_material(world, e, shader);
     return e;
 }

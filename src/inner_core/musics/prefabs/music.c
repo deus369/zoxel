@@ -4,7 +4,7 @@ ecs_entity_t main_music;
 ecs_entity_t spawn_prefab_music(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_music")
+    zox_prefab_name("prefab_music")
     zox_add_tag(e, Music)
     zox_set(e, GenerateMusic, { 1 })
     zox_add(e, MusicData)

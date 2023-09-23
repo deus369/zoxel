@@ -6,7 +6,7 @@ const unsigned char virtual_joysticks_count = 1;
 ecs_entity_t spawn_prefab_touchscreen(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("touchscreen_prefab")
+    zox_prefab_name("prefab_touchscreen")
     zox_add_tag(e, Device)
     zox_add_tag(e, Touchscreen)
     zox_set(e, DeviceLayout, { 0 })

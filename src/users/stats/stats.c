@@ -4,7 +4,7 @@
 zox_declare_user_data(Stat)
 zox_component(StatValue, float)
 zox_component(StatValueMax, float)
-zox_create_user_data_prefabs(Stat, stat)    
+zox_create_user_data_prefabs(Stat, stat, "stat")    
 #include "prefabs/stat.c"
 #include "systems/stat_regen_system.c"
 #include "ui/ui.c"

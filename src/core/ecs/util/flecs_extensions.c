@@ -16,8 +16,14 @@ char* get_entity_string(char label[], ecs_entity_t e) {
     return entity_name;
 }
 
+// test this
+#define zox_prefab_name(label) ;
+//set_unique_entity_name(world, e, label);
+
+#define zox_name(label) set_unique_entity_name(world, e, label);
+
 void set_unique_entity_name(ecs_world_t *world, ecs_entity_t e, char label[]) {
-    #ifdef zoxel_entity_names
+    #ifdef zox_profile_entity_names
         char* entity_name = get_entity_string(label, e);
         ecs_set_name(world, e, entity_name);
         free(entity_name);

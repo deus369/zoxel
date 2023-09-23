@@ -7,7 +7,7 @@ const int font_styles_length = 256;
 ecs_entity_t spawn_font_style_prefab(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_font_style")
+    zox_prefab_name("prefab_font_style")
     zox_add_tag(e, FontStyle);
     zox_add(e, Children);
     ecs_defer_end(world);

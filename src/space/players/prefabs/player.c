@@ -5,7 +5,7 @@ ecs_entity_t local_player;
 ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_player")
+    zox_prefab_name("prefab_player")
     zox_add_tag(e, Player)
     zox_set(e, PlayerState, { camera_mode })
     zox_add(e, DeviceLinks)

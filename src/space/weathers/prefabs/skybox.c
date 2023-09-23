@@ -5,7 +5,7 @@ ecs_entity_t skybox;
 ecs_entity_t spawn_prefab_skybox(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_skybox")
+    zox_prefab_name("prefab_skybox")
     #ifdef zoxel_transforms3D
         add_transform3Ds(world, e);
     #endif

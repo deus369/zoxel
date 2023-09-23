@@ -3,7 +3,7 @@ ecs_entity_t prefab_net_room;
 ecs_entity_t spawn_prefab_net_room(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_net_room")
+    zox_prefab_name("prefab_net_room")
     zox_add_tag(e, NetRoom)
     zox_add_tag(e, PacketReciever)
     zox_add_tag(e, PacketSender)

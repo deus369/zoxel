@@ -7,6 +7,7 @@ zox_declare_tag(CubeLines)
 zox_byte_component(DebugCubeLines)
 zox_component(CubeLinesThickness, float)
 #include "prefabs/line3D.c"
+#include "prefabs/temporary_line3D.c"
 #include "shaders/line3D_shader.c"
 #include "systems/line3D_render_system.c"
 #include "systems/cube_line_render_system.c"
@@ -18,6 +19,7 @@ void load_resources_lines3D(ecs_world_t *world) {
 
 void spawn_prefabs_lines3D(ecs_world_t *world) {
     spawn_prefab_line3D(world);
+    spawn_prefab_temporary_line3D(world);
 }
 
 zox_begin_module(Lines3D)

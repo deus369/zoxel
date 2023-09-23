@@ -3,7 +3,7 @@ ecs_entity_t particle3D_prefab;
 void spawn_prefab_particle3D(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
-    zox_name("prefab_particle3D")
+    zox_prefab_name("prefab_particle3D")
     zox_add_tag(e, Particle3D)
     // ecs_override(world, prefab, Particle2D)
     zox_set(e, Position3D, { float3_zero })

@@ -30,7 +30,7 @@ unsigned char get_character_division(int3 chunk_position, int3 camera_position) 
 ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab_child(prefab_vox)
-    zox_name("prefab_character3D")
+    zox_prefab_name("prefab_character3D")
     add_seed(world, e, 999);
     add_physics3D(world, e);
     zox_set(e, Bounds3D, {{ 1, 1, 1 }})
