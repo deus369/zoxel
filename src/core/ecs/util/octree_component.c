@@ -1,5 +1,5 @@
 // todo: using valgrind, fix some memory leaks froom this component
-
+int node_memory = 0; //todo: test with one chunk totally, key to create / destroy it
 #define octree_length 8
 // #define octree_node_size 2
 const unsigned char octree_node_size = 2;
@@ -164,14 +164,15 @@ typedef struct name name;\
 struct name {\
     type value;\
     name *nodes;\
-};\
-ECS_COMPONENT_DECLARE(name);\
+}; ECS_COMPONENT_DECLARE(name);\
 \
 void free##_##name(name* octree) {\
-    if (octree->nodes != NULL) {\
+    if (octree->nodes) {\
         for (unsigned char i = 0; i < octree_length; i++) free##_##name(&octree->nodes[i]);\
         free(octree->nodes);\
+        node_memory -= 1;\
         octree->nodes = NULL;\
+        /*zoxel_log(" > freeing node [%i]\n", (sizeof(name) * octree_length));*/\
     }\
 }\
 \
@@ -179,6 +180,7 @@ void clone##_##name(name* dst, const name* src) {\
     dst->value = src->value;\
     if (src->nodes) {\
         dst->nodes = malloc(sizeof(name) * octree_length);\
+        node_memory += 1;\
         for (unsigned char i = 0; i < octree_length; i++) clone##_##name(&dst->nodes[i], &src->nodes[i]);\
     } else {\
         dst->nodes = NULL;\
@@ -188,12 +190,15 @@ void clone##_##name(name* dst, const name* src) {\
 void open##_##name(name* octree) {\
     if (octree->nodes == NULL) {\
         octree->nodes = malloc(sizeof(name) * octree_length);\
+        node_memory += 1;\
         for (unsigned char i = 0; i < octree_length; i++) octree->nodes[i].nodes = NULL;\
     }\
 }\
 \
 void open_new##_##name(name* octree) {\
+    /*zoxel_log(" > opening node [%i + 1 = %i :: %i]\n", sizeof(name*), sizeof(name), (sizeof(name) * octree_length));*/\
     octree->nodes = malloc(sizeof(name) * octree_length);\
+    node_memory += 1;\
 }\
 \
 void close##_##name(name* octree) {\
@@ -208,16 +213,17 @@ ECS_CTOR(name, ptr, {\
 ECS_DTOR(name, ptr, {\
     free##_##name(ptr);\
 })\
-ECS_MOVE(name, dst, src, {\
-    dst->value = src->value;\
-    dst->nodes = src->nodes;\
-    src->nodes = NULL;\
-    src->value = default_value;\
-})\
 \
 ECS_COPY(name, dst, src, {\
     free##_##name(dst);\
     clone##_##name(dst, src);\
+})\
+\
+ECS_MOVE(name, dst, src, {\
+    dst->value = src->value;\
+    src->value = default_value;\
+    dst->nodes = src->nodes;\
+    src->nodes = NULL;\
 })\
 \
 const name* find_node##_##name(const name* node, int3 octree_position, unsigned char depth) {\

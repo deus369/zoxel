@@ -8,15 +8,17 @@
 typedef struct {\
     int length;\
     type *value;\
-} name;\
-ECS_COMPONENT_DECLARE(name);\
+} name; ECS_COMPONENT_DECLARE(name);\
+\
 ECS_CTOR(name, ptr, {\
     ptr->length = 0;\
     ptr->value = NULL;\
 })\
+\
 ECS_DTOR(name, ptr, {\
     if (ptr->value) free(ptr->value);\
 })\
+\
 ECS_MOVE(name, dst, src, {\
     if (dst->length != 0) free(dst->value);\
     dst->value = src->value;\
@@ -24,6 +26,7 @@ ECS_MOVE(name, dst, src, {\
     src->value = NULL;\
     src->length = 0;\
 })\
+\
 ECS_COPY(name, dst, src, {\
     if (src->value) {\
         if (dst->length != 0) free(dst->value);\
@@ -102,7 +105,7 @@ ECS_COPY(name, dst, src, {\
 
 #define re_initialize_memory_component(component, dataType, length_) {\
     if (component->length != length_) {\
-        if (component->length != 0 && component->value) free(component->value);\
+        if (component->length > 0 && component->value) free(component->value);\
         component->length = length_;\
         component->value = (dataType*) malloc(length_ * sizeof(dataType));\
     }\

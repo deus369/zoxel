@@ -17,15 +17,18 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world) {
     free_ChunkOctree(chunkOctree);
     fill_new_octree(chunkOctree, 0, max_octree_depth_character);
     ecs_modified(world, e, ChunkOctree);*/
-    initialize_new_chunk_octree(world, e, max_octree_depth_character);
+    // initialize_new_chunk_octree(world, e, max_octree_depth_character);
     ecs_defer_end(world);
     prefab_vox = e;
     return e;
 }
 
 void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, const vox_file *vox) {
+    #ifdef zox_disable_set_vox
+        return;
+    #endif
     #ifndef zox_disable_vox_octrees
-        // const unsigned char fill_type = 0;
+        unsigned char target_depth = max_octree_depth_character;
         int3 vox_size = vox->chunks[0].size.xyz;
         unsigned char *voxels = vox->chunks[0].xyzi.voxels;
         // zoxel_log(" > setting vox [%ix%ix%i]\n", vox_size.x, vox_size.y, vox_size.z);
@@ -36,7 +39,7 @@ void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, const vox_file *v
         memcpy(colorRGBs->value, vox->palette.values_rgb, colors_length * sizeof(color_rgb));
         // initialize_memory_component(colorRGBs, color_rgb, colors_length)
         // ChunkOctree chunkOctree = { };
-        // fill_new_octree(chunkOctree, fill_type, target_depth);
+        fill_new_octree(chunkOctree, 0, target_depth);
         byte2 set_octree_data = (byte2) { 1, max_octree_depth_character };
         int vox_index = 0;
         // byte3 offset = (byte3) { (32 - vox_size.x) / 2, (32 - vox_size.y) / 2, (32 - vox_size.z) / 2 };
@@ -78,9 +81,7 @@ ecs_entity_t spawn_vox(ecs_world_t *world, vox_file *vox, float3 position, unsig
     zox_instance(prefab_vox)
     zox_set(e, Position3D, { position })
     zox_set(e, RenderLod, { division })
-    #ifndef zox_disable_set_vox
-        set_vox_from_vox_file(world, e, vox);
-    #endif
+    set_vox_from_vox_file(world, e, vox);
     spawn_gpu_colors(world, e);
     return e;
 }

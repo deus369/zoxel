@@ -1,6 +1,6 @@
 ecs_entity_t font_style_prefab;
 ecs_entity_t font_style_entity;
-const int fonts_used = 73;
+const int fonts_used = 74;
 const int font_styles_length = 256;
 
 //! meta data for a font character
@@ -102,6 +102,7 @@ ecs_entity_t spawn_font_style(ecs_world_t *world) {
     children->value[70] = spawn_font(world, font_underscore, underscore_length);
     children->value[71] = spawn_font(world, left_square_bracket, left_square_bracket_length);
     children->value[72] = spawn_font(world, right_square_bracket, right_square_bracket_length);
+    children->value[73] = spawn_font(world, font_minus, font_minus_length);
     // finished
     for (int i = fonts_used; i < font_styles_length; i++) children->value[i] = question_mark;
     // zox_set_only(e, Children, { children->length, children->value })

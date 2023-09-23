@@ -66,10 +66,7 @@ unsigned char get_octree_voxel(const ChunkOctree *node, byte3 *position, unsigne
 void close_solid_nodes(ChunkOctree *node) {
     if (node->nodes == NULL) return;
     // for all children nodes - only check higher nodes if closed children
-    //if (node->nodes != NULL) {
     for (unsigned char i = 0; i < octree_length; i++) close_solid_nodes(&node->nodes[i]);
-    //}
-    //if (node->nodes != NULL) {
     unsigned char all_solid = 1;
     for (unsigned char i = 0; i < octree_length; i++) {
         if (node->nodes[i].nodes != NULL || !node->nodes[i].value) {
@@ -89,7 +86,6 @@ void close_solid_nodes(ChunkOctree *node) {
         }
         if (all_air) close_ChunkOctree(node);
     }
-    //}
 }
 
 void close_same_nodes(ChunkOctree *node) {

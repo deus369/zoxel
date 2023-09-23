@@ -52,6 +52,11 @@ const byte2 right_square_bracket[] = {
     { font_right_side, font_bottom_side }, { middleSideX, font_bottom_side },
 };
 
+const unsigned char font_minus_length = 1 * 2;
+const byte2 font_minus[] = {
+    { font_left_side, middleSideX }, { font_right_side, middleSideX }
+};
+
 const unsigned char number_0_length = 4 * 2;
 const byte2 number_0[] = {
     { font_left_side, font_top_side }, { font_right_side, font_top_side },

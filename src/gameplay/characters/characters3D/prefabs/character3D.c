@@ -67,9 +67,7 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vo
     ecs_modified(world, e, ElementLinks);
     spawn_gpu_mesh(world, e);
     spawn_gpu_colors(world, e);
-    #ifndef zox_disable_characters3D_voxes
-        set_vox_from_vox_file(world, e, vox);
-    #endif
+    set_vox_from_vox_file(world, e, vox);
     characters_count++;
     return e;
 }

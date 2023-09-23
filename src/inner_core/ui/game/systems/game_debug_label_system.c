@@ -1,6 +1,7 @@
 extern int characters_count;
 // #define zox_debug_ui_characters
 // #define zox_debug_ui_device_mode
+#define zox_debug_ui_node_memory
 
 void GameDebugLabelSystem(ecs_iter_t *it) {
     if (main_player == 0) return;
@@ -13,12 +14,15 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         ZextDirty *zextDirty = &zextDirtys[i];
         ZextData *zextData = &zextDatas[i];
         // int buffer_index = 0;
-        char buffer[256];
-        snprintf(buffer, sizeof(buffer), "debug ui\nline 2");
+        char buffer[32];
+        // test this \n
+        // snprintf(buffer, sizeof(buffer), "debug ui\nline 2");
         // buffer_index += strlen("debug ui");
+        #ifdef zox_debug_ui_node_memory
+            snprintf(buffer, sizeof(buffer), "node memory [%i]", node_memory);
+        #endif
         #ifdef zox_debug_ui_characters
             snprintf(buffer, sizeof(buffer), "characters [%i]", characters_count);
-            buffer_index += sizeof(buffer);
         #endif
         #ifdef zox_debug_ui_device_mode
             if (deviceMode->value == zox_device_mode_none) {

@@ -4,9 +4,7 @@ int engine_begin(int argc, char* argv[]) {
 }
 
 void on_engine_end(ecs_world_t *world) {
-    /*const Children *font_children = ecs_get(world, font_style_entity, Children);
-    for (int i = 0; i < font_children->length; i++) zox_delete(font_children->value[i])
-    zox_delete(font_style_entity)*/
+    // zoxel_log(" > node memory leak: %i\n", node_memory);
     close_core();
     #ifdef zoxel_voxels
         dispose_vox_files();

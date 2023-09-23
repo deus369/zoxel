@@ -1,5 +1,6 @@
 // Here? select which zoxel modules I shall use?
 
+// #define zox_disable_set_vox
 // module includes
 // #define zoxel_include_vulkan
 #define zoxel_include_players

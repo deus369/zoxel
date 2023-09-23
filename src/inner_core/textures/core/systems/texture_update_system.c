@@ -10,7 +10,7 @@ void TextureUpdateSystem(ecs_iter_t *it) {
         const TextureData *textureData = &textures[i];
         const TextureSize *textureSize = &textureSizes[i];
         const TextureGPULink *textureGPULink = &textureGPULinks[i];
-        if (textureGPULink->value != 0) {
+        if (textureGPULink->value != 0 && textureData->value) {
             glBindTexture(GL_TEXTURE_2D, textureGPULink->value);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize->value.x, textureSize->value.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData->value);
             glBindTexture(GL_TEXTURE_2D, 0);

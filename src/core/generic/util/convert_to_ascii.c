@@ -68,6 +68,9 @@ char convert_to_ascii(unsigned char input) {
     zoxel_convert_to_ascii('_', 70)
     zoxel_convert_to_ascii('[', 71)
     zoxel_convert_to_ascii(']', 72)
+    zoxel_convert_to_ascii('-', 73)
+    zoxel_convert_to_ascii('+', 74)
+    zoxel_convert_to_ascii('=', 75)
     // numbers
     zoxel_convert_to_ascii('0', 60)
     zoxel_convert_to_ascii('1', 61)

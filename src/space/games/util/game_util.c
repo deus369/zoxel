@@ -23,7 +23,8 @@ void spawn_in_game_ui(ecs_world_t *world) {    // spawn game uis
     if (is_touch) {
         const unsigned char pause_button_size = 80;
         const ClickEvent on_pause_ui = (ClickEvent) { &button_event_pause_game };
-        game_ui = spawn_button_on_canvas(world, main_canvas, (int2) { pause_button_size, pause_button_size }, (byte2) { 8, 4 }, (color) { 77, 32, 44, 255 }, "x", pause_button_size, float2_zero, on_pause_ui);   
+        game_ui = spawn_button_on_canvas(world, main_canvas, (int2) { pause_button_size, pause_button_size }, (byte2) { 8, 4 }, (color) { 77, 32, 44, 255 },
+            "P", pause_button_size, float2_zero, on_pause_ui);   
     }
 }
 
@@ -53,6 +54,30 @@ void end_game(ecs_world_t *world) {
     disable_inputs_until_release(world, main_player);
     dispose_in_game_ui(world);
     #ifdef zox_on_play_spawn_terrain
+        // temporary: delete chunks
+        const ChunkLinks *chunkLinks = ecs_get(world, local_terrain, ChunkLinks);
+        for (int i = 0; i < chunkLinks->value->size; i++) {
+            int3_hash_map_pair* pair = chunkLinks->value->data[i];
+            while (pair != NULL) {
+                ecs_entity_t terrain_chunk = pair->value;
+                ChunkOctree *chunkOctree = ecs_get_mut(world, terrain_chunk, ChunkOctree);
+                close_ChunkOctree(chunkOctree);
+                ecs_modified(world, terrain_chunk, ChunkOctree);
+                const EntityLinks *entityLinks = ecs_get(world, terrain_chunk, EntityLinks);
+                for (int j = 0; j < entityLinks->length; j++) {
+                    ecs_entity_t character_entity = entityLinks->value[j];
+                    ChunkOctree *chunkOctree2 = ecs_get_mut(world, character_entity, ChunkOctree);
+                    close_ChunkOctree(chunkOctree2);
+                    ecs_modified(world, character_entity, ChunkOctree);
+                    zox_delete(character_entity)
+                }
+                zox_delete(terrain_chunk)
+                pair = pair->next;
+            }
+        }
+        // delete terrain
+        // this should delete all chunks
+        // which should delete all 
         zox_delete(local_terrain)
     #endif
     local_character3D = 0;

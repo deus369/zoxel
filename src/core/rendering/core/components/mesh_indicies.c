@@ -2,8 +2,8 @@
 typedef struct {\
     int length;\
     type *value;\
-} name;\
-ECS_COMPONENT_DECLARE(name);\
+} name; ECS_COMPONENT_DECLARE(name);\
+\
 ECS_CTOR(name, ptr, {\
     ptr->length = 0;\
     ptr->value = NULL;\
