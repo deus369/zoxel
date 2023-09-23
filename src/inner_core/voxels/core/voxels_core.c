@@ -51,7 +51,7 @@ zox_define_component(GenerateChunk)
 zox_define_memory_component(ChunkData)
 zox_define_memory_component(ChunkNeighbors)
 zoxel_octree_component_define(ChunkOctree)
-zox_define_entities_component(VoxelLinks, [in] VoxelLinks)
+zox_define_entities_component(VoxelLinks)
 // zoxel_filter_defines
 zox_filter(chunks_generating, [in] GenerateChunk)
 // zoxel_system_defines

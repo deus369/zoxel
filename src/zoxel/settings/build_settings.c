@@ -7,6 +7,8 @@
 #define zox_on_play_spawn_terrain
 // #define zox_bulk_spawn_terrain
 
+// #define zox_disable_set_vox
+
 // settings
 #define zoxel_set_camera_ortho
 // #define zoxel_set_camera_topdown
@@ -105,7 +107,6 @@
 // #define zoxel_time_render_loop
 
 // -- debugs --
-// #define zox_profile_entity_names       // sets entity names
 // #define zoxel_debug_vox_read
 //! \todo Fix pathing for android, cannot get resources there.
 // #define debug_element_position_change_query

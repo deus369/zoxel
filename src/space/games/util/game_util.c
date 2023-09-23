@@ -1,4 +1,6 @@
+// player hooks
 extern void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character);
+extern void detatch_from_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character);
 extern void button_event_pause_game(ecs_world_t *world, ecs_entity_t trigger_entity);
 extern ecs_entity_t local_character3D;
 unsigned char game_rule_attach_to_character = 1;
@@ -25,8 +27,6 @@ void spawn_in_game_ui(ecs_world_t *world) {    // spawn game uis
     }
 }
 
-extern void detatch_from_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character);
-
 void end_game(ecs_world_t *world) {
     zoxel_log(" > game state => [playing] to [main_menu]\n");
     zox_delete(pause_ui)
@@ -44,14 +44,12 @@ void end_game(ecs_world_t *world) {
     int2 main_menu_position = int2_zero;
     spawn_main_menu(world, game_name, main_menu_position, main_menu_anchor, 0);
     zox_set_only(local_game, GameState, { zoxel_game_state_main_menu })
-
     set_sky_color(world, menu_sky_color, menu_sky_bottom_color);
     float3 camera_position = float3_zero;
     float4 camera_rotation = quaternion_identity;
     get_camera_start_transform(&camera_position, &camera_rotation);
     zox_set_only(main_camera, Position3D, { camera_position })
     zox_set_only(main_camera, Rotation3D, { camera_rotation })
-    
     disable_inputs_until_release(world, main_player);
     dispose_in_game_ui(world);
     #ifdef zox_on_play_spawn_terrain

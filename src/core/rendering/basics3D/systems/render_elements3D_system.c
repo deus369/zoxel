@@ -11,8 +11,8 @@ void RenderElements3DSystem(ecs_iter_t *it) {
     const Textured3DAttributes *attributes_textured3D = get_textured3D_material_attributes(world);
     unsigned char has_set_material = 0;
     int rendered_count = 0;
-    const Position3D *positions = ecs_field(it, Position3D, 2);
-    const Rotation3D *rotations = ecs_field(it, Rotation3D, 3);
+    const Position3D *position3Ds = ecs_field(it, Position3D, 2);
+    const Rotation3D *rotation3Ds = ecs_field(it, Rotation3D, 3);
     const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 6);
     const UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 7);
     const ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 8);
@@ -26,8 +26,8 @@ void RenderElements3DSystem(ecs_iter_t *it) {
         if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) continue;
         const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
         const ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
-        const Position3D *position3D = &positions[i];
-        const Rotation3D *rotation3D = &rotations[i];
+        const Position3D *position3D = &position3Ds[i];
+        const Rotation3D *rotation3D = &rotation3Ds[i];
         const TextureGPULink *textureGPULink = &textureGPULinks[i];
         if (!has_set_material) {
             has_set_material = 1;

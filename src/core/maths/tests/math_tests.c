@@ -6,7 +6,7 @@ void run_math_tests() {
     float4 leftDownRotation = quaternion_from_euler( (float3) { 90 * degreesToRadians, 90 * degreesToRadians, 0 * degreesToRadians });
     float4 rightUpRotation = quaternion_from_euler( (float3) { -90 * degreesToRadians, -90 * degreesToRadians, 0 * degreesToRadians });
     printf("Testing [quaternion_rotate] v1\n");
-    float4 rotation = float4_identity();
+    float4 rotation = float4_identity;
     print_float4(rotation);
     rotation = quaternion_rotate(leftRotation, rotation);
     print_float4(rotation);
@@ -18,7 +18,7 @@ void run_math_tests() {
     print_float4(rotation);
     printf("End Testing [quaternion_rotate] v1\n");
     printf("Testing [quaternion_rotate] v2\n");
-    rotation = float4_identity();
+    rotation = float4_identity;
     print_float4(rotation);
     rotation = quaternion_rotate(downRotation, rotation);
     print_float4(rotation);
@@ -30,7 +30,7 @@ void run_math_tests() {
     print_float4(rotation);
     printf("End Testing [quaternion_rotate] v2\n");
     printf("Testing [quaternion_rotate] v3\n");
-    rotation = float4_identity();
+    rotation = float4_identity;
     print_float4(rotation);
     rotation = quaternion_rotate(leftDownRotation, rotation);
     print_float4(rotation);
@@ -38,7 +38,7 @@ void run_math_tests() {
     print_float4(rotation);
     printf("End Testing [quaternion_rotate] v3\n");
     printf("Testing [quaternion_rotate] v4\n");
-    rotation = float4_identity();
+    rotation = float4_identity;
     print_float4(rotation);
     rotation = quaternion_rotate(leftRotation, rotation);
     rotation = quaternion_rotate(downRotation, rotation);

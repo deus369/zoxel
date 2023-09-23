@@ -68,13 +68,13 @@ ecs_entity_t spawn_statbar3D(ecs_world_t *world, ecs_entity_t ui_holder) {
     zox_set_only(e, CanvasLink, { main_canvas })
     zox_set_only(e, PixelSize, { pixel_size })
     zox_set_only(e, TextureSize, { pixel_size })
-    // spawn child, percentage overlay
-    Children children = { };
-    initialize_memory_component_non_pointer(children, ecs_entity_t, 1);
-    children.value[0] = spawn_statbar3D_front(world, ui_holder, e, (float3) { 0, 0, depth_difference });
-    zox_set_only(e, Children, { children.length, children.value })
     zox_set_only(e, ElementBar, { percentage_test })
     zox_set_only(e, ElementBarSize, { statbar_front_mesh_scale })
+    // spawn child, percentage overlay
+    Children *children = ecs_get_mut(world, e, Children);
+    initialize_memory_component(children, ecs_entity_t, 1)
+    children->value[0] = spawn_statbar3D_front(world, ui_holder, e, (float3) { 0, 0, depth_difference });
+    ecs_modified(world, e, Children);
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned prefab element_world [%lu]\n", (long int) e);
     #endif

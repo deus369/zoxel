@@ -67,7 +67,7 @@ zox_define_component(TilemapSize)
 zox_define_component(OutlineThickness)
 zox_define_component(FrameCorner)
 zox_define_memory_component(TextureData)
-zox_define_entities_component(TextureLinks, [in] TextureLinks)
+zox_define_entities_component(TextureLinks)
 zox_define_memory_component(TilemapUVs)
 // zoxel_filter_defines
 zox_filter(generate_textures2, [none] FrameTexture, [out] GenerateTexture)

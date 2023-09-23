@@ -1,4 +1,5 @@
 ecs_entity_t prefab_vox;
+const unsigned char max_octree_depth_character = 5;
 
 ecs_entity_t spawn_prefab_vox(ecs_world_t *world) {
     ecs_defer_begin(world);
@@ -11,6 +12,12 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world) {
     zox_set(e, ChunkDirty, { 1 })
     zox_set(e, MeshDirty, { 0 })
     add_gpu_colors(world, e);
+    // this was set in prefab_chunk settings
+    /*ChunkOctree *chunkOctree = ecs_get_mut(world, e, ChunkOctree);
+    free_ChunkOctree(chunkOctree);
+    fill_new_octree(chunkOctree, 0, max_octree_depth_character);
+    ecs_modified(world, e, ChunkOctree);*/
+    initialize_new_chunk_octree(world, e, max_octree_depth_character);
     ecs_defer_end(world);
     prefab_vox = e;
     return e;
@@ -18,19 +25,19 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world) {
 
 void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, const vox_file *vox) {
     #ifndef zox_disable_vox_octrees
-        const unsigned char fill_type = 0;
+        // const unsigned char fill_type = 0;
         int3 vox_size = vox->chunks[0].size.xyz;
         unsigned char *voxels = vox->chunks[0].xyzi.voxels;
         // zoxel_log(" > setting vox [%ix%ix%i]\n", vox_size.x, vox_size.y, vox_size.z);
-        ColorRGBs colorRGBs = { };
         int colors_length = vox->palette.values_length;
-        initialize_memory_component_non_pointer(colorRGBs, color_rgb, colors_length);
-        memcpy(colorRGBs.value, vox->palette.values_rgb, colors_length * sizeof(color_rgb));
-        ecs_set(world, e, ColorRGBs, { colorRGBs.length, colorRGBs.value });
-        ChunkOctree chunkOctree = { };
-        unsigned char target_depth = 5;
-        fill_octree(&chunkOctree, fill_type, target_depth);
-        byte2 set_octree_data = (byte2) { 1, target_depth };
+        ColorRGBs *colorRGBs = ecs_get_mut(world, e, ColorRGBs);
+        ChunkOctree *chunkOctree = ecs_get_mut(world, e, ChunkOctree);
+        initialize_memory_component(colorRGBs, color_rgb, colors_length)
+        memcpy(colorRGBs->value, vox->palette.values_rgb, colors_length * sizeof(color_rgb));
+        // initialize_memory_component(colorRGBs, color_rgb, colors_length)
+        // ChunkOctree chunkOctree = { };
+        // fill_new_octree(chunkOctree, fill_type, target_depth);
+        byte2 set_octree_data = (byte2) { 1, max_octree_depth_character };
         int vox_index = 0;
         // byte3 offset = (byte3) { (32 - vox_size.x) / 2, (32 - vox_size.y) / 2, (32 - vox_size.z) / 2 };
         //zoxel_log(" > setting vox [%ix%ix%i] - offset [%ix%ix%i]\n", vox_size.x, vox_size.y, vox_size.z, offset.x, offset.y, offset.z);
@@ -40,15 +47,17 @@ void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, const vox_file *v
                     set_octree_data.x = voxels[vox_index];
                     byte3 node_position = (byte3) { i, j, k };
                     // byte3_add_byte3_p(&node_position, offset);
-                    set_octree_voxel_final(&chunkOctree, &node_position, &set_octree_data, 0);
+                    set_octree_voxel_final(chunkOctree, &node_position, &set_octree_data, 0);
                     vox_index++;
                 }
             }
         }
-        optimize_solid_nodes(&chunkOctree);
-        close_same_nodes(&chunkOctree);
-        zox_set_only(e, ChunkOctree, { chunkOctree.value, chunkOctree.nodes })
+        optimize_solid_nodes(chunkOctree);
+        close_same_nodes(chunkOctree);
+        ecs_modified(world, e, ColorRGBs);
+        ecs_modified(world, e, ChunkOctree);
         zox_set_only(e, ChunkSize, { vox_size })
+        // zox_set_only(e, ChunkOctree, { chunkOctree.value, chunkOctree.nodes })
     #else
         ChunkSize chunkSize = { vox->chunks[0].size.xyz };
         int voxels_length = chunkSize.value.x * chunkSize.value.y * chunkSize.value.z;
@@ -69,7 +78,9 @@ ecs_entity_t spawn_vox(ecs_world_t *world, vox_file *vox, float3 position, unsig
     zox_instance(prefab_vox)
     zox_set(e, Position3D, { position })
     zox_set(e, RenderLod, { division })
-    set_vox_from_vox_file(world, e, vox);
+    #ifndef zox_disable_set_vox
+        set_vox_from_vox_file(world, e, vox);
+    #endif
     spawn_gpu_colors(world, e);
     return e;
 }

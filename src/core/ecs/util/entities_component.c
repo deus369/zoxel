@@ -1,22 +1,63 @@
+
+#define zox_memory_component_non_dtor(name, type)\
+typedef struct {\
+    int length;\
+    type *value;\
+} name;\
+ECS_COMPONENT_DECLARE(name);\
+ECS_CTOR(name, ptr, {\
+    ptr->length = 0;\
+    ptr->value = NULL;\
+})\
+ECS_MOVE(name, dst, src, {\
+    if (dst->length != 0) free(dst->value);\
+    dst->value = src->value;\
+    dst->length = src->length;\
+    src->value = NULL;\
+    src->length = 0;\
+})\
+ECS_COPY(name, dst, src, {\
+    if (src->value) {\
+        if (dst->length != 0) free(dst->value);\
+        int memory_length = src->length * sizeof(type);\
+        dst->length = src->length;\
+        dst->value = malloc(memory_length);\
+        if (dst->value != NULL) dst->value = memcpy(dst->value, src->value, memory_length);\
+    }\
+})
+
+#define zox_define_memory_component_non_dtor(name)\
+    ECS_COMPONENT_DEFINE(world, name);\
+    ecs_set_hooks(world, name, {\
+        .ctor = ecs_ctor(name),\
+        .move = ecs_move(name),\
+        .copy = ecs_copy(name),\
+    });
+
 #define zox_entities_component(name)\
-zox_memory_component(name, ecs_entity_t)\
+zox_memory_component_non_dtor(name, ecs_entity_t)\
 void on_destroyed##_##name(ecs_iter_t *it) {\
     ecs_world_t *world = it->world;\
-    ecs_defer_begin(world);\
-    const name *children = ecs_field(it, name, 1);\
+    name *components = ecs_field(it, name, 1);\
     for (int i = 0; i < it->count; i++) {\
-        const name *children2 = &children[i];\
-        for (int j = 0; j < children2->length; j++) {\
-            zox_delete(children2->value[j]);\
-        }\
+        name *component = &components[i];\
+        if (component->length == 0) continue;\
+        for (int j = 0; j < component->length; j++) zox_delete(component->value[j]);\
+        free(component->value);\
+        component->length = 0;\
     }\
-    ecs_defer_end(world);\
 }
 
-#define zox_define_entities_component(name, ...)\
-zox_define_memory_component(name)\
+// const
+// zoxel_log(" > destroying components [%i]\n", it->count);
+// zoxel_log("     > destroying [%i] data [%i]\n", i, component->length);
+
+#define zox_define_entities_component2(name, ...)\
+zox_define_memory_component_non_dtor(name)\
 ecs_observer_init(world, &(ecs_observer_desc_t) {\
     .filter.expr = #__VA_ARGS__,\
     .callback = on_destroyed##_##name,\
     .events = { EcsOnRemove },\
 });
+
+#define zox_define_entities_component(name) zox_define_entities_component2(name, [out] name)

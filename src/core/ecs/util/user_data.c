@@ -9,7 +9,7 @@
     zox_define_tag(Name)\
     zox_define_tag(User##Name)\
     zox_define_memory_component(User##Name##s)\
-    zox_define_entities_component(User##Name##Links, [in] User##Name##Links)\
+    zox_define_entities_component(User##Name##Links)\
     zox_define_component(User##Name##Link)
 
 #define zox_create_user_data_prefabs(Name, name, label)\

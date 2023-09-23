@@ -23,7 +23,7 @@ void Camera2DFollowSystem(ecs_iter_t *it) {
             position->value.x = target_position.x;
             position->value.y = target_position.y;
             Rotation3D *rosition = &rotations[i];
-            rosition->value = float4_identity();
+            rosition->value = float4_identity;
         }
     }
 } zox_declare_system(Camera2DFollowSystem)

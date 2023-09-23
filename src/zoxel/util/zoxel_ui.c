@@ -7,8 +7,6 @@ void spawn_zoxel_main_menu(ecs_world_t *world) {
             zoxel_main_menu = 0;
             return;
         }
-        Children children = { };
-        initialize_memory_component_non_pointer(children, ecs_entity_t, 3)
         const char *game_name = "zoxel";
         float2 main_menu_anchor = { 0.5f, 0.5f };
         int2 main_menu_position = int2_zero;
@@ -20,10 +18,16 @@ void spawn_zoxel_main_menu(ecs_world_t *world) {
         #ifdef zoxel_debug_quads
             quads_label = spawn_quad_count_label(world, main_canvas);
         #endif
-        children.value[0] = zoxel_main_menu;
-        children.value[1] = fps_display;
-        children.value[2] = quads_label;
-        ecs_set(world, main_canvas, Children, { children.length, children.value });
+        
+        Children *children = ecs_get_mut(world, main_canvas, Children);
+        initialize_memory_component(children, ecs_entity_t, 3)
+        //Children children = { };
+        //initialize_memory_component_non_pointer(children, ecs_entity_t, 3)
+        children->value[0] = zoxel_main_menu;
+        children->value[1] = fps_display;
+        children->value[2] = quads_label;
+        // ecs_set(world, main_canvas, Children, { children.length, children.value });
+        ecs_modified(world, main_canvas, Children);
         #ifdef zoxel_lines2D
             spawn_canvas_edge_lines(world, main_canvas);
         #endif

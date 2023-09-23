@@ -23,15 +23,14 @@ ecs_entity_t spawn_touchscreen(ecs_world_t *world) {
     zox_instance(prefab_touchscreen)
     zox_name("touchscreen")
     const unsigned char touchscreen_zevice_count = fingers_count + virtual_joysticks_count;
-    Children children = { };
-    initialize_memory_component_non_pointer(children, ecs_entity_t, touchscreen_zevice_count)
-    for (unsigned char i = 0; i < fingers_count; i++) {
-        children.value[i] = spawn_zevice_pointer(world, i, i);
-    }
-    for (unsigned char i = fingers_count; i < fingers_count + virtual_joysticks_count; i++) {
-        children.value[i] = spawn_device_stick(world, i, i);
-    }
-    zox_set_only(e, Children, { children.length, children.value })
+    Children *children = ecs_get_mut(world, e, Children);
+    initialize_memory_component(children, ecs_entity_t, touchscreen_zevice_count)
+    // Children children = { };
+    // initialize_memory_component_non_pointer(children, ecs_entity_t, touchscreen_zevice_count)
+    for (unsigned char i = 0; i < fingers_count; i++) children->value[i] = spawn_zevice_pointer(world, i, i);
+    for (unsigned char i = fingers_count; i < fingers_count + virtual_joysticks_count; i++) children->value[i] = spawn_device_stick(world, i, i);
+    //zox_set_only(e, Children, { children.length, children.value })
+    ecs_modified(world, e, Children);
     touchscreen_entity = e;
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned touchscreen [%lu].\n", (long int) (e));

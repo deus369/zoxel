@@ -131,7 +131,7 @@ void Player2DTestSystem(ecs_iter_t *it) {
         rotation->value.x, rotation->value.y, rotation->value.z, rotation->value.w,
         scale1D->value);
     // ecs_set(it->world, latest_character3D, Rotation3D, { { 0, 0, 0, 0 } });
-    // ecs_set(it->world, latest_character3D, Rotation3D, { float4_identity() });
+    // ecs_set(it->world, latest_character3D, Rotation3D, { float4_identity });
     ecs_set(world, latest_character3D, Rotation3D, { { 0.01f, 0, 0, 0 } });
 } else if (keyboard->y.pressed_this_frame) {
     create_terrain(world);

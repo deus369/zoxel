@@ -6,7 +6,7 @@ ecs_entity_t spawn_camera_base_prefab(ecs_world_t *world) {
     zox_prefab_name("prefab_base_camera")
     zox_add_tag(e, Camera)
     zox_add(e, Position3D)
-    zox_add(e, Rotation3D)
+    zox_set(e, Rotation3D, { float4_identity })
     zox_set(e, ParentLink, { 0 })
     zox_add(e, LocalPosition3D)
     zox_set(e, LocalRotation3D, { quaternion_identity })

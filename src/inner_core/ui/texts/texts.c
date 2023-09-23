@@ -7,16 +7,16 @@ const double zext_animation_speed = 10.0;
 zox_declare_tag(FontStyle) //! Contains a bunch of fonts!
 zox_declare_tag(Font)
 zox_declare_tag(FontTexture)
-zox_memory_component(FontData, byte2) //! An array of points used for generating a font texture
 zox_declare_tag(Zigel) //! An individual text character entity.
 zox_declare_tag(Zext)  //! UI text, holds zigels
-zox_memory_component(ZextData, unsigned char)  //! Holds zigel indexes
 zox_component(ZigelIndex, unsigned char)      //! an index for which font we will use
 zox_component(ZextSize, int)
 zox_component(ZextDirty, unsigned char)
 zox_byte_component(ZextAlignment)
 zox_component(ZextPadding, byte2)
 zox_component(AnimateZext, double) 
+zox_memory_component(FontData, byte2) //! An array of points used for generating a font texture
+zox_memory_component(ZextData, unsigned char)  //! Holds zigel indexes
 // zoxel_util_includes
 #include "util/default_font.c"
 // zoxel_prefab_includes
@@ -51,9 +51,9 @@ zox_define_component(ZextSize)
 zox_define_component(ZextDirty)
 zox_define_component(AnimateZext)
 zox_define_component(ZextAlignment)
+zox_define_component(ZextPadding)
 zox_define_memory_component(FontData)
 zox_define_memory_component(ZextData)
-zox_define_component(ZextPadding)
 // zoxel_filter_defines
 zox_filter(zexts, [none] Zext, [in] ZextDirty)
 zox_filter(fonts, [none] FontTexture, [out] GenerateTexture)

@@ -4,6 +4,7 @@
 unsigned char convert_ascii(char input) {
     // special characters
     if (input == '?') return 0;
+    zoxel_convert_ascii('\n', 254)
     // lower case
     zoxel_convert_ascii('a', 1)
     zoxel_convert_ascii('b', 2)

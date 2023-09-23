@@ -59,15 +59,15 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point
 }
 
 void spawn_canvas_edge_lines(ecs_world_t *world, ecs_entity_t canvas) {
+    const unsigned char lines_layer = 8;
+    const int edge_size = 32;
+    const color edge_color = (color) { 99, 13, 13, 255 };
     int2 canvas_size = ecs_get(world, canvas, PixelSize)->value;
     float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
     float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
     // test ui line
-    const unsigned char lines_layer = 4;
     // color edge_color = (color) { 8, 3, 3, 255 };
     // color cross_color =  (color) { 55, 33, 12, 255 };
-    color edge_color = (color) { 66, 3, 3, 255 };
-    int edge_size = canvas_edge_size;
     float2 offset = (float2) { - aspect_ratio / 2.0f, - 1 / 2.0f };
     spawn_ui_line2D(world, canvas, (int2) { 0, 0 }, (int2) { screen_dimensions.x, 0 }, edge_color, edge_size, 0.0, offset, int2_zero, lines_layer);
     spawn_ui_line2D(world, canvas, (int2) { screen_dimensions.x, 0 }, (int2) { screen_dimensions.x, screen_dimensions.y }, edge_color, edge_size, 0.0, offset, int2_zero, lines_layer);

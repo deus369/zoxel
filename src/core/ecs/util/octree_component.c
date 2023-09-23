@@ -42,18 +42,6 @@ const float octree_scales2[] = {
     0.0078125f
 };
 
-/*const float octree_scales[] = {
-    2.0f,
-    1.0f,
-    0.5f,
-    0.25f,
-    0.125f,
-    0.125f / 2.0f,
-    0.125f / 4.0f,
-    0.125f / 8.0f,
-    0.125f / 16.0f
-};*/
-
 const unsigned char powers_of_two_byte[] = {
     1,
     2,
@@ -161,6 +149,15 @@ unsigned char get_node_index(int3 node_position) {
     return node_position.x * 4 + node_position.y * 2 + node_position.z;
 }
 
+#define zoxel_octree_component_define(name)\
+ECS_COMPONENT_DEFINE(world, name);\
+ecs_set_hooks(world, name, {\
+    .ctor = ecs_ctor(name),\
+    .move = ecs_move(name),\
+    .copy = ecs_copy(name),\
+    .dtor = ecs_dtor(name)\
+});
+
 #define zoxel_octree_component(name, type, default_value)\
 typedef struct name name;\
 struct name {\
@@ -168,6 +165,7 @@ struct name {\
     name *nodes;\
 };\
 ECS_COMPONENT_DECLARE(name);\
+\
 void free##_##name(name* octree) {\
     if (octree->nodes != NULL) {\
         for (unsigned char i = 0; i < octree_length; i++) free##_##name(&octree->nodes[i]);\
@@ -180,9 +178,7 @@ void clone##_##name(name* dst, const name* src) {\
     dst->value = src->value;\
     if (src->nodes) {\
         dst->nodes = malloc(sizeof(name) * octree_length);\
-        for (int i = 0; i < octree_length; i++) {\
-            clone##_##name(&dst->nodes[i], &src->nodes[i]);\
-        }\
+        for (unsigned char i = 0; i < octree_length; i++) clone##_##name(&dst->nodes[i], &src->nodes[i]);\
     } else {\
         dst->nodes = NULL;\
     }\
@@ -193,6 +189,10 @@ void open##_##name(name* octree) {\
         octree->nodes = malloc(sizeof(name) * octree_length);\
         for (unsigned char i = 0; i < octree_length; i++) octree->nodes[i].nodes = NULL;\
     }\
+}\
+\
+void open_new##_##name(name* octree) {\
+    octree->nodes = malloc(sizeof(name) * octree_length);\
 }\
 \
 void close##_##name(name* octree) {\
@@ -297,6 +297,25 @@ const name* find_adjacent##_##name(const name* root, const name* node, int3 posi
     }\
     return find_root_adjacent##_##name(root, position, depth, direction, neighbors, chunk_index);\
 }
+
+/*typedef struct ChunkOctree ChunkOctree;
+typedef struct ChunkOctree
+{
+    unsigned char value;
+    ChunkOctree *nodes;
+} ChunkOctree;*/
+
+/*const float octree_scales[] = {
+    2.0f,
+    1.0f,
+    0.5f,
+    0.25f,
+    0.125f,
+    0.125f / 2.0f,
+    0.125f / 4.0f,
+    0.125f / 8.0f,
+    0.125f / 16.0f
+};*/
 
 /*
 if (direction == direction_left) position.x--;\
@@ -612,19 +631,3 @@ z = (7 / 4) % 2 = 1*/
 // return current_node;
 // return current_node;
 //  return NULL;
-
-#define zoxel_octree_component_define(name)\
-    ECS_COMPONENT_DEFINE(world, name);\
-    ecs_set_hooks(world, name, {\
-        .ctor = ecs_ctor(name),\
-        .move = ecs_move(name),\
-        .copy = ecs_copy(name),\
-        .dtor = ecs_dtor(name)\
-    });
-
-/*typedef struct ChunkOctree ChunkOctree;
-typedef struct ChunkOctree
-{
-    unsigned char value;
-    ChunkOctree *nodes;
-} ChunkOctree;*/

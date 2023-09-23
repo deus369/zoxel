@@ -2,6 +2,7 @@
 #ifdef zox_debug_billboard_system
     extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
 #endif
+
 void BillboardSystem(ecs_iter_t *it) {
     ecs_entity_t main_camera = main_cameras[0];
     // float4 flip_rotation = quaternion_from_euler((float3) { 0, 180 * degreesToRadians, 0 });
@@ -12,13 +13,13 @@ void BillboardSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         // const CameraLink *cameraLink = &cameraLinks[i];
         ecs_entity_t camera = main_camera; // cameraLink->value
-        if (camera == 0 || !ecs_has(world, camera, Rotation3D)) continue;
+        if (!camera || !ecs_has(world, camera, Rotation3D)) continue;
+        ecs_entity_t e = it->entities[i];
         // const Position3D *position3D = &position3Ds[i];
         Rotation3D *rotation3D = &rotation3Ds[i];
         const Rotation3D *target_rotation = ecs_get(world, camera, Rotation3D);
         // rotation3D->value = quaternion_rotate(flip_rotation, target_rotation->value);
         rotation3D->value = target_rotation->value;
-        ecs_entity_t e = it->entities[i];
         if (ecs_has(world, e, Children)) {
             const Children *children = ecs_get(world, e, Children);
             for (int j = 0; j < children->length; j++) {

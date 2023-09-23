@@ -62,7 +62,6 @@ zox_define_memory_component(MeshUVs)
 zox_define_memory_component(MeshColors)
 zox_define_memory_component(MeshColorRGBs)
 // zoxel_system_defines
-// gpu restore/dispose
 zox_system_1(MeshGPUDisposeSystem, 0, [in] MeshGPULink)
 zox_system_1(MeshColorsGPUDisposeSystem, 0,[in] ColorsGPULink)
 zox_system_1(MeshUvsGPUDisposeSystem, 0,[in] UvsGPULink)

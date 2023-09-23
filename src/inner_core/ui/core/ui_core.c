@@ -80,7 +80,7 @@ zox_define_component(UIHolderLink)
 zox_define_component(ClickEvent)
 zox_define_component(ElementBar)
 zox_define_component(ElementBarSize)
-zox_define_entities_component(ElementLinks, [in] ElementLinks)
+zox_define_entities_component(ElementLinks)
 // zoxel_define_filters
 zox_filter(ui_query, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [out] SelectState)
 zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition, [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPixelPosition)

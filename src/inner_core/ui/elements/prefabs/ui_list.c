@@ -31,20 +31,26 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, const char *
     zox_instance(prefab)
     zox_name("ui_list")
     float2 position2D = initialize_ui_components(world, e, main_canvas, position, window_size, anchor, 0, canvas_size);
-    Children children = { };
-    initialize_memory_component_non_pointer(children, ecs_entity_t, (1 + list_count))
-    children.value[0] = spawn_header(world, e, header_position, (int2) { window_size.x, font_size + header_margins }, (float2) { 0.5f, 1.0f }, header_label, font_size, header_margins, 1, position2D, window_size, is_close_button, canvas_size);
+    
+    int children_length = (1 + list_count);
+    Children *children = ecs_get_mut(world, e, Children);
+    initialize_memory_component(children, ecs_entity_t, children_length)
+    //Children children = { };
+    //initialize_memory_component_non_pointer(children, ecs_entity_t, (1 + list_count))
+    children->value[0] = spawn_header(world, e, header_position, (int2) { window_size.x, font_size + header_margins }, (float2) { 0.5f, 1.0f }, header_label, font_size, header_margins, 1, position2D, window_size, is_close_button, canvas_size);
     for (int i = 0; i < list_count; i++) {
         int2 label_position = (int2) { 0, - i * font_size * 2 };
         if (list_count % 2 == 0) label_position.y += font_size; // if even
         const char* label = labels[i].text;
         int array_index = 1 + i;
-        children.value[array_index] = spawn_button(world, e, label_position, button_padding, (float2) { 0.5f, 0.5f }, label, font_size, 1, position2D, window_size, canvas_size);
-        zox_set_only(children.value[array_index], ClickEvent, { events[i].value })
+        children->value[array_index] = spawn_button(world, e, label_position, button_padding, (float2) { 0.5f, 0.5f }, label, font_size, 1, position2D, window_size, canvas_size);
+        zox_set_only(children->value[array_index], ClickEvent, { events[i].value })
     }
-    zox_set_only(e, Children, { children.length, children.value })
+    // zox_set_only(e, Children, { children.length, children.value })
+    ecs_modified(world, e, Children);
+
     #ifdef zoxel_include_players
-        if (!headless && list_count > 0) select_first_button(world, children.value[1]);
+        if (!headless && list_count > 0) select_first_button(world, children->value[1]);
     #endif
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned ui list [%lu]\n", (long int) e);

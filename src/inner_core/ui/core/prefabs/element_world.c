@@ -7,9 +7,6 @@ ecs_entity_t spawn_prefab_element3D(ecs_world_t *world) {
     zox_add_tag(e, Element3D)
     add_ui_components_world(world, e, (float2) { 0.2f, 0.05f });
     zox_add_tag(e, FillTexture)
-    // zox_set(e, FrameCorner, { 0 })
-    // zox_set(e, OutlineThickness, { 1 })
-    // zox_set(e, SelectState, { 0 })
     zox_set(e, Color, {{ 66, 12, 12, 0 }}) // todo: add alpha to a texture3D shader variant
     zox_add_tag(e, SingleMaterial)
     zox_set(e, CameraLink, { 0 })
@@ -38,3 +35,7 @@ ecs_entity_t spawn_element3D(ecs_world_t *world, ecs_entity_t ui_holder) {
     #endif
     return e;
 }
+
+// zox_set(e, FrameCorner, { 0 })
+// zox_set(e, OutlineThickness, { 1 })
+// zox_set(e, SelectState, { 0 })

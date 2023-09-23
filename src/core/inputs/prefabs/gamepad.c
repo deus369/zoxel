@@ -27,8 +27,10 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, unsigned char gamepad_type) {
     zox_name("gamepad")
     zox_set_only(e, DeviceLayout, { gamepad_type })
     // zoxel_log("gamepad_type [%i]\n", gamepad_type);
-    Children children = { };
-    initialize_memory_component_non_pointer(children, ecs_entity_t, 16)
+    //Children children = { };
+    //initialize_memory_component_non_pointer(children, ecs_entity_t, 16)
+    Children *children = ecs_get_mut(world, e, Children);
+    initialize_memory_component(children, ecs_entity_t, 16)
     for (unsigned char i = 0; i < 14; i++) {
         // use gamepad layout
         unsigned char joystick_index = 0;
@@ -53,14 +55,15 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, unsigned char gamepad_type) {
             else if (i == zox_device_button_right_stick_push) joystick_index = 14;
             else joystick_index = i;
         }
-        children.value[i] = spawn_device_button(world, i, joystick_index);
+        children->value[i] = spawn_device_button(world, i, joystick_index);
     }
     for (unsigned char i = 0, j = 14; j < 16; i++, j++) {
         unsigned char joystick_index = i * 2;
         if (i == 1 && gamepad_type == zox_gamepad_layout_type_steamdeck) joystick_index++;
-        children.value[j] = spawn_device_stick(world, i, joystick_index);
+        children->value[j] = spawn_device_stick(world, i, joystick_index);
     }
-    zox_set_only(e, Children, { children.length, children.value })
+    // zox_set_only(e, Children, { children.length, children.value })
+    ecs_modified(world, e, Children);
     gamepad_entity = e;
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned gamepad [%lu].\n", (long int) (e));

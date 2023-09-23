@@ -30,10 +30,15 @@ ecs_entity_t spawn_button(ecs_world_t *world, ecs_entity_t parent, int2 position
     zox_instance(prefab_button)
     zox_name("button")
     float2 position2D = initialize_ui_components_2(world, e, parent, position, button_size, anchor, layer, parent_position2D, parent_pixel_size, canvas_size);
-    Children children = { };
-    initialize_memory_component_non_pointer(children, ecs_entity_t, 1);
-    children.value[0] = spawn_zext(world, zext_prefab, e, (int2) { 0, 0 }, (float2) { 0.5f, 0.5f }, int2_to_byte2(padding), text, font_size, 0, (layer + 1), position2D, zext_size);
-    zox_set_only(e, Children, { children.length, children.value })
+    
+    Children *children = ecs_get_mut(world, e, Children);
+    initialize_memory_component(children, ecs_entity_t, 1)
+    //Children children = { };
+    //initialize_memory_component_non_pointer(children, ecs_entity_t, 1);
+    children->value[0] = spawn_zext(world, zext_prefab, e, (int2) { 0, 0 }, (float2) { 0.5f, 0.5f }, int2_to_byte2(padding), text, font_size, 0, (layer + 1), position2D, zext_size);
+   //zox_set_only(e, Children, { children.length, children.value })
+    ecs_modified(world, e, Children);
+
     #ifdef zoxel_debug_spawns
         zoxel_log("Spawned button [%lu]\n", (long int) e);
     #endif

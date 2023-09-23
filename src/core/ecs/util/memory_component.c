@@ -5,34 +5,34 @@
 //      ECS_MOVE Copy a pointer from one component to another
 //      ECS_COPY Copy one data block to another
 #define zox_memory_component(name, type)\
-    typedef struct {\
-        int length;\
-        type *value;\
-    } name;\
-    ECS_COMPONENT_DECLARE(name);\
-    ECS_CTOR(name, ptr, {\
-        ptr->length = 0;\
-        ptr->value = NULL;\
-    })\
-    ECS_DTOR(name, ptr, {\
-        if (ptr->value) free(ptr->value);\
-    })\
-    ECS_MOVE(name, dst, src, {\
+typedef struct {\
+    int length;\
+    type *value;\
+} name;\
+ECS_COMPONENT_DECLARE(name);\
+ECS_CTOR(name, ptr, {\
+    ptr->length = 0;\
+    ptr->value = NULL;\
+})\
+ECS_DTOR(name, ptr, {\
+    if (ptr->value) free(ptr->value);\
+})\
+ECS_MOVE(name, dst, src, {\
+    if (dst->length != 0) free(dst->value);\
+    dst->value = src->value;\
+    dst->length = src->length;\
+    src->value = NULL;\
+    src->length = 0;\
+})\
+ECS_COPY(name, dst, src, {\
+    if (src->value) {\
         if (dst->length != 0) free(dst->value);\
-        dst->value = src->value;\
+        int memory_length = src->length * sizeof(type);\
         dst->length = src->length;\
-        src->value = NULL;\
-        src->length = 0;\
-    })\
-    ECS_COPY(name, dst, src, {\
-        if (src->value) {\
-            if (dst->length != 0) free(dst->value);\
-            int memory_length = src->length * sizeof(type);\
-            dst->length = src->length;\
-            dst->value = malloc(memory_length);\
-            if (dst->value != NULL) dst->value = memcpy(dst->value, src->value, memory_length);\
-        }\
-    })
+        dst->value = malloc(memory_length);\
+        if (dst->value != NULL) dst->value = memcpy(dst->value, src->value, memory_length);\
+    }\
+})
 
 #define zox_define_memory_component(name)\
     ECS_COMPONENT_DEFINE(world, name);\

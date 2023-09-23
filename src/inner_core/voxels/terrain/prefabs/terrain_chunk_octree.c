@@ -19,6 +19,7 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size) {
     add_seed(world, e, 666);
     add_chunk_octree(world, e, size);
     add_generate_chunk(world, e);
+    initialize_new_chunk_octree(world, e, max_octree_depth);
     if (!headless) {
         zox_add(e, MeshIndicies)
         zox_add(e, MeshVertices)

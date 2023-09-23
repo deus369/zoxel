@@ -44,18 +44,19 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t pa
     zox_set_only(e, ZextPadding, { padding })
     zox_set_only(e, MeshAlignment, { alignment })
     float2 position2D = initialize_ui_components_2(world, e, parent, position, zext_size, anchor, layer, parent_position2D, parent_pixel_size, canvas_size);
-    ZextData zextData = { };
-    Children children = { };
-    initialize_memory_component_non_pointer(zextData, unsigned char, textLength);
-    initialize_memory_component_non_pointer(children, ecs_entity_t, textLength);
+    
+    ZextData *zextData = ecs_get_mut(world, e, ZextData);
+    initialize_memory_component(zextData, unsigned char, textLength)
+    Children *children = ecs_get_mut(world, e, Children);
+    initialize_memory_component(children, ecs_entity_t, textLength)
     for (int i = 0; i < textLength; i++) {
         unsigned char zigel_index = convert_ascii(text[i]);
-        zextData.value[i] = zigel_index;
-        children.value[i] = spawn_zext_zigel(world, e, layer + 1, i, textLength, zigel_index, font_size, alignment, padding, position2D, zext_size, canvas_size);
+        zextData->value[i] = zigel_index;
+        children->value[i] = spawn_zext_zigel(world, e, layer + 1, i, textLength, zigel_index, font_size, alignment, padding, position2D, zext_size, canvas_size);
         // zoxel_log("Is %i [%lu] valid: %s\n", i, (long int) children.value[i], ecs_is_valid(world, children.value[i]) ? "Yes" : "No");
     }
-    zox_set_only(e, ZextData, { zextData.length, zextData.value })
-    zox_set_only(e, Children, { children.length, children.value })
+    ecs_modified(world, e, ZextData);
+    ecs_modified(world, e, Children);
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned zext [%lu]\n", (long int) e);
     #endif

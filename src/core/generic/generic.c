@@ -74,7 +74,7 @@ zox_define_memory_component(ColorRGBs)
 zox_define_memory_component(Colors)
 zox_define_component(GenericEvent)
 zox_define_component(Bounds3D)
-zox_define_entities_component(EntityLinks, [in] EntityLinks)
+zox_define_entities_component(EntityLinks)
 // zoxel_system_defines
 /*#ifdef zox_debug_generic_events
     zox_system(GenericEventDebugSystem, EcsOnUpdate, [in] GenericEvent)

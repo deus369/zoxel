@@ -1,3 +1,21 @@
+void fill_new_octree(ChunkOctree* node, const unsigned char voxel, unsigned char depth) {
+    node->value = voxel;
+    if (depth > 0) {
+        depth--;
+        open_new_ChunkOctree(node);
+        for (unsigned char i = 0; i < octree_length; i++) fill_new_octree(&node->nodes[i], voxel, depth);
+    } else {
+        node->nodes = NULL;
+    }
+}
+
+// max_octree_depth
+void initialize_new_chunk_octree(ecs_world_t *world, ecs_entity_t e, unsigned char depth) {
+    ChunkOctree *chunkOctree = ecs_get_mut(world, e, ChunkOctree);
+    fill_new_octree(chunkOctree, 0, depth);
+    ecs_modified(world, e, ChunkOctree);
+}
+
 void add_chunk_octree(ecs_world_t *world, ecs_entity_t e, int3 size) {
     zox_add_tag(e, Chunk)
     zox_set(e, ChunkOctree, { 0, NULL })
@@ -6,10 +24,14 @@ void add_chunk_octree(ecs_world_t *world, ecs_entity_t e, int3 size) {
     zox_set(e, ChunkPosition, { int3_zero })
     zox_set(e, RenderLod, { 0 })
     zox_set(e, VoxLink, { 0 })
-    ChunkNeighbors chunkNeighbors = { };
-    initialize_memory_component_non_pointer(chunkNeighbors, ecs_entity_t, 6);
-    for (unsigned char i = 0; i < 6; i++) chunkNeighbors.value[i] = 0;
-    ecs_set(world, e, ChunkNeighbors, { chunkNeighbors.length, chunkNeighbors.value });
+    zox_set(e, ChunkNeighbors, { 0, NULL })
+    ChunkNeighbors *chunkNeighbors = ecs_get_mut(world, e, ChunkNeighbors);
+    initialize_memory_component(chunkNeighbors, ecs_entity_t, 6)
+    for (unsigned char i = 0; i < 6; i++) chunkNeighbors->value[i] = 0;
+    ecs_modified(world, e, ChunkNeighbors);
+    /*ChunkOctree *chunkOctree = ecs_get_mut(world, e, ChunkOctree);
+    fill_new_octree(chunkOctree, 0, max_octree_depth);
+    ecs_modified(world, e, ChunkOctree);*/
 }
 
 void set_octree_voxel(ChunkOctree *node, byte3 *position, const byte2 *set_octree_data, unsigned char depth) {
@@ -199,8 +221,6 @@ void fill_octree(ChunkOctree* node, const unsigned char voxel, unsigned char dep
     if (depth > 0) {
         depth--;
         open_ChunkOctree(node);
-        for (int i = 0; i < octree_length; i++) {
-            fill_octree(&node->nodes[i], voxel, depth);
-        }
+        for (unsigned char i = 0; i < octree_length; i++) fill_octree(&node->nodes[i], voxel, depth);
     }
 }
