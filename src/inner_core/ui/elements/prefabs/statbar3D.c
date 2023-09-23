@@ -50,6 +50,7 @@ ecs_entity_t spawn_statbar3D_front(ecs_world_t *world, ecs_entity_t ui_holder, e
     zox_set_only(e, Color, {{ 188, 25, 25, 255 }})
     zox_set(e, ParentLink, { parent })
     zox_set(e, LocalPosition3D, { offset })
+    zox_set(e, LocalRotation3D, { quaternion_identity })
     // zoxel_log("has ui holder link still? %i \n", ecs_has(world, e, UIHolderLink));
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned prefab element_world [%lu]\n", (long int) e);

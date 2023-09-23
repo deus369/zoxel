@@ -51,12 +51,12 @@ ecs_entity_t zoxel_window;
 
 void spawn_zoxel_window(ecs_world_t *world) {
     if (zoxel_window != 0 && ecs_is_alive(world, zoxel_window)) {
-        zoxel_log("Hiding zoxel window.\n");
+        zoxel_log(" > hiding frame debugger\n");
         zox_delete(zoxel_window)
         zoxel_window = 0;
         return;
     }
-    zoxel_log("Showing zoxel window.\n");
+    zoxel_log(" > showing frame debugger\n");
     const unsigned char layer = 3;
     int2 test_window_size = { 380, 380 };
     int2 test_window_position = { - test_window_size.x / 2, test_window_size.y / 2 };

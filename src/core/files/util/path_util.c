@@ -200,6 +200,7 @@ unsigned char initialize_pathing() {
         } else {
             zoxel_log(" !!! resources_path does not exist [%s]\n", resources_path);
         }
+        closedir(dir);
         // free(resources_path);
     } else if (ENOENT == errno) {
         zoxel_log("SDL data_path (DOES NOT EXIST): %s\n", data_path);
