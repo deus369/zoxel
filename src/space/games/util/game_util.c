@@ -55,26 +55,28 @@ void end_game(ecs_world_t *world) {
     dispose_in_game_ui(world);
     #ifdef zox_on_play_spawn_terrain
         // temporary: delete chunks
-        const ChunkLinks *chunkLinks = ecs_get(world, local_terrain, ChunkLinks);
-        for (int i = 0; i < chunkLinks->value->size; i++) {
-            int3_hash_map_pair* pair = chunkLinks->value->data[i];
-            while (pair != NULL) {
-                ecs_entity_t terrain_chunk = pair->value;
-                ChunkOctree *chunkOctree = ecs_get_mut(world, terrain_chunk, ChunkOctree);
-                close_ChunkOctree(chunkOctree);
-                ecs_modified(world, terrain_chunk, ChunkOctree);
-                const EntityLinks *entityLinks = ecs_get(world, terrain_chunk, EntityLinks);
-                for (int j = 0; j < entityLinks->length; j++) {
-                    ecs_entity_t character_entity = entityLinks->value[j];
-                    ChunkOctree *chunkOctree2 = ecs_get_mut(world, character_entity, ChunkOctree);
-                    close_ChunkOctree(chunkOctree2);
-                    ecs_modified(world, character_entity, ChunkOctree);
-                    zox_delete(character_entity)
+        #ifdef zox_extra_destroy_terrain_children
+            const ChunkLinks *chunkLinks = ecs_get(world, local_terrain, ChunkLinks);
+            for (int i = 0; i < chunkLinks->value->size; i++) {
+                int3_hash_map_pair* pair = chunkLinks->value->data[i];
+                while (pair != NULL) {
+                    ecs_entity_t terrain_chunk = pair->value;
+                    ChunkOctree *chunkOctree = ecs_get_mut(world, terrain_chunk, ChunkOctree);
+                    close_ChunkOctree(chunkOctree);
+                    ecs_modified(world, terrain_chunk, ChunkOctree);
+                    const EntityLinks *entityLinks = ecs_get(world, terrain_chunk, EntityLinks);
+                    for (int j = 0; j < entityLinks->length; j++) {
+                        ecs_entity_t character_entity = entityLinks->value[j];
+                        ChunkOctree *chunkOctree2 = ecs_get_mut(world, character_entity, ChunkOctree);
+                        close_ChunkOctree(chunkOctree2);
+                        ecs_modified(world, character_entity, ChunkOctree);
+                        zox_delete(character_entity)
+                    }
+                    zox_delete(terrain_chunk)
+                    pair = pair->next;
                 }
-                zox_delete(terrain_chunk)
-                pair = pair->next;
             }
-        }
+        #endif
         // delete terrain
         // this should delete all chunks
         // which should delete all 

@@ -77,16 +77,6 @@ unsigned char int2_equal(int2 a, int2 b) {
 
 int int2_distance(int2 a, int2 b) {
     return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
-    /*int2 o = int2_sub(a, b);
-    if (o.x < 0)
-    {
-        o.x = -o.x;
-    }
-    if (o.y < 0)
-    {
-        o.y = -o.y;
-    }
-    return o.x + o.y;*/
 }
 
 int2 int2_normalize(int2 input) {
@@ -100,11 +90,6 @@ int int2_array_index(int2 input, int2 size) {
 
 int int2_array_index2(int2 input, int2 size) {
     return input.y + input.x * size.x;
-}
-// return input.y + input.x * size.y;
-
-int2 get_from_byte2(byte2 input) {
-    return (int2) { (int) input.x, (int) input.y };
 }
 
 int2 int2_down(int2 input) {
@@ -129,31 +114,13 @@ unsigned char int2_in_bounds(int2 input, int2 size) {
 }
 
 float float_clamp(float input, float x, float y) {
-    if (input < x)
-    {
-        return x;
-    }
-    else if (input > y)
-    {
-        return y;
-    }
-    else
-    {
-        return input;
-    }
+    if (input < x) return x;
+    else if (input > y) return y;
+    else return input;
 }
 
 int int_clamp(int input, int x, int y) {
-    if (input < x)
-    {
-        return x;
-    }
-    else if (input > y)
-    {
-        return y;
-    }
-    else
-    {
-        return input;
-    }
+    if (input < x) return x;
+    else if (input > y) return y;
+    else return input;
 }

@@ -12,7 +12,6 @@ unsigned char profiler = 0;
 #include "util/flecs_extensions.c"
 #include "util/entities_component.c"
 #include "util/memory_component.c"
-#include "util/octree_component.c"
 #include "util/user_data.c"
 
 ecs_world_t* open_ecs(int argc, char* argv[], unsigned char profiler, int core_count) {

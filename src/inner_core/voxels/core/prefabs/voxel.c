@@ -16,11 +16,8 @@ ecs_entity_t spawn_prefab_voxel(ecs_world_t *world) {
 ecs_entity_t spawn_voxel(ecs_world_t *world, unsigned char index) {
     zox_instance(prefab_voxel)
     // spawn one texture here
-
     TextureLinks *textureLinks = ecs_get_mut(world, e, TextureLinks);
     initialize_memory_component(textureLinks, ecs_entity_t, 1)
-    //TextureLinks textureLinks = { };
-    //initialize_memory_component_non_pointer(textureLinks, ecs_entity_t, 1)
     for (int i = 0; i < 1; i++) {
         ecs_entity_t texture_entity = spawn_texture_dirt(world);
         // todo: just set a flag for TextureGenerationType
@@ -37,10 +34,7 @@ ecs_entity_t spawn_voxel(ecs_world_t *world, unsigned char index) {
         }
         textureLinks->value[i] = texture_entity;
     }
-    // zox_set_only(e, TextureLinks, { textureLinks.length, textureLinks.value })
     ecs_modified(world, e, TextureLinks);
-
-
     #ifdef zoxel_debug_spawns
         zoxel_log(" + spawned voxel [%lu]\n", (long int) e);
     #endif

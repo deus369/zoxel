@@ -4,6 +4,8 @@
 // zoxel_component_includes
 #include "data/color.c"
 #include "data/color_rgb.c"
+#include "data/octree_helper.c"
+#include "data/octree_component.c"
 zox_declare_tag(Selectable)
 zox_declare_tag(Clickable)
 zox_declare_tag(Dragable)
@@ -76,12 +78,8 @@ zox_define_component(GenericEvent)
 zox_define_component(Bounds3D)
 zox_define_entities_component(EntityLinks)
 // zoxel_system_defines
-/*#ifdef zox_debug_generic_events
-    zox_system(GenericEventDebugSystem, EcsOnUpdate, [in] GenericEvent)
-#endif*/
 zox_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
 zox_define_reset_system(EntityDirtyResetSystem, EntityDirty)
-// zox_define_reset_system(ClickableStateResetSystem, ClickState)
 zox_define_reset_system(EntityInitializeResetSystem, EntityInitialize)
 zoxel_end_module(Generic)
 

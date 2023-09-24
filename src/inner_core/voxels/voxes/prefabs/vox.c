@@ -14,7 +14,7 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world) {
     add_gpu_colors(world, e);
     // this was set in prefab_chunk settings
     /*ChunkOctree *chunkOctree = ecs_get_mut(world, e, ChunkOctree);
-    free_ChunkOctree(chunkOctree);
+    close_ChunkOctree(chunkOctree);
     fill_new_octree(chunkOctree, 0, max_octree_depth_character);
     ecs_modified(world, e, ChunkOctree);*/
     // initialize_new_chunk_octree(world, e, max_octree_depth_character);

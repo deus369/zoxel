@@ -35,8 +35,6 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, const char *
     int children_length = (1 + list_count);
     Children *children = ecs_get_mut(world, e, Children);
     initialize_memory_component(children, ecs_entity_t, children_length)
-    //Children children = { };
-    //initialize_memory_component_non_pointer(children, ecs_entity_t, (1 + list_count))
     children->value[0] = spawn_header(world, e, header_position, (int2) { window_size.x, font_size + header_margins }, (float2) { 0.5f, 1.0f }, header_label, font_size, header_margins, 1, position2D, window_size, is_close_button, canvas_size);
     for (int i = 0; i < list_count; i++) {
         int2 label_position = (int2) { 0, - i * font_size * 2 };
@@ -46,7 +44,6 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, const char *
         children->value[array_index] = spawn_button(world, e, label_position, button_padding, (float2) { 0.5f, 0.5f }, label, font_size, 1, position2D, window_size, canvas_size);
         zox_set_only(children->value[array_index], ClickEvent, { events[i].value })
     }
-    // zox_set_only(e, Children, { children.length, children.value })
     ecs_modified(world, e, Children);
 
     #ifdef zoxel_include_players

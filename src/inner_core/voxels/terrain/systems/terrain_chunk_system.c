@@ -9,7 +9,7 @@ void generate_chunk_terrain(ChunkData* chunk, const int3 chunkSize, const int3 c
         for (local_position.z = 0; local_position.z < chunkSize.z; local_position.z++) {
             local_position.y = 0;
             global_position = int3_add(local_position, chunk_position_offset);
-             float2 noise_point = float2_from_int2((int2) { global_position.x + noise_positiver, global_position.z + noise_positiver });
+             float2 noise_point = int2_to_float2((int2) { global_position.x + noise_positiver, global_position.z + noise_positiver });
             int terrain_height2 = terrain_min_height +
                 int_floor(terrain_boost + terrain_amplifier *
                 perlin_terrain(noise_point.x, noise_point.y, terrain_frequency, terrain_seed, terrain_octaves));

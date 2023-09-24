@@ -36,8 +36,8 @@ void generate_font_texture(TextureData* textureData, const TextureSize *textureS
     }
     // point A to B - use FontData byte2 data.
     for (int i = 0; i < fontData->length; i += 2) {
-        int2 pointA = get_from_byte2(fontData->value[i]);
-        int2 pointB = get_from_byte2(fontData->value[i + 1]);
+        int2 pointA = byte2_to_int2(fontData->value[i]);
+        int2 pointB = byte2_to_int2(fontData->value[i + 1]);
         #ifdef debug_font_texture
             zoxel_log("Font Data %i %ix%i > %ix%i\n", i, pointA.x, pointA.y, pointB.x, pointB.y);
         #endif
@@ -46,14 +46,14 @@ void generate_font_texture(TextureData* textureData, const TextureSize *textureS
         pointB.x = (int) ((pointB.x / 255.0f) * textureSize->value.x);
         pointB.y = (int) ((pointB.y / 255.0f) * textureSize->value.y);
         int distance = int2_distance(pointA, pointB);
-        float2 direction = float2_normalize(float2_sub(float2_from_int2(pointB), float2_from_int2(pointA)));
+        float2 direction = float2_normalize(float2_sub(int2_to_float2(pointB), int2_to_float2(pointA)));
         #ifdef debug_font_texture
             zoxel_log("    - %ix%i > %ix%i\n", pointA.x, pointA.y, pointB.x, pointB.y);
             zoxel_log("    - distance %i direction %fx%f\n", distance, direction.x, direction.y);
         #endif
         int2 splash_point = pointA;
         for (int j = 0; j <= distance; j++) {
-            int2 splash_point_check = int2_add(get_int2_from_float2(float2_multiply_float(direction, (float) j)), pointA);
+            int2 splash_point_check = int2_add(float2_to_int2(float2_multiply_float(direction, (float) j)), pointA);
             if (int2_equal(splash_point, splash_point_check)) continue;
             splash_point = splash_point_check;
             // add noise later to this

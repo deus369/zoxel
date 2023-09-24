@@ -15,6 +15,7 @@ int2 int4_zw(int4 value) {
     return (int2) { value.z, value.w };
 }
 
+// used for lines
 void int4_add_int2(int4 *value, int2 add) {
     value->x += add.x;
     value->y += add.y;

@@ -25,22 +25,27 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const char *header_labe
     float line_spacing = ( pixel_size.x - line_margins * 2 ) / (float) (lines_count - 1);
     int lines_min_height = 4;
     int lines_max_height = pixel_size.y - (font_size + header_margins) - font_size;
+    int children_count = 1 + lines_count;
     // zoxel_log(" > line_spacing [%f] - size [%i]\n", line_spacing, pixel_size.x);
     zox_instance(prefab_frame_debugger_ui)
     zox_name("frame_debugger_ui")
     float2 real_position2D = initialize_ui_components(world, e, canvas, pixel_position2D, pixel_size, anchor, layer, canvas_size);
-    Children children = { };
-    initialize_memory_component_non_pointer(children, ecs_entity_t, 1 + lines_count)
-    children.value[0] = spawn_header(world, e, (int2) { 0, - font_size / 2 - header_margins / 2 }, (int2) { pixel_size.x, font_size + header_margins}, (float2) { 0.5f, 1.0f }, header_label, font_size, header_margins, header_layer, real_position2D, pixel_size, 1, canvas_size);
+    
+    Children *children = ecs_get_mut(world, e, Children);
+    initialize_memory_component(children, ecs_entity_t, children_count)
+    children->value[0] = spawn_header(world, e, (int2) { 0, - font_size / 2 - header_margins / 2 }, (int2) { pixel_size.x, font_size + header_margins}, (float2) { 0.5f, 1.0f }, header_label, font_size, header_margins, header_layer, real_position2D, pixel_size, 1, canvas_size);
     // color edge_color = (color) { 33, 155, 155, 155 };
     // int edge_size = 4;
     for (int i = 0; i < lines_count; i++) {
         int position_x = line_margins + i * line_spacing;
-        children.value[1 + i] = spawn_ui_line2D(world, main_canvas, (int2) { position_x, lines_min_height }, (int2) { position_x, lines_max_height }, line_color, lines_thickness, 0.0, real_position2D, pixel_position2D, lines_layer);
-        zox_add_tag(children.value[1 + i], FrameDebugLine)
-        zox_set(children.value[1 + i], ChildIndex, { i })
+        int2 start_position = (int2) { position_x, lines_min_height };
+        int2 end_position = (int2) { position_x, lines_max_height };
+        ecs_entity_t line = spawn_ui_line2D(world, main_canvas, start_position, end_position, line_color, lines_thickness, 0, real_position2D, pixel_position2D, lines_layer);
+        zox_set_only(line, ChildIndex, { i })
+        zox_add_tag(line, FrameDebugLine)
+        children->value[1 + i] = line;
     }
-    zox_set_only(e, Children, { children.length, children.value })
+    ecs_modified(world, e, Children);
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned window [%lu]\n", (long int) e);
     #endif

@@ -46,6 +46,10 @@ int int3_array_index(int3 input, int3 size) {
     return input.z + size.z * (input.y + size.y * input.x);
 }
 
+unsigned char int3_to_node_index(int3 position) {
+    return position.x * 4 + position.y * 2 + position.z;
+}
+
 int int3_array_index2(int3 input, int3 size) {
     return input.z + size.z * (input.y + size.y * input.x);
 }

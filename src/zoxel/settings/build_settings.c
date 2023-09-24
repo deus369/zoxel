@@ -8,6 +8,8 @@
 #define zox_on_play_spawn_terrain
 // #define zox_bulk_spawn_terrain
 
+// #define zox_extra_destroy_terrain_children
+
 // #define zox_disable_set_vox
 
 // settings

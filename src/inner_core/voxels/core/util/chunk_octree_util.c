@@ -1,3 +1,7 @@
+const int fill_octree_random_rate = 50;
+const int fill_octree_random_rate2 = 40;
+const int fill_octree_random_rate3 = 30;
+
 void fill_new_octree(ChunkOctree* node, const unsigned char voxel, unsigned char depth) {
     node->value = voxel;
     if (depth > 0) {
@@ -171,7 +175,7 @@ unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *
                 continue;
             }
             // check underneath nodes
-            if (is_adjacent_all_solid(direction, root_node, &adjacent_node->nodes[i], neighbors,int3_add(octree_position, octree_positions[i]),
+            if (is_adjacent_all_solid(direction, root_node, &adjacent_node->nodes[i], neighbors, int3_add(octree_position, octree_positions[i]),
                 i, local_position, depth, max_depth, neighbor_lods, edge_voxel) == 0) return 0;
         }
     }
@@ -190,25 +194,16 @@ unsigned char is_adjacent_solid(unsigned char direction, const ChunkOctree *root
     else return 0;
 }
 
-const int fill_octree_random_rate = 50;
-const int fill_octree_random_rate2 = 40;
-const int fill_octree_random_rate3 = 30;
-
 void random_fill_octree(ChunkOctree* node, unsigned char voxel, unsigned char depth) {
     node->value = voxel;
     if (depth > 0) {
         depth--;
         open_ChunkOctree(node);
-        for (int i = 0; i < octree_length; i++) {
-            random_fill_octree(&node->nodes[i], voxel, depth);
-        }
+        for (int i = 0; i < octree_length; i++) random_fill_octree(&node->nodes[i], voxel, depth);
     } else {
-        if (rand() % 101 >= fill_octree_random_rate) 
-            node->value = 0;
-        else if (rand() % 101 >= fill_octree_random_rate2) 
-            node->value = 2;
-        else if (rand() % 101 >= fill_octree_random_rate3) 
-            node->value = 3;
+        if (rand() % 101 >= fill_octree_random_rate) node->value = 0;
+        else if (rand() % 101 >= fill_octree_random_rate2) node->value = 2;
+        else if (rand() % 101 >= fill_octree_random_rate3) node->value = 3;
     }
 }
 

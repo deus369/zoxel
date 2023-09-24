@@ -38,14 +38,6 @@ void float2_add_float2_p(float2 *input, const float2 add) {
     input->y += add.y;
 }
 
-float2 float2_from_int2(int2 input) {
-    return (float2) { (float) input.x, (float) input.y };
-}
-
-int2 get_int2_from_float2(float2 input) {
-    return (int2) { (int) ceil(input.x), (int) ceil(input.y) };
-}
-
 float2 float2_sub(float2 a, float2 b) {
     return (float2) { a.x - b.x, a.y - b.y };
 }
@@ -69,25 +61,13 @@ float2 float2_subtract(float2 a, float2 b) {
 }
 
 float float2_highest(float2 input) {
-    if (input.x > input.y)
-    {
-        return input.x;
-    }
-    else
-    {
-        return input.y;
-    }
+    if (input.x > input.y) return input.x;
+    else return input.y;
 }
 
 float float2_lowest(float2 input) {
-    if (input.x < input.y)
-    {
-        return input.x;
-    }
-    else
-    {
-        return input.y;
-    }
+    if (input.x < input.y) return input.x;
+    else return input.y;
 }
 
 float2 normalize2D(float2 input) {

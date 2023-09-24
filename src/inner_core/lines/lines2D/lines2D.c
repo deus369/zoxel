@@ -47,7 +47,6 @@ void set_line_element_real_position2D(ecs_world_t *world, ecs_entity_t e, float2
         linePosition2D->value = new_line_position;
         ecs_modified(world, e, LinePosition2D);
         // zox_set_only(e, LinePosition2D, { new_line_position })
-
         //int2 new_mid_point = (int2) { ceil((real_position2D.x / aspect_ratio + 0.5f) * canvas_size_f.x), ((real_position2D.y + 0.5f) * canvas_size_f.y) };
         //int2 delta = int2_sub(new_mid_point, pixel_position);
         // linePosition2D->value = lineLocalPosition2D->value;

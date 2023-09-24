@@ -58,7 +58,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             if (!did_find_ground) continue;
             int vox_file_index = rand() % vox_files_count;
             vox_file vox = vox_files[vox_file_index];
-            int3 global_voxel_position = int3_add(chunk_voxel_position, int3_from_byte3(local_position));
+            int3 global_voxel_position = int3_add(chunk_voxel_position, byte3_to_int3(local_position));
             float3 position = (float3) { global_voxel_position.x, global_voxel_position.y, global_voxel_position.z };
             float3_multiply_float_p(&position, terrain_voxel_scale);
             float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });

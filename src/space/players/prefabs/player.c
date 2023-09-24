@@ -33,13 +33,10 @@ ecs_entity_t spawn_player(ecs_world_t *world) {
     zox_set_only(e, PlayerState, { camera_mode })
     DeviceLinks *deviceLinks = ecs_get_mut(world, e, DeviceLinks);
     initialize_memory_component(deviceLinks, ecs_entity_t, 4)
-    //DeviceLinks deviceLinks = { };
-    //initialize_memory_component_non_pointer(deviceLinks, ecs_entity_t, 4)
     deviceLinks->value[0] = keyboard_entity;
     deviceLinks->value[1] = mouse_entity;
     deviceLinks->value[2] = gamepad_entity;
     deviceLinks->value[3] = touchscreen_entity;
-    // zox_set_only(e, DeviceLinks, { deviceLinks.length, deviceLinks.value })
     ecs_modified(world, e, DeviceLinks);
     main_player = e;
     #ifdef zoxel_debug_spawns

@@ -5,14 +5,6 @@ typedef struct {
     float z;
 } float3;
 
-#define float3_zero (float3) { 0, 0, 0 }
-#define float3_backward (float3) { 0, 0, -1 }
-#define float3_forward (float3) { 0, 0, 1 }
-#define float3_left (float3) { -1, 0, 0 }
-#define float3_right (float3) { 1, 0, 0 }
-#define float3_down (float3) { 0, -1, 0 }
-#define float3_up (float3) { 0, 1, 0 }
-
 void float3_print(const float3 input) {
     zoxel_log("    Float3 [%f %f %f]\n", input.x, input.y, input.z);
 }
@@ -75,17 +67,6 @@ float3 float3_cross(float3 a, float3 b) {
     };
 }
 
-const float3 octree_positions_float3s[] = {
-    { 0.0f, 0.0f, 0.0f },
-    { 0.0f, 0.0f, 1.0f },
-    { 0.0f, 1.0f, 0.0f },
-    { 0.0f, 1.0f, 1.0f },
-    { 1.0f, 0.0f, 0.0f },
-    { 1.0f, 0.0f, 1.0f },
-    { 1.0f, 1.0f, 0.0f },
-    { 1.0f, 1.0f, 1.0f }
-};
-
 float float3_dot(float3 a, float3 b) {
     return a.x * b.x + a.y * b.y + a.z * b.z;
 }
@@ -97,3 +78,22 @@ float float3_length(float3 v) {
 float3 float3_from_byte3(byte3 input) {
     return (float3) { input.x, input.y, input.z };
 }
+
+#define float3_zero (float3) { 0, 0, 0 }
+#define float3_backward (float3) { 0, 0, -1 }
+#define float3_forward (float3) { 0, 0, 1 }
+#define float3_left (float3) { -1, 0, 0 }
+#define float3_right (float3) { 1, 0, 0 }
+#define float3_down (float3) { 0, -1, 0 }
+#define float3_up (float3) { 0, 1, 0 }
+
+const float3 octree_positions_float3s[] = {
+    { 0.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 1.0f },
+    { 0.0f, 1.0f, 0.0f },
+    { 0.0f, 1.0f, 1.0f },
+    { 1.0f, 0.0f, 0.0f },
+    { 1.0f, 0.0f, 1.0f },
+    { 1.0f, 1.0f, 0.0f },
+    { 1.0f, 1.0f, 1.0f }
+};

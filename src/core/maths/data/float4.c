@@ -51,9 +51,7 @@ float4 quaternion_rotate(float4 q1, float4 q2) {
 }
 
 //! Also called Conjugation in maths. Apparently x needs to be position still?
-/**
-*   Confirmed here https://www.youtube.com/watch?v=A6A0rpV9ElA
-*/
+// confirmed here https://www.youtube.com/watch?v=A6A0rpV9ElA
 float4 float4_inverse(float4 input) { 
     // return (float4) { input.x, -input.y, -input.z, -input.w };
     return (float4) { -input.x, -input.y, -input.z, input.w };

@@ -20,18 +20,13 @@ ecs_entity_t spawn_realm(ecs_world_t *world) {
     zox_instance(prefab_realm)
     zox_name("realm")
     // spawn voxels
-
     VoxelLinks *voxelLinks = ecs_get_mut(world, e, VoxelLinks);
     initialize_memory_component(voxelLinks, ecs_entity_t, realm_voxels)
-    //VoxelLinks voxelLinks = { };
-    //initialize_memory_component_non_pointer(voxelLinks, ecs_entity_t, realm_voxels)
     for (unsigned char i = 0; i < voxelLinks->length; i++) {
         ecs_entity_t voxel_entity = spawn_voxel(world, i);
         voxelLinks->value[i] = voxel_entity;
     }
-    // zox_set_only(e, VoxelLinks, { voxelLinks.length, voxelLinks.value })
     ecs_modified(world, e, VoxelLinks);
-    
     local_realm = e;
     #ifdef zoxel_debug_spawns
         zoxel_log(" + spawned realm [%lu]\n", (long int) e);

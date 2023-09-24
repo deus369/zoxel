@@ -294,6 +294,9 @@ android-dev-debug:
 
 # flecs #
 
+check-flecs:
+	open https://github.com/SanderMertens/flecs/releases &
+
 # downloads source into include, installs library into lib
 $(flecs_target):
 	set -e ; \
@@ -389,7 +392,7 @@ help:
 	@echo "  > linux & windows"
 	@echo "  make <target>"
 	@echo "    play			runs a play button"
-	@echo "    install-play			installs a play button"
+	@echo "    install-play		installs a play button"
 	@echo "    $(target_dev)			builds development"
 	@echo "    <empty>  			builds release"
 	@echo "    run				runs $(TARGET)"
@@ -406,7 +409,7 @@ help:
 	@echo "    install-android-sdk		installs tools for android build"
 	@echo "    android			builds & runs android release"
 	@echo "    android-install		installs zoxel apk"
-	@echo "    android-run		runs the zoxel apk"
+	@echo "    android-run			runs the zoxel apk"
 	@echo "    android-dev			builds & runs android debug"
 	@echo "    android-dev-debug		builds & runs android debug with logcat"
 	@echo "    debug-android		debugs running android game"
@@ -425,6 +428,7 @@ help:
 	@echo "    github			opens zoxel on github"
 	@echo "    codeberg			opens zoxel on codeberg"
 	@echo "  > flecs"
+	@echo "    check-flecs			checks flecs releases"
 	@echo "    install-flecs		installs latest flecs (3.2.6)"
 	@echo "    build/libflecs.a		builds flecs library"
 	@echo "    remove-flecs		removes flecs library"

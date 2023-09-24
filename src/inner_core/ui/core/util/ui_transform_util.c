@@ -11,8 +11,7 @@ float2 get_ui_real_position2D(ecs_world_t *world, ecs_entity_t e, ecs_entity_t p
         const Position2D *parent_position2D = ecs_get(world, parent, Position2D);
         const PixelSize *parent_pixel_size = ecs_get(world, parent, PixelSize);
         if (parent_position2D != NULL) position2D = parent_position2D->value;
-        position2D = float2_add(position2D, (float2) { (local_pixel_position.x  / canvasSizef.x) * aspect_ratio,
-            (local_pixel_position.y  / canvasSizef.y)});
+        position2D = float2_add(position2D, (float2) { (local_pixel_position.x  / canvasSizef.x) * aspect_ratio, (local_pixel_position.y  / canvasSizef.y)});
         if (parent_pixel_size != NULL) {
             float2 parent_pixel_ratio = (float2) { parent_pixel_size->value.x / canvasSizef.y, parent_pixel_size->value.y / canvasSizef.y };
             position2D = float2_add(position2D, (float2) { - (parent_pixel_ratio.x / 2.0f) + parent_pixel_ratio.x * anchor.x, - (parent_pixel_ratio.y / 2.0f) + parent_pixel_ratio.y * anchor.y });
@@ -82,8 +81,8 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
     #endif
     float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
     float aspect_ratio = canvasSizef.x / canvasSizef.y;
-    unsigned char is_valid = ecs_is_valid(world, e);
-    if (is_valid && zox_has(e, PixelPosition)) {
+    if (!ecs_is_valid(world, e)) return;
+    if (zox_has(e, PixelPosition)) {
         const PixelPosition *pixelPosition = ecs_get(world, e, PixelPosition);
         const Anchor *anchor = ecs_get(world, e, Anchor);
         int2 position = pixelPosition->value;
@@ -97,7 +96,7 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
     } /*else {
         zoxel_log(" ! set_ui_transform - ui PixelPosition not found [%lu]\n", (long int) e);
     }*/
-    if (!headless && is_valid && zox_has(e, MeshVertices2D)) {  //! Resize (if visible)
+    if (!headless && zox_has(e, MeshVertices2D)) {  //! Resize (if visible)
         const PixelSize *pixelSize = ecs_get(world, e, PixelSize);
         const MeshAlignment *meshAlignment = ecs_get(world, e, MeshAlignment);
         float2 scale2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
@@ -109,7 +108,7 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
             zoxel_log("        -> Scaling: [%fx%f]\n", scale2D.x, scale2D.y);
         #endif
     }
-    if (is_valid && zox_has(e, Children)) {
+    if (zox_has(e, Children)) {
         layer++;
         const Children *children = ecs_get(world, e, Children);
         for (int i = 0; i < children->length; i++) {

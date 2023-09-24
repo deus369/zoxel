@@ -7,13 +7,14 @@ ecs_entity_t spawn_prefab_ui_line2D(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_ui_line2D")
     zox_add_tag(e, Line2D);
-    zox_set(e, LineData2D, { { 0, 0, 0, 0 } })
+    zox_set(e, LineData2D, { float4_zero })
     zox_set(e, LineLocalPosition2D, { int4_zero })
     zox_set(e, LinePosition2D, { int4_zero })
     zox_set(e, LineThickness, { 1 })
     zox_set(e, CanvasLink, { })
     zox_set(e, Layer2D, { 0 })    // use to render in order during ui render process
     zox_set(e, Color, { { 255, 0, 0, 255 } })
+    zox_set(e, ChildIndex, { 0 })
     #ifdef zoxel_debug_prefabs
         zoxel_log("spawn_prefab ui_line2D [%lu].\n", (long int) (e));
     #endif
@@ -41,16 +42,18 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point
     // const LinePosition2D linePosition2D = (LinePosition2D) { line_position2D };
     // zoxel_log(" > line [%ix%ix%ix%i]\n", line_position2D.x, line_position2D.y, line_position2D.z, line_position2D.w);
     //  { point_a.x, point_a.y, point_b.x, point_b.y } };
-    LineData2D lineData2D;
+    zox_set_only(e, Layer2D, { layer })
     zox_set_only(e, Color, { line_color })
     zox_set_only(e, LineThickness, { thickness })
     zox_set_only(e, LineLocalPosition2D, { local_line_position2D })
     zox_set_only(e, LinePosition2D, { line_position2D })
     // zox_set_only(e, LinePosition2D, { { point_a.x, point_a.y, point_b.x, point_b.y } })
     // PixelPosition would be... ?
-    set_ui_line_position(&lineData2D, line_position2D, canvas_size_f, aspect_ratio);
-    zox_set_only(e, LineData2D, { lineData2D.value })
-    zox_set_only(e, Layer2D, { layer })
+    //LineData2D lineData2D = (LineData2D) { float4_zero };
+    LineData2D *lineData2D = ecs_get_mut(world, e, LineData2D);
+    set_ui_line_position(lineData2D, line_position2D, canvas_size_f, aspect_ratio);
+    ecs_modified(world, e, LineData2D);
+    // zox_set_only(e, LineData2D, { lineData2D.value })
     if (life_time != 0.0f) zox_set_only(e, DestroyInTime, { life_time })
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned ui_line2D [%lu]\n", (long int) e);

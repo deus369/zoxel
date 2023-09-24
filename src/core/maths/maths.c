@@ -13,12 +13,12 @@
 #include <math.h>       // for sqrt
 #include "util/float_util.c"
 // data types
-#include "data/byte2.c"
-#include "data/byte3.c"
-#include "data/byte4.c"
 #include "data/int2.c"
 #include "data/int3.c"
 #include "data/int4.c"
+#include "data/byte2.c"
+#include "data/byte3.c"
+#include "data/byte4.c"
 #include "data/float2.c"
 #include "data/float3.c"
 #include "data/float4.c"
@@ -38,6 +38,7 @@
 #include "util/noise.c"
 #include "util/noise_2.c"
 #include "util/unique_seed.c"
+#include "util/conversion.c"
 #include "fun/quaternion.c"
 #include "fun/conversion.c"
 #include "tests/test_quadrants.c"

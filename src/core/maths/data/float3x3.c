@@ -15,7 +15,6 @@ float3x3 quaternion_to_float3x3(float4 q) {
 float4 float3x3_to_float4(float3x3 mat) {
     float4 quat;
     float tr = mat.x.x + mat.y.y + mat.z.z;
-    
     if (tr > 0) {
         float S = sqrt(tr + 1.0) * 2; // S=4*qw
         quat.w = 0.25 * S;

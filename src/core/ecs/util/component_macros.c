@@ -37,7 +37,6 @@ ECS_DTOR(name, ptr, {\
 });\
 void on_destroyed##_##name(ecs_iter_t *it) {\
     ecs_world_t *world = it->world;\
-    ecs_defer_begin(world);\
     const name *components = ecs_field(it, name, 1);\
     for (int i = 0; i < it->count; i++) {\
         const name *component = &components[i];\
@@ -49,23 +48,7 @@ void on_destroyed##_##name(ecs_iter_t *it) {\
             }\
         }\
     }\
-    ecs_defer_end(world);\
 }
-                /*if (ecs_has(world, pair->value, EntityLinks)) {\
-                    const EntityLinks *entityLinks = ecs_get(world, pair->value, EntityLinks);\
-                    for (int k = 0; k < entityLinks->length; k++) {\
-                        ecs_entity_t character_entity = entityLinks->value[k];\
-                        zox_delete(character_entity);\
-                    }\
-                }\*/
-
-/* 
-    const EntityLinks *entityLinks = ecs_get(world, pair->value, EntityLinks);\
-    for (int j = 0; j < entityLinks->length; j++) {\
-        ecs_entity_t character_entity = entityLinks->value[j];
-        zox_delete(character_entity);\
-    }
-*/
 
 #define zox_define_hashmap_component(name, ...)\
 zox_define_component(name)\
@@ -77,3 +60,18 @@ ecs_observer_init(world, &(ecs_observer_desc_t) {\
 });
 
 #define zox_custom_component(name) ECS_COMPONENT_DECLARE(name);
+
+/*if (ecs_has(world, pair->value, EntityLinks)) {\
+    const EntityLinks *entityLinks = ecs_get(world, pair->value, EntityLinks);\
+    for (int k = 0; k < entityLinks->length; k++) {\
+        ecs_entity_t character_entity = entityLinks->value[k];\
+        zox_delete(character_entity);\
+    }\
+}\*/
+/* 
+    const EntityLinks *entityLinks = ecs_get(world, pair->value, EntityLinks);\
+    for (int j = 0; j < entityLinks->length; j++) {\
+        ecs_entity_t character_entity = entityLinks->value[j];
+        zox_delete(character_entity);\
+    }
+*/

@@ -29,10 +29,10 @@ ecs_entity_t spawn_virtual_joystick(ecs_world_t *world, int2 position) {
     zox_instance(prefab_virtual_joystick)
     zox_name("virtual_joystick")
     float2 position2D = initialize_ui_components(world, e, main_canvas, position, pixel_size, anchor, 0, canvas_size);
-    Children children = { };
-    initialize_memory_component_non_pointer(children, ecs_entity_t, 1);
-    children.value[0] = spawn_virtual_joystick_pointer(world, e, (layer + 1), (int2) { 0, 0 }, (float2) { 0.5f, 0.5f }, position2D, pixel_size, canvas_size);
-    zox_set_only(e, Children, { children.length, children.value })
+    Children *children = ecs_get_mut(world, e, Children);
+    initialize_memory_component(children, ecs_entity_t, 1)
+    children->value[0] = spawn_virtual_joystick_pointer(world, e, (layer + 1), (int2) { 0, 0 }, (float2) { 0.5f, 0.5f }, position2D, pixel_size, canvas_size);
+    ecs_modified(world, e, Children);
     virtual_joystick = e;
     #ifdef zoxel_debug_spawns
         zoxel_log("Spawned virtual_joystick [%lu]\n", (long int) e);
