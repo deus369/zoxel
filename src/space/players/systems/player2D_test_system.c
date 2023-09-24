@@ -29,7 +29,12 @@ void Player2DTestSystem(ecs_iter_t *it) {
                 if (character == 0) attach_to_character(world, main_player, main_camera, local_character3D);
                 else detatch_from_character(world, main_player, main_camera, local_character3D);
             }
-        } /*else if (keyboard->b.pressed_this_frame) {
+        } 
+        /*else if (keyboard->h.pressed_this_frame) {
+            end_game(world);
+        }*/
+        
+        /*else if (keyboard->b.pressed_this_frame) {
             zoxel_log("testing world ui on character %lu\n", local_character3D);
             spawn_element3D(world, local_character3D);
         }*/

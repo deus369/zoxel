@@ -62,7 +62,7 @@ void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, const vox_file *v
         zox_set_only(e, ChunkSize, { vox_size })
         // zox_set_only(e, ChunkOctree, { chunkOctree.value, chunkOctree.nodes })
     #else
-        ChunkSize chunkSize = { vox->chunks[0].size.xyz };
+        /*ChunkSize chunkSize = { vox->chunks[0].size.xyz };
         int voxels_length = chunkSize.value.x * chunkSize.value.y * chunkSize.value.z;
         ChunkData chunk = { };
         ColorRGBs colorRGBs = { };
@@ -73,7 +73,7 @@ void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, const vox_file *v
         memcpy(colorRGBs.value, vox->palette.values_rgb, colors_length * sizeof(color_rgb));
         zox_set_only(e, ChunkSize, { chunkSize.value })
         zox_set_only(e, ChunkData, { chunk.length, chunk.value })
-        zox_set_only(e, ColorRGBs, { colorRGBs.length, colorRGBs.value })
+        zox_set_only(e, ColorRGBs, { colorRGBs.length, colorRGBs.value })*/
     #endif
 }
 

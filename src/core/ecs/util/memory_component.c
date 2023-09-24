@@ -1,3 +1,5 @@
+int memorys_allocated = 0;
+
 // an array of a single data type
 // uses:
 //      ECS_CTOR The constructor should initialize the component value
@@ -10,55 +12,58 @@ typedef struct {\
     type *value;\
 } name; zox_custom_component(name)\
 \
-void dispose##_##name(name *ptr) {\
-    if (!ptr->length) return;\
-    free(ptr->value);\
+void zero##_##name(name *ptr) {\
     ptr->value = NULL;\
     ptr->length = 0;\
 }\
 \
-ECS_CTOR(name, ptr, {\
-    ptr->length = 0;\
-    ptr->value = NULL;\
-})\
+void dispose##_##name(name *ptr) {\
+    if (!ptr->length) return;\
+    free(ptr->value);\
+    zero##_##name(ptr);\
+    memorys_allocated--;\
+}\
 \
+void on_destroyed##_##name(ecs_iter_t *it) {\
+    /*zoxel_log(" > components destroyed [%i]\n", it->count);*/\
+    name *components = ecs_field(it, name, 1);\
+    for (int i = 0; i < it->count; i++) {\
+        name *component = &components[i];\
+        /*zoxel_log("     > component length [%i]\n", component->length);*/\
+        dispose##_##name(component);\
+    }\
+}\
+\
+ECS_CTOR(name, ptr, { zero##_##name(ptr); })\
 ECS_MOVE(name, dst, src, {\
-    if (dst->length != 0) free(dst->value);\
+    if (dst->value == src->value) return;\
+    dispose##_##name(dst);\
     dst->value = src->value;\
     dst->length = src->length;\
-    src->value = NULL;\
-    src->length = 0;\
+    zero##_##name(src);\
 })\
-\
 ECS_COPY(name, dst, src, {\
     if (src->value) {\
-        if (dst->length != 0) free(dst->value);\
+        if (!dst->length) memorys_allocated++;\
+        else if (dst->length) free(dst->value);\
         int memory_length = src->length * sizeof(type);\
         dst->length = src->length;\
         dst->value = malloc(memory_length);\
         if (dst->value != NULL) dst->value = memcpy(dst->value, src->value, memory_length);\
+    } else if (dst->value) {\
+        dispose##_##name(dst);\
     }\
 })\
-\
-ECS_DTOR(name, ptr, { dispose##_##name(ptr); })\
-\
-void on_destroyed##_##name(ecs_iter_t *it) {\
-    name *components = ecs_field(it, name, 1);\
-    for (int i = 0; i < it->count; i++) {\
-        name *component = &components[i];\
-        dispose##_##name(component);\
-    }\
-}
+ECS_DTOR(name, ptr, { dispose##_##name(ptr); })
 
 #define zox_define_memory_component2(name, ...)\
 zox_define_component(name)\
-\
 ecs_set_hooks(world, name, {\
     .ctor = ecs_ctor(name),\
     .move = ecs_move(name),\
     .copy = ecs_copy(name),\
     .dtor = ecs_dtor(name)\
-});
+});\
 
 /*ecs_observer_init(world, &(ecs_observer_desc_t) {\
     .filter.expr = #__VA_ARGS__,\
@@ -68,9 +73,9 @@ ecs_set_hooks(world, name, {\
 
 #define zox_define_memory_component(name) zox_define_memory_component2(name, [out] name)
 
-
 #define initialize_memory_component(component, data_type, _length) {\
     if (component->length != _length) {\
+        if (component->value == NULL) memorys_allocated++;\
         if (component->value != NULL) free(component->value);\
         component->length = _length;\
         component->value = (data_type*) malloc(_length * sizeof(data_type));\
@@ -118,20 +123,24 @@ ecs_set_hooks(world, name, {\
         free(component->value);\
         component->value = NULL;\
         component->length = 0;\
+        memorys_allocated--;\
     }\
-}
-
-#define initialize_memory_component_non_pointer(component, data_type, length_) {\
-    component.length = length_;\
-    component.value = (data_type*) malloc(length_ * sizeof(data_type));\
 }
 
 #define re_initialize_memory_component(component, data_type, length_) {\
     if (component->length != length_) {\
-        if (component->length > 0 && component->value) free(component->value);\
+        if (!component->length) memorys_allocated++;\
+        if (component->length) free(component->value);\
         component->length = length_;\
         component->value = (data_type*) malloc(length_ * sizeof(data_type));\
     }\
+}
+
+/*
+
+#define initialize_memory_component_non_pointer(component, data_type, length_) {\
+    component.length = length_;\
+    component.value = (data_type*) malloc(length_ * sizeof(data_type));\
 }
 
 #define re_initialize_memory_component_no_free(component, data_type, length_) {\
@@ -140,3 +149,4 @@ ecs_set_hooks(world, name, {\
         component->value = (data_type*) malloc(length_ * sizeof(data_type));\
     }\
 }
+*/

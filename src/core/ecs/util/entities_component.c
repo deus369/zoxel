@@ -3,28 +3,36 @@
 typedef struct {\
     int length;\
     type *value;\
-} name; ECS_COMPONENT_DECLARE(name);\
+} name; zox_custom_component(name);\
 \
-ECS_CTOR(name, ptr, {\
+void zero##_##name(name *ptr) {\
     ptr->length = 0;\
     ptr->value = NULL;\
-})\
+}\
 \
+void dispose2##_##name(name *ptr) {\
+    if (!ptr->length) return;\
+    free(ptr->value);\
+    zero##_##name(ptr);\
+}\
+\
+ECS_CTOR(name, ptr, { zero##_##name(ptr); })\
 ECS_MOVE(name, dst, src, {\
-    if (dst->length != 0) free(dst->value);\
+    if (dst->value == src->value) return;\
+    dispose2##_##name(dst);\
     dst->value = src->value;\
     dst->length = src->length;\
-    src->value = NULL;\
-    src->length = 0;\
+    zero##_##name(src);\
 })\
-\
 ECS_COPY(name, dst, src, {\
     if (src->value) {\
-        if (dst->length != 0) free(dst->value);\
+        if (dst->length) free(dst->value);\
         int memory_length = src->length * sizeof(type);\
         dst->length = src->length;\
         dst->value = malloc(memory_length);\
         if (dst->value != NULL) dst->value = memcpy(dst->value, src->value, memory_length);\
+    } else if (dst->value) {\
+        dispose2##_##name(dst);\
     }\
 })
 
@@ -79,11 +87,11 @@ ecs_observer_init(world, &(ecs_observer_desc_t) {\
 #define zox_define_entities_component(name) zox_define_entities_component2(name, [out] name)
 
 /*
-        if (!component->length) continue;\
-        for (int j = 0; j < component->length; j++) zox_delete(component->value[j]);\
-        free(component->value);\
-        component->length = 0;\
-        component->value = NULL;\
+    if (!component->length) continue;\
+    for (int j = 0; j < component->length; j++) zox_delete(component->value[j]);\
+    free(component->value);\
+    component->length = 0;\
+    component->value = NULL;\
 */
 
 /*extern int characters_count;
