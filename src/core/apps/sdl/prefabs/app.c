@@ -12,7 +12,7 @@ ecs_entity_t spawn_prefab_app(ecs_world_t *world) {
     ecs_defer_end(world);
     app_prefab = e;
     #ifdef zoxel_debug_prefabs
-        zoxel_log("spawn_prefab app [%lu].\n", (long int) (e));
+        zoxel_log(" > spawn_prefab app [%lu].\n", (long int) (e));
     #endif
     return e;
 }
@@ -22,6 +22,9 @@ ecs_entity_t spawn_app(ecs_world_t *world, SDL_Window* window, SDL_GLContext* co
     zox_name("app")
     zox_set_only(e, SDLWindow, { window })
     zox_set_only(e, Context, { context })
+    #ifdef zoxel_debug_spawns
+        zoxel_log(" > spawned app [%lu]\n", (long int) e);
+    #endif
     main_app = e;
     return e;
 }

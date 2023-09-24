@@ -1,7 +1,8 @@
 extern int characters_count;
-// #define zox_debug_ui_characters
+#define zox_debug_ui_characters
 // #define zox_debug_ui_device_mode
-#define zox_debug_ui_node_memory
+// #define zox_debug_ui_node_memory
+extern int get_characters_count(ecs_world_t *world);
 
 void GameDebugLabelSystem(ecs_iter_t *it) {
     if (main_player == 0) return;
@@ -23,6 +24,7 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         #endif
         #ifdef zox_debug_ui_characters
             snprintf(buffer, sizeof(buffer), "characters [%i]", characters_count);
+            // snprintf(buffer, sizeof(buffer), "characters [%i]", get_characters_count(it->world));
         #endif
         #ifdef zox_debug_ui_device_mode
             if (deviceMode->value == zox_device_mode_none) {

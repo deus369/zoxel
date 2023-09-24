@@ -46,15 +46,15 @@ ECS_COPY(name, dst, src, {\
         .dtor = ecs_dtor(name)\
     });
 
-#define initialize_memory_component(component, dataType, _length) {\
+#define initialize_memory_component(component, data_type, _length) {\
     if (component->length != _length) {\
         if (component->value != NULL) free(component->value);\
         component->length = _length;\
-        component->value = (dataType*) malloc(_length * sizeof(dataType));\
+        component->value = (data_type*) malloc(_length * sizeof(data_type));\
     }\
 }
 
-#define add_to_memory_component(component, dataType, data) {\
+#define add_to_memory_component(component, data_type, data) {\
     if (component->value != NULL) {\
         unsigned char has_data = 0;\
         for (int i = 0; i < component->length; i++) {\
@@ -65,13 +65,13 @@ ECS_COPY(name, dst, src, {\
         }\
         if (!has_data) {\
             component->length++;\
-            component->value = realloc(component->value, component->length * sizeof(dataType));\
+            component->value = realloc(component->value, component->length * sizeof(data_type));\
             component->value[component->length - 1] = data;\
         }\
     }\
 }
 
-#define remove_from_memory_component(component, dataType, data) {\
+#define remove_from_memory_component(component, data_type, data) {\
     if (component->value != NULL) {\
         int index = -1;\
         for (int i = 0; i < component->length; i++) {\
@@ -85,7 +85,7 @@ ECS_COPY(name, dst, src, {\
                 component->value[i] = component->value[i + 1];\
             }\
             component->length--;\
-            component->value = realloc(component->value, component->length * sizeof(dataType));\
+            component->value = realloc(component->value, component->length * sizeof(data_type));\
         }\
     }\
 }
@@ -103,17 +103,17 @@ ECS_COPY(name, dst, src, {\
     component.value = (data_type*) malloc(length_ * sizeof(data_type));\
 }
 
-#define re_initialize_memory_component(component, dataType, length_) {\
+#define re_initialize_memory_component(component, data_type, length_) {\
     if (component->length != length_) {\
         if (component->length > 0 && component->value) free(component->value);\
         component->length = length_;\
-        component->value = (dataType*) malloc(length_ * sizeof(dataType));\
+        component->value = (data_type*) malloc(length_ * sizeof(data_type));\
     }\
 }
 
-#define re_initialize_memory_component_no_free(component, dataType, length_) {\
+#define re_initialize_memory_component_no_free(component, data_type, length_) {\
     if (component->length != length_) {\
         component->length = length_;\
-        component->value = (dataType*) malloc(length_ * sizeof(dataType));\
+        component->value = (data_type*) malloc(length_ * sizeof(data_type));\
     }\
 }

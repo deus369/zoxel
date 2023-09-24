@@ -43,10 +43,33 @@ void on_destroyed##_##name(ecs_iter_t *it) {\
     name *components = ecs_field(it, name, 1);\
     for (int i = 0; i < it->count; i++) {\
         name *component = &components[i];\
-        if (component->length == 0) continue;\
+        if (!component->length) continue;\
         for (int j = 0; j < component->length; j++) zox_delete(component->value[j]);\
         free(component->value);\
         component->length = 0;\
+        component->value = NULL;\
+    }\
+}
+
+extern int characters_count;
+
+#define zox_entities_component_debug(name)\
+zox_memory_component_non_dtor(name, ecs_entity_t)\
+void on_destroyed##_##name(ecs_iter_t *it) {\
+    ecs_world_t *world = it->world;\
+    name *components = ecs_field(it, name, 1);\
+    for (int i = 0; i < it->count; i++) {\
+        name *component = &components[i];\
+        if (!component->length) continue;\
+        /*zoxel_log(" - destroying entities (characters) [%i]\n", component->length);*/\
+        /*for (int j = 0; j < component->length; j++) zoxel_log("     - character [%lu]\n", component->value[j]);*/\
+        for (int j = 0; j < component->length; j++) {\
+            zox_delete(component->value[j]);\
+            characters_count--;\
+        }\
+        free(component->value);\
+        component->length = 0;\
+        component->value = NULL;\
     }\
 }
 
