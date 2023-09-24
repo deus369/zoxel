@@ -1,3 +1,4 @@
+/*
 #define zoxel_memory_component_mesh_indicies(name, type)\
 typedef struct {\
     int length;\
@@ -30,3 +31,4 @@ ECS_COPY(name, dst, src, {\
 
 // define mesh indicies with custom destruction function
 zoxel_memory_component_mesh_indicies(MeshIndicies, int)
+*/

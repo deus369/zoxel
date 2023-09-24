@@ -1,5 +1,5 @@
 #define zoxel_octree_component_define2(name, ...)\
-ECS_COMPONENT_DEFINE(world, name);\
+zox_define_component(name)\
 ecs_set_hooks(world, name, {\
     .ctor = ecs_ctor(name),\
     .move = ecs_move(name),\

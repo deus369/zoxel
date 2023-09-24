@@ -23,8 +23,8 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
             snprintf(buffer, sizeof(buffer), "node memory [%i]", node_memory);
         #endif
         #ifdef zox_debug_ui_characters
-            snprintf(buffer, sizeof(buffer), "characters [%i]", characters_count);
-            // snprintf(buffer, sizeof(buffer), "characters [%i]", get_characters_count(it->world));
+            // snprintf(buffer, sizeof(buffer), "characters [%i]", characters_count);
+            snprintf(buffer, sizeof(buffer), "characters [%i]", get_characters_count(it->world));
         #endif
         #ifdef zox_debug_ui_device_mode
             if (deviceMode->value == zox_device_mode_none) {

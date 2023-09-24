@@ -16,10 +16,13 @@ int get_chunk_index_2(int i, int j, int k, int rows, int vertical) {
 
 ecs_entity_t create_terrain(ecs_world_t *world) {
     ecs_defer_begin(world);
-    const Position3D *camera_position3D = ecs_get(world, main_cameras[0], Position3D);
+    int3 center_position = int3_zero;
+    ecs_entity_t camera = main_cameras[0];
+    const Position3D *camera_position3D = ecs_get(world, camera, Position3D);
     int3 camera_position = get_chunk_position(camera_position3D->value, default_chunk_size);
-    zox_set_only(main_cameras[0], StreamPoint, { camera_position })
-    //zoxel_log(" > spawning terrain [%lu] at [%ix%ix%i]\n", main_cameras[0], camera_position.x, camera_position.y, camera_position.z);
+    zox_set_only(camera, StreamPoint, { camera_position })
+    center_position = camera_position;
+    //zoxel_log(" > spawning terrain [%lu] at [%ix%ix%i]\n", camera, camera_position.x, camera_position.y, camera_position.z);
     //zoxel_log("     - at [%fx%fx%f]\n", camera_position3D->value.x, camera_position3D->value.y, camera_position3D->value.z);
     #ifdef zox_time_create_terrain
         begin_timing_absolute()
@@ -37,10 +40,10 @@ ecs_entity_t create_terrain(ecs_world_t *world) {
             for (int j = -terrain_vertical; j <= terrain_vertical; j++) {
                 int3 chunk_position = (int3) { i, j, k };
                 int index = get_chunk_index_2(i, j, k, terrain_spawn_distance, terrain_vertical);
-                float3 real_chunk_position = float3_multiply_float(float3_from_int3(chunk_position), real_chunk_scale);;
+                float3 real_chunk_position = float3_multiply_float(float3_from_int3(chunk_position), real_chunk_scale);
                 #ifndef zox_disable_terrain_octrees
                     #ifndef zox_bulk_spawn_terrain
-                        chunks[index] = spawn_terrain_chunk_octree(world, prefab_terrain_chunk_octree, terrain_world, camera_position, chunk_position, real_chunk_position, 0.5f);
+                        chunks[index] = spawn_terrain_chunk_octree(world, prefab_terrain_chunk_octree, terrain_world, center_position, chunk_position, real_chunk_position, 0.5f);
                     #endif
                     chunk_positions[index] = chunk_position;
                 #else
@@ -127,10 +130,12 @@ ecs_entity_t create_terrain(ecs_world_t *world) {
             }
         }
     }
-    ChunkLinks chunkLinks = { };
-    chunkLinks.value = create_int3_hash_map(chunks_total_length);
-    for (int i = 0; i < chunks_total_length; i++) int3_hash_map_add(chunkLinks.value, chunk_positions[i], chunks[i]);
-    zox_set_only(terrain_world, ChunkLinks, { chunkLinks.value });
+    ChunkLinks *chunkLinks = ecs_get_mut(world, terrain_world, ChunkLinks);
+    // ChunkLinks chunkLinks = { };
+    chunkLinks->value = create_int3_hash_map(chunks_total_length);
+    for (int i = 0; i < chunks_total_length; i++) int3_hash_map_add(chunkLinks->value, chunk_positions[i], chunks[i]);
+    // zox_set_only(terrain_world, ChunkLinks, { chunkLinks.value });
+    ecs_modified(world, terrain_world, ChunkLinks);
     #ifdef zox_time_create_terrain
         end_timing_absolute("    - create_terrain")
     #endif

@@ -8,15 +8,18 @@
 typedef struct {\
     int length;\
     type *value;\
-} name; ECS_COMPONENT_DECLARE(name);\
+} name; zox_custom_component(name)\
+\
+void dispose##_##name(name *ptr) {\
+    if (!ptr->length) return;\
+    free(ptr->value);\
+    ptr->value = NULL;\
+    ptr->length = 0;\
+}\
 \
 ECS_CTOR(name, ptr, {\
     ptr->length = 0;\
     ptr->value = NULL;\
-})\
-\
-ECS_DTOR(name, ptr, {\
-    if (ptr->value) free(ptr->value);\
 })\
 \
 ECS_MOVE(name, dst, src, {\
@@ -35,16 +38,36 @@ ECS_COPY(name, dst, src, {\
         dst->value = malloc(memory_length);\
         if (dst->value != NULL) dst->value = memcpy(dst->value, src->value, memory_length);\
     }\
-})
+})\
+\
+ECS_DTOR(name, ptr, { dispose##_##name(ptr); })\
+\
+void on_destroyed##_##name(ecs_iter_t *it) {\
+    name *components = ecs_field(it, name, 1);\
+    for (int i = 0; i < it->count; i++) {\
+        name *component = &components[i];\
+        dispose##_##name(component);\
+    }\
+}
 
-#define zox_define_memory_component(name)\
-    ECS_COMPONENT_DEFINE(world, name);\
-    ecs_set_hooks(world, name, {\
-        .ctor = ecs_ctor(name),\
-        .move = ecs_move(name),\
-        .copy = ecs_copy(name),\
-        .dtor = ecs_dtor(name)\
-    });
+#define zox_define_memory_component2(name, ...)\
+zox_define_component(name)\
+\
+ecs_set_hooks(world, name, {\
+    .ctor = ecs_ctor(name),\
+    .move = ecs_move(name),\
+    .copy = ecs_copy(name),\
+    .dtor = ecs_dtor(name)\
+});
+
+/*ecs_observer_init(world, &(ecs_observer_desc_t) {\
+    .filter.expr = #__VA_ARGS__,\
+    .callback = on_destroyed##_##name,\
+    .events = { EcsOnRemove },\
+});*/
+
+#define zox_define_memory_component(name) zox_define_memory_component2(name, [out] name)
+
 
 #define initialize_memory_component(component, data_type, _length) {\
     if (component->length != _length) {\

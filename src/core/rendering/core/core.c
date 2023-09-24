@@ -5,12 +5,13 @@
 zox_declare_tag(Shader)
 zox_declare_tag(Material)
 zox_declare_tag(SingleMaterial)
+zox_memory_component(MeshIndicies, int)
 zox_memory_component(MeshVertices, float3)
 zox_memory_component(MeshVertices2D, float2)
 zox_memory_component(MeshUVs, float2)
 zox_memory_component(MeshColors, color)
 zox_memory_component(MeshColorRGBs, color_rgb)
-#include "components/mesh_indicies.c"
+// #include "components/mesh_indicies.c"
 #include "components/material_gpu_link.c"
 #include "components/texture_gpu_link.c"
 #include "components/mesh_gpu_link.c"

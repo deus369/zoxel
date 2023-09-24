@@ -31,7 +31,7 @@ zox_memory_component(ColorRGBs, color_rgb)
 zox_memory_component(Colors, color)
 zox_byte_component(GenericEvent)
 zox_component(Bounds3D, float3)
-zox_entities_component_debug(EntityLinks)
+zox_entities_component(EntityLinks)
 // zoxel_util_includes
 #include "util/generic_util.c"
 #include "util/convert_ascii.c"
