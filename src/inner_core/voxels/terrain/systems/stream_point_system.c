@@ -17,12 +17,12 @@ void StreamPointSystem(ecs_iter_t *it) {
     #ifdef zoxel_time_stream_point_system
         begin_timing()
     #endif
+    const Position3D *position3Ds = ecs_field(it, Position3D, 2);
+    StreamPoint *streamPoints = ecs_field(it, StreamPoint, 3);
     const ChunkPosition *chunkPositions = ecs_field(&chunks_iterator, ChunkPosition, 2);
     const ChunkNeighbors *chunkNeighbors2 = ecs_field(&chunks_iterator, ChunkNeighbors, 3);
     RenderLod *renderLods = ecs_field(&chunks_iterator, RenderLod, 4);
     ChunkDirty *chunkDirtys = ecs_field(&chunks_iterator, ChunkDirty, 5);
-    const Position3D *position3Ds = ecs_field(it, Position3D, 2);
-    StreamPoint *streamPoints = ecs_field(it, StreamPoint, 3);
     for (int i = 0; i < it->count; i++) {
         const Position3D *position3D = &position3Ds[i];
         int3 new_position = get_chunk_position(position3D->value, default_chunk_size);  // translate position to int3 chunk position
@@ -53,12 +53,11 @@ void StreamPointSystem(ecs_iter_t *it) {
             }
             for (int j = 0; j < total_chunks; j++) {
                 const unsigned char changed_chunk = changed[j];
-                if (changed_chunk != 255) {
-                    RenderLod *renderLod = &renderLods[j];
-                    ChunkDirty *chunkDirty = &chunkDirtys[j];
-                    renderLod->value = changed_chunk;
-                    chunkDirty->value = 1;
-                }
+                if (changed_chunk == 255) continue;
+                RenderLod *renderLod = &renderLods[j];
+                ChunkDirty *chunkDirty = &chunkDirtys[j];
+                renderLod->value = changed_chunk;
+                chunkDirty->value = 1;
             }
             free(changed);
             #ifdef zoxel_time_stream_point_system
@@ -72,9 +71,3 @@ void StreamPointSystem(ecs_iter_t *it) {
         end_timing("StreamPointSystem")
     #endif
 } zox_declare_system(StreamPointSystem)
-
-// check if neighbors changed division
-//(chunkNeighbors->value[0] != 0 && ecs_get(world, chunkNeighbors->value[0], RenderLod)->value != get_chunk_division(new_position, int3_left(chunkPosition->value))) ||
-//(chunkNeighbors->value[1] != 0 && ecs_get(world, chunkNeighbors->value[1], RenderLod)->value != get_chunk_division(new_position, int3_right(chunkPosition->value))) ||
-//(chunkNeighbors->value[4] != 0 && ecs_get(world, chunkNeighbors->value[4], RenderLod)->value != get_chunk_division(new_position, int3_back(chunkPosition->value)))  ||
-//(chunkNeighbors->value[5] != 0 && ecs_get(world, chunkNeighbors->value[5], RenderLod)->value != get_chunk_division(new_position, int3_front(chunkPosition->value)))) {
