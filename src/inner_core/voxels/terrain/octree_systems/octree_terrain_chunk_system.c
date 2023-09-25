@@ -51,13 +51,11 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
         const ChunkPosition *chunkPosition = &chunkPositions[i];
         ChunkOctree *chunkOctree = &chunkOctrees[i];
         float3 chunk_position_float3 = float3_from_int3(chunkPosition->value);
-
         // testing
-        /*fill_new_octree(chunkOctree, 1, 1);
+        /*fill_new_octree(chunkOctree, 1, target_depth); // 1
         generateChunk->value = 0;
         chunkDirty->value = 1;
         return;*/
-
         fill_new_octree(chunkOctree, 0, target_depth);
         const byte2 set_dirt = (byte2) { 1, target_depth };
         const byte2 set_grass = (byte2) { 2, target_depth };

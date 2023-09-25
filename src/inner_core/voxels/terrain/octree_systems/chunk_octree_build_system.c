@@ -172,6 +172,15 @@ void build_chunk_octree_mesh_uvs(const ChunkOctree *chunk_octree, const TilemapU
     #endif
 }
 
+#define set_neightbor_chunk_data(dir) {\
+    unsigned char index = direction##_##dir;\
+    ecs_entity_t neighbor = chunkNeighbors2->value[index];\
+    const ChunkOctree *neighbor_chunk = neighbor == 0 ? NULL : ecs_get(world, neighbor, ChunkOctree);\
+    unsigned char neighbor_distance = neighbor == 0 ? 0 : ecs_get(world, neighbor, RenderLod)->value;\
+    neighbor_lods[index] = get_terrain_lod_from_camera_distance(neighbor_distance);\
+    neighbors[index] = neighbor_chunk;\
+}
+
 void ChunkOctreeBuildSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(it->ctx, NULL)) return;
     #ifdef zoxel_time_octree_chunk_builds_system
@@ -219,26 +228,14 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         if (tilemapUVs->value == NULL || tilemapUVs->length == 0) continue;
         const ChunkOctree *chunkOctree = &chunkOctrees[i];
         const ChunkNeighbors *chunkNeighbors2 = &chunkNeighbors[i];
-        const ChunkOctree *chunk_left = chunkNeighbors2->value[0] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[0], ChunkOctree);
-        const ChunkOctree *chunk_right = chunkNeighbors2->value[1] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[1], ChunkOctree);
-        const ChunkOctree *chunk_down = chunkNeighbors2->value[2] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[2], ChunkOctree);
-        const ChunkOctree *chunk_up = chunkNeighbors2->value[3] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[3], ChunkOctree);
-        const ChunkOctree *chunk_back = chunkNeighbors2->value[4] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[4], ChunkOctree);
-        const ChunkOctree *chunk_front = chunkNeighbors2->value[5] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[5], ChunkOctree);
-        const ChunkOctree *neighbors[] =  { chunk_left, chunk_right, chunk_down, chunk_up, chunk_back, chunk_front };
-        unsigned char chunk_left_max_distance = chunkNeighbors2->value[0] == 0 ? 0 : ecs_get(it->world, chunkNeighbors2->value[0], RenderLod)->value;
-        unsigned char chunk_right_max_distance = chunkNeighbors2->value[1] == 0 ? 0 : ecs_get(it->world, chunkNeighbors2->value[1], RenderLod)->value;
-        unsigned char chunk_down_max_distance = chunkNeighbors2->value[2] == 0 ? 0 : ecs_get(it->world, chunkNeighbors2->value[2], RenderLod)->value;
-        unsigned char chunk_up_max_distance = chunkNeighbors2->value[3] == 0 ? 0 : ecs_get(it->world, chunkNeighbors2->value[3], RenderLod)->value;
-        unsigned char chunk_back_max_distance = chunkNeighbors2->value[4] == 0 ? 0 : ecs_get(it->world, chunkNeighbors2->value[4], RenderLod)->value;
-        unsigned char chunk_front_max_distance = chunkNeighbors2->value[5] == 0 ? 0 : ecs_get(it->world, chunkNeighbors2->value[5], RenderLod)->value;
+        const ChunkOctree *neighbors[6];
         unsigned char *neighbor_lods = malloc(6);
-        neighbor_lods[0] = get_terrain_lod_from_camera_distance(chunk_left_max_distance);
-        neighbor_lods[1] = get_terrain_lod_from_camera_distance(chunk_right_max_distance);
-        neighbor_lods[2] = get_terrain_lod_from_camera_distance(chunk_down_max_distance);
-        neighbor_lods[3] = get_terrain_lod_from_camera_distance(chunk_up_max_distance);
-        neighbor_lods[4] = get_terrain_lod_from_camera_distance(chunk_back_max_distance);
-        neighbor_lods[5] = get_terrain_lod_from_camera_distance(chunk_front_max_distance);
+        set_neightbor_chunk_data(left)
+        set_neightbor_chunk_data(right)
+        set_neightbor_chunk_data(down)
+        set_neightbor_chunk_data(up)
+        set_neightbor_chunk_data(back)
+        set_neightbor_chunk_data(front)
         tri_count -= meshIndicies->length / 3;
         build_chunk_octree_mesh_uvs(chunkOctree, tilemapUVs, meshIndicies, meshVertices, meshUVs, meshColorRGBs, renderLod->value, lod, neighbors, neighbor_lods);
         tri_count += meshIndicies->length / 3;
@@ -257,19 +254,3 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         end_timing_cutoff("    - octree_chunk_build_system", zoxel_time_octree_chunk_builds_system_cutoff)
     #endif
 } zox_declare_system(ChunkOctreeBuildSystem)
-
-// voxel_scale = 1.0f / 16.0f;
-
-/*unsigned char get_division_amount(float voxel_scale) {
-    if (voxel_scale == 1) return 1;
-    unsigned char division_amount = 1;
-    for (; voxel_scale > 1.0f; voxel_scale /= 2.0f) division_amount *= 2;
-    return division_amount;
-}*/
-
-/*
-for (offset2.x = - (voxel_scale / 2.0f) + 1; offset2.x <= (voxel_scale / 2.0f); offset2.x += 1.0f) {\
-                for (offset2.z = - (voxel_scale / 2.0f) + 1; offset2.z <= (voxel_scale / 2.0f); offset2.z += 1.0f) {
-             && voxel_scale == 2.0f
-              && voxel_scale == 4.0f
-*/

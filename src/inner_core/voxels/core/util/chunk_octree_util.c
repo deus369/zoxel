@@ -33,9 +33,6 @@ void add_chunk_octree(ecs_world_t *world, ecs_entity_t e, int3 size) {
     initialize_memory_component(chunkNeighbors, ecs_entity_t, 6)
     for (unsigned char i = 0; i < 6; i++) chunkNeighbors->value[i] = 0;
     ecs_modified(world, e, ChunkNeighbors);
-    /*ChunkOctree *chunkOctree = ecs_get_mut(world, e, ChunkOctree);
-    fill_new_octree(chunkOctree, 0, max_octree_depth);
-    ecs_modified(world, e, ChunkOctree);*/
 }
 
 void set_octree_voxel(ChunkOctree *node, byte3 *position, const byte2 *set_octree_data, unsigned char depth) {

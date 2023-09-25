@@ -203,7 +203,9 @@ run-dev-debug:
 	cd build && valgrind -s --leak-check=full ./../$(target_dev)
 
 run-dev-debug-tiny:
-	cd build && valgrind -s --leak-check=full ./../$(target_dev) --tiny
+	cd build && valgrind -s ./../$(target_dev) --tiny
+
+#  --leak-check=full
 
 # run release + flecs profiler
 run-profiler:

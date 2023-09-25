@@ -46,7 +46,7 @@ void set_terrain_render_distance() {
     }
     // preset settings
     if (terrain_mode == terrain_mode_tiny) {
-        terrain_spawn_distance = 1;
+        terrain_spawn_distance = 2;
         terrain_vertical = 1;
     }
     if (terrain_mode == terrain_mode_medium) {

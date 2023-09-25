@@ -9,7 +9,7 @@ ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, int3 size) {
     if (!headless) {
         zox_add(e, MeshUVs)
         add_gpu_uvs(world, e);
-        ecs_remove(world, e, MaterialGPULink);
+        // ecs_remove(world, e, MaterialGPULink);
     }
     ecs_defer_end(world);
     prefab_terrain_chunk = e;

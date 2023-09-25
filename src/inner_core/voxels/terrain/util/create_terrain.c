@@ -14,14 +14,8 @@ int get_chunk_index_2(int i, int j, int k, int rows, int vertical) {
     return i * (rows + rows + 1) + j * (rows + rows + 1) * (rows + rows + 1) + k;
 }
 
-ecs_entity_t create_terrain(ecs_world_t *world) {
+ecs_entity_t create_terrain(ecs_world_t *world, int3 center_position) {
     ecs_defer_begin(world);
-    int3 center_position = int3_zero;
-    ecs_entity_t camera = main_cameras[0];
-    const Position3D *camera_position3D = ecs_get(world, camera, Position3D);
-    int3 camera_position = get_chunk_position(camera_position3D->value, default_chunk_size);
-    zox_set_only(camera, StreamPoint, { camera_position })
-    center_position = camera_position;
     //zoxel_log(" > spawning terrain [%lu] at [%ix%ix%i]\n", camera, camera_position.x, camera_position.y, camera_position.z);
     //zoxel_log("     - at [%fx%fx%f]\n", camera_position3D->value.x, camera_position3D->value.y, camera_position3D->value.z);
     #ifdef zox_time_create_terrain
@@ -131,10 +125,8 @@ ecs_entity_t create_terrain(ecs_world_t *world) {
         }
     }
     ChunkLinks *chunkLinks = ecs_get_mut(world, terrain_world, ChunkLinks);
-    // ChunkLinks chunkLinks = { };
     chunkLinks->value = create_int3_hash_map(chunks_total_length);
     for (int i = 0; i < chunks_total_length; i++) int3_hash_map_add(chunkLinks->value, chunk_positions[i], chunks[i]);
-    // zox_set_only(terrain_world, ChunkLinks, { chunkLinks.value });
     ecs_modified(world, terrain_world, ChunkLinks);
     #ifdef zox_time_create_terrain
         end_timing_absolute("    - create_terrain")

@@ -1,10 +1,16 @@
+#define check_chunk_lod(dir)\
+    (chunkNeighbors->value[direction##_##dir] != 0 &&\
+    ecs_get(world, chunkNeighbors->value[direction##_##dir], RenderLod)->value != \
+    get_chunk_division(new_position, int3##_##dir(chunkPosition->value)))
+
 void StreamPointSystem(ecs_iter_t *it) {
     #ifdef voxels_disable_streaming
         return;
     #endif
     //unsigned char did_update = 0;
+    ecs_world_t *world = it->world;
     ecs_query_t *chunks_query = it->ctx;
-    ecs_iter_t chunks_iterator = ecs_query_iter(it->world, chunks_query);
+    ecs_iter_t chunks_iterator = ecs_query_iter(world, chunks_query);
     ecs_query_next(&chunks_iterator);
     int total_chunks = chunks_iterator.count;
     if (total_chunks == 0) return;
@@ -36,12 +42,7 @@ void StreamPointSystem(ecs_iter_t *it) {
                 unsigned char new_chunk_division = get_chunk_division(new_position, chunkPosition->value);
                 RenderLod *renderLod = &renderLods[j];
                 const ChunkNeighbors *chunkNeighbors = &chunkNeighbors2[j];
-                if (renderLod->value != new_chunk_division ||
-                    // check if neighbors changed division
-                    (chunkNeighbors->value[0] != 0 && ecs_get(it->world, chunkNeighbors->value[0], RenderLod)->value != get_chunk_division(new_position, int3_left(chunkPosition->value))) ||
-                    (chunkNeighbors->value[1] != 0 && ecs_get(it->world, chunkNeighbors->value[1], RenderLod)->value != get_chunk_division(new_position, int3_right(chunkPosition->value))) ||
-                    (chunkNeighbors->value[4] != 0 && ecs_get(it->world, chunkNeighbors->value[4], RenderLod)->value != get_chunk_division(new_position, int3_back(chunkPosition->value)))  ||
-                    (chunkNeighbors->value[5] != 0 && ecs_get(it->world, chunkNeighbors->value[5], RenderLod)->value != get_chunk_division(new_position, int3_front(chunkPosition->value)))) {
+                if (renderLod->value != new_chunk_division || check_chunk_lod(left) || check_chunk_lod(right) || check_chunk_lod(back) || check_chunk_lod(front)) {
                     changed[j] = new_chunk_division;
                     #ifdef zoxel_time_stream_point_system
                         updated_count++;
@@ -51,10 +52,11 @@ void StreamPointSystem(ecs_iter_t *it) {
                 }
             }
             for (int j = 0; j < total_chunks; j++) {
-                if (changed[j] != 255) {
+                const unsigned char changed_chunk = changed[j];
+                if (changed_chunk != 255) {
                     RenderLod *renderLod = &renderLods[j];
                     ChunkDirty *chunkDirty = &chunkDirtys[j];
-                    renderLod->value = changed[j];
+                    renderLod->value = changed_chunk;
                     chunkDirty->value = 1;
                 }
             }
@@ -70,3 +72,9 @@ void StreamPointSystem(ecs_iter_t *it) {
         end_timing("StreamPointSystem")
     #endif
 } zox_declare_system(StreamPointSystem)
+
+// check if neighbors changed division
+//(chunkNeighbors->value[0] != 0 && ecs_get(world, chunkNeighbors->value[0], RenderLod)->value != get_chunk_division(new_position, int3_left(chunkPosition->value))) ||
+//(chunkNeighbors->value[1] != 0 && ecs_get(world, chunkNeighbors->value[1], RenderLod)->value != get_chunk_division(new_position, int3_right(chunkPosition->value))) ||
+//(chunkNeighbors->value[4] != 0 && ecs_get(world, chunkNeighbors->value[4], RenderLod)->value != get_chunk_division(new_position, int3_back(chunkPosition->value)))  ||
+//(chunkNeighbors->value[5] != 0 && ecs_get(world, chunkNeighbors->value[5], RenderLod)->value != get_chunk_division(new_position, int3_front(chunkPosition->value)))) {

@@ -1,5 +1,7 @@
 // Here? select which zoxel modules I shall use?
 
+// #define voxels_disable_streaming
+
 // #define zox_disable_set_vox
 // module includes
 // #define zoxel_include_vulkan
@@ -160,10 +162,9 @@
 // voxels
 // #define zox_disable_terrain_octrees  // disables octrees, uses arrays
 // #define zox_disable_closing_octree_nodes
-#define zoxel_disable_close_nodes
+// #define zoxel_disable_close_nodes
 // #define zox_disable_hidden_terrain_edge        // hides faces on edge of map
 // #define zox_disable_voxels_dynamic_array      // used in mesh generation
-// #define voxels_disable_streaming
 // #define zoxel_voxel_disable_distance_division
 // #define voxels_use_octree_pooling
 // -- zoxel game --

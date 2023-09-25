@@ -87,28 +87,27 @@ void end_game(ecs_world_t *world) {
 }
 
 void play_game(ecs_world_t *world) {
-    ecs_entity_t main_camera = main_cameras[0]; // get player camera link instead
-    zoxel_log(" > game state => [main_menu] to [playing]\n");
-    zox_set_only(local_game, GameState, { zoxel_game_state_playing }) // start game
-    zox_delete(main_menu)   // close main menu
-    zox_set_only(main_camera, VoxLink, { local_terrain })
+    ecs_entity_t main_camera = main_cameras[0]; // get player camera link insteaderas
+    // temp here for now
     if (!ecs_has(world, main_camera, Streamer)) {
         zox_add_only(main_camera, Streamer)
         zox_add_only(main_camera, StreamPoint)
     }
-    // \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cameras
+    zoxel_log(" > game state => [main_menu] to [playing]\n");
+    zox_set_only(local_game, GameState, { zoxel_game_state_playing }) // start game
+    zox_delete(main_menu)   // close main menu
+    // \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cam
+    int3 center_position = int3_zero;
+    const Position3D *camera_position3D = ecs_get(world, main_camera, Position3D);
+    center_position = get_chunk_position(camera_position3D->value, default_chunk_size);
+    zox_set_only(main_camera, StreamPoint, { center_position })
     #ifdef zox_on_play_spawn_terrain
-        ecs_entity_t terrain = create_terrain(world);
-        #ifdef zoxel_space
-            zox_set_only(terrain, RealmLink, { local_realm })
-        #endif
+        create_terrain(world, center_position);
     #endif
-    #ifdef zoxel_spawn_character3Ds
-        spawn_many_characters3D(world);
-    #endif
-    #ifdef zoxel_test_single_character3Ds
-        spawn_many_characters3D(world);
-    #endif
+    if (local_terrain) {
+        zox_set_only(main_camera, VoxLink, { local_terrain })
+        zox_set_only(local_terrain, RealmLink, { local_realm })
+    }
     #if defined(zoxel_include_players)
         if (game_rule_attach_to_character) {
             float3 spawn_position = ecs_get(world, main_camera, Position3D)->value;
@@ -150,3 +149,10 @@ ecs_entity_t respawn_base_camera(ecs_world_t *world, ecs_entity_t old_camera_ent
     zox_delete(old_camera_entity)
     return e;
 }*/
+
+/*#ifdef zoxel_spawn_character3Ds
+    spawn_many_characters3D(world);
+#endif
+#ifdef zoxel_test_single_character3Ds
+    spawn_many_characters3D(world);
+#endif*/
