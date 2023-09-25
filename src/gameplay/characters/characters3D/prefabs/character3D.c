@@ -1,6 +1,10 @@
 ecs_entity_t prefab_character3D = 0;
 ecs_entity_t local_character3D = 0;
 
+int get_characters_count(ecs_world_t *world) {
+    return zox_count_entities(world, ecs_id(Character3D));
+}
+
 ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab_child(prefab_vox)
@@ -23,10 +27,6 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
         zoxel_log("spawn_prefab character3D [%lu].\n", (long int) (e));
     #endif
     return e;
-}
-
-int get_characters_count(ecs_world_t *world) {
-    return zox_count_entities(world, ecs_id(Character3D));
 }
 
 ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vox_file *vox, float3 position, float4 rotation, unsigned char lod) {

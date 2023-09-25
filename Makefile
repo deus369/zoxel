@@ -200,7 +200,7 @@ run-dev-vulkan:
 
 # run development + valgrind
 run-dev-debug:
-	cd build && valgrind -s --leak-check=full ./../$(target_dev)
+	cd build && valgrind -s ./../$(target_dev)
 
 run-dev-debug-tiny:
 	cd build && valgrind -s ./../$(target_dev) --tiny

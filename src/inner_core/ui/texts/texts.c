@@ -32,6 +32,14 @@ zox_memory_component(ZextData, unsigned char)  //! Holds zigel indexes
 #include "systems/animate_text_system.c"
 zox_reset_system(ZextDirtyResetSystem, ZextDirty)
 
+int get_zigels_count(ecs_world_t *world) {
+    return zox_count_entities(world, ecs_id(Zigel));
+}
+
+int get_zexts_count(ecs_world_t *world) {
+    return zox_count_entities(world, ecs_id(Zext));
+}
+
 void spawn_prefabs_texts(ecs_world_t *world) {
     spawn_font_style_prefab(world);
     spawn_font_prefab(world);

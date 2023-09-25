@@ -1,7 +1,6 @@
 ecs_entity_t zext_prefab;
 
 ecs_entity_t spawn_zext_prefab(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab()
     zox_prefab_name("zext_prefab")
     zox_add_tag(e, Zext)
@@ -12,7 +11,6 @@ ecs_entity_t spawn_zext_prefab(ecs_world_t *world) {
     zox_add(e, Children)
     add_transform2Ds(world, e);
     add_ui_plus_components_invisible(world, e);
-    ecs_defer_end(world);
     zext_prefab = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log("    > spawn_prefab zext [%lu].\n", (long int) (e));
@@ -34,7 +32,6 @@ void set_zext(ZextData *zext_data, const char* text) {
 }
 
 ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t parent, int2 position, float2 anchor, byte2 padding, const char* text, int font_size, unsigned char alignment, unsigned char layer, float2 parent_position2D, int2 parent_pixel_size) {
-    // unsigned char alignment = 0; // zox_mesh_alignment_centred;
     int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
     int textLength = strlen(text);
     int2 zext_size = (int2) { font_size * textLength, font_size };
@@ -44,15 +41,15 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t pa
     zox_set_only(e, ZextPadding, { padding })
     zox_set_only(e, MeshAlignment, { alignment })
     float2 position2D = initialize_ui_components_2(world, e, parent, position, zext_size, anchor, layer, parent_position2D, parent_pixel_size, canvas_size);
-    
+    unsigned char zigel_layer = layer + 1;
     ZextData *zextData = ecs_get_mut(world, e, ZextData);
-    initialize_memory_component(zextData, unsigned char, textLength)
     Children *children = ecs_get_mut(world, e, Children);
+    initialize_memory_component(zextData, unsigned char, textLength)
     initialize_memory_component(children, ecs_entity_t, textLength)
     for (int i = 0; i < textLength; i++) {
         unsigned char zigel_index = convert_ascii(text[i]);
         zextData->value[i] = zigel_index;
-        children->value[i] = spawn_zext_zigel(world, e, layer + 1, i, textLength, zigel_index, font_size, alignment, padding, position2D, zext_size, canvas_size);
+        children->value[i] = spawn_zext_zigel(world, e, zigel_layer, i, textLength, zigel_index, font_size, alignment, padding, position2D, zext_size, canvas_size);
         // zoxel_log("Is %i [%lu] valid: %s\n", i, (long int) children.value[i], ecs_is_valid(world, children.value[i]) ? "Yes" : "No");
     }
     ecs_modified(world, e, ZextData);

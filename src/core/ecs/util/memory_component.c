@@ -45,24 +45,6 @@ ECS_COPY(name, dst, src, {\
     }\
 })\
 
-/*  old copy
-    if (src->value) {\
-        if (!src->length) {\
-            dispose##_##name(dst);\
-            return;\
-        }\
-        if (dst->value) zoxel_log("    > copying to non blank space\n");\
-        if (dst->value) free(dst->value);\
-        int memory_length = src->length * sizeof(type);\
-        dst->length = src->length;\
-        dst->value = malloc(memory_length);\
-        if (dst->value != NULL) dst->value = memcpy(dst->value, src->value, memory_length);\
-        memorys_allocated++;\
-    } else if (dst->value) {\
-        dispose##_##name(dst);\
-    }\
-*/
-
 #define zox_define_memory_component2(name, ...)\
 zox_define_component(name)\
 ecs_set_hooks(world, name, {\
@@ -86,8 +68,6 @@ ecs_set_hooks(world, name, {\
 #define initialize_memory_component(component, data_type, _length) {\
     if (component->length != _length) {\
         component->length = _length;\
-        /*if (component->value) zoxel_log("   > error reinitializing memory component\n");*/\
-        /*if (component->value) free(component->value);*/\
         component->value = malloc(component->length * sizeof(data_type));\
         memorys_allocated++;\
     }\

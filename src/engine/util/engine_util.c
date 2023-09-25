@@ -4,7 +4,6 @@ int engine_begin(int argc, char* argv[]) {
 }
 
 void on_engine_end(ecs_world_t *world) {
-    // zoxel_log(" > node memory leak: %i\n", node_memory);
     close_core();
     #ifdef zoxel_voxels
         dispose_vox_files();

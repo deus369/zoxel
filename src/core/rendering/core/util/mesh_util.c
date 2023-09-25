@@ -12,6 +12,13 @@ void prefab_set_mesh2D_vertices(ecs_world_t *world, ecs_entity_t e, const float2
     ecs_modified(world, e, MeshVertices2D);
 }
 
+void prefab_set_mesh_uvs(ecs_world_t *world, ecs_entity_t e, const float2 uvs[], int length) {
+    MeshUVs *meshUVs = ecs_get_mut(world, e, MeshUVs);
+    initialize_memory_component(meshUVs, float2, length)
+    memcpy(meshUVs->value, uvs, length * sizeof(float2));
+    ecs_modified(world, e, MeshUVs);
+}
+
 void prefab_set_mesh3D_vertices(ecs_world_t *world, ecs_entity_t e, const float2 vertices[], int length, float2 scale) {
     MeshVertices *meshVertices = ecs_get_mut(world, e, MeshVertices);
     initialize_memory_component(meshVertices, float3, length)
@@ -24,14 +31,6 @@ void prefab_set_mesh_colors_rgb(ecs_world_t *world, ecs_entity_t e, color_rgb co
     initialize_memory_component(meshColorRGBs, color_rgb, length)
     for (int i = 0; i < length; i++) meshColorRGBs->value[i] = color;
     ecs_modified(world, e, MeshColorRGBs);
-}
-
-
-void prefab_set_mesh_uvs(ecs_world_t *world, ecs_entity_t e, const float2 uvs[], int length) {
-    MeshUVs *meshUVs = ecs_get_mut(world, e, MeshUVs);
-    initialize_memory_component(meshUVs, float2, length)
-    memcpy(meshUVs->value, uvs, length * sizeof(float2));
-    ecs_modified(world, e, MeshUVs);
 }
 
 void prefab_set_mesh_vertices(ecs_world_t *world, ecs_entity_t e, const float3 vertices[], int length) {

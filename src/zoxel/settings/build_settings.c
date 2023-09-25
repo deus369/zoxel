@@ -1,6 +1,7 @@
 // Here? select which zoxel modules I shall use?
 
 // #define voxels_disable_streaming
+// #define zoxel_disable_music
 
 // #define zox_disable_set_vox
 // module includes
@@ -153,7 +154,6 @@
 // #define zoxel_test_cubes_textured    // wip
 // #define zoxel_test_uis
 // -- disables --
-// #define zoxel_disable_music
 // #define disable_voxel_left
 // #define disable_voxel_right
 // #define disable_voxel_back

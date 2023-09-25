@@ -18,6 +18,9 @@ void add_ui_mesh_components(ecs_world_t *world, ecs_entity_t e) {
     add_gpu_instanced_material(world, e);
     add_gpu_texture(world, e);
     add_gpu_uvs(world, e);
+    zox_set(e, MeshIndicies, { 0, NULL })
+    zox_set(e, MeshVertices2D, { 0, NULL })
+    zox_set(e, MeshUVs, { 0, NULL })
     prefab_set_mesh_indicies(world, e, square_indicies, 6);
     prefab_set_mesh2D_vertices(world, e, square_vertices, 4);
     prefab_set_mesh_uvs(world, e, square_uvs, 4);
@@ -28,8 +31,8 @@ void add_ui_plus_components(ecs_world_t *world, ecs_entity_t e) {
     add_dirty(world, e);
     add_transform2Ds(world, e);
     add_texture(world, e, int2_zero, 0);
-    if (!headless) add_ui_mesh_components(world, e);
     add_ui_components(world, e);
+    if (!headless) add_ui_mesh_components(world, e);
 }
 
 void add_ui_plus_components_invisible(ecs_world_t *world, ecs_entity_t e) {

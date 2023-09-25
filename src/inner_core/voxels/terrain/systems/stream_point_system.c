@@ -7,7 +7,6 @@ void StreamPointSystem(ecs_iter_t *it) {
     #ifdef voxels_disable_streaming
         return;
     #endif
-    //unsigned char did_update = 0;
     ecs_world_t *world = it->world;
     ecs_query_t *chunks_query = it->ctx;
     ecs_iter_t chunks_iterator = ecs_query_iter(world, chunks_query);

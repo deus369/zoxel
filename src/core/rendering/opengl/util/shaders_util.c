@@ -1,5 +1,5 @@
 void clear_regular_buffer(GLuint *gpu_buffer) {
-    if (gpu_buffer != 0) {
+    if (gpu_buffer) {
         glDeleteBuffers(1, gpu_buffer);
         *gpu_buffer = 0;
     }

@@ -11,14 +11,12 @@ void spawn_zoxel_main_menu(ecs_world_t *world) {
         float2 main_menu_anchor = { 0.5f, 0.5f };
         int2 main_menu_position = int2_zero;
         zoxel_main_menu = spawn_main_menu(world, game_name, main_menu_position, main_menu_anchor, 0);
-
         #ifdef zoxel_debug_fps
             fps_display = spawn_fps_display(world, main_canvas);
         #endif
         #ifdef zoxel_debug_quads
             quads_label = spawn_quad_count_label(world, main_canvas);
         #endif
-        
         Children *children = ecs_get_mut(world, main_canvas, Children);
         initialize_memory_component(children, ecs_entity_t, 3)
         children->value[0] = zoxel_main_menu;

@@ -1,8 +1,9 @@
 extern int characters_count;
-// #define zox_debug_ui_characters
-// #define zox_debug_ui_device_mode
-// #define zox_debug_ui_node_memory
 #define zox_debug_ui_memorys_allocated
+// #define zox_debug_ui_characters
+// #define zox_debug_ui_node_memory
+#define zox_debug_ui_zexts
+// #define zox_debug_ui_device_mode
 extern int get_characters_count(ecs_world_t *world);
 
 void GameDebugLabelSystem(ecs_iter_t *it) {
@@ -15,31 +16,33 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         ZextDirty *zextDirty = &zextDirtys[i];
         ZextData *zextData = &zextDatas[i];
-        // int buffer_index = 0;
-        char buffer[32];
+        int buffer_index = 0;
+        char buffer[256];
         // test this \n
         // snprintf(buffer, sizeof(buffer), "debug ui\nline 2");
-        // buffer_index += strlen("debug ui");
+        buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[db]");
         #ifdef zox_debug_ui_memorys_allocated
-            snprintf(buffer, sizeof(buffer), "memorys [%i]", memorys_allocated);
-        #endif
-        #ifdef zox_debug_ui_node_memory
-            snprintf(buffer, sizeof(buffer), "node memory [%i]", node_memory);
+            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " memorys [%i]", memorys_allocated);
         #endif
         #ifdef zox_debug_ui_characters
-            // snprintf(buffer, sizeof(buffer), "characters [%i]", characters_count);
-            snprintf(buffer, sizeof(buffer), "characters [%i]", get_characters_count(it->world));
+            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " characters [%i]", get_characters_count(it->world));
+        #endif
+        #ifdef zox_debug_ui_zexts
+            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " zexts [%i]", get_zexts_count(it->world));
+            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " zigels [%i]", get_zigels_count(it->world));
+        #endif
+        #ifdef zox_debug_ui_node_memory
+            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " node memory [%i]", node_memory);
         #endif
         #ifdef zox_debug_ui_device_mode
             if (deviceMode->value == zox_device_mode_none) {
-                snprintf(buffer + buffer_index, sizeof(buffer), "[none]");
+                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " d [none]");
             } else if (deviceMode->value == zox_device_mode_keyboardmouse) {
-                snprintf(buffer + buffer_index, sizeof(buffer), "[keyboard]");
+                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " d [keyboard]");
             } else if (deviceMode->value == zox_device_mode_gamepad) {
-                snprintf(buffer + buffer_index, sizeof(buffer), "[gamepad]");
+                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " d [gamepad]");
             } else if (deviceMode->value == zox_device_mode_touchscreen) {
-                // snprintf(buffer, sizeof(buffer), "[touchscreen %i]", finger_id);
-                snprintf(buffer + buffer_index, sizeof(buffer), "[touchscreen]");
+                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " d [touchscreen]");
             }
         #endif
         if (!is_zext(zextData, buffer)) {

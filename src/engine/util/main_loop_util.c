@@ -10,6 +10,12 @@ void engine_end() {
     #endif
 }
 
+void handle_segfault(int sig) {
+    zoxel_log(" > segfault detected [%i]\n", sig);
+    on_engine_end(world);
+    exit(0);
+}
+
 void handle_terminal_close(int sig) {
     zoxel_log(" > terminal close detected [control + c]\n");
     engine_end();
@@ -20,6 +26,7 @@ void engine_loop() {
         emscripten_set_main_loop(&engine_update, -1, 1); // old - 60, 1);
     #else
         signal(SIGINT, handle_terminal_close);     // Handles closing from control + c
+        signal(SIGSEGV, handle_segfault);
         while (running) engine_update();
     #endif
 }
