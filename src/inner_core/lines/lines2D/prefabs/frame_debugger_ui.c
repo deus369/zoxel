@@ -2,11 +2,8 @@ ecs_entity_t prefab_frame_debugger_ui;
 ecs_entity_t frame_debugger_ui;
 
 ecs_entity_t spawn_prefab_frame_debugger_ui(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab_child(prefab_window)
     zox_prefab_name("prefab_frame_debugger_ui")
-    // zox_add_tag(e, MainMenu)
-    ecs_defer_end(world);
     prefab_frame_debugger_ui = e;
     return e;
 }

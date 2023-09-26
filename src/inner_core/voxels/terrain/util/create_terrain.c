@@ -1,9 +1,8 @@
 int get_chunk_index(int i, int j, int rows) {
     return (i + rows + 1) * (rows + rows + 1) + (j + rows + 1);
 }
-
 // vertical_rows + vertical_rows +  - rows + rows + 1
-int get_terrain_chunks_count(int rows, int slabs) {
+int calculate_terrain_chunks_count(int rows, int slabs) {
     return (slabs + slabs + 1) * (rows + rows + 1) * (rows + rows + 1);
 }
 
@@ -25,7 +24,7 @@ ecs_entity_t create_terrain(ecs_world_t *world, int3 center_position) {
         terrain_vertical = 0;
     #endif
     ecs_entity_t tilemap = spawn_tilemap(world);
-    int chunks_total_length = get_terrain_chunks_count(terrain_spawn_distance, terrain_vertical);
+    int chunks_total_length = calculate_terrain_chunks_count(terrain_spawn_distance, terrain_vertical);
     ecs_entity_t terrain_world = spawn_terrain(world, prefab_terrain, tilemap, float3_zero, 1.0f);  // todo link world to chunks and vice versa
     ecs_entity_t chunks[chunks_total_length];
     int3 chunk_positions[chunks_total_length];

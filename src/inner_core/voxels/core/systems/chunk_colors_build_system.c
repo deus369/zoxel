@@ -1,4 +1,4 @@
-// colorRGBs version
+extern float3 calculate_vox_bounds(int3 chunk_size);
 const unsigned char voxel_color_rand = 8;
 const unsigned char voxel_color_rand2 = 16;
 
@@ -100,18 +100,16 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
             }
         }
     }
-    if (meshIndicies->length != 0) free(meshIndicies->value);
+    clear_memory_component(meshIndicies);
+    clear_memory_component(meshVertices);
+    clear_memory_component(meshColorRGBs);
     meshIndicies->length = indicies->size;
-    meshIndicies->value = finalize_int_array_d(indicies);
-    if (meshVertices->length != 0) free(meshVertices->value);
     meshVertices->length = vertices->size;
-    meshVertices->value = finalize_float3_array_d(vertices);
-    if (meshColorRGBs->length != 0) free(meshColorRGBs->value);
     meshColorRGBs->length = color_rgbs->size;
+    meshIndicies->value = finalize_int_array_d(indicies);
+    meshVertices->value = finalize_float3_array_d(vertices);
     meshColorRGBs->value = finalize_color_rgb_array_d(color_rgbs);
 }
-
-extern float3 calculate_vox_bounds(int3 chunk_size);
 
 void ChunkColorsBuildSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(it->ctx, NULL)) return;
@@ -153,9 +151,3 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         end_timing("    - chunk_colors_builds_system")
     #endif
 } zox_declare_system(ChunkColorsBuildSystem)
-
-//float3 total_mesh_offset = (float3) { -0.5f * chunkSize->value.x * model_scale,
-//    -0.5f * chunkSize->value.y * model_scale, -0.5f * chunkSize->value.z * model_scale };
-//float3 total_mesh_offset = float3_from_int3(chunkSize->value);
-//float3_multiply_float_p(&total_mesh_offset, -0.5f * model_scale);
-// zoxel_log(" > total_mesh_offset.y %f\n", total_mesh_offset.y);

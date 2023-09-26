@@ -17,10 +17,9 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
     zox_set(e, OutlineThickness, { 3 })
     zox_set(e, Children, { 0, NULL })
     add_ui_plus_components(world, e);
-    // add_ui_mesh_components(world, e);
     header_prefab = e;
     #ifdef zoxel_debug_prefabs
-        zoxel_log(" > spawn_prefab header [%lu].\n", (long int) (e));
+        zox_log(" > spawn_prefab header [%lu].\n", (long int) (e))
     #endif
     return e;
 }
@@ -50,7 +49,7 @@ ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, int2 position
     }
     ecs_modified(world, e, Children);
     #ifdef zoxel_debug_spawns
-        printf("Spawned header [%lu]\n", (long int) e);
+        zox_log("    > spawned header [%lu]\n", (long int) e)
     #endif
     return e;
 }

@@ -6,12 +6,13 @@ void FpsDisplaySystem(ecs_iter_t *it) {
     ZextData *zextDatas = ecs_field(it, ZextData, 3);
     unsigned char changed = 0;   //! Skip changes if isn't updated.
     for (int i = 0; i < it->count; i++) {
+        ZextDirty *zextDirty = &zextDirtys[i];
+        if (zextDirty->value) continue;
         FPSDisplayTicker *fpsDisplayTicker = &fpsDisplayTickers[i];
         fpsDisplayTicker->value -= delta_time;
         if (fpsDisplayTicker->value <= 0.0) {
             changed = 1;
             // printf("Checking FPS Ticker Ticked.\n");
-            ZextDirty *zextDirty = &zextDirtys[i];
             zextDirty->value = 1;
             fpsDisplayTicker->value += frame_rate_update_speed;
             if (fpsDisplayTicker->value <= -frame_rate_update_speed) fpsDisplayTicker->value = 0;

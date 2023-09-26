@@ -20,6 +20,7 @@ void dispose##_##name(name *ptr) {\
     free(ptr->value);\
     zero##_##name(ptr);\
     memorys_allocated--;\
+    /*zox_logg("      memorys decreased (disposed)\n")*/\
 }\
 ECS_CTOR(name, ptr, { zero##_##name(ptr); })\
 ECS_DTOR(name, ptr, { dispose##_##name(ptr); })\
@@ -37,9 +38,9 @@ ECS_COPY(name, dst, src, {\
     if (!src->value) {\
         dispose##_##name(dst);\
     } else {\
+        int memory_length = src->length * sizeof(type);\
         if (dst->value) dispose##_##name(dst);\
         dst->length = src->length;\
-        int memory_length = src->length * sizeof(type);\
         dst->value = memcpy(malloc(memory_length), src->value, memory_length);\
         memorys_allocated++;\
     }\
@@ -57,29 +58,36 @@ ecs_set_hooks(world, name, {\
 #define zox_define_memory_component(name) zox_define_memory_component2(name, [out] name)
 
 #define clear_memory_component(component) {\
-    if (component->length) {\
+    if (component->value) {\
         free(component->value);\
         component->value = NULL;\
         component->length = 0;\
         memorys_allocated--;\
+        /*zox_logg("      memorys decreased (clear_memory)\n")*/\
     }\
 }
 
 #define initialize_memory_component(component, data_type, _length) {\
     if (component->length != _length) {\
-        component->length = _length;\
-        component->value = malloc(component->length * sizeof(data_type));\
-        memorys_allocated++;\
+        if (_length == 0) {\
+            clear_memory_component(component);\
+        } else {\
+            component->length = _length;\
+            component->value = malloc(component->length * sizeof(data_type));\
+            memorys_allocated++;\
+        }\
     }\
 }
 
-#define re_initialize_memory_component(component, data_type, length_) {\
-    if (component->length != length_) {\
-        if (!component->length) {\
-            initialize_memory_component(component, data_type, length_);\
-        } else {\
-            component->length = length_;\
+#define re_initialize_memory_component(component, data_type, _length) {\
+    if (component->length != _length) {\
+        if (_length == 0) {\
+            clear_memory_component(component);\
+        } else if (component->value) {\
+            component->length = _length;\
             component->value = realloc(component->value, component->length * sizeof(data_type));\
+        } else {\
+            initialize_memory_component(component, data_type, _length);\
         }\
     }\
 }
@@ -120,20 +128,7 @@ ecs_set_hooks(world, name, {\
     }\
 }
 
-/*
-
-#define initialize_memory_component_non_pointer(component, data_type, length_) {\
-    component.length = length_;\
-    component.value = (data_type*) malloc(length_ * sizeof(data_type));\
-}
-
-#define re_initialize_memory_component_no_free(component, data_type, length_) {\
-    if (component->length != length_) {\
-        component->length = length_;\
-        component->value = (data_type*) malloc(length_ * sizeof(data_type));\
-    }\
-}
-*/
+// if (ptr->value) { zox_logg("      memorys decreased (dtor)\n") } 
 
 /*void on_destroyed##_##name(ecs_iter_t *it) {\
     name *components = ecs_field(it, name, 1);\

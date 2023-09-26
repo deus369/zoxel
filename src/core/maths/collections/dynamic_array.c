@@ -39,23 +39,21 @@ void add_block_to##_##data_type##_##array_d(data_type##_##array_d* dynamic_array
 }\
 \
 void expand_capacity##_##data_type##_##array_d(data_type##_##array_d* dynamic_array, int add_count) {\
-    size_t required_capacity = dynamic_array->size + add_count; \
-    if (required_capacity > dynamic_array->capacity) { \
+    size_t required_capacity = dynamic_array->size + add_count;\
+    if (required_capacity > dynamic_array->capacity) {\
         dynamic_array->capacity *= 2;\
         dynamic_array->data = realloc(dynamic_array->data, dynamic_array->capacity * sizeof(data_type));\
     }\
 }\
 \
 void add_block_to##_##data_type##_##array_d2(data_type##_##array_d* dynamic_array, const data_type block[], unsigned char length) {\
-    size_t required_capacity = dynamic_array->size + length; \
-    if (required_capacity > dynamic_array->capacity) { \
+    size_t required_capacity = dynamic_array->size + length;\
+    if (required_capacity > dynamic_array->capacity) {\
         dynamic_array->capacity *= 2;\
         dynamic_array->data = realloc(dynamic_array->data, dynamic_array->capacity * sizeof(data_type));\
     }\
-    memcpy(dynamic_array->data + dynamic_array->size, block, length * sizeof(data_type)); \
-    for (unsigned char i = 0; i < length; i++) { \
-        dynamic_array->data[dynamic_array->size + i] = block[i]; \
-    } \
+    memcpy(dynamic_array->data + dynamic_array->size, block, length * sizeof(data_type));\
+    for (unsigned char i = 0; i < length; i++) dynamic_array->data[dynamic_array->size + i] = block[i];\
     dynamic_array->size += length; \
 }\
 \
@@ -65,11 +63,14 @@ data_type* finalize##_##data_type##_##array_d(data_type##_##array_d* dynamic_arr
         return NULL;\
     } else if (dynamic_array->size == dynamic_array->capacity) {\
         data_type* data = dynamic_array->data;\
+        memorys_allocated++;\
         free(dynamic_array);\
         return data;\
     } else {\
+        /* realloc also deallocates previous memory */\
         data_type* new_data = realloc(dynamic_array->data, dynamic_array->size * sizeof(data_type));\
         free(dynamic_array);\
+        memorys_allocated++;\
         return new_data;\
     }\
 }

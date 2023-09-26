@@ -13,6 +13,7 @@ void SoundUpdateSystem(ecs_iter_t *it) {
         sdlSound->value->volume = 128;
         sdlSound->value->allocated = 1;
         sdlSound->value->alen = soundData->length * 4;
+        // maybe just set thisi to sound value, no need copy memory data
         sdlSound->value->abuf = (Uint8*) malloc(soundData->length * 4 * sizeof(Uint8));
         memcpy(sdlSound->value->abuf, soundData->value, sdlSound->value->alen);
         soundDirty->value = 0;

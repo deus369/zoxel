@@ -97,8 +97,7 @@ unsigned char convert_ascii(char input) {
 unsigned char* convert_from_ascii_text_at(const char *input, unsigned char start_buffer) {
     unsigned char length = start_buffer + strlen(input);
     unsigned char *output = malloc(length);
-    for (unsigned char i = start_buffer; i < length; i++)
-    {
+    for (unsigned char i = start_buffer; i < length; i++) {
         unsigned char input_index = i - start_buffer;
         output[i] = convert_ascii(input[input_index]);
         // printf("Converting Ascii to byte: %i : %i : %c\n", i, output[i], input[input_index]);

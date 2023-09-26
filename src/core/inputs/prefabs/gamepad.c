@@ -13,11 +13,10 @@ ecs_entity_t spawn_prefab_gamepad(ecs_world_t *world) {
     zox_add_tag(e, Gamepad)
     zox_set(e, DeviceLayout, { 0 })
     zox_set(e, Children, { 0, NULL })
-    // zox_set(e, Gamepad, gamepad_zero)
     ecs_defer_end(world);
     prefab_gamepad = e;
     #ifdef zoxel_debug_prefabs
-        zoxel_log(" > spawn_prefab gamepad [%lu].\n", (long int) (e));
+        zox_log(" > spawn_prefab gamepad [%lu].\n", e)
     #endif
     return e;
 }
@@ -26,8 +25,6 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, unsigned char gamepad_type) {
     zox_instance(prefab_gamepad)
     zox_name("gamepad")
     zox_set_only(e, DeviceLayout, { gamepad_type })
-    // zoxel_log("gamepad_type [%i]\n", gamepad_type);
-    //Children children = { };
     Children *children = ecs_get_mut(world, e, Children);
     initialize_memory_component(children, ecs_entity_t, 16)
     for (unsigned char i = 0; i < 14; i++) {
@@ -65,7 +62,7 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, unsigned char gamepad_type) {
     ecs_modified(world, e, Children);
     gamepad_entity = e;
     #ifdef zoxel_debug_spawns
-        zoxel_log(" > spawned gamepad [%lu].\n", (long int) (e));
+        zox_log(" > spawned gamepad [%lu].\n", e)
     #endif
     return e;
 }
@@ -93,39 +90,3 @@ unsigned char gamepad_is_any_input(ecs_world_t *world, ecs_entity_t gamepad) {
     }
     return 0;
 }
-
-/*ZeviceButton *zeviceButton = ecs_get_mut(world, e, ZeviceButton);
-reset_device_button(zeviceButton);
-ecs_modified(world, e, ZeviceButton);*/
-/*if (ecs_has(world, e, ZeviceStick)) {
-    // zoxel_log(" > device stick found [%i] %lu\n", i, e);
-    ZeviceStick *zeviceStick = ecs_get_mut(world, e, ZeviceStick);
-    if (set_gamepad_axis2(zeviceStick, joystick, realButtonIndex->value)) ecs_modified(world, e, ZeviceStick);
-    // if (ecs_has(world, e, ZeviceButton)) zoxel_log("    ! error with device stick, contains device button data[%i]\n", e);
-} else */
-    /*
-        set_gamepad_button(&gamepad->a, joystick, 0);
-        set_gamepad_button(&gamepad->b, joystick, 1);
-        set_gamepad_button(&gamepad->x, joystick, 2);
-        set_gamepad_button(&gamepad->y, joystick, 3);
-        set_gamepad_button(&gamepad->lb, joystick, 4);
-        set_gamepad_button(&gamepad->rb, joystick, 5);
-        set_gamepad_button(&gamepad->select, joystick, 6);
-        set_gamepad_button(&gamepad->start, joystick, 7);
-        set_gamepad_button(&gamepad->left_stick_push, joystick, 9);
-        set_gamepad_button(&gamepad->right_stick_push, joystick, 10);
-        set_gamepad_button(&gamepad->lt, joystick, 11);
-        set_gamepad_button(&gamepad->rt, joystick, 12);
-    */
-
-/*void device_reset_gamepad(ecs_world_t *world, ecs_entity_t gamepad) {
-    if (!gamepad || !ecs_is_alive(world, gamepad)) return;
-    const Children *children = ecs_get(world, gamepad, Children);
-    for (int i = 0; i < children->length; i++) {
-        ecs_entity_t e = children->value[i];
-        if (ecs_has(world, e, ZeviceButton)) {
-            ZeviceButton *zeviceButton = ecs_get_mut(world, e, ZeviceButton);
-            if (reset_device_button(zeviceButton)) ecs_modified(world, e, ZeviceButton);
-        }
-    }
-}*/

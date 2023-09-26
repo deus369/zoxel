@@ -1,10 +1,13 @@
-extern int characters_count;
+// extern int characters_count;
 #define zox_debug_ui_memorys_allocated
 // #define zox_debug_ui_characters
+// #define zox_debug_ui_terrain_chunks
 // #define zox_debug_ui_node_memory
-#define zox_debug_ui_zexts
+// #define zox_debug_ui_zexts
 // #define zox_debug_ui_device_mode
+extern int get_terrain_chunks_count(ecs_world_t *world);
 extern int get_characters_count(ecs_world_t *world);
+// todo: sometimes it removes a memorys when spawning/unspawning this label
 
 void GameDebugLabelSystem(ecs_iter_t *it) {
     if (main_player == 0) return;
@@ -15,14 +18,18 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
     ZextData *zextDatas = ecs_field(it, ZextData, 3);
     for (int i = 0; i < it->count; i++) {
         ZextDirty *zextDirty = &zextDirtys[i];
+        if (zextDirty->value) continue;
         ZextData *zextData = &zextDatas[i];
         int buffer_index = 0;
-        char buffer[256];
+        char buffer[200];
         // test this \n
         // snprintf(buffer, sizeof(buffer), "debug ui\nline 2");
-        buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[db]");
+        buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[debug]");
         #ifdef zox_debug_ui_memorys_allocated
             buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " memorys [%i]", memorys_allocated);
+        #endif
+        #ifdef zox_debug_ui_terrain_chunks
+            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " terrain [%i]", get_terrain_chunks_count(it->world));
         #endif
         #ifdef zox_debug_ui_characters
             buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " characters [%i]", get_characters_count(it->world));
@@ -48,6 +55,7 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         if (!is_zext(zextData, buffer)) {
             set_zext(zextData, buffer);
             zextDirty->value = 1;
+            zoxel_log(" > %s\n", buffer);
         }
     }
 } zox_declare_system(GameDebugLabelSystem)

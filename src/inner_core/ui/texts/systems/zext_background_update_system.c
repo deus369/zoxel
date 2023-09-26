@@ -13,7 +13,7 @@ void ZextBackgroundUpdateSystem(ecs_iter_t *it) {
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 12);
     for (int i = 0; i < it->count; i++) {
         const ZextDirty *zextDirty = &zextDirtys[i];
-        if (zextDirty->value != 1) continue;
+        if (!zextDirty->value) continue;
         const ZextData *zextData = &zextDatas[i];
         const ZextSize *zextSize = &zextSizes[i];
         const ZextPadding *zextPadding = &zextPaddings[i];

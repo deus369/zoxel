@@ -7,7 +7,7 @@ void TerrainTextureSetSystem(ecs_iter_t *it) {
     TextureLinks *textureLinkss = ecs_field(it, TextureLinks, 4);
     for (int i = 0; i < it->count; i++) {
         GenerateTexture *generateTexture = &generateTextures[i];
-        if (generateTexture->value == 0) continue;
+        if (generateTexture->value != 1) continue;
         TilemapSize *tilemapSize = &tilemapSizes[i];
         TextureLinks *textureLinks = &textureLinkss[i];
         // set first voxel texture for now
@@ -15,13 +15,14 @@ void TerrainTextureSetSystem(ecs_iter_t *it) {
         // zoxel_log(" + tilemap length %i\n", tilemap_length);
         tilemapSize->value.x = tilemap_length;
         tilemapSize->value.y = tilemap_length;
-        initialize_memory_component(textureLinks, ecs_entity_t, voxelLinks->length)
+        re_initialize_memory_component(textureLinks, ecs_entity_t, voxelLinks->length)
         for (int j = 0; j < voxelLinks->length; j++) {
             ecs_entity_t voxel_entity = voxelLinks->value[j];
             const TextureLinks *voxel_texture_links = ecs_get(it->world, voxel_entity, TextureLinks);
             if (voxel_texture_links->length > 0) textureLinks->value[j] = voxel_texture_links->value[0];
             //zoxel_log("     > voxel_texture_set [%lu] [%lu]\n", voxel_entity, textureLinks->value[j]);
         }
+        generateTexture->value = 2;
         // zoxel_log("    > tilemap textures linked [%lu] - count [%i]\n", it->entities[i], voxelLinks->length);
     }
 } zox_declare_system(TerrainTextureSetSystem)

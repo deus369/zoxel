@@ -1,7 +1,10 @@
 // Here? select which zoxel modules I shall use?
 
+#define zoxel_disable_music
+// #define zox_disable_player_character3D
+// #define zox_disable_characters3D
 // #define voxels_disable_streaming
-// #define zoxel_disable_music
+// #define zox_extra_destroy_terrain_children
 
 // #define zox_disable_set_vox
 // module includes
@@ -11,7 +14,6 @@
 #define zox_on_play_spawn_terrain
 // #define zox_bulk_spawn_terrain
 
-// #define zox_extra_destroy_terrain_children
 
 // #define zox_disable_set_vox
 
@@ -58,7 +60,6 @@
 
 // #define zox_errorcheck_render_characters_3D
 // #define zox_debug_color_shader
-// #define zox_disable_characters3D
 
 // #define zox_print_sdl                       // debugs sdl app
 // #define zoxel_debug_opengl                  // debugs opengl

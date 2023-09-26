@@ -69,7 +69,7 @@ zox_filter(fonts, [none] FontTexture, [out] GenerateTexture)
 zox_system(AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
 zox_system_ctx(FontTextureSystem, EcsPostUpdate, fonts, [none] FontTexture, [out] TextureDirty, [out] TextureData, [in] TextureSize, [out] GenerateTexture, [in] ZigelIndex, [in] Color)
 if (!headless) zox_system(ZextBackgroundUpdateSystem, EcsPostUpdate, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] MeshAlignment, [in] CanvasLink, [out] PixelSize, [out] TextureSize, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshDirty)
-zox_system_ctx_1(ZextUpdateSystem, main_thread_pipeline, zexts, [none] Zext, [out] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] Position2D, [in] PixelSize, [in] MeshAlignment, [out] Children)
+zox_system_ctx_1(ZextUpdateSystem, main_thread_pipeline, zexts, [none] Zext, [out] ZextDirty, [out] Children, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] Position2D, [in] PixelSize, [in] MeshAlignment)
 zoxel_end_module(Texts)
 
 // \todo Display a UI Element anchored, with a pixel position.

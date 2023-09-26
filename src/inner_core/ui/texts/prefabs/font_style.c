@@ -3,15 +3,15 @@ ecs_entity_t font_style_entity;
 const int fonts_used = 74;
 const int font_styles_length = 256;
 
-//! meta data for a font character
 ecs_entity_t spawn_font_style_prefab(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab()
     zox_prefab_name("prefab_font_style")
     zox_add_tag(e, FontStyle);
     zox_add(e, Children);
-    ecs_defer_end(world);
     font_style_prefab = e;
+    #ifdef zoxel_debug_prefabs
+        zoxel_log(" > spawn_prefab font_style [%lu].\n", (long int) (e));
+    #endif
     return e;
 }
 

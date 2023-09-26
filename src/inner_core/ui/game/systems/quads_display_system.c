@@ -19,6 +19,5 @@ void QuadsLabelSystem(ecs_iter_t *it) {
     }
     if (!has_set) {
         ecs_query_skip(it);
-        // free(buffer);
     }
 } zox_declare_system(QuadsLabelSystem)

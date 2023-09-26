@@ -29,7 +29,7 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
     TilemapUVs *tilemapUVss = ecs_field(it, TilemapUVs, 8);
     for (int i = 0; i < it->count; i++) {
         GenerateTexture *generateTexture = &generateTextures[i];
-        if (!generateTexture->value) continue;
+        if (generateTexture->value != 2) continue;
         TextureDirty *textureDirty = &textureDirtys[i];
         if (textureDirty->value) continue;
         const TextureLinks *textureLinks = &textureLinkss[i];
@@ -43,7 +43,6 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         TilemapUVs *tilemapUVs = &tilemapUVss[i];
         float tile_size = 1.0f / ((float) tilemapSize->value.x);
         // generate textureSize based on TilemapSize
-
         const TextureSize *first_texture_size = ecs_get(world, textureLinks->value[0], TextureSize);
         textureSize->value.x = tilemapSize->value.x * first_texture_size->value.x;
         textureSize->value.y = tilemapSize->value.y * first_texture_size->value.y;

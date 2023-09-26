@@ -61,25 +61,28 @@ void end_game(ecs_world_t *world) {
                 int3_hash_map_pair* pair = chunkLinks->value->data[i];
                 while (pair != NULL) {
                     ecs_entity_t terrain_chunk = pair->value;
-                    ChunkOctree *chunkOctree = ecs_get_mut(world, terrain_chunk, ChunkOctree);
-                    close_ChunkOctree(chunkOctree);
-                    ecs_modified(world, terrain_chunk, ChunkOctree);
+                    // ChunkOctree *chunkOctree = ecs_get_mut(world, terrain_chunk, ChunkOctree);
+                    // close_ChunkOctree(chunkOctree);
+                    // ecs_modified(world, terrain_chunk, ChunkOctree);
                     const EntityLinks *entityLinks = ecs_get(world, terrain_chunk, EntityLinks);
                     for (int j = 0; j < entityLinks->length; j++) {
                         ecs_entity_t character_entity = entityLinks->value[j];
-                        ChunkOctree *chunkOctree2 = ecs_get_mut(world, character_entity, ChunkOctree);
+                        /*ChunkOctree *chunkOctree2 = ecs_get_mut(world, character_entity, ChunkOctree);
                         close_ChunkOctree(chunkOctree2);
-                        ecs_modified(world, character_entity, ChunkOctree);
+                        ecs_modified(world, character_entity, ChunkOctree);*/
                         zox_delete(character_entity)
                     }
-                    zox_delete(terrain_chunk)
+                    // zox_delete(terrain_chunk)
                     pair = pair->next;
                 }
             }
         #endif
-        // delete terrain
         // this should delete all chunks
-        // which should delete all 
+        // which should delete all
+        // delete this when terrain dies
+        const TilemapLink *tilemapLink = ecs_get(world, local_terrain, TilemapLink);
+        zox_delete(tilemapLink->value)
+        // delete terrain
         zox_delete(local_terrain)
     #endif
     local_character3D = 0;
@@ -108,7 +111,9 @@ void play_game(ecs_world_t *world) {
         zox_set_only(main_camera, VoxLink, { local_terrain })
         zox_set_only(local_terrain, RealmLink, { local_realm })
     }
-    #if defined(zoxel_include_players)
+    #ifdef zox_disable_player_character3D
+        attach_to_character(world, main_player, main_camera, 0);
+    #else
         if (game_rule_attach_to_character) {
             float3 spawn_position = ecs_get(world, main_camera, Position3D)->value;
             spawn_position.x = 8;

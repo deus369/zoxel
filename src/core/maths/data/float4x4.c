@@ -1,4 +1,3 @@
-//! A basic x2 building block.
 typedef struct {
     float4 x;
     float4 y;
@@ -7,7 +6,7 @@ typedef struct {
 } float4x4;
 
 float4x4 float4x4_zero() {
-    float4x4 identity; // = malloc(16 * 4);
+    float4x4 identity;
     float* identity2 = (float*) &identity;
     for (int i = 0; i < 16; i++) {
         identity2[i] = 0;

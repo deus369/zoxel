@@ -25,6 +25,10 @@ zox_component(StreamPoint, int3)
 #include "octree_systems/terrain_chunks_render_system.c"
 #include "util/create_terrain.c"
 
+int get_terrain_chunks_count(ecs_world_t *world) {
+    return zox_count_entities(world, ecs_id(TerrainChunk));
+}
+
 void spawn_prefabs_terrain(ecs_world_t *world) {
     spawn_prefab_terrain(world);
     int3 terrain_chunk_size = { default_chunk_length, 8 * default_chunk_length, default_chunk_length };
