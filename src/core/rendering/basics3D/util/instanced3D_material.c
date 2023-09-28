@@ -54,10 +54,7 @@ void render_entity_3D(float3 position, float4 rotation, float scale1D, float bri
     opengl_render(6);
 }
 
-//! Set the mesh on the gpu by uploading indicies and vert buffers.
 void opengl_upload_mesh(GLuint2 mesh, GLuint material, const int *indicies, int indicies_length, const float3 *verts, int verts_length) {
-    // tri_count += indicies_length / 3;
-    // zoxel_log("opengl_upload_mesh - adding tris\n");
     Material3D material3D = spawn_material3D_properties(material);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);
     glBindBuffer(GL_ARRAY_BUFFER, mesh.y);

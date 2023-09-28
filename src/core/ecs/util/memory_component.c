@@ -1,11 +1,7 @@
+// todo: catch these going up and down, we loose 200ish on end game
+// todo: mesh indicies also, catch that
 int memorys_allocated = 0;
 
-// an array of a single data type
-// uses:
-//      ECS_CTOR The constructor should initialize the component value
-//      ECS_DTOR The destructor should free resources
-//      ECS_MOVE Copy a pointer from one component to another
-//      ECS_COPY Copy one data block to another
 #define zox_memory_component(name, type)\
 typedef struct {\
     int length;\
@@ -20,18 +16,14 @@ void dispose##_##name(name *ptr) {\
     free(ptr->value);\
     zero##_##name(ptr);\
     memorys_allocated--;\
-    /*zox_logg("      memorys decreased (disposed)\n")*/\
 }\
 ECS_CTOR(name, ptr, { zero##_##name(ptr); })\
 ECS_DTOR(name, ptr, { dispose##_##name(ptr); })\
 ECS_MOVE(name, dst, src, {\
     if (dst->value == src->value) return;\
-    /* clear dst first */\
     dispose##_##name(dst);\
-    /* copy src contents to dst */\
     dst->length = src->length;\
     dst->value = src->value;\
-    /* lastly clear src */\
     zero##_##name(src);\
 })\
 ECS_COPY(name, dst, src, {\
@@ -54,7 +46,6 @@ ecs_set_hooks(world, name, {\
     .copy = ecs_copy(name),\
     .dtor = ecs_dtor(name)\
 });
-
 #define zox_define_memory_component(name) zox_define_memory_component2(name, [out] name)
 
 #define clear_memory_component(component) {\
@@ -143,3 +134,11 @@ ecs_set_hooks(world, name, {\
     .callback = on_destroyed##_##name,\
     .events = { EcsOnRemove },\
 });*/
+
+
+// an array of a single data type
+// uses:
+//      ECS_CTOR The constructor should initialize the component value
+//      ECS_DTOR The destructor should free resources
+//      ECS_MOVE Copy a pointer from one component to another
+//      ECS_COPY Copy one data block to another

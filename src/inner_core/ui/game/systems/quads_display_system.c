@@ -6,18 +6,16 @@ void QuadsLabelSystem(ecs_iter_t *it) {
     ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 3);
     ZextData *zextDatas = ecs_field(it, ZextData, 4);
     for (int i = 0; i < it->count; i++) {
-        if (quadsCount->value == tri_count) continue;
+        if (quadsCount->value == triangles_count) continue;
         ZextDirty *zextDirty = &zextDirtys[i];
         ZextData *zextData = &zextDatas[i];
-        quadsCount->value = tri_count;
+        quadsCount->value = triangles_count;
         if (!has_set) {
             has_set = 1;
-            snprintf(buffer, sizeof(buffer), "Triangles %i", tri_count);
+            snprintf(buffer, sizeof(buffer), "triangles [%i]", triangles_count);
         }
         set_zext(zextData, buffer);
         zextDirty->value = 1;
     }
-    if (!has_set) {
-        ecs_query_skip(it);
-    }
+    if (!has_set) ecs_query_skip(it);
 } zox_declare_system(QuadsLabelSystem)

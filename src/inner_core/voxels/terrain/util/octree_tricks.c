@@ -1,20 +1,4 @@
-const int terrain_lod_dividor = 3;
 
-unsigned char get_terrain_lod_from_camera_distance(unsigned char distance_to_camera) {
-    unsigned char lod;
-    #ifdef zoxel_voxel_disable_distance_division
-        lod = max_octree_depth;
-    #else
-        if (distance_to_camera <= initial_terrain_lod) lod = max_octree_depth;
-        else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor) lod = max_octree_depth - 1;
-        else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 2) lod = max_octree_depth - 2;
-        else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 3) lod = max_octree_depth - 3;
-        else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 4) lod = max_octree_depth - 4;
-        else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 5) lod = 0;
-        else lod = 255;
-    #endif
-    return lod;
-}
 
 // zoxel_log("Found at depth: %i\n", depth);
 // printf(" > going down at [%i]: %ix%ix%i\n", depth, position->x, position->y, position->z);
@@ -35,7 +19,7 @@ if (int3_equals(node_position, local_position)) {
     return get_octree_voxel(&node->nodes[i], new_position, depth - 1);
 }
 }*/
-/*unsigned char depth_addition = distance_to_camera / lod_division_dividor;
+/*unsigned char depth_addition = distance_to_camera / terrain_lod_dividor;
 unsigned char lod;
 if (depth_addition < initial_terrain_lod) {
     lod = max_octree_depth;

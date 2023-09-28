@@ -100,13 +100,14 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
             }
         }
     }
-    clear_memory_component(meshIndicies);
-    clear_memory_component(meshVertices);
-    clear_memory_component(meshColorRGBs);
+    //clear_memory_component(meshIndicies);
+    //clear_memory_component(meshVertices);
+    //clear_memory_component(meshColorRGBs);
+    clear_mesh(meshIndicies, meshVertices, meshColorRGBs);
     meshIndicies->length = indicies->size;
     meshVertices->length = vertices->size;
     meshColorRGBs->length = color_rgbs->size;
-    meshIndicies->value = finalize_int_array_d(indicies);
+    meshIndicies->value = finalize_int_array_d2(indicies);
     meshVertices->value = finalize_float3_array_d(vertices);
     meshColorRGBs->value = finalize_color_rgb_array_d(color_rgbs);
 }

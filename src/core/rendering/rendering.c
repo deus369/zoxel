@@ -6,7 +6,6 @@
 // todo: remove core functions into rendering outer core, make core all the extra data i've got in here
 
 // zoxel_settings
-int tri_count = 0;
 unsigned char is_render_fog = 1;
 float3 fog_color = (float3) { 0.5f, 0.55f, 0.58f };
 float fog_density = 0.0326f;
@@ -18,7 +17,6 @@ float get_fog_density() {
 // todo: replace this with a render stack, which can easily be used in a camera_render_system
 //      > it can also be sorted better for z issues on translucent materials
 float4x4 render_camera_matrix; 
-// float4x4 ui_camera_matrix; 
 // zoxel_declare_components
 // todo: move these to 'core', make core load despite opengl, before it
 zox_declare_tag(Mesh)

@@ -1,11 +1,11 @@
+int characters_count = 0;
+const int init_character3D_lod = 0; // 1;
+const int character3D_lod_dividor = 1;
+const unsigned char max_character_division = 0;
 int spawn_characters3D_count = 8;
 float spawn_many_radius = 0.5f;
-float3 spawn_many_offset = (float3) { 0, 0, 0 };
+float3 spawn_many_offset = float3_zero;
 float spawn_many_y = 0.6f;
-const int init_character3D_lod = 1;
-const int character3D_lod_dividor = 1; // 2;
-const unsigned char max_character_division = 0; // 0;
-int characters_count = 0;
 
 unsigned char get_character_division_from_camera(unsigned char distance_to_camera) {
     unsigned char division = 255;

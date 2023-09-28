@@ -5,7 +5,8 @@
 zox_declare_tag(Shader)
 zox_declare_tag(Material)
 zox_declare_tag(SingleMaterial)
-zox_memory_component(MeshIndicies, int)
+#include "util/mesh_indicies.c"
+zox_indicies_component(MeshIndicies, int)
 zox_memory_component(MeshVertices, float3)
 zox_memory_component(MeshVertices2D, float2)
 zox_memory_component(MeshUVs, float2)
@@ -19,6 +20,8 @@ zox_memory_component(MeshColorRGBs, color_rgb)
 #include "components/shader_gpu_link.c"
 // zoxel_util_includes
 #include "util/mesh_util.c"
+#include "util/mesh_indicies2.c"
+#include "util/shader_loading.c"
 // zoxel_prefab_includes
 #include "prefabs/shader.c"
 #include "prefabs/material.c"
@@ -26,7 +29,6 @@ zox_memory_component(MeshColorRGBs, color_rgb)
 #include "systems/mesh_restore_system.c"
 #include "systems/mesh_dispose_system.c"
 // zoxel_function_includes
-#include "util/shader_loading.c"
 #include "fun/render_loop.c"
 #include "fun/gpu_dispose.c"
 #include "fun/gpu_restore.c"
@@ -55,7 +57,7 @@ zox_define_component_w_dest(TextureGPULink)
 zox_define_component_w_dest(MeshGPULink)
 zox_define_component_w_dest(UvsGPULink)
 zox_define_component_w_dest(ColorsGPULink)
-zox_define_memory_component(MeshIndicies)
+zox_define_indicies_component(MeshIndicies)
 zox_define_memory_component(MeshVertices)
 zox_define_memory_component(MeshVertices2D)
 zox_define_memory_component(MeshUVs)

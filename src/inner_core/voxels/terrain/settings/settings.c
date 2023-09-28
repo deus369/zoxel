@@ -1,3 +1,10 @@
+// lod settings for terrain
+unsigned char high_resolution_terain_lod = 1; // 2 | 1
+unsigned char initial_terrain_lod = 1; // 3 | 2
+const unsigned char terrain_lod_dividor = 2; // 2 | 3
+unsigned char terrain_spawn_distance;
+unsigned char terrain_vertical = 2;
+
 #define terrain_mode_tiny 1
 #define terrain_mode_medium 2
 #define terrain_mode_large 3
@@ -15,16 +22,27 @@ const double terrain_frequency2 = 0.004216; // 0.026216
 const int terrain_octaves = 12;
 const float flat_height_level = -0.56f; // 0.2f;
 unsigned char terrain_mode = 0;
-unsigned char terrain_spawn_distance;
-unsigned char terrain_vertical = 2;
 double terrain_amplifier = 64.0;
 double terrain_boost = 0.0;
 int lowest_voxel_height = -24;
-unsigned char high_resolution_terain_lod = 1; // 2 | 1
-unsigned char initial_terrain_lod = 2; // 3 | 2
-unsigned char lod_division_dividor = 2; // 2 | 3
 double terrain_frequency = 0.038216; // 0.026216
 uint32_t terrain_seed = 32666;
+
+unsigned char get_terrain_lod_from_camera_distance(unsigned char distance_to_camera) {
+    unsigned char lod;
+    #ifdef zoxel_voxel_disable_distance_division
+        lod = max_octree_depth;
+    #else
+        if (distance_to_camera <= initial_terrain_lod) lod = max_octree_depth;
+        else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor) lod = max_octree_depth - 1;
+        else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 2) lod = max_octree_depth - 2;
+        else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 3) lod = max_octree_depth - 3;
+        else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 4) lod = max_octree_depth - 4;
+        else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 5) lod = 0;
+        else lod = 255;
+    #endif
+    return lod;
+}
 
 void set_terrain_render_distance() {
     if (cpu_tier == 3) {
@@ -76,7 +94,7 @@ void set_terrain_render_distance() {
         zoxel_log("     + octree depth is [%i]\n", max_octree_depth);
         zoxel_log("     + render distance is [%i]\n", terrain_spawn_distance);
         zoxel_log("     + terrain vertical is [%i]\n", terrain_vertical);
-        zoxel_log("     + lod dividor is [%i]\n", lod_division_dividor);
+        zoxel_log("     + lod dividor is [%i]\n", terrain_lod_dividor);
         zoxel_log("     + height amplifier is [%d]\n", terrain_amplifier);
         zoxel_log("     + height noise frequency is [%d]\n", terrain_frequency);
         zoxel_log("     + height boost is [%d]\n", terrain_boost);
