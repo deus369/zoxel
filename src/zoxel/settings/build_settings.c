@@ -1,6 +1,6 @@
 // Here? select which zoxel modules I shall use?
 
-#define zoxel_disable_music
+// #define zoxel_disable_music
 // #define zox_disable_player_character3D
 // #define zox_disable_characters3D
 // #define voxels_disable_streaming
@@ -13,8 +13,6 @@
 #define zox_on_startup_spawn_main_menu
 #define zox_on_play_spawn_terrain
 // #define zox_bulk_spawn_terrain
-
-
 // #define zox_disable_set_vox
 
 // settings

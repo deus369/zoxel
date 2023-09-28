@@ -91,13 +91,15 @@ int clear_zoxel_log() {
         }
 
         #define zox_log(msg, ...) {\
-            va_list a;\
+            zoxel_log(msg, __VA_ARGS__);\
+        }
+
+            /*va_list a;\
             va_start(a, msg);\
             char msg2[max_log_length] = { 0 };\
             vsnprintf(msg2, debug_logs_countof(msg2), msg, a);\
             fputs(msg2, stderr);\
-            va_end(a);\
-        }
+            va_end(a);\*/
     #endif
 #else
     void zoxel_log(const char* msg, ...) { }

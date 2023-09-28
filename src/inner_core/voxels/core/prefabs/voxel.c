@@ -4,7 +4,7 @@ ecs_entity_t spawn_prefab_voxel(ecs_world_t *world) {
     ecs_defer_begin(world);
     zox_prefab()
     zox_add_tag(e, Voxel)
-    zox_set(e, TextureLinks, { 0, NULL })
+    zox_set(e, Textures, { 0, NULL })
     ecs_defer_end(world);
     prefab_voxel = e;
     #ifdef zoxel_debug_prefabs
@@ -16,7 +16,7 @@ ecs_entity_t spawn_prefab_voxel(ecs_world_t *world) {
 ecs_entity_t spawn_voxel(ecs_world_t *world, unsigned char index) {
     zox_instance(prefab_voxel)
     // spawn one texture here
-    TextureLinks *textureLinks = ecs_get_mut(world, e, TextureLinks);
+    Textures *textureLinks = ecs_get_mut(world, e, Textures);
     initialize_memory_component(textureLinks, ecs_entity_t, 1)
     for (int i = 0; i < 1; i++) {
         ecs_entity_t texture_entity = spawn_texture_dirt(world);
@@ -34,7 +34,7 @@ ecs_entity_t spawn_voxel(ecs_world_t *world, unsigned char index) {
         }
         textureLinks->value[i] = texture_entity;
     }
-    ecs_modified(world, e, TextureLinks);
+    ecs_modified(world, e, Textures);
     #ifdef zoxel_debug_spawns
         zoxel_log(" + spawned voxel [%lu]\n", (long int) e);
     #endif

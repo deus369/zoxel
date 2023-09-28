@@ -2,26 +2,25 @@ void MusicGenerateSystem(ecs_iter_t *it) {
     const unsigned char lowest_note = 12;
     const unsigned char highest_note = 36;
     const unsigned char note_verse_difference = 6;
-    const GenerateMusic *generateMusics = ecs_field(it, GenerateMusic, 2);
+    GenerateMusic *generateMusics = ecs_field(it, GenerateMusic, 2);
     MusicData *musicDatas = ecs_field(it, MusicData, 3);
     // InstrumentType *instrumentTypes = ecs_field(it, InstrumentType, 4);
     for (int i = 0; i < it->count; i++) {
-        const GenerateMusic *generateMusic = &generateMusics[i];
-        if (generateMusic->value != 1) continue;
+        GenerateMusic *generateMusic = &generateMusics[i];
+        if (!generateMusic->value) continue;
         MusicData *musicData = &musicDatas[i];
         // InstrumentType *instrumentType = &instrumentTypes[i];
         // instrumentType->value = rand() % instrument_end;
         // instrumentType->value = instrument_unique;
         int sounds_per_verse = 8;
         int verses = 6;
-        re_initialize_memory_component(musicData, int, verses * sounds_per_verse);
+        re_initialize_memory_component(musicData, int, verses * sounds_per_verse)
         int sound_index = 0;
         int palete_type = 0;
         palete_type = rand() % music_palette_end;
         int first_note = lowest_note + rand() % (highest_note - lowest_note + 1 - note_verse_difference);
         #ifdef zoxel_debug_music
-            zoxel_log("Music Generated!\n - Palette [%i] [%s]\n - Instrument: [%i]\n    - First Note [%i]\n",
-                palete_type, music_palette_names[palete_type], instrumentType->value, first_note);
+            zoxel_log("Music Generated!\n - Palette [%i] [%s]\n - Instrument: [%i]\n    - First Note [%i]\n", palete_type, music_palette_names[palete_type], instrumentType->value, first_note);
         #endif
         for (int j = 0; j < verses; j++) {
             first_note += - note_verse_difference + rand() % (note_verse_difference * 2 + 1);
@@ -64,6 +63,7 @@ void MusicGenerateSystem(ecs_iter_t *it) {
                 sound_index++;
             }
         }
+        generateMusic->value = 0;
     }
 }
 zox_declare_system(MusicGenerateSystem)

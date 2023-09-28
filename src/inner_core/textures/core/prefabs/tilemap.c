@@ -31,5 +31,6 @@ ecs_entity_t spawn_tilemap(ecs_world_t *world) {
     #ifdef zoxel_debug_spawns
         zoxel_log(" + spawned tilemap [%lu]\n", (long int) e);
     #endif
+    // zox_log("   > spawned tilemap [%lu]\n", e)
     return e;
 }

@@ -37,13 +37,16 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
             textureDirty->value = 1;
             continue;
         }
+        // zox_log("   > tilemaps [%i]\n", it->count)
         const TilemapSize *tilemapSize = &tilemapSizes[i];
         TextureData *textureData = &textureDatas[i];
         TextureSize *textureSize = &textureSizes[i];
         TilemapUVs *tilemapUVs = &tilemapUVss[i];
         float tile_size = 1.0f / ((float) tilemapSize->value.x);
         // generate textureSize based on TilemapSize
-        const TextureSize *first_texture_size = ecs_get(world, textureLinks->value[0], TextureSize);
+        ecs_entity_t first_texture = textureLinks->value[0];
+        // zox_log("   > first_texture [%i]\n", first_texture)
+        const TextureSize *first_texture_size = ecs_get(world, first_texture, TextureSize);
         textureSize->value.x = tilemapSize->value.x * first_texture_size->value.x;
         textureSize->value.y = tilemapSize->value.y * first_texture_size->value.y;
         re_initialize_memory_component(textureData, color, textureSize->value.x * textureSize->value.y)

@@ -1,6 +1,10 @@
 #ifndef zoxel_texts
 #define zoxel_texts
 
+// \todo Display a UI Element anchored, with a pixel position.
+// \todo Change colour when ray hits a button
+// zox_define_reset_system(ZextDirtyResetSystem, ZextDirty)
+
 // zoxel_settings
 const double zext_animation_speed = 10.0;
 // zoxel_component_defines
@@ -71,9 +75,5 @@ zox_system_ctx(FontTextureSystem, EcsPostUpdate, fonts, [none] FontTexture, [out
 if (!headless) zox_system(ZextBackgroundUpdateSystem, EcsPostUpdate, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] MeshAlignment, [in] CanvasLink, [out] PixelSize, [out] TextureSize, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshDirty)
 zox_system_ctx_1(ZextUpdateSystem, main_thread_pipeline, zexts, [none] Zext, [out] ZextDirty, [out] Children, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] Position2D, [in] PixelSize, [in] MeshAlignment)
 zoxel_end_module(Texts)
-
-// \todo Display a UI Element anchored, with a pixel position.
-// \todo Change colour when ray hits a button
-// zox_define_reset_system(ZextDirtyResetSystem, ZextDirty)
 
 #endif

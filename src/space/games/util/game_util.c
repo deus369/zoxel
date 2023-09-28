@@ -80,8 +80,8 @@ void end_game(ecs_world_t *world) {
         // this should delete all chunks
         // which should delete all
         // delete this when terrain dies
-        const TilemapLink *tilemapLink = ecs_get(world, local_terrain, TilemapLink);
-        zox_delete(tilemapLink->value)
+        // const TilemapLink *tilemapLink = ecs_get(world, local_terrain, TilemapLink);
+        // zox_delete(tilemapLink->value)
         // delete terrain
         zox_delete(local_terrain)
     #endif

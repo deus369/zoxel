@@ -20,6 +20,7 @@ ecs_entity_t spawn_terrain(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t
     zox_set_only(e, Scale1D, { scale })
     zox_set_only(e, TilemapLink, { tilemap })
     zox_set(tilemap, VoxLink, { e })    // link tilemap to vox?
+    // zox_log("   > linking tilemap [%lu]\n", tilemap)
     local_terrain = e;
     return e;
 }

@@ -65,7 +65,7 @@ void on_terrain_settings_changed(ecs_world_t *world) {
     for (int k = 0; k < voxelLinks->length; k++) {
         // zoxel_log("     > voxel texture renewed [%i]\n", k);
         ecs_entity_t voxel = voxelLinks->value[k];
-        const TextureLinks *textureLinks = ecs_get(world, voxel, TextureLinks);
+        const Textures *textureLinks = ecs_get(world, voxel, Textures);
         zox_set_only(textureLinks->value[0], GenerateTexture, { 1 })
     }
     const TilemapLink *tilemapLink = ecs_get(world, local_terrain, TilemapLink);
