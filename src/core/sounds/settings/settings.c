@@ -1,5 +1,6 @@
-#define sound_sample_rate 44100 // / 2
-#define sample_rate_f 44100.0f // / 2.0f
+//  #define sound_sample_rate 44100
+#define sound_sample_rate 4410
+#define sample_rate_f (float) sound_sample_rate
 #define static_sounds_length 5
 const int channels_count = 1;   // 2
 const float sound_attack_multiplier = 0.02f; // 0.04f

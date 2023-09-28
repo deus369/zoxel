@@ -63,7 +63,7 @@ zox_define_component_w_dest(SDLSound)
 zox_define_component(SoundDirty)
 zox_define_memory_component(SoundData)
 // zoxel_define_systems
-zox_system(SoundGenerateSystem, EcsPreStore, [none] Sound, [out] GenerateSound, [in] SoundLength, [in] SoundFrequency, [in] SoundVolume, [in] InstrumentType, [out] SoundData, [out] SoundDirty)
+zox_system(SoundGenerateSystem, EcsPreStore, [none] Sound, [out] GenerateSound, [out] SoundData, [out] SoundDirty, [in] SoundLength, [in] SoundFrequency, [in] SoundVolume, [in] InstrumentType)
 #ifdef SDL_MIXER
     zox_system(SoundUpdateSystem, EcsPreStore, [none] Sound, [in] SoundData, [out] SoundDirty, [out] SDLSound)
     zox_system(PlaySoundSystem, EcsPreStore, [none] Sound, [out] TriggerSound, [in] SoundLength, [in] SDLSound)

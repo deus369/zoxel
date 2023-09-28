@@ -200,10 +200,16 @@ run-dev-vulkan:
 
 # run development + valgrind
 run-dev-debug:
-	cd build && valgrind -s ./../$(target_dev)
+	cd build && valgrind ./../$(target_dev)
 
 run-dev-debug-tiny:
 	cd build && valgrind -s ./../$(target_dev) --tiny
+
+run-debug:
+ifneq ($(SYSTEM),Windows)
+	bash bash/util/install_dev_required.sh
+endif
+	gdb ./build/dev
 
 #  --leak-check=full
 

@@ -67,27 +67,29 @@ ecs_set_hooks(world, name, {\
     }\
 }
 
-#define initialize_memory_component(component, data_type, _length) {\
-    if (component->length != _length) {\
-        if (_length == 0) {\
+#define initialize_memory_component(component, data_type, new_length) {\
+    if (component->length != new_length) {\
+        if (new_length == 0) {\
             clear_memory_component(component);\
         } else {\
-            component->length = _length;\
+            component->length = new_length;\
             component->value = malloc(component->length * sizeof(data_type));\
             memorys_allocated++;\
         }\
     }\
 }
 
-#define re_initialize_memory_component(component, data_type, _length) {\
-    if (component->length != _length) {\
-        if (_length == 0) {\
+#define re_initialize_memory_component(component, data_type, new_length) {\
+    if (component->length != new_length) {\
+        if (new_length == 0) {\
             clear_memory_component(component);\
         } else if (component->value) {\
-            component->length = _length;\
-            component->value = realloc(component->value, component->length * sizeof(data_type));\
+            clear_memory_component(component);\
+            initialize_memory_component(component, data_type, new_length);\
+            /*component->length = new_length;*/\
+            /*component->value = realloc(component->value, component->length * sizeof(data_type));*/\
         } else {\
-            initialize_memory_component(component, data_type, _length);\
+            initialize_memory_component(component, data_type, new_length);\
         }\
     }\
 }
