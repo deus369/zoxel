@@ -8,5 +8,4 @@ void DestroyInTimeSystem(ecs_iter_t *it) {
         destroyInTime->value -= delta_time;
         if (destroyInTime->value <= 0) zox_delete(it->entities[i])
     }
-}
-zox_declare_system(DestroyInTimeSystem)
+} zox_declare_system(DestroyInTimeSystem)

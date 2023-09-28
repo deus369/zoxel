@@ -5,6 +5,8 @@ int frames_count, frames_per_second = 0;
 double zox_current_time_check = 0.0;
 const int record_frames_count = 120;
 double zox_delta_times[120];
+// todo: make physics run multiple timesteps incase it needs to step through more
+const double max_zox_delta_time = 1.0 / 2.0;
 
 double current_time_in_seconds() {
     struct timespec current_time;
@@ -32,7 +34,7 @@ void iterate_time() {
     #endif
     // zoxel_log("current time [%d]\n", zox_current_time);
     // zoxel_log("delta time [%f]\n", zox_delta_time * 1000.0);
-    // if (zox_delta_time >=  1.0 / 10.0) zox_delta_time = 0.0;
+    if (zox_delta_time > max_zox_delta_time) zox_delta_time = max_zox_delta_time;
     frames_count++;
     frames_per_second_time += zox_delta_time;
     if (frames_per_second_time >= 1.0) {
