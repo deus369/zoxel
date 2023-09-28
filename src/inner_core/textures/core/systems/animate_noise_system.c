@@ -1,4 +1,5 @@
 void AnimateNoiseSystem(ecs_iter_t *it) {
+    return;
     double delta_time = zox_delta_time;
     // double delta_time = it->delta_time;
     AnimateTexture *animateTextures = ecs_field(it, AnimateTexture, 1);

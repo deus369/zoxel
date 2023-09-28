@@ -9,7 +9,7 @@ ecs_entity_t spawn_prefab_texture_dirt(ecs_world_t *world) {
     add_seed(world, e, 666);
     add_texture(world, e, texture_size, 1);
     add_noise_texture(world, e);
-    add_dirty(world, e);
+    // add_dirty(world, e);
     prefab_texture_dirt = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log("spawn_prefab texture_dirt [%lu].\n", (long int) (e));

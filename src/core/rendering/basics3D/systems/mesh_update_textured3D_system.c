@@ -16,7 +16,7 @@ void MeshUpdateTextured3DSystem(ecs_iter_t *it) {
     const ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 8);
     for (int i = 0; i < it->count; i++) {
         MeshDirty *meshDirty = &meshDirtys[i];
-        if (meshDirty->value != 1) continue;
+        if (!meshDirty->value) continue;
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         const MeshVertices *meshVertices2 = &meshVertices[i];
         const MeshUVs *meshUVs2 = &meshUVs[i];

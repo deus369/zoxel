@@ -36,10 +36,9 @@ zox_byte_component(FrameCorner)
 #include "systems/animate_noise_system.c"
 #include "systems/texture_update_system.c"
 #include "systems/noise_texture_system.c"
+#include "systems/fill_texture_system.c"
 #include "systems/frame_texture_system.c"
 #include "systems/tilemap_generation_system.c"
-// zox_reset_system(TextureDirtyResetSystem, TextureDirty)
-// zox_reset_system(GenerateTextureResetSystem, GenerateTexture)
 #include "tests/test_texture.c"
 
 void spawn_prefabs_textures_core(ecs_world_t *world) {
@@ -76,10 +75,10 @@ zox_filter(generate_textures2, [none] FrameTexture, [out] GenerateTexture)
 // zoxel_system_defines
 zox_system(AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture)
 zox_texture_generation_system(NoiseTexture, NoiseTextureSystem)
-zox_texture_generation_system(FillTexture, FillTextureSystem)
+zox_texture_generation_system2(FillTexture, FillTextureSystem, [in] Color)
 zox_system_ctx(FrameTextureSystem, EcsPostUpdate, generate_textures2, [none] FrameTexture, [out] GenerateTexture, [in] TextureSize, [in] Color, [in] OutlineThickness, [in] FrameCorner, [out] TextureData, [out] TextureDirty)
 zox_system(TilemapGenerationSystem, EcsPostUpdate, [none] Tilemap, [in] TilemapSize, [in] TextureLinks, [out] GenerateTexture, [out] TextureSize, [out] TextureData, [out] TextureDirty, [out] TilemapUVs)
-if (!headless) zox_system_1(TextureUpdateSystem, main_thread_pipeline, [out] TextureDirty, [in] TextureData, [in] TextureSize, [in] TextureGPULink)
+zox_system_1(TextureUpdateSystem, main_thread_pipeline, [out] TextureDirty, [in] TextureData, [in] TextureSize, [in] TextureGPULink)
 zoxel_end_module(TexturesCore)
 
 #endif

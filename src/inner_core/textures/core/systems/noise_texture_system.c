@@ -179,39 +179,3 @@ void NoiseTextureSystem(ecs_iter_t *it) {
         textureDirty->value = 1; // actually this only gets uploaded if has GPUTextureLink!
     }
 } zox_declare_system(NoiseTextureSystem)
-
-// simple system
-
-
-
-void generate_texture_fill(TextureData* textureData, const TextureSize *textureSize, color fill_color) {
-    // color fill_color = { 222, 35, 35, 255 };
-    for (int j = 0; j < textureSize->value.x; j++) {
-        for (int k = 0; k < textureSize->value.y; k++) {
-            int index = j + k * textureSize->value.x;
-            textureData->value[index] = fill_color;
-        }
-    }
-}
-
-void FillTextureSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(it->ctx, NULL)) return;
-    ecs_world_t *world = it->world;
-    TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 2);
-    TextureData *textures = ecs_field(it, TextureData, 3);
-    const TextureSize *textureSizes = ecs_field(it, TextureSize, 4);
-    GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 5);
-    for (int i = 0; i < it->count; i++) {
-        GenerateTexture *generateTexture = &generateTextures[i];
-        if (generateTexture->value == 0) continue;
-        TextureDirty *textureDirty = &textureDirtys[i];
-        const TextureSize *textureSize = &textureSizes[i];
-        TextureData *textureData = &textures[i];
-        ecs_entity_t e = it->entities[i];
-        const Color *color2 = ecs_get(world, e, Color);
-        re_initialize_memory_component(textureData, color, textureSize->value.x * textureSize->value.y)
-        generate_texture_fill(textureData, textureSize, color2->value);
-        generateTexture->value = 0;
-        textureDirty->value = 1; // actually this only gets uploaded if has GPUTextureLink!
-    }
-} zox_declare_system(FillTextureSystem)

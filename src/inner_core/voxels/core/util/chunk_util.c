@@ -16,13 +16,13 @@ void add_chunk_colors(ecs_world_t *world, ecs_entity_t e) {
 }
 
 void add_generate_chunk(ecs_world_t *world, ecs_entity_t e) {
-    zox_set(e, EntityDirty, { 0 })
+    // zox_set(e, EntityDirty, { 0 })
     zox_set(e, GenerateChunk, { 1 })
 }
 
 void add_noise_chunk(ecs_world_t *world, ecs_entity_t e) {
     zox_add_tag(e, NoiseChunk)
-    zox_set(e, EntityDirty, { 0 })
+    // zox_set(e, EntityDirty, { 0 })
     zox_set(e, GenerateChunk, { 1 })
     // zox_set(e, AnimateTexture, { 0.0 });
 }

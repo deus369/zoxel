@@ -97,6 +97,11 @@ Chose one pipeline tag for each type of system.
     zox_system_ctx(system, EcsPostUpdate, generateTextureQuery, [none] texture_tag, [out] TextureDirty, [out] TextureData, [in] TextureSize, [out] GenerateTexture)\
 }
 
+#define zox_texture_generation_system2(texture_tag, system, ...) {\
+    zox_filter(generateTextureQuery, [none] texture_tag, [out] GenerateTexture)\
+    zox_system_ctx(system, EcsPostUpdate, generateTextureQuery, [none] texture_tag, [out] TextureDirty, [out] TextureData, [in] TextureSize, [out] GenerateTexture, __VA_ARGS__)\
+}
+
 // EcsOnStore
 #define zox_define_reset_system(system_name, component_name) zox_system(system_name, EcsPreStore, [out] component_name)
 

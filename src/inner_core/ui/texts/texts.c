@@ -3,7 +3,6 @@
 
 // \todo Display a UI Element anchored, with a pixel position.
 // \todo Change colour when ray hits a button
-// zox_define_reset_system(ZextDirtyResetSystem, ZextDirty)
 
 // zoxel_settings
 const double zext_animation_speed = 10.0;
@@ -34,7 +33,6 @@ zox_memory_component(ZextData, unsigned char)  //! Holds zigel indexes
 #include "systems/zext_update_system.c"
 #include "systems/zext_background_update_system.c"
 #include "systems/animate_text_system.c"
-zox_reset_system(ZextDirtyResetSystem, ZextDirty)
 
 int get_zigels_count(ecs_world_t *world) {
     return zox_count_entities(world, ecs_id(Zigel));

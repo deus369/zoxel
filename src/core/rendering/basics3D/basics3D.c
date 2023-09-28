@@ -14,13 +14,13 @@
 // util
 #include "util/instanced3D_material.c"
 #include "util/unique3D_material.c"
-#include "util/shader3D_textured.c"
+#include "util/textured3D_shader.c"
 #include "util/shader3D_colored.c"
 // systems
+#include "systems/element3D_render_system.c"
 #include "systems/render3D_system.c"
 #include "systems/render3D_instance_system.c"
 #include "systems/render_characters3D_system.c"
-#include "systems/render_elements3D_system.c"
 #include "systems/mesh_update_system.c"
 #include "systems/mesh_update_textured3D_system.c"
 #include "systems/mesh_update_characters3D_system.c"
@@ -53,9 +53,9 @@ zox_define_component(Textured3DAttributes)
     zox_system_1(Render3DSystem, 0, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] !MeshColorRGBs)
     zox_system_1(RenderCharacters3DSystem, 0, [none] MeshColorRGBs, [in] Position3D, [in] Rotation3D, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [none] !UvsGPULink)   // , [in] Scale1D, [in] Brightness
     zox_system_1(InstanceRender3DSystem, 0, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink)
-    zox_system_1(RenderElements3DSystem, 0, [none] rendering.core.SingleMaterial, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] TextureGPULink)
+    zox_system_1(Element3DRenderSystem, 0, [none] rendering.core.SingleMaterial, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] TextureGPULink)
     add_to_render3D_loop(ecs_id(RenderCharacters3DSystem));
-    add_to_render3D_loop(ecs_id(RenderElements3DSystem));
+    add_to_render3D_loop(ecs_id(Element3DRenderSystem));
     add_to_render3D_loop(ecs_id(Render3DSystem));
 #endif
 zox_system_1(MeshUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs)

@@ -1,10 +1,12 @@
-//! A basic x2 building block.
 typedef struct {
     int x;
     int y;
 } int2;
 
 #define int2_zero (int2) { 0, 0 }
+#define int2_one (int2) { 1, 1 }
+#define int2_two (int2) { 2, 2 }
+#define int2_four (int2) { 4, 4 }
 
 unsigned char int2_equals(int2 a, int2 b) {
     return a.x == b.x && a.y == b.y;

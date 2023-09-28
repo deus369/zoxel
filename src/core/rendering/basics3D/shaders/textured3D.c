@@ -42,6 +42,7 @@ void main() {\
     color = mix(color, vec3(fog_data.x, fog_data.y, fog_data.z), fog_blend);\
 }";
 
+// color.x = 1.0;
 /*const GLchar* shader3D_textured_vert_buffer = "\
 #version 300 es\n\
 layout(location=0) in highp vec3 vertex_position;\

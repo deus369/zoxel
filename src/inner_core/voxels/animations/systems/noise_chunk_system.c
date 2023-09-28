@@ -38,7 +38,6 @@ void NoiseChunkSystem(ecs_iter_t *it) {
     GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 5);
     for (int i = 0; i < it->count; i++) {
         GenerateChunk *generateChunk = &generateChunks[i];
-        //! Only rebuild if GenerateChunk is set to 1 and EntityDirty is false.
         if (generateChunk->value == 0) continue;
         ChunkDirty *chunkDirty = &chunkDirtys[i];
         if (chunkDirty->value != 0) continue;
@@ -62,7 +61,6 @@ void NoiseChunkOctreeSystem(ecs_iter_t *it) {
     GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 5);
     for (int i = 0; i < it->count; i++) {
         GenerateChunk *generateChunk = &generateChunks[i];
-        //! Only rebuild if GenerateChunk is set to 1 and EntityDirty is false
         if (generateChunk->value == 0) continue;
         ChunkDirty *chunkDirty = &chunkDirtys[i];
         if (chunkDirty->value != 0) continue;

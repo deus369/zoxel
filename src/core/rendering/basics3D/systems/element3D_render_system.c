@@ -1,9 +1,7 @@
 extern unsigned char can_render_ui(ecs_world_t *world, ecs_entity_t e);
-// this for 3D uis
 // #define zox_time_render3D_textured_system
-// todo: this produces a memory leak on newer nvidia driver... not sure why
 
-void RenderElements3DSystem(ecs_iter_t *it) {
+void Element3DRenderSystem(ecs_iter_t *it) {
     #ifdef zox_time_render3D_textured_system
         begin_timing()
     #endif
@@ -19,7 +17,8 @@ void RenderElements3DSystem(ecs_iter_t *it) {
     const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 9);
     const TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 10);
     for (int i = 0; i < it->count; i++) {
-        if (!can_render_ui(world, it->entities[i])) continue;
+        ecs_entity_t e = it->entities[i];
+        if (!can_render_ui(world, e)) continue;
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
         if (meshIndicies2->length == 0) continue;
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
@@ -50,7 +49,7 @@ void RenderElements3DSystem(ecs_iter_t *it) {
         #endif
         #ifdef zoxel_catch_opengl_errors
             if (check_opengl_error_unlogged() != 0) {
-                zoxel_log(" > failed to render element3D [%lu]: [%i] - [%ix%i:%i]\n", it->entities[i], meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value);
+                zoxel_log(" > failed to render element3D [%lu]: [%i] - [%ix%i:%i]\n", e, meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value);
                 break;
             }
         #endif
@@ -74,4 +73,4 @@ void RenderElements3DSystem(ecs_iter_t *it) {
     #ifdef zox_errorcheck_render_ui_3D
         if (rendered_count > 0) zoxel_log(" > rendered elements [%i]\n", rendered_count);
     #endif
-} zox_declare_system(RenderElements3DSystem)
+} zox_declare_system(Element3DRenderSystem)

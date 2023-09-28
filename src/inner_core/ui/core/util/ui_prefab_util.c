@@ -27,10 +27,10 @@ void add_ui_mesh_components(ecs_world_t *world, ecs_entity_t e) {
 }
 
 void add_ui_plus_components(ecs_world_t *world, ecs_entity_t e) {
+    unsigned char is_generate_texture = 0; // waits a frame, needs to spawn gpu buffers first
     add_seed(world, e, 666);
-    add_dirty(world, e);
     add_transform2Ds(world, e);
-    add_texture(world, e, int2_zero, 0);
+    add_texture(world, e, int2_zero, is_generate_texture);
     add_ui_components(world, e);
     if (!headless) add_ui_mesh_components(world, e);
 }

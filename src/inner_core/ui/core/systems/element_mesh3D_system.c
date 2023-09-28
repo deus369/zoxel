@@ -9,12 +9,13 @@ void Element3DMeshSystem(ecs_iter_t *it) {
     TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 10);
     for (int i = 0; i < it->count; i++) {
         InitializeEntityMesh *initializeEntityMesh = &initializeEntityMeshs[i];
-        if (initializeEntityMesh->value != 1) continue;
+        if (!initializeEntityMesh->value) continue;
         const CanvasLink *canvasLink = &canvasLinks[i];
         if (canvasLink->value == 0) continue;
-        // ecs_entity_t e = it->entities[i];
         MeshDirty *meshDirty = &meshDirtys[i];
+        if (meshDirty->value) continue;
         GenerateTexture *generateTexture = &generateTextures[i];
+        if (generateTexture->value) continue;
         if (!headless) {
             MeshGPULink *meshGPULink = &meshGPULinks[i];
             UvsGPULink *uvsGPULink = &uvsGPULinks[i];
@@ -29,6 +30,6 @@ void Element3DMeshSystem(ecs_iter_t *it) {
         initializeEntityMesh->value = 0;
         meshDirty->value = 1;
         generateTexture->value = 1;
-        // zoxel_log(" o> mesh_3D spawned [%lu]\n", it->entities[i]);
+        // zox_log("   > initialized mesh 3D [%lu]\n", it->entities[i])
     }
 } zox_declare_system(Element3DMeshSystem)

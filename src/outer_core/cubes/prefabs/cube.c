@@ -11,6 +11,8 @@ ecs_entity_t spawn_prefab_cube(ecs_world_t *world) {
         zox_add(e, Brightness)
         zox_set(e, MeshDirty, { 1 })
         if (!headless) {
+            zox_set(e, MeshIndicies, { 0, NULL })
+            zox_set(e, MeshVertices, { 0, NULL })
             prefab_set_mesh_indicies(world, e, cube_indicies, 36);
             prefab_set_mesh_vertices(world, e, cube_vertices, 24);
         }

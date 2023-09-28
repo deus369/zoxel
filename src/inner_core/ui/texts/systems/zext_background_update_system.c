@@ -14,6 +14,10 @@ void ZextBackgroundUpdateSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const ZextDirty *zextDirty = &zextDirtys[i];
         if (!zextDirty->value) continue;
+        MeshDirty *meshDirty = &meshDirtys[i];
+        if (meshDirty->value) return;
+        GenerateTexture *generateTexture = &generateTextures[i];
+        if (generateTexture->value) return;
         const ZextData *zextData = &zextDatas[i];
         const ZextSize *zextSize = &zextSizes[i];
         const ZextPadding *zextPadding = &zextPaddings[i];
@@ -21,9 +25,7 @@ void ZextBackgroundUpdateSystem(ecs_iter_t *it) {
         const CanvasLink *canvasLink = &canvasLinks[i];
         PixelSize *pixelSize = &pixelSizes[i];
         TextureSize *textureSize = &textureSizes[i];
-        GenerateTexture *generateTexture = &generateTextures[i];
         MeshVertices2D *meshVertices2D = &meshVertices2Ds[i];
-        MeshDirty *meshDirty = &meshDirtys[i];
         const PixelSize *canvasSize = ecs_get(world, canvasLink->value, PixelSize);
         int font_size = zextSize->value;
         pixelSize->value = (int2) { font_size * zextData->length + zextPadding->value.x * 2, font_size + zextPadding->value.y * 2 };

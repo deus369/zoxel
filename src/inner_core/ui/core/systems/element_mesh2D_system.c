@@ -1,6 +1,6 @@
 // #define zox_time_element_mesh_system
 
-void ElementMeshSystem(ecs_iter_t *it) {
+void Element2DMeshSystem(ecs_iter_t *it) {
     #ifdef zox_time_element_mesh_system
         begin_timing()
     #endif
@@ -40,8 +40,8 @@ void ElementMeshSystem(ecs_iter_t *it) {
             uvsGPULink->value = spawn_gpu_generic_buffer();
         }
         initializeEntityMesh->value = 0;
-        meshDirty->value = 1;
         generateTexture->value = 1;
+        meshDirty->value = 1;
         #ifdef zox_time_element_mesh_system
             did_do_timing()
         #endif
@@ -50,4 +50,4 @@ void ElementMeshSystem(ecs_iter_t *it) {
     #ifdef zox_time_element_mesh_system
         end_timing("    - element_mesh_system")
     #endif
-} zox_declare_system(ElementMeshSystem)
+} zox_declare_system(Element2DMeshSystem)

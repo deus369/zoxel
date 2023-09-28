@@ -41,9 +41,6 @@ zox_entities_component(EntityLinks)
 // zoxel_system_includes
 #include "systems/destroy_in_frame_system.c"
 #include "systems/generic_event_debug_system.c"
-zox_reset_system(EntityDirtyResetSystem, EntityDirty)
-// zox_reset_system(ClickableStateResetSystem, ClickState)
-zox_reset_system(EntityInitializeResetSystem, EntityInitialize)
 
 void spawn_prefabs_generic(ecs_world_t *world) {
     spawn_prefab_generic_event(world);
@@ -79,8 +76,6 @@ zox_define_component(Bounds3D)
 zox_define_entities_component(EntityLinks)
 // zoxel_system_defines
 zox_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
-zox_define_reset_system(EntityDirtyResetSystem, EntityDirty)
-zox_define_reset_system(EntityInitializeResetSystem, EntityInitialize)
 zoxel_end_module(Generic)
 
 #endif
