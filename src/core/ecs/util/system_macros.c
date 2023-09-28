@@ -56,6 +56,16 @@ Chose one pipeline tag for each type of system.
     ecs_id(id_) = ecs_system_init(world, &desc);\
 }
 
+#define zox_render2D_system(name, ...) {\
+    zox_system_1(name, 0, __VA_ARGS__)\
+    add_to_render2D_loop(ecs_id(name));\
+}
+
+#define zox_render3D_system(name, ...) {\
+    zox_system_1(name, 0, __VA_ARGS__)\
+    add_to_render3D_loop(ecs_id(name));\
+}
+
 // ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
 //! Multithreaded System Definitions

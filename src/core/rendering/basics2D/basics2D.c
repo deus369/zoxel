@@ -38,10 +38,11 @@ add_restore_shader_function((funfun) { &rendering_restore_basic_shaders2D });
 // zoxel_define_components
 // zoxel_define_systems
 #ifdef zoxel_transforms2D
-    zox_system_1(InstanceRender2DSystem, 0, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink)
-    zox_system_1(RenderMaterial2DSystem, 0, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MaterialGPULink, [in] TextureGPULink, [none] !MeshGPULink)
-    zox_system_1(ElementRenderSystem, 0, [none] ElementRender, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] MaterialInstancedGPULink, [in] TextureGPULink, [in] MeshDirty)
-    add_to_render2D_loop(ecs_id(ElementRenderSystem));
+    //zox_system_1(InstanceRender2DSystem, 0, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink)
+    //zox_system_1(RenderMaterial2DSystem, 0, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MaterialGPULink, [in] TextureGPULink, [none] !MeshGPULink)
+    //zox_system_1(ElementRenderSystem, 0, [none] ElementRender, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] MaterialInstancedGPULink, [in] TextureGPULink, [in] MeshDirty)
+    //add_to_render2D_loop(ecs_id(ElementRenderSystem));
+    zox_render2D_system(ElementRenderSystem, [none] ElementRender, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] MaterialInstancedGPULink, [in] TextureGPULink, [in] MeshDirty)
 #endif
 zox_system_1(Mesh2DUvsUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshUVs, [in] MeshGPULink, [in] UvsGPULink, [none] !MeshColorRGBs)
 zoxel_end_module(RenderingBasics2D)

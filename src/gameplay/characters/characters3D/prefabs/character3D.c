@@ -14,7 +14,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     zox_set(e, Bounds3D, {{ 1, 1, 1 }})
     zox_add(e, VoxLink)
     zox_set(e, ChunkLink, { 0 })
-    zox_set(e, ChunkPosition, { int3_zero })
+    zox_set(e, ChunkPosition, { int3_chaos })
     zox_set(e, VoxelPosition, { int3_zero})
     zox_set(e, ElementLinks, { 0, NULL})
     if (!headless) ecs_remove(world, e, MaterialGPULink);
