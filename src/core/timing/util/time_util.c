@@ -20,6 +20,11 @@ void initialize_time() {
     time_begin = current_time_in_seconds();
 }
 
+void skip_time_to_current() {
+    zox_current_time = current_time_in_seconds() - time_begin;
+    zox_log("   > restoring time to [%d]\n", zox_current_time)
+}
+
 void iterate_time() {
     double last_time = zox_current_time;
     zox_current_time = current_time_in_seconds() - time_begin;

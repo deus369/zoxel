@@ -45,5 +45,6 @@ void restore_all_opengl_resources(ecs_world_t *world) {
 
 void opengl_load_resources(ecs_world_t *world) {
     rendering = 1;
+    skip_time_to_current();
     restore_all_opengl_resources(world);
 }
