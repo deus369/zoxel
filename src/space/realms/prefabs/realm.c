@@ -3,12 +3,10 @@ ecs_entity_t prefab_realm;
 ecs_entity_t local_realm;
 
 ecs_entity_t spawn_prefab_realm(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab()
     zox_prefab_name("prefab_realm")
     zox_add_tag(e, Realm);
     zox_set(e, VoxelLinks, { 0, NULL })
-    ecs_defer_end(world);
     prefab_realm = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log(" + spawn_prefab realm [%lu].\n", (long int) (e));

@@ -2,7 +2,6 @@ ecs_entity_t prefab_line2D;
 extern ecs_entity_t prefab_temporary_line2D;
 
 ecs_entity_t spawn_prefab_line2D(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab()
     zox_prefab_name("prefab_line2D")
     zox_add_tag(e, Line2D)
@@ -25,7 +24,7 @@ ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 pointB, floa
     zox_set_only(e, LineThickness, { thickness })
     if (life_time != 0.0f) zox_set_only(e, DestroyInTime, { life_time })
     #ifdef zoxel_debug_spawns
-        zoxel_log(" > spawned line2D [%lu]\n", (long int) e);
+        zox_log(" > spawned line2D [%lu]\n", e)
     #endif
     return e;
 }

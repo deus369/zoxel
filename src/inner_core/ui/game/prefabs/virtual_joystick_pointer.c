@@ -2,7 +2,6 @@ ecs_entity_t prefab_virtual_joystick_pointer;
 ecs_entity_t virtual_joystick_pointer;  // reference for now
 
 ecs_entity_t spawn_prefab_virtual_joystick_pointer(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab()
     zox_prefab_name("prefab_virtual_joystick_pointer")
     zox_add_tag(e, Button)
@@ -11,7 +10,6 @@ ecs_entity_t spawn_prefab_virtual_joystick_pointer(ecs_world_t *world) {
     zox_set(e, OutlineThickness, { 4 })
     zox_set(e, Color, { virtual_joystick_pointer_color })
     add_ui_plus_components(world, e);
-    ecs_defer_end(world);
     prefab_virtual_joystick_pointer = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log("spawn_prefab virtual_joystick_pointer [%lu].\n", (long int) (e));

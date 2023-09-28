@@ -1,6 +1,5 @@
 //! Here for now, spawns a one man bobarmy.
 void Particle2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCount) {
-    ecs_defer_begin(world);
     float2 positionBounds = { 0.01f, 0.1f };
     const float2 velocityBounds = { 0.03f, 0.2f };
     const float torqueBounds = 12.0f;
@@ -68,7 +67,6 @@ void Particle2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCoun
     free(scale1Ds);
     free(brightnesses);
     free(destroyInTimes);
-    ecs_defer_end(world);
 } zox_declare_system(Particle2DSpawnSystem)
 
 /*int GetParticles2DCount(ecs_world_t *world) {

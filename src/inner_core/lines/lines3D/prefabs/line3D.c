@@ -2,14 +2,12 @@ ecs_entity_t prefab_line3D;
 ecs_entity_t prefab_temporary_line3D;
 
 ecs_entity_t spawn_prefab_line3D(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab()
     zox_prefab_name("prefab_line3D")
     zox_add_tag(e, Line3D)
     zox_set(e, LineData3D, { { 0, 0, 0, 0, 0, 0 } })
     zox_set(e, LineThickness, { 1 })
     zox_set(e, ColorRGB, { { 22, 122, 44 } })
-    ecs_defer_end(world);
     #ifdef zoxel_debug_prefabs
         zoxel_log("spawn_prefab line3D [%lu].\n", (long int) (e));
     #endif

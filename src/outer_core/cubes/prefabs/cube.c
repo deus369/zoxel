@@ -1,7 +1,6 @@
 ecs_entity_t prefab_cube;
 
 ecs_entity_t spawn_prefab_cube(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab()
     zox_prefab_name("prefab_cube")
     #ifdef zoxel_transforms3D
@@ -19,7 +18,6 @@ ecs_entity_t spawn_prefab_cube(ecs_world_t *world) {
         add_gpu_mesh(world, e);
         add_gpu_material(world, e);
     #endif
-    ecs_defer_end(world);
     prefab_cube = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log("spawn_prefab custom_mesh [%lu].\n", (long int) (e));

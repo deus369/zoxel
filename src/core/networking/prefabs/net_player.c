@@ -1,7 +1,6 @@
 ecs_entity_t prefab_net_player;
 
 ecs_entity_t spawn_prefab_net_player(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab()
     zox_prefab_name("prefab_net_player")
     zox_add_tag(e, NetPlayer)
@@ -12,7 +11,6 @@ ecs_entity_t spawn_prefab_net_player(ecs_world_t *world) {
     zox_add(e, TargetNetAddress)
     zox_add(e, TargetNetPort)
     zox_set(e, SocketLink, { -1 })
-    ecs_defer_end(world);
     prefab_net_player = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log(" > spawned prefab net_player [%lu].\n", (long int) (e));

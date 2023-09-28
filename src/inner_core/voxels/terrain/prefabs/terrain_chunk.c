@@ -1,7 +1,6 @@
 ecs_entity_t prefab_terrain_chunk;
 
 ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, int3 size) {
-    ecs_defer_begin(world);
     zox_prefab_child(prefab_chunk)
     zox_prefab_name("prefab_terrain_chunk")
     zox_set(e, ChunkSize, { size })
@@ -11,7 +10,6 @@ ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, int3 size) {
         add_gpu_uvs(world, e);
         // ecs_remove(world, e, MaterialGPULink);
     }
-    ecs_defer_end(world);
     prefab_terrain_chunk = e;
     return e;
 }

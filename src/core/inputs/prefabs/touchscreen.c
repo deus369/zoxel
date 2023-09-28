@@ -4,14 +4,12 @@ const unsigned char fingers_count = 1;
 const unsigned char virtual_joysticks_count = 1;
 
 ecs_entity_t spawn_prefab_touchscreen(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab()
     zox_prefab_name("prefab_touchscreen")
     zox_add_tag(e, Device)
     zox_add_tag(e, Touchscreen)
     zox_set(e, DeviceLayout, { 0 })
     zox_set(e, Children, { 0, NULL })
-    ecs_defer_end(world);
     prefab_touchscreen = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log(" > spawn_prefab touchscreen [%lu].\n", (long int) (e));

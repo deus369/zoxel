@@ -5,7 +5,6 @@ unsigned char get_chunk_division(int3 camera_position, int3 chunk_position) {
 }
 
 ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size) {
-    ecs_defer_begin(world);
     zox_prefab()
     zox_prefab_name("prefab_terrain_chunk_octree")
     zox_add_tag(e, TerrainChunk)
@@ -32,7 +31,6 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size) {
         add_gpu_colors(world, e);
     }
     zox_set_only(e, Scale1D, { 0.5f })
-    ecs_defer_end(world);
     prefab_terrain_chunk_octree = e;
     return e;
 }

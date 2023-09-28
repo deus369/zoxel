@@ -3,11 +3,9 @@
 ecs_entity_t prefab_noise_chunk;
 
 ecs_entity_t spawn_prefab_noise_chunk(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab_child(prefab_chunk)
     zox_prefab_name("prefab_noise_chunk")
     zox_add_tag(e, NoiseChunk)
-    ecs_defer_end(world);
     prefab_noise_chunk = e;
     return e;
 }

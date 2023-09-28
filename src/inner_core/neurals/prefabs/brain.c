@@ -3,12 +3,10 @@ extern ecs_entity_t spawn_connection(ecs_world_t *world, ecs_entity_t neuronA, e
 ecs_entity_t prefab_brain;
 
 ecs_entity_t spawn_prefab_brain(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab()
     zox_prefab_name("prefab_brain")
     zox_add_tag(e, Brain)
     zox_add(e, Children)
-    ecs_defer_end(world);
     prefab_brain = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log("spawn_prefab brain [%lu].\n", (long int) (e));

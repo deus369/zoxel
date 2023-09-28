@@ -1,7 +1,6 @@
 ecs_entity_t prefab_base_camera;
 
 ecs_entity_t spawn_camera_base_prefab(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab()
     zox_prefab_name("prefab_base_camera")
     zox_add_tag(e, Camera)
@@ -20,7 +19,6 @@ ecs_entity_t spawn_camera_base_prefab(ecs_world_t *world) {
     zox_set(e, CanFreeRoam, { 0 })
     zox_set(e, FreeRoam, { 0 }) // newer
     zox_set(e, CameraMode, { 0 })
-    ecs_defer_end(world);
     prefab_base_camera = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log(" + spawned prefab camera_base [%lu].\n", (long int) (e));

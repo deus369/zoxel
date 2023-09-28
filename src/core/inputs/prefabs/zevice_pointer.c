@@ -1,7 +1,6 @@
 ecs_entity_t prefab_zevice_pointer;
 
 ecs_entity_t spawn_prefab_zevice_pointer(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab()
     zox_prefab_name("prefab_zevice_pointer")
     zox_add_tag(e, Zevice)
@@ -12,7 +11,6 @@ ecs_entity_t spawn_prefab_zevice_pointer(ecs_world_t *world) {
     zox_set(e, ZevicePointerDelta, { int2_zero })
     zox_set(e, DeviceButtonType, { 0 })
     zox_set(e, RealButtonIndex, { 0 })
-    ecs_defer_end(world);
     prefab_zevice_pointer = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log(" > spawn_prefab zevice_pointer [%lu].\n", (long int) (e));

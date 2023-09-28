@@ -2,7 +2,6 @@ ecs_entity_t prefab_vox;
 const unsigned char max_octree_depth_character = 5;
 
 ecs_entity_t spawn_prefab_vox(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab_child(prefab_chunk)
     zox_prefab_name("prefab_vox")
     add_chunk_colors(world, e);
@@ -12,13 +11,6 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world) {
     zox_set(e, ChunkDirty, { 1 })
     zox_set(e, MeshDirty, { 0 })
     add_gpu_colors(world, e);
-    // this was set in prefab_chunk settings
-    /*ChunkOctree *chunkOctree = ecs_get_mut(world, e, ChunkOctree);
-    close_ChunkOctree(chunkOctree);
-    fill_new_octree(chunkOctree, 0, max_octree_depth_character);
-    ecs_modified(world, e, ChunkOctree);*/
-    // initialize_new_chunk_octree(world, e, max_octree_depth_character);
-    ecs_defer_end(world);
     prefab_vox = e;
     return e;
 }

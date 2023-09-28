@@ -29,7 +29,6 @@
 // #define zoxel_start_with_debug_ui
 
 // #define zoxel_mouse_emulate_touch
-// #define zox_visualize_sounds
 // #define zoxel_test_networking
 
 // #define zoxel_catch_opengl_errors

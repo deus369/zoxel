@@ -8,7 +8,7 @@ void generate_texture_fill(TextureData* textureData, const int2 size, const colo
 
 void FillTextureSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(it->ctx, NULL)) return;
-    ecs_world_t *world = it->world;
+    // ecs_world_t *world = it->world;
     TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 2);
     TextureData *textures = ecs_field(it, TextureData, 3);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 4);
@@ -19,7 +19,7 @@ void FillTextureSystem(ecs_iter_t *it) {
         if (!generateTexture->value) continue;
         TextureDirty *textureDirty = &textureDirtys[i];
         if (textureDirty->value) continue;
-        ecs_entity_t e = it->entities[i];
+        // ecs_entity_t e = it->entities[i];
         const TextureSize *textureSize = &textureSizes[i];
         TextureData *textureData = &textures[i];
         const Color *color2 = &colors[i];

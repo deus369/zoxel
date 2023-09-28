@@ -16,11 +16,9 @@
     ecs_entity_t prefab_user_##name;\
     \
     void spawn_prefab_user_##name(ecs_world_t *world) {\
-        ecs_defer_begin(world);\
         zox_prefab()\
         zox_prefab_name("prefab_user_"label)\
         zox_add_tag(e, User##Name)\
-        ecs_defer_end(world);\
         prefab_user_##name = e;\
     }\
     \

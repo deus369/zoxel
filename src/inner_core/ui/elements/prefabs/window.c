@@ -2,7 +2,6 @@ extern ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int
 ecs_entity_t prefab_window;
 
 ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab()
     zox_prefab_name("prefab_window")
     zox_add_tag(e, Window)
@@ -12,7 +11,6 @@ ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     zox_set(e, Color, {{ 66, 35, 25, 255 }})
     zox_set(e, Children, { 0, NULL })
     add_ui_plus_components(world, e);
-    ecs_defer_end(world);
     prefab_window = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log("spawn_prefab window [%lu].\n", (long int) (e));

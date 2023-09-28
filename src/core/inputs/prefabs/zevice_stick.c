@@ -4,7 +4,6 @@
 ecs_entity_t prefab_device_stick;
 
 ecs_entity_t spawn_prefab_device_stick(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab()
     zox_prefab_name("prefab_device_stick")
     zox_add_tag(e, Zevice)
@@ -12,7 +11,6 @@ ecs_entity_t spawn_prefab_device_stick(ecs_world_t *world) {
     zox_set(e, ZeviceStick, { float2_zero })
     zox_set(e, DeviceButtonType, { 0 })
     zox_set(e, RealButtonIndex, { 0 })
-    ecs_defer_end(world);
     prefab_device_stick = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log(" > spawn_prefab device_stick [%lu].\n", (long int) (e));

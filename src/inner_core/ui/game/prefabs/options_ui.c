@@ -2,11 +2,9 @@
 ecs_entity_t options_ui_prefab;
 
 ecs_entity_t spawn_prefab_options_ui(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab_child(prefab_window)
     zox_prefab_name("prefab_options_ui")
-    zox_add_tag(e, PauseUI);
-    ecs_defer_end(world);
+    // zox_add_tag(e, OptionsUI);
     options_ui_prefab = e;
     return e;
 }
@@ -31,7 +29,6 @@ ecs_entity_t spawn_options_ui(ecs_world_t *world, const char *header_label, int2
         options_button_position.y = -font_size;
     #endif
     header_position.y = font_size / 2 + header_margins / 2;
-    ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, options_ui_prefab);
     zox_name("options_ui")
     float2 position2D = initialize_ui_components(world, e, main_canvas, position, window_size, anchor, 0, ecs_get(world, main_canvas, PixelSize)->value);
@@ -72,7 +69,6 @@ ecs_entity_t spawn_options_ui(ecs_world_t *world, const char *header_label, int2
     zox_add_tag(children.value[3], ExitGameButton);
     #endif
     ecs_set(world, e, Children, { children.length, children.value });
-    ecs_defer_end(world);
     #ifdef zoxel_debug_spawns
     zoxel_log("Spawned main menu [%lu]\n", (long int) e);
     #endif

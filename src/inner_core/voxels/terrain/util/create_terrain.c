@@ -14,7 +14,6 @@ int get_chunk_index_2(int i, int j, int k, int rows, int vertical) {
 }
 
 ecs_entity_t create_terrain(ecs_world_t *world, int3 center_position) {
-    ecs_defer_begin(world);
     //zoxel_log(" > spawning terrain [%lu] at [%ix%ix%i]\n", camera, camera_position.x, camera_position.y, camera_position.z);
     //zoxel_log("     - at [%fx%fx%f]\n", camera_position3D->value.x, camera_position3D->value.y, camera_position3D->value.z);
     #ifdef zox_time_create_terrain
@@ -130,7 +129,6 @@ ecs_entity_t create_terrain(ecs_world_t *world, int3 center_position) {
     #ifdef zox_time_create_terrain
         end_timing_absolute("    - create_terrain")
     #endif
-    ecs_defer_end(world);
     return terrain_world;
 }
 

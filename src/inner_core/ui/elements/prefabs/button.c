@@ -1,7 +1,6 @@
 ecs_entity_t prefab_button;
 
 ecs_entity_t spawn_prefab_button(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab()
     zox_prefab_name("prefab_button")
     zox_add_tag(e, Button)
@@ -16,7 +15,6 @@ ecs_entity_t spawn_prefab_button(ecs_world_t *world) {
     add_ui_plus_components(world, e);
     zox_set(e, SelectState, { 0 })
     zox_set(e, ClickState, { 0 })
-    ecs_defer_end(world);
     prefab_button = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log("spawn_prefab button [%lu].\n", (long int) (e));

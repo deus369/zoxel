@@ -84,10 +84,8 @@ ecs_set_hooks(world, name, {\
         if (new_length == 0) {\
             clear_memory_component(component);\
         } else if (component->value) {\
-            clear_memory_component(component);\
-            initialize_memory_component(component, data_type, new_length);\
-            /*component->length = new_length;*/\
-            /*component->value = realloc(component->value, component->length * sizeof(data_type));*/\
+            component->length = new_length;\
+            component->value = realloc(component->value, component->length * sizeof(data_type));\
         } else {\
             initialize_memory_component(component, data_type, new_length);\
         }\

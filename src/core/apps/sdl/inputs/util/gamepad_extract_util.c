@@ -177,7 +177,6 @@ gamepad->right_stick_push.is_pressed = SDL_JoystickGetButton(joystick, 10);*/
 //if (axisValue != 0)
 //    zoxel_log(" > joystick [%i]: %i\n", index, axisValue);
 // zoxel_log("+ checking joystick!\n");
-// ecs_defer_begin(world);
 // Read joystick input
 // Gamepad gamepad = { }
 // left joystick axis

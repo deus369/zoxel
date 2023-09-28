@@ -3,7 +3,6 @@ ecs_entity_t main_player;
 ecs_entity_t local_player;
 
 ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab()
     zox_prefab_name("prefab_player")
     zox_add_tag(e, Player)
@@ -19,7 +18,6 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     zox_set(e, CharacterLink, { 0 })
     zox_set(e, CameraLink, { 0 })
     zox_set(e, ElementLinks, { 0, NULL })
-    ecs_defer_end(world);
     prefab_player = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log(" + spawned prefab player [%lu].\n", (long int) (e));

@@ -3,7 +3,6 @@ ecs_entity_t prefab_skybox;
 ecs_entity_t skybox;
 
 ecs_entity_t spawn_prefab_skybox(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab()
     zox_prefab_name("prefab_skybox")
     #ifdef zoxel_transforms3D
@@ -25,7 +24,6 @@ ecs_entity_t spawn_prefab_skybox(ecs_world_t *world) {
     #endif
     zox_set_only(e, Position3D, { float3_zero })
     zox_set_only(e, Brightness, { 1 })
-    ecs_defer_end(world);
     prefab_skybox = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log(" + spawned prefab skybox [%lu].\n", (long int) (e));

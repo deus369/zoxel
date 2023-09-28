@@ -1,7 +1,6 @@
 ecs_entity_t prefab_animating_chunk;
 
 ecs_entity_t spawn_prefab_animating_chunk(ecs_world_t *world) {
-    ecs_defer_begin(world);
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_noise_chunk);
     ecs_add_id(world, e, EcsPrefab);
     add_chunk_colors(world, e);
@@ -12,12 +11,10 @@ ecs_entity_t spawn_prefab_animating_chunk(ecs_world_t *world) {
     add_gpu_colors(world, e);
     // testing: set colors
     ColorRGBs *colorRGBs = ecs_get_mut(world, e, ColorRGBs);
-    re_initialize_memory_component(colorRGBs, color_rgb, 8);
+    re_initialize_memory_component(colorRGBs, color_rgb, 8)
     for (int i = 0; i < 8; i++)
         colorRGBs->value[i] = (color_rgb) {155 - (rand() % 60), 225 - (rand() % 60), 255 - (rand() % 60) };
     ecs_modified(world, e, ColorRGBs);
-    // end
-    ecs_defer_end(world);
     prefab_animating_chunk = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log("spawn_prefab animating_chunk [%lu].\n", (long int) (e));

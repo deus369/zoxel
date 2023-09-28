@@ -39,7 +39,12 @@ void SoundGenerateSystem(ecs_iter_t *it) {
         float attack = sound_attack_multiplier * sound_time_length; //  0.02f * sound_time_length;
         float dampen = sound_dampen_multiplier * sound_time_length;
         int total_sound_samples = (int) (sound_sample_rate * sound_time_length);
+        generateSound->value = 0;
         re_initialize_memory_component(soundData, float, total_sound_samples)
+        /*if (soundData->value == NULL) {
+            zox_log("   ! entity [%lu] failed to alloc sound data [%i]\n", it->entities[i], total_sound_samples)
+            continue;
+        }*/
         for (int j = 0; j < total_sound_samples; j++) {
             float time = (float) (j / sample_rate_f);
             float value = 0.0f;
@@ -60,7 +65,6 @@ void SoundGenerateSystem(ecs_iter_t *it) {
             // value = float_clamp(value, -sound_bounds, sound_bounds);
             soundData->value[j] = value;
         }
-        generateSound->value = 0;
         soundDirty->value = 1;
         #ifdef zoxel_log_sound_generation
             zoxel_log(" > sound generated: instrument [%i] frequency [%f] length [%f]\n", instrumentType->value, soundFrequency->value, soundLength->value);

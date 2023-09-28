@@ -1,7 +1,6 @@
 ecs_entity_t prefab_chunk;
 
 ecs_entity_t spawn_prefab_chunk(ecs_world_t *world) {
-    ecs_defer_begin(world);
     zox_prefab()
     #ifdef zoxel_transforms3D
         add_transform3Ds(world, e);
@@ -18,8 +17,7 @@ ecs_entity_t spawn_prefab_chunk(ecs_world_t *world) {
         zox_add(e, MeshColorRGBs)
         zox_add(e, ColorsGPULink)
         add_gpu_mesh(world, e);
-    }
-    ecs_defer_end(world);
+    }   
     prefab_chunk = e;
     return e;
 }
