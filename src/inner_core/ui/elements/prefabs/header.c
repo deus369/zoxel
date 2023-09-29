@@ -39,7 +39,7 @@ ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, int2 position
     int children_length = 1;
     if (is_close_button) children_length++;
     Children *children = ecs_get_mut(world, e, Children);
-    initialize_memory_component(children, ecs_entity_t, children_length)
+    resize_memory_component(Children, children, ecs_entity_t, children_length)
     children->value[0] = spawn_zext(world, zext_prefab, e, zext_position, zext_anchor, int2_to_byte2(padding), text, font_size, 0, layer + 1, position2D, size);
     if (is_close_button) {
         ecs_entity_t close_button = spawn_button(world, e, (int2) { - (font_size / 2) - header_margins / 2, 0 }, padding, (float2) { 1.0f, 0.5f }, "X", font_size, layer + 1, position2D, size, canvas_size);

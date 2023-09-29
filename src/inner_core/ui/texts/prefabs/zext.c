@@ -18,17 +18,17 @@ ecs_entity_t spawn_zext_prefab(ecs_world_t *world) {
     return e;
 }
 
-unsigned char is_zext(ZextData *zext_data, const char* text) {
+unsigned char is_zext(ZextData *zextData, const char* text) {
     unsigned char text_length = strlen(text);
-    if (zext_data->length != text_length) return 0;
-    for (int i = 0; i < text_length; i++) if (convert_ascii(text[i]) != zext_data->value[i]) return 0;
+    if (zextData->length != text_length) return 0;
+    for (int i = 0; i < text_length; i++) if (convert_ascii(text[i]) != zextData->value[i]) return 0;
     return 1;
 }
 
-void set_zext(ZextData *zext_data, const char* text) {
+void set_zext(ZextData *zextData, const char* text) {
     unsigned char text_length = strlen(text);
-    if (zext_data->length != text_length) re_initialize_memory_component(zext_data, unsigned char, text_length)
-    for (unsigned char i = 0; i < text_length; i++) zext_data->value[i] = convert_ascii(text[i]);
+    if (zextData->length != text_length) resize_memory_component(ZextData, zextData, unsigned char, text_length)
+    for (unsigned char i = 0; i < text_length; i++) zextData->value[i] = convert_ascii(text[i]);
 }
 
 ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t parent, int2 position, float2 anchor, byte2 padding, const char* text, int font_size, unsigned char alignment, unsigned char layer, float2 parent_position2D, int2 parent_pixel_size) {
@@ -44,8 +44,8 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t pa
     unsigned char zigel_layer = layer + 1;
     ZextData *zextData = ecs_get_mut(world, e, ZextData);
     Children *children = ecs_get_mut(world, e, Children);
-    initialize_memory_component(zextData, unsigned char, textLength)
-    initialize_memory_component(children, ecs_entity_t, textLength)
+    resize_memory_component(ZextData, zextData, unsigned char, textLength)
+    resize_memory_component(Children, children, ecs_entity_t, textLength)
     for (int i = 0; i < textLength; i++) {
         unsigned char zigel_index = convert_ascii(text[i]);
         zextData->value[i] = zigel_index;

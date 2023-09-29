@@ -23,7 +23,7 @@ void FillTextureSystem(ecs_iter_t *it) {
         const TextureSize *textureSize = &textureSizes[i];
         TextureData *textureData = &textures[i];
         const Color *color2 = &colors[i];
-        re_initialize_memory_component(textureData, color, textureSize->value.x * textureSize->value.y)
+        resize_memory_component(TextureData, textureData, color, textureSize->value.x * textureSize->value.y)
         generate_texture_fill(textureData, textureSize->value, color2->value); // (color) { 255, 0, 0 }); // 
         generateTexture->value = 0;
         textureDirty->value = 1; // actually this only gets uploaded if has GPUTextureLink!

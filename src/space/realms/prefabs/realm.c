@@ -18,8 +18,9 @@ ecs_entity_t spawn_realm(ecs_world_t *world) {
     zox_instance(prefab_realm)
     zox_name("realm")
     // spawn voxels
+    // todo: rename VoxelLinks to Voxels for realm, signifying parent relationship
     VoxelLinks *voxelLinks = ecs_get_mut(world, e, VoxelLinks);
-    initialize_memory_component(voxelLinks, ecs_entity_t, realm_voxels)
+    resize_memory_component(VoxelLinks, voxelLinks, ecs_entity_t, realm_voxels)
     for (unsigned char i = 0; i < voxelLinks->length; i++) {
         ecs_entity_t voxel_entity = spawn_voxel(world, i);
         voxelLinks->value[i] = voxel_entity;

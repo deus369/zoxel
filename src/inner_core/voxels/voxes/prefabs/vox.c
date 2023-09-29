@@ -27,9 +27,8 @@ void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, const vox_file *v
         int colors_length = vox->palette.values_length;
         ColorRGBs *colorRGBs = ecs_get_mut(world, e, ColorRGBs);
         ChunkOctree *chunkOctree = ecs_get_mut(world, e, ChunkOctree);
-        initialize_memory_component(colorRGBs, color_rgb, colors_length)
+        resize_memory_component(ColorRGBs, colorRGBs, color_rgb, colors_length)
         memcpy(colorRGBs->value, vox->palette.values_rgb, colors_length * sizeof(color_rgb));
-        // initialize_memory_component(colorRGBs, color_rgb, colors_length)
         // ChunkOctree chunkOctree = { };
         fill_new_octree(chunkOctree, 0, target_depth);
         byte2 set_octree_data = (byte2) { 1, max_octree_depth_character };

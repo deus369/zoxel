@@ -101,7 +101,7 @@ void FrameTextureSystem(ecs_iter_t *it) {
         const FrameCorner *frameEdge = &frameEdges[i];
         TextureData *textureData = &textures[i];
         int length = textureSize->value.x * textureSize->value.y;
-        re_initialize_memory_component(textureData, color, length)
+        resize_memory_component(TextureData, textureData, color, length)
         generate_frame_texture(textureData, textureSize, color2, outlineThickness->value, frameEdge->value);
         textureDirty->value = 1;
         generateTexture->value = 0;

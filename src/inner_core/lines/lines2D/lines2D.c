@@ -3,8 +3,8 @@
 
 zox_declare_tag(Line2D)
 zox_declare_tag(FrameDebugLine)
-zox_component(LineData2D, float4)     //! The two points in a line2D.
-zox_component(LinePosition2D, int4)  //! The two ui points in a line2D
+zox_component(LineData2D, float4)       // The two points in a line2D
+zox_component(LinePosition2D, int4)     // The two ui points in a line2D
 zox_component(LineLocalPosition2D, int4)
 
 int4 get_new_line_position(float2 real_position2D, float2 canvas_size_f, float aspect_ratio, int2 parent_position, int4 local_position) {
@@ -77,18 +77,9 @@ zox_define_component(LineData2D)
 zox_define_component(LinePosition2D)
 zox_define_component(LineLocalPosition2D)
 zox_filter(line2Ds_query, [none] Line2D, [in] LinePosition2D, [none] CanvasLink, [none] LineData2D)
-zox_system_ctx(Line2DElementSystem, EcsPreStore, line2Ds_query, [none] Line2D, [in] LinePosition2D, [in] CanvasLink, [out] LineData2D)
-if (!headless) {
-    // todo: zox_render_system(name, ...)
-    zox_render2D_system(Line2DRenderSystem, [none] Line2D, [in] LineData2D, [in] LineThickness, [in] Color, [in] Layer2D)
-    //zox_system_1(Line2DRenderSystem, 0, [none] Line2D, [in] LineData2D, [in] LineThickness, [in] Color, [in] Layer2D)
-    //add_to_render2D_loop(ecs_id(Line2DRenderSystem));
-}
 zox_system(FrameDebugSystem, EcsOnUpdate, [none] FrameDebugLine, [in] ChildIndex, [out] LineLocalPosition2D)
+zox_system_ctx(Line2DElementSystem, EcsPreStore, line2Ds_query, [none] Line2D, [in] LinePosition2D, [in] CanvasLink, [out] LineData2D)
+if (!headless) zox_render2D_system(Line2DRenderSystem, [none] Line2D, [in] LineData2D, [in] LineThickness, [in] Color, [in] Layer2D)
 zoxel_end_module(Lines2D)
-
-// testing
-/**/
-// spawn_ui_line2D(world, main_canvas, (int2) { 0, 0 }, (int2) { 1920, 1080 }, 6.0f, 0);
 
 #endif

@@ -17,7 +17,7 @@ ecs_entity_t spawn_font(ecs_world_t *world, const byte2 points[], unsigned char 
     // zox_clone(font_prefab)
     zox_name("font")
     FontData *fontData = ecs_get_mut(world, e, FontData);
-    initialize_memory_component(fontData, byte2, length)
+    resize_memory_component(FontData, fontData, byte2, length)
     memcpy(fontData->value, points, length * sizeof(byte2));
     ecs_modified(world, e, FontData);
     return e;

@@ -30,7 +30,7 @@ void add_chunk_octree(ecs_world_t *world, ecs_entity_t e, int3 size) {
     zox_set(e, VoxLink, { 0 })
     zox_set(e, ChunkNeighbors, { 0, NULL })
     ChunkNeighbors *chunkNeighbors = ecs_get_mut(world, e, ChunkNeighbors);
-    initialize_memory_component(chunkNeighbors, ecs_entity_t, 6)
+    resize_memory_component(ChunkNeighbors, chunkNeighbors, ecs_entity_t, 6)
     for (unsigned char i = 0; i < 6; i++) chunkNeighbors->value[i] = 0;
     ecs_modified(world, e, ChunkNeighbors);
 }

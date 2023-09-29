@@ -20,7 +20,7 @@ ecs_entity_t spawn_brain(ecs_world_t *world) {
     int connections_length = (neurons_length - 1);
     int length = (neurons_length + connections_length) * vertical_layers;
     Children *children = ecs_get_mut(world, e, Children);
-    initialize_memory_component(children, ecs_entity_t, length)
+    resize_memory_component(Children, children, ecs_entity_t, length)
     int k = 0;
     for (int layer_count = 0; layer_count < vertical_layers; layer_count++) {
         int neuron_start_index = k;

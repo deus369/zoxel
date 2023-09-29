@@ -100,8 +100,8 @@ void spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, Children *children
         #endif
         for (int i = new_children_length; i < old_children_length; i++) zox_delete(old_children[i])
     }
-    if (!old_children && new_children) memorys_allocated++;
-    else if (old_children && !new_children) memorys_allocated--;
+    if (!old_children && new_children) total_memorys_allocated++;
+    else if (old_children && !new_children) total_memorys_allocated--;
     if (old_children) free(old_children);
     children->value = new_children;
     children->length = new_children_length;

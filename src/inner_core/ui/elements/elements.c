@@ -7,6 +7,7 @@ zox_declare_tag(Button)           //! A generic ui button for clicking.
 zox_declare_tag(Window)           //! A ui window.
 zox_declare_tag(Header)           //! A ui window header.
 zox_declare_tag(CloseButton)      //! A ui window close button
+zox_declare_tag(Statbar)
 // prefabs
 #include "prefabs/label.c"
 #include "prefabs/label_background.c"
@@ -41,6 +42,7 @@ zox_define_tag(Button)
 zox_define_tag(Window)
 zox_define_tag(Header)
 zox_define_tag(CloseButton)
+zox_define_tag(Statbar)
 // system defines
 zox_system(ElementDragSystem, EcsPostLoad, [none] Header, [in] DragableState, [in] DraggingDelta, [in] ParentLink) // move this to core
 zox_system(ButtonClickSoundSystem, EcsPostUpdate, [none] Button, [in] ClickState) // move this to core

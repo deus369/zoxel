@@ -30,7 +30,7 @@ ecs_entity_t spawn_terrain_chunk(ecs_world_t *world, ecs_entity_t prefab, int3 c
 void set_chunk_neighbors(ecs_world_t *world, ecs_entity_t e,
     ecs_entity_t chunk_left, ecs_entity_t chunk_right, ecs_entity_t chunk_back, ecs_entity_t chunk_front) {
     ChunkNeighbors *chunkNeighbors = ecs_get_mut(world, e, ChunkNeighbors);
-    initialize_memory_component(chunkNeighbors, ecs_entity_t, 4)
+    resize_memory_component(ChunkNeighbors, chunkNeighbors, ecs_entity_t, 4)
     chunkNeighbors->value[0] = chunk_left;
     chunkNeighbors->value[1] = chunk_right;
     chunkNeighbors->value[2] = chunk_back;
@@ -40,7 +40,7 @@ void set_chunk_neighbors(ecs_world_t *world, ecs_entity_t e,
 
 void set_chunk_neighbors_six_directions(ecs_world_t *world, ecs_entity_t e, ecs_entity_t chunk_left, ecs_entity_t chunk_right, ecs_entity_t chunk_down, ecs_entity_t chunk_up, ecs_entity_t chunk_back, ecs_entity_t chunk_front) {
     ChunkNeighbors *chunkNeighbors = ecs_get_mut(world, e, ChunkNeighbors);
-    initialize_memory_component(chunkNeighbors, ecs_entity_t, 6)
+    resize_memory_component(ChunkNeighbors, chunkNeighbors, ecs_entity_t, 6)
     chunkNeighbors->value[0] = chunk_left;
     chunkNeighbors->value[1] = chunk_right;
     chunkNeighbors->value[2] = chunk_down;

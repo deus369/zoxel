@@ -28,7 +28,7 @@ ecs_entity_t spawn_window(ecs_world_t *world, const char *header_label, int2 pix
     zox_name("window")
     float2 real_position2D = initialize_ui_components(world, e, canvas, pixel_position2D, pixel_size, anchor, layer, canvas_size);
     Children *children = ecs_get_mut(world, e, Children);
-    initialize_memory_component(children, ecs_entity_t, 1)
+    resize_memory_component(Children, children, ecs_entity_t, 1)
     children->value[0] = spawn_header(world, e, (int2) { 0, - font_size / 2 - header_margins / 2 }, (int2) { pixel_size.x, font_size + header_margins}, (float2) { 0.5f, 1.0f }, header_label, font_size, header_margins, header_layer, real_position2D, pixel_size, 1, canvas_size);
     //color edge_color = (color) { 33, 155, 155, 155 };
     //int edge_size = 4;

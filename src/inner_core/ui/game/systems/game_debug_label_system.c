@@ -1,12 +1,12 @@
-// extern int characters_count;
+extern int get_terrain_chunks_count(ecs_world_t *world);
+extern int get_characters_count(ecs_world_t *world);
 #define zox_debug_ui_memorys_allocated
-// #define zox_debug_ui_characters
+#define zox_debug_ui_characters
+#define zox_debug_ui_statbars
 // #define zox_debug_ui_terrain_chunks
 // #define zox_debug_ui_node_memory
 // #define zox_debug_ui_zexts
 // #define zox_debug_ui_device_mode
-extern int get_terrain_chunks_count(ecs_world_t *world);
-extern int get_characters_count(ecs_world_t *world);
 // todo: sometimes it removes a memorys when spawning/unspawning this label
 
 void GameDebugLabelSystem(ecs_iter_t *it) {
@@ -26,13 +26,16 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         // snprintf(buffer, sizeof(buffer), "debug ui\nline 2");
         buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[debug]");
         #ifdef zox_debug_ui_memorys_allocated
-            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " memorys [%i]", memorys_allocated);
+            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " memorys [%i]", total_memorys_allocated);
         #endif
         #ifdef zox_debug_ui_terrain_chunks
             buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " terrain [%i]", get_terrain_chunks_count(it->world));
         #endif
         #ifdef zox_debug_ui_characters
             buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " characters [%i]", get_characters_count(it->world));
+        #endif
+        #ifdef zox_debug_ui_statbars
+            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " statbars [%i]", get_statbars_count(it->world));
         #endif
         #ifdef zox_debug_ui_zexts
             buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " zexts [%i]", get_zexts_count(it->world));
@@ -55,7 +58,7 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         if (!is_zext(zextData, buffer)) {
             set_zext(zextData, buffer);
             zextDirty->value = 1;
-            zoxel_log(" > %s\n", buffer);
+            // zoxel_log(" > %s\n", buffer);
         }
     }
 } zox_declare_system(GameDebugLabelSystem)

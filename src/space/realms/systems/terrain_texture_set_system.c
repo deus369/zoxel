@@ -16,7 +16,7 @@ void TerrainTextureSetSystem(ecs_iter_t *it) {
         // zoxel_log(" + tilemap length %i\n", tilemap_length);
         tilemapSize->value.x = tilemap_length;
         tilemapSize->value.y = tilemap_length;
-        re_initialize_memory_component(textureLinks, ecs_entity_t, voxelLinks->length)
+        resize_memory_component(TextureLinks, textureLinks, ecs_entity_t, voxelLinks->length)
         for (int j = 0; j < voxelLinks->length; j++) {
             ecs_entity_t voxel_entity = voxelLinks->value[j];
             const Textures *voxel_texture_links = ecs_get(world, voxel_entity, Textures);

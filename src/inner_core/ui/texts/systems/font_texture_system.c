@@ -98,7 +98,7 @@ void FontTextureSystem(ecs_iter_t *it) {
         ecs_entity_t zigel_font_entity = font_style_children->value[zigelIndex->value];
         const FontData *fontData = ecs_get(world, zigel_font_entity, FontData);
         int newLength = textureSize->value.x * textureSize->value.y;
-        re_initialize_memory_component(textureData, color, newLength)
+        resize_memory_component(TextureData, textureData, color, newLength)
         generate_font_texture(textureData, textureSize, fontData, color2);
         textureDirty->value = 1;
         generateTexture->value = 0;

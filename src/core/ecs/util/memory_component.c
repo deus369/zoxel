@@ -1,8 +1,9 @@
 // todo: catch these going up and down, we loose 200ish on end game
 // todo: mesh indicies also, catch that
-int memorys_allocated = 0;
+int total_memorys_allocated = 0;
 
 #define zox_memory_component(name, type)\
+int name##_##memorys_allocated = 0;\
 typedef struct {\
     int length;\
     type *value;\
@@ -15,7 +16,8 @@ void dispose##_##name(name *ptr) {\
     if (!ptr->value) return;\
     free(ptr->value);\
     zero##_##name(ptr);\
-    memorys_allocated--;\
+    name##_##memorys_allocated--;\
+    total_memorys_allocated--;\
 }\
 ECS_CTOR(name, ptr, { zero##_##name(ptr); })\
 ECS_DTOR(name, ptr, { dispose##_##name(ptr); })\
@@ -34,9 +36,11 @@ ECS_COPY(name, dst, src, {\
         if (dst->value) dispose##_##name(dst);\
         dst->length = src->length;\
         dst->value = memcpy(malloc(memory_length), src->value, memory_length);\
-        memorys_allocated++;\
+        total_memorys_allocated++;\
+        name##_##memorys_allocated++;\
     }\
 })\
+
 
 #define zox_define_memory_component2(name, ...)\
 zox_define_component(name)\
@@ -48,37 +52,48 @@ ecs_set_hooks(world, name, {\
 });
 #define zox_define_memory_component(name) zox_define_memory_component2(name, [out] name)
 
+#define clear_memory_component(name, component) dispose##_##name(component);
+
+#define on_memory_component_created(component, name) {\
+    if (component->value) {\
+        total_memorys_allocated++;\
+        name##_##memorys_allocated++;\
+    }\
+}
+
+/*
 #define clear_memory_component(component) {\
     if (component->value) {\
         free(component->value);\
         component->value = NULL;\
         component->length = 0;\
-        memorys_allocated--;\
-        /*zox_logg("      memorys decreased (clear_memory)\n")*/\
+        total_memorys_allocated--;\
     }\
 }
+*/
 
-#define initialize_memory_component(component, data_type, new_length) {\
+#define initialize_memory_component(name, component, data_type, new_length) {\
     if (component->length != new_length) {\
         if (new_length == 0) {\
-            clear_memory_component(component);\
+            clear_memory_component(name, component)\
         } else {\
             component->length = new_length;\
             component->value = malloc(component->length * sizeof(data_type));\
-            memorys_allocated++;\
+            total_memorys_allocated++;\
+            name##_##memorys_allocated++;\
         }\
     }\
 }
 
-#define re_initialize_memory_component(component, data_type, new_length) {\
+#define resize_memory_component(name, component, data_type, new_length) {\
     if (component->length != new_length) {\
         if (new_length == 0) {\
-            clear_memory_component(component);\
+            clear_memory_component(name, component)\
         } else if (component->value) {\
             component->length = new_length;\
             component->value = realloc(component->value, component->length * sizeof(data_type));\
         } else {\
-            initialize_memory_component(component, data_type, new_length);\
+            initialize_memory_component(name, component, data_type, new_length);\
         }\
     }\
 }

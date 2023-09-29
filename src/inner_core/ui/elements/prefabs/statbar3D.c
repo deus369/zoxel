@@ -4,11 +4,16 @@ const float2 statbar_front_mesh_scale = (float2) { 0.17f, 0.028f };
 // todo: link to health stat, in health system, update percentge when heath value updates
 // todo: in another system, regen the health value up to max of the stat max
 
+int get_statbars_count(ecs_world_t *world) {
+    return zox_count_entities(world, ecs_id(Statbar));
+}
+
 ecs_entity_t spawn_prefab_statbar3D(ecs_world_t *world) {
     color bar_color = (color) { 66, 12, 12, 0 };
     // color bar_color = (color) { 222, 166, 166, 0 };
     zox_prefab_child(prefab_element_world)
     zox_prefab_name("prefab_statbar")
+    zox_add_tag(e, Statbar)
     zox_set(e, ElementBar, { 1 })
     zox_set(e, ElementBarSize, { float2_zero })
     zox_set(e, Children, { 0, NULL })
@@ -65,7 +70,7 @@ ecs_entity_t spawn_statbar3D(ecs_world_t *world, ecs_entity_t ui_holder, float p
     zox_set_only(e, ElementBarSize, { statbar_front_mesh_scale })
     // spawn child, percentage overlay
     Children *children = ecs_get_mut(world, e, Children);
-    initialize_memory_component(children, ecs_entity_t, 1)
+    resize_memory_component(Children, children, ecs_entity_t, 1)
     children->value[0] = spawn_statbar3D_front(world, ui_holder, e, (float3) { 0, 0, depth_difference });
     ecs_modified(world, e, Children);
     #ifdef zoxel_debug_spawns

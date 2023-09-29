@@ -28,7 +28,7 @@ ecs_entity_t spawn_virtual_joystick(ecs_world_t *world, int2 position) {
     zox_name("virtual_joystick")
     float2 position2D = initialize_ui_components(world, e, main_canvas, position, pixel_size, anchor, 0, canvas_size);
     Children *children = ecs_get_mut(world, e, Children);
-    initialize_memory_component(children, ecs_entity_t, 1)
+    resize_memory_component(Children, children, ecs_entity_t, 1)
     children->value[0] = spawn_virtual_joystick_pointer(world, e, (layer + 1), (int2) { 0, 0 }, (float2) { 0.5f, 0.5f }, position2D, pixel_size, canvas_size);
     ecs_modified(world, e, Children);
     virtual_joystick = e;

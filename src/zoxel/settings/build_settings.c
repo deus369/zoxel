@@ -1,10 +1,13 @@
 // Here? select which zoxel modules I shall use?
 
 // #define zoxel_disable_music
-// #define zox_disable_player_character3D
-// #define zox_disable_characters3D
-// #define voxels_disable_streaming
 // #define zox_extra_destroy_terrain_children
+// this seems to create more triangles and not dispose them properly
+// #define zox_disable_terrain_streaming
+// #define zox_disable_chunk_linking
+// #define zox_disable_characters3D        // disables npcs
+// #define zox_disable_player_character3D  // disables player character
+// #define zox_disable_statbars
 
 // #define zox_disable_set_vox
 // module includes

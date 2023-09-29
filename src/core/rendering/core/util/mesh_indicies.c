@@ -1,6 +1,8 @@
 // a copy of zox_indicies_component in order to track triangles_count
-int triangles_count = 0;
+// todo: debug memory_count per type
+// int triangles_count = 0;
 
+/*
 #define zox_indicies_component(name, type)\
 typedef struct {\
     int length;\
@@ -57,6 +59,7 @@ ecs_set_hooks(world, name, {\
         component->value = NULL;\
         component->length = 0;\
         memorys_allocated--;\
-        /*zox_logg("      memorys decreased (clear_memory)\n")*/\
     }\
 }
+
+*/

@@ -19,7 +19,6 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     zox_set(e, ElementLinks, { 0, NULL})
     if (!headless) ecs_remove(world, e, MaterialGPULink);
     if (!headless) add_gpu_colors(world, e);
-    // initialize_new_chunk_octree(world, e, max_octree_depth_character);
     prefab_character3D = e;
     #ifdef zoxel_debug_prefabs
         zox_log(" > spawn_prefab character3D [%lu].\n", e)
@@ -43,16 +42,18 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vo
     zox_set(user_stat, StatValue, { health })
     zox_set(user_stat, StatValueMax, { max_health })
     UserStatLinks *userStatLinks = ecs_get_mut(world, e, UserStatLinks);
-    initialize_memory_component(userStatLinks, ecs_entity_t, 1)
+    resize_memory_component(UserStatLinks, userStatLinks, ecs_entity_t, 1)
     userStatLinks->value[0] = user_stat;
     ecs_modified(world, e, UserStatLinks);
     // character ui
-    ecs_entity_t statbar = spawn_statbar3D(world, e, health / max_health);
-    zox_set(statbar, UserStatLink, { user_stat })
-    ElementLinks *elementLinks = ecs_get_mut(world, e, ElementLinks);
-    initialize_memory_component(elementLinks, ecs_entity_t, 1)
-    elementLinks->value[0] = statbar;
-    ecs_modified(world, e, ElementLinks);
+    #ifndef zox_disable_statbars
+        ecs_entity_t statbar = spawn_statbar3D(world, e, health / max_health);
+        zox_set(statbar, UserStatLink, { user_stat })
+        ElementLinks *elementLinks = ecs_get_mut(world, e, ElementLinks);
+        resize_memory_component(ElementLinks, elementLinks, ecs_entity_t, 1)
+        elementLinks->value[0] = statbar;
+        ecs_modified(world, e, ElementLinks);
+    #endif
     /// rendering
     zox_set_only(e, RenderLod, { lod })
     spawn_gpu_mesh(world, e);

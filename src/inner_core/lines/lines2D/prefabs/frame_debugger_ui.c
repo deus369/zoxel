@@ -28,7 +28,7 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const char *header_labe
     float2 real_position2D = initialize_ui_components(world, e, canvas, pixel_position2D, pixel_size, anchor, layer, canvas_size);
     int children_count = 1 + lines_count;
     Children *children = ecs_get_mut(world, e, Children);
-    initialize_memory_component(children, ecs_entity_t, children_count)
+    resize_memory_component(Children, children, ecs_entity_t, children_count)
     int2 header_position = (int2) { 0, - font_size / 2 - header_margins / 2 };
     int2 header_size = (int2) { pixel_size.x, font_size + header_margins };
     float2 header_anchor = (float2) { 0.5f, 1.0f };

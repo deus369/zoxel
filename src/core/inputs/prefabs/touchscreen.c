@@ -22,7 +22,7 @@ ecs_entity_t spawn_touchscreen(ecs_world_t *world) {
     zox_name("touchscreen")
     const unsigned char touchscreen_zevice_count = fingers_count + virtual_joysticks_count;
     Children *children = ecs_get_mut(world, e, Children);
-    initialize_memory_component(children, ecs_entity_t, touchscreen_zevice_count)
+    resize_memory_component(Children, children, ecs_entity_t, touchscreen_zevice_count)
     for (unsigned char i = 0; i < fingers_count; i++) children->value[i] = spawn_zevice_pointer(world, i, i);
     for (unsigned char i = fingers_count; i < fingers_count + virtual_joysticks_count; i++) children->value[i] = spawn_device_stick(world, i, i);
     ecs_modified(world, e, Children);

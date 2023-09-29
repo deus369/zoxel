@@ -32,7 +32,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, const char *
     
     int children_length = (1 + list_count);
     Children *children = ecs_get_mut(world, e, Children);
-    initialize_memory_component(children, ecs_entity_t, children_length)
+    resize_memory_component(Children, children, ecs_entity_t, children_length)
     children->value[0] = spawn_header(world, e, header_position, (int2) { window_size.x, font_size + header_margins }, (float2) { 0.5f, 1.0f }, header_label, font_size, header_margins, 1, position2D, window_size, is_close_button, canvas_size);
     for (int i = 0; i < list_count; i++) {
         int2 label_position = (int2) { 0, - i * font_size * 2 };

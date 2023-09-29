@@ -24,7 +24,7 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, unsigned char gamepad_type) {
     zox_name("gamepad")
     zox_set_only(e, DeviceLayout, { gamepad_type })
     Children *children = ecs_get_mut(world, e, Children);
-    initialize_memory_component(children, ecs_entity_t, 16)
+    resize_memory_component(Children, children, ecs_entity_t, 16)
     for (unsigned char i = 0; i < 14; i++) {
         // use gamepad layout
         unsigned char joystick_index = 0;

@@ -22,7 +22,7 @@ ecs_entity_t spawn_font_style(ecs_world_t *world) {
     zox_name("font_style")
 
     Children *children = ecs_get_mut(world, e, Children);
-    initialize_memory_component(children, ecs_entity_t, font_styles_length)
+    resize_memory_component(Children, children, ecs_entity_t, font_styles_length)
     children->value[0] = question_mark;
     // lower case
     children->value[1] = spawn_font(world, font_lower_a, font_lower_a_length);

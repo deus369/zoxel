@@ -14,7 +14,7 @@ void MusicGenerateSystem(ecs_iter_t *it) {
         // instrumentType->value = instrument_unique;
         int sounds_per_verse = 8;
         int verses = 6;
-        re_initialize_memory_component(musicData, int, verses * sounds_per_verse)
+        resize_memory_component(MusicData, musicData, int, verses * sounds_per_verse)
         int sound_index = 0;
         int palete_type = 0;
         palete_type = rand() % music_palette_end;

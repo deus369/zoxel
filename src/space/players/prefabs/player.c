@@ -30,7 +30,7 @@ ecs_entity_t spawn_player(ecs_world_t *world) {
     zox_name("player")
     zox_set_only(e, PlayerState, { camera_mode })
     DeviceLinks *deviceLinks = ecs_get_mut(world, e, DeviceLinks);
-    initialize_memory_component(deviceLinks, ecs_entity_t, 4)
+    resize_memory_component(DeviceLinks, deviceLinks, ecs_entity_t, 4)
     deviceLinks->value[0] = keyboard_entity;
     deviceLinks->value[1] = mouse_entity;
     deviceLinks->value[2] = gamepad_entity;

@@ -49,8 +49,8 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         const TextureSize *first_texture_size = ecs_get(world, first_texture, TextureSize);
         textureSize->value.x = tilemapSize->value.x * first_texture_size->value.x;
         textureSize->value.y = tilemapSize->value.y * first_texture_size->value.y;
-        re_initialize_memory_component(textureData, color, textureSize->value.x * textureSize->value.y)
-        re_initialize_memory_component(tilemapUVs, float2, textureLinks->length * 4)
+        resize_memory_component(TextureData, textureData, color, textureSize->value.x * textureSize->value.y)
+        resize_memory_component(TilemapUVs, tilemapUVs, float2, textureLinks->length * 4)
         // todo: set uvs per each texture, float2 x 4 per texture
         //  get the float size by dividing 1.0f by the rows count
         //  use the tilemap_pixel_position when placing them

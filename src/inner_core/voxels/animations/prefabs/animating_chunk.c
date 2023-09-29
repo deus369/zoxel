@@ -11,7 +11,7 @@ ecs_entity_t spawn_prefab_animating_chunk(ecs_world_t *world) {
     add_gpu_colors(world, e);
     // testing: set colors
     ColorRGBs *colorRGBs = ecs_get_mut(world, e, ColorRGBs);
-    re_initialize_memory_component(colorRGBs, color_rgb, 8)
+    resize_memory_component(ColorRGBs, colorRGBs, color_rgb, 8)
     for (int i = 0; i < 8; i++)
         colorRGBs->value[i] = (color_rgb) {155 - (rand() % 60), 225 - (rand() % 60), 255 - (rand() % 60) };
     ecs_modified(world, e, ColorRGBs);

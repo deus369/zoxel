@@ -150,19 +150,19 @@ void build_chunk_octree_mesh_uvs(const ChunkOctree *chunk_octree, const TilemapU
     float2_array_d* uvs = create_float2_array_d();
     color_rgb_array_d* color_rgbs = create_color_rgb_array_d();
     zox_terrain_building_dig(chunk_octree, tilemapUVs, NULL, chunk_octree, neighbors, neighbor_lods, indicies, vertices, uvs, color_rgbs, distance_to_camera, lod, 0, int3_zero, 0);
-    /*clear_memory_component(meshIndicies);
-    clear_memory_component(meshVertices);
-    clear_memory_component(meshUVs);
-    clear_memory_component(meshColorRGBs);*/
     clear_mesh_uvs(meshIndicies, meshVertices, meshColorRGBs, meshUVs);
     meshIndicies->length = indicies->size;
     meshVertices->length = vertices->size;
     meshUVs->length = uvs->size;
     meshColorRGBs->length = color_rgbs->size;
-    meshIndicies->value = finalize_int_array_d2(indicies);
+    meshIndicies->value = finalize_int_array_d(indicies);
     meshVertices->value = finalize_float3_array_d(vertices);
-    meshUVs->value = finalize_float2_array_d(uvs);
     meshColorRGBs->value = finalize_color_rgb_array_d(color_rgbs);
+    meshUVs->value = finalize_float2_array_d(uvs);
+    on_memory_component_created(meshIndicies, MeshIndicies)
+    on_memory_component_created(meshVertices, MeshVertices)
+    on_memory_component_created(meshColorRGBs, MeshColorRGBs)
+    on_memory_component_created(meshUVs, MeshUVs)
 }
 
 #define set_neightbor_chunk_data(dir) {\
@@ -205,11 +205,6 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         MeshColorRGBs *meshColorRGBs = &meshColorRGBss[i];
         MeshUVs *meshUVs = &meshUVss[i];
         if (lod == 255) { // hides mesh
-            // triangles_count -= meshIndicies->length / 3;
-            /*clear_memory_component(meshIndicies)
-            clear_memory_component(meshVertices)
-            clear_memory_component(meshColorRGBs)
-            clear_memory_component(meshUVs)*/
             clear_mesh_uvs(meshIndicies, meshVertices, meshColorRGBs, meshUVs);
             chunkDirty->value = 0;
             meshDirty->value = 1;
@@ -230,9 +225,7 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         set_neightbor_chunk_data(up)
         set_neightbor_chunk_data(back)
         set_neightbor_chunk_data(front)
-        // triangles_count -= meshIndicies->length / 3;
         build_chunk_octree_mesh_uvs(chunkOctree, tilemapUVs, meshIndicies, meshVertices, meshUVs, meshColorRGBs, renderLod->value, lod, neighbors, neighbor_lods);
-        // triangles_count += meshIndicies->length / 3;
         chunkDirty->value = 0;
         meshDirty->value = 1;
         #ifdef zox_octree_chunk_build_limits

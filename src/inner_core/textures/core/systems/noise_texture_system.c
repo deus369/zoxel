@@ -172,7 +172,7 @@ void NoiseTextureSystem(ecs_iter_t *it) {
         } else if (ecs_has(world, e, ObsidianTexture)) {
             texture_type = zox_texture_obsidian;
         }
-        re_initialize_memory_component(textureData, color, textureSize->value.x * textureSize->value.y)
+        resize_memory_component(TextureData, textureData, color, textureSize->value.x * textureSize->value.y)
         generate_texture_noise(textureData, textureSize, texture_type, terrain_texture_outline_type);
         // zoxel_log("    > voxel texture generated [%lu] texture_mode [%i]\n", it->entities[i], texture_mode);
         generateTexture->value = 0;

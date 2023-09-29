@@ -4,7 +4,7 @@
     get_chunk_division(new_position, int3##_##dir(chunkPosition->value)))
 
 void StreamPointSystem(ecs_iter_t *it) {
-    #ifdef voxels_disable_streaming
+    #ifdef zox_disable_terrain_streaming
         return;
     #endif
     ecs_world_t *world = it->world;

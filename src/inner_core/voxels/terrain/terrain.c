@@ -14,7 +14,6 @@ zox_component(StreamPoint, int3)
 #include "prefabs/terrain_chunk.c"
 #include "prefabs/terrain_chunk_octree.c"
 // zoxel_util_includes
-#include "util/octree_tricks.c"
 #include "util/static_octree_build.c"
 // zoxel_system_declares
 #include "systems/terrain_chunk_system.c"
@@ -54,7 +53,6 @@ zox_system_ctx(OctreeTerrainChunkSystem, EcsOnUpdate, generateTerrainChunkQuery,
 zox_system_ctx(StreamPointSystem, EcsPostUpdate, terrain_chunks_query, [none] Streamer, [in] Position3D, [out] StreamPoint)
 if (!headless) zox_system_ctx(ChunkOctreeBuildSystem, EcsOnLoad, chunks_generating, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] VoxLink, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty)
 if (!headless) zox_render3D_system(TerrainChunksRenderSystem, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] VoxLink)
-// add_to_render3D_loop(ecs_id(TerrainChunksRenderSystem));
 zoxel_end_module(Terrain)
 
 #endif

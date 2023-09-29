@@ -67,9 +67,10 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
                 position.y += 0.26f; // 0.75f;
                 spawn_chunk_character(world, entities, &vox, position, rotation, character_lod);
             }
-            clear_memory_component(entityLinks2);
+            clear_memory_component(EntityLinks, entityLinks2);
             entityLinks2->length = entities->size;
             entityLinks2->value = finalize_ecs_entity_t_array_d(entities);
+            on_memory_component_created(entityLinks2, EntityLinks)
         #endif
         generateChunkEntities2->value = zox_chunk_entities_state_spawned;
         // zoxel_log(" > chunk characters were triggered %i\n", entityLinks2->length);

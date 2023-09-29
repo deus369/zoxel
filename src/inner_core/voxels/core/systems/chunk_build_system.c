@@ -69,8 +69,8 @@ void build_chunk_mesh(const ChunkData *chunk, const ChunkSize *chunkSize,
             }
         }
     }
-    re_initialize_memory_component(meshIndicies, int, indicies_count);
-    re_initialize_memory_component(meshVertices, float3, verticies_count);
+    resize_memory_component(MeshIndicies, meshIndicies, int, indicies_count);
+    resize_memory_component(MeshVertices, meshVertices, float3, verticies_count);
     array_index = 0;
     for (local_position.x = 0; local_position.x < chunk_size.x; local_position.x++) {
         for (local_position.y = 0; local_position.y < chunk_size.y; local_position.y++) {

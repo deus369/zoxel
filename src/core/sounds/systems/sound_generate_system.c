@@ -40,7 +40,7 @@ void SoundGenerateSystem(ecs_iter_t *it) {
         float dampen = sound_dampen_multiplier * sound_time_length;
         int total_sound_samples = (int) (sound_sample_rate * sound_time_length);
         generateSound->value = 0;
-        re_initialize_memory_component(soundData, float, total_sound_samples)
+        resize_memory_component(SoundData, soundData, float, total_sound_samples)
         /*if (soundData->value == NULL) {
             zox_log("   ! entity [%lu] failed to alloc sound data [%i]\n", it->entities[i], total_sound_samples)
             continue;

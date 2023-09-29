@@ -18,7 +18,7 @@ void spawn_zoxel_main_menu(ecs_world_t *world) {
             quads_label = spawn_quad_count_label(world, main_canvas);
         #endif
         Children *children = ecs_get_mut(world, main_canvas, Children);
-        initialize_memory_component(children, ecs_entity_t, 3)
+        resize_memory_component(Children, children, ecs_entity_t, 3)
         children->value[0] = zoxel_main_menu;
         children->value[1] = fps_display;
         children->value[2] = quads_label;

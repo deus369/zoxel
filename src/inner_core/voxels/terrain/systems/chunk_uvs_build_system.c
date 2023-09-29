@@ -39,9 +39,9 @@ void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,
         }
     }
     //! Create our index and vertex arrays
-    re_initialize_memory_component(meshIndicies, int, mesh_count->x);
-    re_initialize_memory_component(meshVertices, float3, mesh_count->y);
-    re_initialize_memory_component(meshUVs, float2, mesh_count->y);
+    resize_memory_component(MeshIndicies, meshIndicies, int, mesh_count->x);
+    resize_memory_component(MeshVertices, meshVertices, float3, mesh_count->y);
+    resize_memory_component(MeshUVs, meshUVs, float2, mesh_count->y);
     for (local_position.x = 0; local_position.x < chunk_size.x; local_position.x++) {
         for (local_position.y = 0; local_position.y < chunk_size.y; local_position.y++) {
             for (local_position.z = 0; local_position.z < chunk_size.z; local_position.z++) {

@@ -92,16 +92,16 @@ void test_build_chunk_octree_mesh_colors(const ChunkOctree *chunk_octree, const 
     float3_array_d* vertices = create_float3_array_d();
     color_rgb_array_d* color_rgbs = create_color_rgb_array_d();
     test_build_octree_chunk_colors_d(chunk_octree, NULL, chunk_octree, neighbors, neighbor_lods, colorRGBs, indicies, vertices, color_rgbs, chunk_depth, 0, int3_zero, 0, total_mesh_offset);
-    //clear_memory_component(meshIndicies);
-    //clear_memory_component(meshVertices);
-    //clear_memory_component(meshColorRGBs);
     clear_mesh(meshIndicies, meshVertices, meshColorRGBs);
     meshIndicies->length = indicies->size;
     meshVertices->length = vertices->size;
     meshColorRGBs->length = color_rgbs->size;
-    meshIndicies->value = finalize_int_array_d2(indicies);
+    meshIndicies->value = finalize_int_array_d(indicies);
     meshVertices->value = finalize_float3_array_d(vertices);
     meshColorRGBs->value = finalize_color_rgb_array_d(color_rgbs);
+    on_memory_component_created(meshIndicies, MeshIndicies)
+    on_memory_component_created(meshVertices, MeshVertices)
+    on_memory_component_created(meshColorRGBs, MeshColorRGBs)
 }
 
 void build_octree_chunk_colors_d(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[], const unsigned char *neighbor_lods, const ColorRGBs *colorRGBs, int_array_d *indicies, float3_array_d* vertices, color_rgb_array_d* color_rgbs, const unsigned char max_depth, unsigned char depth, int3 octree_position, const unsigned char node_index, float3 total_mesh_offset) {
@@ -144,9 +144,12 @@ void build_chunk_octree_mesh_colors(const ChunkOctree *chunk_octree, const Color
     meshIndicies->length = indicies->size;
     meshVertices->length = vertices->size;
     meshColorRGBs->length = color_rgbs->size;
-    meshIndicies->value = finalize_int_array_d2(indicies);
+    meshIndicies->value = finalize_int_array_d(indicies);
     meshVertices->value = finalize_float3_array_d(vertices);
     meshColorRGBs->value = finalize_color_rgb_array_d(color_rgbs);
+    on_memory_component_created(meshIndicies, MeshIndicies)
+    on_memory_component_created(meshVertices, MeshVertices)
+    on_memory_component_created(meshColorRGBs, MeshColorRGBs)
 }
 
 void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
@@ -222,12 +225,3 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         end_timing_cutoff("    - octree_chunk_build_system", zoxel_time_octree_chunk_builds_system_cutoff)
     #endif
 } zox_declare_system(ChunkOctreeColorsBuildSystem)
-
-/*#else
-    int2 *start = &((int2) { 0, 0 });
-    count_octree_chunk(chunk_octree, NULL, chunk_octree, neighbors, neighbor_lods, meshIndicies, meshVertices, meshUVs, &mesh_count, 0, lod, int3_zero, 0, int3_zero);
-    re_initialize_memory_component(meshIndicies, int, mesh_count.x);
-    re_initialize_memory_component(meshVertices, float3, mesh_count.y);
-    re_initialize_memory_component(meshUVs, float2, mesh_count.y);
-    build_octree_chunk(chunk_octree, NULL, chunk_octree, neighbors, neighbor_lods, meshIndicies, meshVertices, meshUVs, start, 0, lod, int3_zero, 0, int3_zero);
-#endif*/
