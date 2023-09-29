@@ -157,3 +157,34 @@ ecs_set_hooks(world, name, {\
 //      ECS_DTOR The destructor should free resources
 //      ECS_MOVE Copy a pointer from one component to another
 //      ECS_COPY Copy one data block to another
+
+
+
+
+#define zox_link_component(name, type, links_name, ...)\
+zox_component(name, type)\
+void on_destroyed##_##name(ecs_iter_t *it) {\
+    ecs_world_t *world = it->world;\
+    name *components = ecs_field(it, name, 1);\
+    for (int i = 0; i < it->count; i++) {\
+        ecs_entity_t e = it->entities[i];\
+        name *component = &components[i];\
+        if (component->value) {\
+            links_name *links_component = ecs_get_mut(world, component->value, links_name);\
+            remove_from_memory_component(links_component, type, e)\
+            ecs_modified(world, component->value, links_name);\
+        }\
+        component->value = 0;\
+    }\
+}
+
+#define zox_define_links_component2(name, ...)\
+zox_define_component(name)\
+ecs_observer_init(world, &(ecs_observer_desc_t) {\
+    .filter.expr = #__VA_ARGS__,\
+    .callback = on_destroyed##_##name,\
+    .events = { EcsOnRemove },\
+});
+
+#define zox_define_links_component(name) zox_define_links_component2(name, [out] name)
+

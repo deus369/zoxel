@@ -9,8 +9,8 @@ void AOEDamageSystem(ecs_iter_t *it) {
     //      - remove when they leave the sphere of influence
     // for now, just damage directly
     // use StatValue to lower their health
-    float damage_rate = 3.0f;
-    float damage_radius = 6.0f;
+    float damage_rate = 1.5f;
+    float damage_radius = 3.5f;
     ecs_world_t *world = it->world;
     float delta_time = zox_delta_time;
     const Position3D *position3Ds = ecs_field(it, Position3D, 2);
@@ -35,6 +35,10 @@ void AOEDamageSystem(ecs_iter_t *it) {
                 statValue->value -= delta_time * damage_rate;
                 if (statValue->value < 0) statValue->value = 0;
                 ecs_modified(world, health_stat, StatValue);
+                if (!statValue->value) {
+                    // todo: death animation
+                    zox_delete(e2)
+                }
                 #ifdef zox_debug_aoe_damage_system
                     spawn_line3D(world, position3D->value, position3D2->value, 0.5f, 0.1);
                 #endif

@@ -8,7 +8,7 @@ zox_declare_tag(NoiseChunk)
 zox_component(ChunkPosition, int3)
 zox_component(VoxelPosition, int3)
 zox_component(VoxLink, ecs_entity_t)
-zox_component(ChunkLink, ecs_entity_t)
+zox_link_component(ChunkLink, ecs_entity_t, EntityLinks)
 zox_hashmap_component(ChunkLinks, int3)
 // zoxel_module_includes
 #include "core/voxels_core.c"
@@ -30,7 +30,7 @@ zox_define_tag(NoiseChunk)
 zox_define_component(ChunkPosition)
 zox_define_component(VoxelPosition)
 zox_define_component(VoxLink)
-zox_define_component(ChunkLink)
+zox_define_links_component(ChunkLink)
 zox_define_hashmap_component(ChunkLinks)
 // zoxel_module_defines
 zox_import_module(VoxelsCore)

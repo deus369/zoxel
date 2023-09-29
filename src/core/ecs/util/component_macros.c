@@ -84,6 +84,7 @@ ecs_observer_init(world, &(ecs_observer_desc_t) {\
 #define zox_define_entity_parent_component(name) zox_define_entity_parent_component2(name, [out] name)
 
 
+
 /*ecs_set_hooks(world, name, { .dtor = ecs_dtor(name) });*/
 /*ECS_DTOR(name, ptr, {\
     if (ptr->value != NULL) type##_##hash_map_dispose(ptr->value);\
