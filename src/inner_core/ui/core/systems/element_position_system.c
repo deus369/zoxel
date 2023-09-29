@@ -30,12 +30,12 @@ void set_element_position(ecs_world_t *world, ecs_entity_t e, float2 parent_posi
 
 // moves ui around after repositioning the pixel position
 void ElementPositionSystem(ecs_iter_t *it) {
-    ecs_query_t *changeQuery = it->ctx;
-    ecs_iter_t change_iter = ecs_query_iter(it->world, changeQuery);
+    ecs_world_t *world = it->world;
+    ecs_query_t *change_query = it->ctx;
+    ecs_iter_t change_iter = ecs_query_iter(world, change_query);
     while (ecs_query_next(&change_iter)) {
         if (change_iter.table != it->table) ecs_query_skip(&change_iter);
     }
-    ecs_world_t *world = it->world;
     const PixelPosition *pixelPositions = ecs_field(it, PixelPosition, 2);
     const ParentLink *parentLinks = ecs_field(it, ParentLink, 3);
     const Anchor *anchors = ecs_field(it, Anchor, 4);
@@ -71,11 +71,11 @@ void ElementPositionSystem(ecs_iter_t *it) {
 //   \done Make this instantaneous for children uis as well
 //   \todo This needs to also account for child uis
 //   \todo Change queries still not working, make a better test function with more components
-/*if (!ecs_query_changed(changeQuery, NULL))
+/*if (!ecs_query_changed(change_query, NULL))
 {
     return;
 }*/
 //! \todo Update this after getting a working example of change filters
 /*#ifdef debug_element_position_change_query
-    unsigned char did_change = ecs_query_changed(changeQuery, NULL);
+    unsigned char did_change = ecs_query_changed(change_query, NULL);
 #endif*/

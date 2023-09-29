@@ -24,6 +24,10 @@ float3 float3_subtract_float3(float3 inputA, float3 inputB) {
     return (float3) { inputA.x - inputB.x, inputA.y - inputB.y, inputA.z - inputB.z };
 }
 
+float float3_distance(float3 a, float3 b) {
+    return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z));
+}
+
 void float3_multiply_float_p(float3* input, float mul) {
     input->x *= mul;
     input->y *= mul;

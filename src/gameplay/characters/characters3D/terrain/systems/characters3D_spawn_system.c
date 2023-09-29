@@ -1,6 +1,4 @@
 // notes: to test, set terrain to 1x1x1 chunks, disable physics, enable this systems logging
-unsigned char has_spawned_main_character = 0;
-
 ecs_entity_t spawn_chunk_character(ecs_world_t *world, ecs_entity_t_array_d* entities, const vox_file *vox, float3 position, float4 rotation, unsigned char character_lod) {
     ecs_entity_t e = spawn_character3D(world, prefab_character3D, vox, position, rotation, character_lod);
     add_to_ecs_entity_t_array_d(entities, e);
@@ -79,13 +77,3 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         if (characters_count != 0) zoxel_log(" + characters [%i]\n", characters_count);
     #endif
 } zox_declare_system(Characters3DSpawnSystem)
-
-/*if (!has_spawned_main_character) {
-    // todo: fix the character lodding breaking when attaching to this character
-    //if (int2_equals((int2) { chunkPosition->value.x, chunkPosition->value.z }, int2_zero)) { // || int2_equals((int2) { chunkPosition->value.x, chunkPosition->value.z + 1 }, int2_zero)) {
-        has_spawned_main_character = 1;
-        vox = vox_files[3];
-        local_character3D = spawn_chunk_character(world, entities, &vox, position, rotation, character_lod);
-        did_spawn_main = 1;
-    //}
-}*/

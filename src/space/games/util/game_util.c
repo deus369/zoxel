@@ -121,6 +121,8 @@ void play_game(ecs_world_t *world) {
             float4 spawn_rotation = quaternion_identity; // ecs_get(world, main_camera, Rotation3D)->value;
             const vox_file vox = vox_files[3];
             local_character3D = spawn_chunk_character2(world, &vox, spawn_position, spawn_rotation, 0);
+            zox_add_tag(local_character3D, Aura)
+            
             // zoxel_log(" > spawned local_character3D [%lu] - spawn_position [%fx%fx%f]\n", local_character3D, spawn_position.x, spawn_position.y, spawn_position.z);
             attach_to_character(world, main_player, main_camera, local_character3D);
         } else attach_to_character(world, main_player, main_camera, 0);

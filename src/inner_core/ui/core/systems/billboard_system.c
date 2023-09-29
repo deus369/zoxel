@@ -32,7 +32,7 @@ void BillboardSystem(ecs_iter_t *it) {
             }
         }
         #ifdef zox_debug_billboard_system
-            // spawn_line3D(world, position3D->value, float3_add(position3D->value, normal), 2, 1);
+            spawn_line3D(world, position3D->value, float3_add(position3D->value, normal), 2, 1);
         #endif
     }
 } zox_declare_system(BillboardSystem)
