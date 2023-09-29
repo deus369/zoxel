@@ -1,4 +1,4 @@
-//! Here for now, spawns a one man bobarmy.
+//! Here for now, spawns a one man bobarmy
 void Particle3DSpawnSystem(ecs_world_t *world, float3 bobPosition, int spawnCount) {
     float2 positionBounds = { 0.1f, 0.2f };
     const float2 velocityBounds = { 0.03f, 0.2f };
@@ -55,7 +55,7 @@ void Particle3DSpawnSystem(ecs_world_t *world, float3 bobPosition, int spawnCoun
     ecs_bulk_init(world, &(ecs_bulk_desc_t) {
         .count = spawnCount,
         .ids = {
-            ecs_pair(EcsIsA, particle3D_prefab),
+            ecs_pair(EcsIsA, prefab_particle3D),
             ecs_id(Position3D),
             ecs_id(Velocity3D),
             ecs_id(Acceleration3D),

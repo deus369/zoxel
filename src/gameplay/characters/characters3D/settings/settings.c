@@ -1,5 +1,5 @@
 int characters_count = 0;
-const int init_character3D_lod = 0; // 1;
+const int init_character3D_lod = 1;
 const int character3D_lod_dividor = 1;
 const unsigned char max_character_division = 0;
 int spawn_characters3D_count = 8;

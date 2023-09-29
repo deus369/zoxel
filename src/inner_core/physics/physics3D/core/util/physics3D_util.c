@@ -23,7 +23,7 @@ void add_physics3D(ecs_world_t *world, ecs_entity_t e) {
     zox_prefab_set(e, Bounds3D, { { 0.5f, 0.5f, 0.5f } })
     zox_prefab_set(e, Grounded, { 0 })
     zox_prefab_set(e, Jump, { 0 })
-    // spawn lines around
+    // spawn debug lines around
     zox_add_tag(e, CubeLines)
     zox_prefab_set(e, CubeLinesThickness, { 4 })
     zox_prefab_set(e, ColorRGB, {{ 0, 255, 255 }})
@@ -32,7 +32,4 @@ void add_physics3D(ecs_world_t *world, ecs_entity_t e) {
     #else
         zox_prefab_set(e, DebugCubeLines, { 0 })
     #endif
-        // can i add children and then use observers to copy children accross??
-        //  so the children get initialized too..?
-        // zox_prefab_set(e, ColorRGB, {{ 255, 0, 0 }});
 }

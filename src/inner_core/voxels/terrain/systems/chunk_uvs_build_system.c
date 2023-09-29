@@ -114,5 +114,4 @@ void ChunkUVsBuildSystem(ecs_iter_t *it) {
     #ifdef zoxel_time_chunk_uvs_builds_system
         end_timing("ChunkUVsBuildSystem")
     #endif
-}
-zox_declare_system(ChunkUVsBuildSystem)
+} zox_declare_system(ChunkUVsBuildSystem)

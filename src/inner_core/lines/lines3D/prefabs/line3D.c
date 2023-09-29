@@ -17,11 +17,8 @@ ecs_entity_t spawn_prefab_line3D(ecs_world_t *world) {
 
 ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time) {
     ecs_entity_t e;
-    if (life_time == 0.0) {
-        e = ecs_new_w_pair(world, EcsIsA, prefab_line3D);
-    } else {
-        e = ecs_new_w_pair(world, EcsIsA, prefab_temporary_line3D);
-    }
+    if (life_time == 0) e = ecs_new_w_pair(world, EcsIsA, prefab_line3D);
+    else e = ecs_new_w_pair(world, EcsIsA, prefab_temporary_line3D);
     zox_set(e, LineData3D, { { pointA.x, pointA.y, pointA.z, pointB.x, pointB.y, pointB.z } })
     zox_set(e, LineThickness, { thickness })
     if (life_time != 0.0f) zox_set(e, DestroyInTime, { life_time })

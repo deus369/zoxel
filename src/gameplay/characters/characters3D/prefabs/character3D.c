@@ -9,14 +9,15 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     zox_prefab_child(prefab_vox)
     zox_prefab_name("prefab_character3D")
     zox_add_tag(e, Character3D)
-    add_seed(world, e, 999);
-    add_physics3D(world, e);
     zox_prefab_set(e, Bounds3D, {{ 1, 1, 1 }})
-    zox_add(e, VoxLink)
+    zox_prefab_set(e, VoxLink, { 0 })
     zox_prefab_set(e, ChunkLink, { 0 })
     zox_prefab_set(e, ChunkPosition, { int3_chaos })
     zox_prefab_set(e, VoxelPosition, { int3_zero})
     zox_prefab_set(e, ElementLinks, { 0, NULL})
+    zox_prefab_set(e, Children, { 0, NULL})         // for bones, particles, etc (transforms)
+    add_seed(world, e, 999);
+    add_physics3D(world, e);
     if (!headless) ecs_remove(world, e, MaterialGPULink);
     if (!headless) add_gpu_colors(world, e);
     prefab_character3D = e;

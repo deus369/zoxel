@@ -28,10 +28,8 @@ zox_define_tag(CubeLines)
 zox_define_component(DebugCubeLines)
 zox_define_component(LineData3D)
 zox_define_component(CubeLinesThickness)
-if (!headless) {
-    zox_render3D_system(Line3DRenderSystem, [none] Line3D, [in] LineData3D, [in] LineThickness, [in] ColorRGB)
-    zox_render3D_system(CubeLineRenderSystem, [none] CubeLines, [in] DebugCubeLines, [in] CubeLinesThickness, [in] ColorRGB, [in] Position3D, [in] Rotation3D, [in] Bounds3D, [in] RenderLod)
-}
+if (!headless) zox_render3D_system(Line3DRenderSystem, [none] Line3D, [in] LineData3D, [in] LineThickness, [in] ColorRGB)
+if (!headless) zox_render3D_system(CubeLineRenderSystem, [none] CubeLines, [in] DebugCubeLines, [in] CubeLinesThickness, [in] ColorRGB, [in] Position3D, [in] Rotation3D, [in] Bounds3D, [in] RenderLod)
 zoxel_end_module(Lines3D)
 
 #endif

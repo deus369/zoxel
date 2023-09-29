@@ -1,8 +1,11 @@
 extern int get_terrain_chunks_count(ecs_world_t *world);
 extern int get_characters_count(ecs_world_t *world);
+extern int get_count_particle3Ds(ecs_world_t *world);
+extern  int get_count_particle3D_emitters(ecs_world_t *world);
 #define zox_debug_ui_memorys_allocated
 #define zox_debug_ui_characters
 #define zox_debug_ui_statbars
+#define zox_debug_ui_particle3Ds
 // #define zox_debug_ui_terrain_chunks
 // #define zox_debug_ui_node_memory
 // #define zox_debug_ui_zexts
@@ -36,6 +39,10 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         #endif
         #ifdef zox_debug_ui_statbars
             buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " statbars [%i]", get_statbars_count(it->world));
+        #endif
+        #ifdef zox_debug_ui_particle3Ds
+            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " particle3Ds [%i %i]", get_count_particle3D_emitters(it->world), get_count_particle3Ds(it->world));
+
         #endif
         #ifdef zox_debug_ui_zexts
             buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " zexts [%i]", get_zexts_count(it->world));

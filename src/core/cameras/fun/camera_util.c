@@ -13,6 +13,9 @@ void set_main_cameras(int new_count) {
 }
 
 unsigned char get_mouse_constrained() {
+    #ifdef zox_disable_mouse_constraint
+        return 0;
+    #endif
     #ifdef zoxel_mouse_emulate_touch
         return 0;
     #endif
