@@ -5,12 +5,12 @@ ecs_entity_t spawn_prefab_music(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_music")
     zox_add_tag(e, Music)
-    zox_set(e, GenerateMusic, { 1 })
+    zox_prefab_set(e, GenerateMusic, { 1 })
     zox_add(e, MusicData)
-    zox_set(e, MusicNote, { 0 })
-    zox_set(e, MusicTime, { 0 })
-    zox_set(e, MusicSpeed, { 0.5 })
-    zox_set(e, InstrumentType, { instrument_piano })
+    zox_prefab_set(e, MusicNote, { 0 })
+    zox_prefab_set(e, MusicTime, { 0 })
+    zox_prefab_set(e, MusicSpeed, { 0.5 })
+    zox_prefab_set(e, InstrumentType, { instrument_piano })
     #ifdef zoxel_debug_prefabs
         zoxel_log("spawn_prefab music [%lu].\n", (long int) (e));
     #endif
@@ -25,8 +25,8 @@ ecs_entity_t spawn_music(ecs_world_t *world, unsigned char instrument_type) {
     #ifdef zoxel_slow_music
         music_speed *= 6.0;
     #endif
-    zox_set_only(e, MusicSpeed, { music_speed })
-    zox_set_only(e, InstrumentType, { instrument_type })
+    zox_set(e, MusicSpeed, { music_speed })
+    zox_set(e, InstrumentType, { instrument_type })
     #ifdef zoxel_debug_music
         zoxel_log("Music Speed set to [%f]\n", music_speed);
     #endif

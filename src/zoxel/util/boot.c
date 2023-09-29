@@ -28,7 +28,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     #ifdef zoxel_include_players
         realm = spawn_realm(world);
         ecs_entity_t game = spawn_game(world);
-        zox_set_only(game, RealmLink, { realm })
+        zox_set(game, RealmLink, { realm })
         spawn_weather(world);
     #endif
     #if defined(zoxel_set_camera_firstperson)
@@ -52,7 +52,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         main_cameras[0] = spawn_base_camera(world, camera_begin_position, camera_spawn_rotation, screen_dimensions2, (int2) { });
         #ifdef zoxel_animations
             float4 rotationer = quaternion_from_euler( (float3) { 0, -main_camera_rotation_speed * degreesToRadians, 0 });
-            zox_set(main_cameras[0], EternalRotation, { rotationer })
+            zox_prefab_set(main_cameras[0], EternalRotation, { rotationer })
         #endif
         if (is_split_screen) {
             //! \todo connect a gamepad to this camera
@@ -68,7 +68,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     #ifdef zoxel_players
         if (!headless) {
             ecs_entity_t player = spawn_player(world);
-            zox_set_only(player, CameraLink, { main_cameras[0] })
+            zox_set(player, CameraLink, { main_cameras[0] })
         }
     #endif
     #ifdef zoxel_ui
@@ -86,7 +86,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     #ifdef zox_spawn_terrain_on_startup
         ecs_entity_t terrain = create_terrain(world);
         #ifdef zoxel_space
-            zox_set_only(terrain, RealmLink, { realm })
+            zox_set(terrain, RealmLink, { realm })
         #endif
     #endif
     #ifdef zoxel_lines3D

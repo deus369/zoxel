@@ -47,7 +47,7 @@ zox_byte_component(CameraMode)
 void spawn_prefabs_cameras(ecs_world_t *world) {
     spawn_camera_base_prefab(world);
     spawn_prefab_free_camera(world);
-    spawn_camera2D_follower_prefab(world);
+    spawn_prefab_camera2D_follower(world);
 }
 
 zox_begin_module(Cameras)

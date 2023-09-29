@@ -10,11 +10,11 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size) {
     zox_add_tag(e, TerrainChunk)
     #ifdef zoxel_transforms3D
         add_transform3Ds(world, e);
-        zox_set(e, Scale1D, { 0.05f })
+        zox_prefab_set(e, Scale1D, { 0.05f })
     #endif
-    zox_set(e, MeshDirty, { 0 })
-    zox_set(e, Brightness, { 1.4f })
-    zox_set(e, EntityLinks, { 0, NULL })    // character and minivox links
+    zox_prefab_set(e, MeshDirty, { 0 })
+    zox_prefab_set(e, Brightness, { 1.4f })
+    zox_prefab_set(e, EntityLinks, { 0, NULL })    // character and minivox links
     add_seed(world, e, 666);
     add_chunk_octree(world, e, size);
     add_generate_chunk(world, e);
@@ -30,7 +30,7 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size) {
         add_gpu_texture(world, e);
         add_gpu_colors(world, e);
     }
-    zox_set_only(e, Scale1D, { 0.5f })
+    zox_set(e, Scale1D, { 0.5f })
     prefab_terrain_chunk_octree = e;
     return e;
 }
@@ -38,8 +38,8 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size) {
 ecs_entity_t spawn_terrain_chunk_octree(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t terrain, int3 camera_position, int3 chunk_position, float3 position, float scale) {
     ecs_entity_t e = spawn_terrain_chunk(world, prefab, chunk_position, position, scale);
     zox_name("terrain_chunk_octree")
-    zox_set_only(e, RenderLod, { get_chunk_division(camera_position, chunk_position) })
-    zox_set_only(e, VoxLink, { terrain })
+    zox_set(e, RenderLod, { get_chunk_division(camera_position, chunk_position) })
+    zox_set(e, VoxLink, { terrain })
     spawn_gpu_colors(world, e);
     return e;
 }

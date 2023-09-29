@@ -8,14 +8,14 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
     zox_add_tag(e, FrameTexture)
     zox_add_tag(e, Selectable)
     zox_add_tag(e, Dragable)
-    zox_set(e, SelectState, { 0 })
-    zox_set(e, DragableState, { 0 })
-    zox_set(e, DraggerLink, { 0 })
-    zox_set(e, DraggingDelta, {{ 0, 0 }})
-    zox_set(e, Color, {{ 77, 44, 33, 255 }})
-    zox_set(e, FrameCorner, { 7 })
-    zox_set(e, OutlineThickness, { 3 })
-    zox_set(e, Children, { 0, NULL })
+    zox_prefab_set(e, SelectState, { 0 })
+    zox_prefab_set(e, DragableState, { 0 })
+    zox_prefab_set(e, DraggerLink, { 0 })
+    zox_prefab_set(e, DraggingDelta, {{ 0, 0 }})
+    zox_prefab_set(e, Color, {{ 77, 44, 33, 255 }})
+    zox_prefab_set(e, FrameCorner, { 7 })
+    zox_prefab_set(e, OutlineThickness, { 3 })
+    zox_prefab_set(e, Children, { 0, NULL })
     add_ui_plus_components(world, e);
     header_prefab = e;
     #ifdef zoxel_debug_prefabs
@@ -43,7 +43,7 @@ ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, int2 position
     children->value[0] = spawn_zext(world, zext_prefab, e, zext_position, zext_anchor, int2_to_byte2(padding), text, font_size, 0, layer + 1, position2D, size);
     if (is_close_button) {
         ecs_entity_t close_button = spawn_button(world, e, (int2) { - (font_size / 2) - header_margins / 2, 0 }, padding, (float2) { 1.0f, 0.5f }, "X", font_size, layer + 1, position2D, size, canvas_size);
-        zox_set_only(close_button, ClickEvent, { &button_event_close_window })
+        zox_set(close_button, ClickEvent, { &button_event_close_window })
         zox_add_tag(close_button, CloseButton)
         children->value[1] = close_button;
     }

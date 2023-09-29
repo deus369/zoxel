@@ -22,8 +22,6 @@ float calculate_additive_comp(float time, float frequency, float lfo_frequency, 
 float high_pass_filter(float time, float cutoff_frequency) {
     // Biquad filter coefficients
     float b0, b1, a1, a2;
-    // Sample rate
-    // float sr = 44100;
     // Quality factor
     float Q = 1.0f; // 0.7f; 
     // Calculate filter coefficients

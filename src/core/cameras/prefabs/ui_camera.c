@@ -3,10 +3,10 @@ ecs_entity_t spawn_ui_camera(ecs_world_t *world, int2 screenDimensions) {
     zox_instance(prefab_base_camera)
     zox_name("ui_camera")
     zox_add_tag(e, UICamera)
-    zox_set_only(e, Position3D, { position })
-    zox_set_only(e, Rotation3D, { quaternion_identity })
-    zox_set_only(e, FieldOfView, { 53.2f })  // fudged this to get ui right... maybe not the best but it works xD
-    zox_set_only(e, ScreenDimensions, { screenDimensions })
+    zox_set(e, Position3D, { position })
+    zox_set(e, Rotation3D, { quaternion_identity })
+    zox_set(e, FieldOfView, { 53.2f })  // fudged this to get ui right... maybe not the best but it works xD
+    zox_set(e, ScreenDimensions, { screenDimensions })
     zox_add_tag(e, Camera2D)
     ui_cameras[0] = e;
     #ifdef zoxel_debug_spawns

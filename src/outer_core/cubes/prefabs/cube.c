@@ -8,10 +8,10 @@ ecs_entity_t spawn_prefab_cube(ecs_world_t *world) {
     #endif
     #ifdef zoxel_rendering
         zox_add(e, Brightness)
-        zox_set(e, MeshDirty, { 1 })
+        zox_prefab_set(e, MeshDirty, { 1 })
         if (!headless) {
-            zox_set(e, MeshIndicies, { 0, NULL })
-            zox_set(e, MeshVertices, { 0, NULL })
+            zox_prefab_set(e, MeshIndicies, { 0, NULL })
+            zox_prefab_set(e, MeshVertices, { 0, NULL })
             prefab_set_mesh_indicies(world, e, cube_indicies, 36);
             prefab_set_mesh_vertices(world, e, cube_vertices, 24);
         }
@@ -28,11 +28,11 @@ ecs_entity_t spawn_prefab_cube(ecs_world_t *world) {
 ecs_entity_t spawn_cube(ecs_world_t *world, ecs_entity_t prefab, float3 position) {
     zox_instance(prefab)
     zox_name("cube")
-    zox_set_only(e, Position3D, { position })
-    zox_set_only(e, Scale1D, { 0.05f })
-    zox_set_only(e, Brightness, { 1.4f })
+    zox_set(e, Position3D, { position })
+    zox_set(e, Scale1D, { 0.05f })
+    zox_set(e, Brightness, { 1.4f })
     float4 rotationer = quaternion_from_euler( (float3) { 0.1f * degreesToRadians, 0.2f * degreesToRadians, 0 });
-    zox_set_only(e, EternalRotation, { rotationer })
+    zox_set(e, EternalRotation, { rotationer })
     if (!headless) {
         spawn_gpu_mesh(world, e);
         spawn_gpu_material(world, e, shader3D);

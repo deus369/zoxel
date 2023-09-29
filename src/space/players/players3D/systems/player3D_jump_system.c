@@ -42,8 +42,8 @@ void Player3DJumpSystem(ecs_iter_t *it) {
         const Jump *jump = ecs_get(world, characterLink->value, Jump);
         // zoxel_log(" > jump was triggered\n");
         if (jump->value == 0) {
-            zox_set_only(characterLink->value, Jump, { jump_timing })
-            zox_set_only(characterLink->value, Grounded, { 0 })
+            zox_set(characterLink->value, Jump, { jump_timing })
+            zox_set(characterLink->value, Grounded, { 0 })
             #ifdef zox_log_jumping
                 zoxel_log(" > in air [%lu] again (%f)\n", characterLink->value, zox_current_time);
             #endif

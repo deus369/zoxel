@@ -26,8 +26,8 @@ void FreeCameraToggleSystem(ecs_iter_t *it) {
             const MouseLock *mouseLock = ecs_get(world, mouse_entity, MouseLock);
             unsigned char new_value = !mouseLock->value;
             // zoxel_log(" > free camera toggled [%s]\n", new_value ? "on" : "off");
-            zox_set_only(mouse_entity, MouseLock, { new_value })
-            zox_set_only(cameraLink->value, FreeRoam, { new_value })
+            zox_set(mouse_entity, MouseLock, { new_value })
+            zox_set(cameraLink->value, FreeRoam, { new_value })
         }
     }
 } zox_declare_system(FreeCameraToggleSystem)

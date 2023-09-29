@@ -8,8 +8,8 @@ ecs_entity_t spawn_prefab_touchscreen(ecs_world_t *world) {
     zox_prefab_name("prefab_touchscreen")
     zox_add_tag(e, Device)
     zox_add_tag(e, Touchscreen)
-    zox_set(e, DeviceLayout, { 0 })
-    zox_set(e, Children, { 0, NULL })
+    zox_prefab_set(e, DeviceLayout, { 0 })
+    zox_prefab_set(e, Children, { 0, NULL })
     prefab_touchscreen = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log(" > spawn_prefab touchscreen [%lu].\n", (long int) (e));

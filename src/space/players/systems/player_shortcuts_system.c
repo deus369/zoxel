@@ -64,10 +64,10 @@ void on_terrain_settings_changed(ecs_world_t *world) {
         // zoxel_log("     > voxel texture renewed [%i]\n", k);
         ecs_entity_t voxel = voxelLinks->value[k];
         const Textures *textureLinks = ecs_get(world, voxel, Textures);
-        zox_set_only(textureLinks->value[0], GenerateTexture, { 1 })
+        zox_set(textureLinks->value[0], GenerateTexture, { 1 })
     }
     const TilemapLink *tilemapLink = ecs_get(world, local_terrain, TilemapLink);
-    zox_set_only(tilemapLink->value, GenerateTexture, { 1 })
+    zox_set(tilemapLink->value, GenerateTexture, { 1 })
 }
 
 void PlayerShortcutsSystem(ecs_iter_t *it) {
@@ -82,8 +82,8 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
                 if (keyboard->m.pressed_this_frame) {
                     zoxel_log(" > generated new music\n");
                     double music_speed = 0.2 + (rand() % 100) * 0.008;
-                    zox_set_only(main_music, MusicSpeed, { music_speed });
-                    zox_set_only(main_music, GenerateMusic, { 1 });
+                    zox_set(main_music, MusicSpeed, { music_speed });
+                    zox_set(main_music, GenerateMusic, { 1 });
                 } else if (keyboard->n.pressed_this_frame) {
                     zox_visualize_sounds = !zox_visualize_sounds;
                 } else if (keyboard->i.pressed_this_frame) {
@@ -120,11 +120,11 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
         float vox_scale = model_scale * 16;
         const LocalPosition3D *localPosition3D = ecs_get(world, cameraLink->value, LocalPosition3D);
         if (localPosition3D->value.z == vox_scale * 0.5f) {
-            zox_set_only(cameraLink->value, LocalPosition3D, {{ 0, vox_scale * 2.2f, - vox_scale * 3.6f }})
-            zox_set_only(cameraLink->value, LocalRotation3D, { quaternion_from_euler((float3) { 25, 180 * degreesToRadians, 0 }) })
+            zox_set(cameraLink->value, LocalPosition3D, {{ 0, vox_scale * 2.2f, - vox_scale * 3.6f }})
+            zox_set(cameraLink->value, LocalRotation3D, { quaternion_from_euler((float3) { 25, 180 * degreesToRadians, 0 }) })
         } else {
-            zox_set_only(cameraLink->value, LocalPosition3D, {{ 0, vox_scale * 0.5f, vox_scale * 0.5f }})
-            zox_set_only(cameraLink->value, LocalRotation3D, { quaternion_from_euler((float3) { 0, 180 * degreesToRadians, 0 }) })
+            zox_set(cameraLink->value, LocalPosition3D, {{ 0, vox_scale * 0.5f, vox_scale * 0.5f }})
+            zox_set(cameraLink->value, LocalRotation3D, { quaternion_from_euler((float3) { 0, 180 * degreesToRadians, 0 }) })
         }
     }
 }*/

@@ -45,15 +45,15 @@ float2 initialize_ui_components(ecs_world_t *world, ecs_entity_t e, ecs_entity_t
     float aspect_ratio = canvasSizef.x / canvasSizef.y;
     float2 position2D = get_ui_real_position2D(world, e, parent, local_pixel_position, anchor, canvas_size);
     int2 global_pixel_position = (int2) { ceil(((position2D.x / aspect_ratio) + 0.5f) * canvasSizef.x), ((position2D.y + 0.5f) * canvasSizef.y) };
-    zox_set_only(e, Anchor, { anchor })
-    zox_set_only(e, PixelPosition, { local_pixel_position })
-    zox_set_only(e, PixelSize, { pixel_size })
-    zox_set_only(e, TextureSize, { pixel_size })
-    zox_set_only(e, CanvasLink, { main_canvas })
-    zox_set_only(e, ParentLink, { parent })
-    zox_set_only(e, Layer2D, { layer })
-    zox_set_only(e, Position2D, { position2D })
-    zox_set_only(e, CanvasPixelPosition, { global_pixel_position })
+    zox_set(e, Anchor, { anchor })
+    zox_set(e, PixelPosition, { local_pixel_position })
+    zox_set(e, PixelSize, { pixel_size })
+    zox_set(e, TextureSize, { pixel_size })
+    zox_set(e, CanvasLink, { main_canvas })
+    zox_set(e, ParentLink, { parent })
+    zox_set(e, Layer2D, { layer })
+    zox_set(e, Position2D, { position2D })
+    zox_set(e, CanvasPixelPosition, { global_pixel_position })
     return position2D;
 }
 
@@ -62,15 +62,15 @@ float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity
     float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
     float2 position2D = get_ui_real_position2D_parent(local_pixel_position, anchor, parent_position, parent_pixel_size, canvas_size_f, aspect_ratio);
     int2 global_pixel_position = (int2) { ceil(((position2D.x / aspect_ratio) + 0.5f) * canvas_size_f.x), ((position2D.y + 0.5f) * canvas_size_f.y) };
-    zox_set_only(e, Anchor, { anchor })
-    zox_set_only(e, PixelSize, { pixel_size })
-    zox_set_only(e, TextureSize, { pixel_size })
-    zox_set_only(e, CanvasLink, { main_canvas })
-    zox_set_only(e, ParentLink, { parent })
-    zox_set_only(e, Layer2D, { layer })
-    zox_set_only(e, PixelPosition, { local_pixel_position })
-    zox_set_only(e, Position2D, { position2D })
-    zox_set_only(e, CanvasPixelPosition, { global_pixel_position })
+    zox_set(e, Anchor, { anchor })
+    zox_set(e, PixelSize, { pixel_size })
+    zox_set(e, TextureSize, { pixel_size })
+    zox_set(e, CanvasLink, { main_canvas })
+    zox_set(e, ParentLink, { parent })
+    zox_set(e, Layer2D, { layer })
+    zox_set(e, PixelPosition, { local_pixel_position })
+    zox_set(e, Position2D, { position2D })
+    zox_set(e, CanvasPixelPosition, { global_pixel_position })
     return position2D;
 }
 
@@ -88,8 +88,8 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
         int2 position = pixelPosition->value;
         float2 position2D = get_ui_real_position2D(world, e, parent, position, anchor->value, canvas_size);
         int2 global_pixel_position = (int2) { ceil((position2D.x / aspect_ratio + 0.5f) * canvasSizef.x), ((position2D.y + 0.5f) * canvasSizef.y) };
-        zox_set_only(e, Position2D, { position2D })
-        zox_set_only(e, CanvasPixelPosition, { global_pixel_position })
+        zox_set(e, Position2D, { position2D })
+        zox_set(e, CanvasPixelPosition, { global_pixel_position })
         #ifdef debug_ui_scaling
             zoxel_log("        -> to [%ix%i]\n", global_pixel_position.x, global_pixel_position.y);
         #endif
@@ -103,7 +103,7 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
         MeshVertices2D *meshVertices2D = ecs_get_mut(world, e, MeshVertices2D);
         set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, scale2D);
         ecs_modified(world, e, MeshVertices2D);
-        zox_set_only(e, MeshDirty, { 1 })
+        zox_set(e, MeshDirty, { 1 })
         #ifdef debug_ui_scaling
             zoxel_log("        -> Scaling: [%fx%f]\n", scale2D.x, scale2D.y);
         #endif

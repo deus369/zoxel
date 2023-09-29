@@ -7,7 +7,7 @@ ecs_entity_t spawn_zext_prefab(ecs_world_t *world) {
     zox_add(e, ZextData)
     zox_add(e, ZextSize)
     zox_add(e, ZextPadding)
-    zox_set(e, ZextDirty, { 0 })
+    zox_prefab_set(e, ZextDirty, { 0 })
     zox_add(e, Children)
     add_transform2Ds(world, e);
     add_ui_plus_components_invisible(world, e);
@@ -37,9 +37,9 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t pa
     int2 zext_size = (int2) { font_size * textLength, font_size };
     zox_instance(prefab)
     zox_name("zext")
-    zox_set_only(e, ZextSize, { font_size })
-    zox_set_only(e, ZextPadding, { padding })
-    zox_set_only(e, MeshAlignment, { alignment })
+    zox_set(e, ZextSize, { font_size })
+    zox_set(e, ZextPadding, { padding })
+    zox_set(e, MeshAlignment, { alignment })
     float2 position2D = initialize_ui_components_2(world, e, parent, position, zext_size, anchor, layer, parent_position2D, parent_pixel_size, canvas_size);
     unsigned char zigel_layer = layer + 1;
     ZextData *zextData = ecs_get_mut(world, e, ZextData);

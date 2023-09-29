@@ -22,11 +22,11 @@ void set_zigel_position(ecs_world_t *world, ecs_entity_t zigel, unsigned char in
     float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
     float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
     int2 position = get_zigel_position(index, total_length, font_size, text_alignment, text_padding);
-    ecs_set(world, zigel, PixelPosition, { position });
+    zox_set(zigel, PixelPosition, { position })
     float2 position2D = get_ui_real_position2D_parent(position, anchor, parent_position, parent_pixel_size, canvas_size_f, aspect_ratio);
-    ecs_set(world, zigel, Position2D, { position2D });
+    zox_set(zigel, Position2D, { position2D })
     int2 global_pixel_position = (int2) { ceil((position2D.x / aspect_ratio + 0.5f) * canvas_size_f.x), ((position2D.y + 0.5f) * canvas_size_f.y) };
-    ecs_set(world, zigel, CanvasPixelPosition, { global_pixel_position });
+    zox_set(zigel, CanvasPixelPosition, { global_pixel_position })
 }
 
 // spawns a text character in a place

@@ -6,10 +6,10 @@ ecs_entity_t spawn_prefab_virtual_joystick(ecs_world_t *world) {
     zox_prefab_name("prefab_virtual_joystick")
     zox_add_tag(e, Button)
     zox_add_tag(e, FrameTexture)
-    zox_set(e, FrameCorner, { 2 })
-    zox_set(e, OutlineThickness, { 2 })
-    zox_set(e, Color, { virtual_joystick_color })
-    zox_set(e, Children, { 0, NULL })
+    zox_prefab_set(e, FrameCorner, { 2 })
+    zox_prefab_set(e, OutlineThickness, { 2 })
+    zox_prefab_set(e, Color, { virtual_joystick_color })
+    zox_prefab_set(e, Children, { 0, NULL })
     add_ui_plus_components(world, e);
     prefab_virtual_joystick = e;
     #ifdef zoxel_debug_prefabs

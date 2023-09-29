@@ -32,7 +32,7 @@ int load_shader3D_textured(ecs_world_t *world) {
         textured3D_shader = spawn_shader(world, shader3D_textured_vert_buffer, shader3D_textured_frag_buffer);
         textured3D_material = spawn_material(world, get_shader3D_textured_value(world));
         GLuint material = get_textured3D_material_value(world);
-        zox_set(textured3D_material, Textured3DAttributes, { 
+        zox_prefab_set(textured3D_material, Textured3DAttributes, { 
             .vertex_position = glGetAttribLocation(material, "vertex_position"),
             .vertex_uv = glGetAttribLocation(material, "vertex_uv"),
             .vertex_color = glGetAttribLocation(material, "vertex_color"),

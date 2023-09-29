@@ -1,5 +1,5 @@
 void resize_camera(ecs_world_t *world, ecs_entity_t e, int2 new_screen_dimensions) {
-    if (e && ecs_is_alive(world, e)) zox_set_only(e, ScreenDimensions, { new_screen_dimensions })
+    if (e && ecs_is_alive(world, e)) zox_set(e, ScreenDimensions, { new_screen_dimensions })
 }
 
 //! Uses ecs_get_mut to resize cameras. \todo Create a viewport resize event.
@@ -43,10 +43,10 @@ void set_camera_transform(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t 
     float3_multiply_float_p(&camera_position, 0.25f);
     float3_multiply_float_p(&camera_euler, degreesToRadians);
     float4 camera_rotation = quaternion_from_euler(camera_euler);
-    zox_set_only(camera, LocalPosition3D, { camera_position })
-    zox_set_only(camera, Position3D, { float3_add(target_position, camera_position) })
-    if (camera_follow_mode == zox_camera_follow_mode_attach) zox_set_only(camera, LocalRotation3D, { camera_rotation })
-    else zox_set_only(camera, Rotation3D, { camera_rotation })
+    zox_set(camera, LocalPosition3D, { camera_position })
+    zox_set(camera, Position3D, { float3_add(target_position, camera_position) })
+    if (camera_follow_mode == zox_camera_follow_mode_attach) zox_set(camera, LocalRotation3D, { camera_rotation })
+    else zox_set(camera, Rotation3D, { camera_rotation })
 }
 
 void set_camera_mode(ecs_world_t *world, unsigned char new_camera_mode) {
@@ -70,19 +70,19 @@ void set_camera_mode(ecs_world_t *world, unsigned char new_camera_mode) {
     for (int i = 0; i < max_cameras; i++) {
         ecs_entity_t camera = main_cameras[i];
         if (camera == 0 || !ecs_is_valid(world, camera)) continue;
-        zox_set_only(camera, CameraMode, { camera_mode })
-        if (old_camera_fov != camera_fov) zox_set_only(camera, FieldOfView, { camera_fov })
+        zox_set(camera, CameraMode, { camera_mode })
+        if (old_camera_fov != camera_fov) zox_set(camera, FieldOfView, { camera_fov })
         // camera_follow_mode is more complicated, involves how camera is attached to character
         ecs_entity_t character = 0;
         if (old_camera_follow_mode == zox_camera_follow_mode_attach) character = ecs_get(world, camera, ParentLink)->value;
         else character = ecs_get(world, camera, CameraFollowLink)->value;
         if (old_camera_follow_mode != camera_follow_mode) {
             // remove old link
-            if (old_camera_follow_mode == zox_camera_follow_mode_attach) zox_set_only(camera, ParentLink, { 0 })
-            else zox_set_only(camera, CameraFollowLink, { 0 })
+            if (old_camera_follow_mode == zox_camera_follow_mode_attach) zox_set(camera, ParentLink, { 0 })
+            else zox_set(camera, CameraFollowLink, { 0 })
             // reattach
-            if (camera_follow_mode == zox_camera_follow_mode_attach) zox_set_only(camera, ParentLink, { character })
-            else if (camera_follow_mode == zox_camera_follow_mode_follow_xz) zox_set_only(camera, CameraFollowLink, { character })
+            if (camera_follow_mode == zox_camera_follow_mode_attach) zox_set(camera, ParentLink, { character })
+            else if (camera_follow_mode == zox_camera_follow_mode_follow_xz) zox_set(camera, CameraFollowLink, { character })
         }
         // set up local positions and rotations
         // use a helper function so attach does the same thing

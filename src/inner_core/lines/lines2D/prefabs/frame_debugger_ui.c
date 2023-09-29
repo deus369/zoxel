@@ -38,7 +38,7 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const char *header_labe
         int2 start_position = (int2) { position_x, lines_min_height };
         int2 end_position = (int2) { position_x, lines_max_height };
         ecs_entity_t line = spawn_ui_line2D(world, main_canvas, start_position, end_position, line_color, lines_thickness, 0, real_position2D, pixel_position2D, lines_layer);
-        zox_set_only(line, ChildIndex, { i })
+        zox_set(line, ChildIndex, { i })
         zox_add_tag(line, FrameDebugLine)
         children->value[1 + i] = line;
     }

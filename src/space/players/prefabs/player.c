@@ -6,18 +6,18 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_player")
     zox_add_tag(e, Player)
-    zox_set(e, PlayerState, { camera_mode })
-    zox_add(e, DeviceLinks)
-    zox_set(e, DeviceMode, { 0 })
-    zox_set(e, DeviceModeDirty, { 0 })
-    zox_set(e, Raycaster, { { 0, 0 } })
-    zox_set(e, RaycasterTarget, { 0 })
-    zox_set(e, RaycasterResult, { 0 })
-    zox_set(e, NavigatorState, { 0 })
-    zox_set(e, NavigatorTimer, { 0 })
-    zox_set(e, CharacterLink, { 0 })
-    zox_set(e, CameraLink, { 0 })
-    zox_set(e, ElementLinks, { 0, NULL })
+    zox_prefab_set(e, PlayerState, { camera_mode })
+    zox_prefab_set(e, DeviceMode, { 0 })
+    zox_prefab_set(e, DeviceModeDirty, { 0 })
+    zox_prefab_set(e, Raycaster, { { 0, 0 } })
+    zox_prefab_set(e, RaycasterTarget, { 0 })
+    zox_prefab_set(e, RaycasterResult, { 0 })
+    zox_prefab_set(e, NavigatorState, { 0 })
+    zox_prefab_set(e, NavigatorTimer, { 0 })
+    zox_prefab_set(e, CharacterLink, { 0 })
+    zox_prefab_set(e, CameraLink, { 0 })
+    zox_prefab_set(e, DeviceLinks, { 0, NULL })
+    zox_prefab_set(e, ElementLinks, { 0, NULL })
     prefab_player = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log(" + spawned prefab player [%lu].\n", (long int) (e));
@@ -28,7 +28,7 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
 ecs_entity_t spawn_player(ecs_world_t *world) {
     zox_instance(prefab_player)
     zox_name("player")
-    zox_set_only(e, PlayerState, { camera_mode })
+    zox_set(e, PlayerState, { camera_mode })
     DeviceLinks *deviceLinks = ecs_get_mut(world, e, DeviceLinks);
     resize_memory_component(DeviceLinks, deviceLinks, ecs_entity_t, 4)
     deviceLinks->value[0] = keyboard_entity;

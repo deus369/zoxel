@@ -19,19 +19,19 @@ void toggle_pause_ui(ecs_world_t *world, ecs_entity_t player) {
     ecs_entity_t character3D = ecs_get(world, player, CharacterLink)->value;
     if (!is_paused) {
         // zoxel_log(" > game state => [playing] to [paused] for [%lu]\n", character3D);
-        zox_set_only(local_game, GameState, { zoxel_game_state_paused })
+        zox_set(local_game, GameState, { zoxel_game_state_paused })
         disable_inputs_until_release(world, player);
-        zox_set_only(main_cameras[0], FreeRoam, { 0 })
-        zox_set_only(mouse_entity, MouseLock, { 0 })
-        zox_set_only(character3D, DisableMovement, { 1 })
+        zox_set(main_cameras[0], FreeRoam, { 0 })
+        zox_set(mouse_entity, MouseLock, { 0 })
+        zox_set(character3D, DisableMovement, { 1 })
         pause_ui = spawn_pause_ui(world, window_position, window_anchor);
         dispose_in_game_ui(world);
     } else {
         // zoxel_log(" > game [paused] to [playing] for [%lu]\n", character3D);
-        zox_set_only(local_game, GameState, { zoxel_game_state_playing })
+        zox_set(local_game, GameState, { zoxel_game_state_playing })
         disable_inputs_until_release(world, player);
-        zox_set_only(mouse_entity, MouseLock, { 1 })
-        zox_set_only(character3D, DisableMovement, { 0 })
+        zox_set(mouse_entity, MouseLock, { 1 })
+        zox_set(character3D, DisableMovement, { 0 })
         zox_delete(pause_ui)
         pause_ui = 0;
         spawn_in_game_ui(world);

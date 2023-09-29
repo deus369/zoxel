@@ -15,7 +15,7 @@ ecs_entity_t spawn_prefab_skill(ecs_world_t *world) {
 ecs_entity_t spawn_skill(ecs_world_t *world) {
     zox_instance(prefab_skill)
     zox_name("skill")
-    // ecs_set(world, e, Position3D, { position });
+    // zox_set(e, Position3D, { position })
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned skill [%lu]\n", (long int) e);
     #endif

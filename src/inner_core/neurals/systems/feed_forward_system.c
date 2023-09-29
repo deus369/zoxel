@@ -5,10 +5,10 @@ void neuron_signal_begin(ecs_world_t *world, ecs_entity_t e) {
     // for all children, if connection..
     for (int i = 0; i < children->length; i++) {
         ecs_entity_t connection_entity = children->value[i];
-        if (ecs_has(world, connection_entity, Connection)) {
+        if (zox_has(connection_entity, Connection)) {
             const ConnectionData *connectionData = ecs_get(world, connection_entity, ConnectionData);
             if (connectionData->value.x == e) {
-                ecs_set(world, connection_entity, Signal, { 1 });
+                zox_set(connection_entity, Signal, { 1 })
             }
         }
     }
@@ -46,7 +46,7 @@ void FeedForwardSystem(ecs_iter_t *it) {
                 const Weight *neuron_weight = ecs_get(world, connectionData->value.y, Weight);
                 float new_weight = neuron_weight->value + weight->value * add_multiplier;
                 if (new_weight > 1.0f) new_weight -= 1.0f;
-                ecs_set(world, connectionData->value.y, Weight, { new_weight });
+                zox_set(connectionData->value.y, Weight, { new_weight })
             }
         }
     }

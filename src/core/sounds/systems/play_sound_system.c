@@ -16,7 +16,7 @@ void PlaySoundSystem(ecs_iter_t *it) {
                 zox_delete(it->entities[i])
             } else {
                 if (soundLength->value == 0) zox_delete(it->entities[i])
-                else zox_set_only(it->entities[i], DestroyInTime, { soundLength->value })
+                else zox_set(it->entities[i], DestroyInTime, { soundLength->value })
                 // zoxel_log("  > played sound\n");
             }
         }

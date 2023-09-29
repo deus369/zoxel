@@ -3,7 +3,6 @@
 int finger_id = 0;
 
 void set_id(ecs_world_t *world, ecs_entity_t e, int new_id) {
-    // zox_set(e, ID, { new_id })
     ID *id = ecs_get_mut(world, e, ID);
     if (id->value != new_id) {
         id->value = new_id;
@@ -48,7 +47,7 @@ void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_di
             /*unsigned char value = ecs_get(world, zevice_pointer_entity, ZevicePointer)->value;
             devices_set_released_this_frame(&value, 1);
             devices_set_is_pressed(&value, 0);
-            zox_set_only(zevice_pointer_entity, ZevicePointer, { value })*/
+            zox_set(zevice_pointer_entity, ZevicePointer, { value })*/
             /*#ifdef zox_debug_log_extract_touchscreen
                 zoxel_log(" > touchscreen released at [%f]\n", (float) zox_current_time);
             #endif*/

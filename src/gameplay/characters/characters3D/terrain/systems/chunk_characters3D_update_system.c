@@ -20,8 +20,8 @@ void ChunkCharactersUpdateSystem(ecs_iter_t *it) {
         //zoxel_log(" > characters in chunk updating %lu > %i [depth %i to %i]\n", it->entities[i], entityLinks2->length, character_chunk_division, character_depth);
         for (int j = 0; j < entityLinks2->length; j++) {
             ecs_entity_t character_entity = entityLinks2->value[j];
-            ecs_set(world, character_entity, RenderLod, { character_depth });
-            ecs_set(world, character_entity, ChunkDirty, { 1 });
+            zox_set(character_entity, RenderLod, { character_depth })
+            zox_set(character_entity, ChunkDirty, { 1 })
         }
         // generateChunkEntities2->value = 0;
         // zoxel_log(" > chunk characters were updated %i\n", entityLinks2->length);

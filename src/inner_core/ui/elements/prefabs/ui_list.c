@@ -40,7 +40,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, const char *
         const char* label = labels[i].text;
         int array_index = 1 + i;
         children->value[array_index] = spawn_button(world, e, label_position, button_padding, (float2) { 0.5f, 0.5f }, label, font_size, 1, position2D, window_size, canvas_size);
-        zox_set_only(children->value[array_index], ClickEvent, { events[i].value })
+        zox_set(children->value[array_index], ClickEvent, { events[i].value })
     }
     ecs_modified(world, e, Children);
 

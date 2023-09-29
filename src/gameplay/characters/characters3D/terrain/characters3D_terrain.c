@@ -15,7 +15,7 @@ zox_byte_component(GenerateChunkEntities)
 // zoxel_fun_includes
 
 void spawn_prefabs_characters3D_terrain(ecs_world_t *world) {
-    zox_set(prefab_terrain_chunk_octree, GenerateChunkEntities, { zox_chunk_entities_state_initial })
+    zox_prefab_set(prefab_terrain_chunk_octree, GenerateChunkEntities, { zox_chunk_entities_state_initial })
 }
 
 zox_begin_module(Characters3DTerrain)

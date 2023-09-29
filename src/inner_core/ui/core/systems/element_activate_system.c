@@ -1,7 +1,7 @@
 #ifdef zoxel_inputs
     void set_ui_clicked_mut(ecs_world_t *world, ecs_entity_t ui) {
         if (ecs_has(world, ui, Clickable)) {
-            zox_set_only(ui, ClickState, { 1 }) // i made it like this due to some complication
+            zox_set(ui, ClickState, { 1 }) // i made it like this due to some complication
             /*ClickState *clickState = ecs_get_mut(world, ui, ClickState);
             clickState->value = 1;
             ecs_modified(world, ui, ClickState);*/

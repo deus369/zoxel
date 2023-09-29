@@ -1,11 +1,11 @@
 zox_component(ShaderGPULink, GLuint2)
 
 void add_gpu_shader(ecs_world_t *world, ecs_entity_t e) {
-    if (!headless) zox_set(e, ShaderGPULink, { { 0, 0 } })
+    if (!headless) zox_prefab_set(e, ShaderGPULink, { { 0, 0 } })
 }
 
 /*void add_new_gpu_shader(ecs_world_t *world, ecs_entity_t e) {
-    if (!headless) zox_set_only(e, ShaderGPULink, { spawn_gpu_shader() })
+    if (!headless) zox_set(e, ShaderGPULink, { spawn_gpu_shader() })
 }*/
 
 ECS_DTOR(ShaderGPULink, ptr, {

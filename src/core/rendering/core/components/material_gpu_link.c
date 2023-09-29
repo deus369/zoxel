@@ -4,18 +4,18 @@ zox_component(MaterialGPULink, GLuint)
 zox_component(MaterialInstancedGPULink, GLuint)
 
 void add_gpu_material(ecs_world_t *world, ecs_entity_t e) {
-    if (!headless) zox_set(e, MaterialGPULink, { 0 })
+    if (!headless) zox_prefab_set(e, MaterialGPULink, { 0 })
 }
 
 void add_gpu_instanced_material(ecs_world_t *world, ecs_entity_t e) {
-    if (!headless) zox_set(e, MaterialInstancedGPULink, { 0 })
+    if (!headless) zox_prefab_set(e, MaterialInstancedGPULink, { 0 })
 }
 
 GLuint spawn_gpu_material(ecs_world_t *world, ecs_entity_t e, const GLuint2 shader) {
     GLuint gpu_material = 0;
     if (!headless) {
         gpu_material = spawn_gpu_material_program(shader);
-        zox_set_only(e, MaterialGPULink, { gpu_material })
+        zox_set(e, MaterialGPULink, { gpu_material })
     }
     return gpu_material;
 }

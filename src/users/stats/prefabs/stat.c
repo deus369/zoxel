@@ -15,7 +15,7 @@ ecs_entity_t spawn_prefab_stat(ecs_world_t *world) {
 ecs_entity_t spawn_stat(ecs_world_t *world) {
     zox_instance(prefab_stat)
     zox_name("stat")
-    // ecs_set(world, e, Position3D, { position });
+    // zox_set(e, Position3D, { position })
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned stat [%lu]\n", (long int) e);
     #endif

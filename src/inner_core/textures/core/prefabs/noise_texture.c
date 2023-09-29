@@ -6,7 +6,7 @@ void add_noise_texture(ecs_world_t *world, ecs_entity_t e) {
 
 void add_animated_noise_texture(ecs_world_t *world, ecs_entity_t e) {
     zox_add_tag(e, NoiseTexture)
-    zox_set(e, AnimateTexture, { 0 })
+    zox_prefab_set(e, AnimateTexture, { 0 })
 }
 
 void spawn_prefab_noise_texture(ecs_world_t *world) {

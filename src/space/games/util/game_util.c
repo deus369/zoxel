@@ -44,13 +44,13 @@ void end_game(ecs_world_t *world) {
     float2 main_menu_anchor = { 0.5f, 0.5f };
     int2 main_menu_position = int2_zero;
     spawn_main_menu(world, game_name, main_menu_position, main_menu_anchor, 0);
-    zox_set_only(local_game, GameState, { zoxel_game_state_main_menu })
+    zox_set(local_game, GameState, { zoxel_game_state_main_menu })
     set_sky_color(world, menu_sky_color, menu_sky_bottom_color);
     float3 camera_position = float3_zero;
     float4 camera_rotation = quaternion_identity;
     get_camera_start_transform(&camera_position, &camera_rotation);
-    zox_set_only(main_camera, Position3D, { camera_position })
-    zox_set_only(main_camera, Rotation3D, { camera_rotation })
+    zox_set(main_camera, Position3D, { camera_position })
+    zox_set(main_camera, Rotation3D, { camera_rotation })
     disable_inputs_until_release(world, main_player);
     dispose_in_game_ui(world);
     #ifdef zox_on_play_spawn_terrain
@@ -97,19 +97,19 @@ void play_game(ecs_world_t *world) {
         zox_add_only(main_camera, StreamPoint)
     }
     zoxel_log(" > game state => [main_menu] to [playing]\n");
-    zox_set_only(local_game, GameState, { zoxel_game_state_playing }) // start game
+    zox_set(local_game, GameState, { zoxel_game_state_playing }) // start game
     zox_delete(main_menu)   // close main menu
     // \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cam
     int3 center_position = int3_zero;
     const Position3D *camera_position3D = ecs_get(world, main_camera, Position3D);
     center_position = get_chunk_position(camera_position3D->value, default_chunk_size);
-    zox_set_only(main_camera, StreamPoint, { center_position })
+    zox_set(main_camera, StreamPoint, { center_position })
     #ifdef zox_on_play_spawn_terrain
         create_terrain(world, center_position);
     #endif
     if (local_terrain) {
-        zox_set_only(main_camera, VoxLink, { local_terrain })
-        zox_set_only(local_terrain, RealmLink, { local_realm })
+        zox_set(main_camera, VoxLink, { local_terrain })
+        zox_set(local_terrain, RealmLink, { local_realm })
     }
     #ifdef zox_disable_player_character3D
         attach_to_character(world, main_player, main_camera, 0);
@@ -138,7 +138,7 @@ void play_game(ecs_world_t *world) {
     float4x4 view_matrix = ecs_get(world, old_camera_entity, ViewMatrix)->value;
     render_camera_matrix = camera_matrix;
     ecs_entity_t e = spawn_free_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { }); // spawn new free roam camera
-    zox_set_only(e, ViewMatrix, { view_matrix })
+    zox_set(e, ViewMatrix, { view_matrix })
     zox_delete(old_camera_entity)
     return e;
 }
@@ -150,7 +150,7 @@ ecs_entity_t respawn_base_camera(ecs_world_t *world, ecs_entity_t old_camera_ent
     float4x4 view_matrix = ecs_get(world, old_camera_entity, ViewMatrix)->value;
     // render_camera_matrix = camera_matrix;
     ecs_entity_t e = spawn_base_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { }); // spawn new free roam camera
-    zox_set_only(e, ViewMatrix, { view_matrix })
+    zox_set(e, ViewMatrix, { view_matrix })
     zox_delete(old_camera_entity)
     return e;
 }*/
