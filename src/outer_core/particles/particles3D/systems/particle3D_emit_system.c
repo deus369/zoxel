@@ -1,28 +1,24 @@
+// #define zox_bulk_spawning
+
 void emit_particle3Ds(ecs_world_t *world, float3 spawn_position, int spawn_count) {
-    float2 positionBounds = { 0.1f, 0.2f };
+    float3 spawn_bounds = { 0.4f, 0.8, 0.4f };
     const float2 velocityBounds = { 0.03f, 0.2f };
     const float2 scaleBounds = { 0.02f, 0.13f };
     const double2 lifeTime = { 0.1f, 2.0f };
     const float2 brightnessBounds = { 0.2f, 0.8f };
-    // Create a SpaceShip prefab with a Defense component.
     Position3D *positions = malloc(sizeof(Position3D) * spawn_count);
     Velocity3D *velocity3Ds = malloc(sizeof(Velocity3D) * spawn_count);
-    // Rotation3D *rotations = malloc(sizeof(Rotation3D) * spawn_count);
-    // Acceleration *accelerations = malloc(sizeof(Acceleration) * spawn_count);
-    // Torque3D *torques = malloc(sizeof(Torque3D) * spawn_count);
     Scale1D *scale1Ds = malloc(sizeof(Scale1D) * spawn_count);
     Brightness *brightnesses = malloc(sizeof(Brightness) * spawn_count);
     DestroyInTime *destroyInTimes = malloc(sizeof(DestroyInTime) * spawn_count);
     for (int i = 0; i < spawn_count; i++) {
-        positions[i].value = (float3) {
-            ((rand() % 101) / 100.0f) * positionBounds.y - (positionBounds.y / 2.0f),
-            ((rand() % 101) / 100.0f) * positionBounds.y - (positionBounds.y / 2.0f),
-            ((rand() % 101) / 100.0f) * positionBounds.y - (positionBounds.y / 2.0f)
-        };
-        positions[i].value.x += spawn_position.x;
-        positions[i].value.y += spawn_position.y;
-        positions[i].value.z += spawn_position.z;
-        // velocity
+        float3 spawn_position = spawn_position;
+        float3_add_float3_p(&spawn_position, (float3) {
+            ((rand() % 101) / 100.0f) * spawn_bounds.x - (spawn_bounds.x / 2.0f),
+            ((rand() % 101) / 100.0f) * spawn_bounds.y - (spawn_bounds.y / 2.0f),
+            ((rand() % 101) / 100.0f) * spawn_bounds.z - (spawn_bounds.z / 2.0f)
+        });
+        positions[i].value = spawn_position;
         velocity3Ds[i].value = (float3) {
             ((rand() % 101) / 100.0f) * 1.0f - 0.5f,
             ((rand() % 101) / 100.0f) * 1.0f - 0.5f,
@@ -36,7 +32,6 @@ void emit_particle3Ds(ecs_world_t *world, float3 spawn_position, int spawn_count
         else velocity3Ds[i].value.y += velocityBounds.x;
         if (velocity3Ds[i].value.z < 0) velocity3Ds[i].value.z -= velocityBounds.x;
         else velocity3Ds[i].value.z += velocityBounds.x;
-        // torques[i].value = ((rand() % 101) / 100.0f) * torqueBounds - (torqueBounds / 2.0f);
         scale1Ds[i].value = scaleBounds.x + ((rand() % 101) / 100.0f) * (scaleBounds.y - scaleBounds.x);
         brightnesses[i].value = brightnessBounds.x + ((rand() % 101) / 100.0f) * (brightnessBounds.y - brightnessBounds.x);
         destroyInTimes[i].value = lifeTime.x + ((rand() % 101) / 100.0f) *  (lifeTime.y - lifeTime.x);
@@ -51,7 +46,6 @@ void emit_particle3Ds(ecs_world_t *world, float3 spawn_position, int spawn_count
             ecs_id(Scale1D),
             ecs_id(Velocity3D),
             ecs_id(Acceleration3D),
-            // ecs_id(Torque3D),
             ecs_id(Brightness),
             ecs_id(DestroyInTime)
         },
@@ -63,7 +57,6 @@ void emit_particle3Ds(ecs_world_t *world, float3 spawn_position, int spawn_count
             scale1Ds,
             velocity3Ds,
             NULL,           // Acceleration3D
-            // NULL,        // Torque3D
             brightnesses,
             destroyInTimes
         }
@@ -71,7 +64,6 @@ void emit_particle3Ds(ecs_world_t *world, float3 spawn_position, int spawn_count
     free(positions);
     free(scale1Ds);
     free(velocity3Ds);
-    // free(torques);
     free(brightnesses);
     free(destroyInTimes);
 }
@@ -105,6 +97,10 @@ void Particle3DEmitSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const Position3D *position3D = &position3Ds[i];
         const ParticleEmitRate *particleEmitRate = &particleEmitRates[i];
-        emit_particle3Ds_slow(world, position3D->value, particleEmitRate->value);
+        #ifdef zox_bulk_spawning
+            emit_particle3Ds(world, position3D->value, particleEmitRate->value);
+        #else
+            emit_particle3Ds_slow(world, position3D->value, particleEmitRate->value);
+        #endif
     }
 } zox_declare_system(Particle3DEmitSystem)

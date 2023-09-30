@@ -4,6 +4,8 @@
 // components
 zox_declare_tag(Particle3D)
 zox_declare_tag(Particle3DEmitter)
+// shaders
+#include "shaders/particle_shader.c"
 // prefabs
 #include "prefabs/particle3D.c"
 #include "prefabs/particle3D_emitter.c"
@@ -18,6 +20,10 @@ int get_count_particle3Ds(ecs_world_t *world) {
 
 int get_count_particle3D_emitters(ecs_world_t *world) {
     return zox_count_entities(world, ecs_id(Particle3DEmitter));
+}
+
+void load_resources_particles3D(ecs_world_t *world) {
+    initialize_shader_particle3D();
 }
 
 void spawn_prefabs_particles3D(ecs_world_t *world) {

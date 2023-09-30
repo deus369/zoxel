@@ -15,7 +15,7 @@ void Line3DRenderSystem(ecs_iter_t *it) {
         glVertexAttribPointer(line3D_position_location, 3, GL_FLOAT, GL_FALSE, 0, line_data);
         float3 color_rgb_f3 = color_rgb_to_float3(colorRGB->value);
         glUniform3f(line3D_color_location, color_rgb_f3.x, color_rgb_f3.y, color_rgb_f3.z);
-        glDrawArrays(GL_LINES, 0, 3);
+        glDrawArrays(GL_LINES, 0, 2);
     }
     glDisableVertexAttribArray(line3D_position_location);
     glUseProgram(0);

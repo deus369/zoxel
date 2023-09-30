@@ -5,6 +5,10 @@
 #include "ai/ai.c"
 #include "particles/particles.c"
 
+void load_resources_outer_core(ecs_world_t *world) {
+    load_resources_particles(world);
+}
+
 void spawn_prefabs_outer_core(ecs_world_t *world) {
     spawn_prefabs_cubes(world);
     spawn_prefabs_particles(world);
