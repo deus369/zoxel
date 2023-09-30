@@ -105,27 +105,6 @@ void opengl_disable_opengl_program() {
     glUseProgram(0);
 }
 
-// glUniformMatrix4fv(view_matrix_location, 1, GL_FALSE, (const GLfloat*) ((float*) &view_matrix));
-
-/*
-Multiple textures:
-
-    https://learnopengl.com/Getting-started/textures
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture1);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, texture2);
-
-*/
-
-// glActiveTexture(GL_TEXTURE0);
-// glUniform1i(texture, 0);
-// glEnableTexture(texture);
-// glActiveTexture(GL_TEXTURE0);
-// glUniform1i(texture, 0);
-// Error 0x500/1280 means GL_INVALID_ENUM
-
 void opengl_enable_vertex_buffer(GLuint shader_index, GLuint vertex_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glEnableVertexAttribArray(shader_index);
@@ -166,3 +145,22 @@ void opengl_set_float3(GLuint shader_index, const float3 value) {
 void opengl_set_float(GLuint shader_index, const float value) {
     glUniform1f(shader_index, value);
 }
+
+/*
+Multiple textures:
+
+    https://learnopengl.com/Getting-started/textures
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture1);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, texture2);
+
+    // glActiveTexture(GL_TEXTURE0);
+    // glUniform1i(texture, 0);
+    // glEnableTexture(texture);
+    // glActiveTexture(GL_TEXTURE0);
+    // glUniform1i(texture, 0);
+    // Error 0x500/1280 means GL_INVALID_ENUM
+
+*/
