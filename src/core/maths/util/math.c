@@ -1,11 +1,12 @@
 // Find more math inspiration at https://gist.github.com/mattatz/86fff4b32d198d0928d0fa4ff32cf6fa
 
 double double_abs(double input) {
-    if (input < 0) {
-        return -input;
-    } else {
-        return input;
-    }
+    if (input < 0) return -input;
+    else return input;
+}
+
+float3 float4x4_get_position(float4x4 matrix) {
+    return (float3) { matrix.w.x, matrix.w.y, matrix.w.z };
 }
 
 float4x4 float4x4_position(float3 position) {
