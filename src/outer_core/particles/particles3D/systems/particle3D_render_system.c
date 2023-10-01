@@ -11,7 +11,7 @@ float float4x4_mul_float_z(float4x4 matrix, float value) {
 
 void Particle3DRenderSystem(ecs_iter_t *it) {
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
-    float3 camera_position = float4x4_get_position(render_camera_matrix);
+    // float3 camera_position = float4x4_get_position(render_camera_matrix);
     // zox_log("   > camera_position: %fx%fx%f\n", camera_position.x, camera_position.y, camera_position.z);
     const float default_point_thickness = 24.0f;
     // zox_log("   > render_camera_matrix.z: %f\n", camera_position.z);

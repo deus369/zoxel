@@ -56,8 +56,8 @@ void AOEDamageSystem(ecs_iter_t *it) {
                 if (statValue->value < 0) statValue->value = 0;
                 ecs_modified(world, health_stat, StatValue);
                 if (!statValue->value) {
-                    // todo: death animation
-                    zox_delete(e2)
+                    // todo: dead animation
+                    // zox_delete(e2)
                     continue;
                 }
                 #ifdef zox_debug_aoe_damage_system

@@ -51,7 +51,7 @@ zox_define_component(Textured3DAttributes)
 // zoxel_define_systems
 #ifdef zoxel_transforms3D
     zox_system_1(InstanceRender3DSystem, 0, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink)
-    zox_render3D_system(RenderCharacters3DSystem, [none] MeshColorRGBs, [in] Position3D, [in] Rotation3D, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [none] !UvsGPULink)   // , [in] Scale1D, [in] Brightness
+    zox_render3D_system(RenderCharacters3DSystem, [none] MeshColorRGBs, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [none] !UvsGPULink)   // , [in] Scale1D, [in] Brightness
     zox_render3D_system(Element3DRenderSystem, [none] rendering.core.SingleMaterial, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] TextureGPULink)
     zox_render3D_system(Render3DSystem, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] !MeshColorRGBs)
 #endif

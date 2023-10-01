@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_particle3D(ecs_world_t *world) {
     zox_prefab_set(e, Velocity3D, { float3_zero })
     zox_prefab_set(e, Acceleration3D, { float3_zero })
     zox_prefab_set(e, Brightness, { 1 })
-    zox_prefab_set(e, ColorRGB, { 255, 0, 0 })
+    zox_prefab_set(e, ColorRGB, {{ 255, 0, 0 }})
     zox_prefab_set(e, DestroyInTime, { 3 })
     prefab_particle3D = e;
     #ifdef zoxel_debug_prefabs

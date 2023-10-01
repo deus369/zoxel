@@ -35,6 +35,8 @@
 
 #define zox_get_mut(e, T) ecs_get_mut(world, e, T);
 
+#define zox_modified(e, T) ecs_modified(world, e, T);
+
 #define zox_prefab() ecs_entity_t e = ecs_new_prefab(world, "");
 
 #define zox_instance(prefab) ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);

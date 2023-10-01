@@ -4,9 +4,10 @@
 void RenderCharacters3DSystem(ecs_iter_t *it) {
     const Position3D *positions = ecs_field(it, Position3D, 2);
     const Rotation3D *rotations = ecs_field(it, Rotation3D, 3);
-    const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 4);
-    const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 5);
-    const ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 6);
+    const Scale1D *scale1Ds = ecs_field(it, Scale1D, 4);
+    const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 5);
+    const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 6);
+    const ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 7);
     unsigned char has_set_material = 0;
     int rendered_count = 0;
     #ifdef zox_debug_render3D_colored
@@ -28,6 +29,7 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         if (colorsGPULink->value == 0) continue;
         const Position3D *position3D = &positions[i];
         const Rotation3D *rotation3D = &rotations[i];
+        const Scale1D *scale1D = &scale1Ds[i];
         if (!has_set_material) {
             has_set_material = 1;
             opengl_set_material(colored3D_material);
@@ -45,6 +47,7 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         #endif
         opengl_set_float3(attributes_colored3D.position, position3D->value);
         opengl_set_float4(attributes_colored3D.rotation, rotation3D->value);
+        opengl_set_float(attributes_colored3D.scale, scale1D->value);
         #ifndef zox_disable_render_characters
             #ifdef zox_characters_as_cubes
                 opengl_render(36);

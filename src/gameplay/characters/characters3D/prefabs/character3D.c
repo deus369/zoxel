@@ -9,6 +9,8 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     zox_prefab_child(prefab_vox)
     zox_prefab_name("prefab_character3D")
     zox_add_tag(e, Character3D)
+    zox_prefab_set(e, Dead, { 0 })
+    zox_prefab_set(e, DiedTime, { 0 })
     zox_prefab_set(e, Bounds3D, {{ 1, 1, 1 }})
     zox_prefab_set(e, VoxLink, { 0 })
     zox_prefab_set(e, ChunkLink, { 0 })
@@ -39,7 +41,8 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vo
     // stats
     float health = (0.02f + 0.98f * ((rand() % 100) * 0.01f)) * 5.0f;
     float max_health = 10.0f;
-    ecs_entity_t user_stat = spawn_user_stat(world);
+    ecs_entity_t user_stat = spawn_user_stat(world, e);
+    zox_add_tag(user_stat, HealthStat)
     zox_prefab_set(user_stat, StatValue, { health })
     zox_prefab_set(user_stat, StatValueMax, { max_health })
     UserStatLinks *userStatLinks = ecs_get_mut(world, e, UserStatLinks);
