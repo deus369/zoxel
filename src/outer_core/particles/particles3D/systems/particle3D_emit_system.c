@@ -12,13 +12,12 @@ void emit_particle3Ds(ecs_world_t *world, float3 spawn_position, int spawn_count
     Brightness *brightnesses = malloc(sizeof(Brightness) * spawn_count);
     DestroyInTime *destroyInTimes = malloc(sizeof(DestroyInTime) * spawn_count);
     for (int i = 0; i < spawn_count; i++) {
-        float3 spawn_position = spawn_position;
-        float3_add_float3_p(&spawn_position, (float3) {
+        positions[i].value = spawn_position;
+        float3_add_float3_p(&positions[i].value, (float3) {
             ((rand() % 101) / 100.0f) * spawn_bounds.x - (spawn_bounds.x / 2.0f),
             ((rand() % 101) / 100.0f) * spawn_bounds.y - (spawn_bounds.y / 2.0f),
             ((rand() % 101) / 100.0f) * spawn_bounds.z - (spawn_bounds.z / 2.0f)
         });
-        positions[i].value = spawn_position;
         velocity3Ds[i].value = (float3) {
             ((rand() % 101) / 100.0f) * 1.0f - 0.5f,
             ((rand() % 101) / 100.0f) * 1.0f - 0.5f,
