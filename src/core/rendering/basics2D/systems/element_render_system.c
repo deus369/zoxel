@@ -10,6 +10,7 @@ void ElementRenderSystem(ecs_iter_t *it) {
     // const MaterialInstancedGPULink *materialGPULinks = ecs_field(it, MaterialInstancedGPULink, 9);
     const TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 10);
     const MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 11);
+    const Alpha *alphas = ecs_field(it, Alpha, 12);
     for (int i = 0; i < it->count; i++) {
         const Layer2D *layer2D = &layer2Ds[i];
         if (layer2D->value != renderer_layer) continue;
@@ -19,6 +20,7 @@ void ElementRenderSystem(ecs_iter_t *it) {
         const Rotation2D *rotation2D = &rotation2Ds[i];
         const Scale1D *scale1D = &scale2Ds[i];
         const Brightness *brightness = &brightnesses[i];
+        const Alpha *alpha = &alphas[i];
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
         const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
         // const MaterialInstancedGPULink *materialInstanceGPULink = &materialGPULinks[i];
@@ -30,14 +32,15 @@ void ElementRenderSystem(ecs_iter_t *it) {
             opengl_set_material(textured2D_material);
             opengl_set_matrix(shader2D_textured_attributes.camera_matrix, render_camera_matrix);
         }
-        float positionZ = ((int) layer2D->value) * shader_depth_multiplier;
+        float position_z = ((int) layer2D->value) * shader_depth_multiplier;
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_set_buffer_attributes2D(meshGPULink->value.y, uvsGPULink->value);
         opengl_bind_texture(textureGPULink->value);
-        opengl_set_float3(shader2D_textured_attributes.position, (float3) { position2D->value.x, position2D->value.y, positionZ });
+        opengl_set_float3(shader2D_textured_attributes.position, (float3) { position2D->value.x, position2D->value.y, position_z });
         opengl_set_float(shader2D_textured_attributes.angle, rotation2D->value);
         opengl_set_float(shader2D_textured_attributes.scale, scale1D->value);
         opengl_set_float(shader2D_textured_attributes.brightness, brightness->value);
+        opengl_set_float(shader2D_textured_attributes.alpha, alpha->value);
         #ifndef zox_disable_render_ui
             opengl_render(6);
         #endif
@@ -47,6 +50,7 @@ void ElementRenderSystem(ecs_iter_t *it) {
                 break;
             }
         #endif
+        // zox_log("   > rendering line at layer: %i\n", renderer_layer)
         // zoxel_log(" > rendered element2D [%lu]: [%i] - [%ix%i:%i]\n", it->entities[i], 6, meshGPULink->value.x, meshGPULink->value.y); //, colorsGPULink->value);
     }
     if (has_set_material) {        

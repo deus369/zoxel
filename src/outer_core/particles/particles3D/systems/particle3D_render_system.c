@@ -1,5 +1,7 @@
 // #define zox_debug_particle3Ds
 
+const float default_point_thickness = 32.0f;
+
 #ifdef zox_debug_particle3Ds
     const float3 debug_particle_line_addition = (float3) { 0, 0.2f, 0 };
     extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
@@ -13,7 +15,6 @@ void Particle3DRenderSystem(ecs_iter_t *it) {
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
     // float3 camera_position = float4x4_get_position(render_camera_matrix);
     // zox_log("   > camera_position: %fx%fx%f\n", camera_position.x, camera_position.y, camera_position.z);
-    const float default_point_thickness = 24.0f;
     // zox_log("   > render_camera_matrix.z: %f\n", camera_position.z);
     glUseProgram(particle3D_material);
     opengl_set_float4(particle3D_fog_data_location, (float4) { fog_color.x, fog_color.y, fog_color.z, get_fog_density() });

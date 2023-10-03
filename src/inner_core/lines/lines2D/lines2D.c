@@ -14,14 +14,17 @@ int4 get_new_line_position(float2 real_position2D, float2 canvas_size_f, float a
     int4_add_int2(&output, delta);
     return output;
 }
-
+// prefabs
 #include "prefabs/line2D.c"
 #include "prefabs/ui_line2D.c"
 #include "prefabs/ui_line2D_temp.c"
 #include "prefabs/frame_debugger_ui.c"
+// systems
 #include "systems/line2D_element_system.c"
 #include "systems/line2D_render_system.c"
 #include "systems/frame_debug_system.c"
+// util
+#include "util/canvas_lines.c"
 
 void load_resources_lines2D(ecs_world_t *world) {
     initialize_shader_line2D();

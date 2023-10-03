@@ -14,6 +14,7 @@ void add_ui_components(ecs_world_t *world, ecs_entity_t e) {
 void add_ui_mesh_components(ecs_world_t *world, ecs_entity_t e) {
     zox_prefab_set(e, MeshDirty, { 0 })
     zox_prefab_set(e, Brightness, { 1 })
+    zox_prefab_set(e, Alpha, { 1 })
     add_gpu_mesh(world, e);
     add_gpu_instanced_material(world, e);
     add_gpu_texture(world, e);
@@ -27,7 +28,7 @@ void add_ui_mesh_components(ecs_world_t *world, ecs_entity_t e) {
 }
 
 void add_ui_plus_components(ecs_world_t *world, ecs_entity_t e) {
-    unsigned char is_generate_texture = 0; // waits a frame, needs to spawn gpu buffers first
+    const unsigned char is_generate_texture = 0; // waits a frame, needs to spawn gpu buffers first
     add_seed(world, e, 666);
     add_transform2Ds(world, e);
     add_texture(world, e, int2_zero, is_generate_texture);

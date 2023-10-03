@@ -19,8 +19,8 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label, int2 
     const text_group labels[] = { { "play" }, { "exit" } };
     const ClickEvent events[] = { { &button_event_play_game }, { &button_event_exit_app } };
 #endif
-    ecs_entity_t e = spawn_ui_list(world, prefab_main_menu, "zoxel", labels_count, labels, events,
-        position, anchor, is_close_button, 42);
+    const unsigned char layer = 1;
+    ecs_entity_t e = spawn_ui_list(world, prefab_main_menu, "zoxel", labels_count, labels, events, position, anchor, is_close_button, 42, layer);
     main_menu = e;
     return e;
 }

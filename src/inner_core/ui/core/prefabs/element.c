@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_element(ecs_world_t *world) {
     add_ui_plus_components(world, e);
     prefab_element = e;
     #ifdef zoxel_debug_prefabs
-        zoxel_log(" > spawned prefab element [%lu].\n", (long int) (e));
+        zox_log(" > spawned prefab element [%lu]\n", e)
     #endif
     return e;
 }
@@ -20,7 +20,7 @@ ecs_entity_t spawn_element(ecs_world_t *world, ecs_entity_t parent, int2 positio
     zox_instance(prefab_element)
     initialize_ui_components(world, e, parent, position, size, anchor, 0, canvas_size);
     #ifdef zoxel_debug_spawns
-        zoxel_log(" > spawned element [%lu]\n", (long int) e);
+        zox_log(" > spawned element [%lu]\n", e)
     #endif
     return e;
 }

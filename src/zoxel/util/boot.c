@@ -72,7 +72,8 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         }
     #endif
     #ifdef zoxel_ui
-        spawn_canvas(world, screen_dimensions2);
+        ecs_entity_t canvas = spawn_canvas(world, screen_dimensions2);
+        spawn_canvas_overlay(world, canvas);
         #ifdef zoxel_texts
             spawn_font_style(world);
         #endif

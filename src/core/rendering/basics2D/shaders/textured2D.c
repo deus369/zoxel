@@ -3,11 +3,11 @@ const GLchar* shader2D_textured_vert_buffer = "\
 #version 300 es\n\
 layout(location=0) in lowp vec2 vertex_position;\
 layout(location=1) in lowp vec2 vertex_uv;\
+out lowp vec2 uv;\
 uniform highp mat4 camera_matrix;\
 uniform lowp vec3 position;\
 uniform lowp float angle;\
 uniform lowp float scale;\
-out lowp vec2 uv;\
 \
 void main() {\
     vec2 position2 = vec2(position.x, position.y);\
@@ -18,13 +18,15 @@ void main() {\
 
 const GLchar* shader2D_textured_frag_buffer = "\
 #version 300 es\n\
-uniform sampler2D tex;\
 in lowp vec2 uv;\
-uniform lowp float brightness;\
 out lowp vec4 color;\
+uniform sampler2D tex;\
+uniform lowp float brightness;\
+uniform lowp float alpha;\
 \
 void main() {\
     color = texture(tex, uv) * brightness;\
+    color.w *= alpha;\
 }";
 
 // testing uvs:

@@ -1,6 +1,7 @@
 #ifndef zoxel_rendering_basics2D
 #define zoxel_rendering_basics2D
 
+const float shader_depth_multiplier = 0.001f; // 0.0001f;
 // shaders
 #include "shaders/instanced2D.c"
 #include "shaders/textured2D.c"
@@ -37,7 +38,7 @@ add_restore_shader_function((funfun) { &rendering_restore_basic_shaders2D });
 // zoxel_define_components
 // zoxel_define_systems
 #ifdef zoxel_transforms2D
-    zox_render2D_system(ElementRenderSystem, [none] ElementRender, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] MaterialInstancedGPULink, [in] TextureGPULink, [in] MeshDirty)
+    zox_render2D_system(ElementRenderSystem, [none] ElementRender, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] MaterialInstancedGPULink, [in] TextureGPULink, [in] MeshDirty, [in] Alpha)
 #endif
 zox_system_1(Mesh2DUvsUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshUVs, [in] MeshGPULink, [in] UvsGPULink, [none] !MeshColorRGBs)
 zoxel_end_module(RenderingBasics2D)

@@ -24,6 +24,7 @@ zox_declare_tag(ElementRender)
 zox_byte_component(MeshDirty)
 zox_byte_component(TextureDirty)
 zox_component(Brightness, float)
+zox_component(Alpha, float)
 zox_byte_component(MeshAlignment)
 zox_byte_component(RenderLod) // The resolution of each chunk, distance to nearest camera
 #include "opengl/opengl.c"
@@ -55,6 +56,7 @@ zox_define_tag(ElementRender)
 zox_define_component(MeshDirty)
 zox_define_component(TextureDirty)
 zox_define_component(Brightness)
+zox_define_component(Alpha)
 zox_define_component(MeshAlignment)
 zox_define_component(RenderLod)
 // zoxel_import_modules

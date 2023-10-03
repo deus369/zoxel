@@ -5,11 +5,11 @@ typedef struct {
     GLuint angle;
     GLuint scale;
     GLuint brightness;
+    GLuint alpha;
     GLint vertex_uv;
     GLuint texture;
 } MaterialTextured2D;
 
-const float shader_depth_multiplier = 0.001f; // 0.0001f;
 const unsigned char disableTextureLoaded = 0;
 GLuint2 shader2D_textured;
 GLuint textured2D_material;
@@ -27,6 +27,7 @@ MaterialTextured2D initialize_material2D_textured(GLuint material) {
     materialTextured2D.scale = glGetUniformLocation(material, "scale");
     materialTextured2D.brightness = glGetUniformLocation(material, "brightness");
     materialTextured2D.texture = glGetUniformLocation(material, "tex");
+    materialTextured2D.alpha = glGetUniformLocation(material, "alpha");
     return materialTextured2D;
 }
 
