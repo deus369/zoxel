@@ -20,6 +20,12 @@ void DeathSystem(ecs_iter_t *it) {
         DiedTime *diedTime = zox_get_mut(userLink->value, DiedTime)
         diedTime->value = zox_current_time;
         zox_modified(userLink->value, DiedTime)
+        AnimationState *animationState = zox_get_mut(userLink->value, AnimationState)
+        animationState->value = zox_animation_shrink;
+        zox_modified(userLink->value, AnimationState)
+        AnimationStart *animationStart = zox_get_mut(userLink->value, AnimationStart)
+        animationStart->value = zox_current_time;
+        zox_modified(userLink->value, AnimationStart)
         // todo: add animation for this
         // zox_delete(userLink->value)
         // zox_log("   %lu just died [%f]\n", it->entities[i], time)

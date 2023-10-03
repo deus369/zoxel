@@ -32,6 +32,8 @@ zox_memory_component(Colors, color)
 zox_byte_component(GenericEvent)
 zox_component(Bounds3D, float3)
 zox_entities_component(EntityLinks)
+zox_byte_component(Dead)
+zox_time_component(DiedTime)
 // zoxel_util_includes
 #include "util/generic_util.c"
 #include "util/convert_ascii.c"
@@ -41,6 +43,7 @@ zox_entities_component(EntityLinks)
 // zoxel_system_includes
 #include "systems/destroy_in_frame_system.c"
 #include "systems/generic_event_debug_system.c"
+#include "systems/death_clean_system.c"
 
 void spawn_prefabs_generic(ecs_world_t *world) {
     spawn_prefab_generic_event(world);
@@ -74,6 +77,8 @@ zox_define_memory_component(Colors)
 zox_define_component(GenericEvent)
 zox_define_component(Bounds3D)
 zox_define_entities_component(EntityLinks)
+zox_define_component(Dead)
+zox_define_component(DiedTime)
 // zoxel_system_defines
 zox_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
 zoxel_end_module(Generic)

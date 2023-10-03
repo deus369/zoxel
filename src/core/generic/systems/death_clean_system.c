@@ -1,5 +1,4 @@
-// when health goes to 0, kill UserLink->value
-//  set Dead to 1
+// time after death, character will be removed
 void DeathCleanSystem(ecs_iter_t *it) {
     // only update when stat value changes
     // if (!ecs_query_changed(NULL, it)) return;

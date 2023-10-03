@@ -11,6 +11,8 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     zox_add_tag(e, Character3D)
     zox_prefab_set(e, Dead, { 0 })
     zox_prefab_set(e, DiedTime, { 0 })
+    zox_prefab_set(e, AnimationState, { zox_animation_idle })
+    zox_prefab_set(e, AnimationStart, { 0 })
     zox_prefab_set(e, Bounds3D, {{ 1, 1, 1 }})
     zox_prefab_set(e, VoxLink, { 0 })
     zox_prefab_set(e, ChunkLink, { 0 })
