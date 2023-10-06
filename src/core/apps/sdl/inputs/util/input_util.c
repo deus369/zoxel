@@ -19,11 +19,9 @@ void spawn_connected_devices(ecs_world_t *world) {
 }
 
 void input_extract_from_sdl(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) {
-    // zoxel_log("extracting sdl inputs\n");
     sdl_extract_keyboard(world, event);
     sdl_extract_mouse(world, event, screen_dimensions);
-    sdl_extract_touchscreen(world, event, screen_dimensions);
-    // extract_gamepad(world, event);
+    // sdl_extract_touchscreen(world, event, screen_dimensions);
     if (event.type == SDL_JOYDEVICEADDED) {
         if (joystick == NULL) {
             joystick = SDL_JoystickOpen(event.jdevice.which);

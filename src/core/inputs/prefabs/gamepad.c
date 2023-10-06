@@ -14,7 +14,7 @@ ecs_entity_t spawn_prefab_gamepad(ecs_world_t *world) {
     zox_prefab_set(e, Children, { 0, NULL })
     prefab_gamepad = e;
     #ifdef zoxel_debug_prefabs
-        zox_log(" > spawn_prefab gamepad [%lu].\n", e)
+        zox_log("   > spawn_prefab gamepad [%lu]\n", e)
     #endif
     return e;
 }
@@ -23,7 +23,7 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, unsigned char gamepad_type) {
     zox_instance(prefab_gamepad)
     zox_name("gamepad")
     zox_set(e, DeviceLayout, { gamepad_type })
-    Children *children = ecs_get_mut(world, e, Children);
+    Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, 16)
     for (unsigned char i = 0; i < 14; i++) {
         // use gamepad layout
@@ -54,13 +54,12 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, unsigned char gamepad_type) {
     for (unsigned char i = 0, j = 14; j < 16; i++, j++) {
         unsigned char joystick_index = i * 2;
         if (i == 1 && gamepad_type == zox_gamepad_layout_type_steamdeck) joystick_index++;
-        children->value[j] = spawn_device_stick(world, i, joystick_index);
+        children->value[j] = spawn_zevice_stick(world, i, joystick_index);
     }
-    // zox_set(e, Children, { children.length, children.value })
-    ecs_modified(world, e, Children);
+    zox_modified(e, Children)
     gamepad_entity = e;
     #ifdef zoxel_debug_spawns
-        zox_log(" > spawned gamepad [%lu].\n", e)
+        zox_log("   > spawned gamepad [%lu]\n", e)
     #endif
     return e;
 }

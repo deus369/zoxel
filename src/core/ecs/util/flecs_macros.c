@@ -33,6 +33,8 @@
 
 #define zox_get(e, T) ecs_get(world, e, T);
 
+#define zox_get_value(e, T) ecs_get(world, e, T)->value;
+
 #define zox_get_mut(e, T) ecs_get_mut(world, e, T);
 
 #define zox_modified(e, T) ecs_modified(world, e, T);

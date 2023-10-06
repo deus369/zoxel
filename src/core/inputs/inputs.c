@@ -64,13 +64,6 @@ zox_memory_component(DeviceLinks, ecs_entity_t)
 // zoxel_util_includes
 #include "util/deadzone_util.c"
 
-// move this to systems
-void reset_input_devices(ecs_world_t *world) {
-    device_reset_keyboard(world, keyboard_entity);
-    device_reset_mouse(world, mouse_entity);
-    device_reset_touchscreen(world, touchscreen_entity);
-}
-
 void spawn_prefabs_inputs(ecs_world_t *world) {
     spawn_prefab_device_button(world);
     spawn_prefab_device_stick(world);
@@ -105,6 +98,8 @@ zox_define_component(ZevicePointerPosition)
 zox_define_component(ZevicePointerDelta)
 // zoxel_system_defines
 zox_system(ZeviceButtonResetSystem, EcsOnLoad, [out] ZeviceButton)
+zox_system(ZevicePointerResetSystem, EcsOnLoad, [out] ZevicePointer)
+zox_system(ZevicePointerDeltaResetSystem, EcsOnLoad, [out] ZevicePointerDelta)
 zox_system(DeviceModeSystem, EcsPreUpdate, [in] DeviceLinks, [in] DeviceMode, [out] DeviceModeDirty)
 zox_system(DraggerEndSystem, EcsPreUpdate, [out] DragableState, [out] DraggerLink, [out] DraggingDelta)
 zox_system(MouseRaycasterSystem, EcsPreUpdate, [in] DeviceLinks, [in] DeviceMode, [out] Raycaster)

@@ -262,7 +262,6 @@ void recreate_main_window(ecs_world_t *world) {
 }
 
 void update_sdl(ecs_world_t *world) {
-    // sdl_extract_gamepad(world, gamepad_entity);
     SDL_Event event = { 0 };
     while (SDL_PollEvent(&event)) {
         input_extract_from_sdl(world, event, screen_dimensions);

@@ -12,7 +12,7 @@ void set_main_cameras(int new_count) {
     main_cameras_count = new_count;
 }
 
-unsigned char get_mouse_constrained() {
+/*unsigned char get_mouse_constrained() {
     #ifdef zox_disable_mouse_constraint
         return 0;
     #endif
@@ -20,7 +20,7 @@ unsigned char get_mouse_constrained() {
         return 0;
     #endif
     return ecs_get(world, mouse_entity, MouseLock)->value;
-}
+}*/
 
 void set_camera_transform(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t character, unsigned char camera_mode) {
     if (!camera || !character) return;

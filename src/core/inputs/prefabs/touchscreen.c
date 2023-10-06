@@ -21,11 +21,11 @@ ecs_entity_t spawn_touchscreen(ecs_world_t *world) {
     zox_instance(prefab_touchscreen)
     zox_name("touchscreen")
     const unsigned char touchscreen_zevice_count = fingers_count + virtual_joysticks_count;
-    Children *children = ecs_get_mut(world, e, Children);
+    Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, touchscreen_zevice_count)
     for (unsigned char i = 0; i < fingers_count; i++) children->value[i] = spawn_zevice_pointer(world, i, i);
-    for (unsigned char i = fingers_count; i < fingers_count + virtual_joysticks_count; i++) children->value[i] = spawn_device_stick(world, i, i);
-    ecs_modified(world, e, Children);
+    for (unsigned char i = fingers_count; i < fingers_count + virtual_joysticks_count; i++) children->value[i] = spawn_zevice_stick(world, i, i);
+    zox_modified(e, Children)
     touchscreen_entity = e;
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned touchscreen [%lu].\n", (long int) (e));
@@ -49,7 +49,7 @@ unsigned char touchscreen_is_any_input(ecs_world_t *world, ecs_entity_t touchscr
     return 0;
 }
 
-void device_reset_touchscreen(ecs_world_t *world, ecs_entity_t touchscreen) {
+/*void device_reset_touchscreen(ecs_world_t *world, ecs_entity_t touchscreen) {
     if (!touchscreen || !ecs_is_alive(world, touchscreen)) return;
     const Children *children = ecs_get(world, touchscreen, Children);
     for (int i = 0; i < children->length; i++) {
@@ -62,4 +62,4 @@ void device_reset_touchscreen(ecs_world_t *world, ecs_entity_t touchscreen) {
         zevicePointerDelta->value = int2_zero;
         ecs_modified(world, e, ZevicePointerDelta);
     }
-}
+}*/

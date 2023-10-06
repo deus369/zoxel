@@ -19,7 +19,7 @@
 // #define zox_disable_set_vox
 
 // settings
-#define zox_disable_mouse_constraint
+// #define zox_disable_mouse_constraint
 #define zoxel_set_camera_ortho
 // #define zoxel_set_camera_topdown
 // #define zoxel_set_camera_firstperson

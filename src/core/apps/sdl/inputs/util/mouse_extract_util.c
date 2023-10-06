@@ -12,8 +12,7 @@ void sdl_extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensio
             mouse->position = new_position;
             mouse->delta = int2_add(mouse->delta, (int2) { event.motion.xrel, - event.motion.yrel });
             #ifdef zox_debug_log_extract_mouse
-                zoxel_log(" - mouse moved [%ix%i]\n     - delta [%ix%i]\n",
-                    mouse->position.x, mouse->position.y, mouse->delta.x, mouse->delta.y);
+                zoxel_log(" - mouse moved [%ix%i]\n     - delta [%ix%i]\n", mouse->position.x, mouse->position.y, mouse->delta.x, mouse->delta.y);
             #endif
         } else if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
             // don't trigger events if touch input
@@ -21,13 +20,9 @@ void sdl_extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensio
             if (button_event->which == SDL_TOUCH_MOUSEID) return;
             SDL_MouseButtonEvent *mouseEvent = &event.button;
             Uint8 button = mouseEvent->button;
-            if (button == SDL_BUTTON_LEFT) {
-                set_sdl_mouse_button(&mouse->left, event.type);
-            } else if (button == SDL_BUTTON_MIDDLE) {
-                set_sdl_mouse_button(&mouse->middle, event.type);
-            } else if (button == SDL_BUTTON_RIGHT) {
-                set_sdl_mouse_button(&mouse->right, event.type);
-            }
+            if (button == SDL_BUTTON_LEFT) set_sdl_mouse_button(&mouse->left, event.type);
+            else if (button == SDL_BUTTON_MIDDLE) set_sdl_mouse_button(&mouse->middle, event.type);
+            else if (button == SDL_BUTTON_RIGHT) set_sdl_mouse_button(&mouse->right, event.type);
             int2 new_position = (int2) { event.motion.x, event.motion.y };
             int2_flip_y(&new_position, screen_dimensions);
             mouse->position = new_position;

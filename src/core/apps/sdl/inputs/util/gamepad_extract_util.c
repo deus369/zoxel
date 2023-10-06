@@ -136,16 +136,12 @@ void sdl_extract_gamepad(SDL_Joystick *joystick, ecs_world_t *world, const Child
     for (int i = 0; i < children->length; i++) {
         ecs_entity_t e = children->value[i];
         const RealButtonIndex *realButtonIndex = ecs_get(world, e, RealButtonIndex);
-        if (ecs_has(world, e, ZeviceStick)) {
-            // zoxel_log(" > device stick found [%i] %lu\n", i, e);
-            ZeviceStick *zeviceStick = ecs_get_mut(world, e, ZeviceStick);
-            if (set_gamepad_axis2(zeviceStick, joystick, realButtonIndex->value)) ecs_modified(world, e, ZeviceStick);
-            // if (ecs_has(world, e, ZeviceButton)) zoxel_log("    ! error with device stick, contains device button data[%i]\n", e);
-        } else if (ecs_has(world, e, ZeviceButton)) {
-            // zoxel_log(" > device button found [%i] %lu\n", i, e);
-            ZeviceButton *zeviceButton = ecs_get_mut(world, e, ZeviceButton);
-            if (set_gamepad_button2(zeviceButton, joystick, realButtonIndex->value)) ecs_modified(world, e, ZeviceButton);
-            // if (devices_get_pressed_this_frame(zeviceButton->value)) zoxel_log("    + button pressed: %i\n", realButtonIndex->value);
+        if (zox_has(e, ZeviceStick)) {
+            ZeviceStick *zeviceStick = zox_get_mut(e, ZeviceStick);
+            if (set_gamepad_axis2(zeviceStick, joystick, realButtonIndex->value)) zox_modified(e, ZeviceStick);
+        } else if (zox_has(e, ZeviceButton)) {
+            ZeviceButton *zeviceButton = zox_get_mut(e, ZeviceButton);
+            if (set_gamepad_button2(zeviceButton, joystick, realButtonIndex->value)) zox_modified(e, ZeviceButton);
         }
     }
 }

@@ -1,5 +1,3 @@
-
-
 int begin_core(int argc, char* argv[]) {
     int didFail = process_arguments(argc, argv);
     if (didFail == EXIT_FAILURE) return EXIT_FAILURE;
@@ -21,7 +19,8 @@ void close_core() {
 void update_core() {
     if (!headless) {
         #ifdef zoxel_inputs
-            reset_input_devices(world);
+            device_reset_keyboard(world, keyboard_entity);
+            device_reset_mouse(world, mouse_entity);
         #endif
         update_sdl(world);
         #ifdef zoxel_on_web
@@ -31,12 +30,7 @@ void update_core() {
     }
     // ecs_log_set_level(1);    // use this to debug system pipelines
     ecs_progress(world, 0);
-    if (!headless) {
-        #ifdef zoxel_cameras
-            set_mouse_constrained(get_mouse_constrained(), screen_dimensions);
-        #endif
-        if (rendering) render_loop();
-    }
+    if (!headless && rendering) render_loop();
     iterate_time();
     #ifdef zoxel_log_frame_ms
         zoxel_log(" > frame time [%fms]\n", (float) (zox_delta_time * 1000.0f));
