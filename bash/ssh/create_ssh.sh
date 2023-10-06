@@ -1,20 +1,26 @@
 #!/bin/bash
 
-is_xclip=$(command -v xclip)
-if [[ $is_xclip = "" ]]; then
-    echo "xclip does not exist. Installing."
-    sudo apt-get install xclip
-else
-    echo "xclip does exist."
-fi
+source bash/util/package_util.sh
 
-is_ssh_keygen=$(command -v ssh-keygen)
-if [[ $is_ssh_keygen = "" ]]; then
-    echo "ssh-keygen does not exist. Installing."
-    sudo apt-get install ssh-keygen
-else
-    echo "ssh-keygen does exist."
-fi
+install_first_library "xclip"
+install_first_library "ssh-keygen" "openssh"
+install_first_library "xdg-utils"
+
+# is_xclip=$(command -v xclip)
+# if [[ $is_xclip = "" ]]; then
+#     echo "xclip does not exist. Installing."
+#     sudo apt-get install xclip
+# else
+#     echo "xclip does exist."
+# fi
+
+# is_ssh_keygen=$(command -v ssh-keygen)
+# if [[ $is_ssh_keygen = "" ]]; then
+#     echo "ssh-keygen does not exist. Installing."
+#     sudo apt-get install ssh-keygen
+# else
+#     echo "ssh-keygen does exist."
+# fi
 
 cd ~
 
@@ -55,8 +61,13 @@ ssh-add ~/.ssh/$sshname
 
 echo "Add new ssh keys to github and codeberg."
 echo "Name it [$sshname] for consistency."
-open https://github.com/settings/keys
-open https://codeberg.org/user/settings/keys
+if [ is_using_pacman ]; then
+    xdg-open https://github.com/settings/keys
+    xdg-open https://codeberg.org/user/settings/keys
+else
+    open https://github.com/settings/keys
+    open https://codeberg.org/user/settings/keys
+fi
 # sleep 6
 
 # echo Finished!

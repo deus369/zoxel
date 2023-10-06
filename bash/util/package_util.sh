@@ -10,6 +10,16 @@ is_steam_deck() {
     fi
 }
 
+is_using_pacman() {
+    if command -v pacman >/dev/null 2>&1; then
+        echo "  > pacman being used"
+        return 0
+    else
+        echo "  - using apt-get"
+        return 1
+    fi
+}
+
 function has_library {
     libraries=("$@")
     for library in "${libraries[@]}"; do
