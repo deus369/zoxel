@@ -12,16 +12,6 @@ void set_main_cameras(int new_count) {
     main_cameras_count = new_count;
 }
 
-/*unsigned char get_mouse_constrained() {
-    #ifdef zox_disable_mouse_constraint
-        return 0;
-    #endif
-    #ifdef zoxel_mouse_emulate_touch
-        return 0;
-    #endif
-    return ecs_get(world, mouse_entity, MouseLock)->value;
-}*/
-
 void set_camera_transform(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t character, unsigned char camera_mode) {
     if (!camera || !character) return;
     float3 target_position = float3_zero;
@@ -41,8 +31,7 @@ void set_camera_transform(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t 
         camera_euler = (float3) { -25, 180, 0 };
         camera_position = (float3) { 0, 2.2f, -3.6f };
     }
-    //zoxel_log(" > settings camera transform [%i] - pos [%fx%fx%f] - rot [%fx%fx%f]\n", camera_mode,
-    //    camera_position.x,  camera_position.y,  camera_position.z, camera_euler.x, camera_euler.y, camera_euler.z);
+    //zoxel_log(" > settings camera transform [%i] - pos [%fx%fx%f] - rot [%fx%fx%f]\n", camera_mode, camera_position.x,  camera_position.y,  camera_position.z, camera_euler.x, camera_euler.y, camera_euler.z);
     float3_multiply_float_p(&camera_position, 0.25f);
     float3_multiply_float_p(&camera_euler, degreesToRadians);
     float4 camera_rotation = quaternion_from_euler(camera_euler);

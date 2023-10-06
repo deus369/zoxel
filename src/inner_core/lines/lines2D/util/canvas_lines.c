@@ -2,7 +2,7 @@ void spawn_canvas_edge_lines(ecs_world_t *world, ecs_entity_t canvas) {
     int2 canvas_size = ecs_get(world, canvas, PixelSize)->value;
     const unsigned char lines_layer = 8;
     int min_dim = int2_min(canvas_size);
-    int edge_size = min_dim / 40;
+    int edge_size = min_dim / 80;
     // const int edge_size = 32;
     // const color edge_color = (color) { 99, 13, 13, 255 };
     const color edge_color = (color) { 13, 44, 13, 255 };

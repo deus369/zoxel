@@ -3,7 +3,7 @@
 
 // todo: refactor keyboard and mouse to use zevices
 // todo: reset zevice_stick and zevice_pointer in systems
-// todo: extract touchscreen, keyboard, mouse in systems
+// todo: extract keyboard & mouse in systems
 // todo: sdl device disconnects, handle as spawning new entities, add to player if player mode is accepting new device (if they disconnect, put their control state in accepting)
 // todo: get change filters to work in multithreaded systems
 // todo: spawn/destroy device entity upon connection/removal
@@ -56,6 +56,8 @@ zox_memory_component(DeviceLinks, ecs_entity_t)
 #include "prefabs/touchscreen.c"
 // zoxel_system_declares
 #include "systems/zevice_button_reset_system.c"
+#include "systems/zevice_pointer_reset_system.c"
+#include "systems/zevice_pointer_delta_reset_system.c"
 #include "systems/zevice_button_enable_system.c"
 #include "systems/mouse_raycaster_system.c"
 #include "systems/dragger_end_system.c"

@@ -1,13 +1,13 @@
 // #define zox_debug_log_extract_touchscreen
 // #define zox_debug_log_element_raycasting
-int finger_id = 0;
+//int finger_id = 0;
 
 void set_id(ecs_world_t *world, ecs_entity_t e, int new_id) {
     ID *id = zox_get_mut(e, ID);
     if (id->value != new_id) {
         id->value = new_id;
         zox_modified(e, ID);
-        finger_id = new_id;
+        //finger_id = new_id;
     }
 }
 
@@ -24,7 +24,7 @@ void finger_released(ecs_world_t *world, ecs_entity_t zevice_pointer_entity) {
 // uses sdl to get touchscreen and finger data directly instead of events
 // todo: fix data structure, doesn't account for second touch
 //      > make spawn and destroy finger entities dynamically
-void sdl_extract_touchscreen2(ecs_world_t *world, const Children *zevices) {
+void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices) {
     if (SDL_GetNumTouchDevices() == 0) return;
     // get touchscreen finger one
     ecs_entity_t zevice_pointer_entity = zevices->value[0];
@@ -71,7 +71,7 @@ void sdl_extract_touchscreen2(ecs_world_t *world, const Children *zevices) {
 }
 
 // note: for some reason steamdeck, seems to call SDL_FINGERDOWN and SDL_FINGERUP in same frame...
-void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) {
+/*void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) {
     if (!(event.type == SDL_FINGERMOTION || event.type == SDL_FINGERDOWN || event.type == SDL_FINGERUP)) return; // sets finger position
     if (!touchscreen_entity || !ecs_is_alive(world, touchscreen_entity)) return;
     const SDL_TouchFingerEvent finger_event = event.tfinger;
@@ -115,7 +115,7 @@ void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_di
     #ifdef zox_debug_log_extract_touchscreen
         zoxel_log(" > finger at [%ix%i]\n", finger_position.x, finger_position.y);
     #endif
-}
+}*/
 
 /*else if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
     if (event.motion.which != SDL_TOUCH_MOUSEID) return; // don't trigger events if not touch input
@@ -129,18 +129,18 @@ void sdl_extract_touchscreen(ecs_world_t *world, SDL_Event event, int2 screen_di
     }
 }*/
 // touchscreen->primary_touch.delta = int2_add(touchscreen->primary_touch.delta, );
-            // try set instead
-            /*unsigned char value = ecs_get(world, zevice_pointer_entity, ZevicePointer)->value;
-            devices_set_released_this_frame(&value, 1);
-            devices_set_is_pressed(&value, 0);
-            zox_set(zevice_pointer_entity, ZevicePointer, { value })*/
-            /*#ifdef zox_debug_log_extract_touchscreen
-                zoxel_log(" > touchscreen released at [%f]\n", (float) zox_current_time);
-            #endif*/
-            /*#ifdef zox_debug_log_extract_touchscreen
-                zoxel_log(" - touchscreen moved [%ix%i]\n       - delta [%ix%i]\n", zevicePointerPosition->value.x, zevicePointerPosition->value.y, zevicePointerDelta->value.x, zevicePointerDelta->value.y);
-            #endif*/
-            /*#ifdef zox_debug_log_extract_touchscreen
-                zoxel_log(" > touchscreen pressed at [%f]\n", (float) zox_current_time);
-                zoxel_log("     + touchscreen down [%ix%i]\n", zevicePointerPosition->value.x, zevicePointerPosition->value.y);
-            #endif*/
+// try set instead
+/*unsigned char value = ecs_get(world, zevice_pointer_entity, ZevicePointer)->value;
+devices_set_released_this_frame(&value, 1);
+devices_set_is_pressed(&value, 0);
+zox_set(zevice_pointer_entity, ZevicePointer, { value })*/
+/*#ifdef zox_debug_log_extract_touchscreen
+    zoxel_log(" > touchscreen released at [%f]\n", (float) zox_current_time);
+#endif*/
+/*#ifdef zox_debug_log_extract_touchscreen
+    zoxel_log(" - touchscreen moved [%ix%i]\n       - delta [%ix%i]\n", zevicePointerPosition->value.x, zevicePointerPosition->value.y, zevicePointerDelta->value.x, zevicePointerDelta->value.y);
+#endif*/
+/*#ifdef zox_debug_log_extract_touchscreen
+    zoxel_log(" > touchscreen pressed at [%f]\n", (float) zox_current_time);
+    zoxel_log("     + touchscreen down [%ix%i]\n", zevicePointerPosition->value.x, zevicePointerPosition->value.y);
+#endif*/
