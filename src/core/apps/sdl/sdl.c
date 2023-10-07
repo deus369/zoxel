@@ -24,7 +24,7 @@ ECS_DTOR(Context, ptr, { if (ptr->value != 0) SDL_GL_DeleteContext(ptr->value); 
 
 unsigned char initialize_apps_sdl(ecs_world_t *world) {
     debug_platform();
-    initialize_sdl();
+    initialize_sdl_video();
     create_main_window(world);
     return EXIT_SUCCESS;
 }

@@ -62,6 +62,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         spawn_ui_camera(world, screen_dimensions2);
     #endif
     #ifdef zoxel_inputs
+        if (!headless) initialize_sdl_input();
         if (!headless) spawn_connected_devices(world);
         // spawn_player_character3D(world, get_main_camera());
     #endif

@@ -29,7 +29,7 @@ void spawn_in_game_ui(ecs_world_t *world) {    // spawn game uis
 }
 
 void end_game(ecs_world_t *world) {
-    zoxel_log(" > game state => [playing] to [main_menu]\n");
+    // zox_logg(" > game state => [playing] to [main_menu]\n")
     zox_delete(pause_ui)
     // detatch character
     ecs_entity_t main_camera = main_cameras[0]; // get player camera link instead
@@ -96,7 +96,7 @@ void play_game(ecs_world_t *world) {
         zox_add_only(main_camera, Streamer)
         zox_add_only(main_camera, StreamPoint)
     }
-    zoxel_log(" > game state => [main_menu] to [playing]\n");
+    // zox_logg(" > game state => [main_menu] to [playing]\n")
     zox_set(local_game, GameState, { zoxel_game_state_playing }) // start game
     zox_delete(main_menu)   // close main menu
     // \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cam

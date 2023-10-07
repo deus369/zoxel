@@ -1,9 +1,6 @@
-// todo: move this to engine code
-
 extern void engine_update();
 
 void engine_end() {
-    zoxel_log(" > zoxel is exiting\n");
     running = 0;
     #ifdef zoxel_on_web    
         emscripten_cancel_main_loop();
@@ -11,13 +8,13 @@ void engine_end() {
 }
 
 void handle_segfault(int sig) {
-    zoxel_log(" ! segfault detected [%i], exiting zox engine\n", sig);
+    zox_log(" ! segfault detected [%i], exiting zox engine\n", sig)
     // on_engine_end(world);
     exit(0);
 }
 
 void handle_terminal_close(int sig) {
-    zoxel_log(" > terminal close detected [control + c]\n");
+    zox_logg(" > terminal close detected [control + c]\n")
     engine_end();
 }
 

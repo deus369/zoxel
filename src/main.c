@@ -20,10 +20,8 @@ int main(int argc, char* argv[]) {
         zox_import_module(Zoxel)        // define our components and systems
         spawn_prefabs_engine(world);    // spawn all our prefabs
         if (boot_zoxel_game(world) == EXIT_SUCCESS) engine_loop();
-        else zoxel_log(" ! booting zoxel failed\n");
+        else zox_logg(" ! booting zoxel failed\n")
         on_engine_end(world);
-    } else {
-        zoxel_log(" ! engine failed to start\n");
-    }
+    } else zox_logg(" ! engine failed to start\n")
     return 0;
 }

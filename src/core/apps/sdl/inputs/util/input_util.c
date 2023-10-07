@@ -2,6 +2,14 @@ void initialize_sdl_inputs() {
     // todo: initialize it here
 }
 
+void close_sdl_input() {
+    SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
+}
+
+void initialize_sdl_input() {
+    if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) fprintf(stderr, "  ! failed SDL joystick subsystem: %s\n", SDL_GetError());
+}
+
 void spawn_connected_devices(ecs_world_t *world) {
     initialize_sdl_gamepads();
     spawn_keyboard(world);

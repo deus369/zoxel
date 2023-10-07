@@ -2,12 +2,9 @@
 // rendering
 extern void opengl_delete_resources(ecs_world_t *world);
 extern void opengl_load_resources(ecs_world_t *world);
-// engine
-extern void engine_end();
-// cameras
-extern void resize_cameras(int2 screen_size);
-// uis
-extern void resize_ui_canvases(ecs_world_t *world, int2 screen_size);
+extern void engine_end(); // engine
+extern void resize_cameras(int2 screen_size); // cameras
+extern void resize_ui_canvases(ecs_world_t *world, int2 screen_size); // uis
 
 void print_sdl() {
     #ifdef zox_print_sdl
@@ -117,8 +114,7 @@ void sdl_toggle_fullscreen(ecs_world_t *world, SDL_Window* window) {
         on_viewport_resized(world, get_current_screen_size());
         SDL_SetWindowSize(window, screen_dimensions.x, screen_dimensions.y);
     }
-    // todo: restore should set to pre window size
-    sdl_set_fullscreen(window, !is_fullscreen);
+    sdl_set_fullscreen(window, !is_fullscreen); // todo: restore should set to pre window size
 }
 
 unsigned char vulkan_supported() {
@@ -157,8 +153,14 @@ void print_supported_renderers() {
     }
 }
 
-int initialize_sdl() {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+void close_sdl_video() {
+    SDL_VideoQuit();
+    // SDL_Quit();
+}
+
+int initialize_sdl_video() {
+    // if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+    if (SDL_VideoInit(NULL) != 0) {
         zoxel_log(" - failed to initialize sdl [%s]\n", SDL_GetError());
         return EXIT_FAILURE;
     } else {

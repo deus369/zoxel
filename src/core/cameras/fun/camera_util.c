@@ -80,7 +80,7 @@ void set_camera_mode(ecs_world_t *world, unsigned char new_camera_mode) {
         // use a helper function so attach does the same thing
         set_camera_transform(world, camera, character, camera_mode);
     }
-    if (camera_mode == zox_camera_mode_first_person) {
+    /*if (camera_mode == zox_camera_mode_first_person) {
         zoxel_log("    > camera_mode set [first person]\n");
     } else if (camera_mode == zox_camera_mode_ortho) {
         zoxel_log("    > camera_mode set [ortho]\n");
@@ -88,7 +88,7 @@ void set_camera_mode(ecs_world_t *world, unsigned char new_camera_mode) {
         zoxel_log("    > camera_mode set [top down]\n");
     } else {
         zoxel_log("    > camera_mode set [%i]\n", camera_mode);
-    }
+    }*/
 }
 
 void set_camera_mode_first_person(ecs_world_t *world) {

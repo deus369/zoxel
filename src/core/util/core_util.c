@@ -11,8 +11,9 @@ void close_core() {
     if (!headless) on_close_rendering(world);
     close_ecs();
     if (!headless) {
+        close_sdl_input();
+        close_sdl_video();
         close_audio_sdl();
-        SDL_Quit();
     }
 }
 
