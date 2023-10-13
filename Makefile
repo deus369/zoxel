@@ -152,6 +152,9 @@ $(target_dev): $(SRCS)
 install-required:
 	bash bash/util/install_required.sh
 
+install-steam-deck-required:
+	bash bash/steam/install_on_steam_deck.sh
+
 ## installs zoxel into /usr/games directory
 install: 
 	bash bash/install/install.sh
@@ -424,6 +427,7 @@ help:
 	@echo "  > setup"
 	@echo "    make $(flecs_target)	builds flecs"
 	@echo "    install-required		installs required libraries for debian systems"
+	@echo "	   install-steam-deck-required	installs steam required"
 	@echo "    install-sdl			installs sdl"
 	@echo "    install			installs zoxel"
 	@echo "    uninstall			inuninstalls zoxel"
