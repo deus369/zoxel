@@ -8,7 +8,7 @@ source bash/util/package_util.sh
 
 if is_steam_deck; then
     # the point is to reinstall make glibc linux-api-headers sdl2, only if steam readonly was enabled (if steam deck updates)
-    result=$(sudo steamos-readonly disable)
+    result=$(sudo steamos-readonly disable 2>&1)
     if [[ ! $result =~ "already read-write" ]]; then
         echo "  > installing steam deck requirements"
         sudo pacman -S --noconfirm make glibc linux-api-headers sdl2
