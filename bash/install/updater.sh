@@ -7,7 +7,7 @@ cd $HOME/projects/zoxel
 # check if updated?
 git pull
 
-source bash/steam/install_on_steam_deck.sh
+# source bash/steam/install_on_steam_deck.sh
 
 make -j$(nproc)
 

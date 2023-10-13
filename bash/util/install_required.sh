@@ -19,20 +19,20 @@ install_first_library "libvulkan-dev" "vulkan-devel" "vulkan-headers"
 
 bash bash/sdl/install_sdl.sh
 
-if is_steam_deck; then
+#if is_steam_deck; then
     # for some reason had to manually install gcc
     # for linux/assert.h
-    if ! has_library "glibc"; then
-        install_library "glibc"
-    fi
+    #if ! has_library "glibc"; then
+    #    install_library "glibc"
+    #fi
     # for linux/errno.h
-    if ! has_library "linux-api-headers"; then
-        install_library "linux-api-headers"
-    fi
+    #if ! has_library "linux-api-headers"; then
+    #    install_library "linux-api-headers"
+    #fi
     # this kinda needs updating? reinstalling?
-    if ! has_library "sdl2"; then
-        install_library "sdl2"
-    fi
+    #if ! has_library "sdl2"; then
+    #    install_library "sdl2"
+    #fi
     
     # if ! has_library "lib32-glibc"; then
     #     install_library "lib32-glibc"
@@ -43,4 +43,4 @@ if is_steam_deck; then
     # if ! has_library "base-devel"; then
     #     install_library "base-devel"
     # fi
-fi
+#fi
