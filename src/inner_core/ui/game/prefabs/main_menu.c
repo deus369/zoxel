@@ -2,7 +2,7 @@ ecs_entity_t prefab_main_menu;
 ecs_entity_t main_menu;
 
 ecs_entity_t spawn_prefab_main_menu(ecs_world_t *world) {
-    zox_prefab_child(prefab_ui_list)    // prefab_window
+    zox_prefab_child(prefab_ui_list)
     zox_prefab_name("prefab_main_menu")
     zox_add_tag(e, MainMenu)
     prefab_main_menu = e;
@@ -20,7 +20,7 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label, int2 
     const ClickEvent events[] = { { &button_event_play_game }, { &button_event_exit_app } };
 #endif
     const unsigned char layer = 1;
-    ecs_entity_t e = spawn_ui_list(world, prefab_main_menu, "zoxel", labels_count, labels, events, position, anchor, is_close_button, 42, layer);
+    ecs_entity_t e = spawn_ui_list(world, prefab_main_menu, main_canvas, "zoxel", labels_count, labels, events, position, anchor, is_close_button, 42, layer);
     main_menu = e;
     return e;
 }

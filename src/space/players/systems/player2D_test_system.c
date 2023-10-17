@@ -8,14 +8,6 @@ void Player2DTestSystem(ecs_iter_t *it) {
     const Keyboard *keyboards = ecs_field(it, Keyboard, 1);
     for (int i = 0; i < it->count; i++) {
         const Keyboard *keyboard = &keyboards[i];
-        /*if (keyboard->h.pressed_this_frame) {
-            has_rendered_elements = 0;
-            zoxel_log(" === rendering elements ===\n");
-        }*/
-
-        if (keyboard->f.is_pressed) {
-            Particle2DSpawnSystem(world, float2_zero, particleSpawnCount);
-        }
         // toggle player connected application
         if ((keyboard->left_alt.is_pressed || keyboard->right_alt.is_pressed) && keyboard->enter.pressed_this_frame) {
             sdl_toggle_fullscreen(world, main_window);
@@ -29,15 +21,7 @@ void Player2DTestSystem(ecs_iter_t *it) {
                 if (character == 0) attach_to_character(world, main_player, main_camera, local_character3D);
                 else detatch_from_character(world, main_player, main_camera, local_character3D);
             }
-        } 
-        /*else if (keyboard->h.pressed_this_frame) {
-            end_game(world);
-        }*/
-        
-        /*else if (keyboard->b.pressed_this_frame) {
-            zoxel_log("testing world ui on character %lu\n", local_character3D);
-            spawn_element3D(world, local_character3D);
-        }*/
+        }
         #ifdef zoxel_tests_rotate_by_keys
             else if (keyboard->r.is_pressed) {
                 float3 euler = (float3) { 0, 90 * degreesToRadians, 0 * degreesToRadians };
@@ -143,3 +127,12 @@ void Player2DTestSystem(ecs_iter_t *it) {
     DebugParticlesSpawned(world);
     // print_keyboard(world);
 }*/
+
+        /*else if (keyboard->h.pressed_this_frame) {
+            end_game(world);
+        }*/
+
+        /*else if (keyboard->b.pressed_this_frame) {
+            zoxel_log("testing world ui on character %lu\n", local_character3D);
+            spawn_element3D(world, local_character3D);
+        }*/

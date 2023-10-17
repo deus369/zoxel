@@ -1,10 +1,10 @@
 #ifdef zoxel_inputs
     void set_ui_clicked_mut(ecs_world_t *world, ecs_entity_t ui) {
-        if (ecs_has(world, ui, Clickable)) {
-            zox_set(ui, ClickState, { 1 }) // i made it like this due to some complication
-            /*ClickState *clickState = ecs_get_mut(world, ui, ClickState);
+        if (zox_has(ui, Clickable)) {
+            // zox_set(ui, ClickState, { 1 }) // i made it like this due to some complication
+            ClickState *clickState = zox_get_mut(ui, ClickState)
             clickState->value = 1;
-            ecs_modified(world, ui, ClickState);*/
+            ecs_modified(world, ui, ClickState);
         }
     }
 
@@ -26,16 +26,12 @@
             const DeviceMode *deviceMode = &deviceModes[i];
             unsigned char did_drag = 0;
             unsigned char did_activate = 0;
-            // convert input to actions
-            for (int j = 0; j < deviceLinks2->length; j++) {
+            for (int j = 0; j < deviceLinks2->length; j++) { // convert inputs to actions
                 ecs_entity_t device_entity = deviceLinks2->value[j];
                 if (deviceMode->value == zox_device_mode_keyboardmouse && ecs_has(world, device_entity, Mouse)) {
                     const Mouse *mouse = ecs_get(world, device_entity, Mouse);
-                    if (mouse->left.pressed_this_frame) {
-                        did_drag = 1;
-                    } else if (mouse->left.released_this_frame) {
-                        did_activate = 1;
-                    }
+                    if (mouse->left.pressed_this_frame) did_drag = 1;
+                    else if (mouse->left.released_this_frame) did_activate = 1;
                 } else if (deviceMode->value == zox_device_mode_gamepad && ecs_has(world, device_entity, Gamepad)) {
                     const Children *zevices = ecs_get(world, device_entity, Children);
                     for (int k = 0; k < zevices->length; k++) {
@@ -59,7 +55,7 @@
                         if (ecs_has(world, zevice_entity, ZevicePointer)) {
                             const ZevicePointer *zevicePointer = ecs_get(world, zevice_entity, ZevicePointer);
                             if (devices_get_pressed_this_frame(zevicePointer->value)) {
-                                did_drag = 1;
+                                did_drag = 2;
                             } else if (devices_get_released_this_frame(zevicePointer->value)) {
                                 did_activate = 1;
                             }
@@ -68,24 +64,21 @@
                     }
                 }
             }
+            raycasterResult->value = did_drag || did_activate;
             if (did_drag) {
-                if (ecs_has(world, raycasterTarget->value, Dragable)) {
+                if (zox_has(raycasterTarget->value, Dragable)) {
                     // todo: zox_set_mut => the next 3 lines basically, component, entity, new_value
-                    DragableState *dragableState = ecs_get_mut(world, raycasterTarget->value, DragableState);
-                    dragableState->value = 1;
-                    ecs_modified(world, raycasterTarget->value, DragableState);
-                    DraggerLink *draggerLink = ecs_get_mut(world, raycasterTarget->value, DraggerLink);
-                    draggerLink->value = e;
-                    ecs_modified(world, raycasterTarget->value, DraggerLink);
+                    DragableState *dragableState = zox_get_mut(raycasterTarget->value, DragableState)
+                    if (!dragableState->value) {
+                        DraggerLink *draggerLink = zox_get_mut(raycasterTarget->value, DraggerLink)
+                        dragableState->value = did_drag;
+                        draggerLink->value = e;
+                        ecs_modified(world, raycasterTarget->value, DragableState);
+                        ecs_modified(world, raycasterTarget->value, DraggerLink);
+                    }
                     // zoxel_log(" > ui dragging at [%f]\n", (float) zox_current_time);
                 }
-                raycasterResult->value = 1;
-            } else if (did_activate) {
-                set_ui_clicked_mut(world, raycasterTarget->value);
-                raycasterResult->value = 1;
-            } else {
-                raycasterResult->value = 0;
-            }
+            } else if (did_activate) set_ui_clicked_mut(world, raycasterTarget->value);
         }
     } zox_declare_system(ElementActivateSystem)
 #endif

@@ -1,4 +1,6 @@
 unsigned char debug_colliders = 0;
+// #define test_particles2D
+#define zox_test_hierarchy
 
 void toggle_collision_debug(ecs_world_t *world) {
     debug_colliders = !debug_colliders;
@@ -53,6 +55,12 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
                         spawn_main_menu(world, game_name, window_position, window_anchor, 0);
                     }
                 #endif
+#ifdef zox_test_hierarchy
+                else if (keyboard->f.pressed_this_frame) toggle_ui(world, &hierarchy, &spawn_editor_hierarchy);
+#endif
+#ifdef test_particles2D
+                else if (keyboard->f.is_pressed) Particle2DSpawnSystem(world, float2_zero, particleSpawnCount);
+#endif
             }
         }
     }

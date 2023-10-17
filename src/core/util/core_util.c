@@ -8,8 +8,8 @@ int begin_core(int argc, char* argv[]) {
 }
 
 void close_core() {
-    if (!headless) on_close_rendering(world);
     close_ecs();
+    if (!headless) on_close_rendering(world);
     if (!headless) {
         close_sdl_input();
         close_sdl_video();

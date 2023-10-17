@@ -21,7 +21,7 @@ void ElementDragSystem(ecs_iter_t *it) {
     const ParentLink *parentLinks = ecs_field(it, ParentLink, 4);
     for (int i = 0; i < it->count; i++) {
         const DragableState *dragableState = &dragableStates[i];
-        if (dragableState->value == 1) {
+        if (dragableState->value) {
             const DraggingDelta *draggingDelta = &draggingDeltas[i];
             if (draggingDelta->value.x != 0 || draggingDelta->value.y != 0) {
                 const ParentLink *parentLink = &parentLinks[i];

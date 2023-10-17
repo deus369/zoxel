@@ -39,6 +39,14 @@
 
 #define zox_modified(e, T) ecs_modified(world, e, T);
 
+#define zox_set_mut(e, type, valuer) {\
+    type *component = zox_get_mut(e, type)\
+    if (component->value != valuer) {\
+        component->value = valuer;\
+        zox_modified(e, type)\
+    }\
+}
+
 #define zox_prefab() ecs_entity_t e = ecs_new_prefab(world, "");
 
 #define zox_instance(prefab) ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);

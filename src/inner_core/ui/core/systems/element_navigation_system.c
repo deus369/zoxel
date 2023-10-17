@@ -30,68 +30,66 @@
             // zoxel_log(" > raycasterTarget->value %lu\n", raycasterTarget->value);
             for (int j = 0; j < deviceLinks2->length; j++) {
                 ecs_entity_t device_entity = deviceLinks2->value[j];
-                if (ecs_has(world, device_entity, Gamepad)) {
-                    // const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
-                    float2 left_stick = float2_zero;
-                    const Children *zevices = ecs_get(world, device_entity, Children);
-                    for (int k = 0; k < zevices->length; k++) {
-                        ecs_entity_t zevice_entity = zevices->value[k];
-                        if (ecs_has(world, zevice_entity, ZeviceStick)) {
-                            const ZeviceDisabled *zeviceDisabled = ecs_get(world, zevice_entity, ZeviceDisabled);
-                            if (zeviceDisabled->value) continue;
-                            const ZeviceStick *zeviceStick = ecs_get(world, zevice_entity, ZeviceStick);
-                            left_stick = zeviceStick->value;
-                            break;
-                        }
-                    }
-                    // here cut 
-                    if (float_abs(left_stick.y) < restore_joystick_cutoff) {
-                        navigatorState->value = 0;
+                if (!zox_has(device_entity, Gamepad)) continue;
+                // const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
+                float2 left_stick = float2_zero;
+                const Children *zevices = ecs_get(world, device_entity, Children);
+                for (int k = 0; k < zevices->length; k++) {
+                    ecs_entity_t zevice_entity = zevices->value[k];
+                    if (ecs_has(world, zevice_entity, ZeviceStick)) {
+                        const ZeviceDisabled *zeviceDisabled = ecs_get(world, zevice_entity, ZeviceDisabled);
+                        if (zeviceDisabled->value) continue;
+                        const ZeviceStick *zeviceStick = ecs_get(world, zevice_entity, ZeviceStick);
+                        left_stick = zeviceStick->value;
                         break;
                     }
-                    // if (left_stick.x == 0 && left_stick.y == 0) break;
-                    // zoxel_log(" > navigating [%f] -> t [%f]\n", left_stick.y, navigatorTimer->value);
-                    // if stops input
-                    if (navigatorState->value == 1) {
-                        // here we are waiting for gamepad to stop moving, as didn't start within gamepad mode
-                        break;
-                    } else if (float_abs(left_stick.y) < ui_navigation_joystick_cutoff) {
-                        navigatorTimer->value = 0;
-                        break;
-                    } else if (navigatorTimer->value > 0) {
-                        navigatorTimer->value -= delta_time;
-                        if (navigatorTimer->value < 0) navigatorTimer->value = 0;
-                        break;
-                    }
-                    if (raycasterTarget->value == 0 || !ecs_is_alive(world, raycasterTarget->value)) break;
-                    //zoxel_log(" > left_stick.value.y: %f\n", gamepad->left_stick.value.y);
-                    ecs_entity_t parent_entity = ecs_get(world, raycasterTarget->value, ParentLink)->value;
-                    const Children *children = ecs_get(world, parent_entity, Children);
-                    unsigned did_find = 0;
-                    for (int k = 0; k < children->length; k++) {
-                        ecs_entity_t child_entity = children->value[k];
-                        if (ecs_has(world, child_entity, Selectable) && child_entity == raycasterTarget->value) {
-                            // zoxel_log(" > found selectable [%i] out of [%i] - %lu\n", k, children->length, child_entity);
-                            did_find = 1;
-                            if (left_stick.y >= ui_navigation_joystick_cutoff && k > 1) {
-                                // zoxel_log("     > moved up ui to [%i] - %lu\n", (k - 1), children->value[k - 1]);
-                                raycaster_select_ui(world, raycasterTarget, children->value[k - 1]);
-                                // set_ui_selected_mut(world, raycasterTarget->value);
-                                set_selectable_state_mut(world, raycasterTarget->value, 1);
-                            } else if (left_stick.y <= -ui_navigation_joystick_cutoff && k != children->length - 1) {
-                                // zoxel_log("     > moved down ui to [%i] - %lu\n", (k + 1), children->value[k + 1]);
-                                raycaster_select_ui(world, raycasterTarget, children->value[k + 1]);
-                                // set_ui_selected_mut(world, raycasterTarget->value);
-                                set_selectable_state_mut(world, raycasterTarget->value, 1);
-                            }
-                            break;
-                        }
-                    }
-                    if (did_find) {
-                        if (navigatorTimer->value < -ui_navigation_timing / 2) navigatorTimer->value = ui_navigation_timing;
-                        else navigatorTimer->value += ui_navigation_timing;
-                    }
+                }
+                // here cut
+                if (float_abs(left_stick.y) < restore_joystick_cutoff) {
+                    navigatorState->value = 0;
                     break;
+                }
+                // if (left_stick.x == 0 && left_stick.y == 0) break;
+                // zoxel_log(" > navigating [%f] -> t [%f]\n", left_stick.y, navigatorTimer->value);
+                // if stops input
+                if (navigatorState->value == 1) {
+                    // here we are waiting for gamepad to stop moving, as didn't start within gamepad mode
+                    break;
+                } else if (float_abs(left_stick.y) < ui_navigation_joystick_cutoff) {
+                    navigatorTimer->value = 0;
+                    break;
+                } else if (navigatorTimer->value > 0) {
+                    navigatorTimer->value -= delta_time;
+                    if (navigatorTimer->value < 0) navigatorTimer->value = 0;
+                    break;
+                }
+                if (raycasterTarget->value == 0 || !ecs_is_alive(world, raycasterTarget->value)) break;
+                //zoxel_log(" > left_stick.value.y: %f\n", gamepad->left_stick.value.y);
+                ecs_entity_t parent_entity = ecs_get(world, raycasterTarget->value, ParentLink)->value;
+                const Children *children = ecs_get(world, parent_entity, Children);
+                unsigned did_find = 0;
+                for (int k = 0; k < children->length; k++) {
+                    ecs_entity_t child_entity = children->value[k];
+                    if (ecs_has(world, child_entity, Selectable) && child_entity == raycasterTarget->value) {
+                        // zoxel_log(" > found selectable [%i] out of [%i] - %lu\n", k, children->length, child_entity);
+                        did_find = 1;
+                        if (left_stick.y >= ui_navigation_joystick_cutoff && k > 1) {
+                            // zoxel_log("     > moved up ui to [%i] - %lu\n", (k - 1), children->value[k - 1]);
+                            raycaster_select_ui(world, raycasterTarget, children->value[k - 1]);
+                            // set_ui_selected_mut(world, raycasterTarget->value);
+                            set_selectable_state_mut(world, raycasterTarget->value, 1);
+                        } else if (left_stick.y <= -ui_navigation_joystick_cutoff && k != children->length - 1) {
+                            // zoxel_log("     > moved down ui to [%i] - %lu\n", (k + 1), children->value[k + 1]);
+                            raycaster_select_ui(world, raycasterTarget, children->value[k + 1]);
+                            // set_ui_selected_mut(world, raycasterTarget->value);
+                            set_selectable_state_mut(world, raycasterTarget->value, 1);
+                        }
+                        break;
+                    }
+                }
+                if (did_find) {
+                    if (navigatorTimer->value < -ui_navigation_timing / 2) navigatorTimer->value = ui_navigation_timing;
+                    else navigatorTimer->value += ui_navigation_timing;
                 }
             }
         }

@@ -10,6 +10,7 @@
 #include "texts/texts.c"
 #include "elements/elements.c"
 #include "game/game_ui.c"
+#include "editor/editor.c"
 // #include "util/test_uis.c"
 #include "fun/spawn_test_window.c"
 
@@ -18,6 +19,7 @@ void spawn_prefabs_ui(ecs_world_t *world) {
     spawn_prefabs_texts(world);
     spawn_prefabs_elements(world);
     spawn_prefabs_game_ui(world);
+    spawn_prefabs_editor(world);
 }
 
 zox_begin_module(UI)
@@ -26,6 +28,7 @@ zox_import_module(UICore)
 zox_import_module(Texts)
 zox_import_module(Elements)
 zox_import_module(GameUI)
+zox_import_module(EditorElements)
 zoxel_end_module(UI)
 
 #endif
