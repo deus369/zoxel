@@ -31,6 +31,10 @@
 
 #define zox_has(e, T) ecs_has(world, e, T)
 
+#define zox_gett_value(e, T) ecs_get(world, e, T)->value
+
+#define zox_gett(e, T) ecs_get(world, e, T)
+
 #define zox_get(e, T) ecs_get(world, e, T);
 
 #define zox_get_value(e, T) ecs_get(world, e, T)->value;

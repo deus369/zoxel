@@ -75,8 +75,10 @@
                         draggerLink->value = e;
                         ecs_modified(world, raycasterTarget->value, DragableState);
                         ecs_modified(world, raycasterTarget->value, DraggerLink);
+#ifdef zox_log_ui_dragging
+                        zox_log(" > ui dragging at [%f]\n", (float) zox_current_time)
+#endif
                     }
-                    // zoxel_log(" > ui dragging at [%f]\n", (float) zox_current_time);
                 }
             } else if (did_activate) set_ui_clicked_mut(world, raycasterTarget->value);
         }

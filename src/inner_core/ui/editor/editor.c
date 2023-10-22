@@ -4,12 +4,13 @@
 // settings
 // zoxel_declare_components
 zox_declare_tag(EditorUI)
-// zox_component(QuadsCount, int)
+zox_declare_tag(HierarchyUI)
+zox_byte_component(HierarchyUIDirty)
 // zoxel_include_prefabs
 #include "prefabs/hierarchy.c"
 #include "prefabs/inspector.c"
 // zoxel_include_systems
-// #include "systems/fps_display_system.c"
+#include "systems/hierarchy_refresh_system.c"
 
 void spawn_prefabs_editor(ecs_world_t *world) {
     spawn_prefab_hierarchy(world);
@@ -19,9 +20,10 @@ void spawn_prefabs_editor(ecs_world_t *world) {
 zox_begin_module(EditorElements)
 // zoxel_define_components
 zox_define_tag(EditorUI)
-// zox_define_component(QuadsCount)
+zox_define_tag(HierarchyUI)
+zox_define_component(HierarchyUIDirty)
 // zoxel_define_systems
-// zox_system(FpsDisplaySystem, EcsOnUpdate, [out] FPSDisplayTicker, [out] ZextDirty, [out] ZextData)
+zox_system_1(HierarchyRefreshSystem, main_thread_pipeline, [none] HierarchyUI, [in] Position2D, [in] Layer2D, [out] PixelSize, [out] TextureSize, [out] HierarchyUIDirty, [out] Children)
 zoxel_end_module(EditorElements)
 
 #endif

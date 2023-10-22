@@ -16,8 +16,10 @@ zox_byte_component(EntityInitialize)
 zox_byte_component(SelectState)
 zox_byte_component(ClickState)
 zox_byte_component(DragableState)
-zox_component(DraggerLink, ecs_entity_t)
 zox_component(DraggingDelta, int2)
+zox_component(DraggerLink, ecs_entity_t)
+zox_component(DraggedLink, ecs_entity_t)
+zox_component(DraggableLimits, int2)
 zox_component(ID, int)                        //! An unique ID, possibly use GUID?
 zox_component(Seed, long int)                 //! A unique Seed for generation
 zox_component(Raycaster, int2)                //! Contains the raycast mouse position
@@ -60,8 +62,10 @@ zox_define_component(EntityDirty)
 zox_define_component(SelectState)
 zox_define_component(ClickState)
 zox_define_component(DragableState)
-zox_define_component(DraggerLink)
 zox_define_component(DraggingDelta)
+zox_define_component(DraggerLink)       // the what that drags
+zox_define_component(DraggedLink)       // the who gets dragged
+zox_define_component(DraggableLimits)
 zox_define_component(ID)
 zox_define_component(Seed)
 zox_define_component(Raycaster)

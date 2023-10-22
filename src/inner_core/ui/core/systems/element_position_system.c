@@ -62,8 +62,8 @@ void ElementPositionSystem(ecs_iter_t *it) {
         if (ecs_has(world, e, Children)) {
             int2 pixel_size = ecs_get(world, e, PixelSize)->value;
             const Children *children = ecs_get(world, e, Children);
-            for (int i = 0; i < children->length; i++) 
-                set_element_position(world, children->value[i], position2D->value, pixel_size, canvas_size_f, aspect_ratio);
+            for (int j = 0; j < children->length; j++)
+                set_element_position(world, children->value[j], position2D->value, pixel_size, canvas_size_f, aspect_ratio);
         }
     }
 } zox_declare_system(ElementPositionSystem)

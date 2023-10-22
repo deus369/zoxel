@@ -74,6 +74,19 @@ float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity
     return position2D;
 }
 
+void on_element_parent_updated(ecs_world_t *world, ecs_entity_t e, int2 local_pixel_position, float2 anchor, float2 parent_position, int2 parent_pixel_size, float2 canvas_size) {
+    // float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
+    // zox_log("   on_element_parent_updated [%ix%i]\n", zox_gett_value(e, PixelPosition).x, zox_gett_value(e, PixelPosition).y)
+    // zox_log("   on_element_parent_updated [%ix%i]\n", local_pixel_position.x, local_pixel_position.y)
+    float aspect_ratio = canvas_size.x / canvas_size.y;
+    float2 position2D = get_ui_real_position2D_parent(local_pixel_position, anchor, parent_position, parent_pixel_size, canvas_size, aspect_ratio);
+    int2 global_pixel_position = (int2) { ceil(((position2D.x / aspect_ratio) + 0.5f) * canvas_size.x), ((position2D.y + 0.5f) * canvas_size.y) };
+    // zox_log("   global_pixel_position [%f - %f]\n", global_pixel_position.x, zox_gett_value(e, CanvasPixelPosition).x)
+    // zox_log("   position2D [%f - %f]\n", position2D.x, zox_gett_value(e, Position2D).x)
+    zox_set(e, Position2D, { position2D })
+    zox_set(e, CanvasPixelPosition, { global_pixel_position })
+}
+
 // set children position as well
 void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, unsigned char layer, int2 canvas_size) {
     #ifdef debug_ui_scaling

@@ -14,8 +14,6 @@ unsigned char check_texture(TextureData* textureData, const TextureSize *texture
 }
 
 void generate_frame_texture(TextureData* textureData, const TextureSize *textureSize, const Color *color2, unsigned char frame_thickness, unsigned char corner_size) {
-    // const int corner_size = 5; // 7
-    // const int frame_thickness = 2;
     color fill_color = color2->value;
     color outline_color = { fill_color.g + 25 + rand() % 25, fill_color.b + 25 + rand() % 25, fill_color.r + 25 + rand() % 25, 255 };
     color empty = { 0, 0, 0, 0 };
@@ -92,22 +90,22 @@ void FrameTextureSystem(ecs_iter_t *it) {
     TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 8);
     for (int i = 0; i < it->count; i++) {
         GenerateTexture *generateTexture = &generateTextures[i];
-        if (generateTexture->value == 0) continue;
+        if (!generateTexture->value) continue;
         TextureDirty *textureDirty = &textureDirtys[i];
-        if (textureDirty->value != 0) continue;
+        if (textureDirty->value) continue;
         const TextureSize *textureSize = &textureSizes[i];
         const Color *color2 = &colors[i];
         const OutlineThickness *outlineThickness = &outlineThicknesss[i];
         const FrameCorner *frameEdge = &frameEdges[i];
         TextureData *textureData = &textures[i];
-        int length = textureSize->value.x * textureSize->value.y;
-        resize_memory_component(TextureData, textureData, color, length)
+        resize_memory_component(TextureData, textureData, color, textureSize->value.x * textureSize->value.y)
         generate_frame_texture(textureData, textureSize, color2, outlineThickness->value, frameEdge->value);
-        textureDirty->value = 1;
         generateTexture->value = 0;
+        textureDirty->value = 1;
         #ifdef zox_time_frame_texture_system
             did_do_timing()
         #endif
+        // zox_log("   > texture (frame) generated [%i] - %lu - %f\n", i, it->entities[i], zox_current_time)
     }
     #ifdef zox_time_frame_texture_system
         end_timing("    - frame_texture_system")

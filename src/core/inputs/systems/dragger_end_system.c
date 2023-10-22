@@ -35,7 +35,10 @@ void DraggerEndSystem(ecs_iter_t *it) {
         if (did_drag_end) {
             dragableState->value = 0;
             draggerLink->value = 0;
-            draggingDelta->value = (int2) { 0, 0 };
+            draggingDelta->value = int2_zero;
+#ifdef zox_log_ui_dragging
+            zox_log(" > ui dragging ended at [%f]\n", (float) zox_current_time)
+#endif
         }
     }
 } zox_declare_system(DraggerEndSystem)
