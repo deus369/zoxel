@@ -27,6 +27,7 @@ zox_component(Brightness, float)
 zox_component(Alpha, float)
 zox_byte_component(MeshAlignment)
 zox_byte_component(RenderLod) // The resolution of each chunk, distance to nearest camera
+zox_byte_component(RenderDisabled)
 #include "opengl/opengl.c"
 #include "vulkan/vulkan.c"
 #include "core/core.c"
@@ -59,6 +60,7 @@ zox_define_component(Brightness)
 zox_define_component(Alpha)
 zox_define_component(MeshAlignment)
 zox_define_component(RenderLod)
+zox_define_component(RenderDisabled)
 // zoxel_import_modules
 if (!headless) {
     if (is_vulkan) { zox_import_module(Vulkan) }

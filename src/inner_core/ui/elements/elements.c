@@ -9,6 +9,8 @@ zox_declare_tag(Header)           //! A ui window header.
 zox_declare_tag(CloseButton)      //! A ui window close button
 zox_declare_tag(Statbar)
 zox_declare_tag(Scrollbar)
+zox_declare_tag(ScrollbarButton)
+zox_byte_component(ListUIMax)
 // prefabs
 #include "prefabs/label.c"
 #include "prefabs/label_background.c"
@@ -23,6 +25,7 @@ zox_declare_tag(Scrollbar)
 // systems
 #include "systems/button_click_sound_system.c"
 #include "systems/element_drag_system.c"
+#include "systems/scrollbar_system.c"
 // functions
 #include "fun/button_event_close_window.c"
 
@@ -93,9 +96,13 @@ zox_define_tag(Header)
 zox_define_tag(CloseButton)
 zox_define_tag(Statbar)
 zox_define_tag(Scrollbar)
+zox_define_tag(ScrollbarButton)
+zox_define_component(ListUIMax)
 // system defines
-zox_system(ElementDragSystem, EcsPostLoad, [in] DragableState, [in] DraggingDelta, [in] DraggedLink) // move this to core
+zox_system(ElementDragSystem, EcsPostLoad, [in] DraggableState, [in] DraggingDelta, [in] DraggedLink)
 zox_system(ButtonClickSoundSystem, EcsPostUpdate, [none] Button, [in] ClickState) // move this to core
+// zox_system(ScrollbarSystem, EcsPostUpdate, [none] ScrollbarButton, [in] DraggableState, [in] PixelPosition)
+zox_system_1(ScrollbarSystem, main_thread_pipeline, [none] ScrollbarButton, [in] DraggableState, [in] PixelPosition)
 zoxel_end_module(Elements)
 
 #endif

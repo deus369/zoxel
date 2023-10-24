@@ -18,7 +18,7 @@ ecs_entity_t spawn_inspector(ecs_world_t *world, ecs_entity_t canvas) {
     int labels_count = 1;
     const text_group labels[] = { { "realm" } };
     const ClickEvent events[] = { { &button_event_play_game } };
-    ecs_entity_t e = spawn_ui_list(world, prefab_inspector, canvas, "inspector", labels_count, labels, events, position, anchor, is_close_button, font_size, layer);
+    ecs_entity_t e = spawn_ui_list(world, prefab_inspector, canvas, "inspector", labels_count, labels_count, labels, events, position, anchor, is_close_button, font_size, layer);
     inspector = e;
     return e;
 }

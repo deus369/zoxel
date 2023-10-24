@@ -30,7 +30,7 @@
                 ecs_entity_t device_entity = deviceLinks2->value[j];
                 if (deviceMode->value == zox_device_mode_keyboardmouse && ecs_has(world, device_entity, Mouse)) {
                     const Mouse *mouse = ecs_get(world, device_entity, Mouse);
-                    if (mouse->left.pressed_this_frame) did_drag = 1;
+                    if (mouse->left.pressed_this_frame) did_drag = zox_drag_mode_mouse;
                     else if (mouse->left.released_this_frame) did_activate = 1;
                 } else if (deviceMode->value == zox_device_mode_gamepad && ecs_has(world, device_entity, Gamepad)) {
                     const Children *zevices = ecs_get(world, device_entity, Children);
@@ -55,7 +55,7 @@
                         if (ecs_has(world, zevice_entity, ZevicePointer)) {
                             const ZevicePointer *zevicePointer = ecs_get(world, zevice_entity, ZevicePointer);
                             if (devices_get_pressed_this_frame(zevicePointer->value)) {
-                                did_drag = 2;
+                                did_drag = zox_drag_mode_finger;
                             } else if (devices_get_released_this_frame(zevicePointer->value)) {
                                 did_activate = 1;
                             }
@@ -68,13 +68,13 @@
             if (did_drag) {
                 if (zox_has(raycasterTarget->value, Dragable)) {
                     // todo: zox_set_mut => the next 3 lines basically, component, entity, new_value
-                    DragableState *dragableState = zox_get_mut(raycasterTarget->value, DragableState)
+                    DraggableState *dragableState = zox_get_mut(raycasterTarget->value, DraggableState)
                     if (!dragableState->value) {
                         DraggerLink *draggerLink = zox_get_mut(raycasterTarget->value, DraggerLink)
                         dragableState->value = did_drag;
                         draggerLink->value = e;
-                        ecs_modified(world, raycasterTarget->value, DragableState);
-                        ecs_modified(world, raycasterTarget->value, DraggerLink);
+                        zox_modified(raycasterTarget->value, DraggableState)
+                        zox_modified(raycasterTarget->value, DraggerLink)
 #ifdef zox_log_ui_dragging
                         zox_log(" > ui dragging at [%f]\n", (float) zox_current_time)
 #endif

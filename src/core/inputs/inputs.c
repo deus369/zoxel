@@ -17,6 +17,8 @@
 #define zox_device_mode_gamepad 2
 #define zox_device_mode_touchscreen 3
 #define zox_device_mode_max 4
+#define zox_drag_mode_mouse 1
+#define zox_drag_mode_finger 2
 const float joystick_min_cutoff = 0.01f;
 const float joystick_min_cutoff2 = 0.04f;
 const float joystick_cutoff_buffer = 0.14f;
@@ -103,7 +105,7 @@ zox_system(ZeviceButtonResetSystem, EcsOnLoad, [out] ZeviceButton)
 zox_system(ZevicePointerResetSystem, EcsOnLoad, [out] ZevicePointer)
 zox_system(ZevicePointerDeltaResetSystem, EcsOnLoad, [out] ZevicePointerDelta)
 zox_system(DeviceModeSystem, EcsPreUpdate, [in] DeviceLinks, [in] DeviceMode, [out] DeviceModeDirty)
-zox_system(DraggerEndSystem, EcsPreUpdate, [out] DragableState, [out] DraggerLink, [out] DraggingDelta)
+zox_system(DraggerEndSystem, EcsPreUpdate, [out] DraggableState, [out] DraggerLink, [out] DraggingDelta)
 zox_system(MouseRaycasterSystem, EcsPreUpdate, [in] DeviceLinks, [in] DeviceMode, [out] Raycaster)
 zox_system(DeviceModeDirtySystem, EcsPostUpdate, [out] DeviceMode, [out] DeviceModeDirty)
 zox_system(ZeviceButtonEnableSystem, EcsOnStore, [in] ZeviceButton, [out] ZeviceDisabled)

@@ -7,7 +7,7 @@ void ElementRenderSystem(ecs_iter_t *it) {
     const Brightness *brightnesses = ecs_field(it, Brightness, 6);
     const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 7);
     const UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 8);
-    // const MaterialInstancedGPULink *materialGPULinks = ecs_field(it, MaterialInstancedGPULink, 9);
+    const RenderDisabled *renderDisableds = ecs_field(it, RenderDisabled, 9);
     const TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 10);
     const MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 11);
     const Alpha *alphas = ecs_field(it, Alpha, 12);
@@ -16,6 +16,8 @@ void ElementRenderSystem(ecs_iter_t *it) {
         if (layer2D->value != renderer_layer) continue;
         const MeshDirty *meshDirty = &meshDirtys[i];
         if (meshDirty->value) continue; // ecs_get(it->world, it->entities[i], MeshDirty)->value) continue;
+        const RenderDisabled *renderDisabled = &renderDisableds[i];
+        if (renderDisabled->value) continue;
         const Position2D *position2D = &position2Ds[i];
         const Rotation2D *rotation2D = &rotation2Ds[i];
         const Scale1D *scale1D = &scale2Ds[i];
@@ -23,7 +25,6 @@ void ElementRenderSystem(ecs_iter_t *it) {
         const Alpha *alpha = &alphas[i];
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
         const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
-        // const MaterialInstancedGPULink *materialInstanceGPULink = &materialGPULinks[i];
         const TextureGPULink *textureGPULink = &textureGPULinks[i];
         if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0 || uvsGPULink->value == 0 || textureGPULink->value == 0) continue;
         if (!has_set_material) {

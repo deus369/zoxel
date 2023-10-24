@@ -29,6 +29,7 @@ zox_entities_component(ElementLinks)
 zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t)
 zox_component(ElementBar, float)
 zox_component(ElementBarSize, float2)
+zox_component(ElementMargins, int2)
 // zoxel_include_util
 #include "util/ui_prefab_util.c"
 #include "util/ui_transform_util.c"
@@ -84,6 +85,7 @@ zox_define_component(UIHolderLink)
 zox_define_component(ClickEvent)
 zox_define_component(ElementBar)
 zox_define_component(ElementBarSize)
+zox_define_component(ElementMargins)
 zox_define_entities_component(ElementLinks)
 // zoxel_define_filters
 zox_filter(ui_query, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [out] SelectState)

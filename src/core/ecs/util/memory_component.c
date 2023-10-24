@@ -85,13 +85,21 @@ ecs_set_hooks(world, name, {\
     }\
 }
 
+// component->length = new_length;
+// component->value = realloc(component->value, new_length * sizeof(data_type));
+
 #define resize_memory_component(name, component, data_type, new_length) {\
     if (component->length != new_length) {\
         if (new_length == 0) {\
             clear_memory_component(name, component)\
         } else if (component->value) {\
-            component->length = new_length;\
-            component->value = realloc(component->value, component->length * sizeof(data_type));\
+            data_type* temp = realloc(component->value, new_length * sizeof(data_type));\
+            if (temp) {\
+                component->value = temp;\
+                component->length = new_length;\
+            } else {\
+                clear_memory_component(name, component)\
+            }\
         } else {\
             initialize_memory_component(name, component, data_type, new_length);\
         }\

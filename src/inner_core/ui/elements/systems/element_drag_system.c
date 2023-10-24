@@ -23,11 +23,11 @@ void drag_element(ecs_world_t *world, ecs_entity_t e, int2 drag_value) {
 //! Plays a Sound when button is clicked
 void ElementDragSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
-    const DragableState *dragableStates = ecs_field(it, DragableState, 1);
+    const DraggableState *dragableStates = ecs_field(it, DraggableState, 1);
     const DraggingDelta *draggingDeltas = ecs_field(it, DraggingDelta, 2);
     const DraggedLink *draggedLinks = ecs_field(it, DraggedLink, 3);
     for (int i = 0; i < it->count; i++) {
-        const DragableState *dragableState = &dragableStates[i];
+        const DraggableState *dragableState = &dragableStates[i];
         if (dragableState->value) {
             const DraggingDelta *draggingDelta = &draggingDeltas[i];
             if (draggingDelta->value.x != 0 || draggingDelta->value.y != 0) {
