@@ -35,6 +35,7 @@ zox_component(ElementMargins, int2)
 #include "util/ui_transform_util.c"
 #include "util/anchor_util.c"
 #include "util/prefab_util_world_ui.c"
+#include "util/element_render_util.c"
 // zoxel_include_prefabs
 #include "prefabs/canvas.c"
 #include "prefabs/element.c"
@@ -88,7 +89,7 @@ zox_define_component(ElementBarSize)
 zox_define_component(ElementMargins)
 zox_define_entities_component(ElementLinks)
 // zoxel_define_filters
-zox_filter(ui_query, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [out] SelectState)
+zox_filter(ui_query, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [in] RenderDisabled, [out] SelectState)
 zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition, [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPixelPosition)
 // zoxel_define_systems
 #ifdef zoxel_inputs

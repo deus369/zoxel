@@ -8,8 +8,8 @@ float2 get_ui_real_position2D(ecs_world_t *world, ecs_entity_t e, ecs_entity_t p
             zox_log("-> (main_canvas) Position2D : %fx%f\n", position2D.x, position2D.y)
         #endif
     } else {
-        const Position2D *parent_position2D = ecs_get(world, parent, Position2D);
-        const PixelSize *parent_pixel_size = ecs_get(world, parent, PixelSize);
+        const Position2D *parent_position2D = zox_get(parent, Position2D)
+        const PixelSize *parent_pixel_size = zox_get(parent, PixelSize)
         if (parent_position2D != NULL) position2D = parent_position2D->value;
         position2D = float2_add(position2D, (float2) { (local_pixel_position.x  / canvasSizef.x) * aspect_ratio, (local_pixel_position.y  / canvasSizef.y)});
         if (parent_pixel_size != NULL) {
@@ -96,8 +96,8 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
     float aspect_ratio = canvasSizef.x / canvasSizef.y;
     if (!ecs_is_valid(world, e)) return;
     if (zox_has(e, PixelPosition)) {
-        const PixelPosition *pixelPosition = ecs_get(world, e, PixelPosition);
-        const Anchor *anchor = ecs_get(world, e, Anchor);
+        const PixelPosition *pixelPosition = zox_get(e, PixelPosition)
+        const Anchor *anchor = zox_get(e, Anchor)
         int2 position = pixelPosition->value;
         float2 position2D = get_ui_real_position2D(world, e, parent, position, anchor->value, canvas_size);
         int2 global_pixel_position = (int2) { ceil((position2D.x / aspect_ratio + 0.5f) * canvasSizef.x), ((position2D.y + 0.5f) * canvasSizef.y) };
@@ -121,10 +121,7 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
     }
     if (zox_has(e, Children)) {
         layer++;
-        const Children *children = ecs_get(world, e, Children);
-        for (int i = 0; i < children->length; i++) {
-            ecs_entity_t child = children->value[i];
-            set_ui_transform(world, child, e, layer, canvas_size);
-        }
+        const Children *children = zox_get(e, Children)
+        for (int i = 0; i < children->length; i++) set_ui_transform(world, children->value[i], e, layer, canvas_size);
     }
 }

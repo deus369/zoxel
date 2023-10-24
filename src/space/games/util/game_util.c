@@ -24,7 +24,7 @@ void spawn_in_game_ui(ecs_world_t *world) {    // spawn game uis
         const unsigned char pause_button_size = 80;
         const ClickEvent on_pause_ui = (ClickEvent) { &button_event_pause_game };
         game_ui = spawn_button_on_canvas(world, main_canvas, (int2) { pause_button_size, pause_button_size }, (byte2) { 8, 4 }, (color) { 77, 32, 44, 255 },
-            "P", pause_button_size, float2_zero, on_pause_ui);   
+            "P", pause_button_size, float2_zero, on_pause_ui);
     }
 }
 

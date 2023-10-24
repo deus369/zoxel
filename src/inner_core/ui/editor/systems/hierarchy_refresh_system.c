@@ -1,15 +1,3 @@
-void disable_element_rendering(ecs_world_t *world, ecs_entity_t e, unsigned char disabled) {
-    if (!zox_has(e, RenderDisabled)) return;
-    RenderDisabled *renderDisabled = zox_get_mut(e, RenderDisabled)
-    renderDisabled->value = disabled;
-    zox_modified(e, RenderDisabled)
-    zox_set(e, RenderDisabled, { disabled })
-    if (zox_has(e, Children)) {
-        const Children *children = zox_get(e, Children)
-        for (int i = 0; i < children->length; i++) disable_element_rendering(world, children->value[i], disabled);
-    }
-}
-
 void HierarchyRefreshSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
     const int labels_count = 14;
@@ -42,9 +30,11 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         zox_log("   > elements_visible %i\n", elements_visible)
         unsigned char button_layer = layer2D->value + 1;
         int line_txt_length = 16;
-        const int font_size = 18 * default_ui_scale;
+        const int font_size = 24 * default_ui_scale;
         int2 button_padding = (int2) { (int) (font_size * 0.46f), (int) (font_size * 0.3f) };
-        int2 list_margins = (int2) { (int) (font_size * 0.2f), (int) (font_size * 0.2f) };
+        int2 list_margins = (int2) { (int) (font_size * 0.8f), (int) (font_size * 0.8f) };
+        int button_inner_margins = (int) (font_size * 0.5f);
+        // scrollbar
         ecs_entity_t scrollbar = children->value[1];
         // const int scrollbar_width = 36 * default_ui_scale;
         const int scrollbar_margins = zox_gett_value(scrollbar, ElementMargins).x; // 8 * default_ui_scale;
@@ -58,20 +48,17 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
             labels[j].text = text;
             events[j].value = NULL;
         }
-        int max_characters = 0; // get max text length out of all of the words
-        for (int j = 0; j < labels_count; j++) {
-            int txt_size = strlen(labels[j].text);
-            if (txt_size > max_characters) max_characters = txt_size;
+        int max_characters = get_max_characters("hierarchy", labels, labels_count);
+        int2 window_size = pixelSize->value;
+        // y = (font_size + button_padding.y * 2 + list_margins.y) * listUIMax->value + list_margins.y
+        int2 new_window_size = { (font_size) * max_characters + button_padding.x * 2 + list_margins.x * 2, window_size.y };
+        if (is_scrollbar) new_window_size.x += scrollbar_width + scrollbar_margins * 2;
+        if (new_window_size.x != window_size.x) {
+            window_size = new_window_size;
+            pixelSize->value = window_size;
+            textureSize->value = window_size;
+            on_resized_element(world, e, window_size, int2_to_float2(canvas_size));
         }
-        int header_txt_size = strlen("hierarchy");
-        if (header_txt_size > max_characters) max_characters = header_txt_size;
-        max_characters++;
-        int2 window_size = { (font_size) * max_characters + button_padding.x * 2 + list_margins.x * 2, (font_size + button_padding.y * 2 + list_margins.y) * listUIMax->value + list_margins.y };
-        if (is_scrollbar) window_size.x += (scrollbar_width / 2) + scrollbar_margins;
-        if (is_scrollbar) window_size.x += (scrollbar_width / 2) + scrollbar_margins;
-        pixelSize->value = window_size;
-        textureSize->value = window_size;
-        on_resized_element(world, e, window_size, int2_to_float2(canvas_size));
         // resize scrollbar
         ecs_entity_t scrollbar_front = zox_gett_value(scrollbar, Children)[0];
         int scrollbar_height = (int) window_size.y * ( float_min(1, (float) listUIMax->value / (float) labels_count));
@@ -83,17 +70,16 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         zox_set(scrollbar_front, PixelPosition, { (int2) { 0, (window_size.y - scrollbar_height) / 2 } })
         // refresh elements
         for (int j = list_start; j < children->length; j++) zox_delete(children->value[j]) // destroy previous
-        // zox_log("   pre resize children->length %i\n", children->length)
         resize_memory_component(Children, children, ecs_entity_t, childrens_length)
         for (int j = 0; j < labels_count; j++) {
-            int2 label_position = (int2) { 0, - j * (font_size + button_padding.y * 2 + list_margins.y) - list_margins.y };
-            label_position.y += (pixelSize->value.y - font_size - button_padding.y * 2) / 2;
-            if (is_scrollbar) label_position.x -= (scrollbar_width / 2) - scrollbar_margins;
-            ecs_entity_t list_element = spawn_button(world, e, label_position, button_padding, float2_half, labels[j].text, font_size, button_layer, position2D->value, pixelSize->value, canvas_size);
+            unsigned char render_disabled = !(j >= 0 && j < elements_visible);
+            int2 label_position = (int2) { 0, (int) (window_size.y / 2) - (j + 0.5f) * (font_size + button_padding.y * 2) - list_margins.y - j * button_inner_margins };
+            if (is_scrollbar) label_position.x -= (scrollbar_width + scrollbar_margins * 2) / 2;
+            ecs_entity_t list_element = spawn_button(world, e, label_position, button_padding, float2_half, labels[j].text, font_size, button_layer, position2D->value, pixelSize->value, canvas_size, render_disabled);
             if (events[j].value != NULL) zox_set(list_element, ClickEvent, { events[j].value })
             children->value[list_start + j] = list_element;
-            unsigned char render_enabled = j >= 0 && j < elements_visible;
-            disable_element_rendering(world, list_element, !render_enabled);
+            // disable_element_rendering(world, list_element, !render_enabled);
+            // zox_log("   > disabling rendering for [%i] [%i]\n", j, render_enabled)
         }
         for (int j = 0; j < labels_count; j++) free(labels[j].text);
         hierarchyUIDirty->value = 0;

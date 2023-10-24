@@ -80,8 +80,11 @@ void ElementRaycastSystem(ecs_iter_t *it) {
             const CanvasPixelPosition *canvasPixelPositions = ecs_field(&uis_it, CanvasPixelPosition, 2);
             const PixelSize *pixelSizes = ecs_field(&uis_it, PixelSize, 3);
             const Layer2D *layer2Ds = ecs_field(&uis_it, Layer2D, 4);
-            SelectState *selectableStates = ecs_field(&uis_it, SelectState, 5);
+            const RenderDisabled *renderDisableds = ecs_field(&uis_it, RenderDisabled, 5);
+            SelectState *selectableStates = ecs_field(&uis_it, SelectState, 6);
             for (int j = 0; j < uis_it.count; j++) {
+                const RenderDisabled *renderDisabled = &renderDisableds[j];
+                if (renderDisabled->value) continue;
                 const CanvasPixelPosition *canvasPixelPosition2 = &canvasPixelPositions[j];
                 const PixelSize *pixelSize2 = &pixelSizes[j];
                 const Layer2D *layer2D = &layer2Ds[j];
