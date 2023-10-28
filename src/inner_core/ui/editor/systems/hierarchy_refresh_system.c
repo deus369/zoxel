@@ -1,3 +1,5 @@
+extern ecs_entity_t local_realm;
+
 int get_max_characters_d(const char *header_label, text_group_dynamic_array_d* labels) {
     int max_characters = 0; // get max text length out of all of the words
     for (int i = 0; i < labels->size; i++) {
@@ -12,13 +14,29 @@ int get_max_characters_d(const char *header_label, text_group_dynamic_array_d* l
 void add_entity_to_labels(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, int tree_level) {
     const int line_txt_length = 32;
     unsigned char *text = malloc(line_txt_length);
-    snprintf(text, line_txt_length, "entity [%lu] [%i]", e, tree_level);
+    if (!zox_has(e, ZoxName)) {
+        snprintf(text, line_txt_length, "entity [%lu] [%i]", e, tree_level);
+    } else {
+        const ZoxName *zoxName = zox_get(e, ZoxName)
+        // snprintf(text, line_txt_length, "%s", convert_zext_to_text(zoxName->value, zoxName->length));
+        char *text2 = convert_zext_to_text(zoxName->value, zoxName->length);
+        snprintf(text, line_txt_length, "%s [%i]", text2, tree_level);
+        zox_log("   label: %s: %s\n", text, text2)
+        free(text2);
+    }
     add_to_text_group_dynamic_array_d(labels, (text_group_dynamic) { text = text });
     if (zox_has(e, Children)) {
         tree_level++;
         const Children *children = zox_get(e, Children)
         for (int i = 0; i < children->length; i++) add_entity_to_labels(world, children->value[i], labels, tree_level);
     }
+}
+
+void button_event_hierarchy_clicked(ecs_world_t *world, ecs_entity_t trigger_entity) {
+    if (!zox_has(trigger_entity, Children)) return;
+    const Children *children = zox_get(trigger_entity, Children)
+    ecs_entity_t zext_entity = children->value[0];
+    print_entity_zext(world, zext_entity);
 }
 
 void HierarchyRefreshSystem(ecs_iter_t *it) {
@@ -61,14 +79,15 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         // const int scrollbar_width = 36 * default_ui_scale;
         const int scrollbar_margins = zox_gett_value(scrollbar, ElementMargins).x; // 8 * default_ui_scale;
         const int scrollbar_width = zox_gett_value(scrollbar, PixelSize).x; // 8 * default_ui_scale;
-        ClickEvent *clicked_element_event = NULL;
+        ClickEvent clicked_element_event = (ClickEvent) { &button_event_hierarchy_clicked };
         text_group_dynamic_array_d* labels = create_text_group_dynamic_array_d();
         /*for (int j = 0; j < labels_count; j++) {
             unsigned char *text = malloc(line_txt_length);
             snprintf(text, line_txt_length, "entity [%i]", j);
             add_to_text_group_dynamic_array_d(labels, (text_group_dynamic) { text = text });
         }*/
-        add_entity_to_labels(world, children->value[i], labels, 0);
+        // children->value[i]
+        add_entity_to_labels(world, local_realm, labels, 0);
         int labels_count = labels->size;
         int childrens_length = list_start + labels_count;
         int max_characters = get_max_characters_d("hierarchy", labels);
@@ -98,8 +117,9 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
             int2 label_position = (int2) { 0, (int) (window_size.y / 2) - (j + 0.5f) * (font_size + button_padding.y * 2) - list_margins.y - j * button_inner_margins };
             if (is_scrollbar) label_position.x -= (scrollbar_width + scrollbar_margins * 2) / 2;
             ecs_entity_t list_element = spawn_button(world, e, label_position, button_padding, float2_half, labels->data[j].text, font_size, button_layer, position2D->value, pixelSize->value, canvas_size, render_disabled);
-            if (clicked_element_event!= NULL) zox_set(list_element, ClickEvent, { clicked_element_event->value })
+            zox_set(list_element, ClickEvent, { clicked_element_event.value })
             children->value[list_start + j] = list_element;
+            // zox_log("   > spawned button [%lu] - [%s]\n", list_element, labels->data[j].text)
         }
         for (int j = 0; j < labels_count; j++) free(labels->data[j].text);
         dispose_text_group_dynamic_array_d(labels);

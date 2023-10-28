@@ -20,7 +20,8 @@ zox_component(DraggingDelta, int2)
 zox_component(DraggerLink, ecs_entity_t)
 zox_component(DraggedLink, ecs_entity_t)
 zox_component(DraggableLimits, int2)
-zox_component(ID, int)                        //! An unique ID, possibly use GUID?
+zox_component(ID, int)                        //! An unique ID, possibly use GUID
+zox_memory_component(ZoxName, unsigned char)
 zox_component(Seed, long int)                 //! A unique Seed for generation
 zox_component(Raycaster, int2)                //! Contains the raycast mouse position
 zox_component(RaycasterTarget, ecs_entity_t)  //! A target entity for the Raycaster
@@ -47,6 +48,57 @@ zox_time_component(DiedTime)
 #include "systems/destroy_in_frame_system.c"
 #include "systems/generic_event_debug_system.c"
 #include "systems/death_clean_system.c"
+
+unsigned char* convert_string_to_zext(const char* text) {
+    unsigned char text_length = strlen(text);
+    unsigned char *zext = malloc(text_length);
+    for (unsigned char i = 0; i < text_length; i++) zext[i] = convert_ascii(text[i]);
+    return zext;
+}
+
+char* convert_zext_to_text(const unsigned char *zext, unsigned char length) {
+    unsigned char text_length = length + 1;
+    char *text = malloc(text_length);
+    for (unsigned char i = 0; i < length; i++) text[i] = convert_to_ascii(zext[i]);
+    text[length] = '\0'; // last ascii string char
+    return text;
+}
+
+void prefab_set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char label[]) {
+    #ifdef zox_entity_names
+        int length = strlen(label);
+        char* entity_name = get_entity_string(label, e);
+        int length2 = strlen(entity_name);
+        zox_prefab_set(e, ZoxName, { length2, convert_string_to_zext(entity_name) })
+        free(entity_name);
+    #endif
+}
+
+void set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char label[]) {
+    #ifdef zox_entity_names
+        int length = strlen(label);
+        char* entity_name = get_entity_string(label, e);
+        int length2 = strlen(entity_name);
+        zox_set(e, ZoxName, { length2, convert_string_to_zext(entity_name) })
+        // zox_log("   + [%s]\n", entity_name)
+        free(entity_name);
+    #endif
+}
+
+
+/*void convert_string_zox_name(ZoxName *component, const char* text) {
+    unsigned char text_length = strlen(text);
+    if (component->length != text_length) resize_memory_component(ZextData, component, unsigned char, text_length)
+    for (unsigned char i = 0; i < text_length; i++) component->value[i] = convert_ascii(text[i]);
+}*/
+
+/*void print_entity_zox_name(ecs_world_t *world, ecs_entity_t e) {
+    if (!zox_has(e, ZoxName)) return;
+    const ZoxName *zoxName = zox_get(e, ZoxName)
+    char *text = get_zext_text(zoxName);
+    zox_log("   > zext %lu [%s] length %i\n", e, text, zoxName->length)
+    free(text);
+}*/
 
 void spawn_prefabs_generic(ecs_world_t *world) {
     spawn_prefab_generic_event(world);
@@ -84,6 +136,7 @@ zox_define_component(Bounds3D)
 zox_define_entities_component(EntityLinks)
 zox_define_component(Dead)
 zox_define_component(DiedTime)
+zox_define_memory_component(ZoxName)
 // zoxel_system_defines
 zox_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
 zoxel_end_module(Generic)

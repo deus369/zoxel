@@ -16,11 +16,9 @@ char* get_entity_string(char label[], ecs_entity_t e) {
     return entity_name;
 }
 
-// test this
-#define zox_prefab_name(label) ;
-//set_unique_entity_name(world, e, label);
+extern void prefab_set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char label[]);
 
-#define zox_name(label) set_unique_entity_name(world, e, label);
+extern void set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char label[]);
 
 void set_unique_entity_name(ecs_world_t *world, ecs_entity_t e, char label[]) {
     #ifdef zox_profile_entity_names
@@ -29,6 +27,14 @@ void set_unique_entity_name(ecs_world_t *world, ecs_entity_t e, char label[]) {
         free(entity_name);
     #endif
 }
+
+// test this
+// #define zox_prefab_name(label) ;
+#define zox_prefab_name(label) prefab_set_entity_zox_name(world, e, label);
+//set_unique_entity_name(world, e, label);
+
+// #define zox_name(label) set_unique_entity_name(world, e, label);
+#define zox_name(label) set_entity_zox_name(world, e, label);
 
 int zox_count_entities(const ecs_world_t *world, ecs_entity_t id) {
     ecs_iter_t it = ecs_term_iter(world, &(ecs_term_t) { 

@@ -9,7 +9,7 @@ ecs_entity_t spawn_prefab_realm(ecs_world_t *world) {
     zox_prefab_set(e, VoxelLinks, { 0, NULL })
     prefab_realm = e;
     #ifdef zoxel_debug_prefabs
-        zoxel_log(" + spawn_prefab realm [%lu].\n", (long int) (e));
+        zox_log(" + spawn_prefab realm [%lu]\n", e)
     #endif
     return e;
 }
@@ -19,16 +19,13 @@ ecs_entity_t spawn_realm(ecs_world_t *world) {
     zox_name("realm")
     // spawn voxels
     // todo: rename VoxelLinks to Voxels for realm, signifying parent relationship
-    VoxelLinks *voxelLinks = ecs_get_mut(world, e, VoxelLinks);
+    VoxelLinks *voxelLinks = zox_get_mut(e, VoxelLinks)
     resize_memory_component(VoxelLinks, voxelLinks, ecs_entity_t, realm_voxels)
-    for (unsigned char i = 0; i < voxelLinks->length; i++) {
-        ecs_entity_t voxel_entity = spawn_voxel(world, i);
-        voxelLinks->value[i] = voxel_entity;
-    }
-    ecs_modified(world, e, VoxelLinks);
+    for (unsigned char i = 0; i < voxelLinks->length; i++) voxelLinks->value[i] = spawn_voxel(world, i);
+    zox_modified(e, VoxelLinks)
     local_realm = e;
     #ifdef zoxel_debug_spawns
-        zoxel_log(" + spawned realm [%lu]\n", (long int) e);
+        zox_log(" + spawned realm [%lu]\n", e)
     #endif
     return e;
 }
