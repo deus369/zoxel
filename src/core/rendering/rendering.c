@@ -6,6 +6,7 @@
 // todo: remove core functions into rendering outer core, make core all the extra data i've got in here
 
 // zoxel_settings
+extern unsigned char is_vulkan;
 unsigned char is_render_fog = 1;
 float3 fog_color = (float3) { 0.5f, 0.55f, 0.58f };
 float fog_density = 0.0326f;
@@ -23,18 +24,16 @@ zox_declare_tag(Mesh)
 zox_declare_tag(ElementRender)
 zox_byte_component(MeshDirty)
 zox_byte_component(TextureDirty)
-zox_component(Brightness, float)
-zox_component(Alpha, float)
 zox_byte_component(MeshAlignment)
 zox_byte_component(RenderLod) // The resolution of each chunk, distance to nearest camera
 zox_byte_component(RenderDisabled)
+zox_component(Brightness, float)
+zox_component(Alpha, float)
 #include "opengl/opengl.c"
 #include "vulkan/vulkan.c"
 #include "core/core.c"
 #include "basics2D/basics2D.c"
 #include "basics3D/basics3D.c"
-
-extern unsigned char is_vulkan;
 
 unsigned char initialize_rendering(ecs_world_t *world) {
     if (headless) return EXIT_SUCCESS;
@@ -54,13 +53,13 @@ zox_begin_module(Rendering)
 // zoxel_define_components
 zox_define_tag(Mesh)
 zox_define_tag(ElementRender)
-zox_define_component(MeshDirty)
-zox_define_component(TextureDirty)
+zox_define_component_byte(MeshDirty)
+zox_define_component_byte(TextureDirty)
+zox_define_component_byte(MeshAlignment)
+zox_define_component_byte(RenderLod)
+zox_define_component_byte(RenderDisabled)
 zox_define_component(Brightness)
 zox_define_component(Alpha)
-zox_define_component(MeshAlignment)
-zox_define_component(RenderLod)
-zox_define_component(RenderDisabled)
 // zoxel_import_modules
 if (!headless) {
     if (is_vulkan) { zox_import_module(Vulkan) }

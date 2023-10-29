@@ -84,9 +84,9 @@ void end_game(ecs_world_t *world) {
         // zox_delete(tilemapLink->value)
         // delete terrain
         zox_delete(local_terrain)
+        local_terrain = 0;
     #endif
     local_character3D = 0;
-    local_terrain = 0;
 }
 
 void play_game(ecs_world_t *world) {

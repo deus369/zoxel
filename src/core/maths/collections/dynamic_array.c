@@ -73,6 +73,15 @@ data_type* finalize##_##data_type##_##array_d(data_type##_##array_d* dynamic_arr
     }\
 }
 
+#define create_is_in_array_d(data_type)\
+unsigned char is_in##_##data_type##_##array_d(data_type##_##array_d* dynamic_array, const data_type value) {\
+    for (int i = 0; i < dynamic_array->size; i++) if (dynamic_array->data[i] == value) return 1;\
+    return 0;\
+}
+
+/*
+
+*/
 /*
 #define finalize_dynamic_array(name, data_type, data_type##_##array_d* dynamic_array)\
 data_type* return##_##name = finalize##_##data_type##_##array_d(dynamic_array);\
@@ -110,5 +119,6 @@ zoxel_dynamic_array(int)
 zoxel_dynamic_array(float3)
 zoxel_dynamic_array(float2)
 zoxel_dynamic_array(ecs_entity_t)
+create_is_in_array_d(ecs_entity_t)
 
 // todo: make into a macro, then define float3_array_d type with zoxel_dynamic_array(float3)

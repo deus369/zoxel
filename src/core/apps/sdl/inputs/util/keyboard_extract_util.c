@@ -14,7 +14,7 @@ void sdl_extract_keyboard(ecs_world_t *world, SDL_Event event) {
     if (!keyboard_entity || !ecs_is_alive(world, keyboard_entity)) return;
     if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
         SDL_Keycode key = event.key.keysym.sym;
-        Keyboard *keyboard = ecs_get_mut(world, keyboard_entity, Keyboard);
+        Keyboard *keyboard = zox_get_mut(keyboard_entity, Keyboard)
         switch(key) {
             sdl_key_case(SDLK_SPACE, &keyboard->space)
             sdl_key_case(SDLK_ESCAPE, &keyboard->escape)
@@ -56,7 +56,7 @@ void sdl_extract_keyboard(ecs_world_t *world, SDL_Event event) {
             default:
                 return;
         }
-        ecs_modified(world, keyboard_entity, Keyboard);
+        zox_modified(keyboard_entity, Keyboard)
         #if defined(zox_test_game_keys)
             if (keyboard->t.pressed_this_frame) button_event_play_game(world, 0);
             if (keyboard->y.pressed_this_frame) toggle_pause_ui(world, main_player);

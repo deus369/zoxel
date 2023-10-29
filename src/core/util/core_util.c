@@ -7,16 +7,6 @@ int begin_core(int argc, char* argv[]) {
     return EXIT_SUCCESS;
 }
 
-void close_core() {
-    close_ecs();
-    if (!headless) on_close_rendering(world);
-    if (!headless) {
-        close_sdl_input();
-        close_sdl_video();
-        close_audio_sdl();
-    }
-}
-
 void update_core() {
     if (!headless) {
         #ifdef zoxel_inputs

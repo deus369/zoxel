@@ -1,7 +1,7 @@
 // Here? select which zoxel modules I shall use?
 
 // testing editor
-// #define zox_entity_names
+#define zox_entity_names
 
 // #define zoxel_disable_music
 // #define zox_extra_destroy_terrain_children

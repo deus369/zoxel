@@ -4,7 +4,7 @@ int engine_begin(int argc, char* argv[]) {
 }
 
 void on_engine_end(ecs_world_t *world) {
-    close_core();
+    close_module_core(world);
     #ifdef zoxel_voxels
         dispose_vox_files();
     #endif

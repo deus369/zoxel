@@ -3,7 +3,7 @@
 void sdl_extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) {
     if (!mouse_entity || !ecs_is_alive(world, mouse_entity)) return;
     if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP || event.type == SDL_MOUSEWHEEL || event.type == SDL_MOUSEMOTION) {
-        Mouse *mouse = ecs_get_mut(world, mouse_entity, Mouse);
+        Mouse *mouse = zox_get_mut(mouse_entity, Mouse)
         if (event.type == SDL_MOUSEMOTION) {
             // don't trigger events if touch input
             if (event.motion.which == SDL_TOUCH_MOUSEID) return;
@@ -32,6 +32,6 @@ void sdl_extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensio
         } else if (event.type == SDL_MOUSEWHEEL) {
             mouse->wheel = (int2) { event.wheel.x, event.wheel.y };
         }
-        ecs_modified(world, mouse_entity, Mouse);
+        zox_modified(mouse_entity, Mouse)
     }
 }

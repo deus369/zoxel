@@ -6,7 +6,7 @@ void toggle_collision_debug(ecs_world_t *world) {
     debug_colliders = !debug_colliders;
     if (debug_colliders) add_physics_debug(world, prefab_character3D);
     else remove_physics_debug(world, prefab_character3D);
-    const ChunkLinks *chunkLinks = ecs_get(world, local_terrain, ChunkLinks);
+    const ChunkLinks *chunkLinks = zox_get(local_terrain, ChunkLinks)
     // for every chunk, use entity links, add or remove physics debug components
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hash_map_pair* pair = chunkLinks->value->data[i];
@@ -74,7 +74,7 @@ void on_terrain_settings_changed(ecs_world_t *world) {
         const Textures *textureLinks = ecs_get(world, voxel, Textures);
         zox_set(textureLinks->value[0], GenerateTexture, { 1 })
     }
-    const TilemapLink *tilemapLink = ecs_get(world, local_terrain, TilemapLink);
+    const TilemapLink *tilemapLink = zox_get(local_terrain, TilemapLink)
     zox_set(tilemapLink->value, GenerateTexture, { 1 })
 }
 

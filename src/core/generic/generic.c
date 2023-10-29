@@ -7,6 +7,11 @@
 #include "data/octree_helper.c"
 #include "data/octree_component.c"
 #include "data/text_group.c"
+// todo: use hashmap for types
+#include "data/byte_component.c"
+#include "data/int_component.c"
+#include "data/long_int_component.c"
+#include "data/int2_component.c"
 zox_declare_tag(Selectable)
 zox_declare_tag(Clickable)
 zox_declare_tag(Dragable)
@@ -16,28 +21,29 @@ zox_byte_component(EntityInitialize)
 zox_byte_component(SelectState)
 zox_byte_component(ClickState)
 zox_byte_component(DraggableState)
-zox_component(DraggingDelta, int2)
+zox_byte_component(GenericEvent)
+zox_byte_component(RaycasterResult)
+zox_byte_component(Layer2D)         //! A 2D Layer for a entity
+zox_byte_component(Dead)
+zox_component_int(ID)                        //! An unique ID, possibly use GUID
+zox_component_int2(DraggingDelta)
+zox_component_int2(DraggableLimits)
+zox_component_int2(Raycaster)                //! Contains the raycast mouse position
 zox_component(DraggerLink, ecs_entity_t)
 zox_component(DraggedLink, ecs_entity_t)
-zox_component(DraggableLimits, int2)
-zox_component(ID, int)                        //! An unique ID, possibly use GUID
 zox_memory_component(ZoxName, unsigned char)
-zox_component(Seed, long int)                 //! A unique Seed for generation
-zox_component(Raycaster, int2)                //! Contains the raycast mouse position
+zox_component_long_int(Seed)                 //! A unique Seed for generation
 zox_component(RaycasterTarget, ecs_entity_t)  //! A target entity for the Raycaster
-zox_byte_component(RaycasterResult)
-zox_component(Layer2D, unsigned char)         //! A 2D Layer for a entity
 zox_component(Color, color)
 zox_component(SecondaryColor, color)
 zox_component(ColorRGB, color_rgb)
 zox_component(SecondaryColorRGB, color_rgb)
 zox_memory_component(ColorRGBs, color_rgb)
 zox_memory_component(Colors, color)
-zox_byte_component(GenericEvent)
 zox_component(Bounds3D, float3)
 zox_entities_component(EntityLinks)
-zox_byte_component(Dead)
 zox_time_component(DiedTime)
+zox_component(EntityTarget, ecs_entity_t)
 // zoxel_util_includes
 #include "util/generic_util.c"
 #include "util/convert_ascii.c"
@@ -85,6 +91,58 @@ void set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char label[]) {
     #endif
 }
 
+void spawn_prefabs_generic(ecs_world_t *world) {
+    spawn_prefab_generic_event(world);
+}
+
+void close_module_generic(ecs_world_t *world) {
+    dispose_component_ids_byte();
+    dispose_component_ids_int();
+    dispose_component_ids_long_int();
+    dispose_component_ids_int2();
+}
+
+zox_begin_module(Generic)
+initialize_component_ids_byte();
+initialize_component_ids_int();
+initialize_component_ids_long_int();
+initialize_component_ids_int2();
+// zoxel_component_defines
+zox_define_tag(Selectable)
+zox_define_tag(Clickable)
+zox_define_tag(Dragable)
+zox_define_tag(DestroyInFrame)
+zox_define_component_long_int(Seed)
+zox_define_component_byte(EntityDirty)
+zox_define_component_byte(SelectState)
+zox_define_component_byte(ClickState)
+zox_define_component_byte(DraggableState)
+zox_define_component_byte(EntityInitialize)
+zox_define_component_byte(Layer2D)
+zox_define_component_byte(RaycasterResult)
+zox_define_component_byte(Dead)
+zox_define_component_byte(GenericEvent)
+zox_define_component_int2(DraggingDelta)
+zox_define_component_int2(DraggableLimits)
+zox_define_component_int2(Raycaster)
+zox_define_component_int(ID)
+zox_define_component(DraggerLink)       // the what that drags
+zox_define_component(DraggedLink)       // the who gets dragged
+zox_define_component(RaycasterTarget)
+zox_define_component(Color)
+zox_define_component(SecondaryColor)
+zox_define_component(ColorRGB)
+zox_define_component(SecondaryColorRGB)
+zox_define_memory_component(ColorRGBs)
+zox_define_memory_component(Colors)
+zox_define_component(Bounds3D)
+zox_define_entities_component(EntityLinks)
+zox_define_component(DiedTime)
+zox_define_memory_component(ZoxName)
+zox_define_component(EntityTarget)
+// zoxel_system_defines
+zox_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
+zoxel_end_module(Generic)
 
 /*void convert_string_zox_name(ZoxName *component, const char* text) {
     unsigned char text_length = strlen(text);
@@ -99,46 +157,5 @@ void set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char label[]) {
     zox_log("   > zext %lu [%s] length %i\n", e, text, zoxName->length)
     free(text);
 }*/
-
-void spawn_prefabs_generic(ecs_world_t *world) {
-    spawn_prefab_generic_event(world);
-}
-
-zox_begin_module(Generic)
-// zoxel_component_defines
-zox_define_tag(Selectable)
-zox_define_tag(Clickable)
-zox_define_tag(Dragable)
-zox_define_tag(DestroyInFrame)
-zox_define_component(EntityDirty)
-zox_define_component(SelectState)
-zox_define_component(ClickState)
-zox_define_component(DraggableState)
-zox_define_component(DraggingDelta)
-zox_define_component(DraggerLink)       // the what that drags
-zox_define_component(DraggedLink)       // the who gets dragged
-zox_define_component(DraggableLimits)
-zox_define_component(ID)
-zox_define_component(Seed)
-zox_define_component(Raycaster)
-zox_define_component(RaycasterTarget)
-zox_define_component(RaycasterResult)
-zox_define_component(EntityInitialize)
-zox_define_component(Layer2D)
-zox_define_component(Color)
-zox_define_component(SecondaryColor)
-zox_define_component(ColorRGB)
-zox_define_component(SecondaryColorRGB)
-zox_define_memory_component(ColorRGBs)
-zox_define_memory_component(Colors)
-zox_define_component(GenericEvent)
-zox_define_component(Bounds3D)
-zox_define_entities_component(EntityLinks)
-zox_define_component(Dead)
-zox_define_component(DiedTime)
-zox_define_memory_component(ZoxName)
-// zoxel_system_defines
-zox_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
-zoxel_end_module(Generic)
 
 #endif

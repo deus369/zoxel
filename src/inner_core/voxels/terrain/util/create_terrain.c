@@ -14,8 +14,6 @@ int get_chunk_index_2(int i, int j, int k, int rows, int vertical) {
 }
 
 ecs_entity_t create_terrain(ecs_world_t *world, int3 center_position) {
-    //zoxel_log(" > spawning terrain [%lu] at [%ix%ix%i]\n", camera, camera_position.x, camera_position.y, camera_position.z);
-    //zoxel_log("     - at [%fx%fx%f]\n", camera_position3D->value.x, camera_position3D->value.y, camera_position3D->value.z);
     #ifdef zox_time_create_terrain
         begin_timing_absolute()
     #endif
@@ -24,7 +22,7 @@ ecs_entity_t create_terrain(ecs_world_t *world, int3 center_position) {
     #endif
     ecs_entity_t tilemap = spawn_tilemap(world);
     int chunks_total_length = calculate_terrain_chunks_count(terrain_spawn_distance, terrain_vertical);
-    ecs_entity_t terrain_world = spawn_terrain(world, prefab_terrain, tilemap, float3_zero, 1.0f);  // todo link world to chunks and vice versa
+    ecs_entity_t terrain_world = spawn_terrain(world, tilemap, float3_zero, 1);  // todo link world to chunks and vice versa
     ecs_entity_t chunks[chunks_total_length];
     int3 chunk_positions[chunks_total_length];
     for (int i = -terrain_spawn_distance; i <= terrain_spawn_distance; i++) {
@@ -122,10 +120,10 @@ ecs_entity_t create_terrain(ecs_world_t *world, int3 center_position) {
             }
         }
     }
-    ChunkLinks *chunkLinks = ecs_get_mut(world, terrain_world, ChunkLinks);
+    ChunkLinks *chunkLinks = zox_get_mut(terrain_world, ChunkLinks)
     chunkLinks->value = create_int3_hash_map(chunks_total_length);
     for (int i = 0; i < chunks_total_length; i++) int3_hash_map_add(chunkLinks->value, chunk_positions[i], chunks[i]);
-    ecs_modified(world, terrain_world, ChunkLinks);
+    zox_modified(terrain_world, ChunkLinks)
     #ifdef zox_time_create_terrain
         end_timing_absolute("    - create_terrain")
     #endif
@@ -133,7 +131,7 @@ ecs_entity_t create_terrain(ecs_world_t *world, int3 center_position) {
 }
 
 void dispose_opengl_resources_terrain(ecs_world_t *world) {
-    if (local_terrain == 0) return;
+    if (!local_terrain) return;
     const TilemapLink *tilemapLink = ecs_get(world, local_terrain, TilemapLink);
     dispose_material_resources(world, tilemapLink->value);
     const ChunkLinks *chunkLinks = ecs_get(world, local_terrain, ChunkLinks);
@@ -148,7 +146,7 @@ void dispose_opengl_resources_terrain(ecs_world_t *world) {
 }
 
 void restore_opengl_resources_terrain(ecs_world_t *world) {
-    if (local_terrain == 0) return;
+    if (!local_terrain) return;
     const ChunkLinks *chunkLinks = ecs_get(world, local_terrain, ChunkLinks);
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hash_map_pair* pair = chunkLinks->value->data[i];

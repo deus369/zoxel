@@ -134,7 +134,7 @@ void sdl_extract_gamepad(SDL_Joystick *joystick, ecs_world_t *world, const Child
     if (joystick == NULL) return;
     for (int i = 0; i < children->length; i++) {
         ecs_entity_t e = children->value[i];
-        const RealButtonIndex *realButtonIndex = ecs_get(world, e, RealButtonIndex);
+        const RealButtonIndex *realButtonIndex = zox_get(e, RealButtonIndex)
         if (zox_has(e, ZeviceStick)) {
             ZeviceStick *zeviceStick = zox_get_mut(e, ZeviceStick);
             if (set_gamepad_axis2(zeviceStick, joystick, realButtonIndex->value)) zox_modified(e, ZeviceStick);

@@ -33,6 +33,17 @@ void spawn_prefabs_core(ecs_world_t *world) {
     spawn_prefabs_cameras(world);
 }
 
+void close_module_core(ecs_world_t *world) {
+    close_module_generic(world);
+    close_ecs();
+    if (!headless) on_close_rendering(world);
+    if (!headless) {
+        close_sdl_input();
+        close_sdl_video();
+        close_audio_sdl();
+    }
+}
+
 zox_begin_module(Core)
 zox_import_module(Platforms)
 zox_import_module(Generic)

@@ -1,8 +1,4 @@
-#define zox_define_component(name) ECS_COMPONENT_DEFINE(world, name);
-
 #define zox_declare_tag(name) ECS_DECLARE(name);
-
-#define zox_define_tag(name) ECS_TAG_DEFINE(world, name);
 
 #define zox_custom_component(name) ECS_COMPONENT_DECLARE(name);
 
@@ -21,7 +17,11 @@ typedef struct {\
     return_type (*value)(__VA_ARGS__);\
 } name; zox_custom_component(name)
 
-#define zox_byte_component(name) zox_component(name, unsigned char)
+#define zox_define_component(name) ECS_COMPONENT_DEFINE(world, name);
+
+// zox_log("   + component [%lu]\n", ecs_id(name))
+
+#define zox_define_tag(name) ECS_TAG_DEFINE(world, name);
 
 #define zox_time_component(name) zox_component(name, double)
 
@@ -83,7 +83,18 @@ ecs_observer_init(world, &(ecs_observer_desc_t) {\
 
 #define zox_define_entity_parent_component(name) zox_define_entity_parent_component2(name, [out] name)
 
-
+#define component_id_list(type)\
+ecs_entity_t_array_d* component_ids##_##type;\
+\
+void initialize_component_ids##_##type() {\
+    component_ids##_##type = create_ecs_entity_t_array_d();\
+}\
+\
+void dispose_component_ids##_##type() {\
+    dispose_ecs_entity_t_array_d(component_ids##_##type);\
+}\
+\
+unsigned char is_component_type##_##type(ecs_entity_t id) { return is_in_ecs_entity_t_array_d(component_ids##_##type, id);  }
 
 /*ecs_set_hooks(world, name, { .dtor = ecs_dtor(name) });*/
 /*ECS_DTOR(name, ptr, {\
