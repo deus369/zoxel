@@ -132,7 +132,7 @@ void editor_select_entity(ecs_world_t *world, ecs_entity_t e) {
         const ecs_id_t *type_ids = type->array;
         int32_t i, count = type->count;
         for (i = 0; i < count; i ++) {
-            int label_index = 2 + i;
+            int label_index = 3 + i;
             if (label_index >= insector_children->length) continue;    // limit for now
             ecs_entity_t component_label = insector_children->value[label_index];
             int buffer_index = 0;
@@ -159,16 +159,14 @@ void editor_select_entity(ecs_world_t *world, ecs_entity_t e) {
                     buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [%ix%i]", int2_component->value.x, int2_component->value.y);
                 } else {
                     const ZoxName *zoxName = ((const ZoxName*) ecs_get_id(world, e, id));
-                    if (zoxName)
-                    // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " %i: [%s]", zoxName->length, convert_zext_to_text(zoxName->value, zoxName->length));
-                    buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " len [%i]", zoxName->length);
-                    else
-                    buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [tag]");
+                    if (zoxName) buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " len [%i]", zoxName->length);
+                    else buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [tag]");
+                    // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " %i: [%s]", zoxName->length, convert_zext_to_text(zoxName->value, zoxName->length))
                 }
             }
             set_entity_label_with_text(world, component_label, buffer);
         }
-        for (i = count + 2; i < insector_children->length; i++) {
+        for (i = count + 3; i < insector_children->length; i++) {
             ecs_entity_t component_label = insector_children->value[i];
             set_entity_label_with_text(world, component_label, "empty");
         }
