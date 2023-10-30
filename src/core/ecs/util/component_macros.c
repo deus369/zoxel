@@ -83,6 +83,19 @@ ecs_observer_init(world, &(ecs_observer_desc_t) {\
 
 #define zox_define_entity_parent_component(name) zox_define_entity_parent_component2(name, [out] name)
 
+// todo: make this one hashmap with all component ids as keys, a type as a value
+#define zox_component_type_none 0
+#define zox_component_type_byte 1
+#define zox_component_type_int 2
+#define zox_component_type_int2 3
+#define zox_component_type_long_int 4
+#define zox_component_type_float 5
+#define zox_component_type_float2 6
+#define zox_component_type_float3 7
+#define zox_component_type_float4 8
+#define zox_component_type_float4x4 9
+#define zox_component_type_ecs_entity_t 10
+
 #define component_id_list(type)\
 ecs_entity_t_array_d* component_ids##_##type;\
 \

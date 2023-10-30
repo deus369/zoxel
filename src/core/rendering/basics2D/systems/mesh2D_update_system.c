@@ -36,6 +36,7 @@ void Mesh2DUpdateSystem(ecs_iter_t *it) {
         const MeshVertices2D *meshVertices2 = &meshVertices[i];
         set_gpu_mesh2D(meshGPULink->value, materialGPULink->value, meshIndicies2->value, meshIndicies2->length, meshVertices2->value, meshVertices2->length);
         meshDirty->value = 0;
+        // zox_log("   > mesh2D updated: %lu\n", it->entities[i])
     }
 } zox_declare_system(Mesh2DUpdateSystem)
 
@@ -55,5 +56,6 @@ void Mesh2DInstancedUpdateSystem(ecs_iter_t *it) {
         const MeshVertices2D *meshVertices2 = &meshVertices[i];
         set_gpu_mesh2D(meshGPULink->value, materialGPULink->value, meshIndicies2->value, meshIndicies2->length, meshVertices2->value, meshVertices2->length);
         meshDirty->value = 0;
+        // zox_log("   > mesh2D instanced updated: %lu\n", it->entities[i])
     }
 } zox_declare_system(Mesh2DInstancedUpdateSystem)

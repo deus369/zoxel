@@ -1,9 +1,10 @@
 // #define zoxel_debug_zext_updates
 
 char* get_zext_text(const ZextData *zextData) {
-    char* text = malloc(zextData->length);
+    return convert_zext_to_text(zextData->value, zextData->length);
+    /*char* text = malloc(zextData->length);
     for (unsigned char i = 0; i < zextData->length; i++) text[i] = convert_to_ascii(zextData->value[i]);
-    return text;
+    return text;*/
 }
 
 unsigned char is_zext(ZextData *zextData, const char* text) {

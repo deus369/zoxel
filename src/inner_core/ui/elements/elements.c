@@ -101,7 +101,7 @@ zox_define_component(ListUIMax)
 // system defines
 zox_system(ElementDragSystem, EcsPostLoad, [in] DraggableState, [in] DraggingDelta, [in] DraggedLink)
 zox_system(ButtonClickSoundSystem, EcsPostUpdate, [none] Button, [in] ClickState) // move this to core
-zox_system(ScrollbarSystem, EcsPostUpdate, [none] ScrollbarButton, [in] DraggableState, [in] PixelPosition)
+zox_system(ScrollbarSystem, EcsPostUpdate, [none] ScrollbarButton, [in] DraggableState, [in] PixelPosition, [in] PixelSize, [in] ParentLink)
 // zox_system_1(ScrollbarSystem, main_thread_pipeline, [none] ScrollbarButton, [in] DraggableState, [in] PixelPosition)
 zoxel_end_module(Elements)
 

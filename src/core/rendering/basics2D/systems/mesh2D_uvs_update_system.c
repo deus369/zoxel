@@ -8,16 +8,17 @@ void Mesh2DUvsUpdateSystem(ecs_iter_t *it) {
     const UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 6);
     for (int i = 0; i < it->count; i++) {
         MeshDirty *meshDirty = &meshDirtys[i];
-        if (meshDirty->value != 1) continue;
+        if (!meshDirty->value) continue;
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
-        if (meshIndicies2->length == 0) continue;
+        if (!meshIndicies2->length) continue;
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
-        if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) continue;
+        if (!meshGPULink->value.x || !meshGPULink->value.y) continue;
         const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
-        if (uvsGPULink->value == 0) continue;
-        const MeshVertices2D *meshVertices2 = &meshVertices[i];
+        if (!uvsGPULink->value) continue;
+        const MeshVertices2D *meshVertices2D = &meshVertices[i];
         const MeshUVs *meshUVs2 = &meshUVs[i];
-        opengl_upload_shader2D_textured(meshGPULink->value, uvsGPULink->value, meshIndicies2->value, meshIndicies2->length, meshVertices2->value, meshUVs2->value, meshVertices2->length);
+        opengl_upload_shader2D_textured(meshGPULink->value, uvsGPULink->value, meshIndicies2->value, meshIndicies2->length, meshVertices2D->value, meshUVs2->value, meshVertices2D->length);
         meshDirty->value = 0;
+        // zox_log("   > mesh2D with uvs updated: %lu [%f]\n", it->entities[i], meshVertices2D->value[2].x)
     }
 } zox_declare_system(Mesh2DUvsUpdateSystem)

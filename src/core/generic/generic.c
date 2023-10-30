@@ -31,19 +31,19 @@ zox_component_int2(DraggableLimits)
 zox_component_int2(Raycaster)                //! Contains the raycast mouse position
 zox_component(DraggerLink, ecs_entity_t)
 zox_component(DraggedLink, ecs_entity_t)
-zox_memory_component(ZoxName, unsigned char)
 zox_component_long_int(Seed)                 //! A unique Seed for generation
 zox_component(RaycasterTarget, ecs_entity_t)  //! A target entity for the Raycaster
 zox_component(Color, color)
 zox_component(SecondaryColor, color)
 zox_component(ColorRGB, color_rgb)
 zox_component(SecondaryColorRGB, color_rgb)
-zox_memory_component(ColorRGBs, color_rgb)
-zox_memory_component(Colors, color)
 zox_component(Bounds3D, float3)
-zox_entities_component(EntityLinks)
 zox_time_component(DiedTime)
 zox_component(EntityTarget, ecs_entity_t)
+zox_memory_component(ZoxName, unsigned char)
+zox_memory_component(ColorRGBs, color_rgb)
+zox_memory_component(Colors, color)
+zox_entities_component(EntityLinks)
 // zoxel_util_includes
 #include "util/generic_util.c"
 #include "util/convert_ascii.c"

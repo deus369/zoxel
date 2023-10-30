@@ -4,7 +4,7 @@
 // > can i make a viewport an entity, and then run this in a viewport system?!
 //      > yes, using the glViewport -> position.x, position.y, size.x, size.y
 //          > with render systems as data, camera view data, etc
-const unsigned char max_render_layers = 16;
+const unsigned char max_render_layers = 32;
 unsigned char renderer_layer;
 int_array_d* render3D_systems;
 int_array_d* render2D_systems;

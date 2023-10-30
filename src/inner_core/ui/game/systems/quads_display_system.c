@@ -1,7 +1,7 @@
 void QuadsLabelSystem(ecs_iter_t *it) {
     int triangles_count = MeshIndicies_memorys_allocated * 3;
     unsigned char has_set = 0;   //! Skip changes if isn't has_set.
-    char buffer[20];
+    char buffer[32];
     // const char* text = buffer;
     QuadsCount *quadsCount = ecs_field(it, QuadsCount, 2);
     ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 3);

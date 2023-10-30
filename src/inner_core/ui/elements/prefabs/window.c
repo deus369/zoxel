@@ -14,6 +14,7 @@ ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     zox_prefab_set(e, OutlineThickness, { 3 })
     zox_prefab_set(e, Color, {{ 66, 35, 25, 255 }})
     zox_prefab_set(e, Children, { 0, NULL })
+    zox_prefab_set(e, ElementFontSize, { 14 })
     add_ui_plus_components(world, e);
     prefab_window = e;
     #ifdef zoxel_debug_prefabs
