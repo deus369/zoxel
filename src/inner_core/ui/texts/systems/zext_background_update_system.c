@@ -36,9 +36,7 @@ void ZextBackgroundUpdateSystem(ecs_iter_t *it) {
         pixelSize->value = size;
         textureSize->value = size;
         const InitializeEntityMesh *initializeEntityMesh = ecs_get(world, it->entities[i], InitializeEntityMesh);
-        if (initializeEntityMesh->value == 0) {
-            set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, scale2D);
-        }
+        if (!initializeEntityMesh->value) set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, scale2D);
         generateTexture->value = 1;
         meshDirty->value = 1;
     }
@@ -60,6 +58,7 @@ void ZextBackgroundUpdateSystem2(ecs_iter_t *it) {
         ecs_entity_t e = it->entities[i];
         const ParentLink *parentLink = &parentLinks[i];
         ecs_entity_t e2 = parentLink->value;
+        if (!zox_has(e2, ZextLabel)) continue;
         MeshDirty *meshDirty = zox_get_mut(e2, MeshDirty)
         if (meshDirty->value) return;
         GenerateTexture *generateTexture = zox_get_mut(e2, GenerateTexture)

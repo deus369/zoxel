@@ -17,11 +17,12 @@ ecs_entity_t spawn_prefab_texture_dirt(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_texture_dirt(ecs_world_t *world) {
+ecs_entity_t spawn_texture_dirt(ecs_world_t *world, int seed) {
     zox_instance(prefab_texture_dirt)
-    zox_name("texture_dirt")
+    zox_name("texture")
+    zox_set(e, Seed, { seed })
     #ifdef zoxel_debug_spawns
-        zoxel_log(" + spawned texture_dirt [%lu]\n", (long int) e);
+        zox_log("   + spawned texture_dirt [%lu]\n", e)
     #endif
     return e;
 }

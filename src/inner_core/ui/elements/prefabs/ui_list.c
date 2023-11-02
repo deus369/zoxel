@@ -57,6 +57,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t
         ecs_entity_t button = spawn_button(world, e, label_position, button_padding, float2_half, labels[i].text, scaled_font_size, button_layer, position2D, window_size, canvas_size, 0);
         if (events && events[i].value) zox_set(button, ClickEvent, { events[i].value })
         children->value[list_start + i] = button;
+        zox_add_tag(button, ZextLabel)
     }
     zox_modified(e, Children)
     #ifdef zoxel_include_players
