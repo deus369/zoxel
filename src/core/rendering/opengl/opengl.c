@@ -16,12 +16,16 @@ float3 opengl_clear_color = { 125 / 255.0f, 125 / 255.0f, 125 / 255.0f };
 // loads / disposes all shaders, move to higher level
 #include "util/opengl_main_util.c"
 
+void check_compute() {
+    if (check_compute_shader_support() == EXIT_FAILURE) zoxel_log(" ! opengl compute is not supported\n");
+}
+
 unsigned char initialize_opengl(ecs_world_t *world) {
     #ifdef zoxel_debug_opengl
         zoxel_log(" > initializing opengl\n");
     #endif
     print_opengl();
-    if (check_compute_shader_support() == EXIT_FAILURE) zoxel_log(" ! compute is not supported\n");
+    check_compute();
     if (opengl_load_shaders(world) == EXIT_FAILURE) {
         zoxel_log(" - failed to load all shaders\n");
         return EXIT_FAILURE;

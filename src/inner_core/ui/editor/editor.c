@@ -5,7 +5,7 @@
 // zoxel_declare_components
 zox_declare_tag(EditorElement)
 zox_declare_tag(HierarchyUI)
-zox_byte_component(HierarchyUIDirty)
+zox_component_byte(HierarchyUIDirty)
 // zoxel_include_prefabs
 #include "prefabs/hierarchy.c"
 #include "prefabs/inspector.c"

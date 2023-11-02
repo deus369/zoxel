@@ -3,7 +3,7 @@
 
 zox_entities_component(Children)
 zox_component(ParentLink, ecs_entity_t)
-zox_byte_component(ChildIndex)
+zox_component_byte(ChildIndex)
 
 zox_begin_module(Hierarchys)
 zox_define_entities_component(Children)

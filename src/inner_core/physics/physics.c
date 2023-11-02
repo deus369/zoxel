@@ -2,7 +2,7 @@
 #define zoxel_physics
 
 zox_declare_tag(Frictioned)
-zox_byte_component(DisableMovement)
+zox_component_byte(DisableMovement)
 #ifdef zoxel_transforms2D
     #include "physics2D/physics2D.c"
 #endif

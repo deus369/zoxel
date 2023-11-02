@@ -11,8 +11,8 @@ zox_component(Acceleration3D, float3)
 zox_component(Omega3D, float4)
 zox_component(Alpha3D, float4)
 zox_component(Gravity3D, float3)
-zox_byte_component(InitializePhysics3D)
-zox_byte_component(Grounded)
+zox_component_byte(InitializePhysics3D)
+zox_component_byte(Grounded)
 zox_time_component(Jump)
 #include "util/physics3D_util.c"
 #include "systems/velocity3D_system.c"

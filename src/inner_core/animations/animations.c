@@ -19,7 +19,7 @@
 #define zox_animation_fadeout 4
 #define zox_animation_fadein 5
 // components
-zox_byte_component(AnimationState)
+zox_component_byte(AnimationState)
 zox_time_component(AnimationStart)
 zox_component(EternalRotation, float4)
 zox_memory_component(AnimationLinks, ecs_entity_t)

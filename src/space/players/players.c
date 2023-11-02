@@ -4,7 +4,7 @@
 // zoxel_component_declares
 zox_declare_tag(Player)
 zox_declare_tag(PlayerCharacter)
-zox_byte_component(PlayerState)
+zox_component_byte(PlayerState)
 zox_memory_component(PlayerLinks, ecs_entity_t)
 // zoxel_state_includes
 #include "states/player_state.c"

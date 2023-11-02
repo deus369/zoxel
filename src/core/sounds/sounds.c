@@ -6,15 +6,15 @@
 #include "settings/settings.c"
 // zoxel_prefab_declares
 zox_declare_tag(Sound)
-zox_byte_component(InstrumentType)
+zox_component_byte(InstrumentType)
 zox_memory_component(SoundData, float)   //! A sound has an array of bytes
 zox_component(SoundLength, double)       //! The length of a sound
 zox_component(SoundFrequency, float)     //! The frequency of the generated sound
 zox_component(SoundVolume, float)     //! The frequency of the generated sound
-zox_byte_component(GenerateSound)        //! A state event for generating sounds
-zox_byte_component(TriggerSound)         //! A state event for playing sounds
+zox_component_byte(GenerateSound)        //! A state event for generating sounds
+zox_component_byte(TriggerSound)         //! A state event for playing sounds
 // renamed PlaySound to TriggerSound temporarily, cause of windows.h conflict
-zox_byte_component(SoundDirty)
+zox_component_byte(SoundDirty)
 #include "components/SDLSound.c"
 // zoxel_prefab_includes
 #include "prefabs/sound.c"

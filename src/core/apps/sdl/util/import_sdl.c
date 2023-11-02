@@ -1,4 +1,5 @@
 #define zoxel_using_sdl
+#define zoxel_using_sdl_images
 
 #ifdef zoxel_on_web
     #include <emscripten.h>
@@ -13,15 +14,12 @@
     #endif
 #endif
 
-
 #ifdef zoxel_include_vulkan
     #include <SDL2/SDL_vulkan.h>
     #include <vulkan/vulkan.h>
     #include <vulkan/vulkan_wayland.h>
     // #include <wayland-client.h>
 #endif
-
-#define zoxel_using_sdl_images
 
 #ifdef zoxel_on_android
     #include <SDL_image.h>

@@ -4,7 +4,7 @@ extern unsigned char halfscreen;
 extern unsigned char is_split_screen;
 extern unsigned char vsync;
 extern unsigned char override_opengl_es;
-extern unsigned char is_vulkan;
+extern unsigned char is_using_vulkan;
 extern unsigned char game_rule_attach_to_character;
 extern unsigned char zox_lowres_characters_mode;
 extern unsigned char headless;
@@ -73,7 +73,7 @@ int process_arguments(int argc, char* argv[]) {
         } else if (strcmp(argv[i], "-e") == 0 || strcmp(argv[i], "--opengles") == 0) {
             override_opengl_es = 1;
         } else if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--vulkan") == 0) {
-            is_vulkan = 1;
+            is_using_vulkan = 1;
         } else if (strcmp(argv[i], "--tiny") == 0) {
             terrain_mode = terrain_mode_tiny;
         } else if (strcmp(argv[i], "--medium") == 0) {

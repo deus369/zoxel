@@ -28,9 +28,9 @@ zox_component(CameraNearDistance, float)
 zox_entity_component(CameraLink)
 zox_entity_component(CameraTarget)
 zox_entity_component(CameraFollowLink)
-zox_byte_component(FreeRoam)
-zox_byte_component(CanFreeRoam)
-zox_byte_component(CameraMode)
+zox_component_byte(FreeRoam)
+zox_component_byte(CanFreeRoam)
+zox_component_byte(CameraMode)
 // zoxel_prefab_includes
 #include "prefabs/base_camera.c"
 #include "prefabs/camera2D.c"

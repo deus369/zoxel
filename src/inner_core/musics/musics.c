@@ -7,8 +7,8 @@ zox_declare_tag(Looping)
 zox_component(MusicTime, double)
 zox_component(MusicSpeed, double)
 zox_memory_component(MusicData, int)
-zox_byte_component(MusicNote)
-zox_byte_component(GenerateMusic)
+zox_component_byte(MusicNote)
+zox_component_byte(GenerateMusic)
 #include "util/music_palette.c"
 #include "prefabs/music.c"
 #include "systems/music_play_system.c"

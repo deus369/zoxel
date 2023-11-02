@@ -10,7 +10,7 @@ zox_declare_tag(CloseButton)      //! A ui window close button
 zox_declare_tag(Statbar)
 zox_declare_tag(Scrollbar)
 zox_declare_tag(ScrollbarButton)
-zox_byte_component(ListUIMax)
+zox_component_byte(ListUIMax)
 // prefabs
 #include "prefabs/label.c"
 #include "prefabs/label_background.c"

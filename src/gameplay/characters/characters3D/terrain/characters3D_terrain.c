@@ -3,7 +3,7 @@
 
 #include "settings/settings.c"
 // zoxel_component_defines
-zox_byte_component(GenerateChunkEntities)
+zox_component_byte(GenerateChunkEntities)
 #define zox_chunk_entities_state_initial 0
 #define zox_chunk_entities_state_triggered 1
 #define zox_chunk_entities_state_spawned 2

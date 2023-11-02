@@ -9,7 +9,7 @@ zox_declare_tag(Connection)
 zox_declare_tag(InputNeuron)
 zox_declare_tag(OutputNeuron)
 zox_component(Weight, float)                  //! The weight of the neural connection
-zox_byte_component(Signal)                   //! If the signal is sending
+zox_component_byte(Signal)                   //! If the signal is sending
 zox_component(SignalStrength, float)          //! The signal value of a connection
 zox_component(ConnectionData, ecs_entity_2)   //! The weight of the neural connection
 #include "prefabs/brain.c"

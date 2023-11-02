@@ -8,23 +8,24 @@
 #include "data/octree_component.c"
 #include "data/text_group.c"
 // todo: use hashmap for types
-#include "data/byte_component.c"
-#include "data/int_component.c"
-#include "data/long_int_component.c"
-#include "data/int2_component.c"
+#include "components/byte_component.c"
+#include "components/int_component.c"
+#include "components/long_int_component.c"
+#include "components/int2_component.c"
+#include "components/float_component.c"
 zox_declare_tag(Selectable)
 zox_declare_tag(Clickable)
 zox_declare_tag(Dragable)
 zox_declare_tag(DestroyInFrame)
-zox_byte_component(EntityDirty)
-zox_byte_component(EntityInitialize)
-zox_byte_component(SelectState)
-zox_byte_component(ClickState)
-zox_byte_component(DraggableState)
-zox_byte_component(GenericEvent)
-zox_byte_component(RaycasterResult)
-zox_byte_component(Layer2D)         //! A 2D Layer for a entity
-zox_byte_component(Dead)
+zox_component_byte(EntityDirty)
+zox_component_byte(EntityInitialize)
+zox_component_byte(SelectState)
+zox_component_byte(ClickState)
+zox_component_byte(DraggableState)
+zox_component_byte(GenericEvent)
+zox_component_byte(RaycasterResult)
+zox_component_byte(Layer2D)         //! A 2D Layer for a entity
+zox_component_byte(Dead)
 zox_component_int(ID)                        //! An unique ID, possibly use GUID
 zox_component_int2(DraggingDelta)
 zox_component_int2(DraggableLimits)
@@ -95,18 +96,24 @@ void spawn_prefabs_generic(ecs_world_t *world) {
     spawn_prefab_generic_event(world);
 }
 
+void initialize_component_ids() {
+    initialize_component_ids_byte();
+    initialize_component_ids_int();
+    initialize_component_ids_long_int();
+    initialize_component_ids_int2();
+    initialize_component_ids_float();
+}
+
 void close_module_generic(ecs_world_t *world) {
     dispose_component_ids_byte();
     dispose_component_ids_int();
     dispose_component_ids_long_int();
     dispose_component_ids_int2();
+    dispose_component_ids_float();
 }
 
 zox_begin_module(Generic)
-initialize_component_ids_byte();
-initialize_component_ids_int();
-initialize_component_ids_long_int();
-initialize_component_ids_int2();
+initialize_component_ids();
 // zoxel_component_defines
 zox_define_tag(Selectable)
 zox_define_tag(Clickable)

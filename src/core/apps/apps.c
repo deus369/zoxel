@@ -23,6 +23,7 @@ zox_declare_tag(App)
 #include "sdl/sdl.c"
 
 unsigned char initialize_apps(ecs_world_t *world) {
+
     if (headless) return EXIT_SUCCESS;
     return initialize_apps_sdl(world);
 }
