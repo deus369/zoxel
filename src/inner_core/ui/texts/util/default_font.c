@@ -38,6 +38,15 @@ const byte2 font_underscore[] = {
     { font_left_side, font_bottom_side }, { font_right_side, font_bottom_side }
 };
 
+const unsigned char full_stop_radius = 2;
+const unsigned char full_stop_length = 4 * 2;
+const byte2 font_full_stop[] = {
+    { middleSideX - full_stop_radius, middleSideX - full_stop_radius }, { middleSideX + full_stop_radius, middleSideX - full_stop_radius },
+    { middleSideX + full_stop_radius, middleSideX - full_stop_radius }, { middleSideX + full_stop_radius, middleSideX + full_stop_radius },
+    { middleSideX + full_stop_radius, middleSideX + full_stop_radius }, { middleSideX - full_stop_radius, middleSideX + full_stop_radius },
+    { middleSideX - full_stop_radius, middleSideX + full_stop_radius }, { middleSideX - full_stop_radius, middleSideX - full_stop_radius },
+};
+
 const unsigned char left_square_bracket_length = 3 * 2;
 const byte2 left_square_bracket[] = {
     { font_left_side, font_top_side }, { middleSideX, font_top_side },

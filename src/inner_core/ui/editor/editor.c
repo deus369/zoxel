@@ -11,6 +11,7 @@ zox_component_byte(HierarchyUIDirty)
 #include "prefabs/inspector.c"
 // zoxel_include_systems
 #include "systems/hierarchy_refresh_system.c"
+#include "systems/inspector_element_system.c"
 
 void spawn_prefabs_editor(ecs_world_t *world) {
     spawn_prefab_hierarchy(world);

@@ -78,8 +78,8 @@ void Player2DTestSystem(ecs_iter_t *it) {
 }*/
 /*else if (keyboard->m.pressed_this_frame) {
     double music_speed = 0.2 + (rand() % 100) * 0.008;
-    zox_set(main_music, MusicSpeed, { music_speed });
-    zox_set(main_music, GenerateMusic, { 1 });
+    zox_set(local_music, MusicSpeed, { music_speed });
+    zox_set(local_music, GenerateMusic, { 1 });
     zoxel_log(" > generating new music with speed [%f].\n", music_speed);
 }*/
 

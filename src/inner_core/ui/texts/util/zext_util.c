@@ -61,8 +61,7 @@ void set_zigel_position(ecs_world_t *world, ecs_entity_t zigel, unsigned char in
 ecs_entity_t spawn_zext_zigel(ecs_world_t *world, ecs_entity_t zext, int layer, unsigned char index, int total_length, unsigned char zigel_index, int font_size, unsigned char text_alignment, byte2 text_padding, float2 parent_position, int2 parent_pixel_size, int2 canvas_size) {
     int2 zigel_size = (int2) { font_size, font_size };
     int2 position = get_zigel_position(index, total_length, font_size, text_alignment, text_padding);
-    ecs_entity_t zigel = spawn_zigel(world, zext, zigel_index, position, zigel_size, float2_half, layer, parent_position, parent_pixel_size, canvas_size);
-    return zigel;
+    return spawn_zigel(world, zext, zigel_index, position, zigel_size, float2_half, layer, parent_position, parent_pixel_size, canvas_size);
 }
 
 unsigned char is_zext_updating(ecs_world_t *world, const Children *children) {

@@ -12,7 +12,6 @@ zox_component(Position3D, float3)
 zox_component(LastPosition3D, float3)
 zox_component(Rotation3D, float4)     //! A quaternion rotation
 zox_component(Scale, float3)          //! A Non Uniform 3D Scale
-zox_component(UniformScale, float)    //! A Uniform scale used generically
 zox_component(Matrix, float4x4)       //! A matrix used for rendering
 zox_component(Euler, float3)          //! A rotation but kept in euler form
 zox_component(EulerLimitX, float2)    //! a limitation of euler x axis
@@ -34,7 +33,6 @@ zox_define_component(Position3D)
 zox_define_component(LastPosition3D)
 zox_define_component(Rotation3D)
 zox_define_component(Scale)
-zox_define_component(UniformScale)
 zox_define_component(Matrix)
 zox_define_component(Euler)
 zox_define_component(EulerLimitX)

@@ -9,7 +9,7 @@ ecs_entity_t spawn_prefab_player_character2D(ecs_world_t *world) {
     zox_prefab_set(e, DisableMovement, { 0 })
     prefab_player_character2D = e;
     #ifdef zoxel_debug_prefabs
-        zoxel_log("spawn_prefab player_character2D [%lu].\n", (long int) (e));
+        zox_log("   + spawn_prefab player_character2D [%lu]\n", e)
     #endif
     return e;
 }

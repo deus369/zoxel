@@ -8,11 +8,7 @@
 #include "data/octree_component.c"
 #include "data/text_group.c"
 // todo: use hashmap for types
-#include "components/byte_component.c"
-#include "components/int_component.c"
-#include "components/long_int_component.c"
-#include "components/int2_component.c"
-#include "components/float_component.c"
+#include "components/components.c"
 zox_declare_tag(Selectable)
 zox_declare_tag(Clickable)
 zox_declare_tag(Dragable)
@@ -94,22 +90,6 @@ void set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char label[]) {
 
 void spawn_prefabs_generic(ecs_world_t *world) {
     spawn_prefab_generic_event(world);
-}
-
-void initialize_component_ids() {
-    initialize_component_ids_byte();
-    initialize_component_ids_int();
-    initialize_component_ids_long_int();
-    initialize_component_ids_int2();
-    initialize_component_ids_float();
-}
-
-void close_module_generic(ecs_world_t *world) {
-    dispose_component_ids_byte();
-    dispose_component_ids_int();
-    dispose_component_ids_long_int();
-    dispose_component_ids_int2();
-    dispose_component_ids_float();
 }
 
 zox_begin_module(Generic)

@@ -20,7 +20,7 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     zox_prefab_set(e, ElementLinks, { 0, NULL })
     prefab_player = e;
     #ifdef zoxel_debug_prefabs
-        zoxel_log(" + spawned prefab player [%lu].\n", (long int) (e));
+        zox_log(" + spawned prefab player [%lu]\n", e)
     #endif
     return e;
 }
@@ -38,7 +38,7 @@ ecs_entity_t spawn_player(ecs_world_t *world) {
     ecs_modified(world, e, DeviceLinks);
     main_player = e;
     #ifdef zoxel_debug_spawns
-        zoxel_log(" + spawned player [%lu]\n", (long int) e);
+        zox_log(" + spawned player [%lu]\n", e)
     #endif
     return e;
 }

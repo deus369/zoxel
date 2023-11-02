@@ -15,7 +15,7 @@ ecs_entity_t spawn_inspector(ecs_world_t *world, ecs_entity_t canvas) {
     const unsigned char is_close_button = 1;
     const int font_size = 18;
     int labels_count = 9;
-    const text_group labels[] = { { "[ select entity ]" }, { "[ component 1 ]" }, { "[ component 2 ]" }, { "[ component 3 ]" }, { "[ component 4 ]" }, { "[ component 5 ]" }, { "[ component 6 ]" }, { "[ component 7 ]" }, { "[ ---------- --------- ]" }  };
+    const text_group labels[] = { { "[ select entity ]" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "[ ---------- -------------- ]" }  };
     // const ClickEvent events[] = { { NULL } };
     ecs_entity_t e = spawn_ui_list(world, prefab_inspector, canvas, "inspector", labels_count, labels_count, labels, NULL, position, float2_half, is_close_button, font_size, layer, 1);
     zox_name("inspector")

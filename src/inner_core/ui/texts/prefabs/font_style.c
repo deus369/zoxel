@@ -10,7 +10,7 @@ ecs_entity_t spawn_font_style_prefab(ecs_world_t *world) {
     zox_add(e, Children);
     font_style_prefab = e;
     #ifdef zoxel_debug_prefabs
-        zoxel_log(" > spawn_prefab font_style [%lu].\n", (long int) (e));
+        zox_log(" > spawn_prefab font_style [%lu]\n", e)
     #endif
     return e;
 }
@@ -20,8 +20,7 @@ ecs_entity_t spawn_font_style(ecs_world_t *world) {
     ecs_entity_t question_mark = spawn_font(world, font_question_mark, font_question_mark_length);
     zox_instance(font_style_prefab)
     zox_name("font_style")
-
-    Children *children = ecs_get_mut(world, e, Children);
+    Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, font_styles_length)
     children->value[0] = question_mark;
     // lower case
@@ -93,7 +92,7 @@ ecs_entity_t spawn_font_style(ecs_world_t *world) {
     children->value[53] = question_mark;
     children->value[54] = question_mark;
     children->value[55] = spawn_font(world, font_space, font_space_length);
-    children->value[56] = question_mark;
+    children->value[56] = spawn_font(world, font_full_stop, full_stop_length);
     children->value[57] = question_mark;
     children->value[58] = question_mark;
     children->value[59] = question_mark;
@@ -103,7 +102,7 @@ ecs_entity_t spawn_font_style(ecs_world_t *world) {
     children->value[73] = spawn_font(world, font_minus, font_minus_length);
     // finished
     for (int i = fonts_used; i < font_styles_length; i++) children->value[i] = question_mark;
-    ecs_modified(world, e, Children);
+    zox_modified(e, Children)
     font_style_entity = e;
     return e;
 }

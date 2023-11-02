@@ -2,6 +2,7 @@ ecs_entity_t prefab_element;
 
 ecs_entity_t spawn_prefab_element(ecs_world_t *world) {
     zox_prefab()
+    zox_prefab_name("prefab_element")
     zox_add_tag(e, FrameTexture)
     zox_prefab_set(e, FrameCorner, { 7 })
     zox_prefab_set(e, OutlineThickness, { 3 })

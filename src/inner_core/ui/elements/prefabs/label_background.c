@@ -11,7 +11,7 @@ ecs_entity_t spawn_prefab_label_background(ecs_world_t *world) {
     add_ui_plus_components(world, e);
     label_background_prefab = e;
     #ifdef zoxel_debug_prefabs
-        zoxel_log("spawn_prefab label_background [%lu].\n", (long int) (e));
+        zox_log("spawn_prefab label_background [%lu]\n", e)
     #endif
     return e;
 }

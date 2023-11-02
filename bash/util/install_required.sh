@@ -4,26 +4,19 @@ echo "> checking linux packages"
 
 source bash/util/package_util.sh
 
-if ! has_library "gcc"; then
-    install_library "gcc"
-fi
+install_first_library "gcc"
 
-echo "> installing opengl"
 install_first_library "libgl"
 
-echo "> installing glew"
 install_first_library "libglew-dev" "glew" "libglew"
 
-echo "> installing vulkan"
 install_first_library "libvulkan-dev" "vulkan-devel" "vulkan-headers"
 
-echo "> installing wget"
 install_first_library "wget"
 
 # debug requuired tools
-echo "> installing valgrind"
 install_first_library "valgrind"
-echo "> installing gdb"
+
 install_first_library "gdb"
 
 bash bash/sdl/install_sdl.sh

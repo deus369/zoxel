@@ -16,6 +16,7 @@ ecs_entity_t spawn_pause_ui(ecs_world_t *world, int2 position, float2 anchor) {
     const unsigned char layer = 1;
     ecs_entity_t e = spawn_ui_list(world, prefab_pause_ui, main_canvas, "paused", labels_count, labels_count, labels, events, position, anchor, 0, 28, layer, 0);
     pause_ui = e;
+    zox_name("pause_menu")
     // zoxel_log(" > spawn_pause_ui alive ui? %s\n", ecs_is_alive(world, pause_ui) ? "alive" : "dead");
     return e;
 }

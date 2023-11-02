@@ -18,8 +18,6 @@ zox_component_byte(ListUIMax)
 #include "prefabs/header.c"
 #include "prefabs/window.c"
 #include "prefabs/scrollbar.c"
-#include "util/header.c"
-#include "util/window.c"
 #include "prefabs/ui_list.c"
 #include "prefabs/statbar3D.c"
 // systems

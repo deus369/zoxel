@@ -1,5 +1,7 @@
 extern ecs_entity_t local_realm;
 extern ecs_entity_t local_terrain;
+extern ecs_entity_t main_player;
+extern ecs_entity_t local_character3D;
 extern void add_realm_entity_to_labels(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level);
 const int hierarchy_max_line_characters = 64;
 ecs_entity_t editor_selected;
@@ -79,12 +81,15 @@ void print_entity(ecs_world_t *world, ecs_entity_t e) {
             } else if (is_component_type_int(id)) {
                 const ID *int_component = ((const ID*) ecs_get_id(world, e, id));
                 if (int_component) zox_log(" i [%i]", int_component->value)
+            } else if (is_component_type_float(id)) {
+                const Brightness *component_float = ((const Brightness*) ecs_get_id(world, e, id));
+                if (component_float) zox_log(" f [%f]", component_float->value)
             } else {
                 const ZoxName *zoxName = ((const ZoxName*) ecs_get_id(world, e, id));
                 //const EntityDirty *byte_component = ((const EntityDirty*) ecs_get_id(world, target, id));
                 //if (byte_component) zox_logg(" [uknown]")
                 if (zoxName) zox_log(" %i: [%s]", zoxName->length, convert_zext_to_text(zoxName->value, zoxName->length))
-                else zox_logg(" [tag]")
+                // else zox_logg(" [tag]")
             }
             /*const long int *value = ((const long int*) ecs_get_id(world, target, id));
             if (value) zox_log(" [%lu]", value)*/
@@ -142,25 +147,48 @@ void editor_select_entity(ecs_world_t *world, ecs_entity_t e) {
                 ecs_entity_t rel = ecs_pair_first(world, id);
                 ecs_entity_t tgt = ecs_pair_second(world, id);
                 buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " pair %s [%lu]", ecs_get_name(world, rel), tgt);
-            } else {
+            } /*else if (ECS_HAS_ID_FLAG(id, TAG)) {
+                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [tag]");
+            } */else {
                 ecs_entity_t comp = id & ECS_COMPONENT_MASK;
                 buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " %s", ecs_get_name(world, comp));
                 if (is_component_type_byte(id)) {
-                    const EntityDirty *byte_component = ((const EntityDirty*) ecs_get_id(world, e, id));
-                    buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [%i]", byte_component->value);
+                    const EntityDirty *component_byte = ((const EntityDirty*) ecs_get_id(world, e, id));
+                    buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), zox_component_string(byte));
                 } else if (is_component_type_int(id)) {
-                    const ID *int_component = ((const ID*) ecs_get_id(world, e, id));
-                    buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [%i]", int_component->value);
+                    const ID *component_int = ((const ID*) ecs_get_id(world, e, id));
+                    buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), zox_component_string(int));
                 } else if (is_component_type_long_int(id)) {
-                    const Seed *long_int_component = ((const Seed*) ecs_get_id(world, e, id));
-                    buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [%lu]", long_int_component->value);
-                } else if (is_component_type_int2(id)) {
-                    const DraggingDelta *int2_component = ((const DraggingDelta*) ecs_get_id(world, e, id));
-                    buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [%ix%i]", int2_component->value.x, int2_component->value.y);
+                    const Seed *component_long_int = ((const Seed*) ecs_get_id(world, e, id));
+                    buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), zox_component_string(long_int));
+                } else if (is_component_type_float(id)) {
+                    const Brightness *component_float = ((const Brightness*) ecs_get_id(world, e, id));
+                    buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), zox_component_string(float));
+                } else if (is_component_type_double(id)) {
+                    const SoundLength *component_double = ((const SoundLength*) ecs_get_id(world, e, id));
+                    buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), zox_component_string(double));
+                } else if (is_component_type_byte2(id)) {
+                    const ZextPadding *component_byte2 = ((const ZextPadding*) ecs_get_id(world, e, id));
+                    buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), zox_component_string(byte2));
+                }  else if (is_component_type_int2(id)) {
+                    const DraggingDelta *component_int2 = ((const DraggingDelta*) ecs_get_id(world, e, id));
+                    buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), zox_component_string(int2));
+                }  else if (is_component_type_float2(id)) {
+                    const Position2D *component_float2 = ((const Position2D*) ecs_get_id(world, e, id));
+                    buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), zox_component_string(float2));
                 } else {
-                    const ZoxName *zoxName = ((const ZoxName*) ecs_get_id(world, e, id));
-                    if (zoxName) buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " len [%i]", zoxName->length);
-                    else buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [tag]");
+                    const EcsComponent* ecsComponent = (EcsComponent*) ecs_get(world, id, EcsComponent);
+                    unsigned int component_size = ecsComponent !=  NULL ? ecsComponent->size : 0;
+                    // unsigned int component_size = ((EcsComponent*) ecs_get_id(world, e, id))->size;
+                    // int component_size = ((EcsComponent*) ecs_get_id(world, e, ecs_id(EcsComponent)))->size;
+                    zox_log("   %s component_size [%u]\n", ecs_get_name(world, comp), component_size)
+                    if (!component_size) buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [tag]");
+                    //const EntityDirty *component_byte = ((const EntityDirty*) ecs_get_id(world, e, id));
+                    //if (!component_byte) buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [tag]");
+                    else buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [?]");
+                    // const ZoxName *zoxName = ((const ZoxName*) ecs_get_id(world, e, id));
+                    // if (zoxName) buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " m [%i]", zoxName->length);
+                    // else buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [tag]");
                     // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " %i: [%s]", zoxName->length, convert_zext_to_text(zoxName->value, zoxName->length))
                 }
             }
@@ -168,7 +196,7 @@ void editor_select_entity(ecs_world_t *world, ecs_entity_t e) {
         }
         for (i = count + 3; i < insector_children->length; i++) {
             ecs_entity_t component_label = insector_children->value[i];
-            set_entity_label_with_text(world, component_label, "empty");
+            set_entity_label_with_text(world, component_label, "");
         }
     }
 }
@@ -228,8 +256,15 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         ClickEvent clicked_element_event = (ClickEvent) { &button_event_hierarchy_clicked };
         text_group_dynamic_array_d* labels = create_text_group_dynamic_array_d();
         ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d();
+
+        // add game entities
         add_realm_entity_to_labels(world, local_realm, labels, entities, 0);
+        add_entity_children_to_labels(world, main_player, labels, entities, 0);
+        add_entity_to_labels(world, local_music, labels, entities, 0);
         add_entity_to_labels(world, local_terrain, labels, entities, 0);
+        add_entity_to_labels(world, local_character3D, labels, entities, 0);
+        add_entity_children_to_labels(world, main_canvas, labels, entities, 0);
+
         int labels_count = labels->size;
         int childrens_length = list_start + labels_count;
         int max_characters = get_max_characters_d("hierarchy", labels);

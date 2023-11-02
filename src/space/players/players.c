@@ -37,7 +37,7 @@ zox_begin_module(Players)
 // zoxel_component_defines
 zox_define_tag(Player)
 zox_define_tag(PlayerCharacter)
-zox_define_component(PlayerState)
+zox_define_component_byte(PlayerState)
 zox_define_memory_component(PlayerLinks)
 // zoxel_system_defines
 zox_system(FreeCameraMoveSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks, [in] cameras.CameraLink)

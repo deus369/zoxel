@@ -1,20 +1,21 @@
 #ifndef zoxel_sounds
 #define zoxel_sounds
 
+// renamed PlaySound to TriggerSound temporarily, cause of windows.h conflict
+
 // zoxel_settings
 #include "util/import_sdl_mixer.c"
 #include "settings/settings.c"
 // zoxel_prefab_declares
 zox_declare_tag(Sound)
 zox_component_byte(InstrumentType)
-zox_memory_component(SoundData, float)   //! A sound has an array of bytes
-zox_component(SoundLength, double)       //! The length of a sound
-zox_component(SoundFrequency, float)     //! The frequency of the generated sound
-zox_component(SoundVolume, float)     //! The frequency of the generated sound
 zox_component_byte(GenerateSound)        //! A state event for generating sounds
 zox_component_byte(TriggerSound)         //! A state event for playing sounds
-// renamed PlaySound to TriggerSound temporarily, cause of windows.h conflict
 zox_component_byte(SoundDirty)
+zox_component_float(SoundFrequency)     //! The frequency of the generated sound
+zox_component_float(SoundVolume)     //! The frequency of the generated sound
+zox_component_double(SoundLength)       //! The length of a sound
+zox_memory_component(SoundData, float)   //! A sound has an array of bytes
 #include "components/SDLSound.c"
 // zoxel_prefab_includes
 #include "prefabs/sound.c"
@@ -53,15 +54,15 @@ void spawn_prefabs_sounds(ecs_world_t *world) {
 zox_begin_module(Sounds)
 // zoxel_define_components
 zox_define_tag(Sound)
-zox_define_component(InstrumentType)
-zox_define_component(SoundLength)
-zox_define_component(GenerateSound)
-zox_define_component(SoundFrequency)
-zox_define_component(SoundVolume)
-zox_define_component(TriggerSound)
-zox_define_component_w_dest(SDLSound)
-zox_define_component(SoundDirty)
+zox_define_component_byte(InstrumentType)
+zox_define_component_byte(SoundDirty)
+zox_define_component_byte(TriggerSound)
+zox_define_component_byte(GenerateSound)
+zox_define_component_double(SoundLength)
+zox_define_component_float(SoundFrequency)
+zox_define_component_float(SoundVolume)
 zox_define_memory_component(SoundData)
+zox_define_component_w_dest(SDLSound)
 // zoxel_define_systems
 zox_system(SoundGenerateSystem, EcsPreStore, [none] Sound, [out] GenerateSound, [out] SoundData, [out] SoundDirty, [in] SoundLength, [in] SoundFrequency, [in] SoundVolume, [in] InstrumentType)
 #ifdef SDL_MIXER

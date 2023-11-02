@@ -12,13 +12,13 @@ ecs_entity_t spawn_prefab_statbar3D(ecs_world_t *world) {
     color bar_color = (color) { 66, 12, 12, 0 };
     zox_prefab_child(prefab_element_world)
     zox_prefab_name("prefab_statbar")
+    zox_set(e, PixelSize, { int2_one })
+    zox_set(e, TextureSize, { int2_one })
+    zox_set(e, Color, { bar_color })
     zox_add_tag(e, Statbar)
     zox_prefab_set(e, ElementBar, { 1 })
     zox_prefab_set(e, ElementBarSize, { float2_zero })
     zox_prefab_set(e, Children, { 0, NULL })
-    zox_set(e, PixelSize, { int2_one })
-    zox_set(e, TextureSize, { int2_one })
-    zox_set(e, Color, { bar_color })
     prefab_statbar3D = e;
     #ifdef zoxel_debug_prefabs
         zox_log("   > spawn_prefab statbar [%lu]\n", e)

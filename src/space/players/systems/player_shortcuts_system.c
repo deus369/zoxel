@@ -50,8 +50,8 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
                 if (keyboard->m.pressed_this_frame) {
                     zoxel_log(" > generated new music\n");
                     double music_speed = 0.2 + (rand() % 100) * 0.008;
-                    zox_set(main_music, MusicSpeed, { music_speed });
-                    zox_set(main_music, GenerateMusic, { 1 });
+                    zox_set(local_music, MusicSpeed, { music_speed });
+                    zox_set(local_music, GenerateMusic, { 1 });
                 } else if (keyboard->n.pressed_this_frame) {
                     zox_visualize_sounds = !zox_visualize_sounds;
                 } else if (keyboard->i.pressed_this_frame) {
