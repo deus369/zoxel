@@ -5,12 +5,18 @@
 
 zoxel_directory="$HOME/zoxel"
 sdl_directory="$HOME/SDL/SDL2"
-ANDROID_NDK_HOME="$HOME/android/android-ndk-r10e"
-export ANDROID_NDK_HOME="$HOME/android/android-ndk-r10e"
-ANDROID_HOME="/usr/lib/android-sdk"
-ANDROID_SDK_ROOT="/usr/lib/android-sdk"
-export ANDROID_HOME="/usr/lib/android-sdk"
-export ANDROID_SDK_ROOT="/usr/lib/android-sdk"
+# ANDROID_NDK_HOME="$HOME/android/android-ndk-r10e"
+# export ANDROID_NDK_HOME="$HOME/android/android-ndk-r10e"
+# ANDROID_HOME="/usr/lib/android-sdk"
+# ANDROID_SDK_ROOT="/usr/lib/android-sdk"
+# export ANDROID_HOME="/usr/lib/android-sdk"
+# export ANDROID_SDK_ROOT="/usr/lib/android-sdk"
+
+android_sdk_path="$HOME/android_sdk"
+ndk_path="$android_sdk_path/ndk"
+export ANDROID_HOME=$android_sdk_path
+export ANDROID_SDK_ROOT=$android_sdk_path
+export ANDROID_NDK_HOME=$ndk_path
 
 cd $zoxel_directory
 

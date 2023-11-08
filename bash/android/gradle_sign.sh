@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# no keys atm
+
 keystore_alias="zoxel"
 # cd build/android-build
 # echo "need to sign apk: "
@@ -12,7 +14,9 @@ echo "  > signing android release build with alias [$keystore_alias]"
 echo "      > keystore_filepath [$keystore_filepath]"
 echo "      > apk_signed_filepath [$apk_signed_filepath]"
 # jarsigner -verbose -keystore $keystore_filepath $apk_filepath $keystore_alias
-apksigner sign --ks $keystore_filepath --ks-key-alias $keystore_alias --out $apk_signed_filepath $apk_filepath
+#apksigner sign --ks $keystore_filepath --ks-key-alias $keystore_alias --out $apk_signed_filepath $apk_filepath
+
+sh $HOME/android_sdk/build-tools/30.0.3/apksigner sign --ks $keystore_filepath --ks-key-alias $keystore_alias --out $apk_signed_filepath $apk_filepath
 
 # apk_filepath="app/build/outputs/apk/release/zipped.apk"
 # sign the apk, i should save the keyname/alias somewhere for later

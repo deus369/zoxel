@@ -9,6 +9,9 @@ zox_component_byte(HierarchyUIDirty)
 // zoxel_include_prefabs
 #include "prefabs/hierarchy.c"
 #include "prefabs/inspector.c"
+// zoxel_include_util
+#include "util/shared.c"
+#include "util/inspector.c"
 // zoxel_include_systems
 #include "systems/hierarchy_refresh_system.c"
 #include "systems/inspector_element_system.c"

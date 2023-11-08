@@ -260,7 +260,7 @@ git-push-zoxel-play:
 # android #
 
 install-android-sdk:
-	bash bash/android/install_required.sh
+	bash bash/util/install_required_android.sh
 
 android:
 	bash bash/android/copy_settings.sh
@@ -270,6 +270,9 @@ android:
 
 android-run:
 	bash bash/android/gradle_run.sh
+
+android-sign:
+	bash bash/android/gradle_sign.sh
 
 android-install:
 	bash bash/android/gradle_install.sh
@@ -419,6 +422,8 @@ help:
 	@echo "  > android"
 	@echo "    install-android-sdk		installs tools for android build"
 	@echo "    android			builds & runs android release"
+	@echo "	   android-create-key		created android keystore"
+	@echo "    android-sign			signs the unsigned zoxel apk"
 	@echo "    android-install		installs zoxel apk"
 	@echo "    android-run			runs the zoxel apk"
 	@echo "    android-dev			builds & runs android debug"

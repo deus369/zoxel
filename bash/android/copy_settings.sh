@@ -18,11 +18,16 @@ echo "=> copying android settings"
 # copy settings files over
 
 # copy local.properties
-local_properties_source=$android_bash_directory/local.properties
-local_properties_target=$android_directory/local.properties
+local_properties_name="local.properties"
+local_properties_source=$android_bash_directory/$local_properties_name
+local_properties_target=$android_directory/$local_properties_name
 echo "  > copying [$local_properties_source] to [$local_properties_target]"
 rm $local_properties_target
 cp $local_properties_source $local_properties_target
+# edit local_properties_target file, replace $HOME with actual value
+new_home="$HOME"
+echo "  > in [$local_properties_target] replacing [HOME] to [$new_home]"
+sed -i "s|\$HOME|$new_home|g" "$local_properties_target"
 
 # copy app/build.gradle
 android_gradle_file_source=$android_bash_directory/app/build.gradle

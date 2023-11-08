@@ -15,9 +15,8 @@ install_first_library "libvulkan-dev" "vulkan-devel" "vulkan-headers"
 install_first_library "wget"
 
 # debug requuired tools
-install_first_library "valgrind"
-
-install_first_library "gdb"
+# install_first_library "valgrind"
+# install_first_library "gdb"
 
 bash bash/sdl/install_sdl.sh
 

@@ -1,6 +1,5 @@
 #/bin/bash
 
-
 # Prompt the user for the keystore password
 read -p "Enter keystore password: " keystore_password
 
