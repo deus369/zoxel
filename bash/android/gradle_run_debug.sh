@@ -1,9 +1,10 @@
 #!/bin/bash
+source bash/android/gradle_pathing.sh
+start_gradle_build
 
-source gradle_set_paths.sh
+cd build/zoxel-android && gradle run; cd ../..
 
-cd ~/zoxel-android/
-
-gradle run # --debug-jvm
+# --debug-jvm
 
 echo Finished Running Debug Zoxel Android
+end_gradle_build

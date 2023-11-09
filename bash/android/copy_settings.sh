@@ -11,7 +11,8 @@
 
 # \todo copy resources into app/src/main/resources/ & rename to android-resources sub folder
 
-source bash/android/gradle_set_paths.sh
+source bash/android/gradle_pathing.sh
+start_gradle_build
 
 echo "=> copying android settings"
 
@@ -25,9 +26,9 @@ echo "  > copying [$local_properties_source] to [$local_properties_target]"
 rm $local_properties_target
 cp $local_properties_source $local_properties_target
 # edit local_properties_target file, replace $HOME with actual value
-new_home="$HOME"
-echo "  > in [$local_properties_target] replacing [HOME] to [$new_home]"
-sed -i "s|\$HOME|$new_home|g" "$local_properties_target"
+# new_home="$android_sdk_path"
+echo "  > in [$local_properties_target] replacing [\$android_sdk_path] to [$android_sdk_path]"
+sed -i "s|\$android_sdk_path|$android_sdk_path|g" "$local_properties_target"
 
 # copy app/build.gradle
 android_gradle_file_source=$android_bash_directory/app/build.gradle
@@ -75,14 +76,4 @@ echo "  > copying [$file_3] to [$file_3_target]"
 rm $file_3_target
 cp $file_3 $file_3_target
 
-# echo "Finished copying settings files."
-# sleep 3
-# new_source_directory0=$android_directory/app/jni/src
-# # our settings files
-# old_source_directory1=$android_bash_directory/src
-# old_source_directory2=$zoxel_directory/include
-# our new locations
-# old_source_file1=$zoxel_directory/Android.mk
-# old_source_file2=$zoxel_directory/CMakeLists.txt
-# new_source_file1=$new_source_directory0/Android.mk
-# new_source_file2=$new_source_directory0/CMakeLists.txt
+end_gradle_build

@@ -1,16 +1,20 @@
 #!/bin/bash
+echo "  > zoxel [bash/android/gradle_build.sh] running"
+source bash/android/gradle_pathing.sh
+start_gradle_build
 
-echo "=> gradle building android release build"
-
-
-android_sdk_path="$HOME/android_sdk"
-ndk_path="$android_sdk_path/ndk"
-export ANDROID_HOME=$android_sdk_path
-export ANDROID_SDK_ROOT=$android_sdk_path
-export ANDROID_NDK_HOME=$ndk_path
-
-# export ANDROID_SDK_ROOT=/usr/lib/android-sdk
-
+# --parallel
 cd build/android-build
-bash gradlew assembleRelease # --parallel
+bash gradlew assembleRelease
+
+if [ $? -ne 0 ]; then
+    echo "  > gradlew assembleRelease command failed"
+    # You can add additional error handling here if needed
+    clear_gradle_build
+    exit 1
+else
+    echo "  > gradlew assembleRelease command was successful"
+fi
+
 cd ../..
+end_gradle_build

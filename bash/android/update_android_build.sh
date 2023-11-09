@@ -1,6 +1,7 @@
 #!/bin/bash
 # installs android project if it doesn't exist, and then copies latest source files over to it
-source bash/android/gradle_set_paths.sh
+source bash/android/gradle_pathing.sh
+start_gradle_build
 
 if [[ -d $android_sdk_directory ]]; then
     echo "Android SDK Directory [$android_sdk_directory] exists. Nice work."
@@ -31,8 +32,4 @@ echo "Copying zoxel source files to build directory."
 # cd $android_bash_directory
 source bash/android/copy_source.sh
 
-# checks if android build directory exists, if it doesn't exist it will build it using sdl files.
-# updates source files after that.
-# remove last zoxel-android
-# zoxel_directory=$PWD # "$HOME/zoxel"
-# cd $zoxel_directory/bash/android
+end_gradle_build

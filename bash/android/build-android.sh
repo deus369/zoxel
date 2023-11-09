@@ -1,10 +1,12 @@
 #!/bin/bash
-
 # make -j$(nproc) -f MakefileDev -B; ./zoxel-dev
 # cc -std=c99 -fPIC -D_DEFAULT_SOURCE -Wall -g -o zoxel-dev includes/flecs.c src/main.c -lGL -lSDL2 -lm
+source bash/android/gradle_pathing.sh
+start_gradle_build
 
-zoxel_directory="$HOME/zoxel"
-sdl_directory="$HOME/SDL/SDL2"
+#zoxel_directory="$HOME/zoxel"
+#sdl_directory="$HOME/SDL/SDL2"
+
 # ANDROID_NDK_HOME="$HOME/android/android-ndk-r10e"
 # export ANDROID_NDK_HOME="$HOME/android/android-ndk-r10e"
 # ANDROID_HOME="/usr/lib/android-sdk"
@@ -12,11 +14,11 @@ sdl_directory="$HOME/SDL/SDL2"
 # export ANDROID_HOME="/usr/lib/android-sdk"
 # export ANDROID_SDK_ROOT="/usr/lib/android-sdk"
 
-android_sdk_path="$HOME/android_sdk"
-ndk_path="$android_sdk_path/ndk"
-export ANDROID_HOME=$android_sdk_path
-export ANDROID_SDK_ROOT=$android_sdk_path
-export ANDROID_NDK_HOME=$ndk_path
+#android_sdk_path="$HOME/android_sdk"
+#ndk_path="$android_sdk_path/ndk"
+#export ANDROID_HOME=$android_sdk_path
+#export ANDROID_SDK_ROOT=$android_sdk_path
+#export ANDROID_NDK_HOME=$ndk_path
 
 cd $zoxel_directory
 
@@ -37,16 +39,5 @@ cd $sdl_directory/build/org.zoxel.zoxel/
 # .$sdl_directory/build/org.zoxel.zoxel/gradlew org.zoxel.zoxel $SRCS
 
 echo Finished Building Zoxel Android
-# sleep 330
 
-#ln -s /usr/src/SDL2_image jni/
-#ln -s /usr/src/SDL2_image/external/libwebp-0.3.0 jni/webp
-#sed -i -e 's/^LOCAL_SHARED_LIBRARIES.*/& SDL2_image/' jni/src/Android.mk
-#.$ANDROID_NDK_HOME/ndk-build -j$(nproc)
-
-# ./gradlew installDebug --sdk_root=$ANDROID_SDK_ROOT
-
-#ant debug install
-
-
-# ./androidbuild.sh org.libsdl.testgles ../test/testgles.c
+end_gradle_build

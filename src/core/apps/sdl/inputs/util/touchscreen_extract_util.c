@@ -3,10 +3,10 @@
 //int finger_id = 0;
 
 void set_id(ecs_world_t *world, ecs_entity_t e, int new_id) {
-    ID *id = zox_get_mut(e, ID);
+    ID *id = zox_get_mut(e, ID)
     if (id->value != new_id) {
         id->value = new_id;
-        zox_modified(e, ID);
+        zox_modified(e, ID)
         //finger_id = new_id;
     }
 }
@@ -25,7 +25,7 @@ void finger_released(ecs_world_t *world, ecs_entity_t zevice_pointer_entity) {
 // todo: fix data structure, doesn't account for second touch
 //      > make spawn and destroy finger entities dynamically
 void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices) {
-    if (SDL_GetNumTouchDevices() == 0) return;
+    if (!SDL_GetNumTouchDevices() ) return;
     // get touchscreen finger one
     ecs_entity_t zevice_pointer_entity = zevices->value[0];
     const ID *id = zox_get(zevice_pointer_entity, ID)
@@ -55,14 +55,14 @@ void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices) {
         } else if (id->value == new_id) {   // second or more touch
             int2 delta_finger = finger_position;
             int2_sub_int2(&delta_finger, zevicePointerPosition->value);
-            ZevicePointerDelta *zevicePointerDelta = zox_get_mut(zevice_pointer_entity, ZevicePointerDelta);
+            ZevicePointerDelta *zevicePointerDelta = zox_get_mut(zevice_pointer_entity, ZevicePointerDelta)
             zevicePointerDelta->value = delta_finger;
             zox_modified(zevice_pointer_entity, ZevicePointerDelta)
         }
         zevicePointerPosition->value = finger_position;
         zox_modified(zevice_pointer_entity, ZevicePointerPosition)
         #ifdef zox_debug_log_extract_touchscreen
-            zoxel_log(" > finger at [%ix%i]\n", finger_position.x, finger_position.y);
+            zox_log(" > finger at [%ix%i]\n", finger_position.x, finger_position.y)
         #endif
         found_finger = 1;
     }

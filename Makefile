@@ -263,10 +263,7 @@ install-android-sdk:
 	bash bash/util/install_required_android.sh
 
 android:
-	bash bash/android/copy_settings.sh
-	bash bash/android/install.sh
-
-# bash bash/android/android_copy_sdl.sh
+	bash bash/android/gradle_build_run.sh
 
 android-run:
 	bash bash/android/gradle_run.sh
@@ -282,7 +279,7 @@ android-install-run:
 	bash bash/android/gradle_run.sh
 
 android-debug:
-	bash bash/android/install.sh && bash bash/android/debug_android.sh
+	bash bash/android/gradle_build_run.sh && bash bash/android/debug_android.sh
 
 android-create-key:
 	bash bash/android/generate_keystore.sh

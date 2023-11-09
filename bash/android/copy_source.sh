@@ -8,7 +8,8 @@
 #   - app/src/main/res
 #   - resources into app/src/main/resources/ & rename to android-resources sub folder
 
-source $PWD/bash/android/gradle_set_paths.sh
+source bash/android/gradle_pathing.sh
+start_gradle_build
 
 echo "=> copying source files to android project"
 new_source_directory0=$android_directory/app/jni/src
@@ -29,7 +30,4 @@ cp -R $old_source_directory1 $new_source_directory1
 echo "  > copying [$old_source_directory2] to [$new_source_directory2]"
 cp -R $old_source_directory2 $new_source_directory2
 
-# echo Finished copying source files
-# sleep 2
-# echo Make sure to set AndroidBuild in include file at $new_source_directory0/src
-# sleep 1
+end_gradle_build
