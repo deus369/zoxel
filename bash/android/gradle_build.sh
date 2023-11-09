@@ -5,7 +5,7 @@ start_gradle_build
 
 # --parallel
 cd build/android-build
-bash gradlew assembleRelease
+bash gradlew assembleRelease --parallel
 
 if [ $? -ne 0 ]; then
     echo "  > gradlew assembleRelease command failed"

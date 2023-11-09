@@ -12,6 +12,7 @@
 // todo: hotkey ui
 
 // zoxel_settings
+#define zox_devices_reset_pipelines EcsOnLoad
 #define zox_device_mode_none 0
 #define zox_device_mode_keyboardmouse 1
 #define zox_device_mode_gamepad 2
@@ -85,6 +86,8 @@ zox_define_tag(Device)
 zox_define_tag(Zevice)
 zox_define_tag(Gamepad)
 zox_define_tag(Touchscreen)
+zox_define_component(Keyboard)
+zox_define_component(Mouse)
 zox_define_component_byte(ZeviceDisabled)
 zox_define_component_byte(ZevicePointer)
 zox_define_component_byte(ZeviceButton)
@@ -98,13 +101,11 @@ zox_define_component_int2(ZevicePointerPosition)
 zox_define_component_int2(ZevicePointerDelta)
 zox_define_component_float2(ZeviceStick)
 zox_define_memory_component(DeviceLinks)
-zox_define_component(Keyboard)
-zox_define_component(Mouse)
 // zoxel_system_defines
-zox_system(ZeviceButtonResetSystem, EcsOnLoad, [out] ZeviceButton)
-zox_system(ZevicePointerResetSystem, EcsOnLoad, [out] ZevicePointer)
-zox_system(ZevicePointerDeltaResetSystem, EcsOnLoad, [out] ZevicePointerDelta)
-zox_system(DeviceModeSystem, EcsPreUpdate, [in] DeviceLinks, [in] DeviceMode, [out] DeviceModeDirty)
+zox_system(ZeviceButtonResetSystem, zox_devices_reset_pipelines, [out] ZeviceButton)
+zox_system(ZevicePointerResetSystem, zox_devices_reset_pipelines, [out] ZevicePointer)
+zox_system(ZevicePointerDeltaResetSystem, zox_devices_reset_pipelines, [out] ZevicePointerDelta)
+zox_system(DeviceModeSystem, zox_devices_reset_pipelines, [in] DeviceLinks, [in] DeviceMode, [out] DeviceModeDirty)    // has to be before other systems
 zox_system(DraggerEndSystem, EcsPreUpdate, [out] DraggableState, [out] DraggerLink, [out] DraggingDelta)
 zox_system(MouseRaycasterSystem, EcsPreUpdate, [in] DeviceLinks, [in] DeviceMode, [out] Raycaster)
 zox_system(DeviceModeDirtySystem, EcsPostUpdate, [out] DeviceMode, [out] DeviceModeDirty)

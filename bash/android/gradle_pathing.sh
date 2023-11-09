@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "  > gradle pathing check"
-pathing_locker_id=-1
+pathing_locker_id=0
 pathing_locker="/tmp/zox_gradle_building.lock"
 
 clear_gradle_build() {
@@ -53,7 +53,7 @@ start_gradle_build() {
 # Function to end the Gradle build
 end_gradle_build() {
     #if [ -f "$pathing_locker" ]; then
-    if [ pathing_locker_id -eq $PPID ]; then
+    if [ $pathing_locker_id -eq $PPID ]; then
         clear_gradle_build
     fi
 }

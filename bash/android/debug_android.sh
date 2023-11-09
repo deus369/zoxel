@@ -1,16 +1,20 @@
 #!/bin/bash
-
+source bash/android/gradle_pathing.sh
+clear_gradle_build
+start_gradle_build
 log_tag="Zoxel"
 package_name="org.libsdl.app"
 
 echo "  > debugging zoxel android [$log_tag]."
 while true; do
-    # adb logcat -s $package_name
-    adb logcat -s $log_tag color
+    $ANDROID_SDK_ROOT/platform-tools/adb logcat -s $package_name
+    # $ANDROID_SDK_ROOT/platform-tools/adb logcat -s $log_tag color
     sleep 1
 done
 
 echo "  > finished debugging zoxel android"
+
+end_gradle_build
 
 # adb logcat -s "$log_tag" color *:V
 # adb logcat *:V # $package_name *:V

@@ -281,6 +281,9 @@ android-install-run:
 android-debug:
 	bash bash/android/gradle_build_run.sh && bash bash/android/debug_android.sh
 
+debug-android:
+	bash bash/android/debug_android.sh
+
 android-create-key:
 	bash bash/android/generate_keystore.sh
 
@@ -292,9 +295,6 @@ android-uninstall:
 
 android-clean:
 	bash bash/android/gradle_clean.sh
-
-debug-android:
-	bash bash/android/debug_android.sh
 
 android-update-settings:
 	bash bash/android/copy_settings.sh

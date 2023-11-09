@@ -12,7 +12,7 @@ ecs_entity_t spawn_prefab_touchscreen(ecs_world_t *world) {
     zox_prefab_set(e, Children, { 0, NULL })
     prefab_touchscreen = e;
     #ifdef zoxel_debug_prefabs
-        zoxel_log(" > spawn_prefab touchscreen [%lu].\n", (long int) (e));
+        zox_log(" > spawn_prefab touchscreen [%lu]\n", e)
     #endif
     return e;
 }
@@ -28,7 +28,7 @@ ecs_entity_t spawn_touchscreen(ecs_world_t *world) {
     zox_modified(e, Children)
     touchscreen_entity = e;
     #ifdef zoxel_debug_spawns
-        zoxel_log(" > spawned touchscreen [%lu].\n", (long int) (e));
+        zox_log(" > spawned touchscreen [%lu]\n", e)
     #endif
     return e;
 }
@@ -39,11 +39,11 @@ unsigned char zevice_pointer_has_input(const ZevicePointer *zevicePointer) {
 
 unsigned char touchscreen_is_any_input(ecs_world_t *world, ecs_entity_t touchscreen) {
     if (!touchscreen || !ecs_is_alive(world, touchscreen)) return 0;
-    const Children *children = ecs_get(world, touchscreen, Children);
+    const Children *children = zox_get(touchscreen, Children)
     for (int i = 0; i < children->length; i++) {
         ecs_entity_t e = children->value[i];
-        if (!ecs_has(world, e, ZevicePointer)) continue;
-        const ZevicePointer *zevicePointer = ecs_get(world, e, ZevicePointer);
+        if (!zox_has(e, ZevicePointer)) continue;
+        const ZevicePointer *zevicePointer = zox_get(e, ZevicePointer)
         if (zevice_pointer_has_input(zevicePointer)) return 1;
     }
     return 0;

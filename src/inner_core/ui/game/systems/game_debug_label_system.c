@@ -2,10 +2,10 @@ extern int get_terrain_chunks_count(ecs_world_t *world);
 extern int get_characters_count(ecs_world_t *world);
 extern int get_count_particle3Ds(ecs_world_t *world);
 extern int get_count_particle3D_emitters(ecs_world_t *world);
-#define zox_debug_ui_memorys_allocated
-#define zox_debug_ui_characters
-#define zox_debug_ui_particle3Ds
-#define zox_debug_ui_terrain_chunks
+// #define zox_debug_ui_memorys_allocated
+// #define zox_debug_ui_characters
+// #define zox_debug_ui_particle3Ds
+// #define zox_debug_ui_terrain_chunks
 // #define zox_debug_ui_statbars
 // #define zox_debug_ui_node_memory
 // #define zox_debug_ui_zexts
@@ -13,7 +13,7 @@ extern int get_count_particle3D_emitters(ecs_world_t *world);
 // todo: sometimes it removes a memorys when spawning/unspawning this label
 
 void GameDebugLabelSystem(ecs_iter_t *it) {
-    if (main_player == 0) return;
+    if (!main_player) return;
     #ifdef zox_debug_ui_device_mode
         const DeviceMode *deviceMode = ecs_get(it->world, main_player, DeviceMode);
     #endif
@@ -60,6 +60,8 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
                 buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " d [gamepad]");
             } else if (deviceMode->value == zox_device_mode_touchscreen) {
                 buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " d [touchscreen]");
+                // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " touch_devices [%i]", touch_devices_count);
+                // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " fingers [%i]", touch_fingers_count);
             }
         #endif
         if (!is_zext(zextData, buffer)) {

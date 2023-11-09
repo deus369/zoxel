@@ -2,6 +2,7 @@
 
 // testing editor
 #define zox_entity_names
+// #define zoxel_start_with_debug_ui
 
 // #define zoxel_disable_music
 // #define zox_extra_destroy_terrain_children
@@ -33,7 +34,6 @@
 #define zox_disable_gamepad_stick_as_any_input // used for samsung phone, it's buggy af
 #define zox_disable_gamepad_deadzones
 // #define zoxel_disable_gamepads
-// #define zoxel_start_with_debug_ui
 
 // #define zoxel_mouse_emulate_touch
 // #define zoxel_test_networking

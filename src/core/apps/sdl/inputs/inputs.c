@@ -2,6 +2,7 @@
 #define zoxel_apps_inputs
 
 // useful
+#define zox_extract_pipeline EcsPostLoad // EcsOnLoad | EcsPostLoad
 #include "util/sdl_key_util.c"
 #include "util/keyboard_extract_util.c"
 #include "util/mouse_extract_util.c"
@@ -16,8 +17,8 @@
 
 zox_begin_module(AppsInputs)
 // systems
-zox_system(TouchscreenExtractSystem, EcsPostLoad, [in] inputs.Touchscreen, [in] Children)
-zox_system(GamepadExtractSystem, EcsPostLoad, [in] inputs.Gamepad, [in] Children)
+zox_system(TouchscreenExtractSystem, zox_extract_pipeline, [in] inputs.Touchscreen, [in] Children)
+zox_system(GamepadExtractSystem, zox_extract_pipeline, [in] inputs.Gamepad, [in] Children)
 zox_system_1(MouseConstrainSystem, main_thread_pipeline, [in] MouseLock)
 zoxel_end_module(AppsInputs)
 
