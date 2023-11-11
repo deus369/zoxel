@@ -31,6 +31,7 @@ void generate_chunk_noise(ChunkData* chunkData, const ChunkSize *chunkSize) {
 }
 
 void NoiseChunkSystem(ecs_iter_t *it) {
+    return;
     if (!ecs_query_changed(it->ctx, NULL)) return;
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
     ChunkData *chunks = ecs_field(it, ChunkData, 3);

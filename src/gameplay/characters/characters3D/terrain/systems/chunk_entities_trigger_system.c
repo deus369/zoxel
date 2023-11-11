@@ -3,7 +3,7 @@ void ChunkEntitiesTriggerSystem(ecs_iter_t *it) {
     GenerateChunkEntities *generateChunkEntities = ecs_field(it, GenerateChunkEntities, 3);
     for (int i = 0; i < it->count; i++) {
         const ChunkDirty *chunkDirty = &chunkDirtys[i];
-        if (chunkDirty->value == 0) continue;
+        if (!chunkDirty->value) continue;
         // on ChunkDirty, generate chunk entities
         GenerateChunkEntities *generateChunkEntities2 = &generateChunkEntities[i];
         if (generateChunkEntities2->value != zox_chunk_entities_state_initial) continue;

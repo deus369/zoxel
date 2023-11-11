@@ -152,6 +152,7 @@ void build_chunk_octree_mesh_colors(const ChunkOctree *chunk_octree, const Color
     on_memory_component_created(meshColorRGBs, MeshColorRGBs)
 }
 
+// builds the character meshes
 void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(it->ctx, NULL)) return;
     #ifdef zoxel_time_octree_chunk_builds_system
@@ -168,7 +169,7 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
     MeshVertices *meshVertices = ecs_field(it, MeshVertices, 8);
     MeshColorRGBs *meshColorRGBs = ecs_field(it, MeshColorRGBs, 9);
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 10);
-    unsigned char *neighbor_lods = malloc(6);
+    unsigned char *neighbor_lods = NULL; // malloc(6);
     for (int i = 0; i < it->count; i++) {
         ChunkDirty *chunkDirty = &chunkDirtys[i];
         if (chunkDirty->value != 1) continue;
@@ -177,7 +178,8 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
         MeshColorRGBs *meshColorRGBs2 = &meshColorRGBs[i];
-        if (renderLod->value == 255) { // hides mesh
+        // remove mesh
+        if (renderLod->value == 255) {
             chunkDirty->value = 0;
             meshDirty->value = 1;
             clear_mesh(meshIndicies2, meshVertices2, meshColorRGBs2);
@@ -200,6 +202,7 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         unsigned char chunk_up_max_distance = chunkNeighbors2->value[3] == 0 ? 0 : ecs_get(it->world, chunkNeighbors2->value[3], RenderLod)->value;
         unsigned char chunk_back_max_distance = chunkNeighbors2->value[4] == 0 ? 0 : ecs_get(it->world, chunkNeighbors2->value[4], RenderLod)->value;
         unsigned char chunk_front_max_distance = chunkNeighbors2->value[5] == 0 ? 0 : ecs_get(it->world, chunkNeighbors2->value[5], RenderLod)->value;
+        if (!neighbor_lods) neighbor_lods = malloc(6);
         neighbor_lods[0] = colors_get_max_depth_from_division(chunk_left_max_distance);
         neighbor_lods[1] = colors_get_max_depth_from_division(chunk_right_max_distance);
         neighbor_lods[2] = colors_get_max_depth_from_division(chunk_down_max_distance);
@@ -220,7 +223,7 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
             did_do_timing()
         #endif
     }
-    free(neighbor_lods);
+    if (neighbor_lods) free(neighbor_lods);
     #ifdef zoxel_time_octree_chunk_builds_system
         end_timing_cutoff("    - octree_chunk_build_system", zoxel_time_octree_chunk_builds_system_cutoff)
     #endif

@@ -16,9 +16,7 @@ int peek(FILE* file) {
 
 void dispose_vox_file(vox_file *vox) {
     // first free children voxels
-    for (int i = 0; i < vox->pack.model_nums; i++) {
-        free(vox->chunks[i].xyzi.voxels);
-    }
+    for (int i = 0; i < vox->pack.model_nums; i++) free(vox->chunks[i].xyzi.voxels);
     free(vox->chunks);    // children chunks
     free(vox->palette.values);  // pallete colorRGBs
     free(vox->palette.values_rgb);  // pallete colorRGBs
@@ -30,16 +28,14 @@ The chunk id and chunk size are read first, followed by the chunk data itself.
 The chunk data is stored in a dynamically allocated buffer and is then processed as needed.
 */
 int read_vox(const char* filename, vox_file *vox) {
-    if (filename == NULL) {
-        return EXIT_FAILURE;
-    }
+    if (!filename) return EXIT_FAILURE;
     #ifdef zoxel_log_files
         zoxel_log(" + loading file [%s]\n", filename);
     #endif
     // Open the vox file for reading
     FILE *file = fopen(filename, "r");
     // Check if the file was opened successfully
-    if (file == NULL) {
+    if (!file) {
         // Print an error message and exit if the file could not be opened
         zoxel_log("Error: Could not open vox file [%s]\n", filename);
         return EXIT_FAILURE;

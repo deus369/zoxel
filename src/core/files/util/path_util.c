@@ -3,7 +3,6 @@
 //      > /build/android-build/app/src/main/assets/resources
 const char *data_path = NULL;
 char *resources_path = NULL;
-// const char *icon_filepath = resources_folder_name"textures/game_icon.png";
 
 #ifndef zoxel_on_android
     #ifdef zoxel_on_windows
@@ -21,6 +20,7 @@ char *resources_path = NULL;
     #include <android/asset_manager_jni.h>
     #include <sys/stat.h>
     #include <sys/types.h>
+
     void delete_directory_recursive(const char* path) {
         DIR* dir = opendir(path);
         if (dir != NULL) {
@@ -162,6 +162,9 @@ char* get_full_file_path(const char* filepath) {
 }
 
 unsigned char initialize_pathing() {
+#ifdef zox_disable_io
+        return EXIT_SUCCESS;
+#endif
     #ifdef zoxel_using_sdl
         #ifdef zoxel_on_android
             const char* base_path = SDL_AndroidGetInternalStoragePath();
@@ -209,11 +212,3 @@ unsigned char initialize_pathing() {
     }
     return EXIT_SUCCESS;
 }
-
-// char *base_path = SDL_GetPrefPath("libsdl", "app");
-// char *base_path = SDL_GetPrefPath("libsdl", "assets");
-/*char *android_path = SDL_GetBasePath(); // SDL_AndroidGetInternalStoragePath();
-char *base_path = malloc(strlen(android_path) + 1 + 0); // 1
-strcpy(base_path, android_path);
-strcat(base_path, "");  // /*/
-// #define resources_folder_name "android-resources/"

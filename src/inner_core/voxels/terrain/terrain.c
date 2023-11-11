@@ -2,6 +2,7 @@
 #define zoxel_voxels_terrain
 
 // long int render_terrain_chunks_system_id;
+#define zox_pipeline_chunk_generation EcsPostLoad // EcsOnLoad EcsOnUpdate
 #include "settings/settings.c"
 // zoxel_component_declares
 zox_declare_tag(TerrainWorld)
@@ -48,10 +49,10 @@ zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [out] GenerateChunk)
 zox_filter(chunks_generating, [in] GenerateChunk)
 zox_filter(terrain_chunks_query, [none] TerrainChunk, [in] ChunkPosition, [in] ChunkNeighbors, [out] RenderLod, [out] ChunkDirty)
 // zoxel_system_defines
-zox_system_ctx(TerrainChunkSystem, EcsOnUpdate, generateTerrainChunkQuery, [none] TerrainChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] ChunkPosition, [out] GenerateChunk)
-zox_system_ctx(OctreeTerrainChunkSystem, EcsOnUpdate, generateTerrainChunkQuery, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree)
+zox_system_ctx(TerrainChunkSystem, zox_pipeline_chunk_generation, generateTerrainChunkQuery, [none] TerrainChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] ChunkPosition, [out] GenerateChunk)
+zox_system_ctx(OctreeTerrainChunkSystem, zox_pipeline_chunk_generation, generateTerrainChunkQuery, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree)
 zox_system_ctx(StreamPointSystem, EcsPostUpdate, terrain_chunks_query, [none] Streamer, [in] Position3D, [out] StreamPoint)
-if (!headless) zox_system_ctx(ChunkOctreeBuildSystem, EcsOnLoad, chunks_generating, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] VoxLink, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty)
+if (!headless) zox_system_ctx(ChunkOctreeBuildSystem, zox_pipeline_build_voxel_mesh, chunks_generating, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] VoxLink, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty, [none] voxels.core.ChunkTextured)
 if (!headless) zox_render3D_system(TerrainChunksRenderSystem, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] VoxLink)
 zoxel_end_module(Terrain)
 

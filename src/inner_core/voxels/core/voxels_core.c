@@ -1,10 +1,12 @@
 #ifndef zoxel_voxels_core
 #define zoxel_voxels_core
 
+#define zox_pipeline_build_voxel_mesh EcsOnLoad // EcsPostUpdate
 #include "settings/settings.c"
 // zoxel_component_declares
 zox_declare_tag(Voxel)
 zox_declare_tag(ColorChunk)
+zox_declare_tag(ChunkTextured)
 zox_declare_tag(LinkChunk)
 zox_component(ChunkSize, int3)
 zox_component_byte(GenerateChunk)
@@ -43,6 +45,7 @@ set_max_octree_length(max_octree_depth);
 // zoxel_component_defines
 zox_define_tag(Voxel)
 zox_define_tag(ColorChunk)
+zox_define_tag(ChunkTextured)
 zox_define_tag(LinkChunk)
 zox_define_component(ChunkDirty)
 zox_define_component(ChunkSize)
@@ -54,7 +57,7 @@ zox_define_entities_component(VoxelLinks)
 // zoxel_filter_defines
 zox_filter(chunks_generating, [in] GenerateChunk)
 // zoxel_system_defines
-if (!headless) zox_system_ctx(ChunkOctreeColorsBuildSystem, EcsPostUpdate, chunks_generating, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] ColorRGBs, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] ColorChunk, [none] !MeshUVs)
+if (!headless) zox_system_ctx(ChunkOctreeColorsBuildSystem, zox_pipeline_build_voxel_mesh, chunks_generating, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] ColorRGBs, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] ColorChunk)
 zox_system(ChunkLinkSystem, EcsPostUpdate, [none] LinkChunk, [in] VoxLink, [in] Position3D, [out] ChunkPosition, [out] ChunkLink)
 zoxel_end_module(VoxelsCore)
 

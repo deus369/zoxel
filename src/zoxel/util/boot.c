@@ -12,18 +12,20 @@ const char *icon_filepath;
 
 unsigned char boot_zoxel_game(ecs_world_t *world) {
     // zoxel_log(" > [zoxel] begins to boot\n");
-    // todo: initialize_engine
+    // todo: initialize_engine, grab all the things below and ad to a new function
     if (initialize_pathing() == EXIT_FAILURE) return EXIT_FAILURE;
     // zoxel_log(" > [zoxel] success initializing pathing\n");
     if (initialize_apps(world) == EXIT_FAILURE) return EXIT_FAILURE;
     // zoxel_log(" > [zoxel] success initializing app\n");
     if (initialize_rendering(world) == EXIT_FAILURE) return EXIT_FAILURE;
     // zoxel_log(" > [zoxel] success initializing rendering\n");
+    // this loads both in engine resources (shaders) and external (voxes, sounds)
+    // todo: seperate this
     load_resources_engine(world);
+#ifndef zox_disable_io
     icon_filepath = resources_folder_name"textures/game_icon.png";
-    // zoxel_log(" > icon_filepath set to [%s]\n", icon_filepath);
     load_app_icon(main_window, icon_filepath);
-    // zoxel_log(" > [zoxel] success initializing sdl window\n");
+#endif
     ecs_entity_t realm = 0;
     #ifdef zoxel_include_players
         realm = spawn_realm(world);

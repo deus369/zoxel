@@ -9,18 +9,23 @@ int vox_files_count = 0;
 vox_file *vox_files;
 
 void dispose_vox_files() {
-    for (int i = 0; i < vox_files_count; i++) {
-        dispose_vox_file(&vox_files[i]);
-    }
+#ifdef zox_disable_io
+    return;
+#endif
+    for (int i = 0; i < vox_files_count; i++) dispose_vox_file(&vox_files[i]);
     free(vox_files);
 }
 
 void load_vox_file(int index, char* filename) {
+#ifdef zox_disable_io
+    return;
+#endif
     vox_file loaded_vox;
+    loaded_vox.chunks = NULL;
     char* vox_path = concat_file_path(resources_path, filename);
-    if (read_vox(vox_path, &loaded_vox) == EXIT_SUCCESS) {
+    if (read_vox(vox_path, &loaded_vox) == EXIT_SUCCESS) vox_files[index] = loaded_vox;
+    else {
         vox_files[index] = loaded_vox;
-    } else {
         zoxel_log(" !!! failed loading file %s\n", filename);
     }
     free(vox_path);

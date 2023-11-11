@@ -8,16 +8,14 @@ void fill_new_octree(ChunkOctree* node, const unsigned char voxel, unsigned char
         depth--;
         open_new_ChunkOctree(node);
         for (unsigned char i = 0; i < octree_length; i++) fill_new_octree(&node->nodes[i], voxel, depth);
-    } else {
-        node->nodes = NULL;
-    }
+    } else node->nodes = NULL;
 }
 
 // max_octree_depth
 void initialize_new_chunk_octree(ecs_world_t *world, ecs_entity_t e, unsigned char depth) {
-    ChunkOctree *chunkOctree = ecs_get_mut(world, e, ChunkOctree);
+    ChunkOctree *chunkOctree = zox_get_mut(e, ChunkOctree)
     fill_new_octree(chunkOctree, 0, depth);
-    ecs_modified(world, e, ChunkOctree);
+    zox_modified(e, ChunkOctree)
 }
 
 void add_chunk_octree(ecs_world_t *world, ecs_entity_t e, int3 size) {
@@ -29,10 +27,10 @@ void add_chunk_octree(ecs_world_t *world, ecs_entity_t e, int3 size) {
     zox_prefab_set(e, RenderLod, { 0 })
     zox_prefab_set(e, VoxLink, { 0 })
     zox_prefab_set(e, ChunkNeighbors, { 0, NULL })
-    ChunkNeighbors *chunkNeighbors = ecs_get_mut(world, e, ChunkNeighbors);
+    ChunkNeighbors *chunkNeighbors = zox_get_mut(e, ChunkNeighbors)
     resize_memory_component(ChunkNeighbors, chunkNeighbors, ecs_entity_t, 6)
     for (unsigned char i = 0; i < 6; i++) chunkNeighbors->value[i] = 0;
-    ecs_modified(world, e, ChunkNeighbors);
+    zox_modified(e, ChunkNeighbors)
 }
 
 void set_octree_voxel(ChunkOctree *node, byte3 *position, const byte2 *set_octree_data, unsigned char depth) {
@@ -45,7 +43,7 @@ void set_octree_voxel(ChunkOctree *node, byte3 *position, const byte2 *set_octre
 }
 
 void set_octree_voxel_final(ChunkOctree *node, byte3 *position, const byte2 *set_octree_data, unsigned char depth) {
-    if (depth == set_octree_data->y || node->nodes == NULL) {
+    if (depth == set_octree_data->y || !node->nodes) {
         node->value = set_octree_data->x;
         return;
     }
@@ -56,7 +54,7 @@ void set_octree_voxel_final(ChunkOctree *node, byte3 *position, const byte2 *set
 }
 
 unsigned char get_octree_voxel(const ChunkOctree *node, byte3 *position, unsigned char depth) {
-    if (node->nodes == NULL || depth == 0) return node->value;
+    if (!node->nodes || !depth) return node->value;
     unsigned char dividor = powers_of_two_byte[depth - 1]; // target - depth - 1];   // starts at default_chunk_length, ends at 1
     byte3 node_position = (byte3) { position->x / dividor, position->y / dividor, position->z / dividor };
     byte3_modulus_byte(position, dividor);
@@ -65,7 +63,7 @@ unsigned char get_octree_voxel(const ChunkOctree *node, byte3 *position, unsigne
 
 //! Closes all solid nodes, as well as air nodes, after terrain system generates it.
 void close_solid_nodes(ChunkOctree *node) {
-    if (node->nodes == NULL) return;
+    if (!node->nodes) return;
     // for all children nodes - only check higher nodes if closed children
     for (unsigned char i = 0; i < octree_length; i++) close_solid_nodes(&node->nodes[i]);
     unsigned char all_solid = 1;
@@ -75,9 +73,8 @@ void close_solid_nodes(ChunkOctree *node) {
             break;
         }
     }
-    if (all_solid) {
-        close_ChunkOctree(node);
-    } else {
+    if (all_solid) close_ChunkOctree(node);
+    else {
         unsigned char all_air = 1;
         for (unsigned char i = 0; i < octree_length; i++) {
             if (node->nodes[i].nodes != NULL || node->nodes[i].value) {
@@ -110,8 +107,6 @@ void close_same_nodes(ChunkOctree *node) {
 void optimize_solid_nodes(ChunkOctree *node) {
     if (node->nodes != NULL) {
         for (unsigned char i = 0; i < octree_length; i++) optimize_solid_nodes(&node->nodes[i]);
-        // zoxel_log(" > depth [%i]\n", depth);
-        // unsigned char all_solid = 0;
         unsigned char voxel_types = 0;
         byte2 *voxel_counts = malloc(sizeof(byte2) * octree_length);
         for (unsigned char i = 0; i < octree_length; i++) {
@@ -172,8 +167,7 @@ unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *
                 continue;
             }
             // check underneath nodes
-            if (is_adjacent_all_solid(direction, root_node, &adjacent_node->nodes[i], neighbors, int3_add(octree_position, octree_positions[i]),
-                i, local_position, depth, max_depth, neighbor_lods, edge_voxel) == 0) return 0;
+            if (is_adjacent_all_solid(direction, root_node, &adjacent_node->nodes[i], neighbors, int3_add(octree_position, octree_positions[i]), i, local_position, depth, max_depth, neighbor_lods, edge_voxel) == 0) return 0;
         }
     }
     return 1;

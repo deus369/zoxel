@@ -91,47 +91,49 @@ void end_game(ecs_world_t *world) {
 }
 
 void play_game(ecs_world_t *world) {
+    zox_delete(main_menu)   // close main menu
     zox_set(local_game, GameState, { zoxel_game_state_playing })
     set_sky_color(world, game_sky_color, game_sky_bottom_color);
-    zox_delete(main_menu)   // close main menu
     spawn_in_game_ui(world);
     disable_inputs_until_release(world, main_player);
-    // \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cam
     int3 center_position = int3_zero;
     ecs_entity_t main_camera = main_cameras[0]; // get player camera link insteaderas
     if (main_camera == 0) return;
-    const Position3D *camera_position3D = ecs_get(world, main_camera, Position3D);
+    const Position3D *camera_position3D = zox_get(main_camera, Position3D)
     if (camera_position3D) center_position = get_chunk_position(camera_position3D->value, default_chunk_size);
-    #ifdef zox_on_play_spawn_terrain
-        create_terrain(world, center_position);
-    #endif
-    if (local_terrain) {
-        zox_set(main_camera, VoxLink, { local_terrain })
-        zox_set(local_terrain, RealmLink, { local_realm })
-    }
+    zox_set(main_camera, StreamPoint, { center_position })
     // temp here for now
     if (!zox_has(main_camera, Streamer)) {
         zox_add_only(main_camera, Streamer)
         zox_add_only(main_camera, StreamPoint)
     }
-    zox_set(main_camera, StreamPoint, { center_position })
+    // somewhere below android on samsung crashes...!
+    // try disabling touch inpput to see if helps
+    #ifdef zox_on_play_spawn_terrain
+        create_terrain(world, center_position);
+    #endif
     #ifdef zox_disable_player_character3D
         attach_to_character(world, main_player, main_camera, 0);
     #else
         if (game_rule_attach_to_character) {
-            float3 spawn_position = ecs_get(world, main_camera, Position3D)->value;
+            float3 spawn_position = zox_get_value(main_camera, Position3D)
             spawn_position.x = 8;
             spawn_position.z = 8;
             float4 spawn_rotation = quaternion_identity; // ecs_get(world, main_camera, Rotation3D)->value;
             const vox_file vox = vox_files[3];
             local_character3D = spawn_chunk_character2(world, &vox, spawn_position, spawn_rotation, 0);
             zox_add_tag(local_character3D, Aura)
-            // zoxel_log(" > spawned local_character3D [%lu] - spawn_position [%fx%fx%f]\n", local_character3D, spawn_position.x, spawn_position.y, spawn_position.z);
             attach_to_character(world, main_player, main_camera, local_character3D);
         } else attach_to_character(world, main_player, main_camera, 0);
     #endif
+    return;
+    if (local_terrain) {
+        zox_set(main_camera, VoxLink, { local_terrain })
+        zox_set(local_terrain, RealmLink, { local_realm })
+    }
 }
 
+// \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cam
 // todo: new hotswap camera function, takes in two camera entities
 /*ecs_entity_t respawn_camera(ecs_world_t *world, ecs_entity_t old_camera_entity) {
     float3 camera_position = ecs_get(world, old_camera_entity, Position3D)->value;

@@ -13,5 +13,4 @@ void TextureSaveSystem(ecs_iter_t *it) {
         save_texture_as_png(textureData, textureSize, outputTextureName);
         zoxel_log(" > saved texture: %lu as [%s]\n", (long int) it->entities[i], outputTextureName);
     }
-}
-zox_declare_system(TextureSaveSystem)
+} zox_declare_system(TextureSaveSystem)

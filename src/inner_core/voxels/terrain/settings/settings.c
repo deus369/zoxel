@@ -52,11 +52,11 @@ void set_terrain_render_distance() {
         // set_max_octree_length(5);
     } else if (cpu_tier == 2) {
         terrain_spawn_distance = 8;
-        terrain_vertical = 2;
+        terrain_vertical = 1;
         fog_density *= 0.6f;
     } else if (cpu_tier == 1) {
         terrain_spawn_distance = 6;
-        terrain_vertical = 2;
+        terrain_vertical = 1;
         fog_density *= 0.8f;
     } else {
         terrain_spawn_distance = 4;

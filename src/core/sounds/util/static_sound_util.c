@@ -12,6 +12,9 @@ const char *sound_file_names[] = {
 Mix_Chunk *sounds[static_sounds_length];
 
 unsigned char load_static_sounds() {
+#ifdef zox_disable_io
+    return 1;
+#endif
     unsigned char success = 1;
     for (int i = 0; i < static_sounds_length; i++) {
         sounds[i] = Mix_LoadWAV(sound_file_names[i]);
@@ -24,9 +27,10 @@ unsigned char load_static_sounds() {
 }
 
 void dispose_static_sounds() {
-    for (int i = 0; i < static_sounds_length; i++) {
-        Mix_FreeChunk(sounds[i]);
-    }
+#ifdef zox_disable_io
+    return;
+#endif
+    for (int i = 0; i < static_sounds_length; i++) Mix_FreeChunk(sounds[i]);
 }
 
 #endif

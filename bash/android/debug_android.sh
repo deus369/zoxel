@@ -4,11 +4,16 @@ clear_gradle_build
 start_gradle_build
 log_tag="Zoxel"
 package_name="org.libsdl.app"
+activity_name="SDLActivity"
 
 echo "  > debugging zoxel android [$log_tag]."
+$ANDROID_SDK_ROOT/platform-tools/adb shell am start -n "$package_name/.$activity_name"
 while true; do
-    $ANDROID_SDK_ROOT/platform-tools/adb logcat -s $package_name
+    # $ANDROID_SDK_ROOT/platform-tools/adb logcat -s $package_name
     # $ANDROID_SDK_ROOT/platform-tools/adb logcat -s $log_tag color
+    # $ANDROID_SDK_ROOT/platform-tools/adb logcat
+    #@ $ANDROID_SDK_ROOT/platform-tools/adb logcat | grep $package_name
+    $ANDROID_SDK_ROOT/platform-tools/adb logcat | grep "error"
     sleep 1
 done
 

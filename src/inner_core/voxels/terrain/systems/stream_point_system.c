@@ -4,9 +4,6 @@
     get_chunk_division(new_position, int3##_##dir(chunkPosition->value)))
 
 void StreamPointSystem(ecs_iter_t *it) {
-    #ifdef zox_disable_terrain_streaming
-        return;
-    #endif
     ecs_world_t *world = it->world;
     ecs_query_t *chunks_query = it->ctx;
     ecs_iter_t chunks_iterator = ecs_query_iter(world, chunks_query);

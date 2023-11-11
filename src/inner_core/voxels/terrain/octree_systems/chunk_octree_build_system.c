@@ -174,6 +174,7 @@ void build_chunk_octree_mesh_uvs(const ChunkOctree *chunk_octree, const TilemapU
     neighbors[index] = neighbor_chunk;\
 }
 
+// builds the terrain meshes
 void ChunkOctreeBuildSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(it->ctx, NULL)) return;
     #ifdef zoxel_time_octree_chunk_builds_system
@@ -183,7 +184,7 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
     #ifdef zox_octree_chunk_build_limits
         int chunks_built = 0;
     #endif
-    unsigned char *neighbor_lods = malloc(6);
+    unsigned char *neighbor_lods = NULL;
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
     const ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 2);
     const RenderLod *renderLods = ecs_field(it, RenderLod, 3);
@@ -219,6 +220,7 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         const ChunkOctree *chunkOctree = &chunkOctrees[i];
         const ChunkNeighbors *chunkNeighbors2 = &chunkNeighbors[i];
         const ChunkOctree *neighbors[6];
+        if (!neighbor_lods) neighbor_lods = malloc(6);
         set_neightbor_chunk_data(left)
         set_neightbor_chunk_data(right)
         set_neightbor_chunk_data(down)
@@ -236,7 +238,7 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
             did_do_timing()
         #endif
     }
-    free(neighbor_lods);
+    if (neighbor_lods) free(neighbor_lods);
     #ifdef zoxel_time_octree_chunk_builds_system
         end_timing_cutoff("    - octree_chunk_build_system", zoxel_time_octree_chunk_builds_system_cutoff)
     #endif

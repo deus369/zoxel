@@ -17,14 +17,15 @@ void spawn_zoxel_main_menu(ecs_world_t *world) {
         #ifdef zoxel_debug_quads
             quads_label = spawn_quad_count_label(world, main_canvas);
         #endif
-        Children *children = ecs_get_mut(world, main_canvas, Children);
+        Children *children = zox_get_mut(main_canvas, Children);
         resize_memory_component(Children, children, ecs_entity_t, 3)
         children->value[0] = zoxel_main_menu;
         children->value[1] = fps_display;
         children->value[2] = quads_label;
-        ecs_modified(world, main_canvas, Children);
+        zox_modified(main_canvas, Children)
+        // disable until line2Ds reposition/scale based on canvas
         #ifdef zoxel_lines2D
-            spawn_canvas_edge_lines(world, main_canvas);
+        //     spawn_canvas_edge_lines(world, main_canvas);
         #endif
     #endif
 }
