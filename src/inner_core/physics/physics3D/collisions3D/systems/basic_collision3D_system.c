@@ -5,7 +5,7 @@
 // zoxel_log(" distance_to_voxel_side [%f] - new pos [%f] - last [%f -> %f]\n", distance_to_voxel_side, position3D->value.d, collision_point_real.d, collision_point_last.d);
 // the 0.5f scale should be based on terrain voxel scale
 const float collision_precision = 1.0f; // 0.99f; // 0.999f;    // 9
-const float lowest_velocity_threshold = 0.3f; // 0.001
+const float lowest_velocity_threshold = 0; // 0.003f; // 0.3 // 0.001
 // const float terrain_voxel_scale = 0.5f;
 const float terrain_voxel_scale_inverse = 1 / 0.5f;
 
@@ -14,7 +14,7 @@ const float terrain_voxel_scale_inverse = 1 / 0.5f;
     moved_position.d = collision_point_real.d;\
     int3 chunk_position = get_chunk_position(moved_position, default_chunk_size);\
     ecs_entity_t chunk_axis = int3_hash_map_get(chunkLinks->value, chunk_position);\
-    const ChunkOctree *chunkOctree = ecs_get(world, chunk_axis, ChunkOctree);\
+    const ChunkOctree *chunkOctree = zox_get(chunk_axis, ChunkOctree)\
     if (chunkOctree == NULL) return;\
     int3 global_voxel_position_axis = get_voxel_position(moved_position);\
     byte3 local_voxel_position_axis = get_local_position_byte3(global_voxel_position_axis, chunkPosition->value, default_chunk_size_byte3);\
@@ -40,7 +40,7 @@ const float terrain_voxel_scale_inverse = 1 / 0.5f;
                 /*position3D->value.d = voxel_side_position + bounds3D->value.y;*/\
                 /* alter velocity with bounce coefficient */\
                 velocity3D->value.d *= -bounce_lost_force;\
-                if (float_abs(velocity3D->value.d) < lowest_velocity_threshold) velocity3D->value.d = 0.0f;\
+                if (lowest_velocity_threshold != 0 && float_abs(velocity3D->value.d) < lowest_velocity_threshold) velocity3D->value.d = 0;\
                 did_collide = 1;\
             }\
         }\
@@ -48,18 +48,15 @@ const float terrain_voxel_scale_inverse = 1 / 0.5f;
 }
 
 void BasicCollision3DSystem(ecs_iter_t *it) {
-    #ifdef zoxel_disable_velocity
-        return;
-    #endif
     ecs_world_t *world = it->world;
     const VoxLink *voxLinks = ecs_field(it, VoxLink, 1);
+    const Bounds3D *bounds3Ds = ecs_field(it, Bounds3D, 8);
     ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 2);
     Position3D *position3Ds = ecs_field(it, Position3D, 3);
     Velocity3D *velocity3Ds = ecs_field(it, Velocity3D, 4);
     VoxelPosition *voxelPositions = ecs_field(it, VoxelPosition, 5);
     ChunkLink *chunkLinks = ecs_field(it, ChunkLink, 6);
     LastPosition3D *lastPosition3Ds = ecs_field(it, LastPosition3D, 7);
-    const Bounds3D *bounds3Ds = ecs_field(it, Bounds3D, 8);
     Grounded *groundeds = ecs_field(it, Grounded, 9);
     for (int i = 0; i < it->count; i++) {
         ecs_entity_t e = it->entities[i];
@@ -81,20 +78,20 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
         if (!byte3_equals(new_position, old_voxel_position)) {
             // actually here I should check if makes it through to new voxel_position
             voxelPosition->value = byte3_to_int3(new_position);
-            #ifdef zoxel_debug_basic_collision3D_system
-                if (voxelPosition->value.x >= default_chunk_length || voxelPosition->value.y >= default_chunk_length || voxelPosition->value.z >= default_chunk_length) {
-                    zoxel_log(" !!! voxel position set out of bounds !!!\n");
-                    zoxel_log(" !> chunk_position [%ix%ix%i]\n", chunk_position.x, chunk_position.y, chunk_position.z);
-                    zoxel_log("     !+ global voxel position [%ix%ix%i]\n", global_voxel_position.x, global_voxel_position.y, global_voxel_position.z);
-                    zoxel_log("     !+ local voxel position [%ix%ix%i]\n", new_position.x, new_position.y, new_position.z);
-                    zoxel_log("     !+ real position [%fx%fx%f]\n", collision_point_real.x, collision_point_real.y, collision_point_real.z);
-                } else {
-                    zoxel_log(" > chunk_position [%ix%ix%i]\n", chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z);
-                    zoxel_log("     + voxel position updated [%ix%ix%i]\n", new_position.x, new_position.y, new_position.z);
-                    zoxel_log("     + global voxel position [%ix%ix%i]\n", global_voxel_position.x, global_voxel_position.y, global_voxel_position.z);
-                    zoxel_log("     + real position was [%fx%fx%f]\n", collision_point_real.x, collision_point_real.y, collision_point_real.z);
-                }
-            #endif
+#ifdef zoxel_debug_basic_collision3D_system
+            if (voxelPosition->value.x >= default_chunk_length || voxelPosition->value.y >= default_chunk_length || voxelPosition->value.z >= default_chunk_length) {
+                zoxel_log(" !!! voxel position set out of bounds !!!\n");
+                zoxel_log(" !> chunk_position [%ix%ix%i]\n", chunk_position.x, chunk_position.y, chunk_position.z);
+                zoxel_log("     !+ global voxel position [%ix%ix%i]\n", global_voxel_position.x, global_voxel_position.y, global_voxel_position.z);
+                zoxel_log("     !+ local voxel position [%ix%ix%i]\n", new_position.x, new_position.y, new_position.z);
+                zoxel_log("     !+ real position [%fx%fx%f]\n", collision_point_real.x, collision_point_real.y, collision_point_real.z);
+            } else {
+                zoxel_log(" > chunk_position [%ix%ix%i]\n", chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z);
+                zoxel_log("     + voxel position updated [%ix%ix%i]\n", new_position.x, new_position.y, new_position.z);
+                zoxel_log("     + global voxel position [%ix%ix%i]\n", global_voxel_position.x, global_voxel_position.y, global_voxel_position.z);
+                zoxel_log("     + real position was [%fx%fx%f]\n", collision_point_real.x, collision_point_real.y, collision_point_real.z);
+            }
+#endif
             const VoxLink *voxLink = &voxLinks[i];
             if (!voxLink->value) continue;
             const ChunkLinks *chunkLinks = ecs_get(world, voxLink->value, ChunkLinks);
@@ -122,20 +119,20 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
                         if (!ecs_has(world, e, Jump) || !ecs_get(world, e, Jump)->value) {
                             grounded->value = 1;
                             // is_grounded = 1;
-                            #ifdef zox_log_jumping
-                                zoxel_log(" > grounded [%lu] again (%f)\n", e, zox_current_time);
-                            #endif
+#ifdef zox_log_jumping
+                            zoxel_log(" > grounded [%lu] again (%f)\n", e, zox_current_time);
+#endif
                         }
                     }
                 }
-                #ifdef zoxel_debug_basic_collision3D_system
-                    if (voxelPosition->value.x >= default_chunk_length || voxelPosition->value.y >= default_chunk_length || voxelPosition->value.z >= default_chunk_length) {
-                        zoxel_log(" !!! voxel position set out of bounds\n");
-                        zoxel_log(" ! > chunk_position [%ix%ix%i]\n", chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z);
-                        zoxel_log("     ! + voxel position updated [%ix%ix%i]\n", new_position.x, new_position.y, new_position.z);
-                        zoxel_log("     ! + real position was [%fx%fx%f]\n", collision_point_real.x, collision_point_real.y, collision_point_real.z);
-                    }
-                #endif
+#ifdef zoxel_debug_basic_collision3D_system
+                if (voxelPosition->value.x >= default_chunk_length || voxelPosition->value.y >= default_chunk_length || voxelPosition->value.z >= default_chunk_length) {
+                    zoxel_log(" !!! voxel position set out of bounds\n");
+                    zoxel_log(" ! > chunk_position [%ix%ix%i]\n", chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z);
+                    zoxel_log("     ! + voxel position updated [%ix%ix%i]\n", new_position.x, new_position.y, new_position.z);
+                    zoxel_log("     ! + real position was [%fx%fx%f]\n", collision_point_real.x, collision_point_real.y, collision_point_real.z);
+                }
+#endif
             }
             // if (!is_grounded) grounded->value = 0;
         }
