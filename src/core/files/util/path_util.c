@@ -64,70 +64,70 @@ char *resources_path = NULL;
         return asset_manager;
     }
 
-    void copy_resources_directory(AAssetManager* asset_manager, const char* destination_path, const char* source_path) {
-        zoxel_log(" > copy resources from [%s] to [%s]\n", source_path, destination_path);
-        create_directory(destination_path);
+    void copy_resources_directory(AAssetManager* asset_manager, const char* source_path, const char* destination_path) {
         AAssetDir* asset_directory = AAssetManager_openDir(asset_manager, source_path);
-        if (asset_directory == NULL) {
-            zoxel_log("     - asset directory is null [%s]\n", source_path);
+        if (!asset_directory) {
+            zox_log("   ! android source directory does not exist [%s]\n", source_path)
             return;
         }
-        zoxel_log("     + asset directory exists [%s]\n", source_path);
-        // zoxel_log("     + directory has sub directories count [%i]\n", num_of_directories);
+        zox_log(" + copying resources from [%s] to [%s]\n", source_path, destination_path)
+        // zox_log("     + asset source directory exists [%s]\n", source_path)
+        int files_count = 0;
         const char* filename = NULL;
-        // Iterate over all the files in the directory and copy them to the destination path
+        create_directory(destination_path); // create the directory we are copying to
         while ((filename = AAssetDir_getNextFileName(asset_directory)) != NULL) {
             char full_source_path[512]; // asset folder
             char full_destination_path[512];    // internal storage
             sprintf(full_source_path, "%s/%s", source_path, filename);
             sprintf(full_destination_path, "%s/%s", destination_path, filename);
-            // If the file is a directory, recursively copy its contents
-            // zoxel_log("     > is directory? [%s]\n", full_source_path);
-            zoxel_log("     > copy file [%s] to [%s]\n", full_source_path, full_destination_path);
-            // Open the source file in the APK's assets folder
             AAsset* asset = AAssetManager_open(asset_manager, full_source_path, AASSET_MODE_BUFFER);
-            if (asset != NULL) {
+            if (asset) {
                 const void* data = AAsset_getBuffer(asset);
-                if (data != NULL) {
+                if (data) {
                     size_t size = AAsset_getLength(asset);
-                    zoxel_log("         - asset opened [%s] of size [%i]\n", full_source_path, (int) size);
+                    zox_log("         + copying [%s] to [%s] size [%i]\n", full_source_path, full_destination_path, (int) size)
+                    // zox_log("         + asset opened size [%i]\n", (int) size)
                     // Open the destination file on the device's internal storage
                     FILE* destination_file = fopen(full_destination_path, "wb");
-                    if (destination_file != NULL) {
-                        // zoxel_log("         - file opened [%s]\n", full_destination_path);
+                    if (destination_file) {
                         fwrite(data, size, 1, destination_file);
                         fclose(destination_file);
-                        // zoxel_log("         - file contents copied [%s]\n", full_destination_path);
-                    } else {
-                        zoxel_log("         - file opened is null [%s]\n", full_destination_path);
-                    }
-                } else {
-                    zoxel_log("         - asset data is null [%s]\n", full_source_path);
-                }
+                    } else zox_log("            ! file opened is null [%s]\n", full_destination_path)
+                } else zox_log("     - asset data is null [%s]\n", full_source_path)
                 AAsset_close(asset);
-            } else {
-                zoxel_log("         - asset failed to open [%s]\n", full_source_path);
-            }
+            } else  zox_log("         ! asset failed to open [%s]\n", full_source_path)
+            files_count++;
         }
         AAssetDir_close(asset_directory);
+        zox_log("         + total files was [%i]\n", files_count)
     }
 
+    // zoxel_log("     + directory has sub directories count [%i]\n", num_of_directories);
+    // Iterate over all the files in the directory and copy them to the destination path
+    // If the file is a directory, recursively copy its contents
+    // zoxel_log("     > is directory? [%s]\n", full_source_path);
+    // Open the source file in the APK's assets folder
+    // zoxel_log("         - file opened [%s]\n", full_destination_path);
+    // zoxel_log("         - file contents copied [%s]\n", full_destination_path);
+
     void decompress_android_resources() {
+        zox_logg("   > zoxel: decompressing android resources from jar\n")
+        AAssetManager *assetManager = get_asset_manager();
         delete_directory_recursive(resources_path);
         create_directory(resources_path);
         char *path2 = malloc(strlen(resources_path) + strlen(voxes_folder_path) + 1);
         strcpy(path2, resources_path);
         strcat(path2, voxes_folder_path);
+        copy_resources_directory(assetManager, "resources/"voxes_folder_path, path2);
+        free(path2);
         char *path3 = malloc(strlen(resources_path) + strlen(textures_folder_path) + 1);
         strcpy(path3, resources_path);
         strcat(path3, textures_folder_path);
+        copy_resources_directory(assetManager, "resources/"textures_folder_path, path3);
+        free(path3);
+        // copy_resources_directory(assetManager, resources_path, "resources");
         //create_directory(path2);
         //create_directory(path3);
-        copy_resources_directory(get_asset_manager(), path2, "resources/"voxes_folder_path);
-        copy_resources_directory(get_asset_manager(), path3, "resources/"textures_folder_path);
-        // copy_resources_directory(get_asset_manager(), resources_path, "resources");
-        free(path2);
-        free(path3);
     }
 #endif
 
@@ -163,37 +163,40 @@ char* get_full_file_path(const char* filepath) {
 
 unsigned char initialize_pathing() {
 #ifdef zox_disable_io
-        return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 #endif
-    #ifdef zoxel_using_sdl
-        #ifdef zoxel_on_android
-            const char* base_path = SDL_AndroidGetInternalStoragePath();
-        #else
-            const char *base_path = SDL_GetBasePath();
-        #endif
+    const char* base_path;
+#ifdef zoxel_using_sdl
+    #ifdef zoxel_on_android
+    base_path = SDL_AndroidGetInternalStoragePath();
+    __android_log_print(ANDROID_LOG_VERBOSE, "Zoxel", "base_path [%s]", base_path);
     #else
-        // const char *base_path = NULL;   // can i use a base path here based on platform?
-        return EXIT_FAILURE;
+    base_path = SDL_GetBasePath();
     #endif
-    #ifdef zoxel_debug_base_path
-        debug_base_path(base_path);
-    #endif
+#else
+    // can i use a base path here based on platform?
+    base_path = NULL;
+    return EXIT_FAILURE;
+#endif
+#ifdef zoxel_debug_base_path
+    debug_base_path(base_path);
+#endif
     if (base_path) data_path = base_path;
-    #ifdef zoxel_using_sdl
-        else data_path = SDL_strdup("./");
-    #endif
-    zoxel_log(" + opening base_path [%s]\n", base_path);
+#ifdef zoxel_using_sdl
+    else data_path = SDL_strdup("./");
+#endif
+    zox_log(" + opening base_path [%s]\n", base_path)
     DIR* dir = opendir(base_path);
     if (dir) {
-        #ifdef zoxel_debug_pathing
-            zoxel_log(" + base path exists [%s]\n", data_path);
-        #endif
+#ifdef zoxel_debug_pathing
+        zox_log(" + base path exists [%s]\n", data_path)
+#endif
         resources_path = malloc(strlen(base_path) + strlen(resources_folder_name) + 1);
         strcpy(resources_path, base_path);
         strcat(resources_path, resources_folder_name);
-        #ifdef zoxel_on_android
-            decompress_android_resources();
-        #endif
+#ifdef zoxel_on_android
+        decompress_android_resources();
+#endif
         DIR* dir2 = opendir(resources_path);
         if (dir2) {
             #ifdef zoxel_debug_pathing

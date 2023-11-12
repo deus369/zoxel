@@ -11,8 +11,8 @@ int cpu_core_count;
 // zoxel_prefab_includes
 // #include "prefabs/terminal.c"
 // zoxel_util_includes
+// #include "util/platforms_defines.c"
 #include "util/cpu_util.c"
-#include "util/platforms_util.c"
 #include "util/platform_debug_util.c"
 #include "util/webasm_util.c"
 

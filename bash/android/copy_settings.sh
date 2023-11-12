@@ -9,8 +9,6 @@
 #   - [f] app/jni/CMakeLists.txt
 #   - [f] app/jni/src/Android.mk
 
-# \todo copy resources into app/src/main/resources/ & rename to android-resources sub folder
-
 source bash/android/gradle_pathing.sh
 start_gradle_build
 

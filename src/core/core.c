@@ -3,6 +3,7 @@
 
 // zoxel_settings
 unsigned char cpu_tier;
+#include "platforms/util/platform_defines.c"
 #include "util/logs.c"
 #include "ecs/ecs.c"
 #include "maths/maths.c"

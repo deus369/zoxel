@@ -45,14 +45,22 @@ int clear_zoxel_log() {
             return 0;
         }
 
+        #define zox_logg(msg) {\
+            fputs(msg, stderr);\
+        }
+
         #define zox_log(msg, ...) {\
+            zoxel_log(msg, __VA_ARGS__);\
+        }
+
+        /*#define zox_log(msg, ...) {\
             va_list a;\
             va_start(a, msg);\
             char msg2[max_log_length] = { };\
             vsnprintf(msg2, debug_logs_countof(msg2), msg, a);\
             fputs(msg2, stderr);\
             __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "%s", msg2);\
-        }
+        }*/
     #else
         // #define zoxel_log(debug_line) printf(debug_line);
         // #define zoxel_log(debug_line, ...) printf(debug_line, __VA_ARGS__); // #
