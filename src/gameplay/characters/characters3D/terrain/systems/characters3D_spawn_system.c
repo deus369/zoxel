@@ -63,6 +63,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
                 float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
                 // todo: use character bounds before spawning, scale voxel position by terrain scale
                 position.y += 0.26f; // 0.75f;
+                position.y += 0.06f; // extra
                 spawn_chunk_character(world, entities, &vox, position, rotation, character_lod);
             }
             clear_memory_component(EntityLinks, entityLinks2);
