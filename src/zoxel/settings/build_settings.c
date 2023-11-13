@@ -2,6 +2,7 @@
 
 // testing editor
 #define zox_entity_names
+// #define zoxel_has_random_jumping
 // #define zoxel_start_with_debug_ui
 // #define zox_disable_io
 
@@ -14,7 +15,7 @@
 // this seems to create more triangles and not dispose them properly
 // #define zox_disable_terrain_streaming
 // #define zox_disable_chunk_linking
-// #define zox_disable_characters3D        // disables npcs
+#define zox_disable_characters3D        // disables npcs
 // #define zox_disable_player_character3D  // disables player character
 // #define zox_disable_statbars
 
@@ -33,7 +34,6 @@
 // #define zoxel_set_camera_topdown
 // #define zoxel_set_camera_firstperson
 // #define zox_use_orthographic_projection // used for different projection matrix
-#define zoxel_has_random_jumping
 // #define zox_spawn_terrain_on_startup
 
 // #define zoxel_mouse_emulate_touch

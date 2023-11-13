@@ -17,8 +17,9 @@ void Player3DJumpSystem(ecs_iter_t *it) {
         for (int j = 0; j < deviceLinks->length; j++) {
             ecs_entity_t device_entity = deviceLinks->value[j];
             if (ecs_has(world, device_entity, Keyboard)) {
-                const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
+                const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                 if (keyboard->space.pressed_this_frame) is_jump_triggered = 1;
+                // if (keyboard->space.is_pressed) is_jump_triggered = 1;
             } else if (ecs_has(world, device_entity, Gamepad)) {
                 const Children *zevices = ecs_get(world, device_entity, Children);
                 for (int k = 0; k < zevices->length; k++) {
