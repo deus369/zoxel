@@ -59,3 +59,9 @@
     zox_make_prefab(e)
 
 #define zox_clone(prefab) ecs_entity_t e = ecs_clone(world, 0, prefab, 1);
+
+#define zox_field_in(component_name, field_name, index)\
+    const component_name *field_name = ecs_field(it, component_name, index);
+
+#define zox_field_out(component_name, field_name, index)\
+    component_name *field_name = ecs_field(it, component_name, index);

@@ -55,7 +55,7 @@ void ZextBackgroundUpdateSystem2(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const ZextDirty *zextDirty = &zextDirtys[i];
         if (!zextDirty->value) continue;
-        ecs_entity_t e = it->entities[i];
+        // ecs_entity_t e = it->entities[i];
         const ParentLink *parentLink = &parentLinks[i];
         ecs_entity_t e2 = parentLink->value;
         if (!zox_has(e2, ZextLabel)) continue;

@@ -1,17 +1,10 @@
-// todo: time this function
-// done seperated voxel position, and chunk position updates outside of this
-// done check normal of voxel position difference, base bounce velocity off that instead of just y axis
-// zoxel_log(" distance_to_voxel_side [%f]\n", distance_to_voxel_side);
-// zoxel_log(" distance_to_voxel_side [%f] - new pos [%f] - last [%f -> %f]\n", distance_to_voxel_side, position3D->value.d, collision_point_real.d, collision_point_last.d);
-// the 0.5f scale should be based on terrain voxel scale
 const float collision_precision = 1.0f; // 0.99f; // 0.999f;    // 9
 const float terrain_voxel_scale_inverse = 1 / 0.5f;
 const float grounded_velocity_threshold = 0.22f;
 // const float terrain_voxel_scale = 0.5f;
 const float lowest_velocity_threshold = 0.03f; // 0.3 // 0.001
+// draw line to voxel side from character...
 
-// int3 last_global_voxel_position = get_voxel_position(collision_point_last);
-// make this update last position
 #define handle_collision_axis(d, offset) {\
     float3 collision_point_last2 = collision_point_last;\
     collision_point_last2.d += offset.d;\
@@ -35,8 +28,6 @@ const float lowest_velocity_threshold = 0.03f; // 0.3 // 0.001
         }\
     }\
 }
-
-// draw line to voxel side from character...
 
 #define respond_collision(d) {\
     if (did_collide##_##d) {\
@@ -73,17 +64,10 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
         LastPosition3D *lastPosition3D = &lastPosition3Ds[i];
         VoxelPosition *voxelPosition = &voxelPositions[i];
         Grounded *grounded = &groundeds[i];
-        byte3 old_voxel_position = int3_to_byte3(voxelPosition->value);
+        // byte3 old_voxel_position = int3_to_byte3(voxelPosition->value);
         float3 collision_point_real = position3D->value;
         float3 collision_point_last = lastPosition3D->value;
         float3 position_delta = float3_subtract_float3(collision_point_real, collision_point_last);
-        // collision_point_real.y -= bounds3D->value.y;
-        // collision_point_last.y -= bounds3D->value.y;
-        int3 global_voxel_position = get_voxel_position(collision_point_real);
-        // int3 last_global_voxel_position = get_voxel_position(collision_point_last);
-        int3 chunk_position = get_chunk_position(collision_point_real, default_chunk_size);
-        byte3 local_voxel_position = get_local_position_byte3(global_voxel_position, chunk_position, default_chunk_size_byte3);
-        // if (!byte3_equals(local_voxel_position, old_voxel_position))
         {
             // actually here I should check if makes it through to new voxel_position
 #ifdef zoxel_debug_basic_collision3D_system
@@ -103,24 +87,20 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
             const VoxLink *voxLink = &voxLinks[i];
             if (!voxLink->value) continue;
             const ChunkLinks *chunkLinks = zox_get(voxLink->value, ChunkLinks)
-            if (chunkLinks == NULL) continue;
+            if (!chunkLinks) continue;
             Velocity3D *velocity3D = &velocity3Ds[i];
-            // voxelPosition->value = byte3_to_int3(local_voxel_position);
-            // todo: here declare voxel dimensions, side positions?
-            // get last position
             unsigned char did_collide_x = 0;
             unsigned char did_collide_y = 0;
             unsigned char did_collide_z = 0;
-            // float3 offset_a = float3_zero; // (float3) { 0, -bounds3D->value.y, 0 };
-            float3 offset_a = bounds3D->value; // (float3) { 0, -bounds3D->value.y, 0 };
-            float3 offset_b = float3_multiply_float(bounds3D->value, -1); //  (float3) { 0, bounds3D->value.y, 0 };
+            float3 offset_left = float3_multiply_float(bounds3D->value, -1);
+            float3 offset_right = bounds3D->value;
             float3 collision_offset = float3_zero;
-            handle_collision_axis(x, offset_a)
-            handle_collision_axis(y, offset_a)
-            handle_collision_axis(z, offset_a)
-            if (!did_collide_x) handle_collision_axis(x, offset_b)
-            if (!did_collide_y) handle_collision_axis(y, offset_b)
-            if (!did_collide_z) handle_collision_axis(z, offset_b)
+            handle_collision_axis(x, offset_left)
+            handle_collision_axis(y, offset_left)
+            handle_collision_axis(z, offset_left)
+            if (!did_collide_x) handle_collision_axis(x, offset_right)
+            if (!did_collide_y) handle_collision_axis(y, offset_right)
+            if (!did_collide_z) handle_collision_axis(z, offset_right)
             respond_collision(x)
             respond_collision(y)
             respond_collision(z)
@@ -343,3 +323,22 @@ if (voxel_position_2.x < default_chunk_length && voxel_position_2.y < default_ch
         }\
     }\
 }*/
+
+// todo: time this function
+// done seperated voxel position, and chunk position updates outside of this
+// done check normal of voxel position difference, base bounce velocity off that instead of just y axis
+// zoxel_log(" distance_to_voxel_side [%f]\n", distance_to_voxel_side);
+// zoxel_log(" distance_to_voxel_side [%f] - new pos [%f] - last [%f -> %f]\n", distance_to_voxel_side, position3D->value.d, collision_point_real.d, collision_point_last.d);
+// the 0.5f scale should be based on terrain voxel scale
+
+// collision_point_real.y -= bounds3D->value.y;
+// collision_point_last.y -= bounds3D->value.y;
+// int3 global_voxel_position = get_voxel_position(collision_point_real);
+// int3 last_global_voxel_position = get_voxel_position(collision_point_last);
+// int3 chunk_position = get_chunk_position(collision_point_real, default_chunk_size);
+// byte3 local_voxel_position = get_local_position_byte3(global_voxel_position, chunk_position, default_chunk_size_byte3);
+// if (!byte3_equals(local_voxel_position, old_voxel_position))
+
+            // voxelPosition->value = byte3_to_int3(local_voxel_position);
+            // todo: here declare voxel dimensions, side positions?
+            // get last position

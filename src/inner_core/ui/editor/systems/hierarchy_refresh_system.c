@@ -8,7 +8,7 @@ ecs_entity_t editor_selected;
 
 void add_entity_to_labels(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level) {
     if (!e) return;
-    unsigned char *text = malloc(hierarchy_max_line_characters);
+    char *text = malloc(hierarchy_max_line_characters);
     if (!zox_has(e, ZoxName)) {
         snprintf(text, hierarchy_max_line_characters, "_%lu [%i]", e, tree_level);
     } else {
@@ -106,8 +106,8 @@ void editor_select_entity(ecs_world_t *world, ecs_entity_t e) {
 
 void button_event_clicked_hierarchy(ecs_world_t *world, ecs_entity_t trigger_entity) {
     if (!zox_has(trigger_entity, Children)) return;
-    const Children *children = zox_get(trigger_entity, Children)
-    ecs_entity_t zext_entity = children->value[0];
+    // const Children *children = zox_get(trigger_entity, Children)
+    // ecs_entity_t zext_entity = children->value[0];
     // print_entity_zext(world, zext_entity);
     ecs_entity_t target = zox_get_value(trigger_entity, EntityTarget)
     // zox_log("   > target [%lu]\n", target)
@@ -182,7 +182,7 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         int elements_visible = listUIMax->value; // zox_get_value(e, ListUIMax)
         int font_size = elementFontSize->value * default_ui_scale;
         unsigned char button_layer = layer2D->value + 1;
-        int line_txt_length = 16;
+        // int line_txt_length = 16;
         int2 button_padding = (int2) { (int) (font_size * 0.46f), (int) (font_size * 0.3f) };
         int2 list_margins = (int2) { (int) (font_size * 0.8f), (int) (font_size * 0.8f) };
         int button_inner_margins = (int) (font_size * 0.5f);
@@ -204,7 +204,7 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
 
         // resize window
         int labels_count = labels->size;
-        int childrens_length = list_start + labels_count;
+        // int childrens_length = list_start + labels_count;
         int max_characters = get_max_characters_d("hierarchy", labels);
         const float2 window_position = position2D->value;
         int2 window_size = pixelSize->value;

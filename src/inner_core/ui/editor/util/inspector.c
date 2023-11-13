@@ -46,8 +46,8 @@ void set_inspector_element(ecs_world_t *world, ecs_entity_t inspector, ecs_entit
     if (!ecs_is_alive(world, inspector)) return;
     // print_entity(world, e);
 
-    const ClickEvent click_event = (ClickEvent) { &button_event_clicked_inspepctor };
-    text_group_dynamic_array_d* labels = create_text_group_dynamic_array_d();
+    // const ClickEvent click_event = (ClickEvent) { &button_event_clicked_inspepctor };
+    // text_group_dynamic_array_d* labels = create_text_group_dynamic_array_d();
 
     const ZoxName *zoxName = zox_get(e, ZoxName)
     const Children *insector_children = zox_get(inspector, Children)

@@ -3,7 +3,7 @@ extern int get_characters_count(ecs_world_t *world);
 extern int get_count_particle3Ds(ecs_world_t *world);
 extern int get_count_particle3D_emitters(ecs_world_t *world);
 // #define zox_debug_ui_memorys_allocated
-// #define zox_debug_ui_characters
+#define zox_debug_ui_characters
 // #define zox_debug_ui_particle3Ds
 // #define zox_debug_ui_terrain_chunks
 // #define zox_debug_ui_statbars

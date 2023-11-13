@@ -15,7 +15,7 @@
 // this seems to create more triangles and not dispose them properly
 // #define zox_disable_terrain_streaming
 // #define zox_disable_chunk_linking
-#define zox_disable_characters3D        // disables npcs
+// #define zox_disable_characters3D        // disables npcs
 // #define zox_disable_player_character3D  // disables player character
 // #define zox_disable_statbars
 

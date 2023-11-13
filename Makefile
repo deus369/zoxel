@@ -209,11 +209,11 @@ run-dev-debug-tiny:
 	cd build && valgrind -s ./../$(target_dev) --tiny
 
 run-debug:
-ifneq ($(SYSTEM),Windows)
-	bash bash/util/install_dev_required.sh
-endif
 	gdb ./build/dev
 
+#ifneq ($(SYSTEM),Windows)
+#	bash bash/util/install_dev_required.sh
+#endif
 #  --leak-check=full
 
 # run release + flecs profiler

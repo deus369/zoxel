@@ -3,17 +3,15 @@
 // if vertical scrollbar
 void ScrollbarSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
-    // 1 is ScrollButtoon
-    const DraggableState *draggableStates = ecs_field(it, DraggableState, 2);
-    const PixelPosition *pixelPositions = ecs_field(it, PixelPosition, 3);
-    const PixelSize *pixelSizes = ecs_field(it, PixelSize, 4);
-    const ParentLink *parentLinks = ecs_field(it, ParentLink, 5);
-    // const ElementFontSize * elementFontSizes = ecs_field(it, ElementFontSize, 4);
+    zox_field_in(DraggableState, draggableStates, 2)
+    zox_field_in(PixelPosition, pixelPositions, 3)
+    zox_field_in(PixelSize, pixelSizes, 4)
+    zox_field_in(ParentLink, parentLinks, 5)
     for (int i = 0; i < it->count; i++) {
         const DraggableState *draggableState = &draggableStates[i];
         if (!draggableState->value) continue;
         const PixelPosition *pixelPosition = &pixelPositions[i];
-        ecs_entity_t e = it->entities[i];
+        // ecs_entity_t e = it->entities[i];
         const PixelSize *pixelSize = &pixelSizes[i];
         const ParentLink *parentLink = &parentLinks[i];
         // const PixelSize *pixelSize = zox_get(e, PixelSize)

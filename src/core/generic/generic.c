@@ -67,22 +67,23 @@ char* convert_zext_to_text(const unsigned char *zext, unsigned char length) {
     return text;
 }
 
+// int length = strlen(label);
+
 void prefab_set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char label[]) {
     #ifdef zox_entity_names
-        int length = strlen(label);
         char* entity_name = get_entity_string(label, e);
-        int length2 = strlen(entity_name);
-        zox_prefab_set(e, ZoxName, { length2, convert_string_to_zext(entity_name) })
+        int length = strlen(entity_name);
+        zox_prefab_set(e, ZoxName, { length, convert_string_to_zext(entity_name) })
         free(entity_name);
     #endif
 }
 
+// int length = strlen(label);
 void set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char label[]) {
     #ifdef zox_entity_names
-        int length = strlen(label);
         char* entity_name = get_entity_string(label, e);
-        int length2 = strlen(entity_name);
-        zox_set(e, ZoxName, { length2, convert_string_to_zext(entity_name) })
+        int length = strlen(entity_name);
+        zox_set(e, ZoxName, { length, convert_string_to_zext(entity_name) })
         // zox_log("   + [%s]\n", entity_name)
         free(entity_name);
     #endif
