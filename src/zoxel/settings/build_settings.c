@@ -4,10 +4,10 @@
 #define zox_test_hierarchy
 #define zox_entity_names
 // #define zoxel_has_random_jumping
-// #define zoxel_start_with_debug_ui
+#define zoxel_start_with_debug_ui
 // #define zox_disable_io
 
-// #define zox_disable_gamepad_stick_as_any_input // used for samsung phone, it's buggy af
+#define zox_disable_gamepad_stick_as_any_input // used for samsung phone, it's buggy af
 #define zox_disable_gamepad_deadzones
 // #define zoxel_disable_gamepads
 
