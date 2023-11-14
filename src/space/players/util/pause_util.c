@@ -11,9 +11,11 @@ void toggle_pause_ui(ecs_world_t *world, ecs_entity_t player) {
         }
     #endif
     if (!(gameState->value == zoxel_game_state_playing || gameState->value == zoxel_game_state_paused)) return;
-    const int edge_buffer = 8 * default_ui_scale;
-    const float2 window_anchor = { 0.0f, 1.0f };
-    const int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
+    // const int edge_buffer = 8 * default_ui_scale;
+    // const float2 window_anchor = { 0, 1 };
+    // const int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
+    const float2 window_anchor = { 0.5f, 0.5f };
+    const int2 window_position = int2_zero;
     //zoxel_log(" > alive ui? %s\n", ecs_is_alive(world, pause_ui) ? "alive" : "dead");
     unsigned char is_paused = gameState->value == zoxel_game_state_paused; // ecs_is_alive(world, pause_ui); // pause_ui != 0; // ecs_is_alive(world, pause_ui2);
     ecs_entity_t character3D = ecs_get(world, player, CharacterLink)->value;

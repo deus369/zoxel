@@ -5,7 +5,7 @@ void ElementSelectedSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const SelectState *selectState = &selectableStates[i];
         Brightness *brightness = &brightnesss[i];
-        if (selectState->value) brightness->value = 1.28f;
+        if (selectState->value) brightness->value = ui_selected_brightness;
         else brightness->value = 1;
     }
 } zox_declare_system(ElementSelectedSystem)

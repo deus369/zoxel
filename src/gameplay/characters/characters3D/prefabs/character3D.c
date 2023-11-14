@@ -18,6 +18,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     zox_prefab_set(e, AnimationStart, { 0 })
     zox_prefab_set(e, Bounds3D, {{ 1, 1, 1 }})
     zox_prefab_set(e, VoxLink, { 0 })
+    zox_add_tag(e, LinkChunk)
     zox_prefab_set(e, ChunkLink, { 0 })
     zox_prefab_set(e, ChunkPosition, { int3_chaos })
     zox_prefab_set(e, VoxelPosition, { int3_zero})
@@ -33,7 +34,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
 ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vox_file *vox, float3 position, float4 rotation, unsigned char lod) {
     zox_instance(prefab)
     zox_prefab_name("character3D")
-    // transform
+    // transforms
     zox_set(e, Position3D, { position })
     zox_set(e, LastPosition3D, { position })
     zox_set(e, Rotation3D, { rotation })
@@ -64,7 +65,6 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vo
         elementLinks->value[0] = statbar;
         zox_modified(e, ElementLinks)
     #endif
-    characters_count++;
     #ifdef zoxel_debug_spawns
         zox_log("   > spawned character3D [%lu]\n", e)
     #endif

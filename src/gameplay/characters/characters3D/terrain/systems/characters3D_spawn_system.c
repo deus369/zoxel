@@ -5,7 +5,7 @@ ecs_entity_t spawn_chunk_character(ecs_world_t *world, ecs_entity_t_array_d* ent
     return e;
 }
 
-ecs_entity_t spawn_chunk_character2(ecs_world_t *world, const vox_file *vox, float3 position, float4 rotation, unsigned char character_lod) {
+ecs_entity_t spawn_player_character3D_in_world(ecs_world_t *world, const vox_file *vox, float3 position, float4 rotation, unsigned char character_lod) {
     ecs_entity_t e = spawn_character3D(world, prefab_character3D, vox, position, rotation, character_lod);
     return e;
 }
@@ -74,7 +74,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         generateChunkEntities2->value = zox_chunk_entities_state_spawned;
         // zoxel_log(" > chunk characters were triggered %i\n", entityLinks2->length);
     }
-    #ifdef zoxel_log_characters_count
-        if (characters_count != 0) zoxel_log(" + characters [%i]\n", characters_count);
-    #endif
+    //#ifdef zoxel_log_characters_count
+    //    if (characters_count != 0) zoxel_log(" + characters [%i]\n", characters_count);
+    //#endif
 } zox_declare_system(Characters3DSpawnSystem)

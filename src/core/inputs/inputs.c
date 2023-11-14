@@ -12,7 +12,8 @@
 // todo: hotkey ui
 
 // zoxel_settings
-#define zox_devices_reset_pipelines EcsOnLoad
+#define zox_pipelines_devices_reset EcsOnLoad
+#define zox_pipelines_devices_enables EcsOnStore
 #define zox_device_mode_none 0
 #define zox_device_mode_keyboardmouse 1
 #define zox_device_mode_gamepad 2
@@ -102,16 +103,16 @@ zox_define_component_int2(ZevicePointerDelta)
 zox_define_component_float2(ZeviceStick)
 zox_define_memory_component(DeviceLinks)
 // zoxel_system_defines
-zox_system(ZeviceButtonResetSystem, zox_devices_reset_pipelines, [out] ZeviceButton)
-zox_system(ZevicePointerResetSystem, zox_devices_reset_pipelines, [out] ZevicePointer)
-zox_system(ZevicePointerDeltaResetSystem, zox_devices_reset_pipelines, [out] ZevicePointerDelta)
-zox_system(DeviceModeSystem, zox_devices_reset_pipelines, [in] DeviceLinks, [in] DeviceMode, [out] DeviceModeDirty)    // has to be before other systems
+zox_system(ZeviceButtonResetSystem, zox_pipelines_devices_reset, [out] ZeviceButton)
+zox_system(ZevicePointerResetSystem, zox_pipelines_devices_reset, [out] ZevicePointer)
+zox_system(ZevicePointerDeltaResetSystem, zox_pipelines_devices_reset, [out] ZevicePointerDelta)  // has to be before other systems
+zox_system(DeviceModeSystem, EcsPreUpdate, [in] DeviceLinks, [in] DeviceMode, [out] DeviceModeDirty)
 zox_system(DraggerEndSystem, EcsPreUpdate, [out] DraggableState, [out] DraggerLink, [out] DraggingDelta)
 zox_system(MouseRaycasterSystem, EcsPreUpdate, [in] DeviceLinks, [in] DeviceMode, [out] Raycaster)
-zox_system(DeviceModeDirtySystem, EcsPostUpdate, [out] DeviceMode, [out] DeviceModeDirty)
-zox_system(ZeviceButtonEnableSystem, EcsOnStore, [in] ZeviceButton, [out] ZeviceDisabled)
-zox_system(ZeviceStickEnableSystem, EcsOnStore, [in] ZeviceStick, [out] ZeviceDisabled)
-zox_system(ZevicePointerEnableSystem, EcsOnStore, [in] ZevicePointer, [out] ZeviceDisabled)
+zox_system(DeviceModeDirtySystem, zox_pipelines_devices_enables, [out] DeviceMode, [out] DeviceModeDirty)
+zox_system(ZeviceButtonEnableSystem, zox_pipelines_devices_enables, [in] ZeviceButton, [out] ZeviceDisabled)
+zox_system(ZeviceStickEnableSystem, zox_pipelines_devices_enables, [in] ZeviceStick, [out] ZeviceDisabled)
+zox_system(ZevicePointerEnableSystem, zox_pipelines_devices_enables, [in] ZevicePointer, [out] ZeviceDisabled)
 zoxel_end_module(Inputs)
 
 #endif

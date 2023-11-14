@@ -8,4 +8,5 @@ void GamepadExtractSystem(ecs_iter_t *it) {
         const Children *childrenss = &childrens[i];
         sdl_extract_gamepad(joystick, world, childrenss);
     }
+    // zox_log("   > GamepadExtractSystem [%i]\n", it->count)
 } zox_declare_system(GamepadExtractSystem)

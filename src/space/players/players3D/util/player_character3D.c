@@ -8,7 +8,6 @@ ecs_entity_t spawn_player_character3D(ecs_world_t *world, ecs_entity_t camera) {
     zox_set(e, Brightness, { 0.8f + ((rand() % 101) / 100.0f) * 0.6f })
     spawn_gpu_mesh(world, e);
     spawn_gpu_material(world, e, shader3D);
-    // spawn_gpu_texture(world, e);
     local_player = e;
     return e;
 }

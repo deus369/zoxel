@@ -1,4 +1,4 @@
-// #define zox_log_gamepad_button_pressed
+// #define zox_log_gamepad_button_pressed // debug button presses
 SDL_Joystick *joystick;         // todo: connect this to gamepad
 int joysticks_count;
 
@@ -15,16 +15,16 @@ unsigned char is_xbox_gamepad(SDL_Joystick *joystick) {
 void initialize_sdl_gamepads() {
     // SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
     joysticks_count = SDL_NumJoysticks();
-    #ifdef zoxel_debug_input
-        zoxel_log(" > joysticks connected [%d]\n", joysticks_count);
-    #endif
+    //#ifdef zoxel_debug_input
+    zox_log(" > gamepads connected [%d]\n", joysticks_count)
+    //#endif
     for (int i = 0; i < joysticks_count; i++) {
         joystick = SDL_JoystickOpen(i);
         if (!joystick) {
             fprintf(stderr, "   ! joystick error: %s\n", SDL_GetError());
         } else {
             const char* joystick_name = SDL_JoystickName(joystick);
-            zoxel_log(" > joystick [%i:%s] has initialized\n", i, joystick_name);
+            zox_log("   > [%s]\n", joystick_name)
             // if (is_xbox_gamepad(joystick)) zoxel_log("     + xbox controller detected\n");
             break; 
         }
@@ -102,7 +102,8 @@ unsigned char set_gamepad_button2(ZeviceButton *zeviceButton, SDL_Joystick *joys
     unsigned char new_is_pressed = SDL_JoystickGetButton(joystick, index);
     unsigned char is_pressed = devices_get_is_pressed(zeviceButton->value);
     #ifdef zox_log_gamepad_button_pressed
-        if (!is_pressed && new_is_pressed) zoxel_log("  [%i] is pressed this frame\n", index);
+        // zox_log("   > new_is_pressed [%i] index [%i]\n", new_is_pressed, index)
+        if (!is_pressed && new_is_pressed) zox_log("  [%i] is pressed this frame\n", index)
     #endif
     if (!is_pressed && new_is_pressed) devices_set_pressed_this_frame(&zeviceButton->value, 1);
     if (is_pressed && !new_is_pressed) devices_set_released_this_frame(&zeviceButton->value, 1);
@@ -131,7 +132,7 @@ void sdl_gamepad_handle_disconnect(SDL_Joystick *joystick) {
 }
 
 void sdl_extract_gamepad(SDL_Joystick *joystick, ecs_world_t *world, const Children *children) {
-    if (joystick == NULL) return;
+    if (!joystick) return;
     for (int i = 0; i < children->length; i++) {
         ecs_entity_t e = children->value[i];
         const RealButtonIndex *realButtonIndex = zox_get(e, RealButtonIndex)

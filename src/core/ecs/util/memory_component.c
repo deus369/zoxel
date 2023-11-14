@@ -107,7 +107,7 @@ ecs_set_hooks(world, name, {\
 }
 
 #define add_to_memory_component(component, data_type, data) {\
-    if (component->value != NULL) {\
+    if (component->value) {\
         unsigned char has_data = 0;\
         for (int i = 0; i < component->length; i++) {\
             if (component->value[i] == data) {\
@@ -120,11 +120,15 @@ ecs_set_hooks(world, name, {\
             component->value = realloc(component->value, component->length * sizeof(data_type));\
             component->value[component->length - 1] = data;\
         }\
+    } else {\
+        component->length = 1;\
+        component->value = malloc(sizeof(data_type));\
+        component->value[0] = data;\
     }\
 }
 
 #define remove_from_memory_component(component, data_type, data) {\
-    if (component->value != NULL) {\
+    if (component->value) {\
         int index = -1;\
         for (int i = 0; i < component->length; i++) {\
             if (component->value[i] == data) {\
@@ -133,11 +137,12 @@ ecs_set_hooks(world, name, {\
             }\
         }\
         if (index != -1) {\
-            for (int i = index; i < component->length - 1; i++) {\
-                component->value[i] = component->value[i + 1];\
-            }\
+            for (int i = index; i < component->length - 1; i++) component->value[i] = component->value[i + 1];\
             component->length--;\
-            component->value = realloc(component->value, component->length * sizeof(data_type));\
+            if (!component->length) {\
+                free(component->value);\
+                component->value = NULL;\
+            } else component->value = realloc(component->value, component->length * sizeof(data_type));\
         }\
     }\
 }

@@ -1,6 +1,5 @@
 unsigned char debug_colliders = 0;
 // #define test_particles2D
-#define zox_test_hierarchy
 
 void toggle_collision_debug(ecs_world_t *world) {
     debug_colliders = !debug_colliders;
@@ -8,18 +7,19 @@ void toggle_collision_debug(ecs_world_t *world) {
     else remove_physics_debug(world, prefab_character3D);
     const ChunkLinks *chunkLinks = zox_get(local_terrain, ChunkLinks)
     // for every chunk, use entity links, add or remove physics debug components
+    // zox_log("   > chunkLinks [%i]\n", chunkLinks->value->size)
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hash_map_pair* pair = chunkLinks->value->data[i];
         while (pair != NULL) {
-            const EntityLinks *entityLinks = ecs_get(world, pair->value, EntityLinks);
+            ecs_entity_t chunk = pair->value;
+            const EntityLinks *entityLinks = ecs_get(world, chunk, EntityLinks);
+            // const int3 chunk_position = zox_get_value(chunk, ChunkPosition)
+            // if (entityLinks->length > 0 || int3_equals(chunk_position, (int3) { 0, -1, 0 })) zox_log("      > chunk [%lu] entities [%i]\n", chunk, entityLinks->length)
             for (int j = 0; j < entityLinks->length; j++) {
                 ecs_entity_t character_entity = entityLinks->value[j];
-                if (debug_colliders) {
-                    add_physics_debug(world, character_entity);
-                } else {
-                    remove_physics_debug(world, character_entity);
-                }
-                // zoxel_log(" - character_entity [%lu]\n", character_entity);
+                if (debug_colliders) add_physics_debug(world, character_entity);
+                else remove_physics_debug(world, character_entity);
+                // zox_log("           > character_entity [%lu]\n", character_entity)
             }
             pair = pair->next;
         }
@@ -119,7 +119,6 @@ void EditorInputSystem(ecs_iter_t *it) {
             ecs_entity_t device_entity = deviceLinks->value[j];
             if (zox_has( device_entity, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
-
                 // gizmos
                 if (keyboard->z.pressed_this_frame) toggle_collision_debug(world);      // z : collision gizmos
 

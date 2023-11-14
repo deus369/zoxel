@@ -10,6 +10,7 @@
 
 // zoxel_settings
 #define canvas_edge_size 8
+#define ui_selected_brightness 1.6f
 ecs_entity_t main_canvas;
 // zoxel_declare_components
 zox_declare_tag(Element)

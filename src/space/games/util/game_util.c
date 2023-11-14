@@ -112,6 +112,10 @@ void play_game(ecs_world_t *world) {
     #ifdef zox_on_play_spawn_terrain
         create_terrain(world, center_position);
     #endif
+    if (local_terrain) {
+        zox_set(main_camera, VoxLink, { local_terrain })
+        zox_set(local_terrain, RealmLink, { local_realm })
+    }
     #ifdef zox_disable_player_character3D
         attach_to_character(world, main_player, main_camera, 0);
     #else
@@ -119,18 +123,13 @@ void play_game(ecs_world_t *world) {
             float3 spawn_position = zox_get_value(main_camera, Position3D)
             spawn_position.x = 8;
             spawn_position.z = 8;
-            float4 spawn_rotation = quaternion_identity; // ecs_get(world, main_camera, Rotation3D)->value;
-            const vox_file vox = vox_files[3];
-            local_character3D = spawn_chunk_character2(world, &vox, spawn_position, spawn_rotation, 0);
+            float4 spawn_rotation = quaternion_identity;
+            const vox_file vox = vox_files[3]; // get mr penguin vox
+            local_character3D = spawn_player_character3D_in_world(world, &vox, spawn_position, spawn_rotation, 0);
             zox_add_tag(local_character3D, Aura)
             attach_to_character(world, main_player, main_camera, local_character3D);
         } else attach_to_character(world, main_player, main_camera, 0);
     #endif
-    return;
-    if (local_terrain) {
-        zox_set(main_camera, VoxLink, { local_terrain })
-        zox_set(local_terrain, RealmLink, { local_realm })
-    }
 }
 
 // \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cam

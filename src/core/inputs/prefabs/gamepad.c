@@ -72,15 +72,15 @@ unsigned char gamepad_is_any_input(ecs_world_t *world, ecs_entity_t gamepad) {
     const Children *children = ecs_get(world, gamepad, Children);
     for (int i = 0; i < children->length; i++) {
         ecs_entity_t e = children->value[i];
-        #ifndef zox_disable_gamepad_stick_as_any_input
-            if (ecs_has(world, e, ZeviceStick)) {
-                const ZeviceStick *zeviceStick = ecs_get(world, e, ZeviceStick);
-                // if (set_gamepad_axis2(zeviceStick, joystick, realButtonIndex->value)) ecs_modified(world, e, ZeviceStick);
-                return zevice_stick_has_input(zeviceStick, joystick_min_cutoff2); // float_abs(zeviceStick->value.x) >= joystick_min_cutoff2 || float_abs(zeviceStick->value.y) >= joystick_min_cutoff2;
-            } else 
-        #endif
-        if (ecs_has(world, e, ZeviceButton)) {
-            const ZeviceButton *zeviceButton = ecs_get(world, e, ZeviceButton);
+#ifndef zox_disable_gamepad_stick_as_any_input
+        if (zox_has(e, ZeviceStick)) {
+            const ZeviceStick *zeviceStick = zox_get(e, ZeviceStick)
+            // if (set_gamepad_axis2(zeviceStick, joystick, realButtonIndex->value)) ecs_modified(world, e, ZeviceStick);
+            return zevice_stick_has_input(zeviceStick, joystick_min_cutoff2); // float_abs(zeviceStick->value.x) >= joystick_min_cutoff2 || float_abs(zeviceStick->value.y) >= joystick_min_cutoff2;
+        } else
+#endif
+        if (zox_has(e, ZeviceButton)) {
+            const ZeviceButton *zeviceButton = zox_get(e, ZeviceButton)
             // if (devices_get_pressed_this_frame(zeviceButton->value)) zoxel_log("    > %i pressed, gamepad has input\n", i);
             if (devices_get_pressed_this_frame(zeviceButton->value)) return 1;
         }

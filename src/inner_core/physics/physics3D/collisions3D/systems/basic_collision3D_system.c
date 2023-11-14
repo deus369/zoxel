@@ -51,18 +51,19 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
     ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 2);
     Position3D *position3Ds = ecs_field(it, Position3D, 3);
     Velocity3D *velocity3Ds = ecs_field(it, Velocity3D, 4);
-    VoxelPosition *voxelPositions = ecs_field(it, VoxelPosition, 5);
-    ChunkLink *chunkLinks = ecs_field(it, ChunkLink, 6);
+    // VoxelPosition *voxelPositions = ecs_field(it, VoxelPosition, 5);
+    // ChunkLink *chunkLinks = ecs_field(it, ChunkLink, 6);
     LastPosition3D *lastPosition3Ds = ecs_field(it, LastPosition3D, 7);
     Grounded *groundeds = ecs_field(it, Grounded, 9);
     for (int i = 0; i < it->count; i++) {
         const ecs_entity_t e = it->entities[i];
         const Bounds3D *bounds3D = &bounds3Ds[i];
         ChunkPosition *chunkPosition = &chunkPositions[i];
-        ChunkLink *chunkLink = &chunkLinks[i];
+        // todo: check chunklink or neighbors instead of hashmap checking
+        // ChunkLink *chunkLink = &chunkLinks[i];
         Position3D *position3D = &position3Ds[i];
         LastPosition3D *lastPosition3D = &lastPosition3Ds[i];
-        VoxelPosition *voxelPosition = &voxelPositions[i];
+        // VoxelPosition *voxelPosition = &voxelPositions[i];
         Grounded *grounded = &groundeds[i];
         // byte3 old_voxel_position = int3_to_byte3(voxelPosition->value);
         float3 collision_point_real = position3D->value;
@@ -105,7 +106,7 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
             respond_collision(y)
             respond_collision(z)
             // set voxel / chunk position
-            int3 new_global_voxel_position = get_voxel_position(position3D->value);
+            /*int3 new_global_voxel_position = get_voxel_position(position3D->value);
             int3 new_chunk_position = get_chunk_position(position3D->value, default_chunk_size);
             byte3 new_local_voxel_position = get_local_position_byte3(new_global_voxel_position, new_chunk_position, default_chunk_size_byte3);
             if (!int3_equals(chunkPosition->value, new_chunk_position)) {
@@ -113,7 +114,7 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
                 chunkPosition->value = new_chunk_position;
                 set_entity_chunk(world, e, chunkLink, int3_hash_map_get(chunkLinks->value, new_chunk_position));
                 // chunkLink->value = int3_hash_map_get(chunkLinks->value, new_chunk_position);
-            }
+            }*/
             if (did_collide_y) {
                 // voxelPosition->value = byte3_to_int3(local_voxel_position);
                 if (float_abs(velocity3D->value.y) < grounded_velocity_threshold) {

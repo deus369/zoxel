@@ -1,21 +1,22 @@
 // Here? select which zoxel modules I shall use?
 
 // testing editor
+#define zox_test_hierarchy
 #define zox_entity_names
 // #define zoxel_has_random_jumping
 // #define zoxel_start_with_debug_ui
 // #define zox_disable_io
 
-#define zox_disable_gamepad_stick_as_any_input // used for samsung phone, it's buggy af
+// #define zox_disable_gamepad_stick_as_any_input // used for samsung phone, it's buggy af
 #define zox_disable_gamepad_deadzones
 // #define zoxel_disable_gamepads
 
+// #define zox_disable_characters3D        // disables npcs
 // #define zoxel_disable_music
 // #define zox_extra_destroy_terrain_children
 // this seems to create more triangles and not dispose them properly
 // #define zox_disable_terrain_streaming
 // #define zox_disable_chunk_linking
-// #define zox_disable_characters3D        // disables npcs
 // #define zox_disable_player_character3D  // disables player character
 // #define zox_disable_statbars
 
@@ -178,8 +179,6 @@
 // #define zoxel_voxes_color_randomize
 // #define zoxel_debug_vox_read
 // #define zoxel_is_flat_height
-// #define zoxel_debug_chunk_link_system
-// #define zoxel_debug_chunk_link_system_test
 // Fixed color shader gpu things and systems
 // #define zoxel_log_characters_count
 // #define zoxel_log_files

@@ -8,14 +8,16 @@ void ChunkCharactersUpdateSystem(ecs_iter_t *it) {
         GenerateChunkEntities *generateChunkEntities2 = &generateChunkEntities[i];
         if (generateChunkEntities2->value != zox_chunk_entities_state_spawned) continue;
         const EntityLinks *entityLinks2 = &entityLinks[i];
-        if (entityLinks2->length == 0) continue;
+        if (!entityLinks2->length) continue;
+        if (!entityLinks2->value) zox_log(" > chunk has null entityLinks [%lu]\n", it->entities[i])
+        if (!entityLinks2->value) continue; // this should never be null
         // zoxel_log(" > entityLinks2->length: %i\n", entityLinks2->length);
         const RenderLod *renderLod = &renderLods[i];
         unsigned char camera_distance = renderLod->value;
         unsigned char character_depth = get_character_division_from_camera(camera_distance);
-        // if (entityLinks2->value[0] == 0) zoxel_log("issues with character entity\n");
-        if (entityLinks2->value[0] == 0) continue;
-        unsigned char character_chunk_division = ecs_get(world, entityLinks2->value[0], RenderLod)->value;
+        ecs_entity_t first_e = entityLinks2->value[0];
+        if (!first_e) continue;
+        unsigned char character_chunk_division = zox_get_value(first_e, RenderLod);
         if (character_chunk_division == character_depth) continue;  // check if characters division is changed from chunks
         //zoxel_log(" > characters in chunk updating %lu > %i [depth %i to %i]\n", it->entities[i], entityLinks2->length, character_chunk_division, character_depth);
         for (int j = 0; j < entityLinks2->length; j++) {
