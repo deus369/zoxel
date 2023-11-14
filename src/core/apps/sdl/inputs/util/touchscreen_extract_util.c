@@ -13,14 +13,16 @@ void set_id(ecs_world_t *world, ecs_entity_t e, int new_id) {
     }
 }
 
-void finger_released(ecs_world_t *world, ecs_entity_t zevice_pointer_entity) {
-    ZevicePointer *zevicePointer = zox_get_mut(zevice_pointer_entity, ZevicePointer)
+void finger_released(ecs_world_t *world, ecs_entity_t e) {
+    ZevicePointer *zevicePointer = zox_get_mut(e, ZevicePointer)
     // this shouldn't happen... but on Steam Deck it does
-    if (devices_get_pressed_this_frame(zevicePointer->value)) return;
-    devices_set_released_this_frame(&zevicePointer->value, 1);
-    devices_set_is_pressed(&zevicePointer->value, 0);
-    zox_modified(zevice_pointer_entity, ZevicePointer)
-    set_id(world, zevice_pointer_entity, 0);
+    if (devices_get_is_pressed(zevicePointer->value)) {
+        // zox_logg("finger released!\n")
+        devices_set_released_this_frame(&zevicePointer->value, 1);
+        devices_set_is_pressed(&zevicePointer->value, 0);
+        zox_modified(e, ZevicePointer)
+        set_id(world, e, 0);
+    }
 }
 
 // uses sdl to get touchscreen and finger data directly instead of events
@@ -28,7 +30,7 @@ void finger_released(ecs_world_t *world, ecs_entity_t zevice_pointer_entity) {
 //      > make spawn and destroy finger entities dynamically
 void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices) {
     touch_devices_count = SDL_GetNumTouchDevices();
-    if (!touch_devices_count) return;
+    // if (!touch_devices_count) return;
     // get touchscreen finger one
     ecs_entity_t zevice_pointer_entity = zevices->value[0];
     const ID *id = zox_get(zevice_pointer_entity, ID)
@@ -52,7 +54,7 @@ void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices) {
             int2_flip_y(&finger_position, screen_dimensions);
             ZevicePointerPosition *zevicePointerPosition = zox_get_mut(zevice_pointer_entity, ZevicePointerPosition);
             // zox_log("   finger [%i]: %fx%f > %f\n", finger->id, finger->x, finger->y, finger->pressure)
-            if (id->value == 0) { // first touch
+            if (!id->value) { // first touch
                 set_id(world, zevice_pointer_entity, new_id);
                 ZevicePointer *zevicePointer = zox_get_mut(zevice_pointer_entity, ZevicePointer)
                 devices_set_pressed_this_frame(&zevicePointer->value, 1);
@@ -72,6 +74,7 @@ void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices) {
             #endif
             found_finger = 1;
         }
+        if (found_finger) break;
     }
     if (!found_finger) finger_released(world, zevice_pointer_entity);
     // if (!fingers_count) finger_released(world, zevice_pointer_entity);

@@ -23,14 +23,14 @@ ecs_entity_t spawn_virtual_joystick(ecs_world_t *world, int2 position) {
     fix_for_screen_size(&pixel_size, screen_dimensions);
     float2 anchor = float2_zero;
     const unsigned char layer = 4;
-    int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
+    int2 canvas_size = zox_get_value(main_canvas, PixelSize)
     zox_instance(prefab_virtual_joystick)
     zox_name("virtual_joystick")
     float2 position2D = initialize_ui_components(world, e, main_canvas, position, pixel_size, anchor, 0, canvas_size);
-    Children *children = ecs_get_mut(world, e, Children);
+    Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, 1)
     children->value[0] = spawn_virtual_joystick_pointer(world, e, (layer + 1), (int2) { 0, 0 }, (float2) { 0.5f, 0.5f }, position2D, pixel_size, canvas_size);
-    ecs_modified(world, e, Children);
+    zox_modified(e, Children)
     virtual_joystick = e;
     #ifdef zoxel_debug_spawns
         zoxel_log("Spawned virtual_joystick [%lu]\n", (long int) e);

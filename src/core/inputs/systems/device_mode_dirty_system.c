@@ -11,7 +11,7 @@ void DeviceModeDirtySystem(ecs_iter_t *it) {
         deviceModeDirty->value = 0;
         disable_inputs_until_release(world, e);
 #ifdef zox_debug_log_device_mode_system
-        zoxel_log("     > devicemode dirty [%i]\n", deviceMode->value);
+        zox_log("     > devicemode dirty [%i]\n", deviceMode->value)
 #endif
     }
 } zox_declare_system(DeviceModeDirtySystem)

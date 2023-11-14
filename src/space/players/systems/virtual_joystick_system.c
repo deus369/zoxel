@@ -8,7 +8,7 @@
 
 void delete_virtual_joystick(ecs_world_t *world) {
     if (virtual_joystick) {
-        zoxel_log(" - deleting virtual joystick ui\n");
+        // zoxel_log(" - deleting virtual joystick ui\n");
         zox_delete(virtual_joystick)
         virtual_joystick = 0;
     }
@@ -76,37 +76,37 @@ void VirtualJoystickSystem(ecs_iter_t *it) {
                     }
                 }
             }
-            #ifdef zoxel_mouse_emulate_touch
-                else if (deviceMode->value == zox_device_mode_keyboardmouse) {
-                    if (ecs_has(world, device_entity, Mouse)) {
-                        const Mouse *mouse = ecs_get(world, device_entity, Mouse);
-                        if (mouse->left.pressed_this_frame) {
-                            delete_virtual_joystick(world);
-                            zoxel_log(" + spawning virtual joystick ui at %ix%i\n", mouse->position.x, mouse->position.y);
-                            if (is_playing) spawn_virtual_joystick(world, mouse->position);
-                        } else if (mouse->left.released_this_frame) {
-                            delete_virtual_joystick(world);
-                        } else if (mouse->left.is_pressed && virtual_joystick != 0) {
-                            const PixelPosition *virtual_joystick_position = ecs_get(world, virtual_joystick, PixelPosition);
-                            const Children *ui_children = ecs_get(world, virtual_joystick, Children);
-                            int2 delta_position = int2_sub(mouse->position, virtual_joystick_position->value);
-                            ecs_entity_t joystick_pointer = ui_children->value[0];
-                            const PixelSize *virtual_joystick_size = ecs_get(world, virtual_joystick, PixelSize);
-                            const PixelSize *virtual_joystick_pointer_size = ecs_get(world, joystick_pointer, PixelSize);
-                            int2 size_limits = int2_multiply_float(int2_sub(virtual_joystick_size->value, virtual_joystick_pointer_size->value), 0.5f);
-                            PixelPosition *pixel_position = ecs_get_mut(world, joystick_pointer, PixelPosition);
-                            pixel_position->value.x = delta_position.x;
-                            pixel_position->value.y = delta_position.y;
-                            int2_limit(&pixel_position->value, size_limits);
-                            ecs_modified(world, joystick_pointer, PixelPosition);
-                            float2 input_value = (float2) { pixel_position->value.x / (float) size_limits.x, pixel_position->value.y / (float) size_limits.y };
-                            //float add_abs = float_abs(input_value.x) + float_abs(input_value.y);
-                            //if (add_abs > 1.0f) float2_divide_p(&input_value, add_abs);
-                            zoxel_log(" > joystick value is [%fx%f]\n", input_value.x, input_value.y);
-                        }
+#ifdef zoxel_mouse_emulate_touch
+            else if (deviceMode->value == zox_device_mode_keyboardmouse) {
+                if (ecs_has(world, device_entity, Mouse)) {
+                    const Mouse *mouse = ecs_get(world, device_entity, Mouse);
+                    if (mouse->left.pressed_this_frame) {
+                        delete_virtual_joystick(world);
+                        zoxel_log(" + spawning virtual joystick ui at %ix%i\n", mouse->position.x, mouse->position.y);
+                        if (is_playing) spawn_virtual_joystick(world, mouse->position);
+                    } else if (mouse->left.released_this_frame) {
+                        delete_virtual_joystick(world);
+                    } else if (mouse->left.is_pressed && virtual_joystick != 0) {
+                        const PixelPosition *virtual_joystick_position = ecs_get(world, virtual_joystick, PixelPosition);
+                        const Children *ui_children = ecs_get(world, virtual_joystick, Children);
+                        int2 delta_position = int2_sub(mouse->position, virtual_joystick_position->value);
+                        ecs_entity_t joystick_pointer = ui_children->value[0];
+                        const PixelSize *virtual_joystick_size = ecs_get(world, virtual_joystick, PixelSize);
+                        const PixelSize *virtual_joystick_pointer_size = ecs_get(world, joystick_pointer, PixelSize);
+                        int2 size_limits = int2_multiply_float(int2_sub(virtual_joystick_size->value, virtual_joystick_pointer_size->value), 0.5f);
+                        PixelPosition *pixel_position = ecs_get_mut(world, joystick_pointer, PixelPosition);
+                        pixel_position->value.x = delta_position.x;
+                        pixel_position->value.y = delta_position.y;
+                        int2_limit(&pixel_position->value, size_limits);
+                        ecs_modified(world, joystick_pointer, PixelPosition);
+                        float2 input_value = (float2) { pixel_position->value.x / (float) size_limits.x, pixel_position->value.y / (float) size_limits.y };
+                        //float add_abs = float_abs(input_value.x) + float_abs(input_value.y);
+                        //if (add_abs > 1.0f) float2_divide_p(&input_value, add_abs);
+                        zoxel_log(" > joystick value is [%fx%f]\n", input_value.x, input_value.y);
                     }
                 }
-            #endif
+            }
+#endif
         }
     }
 } zox_declare_system(VirtualJoystickSystem)

@@ -7,11 +7,24 @@ unsigned char game_rule_attach_to_character = 1;
 // do I still need render_camera_matrix? - yes - used to insert matrix in each camera system run
 ecs_entity_t game_ui = 0;
 
-void dispose_in_game_ui(ecs_world_t *world) {
+void dispose_in_game_ui_touch(ecs_world_t *world) {
     if (game_ui) {
+        // zox_log("  > disposing touch ui [%lu]\n", game_ui)
         zox_delete(game_ui)
         game_ui = 0;
     }
+}
+
+void dispose_in_game_ui(ecs_world_t *world) {
+    dispose_in_game_ui_touch(world);
+}
+
+void spawn_in_game_ui_touch(ecs_world_t *world) {
+    if (game_ui) return;
+    const unsigned char pause_button_size = 80;
+    const ClickEvent on_pause_ui = (ClickEvent) { &button_event_pause_game };
+    game_ui = spawn_button_on_canvas(world, main_canvas, (int2) { pause_button_size, pause_button_size }, (byte2) { 8, 4 }, (color) { 77, 32, 44, 255 }, "P", pause_button_size, float2_zero, on_pause_ui);
+    // zox_log("  > spawning touch ui [%lu]\n", game_ui)
 }
 
 void spawn_in_game_ui(ecs_world_t *world) {    // spawn game uis
@@ -20,11 +33,7 @@ void spawn_in_game_ui(ecs_world_t *world) {    // spawn game uis
     #ifdef zoxel_mouse_emulate_touch
         is_touch = 1;
     #endif
-    if (is_touch) {
-        const unsigned char pause_button_size = 80;
-        const ClickEvent on_pause_ui = (ClickEvent) { &button_event_pause_game };
-        game_ui = spawn_button_on_canvas(world, main_canvas, (int2) { pause_button_size, pause_button_size }, (byte2) { 8, 4 }, (color) { 77, 32, 44, 255 }, "P", pause_button_size, float2_zero, on_pause_ui);
-    }
+    if (is_touch) spawn_in_game_ui_touch(world);
 }
 
 void end_game(ecs_world_t *world) {
@@ -33,8 +42,8 @@ void end_game(ecs_world_t *world) {
     // detatch character
     ecs_entity_t main_camera = main_cameras[0]; // get player camera link instead
     ecs_entity_t character = 0;
-    if (camera_follow_mode == zox_camera_follow_mode_attach) character = ecs_get(world, main_camera, ParentLink)->value;
-    else if (camera_follow_mode == zox_camera_follow_mode_follow_xz) character = ecs_get(world, main_camera, CameraFollowLink)->value;
+    if (camera_follow_mode == zox_camera_follow_mode_attach) character = zox_get_value(main_camera, ParentLink)
+    else if (camera_follow_mode == zox_camera_follow_mode_follow_xz) character = zox_get_value(main_camera, CameraFollowLink)
     if (character) detatch_from_character(world, main_player, main_camera, local_character3D);
     // const int edge_buffer = 8 * default_ui_scale;
     const char *game_name = "zoxel";
