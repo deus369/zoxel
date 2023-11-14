@@ -1,7 +1,8 @@
 // timing system macros
 #include <time.h>
 
-#define clocks_per_second 10000000.0 // 0
+#define clocks_per_second2 CLOCKS_PER_SEC
+#define clocks_per_second CLOCKS_PER_SEC // 10000000.0 // 0
 double time_app_started = 0;
 
 #define begin_timing()\
@@ -20,7 +21,7 @@ double get_time_seconds() {
 }
 
 #define get_timing_passed()\
-     (double) (clock() - time_start) / CLOCKS_PER_SEC
+     (double) (clock() - time_start) / clocks_per_second2
 
 #ifdef zoxel_time_always
     #define end_timing(system_name)\
@@ -43,7 +44,7 @@ double get_time_seconds() {
 #endif
 
 #define end_timing_absolute(system_name)\
-    double time_taken = (double) (clock() - time_start) / CLOCKS_PER_SEC;\
+    double time_taken = (double) (clock() - time_start) / clocks_per_second2;\
     if (time_taken >= 1.0) {\
         zoxel_log("%s [%fs]\n", system_name, time_taken);\
     } else {\
