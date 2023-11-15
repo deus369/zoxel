@@ -11,22 +11,17 @@ void button_event_clicked_inspepctor(ecs_world_t *world, ecs_entity_t trigger_en
 }
 
 // like text, sets the list of text onto the ui element list
-void set_ui_list_inspector(ecs_world_t *world, Children *children, ecs_entity_t window_entity,
-    int elements_visible, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int labels_count,
-    const ClickEvent click_event,
-    const unsigned char button_layer, const int2 button_padding, const int button_inner_margins, const int font_size,
-    const unsigned char list_start, const int2 list_margins,
-    const unsigned char is_scrollbar, const int scrollbar_width, const int scrollbar_margins,
-    const float2 window_position,  const int2 window_size, const int2 canvas_size) {
+void set_ui_list_inspector(ecs_world_t *world, Children *children, ecs_entity_t window_entity, int elements_visible, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int labels_count, const ClickEvent click_event, const unsigned char button_layer, const int2 button_padding, const int button_inner_margins, const int font_size, const unsigned char list_start, const int2 list_margins, const unsigned char is_scrollbar, const int scrollbar_width, const int scrollbar_margins, const float2 window_position, const int2 window_pixel_position_global, const int2 window_size, const int2 canvas_size) {
     // refresh elements
-    int childrens_length = list_start + labels_count;
+    ecs_entity_t canvas = main_canvas;
+    const int childrens_length = list_start + labels_count;
     for (int j = list_start; j < children->length; j++) zox_delete(children->value[j]) // destroy previous
     resize_memory_component(Children, children, ecs_entity_t, childrens_length)
     for (int j = 0; j < labels_count; j++) {
         unsigned char render_disabled = !(j >= 0 && j < elements_visible);
         int2 label_position = (int2) { 0, (int) (window_size.y / 2) - (j + 0.5f) * (font_size + button_padding.y * 2) - list_margins.y - j * button_inner_margins };
         if (is_scrollbar) label_position.x -= (scrollbar_width + scrollbar_margins * 2) / 2;
-        ecs_entity_t list_element = spawn_button(world, window_entity, label_position, button_padding, float2_half, labels->data[j].text, font_size, button_layer, window_position, window_size, canvas_size, render_disabled);
+        ecs_entity_t list_element = spawn_button(world, window_entity, canvas, label_position, button_padding, float2_half, labels->data[j].text, font_size, button_layer, window_pixel_position_global, window_size, canvas_size, render_disabled);
         zox_set(list_element, ClickEvent, { click_event.value })
         zox_prefab_set(list_element, EntityTarget, { entities->data[j] })
         children->value[list_start + j] = list_element;

@@ -1,30 +1,4 @@
-unsigned char debug_colliders = 0;
 // #define test_particles2D
-
-void toggle_collision_debug(ecs_world_t *world) {
-    debug_colliders = !debug_colliders;
-    if (debug_colliders) add_physics_debug(world, prefab_character3D);
-    else remove_physics_debug(world, prefab_character3D);
-    const ChunkLinks *chunkLinks = zox_get(local_terrain, ChunkLinks)
-    // for every chunk, use entity links, add or remove physics debug components
-    // zox_log("   > chunkLinks [%i]\n", chunkLinks->value->size)
-    for (int i = 0; i < chunkLinks->value->size; i++) {
-        int3_hash_map_pair* pair = chunkLinks->value->data[i];
-        while (pair != NULL) {
-            ecs_entity_t chunk = pair->value;
-            const EntityLinks *entityLinks = ecs_get(world, chunk, EntityLinks);
-            // const int3 chunk_position = zox_get_value(chunk, ChunkPosition)
-            // if (entityLinks->length > 0 || int3_equals(chunk_position, (int3) { 0, -1, 0 })) zox_log("      > chunk [%lu] entities [%i]\n", chunk, entityLinks->length)
-            for (int j = 0; j < entityLinks->length; j++) {
-                ecs_entity_t character_entity = entityLinks->value[j];
-                if (debug_colliders) add_physics_debug(world, character_entity);
-                else remove_physics_debug(world, character_entity);
-                // zox_log("           > character_entity [%lu]\n", character_entity)
-            }
-            pair = pair->next;
-        }
-    }
-}
 
 void on_terrain_settings_changed(ecs_world_t *world) {
     const VoxelLinks *voxelLinks = ecs_get(world, local_realm, VoxelLinks);
@@ -90,18 +64,16 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
             ecs_entity_t device_entity = deviceLinks->value[j];
             if (ecs_has(world, device_entity, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
-                if (keyboard->x.pressed_this_frame) {                        // x : fppps
-                    toggle_ui(world, &fps_display, &spawn_fps_display);
+                if (keyboard->x.pressed_this_frame) toggle_ui(world, &fps_display, &spawn_fps_display);
+#ifndef zox_on_startup_spawn_main_menu
+                else if (keyboard->g.pressed_this_frame) {
+                    const int edge_buffer = 8 * default_ui_scale;
+                    float2 window_anchor = { 0.0f, 1.0f };
+                    int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
+                    const char *game_name = "zoxel";
+                    spawn_main_menu(world, game_name, window_position, window_anchor, 0);
                 }
-                #ifndef zox_on_startup_spawn_main_menu
-                    else if (keyboard->g.pressed_this_frame) {
-                        const int edge_buffer = 8 * default_ui_scale;
-                        float2 window_anchor = { 0.0f, 1.0f };
-                        int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
-                        const char *game_name = "zoxel";
-                        spawn_main_menu(world, game_name, window_position, window_anchor, 0);
-                    }
-                #endif
+#endif
 #ifdef test_particles2D
                 else if (keyboard->f.is_pressed) Particle2DSpawnSystem(world, float2_zero, particleSpawnCount);
 #endif
@@ -109,31 +81,6 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
         }
     }
 } zox_declare_system(PlayerShortcutsSingleSystem)
-
-void EditorInputSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
-    const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
-    for (int i = 0; i < it->count; i++) {
-        const DeviceLinks *deviceLinks = &deviceLinkss[i];
-        for (int j = 0; j < deviceLinks->length; j++) {
-            ecs_entity_t device_entity = deviceLinks->value[j];
-            if (zox_has( device_entity, Keyboard)) {
-                const Keyboard *keyboard = zox_get(device_entity, Keyboard)
-                // gizmos
-                if (keyboard->z.pressed_this_frame) toggle_collision_debug(world);      // z : collision gizmos
-
-                else if (keyboard->v.pressed_this_frame) toggle_ui(world, &game_debug_label, &spawn_game_debug_label);      // v : game debug ui
-                else if (keyboard->b.pressed_this_frame) toggle_ui(world, &quads_label, &spawn_quad_count_label);           // b : quad_ui
-                else if (keyboard->c.pressed_this_frame) spawn_zoxel_window(world);     // c : console
-
-#ifdef zox_test_hierarchy
-                else if (keyboard->f.pressed_this_frame) toggle_ui(world, &hierarchy, &spawn_editor_hierarchy);
-                else if (keyboard->g.pressed_this_frame) toggle_ui(world, &inspector, &spawn_inspector);
-#endif
-            }
-        }
-    }
-} zox_declare_system(EditorInputSystem)
 
 /*if (ecs_is_valid(world, local_character3D) && ecs_has(world, local_character3D, CameraLink)) {
     const CameraLink *cameraLink = ecs_get(world, local_character3D, CameraLink);

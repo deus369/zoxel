@@ -115,13 +115,8 @@ void button_event_clicked_hierarchy(ecs_world_t *world, ecs_entity_t trigger_ent
 }
 
 // like text, sets the list of text onto the ui element list
-void set_ui_list_hierarchy(ecs_world_t *world, Children *children, ecs_entity_t window_entity,
-    int elements_visible, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int labels_count,
-    const ClickEvent click_event,
-    const unsigned char button_layer, const int2 button_padding, const int button_inner_margins, const int font_size,
-    const unsigned char list_start, const int2 list_margins,
-    const unsigned char is_scrollbar, const int scrollbar_width, const int scrollbar_margins,
-    const float2 window_position,  const int2 window_size, const int2 canvas_size) {
+void set_ui_list_hierarchy(ecs_world_t *world, Children *children, ecs_entity_t window_entity, int elements_visible, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int labels_count, const ClickEvent click_event, const unsigned char button_layer, const int2 button_padding, const int button_inner_margins, const int font_size, const unsigned char list_start, const int2 list_margins, const unsigned char is_scrollbar, const int scrollbar_width, const int scrollbar_margins, const float2 window_position, const int2 window_pixel_position_global, const int2 window_size, const int2 canvas_size) {
+    ecs_entity_t canvas = main_canvas;
     // resize scrollbar
     ecs_entity_t scrollbar = children->value[1];
     ecs_entity_t scrollbar_front = zox_gett_value(scrollbar, Children)[0];
@@ -140,7 +135,7 @@ void set_ui_list_hierarchy(ecs_world_t *world, Children *children, ecs_entity_t 
         unsigned char render_disabled = !(j >= 0 && j < elements_visible);
         int2 label_position = (int2) { 0, (int) (window_size.y / 2) - (j + 0.5f) * (font_size + button_padding.y * 2) - list_margins.y - j * button_inner_margins };
         if (is_scrollbar) label_position.x -= (scrollbar_width + scrollbar_margins * 2) / 2;
-        ecs_entity_t list_element = spawn_button(world, window_entity, label_position, button_padding, float2_half, labels->data[j].text, font_size, button_layer, window_position, window_size, canvas_size, render_disabled);
+        ecs_entity_t list_element = spawn_button(world, window_entity, canvas, label_position, button_padding, float2_half, labels->data[j].text, font_size, button_layer, window_pixel_position_global, window_size, canvas_size, render_disabled);
         zox_set(list_element, ClickEvent, { click_event.value })
         zox_prefab_set(list_element, EntityTarget, { entities->data[j] })
         children->value[list_start + j] = list_element;
@@ -157,18 +152,20 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
     const unsigned char is_scrollbar = 1;
     const unsigned char list_start = is_header + is_scrollbar;
     const Position2D *position2Ds = ecs_field(it, Position2D, 2);
-    const Layer2D *layer2Ds = ecs_field(it, Layer2D, 3);
-    const ListUIMax * listUIMaxs = ecs_field(it, ListUIMax, 4);
-    const ElementFontSize * elementFontSizes = ecs_field(it, ElementFontSize, 5);
-    HierarchyUIDirty *hierarchyUIDirtys = ecs_field(it, HierarchyUIDirty,6);
-    PixelSize *pixelSizes = ecs_field(it, PixelSize, 7);
-    TextureSize *textureSizes = ecs_field(it, TextureSize, 8);
-    Children *childrens = ecs_field(it, Children, 9);
+    const CanvasPixelPosition *canvasPixelPositions = ecs_field(it, CanvasPixelPosition, 3);
+    const Layer2D *layer2Ds = ecs_field(it, Layer2D, 4);
+    const ListUIMax * listUIMaxs = ecs_field(it, ListUIMax, 5);
+    const ElementFontSize * elementFontSizes = ecs_field(it, ElementFontSize, 6);
+    HierarchyUIDirty *hierarchyUIDirtys = ecs_field(it, HierarchyUIDirty, 7);
+    PixelSize *pixelSizes = ecs_field(it, PixelSize, 8);
+    TextureSize *textureSizes = ecs_field(it, TextureSize, 9);
+    Children *childrens = ecs_field(it, Children, 10);
     for (int i = 0; i < it->count; i++) {
         HierarchyUIDirty *hierarchyUIDirty = &hierarchyUIDirtys[i];
         if (!hierarchyUIDirty->value) continue;
         ecs_entity_t window_entity = it->entities[i];
         const Position2D *position2D = &position2Ds[i];
+        const CanvasPixelPosition *canvasPixelPosition = &canvasPixelPositions[i];
         const Layer2D *layer2D = &layer2Ds[i];
         const ListUIMax *listUIMax = &listUIMaxs[i];
         const ElementFontSize *elementFontSize = &elementFontSizes[i];
@@ -177,7 +174,7 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         Children *children = &childrens[i];
         //Children *children = zox_get_mut(e, Children)
         ecs_entity_t canvas = main_canvas;
-        int2 canvas_size = ecs_get(world, canvas, PixelSize)->value;
+        int2 canvas_size = zox_get_value(canvas, PixelSize)
         // spawn extra entities as names
         int elements_visible = listUIMax->value; // zox_get_value(e, ListUIMax)
         int font_size = elementFontSize->value * default_ui_scale;
@@ -207,6 +204,7 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         // int childrens_length = list_start + labels_count;
         int max_characters = get_max_characters_d("hierarchy", labels);
         const float2 window_position = position2D->value;
+        const int2 window_pixel_position_global = canvasPixelPosition->value;
         int2 window_size = pixelSize->value;
         // this resizes the window based on size_x (characters)
         //      todo: window resizeable - x/y - variable
@@ -224,7 +222,7 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
             button_layer, button_padding, button_inner_margins, font_size,
             list_start, list_margins,
             is_scrollbar, scrollbar_width, scrollbar_margins,
-            window_position,  window_size, canvas_size);
+            window_position, window_pixel_position_global, window_size, canvas_size);
 
         hierarchyUIDirty->value = 0;
     }

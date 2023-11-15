@@ -42,21 +42,15 @@ void spawn_prefabs_lines2D(ecs_world_t *world) {
     spawn_line2D(world, (float2) { -line_length, -line_length }, (float2) { -line_length, line_length }, 6.0f, 30);*/
 }
 
-void set_line_element_real_position2D(ecs_world_t *world, ecs_entity_t e, float2 real_position2D, float2 canvas_size_f, float aspect_ratio, int2 parent_position) {
+void set_line_element_real_position2D(ecs_world_t *world, ecs_entity_t e, float2 real_position2D, int2 canvas_size, int2 parent_position) {
     if (ecs_has(world, e, LinePosition2D)) {
+        float2 canvas_size_f = int2_to_float2(canvas_size);
+        float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
         const LineLocalPosition2D *lineLocalPosition2D = ecs_get(world, e, LineLocalPosition2D);
         int4 new_line_position = get_new_line_position(real_position2D, canvas_size_f, aspect_ratio, parent_position, lineLocalPosition2D->value);
         LinePosition2D *linePosition2D = ecs_get_mut(world, e, LinePosition2D);
         linePosition2D->value = new_line_position;
         ecs_modified(world, e, LinePosition2D);
-        // zox_set(e, LinePosition2D, { new_line_position })
-        //int2 new_mid_point = (int2) { ceil((real_position2D.x / aspect_ratio + 0.5f) * canvas_size_f.x), ((real_position2D.y + 0.5f) * canvas_size_f.y) };
-        //int2 delta = int2_sub(new_mid_point, pixel_position);
-        // linePosition2D->value = lineLocalPosition2D->value;
-        // linePosition2D->value = (int4) { new_mid_point.x, new_mid_point.y, new_mid_point.x, new_mid_point.y };
-        // int4_add_int2(&linePosition2D->value, delta);
-        // zox_set(e, LinePosition2D, { linePosition2D->value })
-        // zoxel_log(" > new_mid_point [%ix%i] delta [%ix%i]\n", new_mid_point.x, new_mid_point.y, delta.x, delta.y);
     }
 }
 
@@ -86,3 +80,12 @@ if (!headless) zox_render2D_system(Line2DRenderSystem, [none] Line2D, [in] LineD
 zoxel_end_module(Lines2D)
 
 #endif
+
+// zox_set(e, LinePosition2D, { new_line_position })
+//int2 new_mid_point = (int2) { ceil((real_position2D.x / aspect_ratio + 0.5f) * canvas_size_f.x), ((real_position2D.y + 0.5f) * canvas_size_f.y) };
+//int2 delta = int2_sub(new_mid_point, pixel_position);
+// linePosition2D->value = lineLocalPosition2D->value;
+// linePosition2D->value = (int4) { new_mid_point.x, new_mid_point.y, new_mid_point.x, new_mid_point.y };
+// int4_add_int2(&linePosition2D->value, delta);
+// zox_set(e, LinePosition2D, { linePosition2D->value })
+// zoxel_log(" > new_mid_point [%ix%i] delta [%ix%i]\n", new_mid_point.x, new_mid_point.y, delta.x, delta.y);

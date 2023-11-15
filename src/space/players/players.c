@@ -12,6 +12,7 @@ zox_memory_component(PlayerLinks, ecs_entity_t)
 #include "prefabs/player.c"
 // zoxel_util_includes
 #include "util/pause_util.c"
+#include "util/editor_util.c"
 // zoxel_system_includes
 #include "systems/free_camera_move_system.c"
 #include "systems/free_camera_rotate_system.c"
@@ -20,6 +21,7 @@ zox_memory_component(PlayerLinks, ecs_entity_t)
 #include "systems/player_pause_system.c"
 #include "systems/device_mode_response_system.c"
 #include "systems/virtual_joystick_system.c"
+#include "systems/editor_input_system.c"
 // zoxel_module_includes
 #include "players3D/players3D.c"
 #include "players2D/players2D.c"
@@ -53,9 +55,9 @@ zox_import_module(Players3D)
 zox_system(PlayerToggleCameraSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks, [in] CharacterLink)
 zox_system_1(PlayerShortcutsSingleSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks)
 zox_system_1(PlayerPauseSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks)
-zox_system_1(EditorInputSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks)
 zox_system_1(VirtualJoystickSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterResult)
 zox_system_1(DeviceModeResponseSystem, EcsPreStore, [in] DeviceMode, [in] DeviceModeDirty) // has to update before DeviceModeDirtySystem
+zox_system_1(EditorInputSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks)
 zoxel_end_module(Players)
 
 #endif

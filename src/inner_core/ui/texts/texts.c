@@ -23,12 +23,13 @@ zox_memory_component(FontData, byte2)           // points used for generating a 
 zox_memory_component(ZextData, unsigned char)   // zigel indexes
 // zoxel_util_includes
 #include "util/default_font.c"
+#include "util/zigel_util.c"
 // zoxel_prefab_includes
 #include "prefabs/font.c"
 #include "prefabs/font_style.c"
 #include "prefabs/zigel.c"
-#include "util/zext_util.c"
 #include "prefabs/zext.c"
+#include "util/zext_util.c"
 // zoxel_system_declares
 #include "systems/font_texture_system.c"
 #include "systems/zext_update_system.c"
@@ -74,7 +75,7 @@ zox_system(AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [
 zox_system_ctx(FontTextureSystem, EcsPostUpdate, fonts, [none] FontTexture, [out] TextureDirty, [out] TextureData, [in] TextureSize, [out] GenerateTexture, [in] ZigelIndex, [in] Color)
 if (!headless) zox_system(ZextBackgroundUpdateSystem, EcsPostUpdate, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] MeshAlignment, [in] CanvasLink, [out] PixelSize, [out] TextureSize, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshDirty)
 if (!headless) zox_system(ZextBackgroundUpdateSystem2, EcsPostUpdate, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] MeshAlignment, [in] CanvasLink, [in] ParentLink)
-zox_system_ctx_1(ZextUpdateSystem, main_thread_pipeline, zexts, [none] Zext, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] Position2D, [in] PixelSize, [in] MeshAlignment, [in] RenderDisabled, [out] ZextDirty, [out] Children)
+zox_system_ctx_1(ZextUpdateSystem, main_thread_pipeline, zexts, [none] Zext, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] CanvasPixelPosition, [in] PixelSize, [in] MeshAlignment, [in] RenderDisabled, [out] ZextDirty, [out] Children)
 zoxel_end_module(Texts)
 
 #endif

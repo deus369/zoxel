@@ -8,6 +8,10 @@ typedef struct {
 #define int2_two (int2) { 2, 2 }
 #define int2_four (int2) { 4, 4 }
 
+int2 int2_half(int2 value) {
+    return (int2) { value.x / 2, value.y / 2 };
+}
+
 unsigned char int2_equals(int2 a, int2 b) {
     return a.x == b.x && a.y == b.y;
 }

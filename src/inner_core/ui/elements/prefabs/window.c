@@ -23,17 +23,20 @@ ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_window(ecs_world_t *world, const char *header_label, int2 pixel_position2D, int2 pixel_size, float2 anchor, ecs_entity_t canvas, unsigned char layer) {
-    int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
+ecs_entity_t spawn_window(ecs_world_t *world, const char *header_label, int2 pixel_position, int2 pixel_size, float2 anchor, ecs_entity_t canvas, unsigned char layer) {
+    int2 canvas_size = zox_get_value(canvas, PixelSize)
     unsigned char header_layer = layer + 1;
     int font_size = 28;
     int header_margins = 16;
     zox_instance(prefab_window)
     zox_name("window")
-    float2 real_position2D = initialize_ui_components(world, e, canvas, pixel_position2D, pixel_size, anchor, layer, canvas_size);
+    ecs_entity_t parent = canvas;
+    int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
+    float2 position2D = get_element_position(pixel_position_global, canvas_size);
+    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, anchor, layer, position2D, pixel_position_global);
     Children *children = ecs_get_mut(world, e, Children);
     resize_memory_component(Children, children, ecs_entity_t, 1)
-    children->value[0] = spawn_header(world, e, (int2) { 0, - font_size / 2 - header_margins / 2 }, (int2) { pixel_size.x, font_size + header_margins}, (float2) { 0.5f, 1.0f }, header_label, font_size, header_margins, header_layer, real_position2D, pixel_size, 1, canvas_size);
+    children->value[0] = spawn_header(world, e, canvas, (int2) { 0, - font_size / 2 - header_margins / 2 }, (int2) { pixel_size.x, font_size + header_margins}, (float2) { 0.5f, 1.0f }, header_label, font_size, header_margins, header_layer, pixel_position_global, pixel_size, 1, canvas_size);
     ecs_modified(world, e, Children);
     #ifdef zoxel_debug_spawns
         zox_log(" > spawned window [%lu]\n", e)

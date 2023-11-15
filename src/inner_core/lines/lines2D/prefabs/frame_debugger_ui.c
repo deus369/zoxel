@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_frame_debugger_ui(ecs_world_t *world) {
 
 ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const char *header_label, int2 pixel_position2D, int2 pixel_size, float2 anchor, ecs_entity_t canvas, unsigned char layer) {
     unsigned char is_close_button = 1;
-    int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
+    int2 canvas_size = zox_get_value(canvas, PixelSize)
     color line_color = (color) { 6, 222, 222, 255 };
     int lines_count = record_frames_count; // 60;
     unsigned char header_layer = layer + 1;
@@ -26,13 +26,14 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const char *header_labe
     zox_instance(prefab_frame_debugger_ui)
     zox_name("frame_debugger_ui")
     float2 real_position2D = initialize_ui_components(world, e, canvas, pixel_position2D, pixel_size, anchor, layer, canvas_size);
+    int2 pixel_position_global = int2_zero;
     int children_count = 1 + lines_count;
     Children *children = ecs_get_mut(world, e, Children);
     resize_memory_component(Children, children, ecs_entity_t, children_count)
     int2 header_position = (int2) { 0, - font_size / 2 - header_margins / 2 };
     int2 header_size = (int2) { pixel_size.x, font_size + header_margins };
     float2 header_anchor = (float2) { 0.5f, 1.0f };
-    children->value[0] = spawn_header(world, e, header_position, header_size, header_anchor, header_label, font_size, header_margins, header_layer, real_position2D, pixel_size, is_close_button, canvas_size);
+    children->value[0] = spawn_header(world, e, canvas, header_position, header_size, header_anchor, header_label, font_size, header_margins, header_layer, pixel_position_global, pixel_size, is_close_button, canvas_size);
     for (int i = 0; i < lines_count; i++) {
         int position_x = line_margins + i * line_spacing;
         int2 start_position = (int2) { position_x, lines_min_height };
