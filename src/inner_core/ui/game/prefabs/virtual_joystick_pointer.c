@@ -17,15 +17,17 @@ ecs_entity_t spawn_prefab_virtual_joystick_pointer(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_virtual_joystick_pointer(ecs_world_t *world, ecs_entity_t parent, unsigned char layer, int2 position, float2 anchor, float2 parent_position2D, int2 parent_pixel_size, int2 canvas_size) {
+ecs_entity_t spawn_virtual_joystick_pointer(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t canvas, unsigned char layer, int2 pixel_position, float2 anchor, int2 parent_pixel_position_global, int2 parent_pixel_size, int2 canvas_size) {
     int2 pixel_size = virtual_joystick_pointer_size;
     fix_for_screen_size(&pixel_size, screen_dimensions);
     zox_instance(prefab_virtual_joystick_pointer)
     zox_name("virtual_joystick_pointer")
-    initialize_ui_components_2(world, e, parent, position, pixel_size, anchor, layer, parent_position2D, parent_pixel_size, canvas_size);
+    int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
+    float2 position2D = get_element_position(pixel_position_global, canvas_size);
+    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, anchor, layer, position2D, pixel_position_global);
     virtual_joystick_pointer = e;
-    #ifdef zoxel_debug_spawns
-        zox_log("   > spawned virtual_joystick_pointer [%lu]\n", e)
-    #endif
+#ifdef zoxel_debug_spawns
+    zox_log("   > spawned virtual_joystick_pointer [%lu]\n", e)
+#endif
     return e;
 }

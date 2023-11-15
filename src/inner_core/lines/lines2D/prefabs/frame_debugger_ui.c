@@ -8,7 +8,7 @@ ecs_entity_t spawn_prefab_frame_debugger_ui(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const char *header_label, int2 pixel_position2D, int2 pixel_size, float2 anchor, ecs_entity_t canvas, unsigned char layer) {
+ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const char *header_label, int2 pixel_position, int2 pixel_size, float2 anchor, ecs_entity_t canvas, unsigned char layer) {
     unsigned char is_close_button = 1;
     int2 canvas_size = zox_get_value(canvas, PixelSize)
     color line_color = (color) { 6, 222, 222, 255 };
@@ -25,8 +25,10 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const char *header_labe
     // zoxel_log(" > line_spacing [%f] - size [%i]\n", line_spacing, pixel_size.x);
     zox_instance(prefab_frame_debugger_ui)
     zox_name("frame_debugger_ui")
-    float2 real_position2D = initialize_ui_components(world, e, canvas, pixel_position2D, pixel_size, anchor, layer, canvas_size);
-    int2 pixel_position_global = int2_zero;
+    ecs_entity_t parent = canvas;
+    int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
+    float2 position2D = get_element_position(pixel_position_global, canvas_size);
+    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, anchor, layer, position2D, pixel_position_global);
     int children_count = 1 + lines_count;
     Children *children = ecs_get_mut(world, e, Children);
     resize_memory_component(Children, children, ecs_entity_t, children_count)
@@ -38,7 +40,7 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const char *header_labe
         int position_x = line_margins + i * line_spacing;
         int2 start_position = (int2) { position_x, lines_min_height };
         int2 end_position = (int2) { position_x, lines_max_height };
-        ecs_entity_t line = spawn_ui_line2D(world, main_canvas, start_position, end_position, line_color, lines_thickness, 0, real_position2D, pixel_position2D, lines_layer);
+        ecs_entity_t line = spawn_ui_line2D(world, main_canvas, start_position, end_position, line_color, lines_thickness, 0, position2D, pixel_position, lines_layer);
         zox_set(line, ChildIndex, { i })
         zox_add_tag(line, FrameDebugLine)
         children->value[1 + i] = line;

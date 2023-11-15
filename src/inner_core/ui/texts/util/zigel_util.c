@@ -24,8 +24,6 @@ void set_zigel_position(ecs_world_t *world, ecs_entity_t zigel, unsigned char in
 
     int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     float2 position = get_element_position(pixel_position_global, canvas_size);
-    // float2 position2D = get_ui_real_position2D_parent(position, anchor, parent_pixel_position_global, parent_pixel_size, canvas_size_f, aspect_ratio);
-    // int2 global_pixel_position = (int2) { ceil((position2D.x / aspect_ratio + 0.5f) * canvas_size_f.x), ((position2D.y + 0.5f) * canvas_size_f.y) };
     zox_set(zigel, Position2D, { position })
     zox_set(zigel, PixelPosition, { pixel_position })
     zox_set(zigel, CanvasPixelPosition, { pixel_position_global })

@@ -42,17 +42,9 @@ void Line2DElementSystem(ecs_iter_t *it) {
     // zoxel_log(" > lines updated\n");
 } zox_declare_system(Line2DElementSystem)
 
-
-
 //! Sets real position when pixel position updates
 /**
 *   \done Make this instantaneous for children uis as well.
 *   \todo This needs to also account for child uis
 *   \todo Change queries still not working, make a better test function with more components.
 */
-
-/*float2 point_a = get_ui_real_position2D_canvas_no_anchor(
-    (int2) { linePosition2D->value.x, linePosition2D->value.y }, canvas_size_f, aspect_ratio);
-float2 point_b = get_ui_real_position2D_canvas_no_anchor(
-    (int2) { linePosition2D->value.z, linePosition2D->value.w }, canvas_size_f, aspect_ratio);
-lineData2D->value = (float4) { point_a.x, point_a.y, point_b.x, point_b.y };*/

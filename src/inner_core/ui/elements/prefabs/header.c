@@ -42,13 +42,9 @@ ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t 
     zox_instance(header_prefab)
     zox_name("header")
     zox_set(e, DraggedLink, { parent })
-
     int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     float2 position2D = get_element_position(pixel_position_global, canvas_size);
     initialize_ui_components_3(world, e, parent, canvas, pixel_position, size, anchor, layer, position2D, pixel_position_global);
-
-    //float2 position2D = initialize_ui_components_2(world, e, parent, pixel_position, size, anchor, layer, parent_position2D, parent_pixel_size, canvas_size);
-    //int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     int children_length = 1;
     if (is_close_button) children_length++;
     const unsigned char child_layer = layer + 1;

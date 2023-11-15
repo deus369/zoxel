@@ -12,28 +12,32 @@ ecs_entity_t spawn_prefab_virtual_joystick(ecs_world_t *world) {
     zox_prefab_set(e, Children, { 0, NULL })
     add_ui_plus_components(world, e);
     prefab_virtual_joystick = e;
-    #ifdef zoxel_debug_prefabs
-        zoxel_log("spawn_prefab virtual_joystick [%lu].\n", (long int) (e));
-    #endif
+#ifdef zoxel_debug_prefabs
+    zoxel_log("spawn_prefab virtual_joystick [%lu].\n", (long int) (e));
+#endif
     return e;
 }
 
-ecs_entity_t spawn_virtual_joystick(ecs_world_t *world, int2 position) {
+ecs_entity_t spawn_virtual_joystick(ecs_world_t *world, int2 pixel_position) {
+    ecs_entity_t canvas = main_canvas;
     int2 pixel_size = virtual_joystick_size;
     fix_for_screen_size(&pixel_size, screen_dimensions);
     float2 anchor = float2_zero;
     const unsigned char layer = 4;
-    int2 canvas_size = zox_get_value(main_canvas, PixelSize)
+    int2 canvas_size = zox_get_value(canvas, PixelSize)
     zox_instance(prefab_virtual_joystick)
     zox_name("virtual_joystick")
-    float2 position2D = initialize_ui_components(world, e, main_canvas, position, pixel_size, anchor, 0, canvas_size);
+    ecs_entity_t parent = canvas;
+    int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
+    float2 position2D = get_element_position(pixel_position_global, canvas_size);
+    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, anchor, layer, position2D, pixel_position_global);
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, 1)
-    children->value[0] = spawn_virtual_joystick_pointer(world, e, (layer + 1), (int2) { 0, 0 }, (float2) { 0.5f, 0.5f }, position2D, pixel_size, canvas_size);
+    children->value[0] = spawn_virtual_joystick_pointer(world, e, canvas, (layer + 1), (int2) { 0, 0 }, (float2) { 0.5f, 0.5f }, pixel_position_global, pixel_size, canvas_size);
     zox_modified(e, Children)
     virtual_joystick = e;
-    #ifdef zoxel_debug_spawns
-        zoxel_log("Spawned virtual_joystick [%lu]\n", (long int) e);
-    #endif
+#ifdef zoxel_debug_spawns
+    zoxel_log("Spawned virtual_joystick [%lu]\n", (long int) e);
+#endif
     return e;
 }

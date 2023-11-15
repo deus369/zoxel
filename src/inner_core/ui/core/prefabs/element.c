@@ -16,12 +16,15 @@ ecs_entity_t spawn_prefab_element(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_element(ecs_world_t *world, ecs_entity_t parent, int2 position, int2 size, float2 anchor) {
-    int2 canvas_size = ecs_get(world, main_canvas, PixelSize)->value;
+ecs_entity_t spawn_element(ecs_world_t *world, ecs_entity_t canvas, int2 pixel_position, int2 pixel_size, float2 anchor) {
+    ecs_entity_t parent = canvas;
+    int2 canvas_size = zox_get_value(canvas, PixelSize)
     zox_instance(prefab_element)
-    initialize_ui_components(world, e, parent, position, size, anchor, 0, canvas_size);
+    int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
+    float2 position2D = get_element_position(pixel_position_global, canvas_size);
+    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, anchor, 0, position2D, pixel_position_global);
 #ifdef zoxel_debug_spawns
-        zox_log(" > s   pawned element [%lu]\n", e)
+    zox_log(" > s   pawned element [%lu]\n", e)
 #endif
     return e;
 }
