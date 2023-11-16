@@ -40,6 +40,8 @@ void add_entity_components(ecs_world_t *world, text_group_dynamic_array_d* label
 void set_inspector_element(ecs_world_t *world, ecs_entity_t inspector, ecs_entity_t e) {
     if (!ecs_is_alive(world, inspector)) return;
     // print_entity(world, e);
+    const unsigned char is_scrollbar = 0;
+    const unsigned char inspector_index_offset = 1 + is_scrollbar;
 
     // const ClickEvent click_event = (ClickEvent) { &button_event_clicked_inspepctor };
     // text_group_dynamic_array_d* labels = create_text_group_dynamic_array_d();
@@ -47,13 +49,13 @@ void set_inspector_element(ecs_world_t *world, ecs_entity_t inspector, ecs_entit
     const ZoxName *zoxName = zox_get(e, ZoxName)
     const Children *insector_children = zox_get(inspector, Children)
 
-    ecs_entity_t name_label = insector_children->value[2];
+    ecs_entity_t name_label = insector_children->value[inspector_index_offset];
     set_entity_label_with_zext(world, name_label, zoxName->value, zoxName->length);
     const ecs_type_t *type = ecs_get_type(world, e);
     const ecs_id_t *type_ids = type->array;
     int32_t i, count = type->count;
     for (i = 0; i < count; i ++) {
-        int label_index = 3 + i;
+        int label_index = inspector_index_offset + 1 + i;
         if (label_index >= insector_children->length) continue;    // limit for now
         ecs_entity_t component_label = insector_children->value[label_index];
         int buffer_index = 0;
@@ -110,7 +112,7 @@ void set_inspector_element(ecs_world_t *world, ecs_entity_t inspector, ecs_entit
         }
         set_entity_label_with_text(world, component_label, buffer);
     }
-    for (i = count + 3; i < insector_children->length; i++) {
+    for (i = count + inspector_index_offset + 1; i < insector_children->length; i++) {
         ecs_entity_t component_label = insector_children->value[i];
         set_entity_label_with_text(world, component_label, "");
     }

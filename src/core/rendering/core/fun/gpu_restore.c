@@ -15,7 +15,7 @@ void restore_material_resources(ecs_world_t *world, ecs_entity_t e, GLuint2 shad
     if (ecs_has(world, e, TextureDirty)) zox_set(e, TextureDirty, { 1 })
     if (ecs_has(world, e, MaterialGPULink) && shader.x != 0 && shader.y != 0) zox_set(e, MaterialGPULink, { spawn_gpu_material_program(shader) })
     // todo: restore for MaterialInstancedGPULink
-    if (ecs_has(world, e, MaterialInstancedGPULink)) zox_set(e, MaterialInstancedGPULink, { material })
+    // if (ecs_has(world, e, MaterialInstancedGPULink)) zox_set(e, MaterialInstancedGPULink, { material })
 }
 
 void restore_children_resources(ecs_world_t *world, ecs_entity_t e) {

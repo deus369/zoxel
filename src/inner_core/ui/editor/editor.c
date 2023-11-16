@@ -27,7 +27,7 @@ zox_define_tag(EditorElement)
 zox_define_tag(HierarchyUI)
 zox_define_component(HierarchyUIDirty)
 // zoxel_define_systems
-zox_system_1(HierarchyRefreshSystem, main_thread_pipeline, [none] HierarchyUI, [in] Position2D, [in] CanvasPixelPosition, [in] Layer2D, [in] ListUIMax, [in] ElementFontSize, [out] HierarchyUIDirty, [out] PixelSize, [out] TextureSize, [out] Children)
+zox_system_1(HierarchyRefreshSystem, main_thread_pipeline, [none] HierarchyUI, [in] Position2D, [in] CanvasPixelPosition, [in] Layer2D, [in] Anchor, [in] ListUIMax, [in] ElementFontSize, [out] HierarchyUIDirty, [out] PixelPosition, [out] PixelSize, [out] TextureSize, [out] Children)
 zoxel_end_module(EditorElements)
 
 #endif

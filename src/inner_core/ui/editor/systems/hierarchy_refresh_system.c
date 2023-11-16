@@ -156,12 +156,14 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
     const Position2D *position2Ds = ecs_field(it, Position2D, 2);
     const CanvasPixelPosition *canvasPixelPositions = ecs_field(it, CanvasPixelPosition, 3);
     const Layer2D *layer2Ds = ecs_field(it, Layer2D, 4);
-    const ListUIMax * listUIMaxs = ecs_field(it, ListUIMax, 5);
-    const ElementFontSize * elementFontSizes = ecs_field(it, ElementFontSize, 6);
-    HierarchyUIDirty *hierarchyUIDirtys = ecs_field(it, HierarchyUIDirty, 7);
-    PixelSize *pixelSizes = ecs_field(it, PixelSize, 8);
-    TextureSize *textureSizes = ecs_field(it, TextureSize, 9);
-    Children *childrens = ecs_field(it, Children, 10);
+    const Anchor *anchors = ecs_field(it, Anchor, 5);
+    const ListUIMax * listUIMaxs = ecs_field(it, ListUIMax, 6);
+    const ElementFontSize * elementFontSizes = ecs_field(it, ElementFontSize, 7);
+    HierarchyUIDirty *hierarchyUIDirtys = ecs_field(it, HierarchyUIDirty, 8);
+    PixelPosition *pixelPositions = ecs_field(it, PixelPosition, 9);
+    PixelSize *pixelSizes = ecs_field(it, PixelSize, 10);
+    TextureSize *textureSizes = ecs_field(it, TextureSize, 11);
+    Children *childrens = ecs_field(it, Children, 12);
     for (int i = 0; i < it->count; i++) {
         HierarchyUIDirty *hierarchyUIDirty = &hierarchyUIDirtys[i];
         if (!hierarchyUIDirty->value) continue;
@@ -169,8 +171,10 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         const Position2D *position2D = &position2Ds[i];
         const CanvasPixelPosition *canvasPixelPosition = &canvasPixelPositions[i];
         const Layer2D *layer2D = &layer2Ds[i];
+        const Anchor *anchor = &anchors[i];
         const ListUIMax *listUIMax = &listUIMaxs[i];
         const ElementFontSize *elementFontSize = &elementFontSizes[i];
+        PixelPosition *pixelPosition = &pixelPositions[i];
         PixelSize *pixelSize = &pixelSizes[i];
         TextureSize *textureSize = &textureSizes[i];
         Children *children = &childrens[i];
@@ -192,7 +196,6 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         const ClickEvent click_event = (ClickEvent) { &button_event_clicked_hierarchy };
         text_group_dynamic_array_d* labels = create_text_group_dynamic_array_d();
         ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d();
-
         // add game entities
         add_realm_entity_to_labels(world, local_realm, labels, entities, 0);
         add_entity_children_to_labels(world, main_player, labels, entities, 0);
@@ -200,7 +203,6 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         add_entity_to_labels(world, local_terrain, labels, entities, 0);
         add_entity_to_labels(world, local_character3D, labels, entities, 0);
         add_entity_children_to_labels(world, main_canvas, labels, entities, 0);
-
         // resize window
         int labels_count = labels->size;
         // int childrens_length = list_start + labels_count;
@@ -213,10 +215,14 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         int2 new_window_size = { (font_size) * max_characters + button_padding.x * 2 + list_margins.x * 2, window_size.y };
         if (is_scrollbar) new_window_size.x += scrollbar_width + scrollbar_margins * 2;
         if (new_window_size.x != window_size.x) {
+            int header_height = zox_gett_value(children->value[0], PixelSize).y;
+            reverse_anchor_element_position2D_with_header(&pixelPosition->value, anchor->value, window_size, header_height);
             window_size = new_window_size;
             pixelSize->value = window_size;
             textureSize->value = window_size;
             on_resized_element(world, window_entity, window_size, int2_to_float2(canvas_size));
+            // set position based on new size
+            anchor_element_position2D_with_header(&pixelPosition->value, anchor->value, pixelSize->value, header_height);
         }
         // refresh elements
         set_ui_list_hierarchy(world, children, window_entity,

@@ -20,7 +20,7 @@ void add_ui_mesh_components(ecs_world_t *world, ecs_entity_t e) {
     zox_prefab_set(e, MeshVertices2D, { 0, NULL })
     zox_prefab_set(e, MeshUVs, { 0, NULL })
     add_gpu_mesh(world, e);
-    add_gpu_instanced_material(world, e);
+    // add_gpu_instanced_material(world, e);
     add_gpu_texture(world, e);
     add_gpu_uvs(world, e);
     prefab_set_mesh_indicies(world, e, square_indicies, 6);
