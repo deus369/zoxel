@@ -23,6 +23,11 @@ void float2_multiply_float2_p(float2 *input, const float2 mul) {
     input->y *= mul.y;
 }
 
+void float2_divide_float2(float2 *input, const float2 div) {
+    input->x /= div.x;
+    input->y /= div.y;
+}
+
 float2 float2_divide(float2 input, float div) {
     input.x /= div;
     input.y /= div;

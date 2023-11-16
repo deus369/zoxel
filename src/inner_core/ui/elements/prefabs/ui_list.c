@@ -20,8 +20,7 @@ int get_max_characters(const char *header_label, const text_group labels[], int 
 }
 
 ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t canvas, const char *header_label, int elements_count, int max_elements, const text_group labels[], const ClickEvent events[], int2 pixel_position, float2 anchor, unsigned char is_close_button, unsigned char font_size, unsigned char layer, unsigned char is_scrollbar) {
-    // int spawn_elements_count = min(elements_count, max_elements);
-    ecs_entity_t parent = canvas;
+    const ecs_entity_t parent = canvas;
     const unsigned char is_header = 1;
     const unsigned char list_start = is_header + is_scrollbar;
     const int children_length = (list_start + elements_count);
@@ -39,7 +38,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t
     const int button_inner_margins = (int) (scaled_font_size * 0.5f);
     int2 pixel_size = { (scaled_font_size) * max_characters + button_padding.x * 2 + list_margins.x * 2, (scaled_font_size + button_padding.y * 2) * max_elements + button_inner_margins * (max_elements - 1) + list_margins.y * 2 };
     if (is_scrollbar) pixel_size.x += (scrollbar_width / 2) + scrollbar_margins;
-    anchor_element_position2D(&pixel_position, anchor, pixel_size, header_height);
+    anchor_element_position2D_with_header(&pixel_position, anchor, pixel_size, header_height);
     zox_instance(prefab)
     zox_name("ui_list")
     zox_set(e, ListUIMax, { max_elements })
@@ -48,9 +47,11 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t
     float2 position2D = get_element_position(pixel_position_global, canvas_size);
     initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, anchor, layer, position2D, pixel_position_global);
     /*zox_log("   > ui_list %lu\n", e)
-    zox_log("       > pix pos [%ix%i]\n", pixel_position.x, pixel_position.y)
-    zox_log("       > anchor [%fx%f]\n", anchor.x, anchor.y)
+    zox_log("       > pix pixel_position [%ix%i]\n", pixel_position.x, pixel_position.y)
+    zox_log("       > pixel_size [%ix%i]\n", pixel_size.x, pixel_size.y)
     zox_log("       > pix pos global [%ix%i]\n", pixel_position_global.x, pixel_position_global.y)
+    zox_log("       > canvas [%lu] size [%fx%f]\n", canvas, canvas_size.x, canvas_size.y)
+    zox_log("       > anchor [%fx%f]\n", anchor.x, anchor.y)
     zox_log("       > position2D [%fx%f]\n", position2D.x, position2D.y)*/
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, children_length)

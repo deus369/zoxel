@@ -37,9 +37,9 @@ void on_resized_element(ecs_world_t *world, ecs_entity_t e, int2 pixel_size, flo
         zox_modified(e, MeshVertices2D)
         zox_set(e, MeshDirty, { 1 })
         zox_set(e, GenerateTexture, { 1 })
-        #ifdef debug_ui_scaling
-            zox_log("        -> Scaling: [%fx%f]\n", scale2D.x, scale2D.y)
-        #endif
+#ifdef debug_ui_scaling
+        zox_log("        -> Scaling: [%fx%f]\n", scale2D.x, scale2D.y)
+#endif
         if (zox_has(e, Window)) {
             const Children *children = zox_get(e, Children);
             ecs_entity_t header = children->value[0];

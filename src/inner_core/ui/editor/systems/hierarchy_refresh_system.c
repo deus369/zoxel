@@ -146,6 +146,8 @@ void set_ui_list_hierarchy(ecs_world_t *world, Children *children, ecs_entity_t 
     dispose_ecs_entity_t_array_d(entities);
 }
 
+
+// todo: when resize ui, reposition based on parent element (or canvas) and anchoring
 void HierarchyRefreshSystem(ecs_iter_t *it) {
     ecs_world_t *world = it->world;
     const unsigned char is_header = 1;

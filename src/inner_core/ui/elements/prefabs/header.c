@@ -15,9 +15,9 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
     zox_prefab_set(e, OutlineThickness, { 3 })
     zox_prefab_set(e, Children, { 0, NULL })
     header_prefab = e;
-    #ifdef zoxel_debug_prefabs
-        zox_log(" > spawn_prefab header [%lu]\n", e)
-    #endif
+#ifdef zoxel_debug_prefabs
+    zox_log(" > spawn_prefab header [%lu]\n", e)
+#endif
     return e;
 }
 

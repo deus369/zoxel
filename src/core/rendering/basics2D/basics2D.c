@@ -1,7 +1,8 @@
 #ifndef zoxel_rendering_basics2D
 #define zoxel_rendering_basics2D
 
-const float shader_depth_multiplier = 0.001f; // 0.0001f;
+// this creates the least notable deviation for ui
+const float shader_depth_multiplier = 0.0001f; // 0.001f; // 0.0001f;
 // shaders
 #include "shaders/instanced2D.c"
 #include "shaders/textured2D.c"

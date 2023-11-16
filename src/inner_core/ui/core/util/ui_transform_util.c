@@ -103,10 +103,12 @@ int2 get_element_pixel_position_global(const int2 parent_pixel_position_global, 
     return pixel_position_global;
 }
 
-float2 get_element_position(int2 pixel_position_global, int2 canvas_size) {
+float2 get_element_position(const int2 pixel_position_global, const int2 canvas_size) {
     const float2 canvas_size_f = int2_to_float2(canvas_size);
     const float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
-    float2 position = (float2) { pixel_position_global.x / canvas_size_f.x, pixel_position_global.y / canvas_size_f.y };
+    float2 position = int2_to_float2(pixel_position_global);
+    float2_divide_float2(&position, canvas_size_f);
+    // (float2) { pixel_position_global.x * (aspect_ratio / canvas_size_f.x), pixel_position_global.y / canvas_size_f.y };
     // we get our 0 to 1, make -0.5 to 0.5, then stretch x along canvas
     position.x -= 0.5f;
     position.y -= 0.5f;

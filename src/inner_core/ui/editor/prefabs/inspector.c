@@ -19,7 +19,8 @@ ecs_entity_t spawn_inspector(ecs_world_t *world, ecs_entity_t canvas) {
     // const float2 anchor = float2_half;
     const int2 pixel_position = int2_zero;
     const int2 pixel_position_global = int2_zero;
-    ecs_entity_t e = spawn_ui_list(world, prefab_inspector, canvas, "inspector", labels_count, labels_count, labels, NULL, pixel_position, anchor, is_close_button, font_size, layer, 1);
+    const unsigned char is_scrollbar = 0;
+    ecs_entity_t e = spawn_ui_list(world, prefab_inspector, canvas, "inspector", labels_count, labels_count, labels, NULL, pixel_position, anchor, is_close_button, font_size, layer, is_scrollbar);
     zox_name("inspector")
     inspector = e;
     return e;
