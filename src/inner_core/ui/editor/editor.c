@@ -1,10 +1,13 @@
 #ifndef zoxel_editor_elements
 #define zoxel_editor_elements
 
+// todo: edit prefab for component and hierarchy uis, so i can add appropriate ui links to the entities and components there and tags
+
 // settings
 // zoxel_declare_components
 zox_declare_tag(EditorElement)
 zox_declare_tag(HierarchyUI)
+zox_declare_tag(InspectorLabel)
 zox_component_byte(HierarchyUIDirty)
 // zoxel_include_prefabs
 #include "prefabs/hierarchy.c"
@@ -25,8 +28,10 @@ zox_begin_module(EditorElements)
 // zoxel_define_components
 zox_define_tag(EditorElement)
 zox_define_tag(HierarchyUI)
+zox_define_tag(InspectorLabel)
 zox_define_component(HierarchyUIDirty)
 // zoxel_define_systems
+zox_system(InspectorElementSystem, EcsOnUpdate, [none] InspectorLabel, [in] EntityTarget, [in] ComponentTarget) //, [out] ZextData, [out] ZextDirty)
 zox_system_1(HierarchyRefreshSystem, main_thread_pipeline, [none] HierarchyUI, [in] Position2D, [in] CanvasPixelPosition, [in] Layer2D, [in] Anchor, [in] ListUIMax, [in] ElementFontSize, [out] HierarchyUIDirty, [out] PixelPosition, [out] PixelSize, [out] TextureSize, [out] Children)
 zoxel_end_module(EditorElements)
 

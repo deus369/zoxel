@@ -1,4 +1,4 @@
-
+const int inspector_component_size_buffer = 128;
 
 void button_event_clicked_inspepctor(ecs_world_t *world, ecs_entity_t trigger_entity) {
     if (!zox_has(trigger_entity, Children)) return;
@@ -36,19 +36,64 @@ void add_entity_components(ecs_world_t *world, text_group_dynamic_array_d* label
 
 }
 
-// sets inspector ui compponents
+void get_component_label(ecs_world_t *world, ecs_entity_t e, ecs_entity_t component, char *buffer) {
+    const int size_of_buffer = inspector_component_size_buffer;
+    int buffer_index = 0;
+    ecs_id_t id = component & ECS_COMPONENT_MASK;
+    // ecs_entity_t comp = id & ECS_COMPONENT_MASK;
+    buffer_index += snprintf(buffer + buffer_index, size_of_buffer, "%s", ecs_get_name(world, component));
+    if (is_component_type_byte(id)) {
+        const EntityDirty *component_byte = ((const EntityDirty*) ecs_get_id(world, e, id));
+        buffer_index += snprintf(buffer + buffer_index, size_of_buffer, zox_component_string(byte));
+    } else if (is_component_type_int(id)) {
+        const ID *component_int = ((const ID*) ecs_get_id(world, e, id));
+        buffer_index += snprintf(buffer + buffer_index, size_of_buffer, zox_component_string(int));
+    } else if (is_component_type_long_int(id)) {
+        const Seed *component_long_int = ((const Seed*) ecs_get_id(world, e, id));
+        buffer_index += snprintf(buffer + buffer_index, size_of_buffer, zox_component_string(long_int));
+    } else if (is_component_type_float(id)) {
+        const Brightness *component_float = ((const Brightness*) ecs_get_id(world, e, id));
+        buffer_index += snprintf(buffer + buffer_index, size_of_buffer, zox_component_string(float));
+    } else if (is_component_type_double(id)) {
+        const SoundLength *component_double = ((const SoundLength*) ecs_get_id(world, e, id));
+        buffer_index += snprintf(buffer + buffer_index, size_of_buffer, zox_component_string(double));
+    } else if (is_component_type_byte2(id)) {
+        const ZextPadding *component_byte2 = ((const ZextPadding*) ecs_get_id(world, e, id));
+        buffer_index += snprintf(buffer + buffer_index, size_of_buffer, zox_component_string(byte2));
+    }  else if (is_component_type_int2(id)) {
+        const DraggingDelta *component_int2 = ((const DraggingDelta*) ecs_get_id(world, e, id));
+        buffer_index += snprintf(buffer + buffer_index, size_of_buffer, zox_component_string(int2));
+    }  else if (is_component_type_float2(id)) {
+        const Position2D *component_float2 = ((const Position2D*) ecs_get_id(world, e, id));
+        buffer_index += snprintf(buffer + buffer_index, size_of_buffer, zox_component_string(float2));
+    } else {
+        const EcsComponent* ecsComponent = (EcsComponent*) ecs_get(world, id, EcsComponent);
+        unsigned int component_size = ecsComponent !=  NULL ? ecsComponent->size : 0;
+        if (!component_size) buffer_index += snprintf(buffer + buffer_index, size_of_buffer, " [tag]");
+        else buffer_index += snprintf(buffer + buffer_index, size_of_buffer, " [?]");
+        // unsigned int component_size = ((EcsComponent*) ecs_get_id(world, e, id))->size;
+        // int component_size = ((EcsComponent*) ecs_get_id(world, e, ecs_id(EcsComponent)))->size;
+        // zox_log("   %s component_size [%u]\n", ecs_get_name(world, component), component_size)
+        //const EntityDirty *component_byte = ((const EntityDirty*) ecs_get_id(world, e, id));
+        //if (!component_byte) buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [tag]");
+        // const ZoxName *zoxName = ((const ZoxName*) ecs_get_id(world, e, id));
+        // if (zoxName) buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " m [%i]", zoxName->length);
+        // else buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [tag]");
+        // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " %i: [%s]", zoxName->length, convert_zext_to_text(zoxName->value, zoxName->length))
+    }
+    // zox_log("   c [%lu] %s\n", component, buffer)
+}
+
+// sets inspector ui compponents, the inspector ui
 void set_inspector_element(ecs_world_t *world, ecs_entity_t inspector, ecs_entity_t e) {
     if (!ecs_is_alive(world, inspector)) return;
     // print_entity(world, e);
     const unsigned char is_scrollbar = 0;
     const unsigned char inspector_index_offset = 1 + is_scrollbar;
-
     // const ClickEvent click_event = (ClickEvent) { &button_event_clicked_inspepctor };
     // text_group_dynamic_array_d* labels = create_text_group_dynamic_array_d();
-
     const ZoxName *zoxName = zox_get(e, ZoxName)
     const Children *insector_children = zox_get(inspector, Children)
-
     ecs_entity_t name_label = insector_children->value[inspector_index_offset];
     set_entity_label_with_zext(world, name_label, zoxName->value, zoxName->length);
     const ecs_type_t *type = ecs_get_type(world, e);
@@ -58,62 +103,34 @@ void set_inspector_element(ecs_world_t *world, ecs_entity_t inspector, ecs_entit
         int label_index = inspector_index_offset + 1 + i;
         if (label_index >= insector_children->length) continue;    // limit for now
         ecs_entity_t component_label = insector_children->value[label_index];
-        int buffer_index = 0;
-        char buffer[32];
+        ecs_entity_t component = 0;
+        char buffer[inspector_component_size_buffer];
         ecs_id_t id = type_ids[i];
         if (ECS_HAS_ID_FLAG(id, PAIR)) {
             ecs_entity_t rel = ecs_pair_first(world, id);
             ecs_entity_t tgt = ecs_pair_second(world, id);
+            int buffer_index = 0;
             buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " pair %s [%lu]", ecs_get_name(world, rel), tgt);
-        } /*else if (ECS_HAS_ID_FLAG(id, TAG)) {
-            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [tag]");
-        } */else {
-            ecs_entity_t comp = id & ECS_COMPONENT_MASK;
-            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " %s", ecs_get_name(world, comp));
-            if (is_component_type_byte(id)) {
-                const EntityDirty *component_byte = ((const EntityDirty*) ecs_get_id(world, e, id));
-                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), zox_component_string(byte));
-            } else if (is_component_type_int(id)) {
-                const ID *component_int = ((const ID*) ecs_get_id(world, e, id));
-                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), zox_component_string(int));
-            } else if (is_component_type_long_int(id)) {
-                const Seed *component_long_int = ((const Seed*) ecs_get_id(world, e, id));
-                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), zox_component_string(long_int));
-            } else if (is_component_type_float(id)) {
-                const Brightness *component_float = ((const Brightness*) ecs_get_id(world, e, id));
-                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), zox_component_string(float));
-            } else if (is_component_type_double(id)) {
-                const SoundLength *component_double = ((const SoundLength*) ecs_get_id(world, e, id));
-                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), zox_component_string(double));
-            } else if (is_component_type_byte2(id)) {
-                const ZextPadding *component_byte2 = ((const ZextPadding*) ecs_get_id(world, e, id));
-                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), zox_component_string(byte2));
-            }  else if (is_component_type_int2(id)) {
-                const DraggingDelta *component_int2 = ((const DraggingDelta*) ecs_get_id(world, e, id));
-                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), zox_component_string(int2));
-            }  else if (is_component_type_float2(id)) {
-                const Position2D *component_float2 = ((const Position2D*) ecs_get_id(world, e, id));
-                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), zox_component_string(float2));
-            } else {
-                const EcsComponent* ecsComponent = (EcsComponent*) ecs_get(world, id, EcsComponent);
-                unsigned int component_size = ecsComponent !=  NULL ? ecsComponent->size : 0;
-                // unsigned int component_size = ((EcsComponent*) ecs_get_id(world, e, id))->size;
-                // int component_size = ((EcsComponent*) ecs_get_id(world, e, ecs_id(EcsComponent)))->size;
-                zox_log("   %s component_size [%u]\n", ecs_get_name(world, comp), component_size)
-                if (!component_size) buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [tag]");
-                //const EntityDirty *component_byte = ((const EntityDirty*) ecs_get_id(world, e, id));
-                //if (!component_byte) buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [tag]");
-                else buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [?]");
-                // const ZoxName *zoxName = ((const ZoxName*) ecs_get_id(world, e, id));
-                // if (zoxName) buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " m [%i]", zoxName->length);
-                // else buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [tag]");
-                // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " %i: [%s]", zoxName->length, convert_zext_to_text(zoxName->value, zoxName->length))
-            }
+        } else {
+            component = id & ECS_COMPONENT_MASK;
+            // ecs_id_t id2 = comp & ECS_COMPONENT_MASK;
+            // test reverse
+            // zox_log("   ids? %lu - %lu\n", id, id2)
+            get_component_label(world, e, component, buffer);
         }
         set_entity_label_with_text(world, component_label, buffer);
+        zox_add_tag(component_label, InspectorLabel)
+        zox_set(component_label, EntityTarget, { e })
+        zox_set(component_label, ComponentTarget, { component })
     }
     for (i = count + inspector_index_offset + 1; i < insector_children->length; i++) {
         ecs_entity_t component_label = insector_children->value[i];
         set_entity_label_with_text(world, component_label, "");
+        zox_set(component_label, EntityTarget, { 0 })
+        zox_set(component_label, ComponentTarget, { 0 })
     }
 }
+
+/*else if (ECS_HAS_ID_FLAG(id, TAG)) {
+    buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " [tag]");
+} */
