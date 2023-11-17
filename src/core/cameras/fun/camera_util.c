@@ -29,7 +29,8 @@ void set_camera_transform(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t 
         camera_position = (float3) { -height * (0.66f), height, -height * (0.66f) };
     } else if (camera_mode == zox_camera_mode_first_person) {
         camera_euler = (float3) { -25, 180, 0 };
-        camera_position = (float3) { 0, 2.2f, -3.6f };
+        // camera_position = (float3) { 0, 2.2f, -3.6f };
+        camera_position = (float3) { 0, 3.6f, -6.6f };
     }
     //zoxel_log(" > settings camera transform [%i] - pos [%fx%fx%f] - rot [%fx%fx%f]\n", camera_mode, camera_position.x,  camera_position.y,  camera_position.z, camera_euler.x, camera_euler.y, camera_euler.z);
     float3_multiply_float_p(&camera_position, 0.25f);
@@ -43,13 +44,10 @@ void set_camera_transform(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t 
 
 unsigned char get_camera_mode_fov(unsigned char camera_mode) {
     unsigned char camera_fov = 0;
-    if (camera_mode == zox_camera_mode_first_person) {
-        camera_fov = 90;
-    } else if (camera_mode == zox_camera_mode_ortho) {
-        camera_fov = 45;
-    } else if (camera_mode == zox_camera_mode_topdown) {
-        camera_fov = 60;
-    }
+    if (camera_mode == zox_camera_mode_first_person || camera_mode == zox_camera_mode_free || camera_mode == zox_camera_mode_third_person) camera_fov = 90;
+    else if (camera_mode == zox_camera_mode_ortho) camera_fov = 45;
+    else if (camera_mode == zox_camera_mode_topdown) camera_fov = 60;
+    // zox_log("   > camera_mode [%i] camera_fov [%i]\n", camera_mode, camera_fov)
     return camera_fov;
 }
 
