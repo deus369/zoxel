@@ -9,8 +9,8 @@ ecs_entity_t spawn_ui_camera(ecs_world_t *world, int2 screenDimensions) {
     zox_set(e, ScreenDimensions, { screenDimensions })
     zox_add_tag(e, Camera2D)
     ui_cameras[0] = e;
-    #ifdef zoxel_debug_spawns
-        zox_log(" > spawned ui_camera [%lu]\n", e)
-    #endif
+#ifdef zoxel_debug_spawns
+    zox_log(" > spawned ui_camera [%lu]\n", e)
+#endif
     return e;
 }

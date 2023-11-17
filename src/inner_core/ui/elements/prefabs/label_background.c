@@ -10,9 +10,9 @@ ecs_entity_t spawn_prefab_label_background(ecs_world_t *world) {
     zox_prefab_set(e, Color, {{ 35, 88, 66, 255 }})
     add_ui_plus_components(world, e);
     label_background_prefab = e;
-    #ifdef zoxel_debug_prefabs
-        zox_log("spawn_prefab label_background [%lu]\n", e)
-    #endif
+#ifdef zoxel_debug_prefabs
+    zox_log("spawn_prefab label_background [%lu]\n", e)
+#endif
     return e;
 }
 
@@ -33,8 +33,6 @@ ecs_entity_t spawn_label_background(ecs_world_t *world, ecs_entity_t prefab, ecs
     ecs_entity_t e = spawn_zext(world, prefab, parent, canvas, pixel_position, zext_anchor, padding, text, font_size, alignment, layer, parent_pixel_position_global, parent_pixel_size, 0);
     initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, zext_anchor, layer, position2D, pixel_position_global);
     zox_name("label_background")
-
-;
     /*zox_log("   > label_background %lu\n", e)
     zox_log("       > pix pos [%ix%i]\n", pixel_position.x, pixel_position.y)
     zox_log("       > anchor [%fx%f]\n", anchor.x, anchor.y)

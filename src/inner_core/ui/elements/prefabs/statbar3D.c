@@ -36,9 +36,9 @@ ecs_entity_t spawn_prefab_statbar3D_front(ecs_world_t *world) {
     zox_set(e, TextureSize, { int2_one })
     prefab_set_mesh3D_vertices(world, e, square_vertices, 4, statbar_front_mesh_scale);
     prefab_statbar3D_front = e;
-    #ifdef zoxel_debug_prefabs
-        zox_log("   > spawn_prefab statbar [%lu].\n", e)
-    #endif
+#ifdef zoxel_debug_prefabs
+    zox_log("   > spawn_prefab statbar [%lu].\n", e)
+#endif
     return e;
 }
 
@@ -68,8 +68,8 @@ ecs_entity_t spawn_statbar3D(ecs_world_t *world, ecs_entity_t ui_holder, float p
     resize_memory_component(Children, children, ecs_entity_t, 1)
     children->value[0] = spawn_statbar3D_front(world, ui_holder, e, (float3) { 0, 0, depth_difference });
     ecs_modified(world, e, Children);
-    #ifdef zoxel_debug_spawns
-        zox_log(" > spawned statbar3D [%lu]\n", e)
-    #endif
+#ifdef zoxel_debug_spawns
+    zox_log(" > spawned statbar3D [%lu]\n", e)
+#endif
     return e;
 }

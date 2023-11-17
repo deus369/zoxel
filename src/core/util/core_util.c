@@ -7,23 +7,23 @@ int begin_core(int argc, char* argv[]) {
     return EXIT_SUCCESS;
 }
 
-void update_core() {
+void update_core(ecs_world_t *world) {
     if (!headless) {
-        #ifdef zoxel_inputs
-            device_reset_keyboard(world, keyboard_entity);
-            device_reset_mouse(world, mouse_entity);
-        #endif
+#ifdef zoxel_inputs
+        device_reset_keyboard(world, keyboard_entity);
+        device_reset_mouse(world, mouse_entity);
+#endif
         update_sdl(world);
-        #ifdef zoxel_on_web
-            update_web_canvas(world);   // handles resize event
-        #endif
+#ifdef zoxel_on_web
+        update_web_canvas(world);   // handles resize event
+#endif
         if (rendering) render_pre_loop();
     }
     // ecs_log_set_level(1);    // use this to debug system pipelines
     ecs_progress(world, 0);
-    if (!headless && rendering) render_loop();
+    if (!headless && rendering) render_loop(world);
     iterate_time();
-    #ifdef zoxel_log_frame_ms
-        zoxel_log(" > frame time [%fms]\n", (float) (zox_delta_time * 1000.0f));
-    #endif
+#ifdef zoxel_log_frame_ms
+    zox_log(" > frame time [%fms]\n", (float) (zox_delta_time * 1000.0f))
+#endif
 }

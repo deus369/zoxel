@@ -199,6 +199,8 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         // add game entities
         add_realm_entity_to_labels(world, local_realm, labels, entities, 0);
         add_entity_children_to_labels(world, main_player, labels, entities, 0);
+        add_entity_to_labels(world, main_cameras[0], labels, entities, 0);
+        add_entity_to_labels(world, ui_cameras[0], labels, entities, 0);
         add_entity_to_labels(world, local_music, labels, entities, 0);
         add_entity_to_labels(world, local_terrain, labels, entities, 0);
         add_entity_to_labels(world, local_character3D, labels, entities, 0);

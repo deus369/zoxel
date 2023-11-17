@@ -15,7 +15,7 @@ ecs_entity_t spawn_inspector(ecs_world_t *world, ecs_entity_t canvas) {
     const float2 anchor = (float2) { 1, 0.5f };
     // const float2 anchor = float2_half;
     const int2 pixel_position = int2_zero;
-    const int2 pixel_position_global = int2_zero;
+    // const int2 pixel_position_global = int2_zero;
     const unsigned char is_scrollbar = 0;
     const unsigned char is_close_button = 1;
     const int labels_count = 34;

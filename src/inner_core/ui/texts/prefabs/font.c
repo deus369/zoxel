@@ -6,9 +6,9 @@ ecs_entity_t spawn_font_prefab(ecs_world_t *world) {
     zox_add_tag(e, Font)
     zox_add(e, FontData)
     font_prefab = e;
-    #ifdef zoxel_debug_prefabs
-        zox_log(" > spawn_prefab font [%lu]\n", e)
-    #endif
+#ifdef zoxel_debug_prefabs
+    zox_log(" > spawn_prefab font [%lu]\n", e)
+#endif
     return e;
 }
 

@@ -8,9 +8,9 @@ ecs_entity_t spawn_prefab_free_camera(ecs_world_t *world) {
     zox_prefab_name("prefab_free_camera")
     zox_prefab_set(e, FreeRoam, { 0 })
     prefab_free_camera = e;
-    #ifdef zoxel_debug_prefabs
-        zoxel_log("spawn_prefab free_camera [%lu].\n", (long int) (e));
-    #endif
+#ifdef zoxel_debug_prefabs
+    zox_log("spawn_prefab free_camera [%lu]\n", e)
+#endif
     return e;
 }
 
@@ -21,13 +21,13 @@ ecs_entity_t spawn_free_camera(ecs_world_t *world, float3 position, float4 rotat
     zox_set(e, Rotation3D, { rotation })
     zox_set(e, ScreenDimensions, { screen_dimensions })
     zox_set(e, ScreenPosition, { screen_position })
-    #ifndef zox_test_quaternion_camera
-        zox_set(e, Euler, { quaternion_to_euler(rotation) })
-        zox_add_tag(e, EulerOverride)
-        zox_prefab_set(e, EulerLimitX, { { -camera_limit_x, camera_limit_x } }) // adds a limit, - half pi to + half pi, 0.8 is around half that
-    #endif
-    #ifdef zoxel_debug_spawns
-        zoxel_log("Spawned Free Camera [%lu]\n", (long int) e);
-    #endif
+#ifndef zox_test_quaternion_camera
+    zox_set(e, Euler, { quaternion_to_euler(rotation) })
+    zox_add_tag(e, EulerOverride)
+    zox_prefab_set(e, EulerLimitX, { { -camera_limit_x, camera_limit_x } }) // adds a limit, - half pi to + half pi, 0.8 is around half that
+#endif
+#ifdef zoxel_debug_spawns
+    zox_log("Spawned Free Camera [%lu]\n", e)
+#endif
     return e;
 }

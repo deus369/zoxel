@@ -22,37 +22,37 @@ void Player2DTestSystem(ecs_iter_t *it) {
                 else detatch_from_character(world, main_player, main_camera, local_character3D);
             }
         }
-        #ifdef zoxel_tests_rotate_by_keys
-            else if (keyboard->r.is_pressed) {
-                float3 euler = (float3) { 0, 90 * degreesToRadians, 0 * degreesToRadians };
-                //float4 quaternion = (float4) { 0, debug_rotation_speed, 0, 1 };
-                //quaternion_normalize(&quaternion);
-                zox_set(local_character3D, Alpha3D, { quaternion_from_euler(euler) });
-            } else if (keyboard->t.is_pressed) {
-                float3 euler = (float3) { 0, -90 * degreesToRadians, 0 * degreesToRadians };
-                //float4 quaternion = (float4) { 0, -debug_rotation_speed, 0, 1 };
-                //quaternion_normalize(&quaternion);
-                zox_set(local_character3D, Alpha3D, { quaternion_from_euler(euler) });
-            } else if (keyboard->y.pressed_this_frame) {
-                float3 euler = (float3) { 0 * degreesToRadians, (-90 + debug_rotation_addition) * degreesToRadians, 0 * degreesToRadians };
-                zox_set(local_character3D, Rotation3D, { quaternion_from_euler(euler) });
-            } else if (keyboard->u.pressed_this_frame) {
-                float3 euler = (float3) { 0 * degreesToRadians, (0 + debug_rotation_addition) * degreesToRadians, 0 * degreesToRadians };
-                zox_set(local_character3D, Rotation3D, { quaternion_from_euler(euler) });
-            } else if (keyboard->i.pressed_this_frame) {
-                float3 euler = (float3) { 0 * degreesToRadians, (90 + debug_rotation_addition) * degreesToRadians, 0 * degreesToRadians };
-                zox_set(local_character3D, Rotation3D, { quaternion_from_euler(euler) });
-            } else if (keyboard->o.pressed_this_frame) {
-                float3 euler = (float3) { 0 * degreesToRadians, (180 + debug_rotation_addition) * degreesToRadians, 0 * degreesToRadians };
-                zox_set(local_character3D, Rotation3D, { quaternion_from_euler(euler) });
-            } else if (keyboard->f.pressed_this_frame) {
-                zoxel_log(" > reset omega3D\n");
-                zox_set(local_character3D, Omega3D, { quaternion_identity });
-            } else if (keyboard->g.pressed_this_frame) {
-                zoxel_log(" > reset alpha3D\n");
-                zox_set(local_character3D, Alpha3D, { quaternion_identity });
-            }
-        #endif
+#ifdef zoxel_tests_rotate_by_keys
+        else if (keyboard->r.is_pressed) {
+            float3 euler = (float3) { 0, 90 * degreesToRadians, 0 * degreesToRadians };
+            //float4 quaternion = (float4) { 0, debug_rotation_speed, 0, 1 };
+            //quaternion_normalize(&quaternion);
+            zox_set(local_character3D, Alpha3D, { quaternion_from_euler(euler) });
+        } else if (keyboard->t.is_pressed) {
+            float3 euler = (float3) { 0, -90 * degreesToRadians, 0 * degreesToRadians };
+            //float4 quaternion = (float4) { 0, -debug_rotation_speed, 0, 1 };
+            //quaternion_normalize(&quaternion);
+            zox_set(local_character3D, Alpha3D, { quaternion_from_euler(euler) });
+        } else if (keyboard->y.pressed_this_frame) {
+            float3 euler = (float3) { 0 * degreesToRadians, (-90 + debug_rotation_addition) * degreesToRadians, 0 * degreesToRadians };
+            zox_set(local_character3D, Rotation3D, { quaternion_from_euler(euler) });
+        } else if (keyboard->u.pressed_this_frame) {
+            float3 euler = (float3) { 0 * degreesToRadians, (0 + debug_rotation_addition) * degreesToRadians, 0 * degreesToRadians };
+            zox_set(local_character3D, Rotation3D, { quaternion_from_euler(euler) });
+        } else if (keyboard->i.pressed_this_frame) {
+            float3 euler = (float3) { 0 * degreesToRadians, (90 + debug_rotation_addition) * degreesToRadians, 0 * degreesToRadians };
+            zox_set(local_character3D, Rotation3D, { quaternion_from_euler(euler) });
+        } else if (keyboard->o.pressed_this_frame) {
+            float3 euler = (float3) { 0 * degreesToRadians, (180 + debug_rotation_addition) * degreesToRadians, 0 * degreesToRadians };
+            zox_set(local_character3D, Rotation3D, { quaternion_from_euler(euler) });
+        } else if (keyboard->f.pressed_this_frame) {
+            zoxel_log(" > reset omega3D\n");
+            zox_set(local_character3D, Omega3D, { quaternion_identity });
+        } else if (keyboard->g.pressed_this_frame) {
+            zoxel_log(" > reset alpha3D\n");
+            zox_set(local_character3D, Alpha3D, { quaternion_identity });
+        }
+#endif
     }
 } zox_declare_system(Player2DTestSystem);
 

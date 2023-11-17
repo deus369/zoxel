@@ -12,8 +12,8 @@ ecs_entity_t spawn_prefab_element3D_child(ecs_world_t *world) {
     zox_prefab_set(e, LocalRotation3D, { quaternion_identity })
     add_ui_components_world(world, e, (float2) { 0.2f, 0.05f });
     prefab_element_world_child = e;
-    #ifdef zoxel_debug_prefabs
-        zox_log(" > spawned prefab element_world [%lu]\n", e)
-    #endif
+#ifdef zoxel_debug_prefabs
+    zox_log(" > spawned prefab element_world [%lu]\n", e)
+#endif
     return e;
 }

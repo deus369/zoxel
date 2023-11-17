@@ -16,9 +16,9 @@ ecs_entity_t spawn_prefab_element3D(ecs_world_t *world) {
     zox_prefab_set(e, Color, {{ 0, 255, 0, 255 }}) 
     add_ui_components_world(world, e, (float2) { 0.2f, 0.05f });
     prefab_element_world = e;
-    #ifdef zoxel_debug_prefabs
-        zox_log(" > spawned prefab element_world [%lu]\n", e)
-    #endif
+#ifdef zoxel_debug_prefabs
+    zox_log(" > spawned prefab element_world [%lu]\n", e)
+#endif
     return e;
 }
 
@@ -32,8 +32,8 @@ ecs_entity_t spawn_element3D(ecs_world_t *world, ecs_entity_t ui_holder) {
     zox_set(e, CanvasLink, { main_canvas })
     zox_set(e, PixelSize, { pixel_size })
     zox_set(e, TextureSize, { pixel_size })
-    #ifdef zoxel_debug_spawns
-        zox_log(" > spawned prefab element_world [%lu]\n", e)
-    #endif
+#ifdef zoxel_debug_spawns
+    zox_log(" > spawned prefab element_world [%lu]\n", e)
+#endif
     return e;
 }

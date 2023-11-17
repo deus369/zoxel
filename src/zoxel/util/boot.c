@@ -47,11 +47,12 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
             set_main_cameras(2);
         }
     #endif
+    unsigned char camera_fov = get_camera_mode_fov(camera_mode);
     float3 camera_begin_position = float3_zero;
     #ifdef zoxel_cameras
         float4 camera_spawn_rotation = quaternion_identity;
         get_camera_start_transform(&camera_begin_position, &camera_spawn_rotation);
-        main_cameras[0] = spawn_base_camera(world, camera_begin_position, camera_spawn_rotation, screen_dimensions2, (int2) { });
+        main_cameras[0] = spawn_base_camera(world, camera_begin_position, camera_spawn_rotation, screen_dimensions2, (int2) { }, camera_fov);
         #ifdef zoxel_animations
             float4 rotationer = quaternion_from_euler( (float3) { 0, -main_camera_rotation_speed * degreesToRadians, 0 });
             zox_prefab_set(main_cameras[0], EternalRotation, { rotationer })
@@ -59,7 +60,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         if (is_split_screen) {
             //! \todo connect a gamepad to this camera
             camera_begin_position.z += 0.4f;
-            main_cameras[1] = spawn_base_camera(world, camera_begin_position, quaternion_identity, screen_dimensions2, (int2) { screen_dimensions2.x, 0 });
+            main_cameras[1] = spawn_base_camera(world, camera_begin_position, quaternion_identity, screen_dimensions2, (int2) { screen_dimensions2.x, 0 }, camera_fov);
         }
         spawn_ui_camera(world, screen_dimensions2);
     #endif

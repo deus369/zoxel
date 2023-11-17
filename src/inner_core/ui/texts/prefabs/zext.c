@@ -12,9 +12,9 @@ ecs_entity_t spawn_zext_prefab(ecs_world_t *world) {
     zox_prefab_set(e, ZextData, { 0, NULL })
     zox_prefab_set(e, Children, { 0, NULL })
     zext_prefab = e;
-    #ifdef zoxel_debug_prefabs
-        zox_log(" > spawn_prefab zext [%lu]\n", e)
-    #endif
+#ifdef zoxel_debug_prefabs
+    zox_log(" > spawn_prefab zext [%lu]\n", e)
+#endif
     return e;
 }
 
@@ -46,8 +46,8 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t pa
     }
     zox_modified(e, Children)
     // zox_set(e, ZextDirty, { 1 })
-    #ifdef zoxel_debug_spawns
-        zox_log("   > spawned zext [%lu]\n", e)
-    #endif
+#ifdef zoxel_debug_spawns
+    zox_log("   > spawned zext [%lu]\n", e)
+#endif
     return e;
 }

@@ -41,6 +41,18 @@ void set_camera_transform(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t 
     else zox_set(camera, Rotation3D, { camera_rotation })
 }
 
+unsigned char get_camera_mode_fov(unsigned char camera_mode) {
+    unsigned char camera_fov = 0;
+    if (camera_mode == zox_camera_mode_first_person) {
+        camera_fov = 90;
+    } else if (camera_mode == zox_camera_mode_ortho) {
+        camera_fov = 45;
+    } else if (camera_mode == zox_camera_mode_topdown) {
+        camera_fov = 60;
+    }
+    return camera_fov;
+}
+
 void set_camera_mode(ecs_world_t *world, unsigned char new_camera_mode) {
     // remove 2 camera modes for now
     if (new_camera_mode == zox_camera_mode_free) new_camera_mode = zox_camera_mode_first_person;
@@ -49,15 +61,13 @@ void set_camera_mode(ecs_world_t *world, unsigned char new_camera_mode) {
     camera_mode = new_camera_mode;
     unsigned char old_camera_fov = camera_fov;
     unsigned char old_camera_follow_mode = camera_follow_mode;
+    unsigned char camera_fov = get_camera_mode_fov(camera_mode);
     if (camera_mode == zox_camera_mode_first_person) {
         camera_follow_mode = zox_camera_follow_mode_attach;
-        camera_fov = 90;
     } else if (camera_mode == zox_camera_mode_ortho) {
         camera_follow_mode = zox_camera_follow_mode_follow_xz;
-        camera_fov = 45;
     } else if (camera_mode == zox_camera_mode_topdown) {
         camera_follow_mode = zox_camera_follow_mode_follow_xz;
-        camera_fov = 60;
     }
     for (int i = 0; i < max_cameras; i++) {
         ecs_entity_t camera = main_cameras[i];

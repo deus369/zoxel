@@ -22,9 +22,6 @@ float get_fog_density() {
     else return 0.0f;
 }
 #include "data/mesh_alignment_types.c"
-// todo: replace this with a render stack, which can easily be used in a camera_render_system
-//      > it can also be sorted better for z issues on translucent materials
-float4x4 render_camera_matrix; 
 // zoxel_declare_components
 zox_declare_tag(Mesh)
 zox_declare_tag(ElementRender)

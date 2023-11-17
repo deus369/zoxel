@@ -12,9 +12,9 @@ ecs_entity_t spawn_prefab_scrollbar(ecs_world_t *world) {
     add_frame_texture_type(world, e, (color) { 35, 88, 66, 255 }, 7, 3);
     zox_prefab_set(e, Children, { 0, NULL })
     prefab_scrollbar = e;
-    #ifdef zoxel_debug_prefabs
-        zox_log("   > spawn_prefab scrollbar [%lu]\n", e)
-    #endif
+#ifdef zoxel_debug_prefabs
+    zox_log("   > spawn_prefab scrollbar [%lu]\n", e)
+#endif
     return e;
 }
 
@@ -65,8 +65,8 @@ ecs_entity_t spawn_scrollbar(ecs_world_t *world, ecs_entity_t parent, ecs_entity
     resize_memory_component(Children, children, ecs_entity_t, 1)
     children->value[0] = spawn_scrollbar_front(world, e, canvas, int2_zero, float2_half, child_layer, width, height, pixel_position_global, size, canvas_size);
     zox_modified(e, Children)
-    #ifdef zoxel_debug_spawns
-        zox_log(" > spawned scrollbar [%lu]\n", e)
-    #endif
+#ifdef zoxel_debug_spawns
+    zox_log(" > spawned scrollbar [%lu]\n", e)
+#endif
     return e;
 }

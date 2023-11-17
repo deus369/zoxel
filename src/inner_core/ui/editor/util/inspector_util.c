@@ -126,7 +126,7 @@ void set_inspector_element(ecs_world_t *world, ecs_entity_t inspector, ecs_entit
     }
     for (i = count + inspector_index_offset + 1; i < insector_children->length; i++) {
         ecs_entity_t component_label = insector_children->value[i];
-        set_entity_label_with_text(world, component_label, "");
+        set_entity_label_with_text(world, component_label, " ");
         zox_set(component_label, EntityTarget, { 0 })
         zox_set(component_label, ComponentTarget, { 0 })
     }

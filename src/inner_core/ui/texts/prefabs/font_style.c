@@ -9,9 +9,9 @@ ecs_entity_t spawn_font_style_prefab(ecs_world_t *world) {
     zox_add_tag(e, FontStyle);
     zox_add(e, Children);
     font_style_prefab = e;
-    #ifdef zoxel_debug_prefabs
-        zox_log(" > spawn_prefab font_style [%lu]\n", e)
-    #endif
+#ifdef zoxel_debug_prefabs
+    zox_log(" > spawn_prefab font_style [%lu]\n", e)
+#endif
     return e;
 }
 

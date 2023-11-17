@@ -15,7 +15,7 @@ ecs_entity_t spawn_game_debug_label(ecs_world_t *world, ecs_entity_t parent) {
     const int layer = 1;
     unsigned char font_size = 24;
     byte2 padding = (byte2) { 12, 8 };
-    int edge_line_thickness = canvas_edge_size * 2 + 2; // this is real size.. convert to pixel size?
+    // int edge_line_thickness = canvas_edge_size * 2 + 2; // this is real size.. convert to pixel size?
     float2 anchor = { 1.0f, 0.0f };
     int2 pixel_position = int2_zero; // { -edge_line_thickness / 3, (font_size / 2) + edge_line_thickness };
     const int2 parent_pixel_size = zox_get_value(parent, PixelSize)

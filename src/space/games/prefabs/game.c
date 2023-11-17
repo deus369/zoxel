@@ -10,9 +10,9 @@ ecs_entity_t spawn_prefab_game(ecs_world_t *world) {
     zox_add_tag(e, Game)
     zox_prefab_set(e, GameState, { zoxel_game_state_main_menu })
     prefab_game = e;
-    #ifdef zoxel_debug_prefabs
-        zoxel_log("spawn_prefab game [%lu].\n", (long int) (e));
-    #endif
+#ifdef zoxel_debug_prefabs
+    zox_log("spawn_prefab game [%lu]\n", e)
+#endif
     return e;
 }
 
@@ -20,8 +20,8 @@ ecs_entity_t spawn_game(ecs_world_t *world) {
     zox_instance(prefab_game)
     zox_name("game")
     local_game = e;
-    #ifdef zoxel_debug_spawns
-        zoxel_log("Spawned game [%lu]\n", (long int) e);
-    #endif
+#ifdef zoxel_debug_spawns
+    zox_log("Spawned game [%lu]\n", e)
+#endif
     return e;
 }

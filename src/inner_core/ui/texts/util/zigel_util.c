@@ -18,10 +18,9 @@ int2 get_zigel_position(unsigned char index, unsigned char total_length, unsigne
 
 // For reusing a zigel, set all positions again to position entire text
 void set_zigel_position(ecs_world_t *world, ecs_entity_t zigel, unsigned char index, int font_size,  unsigned char text_alignment, byte2 text_padding, float2 anchor, unsigned char total_length, int2 parent_pixel_position_global, int2 parent_pixel_size, int2 canvas_size) {
-    float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
-    float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
+    // float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
+    // float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
     int2 pixel_position = get_zigel_position(index, total_length, font_size, text_alignment, text_padding);
-
     int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     float2 position = get_element_position(pixel_position_global, canvas_size);
     zox_set(zigel, Position2D, { position })

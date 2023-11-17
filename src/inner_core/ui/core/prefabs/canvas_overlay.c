@@ -28,8 +28,8 @@ ecs_entity_t spawn_canvas_overlay(ecs_world_t *world, ecs_entity_t canvas) {
     zox_set(e, AnimationStart, { zox_current_time })
     zox_set(e, AnimationState, { zox_animation_fadeout })
     zox_set(e, Alpha, { 1.0f })
-    #ifdef zoxel_debug_spawns
-        zox_log(" > spawned canvas_overlay [%lu]\n", e)
-    #endif
+#ifdef zoxel_debug_spawns
+    zox_log(" > spawned canvas_overlay [%lu]\n", e)
+#endif
     return e;
 }

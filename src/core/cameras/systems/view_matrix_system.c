@@ -10,7 +10,7 @@ void ViewMatrixSystem(ecs_iter_t *it) {
         const Rotation3D *rotation = &rotations[i];
         const ProjectionMatrix *projectionMatrix = &projectionMatrixs[i];
         ViewMatrix *viewMatrix = &viewMatrixs[i];
-        float4x4 cameraPositionMatrix = float4x4_position(float3_multiply_float(position->value, -1.0f));
+        float4x4 cameraPositionMatrix = float4x4_position(float3_multiply_float(position->value, -1));
         float4x4 cameraViewMatrix = float4x4_multiply(cameraPositionMatrix, quaternion_to_matrix(rotation->value));
         viewMatrix->value = float4x4_multiply(cameraViewMatrix, projectionMatrix->value);
     }
