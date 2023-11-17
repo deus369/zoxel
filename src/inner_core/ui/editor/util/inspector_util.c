@@ -87,6 +87,7 @@ void get_component_label(ecs_world_t *world, ecs_entity_t e, ecs_entity_t compon
 // sets inspector ui compponents, the inspector ui
 void set_inspector_element(ecs_world_t *world, ecs_entity_t inspector, ecs_entity_t e) {
     if (!ecs_is_alive(world, inspector)) return;
+    if (!ecs_is_alive(world, e)) return;
     // print_entity(world, e);
     const unsigned char is_scrollbar = 0;
     const unsigned char inspector_index_offset = 1 + is_scrollbar;

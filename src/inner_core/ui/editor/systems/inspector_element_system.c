@@ -8,6 +8,7 @@ void InspectorElementSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const EntityTarget *entityTarget = &entityTargets[i];
         if (!entityTarget->value) continue;
+        if (!ecs_is_alive(world, entityTarget->value)) continue;
         const ComponentTarget *componentTarget = &componentTargets[i];
         if (!componentTarget->value) continue;
         //ZextDirty *zextDirty = &zextDirtys[i];
