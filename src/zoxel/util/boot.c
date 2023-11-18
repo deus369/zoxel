@@ -33,13 +33,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         zox_set(game, RealmLink, { realm })
         spawn_weather(world);
     #endif
-    #if defined(zoxel_set_camera_firstperson)
-        set_camera_mode_first_person(world);
-    #elif defined(zoxel_set_camera_ortho)
-        set_camera_mode_ortho(world);
-    #elif defined(zoxel_set_camera_topdown)
-        set_camera_mode_topdown(world);
-    #endif
+    set_camera_mode_pre_defined(world);
     int2 screen_dimensions2 = screen_dimensions;
     #ifdef zoxel_cameras
         if (is_split_screen) {

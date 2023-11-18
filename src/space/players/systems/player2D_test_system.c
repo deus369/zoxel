@@ -54,7 +54,7 @@ void Player2DTestSystem(ecs_iter_t *it) {
         }
 #endif
     }
-} zox_declare_system(Player2DTestSystem);
+} zox_declare_system(Player2DTestSystem)
 
 
 /* else if (keyboard->space.is_pressed || keyboard->f.is_pressed) {

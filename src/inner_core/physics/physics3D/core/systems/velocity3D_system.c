@@ -3,11 +3,11 @@ void Velocity3DSystem(ecs_iter_t *it) { //! Veloco Rapters!
         return;
     #endif
     double delta_time = zox_delta_time;
-    Position3D *positions = ecs_field(it, Position3D, 1);
-    const Velocity3D *velocity3Ds = ecs_field(it, Velocity3D, 2);
+    zox_field_out(Position3D, positions, 1)
+    zox_field_in(Velocity3D, velocity3Ds, 2)
     for (int i = 0; i < it->count; i++) {
-        const Velocity3D *velocity3D = &velocity3Ds[i];
-        Position3D *position3D = &positions[i];
+        zox_field_i_in(Velocity3D, velocity3Ds, velocity3D)
+        zox_field_i_out(Position3D, positions, position3D)
         position3D->value.x += velocity3D->value.x * delta_time;
         position3D->value.y += velocity3D->value.y * delta_time;
         position3D->value.z += velocity3D->value.z * delta_time;

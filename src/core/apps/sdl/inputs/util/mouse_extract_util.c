@@ -1,5 +1,4 @@
-// #define zox_debug_log_extract_mouse
-
+// #define zox_debug_log_extract_mous
 void sdl_extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensions) {
     if (!mouse_entity || !ecs_is_alive(world, mouse_entity)) return;
     if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP || event.type == SDL_MOUSEWHEEL || event.type == SDL_MOUSEMOTION) {
@@ -12,7 +11,7 @@ void sdl_extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensio
             mouse->position = new_position;
             mouse->delta = int2_add(mouse->delta, (int2) { event.motion.xrel, - event.motion.yrel });
             #ifdef zox_debug_log_extract_mouse
-                zoxel_log(" - mouse moved [%ix%i]\n     - delta [%ix%i]\n", mouse->position.x, mouse->position.y, mouse->delta.x, mouse->delta.y);
+                zox_log(" - mouse moved [%ix%i]\n     - delta [%ix%i]\n", mouse->position.x, mouse->position.y, mouse->delta.x, mouse->delta.y)
             #endif
         } else if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
             // don't trigger events if touch input
@@ -27,7 +26,7 @@ void sdl_extract_mouse(ecs_world_t *world, SDL_Event event, int2 screen_dimensio
             int2_flip_y(&new_position, screen_dimensions);
             mouse->position = new_position;
             #ifdef zox_debug_log_extract_mouse
-                zoxel_log(" > mouse down [%ix%i]\n", mouse->position.x, mouse->position.y);
+                zox_log(" > mouse down [%ix%i]\n", mouse->position.x, mouse->position.y)
             #endif
         } else if (event.type == SDL_MOUSEWHEEL) {
             mouse->wheel = (int2) { event.wheel.x, event.wheel.y };

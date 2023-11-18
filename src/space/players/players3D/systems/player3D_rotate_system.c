@@ -16,29 +16,27 @@ float4 mouse_delta_to_rotation(float deltaX, float deltaY) {
 }
 
 void Player3DRotateSystem(ecs_iter_t *it) {
-    // if (camera_mode != zox_camera_mode_first_person) return;
-    ecs_world_t *world = it->world;
-    const DeviceLinks *deviceLinks = ecs_field(it, DeviceLinks, 2);
-    const CharacterLink *characterLinks = ecs_field(it, CharacterLink, 3);
-    const CameraLink *cameraLinks = ecs_field(it, CameraLink, 4);
-    // const PlayerState *playerStates = ecs_field(it, PlayerState, 4);
+    zox_iter_world()
+    zox_field_in(DeviceLinks, deviceLinkss, 2)
+    zox_field_in(CharacterLink, characterLinks, 3)
+    zox_field_in(CameraLink, cameraLinks, 4)
     for (int i = 0; i < it->count; i++) {
-        const CharacterLink *characterLink = &characterLinks[i];
+        zox_field_i_in(CharacterLink, characterLinks, characterLink)
         if (characterLink->value == 0) continue;
-        const CameraLink *cameraLink = &cameraLinks[i];
+        zox_field_i_in(CameraLink, cameraLinks, cameraLink)
         if (cameraLink->value) {
-            const CameraMode *cameraMode = ecs_get(world, cameraLink->value, CameraMode);
-            if (cameraMode->value != zox_camera_mode_first_person) continue;
+            const CameraMode *cameraMode = zox_get(cameraLink->value, CameraMode)
+            if (cameraMode->value != zox_camera_mode_first_person && cameraMode->value != zox_camera_mode_third_person) continue;
         }
         //if (playerState->value != zox_camera_mode_first_person) continue;
-        const DisableMovement *disableMovement = ecs_get(world, characterLink->value, DisableMovement);
+        const DisableMovement *disableMovement = zox_get(characterLink->value, DisableMovement)
         if (disableMovement->value) continue;
-        const DeviceLinks *deviceLinks2 = &deviceLinks[i];
         float2 euler = { 0, 0 };
-        for (int j = 0; j < deviceLinks2->length; j++) {
-            ecs_entity_t device_entity = deviceLinks2->value[j];
-            if (ecs_has(world, device_entity, Mouse)) {
-                const Mouse *mouse = ecs_get(world, device_entity, Mouse);
+        zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
+        for (int j = 0; j < deviceLinks->length; j++) {
+            ecs_entity_t device_entity = deviceLinks->value[j];
+            if (zox_has(device_entity, Mouse)) {
+                const Mouse *mouse = zox_get(device_entity, Mouse)
                 float mouse_delta = mouse->delta.x;
                 // if (mouse_delta != 0) zoxel_log(" > mouse_delta: %f\n", mouse_delta);
                 // this is all pretty shit ay haha... fuck mouses
@@ -53,17 +51,17 @@ void Player3DRotateSystem(ecs_iter_t *it) {
                 }
                 // if (mouse_delta != 0) zoxel_log("     > mouse_delta: %f\n", mouse_delta);
                 euler.y = - mouse_delta * mouse_rotate_multiplier;
-            } else if (ecs_has(world, device_entity, Gamepad)) {
+            } else if (zox_has(device_entity, Gamepad)) {
                 float2 right_stick = float2_zero;
-                const Children *zevices = ecs_get(world, device_entity, Children);
+                const Children *zevices = zox_get(device_entity, Children)
                 for (int k = 0; k < zevices->length; k++) {
                     ecs_entity_t zevice_entity = zevices->value[k];
-                    const DeviceButtonType *deviceButtonType = ecs_get(world, zevice_entity, DeviceButtonType);
-                    if (ecs_has(world, zevice_entity, ZeviceStick)) {
+                    const DeviceButtonType *deviceButtonType = zox_get(zevice_entity, DeviceButtonType)
+                    if (zox_has(zevice_entity, ZeviceStick)) {
                         if (deviceButtonType->value == zox_device_stick_right) {
-                            const ZeviceDisabled *zeviceDisabled = ecs_get(world, zevice_entity, ZeviceDisabled);
+                            const ZeviceDisabled *zeviceDisabled = zox_get(zevice_entity, ZeviceDisabled)
                             if (!zeviceDisabled->value) {
-                                const ZeviceStick *zeviceStick = ecs_get(world, zevice_entity, ZeviceStick);
+                                const ZeviceStick *zeviceStick = zox_get(zevice_entity, ZeviceStick)
                                 right_stick = zeviceStick->value;
                             }
                             break;
@@ -80,12 +78,12 @@ void Player3DRotateSystem(ecs_iter_t *it) {
             }
         }
         if (euler.x == 0 && euler.y == 0) continue;
-        const Omega3D *omega3D = ecs_get(world, characterLink->value, Omega3D);
+        const Omega3D *omega3D = zox_get(characterLink->value, Omega3D)
         if ((euler.y > 0 && quaternion_to_euler_y(omega3D->value) < max_rotate_speed) || (euler.y < 0 && quaternion_to_euler_y(omega3D->value) > -max_rotate_speed)) {
             float4 quaternion = mouse_delta_to_rotation(euler.x, euler.y);
-            Alpha3D *alpha3D = ecs_get_mut(world, characterLink->value, Alpha3D);
+            Alpha3D *alpha3D = zox_get_mut(characterLink->value, Alpha3D)
             quaternion_rotate_quaternion_p(&alpha3D->value, quaternion);
-            ecs_modified(world, characterLink->value, Alpha3D);
+            zox_modified(characterLink->value, Alpha3D)
         }
     }
 } zox_declare_system(Player3DRotateSystem)

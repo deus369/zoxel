@@ -28,6 +28,9 @@ void set_camera_transform(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t 
         camera_euler = (float3) { -45, 225, 0 };
         camera_position = (float3) { -height * (0.66f), height, -height * (0.66f) };
     } else if (camera_mode == zox_camera_mode_first_person) {
+        camera_euler = (float3) { 0, 180, 0 };
+        camera_position = (float3) { 0, 0.76f, 0.64f };
+    } else if (camera_mode == zox_camera_mode_third_person) {
         camera_euler = (float3) { -25, 180, 0 };
         // camera_position = (float3) { 0, 2.2f, -3.6f };
         camera_position = (float3) { 0, 3.6f, -6.6f };
@@ -54,13 +57,13 @@ unsigned char get_camera_mode_fov(unsigned char camera_mode) {
 void set_camera_mode(ecs_world_t *world, unsigned char new_camera_mode) {
     // remove 2 camera modes for now
     if (new_camera_mode == zox_camera_mode_free) new_camera_mode = zox_camera_mode_first_person;
-    if (new_camera_mode == zox_camera_mode_third_person) new_camera_mode = zox_camera_mode_ortho;
+    // if (new_camera_mode == zox_camera_mode_third_person) new_camera_mode = zox_camera_mode_ortho;
     if (camera_mode == new_camera_mode) return;
     camera_mode = new_camera_mode;
     unsigned char old_camera_fov = camera_fov;
     unsigned char old_camera_follow_mode = camera_follow_mode;
     unsigned char camera_fov = get_camera_mode_fov(camera_mode);
-    if (camera_mode == zox_camera_mode_first_person) {
+    if (camera_mode == zox_camera_mode_first_person || camera_mode == zox_camera_mode_third_person) {
         camera_follow_mode = zox_camera_follow_mode_attach;
     } else if (camera_mode == zox_camera_mode_ortho) {
         camera_follow_mode = zox_camera_follow_mode_follow_xz;
@@ -74,8 +77,8 @@ void set_camera_mode(ecs_world_t *world, unsigned char new_camera_mode) {
         if (old_camera_fov != camera_fov) zox_set(camera, FieldOfView, { camera_fov })
         // camera_follow_mode is more complicated, involves how camera is attached to character
         ecs_entity_t character = 0;
-        if (old_camera_follow_mode == zox_camera_follow_mode_attach) character = ecs_get(world, camera, ParentLink)->value;
-        else character = ecs_get(world, camera, CameraFollowLink)->value;
+        if (old_camera_follow_mode == zox_camera_follow_mode_attach) character = zox_get_value(camera, ParentLink)
+        else character = zox_get_value(camera, CameraFollowLink)
         if (old_camera_follow_mode != camera_follow_mode) {
             // remove old link
             if (old_camera_follow_mode == zox_camera_follow_mode_attach) zox_set(camera, ParentLink, { 0 })
@@ -99,8 +102,18 @@ void set_camera_mode(ecs_world_t *world, unsigned char new_camera_mode) {
     }*/
 }
 
+void toggle_camera_mode(ecs_world_t *world) {
+    unsigned char new_camera_mode = camera_mode + 1;
+    if (new_camera_mode > zox_camera_mode_topdown) new_camera_mode = 0;
+    set_camera_mode(world, new_camera_mode);
+}
+
 void set_camera_mode_first_person(ecs_world_t *world) {
     set_camera_mode(world, zox_camera_mode_first_person);
+}
+
+void set_camera_mode_third_person(ecs_world_t *world) {
+    set_camera_mode(world, zox_camera_mode_third_person);
 }
 
 void set_camera_mode_ortho(ecs_world_t *world) {
@@ -111,7 +124,17 @@ void set_camera_mode_topdown(ecs_world_t *world) {
     set_camera_mode(world, zox_camera_mode_topdown);
 }
 
-// extern float overall_voxel_scale;
+void set_camera_mode_pre_defined(ecs_world_t *world) {
+#if defined(zox_set_camera_firstperson)
+    set_camera_mode_first_person(world);
+#elif defined(zox_set_camera_thirdperson)
+    set_camera_mode_third_person(world);
+#elif defined(zox_set_camera_ortho)
+    set_camera_mode_ortho(world);
+#elif defined(zox_set_camera_topdown)
+    set_camera_mode_topdown(world);
+#endif
+}
 
 void get_camera_start_transform(float3 *camera_position, float4 *camera_rotation) {
     const float overall_voxel_scale = 32.0f;
@@ -124,10 +147,10 @@ void get_camera_start_transform(float3 *camera_position, float4 *camera_rotation
     camera_rotation->w = 1;
     float rot_x = -0.2f;
     float rot_y = -M_PI_2 + M_PI * (rand() % 101) / 100.0f;
-    #ifndef zoxel_set_camera_firstperson
+    /*#ifndef zoxel_set_camera_firstperson
         rot_x = -M_PI_2 * 0.8f;
         camera_position->y += 0.32f * overall_voxel_scale;
-    #endif
+    #endif*/
     float4 camera_rotation2 = quaternion_from_euler((float3) { rot_x, rot_y, 0 });  // quaternion_identity()
     camera_rotation->x = camera_rotation2.x;
     camera_rotation->y = camera_rotation2.y;

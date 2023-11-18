@@ -12,6 +12,6 @@
 const float camera_far_distance = 6000;
 int main_cameras_count = 1;
 const float camera_limit_x = 1.25f;
-unsigned char camera_mode = zox_camera_mode_first_person;
+unsigned char camera_mode = zox_camera_mode_third_person; // zox_camera_mode_first_person;
 unsigned char camera_fov = 90;
 unsigned char camera_follow_mode = zox_camera_follow_mode_attach;

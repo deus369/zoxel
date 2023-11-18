@@ -1,4 +1,4 @@
-#define main_camera_rotation_speed 60 * 0.22f
+/*#define main_camera_rotation_speed 60 * 0.22f
 
 void toggle_camera_perspective(ecs_world_t *world, ecs_entity_t character) {
     if (camera_mode != zox_camera_mode_first_person) return;
@@ -6,6 +6,7 @@ void toggle_camera_perspective(ecs_world_t *world, ecs_entity_t character) {
         const CameraLink *cameraLink = ecs_get(world, character, CameraLink);
         if (ecs_is_valid(world, cameraLink->value) && cameraLink->value != 0) {
             float vox_scale = model_scale * 16;
+            // zox_log("   > vox_scale [%f]\n", vox_scale)
             const LocalPosition3D *localPosition3D = ecs_get(world, cameraLink->value, LocalPosition3D);
             if (localPosition3D->value.z == vox_scale * 0.5f) {
                 zox_set(cameraLink->value, LocalPosition3D, {{ 0, vox_scale * 2.2f, - vox_scale * 3.6f }})
@@ -16,7 +17,7 @@ void toggle_camera_perspective(ecs_world_t *world, ecs_entity_t character) {
             }
         }
     }
-}
+}*/
 
 void detatch_from_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character) {
     zox_set(player, CharacterLink, { 0 })

@@ -31,9 +31,10 @@
 
 // settings
 // #define zox_disable_mouse_constraint
-#define zoxel_set_camera_ortho
-// #define zoxel_set_camera_topdown
-// #define zoxel_set_camera_firstperson
+#define zox_set_camera_firstperson
+// #define zox_set_camera_thirdperson
+// #define zox_set_camera_ortho
+// #define zox_set_camera_topdown
 // #define zox_use_orthographic_projection // used for different projection matrix
 // #define zox_spawn_terrain_on_startup
 
