@@ -9,16 +9,16 @@ void FreeCameraDisableMovementSystem(ecs_iter_t *it) {
         const DeviceLinks *deviceLinks = &deviceLinkss[i];
         for (int j = 0; j < deviceLinks->length; j++) {
             ecs_entity_t device_entity = deviceLinks->value[j];
-            if (ecs_has(world, device_entity, Mouse)) {
-                const Mouse *mouse = ecs_get(world, device_entity, Mouse);
+            if (zox_has(device_entity, Mouse)) {
+                const Mouse *mouse = zox_get(device_entity, Mouse)
                 if (mouse->left.pressed_this_frame) toggle_disable_movement = 1;
             }
         }
         if (toggle_disable_movement) {
-            DisableMovement *disableMovement = ecs_get_mut(world, characterLink->value, DisableMovement);
+            DisableMovement *disableMovement = zox_get_mut(characterLink->value, DisableMovement)
             disableMovement->value = !disableMovement->value;
-            ecs_modified(world, characterLink->value, DisableMovement);
-            zoxel_log(" > disable movement Toggled [%s]\n", disableMovement->value ? "true" : "false");
+            zox_modified(characterLink->value, DisableMovement);
+            zox_log(" > disable movement Toggled [%s]\n", disableMovement->value ? "true" : "false")
         }
     }
 

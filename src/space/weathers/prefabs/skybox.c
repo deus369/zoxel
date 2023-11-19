@@ -38,7 +38,6 @@ ecs_entity_t spawn_skybox(ecs_world_t *world) {
     if (!headless) {
         spawn_gpu_mesh(world, e);
         GLuint2 shader_skybox_value = get_shader_value(world, shader_skybox);
-        // GLuint2 shader_skybox_value = ecs_get(world, shader_skybox, ShaderGPULink)->value;
         spawn_gpu_material(world, e, shader_skybox_value);
     }
     skybox = e;

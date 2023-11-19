@@ -24,10 +24,10 @@ ecs_entity_t spawn_prefab_animating_chunk(ecs_world_t *world) {
 
 ecs_entity_t spawn_animating_chunk(ecs_world_t *world, float3 position, float scale, unsigned char division) {
     ecs_entity_t e = spawn_chunk(world, prefab_animating_chunk, position, scale);
-    ecs_set(world, e, AnimateChunk, { (((rand() % 100) / 100.0f) * animating_chunk_speed) });
-    ecs_set(world, e, RenderLod, { division });
+    zox_set(e, AnimateChunk, { (((rand() % 100) / 100.0f) * animating_chunk_speed) })
+    zox_set(e, RenderLod, { division })
     spawn_gpu_colors(world, e);
-    zoxel_log(" > spawned animating_chunk at [%fx%fx%f]\n", position.x, position.y, position.z);
+    // zox_log(" > spawned animating_chunk at [%fx%fx%f]\n", position.x, position.y, position.z)
     return e;
 }
 

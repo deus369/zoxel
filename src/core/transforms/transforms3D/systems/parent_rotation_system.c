@@ -1,5 +1,5 @@
 void set_rotation_from_parents(ecs_world_t *world, ecs_entity_t parent, float4 *rotation3D, float4 local_rotation3D) {
-    float4 parent_rotation = ecs_get(world, parent, Rotation3D)->value;
+    float4 parent_rotation = zox_get_value(parent, Rotation3D)
     *rotation3D = parent_rotation;
     quaternion_rotate_quaternion_p(rotation3D, local_rotation3D);
 }
@@ -15,7 +15,7 @@ void ParentRotationSystem(ecs_iter_t *it) {
         const LocalRotation3D *localRotation3D = &localRotation3Ds[i];
         Rotation3D *rotation3D = &rotation3Ds[i];
         set_rotation_from_parents(world, parentLink->value, &rotation3D->value, localRotation3D->value);
-        // rotation3D->value = ecs_get(world, parentLink->value, Rotation3D)->value;
+        // rotation3D->value = zox_get(world, parentLink->value, Rotation3D)->value;
         // quaternion_rotate_quaternion_p(&rotation3D->value, localRotation3D->value);
     }
 } zox_declare_system(ParentRotationSystem)

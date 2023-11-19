@@ -13,15 +13,15 @@ void FreeCameraRotateSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const CameraLink *cameraLink = &cameraLinks[i];
         if (cameraLink->value == 0) continue;
-        const FreeRoam *freeRoam = ecs_get(world, cameraLink->value, FreeRoam);
+        const FreeRoam *freeRoam = zox_get(cameraLink->value, FreeRoam)
         if (freeRoam->value == 0) continue;
         const DeviceLinks *deviceLinks = &deviceLinkss[i];
         // unsigned char is_triggered = 0;
         // ecs_entity_t mouse_entity = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
             ecs_entity_t device_entity = deviceLinks->value[j];
-            if (ecs_has(world, device_entity, Mouse)) {
-                const Mouse *mouse = ecs_get(world, device_entity, Mouse);
+            if (zox_has(device_entity, Mouse)) {
+                const Mouse *mouse = zox_get(device_entity, Mouse)
                 if (int_abs(mouse->delta.x) + int_abs(mouse->delta.y) >= max_mouse_delta || (mouse->delta.x == 0 && mouse->delta.y == 0)) continue;
                 #ifdef zox_test_quaternion_camera
                     /*Rotation3D *rotation3D = &rotation3Ds[j];
@@ -37,10 +37,10 @@ void FreeCameraRotateSystem(ecs_iter_t *it) {
                     };
                     rotation3D->value = quaternion_rotate(rotation3D->value, rotate_delta);*/
                 #else
-                    Euler *euler = ecs_get_mut(world, cameraLink->value, Euler);
+                    Euler *euler = zox_get_mut(cameraLink->value, Euler)
                     float3 eulerAddition = { mouse->delta.y * rotate_power, -mouse->delta.x * rotate_power, 0 };
                     euler->value = float3_add(euler->value, eulerAddition);
-                    ecs_modified(world, cameraLink->value, Euler);
+                    zox_modified(cameraLink->value, Euler)
                 #endif
             }
         }

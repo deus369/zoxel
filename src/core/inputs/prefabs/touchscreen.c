@@ -51,13 +51,13 @@ unsigned char touchscreen_is_any_input(ecs_world_t *world, ecs_entity_t touchscr
 
 /*void device_reset_touchscreen(ecs_world_t *world, ecs_entity_t touchscreen) {
     if (!touchscreen || !ecs_is_alive(world, touchscreen)) return;
-    const Children *children = ecs_get(world, touchscreen, Children);
+    const Children *children = zox_get(world, touchscreen, Children);
     for (int i = 0; i < children->length; i++) {
         ecs_entity_t e = children->value[i];
-        if (!ecs_has(world, e, ZevicePointer)) continue;
-        ZevicePointer *zeviceButton = ecs_get_mut(world, e, ZevicePointer);
+        if (!zox_has(e, ZevicePointer)) continue;
+        ZevicePointer *zeviceButton = zox_get(world, e, ZevicePointer);
         if (reset_device_pointer(zeviceButton)) ecs_modified(world, e, ZevicePointer);
-        ZevicePointerDelta *zevicePointerDelta = ecs_get_mut(world, e, ZevicePointerDelta);
+        ZevicePointerDelta *zevicePointerDelta = zox_get_mut(world, e, ZevicePointerDelta);
         if (zevicePointerDelta->value.x == 0 && zevicePointerDelta->value.y == 0) continue;
         zevicePointerDelta->value = int2_zero;
         ecs_modified(world, e, ZevicePointerDelta);

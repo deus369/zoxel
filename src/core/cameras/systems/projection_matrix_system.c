@@ -70,7 +70,7 @@ void ProjectionMatrixSystem(ecs_iter_t *it) {
         #ifndef zox_use_orthographic_projection
             calculate_perspective_projection_matrix(&projectionMatrix->value, -xmax, xmax, -ymax, ymax, znear, zfar);
         #else
-            if (ecs_has(world, it->entities[i], Camera2D)) {
+            if (zox_has(it->entities[i], Camera2D)) {
                 calculate_perspective_projection_matrix(&projectionMatrix->value, -xmax, xmax, -ymax, ymax, znear, zfar);
             } else {
                 znear = 6;

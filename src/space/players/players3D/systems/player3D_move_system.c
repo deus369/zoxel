@@ -76,7 +76,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
         if (left_stick.x == 0 && left_stick.y == 0) continue;
         // zoxel_log(" > left_stick %fx%f\n", left_stick.x, left_stick.y);
         float3 movement = { left_stick.x, 0, left_stick.y };
-        // const Omega3D *omega3D = ecs_get(world, characterLink->value, Omega3D);
+        // const Omega3D *omega3D = zox_get(world, characterLink->value, Omega3D);
         const Rotation3D *rotation3D = zox_get(characterLink->value, Rotation3D)
         const Velocity3D *velocity3D = zox_get(characterLink->value, Velocity3D)
         Acceleration3D *acceleration3D = zox_get_mut(characterLink->value, Acceleration3D)
@@ -96,7 +96,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                     rotation3D2->value = face_direction;
                     zox_modified(characterLink->value, Rotation3D)
                     // todo: rotate towards desired direction
-                    // Alpha3D *alpha3D = ecs_get_mut(world, characterLink->value, Alpha3D);
+                    // Alpha3D *alpha3D = zox_get_mut(world, characterLink->value, Alpha3D);
                     // quaternion_rotate_quaternion_p(&alpha3D->value, quaternion);
                     // ecs_modified(world, characterLink->value, Alpha3D);
                     #ifdef zox_debug_player_movement_direction
@@ -124,53 +124,3 @@ void Player3DMoveSystem(ecs_iter_t *it) {
         zox_modified(characterLink->value, Acceleration3D)
     }
 } zox_declare_system(Player3DMoveSystem)
-
-/*const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
-if (float_abs(gamepad->left_stick.value.x) >= joystick_cutoff_buffer) movement.x = gamepad->left_stick.value.x;
-if (float_abs(gamepad->left_stick.value.y) >= joystick_cutoff_buffer) movement.z = gamepad->left_stick.value.y;
-if (gamepad->lb.is_pressed || gamepad->rb.is_pressed) {
-    movement.x *= run_speed;
-    movement.z *= run_speed;
-}
-#ifdef zox_floating_movement
-    if (gamepad->a.is_pressed) movement.y = jump_power;
-#endif*/
-
-//if (float_abs(left_stick.x) > joystick_cutoff_buffer) movement.x = left_stick.x;
-//if (float_abs(left_stick.y) > joystick_cutoff_buffer) movement.z = left_stick.y;
-    // movement_rotation = quaternion_rotate(reverse_rotation, movement_rotation);
-    // float euler_y = quaternion_to_euler(movement_rotation).y;
-    // movement_rotation = quaternion_inverse(movement_rotation);
-    // float4 new_rotation = quaternion_from_euler((float3) { 0, euler_y, 0 });
-    // float4 reverse_rotation = (quaternion_from_euler((float3) { 0, 1, 0 })); // quaternion_inverse
-    // float3 movement2 = float4_rotate_float3(reverse_rotation, normalized_movement);
-    // movement = float4_rotate_float3(quaternion_inverse(rotation3D->value), movement);
-    // movement = float4_rotate_float3(camera_rotation->value, movement);
-    /*
-    float3 camera_euler = quaternion_to_euler(camera_rotation->value);
-    camera_euler.x = 0;
-    camera_euler.z = 0;
-    float4 camera_rotation2 = quaternion_from_euler(camera_euler);  // the y axis
-    */
-    
-    //movement = float4_rotate_float3(float4_inverse(rotation3D->value), movement);
-    //movement = float4_rotate_float3(camera_rotation->value, float3_multiply_float(movement, -1.0f));
-    // set character to rotate here too, towards the direction
-    // float4 quaternion = mouse_delta_to_rotation(euler.x, euler.y);
-    // float4 quaternion = quaternion_from_euler(float3_normalize(movement));
-    
-    // quaternion_rotate_quaternion_p(&movement_rotation, quaternion_from_euler((float3) { 90 * degreesToRadians, 90 * degreesToRadians, 0 }));
-    // quaternion_rotate_quaternion_p(&movement_rotation, quaternion_from_euler((float3) { 0, 90 * degreesToRadians, 0 }));
-    // zoxel_log("     > normalized_movement: %fx%fx%f\n", normalized_movement.x, normalized_movement.y, normalized_movement.z);
-    // zoxel_log("     > euler_y: %f\n", euler_y);
-    // rotate towards looking direction
-        // float3 direction_vector = float4_rotate_float3(camera_rotation2, (float3) { 0, 1, 0 }); // 
-        // float4 quaternion2 = quaternion_rotate(quaternion_inverse(rotation3D->value), quaternion);
-        /*float3 direction_vector = quaternion_to_euler(movement_rotation);
-        direction_vector.y = 0;
-        direction_vector = float3_normalize(direction_vector);*/
-    // float4 movement_rotation = quaternion_from_normal(movement); // quaternion_from_euler(movement);
-    // float4 movement_rotation = quaternion_from_between_vectors(float3_zero, movement);
-/*#ifdef zox_floating_movement
-    if (keyboard->space.is_pressed) movement.y = jump_power;
-#endif*/

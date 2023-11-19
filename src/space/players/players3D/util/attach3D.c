@@ -2,12 +2,12 @@
 
 void toggle_camera_perspective(ecs_world_t *world, ecs_entity_t character) {
     if (camera_mode != zox_camera_mode_first_person) return;
-    if (ecs_is_valid(world, character) && ecs_has(world, character, CameraLink)) {
-        const CameraLink *cameraLink = ecs_get(world, character, CameraLink);
+    if (ecs_is_valid(world, character) && zox_has(character, CameraLink)) {
+        const CameraLink *cameraLink = zox_get(world, character, CameraLink);
         if (ecs_is_valid(world, cameraLink->value) && cameraLink->value != 0) {
             float vox_scale = model_scale * 16;
             // zox_log("   > vox_scale [%f]\n", vox_scale)
-            const LocalPosition3D *localPosition3D = ecs_get(world, cameraLink->value, LocalPosition3D);
+            const LocalPosition3D *localPosition3D = zox_get(world, cameraLink->value, LocalPosition3D);
             if (localPosition3D->value.z == vox_scale * 0.5f) {
                 zox_set(cameraLink->value, LocalPosition3D, {{ 0, vox_scale * 2.2f, - vox_scale * 3.6f }})
                 zox_set(cameraLink->value, LocalRotation3D, { quaternion_from_euler((float3) { -25 * degreesToRadians, 180 * degreesToRadians, 0 }) })
@@ -28,9 +28,9 @@ void detatch_from_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_
     //zox_set(camera, EternalRotation, { rotationer })
     zox_set(camera, CanFreeRoam, { 1 })
     zox_add_tag(camera, EulerOverride)
-    // float4 rotation = quaternion_from_euler(ecs_get(world, camera, Euler)->value);
+    // float4 rotation = quaternion_from_euler(zox_get(world, camera, Euler)->value);
     // zox_set(camera, Rotation3D, { rotation })
-    float4 camera_rotation3D = ecs_get(world, camera, Rotation3D)->value;
+    float4 camera_rotation3D = zox_get_value(camera, Rotation3D)
     float3 euler = quaternion_to_euler(camera_rotation3D);
     // zoxel_log(" > camera euler [%fx%fx%f]\n", euler.x, euler.y, euler.z);
     // float4 camera_rotation2 = quaternion_from_euler(euler);

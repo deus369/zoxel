@@ -26,7 +26,7 @@ ecs_entity_t spawn_zevice_pointer(ecs_world_t *world, unsigned char type, unsign
     #ifdef zoxel_debug_spawns
         zoxel_log(" > spawned zevice_pointer [%lu].\n", (long int) (e));
     #endif
-    if (ecs_has(world, e, ZeviceButton)) zoxel_log("    > device stick has button\n");
+    if (zox_has(e, ZeviceButton)) zoxel_log("    > device stick has button\n");
     return e;
 }
 

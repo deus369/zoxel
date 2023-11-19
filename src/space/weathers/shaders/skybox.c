@@ -66,7 +66,7 @@ void load_shader_skybox(ecs_world_t *world) {
 }
 
 void set_sky_color(ecs_world_t *world, float3 top_color, float3 bottom_color) {
-    GLuint material = ecs_get(world, skybox, MaterialGPULink)->value;
+    GLuint material = zox_get_value(skybox, MaterialGPULink)
     opengl_set_material(material);
     opengl_set_float3(glGetUniformLocation(material, "sky_top_color"), top_color);
     opengl_set_float3(glGetUniformLocation(material, "sky_bottom_color"), bottom_color);
@@ -80,8 +80,8 @@ void set_sky_color(ecs_world_t *world, float3 top_color, float3 bottom_color) {
 void restore_skybox_material(ecs_world_t *world) {
     GLuint2 shader_skybox_value = get_shader_value(world, shader_skybox);
     GLuint sky_material = spawn_gpu_material_program(shader_skybox_value);
-    float3 top_color = color_rgb_to_float3(ecs_get(world, skybox, ColorRGB)->value);
-    float3 bottom_color = color_rgb_to_float3(ecs_get(world, skybox, SecondaryColorRGB)->value);
+    float3 top_color = color_rgb_to_float3(zox_gett_value(skybox, ColorRGB));
+    float3 bottom_color = color_rgb_to_float3(zox_gett_value(skybox, SecondaryColorRGB));
     opengl_set_material(sky_material);
     opengl_set_float3(5, top_color);
     opengl_set_float3(6, bottom_color);

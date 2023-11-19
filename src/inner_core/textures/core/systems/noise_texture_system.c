@@ -161,15 +161,15 @@ void NoiseTextureSystem(ecs_iter_t *it) {
         unsigned char texture_type = zox_texture_none;
         if (texture_mode == zox_texture_mode_graybox) {
             texture_type = zox_texture_graybox;
-        } else if (ecs_has(world, e, DirtTexture)) {
+        } else if (zox_has(e, DirtTexture)) {
             texture_type = zox_texture_dirt;
-        } else if (ecs_has(world, e, GrassTexture)) {
+        } else if (zox_has(e, GrassTexture)) {
             texture_type = zox_texture_grass;
-        } else if (ecs_has(world, e, SandTexture)) {
+        } else if (zox_has(e, SandTexture)) {
             texture_type = zox_texture_sand;
-        } else if (ecs_has(world, e, StoneTexture)) {
+        } else if (zox_has(e, StoneTexture)) {
             texture_type = zox_texture_stone;
-        } else if (ecs_has(world, e, ObsidianTexture)) {
+        } else if (zox_has(e, ObsidianTexture)) {
             texture_type = zox_texture_obsidian;
         }
         resize_memory_component(TextureData, textureData, color, textureSize->value.x * textureSize->value.y)

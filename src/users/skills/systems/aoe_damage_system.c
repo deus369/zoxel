@@ -51,7 +51,7 @@ void AOEDamageSystem(ecs_iter_t *it) {
                 }
                 const UserStatLinks *userStatLinks = &userStatLinkss[j];
                 ecs_entity_t health_stat = userStatLinks->value[0];
-                StatValue *statValue = ecs_get_mut(world, health_stat, StatValue);
+                StatValue *statValue = zox_get_mut(health_stat, StatValue)
                 statValue->value -= delta_time * damage_rate;
                 if (statValue->value < 0) statValue->value = 0;
                 ecs_modified(world, health_stat, StatValue);

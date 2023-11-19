@@ -1,6 +1,6 @@
 #define check_chunk_lod(dir)\
     (chunkNeighbors->value[direction##_##dir] != 0 &&\
-    ecs_get(world, chunkNeighbors->value[direction##_##dir], RenderLod)->value != \
+    zox_gett_value(chunkNeighbors->value[direction##_##dir], RenderLod) != \
     get_chunk_division(new_position, int3##_##dir(chunkPosition->value)))
 
 void StreamPointSystem(ecs_iter_t *it) {

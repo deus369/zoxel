@@ -15,7 +15,7 @@ void ElementRenderSystem(ecs_iter_t *it) {
         const Layer2D *layer2D = &layer2Ds[i];
         if (layer2D->value != renderer_layer) continue;
         const MeshDirty *meshDirty = &meshDirtys[i];
-        if (meshDirty->value) continue; // ecs_get(it->world, it->entities[i], MeshDirty)->value) continue;
+        if (meshDirty->value) continue;
         const RenderDisabled *renderDisabled = &renderDisableds[i];
         if (renderDisabled->value) continue;
         const Position2D *position2D = &position2Ds[i];

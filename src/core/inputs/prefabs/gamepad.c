@@ -69,7 +69,7 @@ unsigned char zevice_stick_has_input(const ZeviceStick *zeviceStick, float cutof
 }
 
 unsigned char gamepad_is_any_input(ecs_world_t *world, ecs_entity_t gamepad) {
-    const Children *children = ecs_get(world, gamepad, Children);
+    const Children *children = zox_get(gamepad, Children)
     for (int i = 0; i < children->length; i++) {
         ecs_entity_t e = children->value[i];
 #ifndef zox_disable_gamepad_stick_as_any_input

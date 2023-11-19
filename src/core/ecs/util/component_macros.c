@@ -114,7 +114,7 @@ unsigned char is_component_type##_##type(ecs_entity_t id) { return is_in_ecs_ent
     if (ptr->value != NULL) type##_##hash_map_dispose(ptr->value);\
 });*/
 
-/*if (ecs_has(world, pair->value, EntityLinks)) {\
+/*if (zox_has(pair->value, EntityLinks)) {\
     const EntityLinks *entityLinks = ecs_get(world, pair->value, EntityLinks);\
     for (int k = 0; k < entityLinks->length; k++) {\
         ecs_entity_t character_entity = entityLinks->value[k];\

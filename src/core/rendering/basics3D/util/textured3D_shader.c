@@ -1,4 +1,3 @@
-
 extern GLuint2 get_shader_value(ecs_world_t *world, ecs_entity_t shader);
 extern ecs_entity_t spawn_shader(ecs_world_t *world, const GLchar* vert_buffer, const GLchar* frag_buffer);
 extern ecs_entity_t spawn_material(ecs_world_t *world, GLuint2 shader);
@@ -17,7 +16,7 @@ GLuint get_textured3D_material_value(ecs_world_t *world) {
 }
 
 const Textured3DAttributes* get_textured3D_material_attributes(ecs_world_t *world) {
-    return ecs_get(world, textured3D_material, Textured3DAttributes);
+    return zox_get(textured3D_material, Textured3DAttributes)
 }
 
 void restore_shader_textured3D(ecs_world_t *world) {
@@ -51,9 +50,6 @@ int load_shader3D_textured(ecs_world_t *world) {
             zoxel_log("         3 [%ix%ix%i]\n", attributes_textured3D->camera_matrix, attributes_textured3D->fog_data, attributes_textured3D->texture, attributes_textured3D->brightness);
         */
     }
-    #ifdef zoxel_debug_opengl
-        zoxel_log(" > loaded shader3D textured\n");
-    #endif
     return 0;
 }
 

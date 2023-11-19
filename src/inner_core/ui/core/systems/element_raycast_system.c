@@ -12,7 +12,7 @@ void set_element_brightness_mut(ecs_world_t *world, ecs_entity_t e, float value)
 }
 
 void set_selectable_state_mut(ecs_world_t *world, ecs_entity_t ui_entity, unsigned char state) {
-    if (ui_entity != 0) { // && ecs_is_alive(world, ui_entity) && ecs_has(world, ui_entity, SelectState)) {
+    if (ui_entity != 0) { // && ecs_is_alive(world, ui_entity) && zox_has(ui_entity, SelectState)) {
         SelectState *selectState = zox_get_mut(ui_entity, SelectState)
         if (selectState->value != state) {
             selectState->value = state;

@@ -15,21 +15,21 @@ void UITrailSystem(ecs_iter_t *it) {
         const UITrail *uiTrail = &uiTrails[i];
         Position3D *position3D = &position3Ds[i];
         position3D->value = uiTrail->value;
-        const Position3D *target_position = ecs_get(world, uiHolderLink->value, Position3D);
+        const Position3D *target_position = zox_get(uiHolderLink->value, Position3D)
         float3_add_float3_p(&position3D->value, target_position->value);
         ecs_entity_t e = it->entities[i];
-        if (ecs_has(world, e, Children)) {
-            const Children *children = ecs_get(world, e, Children);
+        if (zox_has(e, Children)) {
+            const Children *children = zox_get(e, Children)
             for (int j = 0; j < children->length; j++) {
                 ecs_entity_t child = children->value[j];
-                const LocalPosition3D *child_local_position3D = ecs_get_mut(world, child, LocalPosition3D);
-                Position3D *child_position3D = ecs_get_mut(world, child, Position3D);
+                const LocalPosition3D *child_local_position3D = zox_get(child, LocalPosition3D)
+                Position3D *child_position3D = zox_get_mut(child, Position3D)
                 set_position_from_parents(world, e, &child_position3D->value, child_local_position3D->value);
-                ecs_modified(world, child, Position3D);
+                zox_modified(child, Position3D)
             }
         }
-        #ifdef zox_debug_ui_trails
-            spawn_line3D(world, target_position->value, position3D->value, ui_trail_debug_thickness, 1.0);
-        #endif
+#ifdef zox_debug_ui_trails
+        spawn_line3D(world, target_position->value, position3D->value, ui_trail_debug_thickness, 1.0);
+#endif
     }
 } zox_declare_system(UITrailSystem)

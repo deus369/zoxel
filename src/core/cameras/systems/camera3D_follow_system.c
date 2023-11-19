@@ -8,12 +8,12 @@ void Camera3DFollowSystem(ecs_iter_t *it) {
         if (cameraFollowLink->value == 0) continue;
         float3 target_position = { 0, 0, 0 };
         if (zox_has(cameraFollowLink->value, Position2D)) {
-            const Position2D *target_position2D = ecs_get(world, cameraFollowLink->value, Position2D);
+            const Position2D *target_position2D = zox_get(cameraFollowLink->value, Position2D)
             target_position.x = target_position2D->value.x;
             target_position.y = target_position2D->value.y;
             target_position.z = 0;
         } else if (zox_has(cameraFollowLink->value, Position3D)) {
-            const Position3D *target_position3D = ecs_get(world, cameraFollowLink->value, Position3D);
+            const Position3D *target_position3D = zox_get(cameraFollowLink->value, Position3D)
             target_position = target_position3D->value;
         } else {
             continue;

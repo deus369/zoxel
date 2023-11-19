@@ -14,19 +14,19 @@ void BillboardSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         // const CameraLink *cameraLink = &cameraLinks[i];
         ecs_entity_t camera = main_camera; // cameraLink->value
-        if (!camera || !ecs_has(world, camera, Rotation3D)) continue;
+        if (!camera || !zox_has(camera, Rotation3D)) continue;
         ecs_entity_t e = it->entities[i];
         // const Position3D *position3D = &position3Ds[i];
         Rotation3D *rotation3D = &rotation3Ds[i];
-        const Rotation3D *target_rotation = ecs_get(world, camera, Rotation3D);
+        const Rotation3D *target_rotation = zox_get(camera, Rotation3D)
         // rotation3D->value = quaternion_rotate(flip_rotation, target_rotation->value);
         rotation3D->value = target_rotation->value;
-        if (ecs_has(world, e, Children)) {
-            const Children *children = ecs_get(world, e, Children);
+        if (zox_has(e, Children)) {
+            const Children *children = zox_get(e, Children)
             for (int j = 0; j < children->length; j++) {
                 ecs_entity_t child = children->value[j];
-                const LocalRotation3D *child_local_rotation3D = ecs_get_mut(world, child, LocalRotation3D);
-                Rotation3D *child_rotation3D = ecs_get_mut(world, child, Rotation3D);
+                const LocalRotation3D *child_local_rotation3D = zox_get(child, LocalRotation3D)
+                Rotation3D *child_rotation3D = zox_get_mut(child, Rotation3D)
                 set_rotation_from_parents(world, e, &child_rotation3D->value, child_local_rotation3D->value);
                 ecs_modified(world, child, Rotation3D);
             }

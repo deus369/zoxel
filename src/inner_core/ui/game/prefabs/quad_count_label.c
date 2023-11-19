@@ -3,7 +3,6 @@ ecs_entity_t quads_label;
 
 ecs_entity_t spawn_prefab_quad_count_label(ecs_world_t *world) {
     ecs_entity_t e = ecs_clone(world, 0, label_background_prefab, 1);
-    // ecs_set_name(world, e, "prefab_fps_display"); // bugged atm
     zox_add_tag(e, QuadsCountLabel)
     zox_prefab_set(e, QuadsCount, { -1 })
     if (!headless) prefab_set_mesh2D_vertices(world, e, square_vertices_right_aligned, 4);

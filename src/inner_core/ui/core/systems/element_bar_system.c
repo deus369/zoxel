@@ -17,7 +17,7 @@ void ElementBarSystem(ecs_iter_t *it) {
         if (textureDirty->value) continue;
         ecs_entity_t e = it->entities[i];
         if (!can_render_ui(world, e)) continue; // disabled for now causes issues
-        MeshDirty *meshDirty = ecs_get_mut(world, dirty_bar, MeshDirty);
+        MeshDirty *meshDirty = zox_get_mut(dirty_bar, MeshDirty)
         if (meshDirty->value) continue;
         const ElementBar *elementBar = &elementBars[i];
         const ElementBarSize *elementBarSize = &elementBarSizes[i];
@@ -27,12 +27,12 @@ void ElementBarSystem(ecs_iter_t *it) {
         const MeshVertices *meshVertices = zox_get(dirty_bar, MeshVertices)
         float test_var = (left_offset + square_vertices[2].x * scale.x * percentage);   // test right vert
         if (test_var == meshVertices->value[2].x) continue;
-        MeshVertices *meshVertices2 = ecs_get_mut(world, dirty_bar, MeshVertices);
+        MeshVertices *meshVertices2 = zox_get_mut(dirty_bar, MeshVertices)
         for (unsigned char j = 0; j < 4; j++)
             meshVertices2->value[j] = (float3) { left_offset + square_vertices[j].x * scale.x * percentage, square_vertices[j].y * scale.y, 0 };
         meshDirty->value = 1;
-        ecs_modified(world, dirty_bar, MeshDirty);
-        ecs_modified(world, dirty_bar, MeshVertices);
+        zox_modified(dirty_bar, MeshDirty)
+        zox_modified(dirty_bar, MeshVertices)
 
         //float test_var = (left_offset + square_vertices[2].x * scale.x * percentage);   // test right vert
         //if (test_var != meshVertices->value[2].x) {

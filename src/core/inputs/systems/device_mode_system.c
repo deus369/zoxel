@@ -12,13 +12,13 @@ void DeviceModeSystem(ecs_iter_t *it) {
             ecs_entity_t device_entity = deviceLinks2->value[j];
             if (deviceMode->value == zox_device_mode_keyboardmouse) {
                 if (zox_has(device_entity, Keyboard)) {
-                    const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
+                    const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                     if (keyboard_is_any_input(keyboard)) {
                         using_current_inputs = 1;
                         break;
                     }
                 } else if (zox_has(device_entity, Mouse)) {
-                    const Mouse *mouse = ecs_get(world, device_entity, Mouse);
+                    const Mouse *mouse = zox_get(device_entity, Mouse)
                     if (mouse_is_any_input(mouse)) {
                         using_current_inputs = 1;
                         break;
@@ -49,11 +49,11 @@ void DeviceModeSystem(ecs_iter_t *it) {
             ecs_entity_t device_entity = deviceLinks2->value[j];
             if (deviceMode->value != zox_device_mode_keyboardmouse) {
                 if (zox_has(device_entity, Keyboard)) {
-                    const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
+                    const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                     if (keyboard_is_any_input(keyboard)) deviceModeDirty->value = zox_device_mode_keyboardmouse;
                     continue;
                 } else if (zox_has(device_entity, Mouse)) {
-                    const Mouse *mouse = ecs_get(world, device_entity, Mouse);
+                    const Mouse *mouse = zox_get(device_entity, Mouse)
                     if (mouse_is_any_input(mouse)) {
                         deviceModeDirty->value = zox_device_mode_keyboardmouse;
                         // zoxel_log(" > input mode changed to keyboardmouse [m]\n");

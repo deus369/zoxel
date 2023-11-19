@@ -19,6 +19,7 @@ unsigned char peek_at_packet(int socket, struct sockaddr_in *recv_addr) {
 void PacketRecieveSystem(ecs_iter_t *it) {
     // zoxel_log(" === attempting to get packets ===\n");
     // only for PacketListener tagged entities
+    // ecs_world_t *world = it->world;
     const SocketLink *socketLinks = ecs_field(it, SocketLink, 2);
     for (int i = 0; i < it->count; i++) {
         const SocketLink *socketLink = &socketLinks[i];
@@ -35,7 +36,7 @@ void PacketRecieveSystem(ecs_iter_t *it) {
                 zoxel_log(" > received packet [%i] from [%s]\n", packet_type, ip4_to_string(recv_addr)); // , recv_size);
                 if (packet_type == zoxel_packet_type_connect) {
                     // reply to client to confirm message was sent
-                    // if (ecs_has(it->world, it->entities[i], NetRoom))
+                    // if (zox_has(it->entities[i], NetRoom))
                     {
                         unsigned char return_packet_size = 1;
                         unsigned char send_buffer[1] = { zoxel_packet_type_connect_confirm };   // return packet

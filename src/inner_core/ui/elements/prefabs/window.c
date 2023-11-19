@@ -1,7 +1,7 @@
 ecs_entity_t prefab_window;
 
 // i'm getting prefab issues with a override component not appearing on the spawned entity, wondering if anyone else is geting this
-// (im thinking its something to do with deffered operations in ecs_set)
+// (im thinking its something to do with deffered operations in zox_set)
 //! \todo in web build, throws error during resize, if window is around
 //      Uncaught TypeError: WebGL2RenderingContext.getAttribLocation: Argument 1 is not an object.
 
@@ -17,9 +17,9 @@ ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     zox_prefab_set(e, Children, { 0, NULL })
     zox_prefab_set(e, ElementFontSize, { 14 })
     prefab_window = e;
-    #ifdef zoxel_debug_prefabs
-        zox_log("   > spawn_prefab window [%lu]\n", e);
-    #endif
+#ifdef zoxel_debug_prefabs
+    zox_log("   > spawn_prefab window [%lu]\n", e)
+#endif
     return e;
 }
 

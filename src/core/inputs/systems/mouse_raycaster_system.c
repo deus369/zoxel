@@ -12,17 +12,17 @@ void MouseRaycasterSystem(ecs_iter_t *it) {
         raycaster->value = int2_zero;
         for (int j = 0; j < deviceLinks2->length; j++) {
             ecs_entity_t device_entity = deviceLinks2->value[j];
-            if (deviceMode->value == zox_device_mode_keyboardmouse && ecs_has(world, device_entity, Mouse)) {
-                const Mouse *mouse = ecs_get(world, device_entity, Mouse);
+            if (deviceMode->value == zox_device_mode_keyboardmouse && zox_has(device_entity, Mouse)) {
+                const Mouse *mouse = zox_get(device_entity, Mouse)
                 int2_add_int2_p(&raycaster->value, mouse->position);
-            } else if (deviceMode->value == zox_device_mode_touchscreen && ecs_has(world, device_entity, Touchscreen)) {
-                const Children *zevices = ecs_get(world, device_entity, Children);
+            } else if (deviceMode->value == zox_device_mode_touchscreen && zox_has(device_entity, Touchscreen)) {
+                const Children *zevices = zox_get(device_entity, Children)
                 for (int k = 0; k < zevices->length; k++) {
                     ecs_entity_t zevice_entity = zevices->value[k];
-                    if (ecs_has(world, zevice_entity, ZevicePointer)) {
-                        const ZevicePointer *zevicePointer = ecs_get(world, zevice_entity, ZevicePointer);
+                    if (zox_has(zevice_entity, ZevicePointer)) {
+                        const ZevicePointer *zevicePointer = zox_get(zevice_entity, ZevicePointer)
                         if (devices_get_released_this_frame(zevicePointer->value) || devices_get_is_pressed(zevicePointer->value)) {
-                            const ZevicePointerPosition *zevicePointerPosition = ecs_get(world, zevice_entity, ZevicePointerPosition);
+                            const ZevicePointerPosition *zevicePointerPosition = zox_get(zevice_entity, ZevicePointerPosition)
                             // raycaster->value = zevicePointerPosition->value;
                             int2_add_int2_p(&raycaster->value, zevicePointerPosition->value);
                         } else {

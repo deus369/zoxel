@@ -1,6 +1,6 @@
 void set_position_from_parents(ecs_world_t *world, ecs_entity_t parent, float3 *position3D, float3 local_position3D) {
-    float3 parent_position = ecs_get(world, parent, Position3D)->value;
-    float4 parent_rotation = ecs_get(world, parent, Rotation3D)->value;
+    float3 parent_position = zox_get_value(parent, Position3D)
+    float4 parent_rotation = zox_get_value(parent, Rotation3D)
     *position3D = local_position3D;
     float4_rotate_float3_p(parent_rotation, position3D);
     float3_add_float3_p(position3D, parent_position);

@@ -6,8 +6,8 @@ void UserStatbarSystem(ecs_iter_t *it) {
         const UserStatLink *userStatLink = &userStatLinks[i];
         if (!userStatLink->value) continue;
         ElementBar *elementBar = &elementBars[i];
-        const StatValue *statValue = ecs_get(world, userStatLink->value, StatValue);
-        const StatValueMax *statValueMax = ecs_get(world, userStatLink->value, StatValueMax);
+        const StatValue *statValue = zox_get(userStatLink->value, StatValue)
+        const StatValueMax *statValueMax = zox_get(userStatLink->value, StatValueMax)
         float new_value = statValue->value / statValueMax->value;
         if (elementBar->value != new_value) {
             elementBar->value = new_value;

@@ -36,7 +36,7 @@
                 const Children *zevices = ecs_get(world, device_entity, Children);
                 for (int k = 0; k < zevices->length; k++) {
                     ecs_entity_t zevice_entity = zevices->value[k];
-                    if (ecs_has(world, zevice_entity, ZeviceStick)) {
+                    if (zox_has(zevice_entity, ZeviceStick)) {
                         const ZeviceDisabled *zeviceDisabled = ecs_get(world, zevice_entity, ZeviceDisabled);
                         if (zeviceDisabled->value) continue;
                         const ZeviceStick *zeviceStick = ecs_get(world, zevice_entity, ZeviceStick);
@@ -70,7 +70,7 @@
                 unsigned did_find = 0;
                 for (int k = 0; k < children->length; k++) {
                     ecs_entity_t child_entity = children->value[k];
-                    if (ecs_has(world, child_entity, Selectable) && child_entity == raycasterTarget->value) {
+                    if (zox_has(child_entity, Selectable) && child_entity == raycasterTarget->value) {
                         // zoxel_log(" > found selectable [%i] out of [%i] - %lu\n", k, children->length, child_entity);
                         did_find = 1;
                         if (left_stick.y >= ui_navigation_joystick_cutoff && k > 1) {

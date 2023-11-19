@@ -86,15 +86,15 @@ void end_game(ecs_world_t *world) {
 #ifdef zox_on_play_spawn_terrain
     // temporary: delete chunks
 /*#ifdef zox_extra_destroy_terrain_children
-    const ChunkLinks *chunkLinks = ecs_get(world, local_terrain, ChunkLinks);
+    const ChunkLinks *chunkLinks = zox_get(world, local_terrain, ChunkLinks);
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hash_map_pair* pair = chunkLinks->value->data[i];
         while (pair != NULL) {
             ecs_entity_t terrain_chunk = pair->value;
-            // ChunkOctree *chunkOctree = ecs_get_mut(world, terrain_chunk, ChunkOctree);
+            // ChunkOctree *chunkOctree = zox_get_mut(world, terrain_chunk, ChunkOctree);
             // close_ChunkOctree(chunkOctree);
             // ecs_modified(world, terrain_chunk, ChunkOctree);
-            const EntityLinks *entityLinks = ecs_get(world, terrain_chunk, EntityLinks);
+            const EntityLinks *entityLinks =zox_get(world, terrain_chunk, EntityLinks);
             for (int j = 0; j < entityLinks->length; j++) {
                 ecs_entity_t character_entity = entityLinks->value[j];
                 zox_delete(character_entity)
@@ -107,7 +107,7 @@ void end_game(ecs_world_t *world) {
     // this should delete all chunks
     // which should delete all
     // delete this when terrain dies
-    // const TilemapLink *tilemapLink = ecs_get(world, local_terrain, TilemapLink);
+    // const TilemapLink *tilemapLink = zox_get(world, local_terrain, TilemapLink);
     // zox_delete(tilemapLink->value)
     // delete terrain
     if (local_terrain) {
@@ -163,10 +163,10 @@ void play_game(ecs_world_t *world) {
 // \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cam
 // todo: new hotswap camera function, takes in two camera entities
 /*ecs_entity_t respawn_camera(ecs_world_t *world, ecs_entity_t old_camera_entity) {
-    float3 camera_position = ecs_get(world, old_camera_entity, Position3D)->value;
-    float4 camera_rotation = ecs_get(world, old_camera_entity, Rotation3D)->value;
-    int2 camera_screen_dimensions = ecs_get(world, old_camera_entity, ScreenDimensions)->value;
-    float4x4 view_matrix = ecs_get(world, old_camera_entity, ViewMatrix)->value;
+    float3 camera_position = zox_get(world, old_camera_entity, Position3D)->value;
+    float4 camera_rotation = zox_get(world, old_camera_entity, Rotation3D)->value;
+    int2 camera_screen_dimensions = zox_get(world, old_camera_entity, ScreenDimensions)->value;
+    float4x4 view_matrix = zox_get(world, old_camera_entity, ViewMatrix)->value;
     render_camera_matrix = camera_matrix;
     ecs_entity_t e = spawn_free_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { }); // spawn new free roam camera
     zox_set(e, ViewMatrix, { view_matrix })
@@ -175,10 +175,10 @@ void play_game(ecs_world_t *world) {
 }
 
 ecs_entity_t respawn_base_camera(ecs_world_t *world, ecs_entity_t old_camera_entity) {
-    float3 camera_position = ecs_get(world, old_camera_entity, Position3D)->value;
-    float4 camera_rotation = ecs_get(world, old_camera_entity, Rotation3D)->value;
-    int2 camera_screen_dimensions = ecs_get(world, old_camera_entity, ScreenDimensions)->value;
-    float4x4 view_matrix = ecs_get(world, old_camera_entity, ViewMatrix)->value;
+    float3 camera_position = zox_get(world, old_camera_entity, Position3D)->value;
+    float4 camera_rotation = zox_get(world, old_camera_entity, Rotation3D)->value;
+    int2 camera_screen_dimensions = zox_get(world, old_camera_entity, ScreenDimensions)->value;
+    float4x4 view_matrix = zox_get(world, old_camera_entity, ViewMatrix)->value;
     // render_camera_matrix = camera_matrix;
     ecs_entity_t e = spawn_base_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { }); // spawn new free roam camera
     zox_set(e, ViewMatrix, { view_matrix })
@@ -193,6 +193,6 @@ ecs_entity_t respawn_base_camera(ecs_world_t *world, ecs_entity_t old_camera_ent
     spawn_many_characters3D(world);
 #endif*/
 
-    /*ChunkOctree *chunkOctree2 = ecs_get_mut(world, character_entity, ChunkOctree);
+    /*ChunkOctree *chunkOctree2 = zox_get(world, character_entity, ChunkOctree);
     close_ChunkOctree(chunkOctree2);
     ecs_modified(world, character_entity, ChunkOctree);*/

@@ -183,9 +183,9 @@ void on_destroyed##_##name(ecs_iter_t *it) {\
         ecs_entity_t e = it->entities[i];\
         name *component = &components[i];\
         if (component->value) {\
-            links_name *links_component = ecs_get_mut(world, component->value, links_name);\
+            links_name *links_component = zox_get_mut(component->value, links_name)\
             remove_from_memory_component(links_component, type, e)\
-            ecs_modified(world, component->value, links_name);\
+            zox_modified(component->value, links_name)\
         }\
         component->value = 0;\
     }\

@@ -29,7 +29,7 @@ void FeedForwardSystem(ecs_iter_t *it) {
         const ConnectionData *connectionData = &connectionDatas[i];
         Signal *signal = &signals[i];
         if (signal->value != 1) {
-            if (ecs_has(world, connectionData->value.x, InputNeuron)) neuron_signal_begin(world, connectionData->value.x);
+            if (zox_has(connectionData->value.x, InputNeuron)) neuron_signal_begin(world, connectionData->value.x);
             continue;
         }
         SignalStrength *signalStrength = &signalStrengths[i];

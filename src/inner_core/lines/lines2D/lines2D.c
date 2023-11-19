@@ -43,19 +43,19 @@ void spawn_prefabs_lines2D(ecs_world_t *world) {
 }
 
 void set_line_element_real_position2D(ecs_world_t *world, ecs_entity_t e, float2 real_position2D, int2 canvas_size, int2 parent_position) {
-    if (ecs_has(world, e, LinePosition2D)) {
+    if (zox_has(e, LinePosition2D)) {
         float2 canvas_size_f = int2_to_float2(canvas_size);
         float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
-        const LineLocalPosition2D *lineLocalPosition2D = ecs_get(world, e, LineLocalPosition2D);
+        const LineLocalPosition2D *lineLocalPosition2D = zox_get(e, LineLocalPosition2D)
         int4 new_line_position = get_new_line_position(real_position2D, canvas_size_f, aspect_ratio, parent_position, lineLocalPosition2D->value);
-        LinePosition2D *linePosition2D = ecs_get_mut(world, e, LinePosition2D);
+        LinePosition2D *linePosition2D = zox_get_mut(e, LinePosition2D)
         linePosition2D->value = new_line_position;
-        ecs_modified(world, e, LinePosition2D);
+        zox_modified(e, LinePosition2D);
     }
 }
 
 int2 get_line_element_mid_point(ecs_world_t *world, ecs_entity_t e) {
-    if (ecs_has(world, e, LineLocalPosition2D)) {
+    if (zox_has(e, LineLocalPosition2D)) {
         const LineLocalPosition2D *lineLocalPosition2D = ecs_get(world, e, LineLocalPosition2D);
         int2 xy_line = int4_xy(lineLocalPosition2D->value);
         int2 pixel_position = int4_zw(lineLocalPosition2D->value);

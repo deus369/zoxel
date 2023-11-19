@@ -14,7 +14,7 @@ void FreeCameraMoveSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const CameraLink *cameraLink = &cameraLinks[i];
         if (cameraLink->value == 0) continue;
-        const FreeRoam *freeRoam = ecs_get(world, cameraLink->value, FreeRoam);
+        const FreeRoam *freeRoam = zox_get(cameraLink->value, FreeRoam)
         if (freeRoam->value == 0) continue;
         const DeviceLinks *deviceLinks = &deviceLinkss[i];
         // unsigned char is_triggered = 0;
@@ -22,8 +22,8 @@ void FreeCameraMoveSystem(ecs_iter_t *it) {
         float3 movement = { 0, 0, 0 };
         for (int j = 0; j < deviceLinks->length; j++) {
             ecs_entity_t device_entity = deviceLinks->value[j];
-            if (ecs_has(world, device_entity, Keyboard)) {
-                const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
+            if (zox_has(device_entity, Keyboard)) {
+                const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                 if (keyboard->a.is_pressed) movement.x += -1;
                 if (keyboard->d.is_pressed) movement.x += 1;
                 if (keyboard->w.is_pressed) movement.z = -1;
@@ -39,11 +39,11 @@ void FreeCameraMoveSystem(ecs_iter_t *it) {
         }
         if (movement.x == 0 && movement.y == 0 && movement.z == 0) continue;
         movement = float3_multiply_float(movement, movement_power);
-        const Rotation3D *rotation3D = ecs_get(world, cameraLink->value, Rotation3D);
+        const Rotation3D *rotation3D = zox_get(cameraLink->value, Rotation3D)
         movement = float4_rotate_float3(rotation3D->value, movement);
-        Position3D *position3D = ecs_get_mut(world, cameraLink->value, Position3D);
+        Position3D *position3D = zox_get_mut(cameraLink->value, Position3D)
         position3D->value = float3_add(position3D->value, movement);
-        ecs_modified(world, cameraLink->value, Position3D);
+        zox_modified(cameraLink->value, Position3D)
     }
 } zox_declare_system(FreeCameraMoveSystem)
 

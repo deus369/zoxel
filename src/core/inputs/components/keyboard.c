@@ -68,7 +68,7 @@ unsigned char keyboard_is_any_input(const Keyboard *keyboard) {
 
 void device_reset_keyboard(ecs_world_t *world, ecs_entity_t keyboard_entity) {
     if (!keyboard_entity || !ecs_is_alive(world, keyboard_entity)) return;
-    Keyboard *keyboard = ecs_get_mut(world, keyboard_entity, Keyboard);
+    Keyboard *keyboard = zox_get_mut(keyboard_entity, Keyboard)
     reset_key(&keyboard->space);
     reset_key(&keyboard->escape);
     reset_key(&keyboard->enter);
@@ -106,7 +106,7 @@ void device_reset_keyboard(ecs_world_t *world, ecs_entity_t keyboard_entity) {
     reset_key(&keyboard->up);
     reset_key(&keyboard->left);
     reset_key(&keyboard->right);
-    ecs_modified(world, keyboard_entity, Keyboard);
+    zox_modified(keyboard_entity, Keyboard)
 }
 
 void print_keyboard_key(const PhysicalButton *key, char* name) {
@@ -114,7 +114,7 @@ void print_keyboard_key(const PhysicalButton *key, char* name) {
 }
 
 void print_keyboard(ecs_world_t *world, ecs_entity_t keyboard_entity) {
-    const Keyboard *keyboard = ecs_get(world, keyboard_entity, Keyboard);
+    const Keyboard *keyboard = zox_get(keyboard_entity, Keyboard)
     print_keyboard_key(&keyboard->space, "space");
     print_keyboard_key(&keyboard->p, "p");
     print_keyboard_key(&keyboard->w, "w");

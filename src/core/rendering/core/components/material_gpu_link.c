@@ -25,7 +25,7 @@ ECS_DTOR(MaterialGPULink, ptr, {
 })
 
 GLuint get_material_value(ecs_world_t *world, ecs_entity_t material) {
-    return ecs_get(world, material, MaterialGPULink)->value;
+    return zox_get_value(material, MaterialGPULink)
 }
 
 /*

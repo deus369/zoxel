@@ -15,7 +15,7 @@ void NeuronRenderSystem(ecs_iter_t *it) {
         const Weight *weight = &weights[i];
         const Position2D *position2D = &position2Ds[i];
         float scaleA = 2.5f;
-        if (ecs_has(world, it->entities[i], InputNeuron)) {
+        if (zox_has(it->entities[i], InputNeuron)) {
             scaleA = 10.0f;
         }
         spawn_line2D_square(world,  position2D->value, // (float2) { x_position, y_position + y_position_mult * position2D->value.y },
@@ -23,5 +23,4 @@ void NeuronRenderSystem(ecs_iter_t *it) {
             scaleA, animate_time);
         // printf("    [%i]    Position3D %f -> %f = [%f]\n", i, x_position, x_position2, signal->value);
     }
-}
-zox_declare_system(NeuronRenderSystem)
+} zox_declare_system(NeuronRenderSystem)

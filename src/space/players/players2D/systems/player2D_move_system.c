@@ -9,15 +9,15 @@ void Player2DMoveSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const CharacterLink *characterLink = &characterLinks[i];
         if (characterLink->value == 0) continue;
-        if (!ecs_has(world, characterLink->value, Character2D)) continue;
-        const DisableMovement *disableMovement = ecs_get(world, characterLink->value, DisableMovement);
+        if (!zox_has(characterLink->value, Character2D)) continue;
+        const DisableMovement *disableMovement = zox_get(characterLink->value, DisableMovement)
         if (disableMovement->value) continue;
         float2 movement = { 0, 0 };
         const DeviceLinks *deviceLinks = &deviceLinkss[i];
         for (int j = 0; j < deviceLinks->length; j++) {
             ecs_entity_t device_entity = deviceLinks->value[j];
-            if (ecs_has(world, device_entity, Keyboard)) {
-                const Keyboard *keyboard = ecs_get(world, device_entity, Keyboard);
+            if (zox_has(device_entity, Keyboard)) {
+                const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                 if (keyboard->a.is_pressed) movement.x = -1;
                 if (keyboard->d.is_pressed) movement.x = 1;
                 if (keyboard->w.is_pressed) movement.y = 1;
@@ -26,24 +26,23 @@ void Player2DMoveSystem(ecs_iter_t *it) {
                     movement.x *= run_speed;
                     movement.y *= run_speed;
                 }
-            } else if (ecs_has(world, device_entity, Gamepad)) {
+            } else if (zox_has(device_entity, Gamepad)) {
                 float2 left_stick = float2_zero;
                 unsigned char is_run = 0;
-                const Children *zevices = ecs_get(world, device_entity, Children);
+                const Children *zevices = zox_get(device_entity, Children)
                 for (int k = 0; k < zevices->length; k++) {
                     ecs_entity_t zevice_entity = zevices->value[k];
-                    if (ecs_has(world, zevice_entity, ZeviceStick)) {
-                        const ZeviceStick *zeviceStick = ecs_get(world, zevice_entity, ZeviceStick);
+                    if (zox_has(zevice_entity, ZeviceStick)) {
+                        const ZeviceStick *zeviceStick = zox_get(zevice_entity, ZeviceStick)
                         left_stick = zeviceStick->value;
-                    } else if (ecs_has(world, zevice_entity, ZeviceButton)) {
-                        const DeviceButtonType *deviceButtonType = ecs_get(world, zevice_entity, DeviceButtonType);
+                    } else if (zox_has(zevice_entity, ZeviceButton)) {
+                        const DeviceButtonType *deviceButtonType = zox_get(zevice_entity, DeviceButtonType)
                         if (deviceButtonType->value == zox_device_button_lb || deviceButtonType->value == zox_device_button_rb) {
-                            const ZeviceButton *zeviceButton = ecs_get(world, zevice_entity, ZeviceButton);
+                            const ZeviceButton *zeviceButton = zox_get(zevice_entity, ZeviceButton)
                             if (!is_run && devices_get_is_pressed(zeviceButton->value)) is_run = 1;
                         }
                     }
                 }
-                /*const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);*/
                 if (float_abs(left_stick.x) > joystick_cutoff_buffer) movement.x = left_stick.x;
                 if (float_abs(left_stick.y) > joystick_cutoff_buffer) movement.y = left_stick.y;
                 if (is_run) { // gamepad->lb.is_pressed || gamepad->rb.is_pressed) {
@@ -53,15 +52,15 @@ void Player2DMoveSystem(ecs_iter_t *it) {
             }
         }
         if (movement.x == 0 && movement.y == 0) continue;
-        const Velocity2D *velocity2D = ecs_get(world, characterLink->value, Velocity2D);
-        Acceleration2D *acceleration2D = ecs_get_mut(world, characterLink->value, Acceleration2D);
+        const Velocity2D *velocity2D = zox_get(characterLink->value, Velocity2D)
+        Acceleration2D *acceleration2D = zox_get_mut(characterLink->value, Acceleration2D)
         float2 delta_movement = movement;
         float2 check_velocity = velocity2D->value;
         if (float_abs(check_velocity.x) < max_delta_velocity.x) acceleration2D->value.x += delta_movement.x * movement_power_x;
         if (float_abs(check_velocity.y) < max_delta_velocity.y) acceleration2D->value.y += delta_movement.y * movement_power_z;
         ecs_modified(world, characterLink->value, Acceleration2D);
     }
-} zox_declare_system(Player2DMoveSystem);
+} zox_declare_system(Player2DMoveSystem)
 
 // const double movementPower = 2.8f;
 // const float2 maxVelocity = { 12.6f, 12.6f };
