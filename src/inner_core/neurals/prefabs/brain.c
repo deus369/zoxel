@@ -35,9 +35,9 @@ ecs_entity_t spawn_brain(ecs_world_t *world) {
             k++;
         }
     }
-    ecs_modified(world, e, Children);
-    #ifdef zoxel_debug_spawns
-        zoxel_log("Spawned brain [%lu]\n", (long int) e);
-    #endif
+    zox_modified(e, Children)
+#ifdef zoxel_debug_spawns
+    zox_log("Spawned brain [%lu]\n", e)
+#endif
     return e;
 }

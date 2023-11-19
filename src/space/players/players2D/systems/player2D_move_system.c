@@ -58,7 +58,7 @@ void Player2DMoveSystem(ecs_iter_t *it) {
         float2 check_velocity = velocity2D->value;
         if (float_abs(check_velocity.x) < max_delta_velocity.x) acceleration2D->value.x += delta_movement.x * movement_power_x;
         if (float_abs(check_velocity.y) < max_delta_velocity.y) acceleration2D->value.y += delta_movement.y * movement_power_z;
-        ecs_modified(world, characterLink->value, Acceleration2D);
+        zox_modified(characterLink->value, Acceleration2D)
     }
 } zox_declare_system(Player2DMoveSystem)
 

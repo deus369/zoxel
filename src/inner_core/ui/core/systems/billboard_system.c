@@ -28,12 +28,12 @@ void BillboardSystem(ecs_iter_t *it) {
                 const LocalRotation3D *child_local_rotation3D = zox_get(child, LocalRotation3D)
                 Rotation3D *child_rotation3D = zox_get_mut(child, Rotation3D)
                 set_rotation_from_parents(world, e, &child_rotation3D->value, child_local_rotation3D->value);
-                ecs_modified(world, child, Rotation3D);
+                zox_modified(child, Rotation3D)
             }
         }
-        #ifdef zox_debug_billboard_system
-            spawn_line3D(world, position3D->value, float3_add(position3D->value, normal), 2, 1);
-        #endif
+#ifdef zox_debug_billboard_system
+        spawn_line3D(world, position3D->value, float3_add(position3D->value, normal), 2, 1);
+#endif
     }
 } zox_declare_system(BillboardSystem)
 

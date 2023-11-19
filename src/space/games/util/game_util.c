@@ -59,9 +59,7 @@ void spawn_in_game_ui(ecs_world_t *world) {    // spawn game uis
 }
 
 void end_game(ecs_world_t *world) {
-    // zox_logg(" > game state => [playing] to [main_menu]\n")
     zox_delete(pause_ui)
-    // detatch character
     ecs_entity_t main_camera = main_cameras[0]; // get player camera link instead
     ecs_entity_t character = 0;
     if (camera_follow_mode == zox_camera_follow_mode_attach) character = zox_get_value(main_camera, ParentLink)
@@ -84,32 +82,6 @@ void end_game(ecs_world_t *world) {
     disable_inputs_until_release(world, main_player);
     dispose_in_game_ui(world);
 #ifdef zox_on_play_spawn_terrain
-    // temporary: delete chunks
-/*#ifdef zox_extra_destroy_terrain_children
-    const ChunkLinks *chunkLinks = zox_get(world, local_terrain, ChunkLinks);
-    for (int i = 0; i < chunkLinks->value->size; i++) {
-        int3_hash_map_pair* pair = chunkLinks->value->data[i];
-        while (pair != NULL) {
-            ecs_entity_t terrain_chunk = pair->value;
-            // ChunkOctree *chunkOctree = zox_get_mut(world, terrain_chunk, ChunkOctree);
-            // close_ChunkOctree(chunkOctree);
-            // ecs_modified(world, terrain_chunk, ChunkOctree);
-            const EntityLinks *entityLinks =zox_get(world, terrain_chunk, EntityLinks);
-            for (int j = 0; j < entityLinks->length; j++) {
-                ecs_entity_t character_entity = entityLinks->value[j];
-                zox_delete(character_entity)
-            }
-            // zox_delete(terrain_chunk)
-            pair = pair->next;
-        }
-    }
-#endif*/
-    // this should delete all chunks
-    // which should delete all
-    // delete this when terrain dies
-    // const TilemapLink *tilemapLink = zox_get(world, local_terrain, TilemapLink);
-    // zox_delete(tilemapLink->value)
-    // delete terrain
     if (local_terrain) {
         zox_delete(local_terrain)
         local_terrain = 0;
@@ -159,40 +131,3 @@ void play_game(ecs_world_t *world) {
     } else attach_to_character(world, main_player, main_camera, 0);
 #endif
 }
-
-// \todo Fix issue with rotation, due to euler setting, make sure to set euler when spawning cam
-// todo: new hotswap camera function, takes in two camera entities
-/*ecs_entity_t respawn_camera(ecs_world_t *world, ecs_entity_t old_camera_entity) {
-    float3 camera_position = zox_get(world, old_camera_entity, Position3D)->value;
-    float4 camera_rotation = zox_get(world, old_camera_entity, Rotation3D)->value;
-    int2 camera_screen_dimensions = zox_get(world, old_camera_entity, ScreenDimensions)->value;
-    float4x4 view_matrix = zox_get(world, old_camera_entity, ViewMatrix)->value;
-    render_camera_matrix = camera_matrix;
-    ecs_entity_t e = spawn_free_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { }); // spawn new free roam camera
-    zox_set(e, ViewMatrix, { view_matrix })
-    zox_delete(old_camera_entity)
-    return e;
-}
-
-ecs_entity_t respawn_base_camera(ecs_world_t *world, ecs_entity_t old_camera_entity) {
-    float3 camera_position = zox_get(world, old_camera_entity, Position3D)->value;
-    float4 camera_rotation = zox_get(world, old_camera_entity, Rotation3D)->value;
-    int2 camera_screen_dimensions = zox_get(world, old_camera_entity, ScreenDimensions)->value;
-    float4x4 view_matrix = zox_get(world, old_camera_entity, ViewMatrix)->value;
-    // render_camera_matrix = camera_matrix;
-    ecs_entity_t e = spawn_base_camera(world, camera_position, camera_rotation, camera_screen_dimensions, (int2) { }); // spawn new free roam camera
-    zox_set(e, ViewMatrix, { view_matrix })
-    zox_delete(old_camera_entity)
-    return e;
-}*/
-
-/*#ifdef zoxel_spawn_character3Ds
-    spawn_many_characters3D(world);
-#endif
-#ifdef zoxel_test_single_character3Ds
-    spawn_many_characters3D(world);
-#endif*/
-
-    /*ChunkOctree *chunkOctree2 = zox_get(world, character_entity, ChunkOctree);
-    close_ChunkOctree(chunkOctree2);
-    ecs_modified(world, character_entity, ChunkOctree);*/

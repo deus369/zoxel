@@ -51,7 +51,7 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point
     //LineData2D lineData2D = (LineData2D) { float4_zero };
     LineData2D *lineData2D = ecs_get_mut(world, e, LineData2D);
     set_ui_line_position(lineData2D, line_position2D, canvas_size_f, aspect_ratio);
-    ecs_modified(world, e, LineData2D);
+    zox_modified(e, LineData2D)
     // zox_set(e, LineData2D, { lineData2D.value })
     if (life_time != 0.0f) zox_set(e, DestroyInTime, { life_time })
     #ifdef zoxel_debug_spawns

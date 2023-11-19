@@ -14,11 +14,11 @@ ecs_entity_t spawn_prefab_animating_chunk(ecs_world_t *world) {
     resize_memory_component(ColorRGBs, colorRGBs, color_rgb, 8)
     for (int i = 0; i < 8; i++)
         colorRGBs->value[i] = (color_rgb) {155 - (rand() % 60), 225 - (rand() % 60), 255 - (rand() % 60) };
-    ecs_modified(world, e, ColorRGBs);
+    zox_modified(e, ColorRGBs)
     prefab_animating_chunk = e;
-    #ifdef zoxel_debug_prefabs
-        zoxel_log("spawn_prefab animating_chunk [%lu].\n", (long int) (e));
-    #endif
+#ifdef zoxel_debug_prefabs
+    zox_log("spawn_prefab animating_chunk [%lu]\n", e)
+#endif
     return e;
 }
 

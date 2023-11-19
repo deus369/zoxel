@@ -98,7 +98,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                     // todo: rotate towards desired direction
                     // Alpha3D *alpha3D = zox_get_mut(world, characterLink->value, Alpha3D);
                     // quaternion_rotate_quaternion_p(&alpha3D->value, quaternion);
-                    // ecs_modified(world, characterLink->value, Alpha3D);
+                    // zox_modified(characterLink->value, Alpha3D);
                     #ifdef zox_debug_player_movement_direction
                         const Position3D *position3D = zox_get(characterLink->value, Position3D)
                         spawn_line3D(world, position3D->value, float3_add(position3D->value, movement), debug_thickness, 34.0);

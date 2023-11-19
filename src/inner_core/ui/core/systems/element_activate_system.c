@@ -4,7 +4,7 @@
             // zox_set(ui, ClickState, { 1 }) // i made it like this due to some complication
             ClickState *clickState = zox_get_mut(ui, ClickState)
             clickState->value = 1;
-            ecs_modified(world, ui, ClickState);
+            zox_modified(ui, ClickState)
         }
     }
 

@@ -56,10 +56,10 @@ unsigned char touchscreen_is_any_input(ecs_world_t *world, ecs_entity_t touchscr
         ecs_entity_t e = children->value[i];
         if (!zox_has(e, ZevicePointer)) continue;
         ZevicePointer *zeviceButton = zox_get(world, e, ZevicePointer);
-        if (reset_device_pointer(zeviceButton)) ecs_modified(world, e, ZevicePointer);
+        if (reset_device_pointer(zeviceButton)) zox_modified(world, e, ZevicePointer);
         ZevicePointerDelta *zevicePointerDelta = zox_get_mut(world, e, ZevicePointerDelta);
         if (zevicePointerDelta->value.x == 0 && zevicePointerDelta->value.y == 0) continue;
         zevicePointerDelta->value = int2_zero;
-        ecs_modified(world, e, ZevicePointerDelta);
+        zox_modified(world, e, ZevicePointerDelta);
     }
 }*/

@@ -54,7 +54,7 @@ void AOEDamageSystem(ecs_iter_t *it) {
                 StatValue *statValue = zox_get_mut(health_stat, StatValue)
                 statValue->value -= delta_time * damage_rate;
                 if (statValue->value < 0) statValue->value = 0;
-                ecs_modified(world, health_stat, StatValue);
+                zox_modified(health_stat, StatValue)
                 if (!statValue->value) {
                     // todo: dead animation
                     // zox_delete(e2)

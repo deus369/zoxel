@@ -37,7 +37,7 @@ ecs_entity_t spawn_window(ecs_world_t *world, const char *header_label, int2 pix
     Children *children = ecs_get_mut(world, e, Children);
     resize_memory_component(Children, children, ecs_entity_t, 1)
     children->value[0] = spawn_header(world, e, canvas, (int2) { 0, - font_size / 2 - header_margins / 2 }, (int2) { pixel_size.x, font_size + header_margins}, (float2) { 0.5f, 1.0f }, header_label, font_size, header_margins, header_layer, pixel_position_global, pixel_size, 1, canvas_size);
-    ecs_modified(world, e, Children);
+    zox_modified(e, Children)
 #ifdef zoxel_debug_spawns
     zox_log(" > spawned window [%lu]\n", e)
 #endif

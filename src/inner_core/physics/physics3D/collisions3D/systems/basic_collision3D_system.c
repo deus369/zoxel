@@ -140,14 +140,6 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
         }
     }
 } zox_declare_system(BasicCollision3DSystem)
-
-//
-    //Grounded *grounded = ecs_get_mut(world, e, Grounded);
-    //
-        //ecs_modified(world, e, Grounded);
-        // velocity3D->value.y *= 0.06f;
-    //}
-//}
                     
 /*int3 new_chunk_position = get_chunk_position(collision_point_real, default_chunk_size);
 if (!int3_equals(chunkPosition->value, new_chunk_position)) {

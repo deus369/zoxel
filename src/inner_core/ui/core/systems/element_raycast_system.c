@@ -47,7 +47,7 @@ void raycaster_select_ui_mut(ecs_world_t *world, ecs_entity_t raycaster_entity, 
     if (raycasterTarget->value != ui_entity) {
         // zoxel_log(" > raycaster_select_ui_mut : selecting [%lu] from [%lu]\n", ui, raycasterTarget->value);
         raycaster_select_ui(world, raycasterTarget, ui_entity);
-        ecs_modified(world, raycaster_entity, RaycasterTarget);
+        zox_modified(raycaster_entity, RaycasterTarget)
         set_selectable_state_mut(world, ui_entity, 1);
     }
     #ifdef zoxel_debug_ui_selectable_states

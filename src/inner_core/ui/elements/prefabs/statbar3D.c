@@ -67,7 +67,7 @@ ecs_entity_t spawn_statbar3D(ecs_world_t *world, ecs_entity_t ui_holder, float p
     Children *children = ecs_get_mut(world, e, Children);
     resize_memory_component(Children, children, ecs_entity_t, 1)
     children->value[0] = spawn_statbar3D_front(world, ui_holder, e, (float3) { 0, 0, depth_difference });
-    ecs_modified(world, e, Children);
+    zox_modified(e, Children)
 #ifdef zoxel_debug_spawns
     zox_log(" > spawned statbar3D [%lu]\n", e)
 #endif

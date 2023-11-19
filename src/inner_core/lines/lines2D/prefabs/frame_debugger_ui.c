@@ -45,10 +45,10 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const char *header_labe
         zox_add_tag(line, FrameDebugLine)
         children->value[1 + i] = line;
     }
-    ecs_modified(world, e, Children);
-    #ifdef zoxel_debug_spawns
-        zoxel_log(" > spawned window [%lu]\n", (long int) e);
-    #endif
+    zox_modified(e, Children)
+#ifdef zoxel_debug_spawns
+    zoxel_log(" > spawned window [%lu]\n", e)
+#endif
     return e;
 }
 

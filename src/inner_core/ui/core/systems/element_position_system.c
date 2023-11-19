@@ -97,12 +97,12 @@ void ElementPositionSystem(ecs_iter_t *it) {
     if (zox_has(e, Position2D)) {
         Position2D *position2D = ecs_get_mut(world, e, Position2D);
         position2D->value = real_position2D;
-        ecs_modified(world, e, Position2D);
+        zox_modified(e, Position2D)
     }
     if (zox_has(e, CanvasPixelPosition)) {
         CanvasPixelPosition *canvasPixelPosition = ecs_get_mut(world, e, CanvasPixelPosition);
         canvasPixelPosition->value = (int2) { ceil((real_position2D.x / aspect_ratio + 0.5f) * canvas_size_f.x), ((real_position2D.y + 0.5f) * canvas_size_f.y) };
-        ecs_modified(world, e, CanvasPixelPosition);
+        zox_modified(e, CanvasPixelPosition)
     }
     set_line_element_real_position2D(world, e, real_position2D, canvas_size_f, aspect_ratio, pixel_position);
     if (zox_has(e, Children)) {
