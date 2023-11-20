@@ -4,8 +4,8 @@ funfun_array_d* load_shader_functions;
 funfun_array_d* restore_shader_functions;
 
 void initialize_shader_loading() {
-    load_shader_functions = create_funfun_array_d();
-    restore_shader_functions = create_funfun_array_d();
+    load_shader_functions = create_funfun_array_d(initial_dynamic_array_size);
+    restore_shader_functions = create_funfun_array_d(initial_dynamic_array_size);
 }
 
 void dispose_shader_loading() {

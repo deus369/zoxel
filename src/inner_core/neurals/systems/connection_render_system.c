@@ -1,7 +1,7 @@
 //! Adds force to the velocity per frame.
 void ConnectionRenderSystem(ecs_iter_t *it) {
     double delta_time = zox_delta_time;
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     // double delta_time = (double) it->delta_time;
     float animate_time = delta_time * 0.5f;
     // const float y_position = -0.8f;

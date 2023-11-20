@@ -15,8 +15,8 @@
 void AOEDamageSystem(ecs_iter_t *it) {
     float damage_rate = 2.0f;
     float damage_radius = 3.0f;
-    ecs_world_t *world = it->world;
     float delta_time = zox_delta_time;
+    zox_iter_world()
     const Position3D *position3Ds = ecs_field(it, Position3D, 2);
     // zox_log("  aoe damaging system [%i]\n", it->count)
     for (int i = 0; i < it->count; i++) {

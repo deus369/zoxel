@@ -1,6 +1,5 @@
-
 /*void PlayGameSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const GenericEvent *genericEvents = ecs_field(it, GenericEvent, 1);
     for (int i = 0; i < it->count; i++) {
         const GenericEvent *genericEvent = &genericEvents[i];

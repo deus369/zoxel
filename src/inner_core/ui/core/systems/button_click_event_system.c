@@ -1,5 +1,5 @@
 void ButtonClickEventSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     ClickState *clickableStates = ecs_field(it, ClickState, 2);
     const ClickEvent *clickEvents = ecs_field(it, ClickEvent, 3);
     for (int i = 0; i < it->count; i++) {

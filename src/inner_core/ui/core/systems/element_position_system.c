@@ -35,7 +35,7 @@ void set_element_position(ecs_world_t *world, ecs_entity_t e, int2 parent_pixel_
 // moves ui around after repositioning the pixel position
 // todo: hierarchy doesn't set properly... uses this to set
 void ElementPositionSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     ecs_query_t *change_query = it->ctx;
     ecs_iter_t change_iter = ecs_query_iter(world, change_query);
     while (ecs_query_next(&change_iter)) {

@@ -3,7 +3,7 @@ void ElementBarSystem(ecs_iter_t *it) {
     // if (!ecs_query_changed(NULL, it)) return;   // todo: make run on threads
     // todo: need change filter on ui render lod as well
     // todo: can_render_ui - needs to be set as a component instead of a check per each system
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const ElementBar *elementBars = ecs_field(it, ElementBar, 1);
     const ElementBarSize *elementBarSizes = ecs_field(it, ElementBarSize, 2);
     const Children *childrens = ecs_field(it, Children, 3);

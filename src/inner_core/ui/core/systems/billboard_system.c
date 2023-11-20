@@ -7,7 +7,7 @@ void BillboardSystem(ecs_iter_t *it) {
     // return;
     ecs_entity_t main_camera = main_cameras[0];
     // float4 flip_rotation = quaternion_from_euler((float3) { 0, 180 * degreesToRadians, 0 });
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     // const CameraLink *cameraLinks = ecs_field(it, CameraLink, 2);
     // const Position3D *position3Ds = ecs_field(it, Position3D, 3);
     Rotation3D *rotation3Ds = ecs_field(it, Rotation3D, 4);

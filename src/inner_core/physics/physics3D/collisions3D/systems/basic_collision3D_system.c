@@ -45,7 +45,7 @@ const float lowest_velocity_threshold = 0.03f; // 0.3 // 0.001
 }
 
 void BasicCollision3DSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const VoxLink *voxLinks = ecs_field(it, VoxLink, 1);
     const Bounds3D *bounds3Ds = ecs_field(it, Bounds3D, 8);
     ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 2);

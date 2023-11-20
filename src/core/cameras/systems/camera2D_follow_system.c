@@ -1,5 +1,5 @@
 void Camera2DFollowSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const FreeRoam *freeRoams = ecs_field(it, FreeRoam, 2);
     const CameraTarget *cameraTargets = ecs_field(it, CameraTarget, 3);
     Position3D *positions = ecs_field(it, Position3D, 4);

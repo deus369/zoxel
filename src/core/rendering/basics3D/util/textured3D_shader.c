@@ -42,13 +42,6 @@ int load_shader3D_textured(ecs_world_t *world) {
             .fog_data = glGetUniformLocation(material, "fog_data"),
             .texture = glGetUniformLocation(material, "tex"),
             .brightness = glGetUniformLocation(material, "brightness") })
-        /*
-            const Textured3DAttributes *attributes_textured3D = get_textured3D_material_attributes(world);
-            zoxel_log(" attributes_textured3D indexes:\n");
-            zoxel_log("         1 [%ix%ix%i]\n", attributes_textured3D->vertex_position, attributes_textured3D->vertex_uv, attributes_textured3D->vertex_color);
-            zoxel_log("         2 [%ix%ix%i]\n", attributes_textured3D->position, attributes_textured3D->rotation, attributes_textured3D->scale);
-            zoxel_log("         3 [%ix%ix%i]\n", attributes_textured3D->camera_matrix, attributes_textured3D->fog_data, attributes_textured3D->texture, attributes_textured3D->brightness);
-        */
     }
     return 0;
 }
@@ -56,16 +49,13 @@ int load_shader3D_textured(ecs_world_t *world) {
 void opengl_upload_shader3D_textured(GLuint2 mesh_buffer, GLuint uv_buffer, GLuint color_buffer, const int *indicies, int indicies_length, const float3 *verts, int verts_length, const float2 *uvs, const color_rgb *color_rgbs) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);
-    #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("opengl_upload_shader3D_textured GL_ELEMENT_ARRAY_BUFFER");
-    #endif
     glBindBuffer(GL_ARRAY_BUFFER, mesh_buffer.y);
     glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float3), verts, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);   
     glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float2), uvs, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
     glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(color_rgb), color_rgbs, GL_STATIC_DRAW);
-    #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("opengl_upload_shader3D_textured");
-    #endif
+#ifdef zoxel_catch_opengl_errors
+    check_opengl_error("opengl_upload_shader3D_textured");
+#endif
 }

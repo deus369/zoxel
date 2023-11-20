@@ -1,5 +1,5 @@
 void Camera3DFollowSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const CameraFollowLink *cameraFollowLinks = ecs_field(it, CameraFollowLink, 1);
     const LocalPosition3D *localPosition3Ds = ecs_field(it, LocalPosition3D, 2);
     Position3D *positions = ecs_field(it, Position3D, 3);

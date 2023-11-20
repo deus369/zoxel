@@ -5,7 +5,7 @@
 #endif
 
 void UITrailSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const UIHolderLink *uiHolderLinks = ecs_field(it, UIHolderLink, 1);
     const UITrail *uiTrails = ecs_field(it, UITrail, 2);
     Position3D *position3Ds = ecs_field(it, Position3D, 3);

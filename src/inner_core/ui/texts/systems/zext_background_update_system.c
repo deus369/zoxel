@@ -1,7 +1,7 @@
 // this needs zextData with Mesh in one entity
 
 void ZextBackgroundUpdateSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
     const ZextData *zextDatas = ecs_field(it, ZextData, 3);
     const ZextSize *zextSizes = ecs_field(it, ZextSize, 4);
@@ -44,7 +44,7 @@ void ZextBackgroundUpdateSystem(ecs_iter_t *it) {
 
 // todo: put a AutoResizeZextX tag on these, so it resizes the background of a text that updates
 void ZextBackgroundUpdateSystem2(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
     const ZextData *zextDatas = ecs_field(it, ZextData, 3);
     const ZextSize *zextSizes = ecs_field(it, ZextSize, 4);

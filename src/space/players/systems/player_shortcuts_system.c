@@ -13,7 +13,7 @@ void on_terrain_settings_changed(ecs_world_t *world) {
 }
 
 void PlayerShortcutsSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
     for (int i = 0; i < it->count; i++) {
         const DeviceLinks *deviceLinks = &deviceLinkss[i];
@@ -53,7 +53,7 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
 } zox_declare_system(PlayerShortcutsSystem)
 
 void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
     for (int i = 0; i < it->count; i++) {
         const DeviceLinks *deviceLinks = &deviceLinkss[i];

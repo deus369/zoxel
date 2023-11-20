@@ -4,7 +4,7 @@ const float debug_rotation_addition = 5;
 extern ecs_entity_t local_character3D;
 
 void Player2DTestSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const Keyboard *keyboards = ecs_field(it, Keyboard, 1);
     for (int i = 0; i < it->count; i++) {
         const Keyboard *keyboard = &keyboards[i];

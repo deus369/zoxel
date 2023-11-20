@@ -88,9 +88,9 @@ void test_build_octree_chunk_colors_d(const ChunkOctree *root_node, const ChunkO
 }
 
 void test_build_chunk_octree_mesh_colors(const ChunkOctree *chunk_octree, const ColorRGBs *colorRGBs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColorRGBs *meshColorRGBs, unsigned char chunk_depth, const ChunkOctree *neighbors[], unsigned char *neighbor_lods, float3 total_mesh_offset) {
-    int_array_d* indicies = create_int_array_d();
-    float3_array_d* vertices = create_float3_array_d();
-    color_rgb_array_d* color_rgbs = create_color_rgb_array_d();
+    int_array_d* indicies = create_int_array_d(initial_dynamic_array_size);
+    float3_array_d* vertices = create_float3_array_d(initial_dynamic_array_size);
+    color_rgb_array_d* color_rgbs = create_color_rgb_array_d(initial_dynamic_array_size);
     test_build_octree_chunk_colors_d(chunk_octree, NULL, chunk_octree, neighbors, neighbor_lods, colorRGBs, indicies, vertices, color_rgbs, chunk_depth, 0, int3_zero, 0, total_mesh_offset);
     clear_mesh(meshIndicies, meshVertices, meshColorRGBs);
     meshIndicies->length = indicies->size;
@@ -136,9 +136,9 @@ void build_octree_chunk_colors_d(const ChunkOctree *root_node, const ChunkOctree
 }
 
 void build_chunk_octree_mesh_colors(const ChunkOctree *chunk_octree, const ColorRGBs *colorRGBs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColorRGBs *meshColorRGBs, unsigned char chunk_depth, const ChunkOctree *neighbors[], unsigned char *neighbor_lods, float3 total_mesh_offset) {
-    int_array_d* indicies = create_int_array_d();
-    float3_array_d* vertices = create_float3_array_d();
-    color_rgb_array_d* color_rgbs = create_color_rgb_array_d();
+    int_array_d* indicies = create_int_array_d(initial_dynamic_array_size);
+    float3_array_d* vertices = create_float3_array_d(initial_dynamic_array_size);
+    color_rgb_array_d* color_rgbs = create_color_rgb_array_d(initial_dynamic_array_size);
     build_octree_chunk_colors_d(chunk_octree, NULL, chunk_octree, neighbors, neighbor_lods, colorRGBs, indicies, vertices, color_rgbs, chunk_depth, 0, int3_zero, 0, total_mesh_offset);
     clear_mesh(meshIndicies, meshVertices, meshColorRGBs);
     meshIndicies->length = indicies->size;

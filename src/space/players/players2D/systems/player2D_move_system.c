@@ -1,9 +1,9 @@
 void Player2DMoveSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
     double delta_time = zox_delta_time;
     float2 max_delta_velocity = max_velocity;
     max_delta_velocity.x *= delta_time;
     max_delta_velocity.y *= delta_time;
+    zox_iter_world()
     const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
     const CharacterLink *characterLinks = ecs_field(it, CharacterLink, 3);
     for (int i = 0; i < it->count; i++) {
@@ -51,7 +51,7 @@ void Player2DMoveSystem(ecs_iter_t *it) {
                 }
             }
         }
-        if (movement.x == 0 && movement.y == 0) continue;
+        if (!movement.x && !movement.y) continue;
         const Velocity2D *velocity2D = zox_get(characterLink->value, Velocity2D)
         Acceleration2D *acceleration2D = zox_get_mut(characterLink->value, Acceleration2D)
         float2 delta_movement = movement;
@@ -61,37 +61,3 @@ void Player2DMoveSystem(ecs_iter_t *it) {
         zox_modified(characterLink->value, Acceleration2D)
     }
 } zox_declare_system(Player2DMoveSystem)
-
-// const double movementPower = 2.8f;
-// const float2 maxVelocity = { 12.6f, 12.6f };
-/*if (!(movement.x == 0 && movement.y == 0)) {
-    movement.x *= movementPower;
-    movement.y *= movementPower;
-    //! \todo Link directly to player characters from player.
-    for (int j = 0; j < playerCharacterIterator.count; j++) {
-        const DisableMovement *disableMovement = &disableMovements[j];
-        if (disableMovement->value) {
-            continue;
-        }
-        const Velocity2D *velocity2D = &velocity2Ds[j];
-        Acceleration2D *acceleration2D = &acceleration2Ds[j];
-        if (movement.x > 0 && velocity2D->value.x < maxVelocity.x) {
-            acceleration2D->value.x += movement.x;
-        } else if (movement.x < 0 && velocity2D->value.x > -maxVelocity.x) {
-            acceleration2D->value.x += movement.x;
-        }
-        if (movement.y > 0 && velocity2D->value.y < maxVelocity.y) {
-            acceleration2D->value.y += movement.y;
-        } else if (movement.y < 0 && velocity2D->value.y > -maxVelocity.y) {
-            acceleration2D->value.y += movement.y;
-        }
-    }
-}*/
-/*ecs_query_t *playerCharacterQuery = it->ctx;
-ecs_iter_t playerCharacterIterator = ecs_query_iter(it->world, playerCharacterQuery);
-ecs_query_next(&playerCharacterIterator);
-if (playerCharacterIterator.count == 0) return;*/
-// Keyboard *keyboards = ecs_field(it, Keyboard, 1);
-/*Acceleration2D *acceleration2Ds = ecs_field(&playerCharacterIterator, Acceleration2D, 2);
-const Velocity2D *velocity2Ds = ecs_field(&playerCharacterIterator, Velocity2D, 3);
-const DisableMovement *disableMovements = ecs_field(&playerCharacterIterator, DisableMovement, 4);*/

@@ -12,7 +12,7 @@ ecs_entity_t get_first_ui(ecs_world_t *world) {
 
 void DeviceModeResponseSystem(ecs_iter_t *it) {
     if (!local_game) return;
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     unsigned char game_state = zox_get_value(local_game, GameState)
     const DeviceMode *deviceModes = ecs_field(it, DeviceMode, 1);
     const DeviceModeDirty *deviceModeDirtys = ecs_field(it, DeviceModeDirty, 2);

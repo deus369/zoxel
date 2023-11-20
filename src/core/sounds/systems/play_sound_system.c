@@ -1,7 +1,7 @@
 void PlaySoundSystem(ecs_iter_t *it) {
     int channel_available = Mix_GroupAvailable(-1); // -1 indicates all channels
     if (channel_available == -1) return;
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     TriggerSound *playSounds = ecs_field(it, TriggerSound, 2);
     const SoundLength *soundLengths = ecs_field(it, SoundLength, 3);
     const SDLSound *sdlSounds = ecs_field(it, SDLSound, 4);

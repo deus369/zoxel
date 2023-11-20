@@ -1,6 +1,6 @@
 // when terrain lod updates, it will update character lods
 void ChunkCharactersUpdateSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const RenderLod *renderLods = ecs_field(it, RenderLod, 2);
     const EntityLinks *entityLinks = ecs_field(it, EntityLinks, 3);
     GenerateChunkEntities *generateChunkEntities = ecs_field(it, GenerateChunkEntities, 4);

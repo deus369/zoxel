@@ -19,7 +19,7 @@ unsigned char peek_at_packet(int socket, struct sockaddr_in *recv_addr) {
 void PacketRecieveSystem(ecs_iter_t *it) {
     // zoxel_log(" === attempting to get packets ===\n");
     // only for PacketListener tagged entities
-    // ecs_world_t *world = it->world;
+    // zox_iter_world()
     const SocketLink *socketLinks = ecs_field(it, SocketLink, 2);
     for (int i = 0; i < it->count; i++) {
         const SocketLink *socketLink = &socketLinks[i];

@@ -43,12 +43,12 @@ void calculate_orthographic_projection_matrix(float4x4 *matrix, float left, floa
 
 // This should only update when either ScreenDimensions or FieldOfView changes
 void ProjectionMatrixSystem(ecs_iter_t *it) {
-    #ifdef main_thread_projection_matrix_system
-        if (!ecs_query_changed(NULL, it)) return;
-    #endif
-    #ifdef zox_use_orthographic_projection
-        ecs_world_t *world = it->world;
-    #endif
+#ifdef main_thread_projection_matrix_system
+    if (!ecs_query_changed(NULL, it)) return;
+#endif
+#ifdef zox_use_orthographic_projection
+    zox_iter_world()
+#endif
     const ScreenDimensions *screenDimensions = ecs_field(it, ScreenDimensions, 1);
     const FieldOfView *fieldOfViews = ecs_field(it, FieldOfView, 2);
     const CameraNearDistance *cameraNearDistances = ecs_field(it, CameraNearDistance, 3);
@@ -67,17 +67,17 @@ void ProjectionMatrixSystem(ecs_iter_t *it) {
         float znear = cameraNearDistance->value;
         float ymax = znear * tanf(fieldOfView->value * M_PI / 360.0);
         float xmax = ymax * aspect_ratio;
-        #ifndef zox_use_orthographic_projection
+#ifndef zox_use_orthographic_projection
+        calculate_perspective_projection_matrix(&projectionMatrix->value, -xmax, xmax, -ymax, ymax, znear, zfar);
+#else
+        if (zox_has(it->entities[i], Camera2D)) {
             calculate_perspective_projection_matrix(&projectionMatrix->value, -xmax, xmax, -ymax, ymax, znear, zfar);
-        #else
-            if (zox_has(it->entities[i], Camera2D)) {
-                calculate_perspective_projection_matrix(&projectionMatrix->value, -xmax, xmax, -ymax, ymax, znear, zfar);
-            } else {
-                znear = 6;
-                ymax = znear * tanf(fieldOfView->value * M_PI / 360.0);
-                xmax = ymax * aspect_ratio;
-                calculate_orthographic_projection_matrix(&projectionMatrix->value, -xmax, xmax, -ymax, ymax, znear, zfar);
-            }
-        #endif
+        } else {
+            znear = 6;
+            ymax = znear * tanf(fieldOfView->value * M_PI / 360.0);
+            xmax = ymax * aspect_ratio;
+            calculate_orthographic_projection_matrix(&projectionMatrix->value, -xmax, xmax, -ymax, ymax, znear, zfar);
+        }
+#endif
     }
 } zox_declare_system(ProjectionMatrixSystem)

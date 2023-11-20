@@ -90,7 +90,7 @@ void emit_particle3Ds_slow(ecs_world_t *world, float3 emit_position, int spawn_c
 }
 
 void Particle3DEmitSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const Position3D *position3Ds = ecs_field(it, Position3D, 2);
     const ParticleEmitRate *particleEmitRates = ecs_field(it, ParticleEmitRate, 3);
     for (int i = 0; i < it->count; i++) {

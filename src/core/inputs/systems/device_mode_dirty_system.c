@@ -1,5 +1,5 @@
 void DeviceModeDirtySystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     DeviceMode *deviceModes = ecs_field(it, DeviceMode, 1);
     DeviceModeDirty *deviceModeDirtys = ecs_field(it, DeviceModeDirty, 2);
     for (int i = 0; i < it->count; i++) {

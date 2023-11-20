@@ -2,7 +2,7 @@
 //      > e->parent->parent->children[2+] for list elements
 // if vertical scrollbar
 void ScrollbarSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     zox_field_in(DraggableState, draggableStates, 2)
     zox_field_in(PixelPosition, pixelPositions, 3)
     zox_field_in(PixelSize, pixelSizes, 4)

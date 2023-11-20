@@ -145,10 +145,10 @@ void zox_terrain_building_dig(const ChunkOctree *root_node, const TilemapUVs *ti
 
 void build_chunk_octree_mesh_uvs(const ChunkOctree *chunk_octree, const TilemapUVs *tilemapUVs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, MeshColorRGBs *meshColorRGBs, unsigned char distance_to_camera, unsigned char lod, const ChunkOctree *neighbors[], unsigned char *neighbor_lods) {
     //#ifndef zox_disable_voxels_dynamic_array
-    int_array_d* indicies = create_int_array_d();
-    float3_array_d* vertices = create_float3_array_d();
-    float2_array_d* uvs = create_float2_array_d();
-    color_rgb_array_d* color_rgbs = create_color_rgb_array_d();
+    int_array_d* indicies = create_int_array_d(initial_dynamic_array_size);
+    float3_array_d* vertices = create_float3_array_d(initial_dynamic_array_size);
+    float2_array_d* uvs = create_float2_array_d(initial_dynamic_array_size);
+    color_rgb_array_d* color_rgbs = create_color_rgb_array_d(initial_dynamic_array_size);
     zox_terrain_building_dig(chunk_octree, tilemapUVs, NULL, chunk_octree, neighbors, neighbor_lods, indicies, vertices, uvs, color_rgbs, distance_to_camera, lod, 0, int3_zero, 0);
     clear_mesh_uvs(meshIndicies, meshVertices, meshColorRGBs, meshUVs);
     meshIndicies->length = indicies->size;
@@ -180,11 +180,11 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
     #ifdef zoxel_time_octree_chunk_builds_system
         begin_timing()
     #endif
-    ecs_world_t *world = it->world;
     #ifdef zox_octree_chunk_build_limits
         int chunks_built = 0;
     #endif
     unsigned char *neighbor_lods = NULL;
+    zox_iter_world()
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
     const ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 2);
     const RenderLod *renderLods = ecs_field(it, RenderLod, 3);

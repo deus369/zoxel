@@ -1,5 +1,4 @@
 #define initial_dynamic_array_size 16
-// extern int triangles_count;   // need a better way to get statistics here
 
 #define zoxel_dynamic_array(data_type)\
 typedef struct {\
@@ -8,10 +7,10 @@ typedef struct {\
     size_t size;\
 } data_type##_##array_d;\
 \
-data_type##_##array_d* create##_##data_type##_##array_d() {\
+data_type##_##array_d* create##_##data_type##_##array_d(int initial_dynamic_array_size_) {\
     data_type##_##array_d* dynamic_array = malloc(sizeof(data_type##_##array_d));\
-    dynamic_array->data = malloc(initial_dynamic_array_size * sizeof(data_type));\
-    dynamic_array->capacity = initial_dynamic_array_size;\
+    dynamic_array->data = malloc(initial_dynamic_array_size_ * sizeof(data_type));\
+    dynamic_array->capacity = initial_dynamic_array_size_;\
     dynamic_array->size = 0;\
     return dynamic_array;\
 }\

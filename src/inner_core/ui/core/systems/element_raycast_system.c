@@ -58,7 +58,7 @@ void raycaster_select_ui_mut(ecs_world_t *world, ecs_entity_t raycaster_entity, 
 }
 
 void ElementRaycastSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const Raycaster *raycasters = ecs_field(it, Raycaster, 1);
     const DeviceMode *deviceModes = ecs_field(it, DeviceMode, 2);
     RaycasterTarget *raycasterTargets = ecs_field(it, RaycasterTarget, 3);

@@ -1,7 +1,7 @@
 int2 resize_element_system_screen_size = int2_zero;
 // basically if viewport resizes, itll resize canvas / all 2D uis
 void ResizeElementSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const CanvasLink *canvasLinks = ecs_field(it, CanvasLink, 1);
     const ParentLink *parentLinks = ecs_field(it, ParentLink, 2);
     for (int i = 0; i < it->count; i++) {

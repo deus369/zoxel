@@ -41,7 +41,6 @@ void spawn_in_game_ui(ecs_world_t *world) {    // spawn game uis
 #endif
     if (is_touch) spawn_in_game_ui_touch(world);
     // actionbar_ui - spawn actionbar
-    // zox_logg("  > [todo] spawning actionbar\n")
     int actions_count = 8;
     int padding = 6;
     int icon_size = 64;

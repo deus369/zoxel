@@ -14,8 +14,8 @@ float4x4 render_camera_matrix;
 unsigned char render_camera_fov;
 
 void initialize_render_loop() {
-    render2D_systems = create_int_array_d();
-    render3D_systems = create_int_array_d();
+    render2D_systems = create_int_array_d(initial_dynamic_array_size);
+    render3D_systems = create_int_array_d(initial_dynamic_array_size);
 }
 
 void dispose_render_loop() {

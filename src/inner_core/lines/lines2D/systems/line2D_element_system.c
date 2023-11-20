@@ -17,7 +17,6 @@ void set_ui_line_position(LineData2D *lineData2D, int4 linePosition2D, float2 ca
 }
 
 void Line2DElementSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
     /*ecs_query_t *changeQuery = it->ctx;
     ecs_iter_t change_iter = ecs_query_iter(world, changeQuery);
     while (ecs_query_next(&change_iter)) {
@@ -25,6 +24,7 @@ void Line2DElementSystem(ecs_iter_t *it) {
     }
     if (!ecs_query_changed(changeQuery, NULL)) return;*/
     //! \todo Update this after getting a working example of change filters
+    zox_iter_world()
     const LinePosition2D *lineElementDatas = ecs_field(it, LinePosition2D, 2);
     const CanvasLink *canvasLinks = ecs_field(it, CanvasLink, 3);
     LineData2D *lineData2Ds = ecs_field(it, LineData2D, 4);

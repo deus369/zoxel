@@ -1,5 +1,5 @@
 void EditorInputSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
     for (int i = 0; i < it->count; i++) {
         const DeviceLinks *deviceLinks = &deviceLinkss[i];
@@ -16,8 +16,10 @@ void EditorInputSystem(ecs_iter_t *it) {
 #ifdef zox_test_hierarchy
                 else if (keyboard->f.pressed_this_frame) {
                     // ecs_defer_begin(world);
-                    toggle_ui(world, &hierarchy, &spawn_editor_hierarchy);
                     toggle_ui(world, &inspector, &spawn_inspector);
+                    // pause_ui = spawn_pause_ui(world, int2_zero, float2_half);
+                    // hierarchy = spawn_editor_hierarchy(world, main_canvas);
+                    toggle_ui(world, &hierarchy, &spawn_editor_hierarchy);
                     // ecs_defer_end(world);
                 }
                 else if (keyboard->h.pressed_this_frame) toggle_ui(world, &hierarchy, &spawn_editor_hierarchy);

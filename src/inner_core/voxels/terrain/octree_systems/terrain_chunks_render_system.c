@@ -11,7 +11,7 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &memory_used);
         glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &memory_total);
     #endif
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const Textured3DAttributes *attributes_textured3D = get_textured3D_material_attributes(world);
     int rendered_count = 0;
     const Position3D *positions = ecs_field(it, Position3D, 1);

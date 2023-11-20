@@ -4,7 +4,7 @@ void MusicPlaySystem(ecs_iter_t *it) {
     #endif
     double delta_time = zox_delta_time;
     const double music_speed = 2.0;
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const MusicData *musicDatas = ecs_field(it, MusicData, 2);
     const MusicSpeed *musicSpeeds = ecs_field(it, MusicSpeed, 3);
     const InstrumentType *instrumentTypes = ecs_field(it, InstrumentType, 4);

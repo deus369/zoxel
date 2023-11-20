@@ -7,7 +7,7 @@
 
     void ElementNavigationSystem(ecs_iter_t *it) {
         double delta_time = zox_delta_time;
-        ecs_world_t *world = it->world;
+    zox_iter_world()
         const DeviceLinks *deviceLinks = ecs_field(it, DeviceLinks, 1);
         const DeviceMode *deviceModes = ecs_field(it, DeviceMode, 2);
         NavigatorState *navigatorStates = ecs_field(it, NavigatorState, 3);

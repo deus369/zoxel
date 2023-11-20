@@ -1,5 +1,5 @@
 void PlayerToggleCameraSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
     const CharacterLink *characterLinks = ecs_field(it, CharacterLink, 3);
     for (int i = 0; i < it->count; i++) {

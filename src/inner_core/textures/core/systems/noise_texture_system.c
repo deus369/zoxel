@@ -145,7 +145,7 @@ void generate_texture_noise(TextureData* textureData, const TextureSize *texture
 
 void NoiseTextureSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(it->ctx, NULL)) return;
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 2);
     TextureData *textures = ecs_field(it, TextureData, 3);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 4);

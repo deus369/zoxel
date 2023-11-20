@@ -4,17 +4,17 @@ void button_event_pause_game(ecs_world_t *world, ecs_entity_t trigger_entity) {
 
 void toggle_pause_ui(ecs_world_t *world, ecs_entity_t player) {
     const GameState *gameState = zox_get(local_game, GameState)
-    #ifdef zox_play_game_on_start
-        if (gameState->value == zoxel_game_state_main_menu) {
-            play_game(world);
-            return;
-        }
-    #endif
+#ifdef zox_play_game_on_start
+    if (gameState->value == zoxel_game_state_main_menu) {
+        play_game(world);
+        return;
+    }
+#endif
     if (!(gameState->value == zoxel_game_state_playing || gameState->value == zoxel_game_state_paused)) return;
     // const int edge_buffer = 8 * default_ui_scale;
     // const float2 window_anchor = { 0, 1 };
     // const int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
-    const float2 window_anchor = { 0.5f, 0.5f };
+    const float2 window_anchor = float2_half; // { 0.5f, 0.5f };
     const int2 window_position = int2_zero;
     //zoxel_log(" > alive ui? %s\n", ecs_is_alive(world, pause_ui) ? "alive" : "dead");
     unsigned char is_paused = gameState->value == zoxel_game_state_paused; // ecs_is_alive(world, pause_ui); // pause_ui != 0; // ecs_is_alive(world, pause_ui2);

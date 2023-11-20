@@ -1,7 +1,7 @@
 // pushes mouse data into Raycaster component
 // todo: check device mode here or device enabled states
 void MouseRaycasterSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const DeviceLinks *deviceLinks = ecs_field(it, DeviceLinks, 1);
     const DeviceMode *deviceModes = ecs_field(it, DeviceMode, 2);
     Raycaster *raycasters = ecs_field(it, Raycaster, 3);

@@ -9,7 +9,7 @@
     }
 
     void ElementActivateSystem(ecs_iter_t *it) {
-        ecs_world_t *world = it->world;
+    zox_iter_world()
         const DeviceLinks *deviceLinks = ecs_field(it, DeviceLinks, 1);
         const DeviceMode *deviceModes = ecs_field(it, DeviceMode, 2);
         const RaycasterTarget *raycasterTargets = ecs_field(it, RaycasterTarget, 3);

@@ -2,10 +2,10 @@ extern unsigned char can_render_ui(ecs_world_t *world, ecs_entity_t e);
 // #define zox_time_render3D_textured_system
 
 void Element3DRenderSystem(ecs_iter_t *it) {
-    #ifdef zox_time_render3D_textured_system
-        begin_timing()
-    #endif
-    ecs_world_t *world = it->world;
+#ifdef zox_time_render3D_textured_system
+    begin_timing()
+#endif
+    zox_iter_world()
     const Textured3DAttributes *attributes_textured3D = get_textured3D_material_attributes(world);
     unsigned char has_set_material = 0;
     int rendered_count = 0;
@@ -44,18 +44,18 @@ void Element3DRenderSystem(ecs_iter_t *it) {
         opengl_bind_texture(textureGPULink->value);
         opengl_set_float3(attributes_textured3D->position, position3D->value);
         opengl_set_float4(attributes_textured3D->rotation, rotation3D->value);
-        #ifndef zox_disable_render_ui_3D
-            opengl_render(meshIndicies2->length);
-        #endif
-        #ifdef zoxel_catch_opengl_errors
-            if (check_opengl_error_unlogged() != 0) {
-                zoxel_log(" > failed to render element3D [%lu]: [%i] - [%ix%i:%i]\n", e, meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value);
-                break;
-            }
-        #endif
-        #ifdef zox_time_render3D_textured_system
-            did_do_timing()
-        #endif
+#ifndef zox_disable_render_ui_3D
+        opengl_render(meshIndicies2->length);
+#endif
+#ifdef zoxel_catch_opengl_errors
+        if (check_opengl_error_unlogged() != 0) {
+            zoxel_log(" > failed to render element3D [%lu]: [%i] - [%ix%i:%i]\n", e, meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value);
+            break;
+        }
+#endif
+#ifdef zox_time_render3D_textured_system
+        did_do_timing()
+#endif
         rendered_count++;
     }
     if (has_set_material) {
@@ -66,11 +66,11 @@ void Element3DRenderSystem(ecs_iter_t *it) {
         opengl_disable_texture(false);
         opengl_disable_opengl_program();
     }
-    #ifdef zox_time_render3D_textured_system
-        end_timing("    - render3D_textured_system")
-        // zoxel_log("         > count [%i]\n", it->count);
-    #endif
-    #ifdef zox_errorcheck_render_ui_3D
-        if (rendered_count > 0) zoxel_log(" > rendered elements [%i]\n", rendered_count);
-    #endif
+#ifdef zox_time_render3D_textured_system
+    end_timing("    - render3D_textured_system")
+    // zoxel_log("         > count [%i]\n", it->count);
+#endif
+#ifdef zox_errorcheck_render_ui_3D
+    if (rendered_count > 0) zoxel_log(" > rendered elements [%i]\n", rendered_count);
+#endif
 } zox_declare_system(Element3DRenderSystem)

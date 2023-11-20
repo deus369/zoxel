@@ -46,9 +46,9 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
     MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColorRGBs *meshColorRGBs, float3 total_mesh_offset) {
     // go through and add a top face for each voxel position that is solid
     float voxel_scale = model_scale;
-    int_array_d* indicies = create_int_array_d();
-    float3_array_d* vertices = create_float3_array_d();
-    color_rgb_array_d* color_rgbs = create_color_rgb_array_d();
+    int_array_d* indicies = create_int_array_d(initial_dynamic_array_size);
+    float3_array_d* vertices = create_float3_array_d(initial_dynamic_array_size);
+    color_rgb_array_d* color_rgbs = create_color_rgb_array_d(initial_dynamic_array_size);
     // precount our face data for initialization
     byte3 chunk_size = (byte3) { chunkSize->value.x, chunkSize->value.y, chunkSize->value.z };
     unsigned char voxel;

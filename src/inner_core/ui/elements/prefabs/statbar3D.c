@@ -20,16 +20,16 @@ ecs_entity_t spawn_prefab_statbar3D(ecs_world_t *world) {
     zox_prefab_set(e, ElementBarSize, { float2_zero })
     zox_prefab_set(e, Children, { 0, NULL })
     prefab_statbar3D = e;
-    #ifdef zoxel_debug_prefabs
-        zox_log("   > spawn_prefab statbar [%lu]\n", e)
-    #endif
+#ifdef zoxel_debug_prefabs
+    zox_log("   > spawn_prefab statbar [%lu]\n", e)
+#endif
     return e;
 }
 
 ecs_entity_t spawn_prefab_statbar3D_front(ecs_world_t *world) {
     color bar_color = (color) { 188, 25, 25, 255 };
     zox_prefab_child(prefab_element_world_child)
-    zox_prefab_name("prefab_statbar_front")
+    zox_prefab_name("prefab_statbar3D_front")
     zox_add_tag(e, FillTexture)
     zox_set(e, Color, { bar_color })
     zox_set(e, PixelSize, { int2_one })
@@ -45,19 +45,21 @@ ecs_entity_t spawn_prefab_statbar3D_front(ecs_world_t *world) {
 // used atm for statbar front bar
 ecs_entity_t spawn_statbar3D_front(ecs_world_t *world, ecs_entity_t ui_holder, ecs_entity_t parent, float3 offset) {
     zox_instance(prefab_statbar3D_front)
+    zox_name("statbar3D_front")
     zox_set(e, CameraLink, { main_cameras[0] })
     zox_set(e, CanvasLink, { main_canvas })
     zox_set(e, ParentLink, { parent })
     zox_set(e, LocalPosition3D, { offset })
-    #ifdef zoxel_debug_spawns
-        zox_log("   > spawned statbar3D_front [%lu]\n", e)
-    #endif
+#ifdef zoxel_debug_spawns
+    zox_log("   > spawned statbar3D_front [%lu]\n", e)
+#endif
     return e;
 }
 
 ecs_entity_t spawn_statbar3D(ecs_world_t *world, ecs_entity_t ui_holder, float percentage) {
     const float depth_difference = 0.012f;
     zox_instance(prefab_statbar3D)
+    zox_name("statbar3D")
     zox_set(e, UIHolderLink, { ui_holder })
     zox_set(e, CameraLink, { main_cameras[0] })
     zox_set(e, CanvasLink, { main_canvas })

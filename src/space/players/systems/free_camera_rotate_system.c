@@ -7,7 +7,7 @@ void FreeCameraRotateSystem(ecs_iter_t *it) {
     #ifdef zoxel_on_web
         rotate_power *= 10.0;
     #endif
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
     const CameraLink *cameraLinks = ecs_field(it, CameraLink, 3);
     for (int i = 0; i < it->count; i++) {

@@ -22,7 +22,7 @@ void drag_element(ecs_world_t *world, ecs_entity_t e, int2 drag_value) {
 // has to also move children and their children
 //! Plays a Sound when button is clicked
 void ElementDragSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const DraggableState *dragableStates = ecs_field(it, DraggableState, 1);
     const DraggingDelta *draggingDeltas = ecs_field(it, DraggingDelta, 2);
     const DraggedLink *draggedLinks = ecs_field(it, DraggedLink, 3);

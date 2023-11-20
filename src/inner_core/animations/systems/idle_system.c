@@ -3,7 +3,6 @@ void IdleSystem(ecs_iter_t *it) {
     const float idle_default_scale = 1.0f;
     const float idle_scale_addition = 0.02f;
     const float idle_animation_speed = 4.0f;
-    // ecs_world_t *world = it->world;
     double time = zox_current_time;
     const AnimationState *animationTypes = ecs_field(it, AnimationState, 1);
     const AnimationStart *animationStarts = ecs_field(it, AnimationStart, 2);

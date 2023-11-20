@@ -177,7 +177,7 @@ ecs_set_hooks(world, name, {\
 #define zox_link_component(name, type, links_name, ...)\
 zox_component(name, type)\
 void on_destroyed##_##name(ecs_iter_t *it) {\
-    ecs_world_t *world = it->world;\
+    zox_iter_world()\
     name *components = ecs_field(it, name, 1);\
     for (int i = 0; i < it->count; i++) {\
         ecs_entity_t e = it->entities[i];\

@@ -54,8 +54,6 @@ void delete_all_opengl_resources(ecs_world_t *world) {
     opengl_dispose_shaders();
     dispose_children_resources(world, main_canvas);
     dispose_opengl_resources_terrain(world);
-    // dispose_material_resources(world, skybox);
-    // dispose_mesh_resources(world, skybox);
     ecs_run(world, ecs_id(MeshGPUDisposeSystem), 0, NULL);
     ecs_run(world, ecs_id(MeshColorsGPUDisposeSystem), 0, NULL);
     ecs_run(world, ecs_id(MeshUvsGPUDisposeSystem), 0, NULL);

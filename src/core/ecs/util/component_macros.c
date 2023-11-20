@@ -100,7 +100,7 @@ ecs_observer_init(world, &(ecs_observer_desc_t) {\
 ecs_entity_t_array_d* component_ids##_##type;\
 \
 void initialize_component_ids##_##type() {\
-    component_ids##_##type = create_ecs_entity_t_array_d();\
+    component_ids##_##type = create_ecs_entity_t_array_d(initial_dynamic_array_size);\
 }\
 \
 void dispose_component_ids##_##type() {\

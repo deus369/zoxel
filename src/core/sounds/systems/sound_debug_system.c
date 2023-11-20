@@ -1,10 +1,9 @@
 // todo: make these lines work in a ui
-
 extern ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 pointB, float thickness, double life_time);
 
 void SoundDebugSystem(ecs_iter_t *it) {
     if (!zox_visualize_sounds) return;
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     unsigned char has_begun = 0;
     const SoundData *soundDatas = ecs_field(it, SoundData, 2);
     const SoundDirty *soundDirtys = ecs_field(it, SoundDirty, 3);

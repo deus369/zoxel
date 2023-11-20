@@ -1,6 +1,5 @@
 // a simple shrink system
 void ShrinkSystem(ecs_iter_t *it) {
-    // ecs_world_t *world = it->world;
     double time = zox_current_time;
     const AnimationState *animationTypes = ecs_field(it, AnimationState, 1);
     const AnimationStart *animationStarts = ecs_field(it, AnimationStart, 2);

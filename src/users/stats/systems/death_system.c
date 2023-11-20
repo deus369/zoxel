@@ -4,7 +4,7 @@
 void DeathSystem(ecs_iter_t *it) {
     // only update when stat value changes
     // if (!ecs_query_changed(NULL, it)) return;
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const StatValue *statValues = ecs_field(it, StatValue, 2);
     const UserLink *userLinks = ecs_field(it, UserLink, 3);
     for (int i = 0; i < it->count; i++) {

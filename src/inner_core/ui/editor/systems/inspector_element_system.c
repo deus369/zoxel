@@ -1,6 +1,6 @@
 // update inspector element text every .5 seconds by checking if value changed... with a string check
 void InspectorElementSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const EntityTarget *entityTargets = ecs_field(it, EntityTarget, 2);
     const ComponentTarget *componentTargets = ecs_field(it, ComponentTarget, 3);
     //ZextData *zextDatas = ecs_field(it, ZextData, 3);

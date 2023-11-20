@@ -1,5 +1,5 @@
 void PlayerPauseSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
     for (int i = 0; i < it->count; i++) {
         unsigned char did_toggle_pause = 0;

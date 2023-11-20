@@ -19,7 +19,7 @@ int get_max_characters(const char *header_label, const text_group labels[], int 
     return max_characters;
 }
 
-ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t canvas, const char *header_label, int elements_count, int max_elements, const text_group labels[], const ClickEvent events[], int2 pixel_position, float2 anchor, unsigned char is_close_button, unsigned char font_size, unsigned char layer, unsigned char is_scrollbar) {
+ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas, const char *header_label, const int elements_count, const int max_elements, const text_group labels[], const ClickEvent events[], int2 pixel_position, const float2 anchor, const unsigned char is_close_button, unsigned char font_size, const unsigned char layer, const unsigned char is_scrollbar) {
     const ecs_entity_t parent = canvas;
     const unsigned char is_header = 1;
     const unsigned char list_start = is_header + is_scrollbar;
@@ -46,13 +46,6 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t
     int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
     float2 position2D = get_element_position(pixel_position_global, canvas_size);
     initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, anchor, layer, position2D, pixel_position_global);
-    /*zox_log("   > ui_list %lu\n", e)
-    zox_log("       > pix pixel_position [%ix%i]\n", pixel_position.x, pixel_position.y)
-    zox_log("       > pixel_size [%ix%i]\n", pixel_size.x, pixel_size.y)
-    zox_log("       > pix pos global [%ix%i]\n", pixel_position_global.x, pixel_position_global.y)
-    zox_log("       > canvas [%lu] size [%fx%f]\n", canvas, canvas_size.x, canvas_size.y)
-    zox_log("       > anchor [%fx%f]\n", anchor.x, anchor.y)
-    zox_log("       > position2D [%fx%f]\n", position2D.x, position2D.y)*/
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, children_length)
     if (is_header) {
@@ -73,10 +66,18 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t
     }
     zox_modified(e, Children)
 #ifdef zoxel_include_players
-    if (!headless && max_elements > 0) select_first_button(world, children->value[list_start]);
+    if (!headless && elements_count > 0) select_first_button(world, children->value[list_start]);
 #endif
 #ifdef zoxel_debug_spawns
     zox_log(" > spawned ui list [%lu]\n", e)
 #endif
     return e;
 }
+
+/*zox_log("   > ui_list %lu\n", e)
+zox_log("       > pix pixel_position [%ix%i]\n", pixel_position.x, pixel_position.y)
+zox_log("       > pixel_size [%ix%i]\n", pixel_size.x, pixel_size.y)
+zox_log("       > pix pos global [%ix%i]\n", pixel_position_global.x, pixel_position_global.y)
+zox_log("       > canvas [%lu] size [%fx%f]\n", canvas, canvas_size.x, canvas_size.y)
+zox_log("       > anchor [%fx%f]\n", anchor.x, anchor.y)
+zox_log("       > position2D [%fx%f]\n", position2D.x, position2D.y)*/

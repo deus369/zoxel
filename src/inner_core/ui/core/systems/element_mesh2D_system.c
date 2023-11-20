@@ -4,7 +4,7 @@ void Element2DMeshSystem(ecs_iter_t *it) {
     #ifdef zox_time_element_mesh_system
         begin_timing()
     #endif
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const PixelSize *pixelSizes = ecs_field(it, PixelSize, 2);
     const MeshAlignment *meshAlignments = ecs_field(it, MeshAlignment, 3);
     const CanvasLink *canvasLinks = ecs_field(it, CanvasLink, 4);

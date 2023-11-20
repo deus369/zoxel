@@ -11,7 +11,7 @@ ecs_entity_t spawn_player_character3D_in_world(ecs_world_t *world, const vox_fil
 }
 
 void Characters3DSpawnSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 2);
     const ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 3);
     const RenderLod *renderLods = ecs_field(it, RenderLod, 4);
@@ -36,7 +36,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             // find if chunk has any air position - free place to spawn - spawn characters in this chunk
             const ChunkPosition *chunkPosition = &chunkPositions[i];
             int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, default_chunk_size);
-            ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d();
+            ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d(initial_dynamic_array_size);
             for (unsigned char j = 0; j < characters_per_chunk_count; j++) {
                 byte3 local_position = (byte3) { rand() % default_chunk_length, default_chunk_length - 1, rand() % default_chunk_length };    // rand() % 16
                 byte3 local_position_temp = local_position;

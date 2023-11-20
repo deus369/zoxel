@@ -1,7 +1,7 @@
 #define zox_entities_component(name)\
 zox_memory_component(name, ecs_entity_t)\
 void on_destroyed##_##name(ecs_iter_t *it) {\
-    ecs_world_t *world = it->world;\
+    zox_iter_world()\
     const name *components = ecs_field(it, name, 1);\
     for (int i = 0; i < it->count; i++) {\
         const name *component = &components[i];\

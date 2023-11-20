@@ -19,7 +19,7 @@ if (texture_index >= voxel_texture_data->length) textureData->value[j].r = 233;*
 
 void TilemapGenerationSystem(ecs_iter_t *it) {
     // int2 default_texture_size = (int2) { 32, 32 }; // 16
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const TilemapSize *tilemapSizes = ecs_field(it, TilemapSize, 2);
     const TextureLinks *textureLinkss = ecs_field(it, TextureLinks, 3);
     GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 4);

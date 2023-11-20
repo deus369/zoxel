@@ -7,7 +7,7 @@ void set_position_from_parents(ecs_world_t *world, ecs_entity_t parent, float3 *
 }
 
 void ParentPositionSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const ParentLink *parentLinks = ecs_field(it, ParentLink, 1);
     const LocalPosition3D *localPosition3Ds = ecs_field(it, LocalPosition3D, 2);
     Position3D *position3Ds = ecs_field(it, Position3D, 3);

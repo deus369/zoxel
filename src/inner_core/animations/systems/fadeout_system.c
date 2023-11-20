@@ -3,7 +3,6 @@
 void FadeoutSystem(ecs_iter_t *it) {
     float delay = 3.0f;
     float animation_length = 3.0f;
-    // ecs_world_t *world = it->world;
     double time = zox_current_time;
     const AnimationState *animationTypes = ecs_field(it, AnimationState, 1);
     const AnimationStart *animationStarts = ecs_field(it, AnimationStart, 2);
@@ -25,7 +24,6 @@ void FadeoutSystem(ecs_iter_t *it) {
 // a copy of fadeout
 void FadeinSystem(ecs_iter_t *it) {
     float speed = 0.2f;
-    // ecs_world_t *world = it->world;
     double time = zox_current_time;
     const AnimationState *animationTypes = ecs_field(it, AnimationState, 1);
     const AnimationStart *animationStarts = ecs_field(it, AnimationStart, 2);

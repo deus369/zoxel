@@ -52,7 +52,7 @@ void VirtualJoystickSystem(ecs_iter_t *it) {
     if (!local_game) return;
     const GameState *gameState = zox_get(local_game, GameState)
     unsigned char is_playing = gameState->value == zoxel_game_state_playing;
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
     const DeviceMode *deviceModes = ecs_field(it, DeviceMode, 3);
     const RaycasterResult *raycasterResults = ecs_field(it, RaycasterResult, 4);

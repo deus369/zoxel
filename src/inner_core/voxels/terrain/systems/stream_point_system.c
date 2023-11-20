@@ -4,7 +4,7 @@
     get_chunk_division(new_position, int3##_##dir(chunkPosition->value)))
 
 void StreamPointSystem(ecs_iter_t *it) {
-    ecs_world_t *world = it->world;
+    zox_iter_world()
     ecs_query_t *chunks_query = it->ctx;
     ecs_iter_t chunks_iterator = ecs_query_iter(world, chunks_query);
     ecs_query_next(&chunks_iterator);
