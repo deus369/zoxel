@@ -23,7 +23,7 @@ zox_component_byte(NavigatorState)
 zox_component_byte(ElementFontSize)
 zox_component_float(ElementBar)
 zox_time_component(NavigatorTimer)
-zox_component_int2(CanvasPixelPosition)
+zox_component_int2(CanvasPosition)
 zox_component_int2(ElementMargins)
 zox_component_float2(Anchor)
 zox_component_float2(ElementBarSize)
@@ -81,7 +81,7 @@ zox_define_component_byte(InitializeEntityMesh)
 zox_define_component_byte(NavigatorState)
 zox_define_component_byte(ElementFontSize)
 zox_define_component_float(ElementBar)
-zox_define_component_int2(CanvasPixelPosition)
+zox_define_component_int2(CanvasPosition)
 zox_define_component_int2(ElementMargins)
 zox_define_component_float2(Anchor)
 zox_define_component_float2(ElementBarSize)
@@ -92,8 +92,8 @@ zox_define_component(UIHolderLink)
 zox_define_component(ClickEvent)
 zox_define_entities_component(ElementLinks)
 // zoxel_define_filters
-zox_filter(ui_query, [none] Element, [in] CanvasPixelPosition, [in] PixelSize, [in] Layer2D, [in] RenderDisabled, [out] SelectState)
-zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition, [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPixelPosition)
+zox_filter(ui_query, [none] Element, [in] CanvasPosition, [in] PixelSize, [in] Layer2D, [in] RenderDisabled, [out] SelectState)
+zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition, [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPosition)
 // zoxel_define_systems
 #ifdef zoxel_inputs
 zox_system_ctx(ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [in] DeviceMode, [out] RaycasterTarget)
@@ -101,7 +101,7 @@ zox_system(ElementActivateSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMo
 zox_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [out] NavigatorState, [out] NavigatorTimer, [out] RaycasterTarget)
 #endif
 // EcsOnStore EcsOnUpdate
-zox_system_ctx(ElementPositionSystem, EcsPreUpdate, pixel_positions_query, [none] Element, [in] PixelPosition, [in] ParentLink, [in] Anchor, [in] CanvasLink, [out] Position2D, [out] CanvasPixelPosition)
+zox_system_ctx(ElementPositionSystem, EcsPreUpdate, pixel_positions_query, [none] Element, [in] PixelPosition, [in] ParentLink, [in] Anchor, [in] CanvasLink, [out] Position2D, [out] CanvasPosition)
 zox_system(ElementSelectedSystem, EcsOnUpdate, [none] Element, [in] SelectState, [out] Brightness)
 zox_system(BillboardSystem, zox_transforms_stage, [none] ElementBillboard, [in] CameraLink, [in] Position3D, [out] Rotation3D)
 zox_system(UITrailSystem, zox_transforms_stage, [in] UIHolderLink, [in] UITrail, [out] Position3D)    // todo: put back to EcsPostUpdate - can't find out where character position updates atm

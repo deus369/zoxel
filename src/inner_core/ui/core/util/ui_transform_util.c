@@ -47,7 +47,7 @@ void on_element_parent_updated(ecs_world_t *world, ecs_entity_t e, int2 local_pi
     float2 position2D = get_ui_real_position2D_parent(local_pixel_position, anchor, parent_position, parent_pixel_size, canvas_size_f, aspect_ratio);
     int2 global_pixel_position = (int2) { ceil(((position2D.x / aspect_ratio) + 0.5f) * canvas_size_f.x), ((position2D.y + 0.5f) * canvas_size_f.y) };
     zox_set(e, Position2D, { position2D })
-    zox_set(e, CanvasPixelPosition, { global_pixel_position })
+    zox_set(e, CanvasPosition, { global_pixel_position })
 }
 
 // set children position as well
@@ -65,7 +65,7 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
         float2 position2D = get_ui_real_position2D(world, e, parent, position, anchor->value, canvas_size);
         int2 global_pixel_position = (int2) { ceil((position2D.x / aspect_ratio + 0.5f) * canvasSizef.x), ((position2D.y + 0.5f) * canvasSizef.y) };
         zox_set(e, Position2D, { position2D })
-        zox_set(e, CanvasPixelPosition, { global_pixel_position })
+        zox_set(e, CanvasPosition, { global_pixel_position })
 #ifdef debug_ui_scaling
         zox_log("        -> to [%ix%i]\n", global_pixel_position.x, global_pixel_position.y)
 #endif
@@ -127,7 +127,7 @@ void initialize_ui_components_3(ecs_world_t *world, ecs_entity_t e, ecs_entity_t
     zox_set(e, TextureSize, { pixel_size })
     zox_set(e, PixelPosition, { pixel_position })
     zox_set(e, Position2D, { position2D }) // set this inside pixel position system
-    zox_set(e, CanvasPixelPosition, { pixel_position_global }) // set this inside system too
+    zox_set(e, CanvasPosition, { pixel_position_global }) // set this inside system too
 }
 
 
@@ -144,7 +144,7 @@ void initialize_ui_components_3(ecs_world_t *world, ecs_entity_t e, ecs_entity_t
     zox_set(e, Anchor, { anchor })
     zox_set(e, Layer2D, { layer })
     zox_set(e, Position2D, { position2D })
-    zox_set(e, CanvasPixelPosition, { global_pixel_position })
+    zox_set(e, CanvasPosition, { global_pixel_position })
     return position2D;
 }
 
@@ -163,6 +163,6 @@ float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity
     zox_set(e, Layer2D, { layer })
     zox_set(e, PixelPosition, { local_pixel_position })
     zox_set(e, Position2D, { position2D })
-    zox_set(e, CanvasPixelPosition, { global_pixel_position })
+    zox_set(e, CanvasPosition, { global_pixel_position })
     return position2D;
 }*/

@@ -33,7 +33,7 @@ zox_define_tag(InspectorLabel)
 zox_define_component(HierarchyUIDirty)
 // zoxel_define_systems
 zox_system(InspectorElementSystem, EcsOnUpdate, [none] InspectorLabel, [in] EntityTarget, [in] ComponentTarget)
-zox_system_1(HierarchyRefreshSystem, main_thread_pipeline, [none] HierarchyUI, [in] Position2D, [in] CanvasPixelPosition, [in] Layer2D, [in] Anchor, [in] ListUIMax, [in] ElementFontSize, [in] CanvasLink, [out] HierarchyUIDirty, [out] PixelPosition, [out] PixelSize, [out] TextureSize, [out] Children)
+zox_system_1(HierarchyRefreshSystem, main_thread_pipeline, [none] HierarchyUI, [in] Position2D, [in] CanvasPosition, [in] Layer2D, [in] Anchor, [in] ListUIMax, [in] ElementFontSize, [in] CanvasLink, [out] HierarchyUIDirty, [out] PixelPosition, [out] PixelSize, [out] TextureSize, [out] Children)
 zoxel_end_module(EditorElements)
 
 #endif

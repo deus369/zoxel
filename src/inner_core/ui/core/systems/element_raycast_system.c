@@ -77,7 +77,7 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         int k = 0;
         ecs_iter_t uis_it = ecs_query_iter(world, it->ctx);
         while(ecs_query_next(&uis_it)) {
-            const CanvasPixelPosition *canvasPixelPositions = ecs_field(&uis_it, CanvasPixelPosition, 2);
+            const CanvasPosition *canvasPositions = ecs_field(&uis_it, CanvasPosition, 2);
             const PixelSize *pixelSizes = ecs_field(&uis_it, PixelSize, 3);
             const Layer2D *layer2Ds = ecs_field(&uis_it, Layer2D, 4);
             const RenderDisabled *renderDisableds = ecs_field(&uis_it, RenderDisabled, 5);
@@ -85,13 +85,13 @@ void ElementRaycastSystem(ecs_iter_t *it) {
             for (int j = 0; j < uis_it.count; j++) {
                 const RenderDisabled *renderDisabled = &renderDisableds[j];
                 if (renderDisabled->value) continue;
-                const CanvasPixelPosition *canvasPixelPosition2 = &canvasPixelPositions[j];
+                const CanvasPosition *canvasPosition2 = &canvasPositions[j];
                 const PixelSize *pixelSize2 = &pixelSizes[j];
                 const Layer2D *layer2D = &layer2Ds[j];
                 SelectState *selectState = &selectableStates[j];
-                const int2 canvasPixelPosition = canvasPixelPosition2->value;
+                const int2 canvasPosition = canvasPosition2->value;
                 const int2 pixelSize = pixelSize2->value;
-                int4 ui_bounds = { canvasPixelPosition.x - pixelSize.x / 2, canvasPixelPosition.x + pixelSize.x / 2, canvasPixelPosition.y - pixelSize.y / 2,  canvasPixelPosition.y + pixelSize.y / 2};
+                int4 ui_bounds = { canvasPosition.x - pixelSize.x / 2, canvasPosition.x + pixelSize.x / 2, canvasPosition.y - pixelSize.y / 2,  canvasPosition.y + pixelSize.y / 2};
                 // zox_log("ui raycasting [%lu] - [%i]\n", uis_it.entities[j], layer2D->value)
                 // zox_log("        - ui [%ix%ix%ix%i]\n", ui_bounds.x, ui_bounds.y, ui_bounds.z, ui_bounds.w)
                 // centered
@@ -102,7 +102,7 @@ void ElementRaycastSystem(ecs_iter_t *it) {
                     // if (ui_selected_selectableState) ui_selected_selectableState->value = 0;
                     ui_selected_selectableState = selectState;
                     #ifdef zox_debug_log_element_raycasting
-                        zoxel_log("     + ui [%lu] position [%ix%i] size [%ix%i]\n", ui_selected, canvasPixelPosition.x, canvasPixelPosition.y, pixelSize.x, pixelSize.y);
+                        zoxel_log("     + ui [%lu] position [%ix%i] size [%ix%i]\n", ui_selected, canvasPosition.x, canvasPosition.y, pixelSize.x, pixelSize.y);
                     #endif
                     // zox_log("   > was_raycasted [%i:%i] - %i of %i uis in table\n", i, k, j, uis_it.count)
                 }

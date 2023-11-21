@@ -11,6 +11,7 @@ void InspectorElementSystem(ecs_iter_t *it) {
         if (!ecs_is_alive(world, entityTarget->value)) continue;
         const ComponentTarget *componentTarget = &componentTargets[i];
         if (!componentTarget->value) continue;
+        const ecs_entity_t e = it->entities[i];
         //ZextDirty *zextDirty = &zextDirtys[i];
         //if (zextDirty->value) continue;
         //ZextData *zextData = &zextDatas[i];
@@ -18,7 +19,7 @@ void InspectorElementSystem(ecs_iter_t *it) {
         get_component_label(world, entityTarget->value, componentTarget->value, buffer);
         // zox_log("   > if value changed [%s]\n", buffer)
         // zextDirty->value = 1;
-        set_entity_label_with_text(world, it->entities[i], buffer);
+        set_entity_label_with_text(world, e, buffer);
     }
     // zox_log("   > inspector elements [%i]\n", it->count)
 } zox_declare_system(InspectorElementSystem)

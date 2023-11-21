@@ -25,5 +25,5 @@ void set_zigel_position(ecs_world_t *world, ecs_entity_t zigel, unsigned char in
     float2 position = get_element_position(pixel_position_global, canvas_size);
     zox_set(zigel, Position2D, { position })
     zox_set(zigel, PixelPosition, { pixel_position })
-    zox_set(zigel, CanvasPixelPosition, { pixel_position_global })
+    zox_set(zigel, CanvasPosition, { pixel_position_global })
 }

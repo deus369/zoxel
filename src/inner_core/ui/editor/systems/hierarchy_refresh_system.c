@@ -5,8 +5,10 @@ extern ecs_entity_t local_character3D;
 extern void add_realm_entity_to_labels(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level);
 const int hierarchy_max_line_characters = 64;
 ecs_entity_t editor_selected;
+// note: not sure why this breaks the first time, maybe flecs table issues?
 #ifdef zox_glitch_fix_hierarchy_labels
 const unsigned char max_hierarchy_labels = 23;
+unsigned is_first_hierarchy_spawn = 1;
 #endif
 
 void add_entity_to_labels(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level) {
@@ -116,25 +118,18 @@ void button_event_clicked_hierarchy(ecs_world_t *world, ecs_entity_t trigger_ent
 }
 
 // like text, sets the list of text onto the ui element list
-void set_ui_list_hierarchy(ecs_world_t *world, Children *children, ecs_entity_t window_entity, const ecs_entity_t canvas, int elements_visible, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int labels_count, const ClickEvent click_event, const unsigned char button_layer, const int2 button_padding, const int button_inner_margins, const int font_size, const unsigned char list_start, const int2 list_margins, const unsigned char is_scrollbar, const int scrollbar_width, const int scrollbar_margins, const float2 window_position, const int2 window_pixel_position_global, const int2 window_size, const int2 canvas_size) {
+void set_ui_list_hierarchy(ecs_world_t *world, Children *children, ecs_entity_t window_entity, const ecs_entity_t canvas, const int elements_visible, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int labels_count, const ClickEvent click_event, const unsigned char button_layer, const int2 button_padding, const int button_inner_margins, const unsigned char font_size, const unsigned char list_start, const int2 list_margins, const unsigned char is_scrollbar, const int scrollbar_width, const int scrollbar_margins, const float2 window_position, const int2 window_pixel_position_global, const int2 window_size, const int2 canvas_size) {
     // resize scrollbar
-    const ecs_entity_t scrollbar = children->value[1];
-    const ecs_entity_t scrollbar_front = zox_gett_value(scrollbar, Children)[0];
-    const int scrollbar_height = (int) window_size.y * ( float_min(1, (float) elements_visible / (float) labels_count));
-    const int2 scrollbar_size = (int2) { zox_gett_value(scrollbar, PixelSize).x, scrollbar_height };
-    zox_set(scrollbar_front, PixelSize, { scrollbar_size })
-    zox_set(scrollbar_front, TextureSize, { scrollbar_size })
-    zox_set(scrollbar_front, DraggableLimits, { (int2) { 0, (window_size.y / 2) - scrollbar_height / 2 } })
-    zox_set(scrollbar_front, PixelPosition, { (int2) { 0, (window_size.y - scrollbar_height) / 2 } })
-    on_resized_element(world, scrollbar_front, scrollbar_size, int2_to_float2(canvas_size));
+    resize_window_scrollbar(children, window_size, canvas_size, elements_visible, labels_count);
     // refresh elements
     const int childrens_length = list_start + labels_count;
-    for (int j = list_start; j < children->length; j++) zox_delete(children->value[j]) // destroy previous
+    // destroy previous ones
+    for (int j = list_start; j < children->length; j++) zox_delete(children->value[j])
+    // set new elements size
     resize_memory_component(Children, children, ecs_entity_t, childrens_length)
     for (int j = 0; j < labels_count; j++) {
         unsigned char render_disabled = !(j >= 0 && j < elements_visible);
-        int2 label_position = (int2) { 0, (int) (window_size.y / 2) - (j + 0.5f) * (font_size + button_padding.y * 2) - list_margins.y - j * button_inner_margins };
-        if (is_scrollbar) label_position.x -= (scrollbar_width + scrollbar_margins * 2) / 2;
+        int2 label_position = get_element_label_position(j, font_size, button_padding, button_inner_margins, window_size, list_margins, is_scrollbar, scrollbar_width, scrollbar_margins);
         const ecs_entity_t list_element = spawn_button(world, window_entity, canvas, label_position, button_padding, float2_half, labels->data[j].text, font_size, button_layer, window_pixel_position_global, window_size, canvas_size, render_disabled);
         zox_set(list_element, ClickEvent, { click_event.value })
         zox_set(list_element, EntityTarget, { entities->data[j] })
@@ -151,7 +146,7 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
     const unsigned char list_start = is_header + is_scrollbar;
     zox_iter_world()
     zox_field_in(Position2D, position2Ds, 2)
-    zox_field_in(CanvasPixelPosition, canvasPixelPositions, 3)
+    zox_field_in(CanvasPosition, canvasPositions, 3)
     zox_field_in(Layer2D, layer2Ds, 4)
     zox_field_in(Anchor, anchors, 5)
     zox_field_in(ListUIMax, listUIMaxs, 6)
@@ -173,7 +168,7 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         if (!scrollbar) continue; // no scrollbar
         const ecs_entity_t header = children->value[0];
         zox_field_i_in(Position2D, position2Ds, position2D)
-        zox_field_i_in(CanvasPixelPosition, canvasPixelPositions, canvasPixelPosition)
+        zox_field_i_in(CanvasPosition, canvasPositions, canvasPosition)
         zox_field_i_in(Layer2D, layer2Ds, layer2D)
         zox_field_i_in(Anchor, anchors, anchor)
         zox_field_i_in(ListUIMax, listUIMaxs, listUIMax)
@@ -187,15 +182,16 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         const int elements_visible = listUIMax->value;
         const int font_size = elementFontSize->value * default_ui_scale;
         const unsigned char button_layer = layer2D->value + 1;
-        const int2 button_padding = (int2) { (int) (font_size * 0.46f), (int) (font_size * 0.3f) };
-        const int2 list_margins = (int2) { (int) (font_size * 0.8f), (int) (font_size * 0.8f) };
-        const int button_inner_margins = (int) (font_size * 0.5f);
         const int scrollbar_margins = zox_gett_value(scrollbar, ElementMargins).x;
         const int scrollbar_width = zox_gett_value(scrollbar, PixelSize).x;
         const ClickEvent click_event = (ClickEvent) { &button_event_clicked_hierarchy };
+            // todo: put these inside a element style
+            const int2 button_padding = (int2) { (int) (font_size * 0.46f), (int) (font_size * 0.3f) };
+            const int2 list_margins = (int2) { (int) (font_size * 0.8f), (int) (font_size * 0.8f) };
+            const int button_inner_margins = (int) (font_size * 0.5f);
         // add game entities
-        ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d(64);
-        text_group_dynamic_array_d* labels = create_text_group_dynamic_array_d(64);
+        ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d(32);
+        text_group_dynamic_array_d* labels = create_text_group_dynamic_array_d(32);
         add_realm_entity_to_labels(world, local_realm, labels, entities, 0);
         add_entity_to_labels(world, local_music, labels, entities, 0);
         add_entity_to_labels(world, main_cameras[0], labels, entities, 0);
@@ -209,14 +205,17 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         add_entity_to_labels(world, local_terrain, labels, entities, 0);
         add_entity_children_to_labels(world, canvas, labels, entities, 0);
         // resize window
-        int labels_count =labels->size;
+        int labels_count = labels->size;
         // first pass, limit it, some reason flecs table glitches here
 #ifdef zox_glitch_fix_hierarchy_labels
-        if (children->length == 2) labels_count = int_min(max_hierarchy_labels, labels_count);
+        if (is_first_hierarchy_spawn) { // children->length == 2
+            is_first_hierarchy_spawn = 0;
+            labels_count = int_min(max_hierarchy_labels, labels_count);
+        }
 #endif
         const int max_characters = get_max_characters_d("hierarchy", labels);
         const float2 window_position = position2D->value;
-        const int2 window_pixel_position_global = canvasPixelPosition->value;
+        const int2 window_pixel_position_global = canvasPosition->value;
         const int2 old_window_size = pixelSize->value;
         // this resizes the window based on size_x (characters) todo: window resizeable - x/y - variable
         int2 new_window_size = { (font_size) * max_characters + button_padding.x * 2 + list_margins.x * 2, old_window_size.y };

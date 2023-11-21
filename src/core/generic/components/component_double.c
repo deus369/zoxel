@@ -6,4 +6,4 @@ component_id_list(double)
 zox_define_component(name)\
 add_to_ecs_entity_t_array_d(component_ids_double, ecs_id(name));
 
-#define zox_component_string_double(component) " d [%lf]", component->value
+#define zox_component_string_double(component) " d [%.2lf]", component->value

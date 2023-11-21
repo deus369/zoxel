@@ -5,6 +5,8 @@
 // \todo Change colour when ray hits a button
 
 // zoxel_settings
+#define zox_pipelines_zext_textures EcsOnUpdate // EcsOnUpdate | EcsPostUpdate
+#define zox_pipelines_zext_backgrounds EcsPreStore // EcsPostUpdate
 const double zext_animation_speed = 10.0;
 // zoxel_component_defines
 zox_declare_tag(FontStyle)
@@ -33,8 +35,9 @@ zox_memory_component(ZextData, unsigned char)   // zigel indexes
 // zoxel_system_declares
 #include "systems/font_texture_system.c"
 #include "systems/zext_update_system.c"
-#include "systems/zext_background_update_system.c"
 #include "systems/animate_text_system.c"
+#include "systems/zext_background_system.c"
+#include "systems/zext_parent_background_system.c"
 
 int get_zigels_count(ecs_world_t *world) {
     return zox_count_entities(world, ecs_id(Zigel));
@@ -71,11 +74,11 @@ zox_define_memory_component(ZextData)
 zox_filter(zexts, [none] Zext, [in] ZextDirty)
 zox_filter(fonts, [none] FontTexture, [out] GenerateTexture)
 // zoxel_system_defines
-zox_system(AnimateTextSystem, EcsOnUpdate, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
-zox_system_ctx(FontTextureSystem, EcsPostUpdate, fonts, [none] FontTexture, [out] TextureDirty, [out] TextureData, [in] TextureSize, [out] GenerateTexture, [in] ZigelIndex, [in] Color)
-if (!headless) zox_system(ZextBackgroundUpdateSystem, EcsPostUpdate, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] MeshAlignment, [in] CanvasLink, [out] PixelSize, [out] TextureSize, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshDirty)
-if (!headless) zox_system(ZextBackgroundUpdateSystem2, EcsPostUpdate, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] MeshAlignment, [in] CanvasLink, [in] ParentLink)
-zox_system_ctx_1(ZextUpdateSystem, main_thread_pipeline, zexts, [none] Zext, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] CanvasPixelPosition, [in] PixelSize, [in] MeshAlignment, [in] RenderDisabled, [out] ZextDirty, [out] Children)
+zox_system(AnimateTextSystem, zox_pipelines_zext_textures, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
+zox_system_ctx(FontTextureSystem, zox_pipelines_zext_textures, fonts, [none] FontTexture, [out] TextureDirty, [out] TextureData, [in] TextureSize, [out] GenerateTexture, [in] ZigelIndex, [in] Color)
+if (!headless) zox_system(ZextBackgroundSystem, zox_pipelines_zext_backgrounds, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] MeshAlignment, [in] CanvasLink, [out] PixelSize, [out] TextureSize, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshDirty)
+if (!headless) zox_system(ZextParentBackgroundSystem, zox_pipelines_zext_backgrounds, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] MeshAlignment, [in] CanvasLink, [in] ParentLink)
+zox_system_ctx_1(ZextUpdateSystem, main_thread_pipeline, zexts, [none] Zext, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] CanvasPosition, [in] PixelSize, [in] MeshAlignment, [in] RenderDisabled, [out] ZextDirty, [out] Children)
 zoxel_end_module(Texts)
 
 #endif

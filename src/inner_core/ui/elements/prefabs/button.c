@@ -28,11 +28,6 @@ ecs_entity_t spawn_button(ecs_world_t *world, const ecs_entity_t parent, const e
     const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     const float2 position2D = get_element_position(pixel_position_global, canvas_size);
     initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, anchor, layer, position2D, pixel_position_global);
-    /*zox_log("   > button %lu\n", e)
-    zox_log("       > pix pos [%ix%i]\n", pixel_position.x, pixel_position.y)
-    zox_log("       > anchor [%fx%f]\n", anchor.x, anchor.y)
-    zox_log("       > pix pos global [%ix%i]\n", pixel_position_global.x, pixel_position_global.y)
-    zox_log("       > position2D [%fx%f]\n", position2D.x, position2D.y)*/
     const ecs_entity_t zext = spawn_zext(world, zext_prefab, e, canvas, int2_zero, float2_half, int2_to_byte2(padding), text, font_size, 0, zext_layer, pixel_position_global, zext_size, render_disabled);
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, 1)
@@ -67,3 +62,9 @@ ecs_entity_t spawn_button_on_canvas(ecs_world_t *world, const ecs_entity_t canva
 #endif
     return e;
 }
+
+    /*zox_log("   > button %lu\n", e)
+    zox_log("       > pix pos [%ix%i]\n", pixel_position.x, pixel_position.y)
+    zox_log("       > anchor [%fx%f]\n", anchor.x, anchor.y)
+    zox_log("       > pix pos global [%ix%i]\n", pixel_position_global.x, pixel_position_global.y)
+    zox_log("       > position2D [%fx%f]\n", position2D.x, position2D.y)*/

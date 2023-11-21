@@ -27,7 +27,7 @@ ecs_entity_t spawn_prefab_statbar3D(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_prefab_statbar3D_front(ecs_world_t *world) {
-    color bar_color = (color) { 188, 25, 25, 255 };
+    const color bar_color = (color) { 188, 25, 25, 255 };
     zox_prefab_child(prefab_element_world_child)
     zox_prefab_name("prefab_statbar3D_front")
     zox_add_tag(e, FillTexture)
@@ -65,7 +65,6 @@ ecs_entity_t spawn_statbar3D(ecs_world_t *world, ecs_entity_t ui_holder, float p
     zox_set(e, CanvasLink, { main_canvas })
     zox_set(e, ElementBar, { percentage })
     zox_set(e, ElementBarSize, { statbar_front_mesh_scale })
-    // spawn child, percentage overlay
     Children *children = ecs_get_mut(world, e, Children);
     resize_memory_component(Children, children, ecs_entity_t, 1)
     children->value[0] = spawn_statbar3D_front(world, ui_holder, e, (float3) { 0, 0, depth_difference });

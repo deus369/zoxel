@@ -3,14 +3,15 @@ ecs_entity_t zext_prefab;
 ecs_entity_t spawn_zext_prefab(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("zext_prefab")
-    add_transform2Ds(world, e);
     add_ui_plus_components_invisible(world, e);
     zox_add_tag(e, Zext)
     zox_prefab_set(e, ZextSize, { 0 })
     zox_prefab_set(e, ZextPadding, { byte2_zero })
     zox_prefab_set(e, ZextDirty, { 0 })
     zox_prefab_set(e, ZextData, { 0, NULL })
+    zox_prefab_set(e, ParentLink, { 0 })
     zox_prefab_set(e, Children, { 0, NULL })
+// [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] MeshAlignment, [in] CanvasLink, [in] ParentLink
     zext_prefab = e;
 #ifdef zoxel_debug_prefabs
     zox_log(" > spawn_prefab zext [%lu]\n", e)

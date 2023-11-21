@@ -4,7 +4,7 @@ void add_ui_components(ecs_world_t *world, ecs_entity_t e) {
     zox_prefab_set(e, RenderDisabled, { 0 })
     zox_prefab_set(e, PixelPosition, { int2_zero })
     zox_prefab_set(e, PixelSize, { int2_zero })
-    zox_prefab_set(e, CanvasPixelPosition, { int2_zero })
+    zox_prefab_set(e, CanvasPosition, { int2_zero })
     zox_prefab_set(e, Anchor, { { 0 } })
     zox_prefab_set(e, CanvasLink, { 0 })
     zox_prefab_set(e, Layer2D, { 0 })

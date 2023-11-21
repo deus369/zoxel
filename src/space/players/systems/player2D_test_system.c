@@ -97,12 +97,12 @@ void Player2DTestSystem(ecs_iter_t *it) {
     for (int i = 0; i < children->length; i++) {
         const Position2D *position2D = zox_get(world, children->value[i], Position2D);
         const ZigelIndex *zigelIndex = zox_get(world, children->value[i], ZigelIndex);
-        const CanvasPixelPosition *canvasPixelPosition = zox_get(world, children->value[i], CanvasPixelPosition);
+        const CanvasPosition *canvasPosition = zox_get(world, children->value[i], CanvasPosition);
         const ParentLink *parentLink = zox_get(world, children->value[i], ParentLink);
         const TextureSize *textureSize = zox_get(world, children->value[i], TextureSize);
         const TextureData *textureData = zox_get(world, children->value[i], TextureData);
-        zoxel_log("    [%i] is [%fx%f] - zigelIndex [%i] - canvasPixelPosition [%ix%i] - parentLink [%lu] - textureData [%ix%i:%i]\n",
-            i, position2D->value.x, position2D->value.y, zigelIndex->value, canvasPixelPosition->value.x, canvasPixelPosition->value.y,
+        zoxel_log("    [%i] is [%fx%f] - zigelIndex [%i] - canvasPosition [%ix%i] - parentLink [%lu] - textureData [%ix%i:%i]\n",
+            i, position2D->value.x, position2D->value.y, zigelIndex->value, canvasPosition->value.x, canvasPosition->value.y,
             (long int) parentLink->value, textureSize->value.x, textureSize->value.y, textureData->length);
         zox_set(children->value[i], GenerateTexture, { 1 });
         zox_set(children->value[i], MeshDirty, { 1 });

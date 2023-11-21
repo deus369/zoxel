@@ -19,10 +19,10 @@ void set_element_position(ecs_world_t *world, ecs_entity_t e, int2 parent_pixel_
         position2D->value = position;
         zox_modified(e, Position2D)
     }
-    if (zox_has(e, CanvasPixelPosition)) {
-        CanvasPixelPosition *canvasPixelPosition = zox_get_mut(e, CanvasPixelPosition)
-        canvasPixelPosition->value = pixel_position_global;
-        zox_modified(e, CanvasPixelPosition)
+    if (zox_has(e, CanvasPosition)) {
+        CanvasPosition *canvasPosition = zox_get_mut(e, CanvasPosition)
+        canvasPosition->value = pixel_position_global;
+        zox_modified(e, CanvasPosition)
     }
     set_line_element_real_position2D(world, e, position, canvas_size, pixel_position);
     if (zox_has(e, Children)) {
@@ -46,7 +46,7 @@ void ElementPositionSystem(ecs_iter_t *it) {
     const Anchor *anchors = ecs_field(it, Anchor, 4);
     const CanvasLink *canvasLinks = ecs_field(it, CanvasLink, 5);
     Position2D *position2Ds = ecs_field(it, Position2D, 6);
-    CanvasPixelPosition *canvasPixelPositions = ecs_field(it, CanvasPixelPosition, 7);
+    CanvasPosition *canvasPositions = ecs_field(it, CanvasPosition, 7);
     for (int i = 0; i < it->count; i++) {
         ecs_entity_t e = it->entities[i];
         const PixelPosition *pixelPosition = &pixelPositions[i];
@@ -56,12 +56,12 @@ void ElementPositionSystem(ecs_iter_t *it) {
         if (!ecs_is_valid(world, canvasLink->value) || parentLink->value != canvasLink->value) continue;
         const int2 canvas_size = zox_get_value(canvasLink->value, PixelSize)
         Position2D *position2D = &position2Ds[i];
-        CanvasPixelPosition *canvasPixelPosition = &canvasPixelPositions[i];
+        CanvasPosition *canvasPosition = &canvasPositions[i];
         int2 pixel_position = pixelPosition->value;
         float2 anchor2 = anchor->value;
         int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor2);
         float2 position = get_element_position(pixel_position_global, canvas_size);
-        canvasPixelPosition->value = pixel_position_global;
+        canvasPosition->value = pixel_position_global;
         position2D->value = position;
         if (zox_has(e, Children)) {
             int2 pixel_size = zox_get_value(e, PixelSize)
@@ -99,10 +99,10 @@ void ElementPositionSystem(ecs_iter_t *it) {
         position2D->value = real_position2D;
         zox_modified(e, Position2D)
     }
-    if (zox_has(e, CanvasPixelPosition)) {
-        CanvasPixelPosition *canvasPixelPosition = ecs_get_mut(world, e, CanvasPixelPosition);
-        canvasPixelPosition->value = (int2) { ceil((real_position2D.x / aspect_ratio + 0.5f) * canvas_size_f.x), ((real_position2D.y + 0.5f) * canvas_size_f.y) };
-        zox_modified(e, CanvasPixelPosition)
+    if (zox_has(e, CanvasPosition)) {
+        CanvasPosition *canvasPosition = ecs_get_mut(world, e, CanvasPosition);
+        canvasPosition->value = (int2) { ceil((real_position2D.x / aspect_ratio + 0.5f) * canvas_size_f.x), ((real_position2D.y + 0.5f) * canvas_size_f.y) };
+        zox_modified(e, CanvasPosition)
     }
     set_line_element_real_position2D(world, e, real_position2D, canvas_size_f, aspect_ratio, pixel_position);
     if (zox_has(e, Children)) {
