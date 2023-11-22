@@ -16,30 +16,30 @@ void MeshUpdateCharacters3DSystem(ecs_iter_t *it) {
         // if (meshColors2->length != meshVertices2->length) continue;
         MeshGPULink *meshGPULink = &meshGPULinks[i];
         ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
-        #ifndef zox_characters_as_cubes
-            if (meshIndicies2->length == 0) {
-                // clear mesh and colors buffer if zero again
+#ifndef zox_characters_as_cubes
+        if (meshIndicies2->length == 0) {
+            // clear mesh and colors buffer if zero again
+            // zoxel_log(" + mesh gpu deleted [%ix%i:%i] -> indicies [%i]\n", meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value, meshIndicies2->length);
+            if (meshGPULink->value.x != 0 && meshGPULink->value.y != 0 && colorsGPULink->value != 0) {
                 // zoxel_log(" + mesh gpu deleted [%ix%i:%i] -> indicies [%i]\n", meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value, meshIndicies2->length);
-                if (meshGPULink->value.x != 0 && meshGPULink->value.y != 0 && colorsGPULink->value != 0) {
-                    // zoxel_log(" + mesh gpu deleted [%ix%i:%i] -> indicies [%i]\n", meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value, meshIndicies2->length);
-                    clear_regular_buffer(&meshGPULink->value.x);
-                    clear_regular_buffer(&meshGPULink->value.y);
-                    clear_regular_buffer(&colorsGPULink->value);
-                    // zoxel_log(" + mesh gpu deleted 2 [%ix%i:%i] -> indicies [%i]\n", meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value, meshIndicies2->length);
-                }
-                continue;
+                clear_regular_buffer(&meshGPULink->value.x);
+                clear_regular_buffer(&meshGPULink->value.y);
+                clear_regular_buffer(&colorsGPULink->value);
+                // zoxel_log(" + mesh gpu deleted 2 [%ix%i:%i] -> indicies [%i]\n", meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value, meshIndicies2->length);
             }
-            if (meshGPULink->value.x == 0 && meshGPULink->value.y == 0 && colorsGPULink->value == 0) {
-                // meshGPULink->value = spawn_gpu_mesh_buffers();
-                meshGPULink->value.x = spawn_gpu_generic_buffer();
-                meshGPULink->value.y = spawn_gpu_generic_buffer();
-                colorsGPULink->value = spawn_gpu_generic_buffer();
-                // zoxel_log("  > character did not have gpu mesh buffers\n");
-            }
-        #endif
+            continue;
+        }
+        if (meshGPULink->value.x == 0 && meshGPULink->value.y == 0 && colorsGPULink->value == 0) {
+            // meshGPULink->value = spawn_gpu_mesh_buffers();
+            meshGPULink->value.x = spawn_gpu_generic_buffer();
+            meshGPULink->value.y = spawn_gpu_generic_buffer();
+            colorsGPULink->value = spawn_gpu_generic_buffer();
+            // zoxel_log("  > character did not have gpu mesh buffers\n");
+        }
+#endif
         opengl_upload_mesh_colors(meshGPULink->value, colorsGPULink->value, meshIndicies2->value, meshIndicies2->length, meshVertices2->value, meshColors2->value, meshVertices2->length);
-        #ifdef zox_errorcheck_render_characters_3D
-            zoxel_log(" + character mesh gpu uploaded [%ix%i:%i] -> indicies [%i]\n", meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value, meshIndicies2->length);
-        #endif
+#ifdef zox_errorcheck_render_characters_3D
+        zoxel_log(" + character mesh gpu uploaded [%ix%i:%i] -> indicies [%i]\n", meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value, meshIndicies2->length);
+#endif
     }
 } zox_declare_system(MeshUpdateCharacters3DSystem)

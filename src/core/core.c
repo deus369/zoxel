@@ -26,7 +26,9 @@ void spawn_prefabs_core(ecs_world_t *world) {
     spawn_prefabs_generic(world);
     spawn_prefabs_files(world);
     spawn_prefabs_terminals(world);
+#ifndef zox_disable_module_networking
     spawn_prefabs_networking(world);
+#endif
     spawn_prefabs_inputs(world);
     if (!headless) spawn_prefabs_apps(world); // sdl
     spawn_prefabs_rendering(world);
@@ -53,7 +55,9 @@ zox_import_module(Timing)
 zox_import_module(Transforms)
 zox_import_module(Files)
 zox_import_module(Terminals)
+#ifndef zox_disable_module_networking
 zox_import_module(Networking)
+#endif
 zox_import_module(Inputs)
 if (!headless) zox_import_module(Apps) // sdl
 zox_import_module(Rendering)

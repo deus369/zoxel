@@ -242,7 +242,9 @@ $(target_web): $(SRCS)
 
 # Runs zoxel web release build
 run-web:
-	cd build && ~/projects/emsdk/upstream/emscripten/emrun --browser firefox zoxel.html
+	cd build && ~/projects/emsdk/upstream/emscripten/emrun zoxel.html
+
+# cd build && ~/projects/emsdk/upstream/emscripten/emrun --browser firefox zoxel.html
 
 # updates the zoxel-play project
 update-web:

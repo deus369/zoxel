@@ -34,7 +34,7 @@ void set_selectable_state_mut(ecs_world_t *world, ecs_entity_t ui_entity, unsign
 
 void raycaster_select_ui(ecs_world_t *world, RaycasterTarget *raycasterTarget, ecs_entity_t ui_entity) {
     if (raycasterTarget->value != ui_entity) {
-        if (raycasterTarget->value != 0) set_selectable_state_mut(world, raycasterTarget->value, 0);
+        if (raycasterTarget->value && ecs_is_alive(world, raycasterTarget->value)) set_selectable_state_mut(world, raycasterTarget->value, 0);
         raycasterTarget->value = ui_entity;
         // zoxel_log(" > raycaster_select_ui : selecting [%lu] from [%lu]\n", ui, raycasterTarget->value);
         /*if (raycasterTarget->value != 0) zox_set(raycasterTarget->value, SelectState, { 0 })

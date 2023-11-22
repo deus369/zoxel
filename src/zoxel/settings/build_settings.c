@@ -5,35 +5,18 @@
 #define zox_entity_names
 // #define zoxel_has_random_jumping
 #define zoxel_start_with_debug_ui
-// #define zox_disable_io
 
 // fixes
 #define zox_glitch_fix_hierarchy_labels
 
-#define zox_disable_gamepad_stick_as_any_input // used for samsung phone, it's buggy af
-#define zox_disable_gamepad_deadzones
-// #define zoxel_disable_gamepads
-
-// #define zox_disable_characters3D        // disables npcs
-// #define zoxel_disable_music
-// #define zox_extra_destroy_terrain_children
-// this seems to create more triangles and not dispose them properly
-// #define zox_disable_terrain_streaming
-// #define zox_disable_chunk_linking
-// #define zox_disable_player_character3D  // disables player character
-// #define zox_disable_statbars
-
-// #define zox_disable_set_vox
 // module includes
 // #define zoxel_include_vulkan
 #define zoxel_include_players
 #define zox_on_startup_spawn_main_menu
 #define zox_on_play_spawn_terrain
 // #define zox_bulk_spawn_terrain
-// #define zox_disable_set_vox
 
 // settings
-// #define zox_disable_mouse_constraint
 #define zox_set_camera_firstperson
 // #define zox_set_camera_thirdperson
 // #define zox_set_camera_ortho
@@ -44,23 +27,10 @@
 // #define zoxel_mouse_emulate_touch
 // #define zoxel_test_networking
 
-// #define zoxel_catch_opengl_errors
-// #define zox_disable_render_terrain_chunks
-// #define zox_disable_render_ui_3D
-// #define zox_disable_render_characters
-// #define zox_disable_render_ui
-
 // #define zox_characters_as_cubes
 
 // temp for pc with shitty gpu issues
 // #define zox_log_jumping
-
-// === Disables ===
-
-// #define zox_disable_logs
-// #define zox_disable_skybox
-// #define zox_disable_terrain
-// #define zox_disable_characters3D_voxes
 
 // === Debugs ===
 
@@ -164,40 +134,21 @@
 // #define zoxel_test_cubes             // Failing atm, gl error at opengl_render
 // #define zoxel_test_cubes_textured    // wip
 // #define zoxel_test_uis
-// -- disables --
-// #define disable_voxel_left
-// #define disable_voxel_right
-// #define disable_voxel_back
-// #define disable_voxel_front
-// #define disable_voxel_down
-// voxels
-// #define zox_disable_terrain_octrees  // disables octrees, uses arrays
-// #define zox_disable_closing_octree_nodes
-// #define zoxel_disable_close_nodes
-// #define zox_disable_hidden_terrain_edge        // hides faces on edge of map
-// #define zox_disable_voxels_dynamic_array      // used in mesh generation
-// #define zoxel_voxel_disable_distance_division
-// #define voxels_use_octree_pooling
 // -- zoxel game --
-// #define zox_disable_terrain_grid
 // #define zoxel_voxes_color_randomize
 // #define zoxel_debug_vox_read
 // #define zoxel_is_flat_height
 // Fixed color shader gpu things and systems
 // #define zoxel_log_characters_count
 // #define zoxel_log_files
-// #define zoxel_disable_velocity       // disables all movement, used to debug spawning
 // #define zoxel_spawn_character3Ds         // spawn x penguins
 // player testing
 // #define zoxel_debug_basic_collision3D_system
 // #define zoxel_tests_rotate_by_keys
-// #define zoxel_disable_non_vertical_bounce
 // #define zoxel_inputs_debug_gamepad
 // #define zoxel_inputs_debug_gamepad_sos
 // test settings
-// #define zox_disable_fog      // todo: make work
 // #define zox_terrain_preset_large
-// #define zox_disable_vox_octrees
 // #define zox_test_voxel_mesh
 // #define zoxel_debug_bounds          // renders a bounding box rotated for characters (by default)
 // #define zoxel_debug_transforms      // renders an axis for movement of characters

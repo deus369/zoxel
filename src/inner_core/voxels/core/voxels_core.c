@@ -58,7 +58,7 @@ zox_define_entities_component(VoxelLinks)
 zox_filter(chunks_generating, [in] GenerateChunk)
 // zoxel_system_defines
 if (!headless) zox_system_ctx(ChunkOctreeColorsBuildSystem, zox_pipeline_build_voxel_mesh, chunks_generating, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] ColorRGBs, [in] ChunkSize, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] ColorChunk)
-zox_system(ChunkLinkSystem, EcsPostUpdate, [none] LinkChunk, [in] VoxLink, [in] Position3D, [out] ChunkPosition, [out] ChunkLink)
+zox_system(ChunkLinkSystem, EcsOnUpdate, [none] LinkChunk, [in] VoxLink, [in] Position3D, [out] ChunkPosition, [out] ChunkLink) // EcsPostUpdate
 zoxel_end_module(VoxelsCore)
 
 #endif

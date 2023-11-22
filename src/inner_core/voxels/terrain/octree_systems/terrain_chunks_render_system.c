@@ -2,15 +2,15 @@
 // later store commands per material to optimize this process
 
 void TerrainChunksRenderSystem(ecs_iter_t *it) {
-    #ifdef zoxel_time_render_3d_uvs
-        begin_timing_absolute()
-    #endif
-    #ifdef zoxel_render3D_uvs_system_overdebug
-        check_opengl_error("[pre render3D_uvs_system Error]");
-        GLint memory_used, memory_total;
-        glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &memory_used);
-        glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &memory_total);
-    #endif
+#ifdef zoxel_time_render_3d_uvs
+    begin_timing_absolute()
+#endif
+#ifdef zoxel_render3D_uvs_system_overdebug
+    check_opengl_error("[pre render3D_uvs_system Error]");
+    GLint memory_used, memory_total;
+    glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &memory_used);
+    glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &memory_total);
+#endif
     zox_iter_world()
     const Textured3DAttributes *attributes_textured3D = get_textured3D_material_attributes(world);
     int rendered_count = 0;
@@ -29,9 +29,9 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
     const TextureGPULink *textureGPULink;
     for (int i = 0; i < it->count; i++) {
         const MeshIndicies *meshIndicies2 = &meshIndicies[i];
-        if (meshIndicies2->length == 0) continue;
+        if (!meshIndicies2->length) continue;
         const MeshGPULink *meshGPULink = &meshGPULinks[i];
-        if (meshGPULink->value.x == 0) continue;
+        if (!meshGPULink->value.x) continue;
         const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
         const ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
         const Position3D *position3D = &positions[i];
@@ -41,12 +41,12 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         const VoxLink *voxLink = &voxLinks[i];
         if (vox_entity != voxLink->value) {
             vox_entity = voxLink->value;
-            const TilemapLink *tilemapLink = ecs_get(world, voxLink->value, TilemapLink);
-            materialGPULink = ecs_get(world, tilemapLink->value, MaterialGPULink);
-            if (materialGPULink->value == 0) break;
-            textureGPULink = ecs_get(world, tilemapLink->value, TextureGPULink);
+            const TilemapLink *tilemapLink = zox_get(voxLink->value, TilemapLink)
+            materialGPULink = zox_get(tilemapLink->value, MaterialGPULink)
+            if (!materialGPULink->value) continue;
+            textureGPULink = zox_get(tilemapLink->value, TextureGPULink)
             // if (textureGPULink->value == 0) zoxel_log("tilemap has no texture\n");
-            if (textureGPULink->value == 0) break;
+            if (!textureGPULink->value) continue;
         }
         if (!has_set_material) {
             has_set_material = 1;
@@ -65,15 +65,15 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         opengl_enable_vertex_buffer(attributes_textured3D->vertex_position, meshGPULink->value.y);
         opengl_enable_uv_buffer(attributes_textured3D->vertex_uv, uvsGPULink->value);
         opengl_enable_color_buffer(attributes_textured3D->vertex_color, colorsGPULink->value);
-        #ifndef zox_disable_render_terrain_chunks
-            opengl_render(meshIndicies2->length);
-        #endif
-        #ifdef zoxel_catch_opengl_errors
-            if (check_opengl_error_unlogged() != 0) {
-                zoxel_log(" > could not render terrain [%i]: indicies [%i] - [%ix%i:%i]\n", rendered_count, meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value);
-                break;
-            }
-        #endif
+#ifndef zox_disable_render_terrain_chunks
+        opengl_render(meshIndicies2->length);
+#endif
+#ifdef zoxel_catch_opengl_errors
+        if (check_opengl_error_unlogged() != 0) {
+            zoxel_log(" > could not render terrain [%i]: indicies [%i] - [%ix%i:%i]\n", rendered_count, meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value);
+            break;
+        }
+#endif
         rendered_count++;
     }
     if (has_set_material) {
@@ -84,12 +84,12 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         opengl_disable_texture(false);
         opengl_disable_opengl_program();
     }
-    #ifdef zoxel_render3D_uvs_system_overdebug
-        check_opengl_error("[render3D_uvs_system Error]");
-    #endif
-    #ifdef zoxel_time_render_3d_uvs
-        end_timing("TerrainChunksRenderSystem")
-    #endif
+#ifdef zoxel_render3D_uvs_system_overdebug
+    check_opengl_error("[render3D_uvs_system Error]");
+#endif
+#ifdef zoxel_time_render_3d_uvs
+    end_timing("TerrainChunksRenderSystem")
+#endif
     // if (rendered_count > 0) zoxel_log(" > rendered chunks [%i]\n", rendered_count);
 } zox_declare_system(TerrainChunksRenderSystem)
 

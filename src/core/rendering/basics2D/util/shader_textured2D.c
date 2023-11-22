@@ -39,9 +39,9 @@ void dispose_shader2D_textured() {
     glDeleteShader(shader2D_textured.x);
     glDeleteShader(shader2D_textured.y);
     glDeleteProgram(textured2D_material);
-    #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("dispose_shader2D_textured");
-    #endif
+#ifdef zoxel_catch_opengl_errors
+    check_opengl_error("dispose_shader2D_textured");
+#endif
 }
 
 void initialize_shader2D_textured(GLuint material) {
@@ -54,9 +54,9 @@ void initialize_shader2D_textured(GLuint material) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(squareTexturedVerts), squareTexturedVerts, GL_STATIC_DRAW); 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("initialize_shader2D_textured");
-    #endif
+#ifdef zoxel_catch_opengl_errors
+    check_opengl_error("initialize_shader2D_textured");
+#endif
 }
 
 int load_shader2D_textured() {
@@ -76,11 +76,11 @@ void opengl_upload_shader2D_textured(GLuint2 mesh_buffer, GLuint uv_buffer, cons
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
     glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float2), uvs, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    #ifdef zoxel_catch_opengl_errors
-        if (check_opengl_error("opengl_upload_shader2D_textured")) {
-            zoxel_log("     > [%ix%i:%i]\n", mesh_buffer.x, mesh_buffer.y, uv_buffer);
-        }
-    #endif
+#ifdef zoxel_catch_opengl_errors
+    if (check_opengl_error("opengl_upload_shader2D_textured")) {
+        zoxel_log("     > [%ix%i:%i]\n", mesh_buffer.x, mesh_buffer.y, uv_buffer);
+    }
+#endif
 }
 
 void opengl_set_buffer_attributes2D(GLuint vertex_buffer, GLuint uv_buffer) {

@@ -1,7 +1,7 @@
 void MusicPlaySystem(ecs_iter_t *it) {
-    #ifdef zoxel_disable_music
-        return;
-    #endif
+#ifdef zox_disable_music
+    return;
+#endif
     double delta_time = zox_delta_time;
     const double music_speed = 2.0;
     zox_iter_world()

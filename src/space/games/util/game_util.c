@@ -7,6 +7,7 @@ unsigned char game_rule_attach_to_character = 1;
 // do I still need render_camera_matrix? - yes - used to insert matrix in each camera system run
 ecs_entity_t game_ui = 0;
 ecs_entity_t actionbar_ui = 0;
+const char *game_name = "zoxel";
 
 void dispose_in_game_ui_touch(ecs_world_t *world) {
     if (game_ui) {
@@ -58,46 +59,48 @@ void spawn_in_game_ui(ecs_world_t *world) {    // spawn game uis
 }
 
 void end_game(ecs_world_t *world) {
+    // zox_logg("  > ending game\n")
     zox_delete(pause_ui)
+    pause_ui = 0;
+    dispose_in_game_ui(world);
+    zox_set(local_game, GameState, { zoxel_game_state_main_menu })
+    disable_inputs_until_release(world, main_player);
+    float2 main_menu_anchor = { 0.5f, 0.5f };
+    int2 main_menu_position = int2_zero;
+    spawn_main_menu(world, game_name, main_menu_position, main_menu_anchor, 0);
     ecs_entity_t main_camera = main_cameras[0]; // get player camera link instead
     ecs_entity_t character = 0;
     if (camera_follow_mode == zox_camera_follow_mode_attach) character = zox_get_value(main_camera, ParentLink)
     else if (camera_follow_mode == zox_camera_follow_mode_follow_xz) character = zox_get_value(main_camera, CameraFollowLink)
     if (character) detatch_from_character(world, main_player, main_camera, local_character3D);
-    // const int edge_buffer = 8 * default_ui_scale;
-    const char *game_name = "zoxel";
-    // float2 window_anchor = { 0.0f, 1.0f };
-    // int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
-    float2 main_menu_anchor = { 0.5f, 0.5f };
-    int2 main_menu_position = int2_zero;
-    spawn_main_menu(world, game_name, main_menu_position, main_menu_anchor, 0);
-    zox_set(local_game, GameState, { zoxel_game_state_main_menu })
     set_sky_color(world, menu_sky_color, menu_sky_bottom_color);
     float3 camera_position = float3_zero;
     float4 camera_rotation = quaternion_identity;
     get_camera_start_transform(&camera_position, &camera_rotation);
     zox_set(main_camera, Position3D, { camera_position })
     zox_set(main_camera, Rotation3D, { camera_rotation })
-    disable_inputs_until_release(world, main_player);
-    dispose_in_game_ui(world);
+    local_character3D = 0;
 #ifdef zox_on_play_spawn_terrain
     if (local_terrain) {
         zox_delete(local_terrain)
         local_terrain = 0;
     }
 #endif
-    local_character3D = 0;
+    // zox_logg("  > ending setting game to [main_menu]\n")
 }
 
 void play_game(ecs_world_t *world) {
-    zox_delete(main_menu)   // close main menu
+    // zox_logg("  > playing game\n")
+    if (!local_game) return;
+    if (!main_menu) return;
+    ecs_entity_t main_camera = main_cameras[0]; // get player camera link insteaderas
+    if (main_camera == 0) return;
     zox_set(local_game, GameState, { zoxel_game_state_playing })
-    set_sky_color(world, game_sky_color, game_sky_bottom_color);
+    zox_delete(main_menu)   // close main menu
+    main_menu = 0;
     spawn_in_game_ui(world);
     disable_inputs_until_release(world, main_player);
     int3 center_position = int3_zero;
-    ecs_entity_t main_camera = main_cameras[0]; // get player camera link insteaderas
-    if (main_camera == 0) return;
     const Position3D *camera_position3D = zox_get(main_camera, Position3D)
     if (camera_position3D) center_position = get_chunk_position(camera_position3D->value, default_chunk_size);
     zox_set(main_camera, StreamPoint, { center_position })
@@ -106,11 +109,12 @@ void play_game(ecs_world_t *world) {
         zox_add_only(main_camera, Streamer)
         zox_add_only(main_camera, StreamPoint)
     }
+    set_sky_color(world, game_sky_color, game_sky_bottom_color);
     // somewhere below android on samsung crashes...!
     // try disabling touch inpput to see if helps
-    #ifdef zox_on_play_spawn_terrain
-        create_terrain(world, center_position);
-    #endif
+#ifdef zox_on_play_spawn_terrain
+    create_terrain(world, center_position);
+#endif
     if (local_terrain) {
         zox_set(main_camera, VoxLink, { local_terrain })
         zox_set(local_terrain, RealmLink, { local_realm })
@@ -129,4 +133,9 @@ void play_game(ecs_world_t *world) {
         attach_to_character(world, main_player, main_camera, local_character3D);
     } else attach_to_character(world, main_player, main_camera, 0);
 #endif
+    // zox_logg("  > ending setting game to [playing]\n")
 }
+
+// const int edge_buffer = 8 * default_ui_scale;
+// float2 window_anchor = { 0.0f, 1.0f };
+// int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };

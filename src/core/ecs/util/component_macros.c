@@ -51,6 +51,9 @@ void on_destroyed##_##name(ecs_iter_t *it) {\
     }\
 }
 
+// if (!component->value || !component->value->data) continue;
+// if (!pair->value || ecs_is_alive(world, pair->value))
+
 #define zox_define_hashmap_component2(name, ...)\
 zox_define_component(name)\
 ecs_observer_init(world, &(ecs_observer_desc_t) {\

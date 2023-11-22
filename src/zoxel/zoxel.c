@@ -2,7 +2,7 @@
 #define zoxel_game
 
 #ifdef zoxel_ui
-    #include "util/zoxel_ui.c"
+#include "util/zoxel_ui.c"
 #endif
 #include "util/boot.c"
 

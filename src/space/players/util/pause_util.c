@@ -11,9 +11,6 @@ void toggle_pause_ui(ecs_world_t *world, ecs_entity_t player) {
     }
 #endif
     if (!(gameState->value == zoxel_game_state_playing || gameState->value == zoxel_game_state_paused)) return;
-    // const int edge_buffer = 8 * default_ui_scale;
-    // const float2 window_anchor = { 0, 1 };
-    // const int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
     const float2 window_anchor = float2_half; // { 0.5f, 0.5f };
     const int2 window_position = int2_zero;
     //zoxel_log(" > alive ui? %s\n", ecs_is_alive(world, pause_ui) ? "alive" : "dead");
@@ -39,3 +36,7 @@ void toggle_pause_ui(ecs_world_t *world, ecs_entity_t player) {
         spawn_in_game_ui(world);
     }
 }
+
+// const int edge_buffer = 8 * default_ui_scale;
+// const float2 window_anchor = { 0, 1 };
+// const int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };

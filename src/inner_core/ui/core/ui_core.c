@@ -109,7 +109,7 @@ zox_system(ElementBarSystem, EcsOnUpdate, [in] ElementBar, [in] ElementBarSize, 
 if (!headless) {
     zox_system_1(Element2DMeshSystem, main_thread_pipeline, [none] Element, [in] PixelSize, [in] MeshAlignment, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshGPULink, [out] TextureGPULink, [out] UvsGPULink, [none] !Element3D)
     zox_system_1(Element3DMeshSystem, main_thread_pipeline, [none] Element3D, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture,  [out] MeshGPULink, [out] UvsGPULink, [out] ColorsGPULink, [out] TextureGPULink)
-    zox_system_1(ButtonClickEventSystem, main_thread_pipeline, [none] Element, [out] ClickState, [in] ClickEvent)
+    zox_system_1(ButtonClickEventSystem, main_thread_pipeline, [none] Element, [in] ClickEvent, [out] ClickState)
 }
 zox_system(ResizeElementSystem, 0, [in] CanvasLink, [in] ParentLink)
 zoxel_end_module(UICore)

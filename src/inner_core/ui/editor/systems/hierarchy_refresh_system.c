@@ -15,7 +15,7 @@ void add_entity_to_labels(ecs_world_t *world, ecs_entity_t e, text_group_dynamic
     if (!e) return;
     char *text = malloc(hierarchy_max_line_characters);
     if (!zox_has(e, ZoxName)) {
-        snprintf(text, hierarchy_max_line_characters, "_%lu [%i]", e, tree_level);
+        snprintf(text, hierarchy_max_line_characters, "_%lu [%i]", (long int) e, tree_level);
     } else {
         const ZoxName *zoxName = zox_get(e, ZoxName)
         char *text2 = convert_zext_to_text(zoxName->value, zoxName->length);
@@ -23,7 +23,7 @@ void add_entity_to_labels(ecs_world_t *world, ecs_entity_t e, text_group_dynamic
         free(text2);
         for (int i = 0; i < tree_level; i++) {
             char *temp = strdup(text);
-            snprintf(text, hierarchy_max_line_characters, "-%s", temp);
+            snprintf(text, hierarchy_max_line_characters, "- %s", temp);
             free(temp);
         }
     }

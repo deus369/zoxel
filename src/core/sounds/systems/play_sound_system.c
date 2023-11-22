@@ -1,4 +1,7 @@
 void PlaySoundSystem(ecs_iter_t *it) {
+#ifdef zox_disable_play_sounds
+    return;
+#endif
     int channel_available = Mix_GroupAvailable(-1); // -1 indicates all channels
     if (channel_available == -1) return;
     zox_iter_world()

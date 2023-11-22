@@ -142,10 +142,10 @@ void set_inspector_element(ecs_world_t *world, ecs_entity_t window_entity, ecs_e
             component = id & ECS_COMPONENT_MASK;
             get_component_label(world, e, component, text);
         } else {
-            ecs_entity_t rel = ecs_pair_first(world, id);
-            ecs_entity_t tgt = ecs_pair_second(world, id);
+            ecs_entity_t relation = ecs_pair_first(world, id);
+            ecs_entity_t target = ecs_pair_second(world, id);
             int buffer_index = 0;
-            buffer_index += snprintf(text + buffer_index, sizeof(text), "pair %s [%lu]", ecs_get_name(world, rel), tgt);
+            buffer_index += snprintf(text + buffer_index, sizeof(text), "pair %s [%lu]", ecs_get_name(world, relation), (long int) target);
         }
         const ecs_entity_t list_element = spawn_button(world, window_entity, canvas, label_position, button_padding, float2_half, text, font_size, button_layer, window_pixel_position_global, window_size, canvas_size, render_disabled);
         zox_add_tag(list_element, InspectorLabel)

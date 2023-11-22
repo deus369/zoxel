@@ -172,7 +172,7 @@ ecs_set_hooks(world, name, {\
 //      ECS_COPY Copy one data block to another
 
 
-
+// this removes the character from chunk upon death
 
 #define zox_link_component(name, type, links_name, ...)\
 zox_component(name, type)\
@@ -182,7 +182,7 @@ void on_destroyed##_##name(ecs_iter_t *it) {\
     for (int i = 0; i < it->count; i++) {\
         ecs_entity_t e = it->entities[i];\
         name *component = &components[i];\
-        if (component->value) {\
+        if (component->value && ecs_is_alive(world, component->value)) {\
             links_name *links_component = zox_get_mut(component->value, links_name)\
             remove_from_memory_component(links_component, type, e)\
             zox_modified(component->value, links_name)\

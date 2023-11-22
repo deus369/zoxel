@@ -18,11 +18,11 @@ void main() {\
 
 const GLchar* shader2D_textured_frag_buffer = "\
 #version 300 es\n\
-in lowp vec2 uv;\
-out lowp vec4 color;\
 uniform sampler2D tex;\
 uniform lowp float brightness;\
 uniform lowp float alpha;\
+in lowp vec2 uv;\
+out lowp vec4 color;\
 \
 void main() {\
     color = texture(tex, uv) * brightness;\

@@ -1,6 +1,9 @@
 // #define zox_debug_zevice_states
 // this disables any buttons (zevices) of a device, until they are released, then they get auto re enabled
-void disable_inputs_until_release(ecs_world_t *world, ecs_entity_t player) {
+void disable_inputs_until_release(ecs_world_t *world, const ecs_entity_t player) {
+    if (!player) return;
+    zox_set(player, RaycasterTarget, { 0 })
+    zox_set(player, RaycasterResult, { 0 })
     const DeviceLinks *deviceLinks = zox_get(player, DeviceLinks)
     for (int j = 0; j < deviceLinks->length; j++) {
         ecs_entity_t device_entity = deviceLinks->value[j];

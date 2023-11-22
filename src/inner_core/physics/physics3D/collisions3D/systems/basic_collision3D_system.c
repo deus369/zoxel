@@ -87,6 +87,7 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
 #endif
             const VoxLink *voxLink = &voxLinks[i];
             if (!voxLink->value) continue;
+            if (!ecs_is_alive(world, voxLink->value)) continue; // these shouldn't be here
             const ChunkLinks *chunkLinks = zox_get(voxLink->value, ChunkLinks)
             if (!chunkLinks) continue;
             Velocity3D *velocity3D = &velocity3Ds[i];
