@@ -1,16 +1,16 @@
 void print_opengl() {
-    #ifdef zoxel_debug_opengl
-        zoxel_log(" > opengl\n");
-        zoxel_log("     + version   [%s]\n", glGetString(GL_VERSION));
-        zoxel_log("     + glsl      [%s]\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
-        zoxel_log("     + vendor    [%s]\n", glGetString(GL_VENDOR));
-        zoxel_log("     + renderer  [%s]\n", glGetString(GL_RENDERER));
-        /*GLint memory_used, memory_total;
-        glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &memory_used);
-        glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &memory_total);
-        zoxel_log("     + GPU Memory Usage [%d MB / %d MB]\n", memory_used / 1024, memory_total / 1024);
-        check_opengl_error("[print_opengl Error]");*/
-    #endif
+#ifdef zoxel_debug_opengl
+    zox_logg(" > opengl\n")
+    zox_log("     + version   [%s]\n", glGetString(GL_VERSION))
+    zox_log("     + glsl      [%s]\n", glGetString(GL_SHADING_LANGUAGE_VERSION))
+    zox_log("     + vendor    [%s]\n", glGetString(GL_VENDOR))
+    zox_log("     + renderer  [%s]\n", glGetString(GL_RENDERER))
+    /*GLint memory_used, memory_total;
+    glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &memory_used);
+    glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &memory_total);
+    zoxel_log("     + GPU Memory Usage [%d MB / %d MB]\n", memory_used / 1024, memory_total / 1024);
+    check_opengl_error("[print_opengl Error]");*/
+#endif
 }
 
 void opengl_bind_texture(GLuint texture_buffer) {
@@ -57,9 +57,9 @@ GLuint2 spawn_gpu_mesh_buffers() {
     GLuint2 mesh;
     glGenBuffers(1, &mesh.x);
     glGenBuffers(1, &mesh.y);
-    #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("spawn_gpu_mesh_buffers");
-    #endif
+#ifdef zoxel_catch_opengl_errors
+    check_opengl_error("spawn_gpu_mesh_buffers");
+#endif
     return mesh;
 }
 
@@ -67,13 +67,6 @@ GLuint spawn_gpu_generic_buffer() {
     GLuint buffer;
     glGenBuffers(1, &buffer);
     return buffer;
-}
-
-void opengl_set_material(GLuint material) {
-    glUseProgram(material);
-    #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("opengl_set_material");
-    #endif
 }
 
 void opengl_bind_mesh(GLuint2 mesh) {
@@ -92,13 +85,6 @@ void opengl_set_mesh_uvs(GLuint uv_buffer) {
 void opengl_unset_mesh() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-void opengl_render(GLint indicies_length) {
-    glDrawElements(GL_TRIANGLES, indicies_length, GL_UNSIGNED_INT, NULL);
-    #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("opengl_render");
-    #endif
 }
 
 void opengl_disable_opengl_program() {
@@ -144,6 +130,20 @@ void opengl_set_float3(GLuint shader_index, const float3 value) {
 
 void opengl_set_float(GLuint shader_index, const float value) {
     glUniform1f(shader_index, value);
+}
+
+void opengl_set_material(GLuint material) {
+    glUseProgram(material);
+/*#ifdef zoxel_catch_opengl_errors
+    check_opengl_error("opengl_set_material");
+#endif*/
+}
+
+void opengl_render(GLint indicies_length) {
+    glDrawElements(GL_TRIANGLES, indicies_length, GL_UNSIGNED_INT, NULL);
+/*#ifdef zoxel_catch_opengl_errors
+    check_opengl_error("opengl_render");
+#endif*/
 }
 
 /*

@@ -29,10 +29,9 @@ void MeshUpdateTextured3DSystem(ecs_iter_t *it) {
         did_do_timing()
         update_count++;
 #endif
-        // zoxel_log(" > uploaded shader texture3D [%lu] :: [%ix%i:%i]\n", it->entities[i], meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value);
     }
 #ifdef zoxel_time_mesh_uvs_update_system
     end_timing("    - mesh_uvs_update_system")
-    if (did_do) zoxel_log("        - updated chunk meshes [%i]\n", update_count);
+    if (did_do) zox_log("        - updated chunk meshes [%i]\n", update_count)
 #endif
 } zox_declare_system(MeshUpdateTextured3DSystem)

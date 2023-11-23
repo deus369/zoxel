@@ -1,3 +1,4 @@
+// skybox render system
 void Render3DSystem(ecs_iter_t *it) {
     const Position3D *positions = ecs_field(it, Position3D, 1);
     const Rotation3D *rotations = ecs_field(it, Rotation3D, 2);

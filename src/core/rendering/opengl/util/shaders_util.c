@@ -56,7 +56,7 @@ int compile_shader(GLenum shaderType, GLuint* shader2, const GLchar* buffer) {
     return 0;
 }
 
-int load_shader(const char* filepath, GLenum shaderType, uint* shader2) {
+int load_shader(const char* filepath, GLenum shaderType, GLuint* shader2) {
     if (strlen(filepath) == 0) {
         zoxel_log("Shader Filepath is Empty.\n");
         return -1;

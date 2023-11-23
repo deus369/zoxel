@@ -6,6 +6,8 @@
 #endif
 #ifdef USE_SDL_3
     #include <SDL3/SDL.h>
+#elif defined(zox_sdl_import_file_only)
+    #include <SDL.h>
 #else
     #ifdef zoxel_on_android
         #include <SDL.h>
@@ -22,6 +24,8 @@
 #endif
 
 #ifdef zoxel_on_android
+    #include <SDL_image.h>
+#elif defined(zox_sdl_import_file_only)
     #include <SDL_image.h>
 #else
     #include <SDL2/SDL_image.h>

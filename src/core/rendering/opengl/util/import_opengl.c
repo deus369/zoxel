@@ -4,7 +4,9 @@
 #else
     #ifdef zoxel_on_android
         #include <SDL_opengl.h>
-    #else
+#elif defined(zox_sdl_import_file_only)
+    #include <SDL_opengl.h>
+#else
         #include <SDL2/SDL_opengl.h>
     #endif
 #endif

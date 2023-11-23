@@ -1,5 +1,8 @@
 // Here? select which zoxel modules I shall use?
 
+// to fix windows build
+// #define zox_sdl_import_file_only
+
 // testing editor
 #define zox_test_hierarchy
 #define zox_entity_names

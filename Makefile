@@ -13,6 +13,8 @@ TARGET = build/zoxel
 target_dev = build/dev
 target_web = build/zoxel.html # .js
 target_web2 = zoxel.html # .js
+target_windows = build/zoxel.exe
+target_windows_32 = build/zoxel_32.exe
 ifeq ($(SYSTEM),Windows)
 TARGET = build/zoxel.exe
 target_dev = build/dev.exe
@@ -24,6 +26,8 @@ web_data_file = build/zoxel.data
 CC = gcc
 # the web compiler
 cc_web = ~/projects/emsdk/upstream/emscripten/emcc
+cc_windows_32=i686-w64-mingw32-gcc
+cc_windows=x86_64-w64-mingw32-gcc
 # OBJS defines all the files used to compile the final Zoxel binary.
 OBJS = ../src/main.c
 # This collects all c and h files in the directory
@@ -130,6 +134,9 @@ make_release = $(CC) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) -o ../$(TA
 make_dev = $(CC) $(CFLAGS) $(fix_flecs_warning) $(cflags_debug) -o ../$(target_dev) $(OBJS) $(LDLIBS) $(LDLIBS2)
 make_web_release = $(cc_web) $(CFLAGS) $(cflags_web) -o $(target_web2) $(OBJS) ../include/flecs/flecs.c $(ldlibs_web)
 
+# halp
+make_windows = $(cc_windows) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) -o ../$(target_windows) $(OBJS) ../include/flecs/flecs.c -L../lib -lflecs $(LDLIBS2) -I/usr/include/SDL2 && echo "  > built [$(target_windows)]"
+# $(LDLIBS)
 # linux & windows #
 
 # release
@@ -229,6 +236,20 @@ run-dev-profiler:
 run-dev-profiler-tiny:
 	sleep 3 && open https://www.flecs.dev/explorer &
 	cd build && ./../$(target_dev) --profiler --tiny
+
+# linux to windows build #
+
+windows-sdk:
+	bash bash/windows/install_sdk.sh
+
+$(target_windows): $(SRCS)
+ifneq ($(SYSTEM),Windows)
+	@echo " > building windows in linux"
+endif
+	set -e ; \
+	bash bash/flecs/check_flecs_lib_not_installed.sh && bash bash/flecs/check_flecs_source.sh && bash bash/flecs/download_flecs_source.sh && cp include/flecs/flecs.h include; \
+	bash bash/flecs/check_flecs_lib_not_installed.sh && cd build && $(make_flecs) && $(make_flecs_lib) && cd .. && cp build/libflecs.a lib;  \
+	bash bash/flecs/check_flecs_lib.sh && cd build && $(make_windows)
 
 # web #
 
@@ -411,6 +432,9 @@ help:
 	@echo "    run-dev			runs $(target_dev)"
 	@echo "    run-dev-debug		runs valgrind $(target_dev)"
 	@echo "    run-dev-profiler		runs $(target_dev) --profiler"
+	@echo "  > windows"
+	@echo "    windows-sdk		installs tools for windows cross compilation"
+	@echo "    build/zoxel.exe			builds windows release"
 	@echo "  > web"
 	@echo "    install-web-sdk		installs tools for web build"
 	@echo "    $(target_web)		builds zoxel-web"

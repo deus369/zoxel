@@ -1,3 +1,39 @@
+## web build
+
+- [ ] Fix terrain rendering not working
+- [ ] Fix EM_JS functions not working anymore (platforms/util/webasm_util.c)
+- [ ] Fix Pipeline, 'make push-web' should push to a zox-web git repo the latest build
+
+## cross compile to windows
+
+- [ ] get a 'make build/zoxel.exe' build working
+
+## steamdeck steam
+
+- [ ] 'make is_steamworks' check if steamworks is in build
+- [ ] make toggle_steamworks - add steamworks includes to build settings?
+- [ ] test achievement for killing first npc - [noob] Vox Slayer! You have started your journey into the path of carnage.
+
+## devops
+
+- [ ] automate builds every morning it should perform all builds
+- [ ] test results can be displayed in a simple text file
+- [ ] push builds to git repo every week on a saturday
+
+=================================
+    builds started at [3.18PM - 11/23/23]
+=================================
+    linux x86_64 [passed]
+    linux x86_32 [passed]
+    windows x86_64 [passed]
+    windows x86_32 [passed]
+    webasm [passed]
+    android [failed]
+    linux arm64 [passed]
+=================================
+    builds completed at [6.18PM - 11/23/23]
+=================================
+
 ## io
 
 - [ ] load vox, texture & sound files dynamically

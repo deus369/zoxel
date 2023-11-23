@@ -1,7 +1,13 @@
 // disables
-#define zox_disable_module_networking
+
+// #define zoxel_catch_opengl_errors
+
 // #define zox_disable_io
-// #define zox_disable_terrain_texture_shader
+
+// for web build
+// #define zox_disable_module_networking
+// #define zox_disable_terrain_textures // this kinda breaks
+// #define zox_disable_render_element3D
 
 // #define zox_disable_music
 // #define zox_disable_play_sounds
@@ -21,7 +27,6 @@
 // #define zox_disable_player_character3D  // disables player character
 // #define zox_disable_statbars
 
-// #define zoxel_catch_opengl_errors
 // #define zox_disable_render_terrain_chunks
 // #define zox_disable_render_ui_3D
 // #define zox_disable_render_characters

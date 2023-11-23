@@ -27,7 +27,7 @@ void restore_shader_textured3D(ecs_world_t *world) {
 }
 
 int load_shader3D_textured(ecs_world_t *world) {
-    if (textured3D_shader == 0) {
+    if (!textured3D_shader) {
         textured3D_shader = spawn_shader(world, shader3D_textured_vert_buffer, shader3D_textured_frag_buffer);
         textured3D_material = spawn_material(world, get_shader3D_textured_value(world));
         GLuint material = get_textured3D_material_value(world);
