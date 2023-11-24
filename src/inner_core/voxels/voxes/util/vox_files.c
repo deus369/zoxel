@@ -1,4 +1,4 @@
-#define monsters_directory "voxes/" // monsters/
+#define monsters_directory "voxes"character_slash
 #define vox_file_littlecube monsters_directory"littlecube.vox"
 #define vox_file_chicken monsters_directory"chicken.vox"
 #define vox_file_slime monsters_directory"slime.vox"
@@ -26,7 +26,7 @@ void load_vox_file(int index, char* filename) {
     if (read_vox(vox_path, &loaded_vox) == EXIT_SUCCESS) vox_files[index] = loaded_vox;
     else {
         vox_files[index] = loaded_vox;
-        zoxel_log(" ! failed loading file %s\n", filename);
+        zoxel_log(" ! failed loading file %s\n", vox_path);
     }
     free(vox_path);
 }

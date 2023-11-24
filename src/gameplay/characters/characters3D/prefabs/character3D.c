@@ -25,9 +25,9 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     zox_prefab_set(e, ElementLinks, { 0, NULL})
     zox_prefab_set(e, Children, { 0, NULL})         // for bones, particles, etc (transforms)
     prefab_character3D = e;
-    #ifdef zoxel_debug_prefabs
-        zox_log(" > spawn_prefab character3D [%lu]\n", e)
-    #endif
+#ifdef zoxel_debug_prefabs
+    zox_log(" > spawn_prefab character3D [%lu]\n", e)
+#endif
     return e;
 }
 
@@ -57,16 +57,16 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vo
     userStatLinks->value[0] = user_stat;
     zox_modified(e, UserStatLinks)
     // character ui
-    #ifndef zox_disable_statbars
-        ecs_entity_t statbar = spawn_statbar3D(world, e, health / max_health);
-        zox_prefab_set(statbar, UserStatLink, { user_stat })
-        ElementLinks *elementLinks = zox_get_mut(e, ElementLinks)
-        resize_memory_component(ElementLinks, elementLinks, ecs_entity_t, 1)
-        elementLinks->value[0] = statbar;
-        zox_modified(e, ElementLinks)
-    #endif
-    #ifdef zoxel_debug_spawns
-        zox_log("   > spawned character3D [%lu]\n", e)
-    #endif
+#ifndef zox_disable_statbars
+    ecs_entity_t statbar = spawn_statbar3D(world, e, health / max_health);
+    zox_prefab_set(statbar, UserStatLink, { user_stat })
+    ElementLinks *elementLinks = zox_get_mut(e, ElementLinks)
+    resize_memory_component(ElementLinks, elementLinks, ecs_entity_t, 1)
+    elementLinks->value[0] = statbar;
+    zox_modified(e, ElementLinks)
+#endif
+#ifdef zoxel_debug_spawns
+    zox_log("   > spawned character3D [%lu]\n", e)
+#endif
     return e;
 }

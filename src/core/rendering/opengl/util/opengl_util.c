@@ -1,5 +1,47 @@
+unsigned char has_gl_extension(const char *extensions, const char *target) {
+    const char *token = strtok((char *)extensions, " ");
+    while (token != NULL) {
+        if (strcmp(token, target) == 0) return 1; // Extension found
+        token = strtok(NULL, " ");
+    }
+    return 0; // Extension not found
+}
+
+unsigned char has_opengl_extensions() {
+    unsigned char has_extension = 1;
+    const GLubyte *extensions = glGetString(GL_EXTENSIONS);
+    /*if (extensions != NULL) printf("        > gl extensions: %s\n", extensions);
+    else fprintf(stderr, "Error retrieving extensions\n");*/
+    if (!has_gl_extension(extensions, "GL_ARB_shader_objects")) {
+        zox_logg("   > no glCreateShader\n")
+        has_extension = 0;
+    }
+    if (!has_extension) exit(0);
+    return has_extension;
+}
+
+void print_opengl_functions() {
+    // Print All Supported Extensions
+    GLint numExtensions;
+    glGetIntegerv(GL_NUM_EXTENSIONS, &numExtensions);
+    printf("    > number of Extensions: %d\n", numExtensions);
+    /*for (int i = 0; i < numExtensions; ++i) {
+        zox_log("%s\n", glGetStringi(GL_EXTENSIONS, i))
+    }*/
+    const GLubyte *extensions = glGetString(GL_EXTENSIONS);
+    if (extensions != NULL) {
+        printf("        > gl extensions: %s\n", extensions);
+    } else {
+        fprintf(stderr, "Error retrieving extensions\n");
+    }
+    /*if (!has_gl_extension(extensions, "GL_ARB_shader_objects")) {
+        zox_logg("   > no glCreateShader\n")
+        exit(0);
+    }*/
+}
+
 void print_opengl() {
-#ifdef zoxel_debug_opengl
+#ifdef zox_print_opengl
     zox_logg(" > opengl\n")
     zox_log("     + version   [%s]\n", glGetString(GL_VERSION))
     zox_log("     + glsl      [%s]\n", glGetString(GL_SHADING_LANGUAGE_VERSION))
@@ -10,6 +52,7 @@ void print_opengl() {
     glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &memory_total);
     zoxel_log("     + GPU Memory Usage [%d MB / %d MB]\n", memory_used / 1024, memory_total / 1024);
     check_opengl_error("[print_opengl Error]");*/
+    print_opengl_functions();
 #endif
 }
 

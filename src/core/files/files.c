@@ -17,6 +17,10 @@
 
 void spawn_prefabs_files(ecs_world_t *world) {
     // spawn_prefab_filemanager(world);
+#ifdef __WINE__
+    zox_logg("  > inside wine\n")
+    exit(0)
+#endif
 }
 
 zox_begin_module(Files)

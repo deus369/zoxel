@@ -1,7 +1,11 @@
 // Here? select which zoxel modules I shall use?
 
 // to fix windows build
-// #define zox_sdl_import_file_only
+#ifdef _WIN32
+    #define zox_sdl_import_file_only
+#endif
+#define zox_print_opengl
+#define zox_print_sdl                       // debugs sdl app
 
 // testing editor
 #define zox_test_hierarchy
@@ -44,7 +48,6 @@
 // #define zox_errorcheck_render_characters_3D
 // #define zox_debug_color_shader
 
-// #define zox_print_sdl                       // debugs sdl app
 // #define zoxel_debug_opengl                  // debugs opengl
 // #define zox_check_render_camera_errors
 // #define zox_debug_sdl_audio

@@ -7,18 +7,18 @@ extern void resize_cameras(int2 screen_size); // cameras
 extern void resize_ui_canvases(ecs_world_t *world, int2 screen_size); // uis
 
 void print_sdl() {
-    #ifdef zox_print_sdl
-        zoxel_log(" > sdl stats\n");
-        zoxel_log("     + platform:     %s\n", SDL_GetPlatform());
-        zoxel_log("     + cpu count:    %d\n", SDL_GetCPUCount());
-        zoxel_log("     + ram:          %d MB\n", SDL_GetSystemRAM());
-        zoxel_log("     + screen:       %ix%i\n", screen_dimensions.x, screen_dimensions.y);
-        /*zoxel_log("     + sse:          %s\n", (SDL_HasSSE() ? "true" : "false"));
-        zoxel_log("     + sse2:         %s\n", (SDL_HasSSE2() ? "true" : "false"));
-        zoxel_log("     + sse3:         %s\n", (SDL_HasSSE3() ? "true" : "false"));
-        zoxel_log("     + sse4.1:       %s\n", (SDL_HasSSE41() ? "true" : "false"));
-        zoxel_log("     + sse4.2:       %s\n", (SDL_HasSSE42() ? "true" : "false"));*/
-    #endif
+#ifdef zox_print_sdl
+    zoxel_log(" > sdl stats\n");
+    zoxel_log("     + platform:     %s\n", SDL_GetPlatform());
+    zoxel_log("     + cpu count:    %d\n", SDL_GetCPUCount());
+    zoxel_log("     + ram:          %d MB\n", SDL_GetSystemRAM());
+    zoxel_log("     + screen:       %ix%i\n", screen_dimensions.x, screen_dimensions.y);
+    /*zoxel_log("     + sse:          %s\n", (SDL_HasSSE() ? "true" : "false"));
+    zoxel_log("     + sse2:         %s\n", (SDL_HasSSE2() ? "true" : "false"));
+    zoxel_log("     + sse3:         %s\n", (SDL_HasSSE3() ? "true" : "false"));
+    zoxel_log("     + sse4.1:       %s\n", (SDL_HasSSE41() ? "true" : "false"));
+    zoxel_log("     + sse4.2:       %s\n", (SDL_HasSSE42() ? "true" : "false"));*/
+#endif
 }
 
 unsigned char opengl_es_supported() {
@@ -135,21 +135,21 @@ void close_sdl_video() {
 int initialize_sdl_video() {
     // if (SDL_Init(SDL_INIT_VIDEO) != 0) {
     if (SDL_VideoInit(NULL) != 0) {
-        zoxel_log(" - failed to initialize sdl [%s]\n", SDL_GetError());
+        zox_log(" - failed to initialize sdl [%s]\n", SDL_GetError())
         return EXIT_FAILURE;
     } else {
         set_screen_size();
         print_sdl();
-        #ifdef zoxel_include_vulkan
-            if (is_using_vulkan) {
-                if (SDL_Vulkan_LoadLibrary(NULL) != 0) {
-                    zoxel_log(" ! failed to load vulkan library [%s]\n", SDL_GetError());
-                    return EXIT_FAILURE;
-                }
+#ifdef zoxel_include_vulkan
+        if (is_using_vulkan) {
+            if (SDL_Vulkan_LoadLibrary(NULL) != 0) {
+                zoxel_log(" ! failed to load vulkan library [%s]\n", SDL_GetError());
+                return EXIT_FAILURE;
             }
-        #else
-            is_using_vulkan = 0;
-        #endif
+        }
+#else
+        is_using_vulkan = 0;
+#endif
         if (!is_using_vulkan) set_sdl_attributes();
         return EXIT_SUCCESS;
     }

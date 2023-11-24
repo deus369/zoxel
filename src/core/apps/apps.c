@@ -23,7 +23,6 @@ zox_declare_tag(App)
 #include "sdl/sdl.c"
 
 unsigned char initialize_apps(ecs_world_t *world) {
-
     if (headless) return EXIT_SUCCESS;
     return initialize_apps_sdl(world);
 }
@@ -36,7 +35,7 @@ zox_begin_module(Apps)
 // zoxel_component_defines
 zox_define_tag(App)
 #ifdef zoxel_include_vulkan
-    zox_define_component_w_dest(VulkanSurface)
+zox_define_component_w_dest(VulkanSurface)
 #endif
 zox_import_module(AppsSDL)
 // zoxel_system_defines

@@ -51,12 +51,12 @@ zox_system(Player2DTestSystem, EcsOnUpdate, [in] Keyboard)
 zox_system(PlayerShortcutsSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks)
 zox_import_module(Players2D)
 zox_import_module(Players3D)
+zox_system_1(DeviceModeResponseSystem, EcsPreStore, [in] DeviceMode, [in] DeviceModeDirty) // has to update before DeviceModeDirtySystem
 // todo: make this work in threading... worked in 3.1.3 - EcsPreStore | EcsOnUpdate
 zox_system(PlayerToggleCameraSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks, [in] CharacterLink)
 zox_system_1(PlayerShortcutsSingleSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks)
 zox_system_1(PlayerPauseSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks)
 zox_system_1(VirtualJoystickSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterResult)
-zox_system_1(DeviceModeResponseSystem, EcsPreStore, [in] DeviceMode, [in] DeviceModeDirty) // has to update before DeviceModeDirtySystem
 zox_system_1(EditorInputSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks)
 zoxel_end_module(Players)
 

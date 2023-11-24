@@ -32,7 +32,7 @@ zox_component_byte(RenderLod) // The resolution of each chunk, distance to neare
 zox_component_byte(RenderDisabled)
 zox_component_float(Brightness)
 zox_component_float(Alpha)
-#include "opengl/opengl.c"
+#include "opengl/opengl.c" // todo: remove use of this
 #include "vulkan/vulkan.c"
 #include "core/core.c"
 #include "basics2D/basics2D.c"

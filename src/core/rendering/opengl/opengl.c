@@ -21,9 +21,17 @@ void check_compute() {
 }
 
 unsigned char initialize_opengl(ecs_world_t *world) {
-    #ifdef zoxel_debug_opengl
-        zoxel_log(" > initializing opengl\n");
-    #endif
+#ifdef zoxel_on_windows
+    GLenum err = glewInit();
+    if (err != GLEW_OK) {
+        fprintf(stderr, "GLEW initialization failed: %s\n", glewGetErrorString(err));
+        return 1;
+    }
+#endif
+#ifdef zoxel_debug_opengl
+    zoxel_log(" > initializing opengl\n");
+#endif
+    if (!has_opengl_extensions()) return EXIT_FAILURE;
     print_opengl();
     check_compute();
     if (opengl_load_shaders(world) == EXIT_FAILURE) {

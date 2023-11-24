@@ -4,17 +4,19 @@
 const char *data_path = NULL;
 char *resources_path = NULL;
 
+#if defined(zoxel_on_windows) && !defined(_WINE) //__WINE__)
+    #define character_slash "\\"
+#else
+    #define character_slash "/"
+#endif
+
 #ifndef zoxel_on_android
-    #ifdef zoxel_on_windows
-        #define resources_folder_name "resources\\"
-    #else
-        #define resources_folder_name "resources/"
-    #endif
+    #define resources_folder_name "resources"character_slash
 #else
     // i will have to manually add in the resource directories for android until ndk updates
-    #define resources_folder_name "/resources/"  // assets/
-    #define voxes_folder_path "voxes"  // assets/
-    #define textures_folder_path "textures"  // assets/
+    #define resources_folder_name character_slash"resources"character_slash
+    #define voxes_folder_path "voxes"
+    #define textures_folder_path "textures"
     #include <SDL_system.h>
     #include <android/asset_manager.h>
     #include <android/asset_manager_jni.h>
@@ -136,11 +138,9 @@ void debug_base_path(const char *base_path) {
     struct dirent *entry;
     if ((dir = opendir(base_path)) != NULL) {
         zoxel_log(" > directories and files in [%s]\n", base_path);
-        while ((entry = readdir(dir)) != NULL) zoxel_log("     + [%s]\n", entry->d_name);
+        while ((entry = readdir(dir)) != NULL) zox_log("     + [%s]\n", entry->d_name)
         closedir(dir);
-    } else {
-        zoxel_log(" - failed to open directory [%s]\n", base_path);
-    }
+    } else zox_log(" - failed to open directory [%s]\n", base_path)
 }
 
 char* concat_file_path(char* resources_path, char* file_path) {
@@ -155,23 +155,40 @@ char* get_full_file_path(const char* filepath) {
     char* fullpath = malloc(strlen(data_path) + strlen(filepath) + 1);
     strcpy(fullpath, data_path);
     strcat(fullpath, filepath);
-    #ifdef zoxel_debug_pathing
-        zoxel_log("fullpath: %s\n", fullpath);
-    #endif
+#ifdef zoxel_debug_pathing
+    zoxel_log("fullpath: %s\n", fullpath);
+#endif
     return fullpath;
+}
+
+void convert_file_path_slashes(char* path) {
+    while (*path) {
+        if (*path == '\\') {
+            *path = '/';
+        }
+        ++path;
+    }
 }
 
 unsigned char initialize_pathing() {
 #ifdef zox_disable_io
     return EXIT_SUCCESS;
 #endif
-    const char* base_path;
+    char* base_path;
 #ifdef zoxel_using_sdl
     #ifdef zoxel_on_android
     base_path = SDL_AndroidGetInternalStoragePath();
     __android_log_print(ANDROID_LOG_VERBOSE, "Zoxel", "base_path [%s]", base_path);
     #else
     base_path = SDL_GetBasePath();
+#ifdef zoxel_on_windows
+    // convert_file_path_slashes(base_path);
+#endif
+    /*zox_log("   + base_path [%s]\n", base_path)
+    if (is_platform_wine()) {
+        zox_logg("wine platform\n")
+        convert_file_path(base_path);
+    } else exit(0);*/
     #endif
 #else
     // can i use a base path here based on platform?

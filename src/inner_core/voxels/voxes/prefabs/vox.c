@@ -40,9 +40,9 @@ void set_colors_from_vox_file(ecs_world_t *world, ecs_entity_t e, const vox_file
 }
 
 void set_vox_from_vox_file(ecs_world_t *world, ecs_entity_t e, const vox_file *vox) {
-    #ifdef zox_disable_set_vox
-        return;
-    #endif
+#ifdef zox_disable_set_vox
+    return;
+#endif
     if (!is_vox_valid(vox)) {
         set_as_debug_vox(world, e);
         return;
@@ -94,15 +94,15 @@ void test_voxes(ecs_world_t *world, float3 position) {
 // byte3 offset = (byte3) { (32 - vox_size.x) / 2, (32 - vox_size.y) / 2, (32 - vox_size.z) / 2 };
 // zoxel_log(" > setting vox [%ix%ix%i] - offset [%ix%ix%i]\n", vox_size.x, vox_size.y, vox_size.z, offset.x, offset.y, offset.z);
 
-        /*ChunkSize chunkSize = { vox->chunks[0].size.xyz };
-        int voxels_length = chunkSize.value.x * chunkSize.value.y * chunkSize.value.z;
-        ChunkData chunk = { };
-        ColorRGBs colorRGBs = { };
-        int colors_length = vox->palette.values_length;
-        initialize_memory_component_non_pointer(chunk, unsigned char, voxels_length)
-        initialize_memory_component_non_pointer(colorRGBs, color_rgb, colors_length)
-        memcpy(chunk.value, vox->chunks[0].xyzi.voxels, voxels_length);     // this lags it hard...
-        memcpy(colorRGBs.value, vox->palette.values_rgb, colors_length * sizeof(color_rgb));
-        zox_set(e, ChunkSize, { chunkSize.value })
-        zox_set(e, ChunkData, { chunk.length, chunk.value })
-        zox_set(e, ColorRGBs, { colorRGBs.length, colorRGBs.value })*/
+/*ChunkSize chunkSize = { vox->chunks[0].size.xyz };
+int voxels_length = chunkSize.value.x * chunkSize.value.y * chunkSize.value.z;
+ChunkData chunk = { };
+ColorRGBs colorRGBs = { };
+int colors_length = vox->palette.values_length;
+initialize_memory_component_non_pointer(chunk, unsigned char, voxels_length)
+initialize_memory_component_non_pointer(colorRGBs, color_rgb, colors_length)
+memcpy(chunk.value, vox->chunks[0].xyzi.voxels, voxels_length);     // this lags it hard...
+memcpy(colorRGBs.value, vox->palette.values_rgb, colors_length * sizeof(color_rgb));
+zox_set(e, ChunkSize, { chunkSize.value })
+zox_set(e, ChunkData, { chunk.length, chunk.value })
+zox_set(e, ColorRGBs, { colorRGBs.length, colorRGBs.value })*/

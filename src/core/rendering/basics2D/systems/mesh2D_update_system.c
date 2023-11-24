@@ -9,7 +9,6 @@ void set_gpu_mesh2D(GLuint2 mesh, GLuint material, const int *indicies, int indi
         combined_verts[i * float_per_data + 0] = vert.x;
         combined_verts[i * float_per_data + 1] = vert.y;
     }
-
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * 4, indicies, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

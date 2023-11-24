@@ -39,73 +39,73 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
         const Rotation3D *rotation3D = &rotation3Ds[i];
         const Bounds3D *bounds3D = &bounds3Ds[i];
         set_line3D_thickness(cubeLinesThickness->value);
-        #ifdef zoxel_debug_transforms
-            // up axis
-            set_line3D_color(colorRGB->value);
-            // render_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + cube_lines_length, position3D->value.z });
-            float3 up_vector = (float3) { 0, cube_lines_length, 0 };
-            float4_rotate_float3_p(rotation3D->value, &up_vector);
-            float3_add_float3_p(&up_vector, position3D->value);
-            render_line3D(position3D->value, up_vector);
-            // forward axis
-            set_line3D_color((color_rgb) { colorRGB->value.b, colorRGB->value.g, colorRGB->value.r });
-            float3 forward_vector = (float3) { 0, 0, cube_lines_length };
-            float4_rotate_float3_p(rotation3D->value, &forward_vector);
-            float3_add_float3_p(&forward_vector, position3D->value);
-            render_line3D(position3D->value, forward_vector);
-            // right axis
-            set_line3D_color((color_rgb) { colorRGB->value.g, colorRGB->value.r, colorRGB->value.b });
-            float3 right_vector = (float3) { cube_lines_length, 0, 0 };
-            float4_rotate_float3_p(rotation3D->value, &right_vector);
-            float3_add_float3_p(&right_vector, position3D->value);
-            render_line3D(position3D->value, right_vector);
-        #else
-            color_rgb cube_color = colorRGB->value;
-            cube_color.r += 30 * renderLod->value;
-            cube_color.g -= 20 * renderLod->value;
-            cube_color.b -= 20 * renderLod->value;
-            set_line3D_color(cube_color);
-            // get corners of cube
-            float3 top_right = (float3) { bounds3D->value.x, bounds3D->value.y, bounds3D->value.z };
-            float3 top_left = (float3) { - bounds3D->value.x, bounds3D->value.y, bounds3D->value.z };
-            float3 top_right2 = (float3) { bounds3D->value.x, bounds3D->value.y, - bounds3D->value.z };
-            float3 top_left2 = (float3) { - bounds3D->value.x, bounds3D->value.y, - bounds3D->value.z };
-            float3 bottom_right = (float3) { bounds3D->value.x, - bounds3D->value.y, bounds3D->value.z };
-            float3 bottom_left = (float3) { - bounds3D->value.x, - bounds3D->value.y, bounds3D->value.z };
-            float3 bottom_right2 = (float3) { bounds3D->value.x, - bounds3D->value.y, - bounds3D->value.z };
-            float3 bottom_left2 = (float3) { - bounds3D->value.x, - bounds3D->value.y, - bounds3D->value.z };
-            float4_rotate_float3_p(rotation3D->value, &top_right);
-            float4_rotate_float3_p(rotation3D->value, &top_left);
-            float4_rotate_float3_p(rotation3D->value, &top_right2);
-            float4_rotate_float3_p(rotation3D->value, &top_left2);
-            float4_rotate_float3_p(rotation3D->value, &bottom_right);
-            float4_rotate_float3_p(rotation3D->value, &bottom_left);
-            float4_rotate_float3_p(rotation3D->value, &bottom_right2);
-            float4_rotate_float3_p(rotation3D->value, &bottom_left2);
-            float3_add_float3_p(&top_right, position3D->value);
-            float3_add_float3_p(&top_left, position3D->value);
-            float3_add_float3_p(&top_right2, position3D->value);
-            float3_add_float3_p(&top_left2, position3D->value);
-            float3_add_float3_p(&bottom_right, position3D->value);
-            float3_add_float3_p(&bottom_left, position3D->value);
-            float3_add_float3_p(&bottom_right2, position3D->value);
-            float3_add_float3_p(&bottom_left2, position3D->value);
-            // top
-            render_line3D(top_left, top_right);
-            render_line3D(top_left2, top_right2);
-            render_line3D(top_left, top_left2);
-            render_line3D(top_right, top_right2);
-            // bottom
-            render_line3D(bottom_left, bottom_right);
-            render_line3D(bottom_left2, bottom_right2);
-            render_line3D(bottom_left, bottom_left2);
-            render_line3D(bottom_right, bottom_right2);
-            // vertical
-            render_line3D(bottom_right, top_right);
-            render_line3D(bottom_left, top_left);
-            render_line3D(bottom_right2, top_right2);
-            render_line3D(bottom_left2, top_left2);
-        #endif
+#ifdef zoxel_debug_transforms
+        // up axis
+        set_line3D_color(colorRGB->value);
+        // render_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + cube_lines_length, position3D->value.z });
+        float3 up_vector = (float3) { 0, cube_lines_length, 0 };
+        float4_rotate_float3_p(rotation3D->value, &up_vector);
+        float3_add_float3_p(&up_vector, position3D->value);
+        render_line3D(position3D->value, up_vector);
+        // forward axis
+        set_line3D_color((color_rgb) { colorRGB->value.b, colorRGB->value.g, colorRGB->value.r });
+        float3 forward_vector = (float3) { 0, 0, cube_lines_length };
+        float4_rotate_float3_p(rotation3D->value, &forward_vector);
+        float3_add_float3_p(&forward_vector, position3D->value);
+        render_line3D(position3D->value, forward_vector);
+        // right axis
+        set_line3D_color((color_rgb) { colorRGB->value.g, colorRGB->value.r, colorRGB->value.b });
+        float3 right_vector = (float3) { cube_lines_length, 0, 0 };
+        float4_rotate_float3_p(rotation3D->value, &right_vector);
+        float3_add_float3_p(&right_vector, position3D->value);
+        render_line3D(position3D->value, right_vector);
+#else
+        color_rgb cube_color = colorRGB->value;
+        cube_color.r += 30 * renderLod->value;
+        cube_color.g -= 20 * renderLod->value;
+        cube_color.b -= 20 * renderLod->value;
+        set_line3D_color(cube_color);
+        // get corners of cube
+        float3 top_right = (float3) { bounds3D->value.x, bounds3D->value.y, bounds3D->value.z };
+        float3 top_left = (float3) { - bounds3D->value.x, bounds3D->value.y, bounds3D->value.z };
+        float3 top_right2 = (float3) { bounds3D->value.x, bounds3D->value.y, - bounds3D->value.z };
+        float3 top_left2 = (float3) { - bounds3D->value.x, bounds3D->value.y, - bounds3D->value.z };
+        float3 bottom_right = (float3) { bounds3D->value.x, - bounds3D->value.y, bounds3D->value.z };
+        float3 bottom_left = (float3) { - bounds3D->value.x, - bounds3D->value.y, bounds3D->value.z };
+        float3 bottom_right2 = (float3) { bounds3D->value.x, - bounds3D->value.y, - bounds3D->value.z };
+        float3 bottom_left2 = (float3) { - bounds3D->value.x, - bounds3D->value.y, - bounds3D->value.z };
+        float4_rotate_float3_p(rotation3D->value, &top_right);
+        float4_rotate_float3_p(rotation3D->value, &top_left);
+        float4_rotate_float3_p(rotation3D->value, &top_right2);
+        float4_rotate_float3_p(rotation3D->value, &top_left2);
+        float4_rotate_float3_p(rotation3D->value, &bottom_right);
+        float4_rotate_float3_p(rotation3D->value, &bottom_left);
+        float4_rotate_float3_p(rotation3D->value, &bottom_right2);
+        float4_rotate_float3_p(rotation3D->value, &bottom_left2);
+        float3_add_float3_p(&top_right, position3D->value);
+        float3_add_float3_p(&top_left, position3D->value);
+        float3_add_float3_p(&top_right2, position3D->value);
+        float3_add_float3_p(&top_left2, position3D->value);
+        float3_add_float3_p(&bottom_right, position3D->value);
+        float3_add_float3_p(&bottom_left, position3D->value);
+        float3_add_float3_p(&bottom_right2, position3D->value);
+        float3_add_float3_p(&bottom_left2, position3D->value);
+        // top
+        render_line3D(top_left, top_right);
+        render_line3D(top_left2, top_right2);
+        render_line3D(top_left, top_left2);
+        render_line3D(top_right, top_right2);
+        // bottom
+        render_line3D(bottom_left, bottom_right);
+        render_line3D(bottom_left2, bottom_right2);
+        render_line3D(bottom_left, bottom_left2);
+        render_line3D(bottom_right, bottom_right2);
+        // vertical
+        render_line3D(bottom_right, top_right);
+        render_line3D(bottom_left, top_left);
+        render_line3D(bottom_right2, top_right2);
+        render_line3D(bottom_left2, top_left2);
+#endif
 
         // up | down for collision
         /*set_line3D_color(colorRGB->value);

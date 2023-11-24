@@ -13,8 +13,6 @@ TARGET = build/zoxel
 target_dev = build/dev
 target_web = build/zoxel.html # .js
 target_web2 = zoxel.html # .js
-target_windows = build/zoxel.exe
-target_windows_32 = build/zoxel_32.exe
 ifeq ($(SYSTEM),Windows)
 TARGET = build/zoxel.exe
 target_dev = build/dev.exe
@@ -26,8 +24,6 @@ web_data_file = build/zoxel.data
 CC = gcc
 # the web compiler
 cc_web = ~/projects/emsdk/upstream/emscripten/emcc
-cc_windows_32=i686-w64-mingw32-gcc
-cc_windows=x86_64-w64-mingw32-gcc
 # OBJS defines all the files used to compile the final Zoxel binary.
 OBJS = ../src/main.c
 # This collects all c and h files in the directory
@@ -50,41 +46,28 @@ fix_flecs_warning = -Wno-stringop-overread -Wno-stringop-overflow
 # CFLAGS += -Wno-stringop-overflow-size
 # Add libraries
 LDLIBS =
-LDLIBS2 =
-# for math.h
-LDLIBS2 += -lm
-# For threading
-LDLIBS2 += -lpthread
+# for math.h, threading
+LDLIBS2 = -lm -lpthread
 # For a pre compiled flecs
 LDLIBS += -L../lib -lflecs
 ifeq ($(SYSTEM), Windows)
-# opengl windows
+# opengl windows, win sockets
 LDLIBS += -lopengl32
-# win sockets
 LDLIBS2 += -lws2_32
 else
 LDLIBS += -lGL	# opengl linux
-LDLIBS += -lvulkan # vulkan on linux
+# LDLIBS += -lvulkan # vulkan on linux
 # LDLIBS += -lGLEW
 # -lwayland-client
 endif
 # add sdl2 includes
 ifeq ($(SYSTEM), Windows)
-LDLIBS += -IC:/SDL2/include
-LDLIBS += -LC:/SDL2/lib
-LDLIBS += -LC:/SDL2_image/lib
-LDLIBS += -LC:/SDL2_mixer/lib
+LDLIBS += -IC:/SDL2/include -LC:/SDL2/lib -LC:/SDL2_image/lib -LC:/SDL2_mixer/lib
 endif
-# SDL2 Audio Library
-LDLIBS += -lSDL2_mixer
-# SDL2 Image Library
-LDLIBS += -lSDL2_image
-# SDL2 Library
-LDLIBS += -lSDL2
+# SDL2 Librarys
+LDLIBS += -lSDL2_mixer -lSDL2_image -lSDL2
 ifeq ($(SYSTEM), Windows)
-LDLIBS += -LSDL2main
-LDLIBS += -Wl,-subsystem,windows
-LDLIBS += -mwindows
+LDLIBS += -LSDL2main -Wl,-subsystem,windows -mwindows
 endif
 # FOR RELEASE
 CFLAGS_RELEASE =
@@ -134,10 +117,30 @@ make_release = $(CC) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) -o ../$(TA
 make_dev = $(CC) $(CFLAGS) $(fix_flecs_warning) $(cflags_debug) -o ../$(target_dev) $(OBJS) $(LDLIBS) $(LDLIBS2)
 make_web_release = $(cc_web) $(CFLAGS) $(cflags_web) -o $(target_web2) $(OBJS) ../include/flecs/flecs.c $(ldlibs_web)
 
-# halp
-make_windows = $(cc_windows) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) -o ../$(target_windows) $(OBJS) ../include/flecs/flecs.c -L../lib -lflecs $(LDLIBS2) -I/usr/include/SDL2 && echo "  > built [$(target_windows)]"
-# $(LDLIBS)
-# linux & windows #
+# halp - -lopengl32 doesn't have the right functions
+# 'strings libopengl32.a | grep glBind' to find some functions
+# enable #define zox_sdl_import_file_only for windows build
+#  strings /usr/x86_64-w64-mingw32/lib/libopengl32.a | grep glBind
+cc_windows=x86_64-w64-mingw32-gcc
+cc_windows_32=i686-w64-mingw32-gcc
+target_windows = build/windows/zoxel.exe
+target_windows_32 = build/windows_32/zoxel_32.exe
+windows_includes = -I../include -I/usr/include/SDL2 -I/usr/include/GL
+# -I/build/sdl/sdl/include -I/build/sdl/sdl_mixer/include -I/build/sdl/sdl_image
+# -I/usr/include/SDL2
+# -L/usr/local/cross-tools/x86_64-w64-mingw32/lib/
+# -L/usr/i686-w64-mingw32/lib/
+# -L../lib/opengl32.dll
+windows_pre_libs = -L../lib -L../bin -L../build/sdl/sdl/build/.libs -L../build/sdl/sdl_mixer/build/.libs -L../build/sdl/sdl_image/.libs
+# -Lbin
+# -L/usr/x86_64-w64-mingw32/lib/
+windows_libs = -lSDL2_mixer -lSDL2_image -lSDL2 -lm -lpthread -lws2_32 -mwindows -Wl,-subsystem,windows -lglew32 -lopengl32
+# -lglew32
+# -lopengl32
+# -lflecs
+# ../include/flecs/flecs.c
+# -v
+make_windows = $(cc_windows) $(OBJS) ../include/flecs/flecs.c $(windows_pre_libs) $(windows_includes) $(windows_libs) -o ../$(target_windows) -Wl,-Bsymbolic # -Wl,-rpath-link,'./bin/' # :../bin
 
 # release
 $(TARGET): $(SRCS)
@@ -242,14 +245,18 @@ run-dev-profiler-tiny:
 windows-sdk:
 	bash bash/windows/install_sdk.sh
 
-$(target_windows): $(SRCS)
+run-windows:
+	WINEPATH=bin wine build/windows/zoxel.exe
+
+run-windows-debug:
+	WINEDEBUG=+opengl wine build/windows/zoxel.exe
+
+# todo: copy resources and bin dll's into the folder build/windows
 ifneq ($(SYSTEM),Windows)
+$(target_windows): $(SRCS)
 	@echo " > building windows in linux"
+	cd build && $(make_windows)
 endif
-	set -e ; \
-	bash bash/flecs/check_flecs_lib_not_installed.sh && bash bash/flecs/check_flecs_source.sh && bash bash/flecs/download_flecs_source.sh && cp include/flecs/flecs.h include; \
-	bash bash/flecs/check_flecs_lib_not_installed.sh && cd build && $(make_flecs) && $(make_flecs_lib) && cd .. && cp build/libflecs.a lib;  \
-	bash bash/flecs/check_flecs_lib.sh && cd build && $(make_windows)
 
 # web #
 
