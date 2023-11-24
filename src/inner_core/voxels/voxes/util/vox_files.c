@@ -16,7 +16,7 @@ void dispose_vox_files() {
     free(vox_files);
 }
 
-void load_vox_file(int index, char* filename) {
+void load_vox_file(int index, const char* filename) {
 #ifdef zox_disable_io
     return;
 #endif
@@ -25,8 +25,8 @@ void load_vox_file(int index, char* filename) {
     char* vox_path = concat_file_path(resources_path, filename);
     if (read_vox(vox_path, &loaded_vox) == EXIT_SUCCESS) vox_files[index] = loaded_vox;
     else {
-        vox_files[index] = loaded_vox;
-        zoxel_log(" ! failed loading file %s\n", vox_path);
+        // vox_files[index] = loaded_vox;
+        zox_log(" ! failed loading file %s\n", vox_path)
     }
     free(vox_path);
 }

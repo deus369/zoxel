@@ -29,48 +29,48 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             generateChunkEntities2->value = zox_chunk_entities_state_spawned;
             continue;
         }
-        #ifndef zox_disable_characters3D
-            unsigned char camera_distance = renderLod->value;
-            unsigned char character_lod = get_character_division_from_camera(camera_distance);
-            // zoxel_log("characters spawning in chunk %lu\n", it->entities[i]);
-            // find if chunk has any air position - free place to spawn - spawn characters in this chunk
-            const ChunkPosition *chunkPosition = &chunkPositions[i];
-            int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, default_chunk_size);
-            ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d(initial_dynamic_array_size);
-            for (unsigned char j = 0; j < characters_per_chunk_count; j++) {
-                byte3 local_position = (byte3) { rand() % default_chunk_length, default_chunk_length - 1, rand() % default_chunk_length };    // rand() % 16
-                byte3 local_position_temp = local_position;
-                unsigned char voxel = get_octree_voxel(chunkOctree, &local_position_temp, max_octree_depth);
-                if (voxel != 0) continue;
-                unsigned char did_find_ground = 0;
-                for (local_position.y = default_chunk_length - 2; local_position.y >= 0; local_position.y--) {
-                    local_position_temp = local_position;
-                    voxel = get_octree_voxel(chunkOctree, &local_position_temp, max_octree_depth);
-                    if (voxel != 0) {
-                        local_position.y++;
-                        did_find_ground = 1;
-                        // zoxel_log(" > found ground! [%i]\n", local_position.y);
-                        break;
-                    }
-                    if (local_position.y == 0) break;   // since byte cannot go under 0
+#ifndef zox_disable_characters3D
+        unsigned char camera_distance = renderLod->value;
+        unsigned char character_lod = get_character_division_from_camera(camera_distance);
+        // zoxel_log("characters spawning in chunk %lu\n", it->entities[i]);
+        // find if chunk has any air position - free place to spawn - spawn characters in this chunk
+        const ChunkPosition *chunkPosition = &chunkPositions[i];
+        int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, default_chunk_size);
+        ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d(initial_dynamic_array_size);
+        for (unsigned char j = 0; j < characters_per_chunk_count; j++) {
+            byte3 local_position = (byte3) { rand() % default_chunk_length, default_chunk_length - 1, rand() % default_chunk_length };    // rand() % 16
+            byte3 local_position_temp = local_position;
+            unsigned char voxel = get_octree_voxel(chunkOctree, &local_position_temp, max_octree_depth);
+            if (voxel != 0) continue;
+            unsigned char did_find_ground = 0;
+            for (local_position.y = default_chunk_length - 2; local_position.y >= 0; local_position.y--) {
+                local_position_temp = local_position;
+                voxel = get_octree_voxel(chunkOctree, &local_position_temp, max_octree_depth);
+                if (voxel != 0) {
+                    local_position.y++;
+                    did_find_ground = 1;
+                    // zoxel_log(" > found ground! [%i]\n", local_position.y);
+                    break;
                 }
-                if (!did_find_ground) continue;
-                int vox_file_index = rand() % vox_files_count;
-                vox_file vox = vox_files[vox_file_index];
-                int3 global_voxel_position = int3_add(chunk_voxel_position, byte3_to_int3(local_position));
-                float3 position = (float3) { global_voxel_position.x, global_voxel_position.y, global_voxel_position.z };
-                float3_multiply_float_p(&position, terrain_voxel_scale);
-                float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
-                // todo: use character bounds before spawning, scale voxel position by terrain scale
-                position.y += 0.26f; // 0.75f;
-                position.y += 0.06f; // extra
-                spawn_chunk_character(world, entities, &vox, position, rotation, character_lod);
+                if (local_position.y == 0) break;   // since byte cannot go under 0
             }
-            clear_memory_component(EntityLinks, entityLinks2);
-            entityLinks2->length = entities->size;
-            entityLinks2->value = finalize_ecs_entity_t_array_d(entities);
-            on_memory_component_created(entityLinks2, EntityLinks)
-        #endif
+            if (!did_find_ground) continue;
+            int vox_file_index = rand() % vox_files_count;
+            vox_file vox = vox_files[vox_file_index];
+            int3 global_voxel_position = int3_add(chunk_voxel_position, byte3_to_int3(local_position));
+            float3 position = (float3) { global_voxel_position.x, global_voxel_position.y, global_voxel_position.z };
+            float3_multiply_float_p(&position, terrain_voxel_scale);
+            float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
+            // todo: use character bounds before spawning, scale voxel position by terrain scale
+            position.y += 0.26f; // 0.75f;
+            position.y += 0.06f; // extra
+            spawn_chunk_character(world, entities, &vox, position, rotation, character_lod);
+        }
+        clear_memory_component(EntityLinks, entityLinks2);
+        entityLinks2->length = entities->size;
+        entityLinks2->value = finalize_ecs_entity_t_array_d(entities);
+        on_memory_component_created(entityLinks2, EntityLinks)
+#endif
         generateChunkEntities2->value = zox_chunk_entities_state_spawned;
         // zoxel_log(" > chunk characters were triggered %i\n", entityLinks2->length);
     }

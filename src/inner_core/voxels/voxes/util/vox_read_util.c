@@ -7,6 +7,7 @@
 #define VOX_SIZE_INT 32
 #define VOX_SUPPORTED_VERSION 150
 #define zoxel_voxel_vox_flipz
+// #define zoxel_debug_vox_read
 
 int peek(FILE* file) {
     int c = fgetc(file);
@@ -31,20 +32,20 @@ The chunk data is stored in a dynamically allocated buffer and is then processed
 */
 int read_vox(const char* filename, vox_file *vox) {
     if (!filename) return EXIT_FAILURE;
-    #ifdef zoxel_log_files
-        zoxel_log(" + loading file [%s]\n", filename);
-    #endif
+#ifdef zoxel_log_files
+    zox_log(" + loading file [%s]\n", filename)
+#endif
     // Open the vox file for reading
     FILE *file = fopen(filename, "r");
     // Check if the file was opened successfully
     if (!file) {
         // Print an error message and exit if the file could not be opened
-        zoxel_log("Error: Could not open vox file [%s]\n", filename);
+        zox_log(" - error: Could not open vox file [%s]\n", filename)
         return EXIT_FAILURE;
     }
-    #ifdef zoxel_debug_vox_read
-        zoxel_log("Success Opening vox file [%s]\n", filename);
-    #endif
+#ifdef zoxel_debug_vox_read
+    zox_log(" + success opening vox file [%s]\n", filename)
+#endif
     // vox_file vox;
     if (fread(&vox->header, sizeof(vox_file_header), 1, file) != 1) {
         zoxel_log_error(stderr, "Failed to read header\n");
@@ -113,9 +114,9 @@ int read_vox(const char* filename, vox_file *vox) {
     // chunk childs
     vox->chunks = malloc(vox->pack.model_nums * sizeof(vox_file_chunk_child));
     for (int i = 0; i < vox->pack.model_nums; i++) {
-        #ifdef zoxel_debug_vox_read
-        zoxel_log("  - Reading ChunkData [%i]\n", i);
-        #endif
+#ifdef zoxel_debug_vox_read
+        zox_log("  - Reading ChunkData [%i]\n", i)
+#endif
         vox_file_chunk_child chunk;
         if (fread(&chunk.size.name, sizeof(chunk.size.name), 1, file) != 1) {
             zoxel_log_error(stderr, "Failed to read chunk.size.name\n");
@@ -176,7 +177,7 @@ int read_vox(const char* filename, vox_file *vox) {
         }
         int voxels_length = int3_array_size(chunk.size.xyz); // chunk.size.x * chunk.size.y * chunk.size.z;
         int bytes_length = voxel_nums * 4;
-        #ifdef zoxel_debug_vox_read
+#ifdef zoxel_debug_vox_read
         zoxel_log("    - size.chunk_content [%i]\n", chunk.size.chunk_content);
         zoxel_log("    - size.chunk_nums [%i]\n", chunk.size.chunk_nums);
         zoxel_log("    - size.xyz [%ix%ix%i]\n", chunk.size.xyz.x, chunk.size.xyz.y, chunk.size.xyz.z);
@@ -185,12 +186,10 @@ int read_vox(const char* filename, vox_file *vox) {
         zoxel_log("    - voxel_nums [%i]\n", voxel_nums);
         zoxel_log("    - voxels_length [%i]\n", voxels_length);
         zoxel_log("    - bytes_length [%i]\n", bytes_length);
-        #endif
+#endif
         // allocate voxels
         chunk.xyzi.voxels = malloc(voxels_length);
-        for (int j = 0; j < voxels_length; j++) {
-            chunk.xyzi.voxels[j] = 0;
-        }
+        for (int j = 0; j < voxels_length; j++) chunk.xyzi.voxels[j] = 0;
         // zoxel_log("-=== voxel_nums [%i] ===-\n", voxel_nums);
         unsigned char *voxel_bytes = (unsigned char*) malloc(bytes_length);
         if (voxel_bytes == NULL)
@@ -200,7 +199,7 @@ int read_vox(const char* filename, vox_file *vox) {
         }
         for (int j = 0; j < bytes_length; j++) {
             if (feof(file)) {
-                zoxel_log("End of file at [%i]\n", j);
+                zox_log("End of file at [%i]\n", j)
                 break;
             }
             voxel_bytes[j] = fgetc(file);
@@ -209,17 +208,21 @@ int read_vox(const char* filename, vox_file *vox) {
             // int3 position = (int3) { voxel_bytes[j + 0], voxel_bytes[j + 1], voxel_bytes[j + 2] };
             int3 position = (int3) { voxel_bytes[j + 0], voxel_bytes[j + 2], voxel_bytes[j + 1] };
             // flip z, on vox file import it flips z voxels
-            #ifdef zoxel_voxel_vox_flipz
-                position.z = chunk.size.xyz.z - 1 - position.z;
-            #endif
+#ifdef zoxel_voxel_vox_flipz
+            position.z = chunk.size.xyz.z - 1 - position.z;
+#endif
             // int array_index = int3_array_index2(position, chunk.size.xyz);
             int array_index = int3_array_index(position, chunk.size.xyz);
+            if (array_index < 0 || array_index >= voxels_length) {
+                zox_log(" -     array_index out of bounds  [%i] at [%ix%ix%i]\n", array_index, position.x, position.y, position.z)
+                return EXIT_FAILURE;
+            }
             chunk.xyzi.voxels[array_index] = voxel_bytes[j + 3];
-            #ifdef zoxel_debug_vox_read
+#ifdef zoxel_debug_vox_read
             if (j < 4 * 32) {
                 zoxel_log("        - voxel [%i] [%ix%ix%i] [%i]\n", j, position.x, position.y, position.z, chunk.xyzi.voxels[array_index]);
             }
-            #endif
+#endif
         }
         free(voxel_bytes);
         vox->chunks[i] = chunk;
@@ -243,9 +246,9 @@ int read_vox(const char* filename, vox_file *vox) {
             return EXIT_FAILURE;
         }
         int colors_length = vox->palette.chunk_content / 4;
-        #ifdef zoxel_debug_vox_read
-            zoxel_log("vox->palette.chunk_content: %i\n", colors_length);
-        #endif
+#ifdef zoxel_debug_vox_read
+        zox_log("vox->palette.chunk_content: %i\n", colors_length);
+#endif
         vox->palette.values = malloc(sizeof(color) * colors_length);
         vox->palette.values_length = colors_length;
         vox->palette.values_rgb = malloc(sizeof(color_rgb) * colors_length);
@@ -267,9 +270,9 @@ int read_vox(const char* filename, vox_file *vox) {
             #endif
         }
     } else {
-        #ifdef zoxel_debug_vox_read
-            zoxel_log("Using default palette!\n");
-        #endif
+#ifdef zoxel_debug_vox_read
+        zox_logg(" + using default palette\n")
+#endif
         vox->palette.values = malloc(sizeof(unsigned int) * 256);
         memcpy(vox->palette.values, default_palette, sizeof(unsigned int) * 256);
         int colors_length = 256;
@@ -282,9 +285,9 @@ int read_vox(const char* filename, vox_file *vox) {
         }
 
     }
-    #ifdef zoxel_debug_vox_read
-    zoxel_log("Success reading vox [%s]\n", filename);
-    #endif
+#ifdef zoxel_debug_vox_read
+    zox_log(" + success reading vox [%s]\n", filename)
+#endif
     // Close the vox file when we're done
     fclose(file);
     return EXIT_SUCCESS;
