@@ -25,7 +25,7 @@ void load_vox_file(int index, const char* filename) {
     char* vox_path = concat_file_path(resources_path, filename);
     if (read_vox(vox_path, &loaded_vox) == EXIT_SUCCESS) vox_files[index] = loaded_vox;
     else {
-        // vox_files[index] = loaded_vox;
+        vox_files[index] = loaded_vox;
         zox_log(" ! failed loading file %s\n", vox_path)
     }
     free(vox_path);
@@ -39,22 +39,3 @@ void load_vox_files() {
     load_vox_file(2, vox_file_slime);
     load_vox_file(3, vox_file_mrpenguin);
 }
-
-    /*vox_file chicken_vox;
-    char* chicken_vox_path = concat_file_path(resources_path, vox_file_chicken);
-    if (read_vox(chicken_vox_path, &chicken_vox) == EXIT_SUCCESS) {
-        vox_files[0] = chicken_vox;
-    }
-    free(chicken_vox_path);
-    vox_file vox_slime;
-    char* slime_vox_path = concat_file_path(resources_path, vox_file_slime);
-    if (read_vox(slime_vox_path, &vox_slime) == EXIT_SUCCESS) {
-        vox_files[1] = vox_slime;
-    }
-    free(slime_vox_path);
-    vox_file vox_mrpenguin;
-    char* mrpenguin_vox_path = concat_file_path(resources_path, vox_file_mrpenguin);
-    if (read_vox(mrpenguin_vox_path, &vox_mrpenguin) == EXIT_SUCCESS) {
-        vox_files[2] = vox_mrpenguin;
-    }
-    free(mrpenguin_vox_path);*/

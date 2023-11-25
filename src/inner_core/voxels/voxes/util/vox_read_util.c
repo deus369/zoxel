@@ -36,7 +36,7 @@ int read_vox(const char* filename, vox_file *vox) {
     zox_log(" + loading file [%s]\n", filename)
 #endif
     // Open the vox file for reading
-    FILE *file = fopen(filename, "r");
+    FILE *file = fopen(filename, "rb"); // "r"
     // Check if the file was opened successfully
     if (!file) {
         // Print an error message and exit if the file could not be opened
