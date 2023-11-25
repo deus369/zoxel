@@ -38,13 +38,13 @@ char *resources_path = NULL;
             closedir(dir);
             rmdir(path);
         } else {
-            zoxel_log("Error opening directory %s: %s\n", path, strerror(errno));
+            zox_log("Error opening directory %s: %s\n", path, strerror(errno))
         }
     }
 
     unsigned char create_directory(const char* path) {
         if (mkdir(path, 0777) != 0) {
-            zoxel_log(" !!! directory failed to create [%s]\n", path);
+            zox_log(" !!! directory failed to create [%s]\n", path)
             return 1;
         } else {
             return 0;
@@ -52,13 +52,13 @@ char *resources_path = NULL;
     }
 
     AAssetManager* get_asset_manager() {
-        #ifdef zoxel_using_sdl
+#ifdef zoxel_using_sdl
             JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
             jobject activity = (jobject) SDL_AndroidGetActivity();
-        #else
+#else
             JNIEnv* env = NULL;
             jobject activity = NULL;
-        #endif
+#endif
         jclass activityClass = (*env)->GetObjectClass(env, activity);
         jmethodID methodID = (*env)->GetMethodID(env, activityClass, "getAssets", "()Landroid/content/res/AssetManager;");
         jobject assetManager = (*env)->CallObjectMethod(env, activity, methodID);
@@ -137,13 +137,13 @@ void debug_base_path(const char *base_path) {
     DIR *dir;
     struct dirent *entry;
     if ((dir = opendir(base_path)) != NULL) {
-        zoxel_log(" > directories and files in [%s]\n", base_path);
+        zox_log(" > directories and files in [%s]\n", base_path)
         while ((entry = readdir(dir)) != NULL) zox_log("     + [%s]\n", entry->d_name)
         closedir(dir);
     } else zox_log(" - failed to open directory [%s]\n", base_path)
 }
 
-char* concat_file_path(char* resources_path, char* file_path) {
+char* concat_file_path(const char* resources_path, const char* file_path) {
     if (resources_path == NULL || file_path == NULL) return NULL;
     char* full_file_path = malloc(strlen(resources_path) + strlen(file_path) + 1);
     strcpy(full_file_path, resources_path);
@@ -156,7 +156,7 @@ char* get_full_file_path(const char* filepath) {
     strcpy(fullpath, data_path);
     strcat(fullpath, filepath);
 #ifdef zoxel_debug_pathing
-    zoxel_log("fullpath: %s\n", fullpath);
+    zox_log("fullpath: %s\n", fullpath)
 #endif
     return fullpath;
 }
@@ -216,9 +216,9 @@ unsigned char initialize_pathing() {
 #endif
         DIR* dir2 = opendir(resources_path);
         if (dir2) {
-            #ifdef zoxel_debug_pathing
-                zoxel_log("     + resources path is [%s]\n", resources_path);
-            #endif
+#ifdef zoxel_debug_pathing
+            zox_log("     + resources path is [%s]\n", resources_path)
+#endif
             closedir(dir2);
         } else {
             zoxel_log(" !!! resources_path does not exist [%s]\n", resources_path);

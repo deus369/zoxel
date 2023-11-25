@@ -1,4 +1,3 @@
-const double frame_rate_update_speed = 1.0; // 1.0;
 double time_begin, zox_current_time, zox_delta_time = 0.0;
 double frames_per_second_time = 0.0;
 int frames_count, frames_per_second = 0;

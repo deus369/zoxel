@@ -1,7 +1,7 @@
 // Here? select which zoxel modules I shall use?
 
 // to fix windows build
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__ANDROID__)
     #define zox_sdl_import_file_only
 #endif
 #define zox_print_opengl

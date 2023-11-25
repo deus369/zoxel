@@ -1,5 +1,5 @@
 void UserStatbarSystem(ecs_iter_t *it) {
-    unsigned char changed = 0;
+    unsigned char system_updated = 0;
     const UserStatLink *userStatLinks = ecs_field(it, UserStatLink, 1);
     ElementBar *elementBars = ecs_field(it, ElementBar, 2);
     for (int i = 0; i < it->count; i++) {
@@ -8,12 +8,13 @@ void UserStatbarSystem(ecs_iter_t *it) {
         ElementBar *elementBar = &elementBars[i];
         const StatValue *statValue = zox_get(userStatLink->value, StatValue)
         const StatValueMax *statValueMax = zox_get(userStatLink->value, StatValueMax)
-        float new_value = statValue->value / statValueMax->value;
+        const float new_value = statValue->value / statValueMax->value;
         if (elementBar->value != new_value) {
             elementBar->value = new_value;
-            changed = 1;
-            // zoxel_log("     - new elementBar value is: %f\n", elementBar->value);
+            system_updated = 1;
         }
     }
-    if (!changed) ecs_query_skip(it);
+#ifndef zoxel_on_windows
+    if (!system_updated) ecs_query_skip(it);
+#endif
 } zox_declare_system(UserStatbarSystem)

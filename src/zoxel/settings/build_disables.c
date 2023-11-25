@@ -5,7 +5,7 @@
 // #define zox_disable_io
 
 // for web build
-#define zox_disable_module_networking
+// #define zox_disable_module_networking
 // #define zox_disable_terrain_textures // this kinda breaks
 // #define zox_disable_render_element3D
 

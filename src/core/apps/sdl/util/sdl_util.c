@@ -24,21 +24,21 @@ void print_sdl() {
 unsigned char opengl_es_supported() {
     unsigned char is_supported = 0;
     int num_render_drivers = SDL_GetNumRenderDrivers();
-    #ifdef zoxel_debug_opengl
-        zoxel_log(" > found [%i] render drivers\n", num_render_drivers);
-    #endif
+#ifdef zoxel_debug_opengl
+    zox_log(" > found [%i] render drivers\n", num_render_drivers)
+#endif
     for (int i = 0; i < num_render_drivers; i++) {
         SDL_RendererInfo info;
         SDL_GetRenderDriverInfo(i, &info);
         if (strstr(info.name, "opengles")) {
-            #ifdef zoxel_debug_opengl
-                zoxel_log("     + render driver [%s]\n", info.name);
-            #endif
+#ifdef zoxel_debug_opengl
+            zox_log("     + render driver [%s]\n", info.name)
+#endif
             is_supported = 1;
         } else {
-            #ifdef zoxel_debug_opengl
-                zoxel_log("     - render driver [%s]\n", info.name);
-            #endif
+#ifdef zoxel_debug_opengl
+            zox_log("     - render driver [%s]\n", info.name)
+#endif
         }
     }
     return is_supported;
@@ -51,14 +51,14 @@ void set_sdl_attributes() {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, sdl_gl_minor);
     if (override_opengl_es) {
         if (opengl_es_supported()) {
-            #ifdef zoxel_debug_opengl
-                zoxel_log(" + GL_ES detected\n");
-            #endif
+#ifdef zoxel_debug_opengl
+            zox_logg(" + GL_ES detected\n")
+#endif
             SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
         } else {
-            #ifdef zoxel_debug_opengl
-                zoxel_log(" - GL_ES unavilable\n");
-            #endif
+#ifdef zoxel_debug_opengl
+            zox_logg(" - GL_ES unavilable\n")
+#endif
             SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         }
     }
@@ -71,19 +71,19 @@ int2 get_sdl_screen_size() {
     screen_size.x = displayMode.w;
     screen_size.y = displayMode.h;
     if (!(screen_size.x > 0 && screen_size.x < 22000 && screen_size.y > 0 && screen_size.y < 22000)) {
-        zoxel_log(" - screen size is wrong [%ix%i]\n", screen_size.x, screen_size.y);
-        zoxel_log(" > setting to 480x480\n");
+        zox_log(" - screen size is wrong [%ix%i]\n", screen_size.x, screen_size.y)
+        zox_logg(" > setting to 480x480\n")
         return (int2) { 480, 480 };
     }
     return screen_size;
 }
 
 int2 get_current_screen_size() {
-    #ifdef zoxel_on_web
-        return get_webasm_screen_size();
-    #else
-        return get_sdl_screen_size();
-    #endif
+#ifdef zoxel_on_web
+    return get_webasm_screen_size();
+#else
+    return get_sdl_screen_size();
+#endif
 }
 
 void set_screen_size() {
@@ -110,7 +110,7 @@ void sdl_set_fullscreen(SDL_Window* window, unsigned char is_fullscreen) {
 void sdl_toggle_fullscreen(ecs_world_t *world, SDL_Window* window) {
     unsigned char is_fullscreen = SDL_GetWindowFlags(window) & sdl_fullscreen_byte;
     if (!is_fullscreen) {
-        zoxel_log(" > setting to fullscreen\n");
+        zox_logg(" > setting to fullscreen\n")
         on_viewport_resized(world, get_current_screen_size());
         SDL_SetWindowSize(window, screen_dimensions.x, screen_dimensions.y);
     }
@@ -119,11 +119,11 @@ void sdl_toggle_fullscreen(ecs_world_t *world, SDL_Window* window) {
 
 void print_supported_renderers() {
     int num_render_drivers = SDL_GetNumRenderDrivers();
-    printf(" > found [%i] render drivers\n", num_render_drivers);
+    zox_log(" > found [%i] render drivers\n", num_render_drivers);
     for (int i = 0; i < num_render_drivers; i++) {
         SDL_RendererInfo info;
         SDL_GetRenderDriverInfo(i, &info);
-        printf("     + render driver [%s]\n", info.name);
+        zox_log("     + render driver [%s]\n", info.name)
     }
 }
 
@@ -143,7 +143,7 @@ int initialize_sdl_video() {
 #ifdef zoxel_include_vulkan
         if (is_using_vulkan) {
             if (SDL_Vulkan_LoadLibrary(NULL) != 0) {
-                zoxel_log(" ! failed to load vulkan library [%s]\n", SDL_GetError());
+                zox_log(" ! failed to load vulkan library [%s]\n", SDL_GetError())
                 return EXIT_FAILURE;
             }
         }
@@ -164,23 +164,23 @@ SDL_Window* create_sdl_window(unsigned char flags) {
 SDL_Window* spawn_sdl_window() {
     unsigned char is_resizeable = 1;
     unsigned long window_flags = SDL_WINDOW_OPENGL;
-    #ifdef zoxel_on_android
-        window_flags = SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE; // SDL_WINDOW_FULLSCREEN_DESKTOP; //  | SDL_WINDOW_HIDDEN;
-        is_resizeable = 0;
-    #endif
+#ifdef zoxel_on_android
+    window_flags = SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE; // SDL_WINDOW_FULLSCREEN_DESKTOP; //  | SDL_WINDOW_HIDDEN;
+    is_resizeable = 0;
+#endif
     if (is_using_vulkan) {
         window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_VULKAN;
-        zoxel_log(" > windows_flags is set with [SDL_WINDOW_VULKAN]\n");
+        zox_logg(" > windows_flags is set with [SDL_WINDOW_VULKAN]\n")
     }
     SDL_Window* window = create_sdl_window(window_flags);
     if (window == NULL && is_using_vulkan) {
-        zoxel_log(" ! vulkan is not supported on this device, defaulting to [SDL_WINDOW_OPENGL]\n");
+        zox_logg(" ! vulkan is not supported on this device, defaulting to [SDL_WINDOW_OPENGL]\n")
         is_using_vulkan = 0;
         window_flags = SDL_WINDOW_OPENGL;
         window = create_sdl_window(window_flags);
     }
     if (window == NULL) {
-        zoxel_log(" ! failed to create sdl window [%s]\n", SDL_GetError());
+        zox_log(" ! failed to create sdl window [%s]\n", SDL_GetError())
         return window;
     }
     SDL_SetWindowResizable(window, is_resizeable);
@@ -188,9 +188,9 @@ SDL_Window* spawn_sdl_window() {
         SDL_GL_SwapWindow(window);
         SDL_GL_SetSwapInterval(vsync);
     }
-    #if !defined(zoxel_on_web) && !defined(zoxel_on_android)
-        sdl_set_fullscreen(window, fullscreen);
-    #endif
+#if !defined(zoxel_on_web) && !defined(zoxel_on_android)
+    sdl_set_fullscreen(window, fullscreen);
+#endif
     return window;
 }
 
@@ -223,11 +223,11 @@ unsigned char create_main_window(ecs_world_t *world) {
         if (main_gl_context == NULL) running = 0;
         return app_success;
     } else {
-        #ifdef zoxel_include_vulkan
-            return create_main_window_vulkan(world);
-        #else
-            return EXIT_FAILURE;
-        #endif
+#ifdef zoxel_include_vulkan
+        return create_main_window_vulkan(world);
+#else
+        return EXIT_FAILURE;
+#endif
     }
 }
 
@@ -242,7 +242,7 @@ void update_sdl(ecs_world_t *world) {
         input_extract_from_sdl(world, event, screen_dimensions);
         int eventType = event.type;
         if (eventType == SDL_QUIT) {
-            zoxel_log(" > window was quit\n");
+            zox_logg(" > window was quit\n")
             engine_end();
         } else if (eventType == SDL_WINDOWEVENT) {
             if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) { // handles application resizing
@@ -250,10 +250,10 @@ void update_sdl(ecs_world_t *world) {
                 int2 new_screen_size = (int2) { event.window.data1, event.window.data2 };
                 on_viewport_resized(world, new_screen_size);
             } else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) {
-                zoxel_log(" > window was minimized\n");
+                zox_logg(" > window was minimized\n")
                 opengl_delete_resources(world);
             } else if (event.window.event == SDL_WINDOWEVENT_RESTORED) {
-                zoxel_log(" > window was restored\n");
+                zox_logg(" > window was restored\n")
                 opengl_load_resources(world);
             }
         }

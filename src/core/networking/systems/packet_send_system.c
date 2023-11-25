@@ -24,7 +24,7 @@ void PacketSendSystem(ecs_iter_t *it) {
         send_buffer_2[1] = strlen(send_text);
         unsigned char packet_size_2 = 2 + send_buffer_2[1];
         unsigned char packets_send_count = 1 + rand() % test_send_packet_length;
-        zoxel_log(" > sending [%i] packets to [%i.%i.%i.%i:%i]\n", packets_send_count, targetNetAddress->value.x, targetNetAddress->value.y, targetNetAddress->value.z, targetNetAddress->value.w, targetNetPort->value);
+        zox_log(" > sending [%i] packets to [%i.%i.%i.%i:%i]\n", packets_send_count, targetNetAddress->value.x, targetNetAddress->value.y, targetNetAddress->value.z, targetNetAddress->value.w, targetNetPort->value)
         // test sending multiple times
         for (int j = 0; j < packets_send_count; j++) {
             if (rand() % 100 >= 70) {

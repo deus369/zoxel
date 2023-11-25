@@ -14,11 +14,6 @@ void anchor_element_position2D(int2 *position, const float2 position_anchor, con
     position->y += (window_size.y / 2.0f) - window_size.y * position_anchor.y;
 }
 
-// #ifdef zoxel_on_android
-//     if (anchor.y == 1) {
-//         position->y -= android_header_size;
-//     }
-// #endif
 /*if (anchor.x == 0) {
     position->x += window_size.x / 2.0f;
 }

@@ -7,20 +7,20 @@ unsigned char is_steam_deck() {
 }
 
 void debug_platform() {
-    #if defined(zoxel_on_android)
-        zoxel_log(" > platform [android]\n");
-    #elif defined(zoxel_on_windows)
-        zoxel_log(" > platform [windows]\n");
-    #elif defined(zoxel_on_web)
-        zoxel_log(" > platform [web]\n");
-    #elif defined(zoxel_on_linux)
-        zoxel_log(" > platform [linux]\n");
-    #endif
-    #if defined(zoxel_on_steamdeck)
-        zoxel_log(" > platform [steamdeck]\n");
-    #endif
+#if defined(zoxel_on_android)
+    zox_logg(" > platform [android]\n")
+#elif defined(zoxel_on_windows)
+    zox_logg(" > platform [windows]\n")
+#elif defined(zoxel_on_web)
+    zox_logg(" > platform [web]\n")
+#elif defined(zoxel_on_linux)
+    zox_logg(" > platform [linux]\n")
+#endif
+#if defined(zoxel_on_steamdeck)
+    zox_logg(" > platform [steamdeck]\n")
+#endif
     if (is_steam_deck()) {
-        zoxel_log(" > platform [steamdeck] (check 2)\n");
+        zox_logg(" > platform [steamdeck] (check 2)\n")
     }
 }
 

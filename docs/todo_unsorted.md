@@ -1,12 +1,12 @@
 ## web build
 
-- [ ] Fix terrain rendering not working
+- [ ] Fix terrain rendering not showing visually, opengl errors?
 - [ ] Fix EM_JS functions not working anymore (platforms/util/webasm_util.c)
 - [ ] Fix Pipeline, 'make push-web' should push to a zox-web git repo the latest build
 
 ## cross compile to windows
 
-- [ ] get a 'make build/zoxel.exe' build working
+- [x] get a 'make build/zoxel.exe' build working
 
 ## steamdeck steam
 

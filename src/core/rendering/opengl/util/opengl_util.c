@@ -1,4 +1,4 @@
-unsigned char has_gl_extension(const char *extensions, const char *target) {
+unsigned char has_gl_extension(const GLubyte *extensions, const char *target) {
     const char *token = strtok((char *)extensions, " ");
     while (token != NULL) {
         if (strcmp(token, target) == 0) return 1; // Extension found

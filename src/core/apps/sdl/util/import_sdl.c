@@ -13,11 +13,7 @@
 #elif defined(zox_sdl_import_file_only)
     #include <SDL.h>
 #else
-    #ifdef zoxel_on_android
-        #include <SDL.h>
-    #else
-        #include <SDL2/SDL.h>
-    #endif
+    #include <SDL2/SDL.h>
 #endif
 
 #ifdef zoxel_include_vulkan
@@ -27,9 +23,7 @@
     // #include <wayland-client.h>
 #endif
 
-#ifdef zoxel_on_android
-    #include <SDL_image.h>
-#elif defined(zox_sdl_import_file_only)
+#if defined(zox_sdl_import_file_only)
     #include <SDL_image.h>
 #else
     #include <SDL2/SDL_image.h>

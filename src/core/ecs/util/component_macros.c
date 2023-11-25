@@ -28,8 +28,7 @@ typedef struct {\
 #define zox_entity_component(name) zox_component(name, ecs_entity_t)
 
 // todo: redo these hooks as a system
-#define zox_define_component_w_dest(name) zox_define_component(name)\
-    ecs_set_hooks(world, name, { .dtor = ecs_dtor(name) });
+#define zox_define_component_w_dest(name) zox_define_component(name) ecs_set_hooks(world, name, { .dtor = ecs_dtor(name) });
 
 #define zox_define_destruction(name) ecs_set_hooks(world, name, { .dtor = ecs_dtor(name) });
 

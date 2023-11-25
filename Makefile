@@ -1,6 +1,8 @@
 # zoxel makefile: [linux, web, android, windows]
 #	sudo apt install make && make install-required
 
+# todo: use a check for library and simply warn user here to make platform-sdk
+
 # determine the operating system #
 ifeq ($(OS),Windows_NT)
     SYSTEM := Windows
@@ -254,6 +256,10 @@ run-windows-debug:
 # todo: copy resources and bin dll's into the folder build/windows
 ifneq ($(SYSTEM),Windows)
 $(target_windows): $(SRCS)
+	@echo " > building windows in linux"
+	cd build && $(make_windows)
+
+windows:
 	@echo " > building windows in linux"
 	cd build && $(make_windows)
 endif

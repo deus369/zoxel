@@ -65,7 +65,7 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                 if (keyboard->x.pressed_this_frame) toggle_ui(world, &fps_display, &spawn_fps_display);
 #ifndef zox_on_startup_spawn_main_menu
-                else if (keyboard->g.pressed_this_frame) {
+                if (keyboard->g.pressed_this_frame) {
                     const int edge_buffer = 8 * default_ui_scale;
                     float2 window_anchor = { 0.0f, 1.0f };
                     int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
@@ -74,7 +74,7 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
                 }
 #endif
 #ifdef test_particles2D
-                else if (keyboard->f.is_pressed) Particle2DSpawnSystem(world, float2_zero, particleSpawnCount);
+                if (keyboard->f.is_pressed) Particle2DSpawnSystem(world, float2_zero, particleSpawnCount);
 #endif
             }
         }

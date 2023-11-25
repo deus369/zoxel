@@ -55,9 +55,9 @@ zox_define_tag(GameDebugLabel)
 zox_define_component(QuadsCount)
 zox_define_component(FPSDisplayTicker)
 // zoxel_define_systems
-zox_system(FpsDisplaySystem, EcsOnUpdate, [out] FPSDisplayTicker, [out] ZextDirty, [out] ZextData)
-zox_system(QuadsLabelSystem, EcsOnUpdate, [none] QuadsCountLabel, [out] QuadsCount, [out] ZextDirty, [out] ZextData)
-zox_system(GameDebugLabelSystem, EcsOnUpdate, [none] GameDebugLabel, [out] ZextDirty, [out] ZextData)
+zox_system(FpsDisplaySystem, EcsPostUpdate, [none] FPSDisplay, [out] ZextData, [out] ZextDirty, [out] FPSDisplayTicker)
+zox_system(QuadsLabelSystem, EcsPostUpdate, [none] QuadsCountLabel, [out] QuadsCount, [out] ZextDirty, [out] ZextData)
+zox_system(GameDebugLabelSystem, EcsPostUpdate, [none] GameDebugLabel, [out] ZextDirty, [out] ZextData)
 zoxel_end_module(GameUI)
 
 #endif
