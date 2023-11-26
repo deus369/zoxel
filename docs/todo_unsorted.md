@@ -10,6 +10,8 @@
 
 ## steamdeck steam
 
+- [x] install_sdk for steamworks
+- [ ] add steamworks to zoxel compilation with a toggle option
 - [ ] 'make is_steamworks' check if steamworks is in build
 - [ ] make toggle_steamworks - add steamworks includes to build settings?
 - [ ] test achievement for killing first npc - [noob] Vox Slayer! You have started your journey into the path of carnage.
