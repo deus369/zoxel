@@ -2,6 +2,7 @@
 #include "../../include/steam/steam_api.h"
 #include "steamwrapper.c"
 #include <iostream>  // For demonstration purposes
+#include <cstdint>  // Include this header for uint64_t
 
 unsigned char initialize_steam() {
     return SteamAPI_Init();
@@ -23,11 +24,6 @@ void show_leaderboard() {
     SteamUserStats()->FindOrCreateLeaderboard("Your_Leaderboard_Name", k_ELeaderboardSortMethodDescending, k_ELeaderboardDisplayTypeNumeric);
     SteamUserStats()->DownloadLeaderboardEntries(leaderboardHandle, k_ELeaderboardDataRequestGlobal, 1, 10);*/
 
-}
-
-void unlock_achievement(const char* achievementID) {
-    SteamUserStats()->SetAchievement(achievementID);
-    SteamUserStats()->StoreStats();
 }
 
 void save_to_cloud() {
@@ -75,13 +71,33 @@ int get_friends_count() {
     return SteamFriends()->GetFriendCount(flags);
 }
 
-uint64 get_friend_id(int index) {
+uint64_t get_friend_id(int index) {
     int flags = k_EFriendFlagImmediate; // k_EFriendFlagAll
     CSteamID steamID = SteamFriends()->GetFriendByIndex(index, flags);
     return steamID.ConvertToUint64();
 }
 
-const char* get_friend_name(uint64 steam_id) {
-    CSteamID steam_id2 = CSteamID(steam_id);
+const char* get_friend_name(uint64_t steam_id) {
+    CSteamID steam_id2 = CSteamID(static_cast<uint64>(steam_id));
     return SteamFriends()->GetFriendPersonaName(steam_id2);
 }
+
+const char* get_friend_nickname(uint64_t steam_id) {
+    CSteamID steam_id2 = CSteamID(static_cast<uint64>(steam_id));
+    return SteamFriends()->GetPlayerNickname(steam_id2);
+}
+
+
+// achievements
+
+void unlock_achievement(const char* achievement_name) {
+    // const char* achievement_name = "ACHIEVEMENT_NAME";
+    // Unlock the achievement using Steamworks API
+    SteamUserStats()->SetAchievement(achievement_name);
+    SteamUserStats()->StoreStats();
+}
+
+/*void unlock_achievement(const char* achievementID) {
+    SteamUserStats()->SetAchievement(achievementID);
+    SteamUserStats()->StoreStats();
+}*/

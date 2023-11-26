@@ -16,3 +16,14 @@ gcc $test_wrapper_c $wrapper_c -o $test_output -Iinclude/steam -Llib -lsteam_api
 
 # runs it
 ./$test_output
+
+# achievements
+# go to https://partner.steamgames.com/apps/achievements/<game_id>
+#   zoxel is 1412400
+#   test achievement is Zoxeller
+
+# upload directly here:
+# https://partner.steamgames.com/apps/depotuploads/1412400
+# make sure to hit commit before publishing changes
+# check builds > https://partner.steamgames.com/apps/builds/1412400
+# there is a depots includled collumn
