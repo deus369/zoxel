@@ -475,6 +475,14 @@ steam-upload-default:
 install-steam-deck-required:
 	bash bash/steam/install_on_steam_deck.sh
 
+# itch io #
+
+itch-sdk:
+	bash bash/itch/install_butler.sh
+
+itch-upload:
+	bash bash/itch/upload.sh
+
 # lost ones #
 
 help:
@@ -543,6 +551,9 @@ help:
 	@echo "    steam-upload		uploads steam to release (beta) branch"
 	@echo "    steam-upload-default	uploads steam to main branch"
 	@echo "    install-steam-deck-required	installs steamdeck required libs"
+	@echo "  > [itchio]"
+	@echo "    itch-sdk			installs itch io butler"
+	@echo "    itch-upload			uploads builds to butler"
 
 # todo: clean more
 # ignore resources directory and gitignore in build?
