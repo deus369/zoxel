@@ -440,6 +440,19 @@ play:
 
 # steamworks #
 
+steam-all:
+	@echo "	> 1 building linux"
+	bash bash/steam/build_wrapper.sh
+	cd build && $(make_release) && cd ..
+	@echo "	> 2 building windows"
+	bash bash/steam/build_wrapper_windows.sh
+	cd build && $(make_windows) && cd ..
+	@echo "	> 3 packaging"
+	bash bash/steam/package.sh
+	@echo "	> 4 upload build/steam_export.zip"
+	bash bash/steam/upload_package.sh
+	# bash bash/steam/upload_package.sh --default
+
 steam:
 	bash bash/steam/build_wrapper.sh
 
@@ -455,17 +468,8 @@ steam-package:
 steam-upload:
 	bash bash/steam/upload_package.sh
 
-steam-build-all:
-	@echo "	> 1 building linux"
-	bash bash/steam/build_wrapper.sh
-	cd build && $(make_release) && cd ..
-	@echo "	> 2 building windows"
-	bash bash/steam/build_wrapper_windows.sh
-	cd build && $(make_windows) && cd ..
-	@echo "	> 3 packaging"
-	bash bash/steam/package.sh
-	@echo "	> 4 upload build/steam_export.zip"
-	bash bash/steam/upload_package.sh
+steam-upload-default:
+	bash bash/steam/upload_package.sh --default
 
 # install libs needed on steamdeck for builds there (steam os)
 install-steam-deck-required:
@@ -476,7 +480,7 @@ install-steam-deck-required:
 help:
 	@echo "zoxel -> an open source voxel engine"
 	@echo "	latest @ https://codeberg.org/deus/zoxel"
-	@echo "  > linux & windows"
+	@echo "  > [linux]"
 	@echo "  make <target>"
 	@echo "    play			runs a play button"
 	@echo "    install-play		installs a play button"
@@ -488,14 +492,11 @@ help:
 	@echo "    run-dev			runs $(target_dev)"
 	@echo "    run-dev-debug		runs valgrind $(target_dev)"
 	@echo "    run-dev-profiler		runs $(target_dev) --profiler"
-	@echo "  > windows"
-	@echo "    windows-sdk		installs tools for windows cross compilation"
-	@echo "    build/zoxel.exe			builds windows release"
-	@echo "  > web"
+	@echo "  > [web]"
 	@echo "    install-web-sdk		installs tools for web build"
 	@echo "    $(target_web)		builds zoxel-web"
 	@echo "    run-web			runs $(target_web)"
-	@echo "  > android"
+	@echo "  > [android]"
 	@echo "    install-android-sdk		installs tools for android build"
 	@echo "    android			builds & runs android release"
 	@echo "    android-create-key		created android keystore"
@@ -505,36 +506,42 @@ help:
 	@echo "    android-dev			builds & runs android debug"
 	@echo "    android-dev-debug		builds & runs android debug with logcat"
 	@echo "    debug-android		debugs running android game"
-	@echo "  > setup"
+	@echo "  > [setup]"
 	@echo "    make $(flecs_target)	builds flecs"
 	@echo "    install-required		installs required libraries for debian systems"
 	@echo "    install-sdl			installs sdl"
 	@echo "    install			installs zoxel"
 	@echo "    uninstall			inuninstalls zoxel"
 	@echo "    clean			removes all build files"
-	@echo "  > util"
+	@echo "  > [util]"
 	@echo "    count			counts total lines in all source"
 	@echo "    list-systems		lists all found zoxel systems in a module"
 	@echo "    create-system		creates a new system in a module"
 	@echo "    zip-build			zips zoxel build and resources"
 	@echo "    github			opens zoxel on github"
 	@echo "    codeberg			opens zoxel on codeberg"
-	@echo "  > flecs"
+	@echo "  > [flecs]"
 	@echo "    check-flecs			checks flecs releases"
 	@echo "    install-flecs		installs latest flecs (3.2.6)"
 	@echo "    build/libflecs.a		builds flecs library"
 	@echo "    remove-flecs		removes flecs library"
 	@echo "    get-flecs-version		get a flecs by version"
 	@echo "    get-nightly-flecs		gets latest flecs"
-	@echo "  > git"
+	@echo "  > [git]"
 	@echo "    git-pull			pulls latest git"
 	@echo "    git-push			pushes git updates (requires ssh access)"
 	@echo "    git-keys			creates a ssh key to add to git servers"
-	@echo "  > steam"
+	@echo "  > [windows]"
+	@echo "    windows-sdk			installs tools for windows cross compilation"
+	@echo "    build/zoxel.exe		builds windows release"
+	@echo "  > [steam]"
+	@echo "    steam-all			builds both wrappers, builds and uploads them to beta"
 	@echo "    steam			builds steam wrapper lib/libsteam_wrapper.so"
 	@echo "    steam-windows		[todo] builds steam wrapper lib/libsteam_wrapper.dll"
 	@echo "    steam-sdk			installs steamworks sdk from zip ~/Downloads/steamworks_sdk.zip"
-	@echo "    steam-package	packages steam zip for upload"
+	@echo "    steam-package		packages steam zip for upload"
+	@echo "    steam-upload		uploads steam to release (beta) branch"
+	@echo "    steam-upload-default	uploads steam to main branch"
 	@echo "    install-steam-deck-required	installs steamdeck required libs"
 
 # todo: clean more

@@ -19,7 +19,9 @@ install_first_library "glew"
 
 # new build folder
 echo "> creating [build/windows]"
-mkdir build/windows
+if [ ! -d build/windows ]; then
+    mkdir build/windows
+fi
 
 echo "> copying [bin/*.dll]"
 cp -r bin/*.dll build/windows

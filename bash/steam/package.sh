@@ -6,7 +6,7 @@
 #echo " > copying [bash/steam/real_steam_appid.txt] contents to build/steam_export/steam_appid.txt"
 #echo " > zipping contents"
 
-steam_depot_dir="build/steam_depot"
+steam_depot_dir="build/steam_export"
 steam_depot_zip="build/steam_export.zip"
 windows_dir="build/windows"
 linux_dir="build"
@@ -25,9 +25,7 @@ else
     echo " > no last [$steam_depot_dir]"
 fi
 
-cd $windows_dir && zip -r ../../$steam_depot_zip * && cd ../..
-cd $linux_dir && zip -r ../$steam_depot_zip zoxel && cd ..
-
+# first make a directory
 echo " > creating [$steam_depot_dir]"
 mkdir $steam_depot_dir
 # Copy files from the Windows directory
@@ -37,9 +35,13 @@ cp -r $windows_dir/* $steam_depot_dir/
 echo " > copying 'zoxel' directory from Linux directory"
 cp -r $linux_dir/zoxel $steam_depot_dir/
 
+echo " > copying [lib/*.so] contents"
+cp lib/*.so $steam_depot_dir/
+echo " > copying [lib/*.dll contents"
+cp lib/*.dll $steam_depot_dir/
+
+# next zip them
+cd $windows_dir && zip -r ../../$steam_depot_zip * && cd ../..
+cd $linux_dir && zip -r ../$steam_depot_zip zoxel && cd ..
+
 echo " > Copying complete. Your files await deployment, My Lord."
-
-# echo " > todo: opening steamworks upload link"
-
-# zip -r $steam_depot_zip $windows_dir
-# zip $steam_depot_zip $linux_file

@@ -1,7 +1,11 @@
 #ifndef zoxel_game
 #define zoxel_game
 
-const char *game_name = "zoxel2";
+#ifndef zox_beta
+const char *game_name = "zoxel";
+#else
+const char *game_name = "zoxel beta bra";
+#endif
 #ifdef zoxel_ui
 #include "util/zoxel_ui.c"
 #endif
