@@ -1,5 +1,6 @@
 int engine_begin(int argc, char* argv[]) {
     clear_zoxel_log();
+    intialize_game_store();
     return begin_core(argc, argv);
 }
 
@@ -8,6 +9,7 @@ void on_engine_end(ecs_world_t *world) {
 #ifdef zoxel_voxels
     dispose_vox_files();
 #endif
+    dispose_game_store();
 }
 
 void engine_update() {

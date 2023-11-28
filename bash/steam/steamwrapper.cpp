@@ -1,8 +1,9 @@
 // g++ -shared -o lib/libsteam_wrapper.so steam_wrapper.cpp -Iinclude/steam -Llib -lsteam_api
 #include "../../include/steam/steam_api.h"
 #include "steamwrapper.c"
-#include <iostream>  // For demonstration purposes
-#include <cstdint>  // Include this header for uint64_t
+#include <stdexcept>
+// #include <iostream>  // For demonstration purposes
+// #include <cstdint>  // Include this header for uint64_t
 
 unsigned char initialize_steam() {
     return SteamAPI_Init();
@@ -12,9 +13,21 @@ void shutdown_steam() {
     SteamAPI_Shutdown();
 }
 
+CSteamID get_steam_id() {
+    CSteamID steamID = SteamUser()->GetSteamID();
+    return steamID;
+}
+
+unsigned char is_logged_on() {
+    return SteamUser()->BLoggedOn();
+}
+
 void authenticate_user() {
     // SteamUser()->LogOn(new CSteamID(), k_EAccountTypeIndividual);
-    // Handle the callbacks to check when authentication is complete.
+    // SteamUser()->LogOn(get_steam_id(), k_EAccountTypeIndividual);
+    if (!is_logged_on()) {
+        // SteamUser()->LogOnAnonymous();
+    }
 }
 
 void show_leaderboard() {
@@ -51,11 +64,6 @@ void enable_voice_chat() {
     // Implement the necessary voice chat handling.
 }
 
-CSteamID get_steam_id() {
-    CSteamID steamID = SteamUser()->GetSteamID();
-    return steamID;
-}
-
 const char* get_steam_user_name() {
     // Get the SteamID of the currently logged-in user
     CSteamID steamID = get_steam_id();
@@ -90,11 +98,16 @@ const char* get_friend_nickname(uint64_t steam_id) {
 
 // achievements
 
-void unlock_achievement(const char* achievement_name) {
+unsigned char unlock_achievement(const char* achievement_name) {
     // const char* achievement_name = "ACHIEVEMENT_NAME";
     // Unlock the achievement using Steamworks API
-    SteamUserStats()->SetAchievement(achievement_name);
-    SteamUserStats()->StoreStats();
+    try {
+        // SteamUserStats()->SetAchievement(achievement_name);
+        // SteamUserStats()->StoreStats();
+        return 1;
+    } catch (const std::exception& e) {
+        return 0;
+    }
 }
 
 /*void unlock_achievement(const char* achievementID) {

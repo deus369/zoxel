@@ -17,7 +17,12 @@
 #define SDL_MIXER
 // #define USE_SDL_3
 #include "util/events.c"
+#ifdef zox_include_steam
+unsigned char is_steam_running = 0;
+#include "../../bash/steam/steamwrapper.c"
+#endif
 #include "../core/core.c"
+#include "util/game_store_util.c"
 #include "../inner_core/inner_core.c"
 #include "../outer_core/outer_core.c"
 #include "../users/users.c"

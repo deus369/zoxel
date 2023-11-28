@@ -3,6 +3,7 @@
 
 # todo: use a check for library and simply warn user here to make platform-sdk
 
+IS_STEAMWORKS := true
 # determine the operating system #
 ifeq ($(OS),Windows_NT)
     SYSTEM := Windows
@@ -71,6 +72,14 @@ LDLIBS += -lSDL2_mixer -lSDL2_image -lSDL2
 ifeq ($(SYSTEM), Windows)
 LDLIBS += -LSDL2main -Wl,-subsystem,windows -mwindows
 endif
+
+ifeq ($(IS_STEAMWORKS),true)
+    LDLIBS += -I../include/steam -lsteam_api -lsteam_wrapper -Wl,-rpath,'lib:../lib'
+    OBJS += ../bash/steam/steamwrapper.c
+endif
+# -Llib
+# gcc $test_wrapper_c $wrapper_c -o $test_output -Iinclude/steam -Llib -lsteam_api -lsteam_wrapper -Wl,-rpath,'$ORIGIN/lib:$ORIGIN/../lib'
+
 # FOR RELEASE
 CFLAGS_RELEASE =
 # Optimization Level | -Ofast | -O1 | -O2 | -O3
@@ -115,7 +124,7 @@ flecs_obj = flecs.o
 make_flecs = $(CC) $(flecs_flags) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) ../$(flecs_source) -o $(flecs_obj) $(LDLIBS2) && echo "  > built [flecs.o]"
 make_flecs_lib = ar rcs ../$(flecs_target) $(flecs_obj) && echo "  > built [libflecs.a]"
 # build commands
-make_release = $(CC) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) -o ../$(TARGET) $(OBJS) $(LDLIBS) $(LDLIBS2) && echo "  > built [$(TARGET)]"
+make_release = $(CC) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) -o ../$(TARGET) $(OBJS) $(LDLIBS2) $(LDLIBS)  && echo "  > built [$(TARGET)]"
 make_dev = $(CC) $(CFLAGS) $(fix_flecs_warning) $(cflags_debug) -o ../$(target_dev) $(OBJS) $(LDLIBS) $(LDLIBS2)
 make_web_release = $(cc_web) $(CFLAGS) $(cflags_web) -o $(target_web2) $(OBJS) ../include/flecs/flecs.c $(ldlibs_web)
 
@@ -137,12 +146,16 @@ windows_pre_libs = -L../lib -L../bin -L../build/sdl/sdl/build/.libs -L../build/s
 # -Lbin
 # -L/usr/x86_64-w64-mingw32/lib/
 windows_libs = -lSDL2_mixer -lSDL2_image -lSDL2 -lm -lpthread -lws2_32 -mwindows -Wl,-subsystem,windows -lglew32 -lopengl32
+
+ifeq ($(IS_STEAMWORKS),true)
+    windows_libs += -I../include/steam -lsteam_api64 -lsteam_wrapper -Wl,-rpath,'lib:../lib'
+endif
 # -lglew32
 # -lopengl32
 # -lflecs
 # ../include/flecs/flecs.c
 # -v
-make_windows = $(cc_windows) $(OBJS) ../include/flecs/flecs.c $(windows_pre_libs) $(windows_includes) $(windows_libs) -o ../$(target_windows) -Wl,-Bsymbolic # -Wl,-rpath-link,'./bin/' # :../bin
+make_windows = $(cc_windows) $(OBJS) ../include/flecs/flecs.c -o ../$(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs) # -Wl,-Bsymbolic # -Wl,-rpath-link,'./bin/' # :../bin
 
 # release
 $(TARGET): $(SRCS)
@@ -163,9 +176,6 @@ $(target_dev): $(SRCS)
 # required libraries
 install-required:
 	bash bash/util/install_required.sh
-
-install-steam-deck-required:
-	bash bash/steam/install_on_steam_deck.sh
 
 ## installs zoxel into /usr/games directory
 install: 
@@ -428,6 +438,24 @@ install-play:
 play:
 	gcc tests/glut/play_button.c -o build/play_button -lglut -lGL -lGLU && ./build/play_button &
 
+# steamworks #
+
+steam:
+	bash bash/steam/build_wrapper.sh
+
+steam-windows:
+	bash bash/steam/build_wrapper_windows.sh
+
+steam-sdk:
+	bash bash/steam/install_sdk.sh
+
+steam-package:
+	bash bash/steam/package.sh
+
+# install libs needed on steamdeck for builds there (steam os)
+install-steam-deck-required:
+	bash bash/steam/install_on_steam_deck.sh
+
 # lost ones #
 
 help:
@@ -455,7 +483,7 @@ help:
 	@echo "  > android"
 	@echo "    install-android-sdk		installs tools for android build"
 	@echo "    android			builds & runs android release"
-	@echo "	   android-create-key		created android keystore"
+	@echo "    android-create-key		created android keystore"
 	@echo "    android-sign			signs the unsigned zoxel apk"
 	@echo "    android-install		installs zoxel apk"
 	@echo "    android-run			runs the zoxel apk"
@@ -465,7 +493,6 @@ help:
 	@echo "  > setup"
 	@echo "    make $(flecs_target)	builds flecs"
 	@echo "    install-required		installs required libraries for debian systems"
-	@echo "	   install-steam-deck-required	installs steam required"
 	@echo "    install-sdl			installs sdl"
 	@echo "    install			installs zoxel"
 	@echo "    uninstall			inuninstalls zoxel"
@@ -488,6 +515,12 @@ help:
 	@echo "    git-pull			pulls latest git"
 	@echo "    git-push			pushes git updates (requires ssh access)"
 	@echo "    git-keys			creates a ssh key to add to git servers"
+	@echo "  > steam"
+	@echo "    steam			builds steam wrapper lib/libsteam_wrapper.so"
+	@echo "    steam-windows		[todo] builds steam wrapper lib/libsteam_wrapper.dll"
+	@echo "    steam-sdk			installs steamworks sdk from zip ~/Downloads/steamworks_sdk.zip"
+	@echo "    steam-package	packages steam zip for upload"
+	@echo "    install-steam-deck-required	installs steamdeck required libs"
 
 # todo: clean more
 # ignore resources directory and gitignore in build?

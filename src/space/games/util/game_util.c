@@ -134,6 +134,8 @@ void play_game(ecs_world_t *world) {
     } else attach_to_character(world, main_player, main_camera, 0);
 #endif
     // zox_logg("  > ending setting game to [playing]\n")
+    if (unlock_achievement("test_achievement")) zox_logg("achievement unlocked\n")
+    else zox_logg("achievement unlock failed\n")
 }
 
 // const int edge_buffer = 8 * default_ui_scale;
