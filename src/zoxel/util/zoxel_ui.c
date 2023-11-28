@@ -7,7 +7,6 @@ void spawn_zoxel_main_menu(ecs_world_t *world) {
         zoxel_main_menu = 0;
         return;
     }
-    const char *game_name = "zoxel";
     float2 main_menu_anchor = { 0.5f, 0.5f };
     int2 main_menu_position = int2_zero;
     zoxel_main_menu = spawn_main_menu(world, game_name, main_menu_position, main_menu_anchor, 0);

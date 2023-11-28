@@ -1,7 +1,7 @@
 // g++ -shared -o lib/libsteam_wrapper.so steam_wrapper.cpp -Iinclude/steam -Llib -lsteam_api
 #include "../../include/steam/steam_api.h"
 #include "steamwrapper.c"
-#include <stdexcept>
+// #include <stdexcept>
 // #include <iostream>  // For demonstration purposes
 // #include <cstdint>  // Include this header for uint64_t
 
@@ -98,19 +98,7 @@ const char* get_friend_nickname(uint64_t steam_id) {
 
 // achievements
 
-unsigned char unlock_achievement(const char* achievement_name) {
-    // const char* achievement_name = "ACHIEVEMENT_NAME";
-    // Unlock the achievement using Steamworks API
-    try {
-        // SteamUserStats()->SetAchievement(achievement_name);
-        // SteamUserStats()->StoreStats();
-        return 1;
-    } catch (const std::exception& e) {
-        return 0;
-    }
-}
-
-/*void unlock_achievement(const char* achievementID) {
-    SteamUserStats()->SetAchievement(achievementID);
+void unlock_achievement(const char* achievement_name) {
+    SteamUserStats()->SetAchievement(achievement_name);
     SteamUserStats()->StoreStats();
-}*/
+}

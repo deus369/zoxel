@@ -25,6 +25,8 @@ void toggle_pause_ui(ecs_world_t *world, ecs_entity_t player) {
         zox_set(character3D, DisableMovement, { 1 })
         pause_ui = spawn_pause_ui(world, window_position, window_anchor);
         dispose_in_game_ui(world);
+        zox_logg("  > achievement unlocked [test_achievement2]\n")
+        unlock_achievement("test_achievement2");
     } else {
         // zoxel_log(" > game [paused] to [playing] for [%lu]\n", character3D);
         zox_set(local_game, GameState, { zoxel_game_state_playing })

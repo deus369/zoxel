@@ -7,7 +7,8 @@ unsigned char game_rule_attach_to_character = 1;
 // do I still need render_camera_matrix? - yes - used to insert matrix in each camera system run
 ecs_entity_t game_ui = 0;
 ecs_entity_t actionbar_ui = 0;
-const char *game_name = "zoxel";
+// const char *game_name = "zoxel";
+extern const char *game_name;
 
 void dispose_in_game_ui_touch(ecs_world_t *world) {
     if (game_ui) {
@@ -134,8 +135,8 @@ void play_game(ecs_world_t *world) {
     } else attach_to_character(world, main_player, main_camera, 0);
 #endif
     // zox_logg("  > ending setting game to [playing]\n")
-    if (unlock_achievement("test_achievement")) zox_logg("achievement unlocked\n")
-    else zox_logg("achievement unlock failed\n")
+    zox_logg("  > achievement unlocked [test_achievement]\n")
+    unlock_achievement("test_achievement");
 }
 
 // const int edge_buffer = 8 * default_ui_scale;

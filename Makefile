@@ -452,6 +452,21 @@ steam-sdk:
 steam-package:
 	bash bash/steam/package.sh
 
+steam-upload:
+	bash bash/steam/upload_package.sh
+
+steam-build-all:
+	@echo "	> 1 building linux"
+	bash bash/steam/build_wrapper.sh
+	cd build && $(make_release) && cd ..
+	@echo "	> 2 building windows"
+	bash bash/steam/build_wrapper_windows.sh
+	cd build && $(make_windows) && cd ..
+	@echo "	> 3 packaging"
+	bash bash/steam/package.sh
+	@echo "	> 4 upload build/steam_export.zip"
+	bash bash/steam/upload_package.sh
+
 # install libs needed on steamdeck for builds there (steam os)
 install-steam-deck-required:
 	bash bash/steam/install_on_steam_deck.sh

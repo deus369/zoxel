@@ -14,7 +14,7 @@
 #else
     void intialize_game_store() { zox_logg("  > no game store in build to initialize\n") }
     void dispose_game_store() { zox_logg("  > no game store in build to dispose\n") }
-    unsigned char unlock_achievement(const char* achievement) {
+    void unlock_achievement(const char* achievement) {
         zox_log("   > unlocking achievement [%s]\n", achievement)
     }
 #endif

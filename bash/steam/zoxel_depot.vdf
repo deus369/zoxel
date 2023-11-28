@@ -1,0 +1,12 @@
+"DepotBuildConfig"
+{
+	"DepotID" "1412401"
+	"contentroot" "/home/deck/projects/zoxel/build/steam_depot/"
+	"FileMapping"
+	{
+		"LocalPath" "*"
+		"DepotPath" "."
+		"recursive" "1"
+	}
+    "FileExclusion" "*.pdb"
+}

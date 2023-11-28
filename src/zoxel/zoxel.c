@@ -1,6 +1,7 @@
 #ifndef zoxel_game
 #define zoxel_game
 
+const char *game_name = "zoxel2";
 #ifdef zoxel_ui
 #include "util/zoxel_ui.c"
 #endif
