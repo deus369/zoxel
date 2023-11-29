@@ -12,10 +12,12 @@ unsigned char has_opengl_extensions() {
     const GLubyte *extensions = glGetString(GL_EXTENSIONS);
     /*if (extensions != NULL) printf("        > gl extensions: %s\n", extensions);
     else fprintf(stderr, "Error retrieving extensions\n");*/
+#ifndef zoxel_on_web
     if (!has_gl_extension(extensions, "GL_ARB_shader_objects")) {
-        zox_logg("   > no glCreateShader\n")
+        zox_logg(" ! has_opengl_extensions: no ext [GL_ARB_shader_objects]\n")
         has_extension = 0;
     }
+#endif
     if (!has_extension) exit(0);
     return has_extension;
 }
@@ -30,14 +32,10 @@ void print_opengl_functions() {
     }*/
     const GLubyte *extensions = glGetString(GL_EXTENSIONS);
     if (extensions != NULL) {
-        printf("        > gl extensions: %s\n", extensions);
+        zox_log("        > gl extensions: %s\n", extensions);
     } else {
         fprintf(stderr, "Error retrieving extensions\n");
     }
-    /*if (!has_gl_extension(extensions, "GL_ARB_shader_objects")) {
-        zox_logg("   > no glCreateShader\n")
-        exit(0);
-    }*/
 }
 
 void print_opengl() {

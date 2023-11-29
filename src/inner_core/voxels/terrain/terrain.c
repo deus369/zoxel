@@ -53,7 +53,7 @@ zox_system_ctx(TerrainChunkSystem, zox_pipeline_chunk_generation, generateTerrai
 zox_system_ctx(OctreeTerrainChunkSystem, zox_pipeline_chunk_generation, generateTerrainChunkQuery, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree)
 zox_system_ctx(StreamPointSystem, EcsPostUpdate, terrain_chunks_query, [none] Streamer, [in] Position3D, [out] StreamPoint)
 if (!headless) zox_system_ctx(ChunkOctreeBuildSystem, zox_pipeline_build_voxel_mesh, chunks_generating, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] VoxLink, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty, [none] voxels.core.ChunkTextured)
-if (!headless) zox_render3D_system(TerrainChunksRenderSystem, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] VoxLink)
+zox_render3D_system(TerrainChunksRenderSystem, [in] Position3D, [in] Rotation3D, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] VoxLink)
 zoxel_end_module(Terrain)
 
 #endif

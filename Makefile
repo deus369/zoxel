@@ -1,40 +1,38 @@
-# zoxel makefile: [linux, web, android, windows]
-#	sudo apt install make && make install-required
+# ===== ===== ===== #
+# ===== ===== ===== #
+# ===== zoxel ===== #
+# ===== ===== ===== #
+# ===== ===== ===== #
 
+# platforms [linux, windows, web, android]
+# stores [steam, itch, google]
+# tooling: sudo apt install make && make install-required
+
+resources_dir = build/resources
+LDLIBS = -Llib -lflecs -lSDL2_mixer -lSDL2_image -lSDL2 -lm -lpthread
 # determine the operating system #
 ifeq ($(OS),Windows_NT)
     SYSTEM := Windows
-else
+    SRCS := $(shell find src/ -type f \( -name "*.c" -o -name "*.h" \))
+    LDLIBS += -lopengl32 -lws2_32
+    LDLIBS += -IC:/SDL2/include -LC:/SDL2/lib -LC:/SDL2_image/lib -LC:/SDL2_mixer/lib # add sdl2 includes
+    LDLIBS += -LSDL2main -Wl,-subsystem,windows -mwindows # add libraries
+else # linux
     SYSTEM := $(shell uname -s)
-endif
-CC = gcc # c99 | gnu99
-# This collects all c and h files in the directory
-# Set the source files
-ifeq ($(SYSTEM),Windows)
     SRCS := $(shell find src/ -type f \( -name "*.c" -o -name "*.h" \))
-else
-    SRCS := $(shell find src/ -type f \( -name "*.c" -o -name "*.h" \))
+    LDLIBS += -lGL
 endif
-fix_flecs_warning = -Wno-stringop-overread -Wno-stringop-overflow # a fix to supresses flecs warning
+# collect our source files #
 CFLAGS = -std=gnu99 -D_DEFAULT_SOURCE -fPIC
-LDLIBS2 = -lm -lpthread
-LDLIBS = -Llib -lflecs -lSDL2_mixer -lSDL2_image -lSDL2
-ifeq ($(SYSTEM), Windows) # opengl windows, win sockets
-LDLIBS += -lopengl32
-LDLIBS2 += -lws2_32
-else # opengl linux
-LDLIBS += -lGL
-endif
-ifeq ($(SYSTEM), Windows)
-LDLIBS += -IC:/SDL2/include -LC:/SDL2/lib -LC:/SDL2_image/lib -LC:/SDL2_mixer/lib # add sdl2 includes
-LDLIBS += -LSDL2main -Wl,-subsystem,windows -mwindows # add libraries
-endif
+# supresses flecs warning
+CFLAGS += -Wno-stringop-overread -Wno-stringop-overflow
 
 # ===== ===== ===== #
 # ===== linux ===== #
 # ===== ===== ===== #
 
 target = build/linux/zoxel
+CC = gcc # c99 | gnu99
 OBJS = src/main.c
 ifeq ($(SYSTEM),Windows)
 target = build/zoxel.exe
@@ -43,7 +41,7 @@ CFLAGS_RELEASE = -Ofast -D NDEBUG -s
 ifneq ($(SYSTEM),Windows)
 CFLAGS_RELEASE += -flto=auto # fuse linker plugin on linux only
 endif
-make_release = $(CC) $(CFLAGS) $(CFLAGS_RELEASE) -o $(target) $(OBJS) $(LDLIBS2) $(LDLIBS)
+make_release = $(CC) $(CFLAGS) $(CFLAGS_RELEASE) -o $(target) $(OBJS) $(LDLIBS)
 
 $(target): $(SRCS)
 	$(make_release)
@@ -86,16 +84,16 @@ run-vulkan:
 	./$(target) --vulkan
 
 
-# ===== ===== ===== #
+# ====== ======= ====== #
 # ===== linux-dev ===== #
-# ===== ===== ===== #
+# ====== ======= ====== #
 
 target_dev = build/linux-dev/zoxel
 ifeq ($(SYSTEM),Windows)
 target_dev = build/windows-dev/zoxel.exe
 endif
 cflags_debug = -Wall -g
-make_dev = $(CC) $(CFLAGS) $(cflags_debug) -o $(target_dev) $(OBJS) $(LDLIBS) $(LDLIBS2)
+make_dev = $(CC) $(CFLAGS) $(cflags_debug) -o $(target_dev) $(OBJS) $(LDLIBS)
 
 # development
 dev:
@@ -127,12 +125,7 @@ run-dev-debug-tiny:
 	valgrind -s ./$(target_dev) --tiny
 
 run-debug:
-	gdb ./build/dev
-
-#ifneq ($(SYSTEM),Windows)
-#	bash bash/util/install_dev_required.sh
-#endif
-#  --leak-check=full
+	gdb ./$(target_dev)
 
 # run release + flecs profiler
 run-profiler:
@@ -157,19 +150,26 @@ flecs_target = build/libflecs.a
 flecs_source = include/flecs/flecs.c
 flecs_flags = -c
 flecs_obj = build/flecs.o
-make_flecs = $(CC) $(flecs_flags) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) $(flecs_source) -o $(flecs_obj) $(LDLIBS2)
+flecs_libs = -lm -lpthread
+ifeq ($(SYSTEM), Windows) # win sockets
+flecs_libs += -lws2_32
+endif
+make_flecs = $(CC) $(flecs_flags) $(CFLAGS) $(CFLAGS_RELEASE) $(flecs_source) -o $(flecs_obj) $(flecs_libs)
 make_flecs_lib = ar rcs $(flecs_target) $(flecs_obj)
-
-check-flecs:
-	open https://github.com/SanderMertens/flecs/releases &
+make_flecs_big= set -e; \
+	bash bash/flecs/check_flecs_source.sh && bash bash/flecs/download_flecs_source.sh && \
+	cp include/flecs/flecs.h include; \
+	$(make_flecs) && \
+	$(make_flecs_lib)  && \
+	cp build/libflecs.a lib && \
+	cp include/flecs/flecs.h include
 
 # downloads source into include, installs library into lib
 $(flecs_target):
-	set -e ; \
-	bash bash/flecs/check_flecs_source.sh && bash bash/flecs/download_flecs_source.sh && cp include/flecs/flecs.h include; \
-	$(make_flecs)  && \
-	$(make_flecs_lib)  &&  \
-	cp build/libflecs.a lib && cp include/flecs/flecs.h include && echo "[flecs build complete]"
+	$(make_flecs_big)
+
+flecs:
+	$(make_flecs_big)
 
 install-sdl:
 	bash bash/sdl/install_sdl.sh
@@ -190,10 +190,12 @@ get-flecs-version:
 revert-nightly-flecs:
 	bash bash/flecs/nightly_revert_source.sh
 
+check-flecs:
+	open https://github.com/SanderMertens/flecs/releases &
 
-# ===== ===== ===== #
+# ====== ===== ====== #
 # ===== windows ===== #
-# ===== ===== ===== #
+# ====== ===== ====== #
 # [from linux]
 
 cc_windows=x86_64-w64-mingw32-gcc
@@ -202,7 +204,6 @@ windows_includes = -Iinclude -I/usr/include/SDL2 -I/usr/include/GL
 windows_pre_libs = -Llib -Lbin -Lbuild/sdl/sdl/build/.libs -Lbuild/sdl/sdl_mixer/build/.libs -Lbuild/sdl/sdl_image/.libs
 windows_libs = -lSDL2_mixer -lSDL2_image -lSDL2 -lm -lpthread -lws2_32 -mwindows -Wl,-subsystem,windows -lglew32 -lopengl32
 make_windows = $(cc_windows) $(OBJS) include/flecs/flecs.c -o $(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs)
-# -Wl,-Bsymbolic # -Wl,-rpath-link,'./bin/' # :../bin
 
 windows-sdk:
 	bash bash/windows/install_sdk.sh
@@ -224,14 +225,14 @@ windows:
 	$(make_windows)
 endif
 
-# ===== ===== ===== #
+# ======= ===== ======= #
 # ===== windows32 ===== #
-# ===== ===== ===== #
+# ======= ===== ======= #
 
 cc_windows_32=i686-w64-mingw32-gcc
 target_windows_32 = build/windows_32/zoxel_32.exe
 
-# todo: this
+# todo: windows 32 build, linux32, etc
 
 
 # ==== ===== ==== #
@@ -239,24 +240,28 @@ target_windows_32 = build/windows_32/zoxel_32.exe
 # ==== ===== ==== #
 
 cc_web = ~/projects/emsdk/upstream/emscripten/emcc
-target_web = build/zoxel.html # .js
-web_wasm_file = build/zoxel.wasm
-web_data_file = build/zoxel.data
-cflags_web = --preload-file resources -s WASM=1 -s FULL_ES3=1 -s USE_WEBGL2=1 -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 -s ALLOW_MEMORY_GROWTH -s STACK_SIZE=365536 -s EXPORTED_FUNCTIONS=['_main','_ntohs']
+emrun=~/projects/emsdk/upstream/emscripten/emrun
+emsdk=python3 ~/projects/emsdk/emsdk.py
+target_web_dir = build/web
+target_web = $(target_web_dir)/zoxel.html # .js
+web_wasm_file = $(target_web_dir)/zoxel.wasm
+web_data_file = $(target_web_dir)/zoxel.data
+make_web_checks= [ ! -d $(target_web_dir) ] && mkdir -p $(target_web_dir); \
+[ ! -d $(target_web_dir)/resources ] && cp -R $(resources_dir) $(target_web_dir)/resources;
+web_resources_dir = -Dresources_dir_name="\"build/resources\""
+cflags_web = --preload-file $(resources_dir) -s WASM=1 -s FULL_ES3=1 -s USE_WEBGL2=1 -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 -s ALLOW_MEMORY_GROWTH -s STACK_SIZE=365536 -s EXPORTED_FUNCTIONS=['_main','_ntohs']
 ldlibs_web = -lGL -lGLEW -lSDL -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["png"]' -s USE_SDL_MIXER=2
-make_web_release = $(cc_web) $(CFLAGS) $(cflags_web) -o $(target_web) $(OBJS) include/flecs/flecs.c $(ldlibs_web)
+make_web = $(make_web_checks) $(emsdk) construct_env && $(cc_web) $(CFLAGS) $(cflags_web) $(web_resources_dir) -o $(target_web) $(OBJS) include/flecs/flecs.c $(ldlibs_web)
 
-install-web-sdk:
-	bash bash/web/install_sdk.sh
-
-# web - bash bash/flecs/check_flecs_lib.sh && 
 $(target_web): $(SRCS)
-	python3 ~/projects/emsdk/emsdk.py construct_env
-	$(make_web_release)
+	$(make_web)
+
+web:
+	$(make_web)
 
 # Runs zoxel web release build
 run-web:
-	~/projects/emsdk/upstream/emscripten/emrun $(target_web)
+	$(emrun) $(target_web)
 
 # ~/projects/emsdk/upstream/emscripten/emrun --browser firefox zoxel.html
 
@@ -275,18 +280,19 @@ git-push-zoxel-play:
 	echo " > pushing from projects/zoxel-play"
 	cd ../zoxel-play && bash/git/git_push.sh
 
+web-sdk:
+	bash bash/web/install_sdk.sh
 
 # ====== ===== ====== #
 # ===== android ===== #
 # ====== ===== ====== #
 
 # firefox-esr | firefox
-
-install-android-sdk:
-	bash bash/util/install_required_android.sh
+make_android= bash bash/android/gradle_build.sh # gradle_build_run.sh
+target_android="build/zoxel.apk"
 
 android:
-	bash bash/android/gradle_build_run.sh
+	$(make_android)
 
 android-run:
 	bash bash/android/gradle_run.sh
@@ -323,41 +329,42 @@ android-dev-debug:
 	bash bash/android/install_debug.sh
 	bash bash/android/debug_android.sh
 
-# ssh & git #
+install-android-sdk:
+	bash bash/util/install_required_android.sh
 
-git-keys:
-	bash bash/ssh/create_ssh.sh
 
-git-push: ## installs zoxel into /usr/games directory
-	bash bash/git/git_update_config.sh
-	bash bash/git/git_push.sh
-
-git-pull: ## installs zoxel into /usr/games directory
-	bash bash/git/git_pull.sh
-
-git-config:
-	bash bash/git/git_update_config.sh
-
-# all platforms #
+# ==== ===== ==== #
+# ===== all ===== #
+# ==== ===== ==== #
 
 # builds for all platforms - this rebuilds everytime tho
 all: $(SRCS)
-	@echo "Begin Making All"
-	@echo "Installing/Making Flecs [$(flecs_target)]"
-	bash bash/flecs/download_flecs_source.sh
-	$(make_flecs) && $(make_flecs_lib)
-	@echo "Making Native Release Build [$(target)]"
+	@echo " > making all"
+	@echo "   > making flecs [$(flecs_target)]"
+	$(make_flecs_big)
+	@echo "   > making flecs [$(target)]"
 	$(make_release)
-	@echo "Making Native Dev Build [$(target_dev)]"
+	@echo "   > making dev [$(target_dev)]"
 	$(make_dev)
-	@echo "Finished Making All"
+	@echo "   > making windows [$(target_windows)]"
+	$(make_windows)
+	@echo "   > making android [$(target_android)]"
+	$(make_android)
+	@echo "   > making web [$(target_web)]"
+	$(make_web)
+	@echo " > completed all"
+
+
+
+# ==== ====== ==== #
+# ===== util ===== #
+# ==== ====== ==== #
 
 # removes all build files
+# todo: remove build, lib, include from project
 clean:
 	@echo "Cleaning All Build Files"
 	bash bash/flecs/remove_flecs.sh
-
-# util #
 
 codeberg:
 	open https://codeberg.org/deus/zoxel &
@@ -384,11 +391,32 @@ install-play:
 play:
 	gcc tests/glut/play_button.c -o build/play_button -lglut -lGL -lGLU && ./build/play_button &
 
-# steamworks #
+
+# ====== ======= ====== #
+# ===== git & ssh ===== #
+# ====== ======= ====== #
+
+git-keys:
+	bash bash/ssh/create_ssh.sh
+
+git-push: ## installs zoxel into /usr/games directory
+	bash bash/git/git_update_config.sh
+	bash bash/git/git_push.sh
+
+git-pull: ## installs zoxel into /usr/games directory
+	bash bash/git/git_pull.sh
+
+git-config:
+	bash bash/git/git_update_config.sh
+
+# ===== ===== ===== #
+# ===== steam ===== #
+# ===== ===== ===== #
+
 # todo: use windows-steam directory
 steam_libs = -Iinclude/steam -lsteam_wrapper -Wl,-rpath,'lib:../lib' -Dzox_include_steam
 steam_objs = bash/steam/steamwrapper.c
-make_linux_with_steam = $(CC) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) -o $(target) $(OBJS) $(steam_objs) $(LDLIBS2) $(LDLIBS) $(steam_libs) -lsteam_api
+make_linux_with_steam = $(CC) $(CFLAGS) $(CFLAGS_RELEASE) -o $(target) $(OBJS) $(steam_objs) $(LDLIBS) $(steam_libs) -lsteam_api
 make_windows_with_steam = $(cc_windows) $(OBJS) include/flecs/flecs.c $(steam_objs) -o $(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs) $(steam_libs) -lsteam_api64
 
 steam-wrapper-linux:s
@@ -454,7 +482,9 @@ steam-upload-live:
 install-steam-deck-required:
 	bash bash/steam/install_on_steam_deck.sh
 
-# itch io #
+# ===== ====== ===== #
+# ===== itchio ===== #
+# ===== ====== ===== #
 
 itch-all:
 	@echo "	> build linux"
@@ -471,7 +501,10 @@ itch-upload:
 itch-sdk:
 	bash bash/itch/install_butler.sh
 
-# lost ones #
+
+# ====== ======== ====== #
+# ===== lost souls ===== #
+# ====== ======== ====== #
 
 help:
 	@echo "zoxel -> an open source voxel engine"
@@ -489,7 +522,7 @@ help:
 	@echo "    run-dev-debug		runs valgrind $(target_dev)"
 	@echo "    run-dev-profiler		runs $(target_dev) --profiler"
 	@echo "  > [web]"
-	@echo "    install-web-sdk		installs tools for web build"
+	@echo "    web-sdk			installs tools for web build"
 	@echo "    $(target_web)		builds zoxel-web"
 	@echo "    run-web			runs $(target_web)"
 	@echo "  > [android]"
@@ -542,8 +575,9 @@ help:
 	@echo "    steam-sdk			installs steamworks sdk from zip ~/Downloads/steamworks_sdk.zip"
 	@echo "    install-steam-deck-required	installs steamdeck required libs"
 	@echo "  > [itchio]"
+	@echo "    itch-all			builds all platforms uploads to itch"
+	@echo "    itch-upload			uploads builds to itch"
 	@echo "    itch-sdk			installs itch io butler"
-	@echo "    itch-upload			uploads builds to butler"
 
 # todo #
 
@@ -619,3 +653,10 @@ help:
 # bash bash/flecs/check_flecs_lib.sh && cd build && $(make_release)
 # compiler tools and flags #
 # NAME := zoxel
+# -Wl,-Bsymbolic # -Wl,-rpath-link,'./bin/' # :../bin
+
+
+#ifneq ($(SYSTEM),Windows)
+#	bash bash/util/install_dev_required.sh
+#endif
+#  --leak-check=full

@@ -12,7 +12,7 @@ void add_components_mesh_textured(ecs_world_t *world, ecs_entity_t e) {
         zox_add(e, MeshUVs)
         zox_add(e, MeshColorRGBs)
         add_gpu_mesh(world, e);
-        add_gpu_material(world, e);
+        // add_gpu_material(world, e);
         add_gpu_uvs(world, e);
         add_gpu_texture(world, e);
         add_gpu_colors(world, e);

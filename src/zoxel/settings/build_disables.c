@@ -4,10 +4,12 @@
 
 // #define zox_disable_io
 
-// for web build
-// #define zox_disable_module_networking
-// #define zox_disable_terrain_textures // this kinda breaks
-// #define zox_disable_render_element3D
+// for web build disable these for now
+#ifdef __EMSCRIPTEN__
+    #define zox_disable_module_networking
+    // #define zox_disable_terrain_textures // this kinda breaks
+    #define zox_disable_render_element3D
+#endif
 
 // #define zox_disable_music
 // #define zox_disable_play_sounds

@@ -57,10 +57,10 @@ zox_memory_component(PacketData, unsigned char)
 void spawn_prefabs_networking(ecs_world_t *world) {
     spawn_prefab_net_room(world);
     spawn_prefab_net_player(world);
-#ifndef zoxel_on_windows
+#if !defined(zoxel_on_windows) && !defined(zoxel_on_web)
     zox_define_destruction(SocketLink)  // for some reason it calls destruction when making prefabs, so we put these after
 #else
-    zox_logg("  > todo: get zox_define_destruction(SocketLink) to work on windows.\n")
+    zox_logg("  > todo: get zox_define_destruction(SocketLink) to work on windows/web\n")
 #endif
     // #ifdef zoxel_test_networking
     if (headless) {

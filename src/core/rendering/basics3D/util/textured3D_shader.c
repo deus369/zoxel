@@ -26,22 +26,17 @@ void restore_shader_textured3D(ecs_world_t *world) {
     restore_material(world, textured3D_material, get_shader3D_textured_value(world));
 }
 
+Textured3DAttributes create_Textured3DAttributes(GLuint material) {
+    return (Textured3DAttributes) { .vertex_position = glGetAttribLocation(material, "vertex_position"), .vertex_uv = glGetAttribLocation(material, "vertex_uv"), .vertex_color = glGetAttribLocation(material, "vertex_color"), .position = glGetUniformLocation(material, "position"), .rotation = glGetUniformLocation(material, "rotation"), .scale = glGetUniformLocation(material, "scale"), .camera_matrix = glGetUniformLocation(material, "camera_matrix"), .fog_data = glGetUniformLocation(material, "fog_data"), .texture = glGetUniformLocation(material, "tex"), .brightness = glGetUniformLocation(material, "brightness") };
+}
+
 int load_shader3D_textured(ecs_world_t *world) {
     if (!textured3D_shader) {
         textured3D_shader = spawn_shader(world, shader3D_textured_vert_buffer, shader3D_textured_frag_buffer);
         textured3D_material = spawn_material(world, get_shader3D_textured_value(world));
         GLuint material = get_textured3D_material_value(world);
-        zox_prefab_set(textured3D_material, Textured3DAttributes, { 
-            .vertex_position = glGetAttribLocation(material, "vertex_position"),
-            .vertex_uv = glGetAttribLocation(material, "vertex_uv"),
-            .vertex_color = glGetAttribLocation(material, "vertex_color"),
-            .position = glGetUniformLocation(material, "position"),
-            .rotation = glGetUniformLocation(material, "rotation"),
-            .scale = glGetUniformLocation(material, "scale"),
-            .camera_matrix = glGetUniformLocation(material, "camera_matrix"),
-            .fog_data = glGetUniformLocation(material, "fog_data"),
-            .texture = glGetUniformLocation(material, "tex"),
-            .brightness = glGetUniformLocation(material, "brightness") })
+        Textured3DAttributes at = create_Textured3DAttributes(material);
+        zox_prefab_set(textured3D_material, Textured3DAttributes, { .vertex_position = at.vertex_position, .vertex_uv = at.vertex_uv, .vertex_color = at.vertex_color, .position = at.position, .rotation = at.rotation, .scale = at.scale, .camera_matrix = at.camera_matrix, .fog_data = at.fog_data, .texture = at.texture, .brightness = at.brightness })
     }
     return 0;
 }

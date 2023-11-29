@@ -1,6 +1,14 @@
 // #define zoxel_debug_base_path
 // todo: make sure to copy folder, with bash, resources into:
 //      > /build/android-build/app/src/main/assets/resources
+/*#ifdef zoxel_on_web
+#define resources_dir_name "build/resources"
+#else
+#define resources_dir_name "resources"
+#endif*/
+#ifndef resources_dir_name
+    #define resources_dir_name "resources"
+#endif
 const char *data_path = NULL;
 char *resources_path = NULL;
 
@@ -11,10 +19,10 @@ char *resources_path = NULL;
 #endif
 
 #ifndef zoxel_on_android
-    #define resources_folder_name "resources"character_slash
+    #define resources_folder_name resources_dir_name character_slash
 #else
     // i will have to manually add in the resource directories for android until ndk updates
-    #define resources_folder_name character_slash"resources"character_slash
+    #define resources_folder_name character_slash resources_dir_name character_slash
     #define voxes_folder_path "voxes"
     #define textures_folder_path "textures"
     #include <SDL_system.h>
@@ -208,9 +216,12 @@ unsigned char initialize_pathing() {
 #ifdef zoxel_debug_pathing
         zox_log(" + base path exists [%s]\n", data_path)
 #endif
+        // resources_path = resources_folder_name; // malloc(strlen(resources_folder_name) + 1);
+        // strcat(resources_path, resources_folder_name);
         resources_path = malloc(strlen(base_path) + strlen(resources_folder_name) + 1);
         strcpy(resources_path, base_path);
         strcat(resources_path, resources_folder_name);
+        zox_log(" > resources_folder_name [%s] resources_path [%s]\n", resources_folder_name, resources_path)
 #ifdef zoxel_on_android
         decompress_android_resources();
 #endif

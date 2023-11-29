@@ -50,10 +50,10 @@ add_restore_shader_function((funfun) { &rendering_restore_basic_shaders3D });
 zox_define_component(Textured3DAttributes)
 // zoxel_define_systems
 #ifdef zoxel_transforms3D
-    zox_system_1(InstanceRender3DSystem, 0, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink)
-    zox_render3D_system(RenderCharacters3DSystem, [none] MeshColorRGBs, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [none] !UvsGPULink)   // , [in] Scale1D, [in] Brightness
-    zox_render3D_system(Element3DRenderSystem, [none] rendering.core.SingleMaterial, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] TextureGPULink)
-    zox_render3D_system(Render3DSystem, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] !MeshColorRGBs)
+zox_system_1(InstanceRender3DSystem, 0, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink)
+zox_render3D_system(RenderCharacters3DSystem, [none] MeshColorRGBs, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [none] !UvsGPULink)
+zox_render3D_system(Element3DRenderSystem, [none] rendering.core.SingleMaterial, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] TextureGPULink)
+zox_render3D_system(Render3DSystem, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] !MeshColorRGBs)
 #endif
 zox_system_1(MeshUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs)
 zox_system_1(MeshUpdateTextured3DSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshUVs, [in] MeshColorRGBs, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink)

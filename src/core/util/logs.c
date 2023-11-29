@@ -66,42 +66,32 @@ int clear_zoxel_log() {
     // #define zoxel_log(debug_line) printf(debug_line);
     // #define zoxel_log(debug_line, ...) printf(debug_line, __VA_ARGS__); // #
     void zoxel_log(const char* msg, ...) {
-        #ifndef zox_disable_logs
-            va_list a;
-            va_start(a, msg);
-            char msg2[1024] = { 0 };
-            vsnprintf(msg2, debug_logs_countof(msg2), msg, a);
-            #ifdef log_to_file
-                FILE* f = fopen("log.txt", "a");
-                if (f) {
-                    fputs(msg2, f);
-                    fclose(f);
-                }
-            #else
-                fputs(msg2, stderr);
-            #endif
-            va_end(a);
-        #endif
+        va_list a;
+        va_start(a, msg);
+        char msg2[1024] = { 0 };
+        vsnprintf(msg2, debug_logs_countof(msg2), msg, a);
+#ifdef log_to_file
+        FILE* f = fopen("log.txt", "a");
+        if (f) {
+            fputs(msg2, f);
+            fclose(f);
+        }
+#else
+        fputs(msg2, stderr);
+#endif
+        va_end(a);
     }
 
     int zoxel_log_error(void *stream, const char *msg, ...) {
-        #ifndef zox_disable_logs
         //    return fprintf((FILE*) stream, msg, __VA_ARGS__);
-        #endif
         return 0;
     }
 
-    /*#define zox_log(msg) {\
-        fputs(msg, stderr);\
-    }*/
+    #define zox_logg(msg) { fputs(msg, stderr); }
 
-    #define zox_logg(msg) {\
-        fputs(msg, stderr);\
-    }
+    #define zox_log(msg, ...) { zoxel_log(msg, __VA_ARGS__); }
 
-    #define zox_log(msg, ...) {\
-        zoxel_log(msg, __VA_ARGS__);\
-    }
+// printf(msg, __VA_ARGS__);
 
         /*va_list a;\
         va_start(a, msg);\
