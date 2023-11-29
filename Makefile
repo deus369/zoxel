@@ -1,9 +1,10 @@
 # zoxel makefile: [linux, web, android, windows]
 #	sudo apt install make && make install-required
 
+# todo: make build folders per platform / build tags (for web and on window builds)
 # todo: use a check for library and simply warn user here to make platform-sdk
 
-IS_STEAMWORKS := true
+# IS_STEAMWORKS := true
 # determine the operating system #
 ifeq ($(OS),Windows_NT)
     SYSTEM := Windows
@@ -12,12 +13,14 @@ else
 endif
 # compiler tools and flags #
 NAME := zoxel
-TARGET = build/zoxel
+# linux
+target = build/linux/zoxel
 target_dev = build/dev
+# web
 target_web = build/zoxel.html # .js
 target_web2 = zoxel.html # .js
 ifeq ($(SYSTEM),Windows)
-TARGET = build/zoxel.exe
+target = build/zoxel.exe
 target_dev = build/dev.exe
 endif
 web_wasm_file = build/zoxel.wasm
@@ -72,14 +75,6 @@ LDLIBS += -lSDL2_mixer -lSDL2_image -lSDL2
 ifeq ($(SYSTEM), Windows)
 LDLIBS += -LSDL2main -Wl,-subsystem,windows -mwindows
 endif
-
-ifeq ($(IS_STEAMWORKS),true)
-    LDLIBS += -I../include/steam -lsteam_api -lsteam_wrapper -Wl,-rpath,'lib:../lib'
-    OBJS += ../bash/steam/steamwrapper.c
-endif
-# -Llib
-# gcc $test_wrapper_c $wrapper_c -o $test_output -Iinclude/steam -Llib -lsteam_api -lsteam_wrapper -Wl,-rpath,'$ORIGIN/lib:$ORIGIN/../lib'
-
 # FOR RELEASE
 CFLAGS_RELEASE =
 # Optimization Level | -Ofast | -O1 | -O2 | -O3
@@ -124,7 +119,7 @@ flecs_obj = flecs.o
 make_flecs = $(CC) $(flecs_flags) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) ../$(flecs_source) -o $(flecs_obj) $(LDLIBS2) && echo "  > built [flecs.o]"
 make_flecs_lib = ar rcs ../$(flecs_target) $(flecs_obj) && echo "  > built [libflecs.a]"
 # build commands
-make_release = $(CC) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) -o ../$(TARGET) $(OBJS) $(LDLIBS2) $(LDLIBS)  && echo "  > built [$(TARGET)]"
+make_release = $(CC) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) -o ../$(target) $(OBJS) $(LDLIBS2) $(LDLIBS)  && echo "  > built [$(target)]"
 make_dev = $(CC) $(CFLAGS) $(fix_flecs_warning) $(cflags_debug) -o ../$(target_dev) $(OBJS) $(LDLIBS) $(LDLIBS2)
 make_web_release = $(cc_web) $(CFLAGS) $(cflags_web) -o $(target_web2) $(OBJS) ../include/flecs/flecs.c $(ldlibs_web)
 
@@ -132,33 +127,9 @@ make_web_release = $(cc_web) $(CFLAGS) $(cflags_web) -o $(target_web2) $(OBJS) .
 # 'strings libopengl32.a | grep glBind' to find some functions
 # enable #define zox_sdl_import_file_only for windows build
 #  strings /usr/x86_64-w64-mingw32/lib/libopengl32.a | grep glBind
-cc_windows=x86_64-w64-mingw32-gcc
-cc_windows_32=i686-w64-mingw32-gcc
-target_windows = build/windows/zoxel.exe
-target_windows_32 = build/windows_32/zoxel_32.exe
-windows_includes = -I../include -I/usr/include/SDL2 -I/usr/include/GL
-# -I/build/sdl/sdl/include -I/build/sdl/sdl_mixer/include -I/build/sdl/sdl_image
-# -I/usr/include/SDL2
-# -L/usr/local/cross-tools/x86_64-w64-mingw32/lib/
-# -L/usr/i686-w64-mingw32/lib/
-# -L../lib/opengl32.dll
-windows_pre_libs = -L../lib -L../bin -L../build/sdl/sdl/build/.libs -L../build/sdl/sdl_mixer/build/.libs -L../build/sdl/sdl_image/.libs
-# -Lbin
-# -L/usr/x86_64-w64-mingw32/lib/
-windows_libs = -lSDL2_mixer -lSDL2_image -lSDL2 -lm -lpthread -lws2_32 -mwindows -Wl,-subsystem,windows -lglew32 -lopengl32
-
-ifeq ($(IS_STEAMWORKS),true)
-    windows_libs += -I../include/steam -lsteam_api64 -lsteam_wrapper -Wl,-rpath,'lib:../lib'
-endif
-# -lglew32
-# -lopengl32
-# -lflecs
-# ../include/flecs/flecs.c
-# -v
-make_windows = $(cc_windows) $(OBJS) ../include/flecs/flecs.c -o ../$(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs) # -Wl,-Bsymbolic # -Wl,-rpath-link,'./bin/' # :../bin
 
 # release
-$(TARGET): $(SRCS)
+$(target): $(SRCS)
 ifneq ($(SYSTEM),Windows)
 	bash bash/util/install_required.sh
 endif
@@ -187,25 +158,25 @@ uninstall:
 
 # run release
 run:
-	cd build && ./../$(TARGET)
+	cd build && ./../$(target)
 
 run-headless:
-	cd build && ./../$(TARGET) --headless
+	cd build && ./../$(target) --headless
 
 run-server:
-	cd build && ./../$(TARGET) --headless --server
+	cd build && ./../$(target) --headless --server
 
 run-tiny:
-	cd build && ./../$(TARGET) --tiny
+	cd build && ./../$(target) --tiny
 
 run-medium:
-	cd build && ./../$(TARGET) --medium
+	cd build && ./../$(target) --medium
 
 run-large:
-	cd build && ./../$(TARGET) --large
+	cd build && ./../$(target) --large
 
 run-vulkan:
-	./$(TARGET) --vulkan
+	./$(target) --vulkan
 
 # run development
 run-dev:
@@ -241,7 +212,7 @@ run-debug:
 # run release + flecs profiler
 run-profiler:
 	sleep 3 && open https://www.flecs.dev/explorer &
-	cd build && ./../$(TARGET) --profiler
+	cd build && ./../$(target) --profiler
 
 # run development + flecs profiler
 run-dev-profiler:
@@ -253,6 +224,14 @@ run-dev-profiler-tiny:
 	cd build && ./../$(target_dev) --profiler --tiny
 
 # linux to windows build #
+
+cc_windows=x86_64-w64-mingw32-gcc
+target_windows = build/windows/zoxel.exe
+windows_includes = -I../include -I/usr/include/SDL2 -I/usr/include/GL
+windows_pre_libs = -L../lib -L../bin -L../build/sdl/sdl/build/.libs -L../build/sdl/sdl_mixer/build/.libs -L../build/sdl/sdl_image/.libs
+windows_libs = -lSDL2_mixer -lSDL2_image -lSDL2 -lm -lpthread -lws2_32 -mwindows -Wl,-subsystem,windows -lglew32 -lopengl32
+make_windows = $(cc_windows) $(OBJS) ../include/flecs/flecs.c -o ../$(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs)
+# -Wl,-Bsymbolic # -Wl,-rpath-link,'./bin/' # :../bin
 
 windows-sdk:
 	bash bash/windows/install_sdk.sh
@@ -273,6 +252,11 @@ windows:
 	@echo " > building windows in linux"
 	cd build && $(make_windows)
 endif
+
+# todo: windows 32
+
+cc_windows_32=i686-w64-mingw32-gcc
+target_windows_32 = build/windows_32/zoxel_32.exe
 
 # web #
 
@@ -400,7 +384,7 @@ all: $(SRCS)
 	@echo "Installing/Making Flecs [$(flecs_target)]"
 	bash bash/flecs/download_flecs_source.sh
 	cd build && $(make_flecs) && $(make_flecs_lib)
-	@echo "Making Native Release Build [$(TARGET)]"
+	@echo "Making Native Release Build [$(target)]"
 	cd build && $(make_release)
 	@echo "Making Native Dev Build [$(target_dev)]"
 	cd build && $(make_dev)
@@ -439,25 +423,58 @@ play:
 	gcc tests/glut/play_button.c -o build/play_button -lglut -lGL -lGLU && ./build/play_button &
 
 # steamworks #
+# todo: use windows-steam directory
+steam_libs = -I../include/steam -lsteam_wrapper -Wl,-rpath,'lib:../lib' -Dzox_include_steam
+steam_objs = ../bash/steam/steamwrapper.c
+make_linux_with_steam = $(CC) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) -o ../$(target) $(OBJS) $(steam_objs) $(LDLIBS2) $(LDLIBS) $(steam_libs) -lsteam_api
+make_windows_with_steam = $(cc_windows) $(OBJS) ../include/flecs/flecs.c $(steam_objs) -o ../$(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs) $(steam_libs) -lsteam_api64
+
+steam-wrapper-linux:s
+	bash bash/steam/build_wrapper.sh
+
+steam-linux:
+	@echo "	> building linux-steam"
+	bash bash/steam/build_wrapper.sh
+	@echo "    > copyin libsteam_api.so into build/linux"
+	cp lib/libsteam_api.so build/linux/libsteam_api.so
+	@echo "    > copyin libsteam_wrapper.so into build/linux"
+	cp lib/libsteam_wrapper.so build/linux/libsteam_wrapper.so
+	@echo " > building linux with steam"
+	cd build && $(make_linux_with_steam) $(steam_libs) -Dzox_include_steam && cd ..
+
+steam-wrapper-windows:
+	bash bash/steam/build_wrapper_windows.sh
+
+steam-windows:
+	@echo "	> building windows-steam"
+	bash bash/steam/build_wrapper_windows.sh
+	@echo "    > copyin lib/steam_api64.dll into build/windows"
+	cp lib/steam_api64.dll build/windows/steam_api64.dll
+	@echo "    > copyin lib/libsteam_wrapper.dll into build/windows"
+	cp lib/libsteam_wrapper.dll build/windows/libsteam_wrapper.dll
+	@echo " > building windows with steam"
+	cd build && $(make_windows_with_steam) && cd ..
 
 steam-all:
 	@echo "	> 1 building linux"
 	bash bash/steam/build_wrapper.sh
-	cd build && $(make_release) && cd ..
+	@echo "    > copyin libsteam_api.so into build/linux"
+	cp lib/libsteam_api.so build/linux/libsteam_api.so
+	@echo "    > copyin libsteam_wrapper.so into build/linux"
+	cp lib/libsteam_wrapper.so build/linux/libsteam_wrapper.so
+	cd build && $(make_linux_with_steam) $(steam_libs) -Dzox_include_steam && cd ..
 	@echo "	> 2 building windows"
 	bash bash/steam/build_wrapper_windows.sh
-	cd build && $(make_windows) && cd ..
+	@echo "    > copyin lib/steam_api64.dll into build/windows"
+	cp lib/steam_api64.dll build/windows/steam_api64.dll
+	@echo "    > copyin lib/libsteam_wrapper.dll into build/windows"
+	cp lib/libsteam_wrapper.dll build/windows/libsteam_wrapper.dll
+	cd build && $(make_windows_with_steam) && cd ..
 	@echo "	> 3 packaging"
 	bash bash/steam/package.sh
 	@echo "	> 4 upload build/steam_export.zip"
 	bash bash/steam/upload_package.sh
 	# bash bash/steam/upload_package.sh --default
-
-steam:
-	bash bash/steam/build_wrapper.sh
-
-steam-windows:
-	bash bash/steam/build_wrapper_windows.sh
 
 steam-sdk:
 	bash bash/steam/install_sdk.sh
@@ -468,7 +485,7 @@ steam-package:
 steam-upload:
 	bash bash/steam/upload_package.sh
 
-steam-upload-default:
+steam-upload-live:
 	bash bash/steam/upload_package.sh --default
 
 # install libs needed on steamdeck for builds there (steam os)
@@ -477,11 +494,16 @@ install-steam-deck-required:
 
 # itch io #
 
-itch-sdk:
-	bash bash/itch/install_butler.sh
+itch-all:
+	@echo "	> build linux"
+	@echo "	> build windows"
+	@echo "	> upload all to itch io"
 
 itch-upload:
 	bash bash/itch/upload.sh
+
+itch-sdk:
+	bash bash/itch/install_butler.sh
 
 # lost ones #
 
@@ -494,9 +516,9 @@ help:
 	@echo "    install-play		installs a play button"
 	@echo "    $(target_dev)			builds development"
 	@echo "    <empty>  			builds release"
-	@echo "    run				runs $(TARGET)"
-	@echo "    run-vulkan			runs $(TARGET) with vulkan"
-	@echo "    run-profiler		runs $(TARGET) --profiler"
+	@echo "    run				runs $(target)"
+	@echo "    run-vulkan			runs $(target) with vulkan"
+	@echo "    run-profiler		runs $(target) --profiler"
 	@echo "    run-dev			runs $(target_dev)"
 	@echo "    run-dev-debug		runs valgrind $(target_dev)"
 	@echo "    run-dev-profiler		runs $(target_dev) --profiler"
@@ -544,12 +566,14 @@ help:
 	@echo "    build/zoxel.exe		builds windows release"
 	@echo "  > [steam]"
 	@echo "    steam-all			builds both wrappers, builds and uploads them to beta"
-	@echo "    steam			builds steam wrapper lib/libsteam_wrapper.so"
-	@echo "    steam-windows		[todo] builds steam wrapper lib/libsteam_wrapper.dll"
-	@echo "    steam-sdk			installs steamworks sdk from zip ~/Downloads/steamworks_sdk.zip"
+	@echo "    steam-wrapper-linux		builds steam wrapper lib/libsteam_wrapper.so"
+	@echo "    steam-linux			builds zoxel-linux with steam added"
+	@echo "    steam-wrapper-windows	builds steam wrapper lib/libsteam_wrapper.dll"
+	@echo "    steam-windows		builds zoxel-windows with steam added"
 	@echo "    steam-package		packages steam zip for upload"
-	@echo "    steam-upload		uploads steam to release (beta) branch"
-	@echo "    steam-upload-default	uploads steam to main branch"
+	@echo "    steam-upload		uploads steam to beta branch"
+	@echo "    steam-upload-live		uploads steam to main branch"
+	@echo "    steam-sdk			installs steamworks sdk from zip ~/Downloads/steamworks_sdk.zip"
 	@echo "    install-steam-deck-required	installs steamdeck required libs"
 	@echo "  > [itchio]"
 	@echo "    itch-sdk			installs itch io butler"
@@ -562,7 +586,7 @@ help:
 # $(RM) $(target_web)
 # $(RM) $(web_wasm_file)
 # $(RM) $(web_data_file)
-# $(RM) $(TARGET)
+# $(RM) $(target)
 # $(RM) $(target_dev)
 # $(RM) $(flecs_target)
 # use these?

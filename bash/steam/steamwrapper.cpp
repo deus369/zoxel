@@ -98,7 +98,7 @@ const char* get_friend_nickname(uint64_t steam_id) {
 
 // achievements
 
-void unlock_achievement(const char* achievement_name) {
+void steam_unlock_achievement(const char* achievement_name) {
     SteamUserStats()->SetAchievement(achievement_name);
     SteamUserStats()->StoreStats();
 }

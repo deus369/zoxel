@@ -22,7 +22,7 @@ const char* get_friend_name(uint64_t steam_id);
 const char* get_friend_nickname(uint64_t steam_id);
 
 // achievement testing
-void unlock_achievement(const char* achievement_name);
+void steam_unlock_achievement(const char* achievement_name);
 
 #ifdef __cplusplus
 }

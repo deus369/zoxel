@@ -9,7 +9,7 @@
 steam_depot_dir="build/steam_export"
 steam_depot_zip="build/steam_export.zip"
 windows_dir="build/windows"
-linux_dir="build"
+linux_dir="build/linux"
 
 if [ -f $steam_depot_zip ]; then
     echo " > removing last [$steam_depot_zip]"
@@ -32,8 +32,10 @@ mkdir $steam_depot_dir
 echo " > copying files from Windows directory"
 cp -r $windows_dir/* $steam_depot_dir/
 # Copy the 'zoxel' directory from the Linux directory
-echo " > copying 'zoxel' directory from Linux directory"
-cp -r $linux_dir/zoxel $steam_depot_dir/
+echo " > copying 'zoxel' files from [$linux_dir] directory"
+cp $linux_dir/zoxel $steam_depot_dir/zoxel
+cp $linux_dir/libsteam_api.so $steam_depot_dir/libsteam_api.so
+cp $linux_dir/libsteam_wrapper.so $steam_depot_dir/libsteam_wrapper.so
 
 echo " > copying [lib/*.so] contents"
 cp lib/*.so $steam_depot_dir/
@@ -41,7 +43,10 @@ echo " > copying [lib/*.dll contents"
 cp lib/*.dll $steam_depot_dir/
 
 # next zip them
+echo " > ziping contents too"
 cd $windows_dir && zip -r ../../$steam_depot_zip * && cd ../..
-cd $linux_dir && zip -r ../$steam_depot_zip zoxel && cd ..
+cd $linux_dir && zip -r ../../$steam_depot_zip zoxel && cd ../..
+cd $linux_dir && zip -r ../../$steam_depot_zip libsteam_api.so && cd ../..
+cd $linux_dir && zip -r ../../$steam_depot_zip libsteam_wrapper.so && cd ../..
 
 echo " > Copying complete. Your files await deployment, My Lord."

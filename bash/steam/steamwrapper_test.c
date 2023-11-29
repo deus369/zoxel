@@ -15,7 +15,7 @@ int main() {
             printf("            - %s [%s]\n", get_friend_name(id), get_friend_nickname(id));
         }*/
         printf("    > unlocked achievement [Zoxeller]");
-        unlock_achievement("Zoxeller");
+        steam_unlock_achievement("Zoxeller");
         sleep(16);
         shutdown_steam();
     } else {
