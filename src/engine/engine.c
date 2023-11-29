@@ -3,7 +3,6 @@
 
 // todo: move some things to sdl module in core
 // todo: position confusing, move to above directory for easier to understand navigation
-
 // engine imports, besides sub modules, it's core is flecs
 #include <signal.h> // used for detecting cancel
 #include <string.h> // who uses this?
@@ -15,12 +14,7 @@
 #define FLECS_PIPELINE
 #include "../../include/flecs.h"
 #define SDL_MIXER
-// #define USE_SDL_3
 #include "util/events.c"
-#ifdef zox_include_steam
-unsigned char is_steam_running = 0;
-#include "../../bash/steam/steamwrapper.c"
-#endif
 #include "../core/core.c"
 #include "util/game_store_util.c"
 #include "../inner_core/inner_core.c"
@@ -55,3 +49,5 @@ zox_import_module(Space)
 zoxel_end_module(ZoxelEngine)
 
 #endif
+
+// #define USE_SDL_3

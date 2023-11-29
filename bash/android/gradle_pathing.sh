@@ -29,7 +29,12 @@ start_gradle_build() {
     android_directory="$zoxel_directory/build/android-build"
     android_bash_directory="$zoxel_directory/bash/android"
     # export JAVA_HOME="/usr/lib/jvm/java-17-openjdk/bin/java"
-    export JAVA_HOME="/usr/lib/jvm/java-17-openjdk" # $(dirname $(dirname $(whereis java)))
+    # Get the result of 'whereis jdk'
+    jdk_whereis=$(whereis java) # locates jdk through whereis
+    jdk_whereis2=$(echo $jdk_whereis | awk '{print $NF}') # gets the last string in the list
+    jdk_whereis2=$(dirname "$(dirname "$jdk_whereis2")") # removes last 2 directories
+    JAVA_HOME=$jdk_whereis2 #"/usr/lib/jvm/java-17-openjdk"
+    export JAVA_HOME=$JAVA_HOME # "/usr/lib/jvm/java-17-openjdk" # $(dirname $(dirname $(whereis java)))
     # SDL
     sdl_directory="$zoxel_directory/build/sdl/sdl" # "$HOME/SDL/SDL2"
     export sdl_directory="$zoxel_directory/build/sdl/sdl" # "$HOME/SDL/SDL2"

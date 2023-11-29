@@ -1,8 +1,6 @@
 // Here? select which zoxel modules I shall use?
 
-// #define zox_include_steam
 #define zox_beta
-
 // to fix windows build
 #if defined(_WIN32) || defined(__ANDROID__)
     #define zox_sdl_import_file_only

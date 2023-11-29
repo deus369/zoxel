@@ -134,8 +134,6 @@ void play_game(ecs_world_t *world) {
         attach_to_character(world, main_player, main_camera, local_character3D);
     } else attach_to_character(world, main_player, main_camera, 0);
 #endif
-    // zox_logg("  > ending setting game to [playing]\n")
-    zox_logg("  > achievement unlocked [test_achievement]\n")
     unlock_achievement("test_achievement");
 }
 

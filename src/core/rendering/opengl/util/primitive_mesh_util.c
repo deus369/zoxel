@@ -20,6 +20,7 @@ const float cubeVertices3[] = {
      default_cube_size, -default_cube_size, default_cube_size      // 7
 };
 
+const int cube_vertices_length = 8;
 const float3 cube_vertices[] = {
     (float3) { -default_cube_size, -default_cube_size,  default_cube_size },   //0
     (float3) { default_cube_size, -default_cube_size,  default_cube_size },    //1
@@ -105,6 +106,18 @@ const float3 cubeVertices2[] = {
     { 1.0f, 0, 0 },         //5
     { 0, 1.0f, 0 },         //6
     { 1.0f, 1.0f, 0}        //7
+};
+
+const int cube_vertices_singles_length = 8 * 3;
+const float cube_vertices_singles[] = {
+     -default_cube_size, -default_cube_size,  default_cube_size,   //0
+    default_cube_size, -default_cube_size,  default_cube_size,    //1
+    -default_cube_size,  default_cube_size,  default_cube_size,   //2
+    default_cube_size,  default_cube_size,  default_cube_size,    //3
+    -default_cube_size, -default_cube_size, -default_cube_size,   //4
+    default_cube_size, -default_cube_size, -default_cube_size,    //5
+    -default_cube_size,  default_cube_size, -default_cube_size,   //6
+    default_cube_size,  default_cube_size, -default_cube_size     //7
 };
     /*
     // Left

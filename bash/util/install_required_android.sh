@@ -11,11 +11,14 @@ sudo mkdir $ndk_path && sudo chmod -R 777 $ndk_path
 
 # installs jdk, sdkmanager and sdk itself
 echo "  > installing [jdk]"
-install_first_library "default-jdk" "jdk-openjdk"
+install_first_library "default-jdk" "jdk-"
 echo "  > installing [sdkmanager]"
 install_first_library "sdkmanager"
 echo "  > installing [android-sdk]"
 install_first_library "android-sdk"
+
+# needed to manually install jdk-openjdk again on steam deck:
+# sudo rm /etc/java-openjdk/sdp/sdp.conf.template && sudo pacman -S jdk-openjdk
 
 # license directory
 sudo mkdir /opt/android-sdk/licenses && sudo chmod -R 777 /opt/android-sdk/licenses

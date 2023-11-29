@@ -33,10 +33,11 @@ void prefab_set_mesh_colors_rgb(ecs_world_t *world, ecs_entity_t e, color_rgb co
     zox_modified(e, MeshColorRGBs)
 }
 
-void prefab_set_mesh_vertices(ecs_world_t *world, ecs_entity_t e, const float3 vertices[], int length) {
+void prefab_set_mesh_vertices(ecs_world_t *world, ecs_entity_t e, const float vertices[], int length) {
+    // zox_log("   sizeof(float3) [%i]\n", sizeof(float3))
     MeshVertices *meshVertices = zox_get_mut(e, MeshVertices)
     resize_memory_component(MeshVertices, meshVertices, float3, length)
-    memcpy(meshVertices->value, vertices, length * sizeof(float3));
+    memcpy(meshVertices->value, vertices, length * sizeof(float));
     zox_modified(e, MeshVertices)
 }
 

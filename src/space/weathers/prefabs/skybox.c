@@ -17,7 +17,7 @@ ecs_entity_t spawn_prefab_skybox(ecs_world_t *world) {
         zox_prefab_set(e, MeshIndicies, { 0, NULL })
         zox_prefab_set(e, MeshVertices, { 0, NULL })
         prefab_set_mesh_indicies(world, e, cube_indicies_inverted, 36);
-        prefab_set_mesh_vertices(world, e, cube_vertices, 24);
+        prefab_set_mesh_vertices(world, e, cube_vertices_singles, cube_vertices_singles_length);
     }
     add_gpu_mesh(world, e);
     add_gpu_material(world, e);
