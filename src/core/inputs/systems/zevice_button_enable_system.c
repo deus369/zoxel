@@ -1,9 +1,12 @@
 // #define zox_debug_zevice_states
+extern void raycaster_select_ui_mut(ecs_world_t *world, ecs_entity_t raycaster_entity, ecs_entity_t ui_entity);
 // this disables any buttons (zevices) of a device, until they are released, then they get auto re enabled
-void disable_inputs_until_release(ecs_world_t *world, const ecs_entity_t player) {
+void disable_inputs_until_release(ecs_world_t *world, const ecs_entity_t player, const unsigned char new_device_mode) {
     if (!player) return;
-    zox_set(player, RaycasterTarget, { 0 })
-    zox_set(player, RaycasterResult, { 0 })
+    if (new_device_mode != zox_device_mode_gamepad) {
+        raycaster_select_ui_mut(world, player, 0);
+        // zox_set(player, RaycasterResult, { 0 })
+    }
     const DeviceLinks *deviceLinks = zox_get(player, DeviceLinks)
     for (int j = 0; j < deviceLinks->length; j++) {
         ecs_entity_t device_entity = deviceLinks->value[j];
@@ -26,7 +29,7 @@ void disable_inputs_until_release(ecs_world_t *world, const ecs_entity_t player)
                         zeviceDisabled->value = 1;
                         zox_modified(zevice_entity, ZeviceDisabled);
 #ifdef zox_debug_zevice_states
-                        zoxel_log("  = button disabled [%lu] at %f\n", zevice_entity, zox_current_time);
+                        zox_log("  = button disabled [%lu] at %f\n", zevice_entity, zox_current_time)
 #endif
                     }
                 }
@@ -44,7 +47,7 @@ void ZeviceButtonEnableSystem(ecs_iter_t *it) {
         const ZeviceButton *zeviceButton = &deviceButtons[i];
         unsigned char has_input = devices_get_is_pressed(zeviceButton->value);
 #ifdef zox_debug_zevice_states
-        if (!has_input) zoxel_log("   = button reenabled [%lu] at %f\n", it->entities[i], zox_current_time);
+        if (!has_input) zox_log("   = button reenabled [%lu] at %f\n", it->entities[i], zox_current_time)
 #endif
         if (!has_input) zeviceDisabled->value = 0;
     }
@@ -59,7 +62,7 @@ void ZeviceStickEnableSystem(ecs_iter_t *it) {
         const ZeviceStick *zeviceStick = &deviceSticks[i];
         unsigned char has_input = zevice_stick_has_input(zeviceStick, joystick_min_cutoff2 * 2.0f);
 #ifdef zox_debug_zevice_states
-        if (!has_input) zoxel_log("   = joystick reenabled [%lu] at %f\n", it->entities[i], zox_current_time);
+        if (!has_input) zox_log("   = joystick reenabled [%lu] at %f\n", it->entities[i], zox_current_time)
 #endif
         if (!has_input) zeviceDisabled->value = 0;
     }
@@ -74,7 +77,7 @@ void ZevicePointerEnableSystem(ecs_iter_t *it) {
         const ZevicePointer *zevicePointer = &zevicePointers[i];
         unsigned char has_input = devices_get_is_pressed(zevicePointer->value);
 #ifdef zox_debug_zevice_states
-        if (!has_input) zoxel_log("   = zevice_pointer reenabled [%lu] at %f\n", it->entities[i], zox_current_time);
+        if (!has_input) zox_log("   = zevice_pointer reenabled [%lu] at %f\n", it->entities[i], zox_current_time)
 #endif
         if (!has_input) zeviceDisabled->value = 0;
     }

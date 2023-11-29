@@ -65,8 +65,8 @@ void end_game(ecs_world_t *world) {
     pause_ui = 0;
     dispose_in_game_ui(world);
     zox_set(local_game, GameState, { zoxel_game_state_main_menu })
-    disable_inputs_until_release(world, main_player);
-    float2 main_menu_anchor = { 0.5f, 0.5f };
+    disable_inputs_until_release(world, main_player, zox_device_mode_none);
+    float2 main_menu_anchor = float2_half; // { 0.5f, 0.5f };
     int2 main_menu_position = int2_zero;
     spawn_main_menu(world, game_name, main_menu_position, main_menu_anchor, 0);
     ecs_entity_t main_camera = main_cameras[0]; // get player camera link instead
@@ -100,7 +100,7 @@ void play_game(ecs_world_t *world) {
     zox_delete(main_menu)   // close main menu
     main_menu = 0;
     spawn_in_game_ui(world);
-    disable_inputs_until_release(world, main_player);
+    disable_inputs_until_release(world, main_player, zox_device_mode_none);
     int3 center_position = int3_zero;
     const Position3D *camera_position3D = zox_get(main_camera, Position3D)
     if (camera_position3D) center_position = get_chunk_position(camera_position3D->value, default_chunk_size);

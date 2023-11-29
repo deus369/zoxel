@@ -19,7 +19,7 @@ void toggle_pause_ui(ecs_world_t *world, ecs_entity_t player) {
     if (!is_paused) {
         // zoxel_log(" > game state => [playing] to [paused] for [%lu]\n", character3D);
         zox_set(local_game, GameState, { zoxel_game_state_paused })
-        disable_inputs_until_release(world, player);
+        disable_inputs_until_release(world, player, zox_device_mode_none);
         zox_set(main_cameras[0], FreeRoam, { 0 })
         zox_set(mouse_entity, MouseLock, { 0 })
         zox_set(character3D, DisableMovement, { 1 })
@@ -29,7 +29,7 @@ void toggle_pause_ui(ecs_world_t *world, ecs_entity_t player) {
     } else {
         // zoxel_log(" > game [paused] to [playing] for [%lu]\n", character3D);
         zox_set(local_game, GameState, { zoxel_game_state_playing })
-        disable_inputs_until_release(world, player);
+        disable_inputs_until_release(world, player, zox_device_mode_none);
         zox_set(mouse_entity, MouseLock, { 1 })
         zox_set(character3D, DisableMovement, { 0 })
         zox_delete(pause_ui)

@@ -35,10 +35,3 @@ ecs_entity_t spawn_tilemap(ecs_world_t *world) {
 #endif
     return e;
 }
-
-/*#ifdef zoxel_render3D_uvs_system_overdebug
-    check_opengl_error("[pre render3D_uvs_system Error]");
-    GLint memory_used, memory_total;
-    glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &memory_used);
-    glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &memory_total);
-#endif*/

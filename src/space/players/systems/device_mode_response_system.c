@@ -17,10 +17,11 @@ void DeviceModeResponseSystem(ecs_iter_t *it) {
     const DeviceMode *deviceModes = ecs_field(it, DeviceMode, 1);
     const DeviceModeDirty *deviceModeDirtys = ecs_field(it, DeviceModeDirty, 2);
     for (int i = 0; i < it->count; i++) {
+        ecs_entity_t e = it->entities[i];
         const DeviceMode *deviceMode = &deviceModes[i];
         const DeviceModeDirty *deviceModeDirty = &deviceModeDirtys[i];
         if (deviceModeDirty->value != 0 && deviceModeDirty->value != deviceMode->value) {
-            // zoxel_log("     > devicemode response [%i -> %i]\n", deviceModeDirty->value, deviceMode->value);
+            // zox_log("     > devicemode response [%i -> %i]\n", deviceModeDirty->value, deviceMode->value)
             if (deviceMode->value == zox_device_mode_touchscreen) {
                 // zox_logg("  > old device mode was touchscreen\n")
                 if (game_state == zoxel_game_state_playing) dispose_in_game_ui_touch(world);
@@ -28,9 +29,9 @@ void DeviceModeResponseSystem(ecs_iter_t *it) {
             if (deviceModeDirty->value == zox_device_mode_gamepad) {
                 // select main menu ui - also set player selected ui target
                 ecs_entity_t first_ui = get_first_ui(world);
-                raycaster_select_ui_mut(world, main_player, first_ui);
+                raycaster_select_ui_mut(world, e, first_ui);
             } else if (deviceModeDirty->value == zox_device_mode_keyboardmouse) {
-                raycaster_select_ui_mut(world, main_player, 0);
+                raycaster_select_ui_mut(world, e, 0);
             } else if (deviceModeDirty->value == zox_device_mode_touchscreen) {
                 if (game_state == zoxel_game_state_playing) spawn_in_game_ui_touch(world);
             }

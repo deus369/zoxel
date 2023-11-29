@@ -34,7 +34,6 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
             textureGPULink = zox_get(tilemapLink->value, TextureGPULink)
             if (!textureGPULink->value) continue;
             attributes_textured3D = zox_get(tilemapLink->value, Textured3DAttributes)
-            // if (!attributes_textured3D) zox_log(" tilemap material has no attributes: %lu\n", tilemapLink->value)
             if (!attributes_textured3D) break;
         }
         if (!has_set_material) {
