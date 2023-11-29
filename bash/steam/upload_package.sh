@@ -21,7 +21,5 @@ steamcmd +login $username $password +run_app_build_http $vdf_file +quit
 echo " > if wanting default branch, edit bash/steam/zoxel.vdf >setlive< value"
 echo "  > next go to https://partner.steamgames.com/apps/builds/1412400 and set build manually"
 
-# force_install_dir $steam_depot_zip
-# app_update 1412400 validate
 # xdg-open https://partner.steamgames.com/apps/depotuploads/1412400 &
 # echo "build/steam_export.zip" | xclip -selection clipboard

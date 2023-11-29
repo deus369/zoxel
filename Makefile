@@ -3,6 +3,10 @@
 
 # todo: make build folders per platform / build tags (for web and on window builds)
 # todo: use a check for library and simply warn user here to make platform-sdk
+# todo: integrate google services, for achievements, etc
+# todo: integrate google play store uploads
+# todo: for simple make, make a platform folder (linux or windows)
+# todo: note whether x86 / arm for builds linux-x86_64, windows-x86_64, linux_arm64
 
 # IS_STEAMWORKS := true
 # determine the operating system #
@@ -111,31 +115,61 @@ ldlibs_web += -s USE_SDL_IMAGE=2
 ldlibs_web += -s SDL2_IMAGE_FORMATS='["png"]' # "bmp",
 ldlibs_web += -s USE_SDL_MIXER=2
 # ldlibs_web += -L./ -lflecs
-# flecs
+# halp - -lopengl32 doesn't have the right functions
+# 'strings libopengl32.a | grep glBind' to find some functions
+# enable #define zox_sdl_import_file_only for windows build
+#  strings /usr/x86_64-w64-mingw32/lib/libopengl32.a | grep glBind
+
+# flecs #
 flecs_target = build/libflecs.a
 flecs_source = include/flecs/flecs.c
 flecs_flags = -c
 flecs_obj = flecs.o
 make_flecs = $(CC) $(flecs_flags) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) ../$(flecs_source) -o $(flecs_obj) $(LDLIBS2) && echo "  > built [flecs.o]"
 make_flecs_lib = ar rcs ../$(flecs_target) $(flecs_obj) && echo "  > built [libflecs.a]"
-# build commands
+
+check-flecs:
+	open https://github.com/SanderMertens/flecs/releases &
+
+# downloads source into include, installs library into lib
+$(flecs_target):
+	set -e ; \
+	bash bash/flecs/check_flecs_source.sh && bash bash/flecs/download_flecs_source.sh && cp include/flecs/flecs.h include; \
+	cd build && $(make_flecs) && $(make_flecs_lib) && cd .. && cp build/libflecs.a lib && cp include/flecs/flecs.h include; \
+	echo "  > installed flecs library"
+
+install-sdl:
+	bash bash/sdl/install_sdl.sh
+
+install-flecs:
+	bash bash/flecs/remove_flecs.sh
+	bash bash/flecs/download_flecs_source.sh
+
+remove-flecs:
+	bash bash/flecs/remove_flecs.sh
+
+get-nightly-flecs:
+	bash bash/flecs/nightly_flecs.sh
+
+get-flecs-version:
+	bash bash/flecs/download_flecs_version.sh
+
+revert-nightly-flecs:
+	bash bash/flecs/nightly_revert_source.sh
+
+
+# linux #
+
 make_release = $(CC) $(CFLAGS) $(fix_flecs_warning) $(CFLAGS_RELEASE) -o ../$(target) $(OBJS) $(LDLIBS2) $(LDLIBS)  && echo "  > built [$(target)]"
 make_dev = $(CC) $(CFLAGS) $(fix_flecs_warning) $(cflags_debug) -o ../$(target_dev) $(OBJS) $(LDLIBS) $(LDLIBS2)
-make_web_release = $(cc_web) $(CFLAGS) $(cflags_web) -o $(target_web2) $(OBJS) ../include/flecs/flecs.c $(ldlibs_web)
 
-# halp - -lopengl32 doesn't have the right functions
-# 'strings libopengl32.a | grep glBind' to find some functions
-# enable #define zox_sdl_import_file_only for windows build
-#  strings /usr/x86_64-w64-mingw32/lib/libopengl32.a | grep glBind
-
-# release
 $(target): $(SRCS)
 ifneq ($(SYSTEM),Windows)
 	bash bash/util/install_required.sh
 endif
 	set -e ; \
 	bash bash/flecs/check_flecs_lib_not_installed.sh && bash bash/flecs/check_flecs_source.sh && bash bash/flecs/download_flecs_source.sh && cp include/flecs/flecs.h include; \
-	bash bash/flecs/check_flecs_lib_not_installed.sh && cd build && $(make_flecs) && $(make_flecs_lib) && cd .. && cp build/libflecs.a lib;  \
+	bash bash/flecs/check_flecs_lib_not_installed.sh && cd build && $(make_flecs) && $(make_flecs_lib) && cd .. && cp build/libflecs.a lib; \
 	bash bash/flecs/check_flecs_lib.sh && cd build && $(make_release)
 	
 # bash bash/flecs/check_flecs_lib.sh && cd build && $(make_release)
@@ -260,6 +294,8 @@ target_windows_32 = build/windows_32/zoxel_32.exe
 
 # web #
 
+make_web_release = $(cc_web) $(CFLAGS) $(cflags_web) -o $(target_web2) $(OBJS) ../include/flecs/flecs.c $(ldlibs_web)
+
 install-web-sdk:
 	bash bash/web/install_sdk.sh
 
@@ -329,37 +365,6 @@ android-update-settings:
 android-dev-debug:
 	bash bash/android/install_debug.sh
 	bash bash/android/debug_android.sh
-
-# flecs #
-
-check-flecs:
-	open https://github.com/SanderMertens/flecs/releases &
-
-# downloads source into include, installs library into lib
-$(flecs_target):
-	set -e ; \
-	bash bash/flecs/check_flecs_source.sh && bash bash/flecs/download_flecs_source.sh && cp include/flecs/flecs.h include; \
-	cd build && $(make_flecs) && $(make_flecs_lib) && cd .. && cp build/libflecs.a lib && cp include/flecs/flecs.h include; \
-	echo "  > installed flecs library"
-
-install-sdl:
-	bash bash/sdl/install_sdl.sh
-
-install-flecs:
-	bash bash/flecs/remove_flecs.sh
-	bash bash/flecs/download_flecs_source.sh
-
-remove-flecs:
-	bash bash/flecs/remove_flecs.sh
-
-get-nightly-flecs:
-	bash bash/flecs/nightly_flecs.sh
-
-get-flecs-version:
-	bash bash/flecs/download_flecs_version.sh
-
-revert-nightly-flecs:
-	bash bash/flecs/nightly_revert_source.sh
 
 # ssh & git #
 
@@ -496,8 +501,12 @@ install-steam-deck-required:
 
 itch-all:
 	@echo "	> build linux"
+	cd build && $(make_release) && cd ..
 	@echo "	> build windows"
+	cd build && $(make_windows) && cd ..
 	@echo "	> upload all to itch io"
+	bash bash/itch/upload.sh
+	@echo "	> itch all complete"
 
 itch-upload:
 	bash bash/itch/upload.sh

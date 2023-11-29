@@ -4,6 +4,12 @@
 - [ ] Fix EM_JS functions not working anymore (platforms/util/webasm_util.c)
 - [ ] Fix Pipeline, 'make push-web' should push to a zox-web git repo the latest build
 
+## devops
+
+- [ ] automate beta builds every saturday it should perform all platforms
+- [ ] test results can be displayed in a simple text file
+- [ ] push builds to git repo every week on a saturday
+
 ## cross compile to windows
 
 - [x] get a 'make build/zoxel.exe' build working
@@ -11,16 +17,9 @@
 ## steamdeck steam
 
 - [x] install_sdk for steamworks
-- [ ] add steamworks to zoxel compilation with a toggle option
-- [ ] 'make is_steamworks' check if steamworks is in build
-- [ ] make toggle_steamworks - add steamworks includes to build settings?
-- [ ] test achievement for killing first npc - [noob] Vox Slayer! You have started your journey into the path of carnage.
-
-## devops
-
-- [ ] automate builds every morning it should perform all builds
-- [ ] test results can be displayed in a simple text file
-- [ ] push builds to git repo every week on a saturday
+- [x] add steamworks to zoxel compilation with a toggle option
+- [x] 'make is_steamworks' check if steamworks is in build
+- [x] test achievement for killing first npc - [noob] Vox Slayer! You have started your journey into the path of carnage.
 
 =================================
     builds started at [3.18PM - 11/23/23]
