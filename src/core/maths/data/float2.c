@@ -6,6 +6,7 @@ typedef struct {
 
 #define float2_zero (float2) { 0.0f, 0.0f }
 #define float2_half (float2) { 0.5f, 0.5f }
+#define float2_top_left (float2) { 0, 1 }
 
 float2 float2_multiply_float(float2 input, float mul) {
     input.x *= mul;

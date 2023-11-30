@@ -8,3 +8,17 @@ lib_output="lib/libsteam_wrapper.dll"
 #builds test_steamworks
 echo " > building steam-wrapper [$lib_output]"
 x86_64-w64-mingw32-g++ -shared $wrapper_cpp -o $lib_output -Iinclude/steam -Llib -lsteam_api64 -fPIC
+
+# todo: move wrapper copying into make build step
+if [ ! -d build ]; then
+    echo " > creating build directory"
+    mkdir build
+fi
+if [ ! -d build/windows ]; then
+    echo " > creating build/windows directory"
+    mkdir build/windows
+fi
+echo " > copying steam_api64.dll into build/windows"
+cp lib/steam_api64.dll build/windows/steam_api64.dll
+echo " > copying [$lib_output] into build/windows"
+cp $lib_output build/windows/libsteam_wrapper.dll

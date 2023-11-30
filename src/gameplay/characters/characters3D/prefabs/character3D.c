@@ -1,5 +1,6 @@
 ecs_entity_t prefab_character3D = 0;
 ecs_entity_t local_character3D = 0;
+extern ecs_entity_t healthbar_2D;
 
 int get_characters_count(ecs_world_t *world) {
     return zox_count_entities(world, ecs_id(Character3D));
@@ -64,6 +65,7 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vo
     resize_memory_component(ElementLinks, elementLinks, ecs_entity_t, 1)
     elementLinks->value[0] = statbar;
     zox_modified(e, ElementLinks)
+    zox_prefab_set(healthbar_2D, UserStatLink, { user_stat })
 #endif
 #ifdef zoxel_debug_spawns
     zox_log("   > spawned character3D [%lu]\n", e)

@@ -15,6 +15,7 @@ ecs_entity_t spawn_prefab_element(ecs_world_t *world) {
 #endif
     return e;
 }
+
 ecs_entity_t spawn_element(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t canvas, int2 pixel_position, int2 pixel_size, float2 anchor, unsigned char layer, color element_color) {
     int2 canvas_size = zox_get_value(canvas, PixelSize)
     zox_instance(prefab_element)

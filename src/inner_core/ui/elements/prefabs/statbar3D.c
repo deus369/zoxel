@@ -9,12 +9,11 @@ int get_statbars_count(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_prefab_statbar3D(ecs_world_t *world) {
-    color bar_color = (color) { 66, 12, 12, 0 };
     zox_prefab_child(prefab_element_world)
     zox_prefab_name("prefab_statbar")
-    zox_set(e, PixelSize, { int2_one })
-    zox_set(e, TextureSize, { int2_one })
-    zox_set(e, Color, { bar_color })
+    zox_prefab_set(e, PixelSize, { int2_one })
+    zox_prefab_set(e, TextureSize, { int2_one })
+    zox_prefab_set(e, Color, { back_bar_color_3D_start })
     zox_add_tag(e, Statbar)
     zox_prefab_set(e, ElementBar, { 1 })
     zox_prefab_set(e, ElementBarSize, { float2_zero })
@@ -27,13 +26,12 @@ ecs_entity_t spawn_prefab_statbar3D(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_prefab_statbar3D_front(ecs_world_t *world) {
-    const color bar_color = (color) { 188, 25, 25, 255 };
     zox_prefab_child(prefab_element_world_child)
     zox_prefab_name("prefab_statbar3D_front")
     zox_add_tag(e, FillTexture)
-    zox_set(e, Color, { bar_color })
-    zox_set(e, PixelSize, { int2_one })
-    zox_set(e, TextureSize, { int2_one })
+    zox_prefab_set(e, Color, { front_bar_color })
+    zox_prefab_set(e, PixelSize, { int2_one })
+    zox_prefab_set(e, TextureSize, { int2_one })
     prefab_set_mesh3D_vertices(world, e, square_vertices, 4, statbar_front_mesh_scale);
     prefab_statbar3D_front = e;
 #ifdef zoxel_debug_prefabs
@@ -43,7 +41,7 @@ ecs_entity_t spawn_prefab_statbar3D_front(ecs_world_t *world) {
 }
 
 // used atm for statbar front bar
-ecs_entity_t spawn_statbar3D_front(ecs_world_t *world, ecs_entity_t ui_holder, ecs_entity_t parent, float3 offset) {
+ecs_entity_t spawn_statbar3D_front(ecs_world_t *world, const ecs_entity_t ui_holder, const ecs_entity_t parent, const float3 offset) {
     zox_instance(prefab_statbar3D_front)
     zox_name("statbar3D_front")
     zox_set(e, CameraLink, { main_cameras[0] })
@@ -56,7 +54,7 @@ ecs_entity_t spawn_statbar3D_front(ecs_world_t *world, ecs_entity_t ui_holder, e
     return e;
 }
 
-ecs_entity_t spawn_statbar3D(ecs_world_t *world, ecs_entity_t ui_holder, float percentage) {
+ecs_entity_t spawn_statbar3D(ecs_world_t *world, const ecs_entity_t ui_holder, const float percentage) {
     const float depth_difference = 0.012f;
     zox_instance(prefab_statbar3D)
     zox_name("statbar3D")

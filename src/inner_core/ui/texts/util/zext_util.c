@@ -104,3 +104,43 @@ void spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, ecs_entity_t canva
     // zox_log("   > new_children_length [%i] reusing_length [%i] old_children_length [%i]\n", new_children_length, reusing_length, old_children_length)
     // zox_log("   > finished [%i]\n", children->length)
 }
+void set_entity_label_with_zext(ecs_world_t *world, ecs_entity_t e, unsigned char *value, int length) {
+    const Children *name_label_children = zox_get(e, Children)
+    ecs_entity_t zext_entity = name_label_children->value[0];
+    ZextData *zextData = zox_get_mut(zext_entity, ZextData)
+    if (zextData->value) free(zextData->value);
+    zextData->value = memcpy(malloc(length), value, length);
+    zextData->length = length;
+    zox_modified(zext_entity, ZextData)
+    // zox_set(zext_entity, ZextDirty, { 1 })
+    ZextDirty *zextDirty = zox_get_mut(zext_entity, ZextDirty)
+    zextDirty->value = 1;
+    zox_modified(zext_entity, ZextDirty)
+}
+
+unsigned char set_entity_label_with_text(ecs_world_t *world, ecs_entity_t e, const char* text) {
+    const Children *name_label_children = zox_get(e, Children)
+    const ecs_entity_t zext_entity = name_label_children->value[0];
+    ZextDirty *zextDirty = zox_get_mut(zext_entity, ZextDirty)
+    if (zextDirty->value) return 0;
+    ZextData *zextData = zox_get_mut(zext_entity, ZextData)
+    if (is_zext(zextData, text)) return 0;
+    set_zext(zextData, text);
+    zextDirty->value = 1;
+    zox_modified(zext_entity, ZextData)
+    zox_modified(zext_entity, ZextDirty)
+    return 1;
+}
+
+unsigned char set_entity_with_text(ecs_world_t *world, ecs_entity_t zext_entity, const char* text) {
+    ZextDirty *zextDirty = zox_get_mut(zext_entity, ZextDirty)
+    if (zextDirty->value) return 0;
+    ZextData *zextData = zox_get_mut(zext_entity, ZextData)
+    if (is_zext(zextData, text)) return 0;
+    set_zext(zextData, text);
+    zextDirty->value = 1;
+    zox_modified(zext_entity, ZextData)
+    zox_modified(zext_entity, ZextDirty)
+    return 1;
+}
+

@@ -1,9 +1,9 @@
 // #define zox_time_element_mesh_system
 
 void Element2DMeshSystem(ecs_iter_t *it) {
-    #ifdef zox_time_element_mesh_system
-        begin_timing()
-    #endif
+#ifdef zox_time_element_mesh_system
+    begin_timing()
+#endif
     zox_iter_world()
     const PixelSize *pixelSizes = ecs_field(it, PixelSize, 2);
     const MeshAlignment *meshAlignments = ecs_field(it, MeshAlignment, 3);
@@ -42,12 +42,12 @@ void Element2DMeshSystem(ecs_iter_t *it) {
         initializeEntityMesh->value = 0;
         generateTexture->value = 1;
         meshDirty->value = 1;
-        #ifdef zox_time_element_mesh_system
-            did_do_timing()
-        #endif
+#ifdef zox_time_element_mesh_system
+        did_do_timing()
+#endif
         // zoxel_log(" > ui mesh 2D spawned on gpu [%lu]\n", it->entities[i]);
     }
-    #ifdef zox_time_element_mesh_system
-        end_timing("    - element_mesh_system")
-    #endif
+#ifdef zox_time_element_mesh_system
+    end_timing("    - element_mesh_system")
+#endif
 } zox_declare_system(Element2DMeshSystem)

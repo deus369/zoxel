@@ -38,6 +38,29 @@ const byte2 font_underscore[] = {
     { font_left_side, font_bottom_side }, { font_right_side, font_bottom_side }
 };
 
+const unsigned char font_slash_length = 1 * 2;
+const byte2 font_slash[] = {
+    { font_left_side, font_bottom_side }, { font_right_side, font_top_side }
+};
+
+const unsigned char font_percentage_length = 3 * 2;
+const byte2 font_percentage[] = {
+    { font_left_side, font_bottom_side }, { font_right_side, font_top_side },
+    { font_right_side, font_bottom_side }, { font_right_side - 42, font_bottom_side + 42 },
+    { font_left_side, font_top_side  }, { font_left_side + 42, font_top_side - 42 },
+};
+
+const unsigned char font_back_slash_length = 1 * 2;
+const byte2 font_back_slash[] = {
+    { font_left_side, font_top_side }, { font_right_side, font_bottom_side }
+};
+
+const unsigned char font_comma_length = 1 * 2;
+const byte2 font_comma[] = {
+    { font_left_side, font_bottom_side }, { middleSideX, font_lowerMiddleSideY }
+};
+
+
 const unsigned char full_stop_radius = 2;
 const unsigned char full_stop_length = 4 * 2;
 const byte2 font_full_stop[] = {

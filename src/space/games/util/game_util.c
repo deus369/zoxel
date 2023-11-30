@@ -7,8 +7,10 @@ unsigned char game_rule_attach_to_character = 1;
 // do I still need render_camera_matrix? - yes - used to insert matrix in each camera system run
 ecs_entity_t game_ui = 0;
 ecs_entity_t actionbar_ui = 0;
+ecs_entity_t healthbar_2D = 0;
 // const char *game_name = "zoxel";
 extern const char *game_name;
+// todo: make this an event i can latch onto
 
 void dispose_in_game_ui_touch(ecs_world_t *world) {
     if (game_ui) {
@@ -33,10 +35,15 @@ void dispose_in_game_ui(ecs_world_t *world) {
         zox_delete(actionbar_ui)
         actionbar_ui = 0;
     }
+    if (healthbar_2D) {
+        zox_delete(healthbar_2D)
+        healthbar_2D = 0;
+    }
 }
 
 void spawn_in_game_ui(ecs_world_t *world) {    // spawn game uis
-    const DeviceMode *deviceMode = zox_get(main_player, DeviceMode)
+    ecs_entity_t player = main_player;
+    const DeviceMode *deviceMode = zox_get(player, DeviceMode)
     unsigned char is_touch = deviceMode->value == zox_device_mode_touchscreen;
 #ifdef zoxel_mouse_emulate_touch
     is_touch = 1;
@@ -54,9 +61,13 @@ void spawn_in_game_ui(ecs_world_t *world) {    // spawn game uis
     for (int i = 0; i < actions_count; i++) {
         const color action_color = (color) { 99, 11, 66, 255 };
         int position_x = (int) ((i - (actions_count / 2) + 0.5f) * (icon_size + padding));
-        children->value[i] = spawn_element(world, actionbar_ui, main_canvas, (int2) { position_x, 0 }, (int2) { icon_size, icon_size }, (float2) { 0.5f, 0.5f }, 1, action_color);
+        children->value[i] = spawn_element(world, actionbar_ui, main_canvas, (int2) { position_x, 0 }, (int2) { icon_size, icon_size }, float2_half, 1, action_color);
     }
     zox_modified(actionbar_ui, Children)
+    // statbar testing
+    const int2 canvas_size = zox_get_value(main_canvas, PixelSize)
+    float2 element_bar2D_anchor = float2_top_left; // float2_half;
+    healthbar_2D = spawn_element_bar2D(world, player, main_canvas, main_canvas, int2_zero, (int2) { 12, 8 }, element_bar2D_anchor, "health [5/10]", 18, 0, int2_half(canvas_size), canvas_size, canvas_size, 0);
 }
 
 void end_game(ecs_world_t *world) {

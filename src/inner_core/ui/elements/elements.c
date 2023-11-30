@@ -1,6 +1,9 @@
 #ifndef zoxel_ui_elements
 #define zoxel_ui_elements
 
+const color back_bar_color = (color) { 66, 12, 12, 255 };
+const color back_bar_color_3D_start = (color) { 66, 12, 12, 0 };
+const color front_bar_color = (color) { 188, 25, 25, 255 };
 // components
 zox_declare_tag(Label)            // UI extras, make extra ui module?
 zox_declare_tag(Button)           //! A generic ui button for clicking.
@@ -19,6 +22,7 @@ zox_component_byte(ListUIMax)
 #include "prefabs/window.c"
 #include "prefabs/scrollbar.c"
 #include "prefabs/ui_list.c"
+#include "prefabs/element_bar2D.c"
 #include "prefabs/statbar3D.c"
 // systems
 #include "systems/button_click_sound_system.c"
@@ -81,6 +85,8 @@ void spawn_prefabs_elements(ecs_world_t *world) {
     spawn_prefab_scrollbar(world);
     spawn_prefab_scrollbar_front(world);
     spawn_prefab_ui_list(world);
+    spawn_prefab_element_bar2D(world);
+    spawn_prefab_element_bar2D_front(world);
     spawn_prefab_statbar3D(world);
     spawn_prefab_statbar3D_front(world);
 }

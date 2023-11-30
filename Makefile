@@ -423,46 +423,32 @@ steam-wrapper-linux:s
 	bash bash/steam/build_wrapper.sh
 
 steam-linux:
-	@echo "	> building linux-steam"
+	@echo " > building linux-steam wrapper:"
 	bash bash/steam/build_wrapper.sh
-	@echo "    > copyin libsteam_api.so into build/linux"
-	cp lib/libsteam_api.so build/linux/libsteam_api.so
-	@echo "    > copyin libsteam_wrapper.so into build/linux"
-	cp lib/libsteam_wrapper.so build/linux/libsteam_wrapper.so
-	@echo " > building linux with steam"
-	$(make_linux_with_steam) $(steam_libs) -Dzox_include_steam
+	@echo " > building linux-steam:"
+	$(make_linux_with_steam)
 
 steam-wrapper-windows:
 	bash bash/steam/build_wrapper_windows.sh
 
 steam-windows:
-	@echo "	> building windows-steam"
+	@echo " > building windows-steam wrapper:"
 	bash bash/steam/build_wrapper_windows.sh
-	@echo "    > copyin lib/steam_api64.dll into build/windows"
-	cp lib/steam_api64.dll build/windows/steam_api64.dll
-	@echo "    > copyin lib/libsteam_wrapper.dll into build/windows"
-	cp lib/libsteam_wrapper.dll build/windows/libsteam_wrapper.dll
-	@echo " > building windows with steam"
+	@echo " > building windows-steam:"
 	$(make_windows_with_steam)
 
 steam-all:
-	@echo "	> 1 building linux"
+	@echo "	> 1 building linux-steam wrapper:"
 	bash bash/steam/build_wrapper.sh
-	@echo "    > copyin libsteam_api.so into build/linux"
-	cp lib/libsteam_api.so build/linux/libsteam_api.so
-	@echo "    > copyin libsteam_wrapper.so into build/linux"
-	cp lib/libsteam_wrapper.so build/linux/libsteam_wrapper.so
-	$(make_linux_with_steam) $(steam_libs) -Dzox_include_steam
-	@echo "	> 2 building windows"
+	@echo "	> 2 building linux-steam:"
+	$(make_linux_with_steam)
+	@echo "	> 3 building windows-steam wrapper:"
 	bash bash/steam/build_wrapper_windows.sh
-	@echo "    > copyin lib/steam_api64.dll into build/windows"
-	cp lib/steam_api64.dll build/windows/steam_api64.dll
-	@echo "    > copyin lib/libsteam_wrapper.dll into build/windows"
-	cp lib/libsteam_wrapper.dll build/windows/libsteam_wrapper.dll
+	@echo "	> 4 building windows-steam:"
 	$(make_windows_with_steam)
-	@echo "	> 3 packaging"
+	@echo "	> 5 packaging build/steam_export.zip:"
 	bash bash/steam/package.sh
-	@echo "	> 4 upload build/steam_export.zip"
+	@echo "	> 6 uploading build/steam_export.zip:"
 	bash bash/steam/upload_package.sh
 	# bash bash/steam/upload_package.sh --default
 

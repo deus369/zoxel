@@ -71,6 +71,7 @@ unsigned char convert_ascii(char input) {
     zoxel_convert_ascii('-', 73)
     zoxel_convert_ascii('+', 74)
     zoxel_convert_ascii('=', 75)
+    zoxel_convert_ascii('%', 76)
     // numbers
     zoxel_convert_ascii('0', 60)
     zoxel_convert_ascii('1', 61)

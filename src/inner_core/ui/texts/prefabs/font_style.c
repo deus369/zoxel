@@ -1,6 +1,6 @@
 ecs_entity_t font_style_prefab;
 ecs_entity_t font_style_entity;
-const int fonts_used = 74;
+const int fonts_used = 77;
 const int font_styles_length = 256;
 
 ecs_entity_t spawn_font_style_prefab(ecs_world_t *world) {
@@ -93,13 +93,16 @@ ecs_entity_t spawn_font_style(ecs_world_t *world) {
     children->value[54] = question_mark;
     children->value[55] = spawn_font(world, font_space, font_space_length);
     children->value[56] = spawn_font(world, font_full_stop, full_stop_length);
-    children->value[57] = question_mark;
-    children->value[58] = question_mark;
-    children->value[59] = question_mark;
+    children->value[57] = spawn_font(world, font_comma, font_comma_length);
+    children->value[58] = spawn_font(world, font_slash, font_slash_length);
+    children->value[59] = spawn_font(world, font_back_slash, font_back_slash_length);
     children->value[70] = spawn_font(world, font_underscore, underscore_length);
     children->value[71] = spawn_font(world, left_square_bracket, left_square_bracket_length);
     children->value[72] = spawn_font(world, right_square_bracket, right_square_bracket_length);
     children->value[73] = spawn_font(world, font_minus, font_minus_length);
+    children->value[74] = question_mark; // +
+    children->value[75] = question_mark; // =
+    children->value[76] = spawn_font(world, font_percentage, font_percentage_length);
     // finished
     for (int i = fonts_used; i < font_styles_length; i++) children->value[i] = question_mark;
     zox_modified(e, Children)
