@@ -41,11 +41,11 @@ void show_leaderboard() {
 }
 
 // saves to cloud
-unsigned char steam_remote_save(const char* save_name, unsigned char *buffer, int byte_length) {
+unsigned char steam_remote_save(const char* save_name, unsigned char *buffer, int32 byte_length) {
     return SteamRemoteStorage()->FileWrite(save_name, buffer, byte_length);
 }
 
-unsigned char* steam_remote_read(const char* save_name, int* file_length) {
+unsigned char* steam_remote_read(const char* save_name, int32* file_length) {
     *file_length = SteamRemoteStorage()->GetFileSize(save_name);
     unsigned char* file_content = (unsigned char*) malloc(*file_length);
     if (!SteamRemoteStorage()->FileRead(save_name, file_content, *file_length)) {
@@ -54,6 +54,13 @@ unsigned char* steam_remote_read(const char* save_name, int* file_length) {
     }
     return file_content;
 }
+
+/* int32 fileCount = SteamRemoteStorage()->GetFileCount();
+for ( int i = 0; i < fileCount; ++i ) {
+    int32 fileSize;
+    const char *fileName = SteamRemoteStorage()->GetFileNameAndSize( i, &fileSize );
+    // Do something with fileSize and fileName
+}*/
 
 void publish_to_workshop(const char* contentPath, const char* title, const char* description) {
     int workshopItemID = 0;
