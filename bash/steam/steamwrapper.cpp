@@ -41,8 +41,8 @@ void show_leaderboard() {
 }
 
 // saves to cloud
-void steam_remote_save(const char* save_name, unsigned char *buffer, int byte_length) {
-    SteamRemoteStorage()->FileWrite(save_name, buffer, byte_length);
+unsigned char steam_remote_save(const char* save_name, unsigned char *buffer, int byte_length) {
+    return SteamRemoteStorage()->FileWrite(save_name, buffer, byte_length);
 }
 
 unsigned char* steam_remote_read(const char* save_name, int* file_length) {

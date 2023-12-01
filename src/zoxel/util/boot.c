@@ -110,14 +110,15 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
 #ifdef zox_include_steam
     if (is_steam_running) {
         const char *save_file_name = "zoxel_save";
-        int *file_length = malloc(1);
+        const int file_size = 2;
+        int *file_length = malloc(sizeof(int));
         unsigned char* test_bytes_read = steam_remote_read(save_file_name, file_length);
-        if (test_bytes_read && file_length && *file_length != 2) {
+        if (test_bytes_read) { // } && file_length && *file_length != file_size) {
             test_read_byte = test_bytes_read[0];
             test_read_byte2 = test_bytes_read[1];
             zox_log(" > read bytes [%i:%i]\n", test_read_byte, test_read_byte2)
         } else {
-            test_read_byte = 1;
+            test_read_byte = 0;
             test_read_byte2 = 1;
             zox_log(" > creating new data [%i:%i]\n", test_read_byte, test_read_byte2)
         }
@@ -125,10 +126,14 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         free(file_length);
         test_read_byte++;
         // write to file
-        unsigned char* test_bytes_write = malloc(2);
+        unsigned char* test_bytes_write = malloc(file_size);
         test_bytes_write[0] = test_read_byte;
         test_bytes_write[1] = test_read_byte2;
-        steam_remote_save(save_file_name, test_bytes_write, 2);
+        if (!steam_remote_save(save_file_name, test_bytes_write, file_size)) {
+            zox_logg(" > error saving to cloud saves\n")
+        } else {
+            zox_logg(" > success saving to cloud saves\n")
+        }
         free(test_bytes_write);
     } else {
         // todo: fix this, it's not initializing properly atm
