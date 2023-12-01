@@ -4,6 +4,7 @@ extern int get_count_particle3Ds(ecs_world_t *world);
 extern int get_count_particle3D_emitters(ecs_world_t *world);
 // #define zox_debug_ui_memorys_allocated
 #define zox_debug_ui_device_mode
+#define zox_debug_ui_save_cloud
 // #define zox_debug_ui_raycaster_target
 // #define zox_debug_ui_characters
 // #define zox_debug_ui_particle3Ds
@@ -12,6 +13,11 @@ extern int get_count_particle3D_emitters(ecs_world_t *world);
 // #define zox_debug_ui_node_memory
 // #define zox_debug_ui_zexts
 // todo: sometimes it removes a memorys when spawning/unspawning this label
+
+#ifdef zox_debug_ui_save_cloud
+    extern unsigned char test_read_byte;
+    extern unsigned char test_read_byte2;
+#endif
 
 void GameDebugLabelSystem(ecs_iter_t *it) {
     if (!main_player) return;
@@ -33,6 +39,9 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         // test this \n
         // snprintf(buffer, sizeof(buffer), "debug ui\nline 2");
         // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[debug]");
+#ifdef zox_debug_ui_save_cloud
+        buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " cloud [%i - %i] ", test_read_byte, test_read_byte2);
+#endif
 #ifdef zox_debug_ui_memorys_allocated
         buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " memorys [%i]", total_memorys_allocated);
 #endif
@@ -59,28 +68,17 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 #ifdef zox_debug_ui_raycaster_target
         buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " raycaster target [%lu]", raycaster_target);
 #endif
-        #ifdef zox_debug_ui_device_mode
-            /*if (deviceMode->value == zox_device_mode_none) {
-                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " d [none]");
-            } else if (deviceMode->value == zox_device_mode_keyboardmouse) {
-                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " d [keyboard]");
-            } else if (deviceMode->value == zox_device_mode_gamepad) {
-                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " d [gamepad]");
-            } else if (deviceMode->value == zox_device_mode_touchscreen) {
-                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " d [touchscreen]");
-                // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " touch_devices [%i]", touch_devices_count);
-                // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " fingers [%i]", touch_fingers_count);
-            }*/
-            if (deviceMode->value == zox_device_mode_none) {
-                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[ ]");
-            } else if (deviceMode->value == zox_device_mode_keyboardmouse) {
-                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[k]");
-            } else if (deviceMode->value == zox_device_mode_gamepad) {
-                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[g]");
-            } else if (deviceMode->value == zox_device_mode_touchscreen) {
-                buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[t]");
-            }
-        #endif
+#ifdef zox_debug_ui_device_mode
+        if (deviceMode->value == zox_device_mode_none) {
+            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[ ]");
+        } else if (deviceMode->value == zox_device_mode_keyboardmouse) {
+            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[k]");
+        } else if (deviceMode->value == zox_device_mode_gamepad) {
+            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[g]");
+        } else if (deviceMode->value == zox_device_mode_touchscreen) {
+            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[t]");
+        }
+#endif
         if (!is_zext(zextData, buffer)) {
             set_zext(zextData, buffer);
             zextDirty->value = 1;
@@ -88,3 +86,15 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         }
     }
 } zox_declare_system(GameDebugLabelSystem)
+
+/*if (deviceMode->value == zox_device_mode_none) {
+buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " d [none]");
+} else if (deviceMode->value == zox_device_mode_keyboardmouse) {
+buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " d [keyboard]");
+} else if (deviceMode->value == zox_device_mode_gamepad) {
+buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " d [gamepad]");
+} else if (deviceMode->value == zox_device_mode_touchscreen) {
+buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " d [touchscreen]");
+// buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " touch_devices [%i]", touch_devices_count);
+// buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " fingers [%i]", touch_fingers_count);
+}*/

@@ -6,7 +6,7 @@ install_directory="/usr/local/games"
 echo "  > install directory is [$install_directory]"
 zoxel_install_directory=$install_directory/zoxel
 zoxel_install_directory2=/usr/games/zoxel
-shortcut_file_name=zoxel.desktop
+shortcut_file_name=zoxel_git.desktop
 # shortcut_directory=/usr/share/applications
 shortcut_directory=$HOME/.local/share/applications
 

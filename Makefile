@@ -35,7 +35,7 @@ target = build/linux/zoxel
 CC = gcc # c99 | gnu99
 OBJS = src/main.c
 ifeq ($(SYSTEM),Windows)
-target = build/zoxel.exe
+target = build/windows/zoxel.exe
 endif
 CFLAGS_RELEASE = -Ofast -D NDEBUG -s
 ifneq ($(SYSTEM),Windows)
@@ -419,7 +419,7 @@ steam_objs = bash/steam/steamwrapper.c
 make_linux_with_steam = $(CC) $(CFLAGS) $(CFLAGS_RELEASE) -o $(target) $(OBJS) $(steam_objs) $(LDLIBS) $(steam_libs) -lsteam_api
 make_windows_with_steam = $(cc_windows) $(OBJS) include/flecs/flecs.c $(steam_objs) -o $(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs) $(steam_libs) -lsteam_api64
 
-steam-wrapper-linux:s
+steam-wrapper-linux:
 	bash bash/steam/build_wrapper.sh
 
 steam-linux:
@@ -548,7 +548,7 @@ help:
 	@echo "    git-keys			creates a ssh key to add to git servers"
 	@echo "  > [windows]"
 	@echo "    windows-sdk			installs tools for windows cross compilation"
-	@echo "    build/zoxel.exe		builds windows release"
+	@echo "    windows			builds windows release"
 	@echo "  > [steam]"
 	@echo "    steam-all			builds both wrappers, builds and uploads them to beta"
 	@echo "    steam-wrapper-linux		builds steam wrapper lib/libsteam_wrapper.so"

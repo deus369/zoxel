@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=zoxel_git
+Comment=A Voxely Game
+Categories=Development;
+Type=Application
+Exec=/usr/local/games/zoxel/zoxel
+Icon=/usr/local/games/zoxel/resources/textures/game_icon.png

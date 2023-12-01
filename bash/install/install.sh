@@ -8,7 +8,7 @@ echo "  > installing zoxel" #  from zoxel directory [$PWD]"
 install_directory=$install_directory_1
 echo "  > install directory is [$install_directory]"
 # zoxel_directory=$PWD
-shortcut_file_name=zoxel.desktop
+shortcut_file_name=zoxel_git.desktop
 # shortcut_directory=/usr/share/applications
 shortcut_directory=$HOME/.local/share/applications
 # echo "Filename [$file_name]"

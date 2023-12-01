@@ -1,4 +1,5 @@
-// todo: canvas lines doesn't update in this
+// todo: canvas lines doesn't update in this, needs to link up
+// todo: make this instantaneous for children uis as well (it isn't when you drag)
 extern int2 get_line_element_mid_point(ecs_world_t *world, ecs_entity_t e);
 extern void set_line_element_real_position2D(ecs_world_t *world, ecs_entity_t e, float2 real_position2D, int2 canvas_size, int2 pixel_position);
 
@@ -27,7 +28,7 @@ void set_element_position(ecs_world_t *world, ecs_entity_t e, int2 parent_pixel_
     set_line_element_real_position2D(world, e, position, canvas_size, pixel_position);
     if (zox_has(e, Children)) {
         int2 pixel_size = zox_get_value(e, PixelSize)
-        const Children *children = ecs_get(world, e, Children);
+        const Children *children = zox_get(e, Children)
         for (int i = 0; i < children->length; i++) set_element_position(world, children->value[i], pixel_position_global, pixel_size, canvas_size);
     }
 }
@@ -68,46 +69,8 @@ void ElementPositionSystem(ecs_iter_t *it) {
             const Children *children = zox_get(e, Children)
             for (int j = 0; j < children->length; j++) set_element_position(world, children->value[j], pixel_position_global, pixel_size, canvas_size);
         }
-        #ifdef debug_element_position_change_query
-            zox_log("    - PixelPosition Updated [%lu]\n", e)
-        #endif
+#ifdef debug_element_position_change_query
+        zox_log("    - PixelPosition Updated [%lu]\n", e)
+#endif
     }
 } zox_declare_system(ElementPositionSystem)
-
-//   \done Make this instantaneous for children uis as well
-//   \todo This needs to also account for child uis
-//   \todo Change queries still not working, make a better test function with more components
-/*if (!ecs_query_changed(change_query, NULL))
-{
-    return;
-}*/
-//! \todo Update this after getting a working example of change filters
-/*#ifdef debug_element_position_change_query
-    unsigned char did_change = ecs_query_changed(change_query, NULL);
-#endif*/
-
-/*void set_element_position(ecs_world_t *world, ecs_entity_t e, float2 parent_position, int2 parent_pixel_size, float2 canvas_size_f, float aspect_ratio) {
-    if (e == 0 || !ecs_is_alive(world, e)) return; // || !ecs_is_valid(world, e)
-    int2 pixel_position = int2_zero;
-    if (zox_has(e, PixelPosition)) pixel_position = ecs_get(world, e, PixelPosition)->value;
-    else pixel_position = get_line_element_mid_point(world, e);
-    float2 anchor = float2_zero;    // should i pass this in from parent?
-    if (zox_has(e, Anchor))  anchor = ecs_get(world, e, Anchor)->value;
-    float2 real_position2D = get_ui_real_position2D_parent(pixel_position, anchor, parent_position, parent_pixel_size, canvas_size_f, aspect_ratio);
-    if (zox_has(e, Position2D)) {
-        Position2D *position2D = ecs_get_mut(world, e, Position2D);
-        position2D->value = real_position2D;
-        zox_modified(e, Position2D)
-    }
-    if (zox_has(e, CanvasPosition)) {
-        CanvasPosition *canvasPosition = ecs_get_mut(world, e, CanvasPosition);
-        canvasPosition->value = (int2) { ceil((real_position2D.x / aspect_ratio + 0.5f) * canvas_size_f.x), ((real_position2D.y + 0.5f) * canvas_size_f.y) };
-        zox_modified(e, CanvasPosition)
-    }
-    set_line_element_real_position2D(world, e, real_position2D, canvas_size_f, aspect_ratio, pixel_position);
-    if (zox_has(e, Children)) {
-        int2 pixel_size = ecs_get(world, e, PixelSize)->value;
-        const Children *children = ecs_get(world, e, Children);
-        for (int i = 0; i < children->length; i++) set_element_position(world, children->value[i], real_position2D, pixel_size, canvas_size_f, aspect_ratio);
-    }
-}*/

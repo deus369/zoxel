@@ -1,8 +1,9 @@
 ## web build
 
-- [ ] Fix terrain rendering not showing visually, opengl errors?
+- [x] Fix terrain rendering not showing visually, opengl errors?
 - [ ] Fix EM_JS functions not working anymore (platforms/util/webasm_util.c)
 - [ ] Fix Pipeline, 'make push-web' should push to a zox-web git repo the latest build
+    - test with zoxel-web
 
 ## devops
 

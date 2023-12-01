@@ -18,7 +18,11 @@ if [ ! -d build/windows ]; then
     echo " > creating build/windows directory"
     mkdir build/windows
 fi
+if [ ! -d build/windows/lib ]; then
+    echo " > creating build/windows/lib directory"
+    mkdir build/windows/lib
+fi
 echo " > copying steam_api64.dll into build/windows"
-cp lib/steam_api64.dll build/windows/steam_api64.dll
+cp lib/steam_api64.dll build/windows/lib/steam_api64.dll
 echo " > copying [$lib_output] into build/windows"
-cp $lib_output build/windows/libsteam_wrapper.dll
+cp $lib_output build/windows/lib/libsteam_wrapper.dll

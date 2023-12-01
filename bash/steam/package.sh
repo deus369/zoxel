@@ -28,14 +28,16 @@ fi
 # first make a directory
 echo " > creating [$steam_depot_dir]"
 mkdir $steam_depot_dir
+cp bash/steam/steam_appid.txt $steam_depot_dir/steam_appid.txt
+
 # Copy files from the Windows directory
 echo " > copying files from Windows directory"
 cp -r $windows_dir/* $steam_depot_dir/
 # Copy the 'zoxel' directory from the Linux directory
 echo " > copying 'zoxel' files from [$linux_dir] directory"
 cp $linux_dir/zoxel $steam_depot_dir/zoxel
-cp $linux_dir/libsteam_api.so $steam_depot_dir/libsteam_api.so
-cp $linux_dir/libsteam_wrapper.so $steam_depot_dir/libsteam_wrapper.so
+cp $linux_dir/lib/libsteam_api.so $steam_depot_dir/lib/libsteam_api.so
+cp $linux_dir/lib/libsteam_wrapper.so $steam_depot_dir/lib/libsteam_wrapper.so
 
 echo " > copying [lib/*.so] contents"
 cp lib/*.so $steam_depot_dir/

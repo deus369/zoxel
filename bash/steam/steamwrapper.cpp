@@ -1,6 +1,7 @@
 // g++ -shared -o lib/libsteam_wrapper.so steam_wrapper.cpp -Iinclude/steam -Llib -lsteam_api
 #include "../../include/steam/steam_api.h"
 #include "steamwrapper.c"
+#include <stdlib.h>
 // #include <stdexcept>
 // #include <iostream>  // For demonstration purposes
 // #include <cstdint>  // Include this header for uint64_t
@@ -39,8 +40,19 @@ void show_leaderboard() {
 
 }
 
-void save_to_cloud() {
-    // SteamRemoteStorage()->FileWrite("SaveGame", game_data, sizeof(GameData));
+// saves to cloud
+void steam_remote_save(const char* save_name, unsigned char *buffer, int byte_length) {
+    SteamRemoteStorage()->FileWrite(save_name, buffer, byte_length);
+}
+
+unsigned char* steam_remote_read(const char* save_name, int* file_length) {
+    *file_length = SteamRemoteStorage()->GetFileSize(save_name);
+    unsigned char* file_content = (unsigned char*) malloc(*file_length);
+    if (!SteamRemoteStorage()->FileRead(save_name, file_content, *file_length)) {
+        free(file_content);
+        return NULL;
+    }
+    return file_content;
 }
 
 void publish_to_workshop(const char* contentPath, const char* title, const char* description) {

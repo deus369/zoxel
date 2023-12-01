@@ -9,6 +9,8 @@ const char *icon_filepath;
 // spawning:
 //      > main menu
 //      > terrain
+unsigned char test_read_byte = 0;
+unsigned char test_read_byte2 = 0;
 
 unsigned char boot_zoxel_game(ecs_world_t *world) {
     // zoxel_log(" > [zoxel] begins to boot\n");
@@ -103,6 +105,40 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
 #endif
 #ifdef zox_test_voxes
     test_voxes(world, camera_begin_position);
+#endif
+    // testing save system
+#ifdef zox_include_steam
+    if (is_steam_running) {
+        const char *save_file_name = "zoxel_save";
+        int *file_length = malloc(1);
+        unsigned char* test_bytes_read = steam_remote_read(save_file_name, file_length);
+        if (test_bytes_read && file_length && *file_length != 2) {
+            test_read_byte = test_bytes_read[0];
+            test_read_byte2 = test_bytes_read[1];
+            zox_log(" > read bytes [%i:%i]\n", test_read_byte, test_read_byte2)
+        } else {
+            test_read_byte = 1;
+            test_read_byte2 = 1;
+            zox_log(" > creating new data [%i:%i]\n", test_read_byte, test_read_byte2)
+        }
+        free(test_bytes_read);
+        free(file_length);
+        test_read_byte++;
+        // write to file
+        unsigned char* test_bytes_write = malloc(2);
+        test_bytes_write[0] = test_read_byte;
+        test_bytes_write[1] = test_read_byte2;
+        steam_remote_save(save_file_name, test_bytes_write, 2);
+        free(test_bytes_write);
+    } else {
+        // todo: fix this, it's not initializing properly atm
+        zox_logg(" > steam is not initialized, cannot test steam cloud\n")
+        test_read_byte = 255;
+        test_read_byte2 = 255;
+    }
+#else
+    test_read_byte = 254;
+    test_read_byte2 = 254;
 #endif
     // zoxel_log(" > [zoxel] begins to run\n");
     return EXIT_SUCCESS;

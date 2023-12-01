@@ -22,7 +22,13 @@ if [ ! -d build/linux ]; then
     echo " > creating build/linux directory"
     mkdir build/linux
 fi
+if [ ! -d build/linux/lib ]; then
+    echo " > creating build/linux/lib directory"
+    mkdir build/linux/lib
+fi
+
 echo " > copying libsteam_api.so into build/linux"
-cp lib/libsteam_api.so build/linux/libsteam_api.so
+cp lib/libsteam_api.so build/linux/lib/libsteam_api.so
+
 echo " > copying [$lib_output] into build/linux"
-cp $lib_output build/linux/libsteam_wrapper.so
+cp $lib_output build/linux/lib/libsteam_wrapper.so
