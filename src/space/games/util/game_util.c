@@ -68,6 +68,10 @@ void spawn_in_game_ui(ecs_world_t *world) {    // spawn game uis
     const int2 canvas_size = zox_get_value(main_canvas, PixelSize)
     float2 element_bar2D_anchor = float2_top_left; // float2_half;
     healthbar_2D = spawn_element_bar2D(world, player, main_canvas, main_canvas, int2_zero, (int2) { 12, 8 }, element_bar2D_anchor, "health [5/10]", 18, 0, int2_half(canvas_size), canvas_size, canvas_size, 0);
+    if (local_character3D) {
+        const UserStatLinks *userStatLinks = zox_get(local_character3D, UserStatLinks)
+        zox_prefab_set(healthbar_2D, UserStatLink, { userStatLinks->value[0] })
+    }
 }
 
 void end_game(ecs_world_t *world) {

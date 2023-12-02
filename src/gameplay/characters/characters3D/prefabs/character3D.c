@@ -32,7 +32,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vox_file *vox, float3 position, float4 rotation, unsigned char lod) {
+ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vox_file *vox, float3 position, float4 rotation, unsigned char lod, unsigned char is_player_character) {
     zox_instance(prefab)
     zox_prefab_name("character3D")
     // transforms
@@ -65,7 +65,7 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vo
     resize_memory_component(ElementLinks, elementLinks, ecs_entity_t, 1)
     elementLinks->value[0] = statbar;
     zox_modified(e, ElementLinks)
-    zox_prefab_set(healthbar_2D, UserStatLink, { user_stat })
+    if (is_player_character) zox_prefab_set(healthbar_2D, UserStatLink, { user_stat })
 #endif
 #ifdef zoxel_debug_spawns
     zox_log("   > spawned character3D [%lu]\n", e)

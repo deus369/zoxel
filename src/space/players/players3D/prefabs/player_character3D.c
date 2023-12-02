@@ -10,8 +10,8 @@ ecs_entity_t spawn_prefab_player_character3D(ecs_world_t *world) {
     // zox_remove(e, AnimateChunk)
     zox_add_tag(e, Aura)
     prefab_player_character3D = e;
-    #ifdef zoxel_debug_prefabs
-        zox_log("   > spawn_prefab player_character3D [%lu].\n", e)
-    #endif
+#ifdef zoxel_debug_prefabs
+    zox_log("   > spawn_prefab player_character3D [%lu]\n", e)
+#endif
     return e;
 }
