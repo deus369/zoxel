@@ -1,7 +1,7 @@
 #!/bin/sh
 # builds test_steamworks
 
-source bash/steam/build_wrapper.sh
+source bash/steam/build_wrapper_linux.sh
 
 test_output="build/test_steamworks"
 

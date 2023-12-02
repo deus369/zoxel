@@ -178,6 +178,13 @@ void convert_file_path_slashes(char* path) {
     }
 }
 
+char* clone_str(const char* text) {
+    int length = strlen(text);
+    char *new_text = malloc(length);
+    memcpy(new_text, text, length);
+    return new_text;
+}
+
 unsigned char initialize_pathing() {
 #ifdef zox_disable_io
     return EXIT_SUCCESS;
@@ -185,7 +192,7 @@ unsigned char initialize_pathing() {
     char* base_path;
 #ifdef zoxel_using_sdl
     #ifdef zoxel_on_android
-    base_path = SDL_AndroidGetInternalStoragePath();
+    base_path = clone_str(SDL_AndroidGetInternalStoragePath());
     __android_log_print(ANDROID_LOG_VERBOSE, "Zoxel", "base_path [%s]", base_path);
     #else
     base_path = SDL_GetBasePath();

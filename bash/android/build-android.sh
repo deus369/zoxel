@@ -1,9 +1,27 @@
 #!/bin/bash
-# make -j$(nproc) -f MakefileDev -B; ./zoxel-dev
-# cc -std=c99 -fPIC -D_DEFAULT_SOURCE -Wall -g -o zoxel-dev includes/flecs.c src/main.c -lGL -lSDL2 -lm
+# old script? delete this
 source bash/android/gradle_pathing.sh
 start_gradle_build
+cd $zoxel_directory
+SRCS="$zoxel_directory/includes/flecs.c $zoxel_directory/src/main.c"
+echo Running androidbuild.sh
+cd $sdl_directory/build-scripts/
+./androidbuild.sh org.zoxel.zoxel $SRCS
+echo Running gradlew in org.zoxel.zoxel build folder
+cd $sdl_directory/build/org.zoxel.zoxel/
+./gradlew installDebug
+echo Finished Building Zoxel Android
+end_gradle_build
 
+# make -j$(nproc) -f MakefileDev -B; ./zoxel-dev
+# cc -std=c99 -fPIC -D_DEFAULT_SOURCE -Wall -g -o zoxel-dev includes/flecs.c src/main.c -lGL -lSDL2 -lm
+
+# ./androidbuild.sh org.zoxel.zoxel $zoxel_directory/includes/flecs.c $zoxel_directory/src/main.c
+#SRCS="$zoxel_directory/includes/flecs.h $zoxel_directory/includes/flecs.c"
+#SRCS="$SRCS $(find $zoxel_directory/src/ -type f -name *.c)"
+#SRCS="$SRCS $(find $zoxel_directory/src/ -type f -name *.h)"
+
+# sh $sdl_directory/build-scripts/androidbuild.sh org.zoxel.zoxel $SRCS
 #zoxel_directory="$HOME/zoxel"
 #sdl_directory="$HOME/SDL/SDL2"
 
@@ -20,24 +38,4 @@ start_gradle_build
 #export ANDROID_SDK_ROOT=$android_sdk_path
 #export ANDROID_NDK_HOME=$ndk_path
 
-cd $zoxel_directory
-
-SRCS="$zoxel_directory/includes/flecs.c $zoxel_directory/src/main.c"
-# ./androidbuild.sh org.zoxel.zoxel $zoxel_directory/includes/flecs.c $zoxel_directory/src/main.c
-#SRCS="$zoxel_directory/includes/flecs.h $zoxel_directory/includes/flecs.c"
-#SRCS="$SRCS $(find $zoxel_directory/src/ -type f -name *.c)"
-#SRCS="$SRCS $(find $zoxel_directory/src/ -type f -name *.h)"
-
-echo Running androidbuild.sh
-cd $sdl_directory/build-scripts/
-./androidbuild.sh org.zoxel.zoxel $SRCS
-# sh $sdl_directory/build-scripts/androidbuild.sh org.zoxel.zoxel $SRCS
-
-echo Running gradlew in org.zoxel.zoxel build folder
-cd $sdl_directory/build/org.zoxel.zoxel/
-./gradlew installDebug
 # .$sdl_directory/build/org.zoxel.zoxel/gradlew org.zoxel.zoxel $SRCS
-
-echo Finished Building Zoxel Android
-
-end_gradle_build

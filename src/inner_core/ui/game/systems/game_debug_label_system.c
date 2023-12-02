@@ -40,7 +40,8 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         // snprintf(buffer, sizeof(buffer), "debug ui\nline 2");
         // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[debug]");
 #ifdef zox_debug_ui_save_cloud
-        buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " cloud [%i - %i] ", test_read_byte, test_read_byte2);
+        if (test_read_byte != 255)
+            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " cloud [%i] ", test_read_byte);
 #endif
 #ifdef zox_debug_ui_memorys_allocated
         buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " memorys [%i]", total_memorys_allocated);

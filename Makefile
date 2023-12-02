@@ -8,8 +8,17 @@
 # stores [steam, itch, google]
 # tooling: sudo apt install make && make install-required
 
+is_use_sdl_image := true
+is_use_sdl_mixer := true
+patient_cmd = echo " > please be patient :), lord deus [>,<]/)"
 resources_dir = build/resources
-LDLIBS = -Llib -lflecs -lSDL2_mixer -lSDL2_image -lSDL2 -lm -lpthread
+LDLIBS = -Llib -lflecs -lSDL2_image -lSDL2 -lm -lpthread
+ifeq ($(is_use_sdl_image), true)
+    LDLIBS += -lSDL2_image
+endif
+ifeq ($(is_use_sdl_mixer), true)
+    LDLIBS += -lSDL2_mixer
+endif
 # determine the operating system #
 ifeq ($(OS),Windows_NT)
     SYSTEM := Windows
@@ -44,10 +53,14 @@ endif
 make_release = $(CC) $(CFLAGS) $(CFLAGS_RELEASE) -o $(target) $(OBJS) $(LDLIBS)
 
 $(target): $(SRCS)
-	$(make_release)
+	@ echo " > building zoxel-linux"
+	@ $(patient_cmd)
+	@ $(make_release)
 
 linux:
-	$(make_release)
+	@ echo " > building zoxel-linux"
+	@ $(patient_cmd)
+	@ $(make_release)
 
 # required libraries
 install-required:
@@ -97,10 +110,14 @@ make_dev = $(CC) $(CFLAGS) $(cflags_debug) -o $(target_dev) $(OBJS) $(LDLIBS)
 
 # development
 dev:
-	$(make_dev)
+	@ echo " > building zoxel-dev-linux"
+	@ $(patient_cmd)
+	@ $(make_dev)
 
 $(target_dev): $(SRCS)
-	$(make_dev)
+	@ echo " > building zoxel-dev-linux"
+	@ $(patient_cmd)
+	@ $(make_dev)
 
 run-dev:
 	./$(target_dev)
@@ -202,28 +219,35 @@ cc_windows=x86_64-w64-mingw32-gcc
 target_windows = build/windows/zoxel.exe
 windows_includes = -Iinclude -I/usr/include/SDL2 -I/usr/include/GL
 windows_pre_libs = -Llib -Lbin -Lbuild/sdl/sdl/build/.libs -Lbuild/sdl/sdl_mixer/build/.libs -Lbuild/sdl/sdl_image/.libs
-windows_libs = -lSDL2_mixer -lSDL2_image -lSDL2 -lm -lpthread -lws2_32 -mwindows -Wl,-subsystem,windows -lglew32 -lopengl32
+windows_libs = -lSDL2_image -lSDL2 -lm -lpthread -lws2_32 -mwindows -Wl,-subsystem,windows -lglew32 -lopengl32
+ifeq ($(is_use_sdl_mixer), true)
+    windows_libs += -lSDL2_mixer
+endif
 make_windows = $(cc_windows) $(OBJS) include/flecs/flecs.c -o $(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs)
+
+# todo: copy resources and bin dll's into the folder build/windows
+ifneq ($(SYSTEM),Windows)
+
+$(target_windows): $(SRCS)
+	@ echo " > building zoxel-windows"
+	@ $(patient_cmd)
+	@ $(make_windows)
+
+windows:
+	@ echo " > building zoxel-windows"
+	@ $(patient_cmd)
+	@ $(make_windows)
 
 windows-sdk:
 	bash bash/windows/install_sdk.sh
 
+endif
+
 run-windows:
-	WINEPATH=bin wine build/windows/zoxel.exe
+	WINEPATH=bin wine $(target_windows)
 
 run-windows-debug:
-	WINEDEBUG=+opengl wine build/windows/zoxel.exe
-
-# todo: copy resources and bin dll's into the folder build/windows
-ifneq ($(SYSTEM),Windows)
-$(target_windows): $(SRCS)
-	@echo " > building windows in linux"
-	$(make_windows)
-
-windows:
-	@echo " > building windows in linux"
-	$(make_windows)
-endif
+	WINEDEBUG=+opengl wine $(target_windows)
 
 # ======= ===== ======= #
 # ===== windows32 ===== #
@@ -254,10 +278,14 @@ ldlibs_web = -lGL -lGLEW -lSDL -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FOR
 make_web = $(make_web_checks) $(emsdk) construct_env && $(cc_web) $(CFLAGS) $(cflags_web) $(web_resources_dir) -o $(target_web) $(OBJS) include/flecs/flecs.c $(ldlibs_web)
 
 $(target_web): $(SRCS)
-	$(make_web)
+	@ echo " > building zoxel-web"
+	@ $(patient_cmd)
+	@ $(make_web)
 
 web:
-	$(make_web)
+	@ echo " > building zoxel-web"
+	@ $(patient_cmd)
+	@ $(make_web)
 
 # Runs zoxel web release build
 run-web:
@@ -288,24 +316,40 @@ web-sdk:
 # ====== ===== ====== #
 
 # firefox-esr | firefox
-make_android= bash bash/android/gradle_build.sh # gradle_build_run.sh
-target_android="build/zoxel.apk"
+make_android = bash bash/android/gradle_build_release.sh # gradle_build_run.sh
+target_android = build/zoxel.apk
 
 android:
-	$(make_android)
+	@ echo " > building zoxel-android"
+	@ $(patient_cmd)
+	@ $(make_android)
+
+android-push:
+	@ echo " > installing and running zoxel.apk"
+	@ $(patient_cmd)
+	@ bash bash/android/gradle_push_release.sh
+
+android-sdl:
+	@ echo " > installing sdl for android"
+	@ $(patient_cmd)
+	@ bash bash/android/install_sdl.sh
+	@ bash bash/android/copy_sdl.sh
+
+android-clean:
+	@ echo " > cleaning up android build files"
+	@ $(patient_cmd)
+	@ bash bash/android/clean_sdk.sh
+
+# @ bash bash/android/gradle_install.sh && bash bash/android/gradle_run.sh
+
+android-install:
+	bash bash/android/gradle_install.sh
 
 android-run:
 	bash bash/android/gradle_run.sh
 
 android-sign:
 	bash bash/android/gradle_sign.sh
-
-android-install:
-	bash bash/android/gradle_install.sh
-
-android-install-run:
-	bash bash/android/gradle_install.sh
-	bash bash/android/gradle_run.sh
 
 android-debug:
 	bash bash/android/debug_android.sh
@@ -319,8 +363,8 @@ android-create-key:
 android-uninstall:
 	bash bash/android/gradle_uninstall.sh
 
-android-clean:
-	bash bash/android/gradle_clean.sh
+#android-clean:
+#	bash bash/android/gradle_clean.sh
 
 android-update-settings:
 	bash bash/android/copy_settings.sh
@@ -329,67 +373,10 @@ android-dev-debug:
 	bash bash/android/install_debug.sh
 	bash bash/android/debug_android.sh
 
-install-android-sdk:
-	bash bash/util/install_required_android.sh
-
-
-# ==== ===== ==== #
-# ===== all ===== #
-# ==== ===== ==== #
-
-# builds for all platforms - this rebuilds everytime tho
-all: $(SRCS)
-	@echo " > making all"
-	@echo "   > making flecs [$(flecs_target)]"
-	$(make_flecs_big)
-	@echo "   > making flecs [$(target)]"
-	$(make_release)
-	@echo "   > making dev [$(target_dev)]"
-	$(make_dev)
-	@echo "   > making windows [$(target_windows)]"
-	$(make_windows)
-	@echo "   > making android [$(target_android)]"
-	$(make_android)
-	@echo "   > making web [$(target_web)]"
-	$(make_web)
-	@echo " > completed all"
-
-
-
-# ==== ====== ==== #
-# ===== util ===== #
-# ==== ====== ==== #
-
-# removes all build files
-# todo: remove build, lib, include from project
-clean:
-	@echo "Cleaning All Build Files"
-	bash bash/flecs/remove_flecs.sh
-
-codeberg:
-	open https://codeberg.org/deus/zoxel &
-
-github:
-	open https://github.com/deus369/zoxel &
-
-count:
-	@echo "Counting Source Files"
-	bash bash/count/count_source.sh
-
-list-systems:
-	bash bash/zoxel/list_systems.sh
-
-create-system:
-	bash bash/zoxel/create_system.sh
-
-zip-build:
-	bash bash/util/zip_build.sh
-
-install-play:
-	bash bash/install/install_play_button.sh
-
-play:
-	gcc tests/glut/play_button.c -o build/play_button -lglut -lGL -lGLU && ./build/play_button &
+android-sdk:
+	@ echo " > installing android-sdk"
+	@ $(patient_cmd)
+	@ bash bash/android/install_sdk.sh
 
 
 # ====== ======= ====== #
@@ -420,72 +407,139 @@ make_linux_with_steam = $(CC) $(CFLAGS) $(CFLAGS_RELEASE) -o $(target) $(OBJS) $
 make_windows_with_steam = $(cc_windows) $(OBJS) include/flecs/flecs.c $(steam_objs) -o $(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs) $(steam_libs) -lsteam_api64
 
 steam-wrapper-linux:
-	bash bash/steam/build_wrapper.sh
-
-steam-linux:
-	@echo " > building linux-steam wrapper:"
-	bash bash/steam/build_wrapper.sh
-	@echo " > building linux-steam:"
-	$(make_linux_with_steam)
+	@ bash bash/steam/build_wrapper_linux.sh
 
 steam-wrapper-windows:
-	bash bash/steam/build_wrapper_windows.sh
+	@ bash bash/steam/build_wrapper_windows.sh
+
+steam-linux:
+	@ echo " > building linux-steam wrapper"
+	@ bash bash/steam/build_wrapper_linux.sh
+	@ echo " > building linux-steam"
+	@ $(patient_cmd)
+	@ $(make_linux_with_steam)
 
 steam-windows:
-	@echo " > building windows-steam wrapper:"
-	bash bash/steam/build_wrapper_windows.sh
-	@echo " > building windows-steam:"
-	$(make_windows_with_steam)
+	@ echo " > building windows-steam wrapper"
+	@ bash bash/steam/build_wrapper_windows.sh
+	@ echo " > building windows-steam"
+	@ $(patient_cmd)
+	@ $(make_windows_with_steam)
 
 steam-all:
-	@echo "	> 1 building linux-steam wrapper:"
-	bash bash/steam/build_wrapper.sh
-	@echo "	> 2 building linux-steam:"
-	$(make_linux_with_steam)
-	@echo "	> 3 building windows-steam wrapper:"
-	bash bash/steam/build_wrapper_windows.sh
-	@echo "	> 4 building windows-steam:"
-	$(make_windows_with_steam)
-	@echo "	> 5 packaging build/steam_export.zip:"
-	bash bash/steam/package.sh
-	@echo "	> 6 uploading build/steam_export.zip:"
-	bash bash/steam/upload_package.sh
+	@ echo " > [1/6] building linux-steam wrapper"
+	@ bash bash/steam/build_wrapper_linux.sh
+	@ echo " > [2/6] building linux-steam"
+	@ $(make_linux_with_steam)
+	@ echo " > [3/6] building windows-steam wrapper"
+	@ bash bash/steam/build_wrapper_windows.sh
+	@ echo " > [4/6] building windows-steam"
+	@ $(make_windows_with_steam)
+	@ echo " > [5/6] packaging build/steam_export.zip"
+	@ bash bash/steam/package.sh
+	@ echo " > [6/6] uploading build/steam_export.zip"
+	@ $(patient_cmd)
+	@ bash bash/steam/upload_package.sh
 	# bash bash/steam/upload_package.sh --default
 
 steam-sdk:
-	bash bash/steam/install_sdk.sh
+	@ bash bash/steam/install_sdk.sh
 
 steam-package:
-	bash bash/steam/package.sh
+	@ bash bash/steam/package.sh
 
 steam-upload:
-	bash bash/steam/upload_package.sh
+	@ bash bash/steam/upload_package.sh
 
 steam-upload-live:
-	bash bash/steam/upload_package.sh --default
+	@ bash bash/steam/upload_package.sh --default
 
 # install libs needed on steamdeck for builds there (steam os)
 install-steam-deck-required:
-	bash bash/steam/install_on_steam_deck.sh
+	@ bash bash/steam/install_on_steam_deck.sh
+
+clean-steam:
+	@ echo " > cleaning steam builds"
+	@ bash bash/steam/clean.sh
 
 # ===== ====== ===== #
 # ===== itchio ===== #
 # ===== ====== ===== #
 
 itch-all:
-	@echo "	> build linux"
-	$(make_release)
-	@echo "	> build windows"
-	$(make_windows)
-	@echo "	> upload all to itch io"
-	bash bash/itch/upload.sh
-	@echo "	> itch all complete"
+	@ echo "	> build linux"
+	@ $(make_release)
+	@ echo "	> build windows"
+	@ $(make_windows)
+	@ echo "	> upload all to itch io"
+	@ bash bash/itch/upload.sh
+	@ echo "	> itch all complete"
 
 itch-upload:
 	bash bash/itch/upload.sh
 
 itch-sdk:
 	bash bash/itch/install_butler.sh
+
+
+# ==== ===== ==== #
+# ===== all ===== #
+# ==== ===== ==== #
+
+# builds for all platforms - this rebuilds everytime tho
+all: $(SRCS)
+	@echo " > making all"
+	@echo "  > making flecs [$(flecs_target)]"
+	@ $(make_flecs_big)
+	@echo "  > making flecs [$(target)]"
+	@ $(make_release)
+	@echo "  > making dev [$(target_dev)]"
+	@ $(make_dev)
+	@echo "   > making windows [$(target_windows)]"
+	@ $(make_windows)
+	@echo "   > making android [$(target_android)]"
+	@ $(make_android)
+	@echo "   > making web [$(target_web)]"
+	@ $(make_web)
+	@echo " > completed all builds"
+
+# clean all things
+clean:
+	@echo " > cleaning flecs"
+	bash bash/flecs/remove_flecs.sh
+
+
+# ==== ====== ==== #
+# ===== util ===== #
+# ==== ====== ==== #
+
+# removes all build files
+# todo: remove build, lib, include from project
+
+codeberg:
+	open https://codeberg.org/deus/zoxel &
+
+github:
+	open https://github.com/deus369/zoxel &
+
+count:
+	@echo "Counting Source Files"
+	bash bash/count/count_source.sh
+
+list-systems:
+	bash bash/zoxel/list_systems.sh
+
+create-system:
+	bash bash/zoxel/create_system.sh
+
+zip-build:
+	bash bash/util/zip_build.sh
+
+install-play:
+	bash bash/install/install_play_button.sh
+
+play:
+	gcc tests/glut/play_button.c -o build/play_button -lglut -lGL -lGLU && ./build/play_button &
 
 
 # ====== ======== ====== #
@@ -512,7 +566,7 @@ help:
 	@echo "    $(target_web)		builds zoxel-web"
 	@echo "    run-web			runs $(target_web)"
 	@echo "  > [android]"
-	@echo "    install-android-sdk		installs tools for android build"
+	@echo "    android-sdk			installs tools for android build"
 	@echo "    android			builds & runs android release"
 	@echo "    android-create-key		created android keystore"
 	@echo "    android-sign			signs the unsigned zoxel apk"

@@ -1,13 +1,15 @@
 #!/bin/sh
 # builds test_steamworks
 
-wrapper_cpp="bash/steam/steamwrapper.cpp"
-lib_output="lib/libsteam_wrapper.dll"
+steam_headers_dir=include/steam
+steam_api_lib=lib/steam_api64.dll
+build_dir_windows=build/windows
+wrapper_cpp=bash/steam/steamwrapper.cpp
+steam_wrapper_lib=lib/libsteam_wrapper.dll
 
 # builds library
-#builds test_steamworks
-echo " > building steam-wrapper [$lib_output]"
-x86_64-w64-mingw32-g++ -shared $wrapper_cpp -o $lib_output -Iinclude/steam -Llib -lsteam_api64 -fPIC
+echo " > building steam-wrapper [$steam_wrapper_lib]"
+x86_64-w64-mingw32-g++ -shared $wrapper_cpp -o $steam_wrapper_lib -I$steam_headers_dir -Llib -lsteam_api64 -fPIC
 
 # todo: move wrapper copying into make build step
 if [ ! -d build ]; then
@@ -22,7 +24,9 @@ if [ ! -d build/windows/lib ]; then
     echo " > creating build/windows/lib directory"
     mkdir build/windows/lib
 fi
-echo " > copying steam_api64.dll into build/windows"
-cp lib/steam_api64.dll build/windows/lib/steam_api64.dll
-echo " > copying [$lib_output] into build/windows"
-cp $lib_output build/windows/lib/libsteam_wrapper.dll
+
+echo " > copying [$steam_wrapper_lib] into [$build_dir_windows]"
+cp $steam_wrapper_lib $build_dir_windows/$steam_wrapper_lib
+
+echo " > copying [$steam_api_lib] into [$build_dir_windows]"
+cp $steam_api_lib $build_dir_windows/$steam_api_lib

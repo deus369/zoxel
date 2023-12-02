@@ -3,6 +3,8 @@
 // #define zoxel_catch_opengl_errors
 
 // #define zox_disable_io
+// #define zox_disable_audio
+// #define zox_disable_module_networking
 
 // for web build disable these for now
 #ifdef __EMSCRIPTEN__

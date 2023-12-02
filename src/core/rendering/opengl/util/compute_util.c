@@ -9,22 +9,22 @@ int check_compute_shader_support_from_version() {
     glGetIntegerv(GL_MINOR_VERSION, &minor);
     if (is_opengl_es) {
         if (major >= 3 && minor >= 1) {
-            #ifdef zoxel_debug_opengl
-                zoxel_log(" > compute supported: OpenGL ES %d.%d [%s]\n", major, minor, version_str);
-            #endif
+#ifdef zoxel_debug_opengl
+            zox_log(" > compute supported: OpenGL ES %d.%d [%s]\n", major, minor, version_str)
+#endif
             return EXIT_SUCCESS;
         }
     } else {
         if (major >= 4 && minor >= 3) {
-            #ifdef zoxel_debug_opengl
-                zoxel_log(" > compute supported: OpenGL %d.%d [%s]\n", major, minor, version_str);
-            #endif
+#ifdef zoxel_debug_opengl
+            zox_log(" > compute supported: OpenGL %d.%d [%s]\n", major, minor, version_str)
+#endif
             return EXIT_SUCCESS;
         }
     }
-    #ifdef zoxel_debug_opengl
-        zoxel_log(" - compute not supported: OpenGL %d.%d [%s]\n", major, minor, version_str);
-    #endif
+#ifdef zoxel_debug_opengl
+    zox_log(" - compute not supported: OpenGL %d.%d [%s]\n", major, minor, version_str)
+#endif
     return EXIT_FAILURE;
 }
 
@@ -43,9 +43,9 @@ int check_compute_shader_support() {
     if (check_compute_shader_support_from_version() == EXIT_FAILURE) {
         return EXIT_FAILURE;
     }
-    #ifdef zoxel_debug_opengl
-        zoxel_log("    > opengl compute stats\n");
-    #endif
+#ifdef zoxel_debug_opengl
+    zox_logg("    > opengl compute stats\n")
+#endif
     // Get the maximum number of compute work groups
     /*GLint max_compute_group_count[3];
     glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0, &max_compute_group_count[0]);

@@ -7,18 +7,25 @@ else {
     apply plugin: 'com.android.library'
 }
 android {
+    namespace 'org.libsdl.app'
     compileSdkVersion 31
+    // ndkVersion "13.1.3345770"
+    // ndkVersion "15.2.4203891"
+    // ndkVersion "21.0.6113669"
+    // ndkVersion 25 // "26.1.10909125"
+    ndkVersion "25.0.8775105"
+    // ndkPath "$android_sdk_path/ndk/21.0.6113669"
     defaultConfig {
         if (buildAsApplication) {
             applicationId "org.libsdl.app"
         }
-        minSdkVersion 16
+        minSdkVersion 19 // 16
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         externalNativeBuild {
             ndkBuild {
-                arguments "APP_PLATFORM=android-16"
+                arguments "APP_PLATFORM=android-19" // 16
                 abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
             }
         }

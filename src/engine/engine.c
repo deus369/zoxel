@@ -13,7 +13,9 @@
 #define FLECS_SYSTEM 
 #define FLECS_PIPELINE
 #include "../../include/flecs.h"
-#define SDL_MIXER
+#ifndef zox_disable_audio
+    #define SDL_MIXER
+#endif
 #include "util/events.c"
 #include "../core/core.c"
 #include "util/game_store_util.c"

@@ -5,12 +5,14 @@ ecs_entity_t spawn_prefab_sound(ecs_world_t *world) {
     zox_prefab_name("prefab_sound")
     zox_add_tag(e, Sound)
     zox_prefab_set(e, SoundLength, { 0 })
-    zox_prefab_set(e, SDLSound, { NULL })
     zox_prefab_set(e, DestroyInTime, { 0 })
     zox_prefab_set(e, TriggerSound, { 1 })
     zox_prefab_set(e, SoundDirty, { 0 })
     zox_prefab_set(e, SoundVolume, { 0.5f })
     // zox_prefab_set(e, SoundFrequency, { 146.83f });
+#ifdef SDL_MIXER
+    zox_prefab_set(e, SDLSound, { NULL })
+#endif
     prefab_sound = e;
     #ifdef zoxel_debug_prefabs
         zoxel_log(" > spawn_prefab sound [%lu].\n", (long int) (e));

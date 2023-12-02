@@ -31,6 +31,10 @@ function has_library {
             echo "  [$library] is installed"
             return 0
         fi
+        if yay -Q "$library" &>/dev/null; then
+            echo "  [$library] is installed with yay"
+            return 0
+        fi
     done
     return 1
 }
@@ -41,6 +45,8 @@ function install_library {
         sudo apt-get install -y "$library" || return 1
     elif command -v pacman >/dev/null 2>&1; then
         sudo pacman -S --noconfirm "$library" || return 1
+    elif command -v yay >/dev/null 2>&1; then
+        yay -S --noconfirm "$library" || return 1
     else
         echo "  - package manager not found"
         return 1

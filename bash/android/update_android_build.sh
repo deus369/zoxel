@@ -16,12 +16,12 @@ else
     # copy sdl android project
     echo "Copying SDL androind project folder to zoxel directory."
     # cd $android_bash_directory
-    source bash/android/android_copy_android_project.sh
+    source bash/android/copy_android_project.sh
 
     # copy sdl source files to android folder
     echo "Copying SDL source files to android build folder."
     # cd $android_bash_directory
-    source bash/android/android_copy_sdl.sh
+    source bash/android/copy_sdl.sh
 
     echo "Copying zoxel settings to build directory."
     # cd $android_bash_directory

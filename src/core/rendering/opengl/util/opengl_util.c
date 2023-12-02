@@ -12,12 +12,13 @@ unsigned char has_opengl_extensions() {
     const GLubyte *extensions = glGetString(GL_EXTENSIONS);
     /*if (extensions != NULL) printf("        > gl extensions: %s\n", extensions);
     else fprintf(stderr, "Error retrieving extensions\n");*/
-#ifndef zoxel_on_web
+#if !defined(zoxel_on_web) && !defined(zoxel_on_android)
     if (!has_gl_extension(extensions, "GL_ARB_shader_objects")) {
         zox_logg(" ! has_opengl_extensions: no ext [GL_ARB_shader_objects]\n")
         has_extension = 0;
     }
 #endif
+    if (!has_extension) zox_logg(" > extension not found, exiting\n")
     if (!has_extension) exit(0);
     return has_extension;
 }

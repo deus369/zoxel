@@ -6,51 +6,57 @@ source bash/android/gradle_pathing.sh
 clear_gradle_build
 start_gradle_build
 
-sudo mkdir $android_sdk_path && sudo chmod -R 777 $android_sdk_path
-sudo mkdir $ndk_path && sudo chmod -R 777 $ndk_path
+if [ ! -d $android_sdk_path ]; then
+    sudo mkdir $android_sdk_path && sudo chmod -R 777 $android_sdk_path
+fi
+if [ ! -d $ndk_path ]; then
+    sudo mkdir $ndk_path && sudo chmod -R 777 $ndk_path
+fi
 
 # installs jdk, sdkmanager and sdk itself
 echo "  > installing [jdk]"
-install_first_library "default-jdk" "jdk-"
+install_first_library "default-jdk" "jdk-openjdk"
+# install_first_library "default-jdk" "jdk8-openjdk"
+# install_first_library "default-jdk" "jdk11-openjdk"
 echo "  > installing [sdkmanager]"
 install_first_library "sdkmanager"
 echo "  > installing [android-sdk]"
 install_first_library "android-sdk"
+echo " !!! if these fail, install yay -S sdkmanager android-sdk dk-openjdk"
 
 # needed to manually install jdk-openjdk again on steam deck:
 # sudo rm /etc/java-openjdk/sdp/sdp.conf.template && sudo pacman -S jdk-openjdk
 
 # license directory
-sudo mkdir /opt/android-sdk/licenses && sudo chmod -R 777 /opt/android-sdk/licenses
+if [ ! -d /opt/android-sdk/licenses ]; then
+    sudo mkdir /opt/android-sdk/licenses && sudo chmod -R 777 /opt/android-sdk/licenses
+fi
 
 # now update licenses / accept them
 yes | sdkmanager --license # accepts sdkmanager licenses in /opt/android-sdk/licenses directory
 
 # sdkmanager --install "ndk;r24"
-echo "  > installing [platform-tools]"
-sdkmanager --sdk_root=$android_sdk_path --install "platform-tools"
-
-echo "  > installing [build-tools;30.0.3]"
-sdkmanager --sdk_root=$android_sdk_path --install "build-tools;30.0.3"
-
-echo "  > installing [platforms;android-30]"
-sdkmanager --sdk_root=$android_sdk_path --install "platforms;android-30"
-
-echo "  > installing [ndk;r21]"
-sdkmanager --sdk_root=$android_sdk_path --install "ndk;r21"
+echo " > installing [ndk;r$ndk_ver]"
+sdkmanager --sdk_root=$android_sdk_path --install "ndk;r$ndk_ver"
+echo " > installing [platforms;android-$platform_ver]"
+sdkmanager --sdk_root=$android_sdk_path --install "platforms;android-$platform_ver"
+echo " > installing [platform-tools;$platform_tools_ver]"
+sdkmanager --sdk_root=$android_sdk_path --install "platform-tools;$platform_tools_ver"
+echo " > installing [build-tools;$build_tools_ver]"
+sdkmanager --sdk_root=$android_sdk_path --install "build-tools;$build_tools_ver"
 
 # install the sdl setup for our gradle build
-echo "  > installing [sdl source]"
+echo " > installing [sdl source]"
 bash bash/android/install_sdl.sh
-echo "  > installing [android_project]"
-source bash/android/android_copy_android_project.sh
-source bash/android/android_copy_sdl.sh
-echo "  > installing [settings]"
+echo " > installing [android_project]"
+source bash/android/copy_android_project.sh
+source bash/android/copy_sdl.sh
+echo " > installing [settings]"
 source bash/android/copy_settings.sh
-echo "  > installing [source]"
+echo " > installing [source]"
 source bash/android/copy_source.sh
 # installs ndk automatically
-echo "  > refreshing [gradlew]"
+echo " > refreshing [gradlew]"
 cd build/android-build && bash gradlew; cd ../..
 
 end_gradle_build

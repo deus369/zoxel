@@ -34,6 +34,7 @@ android_gradle_file_target=$android_directory/app/build.gradle
 echo "  > copying [$android_gradle_file_source] to [$android_gradle_file_target]"
 rm $android_gradle_file_target
 cp $android_gradle_file_source $android_gradle_file_target
+sed -i "s|\$android_sdk_path|$android_sdk_path|g" "$android_gradle_file_target"
 
 # copy manifesto
 android_manifesto_file=$android_bash_directory/app/src/main/AndroidManifest.xml
