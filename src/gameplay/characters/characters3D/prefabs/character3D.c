@@ -49,23 +49,37 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vo
     // stats
     float health = (0.02f + 0.98f * ((rand() % 100) * 0.01f)) * 5.0f;
     float max_health = 10.0f;
-    ecs_entity_t user_stat = spawn_user_stat(world, e);
-    zox_add_tag(user_stat, HealthStat)
-    zox_prefab_set(user_stat, StatValue, { health })
-    zox_prefab_set(user_stat, StatValueMax, { max_health })
+    int stats_count = 1;
+    if (is_player_character) stats_count++;
+    // todo: make prefab for health_stat, etc
     UserStatLinks *userStatLinks = zox_get_mut(e, UserStatLinks)
-    resize_memory_component(UserStatLinks, userStatLinks, ecs_entity_t, 1)
-    userStatLinks->value[0] = user_stat;
+    resize_memory_component(UserStatLinks, userStatLinks, ecs_entity_t, stats_count)
+    // health
+    ecs_entity_t health_stat = spawn_user_stat(world, e);
+    zox_add_tag(health_stat, HealthStat)
+    zox_add_tag(health_stat, StateStat)
+    zox_prefab_set(health_stat, StatValue, { health })
+    zox_prefab_set(health_stat, StatValueMax, { max_health })
+    userStatLinks->value[0] = health_stat;
+    // soul experience
+    if (is_player_character) {
+        ecs_entity_t soul_stat = spawn_user_stat(world, e);
+        zox_add_tag(soul_stat, LevelStat)
+        zox_prefab_set(soul_stat, StatValue, { 1 })
+        zox_prefab_set(soul_stat, ExperienceValue, { 0 })
+        zox_prefab_set(soul_stat, ExperienceMax, { 10 })
+        userStatLinks->value[1] = soul_stat;
+    }
     zox_modified(e, UserStatLinks)
     // character ui
 #ifndef zox_disable_statbars
     ecs_entity_t statbar = spawn_statbar3D(world, e, health / max_health);
-    zox_prefab_set(statbar, UserStatLink, { user_stat })
+    zox_prefab_set(statbar, UserStatLink, { health_stat })
     ElementLinks *elementLinks = zox_get_mut(e, ElementLinks)
     resize_memory_component(ElementLinks, elementLinks, ecs_entity_t, 1)
     elementLinks->value[0] = statbar;
     zox_modified(e, ElementLinks)
-    if (is_player_character) zox_prefab_set(healthbar_2D, UserStatLink, { user_stat })
+    if (is_player_character) zox_prefab_set(healthbar_2D, UserStatLink, { health_stat })
 #endif
 #ifdef zoxel_debug_spawns
     zox_log("   > spawned character3D [%lu]\n", e)

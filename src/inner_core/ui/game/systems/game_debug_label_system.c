@@ -2,9 +2,11 @@ extern int get_terrain_chunks_count(ecs_world_t *world);
 extern int get_characters_count(ecs_world_t *world);
 extern int get_count_particle3Ds(ecs_world_t *world);
 extern int get_count_particle3D_emitters(ecs_world_t *world);
+extern int get_stat_label(ecs_world_t *world, char buffer[], int buffer_size, int buffer_index);
 // #define zox_debug_ui_memorys_allocated
 #define zox_debug_ui_device_mode
 #define zox_debug_ui_save_cloud
+#define zox_debug_ui_player_level
 // #define zox_debug_ui_raycaster_target
 // #define zox_debug_ui_characters
 // #define zox_debug_ui_particle3Ds
@@ -35,49 +37,53 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         if (zextDirty->value) continue;
         ZextData *zextData = &zextDatas[i];
         int buffer_index = 0;
-        char buffer[200];
+        const int buffer_size = 256;
+        char buffer[buffer_size];
         // test this \n
         // snprintf(buffer, sizeof(buffer), "debug ui\nline 2");
         // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[debug]");
+#ifdef zox_debug_ui_player_level
+        buffer_index = get_stat_label(world, buffer, buffer_size, buffer_index);
+#endif
 #ifdef zox_debug_ui_save_cloud
         if (test_read_byte != 255)
-            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " cloud [%i] ", test_read_byte);
+            buffer_index += snprintf(buffer + buffer_index, buffer_size, " cloud [%i] ", test_read_byte);
 #endif
 #ifdef zox_debug_ui_memorys_allocated
-        buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " memorys [%i]", total_memorys_allocated);
+        buffer_index += snprintf(buffer + buffer_index, buffer_size, " memorys [%i]", total_memorys_allocated);
 #endif
 #ifdef zox_debug_ui_terrain_chunks
-        buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " terrain [%i]", get_terrain_chunks_count(it->world));
+        buffer_index += snprintf(buffer + buffer_index, buffer_size, " terrain [%i]", get_terrain_chunks_count(it->world));
 #endif
 #ifdef zox_debug_ui_characters
-        buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " characters [%i]", get_characters_count(it->world));
+        buffer_index += snprintf(buffer + buffer_index, buffer_size, " characters [%i]", get_characters_count(it->world));
 #endif
 #ifdef zox_debug_ui_statbars
-        buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " statbars [%i]", get_statbars_count(it->world));
+        buffer_index += snprintf(buffer + buffer_index, buffer_size, " statbars [%i]", get_statbars_count(it->world));
 #endif
 #ifdef zox_debug_ui_particle3Ds
-        buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " particle3Ds [%i %i]", get_count_particle3D_emitters(it->world), get_count_particle3Ds(it->world));
+        buffer_index += snprintf(buffer + buffer_index, buffer_size, " particle3Ds [%i %i]", get_count_particle3D_emitters(it->world), get_count_particle3Ds(it->world));
 
 #endif
 #ifdef zox_debug_ui_zexts
-        buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " zexts [%i]", get_zexts_count(it->world));
-        buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " zigels [%i]", get_zigels_count(it->world));
+        buffer_index += snprintf(buffer + buffer_index, buffer_size, " zexts [%i]", get_zexts_count(it->world));
+        buffer_index += snprintf(buffer + buffer_index, buffer_size, " zigels [%i]", get_zigels_count(it->world));
 #endif
 #ifdef zox_debug_ui_node_memory
-        buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " node memory [%i]", node_memory);
+        buffer_index += snprintf(buffer + buffer_index, buffer_size, " node memory [%i]", node_memory);
 #endif
 #ifdef zox_debug_ui_raycaster_target
-        buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " raycaster target [%lu]", raycaster_target);
+        buffer_index += snprintf(buffer + buffer_index, buffer_size, " raycaster target [%lu]", raycaster_target);
 #endif
 #ifdef zox_debug_ui_device_mode
         if (deviceMode->value == zox_device_mode_none) {
-            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[ ]");
+            buffer_index += snprintf(buffer + buffer_index,buffer_size, "[ ]");
         } else if (deviceMode->value == zox_device_mode_keyboardmouse) {
-            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[k]");
+            buffer_index += snprintf(buffer + buffer_index, buffer_size, "[k]");
         } else if (deviceMode->value == zox_device_mode_gamepad) {
-            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[g]");
+            buffer_index += snprintf(buffer + buffer_index, buffer_size, "[g]");
         } else if (deviceMode->value == zox_device_mode_touchscreen) {
-            buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[t]");
+            buffer_index += snprintf(buffer + buffer_index, buffer_size, "[t]");
         }
 #endif
         if (!is_zext(zextData, buffer)) {
