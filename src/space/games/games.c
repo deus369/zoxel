@@ -1,6 +1,8 @@
 #ifndef zoxel_games
 #define zoxel_games
 
+// todo: put game_ui spawns under one game_ui entity
+
 zox_declare_tag(Game)
 zox_component_byte(GameState);
 #include "prefabs/game.c"

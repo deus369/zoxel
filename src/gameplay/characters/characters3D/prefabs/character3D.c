@@ -73,7 +73,7 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vo
     zox_modified(e, UserStatLinks)
     // character ui
 #ifndef zox_disable_statbars
-    ecs_entity_t statbar = spawn_statbar3D(world, e, health / max_health);
+    ecs_entity_t statbar = spawn_elementbar3D(world, e, health / max_health);
     zox_prefab_set(statbar, UserStatLink, { health_stat })
     ElementLinks *elementLinks = zox_get_mut(e, ElementLinks)
     resize_memory_component(ElementLinks, elementLinks, ecs_entity_t, 1)

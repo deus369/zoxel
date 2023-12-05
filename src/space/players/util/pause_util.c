@@ -24,7 +24,7 @@ void toggle_pause_ui(ecs_world_t *world, ecs_entity_t player) {
         zox_set(mouse_entity, MouseLock, { 0 })
         zox_set(character3D, DisableMovement, { 1 })
         pause_ui = spawn_pause_ui(world, window_position, window_anchor);
-        dispose_in_game_ui(world);
+        dispose_in_game_ui(world, player);
         unlock_achievement("test_achievement2");
     } else {
         // zoxel_log(" > game [paused] to [playing] for [%lu]\n", character3D);
@@ -34,7 +34,7 @@ void toggle_pause_ui(ecs_world_t *world, ecs_entity_t player) {
         zox_set(character3D, DisableMovement, { 0 })
         zox_delete(pause_ui)
         pause_ui = 0;
-        spawn_in_game_ui(world);
+        spawn_in_game_ui(world, player);
     }
 }
 

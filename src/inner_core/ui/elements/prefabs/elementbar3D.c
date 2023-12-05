@@ -8,7 +8,7 @@ int get_statbars_count(ecs_world_t *world) {
     return zox_count_entities(world, ecs_id(Statbar));
 }
 
-ecs_entity_t spawn_prefab_statbar3D(ecs_world_t *world) {
+ecs_entity_t spawn_prefab_elementbar3D(ecs_world_t *world) {
     zox_prefab_child(prefab_element_world)
     zox_prefab_name("prefab_statbar")
     zox_prefab_set(e, PixelSize, { int2_one })
@@ -25,7 +25,7 @@ ecs_entity_t spawn_prefab_statbar3D(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_prefab_statbar3D_front(ecs_world_t *world) {
+ecs_entity_t spawn_prefab_elementbar3D_front(ecs_world_t *world) {
     zox_prefab_child(prefab_element_world_child)
     zox_prefab_name("prefab_statbar3D_front")
     zox_add_tag(e, FillTexture)
@@ -41,7 +41,7 @@ ecs_entity_t spawn_prefab_statbar3D_front(ecs_world_t *world) {
 }
 
 // used atm for statbar front bar
-ecs_entity_t spawn_statbar3D_front(ecs_world_t *world, const ecs_entity_t ui_holder, const ecs_entity_t parent, const float3 offset) {
+ecs_entity_t spawn_elementbar3D_front(ecs_world_t *world, const ecs_entity_t ui_holder, const ecs_entity_t parent, const float3 offset) {
     zox_instance(prefab_statbar3D_front)
     zox_name("statbar3D_front")
     zox_set(e, CameraLink, { main_cameras[0] })
@@ -54,7 +54,7 @@ ecs_entity_t spawn_statbar3D_front(ecs_world_t *world, const ecs_entity_t ui_hol
     return e;
 }
 
-ecs_entity_t spawn_statbar3D(ecs_world_t *world, const ecs_entity_t ui_holder, const float percentage) {
+ecs_entity_t spawn_elementbar3D(ecs_world_t *world, const ecs_entity_t ui_holder, const float percentage) {
     const float depth_difference = 0.012f;
     zox_instance(prefab_statbar3D)
     zox_name("statbar3D")
@@ -65,7 +65,7 @@ ecs_entity_t spawn_statbar3D(ecs_world_t *world, const ecs_entity_t ui_holder, c
     zox_set(e, ElementBarSize, { statbar_front_mesh_scale })
     Children *children = ecs_get_mut(world, e, Children);
     resize_memory_component(Children, children, ecs_entity_t, 1)
-    children->value[0] = spawn_statbar3D_front(world, ui_holder, e, (float3) { 0, 0, depth_difference });
+    children->value[0] = spawn_elementbar3D_front(world, ui_holder, e, (float3) { 0, 0, depth_difference });
     zox_modified(e, Children)
 #ifdef zoxel_debug_spawns
     zox_log(" > spawned statbar3D [%lu]\n", e)

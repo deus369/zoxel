@@ -25,6 +25,12 @@
 
 #define zox_delete(e) ecs_delete(world, e);
 
+#define zox_delete_and_set(e)\
+if (e) {\
+    zox_delete(e)\
+    e = 0;\
+}
+
 #define zox_add_tag(e, T) ecs_add_id(world, e, ecs_id(T));
 
 #define zox_make_prefab(e) ecs_add_id(world, e, EcsPrefab);
@@ -55,7 +61,8 @@
 
 #define zox_instance(prefab) ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
 
-#define zox_prefab_child(prefab) zox_instance(prefab)\
+#define zox_prefab_child(prefab)\
+    zox_instance(prefab)\
     zox_make_prefab(e)
 
 #define zox_clone(prefab) ecs_entity_t e = ecs_clone(world, 0, prefab, 1);
