@@ -44,11 +44,11 @@ zox_memory_component(SoundData, float)   //! A sound has an array of bytes
 
 void spawn_prefabs_sounds(ecs_world_t *world) {
     load_audio_sdl();
-    #ifdef zox_debug_sdl_audio
-        int channel_available = Mix_GroupAvailable(-1); // -1 indicates all channels
-        if (channel_available == -1) zoxel_log("  ! sdl audio error: no channels available\n");
-        else zoxel_log("  > sdl channel available [%i]\n", channel_available);
-    #endif
+#ifdef zox_debug_sdl_audio
+    int channel_available = Mix_GroupAvailable(-1); // -1 indicates all channels
+    if (channel_available == -1) zoxel_log("  ! sdl audio error: no channels available\n");
+    else zoxel_log("  > sdl channel available [%i]\n", channel_available);
+#endif
     spawn_prefab_sound(world);
     spawn_prefab_generated_sound(world);
 }
@@ -68,9 +68,9 @@ zox_define_memory_component(SoundData)
     zox_define_component_w_dest(SDLSound)
 #endif
 // zoxel_define_systems
-zox_system(SoundGenerateSystem, EcsPreStore, [none] Sound, [out] GenerateSound, [out] SoundData, [out] SoundDirty, [in] SoundLength, [in] SoundFrequency, [in] SoundVolume, [in] InstrumentType)
+zox_system(SoundGenerateSystem, EcsOnUpdate, [none] Sound, [out] GenerateSound, [out] SoundData, [out] SoundDirty, [in] SoundLength, [in] SoundFrequency, [in] SoundVolume, [in] InstrumentType)
 #ifdef SDL_MIXER
-    zox_system(SoundUpdateSystem, EcsPreStore, [none] Sound, [in] SoundData, [out] SoundDirty, [out] SDLSound)
+    zox_system(SoundUpdateSystem, EcsPostUpdate, [none] Sound, [in] SoundData, [out] SoundDirty, [out] SDLSound)
     zox_system(PlaySoundSystem, EcsPreStore, [none] Sound, [out] TriggerSound, [in] SoundLength, [in] SDLSound)
 #endif
 zox_system_1(SoundDebugSystem, main_thread_pipeline, [none] Sound, [in] SoundData, [in] SoundDirty)

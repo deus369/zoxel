@@ -134,15 +134,16 @@ run-dev-tiny:
 run-dev-vulkan:
 	./$(target_dev) --vulkan
 
-# run development + valgrind
-run-dev-debug:
-	valgrind ./$(target_dev)
 
 run-dev-debug-tiny:
 	valgrind -s ./$(target_dev) --tiny
 
 run-debug:
 	gdb ./$(target_dev)
+
+# run development + valgrind
+run-valgrind:
+	valgrind ./$(target_dev)
 
 # run release + flecs profiler
 run-profiler:

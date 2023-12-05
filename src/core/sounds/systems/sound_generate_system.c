@@ -11,9 +11,9 @@
 // sometimes envelop function has glitches?
 
 void SoundGenerateSystem(ecs_iter_t *it) {
-    #ifdef zoxel_time_sound_generate_system
-        begin_timing()
-    #endif
+#ifdef zoxel_time_sound_generate_system
+    begin_timing()
+#endif
     GenerateSound *generateSounds = ecs_field(it, GenerateSound, 2);
     SoundData *soundDatas = ecs_field(it, SoundData, 3);
     SoundDirty *soundDirtys = ecs_field(it, SoundDirty, 4);
@@ -66,14 +66,14 @@ void SoundGenerateSystem(ecs_iter_t *it) {
             soundData->value[j] = value;
         }
         soundDirty->value = 1;
-        #ifdef zoxel_log_sound_generation
-            zoxel_log(" > sound generated: instrument [%i] frequency [%f] length [%f]\n", instrumentType->value, soundFrequency->value, soundLength->value);
-        #endif
-        #ifdef zoxel_time_sound_generate_system
-            did_do_timing()
-        #endif
+#ifdef zoxel_log_sound_generation
+        zox_log(" > sound generated: instrument [%i] frequency [%f] length [%f]\n", instrumentType->value, soundFrequency->value, soundLength->value)
+#endif
+#ifdef zoxel_time_sound_generate_system
+        did_do_timing()
+#endif
     }
-    #ifdef zoxel_time_sound_generate_system
-        end_timing("SoundGenerateSystem")
-    #endif
+#ifdef zoxel_time_sound_generate_system
+    end_timing("SoundGenerateSystem")
+#endif
 } zox_declare_system(SoundGenerateSystem)

@@ -4,9 +4,9 @@ void SoundUpdateSystem(ecs_iter_t *it) {
     SDLSound *sdlSounds = ecs_field(it, SDLSound, 4);
     for (int i = 0; i < it->count; i++) {
         SoundDirty *soundDirty = &soundDirtys[i];
-        if (soundDirty->value != 1) continue;
+        if (!soundDirty->value) continue;
         const SoundData *soundData = &soundDatas[i];
-        if (soundData->value == NULL) continue;
+        if (!soundData->value) continue;
         SDLSound *sdlSound = &sdlSounds[i];
         free_sdl_sound(sdlSound);
         sdlSound->value = (Mix_Chunk *) malloc(sizeof(Mix_Chunk));

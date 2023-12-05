@@ -11,9 +11,9 @@ ecs_entity_t game_ui_touch = 0;
 ecs_entity_t actionbar_ui = 0;
 ecs_entity_t healthbar_2D = 0;
 #ifndef zox_disable_player_character3D
-unsigned char game_rule_attach_to_character = 1;
+    unsigned char game_rule_attach_to_character = 1;
 #else
-unsigned char game_rule_attach_to_character = 0;
+    unsigned char game_rule_attach_to_character = 0;
 #endif
 
 void dispose_in_game_ui_touch(ecs_world_t *world) {

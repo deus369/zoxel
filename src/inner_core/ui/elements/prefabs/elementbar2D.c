@@ -37,7 +37,6 @@ ecs_entity_t spawn_prefab_elementbar2D_front(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_elementbar2D_front(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 parent_pixel_position_global, const int2 parent_pixel_size, const unsigned char layer, const int2 canvas_size, const unsigned char render_disabled) {
-    const int2 pixel_position = int2_zero;
     const int2 pixel_size = (int2) { 0, parent_pixel_size.y };
     const float2 anchor = float2_half;
     const int2 pixel_position_global = parent_pixel_position_global;
