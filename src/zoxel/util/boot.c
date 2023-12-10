@@ -71,6 +71,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     ecs_entity_t realm = 0;
 #ifdef zoxel_include_players
     realm = spawn_realm(world);
+    create_game_stats(world, realm);
     ecs_entity_t game = spawn_game(world);
     zox_set(game, RealmLink, { realm })
     spawn_weather(world);

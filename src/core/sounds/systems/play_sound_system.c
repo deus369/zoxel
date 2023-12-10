@@ -17,7 +17,6 @@ void PlaySoundSystem(ecs_iter_t *it) {
         if (sdlSound->value != NULL) {
             if (soundLength->value && Mix_PlayChannel(channel_available, sdlSound->value, 0) != -1) {
                 zox_set(e, DestroyInTime, { soundLength->value + 1.0 })
-                // zox_delete(e)
             } else {
                 if (soundLength->value) zox_log(" ! playing sound failed [%s]\n", Mix_GetError())
                 zox_delete(e)

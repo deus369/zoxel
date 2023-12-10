@@ -55,7 +55,7 @@ ecs_entity_t spawn_elementbar3D_front(ecs_world_t *world, const ecs_entity_t ui_
 }
 
 ecs_entity_t spawn_elementbar3D(ecs_world_t *world, const ecs_entity_t ui_holder, const float percentage) {
-    const float depth_difference = 0.012f;
+    const float depth_difference = 0.0012f; // 0.012f;
     zox_instance(prefab_statbar3D)
     zox_name("statbar3D")
     zox_set(e, UIHolderLink, { ui_holder })

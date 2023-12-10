@@ -1,7 +1,5 @@
 ecs_entity_t prefab_elementbar2D;
 ecs_entity_t prefab_elementbar2D_front;
-// add_selectable_components(world, e);
-// add_frame_texture_type(world, e, (color) { 35, 88, 66, 255 }, 7, 3);
 
 ecs_entity_t spawn_prefab_elementbar2D(ecs_world_t *world) {
     zox_prefab()
@@ -75,6 +73,6 @@ ecs_entity_t spawn_elementbar2D(ecs_world_t *world, const ecs_entity_t ui_holder
     return e;
 }
 
-    /*zox_log("   > pixel_size [%ix%i]\n", pixel_size.x, pixel_size.y)
-    zox_log("   > pixel_position [%ix%i]\n", pixel_position.x, pixel_position   .y)
-    zox_log("   > pixel_position_global [%ix%i]\n", pixel_position_global.x, pixel_position_global.y)*/
+/*zox_log("   > pixel_size [%ix%i]\n", pixel_size.x, pixel_size.y)
+zox_log("   > pixel_position [%ix%i]\n", pixel_position.x, pixel_position   .y)
+zox_log("   > pixel_position_global [%ix%i]\n", pixel_position_global.x, pixel_position_global.y)*/

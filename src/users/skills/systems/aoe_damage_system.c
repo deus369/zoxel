@@ -1,6 +1,6 @@
 // #define zox_debug_aoe_damage_system
 
-// for any nearby entities with UserStatLinks:
+// for any nearby entities with StatLinks:
 //      - add a damage debuff on them
 //      - remove when they leave the sphere of influence
 // for now, just damage directly
@@ -18,7 +18,6 @@ void AOEDamageSystem(ecs_iter_t *it) {
     float delta_time = zox_delta_time;
     zox_iter_world()
     const Position3D *position3Ds = ecs_field(it, Position3D, 2);
-    // zox_log("  aoe damaging system [%i]\n", it->count)
     for (int i = 0; i < it->count; i++) {
         ecs_entity_t e = it->entities[i];
         const Position3D *position3D = &position3Ds[i];
@@ -26,7 +25,7 @@ void AOEDamageSystem(ecs_iter_t *it) {
         ecs_iter_t *it2 = &it3;
         while(ecs_query_next(it2)) {
             const Position3D *position3D2s = ecs_field(it2, Position3D, 1);
-            const UserStatLinks *userStatLinkss = ecs_field(it2, UserStatLinks, 2);
+            const StatLinks *statLinkss = ecs_field(it2, StatLinks, 2);
             Children *childrens = ecs_field(it2, Children, 3);
             for (int j = 0; j < it2->count; j++) {
                 ecs_entity_t e2 = it2->entities[j];
@@ -49,8 +48,8 @@ void AOEDamageSystem(ecs_iter_t *it) {
                     resize_memory_component(Children, children, ecs_entity_t, 1)
                     children->value[0] = particle3D_emitter;
                 }
-                const UserStatLinks *userStatLinks = &userStatLinkss[j];
-                ecs_entity_t health_stat = userStatLinks->value[0];
+                const StatLinks *statLinks = &statLinkss[j];
+                ecs_entity_t health_stat = statLinks->value[0];
                 StatValue *statValue = zox_get_mut(health_stat, StatValue)
                 statValue->value -= delta_time * damage_rate;
                 if (statValue->value < 0) statValue->value = 0;

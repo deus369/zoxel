@@ -10,7 +10,7 @@
 
 // testing editor
 #define zox_test_hierarchy
-#define zox_entity_names
+// #define zox_entity_names // adds names to entities for our editor
 // #define zoxel_has_random_jumping
 #define zoxel_start_with_debug_ui
 

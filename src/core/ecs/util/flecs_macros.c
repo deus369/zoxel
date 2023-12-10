@@ -18,9 +18,18 @@
     ecs_set_id(world, e, ecs_id(T), sizeof(T), &(T)__VA_ARGS__);\
 }
 
+void ecs_override_remove_id(ecs_world_t *world, ecs_entity_t entity, ecs_id_t id) {
+    ecs_remove_id(world, entity, ECS_OVERRIDE | id);
+    // ecs_add_id(world, entity, ECS_OVERRIDE | id);
+}
+
+#define zox_override_remove(e, T) ecs_override_remove_id(world, e, ecs_id(T));
+
+#define zox_override(e, T) ecs_override_id(world, e, ecs_id(T));
+
 #define zox_prefab_set(e, T, ...) {\
     ecs_set_id(world, e, ecs_id(T), sizeof(T), &(T)__VA_ARGS__);\
-    ecs_override_id(world, e, ecs_id(T));\
+    zox_override(e, T)\
 }
 
 #define zox_delete(e) ecs_delete(world, e);

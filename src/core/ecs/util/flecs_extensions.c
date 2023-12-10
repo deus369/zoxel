@@ -21,11 +21,11 @@ extern void prefab_set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char 
 extern void set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char label[]);
 
 void set_unique_entity_name(ecs_world_t *world, ecs_entity_t e, char label[]) {
-    #ifdef zox_profile_entity_names
-        char* entity_name = get_entity_string(label, e);
-        ecs_set_name(world, e, entity_name);
-        free(entity_name);
-    #endif
+#ifdef zox_profile_entity_names
+    char* entity_name = get_entity_string(label, e);
+    ecs_set_name(world, e, entity_name);
+    free(entity_name);
+#endif
 }
 
 // test this

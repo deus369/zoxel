@@ -1,5 +1,11 @@
 // #define zoxel_debug_zext_updates
 
+void set_zox_name(ZoxName *zoxName, const char* text) {
+    unsigned char text_length = strlen(text);
+    if (zoxName->length != text_length) resize_memory_component(ZoxName, zoxName, unsigned char, text_length)
+    for (unsigned char i = 0; i < text_length; i++) zoxName->value[i] = convert_ascii(text[i]);
+}
+
 char* get_zext_text(const ZextData *zextData) {
     return convert_zext_to_text(zextData->value, zextData->length);
     /*char* text = malloc(zextData->length);
