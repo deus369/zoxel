@@ -5,6 +5,8 @@ ecs_entity_t meta_stat_health;
 ecs_entity_t create_stat_state(ecs_world_t *world, const char *name) {
     ecs_entity_t e = spawn_meta_stat(world, name);
     zox_add_tag(e, StateStat)
+    //zox_set(e, StatValue, { 10 })
+    //zox_set(e, StatValueMax, { 10 })
     zox_prefab_set(e, StatValue, { 10 })
     zox_prefab_set(e, StatValueMax, { 10 })
     return e;
@@ -61,16 +63,4 @@ void create_game_stats(ecs_world_t *world, ecs_entity_t realm) {
     meta_stat_soul = statLinks->value[1];
     zox_add_tag(meta_stat_health, HealthStat)
     zox_modified(realm, StatLinks)
-}
-
-
-void add_to_labels_stat_links(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level) {
-    if (!e) return;
-    // add_entity_to_labels(world, e, labels, entities, tree_level);
-    if (zox_has(e, StatLinks)) {
-        tree_level++;
-        const StatLinks *component = zox_get(e, StatLinks)
-        for (int i = 0; i < component->length; i++) add_entity_to_labels(world,  component->value[i], labels, entities, tree_level);
-        // add_to_labels_stat_links(world, component->value[i], labels, entities, tree_level);
-    }
 }

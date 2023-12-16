@@ -43,7 +43,7 @@ zox_memory_component(TilemapUVs, float2)
 
 void spawn_prefabs_textures_core(ecs_world_t *world) {
     spawn_prefab_noise_texture(world);
-    spawn_prefab_texture_dirt(world);
+    spawn_prefab_texture(world);
     spawn_prefab_tilemap(world);
 }
 

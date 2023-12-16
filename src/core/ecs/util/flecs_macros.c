@@ -66,7 +66,13 @@ if (e) {\
     }\
 }
 
-#define zox_prefab() ecs_entity_t e = ecs_new_prefab(world, "");
+// ecs_entity_t e = ecs_new_prefab(world, "");
+#define zox_prefab()\
+    ecs_entity_t e = ecs_new(world, 0);\
+    zox_make_prefab(e)
+
+// ecs_add_id(world, e, EcsPrefab);
+// zox_add_tag(e, EcsPrefab)
 
 #define zox_instance(prefab) ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
 

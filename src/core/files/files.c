@@ -14,6 +14,7 @@
 // #include "prefabs/terminal.c"
 // zoxel_util_includes
 #include "util/path_util.c"
+#include "util/directory_util.c"
 
 void spawn_prefabs_files(ecs_world_t *world) {
     // spawn_prefab_filemanager(world);

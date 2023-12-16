@@ -2,7 +2,7 @@
 #define zoxel_using_sdl_images
 
 #ifdef zoxel_on_windows
-    #include <glew.h> // GL/
+    #include <glew.h>
 #endif
 
 #ifdef zoxel_on_web

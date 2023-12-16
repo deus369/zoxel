@@ -237,6 +237,7 @@ $(target_windows): $(SRCS)
 windows:
 	@ echo " > building zoxel-windows"
 	@ $(patient_cmd)
+	@ if [ ! -d build/windows ]; then mkdir build/windows; fi
 	@ $(make_windows)
 
 windows-sdk:

@@ -1,16 +1,30 @@
-extern ecs_entity_t local_realm;
-extern ecs_entity_t local_terrain;
-extern ecs_entity_t main_player;
-extern ecs_entity_t local_character3D;
-extern void add_to_labels_voxel_links(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level);
-extern void add_to_labels_stat_links(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level);
-const int hierarchy_max_line_characters = 64;
-ecs_entity_t editor_selected;
 // note: not sure why this breaks the first time, maybe flecs table issues?
 #ifdef zox_glitch_fix_hierarchy_labels
 const unsigned char max_hierarchy_labels = 23;
 unsigned is_first_hierarchy_spawn = 1;
 #endif
+const int hierarchy_max_line_characters = 64;
+ecs_entity_t editor_selected;
+// todo: add these functions to a global event trigger based on component type of links 'stat_links'
+extern void add_to_labels_voxel_links(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level);
+extern void add_to_labels_stat_links(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level);
+// todo: grab these from reference list of zoxel prefabs
+extern ecs_entity_t prefab_app;
+extern ecs_entity_t prefab_window;
+extern ecs_entity_t prefab_button;
+extern ecs_entity_t prefab_zext;
+extern ecs_entity_t prefab_zigel;
+extern ecs_entity_t prefab_realm;
+extern ecs_entity_t prefab_voxel;
+extern ecs_entity_t prefab_texture;
+// make everything a child of realm
+extern ecs_entity_t local_realm;
+// realm -> world
+extern ecs_entity_t local_terrain;
+// realm -> players
+extern ecs_entity_t main_player;
+// realm -> players -> characters
+extern ecs_entity_t local_character3D;
 
 void add_entity_to_labels(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level) {
     if (!e) return;
@@ -190,11 +204,24 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
             const int2 button_padding = (int2) { (int) (font_size * 0.46f), (int) (font_size * 0.3f) };
             const int2 list_margins = (int2) { (int) (font_size * 0.8f), (int) (font_size * 0.8f) };
             const int button_inner_margins = (int) (font_size * 0.5f);
-        // add game entities
+        // our label data
         ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d(32);
         text_group_dynamic_array_d* labels = create_text_group_dynamic_array_d(32);
+        // prefabs
+        add_entity_to_labels(world, prefab_app, labels, entities, 0);
+        add_entity_to_labels(world, prefab_window, labels, entities, 0);
+        add_entity_to_labels(world, prefab_button, labels, entities, 0);
+        add_entity_to_labels(world, prefab_zext, labels, entities, 0);
+        add_entity_to_labels(world, prefab_zigel, labels, entities, 0);
+        add_entity_to_labels(world, prefab_realm, labels, entities, 0);
+        add_entity_to_labels(world, prefab_voxel, labels, entities, 0);
+        add_entity_to_labels(world, prefab_texture, labels, entities, 0);
+
+        // add game entities
+        add_entity_to_labels(world, local_realm, labels, entities, 0);
         add_to_labels_voxel_links(world, local_realm, labels, entities, 0);
         add_to_labels_stat_links(world, local_realm, labels, entities, 0);
+
         add_entity_to_labels(world, local_music, labels, entities, 0);
         add_entity_to_labels(world, main_cameras[0], labels, entities, 0);
         add_entity_to_labels(world, ui_cameras[0], labels, entities, 0);

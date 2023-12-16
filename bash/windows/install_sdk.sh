@@ -17,6 +17,13 @@ install_first_library "wine"
 echo "> installing [glew]"
 install_first_library "glew"
 
+
+if is_steam_deck; then
+    echo " > steam deck detecteed"
+    echo " > need to reinstall glew"
+    sudo pacman -S --noconfirm glew
+fi
+
 # new build folder
 echo "> creating [build/windows]"
 if [ ! -d build/windows ]; then

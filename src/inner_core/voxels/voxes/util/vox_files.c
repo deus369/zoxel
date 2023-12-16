@@ -1,11 +1,11 @@
 #define monsters_directory "voxes"character_slash
-#define vox_file_littlecube monsters_directory"littlecube.vox"
+/*#define vox_file_littlecube monsters_directory"littlecube.vox"
 #define vox_file_chicken monsters_directory"chicken.vox"
 #define vox_file_slime monsters_directory"slime.vox"
-#define vox_file_mrpenguin monsters_directory"mrpenguin.vox"
+#define vox_file_mrpenguin monsters_directory"mrpenguin.vox"*/
 
-int vox_files_count = 0;
 //! load a bunch of vox files from resources/voxes
+int vox_files_count = 0;
 vox_file *vox_files;
 
 void dispose_vox_files() {
@@ -16,11 +16,33 @@ void dispose_vox_files() {
     free(vox_files);
 }
 
-void load_vox_file(int index, const char* filename) {
+void load_vox_file(const char* filename, vox_file *vox) {
 #ifdef zox_disable_io
     return;
 #endif
-    vox_file loaded_vox;
+    vox->chunks = NULL;
+    read_vox(filename, vox);
+}
+
+void load_vox_files() {
+    // get a list of files in monsters_directory
+    char* full_monsters_directory = concat_file_path(resources_path, monsters_directory);
+    list_files(full_monsters_directory);
+    FileList fileList = get_files(full_monsters_directory);
+    vox_files_count = fileList.count;
+    vox_files = malloc(sizeof(vox_file) * vox_files_count);
+    for (int i = 0; i < fileList.count; i++) {
+        char* vox_path = concat_file_path(full_monsters_directory, fileList.files[i]);
+        load_vox_file(vox_path, &vox_files[i]);
+        free(vox_path);
+    }
+    free_files(fileList);
+    free(full_monsters_directory);
+}
+
+    // vox_file loaded_vox;
+    // return loaded_vox;
+    /*vox_file loaded_vox;
     loaded_vox.chunks = NULL;
     char* vox_path = concat_file_path(resources_path, filename);
     if (read_vox(vox_path, &loaded_vox) == EXIT_SUCCESS) vox_files[index] = loaded_vox;
@@ -28,14 +50,10 @@ void load_vox_file(int index, const char* filename) {
         vox_files[index] = loaded_vox;
         zox_log(" ! failed loading file %s\n", vox_path)
     }
-    free(vox_path);
-}
-
-void load_vox_files() {
-    vox_files_count = 4;
+    free(vox_path);*/
+    /*vox_files_count = 4;
     vox_files = malloc(sizeof(vox_file) * vox_files_count);
     load_vox_file(0, vox_file_littlecube);
     load_vox_file(1, vox_file_chicken);
     load_vox_file(2, vox_file_slime);
-    load_vox_file(3, vox_file_mrpenguin);
-}
+    load_vox_file(3, vox_file_mrpenguin);*/

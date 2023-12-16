@@ -35,3 +35,11 @@ int get_label_local_character_health(ecs_world_t *world, char buffer[], int buff
     }
     return buffer_index;
 }
+
+// used for editor
+void add_to_labels_stat_links(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level) {
+    if (!(e && zox_has(e, StatLinks))) return;
+    tree_level++;
+    const StatLinks *component = zox_get(e, StatLinks)
+    for (int i = 0; i < component->length; i++) add_entity_to_labels(world,  component->value[i], labels, entities, tree_level);
+}

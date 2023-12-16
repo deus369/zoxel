@@ -65,7 +65,7 @@ ecs_entity_t spawn_elementbar2D(ecs_world_t *world, const ecs_entity_t ui_holder
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, 2)
     children->value[0] = spawn_elementbar2D_front(world, e, canvas, pixel_position_global, pixel_size, front_bar_layer, canvas_size, render_disabled);
-    children->value[1] = spawn_zext(world, zext_prefab, e, canvas, int2_zero, float2_half, int2_to_byte2(padding), text, font_size, 0, zext_layer, pixel_position_global, zext_size, render_disabled);
+    children->value[1] = spawn_zext(world, prefab_zext, e, canvas, int2_zero, float2_half, int2_to_byte2(padding), text, font_size, 0, zext_layer, pixel_position_global, zext_size, render_disabled);
     zox_modified(e, Children)
 #ifdef zoxel_debug_spawns
     zox_log(" > spawned element_bar [%lu]\n", e)

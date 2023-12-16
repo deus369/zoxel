@@ -51,7 +51,7 @@ void spawn_prefabs_texts(ecs_world_t *world) {
     spawn_font_style_prefab(world);
     spawn_font_prefab(world);
     spawn_zigel_prefab(world);
-    spawn_zext_prefab(world);
+    spawn_prefab_zext(world);
 }
 
 zox_begin_module(Texts)

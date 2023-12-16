@@ -1,12 +1,16 @@
 ## io
 
-- [ ] load vox, texture & sound files dynamically
+- [x] load vox dynamically
+- [ ] load generic textures, linking to realm
+    - [ ] load textures dynamically from textures folder in resources
+    - [ ] draw a texture inside a test element - link it there
+- [ ] load sounds dynamically
 - [ ] save file in multithread
 - [ ] push save file to steam cloud when saving
 
 ## game
 
-- [ ] user stat to share data with meta data of stat
+- [x] user stat to share data with meta data of stat
     - [ ] meta data have name, description, TextureLink
     - [ ] test deletion to make sure only meta data deletes texture
 

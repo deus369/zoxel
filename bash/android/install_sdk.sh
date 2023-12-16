@@ -23,6 +23,7 @@ install_first_library "sdkmanager"
 echo "  > installing [android-sdk]"
 install_first_library "android-sdk"
 echo " !!! if these fail, install yay -S sdkmanager android-sdk dk-openjdk"
+yay -S --noconfirm sdkmanager android-sdk dk-openjdk
 
 # needed to manually install jdk-openjdk again on steam deck:
 # sudo rm /etc/java-openjdk/sdp/sdp.conf.template && sudo pacman -S jdk-openjdk

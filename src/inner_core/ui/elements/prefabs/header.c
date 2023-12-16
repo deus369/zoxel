@@ -50,7 +50,7 @@ ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t 
     const unsigned char child_layer = layer + 1;
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, children_length)
-    children->value[0] = spawn_zext(world, zext_prefab, e, canvas, zext_position, zext_anchor, int2_to_byte2(padding), text, font_size, 0, child_layer, pixel_position_global, size, 0);
+    children->value[0] = spawn_zext(world, prefab_zext, e, canvas, zext_position, zext_anchor, int2_to_byte2(padding), text, font_size, 0, child_layer, pixel_position_global, size, 0);
     if (is_close_button) {
         int2 close_button_position = (int2) { - (font_size / 2) - header_margins / 2, 0 };
         children->value[1] = spawn_close_button(world, e, canvas, pixel_position_global, size, close_button_position, font_size, padding, child_layer, canvas_size);

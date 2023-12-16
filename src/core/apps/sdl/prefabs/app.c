@@ -1,14 +1,14 @@
-ecs_entity_t app_prefab;
+ecs_entity_t prefab_app;
 ecs_entity_t main_app;
 
 ecs_entity_t spawn_prefab_app(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_app")
     zox_add_tag(e, App)
-    zox_add(e, SDLWindow)
-    zox_add(e, Context)
+    zox_prefab_set(e, SDLWindow, { NULL })
+    zox_prefab_set(e, Context, { NULL })
     // zox_add_tag(e, ViewPort)
-    app_prefab = e;
+    prefab_app = e;
 #ifdef zoxel_debug_prefabs
     zox_log(" > spawn_prefab app [%lu]\n", e)
 #endif
@@ -16,7 +16,7 @@ ecs_entity_t spawn_prefab_app(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_app(ecs_world_t *world, SDL_Window* window, SDL_GLContext* context) {
-    zox_instance(app_prefab)
+    zox_instance(prefab_app)
     zox_name("app")
     zox_set(e, SDLWindow, { window })
     zox_set(e, Context, { context })
@@ -36,7 +36,7 @@ void finish_opengl_rendering(ecs_world_t *world) {
 #ifdef zoxel_include_vulkan
 
 ecs_entity_t spawn_app_vulkan(ecs_world_t *world, SDL_Window* window, VkSurfaceKHR* surface) {
-    zox_instance(app_prefab)
+    zox_instance(prefab_app)
     zox_set(e, SDLWindow, { window })
     zox_set(e, VulkanSurface, { surface })
     main_app = e;
