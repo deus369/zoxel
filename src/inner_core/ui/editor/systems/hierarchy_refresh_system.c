@@ -2,7 +2,8 @@ extern ecs_entity_t local_realm;
 extern ecs_entity_t local_terrain;
 extern ecs_entity_t main_player;
 extern ecs_entity_t local_character3D;
-extern void add_realm_entity_to_labels(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level);
+extern void add_to_labels_voxel_links(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level);
+extern void add_to_labels_stat_links(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level);
 const int hierarchy_max_line_characters = 64;
 ecs_entity_t editor_selected;
 // note: not sure why this breaks the first time, maybe flecs table issues?
@@ -192,7 +193,8 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         // add game entities
         ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d(32);
         text_group_dynamic_array_d* labels = create_text_group_dynamic_array_d(32);
-        add_realm_entity_to_labels(world, local_realm, labels, entities, 0);
+        add_to_labels_voxel_links(world, local_realm, labels, entities, 0);
+        add_to_labels_stat_links(world, local_realm, labels, entities, 0);
         add_entity_to_labels(world, local_music, labels, entities, 0);
         add_entity_to_labels(world, main_cameras[0], labels, entities, 0);
         add_entity_to_labels(world, ui_cameras[0], labels, entities, 0);

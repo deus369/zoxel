@@ -38,7 +38,7 @@ void add_entity_textures_to_labels(ecs_world_t *world, ecs_entity_t e, text_grou
     }
 }
 
-void add_realm_entity_to_labels(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level) {
+void add_to_labels_voxel_links(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level) {
     if (!e) return;
     add_entity_to_labels(world, e, labels, entities, tree_level);
     if (zox_has(e, VoxelLinks)) {

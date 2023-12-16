@@ -7,9 +7,12 @@
 //      > for GameDebugLabel - use ZoxName component off Stat
 // todo: make meta stat same entity, parent of user stat, and share it's name and description
 // todo: hover tooltip for healthbar 2D
+// todo: why is statvalue showing twice on stats?? oh i get it
 
 // zoxel_component_declares
 zox_declare_tag(StateStat)
+zox_declare_tag(RegenStat)
+zox_declare_tag(AttributeStat)
 zox_declare_tag(LevelStat)
 zox_declare_tag(HealthStat)
 zox_declare_user_data(Stat)
@@ -37,13 +40,15 @@ void spawn_prefabs_stats(ecs_world_t *world) {
 zox_begin_module(Stats)
 // components
 zox_define_tag(StateStat)
+zox_define_tag(RegenStat)
+zox_define_tag(AttributeStat)
 zox_define_tag(LevelStat)
 zox_define_tag(HealthStat)
 zox_define_user_data(Stat)
-zox_define_component(StatValue)
-zox_define_component(StatValueMax)
-zox_define_component(ExperienceValue)
-zox_define_component(ExperienceMax)
+zox_define_component_float(StatValue)
+zox_define_component_float(StatValueMax)
+zox_define_component_float(ExperienceValue)
+zox_define_component_float(ExperienceMax)
 // systems
 // debuff system here, skills will add debuffs
 zox_system(DeathCleanSystem, EcsOnUpdate, [in] Dead, [in] DiedTime)

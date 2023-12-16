@@ -37,7 +37,7 @@ ecs_entity_t spawn_meta_##name(ecs_world_t *world, const char *name) {\
 \
 ecs_entity_t spawn_user_##name(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t user) {\
     zox_instance(prefab)\
-    zox_name("user_"label)\
+    /*zox_name("user_"label)*/\
     zox_set(e, UserLink, { user })\
     return e;\
 }
