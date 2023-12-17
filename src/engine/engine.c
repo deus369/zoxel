@@ -28,6 +28,7 @@
 #include "util/main_loop_util.c"
 
 void load_resources_engine(ecs_world_t *world) {
+    load_resources_core(world);
     load_resources_inner_core(world);
     load_resources_outer_core(world);
 }

@@ -20,13 +20,3 @@ ecs_entity_t spawn_prefab_sound(ecs_world_t *world) {
 #endif
     return e;
 }
-
-/*ecs_entity_t spawn_sound(ecs_world_t *world) {
-    ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_sound);
-    set_unique_entity_name(world, e, "sound");
-    zox_set(e, SDLSound, { Mix_LoadWAV(sound_file_names[0]) }); //  sounds[0] });
-    #ifdef zoxel_debug_spawns
-    zoxel_log("Spawned sound [%lu]\n", (long int) e);
-    #endif
-    return e;
-}*/

@@ -1,10 +1,10 @@
 ## io
 
 - [x] load vox dynamically
+- [x] load sounds dynamically
 - [ ] load generic textures, linking to realm
     - [ ] load textures dynamically from textures folder in resources
     - [ ] draw a texture inside a test element - link it there
-- [ ] load sounds dynamically
 - [ ] save file in multithread
 - [ ] push save file to steam cloud when saving
 

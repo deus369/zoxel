@@ -21,6 +21,10 @@ unsigned char cpu_tier;
 #include "sounds/sounds.c"
 #include "util/core_util.c"
 
+void load_resources_core(ecs_world_t *world) {
+    load_resources_sounds(world);
+}
+
 void spawn_prefabs_core(ecs_world_t *world) {
     spawn_prefabs_platforms(world);
     spawn_prefabs_generic(world);

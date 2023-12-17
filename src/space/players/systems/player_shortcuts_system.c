@@ -65,6 +65,10 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
             if (zox_has(device_entity, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                 if (keyboard->x.pressed_this_frame) toggle_ui(world, &fps_display, &spawn_fps_display);
+                 if (keyboard->j.pressed_this_frame) {
+                    zoxel_log(" > spawned new sound\n");
+                    spawn_sound_from_file(world, 0);
+                 }
 #ifndef zox_on_startup_spawn_main_menu
                 if (keyboard->g.pressed_this_frame) {
                     const int edge_buffer = 8 * default_ui_scale;

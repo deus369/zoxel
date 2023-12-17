@@ -16,15 +16,15 @@ zox_component_float(SoundFrequency)     //! The frequency of the generated sound
 zox_component_float(SoundVolume)     //! The frequency of the generated sound
 zox_component_double(SoundLength)       //! The length of a sound
 zox_memory_component(SoundData, float)   //! A sound has an array of bytes
-#ifdef SDL_MIXER
-    #include "components/SDLSound.c"
-#endif
+#include "components/SDLSound.c"
 // zoxel_prefab_includes
 #include "prefabs/sound.c"
 #include "prefabs/generated_sound.c"
 // zoxel_util_includes
 #include "util/static_sound_util.c"
 #include "util/sdl_mix_util.c"
+#include "util/sdl_sound_util.c"
+#include "util/sound_files.c"
 #include "instruments/note_frequencies.c"
 #include "instruments/sin_waves.c"
 #include "instruments/square_waves.c"
@@ -38,9 +38,17 @@ zox_memory_component(SoundData, float)   //! A sound has an array of bytes
 #include "systems/sound_generate_system.c"
 #include "systems/sound_debug_system.c"
 #ifdef SDL_MIXER
-	#include "systems/play_sound_system.c"
-    #include "systems/sound_update_system.c"
+#include "systems/play_sound_system.c"
+#include "systems/sound_update_system.c"
 #endif
+
+void load_resources_sounds(ecs_world_t *world) {
+    load_files_sounds();
+}
+
+void dispose_sounds() {
+    dispose_sound_files();
+}
 
 void spawn_prefabs_sounds(ecs_world_t *world) {
     load_audio_sdl();

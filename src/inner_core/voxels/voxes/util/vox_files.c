@@ -1,9 +1,6 @@
 #define monsters_directory "voxes"character_slash
-/*#define vox_file_littlecube monsters_directory"littlecube.vox"
-#define vox_file_chicken monsters_directory"chicken.vox"
-#define vox_file_slime monsters_directory"slime.vox"
-#define vox_file_mrpenguin monsters_directory"mrpenguin.vox"*/
 
+// todo: load vox_file as an entity, with filename as it's name, foroo easy use in game engine
 //! load a bunch of vox files from resources/voxes
 int vox_files_count = 0;
 vox_file *vox_files;
@@ -24,7 +21,7 @@ void load_vox_file(const char* filename, vox_file *vox) {
     read_vox(filename, vox);
 }
 
-void load_vox_files() {
+void load_files_voxes() {
     // get a list of files in monsters_directory
     char* full_monsters_directory = concat_file_path(resources_path, monsters_directory);
     list_files(full_monsters_directory);

@@ -9,7 +9,7 @@ zox_declare_tag(Vox)
 #include "prefabs/vox.c"
 
 void load_resources_voxes(ecs_world_t *world) {
-    load_vox_files();
+    load_files_voxes();
 }
 
 void spawn_prefabs_voxes(ecs_world_t *world) {
