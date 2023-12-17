@@ -15,7 +15,7 @@ ecs_entity_t spawn_zigel_prefab(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_zigel(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t canvas, unsigned char index, int2 pixel_position, int2 size, float2 anchor, unsigned char layer, int2 parent_pixel_position_global, int2 parent_pixel_size, int2 canvas_size) {
+ecs_entity_t spawn_zigel(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t canvas, unsigned char index, int2 pixel_position, int2 pixel_size, float2 anchor, unsigned char layer, int2 parent_pixel_position_global, int2 parent_pixel_size, int2 canvas_size) {
     // color zigel_color = (color) { 55 + rand() % 60, 150 + rand() % 75, 135 + rand() % 70, 255 };
     color zigel_color = (color) { 22, 177, 133, 255 };
     zox_instance(prefab_zigel)
@@ -24,7 +24,7 @@ ecs_entity_t spawn_zigel(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t c
     zox_set(e, Color, { zigel_color })
     int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     float2 position = get_element_position(pixel_position_global, canvas_size);
-    initialize_ui_components_3(world, e, parent, canvas, pixel_position, size, anchor, layer, position, pixel_position_global);
+    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position, pixel_position_global);
 #ifdef zoxel_debug_spawns
     zox_log("   > spawned zigel [%lu]\n", e)
 #endif

@@ -7,7 +7,8 @@ void on_resized_element(ecs_world_t *world, ecs_entity_t e, int2 pixel_size, flo
         set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, scale2D);
         zox_modified(e, MeshVertices2D)
         zox_set(e, MeshDirty, { 1 })
-        zox_set(e, GenerateTexture, { 1 })
+        // for procedural textures, regenerate upon resize
+        if (zox_has(e, GenerateTexture)) zox_set(e, GenerateTexture, { 1 })
 #ifdef debug_ui_scaling
         zox_log("        -> Scaling: [%fx%f]\n", scale2D.x, scale2D.y)
 #endif

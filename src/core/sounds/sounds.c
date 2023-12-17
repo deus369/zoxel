@@ -46,7 +46,7 @@ void load_resources_sounds(ecs_world_t *world) {
     load_files_sounds();
 }
 
-void dispose_sounds() {
+void dispose_resources_sounds(ecs_world_t *world) {
     dispose_sound_files();
 }
 

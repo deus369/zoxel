@@ -65,10 +65,12 @@ void spawn_in_game_ui(ecs_world_t *world, ecs_entity_t player) {    // spawn gam
     // statbar testing
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     float2 elementbar2D_anchor = float2_top_left; // float2_half;
-    healthbar_2D = spawn_elementbar2D(world, player, canvas, canvas, int2_zero, (int2) { 12, 8 }, elementbar2D_anchor, "health [5/10]", 18, 0, int2_half(canvas_size), canvas_size, canvas_size, 0);
+    healthbar_2D = spawn_elementbar2D(world, player, canvas, canvas, int2_zero, (int2) { 12, 8 }, elementbar2D_anchor, "-----", 18, 0, int2_half(canvas_size), canvas_size, canvas_size, 0);
     if (local_character3D) {
         const StatLinks *statLinks = zox_get(local_character3D, StatLinks)
         zox_prefab_set(healthbar_2D, StatLink, { statLinks->value[0] })
+    } else {
+        zox_logg(" ! error no local_character3D\n")
     }
     game_ui_children->value[0] = actionbar_ui;
     game_ui_children->value[1] = healthbar_2D;

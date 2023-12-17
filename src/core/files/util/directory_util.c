@@ -36,9 +36,7 @@ FileList get_files(const char *directory) {
             char **temp = realloc(fileList.files, capacity * sizeof(char *));
             if (temp == NULL) {
                 perror("Memory reallocation failed");
-                for (int i = 0; i < fileList.count; i++) {
-                    free(fileList.files[i]);
-                }
+                for (int i = 0; i < fileList.count; i++) free(fileList.files[i]);
                 free(fileList.files);
                 fileList.files = NULL;
                 fileList.count = 0;
@@ -52,7 +50,6 @@ FileList get_files(const char *directory) {
         fileList.files[fileList.count] = strdup(entry->d_name);
         fileList.count++;
     }
-
     closedir(dp);
     return fileList;
 }
@@ -61,14 +58,12 @@ FileList get_files(const char *directory) {
 void list_files(const char *directory) {
     struct dirent *entry;
     DIR *dp;
-
     // Opening the directory
     dp = opendir(directory);
     if (dp == NULL) {
         zox_log(" ! directory failed to open [%s]\n", directory)
         return;
     }
-
     // Reading the directory contents
     zox_log(" + directory opened [%s]\n", directory)
     while ((entry = readdir(dp)) != NULL) {

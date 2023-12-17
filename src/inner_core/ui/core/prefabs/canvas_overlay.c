@@ -24,7 +24,7 @@ ecs_entity_t spawn_canvas_overlay(ecs_world_t *world, ecs_entity_t canvas) {
     zox_instance(prefab_canvas_overlay)
     int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
     float2 position2D = get_element_position(pixel_position_global, canvas_size);
-    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, anchor, layer, position2D, pixel_position_global);
+    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     zox_set(e, AnimationStart, { zox_current_time })
     zox_set(e, AnimationState, { zox_animation_fadeout })
     zox_set(e, Alpha, { 1.0f })

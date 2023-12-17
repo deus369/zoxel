@@ -33,7 +33,7 @@ ecs_entity_t spawn_window(ecs_world_t *world, const char *header_label, int2 pix
     ecs_entity_t parent = canvas;
     int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
     float2 position2D = get_element_position(pixel_position_global, canvas_size);
-    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, anchor, layer, position2D, pixel_position_global);
+    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     Children *children = ecs_get_mut(world, e, Children);
     resize_memory_component(Children, children, ecs_entity_t, 1)
     children->value[0] = spawn_header(world, e, canvas, (int2) { 0, - font_size / 2 - header_margins / 2 }, (int2) { pixel_size.x, font_size + header_margins}, (float2) { 0.5f, 1.0f }, header_label, font_size, header_margins, header_layer, pixel_position_global, pixel_size, 1, canvas_size);

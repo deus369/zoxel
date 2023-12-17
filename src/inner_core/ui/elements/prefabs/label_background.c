@@ -25,7 +25,7 @@ ecs_entity_t spawn_label_background(ecs_world_t *world, ecs_entity_t prefab, ecs
     int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, element_anchor);
     float2 position2D = get_element_position(pixel_position_global, canvas_size);
     ecs_entity_t e = spawn_zext(world, prefab, parent, canvas, pixel_position, zext_anchor, padding, text, font_size, alignment, layer, parent_pixel_position_global, parent_pixel_size, 0);
-    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, zext_anchor, layer, position2D, pixel_position_global);
+    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, zext_anchor, layer, position2D, pixel_position_global);
     zox_name("label_background")
     return e;
 }

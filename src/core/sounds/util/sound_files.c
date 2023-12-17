@@ -8,7 +8,7 @@ Mix_Chunk **sound_files;
 void load_files_sounds() {
     // get a list of files in monsters_directory
     char* load_directory = concat_file_path(resources_path, directory_sounds);
-    list_files(load_directory);
+    // list_files(load_directory);
     FileList files = get_files(load_directory);
     zox_log("   > sounds found [%i]\n", files.count)
     // vox_files_count = files.count;

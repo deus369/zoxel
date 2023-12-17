@@ -65,10 +65,22 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
             if (zox_has(device_entity, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                 if (keyboard->x.pressed_this_frame) toggle_ui(world, &fps_display, &spawn_fps_display);
-                 if (keyboard->j.pressed_this_frame) {
+                else if (keyboard->j.pressed_this_frame) {
                     zoxel_log(" > spawned new sound\n");
                     spawn_sound_from_file(world, 0);
-                 }
+                }
+                else if (keyboard->k.pressed_this_frame) {
+                    ecs_entity_t source_texture = files_textures[0];
+                    const int2 source_size = zox_get_value(source_texture, TextureSize)
+                    const TextureData *source_data = zox_get(source_texture, TextureData)
+                    zox_log("   > testing ui %lu\n", main_canvas);
+                    // spawn_element_on_canvas(world, main_canvas, (int2) { 0, 60 },
+                    int2 size = (int2) { 32 * 8, 32 * 8 };
+                    ecs_entity_t e = spawn_on_canvas_element_basic(world, main_canvas, (int2) { 8, 8 }, size, source_size, (float2) { 0, 0 });
+                    zox_set(e, TextureDirty, { 1 })
+                    // zox_set(e, TextureSize, { source_size })
+                    zox_set(e, TextureData, { source_data->length, source_data->value })
+                }
 #ifndef zox_on_startup_spawn_main_menu
                 if (keyboard->g.pressed_this_frame) {
                     const int edge_buffer = 8 * default_ui_scale;

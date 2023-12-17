@@ -27,7 +27,7 @@ ecs_entity_t spawn_button(ecs_world_t *world, const ecs_entity_t parent, const e
     zox_set(e, RenderDisabled, { render_disabled })
     const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     const float2 position2D = get_element_position(pixel_position_global, canvas_size);
-    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, anchor, layer, position2D, pixel_position_global);
+    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     const ecs_entity_t zext = spawn_zext(world, prefab_zext, e, canvas, int2_zero, float2_half, int2_to_byte2(padding), text, font_size, 0, zext_layer, pixel_position_global, zext_size, render_disabled);
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, 1)
@@ -52,7 +52,7 @@ ecs_entity_t spawn_button_on_canvas(ecs_world_t *world, const ecs_entity_t canva
     zox_set(e, ClickEvent, { event.value })
     int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
     float2 position2D = get_element_position(pixel_position_global, canvas_size);
-    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, anchor, layer, position2D, pixel_position_global);
+    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, 1)
     children->value[0] = spawn_zext(world, prefab_zext, e, canvas, (int2) { 0, 0 }, (float2) { 0.5f, 0.5f }, padding, text, font_size, 0, (layer + 1), pixel_position_global, zext_size, 0);

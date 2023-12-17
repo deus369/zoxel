@@ -22,11 +22,12 @@ ecs_entity_t spawn_prefab_elementbar2D(ecs_world_t *world) {
 ecs_entity_t spawn_prefab_elementbar2D_front(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_element_bar_front2D")
+    add_ui_plus_components(world, e);
     zox_add_tag(e, FillTexture)
     zox_prefab_set(e, Color, { front_bar_color })
     zox_prefab_set(e, PixelSize, { int2_one })
     zox_prefab_set(e, TextureSize, { int2_one })
-    add_ui_plus_components(world, e);
+    // zox_prefab_set(e, GenerateTexture, { 1 })
     prefab_elementbar2D_front = e;
 #ifdef zoxel_debug_prefabs
     zox_log("   > spawn_prefab element_bar_front [%lu]\n", e)
@@ -40,7 +41,7 @@ ecs_entity_t spawn_elementbar2D_front(ecs_world_t *world, const ecs_entity_t par
     const int2 pixel_position_global = parent_pixel_position_global;
     const float2 position2D = get_element_position(pixel_position_global, canvas_size);
     zox_instance(prefab_elementbar2D_front)
-    initialize_ui_components_3(world, e, parent, canvas, int2_zero, pixel_size, anchor, layer, position2D, pixel_position_global);
+    initialize_ui_components_3(world, e, parent, canvas, int2_zero, pixel_size, int2_one, anchor, layer, position2D, pixel_position_global);
     zox_set(e, RenderDisabled, { render_disabled })
 #ifdef zoxel_debug_spawns
     zox_log(" > spawned element [%lu]\n", e)
@@ -52,14 +53,15 @@ ecs_entity_t spawn_elementbar2D(ecs_world_t *world, const ecs_entity_t ui_holder
     const unsigned char front_bar_layer = layer + 1;
     const unsigned char zext_layer = layer + 2;
     const int2 zext_size = (int2) { font_size * strlen(text), font_size };
-    const int2 pixel_size = (int2) { zext_size.x + padding.x * 2, zext_size.y + padding.y * 2 };
+    // const int2 pixel_size = (int2) { zext_size.x + padding.x * 2, zext_size.y + padding.y * 2 };
+    const int2 pixel_size = (int2) { font_size * 16 + padding.x * 2, zext_size.y + padding.y * 2 };
     anchor_element_position2D(&pixel_position, anchor, pixel_size);
     zox_instance(prefab_elementbar2D)
     zox_name("element_bar")
     const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     // anchor_element_position2D(&pixel_position, anchor, pixel_size);
     const float2 position2D = get_element_position(pixel_position_global, canvas_size);
-    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, anchor, layer, position2D, pixel_position_global);
+    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, int2_one, anchor, layer, position2D, pixel_position_global);
     zox_set(e, RenderDisabled, { render_disabled })
     zox_set(e, Color, { back_bar_color })
     Children *children = zox_get_mut(e, Children)

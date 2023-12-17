@@ -18,7 +18,7 @@ void ElementBarSystem(ecs_iter_t *it) {
         const InitializeEntityMesh *initializeEntityMesh = zox_get(dirty_bar, InitializeEntityMesh)
         if (initializeEntityMesh->value) continue;
         const TextureDirty *textureDirty = zox_get(dirty_bar, TextureDirty)
-        if (textureDirty->value) continue;
+        // if (textureDirty->value) continue;
         ecs_entity_t e = it->entities[i];
         if (!can_render_ui(world, e)) continue; // disabled for now causes issues
         MeshDirty *meshDirty = zox_get_mut(dirty_bar, MeshDirty)
@@ -29,6 +29,7 @@ void ElementBarSystem(ecs_iter_t *it) {
         const float2 scale = elementBarSize->value;
         const float left_offset = - scale.x * (1.0f - percentage) * 0.5f;
         if (zox_has(dirty_bar, MeshVertices)) {
+            // for our elementbar3D
             const MeshVertices *meshVertices = zox_get(dirty_bar, MeshVertices)
             const float test_var = (left_offset + square_vertices[2].x * scale.x * percentage);   // test right vert
             if (test_var == meshVertices->value[2].x) continue;
@@ -38,13 +39,13 @@ void ElementBarSystem(ecs_iter_t *it) {
             zox_modified(dirty_bar, MeshDirty)
             zox_modified(dirty_bar, MeshVertices)
         } else if (zox_has(dirty_bar, MeshVertices2D)) {
+            // for our elementbar2D
             const PixelSize *pixelSize = zox_get(it->entities[i], PixelSize)
             PixelSize *dirty_pixel_size = zox_get_mut(dirty_bar, PixelSize)
-            dirty_pixel_size->value.x = (int) (pixelSize->value.x * percentage);
-            zox_modified(dirty_bar, PixelSize)
-            on_element_pixels_resized(world, dirty_bar, dirty_pixel_size->value, 0);
             PixelPosition *dirty_pixel_position = zox_get_mut(dirty_bar, PixelPosition)
+            dirty_pixel_size->value.x = (int) (pixelSize->value.x * percentage);
             dirty_pixel_position->value.x = - pixelSize->value.x / 2 + dirty_pixel_size->value.x / 2;
+            zox_modified(dirty_bar, PixelSize)
             zox_modified(dirty_bar, PixelPosition)
             // todo: get statlink in stat_bar_system, get name of stat
             int percentage_i = (int) (percentage * 100); // set text of statbar
@@ -54,6 +55,7 @@ void ElementBarSystem(ecs_iter_t *it) {
             if (set_entity_with_text(world, dirty_text, text)) {
                 // zox_log("health set to: [%s]\n", text)
             }
+            on_element_pixels_resized(world, dirty_bar, dirty_pixel_size->value, 0);
         }
     }
 } zox_declare_system(ElementBarSystem)

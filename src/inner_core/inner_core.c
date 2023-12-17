@@ -13,8 +13,14 @@
 #include "voxels/voxels.c"
 #include "physics/physics.c"
 
+void dispose_resources_inner_core(ecs_world_t *world) {
+    dispose_resources_textures(world);
+    dispose_resources_voxes(world);
+}
+
 void load_resources_inner_core(ecs_world_t *world) {
     load_resources_lines(world);
+    load_resources_textures(world);
     load_resources_voxes(world);
 }
 

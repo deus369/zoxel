@@ -24,7 +24,7 @@ ecs_entity_t spawn_virtual_joystick_pointer(ecs_world_t *world, ecs_entity_t par
     zox_name("virtual_joystick_pointer")
     int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     float2 position2D = get_element_position(pixel_position_global, canvas_size);
-    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, anchor, layer, position2D, pixel_position_global);
+    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     virtual_joystick_pointer = e;
 #ifdef zoxel_debug_spawns
     zox_log("   > spawned virtual_joystick_pointer [%lu]\n", e)

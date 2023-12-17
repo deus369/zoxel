@@ -117,14 +117,14 @@ float2 get_element_position(const int2 pixel_position_global, const int2 canvas_
     return position;
 }
 
-void initialize_ui_components_3(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, ecs_entity_t canvas, int2 pixel_position, int2 pixel_size, float2 anchor, unsigned char layer, float2 position2D, int2 pixel_position_global) {
+void initialize_ui_components_3(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, ecs_entity_t canvas, int2 pixel_position, int2 pixel_size, int2 texture_size, float2 anchor, unsigned char layer, float2 position2D, int2 pixel_position_global) {
     // use a function that updates it, but keep seperate from initialize function which merely sets variables
     zox_set(e, CanvasLink, { canvas })
     zox_set(e, ParentLink, { parent })
     zox_set(e, Anchor, { anchor })
     zox_set(e, Layer2D, { layer })
     zox_set(e, PixelSize, { pixel_size })
-    zox_set(e, TextureSize, { pixel_size })
+    zox_set(e, TextureSize, { texture_size })
     zox_set(e, PixelPosition, { pixel_position })
     zox_set(e, Position2D, { position2D }) // set this inside pixel position system
     zox_set(e, CanvasPosition, { pixel_position_global }) // set this inside system too

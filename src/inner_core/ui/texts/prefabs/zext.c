@@ -32,7 +32,7 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t pa
     zox_set(e, MeshAlignment, { alignment })
     const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     const float2 position2D = get_element_position(pixel_position_global, canvas_size);
-    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, anchor, layer, position2D, pixel_position_global);
+    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     ZextData *zextData = zox_get_mut(e, ZextData)
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(ZextData, zextData, unsigned char, textLength)

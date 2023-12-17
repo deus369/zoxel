@@ -5,10 +5,9 @@ int engine_begin(int argc, char* argv[]) {
 }
 
 void on_engine_end(ecs_world_t *world) {
+    dispose_resources_inner_core(world);
+    dispose_resources_core(world);
     close_module_core(world);
-#ifdef zoxel_voxels
-    dispose_vox_files();
-#endif
     dispose_game_store();
 }
 

@@ -67,3 +67,11 @@ void add_frame_texture_type(ecs_world_t *world, ecs_entity_t e, color primary, u
     zox_prefab_set(e, OutlineThickness, { thickness })
     zox_prefab_set(e, Color, { primary })
 }
+
+
+void add_components_ui_basic(ecs_world_t *world, ecs_entity_t e) {
+    add_transform2Ds(world, e);
+    add_ui_components(world, e);
+    add_texture_non_generate(world, e, int2_zero);
+    if (!headless) add_ui_mesh_components(world, e);
+}
