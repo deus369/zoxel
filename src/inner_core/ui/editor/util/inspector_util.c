@@ -138,14 +138,20 @@ void set_inspector_element(ecs_world_t *world, ecs_entity_t window_entity, ecs_e
         ecs_entity_t component = 0;
         // const char *text = ""; // labels->data[i].text
         char text[inspector_component_size_buffer];
-        if (!ECS_HAS_ID_FLAG(id, PAIR)) {
-            component = id & ECS_COMPONENT_MASK;
-            get_component_label(world, e, component, text);
-        } else {
+        if (ECS_HAS_ID_FLAG(id, OVERRIDE)) {
+            // component = id & ECS_COMPONENT_MASK;
+            // get_component_label(world, e, component, text);
+            ecs_entity_t component2 = id & ECS_COMPONENT_MASK;
+            int buffer_index = 0;
+            buffer_index += snprintf(text + buffer_index, sizeof(text), "override [%s]", ecs_get_name(world, component2));
+        } else if (ECS_HAS_ID_FLAG(id, PAIR)) {
             ecs_entity_t relation = ecs_pair_first(world, id);
             ecs_entity_t target = ecs_pair_second(world, id);
             int buffer_index = 0;
             buffer_index += snprintf(text + buffer_index, sizeof(text), "pair %s [%lu]", ecs_get_name(world, relation), (long int) target);
+        } else {
+            component = id & ECS_COMPONENT_MASK;
+            get_component_label(world, e, component, text);
         }
         const ecs_entity_t list_element = spawn_button(world, window_entity, canvas, label_position, button_padding, float2_half, text, font_size, button_layer, window_pixel_position_global, window_size, canvas_size, render_disabled);
         zox_add_tag(list_element, InspectorLabel)
