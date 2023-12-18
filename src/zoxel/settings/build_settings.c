@@ -5,8 +5,10 @@
 #if defined(_WIN32) || defined(__ANDROID__)
     #define zox_sdl_import_file_only
 #endif
-#define zox_print_opengl
-#define zox_print_sdl                       // debugs sdl app
+// #define zox_print_opengl
+// #define zox_print_sdl                       // debugs sdl app
+// #define zox_print_files
+#define zox_print_shader_support
 
 // testing editor
 #define zox_test_hierarchy
@@ -18,7 +20,6 @@
 #define zox_glitch_fix_hierarchy_labels
 
 // module includes
-// #define zoxel_include_vulkan
 #define zoxel_include_players
 #define zox_on_startup_spawn_main_menu
 #define zox_on_play_spawn_terrain

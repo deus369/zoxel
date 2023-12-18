@@ -22,10 +22,12 @@ unsigned char cpu_tier;
 #include "util/core_util.c"
 
 void load_resources_core(ecs_world_t *world) {
+    load_resources_apps(world);
     load_resources_sounds(world);
 }
 
 void dispose_resources_core(ecs_world_t *world) {
+    dispose_resources_apps(world);
     dispose_resources_sounds(world);
 }
 

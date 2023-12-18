@@ -4,23 +4,28 @@
 // zoxel apps: handles os windows, using (sdl, glut) libraries
 
 // zoxel_settings
+const char *icon_filepath;
 #include "settings/settings.c"
 // app variables
-#ifdef zoxel_include_vulkan
-    VkInstance* main_vulkan_instance;
-    VkSurfaceKHR* main_vulkan_context;
-#endif
 // zoxel_component_includes
 zox_declare_tag(App)
-#ifdef zoxel_include_vulkan
-    zox_component(VulkanSurface, VkSurfaceKHR*)
-    ECS_DTOR(VulkanSurface, ptr, { if (ptr->value != 0) vkDestroySurfaceKHR(*main_vulkan_instance, *ptr->value, NULL); })
-#endif
 // zoxel_prefab_includes
 #include "prefabs/app.c"
 // zoxel_util_includes
 // sdl input sub module
 #include "sdl/sdl.c"
+
+void set_icon_filepath(const char *icon_filepath_new) {
+    icon_filepath = icon_filepath_new;
+}
+
+void load_resources_apps(ecs_world_t *world) {
+    load_resources_sdl(world);
+}
+
+void dispose_resources_apps(ecs_world_t *world) {
+    dispose_resources_sdl(world);
+}
 
 unsigned char initialize_apps(ecs_world_t *world) {
     if (headless) return EXIT_SUCCESS;
@@ -34,7 +39,7 @@ void spawn_prefabs_apps(ecs_world_t *world) {
 zox_begin_module(Apps)
 // zoxel_component_defines
 zox_define_tag(App)
-#ifdef zoxel_include_vulkan
+#ifdef zox_include_vulkan
 zox_define_component_w_dest(VulkanSurface)
 #endif
 zox_import_module(AppsSDL)

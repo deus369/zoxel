@@ -25,12 +25,16 @@ void load_files_voxes() {
     char* full_monsters_directory = concat_file_path(resources_path, monsters_directory);
     // list_files(full_monsters_directory);
     FileList files = get_files(full_monsters_directory);
+#ifdef zox_print_files
     zox_log("   > voxes found [%i]\n", files.count)
+#endif
     vox_files_count = files.count;
     vox_files = malloc(sizeof(vox_file) * vox_files_count);
     for (int i = 0; i < files.count; i++) {
         char* file_path = concat_file_path(full_monsters_directory, files.files[i]);
+#ifdef zox_print_files
         zox_log("   > vox file [%s]\n", file_path)
+#endif
         load_vox_file(file_path, &vox_files[i]);
         free(file_path);
     }

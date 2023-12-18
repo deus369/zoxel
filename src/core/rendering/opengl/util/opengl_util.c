@@ -73,8 +73,8 @@ void opengl_disable_texture(unsigned char isBlend) {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void opengl_clear() {
-    glClearColor(opengl_clear_color.x, opengl_clear_color.y, opengl_clear_color.z, 1.0f);
+void opengl_clear(float3 clear_color) {
+    glClearColor(clear_color.x, clear_color.y, clear_color.z, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);       // Clears the buffer ?
     glEnable(GL_DEPTH_TEST);        // cull for 3D things
     glEnable(GL_CULL_FACE);

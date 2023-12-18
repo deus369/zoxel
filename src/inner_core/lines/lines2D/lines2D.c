@@ -27,7 +27,7 @@ int4 get_new_line_position(float2 real_position2D, float2 canvas_size_f, float a
 #include "util/canvas_lines.c"
 
 void load_resources_lines2D(ecs_world_t *world) {
-    initialize_shader_line2D();
+    if (!is_using_vulkan) initialize_shader_line2D();
 }
 
 void spawn_prefabs_lines2D(ecs_world_t *world) {

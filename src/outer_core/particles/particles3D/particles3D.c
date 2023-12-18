@@ -23,7 +23,7 @@ int get_count_particle3D_emitters(ecs_world_t *world) {
 }
 
 void load_resources_particles3D(ecs_world_t *world) {
-    initialize_shader_particle3D();
+    if (!is_using_vulkan) initialize_shader_particle3D();
 }
 
 void spawn_prefabs_particles3D(ecs_world_t *world) {

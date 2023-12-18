@@ -2,8 +2,6 @@
 #define zoxel_opengl
 
 #include "util/import_opengl.c"
-// zoxel_settings
-float3 opengl_clear_color = { 125 / 255.0f, 125 / 255.0f, 125 / 255.0f };
 // zoxel_data
 #include "data/GLuint2.c"
 // zoxel_util
@@ -12,6 +10,7 @@ float3 opengl_clear_color = { 125 / 255.0f, 125 / 255.0f, 125 / 255.0f };
 #include "util/primitive_mesh_util.c"
 #include "util/shaders_util.c"
 #include "util/opengl_util.c"
+#include "util/geometry_util.c"
 #include "util/compute_util.c"
 // loads / disposes all shaders, move to higher level
 #include "util/opengl_main_util.c"
@@ -34,6 +33,7 @@ unsigned char initialize_opengl(ecs_world_t *world) {
     if (!has_opengl_extensions()) return EXIT_FAILURE;
     print_opengl();
     check_compute();
+    check_geometry();
     if (opengl_load_shaders(world) == EXIT_FAILURE) {
         zoxel_log(" - failed to load all shaders\n");
         return EXIT_FAILURE;

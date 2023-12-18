@@ -8,6 +8,7 @@ int begin_core(int argc, char* argv[]) {
 }
 
 void update_core(ecs_world_t *world) {
+    unsigned char do_renders = !headless && rendering; // && !is_using_vulkan;
     if (!headless) {
 #ifdef zoxel_inputs
         device_reset_keyboard(world, keyboard_entity);
@@ -17,11 +18,11 @@ void update_core(ecs_world_t *world) {
 #ifdef zoxel_on_web
         update_web_canvas(world);   // handles resize event
 #endif
-        if (rendering) render_pre_loop();
     }
+    if (do_renders) render_pre_loop();
     // ecs_log_set_level(1);    // use this to debug system pipelines
     ecs_progress(world, 0);
-    if (!headless && rendering) render_loop(world);
+    if (do_renders) render_loop(world);
     iterate_time();
 #ifdef zoxel_log_frame_ms
     zox_log(" > frame time [%fms]\n", (float) (zox_delta_time * 1000.0f))

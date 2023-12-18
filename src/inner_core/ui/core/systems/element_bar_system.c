@@ -17,7 +17,7 @@ void ElementBarSystem(ecs_iter_t *it) {
         ecs_entity_t dirty_bar = children->value[0];
         const InitializeEntityMesh *initializeEntityMesh = zox_get(dirty_bar, InitializeEntityMesh)
         if (initializeEntityMesh->value) continue;
-        const TextureDirty *textureDirty = zox_get(dirty_bar, TextureDirty)
+        // const TextureDirty *textureDirty = zox_get(dirty_bar, TextureDirty)
         // if (textureDirty->value) continue;
         ecs_entity_t e = it->entities[i];
         if (!can_render_ui(world, e)) continue; // disabled for now causes issues

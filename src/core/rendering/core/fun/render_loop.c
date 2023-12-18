@@ -31,28 +31,35 @@ void add_to_render2D_loop(long int id) {
     add_to_int_array_d(render2D_systems, id);
 }
 
-void render_pre_loop() {
-    opengl_clear(); // cannot just clear in a view port with opengl?
-}
-
 // This renders all render systems per camera, by externally setting the camera matrix this will be uploaded to all materials
 void render_camera(ecs_world_t *world, const float4x4 camera_matrix, const unsigned char camera_fov, const int2 position, const int2 size) {
-#ifdef zox_check_render_camera_errors
-    check_opengl_error("[pre render_camera]");
-#endif
     render_camera_matrix = camera_matrix;
     render_camera_fov = camera_fov;
-    glViewport(position.x, position.y, size.x, size.y);
-    for (int i = 0; i < render3D_systems->size; i++) ecs_run(world, render3D_systems->data[i], 0, NULL);
-    glClear(GL_DEPTH_BUFFER_BIT);
-    // remember to check renderer_layer in each 2D  render system
-    if (ecs_is_valid(world, ui_cameras[0])) render_camera_matrix = zox_get_value(ui_cameras[0], ViewMatrix)
-    for (renderer_layer = 0; renderer_layer < max_render_layers; renderer_layer++) {
-        for (int i = 0; i < render2D_systems->size; i++) ecs_run(world, render2D_systems->data[i], 0, NULL);
-    }
-#ifdef zox_check_render_camera_errors
-    check_opengl_error("[render_camera]");
+    if (is_using_vulkan) {
+#ifdef zox_include_vulkan
+        // render cameras for vulkan
 #endif
+    } else {
+        glViewport(position.x, position.y, size.x, size.y);
+        for (int i = 0; i < render3D_systems->size; i++) ecs_run(world, render3D_systems->data[i], 0, NULL);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        // remember to check renderer_layer in each 2D  render system
+        if (ecs_is_valid(world, ui_cameras[0])) render_camera_matrix = zox_get_value(ui_cameras[0], ViewMatrix)
+        for (renderer_layer = 0; renderer_layer < max_render_layers; renderer_layer++) {
+            for (int i = 0; i < render2D_systems->size; i++) ecs_run(world, render2D_systems->data[i], 0, NULL);
+        }
+    }
+}
+
+void render_pre_loop() {
+    if (is_using_vulkan) {
+#ifdef zox_include_vulkan
+        // render cameras for vulkan
+        vulkan_clear_viewport(viewport_clear_color);
+#endif
+    } else {
+        opengl_clear(viewport_clear_color);
+    }
 }
 
 void render_loop(ecs_world_t *world) {

@@ -40,7 +40,7 @@ zox_component_float(Alpha)
 
 unsigned char initialize_rendering(ecs_world_t *world) {
     if (headless) return EXIT_SUCCESS;
-    if (is_using_vulkan) return initialize_vulkan(world); // SDL_WINDOW_VULKAN
+    else if (is_using_vulkan) return initialize_vulkan(world); // SDL_WINDOW_VULKAN
     else return initialize_opengl(world);
 }
 

@@ -24,12 +24,16 @@ void load_files_textures(ecs_world_t *world) {
     char* load_directory = concat_file_path(resources_path, directory_textures);
     // list_files(load_directory);
     FileList files = get_files(load_directory);
+#ifdef zox_print_files
     zox_log("   > textures found [%i]\n", files.count)
+#endif
     files_count_textures = files.count;
     files_textures = malloc(sizeof(ecs_entity_t) * files.count);
     for (int i = 0; i < files.count; i++) {
         char* filepath = concat_file_path(load_directory, files.files[i]);
+#ifdef zox_print_files
         zox_log("       > texture file [%s]\n", filepath)
+#endif
         // load texture - filepath
         files_textures[i] = spawn_from_file_path_texture(world, filepath);
         free(filepath);
@@ -43,12 +47,13 @@ void dispose_files_textures(ecs_world_t *world) {
     free(files_textures);
 }
 
+// todo: this
 ecs_entity_t spawn_from_file_texture(ecs_world_t *world, int index) {
     if (index < 0 || index >= files_count_textures) return 0;
     zox_instance(prefab_texture)
     zox_name("texture_file")
     // copy textureData and textureSize from file
-    ecs_entity_t source_texture = files_textures[index];
+    // ecs_entity_t source_texture = files_textures[index];
     // copy texture data over
     // idk what to do with this one
     // *textureData = zox_get_mut(

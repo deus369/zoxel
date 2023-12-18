@@ -30,6 +30,7 @@ void restore_children_resources(ecs_world_t *world, ecs_entity_t e) {
 
 // restore opengl resources here
 void restore_all_opengl_resources(ecs_world_t *world) {
+    if (is_using_vulkan) return;
     zoxel_log(" > restoring all opengl resources\n");
     restore_shaders_dynamic(world);
     // rendering_restore_basic_shaders2D(world);   // replace eventually
@@ -42,6 +43,7 @@ void restore_all_opengl_resources(ecs_world_t *world) {
 }
 
 void opengl_load_resources(ecs_world_t *world) {
+    if (is_using_vulkan) return;
     rendering = 1;
     skip_time_to_current();
     restore_all_opengl_resources(world);

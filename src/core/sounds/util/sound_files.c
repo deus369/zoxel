@@ -10,7 +10,9 @@ void load_files_sounds() {
     char* load_directory = concat_file_path(resources_path, directory_sounds);
     // list_files(load_directory);
     FileList files = get_files(load_directory);
+#ifdef zox_print_files
     zox_log("   > sounds found [%i]\n", files.count)
+#endif
     // vox_files_count = files.count;
 #ifdef SDL_MIXER
     sound_files_count = files.count;
@@ -18,7 +20,9 @@ void load_files_sounds() {
 #endif
     for (int i = 0; i < files.count; i++) {
         char* file_path = concat_file_path(load_directory, files.files[i]);
+#ifdef zox_print_files
         zox_log("   > sound file [%s]\n", file_path)
+#endif
 #ifdef SDL_MIXER
         sound_files[i] = Mix_LoadWAV(file_path);
 #endif

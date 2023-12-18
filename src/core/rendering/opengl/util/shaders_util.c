@@ -78,6 +78,7 @@ int load_shader(const char* filepath, GLenum shaderType, GLuint* shader2) {
 
 GLuint2 spawn_gpu_shader(const char* vertFilepath, const char* fragFilepath) {
     GLuint2 shader = { 0, 0 };
+    if (is_using_vulkan) return shader;
     if (load_shader(vertFilepath, GL_VERTEX_SHADER, &shader.x) != 0) {
         zoxel_log("Error loading shader vert [%s]\n", vertFilepath);
         return shader;
@@ -91,6 +92,7 @@ GLuint2 spawn_gpu_shader(const char* vertFilepath, const char* fragFilepath) {
 
 GLuint2 spawn_gpu_shader_inline(const GLchar* vert_buffer, const GLchar* frag_buffer) {
     GLuint2 shader = { 0, 0 };
+    if (is_using_vulkan) return shader;
     if (compile_shader(GL_VERTEX_SHADER, &shader.x, vert_buffer) != 0) {
         zoxel_log("Error loading shader vert [%s]\n", vert_buffer);
         return shader;

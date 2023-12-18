@@ -7,9 +7,15 @@
 # platforms [linux, windows, web, android]
 # stores [steam, itch, google]
 # tooling: sudo apt install make && make install-required
-
+# global settings
 is_use_sdl_image := true
 is_use_sdl_mixer := true
+is_use_vulkan := false
+# make VULKAN=1 for vulkan
+ifdef VULKAN
+    is_use_vulkan := true
+endif
+# more
 patient_cmd = echo " > please be patient :), lord deus [>,<]/)"
 resources_dir = build/resources
 LDLIBS = -Llib -lflecs -lSDL2_image -lSDL2 -lm -lpthread
@@ -18,6 +24,9 @@ ifeq ($(is_use_sdl_image), true)
 endif
 ifeq ($(is_use_sdl_mixer), true)
     LDLIBS += -lSDL2_mixer
+endif
+ifeq ($(is_use_vulkan), true)
+    LDLIBS += -lvulkan -Dzox_include_vulkan # vulkan on linux
 endif
 # determine the operating system #
 ifeq ($(OS),Windows_NT)
@@ -64,37 +73,37 @@ linux:
 
 # required libraries
 install-required:
-	bash bash/util/install_required.sh
+	@ bash bash/util/install_required.sh
 
 ## installs zoxel into /usr/games directory
 install: 
-	bash bash/install/install.sh
+	@ bash bash/install/install.sh
 
 ## uninstalls zoxel into /usr/games directory
 uninstall: 
-	bash bash/install/uninstall.sh
+	@ bash bash/install/uninstall.sh
 
 # run release
 run:
-	./$(target)
+	@ ./$(target)
 
 run-headless:
-	./$(target) --headless
+	@ ./$(target) --headless
 
 run-server:
-	./$(target) --headless --server
+	@ ./$(target) --headless --server
 
 run-tiny:
-	./$(target) --tiny
+	@ ./$(target) --tiny
 
 run-medium:
-	./$(target) --medium
+	@ ./$(target) --medium
 
 run-large:
-	./$(target) --large
+	@ ./$(target) --large
 
 run-vulkan:
-	./$(target) --vulkan
+	@ ./$(target) --vulkan
 
 
 # ====== ======= ====== #
@@ -120,44 +129,48 @@ $(target_dev): $(SRCS)
 	@ $(make_dev)
 
 run-dev:
-	./$(target_dev)
+	@ ./$(target_dev)
 
 run-dev-headless:
-	./$(target_dev) --headless
+	@ ./$(target_dev) --headless
 
 run-dev-server:
-	./$(target_dev) --headless --server
+	@ ./$(target_dev) --headless --server
 
 run-dev-tiny:
-	./$(target_dev) --tiny
+	@ ./$(target_dev) --tiny
 
 run-dev-vulkan:
-	./$(target_dev) --vulkan
+	@ ./$(target_dev) --vulkan
 
-
-run-dev-debug-tiny:
-	valgrind -s ./$(target_dev) --tiny
+run-debug-vulkan:
+	@ echo " > running gdb with vulkan"
+	@ $(patient_cmd)
+	@ valgrind ./$(target_dev) --vulkan
 
 run-debug:
-	gdb ./$(target_dev)
+	@ gdb ./$(target_dev)
 
 # run development + valgrind
 run-valgrind:
-	valgrind ./$(target_dev)
+	@ valgrind ./$(target_dev)
 
 # run release + flecs profiler
 run-profiler:
-	sleep 3 && open https://www.flecs.dev/explorer &
-	./$(target) --profiler
+	@ sleep 3 && open https://www.flecs.dev/explorer &
+	@ ./$(target) --profiler
 
 # run development + flecs profiler
 run-dev-profiler:
-	sleep 3 && open https://www.flecs.dev/explorer &
-	./$(target_dev) --profiler
+	@ sleep 3 && open https://www.flecs.dev/explorer &
+	@ ./$(target_dev) --profiler
 
 run-dev-profiler-tiny:
-	sleep 3 && open https://www.flecs.dev/explorer &
-	./$(target_dev) --profiler --tiny
+	@ sleep 3 && open https://www.flecs.dev/explorer &
+	@ ./$(target_dev) --profiler --tiny
+
+run-dev-debug-tiny:
+	@ valgrind -s ./$(target_dev) --tiny
 
 
 # ===== ===== ===== #
@@ -184,32 +197,32 @@ make_flecs_big= set -e; \
 
 # downloads source into include, installs library into lib
 $(flecs_target):
-	$(make_flecs_big)
+	@ $(make_flecs_big)
 
 flecs:
-	$(make_flecs_big)
+	@ $(make_flecs_big)
 
 install-sdl:
-	bash bash/sdl/install_sdl.sh
+	@ bash bash/sdl/install_sdl.sh
 
 install-flecs:
-	bash bash/flecs/remove_flecs.sh
-	bash bash/flecs/download_flecs_source.sh
+	@ bash bash/flecs/remove_flecs.sh
+	@ bash bash/flecs/download_flecs_source.sh
 
 remove-flecs:
-	bash bash/flecs/remove_flecs.sh
+	@ bash bash/flecs/remove_flecs.sh
 
 get-nightly-flecs:
-	bash bash/flecs/nightly_flecs.sh
+	@ bash bash/flecs/nightly_flecs.sh
 
 get-flecs-version:
-	bash bash/flecs/download_flecs_version.sh
+	@ bash bash/flecs/download_flecs_version.sh
 
 revert-nightly-flecs:
-	bash bash/flecs/nightly_revert_source.sh
+	@ bash bash/flecs/nightly_revert_source.sh
 
 check-flecs:
-	open https://github.com/SanderMertens/flecs/releases &
+	@ open https://github.com/SanderMertens/flecs/releases &
 
 # ====== ===== ====== #
 # ===== windows ===== #
@@ -241,15 +254,17 @@ windows:
 	@ $(make_windows)
 
 windows-sdk:
-	bash bash/windows/install_sdk.sh
+	@ echo " > installing windows sdk"
+	@ $(patient_cmd)
+	@ bash bash/windows/install_sdk.sh
 
 endif
 
 run-windows:
-	WINEPATH=bin wine $(target_windows)
+	@ WINEPATH=bin wine $(target_windows)
 
 run-windows-debug:
-	WINEDEBUG=+opengl wine $(target_windows)
+	@ WINEDEBUG=+opengl wine $(target_windows)
 
 # ======= ===== ======= #
 # ===== windows32 ===== #
@@ -259,7 +274,6 @@ cc_windows_32=i686-w64-mingw32-gcc
 target_windows_32 = build/windows_32/zoxel_32.exe
 
 # todo: windows 32 build, linux32, etc
-
 
 # ==== ===== ==== #
 # ===== web ===== #
@@ -478,10 +492,10 @@ itch-all:
 	@ echo "	> itch all complete"
 
 itch-upload:
-	bash bash/itch/upload.sh
+	@ bash bash/itch/upload.sh
 
 itch-sdk:
-	bash bash/itch/install_butler.sh
+	@ bash bash/itch/install_butler.sh
 
 
 # ==== ===== ==== #
@@ -490,20 +504,20 @@ itch-sdk:
 
 # builds for all platforms - this rebuilds everytime tho
 all: $(SRCS)
-	@echo " > making all"
-	@echo "  > making flecs [$(flecs_target)]"
+	@ echo " > making all"
+	@ echo "  > making flecs [$(flecs_target)]"
 	@ $(make_flecs_big)
-	@echo "  > making flecs [$(target)]"
+	@ echo "  > making flecs [$(target)]"
 	@ $(make_release)
-	@echo "  > making dev [$(target_dev)]"
+	@ echo "  > making dev [$(target_dev)]"
 	@ $(make_dev)
-	@echo "   > making windows [$(target_windows)]"
+	@ echo "   > making windows [$(target_windows)]"
 	@ $(make_windows)
-	@echo "   > making android [$(target_android)]"
+	@ echo "   > making android [$(target_android)]"
 	@ $(make_android)
-	@echo "   > making web [$(target_web)]"
+	@ echo "   > making web [$(target_web)]"
 	@ $(make_web)
-	@echo " > completed all builds"
+	@ echo " > completed all builds"
 
 # clean all things
 clean:
@@ -677,7 +691,6 @@ help:
 # 'strings libopengl32.a | grep glBind' to find some functions
 # enable #define zox_sdl_import_file_only for windows build
 #  strings /usr/x86_64-w64-mingw32/lib/libopengl32.a | grep glBind
-# LDLIBS += -lvulkan # vulkan on linux
 # LDLIBS += -lGLEW
 # -lwayland-client
 # IS_STEAMWORKS := true

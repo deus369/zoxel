@@ -51,6 +51,8 @@ void dispose_children_resources(ecs_world_t *world, ecs_entity_t e) {
 
 // delete opengl resources, shaders, textures,
 void delete_all_opengl_resources(ecs_world_t *world) {
+    if (is_using_vulkan) return;
+    zoxel_log(" > disposing all opengl resources\n");
     opengl_dispose_shaders();
     dispose_children_resources(world, main_canvas);
     dispose_opengl_resources_terrain(world);
@@ -62,6 +64,7 @@ void delete_all_opengl_resources(ecs_world_t *world) {
 }
 
 void opengl_delete_resources(ecs_world_t *world) {
+    if (is_using_vulkan) return;
     rendering = 0;
     delete_all_opengl_resources(world);
 }

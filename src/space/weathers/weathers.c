@@ -11,9 +11,9 @@ zox_declare_tag(Weather)
 #include "prefabs/skybox.c"
 
 void spawn_weather(ecs_world_t *world) {
-    #ifndef zox_disable_skybox
-        spawn_skybox(world);
-    #endif
+#ifndef zox_disable_skybox
+    spawn_skybox(world);
+#endif
 }
 
 void spawn_prefabs_weather(ecs_world_t *world) {

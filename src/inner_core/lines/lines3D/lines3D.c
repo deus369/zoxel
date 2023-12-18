@@ -14,7 +14,7 @@ zox_component(CubeLinesThickness, float)
 #include "util/terrain_grid.c"
 
 void load_resources_lines3D(ecs_world_t *world) {
-    initialize_shader_line3D();
+    if (!is_using_vulkan) initialize_shader_line3D();
 }
 
 void spawn_prefabs_lines3D(ecs_world_t *world) {

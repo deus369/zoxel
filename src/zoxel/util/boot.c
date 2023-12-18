@@ -3,7 +3,6 @@ extern unsigned char is_split_screen;
 extern ecs_entity_t fps_display;
 #endif
 #define main_camera_rotation_speed 60 * 0.22f
-const char *icon_filepath;
 
 // move spawning to first frame, game systems, etc
 // spawning:
@@ -53,29 +52,24 @@ void test_steam_cloud() {
 }
 
 unsigned char boot_zoxel_game(ecs_world_t *world) {
-    // zoxel_log(" > [zoxel] begins to boot\n");
     // todo: initialize_engine, grab all the things below and ad to a new function
     if (initialize_pathing() == EXIT_FAILURE) return EXIT_FAILURE;
-    // zoxel_log(" > [zoxel] success initializing pathing\n");
     if (initialize_apps(world) == EXIT_FAILURE) return EXIT_FAILURE;
-    // zoxel_log(" > [zoxel] success initializing app\n");
     if (initialize_rendering(world) == EXIT_FAILURE) return EXIT_FAILURE;
-    // zoxel_log(" > [zoxel] success initializing rendering\n");
+    // set pathing for Zoxel game
+    set_icon_filepath(resources_folder_name"textures/game_icon.png");
     // this loads both in engine resources (shaders) and external (voxes, sounds)
-    // todo: seperate this
     load_resources_engine(world);
-#ifndef zox_disable_io
-    icon_filepath = resources_folder_name"textures/game_icon.png";
-    load_app_icon(main_window, icon_filepath);
-#endif
+    // Realm,  players, skybox
     ecs_entity_t realm = 0;
 #ifdef zoxel_include_players
     realm = spawn_realm(world);
     create_game_stats(world, realm);
     ecs_entity_t game = spawn_game(world);
     zox_set(game, RealmLink, { realm })
-    spawn_weather(world);
+    if (!is_using_vulkan) spawn_weather(world);
 #endif
+    // Cameras
     set_camera_mode_pre_defined(world);
     int2 screen_dimensions2 = screen_dimensions;
 #ifdef zoxel_cameras
@@ -101,6 +95,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     }
     spawn_ui_camera(world, screen_dimensions2);
 #endif
+
 #ifdef zoxel_inputs
     if (!headless) {
         initialize_sdl_input();
@@ -114,6 +109,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         zox_set(player, CameraLink, { main_cameras[0] })
     }
 #endif
+
 #ifdef zoxel_ui
     ecs_entity_t canvas = spawn_canvas(world, screen_dimensions2);
     spawn_canvas_overlay(world, canvas);
@@ -148,6 +144,5 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     test_voxes(world, camera_begin_position);
 #endif
     test_steam_cloud();
-    // zoxel_log(" > [zoxel] begins to run\n");
     return EXIT_SUCCESS;
 }
