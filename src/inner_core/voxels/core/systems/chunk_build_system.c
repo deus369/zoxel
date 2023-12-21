@@ -125,6 +125,5 @@ void ChunkBuildSystem(ecs_iter_t *it) {
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
         build_chunk_mesh(chunk, chunkSize, meshIndicies2, meshVertices2);
-        // zoxel_log("Building ChunkData Mesh [%lu] - [%i] [%i]\n", (long int) it->entities[i], meshIndicies2->length, meshVertices2->length);
     }
 } zox_declare_system(ChunkBuildSystem)

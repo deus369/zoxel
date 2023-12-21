@@ -146,14 +146,7 @@ int initialize_sdl_video() {
         set_screen_size();
         print_sdl();
 #ifdef zox_include_vulkan
-        if (is_using_vulkan) {
-            if (SDL_Vulkan_LoadLibrary(NULL) != 0) {
-                zox_log(" ! failed to load vulkan library [%s]\n", SDL_GetError())
-                return EXIT_FAILURE;
-            } else {
-                zox_logg(" + vulkan library loaded\n")
-            }
-        }
+        if (!load_vulkan_library()) return EXIT_FAILURE;
 #else
         is_using_vulkan = 0;
 #endif
@@ -164,7 +157,7 @@ int initialize_sdl_video() {
 
 SDL_Window* create_sdl_window() {
     int flags;
-    if (is_using_vulkan) flags = SDL_WINDOW_VULKAN | SDL_WINDOW_SHOWN;
+    if (is_using_vulkan) flags = SDL_WINDOW_VULKAN | SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP;
     else flags = SDL_WINDOW_OPENGL;
 #ifdef zoxel_on_android
     flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE;

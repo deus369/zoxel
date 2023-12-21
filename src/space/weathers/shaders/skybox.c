@@ -73,8 +73,6 @@ void set_sky_color(ecs_world_t *world, float3 top_color, float3 bottom_color) {
     opengl_set_material(0);
     zox_set(skybox, ColorRGB, { color_rgb_from_float3(top_color) })
     zox_set(skybox, SecondaryColorRGB, { color_rgb_from_float3(bottom_color) })
-    // zoxel_log(" > set sky colors [%fx%fx%f] [%fx%fx%f]\n", top_color.x, top_color.y, top_color.z, bottom_color.x, bottom_color.y, bottom_color.z);
-    // zoxel_log(" > set sky color [%fx%fx%f]\n", color.x, color.y, color.z);
 }
 
 void restore_skybox_material(ecs_world_t *world) {
@@ -87,8 +85,6 @@ void restore_skybox_material(ecs_world_t *world) {
     opengl_set_float3(6, bottom_color);
     opengl_set_material(0);
     zox_set(skybox, MaterialGPULink, { sky_material })
-    // set_sky_color(world, top_color, bottom_color);
-    // zoxel_log(" > restoring sky colors [%fx%fx%f] [%fx%fx%f]\n", top_color.x, top_color.y, top_color.z, bottom_color.x, bottom_color.y, bottom_color.z);
 }
 
 void restore_shader_skybox(ecs_world_t *world) {

@@ -25,7 +25,6 @@ void initialize_sdl_gamepads() {
         } else {
             const char* joystick_name = SDL_JoystickName(joystick);
             zox_log("   > [%s]\n", joystick_name)
-            // if (is_xbox_gamepad(joystick)) zoxel_log("     + xbox controller detected\n");
             break; 
         }
     }

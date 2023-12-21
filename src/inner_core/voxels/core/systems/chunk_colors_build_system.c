@@ -114,9 +114,9 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
 
 void ChunkColorsBuildSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(it->ctx, NULL)) return;
-    #ifdef zoxel_time_chunk_colors_builds_system
-        begin_timing()
-    #endif
+#ifdef zoxel_time_chunk_colors_builds_system
+    begin_timing()
+#endif
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
     const ChunkData *chunks = ecs_field(it, ChunkData, 2);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 3);
@@ -142,13 +142,11 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         build_chunk_mesh_colors(chunk, chunkSize, colors2, meshIndicies2, meshVertices2, meshColorRGBs2, total_mesh_offset);
         chunkDirty->value = 0;
         meshDirty->value = 1;
-        // zoxel_log(" > built ChunkData ColorRGBs Mesh [%lu] - [%i] [%i]\n", (long int) it->entities[i], meshIndicies2->length, meshVertices2->length);
-        // zoxel_log(" > built ChunkData ColorRGBs Mesh\n");
-        #ifdef zoxel_time_chunk_colors_builds_system
-            did_do_timing()
-        #endif
+#ifdef zoxel_time_chunk_colors_builds_system
+        did_do_timing()
+#endif
     }
-    #ifdef zoxel_time_chunk_colors_builds_system
-        end_timing("    - chunk_colors_builds_system")
-    #endif
+#ifdef zoxel_time_chunk_colors_builds_system
+    end_timing("    - chunk_colors_builds_system")
+#endif
 } zox_declare_system(ChunkColorsBuildSystem)

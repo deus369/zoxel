@@ -24,9 +24,6 @@ ECS_DTOR(Context, ptr, { if (ptr->value != 0) SDL_GL_DeleteContext(ptr->value); 
 extern void load_app_icon(SDL_Window* window, const char *icon_filepath);
 
 void dispose_resources_sdl(ecs_world_t *world) {
-#ifdef zox_include_vulkan
-    dispose_vulkan_instance();
-#endif
 }
 
 void load_resources_sdl(ecs_world_t *world) {

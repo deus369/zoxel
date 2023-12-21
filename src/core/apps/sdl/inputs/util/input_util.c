@@ -34,7 +34,7 @@ void input_extract_from_sdl(ecs_world_t *world, SDL_Event event, int2 screen_dim
         if (joystick == NULL) {
             joystick = SDL_JoystickOpen(event.jdevice.which);
             int joystick_id = SDL_JoystickInstanceID(joystick);
-            zoxel_log(" > gamepad [%d] has connected\n", joystick_id);
+            zox_log(" > gamepad [%d] has connected\n", joystick_id)
         }
     }
 }

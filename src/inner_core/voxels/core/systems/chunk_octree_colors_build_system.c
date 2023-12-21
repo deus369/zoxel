@@ -155,9 +155,9 @@ void build_chunk_octree_mesh_colors(const ChunkOctree *chunk_octree, const Color
 // builds the character meshes
 void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(it->ctx, NULL)) return;
-    #ifdef zoxel_time_octree_chunk_builds_system
-        begin_timing()
-    #endif
+#ifdef zoxel_time_octree_chunk_builds_system
+    begin_timing()
+#endif
     int chunks_built = 0;
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
     const ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 2);
@@ -216,15 +216,14 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         else build_chunk_octree_mesh_colors(chunkOctree, colorRGBs2, meshIndicies2, meshVertices2, meshColorRGBs2, chunk_depth, neighbors, neighbor_lods, total_mesh_offset);
         chunkDirty->value = 0;
         meshDirty->value = 1;
-        // zoxel_log(" > built character [%lu] [%i]\n", it->entities[i], meshIndicies2->length);
         chunks_built++;
         if (chunks_built >= max_color_chunks_build_per_frame) break;
-        #ifdef zoxel_time_octree_chunk_builds_system
-            did_do_timing()
-        #endif
+    #ifdef zoxel_time_octree_chunk_builds_system
+        did_do_timing()
+    #endif
     }
     if (neighbor_lods) free(neighbor_lods);
-    #ifdef zoxel_time_octree_chunk_builds_system
-        end_timing_cutoff("    - octree_chunk_build_system", zoxel_time_octree_chunk_builds_system_cutoff)
-    #endif
+#ifdef zoxel_time_octree_chunk_builds_system
+    end_timing_cutoff("    - octree_chunk_build_system", zoxel_time_octree_chunk_builds_system_cutoff)
+#endif
 } zox_declare_system(ChunkOctreeColorsBuildSystem)

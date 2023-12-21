@@ -46,6 +46,7 @@ unsigned char initialize_rendering(ecs_world_t *world) {
 
 void on_close_rendering(ecs_world_t *world) {
     opengl_dispose_shaders();
+    dispose_resources_vulkan(world);
 }
 
 void spawn_prefabs_rendering(ecs_world_t *world) {

@@ -17,7 +17,7 @@ void StatRegenSystem(ecs_iter_t *it) {
             statValue->value += delta_time * regen_rate;
             if (statValue->value > statValueMax->value) statValue->value = statValueMax->value;
             system_updated = 1;
-            // zoxel_log(" > new stat value is: %f\n", statValue->value);
+            // zox_log(" > new stat value is: %f\n", statValue->value)
         }
     }
 #ifndef zoxel_on_windows

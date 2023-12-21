@@ -38,7 +38,6 @@ void generate_texture_noise(TextureData* textureData, const TextureSize *texture
             blueRange.x += 8;
             blueRange.y += 16;
         } else if (texture_type == zox_texture_grass) {
-            //zoxel_log(" > grass texture created\n");
             greenRange.x *= 2;
             greenRange.y *= 2;
             blueRange.x = redRange.x - 30;
@@ -46,7 +45,6 @@ void generate_texture_noise(TextureData* textureData, const TextureSize *texture
             redRange.x /= 2;
             redRange.y /= 2;
         } else if (texture_type == zox_texture_sand) {
-            // zoxel_log(" > sand texture created\n");
             redRange.x = redRange.y = 206 - 50;
             greenRange.x = greenRange.y = 179 - 50;
             blueRange.x = blueRange.y = 59 - 30;
@@ -54,7 +52,6 @@ void generate_texture_noise(TextureData* textureData, const TextureSize *texture
             greenRange.x -= 10 + rand() % 30;
             blueRange.x -= 10 + rand() % 20;
         } else if (texture_type == zox_texture_stone) {
-            // zoxel_log(" > sand texture created\n");
             redRange.x = redRange.y = 100;
             greenRange.x = greenRange.y = 100;
             blueRange.x = blueRange.y = 100;
@@ -174,7 +171,6 @@ void NoiseTextureSystem(ecs_iter_t *it) {
         }
         resize_memory_component(TextureData, textureData, color, textureSize->value.x * textureSize->value.y)
         generate_texture_noise(textureData, textureSize, texture_type, terrain_texture_outline_type);
-        // zoxel_log("    > voxel texture generated [%lu] texture_mode [%i]\n", it->entities[i], texture_mode);
         generateTexture->value = 0;
         textureDirty->value = 1; // actually this only gets uploaded if has GPUTextureLink!
     }

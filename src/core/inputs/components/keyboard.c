@@ -110,7 +110,7 @@ void device_reset_keyboard(ecs_world_t *world, ecs_entity_t keyboard_entity) {
 }
 
 void print_keyboard_key(const PhysicalButton *key, char* name) {
-    zoxel_log("    key %s [%s - %s - %s]\n", name, (key->pressed_this_frame ? "true" : "false"), (key->is_pressed ? "true" : "false"), (key->released_this_frame ? "true" : "false"));
+    zox_log("    key %s [%s - %s - %s]\n", name, (key->pressed_this_frame ? "true" : "false"), (key->is_pressed ? "true" : "false"), (key->released_this_frame ? "true" : "false"))
 }
 
 void print_keyboard(ecs_world_t *world, ecs_entity_t keyboard_entity) {

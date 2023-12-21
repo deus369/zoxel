@@ -14,7 +14,6 @@ void Bounds3DGrowSystem(ecs_iter_t *it) {
             const ChunkSize *chunkSize = &chunkSizes[i];
             Bounds3D *bounds3D = &bounds3Ds[i];
             bounds3D->value = calculate_vox_bounds(chunkSize->value);
-            // zoxel_log(" > bounds3D->value.y %f\n", bounds3D->value.y);
         }
     }
 } zox_declare_system(Bounds3DGrowSystem)

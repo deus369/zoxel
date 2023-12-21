@@ -2,7 +2,8 @@
 #define zoxel_rendering_core
 
 // settings
-float3 viewport_clear_color = { 125 / 255.0f, 125 / 255.0f, 125 / 255.0f };
+// float3 viewport_clear_color = { 125 / 255.0f, 125 / 255.0f, 125 / 255.0f };
+const float3 viewport_clear_color = (float3) { 0.3f, 0.1f, 0.1f };
 // zoxel_component_includes
 zox_declare_tag(Shader)
 zox_declare_tag(Material)

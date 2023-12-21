@@ -2,21 +2,6 @@
 //  todo: system before that sets texture links from voxel links
 // todo: debug why array indexes go out of bounds!
 
-// for (int j = 0; j < textureLinks->length; j++) {
-// if (!ecs_is_valid(it->world, texture_entity)) zoxel_log("issue with texture at [%i]\n", j);
-// if (!ecs_is_valid(it->world, texture_entity)) continue;
-// if (voxel_texture_data->length == 0) zoxel_log("    ! issue with texture at [%i] - %lu\n", j, texture_entity);
-// if (voxel_texture_data->length == 0) continue;
-// const TextureSize *voxel_texture_size = ecs_get(it->world, texture_entity, TextureSize);
-/*if (texture_index >= voxel_texture_data->length) zoxel_log("texture_index out of bounds [%i / %i]\n", texture_index, voxel_texture_data->length);
-if (texture_index >= voxel_texture_data->length) textureData->value[j].r = 233;*/
-// set random color for now
-/*for (int j = 0; j < textureData->length; j++) {
-    textureData->value[j].r = 145;
-    textureData->value[j].g = 24;
-    textureData->value[j].b = 133;
-}*/
-
 void TilemapGenerationSystem(ecs_iter_t *it) {
     // int2 default_texture_size = (int2) { 32, 32 }; // 16
     zox_iter_world()
@@ -82,19 +67,14 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
                 tilemapUVs->value[texture_entity_index * 4 + 1] = (float2) { tile_uv.x, tile_uv.y + tile_size };
                 tilemapUVs->value[texture_entity_index * 4 + 2] = (float2) { tile_uv.x + tile_size, tile_uv.y + tile_size };
                 tilemapUVs->value[texture_entity_index * 4 + 3] = (float2) { tile_uv.x + tile_size, tile_uv.y };
-                // zoxel_log(" + placing tile [%i] at [%ix%i]\n", texture_entity_index, tilemap_position.x, tilemap_position.y);
                 texture_entity_index++;
                 if (texture_entity_index >= textureLinks->length) {
                     texture_position.x = tilemapSize->value.x;
                     texture_position.y = tilemapSize->value.y;
-                    // zoxel_log(" ! finished placing at [%i]\n", texture_entity_index);
                 }
             }
         }
         textureDirty->value = 1;
         generateTexture->value = 0;
-        // zoxel_log("    > tilemap texture generated [%lu]\n", it->entities[i]);
-        // generate_tilemap(it->world, textureData, tilemapSize, textures);
-        // zoxel_log("    > tilemap generated [%lu] textures [%i] tilemapUVs [%i]\n", it->entities[i], textureLinks->length, tilemapUVs->length);
     }
 } zox_declare_system(TilemapGenerationSystem)

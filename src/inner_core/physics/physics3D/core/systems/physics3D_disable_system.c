@@ -20,7 +20,6 @@ void Physics3DDisableSystem(ecs_iter_t *it) {
             velocity3D->value.x = 0;
             velocity3D->value.y = 0;
             velocity3D->value.z = 0;
-            // zoxel_log("disabling physics 3D [%lu]\n", it->entities[i]);
         }
     }
 } zox_declare_system(Physics3DDisableSystem)

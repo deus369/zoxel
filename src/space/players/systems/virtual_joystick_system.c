@@ -8,7 +8,6 @@
 
 void delete_virtual_joystick(ecs_world_t *world) {
     if (virtual_joystick) {
-        // zoxel_log(" - deleting virtual joystick ui\n");
         zox_delete(virtual_joystick)
         virtual_joystick = 0;
     }
@@ -82,7 +81,7 @@ void VirtualJoystickSystem(ecs_iter_t *it) {
                     const Mouse *mouse = zox_get( device_entity, Mouse);
                     if (mouse->left.pressed_this_frame) {
                         delete_virtual_joystick(world);
-                        zoxel_log(" + spawning virtual joystick ui at %ix%i\n", mouse->position.x, mouse->position.y);
+                        zox_log(" + spawning virtual joystick ui at %ix%i\n", mouse->position.x, mouse->position.y)
                         if (is_playing) spawn_virtual_joystick(world, mouse->position);
                     } else if (mouse->left.released_this_frame) {
                         delete_virtual_joystick(world);

@@ -12,9 +12,9 @@ ecs_entity_t spawn_prefab_zevice_pointer(ecs_world_t *world) {
     zox_prefab_set(e, DeviceButtonType, { 0 })
     zox_prefab_set(e, RealButtonIndex, { 0 })
     prefab_zevice_pointer = e;
-    #ifdef zoxel_debug_prefabs
-        zoxel_log(" > spawn_prefab zevice_pointer [%lu].\n", (long int) (e));
-    #endif
+#ifdef zoxel_debug_prefabs
+    zox_log(" > spawn_prefab zevice_pointer [%lu].\n", e)
+#endif
     return e;
 }
 
@@ -23,10 +23,10 @@ ecs_entity_t spawn_zevice_pointer(ecs_world_t *world, unsigned char type, unsign
     zox_name("zevice_pointer")
     zox_prefab_set(e, DeviceButtonType, { type })
     zox_prefab_set(e, RealButtonIndex, { index })
-    #ifdef zoxel_debug_spawns
-        zoxel_log(" > spawned zevice_pointer [%lu].\n", (long int) (e));
-    #endif
-    if (zox_has(e, ZeviceButton)) zoxel_log("    > device stick has button\n");
+#ifdef zoxel_debug_spawns
+    zoxel_log(" > spawned zevice_pointer [%lu].\n", e)
+#endif
+    // if (zox_has(e, ZeviceButton)) zoxel_log("    > device stick has button\n");
     return e;
 }
 

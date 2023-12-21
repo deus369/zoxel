@@ -1,5 +1,4 @@
 void generate_chunk_noise(ChunkData* chunkData, const ChunkSize *chunkSize) {
-    // zoxel_log("     = [%i]\n", chunkSize->value.x);
     int voxels_count = 0;
     int array_index = 0;
     for (int j = 0; j < chunkSize->value.x; j++) {
@@ -27,7 +26,6 @@ void generate_chunk_noise(ChunkData* chunkData, const ChunkSize *chunkSize) {
             }
         }
     }
-    // zoxel_log("     + voxels [%i]\n", voxels_count);
 }
 
 void NoiseChunkSystem(ecs_iter_t *it) {
@@ -49,7 +47,6 @@ void NoiseChunkSystem(ecs_iter_t *it) {
         generate_chunk_noise(chunkData, chunkSize);
         generateChunk->value = 0;
         chunkDirty->value = 1;
-        // zoxel_log(" > chunkData [noise] generated [%lu] at [%f]\n", it->entities[i], get_total_time_seconds());
     }
 }
 zox_declare_system(NoiseChunkSystem)
@@ -69,11 +66,10 @@ void NoiseChunkOctreeSystem(ecs_iter_t *it) {
         ChunkOctree *chunkOctree = &chunkOctrees[i];
         unsigned char chunk_depth = colors_get_max_depth_from_division(renderLod->value); // 5
         random_fill_octree(chunkOctree, 1, chunk_depth);
-        #ifndef zox_disable_closing_octree_nodes
-            close_solid_nodes(chunkOctree);
-        #endif
+#ifndef zox_disable_closing_octree_nodes
+        close_solid_nodes(chunkOctree);
+#endif
         generateChunk->value = 0;
         chunkDirty->value = 1;
-        // zoxel_log(" > chunkData octree [noise] generated [%lu] at [%f]\n", it->entities[i], get_total_time_seconds());
     }
 } zox_declare_system(NoiseChunkOctreeSystem)

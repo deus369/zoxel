@@ -10,9 +10,9 @@ void StreamPointSystem(ecs_iter_t *it) {
     ecs_query_next(&chunks_iterator);
     int total_chunks = chunks_iterator.count;
     if (total_chunks == 0) return;
-    #ifdef zoxel_time_stream_point_system
-        begin_timing()
-    #endif
+#ifdef zoxel_time_stream_point_system
+    begin_timing()
+#endif
     const Position3D *position3Ds = ecs_field(it, Position3D, 2);
     StreamPoint *streamPoints = ecs_field(it, StreamPoint, 3);
     const ChunkPosition *chunkPositions = ecs_field(&chunks_iterator, ChunkPosition, 2);
@@ -21,13 +21,10 @@ void StreamPointSystem(ecs_iter_t *it) {
     ChunkDirty *chunkDirtys = ecs_field(&chunks_iterator, ChunkDirty, 5);
     for (int i = 0; i < it->count; i++) {
         const Position3D *position3D = &position3Ds[i];
-        int3 new_position = get_chunk_position(position3D->value, default_chunk_size);  // translate position to int3 chunk position
-        // printf("Checking Streamer position3D: [%fx%fx%f] \n", position3D->value.x, position3D->value.y, position3D->value.z);
+        int3 new_position = get_chunk_position(position3D->value, default_chunk_size);
         StreamPoint *streamPoint = &streamPoints[i];
         if (!int3_equals(new_position, streamPoint->value)) {
             streamPoint->value = new_position;
-            // zoxel_log(" > stream terrain from [%lu] at [%ix%ix%i]\n", it->entities[i], new_position.x, new_position.y, new_position.z);
-            // did_update = 1;
             #ifdef zoxel_time_stream_point_system
                 int updated_count = 0;
             #endif
@@ -56,14 +53,14 @@ void StreamPointSystem(ecs_iter_t *it) {
                 chunkDirty->value = 1;
             }
             free(changed);
-            #ifdef zoxel_time_stream_point_system
-                did_do_timing()
-                zoxel_log(" > stream point updated [%i / %i]\n", updated_count, total_chunks);
-            #endif
+#ifdef zoxel_time_stream_point_system
+            did_do_timing()
+            zox_log(" > stream point updated [%i / %i]\n", updated_count, total_chunks)
+#endif
         }
     }
     //if (!did_update) ecs_query_skip(it); // skip table updates here if no updates
-    #ifdef zoxel_time_stream_point_system
-        end_timing("StreamPointSystem")
-    #endif
+#ifdef zoxel_time_stream_point_system
+    end_timing("StreamPointSystem")
+#endif
 } zox_declare_system(StreamPointSystem)

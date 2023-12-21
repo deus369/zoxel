@@ -11,10 +11,9 @@ void Alpha3DSystem(ecs_iter_t *it) {
             Omega3D *omega3D = &omega3Ds[i];
             float4 delta_omega = get_delta_rotation(alpha3D->value, magnitude, delta_time);
             quaternion_rotate_quaternion_p(&omega3D->value, delta_omega);
-            #ifdef zoxel_debug_alpha3D_system
-                zoxel_log("     + post omega [%fx%fx%fx%f]\n", omega3D->value.x, omega3D->value.y, omega3D->value.z, omega3D->value.w);
-            #endif
-            // zoxel_log("alpha effecting omega\n");
+#ifdef zoxel_debug_alpha3D_system
+            zoxel_log("     + post omega [%fx%fx%fx%f]\n", omega3D->value.x, omega3D->value.y, omega3D->value.z, omega3D->value.w);
+#endif
         }
         alpha3D->value = quaternion_identity;
     }

@@ -40,7 +40,8 @@ zox_begin_module(Apps)
 // zoxel_component_defines
 zox_define_tag(App)
 #ifdef zox_include_vulkan
-zox_define_component_w_dest(VulkanSurface)
+    // zox_define_component_w_dest(VulkanSurface)
+    zox_define_component(VulkanSurface)
 #endif
 zox_import_module(AppsSDL)
 // zoxel_system_defines

@@ -29,7 +29,7 @@ void close##_##name(name* octree) {\
         free(octree->nodes);\
         octree->nodes = NULL;\
         node_memory -= 1;\
-        /*zoxel_log(" > freeing node [%i]\n", (sizeof(name) * octree_length));*/\
+        /*zox_log(" > freeing node [%i]\n", (sizeof(name) * octree_length))*/\
     }\
 }\
 \

@@ -52,15 +52,6 @@ void zox_build_voxel_face(int_array_d *indicies, float3_array_d* vertices, float
     }
 }
 
-/*
-if (amplify_position != 1) {\
-    zoxel_log(" > depth_difference %i, amplify_position %i\n", depth_difference, amplify_position);
-    zoxel_log("     - octree_position %ix%ix%i\n", octree_position.x, octree_position.y, octree_position.z);
-    zoxel_log("     - octree_position2 %ix%ix%i\n", octree_position2.x, octree_position2.y, octree_position2.z);
-}
-zoxel_log(" === adjacent is air %ix%ix%i\n", octree_position3.x, octree_position3.y, octree_position3.z)
-*/
-
 #define zox_build_if_adjacent_voxel(direction_name, is_positive, voxel_uvs)\
 if (!is_adjacent_all_solid(direction##_##direction_name, root_node, parent_node, neighbors, octree_position, node_index, node_position, depth, lod, neighbor_lods, edge_voxel)) {\
     if (zox_build_all_faces && distance_to_camera <= high_resolution_terain_lod) {\

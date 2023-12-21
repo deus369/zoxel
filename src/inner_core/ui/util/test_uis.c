@@ -24,7 +24,7 @@ void spawn_corner_uis(ecs_world_t *world) {
     spawn_element_on_canvas(world, main_canvas, (int2) { - testSize.x / 2, testSize.y / 2 }, testSize, (float2) { 1.0f, 0.0 });      // bottom right
     spawn_element_on_canvas(world, main_canvas, (int2) { testSize.x / 2, - testSize.y / 2 }, testSize, (float2) { 0, 1.0f });        // top left
     spawn_element_on_canvas(world, main_canvas, (int2) { - testSize.x / 2, - testSize.y / 2 }, testSize, (float2) { 1.0f, 1.0f});
-    zoxel_log("Spawned 4 corner ui elements.\n");    // top right
+    zox_log("Spawned 4 corner ui elements.\n")    // top right
 }
 
 void spawn_test_uis(ecs_world_t *world) {
