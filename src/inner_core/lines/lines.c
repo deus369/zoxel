@@ -6,9 +6,9 @@ zox_component(LineThickness, float)
 #include "lines2D/lines2D.c"
 #include "lines3D/lines3D.c"
 
-void load_resources_lines(ecs_world_t *world) {
-    load_resources_lines2D(world);
-    load_resources_lines3D(world);
+void initialize_lines(ecs_world_t *world) {
+    initialize_lines2D(world);
+    initialize_lines3D(world);
 }
 
 void spawn_prefabs_lines(ecs_world_t *world) {

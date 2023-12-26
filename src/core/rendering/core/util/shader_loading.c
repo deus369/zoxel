@@ -14,11 +14,11 @@ void dispose_shader_loading() {
 }
 
 void add_load_shader_function(funfun event) {
-    add_to_funfun_array_d(load_shader_functions, event);
+    if (!headless) add_to_funfun_array_d(load_shader_functions, event);
 }
 
 void add_restore_shader_function(funfun event) {
-    add_to_funfun_array_d(restore_shader_functions, event);
+    if (!headless) add_to_funfun_array_d(restore_shader_functions, event);
 }
 
 void run_load_shader_function(ecs_world_t *world, int i) {

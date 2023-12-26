@@ -13,9 +13,9 @@
     #include "util/vulkan_setup.c"
 #endif
 
-void dispose_resources_vulkan(ecs_world_t *world) {
+void dispose_vulkan(ecs_world_t *world) {
 #ifdef zox_include_vulkan
-    dispose_vulkan();
+    dispose_vulkan_globals();
 #endif
 }
 

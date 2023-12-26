@@ -57,9 +57,7 @@ void render_pre_loop() {
         // render cameras for vulkan
         vulkan_clear_viewport(viewport_clear_color);
 #endif
-    } else {
-        opengl_clear(viewport_clear_color);
-    }
+    } else opengl_clear(viewport_clear_color);
 }
 
 void render_loop(ecs_world_t *world) {

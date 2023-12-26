@@ -32,6 +32,6 @@ ecs_world_t* open_ecs(int argc, char* argv[], unsigned char profiler, int core_c
     return world;
 }
 
-void close_ecs() {
+void dispose_ecs(ecs_world_t *world) {
     ecs_fini(world);
 }

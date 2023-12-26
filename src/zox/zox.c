@@ -1,5 +1,5 @@
-#ifndef zoxel_engine
-#define zoxel_engine
+#ifndef zox_engine
+#define zox_engine
 
 // todo: move some things to sdl module in core
 // todo: position confusing, move to above directory for easier to understand navigation
@@ -27,10 +27,17 @@
 #include "util/engine_util.c"
 #include "util/main_loop_util.c"
 
-void load_resources_engine(ecs_world_t *world) {
-    load_resources_core(world);
-    load_resources_inner_core(world);
-    load_resources_outer_core(world);
+void dispose_zox(ecs_world_t *world) {
+    dispose_inner_core(world);
+    dispose_game_store();
+    dispose_core(world);
+}
+
+unsigned char initialize_zox(ecs_world_t *world) {
+    if (initialize_core(world) == EXIT_FAILURE) return EXIT_FAILURE;
+    initialize_inner_core(world);
+    initialize_outer_core(world);
+    return EXIT_SUCCESS;
 }
 
 void spawn_prefabs_engine(ecs_world_t *world) {
@@ -42,15 +49,13 @@ void spawn_prefabs_engine(ecs_world_t *world) {
     spawn_prefabs_space(world);
 }
 
-zox_begin_module(ZoxelEngine)
+zox_begin_module(Zox)
 zox_import_module(Core)
 zox_import_module(InnerCore)
 zox_import_module(OuterCore)
 zox_import_module(Users)
 zox_import_module(Gameplay)
 zox_import_module(Space)
-zoxel_end_module(ZoxelEngine)
+zoxel_end_module(Zox)
 
 #endif
-
-// #define USE_SDL_3

@@ -20,7 +20,7 @@ void initialize_component_ids() {
     initialize_component_ids_float2();
 }
 
-void close_module_generic(ecs_world_t *world) {
+void dispose_component_ids() {
     dispose_component_ids_byte();
     dispose_component_ids_int();
     dispose_component_ids_long_int();

@@ -13,19 +13,19 @@
 #include "voxels/voxels.c"
 #include "physics/physics.c"
 
-void dispose_resources_inner_core(ecs_world_t *world) {
-    dispose_resources_textures(world);
-    dispose_resources_voxes(world);
+void dispose_inner_core(ecs_world_t *world) {
+    dispose_textures(world);
+    dispose_voxes(world);
 }
 
-void load_resources_inner_core(ecs_world_t *world) {
-    load_resources_lines(world);
-    load_resources_textures(world);
-    load_resources_voxes(world);
+void initialize_inner_core(ecs_world_t *world) {
+    initialize_lines(world);
+    initialize_textures(world);
+    initialize_voxes(world);
 }
 
 void spawn_prefabs_inner_core(ecs_world_t *world) {
-    spawn_prefabs_textures_core(world);
+    spawn_prefabs_textures(world);
     spawn_prefabs_ui(world);
     spawn_prefabs_lines(world);
     spawn_prefabs_neurals(world);

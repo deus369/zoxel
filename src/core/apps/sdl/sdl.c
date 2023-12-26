@@ -21,20 +21,16 @@ ECS_DTOR(Context, ptr, { if (ptr->value != 0) SDL_GL_DeleteContext(ptr->value); 
 #include "inputs/inputs.c"
 #include "util/vulkan_util.c"
 #include "util/sdl_util.c"
-extern void load_app_icon(SDL_Window* window, const char *icon_filepath);
+// extern void load_app_icon(SDL_Window* window, const char *icon_filepath);
 
-void dispose_resources_sdl(ecs_world_t *world) {
-}
+void dispose_apps_sdl(ecs_world_t *world) {
 
-void load_resources_sdl(ecs_world_t *world) {
-#ifndef zox_disable_io
-    load_app_icon(main_window, icon_filepath);
-#endif
 }
 
 unsigned char initialize_apps_sdl(ecs_world_t *world) {
     debug_platform();
     initialize_sdl_video();
+    initialize_apps_input(world);
     create_main_window(world);
     return EXIT_SUCCESS;
 }

@@ -56,9 +56,10 @@ void save_texture_as_png(const TextureData *textureData, const TextureSize *text
 #endif
 
 void load_app_icon(SDL_Window* window, const char *icon_filepath) {
+#ifndef zox_disable_io
     SDL_Surface *surface = load_png_as_surface(icon_filepath); // IMG_Load(icon_filepath); // IMG_Load(buffer);
-    if (surface != NULL) {
-        SDL_SetWindowIcon(window, surface); // The icon is attached to the window pointer
-        SDL_FreeSurface(surface);
-    }
+    if (surface == NULL) return;
+    SDL_SetWindowIcon(window, surface); // The icon is attached to the window pointer
+    SDL_FreeSurface(surface);
+#endif
 }

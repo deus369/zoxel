@@ -15,6 +15,7 @@
 // zoxel_util_includes
 #include "util/path_util.c"
 #include "util/directory_util.c"
+#include "steam/test_steam_io.c"
 
 void spawn_prefabs_files(ecs_world_t *world) {
     // spawn_prefab_filemanager(world);

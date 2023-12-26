@@ -15,6 +15,10 @@
 #include "systems/touchscreen_extract_system.c"
 #include "systems/mouse_constrain_system.c"
 
+void initialize_apps_input(ecs_world_t *world) {
+    initialize_sdl_input();
+}
+
 zox_begin_module(AppsInputs)
 // systems
 zox_system(TouchscreenExtractSystem, zox_extract_pipeline, [in] inputs.Touchscreen, [in] Children)

@@ -41,7 +41,7 @@ void spawn_prefabs_rendering_core(ecs_world_t *world) {
     spawn_prefab_material(world);
 }
 
-void on_close_rendering_core(ecs_world_t *world) {
+void dispose_rendering_core(ecs_world_t *world) {
     dispose_render_loop();
     dispose_shader_loading();
 }

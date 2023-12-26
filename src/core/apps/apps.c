@@ -4,7 +4,6 @@
 // zoxel apps: handles os windows, using (sdl, glut) libraries
 
 // zoxel_settings
-const char *icon_filepath;
 #include "settings/settings.c"
 // app variables
 // zoxel_component_includes
@@ -15,21 +14,13 @@ zox_declare_tag(App)
 // sdl input sub module
 #include "sdl/sdl.c"
 
-void set_icon_filepath(const char *icon_filepath_new) {
-    icon_filepath = icon_filepath_new;
-}
-
-void load_resources_apps(ecs_world_t *world) {
-    load_resources_sdl(world);
-}
-
-void dispose_resources_apps(ecs_world_t *world) {
-    dispose_resources_sdl(world);
-}
-
 unsigned char initialize_apps(ecs_world_t *world) {
-    if (headless) return EXIT_SUCCESS;
-    return initialize_apps_sdl(world);
+    if (!headless) return initialize_apps_sdl(world);
+    else return EXIT_SUCCESS;
+}
+
+void dispose_apps(ecs_world_t *world) {
+    dispose_apps_sdl(world);
 }
 
 void spawn_prefabs_apps(ecs_world_t *world) {

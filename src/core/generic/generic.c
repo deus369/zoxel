@@ -54,6 +54,10 @@ zox_entities_component(EntityLinks)
 #include "systems/generic_event_debug_system.c"
 #include "systems/death_clean_system.c"
 
+void dispose_generic(ecs_world_t *world) {
+    dispose_component_ids();
+}
+
 void spawn_prefabs_generic(ecs_world_t *world) {
     spawn_prefab_generic_event(world);
 }

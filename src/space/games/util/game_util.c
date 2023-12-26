@@ -1,4 +1,5 @@
-// todo: make this an event i can latch onto
+// todo: make this an event i can latch onto in submodules
+
 // player hooks
 extern void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character);
 extern void detatch_from_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character);
@@ -69,9 +70,9 @@ void spawn_in_game_ui(ecs_world_t *world, ecs_entity_t player) {    // spawn gam
     if (local_character3D) {
         const StatLinks *statLinks = zox_get(local_character3D, StatLinks)
         zox_prefab_set(healthbar_2D, StatLink, { statLinks->value[0] })
-    } else {
+    }/* else {
         zox_logg(" ! error no local_character3D\n")
-    }
+    }*/
     game_ui_children->value[0] = actionbar_ui;
     game_ui_children->value[1] = healthbar_2D;
     zox_modified(actionbar_ui, Children)

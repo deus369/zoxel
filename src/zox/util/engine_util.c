@@ -4,13 +4,6 @@ int engine_begin(int argc, char* argv[]) {
     return begin_core(argc, argv);
 }
 
-void on_engine_end(ecs_world_t *world) {
-    dispose_resources_inner_core(world);
-    dispose_resources_core(world);
-    close_module_core(world);
-    dispose_game_store();
-}
-
 void engine_update() {
 #ifdef zoxel_time_main_loop
     begin_timing_absolute()

@@ -9,7 +9,6 @@ void engine_end() {
 
 void handle_segfault(int sig) {
     zox_log(" ! segfault detected [%i], exiting zox engine\n", sig)
-    // on_engine_end(world);
     exit(0);
 }
 

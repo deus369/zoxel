@@ -22,7 +22,7 @@ int get_count_particle3D_emitters(ecs_world_t *world) {
     return zox_count_entities(world, ecs_id(Particle3DEmitter));
 }
 
-void load_resources_particles3D(ecs_world_t *world) {
+void initialize_particles3D(ecs_world_t *world) {
     if (!is_using_vulkan) initialize_shader_particle3D();
 }
 

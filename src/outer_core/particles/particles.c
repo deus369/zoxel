@@ -7,8 +7,8 @@ zox_component(ParticleEmitRate, int)
 #include "particles2D/particles2D.c"
 #include "particles3D/particles3D.c"
 
-void load_resources_particles(ecs_world_t *world) {
-    load_resources_particles3D(world);
+void initialize_particles(ecs_world_t *world) {
+    initialize_particles3D(world);
 }
 
 void spawn_prefabs_particles(ecs_world_t *world) {

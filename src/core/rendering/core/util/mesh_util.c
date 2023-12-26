@@ -1,4 +1,5 @@
 void prefab_set_mesh_indicies(ecs_world_t *world, ecs_entity_t e, const int indicies[], int length) {
+    if (headless) return;
     MeshIndicies *meshIndicies = zox_get_mut(e, MeshIndicies)
     resize_memory_component(MeshIndicies, meshIndicies, int, length)
     memcpy(meshIndicies->value, indicies, length * sizeof(int));
@@ -6,6 +7,7 @@ void prefab_set_mesh_indicies(ecs_world_t *world, ecs_entity_t e, const int indi
 }
 
 void prefab_set_mesh2D_vertices(ecs_world_t *world, ecs_entity_t e, const float2 vertices[], int length) {
+    if (headless) return;
     MeshVertices2D *meshVertices2D = zox_get_mut(e, MeshVertices2D)
     resize_memory_component(MeshVertices2D, meshVertices2D, float2, length)
     memcpy(meshVertices2D->value, vertices, length * sizeof(float2));
@@ -13,6 +15,7 @@ void prefab_set_mesh2D_vertices(ecs_world_t *world, ecs_entity_t e, const float2
 }
 
 void prefab_set_mesh_uvs(ecs_world_t *world, ecs_entity_t e, const float2 uvs[], int length) {
+    if (headless) return;
     MeshUVs *meshUVs = zox_get_mut(e, MeshUVs)
     resize_memory_component(MeshUVs, meshUVs, float2, length)
     memcpy(meshUVs->value, uvs, length * sizeof(float2));
@@ -20,6 +23,7 @@ void prefab_set_mesh_uvs(ecs_world_t *world, ecs_entity_t e, const float2 uvs[],
 }
 
 void prefab_set_mesh3D_vertices(ecs_world_t *world, ecs_entity_t e, const float2 vertices[], int length, float2 scale) {
+    if (headless) return;
     MeshVertices *meshVertices = zox_get_mut(e, MeshVertices)
     resize_memory_component(MeshVertices, meshVertices, float3, length)
     for (int i = 0; i < length; i++) meshVertices->value[i] = (float3) { vertices[i].x * scale.x, vertices[i].y * scale.y, 0 };
@@ -27,6 +31,7 @@ void prefab_set_mesh3D_vertices(ecs_world_t *world, ecs_entity_t e, const float2
 }
 
 void prefab_set_mesh_colors_rgb(ecs_world_t *world, ecs_entity_t e, color_rgb color, int length) {
+    if (headless) return;
     MeshColorRGBs *meshColorRGBs = zox_get_mut(e, MeshColorRGBs)
     resize_memory_component(MeshColorRGBs, meshColorRGBs, color_rgb, length)
     for (int i = 0; i < length; i++) meshColorRGBs->value[i] = color;
@@ -34,7 +39,7 @@ void prefab_set_mesh_colors_rgb(ecs_world_t *world, ecs_entity_t e, color_rgb co
 }
 
 void prefab_set_mesh_vertices(ecs_world_t *world, ecs_entity_t e, const float vertices[], int length) {
-    // zox_log("   sizeof(float3) [%i]\n", sizeof(float3))
+    if (headless) return;
     MeshVertices *meshVertices = zox_get_mut(e, MeshVertices)
     resize_memory_component(MeshVertices, meshVertices, float3, length)
     memcpy(meshVertices->value, vertices, length * sizeof(float));

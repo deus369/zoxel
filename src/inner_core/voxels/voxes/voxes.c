@@ -8,11 +8,11 @@ zox_declare_tag(Vox)
 #include "util/vox_files.c"
 #include "prefabs/vox.c"
 
-void dispose_resources_voxes(ecs_world_t *world) {
+void dispose_voxes(ecs_world_t *world) {
     dispose_files_voxes(world);
 }
 
-void load_resources_voxes(ecs_world_t *world) {
+void initialize_voxes(ecs_world_t *world) {
     load_files_voxes();
 }
 

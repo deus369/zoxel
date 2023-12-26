@@ -2,7 +2,7 @@
 // #include "core/ecs/util/profiler_defines.c"
 #include "zoxel/settings/build_settings.c"
 #include "zoxel/settings/build_disables.c"
-#include "engine/engine.c"
+#include "zox/zox.c"
 #include "zoxel/zoxel.c"
 
 #ifdef zoxel_on_windows
@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
         spawn_prefabs_engine(world);    // spawn all our prefabs
         if (boot_zoxel_game(world) == EXIT_SUCCESS) engine_loop();
         else zox_logg(" ! booting zoxel failed\n")
-        on_engine_end(world);
+        dispose_zox(world);
     } else zox_logg(" ! engine failed to start\n")
     return 0;
 }

@@ -42,11 +42,11 @@ zox_memory_component(SoundData, float)   //! A sound has an array of bytes
 #include "systems/sound_update_system.c"
 #endif
 
-void load_resources_sounds(ecs_world_t *world) {
+void initialize_sounds(ecs_world_t *world) {
     load_files_sounds();
 }
 
-void dispose_resources_sounds(ecs_world_t *world) {
+void dispose_sounds(ecs_world_t *world) {
     dispose_sound_files();
 }
 

@@ -48,7 +48,7 @@ const char* vulkan_result_to_string(VkResult result) {
     }
 }
 
-void dispose_vulkan() {
+void dispose_vulkan_globals() {
     if (*vk_instance != VK_NULL_HANDLE) {
         zox_log_vulkan(" > destroying [vk_instance]\n")
         // vkDestroyCommandPool(vk_device, vk_command_buffer, NULL);

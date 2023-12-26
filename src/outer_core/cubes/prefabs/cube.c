@@ -3,10 +3,7 @@ ecs_entity_t prefab_cube;
 ecs_entity_t spawn_prefab_cube(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_cube")
-#ifdef zoxel_transforms3D
     add_transform3Ds(world, e);
-#endif
-#ifdef zoxel_rendering
     zox_add(e, Brightness)
     zox_prefab_set(e, MeshDirty, { 1 })
     if (!headless) {
@@ -14,10 +11,9 @@ ecs_entity_t spawn_prefab_cube(ecs_world_t *world) {
         zox_prefab_set(e, MeshVertices, { 0, NULL })
         prefab_set_mesh_indicies(world, e, cube_indicies, 36);
         prefab_set_mesh_vertices(world, e, cube_vertices_singles, cube_vertices_singles_length);
+        add_gpu_mesh(world, e);
+        add_gpu_material(world, e);
     }
-    add_gpu_mesh(world, e);
-    add_gpu_material(world, e);
-#endif
     prefab_cube = e;
 #ifdef zoxel_debug_prefabs
     zox_log(" > spawn_prefab custom_mesh [%lu]\n", e)

@@ -8,7 +8,16 @@ zox_component_byte(GameState);
 #include "prefabs/game.c"
 #include "util/game_states.c"
 #include "util/game_util.c"
+#include "util/game_events.c"
 // #include "systems/play_game_system.c"
+
+void initialize_games(ecs_world_t *world) {
+    initialize_events_games();
+}
+
+void dispose_games(ecs_world_t *world) {
+    dispose_events_games();
+}
 
 void spawn_prefabs_games(ecs_world_t *world) {
     spawn_prefab_game(world);

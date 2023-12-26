@@ -66,6 +66,7 @@ void load_shader_skybox(ecs_world_t *world) {
 }
 
 void set_sky_color(ecs_world_t *world, float3 top_color, float3 bottom_color) {
+    if (headless) return;
     GLuint material = zox_get_value(skybox, MaterialGPULink)
     opengl_set_material(material);
     opengl_set_float3(glGetUniformLocation(material, "sky_top_color"), top_color);

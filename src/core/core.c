@@ -21,14 +21,25 @@ unsigned char cpu_tier;
 #include "sounds/sounds.c"
 #include "util/core_util.c"
 
-void load_resources_core(ecs_world_t *world) {
-    load_resources_apps(world);
-    load_resources_sounds(world);
+unsigned char initialize_core(ecs_world_t *world) {
+    if (initialize_pathing() == EXIT_FAILURE) return EXIT_FAILURE;
+    if (initialize_apps(world) == EXIT_FAILURE) return EXIT_FAILURE;
+    if (initialize_rendering(world) == EXIT_FAILURE) return EXIT_FAILURE;
+    initialize_sounds(world);
+    return EXIT_SUCCESS;
 }
 
-void dispose_resources_core(ecs_world_t *world) {
-    dispose_resources_apps(world);
-    dispose_resources_sounds(world);
+void dispose_core(ecs_world_t *world) {
+    dispose_generic(world);
+    dispose_apps(world);
+    dispose_sounds(world);
+    dispose_rendering(world);
+    if (!headless) {
+        close_sdl_input();
+        close_sdl_video();
+        close_audio_sdl();
+    }
+    dispose_ecs(world);
 }
 
 void spawn_prefabs_core(ecs_world_t *world) {
@@ -44,17 +55,6 @@ void spawn_prefabs_core(ecs_world_t *world) {
     spawn_prefabs_rendering(world);
     spawn_prefabs_sounds(world);
     spawn_prefabs_cameras(world);
-}
-
-void close_module_core(ecs_world_t *world) {
-    close_module_generic(world);
-    close_ecs();
-    if (!headless) on_close_rendering(world);
-    if (!headless) {
-        close_sdl_input();
-        close_sdl_video();
-        close_audio_sdl();
-    }
 }
 
 zox_begin_module(Core)
