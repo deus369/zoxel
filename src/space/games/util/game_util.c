@@ -107,60 +107,55 @@ void end_game_on_player(ecs_world_t *world, ecs_entity_t player) {
 void play_game_on_player(ecs_world_t *world, ecs_entity_t player) {
     disable_inputs_until_release(world, player, zox_device_mode_none);
     // ui control
-    zox_delete_and_set(main_menu)
+    // zox_delete_and_set(main_menu)
     spawn_in_game_ui(world, player);
     // todo: get player camera linked to it
-    ecs_entity_t main_camera = main_cameras[0];
+    ecs_entity_t camera = zox_get_value(player, CameraLink) //  main_cameras[0];
     // temp here for now
-    if (!zox_has(main_camera, Streamer)) {
-        zox_add_only(main_camera, Streamer)
-        zox_add_only(main_camera, StreamPoint)
+    if (!zox_has(camera, Streamer)) {
+        zox_add_only(camera, Streamer)
+        zox_add_only(camera, StreamPoint)
     }
-    const Position3D *camera_position3D = zox_get(main_camera, Position3D)
+    const Position3D *camera_position3D = zox_get(camera, Position3D)
     int3 terrain_position = int3_zero;
     if (camera_position3D) terrain_position = get_chunk_position(camera_position3D->value, default_chunk_size);
-    zox_set(main_camera, StreamPoint, { terrain_position })
+    zox_set(camera, StreamPoint, { terrain_position })
     // link camera to terrain it's in
     // todo: dynamically set camera in whatever world it is in, multiple links? position space based
-    if (local_terrain) zox_set(main_camera, VoxLink, { local_terrain })
+    if (local_terrain) zox_set(camera, VoxLink, { local_terrain })
     if (game_rule_attach_to_character) {
-        float3 spawn_position = zox_get_value(main_camera, Position3D)
+        float3 spawn_position = zox_get_value(camera, Position3D)
         spawn_position.x = 8;
         spawn_position.z = 8;
         float4 spawn_rotation = quaternion_identity;
         const vox_file vox = vox_files[3]; // get mr penguin vox
         local_character3D = spawn_player_character3D_in_world(world, &vox, spawn_position, spawn_rotation, 0);
         zox_add_tag(local_character3D, Aura)
-        attach_to_character(world, player, main_camera, local_character3D);
-    } else attach_to_character(world, player, main_camera, 0);
+        attach_to_character(world, player, camera, local_character3D);
+    } else attach_to_character(world, player, camera, 0);
 }
 
-void play_game(ecs_world_t *world) {
-    if (!local_game) return;
-    zox_set(local_game, GameState, { zoxel_game_state_playing })
+void play_game(ecs_world_t *world, ecs_entity_t game) {
+    if (!game) return;
+    zox_set(game, GameState, { zoxel_game_state_playing })
     set_sky_color(world, game_sky_color, game_sky_bottom_color);
 #ifdef zox_on_play_spawn_terrain
     int3 terrain_position = int3_zero;
     create_terrain(world, terrain_position);
     zox_set(local_terrain, RealmLink, { local_realm }) // this should be done on spawn
 #endif
-    // todo: for each player linked to game
-    ecs_entity_t player = main_player;
-    play_game_on_player(world, player);
+    trigger_event_on_start_game(world, game);
     unlock_achievement("test_achievement"); // idk if this can be per player
 }
 
-void end_game(ecs_world_t *world) {
-    zox_set(local_game, GameState, { zoxel_game_state_main_menu })
+void end_game(ecs_world_t *world, ecs_entity_t game) {
+    zox_set(game, GameState, { zoxel_game_state_main_menu })
     // todo: for each player in game
-    ecs_entity_t player = main_player;
-    end_game_on_player(world, player);
 #ifdef zox_on_play_spawn_terrain
     zox_delete_and_set(local_terrain)
 #endif
     set_sky_color(world, menu_sky_color, menu_sky_bottom_color);
+    // todo: end game event
+    ecs_entity_t player = main_player;
+    end_game_on_player(world, player);
 }
-
-// const int edge_buffer = 8 * default_ui_scale;
-// float2 window_anchor = { 0.0f, 1.0f };
-// int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };

@@ -5,10 +5,11 @@
 
 zox_declare_tag(Game)
 zox_component_byte(GameState);
+#include "data/zox_game_event.c"
 #include "prefabs/game.c"
 #include "util/game_states.c"
-#include "util/game_util.c"
 #include "util/game_events.c"
+#include "util/game_util.c"
 // #include "systems/play_game_system.c"
 
 void initialize_games(ecs_world_t *world) {

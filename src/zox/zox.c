@@ -28,6 +28,7 @@
 #include "util/main_loop_util.c"
 
 void dispose_zox(ecs_world_t *world) {
+    dispose_space(world);
     dispose_inner_core(world);
     dispose_game_store();
     dispose_core(world);
@@ -37,6 +38,7 @@ unsigned char initialize_zox(ecs_world_t *world) {
     if (initialize_core(world) == EXIT_FAILURE) return EXIT_FAILURE;
     initialize_inner_core(world);
     initialize_outer_core(world);
+    initialize_space(world);
     return EXIT_SUCCESS;
 }
 

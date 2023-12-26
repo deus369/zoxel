@@ -13,6 +13,7 @@ zox_memory_component(PlayerLinks, ecs_entity_t)
 // zoxel_util_includes
 #include "util/pause_util.c"
 #include "util/editor_util.c"
+#include "util/player_util.c"
 // zoxel_system_includes
 #include "systems/free_camera_move_system.c"
 #include "systems/free_camera_rotate_system.c"
@@ -28,6 +29,10 @@ zox_memory_component(PlayerLinks, ecs_entity_t)
 #include "systems/player2D_test_system.c"
 #include "systems/player_shortcuts_system.c"
 #include "systems/player_toggle_camera_system.c"
+
+void initialize_players(ecs_world_t *world) {
+    add_to_event_start_game((zox_game_event) { &play_game_players });
+}
 
 void spawn_prefabs_players(ecs_world_t *world) {
     spawn_prefab_player(world);
@@ -52,7 +57,6 @@ zox_system(PlayerShortcutsSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks)
 zox_import_module(Players2D)
 zox_import_module(Players3D)
 zox_system_1(DeviceModeResponseSystem, EcsPreStore, [in] DeviceMode, [in] DeviceModeDirty) // has to update before DeviceModeDirtySystem
-// todo: make this work in threading... worked in 3.1.3 - EcsPreStore | EcsOnUpdate
 zox_system(PlayerToggleCameraSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks, [in] CharacterLink)
 zox_system_1(PlayerShortcutsSingleSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks)
 zox_system_1(PlayerPauseSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks)
@@ -61,3 +65,5 @@ zox_system_1(EditorInputSystem, main_thread_pipeline, [none] Player, [in] Device
 zoxel_end_module(Players)
 
 #endif
+
+// todo: make this work in threading... worked in 3.1.3 - EcsPreStore | EcsOnUpdate

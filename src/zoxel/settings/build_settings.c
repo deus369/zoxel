@@ -80,7 +80,6 @@
 
 // === Tests ===
 
-// #define zox_play_game_on_start
 // #define zox_terrain_preset_small
 // #define zox_terrain_preset_medium
 // #define zox_test_game_keys

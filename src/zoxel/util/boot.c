@@ -45,6 +45,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         spawn_connected_devices(world);
         ecs_entity_t player = spawn_player(world);
         zox_set(player, CameraLink, { main_cameras[0] })
+        add_player(local_game, player);
     }
 
     // UI

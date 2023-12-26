@@ -4,12 +4,6 @@ void button_event_pause_game(ecs_world_t *world, ecs_entity_t trigger_entity) {
 
 void toggle_pause_ui(ecs_world_t *world, ecs_entity_t player) {
     const GameState *gameState = zox_get(local_game, GameState)
-#ifdef zox_play_game_on_start
-    if (gameState->value == zoxel_game_state_main_menu) {
-        play_game(world);
-        return;
-    }
-#endif
     if (!(gameState->value == zoxel_game_state_playing || gameState->value == zoxel_game_state_paused)) return;
     const float2 window_anchor = float2_half; // { 0.5f, 0.5f };
     const int2 window_position = int2_zero;
