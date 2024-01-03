@@ -26,6 +26,9 @@
 #include "../space/space.c"
 #include "util/engine_util.c"
 #include "util/main_loop_util.c"
+#include "util/boot_util.c"
+typedef unsigned char (*boot_zox)(ecs_world_t*);
+boot_zox boot_event;
 
 void dispose_zox(ecs_world_t *world) {
     dispose_space(world);
