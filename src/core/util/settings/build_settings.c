@@ -22,7 +22,6 @@
 // module includes
 #define zoxel_include_players
 #define zox_on_startup_spawn_main_menu
-#define zox_on_play_spawn_terrain
 // #define zox_bulk_spawn_terrain
 
 // settings

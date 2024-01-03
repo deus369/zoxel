@@ -4,7 +4,8 @@ void FreeCameraDisableMovementSystem(ecs_iter_t *it) {
     const CharacterLink *characterLinks = ecs_field(it, CharacterLink, 3);
     for (int i = 0; i < it->count; i++) {
         const CharacterLink *characterLink = &characterLinks[i];
-        if (characterLink->value == 0) continue;
+        ecs_entity_t character = characterLink->value;
+        if (!character || !zox_has(character, DisableMovement)) continue;
         unsigned char toggle_disable_movement = 0;
         const DeviceLinks *deviceLinks = &deviceLinkss[i];
         for (int j = 0; j < deviceLinks->length; j++) {
@@ -15,13 +16,12 @@ void FreeCameraDisableMovementSystem(ecs_iter_t *it) {
             }
         }
         if (toggle_disable_movement) {
-            DisableMovement *disableMovement = zox_get_mut(characterLink->value, DisableMovement)
+            DisableMovement *disableMovement = zox_get_mut(character, DisableMovement)
             disableMovement->value = !disableMovement->value;
-            zox_modified(characterLink->value, DisableMovement);
+            zox_modified(character, DisableMovement);
             zox_log(" > disable movement Toggled [%s]\n", disableMovement->value ? "true" : "false")
         }
     }
-
 } zox_declare_system(FreeCameraDisableMovementSystem)
 
 /*ecs_iter_t playerIter = ecs_query_iter(it->world, it->ctx);

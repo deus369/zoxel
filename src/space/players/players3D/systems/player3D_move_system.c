@@ -21,8 +21,9 @@ void Player3DMoveSystem(ecs_iter_t *it) {
     zox_field_in(CharacterLink, characterLinks, 4)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(CharacterLink, characterLinks, characterLink)
-        if (!characterLink->value) continue;
-        const DisableMovement *disableMovement = zox_get(characterLink->value, DisableMovement)
+        ecs_entity_t character = characterLink->value;
+        if (!character || !zox_has(character, Character3D)) continue;
+        const DisableMovement *disableMovement = zox_get(character, DisableMovement)
         if (disableMovement->value) continue;
         float2 left_stick = float2_zero;
         unsigned char is_running = 0;
@@ -76,13 +77,13 @@ void Player3DMoveSystem(ecs_iter_t *it) {
         if (left_stick.x == 0 && left_stick.y == 0) continue;
         // zoxel_log(" > left_stick %fx%f\n", left_stick.x, left_stick.y);
         float3 movement = { left_stick.x, 0, left_stick.y };
-        // const Omega3D *omega3D = zox_get(world, characterLink->value, Omega3D);
-        const Rotation3D *rotation3D = zox_get(characterLink->value, Rotation3D)
-        const Velocity3D *velocity3D = zox_get(characterLink->value, Velocity3D)
-        Acceleration3D *acceleration3D = zox_get_mut(characterLink->value, Acceleration3D)
+        // const Omega3D *omega3D = zox_get(world, character, Omega3D);
+        const Rotation3D *rotation3D = zox_get(character, Rotation3D)
+        const Velocity3D *velocity3D = zox_get(character, Velocity3D)
+        Acceleration3D *acceleration3D = zox_get_mut(character, Acceleration3D)
         if (camera_mode == zox_camera_mode_topdown || camera_mode == zox_camera_mode_ortho) {
-            if (zox_has(characterLink->value, CameraLink)) {
-                const CameraLink *cameraLink = zox_get(characterLink->value, CameraLink)
+            if (zox_has(character, CameraLink)) {
+                const CameraLink *cameraLink = zox_get(character, CameraLink)
                 if (cameraLink->value) {
                     const Rotation3D *camera_rotation = zox_get(cameraLink->value, Rotation3D)
                     float4 camera_rotation2 = quaternion_from_euler((float3) { 0, -quaternion_to_euler_y(camera_rotation->value), 0 });
@@ -92,15 +93,15 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                     // movement = float3_normalize(movement);
                     float4 face_direction = quaternion_from_between_vectors(float3_forward, movement);
                     // test rotation
-                    Rotation3D *rotation3D2 = zox_get_mut(characterLink->value, Rotation3D)
+                    Rotation3D *rotation3D2 = zox_get_mut(character, Rotation3D)
                     rotation3D2->value = face_direction;
-                    zox_modified(characterLink->value, Rotation3D)
+                    zox_modified(character, Rotation3D)
                     // todo: rotate towards desired direction
                     // Alpha3D *alpha3D = zox_get_mut(world, characterLink->value, Alpha3D);
                     // quaternion_rotate_quaternion_p(&alpha3D->value, quaternion);
                     // zox_modified(characterLink->value, Alpha3D);
                     #ifdef zox_debug_player_movement_direction
-                        const Position3D *position3D = zox_get(characterLink->value, Position3D)
+                        const Position3D *position3D = zox_get(character, Position3D)
                         spawn_line3D(world, position3D->value, float3_add(position3D->value, movement), debug_thickness, 34.0);
                         float3 movement2 = float4_rotate_float3(face_direction, (float3) { 0, 0, -1 });
                         spawn_line3D(world, position3D->value, float3_add(position3D->value, movement2), debug_thickness, 34.0);
@@ -121,6 +122,6 @@ void Player3DMoveSystem(ecs_iter_t *it) {
         float3 rotated_velocity = float4_rotate_float3(float4_inverse(rotation3D->value), velocity3D->value);
         if (float_abs(rotated_velocity.x) < max_delta_velocity.x) acceleration3D->value.x += movement.x * movement_power_x;
         if (float_abs(rotated_velocity.z) < max_delta_velocity.y) acceleration3D->value.z += movement.z * movement_power_z;
-        zox_modified(characterLink->value, Acceleration3D)
+        zox_modified(character, Acceleration3D)
     }
 } zox_declare_system(Player3DMoveSystem)

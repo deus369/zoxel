@@ -1,4 +1,4 @@
-extern void engine_update();
+// extern void engine_update();
 
 void engine_end() {
     running = 0;

@@ -18,11 +18,17 @@ unsigned char boot_zoxel2D(ecs_world_t *world) {
     spawn_player_cameras(world);
     spawn_default_ui(world);
     zox_spawn_main_menu(world, game_name);
+    return EXIT_SUCCESS;
 }
 
 void Zoxel2DImport(ecs_world_t *world) {
     zox_module(Zoxel2D)
+    zox_game_type = zox_game_mode_2D;
     boot_event = boot_zoxel2D;
+    menu_sky_color = (float3) { 0.3f, 0.7f, 0.7f };
+    menu_sky_bottom_color = (float3) { 0.2f, 0.56f, 0.56f };
+    game_sky_color = (float3) { 0.6f, 0.4f, 0.3f };
+    game_sky_bottom_color = (float3) { 0.5f, 0.35f, 0.48f };
 }
 
 #endif

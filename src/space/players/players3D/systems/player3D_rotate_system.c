@@ -22,14 +22,15 @@ void Player3DRotateSystem(ecs_iter_t *it) {
     zox_field_in(CameraLink, cameraLinks, 4)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(CharacterLink, characterLinks, characterLink)
-        if (characterLink->value == 0) continue;
+        ecs_entity_t character = characterLink->value;
+        if (!character || !zox_has(character, Character3D)) continue;
         zox_field_i_in(CameraLink, cameraLinks, cameraLink)
         if (cameraLink->value) {
             const CameraMode *cameraMode = zox_get(cameraLink->value, CameraMode)
             if (cameraMode->value != zox_camera_mode_first_person && cameraMode->value != zox_camera_mode_third_person) continue;
         }
         //if (playerState->value != zox_camera_mode_first_person) continue;
-        const DisableMovement *disableMovement = zox_get(characterLink->value, DisableMovement)
+        const DisableMovement *disableMovement = zox_get(character, DisableMovement)
         if (disableMovement->value) continue;
         float2 euler = { 0, 0 };
         zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
@@ -78,12 +79,12 @@ void Player3DRotateSystem(ecs_iter_t *it) {
             }
         }
         if (euler.x == 0 && euler.y == 0) continue;
-        const Omega3D *omega3D = zox_get(characterLink->value, Omega3D)
+        const Omega3D *omega3D = zox_get(character, Omega3D)
         if ((euler.y > 0 && quaternion_to_euler_y(omega3D->value) < max_rotate_speed) || (euler.y < 0 && quaternion_to_euler_y(omega3D->value) > -max_rotate_speed)) {
             float4 quaternion = mouse_delta_to_rotation(euler.x, euler.y);
-            Alpha3D *alpha3D = zox_get_mut(characterLink->value, Alpha3D)
+            Alpha3D *alpha3D = zox_get_mut(character, Alpha3D)
             quaternion_rotate_quaternion_p(&alpha3D->value, quaternion);
-            zox_modified(characterLink->value, Alpha3D)
+            zox_modified(character, Alpha3D)
         }
     }
 } zox_declare_system(Player3DRotateSystem)

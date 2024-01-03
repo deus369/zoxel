@@ -15,6 +15,7 @@ void add_ui_components(ecs_world_t *world, ecs_entity_t e) {
 void add_ui_mesh_components(ecs_world_t *world, ecs_entity_t e) {
     zox_prefab_set(e, Brightness, { 1 })
     zox_prefab_set(e, Alpha, { 1 })
+    if (headless) return;
     zox_prefab_set(e, MeshDirty, { 0 })
     zox_prefab_set(e, MeshIndicies, { 0, NULL })
     zox_prefab_set(e, MeshVertices2D, { 0, NULL })
@@ -73,5 +74,5 @@ void add_components_ui_basic(ecs_world_t *world, ecs_entity_t e) {
     add_transform2Ds(world, e);
     add_ui_components(world, e);
     add_texture_non_generate(world, e, int2_zero);
-    if (!headless) add_ui_mesh_components(world, e);
+    add_ui_mesh_components(world, e);
 }

@@ -86,7 +86,6 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
                     const int edge_buffer = 8 * default_ui_scale;
                     float2 window_anchor = { 0.0f, 1.0f };
                     int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
-                    // const char *game_name = "zoxel";
                     spawn_main_menu(world, game_name, window_position, window_anchor, 0);
                 }
 #endif

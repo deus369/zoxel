@@ -11,6 +11,7 @@ const char *game_name = "zoxel beta";
 void ZoxelImport(ecs_world_t *world) {
     zox_module(Zoxel)
     boot_event = boot_zoxel_game;
+    zox_game_type = zox_game_mode_3D;
 }
 
 #endif

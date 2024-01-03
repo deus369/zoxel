@@ -4,16 +4,18 @@ void Player2DMoveSystem(ecs_iter_t *it) {
     max_delta_velocity.x *= delta_time;
     max_delta_velocity.y *= delta_time;
     zox_iter_world()
-    const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
-    const CharacterLink *characterLinks = ecs_field(it, CharacterLink, 3);
+    zox_field_in(DeviceLinks, deviceLinkss, 2)
+    zox_field_in(CharacterLink, characterLinks, 3)
     for (int i = 0; i < it->count; i++) {
-        const CharacterLink *characterLink = &characterLinks[i];
-        if (characterLink->value == 0) continue;
-        if (!zox_has(characterLink->value, Character2D)) continue;
-        const DisableMovement *disableMovement = zox_get(characterLink->value, DisableMovement)
-        if (disableMovement->value) continue;
-        float2 movement = { 0, 0 };
-        const DeviceLinks *deviceLinks = &deviceLinkss[i];
+        zox_field_i_in(CharacterLink, characterLinks, characterLink)
+        if (!characterLink->value || !zox_has(characterLink->value, Character2D)) continue;
+        if (zox_has(characterLink->value, DisableMovement)) {
+            const DisableMovement *disableMovement = zox_get(characterLink->value, DisableMovement)
+            if (disableMovement->value) continue;
+        }
+        float2 movement = float2_zero; // { 0, 0 };
+        zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
+        // get the player input vector
         for (int j = 0; j < deviceLinks->length; j++) {
             ecs_entity_t device_entity = deviceLinks->value[j];
             if (zox_has(device_entity, Keyboard)) {
@@ -52,6 +54,8 @@ void Player2DMoveSystem(ecs_iter_t *it) {
             }
         }
         if (!movement.x && !movement.y) continue;
+        const Position2D *position2D = zox_get(characterLink->value, Position2D)
+        // zox_log("player movement 2D [%fx%f] at [%fx%f]\n   ", movement.x, movement.y, position2D->value.x, position2D->value.y)
         const Velocity2D *velocity2D = zox_get(characterLink->value, Velocity2D)
         Acceleration2D *acceleration2D = zox_get_mut(characterLink->value, Acceleration2D)
         float2 delta_movement = movement;

@@ -19,9 +19,7 @@ zox_begin_module(Players2D)
 zox_define_tag(Player2D)
 zox_define_tag(PlayerCharacter2D)
 // zoxel_system_defines
-#ifdef zoxel_physics2D
-    zox_system(Player2DMoveSystem, EcsPreUpdate, [none] players.Player, [in] DeviceLinks, [in] CharacterLink)
-#endif
+zox_system(Player2DMoveSystem, EcsPreUpdate, [none] players.Player, [in] DeviceLinks, [in] CharacterLink)
 zoxel_end_module(Players2D)
 
 #endif

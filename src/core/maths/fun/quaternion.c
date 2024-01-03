@@ -1,4 +1,8 @@
 #define quaternion_identity (float4) { 0, 0, 0, 1 }
+// #define quaternion_flipped_y (float4) { 6.123234e-17, 0.000000e+00, -1.000000e+00, 0.000 }
+// #define quaternion_flipped_y (float4) { 0, 1, 0, 0 }
+#define quaternion_flipped_y (float4) { 0, 0, 0, 1 }
+
 // #define debug_quadrant_correctnion
 // this is used to get exact quadrants by removing significant bit errors
 // wow i've come along way
