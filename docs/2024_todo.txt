@@ -1,0 +1,7 @@
+todo:
+
+- [ ] save/load settings for window size / window maximized state
+- [ ] save/load debug settings like disable_mouse_lock
+- [ ] buy new keyboard
+
+
