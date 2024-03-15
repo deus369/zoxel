@@ -1,3 +1,4 @@
+// todo: rename this system
 const int particleSpawnCount = 266;
 const float debug_rotation_speed = 12;
 const float debug_rotation_addition = 5;
@@ -10,7 +11,7 @@ void Player2DTestSystem(ecs_iter_t *it) {
         const Keyboard *keyboard = &keyboards[i];
         // toggle player connected application
         if ((keyboard->left_alt.is_pressed || keyboard->right_alt.is_pressed) && keyboard->enter.pressed_this_frame) {
-            sdl_toggle_fullscreen(world, main_window);
+            sdl_toggle_fullscreen(world, main_app);
         } else if (keyboard->p.pressed_this_frame) {
             const GameState *gameState = zox_get(local_game, GameState)
             if (gameState->value == zoxel_game_state_playing) {

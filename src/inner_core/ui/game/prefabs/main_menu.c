@@ -16,7 +16,7 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label, int2 
     const ClickEvent events[] = { { &button_event_play_game } };
 #else
     int labels_count = 2;
-    const text_group labels[] = { { "play" }, { "exit" } };
+    const text_group labels[] = { { "playz" }, { "exit" } };
     const ClickEvent events[] = { { &button_event_play_game }, { &button_event_exit_app } };
 #endif
     const unsigned char layer = 1;

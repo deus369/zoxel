@@ -1,3 +1,21 @@
+fixes:
+
+- [ ] sometimes jump isnt working
+- [ ] cannot rotate down and up
+- [ ] alt + enter should reduce window size - because it doesn't  fit screen bounds
+- [ ] make rotate with mouse perfect
+    - [ ] make rotate physics body towards camera rotation
+    - [ ] make camera rotation free flow, but position should be fixed onto body
+
+User Experiencece:
+
+- [ ] fade in when loading game world
+- [ ] add a new game / load game flow
+- [ ] show what controller we are using
+- [ ] make a editor / loader for fonts
+    - [ ] load a boring  font for the normies
+
+
 todo:
 
 - [ ] save/load settings for window size / window maximized state
@@ -5,3 +23,12 @@ todo:
 - [ ] buy new keyboard
 
 
+improve visuals:
+
+- [ ] add AO on models
+- [ ] add outline to models
+
+
+cool mechanics:
+
+- [ ] portals, bring them back

@@ -113,14 +113,29 @@ void sdl_set_fullscreen(SDL_Window* window, unsigned char is_fullscreen) {
     SDL_SetWindowFullscreen(window, is_fullscreen ? sdl_fullscreen_byte : 0);
 }
 
-void sdl_toggle_fullscreen(ecs_world_t *world, SDL_Window* window) {
-    unsigned char is_fullscreen = SDL_GetWindowFlags(window) & sdl_fullscreen_byte;
-    if (!is_fullscreen) {
+void sdl_toggle_fullscreen(ecs_world_t *world, ecs_entity_t e) { // SDL_Window* window) {
+    unsigned char is_fullscreen = zox_get_value(e, WindowFullscreen)
+    SDL_Window* window = zox_get_value(e, SDLWindow)
+    // unsigned char is_fullscreen = SDL_GetWindowFlags(window) & sdl_fullscreen_byte;
+    is_fullscreen = !is_fullscreen;
+    zox_set(e, WindowFullscreen, { is_fullscreen })
+    if (is_fullscreen) {
         zox_logg(" > setting to fullscreen\n")
         on_viewport_resized(world, get_current_screen_size());
         SDL_SetWindowSize(window, screen_dimensions.x, screen_dimensions.y);
     }
-    sdl_set_fullscreen(window, !is_fullscreen); // todo: restore should set to pre window size
+    sdl_set_fullscreen(window, is_fullscreen);
+    if (!is_fullscreen) {
+        if (!zox_has(e, WindowSize)) {
+            zox_log("no WindowSize on main_app..\n")
+            return;
+        }
+        int2 window_size = zox_get_value(e, WindowSize)
+        int2 window_position = zox_get_value(e, WindowPosition)
+        zox_log(" > setting to windowed [%ix%i]\n", window_size.x, window_size.y)
+        SDL_SetWindowSize(window, window_size.x, window_size.y);
+        SDL_SetWindowPosition(window, window_position.x, window_position.y);
+    }
 }
 
 void print_supported_renderers() {
@@ -155,7 +170,7 @@ int initialize_sdl_video() {
     }
 }
 
-SDL_Window* create_sdl_window() {
+SDL_Window* create_sdl_window_basic(unsigned char is_using_vulkan) {
     int flags;
     if (is_using_vulkan) flags = SDL_WINDOW_VULKAN | SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP;
     else flags = SDL_WINDOW_OPENGL;
@@ -165,16 +180,16 @@ SDL_Window* create_sdl_window() {
     return SDL_CreateWindow(sdl_window_name, SDL_WINDOWPOS_UNDEFINED_DISPLAY(0), SDL_WINDOWPOS_UNDEFINED_DISPLAY(0), screen_dimensions.x, screen_dimensions.y, flags);
 }
 
-SDL_Window* spawn_sdl_window() {
+SDL_Window* create_sdl_window(unsigned char fullscreen) {
     unsigned char is_resizeable = 1;
 #ifdef zoxel_on_android
     is_resizeable = 0;
 #endif
-    SDL_Window* window = create_sdl_window();
+    SDL_Window* window = create_sdl_window_basic(is_using_vulkan);
     if (window == NULL && is_using_vulkan) {
         zox_logg(" ! vulkan is not supported on this device, defaulting to [SDL_WINDOW_OPENGL]\n")
         is_using_vulkan = 0;
-        window = create_sdl_window();
+        window = create_sdl_window_basic(is_using_vulkan);
     }
     if (window == NULL) {
         zox_log(" ! failed to create sdl window [%s]\n", SDL_GetError())
@@ -210,11 +225,11 @@ unsigned char is_opengl_running() {
 }
 
 unsigned char create_main_window(ecs_world_t *world) {
-    SDL_Window* window = spawn_sdl_window();
+    SDL_Window* window = create_sdl_window(fullscreen);
     main_window = window;
     if (!is_using_vulkan) {
         SDL_GLContext* gl_context = create_sdl_opengl_context(window);
-        spawn_app(world, window, gl_context);
+        spawn_app_sdl(world, window, gl_context, fullscreen);
         main_gl_context = gl_context;
         unsigned char app_success = main_gl_context != NULL ? EXIT_SUCCESS : EXIT_FAILURE;
         if (main_gl_context == NULL) zoxel_log("    ! opengl did not create context, exiting zoxel\n");
@@ -234,7 +249,7 @@ void recreate_main_window(ecs_world_t *world) {
     create_main_window(world);
 }
 
-void update_sdl(ecs_world_t *world) {
+void update_sdl(ecs_world_t *world, ecs_entity_t e) {
     SDL_Event event = { 0 };
     while (SDL_PollEvent(&event)) {
         input_extract_from_sdl(world, event, screen_dimensions);
@@ -247,6 +262,17 @@ void update_sdl(ecs_world_t *world) {
                 if (!rendering) continue;
                 int2 new_screen_size = (int2) { event.window.data1, event.window.data2 };
                 on_viewport_resized(world, new_screen_size);
+                unsigned char is_fullscreen = zox_get_value(e, WindowFullscreen)
+                if (!is_fullscreen) {
+                    zox_set(e, WindowSize, { new_screen_size.x, new_screen_size.y });
+                }
+            } else if (event.window.event == SDL_WINDOWEVENT_MOVED) { // handles application resizing
+                if (!rendering) continue;
+                int2 new_window_position = (int2) { event.window.data1, event.window.data2 };
+                unsigned char is_fullscreen = zox_get_value(e, WindowFullscreen)
+                if (!is_fullscreen) {
+                    zox_set(e, WindowPosition, { new_window_position.x, new_window_position.y });
+                }
             } else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) {
                 zox_logg(" > window was minimized\n")
                 opengl_delete_resources(world);

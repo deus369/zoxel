@@ -8,7 +8,8 @@ void PlayerPauseSystem(ecs_iter_t *it) {
             ecs_entity_t device_entity = deviceLinks->value[j];
             if (zox_has(device_entity, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
-                if (keyboard->escape.pressed_this_frame || keyboard->enter.pressed_this_frame) {
+                if (keyboard->escape.pressed_this_frame ||
+                    (!keyboard->left_alt.is_pressed && !keyboard->right_alt.is_pressed && keyboard->enter.pressed_this_frame)) {
                     did_toggle_pause = 1;
                     break;
                 }

@@ -8,6 +8,9 @@
 // app variables
 // zoxel_component_includes
 zox_declare_tag(App)
+zox_component_byte(WindowFullscreen)
+zox_component_int2(WindowSize)
+zox_component_int2(WindowPosition)
 // zoxel_prefab_includes
 #include "prefabs/app.c"
 // zoxel_util_includes
@@ -25,14 +28,18 @@ void dispose_apps(ecs_world_t *world) {
 
 void spawn_prefabs_apps(ecs_world_t *world) {
     spawn_prefab_app(world);
+    spawn_prefabs_apps_sdl(world);
 }
 
 zox_begin_module(Apps)
 // zoxel_component_defines
 zox_define_tag(App)
+zox_define_component_byte(WindowFullscreen)
+zox_define_component_int2(WindowSize)
+zox_define_component_int2(WindowPosition)
 #ifdef zox_include_vulkan
-    // zox_define_component_w_dest(VulkanSurface)
-    zox_define_component(VulkanSurface)
+// zox_define_component_w_dest(VulkanSurface)
+zox_define_component(VulkanSurface)
 #endif
 zox_import_module(AppsSDL)
 // zoxel_system_defines

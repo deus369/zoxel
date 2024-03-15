@@ -17,7 +17,7 @@ ECS_DTOR(SDLWindow, ptr, { if (ptr->value != 0) SDL_DestroyWindow(ptr->value); }
 ECS_DTOR(Renderer, ptr, { if (ptr->value != 0) SDL_DestroyRenderer(ptr->value); })
 ECS_DTOR(Context, ptr, { if (ptr->value != 0) SDL_GL_DeleteContext(ptr->value); })
 // zoxel_prefab_includes
-#include "prefabs/app.c"
+#include "prefabs/app_sdl.c"
 #include "inputs/inputs.c"
 #include "util/vulkan_util.c"
 #include "util/sdl_util.c"
@@ -27,8 +27,13 @@ void dispose_apps_sdl(ecs_world_t *world) {
 
 }
 
+void spawn_prefabs_apps_sdl(ecs_world_t *world) {
+    spawn_prefab_app_sdl(world);
+}
+
 unsigned char initialize_apps_sdl(ecs_world_t *world) {
     debug_platform();
+    spawn_prefab_app_sdl(world);
     initialize_sdl_video();
     initialize_apps_input(world);
     create_main_window(world);
