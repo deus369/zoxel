@@ -1,4 +1,9 @@
 unsigned char boot_zoxel_game(ecs_world_t *world) {
+#ifndef zox_beta
+    game_name = "zoxel";
+#else
+    game_name = "zoxel beta";
+#endif
     if (initialize_zox(world) == EXIT_FAILURE) return EXIT_FAILURE;
     if (!headless) load_app_icon(main_window, resources_folder_name"textures/game_icon.png");
     // Realm,  players, skybox
@@ -12,7 +17,6 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     spawn_player_cameras(world);
     spawn_default_ui(world);
     zox_spawn_main_menu(world, game_name);
-
     // debug/testing
 #ifdef zoxel_start_with_debug_ui
     toggle_ui(world, &game_debug_label, &spawn_game_debug_label);

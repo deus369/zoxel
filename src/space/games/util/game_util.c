@@ -85,7 +85,7 @@ void end_game_on_player(ecs_world_t *world, ecs_entity_t player) {
     // spawn/delete on that players canvas
     const float2 main_menu_anchor = float2_half; // { 0.5f, 0.5f };
     const int2 main_menu_position = int2_zero;
-    spawn_main_menu(world, game_name, main_menu_position, main_menu_anchor, 0);
+    spawn_main_menu(world, game_name, main_menu_position, main_menu_anchor);
     // pause inputs
     disable_inputs_until_release(world, player, zox_device_mode_none);
     // todo: get player linked main camera

@@ -1,5 +1,4 @@
 // #define test_particles2D
-extern const char *game_name;
 
 void on_terrain_settings_changed(ecs_world_t *world) {
     if (!local_realm) return;

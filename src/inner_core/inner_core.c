@@ -1,6 +1,7 @@
 #ifndef zoxel_inner_core
 #define zoxel_inner_core
 
+const char *game_name = "zox";
 #include "textures/textures.c"
 #include "musics/musics.c"
 #include "animations/animations.c"

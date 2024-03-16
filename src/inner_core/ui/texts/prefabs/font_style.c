@@ -100,7 +100,7 @@ ecs_entity_t spawn_font_style(ecs_world_t *world) {
     children->value[71] = spawn_font(world, left_square_bracket, left_square_bracket_length);
     children->value[72] = spawn_font(world, right_square_bracket, right_square_bracket_length);
     children->value[73] = spawn_font(world, font_minus, font_minus_length);
-    children->value[74] = question_mark; // +
+    children->value[74] = spawn_font(world, font_plus, font_plus_length);
     children->value[75] = question_mark; // =
     children->value[76] = spawn_font(world, font_percentage, font_percentage_length);
     // finished

@@ -4,6 +4,9 @@
 // renamed PlaySound to TriggerSound temporarily, cause of windows.h conflict
 
 // zoxel_settings
+int global_master_volume = 64;
+const int global_master_volume_max = 128;
+const int global_master_volume_increment = 16;
 #include "util/import_sdl_mixer.c"
 #include "settings/settings.c"
 // zoxel_prefab_declares
