@@ -9,9 +9,9 @@ void Player3DJumpSystem(ecs_iter_t *it) {
         ecs_entity_t character = characterLink->value;
         if (!character || !zox_has(character, Character3D)) continue;
         const DisableMovement *disableMovement = zox_get(character, DisableMovement)
-        if (disableMovement->value == 1) continue;
+        if (disableMovement->value) continue;
         const Grounded *grounded = zox_get(character, Grounded)
-        if (grounded->value == 0) continue;
+        if (!grounded->value) continue;
         zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
         unsigned char is_jump_triggered = 0;
         for (int j = 0; j < deviceLinks->length; j++) {

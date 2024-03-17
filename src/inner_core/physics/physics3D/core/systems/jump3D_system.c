@@ -7,7 +7,7 @@ void Jump3DSystem(ecs_iter_t *it) {
         const Dead *dead = &deads[i];
         if (dead->value) continue;
         Jump *jump = &jumps[i];
-        if (jump->value == 0) continue;
+        if (!jump->value) continue;
         Acceleration3D *acceleration3D = &acceleration3Ds[i];
         acceleration3D->value.y += physics3D_jump;
         jump->value -= delta_time;

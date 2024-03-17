@@ -43,3 +43,15 @@ void add_to_labels_stat_links(ecs_world_t *world, ecs_entity_t e, text_group_dyn
     const StatLinks *component = zox_get(e, StatLinks)
     for (int i = 0; i < component->length; i++) add_entity_to_labels(world,  component->value[i], labels, entities, tree_level);
 }
+
+int debug_can_jump(ecs_world_t *world, char buffer[], int buffer_size, int buffer_index) {
+    if (local_character3D) {
+        const unsigned char can_jump = zox_get_value(local_character3D, Grounded)
+        const int is_jump = (int) 1000.0 * zox_get_value(local_character3D, Jump)
+        // const unsigned char movement_disabled = zox_get_value(local_character3D, DisableMovement)
+        // buffer_index += snprintf(buffer + buffer_index, buffer_size, " grounded [%i] movement_disabled [%i]", can_jump, movement_disabled);
+        buffer_index += snprintf(buffer + buffer_index, buffer_size, " grounded [%i] jump [%i ms]", can_jump, is_jump);
+        //buffer_index += snprintf(buffer + buffer_index, buffer_size, " grounded [%i]", can_jump);
+    }
+    return buffer_index;
+}

@@ -1,10 +1,10 @@
 void Acceleration3DSystem(ecs_iter_t *it) {
     double delta_time = zox_delta_time;
-    Acceleration3D *acceleration3Ds = ecs_field(it, Acceleration3D, 1);
-    Velocity3D *velocity3Ds = ecs_field(it, Velocity3D, 2);
+    zox_field_out(Acceleration3D, acceleration3Ds, 1)
+    zox_field_out(Velocity3D, velocity3Ds, 2)
     for (int i = 0; i < it->count; i++) {
-        Acceleration3D *acceleration3D = &acceleration3Ds[i];
-        Velocity3D *velocity3D = &velocity3Ds[i];
+        zox_field_i_out(Acceleration3D, acceleration3Ds, acceleration3D)
+        zox_field_i_out(Velocity3D, velocity3Ds, velocity3D)
         velocity3D->value.x += acceleration3D->value.x * delta_time;
         velocity3D->value.y += acceleration3D->value.y * delta_time;
         velocity3D->value.z += acceleration3D->value.z * delta_time;

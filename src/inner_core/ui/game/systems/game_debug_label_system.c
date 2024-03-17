@@ -4,12 +4,13 @@ extern int get_count_particle3Ds(ecs_world_t *world);
 extern int get_count_particle3D_emitters(ecs_world_t *world);
 extern int get_label_local_character_level(ecs_world_t *world, char buffer[], int buffer_size, int buffer_index);
 extern int get_label_local_character_health(ecs_world_t *world, char buffer[], int buffer_size, int buffer_index);
+extern int debug_can_jump(ecs_world_t *world, char buffer[], int buffer_size, int buffer_index);
 
 // #define zox_debug_ui_memorys_allocated
 #define zox_debug_ui_device_mode
 #define zox_debug_ui_save_cloud
 #define zox_debug_ui_player_level
-#define zox_debug_ui_player_health
+// #define zox_debug_ui_player_health
 // #define zox_debug_ui_raycaster_target
 // #define zox_debug_ui_characters
 // #define zox_debug_ui_particle3Ds
@@ -17,6 +18,7 @@ extern int get_label_local_character_health(ecs_world_t *world, char buffer[], i
 // #define zox_debug_ui_statbars
 // #define zox_debug_ui_node_memory
 // #define zox_debug_ui_zexts
+// #define zox_debug_can_jump
 // todo: sometimes it removes a memorys when spawning/unspawning this label
 
 #ifdef zox_debug_ui_save_cloud
@@ -45,6 +47,9 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         // test this \n
         // snprintf(buffer, sizeof(buffer), "debug ui\nline 2");
         // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[debug]");
+#ifdef zox_debug_can_jump
+        buffer_index = debug_can_jump(world, buffer, buffer_size, buffer_index);
+#endif
 #ifdef zox_debug_ui_player_level
         buffer_index = get_label_local_character_level(world, buffer, buffer_size, buffer_index);
 #endif

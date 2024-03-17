@@ -1,14 +1,14 @@
-// #define zoxel_debug_alpha3D_system
+//  #define zoxel_debug_alpha3D_system
 void Alpha3DSystem(ecs_iter_t *it) {
     double delta_time = zox_delta_time;
-    Alpha3D *alpha3Ds = ecs_field(it, Alpha3D, 1);
-    Omega3D *omega3Ds = ecs_field(it, Omega3D, 2);
+    zox_field_out(Alpha3D, alpha3Ds, 1)
+    zox_field_out(Omega3D, omega3Ds, 2)
     for (int i = 0; i < it->count; i++) {
-        Alpha3D *alpha3D = &alpha3Ds[i];
+        zox_field_i_out(Alpha3D, alpha3Ds, alpha3D)
         if (alpha3D->value.x == 0 && alpha3D->value.y == 0 && alpha3D->value.z == 0 && alpha3D->value.w == 1) continue;
         float magnitude = quaternion_magnitude(alpha3D->value);
         if (magnitude != 0.0f) {
-            Omega3D *omega3D = &omega3Ds[i];
+            zox_field_i_out(Omega3D, omega3Ds, omega3D)
             float4 delta_omega = get_delta_rotation(alpha3D->value, magnitude, delta_time);
             quaternion_rotate_quaternion_p(&omega3D->value, delta_omega);
 #ifdef zoxel_debug_alpha3D_system

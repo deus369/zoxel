@@ -9,11 +9,11 @@ void RandomJump3DSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         Jump *jump = &jumps[i];
         Grounded *grounded = &groundeds[i];
-        if (jump->value == 0 && grounded->value) {
+        if (grounded->value) {
             if (rand() % 1000 >= random_jump_chance) {
                 Jump *jump = &jumps[i];
                 jump->value = jump_timing;
-                grounded->value = 0;
+                // grounded->value = 0;
             }
         }
     } 

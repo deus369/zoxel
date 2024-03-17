@@ -1,5 +1,4 @@
 // #define zoxel_debug_omega3D_system
-
 void Omega3DSystem(ecs_iter_t *it) {
     double delta_time = zox_delta_time;
     const Omega3D *omega3Ds = ecs_field(it, Omega3D, 1);
