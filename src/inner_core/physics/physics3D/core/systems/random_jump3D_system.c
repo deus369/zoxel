@@ -4,16 +4,15 @@ void RandomJump3DSystem(ecs_iter_t *it) {
         return;
     #endif
     const double jump_timing = 0.21;
-    Jump *jumps = ecs_field(it, Jump, 1);
-    Grounded *groundeds = ecs_field(it, Grounded, 2);
+    zox_field_out(Jump, jumps, 1)
+    zox_field_out(Grounded, groundeds, 2)
     for (int i = 0; i < it->count; i++) {
-        Jump *jump = &jumps[i];
-        Grounded *grounded = &groundeds[i];
+        zox_field_i_in(Jump, jumps, jump)
+        zox_field_i_in(Grounded, groundeds, grounded)
         if (grounded->value) {
             if (rand() % 1000 >= random_jump_chance) {
                 Jump *jump = &jumps[i];
                 jump->value = jump_timing;
-                // grounded->value = 0;
             }
         }
     } 

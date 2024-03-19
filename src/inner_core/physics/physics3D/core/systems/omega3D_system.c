@@ -1,15 +1,13 @@
 // #define zoxel_debug_omega3D_system
 void Omega3DSystem(ecs_iter_t *it) {
     double delta_time = zox_delta_time;
-    const Omega3D *omega3Ds = ecs_field(it, Omega3D, 1);
-    Rotation3D *rotation3Ds = ecs_field(it, Rotation3D, 2);
+    zox_field_out(Omega3D, omega3Ds, 1)
+    zox_field_out(Rotation3D, rotation3Ds, 2)
     for (int i = 0; i < it->count; i++) {
-        const Omega3D *omega3D = &omega3Ds[i];
-        if (omega3D->value.x == 0 && omega3D->value.y == 0 && omega3D->value.z == 0 && omega3D->value.w == 1) {
-            continue;
-        }
+        zox_field_i_in(Omega3D, omega3Ds, omega3D)
+        if (omega3D->value.x == 0 && omega3D->value.y == 0 && omega3D->value.z == 0 && omega3D->value.w == 1) continue;
         // check if it's magnitude is close to a cutoff point and then set to identity too
-        Rotation3D *rotation3D = &rotation3Ds[i];
+        zox_field_i_out(Rotation3D, rotation3Ds, rotation3D)
 #ifdef zoxel_debug_omega3D_system
         zox_log(" > omega3D [%fx%fx%fx%f]\n", omega3D->value.x, omega3D->value.y, omega3D->value.z, omega3D->value.w);
         zox_log("     + pre rotation [%fx%fx%fx%f]\n", rotation3D->value.x, rotation3D->value.y, rotation3D->value.z, rotation3D->value.w);
@@ -23,16 +21,3 @@ void Omega3DSystem(ecs_iter_t *it) {
 #endif
     }
 } zox_declare_system(Omega3DSystem)
-
-// float4 rotation_delta = omega3D->value;
-// float4_multiply_float_p(&rotation_delta, delta_time);
-// quaternion_rotate_quaternion_p(&rotation3D->value, rotation_delta);
-
-// Multiply the current rotation by the delta rotation to update the rotation
-/*float4 new_rotation = {
-    delta_rotation.w * rotation3D->value.x + delta_rotation.x * rotation3D->value.w - delta_rotation.y * rotation3D->value.z + delta_rotation.z * rotation3D->value.y,
-    delta_rotation.w * rotation3D->value.y + delta_rotation.x * rotation3D->value.z + delta_rotation.y * rotation3D->value.w - delta_rotation.z * rotation3D->value.x,
-    delta_rotation.w * rotation3D->value.z - delta_rotation.x * rotation3D->value.y + delta_rotation.y * rotation3D->value.x + delta_rotation.z * rotation3D->value.w,
-    delta_rotation.w * rotation3D->value.w - delta_rotation.x * rotation3D->value.x - delta_rotation.y * rotation3D->value.y - delta_rotation.z * rotation3D->value.z
-};
-rotation3D->value = new_rotation;*/

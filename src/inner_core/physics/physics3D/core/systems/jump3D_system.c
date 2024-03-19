@@ -1,14 +1,14 @@
 void Jump3DSystem(ecs_iter_t *it) {
     double delta_time = zox_delta_time;
-    const Dead *deads = ecs_field(it, Dead, 1);
-    Jump *jumps = ecs_field(it, Jump, 2);
-    Acceleration3D *acceleration3Ds = ecs_field(it, Acceleration3D, 3);
+    zox_field_in(Dead, deads, 1)
+    zox_field_out(Jump, jumps, 2)
+    zox_field_out(Acceleration3D, acceleration3Ds, 3)
     for (int i = 0; i < it->count; i++) {
-        const Dead *dead = &deads[i];
+        zox_field_i_in(Dead, deads, dead)
         if (dead->value) continue;
-        Jump *jump = &jumps[i];
+        zox_field_i_out(Jump, jumps, jump)
         if (!jump->value) continue;
-        Acceleration3D *acceleration3D = &acceleration3Ds[i];
+        zox_field_i_out(Acceleration3D, acceleration3Ds, acceleration3D)
         acceleration3D->value.y += physics3D_jump;
         jump->value -= delta_time;
         if (jump->value < 0) jump->value = 0;
