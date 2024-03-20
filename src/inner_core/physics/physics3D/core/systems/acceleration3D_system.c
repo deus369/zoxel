@@ -8,8 +8,6 @@ void Acceleration3DSystem(ecs_iter_t *it) {
         velocity3D->value.x += acceleration3D->value.x * delta_time;
         velocity3D->value.y += acceleration3D->value.y * delta_time;
         velocity3D->value.z += acceleration3D->value.z * delta_time;
-        acceleration3D->value.x = 0;
-        acceleration3D->value.y = 0;
-        acceleration3D->value.z = 0;
+        float3_make_zero(&acceleration3D->value);
     }
 } zox_declare_system(Acceleration3DSystem)

@@ -9,6 +9,12 @@ void float3_print(const float3 input) {
     zoxel_log("    Float3 [%f %f %f]\n", input.x, input.y, input.z);
 }
 
+void float3_make_zero(float3* value) {
+    value->x = 0;
+    value->y = 0;
+    value->z = 0;
+}
+
 float3 float3_multiply_float(float3 input, float mul) {
     input.x *= mul;
     input.y *= mul;

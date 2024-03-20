@@ -4,7 +4,7 @@ const float debug_rotation_speed = 12;
 const float debug_rotation_addition = 5;
 extern ecs_entity_t local_character3D;
 
-void Player2DTestSystem(ecs_iter_t *it) {
+void PlayerMoreShortcutsSystem(ecs_iter_t *it) {
     zox_iter_world()
     const Keyboard *keyboards = ecs_field(it, Keyboard, 1);
     for (int i = 0; i < it->count; i++) {
@@ -55,7 +55,7 @@ void Player2DTestSystem(ecs_iter_t *it) {
         }
 #endif
     }
-} zox_declare_system(Player2DTestSystem)
+} zox_declare_system(PlayerMoreShortcutsSystem)
 
 
 /* else if (keyboard->space.is_pressed || keyboard->f.is_pressed) {

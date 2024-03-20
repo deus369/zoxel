@@ -63,11 +63,11 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
                 if (voxel != 0) {
                     voxel_color = colorRGBs->value[voxel - 1];
                     // randomize color
-                    #ifdef zoxel_voxes_color_randomize
-                        voxel_color.r -= voxel_color_rand + rand() % voxel_color_rand2;
-                        voxel_color.g -= voxel_color_rand + rand() % voxel_color_rand2;
-                        voxel_color.b -= voxel_color_rand + rand() % voxel_color_rand2;
-                    #endif
+#ifdef zoxel_voxes_color_randomize
+                    voxel_color.r -= voxel_color_rand + rand() % voxel_color_rand2;
+                    voxel_color.g -= voxel_color_rand + rand() % voxel_color_rand2;
+                    voxel_color.b -= voxel_color_rand + rand() % voxel_color_rand2;
+#endif
                     // get color based on pallete voxel_color
                     float3 vertex_position_offset = float3_from_byte3(local_position);
                     float3_multiply_float_p(&vertex_position_offset, voxel_scale);
@@ -78,24 +78,24 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
                     zoxel_get_adjacent_face(up)
                     zoxel_get_adjacent_face(back)
                     zoxel_get_adjacent_face(front)
-                    #ifndef disable_voxel_left
-                        zoxel_add_faces_colors(left, 0)
-                    #endif
-                    #ifndef disable_voxel_right
-                        zoxel_add_faces_colors(right, 1)
-                    #endif
-                    #ifndef disable_voxel_down
-                        zoxel_add_faces_colors(down, 1)
-                    #endif
-                    #ifndef disable_voxel_up
-                        zoxel_add_faces_colors(up, 0)
-                    #endif
-                    #ifndef disable_voxel_back
-                        zoxel_add_faces_colors(back, 0)
-                    #endif
-                    #ifndef disable_voxel_front
-                        zoxel_add_faces_colors(front, 1)
-                    #endif
+#ifndef disable_voxel_left
+                    zoxel_add_faces_colors(left, 0)
+#endif
+#ifndef disable_voxel_right
+                    zoxel_add_faces_colors(right, 1)
+#endif
+#ifndef disable_voxel_down
+                    zoxel_add_faces_colors(down, 1)
+#endif
+#ifndef disable_voxel_up
+                    zoxel_add_faces_colors(up, 0)
+#endif
+#ifndef disable_voxel_back
+                    zoxel_add_faces_colors(back, 0)
+#endif
+#ifndef disable_voxel_front
+                    zoxel_add_faces_colors(front, 1)
+#endif
                 }
             }
         }

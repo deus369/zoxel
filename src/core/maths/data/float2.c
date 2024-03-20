@@ -8,6 +8,11 @@ typedef struct {
 #define float2_half (float2) { 0.5f, 0.5f }
 #define float2_top_left (float2) { 0, 1 }
 
+void float2_make_zero(float2* value) {
+    value->x = 0;
+    value->y = 0;
+}
+
 float2 float2_multiply_float(float2 input, float mul) {
     input.x *= mul;
     input.y *= mul;

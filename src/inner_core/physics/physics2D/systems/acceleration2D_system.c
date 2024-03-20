@@ -7,7 +7,6 @@ void Acceleration2DSystem(ecs_iter_t *it) {
         zox_field_i_out(Acceleration2D, acceleration2Ds, acceleration2D)
         velocity2D->value.x += acceleration2D->value.x * delta_time;
         velocity2D->value.y += acceleration2D->value.y * delta_time;
-        acceleration2D->value.x = 0;
-        acceleration2D->value.y = 0;
+        float2_make_zero(&acceleration2D->value);
     }
 } zox_declare_system(Acceleration2DSystem)

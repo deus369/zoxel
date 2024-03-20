@@ -17,9 +17,7 @@ void Physics3DDisableSystem(ecs_iter_t *it) {
             position3D->value.x -= velocity3D->value.x * delta_time;
             position3D->value.y -= velocity3D->value.y * delta_time;
             position3D->value.z -= velocity3D->value.z * delta_time;
-            velocity3D->value.x = 0;
-            velocity3D->value.y = 0;
-            velocity3D->value.z = 0;
+            float3_make_zero(&velocity3D->value);
         }
     }
 } zox_declare_system(Physics3DDisableSystem)

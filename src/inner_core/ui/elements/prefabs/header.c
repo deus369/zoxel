@@ -9,7 +9,6 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
     add_draggable_components(world, e);
     zox_add_tag(e, Header)
     zox_add_tag(e, FrameTexture)
-    // add_clickable_components(world, e);
     zox_prefab_set(e, Color, {{ 77, 44, 33, 255 }})
     zox_prefab_set(e, FrameCorner, { 7 })
     zox_prefab_set(e, OutlineThickness, { 3 })
@@ -23,7 +22,6 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
 
 ecs_entity_t spawn_close_button(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t canvas, int2 pixel_position_global, int2 parent_size, int2 position, int size, int2 padding, unsigned char layer, int2 canvas_size) {
     const float2 anchor = (float2) { 1, 0.5f };
-    // int2 pixel_position_global = int2_zero; // get_element_pixel_position_global(int2_zero, int2_zero, pixel_position, anchor);
     ecs_entity_t e = spawn_button(world, parent, canvas, position, padding, anchor, "X", size, layer, pixel_position_global, parent_size, canvas_size, 0);
     zox_set(e, ClickEvent, { &button_event_close_window })
     zox_add_tag(e, CloseButton)
