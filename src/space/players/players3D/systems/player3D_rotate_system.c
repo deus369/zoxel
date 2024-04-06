@@ -6,6 +6,9 @@ const float max_mouse_delta3 = 60.0f;
 const float max_mouse_delta4 = 120.0f;
 const float max_mouse_delta2 = 200.0f;
 const double max_rotate_speed = 0.2; //  0.23;
+#define disable_player_rotate_alpha_force
+float3 player_euler = (float3) { 0, 0, 0 };
+float3 camera_euler = (float3) { 0, 180 * degreesToRadians, 0 };
 
 float4 mouse_delta_to_rotation(float deltaX, float deltaY) {
     float4 output = quaternion_identity;
@@ -38,20 +41,23 @@ void Player3DRotateSystem(ecs_iter_t *it) {
             ecs_entity_t device_entity = deviceLinks->value[j];
             if (zox_has(device_entity, Mouse)) {
                 const Mouse *mouse = zox_get(device_entity, Mouse)
-                float mouse_delta = mouse->delta.x;
+                float2 mouse_delta = int2_to_float2(mouse->delta);
+/*#ifndef disable_player_rotate_alpha_force
                 // if (mouse_delta != 0) zoxel_log(" > mouse_delta: %f\n", mouse_delta);
                 // this is all pretty shit ay haha... fuck mouses
-                if (mouse_delta < -max_mouse_delta2) mouse_delta = -max_mouse_delta;
-                else if (mouse_delta > max_mouse_delta2) mouse_delta = max_mouse_delta;
-                if (float_abs(mouse_delta) >= max_mouse_delta3) mouse_delta *= 1.2f;
-                else if (float_abs(mouse_delta) >= max_mouse_delta4) mouse_delta *= 1.4f;
-                else if (float_abs(mouse_delta) <= min_mouse_delta3) mouse_delta = 0;
-                if (mouse_delta != 0) {
-                    if (mouse_delta > 0 && mouse_delta < min_mouse_delta2) mouse_delta = min_mouse_delta2;
-                    else if (mouse_delta < 0 && mouse_delta > -min_mouse_delta2) mouse_delta = -min_mouse_delta2;
+                if (mouse_delta < -max_mouse_delta2) mouse_delta.x = -max_mouse_delta;
+                else if (mouse_delta > max_mouse_delta2) mouse_delta.x = max_mouse_delta;
+                if (float_abs(mouse_delta) >= max_mouse_delta3) mouse_delta.x *= 1.2f;
+                else if (float_abs(mouse_delta) >= max_mouse_delta4) mouse_delta.x *= 1.4f;
+                else if (float_abs(mouse_delta) <= min_mouse_delta3) mouse_delta.x = 0;
+                if (mouse_delta.x != 0) {
+                    if (mouse_delta.x > 0 && mouse_delta < min_mouse_delta2) mouse_delta.x = min_mouse_delta2;
+                    else if (mouse_delta < 0 && mouse_delta > -min_mouse_delta2) mouse_delta.x = -min_mouse_delta2;
                 }
+#endif*/
                 // if (mouse_delta != 0) zoxel_log("     > mouse_delta: %f\n", mouse_delta);
-                euler.y = - mouse_delta * mouse_rotate_multiplier;
+                euler.x = - mouse_delta.y * mouse_rotate_multiplier;
+                euler.y = - mouse_delta.x * mouse_rotate_multiplier;
             } else if (zox_has(device_entity, Gamepad)) {
                 float2 right_stick = float2_zero;
                 const Children *zevices = zox_get(device_entity, Children)
@@ -76,9 +82,17 @@ void Player3DRotateSystem(ecs_iter_t *it) {
                         euler.y = right_stick.x * gamepad_rotate_multiplier;
                     }
                 }
+                if (float_abs(right_stick.y) >= joystick_cutoff_buffer) {
+                    if (right_stick.y < -joystick_cutoff_buffer) {
+                        euler.x = right_stick.y * gamepad_rotate_multiplier;
+                    } else if (right_stick.y > joystick_cutoff_buffer) {
+                        euler.x = right_stick.y * gamepad_rotate_multiplier;
+                    }
+                }
             }
         }
         if (euler.x == 0 && euler.y == 0) continue;
+#ifndef disable_player_rotate_alpha_force
         const Omega3D *omega3D = zox_get(character, Omega3D)
         if ((euler.y > 0 && quaternion_to_euler_y(omega3D->value) < max_rotate_speed) || (euler.y < 0 && quaternion_to_euler_y(omega3D->value) > -max_rotate_speed)) {
             float4 quaternion = mouse_delta_to_rotation(euler.x, euler.y);
@@ -86,5 +100,21 @@ void Player3DRotateSystem(ecs_iter_t *it) {
             quaternion_rotate_quaternion_p(&alpha3D->value, quaternion);
             zox_modified(character, Alpha3D)
         }
+#else
+        player_euler.y += euler.y;
+        // player_euler.y = player_euler.y % 360;
+        Rotation3D *rotation3D = zox_get_mut(character, Rotation3D)
+        rotation3D->value = quaternion_from_euler(player_euler);
+        zox_modified(character, Rotation3D)
+        camera_euler.x -= euler.x;
+        if (camera_euler.x >= 180) camera_euler.x -= 360;
+        else if (camera_euler.x < -180) camera_euler.x += 360;
+        ecs_entity_t player_camera = zox_get_value(character, CameraLink)
+        if (player_camera) {
+            LocalRotation3D *player_camera_rotation3D = zox_get_mut(player_camera, LocalRotation3D)
+            player_camera_rotation3D->value = quaternion_from_euler(camera_euler);
+            zox_modified(player_camera, LocalRotation3D)
+        }
+#endif
     }
 } zox_declare_system(Player3DRotateSystem)

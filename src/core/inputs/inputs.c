@@ -29,7 +29,6 @@ const float joystick_cutoff_buffer = 0.14f;
 #include "data/button_flags.c"
 #include "data/physical_button.c"
 #include "data/physical_stick.c"
-#include "data/finger.c"
 zox_declare_tag(Device)
 zox_declare_tag(Zevice)
 zox_declare_tag(Gamepad)
