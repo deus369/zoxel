@@ -1,5 +1,4 @@
 #define zoxel_using_sdl
-#define zoxel_using_sdl_images
 
 #ifdef zoxel_on_windows
     #include <glew.h>

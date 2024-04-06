@@ -23,9 +23,10 @@ endif
 # more
 patient_cmd = echo " > please be patient :), lord deus [>,<]/)"
 resources_dir = build/resources
-LDLIBS = -Llib -lflecs -lSDL2_image -lSDL2 -lm -lpthread
+LDLIBS = -Llib -lflecs -lSDL2 -lm -lpthread
 ifeq ($(is_use_sdl_image), true)
     LDLIBS += -lSDL2_image
+    LDLIBS += -Dzox_using_sdl_images
 endif
 ifeq ($(is_use_sdl_mixer), true)
     LDLIBS += -lSDL2_mixer
