@@ -42,6 +42,7 @@ zox_entities_component(ElementLinks)
 // zoxel_include_prefabs
 #include "prefabs/canvas.c"
 #include "prefabs/element.c"
+#include "prefabs/element_basic.c"
 #include "prefabs/element_world.c"
 #include "prefabs/element_world_child.c"
 #include "prefabs/canvas_overlay.c"
@@ -66,6 +67,7 @@ zox_entities_component(ElementLinks)
 void spawn_prefabs_ui_core(ecs_world_t *world) {
     spawn_prefab_canvas(world);
     spawn_prefab_element(world);
+    spawn_prefab_element_basic(world);
     spawn_prefab_element3D(world);
     spawn_prefab_element3D_child(world);
     spawn_prefab_canvas_overlay(world);

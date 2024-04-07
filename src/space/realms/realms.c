@@ -8,6 +8,12 @@ zox_component(RealmLink, ecs_entity_t)
 #include "prefabs/realm.c"
 // zoxel_system_includes
 #include "systems/terrain_texture_set_system.c"
+// used for things
+#include "util/game_util.c"
+
+void initialize_realms(ecs_world_t *world) {
+    add_to_event_game_state((zox_game_event) { &realms_game_state });
+}
 
 void spawn_prefabs_realms(ecs_world_t *world) {
     spawn_prefab_realm(world);

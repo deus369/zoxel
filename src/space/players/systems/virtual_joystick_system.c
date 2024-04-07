@@ -50,7 +50,7 @@ void handle_touch_drag(ecs_world_t *world, ecs_entity_t zevice_entity, ecs_entit
 void VirtualJoystickSystem(ecs_iter_t *it) {
     if (!local_game) return;
     const GameState *gameState = zox_get(local_game, GameState)
-    unsigned char is_playing = gameState->value == zoxel_game_state_playing;
+    unsigned char is_playing = gameState->value == zox_game_playing;
     zox_iter_world()
     const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
     const DeviceMode *deviceModes = ecs_field(it, DeviceMode, 3);

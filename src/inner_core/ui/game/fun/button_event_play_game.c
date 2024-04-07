@@ -1,20 +1,22 @@
 // i should just set new game state to playing here
-extern void play_game(ecs_world_t *world, ecs_entity_t game);
-extern void end_game(ecs_world_t *world, ecs_entity_t game);
+// extern void play_game(ecs_world_t *world, ecs_entity_t game);
+// extern void end_game(ecs_world_t *world, ecs_entity_t game);
 extern ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label, int2 position, float2 anchor);
 extern ecs_entity_t spawn_menu_options(ecs_world_t *world, int2 position, float2 anchor);
 extern ecs_entity_t main_menu;
 extern ecs_entity_t menu_options;
-extern ecs_entity_t local_game;
+// extern ecs_entity_t local_game;
 
 void button_event_play_game(ecs_world_t *world, ecs_entity_t trigger_entity) {
     // todo: link ui to game entity
     zox_delete_and_set(main_menu)
-    play_game(world, local_game);
+    // play_game(world, local_game);
+    trigger_event_game(world, local_game, zox_game_playing);
 }
 
 void button_event_end_game(ecs_world_t *world, ecs_entity_t trigger_entity) {
-    end_game(world, local_game);
+    // end_game(world, local_game);
+    trigger_event_game(world, local_game, zox_game_start);
 }
 
 void button_event_menu_options(ecs_world_t *world, ecs_entity_t trigger_entity) {

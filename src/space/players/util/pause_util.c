@@ -1,30 +1,32 @@
-void button_event_pause_game(ecs_world_t *world, ecs_entity_t trigger_entity) {
-    toggle_pause_ui(world, main_player);
+
+
+void pause_player(ecs_world_t *world, ecs_entity_t player) {
+    const float2 window_anchor = float2_half; // { 0.5f, 0.5f };
+    const int2 window_position = int2_zero;
+    ecs_entity_t character3D = zox_get_value(player, CharacterLink)
+    disable_inputs_until_release(world, player, zox_device_mode_none);
+    zox_set(main_cameras[0], FreeRoam, { 0 })
+    zox_set(mouse_entity, MouseLock, { 0 })
+    zox_set(character3D, DisableMovement, { 1 })
+    pause_ui = spawn_pause_ui(world, window_position, window_anchor);
+    dispose_in_game_ui(world, player);
+    unlock_achievement("test_achievement2");
+}
+
+void resume_player(ecs_world_t *world, ecs_entity_t player) {
+    ecs_entity_t character3D = zox_get_value(player, CharacterLink)
+    disable_inputs_until_release(world, player, zox_device_mode_none);
+    zox_set(mouse_entity, MouseLock, { 1 })
+    zox_set(character3D, DisableMovement, { 0 })
+    zox_delete(pause_ui)
+    pause_ui = 0;
+    spawn_in_game_ui(world, player);
 }
 
 void toggle_pause_ui(ecs_world_t *world, ecs_entity_t player) {
     const GameState *gameState = zox_get(local_game, GameState)
-    if (!(gameState->value == zoxel_game_state_playing || gameState->value == zoxel_game_state_paused)) return;
-    const float2 window_anchor = float2_half; // { 0.5f, 0.5f };
-    const int2 window_position = int2_zero;
-    unsigned char is_paused = gameState->value == zoxel_game_state_paused;
-    ecs_entity_t character3D = zox_get_value(player, CharacterLink)
-    if (!is_paused) {
-        zox_set(local_game, GameState, { zoxel_game_state_paused })
-        disable_inputs_until_release(world, player, zox_device_mode_none);
-        zox_set(main_cameras[0], FreeRoam, { 0 })
-        zox_set(mouse_entity, MouseLock, { 0 })
-        zox_set(character3D, DisableMovement, { 1 })
-        pause_ui = spawn_pause_ui(world, window_position, window_anchor);
-        dispose_in_game_ui(world, player);
-        unlock_achievement("test_achievement2");
-    } else {
-        zox_set(local_game, GameState, { zoxel_game_state_playing })
-        disable_inputs_until_release(world, player, zox_device_mode_none);
-        zox_set(mouse_entity, MouseLock, { 1 })
-        zox_set(character3D, DisableMovement, { 0 })
-        zox_delete(pause_ui)
-        pause_ui = 0;
-        spawn_in_game_ui(world, player);
-    }
+    if (!(gameState->value == zox_game_playing || gameState->value == zox_game_paused)) return;
+    unsigned char is_paused = gameState->value == zox_game_paused;
+    if (!is_paused) trigger_event_game(world, local_game, zox_game_paused);
+    else trigger_event_game(world, local_game, zox_game_playing);
 }

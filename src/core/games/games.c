@@ -3,17 +3,14 @@
 
 // todo: migate this to core and hook off game events
 // todo: put game_ui spawns under one game_ui entity
-
-#define zox_game_mode_3D 1
-#define zox_game_mode_2D 2
 unsigned char zox_game_type;
 zox_declare_tag(Game)
 zox_component_byte(GameState);
+#include "data/game_modes.c"
+#include "data/game_states.c"
 #include "data/zox_game_event.c"
 #include "prefabs/game.c"
-#include "util/game_states.c"
 #include "util/game_events.c"
-#include "util/game_util.c"
 // #include "systems/play_game_system.c"
 
 void initialize_games(ecs_world_t *world) {

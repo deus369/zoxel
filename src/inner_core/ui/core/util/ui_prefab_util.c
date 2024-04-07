@@ -29,12 +29,19 @@ void add_ui_mesh_components(ecs_world_t *world, ecs_entity_t e) {
     prefab_set_mesh_uvs(world, e, square_uvs, 4);
 }
 
+void add_components_ui_basic(ecs_world_t *world, ecs_entity_t e) {
+    add_transform2Ds(world, e);
+    add_ui_components(world, e);
+    add_ui_mesh_components(world, e);
+    add_texture_non_generate(world, e, int2_zero);
+}
+
 void add_ui_plus_components(ecs_world_t *world, ecs_entity_t e) {
     add_seed(world, e, 666);
     add_transform2Ds(world, e);
     add_ui_components(world, e);
+    add_ui_mesh_components(world, e);
     add_texture(world, e, int2_zero, 0);
-    if (!headless) add_ui_mesh_components(world, e);
 }
 
 void add_ui_plus_components_invisible(ecs_world_t *world, ecs_entity_t e) {
@@ -67,12 +74,4 @@ void add_frame_texture_type(ecs_world_t *world, ecs_entity_t e, color primary, u
     zox_prefab_set(e, FrameCorner, { corner })
     zox_prefab_set(e, OutlineThickness, { thickness })
     zox_prefab_set(e, Color, { primary })
-}
-
-
-void add_components_ui_basic(ecs_world_t *world, ecs_entity_t e) {
-    add_transform2Ds(world, e);
-    add_ui_components(world, e);
-    add_texture_non_generate(world, e, int2_zero);
-    add_ui_mesh_components(world, e);
 }

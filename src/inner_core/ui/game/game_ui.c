@@ -17,6 +17,7 @@ zox_component_int(QuadsCount)
 zox_component_double(FPSDisplayTicker)
 // zoxel_include_functions
 #include "fun/button_event_play_game.c"
+#include "fun/button_event_pause_game.c"
 #include "fun/button_event_exit_app.c"
 #include "fun/button_event_return_to_game.c"
 // zoxel_include_prefabs

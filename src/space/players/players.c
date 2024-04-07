@@ -1,6 +1,8 @@
 #ifndef zoxel_players
 #define zoxel_players
 
+// alot of systems here are actually controller ones, player + device + camera / character, or game states like pause system?
+
 // zoxel_component_declares
 zox_declare_tag(Player)
 zox_declare_tag(PlayerCharacter)
@@ -11,7 +13,12 @@ zox_memory_component(PlayerLinks, ecs_entity_t)
 // zoxel_prefab_includes
 #include "prefabs/player.c"
 // zoxel_util_includes
+#include "players3D/players3D.c"
+#include "players2D/players2D.c"
+#include "util/player_ui.c"
 #include "util/pause_util.c"
+#include "util/start_game.c"
+#include "util/end_game.c"
 #include "util/editor_util.c"
 #include "util/player_util.c"
 // zoxel_system_includes
@@ -24,14 +31,12 @@ zox_memory_component(PlayerLinks, ecs_entity_t)
 #include "systems/virtual_joystick_system.c"
 #include "systems/editor_input_system.c"
 // zoxel_module_includes
-#include "players3D/players3D.c"
-#include "players2D/players2D.c"
 #include "systems/player2D_test_system.c"
 #include "systems/player_shortcuts_system.c"
 #include "systems/player_toggle_camera_system.c"
 
 void initialize_players(ecs_world_t *world) {
-    add_to_event_start_game((zox_game_event) { &play_game_players });
+    add_to_event_game_state((zox_game_event) { &players_game_state });
 }
 
 void spawn_prefabs_players(ecs_world_t *world) {

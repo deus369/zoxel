@@ -24,7 +24,7 @@ void DeviceModeResponseSystem(ecs_iter_t *it) {
             // zox_log("     > devicemode response [%i -> %i]\n", deviceModeDirty->value, deviceMode->value)
             if (deviceMode->value == zox_device_mode_touchscreen) {
                 // zox_logg("  > old device mode was touchscreen\n")
-                if (game_state == zoxel_game_state_playing) dispose_in_game_ui_touch(world);
+                if (game_state == zox_game_playing) dispose_in_game_ui_touch(world);
             }
             if (deviceModeDirty->value == zox_device_mode_gamepad) {
                 // select main menu ui - also set player selected ui target
@@ -33,7 +33,7 @@ void DeviceModeResponseSystem(ecs_iter_t *it) {
             } else if (deviceModeDirty->value == zox_device_mode_keyboardmouse) {
                 raycaster_select_ui_mut(world, e, 0);
             } else if (deviceModeDirty->value == zox_device_mode_touchscreen) {
-                if (game_state == zoxel_game_state_playing) spawn_in_game_ui_touch(world);
+                if (game_state == zox_game_playing) spawn_in_game_ui_touch(world);
             }
         }
     }

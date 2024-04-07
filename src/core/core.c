@@ -19,6 +19,7 @@ unsigned char cpu_tier;
 #include "cameras/cameras.c"
 #include "rendering/rendering.c"
 #include "sounds/sounds.c"
+#include "games/games.c"
 #include "util/core_util.c"
 
 unsigned char initialize_core(ecs_world_t *world) {
@@ -26,10 +27,12 @@ unsigned char initialize_core(ecs_world_t *world) {
     if (initialize_apps(world) == EXIT_FAILURE) return EXIT_FAILURE;
     if (initialize_rendering(world) == EXIT_FAILURE) return EXIT_FAILURE;
     initialize_sounds(world);
+    initialize_games(world);
     return EXIT_SUCCESS;
 }
 
 void dispose_core(ecs_world_t *world) {
+    dispose_games(world);
     dispose_generic(world);
     dispose_apps(world);
     dispose_sounds(world);
@@ -55,6 +58,7 @@ void spawn_prefabs_core(ecs_world_t *world) {
     spawn_prefabs_rendering(world);
     spawn_prefabs_sounds(world);
     spawn_prefabs_cameras(world);
+    spawn_prefabs_games(world);
 }
 
 zox_begin_module(Core)
@@ -73,6 +77,7 @@ if (!headless) zox_import_module(Apps) // sdl
 zox_import_module(Rendering)
 zox_import_module(Sounds)
 zox_import_module(Cameras)
+zox_import_module(Games)
 zoxel_end_module(Core)
 
 #endif

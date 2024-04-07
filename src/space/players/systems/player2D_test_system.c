@@ -14,7 +14,7 @@ void PlayerMoreShortcutsSystem(ecs_iter_t *it) {
             sdl_toggle_fullscreen(world, main_app);
         } else if (keyboard->p.pressed_this_frame) {
             const GameState *gameState = zox_get(local_game, GameState)
-            if (gameState->value == zoxel_game_state_playing) {
+            if (gameState->value == zox_game_playing) {
                 ecs_entity_t main_camera = main_cameras[0]; // get player camera link instead
                 ecs_entity_t character = 0;
                 if (camera_mode == zox_camera_mode_first_person) character = zox_get_value(main_camera, ParentLink)
@@ -128,12 +128,3 @@ void PlayerMoreShortcutsSystem(ecs_iter_t *it) {
     DebugParticlesSpawned(world);
     // print_keyboard(world);
 }*/
-
-        /*else if (keyboard->h.pressed_this_frame) {
-            end_game(world);
-        }*/
-
-        /*else if (keyboard->b.pressed_this_frame) {
-            zoxel_log("testing world ui on character %lu\n", local_character3D);
-            spawn_element3D(world, local_character3D);
-        }*/

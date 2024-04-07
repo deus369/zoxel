@@ -1,5 +1,5 @@
 typedef struct {
-    void (*value)(ecs_world_t*, ecs_entity_t);
+    void (*value)(ecs_world_t*, ecs_entity_t, unsigned char);
 } zox_game_event;
 
 zoxel_dynamic_array(zox_game_event)
