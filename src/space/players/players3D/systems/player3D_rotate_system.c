@@ -10,14 +10,6 @@ const double max_rotate_speed = 0.2; //  0.23;
 float3 player_euler = (float3) { 0, 0, 0 };
 float3 camera_euler = (float3) { 0, 180 * degreesToRadians, 0 };
 
-float4 mouse_delta_to_rotation(float deltaX, float deltaY) {
-    float4 output = quaternion_identity;
-    output.x = deltaX;
-    output.y = deltaY;
-    // quaternion_normalize(&output);
-    return output;
-}
-
 void Player3DRotateSystem(ecs_iter_t *it) {
     zox_iter_world()
     zox_field_in(DeviceLinks, deviceLinkss, 2)
@@ -95,7 +87,7 @@ void Player3DRotateSystem(ecs_iter_t *it) {
 #ifndef disable_player_rotate_alpha_force
         const Omega3D *omega3D = zox_get(character, Omega3D)
         if ((euler.y > 0 && quaternion_to_euler_y(omega3D->value) < max_rotate_speed) || (euler.y < 0 && quaternion_to_euler_y(omega3D->value) > -max_rotate_speed)) {
-            float4 quaternion = mouse_delta_to_rotation(euler.x, euler.y);
+            float4 quaternion = .x, euler.y(euler);
             Alpha3D *alpha3D = zox_get_mut(character, Alpha3D)
             quaternion_rotate_quaternion_p(&alpha3D->value, quaternion);
             zox_modified(character, Alpha3D)

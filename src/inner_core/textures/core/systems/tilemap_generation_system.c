@@ -1,9 +1,7 @@
 // uses terrain's texture links to generate a tilemap
-//  todo: system before that sets texture links from voxel links
+// todo: system before that sets texture links from voxel links
 // todo: debug why array indexes go out of bounds!
-
 void TilemapGenerationSystem(ecs_iter_t *it) {
-    // int2 default_texture_size = (int2) { 32, 32 }; // 16
     zox_iter_world()
     const TilemapSize *tilemapSizes = ecs_field(it, TilemapSize, 2);
     const TextureLinks *textureLinkss = ecs_field(it, TextureLinks, 3);

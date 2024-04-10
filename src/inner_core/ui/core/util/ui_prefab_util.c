@@ -68,10 +68,3 @@ void add_draggable_components(ecs_world_t *world, ecs_entity_t e) {
     zox_prefab_set(e, DraggerLink, { 0 })
     zox_prefab_set(e, DraggedLink, { 0 })
 }
-
-void add_frame_texture_type(ecs_world_t *world, ecs_entity_t e, color primary, unsigned char corner, unsigned char thickness) {
-    zox_add_tag(e, FrameTexture)
-    zox_prefab_set(e, FrameCorner, { corner })
-    zox_prefab_set(e, OutlineThickness, { thickness })
-    zox_prefab_set(e, Color, { primary })
-}

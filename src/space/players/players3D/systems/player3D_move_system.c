@@ -100,15 +100,15 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                     // Alpha3D *alpha3D = zox_get_mut(world, characterLink->value, Alpha3D);
                     // quaternion_rotate_quaternion_p(&alpha3D->value, quaternion);
                     // zox_modified(characterLink->value, Alpha3D);
-                    #ifdef zox_debug_player_movement_direction
-                        const Position3D *position3D = zox_get(character, Position3D)
-                        spawn_line3D(world, position3D->value, float3_add(position3D->value, movement), debug_thickness, 34.0);
-                        float3 movement2 = float4_rotate_float3(face_direction, (float3) { 0, 0, -1 });
-                        spawn_line3D(world, position3D->value, float3_add(position3D->value, movement2), debug_thickness, 34.0);
-                        // zoxel_log(" > movement: %fx%fx%f\n", movement.x, movement.y, movement.z);
-                        // zoxel_log("     - movement2: %fx%fx%f\n", movement2.x, movement2.y, movement.z);
-                        zoxel_log(" > face_direction %fx%fx%fx%f\n", face_direction.x, face_direction.y, face_direction.z, face_direction.w);
-                    #endif
+#ifdef zox_debug_player_movement_direction
+                    const Position3D *position3D = zox_get(character, Position3D)
+                    spawn_line3D(world, position3D->value, float3_add(position3D->value, movement), debug_thickness, 34.0);
+                    float3 movement2 = float4_rotate_float3(face_direction, (float3) { 0, 0, -1 });
+                    spawn_line3D(world, position3D->value, float3_add(position3D->value, movement2), debug_thickness, 34.0);
+                    // zoxel_log(" > movement: %fx%fx%f\n", movement.x, movement.y, movement.z);
+                    // zoxel_log("     - movement2: %fx%fx%f\n", movement2.x, movement2.y, movement.z);
+                    zoxel_log(" > face_direction %fx%fx%fx%f\n", face_direction.x, face_direction.y, face_direction.z, face_direction.w);
+#endif
                 }
             }
         } else {

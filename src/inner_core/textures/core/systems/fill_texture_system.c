@@ -1,11 +1,4 @@
 // simple system
-void generate_texture_fill(TextureData* textureData, const int2 size, const color fill_color) {
-    int2 position;
-    for (position.x = 0; position.x < size.x; position.x++)
-        for (position.y = 0; position.y < size.y; position.y++)
-            textureData->value[int2_array_index(position, size)] = fill_color;
-}
-
 void FillTextureSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(it->ctx, NULL)) return;
     TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 2);
