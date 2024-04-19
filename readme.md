@@ -17,6 +17,20 @@
 + experience the thrill of discovery & adventure +
 </p>
 
+-----
+
+<p align="center"> <b> build zoxel </b> </p>
+<div align="center">
+<code>
+git clone https://codeberg.org/deus/zoxel && cd zoxel && make prepare && make
+</code>
+</div>
+<br>
+<p align="center">  <i> windows requires choco [git, make, mingw, wget, unzip] </i> </p>
+
+
+-----
+
 <p align="center">
   [<a href="https://deus369.github.io/zoxel-play">play now
   <img width="16" src="build/resources/textures/game_icon.png"></a>]
@@ -27,7 +41,7 @@
   <!--<img src="https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/zoxel_unity_00.png?raw=false" alt="Unity Zoxel" width="400"/> width="420" -->
 </p>
 
-<h3 align="center">build a zoxel</h3>
+<h3 align="center">build zoxel</h3>
 
 <p align="center">
 + engine modules: core, inner_core, outer_core, users, gameplay & space +
