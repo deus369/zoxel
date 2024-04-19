@@ -19,6 +19,7 @@
 <code>make run</code>
 </div>
 <br> <p align="center">  <i> windows requires choco [git, make, mingw, wget, unzip] </i> </p>
+<
 -----
 
 <h3 align="center">a procedural simulation game</h3>
@@ -39,11 +40,9 @@
 </p>
 
 <p align="center">
-  <img src="docs/latest_screenshot.jpg?raw=false" alt="Zoxel" width="98%"/>
+  <img src="docs/latest_screenshot_0.png?raw=false" alt="Zoxel" width="98%"/>
   <!--<img src="https://raw.githubusercontent.com/deus369/zoxel-web/master/screenshots/zoxel_unity_00.png?raw=false" alt="Unity Zoxel" width="400"/> width="420" -->
 </p>
-
-<h3 align="center">build zoxel</h3>
 
 <p align="center">
 + engine modules: core, inner_core, outer_core, users, gameplay & space +
