@@ -5,6 +5,22 @@
 	<br>
 </p>
 
+-----
+<h3 align="center">build</h3>
+<div align="center">
+<code>git clone https://codeberg.org/deus/zoxel && cd zoxel && make prepare && make</code>
+</div>
+<h3 align="center">install</h3>
+<div align="center">
+<code>make install</code>
+</div>
+<h3 align="center">run</h3>
+<div align="center">
+<code>make run</code>
+</div>
+<br> <p align="center">  <i> windows requires choco [git, make, mingw, wget, unzip] </i> </p>
+-----
+
 <h3 align="center">a procedural simulation game</h3>
 
 <p align="center">
@@ -16,20 +32,6 @@
 <p align="center">
 + experience the thrill of discovery & adventure +
 </p>
-
------
-
-<p align="center"> <b> build zoxel </b> </p>
-<div align="center">
-<code>
-git clone https://codeberg.org/deus/zoxel && cd zoxel && make prepare && make
-</code>
-</div>
-<br>
-<p align="center">  <i> windows requires choco [git, make, mingw, wget, unzip] </i> </p>
-
-
------
 
 <p align="center">
   [<a href="https://deus369.github.io/zoxel-play">play now
