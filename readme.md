@@ -19,8 +19,8 @@
 <code>make run</code>
 </div>
 <br> <p align="center">  <i> windows requires choco [git, make, mingw, wget, unzip] </i> </p>
-<
------
+
+<br>
 
 <h3 align="center">a procedural simulation game</h3>
 
