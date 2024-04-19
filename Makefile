@@ -41,9 +41,12 @@ endif
 ifeq ($(OS),Windows_NT)
     SYSTEM := Windows
     SRCS := $(shell find src/ -type f \( -name "*.c" -o -name "*.h" \))
-    LDLIBS += -lopengl32 -lws2_32
-    LDLIBS += -IC:/SDL2/include -LC:/SDL2/lib -LC:/SDL2_image/lib -LC:/SDL2_mixer/lib # add sdl2 includes
-    LDLIBS += -LSDL2main -Wl,-subsystem,windows -mwindows # add libraries
+    # LDLIBS += -Lbin
+    LDLIBS += -lopengl32 -lws2_32 -lglew32
+    LDLIBS += -Ibuild/sdl/include -Ibuild/sdl_image/include -Ibuild/sdl_mixer/include
+    LDLIBS += -Lbuild/sdl/lib/x64 -Lbuild/sdl_image/lib/x64 -Lbuild/sdl_mixer/lib/x64
+    LDLIBS += -LSDL2main -Wl,-subsystem,windows -mwindows
+    LDLIBS += -Ibuild/glew/include -Lbuild/glew/lib/Release/x64 # glew
 else # linux
     SYSTEM := $(shell uname -s)
     SRCS := $(shell find src/ -type f \( -name "*.c" -o -name "*.h" \))
@@ -81,6 +84,15 @@ linux:
 	@ $(make_release)
 
 # required libraries
+prepare:
+ifeq ($(OS),Windows_NT) # on windows
+	@ make install-flecs && make build/libflecs.a
+	@ bash bash/windows/install_sdl.sh
+	@ bash bash/windows/prepare_build_directory.sh
+else # linux
+	@ echo todo: linux prepare
+endif
+
 install-required:
 	@ bash bash/util/install_required.sh
 
@@ -242,7 +254,10 @@ cc_windows=x86_64-w64-mingw32-gcc
 target_windows = build/windows/zoxel.exe
 windows_includes = -Iinclude -I/usr/include/SDL2 -I/usr/include/GL
 windows_pre_libs = -Llib -Lbin -Lbuild/sdl/sdl/build/.libs -Lbuild/sdl/sdl_mixer/build/.libs -Lbuild/sdl/sdl_image/.libs
-windows_libs = -lSDL2_image -lSDL2 -lm -lpthread -lws2_32 -mwindows -Wl,-subsystem,windows -lglew32 -lopengl32
+windows_libs = -lm -lpthread -lws2_32 -mwindows -Wl,-subsystem,windows -lglew32 -lopengl32
+# more sdl2
+windows_libs += -lSDL2
+windows_libs += -lSDL2_image
 ifeq ($(is_use_sdl_mixer), true)
     windows_libs += -lSDL2_mixer
 endif
@@ -574,6 +589,7 @@ play:
 help:
 	@echo "zoxel -> an open source voxel engine"
 	@echo "	latest @ https://codeberg.org/deus/zoxel"
+	@echo " > make prepare		prepare build directory and libraries"
 	@echo "  > [linux]"
 	@echo "  make <target>"
 	@echo "    play			runs a play button"
