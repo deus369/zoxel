@@ -98,7 +98,11 @@ install-required:
 
 ## installs zoxel into /usr/games directory
 install: 
+ifeq ($(OS),Windows_NT) # on windows
+	@ bash bash/windows/install.sh
+else # linux
 	@ bash bash/install/install.sh
+endif
 
 ## uninstalls zoxel into /usr/games directory
 uninstall: 
