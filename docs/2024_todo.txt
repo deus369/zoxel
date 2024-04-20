@@ -32,3 +32,15 @@ improve visuals:
 cool mechanics:
 
 - [ ] portals, bring them back
+
+
+# todo from Makefile #
+
+# todo: improve cleanup make commands
+# todo: make prepare for linux - create linux folder, and copy resources into it, for build step
+# todo: make build folders per platform / build tags (for web and on window builds)
+# todo: use a check for library and simply warn user here to make platform-sdk
+# todo: integrate google services, for achievements, etc
+# todo: automate google play store uploads
+# todo: for simple make, make a platform folder (linux or windows)
+# todo: note processor in build directory [x64 / x86 / Arm] - linux-x86_64, windows-x86_64, linux_arm64

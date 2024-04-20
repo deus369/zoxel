@@ -1,8 +1,6 @@
-# ===== ===== ===== #
-# ===== ===== ===== #
-# ===== zoxel ===== #
-# ===== ===== ===== #
-# ===== ===== ===== #
+# ==== ===== ==== #
+# ===== zox ===== #
+# ==== ===== ==== #
 
 # platforms [linux, windows, web, android]
 # stores [steam, itch, google]
@@ -597,37 +595,50 @@ play:
 # ====== ======== ====== #
 
 help:
-	@echo "zoxel -> an open source voxel engine"
-	@echo "	latest @ https://codeberg.org/deus/zoxel"
-	@echo " > make prepare		prepare build directory and libraries"
-	@echo "  > [linux]"
-	@echo "  make <target>"
-	@echo "    play			runs a play button"
-	@echo "    install-play		installs a play button"
-	@echo "    $(target_dev)			builds development"
-	@echo "    <empty>  			builds release"
-	@echo "    run				runs $(target)"
-	@echo "    run-vulkan			runs $(target) with vulkan"
+	@echo "  "
+	@echo "welcome to [zoxel] help menu"
+ifeq ($(OS),Windows_NT)
+	@echo "   [you are on windows]"
+else
+	@echo "   [you are on [linux]"
+endif
+	@echo "   [@https://codeberg.org/deus/zoxel]"
+	@echo "  "
+	@echo " > make commands"
+	@echo "  + make prepare	prepare build directory and libraries"
+	@echo "  + make 		builds release into $(target)"
+	@echo "  + make dev		builds development"
+	@echo "  + make run		runs release build"
+	@echo "  + make run-vulkan	runs release with vulkan"
+	@echo "  "
+	@echo " > help commands"
+	@echo "  + flecs-help		building flecs"
+	@echo "  + help-extra		all the extras"
+	@echo "  + git-help		git bash helpers"
+	@echo "  + android-help	android builds"
+	@echo "  + web-help		web builds"
+	@echo "  + steam-help		steam integration"
+	@echo "  + itch-help		itch-io automation"
+	@echo "  "
+
+debug-help:
 	@echo "    run-profiler		runs $(target) --profiler"
 	@echo "    run-dev			runs $(target_dev)"
 	@echo "    run-dev-debug		runs valgrind $(target_dev)"
 	@echo "    run-dev-profiler		runs $(target_dev) --profiler"
-	@echo "  > [web]"
-	@echo "    web-sdk			installs tools for web build"
-	@echo "    $(target_web)		builds zoxel-web"
-	@echo "    run-web			runs $(target_web)"
-	@echo "  > [android]"
-	@echo "    android-sdk			installs tools for android build"
-	@echo "    android			builds & runs android release"
-	@echo "    android-create-key		created android keystore"
-	@echo "    android-sign			signs the unsigned zoxel apk"
-	@echo "    android-install		installs zoxel apk"
-	@echo "    android-run			runs the zoxel apk"
-	@echo "    android-dev			builds & runs android debug"
-	@echo "    android-dev-debug		builds & runs android debug with logcat"
-	@echo "    debug-android		debugs running android game"
-	@echo "  > [setup]"
+
+flecs-help:
+	@echo "  > [flecs]"
 	@echo "    make $(flecs_target)	builds flecs"
+	@echo "    check-flecs			checks flecs releases"
+	@echo "    install-flecs		installs latest flecs (3.2.6)"
+	@echo "    build/libflecs.a		builds flecs library"
+	@echo "    remove-flecs		removes flecs library"
+	@echo "    get-flecs-version		get a flecs by version"
+	@echo "    get-nightly-flecs		gets latest flecs"
+
+help-extra:
+	@echo "  > [setup]"
 	@echo "    install-required		installs required libraries for debian systems"
 	@echo "    install-sdl			installs sdl"
 	@echo "    install			installs zoxel"
@@ -640,20 +651,37 @@ help:
 	@echo "    zip-build			zips zoxel build and resources"
 	@echo "    github			opens zoxel on github"
 	@echo "    codeberg			opens zoxel on codeberg"
-	@echo "  > [flecs]"
-	@echo "    check-flecs			checks flecs releases"
-	@echo "    install-flecs		installs latest flecs (3.2.6)"
-	@echo "    build/libflecs.a		builds flecs library"
-	@echo "    remove-flecs		removes flecs library"
-	@echo "    get-flecs-version		get a flecs by version"
-	@echo "    get-nightly-flecs		gets latest flecs"
+	@echo "    play			runs a play button"
+	@echo "    install-play		installs a play button"
+	@echo "  > [linux-to-windows]"
+	@echo "    windows-sdk			installs tools for windows cross compilation"
+	@echo "    windows			builds windows release"
+
+git-help:
 	@echo "  > [git]"
 	@echo "    git-pull			pulls latest git"
 	@echo "    git-push			pushes git updates (requires ssh access)"
 	@echo "    ssh				creates a ssh key to add to git servers"
-	@echo "  > [windows]"
-	@echo "    windows-sdk			installs tools for windows cross compilation"
-	@echo "    windows			builds windows release"
+
+android-help:
+	@echo "  > [android]"
+	@echo "    android-sdk			installs tools for android build"
+	@echo "    android			builds & runs android release"
+	@echo "    android-create-key		created android keystore"
+	@echo "    android-sign			signs the unsigned zoxel apk"
+	@echo "    android-install		installs zoxel apk"
+	@echo "    android-run			runs the zoxel apk"
+	@echo "    android-dev			builds & runs android debug"
+	@echo "    android-dev-debug		builds & runs android debug with logcat"
+	@echo "    debug-android		debugs running android game"
+
+web-help:
+	@echo "  > [web]"
+	@echo "    web-sdk			installs tools for web build"
+	@echo "    $(target_web)		builds zoxel-web"
+	@echo "    run-web			runs $(target_web)"
+
+steam-help:
 	@echo "  > [steam]"
 	@echo "    steam-all			builds both wrappers, builds and uploads them to beta"
 	@echo "    steam-wrapper-linux		builds steam wrapper lib/libsteam_wrapper.so"
@@ -665,88 +693,9 @@ help:
 	@echo "    steam-upload-live		uploads steam to main branch"
 	@echo "    steam-sdk			installs steamworks sdk from zip ~/Downloads/steamworks_sdk.zip"
 	@echo "    install-steam-deck-required	installs steamdeck required libs"
+
+itch-help:
 	@echo "  > [itchio]"
 	@echo "    itch-all			builds all platforms uploads to itch"
 	@echo "    itch-upload			uploads builds to itch"
 	@echo "    itch-sdk			installs itch io butler"
-
-# todo #
-
-# todo: make default directory zoxel project instead of zoxel/build
-# todo: clean more
-# todo: create linux folder, and copy resources into it, for build step
-# todo: make build folders per platform / build tags (for web and on window builds)
-# todo: use a check for library and simply warn user here to make platform-sdk
-# todo: integrate google services, for achievements, etc
-# todo: integrate google play store uploads
-# todo: for simple make, make a platform folder (linux or windows)
-# todo: note whether x86 / arm for builds linux-x86_64, windows-x86_64, linux_arm64
-
-# info on commands
-
-# -D_DEFAULT_SOURCE Needed for a few functions, will be fixed in the future
-# CFLAGS += -Wno-stringop-overflow-size
-# for math.h, threading
-# -Ofast Optimization Level | -Ofast | -O1 | -O2 | -O3
-# -D NDEBUG No Debugging
-# -s strip - removes 70kb atm
-# -Wall Warnings, -gDebugging Info
-
-# -fPIC Position Independent Code https://stackoverflow.com/questions/5311515/gcc-fpic-option
-# ignore resources directory and gitignore in build?
-# $(RM) build/*.o
-# used to remove web?
-# $(RM) $(target_web)
-# $(RM) $(web_wasm_file)
-# $(RM) $(web_data_file)
-# $(RM) $(target)
-# $(RM) $(target_dev)
-# $(RM) $(flecs_target)
-# use these?
-# LDLIBS += -s SDL2_IMAGE_FORMATS='["png"]' # "bmp",
-# CFLAGS += -D_POSIX_C_SOURCE=200112L
-# dCFLAGS += -fsanitize=undefined
-# LDLIBS += -flto-partition=none ?
-# https://stackoverflow.com/questions/66350310/link-time-optimizations-in-cuda-11-what-are-they-and-how-to-use-them
-# LDLIBS += -dlto	# Dynamic Link-Time Optimization
-# web build threading
-# LDLIBS += -s USE_PTHREADS=1
-# LDLIBS += -s PTHREAD_POOL_SIZE=2
-# can add --num-callers=60 to valgrind
-# used for manual sdl compiling on systems that don't have sdl lib in their package managers
-# LDLIBS += -L/usr/local/lib
-# LDLIBS += -Wl,-rpath=/usr/local/lib
-# cflags_debug += -fsanitize=address # detects memory leaks as well
-# cflags_debug += -Wno-stringop-overflow # supresses flecs warning
-# cflags_debug += -Wno-stringop-overflow-size
-# make something like this so it's less confusing:
-# bash bash/flecs/install_flecs.sh
-# ldlibs_web += -L./ -lflecs
-# halp - -lopengl32 doesn't have the right functions
-# 'strings libopengl32.a | grep glBind' to find some functions
-# enable #define zox_sdl_import_file_only for windows build
-#  strings /usr/x86_64-w64-mingw32/lib/libopengl32.a | grep glBind
-# LDLIBS += -lGLEW
-# -lwayland-client
-# IS_STEAMWORKS := true
-
-# used to check flecs before build
-
-#ifneq ($(SYSTEM),Windows)
-#	bash bash/util/install_required.sh
-#endif
-# set -e ; \
-	bash bash/flecs/check_flecs_lib_not_installed.sh && bash bash/flecs/check_flecs_source.sh && bash bash/flecs/download_flecs_source.sh && cp include/flecs/flecs.h include; \
-	bash bash/flecs/check_flecs_lib_not_installed.sh && cd build && $(make_flecs) && $(make_flecs_lib) && cd .. && cp build/libflecs.a lib; \
-	bash bash/flecs/check_flecs_lib.sh &&
-
-# bash bash/flecs/check_flecs_lib.sh && cd build && $(make_release)
-# compiler tools and flags #
-# NAME := zoxel
-# -Wl,-Bsymbolic # -Wl,-rpath-link,'./bin/' # :../bin
-
-
-#ifneq ($(SYSTEM),Windows)
-#	bash bash/util/install_dev_required.sh
-#endif
-#  --leak-check=full
