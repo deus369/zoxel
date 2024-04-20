@@ -13,7 +13,7 @@ shortcut_file_name=zoxel_git.desktop
 shortcut_directory=$HOME/.local/share/applications
 # echo "Filename [$file_name]"
 binary_path=build/linux/zoxel
-resources_directory=build/resources
+resources_directory=resources
 # game_icon_file_name=$resources_directory/textures/game_icon.png
 zoxel_install_directory=$install_directory/zoxel
 install_resource_directory=$zoxel_install_directory/resources

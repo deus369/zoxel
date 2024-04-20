@@ -34,6 +34,6 @@ echo "> copying [bin/*.dll]"
 cp -r bin/*.dll build/windows
 
 echo "> copying [resources]"
-cp -r build/resources build/windows
+cp -r resources build/windows
 
 

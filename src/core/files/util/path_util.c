@@ -2,7 +2,7 @@
 // todo: make sure to copy folder, with bash, resources into:
 //      > /build/android-build/app/src/main/assets/resources
 /*#ifdef zoxel_on_web
-#define resources_dir_name "build/resources"
+#define resources_dir_name "resources"
 #else
 #define resources_dir_name "resources"
 #endif*/

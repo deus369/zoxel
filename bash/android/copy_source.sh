@@ -19,7 +19,7 @@ old_source_directory1=$zoxel_directory/src
 old_source_directory2=$zoxel_directory/include
 new_source_directory1=$new_source_directory0/src
 new_source_directory2=$new_source_directory0/include
-source_directory_resources=$zoxel_directory/build/resources
+source_directory_resources=$zoxel_directory/resources
 target_directory_assets=$android_directory/app/src/main/assets
 target_directory_resources=$android_directory/app/src/main/assets/resources
 

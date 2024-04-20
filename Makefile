@@ -22,7 +22,7 @@ ifdef ZOXEL2D
 endif
 # more
 patient_cmd = echo " > please be patient :), lord deus [>,<]/)"
-resources_dir = build/resources
+resources_dir = resources
 LDLIBS = -Llib -lflecs -lSDL2 -lm -lpthread
 ifeq ($(is_use_sdl_image), true)
     LDLIBS += -lSDL2_image
@@ -88,7 +88,7 @@ prepare:
 ifeq ($(OS),Windows_NT) # on windows
 	@ make install-flecs && make build/libflecs.a
 	@ bash bash/windows/install_sdl.sh
-	@ bash bash/windows/prepare_build_directory.sh
+	@ bash bash/windows/prepare.sh
 else # linux
 	@ echo todo: linux prepare
 endif
@@ -316,7 +316,7 @@ web_wasm_file = $(target_web_dir)/zoxel.wasm
 web_data_file = $(target_web_dir)/zoxel.data
 make_web_checks= [ ! -d $(target_web_dir) ] && mkdir -p $(target_web_dir); \
 [ ! -d $(target_web_dir)/resources ] && cp -R $(resources_dir) $(target_web_dir)/resources;
-web_resources_dir = -Dresources_dir_name="\"build/resources\""
+web_resources_dir = -Dresources_dir_name="\"resources\""
 cflags_web = --preload-file $(resources_dir) -s WASM=1 -s FULL_ES3=1 -s USE_WEBGL2=1 -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 -s ALLOW_MEMORY_GROWTH -s STACK_SIZE=365536 -s EXPORTED_FUNCTIONS=['_main','_ntohs']
 ldlibs_web = -lGL -lGLEW -lSDL -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["png"]' -s USE_SDL_MIXER=2
 make_web = $(make_web_checks) $(emsdk) construct_env && $(cc_web) $(CFLAGS) $(cflags_web) $(web_resources_dir) -o $(target_web) $(OBJS) include/flecs/flecs.c $(ldlibs_web)
@@ -427,18 +427,24 @@ android-sdk:
 # ===== git & ssh ===== #
 # ====== ======= ====== #
 
-git-keys:
-	bash bash/ssh/create_ssh.sh
+ssh:
+	@ bash bash/ssh/create_ssh.sh
 
 git-push: ## installs zoxel into /usr/games directory
-	bash bash/git/git_update_config.sh
-	bash bash/git/git_push.sh
+	@ bash bash/git/git_update_config.sh
+	@ bash bash/git/git_push.sh
+
+git-commit: ## creates a commit in terminal
+	@ echo create a commit  pusher script
+
+git-push-only: ## pushes commit, created otherwise
+	@ bash bash/git/git_push_only.sh
 
 git-pull: ## installs zoxel into /usr/games directory
-	bash bash/git/git_pull.sh
+	@ bash bash/git/git_pull.sh
 
 git-config:
-	bash bash/git/git_update_config.sh
+	@ bash bash/git/git_update_config.sh
 
 # ===== ===== ===== #
 # ===== steam ===== #
@@ -644,7 +650,7 @@ help:
 	@echo "  > [git]"
 	@echo "    git-pull			pulls latest git"
 	@echo "    git-push			pushes git updates (requires ssh access)"
-	@echo "    git-keys			creates a ssh key to add to git servers"
+	@echo "    ssh				creates a ssh key to add to git servers"
 	@echo "  > [windows]"
 	@echo "    windows-sdk			installs tools for windows cross compilation"
 	@echo "    windows			builds windows release"

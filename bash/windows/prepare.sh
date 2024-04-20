@@ -1,14 +1,11 @@
 #!/bin/bash
-
 build_path="build/windows"
-
+build_dev_path="build/windows-dev"
+resources="resources" # todo: change to just resources
 # if [ ! - d $build_path ] mkdir $build_path ;
-
-
 # Function to create directory if it doesn't exist
 prepare_build_directory() {
     local directory="$1"
-    local resources="build/resources"
     local build_resources="$directory/resources"
     local build_bin="$directory/bin"
     if [ ! -d "$directory" ]; then
@@ -17,7 +14,7 @@ prepare_build_directory() {
     else
         echo " > directory [$directory] already exists"
     fi
-    # build/resources
+    # resources
     if [ -d "$build_resources" ]; then
         echo " + removing old resources [$build_resources]"
         rm -rf "$build_resources"
@@ -41,5 +38,5 @@ prepare_build_directory() {
     # do this for now, can't get exe to recognize dlls
     cp -r $build_bin/* $directory/
 }
-
 prepare_build_directory "$build_path"
+prepare_build_directory "$build_dev_path"

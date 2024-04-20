@@ -1,4 +1,10 @@
 #!/bin/bash
+
+echo "===== ===== ====="
+echo "  Remember to    "
+echo "  Run as Admin   "
+echo "===== ===== ====="
+
 # copies zoxel binary, resources folder, and game icon
 zoxel_install_directory="C:/Program Files/zoxel"
 zoxel_build_directory="build/windows"
@@ -17,23 +23,19 @@ else
     fi
 fi
 
-
+# windows program files
 echo " + creating install directory [$zoxel_install_directory]"
 mkdir "$zoxel_install_directory"
 echo "  + copying to install directory [$zoxel_install_directory]"
 cp -r "$zoxel_build_directory/"* "$zoxel_install_directory/"
 
 #shortcut
-
 if [[ -d "$zoxel_install_directory" ]]; then
 	echo " > removing old shortcut directory [$shortcut_directory]"
     rm -R "$shortcut_directory"
 fi
-
-
 echo " > creating shortcut directory [$shortcut_directory]"
 mkdir "$shortcut_directory"
-
 # copy shortcut into that folder
 cp "bash/windows/zoxel.ico" "$zoxel_install_directory/zoxel.ico"
 cp "bash/windows/zoxel.lnk" "$shortcut_directory/zoxel.lnk"

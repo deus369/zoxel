@@ -36,7 +36,7 @@
 <h3 align="center">play in browser</h3>
 <p align="center">
   + [<a href="https://deus369.github.io/zoxel-play">click_here_to_play
-  <img width="16" src="build/resources/textures/game_icon.png"></a>] +
+  <img width="16" src="resources/textures/game_icon.png"></a>] +
 </p>
 
 <p align="center">

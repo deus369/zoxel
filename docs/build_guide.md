@@ -81,7 +81,7 @@ As a player of our voxel-based RPG, you will have the ability to build and mod t
 -----
 
 <p align="center">
-  <img width="64" src="../build/resources/textures/game_icon.png" alt="Zoxel Logo"> 
+  <img width="64" src="../resources/textures/game_icon.png" alt="Zoxel Logo">
 </p>
 
 <p align="center">

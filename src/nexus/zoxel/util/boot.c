@@ -5,7 +5,11 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     game_name = "zoxel beta";
 #endif
     if (initialize_zox(world) == EXIT_FAILURE) return EXIT_FAILURE;
-    if (!headless) load_app_icon(main_window, resources_folder_name"textures/game_icon.png");
+    if (!headless) {
+        char* icon_path = concat_file_path(resources_path, "textures"character_slash"game_icon.png");
+        load_app_icon(main_window, icon_path);
+        free(icon_path);
+    }
     // Realm,  players, skybox
     ecs_entity_t realm = spawn_realm(world);
     create_game_stats(world, realm);
