@@ -586,13 +586,6 @@ codeberg:
 github:
 	open https://github.com/deus369/zoxel &
 
-count:
-	@echo "Counting Source Files"
-	bash bash/count/count_source.sh
-
-list-systems:
-	bash bash/zoxel/list_systems.sh
-
 create-system:
 	bash bash/zoxel/create_system.sh
 
@@ -605,6 +598,28 @@ install-play:
 play:
 	gcc tests/glut/play_button.c -o build/play_button -lglut -lGL -lGLU && ./build/play_button &
 
+
+
+# -==== ====== ====- #
+# ===== counts ===== #
+# -==== ====== ====- #
+
+count:
+	@ echo " > counting source files"
+	@ bash bash/count/count_source.sh
+
+count-systems:
+#	@ bash bash/count/count_systems.sh
+	@ bash bash/count/create_systems_chart.sh
+
+list-systems:
+	@ echo " > listing systems"
+	# @ bash bash/count/list_systems.sh
+	@ bash bash/zoxel/list_systems.sh
+
+#show-systems:
+#	@ echo " > showing systems"
+#	@ bash bash/count/create_systems_chart.sh
 
 # ====== ======== ====== #
 # ===== lost souls ===== #
