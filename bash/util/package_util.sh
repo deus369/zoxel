@@ -23,17 +23,23 @@ is_using_pacman() {
 function has_library {
     libraries=("$@")
     for library in "${libraries[@]}"; do
-        if dpkg -s "$library" > /dev/null 2>&1; then
-            echo "  [$library] is installed with dpkg"
-            return 0
+        if command -v dpkg &>/dev/null; then
+            if dpkg -s "$library" > /dev/null 2>&1; then
+                echo "  [$library] is installed with dpkg"
+                return 0
+            fi
         fi
-        if ! pacman -Q "$library" 2>&1 | grep -q "was not found"; then
-            echo "  [$library] is installed"
-            return 0
+        if command -v pacman &>/dev/null; then
+            if ! pacman -Q "$library" 2>&1 | grep -q "was not found"; then
+                echo "  [$library] is installed with pacman"
+                return 0
+            fi
         fi
-        if yay -Q "$library" &>/dev/null; then
-            echo "  [$library] is installed with yay"
-            return 0
+        if command -v yay &>/dev/null; then
+            if yay -Q "$library" &>/dev/null; then
+                echo "  [$library] is installed with yay"
+                return 0
+            fi
         fi
     done
     return 1
@@ -58,7 +64,7 @@ function install_first_library {
     # echo "  > install_first_library"
     libraries=("$@")
     if has_library "${libraries[@]}"; then
-        # echo "  > library already exists"
+        echo "  > library [${libraries[@]}] already exists"
         return 0
     fi
     echo "  > Installing library from list"

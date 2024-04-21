@@ -15,25 +15,24 @@ install_first_library "wine"
 
 # this actually needs to be just reinstalled..!
 echo "> installing [glew]"
-install_first_library "glew"
+install_first_library "glew" "libglew-dev"
 
-
-if is_steam_deck; then
-    echo " > steam deck detecteed"
-    echo " > need to reinstall glew"
-    sudo pacman -S --noconfirm glew
-fi
+#if is_steam_deck; then
+#    echo " > steam deck detecteed"
+#    echo " > need to reinstall glew"
+#    sudo pacman -S --noconfirm glew
+#fi
 
 # new build folder
-echo "> creating [build/windows]"
-if [ ! -d build/windows ]; then
-    mkdir build/windows
-fi
+#echo "> creating [build/windows]"
+# if [ ! -d build/windows ]; then
+#     mkdir build/windows
+# fi
 
-echo "> copying [bin/*.dll]"
-cp -r bin/*.dll build/windows
+# echo "> copying [bin/*.dll]"
+# cp -r bin/*.dll build/windows
 
-echo "> copying [resources]"
-cp -r resources build/windows
+# echo "> copying [resources]"
+# cp -r resources build/windows
 
 

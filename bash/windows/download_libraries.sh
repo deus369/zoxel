@@ -1,33 +1,29 @@
 #!/bin/bash
 
 # Set the download URL for SDL2
-#sdl_url="https://www.libsdl.org/release/SDL2-2.0.14-win32-x64.zip"
-# sdl_url="https://www.libsdl.org/release/SDL2-devel-2.0.14-VC.zip"
 sdl_url="https://github.com/libsdl-org/SDL/releases/download/release-2.30.2/SDL2-devel-2.30.2-VC.zip"
 sdl_zip="build/sdl.zip"
-sdl_path="build/sdl"
 sdl_source="build/sdl/SDL2-2.30.2" # SDL2-2.0.14"
+sdl_path="build/sdl"
 sdl_dest="build/sdl"
 
-# sdl_image_url="https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-2.0.5-VC.zip"
 sdl_image_url="https://github.com/libsdl-org/SDL_image/releases/download/release-2.8.2/SDL2_image-devel-2.8.2-VC.zip"
 sdl_image_zip="build/sdl_image.zip"
-sdl_image_path="build/sdl_image"
 sdl_image_source="build/sdl_image/SDL2_image-2.8.2" # 2.0.5"
+sdl_image_path="build/sdl_image"
 sdl_image_dest="build/sdl_image"
 
-# sdl_mixer_url="https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-2.0.4-VC.zip"
 sdl_mixer_url="https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.8.0/SDL2_mixer-devel-2.8.0-VC.zip"
 sdl_mixer_zip="build/sdl_mixer.zip"
-sdl_mixer_path="build/sdl_mixer"
 sdl_mixer_source="build/sdl_mixer/SDL2_mixer-2.8.0" # 2.0.4"
+sdl_mixer_path="build/sdl_mixer"
 sdl_mixer_dest="build/sdl_mixer"
 
 glew_url="https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0-win32.zip"
 # Set the directory to extract SDL2 to
 glew_zip="build/glew.zip"
-glew_path="build/glew"
 glew_source="build/glew/glew-2.2.0"
+glew_path="build/glew"
 glew_dest="build/glew"
 
 # Create the directory if it doesn't exist

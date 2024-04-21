@@ -40,10 +40,11 @@ ifeq ($(OS),Windows_NT)
     SYSTEM := Windows
     SRCS := $(shell find src/ -type f \( -name "*.c" -o -name "*.h" \))
     # LDLIBS += -Lbin
+    LDLIBS += -LSDL2main -Wl,-subsystem,windows -mwindows
     LDLIBS += -lopengl32 -lws2_32 -lglew32
+    # windows pathing
     LDLIBS += -Ibuild/sdl/include -Ibuild/sdl_image/include -Ibuild/sdl_mixer/include
     LDLIBS += -Lbuild/sdl/lib/x64 -Lbuild/sdl_image/lib/x64 -Lbuild/sdl_mixer/lib/x64
-    LDLIBS += -LSDL2main -Wl,-subsystem,windows -mwindows
     LDLIBS += -Ibuild/glew/include -Lbuild/glew/lib/Release/x64 # glew
 else # linux
     SYSTEM := $(shell uname -s)
@@ -83,13 +84,16 @@ linux:
 
 # required libraries
 prepare:
-ifeq ($(OS),Windows_NT) # on windows
 	@ make install-flecs && make build/libflecs.a
-	@ bash bash/windows/install_sdl.sh
+ifeq ($(OS),Windows_NT) # on windows
 	@ bash bash/windows/prepare.sh
 else # linux
-	@ echo todo: linux prepare
+	@ bash bash/linux/prepare.sh
 endif
+
+prepare-windows: # for linux cross platform build
+	@ make install-flecs && make build/libflecs.a
+	@ bash bash/windows/prepare.sh
 
 install-required:
 	@ bash bash/util/install_required.sh
@@ -254,15 +258,24 @@ check-flecs:
 
 cc_windows=x86_64-w64-mingw32-gcc
 target_windows = build/windows/zoxel.exe
-windows_includes = -Iinclude -I/usr/include/SDL2 -I/usr/include/GL
-windows_pre_libs = -Llib -Lbin -Lbuild/sdl/sdl/build/.libs -Lbuild/sdl/sdl_mixer/build/.libs -Lbuild/sdl/sdl_image/.libs
-windows_libs = -lm -lpthread -lws2_32 -mwindows -Wl,-subsystem,windows -lglew32 -lopengl32
+windows_pre_libs = -Llib -Lbi
+windows_libs = -lm -lpthread
+windows_libs += -Wl,-subsystem,windows -mwindows
+windows_libs += -Wl,-subsystem,windows -mwindows
+windows_libs += -lopengl32 -lws2_32 -lglew32
 # more sdl2
-windows_libs += -lSDL2
+windows_libs += -LSDL2main -lSDL2
 windows_libs += -lSDL2_image
 ifeq ($(is_use_sdl_mixer), true)
     windows_libs += -lSDL2_mixer
 endif
+# windows pathing
+windows_includes = -Iinclude #  -I/usr/include/SDL2 -I/usr/include/GL
+# -Lbuild/sdl/sdl/build/.libs -Lbuild/sdl/sdl_mixer/build/.libs -Lbuild/sdl/sdl_image/.libs
+windows_includes += -Ibuild/sdl/include -Ibuild/sdl_image/include -Ibuild/sdl_mixer/include
+windows_includes += -Lbuild/sdl/lib/x64 -Lbuild/sdl_image/lib/x64 -Lbuild/sdl_mixer/lib/x64
+windows_includes += -Ibuild/glew/include -Lbuild/glew/lib/Release/x64 # glew
+# command
 make_windows = $(cc_windows) $(OBJS) include/flecs/flecs.c -o $(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs)
 
 # todo: copy resources and bin dll's into the folder build/windows
@@ -654,6 +667,7 @@ help-extra:
 	@echo "    play			runs a play button"
 	@echo "    install-play		installs a play button"
 	@echo "  > [linux-to-windows]"
+	@echo "    make prepare-windows	prepare build directory and libraries"
 	@echo "    windows-sdk			installs tools for windows cross compilation"
 	@echo "    windows			builds windows release"
 
