@@ -82,6 +82,10 @@
   ]
 </p>
 
+<p align="center">
+  <img src="docs/systems_count.png?raw=false" alt="Zoxel" width="98%"/>
+</p>
+
 <br>
 
 <p align="center">
