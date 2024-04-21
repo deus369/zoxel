@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source bash/util/prepare_directories.sh
+
 # first download libraries
 source bash/windows/download_libraries.sh
 

@@ -84,12 +84,12 @@ linux:
 
 # required libraries
 prepare:
-	@ make install-flecs && make build/libflecs.a
 ifeq ($(OS),Windows_NT) # on windows
 	@ bash bash/windows/prepare.sh
 else # linux
 	@ bash bash/linux/prepare.sh
 endif
+	@ make install-flecs && make build/libflecs.a
 
 prepare-windows: # for linux cross platform build
 	@ make install-flecs && make build/libflecs.a
@@ -567,8 +567,10 @@ all: $(SRCS)
 
 # clean all things
 clean:
-	@echo " > cleaning flecs"
-	bash bash/flecs/remove_flecs.sh
+	@ bash bash/util/clean.sh
+
+# @echo " > cleaning flecs"
+# bash bash/flecs/remove_flecs.sh
 
 
 # ==== ====== ==== #
