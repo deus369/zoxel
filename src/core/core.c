@@ -32,6 +32,7 @@ unsigned char initialize_core(ecs_world_t *world) {
 }
 
 void dispose_core(ecs_world_t *world) {
+    dispose_ecs(world);
     dispose_games(world);
     dispose_generic(world);
     dispose_apps(world);
@@ -42,7 +43,6 @@ void dispose_core(ecs_world_t *world) {
         close_sdl_video();
         close_audio_sdl();
     }
-    dispose_ecs(world);
 }
 
 void spawn_prefabs_core(ecs_world_t *world) {

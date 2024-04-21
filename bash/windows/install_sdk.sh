@@ -4,6 +4,7 @@ echo "> checking linux packages"
 
 source bash/util/package_util.sh
 
+# if 32 bit
 # echo "> installing [mingw-w32]"
 # install_first_library "mingw-w32"
 
@@ -22,17 +23,5 @@ install_first_library "glew" "libglew-dev"
 #    echo " > need to reinstall glew"
 #    sudo pacman -S --noconfirm glew
 #fi
-
-# new build folder
-#echo "> creating [build/windows]"
-# if [ ! -d build/windows ]; then
-#     mkdir build/windows
-# fi
-
-# echo "> copying [bin/*.dll]"
-# cp -r bin/*.dll build/windows
-
-# echo "> copying [resources]"
-# cp -r resources build/windows
 
 

@@ -40,8 +40,8 @@ ifeq ($(OS),Windows_NT)
     SYSTEM := Windows
     SRCS := $(shell find src/ -type f \( -name "*.c" -o -name "*.h" \))
     # LDLIBS += -Lbin
-    LDLIBS += -LSDL2main -Wl,-subsystem,windows -mwindows
-    LDLIBS += -lopengl32 -lws2_32 -lglew32
+    LDLIBS += -LSDL2main -Wl,-subsystem,windows -mwindows -lws2_32 # windows only
+    LDLIBS += -lopengl32 -lglew32
     # windows pathing
     LDLIBS += -Ibuild/sdl/include -Ibuild/sdl_image/include -Ibuild/sdl_mixer/include
     LDLIBS += -Lbuild/sdl/lib/x64 -Lbuild/sdl_image/lib/x64 -Lbuild/sdl_mixer/lib/x64
@@ -258,11 +258,10 @@ check-flecs:
 
 cc_windows=x86_64-w64-mingw32-gcc
 target_windows = build/windows/zoxel.exe
-windows_pre_libs = -Llib -Lbi
+windows_pre_libs = -Llib
 windows_libs = -lm -lpthread
-windows_libs += -Wl,-subsystem,windows -mwindows
-windows_libs += -Wl,-subsystem,windows -mwindows
-windows_libs += -lopengl32 -lws2_32 -lglew32
+windows_libs += -Wl,-subsystem,windows -mwindows -lws2_32 # windows only
+windows_libs += -lopengl32 -lglew32
 # more sdl2
 windows_libs += -LSDL2main -lSDL2
 windows_libs += -lSDL2_image
@@ -276,7 +275,7 @@ windows_includes += -Ibuild/sdl/include -Ibuild/sdl_image/include -Ibuild/sdl_mi
 windows_includes += -Lbuild/sdl/lib/x64 -Lbuild/sdl_image/lib/x64 -Lbuild/sdl_mixer/lib/x64
 windows_includes += -Ibuild/glew/include -Lbuild/glew/lib/Release/x64 # glew
 # command
-make_windows = $(cc_windows) $(OBJS) include/flecs/flecs.c -o $(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs)
+make_windows = $(cc_windows) $(OBJS) include/flecs/flecs.c -o $(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs)  --static # this fixes thread dll issue
 
 # todo: copy resources and bin dll's into the folder build/windows
 ifneq ($(SYSTEM),Windows)
@@ -299,11 +298,13 @@ windows-sdk:
 
 endif
 
+# @ WINEPATH=bin wine $(target_windows)
+
 run-windows:
-	@ WINEPATH=bin wine $(target_windows)
+	@ WINEPREFIX=~/.wine64 wine $(target_windows)
 
 run-windows-debug:
-	@ WINEDEBUG=+opengl wine $(target_windows)
+	@ WINEPREFIX=~/.wine64 WINEDEBUG=+opengl wine $(target_windows)
 
 # ======= ===== ======= #
 # ===== windows32 ===== #

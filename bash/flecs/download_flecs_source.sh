@@ -4,3 +4,4 @@
 
 source bash/flecs/flecs_util.sh
 download_flecs_source "3.2.6"
+source bash/flecs/post_download_edits.sh
