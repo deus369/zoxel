@@ -82,12 +82,5 @@ if (e) {\
 
 #define zox_clone(prefab) ecs_entity_t e = ecs_clone(world, 0, prefab, 1);
 
-#define zox_iter_world() ecs_world_t *world = it->world;
-
-#define zox_field_in(component_name, field_name, index) const component_name *field_name = ecs_field(it, component_name, index);
-
-#define zox_field_out(component_name, field_name, index) component_name *field_name = ecs_field(it, component_name, index);
-
-#define zox_field_i_in(component_name, field_name, variable_name) const component_name *variable_name = &field_name[i];
-
-#define zox_field_i_out(component_name, field_name, variable_name) component_name *variable_name = &field_name[i];
+// checks if entity is valid
+#define zox_valid(e) ecs_is_valid(world, e)

@@ -57,7 +57,7 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
 #endif
     float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
     float aspect_ratio = canvasSizef.x / canvasSizef.y;
-    if (!ecs_is_valid(world, e)) return;
+    if (!zox_valid(e)) return;
     if (zox_has(e, PixelPosition)) {
         const PixelPosition *pixelPosition = zox_get(e, PixelPosition)
         const Anchor *anchor = zox_get(e, Anchor)

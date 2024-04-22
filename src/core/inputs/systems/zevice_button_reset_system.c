@@ -1,9 +1,8 @@
 // reset each zevice in a system, on EcsOnLoad
-// make extract system too, link the sdl joystick to the reset systems
 void ZeviceButtonResetSystem(ecs_iter_t *it) {
-    ZeviceButton *zeviceButtons = ecs_field(it, ZeviceButton, 1);
+    zox_field_out(ZeviceButton, zeviceButtons, 1)
     for (int i = 0; i < it->count; i++) {
-        ZeviceButton *zeviceButton = &zeviceButtons[i];
+        zox_field_i_out(ZeviceButton, zeviceButtons, zeviceButton)
         reset_device_button(zeviceButton);
     }
 } zox_declare_system(ZeviceButtonResetSystem)

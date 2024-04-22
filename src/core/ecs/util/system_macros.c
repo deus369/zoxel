@@ -133,3 +133,17 @@ void system_name(ecs_iter_t *it) {\
 
 // #define zoxel_button_system(system, tag) zox_system(system, EcsPostUpdate, [none] tag, [in] ClickState);
 // #define zoxel_button_system2(system, tag, pipeline) zox_system(system, pipeline, [none] tag, [in] ClickState);
+
+// used for systems
+
+#define zox_iter_world() ecs_world_t *world = it->world;
+
+#define zox_field_in(component_name, field_name, index) const component_name *field_name = ecs_field(it, component_name, index);
+
+#define zox_field_out(component_name, field_name, index) component_name *field_name = ecs_field(it, component_name, index);
+
+#define zox_field_i_in(component_name, field_name, variable_name) const component_name *variable_name = &field_name[i];
+
+#define zox_field_i_out(component_name, field_name, variable_name) component_name *variable_name = &field_name[i];
+
+#define zox_field_e() const ecs_entity_t e = it->entities[i];

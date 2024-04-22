@@ -2,13 +2,13 @@
 // todo: check device mode here or device enabled states
 void MouseRaycasterSystem(ecs_iter_t *it) {
     zox_iter_world()
-    const DeviceLinks *deviceLinks = ecs_field(it, DeviceLinks, 1);
-    const DeviceMode *deviceModes = ecs_field(it, DeviceMode, 2);
-    Raycaster *raycasters = ecs_field(it, Raycaster, 3);
+    zox_field_in(DeviceLinks, deviceLinks, 1)
+    zox_field_in(DeviceMode, deviceModes, 2)
+    zox_field_out(Raycaster, raycasters, 3)
     for (int i = 0; i < it->count; i++) {
-        const DeviceLinks *deviceLinks2 = &deviceLinks[i];
-        const DeviceMode *deviceMode = &deviceModes[i];
-        Raycaster *raycaster = &raycasters[i];
+        zox_field_i_in(DeviceLinks, deviceLinks, deviceLinks2)
+        zox_field_i_in(DeviceMode, deviceModes, deviceMode)
+        zox_field_i_out(Raycaster, raycasters, raycaster)
         raycaster->value = int2_zero;
         for (int j = 0; j < deviceLinks2->length; j++) {
             ecs_entity_t device_entity = deviceLinks2->value[j];

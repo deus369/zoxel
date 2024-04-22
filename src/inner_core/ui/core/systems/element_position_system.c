@@ -49,12 +49,12 @@ void ElementPositionSystem(ecs_iter_t *it) {
     Position2D *position2Ds = ecs_field(it, Position2D, 6);
     CanvasPosition *canvasPositions = ecs_field(it, CanvasPosition, 7);
     for (int i = 0; i < it->count; i++) {
-        ecs_entity_t e = it->entities[i];
+        zox_field_e()
         const PixelPosition *pixelPosition = &pixelPositions[i];
         const ParentLink *parentLink = &parentLinks[i];
         const Anchor *anchor = &anchors[i];
         const CanvasLink *canvasLink = &canvasLinks[i];
-        if (!ecs_is_valid(world, canvasLink->value) || parentLink->value != canvasLink->value) continue;
+        if (!zox_valid(canvasLink->value) || parentLink->value != canvasLink->value) continue;
         const int2 canvas_size = zox_get_value(canvasLink->value, PixelSize)
         Position2D *position2D = &position2Ds[i];
         CanvasPosition *canvasPosition = &canvasPositions[i];

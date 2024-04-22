@@ -2,9 +2,9 @@
 
 void toggle_camera_perspective(ecs_world_t *world, ecs_entity_t character) {
     if (camera_mode != zox_camera_mode_first_person) return;
-    if (ecs_is_valid(world, character) && zox_has(character, CameraLink)) {
+    if (zox_valid(character) && zox_has(character, CameraLink)) {
         const CameraLink *cameraLink = zox_get(world, character, CameraLink);
-        if (ecs_is_valid(world, cameraLink->value) && cameraLink->value != 0) {
+        if (zox_valid(cameraLink->value) && cameraLink->value != 0) {
             float vox_scale = model_scale * 16;
             // zox_log("   > vox_scale [%f]\n", vox_scale)
             const LocalPosition3D *localPosition3D = zox_get(world, cameraLink->value, LocalPosition3D);

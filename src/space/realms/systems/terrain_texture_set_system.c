@@ -1,7 +1,7 @@
 void TerrainTextureSetSystem(ecs_iter_t *it) {
     // todo: link directly to a voxelLinks holder instead of using local_realm (use terrain ones)
     zox_iter_world()
-    if (!ecs_is_valid(world, local_realm)) return;
+    if (!zox_valid(local_realm)) return;
     const VoxelLinks *voxelLinks = zox_get(local_realm, VoxelLinks)
     GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 2);
     TilemapSize *tilemapSizes = ecs_field(it, TilemapSize, 3);

@@ -1,30 +1,14 @@
 #ifndef zoxel_inputs
 #define zoxel_inputs
 
-// todo: refactor keyboard and mouse to use zevices
-// todo: reset zevice_stick and zevice_pointer in systems
-// todo: extract keyboard & mouse in systems
-// todo: sdl device disconnects, handle as spawning new entities, add to player if player mode is accepting new device (if they disconnect, put their control state in accepting)
-// todo: get change filters to work in multithreaded systems
-// todo: spawn/destroy device entity upon connection/removal
-// todo: refactor deadzonoes into each individual zevice
-// todo: hotkey system to do with bindings
-// todo: hotkey ui
-
 // zoxel_settings
 #define zox_pipelines_devices_reset EcsOnLoad
 #define zox_pipelines_devices_enables EcsOnStore
-#define zox_device_mode_none 0
-#define zox_device_mode_keyboardmouse 1
-#define zox_device_mode_gamepad 2
-#define zox_device_mode_touchscreen 3
-#define zox_device_mode_max 4
-#define zox_drag_mode_mouse 1
-#define zox_drag_mode_finger 2
 const float joystick_min_cutoff = 0.01f;
 const float joystick_min_cutoff2 = 0.04f;
 const float joystick_cutoff_buffer = 0.14f;
 // zoxel_component_declares
+#include "data/device_modes.c"
 #include "data/gamepad_flags.c"
 #include "data/button_flags.c"
 #include "data/physical_button.c"
@@ -57,17 +41,20 @@ zox_memory_component(DeviceLinks, ecs_entity_t)
 #include "prefabs/keyboard.c"
 #include "prefabs/gamepad.c"
 #include "prefabs/touchscreen.c"
+// zoxel_util_includes
+#include "util/input_util.c"
+#include "util/deadzone_util.c"
 // zoxel_system_declares
 #include "systems/zevice_button_reset_system.c"
 #include "systems/zevice_pointer_reset_system.c"
 #include "systems/zevice_pointer_delta_reset_system.c"
 #include "systems/zevice_button_enable_system.c"
+#include "systems/zevice_stick_enable_system.c"
+#include "systems/zevice_pointer_enable_system.c"
 #include "systems/mouse_raycaster_system.c"
 #include "systems/dragger_end_system.c"
 #include "systems/device_mode_system.c"
 #include "systems/device_mode_dirty_system.c"
-// zoxel_util_includes
-#include "util/deadzone_util.c"
 
 void spawn_prefabs_inputs(ecs_world_t *world) {
     spawn_prefab_device_button(world);

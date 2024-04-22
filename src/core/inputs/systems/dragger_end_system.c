@@ -2,15 +2,15 @@
 // todo: check device mode here or device enabled states
 void DraggerEndSystem(ecs_iter_t *it) {
     zox_iter_world()
-    DraggableState *dragableStates = ecs_field(it, DraggableState, 1);
-    DraggerLink *draggerLinks = ecs_field(it, DraggerLink, 2);
-    DraggingDelta *draggingDeltas = ecs_field(it, DraggingDelta, 3);
+    zox_field_out(DraggableState, dragableStates, 1)
+    zox_field_out(DraggerLink, draggerLinks, 2)
+    zox_field_out(DraggingDelta, draggingDeltas, 3)
     for (int i = 0; i < it->count; i++) {
-        DraggerLink *draggerLink = &draggerLinks[i];
+        zox_field_i_out(DraggerLink, draggerLinks, draggerLink)
         if (draggerLink->value == 0) continue;
-        DraggableState *dragableState = &dragableStates[i];
+        zox_field_i_out(DraggableState, dragableStates, dragableState)
         if (dragableState->value == 0) continue;
-        DraggingDelta *draggingDelta = &draggingDeltas[i];
+        zox_field_i_out(DraggingDelta, draggingDeltas, draggingDelta)
         ecs_entity_t player_entity = draggerLink->value;
         const DeviceLinks *deviceLinks = zox_get(player_entity, DeviceLinks)
         unsigned char did_drag_end = 0;

@@ -96,9 +96,9 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
     }
 } zox_declare_system(PlayerShortcutsSingleSystem)
 
-/*if (ecs_is_valid(world, local_character3D) && zox_has(local_character3D, CameraLink)) {
+/*if (zox_valid(local_character3D) && zox_has(local_character3D, CameraLink)) {
     const CameraLink *cameraLink = zox_get(world, local_character3D, CameraLink);
-    if (ecs_is_valid(world, cameraLink->value) && cameraLink->value != 0) {
+    if (zox_valid(cameraLink->value) && cameraLink->value != 0) {
         // zoxel_log(" > switching camera view\n");
         float vox_scale = model_scale * 16;
         const LocalPosition3D *localPosition3D = zox_get(world, cameraLink->value, LocalPosition3D);

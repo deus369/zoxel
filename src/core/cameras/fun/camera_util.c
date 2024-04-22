@@ -72,7 +72,7 @@ void set_camera_mode(ecs_world_t *world, unsigned char new_camera_mode) {
     }
     for (int i = 0; i < max_cameras; i++) {
         ecs_entity_t camera = main_cameras[i];
-        if (camera == 0 || !ecs_is_valid(world, camera)) continue;
+        if (camera == 0 || !zox_valid(camera)) continue;
         zox_set(camera, CameraMode, { camera_mode })
         if (old_camera_fov != camera_fov) zox_set(camera, FieldOfView, { camera_fov })
         // camera_follow_mode is more complicated, involves how camera is attached to character

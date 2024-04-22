@@ -30,7 +30,7 @@ void Line2DElementSystem(ecs_iter_t *it) {
     LineData2D *lineData2Ds = ecs_field(it, LineData2D, 4);
     for (int i = 0; i < it->count; i++) {
         const CanvasLink *canvasLink = &canvasLinks[i];
-        if (!ecs_is_valid(world, canvasLink->value)) continue;
+        if (!zox_valid(canvasLink->value)) continue;
         int2 canvas_size = ecs_get(world, canvasLink->value, PixelSize)->value;
         float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
         float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
