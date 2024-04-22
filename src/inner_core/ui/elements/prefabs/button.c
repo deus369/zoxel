@@ -8,6 +8,7 @@ ecs_entity_t spawn_prefab_button(ecs_world_t *world) {
     add_selectable_components(world, e);
     add_clickable_components(world, e);
     zox_add_tag(e, Button)
+    zox_add_tag(e, ClickMakeSound)
     add_frame_texture_type(world, e, (color) { 35, 88, 66, 255 }, 7, 3);
     zox_prefab_set(e, Children, { 0, NULL })
     prefab_button = e;

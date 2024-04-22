@@ -37,11 +37,13 @@ void spawn_player_cameras(ecs_world_t *world) {
 }
 
 // todo: spawn unique canvas per viewport, viewports per player
-void spawn_default_ui(ecs_world_t *world) {
-    ecs_entity_t canvas = spawn_canvas(world, screen_dimensions);
+void spawn_default_ui(ecs_world_t *world, ecs_entity_t camera) {
+    ecs_entity_t canvas = spawn_canvas(world, screen_dimensions, camera);
     spawn_canvas_overlay(world, canvas);
     spawn_font_style(world);
-}ecs_entity_t zoxel_main_menu;
+}
+
+ecs_entity_t zoxel_main_menu;
 
 void zox_spawn_main_menu(ecs_world_t *world, const char *game_name) {
 #ifdef zoxel_game_ui

@@ -30,6 +30,9 @@ zox_entities_component(ElementLinks)
 #include "util/prefab_util_world_ui.c"
 #include "util/element_render_util.c"
 #include "util/click_util.c"
+#include "util/toggle_util.c"
+#include "util/resize_util.c"
+#include "util/world_ui_util.c"
 // zoxel_include_prefabs
 #include "prefabs/canvas.c"
 #include "prefabs/element.c"
@@ -50,10 +53,7 @@ zox_entities_component(ElementLinks)
 #include "systems/ui_trail_system.c"
 #include "systems/resize_element_system.c"
 #include "systems/element_bar_system.c"
-// zoxel_more_util
-#include "util/toggle_util.c"
-#include "util/resize_util.c"
-#include "util/world_ui_util.c"
+#include "systems/canvas_resize_system.c"
 
 void spawn_prefabs_ui_core(ecs_world_t *world) {
     spawn_prefab_canvas(world);
@@ -104,6 +104,7 @@ if (!headless) {
     zox_system_1(Element2DMeshSystem, main_thread_pipeline, [none] Element, [in] PixelSize, [in] MeshAlignment, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] MeshVertices2D, [out] MeshGPULink, [out] TextureGPULink, [out] UvsGPULink, [none] !Element3D)
     zox_system_1(Element3DMeshSystem, main_thread_pipeline, [none] Element3D, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture,  [out] MeshGPULink, [out] UvsGPULink, [out] ColorsGPULink, [out] TextureGPULink)
     zox_system_1(ButtonClickEventSystem, main_thread_pipeline, [none] Element, [in] ClickEvent, [out] ClickState)
+    zox_system(CanvasResizeSystem, EcsOnUpdate, [in] CameraLink, [out] PixelSize, [none] Canvas)
 }
 zox_system(ResizeElementSystem, 0, [in] CanvasLink, [in] ParentLink)
 zoxel_end_module(UICore)

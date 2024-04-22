@@ -1,6 +1,5 @@
 void AnimateTextSystem(ecs_iter_t *it) {
     double delta_time = zox_delta_time;
-    // double delta_time = it->delta_time;
     AnimateZext *animateZexts = ecs_field(it, AnimateZext, 1);
     ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
     ZextData *zextDatas = ecs_field(it, ZextData, 3);

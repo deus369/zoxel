@@ -13,6 +13,7 @@ zox_component_byte(HierarchyUIDirty)
 // zoxel_include_util
 #include "util/shared.c"
 #include "util/inspector_util.c"
+#include "util/hierarchy_util.c"
 // zoxel_include_systems
 #include "systems/hierarchy_refresh_system.c"
 #include "systems/inspector_element_system.c"

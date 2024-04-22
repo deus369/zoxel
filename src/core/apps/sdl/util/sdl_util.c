@@ -1,8 +1,7 @@
 extern void opengl_delete_resources(ecs_world_t *world);
 extern void opengl_load_resources(ecs_world_t *world);
 extern void engine_end(); // engine
-extern void resize_cameras(int2 screen_size); // cameras
-extern void resize_ui_canvases(ecs_world_t *world, int2 screen_size); // uis
+extern void resize_cameras(int2 screen_size); // cameras, make camera just resize on viewport resize instead of extern
 
 void print_sdl() {
 #ifdef zox_print_sdl
@@ -102,9 +101,8 @@ void on_viewport_resized(ecs_world_t *world, int2 new_screen_dimensions) {
     if (screen_dimensions.x == new_screen_dimensions.x && screen_dimensions.y == new_screen_dimensions.y) return;
     screen_dimensions = new_screen_dimensions;
     if(screen_dimensions.y <= 0) screen_dimensions.y = 1;
-    // zoxel_log(" > viewport was resized [%ix%i]\n", screen_dimensions.x, screen_dimensions.y);
-    resize_cameras(screen_dimensions);
-    resize_ui_canvases(world, screen_dimensions);
+    resize_cameras(screen_dimensions); // set viewport size - triggers canvas resizing
+
 }
 
 void sdl_set_fullscreen(SDL_Window* window, unsigned char is_fullscreen) {

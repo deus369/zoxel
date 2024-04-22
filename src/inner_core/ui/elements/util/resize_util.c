@@ -3,7 +3,7 @@ void on_resized_element(ecs_world_t *world, ecs_entity_t e, int2 pixel_size, flo
     if (!headless && zox_has(e, MeshVertices2D)) {
         const MeshAlignment *meshAlignment = zox_get(e, MeshAlignment)
         MeshVertices2D *meshVertices2D = zox_get_mut(e, MeshVertices2D)
-        float2 scale2D = (float2) { pixel_size.x / canvas_size.y, pixel_size.y / canvas_size.y };
+        const float2 scale2D = (float2) { pixel_size.x / canvas_size.y, pixel_size.y / canvas_size.y };
         set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, scale2D);
         zox_modified(e, MeshVertices2D)
         zox_set(e, MeshDirty, { 1 })
@@ -15,7 +15,7 @@ void on_resized_element(ecs_world_t *world, ecs_entity_t e, int2 pixel_size, flo
         if (zox_has(e, Window)) {
             const Children *children = zox_get(e, Children);
             ecs_entity_t header = children->value[0];
-            int2 header_size = (int2) { pixel_size.x, zox_gett_value(header, PixelSize).y };
+            const int2 header_size = (int2) { pixel_size.x, zox_gett_value(header, PixelSize).y };
             zox_set(header, PixelSize, { header_size })
             zox_set(header, TextureSize, { header_size })
             on_resized_element(world, header, header_size, canvas_size);
@@ -42,4 +42,22 @@ void on_resized_element(ecs_world_t *world, ecs_entity_t e, int2 pixel_size, flo
             }
         }
     }
+}
+
+void drag_element(ecs_world_t *world, ecs_entity_t e, int2 drag_value) {
+    if (!zox_valid(e)) return;
+    PixelPosition *pixel_position = zox_get_mut(e, PixelPosition)
+    pixel_position->value.x += drag_value.x;
+    pixel_position->value.y += drag_value.y;
+    if (zox_has(e, DraggableLimits)) {
+        const DraggableLimits *draggableLimits = zox_get(e, DraggableLimits)
+        if (pixel_position->value.x < -draggableLimits->value.x) pixel_position->value.x = -draggableLimits->value.x;
+        if (pixel_position->value.x > draggableLimits->value.x) pixel_position->value.x = draggableLimits->value.x;
+        if (pixel_position->value.y < -draggableLimits->value.y) pixel_position->value.y = -draggableLimits->value.y;
+        if (pixel_position->value.y > draggableLimits->value.y) pixel_position->value.y = draggableLimits->value.y;
+    }
+    zox_modified(e, PixelPosition)
+#ifdef zox_log_ui_dragging
+    zox_log(" > dragging window [%lu] by %ix%i\n", e, drag_value.x, drag_value.y)
+#endif
 }

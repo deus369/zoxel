@@ -26,13 +26,12 @@ zox_component_byte(ListUIMax)
 #include "prefabs/ui_list.c"
 #include "prefabs/elementbar2D.c"
 #include "prefabs/elementbar3D.c"
-// systems
-#include "systems/button_click_sound_system.c"
-#include "systems/element_drag_system.c"
-#include "systems/scrollbar_system.c"
 // functions
 #include "fun/button_event_close_window.c"
 #include "util/resize_util.c"
+// systems
+#include "systems/element_drag_system.c"
+#include "systems/scrollbar_system.c"
 
 void spawn_prefabs_elements(ecs_world_t *world) {
     spawn_prefab_label(world);
@@ -63,7 +62,6 @@ zox_define_component(ListUIMax)
 // system defines
 zox_system(ElementDragSystem, EcsPostLoad, [in] DraggableState, [in] DraggingDelta, [in] DraggedLink)
 zox_system(ScrollbarSystem, EcsPostUpdate, [none] ScrollbarButton, [in] DraggableState, [in] PixelPosition, [in] PixelSize, [in] ParentLink)
-zox_system_1(ButtonClickSoundSystem, main_thread_pipeline, [none] Button, [in] ClickState) // move this to core
 zoxel_end_module(Elements)
 
 #endif

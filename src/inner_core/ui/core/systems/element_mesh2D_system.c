@@ -4,36 +4,34 @@ void Element2DMeshSystem(ecs_iter_t *it) {
     begin_timing()
 #endif
     zox_iter_world()
-    const PixelSize *pixelSizes = ecs_field(it, PixelSize, 2);
-    const MeshAlignment *meshAlignments = ecs_field(it, MeshAlignment, 3);
-    const CanvasLink *canvasLinks = ecs_field(it, CanvasLink, 4);
-    InitializeEntityMesh *initializeEntityMeshs = ecs_field(it, InitializeEntityMesh, 5);
-    MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 6);
-    // GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 7);
-    //  [out] GenerateTexture,
-    MeshVertices2D *meshVertices2Ds = ecs_field(it, MeshVertices2D, 7);
-    MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 8);
-    TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 9);
-    UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 10);
+    zox_field_in(PixelSize, pixelSizes, 2)
+    zox_field_in(MeshAlignment, meshAlignments, 3)
+    zox_field_in(CanvasLink, canvasLinks, 4)
+    zox_field_out(InitializeEntityMesh, initializeEntityMeshs, 5)
+    zox_field_out(MeshDirty, meshDirtys, 6)
+    zox_field_out(MeshVertices2D, meshVertices2Ds, 7)
+    zox_field_out(MeshGPULink, meshGPULinks, 8)
+    zox_field_out(TextureGPULink, textureGPULinks, 9)
+    zox_field_out(UvsGPULink, uvsGPULinks, 10)
     for (int i = 0; i < it->count; i++) {
-        InitializeEntityMesh *initializeEntityMesh = &initializeEntityMeshs[i];
-        if (initializeEntityMesh->value != 1) continue;
-        const CanvasLink *canvasLink = &canvasLinks[i];
-        if (canvasLink->value == 0) continue;
-        const ecs_entity_t e = it->entities[i];
-        const PixelSize *pixelSize = &pixelSizes[i];
-        const MeshAlignment *meshAlignment = &meshAlignments[i];
-        MeshDirty *meshDirty = &meshDirtys[i];
-        MeshVertices2D *meshVertices2D = &meshVertices2Ds[i];
-        const PixelSize *canvasSize = ecs_get(world, canvasLink->value, PixelSize);
-        float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
-        float2 scale2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
+        zox_field_i_out(InitializeEntityMesh, initializeEntityMeshs, initializeEntityMesh)
+        if (!initializeEntityMesh->value) continue;
+        zox_field_i_in(CanvasLink, canvasLinks, canvasLink)
+        if (!canvasLink->value) continue;
+        zox_field_e()
+        zox_field_i_in(PixelSize, pixelSizes, pixelSize)
+        zox_field_i_in(MeshAlignment, meshAlignments, meshAlignment)
+        zox_field_i_out(MeshDirty, meshDirtys, meshDirty)
+        zox_field_i_out(MeshVertices2D, meshVertices2Ds, meshVertices2D)
+        const int2 canvas_size = zox_get_value(canvasLink->value, PixelSize)
+        const float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
+        const  float2 scale2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
         set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, scale2D);
         // spawn gpu bufers
         if (!headless) {
-            MeshGPULink *meshGPULink = &meshGPULinks[i];
-            UvsGPULink *uvsGPULink = &uvsGPULinks[i];
-            TextureGPULink *textureGPULink = &textureGPULinks[i];
+            zox_field_i_out(MeshGPULink, meshGPULinks, meshGPULink)
+            zox_field_i_out(UvsGPULink, uvsGPULinks, uvsGPULink)
+            zox_field_i_out(TextureGPULink, textureGPULinks, textureGPULink)
             meshGPULink->value = spawn_gpu_mesh_buffers();
             textureGPULink->value = spawn_gpu_texture_buffers();
             uvsGPULink->value = spawn_gpu_generic_buffer();

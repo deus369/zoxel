@@ -8,7 +8,7 @@ void BillboardSystem(ecs_iter_t *it) {
     zox_iter_world()
     zox_field_out(Rotation3D, rotation3Ds, 4)
     for (int i = 0; i < it->count; i++) {
-        ecs_entity_t camera = main_camera;
+        const ecs_entity_t camera = main_camera;
         if (!camera || !zox_has(camera, Rotation3D)) continue;
         zox_field_e()
         zox_field_i_out(Rotation3D, rotation3Ds, rotation3D)

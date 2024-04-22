@@ -1,26 +1,26 @@
 void Element3DMeshSystem(ecs_iter_t *it) {
-    const CanvasLink *canvasLinks = ecs_field(it, CanvasLink, 3);
-    InitializeEntityMesh *initializeEntityMeshs = ecs_field(it, InitializeEntityMesh, 4);
-    MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 5);
-    GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 6);
-    MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 7);
-    UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 8);
-    ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 9);
-    TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 10);
+    zox_field_in(CanvasLink, canvasLinks, 3)
+    zox_field_out(InitializeEntityMesh, initializeEntityMeshs, 4)
+    zox_field_out(MeshDirty, meshDirtys, 5)
+    zox_field_out(GenerateTexture, generateTextures, 6)
+    zox_field_out(MeshGPULink, meshGPULinks, 7)
+    zox_field_out(UvsGPULink, uvsGPULinks, 8)
+    zox_field_out(ColorsGPULink, colorsGPULinks, 9)
+    zox_field_out(TextureGPULink, textureGPULinks, 10)
     for (int i = 0; i < it->count; i++) {
-        InitializeEntityMesh *initializeEntityMesh = &initializeEntityMeshs[i];
+        zox_field_i_out(InitializeEntityMesh, initializeEntityMeshs, initializeEntityMesh)
         if (!initializeEntityMesh->value) continue;
-        const CanvasLink *canvasLink = &canvasLinks[i];
-        if (canvasLink->value == 0) continue;
-        MeshDirty *meshDirty = &meshDirtys[i];
+        zox_field_i_in(CanvasLink, canvasLinks, canvasLink)
+        if (!canvasLink->value) continue;
+        zox_field_i_out(MeshDirty, meshDirtys, meshDirty)
         if (meshDirty->value) continue;
-        GenerateTexture *generateTexture = &generateTextures[i];
+        zox_field_i_out(GenerateTexture, generateTextures, generateTexture)
         if (generateTexture->value) continue;
         if (!headless) {
-            MeshGPULink *meshGPULink = &meshGPULinks[i];
-            UvsGPULink *uvsGPULink = &uvsGPULinks[i];
-            ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
-            TextureGPULink *textureGPULink = &textureGPULinks[i];
+            zox_field_i_out(MeshGPULink, meshGPULinks, meshGPULink)
+            zox_field_i_out(UvsGPULink, uvsGPULinks, uvsGPULink)
+            zox_field_i_out(TextureGPULink, textureGPULinks, textureGPULink)
+            zox_field_i_out(ColorsGPULink, colorsGPULinks, colorsGPULink)
             meshGPULink->value = spawn_gpu_mesh_buffers();
             textureGPULink->value = spawn_gpu_texture_buffers();
             uvsGPULink->value = spawn_gpu_generic_buffer();

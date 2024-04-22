@@ -2,7 +2,6 @@
 #define zoxel_sounds
 
 // renamed PlaySound to TriggerSound temporarily, cause of windows.h conflict
-
 // zoxel_settings
 int global_master_volume = 64;
 const int global_master_volume_max = 128;
@@ -11,6 +10,7 @@ const int global_master_volume_increment = 16;
 #include "settings/settings.c"
 // zoxel_prefab_declares
 zox_declare_tag(Sound)
+zox_declare_tag(ClickMakeSound)
 zox_component_byte(InstrumentType)
 zox_component_byte(GenerateSound)        //! A state event for generating sounds
 zox_component_byte(TriggerSound)         //! A state event for playing sounds
@@ -44,6 +44,7 @@ zox_memory_component(SoundData, float)   //! A sound has an array of bytes
 #include "systems/play_sound_system.c"
 #include "systems/sound_update_system.c"
 #endif
+#include "systems/click_sound_system.c"
 
 void initialize_sounds(ecs_world_t *world) {
     load_files_sounds();
@@ -67,6 +68,7 @@ void spawn_prefabs_sounds(ecs_world_t *world) {
 zox_begin_module(Sounds)
 // zoxel_define_components
 zox_define_tag(Sound)
+zox_define_tag(ClickMakeSound)
 zox_define_component_byte(InstrumentType)
 zox_define_component_byte(SoundDirty)
 zox_define_component_byte(TriggerSound)
@@ -85,6 +87,7 @@ zox_system(SoundGenerateSystem, EcsOnUpdate, [none] Sound, [out] GenerateSound, 
     zox_system(PlaySoundSystem, EcsPreStore, [none] Sound, [out] TriggerSound, [in] SoundLength, [in] SDLSound)
 #endif
 zox_system_1(SoundDebugSystem, main_thread_pipeline, [none] Sound, [in] SoundData, [in] SoundDirty)
+zox_system_1(ClickSoundSystem, main_thread_pipeline, [in] ClickState, [none] ClickMakeSound)
 zoxel_end_module(Sounds)
 
 #endif

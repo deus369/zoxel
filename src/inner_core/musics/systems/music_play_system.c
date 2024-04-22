@@ -26,9 +26,9 @@ void MusicPlaySystem(ecs_iter_t *it) {
             float frequency = note_frequencies[music_note]; // based sound note off music note, get timings off music notes in array
             float note_time = musicSpeed->value * music_speed;
             spawn_generated_sound(world, frequency, note_time, instrumentType->value);
-            #ifdef zoxel_log_music_playing
-                zoxel_log(" > music note played [%i : %i] frequency [%f] instrument [%i]\n", musicNote->value, music_note, frequency, instrumentType->value);
-            #endif
+#ifdef zoxel_log_music_playing
+            zoxel_log(" > music note played [%i : %i] frequency [%f] instrument [%i]\n", musicNote->value, music_note, frequency, instrumentType->value);
+#endif
         }
     }
 } zox_declare_system(MusicPlaySystem)

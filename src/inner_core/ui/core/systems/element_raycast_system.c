@@ -1,13 +1,13 @@
 void ElementRaycastSystem(ecs_iter_t *it) {
     zox_iter_world()
-    const Raycaster *raycasters = ecs_field(it, Raycaster, 1);
-    const DeviceMode *deviceModes = ecs_field(it, DeviceMode, 2);
-    RaycasterTarget *raycasterTargets = ecs_field(it, RaycasterTarget, 3);
+    zox_field_in(Raycaster, raycasters, 1)
+    zox_field_in(DeviceMode, deviceModes, 2)
+    zox_field_out(RaycasterTarget, raycasterTargets, 3)
     for (int i = 0; i < it->count; i++) {
-        const DeviceMode *deviceMode = &deviceModes[i];
+        zox_field_i_in(DeviceMode, deviceModes, deviceMode)
         if (deviceMode->value != zox_device_mode_keyboardmouse && deviceMode->value != zox_device_mode_touchscreen) continue;
-        const Raycaster *raycaster = &raycasters[i];
-        RaycasterTarget *raycasterTarget = &raycasterTargets[i];
+        zox_field_i_in(Raycaster, raycasters, raycaster)
+        zox_field_i_out(RaycasterTarget, raycasterTargets, raycasterTarget)
         const int2 position = raycaster->value;
         int ui_layer = -1;
         ecs_entity_t ui_selected = 0;

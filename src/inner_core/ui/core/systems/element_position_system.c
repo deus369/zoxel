@@ -1,36 +1,3 @@
-extern int2 get_line_element_mid_point(ecs_world_t *world, ecs_entity_t e);
-extern void set_line_element_real_position2D(ecs_world_t *world, ecs_entity_t e, float2 real_position2D, int2 canvas_size, int2 pixel_position);
-
-void set_element_position(ecs_world_t *world, ecs_entity_t e, int2 parent_pixel_position_global, int2 parent_pixel_size, int2 canvas_size) {
-    if (e == 0 || !ecs_is_alive(world, e)) return;
-    // get e components
-    int2 pixel_position = int2_zero;
-    if (zox_has(e, PixelPosition)) pixel_position = zox_get_value(e, PixelPosition)
-    else pixel_position = get_line_element_mid_point(world, e);
-    float2 anchor = float2_zero;    // should i pass this in from parent?
-    if (zox_has(e, Anchor)) anchor = zox_get_value(e, Anchor)
-    // calculate pixel and real positions
-    int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
-    float2 position = get_element_position(pixel_position_global, canvas_size);
-    // now set variables
-    if (zox_has(e, Position2D)) {
-        Position2D *position2D = zox_get_mut(e, Position2D)
-        position2D->value = position;
-        zox_modified(e, Position2D)
-    }
-    if (zox_has(e, CanvasPosition)) {
-        CanvasPosition *canvasPosition = zox_get_mut(e, CanvasPosition)
-        canvasPosition->value = pixel_position_global;
-        zox_modified(e, CanvasPosition)
-    }
-    set_line_element_real_position2D(world, e, position, canvas_size, pixel_position);
-    if (zox_has(e, Children)) {
-        int2 pixel_size = zox_get_value(e, PixelSize)
-        const Children *children = zox_get(e, Children)
-        for (int i = 0; i < children->length; i++) set_element_position(world, children->value[i], pixel_position_global, pixel_size, canvas_size);
-    }
-}
-
 void ElementPositionSystem(ecs_iter_t *it) {
     zox_iter_world()
     ecs_query_t *change_query = it->ctx;
@@ -38,30 +5,30 @@ void ElementPositionSystem(ecs_iter_t *it) {
     while (ecs_query_next(&change_iter)) {
         if (change_iter.table != it->table) ecs_query_skip(&change_iter);
     }
-    const PixelPosition *pixelPositions = ecs_field(it, PixelPosition, 2);
-    const ParentLink *parentLinks = ecs_field(it, ParentLink, 3);
-    const Anchor *anchors = ecs_field(it, Anchor, 4);
-    const CanvasLink *canvasLinks = ecs_field(it, CanvasLink, 5);
-    Position2D *position2Ds = ecs_field(it, Position2D, 6);
-    CanvasPosition *canvasPositions = ecs_field(it, CanvasPosition, 7);
+    zox_field_in(PixelPosition, pixelPositions, 2)
+    zox_field_in(ParentLink, parentLinks, 3)
+    zox_field_in(Anchor, anchors, 4)
+    zox_field_in(CanvasLink, canvasLinks, 5)
+    zox_field_out(Position2D, position2Ds, 6)
+    zox_field_out(CanvasPosition, canvasPositions, 7)
     for (int i = 0; i < it->count; i++) {
         zox_field_e()
-        const PixelPosition *pixelPosition = &pixelPositions[i];
-        const ParentLink *parentLink = &parentLinks[i];
-        const Anchor *anchor = &anchors[i];
-        const CanvasLink *canvasLink = &canvasLinks[i];
+        zox_field_i_in(PixelPosition, pixelPositions, pixelPosition)
+        zox_field_i_in(ParentLink, parentLinks, parentLink)
+        zox_field_i_in(Anchor, anchors, anchor)
+        zox_field_i_in(CanvasLink, canvasLinks, canvasLink)
         if (!zox_valid(canvasLink->value) || parentLink->value != canvasLink->value) continue;
+        zox_field_i_out(Position2D, position2Ds, position2D)
+        zox_field_i_out(CanvasPosition, canvasPositions, canvasPosition)
         const int2 canvas_size = zox_get_value(canvasLink->value, PixelSize)
-        Position2D *position2D = &position2Ds[i];
-        CanvasPosition *canvasPosition = &canvasPositions[i];
-        int2 pixel_position = pixelPosition->value;
-        float2 anchor2 = anchor->value;
-        int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor2);
-        float2 position = get_element_position(pixel_position_global, canvas_size);
+        const int2 pixel_position = pixelPosition->value;
+        const float2 anchor2 = anchor->value;
+        const int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor2);
+        const float2 position = get_element_position(pixel_position_global, canvas_size);
         canvasPosition->value = pixel_position_global;
         position2D->value = position;
         if (zox_has(e, Children)) {
-            int2 pixel_size = zox_get_value(e, PixelSize)
+            const int2 pixel_size = zox_get_value(e, PixelSize)
             const Children *children = zox_get(e, Children)
             for (int j = 0; j < children->length; j++) set_element_position(world, children->value[j], pixel_position_global, pixel_size, canvas_size);
         }

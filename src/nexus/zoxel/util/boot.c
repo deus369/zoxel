@@ -19,7 +19,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     if (!headless) spawn_music(world, instrument_piano); // _square
     spawn_players(world);
     spawn_player_cameras(world);
-    spawn_default_ui(world);
+    spawn_default_ui(world, main_cameras[0]);
     zox_spawn_main_menu(world, game_name);
     // debug/testing
 #ifdef zoxel_start_with_debug_ui
