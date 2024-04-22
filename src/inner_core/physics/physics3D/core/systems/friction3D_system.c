@@ -1,4 +1,3 @@
-// todo: only do this when scraping against a surface
 void Friction3DSystem(ecs_iter_t *it) {
     zox_field_in(Velocity3D, velocity3Ds, 2)
     zox_field_out(Acceleration3D, acceleration3Ds, 3)

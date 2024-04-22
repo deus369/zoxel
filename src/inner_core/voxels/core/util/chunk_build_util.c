@@ -85,13 +85,6 @@ void add_voxel_face_uvs(MeshIndicies *meshIndicies, MeshVertices *meshVertices, 
     mesh_start->y += voxel_face_vertices_length;
 }
 
-//! Create functions with macros to get voxels.
-/**
-*   \todo chunk_other should never be non null and have value == null as all chunks should be built at once..
-*/
-// printf("Error in get_voxel_direction (chunk_other->value == NULL) [%ix%ix%i]\n", local_position.x, local_position.y, local_position.z);
-// printf("Error in get_voxel_direction (chunk_other->length == 0) [%ix%ix%i]\n", local_position.x, local_position.y, local_position.z);
-
 #define zoxel_get_voxel_direction(direction, dimension, is_positive)\
 unsigned char get_voxel##_##direction(byte3 local_position, const ChunkData *chunk, byte3 chunk_size, const ChunkData *chunk_other) {\
     if ((is_positive && local_position.dimension == chunk_size.dimension - 1) || (!is_positive && local_position.dimension == 0)) {\

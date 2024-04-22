@@ -4,7 +4,6 @@ int frames_count, frames_per_second = 0;
 double zox_current_time_check = 0.0;
 const int record_frames_count = 120;
 double zox_delta_times[120];
-// todo: make physics run multiple timesteps incase it needs to step through more
 const double max_zox_delta_time = 1.0 / 2.0;
 
 double current_time_in_seconds() {

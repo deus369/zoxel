@@ -19,7 +19,6 @@ extern int debug_can_jump(ecs_world_t *world, char buffer[], int buffer_size, in
 // #define zox_debug_ui_node_memory
 // #define zox_debug_ui_zexts
 // #define zox_debug_can_jump
-// todo: sometimes it removes a memorys when spawning/unspawning this label
 
 #ifdef zox_debug_ui_save_cloud
     extern unsigned char test_read_byte;

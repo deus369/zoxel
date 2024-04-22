@@ -2,8 +2,6 @@
 #define zoxel_platforms
 
 // specific platform implementation code
-// todo:
-//  > activate keyboard on steam deck
 
 // zoxel_settings
 int cpu_core_count;

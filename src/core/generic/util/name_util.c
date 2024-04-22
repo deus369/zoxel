@@ -1,5 +1,3 @@
-// todo: set names makes use of extern in flecs macro, bad looping
-
 unsigned char* convert_string_to_zext(const char* text) {
     unsigned char text_length = strlen(text);
     unsigned char *zext = malloc(text_length);

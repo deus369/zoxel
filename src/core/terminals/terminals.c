@@ -1,10 +1,6 @@
 #ifndef zoxel_terminals
 #define zoxel_terminals
 
-// used for terminal functions
-// todo:
-//  > get input from terminal
-
 // zoxel_settings
 // zoxel_component_includes
 zox_declare_tag(Terminal)

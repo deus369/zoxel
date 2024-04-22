@@ -30,7 +30,6 @@ void StreamPointSystem(ecs_iter_t *it) {
             #endif
             unsigned char *changed = malloc(total_chunks);
             for (int j = 0; j < total_chunks; j++) {
-                // todo: check terrain matches up to stream points
                 const ChunkPosition *chunkPosition = &chunkPositions[j];
                 unsigned char new_chunk_division = get_chunk_division(new_position, chunkPosition->value);
                 RenderLod *renderLod = &renderLods[j];

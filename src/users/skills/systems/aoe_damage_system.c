@@ -1,13 +1,5 @@
 // #define zox_debug_aoe_damage_system
 
-// for any nearby entities with StatLinks:
-//      - add a damage debuff on them
-//      - remove when they leave the sphere of influence
-// for now, just damage directly
-// use StatValue to lower their health
-// todo: use a entities list to add/remove nearby characters to it, and just check if they enter or leave
-//  -> use nearby entities 
-
 #ifdef zox_debug_aoe_damage_system
     extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
 #endif
@@ -54,11 +46,7 @@ void AOEDamageSystem(ecs_iter_t *it) {
                 statValue->value -= delta_time * damage_rate;
                 if (statValue->value < 0) statValue->value = 0;
                 zox_modified(health_stat, StatValue)
-                if (!statValue->value) {
-                    // todo: dead animation
-                    // zox_delete(e2)
-                    continue;
-                }
+                if (!statValue->value) continue;
                 #ifdef zox_debug_aoe_damage_system
                     spawn_line3D(world, position3D->value, position3D2->value, 0.5f, 0.1);
                 #endif

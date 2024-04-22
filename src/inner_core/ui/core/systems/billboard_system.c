@@ -1,6 +1,6 @@
 // #define zox_debug_billboard_system
 #ifdef zox_debug_billboard_system
-    extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
+extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
 #endif
 
 void BillboardSystem(ecs_iter_t *it) {

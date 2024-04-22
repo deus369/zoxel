@@ -6,17 +6,12 @@ unsigned char game_rule_attach_to_character = 1;
 unsigned char game_rule_attach_to_character = 0;
 #endif
 
-// somewhere below android on samsung crashes...!
-// try disabling touch inpput to see if helps
-// todo: for each player
 void player_start_game(ecs_world_t *world, ecs_entity_t player) {
     disable_inputs_until_release(world, player, zox_device_mode_none);
     // ui control
     ecs_entity_t camera = zox_get_value(player, CameraLink) //  main_cameras[0];
     if (zox_game_type == zox_game_mode_3D) {
         spawn_in_game_ui(world, player);
-        // todo: get player camera linked to it
-        // temp here for now
         if (!zox_has(camera, Streamer)) {
             zox_add_only(camera, Streamer)
             zox_add_only(camera, StreamPoint)
@@ -25,8 +20,6 @@ void player_start_game(ecs_world_t *world, ecs_entity_t player) {
         int3 terrain_position = int3_zero;
         if (camera_position3D) terrain_position = get_chunk_position(camera_position3D->value, default_chunk_size);
         zox_set(camera, StreamPoint, { terrain_position })
-        // link camera to terrain it's in
-        // todo: dynamically set camera in whatever world it is in, multiple links? position space based
         if (local_terrain) zox_set(camera, VoxLink, { local_terrain })
         if (game_rule_attach_to_character) {
             float3 spawn_position = zox_get_value(camera, Position3D)

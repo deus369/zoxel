@@ -1,15 +1,10 @@
 #ifndef zoxel_rendering
 #define zoxel_rendering
 
-// todo: is_using_vulkan -> render_backend
 #define zox_render_backend_headless 0
 #define zox_render_backend_opengl 1
 #define zox_render_backend_vulkan 2
 #define zox_render_backend_directx 3
-
-// todo: create a render stack?
-// todo: use realm cameras instead of singleton data render_camera_matrix, ui_camera_matrix
-// todo: remove core functions into rendering outer core, make core all the extra data i've got in here
 
 // zoxel_settings
 unsigned char render_backend = zox_render_backend_opengl;
@@ -28,11 +23,11 @@ zox_declare_tag(ElementRender)
 zox_component_byte(MeshDirty)
 zox_component_byte(TextureDirty)
 zox_component_byte(MeshAlignment)
-zox_component_byte(RenderLod) // The resolution of each chunk, distance to nearest camera
+zox_component_byte(RenderLod)       // The resolution of each chunk, distance to nearest camera
 zox_component_byte(RenderDisabled)
 zox_component_float(Brightness)
 zox_component_float(Alpha)
-#include "opengl/opengl.c" // todo: remove use of this
+#include "opengl/opengl.c"
 #include "vulkan/vulkan.c"
 #include "core/core.c"
 #include "basics2D/basics2D.c"

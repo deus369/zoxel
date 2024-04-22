@@ -1,4 +1,3 @@
-//! Changes brightness based on raycast state.
 void ElementSelectedSystem(ecs_iter_t *it) {
     const SelectState *selectableStates = ecs_field(it, SelectState, 2);
     Brightness *brightnesss = ecs_field(it, Brightness, 3);

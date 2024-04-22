@@ -1,6 +1,6 @@
 //! Each entity will impact all other entities.
 void Gravity2DSystem(ecs_iter_t *it) {
-    //! \todo Inject other entities in here and pull towards them. Eventually use a localized NearbyEntities component instead of everything.
+    // NearbyEntities component instead of everything.
     /*double delta_time = (double) it->delta_time;
     Position2D *position2Ds = ecs_field(it, Position2D, 1);
     Velocity2D *velocity2Ds = ecs_field(it, Velocity2D, 2);

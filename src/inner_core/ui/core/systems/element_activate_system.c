@@ -1,30 +1,20 @@
 #ifdef zoxel_inputs
-
-void set_ui_clicked_mut(ecs_world_t *world, ecs_entity_t ui) {
-    if (zox_has(ui, Clickable)) {
-        // zox_set(ui, ClickState, { 1 }) // i made it like this due to some complication
-        ClickState *clickState = zox_get_mut(ui, ClickState)
-        clickState->value = 1;
-        zox_modified(ui, ClickState)
-    }
-}
-
 void ElementActivateSystem(ecs_iter_t *it) {
     zox_iter_world()
-    const DeviceLinks *deviceLinks = ecs_field(it, DeviceLinks, 1);
-    const DeviceMode *deviceModes = ecs_field(it, DeviceMode, 2);
-    const RaycasterTarget *raycasterTargets = ecs_field(it, RaycasterTarget, 3);
-    RaycasterResult *raycasterResults = ecs_field(it, RaycasterResult, 4);
+    zox_field_in(DeviceLinks, deviceLinks, 1)
+    zox_field_in(DeviceMode, deviceModes, 2)
+    zox_field_in(RaycasterTarget, raycasterTargets, 3)
+    zox_field_out(RaycasterResult, raycasterResults, 4)
     for (int i = 0; i < it->count; i++) {
-        RaycasterResult *raycasterResult = &raycasterResults[i];
-        const RaycasterTarget *raycasterTarget = &raycasterTargets[i];
+        zox_field_i_out(RaycasterResult, raycasterResults, raycasterResult)
+        zox_field_i_in(RaycasterTarget, raycasterTargets, raycasterTarget)
         if (!raycasterTarget->value || !ecs_is_alive(world, raycasterTarget->value)) {
             raycasterResult->value = 0;
             continue;
         }
-        ecs_entity_t e = it->entities[i];
-        const DeviceLinks *deviceLinks2 = &deviceLinks[i];
-        const DeviceMode *deviceMode = &deviceModes[i];
+        zox_field_e()
+        zox_field_i_in(DeviceLinks, deviceLinks, deviceLinks2)
+        zox_field_i_in(DeviceMode, deviceModes, deviceMode)
         unsigned char did_drag = 0;
         unsigned char did_activate = 0;
         for (int j = 0; j < deviceLinks2->length; j++) { // convert inputs to actions
@@ -68,7 +58,6 @@ void ElementActivateSystem(ecs_iter_t *it) {
         raycasterResult->value = did_drag || did_activate;
         if (did_drag) {
             if (zox_has(raycasterTarget->value, Dragable)) {
-                // todo: zox_set_mut => the next 3 lines basically, component, entity, new_value
                 DraggableState *dragableState = zox_get_mut(raycasterTarget->value, DraggableState)
                 if (!dragableState->value) {
                     DraggerLink *draggerLink = zox_get_mut(raycasterTarget->value, DraggerLink)
@@ -84,5 +73,4 @@ void ElementActivateSystem(ecs_iter_t *it) {
         } else if (did_activate) set_ui_clicked_mut(world, raycasterTarget->value);
     }
 } zox_declare_system(ElementActivateSystem)
-
 #endif

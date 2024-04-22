@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# \todo Also copy files:
+# Also copy files:
 #   - app/jni/CMakeLists.txt
 #   - app/jni/CMakeLists.txt
 #   - app/jni/src/Android.mk
 #   - app/src/main/AndroidManifest.xml
 #   - app/src/main/res
 #   - resources into app/src/main/resources/ & rename to android-resources sub folder
-# todo: copy resources into app/src/main/resources/
+# copy resources into app/src/main/resources/
 # ? & rename to android-resources sub folder
 
 source bash/android/gradle_pathing.sh

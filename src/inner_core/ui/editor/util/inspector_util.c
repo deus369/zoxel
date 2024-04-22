@@ -107,7 +107,6 @@ void set_inspector_element(ecs_world_t *world, ecs_entity_t window_entity, ecs_e
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const int scrollbar_margins = zox_gett_value(scrollbar, ElementMargins).x;
     const int scrollbar_width = zox_gett_value(scrollbar, PixelSize).x;
-        // todo: put these inside a element style
         const int2 button_padding = (int2) { (int) (font_size * 0.46f), (int) (font_size * 0.3f) };
         const int2 list_margins = (int2) { (int) (font_size * 0.8f), (int) (font_size * 0.8f) };
         const int button_inner_margins = (int) (font_size * 0.5f);

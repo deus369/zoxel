@@ -27,7 +27,6 @@ typedef struct {\
 
 #define zox_entity_component(name) zox_component(name, ecs_entity_t)
 
-// todo: redo these hooks as a system
 #define zox_define_component_w_dest(name) zox_define_component(name) ecs_set_hooks(world, name, { .dtor = ecs_dtor(name) });
 
 #define zox_define_destruction(name) ecs_set_hooks(world, name, { .dtor = ecs_dtor(name) });
@@ -85,7 +84,6 @@ ecs_observer_init(world, &(ecs_observer_desc_t) {\
 
 #define zox_define_entity_parent_component(name) zox_define_entity_parent_component2(name, [out] name)
 
-// todo: make this one hashmap with all component ids as keys, a type as a value
 #define zox_component_type_none 0
 #define zox_component_type_byte 1
 #define zox_component_type_int 2

@@ -1,4 +1,3 @@
-// todo: make a better way for modules to add terminal options
 extern unsigned char fullscreen;
 extern unsigned char halfscreen;
 extern unsigned char is_split_screen;

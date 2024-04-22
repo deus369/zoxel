@@ -1,6 +1,5 @@
 #define zoxel_convert_ascii(char, number) else if (input == char) return number;
 
-//! \todo use a Hash Map to convert these
 unsigned char convert_ascii(char input) {
     // special characters
     if (input == '?') return 0;

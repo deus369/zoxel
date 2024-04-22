@@ -1,5 +1,4 @@
 ecs_entity_t prefab_material;
-// todo: keep a reference to the script for the material
 
 ecs_entity_t spawn_prefab_material(ecs_world_t *world) {
     zox_prefab()

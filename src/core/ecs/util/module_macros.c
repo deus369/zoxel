@@ -1,6 +1,3 @@
-// todo: Override these macros during testing to print statements
-//      When it breaks on module import
-
 #define zox_module(name) ECS_MODULE(world, name);
 
 #define zox_import_module(name) ECS_IMPORT(world, name);

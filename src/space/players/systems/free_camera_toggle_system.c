@@ -1,10 +1,8 @@
-// todo: change this to work with player, cameraLinks, and deviceLinks
 void FreeCameraToggleSystem(ecs_iter_t *it) {
     zox_iter_world()
     const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
     const CameraLink *cameraLinks = ecs_field(it, CameraLink, 3);
     for (int i = 0; i < it->count; i++) {
-        // todo: use player GameLink here
         const GameState *gameState = zox_get(local_game, GameState)
         if (gameState->value != zox_game_playing) continue;
         const CameraLink *cameraLink = &cameraLinks[i];

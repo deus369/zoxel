@@ -1,6 +1,6 @@
 #! /bin/bash
 
-echo " [todo] upload game with itch"
+echo " uploads game with itch"
 butler="./build/butler/butler"
 username="deus0"
 game="zoxel"

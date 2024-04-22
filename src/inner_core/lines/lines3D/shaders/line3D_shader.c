@@ -29,7 +29,6 @@ GLuint line3D_color_location;
 GLuint line3D_camera_matrix_location;
 GLuint line3D_fog_data_location;
 
-// todo: call dispose_line3D_shader / move it to a shader entity
 void dispose_shader_line3D() {
     glDeleteShader(line3D_shader.x);
     glDeleteShader(line3D_shader.y);

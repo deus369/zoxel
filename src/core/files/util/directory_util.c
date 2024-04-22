@@ -54,7 +54,6 @@ FileList get_files(const char *directory) {
     return fileList;
 }
 
-// todo: test on windows
 void list_files(const char *directory) {
     struct dirent *entry;
     DIR *dp;

@@ -1,12 +1,6 @@
 #ifndef zoxel_vulkan
 #define zoxel_vulkan
 
-// todo: a simple triangle mesh / entity with opengl
-// todo: next, render a simple triangle with vulkan instead of opengl
-//      - use a --vulkan option when running zoxel
-// todo: load ui shaders with vulkan
-// todo: update vulkan shader meshes in threaded systems
-
 // #include "vulkan/vulkan.c"
 #include "util/vulkan_check.c"
 #ifdef zox_include_vulkan

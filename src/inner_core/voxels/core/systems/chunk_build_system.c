@@ -4,13 +4,6 @@
 // #define disable_voxel_up
 // #define disable_voxel_back
 // #define disable_voxel_front
-
-//! \todo Use a hashmap with bit map of side voxels, to generate voxel faces.
-//      for example, top and bottom, would be 001100, and would have 8 vertexes and 12 indicies.
-
-//! \todo combine vertices between voxel meshes.
-//      For example, to up faces next to each other, will only have 6 vertices and now 8.
-
 void add_voxel_face(MeshIndicies *meshIndicies2, MeshVertices *meshVertices2,
     float3 vertex_position_offset, float3 center_mesh_offset, float voxel_scale,
     int2 *start, int2 start2,

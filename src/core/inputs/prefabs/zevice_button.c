@@ -26,7 +26,6 @@ ecs_entity_t spawn_device_button(ecs_world_t *world, unsigned char type, unsigne
     return e;
 }
 
-// todo: put this in a system on load instead
 unsigned char reset_device_button(ZeviceButton *zeviceButton) {
     unsigned char previous_value = zeviceButton->value;
     if (devices_get_pressed_this_frame(zeviceButton->value)) devices_set_pressed_this_frame(&zeviceButton->value, 0);

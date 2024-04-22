@@ -1,18 +1,8 @@
 #ifndef zoxel_ui_core
 #define zoxel_ui_core
 
-// \todo Display a UI Element anchored, with a pixel position.
-// \todo Change colour when ray hits a button.
-//! \todo When resizing, reposition UIs.
-//      - should i use a resize event in the window?
-// completely 2D ui? 3D canvas + 3D transforms?
-// canvas: still uses 2D posti
-
 // zoxel_settings
-#define canvas_edge_size 8
-#define ui_selected_brightness 1.42f
-#define ui_default_brightness 0.8f
-ecs_entity_t main_canvas;
+#include "settings/settings.c"
 // zoxel_declare_components
 zox_declare_tag(Element)
 zox_declare_tag(Element3D)
@@ -39,6 +29,7 @@ zox_entities_component(ElementLinks)
 #include "util/anchor_util.c"
 #include "util/prefab_util_world_ui.c"
 #include "util/element_render_util.c"
+#include "util/click_util.c"
 // zoxel_include_prefabs
 #include "prefabs/canvas.c"
 #include "prefabs/element.c"
@@ -107,8 +98,8 @@ zox_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [in] Device
 zox_system_ctx(ElementPositionSystem, EcsPreUpdate, pixel_positions_query, [none] Element, [in] PixelPosition, [in] ParentLink, [in] Anchor, [in] CanvasLink, [out] Position2D, [out] CanvasPosition)
 zox_system(ElementSelectedSystem, EcsOnUpdate, [none] Element, [in] SelectState, [out] Brightness)
 zox_system(BillboardSystem, zox_transforms_stage, [none] ElementBillboard, [in] CameraLink, [in] Position3D, [out] Rotation3D)
-zox_system(UITrailSystem, zox_transforms_stage, [in] UIHolderLink, [in] UITrail, [out] Position3D)    // todo: put back to EcsPostUpdate - can't find out where character position updates atm
-zox_system(ElementBarSystem, EcsOnUpdate, [in] ElementBar, [in] ElementBarSize, [in] Children) // todo make multithreading
+zox_system(UITrailSystem, zox_transforms_stage, [in] UIHolderLink, [in] UITrail, [out] Position3D)
+zox_system(ElementBarSystem, EcsOnUpdate, [in] ElementBar, [in] ElementBarSize, [in] Children)
 if (!headless) {
     zox_system_1(Element2DMeshSystem, main_thread_pipeline, [none] Element, [in] PixelSize, [in] MeshAlignment, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] MeshVertices2D, [out] MeshGPULink, [out] TextureGPULink, [out] UvsGPULink, [none] !Element3D)
     zox_system_1(Element3DMeshSystem, main_thread_pipeline, [none] Element3D, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture,  [out] MeshGPULink, [out] UvsGPULink, [out] ColorsGPULink, [out] TextureGPULink)

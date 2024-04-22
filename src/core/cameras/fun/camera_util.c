@@ -2,7 +2,6 @@ void resize_camera(ecs_world_t *world, ecs_entity_t e, int2 new_screen_dimension
     if (e && ecs_is_alive(world, e)) zox_set(e, ScreenDimensions, { new_screen_dimensions })
 }
 
-//! Uses ecs_get_mut to resize cameras. \todo Create a viewport resize event.
 void resize_cameras(int2 screen_size) {
     for (int i = 0; i < main_cameras_count; i++) resize_camera(world, main_cameras[i], screen_size);
     resize_camera(world, ui_cameras[0], screen_size);

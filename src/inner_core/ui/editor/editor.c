@@ -1,9 +1,6 @@
 #ifndef zoxel_editor_elements
 #define zoxel_editor_elements
 
-// todo: edit prefab for component and hierarchy uis, so i can add appropriate ui links to the entities and components there and tags
-// todo: fix background not regenerating due to system order issues, just make another state that happens after dirty for a entire frame, actually use same byte, just flag the bit in it to track it
-
 // settings
 // zoxel_declare_components
 zox_declare_tag(EditorElement)

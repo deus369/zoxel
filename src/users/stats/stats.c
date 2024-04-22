@@ -1,14 +1,6 @@
 #ifndef zoxel_stats
 #define zoxel_stats
 
-// todo:
-//      > first create Stat prefab
-//      > next child, but keep same name, don't add override to ZoxName property
-//      > for GameDebugLabel - use ZoxName component off Stat
-// todo: make meta stat same entity, parent of user stat, and share it's name and description
-// todo: hover tooltip for healthbar 2D
-// todo: why is statvalue showing twice on stats?? oh i get it
-
 // zoxel_component_declares
 zox_declare_tag(StateStat)
 zox_declare_tag(RegenStat)

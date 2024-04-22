@@ -1,5 +1,3 @@
-// todo: remove any canvas elements, these will just be world transform uis
-// todo: add alpha to a texture3D shader variant
 ecs_entity_t prefab_element_world;
 
 ecs_entity_t spawn_prefab_element3D(ecs_world_t *world) {

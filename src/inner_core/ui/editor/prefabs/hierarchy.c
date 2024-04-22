@@ -1,9 +1,3 @@
-// todo:
-//  > spawn entities from a query
-//  > selection on list ui
-//  > multi selection on list ui
-//  > click event linked to inspector ui of entity
-
 ecs_entity_t prefab_hierarchy;
 ecs_entity_t hierarchy = 0;
 

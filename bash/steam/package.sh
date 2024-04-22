@@ -1,6 +1,5 @@
 #!/bin/sh
 
-#echo " > todo: this"
 #echo " > copying [linux] contents to build/steam_export"
 #echo " > copying [windows] contents to build/steam_export"
 #echo " > copying [bash/steam/real_steam_appid.txt] contents to build/steam_export/steam_appid.txt"

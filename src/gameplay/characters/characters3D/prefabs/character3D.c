@@ -51,7 +51,6 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vo
     float max_health = 10.0f;
     int stats_count = 1;
     if (is_player_character) stats_count++;
-    // todo: make prefab for health_stat, etc
     StatLinks *statLinks = zox_get_mut(e, StatLinks)
     resize_memory_component(StatLinks, statLinks, ecs_entity_t, stats_count)
     // health

@@ -1,17 +1,6 @@
 #ifndef zoxel_animations
 #define zoxel_animations
 
-// Animation Structure
-//  > characters can have many animations
-//  > animation instance data contains the time value of the animation starting
-//  > animation data contains the lerp start and end values
-//  > an animation contains many curves
-//      > a curve has a property, requires a system to lerp that property (can macro this system)
-//  > our death animation consists of a bunch of curves, each curve will lerp different properties
-//      > scale, color, etc
-// todo:
-//  > animation curve editor simplified, just show animation and list of curve/properties it has
-
 #include "data/animation_states.c"
 // components
 zox_component_byte(AnimationState)

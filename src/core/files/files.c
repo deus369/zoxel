@@ -5,8 +5,6 @@
 #include <dirent.h>
 #include <errno.h>
 // used for file io functions
-// todo:
-//  > read/write async bytes to files (for multi threaded systems use)
 // zoxel_settings
 // zoxel_component_includes
 // zox_declare_tag(Files)

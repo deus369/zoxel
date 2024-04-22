@@ -21,7 +21,6 @@ ecs_entity_t spawn_voxel(ecs_world_t *world, unsigned char index) {
     resize_memory_component(Textures, textures, ecs_entity_t, 1)
     for (int i = 0; i < 1; i++) {
         ecs_entity_t texture_entity = spawn_texture_dirt(world, seed + i);
-        // todo: just set a flag for TextureGenerationType
         if (index == 0) {
             zox_add_tag(texture_entity, DirtTexture)
         } else if (index == 1) {

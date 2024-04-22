@@ -1,11 +1,4 @@
 #ifdef zoxel_inputs
-
-#define ui_navigation_joystick_cutoff 0.6f
-#define ui_navigation_timing 0.3
-#define restore_joystick_cutoff 0.06f
-// select left and right later directions
-// also, use a stored selection, NavigatorSelected component
-
 void ElementNavigationSystem(ecs_iter_t *it) {
     double delta_time = zox_delta_time;
     zox_iter_world()
@@ -33,9 +26,8 @@ void ElementNavigationSystem(ecs_iter_t *it) {
         const DeviceLinks *deviceLinks2 = &deviceLinks[i];
         // zoxel_log(" > raycasterTarget->value %lu\n", raycasterTarget->value);
         for (int j = 0; j < deviceLinks2->length; j++) {
-            ecs_entity_t device_entity = deviceLinks2->value[j];
+            const ecs_entity_t device_entity = deviceLinks2->value[j];
             if (!zox_has(device_entity, Gamepad)) continue;
-            // const Gamepad *gamepad = ecs_get(world, device_entity, Gamepad);
             const Children *zevices = ecs_get(world, device_entity, Children);
             for (int k = 0; k < zevices->length; k++) {
                 ecs_entity_t zevice_entity = zevices->value[k];
@@ -66,25 +58,18 @@ void ElementNavigationSystem(ecs_iter_t *it) {
             if (navigatorTimer->value < 0) navigatorTimer->value = 0;
             continue;
         }
-        // zox_log(" > element navigation stick (%f) [%lu] from %lu\n", left_stick.y, raycasterTarget->value, it->entities[i])
-        // zox_log(" > 2 element navigation stick: %f\n", left_stick.y)
         ecs_entity_t parent_entity = ecs_get(world, raycasterTarget->value, ParentLink)->value;
         const Children *children = ecs_get(world, parent_entity, Children);
         unsigned did_find = 0;
         for (int k = 0; k < children->length; k++) {
             ecs_entity_t child_entity = children->value[k];
             if (zox_has(child_entity, Selectable) && child_entity == raycasterTarget->value) {
-                // zoxel_log(" > found selectable [%i] out of [%i] - %lu\n", k, children->length, child_entity);
                 did_find = 1;
                 if (left_stick.y >= ui_navigation_joystick_cutoff && k > 1) {
-                    // zoxel_log("     > moved up ui to [%i] - %lu\n", (k - 1), children->value[k - 1]);
                     raycaster_select_ui(world, raycasterTarget, children->value[k - 1]);
-                    // set_ui_selected_mut(world, raycasterTarget->value);
                     set_selectable_state_mut(world, raycasterTarget->value, 1);
                 } else if (left_stick.y <= -ui_navigation_joystick_cutoff && k != children->length - 1) {
-                    // zoxel_log("     > moved down ui to [%i] - %lu\n", (k + 1), children->value[k + 1]);
                     raycaster_select_ui(world, raycasterTarget, children->value[k + 1]);
-                    // set_ui_selected_mut(world, raycasterTarget->value);
                     set_selectable_state_mut(world, raycasterTarget->value, 1);
                 }
                 break;
@@ -96,12 +81,4 @@ void ElementNavigationSystem(ecs_iter_t *it) {
         }
     }
 } zox_declare_system(ElementNavigationSystem)
-
 #endif
-
-/*if (!did_find) {
-    zoxel_log(" ! selectable not found out of [%i]\n", children->length);
-}*/
-
-        // if (left_stick.x == 0 && left_stick.y == 0) break;
-        // zoxel_log(" > navigating [%f] -> t [%f]\n", left_stick.y, navigatorTimer->value);

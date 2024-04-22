@@ -1,8 +1,3 @@
-// todo: add to players ui links (ElementLinks)
-// todo: link each finger pointer to it's own virtual joystick entity
-// todo: link each virtual joystick entity to it's own virtual joystick ui
-// if player is using touchscreen, and touches, then create the joystick ui in new position
-// check if touches an invisible ui area
 // #define zoxel_mouse_emulate_touch
 // #define zoxel_disable_mouse_lock
 

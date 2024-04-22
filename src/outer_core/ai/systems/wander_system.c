@@ -1,5 +1,4 @@
 // simple wander, adds acceleration to entity's with wander tag
-// todo: kate plugin that generates system, right click -> new system code
 void WanderSystem(ecs_iter_t *it) {
     const float2 movement_power = (float2) { 0, 4 };
     const float2 max_velocity = { 60 * 60, 160 * 60 };
@@ -20,7 +19,6 @@ void WanderSystem(ecs_iter_t *it) {
         zox_field_i_out(Acceleration3D, acceleration3Ds, acceleration3D)
         zox_field_i_in(Omega3D, omega3Ds, omega3D)
         zox_field_i_out(Alpha3D, alpha3Ds, alpha3D)
-        // todo: maybe make this into a component
         // float2 movement = { (rand() % 100) * 0.01f, (rand() % 100) * 0.01f };
         float2 movement = { (rand() % 100) * 0.01f * pivot_power - pivot_power * 0.5f, (rand() % 100) * 0.01f };
         float2 euler = { 0, (rand() % 100) * 0.01f * rotate_power - rotate_power * 0.5f };

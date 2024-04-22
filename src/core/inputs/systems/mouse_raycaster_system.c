@@ -1,5 +1,3 @@
-// pushes mouse data into Raycaster component
-// todo: check device mode here or device enabled states
 void MouseRaycasterSystem(ecs_iter_t *it) {
     zox_iter_world()
     zox_field_in(DeviceLinks, deviceLinks, 1)

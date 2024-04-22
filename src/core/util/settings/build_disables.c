@@ -62,5 +62,5 @@
 // #define zox_disable_terrain_grid
 // #define zoxel_disable_velocity       // disables all movement, used to debug spawning
 // #define zoxel_disable_non_vertical_bounce
-// #define zox_disable_fog      // todo: make work
+// #define zox_disable_fog
 // #define zox_disable_vox_octrees

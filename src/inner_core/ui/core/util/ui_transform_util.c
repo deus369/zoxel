@@ -29,7 +29,6 @@ float2 get_ui_real_position2D_canvas(int2 local_pixel_position, float2 anchor, f
     return (float2) { ((local_pixel_position.x  / canvas_size_f.x) - 0.5f + anchor.x) * aspect_ratio, ((local_pixel_position.y  / canvas_size_f.y) - 0.5f + anchor.y) };
 }
 
-// used by canvas resizing - todo: remove this and use a more universal UI resize system for repositioning
 float2 get_ui_real_position2D_parent(int2 local_pixel_position, float2 anchor, float2 parent_position2D, int2 parent_pixel_size, float2 canvas_size_f, float aspect_ratio) {
     float2 parent_pixel_ratio = (float2) { parent_pixel_size.x / canvas_size_f.y, parent_pixel_size.y / canvas_size_f.y };
     float2 position2D = parent_position2D;
@@ -129,40 +128,3 @@ void initialize_ui_components_3(ecs_world_t *world, ecs_entity_t e, ecs_entity_t
     zox_set(e, Position2D, { position2D }) // set this inside pixel position system
     zox_set(e, CanvasPosition, { pixel_position_global }) // set this inside system too
 }
-
-
-/*float2 initialize_ui_components(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, int2 local_pixel_position, int2 pixel_size, float2 anchor, unsigned char layer, int2 canvas_size) {
-    float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
-    float aspect_ratio = canvasSizef.x / canvasSizef.y;
-    float2 position2D = get_ui_real_position2D(world, e, parent, local_pixel_position, anchor, canvas_size);
-    int2 global_pixel_position = (int2) { ceil(((position2D.x / aspect_ratio) + 0.5f) * canvasSizef.x), ((position2D.y + 0.5f) * canvasSizef.y) };
-    zox_set(e, PixelSize, { pixel_size })
-    zox_set(e, TextureSize, { pixel_size })
-    zox_set(e, PixelPosition, { local_pixel_position })
-    zox_set(e, CanvasLink, { main_canvas })
-    zox_set(e, ParentLink, { parent })
-    zox_set(e, Anchor, { anchor })
-    zox_set(e, Layer2D, { layer })
-    zox_set(e, Position2D, { position2D })
-    zox_set(e, CanvasPosition, { global_pixel_position })
-    return position2D;
-}
-
-float2 initialize_ui_components_2(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, int2 local_pixel_position, int2 pixel_size, float2 anchor, unsigned char layer, float2 parent_position, int2 parent_pixel_size, int2 canvas_size) {
-    float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
-    float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
-    float2 position2D = get_ui_real_position2D_parent(local_pixel_position, anchor, parent_position, parent_pixel_size, canvas_size_f, aspect_ratio);
-    int2 global_pixel_position = (int2) { ceil(((position2D.x / aspect_ratio) + 0.5f) * canvas_size_f.x), ((position2D.y + 0.5f) * canvas_size_f.y) };
-    // todo: make global pixel position dependent only on pixel positions, and not position2D
-    //          > set position2D within
-    zox_set(e, Anchor, { anchor })
-    zox_set(e, PixelSize, { pixel_size })
-    zox_set(e, TextureSize, { pixel_size })
-    zox_set(e, CanvasLink, { main_canvas })
-    zox_set(e, ParentLink, { parent })
-    zox_set(e, Layer2D, { layer })
-    zox_set(e, PixelPosition, { local_pixel_position })
-    zox_set(e, Position2D, { position2D })
-    zox_set(e, CanvasPosition, { global_pixel_position })
-    return position2D;
-}*/

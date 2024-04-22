@@ -1,5 +1,4 @@
 ecs_entity_t prefab_shader;
-// todo: keep a reference to the script for the shader
 
 ecs_entity_t spawn_prefab_shader(ecs_world_t *world) {
     zox_prefab()

@@ -1,5 +1,3 @@
-// todo: canvas lines doesn't update in this, needs to link up
-// todo: make this instantaneous for children uis as well (it isn't when you drag)
 extern int2 get_line_element_mid_point(ecs_world_t *world, ecs_entity_t e);
 extern void set_line_element_real_position2D(ecs_world_t *world, ecs_entity_t e, float2 real_position2D, int2 canvas_size, int2 pixel_position);
 
@@ -33,8 +31,6 @@ void set_element_position(ecs_world_t *world, ecs_entity_t e, int2 parent_pixel_
     }
 }
 
-// moves ui around after repositioning the pixel position
-// todo: hierarchy doesn't set properly... uses this to set
 void ElementPositionSystem(ecs_iter_t *it) {
     zox_iter_world()
     ecs_query_t *change_query = it->ctx;

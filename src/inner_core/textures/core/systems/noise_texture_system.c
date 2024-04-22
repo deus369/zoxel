@@ -1,6 +1,3 @@
-//! This breaks the updates. \todo Fix this. Find out why it doesn't work properly.
-//! This doesn't work because the table writes all changes in the first iteration which is for one entity.
-//!     Possible fix: Make a second system that writes changes at the end of the loop
 void NoiseTextureSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(it->ctx, NULL)) return;
     zox_iter_world()

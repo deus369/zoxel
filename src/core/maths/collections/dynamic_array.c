@@ -120,5 +120,3 @@ create_is_in_array_d(ecs_entity_t)
 // zoxel_dynamic_array(long int)
 zoxel_dynamic_array(float3)
 zoxel_dynamic_array(float2)
-
-// todo: make into a macro, then define float3_array_d type with zoxel_dynamic_array(float3)

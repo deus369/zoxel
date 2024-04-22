@@ -1,4 +1,3 @@
-// todo: make these lines work in a ui
 extern ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 pointB, float thickness, double life_time);
 
 void SoundDebugSystem(ecs_iter_t *it) {

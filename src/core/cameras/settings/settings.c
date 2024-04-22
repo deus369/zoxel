@@ -1,5 +1,3 @@
-// todo: finish camera mode toggling y.pressed_this_frame
-// how to position and control cameras
 #define zox_camera_mode_free 0
 #define zox_camera_mode_first_person 1
 #define zox_camera_mode_third_person 2

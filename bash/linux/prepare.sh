@@ -7,7 +7,7 @@ source bash/util/prepare_directories.sh
 
 build_path="build/linux"
 build_dev_path="build/linux-dev"
-resources="resources" # todo: change to just resources
+resources="resources"
 # if [ ! - d $build_path ] mkdir $build_path ;
 # Function to create directory if it doesn't exist
 prepare_linux_build_directory() {

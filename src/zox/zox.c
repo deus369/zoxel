@@ -1,8 +1,6 @@
 #ifndef zox_engine
 #define zox_engine
 
-// todo: move some things to sdl module in core
-// todo: position confusing, move to above directory for easier to understand navigation
 // engine imports, besides sub modules, it's core is flecs
 #include <signal.h> // used for detecting cancel
 #include <string.h> // who uses this?

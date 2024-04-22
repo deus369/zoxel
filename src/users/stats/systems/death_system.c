@@ -26,8 +26,5 @@ void DeathSystem(ecs_iter_t *it) {
         AnimationStart *animationStart = zox_get_mut(userLink->value, AnimationStart)
         animationStart->value = zox_current_time;
         zox_modified(userLink->value, AnimationStart)
-        // todo: add animation for this
-        // zox_delete(userLink->value)
-        // zox_log("   %lu just died [%f]\n", it->entities[i], time)
     }
 } zox_declare_system(DeathSystem)

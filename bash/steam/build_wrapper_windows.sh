@@ -11,7 +11,7 @@ steam_wrapper_lib=lib/libsteam_wrapper.dll
 echo " > building steam-wrapper [$steam_wrapper_lib]"
 x86_64-w64-mingw32-g++ -shared $wrapper_cpp -o $steam_wrapper_lib -I$steam_headers_dir -Llib -lsteam_api64 -fPIC
 
-# todo: move wrapper copying into make build step
+# moves wrapper copying into make build step
 if [ ! -d build ]; then
     echo " > creating build directory"
     mkdir build

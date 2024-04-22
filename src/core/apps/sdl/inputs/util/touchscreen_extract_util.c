@@ -25,9 +25,6 @@ void finger_released(ecs_world_t *world, ecs_entity_t e) {
     }
 }
 
-// uses sdl to get touchscreen and finger data directly instead of events
-// todo: fix data structure, doesn't account for second touch
-//      > make spawn and destroy finger entities dynamically
 void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices) {
     touch_devices_count = SDL_GetNumTouchDevices();
     // if (!touch_devices_count) return;

@@ -1,15 +1,7 @@
-// \todo Create a queue of 3D models to render, including materials, etc
-//  - each type of render queue has different data based on the shaders
-//  - inside ecs systems, can run multithread, add things to queues to render
-// > can i make a viewport an entity, and then run this in a viewport system?!
-//      > yes, using the glViewport -> position.x, position.y, size.x, size.y
-//          > with render systems as data, camera view data, etc
 const unsigned char max_render_layers = 32;
 unsigned char renderer_layer;
 int_array_d* render3D_systems;
 int_array_d* render2D_systems;
-// todo: replace this with a render stack, which can easily be used in a camera_render_system
-//      > it can also be sorted better for z issues on translucent materials
 float4x4 render_camera_matrix;
 unsigned char render_camera_fov;
 

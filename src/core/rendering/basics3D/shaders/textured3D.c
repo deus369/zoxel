@@ -1,5 +1,3 @@
-// todo: pass in matrix instead, it will be faster on gpu than the float4_rotate_float3 function on each triangle
-
 #ifdef zox_disable_terrain_textures
 
 const GLchar* shader3D_textured_vert_buffer = "\

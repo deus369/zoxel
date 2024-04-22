@@ -1,30 +1,23 @@
-// todo: move this
 extern unsigned char set_entity_with_text(ecs_world_t *world, ecs_entity_t e, const char* text);
 extern void on_element_pixels_resized(ecs_world_t *world, ecs_entity_t e, const int2 size, unsigned char mesh_alignment);
 
 void ElementBarSystem(ecs_iter_t *it) {
-    // return;
-    // if (!ecs_query_changed(NULL, it)) return;   // todo: make run on threads
-    // todo: need change filter on ui render lod as well
-    // todo: can_render_ui - needs to be set as a component instead of a check per each system
     zox_iter_world()
-    const ElementBar *elementBars = ecs_field(it, ElementBar, 1);
-    const ElementBarSize *elementBarSizes = ecs_field(it, ElementBarSize, 2);
-    const Children *childrens = ecs_field(it, Children, 3);
+    zox_field_in(ElementBar, elementBars, 1)
+    zox_field_in(ElementBarSize, elementBarSizes, 2)
+    zox_field_in(Children, childrens, 3)
     for (int i = 0; i < it->count; i++) {
-        const Children *children = &childrens[i];
+        zox_field_i_in(Children, childrens, children)
         if (!children->length) continue;
         ecs_entity_t dirty_bar = children->value[0];
         const InitializeEntityMesh *initializeEntityMesh = zox_get(dirty_bar, InitializeEntityMesh)
         if (initializeEntityMesh->value) continue;
-        // const TextureDirty *textureDirty = zox_get(dirty_bar, TextureDirty)
-        // if (textureDirty->value) continue;
-        ecs_entity_t e = it->entities[i];
+        zox_field_e()
         if (!can_render_ui(world, e)) continue; // disabled for now causes issues
         MeshDirty *meshDirty = zox_get_mut(dirty_bar, MeshDirty)
         if (meshDirty->value) continue;
-        const ElementBar *elementBar = &elementBars[i];
-        const ElementBarSize *elementBarSize = &elementBarSizes[i];
+        zox_field_i_in(ElementBar, elementBars, elementBar)
+        zox_field_i_in(ElementBarSize, elementBarSizes, elementBarSize)
         const float percentage = elementBar->value;
         const float2 scale = elementBarSize->value;
         const float left_offset = - scale.x * (1.0f - percentage) * 0.5f;
@@ -47,7 +40,6 @@ void ElementBarSystem(ecs_iter_t *it) {
             dirty_pixel_position->value.x = - pixelSize->value.x / 2 + dirty_pixel_size->value.x / 2;
             zox_modified(dirty_bar, PixelSize)
             zox_modified(dirty_bar, PixelPosition)
-            // todo: get statlink in stat_bar_system, get name of stat
             int percentage_i = (int) (percentage * 100); // set text of statbar
             char text[32];
             snprintf(text, sizeof(text), "health %i%%", percentage_i);

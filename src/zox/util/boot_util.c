@@ -4,12 +4,6 @@ extern unsigned char is_split_screen;
 extern ecs_entity_t fps_display;
 #endif
 #define main_camera_rotation_speed 60 * 0.22f
-// todo: move things internally to zox: camera, ui canvas,
-// move spawning to first frame, game systems, etc
-// spawning:
-//      > main menu
-//      > terrain
-// this loads both in engine resources (shaders) and external (voxes, sounds)
 
 void spawn_players(ecs_world_t *world) {
     if (!headless) {
@@ -35,7 +29,6 @@ void spawn_player_cameras(ecs_world_t *world) {
     float4 rotationer = quaternion_from_euler( (float3) { 0, -main_camera_rotation_speed * degreesToRadians, 0 });
     zox_prefab_set(main_cameras[0], EternalRotation, { rotationer })
     if (is_split_screen) {
-        //! \todo connect a gamepad to this camera
         camera_begin_position.z += 0.4f;
         main_cameras[1] = spawn_base_camera(world, camera_begin_position, quaternion_identity, screen_dimensions2, (int2) { screen_dimensions2.x, 0 }, camera_fov);
     }

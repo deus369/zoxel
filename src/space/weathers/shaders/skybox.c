@@ -89,7 +89,6 @@ void restore_skybox_material(ecs_world_t *world) {
 }
 
 void restore_shader_skybox(ecs_world_t *world) {
-    // todo: link shader code to the shader gpu link, use system for restoring them
     restore_shader(world, shader_skybox, skybox_shader_source_vert, skybox_shader_source_frag);
     restore_skybox_material(world);
 }

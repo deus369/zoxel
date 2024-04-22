@@ -1,5 +1,4 @@
 void initialize_sdl_inputs() {
-    // todo: initialize it here
 }
 
 void close_sdl_input() {
@@ -21,7 +20,6 @@ void spawn_connected_devices(ecs_world_t *world) {
             if (is_xbox_gamepad(joystick)) gamepad_type = zox_gamepad_layout_type_xbox;
             if (is_steamdeck_gamepad(joystick)) gamepad_type = zox_gamepad_layout_type_steamdeck;
         }
-        // todo: use SDL_JoystickNumButtons to set gamepad up
         spawn_gamepad(world, gamepad_type);
     #endif
 }

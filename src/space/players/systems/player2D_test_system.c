@@ -1,4 +1,3 @@
-// todo: rename this system
 const int particleSpawnCount = 266;
 const float debug_rotation_speed = 12;
 const float debug_rotation_addition = 5;

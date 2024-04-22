@@ -96,7 +96,6 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                     Rotation3D *rotation3D2 = zox_get_mut(character, Rotation3D)
                     rotation3D2->value = face_direction;
                     zox_modified(character, Rotation3D)
-                    // todo: rotate towards desired direction
                     // Alpha3D *alpha3D = zox_get_mut(world, characterLink->value, Alpha3D);
                     // quaternion_rotate_quaternion_p(&alpha3D->value, quaternion);
                     // zox_modified(characterLink->value, Alpha3D);

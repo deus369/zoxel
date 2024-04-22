@@ -1,4 +1,3 @@
-// todo: set the verts like I do in 3D shader!
 GLuint2 shader3D;
 GLuint materialInstance3D;
 Material3D material3D;

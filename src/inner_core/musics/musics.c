@@ -1,9 +1,6 @@
 #ifndef zoxel_musics
 #define zoxel_musics
 
-//! \todo MusicPlayer -> play a music and pick a new one when song ends
-//! \todo MusicData - Contains a bunch of notes? - make custom struct for this with timing + note
-
 const int music_note_skip = 84;
 zox_declare_tag(Music)
 zox_declare_tag(Looping)

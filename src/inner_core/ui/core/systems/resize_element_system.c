@@ -1,4 +1,3 @@
-int2 resize_element_system_screen_size = int2_zero;
 // basically if viewport resizes, itll resize canvas / all 2D uis
 void ResizeElementSystem(ecs_iter_t *it) {
     zox_iter_world()

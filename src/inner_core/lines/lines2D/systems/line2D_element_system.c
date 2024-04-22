@@ -17,13 +17,6 @@ void set_ui_line_position(LineData2D *lineData2D, int4 linePosition2D, float2 ca
 }
 
 void Line2DElementSystem(ecs_iter_t *it) {
-    /*ecs_query_t *changeQuery = it->ctx;
-    ecs_iter_t change_iter = ecs_query_iter(world, changeQuery);
-    while (ecs_query_next(&change_iter)) {
-        if (change_iter.table != it->table) ecs_query_skip(&change_iter);
-    }
-    if (!ecs_query_changed(changeQuery, NULL)) return;*/
-    //! \todo Update this after getting a working example of change filters
     zox_iter_world()
     const LinePosition2D *lineElementDatas = ecs_field(it, LinePosition2D, 2);
     const CanvasLink *canvasLinks = ecs_field(it, CanvasLink, 3);
@@ -41,10 +34,3 @@ void Line2DElementSystem(ecs_iter_t *it) {
     }
     // zoxel_log(" > lines updated\n");
 } zox_declare_system(Line2DElementSystem)
-
-//! Sets real position when pixel position updates
-/**
-*   \done Make this instantaneous for children uis as well.
-*   \todo This needs to also account for child uis
-*   \todo Change queries still not working, make a better test function with more components.
-*/

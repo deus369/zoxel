@@ -4,7 +4,6 @@ unsigned char get_chunk_division(int3 camera_position, int3 chunk_position) {
     return int_max(int_abs(chunk_position.x - camera_position.x), int_abs(chunk_position.z - camera_position.z));
 }
 
-// todo: move to rendering module
 void add_components_mesh_textured(ecs_world_t *world, ecs_entity_t e) {
     if (!headless) {
         zox_add(e, MeshIndicies)

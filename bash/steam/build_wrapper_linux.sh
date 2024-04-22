@@ -16,7 +16,7 @@ fi
 echo " > building steam-wrapper [$steam_wrapper_lib] from [$wrapper_cpp]"
 g++ -shared $wrapper_cpp -o $steam_wrapper_lib -I$steam_headers_dir -Llib -lsteam_api -fPIC
 
-# todo: move wrapper copying into make build step
+# moves wrapper copying into make build step
 # this checks directories are created
 if [ ! -d build ]; then
     echo " > creating build directory"

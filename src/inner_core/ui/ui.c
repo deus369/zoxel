@@ -2,16 +2,15 @@
 #define zoxel_ui
 
 #ifndef zoxel_on_android
-    #define default_ui_scale 1.0f
+#define default_ui_scale 1.0f
 #else
-    #define default_ui_scale 2.0f
+#define default_ui_scale 2.0f
 #endif
 #include "core/ui_core.c"
 #include "texts/texts.c"
 #include "elements/elements.c"
 #include "game/game_ui.c"
 #include "editor/editor.c"
-// #include "util/test_uis.c"
 #include "fun/spawn_test_window.c"
 
 void spawn_prefabs_ui(ecs_world_t *world) {

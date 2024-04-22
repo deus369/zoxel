@@ -1,5 +1,5 @@
 // #define zox_log_gamepad_button_pressed // debug button presses
-SDL_Joystick *joystick;         // todo: connect this to gamepad
+SDL_Joystick *joystick;
 int joysticks_count;
 
 unsigned char is_steamdeck_gamepad(SDL_Joystick *joystick) {

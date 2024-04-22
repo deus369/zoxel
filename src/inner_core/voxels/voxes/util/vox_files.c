@@ -2,8 +2,6 @@
 int vox_files_count = 0;
 vox_file *vox_files;
 
-// todo: load vox_file as an entity, with filename as it's name, foroo easy use in game engine
-
 void dispose_files_voxes() {
 #ifdef zox_disable_io
     return;

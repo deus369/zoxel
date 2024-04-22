@@ -1,8 +1,6 @@
 #ifndef zoxel_games
 #define zoxel_games
 
-// todo: migate this to core and hook off game events
-// todo: put game_ui spawns under one game_ui entity
 unsigned char zox_game_type;
 zox_declare_tag(Game)
 zox_component_byte(GameState);

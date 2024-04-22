@@ -1,8 +1,6 @@
 ecs_entity_t prefab_statbar3D;
 ecs_entity_t prefab_statbar3D_front;
 const float2 statbar_front_mesh_scale = (float2) { 0.17f, 0.028f };
-// todo: link to health stat, in health system, update percentge when heath value updates
-// todo: in another system, regen the health value up to max of the stat max
 
 int get_statbars_count(ecs_world_t *world) {
     return zox_count_entities(world, ecs_id(Statbar));

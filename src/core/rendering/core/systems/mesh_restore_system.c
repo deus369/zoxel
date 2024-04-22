@@ -39,8 +39,3 @@ void ColorsGPULinkRestoreSystem(ecs_iter_t *it) {
         initializeEntityMesh->value = 1;
     }
 } zox_declare_system(ElementGPURestoreSystem)*/
-
-
-// todo: restore all gpu data in systems
-//      > ShaderGPULinkRestoreSystem
-//      > MaterialGPULinkRestoreSystem

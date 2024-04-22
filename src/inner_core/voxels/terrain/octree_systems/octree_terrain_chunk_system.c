@@ -1,7 +1,6 @@
 #define grass_spawn_chance 80
 #define octree_random_spawn_chance 90
 const int sand_height = -7;
-// todo: rewrite algorithm, it's too slow atm for xyz chunks
 
 void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 position, float scale) {
     double octree_noise = perlin_terrain(position.x + noise_positiver2, position.z + noise_positiver2, terrain_frequency, terrain_seed, terrain_octaves);

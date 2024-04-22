@@ -47,7 +47,6 @@ void dispose_files_textures(ecs_world_t *world) {
     free(files_textures);
 }
 
-// todo: this
 ecs_entity_t spawn_from_file_texture(ecs_world_t *world, int index) {
     if (index < 0 || index >= files_count_textures) return 0;
     zox_instance(prefab_texture)

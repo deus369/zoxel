@@ -68,5 +68,3 @@ zox_system_1(EditorInputSystem, main_thread_pipeline, [none] Player, [in] Device
 zoxel_end_module(Players)
 
 #endif
-
-// todo: make this work in threading... worked in 3.1.3 - EcsPreStore | EcsOnUpdate

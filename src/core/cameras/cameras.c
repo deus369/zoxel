@@ -1,10 +1,6 @@
 #ifndef zoxel_cameras
 #define zoxel_cameras
 
-//   todo: Custom name for namespaces used in flecs
-//       const char* nm_zoxel_cameras = "Zoxel.cameras";
-//       zox_module(world, cameras, nm_zoxel_cameras);
-
 // zoxel_settings
 // EcsPreStore | EcsPostUpdate
 #define zox_camera_stage EcsPreStore
@@ -57,7 +53,7 @@ zox_define_tag(Camera)
 zox_define_tag(Camera2D)
 zox_define_tag(Camera3D)
 zox_define_tag(FirstPersonCamera)
-zox_define_tag(CameraFollower2D) // Until fix is found. \todo Fix this, readd it back here where it belongs.
+zox_define_tag(CameraFollower2D)
 zox_define_tag(UICamera)
 zox_define_component_byte(FreeRoam)
 zox_define_component_byte(CanFreeRoam)

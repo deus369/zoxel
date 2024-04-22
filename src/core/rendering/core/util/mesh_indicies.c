@@ -1,5 +1,4 @@
 // a copy of zox_indicies_component in order to track triangles_count
-// todo: debug memory_count per type
 // int triangles_count = 0;
 
 /*

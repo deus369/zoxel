@@ -1,9 +1,6 @@
 #ifndef zoxel_texts
 #define zoxel_texts
 
-// \todo Display a UI Element anchored, with a pixel position.
-// \todo Change colour when ray hits a button
-
 // zoxel_settings
 #define zox_pipelines_zext_textures EcsOnUpdate // EcsOnUpdate | EcsPostUpdate
 #define zox_pipelines_zext_backgrounds EcsPreStore // EcsPostUpdate

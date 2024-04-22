@@ -1,14 +1,3 @@
-// todo: make this an event i can latch onto in submodules
-
-// player hooks
-// extern void attach_to_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character);
-// extern void detatch_from_character(ecs_world_t *world, ecs_entity_t player, ecs_entity_t camera, ecs_entity_t character);
-// extern void button_event_pause_game(ecs_world_t *world, ecs_entity_t trigger_entity);
-// extern ecs_entity_t local_character3D;
-// do I still need render_camera_matrix? - yes - used to insert matrix in each camera system run
-// extern const char *game_name;
-// extern ecs_entity_t spawn_player_character2D(ecs_world_t *world, ecs_entity_t camera);
-
 void realms_game_start(ecs_world_t *world, ecs_entity_t game) {
     set_sky_color(world, game_sky_color, game_sky_bottom_color);
     if (zox_game_type == zox_game_mode_3D) {

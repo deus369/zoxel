@@ -1,6 +1,3 @@
-// todo: put a AutoResizeZextX tag on these, so it resizes the background of a text that updates
-// todo: put this in element_resize_system like element_position_system
-
 void on_element_pixels_resized(ecs_world_t *world, ecs_entity_t e, const int2 size, unsigned char mesh_alignment) {
     const CanvasLink *canvasLink = zox_get(e, CanvasLink)
     PixelSize *pixelSize = zox_get_mut(e, PixelSize)

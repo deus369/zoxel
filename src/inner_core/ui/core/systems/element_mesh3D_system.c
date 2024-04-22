@@ -25,11 +25,9 @@ void Element3DMeshSystem(ecs_iter_t *it) {
             textureGPULink->value = spawn_gpu_texture_buffers();
             uvsGPULink->value = spawn_gpu_generic_buffer();
             colorsGPULink->value = spawn_gpu_generic_buffer();
-            // zoxel_log(" > entity [%lu] ui 3D spawned [%i, %i, %i]\n", it->entities[i], meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value);
         }
         initializeEntityMesh->value = 0;
         meshDirty->value = 1;
         generateTexture->value = 1;
-        // zox_log("   > initialized mesh 3D [%lu]\n", it->entities[i])
     }
 } zox_declare_system(Element3DMeshSystem)

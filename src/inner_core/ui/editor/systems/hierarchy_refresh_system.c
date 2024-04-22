@@ -5,10 +5,8 @@ unsigned is_first_hierarchy_spawn = 1;
 #endif
 const int hierarchy_max_line_characters = 64;
 ecs_entity_t editor_selected;
-// todo: add these functions to a global event trigger based on component type of links 'stat_links'
 extern void add_to_labels_voxel_links(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level);
 extern void add_to_labels_stat_links(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level);
-// todo: grab these from reference list of zoxel prefabs
 extern ecs_entity_t prefab_app;
 extern ecs_entity_t prefab_window;
 extern ecs_entity_t prefab_button;
@@ -153,8 +151,6 @@ void set_ui_list_hierarchy(ecs_world_t *world, Children *children, ecs_entity_t 
     }
 }
 
-
-// todo: when resize ui, reposition based on parent element (or canvas) and anchoring
 void HierarchyRefreshSystem(ecs_iter_t *it) {
     const unsigned char is_header = 1;
     const unsigned char is_scrollbar = 1;
@@ -200,7 +196,6 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         const int scrollbar_margins = zox_gett_value(scrollbar, ElementMargins).x;
         const int scrollbar_width = zox_gett_value(scrollbar, PixelSize).x;
         const ClickEvent click_event = (ClickEvent) { &button_event_clicked_hierarchy };
-            // todo: put these inside a element style
             const int2 button_padding = (int2) { (int) (font_size * 0.46f), (int) (font_size * 0.3f) };
             const int2 list_margins = (int2) { (int) (font_size * 0.8f), (int) (font_size * 0.8f) };
             const int button_inner_margins = (int) (font_size * 0.5f);
@@ -246,7 +241,6 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         const float2 window_position = position2D->value;
         const int2 window_pixel_position_global = canvasPosition->value;
         const int2 old_window_size = pixelSize->value;
-        // this resizes the window based on size_x (characters) todo: window resizeable - x/y - variable
         int2 new_window_size = { (font_size) * max_characters + button_padding.x * 2 + list_margins.x * 2, old_window_size.y };
         if (is_scrollbar) new_window_size.x += scrollbar_width + scrollbar_margins * 2;
         if (new_window_size.x != old_window_size.x) {

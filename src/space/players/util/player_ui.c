@@ -72,7 +72,6 @@ void dispose_in_game_ui_touch(ecs_world_t *world) {
 }
 
 void dispose_in_game_ui(ecs_world_t *world, ecs_entity_t player) {
-    // todo: get ui links
     dispose_in_game_ui_touch(world);
     zox_delete_and_set(game_ui)
 }

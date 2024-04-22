@@ -262,7 +262,6 @@ const byte2 specialComma[] =
     { 9, 3 }, { 3, 1 }
 };
 
-// todo: this
 const byte2 specialQuestionMark[] = 
 {
     { 3, 12 }, { 10, 12 },  // top line

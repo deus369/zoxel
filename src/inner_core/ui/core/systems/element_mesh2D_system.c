@@ -1,5 +1,4 @@
 // #define zox_time_element_mesh_system
-
 void Element2DMeshSystem(ecs_iter_t *it) {
 #ifdef zox_time_element_mesh_system
     begin_timing()
@@ -26,7 +25,6 @@ void Element2DMeshSystem(ecs_iter_t *it) {
         const MeshAlignment *meshAlignment = &meshAlignments[i];
         MeshDirty *meshDirty = &meshDirtys[i];
         MeshVertices2D *meshVertices2D = &meshVertices2Ds[i];
-        // rescale verts if scale changes, todo: make this in a new system?
         const PixelSize *canvasSize = ecs_get(world, canvasLink->value, PixelSize);
         float2 canvasSizef = { (float) canvasSize->value.x, (float) canvasSize->value.y };
         float2 scale2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
@@ -46,7 +44,6 @@ void Element2DMeshSystem(ecs_iter_t *it) {
 #ifdef zox_time_element_mesh_system
         did_do_timing()
 #endif
-        // zoxel_log(" > ui mesh 2D spawned on gpu [%lu]\n", it->entities[i]);
     }
 #ifdef zox_time_element_mesh_system
     end_timing("    - element_mesh_system")

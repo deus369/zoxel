@@ -101,7 +101,6 @@
 
 // -- debugs --
 // #define zoxel_debug_vox_read
-//! \todo Fix pathing for android, cannot get resources there.
 // #define debug_element_position_change_query
 // #define debug_viewport_resize
 // #define zox_debug_log_element_raycasting

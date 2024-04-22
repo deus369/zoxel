@@ -1,5 +1,3 @@
-// todo: use a hashmap with keys keyboard->keys['a'] for more dynamic access
-
 typedef struct {
     PhysicalButton enter;
     PhysicalButton space;

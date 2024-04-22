@@ -4,7 +4,6 @@ const float grounded_velocity_threshold = 0.22f;
 // const float terrain_voxel_scale = 0.5f;
 const float lowest_velocity_threshold = 0.03f; // 0.3 // 0.001
 // draw line to voxel side from character...
-// todo: check chunklink or neighbors instead of hashmap checking
 
 #define handle_collision_axis(d, offset) {\
     float3 collision_point_last2 = collision_point_last;\

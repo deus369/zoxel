@@ -7,7 +7,6 @@
 #include "data/octree_helper.c"
 #include "data/octree_component.c"
 #include "data/text_group.c"
-// todo: use hashmap for types
 #include "components/components.c"
 zox_declare_tag(Selectable)
 zox_declare_tag(Clickable)

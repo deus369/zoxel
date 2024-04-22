@@ -1,4 +1,3 @@
-// todo: remove any canvas elements, these will just be world transform uis
 ecs_entity_t prefab_element_world_child;
 
 ecs_entity_t spawn_prefab_element3D_child(ecs_world_t *world) {

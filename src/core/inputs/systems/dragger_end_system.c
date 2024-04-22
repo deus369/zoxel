@@ -1,5 +1,3 @@
-// pushes mouse->delta into DraggingDelta's ui component
-// todo: check device mode here or device enabled states
 void DraggerEndSystem(ecs_iter_t *it) {
     zox_iter_world()
     zox_field_out(DraggableState, dragableStates, 1)

@@ -3,9 +3,6 @@ void test_action_bar(ecs_world_t *world) {
     int2 testSize2 = (int2) { 48, 48 };
     // actionbar - anchor actionbar to bottom
     ecs_entity_t action_bar = spawn_element_on_canvas(world, main_canvas, (int2) { 0, 10 + actionbar_size4.y / 2 }, actionbar_size4, (float2) { 0.5f, 0 });
-    //! \todo Spawn these as children~
-    //! \todo Destroy when destroy actionbar
-    //! \todo Transform hierarchy, child positioning
     for (int i = 0; i < 5; i++)
     {
         // spawn element as child

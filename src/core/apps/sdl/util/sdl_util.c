@@ -1,5 +1,3 @@
-// todo: find a cleaner way to link to other modules
-// rendering
 extern void opengl_delete_resources(ecs_world_t *world);
 extern void opengl_load_resources(ecs_world_t *world);
 extern void engine_end(); // engine

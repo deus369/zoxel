@@ -1,5 +1,3 @@
-// TODO: rename ZoxName for editor, to EntityName?
-
 #define zox_declare_user_data(Name)\
 zox_declare_tag(Name)\
 zox_memory_component(User##Name##s, ecs_entity_t)\

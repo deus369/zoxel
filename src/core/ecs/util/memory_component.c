@@ -1,5 +1,3 @@
-// todo: catch these going up and down, we loose 200ish on end game
-// todo: mesh indicies also, catch that
 int total_memorys_allocated = 0;
 
 #define zox_memory_component(name, type)\

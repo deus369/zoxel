@@ -1,6 +1,5 @@
 void drag_element(ecs_world_t *world, ecs_entity_t e, int2 drag_value) {
     if (!zox_valid(e)) return;
-    // todo: limit element within a 'constraints' component
     PixelPosition *pixel_position = zox_get_mut(e, PixelPosition)
     pixel_position->value.x += drag_value.x;
     pixel_position->value.y += drag_value.y;

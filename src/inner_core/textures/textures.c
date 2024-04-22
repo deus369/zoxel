@@ -23,7 +23,4 @@ zox_import_module(AppsTextures)
 zox_import_module(TexturesIO)
 zoxel_end_module(Textures)
 
-// \todo Blueprints (Nodes) + UI
-// \todo Noise generation to work on a node
-
 #endif

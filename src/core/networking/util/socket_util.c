@@ -1,4 +1,3 @@
-// todo: fix this for windows build
 #ifndef zoxel_on_windows
     const unsigned long non_blocking = O_NONBLOCK;
     const unsigned long f_getfl = F_GETFL;

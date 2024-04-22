@@ -1,8 +1,6 @@
 unsigned char test_read_byte = 255;
 unsigned char test_read_byte2 = 255;
 
-// todo: move this to io, make generic, implement as steam cloud save
-///     It should push to cloud after normal saving?
 void test_steam_cloud() {
 #ifdef zox_include_steam
     if (is_steam_running) {

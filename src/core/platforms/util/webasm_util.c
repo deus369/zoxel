@@ -6,7 +6,6 @@ extern void on_viewport_resized(ecs_world_t *world, int2 new_screen_dimensions);
 // emscripten app functions (void)
 int get_canvas_width() { return 1280; }
 int get_canvas_height() { return 720; }
-// todo: fix these
 // EM_JS(int, get_canvas_width, (), { return window.innerWidth; });
 // EM_JS(int, get_canvas_height, (), { return window.innerHeight; });
 

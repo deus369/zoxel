@@ -28,7 +28,7 @@ void ZextUpdateSystem(ecs_iter_t *it) {
         zox_field_i_in(PixelSize, pixelSizes, pixelSize)
         zox_field_i_in(MeshAlignment, meshAlignments, meshAlignment)
         zox_field_i_in(RenderDisabled, renderDisableds, renderDisabled)
-        ecs_entity_t canvas = main_canvas; // todo: canvasLink
+        ecs_entity_t canvas = main_canvas; // todo: use canvasLink here
         spawn_zext_zigels(world, e, canvas, children, zextData, zextSize->value, meshAlignment->value, zextPadding->value, layer2D->value, canvasPosition->value, pixelSize->value, renderDisabled->value);
         zextDirty->value = 2;
 #ifdef zoxel_debug_zigel_updates

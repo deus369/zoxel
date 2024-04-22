@@ -1,29 +1,6 @@
 #ifndef zoxel_networking
 #define zoxel_networking
 
-// backend todo:
-//      - use raw packets for relaying character positions (per frame data)
-//      > create a test packet system, similar to the send system, used to test limits of packets
-
-// connections / pinging todo:
-//      > create an entity for a connection
-//      > create a ping client system, that keeps bouncing packets to a connection, if no reply back for x seconds, disconnect
-//      > create ping host system, recieves pings, replies
-//      > create ping host disconnect system, if no pings for x seconds, disconnect
-
-// secured packets todo:
-//      - use this for connecting to host and messages
-//      > secure sending -> uses a unique id on a packet, keeps sending
-//      > secure recieving -> stores dictionary of packets recieved for up to x seconds, removes duplicates
-//      > secure packet host clean system -> removes stored secured packets after x seconds
-
-// front end todo:
-//      > create a chat ui, it creates a net player room
-//      > when window closes, destroy room, including all players
-//      > when connecting confirmed, server will send all other netplayer data to the new client
-//      > when new player joins, server will send all the new player data to all other clients
-//      > debug connected players using game debug ui, or a new debug ui module with a label type prefab and system
-
 // zoxel_settings_includes
 extern unsigned char headless;
 #include "settings/includes.c"

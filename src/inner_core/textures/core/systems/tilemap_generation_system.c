@@ -1,6 +1,4 @@
 // uses terrain's texture links to generate a tilemap
-// todo: system before that sets texture links from voxel links
-// todo: debug why array indexes go out of bounds!
 void TilemapGenerationSystem(ecs_iter_t *it) {
     zox_iter_world()
     const TilemapSize *tilemapSizes = ecs_field(it, TilemapSize, 2);
@@ -34,10 +32,6 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         textureSize->value.y = tilemapSize->value.y * first_texture_size->value.y;
         resize_memory_component(TextureData, textureData, color, textureSize->value.x * textureSize->value.y)
         resize_memory_component(TilemapUVs, tilemapUVs, float2, textureLinks->length * 4)
-        // todo: set uvs per each texture, float2 x 4 per texture
-        //  get the float size by dividing 1.0f by the rows count
-        //  use the tilemap_pixel_position when placing them
-        //  it should atm get a minimum power of 2, in this case for 5 voxels, it would create a 4x4 tilemap
         int texture_entity_index = 0;
         int2 texture_position = int2_zero;
         for (texture_position.y = 0; texture_position.y < tilemapSize->value.y; texture_position.y++) {
