@@ -9,9 +9,6 @@ ecs_entity_t spawn_zigel_prefab(ecs_world_t *world) {
     zox_prefab_set(e, ZigelIndex, { 0 })
     zox_prefab_set(e, Color, {{ 55, 185, 125, 255 }})
     prefab_zigel = e;
-#ifdef zoxel_debug_prefabs
-    zox_log(" > spawn_prefab zigel [%lu]\n", e)
-#endif
     return e;
 }
 
@@ -24,10 +21,7 @@ ecs_entity_t spawn_zigel(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t c
     zox_set(e, Color, { zigel_color })
     int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     float2 position = get_element_position(pixel_position_global, canvas_size);
-    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position, pixel_position_global);
-#ifdef zoxel_debug_spawns
-    zox_log("   > spawned zigel [%lu]\n", e)
-#endif
+    initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position, pixel_position_global);
     return e;
 }
 

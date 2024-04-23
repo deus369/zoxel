@@ -4,6 +4,5 @@
 #define ui_navigation_joystick_cutoff 0.6f
 #define ui_navigation_timing 0.3
 #define restore_joystick_cutoff 0.06f
-int2 resize_element_system_screen_size = int2_zero;
 // #define zox_debug_ui_trails
 // #define zoxel_debug_ui_selectable_states

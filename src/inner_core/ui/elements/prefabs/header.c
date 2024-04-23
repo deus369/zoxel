@@ -14,9 +14,6 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
     zox_prefab_set(e, OutlineThickness, { 3 })
     zox_prefab_set(e, Children, { 0, NULL })
     header_prefab = e;
-#ifdef zoxel_debug_prefabs
-    zox_log(" > spawn_prefab header [%lu]\n", e)
-#endif
     return e;
 }
 
@@ -42,7 +39,7 @@ ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t 
     zox_set(e, DraggedLink, { parent })
     int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     float2 position2D = get_element_position(pixel_position_global, canvas_size);
-    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
+    initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     int children_length = 1;
     if (is_close_button) children_length++;
     const unsigned char child_layer = layer + 1;
@@ -54,8 +51,5 @@ ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t 
         children->value[1] = spawn_close_button(world, e, canvas, pixel_position_global, pixel_size, close_button_position, font_size, padding, child_layer, canvas_size);
     }
     zox_modified(e, Children)
-#ifdef zoxel_debug_spawns
-    zox_log("    > spawned header [%lu]\n", e)
-#endif
     return e;
 }

@@ -13,9 +13,6 @@ ecs_entity_t spawn_from_file_path_texture(ecs_world_t *world, const char *filepa
     // for (int i = 0; i < 16; i++) zox_log("color %ix%ix%i\n", textureData->value[i].r, textureData->value[i].g, textureData->value[i].b)
     zox_modified(e, TextureData)
     zox_modified(e, TextureSize)
-#ifdef zoxel_debug_spawns
-    zox_log(" + spawned texture [%lu]\n", e)
-#endif
     return e;
 }
 
@@ -57,8 +54,5 @@ ecs_entity_t spawn_from_file_texture(ecs_world_t *world, int index) {
     // idk what to do with this one
     // *textureData = zox_get_mut(
     // load_texture_from_png();
-#ifdef zoxel_debug_spawns
-    zox_log(" + spawned texture [%lu]\n", e)
-#endif
     return e;
 }

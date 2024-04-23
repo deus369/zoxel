@@ -48,8 +48,5 @@ ecs_entity_t spawn_sound_from_file(ecs_world_t *world, int index) {
     zox_set(e, SoundLength, { get_mix_chunk_sound_length(mixChunk) })
     //Mix_LoadWAV(sound_file_names[0]) }); //  sounds[0] });
 #endif
-#ifdef zoxel_debug_spawns
-    zox_log(" + spawned sound [%lu]\n", e)
-#endif
     return e;
 }

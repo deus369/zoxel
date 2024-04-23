@@ -7,9 +7,6 @@ ecs_entity_t spawn_prefab_material(ecs_world_t *world) {
     // zox_add(e, ShaderGPULink)
     add_gpu_material(world, e);
     prefab_material = e;
-    #ifdef zoxel_debug_prefabs
-        zoxel_log("spawn_prefab material [%lu].\n", (long int) (e));
-    #endif
     return e;
 }
 

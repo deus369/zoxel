@@ -9,9 +9,6 @@ ecs_entity_t spawn_prefab_device_button(ecs_world_t *world) {
     zox_prefab_set(e, DeviceButtonType, { 0 })
     zox_prefab_set(e, RealButtonIndex, { 0 })
     prefab_zevice_button = e;
-#ifdef zoxel_debug_prefabs
-    zoxel_log(" > spawn_prefab device_button [%lu].\n", e)
-#endif
     return e;
 }
 
@@ -20,9 +17,6 @@ ecs_entity_t spawn_device_button(ecs_world_t *world, unsigned char type, unsigne
     zox_name("zevice_button")
     zox_prefab_set(e, DeviceButtonType, { type })
     zox_prefab_set(e, RealButtonIndex, { index })
-#ifdef zoxel_debug_spawns
-    zox_log(" > spawned device_button [%lu].\n", e)
-#endif
     return e;
 }
 

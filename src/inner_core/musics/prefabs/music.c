@@ -12,9 +12,6 @@ ecs_entity_t spawn_prefab_music(ecs_world_t *world) {
     zox_prefab_set(e, MusicSpeed, { 0.5 })
     zox_prefab_set(e, InstrumentType, { instrument_piano })
     prefab_music = e;
-    #ifdef zoxel_debug_prefabs
-        zox_log("spawn_prefab music [%lu]\n", e)
-    #endif
     return e;
 }
 
@@ -31,8 +28,5 @@ ecs_entity_t spawn_music(ecs_world_t *world, unsigned char instrument_type) {
         zox_log(" > music speed set to [%lf]\n", music_speed)
     #endif
     local_music = e;
-    #ifdef zoxel_debug_spawns
-        zox_log("Spawned music [%lu]\n", e)
-    #endif
     return e;
 }

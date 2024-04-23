@@ -12,9 +12,6 @@ ecs_entity_t spawn_prefab_button(ecs_world_t *world) {
     add_frame_texture_type(world, e, (color) { 35, 88, 66, 255 }, 7, 3);
     zox_prefab_set(e, Children, { 0, NULL })
     prefab_button = e;
-#ifdef zoxel_debug_prefabs
-    zox_log("   > spawn_prefab button [%lu]\n", e)
-#endif
     return e;
 }
 
@@ -28,15 +25,12 @@ ecs_entity_t spawn_button(ecs_world_t *world, const ecs_entity_t parent, const e
     zox_set(e, RenderDisabled, { render_disabled })
     const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     const float2 position2D = get_element_position(pixel_position_global, canvas_size);
-    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
+    initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     const ecs_entity_t zext = spawn_zext(world, prefab_zext, e, canvas, int2_zero, float2_half, int2_to_byte2(padding), text, font_size, 0, zext_layer, pixel_position_global, zext_size, render_disabled);
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, 1)
     children->value[0] = zext;
     zox_modified(e, Children)
-#ifdef zoxel_debug_spawns
-    zox_log(" > spawned button [%lu]\n", e)
-#endif
     return e;
 }
 
@@ -48,19 +42,16 @@ ecs_entity_t spawn_button_on_canvas(ecs_world_t *world, const ecs_entity_t canva
     int2 pixel_size = (int2) { zext_size.x + padding.x * 2, zext_size.y + padding.y * 2 };
     int2 canvas_size = zox_get_value(canvas, PixelSize)
     zox_instance(prefab_button)
-    zox_name("button")
+    zox_name("button_on_canvas")
     zox_set(e, Color, { color })
     zox_set(e, ClickEvent, { event.value })
     int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
     float2 position2D = get_element_position(pixel_position_global, canvas_size);
-    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
+    initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, 1)
     children->value[0] = spawn_zext(world, prefab_zext, e, canvas, (int2) { 0, 0 }, (float2) { 0.5f, 0.5f }, padding, text, font_size, 0, (layer + 1), pixel_position_global, zext_size, 0);
     zox_modified(e, Children)
-#ifdef zoxel_debug_spawns
-    zox_log("   > spawned button (on canvas) [%lu]\n", e)
-#endif
     return e;
 }
 

@@ -20,9 +20,6 @@ ecs_entity_t spawn_camera_base_prefab(ecs_world_t *world) {
     zox_prefab_set(e, FreeRoam, { 0 }) // newer
     zox_prefab_set(e, CameraMode, { 0 })
     prefab_base_camera = e;
-#ifdef zoxel_debug_prefabs
-    zox_log(" + spawned prefab camera_base [%lu]\n", e)
-#endif
     return e;
 }
 
@@ -35,8 +32,5 @@ ecs_entity_t spawn_base_camera(ecs_world_t *world, float3 position, float4 rotat
     zox_set(e, ScreenPosition, { screen_position })
     zox_set(e, CameraMode, { camera_mode })
     zox_set(e, FieldOfView, { camera_fov })
-#ifdef zoxel_debug_spawns
-    zox_log(" + spawned base camera [%lu]\n", e)
-#endif
     return e;
 }

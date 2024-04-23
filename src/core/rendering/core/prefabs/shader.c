@@ -7,9 +7,6 @@ ecs_entity_t spawn_prefab_shader(ecs_world_t *world) {
     // zox_add(e, ShaderGPULink)
     add_gpu_shader(world, e);
     prefab_shader = e;
-    #ifdef zoxel_debug_prefabs
-        zoxel_log("spawn_prefab shader [%lu].\n", (long int) (e));
-    #endif
     return e;
 }
 

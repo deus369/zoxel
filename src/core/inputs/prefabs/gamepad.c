@@ -13,9 +13,6 @@ ecs_entity_t spawn_prefab_gamepad(ecs_world_t *world) {
     zox_prefab_set(e, DeviceLayout, { 0 })
     zox_prefab_set(e, Children, { 0, NULL })
     prefab_gamepad = e;
-#ifdef zoxel_debug_prefabs
-    zox_log("   > spawn_prefab gamepad [%lu]\n", e)
-#endif
     return e;
 }
 
@@ -60,9 +57,6 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, unsigned char gamepad_type) {
     }
     zox_modified(e, Children)
     gamepad_entity = e;
-    #ifdef zoxel_debug_spawns
-        zox_log("   > spawned gamepad [%lu]\n", e)
-    #endif
     return e;
 }
 

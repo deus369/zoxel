@@ -11,11 +11,7 @@ ecs_entity_t spawn_prefab_zext(ecs_world_t *world) {
     zox_prefab_set(e, ZextData, { 0, NULL })
     zox_prefab_set(e, ParentLink, { 0 })
     zox_prefab_set(e, Children, { 0, NULL })
-// [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] MeshAlignment, [in] CanvasLink, [in] ParentLink
     prefab_zext = e;
-#ifdef zoxel_debug_prefabs
-    zox_log(" > spawn_prefab zext [%lu]\n", e)
-#endif
     return e;
 }
 
@@ -32,7 +28,7 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t pa
     zox_set(e, MeshAlignment, { alignment })
     const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     const float2 position2D = get_element_position(pixel_position_global, canvas_size);
-    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
+    initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     ZextData *zextData = zox_get_mut(e, ZextData)
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(ZextData, zextData, unsigned char, textLength)
@@ -46,8 +42,5 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t pa
     }
     zox_modified(e, ZextData)
     zox_modified(e, Children)
-#ifdef zoxel_debug_spawns
-    zox_log("   > spawned zext [%lu]\n", e)
-#endif
     return e;
 }

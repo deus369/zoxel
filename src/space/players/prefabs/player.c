@@ -23,9 +23,6 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     zox_prefab_set(e, CharacterLink, { 0 })
     zox_prefab_set(e, CameraLink, { 0 })
     prefab_player = e;
-#ifdef zoxel_debug_prefabs
-    zox_log(" + spawned prefab player [%lu]\n", e)
-#endif
     return e;
 }
 
@@ -42,8 +39,5 @@ ecs_entity_t spawn_player(ecs_world_t *world) {
     deviceLinks->value[3] = touchscreen_entity;
     zox_modified(e, DeviceLinks)
     main_player = e;
-#ifdef zoxel_debug_spawns
-    zox_log(" + spawned player [%lu]\n", e)
-#endif
     return e;
 }

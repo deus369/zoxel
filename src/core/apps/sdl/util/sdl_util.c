@@ -116,7 +116,7 @@ void sdl_toggle_fullscreen(ecs_world_t *world, ecs_entity_t e) { // SDL_Window* 
     is_fullscreen = !is_fullscreen;
     zox_set(e, WindowFullscreen, { is_fullscreen })
     if (is_fullscreen) {
-        zox_logg(" > setting to fullscreen\n")
+        // zox_logg(" > setting to fullscreen\n")
         on_viewport_resized(world, get_current_screen_size());
         SDL_SetWindowSize(window, screen_dimensions.x, screen_dimensions.y);
     }
@@ -128,7 +128,7 @@ void sdl_toggle_fullscreen(ecs_world_t *world, ecs_entity_t e) { // SDL_Window* 
         }
         int2 window_size = zox_get_value(e, WindowSize)
         int2 window_position = zox_get_value(e, WindowPosition)
-        zox_log(" > setting to windowed [%ix%i]\n", window_size.x, window_size.y)
+        // zox_log(" > setting to windowed [%ix%i]\n", window_size.x, window_size.y)
         SDL_SetWindowSize(window, window_size.x, window_size.y);
         SDL_SetWindowPosition(window, window_position.x, window_position.y);
     }

@@ -1,9 +1,10 @@
 void player_end_game(ecs_world_t *world, ecs_entity_t player) {
+    ecs_entity_t canvas = main_canvas;
     dispose_in_game_ui(world, player);
     zox_delete_and_set(pause_ui)
     const float2 main_menu_anchor = float2_half;
     const int2 main_menu_position = int2_zero;
-    spawn_main_menu(world, game_name, main_menu_position, main_menu_anchor);
+    spawn_main_menu(world, canvas, game_name, main_menu_position, main_menu_anchor);
     // pause inputs
     disable_inputs_until_release(world, player, zox_device_mode_none);
     const ecs_entity_t camera = zox_get_value(player, CameraLink)

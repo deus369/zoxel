@@ -15,8 +15,5 @@ ecs_entity_t spawn_prefab_sound(ecs_world_t *world) {
     zox_prefab_set(e, SoundVolume, { 0.5f })
     zox_prefab_set(e, DestroyInTime, { 0 })
     prefab_sound = e;
-#ifdef zoxel_debug_prefabs
-    zox_log(" > spawn_prefab sound [%lu]\n", e)
-#endif
     return e;
 }

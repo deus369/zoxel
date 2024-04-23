@@ -83,9 +83,9 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
 #ifndef zox_on_startup_spawn_main_menu
                 if (keyboard->g.pressed_this_frame) {
                     const int edge_buffer = 8 * default_ui_scale;
-                    float2 window_anchor = { 0.0f, 1.0f };
-                    int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
-                    spawn_main_menu(world, game_name, window_position, window_anchor, 0);
+                    const float2 window_anchor = { 0.0f, 1.0f };
+                    const int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
+                    spawn_main_menu(world, main_canvas, game_name, window_position, window_anchor, 0);
                 }
 #endif
 #ifdef test_particles2D

@@ -54,6 +54,8 @@
 // #define zox_debug_sdl_audio
 
 // -- in game ui debugs --
+// #define zox_debug_prefab_spawning
+// #define zox_debug_instance_spawning
 // #define zoxel_debug_fps
 // #define zoxel_debug_quads
 // #define zoxel_debug_settings             // debugs zoxel settings
@@ -61,8 +63,6 @@
 // #define zoxel_debug_input                // debugs sdl input
 // #define zoxel_debug_eternal_rotation     // debugs euler in main menu
 // #define zoxel_debug_pathing 
-// #define zoxel_debug_prefabs
-// #define zoxel_debug_spawns
 // #define debug_ui_positioning
 // #define debug_ui_scaling
 // #define zox_debug_ui_trails      // shows a line from the ui holder to the ui

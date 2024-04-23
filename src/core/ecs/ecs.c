@@ -5,6 +5,7 @@ unsigned char is_multithreading = 1;
 unsigned char target_frame_rate = 0;
 unsigned char profiler = 0;
 // util helper functions
+#include "macros/names.c"
 #include "util/module_macros.c"
 #include "util/component_macros.c"
 #include "util/system_macros.c"

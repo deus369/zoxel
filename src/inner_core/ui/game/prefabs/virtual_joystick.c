@@ -12,9 +12,6 @@ ecs_entity_t spawn_prefab_virtual_joystick(ecs_world_t *world) {
     zox_prefab_set(e, Children, { 0, NULL })
     add_ui_plus_components(world, e);
     prefab_virtual_joystick = e;
-#ifdef zoxel_debug_prefabs
-    zox_log("spawn_prefab virtual_joystick [%lu].\n", e)
-#endif
     return e;
 }
 
@@ -30,14 +27,11 @@ ecs_entity_t spawn_virtual_joystick(ecs_world_t *world, int2 pixel_position) {
     ecs_entity_t parent = canvas;
     int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
     float2 position2D = get_element_position(pixel_position_global, canvas_size);
-    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
+    initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, 1)
     children->value[0] = spawn_virtual_joystick_pointer(world, e, canvas, (layer + 1), (int2) { 0, 0 }, (float2) { 0.5f, 0.5f }, pixel_position_global, pixel_size, canvas_size);
     zox_modified(e, Children)
     virtual_joystick = e;
-#ifdef zoxel_debug_spawns
-    zox_log("Spawned virtual_joystick [%lu]\n", e)
-#endif
     return e;
 }

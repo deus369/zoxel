@@ -26,15 +26,12 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     zox_prefab_set(e, ElementLinks, { 0, NULL})
     zox_prefab_set(e, Children, { 0, NULL})         // for bones, particles, etc (transforms)
     prefab_character3D = e;
-#ifdef zoxel_debug_prefabs
-    zox_log(" > spawn_prefab character3D [%lu]\n", e)
-#endif
     return e;
 }
 
 ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vox_file *vox, float3 position, float4 rotation, unsigned char lod, unsigned char is_player_character) {
     zox_instance(prefab)
-    zox_prefab_name("character3D")
+    zox_name("character3D")
     // transforms
     zox_set(e, Position3D, { position })
     zox_set(e, LastPosition3D, { position })
@@ -70,9 +67,6 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vo
     elementLinks->value[0] = statbar;
     zox_modified(e, ElementLinks)
     if (is_player_character) zox_prefab_set(healthbar_2D, StatLink, { health_stat })
-#endif
-#ifdef zoxel_debug_spawns
-    zox_log("   > spawned character3D [%lu]\n", e)
 #endif
     return e;
 }

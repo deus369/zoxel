@@ -13,9 +13,6 @@ ecs_entity_t spawn_prefab_particle3D_emitter(ecs_world_t *world) {
     zox_prefab_set(e, LocalRotation3D, { quaternion_identity })
     zox_prefab_set(e, ParentLink, { 0 })
     prefab_particle3D_emitter = e;
-    #ifdef zoxel_debug_prefabs
-        zox_log("spawn_prefab particle3D_emitter [%lu]\n", e)
-    #endif
     return e;
 }
 

@@ -6,9 +6,6 @@ ecs_entity_t spawn_prefab_voxel(ecs_world_t *world) {
     zox_add_tag(e, Voxel)
     zox_prefab_set(e, Textures, { 0, NULL })
     prefab_voxel = e;
-#ifdef zoxel_debug_prefabs
-    zox_log(" + spawned prefab voxel [%lu]\n", e)
-#endif
     return e;
 }
 
@@ -35,8 +32,5 @@ ecs_entity_t spawn_voxel(ecs_world_t *world, unsigned char index) {
         textures->value[i] = texture_entity;
     }
     zox_modified(e, Textures)
-#ifdef zoxel_debug_spawns
-    zox_log(" + spawned voxel [%lu]\n", e)
-#endif
     return e;
 }

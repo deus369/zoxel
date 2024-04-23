@@ -14,9 +14,6 @@ ecs_entity_t spawn_prefab_tilemap(ecs_world_t *world) {
         add_gpu_texture(world, e);
     }
     prefab_tilemap = e;
-#ifdef zoxel_debug_prefabs
-    zox_log(" > spawn_prefab tilemap [%lu]\n", e)
-#endif
     return e;
 }
 
@@ -30,8 +27,5 @@ ecs_entity_t spawn_tilemap(ecs_world_t *world) {
         Textured3DAttributes at = create_Textured3DAttributes(material);
         zox_prefab_set(e, Textured3DAttributes, { .vertex_position = at.vertex_position, .vertex_uv = at.vertex_uv, .vertex_color = at.vertex_color, .position = at.position, .rotation = at.rotation,  .scale = at.scale, .camera_matrix = at.camera_matrix, .fog_data = at.fog_data, .texture = at.texture, .brightness = at.brightness })
     }
-#ifdef zoxel_debug_spawns
-    zox_log(" > spawned tilemap [%lu]\n", e)
-#endif
     return e;
 }

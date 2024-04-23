@@ -16,8 +16,8 @@ unsigned char boot_zoxel2D(ecs_world_t *world) {
     if (!headless) spawn_music(world, instrument_piano);
     spawn_players(world);
     spawn_player_cameras(world);
-    spawn_default_ui(world);
-    zox_spawn_main_menu(world, game_name);
+    ecs_entity_t canvas = spawn_default_ui(world);
+    zox_spawn_main_menu(world, game_name, canvas);
     return EXIT_SUCCESS;
 }
 

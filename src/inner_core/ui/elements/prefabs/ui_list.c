@@ -45,7 +45,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
     zox_set(e, ElementFontSize, { font_size })
     int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
     float2 position2D = get_element_position(pixel_position_global, canvas_size);
-    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
+    initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, children_length)
     if (is_header) {
@@ -67,9 +67,6 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
     zox_modified(e, Children)
 #ifdef zoxel_include_players
     if (!headless && elements_count > 0) select_first_button(world, children->value[list_start]);
-#endif
-#ifdef zoxel_debug_spawns
-    zox_log(" > spawned ui list [%lu]\n", e)
 #endif
     return e;
 }

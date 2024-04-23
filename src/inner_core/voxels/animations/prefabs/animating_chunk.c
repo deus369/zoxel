@@ -16,9 +16,6 @@ ecs_entity_t spawn_prefab_animating_chunk(ecs_world_t *world) {
         colorRGBs->value[i] = (color_rgb) {155 - (rand() % 60), 225 - (rand() % 60), 255 - (rand() % 60) };
     zox_modified(e, ColorRGBs)
     prefab_animating_chunk = e;
-#ifdef zoxel_debug_prefabs
-    zox_log("spawn_prefab animating_chunk [%lu]\n", e)
-#endif
     return e;
 }
 

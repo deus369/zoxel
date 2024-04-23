@@ -50,7 +50,7 @@ void on_element_parent_updated(ecs_world_t *world, ecs_entity_t e, int2 local_pi
 }
 
 // set children position as well
-void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, unsigned char layer, int2 canvas_size) {
+void set_ui_transform(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t e, unsigned char layer, int2 canvas_size) {
 #ifdef debug_ui_scaling
     zox_log("    - layer [%i] Repositioning entity [%lu]\n", layer, e)
 #endif
@@ -84,7 +84,7 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, u
     if (zox_has(e, Children)) {
         layer++;
         const Children *children = zox_get(e, Children)
-        for (int i = 0; i < children->length; i++) set_ui_transform(world, children->value[i], e, layer, canvas_size);
+        for (int i = 0; i < children->length; i++) set_ui_transform(world, e, children->value[i], layer, canvas_size);
     }
 }
 
@@ -116,7 +116,7 @@ float2 get_element_position(const int2 pixel_position_global, const int2 canvas_
     return position;
 }
 
-void initialize_ui_components_3(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, ecs_entity_t canvas, int2 pixel_position, int2 pixel_size, int2 texture_size, float2 anchor, unsigned char layer, float2 position2D, int2 pixel_position_global) {
+void initialize_element(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, ecs_entity_t canvas, int2 pixel_position, int2 pixel_size, int2 texture_size, float2 anchor, unsigned char layer, float2 position2D, int2 pixel_position_global) {
     // use a function that updates it, but keep seperate from initialize function which merely sets variables
     zox_set(e, CanvasLink, { canvas })
     zox_set(e, ParentLink, { parent })
@@ -127,4 +127,11 @@ void initialize_ui_components_3(ecs_world_t *world, ecs_entity_t e, ecs_entity_t
     zox_set(e, PixelPosition, { pixel_position })
     zox_set(e, Position2D, { position2D }) // set this inside pixel position system
     zox_set(e, CanvasPosition, { pixel_position_global }) // set this inside system too
+    if (canvas == parent) {
+        // zox_log(" + added [%lu] to canvas [%lu]\n", e, canvas)
+        // todo: make this generic for when component is set, event
+        // this isn't systematic enough for children linking!
+        Children *children = zox_get_mut(canvas, Children)
+        if (add_to_Children(children, e)) zox_modified(canvas, Children)
+    }
 }

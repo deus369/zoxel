@@ -13,9 +13,6 @@ ecs_entity_t spawn_prefab_element3D(ecs_world_t *world) {
     add_ui_components_world(world, e, (float2) { 0.2f, 0.05f });
     if (!headless) zox_add_tag(e, SingleMaterial)
     prefab_element_world = e;
-#ifdef zoxel_debug_prefabs
-    zox_log(" > spawned prefab element_world [%lu]\n", e)
-#endif
     return e;
 }
 
@@ -23,14 +20,11 @@ ecs_entity_t spawn_prefab_element3D(ecs_world_t *world) {
 ecs_entity_t spawn_element3D(ecs_world_t *world, ecs_entity_t ui_holder) {
     int2 pixel_size = (int2) { 32, 8 };
     zox_instance(prefab_element_world)
-    zox_prefab_name("element_world")
+    zox_name("element3D")
     zox_set(e, UIHolderLink, { ui_holder })
     zox_set(e, CameraLink, { main_cameras[0] })
     zox_set(e, CanvasLink, { main_canvas })
     zox_set(e, PixelSize, { pixel_size })
     zox_set(e, TextureSize, { pixel_size })
-#ifdef zoxel_debug_spawns
-    zox_log(" > spawned prefab element_world [%lu]\n", e)
-#endif
     return e;
 }

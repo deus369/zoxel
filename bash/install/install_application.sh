@@ -2,7 +2,7 @@
 
 cd ~/zoxel/bash/install/
 
-filename=zoxel_git.desktop
+filename=zoxel.desktop
 
 echo Filename is $filename
 

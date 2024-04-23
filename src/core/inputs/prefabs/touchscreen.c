@@ -11,9 +11,6 @@ ecs_entity_t spawn_prefab_touchscreen(ecs_world_t *world) {
     zox_prefab_set(e, DeviceLayout, { 0 })
     zox_prefab_set(e, Children, { 0, NULL })
     prefab_touchscreen = e;
-#ifdef zoxel_debug_prefabs
-    zox_log(" > spawn_prefab touchscreen [%lu]\n", e)
-#endif
     return e;
 }
 
@@ -27,9 +24,6 @@ ecs_entity_t spawn_touchscreen(ecs_world_t *world) {
     for (unsigned char i = fingers_count; i < fingers_count + virtual_joysticks_count; i++) children->value[i] = spawn_zevice_stick(world, i, i);
     zox_modified(e, Children)
     touchscreen_entity = e;
-#ifdef zoxel_debug_spawns
-    zox_log(" > spawned touchscreen [%lu]\n", e)
-#endif
     return e;
 }
 

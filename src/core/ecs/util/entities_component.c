@@ -8,6 +8,40 @@ void on_destroyed##_##name(ecs_iter_t *it) {\
         if (!component->value) continue;\
         for (int j = 0; j < component->length; j++) zox_delete(component->value[j]);\
     }\
+}\
+unsigned char add_to##_##name(name *component, ecs_entity_t data) {\
+    if (component->value) {\
+        unsigned char has_data = 0;\
+        for (int i = 0; i < component->length; i++) {\
+            if (component->value[i] == data) return 0;\
+        }\
+        component->length++;\
+        component->value = realloc(component->value, component->length * sizeof(ecs_entity_t));\
+        component->value[component->length - 1] = data;\
+    } else {\
+        component->length = 1;\
+        component->value = malloc(sizeof(ecs_entity_t));\
+        component->value[0] = data;\
+    }\
+    return 1;\
+}\
+unsigned char remove_from##_##name(name *component, ecs_entity_t data) {\
+    if (component->value) {\
+        unsigned char has_data = 0;\
+        for (int i = 0; i < component->length; i++) {\
+            if (component->value[i] == data) {\
+                /* shift list down, as we are removing i*/\
+                for (int j = i; j < component->length; j++) {\
+                    component->value[j] = component->value[j + 1];\
+                }\
+                /* resize list*/\
+                component->length--;\
+                component->value = realloc(component->value, component->length * sizeof(ecs_entity_t));\
+                return 1;\
+            }\
+        }\
+    }\
+    return 0;\
 }
 
 #define zox_define_entities_component2(name, ...)\

@@ -20,8 +20,7 @@ void set_entity_chunk(ecs_world_t *world, ecs_entity_t e, ChunkLink *chunkLink, 
             EntityLinks *entityLinks = zox_get_mut(new_chunk, EntityLinks)
             if (!entityLinks) return;
             // if (!entityLinks->value) zox_log(" > chunk [%lu] entityLinks is null\n", new_chunk)
-            add_to_memory_component(entityLinks, ecs_entity_t, e)
-            zox_modified(new_chunk, EntityLinks)
+            if (add_to_EntityLinks(entityLinks, e)) zox_modified(new_chunk, EntityLinks)
 #ifdef zox_debug_chunk_link_system
             const int3 chunk_position = zox_get_value(new_chunk, ChunkPosition)
             zox_log(" > chunk [%lu] added e [%lu] [%ix%ix%i] at length [%i]\n", new_chunk, e, chunk_position.x, chunk_position.y, chunk_position.z, entityLinks->length)

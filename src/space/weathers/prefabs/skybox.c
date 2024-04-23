@@ -25,9 +25,6 @@ ecs_entity_t spawn_prefab_skybox(ecs_world_t *world) {
     zox_set(e, Position3D, { float3_zero })
     zox_set(e, Brightness, { 1 })
     prefab_skybox = e;
-#ifdef zoxel_debug_prefabs
-    zox_log(" + spawned prefab skybox [%lu]\n", e)
-#endif
     return e;
 }
 
@@ -42,8 +39,5 @@ ecs_entity_t spawn_skybox(ecs_world_t *world) {
         spawn_gpu_material(world, e, shader_skybox_value);
         set_sky_color(world, menu_sky_color, menu_sky_bottom_color);
     }
-#ifdef zoxel_debug_spawns
-    zox_log(" + spawned skybox [%lu]\n", e)
-#endif
     return e;
 }

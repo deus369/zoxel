@@ -16,6 +16,7 @@ void dispose##_##name(name *ptr) {\
     zero##_##name(ptr);\
     name##_##memorys_allocated--;\
     total_memorys_allocated--;\
+    /*zox_log(" [%s] disposing of entity with memory component\n", #name)*/\
 }\
 ECS_CTOR(name, ptr, { zero##_##name(ptr); })\
 ECS_DTOR(name, ptr, { dispose##_##name(ptr); })\
@@ -38,7 +39,6 @@ ECS_COPY(name, dst, src, {\
         name##_##memorys_allocated++;\
     }\
 })\
-
 
 #define zox_define_memory_component2(name, ...)\
 zox_define_component(name)\
@@ -104,6 +104,7 @@ ecs_set_hooks(world, name, {\
     }\
 }
 
+/*
 #define add_to_memory_component(component, data_type, data) {\
     if (component->value) {\
         unsigned char has_data = 0;\
@@ -124,6 +125,7 @@ ecs_set_hooks(world, name, {\
         component->value[0] = data;\
     }\
 }
+*/
 
 #define remove_from_memory_component(component, data_type, data) {\
     if (component->value) {\

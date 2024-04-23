@@ -8,9 +8,6 @@ ecs_entity_t spawn_prefab_terrain(ecs_world_t *world) {
     zox_prefab_set(e, ChunkLinks, { NULL })
     zox_prefab_set(e, TilemapLink, { 0 })
     prefab_terrain = e;
-#ifdef zoxel_debug_prefabs
-    zox_log(" + spawn_prefab terrain [%lu]\n", e)
-#endif
     return e;
 }
 
@@ -23,8 +20,5 @@ ecs_entity_t spawn_terrain(ecs_world_t *world, ecs_entity_t tilemap, float3 posi
     // did tilemap have a voxlink previously
     zox_prefab_set(tilemap, VoxLink, { e })    // link tilemap to terrain
     local_terrain = e;
-#ifdef zoxel_debug_spawns
-    zox_log(" + spawned terrain [%lu]\n", e)
-#endif
     return e;
 }

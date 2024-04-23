@@ -12,9 +12,6 @@ ecs_entity_t spawn_prefab_scrollbar(ecs_world_t *world) {
     add_frame_texture_type(world, e, (color) { 35, 88, 66, 255 }, 7, 3);
     zox_prefab_set(e, Children, { 0, NULL })
     prefab_scrollbar = e;
-#ifdef zoxel_debug_prefabs
-    zox_log("   > spawn_prefab scrollbar [%lu]\n", e)
-#endif
     return e;
 }
 
@@ -27,9 +24,6 @@ ecs_entity_t spawn_prefab_scrollbar_front(ecs_world_t *world) {
     add_draggable_components(world, e);
     zox_prefab_set(e, DraggableLimits, { int2_zero })
     prefab_scrollbar_front = e;
-#ifdef zoxel_debug_prefabs
-    zox_log("   > spawn_prefab scrollbar_front [%lu]\n", e)
-#endif
     return e;
 }
 
@@ -41,10 +35,7 @@ ecs_entity_t spawn_scrollbar_front(ecs_world_t *world, ecs_entity_t parent, ecs_
     zox_set(e, DraggableLimits, { (int2) { 0, (parent_pixel_size.y / 2) - height / 2 } })
     int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     float2 position2D = get_element_position(pixel_position_global, canvas_size);
-    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
-#ifdef zoxel_debug_spawns
-    zox_log(" > spawned scrollbar_front [%lu]\n", e)
-#endif
+    initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     return e;
 }
 
@@ -60,13 +51,10 @@ ecs_entity_t spawn_scrollbar(ecs_world_t *world, ecs_entity_t parent, ecs_entity
     zox_set(e, ElementMargins, { margins })
     int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     float2 position2D = get_element_position(pixel_position_global, canvas_size);
-    initialize_ui_components_3(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
+    initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, 1)
     children->value[0] = spawn_scrollbar_front(world, e, canvas, int2_zero, float2_half, child_layer, width, height, pixel_position_global, pixel_size, canvas_size);
     zox_modified(e, Children)
-#ifdef zoxel_debug_spawns
-    zox_log(" > spawned scrollbar [%lu]\n", e)
-#endif
     return e;
 }

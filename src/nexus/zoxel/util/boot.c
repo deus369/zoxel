@@ -1,8 +1,8 @@
 unsigned char boot_zoxel_game(ecs_world_t *world) {
 #ifndef zox_beta
-    game_name = "zoxel";
+    game_name = "Zoxel";
 #else
-    game_name = "zoxel beta";
+    game_name = "Zoxel b";
 #endif
     if (initialize_zox(world) == EXIT_FAILURE) return EXIT_FAILURE;
     if (!headless) {
@@ -19,8 +19,8 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     if (!headless) spawn_music(world, instrument_piano); // _square
     spawn_players(world);
     spawn_player_cameras(world);
-    spawn_default_ui(world, main_cameras[0]);
-    zox_spawn_main_menu(world, game_name);
+    ecs_entity_t canvas = spawn_default_ui(world, main_cameras[0]);
+    zox_spawn_main_menu(world, game_name, canvas);
     // debug/testing
 #ifdef zoxel_start_with_debug_ui
     toggle_ui(world, &game_debug_label, &spawn_game_debug_label);

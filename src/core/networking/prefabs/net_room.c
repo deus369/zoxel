@@ -11,9 +11,6 @@ ecs_entity_t spawn_prefab_net_room(ecs_world_t *world) {
     zox_prefab_set(e, SocketLink, { -1 })
     zox_prefab_set(e, Children, { 0, NULL }) // net players will be children of a room
     prefab_net_room = e;
-    #ifdef zoxel_debug_prefabs
-        zoxel_log(" > spawned prefab net_room [%lu].\n", (long int) (e));
-    #endif
     return e;
 }
 
@@ -22,8 +19,5 @@ ecs_entity_t spawn_net_room(ecs_world_t *world, int port) {
     zox_name("net_room")
     zox_set(e, NetPort, { port })
     set_new_socket(world, e, port);
-    #ifdef zoxel_debug_spawns
-        zoxel_log(" > spawned net_room [%lu]\n", (long int) e);
-    #endif
     return e;
 }

@@ -9,9 +9,6 @@ ecs_entity_t spawn_prefab_neuron(ecs_world_t *world) {
     // this is only used for rendering / debugging
     zox_prefab_set(e, Position2D, { float2_zero })
     prefab_neuron = e;
-    #ifdef zoxel_debug_prefabs
-        zoxel_log("spawn_prefab neuron [%lu].\n", (long int) (e));
-    #endif
     return e;
 }
 
@@ -31,8 +28,5 @@ ecs_entity_t spawn_neuron(ecs_world_t *world, ecs_entity_t brain, float2 positio
     zox_prefab_set(e, Position2D, { render_position })
     if (position.x == 0) { zox_add_tag(e, InputNeuron) }
     else if (position.x == 7) { zox_add_tag(e, OutputNeuron) }
-    #ifdef zoxel_debug_spawns
-    zoxel_log("Spawned neuron [%lu]\n", (long int) e);
-    #endif
     return e;
 }

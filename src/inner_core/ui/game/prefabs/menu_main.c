@@ -9,7 +9,7 @@ ecs_entity_t spawn_prefab_main_menu(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label, int2 position, float2 anchor) {
+ecs_entity_t spawn_main_menu(ecs_world_t *world, const ecs_entity_t canvas, const char *header_label, const int2 position, const float2 anchor) {
     const unsigned char is_close_button = 0;
 #ifdef zoxel_on_android
     int labels_count = 1;
@@ -21,7 +21,7 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const char *header_label, int2 
     const ClickEvent events[] = { { &button_event_play_game }, { &button_event_menu_options }, { &button_event_exit_app } };
 #endif
     const unsigned char layer = 1;
-    ecs_entity_t e = spawn_ui_list(world, prefab_main_menu, main_canvas, header_label, labels_count, labels_count, labels, events, position, anchor, is_close_button, 42, layer, 0);
+    ecs_entity_t e = spawn_ui_list(world, prefab_main_menu, canvas, header_label, labels_count, labels_count, labels, events, position, anchor, is_close_button, 42, layer, 0);
     zox_name("main_menu")
     main_menu = e;
     return e;
