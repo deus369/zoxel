@@ -5,8 +5,8 @@
 #include "data/color.c"
 #include "data/color_rgb.c"
 #include "data/octree_helper.c"
-#include "data/octree_component.c"
 #include "data/text_group.c"
+#include "macros/octree_component.c"
 #include "components/components.c"
 zox_declare_tag(Selectable)
 zox_declare_tag(Clickable)
