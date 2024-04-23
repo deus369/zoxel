@@ -49,6 +49,7 @@ void on_element_parent_updated(ecs_world_t *world, ecs_entity_t e, int2 local_pi
     zox_set(e, CanvasPosition, { global_pixel_position })
 }
 
+extern void resize_ui_line2D(ecs_world_t *world, ecs_entity_t e, int2 canvas_size);
 // set children position as well
 void set_ui_transform(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t e, unsigned char layer, int2 canvas_size) {
 #ifdef debug_ui_scaling
@@ -69,6 +70,7 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t e, u
         zox_log("        -> to [%ix%i]\n", global_pixel_position.x, global_pixel_position.y)
 #endif
     }
+    resize_ui_line2D(world, e, canvas_size);
     if (!headless && zox_has(e, MeshVertices2D)) {  //! Resize (if visible)
         const PixelSize *pixelSize = zox_get(e, PixelSize)
         const MeshAlignment *meshAlignment = zox_get(e, MeshAlignment)

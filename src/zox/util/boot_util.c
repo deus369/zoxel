@@ -76,7 +76,7 @@ void zox_spawn_main_menu(ecs_world_t *world, const char *game_name, ecs_entity_t
     zox_modified(canvas, Children)
     // disable until line2Ds reposition/scale based on canvas
 #ifdef zoxel_lines2D
-    //     spawn_canvas_edge_lines(world, main_canvas);
+    spawn_canvas_edge_lines(world, canvas);
 #endif
 #endif
 }

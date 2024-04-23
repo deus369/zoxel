@@ -6,6 +6,7 @@ zox_declare_tag(FrameDebugLine)
 zox_component(LineData2D, float4)       // The two points in a line2D
 zox_component(LinePosition2D, int4)     // The two ui points in a line2D
 zox_component(LineLocalPosition2D, int4)
+zox_component(LineAnchor, float4)
 
 int4 get_new_line_position(float2 real_position2D, float2 canvas_size_f, float aspect_ratio, int2 parent_position, int4 local_position) {
     int2 new_mid_point = (int2) { ceil((real_position2D.x / aspect_ratio + 0.5f) * canvas_size_f.x), ((real_position2D.y + 0.5f) * canvas_size_f.y) };
@@ -73,6 +74,7 @@ zox_define_tag(FrameDebugLine)
 zox_define_component(LineData2D)
 zox_define_component(LinePosition2D)
 zox_define_component(LineLocalPosition2D)
+zox_define_component(LineAnchor)
 zox_filter(line2Ds_query, [none] Line2D, [in] LinePosition2D, [none] CanvasLink, [none] LineData2D)
 zox_system(FrameDebugSystem, EcsOnUpdate, [none] FrameDebugLine, [in] ChildIndex, [out] LineLocalPosition2D)
 zox_system_ctx(Line2DElementSystem, EcsPreStore, line2Ds_query, [none] Line2D, [in] LinePosition2D, [in] CanvasLink, [out] LineData2D)
