@@ -14,3 +14,17 @@ if [ -f "$file_path" ]; then
 else
     echo " - flecs file '$file_path' not found."
 fi
+
+# this is done because flecs on web has issues
+line_number_2=6095
+replacement_line_2="    if (!ecs_is_alive(world, entity)) return NULL;"
+
+# Check if the file exists
+if [ -f "$file_path" ]; then
+    # Replace the line
+    echo " - disabled this edit for now"
+    # sed -i "${line_number_2}s/.*/${replacement_line_2}/" "$file_path"
+    # echo " + flecs file modified at [$line_number_2] with [$replacement_line_2]"
+else
+    echo " - flecs file '$file_path' not found."
+fi

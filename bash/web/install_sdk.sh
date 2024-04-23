@@ -1,29 +1,31 @@
 #!/bin/bash
 
-if [ ! -d "$HOME/projects" ]; then
-    mkdir "$HOME/projects"
-    echo "  > created directory [~/projects]"
+web_sdk_path="build/emsdk"
+if [ ! -d "build" ]; then
+    mkdir "build"
+    echo " + created new directory [build]"
 fi
-cd $HOME/projects
-echo "  > installing emscripten in [$PWD]"
-
-if [[ -d emsdk ]]; then
-	echo "  > emsdk already exists, pulling latest"
-    cd emsdk
+# echo " + installing emscripten in [$PWD]"
+if [[ -d $web_sdk_path ]]; then
+	echo " + emsdk [$web_sdk_path] exists, pulling latest"
+    cd $web_sdk_path
     git pull
 else
-	echo "  > cloning new emsdk"
+	echo "  > downloading latest emsdk to [$web_sdk_path]"
+    cd build
     git clone https://github.com/emscripten-core/emsdk.git
-    cd emsdk
+    cd "emsdk"
     #echo 'source "$HOME/projects/emsdk/emsdk_env.sh"' >> $HOME/.bash_profile
 fi
 
-echo "  > installing latest emsdk"
+echo " + installing emsdk"
 ./emsdk install latest
-echo "  > activating latest emsdk"
+echo " + activating emsdk"
 ./emsdk activate latest
-
-source add_emsdk_env.sh
+echo " + adding emsdk environment variables"
+source emsdk_env.sh # add_emsdk_env.sh
+# return to zoxel
+cd ../..
 
 # sudo rm -r emsdk
 # sudo rm -r /user/share/emscripten

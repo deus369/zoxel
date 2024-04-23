@@ -2,7 +2,7 @@
 int vox_files_count = 0;
 vox_file *vox_files;
 
-void dispose_files_voxes() {
+void dispose_files_voxes(ecs_world_t *world) {
 #ifdef zox_disable_io
     return;
 #endif

@@ -319,9 +319,9 @@ target_windows_32 = build/windows_32/zoxel_32.exe
 # ===== web ===== #
 # ==== ===== ==== #
 
-cc_web = ~/projects/emsdk/upstream/emscripten/emcc
-emrun=~/projects/emsdk/upstream/emscripten/emrun
-emsdk=python3 ~/projects/emsdk/emsdk.py
+cc_web = build/emsdk/upstream/emscripten/emcc
+emrun=build/emsdk/upstream/emscripten/emrun
+emsdk=python3 build/emsdk/emsdk.py
 target_web_dir = build/web
 target_web = $(target_web_dir)/zoxel.html # .js
 web_wasm_file = $(target_web_dir)/zoxel.wasm
@@ -332,6 +332,9 @@ web_resources_dir = -Dresources_dir_name="\"resources\""
 cflags_web = --preload-file $(resources_dir) -s WASM=1 -s FULL_ES3=1 -s USE_WEBGL2=1 -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 -s ALLOW_MEMORY_GROWTH -s STACK_SIZE=365536 -s EXPORTED_FUNCTIONS=['_main','_ntohs']
 ldlibs_web = -lGL -lGLEW -lSDL -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["png"]' -s USE_SDL_MIXER=2
 make_web = $(make_web_checks) $(emsdk) construct_env && $(cc_web) $(CFLAGS) $(cflags_web) $(web_resources_dir) -o $(target_web) $(OBJS) include/flecs/flecs.c $(ldlibs_web)
+
+prepare-web:
+	@ bash bash/web/prepare.sh
 
 $(target_web): $(SRCS)
 	@ echo " > building zoxel-web"
@@ -363,9 +366,6 @@ run-zoxel-play:
 git-push-zoxel-play:
 	echo " > pushing from projects/zoxel-play"
 	cd ../zoxel-play && bash/git/git_push.sh
-
-web-sdk:
-	bash bash/web/install_sdk.sh
 
 # ====== ===== ====== #
 # ===== android ===== #
@@ -642,23 +642,23 @@ endif
 	@echo "  + make run		runs release build"
 	@echo "  + make run-vulkan	runs release with vulkan"
 	@echo "  "
-	@echo " > help commands"
-	@echo "  + flecs-help		building flecs"
-	@echo "  + help-extra		all the extras"
-	@echo "  + git-help		git bash helpers"
-	@echo "  + android-help	android builds"
-	@echo "  + web-help		web builds"
-	@echo "  + steam-help		steam integration"
-	@echo "  + itch-help		itch-io automation"
+	@echo " > help-x commands"
+	@echo "  + flecs		building flecs"
+	@echo "  + extra		all the extras"
+	@echo "  + git			git bash helpers"
+	@echo "  + android-		android builds"
+	@echo "  + web			web builds"
+	@echo "  + steam		steam integration"
+	@echo "  + itch		itch-io automation"
 	@echo "  "
 
-debug-help:
+help-debug:
 	@echo "    run-profiler		runs $(target) --profiler"
 	@echo "    run-dev			runs $(target_dev)"
 	@echo "    run-dev-debug		runs valgrind $(target_dev)"
 	@echo "    run-dev-profiler		runs $(target_dev) --profiler"
 
-flecs-help:
+help-flecs:
 	@echo "  > [flecs]"
 	@echo "    make $(flecs_target)	builds flecs"
 	@echo "    check-flecs			checks flecs releases"
@@ -689,13 +689,13 @@ help-extra:
 	@echo "    windows-sdk			installs tools for windows cross compilation"
 	@echo "    windows			builds windows release"
 
-git-help:
+help-git:
 	@echo "  > [git]"
 	@echo "    git-pull			pulls latest git"
 	@echo "    git-push			pushes git updates (requires ssh access)"
 	@echo "    ssh				creates a ssh key to add to git servers"
 
-android-help:
+help-android:
 	@echo "  > [android]"
 	@echo "    android-sdk			installs tools for android build"
 	@echo "    android			builds & runs android release"
@@ -707,13 +707,13 @@ android-help:
 	@echo "    android-dev-debug		builds & runs android debug with logcat"
 	@echo "    debug-android		debugs running android game"
 
-web-help:
+help-web:
 	@echo "  > [web]"
-	@echo "    web-sdk			installs tools for web build"
-	@echo "    $(target_web)		builds zoxel-web"
-	@echo "    run-web			runs $(target_web)"
+	@echo "    prepare-web	installs tools for web build"
+	@echo "    web		builds web [ $(target_web)]"
+	@echo "    run-web	runs web"
 
-steam-help:
+help-steam:
 	@echo "  > [steam]"
 	@echo "    steam-all			builds both wrappers, builds and uploads them to beta"
 	@echo "    steam-wrapper-linux		builds steam wrapper lib/libsteam_wrapper.so"
@@ -726,7 +726,7 @@ steam-help:
 	@echo "    steam-sdk			installs steamworks sdk from zip ~/Downloads/steamworks_sdk.zip"
 	@echo "    install-steam-deck-required	installs steamdeck required libs"
 
-itch-help:
+help-itch:
 	@echo "  > [itchio]"
 	@echo "    itch-all			builds all platforms uploads to itch"
 	@echo "    itch-upload			uploads builds to itch"
