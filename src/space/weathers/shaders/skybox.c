@@ -58,7 +58,6 @@ void main() {\
 // lowp vec3 sky_color_bottom = vec3(0.9, 0.95, 0.98);
 // color.x = color.y = 0.0; color.z = mesh_y;
 // color = vec4(0, 0.6, 0.4, 1) * brightness;
-
 ecs_entity_t shader_skybox;
 
 void load_shader_skybox(ecs_world_t *world) {

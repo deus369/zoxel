@@ -1,6 +1,6 @@
 extern GLuint2 get_shader_value(ecs_world_t *world, ecs_entity_t shader);
 extern ecs_entity_t spawn_shader(ecs_world_t *world, const GLchar* vert_buffer, const GLchar* frag_buffer);
-extern ecs_entity_t spawn_material(ecs_world_t *world, GLuint2 shader);
+extern ecs_entity_t spawn_material(ecs_world_t *world, ecs_entity_t shader);
 extern GLuint get_material_value(ecs_world_t *world, ecs_entity_t material);
 extern void restore_shader(ecs_world_t *world, ecs_entity_t e, const GLchar* vert_buffer, const GLchar* frag_buffer);
 extern void restore_material(ecs_world_t *world, ecs_entity_t e, GLuint2 shader);
@@ -31,7 +31,7 @@ Textured3DAttributes create_Textured3DAttributes(GLuint material) {
 int load_shader3D_textured(ecs_world_t *world) {
     if (!textured3D_shader) {
         textured3D_shader = spawn_shader(world, shader3D_textured_vert_buffer, shader3D_textured_frag_buffer);
-        textured3D_material = spawn_material(world, get_shader3D_textured_value(world));
+        textured3D_material = spawn_material(world, textured3D_shader); // get_shader3D_textured_value(world));
         GLuint material = get_textured3D_material_value(world);
         Textured3DAttributes at = create_Textured3DAttributes(material);
         zox_prefab_set(textured3D_material, Textured3DAttributes, { .vertex_position = at.vertex_position, .vertex_uv = at.vertex_uv, .vertex_color = at.vertex_color, .position = at.position, .rotation = at.rotation, .scale = at.scale, .camera_matrix = at.camera_matrix, .fog_data = at.fog_data, .texture = at.texture, .brightness = at.brightness })

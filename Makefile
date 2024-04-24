@@ -375,6 +375,11 @@ git-push-zoxel-play:
 make_android = bash bash/android/gradle_build_release.sh # gradle_build_run.sh
 target_android = build/zoxel.apk
 
+prepare-android:
+	@ echo " > installing prepare-android"
+	@ $(patient_cmd)
+	@ bash bash/android/prepare.sh
+
 android:
 	@ echo " > building zoxel-android"
 	@ $(patient_cmd)
@@ -399,40 +404,35 @@ android-clean:
 # @ bash bash/android/gradle_install.sh && bash bash/android/gradle_run.sh
 
 android-install:
-	bash bash/android/gradle_install.sh
+	@ bash bash/android/gradle_install.sh
 
 android-run:
-	bash bash/android/gradle_run.sh
+	@ bash bash/android/gradle_run.sh
 
 android-sign:
-	bash bash/android/gradle_sign.sh
+	@ bash bash/android/gradle_sign.sh
 
 android-debug:
-	bash bash/android/debug_android.sh
+	@ bash bash/android/debug_android.sh
 
 android-dev:
-	bash bash/android/gradle_build_dev.sh
+	@ bash bash/android/gradle_build_dev.sh
 
 android-create-key:
-	bash bash/android/generate_keystore.sh
+	@ bash bash/android/generate_keystore.sh
 
 android-uninstall:
-	bash bash/android/gradle_uninstall.sh
+	@ bash bash/android/gradle_uninstall.sh
 
 #android-clean:
 #	bash bash/android/gradle_clean.sh
 
 android-update-settings:
-	bash bash/android/copy_settings.sh
+	@ bash bash/android/copy_settings.sh
 
 android-dev-debug:
-	bash bash/android/install_debug.sh
-	bash bash/android/debug_android.sh
-
-android-sdk:
-	@ echo " > installing android-sdk"
-	@ $(patient_cmd)
-	@ bash bash/android/install_sdk.sh
+	@ bash bash/android/install_debug.sh
+	@ bash bash/android/debug_android.sh
 
 
 # ====== ======= ====== #
@@ -697,10 +697,10 @@ help-git:
 
 help-android:
 	@echo "  > [android]"
-	@echo "    android-sdk			installs tools for android build"
+	@echo "    prepare-android		installs tools for android build"
 	@echo "    android			builds & runs android release"
 	@echo "    android-create-key		created android keystore"
-	@echo "    android-sign			signs the unsigned zoxel apk"
+	@echo "    android-sign		signs the unsigned zoxel apk"
 	@echo "    android-install		installs zoxel apk"
 	@echo "    android-run			runs the zoxel apk"
 	@echo "    android-dev			builds & runs android debug"

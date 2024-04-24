@@ -157,7 +157,7 @@ ecs_entity_t create_terrain(ecs_world_t *world, int3 center_position) {
     return terrain_world;
 }
 
-void dispose_opengl_resources_terrain(ecs_world_t *world) {
+/*void dispose_opengl_resources_terrain(ecs_world_t *world) {
     if (!local_terrain) return;
     const TilemapLink *tilemapLink = zox_get(local_terrain, TilemapLink)
     dispose_material_resources(world, tilemapLink->value);
@@ -186,7 +186,7 @@ void restore_opengl_resources_terrain(ecs_world_t *world) {
     const TilemapLink *tilemapLink = zox_get(local_terrain, TilemapLink)
     restore_material_resources(world, tilemapLink->value, get_shader3D_textured_value(world), 0);
     // zoxel_log(" > shader restore [%ix%i]\n", get_shader3D_textured_value(world).x, get_shader3D_textured_value(world).y);
-}
+}*/
 
 
 /*

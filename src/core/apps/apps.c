@@ -27,7 +27,8 @@ void dispose_apps(ecs_world_t *world) {
 }
 
 void spawn_prefabs_apps(ecs_world_t *world) {
-    spawn_prefab_app(world);
+    default_window_position = (int2) { screen_dimensions.x / 2 - default_window_size.x / 2, screen_dimensions.y / 2 - default_window_size.y / 2 };
+    spawn_prefab_app(world, default_window_position, default_window_size);
     spawn_prefabs_apps_sdl(world);
 }
 

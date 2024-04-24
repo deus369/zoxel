@@ -4,6 +4,7 @@ extern unsigned char is_split_screen;
 extern ecs_entity_t fps_display;
 #endif
 #define main_camera_rotation_speed 60 * 0.22f
+ecs_entity_t zoxel_main_menu;
 
 void spawn_players(ecs_world_t *world) {
     if (!headless) {
@@ -43,8 +44,6 @@ ecs_entity_t spawn_default_ui(ecs_world_t *world, ecs_entity_t camera) {
     spawn_font_style(world);
     return canvas;
 }
-
-ecs_entity_t zoxel_main_menu;
 
 void zox_spawn_main_menu(ecs_world_t *world, const char *game_name, ecs_entity_t canvas) {
 #ifdef zoxel_game_ui

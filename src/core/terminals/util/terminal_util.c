@@ -27,6 +27,7 @@ void print_help_menu(const char* arg0) {
     zoxel_log("        -h --help            print this help\n");
     zoxel_log("        -z --headless        enable headless\n");
     zoxel_log("        -v --vulkan          enables vulkan\n");
+    zoxel_log("        -w --windowed        windowed mode\n");
     zoxel_log("        -f --fullscreen      fullscreen window\n");
     zoxel_log("        -g --halfscreen      halfscreen window\n");
     zoxel_log("        -s --splitscreen     split screen local coop\n");
@@ -55,6 +56,8 @@ int process_arguments(int argc, char* argv[]) {
             return EXIT_FAILURE;
         } else if (strcmp(argv[i], "--singlethread") == 0) {
             is_multithreading = 0;
+        } else if (strcmp(argv[i], "-w") == 0 || strcmp(argv[i], "--windowed") == 0) {
+            fullscreen = 0;
         } else if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--fullscreen") == 0) {
             fullscreen = 1;
         } else if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--halfscreen") == 0) {

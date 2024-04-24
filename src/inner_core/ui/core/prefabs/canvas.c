@@ -1,5 +1,4 @@
 ecs_entity_t prefab_canvas;
-ecs_entity_t main_canvas;
 
 ecs_entity_t spawn_prefab_canvas(ecs_world_t *world) {
     zox_prefab()

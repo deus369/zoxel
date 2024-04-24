@@ -29,7 +29,9 @@ start_gradle_build() {
     touch "$pathing_locker"
     # global variables
     ndk_ver=25 # 15c / 13b / 21 / 26b
-    jdk_ver=20 # 7 / 11 / 20
+    # jdk_ver=20 # 7 / 11 / 20
+    #jdk_ver=$(java --version 2>&1 | grep openjdk | awk '{split($2, a, "."); print a[1]}')
+    #echo " > JDK Version found [$jdk_ver]"
     platform_ver=34 # 30
     platform_tools_ver=34.0.5
     build_tools_ver=34.0.0-rc4 # 30.0.3
@@ -51,9 +53,10 @@ start_gradle_build() {
     # jdk_whereis2=$(echo $jdk_whereis | awk '{print $NF}') # gets the last string in the list
     # jdk_whereis2=$(dirname "$(dirname "$jdk_whereis2")")
     # JAVA_HOME=$jdk_whereis2 #"/usr/lib/jvm/java-17-openjdk"
-    JAVA_HOME=/usr/lib/jvm/java-$jdk_ver-openjdk # 7 / 11 / 20
-    # javaHome=$JAVA_HOME
-    export JAVA_HOME=$JAVA_HOME # "/usr/lib/jvm/java-17-openjdk" # $(dirname $(dirname $(whereis java)))
+    #JAVA_HOME=/usr/lib/jvm/java-$jdk_ver-openjdk # 7 / 11 / 20
+    #export JAVA_HOME=$JAVA_HOME
+    # javaHome=$JAVA_HOME # "/usr/lib/jvm/java-17-openjdk" # $(dirname $(dirname $(whereis java)))
+    source bash/android/set_java_home.sh
     # SDL
     sdl_parent_directory=$zoxel_directory/build/sdl
     sdl_directory=$sdl_parent_directory/sdl

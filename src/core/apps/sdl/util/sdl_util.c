@@ -109,6 +109,19 @@ void sdl_set_fullscreen(SDL_Window* window, unsigned char is_fullscreen) {
     SDL_SetWindowFullscreen(window, is_fullscreen ? sdl_fullscreen_byte : 0);
 }
 
+void on_sdl_window_restored(ecs_world_t *world, ecs_entity_t e) {
+    if (!zox_has(e, WindowSize)) {
+        zox_log("no WindowSize on app [%lu]\n", e)
+        return;
+    }
+    SDL_Window* window = zox_get_value(e, SDLWindow)
+    const int2 window_size = zox_get_value(e, WindowSize)
+    const int2 window_position = zox_get_value(e, WindowPosition)
+    SDL_SetWindowSize(window, window_size.x, window_size.y);
+    SDL_SetWindowPosition(window, window_position.x, window_position.y);
+    // zox_log(" > setting to windowed [%ix%i]\n", window_size.x, window_size.y)
+}
+
 void sdl_toggle_fullscreen(ecs_world_t *world, ecs_entity_t e) { // SDL_Window* window) {
     unsigned char is_fullscreen = zox_get_value(e, WindowFullscreen)
     SDL_Window* window = zox_get_value(e, SDLWindow)
@@ -121,21 +134,11 @@ void sdl_toggle_fullscreen(ecs_world_t *world, ecs_entity_t e) { // SDL_Window* 
         SDL_SetWindowSize(window, screen_dimensions.x, screen_dimensions.y);
     }
     sdl_set_fullscreen(window, is_fullscreen);
-    if (!is_fullscreen) {
-        if (!zox_has(e, WindowSize)) {
-            zox_log("no WindowSize on main_app..\n")
-            return;
-        }
-        int2 window_size = zox_get_value(e, WindowSize)
-        int2 window_position = zox_get_value(e, WindowPosition)
-        // zox_log(" > setting to windowed [%ix%i]\n", window_size.x, window_size.y)
-        SDL_SetWindowSize(window, window_size.x, window_size.y);
-        SDL_SetWindowPosition(window, window_position.x, window_position.y);
-    }
+    if (!is_fullscreen) on_sdl_window_restored(world, e);
 }
 
 void print_supported_renderers() {
-    int num_render_drivers = SDL_GetNumRenderDrivers();
+    const int num_render_drivers = SDL_GetNumRenderDrivers();
     zox_log(" > found [%i] render drivers\n", num_render_drivers);
     for (int i = 0; i < num_render_drivers; i++) {
         SDL_RendererInfo info;
@@ -225,7 +228,8 @@ unsigned char create_main_window(ecs_world_t *world) {
     main_window = window;
     if (!is_using_vulkan) {
         SDL_GLContext* gl_context = create_sdl_opengl_context(window);
-        spawn_app_sdl(world, window, gl_context, fullscreen);
+        ecs_entity_t e = spawn_app_sdl(world, window, gl_context, fullscreen);
+        if (!fullscreen) on_sdl_window_restored(world, e);
         main_gl_context = gl_context;
         unsigned char app_success = main_gl_context != NULL ? EXIT_SUCCESS : EXIT_FAILURE;
         if (main_gl_context == NULL) zoxel_log("    ! opengl did not create context, exiting zoxel\n");

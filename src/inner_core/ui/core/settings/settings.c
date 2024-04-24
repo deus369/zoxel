@@ -6,3 +6,5 @@
 #define restore_joystick_cutoff 0.06f
 // #define zox_debug_ui_trails
 // #define zoxel_debug_ui_selectable_states
+ecs_entity_t main_canvas;
+ecs_entity_t zox_canvases[max_cameras];

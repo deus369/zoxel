@@ -1,6 +1,5 @@
 const float skybox_scale = 1024.0f;
 ecs_entity_t prefab_skybox;
-ecs_entity_t skybox;
 
 ecs_entity_t spawn_prefab_skybox(ecs_world_t *world) {
     zox_prefab()

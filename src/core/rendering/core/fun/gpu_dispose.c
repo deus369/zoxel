@@ -1,4 +1,26 @@
-extern void dispose_opengl_resources_terrain(ecs_world_t *world);
+// delete opengl resources, shaders, textures,
+void delete_all_opengl_resources(ecs_world_t *world) {
+    if (is_using_vulkan) return;
+    zoxel_log(" > disposing all opengl resources\n");
+    ecs_run(world, ecs_id(MeshGPUDisposeSystem), 0, NULL);
+    ecs_run(world, ecs_id(MeshColorsGPUDisposeSystem), 0, NULL);
+    ecs_run(world, ecs_id(MeshUvsGPUDisposeSystem), 0, NULL);
+    // materials, shaders, textures
+    ecs_run(world, ecs_id(ShaderGPUDisposeSystem), 0, NULL);
+    ecs_run(world, ecs_id(MaterialGPUDisposeSystem), 0, NULL);
+    ecs_run(world, ecs_id(TextureGPUDisposeSystem), 0, NULL);
+    // dispose_children_resources(world, main_canvas);
+    // dispose_opengl_resources_terrain(world);
+    opengl_dispose_shaders(); // todo: remove, for ones that  arn't entities yet
+}
+
+void opengl_delete_resources(ecs_world_t *world) {
+    if (is_using_vulkan) return;
+    rendering = 0;
+    delete_all_opengl_resources(world);
+}
+
+/*extern void dispose_opengl_resources_terrain(ecs_world_t *world);
 extern ecs_entity_t skybox;
 extern ecs_entity_t main_canvas;
 
@@ -19,9 +41,9 @@ void dispose_shader_resources(ecs_world_t *world, ecs_entity_t e) {
         if (shaderGPULink->value.x != 0) glDeleteShader(shaderGPULink->value.x);
         if (shaderGPULink->value.y != 0) glDeleteShader(shaderGPULink->value.y);
     }
-}
+}*/
 
-void dispose_mesh_resources(ecs_world_t *world, ecs_entity_t e) {
+/*void dispose_mesh_resources(ecs_world_t *world, ecs_entity_t e) {
     if (zox_has(e, MeshGPULink)) {
         const MeshGPULink *meshGPULink = zox_get(e, MeshGPULink)
         if (meshGPULink->value.x != 0) glDeleteBuffers(1, &meshGPULink->value.x);
@@ -47,24 +69,4 @@ void dispose_children_resources(ecs_world_t *world, ecs_entity_t e) {
             dispose_mesh_resources(world, child);
         }
     }
-}
-
-// delete opengl resources, shaders, textures,
-void delete_all_opengl_resources(ecs_world_t *world) {
-    if (is_using_vulkan) return;
-    zoxel_log(" > disposing all opengl resources\n");
-    opengl_dispose_shaders();
-    dispose_children_resources(world, main_canvas);
-    dispose_opengl_resources_terrain(world);
-    ecs_run(world, ecs_id(MeshGPUDisposeSystem), 0, NULL);
-    ecs_run(world, ecs_id(MeshColorsGPUDisposeSystem), 0, NULL);
-    ecs_run(world, ecs_id(MeshUvsGPUDisposeSystem), 0, NULL);
-    ecs_run(world, ecs_id(ShaderGPUDisposeSystem), 0, NULL);
-    ecs_run(world, ecs_id(MaterialGPUDisposeSystem), 0, NULL);
-}
-
-void opengl_delete_resources(ecs_world_t *world) {
-    if (is_using_vulkan) return;
-    rendering = 0;
-    delete_all_opengl_resources(world);
-}
+}*/

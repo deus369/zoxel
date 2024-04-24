@@ -5,9 +5,9 @@ void realms_game_start(ecs_world_t *world, ecs_entity_t game) {
         create_terrain(world, terrain_position);
         zox_set(local_terrain, RealmLink, { local_realm }) // this should be done on spawn
         // link terrain to realm too
-    } else if (zox_game_type == zox_game_mode_2D) {
+    } /*else if (zox_game_type == zox_game_mode_2D) {
         zox_log(" > todo: create terrain2D and chunk2D modules\n")
-    }
+    }*/
     unlock_achievement("test_achievement"); // idk if this can be per player
 }
 

@@ -24,6 +24,9 @@ else
     echo "  > gradlew signing was successful"
 fi
 
+cp $apk_signed_filepath build/zoxel.apk
+echo " + zoxel.apk completed"
+
 end_gradle_build
 # apk_filepath="app/build/outputs/apk/release/zipped.apk"
 # sign the apk, i should save the keyname/alias somewhere for later

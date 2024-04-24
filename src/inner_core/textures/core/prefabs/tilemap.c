@@ -22,7 +22,8 @@ ecs_entity_t spawn_tilemap(ecs_world_t *world) {
     zox_name("tilemap")
     // zox_set(e, TextureSize, { texture_size })
     if (!headless) {
-        GLuint material = spawn_gpu_material(world, e, get_shader3D_textured_value(world));
+        zox_set(e, ShaderLink, { textured3D_shader })
+        const GLuint material = spawn_gpu_material(world, e, get_shader3D_textured_value(world));
         spawn_gpu_texture(world, e);
         Textured3DAttributes at = create_Textured3DAttributes(material);
         zox_prefab_set(e, Textured3DAttributes, { .vertex_position = at.vertex_position, .vertex_uv = at.vertex_uv, .vertex_color = at.vertex_color, .position = at.position, .rotation = at.rotation,  .scale = at.scale, .camera_matrix = at.camera_matrix, .fog_data = at.fog_data, .texture = at.texture, .brightness = at.brightness })
