@@ -8,8 +8,8 @@ ecs_entity_t spawn_prefab_zext(ecs_world_t *world) {
     zox_prefab_set(e, ZextSize, { 0 })
     zox_prefab_set(e, ZextPadding, { byte2_zero })
     zox_prefab_set(e, ZextDirty, { 0 })
-    zox_prefab_set(e, ZextData, { 0, NULL })
     zox_prefab_set(e, ParentLink, { 0 })
+    zox_prefab_set(e, ZextData, { 0, NULL })
     zox_prefab_set(e, Children, { 0, NULL })
     prefab_zext = e;
     return e;
@@ -20,14 +20,14 @@ ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t pa
     const int textLength = strlen(text);
     const unsigned char zigel_layer = layer + 1;
     const int2 pixel_size = (int2) { font_size * textLength, font_size };
+    const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
+    const float2 position2D = get_element_position(pixel_position_global, canvas_size);
     zox_instance(prefab)
     zox_name("zext")
     zox_set(e, RenderDisabled, { render_disabled })
     zox_set(e, ZextSize, { font_size })
     zox_set(e, ZextPadding, { padding })
     zox_set(e, MeshAlignment, { alignment })
-    const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
-    const float2 position2D = get_element_position(pixel_position_global, canvas_size);
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     ZextData *zextData = zox_get_mut(e, ZextData)
     Children *children = zox_get_mut(e, Children)

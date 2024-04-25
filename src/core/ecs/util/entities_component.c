@@ -2,9 +2,9 @@
 zox_memory_component(name, ecs_entity_t)\
 void on_destroyed##_##name(ecs_iter_t *it) {\
     zox_iter_world()\
-    const name *components = ecs_field(it, name, 1);\
+    zox_field_in(name, components, 1)\
     for (int i = 0; i < it->count; i++) {\
-        const name *component = &components[i];\
+        zox_field_i_in(name, components, component)\
         if (!component->value) continue;\
         for (int j = 0; j < component->length; j++) zox_delete(component->value[j]);\
     }\

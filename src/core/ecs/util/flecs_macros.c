@@ -84,3 +84,4 @@ if (e) {\
 
 // checks if entity is valid
 #define zox_valid(e) ecs_is_valid(world, e)
+#define zox_alive(e) ecs_is_alive(world, e)

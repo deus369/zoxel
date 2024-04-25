@@ -29,10 +29,8 @@
 #include "data/ecs_entity_2.c"
 #include "data/uint2.c"
 #include "data/uint3.c"
-// collections & functions
-#include "collections/dynamic_array.c"
-#include "collections/hash_map.c"
-#include "collections/int3_hash_map.c"
+#include "data/int3_hash_map.c"
+// functions
 #include "util/math.c"
 #include "util/integer_util.c"
 #include "util/noise.c"
@@ -43,10 +41,16 @@
 #include "fun/conversion.c"
 #include "tests/test_quadrants.c"
 
+zoxel_dynamic_array(int)
+create_is_in_array_d(int)
+// zoxel_dynamic_array(long int)
+zoxel_dynamic_array(float3)
+zoxel_dynamic_array(float2)
+
 zox_begin_module(Maths)
 unsigned long seed = get_unique_time_seed();
 #ifdef zoxel_seed_666
-    seed = 666;
+seed = 666;
 #endif
 set_noise_seed(seed);
 // zoxel_log(" > seed set to [%lu]\n", seed);

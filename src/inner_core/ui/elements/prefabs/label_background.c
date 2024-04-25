@@ -1,4 +1,4 @@
-ecs_entity_t label_background_prefab;
+ecs_entity_t prefab_label_background;
 
 ecs_entity_t spawn_prefab_label_background(ecs_world_t *world) {
     zox_prefab_child(prefab_zext)
@@ -9,7 +9,7 @@ ecs_entity_t spawn_prefab_label_background(ecs_world_t *world) {
     zox_prefab_set(e, FrameCorner, { 7 })
     zox_prefab_set(e, OutlineThickness, { 3 })
     zox_prefab_set(e, Color, {{ 35, 88, 66, 255 }})
-    label_background_prefab = e;
+    prefab_label_background = e;
     return e;
 }
 

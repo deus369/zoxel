@@ -36,9 +36,9 @@ float2 get_ui_real_position2D_parent(int2 local_pixel_position, float2 anchor, f
     float2 add_2 = (float2) { - (parent_pixel_ratio.x / 2.0f) + parent_pixel_ratio.x * anchor.x, - (parent_pixel_ratio.y / 2.0f) + parent_pixel_ratio.y * anchor.y };
     float2_add_float2_p(&position2D, add_1);
     float2_add_float2_p(&position2D, add_2);
-    #ifdef debug_ui_positioning
-        zox_log(" -> (parent) Position2D : %fx%f\n", position2D.x, position2D.y)
-    #endif
+#ifdef debug_ui_positioning
+    zox_log(" -> (parent) Position2D : %fx%f\n", position2D.x, position2D.y)
+#endif
     return position2D;
 }
 void on_element_parent_updated(ecs_world_t *world, ecs_entity_t e, int2 local_pixel_position, float2 anchor, float2 parent_position, int2 parent_pixel_size, float2 canvas_size_f) {
@@ -119,14 +119,14 @@ float2 get_element_position(const int2 pixel_position_global, const int2 canvas_
 }
 
 void initialize_element_invisible(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const int2 pixel_size, const float2 anchor, const unsigned char layer, const float2 position2D, const int2 pixel_position_global) {
-    zox_set(e, CanvasLink, { canvas })
-    zox_set(e, ParentLink, { parent })
     zox_set(e, Anchor, { anchor })
     zox_set(e, Layer2D, { layer })
     zox_set(e, PixelSize, { pixel_size })
     zox_set(e, PixelPosition, { pixel_position })
     zox_set(e, Position2D, { position2D }) // set this inside pixel position system
     zox_set(e, CanvasPosition, { pixel_position_global }) // set this inside system too
+    zox_set(e, CanvasLink, { canvas })
+    zox_set(e, ParentLink, { parent })
     if (canvas == parent) on_child_added(world, canvas, e);
 }
 

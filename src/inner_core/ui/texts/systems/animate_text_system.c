@@ -13,9 +13,9 @@ void AnimateTextSystem(ecs_iter_t *it) {
             ZextDirty *zextDirty = &zextDirtys[i];
             if (zextDirty->value == 0) {
                 zextDirty->value = 1;
-                #ifdef zoxel_debug_zext_updates
-                    printf("AnimateZext :: [%lu]\n", (long int) it->entities[i]);
-                #endif
+#ifdef zoxel_debug_zext_updates
+                zox_log("AnimateZext :: [%lu]\n", it->entities[i])
+#endif
                 ZextData *zextData = &zextDatas[i];
                 int index = rand() % zextData->length;
                 zextData->value[index] = 1 + rand() % 52;

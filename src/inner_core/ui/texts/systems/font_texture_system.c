@@ -38,19 +38,19 @@ void generate_font_texture(TextureData* textureData, const TextureSize *textureS
     for (int i = 0; i < fontData->length; i += 2) {
         int2 pointA = byte2_to_int2(fontData->value[i]);
         int2 pointB = byte2_to_int2(fontData->value[i + 1]);
-        #ifdef debug_font_texture
-            zoxel_log("Font Data %i %ix%i > %ix%i\n", i, pointA.x, pointA.y, pointB.x, pointB.y);
-        #endif
+#ifdef debug_font_texture
+        zoxel_log("Font Data %i %ix%i > %ix%i\n", i, pointA.x, pointA.y, pointB.x, pointB.y);
+#endif
         pointA.x = (int) ((pointA.x / 255.0f) * textureSize->value.x);
         pointA.y = (int) ((pointA.y / 255.0f) * textureSize->value.y);
         pointB.x = (int) ((pointB.x / 255.0f) * textureSize->value.x);
         pointB.y = (int) ((pointB.y / 255.0f) * textureSize->value.y);
         int distance = int2_distance(pointA, pointB);
         float2 direction = float2_normalize(float2_sub(int2_to_float2(pointB), int2_to_float2(pointA)));
-        #ifdef debug_font_texture
-            zoxel_log("    - %ix%i > %ix%i\n", pointA.x, pointA.y, pointB.x, pointB.y);
-            zoxel_log("    - distance %i direction %fx%f\n", distance, direction.x, direction.y);
-        #endif
+#ifdef debug_font_texture
+        zoxel_log("    - %ix%i > %ix%i\n", pointA.x, pointA.y, pointB.x, pointB.y);
+        zoxel_log("    - distance %i direction %fx%f\n", distance, direction.x, direction.y);
+#endif
         int2 splash_point = pointA;
         for (int j = 0; j <= distance; j++) {
             int2 splash_point_check = int2_add(float2_to_int2(float2_multiply_float(direction, (float) j)), pointA);
@@ -58,9 +58,9 @@ void generate_font_texture(TextureData* textureData, const TextureSize *textureS
             splash_point = splash_point_check;
             // add noise later to this
             int pointSize2 = 1 + rand() % 1; // math.floor(random.NextFloat(pointSize.x, pointSize.y));
-            #ifdef debug_font_texture
-                zoxel_log("    - j %i splash_point %ix%i size %i\n", j, splash_point.x, splash_point.y, pointSize2);
-            #endif
+#ifdef debug_font_texture
+            zoxel_log("    - j %i splash_point %ix%i size %i\n", j, splash_point.x, splash_point.y, pointSize2);
+#endif
             for (int k = -pointSize2; k <= pointSize2; k++) {
                 for (int l = -pointSize2; l <= pointSize2; l++) {
                     int2 drawPoint = (int2) { splash_point.x + k, splash_point.y + l};
@@ -102,9 +102,9 @@ void FontTextureSystem(ecs_iter_t *it) {
         generate_font_texture(textureData, textureSize, fontData, color2);
         textureDirty->value = 1;
         generateTexture->value = 0;
-        #ifdef zoxel_debug_zigel_updates
-            zoxel_log("     > zigel font is updating [%lu]\n", (long int) it->entities[i]);
-        #endif
+#ifdef zoxel_debug_zigel_updates
+        zox_log("     > zigel font is updating [%lu]\n", it->entities[i])
+#endif
     }
 } zox_declare_system(FontTextureSystem)
 

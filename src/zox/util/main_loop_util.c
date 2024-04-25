@@ -1,5 +1,3 @@
-// extern void engine_update();
-
 void engine_end() {
     running = 0;
 #ifdef zoxel_on_web

@@ -23,7 +23,7 @@
 // #define zoxel_disable_gamepads
 
 // #define zox_disable_set_vox
-// #define zox_disable_characters3D        // disables npcs
+// #define zox_disable_npcs        // disables npcs
 // #define zox_extra_destroy_terrain_children
 // this seems to create more triangles and not dispose them properly
 // #define zox_disable_terrain_streaming

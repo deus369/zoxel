@@ -1,3 +1,4 @@
+// refactor this, module updates can add debug lines to it per frame
 extern int get_terrain_chunks_count(ecs_world_t *world);
 extern int get_characters_count(ecs_world_t *world);
 extern int get_count_particle3Ds(ecs_world_t *world);

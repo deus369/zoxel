@@ -10,3 +10,8 @@
 #if defined(STEAMDECK)
     #define zoxel_on_steamdeck
 #endif
+
+// for now web has to disable characters
+#ifdef zoxel_on_web
+    #define zox_disable_npcs
+#endif

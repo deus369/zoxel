@@ -20,8 +20,7 @@ void update_core(ecs_world_t *world) {
 #endif
     }
     if (do_renders) render_pre_loop();
-    // ecs_log_set_level(1);    // use this to debug system pipelines
-    ecs_progress(world, 0);
+    run_ecs(world);
     if (do_renders) render_loop(world);
     iterate_time();
 #ifdef zoxel_log_frame_ms

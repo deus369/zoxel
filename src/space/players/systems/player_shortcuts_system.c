@@ -1,5 +1,4 @@
 // #define test_particles2D
-
 void on_terrain_settings_changed(ecs_world_t *world) {
     if (!local_realm) return;
     const VoxelLinks *voxelLinks = zox_get(local_realm, VoxelLinks)
@@ -95,19 +94,3 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
         }
     }
 } zox_declare_system(PlayerShortcutsSingleSystem)
-
-/*if (zox_valid(local_character3D) && zox_has(local_character3D, CameraLink)) {
-    const CameraLink *cameraLink = zox_get(world, local_character3D, CameraLink);
-    if (zox_valid(cameraLink->value) && cameraLink->value != 0) {
-        // zoxel_log(" > switching camera view\n");
-        float vox_scale = model_scale * 16;
-        const LocalPosition3D *localPosition3D = zox_get(world, cameraLink->value, LocalPosition3D);
-        if (localPosition3D->value.z == vox_scale * 0.5f) {
-            zox_set(cameraLink->value, LocalPosition3D, {{ 0, vox_scale * 2.2f, - vox_scale * 3.6f }})
-            zox_set(cameraLink->value, LocalRotation3D, { quaternion_from_euler((float3) { 25, 180 * degreesToRadians, 0 }) })
-        } else {
-            zox_set(cameraLink->value, LocalPosition3D, {{ 0, vox_scale * 0.5f, vox_scale * 0.5f }})
-            zox_set(cameraLink->value, LocalRotation3D, { quaternion_from_euler((float3) { 0, 180 * degreesToRadians, 0 }) })
-        }
-    }
-}*/

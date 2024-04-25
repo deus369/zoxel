@@ -73,9 +73,9 @@ zox_filter(fonts, [none] FontTexture, [out] GenerateTexture)
 // zoxel_system_defines
 zox_system(AnimateTextSystem, zox_pipelines_zext_textures, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
 zox_system_ctx(FontTextureSystem, zox_pipelines_zext_textures, fonts, [none] FontTexture, [out] TextureDirty, [out] TextureData, [in] TextureSize, [out] GenerateTexture, [in] ZigelIndex, [in] Color)
+zox_system_ctx_1(ZextUpdateSystem, main_thread_pipeline, zexts, [none] Zext, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] CanvasPosition, [in] PixelSize, [in] MeshAlignment, [in] RenderDisabled, [out] ZextDirty, [out] Children)
 if (!headless) zox_system(ZextBackgroundSystem, zox_pipelines_zext_backgrounds, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] MeshAlignment, [in] CanvasLink, [out] PixelSize, [out] TextureSize, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshDirty)
 if (!headless) zox_system(ZextParentBackgroundSystem, zox_pipelines_zext_backgrounds, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] MeshAlignment, [in] CanvasLink, [in] ParentLink)
-zox_system_ctx_1(ZextUpdateSystem, main_thread_pipeline, zexts, [none] Zext, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] CanvasPosition, [in] PixelSize, [in] MeshAlignment, [in] RenderDisabled, [out] ZextDirty, [out] Children)
 zoxel_end_module(Texts)
 
 #endif

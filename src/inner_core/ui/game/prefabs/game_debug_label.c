@@ -2,7 +2,7 @@ ecs_entity_t prefab_game_debug_label;
 ecs_entity_t game_debug_label;
 
 ecs_entity_t spawn_prefab_game_debug_label(ecs_world_t *world) {
-    ecs_entity_t e = ecs_clone(world, 0, label_background_prefab, 1);
+    ecs_entity_t e = ecs_clone(world, 0, prefab_label_background, 1);
     zox_add_tag(e, GameDebugLabel)
     // zox_prefab_set(e, QuadsCount, { 0 })
     if (!headless) prefab_set_mesh2D_vertices(world, e, square_vertices_right_aligned, 4);

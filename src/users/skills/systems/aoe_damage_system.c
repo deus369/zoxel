@@ -1,9 +1,9 @@
 // #define zox_debug_aoe_damage_system
-
 #ifdef zox_debug_aoe_damage_system
-    extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
+extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
 #endif
 
+// todo: Seperate area from damage, so the skill is a child of character, and it finds characters in area and applies damage at end step
 void AOEDamageSystem(ecs_iter_t *it) {
     float damage_rate = 2.0f;
     float damage_radius = 3.0f;
@@ -47,9 +47,9 @@ void AOEDamageSystem(ecs_iter_t *it) {
                 if (statValue->value < 0) statValue->value = 0;
                 zox_modified(health_stat, StatValue)
                 if (!statValue->value) continue;
-                #ifdef zox_debug_aoe_damage_system
-                    spawn_line3D(world, position3D->value, position3D2->value, 0.5f, 0.1);
-                #endif
+#ifdef zox_debug_aoe_damage_system
+                spawn_line3D(world, position3D->value, position3D2->value, 0.5f, 0.1);
+#endif
             }
         }
     }

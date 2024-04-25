@@ -53,8 +53,7 @@ ecs_entity_t spawn_scrollbar(ecs_world_t *world, ecs_entity_t parent, ecs_entity
     float2 position2D = get_element_position(pixel_position_global, canvas_size);
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     Children *children = zox_get_mut(e, Children)
-    resize_memory_component(Children, children, ecs_entity_t, 1)
-    children->value[0] = spawn_scrollbar_front(world, e, canvas, int2_zero, float2_half, child_layer, width, height, pixel_position_global, pixel_size, canvas_size);
+    add_to_Children(children, spawn_scrollbar_front(world, e, canvas, int2_zero, float2_half, child_layer, width, height, pixel_position_global, pixel_size, canvas_size));
     zox_modified(e, Children)
     return e;
 }

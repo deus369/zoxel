@@ -12,22 +12,22 @@ ecs_entity_t spawn_zigel_prefab(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_zigel(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t canvas, unsigned char index, int2 pixel_position, int2 pixel_size, float2 anchor, unsigned char layer, int2 parent_pixel_position_global, int2 parent_pixel_size, int2 canvas_size) {
+ecs_entity_t spawn_zigel(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t canvas, const unsigned char index, int2 pixel_position, const int2 pixel_size, const float2 anchor, const unsigned char layer, const int2 parent_pixel_position_global, const int2 parent_pixel_size, const int2 canvas_size) {
     // color zigel_color = (color) { 55 + rand() % 60, 150 + rand() % 75, 135 + rand() % 70, 255 };
-    color zigel_color = (color) { 22, 177, 133, 255 };
+    const color zigel_color = (color) { 22, 177, 133, 255 };
+    const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
+    const float2 position = get_element_position(pixel_position_global, canvas_size);
     zox_instance(prefab_zigel)
     zox_name("zigel")
     zox_set(e, ZigelIndex, { index })
     zox_set(e, Color, { zigel_color })
-    int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
-    float2 position = get_element_position(pixel_position_global, canvas_size);
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position, pixel_position_global);
     return e;
 }
 
 // spawns a text character in a place
-ecs_entity_t spawn_zext_zigel(ecs_world_t *world, ecs_entity_t zext, ecs_entity_t canvas, int layer, unsigned char index, int total_length, unsigned char zigel_index, int font_size, unsigned char text_alignment, byte2 text_padding, int2 parent_position, int2 parent_pixel_size, int2 canvas_size) {
-    int2 zigel_size = (int2) { font_size, font_size };
-    int2 position = get_zigel_position(index, total_length, font_size, text_alignment, text_padding);
+ecs_entity_t spawn_zext_zigel(ecs_world_t *world, ecs_entity_t zext, const ecs_entity_t canvas, const int layer, const unsigned char index, const int total_length, const unsigned char zigel_index, const int font_size, const unsigned char text_alignment, const byte2 text_padding, const int2 parent_position, const int2 parent_pixel_size, const int2 canvas_size) {
+    const int2 zigel_size = (int2) { font_size, font_size };
+    const int2 position = get_zigel_position(index, total_length, font_size, text_alignment, text_padding);
     return spawn_zigel(world, zext, canvas, zigel_index, position, zigel_size, float2_half, layer, parent_position, parent_pixel_size, canvas_size);
 }

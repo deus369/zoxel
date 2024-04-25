@@ -4,6 +4,8 @@ ecs_world_t *world;
 unsigned char is_multithreading = 1;
 unsigned char target_frame_rate = 0;
 unsigned char profiler = 0;
+zoxel_dynamic_array(ecs_entity_t)
+create_is_in_array_d(ecs_entity_t)
 // util helper functions
 #include "macros/names.c"
 #include "util/module_macros.c"
@@ -31,6 +33,11 @@ ecs_world_t* open_ecs(int argc, char* argv[], unsigned char profiler, int core_c
     else ecs_set_threads(world, 0);
     if (target_frame_rate != 0) ecs_set_target_fps(world, target_frame_rate);
     return world;
+}
+
+void run_ecs(ecs_world_t *world)  {
+    // ecs_log_set_level(1);    // use this to debug system pipelines
+    ecs_progress(world, 0);
 }
 
 void dispose_ecs(ecs_world_t *world) {

@@ -30,7 +30,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             generateChunkEntities2->value = zox_chunk_entities_state_spawned;
             continue;
         }
-#ifndef zox_disable_characters3D
+#ifndef zox_disable_npcs
         unsigned char camera_distance = renderLod->value;
         unsigned char character_lod = get_character_division_from_camera(camera_distance);
         // zoxel_log("characters spawning in chunk %lu\n", it->entities[i]);

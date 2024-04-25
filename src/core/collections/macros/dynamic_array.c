@@ -112,11 +112,3 @@ data_type* finalize##_##data_type##_##array_d2(data_type##_##array_d* dynamic_ar
     }\
 }
 */
-
-zoxel_dynamic_array(int)
-create_is_in_array_d(int)
-zoxel_dynamic_array(ecs_entity_t)
-create_is_in_array_d(ecs_entity_t)
-// zoxel_dynamic_array(long int)
-zoxel_dynamic_array(float3)
-zoxel_dynamic_array(float2)
