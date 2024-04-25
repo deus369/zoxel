@@ -23,7 +23,7 @@ zox_component_byte(Layer2D)         //! A 2D Layer for a entity
 zox_component_byte(Dead)
 zox_component_int(ID)                        //! An unique ID, possibly use GUID
 zox_component_int2(DraggingDelta)
-zox_component_int2(DraggableLimits)
+zox_component_int4(DraggableLimits)
 zox_component_int2(Raycaster)                //! Contains the raycast mouse position
 zox_component(DraggerLink, ecs_entity_t)
 zox_component(DraggedLink, ecs_entity_t)
@@ -79,7 +79,7 @@ zox_define_component_byte(RaycasterResult)
 zox_define_component_byte(Dead)
 zox_define_component_byte(GenericEvent)
 zox_define_component_int2(DraggingDelta)
-zox_define_component_int2(DraggableLimits)
+zox_define_component_int4(DraggableLimits)
 zox_define_component_int2(Raycaster)
 zox_define_component_int(ID)
 zox_define_component(DraggerLink)       // the what that drags

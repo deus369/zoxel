@@ -33,18 +33,19 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
     const unsigned char button_layer = layer + 1;
     const int header_margins = scaled_font_size / 3; // 12;
     const int header_height = (scaled_font_size + header_margins - 1);
+    cache_header_height = header_height;
     const int2 list_margins = (int2) { (int) (scaled_font_size * 0.8f), (int) (scaled_font_size * 0.8f) };
     const int2 button_padding = (int2) { (int) (scaled_font_size * 0.46f), (int) (scaled_font_size * 0.3f) };
     const int button_inner_margins = (int) (scaled_font_size * 0.5f);
     int2 pixel_size = { (scaled_font_size) * max_characters + button_padding.x * 2 + list_margins.x * 2, (scaled_font_size + button_padding.y * 2) * max_elements + button_inner_margins * (max_elements - 1) + list_margins.y * 2 };
     if (is_scrollbar) pixel_size.x += (scrollbar_width / 2) + scrollbar_margins;
     anchor_element_position2D_with_header(&pixel_position, anchor, pixel_size, header_height);
+    const int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
+    float2 position2D = get_element_position(pixel_position_global, canvas_size);
     zox_instance(prefab)
     zox_name("ui_list")
     zox_set(e, ListUIMax, { max_elements })
     zox_set(e, ElementFontSize, { font_size })
-    int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
-    float2 position2D = get_element_position(pixel_position_global, canvas_size);
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, children_length)
@@ -68,6 +69,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
 #ifdef zoxel_include_players
     if (!headless && elements_count > 0) select_first_button(world, children->value[list_start]);
 #endif
+    set_window_bounds_to_canvas(world, e, canvas_size, pixel_size);
     return e;
 }
 

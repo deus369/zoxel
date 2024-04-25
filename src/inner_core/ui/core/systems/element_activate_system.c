@@ -61,7 +61,7 @@ void ElementActivateSystem(ecs_iter_t *it) {
                 DraggableState *dragableState = zox_get_mut(raycasterTarget->value, DraggableState)
                 if (!dragableState->value) {
                     DraggerLink *draggerLink = zox_get_mut(raycasterTarget->value, DraggerLink)
-                    dragableState->value = did_drag;
+                    dragableState->value = 1;
                     draggerLink->value = e;
                     zox_modified(raycasterTarget->value, DraggableState)
                     zox_modified(raycasterTarget->value, DraggerLink)

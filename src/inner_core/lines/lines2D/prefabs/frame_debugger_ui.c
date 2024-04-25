@@ -46,6 +46,7 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const char *header_labe
         children->value[1 + i] = line;
     }
     zox_modified(e, Children)
+    set_window_bounds_to_canvas(world, e, canvas_size, pixel_size);
     return e;
 }
 

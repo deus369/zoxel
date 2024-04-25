@@ -29,7 +29,8 @@ void on_resized_element(ecs_world_t *world, ecs_entity_t e, int2 pixel_size, flo
                     on_resized_element(world, scrollbar, scrollbar_size, canvas_size);
                     const Children *scrollbar_children = zox_get(scrollbar, Children);
                     ecs_entity_t scrollbar_front = scrollbar_children->value[0];
-                    zox_set(scrollbar_front, DraggableLimits, { (int2) { 0, (scrollbar_size.y / 2) - scrollbar_size.x / 2 } })
+                    const int bounds_y = (scrollbar_size.y / 2) - scrollbar_size.x / 2;
+                    zox_set(scrollbar_front, DraggableLimits, { (int4) { 0, 0, -bounds_y, bounds_y } })
                 }
             }
             const Children *header_children = zox_get(header, Children);
@@ -44,17 +45,14 @@ void on_resized_element(ecs_world_t *world, ecs_entity_t e, int2 pixel_size, flo
     }
 }
 
-void drag_element(ecs_world_t *world, ecs_entity_t e, int2 drag_value) {
+void drag_element(ecs_world_t *world, const ecs_entity_t e, const int2 drag_value) {
     if (!zox_valid(e)) return;
     PixelPosition *pixel_position = zox_get_mut(e, PixelPosition)
     pixel_position->value.x += drag_value.x;
     pixel_position->value.y += drag_value.y;
     if (zox_has(e, DraggableLimits)) {
-        const DraggableLimits *draggableLimits = zox_get(e, DraggableLimits)
-        if (pixel_position->value.x < -draggableLimits->value.x) pixel_position->value.x = -draggableLimits->value.x;
-        if (pixel_position->value.x > draggableLimits->value.x) pixel_position->value.x = draggableLimits->value.x;
-        if (pixel_position->value.y < -draggableLimits->value.y) pixel_position->value.y = -draggableLimits->value.y;
-        if (pixel_position->value.y > draggableLimits->value.y) pixel_position->value.y = draggableLimits->value.y;
+        const int4 drag_bounds = zox_get_value(e, DraggableLimits)
+        limited_element(pixel_position, drag_bounds);
     }
     zox_modified(e, PixelPosition)
 #ifdef zox_log_ui_dragging

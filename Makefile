@@ -376,9 +376,14 @@ make_android = bash bash/android/gradle_build_release.sh # gradle_build_run.sh
 target_android = build/zoxel.apk
 
 prepare-android:
-	@ echo " > installing prepare-android"
+	@ echo " > preparing for android"
 	@ $(patient_cmd)
 	@ bash bash/android/prepare.sh
+
+prepare-android-emu:
+	@ echo " > installing android emulator"
+	@ $(patient_cmd)
+	@ bash bash/android/prepare_emu.sh
 
 android:
 	@ echo " > building zoxel-android"
@@ -698,6 +703,7 @@ help-git:
 help-android:
 	@echo "  > [android]"
 	@echo "    prepare-android		installs tools for android build"
+	@echo "    prepare-android-emu		installs waydroid for local android"
 	@echo "    android			builds & runs android release"
 	@echo "    android-create-key		created android keystore"
 	@echo "    android-sign		signs the unsigned zoxel apk"

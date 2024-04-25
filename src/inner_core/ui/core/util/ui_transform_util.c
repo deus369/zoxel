@@ -1,4 +1,6 @@
 // only used be lines atm
+extern void resize_ui_line2D(ecs_world_t *world, ecs_entity_t e, int2 canvas_size);
+
 float2 get_ui_real_position2D(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, int2 local_pixel_position, float2 anchor, int2 canvas_size) {
     float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
     float aspect_ratio = canvasSizef.x / canvasSizef.y;
@@ -49,9 +51,28 @@ void on_element_parent_updated(ecs_world_t *world, ecs_entity_t e, int2 local_pi
     zox_set(e, CanvasPosition, { global_pixel_position })
 }
 
-extern void resize_ui_line2D(ecs_world_t *world, ecs_entity_t e, int2 canvas_size);
+void set_window_bounds_to_canvas(ecs_world_t *world, const ecs_entity_t e, const int2 canvas_size, const int2 window_size) {
+    const int2 bounds = (int2) { (canvas_size.x - window_size.x) / 2, (canvas_size.y - window_size.y) / 2};
+    zox_set(e, DraggableLimits, { -bounds.x, bounds.x, -bounds.y, bounds.y - cache_header_height });
+}
+
+void limited_element(PixelPosition *pixel_position, const int4 drag_bounds) {
+    if (pixel_position->value.x < drag_bounds.x) pixel_position->value.x = drag_bounds.x;
+    if (pixel_position->value.x > drag_bounds.y) pixel_position->value.x = drag_bounds.y;
+    if (pixel_position->value.y < drag_bounds.z) pixel_position->value.y = drag_bounds.z;
+    if (pixel_position->value.y > drag_bounds.w) pixel_position->value.y = drag_bounds.w;
+}
+
+void limit_element(ecs_world_t *world, const ecs_entity_t e) {
+    if (!zox_valid(e) || !zox_has(e, PixelPosition) || !zox_has(e, DraggableLimits)) return;
+    PixelPosition *pixel_position = zox_get_mut(e, PixelPosition)
+    const int4 drag_bounds = zox_get_value(e, DraggableLimits)
+    limited_element(pixel_position, drag_bounds);
+    zox_modified(e, PixelPosition)
+}
+
 // set children position as well
-void set_ui_transform(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t e, unsigned char layer, int2 canvas_size) {
+void set_ui_transform(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t e, const unsigned char layer, const int2 canvas_size) {
 #ifdef debug_ui_scaling
     zox_log("    - layer [%i] Repositioning entity [%lu]\n", layer, e)
 #endif
@@ -70,12 +91,11 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t e, u
         zox_log("        -> to [%ix%i]\n", global_pixel_position.x, global_pixel_position.y)
 #endif
     }
-    resize_ui_line2D(world, e, canvas_size);
     if (!headless && zox_has(e, MeshVertices2D)) {  //! Resize (if visible)
-        const PixelSize *pixelSize = zox_get(e, PixelSize)
+        const int2 pixel_size = zox_get_value(e, PixelSize)
         const MeshAlignment *meshAlignment = zox_get(e, MeshAlignment)
         MeshVertices2D *meshVertices2D = zox_get_mut(e, MeshVertices2D)
-        float2 scale2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
+        float2 scale2D = (float2) { pixel_size.x / canvasSizef.y, pixel_size.y / canvasSizef.y };
         set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, scale2D);
         zox_modified(e, MeshVertices2D)
         zox_set(e, MeshDirty, { 1 })
@@ -84,10 +104,15 @@ void set_ui_transform(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t e, u
 #endif
     }
     if (zox_has(e, Children)) {
-        layer++;
         const Children *children = zox_get(e, Children)
-        for (int i = 0; i < children->length; i++) set_ui_transform(world, e, children->value[i], layer, canvas_size);
+        for (int i = 0; i < children->length; i++) set_ui_transform(world, e, children->value[i], layer + 1, canvas_size);
     }
+    resize_ui_line2D(world, e, canvas_size);
+    if (zox_has(e, BoundToCanvas)) {
+        const int2 pixel_size = zox_get_value(e, PixelSize)
+        set_window_bounds_to_canvas(world, e, canvas_size, pixel_size);
+    }
+    limit_element(world, e); // check limited elements - bounded
 }
 
 int2 get_element_pixel_position_global(const int2 parent_pixel_position_global, const int2 parent_size, int2 pixel_position, float2 anchor) {
