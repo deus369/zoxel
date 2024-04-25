@@ -37,6 +37,7 @@ zox_entities_component(ElementLinks)
 #include "prefabs/canvas.c"
 #include "prefabs/element.c"
 #include "prefabs/element_basic.c"
+#include "prefabs/element_invisible.c"
 #include "prefabs/element_world.c"
 #include "prefabs/element_world_child.c"
 #include "prefabs/canvas_overlay.c"
@@ -59,6 +60,7 @@ void spawn_prefabs_ui_core(ecs_world_t *world) {
     spawn_prefab_canvas(world);
     spawn_prefab_element(world);
     spawn_prefab_element_basic(world);
+    spawn_prefab_element_invisible(world);
     spawn_prefab_element3D(world);
     spawn_prefab_element3D_child(world);
     spawn_prefab_canvas_overlay(world);
@@ -106,7 +108,6 @@ if (!headless) {
     zox_system_1(ButtonClickEventSystem, main_thread_pipeline, [none] Element, [in] ClickEvent, [out] ClickState)
 }
 zox_system(CanvasResizeSystem, EcsOnUpdate, [in] CameraLink, [in] Children, [out] PixelSize, [none] Canvas)
-// zox_system(ResizeElementSystem, 0, [in] CanvasLink, [in] ParentLink)
 zoxel_end_module(UICore)
 
 #endif

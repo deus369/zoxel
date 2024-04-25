@@ -9,16 +9,18 @@ ecs_entity_t spawn_prefab_element_basic(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_on_canvas_element_basic(ecs_world_t *world, ecs_entity_t canvas, int2 pixel_position, int2 pixel_size, int2 texture_size, float2 anchor) {
-    // return spawn_element(world, canvas, canvas, pixel_position, pixel_size, anchor, 0, (color) { 66, 35, 25, 255 });
-    unsigned char layer = 0;
-    ecs_entity_t parent = canvas;
-    int2 canvas_size = zox_get_value(canvas, PixelSize)
+ecs_entity_t spawn_element_basic(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t parent, int2 pixel_position, const int2 pixel_size, const int2 texture_size, const float2 anchor, const unsigned char layer, const int2 parent_pixel_position_global, const int2 parent_pixel_size) {
+    const int2 canvas_size = zox_get_value(canvas, PixelSize)
+    const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
+    const float2 position2D = get_element_position(pixel_position_global, canvas_size);
+    anchor_element_position2D(&pixel_position, anchor, pixel_size);
     zox_instance(prefab_element_basic)
     zox_name("element_basic")
-    int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
-    float2 position2D = get_element_position(pixel_position_global, canvas_size);
-    anchor_element_position2D(&pixel_position, anchor, pixel_size);
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, texture_size, anchor, layer, position2D, pixel_position_global);
     return e;
+}
+
+ecs_entity_t spawn_element_basic_on_canvas(ecs_world_t *world, const ecs_entity_t canvas, const int2 pixel_position, const int2 pixel_size, const int2 texture_size, const float2 anchor) {
+    const int2 canvas_size = zox_get_value(canvas, PixelSize)
+    return spawn_element_basic(world, canvas, canvas, pixel_position, pixel_size, texture_size, anchor, 0, int2_half(canvas_size), canvas_size);
 }

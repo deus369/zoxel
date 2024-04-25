@@ -75,7 +75,7 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
                     zox_log("   > testing ui %lu\n", main_canvas);
                     // spawn_element_on_canvas(world, main_canvas, (int2) { 0, 60 },
                     int2 size = (int2) { 32 * 8, 32 * 8 };
-                    ecs_entity_t e = spawn_on_canvas_element_basic(world, main_canvas, (int2) { 8, 8 }, size, source_size, (float2) { 0, 0 });
+                    ecs_entity_t e = spawn_element_basic_on_canvas(world, main_canvas, (int2) { 8, 8 }, size, source_size, (float2) { 0, 0 });
                     zox_set(e, TextureDirty, { 1 })
                     // zox_set(e, TextureSize, { source_size })
                     zox_set(e, TextureData, { source_data->length, source_data->value })

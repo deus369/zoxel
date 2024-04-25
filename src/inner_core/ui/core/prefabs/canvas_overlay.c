@@ -11,20 +11,21 @@ ecs_entity_t spawn_prefab_canvas_overlay(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_canvas_overlay(ecs_world_t *world, ecs_entity_t canvas) {
+ecs_entity_t spawn_canvas_overlay(ecs_world_t *world, const ecs_entity_t canvas) {
     const ecs_entity_t parent = canvas;
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const unsigned char layer = max_render_layers - 1;
     const int2 pixel_position = int2_zero;
     const float2 anchor = float2_half;
-    int2 pixel_size = canvas_size;
+    const int2 pixel_size = canvas_size;
     zox_instance(prefab_canvas_overlay)
     zox_name("canvas_overlay")
-    int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
-    float2 position2D = get_element_position(pixel_position_global, canvas_size);
+    const int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
+    const float2 position2D = get_element_position(pixel_position_global, canvas_size);
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     zox_set(e, AnimationStart, { zox_current_time })
     zox_set(e, AnimationState, { zox_animation_fadeout })
     zox_set(e, Alpha, { 1.0f })
+    on_child_added(world, canvas, e);
     return e;
 }

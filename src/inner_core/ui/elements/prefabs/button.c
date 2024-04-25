@@ -19,17 +19,18 @@ ecs_entity_t spawn_button(ecs_world_t *world, const ecs_entity_t parent, const e
     const unsigned char zext_layer = layer + 1;
     const int2 zext_size = (int2) { font_size * strlen(text), font_size };
     const int2 pixel_size = (int2) { zext_size.x + padding.x * 2, zext_size.y + padding.y * 2 };
-    zox_instance(prefab_button)
-    zox_name("button")
-    zox_set(e, Color, { button_color })
-    zox_set(e, RenderDisabled, { render_disabled })
     const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     const float2 position2D = get_element_position(pixel_position_global, canvas_size);
+    zox_instance(prefab_button)
+    zox_name("button")
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
+    zox_set(e, Color, { button_color })
+    zox_set(e, RenderDisabled, { render_disabled })
     const ecs_entity_t zext = spawn_zext(world, prefab_zext, e, canvas, int2_zero, float2_half, int2_to_byte2(padding), text, font_size, 0, zext_layer, pixel_position_global, zext_size, render_disabled);
     Children *children = zox_get_mut(e, Children)
-    resize_memory_component(Children, children, ecs_entity_t, 1)
-    children->value[0] = zext;
+    add_to_Children(children, zext);
+    // resize_memory_component(Children, children, ecs_entity_t, 1)
+    // children->value[0] = zext;
     zox_modified(e, Children)
     return e;
 }

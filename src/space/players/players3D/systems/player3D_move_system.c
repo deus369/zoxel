@@ -4,10 +4,9 @@ const double movement_power_z = 9; // 24;
 const float2 max_velocity = { 60 * 60, 160 * 60 };
 const double run_speed = 1.6;
 const float backwards_multiplier = 0.7f;
-
 #ifdef zox_debug_player_movement_direction
-    float debug_thickness = 2.0f;
-    extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
+float debug_thickness = 2.0f;
+extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
 #endif
 
 void Player3DMoveSystem(ecs_iter_t *it) {
@@ -21,7 +20,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
     zox_field_in(CharacterLink, characterLinks, 4)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(CharacterLink, characterLinks, characterLink)
-        ecs_entity_t character = characterLink->value;
+        const ecs_entity_t character = characterLink->value;
         if (!character || !zox_has(character, Character3D)) continue;
         const DisableMovement *disableMovement = zox_get(character, DisableMovement)
         if (disableMovement->value) continue;
@@ -30,7 +29,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
         zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
         zox_field_i_in(DeviceMode, deviceModes, deviceMode)
         for (int j = 0; j < deviceLinks->length; j++) {
-            ecs_entity_t device_entity = deviceLinks->value[j];
+            const ecs_entity_t device_entity = deviceLinks->value[j];
             if (deviceMode->value == zox_device_mode_keyboardmouse && zox_has(device_entity, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                 if (keyboard->w.is_pressed) left_stick.y += 1;
@@ -42,7 +41,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
             } else if (deviceMode->value == zox_device_mode_gamepad && zox_has(device_entity, Gamepad)) {
                 const Children *zevices = zox_get(device_entity, Children)
                 for (int k = 0; k < zevices->length; k++) {
-                    ecs_entity_t zevice_entity = zevices->value[k];
+                    const ecs_entity_t zevice_entity = zevices->value[k];
                     const ZeviceDisabled *zeviceDisabled = zox_get(zevice_entity, ZeviceDisabled)
                     if (zeviceDisabled->value) continue;
                     const DeviceButtonType *deviceButtonType = zox_get(zevice_entity, DeviceButtonType)
@@ -63,7 +62,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                 const Children *zevices = zox_get(device_entity, Children)
                 for (int k = 0; k < zevices->length; k++) {
                     if (k < fingers_count) continue;
-                    ecs_entity_t zevice_entity = zevices->value[k];
+                    const ecs_entity_t zevice_entity = zevices->value[k];
                     const ZeviceDisabled *zeviceDisabled = zox_get(zevice_entity, ZeviceDisabled)
                     if (zeviceDisabled->value) continue;
                     if (zox_has(zevice_entity, ZeviceStick)) {
@@ -86,7 +85,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                 const CameraLink *cameraLink = zox_get(character, CameraLink)
                 if (cameraLink->value) {
                     const Rotation3D *camera_rotation = zox_get(cameraLink->value, Rotation3D)
-                    float4 camera_rotation2 = quaternion_from_euler((float3) { 0, -quaternion_to_euler_y(camera_rotation->value), 0 });
+                    const float4 camera_rotation2 = quaternion_from_euler((float3) { 0, -quaternion_to_euler_y(camera_rotation->value), 0 });
                     if (movement.z == -movement.x) movement.x *= 0.999f; // this hack fixes the rotation
                     movement = float4_rotate_float3(camera_rotation2, movement);
                     movement.y = 0;
@@ -104,8 +103,6 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                     spawn_line3D(world, position3D->value, float3_add(position3D->value, movement), debug_thickness, 34.0);
                     float3 movement2 = float4_rotate_float3(face_direction, (float3) { 0, 0, -1 });
                     spawn_line3D(world, position3D->value, float3_add(position3D->value, movement2), debug_thickness, 34.0);
-                    // zoxel_log(" > movement: %fx%fx%f\n", movement.x, movement.y, movement.z);
-                    // zoxel_log("     - movement2: %fx%fx%f\n", movement2.x, movement2.y, movement.z);
                     zoxel_log(" > face_direction %fx%fx%fx%f\n", face_direction.x, face_direction.y, face_direction.z, face_direction.w);
 #endif
                 }
@@ -117,8 +114,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
             movement.x *= run_speed;
             movement.z *= run_speed;
         }
-        // if (movement.z < 0) movement.z *= backwards_multiplier;
-        float3 rotated_velocity = float4_rotate_float3(float4_inverse(rotation3D->value), velocity3D->value);
+        const float3 rotated_velocity = float4_rotate_float3(float4_inverse(rotation3D->value), velocity3D->value);
         if (float_abs(rotated_velocity.x) < max_delta_velocity.x) acceleration3D->value.x += movement.x * movement_power_x;
         if (float_abs(rotated_velocity.z) < max_delta_velocity.y) acceleration3D->value.z += movement.z * movement_power_z;
         zox_modified(character, Acceleration3D)

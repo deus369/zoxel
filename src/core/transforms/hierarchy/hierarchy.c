@@ -5,6 +5,15 @@ zox_component_byte(ChildIndex)
 zox_entities_component(Children)
 zox_component(ParentLink, ecs_entity_t)
 
+void on_child_added(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t child) {
+    // zox_log(" + added [%lu] to canvas [%lu]\n", e, canvas)
+    // todo: make this generic for when component is set, event
+    // this isn't systematic enough for children linking!
+    Children *children = zox_get_mut(parent, Children)
+    if (add_to_Children(children, child)) zox_modified(parent, Children)
+}
+
+
 // todo: macro on_destroyed_ParentLink, make Children and ParentLink declaration one thing
 void on_destroyed_ParentLink(ecs_iter_t *it) {
     zox_iter_world()

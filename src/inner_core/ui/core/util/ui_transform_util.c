@@ -118,22 +118,20 @@ float2 get_element_position(const int2 pixel_position_global, const int2 canvas_
     return position;
 }
 
-void initialize_element(ecs_world_t *world, ecs_entity_t e, ecs_entity_t parent, ecs_entity_t canvas, int2 pixel_position, int2 pixel_size, int2 texture_size, float2 anchor, unsigned char layer, float2 position2D, int2 pixel_position_global) {
-    // use a function that updates it, but keep seperate from initialize function which merely sets variables
+void initialize_element_invisible(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const int2 pixel_size, const float2 anchor, const unsigned char layer, const float2 position2D, const int2 pixel_position_global) {
     zox_set(e, CanvasLink, { canvas })
     zox_set(e, ParentLink, { parent })
     zox_set(e, Anchor, { anchor })
     zox_set(e, Layer2D, { layer })
     zox_set(e, PixelSize, { pixel_size })
-    zox_set(e, TextureSize, { texture_size })
     zox_set(e, PixelPosition, { pixel_position })
     zox_set(e, Position2D, { position2D }) // set this inside pixel position system
     zox_set(e, CanvasPosition, { pixel_position_global }) // set this inside system too
-    if (canvas == parent) {
-        // zox_log(" + added [%lu] to canvas [%lu]\n", e, canvas)
-        // todo: make this generic for when component is set, event
-        // this isn't systematic enough for children linking!
-        Children *children = zox_get_mut(canvas, Children)
-        if (add_to_Children(children, e)) zox_modified(canvas, Children)
-    }
+    if (canvas == parent) on_child_added(world, canvas, e);
+}
+
+void initialize_element(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const int2 pixel_size, const int2 texture_size, const float2 anchor, const unsigned char layer, const float2 position2D, const int2 pixel_position_global) {
+    initialize_element_invisible(world, e, parent, canvas, pixel_position, pixel_size, anchor, layer, position2D, pixel_position_global);
+    zox_set(e, TextureSize, { texture_size })
+    // use a function that updates it, but keep seperate from initialize function which merely sets variables
 }

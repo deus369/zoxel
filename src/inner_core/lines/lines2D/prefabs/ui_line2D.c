@@ -56,33 +56,24 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point
     const float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
     const float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
     const float4 line_anchor = (float4) { anchor_a.x, anchor_a.y, anchor_b.x, anchor_b.y };
-    // parent_real_position.x -= aspect_ratio / 2.0f;
-    // parent_real_position.y -= 1 / 2.0f;
     int4 points = (int4) { point_a.x, point_a.y, point_b.x, point_b.y };
     zox_set(e, LineLocalPosition2D, { points })
     offset_line_points(&points, line_anchor, canvas_size_f);
     int4 line_position2D = get_new_line_position(parent_real_position, canvas_size_f, aspect_ratio, parent_position, points);
-    // const LinePosition2D linePosition2D = (LinePosition2D) { line_position2D };
-    // zoxel_log(" > line [%ix%ix%ix%i]\n", line_position2D.x, line_position2D.y, line_position2D.z, line_position2D.w);
-    //  { point_a.x, point_a.y, point_b.x, point_b.y } };
     zox_set(e, Layer2D, { layer })
     zox_set(e, Color, { line_color })
     zox_set(e, LineThickness, { thickness })
     zox_set(e, LinePosition2D, { line_position2D })
     zox_set(e, LineAnchor, { line_anchor })
-    // zox_set(e, LinePosition2D, { { point_a.x, point_a.y, point_b.x, point_b.y } })
-    // PixelPosition would be... ?
-    //LineData2D lineData2D = (LineData2D) { float4_zero };
     LineData2D *lineData2D = zox_get_mut(e, LineData2D)
     set_ui_line_position(lineData2D, line_position2D, canvas_size_f, aspect_ratio);
     zox_modified(e, LineData2D)
-    // zox_set(e, LineData2D, { lineData2D.value })
     if (life_time != 0.0f) zox_set(e, DestroyInTime, { life_time })
     // adds to canvas
-    //if (canvas == parent) {
-    Children *children = zox_get_mut(canvas, Children)
-    if (add_to_Children(children, e)) zox_modified(canvas, Children)
-    //}
+    on_child_added(world, canvas, e);
+    // const LinePosition2D linePosition2D = (LinePosition2D) { line_position2D };
+    // zoxel_log(" > line [%ix%ix%ix%i]\n", line_position2D.x, line_position2D.y, line_position2D.z, line_position2D.w);
+    //  { point_a.x, point_a.y, point_b.x, point_b.y } };
     return e;
 }
 
