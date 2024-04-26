@@ -44,6 +44,36 @@ float2 get_ui_real_position2D_parent(const int2 local_pixel_position, const floa
     return position2D;
 }
 
+
+
+int2 get_element_pixel_position_global(const int2 parent_pixel_position_global, const int2 parent_size, const int2 pixel_position, const float2 anchor) {
+    int2 pixel_position_global = parent_pixel_position_global;
+    // position is actually the centre point, so get the bottom left corner here
+    pixel_position_global.x -= parent_size.x / 2;
+    pixel_position_global.y -= parent_size.y / 2;
+    // now centre it within the parent element / canvas
+    pixel_position_global.x += (int) (parent_size.x * anchor.x);
+    pixel_position_global.y += (int) (parent_size.y * anchor.y);
+    // add local position offset
+    pixel_position_global.x += pixel_position.x;
+    pixel_position_global.y += pixel_position.y;
+    return pixel_position_global;
+}
+
+float2 get_element_position(const int2 pixel_position_global, const int2 canvas_size) {
+    const float2 canvas_size_f = int2_to_float2(canvas_size);
+    const float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
+    float2 position = int2_to_float2(pixel_position_global);
+    float2_divide_float2(&position, canvas_size_f);
+    // (float2) { pixel_position_global.x * (aspect_ratio / canvas_size_f.x), pixel_position_global.y / canvas_size_f.y };
+    // we get our 0 to 1, make -0.5 to 0.5, then stretch x along canvas
+    position.x -= 0.5f;
+    position.y -= 0.5f;
+    position.x *= aspect_ratio;
+    // zox_log("   > canvas_size [%fx%f] aspect_ratio [%f]\n", canvas_size_f.x, canvas_size_f.y, aspect_ratio)
+    return position;
+}
+
 void on_element_parent_updated(ecs_world_t *world, const ecs_entity_t e, const int2 local_pixel_position, const float2 anchor, const float2 parent_position, const int2 parent_pixel_size, const float2 canvas_size_f) {
     const float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
     const float2 position2D = get_ui_real_position2D_parent(local_pixel_position, anchor, parent_position, parent_pixel_size, canvas_size_f, aspect_ratio);
@@ -83,41 +113,29 @@ void limit_element(ecs_world_t *world, const ecs_entity_t e) {
     zox_modified(e, PixelPosition)
 }
 
+extern void anchor_element_position2D(int2 *position, const float2 position_anchor, const int2 window_size);
+extern void anchor_element_size2D(int2 *size, const float2 anchor, const int2 parent_size);
+
 // called by CanvasResizeSystem
-void set_ui_transform(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t e, const unsigned char layer, const int2 canvas_size) {
+void set_ui_transform(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t e, const unsigned char layer, const int2 canvas_size, const int2 parent_pixel_position_global, const int2 parent_pixel_size) {
 #ifdef debug_ui_scaling
     zox_log("    - layer [%i] Repositioning entity [%lu]\n", layer, e)
 #endif
-    const float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
-    float aspect_ratio = canvasSizef.x / canvasSizef.y;
+    // zox_log("  - resizing child [%lu]\n", e)
     if (!zox_valid(e)) return;
-    if (zox_has(e, PixelPosition)) {
-        const PixelPosition *pixelPosition = zox_get(e, PixelPosition)
-        const Anchor *anchor = zox_get(e, Anchor)
-        const int2 position = pixelPosition->value;
-        float2 position2D = get_ui_real_position2D(world, e, parent, position, anchor->value, canvas_size);
-        const int2 global_pixel_position = (int2) { ceil((position2D.x / aspect_ratio + 0.5f) * canvasSizef.x), ((position2D.y + 0.5f) * canvasSizef.y) };
-        zox_set(e, Position2D, { position2D })
-        zox_set(e, CanvasPosition, { global_pixel_position })
-#ifdef debug_ui_scaling
-        zox_log("        -> to [%ix%i]\n", global_pixel_position.x, global_pixel_position.y)
-#endif
-    }
+    const float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
+    const float aspect_ratio = canvasSizef.x / canvasSizef.y;
     if (!headless && zox_has(e, MeshVertices2D)) {  //! Resize (if visible)
         const int2 pixel_size = zox_get_value(e, PixelSize)
         const MeshAlignment *meshAlignment = zox_get(e, MeshAlignment)
         MeshVertices2D *meshVertices2D = zox_get_mut(e, MeshVertices2D)
-        float2 scale2D = (float2) { pixel_size.x / canvasSizef.y, pixel_size.y / canvasSizef.y };
+        const float2 scale2D = (float2) { pixel_size.x / canvasSizef.y, pixel_size.y / canvasSizef.y };
         set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, scale2D);
         zox_modified(e, MeshVertices2D)
         zox_set(e, MeshDirty, { 1 })
 #ifdef debug_ui_scaling
         zox_log("        -> Scaling: [%fx%f]\n", scale2D.x, scale2D.y)
 #endif
-    }
-    if (zox_has(e, Children)) {
-        const Children *children = zox_get(e, Children)
-        for (int i = 0; i < children->length; i++) set_ui_transform(world, e, children->value[i], layer + 1, canvas_size);
     }
     resize_ui_line2D(world, e, canvas_size);
     if (zox_has(e, BoundToCanvas)) {
@@ -127,34 +145,32 @@ void set_ui_transform(ecs_world_t *world, const ecs_entity_t parent, const ecs_e
         set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor, header_height);
     }
     limit_element(world, e); // check limited elements - bounded
-}
-
-int2 get_element_pixel_position_global(const int2 parent_pixel_position_global, const int2 parent_size, const int2 pixel_position, const float2 anchor) {
-    int2 pixel_position_global = parent_pixel_position_global;
-    // position is actually the centre point, so get the bottom left corner here
-    pixel_position_global.x -= parent_size.x / 2;
-    pixel_position_global.y -= parent_size.y / 2;
-    // now centre it within the parent element / canvas
-    pixel_position_global.x += (int) (parent_size.x * anchor.x);
-    pixel_position_global.y += (int) (parent_size.y * anchor.y);
-    // add local position offset
-    pixel_position_global.x += pixel_position.x;
-    pixel_position_global.y += pixel_position.y;
-    return pixel_position_global;
-}
-
-float2 get_element_position(const int2 pixel_position_global, const int2 canvas_size) {
-    const float2 canvas_size_f = int2_to_float2(canvas_size);
-    const float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
-    float2 position = int2_to_float2(pixel_position_global);
-    float2_divide_float2(&position, canvas_size_f);
-    // (float2) { pixel_position_global.x * (aspect_ratio / canvas_size_f.x), pixel_position_global.y / canvas_size_f.y };
-    // we get our 0 to 1, make -0.5 to 0.5, then stretch x along canvas
-    position.x -= 0.5f;
-    position.y -= 0.5f;
-    position.x *= aspect_ratio;
-    // zox_log("   > canvas_size [%fx%f] aspect_ratio [%f]\n", canvas_size_f.x, canvas_size_f.y, aspect_ratio)
-    return position;
+    if (zox_has(e, PixelPosition)) {
+        const float2 anchor = zox_get_value(e, Anchor)
+        int2 pixel_position = zox_get_value(e, PixelPosition)
+        int2 pixel_size = zox_get_value(e, PixelSize)
+        // todo: make this more widespread, used atm just for game_ui
+        if (zox_has(e, AnchorSize)) {
+            const float2 anchor_size = zox_get_value(e, AnchorSize)
+            anchor_element_size2D(&pixel_size, anchor_size, parent_pixel_size);
+        }
+        const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
+        const float2 position2D = get_element_position(pixel_position_global, canvas_size);
+        anchor_element_position2D(&pixel_position, anchor, pixel_size);
+        if (zox_has(e, AnchorSize)) {
+            zox_set(e, PixelSize, { pixel_size })
+        }
+        zox_set(e, Position2D, { position2D })
+        zox_set(e, CanvasPosition, { pixel_position_global })
+        // zox_log("   - resizing child2 [%lu]\n", e)
+#ifdef debug_ui_scaling
+        zox_log("        -> to [%ix%i]\n", pixel_position_global.x, pixel_position_global.y)
+#endif
+        if (zox_has(e, Children)) {
+            const Children *children = zox_get(e, Children)
+            for (int i = 0; i < children->length; i++) set_ui_transform(world, e, children->value[i], layer + 1, canvas_size, pixel_position_global, pixel_size);
+        }
+    }
 }
 
 void initialize_element_invisible(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const int2 pixel_size, const float2 anchor, const unsigned char layer, const float2 position2D, const int2 pixel_position_global) {

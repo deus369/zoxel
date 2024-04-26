@@ -6,6 +6,16 @@ zox_entities_component(Children)
 zox_component(ParentLink, ecs_entity_t)
 #include "util/parent_link.c"
 
+#define find_child_with_tag(parent, tag, child_name)\
+const Children *children##_##tag = zox_get(parent, Children)\
+ecs_entity_t child_name = 0;\
+for (int i = 0; i < children##_##tag->length; i++) {\
+    if (zox_has(children##_##tag->value[i], tag)) {\
+        child_name = children##_##tag->value[i];\
+        break;\
+    }\
+}
+
 void on_child_added(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t child) {
     // zox_log(" + added [%lu] to canvas [%lu]\n", e, canvas)
     // todo: make this generic for when component is set, event

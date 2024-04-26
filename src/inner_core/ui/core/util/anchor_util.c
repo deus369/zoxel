@@ -1,5 +1,7 @@
+extern int2 get_line_element_mid_point(ecs_world_t *world, ecs_entity_t e);
+extern void set_line_element_real_position2D(ecs_world_t *world, ecs_entity_t e, float2 real_position2D, int2 canvas_size, int2 pixel_position);
+
 void anchor_element_position2D_with_header(int2 *position, const float2 position_anchor, const int2 window_size, const float header_height) {
-    // zox_log("   > header_height %f\n", header_height)
     position->x += (window_size.x / 2.0f) - window_size.x * position_anchor.x;
     position->y += (window_size.y / 2.0f) - (window_size.y + header_height) * position_anchor.y;
 }
@@ -13,8 +15,11 @@ void anchor_element_position2D(int2 *position, const float2 position_anchor, con
     position->x += (window_size.x / 2.0f) - window_size.x * position_anchor.x;
     position->y += (window_size.y / 2.0f) - window_size.y * position_anchor.y;
 }
-extern int2 get_line_element_mid_point(ecs_world_t *world, ecs_entity_t e);
-extern void set_line_element_real_position2D(ecs_world_t *world, ecs_entity_t e, float2 real_position2D, int2 canvas_size, int2 pixel_position);
+
+void anchor_element_size2D(int2 *size, const float2 anchor, const int2 parent_size) {
+    size->x = parent_size.x * anchor.x;
+    size->y = parent_size.y * anchor.y;
+}
 
 void set_element_position(ecs_world_t *world, ecs_entity_t e, int2 parent_pixel_position_global, int2 parent_pixel_size, int2 canvas_size) {
     if (e == 0 || !ecs_is_alive(world, e)) return;

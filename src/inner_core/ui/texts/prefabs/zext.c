@@ -15,7 +15,7 @@ ecs_entity_t spawn_prefab_zext(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_zext(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const float2 anchor, const byte2 padding, const char* text, const int font_size, unsigned char alignment, const unsigned char layer, const int2 parent_pixel_position_global, const int2 parent_pixel_size, const unsigned char render_disabled) {
+ecs_entity_t spawn_zext(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const float2 anchor, const byte2 padding, const char* text, const int font_size, unsigned char alignment, const unsigned char layer, const int2 parent_pixel_position_global, const int2 parent_pixel_size, const unsigned char render_disabled) {
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const int textLength = strlen(text);
     const unsigned char zigel_layer = layer + 1;

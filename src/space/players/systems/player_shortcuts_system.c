@@ -59,32 +59,38 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const DeviceLinks *deviceLinks = &deviceLinkss[i];
         for (int j = 0; j < deviceLinks->length; j++) {
-            ecs_entity_t device_entity = deviceLinks->value[j];
+            const ecs_entity_t device_entity = deviceLinks->value[j];
             if (zox_has(device_entity, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                 if (keyboard->x.pressed_this_frame) toggle_ui(world, &fps_display, &spawn_fps_display);
+                else if (keyboard->l.pressed_this_frame) {
+                    const ecs_entity_t character = zox_get_value(it->entities[i], CharacterLink)
+                    if (zox_has(character, Aura)) {
+                        zox_remove_tag(character, Aura)
+                        zox_log(" > removed Aura from character\n")
+                    } else {
+                        zox_add_tag(character, Aura)
+                        zox_log(" > added Aura to character\n")
+                    }
+                }
                 else if (keyboard->j.pressed_this_frame) {
                     zoxel_log(" > spawned new sound\n");
                     spawn_sound_from_file(world, 0);
                 }
                 else if (keyboard->k.pressed_this_frame) {
-                    ecs_entity_t source_texture = files_textures[0];
-                    const int2 source_size = zox_get_value(source_texture, TextureSize)
-                    const TextureData *source_data = zox_get(source_texture, TextureData)
-                    zox_log("   > testing ui %lu\n", main_canvas);
-                    // spawn_element_on_canvas(world, main_canvas, (int2) { 0, 60 },
-                    int2 size = (int2) { 32 * 8, 32 * 8 };
-                    ecs_entity_t e = spawn_element_basic_on_canvas(world, main_canvas, (int2) { 8, 8 }, size, source_size, (float2) { 0, 0 });
-                    zox_set(e, TextureDirty, { 1 })
-                    // zox_set(e, TextureSize, { source_size })
-                    zox_set(e, TextureData, { source_data->length, source_data->value })
+                    const int2 position = (int2) { 8, 8 };
+                    const int2 size = (int2) { 32 * 8, 32 * 8 };
+                    const ecs_entity_t source_texture = files_textures[0];
+                    const ecs_entity_t canvas = zox_get_value(it->entities[i], CanvasLink)
+                    spawn_texture_element(world, canvas, source_texture, position, size);
                 }
 #ifndef zox_on_startup_spawn_main_menu
                 if (keyboard->g.pressed_this_frame) {
+                    const ecs_entity_t canvas = zox_get_value(it->entities[i], CanvasLink)
                     const int edge_buffer = 8 * default_ui_scale;
                     const float2 window_anchor = { 0.0f, 1.0f };
                     const int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
-                    spawn_main_menu(world, main_canvas, game_name, window_position, window_anchor, 0);
+                    spawn_main_menu(world, canvas, game_name, window_position, window_anchor, 0);
                 }
 #endif
 #ifdef test_particles2D

@@ -1,11 +1,11 @@
-extern ecs_entity_t spawn_main_menu(ecs_world_t *world, const ecs_entity_t canvas, const char *header_label, int2 position, float2 anchor);
-extern ecs_entity_t spawn_menu_options(ecs_world_t *world, int2 position, float2 anchor);
-extern ecs_entity_t main_menu;
-extern ecs_entity_t menu_options;
-// extern ecs_entity_t local_game;
+extern ecs_entity_t spawn_main_menu(ecs_world_t *world, const ecs_entity_t canvas, const char *header_label, const int2 position, const float2 anchor);
+extern ecs_entity_t spawn_menu_options(ecs_world_t *world, const ecs_entity_t canvas, const int2 position, const float2 anchor);
 
 void button_event_play_game(ecs_world_t *world, ecs_entity_t trigger_entity) {
-    zox_delete_and_set(main_menu)
+    const ecs_entity_t canvas = zox_get_value(trigger_entity, CanvasLink)
+    find_child_with_tag(canvas, MenuMain, found_child)
+    if (!found_child) return;
+    zox_delete_and_set(found_child)
     trigger_event_game(world, local_game, zox_game_playing);
 }
 
@@ -14,17 +14,20 @@ void button_event_end_game(ecs_world_t *world, ecs_entity_t trigger_entity) {
 }
 
 void button_event_menu_options(ecs_world_t *world, ecs_entity_t trigger_entity) {
-    zox_delete_and_set(main_menu)
-    const float2 main_menu_anchor = { 0.5f, 0.5f };
-    const int2 main_menu_position = int2_zero;
-    spawn_menu_options(world, main_menu_position, main_menu_anchor);
+    const ecs_entity_t canvas = zox_get_value(trigger_entity, CanvasLink)
+    find_child_with_tag(canvas, MenuMain, found_child)
+    if (!found_child) return;
+    zox_delete_and_set(found_child)
+    spawn_menu_options(world, canvas, int2_zero, float2_half);
 }
 
 void button_event_menu_main(ecs_world_t *world, ecs_entity_t trigger_entity) {
-    zox_delete_and_set(menu_options)
-    float2 main_menu_anchor = { 0.5f, 0.5f };
-    int2 main_menu_position = int2_zero;
-    spawn_main_menu(world, main_canvas, game_name, main_menu_position, main_menu_anchor);
+    // we should just check root ui -> trigger_entity
+    const ecs_entity_t canvas = zox_get_value(trigger_entity, CanvasLink)
+    find_child_with_tag(canvas, MenuOptions, found_child)
+    if (found_child == 0) return; // failed to find ...
+    zox_delete_and_set(found_child)
+    spawn_main_menu(world, canvas, game_name, int2_zero, float2_half);
 }
 
 void button_event_volume_increase(ecs_world_t *world, ecs_entity_t trigger_entity) {

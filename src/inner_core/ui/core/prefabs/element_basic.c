@@ -24,3 +24,14 @@ ecs_entity_t spawn_element_basic_on_canvas(ecs_world_t *world, const ecs_entity_
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     return spawn_element_basic(world, canvas, canvas, pixel_position, pixel_size, texture_size, anchor, 0, int2_half(canvas_size), canvas_size);
 }
+
+
+ecs_entity_t spawn_texture_element(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t source_texture, const int2 position, const int2 size) {
+    const int2 source_size = zox_get_value(source_texture, TextureSize)
+    const TextureData *source_data = zox_get(source_texture, TextureData)
+    const ecs_entity_t e = spawn_element_basic_on_canvas(world, canvas, position, size, source_size, float2_zero);
+    zox_set(e, TextureDirty, { 1 })
+    zox_set(e, TextureData, { source_data->length, source_data->value })
+    // zox_set(e, TextureSize, { source_size })
+    return e;
+}

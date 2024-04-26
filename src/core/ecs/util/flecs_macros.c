@@ -42,6 +42,8 @@ if (e) {\
 
 #define zox_add_tag(e, T) ecs_add_id(world, e, ecs_id(T));
 
+#define zox_remove_tag(e, T) ecs_remove_id(world, e, ecs_id(T));
+
 #define zox_make_prefab(e) ecs_add_id(world, e, EcsPrefab);
 
 #define zox_has(e, T) ecs_has(world, e, T)

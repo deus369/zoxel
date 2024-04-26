@@ -2,7 +2,7 @@
 #define zoxel_rendering_basics2D
 
 // this creates the least notable deviation for ui
-const float shader_depth_multiplier = 0.0001f; // 0.001f; // 0.0001f;
+const float shader_depth_multiplier = 0.001f; // 0.0001f | 0.001f | 0.001f
 // shaders
 #include "shaders/instanced2D.c"
 #include "shaders/textured2D.c"
@@ -39,11 +39,10 @@ add_restore_shader_function((funfun) { &rendering_restore_basic_shaders2D });
 // zoxel_define_components
 // zoxel_define_systems
 #ifdef zoxel_transforms2D
-zox_render2D_system(ElementRenderSystem, [none] ElementRender, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] RenderDisabled, [in] TextureGPULink, [in] MeshDirty, [in] Alpha)
+zox_render2D_system(ElementRenderSystem, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D,  [in] RenderDisabled, [in] Brightness, [in] Alpha, [in] MeshGPULink, [in] UvsGPULink, [in] TextureGPULink, [in] MeshDirty, [none] ElementRender)
 zox_render3D_system(RenderMaterial2DSystem, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MaterialGPULink, [in] TextureGPULink, [none] !MeshGPULink)
 #endif
 zox_system_1(Mesh2DUvsUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshUVs, [in] MeshGPULink, [in] UvsGPULink, [none] !MeshColorRGBs)
-//
 zox_system_1(Mesh2DUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs)
 zoxel_end_module(RenderingBasics2D)
 

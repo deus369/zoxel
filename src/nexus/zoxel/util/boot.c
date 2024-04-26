@@ -13,9 +13,9 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         free(icon_path);
     }
     // Realm,  players, skybox
-    ecs_entity_t realm = spawn_realm(world);
+    const ecs_entity_t realm = spawn_realm(world);
     create_game_stats(world, realm);
-    ecs_entity_t game = spawn_game(world);
+    const ecs_entity_t game = spawn_game(world);
     zox_set(game, RealmLink, { realm })
     spawn_weather(world);
     if (!headless) spawn_music(world, instrument_piano); // _square
@@ -28,11 +28,12 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     float4 camera_rotation = quaternion_identity;
     for (int i = 0; i < players_playing; i++) {
         get_camera_start_transform(&camera_position, &camera_rotation);
-        float4 screen_to_canvas = (float4) { 1 / (float) players_playing, 1, i / (float) players_playing, 0 };
-        int2 viewport_size = screen_to_canvas_size(screen_dimensions, screen_to_canvas);
-        int2 viewport_position = screen_to_canvas_position(screen_dimensions, screen_to_canvas);
+        const float4 screen_to_canvas = (float4) { 1 / (float) players_playing, 1, i / (float) players_playing, 0 };
+        const int2 viewport_size = screen_to_canvas_size(screen_dimensions, screen_to_canvas);
+        const int2 viewport_position = screen_to_canvas_position(screen_dimensions, screen_to_canvas);
         const ecs_entity_t camera = spawn_player_camera(world, i, camera_position, camera_rotation, viewport_position, viewport_size, screen_to_canvas);
-        const ecs_entity_t canvas = spawn_default_ui(world, camera, viewport_size, screen_to_canvas);
+        const ecs_entity_t ui_camera = ui_cameras[i];
+        const ecs_entity_t canvas = spawn_default_ui(world, ui_camera, viewport_size, screen_to_canvas);
         zox_spawn_main_menu(world, game_name, canvas);
         zox_canvases[i] = canvas;
         zox_set(zox_players[i], CanvasLink, { canvas })

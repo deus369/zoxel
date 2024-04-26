@@ -3,9 +3,10 @@ extern int get_terrain_chunks_count(ecs_world_t *world);
 extern int get_characters_count(ecs_world_t *world);
 extern int get_count_particle3Ds(ecs_world_t *world);
 extern int get_count_particle3D_emitters(ecs_world_t *world);
-extern int get_label_local_character_level(ecs_world_t *world, char buffer[], int buffer_size, int buffer_index);
-extern int get_label_local_character_health(ecs_world_t *world, char buffer[], int buffer_size, int buffer_index);
-extern int debug_can_jump(ecs_world_t *world, char buffer[], int buffer_size, int buffer_index);
+extern int get_label_local_character_level(ecs_world_t *world, const ecs_entity_t character, char buffer[], int buffer_size, int buffer_index);
+extern int get_label_local_character_health(ecs_world_t *world, const ecs_entity_t character,char buffer[], int buffer_size, int buffer_index);
+extern int debug_can_jump(ecs_world_t *world, const ecs_entity_t character,char buffer[], int buffer_size, int buffer_index);
+extern ecs_entity_t local_character3D;
 
 // #define zox_debug_ui_memorys_allocated
 #define zox_debug_ui_device_mode
@@ -28,6 +29,7 @@ extern int debug_can_jump(ecs_world_t *world, char buffer[], int buffer_size, in
 
 void GameDebugLabelSystem(ecs_iter_t *it) {
     if (!main_player) return;
+    const ecs_entity_t character = local_character3D;
     ecs_world_t *world = it->world;
 #ifdef zox_debug_ui_device_mode
     const DeviceMode *deviceMode = zox_get(main_player, DeviceMode)
@@ -48,13 +50,13 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         // snprintf(buffer, sizeof(buffer), "debug ui\nline 2");
         // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[debug]");
 #ifdef zox_debug_can_jump
-        buffer_index = debug_can_jump(world, buffer, buffer_size, buffer_index);
+        buffer_index = debug_can_jump(world, character, buffer, buffer_size, buffer_index);
 #endif
 #ifdef zox_debug_ui_player_level
-        buffer_index = get_label_local_character_level(world, buffer, buffer_size, buffer_index);
+        buffer_index = get_label_local_character_level(world, character, buffer, buffer_size, buffer_index);
 #endif
 #ifdef zox_debug_ui_player_health
-        buffer_index = get_label_local_character_health(world, buffer, buffer_size, buffer_index);
+        buffer_index = get_label_local_character_health(world, character, buffer, buffer_size, buffer_index);
 #endif
 #ifdef zox_debug_ui_save_cloud
         if (test_read_byte != 255)

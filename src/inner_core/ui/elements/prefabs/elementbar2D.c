@@ -45,14 +45,12 @@ ecs_entity_t spawn_elementbar2D(ecs_world_t *world, const ecs_entity_t ui_holder
     const unsigned char front_bar_layer = layer + 1;
     const unsigned char zext_layer = layer + 2;
     const int2 zext_size = (int2) { font_size * strlen(text), font_size };
-    // const int2 pixel_size = (int2) { zext_size.x + padding.x * 2, zext_size.y + padding.y * 2 };
     const int2 pixel_size = (int2) { font_size * 16 + padding.x * 2, zext_size.y + padding.y * 2 };
     anchor_element_position2D(&pixel_position, anchor, pixel_size);
+    const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
+    const float2 position2D = get_element_position(pixel_position_global, canvas_size);
     zox_instance(prefab_elementbar2D)
     zox_name("elementbar2D")
-    const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
-    // anchor_element_position2D(&pixel_position, anchor, pixel_size);
-    const float2 position2D = get_element_position(pixel_position_global, canvas_size);
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, int2_one, anchor, layer, position2D, pixel_position_global);
     zox_set(e, RenderDisabled, { render_disabled })
     zox_set(e, Color, { back_bar_color })

@@ -1,7 +1,8 @@
 const unsigned char max_render_layers = 32;
-unsigned char renderer_layer;
 int_array_d* render3D_systems;
 int_array_d* render2D_systems;
+unsigned char renderer_layer;
+ecs_entity_t renderer_camera;
 float4x4 render_camera_matrix;
 unsigned char render_camera_fov;
 
@@ -25,11 +26,11 @@ void add_to_render2D_loop(long int id) {
 
 void render_ui_camera(ecs_world_t *world, const ecs_entity_t e) {
     // remember to check renderer_layer in each 2D  render system
-    // todo: check if ui is within canvas/view of that camera
-    if (!zox_valid(e)) return;
+    if (!zox_valid(e)) return; // todo: check if ui is within canvas/view of that camera
     const int2 screen_position = zox_get_value(e, ScreenPosition)
     const int2 screen_dimensions = zox_get_value(e, ScreenDimensions)
     const unsigned char camera_fov = zox_get_value(e, FieldOfView)
+    renderer_camera = e;
     render_camera_fov = camera_fov;
     render_camera_matrix = zox_get_value(e, ViewMatrix)
     if (is_using_vulkan) {
@@ -37,7 +38,6 @@ void render_ui_camera(ecs_world_t *world, const ecs_entity_t e) {
         // render ui cameras for vulkan
 #endif
     } else {
-        // zox_log("rendering ui [%ix%i] [%ix%i]\n", screen_position.x, screen_position.y, screen_dimensions.x, screen_dimensions.y)
         glViewport(screen_position.x, screen_position.y, screen_dimensions.x, screen_dimensions.y);
         for (renderer_layer = 0; renderer_layer < max_render_layers; renderer_layer++) {
             for (int j = 0; j < render2D_systems->size; j++)
@@ -53,6 +53,7 @@ void render_camera(ecs_world_t *world, const ecs_entity_t e) {
     const unsigned char camera_fov = zox_get_value(e, FieldOfView)
     const int2 screen_position = zox_get_value(e, ScreenPosition)
     const int2 screen_dimensions = zox_get_value(e, ScreenDimensions)
+    renderer_camera = e;
     render_camera_matrix = view_matrix;
     render_camera_fov = camera_fov;
     if (is_using_vulkan) {

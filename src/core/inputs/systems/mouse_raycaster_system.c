@@ -9,7 +9,7 @@ void MouseRaycasterSystem(ecs_iter_t *it) {
         zox_field_i_out(Raycaster, raycasters, raycaster)
         raycaster->value = int2_zero;
         for (int j = 0; j < deviceLinks2->length; j++) {
-            ecs_entity_t device_entity = deviceLinks2->value[j];
+            const ecs_entity_t device_entity = deviceLinks2->value[j];
             if (deviceMode->value == zox_device_mode_keyboardmouse && zox_has(device_entity, Mouse)) {
                 const Mouse *mouse = zox_get(device_entity, Mouse)
                 int2_add_int2_p(&raycaster->value, mouse->position);

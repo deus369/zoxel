@@ -31,11 +31,6 @@ ecs_entity_t spawn_player_camera(ecs_world_t *world, const unsigned char index, 
     return e;
 }
 
-/*void spawn_player_cameras(ecs_world_t *world, const unsigned char players_playing, const int2 viewport_size, const float4 screen_to_canvas) {
-    spawn_player_camera(world, 0, camera_position, camera_rotation, int2_zero, viewport_size, screen_to_canvas);
-    if (players_playing == 2) spawn_player_camera(world, 1, float3_add(camera_position, (float3) { 0.4f, 0, 0.4f }), camera_rotation, (int2) { viewport_size.x, 0 }, viewport_size, screen_to_canvas);
-}*/
-
 void load_element_styles(ecs_world_t *world) {
     spawn_font_style(world);
 }
@@ -52,11 +47,6 @@ void zox_spawn_main_menu(ecs_world_t *world, const char *game_name, ecs_entity_t
     return;
 #endif
 #ifdef zoxel_game_ui
-    /*if (zoxel_main_menu != 0 && ecs_is_alive(world, zoxel_main_menu)) {
-        zox_delete(zoxel_main_menu)
-        zoxel_main_menu = 0;
-        return;
-    }*/
     const float2 main_menu_anchor = { 0.5f, 0.5f };
     const int2 main_menu_position = int2_zero;
     zoxel_main_menu = spawn_main_menu(world, canvas, game_name, main_menu_position, main_menu_anchor);

@@ -1,14 +1,13 @@
 // notes: to test, set terrain to 1x1x1 chunks, disable physics, enable this systems logging
-ecs_entity_t spawn_chunk_character(ecs_world_t *world, ecs_entity_t_array_d* entities, const vox_file *vox, float3 position, float4 rotation, unsigned char character_lod) {
-    ecs_entity_t e = spawn_character3D(world, prefab_character3D, vox, position, rotation, character_lod, 0);
-    add_to_ecs_entity_t_array_d(entities, e);
-    zox_add_tag(e, Wanderer)
-    return e;
+ecs_entity_t spawn_chunk_character(ecs_world_t *world, ecs_entity_t_array_d* entities, const vox_file *vox, const float3 position, const float4 rotation, const unsigned char character_lod) {
+    const ecs_entity_2 e = spawn_character3D(world, prefab_character3D, vox, position, rotation, character_lod, 0);
+    add_to_ecs_entity_t_array_d(entities, e.x);
+    zox_add_tag(e.x, Wanderer)
+    return e.x;
 }
 
-ecs_entity_t spawn_player_character3D_in_world(ecs_world_t *world, const vox_file *vox, float3 position, float4 rotation, unsigned char character_lod) {
-    ecs_entity_t e = spawn_character3D(world, prefab_character3D, vox, position, rotation, character_lod, 1);
-    return e;
+ecs_entity_2 spawn_player_character3D_in_world(ecs_world_t *world, const vox_file *vox, const float3 position, const float4 rotation, const unsigned char character_lod, const ecs_entity_t player) {
+    return spawn_character3D(world, prefab_character3D, vox, position, rotation, character_lod, player);
 }
 
 void Characters3DSpawnSystem(ecs_iter_t *it) {

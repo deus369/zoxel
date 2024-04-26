@@ -14,13 +14,12 @@ void ZextUpdateSystem(ecs_iter_t *it) {
     zox_field_out(Children, childrens, 11)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_out(ZextDirty, zextDirtys, zextDirty)
-        if (zextDirty->value == 2) zextDirty->value = 0;
         if (!zextDirty->value) continue;
         zox_field_i_in(ZextData, zextDatas, zextData)
-        // if (!zextData->value) continue;
         zox_field_i_out(Children, childrens, children)
         if (is_zext_updating(world, children)) continue;
-        ecs_entity_t e = it->entities[i];
+        zox_field_e()
+        const ecs_entity_t canvas = get_root_canvas(world, e);
         zox_field_i_in(ZextSize, zextSizes, zextSize)
         zox_field_i_in(ZextPadding, zextPaddings, zextPadding)
         zox_field_i_in(Layer2D, layer2Ds, layer2D)
@@ -28,9 +27,8 @@ void ZextUpdateSystem(ecs_iter_t *it) {
         zox_field_i_in(PixelSize, pixelSizes, pixelSize)
         zox_field_i_in(MeshAlignment, meshAlignments, meshAlignment)
         zox_field_i_in(RenderDisabled, renderDisableds, renderDisabled)
-        ecs_entity_t canvas = main_canvas; // todo: use canvasLink here
         spawn_zext_zigels(world, e, canvas, children, zextData, zextSize->value, meshAlignment->value, zextPadding->value, layer2D->value, canvasPosition->value, pixelSize->value, renderDisabled->value);
-        zextDirty->value = 2;
+        zextDirty->value = 0; // 2;
 #ifdef zoxel_debug_zigel_updates
         zox_log(" > zext is updating [%lu] [%i]\n", it->entities[i], zextData->length)
 #endif

@@ -26,20 +26,27 @@ void ElementRaycastSystem(ecs_iter_t *it) {
             for (int j = 0; j < uis_it.count; j++) {
                 const RenderDisabled *renderDisabled = &renderDisableds[j];
                 if (renderDisabled->value) continue;
+                const ecs_entity_t e2 = uis_it.entities[j];
                 const CanvasPosition *canvasPosition2 = &canvasPositions[j];
                 const PixelSize *pixelSize2 = &pixelSizes[j];
                 const Layer2D *layer2D = &layer2Ds[j];
                 SelectState *selectState = &selectableStates[j];
-                const int2 canvasPosition = canvasPosition2->value;
+                int2 viewport_position = canvasPosition2->value;
                 const int2 pixelSize = pixelSize2->value;
-                int4 ui_bounds = { canvasPosition.x - pixelSize.x / 2, canvasPosition.x + pixelSize.x / 2, canvasPosition.y - pixelSize.y / 2,  canvasPosition.y + pixelSize.y / 2};
+                const ecs_entity_t camera = get_root_canvas_camera(world, e2);
+                if (!camera) continue;
+                const int2 canvas_position = zox_get_value(camera, ScreenPosition)
+                viewport_position.x += canvas_position.x;
+                viewport_position.y += canvas_position.y;
+                // bounds should be offset with canvas position
+                const int4 ui_bounds = { viewport_position.x - pixelSize.x / 2, viewport_position.x + pixelSize.x / 2, viewport_position.y - pixelSize.y / 2,  viewport_position.y + pixelSize.y / 2};
                 unsigned char was_raycasted = position.x >= ui_bounds.x && position.x <= ui_bounds.y && position.y >= ui_bounds.z && position.y <= ui_bounds.w;
                 if (was_raycasted && layer2D->value > ui_layer) {
                     ui_layer = layer2D->value;
                     ui_selected = uis_it.entities[j];
                     ui_selected_selectableState = selectState;
 #ifdef zox_debug_log_element_raycasting
-                    zox_log("     + ui [%lu] position [%ix%i] size [%ix%i]\n", ui_selected, canvasPosition.x, canvasPosition.y, pixelSize.x, pixelSize.y)
+                    zox_log("     + ui [%lu] position [%ix%i] size [%ix%i]\n", ui_selected, canvas_position.x, canvas_position.y, pixelSize.x, pixelSize.y)
 #endif
                 }
             }

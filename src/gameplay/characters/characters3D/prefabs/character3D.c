@@ -1,6 +1,5 @@
 ecs_entity_t prefab_character3D = 0;
 ecs_entity_t local_character3D = 0;
-extern ecs_entity_t healthbar_2D;
 
 int get_characters_count(ecs_world_t *world) {
     return zox_count_entities(world, ecs_id(Character3D));
@@ -29,7 +28,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vox_file *vox, float3 position, float4 rotation, unsigned char lod, unsigned char is_player_character) {
+ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, const vox_file *vox, const float3 position, const float4 rotation, const unsigned char lod, const ecs_entity_t player) {
     zox_instance(prefab)
     zox_name("character3D")
     // transforms
@@ -47,16 +46,16 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vo
     float health = (0.02f + 0.98f * ((rand() % 100) * 0.01f)) * 5.0f;
     float max_health = 10.0f;
     int stats_count = 1;
-    if (is_player_character) stats_count++;
+    if (player) stats_count++;
     StatLinks *statLinks = zox_get_mut(e, StatLinks)
     resize_memory_component(StatLinks, statLinks, ecs_entity_t, stats_count)
     // health
-    ecs_entity_t health_stat = spawn_user_stat(world, meta_stat_health, e);
+    const ecs_entity_t health_stat = spawn_user_stat(world, meta_stat_health, e);
     zox_set(health_stat, StatValue, { health })
     zox_set(health_stat, StatValueMax, { max_health })
     statLinks->value[0] = health_stat;
     // soul experience
-    if (is_player_character) statLinks->value[1] = spawn_user_stat(world, meta_stat_soul, e);
+    if (player) statLinks->value[1] = spawn_user_stat(world, meta_stat_soul, e);
     zox_modified(e, StatLinks)
     // character ui
 #ifndef zox_disable_statbars
@@ -66,7 +65,17 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, ecs_entity_t prefab, const vo
     resize_memory_component(ElementLinks, elementLinks, ecs_entity_t, 1)
     elementLinks->value[0] = statbar;
     zox_modified(e, ElementLinks)
-    if (is_player_character) zox_prefab_set(healthbar_2D, StatLink, { health_stat })
+    if (player) {
+        const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+        find_child_with_tag(canvas, MenuInGame, game_menu)
+        if (game_menu) {
+            find_child_with_tag(game_menu, ElementBar, healthbar_2D)
+            zox_set(healthbar_2D, StatLink, { health_stat })
+        }/* else {
+            zox_log(" > no MenuInGame found on canvas\n")
+        }*/
+    }
 #endif
-    return e;
+    const ecs_entity_2 e_group = (ecs_entity_2) { e, health_stat };
+    return e_group;
 }

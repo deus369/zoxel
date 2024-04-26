@@ -32,28 +32,31 @@ int initialize_shader_line2D() {
     return 0;
 }
 
+extern ecs_entity_t get_root_canvas_camera(ecs_world_t *world, const ecs_entity_t e);
+
 void Line2DRenderSystem(ecs_iter_t *it) {
     glUseProgram(line2D_material);
     glEnableVertexAttribArray(line2D_position_location);
-    const LineData2D *lineData2Ds = ecs_field(it, LineData2D, 2);
-    const LineThickness *lineThicknesss = ecs_field(it, LineThickness, 3);
-    const Color *colorRGBs = ecs_field(it, Color, 4);
-    const Layer2D *layer2Ds = ecs_field(it, Layer2D, 5);
+    zox_field_in(LineData2D, lineData2Ds, 1)
+    zox_field_in(LineThickness, lineThicknesss, 2)
+    zox_field_in(Color, colorRGBs, 3)
+    zox_field_in(Layer2D, layer2Ds, 4)
     for (int i = 0; i < it->count; i++) {
-        const Layer2D *layer2D = &layer2Ds[i];
-        if (layer2D->value != renderer_layer) continue;
-        const LineData2D *lineData2D = &lineData2Ds[i];
-        const LineThickness *lineThickness = &lineThicknesss[i];
-        const Color *color = &colorRGBs[i];
-        float line_data[] = { lineData2D->value.x, lineData2D->value.y, lineData2D->value.z, lineData2D->value.w };
-        float4 color_float4 = color_to_float4(color->value);
-        float position_z = ((int) layer2D->value) * shader_depth_multiplier;
+        zox_field_i_in(Layer2D, layer2Ds, layer2D)
+        if (layer2D->value != renderer_layer) continue; // render per layer
+        zox_field_e()
+        if (get_root_canvas_camera(world, e) != renderer_camera) continue;
+        zox_field_i_in(LineData2D, lineData2Ds, lineData2D)
+        zox_field_i_in(LineThickness, lineThicknesss, lineThickness)
+        zox_field_i_in(Color, colorRGBs, colorRGB)
+        const float line_data[] = { lineData2D->value.x, lineData2D->value.y, lineData2D->value.z, lineData2D->value.w };
+        const float4 color_float4 = color_to_float4(colorRGB->value);
+        const float position_z = ((int) layer2D->value) * shader_depth_multiplier;
         glLineWidth(lineThickness->value);
         glUniform1f(line2D_depth_location, position_z);
         glVertexAttribPointer(line2D_position_location, 2, GL_FLOAT, GL_FALSE, 0, line_data);
         glUniform4f(line2D_color_location, color_float4.x, color_float4.y, color_float4.z, color_float4.w);
         glDrawArrays(GL_LINES, 0, 2);
-        // zox_log("   > rendering line at layer: %i\n", renderer_layer)
     }
-    // glUseProgram(0);
+    glUseProgram(0);
 } zox_declare_system(Line2DRenderSystem)

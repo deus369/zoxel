@@ -19,12 +19,8 @@ void EditorInputSystem(ecs_iter_t *it) {
                 //    spawn_frame_debugger(world);     // c : console
 #ifdef zox_test_hierarchy
                 else if (keyboard->f.pressed_this_frame) {
-                    // ecs_defer_begin(world);
                     toggle_ui(world, &inspector, &spawn_inspector);
-                    // pause_ui = spawn_pause_ui(world, int2_zero, float2_half);
-                    // hierarchy = spawn_editor_hierarchy(world, main_canvas);
                     toggle_ui(world, &hierarchy, &spawn_editor_hierarchy);
-                    // ecs_defer_end(world);
                 }
                 else if (keyboard->h.pressed_this_frame) toggle_ui(world, &hierarchy, &spawn_editor_hierarchy);
                 else if (keyboard->g.pressed_this_frame) toggle_ui(world, &inspector, &spawn_inspector);

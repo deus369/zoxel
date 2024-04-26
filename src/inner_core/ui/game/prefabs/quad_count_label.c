@@ -19,6 +19,5 @@ ecs_entity_t spawn_quad_count_label(ecs_world_t *world, const ecs_entity_t paren
     const int2 parent_pixel_size = zox_get_value(parent, PixelSize)
     const ecs_entity_t e = spawn_label_background(world, prefab_quad_count_label, parent, main_canvas, pixel_position, anchor, padding, "", font_size, zox_mesh_alignment_right, layer, int2_half(parent_pixel_size), parent_pixel_size);
     quads_label = e;
-    // zox_log(" + quads_label QuadsCount? %s\n", zox_has(e, QuadsCount) ? "yes" : "no")
     return e;
 }

@@ -4,7 +4,7 @@ extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 point
 #endif
 
 void BillboardSystem(ecs_iter_t *it) {
-    const ecs_entity_t main_camera = main_cameras[0];
+    const ecs_entity_t main_camera = main_cameras[0]; // todo: make this multi camera
     zox_iter_world()
     zox_field_out(Rotation3D, rotation3Ds, 4)
     for (int i = 0; i < it->count; i++) {

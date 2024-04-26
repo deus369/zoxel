@@ -40,14 +40,13 @@ void ElementBarSystem(ecs_iter_t *it) {
             dirty_pixel_position->value.x = - pixelSize->value.x / 2 + dirty_pixel_size->value.x / 2;
             zox_modified(dirty_bar, PixelSize)
             zox_modified(dirty_bar, PixelPosition)
-            int percentage_i = (int) (percentage * 100); // set text of statbar
-            char text[32];
-            snprintf(text, sizeof(text), "health %i%%", percentage_i);
-            ecs_entity_t dirty_text = children->value[1];
-            if (set_entity_with_text(world, dirty_text, text)) {
-                // zox_log("health set to: [%s]\n", text)
-            }
             on_element_pixels_resized(world, dirty_bar, dirty_pixel_size->value, 0);
+            const ecs_entity_t dirty_text = children->value[1];
+            char text[16];
+            snprintf(text, 16, "health %i%%", (int) (percentage * 100)); // sizeof(text)
+            if (set_entity_with_text(world, dirty_text, text)) {
+                // zox_log(" [%lu] health set to: [%s]\n", e, text)
+            }
         }
     }
 } zox_declare_system(ElementBarSystem)

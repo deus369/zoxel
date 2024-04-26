@@ -6,6 +6,7 @@
 #include "data/color_rgb.c"
 #include "data/octree_helper.c"
 #include "data/text_group.c"
+#include "data/ecs_entity_2.c"
 #include "macros/octree_component.c"
 #include "components/components.c"
 zox_declare_tag(Selectable)

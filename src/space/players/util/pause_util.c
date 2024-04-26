@@ -1,26 +1,28 @@
-
-
 void pause_player(ecs_world_t *world, ecs_entity_t player) {
-    const float2 window_anchor = float2_half; // { 0.5f, 0.5f };
+    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+    const ecs_entity_t camera = zox_get_value(player, CameraLink)
+    const ecs_entity_t character3D = zox_get_value(player, CharacterLink)
+    const float2 window_anchor = float2_half;
     const int2 window_position = int2_zero;
-    ecs_entity_t character3D = zox_get_value(player, CharacterLink)
+    dispose_in_game_ui(world, player); // check this, ingame ui should now be linked to player, got from canvas
     disable_inputs_until_release(world, player, zox_device_mode_none);
-    zox_set(main_cameras[0], FreeRoam, { 0 })
+    zox_set(camera, FreeRoam, { 0 })
     zox_set(mouse_entity, MouseLock, { 0 })
     zox_set(character3D, DisableMovement, { 1 })
-    pause_ui = spawn_pause_ui(world, window_position, window_anchor);
-    dispose_in_game_ui(world, player);
-    unlock_achievement("test_achievement2");
+    spawn_pause_ui(world, canvas, window_position, window_anchor);
+    unlock_achievement("achievement_paused_game"); // test_achievement2
 }
 
 void resume_player(ecs_world_t *world, ecs_entity_t player) {
-    ecs_entity_t character3D = zox_get_value(player, CharacterLink)
+    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+    find_child_with_tag(canvas, MenuPaused, found_child)
+    const ecs_entity_t character = zox_get_value(player, CharacterLink)
     disable_inputs_until_release(world, player, zox_device_mode_none);
     zox_set(mouse_entity, MouseLock, { 1 })
-    zox_set(character3D, DisableMovement, { 0 })
-    zox_delete(pause_ui)
-    pause_ui = 0;
-    spawn_in_game_ui(world, player);
+    zox_set(character, DisableMovement, { 0 })
+    zox_delete(found_child)
+    const ecs_entity_t health_stat = zox_gett(character, StatLinks)->value[0];
+    spawn_in_game_ui(world, player, (ecs_entity_2) { character, health_stat });
 }
 
 void toggle_pause_ui(ecs_world_t *world, ecs_entity_t player) {

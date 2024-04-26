@@ -78,7 +78,7 @@ zox_define_component(LineAnchor)
 zox_filter(line2Ds_query, [none] Line2D, [in] LinePosition2D, [none] CanvasLink, [none] LineData2D)
 zox_system(FrameDebugSystem, EcsOnUpdate, [none] FrameDebugLine, [in] ChildIndex, [out] LineLocalPosition2D)
 zox_system_ctx(Line2DElementSystem, EcsPreStore, line2Ds_query, [none] Line2D, [in] LinePosition2D, [in] CanvasLink, [out] LineData2D)
-if (!headless) zox_render2D_system(Line2DRenderSystem, [none] Line2D, [in] LineData2D, [in] LineThickness, [in] Color, [in] Layer2D)
+if (!headless) zox_render2D_system(Line2DRenderSystem, [in] LineData2D, [in] LineThickness, [in] Color, [in] Layer2D, [none] Line2D)
 zoxel_end_module(Lines2D)
 
 #endif

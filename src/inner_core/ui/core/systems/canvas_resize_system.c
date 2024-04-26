@@ -16,13 +16,11 @@ void CanvasResizeSystem(ecs_iter_t *it) {
         zox_field_i_in(Children, childrens, children)
         pixelSize->value = viewport_dimensions;
         // zox_log(" > viewport resize detected [%ix%i]\n", screen_dimensions.x, screen_dimensions.y)
-        // zox_log("canvas children resizing: %i\n", children->length)
         for (int j = 0; j < children->length; j++) {
             const ecs_entity_t child = children->value[j];
-            // if (!zox_valid(child)) zox_log("   > canvas child invalid: %lu\n", child)
             if (!zox_valid(child)) continue;
             // zox_log("  - [%i] canvas child is resizing: %lu\n", j, child)
-            set_ui_transform(world, e, child, 0, viewport_dimensions);
+            set_ui_transform(world, e, child, 0, viewport_dimensions, int2_half(viewport_dimensions), viewport_dimensions); // assume canvas is in middle?
         }
     }
 } zox_declare_system(CanvasResizeSystem)

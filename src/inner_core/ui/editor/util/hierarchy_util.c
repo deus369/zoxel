@@ -20,7 +20,7 @@ extern ecs_entity_t local_realm;
 // realm -> world
 extern ecs_entity_t local_terrain;
 // realm -> players -> characters
-extern ecs_entity_t local_character3D;
+// extern ecs_entity_t local_character3D;
 
 void add_entity_to_labels(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level) {
     if (!e) return;

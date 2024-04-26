@@ -1,11 +1,12 @@
 void PlayerPauseSystem(ecs_iter_t *it) {
     zox_iter_world()
-    const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
+    zox_field_in(DeviceLinks, deviceLinkss, 2)
+    unsigned char did_toggle_pause = 0; // for now, no support for different games at once
+    ecs_entity_t triggering_player = 0;
     for (int i = 0; i < it->count; i++) {
-        unsigned char did_toggle_pause = 0;
-        const DeviceLinks *deviceLinks = &deviceLinkss[i];
+        zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
         for (int j = 0; j < deviceLinks->length; j++) {
-            ecs_entity_t device_entity = deviceLinks->value[j];
+            const ecs_entity_t device_entity = deviceLinks->value[j];
             if (zox_has(device_entity, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                 if (keyboard->escape.pressed_this_frame ||
@@ -29,7 +30,10 @@ void PlayerPauseSystem(ecs_iter_t *it) {
                 }
             }
         }
-        if (did_toggle_pause) toggle_pause_ui(world, it->entities[i]);
-        // zoxel_log(" > alive ui? %s\n", ecs_is_alive(world, pause_ui) ? "alive" : "dead");
+        if (did_toggle_pause) {
+            triggering_player = it->entities[i];
+            break;
+        }
     }
+    if (did_toggle_pause) toggle_pause_ui(world, triggering_player);
 } zox_declare_system(PlayerPauseSystem)

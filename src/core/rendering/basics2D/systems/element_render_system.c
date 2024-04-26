@@ -1,31 +1,35 @@
+extern ecs_entity_t get_root_canvas_camera(ecs_world_t *world, const ecs_entity_t e);
+
 void ElementRenderSystem(ecs_iter_t *it) {
     unsigned char has_set_material = 0;
-    const Position2D *position2Ds = ecs_field(it, Position2D, 2);
-    const Rotation2D *rotation2Ds = ecs_field(it, Rotation2D, 3);
-    const Layer2D *layer2Ds = ecs_field(it, Layer2D, 5);
-    const Scale1D *scale2Ds = ecs_field(it, Scale1D, 4);
-    const Brightness *brightnesses = ecs_field(it, Brightness, 6);
-    const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 7);
-    const UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 8);
-    const RenderDisabled *renderDisableds = ecs_field(it, RenderDisabled, 9);
-    const TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 10);
-    const MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 11);
-    const Alpha *alphas = ecs_field(it, Alpha, 12);
+    zox_field_in(Position2D, position2Ds, 1)
+    zox_field_in(Rotation2D, rotation2Ds, 2)
+    zox_field_in(Scale1D, scale1Ds, 3)
+    zox_field_in(Layer2D, layer2Ds, 4)
+    zox_field_in(RenderDisabled, renderDisableds, 5)
+    zox_field_in(Brightness, brightnesses, 6)
+    zox_field_in(Alpha, alphas, 7)
+    zox_field_in(MeshGPULink, meshGPULinks, 8)
+    zox_field_in(UvsGPULink, uvsGPULinks, 9)
+    zox_field_in(TextureGPULink, textureGPULinks, 10)
+    zox_field_in(MeshDirty, meshDirtys, 11)
     for (int i = 0; i < it->count; i++) {
-        const Layer2D *layer2D = &layer2Ds[i];
+        zox_field_i_in(Layer2D, layer2Ds, layer2D)
         if (layer2D->value != renderer_layer) continue;
-        const MeshDirty *meshDirty = &meshDirtys[i];
+        zox_field_i_in(MeshDirty, meshDirtys, meshDirty)
         if (meshDirty->value) continue;
-        const RenderDisabled *renderDisabled = &renderDisableds[i];
+        zox_field_i_in(RenderDisabled, renderDisableds, renderDisabled)
         if (renderDisabled->value) continue;
-        const Position2D *position2D = &position2Ds[i];
-        const Rotation2D *rotation2D = &rotation2Ds[i];
-        const Scale1D *scale1D = &scale2Ds[i];
-        const Brightness *brightness = &brightnesses[i];
-        const Alpha *alpha = &alphas[i];
-        const MeshGPULink *meshGPULink = &meshGPULinks[i];
-        const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
-        const TextureGPULink *textureGPULink = &textureGPULinks[i];
+        zox_field_e()
+        if (get_root_canvas_camera(world, e) != renderer_camera) continue;
+        zox_field_i_in(Position2D, position2Ds, position2D)
+        zox_field_i_in(Rotation2D, rotation2Ds, rotation2D)
+        zox_field_i_in(Scale1D, scale1Ds, scale1D)
+        zox_field_i_in(Brightness, brightnesses, brightness)
+        zox_field_i_in(Alpha, alphas, alpha)
+        zox_field_i_in(MeshGPULink, meshGPULinks, meshGPULink)
+        zox_field_i_in(UvsGPULink, uvsGPULinks, uvsGPULink)
+        zox_field_i_in(TextureGPULink, textureGPULinks, textureGPULink)
         if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0 || uvsGPULink->value == 0 || textureGPULink->value == 0) continue;
         if (!has_set_material) {
             has_set_material = 1;
@@ -33,7 +37,7 @@ void ElementRenderSystem(ecs_iter_t *it) {
             opengl_set_material(textured2D_material);
             opengl_set_matrix(shader2D_textured_attributes.camera_matrix, render_camera_matrix);
         }
-        float position_z = ((int) layer2D->value) * shader_depth_multiplier;
+        const float position_z = ((int) layer2D->value) * shader_depth_multiplier;
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_set_buffer_attributes2D(meshGPULink->value.y, uvsGPULink->value);
         opengl_bind_texture(textureGPULink->value);
@@ -42,17 +46,15 @@ void ElementRenderSystem(ecs_iter_t *it) {
         opengl_set_float(shader2D_textured_attributes.scale, scale1D->value);
         opengl_set_float(shader2D_textured_attributes.brightness, brightness->value);
         opengl_set_float(shader2D_textured_attributes.alpha, alpha->value);
-        #ifndef zox_disable_render_ui
-            opengl_render(6);
-        #endif
-        #ifdef zoxel_catch_opengl_errors
-            if (check_opengl_error_unlogged() != 0) {
-                zoxel_log(" > failed to render element2D [%lu]: [%i] - [%ix%i:%i]\n", it->entities[i], 6, meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value); // , colorsGPULink->value);
-                break;
-            }
-        #endif
-        // zox_log("   > rendering line at layer: %i\n", renderer_layer)
-        // zoxel_log(" > rendered element2D [%lu]: [%i] - [%ix%i:%i]\n", it->entities[i], 6, meshGPULink->value.x, meshGPULink->value.y); //, colorsGPULink->value);
+#ifndef zox_disable_render_ui
+        opengl_render(6);
+#endif
+#ifdef zoxel_catch_opengl_errors
+        if (check_opengl_error_unlogged() != 0) {
+            zoxel_log(" > failed to render element2D [%lu]: [%i] - [%ix%i:%i]\n", it->entities[i], 6, meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value);
+            break;
+        }
+#endif
     }
     if (has_set_material) {        
         opengl_disable_buffer(shader2D_textured_attributes.vertex_uv);
