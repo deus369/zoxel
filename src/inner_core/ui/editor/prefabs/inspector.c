@@ -9,7 +9,7 @@ ecs_entity_t spawn_prefab_inspector(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_inspector(ecs_world_t *world, ecs_entity_t canvas) {
+ecs_entity_t spawn_inspector(ecs_world_t *world, const ecs_entity_t canvas) {
     const unsigned char layer = 12;
     const int font_size = 18;
     const float2 anchor = (float2) { 1, 0.5f };
@@ -21,7 +21,7 @@ ecs_entity_t spawn_inspector(ecs_world_t *world, ecs_entity_t canvas) {
     const text_group labels[] = { { "------------------------" } };
     // const text_group labels[] = { { "[ ------ select entity ------ ]" } };
     // const text_group labels[] = { { "[ select entity ]" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "[ ---------- -------------- ]" }  };
-    ecs_entity_t e = spawn_ui_list(world, prefab_inspector, canvas, "inspector", labels_count, max_elements, labels, NULL, pixel_position, anchor, is_close_button, font_size, layer, is_scrollbar);
+    const ecs_entity_t e = spawn_ui_list(world, prefab_inspector, canvas, "inspector", labels_count, max_elements, labels, NULL, pixel_position, anchor, is_close_button, font_size, layer, is_scrollbar);
     zox_name("inspector")
     inspector = e;
     return e;

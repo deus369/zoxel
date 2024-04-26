@@ -12,7 +12,7 @@ ecs_entity_t spawn_prefab_fps_display(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_fps_display(ecs_world_t *world, ecs_entity_t canvas) {
+ecs_entity_t spawn_fps_display(ecs_world_t *world, const ecs_entity_t canvas) {
     const unsigned char layer = 1;
     const unsigned char font_size = 32;
     const byte2 padding = (byte2) { 12, 8 };

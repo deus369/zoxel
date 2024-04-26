@@ -24,6 +24,7 @@ zox_component(CanvasLink, ecs_entity_t)
 zox_component(UIHolderLink, ecs_entity_t)
 zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t)
 zox_entities_component(ElementLinks)
+zox_component_byte(HeaderHeight)
 // zoxel_include_util
 #include "util/ui_prefab_util.c"
 #include "util/ui_transform_util.c"
@@ -53,7 +54,6 @@ zox_entities_component(ElementLinks)
 #include "systems/element_mesh3D_system.c"
 #include "systems/billboard_system.c"
 #include "systems/ui_trail_system.c"
-#include "systems/resize_element_system.c"
 #include "systems/element_bar_system.c"
 #include "systems/canvas_resize_system.c"
 
@@ -89,6 +89,7 @@ zox_define_component(CanvasLink)
 zox_define_component(UIHolderLink)
 zox_define_component(ClickEvent)
 zox_define_entities_component(ElementLinks)
+zox_define_component_byte(HeaderHeight)
 // zoxel_define_filters
 zox_filter(ui_query, [none] Element, [in] CanvasPosition, [in] PixelSize, [in] Layer2D, [in] RenderDisabled, [out] SelectState)
 zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition, [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPosition)

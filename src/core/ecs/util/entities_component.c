@@ -9,12 +9,10 @@ void on_destroyed##_##name(ecs_iter_t *it) {\
         for (int j = 0; j < component->length; j++) zox_delete(component->value[j]);\
     }\
 }\
-unsigned char add_to##_##name(name *component, ecs_entity_t data) {\
+unsigned char add_to##_##name(name *component, const ecs_entity_t data) {\
     if (component->value) {\
-        unsigned char has_data = 0;\
-        for (int i = 0; i < component->length; i++) {\
+        for (int i = 0; i < component->length; i++)\
             if (component->value[i] == data) return 0;\
-        }\
         component->length++;\
         component->value = realloc(component->value, component->length * sizeof(ecs_entity_t));\
         component->value[component->length - 1] = data;\
@@ -25,6 +23,7 @@ unsigned char add_to##_##name(name *component, ecs_entity_t data) {\
     }\
     return 1;\
 }\
+\
 unsigned char remove_from##_##name(name *component, ecs_entity_t data) {\
     if (component->value) {\
         unsigned char has_data = 0;\

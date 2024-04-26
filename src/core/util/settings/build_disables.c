@@ -1,5 +1,9 @@
 // disables
 
+// boot disables
+// #define zox_disable_skybox
+// #define zox_disable_main_menu
+
 #define zox_disable_mouse_constraint
 
 // #define zoxel_catch_opengl_errors
@@ -39,7 +43,6 @@
 // === Disables ===
 
 // #define zox_disable_logs
-// #define zox_disable_skybox
 // #define zox_disable_terrain
 // #define zox_disable_characters3D_voxes
 

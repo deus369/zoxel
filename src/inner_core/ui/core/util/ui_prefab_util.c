@@ -1,18 +1,18 @@
-void add_ui_components(ecs_world_t *world, ecs_entity_t e) {
+void add_ui_components(ecs_world_t *world, const ecs_entity_t e) {
     zox_add_tag(e, Element)
     zox_add_tag(e, ElementRender)
     zox_prefab_set(e, RenderDisabled, { 0 })
     zox_prefab_set(e, PixelPosition, { int2_zero })
     zox_prefab_set(e, PixelSize, { int2_zero })
     zox_prefab_set(e, CanvasPosition, { int2_zero })
-    zox_prefab_set(e, Anchor, { { 0 } })
+    zox_prefab_set(e, Anchor, { float2_zero })
     zox_prefab_set(e, CanvasLink, { 0 })
     zox_prefab_set(e, Layer2D, { 0 })
     zox_prefab_set(e, MeshAlignment, { 0 })
     zox_prefab_set(e, InitializeEntityMesh, { 1 })
 }
 
-void add_ui_mesh_components(ecs_world_t *world, ecs_entity_t e) {
+void add_ui_mesh_components(ecs_world_t *world, const ecs_entity_t e) {
     zox_prefab_set(e, Brightness, { 1 })
     zox_prefab_set(e, Alpha, { 1 })
     if (headless) return;
@@ -29,14 +29,14 @@ void add_ui_mesh_components(ecs_world_t *world, ecs_entity_t e) {
     prefab_set_mesh_uvs(world, e, square_uvs, 4);
 }
 
-void add_components_ui_basic(ecs_world_t *world, ecs_entity_t e) {
+void add_components_ui_basic(ecs_world_t *world, const ecs_entity_t e) {
     add_transform2Ds(world, e);
     add_ui_components(world, e);
     add_ui_mesh_components(world, e);
     add_texture_non_generate(world, e, int2_zero);
 }
 
-void add_ui_plus_components(ecs_world_t *world, ecs_entity_t e) {
+void add_ui_plus_components(ecs_world_t *world, const ecs_entity_t e) {
     add_seed(world, e, 666);
     add_transform2Ds(world, e);
     add_ui_components(world, e);
@@ -44,24 +44,24 @@ void add_ui_plus_components(ecs_world_t *world, ecs_entity_t e) {
     add_texture(world, e, int2_zero, 0);
 }
 
-void add_ui_plus_components_invisible(ecs_world_t *world, ecs_entity_t e) {
+void add_ui_plus_components_invisible(ecs_world_t *world, const ecs_entity_t e) {
     add_seed(world, e, 666);
     add_transform2Ds(world, e);
     add_ui_components(world, e);
 }
 
-void add_clickable_components(ecs_world_t *world, ecs_entity_t e) {
+void add_clickable_components(ecs_world_t *world, const ecs_entity_t e) {
     zox_add_tag(e, Clickable)
     zox_prefab_set(e, ClickState, { 0 })
     zox_prefab_set(e, ClickEvent, { NULL })
 }
 
-void add_selectable_components(ecs_world_t *world, ecs_entity_t e) {
+void add_selectable_components(ecs_world_t *world, const ecs_entity_t e) {
     zox_add_tag(e, Selectable)
     zox_prefab_set(e, SelectState, { 0 })
 }
 
-void add_draggable_components(ecs_world_t *world, ecs_entity_t e) {
+void add_draggable_components(ecs_world_t *world, const ecs_entity_t e) {
     zox_add_tag(e, Dragable)
     zox_prefab_set(e, DraggableState, { 0 })
     zox_prefab_set(e, DraggingDelta, {{ 0, 0 }})

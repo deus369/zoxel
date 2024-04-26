@@ -68,19 +68,19 @@ if (e) {\
 
 // ecs_entity_t e = ecs_new_prefab(world, "");
 #define zox_prefab()\
-    ecs_entity_t e = ecs_new(world, 0);\
+    const ecs_entity_t e = ecs_new(world, 0);\
     zox_make_prefab(e)
 
 // ecs_add_id(world, e, EcsPrefab);
 // zox_add_tag(e, EcsPrefab)
 
-#define zox_instance(prefab) ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
+#define zox_instance(prefab) const ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
 
 #define zox_prefab_child(prefab)\
     zox_instance(prefab)\
     zox_make_prefab(e)
 
-#define zox_clone(prefab) ecs_entity_t e = ecs_clone(world, 0, prefab, 1);
+#define zox_clone(prefab) const ecs_entity_t e = ecs_clone(world, 0, prefab, 1);
 
 // checks if entity is valid
 #define zox_valid(e) ecs_is_valid(world, e)

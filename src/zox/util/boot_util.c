@@ -9,7 +9,7 @@ ecs_entity_t zoxel_main_menu;
 void spawn_players(ecs_world_t *world) {
     if (!headless) {
         spawn_connected_devices(world);
-        ecs_entity_t player = spawn_player(world);
+        const ecs_entity_t player = spawn_player(world);
         zox_set(player, CameraLink, { main_cameras[0] })
         add_player(local_game, player);
     }
@@ -22,12 +22,12 @@ void spawn_player_cameras(ecs_world_t *world) {
         screen_dimensions2.x /= 2;
         set_main_cameras(2);
     }
-    unsigned char camera_fov = get_camera_mode_fov(camera_mode);
+    const unsigned char camera_fov = get_camera_mode_fov(camera_mode);
     float3 camera_begin_position = float3_zero;
     float4 camera_spawn_rotation = quaternion_identity;
     get_camera_start_transform(&camera_begin_position, &camera_spawn_rotation);
     main_cameras[0] = spawn_base_camera(world, camera_begin_position, camera_spawn_rotation, screen_dimensions2, (int2) { }, camera_fov);
-    float4 rotationer = quaternion_from_euler( (float3) { 0, -main_camera_rotation_speed * degreesToRadians, 0 });
+    const float4 rotationer = quaternion_from_euler( (float3) { 0, -main_camera_rotation_speed * degreesToRadians, 0 });
     zox_prefab_set(main_cameras[0], EternalRotation, { rotationer })
     if (is_split_screen) {
         camera_begin_position.z += 0.4f;
@@ -39,40 +39,31 @@ void spawn_player_cameras(ecs_world_t *world) {
 
 // todo: spawn unique canvas per viewport, viewports per player
 ecs_entity_t spawn_default_ui(ecs_world_t *world, ecs_entity_t camera) {
-    ecs_entity_t canvas = spawn_canvas(world, screen_dimensions, camera);
+    const ecs_entity_t canvas = spawn_canvas(world, screen_dimensions, camera);
     spawn_canvas_overlay(world, canvas);
     spawn_font_style(world);
     return canvas;
 }
 
 void zox_spawn_main_menu(ecs_world_t *world, const char *game_name, ecs_entity_t canvas) {
+#ifdef zox_disable_main_menu
+    return;
+#endif
 #ifdef zoxel_game_ui
     if (zoxel_main_menu != 0 && ecs_is_alive(world, zoxel_main_menu)) {
-        zox_delete(zoxel_window)
+        zox_delete(zoxel_main_menu)
         zoxel_main_menu = 0;
         return;
     }
-    float2 main_menu_anchor = { 0.5f, 0.5f };
-    int2 main_menu_position = int2_zero;
+    const float2 main_menu_anchor = { 0.5f, 0.5f };
+    const int2 main_menu_position = int2_zero;
     zoxel_main_menu = spawn_main_menu(world, canvas, game_name, main_menu_position, main_menu_anchor);
-    int children_count = 1;
-#ifdef zoxel_debug_fps
-    children_count++;
-#endif
-#ifdef zoxel_debug_quads
-    children_count++;
-#endif
-    Children *children = zox_get_mut(canvas, Children);
-    add_to_Children(children, zoxel_main_menu);
 #ifdef zoxel_debug_fps
     fps_display = spawn_fps_display(world, canvas);
-    add_to_Children(children, fps_display);
 #endif
 #ifdef zoxel_debug_quads
     quads_label = spawn_quad_count_label(world, canvas);
-    add_to_Children(children, quads_label);
 #endif
-    zox_modified(canvas, Children)
     // disable until line2Ds reposition/scale based on canvas
 #ifdef zoxel_lines2D
     spawn_canvas_edge_lines(world, canvas);

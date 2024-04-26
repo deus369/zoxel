@@ -29,8 +29,6 @@ ecs_entity_t spawn_button(ecs_world_t *world, const ecs_entity_t parent, const e
     const ecs_entity_t zext = spawn_zext(world, prefab_zext, e, canvas, int2_zero, float2_half, int2_to_byte2(padding), text, font_size, 0, zext_layer, pixel_position_global, zext_size, render_disabled);
     Children *children = zox_get_mut(e, Children)
     add_to_Children(children, zext);
-    // resize_memory_component(Children, children, ecs_entity_t, 1)
-    // children->value[0] = zext;
     zox_modified(e, Children)
     return e;
 }

@@ -12,7 +12,11 @@ void EditorInputSystem(ecs_iter_t *it) {
                 // toggle uis
                 else if (keyboard->v.pressed_this_frame) toggle_ui(world, &game_debug_label, &spawn_game_debug_label);      // v : game debug ui
                 else if (keyboard->b.pressed_this_frame) toggle_ui(world, &quads_label, &spawn_quad_count_label);           // b : quad_ui
-                else if (keyboard->c.pressed_this_frame) spawn_zoxel_window(world);     // c : console
+                else if (keyboard->c.pressed_this_frame) toggle_ui(world, &frame_debugger_window, &spawn_frame_debugger);
+                /*else if (keyboard->n.pressed_this_frame) {
+                    zox_log(" + quads_label 2 QuadsCount? %s\n", zox_has(quads_label, QuadsCount) ? "yes" : "no")
+                }*/
+                //    spawn_frame_debugger(world);     // c : console
 #ifdef zox_test_hierarchy
                 else if (keyboard->f.pressed_this_frame) {
                     // ecs_defer_begin(world);

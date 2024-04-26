@@ -33,7 +33,6 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
     const unsigned char button_layer = layer + 1;
     const int header_margins = scaled_font_size / 3; // 12;
     const int header_height = (scaled_font_size + header_margins - 1);
-    cache_header_height = header_height;
     const int2 list_margins = (int2) { (int) (scaled_font_size * 0.8f), (int) (scaled_font_size * 0.8f) };
     const int2 button_padding = (int2) { (int) (scaled_font_size * 0.46f), (int) (scaled_font_size * 0.3f) };
     const int button_inner_margins = (int) (scaled_font_size * 0.5f);
@@ -41,20 +40,23 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
     if (is_scrollbar) pixel_size.x += (scrollbar_width / 2) + scrollbar_margins;
     anchor_element_position2D_with_header(&pixel_position, anchor, pixel_size, header_height);
     const int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
-    float2 position2D = get_element_position(pixel_position_global, canvas_size);
+    const float2 position2D = get_element_position(pixel_position_global, canvas_size);
+    int2 header_size = (int2) { pixel_size.x, header_height };
+    if (!is_header) header_size.y = 0;
     zox_instance(prefab)
     zox_name("ui_list")
     zox_set(e, ListUIMax, { max_elements })
     zox_set(e, ElementFontSize, { font_size })
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
+    set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor, header_size.y);
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, children_length)
     if (is_header) {
         // scaled_font_size + header_margins
-        const int2 header_size = (int2) { pixel_size.x, header_height };
         const int2 header_position = (int2) { 0, header_height / 2 };
         const float2 header_anchor = (float2) { 0.5f, 1.0f };
         children->value[0] = spawn_header(world, e, canvas, header_position, header_size, header_anchor, header_label, scaled_font_size, header_margins, header_layer, pixel_position_global, pixel_size, is_close_button, canvas_size);
+        zox_set(e, HeaderHeight, { header_size.y })
     }
     if (is_scrollbar) children->value[is_header] = spawn_scrollbar(world, e, canvas, (int2) { -(scrollbar_width / 2) - scrollbar_margins, 0 }, header_layer, pixel_position_global, pixel_size, scrollbar_width, scrollbar_margins, canvas_size, elements_count, max_elements);
     for (int i = 0; i < elements_count; i++) {
@@ -69,7 +71,6 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
 #ifdef zoxel_include_players
     if (!headless && elements_count > 0) select_first_button(world, children->value[list_start]);
 #endif
-    set_window_bounds_to_canvas(world, e, canvas_size, pixel_size);
     return e;
 }
 
