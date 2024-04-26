@@ -19,8 +19,6 @@ extern ecs_entity_t prefab_texture;
 extern ecs_entity_t local_realm;
 // realm -> world
 extern ecs_entity_t local_terrain;
-// realm -> players
-extern ecs_entity_t main_player;
 // realm -> players -> characters
 extern ecs_entity_t local_character3D;
 

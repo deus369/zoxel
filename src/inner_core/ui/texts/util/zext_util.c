@@ -44,9 +44,9 @@ unsigned char is_zext_updating(ecs_world_t *world, const Children *children) {
 }
 
 //! Dynamically updates zext by spawning/destroying zigels and updating remaining
-void spawn_zext_zigels(ecs_world_t *world, ecs_entity_t zext, ecs_entity_t canvas, Children *children, const ZextData *zextData, int font_size, unsigned char text_alignment, byte2 text_padding, unsigned char zext_layer, int2 parent_position, int2 parent_pixel_size, unsigned char render_disabled) {
+void spawn_zext_zigels(ecs_world_t *world, const ecs_entity_t zext, const ecs_entity_t canvas, Children *children, const ZextData *zextData, const int font_size, const unsigned char text_alignment, const byte2 text_padding, const unsigned char zext_layer, int2 parent_position, int2 parent_pixel_size, unsigned char render_disabled) {
     const float2 anchor = float2_half; // (float2) { 0.5f, 0.5f };
-    const int2 canvas_size = zox_get_value(main_canvas, PixelSize)
+    const int2 canvas_size = zox_get_value(canvas, PixelSize)
     unsigned char old_children_length = children->length;
     unsigned char new_children_length = zextData->length;
     unsigned char has_old_children = old_children_length > 0;

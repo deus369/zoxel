@@ -11,9 +11,8 @@ ecs_entity_t spawn_prefab_canvas_overlay(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_canvas_overlay(ecs_world_t *world, const ecs_entity_t canvas) {
+ecs_entity_t spawn_canvas_overlay(ecs_world_t *world, const ecs_entity_t canvas, const int2 canvas_size) {
     const ecs_entity_t parent = canvas;
-    const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const unsigned char layer = max_render_layers - 1;
     const int2 pixel_position = int2_zero;
     const float2 anchor = float2_half;

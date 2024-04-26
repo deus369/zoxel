@@ -65,9 +65,11 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         add_to_labels_stat_links(world, local_realm, labels, entities, 0);
 
         add_entity_to_labels(world, local_music, labels, entities, 0);
-        add_entity_to_labels(world, main_cameras[0], labels, entities, 0);
-        add_entity_to_labels(world, ui_cameras[0], labels, entities, 0);
-        add_entity_children_to_labels(world, main_player, labels, entities, 0);
+        for (int k = 0; k < main_cameras_count; k++) {
+            add_entity_to_labels(world, main_cameras[k], labels, entities, 0);
+            add_entity_to_labels(world, ui_cameras[k], labels, entities, 0);
+        }
+        // add_entity_children_to_labels(world, zox_players[0], labels, entities, 0);
         add_entity_children_to_labels(world, keyboard_entity, labels, entities, 0);
         add_entity_children_to_labels(world, mouse_entity, labels, entities, 0);
         add_entity_children_to_labels(world, gamepad_entity, labels, entities, 0);

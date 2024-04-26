@@ -19,6 +19,7 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     zox_prefab_set(e, NavigatorState, { 0 })
     zox_prefab_set(e, NavigatorTimer, { 0 })
     zox_prefab_set(e, ElementLinks, { 0, NULL })
+    zox_prefab_set(e, CanvasLink, { 0 })
     // Player -> Character/Camera
     zox_prefab_set(e, CharacterLink, { 0 })
     zox_prefab_set(e, CameraLink, { 0 })
@@ -38,6 +39,5 @@ ecs_entity_t spawn_player(ecs_world_t *world) {
     deviceLinks->value[2] = gamepad_entity;
     deviceLinks->value[3] = touchscreen_entity;
     zox_modified(e, DeviceLinks)
-    main_player = e;
     return e;
 }

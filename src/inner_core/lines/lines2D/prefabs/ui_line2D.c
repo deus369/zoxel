@@ -44,15 +44,13 @@ void resize_ui_line2D(ecs_world_t *world, ecs_entity_t e, int2 canvas_size) {
 }
 
 ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point_a, int2 point_b, float2 anchor_a, float2 anchor_b, color line_color, float thickness, double life_time, float2 parent_real_position, int2 parent_position, unsigned char layer) {
+    if (canvas == 0) canvas = zox_canvases[0];
+    const int2 canvas_size = zox_get_value(canvas, PixelSize)
     ecs_entity_t e;
     if (life_time == 0.0) e = ecs_new_w_pair(world, EcsIsA, prefab_ui_line2D);
     else e = ecs_new_w_pair(world, EcsIsA, prefab_temporary_ui_line2D);
     zox_name("ui_line2D")
-    int2 canvas_size = screen_dimensions;
-    if (canvas != 0) {
-        canvas_size = zox_get_value(canvas, PixelSize)
-        zox_set(e, CanvasLink, { canvas })
-    }
+    zox_set(e, CanvasLink, { canvas })
     const float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
     const float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
     const float4 line_anchor = (float4) { anchor_a.x, anchor_a.y, anchor_b.x, anchor_b.y };

@@ -1,5 +1,5 @@
 void player_end_game(ecs_world_t *world, ecs_entity_t player) {
-    ecs_entity_t canvas = main_canvas;
+    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     dispose_in_game_ui(world, player);
     zox_delete_and_set(pause_ui)
     const float2 main_menu_anchor = float2_half;

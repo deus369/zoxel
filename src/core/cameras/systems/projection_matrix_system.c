@@ -49,28 +49,28 @@ void ProjectionMatrixSystem(ecs_iter_t *it) {
 #ifdef zox_use_orthographic_projection
     zox_iter_world()
 #endif
-    const ScreenDimensions *screenDimensions = ecs_field(it, ScreenDimensions, 1);
-    const FieldOfView *fieldOfViews = ecs_field(it, FieldOfView, 2);
-    const CameraNearDistance *cameraNearDistances = ecs_field(it, CameraNearDistance, 3);
-    ProjectionMatrix *projectionMatrixs = ecs_field(it, ProjectionMatrix, 4);
-    // ecs_query_changed(it->query, &it, ScreenDimensions) || ecs_query_changed(q_read, &it, ScreenDimensions)
+    zox_field_in(ScreenDimensions, screenDimensionss, 1)
+    zox_field_in(FieldOfView, fieldOfViews, 2)
+    zox_field_in(CameraNearDistance, cameraNearDistances, 3)
+    zox_field_out(ProjectionMatrix, projectionMatrixs, 4)
     for (int i = 0; i < it->count; i++) {
-        const ScreenDimensions *screenDimensions2 = &screenDimensions[i];
-        int screen_width = screenDimensions2->value.x;
-        int screen_height = screenDimensions2->value.y;
+        zox_field_e()
+        zox_field_i_in(ScreenDimensions, screenDimensionss, screenDimensions)
+        const int screen_width = screenDimensions->value.x;
+        const int screen_height = screenDimensions->value.y;
         if(screen_height <= 0) continue;
-        const FieldOfView *fieldOfView = &fieldOfViews[i];
-        const CameraNearDistance *cameraNearDistance = &cameraNearDistances[i];
-        ProjectionMatrix *projectionMatrix = &projectionMatrixs[i];
-        float aspect_ratio = ((float) screen_width) / ((float) screen_height);
-        float zfar = camera_far_distance;
-        float znear = cameraNearDistance->value;
-        float ymax = znear * tanf(fieldOfView->value * M_PI / 360.0);
-        float xmax = ymax * aspect_ratio;
+        zox_field_i_in(FieldOfView, fieldOfViews, fieldOfView)
+        zox_field_i_in(CameraNearDistance, cameraNearDistances, cameraNearDistance)
+        zox_field_i_out(ProjectionMatrix, projectionMatrixs, projectionMatrix)
+        const float aspect_ratio = ((float) screen_width) / ((float) screen_height);
+        const float zfar = camera_far_distance;
+        const float znear = cameraNearDistance->value;
+        const float ymax = znear * tanf(fieldOfView->value * M_PI / 360.0);
+        const float xmax = ymax * aspect_ratio;
 #ifndef zox_use_orthographic_projection
         calculate_perspective_projection_matrix(&projectionMatrix->value, -xmax, xmax, -ymax, ymax, znear, zfar);
 #else
-        if (zox_has(it->entities[i], Camera2D)) {
+        if (zox_has(e, Camera2D)) {
             calculate_perspective_projection_matrix(&projectionMatrix->value, -xmax, xmax, -ymax, ymax, znear, zfar);
         } else {
             znear = 6;

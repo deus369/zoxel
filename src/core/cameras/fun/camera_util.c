@@ -1,10 +1,25 @@
-void resize_camera(ecs_world_t *world, ecs_entity_t e, int2 new_screen_dimensions) {
-    if (e && ecs_is_alive(world, e)) zox_set(e, ScreenDimensions, { new_screen_dimensions })
+int2 screen_to_canvas_size(const int2 screen_dimensions, const float4 screen_to_canvas) {
+    return (int2) { screen_to_canvas.x * screen_dimensions.x, screen_to_canvas.y * screen_dimensions. y };
 }
 
-void resize_cameras(int2 screen_size) {
-    for (int i = 0; i < main_cameras_count; i++) resize_camera(world, main_cameras[i], screen_size);
-    resize_camera(world, ui_cameras[0], screen_size);
+int2 screen_to_canvas_position(const int2 screen_dimensions, const float4 screen_to_canvas) {
+    return (int2) { screen_to_canvas.z * screen_dimensions.x, screen_to_canvas.w * screen_dimensions. y };
+}
+
+void resize_camera(ecs_world_t *world, const ecs_entity_t e, const int2 viewport_position, const int2 viewport_size) {
+    if (e && zox_alive(e)) zox_set(e, ScreenPosition, { viewport_position })
+    if (e && zox_alive(e)) zox_set(e, ScreenDimensions, { viewport_size })
+}
+
+void resize_cameras(const int2 screen_size) {
+    for (int i = 0; i < main_cameras_count; i++) {
+        if (!zox_valid(main_cameras[i])) continue;
+        const float4 screen_to_canvas = zox_get_value(main_cameras[i], ScreenToCanvas)
+        const int2 viewport_size = screen_to_canvas_size(screen_size, screen_to_canvas);
+        const int2 viewport_position = screen_to_canvas_position(screen_size, screen_to_canvas);
+        resize_camera(world, main_cameras[i], viewport_position, viewport_size);
+        resize_camera(world, ui_cameras[i], viewport_position, viewport_size);
+    }
 }
 
 void set_main_cameras(int new_count) {
@@ -69,7 +84,7 @@ void set_camera_mode(ecs_world_t *world, unsigned char new_camera_mode) {
     } else if (camera_mode == zox_camera_mode_topdown) {
         camera_follow_mode = zox_camera_follow_mode_follow_xz;
     }
-    for (int i = 0; i < max_cameras; i++) {
+    for (int i = 0; i < main_cameras_count; i++) {
         ecs_entity_t camera = main_cameras[i];
         if (camera == 0 || !zox_valid(camera)) continue;
         zox_set(camera, CameraMode, { camera_mode })

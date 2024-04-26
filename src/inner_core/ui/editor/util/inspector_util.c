@@ -11,9 +11,9 @@ void button_event_clicked_inspepctor(ecs_world_t *world, ecs_entity_t trigger_en
 }
 
 // like text, sets the list of text onto the ui element list
-void set_ui_list_inspector(ecs_world_t *world, Children *children, ecs_entity_t window_entity, int elements_visible, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int labels_count, const ClickEvent click_event, const unsigned char button_layer, const int2 button_padding, const int button_inner_margins, const int font_size, const unsigned char list_start, const int2 list_margins, const unsigned char is_scrollbar, const int scrollbar_width, const int scrollbar_margins, const float2 window_position, const int2 window_pixel_position_global, const int2 window_size, const int2 canvas_size) {
+void set_ui_list_inspector(ecs_world_t *world, Children *children, const ecs_entity_t window_entity, const int elements_visible, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, const int labels_count, const ClickEvent click_event, const unsigned char button_layer, const int2 button_padding, const int button_inner_margins, const int font_size, const unsigned char list_start, const int2 list_margins, const unsigned char is_scrollbar, const int scrollbar_width, const int scrollbar_margins, const float2 window_position, const int2 window_pixel_position_global, const int2 window_size, const int2 canvas_size) {
     // refresh elements
-    ecs_entity_t canvas = main_canvas;
+    const ecs_entity_t canvas = zox_get_value(window_entity, CanvasLink)
     const int childrens_length = list_start + labels_count;
     for (int j = list_start; j < children->length; j++) zox_delete(children->value[j]) // destroy previous
     resize_memory_component(Children, children, ecs_entity_t, childrens_length)
@@ -36,7 +36,7 @@ void add_entity_components(ecs_world_t *world, text_group_dynamic_array_d* label
 
 }
 
-void get_component_label(ecs_world_t *world, ecs_entity_t e, ecs_entity_t component, char *buffer) {
+void get_component_label(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t component, char *buffer) {
     const int size_of_buffer = inspector_component_size_buffer;
     int buffer_index = 0;
     ecs_id_t id = component & ECS_COMPONENT_MASK;
@@ -85,7 +85,7 @@ void get_component_label(ecs_world_t *world, ecs_entity_t e, ecs_entity_t compon
 }
 
 // sets inspector ui compponents, the inspector ui
-void set_inspector_element(ecs_world_t *world, ecs_entity_t window_entity, ecs_entity_t e) {
+void set_inspector_element(ecs_world_t *world, const ecs_entity_t window_entity, const ecs_entity_t e) {
     if (!ecs_is_alive(world, window_entity)) return;
     if (!ecs_is_alive(world, e)) return;
     // print_entity(world, e);

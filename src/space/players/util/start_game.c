@@ -6,7 +6,8 @@ unsigned char game_rule_attach_to_character = 1;
 unsigned char game_rule_attach_to_character = 0;
 #endif
 
-void player_start_game(ecs_world_t *world, ecs_entity_t player) {
+void player_start_game(ecs_world_t *world, const ecs_entity_t player) {
+    // destroy main menu
     disable_inputs_until_release(world, player, zox_device_mode_none);
     // ui control
     ecs_entity_t camera = zox_get_value(player, CameraLink) //  main_cameras[0];

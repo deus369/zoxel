@@ -1,4 +1,4 @@
-void add_player(ecs_entity_t e, ecs_entity_t player) {
+void add_player(ecs_entity_t e, const ecs_entity_t player) {
     PlayerLinks *playerLinks = zox_get_mut(e, PlayerLinks)
     // do a list check first (later)
     resize_memory_component(PlayerLinks, playerLinks, ecs_entity_t, playerLinks->length + 1)

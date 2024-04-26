@@ -26,7 +26,6 @@ unsigned char add_to##_##name(name *component, const ecs_entity_t data) {\
 \
 unsigned char remove_from##_##name(name *component, ecs_entity_t data) {\
     if (component->value) {\
-        unsigned char has_data = 0;\
         for (int i = 0; i < component->length; i++) {\
             if (component->value[i] == data) {\
                 /* shift list down, as we are removing i*/\

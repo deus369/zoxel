@@ -69,7 +69,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
     }
     zox_modified(e, Children)
 #ifdef zoxel_include_players
-    if (!headless && elements_count > 0) select_first_button(world, children->value[list_start]);
+    // if (!headless && elements_count > 0) select_first_button(world, children->value[list_start], zox_players[0]);
 #endif
     return e;
 }

@@ -1,7 +1,7 @@
 extern void opengl_delete_resources(ecs_world_t *world);
 extern void opengl_load_resources(ecs_world_t *world);
 extern void engine_end(); // engine
-extern void resize_cameras(int2 screen_size); // cameras, make camera just resize on viewport resize instead of extern
+extern void resize_cameras(const int2 screen_size); // cameras, make camera just resize on viewport resize instead of extern
 
 void print_sdl() {
 #ifdef zox_print_sdl

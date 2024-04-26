@@ -16,7 +16,7 @@ ecs_entity_t spawn_prefab_virtual_joystick_pointer(ecs_world_t *world) {
 
 ecs_entity_t spawn_virtual_joystick_pointer(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t canvas, unsigned char layer, int2 pixel_position, float2 anchor, int2 parent_pixel_position_global, int2 parent_pixel_size, int2 canvas_size) {
     int2 pixel_size = virtual_joystick_pointer_size;
-    fix_for_screen_size(&pixel_size, screen_dimensions);
+    fix_for_screen_size(&pixel_size, screen_dimensions); // todo: use viewport_size
     zox_instance(prefab_virtual_joystick_pointer)
     zox_name("virtual_joystick_pointer")
     int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);

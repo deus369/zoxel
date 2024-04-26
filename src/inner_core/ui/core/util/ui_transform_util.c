@@ -5,10 +5,10 @@ float2 get_ui_real_position2D(ecs_world_t *world, const ecs_entity_t e, const ec
     const float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
     const float aspect_ratio = canvasSizef.x / canvasSizef.y;
     float2 position2D;
-    if (parent == main_canvas) {
+    if (zox_has(parent, Canvas)) {
         position2D = (float2) { ((local_pixel_position.x  / canvasSizef.x) - 0.5f + anchor.x) * aspect_ratio, ((local_pixel_position.y  / canvasSizef.y) - 0.5f + anchor.y) };
 #ifdef debug_ui_positioning
-        zox_log("-> (main_canvas) Position2D : %fx%f\n", position2D.x, position2D.y)
+        zox_log("-> Canvas Position2D : %fx%f\n", position2D.x, position2D.y)
 #endif
     } else {
         const Position2D *parent_position2D = zox_get(parent, Position2D)
