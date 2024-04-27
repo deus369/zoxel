@@ -1,6 +1,4 @@
 ecs_entity_t prefab_statbar3D;
-ecs_entity_t prefab_statbar3D_front;
-const float2 statbar_front_mesh_scale = (float2) { 0.17f, 0.028f };
 
 int get_statbars_count(ecs_world_t *world) {
     return zox_count_entities(world, ecs_id(Statbar));
@@ -17,29 +15,6 @@ ecs_entity_t spawn_prefab_elementbar3D(ecs_world_t *world) {
     zox_prefab_set(e, ElementBarSize, { float2_zero })
     zox_prefab_set(e, Children, { 0, NULL })
     prefab_statbar3D = e;
-    return e;
-}
-
-ecs_entity_t spawn_prefab_elementbar3D_front(ecs_world_t *world) {
-    zox_prefab_child(prefab_element_world_child)
-    zox_prefab_name("prefab_statbar3D_front")
-    zox_add_tag(e, FillTexture)
-    zox_prefab_set(e, Color, { front_bar_color })
-    zox_prefab_set(e, PixelSize, { int2_one })
-    zox_prefab_set(e, TextureSize, { int2_one })
-    prefab_set_mesh3D_vertices(world, e, square_vertices, 4, statbar_front_mesh_scale);
-    prefab_statbar3D_front = e;
-    return e;
-}
-
-// used atm for statbar front bar
-ecs_entity_t spawn_elementbar3D_front(ecs_world_t *world, const ecs_entity_t ui_holder, const ecs_entity_t parent, const float3 offset) {
-    zox_instance(prefab_statbar3D_front)
-    zox_name("elementbar3D_front")
-    zox_set(e, CameraLink, { main_cameras[0] })
-    zox_set(e, CanvasLink, { main_canvas })
-    zox_set(e, ParentLink, { parent })
-    zox_set(e, LocalPosition3D, { offset })
     return e;
 }
 

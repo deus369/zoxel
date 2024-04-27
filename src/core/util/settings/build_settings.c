@@ -97,7 +97,6 @@
 // #define zoxel_time_main_loop_cutoff 0.001
 // #define zoxel_time_always
 // #define zoxel_time_zext_update_system
-// #define zoxel_time_render_loop
 
 // -- debugs --
 // #define zoxel_debug_vox_read

@@ -14,7 +14,7 @@ char* convert_zext_to_text(const unsigned char *zext, unsigned char length) {
 }
 
 
-void prefab_set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char label[]) {
+/*void prefab_set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char label[]) {
 #ifdef zox_entity_names
     char* entity_name = get_entity_string(label, e);
     int length = strlen(entity_name);
@@ -31,7 +31,7 @@ void set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char label[]) {
     // zox_log("   + [%s]\n", entity_name)
     free(entity_name);
 #endif
-}
+}*/
 
 /*void convert_string_zox_name(ZoxName *component, const char* text) {
     unsigned char text_length = strlen(text);

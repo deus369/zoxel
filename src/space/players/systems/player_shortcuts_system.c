@@ -57,13 +57,14 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
     zox_iter_world()
     const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
     for (int i = 0; i < it->count; i++) {
+        zox_field_e()
+        const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
         const DeviceLinks *deviceLinks = &deviceLinkss[i];
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device_entity = deviceLinks->value[j];
             if (zox_has(device_entity, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
-                if (keyboard->x.pressed_this_frame) toggle_ui(world, &fps_display, &spawn_fps_display);
-                else if (keyboard->l.pressed_this_frame) {
+                if (keyboard->l.pressed_this_frame) {
                     const ecs_entity_t character = zox_get_value(it->entities[i], CharacterLink)
                     if (zox_has(character, Aura)) {
                         zox_remove_tag(character, Aura)

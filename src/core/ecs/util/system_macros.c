@@ -1,6 +1,8 @@
 //! A bunch of flecs system macros
-
-#define main_thread_pipeline EcsOnStore
+// todo: make all use of these pipeline tags, zox_ ones because it
+//  > makes it easier to organize
+#define main_thread_pipeline EcsPreStore // EcsOnStore
+#define zox_pipelines_pre_render EcsPreStore
 
 /**
 Chose one pipeline tag for each type of system.
@@ -114,7 +116,6 @@ Chose one pipeline tag for each type of system.
     zox_system_ctx(system, EcsPostUpdate, generateTextureQuery, [none] texture_tag, [out] TextureDirty, [out] TextureData, [in] TextureSize, [out] GenerateTexture, __VA_ARGS__)\
 }
 
-// EcsOnStore
 #define zox_define_reset_system(system_name, component_name) zox_system(system_name, EcsPreStore, [out] component_name)
 
 #define zox_reset_system(system_name, component_name)\

@@ -84,7 +84,7 @@ zox_define_memory_component(SoundData)
 zox_system(SoundGenerateSystem, EcsOnUpdate, [none] Sound, [out] GenerateSound, [out] SoundData, [out] SoundDirty, [in] SoundLength, [in] SoundFrequency, [in] SoundVolume, [in] InstrumentType)
 #ifdef SDL_MIXER
     zox_system(SoundUpdateSystem, EcsPostUpdate, [none] Sound, [in] SoundData, [out] SoundDirty, [out] SDLSound)
-    zox_system(PlaySoundSystem, EcsPreStore, [none] Sound, [out] TriggerSound, [in] SoundLength, [in] SDLSound)
+    zox_system(PlaySoundSystem, zox_pipelines_pre_render, [none] Sound, [out] TriggerSound, [in] SoundLength, [in] SDLSound)
 #endif
 zox_system_1(SoundDebugSystem, main_thread_pipeline, [none] Sound, [in] SoundData, [in] SoundDirty)
 zox_system_1(ClickSoundSystem, main_thread_pipeline, [in] ClickState, [none] ClickMakeSound)

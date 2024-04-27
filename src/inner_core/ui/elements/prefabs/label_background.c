@@ -26,15 +26,3 @@ ecs_entity_t spawn_label_background(ecs_world_t *world, ecs_entity_t prefab, ecs
     zox_name("label_background")
     return e;
 }
-
-/*zox_logg("   > canvas label\n")
-zox_log("       > pixel_position [%ix%i]\n", pixel_position.x, pixel_position.y)
-zox_log("       > pixel_size [%ix%i]\n", pixel_size.x, pixel_size.y)
-zox_log("       > pixel_position_global [%ix%i]\n", pixel_position_global.x, pixel_position_global.y)
-zox_log("       > position2D [%fx%f]\n", position2D.x, position2D.y)
-zox_log("       > canvas_size [%ix%i]\n", canvas_size.x, canvas_size.y)*/
-/*zox_log("   > label_background %lu\n", e)
-zox_log("       > pix pos [%ix%i]\n", pixel_position.x, pixel_position.y)
-zox_log("       > anchor [%fx%f]\n", anchor.x, anchor.y)
-zox_log("       > pix pos global [%ix%i]\n", pixel_position_global.x, pixel_position_global.y)
-zox_log("       > position2D [%fx%f]\n", position2D.x, position2D.y)*/

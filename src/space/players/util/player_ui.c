@@ -54,7 +54,7 @@ ecs_entity_t spawn_actionbar(ecs_world_t *world, const ecs_entity_t canvas, cons
 
 ecs_entity_t spawn_healthbar_on_canvas(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t parent, const ecs_entity_t player, const ecs_entity_2 character_group) {
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    const float2 elementbar2D_anchor = float2_top_left; // float2_half;
+    const float2 elementbar2D_anchor = float2_top_left;
     const int2 healthbar_size = (int2) { 12, 8 };
     const ecs_entity_t healthbar_2D = spawn_elementbar2D(world, player, canvas, parent, int2_zero, healthbar_size, elementbar2D_anchor, "-----", 18, 0, int2_half(canvas_size), canvas_size, canvas_size, 0);
     // const ecs_entity_t character = zox_get_value(player, CharacterLink)
@@ -74,8 +74,7 @@ void spawn_in_game_ui(ecs_world_t *world, const ecs_entity_t player, const ecs_e
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     if (is_touch) spawn_in_game_ui_touch(world, canvas);
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    const ecs_entity_t game_ui  = spawn_element_invisible_on_canvas(world, canvas, int2_zero, canvas_size, float2_half); // int2_half(canvas_size)
-    // const ecs_entity_t game_ui = spawn_element_invisible_on_canvas(world, canvas, int2_zero, canvas_size, float2_zero);
+    const ecs_entity_t game_ui = spawn_element_invisible_on_canvas(world, canvas, int2_zero, canvas_size, float2_half);
     zox_add_tag(game_ui, MenuInGame)
     zox_prefab_set(game_ui, AnchorSize, { (float2) { 1, 1 }})
     zox_prefab_set(game_ui, Children, { 0, NULL })

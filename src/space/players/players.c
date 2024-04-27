@@ -61,7 +61,7 @@ zox_system(PlayerMoreShortcutsSystem, EcsOnUpdate, [in] Keyboard)
 zox_system(PlayerShortcutsSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks)
 zox_import_module(Players2D)
 zox_import_module(Players3D)
-zox_system_1(DeviceModeResponseSystem, EcsPreStore, [in] DeviceMode, [in] DeviceModeDirty) // has to update before DeviceModeDirtySystem
+zox_system_1(DeviceModeResponseSystem, zox_pipelines_pre_render, [in] DeviceMode, [in] DeviceModeDirty) // has to update before DeviceModeDirtySystem
 zox_system(PlayerToggleCameraSystem, EcsOnUpdate, [none] Player, [in] DeviceLinks, [in] CharacterLink)
 zox_system_1(PlayerShortcutsSingleSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks)
 zox_system_1(PlayerPauseSystem, main_thread_pipeline, [none] Player, [in] DeviceLinks)

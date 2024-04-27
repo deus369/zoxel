@@ -1,24 +1,3 @@
-void on_element_pixels_resized(ecs_world_t *world, ecs_entity_t e, const int2 size, unsigned char mesh_alignment) {
-    const CanvasLink *canvasLink = zox_get(e, CanvasLink)
-    PixelSize *pixelSize = zox_get_mut(e, PixelSize)
-    TextureSize *textureSize = zox_get_mut(e, TextureSize)
-    GenerateTexture *generateTexture = zox_get_mut(e, GenerateTexture)
-    MeshVertices2D *meshVertices2D = zox_get_mut(e, MeshVertices2D)
-    MeshDirty *meshDirty = zox_get_mut(e, MeshDirty)
-    const float2 canvas_size = int2_to_float2(zox_gett_value(canvasLink->value, PixelSize));
-    const float2 scale2D = (float2) { size.x / canvas_size.y, size.y / canvas_size.y };
-    pixelSize->value = size;
-    textureSize->value = size;
-    set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(mesh_alignment), 4, scale2D);
-    generateTexture->value = 1;
-    meshDirty->value = 1;
-    zox_modified(e, PixelSize)
-    zox_modified(e, TextureSize)
-    zox_modified(e, GenerateTexture)
-    zox_modified(e, MeshVertices2D)
-    zox_modified(e, MeshDirty)
-}
-
 void ZextParentBackgroundSystem(ecs_iter_t *it) {
     zox_iter_world()
     zox_field_in(ZextDirty, zextDirtys, 2)

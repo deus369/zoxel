@@ -2,9 +2,7 @@
 #define zoxel_ui_elements
 
 // settings
-const color back_bar_color = (color) { 66, 12, 12, 255 };
-const color back_bar_color_3D_start = (color) { 66, 12, 12, 0 };
-const color front_bar_color = (color) { 188, 25, 25, 255 };
+#include "settings/settings.c"
 // components
 zox_declare_tag(Label)            // UI extras, make extra ui module?
 zox_declare_tag(Button)           //! A generic ui button for clicking.
@@ -24,7 +22,9 @@ zox_component_byte(ListUIMax)
 #include "prefabs/window.c"
 #include "prefabs/scrollbar.c"
 #include "prefabs/ui_list.c"
+#include "prefabs/elementbar2D_front.c"
 #include "prefabs/elementbar2D.c"
+#include "prefabs/elementbar3D_front.c"
 #include "prefabs/elementbar3D.c"
 // functions
 #include "fun/button_event_close_window.c"

@@ -24,6 +24,15 @@ void on_child_added(ecs_world_t *world, const ecs_entity_t parent, const ecs_ent
     if (add_to_Children(children, child)) zox_modified(parent, Children)
 }
 
+void zox_debug_children(ecs_world_t *world, const ecs_entity_t parent) {
+    Children *children = zox_get_mut(parent, Children)
+    zox_log(" > children of [%s]\n", zox_get_name(parent))
+    for (int i = 0; i < children->length; i++) {
+        const ecs_entity_t child = children->value[i];
+        zox_log("       - child [%s]\n", zox_get_name(child))
+    }
+}
+
 zox_begin_module(Hierarchys)
 zox_define_component_byte(ChildIndex)
 zox_define_entities_component(Children)

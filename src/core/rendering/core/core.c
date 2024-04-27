@@ -2,6 +2,7 @@
 #define zoxel_rendering_core
 
 // settings
+#define zox_pipelines_rendering EcsOnStore
 // float3 viewport_clear_color = { 125 / 255.0f, 125 / 255.0f, 125 / 255.0f };
 const float3 viewport_clear_color = (float3) { 0.3f, 0.1f, 0.1f };
 // zoxel_component_includes
@@ -81,6 +82,8 @@ zox_system_1(UvsGPULinkRestoreSystem, 0, [out] UvsGPULink)
 zox_system_1(ColorsGPULinkRestoreSystem, 0, [out] ColorsGPULink)
 zox_system_1(MaterialRestoreSystem, 0, [in] ShaderLink, [out] MaterialGPULink)
 zox_system_1(TextureRestoreSystem, 0, [out] TextureGPULink, [out] TextureDirty)
+zox_system_1(CameraRender3DSystem, zox_pipelines_rendering, [in] cameras.ViewMatrix, [in] cameras.FieldOfView, [in] cameras.ScreenPosition, [in] cameras.ScreenDimensions, [none] !cameras.CameraUI)
+zox_system_1(CameraRenderUISystem, zox_pipelines_rendering, [in] cameras.ViewMatrix, [in] cameras.FieldOfView, [in] cameras.ScreenPosition, [in] cameras.ScreenDimensions, [none] cameras.CameraUI)
 zoxel_end_module(RenderingCore)
 
 #endif

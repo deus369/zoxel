@@ -75,9 +75,9 @@ zox_import_module(Networking)
 #endif
 zox_import_module(Inputs)
 if (!headless) zox_import_module(Apps) // sdl
+zox_import_module(Cameras)
 zox_import_module(Rendering)
 zox_import_module(Sounds)
-zox_import_module(Cameras)
 zox_import_module(Games)
 zoxel_end_module(Core)
 

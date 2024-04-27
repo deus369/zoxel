@@ -46,8 +46,4 @@ zox_system_1(Mesh2DUvsUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] 
 zox_system_1(Mesh2DUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs)
 zoxel_end_module(RenderingBasics2D)
 
-// add back instanced 2D
-//zox_system_1(InstanceRender2DSystem, 0, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink)
-// zox_system_1(Mesh2DInstancedUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshGPULink, [in] MaterialInstancedGPULink, [none] !MeshUVs, [none] !MeshColorRGBs)
-
 #endif

@@ -9,44 +9,46 @@ void ElementBarSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(Children, childrens, children)
         if (!children->length) continue;
-        ecs_entity_t dirty_bar = children->value[0];
-        const InitializeEntityMesh *initializeEntityMesh = zox_get(dirty_bar, InitializeEntityMesh)
-        if (initializeEntityMesh->value) continue;
+        const ecs_entity_t front_bar = children->value[0];
+        const InitializeEntityMesh *initializeEntityMesh = zox_get(front_bar, InitializeEntityMesh)
+        if (initializeEntityMesh->value) continue; // removing this breaks it?!?!
         zox_field_e()
         if (!can_render_ui(world, e)) continue; // disabled for now causes issues
-        MeshDirty *meshDirty = zox_get_mut(dirty_bar, MeshDirty)
-        if (meshDirty->value) continue;
         zox_field_i_in(ElementBar, elementBars, elementBar)
         zox_field_i_in(ElementBarSize, elementBarSizes, elementBarSize)
         const float percentage = elementBar->value;
         const float2 scale = elementBarSize->value;
         const float left_offset = - scale.x * (1.0f - percentage) * 0.5f;
-        if (zox_has(dirty_bar, MeshVertices)) {
+        if (zox_has(front_bar, MeshVertices)) {
+            // todo: seperate this into a seperate system for 3D frontbars
+            MeshDirty *meshDirty = zox_get_mut(front_bar, MeshDirty)
+            if (meshDirty->value) continue;
             // for our elementbar3D
-            const MeshVertices *meshVertices = zox_get(dirty_bar, MeshVertices)
+            const MeshVertices *meshVertices = zox_get(front_bar, MeshVertices)
             const float test_var = (left_offset + square_vertices[2].x * scale.x * percentage);   // test right vert
             if (test_var == meshVertices->value[2].x) continue;
-            MeshVertices *meshVertices2 = zox_get_mut(dirty_bar, MeshVertices)
+            MeshVertices *meshVertices2 = zox_get_mut(front_bar, MeshVertices)
             for (unsigned char j = 0; j < 4; j++) meshVertices2->value[j] = (float3) { left_offset + square_vertices[j].x * scale.x * percentage, square_vertices[j].y * scale.y, 0 };
             meshDirty->value = 1;
-            zox_modified(dirty_bar, MeshDirty)
-            zox_modified(dirty_bar, MeshVertices)
-        } else if (zox_has(dirty_bar, MeshVertices2D)) {
+            zox_modified(front_bar, MeshDirty)
+            zox_modified(front_bar, MeshVertices)
+        } else if (zox_has(front_bar, MeshVertices2D)) {
+            // todo: seperate this into a seperate system
             // for our elementbar2D
-            const PixelSize *pixelSize = zox_get(it->entities[i], PixelSize)
-            PixelSize *dirty_pixel_size = zox_get_mut(dirty_bar, PixelSize)
-            PixelPosition *dirty_pixel_position = zox_get_mut(dirty_bar, PixelPosition)
-            dirty_pixel_size->value.x = (int) (pixelSize->value.x * percentage);
-            dirty_pixel_position->value.x = - pixelSize->value.x / 2 + dirty_pixel_size->value.x / 2;
-            zox_modified(dirty_bar, PixelSize)
-            zox_modified(dirty_bar, PixelPosition)
-            on_element_pixels_resized(world, dirty_bar, dirty_pixel_size->value, 0);
-            const ecs_entity_t dirty_text = children->value[1];
-            char text[16];
-            snprintf(text, 16, "health %i%%", (int) (percentage * 100)); // sizeof(text)
-            if (set_entity_with_text(world, dirty_text, text)) {
-                // zox_log(" [%lu] health set to: [%s]\n", e, text)
-            }
+            if (children->length >= 2) {
+                const ecs_entity_t bar_text = children->value[1];
+                char text[16];
+                snprintf(text, 16, "health %i%%", (int) (percentage * 100));
+                set_entity_with_text(world, bar_text, text);
+            } else continue;
+            const PixelSize *pixelSize = zox_get(e, PixelSize)
+            int2 front_pixel_size = zox_get_value(front_bar, PixelSize)
+            PixelPosition *front_pixel_position = zox_get_mut(front_bar, PixelPosition)
+            front_pixel_size.x = (int) (pixelSize->value.x * percentage);
+            front_pixel_position->value.x = - pixelSize->value.x / 2 + front_pixel_size.x / 2;
+            zox_modified(front_bar, PixelPosition)
+            on_element_pixels_resized(world, front_bar, front_pixel_size, 0);
+            // zox_log("set front-bar2D to size: %ix%i\n", front_pixel_size.x, front_pixel_position->value.x)
         }
     }
 } zox_declare_system(ElementBarSystem)

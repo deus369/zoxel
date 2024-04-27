@@ -8,12 +8,12 @@ void delete_virtual_joystick(ecs_world_t *world) {
     }
 }
 
-void handle_touch_drag(ecs_world_t *world, ecs_entity_t zevice_entity, ecs_entity_t linked_virtual_joystick, unsigned char is_playing) {
+void handle_touch_drag(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t zevice_entity, const ecs_entity_t linked_virtual_joystick, const unsigned char is_playing) {
     const ZevicePointer *zevicePointer = zox_get(zevice_entity, ZevicePointer)
     if (devices_get_pressed_this_frame(zevicePointer->value)) {
         delete_virtual_joystick(world);
         const ZevicePointerPosition *zevicePointerPosition = zox_get(zevice_entity, ZevicePointerPosition)
-        if (is_playing) spawn_virtual_joystick(world, zevicePointerPosition->value);
+        if (is_playing) spawn_virtual_joystick(world, canvas, zevicePointerPosition->value);
     } else if (devices_get_released_this_frame(zevicePointer->value)) {
         ZeviceStick *zeviceStick = zox_get_mut(linked_virtual_joystick, ZeviceStick)
         zeviceStick->value = float2_zero;
@@ -53,6 +53,8 @@ void VirtualJoystickSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const RaycasterResult *raycasterResult = &raycasterResults[i];
         if (raycasterResult->value) continue;   // if raycasted ui, don't process
+        zox_field_e()
+        const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
         const DeviceLinks *deviceLinks = &deviceLinkss[i];
         const DeviceMode *deviceMode = &deviceModes[i];
         for (int j = 0; j < deviceLinks->length; j++) {
@@ -64,7 +66,7 @@ void VirtualJoystickSystem(ecs_iter_t *it) {
                     for (int k = 0; k < zevices->length; k++) {
                         ecs_entity_t zevice_entity = zevices->value[k];
                         if (zox_has(zevice_entity, ZevicePointer)) {
-                            handle_touch_drag(world, zevice_entity, virtual_joystick, is_playing);
+                            handle_touch_drag(world, canvas, zevice_entity, virtual_joystick, is_playing);
                             break;
                         }
                     }
@@ -77,7 +79,7 @@ void VirtualJoystickSystem(ecs_iter_t *it) {
                     if (mouse->left.pressed_this_frame) {
                         delete_virtual_joystick(world);
                         zox_log(" + spawning virtual joystick ui at %ix%i\n", mouse->position.x, mouse->position.y)
-                        if (is_playing) spawn_virtual_joystick(world, mouse->position);
+                        if (is_playing) spawn_virtual_joystick(world, canvas, mouse->position);
                     } else if (mouse->left.released_this_frame) {
                         delete_virtual_joystick(world);
                     } else if (mouse->left.is_pressed && virtual_joystick != 0) {

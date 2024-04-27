@@ -2,8 +2,8 @@
 #define zoxel_texts
 
 // zoxel_settings
-#define zox_pipelines_zext_textures EcsOnUpdate // EcsOnUpdate | EcsPostUpdate
-#define zox_pipelines_zext_backgrounds EcsPreStore // EcsPostUpdate
+#define zox_pipelines_zext_backgrounds EcsPostUpdate
+#define zox_pipelines_zext_textures EcsOnUpdate
 const double zext_animation_speed = 10.0;
 // zoxel_component_defines
 zox_declare_tag(FontStyle)
@@ -23,6 +23,8 @@ zox_memory_component(ZextData, unsigned char)   // zigel indexes
 // zoxel_util_includes
 #include "util/default_font.c"
 #include "util/zigel_util.c"
+#include "util/resize_util.c"
+#include "util/font_util.c"
 // zoxel_prefab_includes
 #include "prefabs/font.c"
 #include "prefabs/font_style.c"
@@ -74,8 +76,8 @@ zox_filter(fonts, [none] FontTexture, [out] GenerateTexture)
 zox_system(AnimateTextSystem, zox_pipelines_zext_textures, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
 zox_system_ctx(FontTextureSystem, zox_pipelines_zext_textures, fonts, [none] FontTexture, [out] TextureDirty, [out] TextureData, [in] TextureSize, [out] GenerateTexture, [in] ZigelIndex, [in] Color)
 zox_system_ctx_1(ZextUpdateSystem, main_thread_pipeline, zexts, [none] Zext, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] CanvasPosition, [in] PixelSize, [in] MeshAlignment, [in] RenderDisabled, [out] ZextDirty, [out] Children)
-if (!headless) zox_system(ZextBackgroundSystem, zox_pipelines_zext_backgrounds, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] MeshAlignment, [in] CanvasLink, [out] PixelSize, [out] TextureSize, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshDirty)
 if (!headless) zox_system(ZextParentBackgroundSystem, zox_pipelines_zext_backgrounds, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] MeshAlignment, [in] CanvasLink, [in] ParentLink)
+if (!headless) zox_system(ZextBackgroundSystem, zox_pipelines_zext_backgrounds, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] MeshAlignment, [in] CanvasLink, [out] PixelSize, [out] TextureSize, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshDirty, [in] InitializeEntityMesh)
 zoxel_end_module(Texts)
 
 #endif

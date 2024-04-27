@@ -38,11 +38,11 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         zox_canvases[i] = canvas;
         zox_set(zox_players[i], CanvasLink, { canvas })
         if (i == 0) main_canvas = canvas;
+#ifdef zoxel_start_with_debug_ui
+        toggle_ui(world, canvas, &game_debug_label, &spawn_game_debug_label);
+#endif
     }
     // debug/testing
-#ifdef zoxel_start_with_debug_ui
-    toggle_ui(world, &game_debug_label, &spawn_game_debug_label);
-#endif
 #ifdef zox_test_voxel_mesh
     test_animating_chunks(world, camera_begin_position);
 #endif

@@ -1,10 +1,11 @@
 ecs_entity_t prefab_frame_debugger_ui;
-ecs_entity_t frame_debugger_ui;
-ecs_entity_t frame_debugger_window = 0;
+// ecs_entity_t frame_debugger_ui;
+// ecs_entity_t frame_debugger_window = 0;
 
 ecs_entity_t spawn_prefab_frame_debugger_ui(ecs_world_t *world) {
     zox_prefab_child(prefab_window)
     zox_prefab_name("prefab_frame_debugger_ui")
+    zox_add_tag(e, FrameDebuggerWindow)
     prefab_frame_debugger_ui = e;
     return e;
 }
@@ -52,11 +53,11 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const char *header_labe
     return e;
 }
 
-ecs_entity_t spawn_frame_debugger(ecs_world_t *world, const ecs_entity_t parent) {
+ecs_entity_t spawn_frame_debugger(ecs_world_t *world, const ecs_entity_t canvas) {
     const unsigned char layer = 3;
     const int2 test_window_size = { 380, 380 };
     const int2 test_window_position = { - test_window_size.x / 2, test_window_size.y / 2 };
     const float2 test_window_anchor = { 1.0f, 0.0f };
-    zox_log(" > showing frame_debugger_window\n")
-    return spawn_frame_debugger_ui(world, "debugger", test_window_position, test_window_size, test_window_anchor, parent, layer);
+    // zox_log(" > showing frame_debugger_window\n")
+    return spawn_frame_debugger_ui(world, "debugger", test_window_position, test_window_size, test_window_anchor, canvas, layer);
 }

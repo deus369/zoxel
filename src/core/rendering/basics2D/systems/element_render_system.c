@@ -16,11 +16,11 @@ void ElementRenderSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(Layer2D, layer2Ds, layer2D)
         if (layer2D->value != renderer_layer) continue;
-        zox_field_i_in(MeshDirty, meshDirtys, meshDirty)
-        if (meshDirty->value) continue;
         zox_field_i_in(RenderDisabled, renderDisableds, renderDisabled)
         if (renderDisabled->value) continue;
         zox_field_e()
+        zox_field_i_in(MeshDirty, meshDirtys, meshDirty)
+        if (meshDirty->value) continue;
         if (get_root_canvas_camera(world, e) != renderer_camera) continue;
         zox_field_i_in(Position2D, position2Ds, position2D)
         zox_field_i_in(Rotation2D, rotation2Ds, rotation2D)

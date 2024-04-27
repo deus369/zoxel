@@ -3,19 +3,19 @@ void FpsDisplaySystem(ecs_iter_t *it) {
     const unsigned char number_0_start = 60;
     const double delta_time = zox_delta_time;
     unsigned char system_updated = 0;
-    ZextData *zextDatas = ecs_field(it, ZextData, 2);
-    ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 3);
-    FPSDisplayTicker *fpsDisplayTickers = ecs_field(it, FPSDisplayTicker, 4);
+    zox_field_out(ZextData, zextDatas, 2)
+    zox_field_out(ZextDirty, zextDirtys, 3)
+    zox_field_out(FPSDisplayTicker, fpsDisplayTickers, 4)
     for (int i = 0; i < it->count; i++) {
-        ZextDirty *zextDirty = &zextDirtys[i];
+        zox_field_i_out(ZextDirty, zextDirtys, zextDirty)
         if (zextDirty->value) continue;
-        FPSDisplayTicker *fpsDisplayTicker = &fpsDisplayTickers[i];
+        zox_field_i_out(FPSDisplayTicker, fpsDisplayTickers, fpsDisplayTicker)
         fpsDisplayTicker->value -= delta_time;
         if (fpsDisplayTicker->value <= 0) {
             system_updated = 1;
             fpsDisplayTicker->value += frame_rate_update_speed;
             if (fpsDisplayTicker->value <= -frame_rate_update_speed) fpsDisplayTicker->value = 0;
-            ZextData *zextData = &zextDatas[i];
+            zox_field_i_out(ZextData, zextDatas, zextData)
             resize_memory_component(ZextData, zextData, unsigned char, 3)
             if (frames_per_second < 10) {
                 zextData->value[0] = number_0_start;

@@ -1,8 +1,8 @@
 // a simple alpha animation
 
 void FadeoutSystem(ecs_iter_t *it) {
-    float delay = 3.0f;
-    float animation_length = 3.0f;
+    float delay = 1.0f;
+    float animation_length = 2.0f;
     double time = zox_current_time;
     const AnimationState *animationTypes = ecs_field(it, AnimationState, 1);
     const AnimationStart *animationStarts = ecs_field(it, AnimationStart, 2);
