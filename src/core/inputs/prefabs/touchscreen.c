@@ -31,7 +31,7 @@ unsigned char zevice_pointer_has_input(const ZevicePointer *zevicePointer) {
     return devices_get_is_pressed(zevicePointer->value) || devices_get_pressed_this_frame(zevicePointer->value);
 }
 
-unsigned char touchscreen_is_any_input(ecs_world_t *world, ecs_entity_t touchscreen) {
+unsigned char touchscreen_is_any_input(ecs_world_t *world, const ecs_entity_t touchscreen) {
     if (!touchscreen || !ecs_is_alive(world, touchscreen)) return 0;
     const Children *children = zox_get(touchscreen, Children)
     for (int i = 0; i < children->length; i++) {
@@ -42,18 +42,3 @@ unsigned char touchscreen_is_any_input(ecs_world_t *world, ecs_entity_t touchscr
     }
     return 0;
 }
-
-/*void device_reset_touchscreen(ecs_world_t *world, ecs_entity_t touchscreen) {
-    if (!touchscreen || !ecs_is_alive(world, touchscreen)) return;
-    const Children *children = zox_get(world, touchscreen, Children);
-    for (int i = 0; i < children->length; i++) {
-        ecs_entity_t e = children->value[i];
-        if (!zox_has(e, ZevicePointer)) continue;
-        ZevicePointer *zeviceButton = zox_get(world, e, ZevicePointer);
-        if (reset_device_pointer(zeviceButton)) zox_modified(world, e, ZevicePointer);
-        ZevicePointerDelta *zevicePointerDelta = zox_get_mut(world, e, ZevicePointerDelta);
-        if (zevicePointerDelta->value.x == 0 && zevicePointerDelta->value.y == 0) continue;
-        zevicePointerDelta->value = int2_zero;
-        zox_modified(world, e, ZevicePointerDelta);
-    }
-}*/

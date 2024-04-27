@@ -2,10 +2,7 @@
 #define zoxel_game_ui
 
 // settings
-const color virtual_joystick_color = (color) { 44, 33, 33, 55 };
-const color virtual_joystick_pointer_color = (color) { 88, 22, 22, 200 };
-const int2 virtual_joystick_size = (int2) { 300, 300 }; // 240
-const int2 virtual_joystick_pointer_size = (int2) { 120, 120 }; // 100
+#include "settings/settings.c"
 // zoxel_declare_components
 zox_declare_tag(MenuMain)
 zox_declare_tag(MenuOptions)
@@ -15,6 +12,7 @@ zox_declare_tag(FPSDisplay)
 zox_declare_tag(QuadsCountLabel)
 zox_declare_tag(GameDebugLabel)
 zox_declare_tag(FrameDebuggerWindow)
+zox_declare_tag(JoystickUI)
 zox_component_int(QuadsCount)
 zox_component_double(FPSDisplayTicker)
 // zoxel_include_functions
@@ -57,6 +55,7 @@ zox_define_tag(FPSDisplay)
 zox_define_tag(QuadsCountLabel)
 zox_define_tag(GameDebugLabel)
 zox_define_tag(FrameDebuggerWindow)
+zox_define_tag(JoystickUI)
 zox_define_component_int(QuadsCount)
 zox_define_component_double(FPSDisplayTicker)
 // zoxel_define_systems

@@ -27,8 +27,8 @@ unsigned char mouse_is_any_input(const Mouse *mouse) {
         mouse->wheel.y != 0);
 }
 
-void device_reset_mouse(ecs_world_t *world, ecs_entity_t mouse_entity) {
-    if (!mouse_entity || !ecs_is_alive(world, mouse_entity)) return;
+void device_reset_mouse(ecs_world_t *world, const ecs_entity_t mouse_entity) {
+    if (!mouse_entity || !zox_alive(mouse_entity)) return;
     Mouse *mouse = zox_get_mut(mouse_entity, Mouse)
     reset_key(&mouse->left);
     reset_key(&mouse->middle);

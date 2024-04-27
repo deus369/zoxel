@@ -30,7 +30,7 @@ extern ecs_entity_t local_character3D;
 void GameDebugLabelSystem(ecs_iter_t *it) {
     if (!main_player) return;
     const ecs_entity_t character = local_character3D;
-    ecs_world_t *world = it->world;
+    zox_iter_world()
 #ifdef zox_debug_ui_device_mode
     const DeviceMode *deviceMode = zox_get(main_player, DeviceMode)
 #endif

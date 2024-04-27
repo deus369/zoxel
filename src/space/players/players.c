@@ -23,6 +23,7 @@ zox_memory_component(PlayerLinks, ecs_entity_t)
 #include "util/end_game.c"
 #include "util/editor_util.c"
 #include "util/player_util.c"
+#include "util/touch_util.c"
 // zoxel_system_includes
 #include "systems/free_camera_move_system.c"
 #include "systems/free_camera_rotate_system.c"

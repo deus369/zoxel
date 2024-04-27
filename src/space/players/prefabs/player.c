@@ -16,6 +16,7 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     zox_prefab_set(e, Raycaster, { { 0, 0 } })
     zox_prefab_set(e, RaycasterTarget, { 0 })
     zox_prefab_set(e, RaycasterResult, { 0 })
+    zox_prefab_set(e, ClickingEntity, { 0 })
     zox_prefab_set(e, NavigatorState, { 0 })
     zox_prefab_set(e, NavigatorTimer, { 0 })
     zox_prefab_set(e, ElementLinks, { 0, NULL })

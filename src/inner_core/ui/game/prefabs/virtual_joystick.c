@@ -1,9 +1,10 @@
 ecs_entity_t prefab_virtual_joystick;
-ecs_entity_t virtual_joystick;  // reference for now
+// ecs_entity_t virtual_joystick;  // reference for now
 
 ecs_entity_t spawn_prefab_virtual_joystick(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_virtual_joystick")
+    zox_add_tag(e, JoystickUI)
     zox_add_tag(e, Button)
     zox_add_tag(e, FrameTexture)
     zox_prefab_set(e, FrameCorner, { 2 })
@@ -31,6 +32,6 @@ ecs_entity_t spawn_virtual_joystick(ecs_world_t *world, const ecs_entity_t canva
     resize_memory_component(Children, children, ecs_entity_t, 1)
     children->value[0] = spawn_virtual_joystick_pointer(world, canvas, e, (layer + 1), int2_zero, float2_half, pixel_position_global, pixel_size, canvas_size);
     zox_modified(e, Children)
-    virtual_joystick = e;
+    // virtual_joystick = e;
     return e;
 }
