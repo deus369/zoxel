@@ -10,6 +10,7 @@ const float shader_depth_multiplier = 0.001f; // 0.0001f | 0.001f | 0.001f
 #include "util/material2D.c"
 #include "util/instanced2D_material.c"
 #include "util/shader_textured2D.c"
+#include "util/render_util.c"
 // systems
 #include "systems/element_render_system.c" // move to ui core
 #include "systems/mesh2D_update_system.c"

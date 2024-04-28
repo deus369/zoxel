@@ -1,8 +1,9 @@
 void GenericEventDebugSystem(ecs_iter_t *it) {
     zox_log(" > events occurs [%i]\n", it->count);
-    const GenericEvent *genericEvents = ecs_field(it, GenericEvent, 1);
+    zox_field_in(GenericEvent, genericEvents, 1)
     for (int i = 0; i < it->count; i++) {
-        const GenericEvent *genericEvent = &genericEvents[i];
-        zox_log("     > event occurs [%lu] [%i]\n", it->entities[i], genericEvent->value);
+        zox_field_e()
+        zox_field_i_in(GenericEvent, genericEvents, genericEvent)
+        zox_log("     > event occurs [%lu] [%i]\n", e, genericEvent->value);
     }
 } zox_declare_system(GenericEventDebugSystem)

@@ -30,7 +30,7 @@ int get_terrain_chunks_count(ecs_world_t *world) {
 }
 
 void spawn_prefabs_terrain(ecs_world_t *world) {
-    int3 terrain_chunk_size = { default_chunk_length, 8 * default_chunk_length, default_chunk_length };
+    const int3 terrain_chunk_size = { default_chunk_length, 8 * default_chunk_length, default_chunk_length };
     spawn_prefab_terrain(world);
     spawn_prefab_terrain_chunk(world, terrain_chunk_size);
     spawn_prefab_terrain_chunk_octree(world, terrain_chunk_size);

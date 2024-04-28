@@ -1,21 +1,16 @@
 extern double zox_current_time;
-
+const double cleanup_time = 2.0;
 // time after death, character will be removed
 void DeathCleanSystem(ecs_iter_t *it) {
-    const double cleanup_time = 2.0;
-    // only update when stat value changes
-    // if (!ecs_query_changed(NULL, it)) return;
+    // if (!ecs_query_changed(NULL, it)) return; // only update when stat value changes
     zox_iter_world()
     double time = zox_current_time;
-    const Dead *deads = ecs_field(it, Dead, 1);
-    const DiedTime *diedTimes = ecs_field(it, DiedTime, 2);
+    zox_field_in(Dead, deads, 1)
+    zox_field_in(DiedTime, diedTimes, 2)
     for (int i = 0; i < it->count; i++) {
-        const Dead *dead = &deads[i];
+        zox_field_i_in(Dead, deads, dead)
         if (!dead->value) continue;
-        const DiedTime *diedTime = &diedTimes[i];
-        if (time - diedTime->value >= cleanup_time) {
-            // zox_log("   %lu just been removed [%f]\n", it->entities[i], time)
-            zox_delete(it->entities[i])
-        }
+        zox_field_i_in(DiedTime, diedTimes, diedTime)
+        if (time - diedTime->value >= cleanup_time) zox_delete(it->entities[i])
     }
 } zox_declare_system(DeathCleanSystem)

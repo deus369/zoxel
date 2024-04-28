@@ -12,24 +12,27 @@ ecs_entity_2 spawn_player_character3D_in_world(ecs_world_t *world, const vox_fil
 
 void Characters3DSpawnSystem(ecs_iter_t *it) {
     zox_iter_world()
-    const ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 2);
-    const ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 3);
-    const RenderLod *renderLods = ecs_field(it, RenderLod, 4);
-    EntityLinks *entityLinks = ecs_field(it, EntityLinks, 5); // set characters
-    GenerateChunkEntities *generateChunkEntities = ecs_field(it, GenerateChunkEntities, 6);
+    zox_field_in(ChunkOctree, chunkOctrees, 2)
+    zox_field_in(ChunkPosition, chunkPositions, 3)
+    zox_field_in(RenderLod, renderLods, 4)
+    zox_field_out(EntityLinks, entityLinkss, 5)
+    zox_field_out(GenerateChunkEntities, generateChunkEntitiess, 6)
     for (int i = 0; i < it->count; i++) {
-        GenerateChunkEntities *generateChunkEntities2 = &generateChunkEntities[i];
-        if (generateChunkEntities2->value != zox_chunk_entities_state_triggered) continue;
-        const ChunkOctree *chunkOctree = &chunkOctrees[i];
+        zox_field_i_out(GenerateChunkEntities, generateChunkEntitiess, generateChunkEntities)
+        if (generateChunkEntities->value != zox_chunk_entities_state_triggered) continue;
+        zox_field_i_in(ChunkOctree, chunkOctrees, chunkOctree)
         if (chunkOctree->nodes == NULL) continue;   // if basically all air or solid, no need to spawn
-        const RenderLod *renderLod = &renderLods[i];
-        EntityLinks *entityLinks2 = &entityLinks[i];
-        if (entityLinks2->length != 0) {
+        zox_field_i_in(RenderLod, renderLods, renderLod)
+        zox_field_i_out(EntityLinks, entityLinkss, entityLinks)
+        if (entityLinks->length != 0) {
             // if already spawned, skip spawning, only update LODs
-            generateChunkEntities2->value = zox_chunk_entities_state_spawned;
+            generateChunkEntities->value = zox_chunk_entities_state_spawned;
             continue;
         }
-#ifndef zox_disable_npcs
+        generateChunkEntities->value = zox_chunk_entities_state_spawned;
+#ifdef zox_disable_npcs
+        continue;
+#endif
         unsigned char camera_distance = renderLod->value;
         unsigned char character_lod = get_character_division_from_camera(camera_distance);
         // zoxel_log("characters spawning in chunk %lu\n", it->entities[i]);
@@ -65,15 +68,9 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             position.y += 0.06f; // extra
             spawn_chunk_character(world, entities, &vox, position, rotation, character_lod);
         }
-        clear_memory_component(EntityLinks, entityLinks2);
-        entityLinks2->length = entities->size;
-        entityLinks2->value = finalize_ecs_entity_t_array_d(entities);
-        on_memory_component_created(entityLinks2, EntityLinks)
-#endif
-        generateChunkEntities2->value = zox_chunk_entities_state_spawned;
-        // zoxel_log(" > chunk characters were triggered %i\n", entityLinks2->length);
+        clear_memory_component(EntityLinks, entityLinks);
+        entityLinks->length = entities->size;
+        entityLinks->value = finalize_ecs_entity_t_array_d(entities);
+        on_memory_component_created(entityLinks, EntityLinks)
     }
-    //#ifdef zoxel_log_characters_count
-    //    if (characters_count != 0) zoxel_log(" + characters [%i]\n", characters_count);
-    //#endif
 } zox_declare_system(Characters3DSpawnSystem)

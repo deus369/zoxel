@@ -25,7 +25,7 @@ zox_define_component(GenerateChunkEntities)
 // zoxel_system_defines
 zox_system_1(Characters3DSpawnSystem, main_thread_pipeline, [none] terrain.TerrainChunk, [in] ChunkOctree, [in] ChunkPosition, [in] RenderLod, [out] EntityLinks, [out] GenerateChunkEntities)
 zox_system(ChunkEntitiesTriggerSystem, zox_pipeline_chunk_generation, [none] terrain.TerrainChunk, [in] ChunkDirty, [out] GenerateChunkEntities)
-zox_system(ChunkCharactersUpdateSystem, zox_pipeline_chunk_generation, [none] terrain.TerrainChunk, [in] RenderLod, [in] EntityLinks, [out] GenerateChunkEntities)
+zox_system(ChunkCharactersUpdateSystem, zox_pipeline_chunk_generation, [in] RenderLod, [in] EntityLinks, [in] GenerateChunkEntities, [none] terrain.TerrainChunk)
 zoxel_end_module(Characters3DTerrain)
 
 #endif

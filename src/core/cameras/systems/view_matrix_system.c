@@ -1,16 +1,16 @@
 void ViewMatrixSystem(ecs_iter_t *it) {
-    const Position3D *positions = ecs_field(it, Position3D, 1);
-    const Rotation3D *rotations = ecs_field(it, Rotation3D, 2);
-    const ProjectionMatrix *projectionMatrixs = ecs_field(it, ProjectionMatrix, 3);
-    ViewMatrix *viewMatrixs = ecs_field(it, ViewMatrix, 4);
-    // ecs_query_changed(it->query, &it, ScreenDimensions) || ecs_query_changed(q_read, &it, ScreenDimensions)
+    // todo: change query here
+    zox_field_in(Position3D, position3Ds, 1)
+    zox_field_in(Rotation3D, rotation3Ds, 2)
+    zox_field_in(ProjectionMatrix, projectionMatrixs, 3)
+    zox_field_out(ViewMatrix, viewMatrixs, 4)
     for (int i = 0; i < it->count; i++) {
-        const Position3D *position = &positions[i];
-        const Rotation3D *rotation = &rotations[i];
-        const ProjectionMatrix *projectionMatrix = &projectionMatrixs[i];
-        ViewMatrix *viewMatrix = &viewMatrixs[i];
-        float4x4 cameraPositionMatrix = float4x4_position(float3_multiply_float(position->value, -1));
-        float4x4 cameraViewMatrix = float4x4_multiply(cameraPositionMatrix, quaternion_to_matrix(rotation->value));
+        zox_field_i_in(Position3D, position3Ds, position3D)
+        zox_field_i_in(Rotation3D, rotation3Ds, rotation3D)
+        zox_field_i_in(ProjectionMatrix, projectionMatrixs, projectionMatrix)
+        zox_field_i_out(ViewMatrix, viewMatrixs, viewMatrix)
+        const float4x4 cameraPositionMatrix = float4x4_position(float3_multiply_float(position3D->value, -1));
+        const float4x4 cameraViewMatrix = float4x4_multiply(cameraPositionMatrix, quaternion_to_matrix(rotation3D->value));
         viewMatrix->value = float4x4_multiply(cameraViewMatrix, projectionMatrix->value);
     }
 } zox_declare_system(ViewMatrixSystem)

@@ -28,13 +28,14 @@ zox_entity_component(CameraFollowLink)
 zox_component(ProjectionMatrix, float4x4)
 zox_component(ViewMatrix, float4x4)
 zox_component_float4(ScreenToCanvas)
+// zoxel_function_includes
+#include "fun/camera_util.c"
+#include "util/camera_util.c"
 // zoxel_prefab_includes
 #include "prefabs/base_camera.c"
 #include "prefabs/camera2D.c"
 #include "prefabs/ui_camera.c"
 #include "prefabs/free_camera.c"
-// zoxel_function_includes
-#include "fun/camera_util.c"
 // zoxel_system_declares
 #include "systems/projection_matrix_system.c"
 #include "systems/view_matrix_system.c"

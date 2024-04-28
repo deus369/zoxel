@@ -1,10 +1,10 @@
 void Camera3DFollowSystem(ecs_iter_t *it) {
     zox_iter_world()
-    const CameraFollowLink *cameraFollowLinks = ecs_field(it, CameraFollowLink, 1);
-    const LocalPosition3D *localPosition3Ds = ecs_field(it, LocalPosition3D, 2);
-    Position3D *positions = ecs_field(it, Position3D, 3);
+    zox_field_in(CameraFollowLink, cameraFollowLinks, 1)
+    zox_field_in(LocalPosition3D, localPosition3Ds, 2)
+    zox_field_out(Position3D, positions, 3)
     for (int i = 0; i < it->count; i++) {
-        const CameraFollowLink *cameraFollowLink = &cameraFollowLinks[i];
+        zox_field_i_in(CameraFollowLink, cameraFollowLinks, cameraFollowLink)
         if (cameraFollowLink->value == 0) continue;
         float3 target_position = { 0, 0, 0 };
         if (zox_has(cameraFollowLink->value, Position2D)) {
@@ -18,8 +18,8 @@ void Camera3DFollowSystem(ecs_iter_t *it) {
         } else {
             continue;
         }
-        const LocalPosition3D *localPosition3D = &localPosition3Ds[i];
-        Position3D *position = &positions[i];
+        zox_field_i_in(LocalPosition3D, localPosition3Ds, localPosition3D)
+        zox_field_i_out(Position3D, positions, position)
         position->value = target_position;
         float3_add_float3_p(&position->value, localPosition3D->value);
     }

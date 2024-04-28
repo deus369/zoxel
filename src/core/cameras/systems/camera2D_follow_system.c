@@ -1,13 +1,13 @@
 void Camera2DFollowSystem(ecs_iter_t *it) {
     zox_iter_world()
-    const FreeRoam *freeRoams = ecs_field(it, FreeRoam, 2);
-    const CameraTarget *cameraTargets = ecs_field(it, CameraTarget, 3);
-    Position3D *positions = ecs_field(it, Position3D, 4);
-    Rotation3D *rotations = ecs_field(it, Rotation3D, 5);
+    zox_field_in(FreeRoam, freeRoams, 2)
+    zox_field_in(CameraTarget, cameraTargets, 3)
+    zox_field_out(Position3D, positions3D, 4)
+    zox_field_out(Rotation3D, rotation3Ds, 5)
     for (int i = 0; i < it->count; i++) {
-        const FreeRoam *freeRoam = &freeRoams[i];
+        zox_field_i_in(FreeRoam, freeRoams, freeRoam)
         if (freeRoam->value == 0) {
-            const CameraTarget *cameraTarget = &cameraTargets[i];
+            zox_field_i_in(CameraTarget, cameraTargets, cameraTarget)
             float3 target_position = { 0, 0, 0 };
             if (zox_has(cameraTarget->value, Position2D)) {
                 const Position2D *playerPosition2D = zox_get(cameraTarget->value, Position2D)
@@ -20,11 +20,11 @@ void Camera2DFollowSystem(ecs_iter_t *it) {
             } else {
                 continue;
             }
-            Position3D *position = &positions[i];
-            position->value.x = target_position.x;
-            position->value.y = target_position.y;
-            Rotation3D *rosition = &rotations[i];
-            rosition->value = float4_identity;
+            zox_field_i_out(Position3D, positions3D, position3D)
+            zox_field_i_out(Rotation3D, rotation3Ds, rotation3D)
+            position3D->value.x = target_position.x;
+            position3D->value.y = target_position.y;
+            rotation3D->value = float4_identity;
         }
     }
 } zox_declare_system(Camera2DFollowSystem)
