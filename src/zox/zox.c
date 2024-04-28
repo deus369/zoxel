@@ -2,18 +2,23 @@
 #define zox_engine
 
 // engine imports, besides sub modules, it's core is flecs
+#ifndef zox_game
+    #define zox_game zoxel
+#endif
+#include "../core/util/settings/build_settings.c"
+#include "../core/util/settings/build_disables.c"
+#define FLECS_CUSTOM_BUILD
+#define FLECS_MODULE
+#define FLECS_SYSTEM
+#define FLECS_PIPELINE
+#ifndef zox_disable_audio
+    #define SDL_MIXER
+#endif
 #include <signal.h> // used for detecting cancel
 #include <string.h> // who uses this?
 #include <stdlib.h> // for malloc & free
 #include <stdio.h>  // just for sprintf and perror
-#define FLECS_CUSTOM_BUILD
-#define FLECS_MODULE
-#define FLECS_SYSTEM 
-#define FLECS_PIPELINE
 #include "../../include/flecs.h"
-#ifndef zox_disable_audio
-    #define SDL_MIXER
-#endif
 #include "util/events.c"
 #include "../core/core.c"
 #include "util/game_store_util.c"
@@ -27,30 +32,7 @@
 #include "util/boot_util.c"
 typedef unsigned char (*boot_zox)(ecs_world_t*);
 boot_zox boot_event;
-
-void dispose_zox(ecs_world_t *world) {
-    dispose_space(world);
-    dispose_inner_core(world);
-    dispose_game_store();
-    dispose_core(world);
-}
-
-unsigned char initialize_zox(ecs_world_t *world) {
-    if (initialize_core(world) == EXIT_FAILURE) return EXIT_FAILURE;
-    initialize_inner_core(world);
-    initialize_outer_core(world);
-    initialize_space(world);
-    return EXIT_SUCCESS;
-}
-
-void spawn_prefabs_engine(ecs_world_t *world) {
-    spawn_prefabs_core(world);
-    spawn_prefabs_inner_core(world);
-    spawn_prefabs_outer_core(world);
-    spawn_prefabs_users(world);
-    spawn_prefabs_gameplay(world);
-    spawn_prefabs_space(world);
-}
+#include "util/zox_util.c"
 
 zox_begin_module(Zox)
 zox_import_module(Core)

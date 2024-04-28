@@ -63,3 +63,27 @@ void zox_spawn_main_menu(ecs_world_t *world, const char *game_name, ecs_entity_t
 #endif
 }
 
+void spawn_players_cameras_canvases(ecs_world_t *world) {
+    spawn_players(world);
+    set_camera_mode_pre_defined(world);
+    set_main_cameras((int) players_playing);
+    const unsigned char camera_fov = get_camera_mode_fov(camera_mode);
+    float3 camera_position = float3_zero;
+    float4 camera_rotation = quaternion_identity;
+    for (int i = 0; i < players_playing; i++) {
+        get_camera_start_transform(&camera_position, &camera_rotation);
+        const float4 screen_to_canvas = (float4) { 1 / (float) players_playing, 1, i / (float) players_playing, 0 };
+        const int2 viewport_size = screen_to_canvas_size(screen_dimensions, screen_to_canvas);
+        const int2 viewport_position = screen_to_canvas_position(screen_dimensions, screen_to_canvas);
+        const ecs_entity_t camera = spawn_player_camera(world, i, camera_position, camera_rotation, viewport_position, viewport_size, screen_to_canvas);
+        const ecs_entity_t ui_camera = ui_cameras[i];
+        const ecs_entity_t canvas = spawn_default_ui(world, ui_camera, viewport_size, screen_to_canvas);
+        zox_spawn_main_menu(world, game_name, canvas);
+        zox_canvases[i] = canvas;
+        zox_set(zox_players[i], CanvasLink, { canvas })
+        if (i == 0) main_canvas = canvas;
+#ifdef zoxel_start_with_debug_ui
+        toggle_ui(world, canvas, &game_debug_label, &spawn_game_debug_label);
+#endif
+    }
+}

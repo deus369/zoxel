@@ -1,10 +1,9 @@
 #ifndef def_zox_game_zoxel2D
 #define def_zox_game_zoxel2D
 
-const char *game_name = "Automata";
-
-unsigned char boot_zoxel2D(ecs_world_t *world) {
-    zox_log("Booting zoxel 2D\n")
+unsigned char boot_zixel(ecs_world_t *world) {
+    game_name = "Automata";
+    zox_log("Booting [%s]\n", game_name)
     if (initialize_zox(world) == EXIT_FAILURE) return EXIT_FAILURE;
     if (!headless) load_app_icon(main_window, resources_folder_name"textures/game_icon.png");
     // Realm,  players, skybox
@@ -14,17 +13,19 @@ unsigned char boot_zoxel2D(ecs_world_t *world) {
     zox_set(game, RealmLink, { realm })
     spawn_weather(world);
     if (!headless) spawn_music(world, instrument_piano);
-    spawn_players(world);
+    load_element_styles(world);
+    spawn_players_cameras_canvases(world);
+    /*spawn_players(world);
     spawn_player_cameras(world, players_playing);
     ecs_entity_t canvas = spawn_default_ui(world, main_camera, float2_zero, float2_zero);
-    zox_spawn_main_menu(world, game_name, canvas);
+    zox_spawn_main_menu(world, game_name, canvas);*/
     return EXIT_SUCCESS;
 }
 
-void Zoxel2DImport(ecs_world_t *world) {
-    zox_module(Zoxel2D)
+void ZixelImport(ecs_world_t *world) {
+    zox_module(Zixel)
     zox_game_type = zox_game_mode_2D;
-    boot_event = boot_zoxel2D;
+    boot_event = boot_zixel;
     menu_sky_color = (float3) { 0.3f, 0.7f, 0.7f };
     menu_sky_bottom_color = (float3) { 0.2f, 0.56f, 0.56f };
     game_sky_color = (float3) { 0.6f, 0.4f, 0.3f };

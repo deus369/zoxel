@@ -17,16 +17,16 @@ void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 pos
             generate_terrain(&chunk_octree->nodes[i], depth, node_position, scale);
         }
         // check all children
-        #ifndef zoxel_disable_close_nodes
-            unsigned char is_all_solid = 1;
-            for (unsigned char i = 0; i < octree_length; i++) {
-                if (chunk_octree->nodes[i].nodes != NULL || !chunk_octree->nodes[i].value) {
-                    is_all_solid = 0;
-                    break;
-                }
+#ifndef zoxel_disable_close_nodes
+        unsigned char is_all_solid = 1;
+        for (unsigned char i = 0; i < octree_length; i++) {
+            if (chunk_octree->nodes[i].nodes != NULL || !chunk_octree->nodes[i].value) {
+                is_all_solid = 0;
+                break;
             }
-            if (is_all_solid) close_ChunkOctree(chunk_octree);
-        #endif
+        }
+        if (is_all_solid) close_ChunkOctree(chunk_octree);
+#endif
     }
 }
 

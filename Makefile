@@ -9,15 +9,15 @@
 is_use_sdl_image := true
 is_use_sdl_mixer := true
 is_use_vulkan := false
-is_game_zoxel2D := false
 # make VULKAN=1 for vulkan
 ifdef VULKAN
     is_use_vulkan := true
 endif
-# make ZOXEL2D=1 for zoxel2D game
-ifdef ZOXEL2D
-    is_game_zoxel2D := true
-endif
+# make GAME=zoxel or GAME=zoxel2D
+# Define the variable GAME
+game ?=
+game_module ?=
+
 # more
 patient_cmd = echo " > please be patient :), lord deus [>,<]/)"
 resources_dir = resources
@@ -32,8 +32,11 @@ endif
 ifeq ($(is_use_vulkan), true)
     LDLIBS += -lvulkan -Dzox_include_vulkan # vulkan on linux
 endif
-ifeq ($(is_game_zoxel2D), true)
-    LDLIBS += -Dzox_game_zoxel2D
+ifdef game
+    LDLIBS +=-Dzox_game=$(game)
+endif
+ifdef game_module
+    LDLIBS +=-Dzox_game_module=$(game_module)
 endif
 # determine the operating system #
 ifeq ($(OS),Windows_NT)
