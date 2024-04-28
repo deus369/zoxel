@@ -18,7 +18,9 @@ void set_game_state(ecs_world_t *world, ecs_entity_t game, unsigned char new_gam
     zox_set(game, GameState, { new_game_state })
 }
 
-void trigger_event_game(ecs_world_t* world, ecs_entity_t game, unsigned char new_game_state) {
+void trigger_event_game(ecs_world_t* world, const ecs_entity_t game, const unsigned char new_game_state) {
+    const unsigned char old_game_stat = zox_get_value(game, GameState)
+    if (new_game_state == old_game_stat) return;
     for (int i = 0; i < game_state_event->size; i++) {
         if (game_state_event->data[i].value) (*game_state_event->data[i].value)(world, game, new_game_state);
     }

@@ -21,7 +21,7 @@ ecs_entity_t spawn_inspector(ecs_world_t *world, const ecs_entity_t canvas) {
     const text_group labels[] = { { "------------------------" } };
     // const text_group labels[] = { { "[ ------ select entity ------ ]" } };
     // const text_group labels[] = { { "[ select entity ]" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "" }, { "[ ---------- -------------- ]" }  };
-    const ecs_entity_t e = spawn_ui_list(world, prefab_inspector, canvas, "inspector", labels_count, max_elements, labels, NULL, pixel_position, anchor, is_close_button, font_size, layer, is_scrollbar);
+    const ecs_entity_t e = spawn_ui_list(world, prefab_inspector, canvas, "inspector", labels_count, max_elements, labels, NULL, pixel_position, anchor, is_close_button, font_size, layer, is_scrollbar, main_player);
     zox_name("inspector")
     inspector = e;
     return e;

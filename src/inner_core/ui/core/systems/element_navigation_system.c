@@ -10,30 +10,25 @@ void ElementNavigationSystem(ecs_iter_t *it) {
     zox_field_out(NavigatorTimer, navigatorTimers, 4)
     zox_field_out(RaycasterTarget, raycasterTargets, 5)
     for (int i = 0; i < it->count; i++) {
+        zox_field_e()
         zox_field_i_in(DeviceMode, deviceModes, deviceMode)
         zox_field_i_out(RaycasterTarget, raycasterTargets, raycasterTarget)
         zox_field_i_out(NavigatorState, navigatorStates, navigatorState)
         zox_field_i_out(NavigatorTimer, navigatorTimers, navigatorTimer)
         if (deviceMode->value != zox_device_mode_gamepad) {
             if (!navigatorState->value) {
-                // zoxel_log("   > gamepad state disabled [%i]\n", navigatorState->value);
                 navigatorState->value = 1;
                 navigatorTimer->value = 0;
             }
             continue;
-        } else {
-            // select first
-            if (!raycasterTarget->value) {
-                zox_field_e()
-                const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
-                canvas_select_first_button(world, e, canvas);
-            }
+        } else if (deviceMode->value == zox_device_mode_gamepad && !raycasterTarget->value) {
+            zox_field_e()
+            const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
+            canvas_select_first_button(world, e, canvas);
         }
-        // if (!raycasterTarget->value) zox_logg(" > raycaster not selected\n")
         if (!raycasterTarget->value || !zox_alive(raycasterTarget->value)) continue;
-        float2 left_stick = float2_zero;
         zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
-        // zoxel_log(" > raycasterTarget->value %lu\n", raycasterTarget->value);
+        float2 left_stick = float2_zero;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device_entity = deviceLinks->value[j];
             if (!zox_has(device_entity, Gamepad)) continue;
@@ -71,15 +66,15 @@ void ElementNavigationSystem(ecs_iter_t *it) {
         const Children *children = zox_get(parent_entity, Children);
         unsigned did_find = 0;
         for (int k = 0; k < children->length; k++) {
-            ecs_entity_t child_entity = children->value[k];
+            const ecs_entity_t child_entity = children->value[k];
             if (zox_has(child_entity, Selectable) && child_entity == raycasterTarget->value) {
                 did_find = 1;
                 if (left_stick.y >= ui_navigation_joystick_cutoff && k > 1) {
-                    raycaster_select_ui(world, raycasterTarget, children->value[k - 1]);
-                    set_selectable_state_mut(world, raycasterTarget->value, 1);
+                    raycaster_select_element(world, e, children->value[k - 1]);
+                    // set_selectable_state_mut(world, raycasterTarget->value, 1);
                 } else if (left_stick.y <= -ui_navigation_joystick_cutoff && k != children->length - 1) {
-                    raycaster_select_ui(world, raycasterTarget, children->value[k + 1]);
-                    set_selectable_state_mut(world, raycasterTarget->value, 1);
+                    raycaster_select_element(world, e, children->value[k + 1]);
+                    // set_selectable_state_mut(world, raycasterTarget->value, 1);
                 }
                 break;
             }

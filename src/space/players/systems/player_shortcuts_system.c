@@ -94,7 +94,7 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
                     const int edge_buffer = 8 * default_ui_scale;
                     const float2 window_anchor = { 0.0f, 1.0f };
                     const int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
-                    spawn_main_menu(world, canvas, game_name, window_position, window_anchor, 0);
+                    spawn_main_menu(world, main_player, canvas, game_name, window_position, window_anchor, 0);
                 }
 #endif
 #ifdef test_particles2D

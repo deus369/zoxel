@@ -42,14 +42,14 @@ ecs_entity_t spawn_default_ui(ecs_world_t *world, const ecs_entity_t camera, con
     return canvas;
 }
 
-void zox_spawn_main_menu(ecs_world_t *world, const char *game_name, ecs_entity_t canvas) {
+void zox_spawn_main_menu(ecs_world_t *world, const ecs_entity_t player, const char *game_name, ecs_entity_t canvas) {
 #ifdef zox_disable_main_menu
     return;
 #endif
 #ifdef zoxel_game_ui
-    const float2 main_menu_anchor = { 0.5f, 0.5f };
+    const float2 main_menu_anchor = float2_half;
     const int2 main_menu_position = int2_zero;
-    zoxel_main_menu = spawn_main_menu(world, canvas, game_name, main_menu_position, main_menu_anchor);
+    zoxel_main_menu = spawn_main_menu(world, player, canvas, game_name, main_menu_position, main_menu_anchor);
 #ifdef zoxel_debug_fps
     fps_display = spawn_fps_display(world, canvas);
 #endif
@@ -78,7 +78,7 @@ void spawn_players_cameras_canvases(ecs_world_t *world) {
         const ecs_entity_t camera = spawn_player_camera(world, i, camera_position, camera_rotation, viewport_position, viewport_size, screen_to_canvas);
         const ecs_entity_t ui_camera = ui_cameras[i];
         const ecs_entity_t canvas = spawn_default_ui(world, ui_camera, viewport_size, screen_to_canvas);
-        zox_spawn_main_menu(world, game_name, canvas);
+        zox_spawn_main_menu(world, zox_players[i], game_name, canvas);
         zox_canvases[i] = canvas;
         zox_set(zox_players[i], CanvasLink, { canvas })
         if (i == 0) main_canvas = canvas;

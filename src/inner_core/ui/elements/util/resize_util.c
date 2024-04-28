@@ -14,16 +14,15 @@ void on_resized_element(ecs_world_t *world, ecs_entity_t e, int2 pixel_size, flo
 #endif
         if (zox_has(e, Window)) {
             const Children *children = zox_get(e, Children);
-            ecs_entity_t header = children->value[0];
+            const ecs_entity_t header = children->value[0];
             const int2 header_size = (int2) { pixel_size.x, zox_gett_value(header, PixelSize).y };
             zox_set(header, PixelSize, { header_size })
             zox_set(header, TextureSize, { header_size })
             on_resized_element(world, header, header_size, canvas_size);
-            // zox_log("   > header_height: %f\n", header_height)
             if (children->length > 1) {
-                ecs_entity_t scrollbar = children->value[1];
+                const ecs_entity_t scrollbar = children->value[1];
                 if (zox_has(scrollbar, Scrollbar)) {
-                    int2 scrollbar_size = (int2) { zox_gett_value(scrollbar, PixelSize).x, pixel_size.y };
+                    const int2 scrollbar_size = (int2) { zox_gett_value(scrollbar, PixelSize).x, pixel_size.y };
                     zox_set(scrollbar, PixelSize, { scrollbar_size })
                     zox_set(scrollbar, TextureSize, { scrollbar_size })
                     on_resized_element(world, scrollbar, scrollbar_size, canvas_size);

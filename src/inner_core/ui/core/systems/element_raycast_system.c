@@ -6,6 +6,7 @@ void ElementRaycastSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(DeviceMode, deviceModes, deviceMode)
         if (deviceMode->value != zox_device_mode_keyboardmouse && deviceMode->value != zox_device_mode_touchscreen) continue;
+        zox_field_e()
         zox_field_i_in(Raycaster, raycasters, raycaster)
         zox_field_i_out(RaycasterTarget, raycasterTargets, raycasterTarget)
         const int2 position = raycaster->value;
@@ -22,29 +23,29 @@ void ElementRaycastSystem(ecs_iter_t *it) {
             const PixelSize *pixelSizes = ecs_field(&uis_it, PixelSize, 3);
             const Layer2D *layer2Ds = ecs_field(&uis_it, Layer2D, 4);
             const RenderDisabled *renderDisableds = ecs_field(&uis_it, RenderDisabled, 5);
-            SelectState *selectableStates = ecs_field(&uis_it, SelectState, 6);
+            // SelectState *selectableStates = ecs_field(&uis_it, SelectState, 6);
             for (int j = 0; j < uis_it.count; j++) {
                 const RenderDisabled *renderDisabled = &renderDisableds[j];
                 if (renderDisabled->value) continue;
                 const ecs_entity_t e2 = uis_it.entities[j];
+                const ecs_entity_t camera = get_root_canvas_camera(world, e2);
+                if (!camera) continue;
                 const CanvasPosition *canvasPosition2 = &canvasPositions[j];
                 const PixelSize *pixelSize2 = &pixelSizes[j];
                 const Layer2D *layer2D = &layer2Ds[j];
-                SelectState *selectState = &selectableStates[j];
-                int2 viewport_position = canvasPosition2->value;
+                // SelectState *selectState = &selectableStates[j];
                 const int2 pixelSize = pixelSize2->value;
-                const ecs_entity_t camera = get_root_canvas_camera(world, e2);
-                if (!camera) continue;
                 const int2 canvas_position = zox_get_value(camera, ScreenPosition)
+                int2 viewport_position = canvasPosition2->value;
                 viewport_position.x += canvas_position.x;
                 viewport_position.y += canvas_position.y;
                 // bounds should be offset with canvas position
                 const int4 ui_bounds = { viewport_position.x - pixelSize.x / 2, viewport_position.x + pixelSize.x / 2, viewport_position.y - pixelSize.y / 2,  viewport_position.y + pixelSize.y / 2};
-                unsigned char was_raycasted = position.x >= ui_bounds.x && position.x <= ui_bounds.y && position.y >= ui_bounds.z && position.y <= ui_bounds.w;
+                const unsigned char was_raycasted = position.x >= ui_bounds.x && position.x <= ui_bounds.y && position.y >= ui_bounds.z && position.y <= ui_bounds.w;
                 if (was_raycasted && layer2D->value > ui_layer) {
                     ui_layer = layer2D->value;
                     ui_selected = uis_it.entities[j];
-                    ui_selected_selectableState = selectState;
+                    // ui_selected_selectableState = selectState;
 #ifdef zox_debug_log_element_raycasting
                     zox_log("     + ui [%lu] position [%ix%i] size [%ix%i]\n", ui_selected, canvas_position.x, canvas_position.y, pixelSize.x, pixelSize.y)
 #endif
@@ -53,12 +54,12 @@ void ElementRaycastSystem(ecs_iter_t *it) {
             k++;
         }
         if (raycasterTarget->value != ui_selected) {
-            if (raycasterTarget->value) zox_set_mut(raycasterTarget->value, Brightness, ui_default_brightness)
-            if (raycasterTarget->value) set_selectable_state_mut(world, raycasterTarget->value, 0);
-            raycaster_select_ui(world, raycasterTarget, ui_selected);
-            raycasterTarget->value = ui_selected;
-            if (ui_selected_selectableState) ui_selected_selectableState->value = 1;
-            if (raycasterTarget->value) zox_set_mut(raycasterTarget->value, Brightness, ui_selected_brightness)
+            raycaster_select_element(world, e, ui_selected);
+            // if (raycasterTarget->value) zox_set_mut(raycasterTarget->value, Brightness, ui_default_brightness)
+            // if (raycasterTarget->value) set_selectable_state_mut(world, raycasterTarget->value, 0);
+            // raycasterTarget->value = ui_selected;
+            // if (ui_selected_selectableState) ui_selected_selectableState->value = 1;
+            // if (raycasterTarget->value) zox_set_mut(raycasterTarget->value, Brightness, ui_selected_brightness)
         }
     }
 } zox_declare_system(ElementRaycastSystem)

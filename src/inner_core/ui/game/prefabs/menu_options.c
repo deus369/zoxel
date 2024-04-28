@@ -9,7 +9,7 @@ ecs_entity_t spawn_prefab_options_ui(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_menu_options(ecs_world_t *world, const ecs_entity_t canvas, const int2 position, const float2 anchor) {
+ecs_entity_t spawn_menu_options(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t canvas, const int2 position, const float2 anchor) {
     const float2 main_menu_anchor = float2_half;
     const int2 main_menu_position = int2_zero;
     const unsigned char is_close_button = 0;
@@ -17,7 +17,7 @@ ecs_entity_t spawn_menu_options(ecs_world_t *world, const ecs_entity_t canvas, c
     const text_group labels[] = { { "volume +" }, { "volume -" }, { "return" } };
     const ClickEvent events[] = { { &button_event_volume_increase }, { &button_event_volume_decrease }, { &button_event_menu_main } };
     const unsigned char layer = 1;
-    const ecs_entity_t e = spawn_ui_list(world, prefab_menu_options, canvas, "options", labels_count, labels_count, labels, events, position, anchor, is_close_button, 42, layer, 0);
+    const ecs_entity_t e = spawn_ui_list(world, prefab_menu_options, canvas, "options", labels_count, labels_count, labels, events, position, anchor, is_close_button, 42, layer, 0, player);
     zox_name("menu_options")
     return e;
 }

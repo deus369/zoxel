@@ -9,11 +9,11 @@ void pause_player(ecs_world_t *world, ecs_entity_t player) {
     zox_set(camera, FreeRoam, { 0 })
     zox_set(mouse_entity, MouseLock, { 0 })
     zox_set(character3D, DisableMovement, { 1 })
-    spawn_pause_ui(world, canvas, window_position, window_anchor);
+    spawn_menu_paused(world, player, canvas, window_position, window_anchor);
     unlock_achievement("achievement_paused_game"); // test_achievement2
 }
 
-void resume_player(ecs_world_t *world, ecs_entity_t player) {
+void resume_player(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     find_child_with_tag(canvas, MenuPaused, found_child)
     const ecs_entity_t character = zox_get_value(player, CharacterLink)
@@ -25,7 +25,14 @@ void resume_player(ecs_world_t *world, ecs_entity_t player) {
     spawn_in_game_ui(world, player, (ecs_entity_2) { character, health_stat });
 }
 
-void toggle_pause_ui(ecs_world_t *world, ecs_entity_t player) {
+void pause_resume(ecs_world_t *world, const ecs_entity_t player) {
+    const GameState *gameState = zox_get(local_game, GameState)
+    if (!(gameState->value == zox_game_playing || gameState->value == zox_game_paused)) return;
+    unsigned char is_paused = gameState->value == zox_game_paused;
+    if (is_paused) trigger_event_game(world, local_game, zox_game_playing);
+}
+
+void toggle_pause_ui(ecs_world_t *world, const ecs_entity_t player) {
     const GameState *gameState = zox_get(local_game, GameState)
     if (!(gameState->value == zox_game_playing || gameState->value == zox_game_paused)) return;
     unsigned char is_paused = gameState->value == zox_game_paused;
