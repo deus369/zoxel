@@ -112,18 +112,18 @@ void print_entity(ecs_world_t *world, ecs_entity_t e) {
     }
 }
 
-void editor_select_entity(ecs_world_t *world, ecs_entity_t e) {
+void editor_select_entity(ecs_world_t *world, const ecs_entity_t e) {
     if (editor_selected == e) return;
     editor_selected = e;
     set_inspector_element(world, inspector, e);
 }
 
-void button_event_clicked_hierarchy(ecs_world_t *world, ecs_entity_t trigger_entity) {
-    if (!zox_has(trigger_entity, Children)) return;
+void button_event_clicked_hierarchy(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
+    if (!zox_has(element, Children)) return;
     // const Children *children = zox_get(trigger_entity, Children)
     // ecs_entity_t zext_entity = children->value[0];
     // print_entity_zext(world, zext_entity);
-    ecs_entity_t target = zox_get_value(trigger_entity, EntityTarget)
+    const ecs_entity_t target = zox_get_value(element, EntityTarget)
     // zox_log("   > target [%lu]\n", target)
     editor_select_entity(world, target);
 }

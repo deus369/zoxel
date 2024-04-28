@@ -21,12 +21,12 @@ zox_time_component(Jump)
 #include "systems/alpha3D_system.c"
 #include "systems/friction3D_system.c"
 #include "systems/dissipation3D_system.c"
-#include "systems/bounds3D_system.c"
 #include "systems/gravity3D_system.c"
 #include "systems/jump3D_system.c"
 #include "systems/physics3D_disable_system.c"
 #include "systems/bounds3D_grow_system.c"
 #include "systems/random_jump3D_system.c"
+#include "systems/position3D_bounds_system.c" //  move to transforms
 
 zox_begin_module(CorePhysics3D)
 zox_define_component(Velocity3D)
@@ -48,6 +48,7 @@ zox_system(Dissipation3DSystem, EcsOnUpdate, [none] physics.Frictioned, [in] Ome
 zox_system(Acceleration3DSystem, EcsOnUpdate, [out] Acceleration3D, [out] Velocity3D)
 zox_system(Alpha3DSystem, EcsOnUpdate, [out] Alpha3D, [out] Omega3D)
 zox_system(Bounds3DGrowSystem, EcsPostUpdate, [in] MeshDirty, [in] ChunkSize, [in] Bounds3D)
+zox_system(Position3DBoundsSystem, EcsPostUpdate, [in] Position3DBounds, [in] Bounds3D, [out] Position3D)
 zoxel_end_module(CorePhysics3D)
 
 #endif

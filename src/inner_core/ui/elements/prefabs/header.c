@@ -1,4 +1,4 @@
-extern void button_event_close_window(ecs_world_t *world, ecs_entity_t trigger_entity);
+extern void button_event_close_window(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element);
 ecs_entity_t header_prefab;
 
 ecs_entity_t spawn_prefab_header(ecs_world_t *world) {

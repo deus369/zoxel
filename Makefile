@@ -5,18 +5,12 @@
 # platforms [linux, windows, web, android]
 # stores [steam, itch, google]
 # tooling: sudo apt install make && make install-required
+# make vulkan=1 for vulkan
+# make game=zixel for zoxel2D
 # global settings
 is_use_sdl_image := true
 is_use_sdl_mixer := true
 is_use_vulkan := false
-# make VULKAN=1 for vulkan
-ifdef VULKAN
-    is_use_vulkan := true
-endif
-# make GAME=zoxel or GAME=zoxel2D
-# Define the variable GAME
-game ?=
-game_module ?=
 
 # more
 patient_cmd = echo " > please be patient :), lord deus [>,<]/)"
@@ -29,14 +23,11 @@ endif
 ifeq ($(is_use_sdl_mixer), true)
     LDLIBS += -lSDL2_mixer
 endif
-ifeq ($(is_use_vulkan), true)
+ifdef vulkan
     LDLIBS += -lvulkan -Dzox_include_vulkan # vulkan on linux
 endif
 ifdef game
     LDLIBS +=-Dzox_game=$(game)
-endif
-ifdef game_module
-    LDLIBS +=-Dzox_game_module=$(game_module)
 endif
 # determine the operating system #
 ifeq ($(OS),Windows_NT)
@@ -359,16 +350,16 @@ run-web:
 
 # updates the zoxel-play project
 update-web:
-	bash bash/web/update_zoxel_play.sh
+	@ bash bash/web/update_zoxel_play.sh
 
 # updates the zoxel-play project
 run-zoxel-play:
-	bash bash/web/run_zoxel_play.sh
+	@ bash bash/web/run_zoxel_play.sh
 
 # updates the zoxel-play project
 git-push-zoxel-play:
-	echo " > pushing from projects/zoxel-play"
-	cd ../zoxel-play && bash/git/git_push.sh
+	@ echo " > pushing from projects/zoxel-play"
+	@ cd ../zoxel-play && bash/git/git_push.sh
 
 # ====== ===== ====== #
 # ===== android ===== #
@@ -589,22 +580,22 @@ clean:
 # todo: remove build, lib, include from project
 
 codeberg:
-	open https://codeberg.org/deus/zoxel &
+	@ open https://codeberg.org/deus/zoxel &
 
 github:
-	open https://github.com/deus369/zoxel &
+	@ open https://github.com/deus369/zoxel &
 
 create-system:
-	bash bash/zoxel/create_system.sh
+	@ bash bash/zoxel/create_system.sh
 
 zip-build:
-	bash bash/util/zip_build.sh
+	@ bash bash/util/zip_build.sh
 
 install-play:
-	bash bash/install/install_play_button.sh
+	@ bash bash/install/install_play_button.sh
 
 play:
-	gcc tests/glut/play_button.c -o build/play_button -lglut -lGL -lGLU && ./build/play_button &
+	@ gcc tests/glut/play_button.c -o build/play_button -lglut -lGL -lGLU && ./build/play_button &
 
 
 

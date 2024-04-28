@@ -6,9 +6,9 @@
 // components
 zox_declare_tag(Label)            // UI extras, make extra ui module?
 zox_declare_tag(Button)           //! A generic ui button for clicking.
-zox_declare_tag(Window)           //! A ui window.
 zox_declare_tag(Header)           //! A ui window header.
 zox_declare_tag(CloseButton)      //! A ui window close button
+zox_declare_tag(Window)
 // todo: move these too stats_ui
 zox_declare_tag(Statbar)
 zox_declare_tag(Scrollbar)
@@ -29,6 +29,7 @@ zox_component_byte(ListUIMax)
 // functions
 #include "fun/button_event_close_window.c"
 #include "util/resize_util.c"
+#include "util/navigation_util.c"
 // systems
 #include "systems/element_drag_system.c"
 #include "systems/scrollbar_system.c"
@@ -52,12 +53,12 @@ zox_begin_module(Elements)
 // component defines
 zox_define_tag(Label)
 zox_define_tag(Button)
-zox_define_tag(Window)
 zox_define_tag(Header)
 zox_define_tag(CloseButton)
 zox_define_tag(Statbar)
 zox_define_tag(Scrollbar)
 zox_define_tag(ScrollbarButton)
+zox_define_tag(Window)
 zox_define_component(ListUIMax)
 // system defines
 zox_system(ElementDragSystem, EcsPostLoad, [in] DraggableState, [in] DraggingDelta, [in] DraggedLink)

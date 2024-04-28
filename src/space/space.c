@@ -4,7 +4,7 @@
 #include "weathers/weathers.c"
 #include "realms/realms.c"
 #if defined(zoxel_include_players)
-    #include "players/players.c"
+#include "players/players.c"
 #endif
 
 void spawn_prefabs_space(ecs_world_t *world) {
@@ -18,8 +18,7 @@ void spawn_prefabs_space(ecs_world_t *world) {
 #endif
 }
 
-void dispose_space(ecs_world_t *world) {
-}
+void dispose_space(ecs_world_t *world) { }
 
 void initialize_space(ecs_world_t *world) {
     initialize_realms(world);

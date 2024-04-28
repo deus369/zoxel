@@ -1,4 +1,4 @@
-void realms_game_start(ecs_world_t *world, ecs_entity_t game) {
+void realms_game_start(ecs_world_t *world, const ecs_entity_t game) {
     set_sky_color(world, game_sky_color, game_sky_bottom_color);
     if (zox_game_type == zox_game_mode_3D) {
         int3 terrain_position = int3_zero;
@@ -11,9 +11,10 @@ void realms_game_start(ecs_world_t *world, ecs_entity_t game) {
     unlock_achievement("test_achievement"); // idk if this can be per player
 }
 
-void realms_game_end(ecs_world_t *world, ecs_entity_t game) {
+void realms_game_end(ecs_world_t *world, const ecs_entity_t game) {
     if (zox_game_type == zox_game_mode_3D) {
         zox_delete_and_set(local_terrain)
+        destroy_terrain_grid(world);
     }
     set_sky_color(world, menu_sky_color, menu_sky_bottom_color);
 }

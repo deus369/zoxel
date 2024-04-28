@@ -38,7 +38,10 @@ void player_start_game(ecs_world_t *world, const ecs_entity_t player) {
             const float4 spawn_rotation = quaternion_identity;
             const vox_file vox = vox_files[3]; // get mr penguin vox
             character_group = spawn_player_character3D_in_world(world, &vox, spawn_position, spawn_rotation, 0, player);
-            attach_to_character(world, player, camera, character_group.x);
+            const ecs_entity_t character = character_group.x;
+            zox_set(player, CharacterLink, { character })
+            zox_set(character, CameraLink, { camera })
+            attach_to_character(world, player, camera, character);
             // zox_add_tag(character_group.x, Aura)
         } else {
             attach_to_character(world, player, camera, 0);
@@ -46,7 +49,7 @@ void player_start_game(ecs_world_t *world, const ecs_entity_t player) {
         spawn_in_game_ui(world, player, character_group);
     } else if (zox_game_type == zox_game_mode_2D) {
         attach_to_character(world, player, camera, 0);  // set camera into game mode
-        zox_set(camera, Position3D, { 0, 0, 1 })
+        zox_set(camera, Position3D, { { 0, 0, 1 } })
         zox_set(camera, Rotation3D, { quaternion_from_euler((float3) { 0, 0 * degreesToRadians, 0 }) })
         zox_set(camera, Euler, { 0, 0 * degreesToRadians, 0 })
         const ecs_entity_t character = spawn_player_character2D(world, camera);

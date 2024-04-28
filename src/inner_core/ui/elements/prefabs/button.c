@@ -33,7 +33,7 @@ ecs_entity_t spawn_button(ecs_world_t *world, const ecs_entity_t parent, const e
 }
 
 ecs_entity_t spawn_button_on_canvas(ecs_world_t *world, const ecs_entity_t canvas, int2 pixel_position, const byte2 padding, const color color, const char* text, int font_size, const float2 anchor, const ClickEvent event) {
-    ecs_entity_t parent = canvas;
+    const ecs_entity_t parent = canvas;
     const unsigned char layer = 6;
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     fix_text_for_screen_size(&pixel_position, &font_size, canvas_size);

@@ -1,9 +1,12 @@
-void set_ui_clicked_mut(ecs_world_t *world, const ecs_entity_t ui) {
+void on_element_clicked(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t ui) {
     if (zox_has(ui, Clickable)) {
         // zox_set(ui, ClickState, { 1 }) // i made it like this due to some complication
         ClickState *clickState = zox_get_mut(ui, ClickState)
         clickState->value = 1;
         zox_modified(ui, ClickState)
+        Clicker *clicker = zox_get_mut(ui, Clicker)
+        clicker->value = player;
+        zox_modified(ui, Clicker)
     }
 }
 
@@ -40,7 +43,7 @@ void set_selectable_state_mut(ecs_world_t *world, const ecs_entity_t ui_entity, 
 
 void raycaster_select_ui(ecs_world_t *world, RaycasterTarget *raycasterTarget, const ecs_entity_t ui_entity) {
     if (raycasterTarget->value != ui_entity) {
-        if (raycasterTarget->value && ecs_is_alive(world, raycasterTarget->value)) set_selectable_state_mut(world, raycasterTarget->value, 0);
+        if (raycasterTarget->value && zox_alive(raycasterTarget->value)) set_selectable_state_mut(world, raycasterTarget->value, 0);
         raycasterTarget->value = ui_entity;
         // zox_log(" ===== UI SELECTED [%lu] =====\n",  ui_entity)
         /*if (raycasterTarget->value != 0) zox_set(raycasterTarget->value, SelectState, { 0 })
@@ -49,7 +52,7 @@ void raycaster_select_ui(ecs_world_t *world, RaycasterTarget *raycasterTarget, c
 }
 
 void raycaster_select_ui_mut(ecs_world_t *world, const ecs_entity_t raycaster_entity, const ecs_entity_t ui_entity) {
-    RaycasterTarget *raycasterTarget = ecs_get_mut(world, raycaster_entity, RaycasterTarget);
+    RaycasterTarget *raycasterTarget = zox_get_mut(raycaster_entity, RaycasterTarget)
     if (raycasterTarget->value != ui_entity) {
         raycaster_select_ui(world, raycasterTarget, ui_entity);
         zox_modified(raycaster_entity, RaycasterTarget)
@@ -60,4 +63,9 @@ void raycaster_select_ui_mut(ecs_world_t *world, const ecs_entity_t raycaster_en
 #ifdef zoxel_debug_ui_selectable_states
     else zox_log(" ! [%lu]'s was already set\n", ui_entity)
 #endif
+}
+
+void raycaster_select_element(ecs_world_t *world, const ecs_entity_t raycaster, const ecs_entity_t element) {
+    zox_set(raycaster, RaycasterTarget, { element })
+    zox_set(element, SelectState, { 1 })
 }

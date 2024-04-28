@@ -17,9 +17,10 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
     zox_iter_world()
     const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
     for (int i = 0; i < it->count; i++) {
+        zox_field_e()
         const DeviceLinks *deviceLinks = &deviceLinkss[i];
         for (int j = 0; j < deviceLinks->length; j++) {
-            ecs_entity_t device_entity = deviceLinks->value[j];
+            const ecs_entity_t device_entity = deviceLinks->value[j];
             if (zox_has(device_entity, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                 if (keyboard->m.pressed_this_frame) {
@@ -48,6 +49,8 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
                 } /*else if (keyboard->y.pressed_this_frame) {
                     toggle_camera_mode(world);
                 }*/
+
+                else if (keyboard->p.pressed_this_frame) toggle_free_roam_camera(world, e);
             }
         }
     }

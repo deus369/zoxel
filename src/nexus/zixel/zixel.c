@@ -15,15 +15,11 @@ unsigned char boot_zixel(ecs_world_t *world) {
     if (!headless) spawn_music(world, instrument_piano);
     load_element_styles(world);
     spawn_players_cameras_canvases(world);
-    /*spawn_players(world);
-    spawn_player_cameras(world, players_playing);
-    ecs_entity_t canvas = spawn_default_ui(world, main_camera, float2_zero, float2_zero);
-    zox_spawn_main_menu(world, game_name, canvas);*/
     return EXIT_SUCCESS;
 }
 
-void ZixelImport(ecs_world_t *world) {
-    zox_module(Zixel)
+void ZoxGameImport(ecs_world_t *world) {
+    zox_module(ZoxGame)
     zox_game_type = zox_game_mode_2D;
     boot_event = boot_zixel;
     menu_sky_color = (float3) { 0.3f, 0.7f, 0.7f };

@@ -20,7 +20,7 @@ ecs_entity_t spawn_crosshair(ecs_world_t *world, const ecs_entity_t canvas, cons
     zox_set(crosshair_ui, Color, { crosshair_color})
     zox_set(crosshair_ui, GenerateTexture, { 1 })
     zox_set(crosshair_ui, Seed, { 666 })
-    zox_log(" > crosshair [%lu]\n", crosshair_ui)
+    // zox_log(" > crosshair [%lu]\n", crosshair_ui)
     return crosshair_ui;
 }
 

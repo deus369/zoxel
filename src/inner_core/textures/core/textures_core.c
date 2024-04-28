@@ -2,6 +2,7 @@
 #define zoxel_textures_core
 
 // zoxel_settings
+const int2 voxel_texture_size = (int2) { 16, 16 }; // 32, 32 };
 #include "settings/settings.c"
 // zoxel_component_includes
 zox_declare_tag(Texture)
@@ -42,8 +43,8 @@ zox_memory_component(TilemapUVs, float2)
 #include "tests/test_texture.c"
 
 void spawn_prefabs_textures_core(ecs_world_t *world) {
-    spawn_prefab_noise_texture(world);
-    spawn_prefab_texture(world);
+    spawn_prefab_texture_noise(world, voxel_texture_size);
+    spawn_prefab_texture(world, voxel_texture_size);
     spawn_prefab_tilemap(world);
 }
 

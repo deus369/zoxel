@@ -2,8 +2,7 @@ ecs_entity_t prefab_texture;
 ecs_entity_t prefab_texture_noise;
 // int2 texture_size = (int2) { 16, 16 };
 
-ecs_entity_t spawn_prefab_texture_noise(ecs_world_t *world) {
-    int2 texture_size = (int2) { 32, 32 };
+ecs_entity_t spawn_prefab_texture_noise(ecs_world_t *world, const int2 texture_size) {
     zox_prefab()
     zox_prefab_name("prefab_texture")
     add_seed(world, e, 666);
@@ -13,13 +12,11 @@ ecs_entity_t spawn_prefab_texture_noise(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_prefab_texture(ecs_world_t *world) {
-    int2 texture_size = (int2) { 32, 32 };
+ecs_entity_t spawn_prefab_texture(ecs_world_t *world, const int2 texture_size) {
     zox_prefab()
     zox_prefab_name("prefab_texture")
     add_texture_non_generate(world, e, texture_size);
     prefab_texture = e;
-    spawn_prefab_texture_noise(world);
     return e;
 }
 

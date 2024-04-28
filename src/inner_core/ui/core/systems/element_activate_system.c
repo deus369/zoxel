@@ -82,7 +82,7 @@ void ElementActivateSystem(ecs_iter_t *it) {
 #endif
                 }
             }
-        } else if (did_activate) set_ui_clicked_mut(world, element);
+        } else if (did_activate) on_element_clicked(world, e, element);
     }
 } zox_declare_system(ElementActivateSystem)
 #endif

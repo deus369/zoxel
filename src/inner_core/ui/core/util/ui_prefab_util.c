@@ -53,6 +53,7 @@ void add_ui_plus_components_invisible(ecs_world_t *world, const ecs_entity_t e) 
 void add_clickable_components(ecs_world_t *world, const ecs_entity_t e) {
     zox_add_tag(e, Clickable)
     zox_prefab_set(e, ClickState, { 0 })
+    zox_prefab_set(e, Clicker, { 0 })
     zox_prefab_set(e, ClickEvent, { NULL })
 }
 

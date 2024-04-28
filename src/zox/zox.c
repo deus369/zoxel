@@ -2,9 +2,6 @@
 #define zox_engine
 
 // engine imports, besides sub modules, it's core is flecs
-#ifndef zox_game
-    #define zox_game zoxel
-#endif
 #include "../core/util/settings/build_settings.c"
 #include "../core/util/settings/build_disables.c"
 #define FLECS_CUSTOM_BUILD

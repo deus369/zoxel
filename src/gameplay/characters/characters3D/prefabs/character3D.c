@@ -16,7 +16,8 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     zox_prefab_set(e, DiedTime, { 0 })
     zox_prefab_set(e, AnimationState, { zox_animation_idle })
     zox_prefab_set(e, AnimationStart, { 0 })
-    zox_prefab_set(e, Bounds3D, {{ 1, 1, 1 }})
+    zox_prefab_set(e, Bounds3D, { { 1, 1, 1 } })
+    zox_prefab_set(e, Position3DBounds, { { 0, 0, 0, 0, 0, 0 } })
     zox_prefab_set(e, VoxLink, { 0 })
     zox_add_tag(e, LinkChunk)
     zox_prefab_set(e, ChunkLink, { 0 })
@@ -33,6 +34,17 @@ ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, co
     zox_name("character3D")
     // transforms
     zox_set(e, Position3D, { position })
+    if (!player) {
+        const int bounds_radius = 6;
+        zox_set(e, Position3DBounds, { position.x - bounds_radius, position.x + bounds_radius, position.y - bounds_radius, position.y + bounds_radius, position.z - bounds_radius, position.z + bounds_radius  })
+    } else {
+        const float bottom_bounds = - real_chunk_scale * terrain_vertical;
+        const float top_bounds = - bottom_bounds + real_chunk_scale;
+        const float negative_bounds = -(terrain_spawn_distance) * (real_chunk_scale) + 0.1f;
+        const float position_bounds = (terrain_spawn_distance + 1) * (real_chunk_scale) - 0.1f;
+        zox_set(e, Position3DBounds, { negative_bounds, position_bounds, bottom_bounds, top_bounds, negative_bounds, position_bounds })
+    }
+
     zox_set(e, LastPosition3D, { position })
     zox_set(e, Rotation3D, { rotation })
     // voxels

@@ -25,9 +25,8 @@ void spawn_prefabs_engine(ecs_world_t *world) {
 }
 
 // #includes nexus game
-// for now we do this until we can control flecs module names
-#ifndef zox_game_module
-    #define zox_game_module Zoxel
+#ifndef zox_game
+    #define zox_game zoxel
 #endif
 #define capitalize_first(s) (toupper((s)[0]) + (s) + 1)
 #define str_macro(x) #x
@@ -36,5 +35,5 @@ void spawn_prefabs_engine(ecs_world_t *world) {
 
 // temp fix for now while it is forcefully capitalized
 void zox_import_game_module() {
-    zox_import_module(zox_game_module)
+    zox_import_module(ZoxGame)
 }

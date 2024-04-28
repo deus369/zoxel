@@ -19,6 +19,8 @@ int get_max_characters(const char *header_label, const text_group labels[], int 
     return max_characters;
 }
 
+extern ecs_entity_t zox_players[];
+
 ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas, const char *header_label, const int elements_count, const int max_elements, const text_group labels[], const ClickEvent events[], int2 pixel_position, const float2 anchor, const unsigned char is_close_button, unsigned char font_size, const unsigned char layer, const unsigned char is_scrollbar) {
     const ecs_entity_t parent = canvas;
     const unsigned char is_header = 1;
@@ -69,7 +71,8 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
     }
     zox_modified(e, Children)
 #ifdef zoxel_include_players
-    // if (!headless && elements_count > 0) select_first_button(world, children->value[list_start], zox_players[0]);
+    const ecs_entity_t player = zox_players[0]; // todo: pass in player through here
+    if (!headless && elements_count > 0) select_first_button(world, children->value[list_start], player);
 #endif
     return e;
 }

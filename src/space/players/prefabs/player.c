@@ -1,6 +1,5 @@
 ecs_entity_t prefab_player;
-ecs_entity_t main_player;
-ecs_entity_t local_player;
+ecs_entity_t main_player; // todo: remove main_player
 
 ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     zox_prefab()

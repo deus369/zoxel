@@ -9,6 +9,7 @@
 #include "component_float2.c"
 #include "component_float3.c"
 #include "component_float4.c"
+#include "component_entity.c"
 
 #define zox_component_string(type) zox_component_string##_##type(component##_##type)
 
@@ -24,6 +25,7 @@ void initialize_component_ids() {
     initialize_component_ids_float2();
     initialize_component_ids_float3();
     initialize_component_ids_float4();
+    initialize_component_ids_ecs_entity_t();
 }
 
 void dispose_component_ids() {
@@ -38,4 +40,5 @@ void dispose_component_ids() {
     dispose_component_ids_float2();
     dispose_component_ids_float3();
     dispose_component_ids_float4();
+    dispose_component_ids_ecs_entity_t();
 }

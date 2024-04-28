@@ -7,6 +7,7 @@ const float max_mouse_delta4 = 120.0f;
 const float max_mouse_delta2 = 200.0f;
 const double max_rotate_speed = 0.2; //  0.23;
 #define disable_player_rotate_alpha_force
+// shit remove this atm, it doubles up for coop
 float3 player_euler = (float3) { 0, 0, 0 };
 float3 camera_euler = (float3) { 0, 180 * degreesToRadians, 0 };
 
@@ -17,7 +18,7 @@ void Player3DRotateSystem(ecs_iter_t *it) {
     zox_field_in(CameraLink, cameraLinks, 4)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(CharacterLink, characterLinks, characterLink)
-        ecs_entity_t character = characterLink->value;
+        const ecs_entity_t character = characterLink->value;
         if (!character || !zox_has(character, Character3D)) continue;
         zox_field_i_in(CameraLink, cameraLinks, cameraLink)
         if (cameraLink->value) {
@@ -54,7 +55,7 @@ void Player3DRotateSystem(ecs_iter_t *it) {
                 float2 right_stick = float2_zero;
                 const Children *zevices = zox_get(device_entity, Children)
                 for (int k = 0; k < zevices->length; k++) {
-                    ecs_entity_t zevice_entity = zevices->value[k];
+                    const ecs_entity_t zevice_entity = zevices->value[k];
                     const DeviceButtonType *deviceButtonType = zox_get(zevice_entity, DeviceButtonType)
                     if (zox_has(zevice_entity, ZeviceStick)) {
                         if (deviceButtonType->value == zox_device_stick_right) {
@@ -62,6 +63,7 @@ void Player3DRotateSystem(ecs_iter_t *it) {
                             if (!zeviceDisabled->value) {
                                 const ZeviceStick *zeviceStick = zox_get(zevice_entity, ZeviceStick)
                                 right_stick = zeviceStick->value;
+                                right_stick.y *= -1;
                             }
                             break;
                         }
@@ -101,7 +103,7 @@ void Player3DRotateSystem(ecs_iter_t *it) {
         camera_euler.x -= euler.x;
         if (camera_euler.x >= 180) camera_euler.x -= 360;
         else if (camera_euler.x < -180) camera_euler.x += 360;
-        ecs_entity_t player_camera = zox_get_value(character, CameraLink)
+        const ecs_entity_t player_camera = zox_get_value(character, CameraLink)
         if (player_camera) {
             LocalRotation3D *player_camera_rotation3D = zox_get_mut(player_camera, LocalRotation3D)
             player_camera_rotation3D->value = quaternion_from_euler(camera_euler);

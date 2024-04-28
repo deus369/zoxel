@@ -9,19 +9,7 @@ void PlayerMoreShortcutsSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         const Keyboard *keyboard = &keyboards[i];
         // toggle player connected application
-        if ((keyboard->left_alt.is_pressed || keyboard->right_alt.is_pressed) && keyboard->enter.pressed_this_frame) {
-            sdl_toggle_fullscreen(world, main_app);
-        } else if (keyboard->p.pressed_this_frame) {
-            const GameState *gameState = zox_get(local_game, GameState)
-            if (gameState->value == zox_game_playing) {
-                ecs_entity_t main_camera = main_cameras[0]; // get player camera link instead
-                ecs_entity_t character = 0;
-                if (camera_mode == zox_camera_mode_first_person) character = zox_get_value(main_camera, ParentLink)
-                else character = zox_get_value(main_camera, CameraFollowLink)
-                if (character == 0) attach_to_character(world, main_player, main_camera, local_character3D);
-                else detatch_from_character(world, main_player, main_camera, local_character3D);
-            }
-        }
+        if ((keyboard->left_alt.is_pressed || keyboard->right_alt.is_pressed) && keyboard->enter.pressed_this_frame) sdl_toggle_fullscreen(world, main_app);
 #ifdef zoxel_tests_rotate_by_keys
         else if (keyboard->r.is_pressed) {
             float3 euler = (float3) { 0, 90 * degreesToRadians, 0 * degreesToRadians };
@@ -58,16 +46,16 @@ void PlayerMoreShortcutsSystem(ecs_iter_t *it) {
 
 
 /* else if (keyboard->space.is_pressed || keyboard->f.is_pressed) {
-    if (local_player != 0 && zox_has(local_player, Position2D)) {
-        const Position2D *position2D = zox_get(world, local_player, Position2D);
+    if (main_player != 0 && zox_has(main_player, Position2D)) {
+        const Position2D *position2D = zox_get(world, main_player, Position2D);
         if (keyboard->space.is_pressed) {
             Particle3DSpawnSystem(world, (float3) { position2D->value.x, position2D->value.y, 0 }, particleSpawnCount);
         }
         if (keyboard->f.is_pressed) {
             Particle2DSpawnSystem(world, position2D->value, particleSpawnCount);
         }
-    } else if (local_player != 0 && zox_has(local_player, Position3D)) {
-        const Position3D *position = zox_get(world, local_player, Position3D);
+    } else if (main_player != 0 && zox_has(main_player, Position3D)) {
+        const Position3D *position = zox_get(world, main_player, Position3D);
         if (keyboard->space.is_pressed) {
             Particle3DSpawnSystem(world, position->value, particleSpawnCount);
         }

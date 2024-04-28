@@ -20,12 +20,12 @@ zox_component_int2(ElementMargins)
 zox_component_float2(Anchor)
 zox_component_float2(AnchorSize)
 zox_component_float2(ElementBarSize)
-zox_component(UITrail, float3)
-zox_component(CanvasLink, ecs_entity_t)
-zox_component(UIHolderLink, ecs_entity_t)
-zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t)
-zox_entities_component(ElementLinks)
+zox_component_float3(UITrail)
+zox_component_entity(CanvasLink)
+zox_component_entity(UIHolderLink)
 zox_component_byte(HeaderHeight)
+zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t, ecs_entity_t)
+zox_entities_component(ElementLinks)
 // zoxel_include_util
 #include "util/ui_prefab_util.c"
 #include "util/ui_transform_util.c"
@@ -109,7 +109,7 @@ zox_system(ElementBarSystem, EcsOnUpdate, [in] ElementBar, [in] ElementBarSize, 
 if (!headless) {
     zox_system_1(Element2DMeshSystem, main_thread_pipeline, [none] Element, [in] PixelSize, [in] MeshAlignment, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] MeshVertices2D, [out] MeshGPULink, [out] TextureGPULink, [out] UvsGPULink, [none] !Element3D)
     zox_system_1(Element3DMeshSystem, main_thread_pipeline, [none] Element3D, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture,  [out] MeshGPULink, [out] UvsGPULink, [out] ColorsGPULink, [out] TextureGPULink)
-    zox_system_1(ButtonClickEventSystem, main_thread_pipeline, [none] Element, [in] ClickEvent, [out] ClickState)
+    zox_system_1(ButtonClickEventSystem, main_thread_pipeline, [in] ClickEvent, [out] ClickState, [out] Clicker, [none] Element)
 }
 zox_system(CanvasResizeSystem, EcsOnUpdate, [in] CameraLink, [in] Children, [in] cameras.ScreenToCanvas, [out] PixelSize, [none] Canvas)
 zoxel_end_module(UICore)

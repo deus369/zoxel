@@ -1,4 +1,6 @@
 #ifdef zoxel_inputs
+extern void canvas_select_first_button(ecs_world_t *world, const ecs_entity_t raycaster, const ecs_entity_t canvas);
+
 void ElementNavigationSystem(ecs_iter_t *it) {
     double delta_time = zox_delta_time;
     zox_iter_world()
@@ -19,9 +21,16 @@ void ElementNavigationSystem(ecs_iter_t *it) {
                 navigatorTimer->value = 0;
             }
             continue;
+        } else {
+            // select first
+            if (!raycasterTarget->value) {
+                zox_field_e()
+                const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
+                canvas_select_first_button(world, e, canvas);
+            }
         }
-        if (!raycasterTarget->value) zox_logg(" > raycaster not selected\n")
-        if (!raycasterTarget->value || !ecs_is_alive(world, raycasterTarget->value)) continue;
+        // if (!raycasterTarget->value) zox_logg(" > raycaster not selected\n")
+        if (!raycasterTarget->value || !zox_alive(raycasterTarget->value)) continue;
         float2 left_stick = float2_zero;
         zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
         // zoxel_log(" > raycasterTarget->value %lu\n", raycasterTarget->value);

@@ -16,7 +16,7 @@ void test_action_bar(ecs_world_t *world) {
 
 // used for testing the canvas scaling
 void spawn_corner_uis(ecs_world_t *world) {
-    int2 testSize = { 32, 32 };
+    const int2 testSize = { 32, 32 };
     spawn_element_on_canvas(world, main_canvas, (int2) { testSize.x / 2, testSize.y / 2 }, testSize, (float2) { 0, 0 });             // bottom left
     spawn_element_on_canvas(world, main_canvas, (int2) { - testSize.x / 2, testSize.y / 2 }, testSize, (float2) { 1.0f, 0.0 });      // bottom right
     spawn_element_on_canvas(world, main_canvas, (int2) { testSize.x / 2, - testSize.y / 2 }, testSize, (float2) { 0, 1.0f });        // top left

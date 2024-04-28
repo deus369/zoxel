@@ -111,9 +111,10 @@ ecs_entity_t create_terrain_bulk(ecs_world_t *world, int3 center_position) {
 #endif
 
 ecs_entity_t create_terrain(ecs_world_t *world, int3 center_position) {
-    #ifdef zox_time_create_terrain
-        begin_timing_absolute()
-    #endif
+#ifdef zox_time_create_terrain
+    begin_timing_absolute()
+#endif
+    spawn_terrain_grid(world, real_chunk_scale);
     ecs_entity_t tilemap = spawn_tilemap(world);
     int chunks_total_length = calculate_terrain_chunks_count(terrain_spawn_distance, terrain_vertical);
     ecs_entity_t terrain_world = spawn_terrain(world, tilemap, float3_zero, 1);
@@ -151,9 +152,9 @@ ecs_entity_t create_terrain(ecs_world_t *world, int3 center_position) {
     chunkLinks->value = create_int3_hash_map(chunks_total_length);
     for (int i = 0; i < chunks_total_length; i++) int3_hash_map_add(chunkLinks->value, chunk_positions[i], chunks[i]);
     zox_modified(terrain_world, ChunkLinks)
-    #ifdef zox_time_create_terrain
-        end_timing_absolute("    - create_terrain")
-    #endif
+#ifdef zox_time_create_terrain
+    end_timing_absolute("    - create_terrain")
+#endif
     return terrain_world;
 }
 
