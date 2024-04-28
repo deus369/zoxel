@@ -33,24 +33,24 @@ void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 pos
 // generates our terrain voxels
 void OctreeTerrainChunkSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(it->ctx, NULL)) return;
-    #ifdef zoxel_time_octree_terrain_chunk_system
-        begin_timing()
-    #endif
+#ifdef zoxel_time_octree_terrain_chunk_system
+    begin_timing()
+#endif
     const unsigned char target_depth = max_octree_depth;
     const unsigned char chunk_voxel_length = powers_of_two_byte[target_depth];
     const float2 map_size_f = (float2) { chunk_voxel_length, chunk_voxel_length };
-    const ChunkPosition *chunkPositions = ecs_field(it, ChunkPosition, 2);
-    GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 3);
-    ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 4);
-    ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 5);
+    zox_field_in(ChunkPosition, chunkPositions, 2)
+    zox_field_out(GenerateChunk, generateChunks, 3)
+    zox_field_out(ChunkDirty, chunkDirtys, 4)
+    zox_field_out(ChunkOctree, chunkOctrees, 5)
     for (int i = 0; i < it->count; i++) {
-        GenerateChunk *generateChunk = &generateChunks[i];
+        zox_field_i_out(GenerateChunk, generateChunks, generateChunk)
         if (generateChunk->value != 1) continue;
-        ChunkDirty *chunkDirty = &chunkDirtys[i];
+        zox_field_i_out(ChunkDirty, chunkDirtys, chunkDirty)
         if (chunkDirty->value) continue;
-        const ChunkPosition *chunkPosition = &chunkPositions[i];
-        ChunkOctree *chunkOctree = &chunkOctrees[i];
-        float3 chunk_position_float3 = float3_from_int3(chunkPosition->value);
+        zox_field_i_in(ChunkPosition, chunkPositions, chunkPosition)
+        zox_field_i_out(ChunkOctree, chunkOctrees, chunkOctree)
+        const float3 chunk_position_float3 = float3_from_int3(chunkPosition->value);
         fill_new_octree(chunkOctree, 0, target_depth);
         const byte2 set_dirt = (byte2) { 1, target_depth };
         const byte2 set_grass = (byte2) { 2, target_depth };
@@ -58,30 +58,30 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
         byte3 voxel_position;
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
             for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
-                #ifdef zoxel_is_flat_height
-                    int global_height = int_floor(terrain_amplifier * flat_height_level);
-                #else
-                    int global_height = int_floor(terrain_boost + -terrain_minus_amplifier + terrain_amplifier * perlin_terrain(
-                        noise_positiver2 + chunk_position_float3.x + (voxel_position.x / map_size_f.x), 
-                        noise_positiver2 + chunk_position_float3.z + (voxel_position.z / map_size_f.y),
-                        terrain_frequency, terrain_seed, terrain_octaves));
-                    if (global_height < lowest_voxel_height) global_height = lowest_voxel_height;
-                #endif
-                int global_position_y = (int) (chunk_position_float3.y * chunk_voxel_length);
+#ifdef zoxel_is_flat_height
+                int global_height = int_floor(terrain_amplifier * flat_height_level);
+#else
+                int global_height = int_floor(terrain_boost + -terrain_minus_amplifier + terrain_amplifier * perlin_terrain(
+                    noise_positiver2 + chunk_position_float3.x + (voxel_position.x / map_size_f.x),
+                    noise_positiver2 + chunk_position_float3.z + (voxel_position.z / map_size_f.y),
+                    terrain_frequency, terrain_seed, terrain_octaves));
+                if (global_height < lowest_voxel_height) global_height = lowest_voxel_height;
+#endif
+                const int global_position_y = (int) (chunk_position_float3.y * chunk_voxel_length);
                 int local_height = (int) (global_height - global_position_y);
                 if (local_height > 0) {
-                    unsigned char chunk_below_max = local_height > chunk_voxel_length;
+                    const unsigned char chunk_below_max = local_height > chunk_voxel_length;
                     if (chunk_below_max) local_height = chunk_voxel_length;
                     for (voxel_position.y = 0; voxel_position.y < local_height; voxel_position.y++) {
                         byte3 node_position = voxel_position;
                         if (!chunk_below_max && voxel_position.y == local_height - 1) {
                             // if top voxel
-                            int current_position_y = global_position_y + voxel_position.y;
+                            const int current_position_y = global_position_y + voxel_position.y;
                             if (current_position_y < sand_height) {
                                 // zoxel_log(" > sand voxel created\n");
                                 set_octree_voxel(chunkOctree, &node_position, &set_sand, 0);
                             } else {
-                                if (rand() % 100 >= 96) set_octree_voxel(chunkOctree, &node_position, &set_grass, 0);
+                                if (rand() % 100 <= grass_spawn_chance) set_octree_voxel(chunkOctree, &node_position, &set_grass, 0);
                                 else set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);
                             }
                         } else {
@@ -91,22 +91,22 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
                 }
             }
         }
-        #ifndef zox_disable_closing_octree_nodes
-            close_same_nodes(chunkOctree);
-        #endif
+#ifndef zox_disable_closing_octree_nodes
+        close_same_nodes(chunkOctree);
+#endif
         // close_solid_nodes(chunkOctree);
-        #ifdef zoxel_time_octree_terrain_chunk_system
-            did_do_timing()
-        #endif
+#ifdef zoxel_time_octree_terrain_chunk_system
+        did_do_timing()
+#endif
         generateChunk->value = 0;
         chunkDirty->value = 1;
         /*if (zox_has(e, GenerateChunkEntities)) {
             zox_set(e, GenerateChunkEntities, { zox_chunk_entities_state_triggered })
         }*/
     }
-    #ifdef zoxel_time_octree_terrain_chunk_system
-        end_timing("    - octree_terrain_chunk_system")
-    #endif
+#ifdef zoxel_time_octree_terrain_chunk_system
+    end_timing("    - octree_terrain_chunk_system")
+#endif
 } zox_declare_system(OctreeTerrainChunkSystem)
 
 
