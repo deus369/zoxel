@@ -6,7 +6,8 @@ void button_event_play_game(ecs_world_t *world, const ecs_entity_t player, const
     find_child_with_tag(canvas, MenuMain, menu)
     if (!menu) return;
     zox_delete_and_set(menu)
-    trigger_event_game(world, local_game, zox_game_playing);
+    const ecs_entity_t game = zox_get_value(player, GameLink)
+    trigger_event_game(world, game, zox_game_playing);
 }
 
 void button_event_end_game(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
@@ -14,7 +15,8 @@ void button_event_end_game(ecs_world_t *world, const ecs_entity_t player, const 
     find_child_with_tag(canvas, MenuPaused, menu)
     if (!menu) return;
     zox_delete_and_set(menu)
-    trigger_event_game(world, local_game, zox_game_start);
+    const ecs_entity_t game = zox_get_value(player, GameLink)
+    trigger_event_game(world, game, zox_game_start);
 }
 
 void button_event_menu_options(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
@@ -26,7 +28,6 @@ void button_event_menu_options(ecs_world_t *world, const ecs_entity_t player, co
 }
 
 void button_event_menu_main(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
-    // we should just check root ui -> trigger_entity
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     find_child_with_tag(canvas, MenuOptions, menu)
     if (menu == 0) return; // failed to find ...

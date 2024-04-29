@@ -22,7 +22,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     spawn_weather(world);
     if (!headless) spawn_music(world, instrument_piano); // _square
     load_element_styles(world);
-    spawn_players_cameras_canvases(world);
+    spawn_players_cameras_canvases(world, game);
     // debug/testing
 #ifdef zox_test_voxel_mesh
     test_animating_chunks(world, camera_begin_position);

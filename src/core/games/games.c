@@ -3,7 +3,8 @@
 
 unsigned char zox_game_type;
 zox_declare_tag(Game)
-zox_component_byte(GameState);
+zox_component_byte(GameState)
+zox_component_entity(GameLink)
 #include "data/game_modes.c"
 #include "data/game_states.c"
 #include "data/zox_game_event.c"
@@ -25,7 +26,8 @@ void spawn_prefabs_games(ecs_world_t *world) {
 
 zox_begin_module(Games)
 zox_define_tag(Game)
-zox_define_component(GameState)
+zox_define_component_byte(GameState)
+zox_define_component_entity(GameLink)
 // zox_system(PlayGameSystem, EcsPostUpdate, [in] GenericEvent)
 zoxel_end_module(Games)
 

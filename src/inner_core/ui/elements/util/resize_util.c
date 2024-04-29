@@ -1,5 +1,5 @@
 // uses resizes the mesh
-void on_resized_element(ecs_world_t *world, ecs_entity_t e, int2 pixel_size, float2 canvas_size) {
+void on_resized_element(ecs_world_t *world, const ecs_entity_t e, const int2 pixel_size, const float2 canvas_size) {
     if (!headless && zox_has(e, MeshVertices2D)) {
         const MeshAlignment *meshAlignment = zox_get(e, MeshAlignment)
         MeshVertices2D *meshVertices2D = zox_get_mut(e, MeshVertices2D)
@@ -27,17 +27,17 @@ void on_resized_element(ecs_world_t *world, ecs_entity_t e, int2 pixel_size, flo
                     zox_set(scrollbar, TextureSize, { scrollbar_size })
                     on_resized_element(world, scrollbar, scrollbar_size, canvas_size);
                     const Children *scrollbar_children = zox_get(scrollbar, Children);
-                    ecs_entity_t scrollbar_front = scrollbar_children->value[0];
+                    const ecs_entity_t scrollbar_front = scrollbar_children->value[0];
                     const int bounds_y = (scrollbar_size.y / 2) - scrollbar_size.x / 2;
                     zox_set(scrollbar_front, DraggableLimits, { (int4) { 0, 0, -bounds_y, bounds_y } })
                 }
             }
             const Children *header_children = zox_get(header, Children);
             if (header_children->length > 1) {
-                float2 header_position = zox_get_value(header, Position2D)
-                ecs_entity_t close_button = header_children->value[1];
-                int2 close_button_position = zox_get_value(close_button, PixelPosition)
-                float2 close_button_anchor = zox_get_value(close_button, Anchor)
+                const float2 header_position = zox_get_value(header, Position2D)
+                const ecs_entity_t close_button = header_children->value[1];
+                const int2 close_button_position = zox_get_value(close_button, PixelPosition)
+                const float2 close_button_anchor = zox_get_value(close_button, Anchor)
                 on_element_parent_updated(world, close_button, close_button_position, close_button_anchor, header_position, header_size, canvas_size);
             }
         }

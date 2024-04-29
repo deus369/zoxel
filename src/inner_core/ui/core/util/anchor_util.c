@@ -44,7 +44,7 @@ void set_element_position(ecs_world_t *world, const ecs_entity_t e, const int2 p
     }
     set_line_element_real_position2D(world, e, position2D, canvas_size, pixel_position);
     if (zox_has(e, Children)) {
-        int2 pixel_size = zox_get_value(e, PixelSize)
+        const int2 pixel_size = zox_get_value(e, PixelSize)
         const Children *children = zox_get(e, Children)
         for (int i = 0; i < children->length; i++) set_element_position(world, children->value[i], pixel_position_global, pixel_size, canvas_size);
     }

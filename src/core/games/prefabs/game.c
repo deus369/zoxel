@@ -1,5 +1,5 @@
 ecs_entity_t prefab_game;
-ecs_entity_t local_game;
+// ecs_entity_t local_game;
 
 ecs_entity_t spawn_prefab_game(ecs_world_t *world) {
     zox_prefab()
@@ -13,6 +13,6 @@ ecs_entity_t spawn_prefab_game(ecs_world_t *world) {
 ecs_entity_t spawn_game(ecs_world_t *world) {
     zox_instance(prefab_game)
     zox_name("game")
-    local_game = e;
+    // local_game = e;
     return e;
 }

@@ -8,18 +8,16 @@ void FreeCameraRotateSystem(ecs_iter_t *it) {
     rotate_power *= 10.0;
 #endif
     zox_iter_world()
-    const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
-    const CameraLink *cameraLinks = ecs_field(it, CameraLink, 3);
+    zox_field_in(DeviceLinks, deviceLinkss, 1)
+    zox_field_in(CameraLink, cameraLinks, 2)
     for (int i = 0; i < it->count; i++) {
-        const CameraLink *cameraLink = &cameraLinks[i];
+        zox_field_i_in(CameraLink, cameraLinks, cameraLink)
         if (cameraLink->value == 0) continue;
         const FreeRoam *freeRoam = zox_get(cameraLink->value, FreeRoam)
         if (freeRoam->value == 0) continue;
-        const DeviceLinks *deviceLinks = &deviceLinkss[i];
-        // unsigned char is_triggered = 0;
-        // ecs_entity_t mouse_entity = 0;
+        zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
         for (int j = 0; j < deviceLinks->length; j++) {
-            ecs_entity_t device_entity = deviceLinks->value[j];
+            const ecs_entity_t device_entity = deviceLinks->value[j];
             if (zox_has(device_entity, Mouse)) {
                 const Mouse *mouse = zox_get(device_entity, Mouse)
                 if (int_abs(mouse->delta.x) + int_abs(mouse->delta.y) >= max_mouse_delta || (mouse->delta.x == 0 && mouse->delta.y == 0)) continue;

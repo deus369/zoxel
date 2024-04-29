@@ -32,9 +32,7 @@ void set_ui_list_inspector(ecs_world_t *world, Children *children, const ecs_ent
     dispose_ecs_entity_t_array_d(entities);
 }
 
-void add_entity_components(ecs_world_t *world, text_group_dynamic_array_d* labels) {
-
-}
+void add_entity_components(ecs_world_t *world, text_group_dynamic_array_d* labels) { }
 
 void get_component_label(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t component, char *buffer) {
     const int size_of_buffer = inspector_component_size_buffer;
@@ -107,9 +105,9 @@ void set_inspector_element(ecs_world_t *world, const ecs_entity_t window_entity,
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const int scrollbar_margins = zox_gett_value(scrollbar, ElementMargins).x;
     const int scrollbar_width = zox_gett_value(scrollbar, PixelSize).x;
-        const int2 button_padding = (int2) { (int) (font_size * 0.46f), (int) (font_size * 0.3f) };
-        const int2 list_margins = (int2) { (int) (font_size * 0.8f), (int) (font_size * 0.8f) };
-        const int button_inner_margins = (int) (font_size * 0.5f);
+    const int2 button_padding = (int2) { (int) (font_size * 0.46f), (int) (font_size * 0.3f) };
+    const int2 list_margins = (int2) { (int) (font_size * 0.8f), (int) (font_size * 0.8f) };
+    const int button_inner_margins = (int) (font_size * 0.5f);
     // destroy previous ones
     for (int j = list_start; j < children->length; j++) zox_delete(children->value[j])
     // set new elements size
@@ -140,12 +138,12 @@ void set_inspector_element(ecs_world_t *world, const ecs_entity_t window_entity,
         if (ECS_HAS_ID_FLAG(id, OVERRIDE)) {
             // component = id & ECS_COMPONENT_MASK;
             // get_component_label(world, e, component, text);
-            ecs_entity_t component2 = id & ECS_COMPONENT_MASK;
+            const ecs_entity_t component2 = id & ECS_COMPONENT_MASK;
             int buffer_index = 0;
             buffer_index += snprintf(text + buffer_index, sizeof(text), "override [%s]", ecs_get_name(world, component2));
         } else if (ECS_HAS_ID_FLAG(id, PAIR)) {
-            ecs_entity_t relation = ecs_pair_first(world, id);
-            ecs_entity_t target = ecs_pair_second(world, id);
+            const ecs_entity_t relation = ecs_pair_first(world, id);
+            const ecs_entity_t target = ecs_pair_second(world, id);
             int buffer_index = 0;
             buffer_index += snprintf(text + buffer_index, sizeof(text), "pair %s [%lu]", ecs_get_name(world, relation), (long int) target);
         } else {

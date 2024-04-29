@@ -2,26 +2,23 @@ const double movement_multiplier = 0.08 * 100;
 const double shift_movement_multiplier = 3.0;
 
 void FreeCameraMoveSystem(ecs_iter_t *it) {
-    // unsigned char did_update = 0;
     double movement_power = zox_delta_time;
     movement_power *= movement_multiplier;
-    #ifdef zoxel_on_web
-        movement_power *= 10.0f;
-    #endif
+#ifdef zoxel_on_web
+    movement_power *= 10.0f;
+#endif
     zox_iter_world()
-    const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
-    const CameraLink *cameraLinks = ecs_field(it, CameraLink, 3);
+    zox_field_in(DeviceLinks, deviceLinkss, 1)
+    zox_field_in(CameraLink, cameraLinks, 2)
     for (int i = 0; i < it->count; i++) {
-        const CameraLink *cameraLink = &cameraLinks[i];
+        zox_field_i_in(CameraLink, cameraLinks, cameraLink)
         if (cameraLink->value == 0) continue;
         const FreeRoam *freeRoam = zox_get(cameraLink->value, FreeRoam)
         if (freeRoam->value == 0) continue;
-        const DeviceLinks *deviceLinks = &deviceLinkss[i];
-        // unsigned char is_triggered = 0;
-        // ecs_entity_t mouse_entity = 0;
+        zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
         float3 movement = { 0, 0, 0 };
         for (int j = 0; j < deviceLinks->length; j++) {
-            ecs_entity_t device_entity = deviceLinks->value[j];
+            const ecs_entity_t device_entity = deviceLinks->value[j];
             if (zox_has(device_entity, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                 if (keyboard->a.is_pressed) movement.x += -1;

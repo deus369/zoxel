@@ -7,14 +7,14 @@ unsigned char boot_zixel(ecs_world_t *world) {
     if (initialize_zox(world) == EXIT_FAILURE) return EXIT_FAILURE;
     if (!headless) load_app_icon(main_window, resources_folder_name"textures/game_icon.png");
     // Realm,  players, skybox
-    ecs_entity_t realm = spawn_realm(world);
+    const ecs_entity_t realm = spawn_realm(world);
     create_game_stats(world, realm);
-    ecs_entity_t game = spawn_game(world);
+    const ecs_entity_t game = spawn_game(world);
     zox_set(game, RealmLink, { realm })
     spawn_weather(world);
     if (!headless) spawn_music(world, instrument_piano);
     load_element_styles(world);
-    spawn_players_cameras_canvases(world);
+    spawn_players_cameras_canvases(world, game);
     return EXIT_SUCCESS;
 }
 

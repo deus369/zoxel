@@ -1,13 +1,13 @@
 const int particleSpawnCount = 266;
 const float debug_rotation_speed = 12;
 const float debug_rotation_addition = 5;
-extern ecs_entity_t local_character3D;
+extern ecs_entity_t local_character3D; // change to devicece links and use e!
 
 void PlayerMoreShortcutsSystem(ecs_iter_t *it) {
     zox_iter_world()
-    const Keyboard *keyboards = ecs_field(it, Keyboard, 1);
+    zox_field_in(Keyboard, keyboards, 1)
     for (int i = 0; i < it->count; i++) {
-        const Keyboard *keyboard = &keyboards[i];
+        zox_field_i_in(Keyboard, keyboards, keyboard)
         // toggle player connected application
         if ((keyboard->left_alt.is_pressed || keyboard->right_alt.is_pressed) && keyboard->enter.pressed_this_frame) sdl_toggle_fullscreen(world, main_app);
 #ifdef zoxel_tests_rotate_by_keys

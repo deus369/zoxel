@@ -13,13 +13,7 @@ void float2_make_zero(float2* value) {
     value->y = 0;
 }
 
-float2 float2_multiply_float(float2 input, float mul) {
-    input.x *= mul;
-    input.y *= mul;
-    return input;
-}
-
-void float2_multiply_float_p(float2 *input, float mul) {
+void float2_multiply_float_p(float2 *input, const float mul) {
     input->x *= mul;
     input->y *= mul;
 }
@@ -34,13 +28,7 @@ void float2_divide_float2(float2 *input, const float2 div) {
     input->y /= div.y;
 }
 
-float2 float2_divide(float2 input, float div) {
-    input.x /= div;
-    input.y /= div;
-    return input;
-}
-
-void float2_divide_p(float2 *input, float div) {
+void float2_divide_p(float2 *input, const float div) {
     input->x /= div;
     input->y /= div;
 }
@@ -50,8 +38,34 @@ void float2_add_float2_p(float2 *input, const float2 add) {
     input->y += add.y;
 }
 
-float2 float2_sub(float2 a, float2 b) {
+float2 float2_multiply_float(const float2 input, const float mul) {
+    return (float2) { input.x * mul, input.y * mul };
+}
+
+float2 float2_divide(const float2 input, const float div) {
+    return (float2) { input.x / div, input.y / div };
+}
+
+float2 float2_sub(const float2 a, const float2 b) {
     return (float2) { a.x - b.x, a.y - b.y };
+}
+
+float2 float2_add(const float2 a, const float2 b) {
+    return (float2) { a.x + b.x, a.y + b.y };
+}
+
+float2 float2_subtract(const float2 a, const float2 b) {
+    return (float2) { a.x - b.x, a.y - b.y };
+}
+
+float float2_highest(const float2 input) {
+    if (input.x > input.y) return input.x;
+    else return input.y;
+}
+
+float float2_lowest(const float2 input) {
+    if (input.x < input.y) return input.x;
+    else return input.y;
 }
 
 void float2_normalize_p(float2 *input) {
@@ -59,30 +73,12 @@ void float2_normalize_p(float2 *input) {
     float2_divide_p(input, length);
 }
 
-float2 float2_normalize(float2 input) {
-    float length = sqrt(input.x * input.x + input.y * input.y);
+float2 float2_normalize(const float2 input) {
+    const float length = sqrt(input.x * input.x + input.y * input.y);
     return float2_divide(input, length);
 }
 
-float2 float2_add(float2 a, float2 b) {
-    return (float2) { a.x + b.x, a.y + b.y };
-}
-
-float2 float2_subtract(float2 a, float2 b) {
-    return (float2) { a.x - b.x, a.y - b.y };
-}
-
-float float2_highest(float2 input) {
-    if (input.x > input.y) return input.x;
-    else return input.y;
-}
-
-float float2_lowest(float2 input) {
-    if (input.x < input.y) return input.x;
-    else return input.y;
-}
-
-float2 normalize2D(float2 input) {
-    float length = sqrt(input.x * input.x + input.y * input.y);
+float2 normalize2D(const float2 input) {
+    const float length = sqrt(input.x * input.x + input.y * input.y);
     return (float2) { input.x / length, input.y / length };
 }

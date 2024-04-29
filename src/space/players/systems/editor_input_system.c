@@ -1,10 +1,11 @@
 void EditorInputSystem(ecs_iter_t *it) {
     zox_iter_world()
-    zox_field_in(DeviceLinks, deviceLinkss, 2)
+    zox_field_in(DeviceLinks, deviceLinkss, 1)
+    zox_field_in(CanvasLink, canvasLinks, 2)
     for (int i = 0; i < it->count; i++) {
-        zox_field_e()
-        const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
         zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
+        zox_field_i_in(CanvasLink, canvasLinks, canvasLink)
+        const ecs_entity_t canvas = canvasLink->value;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device_entity = deviceLinks->value[j];
             if (zox_has( device_entity, Keyboard)) {

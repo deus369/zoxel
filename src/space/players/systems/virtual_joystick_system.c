@@ -1,20 +1,22 @@
 // #define zoxel_mouse_emulate_touch
 // #define zoxel_disable_mouse_lock
 void VirtualJoystickSystem(ecs_iter_t *it) {
-    if (!local_game) return;
-    const GameState *gameState = zox_get(local_game, GameState)
-    const unsigned char is_playing = gameState->value == zox_game_playing;
     zox_iter_world()
-    zox_field_in(DeviceLinks, deviceLinkss, 2)
-    zox_field_in(DeviceMode, deviceModes, 3)
-    zox_field_in(RaycasterResult, raycasterResults, 4)
+    zox_field_in(DeviceLinks, deviceLinkss, 1)
+    zox_field_in(DeviceMode, deviceModes, 2)
+    zox_field_in(RaycasterResult, raycasterResults, 3)
+    zox_field_in(GameLink, gameLinks, 4)
     for (int i = 0; i < it->count; i++) {
+        zox_field_i_in(GameLink, gameLinks, gameLink)
+        if (!gameLink->value) return;
         zox_field_i_in(RaycasterResult, raycasterResults, raycasterResult)
         if (raycasterResult->value) continue;   // if raycasted ui, don't process
         zox_field_e()
         const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
         zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
         zox_field_i_in(DeviceMode, deviceModes, deviceMode)
+        const GameState *gameState = zox_get(gameLink->value, GameState)
+        const unsigned char is_playing = gameState->value == zox_game_playing;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device_entity = deviceLinks->value[j];
             if (deviceMode->value == zox_device_mode_touchscreen) {

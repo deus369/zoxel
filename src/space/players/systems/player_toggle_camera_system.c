@@ -1,20 +1,23 @@
 void PlayerToggleCameraSystem(ecs_iter_t *it) {
     zox_iter_world()
-    const DeviceLinks *deviceLinkss = ecs_field(it, DeviceLinks, 2);
-    const CharacterLink *characterLinks = ecs_field(it, CharacterLink, 3);
+    zox_field_in(DeviceLinks, deviceLinkss, 1)
+    zox_field_in(CharacterLink, characterLinks, 2)
+    zox_field_in(GameLink, gameLinks, 3)
     for (int i = 0; i < it->count; i++) {
-        const GameState *gameState = zox_get(local_game, GameState)
+        zox_field_i_in(GameLink, gameLinks, gameLink)
+        if (!gameLink->value) continue;
+        const GameState *gameState = zox_get(gameLink->value, GameState)
         if (gameState->value != zox_game_playing) continue;
-        const CharacterLink *characterLink = &characterLinks[i];
+        zox_field_i_in(CharacterLink, characterLinks, characterLink)
         if (!characterLink->value) continue;
         if (zox_has(characterLink->value, DisableMovement)) {
             const DisableMovement *disableMovement = zox_get(characterLink->value, DisableMovement)
             if (disableMovement->value) continue;
         }
         unsigned char is_toggle_camera = 0;
-        const DeviceLinks *deviceLinks = &deviceLinkss[i];
+        zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
         for (int j = 0; j < deviceLinks->length; j++) {
-            ecs_entity_t device_entity = deviceLinks->value[j];
+            const ecs_entity_t device_entity = deviceLinks->value[j];
             if (zox_has(device_entity, Mouse)) {
                 const Mouse *mouse = zox_get(device_entity, Mouse)
                 if (mouse->middle.pressed_this_frame) is_toggle_camera = 1;
@@ -37,8 +40,6 @@ void PlayerToggleCameraSystem(ecs_iter_t *it) {
                 }
             }
         }
-        // if (is_toggle_camera) zoxel_log("   > toggling camera state  [%lu]\n", characterLink->value);
         if (is_toggle_camera) toggle_camera_mode(world);
-        //toggle_camera_perspective(world, characterLink->value);
     }
 } zox_declare_system(PlayerToggleCameraSystem)

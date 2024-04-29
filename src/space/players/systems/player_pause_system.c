@@ -1,8 +1,8 @@
 void PlayerPauseSystem(ecs_iter_t *it) {
-    zox_iter_world()
-    zox_field_in(DeviceLinks, deviceLinkss, 2)
     unsigned char did_toggle_pause = 0; // for now, no support for different games at once
     ecs_entity_t triggering_player = 0;
+    zox_iter_world()
+    zox_field_in(DeviceLinks, deviceLinkss, 1)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
         for (int j = 0; j < deviceLinks->length; j++) {

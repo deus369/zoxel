@@ -1,12 +1,14 @@
 void DeviceModeResponseSystem(ecs_iter_t *it) {
-    if (!local_game) return;
     zox_iter_world()
-    const unsigned char game_state = zox_get_value(local_game, GameState)
     zox_field_in(DeviceMode, deviceModes, 1)
     zox_field_in(DeviceModeDirty, deviceModeDirtys, 2)
+    zox_field_in(GameLink, gameLinks, 3)
     for (int i = 0; i < it->count; i++) {
+        zox_field_i_in(GameLink, gameLinks, gameLink)
+        if (!gameLink->value) continue;
         zox_field_i_in(DeviceMode, deviceModes, deviceMode)
         zox_field_i_in(DeviceModeDirty, deviceModeDirtys, deviceModeDirty)
+        const unsigned char game_state = zox_get_value(gameLink->value, GameState)
         if (deviceModeDirty->value != 0 && deviceModeDirty->value != deviceMode->value) {
             zox_field_e()
             const ecs_entity_t canvas = zox_get_value(e, CanvasLink)

@@ -4,6 +4,7 @@ unsigned char game_rule_attach_to_character = 1;
 #else
 unsigned char game_rule_attach_to_character = 0;
 #endif
+const unsigned char player_vox_index = 0;
 
 void player_start_game(ecs_world_t *world, const ecs_entity_t player) {
     // destroy again - secondary players
@@ -36,7 +37,7 @@ void player_start_game(ecs_world_t *world, const ecs_entity_t player) {
                 spawn_position.z += rand() % 16;
             }
             const float4 spawn_rotation = quaternion_identity;
-            const vox_file vox = vox_files[3]; // get mr penguin vox
+            const vox_file vox = vox_files[player_vox_index]; // get mr penguin vox
             character_group = spawn_player_character3D_in_world(world, &vox, spawn_position, spawn_rotation, 0, player);
             const ecs_entity_t character = character_group.x;
             zox_set(player, CharacterLink, { character })

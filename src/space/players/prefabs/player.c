@@ -7,6 +7,7 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     // core players data
     zox_add_tag(e, Player)
     zox_prefab_set(e, PlayerState, { camera_mode })
+    zox_prefab_set(e, GameLink, { 0 })
     // Player -> Devices
     zox_prefab_set(e, DeviceMode, { 0 })
     zox_prefab_set(e, DeviceModeDirty, { 0 })

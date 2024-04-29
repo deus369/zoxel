@@ -6,14 +6,14 @@ extern ecs_entity_t fps_display;
 #define main_camera_rotation_speed 60 * 0.22f
 ecs_entity_t zoxel_main_menu;
 
-void spawn_players(ecs_world_t *world) {
+void spawn_players(ecs_world_t *world, const ecs_entity_t game) {
     if (headless) return;   // no players in headless mode
     spawn_connected_devices(world);
     if (is_split_screen) players_playing = 2;
     else players_playing = 1;
     for (int i = 0; i < players_playing; i++) {
         const ecs_entity_t e = spawn_player(world);
-        add_player(local_game, e);
+        add_player(world, game, e);
         zox_set(e, CameraLink, { main_cameras[i] })
         zox_players[i] = e;
         if (i == 0) main_player = e;
@@ -63,8 +63,8 @@ void zox_spawn_main_menu(ecs_world_t *world, const ecs_entity_t player, const ch
 #endif
 }
 
-void spawn_players_cameras_canvases(ecs_world_t *world) {
-    spawn_players(world);
+void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game) {
+    spawn_players(world, game);
     set_camera_mode_pre_defined(world);
     set_main_cameras((int) players_playing);
     const unsigned char camera_fov = get_camera_mode_fov(camera_mode);

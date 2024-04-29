@@ -4,6 +4,8 @@ void player_end_game(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t character = zox_get_value(player, CharacterLink)
     const float2 main_menu_anchor = float2_half;
     const int2 main_menu_position = int2_zero;
+    find_child_with_tag(canvas, MenuPaused, menu_paused)
+    if (menu_paused) zox_delete(menu_paused) // for second player
     dispose_in_game_ui(world, player);
     disable_inputs_until_release(world, player, zox_device_mode_none);
     if (character) detatch_from_character(world, player, camera, character);

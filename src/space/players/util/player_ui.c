@@ -1,6 +1,7 @@
 const unsigned char player_uis_count = 3;
-const int2 crosshair_size = (int2) { 64, 64 };
-const color crosshair_color = (color) { 66, 35, 25, 25 };
+const int2 crosshair_texture_size = (int2) { 24, 24 };
+const int2 crosshair_pixel_size = (int2) { 48, 48 };
+const color crosshair_color = (color) { 33, 122, 122, 13 };
 ecs_entity_t game_ui_touch = 0;
 
 void spawn_in_game_ui_touch(ecs_world_t *world, const ecs_entity_t canvas) {
@@ -13,7 +14,7 @@ void spawn_in_game_ui_touch(ecs_world_t *world, const ecs_entity_t canvas) {
 
 ecs_entity_t spawn_crosshair(ecs_world_t *world, const ecs_entity_t canvas, const  ecs_entity_t parent) {
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    const ecs_entity_t crosshair_ui = spawn_element_basic(world, canvas, parent, int2_zero, crosshair_size, crosshair_size, float2_half, 1, int2_half(canvas_size), canvas_size);
+    const ecs_entity_t crosshair_ui = spawn_element_basic(world, canvas, parent, int2_zero, crosshair_pixel_size, crosshair_texture_size, float2_half, 1, int2_half(canvas_size), canvas_size);
     zox_add_tag(crosshair_ui, FrameTexture)
     zox_set(crosshair_ui, FrameCorner, { 7 })
     zox_set(crosshair_ui, OutlineThickness, { 3 })

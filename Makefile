@@ -209,12 +209,11 @@ endif
 make_flecs = $(CC) $(flecs_flags) $(CFLAGS) $(CFLAGS_RELEASE) $(flecs_source) -o $(flecs_obj) $(flecs_libs)
 make_flecs_lib = ar rcs $(flecs_target) $(flecs_obj)
 make_flecs_big= set -e; \
-	bash bash/flecs/check_flecs_source.sh && bash bash/flecs/download_flecs_source.sh && \
-	cp include/flecs/flecs.h include; \
 	$(make_flecs) && \
 	$(make_flecs_lib)  && \
-	cp build/libflecs.a lib && \
-	cp include/flecs/flecs.h include
+	cp build/libflecs.a lib &&
+
+# bash bash/flecs/check_flecs_source.sh && bash bash/flecs/download_flecs_source.sh && \
 
 # downloads source into include, installs library into lib
 $(flecs_target):
@@ -227,8 +226,9 @@ install-sdl:
 	@ bash bash/sdl/install_sdl.sh
 
 install-flecs:
-	@ bash bash/flecs/remove_flecs.sh
 	@ bash bash/flecs/download_flecs_source.sh
+
+# @ bash bash/flecs/remove_flecs.sh
 
 remove-flecs:
 	@ bash bash/flecs/remove_flecs.sh
