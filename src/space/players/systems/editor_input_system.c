@@ -12,6 +12,8 @@ void EditorInputSystem(ecs_iter_t *it) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                 // gizmos
                 if (keyboard->z.pressed_this_frame) toggle_collision_debug(world);      // z : collision gizmos
+                // test
+                else if (keyboard->t.pressed_this_frame) trigger_canvas_fade_transition(world, canvas);
                 // toggle uis
                 else if (keyboard->x.pressed_this_frame) toggle_ui_with_tag(spawn_fps_display, FPSDisplay)
                 else if (keyboard->c.pressed_this_frame) toggle_ui_with_tag(spawn_game_debug_label, GameDebugLabel)

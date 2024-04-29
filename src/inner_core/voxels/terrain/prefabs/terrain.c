@@ -1,5 +1,5 @@
 ecs_entity_t prefab_terrain;
-ecs_entity_t local_terrain;
+ecs_entity_t local_terrain; // todo: remove and just use Realm's TerrainLink
 
 ecs_entity_t spawn_prefab_terrain(ecs_world_t *world) {
     zox_prefab()

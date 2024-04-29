@@ -10,5 +10,4 @@ void EternalRotationSystem(ecs_iter_t *it) {
         float4 rotate_speed = quaternion_from_euler(euler);
         rotation3D->value = quaternion_rotate(rotate_speed, rotation3D->value);
     }
-}
-zox_declare_system(EternalRotationSystem)
+} zox_declare_system(EternalRotationSystem)

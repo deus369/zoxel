@@ -4,3 +4,4 @@
 #define zox_animation_shrink 3
 #define zox_animation_fadeout 4
 #define zox_animation_fadein 5
+#define zox_animation_waiting 6 // like none but a delay between animations

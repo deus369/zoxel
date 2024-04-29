@@ -45,6 +45,9 @@ zox_memory_component(ZoxName, unsigned char)
 zox_memory_component(ColorRGBs, color_rgb)
 zox_memory_component(Colors, color)
 zox_entities_component(EntityLinks)
+zox_component_double(EventTime)
+zox_component_entity(EventInput)
+zox_function_component(TimedEvent, void, ecs_world_t*, const ecs_entity_t)
 // zoxel_util_includes
 #include "util/generic_util.c"
 #include "util/convert_ascii.c"
@@ -56,6 +59,7 @@ zox_entities_component(EntityLinks)
 #include "systems/destroy_in_frame_system.c"
 #include "systems/generic_event_debug_system.c"
 #include "systems/death_clean_system.c"
+#include "systems/timed_event_system.c"
 
 void dispose_generic(ecs_world_t *world) {
     dispose_component_ids();
@@ -63,6 +67,13 @@ void dispose_generic(ecs_world_t *world) {
 
 void spawn_prefabs_generic(ecs_world_t *world) {
     spawn_prefab_generic_event(world);
+}
+
+void delay_event(ecs_world_t *world, void (*value)(ecs_world_t*, const ecs_entity_t), const ecs_entity_t e, const double delay) {
+    const ecs_entity_t event = ecs_new(world, 0);
+    zox_set(event, TimedEvent, { value })
+    zox_set(event, EventInput, { e })
+    zox_set(event, EventTime, { delay })
 }
 
 zox_begin_module(Generic)
@@ -104,8 +115,12 @@ zox_define_memory_component(ZoxName)
 zox_define_component(EntityTarget)
 zox_define_component(ComponentTarget)
 zox_define_component(ClickingEntity)
+zox_define_component_double(EventTime)
+zox_define_component_entity(EventInput)
+zox_define_component(TimedEvent)
 // zoxel_system_defines
 zox_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
+zox_system_1(TimedEventSystem, main_thread_pipeline, [in] TimedEvent, [in] EventInput, [out] EventTime) // assume spawning in generic events
 zoxel_end_module(Generic)
 
 #endif
