@@ -1,4 +1,3 @@
-
 // builds the character vox meshes
 void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(it->ctx, NULL)) return;

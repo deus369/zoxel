@@ -22,11 +22,11 @@ extern ecs_entity_t local_terrain;
 // realm -> players -> characters
 // extern ecs_entity_t local_character3D;
 
-void add_entity_to_labels(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level) {
+void add_entity_to_labels(ecs_world_t *world, const ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, const int tree_level) {
     if (!e) return;
     char *text = malloc(hierarchy_max_line_characters);
     if (!zox_has(e, ZoxName)) {
-        snprintf(text, hierarchy_max_line_characters, "_%lu [%i]", (long int) e, tree_level);
+        snprintf(text, hierarchy_max_line_characters, "e [%lu] -%i", (long int) e, tree_level);
     } else {
         const ZoxName *zoxName = zox_get(e, ZoxName)
         char *text2 = convert_zext_to_text(zoxName->value, zoxName->length);
@@ -141,7 +141,7 @@ void set_ui_list_hierarchy(ecs_world_t *world, Children *children, ecs_entity_t 
     for (int j = 0; j < labels_count; j++) {
         unsigned char render_disabled = !(j >= 0 && j < elements_visible);
         int2 label_position = get_element_label_position(j, font_size, button_padding, button_inner_margins, window_size, list_margins, is_scrollbar, scrollbar_width, scrollbar_margins);
-        const ecs_entity_t list_element = spawn_button(world, window_entity, canvas, label_position, button_padding, float2_half, labels->data[j].text, font_size, button_layer, window_pixel_position_global, window_size, canvas_size, render_disabled);
+        const ecs_entity_t list_element = spawn_button(world, window_entity, canvas, label_position, button_padding, float2_half, labels->data[j].text, font_size, button_layer, window_pixel_position_global, window_size, canvas_size, render_disabled, button_color);
         zox_set(list_element, ClickEvent, { click_event.value })
         zox_set(list_element, EntityTarget, { entities->data[j] })
         // zox_prefab_set(list_element, EntityTarget, { entities->data[j] })

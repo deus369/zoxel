@@ -20,6 +20,7 @@ zox_component_byte(ListUIMax)
 #include "prefabs/button.c"
 #include "prefabs/header.c"
 #include "prefabs/window.c"
+#include "prefabs/scrollbar_front.c"
 #include "prefabs/scrollbar.c"
 #include "prefabs/ui_list.c"
 #include "prefabs/elementbar2D_front.c"

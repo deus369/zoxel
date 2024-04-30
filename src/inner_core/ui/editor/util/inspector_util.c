@@ -21,7 +21,7 @@ void set_ui_list_inspector(ecs_world_t *world, Children *children, const ecs_ent
         unsigned char render_disabled = !(j >= 0 && j < elements_visible);
         int2 label_position = (int2) { 0, (int) (window_size.y / 2) - (j + 0.5f) * (font_size + button_padding.y * 2) - list_margins.y - j * button_inner_margins };
         if (is_scrollbar) label_position.x -= (scrollbar_width + scrollbar_margins * 2) / 2;
-        ecs_entity_t list_element = spawn_button(world, window_entity, canvas, label_position, button_padding, float2_half, labels->data[j].text, font_size, button_layer, window_pixel_position_global, window_size, canvas_size, render_disabled);
+        ecs_entity_t list_element = spawn_button(world, window_entity, canvas, label_position, button_padding, float2_half, labels->data[j].text, font_size, button_layer, window_pixel_position_global, window_size, canvas_size, render_disabled, button_color);
         zox_set(list_element, ClickEvent, { click_event.value })
         zox_prefab_set(list_element, EntityTarget, { entities->data[j] })
         children->value[list_start + j] = list_element;
@@ -84,9 +84,7 @@ void get_component_label(ecs_world_t *world, const ecs_entity_t e, const ecs_ent
 
 // sets inspector ui compponents, the inspector ui
 void set_inspector_element(ecs_world_t *world, const ecs_entity_t window_entity, const ecs_entity_t e) {
-    if (!ecs_is_alive(world, window_entity)) return;
-    if (!ecs_is_alive(world, e)) return;
-    // print_entity(world, e);
+    if (!zox_alive(window_entity) || !zox_alive(e)) return;
     const ecs_type_t *type = ecs_get_type(world, e);
     const ecs_id_t *type_ids = type->array;
     const int components_count = type->count; // int32_t
@@ -109,7 +107,7 @@ void set_inspector_element(ecs_world_t *world, const ecs_entity_t window_entity,
     const int2 list_margins = (int2) { (int) (font_size * 0.8f), (int) (font_size * 0.8f) };
     const int button_inner_margins = (int) (font_size * 0.5f);
     // destroy previous ones
-    for (int j = list_start; j < children->length; j++) zox_delete(children->value[j])
+    for (int j = list_start; j < children->length; j++) if (children->value[j]) zox_delete(children->value[j])
     // set new elements size
     const int labels_count = components_count + is_entity_name_label;
     const int childrens_length = list_start + labels_count;
@@ -120,9 +118,11 @@ void set_inspector_element(ecs_world_t *world, const ecs_entity_t window_entity,
         const int child_index = list_start + list_index;
         const unsigned char render_disabled = 0;
         const ZoxName *zoxName = zox_get(e, ZoxName)
-        char *text = convert_zext_to_text(zoxName->value, zoxName->length);
+        char *text;
+        if (zoxName) text = convert_zext_to_text(zoxName->value, zoxName->length);
+        else text = "no name";
         const int2 label_position = get_element_label_position(list_index, font_size, button_padding, button_inner_margins, window_size, list_margins, is_scrollbar, scrollbar_width, scrollbar_margins);
-        const ecs_entity_t list_element = spawn_button(world, window_entity, canvas, label_position, button_padding, float2_half, text, font_size, button_layer, window_pixel_position_global, window_size, canvas_size, render_disabled);
+        const ecs_entity_t list_element = spawn_button(world, window_entity, canvas, label_position, button_padding, float2_half, text, font_size, button_layer, window_pixel_position_global, window_size, canvas_size, render_disabled, button_color);
         free(text);
         children->value[child_index] = list_element;
     }
@@ -150,7 +150,7 @@ void set_inspector_element(ecs_world_t *world, const ecs_entity_t window_entity,
             component = id & ECS_COMPONENT_MASK;
             get_component_label(world, e, component, text);
         }
-        const ecs_entity_t list_element = spawn_button(world, window_entity, canvas, label_position, button_padding, float2_half, text, font_size, button_layer, window_pixel_position_global, window_size, canvas_size, render_disabled);
+        const ecs_entity_t list_element = spawn_button(world, window_entity, canvas, label_position, button_padding, float2_half, text, font_size, button_layer, window_pixel_position_global, window_size, canvas_size, render_disabled, button_color);
         zox_add_tag(list_element, InspectorLabel)
         zox_add_tag(list_element, ZextLabel)
         zox_set(list_element, EntityTarget, { e })

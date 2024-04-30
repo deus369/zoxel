@@ -111,31 +111,31 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
 #ifdef zoxel_time_chunk_colors_builds_system
     begin_timing()
 #endif
-    ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
-    const ChunkData *chunks = ecs_field(it, ChunkData, 2);
-    const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 3);
-    const ColorRGBs *colorRGBs = ecs_field(it, ColorRGBs, 4);
+    zox_field_out(ChunkDirty, chunkDirtys, 1)
+    zox_field_in(ChunkData, chunkDatas, 2)
+    zox_field_in(ChunkSize, chunkSizes, 3)
+    zox_field_in(ColorRGBs, colorRGBs, 4)
     zox_field_in(VoxScale, voxScales, 5)
-    MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 6);
-    MeshVertices *meshVertices = ecs_field(it, MeshVertices, 7);
-    MeshColorRGBs *meshColorRGBs = ecs_field(it, MeshColorRGBs, 8);
-    MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 9);
+    zox_field_out(MeshIndicies, meshIndicies, 6)
+    zox_field_out(MeshVertices, meshVertices, 7)
+    zox_field_out(MeshColorRGBs, meshColorRGBs, 8)
+    zox_field_out(MeshDirty, meshDirtys, 9)
     for (int i = 0; i < it->count; i++) {
-        ChunkDirty *chunkDirty = &chunkDirtys[i];
+        zox_field_i_out(ChunkDirty, chunkDirtys, chunkDirty)
         if (chunkDirty->value == 0) continue;
-        MeshDirty *meshDirty = &meshDirtys[i];
+        zox_field_i_out(MeshDirty, meshDirtys, meshDirty)
         if (meshDirty->value != 0) continue;
-        const ChunkData *chunk = &chunks[i];
-        const ChunkSize *chunkSize = &chunkSizes[i];
-        const ColorRGBs *colors2 = &colorRGBs[i];
+        zox_field_i_in(ChunkData, chunkDatas, chunkData)
+        zox_field_i_in(ChunkSize, chunkSizes, chunkSize)
+        zox_field_i_in(ColorRGBs, colorRGBs, colors2)
         zox_field_i_in(VoxScale, voxScales, voxScale)
-        MeshIndicies *meshIndicies2 = &meshIndicies[i];
-        MeshVertices *meshVertices2 = &meshVertices[i];
-        MeshColorRGBs *meshColorRGBs2 = &meshColorRGBs[i];
+        zox_field_i_out(MeshIndicies, meshIndicies, meshIndicies2)
+        zox_field_i_out(MeshVertices, meshVertices, meshVertices2)
+        zox_field_i_out(MeshColorRGBs, meshColorRGBs, meshColorRGBs2)
         // maybe use bounds here directly
         float3 total_mesh_offset = calculate_vox_bounds(chunkSize->value, voxScale->value);
         float3_multiply_float_p(&total_mesh_offset, -1);
-        build_chunk_mesh_colors(chunk, chunkSize, colors2, meshIndicies2, meshVertices2, meshColorRGBs2, total_mesh_offset, voxScale->value);
+        build_chunk_mesh_colors(chunkData, chunkSize, colors2, meshIndicies2, meshVertices2, meshColorRGBs2, total_mesh_offset, voxScale->value);
         chunkDirty->value = 0;
         meshDirty->value = 1;
 #ifdef zoxel_time_chunk_colors_builds_system

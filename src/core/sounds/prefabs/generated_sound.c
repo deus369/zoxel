@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_generated_sound(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_generated_sound(ecs_world_t *world, float frequency, float sound_length, unsigned char instrument_type) {
+ecs_entity_t spawn_generated_sound(ecs_world_t *world, const float frequency, const float sound_length, const unsigned char instrument_type) {
     zox_instance(prefab_generated_sound)
     zox_name("generated_sound")
     zox_set(e, SoundLength, { sound_length })

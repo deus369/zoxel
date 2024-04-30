@@ -1,5 +1,6 @@
 extern void button_event_close_window(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element);
 ecs_entity_t header_prefab;
+const color header_color = (color) { 77, 44, 33, 255 };
 
 ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
     zox_prefab()
@@ -10,7 +11,7 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
     zox_add_tag(e, Header)
     zox_add_tag(e, FrameTexture)
     zox_add_tag(e, TextureAddNoise)
-    zox_prefab_set(e, Color, {{ 77, 44, 33, 255 }})
+    zox_prefab_set(e, Color, { header_color })
     zox_prefab_set(e, FrameCorner, { 7 })
     zox_prefab_set(e, OutlineThickness, { 3 })
     zox_prefab_set(e, Children, { 0, NULL })
@@ -20,7 +21,7 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
 
 ecs_entity_t spawn_close_button(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t canvas, int2 pixel_position_global, int2 parent_size, int2 position, int size, int2 padding, unsigned char layer, int2 canvas_size) {
     const float2 anchor = (float2) { 1, 0.5f };
-    ecs_entity_t e = spawn_button(world, parent, canvas, position, padding, anchor, "X", size, layer, pixel_position_global, parent_size, canvas_size, 0);
+    ecs_entity_t e = spawn_button(world, parent, canvas, position, padding, anchor, "X", size, layer, pixel_position_global, parent_size, canvas_size, 0, button_color);
     zox_set(e, ClickEvent, { &button_event_close_window })
     zox_add_tag(e, CloseButton)
     return e;

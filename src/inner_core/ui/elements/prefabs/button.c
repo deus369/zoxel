@@ -1,4 +1,4 @@
-const color button_color = (color) {  22, 6, 8, 255 };
+const color button_color = (color) { 43, 44, 53, 255 };
 ecs_entity_t prefab_button;
 
 ecs_entity_t spawn_prefab_button(ecs_world_t *world) {
@@ -15,7 +15,7 @@ ecs_entity_t spawn_prefab_button(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_button(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const int2 padding, const float2 anchor, const char* text, const int font_size, const unsigned char layer, const int2 parent_pixel_position_global, const int2 parent_pixel_size, const int2 canvas_size, const unsigned char render_disabled) {
+ecs_entity_t spawn_button(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const int2 padding, const float2 anchor, const char* text, const int font_size, const unsigned char layer, const int2 parent_pixel_position_global, const int2 parent_pixel_size, const int2 canvas_size, const unsigned char render_disabled, const color button_color) {
     const unsigned char zext_layer = layer + 1;
     const int2 zext_size = (int2) { font_size * strlen(text), font_size };
     const int2 pixel_size = (int2) { zext_size.x + padding.x * 2, zext_size.y + padding.y * 2 };

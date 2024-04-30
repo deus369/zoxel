@@ -15,7 +15,7 @@ ecs_entity_t prefab_##name;\
 \
 void spawn_prefab_##name(ecs_world_t *world) {\
     zox_prefab()\
-    zox_prefab_name("prefab_"label)\
+    zox_prefab_name(label)\
     zox_add_tag(e, Name)\
     zox_prefab_set(e, UserLink, { 0 })\
     /*zox_prefab_set(e, ZoxName, { 0, NULL })*/\

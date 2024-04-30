@@ -42,6 +42,8 @@ void ZoxGameImport(ecs_world_t *world) {
     zox_module(ZoxGame)
     boot_event = boot_zoxel_game;
     zox_game_type = zox_game_mode_3D;
+    menu_sky_color = (float3) { 29 / 255.0f, 53 / 255.0f, 47 / 255.0f };
+    menu_sky_bottom_color = (float3) { 30 / 255.0f, 25 / 255.0f, 21 / 255.0f };
 }
 
 #endif

@@ -1,11 +1,8 @@
 #define zox_get_name(e) ecs_get_name(world, e)
 #define zox_set_name(e, name) ecs_set_name(world, e, name);
-// #define zox_set_entity_names
+#define zox_set_entity_names
 // #define zox_debug_spawning
-
-// get these from Text section
-// extern void prefab_set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char label[]);
-// extern void set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char label[]);
+extern void set_new_zox_name(ecs_world_t *world, const ecs_entity_t e, const char* text);
 
 char *long_int_itoa(char *str, long int num) {
     if (str == NULL) return NULL;
@@ -28,6 +25,8 @@ char* get_entity_string(const ecs_entity_t e, const char* name) {
 void zox_set_entity_name(ecs_world_t *world, const ecs_entity_t e, const char* name) {
     char* name_plus_id = get_entity_string(e, name);
     zox_set_name(e, name_plus_id)
+    set_new_zox_name(world, e, name);
+    // zox_set(e, ZoxName, { strlen(name), convert_string_to_zext(name) })
     free(name_plus_id);
 }
 
@@ -36,7 +35,7 @@ void zox_debug_spawn(ecs_world_t *world, const ecs_entity_t e, const char* name,
     zox_set_entity_name(world, e, name);
 #endif
 #ifdef zox_debug_spawning
-    zox_log(" + spawned %s [%s] [%lu]\n", entity_type, name, e)
+    zox_log(" + spawned %s [%s] [%lu] [%s]\n", entity_type, name, e, zox_get_name(e))
 #endif
 }
 
