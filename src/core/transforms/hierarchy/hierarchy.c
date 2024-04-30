@@ -10,8 +10,9 @@ zox_component(ParentLink, ecs_entity_t)
 const Children *children##_##tag = zox_get(parent, Children)\
 ecs_entity_t child_name = 0;\
 for (int i = 0; i < children##_##tag->length; i++) {\
-    if (zox_has(children##_##tag->value[i], tag)) {\
-        child_name = children##_##tag->value[i];\
+    const ecs_entity_t child_e = children##_##tag->value[i];\
+    if (child_e && zox_has(child_e, tag)) {\
+        child_name = child_e;\
         break;\
     }\
 }

@@ -46,16 +46,16 @@ unsigned char get_terrain_lod_from_camera_distance(unsigned char distance_to_cam
 
 void set_terrain_render_distance() {
     if (cpu_tier == 3) {
-        terrain_spawn_distance = 10;
+        terrain_spawn_distance = 16;
         terrain_vertical = 2;
         fog_density *= 0.5f;    // .3 for now to cover up transitions
         // set_max_octree_length(5);
     } else if (cpu_tier == 2) {
-        terrain_spawn_distance = 8;
+        terrain_spawn_distance = 10;
         terrain_vertical = 1;
         fog_density *= 0.6f;
     } else if (cpu_tier == 1) {
-        terrain_spawn_distance = 6;
+        terrain_spawn_distance = 8;
         terrain_vertical = 1;
         fog_density *= 0.8f;
     } else {

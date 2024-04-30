@@ -1,7 +1,3 @@
-extern float3 calculate_vox_bounds(int3 chunk_size);
-const unsigned char voxel_color_rand = 8;
-const unsigned char voxel_color_rand2 = 16;
-
 void add_voxel_face_colors(int_array_d *indicies, float3_array_d* vertices, color_rgb_array_d* color_rgbs,
     color_rgb voxel_color, float3 vertex_position_offset, float voxel_scale,
     const int voxel_face_indicies[], int voxel_face_indicies_length,
@@ -42,15 +38,13 @@ if (voxel##_##direction_facing == 0) {\
         voxel_face_vertices_length, direction##_##direction_facing);\
 }
 
-void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize, const ColorRGBs *colorRGBs,
-    MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColorRGBs *meshColorRGBs, float3 total_mesh_offset) {
+void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize, const ColorRGBs *colorRGBs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColorRGBs *meshColorRGBs, float3 total_mesh_offset, const float voxel_scale) {
     // go through and add a top face for each voxel position that is solid
-    float voxel_scale = model_scale;
     int_array_d* indicies = create_int_array_d(initial_dynamic_array_size);
     float3_array_d* vertices = create_float3_array_d(initial_dynamic_array_size);
     color_rgb_array_d* color_rgbs = create_color_rgb_array_d(initial_dynamic_array_size);
     // precount our face data for initialization
-    byte3 chunk_size = (byte3) { chunkSize->value.x, chunkSize->value.y, chunkSize->value.z };
+    const byte3 chunk_size = (byte3) { chunkSize->value.x, chunkSize->value.y, chunkSize->value.z };
     unsigned char voxel;
     color_rgb voxel_color;
     int array_index;
@@ -121,10 +115,11 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
     const ChunkData *chunks = ecs_field(it, ChunkData, 2);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 3);
     const ColorRGBs *colorRGBs = ecs_field(it, ColorRGBs, 4);
-    MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 5);
-    MeshVertices *meshVertices = ecs_field(it, MeshVertices, 6);
-    MeshColorRGBs *meshColorRGBs = ecs_field(it, MeshColorRGBs, 7);
-    MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 8);
+    zox_field_in(VoxScale, voxScales, 5)
+    MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 6);
+    MeshVertices *meshVertices = ecs_field(it, MeshVertices, 7);
+    MeshColorRGBs *meshColorRGBs = ecs_field(it, MeshColorRGBs, 8);
+    MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 9);
     for (int i = 0; i < it->count; i++) {
         ChunkDirty *chunkDirty = &chunkDirtys[i];
         if (chunkDirty->value == 0) continue;
@@ -133,13 +128,14 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         const ChunkData *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
         const ColorRGBs *colors2 = &colorRGBs[i];
+        zox_field_i_in(VoxScale, voxScales, voxScale)
         MeshIndicies *meshIndicies2 = &meshIndicies[i];
         MeshVertices *meshVertices2 = &meshVertices[i];
         MeshColorRGBs *meshColorRGBs2 = &meshColorRGBs[i];
         // maybe use bounds here directly
-        float3 total_mesh_offset = calculate_vox_bounds(chunkSize->value);
+        float3 total_mesh_offset = calculate_vox_bounds(chunkSize->value, voxScale->value);
         float3_multiply_float_p(&total_mesh_offset, -1);
-        build_chunk_mesh_colors(chunk, chunkSize, colors2, meshIndicies2, meshVertices2, meshColorRGBs2, total_mesh_offset);
+        build_chunk_mesh_colors(chunk, chunkSize, colors2, meshIndicies2, meshVertices2, meshColorRGBs2, total_mesh_offset, voxScale->value);
         chunkDirty->value = 0;
         meshDirty->value = 1;
 #ifdef zoxel_time_chunk_colors_builds_system

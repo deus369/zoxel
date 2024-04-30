@@ -26,7 +26,7 @@ void set_main_cameras(int new_count) {
     main_cameras_count = new_count;
 }
 
-void set_camera_transform(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t character, unsigned char camera_mode) {
+void set_camera_transform(ecs_world_t *world, const ecs_entity_t camera, const ecs_entity_t character, const unsigned char camera_mode) {
     if (!camera || !character) return;
     float3 target_position = float3_zero;
     const Position3D *position3D = ecs_get(world, character, Position3D);
@@ -59,7 +59,7 @@ void set_camera_transform(ecs_world_t *world, ecs_entity_t camera, ecs_entity_t 
     else zox_set(camera, Rotation3D, { camera_rotation })
 }
 
-unsigned char get_camera_mode_fov(unsigned char camera_mode) {
+unsigned char get_camera_mode_fov(const unsigned char camera_mode) {
     unsigned char camera_fov = 0;
     if (camera_mode == zox_camera_mode_first_person || camera_mode == zox_camera_mode_free || camera_mode == zox_camera_mode_third_person) camera_fov = 90;
     else if (camera_mode == zox_camera_mode_ortho) camera_fov = 45;
@@ -74,9 +74,9 @@ void set_camera_mode(ecs_world_t *world, unsigned char new_camera_mode) {
     // if (new_camera_mode == zox_camera_mode_third_person) new_camera_mode = zox_camera_mode_ortho;
     if (camera_mode == new_camera_mode) return;
     camera_mode = new_camera_mode;
-    unsigned char old_camera_fov = camera_fov;
-    unsigned char old_camera_follow_mode = camera_follow_mode;
-    unsigned char camera_fov = get_camera_mode_fov(camera_mode);
+    // const unsigned char old_camera_fov = camera_fov;
+    const unsigned char old_camera_follow_mode = camera_follow_mode;
+    const unsigned char camera_fov = get_camera_mode_fov(camera_mode);
     if (camera_mode == zox_camera_mode_first_person || camera_mode == zox_camera_mode_third_person) {
         camera_follow_mode = zox_camera_follow_mode_attach;
     } else if (camera_mode == zox_camera_mode_ortho) {
@@ -85,10 +85,10 @@ void set_camera_mode(ecs_world_t *world, unsigned char new_camera_mode) {
         camera_follow_mode = zox_camera_follow_mode_follow_xz;
     }
     for (int i = 0; i < main_cameras_count; i++) {
-        ecs_entity_t camera = main_cameras[i];
+        const ecs_entity_t camera = main_cameras[i];
         if (camera == 0 || !zox_valid(camera)) continue;
         zox_set(camera, CameraMode, { camera_mode })
-        if (old_camera_fov != camera_fov) zox_set(camera, FieldOfView, { camera_fov })
+        zox_set(camera, FieldOfView, { camera_fov })
         // camera_follow_mode is more complicated, involves how camera is attached to character
         ecs_entity_t character = 0;
         if (old_camera_follow_mode == zox_camera_follow_mode_attach) character = zox_get_value(camera, ParentLink)

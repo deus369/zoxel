@@ -68,7 +68,7 @@ void toggle_camera_perspective(ecs_world_t *world, ecs_entity_t character) {
     if (zox_valid(character) && zox_has(character, CameraLink)) {
         const CameraLink *cameraLink = zox_get(world, character, CameraLink);
         if (zox_valid(cameraLink->value) && cameraLink->value != 0) {
-            float vox_scale = model_scale * 16;
+            float vox_scale = vox_model_scale * 16;
             // zox_log("   > vox_scale [%f]\n", vox_scale)
             const LocalPosition3D *localPosition3D = zox_get(world, cameraLink->value, LocalPosition3D);
             if (localPosition3D->value.z == vox_scale * 0.5f) {

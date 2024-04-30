@@ -5,7 +5,9 @@ const unsigned char max_octree_depth_character = 5; // issue with this...!
 ecs_entity_t spawn_prefab_vox(ecs_world_t *world) {
     zox_prefab_child(prefab_chunk)
     zox_prefab_name("prefab_vox")
+    zox_add_tag(e, Vox)
     zox_prefab_set(e, Scale1D, { 1.0f })
+    zox_prefab_set(e, VoxScale, { vox_model_scale })
     // because we set the data on spawn, no need to generate here
     zox_prefab_set(e, GenerateChunk, { 0 })
     zox_prefab_set(e, ChunkDirty, { 1 })
@@ -60,8 +62,8 @@ void set_vox_from_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_f
     ChunkOctree *chunkOctree = zox_get_mut(e, ChunkOctree)
     fill_new_octree(chunkOctree, 0, target_depth);
     byte2 set_octree_data = (byte2) { 1, max_octree_depth_character };
-    int vox_index;
     byte3 position;
+    int vox_index;
     for (position.x = 0; position.x < vox_size.x; position.x++) {
         for (position.y = 0; position.y < vox_size.y; position.y++) {
             for (position.z = 0; position.z < vox_size.z; position.z++) {
@@ -69,7 +71,6 @@ void set_vox_from_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_f
                 set_octree_data.x = voxels[vox_index];
                 byte3 node_position = position;
                 set_octree_voxel_final(chunkOctree, &node_position, &set_octree_data, 0);
-                // vox_index++;
             }
         }
     }
