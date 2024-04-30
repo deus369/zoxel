@@ -1,17 +1,4 @@
-void add_texture(ecs_world_t *world, ecs_entity_t e, int2 textureSize, unsigned char is_generate) {
-    zox_add_tag(e, Texture)
-    zox_add(e, TextureData)
-    zox_prefab_set(e, TextureSize, { textureSize })
-    zox_prefab_set(e, TextureDirty, { 0 })
-    zox_prefab_set(e, GenerateTexture, { is_generate })
-}
-
-void add_texture_non_generate(ecs_world_t *world, ecs_entity_t e, int2 textureSize) {
-    zox_add_tag(e, Texture)
-    zox_add(e, TextureData)
-    zox_prefab_set(e, TextureSize, { textureSize })
-    zox_prefab_set(e, TextureDirty, { 0 })
-}
+const color empty_color = { 0, 0, 0, 0 };
 
 void add_frame_texture_type(ecs_world_t *world, ecs_entity_t e, color primary, unsigned char corner, unsigned char thickness) {
     zox_add_tag(e, FrameTexture)
@@ -33,10 +20,7 @@ unsigned char check_texture(TextureData* textureData, const TextureSize *texture
     return 0;
 }
 
-void generate_frame_texture(TextureData* textureData, const TextureSize *textureSize, const Color *color2, unsigned char frame_thickness, unsigned char corner_size) {
-    color fill_color = color2->value;
-    color outline_color = { fill_color.g + 25 + rand() % 25, fill_color.b + 25 + rand() % 25, fill_color.r + 25 + rand() % 25, 255 };
-    color empty = { 0, 0, 0, 0 };
+void generate_frame_texture(TextureData* textureData, const TextureSize *textureSize, const color fill_color, const color outline_color, const unsigned char frame_thickness, const unsigned char corner_size, const unsigned char is_noise) {
     int index = 0;
     int2 pixel_position = { 0, 0 };
     for (pixel_position.y = 0; pixel_position.y < textureSize->value.y; pixel_position.y++) {
@@ -46,7 +30,7 @@ void generate_frame_texture(TextureData* textureData, const TextureSize *texture
             int distance_to_corner_c = (textureSize->value.x - 1 - pixel_position.x) + (textureSize->value.y - 1 - pixel_position.y);
             int distance_to_corner_d = pixel_position.x + (textureSize->value.y - 1 - pixel_position.y);
             if (distance_to_corner_a < corner_size || distance_to_corner_b < corner_size || distance_to_corner_c < corner_size || distance_to_corner_d < corner_size) {
-                textureData->value[index] = empty;
+                textureData->value[index] = empty_color;
             } else {
                 textureData->value[index] = fill_color;
             }
@@ -69,7 +53,7 @@ void generate_frame_texture(TextureData* textureData, const TextureSize *texture
                 (pixel_position.x > textureSize->value.x - corner_size && pixel_position.y < corner_size) ||
                 (pixel_position.x > textureSize->value.x - corner_size && pixel_position.y > textureSize->value.y - corner_size) ||
                 (pixel_position.x < corner_size && pixel_position.y > textureSize->value.y - corner_size)) {
-                if (check_texture(textureData, textureSize, pixel_position, empty, frame_thickness)) {
+                if (check_texture(textureData, textureSize, pixel_position, empty_color, frame_thickness)) {
                     textureData->value[index] = outline_color;
                 }
             }
@@ -77,21 +61,23 @@ void generate_frame_texture(TextureData* textureData, const TextureSize *texture
         }
     }
     // add noise to fill parts
-    index = 0;
-    const int fill_noise_addition = 55;
-    const int outline_noise_addition = 25;
-    for (pixel_position.y = 0; pixel_position.y < textureSize->value.y; pixel_position.y++) {
-        for (pixel_position.x = 0; pixel_position.x < textureSize->value.x; pixel_position.x++) {
-            if (color_equal(textureData->value[index], fill_color)) {
-                textureData->value[index].r += rand() % fill_noise_addition;
-                textureData->value[index].g += rand() % fill_noise_addition;
-                textureData->value[index].b += rand() % fill_noise_addition;
-            } else if (color_equal(textureData->value[index], outline_color)) {
-                textureData->value[index].r += rand() % outline_noise_addition;
-                textureData->value[index].g += rand() % outline_noise_addition;
-                textureData->value[index].b += rand() % outline_noise_addition;
+    if (is_noise) {
+        index = 0;
+        const int fill_noise_addition = 55;
+        const int outline_noise_addition = 25;
+        for (pixel_position.y = 0; pixel_position.y < textureSize->value.y; pixel_position.y++) {
+            for (pixel_position.x = 0; pixel_position.x < textureSize->value.x; pixel_position.x++) {
+                if (color_equal(textureData->value[index], fill_color)) {
+                    textureData->value[index].r += rand() % fill_noise_addition;
+                    textureData->value[index].g += rand() % fill_noise_addition;
+                    textureData->value[index].b += rand() % fill_noise_addition;
+                } else if (color_equal(textureData->value[index], outline_color)) {
+                    textureData->value[index].r += rand() % outline_noise_addition;
+                    textureData->value[index].g += rand() % outline_noise_addition;
+                    textureData->value[index].b += rand() % outline_noise_addition;
+                }
+                index++;
             }
-            index++;
         }
     }
 }

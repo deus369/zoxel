@@ -1,8 +1,6 @@
 #ifndef zoxel_voxels
 #define zoxel_voxels
 
-// #define vox_model_scale (1 / 64.0f)
-#define vox_model_scale (1 / 64.0f)
 // zoxel_component_includes
 zox_declare_tag(Chunk)
 zox_declare_tag(NoiseChunk)

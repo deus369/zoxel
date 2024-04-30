@@ -15,8 +15,11 @@ zox_memory_component(PlayerLinks, ecs_entity_t)
 // zoxel_prefab_includes
 #include "prefabs/player.c"
 // zoxel_util_includes
+#include "util/crosshair.c"
+// zoxel_module_includes
 #include "players3D/players3D.c"
 #include "players2D/players2D.c"
+// zoxel_util_includes
 #include "util/player_ui.c"
 #include "util/pause_util.c"
 #include "util/start_game.c"

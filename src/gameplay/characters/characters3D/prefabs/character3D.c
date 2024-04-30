@@ -42,7 +42,7 @@ ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, co
         const float negative_bounds = -(terrain_spawn_distance) * (real_chunk_scale) + 0.1f;
         const float position_bounds = (terrain_spawn_distance + 1) * (real_chunk_scale) - 0.1f;
         zox_set(e, Position3DBounds, { negative_bounds, position_bounds, bottom_bounds, top_bounds, negative_bounds, position_bounds })
-        zox_set(e, VoxScale, { vox_model_scale * 2})
+        zox_set(e, VoxScale, { player_vox_model_scale })
     }
     zox_set(e, LastPosition3D, { position })
     zox_set(e, Rotation3D, { rotation })

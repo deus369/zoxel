@@ -1,7 +1,4 @@
 const unsigned char player_uis_count = 3;
-const int2 crosshair_texture_size = (int2) { 24, 24 };
-const int2 crosshair_pixel_size = (int2) { 48, 48 };
-const color crosshair_color = (color) { 33, 122, 122, 13 };
 ecs_entity_t game_ui_touch = 0;
 
 void spawn_in_game_ui_touch(ecs_world_t *world, const ecs_entity_t canvas) {
@@ -10,19 +7,6 @@ void spawn_in_game_ui_touch(ecs_world_t *world, const ecs_entity_t canvas) {
     const ClickEvent on_pause_ui = (ClickEvent) { &button_event_pause_game };
     game_ui_touch = spawn_button_on_canvas(world, canvas, (int2) { pause_button_size, pause_button_size }, (byte2) { 8, 4 }, (color) { 77, 32, 44, 255 }, "P", pause_button_size, float2_zero, on_pause_ui);
     // zox_log("  > spawning touch ui [%lu]\n", game_ui_touch)
-}
-
-ecs_entity_t spawn_crosshair(ecs_world_t *world, const ecs_entity_t canvas, const  ecs_entity_t parent) {
-    const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    const ecs_entity_t crosshair_ui = spawn_element_basic(world, canvas, parent, int2_zero, crosshair_pixel_size, crosshair_texture_size, float2_half, 1, int2_half(canvas_size), canvas_size);
-    zox_add_tag(crosshair_ui, FrameTexture)
-    zox_set(crosshair_ui, FrameCorner, { 7 })
-    zox_set(crosshair_ui, OutlineThickness, { 3 })
-    zox_set(crosshair_ui, Color, { crosshair_color})
-    zox_set(crosshair_ui, GenerateTexture, { 1 })
-    zox_set(crosshair_ui, Seed, { 666 })
-    // zox_log(" > crosshair [%lu]\n", crosshair_ui)
-    return crosshair_ui;
 }
 
 // todo: move to actions module

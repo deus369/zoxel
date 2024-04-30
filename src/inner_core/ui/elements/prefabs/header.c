@@ -9,6 +9,7 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
     add_draggable_components(world, e);
     zox_add_tag(e, Header)
     zox_add_tag(e, FrameTexture)
+    zox_add_tag(e, TextureAddNoise)
     zox_prefab_set(e, Color, {{ 77, 44, 33, 255 }})
     zox_prefab_set(e, FrameCorner, { 7 })
     zox_prefab_set(e, OutlineThickness, { 3 })

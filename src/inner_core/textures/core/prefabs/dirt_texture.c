@@ -1,6 +1,5 @@
 ecs_entity_t prefab_texture;
 ecs_entity_t prefab_texture_noise;
-// int2 texture_size = (int2) { 16, 16 };
 
 ecs_entity_t spawn_prefab_texture_noise(ecs_world_t *world, const int2 texture_size) {
     zox_prefab()

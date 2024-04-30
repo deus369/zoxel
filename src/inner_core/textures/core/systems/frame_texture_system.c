@@ -4,31 +4,36 @@ void FrameTextureSystem(ecs_iter_t *it) {
 #ifdef zox_time_frame_texture_system
     begin_timing()
 #endif
-    GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 2);
-    const TextureSize *textureSizes = ecs_field(it, TextureSize, 3);
-    const Color *colors = ecs_field(it, Color, 4);
-    const OutlineThickness *outlineThicknesss = ecs_field(it, OutlineThickness, 5);
-    const FrameCorner *frameEdges = ecs_field(it, FrameCorner, 6);
-    TextureData *textures = ecs_field(it, TextureData, 7);
-    TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 8);
+    zox_field_out(GenerateTexture, generateTextures, 2)
+    zox_field_in(TextureSize, textureSizes, 3)
+    zox_field_in(Color, colors, 4)
+    zox_field_in(OutlineThickness, outlineThicknesss, 5)
+    zox_field_in(FrameCorner, frameEdges, 6)
+    zox_field_out(TextureData, textureDatas, 7)
+    zox_field_out(TextureDirty, textureDirtys, 8)
     for (int i = 0; i < it->count; i++) {
-        GenerateTexture *generateTexture = &generateTextures[i];
+        zox_field_i_out(GenerateTexture, generateTextures, generateTexture)
         if (!generateTexture->value) continue;
-        TextureDirty *textureDirty = &textureDirtys[i];
+        zox_field_i_out(TextureDirty, textureDirtys, textureDirty)
         if (textureDirty->value) continue;
-        const TextureSize *textureSize = &textureSizes[i];
-        const Color *color2 = &colors[i];
-        const OutlineThickness *outlineThickness = &outlineThicknesss[i];
-        const FrameCorner *frameEdge = &frameEdges[i];
-        TextureData *textureData = &textures[i];
+        zox_field_e()
+        zox_field_i_in(TextureSize, textureSizes, textureSize)
+        zox_field_i_in(Color, colors, color2)
+        zox_field_i_in(OutlineThickness, outlineThicknesss, outlineThickness)
+        zox_field_i_in(FrameCorner, frameEdges, frameEdge)
+        zox_field_i_out(TextureData, textureDatas, textureData)
         resize_memory_component(TextureData, textureData, color, textureSize->value.x * textureSize->value.y)
-        generate_frame_texture(textureData, textureSize, color2, outlineThickness->value, frameEdge->value);
+        const color fill_color = color2->value;
+        color outline_color = { fill_color.g + 25 + rand() % 25, fill_color.b + 25 + rand() % 25, fill_color.r + 25 + rand() % 25, 255 };
+        if (zox_has(e, OutlineColor)) {
+            outline_color = zox_get_value(e, OutlineColor)
+        }
+        generate_frame_texture(textureData, textureSize, fill_color, outline_color, outlineThickness->value, frameEdge->value, zox_has(e, TextureAddNoise));
         generateTexture->value = 0;
         textureDirty->value = 1;
 #ifdef zox_time_frame_texture_system
         did_do_timing()
 #endif
-        // zox_log("   > texture (frame) generated [%i] - %lu - %f\n", i, it->entities[i], zox_current_time)
     }
 #ifdef zox_time_frame_texture_system
     end_timing("    - frame_texture_system")

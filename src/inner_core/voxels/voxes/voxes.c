@@ -1,17 +1,20 @@
 #ifndef zoxel_voxes
 #define zoxel_voxes
 
-// zoxel_component_declares
+// zox_settings
+#define vox_model_scale (1 / 64.0f)
+#define player_vox_model_scale  (1 / 42.0f)
+// zox_component_declares
 zox_declare_tag(Vox)
-// zoxel_data_includes
+// zox_data_includes
 #include "data/default_palette.c"
 #include "data/vox_file.c"
-// zoxel_util_includes
+// zox_util_includes
 #include "util/vox_read_util.c"
 #include "util/vox_files.c"
-// zoxel_prefab_includes
+// zox_prefab_includes
 #include "prefabs/vox.c"
-// zoxel_system_includes
+// zox_system_includes
 #include "systems/chunk_colors_build_system.c"
 #include "systems/chunk_octree_colors_build_system.c"
 #include "systems/bounds3D_grow_system.c"

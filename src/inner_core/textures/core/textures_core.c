@@ -2,7 +2,7 @@
 #define zoxel_textures_core
 
 // zoxel_settings
-const int2 voxel_texture_size = (int2) { 16, 16 }; // 32, 32 };
+const int2 voxel_texture_size = (int2) { 64, 64 };
 #include "settings/settings.c"
 // zoxel_component_includes
 zox_declare_tag(Texture)
@@ -15,6 +15,7 @@ zox_declare_tag(StoneTexture)
 zox_declare_tag(ObsidianTexture)
 zox_declare_tag(Tilemap)
 zox_declare_tag(FillTexture)
+zox_declare_tag(TextureAddNoise)
 zox_component_byte(GenerateTexture)
 zox_component_byte(OutlineThickness)
 zox_component_byte(FrameCorner)
@@ -22,13 +23,15 @@ zox_component_int2(TextureSize)
 zox_component_int2(TilemapSize)
 zox_entity_parent_component(TilemapLink)
 zox_memory_component(TextureData, color)
-zox_component(AnimateTexture, double)
+zox_component_double(AnimateTexture)
+zox_component(OutlineColor, color)
 zox_entities_component(Textures)                    // this destroys linked entities (parent)
 zox_memory_component(TextureLinks, ecs_entity_t)    // this links only
 zox_memory_component(TilemapUVs, float2)
 // zoxel_util_includes
 #include "util/textures_sdl_util.c"
 #include "util/textures_util.c"
+#include "util/texture_prefab_util.c"
 // zoxel_prefab_includes
 #include "prefabs/noise_texture.c"
 #include "prefabs/dirt_texture.c"
@@ -60,12 +63,14 @@ zox_define_tag(StoneTexture)
 zox_define_tag(ObsidianTexture)
 zox_define_tag(Tilemap)
 zox_define_tag(FillTexture)
+zox_define_tag(TextureAddNoise)
 zox_define_component_byte(GenerateTexture)
 zox_define_component_byte(OutlineThickness)
 zox_define_component_byte(FrameCorner)
 zox_define_component_int2(TextureSize)
 zox_define_component_int2(TilemapSize)
-zox_define_component(AnimateTexture)
+zox_define_component_double(AnimateTexture)
+zox_define_component(OutlineColor)
 zox_define_entity_parent_component(TilemapLink)
 zox_define_memory_component(TextureData)
 zox_define_memory_component(TilemapUVs)
