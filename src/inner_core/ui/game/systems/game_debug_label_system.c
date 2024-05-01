@@ -35,14 +35,14 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
     const DeviceMode *deviceMode = zox_get(main_player, DeviceMode)
 #endif
 #ifdef zox_debug_ui_raycaster_target
-    ecs_entity_t raycaster_target = zox_get_value(main_player, RaycasterTarget)
+    const ecs_entity_t raycaster_target = zox_get_value(main_player, RaycasterTarget)
 #endif
-    ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
-    ZextData *zextDatas = ecs_field(it, ZextData, 3);
+    zox_field_out(ZextDirty, zextDirtys, 2)
+    zox_field_out(ZextData, zextDatas, 3)
     for (int i = 0; i < it->count; i++) {
-        ZextDirty *zextDirty = &zextDirtys[i];
+        zox_field_i_out(ZextDirty, zextDirtys, zextDirty)
         if (zextDirty->value) continue;
-        ZextData *zextData = &zextDatas[i];
+        zox_field_i_out(ZextData, zextDatas, zextData)
         int buffer_index = 0;
         const int buffer_size = 256;
         char buffer[buffer_size];

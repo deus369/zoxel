@@ -73,24 +73,24 @@ void build_chunk_mesh(const ChunkData *chunk, const ChunkSize *chunkSize,
                     float3 vertex_position_offset = float3_from_byte3(local_position);
                     float3_multiply_float_p(&vertex_position_offset, voxel_scale);
                     // float3 vertex_position_offset = float3_multiply_float(float3_from_int3(local_position), voxel_scale);
-                    #ifndef disable_voxel_left
+#ifndef disable_voxel_left
                     zoxel_add_faces(left, 0)
-                    #endif
-                    #ifndef disable_voxel_right
+#endif
+#ifndef disable_voxel_right
                     zoxel_add_faces(right, 1)
-                    #endif
-                    #ifndef disable_voxel_down
+#endif
+#ifndef disable_voxel_down
                     zoxel_add_faces(down, 1)
-                    #endif
-                    #ifndef disable_voxel_up
+#endif
+#ifndef disable_voxel_up
                     zoxel_add_faces(up, 0)
-                    #endif
-                    #ifndef disable_voxel_back
+#endif
+#ifndef disable_voxel_back
                     zoxel_add_faces(back, 0)
-                    #endif
-                    #ifndef disable_voxel_front
+#endif
+#ifndef disable_voxel_front
                     zoxel_add_faces(front, 1)
-                    #endif
+#endif
                 }
             }
         }
@@ -100,23 +100,23 @@ void build_chunk_mesh(const ChunkData *chunk, const ChunkSize *chunkSize,
 void ChunkBuildSystem(ecs_iter_t *it) {
     ecs_query_t *changeQuery = it->ctx;
     if (!changeQuery || !ecs_query_changed(changeQuery, NULL)) return;
-    ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
-    const ChunkData *chunks = ecs_field(it, ChunkData, 2);
-    const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 3);
-    MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 4);
-    MeshVertices *meshVertices = ecs_field(it, MeshVertices, 5);
-    MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 6);
+    zox_field_in(ChunkData, chunkDatas, 2)
+    zox_field_in(ChunkSize, chunkSizes, 3)
+    zox_field_out(ChunkDirty, chunkDirtys, 1)
+    zox_field_out(MeshIndicies, meshIndicies, 4)
+    zox_field_out(MeshVertices, meshVertices, 5)
+    zox_field_out(MeshDirty, meshDirtys, 6)
     for (int i = 0; i < it->count; i++) {
-        ChunkDirty *chunkDirty = &chunkDirtys[i];
+        zox_field_i_out(ChunkDirty, chunkDirtys, chunkDirty)
         if (chunkDirty->value == 0) continue;
-        MeshDirty *meshDirty = &meshDirtys[i];
+        zox_field_i_out(MeshDirty, meshDirtys, meshDirty)
         if (meshDirty->value != 0) continue;
+        zox_field_i_in(ChunkData, chunkDatas, chunkData)
+        zox_field_i_in(ChunkSize, chunkSizes, chunkSize)
+        zox_field_i_out(MeshIndicies, meshIndicies, meshIndicies2)
+        zox_field_i_out(MeshVertices, meshVertices, meshVertices2)
         chunkDirty->value = 0;
         meshDirty->value = 1;
-        const ChunkData *chunk = &chunks[i];
-        const ChunkSize *chunkSize = &chunkSizes[i];
-        MeshIndicies *meshIndicies2 = &meshIndicies[i];
-        MeshVertices *meshVertices2 = &meshVertices[i];
-        build_chunk_mesh(chunk, chunkSize, meshIndicies2, meshVertices2);
+        build_chunk_mesh(chunkData, chunkSize, meshIndicies2, meshVertices2);
     }
 } zox_declare_system(ChunkBuildSystem)

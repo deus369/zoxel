@@ -4,17 +4,17 @@ const int test_send_packet_length = 1; // 100;    // 3
 //! Atm this is just testing sending to server and getting replies
 void PacketSendSystem(ecs_iter_t *it) {
     // every 3 seconds send one packet!
-    double delta_time = zox_delta_time;
+    const double delta_time = zox_delta_time;
     last_time_send += delta_time;
     if (last_time_send < 3.0) return;
     last_time_send -= 3.0;
-    const SocketLink *socketLinks = ecs_field(it, SocketLink, 2);
-    const TargetNetAddress *targetNetAddresss = ecs_field(it, TargetNetAddress, 3);
-    const TargetNetPort *targetNetPorts = ecs_field(it, TargetNetPort, 4);
+    zox_field_in(SocketLink, socketLinks, 2)
+    zox_field_in(TargetNetAddress, targetNetAddresss, 3)
+    zox_field_in(TargetNetPort, targetNetPorts, 4)
     for (int i = 0; i < it->count; i++) {
-        const SocketLink *socketLink = &socketLinks[i];
-        const TargetNetAddress *targetNetAddress = &targetNetAddresss[i];
-        const TargetNetPort *targetNetPort = &targetNetPorts[i];
+        zox_field_i_in(SocketLink, socketLinks, socketLink)
+        zox_field_i_in(TargetNetAddress, targetNetAddresss, targetNetAddress)
+        zox_field_i_in(TargetNetPort, targetNetPorts, targetNetPort)
         struct sockaddr_in send_addr = byte4_to_ip(targetNetAddress->value, targetNetPort->value);
         unsigned char packet_size = 1;
         unsigned char send_buffer[] = { zoxel_packet_type_connect };

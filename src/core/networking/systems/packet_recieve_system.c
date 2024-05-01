@@ -20,9 +20,9 @@ void PacketRecieveSystem(ecs_iter_t *it) {
     // zoxel_log(" === attempting to get packets ===\n");
     // only for PacketListener tagged entities
     // zox_iter_world()
-    const SocketLink *socketLinks = ecs_field(it, SocketLink, 2);
+    zox_field_in(SocketLink, socketLinks, 2)
     for (int i = 0; i < it->count; i++) {
-        const SocketLink *socketLink = &socketLinks[i];
+        zox_field_i_in(SocketLink, socketLinks, socketLink)
         if (socketLink->value == 0) continue;
         ssize_t recv_size;
         struct sockaddr_in recv_addr;

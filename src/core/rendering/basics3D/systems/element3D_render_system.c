@@ -11,25 +11,25 @@ void Element3DRenderSystem(ecs_iter_t *it) {
     unsigned char has_set_material = 0;
     zox_iter_world()
     const Textured3DAttributes *attributes_textured3D = get_textured3D_material_attributes(world);
-    const Position3D *position3Ds = ecs_field(it, Position3D, 2);
-    const Rotation3D *rotation3Ds = ecs_field(it, Rotation3D, 3);
-    const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 6);
-    const UvsGPULink *uvsGPULinks = ecs_field(it, UvsGPULink, 7);
-    const ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 8);
-    const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 9);
-    const TextureGPULink *textureGPULinks = ecs_field(it, TextureGPULink, 10);
+    zox_field_in(Position3D, position3Ds, 2)
+    zox_field_in(Rotation3D, rotation3Ds, 3)
+    zox_field_in(MeshGPULink, meshGPULinks, 6)
+    zox_field_in(UvsGPULink, uvsGPULinks, 7)
+    zox_field_in(ColorsGPULink, colorsGPULinks, 8)
+    zox_field_in(MeshIndicies, meshIndiciess, 9)
+    zox_field_in(TextureGPULink, textureGPULinks, 10)
     for (int i = 0; i < it->count; i++) {
-        ecs_entity_t e = it->entities[i];
+        zox_field_e()
         if (!can_render_ui(world, e)) continue;
-        const MeshIndicies *meshIndicies2 = &meshIndicies[i];
-        if (!meshIndicies2->length) continue;
-        const MeshGPULink *meshGPULink = &meshGPULinks[i];
+        zox_field_i_in(MeshIndicies, meshIndiciess, meshIndicies)
+        if (!meshIndicies->length) continue;
+        zox_field_i_in(MeshGPULink, meshGPULinks, meshGPULink)
         if (!meshGPULink->value.x || !meshGPULink->value.y) continue;
-        const UvsGPULink *uvsGPULink = &uvsGPULinks[i];
-        const ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
-        const Position3D *position3D = &position3Ds[i];
-        const Rotation3D *rotation3D = &rotation3Ds[i];
-        const TextureGPULink *textureGPULink = &textureGPULinks[i];
+        zox_field_i_in(Position3D, position3Ds, position3D)
+        zox_field_i_in(Rotation3D, rotation3Ds, rotation3D)
+        zox_field_i_in(UvsGPULink, uvsGPULinks, uvsGPULink)
+        zox_field_i_in(ColorsGPULink, colorsGPULinks, colorsGPULink)
+        zox_field_i_in(TextureGPULink, textureGPULinks, textureGPULink)
         if (!has_set_material) {
             has_set_material = 1;
             opengl_set_material(get_textured3D_material_value(world));
@@ -49,11 +49,11 @@ void Element3DRenderSystem(ecs_iter_t *it) {
         opengl_bind_texture(textureGPULink->value);
 #endif
 #ifndef zox_disable_render_ui_3D
-        opengl_render(meshIndicies2->length);
+        opengl_render(meshIndicies->length);
 #endif
 #ifdef zoxel_catch_opengl_errors
         if (check_opengl_error_unlogged()) {
-            zoxel_log(" > failed to render element3D [%i]: [%i] - [%ix%i:%i]\n", i, meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value);
+            zoxel_log(" > failed to render element3D [%i]: [%i] - [%ix%i:%i]\n", i, meshIndicies->length, meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value);
             break;
         }
 #endif

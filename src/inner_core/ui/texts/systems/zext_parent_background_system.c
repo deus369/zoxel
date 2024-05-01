@@ -10,7 +10,7 @@ void ZextParentBackgroundSystem(ecs_iter_t *it) {
         zox_field_i_in(ZextDirty, zextDirtys, zextDirty)
         if (!zextDirty->value) continue;
         zox_field_i_in(ParentLink, parentLinks, parentLink)
-        ecs_entity_t e2 = parentLink->value;
+        const ecs_entity_t e2 = parentLink->value;
         if (!zox_has(e2, ZextLabel)) continue;
         MeshDirty *meshDirty = zox_get_mut(e2, MeshDirty)
         if (meshDirty->value) return;

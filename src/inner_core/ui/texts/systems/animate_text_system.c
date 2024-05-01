@@ -1,26 +1,25 @@
 void AnimateTextSystem(ecs_iter_t *it) {
-    double delta_time = zox_delta_time;
-    AnimateZext *animateZexts = ecs_field(it, AnimateZext, 1);
-    ZextDirty *zextDirtys = ecs_field(it, ZextDirty, 2);
-    ZextData *zextDatas = ecs_field(it, ZextData, 3);
+    const double delta_time = zox_delta_time;
+    zox_field_out(AnimateZext, animateZexts, 1)
+    zox_field_out(ZextDirty, zextDirtys, 2)
+    zox_field_out(ZextData, zextDatas, 3)
     unsigned char changed = 0;
     for (int i = 0; i < it->count; i++) {
-        AnimateZext *animateZext = &animateZexts[i];
+        zox_field_i_out(AnimateZext, animateZexts, animateZext)
         animateZext->value -= delta_time;
         if (animateZext->value <= 0.0) {
             animateZext->value += zext_animation_speed;
             if (animateZext->value <= -zext_animation_speed) animateZext->value = 0;
-            ZextDirty *zextDirty = &zextDirtys[i];
+            zox_field_i_out(ZextDirty, zextDirtys, zextDirty)
             if (zextDirty->value == 0) {
                 zextDirty->value = 1;
 #ifdef zoxel_debug_zext_updates
                 zox_log("AnimateZext :: [%lu]\n", it->entities[i])
 #endif
-                ZextData *zextData = &zextDatas[i];
-                int index = rand() % zextData->length;
+                zox_field_i_out(ZextData, zextDatas, zextData)
+                const int index = rand() % zextData->length;
                 zextData->value[index] = 1 + rand() % 52;
                 changed = 1;
-                // printf("AnimateNoiseSystem, GenerateTexture Triggered: [%lu] on index [%i]\n", (long int)(it->entities[i]), i);
             }
         }
     }

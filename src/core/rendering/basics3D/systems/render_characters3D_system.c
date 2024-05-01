@@ -1,75 +1,74 @@
 // #define zox_debug_render3D_colored
 // #define max_character_mesh_indicies 1000000
-
 void RenderCharacters3DSystem(ecs_iter_t *it) {
-    const Position3D *positions = ecs_field(it, Position3D, 2);
-    const Rotation3D *rotations = ecs_field(it, Rotation3D, 3);
-    const Scale1D *scale1Ds = ecs_field(it, Scale1D, 4);
-    const MeshIndicies *meshIndicies = ecs_field(it, MeshIndicies, 5);
-    const MeshGPULink *meshGPULinks = ecs_field(it, MeshGPULink, 6);
-    const ColorsGPULink *colorsGPULinks = ecs_field(it, ColorsGPULink, 7);
+    zox_field_in(Position3D, position3Ds, 2)
+    zox_field_in(Rotation3D, rotation3Ds, 3)
+    zox_field_in(Scale1D, scale1Ds, 4)
+    zox_field_in(MeshIndicies, meshIndiciess, 5)
+    zox_field_in(MeshGPULink, meshGPULinks, 6)
+    zox_field_in(ColorsGPULink, colorsGPULinks, 7)
     unsigned char has_set_material = 0;
     int rendered_count = 0;
-    #ifdef zox_debug_render3D_colored
-        int zero_meshes = 0;
-        int meshes = 0;
-        int tris_rendered = 0;
-    #endif
+#ifdef zox_debug_render3D_colored
+    int zero_meshes = 0;
+    int meshes = 0;
+    int tris_rendered = 0;
+#endif
     for (int i = 0; i < it->count; i++) {
-        const MeshIndicies *meshIndicies2 = &meshIndicies[i];
-        #ifdef zox_debug_render3D_colored
-            if (meshIndicies2->length == 0) zero_meshes++;
-        #endif
-        #ifndef zox_characters_as_cubes
-            if (meshIndicies2->length == 0) continue;
-        #endif
-        const MeshGPULink *meshGPULink = &meshGPULinks[i];
+        zox_field_i_in(MeshIndicies, meshIndiciess, meshIndicies)
+#ifdef zox_debug_render3D_colored
+        if (meshIndicies->length == 0) zero_meshes++;
+#endif
+#ifndef zox_characters_as_cubes
+        if (meshIndicies->length == 0) continue;
+#endif
+        zox_field_i_in(MeshGPULink, meshGPULinks, meshGPULink)
         if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) continue;
-        const ColorsGPULink *colorsGPULink = &colorsGPULinks[i];
+        zox_field_i_in(ColorsGPULink, colorsGPULinks, colorsGPULink)
         if (colorsGPULink->value == 0) continue;
-        const Position3D *position3D = &positions[i];
-        const Rotation3D *rotation3D = &rotations[i];
-        const Scale1D *scale1D = &scale1Ds[i];
+        zox_field_i_in(Position3D, position3Ds, position3D)
+        zox_field_i_in(Rotation3D, rotation3Ds, rotation3D)
+        zox_field_i_in(Scale1D, scale1Ds, scale1D)
         if (!has_set_material) {
             has_set_material = 1;
             opengl_set_material(colored3D_material);
             opengl_set_matrix(attributes_colored3D.camera_matrix, render_camera_matrix);
-            #ifndef zox_debug_color_shader
-                opengl_set_float(attributes_colored3D.scale, 1);
-                opengl_set_float4(attributes_colored3D.fog_data, (float4) { fog_color.x, fog_color.y, fog_color.z, get_fog_density() });
-                opengl_set_float(attributes_colored3D.brightness, 1);
-            #endif
+#ifndef zox_debug_color_shader
+            opengl_set_float(attributes_colored3D.scale, 1);
+            opengl_set_float4(attributes_colored3D.fog_data, (float4) { fog_color.x, fog_color.y, fog_color.z, get_fog_density() });
+            opengl_set_float(attributes_colored3D.brightness, 1);
+#endif
         }
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_enable_vertex_buffer(attributes_colored3D.vertex_position, meshGPULink->value.y);
-        #ifndef zox_debug_color_shader
-            opengl_enable_color_buffer(attributes_colored3D.vertex_color, colorsGPULink->value);
-        #endif
+#ifndef zox_debug_color_shader
+        opengl_enable_color_buffer(attributes_colored3D.vertex_color, colorsGPULink->value);
+#endif
         opengl_set_float3(attributes_colored3D.position, position3D->value);
         opengl_set_float4(attributes_colored3D.rotation, rotation3D->value);
         opengl_set_float(attributes_colored3D.scale, scale1D->value);
-        #ifndef zox_disable_render_characters
-            #ifdef zox_characters_as_cubes
-                opengl_render(36);
-            #else
-                opengl_render(meshIndicies2->length);
-            #endif
-        #endif
-        #ifdef zoxel_catch_opengl_errors
-            if (check_opengl_error_unlogged() != 0) {
-                zoxel_log(" > could not render character [%i]: indicies [%i] - [%ix%i:%i]\n", rendered_count, meshIndicies2->length, meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value);
-                break;
-            }
-        #endif
-        #ifdef zox_debug_render3D_colored
-            meshes++;
-            tris_rendered += meshIndicies2->length / 3;
-        #endif
+#ifndef zox_disable_render_characters
+#ifdef zox_characters_as_cubes
+        opengl_render(36);
+#else
+        opengl_render(meshIndicies->length);
+#endif
+#endif
+#ifdef zoxel_catch_opengl_errors
+        if (check_opengl_error_unlogged() != 0) {
+            zoxel_log(" > could not render character [%i]: indicies [%i] - [%ix%i:%i]\n", rendered_count, meshIndicies->length, meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value);
+            break;
+        }
+#endif
+#ifdef zox_debug_render3D_colored
+        meshes++;
+        tris_rendered += meshIndicies->length / 3;
+#endif
         rendered_count++;
     }
-    #ifdef zox_debug_render3D_colored
-        zoxel_log("  > rendered meshes [%i] unused meshes [%i] tris [%i]\n", meshes, zero_meshes, tris_rendered);
-    #endif
+#ifdef zox_debug_render3D_colored
+    zoxel_log("  > rendered meshes [%i] unused meshes [%i] tris [%i]\n", meshes, zero_meshes, tris_rendered);
+#endif
     if (has_set_material) {
         opengl_disable_buffer(attributes_colored3D.vertex_color);
         opengl_disable_buffer(attributes_colored3D.vertex_position);

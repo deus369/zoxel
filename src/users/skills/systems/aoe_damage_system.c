@@ -5,9 +5,9 @@ extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 point
 // todo: Seperate area from damage, so the skill is a child of character, and it finds characters in area and applies damage at end step
 // todo: seperate skill, use sphere cast (using sphere distance) to cache nearby characters - and lookup using chunk entities and not a seperate query
 void AOEDamageSystem(ecs_iter_t *it) {
-    float damage_rate = 2.0f;
-    float damage_radius = 3.0f;
-    float delta_time = zox_delta_time;
+    const float damage_rate = 2.0f;
+    const float damage_radius = 3.0f;
+    const float delta_time = zox_delta_time;
     zox_iter_world()
     zox_field_in(Position3D, position3Ds, 2)
     for (int i = 0; i < it->count; i++) {

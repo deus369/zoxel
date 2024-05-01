@@ -1,6 +1,5 @@
 // #define zox_bulk_spawning
-
-void emit_particle3Ds(ecs_world_t *world, float3 spawn_position, int spawn_count) {
+void emit_particle3Ds(ecs_world_t *world, const float3 spawn_position, const int spawn_count) {
     float3 spawn_bounds = { 0.4f, 0.8, 0.4f };
     const float2 velocityBounds = { 0.03f, 0.2f };
     const float2 scaleBounds = { 0.02f, 0.13f };
@@ -67,9 +66,9 @@ void emit_particle3Ds(ecs_world_t *world, float3 spawn_position, int spawn_count
     free(destroyInTimes);
 }
 
-void emit_particle3Ds_slow(ecs_world_t *world, float3 emit_position, int spawn_count) {
-    float3 spawn_bounds = { 0.4f, 0.8, 0.4f };
-    float3 acceleration3D_bounds = { 0.4f, 0.8, 0.4f };
+void emit_particle3Ds_slow(ecs_world_t *world, const float3 emit_position, const int spawn_count) {
+    const float3 spawn_bounds = { 0.4f, 0.8, 0.4f };
+    const float3 acceleration3D_bounds = { 0.4f, 0.8, 0.4f };
     for (int i = 0; i < spawn_count; i++) {
         // ecs_entity_t e =
         float3 spawn_position = emit_position;
@@ -91,15 +90,15 @@ void emit_particle3Ds_slow(ecs_world_t *world, float3 emit_position, int spawn_c
 
 void Particle3DEmitSystem(ecs_iter_t *it) {
     zox_iter_world()
-    const Position3D *position3Ds = ecs_field(it, Position3D, 2);
-    const ParticleEmitRate *particleEmitRates = ecs_field(it, ParticleEmitRate, 3);
+    zox_field_in(Position3D, position3Ds, 2)
+    zox_field_in(ParticleEmitRate, particleEmitRates, 3)
     for (int i = 0; i < it->count; i++) {
-        const Position3D *position3D = &position3Ds[i];
-        const ParticleEmitRate *particleEmitRate = &particleEmitRates[i];
-        #ifdef zox_bulk_spawning
-            emit_particle3Ds(world, position3D->value, particleEmitRate->value);
-        #else
-            emit_particle3Ds_slow(world, position3D->value, particleEmitRate->value);
-        #endif
+        zox_field_i_in(Position3D, position3Ds, position3D)
+        zox_field_i_in(ParticleEmitRate, particleEmitRates, particleEmitRate)
+#ifdef zox_bulk_spawning
+        emit_particle3Ds(world, position3D->value, particleEmitRate->value);
+#else
+        emit_particle3Ds_slow(world, position3D->value, particleEmitRate->value);
+#endif
     }
 } zox_declare_system(Particle3DEmitSystem)

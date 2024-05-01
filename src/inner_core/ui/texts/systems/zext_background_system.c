@@ -30,10 +30,10 @@ void ZextBackgroundSystem(ecs_iter_t *it) {
         zox_field_i_out(TextureSize, textureSizes, textureSize)
         zox_field_i_out(MeshVertices2D, meshVertices2Ds, meshVertices2D)
         const int2 canvas_size = zox_get_value(canvasLink->value, PixelSize)
-        int font_size = zextSize->value;
-        int2 size = (int2) { font_size * zextData->length + zextPadding->value.x * 2, font_size + zextPadding->value.y * 2 };
-        float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
-        float2 scale2D = (float2) { size.x / canvasSizef.y, size.y / canvasSizef.y };
+        const int font_size = zextSize->value;
+        const int2 size = (int2) { font_size * zextData->length + zextPadding->value.x * 2, font_size + zextPadding->value.y * 2 };
+        const float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
+        const float2 scale2D = (float2) { size.x / canvasSizef.y, size.y / canvasSizef.y };
         pixelSize->value = size;
         textureSize->value = size;
         if (!initializeEntityMesh->value) set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, scale2D);

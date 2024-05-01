@@ -134,7 +134,7 @@ void zox_terrain_building_dig(const ChunkOctree *root_node, const TilemapUVs *ti
     }
 }
 
-void build_chunk_octree_mesh_uvs(const ChunkOctree *chunk_octree, const TilemapUVs *tilemapUVs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, MeshColorRGBs *meshColorRGBs, unsigned char distance_to_camera, unsigned char lod, const ChunkOctree *neighbors[], unsigned char *neighbor_lods) {
+void build_chunk_octree_mesh_uvs(const ChunkOctree *chunk_octree, const TilemapUVs *tilemapUVs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, MeshColorRGBs *meshColorRGBs, unsigned char distance_to_camera, unsigned char lod, const ChunkOctree *neighbors[], const unsigned char *neighbor_lods) {
     //#ifndef zox_disable_voxels_dynamic_array
     int_array_d* indicies = create_int_array_d(initial_dynamic_array_size);
     float3_array_d* vertices = create_float3_array_d(initial_dynamic_array_size);
@@ -176,40 +176,40 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
     #endif
     unsigned char *neighbor_lods = NULL;
     zox_iter_world()
-    ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 1);
-    const ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 2);
-    const RenderLod *renderLods = ecs_field(it, RenderLod, 3);
-    const ChunkNeighbors *chunkNeighbors = ecs_field(it, ChunkNeighbors, 4);
-    const VoxLink *voxLinks = ecs_field(it, VoxLink, 5);
-    MeshIndicies *meshIndiciess = ecs_field(it, MeshIndicies, 6);
-    MeshVertices *meshVerticess = ecs_field(it, MeshVertices, 7);
-    MeshUVs *meshUVss = ecs_field(it, MeshUVs, 8);
-    MeshColorRGBs *meshColorRGBss = ecs_field(it, MeshColorRGBs, 9);
-    MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 10);
+    zox_field_in(ChunkOctree, chunkOctrees, 2)
+    zox_field_in(RenderLod, renderLods, 3)
+    zox_field_in(ChunkNeighbors, chunkNeighbors, 4)
+    zox_field_in(VoxLink, voxLinks, 5)
+    zox_field_out(ChunkDirty, chunkDirtys, 1)
+    zox_field_out(MeshIndicies, meshIndiciess, 6)
+    zox_field_out(MeshVertices, meshVerticess, 7)
+    zox_field_out(MeshUVs, meshUVss, 8)
+    zox_field_out(MeshColorRGBs, meshColorRGBss, 9)
+    zox_field_out(MeshDirty, meshDirtys, 10)
     for (int i = 0; i < it->count; i++) {
-        ChunkDirty *chunkDirty = &chunkDirtys[i];
+        zox_field_i_out(ChunkDirty, chunkDirtys, chunkDirty)
         if (chunkDirty->value == 0) continue;
-        const RenderLod *renderLod = &renderLods[i];
-        unsigned char lod = get_terrain_lod_from_camera_distance(renderLod->value);
-        MeshDirty *meshDirty = &meshDirtys[i];
-        MeshIndicies *meshIndicies = &meshIndiciess[i];
-        MeshVertices *meshVertices = &meshVerticess[i];
-        MeshColorRGBs *meshColorRGBs = &meshColorRGBss[i];
-        MeshUVs *meshUVs = &meshUVss[i];
+        zox_field_i_in(RenderLod, renderLods, renderLod)
+        const unsigned char lod = get_terrain_lod_from_camera_distance(renderLod->value);
+        zox_field_i_out(MeshDirty, meshDirtys, meshDirty)
+        zox_field_i_out(MeshIndicies, meshIndiciess, meshIndicies)
+        zox_field_i_out(MeshVertices, meshVerticess, meshVertices)
+        zox_field_i_out(MeshColorRGBs, meshColorRGBss, meshColorRGBs)
+        zox_field_i_out(MeshUVs, meshUVss, meshUVs)
         if (lod == 255) { // hides mesh
             clear_mesh_uvs(meshIndicies, meshVertices, meshColorRGBs, meshUVs);
             chunkDirty->value = 0;
             meshDirty->value = 1;
             continue;
         }
-        const VoxLink *voxLink = &voxLinks[i];
+        zox_field_i_in(VoxLink, voxLinks, voxLink)
         // waits for tilemap generation to finish
-        const TilemapLink *tilemapLink = ecs_get(world, voxLink->value, TilemapLink);
-        const TilemapUVs *tilemapUVs = ecs_get(world, tilemapLink->value, TilemapUVs);
+        const TilemapLink *tilemapLink = zox_get(voxLink->value, TilemapLink)
+        const TilemapUVs *tilemapUVs = zox_get(tilemapLink->value, TilemapUVs)
         // waits for tilemap generation to be done
         if (tilemapUVs->value == NULL || tilemapUVs->length == 0) continue;
-        const ChunkOctree *chunkOctree = &chunkOctrees[i];
-        const ChunkNeighbors *chunkNeighbors2 = &chunkNeighbors[i];
+        zox_field_i_in(ChunkOctree, chunkOctrees, chunkOctree)
+        zox_field_i_in(ChunkNeighbors, chunkNeighbors, chunkNeighbors2)
         const ChunkOctree *neighbors[6];
         if (!neighbor_lods) neighbor_lods = malloc(6);
         set_neightbor_chunk_data(left)
@@ -221,16 +221,16 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         build_chunk_octree_mesh_uvs(chunkOctree, tilemapUVs, meshIndicies, meshVertices, meshUVs, meshColorRGBs, renderLod->value, lod, neighbors, neighbor_lods);
         chunkDirty->value = 0;
         meshDirty->value = 1;
-        #ifdef zox_octree_chunk_build_limits
-            chunks_built++;
-            if (chunks_built >= max_chunks_build_per_frame) break;
-        #endif
-        #ifdef zoxel_time_octree_chunk_builds_system
-            did_do_timing()
-        #endif
+#ifdef zox_octree_chunk_build_limits
+        chunks_built++;
+        if (chunks_built >= max_chunks_build_per_frame) break;
+#endif
+#ifdef zoxel_time_octree_chunk_builds_system
+        did_do_timing()
+#endif
     }
     if (neighbor_lods) free(neighbor_lods);
-    #ifdef zoxel_time_octree_chunk_builds_system
-        end_timing_cutoff("    - octree_chunk_build_system", zoxel_time_octree_chunk_builds_system_cutoff)
-    #endif
+#ifdef zoxel_time_octree_chunk_builds_system
+    end_timing_cutoff("    - octree_chunk_build_system", zoxel_time_octree_chunk_builds_system_cutoff)
+#endif
 } zox_declare_system(ChunkOctreeBuildSystem)

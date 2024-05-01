@@ -1,5 +1,5 @@
 //! Here for now, spawns a one man bobarmy
-void Particle3DSpawnSystem(ecs_world_t *world, float3 bobPosition, int spawnCount) {
+/*void Particle3DSpawnSystem(ecs_world_t *world, float3 bobPosition, int spawnCount) {
     float2 positionBounds = { 0.1f, 0.2f };
     const float2 velocityBounds = { 0.03f, 0.2f };
     const float2 scaleBounds = { 0.02f, 0.13f };
@@ -84,4 +84,4 @@ void Particle3DSpawnSystem(ecs_world_t *world, float3 bobPosition, int spawnCoun
     free(scale1Ds);
     free(brightnesses);
     free(destroyInTimes);
-} zox_declare_system(Particle3DSpawnSystem)
+} zox_declare_system(Particle3DSpawnSystem)*/

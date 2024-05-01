@@ -2,22 +2,21 @@ void StatRegenSystem(ecs_iter_t *it) {
     const float regen_rate = 0.25f;
     const float delta_time = zox_delta_time;
     unsigned char system_updated = 0;
-    ecs_world_t *world = it->world;
-    const UserLink *userLinks = ecs_field(it, UserLink, 2);
-    const StatValueMax *statValueMaxs = ecs_field(it, StatValueMax, 3);
-    StatValue *statValues = ecs_field(it, StatValue, 4);
+    zox_iter_world()
+    zox_field_in(UserLink, userLinks, 2)
+    zox_field_in(StatValueMax, statValueMaxs, 3)
+    zox_field_out(StatValue, statValues, 4)
     for (int i = 0; i < it->count; i++) {
-        const UserLink *userLink = &userLinks[i];
+        zox_field_i_in(UserLink, userLinks, userLink)
         if (!userLink->value || !zox_has(userLink->value, Dead)) continue;
         const Dead *dead = zox_get(userLink->value, Dead);
         if (dead->value) continue;
-        const StatValueMax *statValueMax = &statValueMaxs[i];
-        StatValue *statValue = &statValues[i];
+        zox_field_i_in(StatValueMax, statValueMaxs, statValueMax)
+        zox_field_i_out(StatValue, statValues, statValue)
         if (statValue->value < statValueMax->value) {
             statValue->value += delta_time * regen_rate;
             if (statValue->value > statValueMax->value) statValue->value = statValueMax->value;
             system_updated = 1;
-            // zox_log(" > new stat value is: %f\n", statValue->value)
         }
     }
 #ifndef zoxel_on_windows

@@ -1,18 +1,14 @@
 // when health goes to 0, kill UserLink->value
 //  set Dead to 1
-
 void DeathSystem(ecs_iter_t *it) {
-    // only update when stat value changes
-    // if (!ecs_query_changed(NULL, it)) return;
+    // if (!ecs_query_changed(NULL, it)) return; // only update when stat value changes
     zox_iter_world()
-    const StatValue *statValues = ecs_field(it, StatValue, 2);
-    const UserLink *userLinks = ecs_field(it, UserLink, 3);
+    zox_field_in(StatValue, statValues, 2)
+    zox_field_in(UserLink, userLinks, 3)
     for (int i = 0; i < it->count; i++) {
-        const StatValue *statValue = &statValues[i];
-        // if (statValue->value > 0) zox_log("   %lu lives\n", it->entities[i])
+        zox_field_i_in(StatValue, statValues, statValue)
         if (statValue->value > 0) continue;
-        // zox_log("   %lu has no health\n", it->entities[i])
-        const UserLink *userLink = &userLinks[i];
+        zox_field_i_in(UserLink, userLinks, userLink)
         Dead *dead = zox_get_mut(userLink->value, Dead)
         if (dead->value) continue;
         dead->value = 1; // died now
