@@ -2,7 +2,7 @@
 #define zoxel_apps_inputs
 
 // useful
-#define zox_extract_pipeline EcsPostLoad // EcsOnLoad | EcsPostLoad
+#define zox_extract_pipeline EcsOnLoad // EcsOnLoad | EcsPostLoad
 #include "util/sdl_key_util.c"
 #include "util/keyboard_extract_util.c"
 #include "util/mouse_extract_util.c"

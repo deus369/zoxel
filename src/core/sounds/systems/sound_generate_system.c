@@ -1,36 +1,24 @@
-// instrument_piano
-// instrument_organ
-// instrument_edm
-// instrument_guitar
-// instrument_flute
-// instrument_violin
-// instrument_piano_square
-// instrument_saxophone
-// instrument_trumpet
-// const unsigned char instrumentType = instrument_piano;
-// sometimes envelop function has glitches?
-
 void SoundGenerateSystem(ecs_iter_t *it) {
 #ifdef zoxel_time_sound_generate_system
     begin_timing()
 #endif
-    GenerateSound *generateSounds = ecs_field(it, GenerateSound, 2);
-    SoundData *soundDatas = ecs_field(it, SoundData, 3);
-    SoundDirty *soundDirtys = ecs_field(it, SoundDirty, 4);
-    const SoundLength *soundLengths = ecs_field(it, SoundLength, 5);
-    const SoundFrequency *soundFrequencys = ecs_field(it, SoundFrequency, 6);
-    const SoundVolume *soundVolumes = ecs_field(it, SoundVolume, 7);
-    const InstrumentType *instrumentTypes = ecs_field(it, InstrumentType, 8);
+    zox_field_in(SoundLength, soundLengths, 5)
+    zox_field_in(SoundFrequency, soundFrequencys, 6)
+    zox_field_in(SoundVolume, soundVolumes, 7)
+    zox_field_in(InstrumentType, instrumentTypes, 8)
+    zox_field_out(GenerateSound, generateSounds, 2)
+    zox_field_out(SoundData, soundDatas, 3)
+    zox_field_out(SoundDirty, soundDirtys, 4)
     for (int i = 0; i < it->count; i++) {
-        GenerateSound *generateSound = &generateSounds[i];
+        zox_field_i_out(GenerateSound, generateSounds, generateSound)
         if (!generateSound->value) continue;
-        SoundDirty *soundDirty = &soundDirtys[i];
+        zox_field_i_out(SoundDirty, soundDirtys, soundDirty)
         if (soundDirty->value) continue;
-        SoundData *soundData = &soundDatas[i];
-        const SoundLength *soundLength = &soundLengths[i];
-        const SoundFrequency *soundFrequency = &soundFrequencys[i];
-        const InstrumentType *instrumentType = &instrumentTypes[i];
-        const SoundVolume *soundVolume = &soundVolumes[i];
+        zox_field_i_out(SoundData, soundDatas, soundData)
+        zox_field_i_in(SoundLength, soundLengths, soundLength)
+        zox_field_i_in(SoundFrequency, soundFrequencys, soundFrequency)
+        zox_field_i_in(InstrumentType, instrumentTypes, instrumentType)
+        zox_field_i_in(SoundVolume, soundVolumes, soundVolume)
         float volume = soundVolume->value;
         double sound_time_length = soundLength->value; // soundData.sound_time_length;
         float frequency = soundFrequency->value;
@@ -41,10 +29,6 @@ void SoundGenerateSystem(ecs_iter_t *it) {
         int total_sound_samples = (int) (sound_sample_rate * sound_time_length);
         generateSound->value = 0;
         resize_memory_component(SoundData, soundData, float, total_sound_samples)
-        /*if (soundData->value == NULL) {
-            zox_log("   ! entity [%lu] failed to alloc sound data [%i]\n", it->entities[i], total_sound_samples)
-            continue;
-        }*/
         for (int j = 0; j < total_sound_samples; j++) {
             float time = (float) (j / sample_rate_f);
             float value = 0.0f;

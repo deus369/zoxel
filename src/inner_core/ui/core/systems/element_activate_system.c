@@ -20,7 +20,7 @@ void ElementActivateSystem(ecs_iter_t *it) {
         zox_field_e()
         zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
         zox_field_i_in(DeviceMode, deviceModes, deviceMode)
-        unsigned char did_drag = 0;
+        unsigned char drag_mode = zox_drag_mode_none;
         unsigned char did_activate = 0;
         for (int j = 0; j < deviceLinks->length; j++) { // convert inputs to actions
             const ecs_entity_t device_entity = deviceLinks->value[j];
@@ -28,7 +28,7 @@ void ElementActivateSystem(ecs_iter_t *it) {
                 const Mouse *mouse = zox_get(device_entity, Mouse)
                 if (mouse->left.pressed_this_frame) {
                     clickingEntity->value = element;
-                    did_drag = zox_drag_mode_mouse;
+                    drag_mode = zox_drag_mode_mouse;
                 }
                 else if (mouse->left.released_this_frame) {
                     if (element == clickingEntity->value) did_activate = 1;
@@ -57,7 +57,7 @@ void ElementActivateSystem(ecs_iter_t *it) {
                     if (zox_has(zevice_entity, ZevicePointer)) {
                         const ZevicePointer *zevicePointer = zox_get(zevice_entity, ZevicePointer)
                         if (devices_get_pressed_this_frame(zevicePointer->value)) {
-                            did_drag = zox_drag_mode_finger;
+                            drag_mode = zox_drag_mode_finger;
                             clickingEntity->value = element;
                         } else if (devices_get_released_this_frame(zevicePointer->value)) {
                             if (element == clickingEntity->value) did_activate = 1;
@@ -67,13 +67,13 @@ void ElementActivateSystem(ecs_iter_t *it) {
                 }
             }
         }
-        raycasterResult->value = did_drag || did_activate;
-        if (did_drag) {
+        raycasterResult->value = drag_mode || did_activate;
+        if (drag_mode) {
             if (zox_has(element, Dragable)) {
                 DraggableState *dragableState = zox_get_mut(element, DraggableState)
                 if (!dragableState->value) {
                     DraggerLink *draggerLink = zox_get_mut(element, DraggerLink)
-                    dragableState->value = 1;
+                    dragableState->value = drag_mode;
                     draggerLink->value = e;
                     zox_modified(element, DraggableState)
                     zox_modified(element, DraggerLink)

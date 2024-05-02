@@ -56,7 +56,7 @@ void Line2DRenderSystem(ecs_iter_t *it) {
         glUniform1f(line2D_depth_location, position_z);
         glVertexAttribPointer(line2D_position_location, 2, GL_FLOAT, GL_FALSE, 0, line_data);
         glUniform4f(line2D_color_location, color_float4.x, color_float4.y, color_float4.z, color_float4.w);
-        glDrawArrays(GL_LINES, 0, 2);
+        glDrawArrays(GL_LINES, 0, 2); // 2
     }
     glUseProgram(0);
 } zox_declare_system(Line2DRenderSystem)

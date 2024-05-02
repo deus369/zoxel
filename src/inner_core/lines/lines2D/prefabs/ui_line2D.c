@@ -43,7 +43,7 @@ void resize_ui_line2D(ecs_world_t *world, ecs_entity_t e, int2 canvas_size) {
     zox_modified(e, LineData2D)
 }
 
-ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point_a, int2 point_b, float2 anchor_a, float2 anchor_b, color line_color, float thickness, double life_time, float2 parent_real_position, int2 parent_position, unsigned char layer) {
+ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, const int2 point_a, const int2 point_b, const float2 anchor_a, const float2 anchor_b, const color line_color, const float thickness, const double life_time, const float2 parent_real_position, const int2 parent_position, const unsigned char layer) {
     if (canvas == 0) canvas = zox_canvases[0];
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     ecs_entity_t e;
@@ -76,6 +76,6 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, int2 point
 }
 
 
-ecs_entity_t spawn_ui_line2D_v2(ecs_world_t *world, ecs_entity_t canvas, int2 point_a, int2 point_b, color line_color, float thickness, double life_time, float2 parent_real_position, int2 parent_position, unsigned char layer) {
+ecs_entity_t spawn_ui_line2D_v2(ecs_world_t *world, const ecs_entity_t canvas, const int2 point_a, const int2 point_b, const color line_color, const float thickness, const double life_time, const float2 parent_real_position, const int2 parent_position, const unsigned char layer) {
     return spawn_ui_line2D(world, canvas, point_a, point_b, float2_zero, float2_zero, line_color, thickness, life_time, parent_real_position, parent_position, layer);
 }

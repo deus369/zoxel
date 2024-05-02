@@ -5,17 +5,17 @@ void MusicPlaySystem(ecs_iter_t *it) {
     double delta_time = zox_delta_time;
     const double music_speed = 2.0;
     zox_iter_world()
-    const MusicData *musicDatas = ecs_field(it, MusicData, 2);
-    const MusicSpeed *musicSpeeds = ecs_field(it, MusicSpeed, 3);
-    const InstrumentType *instrumentTypes = ecs_field(it, InstrumentType, 4);
-    MusicNote *musicNotes = ecs_field(it, MusicNote, 5);
-    MusicTime *musicTimes = ecs_field(it, MusicTime, 6);
+    zox_field_in(MusicData, musicDatas, 2)
+    zox_field_in(MusicSpeed, musicSpeeds, 3)
+    zox_field_in(InstrumentType, instrumentTypes, 4)
+    zox_field_out(MusicNote, musicNotes, 5)
+    zox_field_out(MusicTime, musicTimes, 6)
     for (int i = 0; i < it->count; i++) {
-        const MusicData *musicData = &musicDatas[i];
-        const MusicSpeed *musicSpeed = &musicSpeeds[i];
-        const InstrumentType *instrumentType = &instrumentTypes[i];
-        MusicNote *musicNote = &musicNotes[i];
-        MusicTime *musicTime = &musicTimes[i];
+        zox_field_i_in(MusicData, musicDatas, musicData)
+        zox_field_i_in(MusicSpeed, musicSpeeds, musicSpeed)
+        zox_field_i_in(InstrumentType, instrumentTypes, instrumentType)
+        zox_field_i_out(MusicNote, musicNotes, musicNote)
+        zox_field_i_out(MusicTime, musicTimes, musicTime)
         musicTime->value += delta_time / musicSpeed->value;
         if (musicData->length > 0 && musicTime->value >= music_speed) {
             musicTime->value -= music_speed;

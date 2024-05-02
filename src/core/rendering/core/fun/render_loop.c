@@ -33,9 +33,7 @@ void clear_viewport() {
 #ifdef zox_include_vulkan
         vulkan_clear_viewport(viewport_clear_color);
 #endif
-    } else {
-        opengl_clear(viewport_clear_color);
-    }
+    } else opengl_clear(viewport_clear_color);
 }
 
 void run_rendering() {
@@ -76,7 +74,7 @@ void camera_render_update(ecs_iter_t *it, const unsigned char is_camera2D) {
             }
         }
     }
-    if (!is_camera2D) glClear(GL_DEPTH_BUFFER_BIT);
+    // if (!is_camera2D) glClear(GL_DEPTH_BUFFER_BIT);
 #ifdef zoxel_time_render_loop
     end_timing_absolute("    - render_loop")
 #endif

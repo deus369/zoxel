@@ -1,13 +1,13 @@
 void SoundUpdateSystem(ecs_iter_t *it) {
-    const SoundData *soundDatas = ecs_field(it, SoundData, 2);
-    SoundDirty *soundDirtys = ecs_field(it, SoundDirty, 3);
-    SDLSound *sdlSounds = ecs_field(it, SDLSound, 4);
+    zox_field_in(SoundData, soundDatas, 2)
+    zox_field_out(SoundDirty, soundDirtys, 3)
+    zox_field_out(SDLSound, sdlSounds, 4)
     for (int i = 0; i < it->count; i++) {
-        SoundDirty *soundDirty = &soundDirtys[i];
+        zox_field_i_out(SoundDirty, soundDirtys, soundDirty)
         if (!soundDirty->value) continue;
-        const SoundData *soundData = &soundDatas[i];
+        zox_field_i_in(SoundData, soundDatas, soundData)
         if (!soundData->value) continue;
-        SDLSound *sdlSound = &sdlSounds[i];
+        zox_field_i_out(SDLSound, sdlSounds, sdlSound)
         free_sdl_sound(sdlSound);
         sdlSound->value = (Mix_Chunk *) malloc(sizeof(Mix_Chunk));
         sdlSound->value->volume = global_master_volume;

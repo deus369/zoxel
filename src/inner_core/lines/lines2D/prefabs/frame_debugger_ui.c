@@ -1,6 +1,4 @@
 ecs_entity_t prefab_frame_debugger_ui;
-// ecs_entity_t frame_debugger_ui;
-// ecs_entity_t frame_debugger_window = 0;
 
 ecs_entity_t spawn_prefab_frame_debugger_ui(ecs_world_t *world) {
     zox_prefab_child(prefab_window)

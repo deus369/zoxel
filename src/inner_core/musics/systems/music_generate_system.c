@@ -2,13 +2,13 @@ void MusicGenerateSystem(ecs_iter_t *it) {
     const unsigned char lowest_note = 12;
     const unsigned char highest_note = 36;
     const unsigned char note_verse_difference = 6;
-    GenerateMusic *generateMusics = ecs_field(it, GenerateMusic, 2);
-    MusicData *musicDatas = ecs_field(it, MusicData, 3);
+    zox_field_out(GenerateMusic, generateMusics, 2)
+    zox_field_out(MusicData, musicDatas, 3)
     // InstrumentType *instrumentTypes = ecs_field(it, InstrumentType, 4);
     for (int i = 0; i < it->count; i++) {
-        GenerateMusic *generateMusic = &generateMusics[i];
+        zox_field_i_out(GenerateMusic, generateMusics, generateMusic)
         if (!generateMusic->value) continue;
-        MusicData *musicData = &musicDatas[i];
+        zox_field_i_out(MusicData, musicDatas, musicData)
         // InstrumentType *instrumentType = &instrumentTypes[i];
         // instrumentType->value = rand() % instrument_end;
         // instrumentType->value = instrument_unique;

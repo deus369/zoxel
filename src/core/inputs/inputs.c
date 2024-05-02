@@ -4,6 +4,7 @@
 // zoxel_settings
 #define zox_pipelines_devices_reset EcsOnLoad
 #define zox_pipelines_devices_enables EcsPostUpdate // one before zox_pipelines_pre_render
+#define zox_pip_raycasting EcsOnUpdate
 const float joystick_min_cutoff = 0.01f;
 const float joystick_min_cutoff2 = 0.04f;
 const float joystick_cutoff_buffer = 0.14f;
@@ -92,9 +93,9 @@ zox_define_memory_component(DeviceLinks)
 zox_system(ZeviceButtonResetSystem, zox_pipelines_devices_reset, [out] ZeviceButton)
 zox_system(ZevicePointerResetSystem, zox_pipelines_devices_reset, [out] ZevicePointer)
 zox_system(ZevicePointerDeltaResetSystem, zox_pipelines_devices_reset, [out] ZevicePointerDelta)  // has to be before other systems
-zox_system(DeviceModeSystem, EcsPreUpdate, [in] DeviceLinks, [in] DeviceMode, [out] DeviceModeDirty)
-zox_system(DraggerEndSystem, EcsPreUpdate, [out] DraggableState, [out] DraggerLink, [out] DraggingDelta)
-zox_system(MouseRaycasterSystem, EcsPreUpdate, [in] DeviceLinks, [in] DeviceMode, [out] Raycaster)
+zox_system(DeviceModeSystem, zox_pip_raycasting, [in] DeviceLinks, [in] DeviceMode, [out] DeviceModeDirty)
+zox_system(DraggerEndSystem, EcsPostLoad, [out] DraggableState, [out] DraggerLink, [out] DraggingDelta)
+zox_system(MouseRaycasterSystem, zox_pip_raycasting, [in] DeviceLinks, [in] DeviceMode, [out] Raycaster)
 zox_system(DeviceModeDirtySystem, zox_pipelines_devices_enables, [out] DeviceMode, [out] DeviceModeDirty)
 zox_system(ZeviceButtonEnableSystem, zox_pipelines_devices_enables, [in] ZeviceButton, [out] ZeviceDisabled)
 zox_system(ZeviceStickEnableSystem, zox_pipelines_devices_enables, [in] ZeviceStick, [out] ZeviceDisabled)

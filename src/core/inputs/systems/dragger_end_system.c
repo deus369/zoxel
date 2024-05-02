@@ -13,7 +13,7 @@ void DraggerEndSystem(ecs_iter_t *it) {
         const DeviceLinks *deviceLinks = zox_get(player_entity, DeviceLinks)
         unsigned char did_drag_end = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
-            ecs_entity_t device_entity = deviceLinks->value[j];
+            const ecs_entity_t device_entity = deviceLinks->value[j];
             if (dragableState->value == zox_drag_mode_mouse && zox_has(device_entity, Mouse)) {
                 const Mouse *mouse = zox_get(device_entity, Mouse)
                 if (mouse->left.released_this_frame) did_drag_end = 1;

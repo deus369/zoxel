@@ -16,13 +16,13 @@ void MouseRaycasterSystem(ecs_iter_t *it) {
             } else if (deviceMode->value == zox_device_mode_touchscreen && zox_has(device_entity, Touchscreen)) {
                 const Children *zevices = zox_get(device_entity, Children)
                 for (int k = 0; k < zevices->length; k++) {
-                    ecs_entity_t zevice_entity = zevices->value[k];
+                    const ecs_entity_t zevice_entity = zevices->value[k];
                     if (zox_has(zevice_entity, ZevicePointer)) {
                         const ZevicePointer *zevicePointer = zox_get(zevice_entity, ZevicePointer)
                         if (devices_get_released_this_frame(zevicePointer->value) || devices_get_is_pressed(zevicePointer->value)) {
                             const ZevicePointerPosition *zevicePointerPosition = zox_get(zevice_entity, ZevicePointerPosition)
-                            // raycaster->value = zevicePointerPosition->value;
                             int2_add_int2_p(&raycaster->value, zevicePointerPosition->value);
+                            // zox_log(" > player raycaster set to [%ix%i]\n", zevicePointerPosition->value.x, zevicePointerPosition->value.y)
                         } else {
                             raycaster->value = (int2) { -10000, -10000 };
                         }

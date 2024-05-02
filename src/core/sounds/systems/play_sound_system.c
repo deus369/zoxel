@@ -5,15 +5,15 @@ void PlaySoundSystem(ecs_iter_t *it) {
     int channel_available = Mix_GroupAvailable(-1); // -1 indicates all channels
     if (channel_available == -1) return;
     zox_iter_world()
-    const SoundLength *soundLengths = ecs_field(it, SoundLength, 3);
-    const SDLSound *sdlSounds = ecs_field(it, SDLSound, 4);
-    TriggerSound *playSounds = ecs_field(it, TriggerSound, 2);
+    zox_field_in(SoundLength, soundLengths, 3)
+    zox_field_in(SDLSound, sdlSounds, 4)
+    zox_field_out(TriggerSound, triggerSounds, 2)
     for (int i = 0; i < it->count; i++) {
-        TriggerSound *triggerSound = &playSounds[i];
+        zox_field_i_out(TriggerSound, triggerSounds, triggerSound)
         if (triggerSound->value != 1) continue;
-        const ecs_entity_t e = it->entities[i];
-        const SDLSound *sdlSound = &sdlSounds[i];
-        const SoundLength *soundLength = &soundLengths[i];
+        zox_field_e()
+        zox_field_i_in(SDLSound, sdlSounds, sdlSound)
+        zox_field_i_in(SoundLength, soundLengths, soundLength)
         if (sdlSound->value != NULL) {
             if (soundLength->value && Mix_PlayChannel(channel_available, sdlSound->value, 0) != -1) {
                 zox_set(e, DestroyInTime, { soundLength->value + 1.0 })

@@ -7,5 +7,5 @@ void button_event_exit_app(ecs_world_t *world, const ecs_entity_t player, const 
     find_child_with_tag(canvas, MenuMain, menu)
     if (menu) zox_delete(menu)
     trigger_canvas_fade_transition(world, canvas);
-    delay_event(world, &engine_end_delayed, 0, 1.2f);
+    delay_event(world, &engine_end_delayed, 0, 2.0f);
 }

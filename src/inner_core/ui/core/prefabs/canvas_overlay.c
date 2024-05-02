@@ -8,8 +8,8 @@ ecs_entity_t spawn_prefab_canvas_overlay(ecs_world_t *world) {
     zox_prefab_set(e, AnimationState, { 0 })
     zox_prefab_set(e, AnimationStart, { 0 })
     zox_prefab_set(e, AnimationSequence, { 0, NULL })
-    zox_prefab_set(e, AnimationLength, { 0.6f})
-    zox_prefab_set(e, AnimationDelay, { 0.1f})
+    zox_prefab_set(e, AnimationLength, { 1.6f})
+    zox_prefab_set(e, AnimationDelay, { 0.4f})
     add_ui_plus_components(world, e);
     prefab_canvas_overlay = e;
     return e;
@@ -48,5 +48,7 @@ void trigger_canvas_fade_transition(ecs_world_t *world, const ecs_entity_t canva
     // set start animation
     zox_set(e, AnimationStart, { zox_current_time })
     zox_set(e, AnimationState, { zox_animation_fadein })
+    zox_set(e, AnimationLength, { 0.7f})
+    zox_set(e, AnimationDelay, { 0.2f})
     zox_set(e, Alpha, { 0.0f })
 }
