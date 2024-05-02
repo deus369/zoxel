@@ -7,6 +7,7 @@ ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     add_ui_plus_components(world, e);
     zox_add_tag(e, Window)
     zox_add_tag(e, FrameTexture)
+    zox_add_tag(e, Selectable)
     zox_prefab_set(e, FrameCorner, { 7 })
     zox_prefab_set(e, OutlineThickness, { 6 })
     zox_prefab_set(e, Color, { window_color })

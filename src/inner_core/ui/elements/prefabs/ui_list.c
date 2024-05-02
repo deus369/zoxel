@@ -70,7 +70,10 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
     }
     zox_modified(e, Children)
 #ifdef zoxel_include_players
-    if (!headless && elements_count > 0) raycaster_select_element(world, player, children->value[list_start]);
+    if (!headless && elements_count > 0 && player) {
+        const unsigned char device_mode = zox_get_value(player, DeviceMode)
+        if (device_mode == zox_device_mode_gamepad) raycaster_select_element(world, player, children->value[list_start]);
+    }
 #endif
     return e;
 }

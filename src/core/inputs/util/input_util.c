@@ -5,7 +5,6 @@ void disable_inputs_until_release(ecs_world_t *world, const ecs_entity_t player,
     if (!player) return;
     if (new_device_mode != zox_device_mode_gamepad) {
         raycaster_select_element(world, player, 0);
-        // zox_set(player, RaycasterResult, { 0 })
     }
     const DeviceLinks *deviceLinks = zox_get(player, DeviceLinks)
     for (int j = 0; j < deviceLinks->length; j++) {

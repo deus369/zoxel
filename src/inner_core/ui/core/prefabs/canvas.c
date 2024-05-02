@@ -30,6 +30,7 @@ ecs_entity_t spawn_prefab_canvas(ecs_world_t *world) {
     zox_prefab_set(e, Children, { 0, NULL })
     zox_prefab_set(e, CameraLink, { 0 })
     zox_prefab_set(e, ScreenToCanvas, { float4_zero })
+    zox_prefab_set(e, WindowToTop, { 0 })
     prefab_canvas = e;
     return e;
 }

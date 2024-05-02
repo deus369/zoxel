@@ -11,6 +11,7 @@ zox_declare_tag(ElementRaycaster)
 zox_declare_tag(ElementBillboard)
 zox_declare_tag(BoundToCanvas)
 zox_declare_tag(CanvasOverlay)
+zox_declare_tag(Window)
 zox_component_byte(InitializeEntityMesh)
 zox_component_byte(NavigatorState)
 zox_component_byte(ElementFontSize)
@@ -27,6 +28,9 @@ zox_component_entity(UIHolderLink)
 zox_component_byte(HeaderHeight)
 zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t, ecs_entity_t)
 zox_entities_component(ElementLinks)
+zox_component(WindowRaycasted, ecs_entity_t)
+zox_component(WindowTarget, ecs_entity_t)
+zox_component(WindowToTop, ecs_entity_t)
 // zoxel_include_util
 #include "util/ui_prefab_util.c"
 #include "util/ui_transform_util.c"
@@ -49,7 +53,7 @@ zox_entities_component(ElementLinks)
 #include "systems/button_click_event_system.c"
 #include "systems/element_raycast_system.c"
 #include "systems/element_selected_system.c"
-#include "systems/element_activate_system.c"
+#include "systems/element_click_system.c"
 #include "systems/element_navigation_system.c"
 #include "systems/element_position_system.c"
 #include "systems/element_mesh2D_system.c"
@@ -58,6 +62,7 @@ zox_entities_component(ElementLinks)
 #include "systems/ui_trail_system.c"
 #include "systems/element_bar_system.c"
 #include "systems/canvas_resize_system.c"
+#include "systems/canvas_stack_system.c"
 
 void spawn_prefabs_ui_core(ecs_world_t *world) {
     spawn_prefab_canvas(world);
@@ -78,6 +83,7 @@ zox_define_tag(ElementRaycaster)
 zox_define_tag(ElementBillboard)
 zox_define_tag(BoundToCanvas)
 zox_define_tag(CanvasOverlay)
+zox_define_tag(Window)
 zox_define_component_byte(InitializeEntityMesh)
 zox_define_component_byte(NavigatorState)
 zox_define_component_byte(ElementFontSize)
@@ -94,13 +100,16 @@ zox_define_component(UIHolderLink)
 zox_define_component(ClickEvent)
 zox_define_entities_component(ElementLinks)
 zox_define_component_byte(HeaderHeight)
+zox_define_component(WindowRaycasted)
+zox_define_component(WindowTarget)
+zox_define_component(WindowToTop)
 // zoxel_define_filters
-zox_filter(ui_query, [none] Element, [in] CanvasPosition, [in] PixelSize, [in] Layer2D, [in] RenderDisabled, [out] SelectState)
+zox_filter(ui_query, [none] Element, [in] CanvasPosition, [in] PixelSize, [in] Layer2D, [in] RenderDisabled, [none] generic.Selectable)
 zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition, [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPosition)
 // zoxel_define_systems
 #ifdef zoxel_inputs
-zox_system_ctx(ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [in] DeviceMode, [out] RaycasterTarget)
-zox_system(ElementActivateSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterTarget, [out] RaycasterResult, [out] ClickingEntity)
+zox_system_ctx(ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [in] DeviceMode, [out] RaycasterTarget, [out] WindowRaycasted)
+zox_system(ElementClickSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterTarget, [in] WindowRaycasted, [out] RaycasterResult, [out] ClickingEntity, [out] WindowTarget)
 zox_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [out] NavigatorState, [out] NavigatorTimer, [out] RaycasterTarget)
 #endif
 zox_system_ctx(ElementPositionSystem, EcsPreUpdate, pixel_positions_query, [none] Element, [in] PixelPosition, [in] ParentLink, [in] Anchor, [in] CanvasLink, [out] Position2D, [out] CanvasPosition)
@@ -114,6 +123,7 @@ if (!headless) {
     zox_system_1(ButtonClickEventSystem, main_thread_pipeline, [in] ClickEvent, [out] ClickState, [out] Clicker, [none] Element)
 }
 zox_system(CanvasResizeSystem, EcsOnUpdate, [in] CameraLink, [in] Children, [in] cameras.ScreenToCanvas, [out] PixelSize, [none] Canvas)
+zox_system(CanvasStackSystem, EcsOnUpdate, [in] Children, [out] WindowToTop)
 zoxel_end_module(UICore)
 
 #endif

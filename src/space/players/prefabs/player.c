@@ -21,6 +21,8 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     zox_prefab_set(e, NavigatorTimer, { 0 })
     zox_prefab_set(e, ElementLinks, { 0, NULL })
     zox_prefab_set(e, CanvasLink, { 0 })
+    zox_prefab_set(e, WindowRaycasted, { 0 })
+    zox_prefab_set(e, WindowTarget, { 0 })
     // Player -> Character/Camera
     zox_prefab_set(e, CharacterLink, { 0 })
     zox_prefab_set(e, CameraLink, { 0 })
