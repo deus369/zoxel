@@ -1,6 +1,6 @@
+// todo: handle removal of windows in stack on update
 // todo: fix window headers, make body a child, atm clicking header over another window breaks, because it restacks the window under the header ui
 // todo: remember local layers for each element under window, and add those, instead of incrementally just adding like I do atm (this can be done later, not issue for now)
-// todo: handle removal of windows in stack on update
 
 // done:
 //      - When spawning window, set window layer

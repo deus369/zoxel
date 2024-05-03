@@ -11,7 +11,7 @@ typedef struct {\
     name##_##pair **data;\
 } name;\
 \
-int type##_##hash(int key, int size) {\
+int name##_##hash(int key, int size) {\
     return key % size;\
 }\
 \
@@ -24,7 +24,7 @@ name* create##_##name(int size) {\
 \
 void name##_##add(name* map, key_type key_raw, type value) {\
     int key = convert_to_hash(key_raw);\
-    int index = type##_##hash(key, map->size);\
+    int index = name##_##hash(key, map->size);\
     name##_##pair* pair = malloc(sizeof(name##_##pair));\
     pair->key = key;\
     pair->value = value;\
@@ -34,7 +34,7 @@ void name##_##add(name* map, key_type key_raw, type value) {\
 \
 type name##_##get(name* map, key_type key_raw) {\
     int key = convert_to_hash(key_raw);\
-    int index = type##_##hash(key, map->size);\
+    int index = name##_##hash(key, map->size);\
     name##_##pair* pair = map->data[index];\
     while (pair != NULL) {\
         if (pair->key == key) {\
@@ -45,9 +45,20 @@ type name##_##get(name* map, key_type key_raw) {\
     return type_zero;\
 }\
 \
+unsigned char name##_##has(name* map, key_type key_raw) {\
+    int key = convert_to_hash(key_raw);\
+    int index = name##_##hash(key, map->size);\
+    name##_##pair* pair = map->data[index];\
+    while (pair != NULL) {\
+        if (pair->key == key) return 1;\
+        pair = pair->next;\
+    }\
+    return 0;\
+}\
+\
 void name##_##remove(name* map, key_type key_raw) {\
     int key = convert_to_hash(key_raw);\
-    int index = type##_##hash(key, map->size);\
+    int index = name##_##hash(key, map->size);\
     name##_##pair* pair = map->data[index];\
     name##_##pair* prev_pair = NULL;\
     while (pair != NULL) {\
