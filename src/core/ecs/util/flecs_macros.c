@@ -1,5 +1,3 @@
-#define zox_filter(name, ...) ecs_query_t *name = ecs_query_init(world, &(ecs_query_desc_t) { .filter.expr = #__VA_ARGS__});
-
 #define zox_add(e, T) {\
     ecs_add(world, e, T);\
     ecs_override(world, e, T);\

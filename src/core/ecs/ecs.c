@@ -11,6 +11,7 @@ create_is_in_array_d(ecs_entity_t)
 #include "util/module_macros.c"
 #include "util/component_macros.c"
 #include "util/system_macros.c"
+#include "util/filter_macros.c"
 #include "util/flecs_macros.c"
 #include "util/flecs_extensions.c"
 #include "util/entities_component.c"

@@ -1,5 +1,5 @@
 void FontTextureSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(it->ctx, NULL)) return;
+    zox_change_check()
     if (!font_style_entity || !zox_has(font_style_entity, Children)) return;
     zox_iter_world()
     const Children *font_style_children = zox_get(font_style_entity, Children)

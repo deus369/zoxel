@@ -1,6 +1,6 @@
 //! When ui text updates, spawn/destroy font entities
 void ZextUpdateSystem(ecs_iter_t *it) {
-    if (!it->ctx || !ecs_query_changed(it->ctx, NULL)) return;
+    zox_change_check()
     zox_iter_world()
     zox_field_in(ZextData, zextDatas, 2)
     zox_field_in(ZextSize, zextSizes, 3)

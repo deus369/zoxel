@@ -167,7 +167,7 @@ void build_chunk_octree_mesh_uvs(const ChunkOctree *chunk_octree, const TilemapU
 
 // builds the terrain meshes
 void ChunkOctreeBuildSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(it->ctx, NULL)) return;
+    zox_change_check()
     #ifdef zoxel_time_octree_chunk_builds_system
         begin_timing()
     #endif

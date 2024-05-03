@@ -1,5 +1,5 @@
 void NoiseTextureSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(it->ctx, NULL)) return;
+    zox_change_check()
     zox_iter_world()
     TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 2);
     TextureData *textures = ecs_field(it, TextureData, 3);

@@ -200,6 +200,7 @@ run-dev-debug-tiny:
 
 flecs_target = build/libflecs.a
 flecs_source = include/flecs/flecs.c
+flecs_lib = lib/libflecs.a
 flecs_flags = -c
 flecs_obj = build/flecs.o
 flecs_libs = -lm -lpthread
@@ -210,8 +211,9 @@ make_flecs = $(CC) $(flecs_flags) $(CFLAGS) $(CFLAGS_RELEASE) $(flecs_source) -o
 make_flecs_lib = ar rcs $(flecs_target) $(flecs_obj)
 make_flecs_big= set -e; \
 	$(make_flecs) && \
-	$(make_flecs_lib)  && \
-	cp build/libflecs.a lib &&
+	$(make_flecs_lib) && \
+	rm $flecs_obj && \
+	cp $flecs_target $flecs_lib
 
 # bash bash/flecs/check_flecs_source.sh && bash bash/flecs/download_flecs_source.sh && \
 

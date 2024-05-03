@@ -31,6 +31,10 @@ zox_entities_component(ElementLinks)
 zox_component(WindowRaycasted, ecs_entity_t)
 zox_component(WindowTarget, ecs_entity_t)
 zox_component(WindowToTop, ecs_entity_t)
+zox_component_byte(WindowsLayers)
+zox_component_byte(WindowsCount)
+zox_component_byte(WindowLayer)
+zox_component_byte(SetWindowLayer)
 // zoxel_include_util
 #include "util/ui_prefab_util.c"
 #include "util/ui_transform_util.c"
@@ -63,6 +67,7 @@ zox_component(WindowToTop, ecs_entity_t)
 #include "systems/element_bar_system.c"
 #include "systems/canvas_resize_system.c"
 #include "systems/canvas_stack_system.c"
+#include "systems/window_layer_system.c"
 
 void spawn_prefabs_ui_core(ecs_world_t *world) {
     spawn_prefab_canvas(world);
@@ -103,6 +108,10 @@ zox_define_component_byte(HeaderHeight)
 zox_define_component(WindowRaycasted)
 zox_define_component(WindowTarget)
 zox_define_component(WindowToTop)
+zox_define_component_byte(WindowsLayers)
+zox_define_component_byte(WindowsCount)
+zox_define_component_byte(WindowLayer)
+zox_define_component_byte(SetWindowLayer)
 // zoxel_define_filters
 zox_filter(ui_query, [none] Element, [in] CanvasPosition, [in] PixelSize, [in] Layer2D, [in] RenderDisabled, [none] generic.Selectable)
 zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition, [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPosition)
@@ -123,7 +132,8 @@ if (!headless) {
     zox_system_1(ButtonClickEventSystem, main_thread_pipeline, [in] ClickEvent, [out] ClickState, [out] Clicker, [none] Element)
 }
 zox_system(CanvasResizeSystem, EcsOnUpdate, [in] CameraLink, [in] Children, [in] cameras.ScreenToCanvas, [out] PixelSize, [none] Canvas)
-zox_system(CanvasStackSystem, EcsOnUpdate, [in] Children, [out] WindowToTop)
+zox_system(CanvasStackSystem, EcsOnUpdate, [in] Children, [out] WindowToTop, [out] WindowsLayers, [out] WindowsCount, [none] Canvas)
+zox_system(WindowLayerSystem, EcsOnUpdate, [in] SetWindowLayer, [in] CanvasLink, [in] Children, [out] WindowLayer, [out] Layer2D, [none] Window)
 zoxel_end_module(UICore)
 
 #endif

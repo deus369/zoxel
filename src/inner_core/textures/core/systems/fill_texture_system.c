@@ -1,6 +1,6 @@
 // simple system
 void FillTextureSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(it->ctx, NULL)) return;
+    zox_change_check()
     TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 2);
     TextureData *textures = ecs_field(it, TextureData, 3);
     const TextureSize *textureSizes = ecs_field(it, TextureSize, 4);

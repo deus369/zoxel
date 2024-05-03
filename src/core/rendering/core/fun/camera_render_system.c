@@ -1,4 +1,4 @@
-const unsigned char max_render_layers = 32;
+const unsigned char max_layers2D = 64;
 unsigned char renderer_layer;
 ecs_entity_t renderer_camera;
 float4x4 render_camera_matrix;
@@ -69,7 +69,7 @@ void camera_render_update(ecs_iter_t *it, const unsigned char is_camera2D) {
             for (int j = 0; j < render3D_systems->size; j++) ecs_run(world, render3D_systems->data[j], 0, NULL);
         } else {
             // ui is rendered in layers
-            for (renderer_layer = 0; renderer_layer < max_render_layers; renderer_layer++) {
+            for (renderer_layer = 0; renderer_layer < max_layers2D; renderer_layer++) {
                 for (int j = 0; j < render2D_systems->size; j++) ecs_run(world, render2D_systems->data[j], 0, NULL);
             }
         }

@@ -22,7 +22,7 @@ void generate_chunk_terrain(ChunkData* chunkData, const int3 chunkSize, const in
 }
 
 void TerrainChunkSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(it->ctx, NULL)) return;
+    zox_change_check()
     #ifdef zoxel_time_terrain_chunk_system
         begin_timing()
     #endif

@@ -32,20 +32,21 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const char *header_labe
     // zoxel_log(" > line_spacing [%f] - size [%i]\n", line_spacing, pixel_size.x);
     zox_instance(prefab_frame_debugger_ui)
     zox_name("frame_debugger_ui")
+    zox_set(e, HeaderHeight, { header_size.y })
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor, header_size.y);
-    zox_set(e, HeaderHeight, { header_size.y })
-    Children *children = ecs_get_mut(world, e, Children);
+    Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, children_count)
     children->value[0] = spawn_header(world, e, canvas, header_position, header_size, header_anchor, header_label, font_size, header_margins, header_layer, pixel_position_global, pixel_size, is_close_button, canvas_size);
     for (int i = 0; i < lines_count; i++) {
         const int position_x = line_margins + i * line_spacing;
         const int2 start_position = (int2) { position_x, lines_min_height };
         const int2 end_position = (int2) { position_x, lines_max_height };
-        const ecs_entity_t line = spawn_ui_line2D_v2(world, canvas, start_position, end_position, line_color, lines_thickness, 0, position2D, pixel_position, lines_layer);
-        zox_set(line, ChildIndex, { i })
-        zox_add_tag(line, FrameDebugLine)
-        children->value[1 + i] = line;
+        const ecs_entity_t e2 = spawn_ui_line2D_v2(world, canvas, e, start_position, end_position, line_color, lines_thickness, 0, position2D, pixel_position, lines_layer);
+        zox_set(e2, ChildIndex, { i })
+        zox_set(e2, ParentLink, { e })
+        zox_add_tag(e2, FrameDebugLine)
+        children->value[1 + i] = e2;
     }
     zox_modified(e, Children)
     return e;

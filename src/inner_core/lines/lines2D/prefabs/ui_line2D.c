@@ -43,7 +43,7 @@ void resize_ui_line2D(ecs_world_t *world, ecs_entity_t e, int2 canvas_size) {
     zox_modified(e, LineData2D)
 }
 
-ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, const int2 point_a, const int2 point_b, const float2 anchor_a, const float2 anchor_b, const color line_color, const float thickness, const double life_time, const float2 parent_real_position, const int2 parent_position, const unsigned char layer) {
+ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, const ecs_entity_t parent, int2 point_a, const int2 point_b, const float2 anchor_a, const float2 anchor_b, const color line_color, const float thickness, const double life_time, const float2 parent_real_position, const int2 parent_position, const unsigned char layer) {
     if (canvas == 0) canvas = zox_canvases[0];
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     ecs_entity_t e;
@@ -68,7 +68,7 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, const int2
     zox_modified(e, LineData2D)
     if (life_time != 0.0f) zox_set(e, DestroyInTime, { life_time })
     // adds to canvas
-    on_child_added(world, canvas, e);
+    if (parent == canvas) on_child_added(world, canvas, e);
     // const LinePosition2D linePosition2D = (LinePosition2D) { line_position2D };
     // zoxel_log(" > line [%ix%ix%ix%i]\n", line_position2D.x, line_position2D.y, line_position2D.z, line_position2D.w);
     //  { point_a.x, point_a.y, point_b.x, point_b.y } };
@@ -76,6 +76,6 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, const int2
 }
 
 
-ecs_entity_t spawn_ui_line2D_v2(ecs_world_t *world, const ecs_entity_t canvas, const int2 point_a, const int2 point_b, const color line_color, const float thickness, const double life_time, const float2 parent_real_position, const int2 parent_position, const unsigned char layer) {
-    return spawn_ui_line2D(world, canvas, point_a, point_b, float2_zero, float2_zero, line_color, thickness, life_time, parent_real_position, parent_position, layer);
+ecs_entity_t spawn_ui_line2D_v2(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t parent, const int2 point_a, const int2 point_b, const color line_color, const float thickness, const double life_time, const float2 parent_real_position, const int2 parent_position, const unsigned char layer) {
+    return spawn_ui_line2D(world, canvas, parent, point_a, point_b, float2_zero, float2_zero, line_color, thickness, life_time, parent_real_position, parent_position, layer);
 }

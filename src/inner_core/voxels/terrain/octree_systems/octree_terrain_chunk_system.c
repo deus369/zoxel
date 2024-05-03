@@ -32,7 +32,7 @@ void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 pos
 
 // generates our terrain voxels
 void OctreeTerrainChunkSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(it->ctx, NULL)) return;
+    zox_change_check()
 #ifdef zoxel_time_octree_terrain_chunk_system
     begin_timing()
 #endif

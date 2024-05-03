@@ -34,7 +34,7 @@ zox_memory_component(MeshColorRGBs, color_rgb)
 #include "systems/mesh_restore_system.c"
 #include "systems/mesh_dispose_system.c"
 // zoxel_function_includes
-#include "fun/render_loop.c"
+#include "fun/camera_render_system.c"
 #include "fun/gpu_dispose.c"
 #include "fun/gpu_restore.c"
 

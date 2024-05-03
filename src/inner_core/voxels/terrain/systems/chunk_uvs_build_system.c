@@ -75,7 +75,7 @@ void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,
 }
 
 void ChunkUVsBuildSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(it->ctx, NULL)) return;
+    zox_change_check()
     #ifdef zoxel_time_chunk_uvs_builds_system
         begin_timing()
     #endif

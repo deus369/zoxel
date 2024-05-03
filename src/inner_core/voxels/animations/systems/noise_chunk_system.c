@@ -30,7 +30,7 @@ void generate_chunk_noise(ChunkData* chunkData, const ChunkSize *chunkSize) {
 
 void NoiseChunkSystem(ecs_iter_t *it) {
     return;
-    if (!ecs_query_changed(it->ctx, NULL)) return;
+    zox_change_check()
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
     ChunkData *chunks = ecs_field(it, ChunkData, 3);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 4);
@@ -52,7 +52,7 @@ void NoiseChunkSystem(ecs_iter_t *it) {
 zox_declare_system(NoiseChunkSystem)
 
 void NoiseChunkOctreeSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(it->ctx, NULL)) return;
+    zox_change_check()
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
     ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 3);
     const RenderLod *renderLods = ecs_field(it, RenderLod, 4);

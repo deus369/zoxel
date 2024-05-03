@@ -1,6 +1,7 @@
 // #define zox_time_frame_texture_system
 void FrameTextureSystem(ecs_iter_t *it) {
-    if (!it->ctx || !ecs_query_changed(it->ctx, NULL)) return;
+    zox_change_check()
+    // zox_log(" > frame texture updated?\n")
 #ifdef zox_time_frame_texture_system
     begin_timing()
 #endif

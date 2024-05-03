@@ -182,7 +182,10 @@ void initialize_element_invisible(ecs_world_t *world, const ecs_entity_t e, cons
     zox_set(e, CanvasPosition, { pixel_position_global }) // set this inside system too
     zox_set(e, CanvasLink, { canvas })
     zox_set(e, ParentLink, { parent })
-    if (canvas == parent) on_child_added(world, canvas, e);
+    if (canvas == parent) {
+        on_child_added(world, canvas, e);
+        zox_set(canvas, WindowToTop, { e })
+    }
 }
 
 void initialize_element(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const int2 pixel_size, const int2 texture_size, const float2 anchor, const unsigned char layer, const float2 position2D, const int2 pixel_position_global) {

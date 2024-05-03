@@ -27,7 +27,7 @@ ecs_entity_t spawn_close_button(ecs_world_t *world, ecs_entity_t parent, ecs_ent
     return e;
 }
 
-ecs_entity_t spawn_header(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t canvas, int2 pixel_position, int2 pixel_size, float2 anchor, const char* text, int font_size, int header_margins, unsigned char layer, int2 parent_pixel_position_global, int2 parent_pixel_size, unsigned char is_close_button, int2 canvas_size) {
+ecs_entity_t spawn_header(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const int2 pixel_size, const float2 anchor, const char* text, const int font_size, int header_margins, const unsigned char layer, const int2 parent_pixel_position_global, const int2 parent_pixel_size, unsigned char is_close_button, const int2 canvas_size) {
     const int string_length = strlen(text);
     int2 zext_position = (int2) { ((font_size * string_length) / 2) + header_margins / 2, 0 };
     float2 zext_anchor = (float2) { 0, 0.5f };
