@@ -19,10 +19,10 @@ void dispose_game_store() {
 
 void unlock_achievement(const char* achievement) {
     if (is_steam_running) {
-        zox_log("   > unlocking achievement [%s]\n", achievement)
+        zox_log(" > [steam] unlocking achievement [%s]\n", achievement)
         steam_unlock_achievement(achievement);
     } else {
-        zox_log("   > [steam] cannot unlock achievement [%s]\n", achievement)
+        zox_log(" > [steam] cannot unlock achievement [%s]\n", achievement)
     }
 }
 
@@ -31,7 +31,7 @@ void unlock_achievement(const char* achievement) {
 void intialize_game_store() { zox_logg(" > game store [none]\n") }
 void dispose_game_store() { }
 void unlock_achievement(const char* achievement) {
-    zox_log("   > unlocking achievement [%s]\n", achievement)
+    zox_log(" > [none] unlocking achievement [%s]\n", achievement)
 }
 
 #endif

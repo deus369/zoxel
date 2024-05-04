@@ -22,7 +22,8 @@ ecs_entity_t spawn_character2D(ecs_world_t *world, ecs_entity_t prefab, float2 p
     zox_set(e, Scale1D, { 0.4f + ((rand() % 101) / 100.0f) * 0.2f  })
     zox_set(e, Brightness, { 0.8f + ((rand() % 101) / 100.0f) * 0.6f })
     zox_set(e, AnimateTexture, { (((rand() % 100) / 100.0f) * noise_animation_speed) })
-    spawn_gpu_material(world, e, shader2D_textured);
+    const GLuint2 shader = zox_get_value(shader_textured2D, ShaderGPULink)
+    spawn_gpu_material(world, e, shader);
     spawn_gpu_texture(world, e);
     return e;
 }

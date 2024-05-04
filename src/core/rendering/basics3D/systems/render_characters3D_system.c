@@ -1,6 +1,10 @@
 // #define zox_debug_render3D_colored
 // #define max_character_mesh_indicies 1000000
 void RenderCharacters3DSystem(ecs_iter_t *it) {
+    if (!material_colored3D) return;
+    zox_iter_world()
+    const GLuint material_link = zox_get_value(material_colored3D, MaterialGPULink)
+    const MaterialColored3D *material_attributes = zox_get(material_colored3D, MaterialColored3D)
     zox_field_in(Position3D, position3Ds, 2)
     zox_field_in(Rotation3D, rotation3Ds, 3)
     zox_field_in(Scale1D, scale1Ds, 4)
@@ -31,22 +35,22 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         zox_field_i_in(Scale1D, scale1Ds, scale1D)
         if (!has_set_material) {
             has_set_material = 1;
-            opengl_set_material(colored3D_material);
-            opengl_set_matrix(attributes_colored3D.camera_matrix, render_camera_matrix);
+            opengl_set_material(material_link);
+            opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
 #ifndef zox_debug_color_shader
-            opengl_set_float(attributes_colored3D.scale, 1);
-            opengl_set_float4(attributes_colored3D.fog_data, (float4) { fog_color.x, fog_color.y, fog_color.z, get_fog_density() });
-            opengl_set_float(attributes_colored3D.brightness, 1);
+            opengl_set_float(material_attributes->scale, 1);
+            opengl_set_float4(material_attributes->fog_data, (float4) { fog_color.x, fog_color.y, fog_color.z, get_fog_density() });
+            opengl_set_float(material_attributes->brightness, 1);
 #endif
         }
         opengl_set_mesh_indicies(meshGPULink->value.x);
-        opengl_enable_vertex_buffer(attributes_colored3D.vertex_position, meshGPULink->value.y);
+        opengl_enable_vertex_buffer(material_attributes->vertex_position, meshGPULink->value.y);
 #ifndef zox_debug_color_shader
-        opengl_enable_color_buffer(attributes_colored3D.vertex_color, colorsGPULink->value);
+        opengl_enable_color_buffer(material_attributes->vertex_color, colorsGPULink->value);
 #endif
-        opengl_set_float3(attributes_colored3D.position, position3D->value);
-        opengl_set_float4(attributes_colored3D.rotation, rotation3D->value);
-        opengl_set_float(attributes_colored3D.scale, scale1D->value);
+        opengl_set_float3(material_attributes->position, position3D->value);
+        opengl_set_float4(material_attributes->rotation, rotation3D->value);
+        opengl_set_float(material_attributes->scale, scale1D->value);
 #ifndef zox_disable_render_characters
 #ifdef zox_characters_as_cubes
         opengl_render(36);
@@ -70,8 +74,8 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
     zoxel_log("  > rendered meshes [%i] unused meshes [%i] tris [%i]\n", meshes, zero_meshes, tris_rendered);
 #endif
     if (has_set_material) {
-        opengl_disable_buffer(attributes_colored3D.vertex_color);
-        opengl_disable_buffer(attributes_colored3D.vertex_position);
+        opengl_disable_buffer(material_attributes->vertex_color);
+        opengl_disable_buffer(material_attributes->vertex_position);
         opengl_unset_mesh();
         opengl_disable_opengl_program();
     }

@@ -1,5 +1,5 @@
-extern void opengl_delete_resources(ecs_world_t *world);
-extern void opengl_load_resources(ecs_world_t *world);
+extern void opengl_dispose_resources(ecs_world_t *world);
+extern void opengl_restore_resources(ecs_world_t *world);
 extern void engine_end(); // engine
 extern void resize_cameras(const int2 screen_size); // cameras, make camera just resize on viewport resize instead of extern
 
@@ -275,10 +275,10 @@ void update_sdl(ecs_world_t *world, ecs_entity_t e) {
                 }
             } else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) {
                 zox_logg(" > window was minimized\n")
-                opengl_delete_resources(world);
+                opengl_dispose_resources(world);
             } else if (event.window.event == SDL_WINDOWEVENT_RESTORED) {
                 zox_logg(" > window was restored\n")
-                opengl_load_resources(world);
+                opengl_restore_resources(world);
             }
         }
     }

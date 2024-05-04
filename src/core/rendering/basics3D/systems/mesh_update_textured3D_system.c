@@ -1,3 +1,17 @@
+void render_shader3D_textured(const GLuint2 mesh_buffer, const GLuint uv_buffer, const GLuint color_buffer, const int *indicies, int indicies_length, const float3 *verts, int verts_length, const float2 *uvs, const color_rgb *color_rgbs) {
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, mesh_buffer.y);
+    glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float3), verts, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
+    glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float2), uvs, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
+    glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(color_rgb), color_rgbs, GL_STATIC_DRAW);
+#ifdef zoxel_catch_opengl_errors
+    check_opengl_error("opengl_upload_shader3D_textured");
+#endif
+}
+
 void MeshUpdateTextured3DSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(NULL, it)) return;
 #ifdef zoxel_time_mesh_uvs_update_system
@@ -23,8 +37,8 @@ void MeshUpdateTextured3DSystem(ecs_iter_t *it) {
         zox_field_i_in(MeshVertices, meshVerticess, meshVertices)
         zox_field_i_in(MeshUVs, meshUVss, meshUVs)
         zox_field_i_in(MeshColorRGBs, meshColorRGBss, meshColorRGBs)
-        if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) continue;
-        opengl_upload_shader3D_textured(meshGPULink->value, uvsGPULink->value, colorsGPULink->value, meshIndicies->value, meshIndicies->length, meshVertices->value, meshVertices->length, meshUVs->value, meshColorRGBs->value);
+        if (!meshGPULink->value.x || !meshGPULink->value.y) continue;
+        render_shader3D_textured(meshGPULink->value, uvsGPULink->value, colorsGPULink->value, meshIndicies->value, meshIndicies->length, meshVertices->value, meshVertices->length, meshUVs->value, meshColorRGBs->value);
         meshDirty->value = 0;
 #ifdef zoxel_time_mesh_uvs_update_system
         did_do_timing()

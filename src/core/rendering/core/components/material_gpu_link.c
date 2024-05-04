@@ -23,9 +23,9 @@ ECS_DTOR(MaterialGPULink, ptr, {
     if (ptr->value != 0) glDeleteProgram(ptr->value);
 })
 
-GLuint get_material_value(ecs_world_t *world, ecs_entity_t material) {
+/*GLuint get_material_value(ecs_world_t *world, ecs_entity_t material) /{
     return zox_get_value(material, MaterialGPULink)
-}
+}*/
 
 /*
 ECS_CTOR(MaterialGPULink, ptr,

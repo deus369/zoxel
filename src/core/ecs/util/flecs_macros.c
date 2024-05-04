@@ -12,6 +12,8 @@
     ecs_override_id(world, e, ecs_id(T));\
 }
 
+#define zox_set_data(e, T, data) ecs_set_id(world, e, ecs_id(T), sizeof(T), &data);
+
 #define zox_set(e, T, ...) {\
     ecs_set_id(world, e, ecs_id(T), sizeof(T), &(T)__VA_ARGS__);\
 }

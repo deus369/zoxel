@@ -5,12 +5,14 @@ void Element3DRenderSystem(ecs_iter_t *it) {
 #ifdef zox_disable_render_element3D
     return;
 #endif
+    if (!material_textured3D) return;
 #ifdef zox_time_render3D_textured_system
     begin_timing()
 #endif
     unsigned char has_set_material = 0;
     zox_iter_world()
-    const Textured3DAttributes *attributes_textured3D = get_textured3D_material_attributes(world);
+    const GLuint material_link = zox_get_value(material_textured3D, MaterialGPULink)
+    const MaterialTextured3D *attributes_textured3D = zox_get(material_textured3D, MaterialTextured3D)
     zox_field_in(Position3D, position3Ds, 2)
     zox_field_in(Rotation3D, rotation3Ds, 3)
     zox_field_in(MeshGPULink, meshGPULinks, 6)
@@ -32,7 +34,7 @@ void Element3DRenderSystem(ecs_iter_t *it) {
         zox_field_i_in(TextureGPULink, textureGPULinks, textureGPULink)
         if (!has_set_material) {
             has_set_material = 1;
-            opengl_set_material(get_textured3D_material_value(world));
+            opengl_set_material(material_link);
             opengl_set_matrix(attributes_textured3D->camera_matrix, render_camera_matrix);
             opengl_set_float4(attributes_textured3D->fog_data, (float4) { fog_color.x, fog_color.y, fog_color.z, get_fog_density() });
             opengl_set_float(attributes_textured3D->scale, 1);

@@ -158,38 +158,6 @@ ecs_entity_t create_terrain(ecs_world_t *world, int3 center_position) {
     return terrain_world;
 }
 
-/*void dispose_opengl_resources_terrain(ecs_world_t *world) {
-    if (!local_terrain) return;
-    const TilemapLink *tilemapLink = zox_get(local_terrain, TilemapLink)
-    dispose_material_resources(world, tilemapLink->value);
-    const ChunkLinks *chunkLinks = zox_get(local_terrain, ChunkLinks)
-    for (int i = 0; i < chunkLinks->value->size; i++) {
-        int3_hash_map_pair* pair = chunkLinks->value->data[i];
-        while (pair != NULL) {
-            ecs_entity_t terrain_chunk = pair->value;
-            dispose_mesh_resources(world, terrain_chunk);
-            pair = pair->next;
-        }
-    }
-}
-
-void restore_opengl_resources_terrain(ecs_world_t *world) {
-    if (!local_terrain) return;
-    const ChunkLinks *chunkLinks = zox_get(local_terrain, ChunkLinks)
-    for (int i = 0; i < chunkLinks->value->size; i++) {
-        int3_hash_map_pair* pair = chunkLinks->value->data[i];
-        while (pair != NULL) {
-            ecs_entity_t terrain_chunk = pair->value;
-            restore_mesh_resources(world, terrain_chunk);
-            pair = pair->next;
-        }
-    }
-    const TilemapLink *tilemapLink = zox_get(local_terrain, TilemapLink)
-    restore_material_resources(world, tilemapLink->value, get_shader3D_textured_value(world), 0);
-    // zoxel_log(" > shader restore [%ix%i]\n", get_shader3D_textured_value(world).x, get_shader3D_textured_value(world).y);
-}*/
-
-
 /*
     #ifdef zox_disable_terrain_octrees
         terrain_vertical = 0;

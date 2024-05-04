@@ -68,7 +68,7 @@ void opengl_upload_mesh(GLuint2 mesh, GLuint material, const int *indicies, int 
     // printf("Setting Vertex Attribute Pointer for [%ix%i] Mesh.\n", mesh.x, mesh.y);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("opengl_upload_mesh");
-    #endif
+#ifdef zoxel_catch_opengl_errors
+    check_opengl_error("opengl_upload_mesh");
+#endif
 }

@@ -1,68 +1,23 @@
-GLuint2 shader3D_colored;
-GLuint colored3D_material;
-MaterialColored3D attributes_colored3D;
+ecs_entity_t shader_colored3D;
+ecs_entity_t material_colored3D;
 
-void spawn_material3D_colored_properties(GLuint material) {
-    attributes_colored3D = (MaterialColored3D) {
-        .vertex_position = glGetAttribLocation(material, "vertex_position"),
-        .vertex_color = glGetAttribLocation(material, "vertex_color"),
-        .camera_matrix = glGetUniformLocation(material, "camera_matrix"),
-        .position = glGetUniformLocation(material, "position"),
-        .rotation = glGetUniformLocation(material, "rotation"),
-        .scale = glGetUniformLocation(material, "scale"),
-        .fog_data = glGetUniformLocation(material, "fog_data"),
-        .brightness = glGetUniformLocation(material, "brightness")
-    };
-    #ifdef zoxel_debug_opengl
-        zoxel_log(" > created attributes_colored3D [%i]: vertex_position [%i] vertex_color [%i]\n", material, attributes_colored3D.vertex_position, attributes_colored3D.vertex_color);
-        if (attributes_colored3D.vertex_color == -1) {
-            zoxel_log(" ! error with vertex_color\n");
-            attributes_colored3D.vertex_color = 1;
-        }
-    #endif
+ecs_entity_t spawn_shader_colored3D(ecs_world_t *world) {
+    const unsigned char shader_index = get_new_shader_source_index();
+    shader_verts[shader_index] = shader3D_colored_vert_buffer;
+    shader_frags[shader_index] = shader3D_colored_frag_buffer;
+    const ecs_entity_t e = spawn_shader(world, shader_index);
+    zox_name("shader_colored3D")
+    return e;
 }
 
-void dispose_shader3D_colored() {
-    glDeleteShader(shader3D_colored.x);
-    glDeleteShader(shader3D_colored.y);
-    glDeleteProgram(colored3D_material);
-}
-
-int load_shader3D_colored() {
-    #ifndef zox_debug_color_shader
-        shader3D_colored = spawn_gpu_shader_inline(shader3D_colored_vert_buffer, shader3D_colored_frag_buffer);
-    #else
-        shader3D_colored = spawn_gpu_shader_inline(debug_shader3D_colored_vert_buffer, debug_shader3D_colored_frag_buffer);
-    #endif
-    colored3D_material = spawn_gpu_material_program(shader3D_colored);
-    spawn_material3D_colored_properties(colored3D_material);
-    #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("load_shader3D_colored");
-    #endif
-    return 0;
-}
-
-void opengl_upload_mesh_colors(GLuint2 mesh_buffer, GLuint color_buffer, const int *indicies, int indicies_length, const float3 *verts, const color_rgb *color_rgbs, int verts_length) {
-    #ifdef zox_characters_as_cubes
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cube_indicies), cube_indicies, GL_STATIC_DRAW);
-        glBindBuffer(GL_ARRAY_BUFFER, mesh_buffer.y);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(cube_vertices), cube_vertices, GL_STATIC_DRAW);
-        glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(cube_colors), cube_colors, GL_STATIC_DRAW);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-    #else
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ARRAY_BUFFER, mesh_buffer.y);
-        glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(float3), verts, GL_STATIC_DRAW);
-        glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
-        glBufferData(GL_ARRAY_BUFFER, verts_length * sizeof(color_rgb), color_rgbs, GL_STATIC_DRAW);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-    #endif
-    #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("opengl_upload_mesh_colors");
-    #endif
+ecs_entity_t spawn_material_colored3D(ecs_world_t *world) {
+    const ecs_entity_t shader = spawn_shader_colored3D(world);
+    const ecs_entity_t e = spawn_material(world, shader);
+    zox_set(e, ShaderLink, { shader })
+    const GLuint material = zox_get_value(e, MaterialGPULink)
+    const MaterialColored3D attributes = create_MaterialColored3D(material);
+    zox_set_data(e, MaterialColored3D, attributes)
+    material_colored3D = e;
+    shader_colored3D = shader;
+    return e;
 }

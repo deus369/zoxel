@@ -1,6 +1,9 @@
 extern ecs_entity_t get_root_canvas_camera(ecs_world_t *world, const ecs_entity_t e);
 
 void ElementRenderSystem(ecs_iter_t *it) {
+    if (!material_textured2D) return;
+    const GLuint material_link = zox_get_value(material_textured2D, MaterialGPULink)
+    const MaterialTextured2D *material_attributes = zox_get(material_textured2D, MaterialTextured2D)
     unsigned char has_set_material = 0;
     zox_field_in(Position2D, position2Ds, 1)
     zox_field_in(Rotation2D, rotation2Ds, 2)
@@ -30,22 +33,30 @@ void ElementRenderSystem(ecs_iter_t *it) {
         zox_field_i_in(MeshGPULink, meshGPULinks, meshGPULink)
         zox_field_i_in(UvsGPULink, uvsGPULinks, uvsGPULink)
         zox_field_i_in(TextureGPULink, textureGPULinks, textureGPULink)
-        if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0 || uvsGPULink->value == 0 || textureGPULink->value == 0) continue;
+        if (!meshGPULink->value.x || !meshGPULink->value.y || !uvsGPULink->value || !textureGPULink->value) continue;
         if (!has_set_material) {
             has_set_material = 1;
             opengl_enable_blend();
-            opengl_set_material(textured2D_material);
-            opengl_set_matrix(shader2D_textured_attributes.camera_matrix, render_camera_matrix);
+            opengl_set_material(material_link);
+            opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
         }
         const float position_z = ((int) layer2D->value) * shader_depth_multiplier;
         opengl_set_mesh_indicies(meshGPULink->value.x);
-        opengl_set_buffer_attributes2D(meshGPULink->value.y, uvsGPULink->value);
+
+        glBindBuffer(GL_ARRAY_BUFFER, meshGPULink->value.y);
+        glEnableVertexAttribArray(material_attributes->vertex_position);
+        glVertexAttribPointer(material_attributes->vertex_position, 2, GL_FLOAT, GL_FALSE, 0, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, uvsGPULink->value);
+        glEnableVertexAttribArray(material_attributes->vertex_uv);
+        glVertexAttribPointer(material_attributes->vertex_uv, 2, GL_FLOAT, GL_FALSE, 0, 0);
+        // opengl_set_buffer_attributes2D(meshGPULink->value.y, uvsGPULink->value);
+
         opengl_bind_texture(textureGPULink->value);
-        opengl_set_float3(shader2D_textured_attributes.position, (float3) { position2D->value.x, position2D->value.y, position_z });
-        opengl_set_float(shader2D_textured_attributes.angle, rotation2D->value);
-        opengl_set_float(shader2D_textured_attributes.scale, scale1D->value);
-        opengl_set_float(shader2D_textured_attributes.brightness, brightness->value);
-        opengl_set_float(shader2D_textured_attributes.alpha, alpha->value);
+        opengl_set_float3(material_attributes->position, (float3) { position2D->value.x, position2D->value.y, position_z });
+        opengl_set_float(material_attributes->angle, rotation2D->value);
+        opengl_set_float(material_attributes->scale, scale1D->value);
+        opengl_set_float(material_attributes->brightness, brightness->value);
+        opengl_set_float(material_attributes->alpha, alpha->value);
 #ifndef zox_disable_render_ui
         opengl_render(6);
 #endif
@@ -57,8 +68,8 @@ void ElementRenderSystem(ecs_iter_t *it) {
 #endif
     }
     if (has_set_material) {        
-        opengl_disable_buffer(shader2D_textured_attributes.vertex_uv);
-        opengl_disable_buffer(shader2D_textured_attributes.vertex_position);
+        opengl_disable_buffer(material_attributes->vertex_uv);
+        opengl_disable_buffer(material_attributes->vertex_position);
         opengl_disable_blend();
         opengl_unset_mesh();
         opengl_disable_texture(1);

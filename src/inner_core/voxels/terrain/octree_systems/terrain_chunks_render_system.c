@@ -5,7 +5,7 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
     ecs_entity_t vox_entity = 0;
     const MaterialGPULink *materialGPULink;
     const TextureGPULink *textureGPULink;
-    const Textured3DAttributes *attributes_textured3D;
+    const MaterialTextured3D *attributes_textured3D;
     zox_iter_world()
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_in(Rotation3D, rotation3Ds, 2)
@@ -32,7 +32,7 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
             if (!materialGPULink->value) continue;
             textureGPULink = zox_get(tilemapLink->value, TextureGPULink)
             if (!textureGPULink->value) continue;
-            attributes_textured3D = zox_get(tilemapLink->value, Textured3DAttributes)
+            attributes_textured3D = zox_get(tilemapLink->value, MaterialTextured3D)
             if (!attributes_textured3D) break;
         }
         if (!has_set_material) {
