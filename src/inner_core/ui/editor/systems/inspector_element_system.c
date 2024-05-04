@@ -5,8 +5,7 @@ void InspectorElementSystem(ecs_iter_t *it) {
     zox_field_in(ComponentTarget, componentTargets, 3)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(EntityTarget, entityTargets, entityTarget)
-        if (!entityTarget->value) continue;
-        if (!zox_alive(entityTarget->value)) continue;
+        if (!entityTarget->value || !zox_alive(entityTarget->value)) continue;
         zox_field_i_in(ComponentTarget, componentTargets, componentTarget)
         if (!componentTarget->value) continue;
         zox_field_e()

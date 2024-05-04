@@ -17,9 +17,9 @@ zox_component_byte(ZigelIndex)
 zox_component_byte(ZextAlignment)
 zox_component_int(ZextSize)
 zox_component_byte2(ZextPadding)
-zox_component(AnimateZext, double) 
+zox_component_double(AnimateZext)
 zox_memory_component(FontData, byte2)           // points used for generating a font texture
-zox_memory_component(ZextData, unsigned char)   // zigel indexes
+zox_component_zext(ZextData)   // zigel indexes
 // zoxel_util_includes
 #include "util/default_font.c"
 #include "util/zigel_util.c"
@@ -66,9 +66,9 @@ zox_define_component_byte(ZigelIndex)
 zox_define_component_byte(ZextAlignment)
 zox_define_component_int(ZextSize)
 zox_define_component_byte2(ZextPadding)
-zox_define_component(AnimateZext)
+zox_define_component_double(AnimateZext)
 zox_define_memory_component(FontData)
-zox_define_memory_component(ZextData)
+zox_define_component_zext(ZextData)
 // zoxel_filter_defines
 zox_filter(zexts, [none] Zext, [in] ZextDirty)
 zox_filter(fonts, [none] FontTexture, [out] GenerateTexture)

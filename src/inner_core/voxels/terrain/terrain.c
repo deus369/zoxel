@@ -9,7 +9,7 @@ zox_declare_tag(TerrainWorld)
 zox_declare_tag(TerrainChunk)
 zox_declare_tag(ChunkTerrain)
 zox_declare_tag(Streamer)
-zox_component(StreamPoint, int3)
+zox_component_int3(StreamPoint)
 zox_component_entity(TerrainLink)
 // zoxel_prefab_includes
 #include "prefabs/terrain.c"
@@ -44,7 +44,7 @@ zox_define_tag(TerrainWorld)
 zox_define_tag(TerrainChunk)
 zox_define_tag(ChunkTerrain)
 zox_define_tag(Streamer)
-zox_define_component(StreamPoint)
+zox_define_component_int3(StreamPoint)
 zox_define_component_entity(TerrainLink)
 // zoxel_filter_defines
 zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [out] GenerateChunk)

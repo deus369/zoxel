@@ -23,9 +23,9 @@ typedef struct {\
 
 #define zox_define_tag(name) ECS_TAG_DEFINE(world, name);
 
-#define zox_time_component(name) zox_component(name, double)
+// #define zox_time_component(name) zox_component(name, double)
 
-#define zox_entity_component(name) zox_component(name, ecs_entity_t)
+// #define zox_entity_component(name) zox_component(name, ecs_entity_t)
 
 #define zox_define_component_w_dest(name) zox_define_component(name) ecs_set_hooks(world, name, { .dtor = ecs_dtor(name) });
 
@@ -63,16 +63,6 @@ ecs_observer_init(world, &(ecs_observer_desc_t) {\
 #define zox_define_hashmap_component(name) zox_define_hashmap_component2(name, [out] name)
 
 // destroy spawned entity when it is removed
-#define zox_entity_parent_component(name) zox_entity_component(name)\
-void on_destroyed##_##name(ecs_iter_t *it) {\
-    ecs_world_t *world = it->world;\
-    name *components = ecs_field(it, name, 1);\
-    for (int i = 0; i < it->count; i++) {\
-        name *component = &components[i];\
-        zox_delete(component->value);\
-        component->value = 0;\
-    }\
-}
 
 #define zox_define_entity_parent_component2(name, ...)\
 zox_define_component(name)\
@@ -96,18 +86,25 @@ ecs_observer_init(world, &(ecs_observer_desc_t) {\
 #define zox_component_type_float4x4 9
 #define zox_component_type_ecs_entity_t 10
 
-#define component_id_list(type)\
-ecs_entity_t_array_d* component_ids##_##type;\
-\
-void initialize_component_ids##_##type() {\
-    component_ids##_##type = create_ecs_entity_t_array_d(initial_dynamic_array_size);\
+#define component_id_list(name)\
+ecs_entity_t_array_d* component_ids##_##name;\
+void initialize_component_ids##_##name() {\
+    component_ids##_##name = create_ecs_entity_t_array_d(initial_dynamic_array_size);\
 }\
-\
-void dispose_component_ids##_##type() {\
-    dispose_ecs_entity_t_array_d(component_ids##_##type);\
+void dispose_component_ids##_##name() {\
+    dispose_ecs_entity_t_array_d(component_ids##_##name);\
 }\
-\
-unsigned char is_component_type##_##type(ecs_entity_t id) { return is_in_ecs_entity_t_array_d(component_ids##_##type, id);  }
+unsigned char is_component_type##_##name(ecs_entity_t id) { return is_in_ecs_entity_t_array_d(component_ids##_##name, id);  }
+
+/*#define component_id_list_array(name)\
+ecs_entity_t_array_d* component_ids##_##name;\
+void initialize_component_ids##_##name() {\
+    component_ids##_##name = create_ecs_entity_t_array_d(initial_dynamic_array_size);\
+}\
+void dispose_component_ids##_##name() {\
+    dispose_ecs_entity_t_array_d(component_ids##_##name);\
+}\
+unsigned char is_component_type##_##name(ecs_entity_t id) { return is_in_ecs_entity_t_array_d(component_ids##_##name, id);  }*/
 
 /*ecs_set_hooks(world, name, { .dtor = ecs_dtor(name) });*/
 /*ECS_DTOR(name, ptr, {\

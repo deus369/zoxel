@@ -58,12 +58,10 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         add_entity_to_labels(world, prefab_realm, labels, entities, 0);
         add_entity_to_labels(world, prefab_voxel, labels, entities, 0);
         add_entity_to_labels(world, prefab_texture, labels, entities, 0);
-
         // add game entities
         add_entity_to_labels(world, local_realm, labels, entities, 0);
         add_to_labels_voxel_links(world, local_realm, labels, entities, 0);
         add_to_labels_stat_links(world, local_realm, labels, entities, 0);
-
         add_entity_to_labels(world, local_music, labels, entities, 0);
         for (int k = 0; k < main_cameras_count; k++) {
             add_entity_to_labels(world, main_cameras[k], labels, entities, 0);

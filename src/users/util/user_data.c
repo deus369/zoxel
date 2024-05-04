@@ -2,13 +2,13 @@
 zox_declare_tag(Name)\
 zox_memory_component(User##Name##s, ecs_entity_t)\
 zox_entities_component(Name##Links)\
-zox_entity_component(Name##Link)
+zox_component_entity(Name##Link)
 
 #define zox_define_user_data(Name)\
 zox_define_tag(Name)\
 zox_define_memory_component(User##Name##s)\
 zox_define_entities_component(Name##Links)\
-zox_define_component(Name##Link)
+zox_define_component_entity(Name##Link)
 
 #define zox_create_user_data_prefabs(Name, name, label)\
 ecs_entity_t prefab_##name;\

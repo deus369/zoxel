@@ -3,7 +3,7 @@
 
 zox_component_byte(ChildIndex)
 zox_entities_component(Children)
-zox_component(ParentLink, ecs_entity_t)
+zox_component_entity(ParentLink)
 #include "util/parent_link.c"
 
 #define find_child_with_tag(parent, tag, child_name)\
@@ -37,7 +37,7 @@ void zox_debug_children(ecs_world_t *world, const ecs_entity_t parent) {
 zox_begin_module(Hierarchys)
 zox_define_component_byte(ChildIndex)
 zox_define_entities_component(Children)
-zox_define_component(ParentLink)
+zox_define_component_entity(ParentLink)
 ecs_observer_init(world, &(ecs_observer_desc_t) {
     .filter.expr = "ParentLink",
     .callback = on_destroyed_ParentLink,

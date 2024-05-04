@@ -10,7 +10,7 @@ zox_declare_tag(Shader)
 zox_declare_tag(Material)
 zox_declare_tag(SingleMaterial)
 #include "util/mesh_indicies.c"
-zox_component(ShaderLink, ecs_entity_t) // links to a shader entity
+zox_component_entity(ShaderLink) // links to a shader entity
 zox_memory_component(MeshIndicies, int)
 zox_memory_component(MeshVertices, float3)
 zox_memory_component(MeshVertices2D, float2)
@@ -62,7 +62,7 @@ zox_define_component_w_dest(TextureGPULink)
 zox_define_component_w_dest(MeshGPULink)
 zox_define_component_w_dest(UvsGPULink)
 zox_define_component_w_dest(ColorsGPULink)
-zox_define_component(ShaderLink) // links to a shader entity
+zox_define_component_entity(ShaderLink) // links to a shader entity
 zox_define_memory_component(MeshIndicies)
 zox_define_memory_component(MeshVertices)
 zox_define_memory_component(MeshVertices2D)
