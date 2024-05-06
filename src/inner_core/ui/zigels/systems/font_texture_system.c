@@ -23,15 +23,16 @@ void FontTextureSystem(ecs_iter_t *it) {
         // get font based on zigel index
         const ecs_entity_t font = font_style_children->value[zigelIndex->value];
         if (!font) { // spacece
-            resize_memory_component(TextureData, textureData, color, 1)
-            textureData->value[0] = (color) { 0, 0, 0, 0 };
+            const int length = textureSize->value.x * textureSize->value.y;
+            resize_memory_component(TextureData, textureData, color, length)
+            for (int j = 0; j < length; j++) textureData->value[j] = (color) { 0, 0, 0, 0 };
             generateTexture->value = 0;
             textureDirty->value = 1;
             continue;
         }
         const FontData *fontData = zox_get(font, FontData)
-        const int newLength = textureSize->value.x * textureSize->value.y;
-        resize_memory_component(TextureData, textureData, color, newLength)
+        const int length = textureSize->value.x * textureSize->value.y;
+        resize_memory_component(TextureData, textureData, color, length)
         generate_font_texture(textureData, textureSize->value, fontData, color_variable);
         generateTexture->value = 0;
         textureDirty->value = 1;
