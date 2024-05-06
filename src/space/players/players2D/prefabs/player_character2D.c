@@ -22,6 +22,5 @@ ecs_entity_t spawn_player_character2D(ecs_world_t *world, ecs_entity_t camera) {
     const GLuint2 shader = zox_get_value(shader_textured2D, ShaderGPULink)
     spawn_gpu_material(world, e, shader);
     spawn_gpu_texture(world, e);
-    main_player = e;
     return e;
 }

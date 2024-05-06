@@ -108,6 +108,9 @@ uninstall:
 run:
 	@ ./$(target)
 
+run-coop:
+	@ ./$(target) -s
+
 run-headless:
 	@ ./$(target) --headless
 

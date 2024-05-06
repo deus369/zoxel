@@ -16,7 +16,10 @@ void spawn_players(ecs_world_t *world, const ecs_entity_t game) {
         add_player(world, game, e);
         zox_set(e, CameraLink, { main_cameras[i] })
         zox_players[i] = e;
-        if (i == 0) main_player = e;
+        if (players_playing == 2) {
+            if (i == 0) zox_set(e, DeviceModeDirty, { zox_device_mode_keyboardmouse })
+            else if (i == 1) zox_set(e, DeviceModeDirty, { zox_device_mode_gamepad })
+        }
     }
 }
 

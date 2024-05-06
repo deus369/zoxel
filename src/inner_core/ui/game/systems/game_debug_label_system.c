@@ -28,14 +28,13 @@ extern ecs_entity_t local_character3D;
 #endif
 
 void GameDebugLabelSystem(ecs_iter_t *it) {
-    if (!main_player) return;
     const ecs_entity_t character = local_character3D;
     zox_iter_world()
 #ifdef zox_debug_ui_device_mode
-    const DeviceMode *deviceMode = zox_get(main_player, DeviceMode)
+    const DeviceMode *deviceMode = zox_get(zox_players[0], DeviceMode)
 #endif
 #ifdef zox_debug_ui_raycaster_target
-    const ecs_entity_t raycaster_target = zox_get_value(main_player, RaycasterTarget)
+    const ecs_entity_t raycaster_target = zox_get_value(zox_players[0], RaycasterTarget)
 #endif
     zox_field_out(ZextDirty, zextDirtys, 2)
     zox_field_out(ZextData, zextDatas, 3)

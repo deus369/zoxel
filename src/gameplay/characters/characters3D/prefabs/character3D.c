@@ -16,6 +16,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     zox_prefab_set(e, DiedTime, { 0 })
     zox_prefab_set(e, AnimationState, { zox_animation_idle })
     zox_prefab_set(e, AnimationStart, { 0 })
+    zox_prefab_set(e, Euler, { float3_zero })
     zox_prefab_set(e, Bounds3D, { { 1, 1, 1 } })
     zox_prefab_set(e, Position3DBounds, { { 0, 0, 0, 0, 0, 0 } })
     zox_prefab_set(e, VoxLink, { 0 })

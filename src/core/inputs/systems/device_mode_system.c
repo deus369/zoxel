@@ -1,5 +1,8 @@
 // #define zox_debug_log_device_mode_system
+extern unsigned char players_playing;
+
 void DeviceModeSystem(ecs_iter_t *it) {
+    if (players_playing == 2) return;
     zox_field_in(DeviceLinks, deviceLinks, 1)
     zox_field_in(DeviceMode, deviceModes, 2)
     zox_field_out(DeviceModeDirty, deviceModeDirtys, 3)
@@ -9,7 +12,7 @@ void DeviceModeSystem(ecs_iter_t *it) {
         // first check if currently using selected inputs:
         unsigned char using_current_inputs = 0;
         for (int j = 0; j < deviceLinks2->length; j++) {
-            ecs_entity_t device_entity = deviceLinks2->value[j];
+            const ecs_entity_t device_entity = deviceLinks2->value[j];
             if (deviceMode->value == zox_device_mode_keyboardmouse) {
                 if (zox_has(device_entity, Keyboard)) {
                     const Keyboard *keyboard = zox_get(device_entity, Keyboard)

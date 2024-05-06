@@ -3,6 +3,7 @@ void engine_end_delayed(ecs_world_t* world, const ecs_entity_t null) {
 }
 
 void button_event_exit_app(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
+    // zox_log(" player exiting [%s]\n", zox_get_name(player))
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     find_child_with_tag(canvas, MenuMain, menu)
     if (menu) zox_delete(menu)

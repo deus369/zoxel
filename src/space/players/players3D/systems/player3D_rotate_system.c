@@ -8,12 +8,13 @@ const float max_mouse_delta2 = 200.0f;
 const double max_rotate_speed = 0.2; //  0.23;
 #define disable_player_rotate_alpha_force
 // shit remove this atm, it doubles up for coop
-float3 player_euler = (float3) { 0, 0, 0 };
-float3 camera_euler = (float3) { 0, 180 * degreesToRadians, 0 };
+// float3 player_euler = (float3) { 0, 0, 0 };
+// float3 camera_euler = (float3) { 0, 180 * degreesToRadians, 0 };
 
 void Player3DRotateSystem(ecs_iter_t *it) {
     zox_iter_world()
-    zox_field_in(DeviceLinks, deviceLinkss, 2)
+    zox_field_in(DeviceLinks, deviceLinkss, 1)
+    zox_field_in(DeviceMode, deviceModes, 2)
     zox_field_in(CharacterLink, characterLinks, 3)
     zox_field_in(CameraLink, cameraLinks, 4)
     for (int i = 0; i < it->count; i++) {
@@ -30,9 +31,10 @@ void Player3DRotateSystem(ecs_iter_t *it) {
         if (disableMovement->value) continue;
         float2 euler = { 0, 0 };
         zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
+        zox_field_i_in(DeviceMode, deviceModes, deviceMode)
         for (int j = 0; j < deviceLinks->length; j++) {
-            ecs_entity_t device_entity = deviceLinks->value[j];
-            if (zox_has(device_entity, Mouse)) {
+            const ecs_entity_t device_entity = deviceLinks->value[j];
+            if (deviceMode->value == zox_device_mode_keyboardmouse && zox_has(device_entity, Mouse)) {
                 const Mouse *mouse = zox_get(device_entity, Mouse)
                 float2 mouse_delta = int2_to_float2(mouse->delta);
 /*#ifndef disable_player_rotate_alpha_force
@@ -51,7 +53,7 @@ void Player3DRotateSystem(ecs_iter_t *it) {
                 // if (mouse_delta != 0) zoxel_log("     > mouse_delta: %f\n", mouse_delta);
                 euler.x = - mouse_delta.y * mouse_rotate_multiplier;
                 euler.y = - mouse_delta.x * mouse_rotate_multiplier;
-            } else if (zox_has(device_entity, Gamepad)) {
+            } else if (deviceMode->value == zox_device_mode_gamepad && zox_has(device_entity, Gamepad)) {
                 float2 right_stick = float2_zero;
                 const Children *zevices = zox_get(device_entity, Children)
                 for (int k = 0; k < zevices->length; k++) {
@@ -95,18 +97,26 @@ void Player3DRotateSystem(ecs_iter_t *it) {
             zox_modified(character, Alpha3D)
         }
 #else
-        player_euler.y += euler.y;
+        // player_euler.y += euler.y;
         // player_euler.y = player_euler.y % 360;
+        Euler *player_euler = zox_get_mut(character, Euler)
         Rotation3D *rotation3D = zox_get_mut(character, Rotation3D)
-        rotation3D->value = quaternion_from_euler(player_euler);
+        player_euler->value.y += euler.y;
+        rotation3D->value = quaternion_from_euler(player_euler->value);
         zox_modified(character, Rotation3D)
-        camera_euler.x -= euler.x;
+        zox_modified(character, Euler)
+        /*camera_euler.x -= euler.x;
         if (camera_euler.x >= 180) camera_euler.x -= 360;
-        else if (camera_euler.x < -180) camera_euler.x += 360;
+        else if (camera_euler.x < -180) camera_euler.x += 360;*/
         const ecs_entity_t player_camera = zox_get_value(character, CameraLink)
         if (player_camera) {
+            Euler *player_camera_euler = zox_get_mut(player_camera, Euler)
             LocalRotation3D *player_camera_rotation3D = zox_get_mut(player_camera, LocalRotation3D)
-            player_camera_rotation3D->value = quaternion_from_euler(camera_euler);
+            player_camera_euler->value.x -= euler.x;
+            if (player_camera_euler->value.x >= 180) player_camera_euler->value.x -= 360;
+            else if (player_camera_euler->value.x < -180) player_camera_euler->value.x += 360;
+            player_camera_rotation3D->value = quaternion_from_euler(player_camera_euler->value);
+            zox_modified(player_camera, Euler)
             zox_modified(player_camera, LocalRotation3D)
         }
 #endif

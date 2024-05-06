@@ -15,9 +15,9 @@ void Player3DMoveSystem(ecs_iter_t *it) {
     max_delta_velocity.x *= delta_time;
     max_delta_velocity.y *= delta_time;
     zox_iter_world()
-    zox_field_in(DeviceLinks, deviceLinkss, 2)
-    zox_field_in(DeviceMode, deviceModes, 3)
-    zox_field_in(CharacterLink, characterLinks, 4)
+    zox_field_in(DeviceLinks, deviceLinkss, 1)
+    zox_field_in(DeviceMode, deviceModes, 2)
+    zox_field_in(CharacterLink, characterLinks, 3)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(CharacterLink, characterLinks, characterLink)
         const ecs_entity_t character = characterLink->value;
