@@ -9,7 +9,7 @@ ecs_entity_t spawn_font_prefab(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_font(ecs_world_t *world, const byte2 points[], unsigned char length) {
+ecs_entity_t spawn_font(ecs_world_t *world, const byte2 points[], const unsigned char length) {
     zox_instance(font_prefab)
     zox_name("font")
     FontData *fontData = zox_get_mut(e, FontData)

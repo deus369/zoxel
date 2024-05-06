@@ -1,8 +1,9 @@
 void FontTextureSystem(ecs_iter_t *it) {
     zox_change_check()
-    if (!font_style_entity || !zox_has(font_style_entity, Children)) return;
+    // todo: link each zigel to fontstyle's font
+    if (!zox_font_style || !zox_has(zox_font_style, Children)) return;
     zox_iter_world()
-    const Children *font_style_children = zox_get(font_style_entity, Children)
+    const Children *font_style_children = zox_get(zox_font_style, Children)
     zox_field_out(TextureDirty, textureDirtys, 2)
     zox_field_out(TextureData, textureDatas, 3)
     zox_field_out(GenerateTexture, generateTextures, 5)
@@ -20,13 +21,20 @@ void FontTextureSystem(ecs_iter_t *it) {
         zox_field_i_in(TextureSize, textureSizes, textureSize)
         zox_field_i_in(Color, colors, color_variable)
         // get font based on zigel index
-        const ecs_entity_t zigel_font_entity = font_style_children->value[zigelIndex->value];
-        const FontData *fontData = zox_get(zigel_font_entity, FontData)
+        const ecs_entity_t font = font_style_children->value[zigelIndex->value];
+        if (!font) { // spacece
+            resize_memory_component(TextureData, textureData, color, 1)
+            textureData->value[0] = (color) { 0, 0, 0, 0 };
+            generateTexture->value = 0;
+            textureDirty->value = 1;
+            continue;
+        }
+        const FontData *fontData = zox_get(font, FontData)
         const int newLength = textureSize->value.x * textureSize->value.y;
         resize_memory_component(TextureData, textureData, color, newLength)
-        generate_font_texture(textureData, textureSize, fontData, color_variable);
-        textureDirty->value = 1;
+        generate_font_texture(textureData, textureSize->value, fontData, color_variable);
         generateTexture->value = 0;
+        textureDirty->value = 1;
 #ifdef zoxel_debug_zigel_updates
         zox_log("     > zigel font is updating [%lu]\n", it->entities[i])
 #endif

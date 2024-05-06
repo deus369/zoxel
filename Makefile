@@ -2,32 +2,38 @@
 # ===== zox ===== #
 # ==== ===== ==== #
 
+# requires: [git] [make] && make prepare
 # platforms [linux, windows, web, android]
 # stores [steam, itch, google]
-# tooling: sudo apt install make && make install-required
-# make vulkan=1 for vulkan
 # make game=zixel for zoxel2D
-# global settings
-is_use_sdl_image := true
-is_use_sdl_mixer := true
-is_use_vulkan := false
+# library use
+use_lib_sdl := true
+use_lib_sdl_image := true
+use_lib_sdl_mixer := true
+use_lib_vulkan := false		# make vulkan=1 for vulkan
+use_lib_ttf := true
+resources_dir = resources
 
 # more
 patient_cmd = echo " > please be patient :), lord deus [>,<]/)"
-resources_dir = resources
-LDLIBS = -Llib -lflecs -lSDL2 -lm -lpthread
-ifeq ($(is_use_sdl_image), true)
-    LDLIBS += -lSDL2_image
-    LDLIBS += -Dzox_using_sdl_images
-endif
-ifeq ($(is_use_sdl_mixer), true)
-    LDLIBS += -lSDL2_mixer
-endif
-ifdef vulkan
-    LDLIBS += -lvulkan -Dzox_include_vulkan # vulkan on linux
-endif
+LDLIBS = -lm -lpthread -lflecs -Llib # default libraries
 ifdef game
     LDLIBS +=-Dzox_game=$(game)
+endif
+ifeq ($(use_lib_sdl), true)
+    LDLIBS += -lSDL2
+endif
+ifeq ($(use_lib_sdl_image), true)
+    LDLIBS += -lSDL2_image -Dzox_using_sdl_images
+endif
+ifeq ($(use_lib_sdl_mixer), true)
+    LDLIBS += -lSDL2_mixer
+endif
+ifeq ($(use_lib_vulkan), true)
+    LDLIBS += -lvulkan -Dzox_include_vulkan # vulkan on linux
+endif
+ifeq ($(use_lib_ttf), true)
+   LDLIBS += -lfreetype -Dzox_lib_ttf -I/usr/include/freetype2/ # todo: make static for windows
 endif
 # determine the operating system #
 ifeq ($(OS),Windows_NT)
@@ -263,8 +269,10 @@ windows_libs += -Wl,-subsystem,windows -mwindows -lws2_32 # windows only
 windows_libs += -lopengl32 -lglew32
 # more sdl2
 windows_libs += -LSDL2main -lSDL2
-windows_libs += -lSDL2_image
-ifeq ($(is_use_sdl_mixer), true)
+ifeq ($(use_lib_sdl_image), true)
+	windows_libs += -lSDL2_image
+endif
+ifeq ($(use_lib_sdl_mixer), true)
     windows_libs += -lSDL2_mixer
 endif
 # windows pathing

@@ -1,5 +1,5 @@
 ecs_entity_t font_style_prefab;
-ecs_entity_t font_style_entity;
+ecs_entity_t zox_font_style;
 const int fonts_used = 77;
 const int font_styles_length = 256;
 
@@ -14,12 +14,13 @@ ecs_entity_t spawn_font_style_prefab(ecs_world_t *world) {
 
 ecs_entity_t spawn_font_style(ecs_world_t *world) {
     // zox_clone(font_style_prefab)
-    ecs_entity_t question_mark = spawn_font(world, font_question_mark, font_question_mark_length);
+    // const ecs_entity_t question_mark = spawn_font(world, font_question_mark, font_question_mark_length);
     zox_instance(font_style_prefab)
     zox_name("font_style")
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, font_styles_length)
-    children->value[0] = question_mark;
+    for (int i = 0; i < font_styles_length; i++) children->value[i] = 0;
+    // children->value[0] = question_mark;
     // lower case
     children->value[1] = spawn_font(world, font_lower_a, font_lower_a_length);
     children->value[2] = spawn_font(world, font_lower_b, font_lower_b_length);
@@ -86,8 +87,8 @@ ecs_entity_t spawn_font_style(ecs_world_t *world) {
     children->value[68] = spawn_font(world, number_8, number_8_length);
     children->value[69] = spawn_font(world, number_9, number_9_length);
     // special
-    children->value[53] = question_mark;
-    children->value[54] = question_mark;
+    // children->value[53] = question_mark;
+    // children->value[54] = question_mark;
     children->value[55] = spawn_font(world, font_space, font_space_length);
     children->value[56] = spawn_font(world, font_full_stop, full_stop_length);
     children->value[57] = spawn_font(world, font_comma, font_comma_length);
@@ -98,11 +99,12 @@ ecs_entity_t spawn_font_style(ecs_world_t *world) {
     children->value[72] = spawn_font(world, right_square_bracket, right_square_bracket_length);
     children->value[73] = spawn_font(world, font_minus, font_minus_length);
     children->value[74] = spawn_font(world, font_plus, font_plus_length);
-    children->value[75] = question_mark; // =
+    // children->value[75] = question_mark; // =
     children->value[76] = spawn_font(world, font_percentage, font_percentage_length);
     // finished
-    for (int i = fonts_used; i < font_styles_length; i++) children->value[i] = question_mark;
+    // for (int i = fonts_used; i < font_styles_length; i++) children->value[i] = question_mark;
+    for (int i = 0; i < font_styles_length; i++) if (!children->value[i]) children->value[i] = spawn_font(world, font_question_mark, font_question_mark_length);
     zox_modified(e, Children)
-    font_style_entity = e;
+    // zox_font_style = e;
     return e;
 }

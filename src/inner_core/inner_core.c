@@ -20,8 +20,9 @@ void dispose_inner_core(ecs_world_t *world) {
 }
 
 void initialize_inner_core(ecs_world_t *world) {
-    initialize_lines(world);
     initialize_textures(world);
+    initialize_ui(world);
+    initialize_lines(world);
     initialize_voxes(world);
 }
 
