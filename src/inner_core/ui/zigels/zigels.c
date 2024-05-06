@@ -3,7 +3,8 @@
 
 // zoxel_settings
 #define zox_pip_zigels EcsOnUpdate
-const char *default_font_ttf = "resources/fonts/miracode.ttf"; // % is broken idk
+#define directory_fonts "fonts"character_slash
+const char *default_font_ttf = "miracode.ttf"; // % is broken idk
 const float point_font_margins = 0.01f;
 const int font_texture_mul = 4;
 const int font_texture_size = 128;

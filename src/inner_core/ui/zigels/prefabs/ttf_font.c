@@ -61,7 +61,11 @@ void initialize_ttf(ecs_world_t *world) {
         fprintf(stderr, " ! error: failure in initialize_ttf\n");
         return;
     }
-    ecs_entity_t e = spawn_ttf_path_as_font_style(&library, default_font_ttf);
+    char* load_directory = concat_file_path(resources_path, directory_fonts);
+    char* font_ttf = concat_file_path(load_directory, default_font_ttf);
+    ecs_entity_t e = spawn_ttf_path_as_font_style(&library, font_ttf);
+    free(font_ttf);
+    free(load_directory);
     FT_Done_FreeType(library);
 }
 
