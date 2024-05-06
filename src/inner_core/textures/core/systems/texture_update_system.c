@@ -12,8 +12,11 @@ void TextureUpdateSystem(ecs_iter_t *it) {
         const TextureGPULink *textureGPULink = &textureGPULinks[i];
         if (textureGPULink->value != 0 && textureData->value) {
             if (!headless) {
+                // const int texture_type = GL_NEAREST; // GL_NEAREST | GL_LINEAR
                 glBindTexture(GL_TEXTURE_2D, textureGPULink->value);
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize->value.x, textureSize->value.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData->value);
+                //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, texture_type);
+                //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, texture_type);
                 glBindTexture(GL_TEXTURE_2D, 0);
             }
             textureDirty->value = 0;

@@ -83,14 +83,14 @@ void opengl_clear(float3 clear_color) {
 }
 
 GLuint spawn_gpu_texture_buffers() {
-    const int textureType = GL_NEAREST; // GL_LINEAR
+    const int texture_type = GL_NEAREST; // GL_NEAREST | GL_LINEAR
     GLuint textureID;
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, texture_type);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, texture_type);
     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureType);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureType);
     glBindTexture(GL_TEXTURE_2D, 0);
     return textureID;
 }

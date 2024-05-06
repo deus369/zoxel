@@ -13,6 +13,8 @@ zox_declare_tag(Statbar)
 zox_declare_tag(Scrollbar)
 zox_declare_tag(ScrollbarButton)
 zox_component_byte(ListUIMax)
+// datas
+#include "data/spawn_element_data.c"
 // prefabs
 #include "prefabs/label.c"
 #include "prefabs/label_background.c"

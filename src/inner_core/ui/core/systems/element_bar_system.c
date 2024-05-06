@@ -35,12 +35,14 @@ void ElementBarSystem(ecs_iter_t *it) {
         } else if (zox_has(front_bar, MeshVertices2D)) {
             // todo: seperate this into a seperate system
             // for our elementbar2D
-            if (children->length >= 2) {
-                const ecs_entity_t bar_text = children->value[1];
-                char text[16];
-                snprintf(text, 16, "health %i%%", (int) (percentage * 100));
-                set_entity_with_text(world, bar_text, text);
-            } else continue;
+            if (children->length <= 1) {
+                // serious problem here!!
+                continue;
+            }
+            const ecs_entity_t bar_text = children->value[1];
+            char text[16];
+            snprintf(text, 16, "health [%i]", (int) (percentage * 100));
+            set_entity_with_text(world, bar_text, text);
             const PixelSize *pixelSize = zox_get(e, PixelSize)
             int2 front_pixel_size = zox_get_value(front_bar, PixelSize)
             PixelPosition *front_pixel_position = zox_get_mut(front_bar, PixelPosition)

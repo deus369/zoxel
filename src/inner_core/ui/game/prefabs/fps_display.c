@@ -2,13 +2,12 @@ ecs_entity_t fps_display_prefab;
 ecs_entity_t fps_display;
 
 ecs_entity_t spawn_prefab_fps_display(ecs_world_t *world) {
-    // ecs_entity_t e = ecs_new_entity(world, "prefab_fps_display");
-    // const ecs_entity_t e = ecs_clone(world, 0, prefab_label_background, 1);
     zox_prefab_child(prefab_label_background)
     zox_prefab_name("prefab_fps_display")
     zox_add_tag(e, FPSDisplay)
     zox_prefab_set(e, FPSDisplayTicker, { 0 })
-    // if (!headless) prefab_set_mesh2D_vertices(world, e, square_vertices_right_aligned, 4);
+    zox_prefab_set(e, FontOutlineColor, { 200, 80, 80, 255 })
+    zox_prefab_set(e, FontFillColor, { 244, 33, 33, 255 })
     fps_display_prefab = e;
     return e;
 }

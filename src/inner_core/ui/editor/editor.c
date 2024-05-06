@@ -1,6 +1,7 @@
 #ifndef zoxel_editor_elements
 #define zoxel_editor_elements
 
+// todo: add_entity_to_labels should be a macro that takes in Tag so I can filter it with zox_has before adding: try these - Element, Character, Camera, Position3D, Position2D,
 // settings
 // zoxel_declare_components
 zox_declare_tag(EditorElement)

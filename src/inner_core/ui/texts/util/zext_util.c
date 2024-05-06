@@ -45,14 +45,14 @@ unsigned char is_zext_updating(ecs_world_t *world, const Children *children) {
 }
 
 //! Dynamically updates zext by spawning/destroying zigels and updating remaining
-void spawn_zext_zigels(ecs_world_t *world, const ecs_entity_t zext, const ecs_entity_t canvas, Children *children, const ZextData *zextData, const int font_size, const unsigned char text_alignment, const byte2 text_padding, const unsigned char zext_layer, int2 parent_position, int2 parent_pixel_size, unsigned char render_disabled) {
+void spawn_zext_zigels(ecs_world_t *world, const ecs_entity_t zext, const ecs_entity_t canvas_entity, Children *children, const ZextData *zextData, const int font_size, const unsigned char text_alignment, const byte2 text_padding, const unsigned char zext_layer, const int2 parent_position, const int2 parent_size, unsigned char render_disabled, const color font_outline_color, const color font_fill_color) {
     const float2 anchor = float2_half; // (float2) { 0.5f, 0.5f };
-    const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    unsigned char old_children_length = children->length;
-    unsigned char new_children_length = zextData->length;
-    unsigned char has_old_children = old_children_length > 0;
-    int reuse_count = integer_min(old_children_length, new_children_length);
-    unsigned char zigel_layer = zext_layer + 1;
+    const int2 canvas_size = zox_get_value(canvas_entity, PixelSize)
+    const unsigned char old_children_length = children->length;
+    const unsigned char new_children_length = zextData->length;
+    const unsigned char has_old_children = old_children_length > 0;
+    const int reuse_count = integer_min(old_children_length, new_children_length);
+    const unsigned char zigel_layer = zext_layer + 1;
 #ifdef zoxel_debug_zext_updates
     zox_log("spawn_zext_zigels :: [%i] -> [%i]; reuse [%i];\n", children->length, zextData->length, reuse_count)
 #endif
@@ -83,15 +83,25 @@ void spawn_zext_zigels(ecs_world_t *world, const ecs_entity_t zext, const ecs_en
     for (unsigned char i = 0; i < reusing_length; i++) {
         ecs_entity_t old_zigel = old_children[i];
         new_children[i] = old_zigel;
-        set_zigel_position(world, old_zigel, i, font_size, text_alignment, text_padding, anchor, new_children_length, parent_position, parent_pixel_size, canvas_size);
+        set_zigel_position(world, old_zigel, i, font_size, text_alignment, text_padding, anchor, new_children_length, parent_position, parent_size, canvas_size);
     }
     if (new_children_length > old_children_length) {
 #ifdef zoxel_debug_zext_updates
         zox_log("    - spawning new_children [%i]\n", new_children_length - old_children_length)
 #endif
+        ZigelSpawnData spawn_data = {
+            .canvas = { .e = canvas_entity, .size = canvas_size },
+            .parent = { .e = zext, .position = parent_position, .size = parent_size },
+            .zext = { .length = new_children_length, .text_padding = text_padding, .text_alignment = text_alignment },
+            .layer = zigel_layer,
+            .size = (int2) { font_size, font_size },
+            .outline_color = font_outline_color,
+            .fill_color = font_fill_color,
+        };
         for (unsigned char i = old_children_length; i < new_children_length; i++) {
-            unsigned char zigel_type = zextData->value[i];
-            ecs_entity_t zigel = spawn_zext_zigel(world, zext, canvas, zigel_layer, i, new_children_length, zigel_type, font_size, text_alignment, text_padding, parent_position, parent_pixel_size, canvas_size);
+            spawn_data.zigel_index = zextData->value[i];
+            spawn_data.array_index = i;
+            ecs_entity_t zigel = spawn_zext_zigel(world, &spawn_data); // zext, canvas, zigel_layer, i, new_children_length, zigel_type, font_size, text_alignment, text_padding, parent_position, parent_size, canvas_size);
             new_children[i] = zigel;
             zox_set(zigel, RenderDisabled, { render_disabled })
         }
@@ -150,7 +160,6 @@ unsigned char set_entity_with_text(ecs_world_t *world, const ecs_entity_t e, con
     zox_modified(e, ZextDirty)
     return 1;
 }
-
 
 void set_new_zox_name(ecs_world_t *world, const ecs_entity_t e, const char* text) {
     zox_set(e, ZoxName, { strlen(text), convert_string_to_zext(text) })

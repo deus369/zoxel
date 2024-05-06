@@ -14,6 +14,8 @@ zox_component_int(ZextSize)
 zox_component_byte2(ZextPadding)
 zox_component_double(AnimateZext)
 zox_component_zext(ZextData)   // zigel indexes
+// datas
+#include "data/zext_spawn_data.c"
 // zoxel_util_includes
 #include "util/zigel_util.c"
 #include "util/resize_util.c"
@@ -48,7 +50,7 @@ zox_define_component_zext(ZextData)
 zox_filter(zexts, [none] Zext, [in] ZextDirty)
 // zoxel_system_defines
 zox_system(AnimateTextSystem, zox_pipelines_zext_textures, [out] AnimateZext, [out] ZextDirty, [out] ZextData)
-zox_system_ctx_1(ZextUpdateSystem, main_thread_pipeline, zexts, [none] Zext, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] CanvasPosition, [in] PixelSize, [in] MeshAlignment, [in] RenderDisabled, [out] ZextDirty, [out] Children)
+zox_system_ctx_1(ZextUpdateSystem, main_thread_pipeline, zexts, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] Layer2D, [in] CanvasPosition, [in] PixelSize, [in] MeshAlignment, [in] RenderDisabled, [in] FontOutlineColor, [in] FontFillColor, [out] ZextDirty, [out] Children, [none] Zext)
 if (!headless) zox_system(ZextParentBackgroundSystem, zox_pipelines_zext_backgrounds, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] MeshAlignment, [in] CanvasLink, [in] ParentLink)
 if (!headless) zox_system(ZextBackgroundSystem, zox_pipelines_zext_backgrounds, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] MeshAlignment, [in] CanvasLink, [out] PixelSize, [out] TextureSize, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshDirty, [in] InitializeEntityMesh)
 zoxel_end_module(Zexts)

@@ -1,6 +1,8 @@
 extern void button_event_close_window(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element);
 ecs_entity_t header_prefab;
 const color header_color = (color) { 77, 44, 33, 255 };
+const color header_font_outline_color = (color) { 100, 110, 50, 255 };
+const color header_font_fill_color = (color) { 199, 220, 41, 255 };
 
 ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
     zox_prefab()
@@ -47,7 +49,18 @@ ecs_entity_t spawn_header(ecs_world_t *world, const ecs_entity_t parent, const e
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, children_length)
-    children->value[0] = spawn_zext(world, prefab_zext, e, canvas, zext_position, zext_anchor, int2_to_byte2(padding), text, font_size, 0, child_layer, pixel_position_global, pixel_size, 0);
+    ZextSpawnData zextSpawnData = {
+        .canvas = { .e = canvas, .size = canvas_size },
+        .parent = { .e = e, .position = pixel_position_global, .size = pixel_size },
+        .element = { .layer = child_layer, .position = zext_position, .anchor = zext_anchor },
+        .prefab = prefab_zext,
+        .text = text,
+        .font_size = font_size,
+        .padding = int2_to_byte2(padding),
+        .font_fill_color = header_font_fill_color,
+        .font_outline_color = header_font_outline_color,
+    };
+    children->value[0] = spawn_zext2(world, &zextSpawnData);
     if (is_close_button) {
         int2 close_button_position = (int2) { - (font_size / 2) - header_margins / 2, 0 };
         children->value[1] = spawn_close_button(world, e, canvas, pixel_position_global, pixel_size, close_button_position, font_size, padding, child_layer, canvas_size);

@@ -1,4 +1,5 @@
-// const int bytes_per_pixel = 4;
+const unsigned char is_splotches = 1;
+const unsigned char splotch_size = 2;
 
 void flood_fill_texture(TextureData* textureData, const int2 size, const color air_color, const color boundary_color, const color fill_color, const int x, const int y) {
     int index = int2_array_index((int2) { x, y }, size);
@@ -153,13 +154,11 @@ void generate_splotches_lines(TextureData* textureData, const int2 size, const F
     }
 }
 
-void generate_font_texture(TextureData* textureData, const int2 size, const FontData *fontData, const Color *color2) {
-    const unsigned char is_splotches = 1;
-    const unsigned char splotch_size = 1;
-    const unsigned char is_background = 0;
+void generate_font_texture(TextureData* textureData, const int2 size, const FontData *fontData, const color fill_color, const color line_color) {
     const unsigned char is_shapes = 1;
-    const color line_color = color2->value;
-    const color fill_color = (color) { line_color.g + 15, line_color.r + 15, line_color.b + 15, 255 };
+    const unsigned char is_background = 0;
+    //const color line_color = color2->value;
+    //const color fill_color = (color) { line_color.g + 15, line_color.r + 15, line_color.b + 15, 255 };
     const color nothing = { 0, 0, 0, 0 };
     const int frame_thickness = size.x / 4;
     const int2 redRange = { 15, 244 };

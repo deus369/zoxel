@@ -1,6 +1,7 @@
 unsigned char debug_colliders = 0;
 
 void toggle_collision_debug(ecs_world_t *world) {
+    if (!zox_valid(local_terrain)) return;
     debug_colliders = !debug_colliders;
     if (debug_colliders) add_physics_debug(world, prefab_character3D);
     else remove_physics_debug(world, prefab_character3D);

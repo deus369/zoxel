@@ -36,6 +36,8 @@ zox_component_byte(WindowsCount)
 zox_component_byte(SetWindowLayer)
 zox_component_byte(WindowLayer)
 zox_component_byte(ElementLayer)
+// datas
+#include "data/element_spawn_data.c"
 // zoxel_include_util
 #include "util/ui_prefab_util.c"
 #include "util/ui_transform_util.c"
