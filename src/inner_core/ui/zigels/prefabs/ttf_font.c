@@ -23,6 +23,7 @@ ecs_entity_t spawn_ttf_as_font_style(FT_Face face) {
     // enter, options, exit
     zox_instance(font_style_prefab)
     zox_name("font_style_ttf")
+    zox_add_tag(e, TTFFontStyle)
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, font_styles_length)
     for (int i = 0; i < font_styles_length; i++) children->value[i] = 0;
@@ -37,7 +38,6 @@ ecs_entity_t spawn_ttf_as_font_style(FT_Face face) {
     }
     for (int i = 0; i < font_styles_length; i++) if (!children->value[i] && i != 55) children->value[i] = spawn_font(world, font_question_mark, font_question_mark_length);
     zox_modified(e, Children)
-    zox_font_style = e;
     return e;
 }
 
@@ -67,12 +67,15 @@ void initialize_ttf(ecs_world_t *world) {
     free(font_ttf);
     free(load_directory);
     FT_Done_FreeType(library);
+    zox_font_style = e;
 }
 
 #else
 
 void initialize_ttf(ecs_world_t *world) {
     zox_log(" - ttf use it not enabled\n")
+    // default font_style here
+    zox_font_style = spawn_font_style(world);
 }
 
 #endif

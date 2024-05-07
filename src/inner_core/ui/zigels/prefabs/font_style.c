@@ -6,8 +6,8 @@ const int font_styles_length = 256;
 ecs_entity_t spawn_font_style_prefab(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_font_style")
-    zox_add_tag(e, FontStyle);
-    zox_add(e, Children);
+    zox_add_tag(e, FontStyle)
+    zox_add(e, Children)
     font_style_prefab = e;
     return e;
 }
@@ -18,7 +18,6 @@ ecs_entity_t spawn_font_style(ecs_world_t *world) {
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, font_styles_length)
     for (int i = 0; i < font_styles_length; i++) children->value[i] = 0;
-    // children->value[0] = question_mark;
     // lower case
     children->value[1] = spawn_font(world, font_lower_a, font_lower_a_length);
     children->value[2] = spawn_font(world, font_lower_b, font_lower_b_length);

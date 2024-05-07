@@ -154,12 +154,9 @@ void generate_splotches_lines(TextureData* textureData, const int2 size, const F
     }
 }
 
-void generate_font_texture(TextureData* textureData, const int2 size, const FontData *fontData, const color fill_color, const color line_color) {
-    const unsigned char is_shapes = 1;
+void clear_texture(TextureData* textureData, const int2 size) {
+    /*
     const unsigned char is_background = 0;
-    //const color line_color = color2->value;
-    //const color fill_color = (color) { line_color.g + 15, line_color.r + 15, line_color.b + 15, 255 };
-    const color nothing = { 0, 0, 0, 0 };
     const int frame_thickness = size.x / 4;
     const int2 redRange = { 15, 244 };
     const int2 greenRange = { 15, 122 };
@@ -179,20 +176,25 @@ void generate_font_texture(TextureData* textureData, const int2 size, const Font
         greenRange.x + rand() % (greenRange.y - greenRange.x),
         blueRange.x + rand() % (blueRange.y - blueRange.x),
         alphaRange2.x + rand() % (alphaRange2.y - alphaRange2.x)
-    };
+    };*/
+    const color nothing = { 0, 0, 0, 0 };
     int index = 0;
     for (int k = 0; k < size.y; k++) {
         for (int j = 0; j < size.x; j++) {
-            if (!is_background) {
+            textureData->value[index] = nothing;
+            /*if (!is_background) {
                 textureData->value[index] = nothing;
             } else if (j <= frame_thickness || k <= frame_thickness || j >= size.x - 1 - frame_thickness || k >= size.y - 1 - frame_thickness) {
                 textureData->value[index] = base;
             } else {
                 textureData->value[index] = darker;
-            }
+            }*/
             index++;
         }
     }
+}
+
+void generate_font_lines(TextureData* textureData, const int2 size, const FontData *fontData, const color line_color) {
     // point A to B - use FontData byte2 data.
     for (int i = 0; i < fontData->length; i += 2) {
         int2 pointA = byte2_to_int2(fontData->value[i]);
@@ -207,9 +209,18 @@ void generate_font_texture(TextureData* textureData, const int2 size, const Font
         pointB.y = (int) ((pointB.y / 255.0f) * size.y);
         draw_texture_line(textureData, size, pointA, pointB, line_color);
     }
+}
+
+void generate_font_texture(TextureData* textureData, const int2 size, const FontData *font_data, const color line_color,  const color fill_color, const unsigned char is_shapes) {
+    const color nothing = { 0, 0, 0, 0 };
+    clear_texture(textureData, size);
+    if (!font_data->length) return;
     if (is_shapes) {
-        if (fontData->length) scanline_fill_texture(textureData, size, nothing, line_color, fill_color);
+        generate_font_lines(textureData, size, font_data, line_color);
+        scanline_fill_texture(textureData, size, nothing, line_color, fill_color);
         // draw splotches after
-        if (is_splotches) generate_splotches_lines(textureData, size, fontData, line_color, splotch_size);
+        if (is_splotches) generate_splotches_lines(textureData, size, font_data, line_color, splotch_size);
+    } else {
+        generate_splotches_lines(textureData, size, font_data, line_color, splotch_size + 3);
     }
 }

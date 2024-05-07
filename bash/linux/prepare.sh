@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# first install required packages
+source bash/util/install_required.sh
+
+# next fix up directories
 source bash/util/prepare_directories.sh
 
 # first download libraries

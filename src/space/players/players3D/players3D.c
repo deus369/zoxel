@@ -1,6 +1,9 @@
 #ifndef zoxel_players3D
 #define zoxel_players3D
 
+// settings
+const double movement_power_x = 4;
+const double movement_power_z = 5;
 // zoxel_component_declares
 zox_declare_tag(Player3D)
 zox_declare_tag(PlayerCharacter3D)

@@ -34,10 +34,6 @@ ecs_entity_t spawn_player_camera(ecs_world_t *world, const unsigned char index, 
     return e;
 }
 
-void load_element_styles(ecs_world_t *world) {
-    spawn_font_style(world);
-}
-
 // todo: spawn unique canvas per viewport, viewports per player
 ecs_entity_t spawn_default_ui(ecs_world_t *world, const ecs_entity_t camera, const int2 dimensions, const float4 screen_to_canvas) {
     const ecs_entity_t canvas = spawn_canvas(world, camera, dimensions, screen_to_canvas);

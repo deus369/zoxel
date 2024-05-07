@@ -1,12 +1,9 @@
 void FontTextureSystem(ecs_iter_t *it) {
     const color air_color = (color) { 0, 0, 0, 0 };
-    // const color fill_color = (color) { 22, 255, 122, 222 };
-    // const color fill_color = (color) { 44, 66, 66, 222 };
     zox_change_check()
     // todo: link each zigel to fontstyle's font
     if (!zox_font_style || !zox_has(zox_font_style, Children)) return;
     zox_iter_world()
-    const Children *font_style_children = zox_get(zox_font_style, Children)
     zox_field_in(ZigelIndex, zigelIndexs, 1)
     zox_field_in(Color, colors, 2)
     zox_field_in(SecondaryColor, secondaryColors, 3)
@@ -14,6 +11,8 @@ void FontTextureSystem(ecs_iter_t *it) {
     zox_field_out(TextureData, textureDatas, 5)
     zox_field_out(TextureDirty, textureDirtys, 6)
     zox_field_out(GenerateTexture, generateTextures, 7)
+    const Children *font_style_children = zox_get(zox_font_style, Children)
+    const unsigned char is_use_shapes = zox_has(zox_font_style, TTFFontStyle);
     for (int i = 0; i < it->count; i++) {
         zox_field_i_out(GenerateTexture, generateTextures, generateTexture)
         if (generateTexture->value == 0) continue;
@@ -38,7 +37,7 @@ void FontTextureSystem(ecs_iter_t *it) {
         const FontData *fontData = zox_get(font, FontData)
         const int length = textureSize->value.x * textureSize->value.y;
         resize_memory_component(TextureData, textureData, color, length)
-        generate_font_texture(textureData, textureSize->value, fontData, color_variable->value, secondaryColor->value);
+        generate_font_texture(textureData, textureSize->value, fontData, secondaryColor->value, color_variable->value, is_use_shapes);
         generateTexture->value = 0;
         textureDirty->value = 1;
 #ifdef zoxel_debug_zigel_updates
@@ -46,7 +45,3 @@ void FontTextureSystem(ecs_iter_t *it) {
 #endif
     }
 } zox_declare_system(FontTextureSystem)
-
-/*(int2) {
-    random.NextFloat(pointNoise.x * 2) - pointNoise.x, 
-    random.NextFloat(pointNoise.y * 2) - pointNoise.y };*/

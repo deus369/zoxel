@@ -12,6 +12,7 @@ const color default_font_outline_color = (color) { 55, 125, 125, 255 };
 const color default_font_fill_color = (color) { 55, 185, 125, 255 };
 // zoxel_component_defines
 zox_declare_tag(FontStyle)
+zox_declare_tag(TTFFontStyle)
 zox_declare_tag(Font)
 zox_declare_tag(FontTexture)
 zox_declare_tag(Zigel)
@@ -52,9 +53,10 @@ void spawn_prefabs_zigels(ecs_world_t *world) {
 
 zox_begin_module(Zigels)
 // zoxel_component_defines
+zox_define_tag(FontStyle)
+zox_define_tag(TTFFontStyle)
 zox_define_tag(Font)
 zox_define_tag(FontTexture)
-zox_define_tag(FontStyle)
 zox_define_tag(Zigel)
 zox_define_component_byte(ZigelIndex)
 zox_define_component_color(FontFillColor)

@@ -33,7 +33,7 @@ ifeq ($(use_lib_vulkan), true)
     LDLIBS += -lvulkan -Dzox_include_vulkan # vulkan on linux
 endif
 ifeq ($(use_lib_ttf), true)
-   LDLIBS += -lfreetype -Dzox_lib_ttf -I/usr/include/freetype2/ # todo: make static for windows
+   LDLIBS += -lfreetype -Dzox_lib_ttf -I/usr/include/freetype2/ # todo: make static for windows / test on windows
 endif
 # determine the operating system #
 ifeq ($(OS),Windows_NT)
@@ -91,12 +91,8 @@ else # linux
 endif
 	@ make install-flecs && make build/libflecs.a
 
-prepare-windows: # for linux cross platform build
-	@ make install-flecs && make build/libflecs.a
-	@ bash bash/windows/prepare.sh
-
-install-required:
-	@ bash bash/util/install_required.sh
+#install-required:
+#	@ bash bash/util/install_required.sh
 
 ## installs zoxel into /usr/games directory
 install: 
@@ -261,7 +257,7 @@ check-flecs:
 # ====== ===== ====== #
 # [from linux]
 
-cc_windows=x86_64-w64-mingw32-gcc
+cc_windows=x86_64-w64-mingw32-gcc # -Wall -g
 target_windows = build/windows/zoxel.exe
 windows_pre_libs = -Llib
 windows_libs = -lm -lpthread
@@ -282,7 +278,7 @@ windows_includes += -Ibuild/sdl/include -Ibuild/sdl_image/include -Ibuild/sdl_mi
 windows_includes += -Lbuild/sdl/lib/x64 -Lbuild/sdl_image/lib/x64 -Lbuild/sdl_mixer/lib/x64
 windows_includes += -Ibuild/glew/include -Lbuild/glew/lib/Release/x64 # glew
 # command
-make_windows = $(cc_windows) $(OBJS) include/flecs/flecs.c -o $(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs)  --static # this fixes thread dll issue
+make_windows = $(cc_windows) $(CFLAGS) $(CFLAGS_RELEASE) $(OBJS) include/flecs/flecs.c -o $(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs) --static # this fixes thread dll issue
 
 # todo: copy resources and bin dll's into the folder build/windows
 ifneq ($(SYSTEM),Windows)
@@ -298,11 +294,6 @@ windows:
 	@ if [ ! -d build/windows ]; then mkdir build/windows; fi
 	@ $(make_windows)
 
-windows-sdk:
-	@ echo " > installing windows sdk"
-	@ $(patient_cmd)
-	@ bash bash/windows/install_sdk.sh
-
 endif
 
 # @ WINEPATH=bin wine $(target_windows)
@@ -311,7 +302,17 @@ run-windows:
 	@ WINEPREFIX=~/.wine64 wine $(target_windows)
 
 run-windows-debug:
-	@ WINEPREFIX=~/.wine64 WINEDEBUG=+opengl wine $(target_windows)
+	@ WINEPREFIX=~/.wine64 WINEDEBUG=+backtrace wine $(target_windows)
+
+# @ WINEPREFIX=~/.wine64 WINEDEBUG=+all wine $(target_windows)
+# @ WINEPREFIX=~/.wine64 WINEDEBUG=+opengl wine $(target_windows)
+
+prepare-windows: # for linux cross platform build
+	@ echo " > preparing windows"
+	@ $(patient_cmd)
+	@ make install-flecs && make build/libflecs.a
+	@ bash bash/windows/install_sdk.sh
+	@ bash bash/windows/prepare.sh
 
 # ======= ===== ======= #
 # ===== windows32 ===== #
@@ -469,6 +470,11 @@ git-pull: ## installs zoxel into /usr/games directory
 
 git-config:
 	@ bash bash/git/git_update_config.sh
+
+update: ## installs zoxel into /usr/games directory
+	@ echo " + updating zoxel"
+	@ bash bash/git/git_pull.sh
+	@ bash make prepare && make && make install
 
 # ===== ===== ===== #
 # ===== steam ===== #
@@ -653,6 +659,7 @@ endif
 	@echo "  + make dev		builds development"
 	@echo "  + make run		runs release build"
 	@echo "  + make run-vulkan	runs release with vulkan"
+	@echo "  + make update		pulls latest with git and rebuilds"
 	@echo "  "
 	@echo " > help-x commands"
 	@echo "  + flecs		building flecs"

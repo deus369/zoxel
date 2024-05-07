@@ -1,6 +1,4 @@
 const double jump_power = 12.0;
-const double movement_power_x = 6; // 16;
-const double movement_power_z = 9; // 24;
 const float2 max_velocity = { 60 * 60, 160 * 60 };
 const double run_speed = 1.6;
 const float backwards_multiplier = 0.7f;

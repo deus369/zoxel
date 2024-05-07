@@ -14,6 +14,8 @@ install_first_library "libvulkan-dev" "vulkan-devel" "vulkan-headers"
 
 install_first_library "wget"
 
+install_first_library "libfreetype6-dev" "freetype2"
+
 # debug requuired tools
 # install_first_library "valgrind"
 # install_first_library "gdb"

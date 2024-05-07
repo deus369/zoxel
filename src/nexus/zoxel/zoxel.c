@@ -21,7 +21,6 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     zox_set(game, RealmLink, { realm })
     spawn_weather(world);
     if (!headless) spawn_music(world, instrument_piano); // _square
-    load_element_styles(world);
     spawn_players_cameras_canvases(world, game);
     // debug/testing
 #ifdef zox_test_voxel_mesh
