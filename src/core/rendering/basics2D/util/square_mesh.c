@@ -12,7 +12,7 @@ void dispose_shader2D_textured() {
 #endif
 }
 
-void initialize_shader2D_textured(GLuint material) {
+void initialize_square_mesh_textured(GLuint material) {
     glGenBuffers(1, &squareTexturedMesh.x);
     glGenBuffers(1, &squareTexturedMesh.y);  // generate a new VBO and get the associated ID
     glGenBuffers(1, &squareTexturedModelUVs);  // generate a new VBO and get the associated ID

@@ -57,11 +57,11 @@ void player_start_game(ecs_world_t *world, const ecs_entity_t player) {
     zox_delete(found_child)
     // destroy main menu
     disable_inputs_until_release(world, player, zox_device_mode_none);
-    trigger_canvas_fade_transition(world, canvas);
     // spawn character and set camera to streaming terrain
     // todo: delay event to spawn character
     // todo: generic function to delay t this event
     if (zox_game_type == zox_game_mode_3D) {
+        trigger_canvas_fade_transition(world, canvas);
         delay_event(world, &player_start_game_delayed, player, 1.4f);
     } else if (zox_game_type == zox_game_mode_2D) {
         const ecs_entity_t camera = zox_get_value(player, CameraLink)

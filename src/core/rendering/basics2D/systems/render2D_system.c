@@ -1,29 +1,30 @@
 void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint texture, float2 position, float angle, float scale, float brightness) {
-    /*if (material == 0) return;
-    MaterialTextured2D materialTextured2D = initialize_material2D_textured(material);
+    if (material == 0) return;
+    const MaterialTextured2D attributes = create_MaterialTextured2D(material);
+    // MaterialTextured2D materialTextured2D = initialize_material2D_textured(material);
     glUseProgram(material);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     glBindTexture(GL_TEXTURE_2D, texture);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedMesh.x);    // for indices
     glBindBuffer(GL_ARRAY_BUFFER, squareTexturedMesh.y);            // for vertex buffer data
-    glEnableVertexAttribArray(materialTextured2D.vertex_position);
-    glEnableVertexAttribArray(materialTextured2D.vertex_uv);
-    glVertexAttribPointer(materialTextured2D.vertex_position, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(0 * sizeof(float)));
-    glVertexAttribPointer(materialTextured2D.vertex_uv, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(2 * sizeof(float)));
-    glUniformMatrix4fv(materialTextured2D.camera_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
-    glUniform3f(materialTextured2D.position, position.x, position.y, 0);
+    glEnableVertexAttribArray(attributes.vertex_position);
+    glEnableVertexAttribArray(attributes.vertex_uv);
+    glVertexAttribPointer(attributes.vertex_position, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(0 * sizeof(float)));
+    glVertexAttribPointer(attributes.vertex_uv, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(2 * sizeof(float)));
+    glUniformMatrix4fv(attributes.camera_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
+    glUniform3f(attributes.position, position.x, position.y, 0);
     // glUniform1f(materialTextured2D.positionY, position.y);
-    glUniform1f(materialTextured2D.angle, angle);
-    glUniform1f(materialTextured2D.scale, scale);
-    glUniform1f(materialTextured2D.brightness, brightness);
+    glUniform1f(attributes.angle, angle);
+    glUniform1f(attributes.scale, scale);
+    glUniform1f(attributes.brightness, brightness);
     opengl_render(6);
     glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_BLEND);
     glUseProgram(0);
 #ifdef zoxel_catch_opengl_errors
     check_opengl_error("render_entity_material2D");
-#endif*/
+#endif
 }
 
 void RenderMaterial2DSystem(ecs_iter_t *it) {
@@ -40,6 +41,7 @@ void RenderMaterial2DSystem(ecs_iter_t *it) {
         zox_field_i_in(Brightness, brightnesss, brightness)
         zox_field_i_in(MaterialGPULink, materialGPULinks, materialGPULink)
         zox_field_i_in(TextureGPULink, textureGPULinks, textureGPULink)
+        // zox_log("RenderMaterial2DSystem %i %i\n", materialGPULink->value, textureGPULink->value)
         render_entity_material2D(render_camera_matrix, materialGPULink->value, textureGPULink->value, position2D->value, rotation2D->value, scale1D->value, brightness->value);
     }
 } zox_declare_system(RenderMaterial2DSystem)
