@@ -40,8 +40,10 @@ ecs_entity_t spawn_actionbar(ecs_world_t *world, const ecs_entity_t canvas, cons
 ecs_entity_t spawn_healthbar_on_canvas(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t parent, const ecs_entity_t player, const ecs_entity_2 character_group) {
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const float2 elementbar2D_anchor = float2_top_left;
-    const int2 healthbar_size = (int2) { 12, 8 };
-    const ecs_entity_t healthbar_2D = spawn_elementbar2D(world, player, canvas, parent, int2_zero, healthbar_size, elementbar2D_anchor, "-----", 18, 0, int2_half(canvas_size), canvas_size, canvas_size, 0);
+    const int2 size = (int2) { 256, 32 };
+    const byte2 padding = (byte2) { 16, 4 };
+    const int2 healthbar_position = (int2) { 8, 8 - size.y / 2 };
+    const ecs_entity_t healthbar_2D = spawn_elementbar2D(world, prefab_statbar2D, player, canvas, parent, healthbar_position, size, padding, elementbar2D_anchor, 0, int2_half(canvas_size), canvas_size, canvas_size, 0);
     // const ecs_entity_t character = zox_get_value(player, CharacterLink)
     if (character_group.x) {
         // const StatLinks *statLinks = zox_get(character, StatLinks)
@@ -61,7 +63,7 @@ void spawn_in_game_ui(ecs_world_t *world, const ecs_entity_t player, const ecs_e
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const ecs_entity_t game_ui = spawn_element_invisible_on_canvas(world, canvas, int2_zero, canvas_size, float2_half);
     zox_add_tag(game_ui, MenuInGame)
-    zox_prefab_set(game_ui, AnchorSize, { (float2) { 1, 1 }})
+    zox_prefab_set(game_ui, AnchorSize, { float2_one })
     zox_prefab_set(game_ui, Children, { 0, NULL })
     on_child_added(world, canvas, game_ui);
     Children *game_ui_children = zox_get_mut(game_ui, Children)

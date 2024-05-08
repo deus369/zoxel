@@ -1,9 +1,7 @@
 #ifndef zoxel_transforms3D
 #define zoxel_transforms3D
 
-// EcsPostUpdate | EcsPreStore
-#define zox_transforms_stage EcsPreStore
-// zoxel_component_includes
+#define zox_transforms_stage EcsPreStore // EcsPostUpdate | EcsPreStore
 zox_declare_tag(EulerOverride)
 zox_component_float3(Position3D)
 zox_component_float3(LastPosition3D)
@@ -15,9 +13,7 @@ zox_component_float2(EulerLimitX)    // a limitation of euler x axis
 zox_component_float2(EulerLimitZ)    // a limitation of euler z axis
 zox_component_float3(LocalPosition3D)
 zox_component_float4(LocalRotation3D)
-// zoxel_util_includes
 #include "util/transform3d_util.c"
-// zoxel_system_includes
 #include "systems/euler_override_system.c"
 #include "systems/parent_position_system.c"
 #include "systems/parent_rotation_system.c"
@@ -25,7 +21,6 @@ zox_component_float4(LocalRotation3D)
 #include "systems/euler_limit_z_system.c"
 
 zox_begin_module(Transforms3D)
-// zoxel_component_defines
 zox_define_tag(EulerOverride)
 zox_define_component_float3(Position3D)
 zox_define_component_float3(LastPosition3D)
@@ -37,7 +32,6 @@ zox_define_component_float2(EulerLimitX)
 zox_define_component_float2(EulerLimitZ)
 zox_define_component_float3(LocalPosition3D)
 zox_define_component_float4(LocalRotation3D)
-// zoxel_system_defines
 zox_system(EulerLimitXSystem, EcsOnUpdate, [in] EulerLimitX, [out] Euler)
 zox_system(EulerLimitZSystem, EcsOnUpdate, [in] EulerLimitZ, [out] Euler)
 zox_system(EulerOverrideSystem, EcsOnUpdate, [none] EulerOverride, [in] Euler, [out] Rotation3D)

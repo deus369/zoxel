@@ -15,7 +15,7 @@ ecs_entity_t spawn_prefab_button(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_button(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const int2 padding, const float2 anchor, const char* text, const int font_size, const unsigned char layer, const int2 parent_pixel_position_global, const int2 parent_pixel_size, const int2 canvas_size, const unsigned char render_disabled, const color button_color) {
+ecs_entity_t spawn_button(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const byte2 padding, const float2 anchor, const char* text, const int font_size, const unsigned char layer, const int2 parent_pixel_position_global, const int2 parent_pixel_size, const int2 canvas_size, const unsigned char render_disabled, const color button_color) {
     const unsigned char zext_layer = layer + 1;
     const int2 zext_size = (int2) { font_size * strlen(text), font_size };
     const int2 pixel_size = (int2) { zext_size.x + padding.x * 2, zext_size.y + padding.y * 2 };
@@ -26,8 +26,20 @@ ecs_entity_t spawn_button(ecs_world_t *world, const ecs_entity_t parent, const e
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     zox_set(e, Color, { button_color })
     zox_set(e, RenderDisabled, { render_disabled })
+    ZextSpawnData zextSpawnData = {
+        .canvas = { .e = canvas, .size = canvas_size },
+        .parent = { .e = e, .position = pixel_position_global, .size = pixel_size },
+        .element = { .layer = layer + 1, .anchor = float2_half, .render_disabled = render_disabled, .size = zext_size },
+        .prefab = prefab_zext,
+        .text = text,
+        .font_size = font_size,
+        .padding = (padding),
+        .font_fill_color = default_font_fill_color,
+        .font_outline_color = default_font_outline_color,
+    };
+    const ecs_entity_t zext = spawn_zext(world, &zextSpawnData);
     Children *children = zox_get_mut(e, Children)
-    add_to_Children(children, spawn_zext(world, prefab_zext, e, canvas, int2_zero, float2_half, int2_to_byte2(padding), text, font_size, 0, zext_layer, pixel_position_global, zext_size, render_disabled));
+    add_to_Children(children, zext);
     zox_modified(e, Children)
     return e;
 }
@@ -46,9 +58,20 @@ ecs_entity_t spawn_button_on_canvas(ecs_world_t *world, const ecs_entity_t canva
     zox_set(e, Color, { color })
     zox_set(e, ClickEvent, { event.value })
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
+    ZextSpawnData zextSpawnData = {
+        .canvas = { .e = canvas, .size = canvas_size },
+        .parent = { .e = e, .position = pixel_position_global, .size = pixel_size },
+        .element = { .layer = layer + 1, .anchor = float2_half, .size = zext_size },
+        .prefab = prefab_zext,
+        .text = text,
+        .font_size = font_size,
+        .padding = (padding),
+        .font_fill_color = default_font_fill_color,
+        .font_outline_color = default_font_outline_color,
+    };
+    const ecs_entity_t zext = spawn_zext(world, &zextSpawnData);
     Children *children = zox_get_mut(e, Children)
-    resize_memory_component(Children, children, ecs_entity_t, 1)
-    children->value[0] = spawn_zext(world, prefab_zext, e, canvas, int2_zero, float2_half, padding, text, font_size, 0, (layer + 1), pixel_position_global, zext_size, 0);
+    add_to_Children(children, zext);
     zox_modified(e, Children)
     return e;
 }

@@ -10,6 +10,7 @@ void ElementBarSystem(ecs_iter_t *it) {
         zox_field_i_in(Children, childrens, children)
         if (!children->length) continue;
         const ecs_entity_t front_bar = children->value[0];
+        if (!zox_valid(front_bar)) continue;
         const InitializeEntityMesh *initializeEntityMesh = zox_get(front_bar, InitializeEntityMesh)
         if (initializeEntityMesh->value) continue; // removing this breaks it?!?!
         zox_field_e()

@@ -19,6 +19,7 @@ float4 get_glyph_bounds(const FT_GlyphSlot glyph) {
 }
 
 float4 get_face_bounds(FT_Face face) {
+    unsigned char initialized = 0;
     float4 bounds;
     for (int i = 0; i < face->num_glyphs; i++) {
         if (!((i >= 48 && i <= 57) || (i >= 65 && i <= 90) || (i >= 97 && i <= 122) || i == 95)) continue;
@@ -26,7 +27,8 @@ float4 get_face_bounds(FT_Face face) {
         FT_Load_Glyph(face, i, FT_LOAD_DEFAULT); // Load the glyph
         FT_GlyphSlot glyph = face->glyph;
         const float4 glyph_bounds = get_glyph_bounds(glyph);
-        if (i == 65) {
+        if (!initialized) {
+            initialized = 1;
             bounds = glyph_bounds;
         } else {
             if (glyph_bounds.x < bounds.x) bounds.x = glyph_bounds.x;

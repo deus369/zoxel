@@ -24,19 +24,18 @@ unsigned char add_to##_##name(name *component, const ecs_entity_t data) {\
     return 1;\
 }\
 \
-unsigned char remove_from##_##name(name *component, ecs_entity_t data) {\
-    if (component->value) {\
-        for (int i = 0; i < component->length; i++) {\
-            if (component->value[i] == data) {\
-                /* shift list down, as we are removing i*/\
-                for (int j = i; j < component->length; j++) {\
-                    component->value[j] = component->value[j + 1];\
-                }\
-                /* resize list*/\
-                component->length--;\
-                component->value = realloc(component->value, component->length * sizeof(ecs_entity_t));\
-                return 1;\
+unsigned char remove_from##_##name(name *component, const ecs_entity_t data) {\
+    if (!component->value) return 0;\
+    for (int i = 0; i < component->length; i++) {\
+        if (component->value[i] == data) {\
+            /* shift list down, as we are removing i*/\
+            for (int j = i; j < component->length - 1; j++) {\
+                component->value[j] = component->value[j + 1];\
             }\
+            /* resize list: length = length - 1*/\
+            component->length--;\
+            component->value = realloc(component->value, component->length * sizeof(ecs_entity_t));\
+            return 1;\
         }\
     }\
     return 0;\

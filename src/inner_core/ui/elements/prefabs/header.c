@@ -21,7 +21,7 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_close_button(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t canvas, int2 pixel_position_global, int2 parent_size, int2 position, int size, int2 padding, unsigned char layer, int2 canvas_size) {
+ecs_entity_t spawn_close_button(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t canvas, int2 pixel_position_global, int2 parent_size, int2 position, int size, byte2 padding, unsigned char layer, int2 canvas_size) {
     const float2 anchor = (float2) { 1, 0.5f };
     ecs_entity_t e = spawn_button(world, parent, canvas, position, padding, anchor, "X", size, layer, pixel_position_global, parent_size, canvas_size, 0, button_color);
     zox_set(e, ClickEvent, { &button_event_close_window })
@@ -37,7 +37,7 @@ ecs_entity_t spawn_header(ecs_world_t *world, const ecs_entity_t parent, const e
         zext_anchor.x = 0.5f;
         zext_position.x = 0;
     }
-    const int2 padding = (int2) { (int) (font_size * 0.3f), (int) (font_size * 0.3f) };
+    const byte2 padding = (byte2) { (int) (font_size * 0.3f), (int) (font_size * 0.3f) };
     const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     const float2 position2D = get_element_position(pixel_position_global, canvas_size);
     int children_length = 1;
@@ -56,11 +56,11 @@ ecs_entity_t spawn_header(ecs_world_t *world, const ecs_entity_t parent, const e
         .prefab = prefab_zext,
         .text = text,
         .font_size = font_size,
-        .padding = int2_to_byte2(padding),
+        .padding = (padding),
         .font_fill_color = header_font_fill_color,
         .font_outline_color = header_font_outline_color,
     };
-    children->value[0] = spawn_zext2(world, &zextSpawnData);
+    children->value[0] = spawn_zext(world, &zextSpawnData);
     if (is_close_button) {
         int2 close_button_position = (int2) { - (font_size / 2) - header_margins / 2, 0 };
         children->value[1] = spawn_close_button(world, e, canvas, pixel_position_global, pixel_size, close_button_position, font_size, padding, child_layer, canvas_size);

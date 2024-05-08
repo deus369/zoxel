@@ -43,7 +43,7 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         const int scrollbar_margins = zox_gett_value(scrollbar, ElementMargins).x;
         const int scrollbar_width = zox_gett_value(scrollbar, PixelSize).x;
         const ClickEvent click_event = (ClickEvent) { &button_event_clicked_hierarchy };
-            const int2 button_padding = (int2) { (int) (font_size * 0.46f), (int) (font_size * 0.3f) };
+            const byte2 button_padding = (byte2) { (int) (font_size * 0.46f), (int) (font_size * 0.3f) };
             const int2 list_margins = (int2) { (int) (font_size * 0.8f), (int) (font_size * 0.8f) };
             const int button_inner_margins = (int) (font_size * 0.5f);
         // our label data

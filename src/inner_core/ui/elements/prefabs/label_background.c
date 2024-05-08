@@ -35,8 +35,7 @@ ecs_entity_t spawn_label_background(ecs_world_t *world, const ecs_entity_t prefa
         .font_fill_color = label_font_fill_color,
         .font_outline_color = label_font_outline_color,
     };
-    ecs_entity_t e = spawn_zext2(world, &zextSpawnData);
-    // initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, zext_anchor, layer, position2D, pixel_position_global);
+    const ecs_entity_t e = spawn_zext(world, &zextSpawnData);
     zox_name("label_background")
     return e;
 }

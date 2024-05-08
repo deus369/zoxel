@@ -30,7 +30,7 @@ void ScrollbarSystem(ecs_iter_t *it) {
         int scrollview_index_offset = round(scrollview_scroll * scroll_percentage);
         const int scrollbar_margins = zox_gett_value(scrollbar, ElementMargins).x;
         const int scrollbar_width = scrollbar_size->value.x;
-        int2 button_padding = (int2) { (int) (font_size * 0.46f), (int) (font_size * 0.3f) };
+        byte2 button_padding = (byte2) { (int) (font_size * 0.46f), (int) (font_size * 0.3f) };
         int2 list_margins = (int2) { (int) (font_size * 0.8f), (int) (font_size * 0.8f) };
         int button_inner_margins = (int) (font_size * 0.5f);
         for (int j = list_start; j < list_elements->length; j++) {

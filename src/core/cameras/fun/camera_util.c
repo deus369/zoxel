@@ -29,7 +29,7 @@ void set_main_cameras(int new_count) {
 void set_camera_transform(ecs_world_t *world, const ecs_entity_t camera, const ecs_entity_t character, const unsigned char camera_mode) {
     if (!camera || !character) return;
     float3 target_position = float3_zero;
-    const Position3D *position3D = ecs_get(world, character, Position3D);
+    const Position3D *position3D = zox_get(character, Position3D)
     if (position3D != NULL) target_position = position3D->value;
     else target_position = (float3) { 8, 0, 8 };
     float3 camera_position;
@@ -55,8 +55,10 @@ void set_camera_transform(ecs_world_t *world, const ecs_entity_t camera, const e
     float4 camera_rotation = quaternion_from_euler(camera_euler);
     zox_set(camera, LocalPosition3D, { camera_position })
     zox_set(camera, Position3D, { float3_add(target_position, camera_position) })
-    if (camera_follow_mode == zox_camera_follow_mode_attach) zox_set(camera, LocalRotation3D, { camera_rotation })
-    else zox_set(camera, Rotation3D, { camera_rotation })
+    if (camera_follow_mode == zox_camera_follow_mode_attach) {
+        zox_set(camera, LocalRotation3D, { camera_rotation })
+        zox_set(camera, Euler, { camera_euler })
+    } else zox_set(camera, Rotation3D, { camera_rotation })
 }
 
 unsigned char get_camera_mode_fov(const unsigned char camera_mode) {
@@ -150,7 +152,7 @@ void set_camera_mode_pre_defined(ecs_world_t *world) {
 #endif
 }
 
-void get_camera_start_transform(float3 *camera_position, float4 *camera_rotation) {
+void set_camera_start_transform(float3 *camera_position, float4 *camera_rotation) {
     const float overall_voxel_scale = 32.0f;
     camera_position->x = 0.25f * overall_voxel_scale;
     camera_position->y = 0.1f * overall_voxel_scale;

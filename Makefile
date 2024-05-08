@@ -179,7 +179,7 @@ run-debug:
 
 # run development + valgrind
 run-valgrind:
-	@ valgrind ./$(target_dev)
+	@ valgrind ./$(target_dev) --tiny
 
 # run release + flecs profiler
 run-profiler:

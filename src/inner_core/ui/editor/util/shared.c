@@ -1,9 +1,4 @@
-
-
-// int2 label_position = (int2) { 0, (int) (window_size.y / 2) - (j + 0.5f) * (font_size + button_padding.y * 2) - list_margins.y - j * button_inner_margins };
-// if (is_scrollbar) label_position.x -= (scrollbar_width + scrollbar_margins * 2) / 2;
-
-int2 get_element_label_position(int index, const unsigned char font_size, const int2 button_padding, const int button_inner_margins, const int2 window_size, const int2 list_margins, const unsigned char is_scrollbar, const int scrollbar_width, const int scrollbar_margins) {
+int2 get_element_label_position(int index, const unsigned char font_size, const byte2 button_padding, const int button_inner_margins, const int2 window_size, const int2 list_margins, const unsigned char is_scrollbar, const int scrollbar_width, const int scrollbar_margins) {
     int2 label_position = (int2) { 0, (int) (window_size.y / 2) - (index + 0.5f) * (font_size + button_padding.y * 2) - list_margins.y - index * button_inner_margins };
     if (is_scrollbar) label_position.x -= (scrollbar_width + scrollbar_margins * 2) / 2;
     return label_position;

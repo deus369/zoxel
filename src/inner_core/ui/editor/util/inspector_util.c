@@ -11,7 +11,7 @@ void button_event_clicked_inspepctor(ecs_world_t *world, const ecs_entity_t trig
 }
 
 // like text, sets the list of text onto the ui element list
-/*void set_ui_list_inspector(ecs_world_t *world, Children *children, const ecs_entity_t window_entity, const int elements_visible, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, const int labels_count, const ClickEvent click_event, const unsigned char button_layer, const int2 button_padding, const int button_inner_margins, const int font_size, const unsigned char list_start, const int2 list_margins, const unsigned char is_scrollbar, const int scrollbar_width, const int scrollbar_margins, const float2 window_position, const int2 window_pixel_position_global, const int2 window_size, const int2 canvas_size) {
+/*void set_ui_list_inspector(ecs_world_t *world, Children *children, const ecs_entity_t window_entity, const int elements_visible, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, const int labels_count, const ClickEvent click_event, const unsigned char button_layer, const byte2 button_padding, const int button_inner_margins, const int font_size, const unsigned char list_start, const int2 list_margins, const unsigned char is_scrollbar, const int scrollbar_width, const int scrollbar_margins, const float2 window_position, const int2 window_pixel_position_global, const int2 window_size, const int2 canvas_size) {
     // refresh elements
     const ecs_entity_t canvas = zox_get_value(window_entity, CanvasLink)
     const int childrens_length = list_start + labels_count;
@@ -108,7 +108,7 @@ void set_inspector_element(ecs_world_t *world, const ecs_entity_t window_entity,
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const int scrollbar_margins = zox_gett_value(scrollbar, ElementMargins).x;
     const int scrollbar_width = zox_gett_value(scrollbar, PixelSize).x;
-    const int2 button_padding = (int2) { (int) (font_size * 0.46f), (int) (font_size * 0.3f) };
+    const byte2 button_padding = (byte2) { (int) (font_size * 0.46f), (int) (font_size * 0.3f) };
     const int2 list_margins = (int2) { (int) (font_size * 0.8f), (int) (font_size * 0.8f) };
     const int button_inner_margins = (int) (font_size * 0.5f);
     // destroy previous ones
