@@ -1,4 +1,4 @@
-ecs_entity_t spawn_player_character3D(ecs_world_t *world, ecs_entity_t camera) {
+/*ecs_entity_t spawn_player_character3D(ecs_world_t *world, ecs_entity_t camera) {
     // child prefabs don't seem to inherit tags
     ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab_player_character3D);
     zox_set(e, CameraLink, { camera })
@@ -10,3 +10,4 @@ ecs_entity_t spawn_player_character3D(ecs_world_t *world, ecs_entity_t camera) {
     spawn_gpu_material(world, e, shader3D);
     return e;
 }
+*/

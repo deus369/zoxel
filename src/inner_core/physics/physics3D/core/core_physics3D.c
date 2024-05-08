@@ -6,6 +6,7 @@
 const float friction3D = 4.0f; // 6.0f;  // 0.002
 const float dissipation_threshold = 0.001f;
 const float rotation_friction = 0.56f; // 0.7f;
+zox_declare_tag(Jumper)
 zox_component(Velocity3D, float3)
 zox_component(Acceleration3D, float3)
 zox_component(Omega3D, float4)
@@ -28,6 +29,7 @@ zox_component_double(Jump)
 #include "systems/position3D_bounds_system.c" //  move to transforms
 
 zox_begin_module(CorePhysics3D)
+zox_define_tag(Jumper)
 zox_define_component(Velocity3D)
 zox_define_component(Acceleration3D)
 zox_define_component(Omega3D)
@@ -40,8 +42,8 @@ zox_system(Velocity3DSystem, EcsOnUpdate, [out] Position3D, [in] Velocity3D)
 zox_system(Omega3DSystem, EcsOnUpdate, [in] Omega3D, [out] Rotation3D)
 zox_system(Physics3DDisableSystem, EcsOnUpdate, [out] InitializePhysics3D, [out] Position3D, [out] Velocity3D)
 zox_system(Gravity3DSystem, EcsOnUpdate, [in] Gravity3D, [out] Acceleration3D)
+zox_system(RandomJump3DSystem, EcsOnUpdate, [in] Grounded, [out] Jump, [none] Jumper)
 zox_system(Jump3DSystem, EcsOnUpdate, [in] Dead, [out] Jump, [out] Acceleration3D)
-zox_system(RandomJump3DSystem, EcsOnUpdate, [out] Jump, [out] Grounded)
 zox_system(Friction3DSystem, EcsOnUpdate, [none] physics.Frictioned, [in] Velocity3D, [out] Acceleration3D)
 zox_system(Dissipation3DSystem, EcsOnUpdate, [none] physics.Frictioned, [in] Omega3D, [out] Alpha3D)
 zox_system(Acceleration3DSystem, EcsOnUpdate, [out] Acceleration3D, [out] Velocity3D)

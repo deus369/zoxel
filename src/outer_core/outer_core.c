@@ -2,7 +2,6 @@
 #define zoxel_outer_core
 
 #include "cubes/cubes.c"
-#include "ai/ai.c"
 #include "particles/particles.c"
 
 void initialize_outer_core(ecs_world_t *world) {
@@ -16,7 +15,6 @@ void spawn_prefabs_outer_core(ecs_world_t *world) {
 
 zox_begin_module(OuterCore)
 zox_import_module(Cubes)
-zox_import_module(AI)
 zox_import_module(Particles)
 zoxel_end_module(OuterCore)
 

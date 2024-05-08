@@ -105,8 +105,8 @@ FT_GlyphSlot get_glyph(FT_Face face, const char charcode) {
 
 byte2* glyph_to_points(const FT_GlyphSlot glyph, const float4 face_bounds, int *length) {
     const int2 glyph_size = get_glyph_size(glyph);
-    const float2 glyph_margins = get_glyph_margins(glyph);
-    const float4 glyph_bounds = get_glyph_bounds(glyph);
+    // const float2 glyph_margins = get_glyph_margins(glyph);
+    // const float4 glyph_bounds = get_glyph_bounds(glyph);
     *length = 0;
     int start_point_index = 0;
     for (int c = 0; c < glyph->outline.n_contours; c++) {

@@ -66,7 +66,7 @@ void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game)
     spawn_players(world, game);
     set_camera_mode_pre_defined(world);
     set_main_cameras((int) players_playing);
-    const unsigned char camera_fov = get_camera_mode_fov(camera_mode);
+    // const unsigned char camera_fov = get_camera_mode_fov(camera_mode);
     float3 camera_position = float3_zero;
     float4 camera_rotation = quaternion_identity;
     for (int i = 0; i < players_playing; i++) {
@@ -74,7 +74,7 @@ void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game)
         const float4 screen_to_canvas = (float4) { 1 / (float) players_playing, 1, i / (float) players_playing, 0 };
         const int2 viewport_size = screen_to_canvas_size(screen_dimensions, screen_to_canvas);
         const int2 viewport_position = screen_to_canvas_position(screen_dimensions, screen_to_canvas);
-        const ecs_entity_t camera = spawn_player_camera(world, i, camera_position, camera_rotation, viewport_position, viewport_size, screen_to_canvas);
+        spawn_player_camera(world, i, camera_position, camera_rotation, viewport_position, viewport_size, screen_to_canvas);
         const ecs_entity_t ui_camera = ui_cameras[i];
         const ecs_entity_t canvas = spawn_default_ui(world, ui_camera, viewport_size, screen_to_canvas);
         zox_spawn_main_menu(world, zox_players[i], game_name, canvas);

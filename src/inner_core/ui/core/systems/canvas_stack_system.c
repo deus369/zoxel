@@ -15,7 +15,7 @@ unsigned char get_highest_layer(ecs_world_t *world, const ecs_entity_t e, const 
 }
 
 void CanvasStackSystem(ecs_iter_t *it) {
-    unsigned char has_changed = 0;
+    // unsigned char has_changed = 0;
     zox_iter_world()
     zox_field_in(Children, childrens, 1)
     zox_field_out(WindowToTop, windowToTops, 2)
@@ -137,7 +137,7 @@ void CanvasStackSystem(ecs_iter_t *it) {
         // ecs_entity_t window = int3_hash_map_get(windows, j);
         int_hash_map_dispose(windows);
         windowToTop->value = 0;
-        has_changed = 1;
+        // has_changed = 1;
     }
     // what does ecs_query_skip acttuauauaallly do
     // if (!has_changed) ecs_query_skip(it);

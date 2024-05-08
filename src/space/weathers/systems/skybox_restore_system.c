@@ -1,5 +1,5 @@
 void SkyboxRestoreSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    // zox_iter_world()
     zox_field_in(MaterialGPULink, materialGPULinks, 1)
     zox_field_in(ColorRGB, colors, 2)
     zox_field_in(SecondaryColorRGB, secondaryColors, 3)

@@ -91,7 +91,6 @@ void ElementClickSystem(ecs_iter_t *it) {
                 set_element_dragged(world, e, raycasterTarget->value, drag_mode);
             }
         } else if (click_type == 2) { // released
-            unsigned char did_activate = 0;
             if (raycasterTarget->value == clickingEntity->value) on_element_clicked(world, e, raycasterTarget->value);
             else on_element_clicked(world, e, 0);
             clickingEntity->value = 0;

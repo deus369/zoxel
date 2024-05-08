@@ -18,7 +18,6 @@ ecs_entity_t spawn_prefab_zext(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_zext(ecs_world_t *world, const ZextSpawnData *data) {
-    const int2 canvas_size = zox_get_value(data->canvas.e, PixelSize)
     const int zext_length = data->text != NULL ? strlen(data->text) : 0;
     const int2 pixel_size = (int2) { data->font_size * zext_length, data->font_size };
     const int2 element_canvas_position = get_element_pixel_position_global(data->parent.position, data->parent.size, data->element.position, data->element.anchor);

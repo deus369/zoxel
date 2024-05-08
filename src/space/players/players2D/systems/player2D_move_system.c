@@ -54,7 +54,7 @@ void Player2DMoveSystem(ecs_iter_t *it) {
             }
         }
         if (!movement.x && !movement.y) continue;
-        const Position2D *position2D = zox_get(characterLink->value, Position2D)
+        // const Position2D *position2D = zox_get(characterLink->value, Position2D)
         // zox_log("player movement 2D [%fx%f] at [%fx%f]\n   ", movement.x, movement.y, position2D->value.x, position2D->value.y)
         const Velocity2D *velocity2D = zox_get(characterLink->value, Velocity2D)
         Acceleration2D *acceleration2D = zox_get_mut(characterLink->value, Acceleration2D)

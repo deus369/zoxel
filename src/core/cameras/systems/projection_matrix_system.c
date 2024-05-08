@@ -11,7 +11,7 @@ void ProjectionMatrixSystem(ecs_iter_t *it) {
     zox_field_in(CameraNearDistance, cameraNearDistances, 3)
     zox_field_out(ProjectionMatrix, projectionMatrixs, 4)
     for (int i = 0; i < it->count; i++) {
-        zox_field_e()
+        // zox_field_e()
         zox_field_i_in(ScreenDimensions, screenDimensionss, screenDimensions)
         const int screen_width = screenDimensions->value.x;
         const int screen_height = screenDimensions->value.y;

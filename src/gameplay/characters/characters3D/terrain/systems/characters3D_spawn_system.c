@@ -1,15 +1,6 @@
 // notes: to test, set terrain to 1x1x1 chunks, disable physics, enable this systems logging
-ecs_entity_t spawn_chunk_character(ecs_world_t *world, ecs_entity_t_array_d* entities, const vox_file *vox, const float3 position, const float4 rotation, const unsigned char character_lod) {
-    const ecs_entity_2 e = spawn_character3D(world, prefab_character3D, vox, position, rotation, character_lod, 0);
-    add_to_ecs_entity_t_array_d(entities, e.x);
-    zox_add_tag(e.x, Wanderer)
-    return e.x;
-}
-
-ecs_entity_2 spawn_player_character3D_in_world(ecs_world_t *world, const vox_file *vox, const float3 position, const float4 rotation, const unsigned char character_lod, const ecs_entity_t player) {
-    return spawn_character3D(world, prefab_character3D, vox, position, rotation, character_lod, player);
-}
-
+// get function from AI module for now
+extern ecs_entity_t spawn_character3D_npc(ecs_world_t *world, ecs_entity_t_array_d* entities, const vox_file *vox, const float3 position, const float4 rotation, const unsigned char character_lod);
 void Characters3DSpawnSystem(ecs_iter_t *it) {
     zox_iter_world()
     zox_field_in(ChunkOctree, chunkOctrees, 2)
@@ -66,7 +57,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
             position.y += 0.26f; // 0.75f;
             position.y += 0.06f; // extra
-            spawn_chunk_character(world, entities, &vox, position, rotation, character_lod);
+            spawn_character3D_npc(world, entities, &vox, position, rotation, character_lod);
         }
         clear_memory_component(EntityLinks, entityLinks);
         entityLinks->length = entities->size;

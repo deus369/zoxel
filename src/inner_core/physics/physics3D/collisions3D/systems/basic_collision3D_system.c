@@ -54,16 +54,15 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
     zox_field_in(Bounds3D, bounds3Ds, 8)
     zox_field_out(Grounded, groundeds, 9)
     for (int i = 0; i < it->count; i++) {
-        const ecs_entity_t e = it->entities[i];
         zox_field_i_in(Bounds3D, bounds3Ds, bounds3D)
         zox_field_i_in(VoxLink, voxLinks, voxLink)
         zox_field_i_out(ChunkPosition, chunkPositions, chunkPosition)
         zox_field_i_out(Position3D, position3Ds, position3D)
         zox_field_i_out(LastPosition3D, lastPosition3Ds, lastPosition3D)
         zox_field_i_out(Grounded, groundeds, grounded)
-        float3 collision_point_real = position3D->value;
-        float3 collision_point_last = lastPosition3D->value;
-        float3 position_delta = float3_subtract_float3(collision_point_real, collision_point_last);
+        const float3 collision_point_real = position3D->value;
+        const float3 collision_point_last = lastPosition3D->value;
+        const float3 position_delta = float3_subtract_float3(collision_point_real, collision_point_last);
         // actually here I should check if makes it through to new voxel_position
 #ifdef zoxel_debug_basic_collision3D_system
         if (voxelPosition->value.x >= default_chunk_length || voxelPosition->value.y >= default_chunk_length || voxelPosition->value.z >= default_chunk_length) {
@@ -86,8 +85,8 @@ void BasicCollision3DSystem(ecs_iter_t *it) {
         unsigned char did_collide_x = 0;
         unsigned char did_collide_y = 0;
         unsigned char did_collide_z = 0;
-        float3 offset_left = float3_multiply_float(bounds3D->value, -1);
-        float3 offset_right = bounds3D->value;
+        const float3 offset_left = float3_multiply_float(bounds3D->value, -1);
+        const float3 offset_right = bounds3D->value;
         float3 collision_offset = float3_zero;
         handle_collision_axis(x, offset_left)
         handle_collision_axis(y, offset_left)

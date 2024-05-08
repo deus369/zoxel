@@ -264,14 +264,14 @@ void update_sdl(ecs_world_t *world, ecs_entity_t e) {
                 on_viewport_resized(world, new_screen_size);
                 unsigned char is_fullscreen = zox_get_value(e, WindowFullscreen)
                 if (!is_fullscreen) {
-                    zox_set(e, WindowSize, { new_screen_size.x, new_screen_size.y });
+                    zox_set(e, WindowSize, { new_screen_size })
                 }
             } else if (event.window.event == SDL_WINDOWEVENT_MOVED) { // handles application resizing
                 if (!rendering) continue;
                 int2 new_window_position = (int2) { event.window.data1, event.window.data2 };
                 unsigned char is_fullscreen = zox_get_value(e, WindowFullscreen)
                 if (!is_fullscreen) {
-                    zox_set(e, WindowPosition, { new_window_position.x, new_window_position.y });
+                    zox_set(e, WindowPosition, { new_window_position })
                 }
             } else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) {
                 zox_logg(" > window was minimized\n")

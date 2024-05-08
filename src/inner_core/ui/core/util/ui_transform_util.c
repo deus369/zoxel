@@ -124,7 +124,7 @@ void set_ui_transform(ecs_world_t *world, const ecs_entity_t parent, const ecs_e
     // zox_log("  - resizing child [%lu]\n", e)
     if (!zox_valid(e)) return;
     const float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
-    const float aspect_ratio = canvasSizef.x / canvasSizef.y;
+    // const float aspect_ratio = canvasSizef.x / canvasSizef.y;
     if (!headless && zox_has(e, MeshVertices2D)) {  //! Resize (if visible)
         const int2 pixel_size = zox_get_value(e, PixelSize)
         const MeshAlignment *meshAlignment = zox_get(e, MeshAlignment)

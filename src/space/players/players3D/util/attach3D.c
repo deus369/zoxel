@@ -54,7 +54,7 @@ void toggle_free_roam_camera(ecs_world_t *world, const ecs_entity_t e) {
     if (gameState->value == zox_game_playing) {
         const ecs_entity_t camera = zox_get_value(e, CameraLink)
         const ecs_entity_t character = zox_get_value(e, CharacterLink)
-        const ecs_entity_t character_camera = zox_get_value(character, CameraLink)
+        // const ecs_entity_t character_camera = zox_get_value(character, CameraLink)
         const unsigned char is_camera_free = zox_get_value(camera, CanFreeRoam)
         if (is_camera_free) attach_to_character(world, e, camera, character);
         else detatch_from_character(world, e, camera, character, 1);

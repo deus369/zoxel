@@ -19,8 +19,8 @@ ecs_entity_t spawn_label_background(ecs_world_t *world, const ecs_entity_t prefa
     const float2 element_anchor = (float2) { 0.5f, anchor.y }; // because text rendering will reposition it, for now do this
     const float2 zext_anchor = anchor;
     anchor_element_position2D(&pixel_position, element_anchor, pixel_size);
-    const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, element_anchor);
-    const float2 position2D = get_element_position(pixel_position_global, canvas_size);
+    // const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, element_anchor);
+    // const float2 position2D = get_element_position(pixel_position_global, canvas_size);
     const color label_font_outline_color = (color) { 76, 33, 33, 255 };
     const color label_font_fill_color = (color) { 132, 12, 12, 255 };
     ZextSpawnData zextSpawnData = {

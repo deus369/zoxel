@@ -11,7 +11,7 @@ void SoundUpdateSystem(ecs_iter_t *it) {
         free_sdl_sound(sdlSound);
         sdlSound->value = (Mix_Chunk *) malloc(sizeof(Mix_Chunk));
         sdlSound->value->volume = global_master_volume;
-        sdlSound->value->allocated = 1;
+        // sdlSound->value->allocated = 1;
         sdlSound->value->alen = soundData->length * 4;
         // maybe just set thisi to sound value, no need copy memory data
         sdlSound->value->abuf = (Uint8*) soundData->value;

@@ -68,7 +68,7 @@ void player_start_game(ecs_world_t *world, const ecs_entity_t player) {
         attach_to_character(world, player, camera, 0);  // set camera into game mode
         zox_set(camera, Position3D, { { 0, 0, 1 } })
         zox_set(camera, Rotation3D, { quaternion_from_euler((float3) { 0, 0 * degreesToRadians, 0 }) })
-        zox_set(camera, Euler, { 0, 0 * degreesToRadians, 0 })
+        zox_set(camera, Euler, { { 0, 0 * degreesToRadians, 0 } })
         const ecs_entity_t character = spawn_player_character2D(world, camera);
         zox_set(player, CharacterLink, { character })
         // spawn_many_characters2D(world);

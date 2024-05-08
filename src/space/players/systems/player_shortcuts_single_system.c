@@ -30,7 +30,7 @@ void PlayerShortcutsSingleSystem(ecs_iter_t *it) {
                     const int2 position = (int2) { 8, 8 };
                     const int2 size = (int2) { 32 * 8, 32 * 8 };
                     const ecs_entity_t source_texture = files_textures[0];
-                    const ecs_entity_t canvas = zox_get_value(it->entities[i], CanvasLink)
+                    // const ecs_entity_t canvas = zox_get_value(it->entities[i], CanvasLink)
                     spawn_texture_element(world, canvas, source_texture, position, size);
                 }
 #ifndef zox_on_startup_spawn_main_menu
