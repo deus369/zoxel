@@ -1,3 +1,4 @@
+// #define zox_debug_font_textures
 const unsigned char is_splotches = 1;
 const unsigned char splotch_size = 2;
 
@@ -155,40 +156,15 @@ void generate_splotches_lines(TextureData* textureData, const int2 size, const F
 }
 
 void clear_texture(TextureData* textureData, const int2 size) {
-    /*
-    const unsigned char is_background = 0;
-    const int frame_thickness = size.x / 4;
-    const int2 redRange = { 15, 244 };
-    const int2 greenRange = { 15, 122 };
-    const int2 blueRange = { 15, 122 };
-    const int2 alphaRange = { 144, 256 };
-    const int2 alphaRange2 = { 222, 256 };
-    // color font_color = (color) { 5 + rand() % 120, 100 + rand() % 120, 100 + rand() % 120, 255 };
-     // (color) { 55, 185, 125, 255 };
-    color base = {
-        redRange.x + rand() % (redRange.y - redRange.x),
-        greenRange.x + rand() % (greenRange.y - greenRange.x),
-        blueRange.x + rand() % (blueRange.y - blueRange.x),
-        alphaRange.x + rand() % (alphaRange.y - alphaRange.x)
-    };
-    color darker = {
-        redRange.x + rand() % (redRange.y - redRange.x),
-        greenRange.x + rand() % (greenRange.y - greenRange.x),
-        blueRange.x + rand() % (blueRange.y - blueRange.x),
-        alphaRange2.x + rand() % (alphaRange2.y - alphaRange2.x)
-    };*/
+#ifdef zox_debug_font_textures
+    const color nothing = { 125, 100, 100, 255 };
+#else
     const color nothing = { 0, 0, 0, 0 };
+#endif
     int index = 0;
     for (int k = 0; k < size.y; k++) {
         for (int j = 0; j < size.x; j++) {
             textureData->value[index] = nothing;
-            /*if (!is_background) {
-                textureData->value[index] = nothing;
-            } else if (j <= frame_thickness || k <= frame_thickness || j >= size.x - 1 - frame_thickness || k >= size.y - 1 - frame_thickness) {
-                textureData->value[index] = base;
-            } else {
-                textureData->value[index] = darker;
-            }*/
             index++;
         }
     }
@@ -224,3 +200,33 @@ void generate_font_texture(TextureData* textureData, const int2 size, const Font
         generate_splotches_lines(textureData, size, font_data, line_color, splotch_size + 3);
     }
 }
+
+/*
+const unsigned char is_background = 0;
+const int frame_thickness = size.x / 4;
+const int2 redRange = { 15, 244 };
+const int2 greenRange = { 15, 122 };
+const int2 blueRange = { 15, 122 };
+const int2 alphaRange = { 144, 256 };
+const int2 alphaRange2 = { 222, 256 };
+// color font_color = (color) { 5 + rand() % 120, 100 + rand() % 120, 100 + rand() % 120, 255 };
+// (color) { 55, 185, 125, 255 };
+color base = {
+redRange.x + rand() % (redRange.y - redRange.x),
+greenRange.x + rand() % (greenRange.y - greenRange.x),
+blueRange.x + rand() % (blueRange.y - blueRange.x),
+alphaRange.x + rand() % (alphaRange.y - alphaRange.x)
+};
+color darker = {
+redRange.x + rand() % (redRange.y - redRange.x),
+greenRange.x + rand() % (greenRange.y - greenRange.x),
+blueRange.x + rand() % (blueRange.y - blueRange.x),
+alphaRange2.x + rand() % (alphaRange2.y - alphaRange2.x)
+};*/
+/*if (!is_background) {
+    textureData->value[index] = nothing;
+} else if (j <= frame_thickness || k <= frame_thickness || j >= size.x - 1 - frame_thickness || k >= size.y - 1 - frame_thickness) {
+    textureData->value[index] = base;
+} else {
+    textureData->value[index] = darker;
+}*/

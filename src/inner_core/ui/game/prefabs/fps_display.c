@@ -18,7 +18,7 @@ ecs_entity_t spawn_fps_display(ecs_world_t *world, const ecs_entity_t canvas) {
     const unsigned char font_size = 32;
     const byte2 padding = (byte2) { 12, 8 };
     const float2 anchor = { 1.0f, 1.0f };
-    const int2 pixel_position = int2_zero;
+    const int2 pixel_position = (int2) { -16, -16 };
     const int2 parent_pixel_size = zox_get_value(canvas, PixelSize)
-    return spawn_label_background(world, fps_display_prefab, parent, canvas, pixel_position, anchor, padding, "", font_size, zox_mesh_alignment_right, layer, int2_half(parent_pixel_size), parent_pixel_size); // "FPS"
+    return spawn_label_background(world, fps_display_prefab, parent, canvas, pixel_position, anchor, padding, "", font_size, zox_mesh_alignment_top_right, layer, int2_half(parent_pixel_size), parent_pixel_size, default_label_font_outline_color, default_label_font_fill_color); // "FPS"
 }

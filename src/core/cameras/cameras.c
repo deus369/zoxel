@@ -37,7 +37,7 @@ int get_label_camera(ecs_world_t *world, const ecs_entity_t player, char buffer[
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
     if (!camera) return buffer_index;
     const float3 position3D = zox_get_value(camera, Position3D)
-    buffer_index += snprintf(buffer + buffer_index, buffer_size, " pos [%ix%ix%i]", (int) position3D.x, (int) position3D.y, (int) position3D.z);
+    buffer_index += snprintf(buffer + buffer_index, buffer_size, "camera [%ix%ix%i]\n", (int) position3D.x, (int) position3D.y, (int) position3D.z);
     return buffer_index;
 }
 

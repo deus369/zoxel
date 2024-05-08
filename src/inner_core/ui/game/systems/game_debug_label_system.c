@@ -7,12 +7,17 @@ extern int get_label_local_character_level(ecs_world_t *world, const ecs_entity_
 extern int get_label_local_character_health(ecs_world_t *world, const ecs_entity_t character,char buffer[], int buffer_size, int buffer_index);
 extern int debug_can_jump(ecs_world_t *world, const ecs_entity_t character,char buffer[], int buffer_size, int buffer_index);
 extern ecs_entity_t local_character3D;
+extern int get_label_player_character2D(ecs_world_t *world, const ecs_entity_t player, char buffer[], int buffer_size, int buffer_index);
+extern int get_label_player_character3D(ecs_world_t *world, const ecs_entity_t player, char buffer[], int buffer_size, int buffer_index);
 
 // #define zox_debug_ui_memorys_allocated
 #define zox_debug_ui_device_mode
 #define zox_debug_ui_save_cloud
-#define zox_debug_ui_player_level
-// #define zox_debug_player_character2D
+// #define zox_debug_ui_player_level
+#define zox_debug_player_character2D
+#define zox_debug_player_character3D
+#define zox_debug_player_camera
+// #define zox_test_newline
 // #define zox_debug_ui_player_health
 // #define zox_debug_ui_raycaster_target
 // #define zox_debug_ui_characters
@@ -23,7 +28,10 @@ extern ecs_entity_t local_character3D;
 // #define zox_debug_ui_zexts
 // #define zox_debug_can_jump
 
-extern int get_label_player_character2D(ecs_world_t *world, const ecs_entity_t player, char buffer[], int buffer_size, int buffer_index);
+int debug_newline_zext(char buffer[], int buffer_size, int buffer_index) {
+    buffer_index += snprintf(buffer + buffer_index, buffer_size, "Day 1.\nToday is a very sunny day.\nHi jerry.");
+    return buffer_index;
+}
 
 #ifdef zox_debug_ui_save_cloud
     extern unsigned char test_read_byte;
@@ -51,13 +59,20 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         // test this \n
         // snprintf(buffer, sizeof(buffer), "debug ui\nline 2");
         // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[debug]");
+#ifdef zox_test_newline
+        buffer_index = debug_newline_zext(buffer, buffer_size, buffer_index);
+#endif
 #ifdef zox_debug_can_jump
         buffer_index = debug_can_jump(world, character, buffer, buffer_size, buffer_index);
 #endif
 #ifdef zox_debug_player_character2D
         buffer_index = get_label_player_character2D(world, zox_players[0], buffer, buffer_size, buffer_index);
+#endif
+#ifdef zox_debug_player_character3D
+        buffer_index = get_label_player_character3D(world, zox_players[0], buffer, buffer_size, buffer_index);
+#endif
+#ifdef zox_debug_player_camera
         buffer_index = get_label_camera(world, zox_players[0], buffer, buffer_size, buffer_index);
-
 #endif
 #ifdef zox_debug_ui_player_level
         buffer_index = get_label_local_character_level(world, character, buffer, buffer_size, buffer_index);

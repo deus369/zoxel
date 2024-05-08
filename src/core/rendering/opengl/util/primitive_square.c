@@ -61,12 +61,28 @@ const float2 square_vertices_left_aligned[] = {
     { 1, 0.5f },
     { 1, -0.5f }
 };
+const float2 square_vertices_top_right_aligned[] = {
+    { -1, -1 },
+    { -1, 0 },
+    { 0, 0 },
+    { 0, -1 }
+};
+const float2 square_vertices_bottom_right_aligned[] = {
+    { -1, 0 },
+    { -1, 1 },
+    { 0, 1 },
+    { 0, 0 }
+};
 
 const float2* get_aligned_mesh2D(unsigned char alignment) {
     if (alignment == zox_mesh_alignment_centred) {
         return square_vertices;
     } else if (alignment == zox_mesh_alignment_right) {
         return square_vertices_right_aligned;
+    } else if (alignment == zox_mesh_alignment_top_right) {
+        return square_vertices_top_right_aligned;
+    } else if (alignment == zox_mesh_alignment_bottom_right) {
+        return square_vertices_bottom_right_aligned;
     } else if (alignment == zox_mesh_alignment_left) {
         return square_vertices_left_aligned;
     } else {

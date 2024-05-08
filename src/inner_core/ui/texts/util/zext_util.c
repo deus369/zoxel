@@ -45,82 +45,71 @@ unsigned char is_zext_updating(ecs_world_t *world, const Children *children) {
 }
 
 //! Dynamically updates zext by spawning/destroying zigels and updating remaining
-void spawn_zext_zigels(ecs_world_t *world, const ecs_entity_t zext, const ecs_entity_t canvas_entity, Children *children, const ZextData *zextData, const int font_size, const unsigned char text_alignment, const byte2 text_padding, const unsigned char zext_layer, const int2 parent_position, const int2 parent_size, unsigned char render_disabled, const color font_outline_color, const color font_fill_color) {
-    const float2 anchor = float2_half; // (float2) { 0.5f, 0.5f };
-    const int2 canvas_size = zox_get_value(canvas_entity, PixelSize)
+void spawn_zext_zigels(ecs_world_t *world, ZigelSpawnData *data, Children *children, const ZextData *zextData) {
     const unsigned char old_children_length = children->length;
-    const unsigned char new_children_length = zextData->length;
+    const unsigned char new_children_length = calculate_total_zigels(zextData);
     const unsigned char has_old_children = old_children_length > 0;
     const int reuse_count = integer_min(old_children_length, new_children_length);
-    const unsigned char zigel_layer = zext_layer + 1;
 #ifdef zoxel_debug_zext_updates
     zox_log("spawn_zext_zigels :: [%i] -> [%i]; reuse [%i];\n", children->length, zextData->length, reuse_count)
 #endif
-    // re set all old zigels, if index changes, regenerate font textureData
-    for (unsigned char i = 0; i < reuse_count; i++) { // update the reused ones
-        ecs_entity_t old_zigel = children->value[i];
-        const ZigelIndex *zigelIndex = zox_get(old_zigel, ZigelIndex)
-        if (zigelIndex->value != zextData->value[i]) {
-#ifdef zoxel_debug_zigel_updates
-            zox_log("    - zig updated [%i] [%i] -> [%i]\n", i, zigelIndex->value, zextData->value[i])
-#endif
-            ZigelIndex *zigelIndex2 = zox_get_mut(old_zigel, ZigelIndex)
-            GenerateTexture *generateTexture = zox_get_mut(old_zigel, GenerateTexture)
-            zigelIndex2->value = zextData->value[i];
-            generateTexture->value = 1;
-            zox_modified(old_zigel, ZigelIndex)
-            zox_modified(old_zigel, GenerateTexture)
-        }
-    }
 #ifdef zoxel_debug_zext_updates
     if (children->length == zextData->length) zox_log("    - zext remained the same [%i]\n", zextData->length)
 #endif
-    if (children->length == zextData->length) return;
-    int reusing_length = int_min(old_children_length, new_children_length);
+    // if (children->length == zextData->length) return;
     ecs_entity_t *old_children = children->value;
     ecs_entity_t *new_children = NULL;
     if (new_children_length > 0) new_children = malloc(new_children_length * sizeof(ecs_entity_t));
-    for (unsigned char i = 0; i < reusing_length; i++) {
-        ecs_entity_t old_zigel = old_children[i];
-        new_children[i] = old_zigel;
-        set_zigel_position(world, old_zigel, i, font_size, text_alignment, text_padding, anchor, new_children_length, parent_position, parent_size, canvas_size);
+    // Set Data for Old Zigels
+    for (unsigned char i = 0; i < reuse_count; i++) {
+        const ecs_entity_t e = old_children[i];
+        const unsigned char zigel_index = calculate_zigel_index(zextData, i);
+        const unsigned char data_index = calculate_zigel_data_index(zextData, i);
+        set_zigel_position(world, zextData, e, data_index, data->element.size.y, data->zext.text_alignment, data->zext.text_padding, data->element.anchor, new_children_length, data->parent.position, data->parent.size, data->canvas.size);
+        const unsigned char old_zigel_index = zox_get_value(e, ZigelIndex)
+        // only if ZigelIndex has changed!
+        if (old_zigel_index != zigel_index) {
+#ifdef zoxel_debug_zigel_updates
+            zox_log("    - zig updated [%i] [%i] -> [%i]\n", i, old_zigel_index, zigel_index)
+#endif
+            ZigelIndex *zigelIndex2 = zox_get_mut(e, ZigelIndex)
+            GenerateTexture *generateTexture = zox_get_mut(e, GenerateTexture)
+            zigelIndex2->value = zigel_index;
+            generateTexture->value = 1;
+            zox_modified(e, ZigelIndex)
+            zox_modified(e, GenerateTexture)
+        }
+        new_children[i] = e;
     }
+    // Spawn New Zigels
     if (new_children_length > old_children_length) {
 #ifdef zoxel_debug_zext_updates
         zox_log("    - spawning new_children [%i]\n", new_children_length - old_children_length)
 #endif
-        ZigelSpawnData spawn_data = {
-            .canvas = { .e = canvas_entity, .size = canvas_size },
-            .parent = { .e = zext, .position = parent_position, .size = parent_size },
-            .zext = { .length = new_children_length, .text_padding = text_padding, .text_alignment = text_alignment },
-            .layer = zigel_layer,
-            .size = (int2) { font_size, font_size },
-            .outline_color = font_outline_color,
-            .fill_color = font_fill_color,
-        };
         for (unsigned char i = old_children_length; i < new_children_length; i++) {
-            spawn_data.zigel_index = zextData->value[i];
-            spawn_data.array_index = i;
-            ecs_entity_t zigel = spawn_zext_zigel(world, &spawn_data); // zext, canvas, zigel_layer, i, new_children_length, zigel_type, font_size, text_alignment, text_padding, parent_position, parent_size, canvas_size);
+            const unsigned char zigel_index = calculate_zigel_index(zextData, i);
+            const unsigned char data_index = calculate_zigel_data_index(zextData, i);
+            data->zigel_index = zigel_index;
+            data->data_index = data_index;
+            const ecs_entity_t zigel = spawn_zext_zigel(world, zextData, data);
             new_children[i] = zigel;
-            zox_set(zigel, RenderDisabled, { render_disabled })
+            zox_set(zigel, RenderDisabled, { data->element.render_disabled })
         }
-    } else if (new_children_length < old_children_length) {
-#ifdef zoxel_debug_zext_updates
-        zoxel_log("    - deleting old_children [%i].\n", (old_children_length - new_children_length));
-#endif
+    }
+    // Delete Old Zigels
+    else if (new_children_length < old_children_length) {
         for (int i = new_children_length; i < old_children_length; i++) zox_delete(old_children[i])
+#ifdef zoxel_debug_zext_updates
+        zox_log("    - deleted old_children [%i].\n", (old_children_length - new_children_length))
+#endif
     }
     if (!has_old_children && new_children) total_memorys_allocated++;
     else if (has_old_children && !new_children) total_memorys_allocated--;
     if (has_old_children) free(old_children);
     children->value = new_children;
     children->length = new_children_length;
-    // zox_log("   > has_old_children [%i]\n", has_old_children)
-    // zox_log("   > children [%i]\n", new_children_length)
-    // zox_log("   > new_children_length [%i] reusing_length [%i] old_children_length [%i]\n", new_children_length, reusing_length, old_children_length)
-    // zox_log("   > finished [%i]\n", children->length)
 }
+
 void set_entity_label_with_zext(ecs_world_t *world, const ecs_entity_t e, unsigned char *value, int length) {
     const Children *name_label_children = zox_get(e, Children)
     ecs_entity_t zext_entity = name_label_children->value[0];

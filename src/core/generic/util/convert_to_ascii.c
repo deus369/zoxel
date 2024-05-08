@@ -4,7 +4,7 @@
 
 char convert_to_ascii(unsigned char input) {
     zoxel_convert_to_ascii_start('?', 0)
-    zoxel_convert_to_ascii('\n', 254)
+    zoxel_convert_to_ascii('\n', zox_char_newline)
     // lower case
     zoxel_convert_to_ascii('a', 1)
     zoxel_convert_to_ascii('b', 2)

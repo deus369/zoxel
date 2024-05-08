@@ -12,16 +12,15 @@ void ZextParentBackgroundSystem(ecs_iter_t *it) {
         zox_field_i_in(ParentLink, parentLinks, parentLink)
         const ecs_entity_t e2 = parentLink->value;
         if (!zox_has(e2, ZextLabel)) continue;
-        MeshDirty *meshDirty = zox_get_mut(e2, MeshDirty)
-        if (meshDirty->value) return;
-        GenerateTexture *generateTexture = zox_get_mut(e2, GenerateTexture)
-        if (generateTexture->value) return;
+        const unsigned char mesh_dirty = zox_get_value(e2, MeshDirty)
+        if (mesh_dirty) return;
+        const unsigned char generate_texture = zox_get_value(e2, GenerateTexture)
+        if (generate_texture) return;
         zox_field_i_in(ZextData, zextDatas, zextData)
         zox_field_i_in(ZextSize, zextSizes, zextSize)
         zox_field_i_in(ZextPadding, zextPaddings, zextPadding)
         zox_field_i_in(MeshAlignment, meshAlignments, meshAlignment)
-        const int font_size = zextSize->value;
-        const int2 size = (int2) { font_size * zextData->length + zextPadding->value.x * 2, font_size + zextPadding->value.y * 2 };
+        const int2 size = calculate_zext_size(zextData, zextSize->value, zextPadding->value);
         on_element_pixels_resized(world, e2, size, meshAlignment->value);
     }
 } zox_declare_system(ZextParentBackgroundSystem)

@@ -12,9 +12,9 @@ zox_declare_tag(PlayerCharacter2D)
 
 int get_label_player_character2D(ecs_world_t *world, const ecs_entity_t player, char buffer[], int buffer_size, int buffer_index) {
     const ecs_entity_t character2D = zox_get_value(player, CharacterLink)
-    if (!character2D) return buffer_index;
+    if (!character2D || !zox_has(character2D, Position2D)) return buffer_index;
     const float2 position2D = zox_get_value(character2D, Position2D)
-    buffer_index += snprintf(buffer + buffer_index, buffer_size, " pos [%ix%i]", (int) position2D.x, (int) position2D.y);
+    buffer_index += snprintf(buffer + buffer_index, buffer_size, "player [%ix%i]\n", (int) position2D.x, (int) position2D.y);
     return buffer_index;
 }
 

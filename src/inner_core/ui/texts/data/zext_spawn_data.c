@@ -7,7 +7,7 @@ typedef struct {
     const char* text;
     int font_size;
     byte2 padding;
-    unsigned char alignment;
     color font_fill_color;
     color font_outline_color;
+    unsigned char alignment;
 } ZextSpawnData;
