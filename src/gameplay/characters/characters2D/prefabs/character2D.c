@@ -1,11 +1,11 @@
 ecs_entity_t character2D_prefab;
 
-void spawn_prefab_character2D(ecs_world_t *world, int2 textureSize) {
+void spawn_prefab_character2D(ecs_world_t *world, const int2 textureSize) {
     zox_prefab()
     zox_add_tag(e, Character2D)
     add_transform2Ds(world, e);
     zox_add_tag(e, Frictioned);
-    add_physics2D(world, e);
+    add_physics2D(world, e, world_grid2D_size);
     add_seed(world, e, 444);
     zox_add(e, Brightness)
     add_texture(world, e, textureSize, 1);
@@ -15,7 +15,7 @@ void spawn_prefab_character2D(ecs_world_t *world, int2 textureSize) {
     character2D_prefab = e;
 }
 
-ecs_entity_t spawn_character2D(ecs_world_t *world, ecs_entity_t prefab, float2 position) {
+ecs_entity_t spawn_character2D(ecs_world_t *world, const ecs_entity_t prefab, const float2 position) {
     // ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
     zox_instance(prefab)
     zox_set(e, Position2D, { position })

@@ -1,14 +1,8 @@
 #ifndef zoxel_cameras
 #define zoxel_cameras
 
-// zoxel_settings
-// EcsPreStore | EcsPostUpdate
-#define zox_camera_stage EcsPreStore
+#define zox_camera_stage EcsPreStore // EcsPreStore | EcsPostUpdate
 #include "settings/settings.c"
-// shared data
-ecs_entity_t main_cameras[max_cameras];
-ecs_entity_t ui_cameras[max_cameras];
-// zoxel_component_declares
 zox_declare_tag(Camera)
 zox_declare_tag(Camera2D)
 zox_declare_tag(Camera3D)
@@ -28,19 +22,24 @@ zox_component_entity(CameraFollowLink)
 zox_component(ProjectionMatrix, float4x4)
 zox_component(ViewMatrix, float4x4)
 zox_component_float4(ScreenToCanvas)
-// zoxel_function_includes
 #include "fun/camera_util.c"
 #include "util/camera_util.c"
-// zoxel_prefab_includes
 #include "prefabs/base_camera.c"
 #include "prefabs/camera2D.c"
 #include "prefabs/ui_camera.c"
 #include "prefabs/free_camera.c"
-// zoxel_system_declares
 #include "systems/projection_matrix_system.c"
 #include "systems/view_matrix_system.c"
 #include "systems/camera2D_follow_system.c"
 #include "systems/camera3D_follow_system.c"
+
+int get_label_camera(ecs_world_t *world, const ecs_entity_t player, char buffer[], int buffer_size, int buffer_index) {
+    const ecs_entity_t camera = zox_get_value(player, CameraLink)
+    if (!camera) return buffer_index;
+    const float3 position3D = zox_get_value(camera, Position3D)
+    buffer_index += snprintf(buffer + buffer_index, buffer_size, " pos [%ix%ix%i]", (int) position3D.x, (int) position3D.y, (int) position3D.z);
+    return buffer_index;
+}
 
 void spawn_prefabs_cameras(ecs_world_t *world) {
     spawn_camera_base_prefab(world);
@@ -49,7 +48,6 @@ void spawn_prefabs_cameras(ecs_world_t *world) {
 }
 
 zox_begin_module(Cameras)
-// zoxel_component_defines
 zox_define_tag(Camera)
 zox_define_tag(Camera2D)
 zox_define_tag(Camera3D)
@@ -69,8 +67,7 @@ zox_define_component_entity(CameraFollowLink)
 zox_define_component(ProjectionMatrix)
 zox_define_component(ViewMatrix)
 zox_define_component_float4(ScreenToCanvas)
-// zoxel_system_defines
-zox_system(Camera2DFollowSystem, EcsPostUpdate, [none] CameraFollower2D, [in] FreeRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D)
+zox_system(Camera2DFollowSystem, EcsPostUpdate, [in] FreeRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D, [none] CameraFollower2D)
 zox_system(Camera3DFollowSystem, EcsPostUpdate, [in] CameraFollowLink, [in] LocalPosition3D, [out] Position3D)
 zox_system(ViewMatrixSystem, zox_camera_stage, [in] Position3D, [in] Rotation3D, [in] ProjectionMatrix, [out] ViewMatrix)
 zox_system(ProjectionMatrixSystem, zox_camera_stage, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)

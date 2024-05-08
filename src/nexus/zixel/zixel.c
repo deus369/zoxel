@@ -2,7 +2,7 @@
 #define def_zox_game_zoxel2D
 
 unsigned char boot_zixel(ecs_world_t *world) {
-    game_name = "Automata";
+    game_name = "Zixel";
     zox_log("Booting [%s]\n", game_name)
     if (initialize_zox(world) == EXIT_FAILURE) return EXIT_FAILURE;
     if (!headless) load_app_icon(main_window, resources_folder_name"textures/game_icon.png");

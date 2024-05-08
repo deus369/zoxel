@@ -13,3 +13,5 @@ const float camera_limit_x = 1.25f;
 unsigned char camera_mode = zox_camera_mode_first_person;
 unsigned char camera_fov = 90;
 unsigned char camera_follow_mode = zox_camera_follow_mode_attach;
+ecs_entity_t main_cameras[max_cameras];
+ecs_entity_t ui_cameras[max_cameras];

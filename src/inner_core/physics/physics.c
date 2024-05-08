@@ -1,6 +1,7 @@
 #ifndef zoxel_physics
 #define zoxel_physics
 
+#define zox_pip_physics EcsOnUpdate
 zox_declare_tag(Frictioned)
 zox_component_byte(DisableMovement)
 #ifdef zoxel_transforms2D

@@ -1,7 +1,6 @@
 void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint texture, float2 position, float angle, float scale, float brightness) {
-    if (material == 0) return;
+    if (!material) return;
     const MaterialTextured2D attributes = create_MaterialTextured2D(material);
-    // MaterialTextured2D materialTextured2D = initialize_material2D_textured(material);
     glUseProgram(material);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
@@ -14,7 +13,6 @@ void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint
     glVertexAttribPointer(attributes.vertex_uv, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(2 * sizeof(float)));
     glUniformMatrix4fv(attributes.camera_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
     glUniform3f(attributes.position, position.x, position.y, 0);
-    // glUniform1f(materialTextured2D.positionY, position.y);
     glUniform1f(attributes.angle, angle);
     glUniform1f(attributes.scale, scale);
     glUniform1f(attributes.brightness, brightness);
@@ -41,7 +39,6 @@ void RenderMaterial2DSystem(ecs_iter_t *it) {
         zox_field_i_in(Brightness, brightnesss, brightness)
         zox_field_i_in(MaterialGPULink, materialGPULinks, materialGPULink)
         zox_field_i_in(TextureGPULink, textureGPULinks, textureGPULink)
-        // zox_log("RenderMaterial2DSystem %i %i\n", materialGPULink->value, textureGPULink->value)
         render_entity_material2D(render_camera_matrix, materialGPULink->value, textureGPULink->value, position2D->value, rotation2D->value, scale1D->value, brightness->value);
     }
 } zox_declare_system(RenderMaterial2DSystem)

@@ -1,7 +1,3 @@
-const int2 crosshair_texture_size = (int2) { 128, 128 };
-const int2 crosshair_pixel_size = (int2) { 64, 64 };
-const color crosshair_color = (color) { 255, 255, 255, 88 };
-
 ecs_entity_t spawn_crosshair(ecs_world_t *world, const ecs_entity_t canvas, const  ecs_entity_t parent) {
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const ecs_entity_t crosshair_ui = spawn_element_basic(world, canvas, parent, int2_zero, crosshair_pixel_size, crosshair_texture_size, float2_half, 1, int2_half(canvas_size), canvas_size);

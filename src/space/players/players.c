@@ -2,9 +2,7 @@
 #define zoxel_players
 
 // alot of systems here are actually controller ones, player + device + camera / character, or game states like pause system?
-#define max_players 16
-ecs_entity_t zox_players[max_players];
-unsigned char players_playing = 0;
+#include "settings/settings.c"
 // zoxel_component_declares
 zox_declare_tag(Player)
 zox_declare_tag(PlayerCharacter)

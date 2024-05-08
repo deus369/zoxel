@@ -1,4 +1,4 @@
-// keep mesh for now
+// todo: refactor this into entity, and just link other ones to it for mesh, MeshLink?
 GLuint2 squareTexturedMesh;
 GLuint squareTexturedModelUVs;
 

@@ -12,6 +12,7 @@ extern ecs_entity_t local_character3D;
 #define zox_debug_ui_device_mode
 #define zox_debug_ui_save_cloud
 #define zox_debug_ui_player_level
+// #define zox_debug_player_character2D
 // #define zox_debug_ui_player_health
 // #define zox_debug_ui_raycaster_target
 // #define zox_debug_ui_characters
@@ -21,6 +22,8 @@ extern ecs_entity_t local_character3D;
 // #define zox_debug_ui_node_memory
 // #define zox_debug_ui_zexts
 // #define zox_debug_can_jump
+
+extern int get_label_player_character2D(ecs_world_t *world, const ecs_entity_t player, char buffer[], int buffer_size, int buffer_index);
 
 #ifdef zox_debug_ui_save_cloud
     extern unsigned char test_read_byte;
@@ -50,6 +53,11 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[debug]");
 #ifdef zox_debug_can_jump
         buffer_index = debug_can_jump(world, character, buffer, buffer_size, buffer_index);
+#endif
+#ifdef zox_debug_player_character2D
+        buffer_index = get_label_player_character2D(world, zox_players[0], buffer, buffer_size, buffer_index);
+        buffer_index = get_label_camera(world, zox_players[0], buffer, buffer_size, buffer_index);
+
 #endif
 #ifdef zox_debug_ui_player_level
         buffer_index = get_label_local_character_level(world, character, buffer, buffer_size, buffer_index);

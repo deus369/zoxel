@@ -1,9 +1,9 @@
 void Camera2DFollowSystem(ecs_iter_t *it) {
     zox_iter_world()
-    zox_field_in(FreeRoam, freeRoams, 2)
-    zox_field_in(CameraTarget, cameraTargets, 3)
-    zox_field_out(Position3D, positions3D, 4)
-    zox_field_out(Rotation3D, rotation3Ds, 5)
+    zox_field_in(FreeRoam, freeRoams, 1)
+    zox_field_in(CameraTarget, cameraTargets, 2)
+    zox_field_out(Position3D, positions3D, 3)
+    zox_field_out(Rotation3D, rotation3Ds, 4)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(FreeRoam, freeRoams, freeRoam)
         if (freeRoam->value == 0) {

@@ -1,19 +1,13 @@
 //! Bounds, because everyone needs limits! Used atm to keep player within the start area.
 void Bounds2DSystem(ecs_iter_t *it) {
-    Position2D *position2Ds = ecs_field(it, Position2D, 1);
-    const Bounds2D *bounds2Ds = ecs_field(it, Bounds2D, 2);
+    zox_field_in(Bounds2D, bounds2Ds, 2)
+    zox_field_out(Position2D, position2Ds, 1)
     for (int i = 0; i < it->count; i++) {
-        Position2D *position2D = &position2Ds[i];
-        const Bounds2D *bounds2D = &bounds2Ds[i];
-        if (position2D->value.x >= bounds2D->value.x) {
-            position2D->value.x -= bounds2D->value.x * 2.0f;
-        } else if (position2D->value.x <= -bounds2D->value.x) {
-            position2D->value.x += bounds2D->value.x * 2.0f;
-        }
-        if (position2D->value.y >= bounds2D->value.y) {
-            position2D->value.y -= bounds2D->value.y * 2.0f;
-        } else if (position2D->value.y <= -bounds2D->value.y) {
-            position2D->value.y += bounds2D->value.y * 2.0f;
-        }
+        zox_field_i_in(Bounds2D, bounds2Ds, bounds2D)
+        zox_field_i_out(Position2D, position2Ds, position2D)
+        if (position2D->value.x > bounds2D->value.x) position2D->value.x = bounds2D->value.x;
+        else if (position2D->value.x < -bounds2D->value.x) position2D->value.x = -bounds2D->value.x;
+        if (position2D->value.y > bounds2D->value.y) position2D->value.y = bounds2D->value.y;
+        else if (position2D->value.y < -bounds2D->value.y) position2D->value.y = -bounds2D->value.y;
     }
 } zox_declare_system(Bounds2DSystem)

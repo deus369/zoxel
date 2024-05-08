@@ -5,6 +5,7 @@ extern ecs_entity_t fps_display;
 #endif
 #define main_camera_rotation_speed 60 * 0.22f
 ecs_entity_t zoxel_main_menu;
+float4 main_menu_rotation_speed;
 
 void spawn_players(ecs_world_t *world, const ecs_entity_t game) {
     if (headless) return;   // no players in headless mode
@@ -24,10 +25,10 @@ void spawn_players(ecs_world_t *world, const ecs_entity_t game) {
 }
 
 ecs_entity_t spawn_player_camera(ecs_world_t *world, const unsigned char index, const float3 camera_position, const float4 camera_rotation, const int2 viewport_position, const int2 viewport_size, const float4 screen_to_canvas) {
-    const float4 rotationer = quaternion_from_euler( (float3) { 0, -main_camera_rotation_speed * degreesToRadians, 0 });
+    main_menu_rotation_speed = quaternion_from_euler( (float3) { 0, -main_camera_rotation_speed * degreesToRadians, 0 });
     const ecs_entity_t e = spawn_base_camera(world, camera_position, camera_rotation, camera_fov, viewport_position, viewport_size, screen_to_canvas);
     const ecs_entity_t e2 = spawn_camera_ui(world, viewport_position, viewport_size);
-    zox_prefab_set(e, EternalRotation, { rotationer })
+    zox_prefab_set(e, EternalRotation, { main_menu_rotation_speed })
     zox_set(zox_players[index], CameraLink, { e })
     main_cameras[index] = e;
     ui_cameras[index] = e2;

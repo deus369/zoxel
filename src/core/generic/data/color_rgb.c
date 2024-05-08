@@ -24,4 +24,8 @@ color_rgb color_rgb_from_float3(const float3 input) {
     return (color_rgb) { (int) (input.x * 255.0f), (int) (input.y * 255.0f), (int) (input.z * 255.0f) };
 }
 
+color color_rgb_to_color(const color_rgb input) {
+    return (color) { input.r, input.g, input.b, 255 };
+}
+
 zoxel_dynamic_array(color_rgb)

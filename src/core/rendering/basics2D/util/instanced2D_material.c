@@ -22,9 +22,9 @@ void initialize_mesh(GLuint material) {
     glEnableVertexAttribArray(material2D.vertex_position);
     glVertexAttribPointer(material2D.vertex_position, 2, GL_FLOAT, GL_FALSE, 8, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    #ifdef zoxel_catch_opengl_errors
-        check_opengl_error("initialize_mesh");
-    #endif
+#ifdef zoxel_catch_opengl_errors
+    check_opengl_error("initialize_mesh");
+#endif
 }
 
 int load_instance2D_material() {
@@ -36,10 +36,7 @@ int load_instance2D_material() {
 }
 
 void shader2D_instance_begin(const float4x4 viewMatrix) {
-    if (square2DMaterial == 0) {
-        // printf("shader2D_instance_begin square2DMaterial is 0.\n");
-        return;
-    }
+    if (square2DMaterial == 0) return;
     //! This sets the materials actually, would be best to group entities per material here?
     glUseProgram(square2DMaterial);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareMesh.x);    // for indices

@@ -1,19 +1,21 @@
-
-void realms_start_game_delayed(ecs_world_t *world, const ecs_entity_t game) {
+void realms_start_game3D_delayed(ecs_world_t *world, const ecs_entity_t game) {
     set_sky_color(world, game_sky_color, game_sky_bottom_color);
-    int3 terrain_position = int3_zero;
-    local_terrain = create_terrain(world, terrain_position);
+    local_terrain = create_terrain(world, int3_zero);
     zox_set(local_terrain, RealmLink, { local_realm }) // this should be done on spawn
-    // link terrain to realm too
-    zox_set(local_realm, TerrainLink, { local_terrain })
+    zox_set(local_realm, TerrainLink, { local_terrain }) // link terrain to realm too
+}
+
+void realms_start_game2D_delayed(ecs_world_t *world, const ecs_entity_t game) {
+    set_sky_color(world, game_sky_color, game_sky_bottom_color);
+    spawn_grid2D(world);
 }
 
 void realms_start_game(ecs_world_t *world, const ecs_entity_t game) {
     if (zox_game_type == zox_game_mode_3D) {
-        delay_event(world, &realms_start_game_delayed, game, 1.2f);
-    } /*else if (zox_game_type == zox_game_mode_2D) {
-        zox_log(" > todo: create terrain2D and chunk2D modules\n")
-    }*/
+        delay_event(world, &realms_start_game3D_delayed, game, 1.2f);
+    } else if (zox_game_type == zox_game_mode_2D) {
+        delay_event(world, &realms_start_game2D_delayed, game, 1.2f);
+    }
     unlock_achievement("test_achievement"); // idk if this can be per player
 }
 

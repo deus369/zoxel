@@ -1,11 +1,3 @@
-// spawns a game ui per player
-#ifndef zox_disable_player_character3D
-unsigned char game_rule_attach_to_character = 1;
-#else
-unsigned char game_rule_attach_to_character = 0;
-#endif
-const unsigned char player_vox_index = 0;
-
 void fix_camera_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
     if (!zox_has(camera, Streamer)) {
@@ -43,34 +35,35 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
     spawn_in_game_ui(world, player, character_group);
 }
 
-void player_start_game_delayed(ecs_world_t *world, const ecs_entity_t player) {
+// spawn character and set camera to streaming terrain
+void player_start_game3D_delayed(ecs_world_t *world, const ecs_entity_t player) {
     fix_camera_in_terrain(world, player);
     spawn_vox_player_character_in_terrain(world, player);
 }
 
+void player_start_game2D_delayed(ecs_world_t *world, const ecs_entity_t player) {
+    const ecs_entity_t camera = zox_get_value(player, CameraLink)
+    zox_set(camera, Position3D, { { 0, 0, 1 } })
+    zox_set(camera, Rotation3D, { quaternion_from_euler((float3) { 0, 0 * degreesToRadians, 0 }) })
+    zox_set(camera, Euler, { { 0, 0 * degreesToRadians, 0 } })
+    const ecs_entity_t character = spawn_player_character2D(world, camera);
+    zox_set(player, CharacterLink, { character })
+    zox_set(camera, CharacterLink, { character })
+    zox_set(camera, EternalRotation, { float4_identity })
+    zox_add_tag(camera, CameraFollower2D)
+}
+
 // todo: plug this in per game module
 void player_start_game(ecs_world_t *world, const ecs_entity_t player) {
-    // destroy again - secondary players
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
-    find_child_with_tag(canvas, MenuMain, found_child)
-    if (!found_child) return;
-    zox_delete(found_child)
-    // destroy main menu
+    find_child_with_tag(canvas, MenuMain, main_menu)
+    if (!main_menu) return;
+    zox_delete(main_menu)
     disable_inputs_until_release(world, player, zox_device_mode_none);
-    // spawn character and set camera to streaming terrain
-    // todo: delay event to spawn character
-    // todo: generic function to delay t this event
+    trigger_canvas_fade_transition(world, canvas);
     if (zox_game_type == zox_game_mode_3D) {
-        trigger_canvas_fade_transition(world, canvas);
-        delay_event(world, &player_start_game_delayed, player, 1.4f);
+        delay_event(world, &player_start_game3D_delayed, player, 1.4f);
     } else if (zox_game_type == zox_game_mode_2D) {
-        const ecs_entity_t camera = zox_get_value(player, CameraLink)
-        attach_to_character(world, player, camera, 0);  // set camera into game mode
-        zox_set(camera, Position3D, { { 0, 0, 1 } })
-        zox_set(camera, Rotation3D, { quaternion_from_euler((float3) { 0, 0 * degreesToRadians, 0 }) })
-        zox_set(camera, Euler, { { 0, 0 * degreesToRadians, 0 } })
-        const ecs_entity_t character = spawn_player_character2D(world, camera);
-        zox_set(player, CharacterLink, { character })
-        // spawn_many_characters2D(world);
+        delay_event(world, &player_start_game2D_delayed, player, 1.4f);
     }
 }

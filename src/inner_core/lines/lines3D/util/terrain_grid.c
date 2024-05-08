@@ -15,7 +15,7 @@ void spawn_terrain_grid(ecs_world_t *world, const float real_chunk_scale) {
     const float radius = (terrain_spawn_distance) * (real_chunk_scale) + thickness * 0.01f;
     const float radius2 = (terrain_spawn_distance + 1) * (real_chunk_scale) + thickness * 0.01f;
     terrain_grid = ecs_new(world, 0);
-    zox_prefab_set(terrain_grid, Children, { 0, NULL })
+    zox_set(terrain_grid, Children, { 0, NULL })
     Children *children = zox_get_mut(terrain_grid, Children)
     zox_modified(terrain_grid, Children)
     for (int i = bottom_bounds; i <= top_bounds; i += spacing) {
@@ -42,7 +42,7 @@ void spawn_terrain_grid(ecs_world_t *world, const float real_chunk_scale) {
     for (float i = -radius + spacing; i < radius2; i += spacing) {
         add_to_Children(children, spawn_line3D_colored(world, (float3) { -radius, top_bounds, i }, (float3) { radius2, top_bounds, i }, thickness, 0, grid_color));
     }
-
+    // bottom
     /*for (int i = 0; i < 16; i++) {
         for (int j = 0; j < 16; j++) {
             spawn_line3D(world, (float3) { i, 0, j }, (float3) { i + 1, 0, j + 1 }, thickness, 32);

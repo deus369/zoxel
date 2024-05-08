@@ -54,14 +54,13 @@ void Player2DMoveSystem(ecs_iter_t *it) {
             }
         }
         if (!movement.x && !movement.y) continue;
-        // const Position2D *position2D = zox_get(characterLink->value, Position2D)
-        // zox_log("player movement 2D [%fx%f] at [%fx%f]\n   ", movement.x, movement.y, position2D->value.x, position2D->value.y)
         const Velocity2D *velocity2D = zox_get(characterLink->value, Velocity2D)
         Acceleration2D *acceleration2D = zox_get_mut(characterLink->value, Acceleration2D)
-        float2 delta_movement = movement;
-        float2 check_velocity = velocity2D->value;
+        const float2 delta_movement = movement;
+        const float2 check_velocity = velocity2D->value;
         if (float_abs(check_velocity.x) < max_delta_velocity.x) acceleration2D->value.x += delta_movement.x * movement_power_x;
         if (float_abs(check_velocity.y) < max_delta_velocity.y) acceleration2D->value.y += delta_movement.y * movement_power_z;
         zox_modified(characterLink->value, Acceleration2D)
+        // zox_log(" + player movement 2D [%fx%f] acc [%fx%f]\n", movement.x, movement.y, acceleration2D->value.x, acceleration2D->value.y)
     }
 } zox_declare_system(Player2DMoveSystem)
