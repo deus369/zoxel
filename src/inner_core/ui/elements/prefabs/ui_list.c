@@ -1,4 +1,4 @@
-ecs_entity_t prefab_ui_list;
+extern ecs_entity_t zox_players[];
 
 ecs_entity_t spawn_prefab_ui_list(ecs_world_t *world) {
     zox_prefab_child(prefab_window)
@@ -18,8 +18,6 @@ int get_max_characters(const char *header_label, const text_group labels[], int 
     if (header_txt_size > max_characters) max_characters = header_txt_size;
     return max_characters;
 }
-
-extern ecs_entity_t zox_players[];
 
 ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas, const char *header_label, const int elements_count, const int max_elements, const text_group labels[], const ClickEvent events[], int2 pixel_position, const float2 anchor, const unsigned char is_close_button, unsigned char font_size, const unsigned char layer, const unsigned char is_scrollbar, const ecs_entity_t player) {
     const ecs_entity_t parent = canvas;

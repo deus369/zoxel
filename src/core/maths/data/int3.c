@@ -101,3 +101,7 @@ int3 int3_reverse_back(const int3 input, const int3 size) {
 int3 int3_reverse_front(const int3 input, const int3 size) {
     return (int3) { input.x, input.y, 0 };
 }
+
+float int3_distance(const int3 a, const int3 b) {
+    return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z));
+}

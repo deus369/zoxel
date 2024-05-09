@@ -1,7 +1,7 @@
 #ifndef zoxel_core
 #define zoxel_core
 
-// zoxel_settings
+const char *game_name = "zox";
 unsigned char cpu_tier;
 #include "platforms/util/platform_defines.c"
 #include "util/logs.c"

@@ -1,6 +1,3 @@
-const color button_color = (color) { 43, 44, 53, 255 };
-ecs_entity_t prefab_button;
-
 ecs_entity_t spawn_prefab_button(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_button")

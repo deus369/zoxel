@@ -1,6 +1,3 @@
-ecs_entity_t prefab_main_menu;
-// ecs_entity_t main_menu;
-
 ecs_entity_t spawn_prefab_main_menu(ecs_world_t *world) {
     zox_prefab_child(prefab_ui_list)
     zox_prefab_name("prefab_main_menu")

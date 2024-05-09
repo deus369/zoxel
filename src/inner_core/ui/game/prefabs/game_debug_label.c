@@ -1,5 +1,3 @@
-ecs_entity_t prefab_game_debug_label;
-
 ecs_entity_t spawn_prefab_game_debug_label(ecs_world_t *world) {
     zox_prefab_child(prefab_label_background)
     zox_add_tag(e, GameDebugLabel)

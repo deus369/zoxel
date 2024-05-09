@@ -1,5 +1,3 @@
-ecs_entity_t prefab_elementbar2D;
-
 ecs_entity_t spawn_prefab_elementbar2D(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_elementbar2D")

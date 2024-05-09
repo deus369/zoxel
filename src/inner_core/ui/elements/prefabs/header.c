@@ -1,9 +1,4 @@
 extern void button_event_close_window(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element);
-ecs_entity_t header_prefab;
-ecs_entity_t prefab_close_button;
-const color header_color = (color) { 77, 44, 33, 255 };
-const color header_font_outline_color = (color) { 100, 110, 50, 255 };
-const color header_font_fill_color = (color) { 199, 220, 41, 255 };
 
 ecs_entity_t spawn_prefab_button_close(ecs_world_t *world) {
     zox_prefab_child(prefab_button)

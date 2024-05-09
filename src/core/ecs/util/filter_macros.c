@@ -1,5 +1,12 @@
 #define zox_filter(name, ...) ecs_query_t *name = ecs_query_init(world, &(ecs_query_desc_t) { .filter.expr = #__VA_ARGS__});
 
+typedef struct {
+    ecs_query_t *x;
+    ecs_query_t *y;
+} ctx2;
+
+#define zox_filter_combine(name, filter1, filter2) name = (ctx2) { filter1, filter2 };
+
 // todo: make filters work, should recognize a table check
 #define zox_change_check() if (!it->ctx || !ecs_query_changed(it->ctx, NULL)) return;
 

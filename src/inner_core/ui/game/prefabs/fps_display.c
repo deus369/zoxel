@@ -1,6 +1,3 @@
-ecs_entity_t fps_display_prefab;
-ecs_entity_t fps_display;
-
 ecs_entity_t spawn_prefab_fps_display(ecs_world_t *world) {
     zox_prefab_child(prefab_label_background)
     zox_prefab_name("prefab_fps_display")

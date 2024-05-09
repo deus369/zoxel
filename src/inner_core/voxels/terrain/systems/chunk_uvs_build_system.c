@@ -76,11 +76,10 @@ void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,
 
 void ChunkUVsBuildSystem(ecs_iter_t *it) {
     zox_change_check()
-    #ifdef zoxel_time_chunk_uvs_builds_system
-        begin_timing()
-    #endif
-    // printf("[ChunkBuildSystem] GenerateChunk was changed.\n");
-    ChunkDirty *entityDirtys = ecs_field(it, ChunkDirty, 1);
+#ifdef zoxel_time_chunk_uvs_builds_system
+    begin_timing()
+#endif
+    zox_field_out(ChunkDirty, chunkDirtys, 1)
     const ChunkData *chunks = ecs_field(it, ChunkData, 2);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 3);
     const ChunkNeighbors *chunkNeighbors = ecs_field(it, ChunkNeighbors, 4);
@@ -89,7 +88,7 @@ void ChunkUVsBuildSystem(ecs_iter_t *it) {
     MeshUVs *meshUVs = ecs_field(it, MeshUVs, 7);
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 8);
     for (int i = 0; i < it->count; i++) {
-        ChunkDirty *chunkDirty = &entityDirtys[i];
+        zox_field_i_out(ChunkDirty, chunkDirtys, chunkDirty)
         if (chunkDirty->value == 0) continue;
         MeshDirty *meshDirty = &meshDirtys[i];
         if (meshDirty->value != 0) continue;

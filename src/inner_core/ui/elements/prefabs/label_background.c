@@ -1,7 +1,3 @@
-ecs_entity_t prefab_label_background;
-const color default_label_font_outline_color = (color) { 76, 33, 33, 255 };
-const color default_label_font_fill_color = (color) { 132, 12, 12, 255 };
-
 ecs_entity_t spawn_prefab_label_background(ecs_world_t *world) {
     zox_prefab_child(prefab_zext)
     zox_prefab_name("prefab_label_background")

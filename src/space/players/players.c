@@ -3,21 +3,15 @@
 
 // alot of systems here are actually controller ones, player + device + camera / character, or game states like pause system?
 #include "settings/settings.c"
-// zoxel_component_declares
 zox_declare_tag(Player)
 zox_declare_tag(PlayerCharacter)
 zox_component_byte(PlayerState)
 zox_memory_component(PlayerLinks, ecs_entity_t)
-// zoxel_state_includes
 #include "states/player_state.c"
-// zoxel_prefab_includes
 #include "prefabs/player.c"
-// zoxel_util_includes
 #include "util/crosshair.c"
-// zoxel_module_includes
 #include "players3D/players3D.c"
 #include "players2D/players2D.c"
-// zoxel_util_includes
 #include "util/player_ui.c"
 #include "util/pause_util.c"
 #include "util/start_game.c"
@@ -26,7 +20,6 @@ zox_memory_component(PlayerLinks, ecs_entity_t)
 #include "util/player_util.c"
 #include "util/touch_util.c"
 #include "util/terrain_util.c"
-// zoxel_system_includes
 #include "systems/free_camera_move_system.c"
 #include "systems/free_camera_rotate_system.c"
 #include "systems/free_camera_toggle_system.c"
@@ -35,7 +28,6 @@ zox_memory_component(PlayerLinks, ecs_entity_t)
 #include "systems/device_mode_response_system.c"
 #include "systems/virtual_joystick_system.c"
 #include "systems/editor_input_system.c"
-// zoxel_module_includes
 #include "systems/player2D_test_system.c"
 #include "systems/player_shortcuts_system.c"
 #include "systems/player_shortcuts_single_system.c"
@@ -52,12 +44,10 @@ void spawn_prefabs_players(ecs_world_t *world) {
 }
 
 zox_begin_module(Players)
-// zoxel_component_defines
 zox_define_tag(Player)
 zox_define_tag(PlayerCharacter)
 zox_define_component_byte(PlayerState)
 zox_define_memory_component(PlayerLinks)
-// zoxel_system_defines
 zox_system(FreeCameraMoveSystem, EcsOnUpdate, [in] DeviceLinks, [in] cameras.CameraLink, [none] Player)
 zox_system(FreeCameraRotateSystem, EcsOnUpdate, [in] DeviceLinks, [in] cameras.CameraLink, [none] Player)
 zox_system(FreeCameraToggleSystem, EcsOnUpdate, [in] DeviceLinks, [in] cameras.CameraLink, [in] GameLink, [none] Player)

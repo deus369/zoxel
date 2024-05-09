@@ -1,5 +1,3 @@
-ecs_entity_t label_prefab;
-
 ecs_entity_t spawn_prefab_label(ecs_world_t *world) {
     zox_prefab_child(prefab_zext)
     zox_prefab_name("prefab_label")

@@ -1,6 +1,3 @@
-ecs_entity_t prefab_scrollbar_front;
-const color scrollbar_front_color = (color) { 99, 44, 99, 255 };
-
 ecs_entity_t spawn_prefab_scrollbar_front(ecs_world_t *world) {
     zox_prefab_child(prefab_element)
     zox_prefab_name("prefab_scrollbar_front")

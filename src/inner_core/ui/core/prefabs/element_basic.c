@@ -1,5 +1,3 @@
-ecs_entity_t prefab_element_basic;
-
 ecs_entity_t spawn_prefab_element_basic(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_element_basic")

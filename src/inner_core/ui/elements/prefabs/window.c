@@ -1,6 +1,3 @@
-ecs_entity_t prefab_window;
-const color window_color = (color) { 48, 42, 36, 255 }; // { 66, 35, 25, 255 }
-
 ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_window")

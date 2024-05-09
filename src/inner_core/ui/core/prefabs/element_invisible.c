@@ -1,7 +1,5 @@
 // contains only pixel / transform data - invisible element
 // todo: debug tools for these, using line drawing
-ecs_entity_t prefab_element_invisible;
-
 ecs_entity_t spawn_prefab_element_invisible(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_element_invisible")

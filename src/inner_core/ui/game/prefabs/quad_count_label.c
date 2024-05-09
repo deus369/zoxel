@@ -1,5 +1,3 @@
-ecs_entity_t prefab_quad_count_label;
-
 ecs_entity_t spawn_prefab_quad_count_label(ecs_world_t *world) {
     // const ecs_entity_t e = ecs_clone(world, 0, prefab_label_background, 1);
     zox_prefab_child(prefab_label_background)

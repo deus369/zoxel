@@ -1,5 +1,3 @@
-ecs_entity_t prefab_menu_paused;
-
 ecs_entity_t spawn_prefab_pause_ui(ecs_world_t *world) {
     zox_prefab_child(prefab_ui_list)
     zox_prefab_name("prefab_menu_paused")

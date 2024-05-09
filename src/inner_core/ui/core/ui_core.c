@@ -1,9 +1,7 @@
 #ifndef zoxel_ui_core
 #define zoxel_ui_core
 
-// zoxel_settings
 #include "settings/settings.c"
-// zoxel_declare_components
 zox_declare_tag(Element)
 zox_declare_tag(Element3D)
 zox_declare_tag(Canvas)
@@ -36,9 +34,7 @@ zox_component_byte(WindowsCount)
 zox_component_byte(SetWindowLayer)
 zox_component_byte(WindowLayer)
 zox_component_byte(ElementLayer)
-// datas
 #include "data/element_spawn_data.c"
-// zoxel_include_util
 #include "util/ui_prefab_util.c"
 #include "util/ui_transform_util.c"
 #include "util/anchor_util.c"
@@ -48,15 +44,7 @@ zox_component_byte(ElementLayer)
 #include "util/toggle_util.c"
 #include "util/resize_util.c"
 #include "util/world_ui_util.c"
-// zoxel_include_prefabs
-#include "prefabs/canvas.c"
-#include "prefabs/element.c"
-#include "prefabs/element_basic.c"
-#include "prefabs/element_invisible.c"
-#include "prefabs/element_world.c"
-#include "prefabs/element_world_child.c"
-#include "prefabs/canvas_overlay.c"
-// zoxel_declare_systems
+#include "prefabs/prefabs.c"
 #include "systems/button_click_event_system.c"
 #include "systems/element_raycast_system.c"
 #include "systems/element_selected_system.c"
@@ -72,18 +60,7 @@ zox_component_byte(ElementLayer)
 #include "systems/canvas_stack_system.c"
 #include "systems/window_layer_system.c"
 
-void spawn_prefabs_ui_core(ecs_world_t *world) {
-    spawn_prefab_canvas(world);
-    spawn_prefab_element(world);
-    spawn_prefab_element_basic(world);
-    spawn_prefab_element_invisible(world);
-    spawn_prefab_element3D(world);
-    spawn_prefab_element3D_child(world);
-    spawn_prefab_canvas_overlay(world);
-}
-
 zox_begin_module(UICore)
-// zoxel_define_components
 zox_define_tag(Element)
 zox_define_tag(Element3D)
 zox_define_tag(Canvas)
@@ -116,10 +93,8 @@ zox_define_component_byte(WindowsCount)
 zox_define_component_byte(SetWindowLayer)
 zox_define_component_byte(WindowLayer)
 zox_define_component_byte(ElementLayer)
-// zoxel_define_filters
 zox_filter(ui_query, [none] Element, [in] CanvasPosition, [in] PixelSize, [in] Layer2D, [in] RenderDisabled, [none] generic.Selectable)
 zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition, [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPosition)
-// zoxel_define_systems
 #ifdef zoxel_inputs
 zox_system_ctx(ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [in] DeviceMode, [out] RaycasterTarget, [out] WindowRaycasted)
 zox_system(ElementClickSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterTarget, [in] WindowRaycasted, [out] RaycasterResult, [out] ClickingEntity, [out] WindowTarget)

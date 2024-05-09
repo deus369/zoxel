@@ -1,4 +1,4 @@
-ecs_entity_t prefab_elementbar3D;
+
 
 ecs_entity_t spawn_prefab_elementbar3D(ecs_world_t *world) {
     zox_prefab_child(prefab_element_world)

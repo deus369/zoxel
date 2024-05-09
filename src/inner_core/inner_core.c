@@ -1,7 +1,6 @@
 #ifndef zoxel_inner_core
 #define zoxel_inner_core
 
-const char *game_name = "zox";
 #include "textures/textures.c"
 #include "musics/musics.c"
 #include "animations/animations.c"
@@ -13,6 +12,8 @@ const char *game_name = "zox";
 #include "tiles/tiles.c"
 #include "voxels/voxels.c"
 #include "physics/physics.c"
+#include "cubes/cubes.c"
+#include "particles/particles.c"
 
 void dispose_inner_core(ecs_world_t *world) {
     dispose_textures(world);
@@ -24,6 +25,7 @@ void initialize_inner_core(ecs_world_t *world) {
     initialize_ui(world);
     initialize_lines(world);
     initialize_voxes(world);
+    initialize_particles(world);
 }
 
 void spawn_prefabs_inner_core(ecs_world_t *world) {
@@ -33,6 +35,8 @@ void spawn_prefabs_inner_core(ecs_world_t *world) {
     spawn_prefabs_neurals(world);
     spawn_prefabs_musics(world);
     spawn_prefabs_voxels(world);
+    spawn_prefabs_cubes(world);
+    spawn_prefabs_particles(world);
 }
 
 zox_begin_module(InnerCore)
@@ -47,6 +51,8 @@ zox_import_module(Neurals)
 zox_import_module(Tiles)
 zox_import_module(Voxels)
 zox_import_module(Physics)
+zox_import_module(Cubes)
+zox_import_module(Particles)
 zoxel_end_module(InnerCore)
 
 #endif

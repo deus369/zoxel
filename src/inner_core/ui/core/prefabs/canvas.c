@@ -1,5 +1,3 @@
-ecs_entity_t prefab_canvas;
-
 // gets an entities canvas root by climbing the ranks
 ecs_entity_t get_root_canvas(ecs_world_t *world, const ecs_entity_t e) {
     if (!e) return 0;

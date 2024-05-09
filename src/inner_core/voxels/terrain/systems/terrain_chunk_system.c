@@ -23,9 +23,9 @@ void generate_chunk_terrain(ChunkData* chunkData, const int3 chunkSize, const in
 
 void TerrainChunkSystem(ecs_iter_t *it) {
     zox_change_check()
-    #ifdef zoxel_time_terrain_chunk_system
-        begin_timing()
-    #endif
+#ifdef zoxel_time_terrain_chunk_system
+    begin_timing()
+#endif
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
     ChunkData *chunks = ecs_field(it, ChunkData, 3);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 4);

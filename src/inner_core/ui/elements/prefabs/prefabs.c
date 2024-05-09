@@ -1,3 +1,17 @@
+ecs_entity_t label_prefab;
+ecs_entity_t prefab_button;
+ecs_entity_t header_prefab;
+ecs_entity_t prefab_close_button;
+ecs_entity_t prefab_label_background;
+ecs_entity_t prefab_elementbar3D;
+ecs_entity_t prefab_elementbar3D_front;
+ecs_entity_t prefab_elementbar2D;
+ecs_entity_t prefab_elementbar2D_front;
+ecs_entity_t prefab_scrollbar_front;
+ecs_entity_t prefab_scrollbar;
+ecs_entity_t prefab_ui_list;
+ecs_entity_t prefab_window;
+
 #include "label.c"
 #include "label_background.c"
 #include "button.c"

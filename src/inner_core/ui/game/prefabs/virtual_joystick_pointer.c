@@ -1,5 +1,3 @@
-ecs_entity_t prefab_virtual_joystick_pointer;
-
 ecs_entity_t spawn_prefab_virtual_joystick_pointer(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_virtual_joystick_pointer")
