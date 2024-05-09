@@ -10,6 +10,7 @@ zox_declare_tag(Scrollbar)
 zox_declare_tag(ScrollbarButton)
 zox_component_byte(ListUIMax)
 #include "data/spawn_element_data.c"
+#include "data/spawn_button.c"
 #include "prefabs/prefabs.c"
 #include "fun/button_event_close_window.c"
 #include "util/resize_util.c"

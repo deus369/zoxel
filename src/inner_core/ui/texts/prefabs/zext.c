@@ -17,48 +17,44 @@ ecs_entity_t spawn_prefab_zext(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_zext(ecs_world_t *world, const ZextSpawnData *data) {
+ecs_entity_t spawn_zext(ecs_world_t *world, const SpawnZext *data) {
     const int2 element_canvas_position = get_element_pixel_position_global(data->parent.position, data->parent.size, data->element.position, data->element.anchor);
     const float2 position2D = get_element_position(element_canvas_position, data->canvas.size);
-    zox_instance(data->prefab)
+    zox_instance(data->zext.prefab)
     zox_name("zext")
     zox_set(e, RenderDisabled, { data->element.render_disabled })
-    zox_set(e, ZextSize, { data->font_size })
-    zox_set(e, ZextPadding, { data->padding })
-    zox_set(e, MeshAlignment, { data->alignment })
-    zox_set(e, FontFillColor, { data->font_fill_color })
-    zox_set(e, FontOutlineColor, { data->font_outline_color })
-    const unsigned char zext_data_length = data->text != NULL ? strlen(data->text) : 0;
+    zox_set(e, ZextSize, { data->zext.font_size })
+    zox_set(e, ZextPadding, { data->zext.padding })
+    zox_set(e, MeshAlignment, { data->zext.alignment })
+    zox_set(e, FontFillColor, { data->zext.font_fill_color })
+    zox_set(e, FontOutlineColor, { data->zext.font_outline_color })
+    const unsigned char zext_data_length = data->zext.text != NULL ? strlen(data->zext.text) : 0;
     ZextData *zextData = zox_get_mut(e, ZextData)
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(ZextData, zextData, unsigned char, (int) zext_data_length)
-    for (int i = 0; i < zextData->length; i++) zextData->value[i] = convert_ascii(data->text[i]);
-    const unsigned char zigels_count = calculate_total_zigels(zextData);
+    for (int i = 0; i < zextData->length; i++) zextData->value[i] = convert_ascii(data->zext.text[i]);
+    const unsigned char zigels_count = calculate_total_zigels(zextData->value, zextData->length);
     resize_memory_component(Children, children, ecs_entity_t, (int) zigels_count)
-    // zox_log(" zextData: %i - %i\n", zextData->length, zigels_count)
-    const int2 pixel_size = calculate_zext_size(zextData, data->font_size , data->padding);
-    // now zigels
+    const int2 pixel_size = calculate_zext_size(zextData->value, zextData->length, data->zext.font_size , data->zext.padding);
     ZigelSpawnData spawn_data = {
         .canvas = data->canvas,
         .parent = { .e = e, .position = element_canvas_position, .size = data->element.size },
-        .zext = { .length = zigels_count, .text_padding = data->padding, .text_alignment = data->alignment },
-        .element = { .layer = data->element.layer + 1, .size = (int2) { data->font_size, data->font_size } },
-        .outline_color = data->font_outline_color,
-        .fill_color = data->font_fill_color,
+        .zext = { .length = zigels_count, .text_padding = data->zext.padding, .text_alignment = data->zext.alignment },
+        .element = { .layer = data->element.layer + 1, .size = (int2) { data->zext.font_size, data->zext.font_size } },
+        .outline_color = data->zext.font_outline_color,
+        .fill_color = data->zext.font_fill_color,
     };
     for (int i = 0; i < zigels_count; i++) {
-        const unsigned char data_index = calculate_zigel_data_index(zextData, i);
-        const unsigned char zigel_index = calculate_zigel_index(zextData, i);
+        const unsigned char data_index = calculate_zigel_data_index(zextData->value, zextData->length, i);
+        const unsigned char zigel_index = calculate_zigel_index(zextData->value, zextData->length, i);
         spawn_data.data_index = data_index;
         spawn_data.zigel_index = zigel_index;
         children->value[i] = spawn_zext_zigel(world, zextData, &spawn_data);
         zox_set(children->value[i], RenderDisabled, { data->element.render_disabled })
-        // zox_log("zigel_index: i: %i data_index[%i] zigel_index[%i]\n", i, data_index, zigel_index)
     }
     zox_modified(e, ZextData)
     zox_modified(e, Children)
     // this has to be done under as memory shifts a round with the points, when zox_set is called
     initialize_element(world, e, data->parent.e, data->canvas.e, data->element.position, pixel_size, pixel_size, data->element.anchor, data->element.layer, position2D, element_canvas_position);
-    // zox_log("zext_length: %i - strlen: %i\n", zigels_count, zext_data_length)
     return e;
 }

@@ -32,7 +32,7 @@ void ZextUpdateSystem(ecs_iter_t *it) {
         zox_field_i_in(FontFillColor, fontFillColors, fontFillColor)
         const ecs_entity_t canvas = get_root_canvas(world, e);
         const int2 canvas_size = zox_get_value(canvas, PixelSize)
-        const unsigned char zext_length = calculate_total_zigels(zextData);
+        const unsigned char zext_length = calculate_total_zigels(zextData->value, zextData->length);
         ZigelSpawnData spawn_data = {
             .canvas = { .e = canvas, .size = canvas_size },
             .parent = { .e = e, .position = canvasPosition->value, .size = pixelSize->value },

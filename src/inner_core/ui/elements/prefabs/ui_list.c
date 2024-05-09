@@ -60,10 +60,33 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
     }
     set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor, is_header ? header_height : 0);
     if (is_scrollbar) children->value[is_header] = spawn_scrollbar(world, e, canvas, (int2) { -(scrollbar_width / 2) - scrollbar_margins, 0 }, header_layer, pixel_position_global, pixel_size, scrollbar_width, scrollbar_margins, canvas_size, elements_count, max_elements);
+    SpawnButton spawnButton = {
+        .canvas = {
+            .e = canvas,
+            .size = canvas_size },
+        .parent = {
+            .e = e,
+            .position = pixel_position_global,
+            .size = pixel_size },
+        .element = {
+            .layer = button_layer,
+            .anchor = float2_half, },
+        .zext = {
+            .prefab = prefab_zext,
+            .text = "X",
+            .font_size = scaled_font_size,
+            .padding = button_padding,
+            .font_fill_color = default_font_fill_color,
+            .font_outline_color = default_font_outline_color },
+        .button = {
+            .prefab = prefab_button,
+            .color = button_color }};
     for (int i = 0; i < elements_count; i++) {
         int2 label_position = (int2) { 0, (int) (pixel_size.y / 2) - (i + 0.5f) * (scaled_font_size + button_padding.y * 2) - list_margins.y - i * button_inner_margins };
         if (is_scrollbar) label_position.x -= (scrollbar_width + scrollbar_margins * 2) / 2;
-        const ecs_entity_t button = spawn_button(world, e, canvas, label_position, button_padding, float2_half, labels[i].text, scaled_font_size, button_layer, pixel_position_global, pixel_size, canvas_size, 0, button_color);
+        spawnButton.zext.text = labels[i].text;
+        spawnButton.element.position = label_position;
+        const ecs_entity_t button = spawn_button(world, &spawnButton);
         if (events && events[i].value) zox_set(button, ClickEvent, { events[i].value })
         children->value[list_start + i] = button;
         zox_add_tag(button, ZextLabel)

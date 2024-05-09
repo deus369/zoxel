@@ -17,6 +17,7 @@ void spawn_prefabs_elements(ecs_world_t *world) {
     spawn_prefab_button(world);
     spawn_prefab_window(world);
     spawn_prefab_header(world);
+    spawn_prefab_button_close(world);
     spawn_prefab_scrollbar(world);
     spawn_prefab_scrollbar_front(world);
     spawn_prefab_ui_list(world);

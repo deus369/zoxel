@@ -20,7 +20,7 @@ void ZextParentBackgroundSystem(ecs_iter_t *it) {
         zox_field_i_in(ZextSize, zextSizes, zextSize)
         zox_field_i_in(ZextPadding, zextPaddings, zextPadding)
         zox_field_i_in(MeshAlignment, meshAlignments, meshAlignment)
-        const int2 size = calculate_zext_size(zextData, zextSize->value, zextPadding->value);
+        const int2 size = calculate_zext_size(zextData->value, zextData->length, zextSize->value, zextPadding->value);
         on_element_pixels_resized(world, e2, size, meshAlignment->value);
     }
 } zox_declare_system(ZextParentBackgroundSystem)

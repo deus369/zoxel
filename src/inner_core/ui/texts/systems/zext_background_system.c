@@ -29,7 +29,7 @@ void ZextBackgroundSystem(ecs_iter_t *it) {
         zox_field_i_out(TextureSize, textureSizes, textureSize)
         zox_field_i_out(MeshVertices2D, meshVertices2Ds, meshVertices2D)
         const int2 canvas_size = zox_get_value(canvasLink->value, PixelSize)
-        const int2 size = calculate_zext_size(zextData, zextSize->value, zextPadding->value);
+        const int2 size = calculate_zext_size(zextData->value, zextData->length, zextSize->value, zextPadding->value);
         const float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
         const float2 scale2D = (float2) { size.x / canvasSizef.y, size.y / canvasSizef.y };
         pixelSize->value = size;
