@@ -14,16 +14,17 @@ void main() {\
 
 const GLchar* source_frag_particle3D = "\
 #version 300 es\n\
-uniform lowp vec3 color;\
+uniform lowp vec4 color;\
 uniform lowp vec4 fog_data;\
 in highp float fog_level;\
-out lowp vec3 color_output;\
+out lowp vec4 color_output;\
 \
 void main() {\
     lowp float fog_blend = 1.0 - exp2(-fog_data.w * fog_data.w * fog_level * fog_level);\
-    color_output = mix(color, vec3(fog_data.x, fog_data.y, fog_data.z), fog_blend);\
+    color_output = vec4(mix(color.xyz, vec3(fog_data.x, fog_data.y, fog_data.z), fog_blend), color.w);\
 }";
 
+// maybe color.w -= fog_blend, but limit to 0, so it fades out
 /*
     highp float point_size = 100.0;\
     highp vec3 camera_position = vec3(camera_matrix[3][0], camera_matrix[3][1], camera_matrix[3][2]);\

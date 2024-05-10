@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_particle3D(ecs_world_t *world) {
     zox_prefab_set(e, Velocity3D, { float3_zero })
     zox_prefab_set(e, Acceleration3D, { float3_zero })
     zox_prefab_set(e, Brightness, { 1 })
-    zox_prefab_set(e, ColorRGB, {{ 255, 0, 0 }})
+    zox_prefab_set(e, Color, {{ 255, 0, 0, 125 }})
     zox_prefab_set(e, DestroyInTime, { 3 })
     prefab_particle3D = e;
     return e;
@@ -24,6 +24,6 @@ ecs_entity_t spawn_particle3D(ecs_world_t *world, float3 position3D, float3 acce
     // zox_prefab_set(e, Velocity3D, { velocity3D })
     float3 color = (float3) { (rand() % 100) * 0.01f, (rand() % 100) * 0.01f, (rand() % 100) * 0.01f };
     float3_multiply_float_p(&color, 0.3f);
-    zox_set(e, ColorRGB, { color_rgb_from_float3(color) })
+    zox_set(e, Color, { color_from_float3(color, 0.5f) })
     return e;
 }

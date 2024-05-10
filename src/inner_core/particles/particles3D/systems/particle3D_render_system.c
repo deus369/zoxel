@@ -7,6 +7,7 @@ extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 point
 
 void Particle3DRenderSystem(ecs_iter_t *it) {
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+    opengl_enable_blend();
     // float3 camera_position = float4x4_get_position(render_camera_matrix);
     // zox_log("   > camera_position: %fx%fx%f\n", camera_position.x, camera_position.y, camera_position.z);
     // zox_log("   > render_camera_matrix.z: %f\n", camera_position.z);
@@ -19,22 +20,23 @@ void Particle3DRenderSystem(ecs_iter_t *it) {
     opengl_set_float(particle3D_location_thickness, fov_fixer * default_point_thickness);
     // glPointSize(default_point_thickness);
     zox_field_in(Position3D, position3Ds, 2)
-    zox_field_in(ColorRGB, colorRGBs, 5)
+    zox_field_in(Color, colors, 5)
     // const Rotation3D *rotation3Ds = ecs_field(it, Rotation3D, 3);
     // const Scale1D *scale1Ds = ecs_field(it, Scale1D, 4);
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(Position3D, position3Ds, position3D)
-        zox_field_i_in(ColorRGB, colorRGBs, colorRGB)
+        zox_field_i_in(Color, colors, color)
         const float data[] = { position3D->value.x, position3D->value.y, position3D->value.z };
         glVertexAttribPointer(particle3D_position_location, 3, GL_FLOAT, GL_FALSE, 0, data);
-        float3 color_rgb_f3 = color_rgb_to_float3(colorRGB->value); // float3_zero; // color_rgb_to_float3(colorRGB->value);
-        glUniform3f(particle3D_color_location, color_rgb_f3.x, color_rgb_f3.y, color_rgb_f3.z);
+        float4 color_f = color_to_float4(color->value);
+        glUniform4f(particle3D_color_location, color_f.x, color_f.y, color_f.z, color_f.w);
         glDrawArrays(GL_POINTS, 0, 1);
 #ifdef zox_debug_particle3Ds
         spawn_line3D(world, position3D->value, float3_add(position3D->value, debug_particle_line_addition), 0.5f, 0.03);
 #endif
     }
     glDisableVertexAttribArray(particle3D_position_location);
+    opengl_disable_blend();
     glUseProgram(0);
 } zox_declare_system(Particle3DRenderSystem)
 

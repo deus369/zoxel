@@ -38,7 +38,7 @@ zox_define_tag(Particle3D)
 zox_define_tag(Particle3DEmitter)
 // systems
 zox_system_1(Particle3DEmitSystem, main_thread_pipeline, [none] Particle3DEmitter, [in] Position3D, [in] ParticleEmitRate)
-if (!headless) zox_render3D_system(Particle3DRenderSystem, [none] Particle3D, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] ColorRGB)
+if (!headless) zox_render3D_system(Particle3DRenderSystem, [none] Particle3D, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Color)
 zoxel_end_module(Particles3D)
 
 #endif

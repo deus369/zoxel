@@ -4,13 +4,15 @@ extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 point
 #endif
 // todo: Seperate area from damage, so the skill is a child of character, and it finds characters in area and applies damage at end step
 // todo: seperate skill, use sphere cast (using sphere distance) to cache nearby characters - and lookup using chunk entities and not a seperate query
-void AOEDamageSystem(ecs_iter_t *it) {
+void DamageAuraSystem(ecs_iter_t *it) {
     const float damage_radius = 3.0f;
     zox_iter_world()
-    zox_field_in(Position3D, position3Ds, 1)
+    zox_field_in(UserLink, userLinks, 1)
     for (int i = 0; i < it->count; i++) {
-        zox_field_e()
-        zox_field_i_in(Position3D, position3Ds, position3D)
+        zox_field_i_in(UserLink, userLinks, userLink)
+        if (!zox_alive(userLink->value)) continue;
+        const ecs_entity_t user = userLink->value;
+        const Position3D *position3D = zox_get(userLink->value, Position3D)
         // get nearby characters using distance formula
         // make this spherecast
         ecs_iter_t it2 = ecs_query_iter(world, it->ctx);
@@ -21,7 +23,7 @@ void AOEDamageSystem(ecs_iter_t *it) {
             DotLinks *dotLinkss = ecs_field(&it2, DotLinks, 4);
             for (int j = 0; j < it2.count; j++) {
                 const ecs_entity_t e2 = it2.entities[j];
-                if (e == e2) continue;
+                if (user == e2) continue;
                 const Dead *dead = &deads[j];
                 if (dead->value) continue;
                 const Position3D *position3D2 = &position3D2s[j];
@@ -33,7 +35,7 @@ void AOEDamageSystem(ecs_iter_t *it) {
                 for (int k = 0; k < dotLinks->length; k++) {
                     const ecs_entity_t dot = dotLinks->value[k];
                     // if added in this function, SpawnerLink doesn't get added into flecs table until after the function, so the dot will not have component access yet, assume we havn't added a dot yet from the current user
-                    if (zox_has(dot, SpawnerLink) && zox_gett_value(dot, SpawnerLink) == e) {
+                    if (zox_has(dot, SpawnerLink) && zox_gett_value(dot, SpawnerLink) == user) {
                         poisoned_entity = dot;
                         break;
                     }
@@ -50,7 +52,7 @@ void AOEDamageSystem(ecs_iter_t *it) {
                         zox_delete(particle3D_emitter)
                     }
                 } else if (!poisoned_entity && distance <= damage_radius) {
-                    add_to_DotLinks(dotLinks, spawn_poison(world, e2, e));
+                    add_to_DotLinks(dotLinks, spawn_poison(world, e2, user));
                     // spawn particle system
                     if (!children->length) {
                         ecs_entity_t particle3D_emitter = spawn_particle3D_emitter(world, e2, 4);
@@ -63,4 +65,4 @@ void AOEDamageSystem(ecs_iter_t *it) {
             }
         }
     }
-} zox_declare_system(AOEDamageSystem)
+} zox_declare_system(DamageAuraSystem)
