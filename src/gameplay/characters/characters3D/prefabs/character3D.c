@@ -29,7 +29,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     zox_prefab_set(e, StatLinks, { 0, NULL })
     zox_prefab_set(e, ItemLinks, { 0, NULL })
     zox_prefab_set(e, ActionLinks, { 0, NULL })
-    zox_prefab_set(e, Poison, { 0 })                // temp for now until  debuff list on characters
+    zox_prefab_set(e, DotLinks, { 0, NULL })
     prefab_character3D = e;
     return e;
 }

@@ -1,11 +1,9 @@
 #ifndef zoxel_users
 #define zoxel_users
 
-// shared components
 zox_component_entity(UserLink)
-// util
+zox_component_entity(SpawnerLink)
 #include "util/user_data.c"
-// modules
 #include "stats/stats.c"
 #include "skills/skills.c"
 #include "items/items.c"
@@ -28,6 +26,7 @@ void spawn_prefabs_users(ecs_world_t *world) {
 
 zox_begin_module(Users)
 zox_define_component_entity(UserLink)
+zox_define_component_entity(SpawnerLink)
 zox_import_module(Stats)
 zox_import_module(Skills)
 zox_import_module(Items)

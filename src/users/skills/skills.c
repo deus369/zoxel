@@ -13,22 +13,24 @@
 
 zox_declare_user_data(Skill)
 zox_declare_tag(Aura)
-zox_component_byte(Poison)
+zox_declare_tag(Poison)
 #include "prefabs/skill.c"
+#include "prefabs/poison.c"
 #include "systems/aoe_damage_system.c"
 #include "systems/dots_system.c"
 
 void spawn_prefabs_skills(ecs_world_t *world) {
     spawn_prefab_skill(world);
+    spawn_prefab_poison(world);
 }
 
 zox_begin_module(Skills)
 zox_define_user_data(Skill)
 zox_define_tag(Aura)
-zox_define_component_byte(Poison)
-zox_filter(characters, [in] Dead, [in] Position3D, [out] Children, [out] Poison)
+zox_define_tag(Poison)
+zox_filter(characters, [in] Dead, [in] Position3D, [out] Children, [out] DotLinks)
 zox_system_ctx_1(AOEDamageSystem, main_thread_pipeline, characters, [in] Position3D, [none] Aura)
-zox_system(DotsSystem, EcsOnUpdate, [in] Poison, [in] Dead, [in] StatLinks)
+zox_system(DotsSystem, EcsOnUpdate, [in] UserLink, [none] Poison)
 zoxel_end_module(Skills)
 
 #endif

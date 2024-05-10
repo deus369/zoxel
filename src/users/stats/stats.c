@@ -12,6 +12,7 @@ zox_component_float(StatValueMax)
 zox_component_float(ExperienceValue)
 zox_component_float(ExperienceMax)
 zox_create_user_data_prefabs(Stat, stat, "stat")
+zox_entities_component(DotLinks)
 #include "prefabs/stat.c"
 #include "prefabs/game_stats.c"
 #include "util/label_util.c"
@@ -35,6 +36,7 @@ zox_define_component_float(StatValue)
 zox_define_component_float(StatValueMax)
 zox_define_component_float(ExperienceValue)
 zox_define_component_float(ExperienceMax)
+zox_define_entities_component(DotLinks)
 // debuff system here, skills will add debuffs
 zox_system(DeathCleanSystem, EcsOnUpdate, [in] Dead, [in] DiedTime)
 zox_system(DeathSystem, EcsOnUpdate, [in] StatValue, [in] UserLink, [none] HealthStat)

@@ -142,7 +142,9 @@ ecs_set_hooks(world, name, {\
             if (!component->length) {\
                 free(component->value);\
                 component->value = NULL;\
-            } else component->value = realloc(component->value, component->length * sizeof(data_type));\
+            } else {\
+                component->value = realloc(component->value, component->length * sizeof(data_type));\
+            }\
         }\
     }\
 }

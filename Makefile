@@ -181,6 +181,9 @@ run-debug:
 run-valgrind:
 	@ valgrind ./$(target_dev) --tiny
 
+run-coop-valgrind:
+	@ valgrind ./$(target_dev) --tiny -s
+
 # run release + flecs profiler
 run-profiler:
 	@ sleep 3 && open https://www.flecs.dev/explorer &

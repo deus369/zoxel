@@ -4,11 +4,24 @@ extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 point
 #endif
 
 void BillboardSystem(ecs_iter_t *it) {
+    // main_cameras_count
     const ecs_entity_t main_camera = main_cameras[0]; // todo: make this multi camera
     zox_iter_world()
-    zox_field_out(Rotation3D, rotation3Ds, 4)
+    zox_field_in(Position3D, position3Ds, 1)
+    zox_field_out(Rotation3D, rotation3Ds, 2)
     for (int i = 0; i < it->count; i++) {
-        const ecs_entity_t camera = main_camera;
+        zox_field_i_in(Position3D, position3Ds, position3D)
+        // get closest camera
+        ecs_entity_t camera = 0;
+        float closest_distance = 10000;
+        for (int j = 0; j < main_cameras_count; j++) {
+            const float3 camera_position = zox_get_value(main_cameras[j], Position3D)
+            float distance = float3_distance(position3D->value, camera_position);
+            if (distance < closest_distance) {
+                closest_distance = distance;
+                camera = main_cameras[j];
+            }
+        }
         if (!camera || !zox_has(camera, Rotation3D)) continue;
         zox_field_e()
         zox_field_i_out(Rotation3D, rotation3Ds, rotation3D)
