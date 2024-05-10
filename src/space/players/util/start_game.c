@@ -10,7 +10,7 @@ void fix_camera_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
     zox_set(camera, StreamPoint, { terrain_position })
     if (local_terrain) zox_set(camera, VoxLink, { local_terrain })
     if (local_terrain) zox_set(camera, TerrainLink, { local_terrain })
-    zox_log("camera set [%lu]\n", camera)
+    // zox_log("camera set [%lu]\n", camera)
 }
 
 void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_t player) {

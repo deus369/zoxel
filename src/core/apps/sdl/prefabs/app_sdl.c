@@ -5,6 +5,7 @@ ecs_entity_t spawn_prefab_app_sdl(ecs_world_t *world) {
     zox_prefab_name("prefab_app_sdl")
     zox_prefab_set(e, SDLWindow, { NULL })
     zox_prefab_set(e, Context, { NULL })
+    zox_prefab_set(e, WindowFullscreen, { 0 })
     // zox_add_tag(e, ViewPort)
     prefab_app_sdl = e;
     return e;

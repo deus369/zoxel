@@ -15,5 +15,5 @@ unsigned char override_opengl_es = 0;
 #if defined(zoxel_on_android) || defined(zoxel_on_web)
     unsigned char fullscreen = 1;
 #else
-    unsigned char fullscreen = 0;
+    unsigned char fullscreen = 1;
 #endif

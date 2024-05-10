@@ -18,4 +18,5 @@ ecs_entity_t spawn_grid2D(ecs_world_t *world) {
         }
     }
     world_grid2D = e;
+    return e;
 }

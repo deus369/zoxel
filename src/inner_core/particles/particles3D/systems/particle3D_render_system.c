@@ -4,6 +4,7 @@ const float default_point_thickness = 32.0f;
 const float3 debug_particle_line_addition = (float3) { 0, 0.2f, 0 };
 extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
 #endif
+
 void Particle3DRenderSystem(ecs_iter_t *it) {
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
     // float3 camera_position = float4x4_get_position(render_camera_matrix);

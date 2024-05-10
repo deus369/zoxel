@@ -6,6 +6,7 @@
 zox_declare_tag(Player)
 zox_declare_tag(PlayerCharacter)
 zox_component_byte(PlayerState)
+zox_component_entity(PlayerLink)
 zox_memory_component(PlayerLinks, ecs_entity_t)
 #include "states/player_state.c"
 #include "prefabs/player.c"
@@ -47,6 +48,7 @@ zox_begin_module(Players)
 zox_define_tag(Player)
 zox_define_tag(PlayerCharacter)
 zox_define_component_byte(PlayerState)
+zox_define_component_entity(PlayerLink)
 zox_define_memory_component(PlayerLinks)
 zox_system(FreeCameraMoveSystem, EcsOnUpdate, [in] DeviceLinks, [in] cameras.CameraLink, [none] Player)
 zox_system(FreeCameraRotateSystem, EcsOnUpdate, [in] DeviceLinks, [in] cameras.CameraLink, [none] Player)

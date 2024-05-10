@@ -64,6 +64,7 @@ void zox_spawn_main_menu(ecs_world_t *world, const ecs_entity_t player, const ch
 }
 
 void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game) {
+    zox_prefab_set(prefab_canvas, PlayerLink, { 0 })
     spawn_players(world, game);
     set_camera_mode_pre_defined(world);
     set_main_cameras((int) players_playing);
@@ -81,6 +82,7 @@ void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game)
         zox_spawn_main_menu(world, zox_players[i], game_name, canvas);
         zox_canvases[i] = canvas;
         zox_set(zox_players[i], CanvasLink, { canvas })
+        zox_prefab_set(canvas, PlayerLink, { zox_players[i] })
         if (i == 0) main_canvas = canvas;
 #ifdef zoxel_start_with_debug_ui
         toggle_ui(world, canvas, &game_debug_label, &spawn_game_debug_label);

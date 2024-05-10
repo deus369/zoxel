@@ -3,9 +3,9 @@ void StatRegenSystem(ecs_iter_t *it) {
     const float delta_time = zox_delta_time;
     unsigned char system_updated = 0;
     zox_iter_world()
-    zox_field_in(UserLink, userLinks, 2)
-    zox_field_in(StatValueMax, statValueMaxs, 3)
-    zox_field_out(StatValue, statValues, 4)
+    zox_field_in(UserLink, userLinks, 1)
+    zox_field_in(StatValueMax, statValueMaxs, 2)
+    zox_field_out(StatValue, statValues, 3)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(UserLink, userLinks, userLink)
         if (!userLink->value || !zox_has(userLink->value, Dead)) continue;

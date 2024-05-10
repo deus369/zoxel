@@ -1,8 +1,3 @@
-#define check_chunk_lod(dir)\
-    (chunkNeighbors->value[direction##_##dir] != 0 &&\
-    zox_gett_value(chunkNeighbors->value[direction##_##dir], RenderLod) != \
-    get_chunk_division(stream_point, int3##_##dir(chunk_position)))
-
 void StreamPointSystem(ecs_iter_t *it) {
     zox_iter_world()
     zox_field_in(Position3D, position3Ds, 1)

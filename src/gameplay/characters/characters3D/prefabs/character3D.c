@@ -8,24 +8,28 @@ int get_characters_count(ecs_world_t *world) {
 ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     zox_prefab_child(prefab_vox)
     zox_prefab_name("prefab_character3D")
+    zox_add_tag(e, Character3D)
+    zox_add_tag(e, LinkChunk)
     add_seed(world, e, 999);
     add_physics3D(world, e);
     if (!headless) add_gpu_colors(world, e);
-    zox_add_tag(e, Character3D)
     zox_prefab_set(e, Dead, { 0 })
     zox_prefab_set(e, DiedTime, { 0 })
     zox_prefab_set(e, AnimationState, { zox_animation_idle })
     zox_prefab_set(e, AnimationStart, { 0 })
     zox_prefab_set(e, Euler, { float3_zero })
-    zox_prefab_set(e, Bounds3D, { { 1, 1, 1 } })
-    zox_prefab_set(e, Position3DBounds, { { 0, 0, 0, 0, 0, 0 } })
+    zox_prefab_set(e, Bounds3D, { float3_one })
+    zox_prefab_set(e, Position3DBounds, { float6_zero })
     zox_prefab_set(e, VoxLink, { 0 })
-    zox_add_tag(e, LinkChunk)
     zox_prefab_set(e, ChunkLink, { 0 })
     zox_prefab_set(e, ChunkPosition, { int3_chaos })
     zox_prefab_set(e, VoxelPosition, { int3_zero})
     zox_prefab_set(e, ElementLinks, { 0, NULL})
     zox_prefab_set(e, Children, { 0, NULL})         // for bones, particles, etc (transforms)
+    zox_prefab_set(e, StatLinks, { 0, NULL })
+    zox_prefab_set(e, ItemLinks, { 0, NULL })
+    zox_prefab_set(e, ActionLinks, { 0, NULL })
+    zox_prefab_set(e, Poison, { 0 })                // temp for now until  debuff list on characters
     prefab_character3D = e;
     return e;
 }

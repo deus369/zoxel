@@ -22,6 +22,8 @@ zox_component_entity(UserLink)
 void spawn_prefabs_users(ecs_world_t *world) {
     spawn_prefabs_stats(world);
     spawn_prefabs_skills(world);
+    spawn_prefabs_items(world);
+    spawn_prefabs_actions(world);
 }
 
 zox_begin_module(Users)

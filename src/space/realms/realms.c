@@ -1,14 +1,10 @@
 #ifndef zoxel_realms
 #define zoxel_realms
 
-// zoxel_component_includes
 zox_declare_tag(Realm)
 zox_component_entity(RealmLink)
-// zoxel_prefab_includes
 #include "prefabs/realm.c"
-// zoxel_system_includes
 #include "systems/terrain_texture_set_system.c"
-// used for things
 #include "util/game_util.c"
 
 void initialize_realms(ecs_world_t *world) {
@@ -20,10 +16,8 @@ void spawn_prefabs_realms(ecs_world_t *world) {
 }
 
 zox_begin_module(Realms)
-// zoxel_component_defines
 zox_define_tag(Realm)
 zox_define_component_entity(RealmLink)
-// zoxel_system_defines
 zox_system(TerrainTextureSetSystem, EcsPreUpdate, [none] textures.core.Tilemap, [out] GenerateTexture, [out] TilemapSize, [out] TextureLinks)
 zoxel_end_module(Realms)
 

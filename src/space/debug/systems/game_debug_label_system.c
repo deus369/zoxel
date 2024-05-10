@@ -1,5 +1,5 @@
 // refactor this, module updates can add debug lines to it per frame
-extern int get_terrain_chunks_count(ecs_world_t *world);
+/*extern int get_terrain_chunks_count(ecs_world_t *world);
 extern int get_characters_count(ecs_world_t *world);
 extern int get_count_particle3Ds(ecs_world_t *world);
 extern int get_count_particle3D_emitters(ecs_world_t *world);
@@ -8,7 +8,7 @@ extern int get_label_local_character_health(ecs_world_t *world, const ecs_entity
 extern int debug_can_jump(ecs_world_t *world, const ecs_entity_t character,char buffer[], int buffer_size, int buffer_index);
 extern ecs_entity_t local_character3D;
 extern int get_label_player_character2D(ecs_world_t *world, const ecs_entity_t player, char buffer[], int buffer_size, int buffer_index);
-extern int get_label_player_character3D(ecs_world_t *world, const ecs_entity_t player, char buffer[], int buffer_size, int buffer_index);
+extern int get_label_player_character3D(ecs_world_t *world, const ecs_entity_t player, char buffer[], int buffer_size, int buffer_index);*/
 
 // #define zox_debug_ui_memorys_allocated
 #define zox_debug_ui_device_mode
@@ -33,22 +33,15 @@ int debug_newline_zext(char buffer[], int buffer_size, int buffer_index) {
     return buffer_index;
 }
 
-#ifdef zox_debug_ui_save_cloud
-    extern unsigned char test_read_byte;
-    extern unsigned char test_read_byte2;
-#endif
+/*#ifdef zox_debug_ui_save_cloud
+extern unsigned char test_read_byte;
+extern unsigned char test_read_byte2;
+#endif*/
 
 void GameDebugLabelSystem(ecs_iter_t *it) {
-    const ecs_entity_t character = local_character3D;
     zox_iter_world()
-#ifdef zox_debug_ui_device_mode
-    const DeviceMode *deviceMode = zox_get(zox_players[0], DeviceMode)
-#endif
-#ifdef zox_debug_ui_raycaster_target
-    const ecs_entity_t raycaster_target = zox_get_value(zox_players[0], RaycasterTarget)
-#endif
-    zox_field_out(ZextDirty, zextDirtys, 2)
-    zox_field_out(ZextData, zextDatas, 3)
+    zox_field_out(ZextDirty, zextDirtys, 1)
+    zox_field_out(ZextData, zextDatas, 2)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_out(ZextDirty, zextDirtys, zextDirty)
         if (zextDirty->value) continue;
@@ -56,6 +49,18 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         int buffer_index = 0;
         const int buffer_size = 256;
         char buffer[buffer_size];
+        zox_field_e()
+        const ecs_entity_t canvas = get_root_canvas(world, e);
+        // zox_log("canvas; %s - %i\n", zox_get_name(canvas), zox_has(canvas, PlayerLink))
+        if (!canvas || !zox_has(canvas, PlayerLink)) continue;
+        const ecs_entity_t player = zox_get_value(canvas, PlayerLink)
+        if (!player) continue;
+#ifdef zox_debug_ui_device_mode
+        const DeviceMode *deviceMode = zox_get(player, DeviceMode)
+#endif
+#ifdef zox_debug_ui_raycaster_target
+        const ecs_entity_t raycaster_target = zox_get_value(player, RaycasterTarget)
+#endif
         // test this \n
         // snprintf(buffer, sizeof(buffer), "debug ui\nline 2");
         // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[debug]");
@@ -66,13 +71,13 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         buffer_index = debug_can_jump(world, character, buffer, buffer_size, buffer_index);
 #endif
 #ifdef zox_debug_player_character2D
-        buffer_index = get_label_player_character2D(world, zox_players[0], buffer, buffer_size, buffer_index);
+        buffer_index = get_label_player_character2D(world, player, buffer, buffer_size, buffer_index);
 #endif
 #ifdef zox_debug_player_character3D
-        buffer_index = get_label_player_character3D(world, zox_players[0], buffer, buffer_size, buffer_index);
+        buffer_index = get_label_player_character3D(world, player, buffer, buffer_size, buffer_index);
 #endif
 #ifdef zox_debug_player_camera
-        buffer_index = get_label_camera(world, zox_players[0], buffer, buffer_size, buffer_index);
+        buffer_index = get_label_camera(world, player, buffer, buffer_size, buffer_index);
 #endif
 #ifdef zox_debug_ui_player_level
         buffer_index = get_label_local_character_level(world, character, buffer, buffer_size, buffer_index);

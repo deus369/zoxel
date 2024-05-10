@@ -1,5 +1,5 @@
-#ifndef zoxel_stats_ui
-#define zoxel_stats_ui
+#ifndef zox_stats_ui
+#define zox_stats_ui
 
 zox_declare_tag(Statbar)
 #include "prefabs/statbar2D.c"

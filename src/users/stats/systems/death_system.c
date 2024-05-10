@@ -3,8 +3,8 @@
 void DeathSystem(ecs_iter_t *it) {
     // if (!ecs_query_changed(NULL, it)) return; // only update when stat value changes
     zox_iter_world()
-    zox_field_in(StatValue, statValues, 2)
-    zox_field_in(UserLink, userLinks, 3)
+    zox_field_in(StatValue, statValues, 1)
+    zox_field_in(UserLink, userLinks, 2)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(StatValue, statValues, statValue)
         if (statValue->value > 0) continue;

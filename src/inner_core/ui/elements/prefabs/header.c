@@ -6,6 +6,7 @@ ecs_entity_t spawn_prefab_button_close(ecs_world_t *world) {
     zox_add_tag(e, CloseButton)
     zox_prefab_set(e, ClickEvent, { &button_event_close_window })
     prefab_close_button = e;
+    return e;
 }
 
 ecs_entity_t spawn_prefab_header(ecs_world_t *world) {

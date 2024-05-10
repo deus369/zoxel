@@ -13,7 +13,7 @@ ecs_entity_t spawn_prefab_label_background(ecs_world_t *world) {
 
 ecs_entity_t spawn_label_background(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t parent, const ecs_entity_t canvas, int2 pixel_position, const float2 anchor, const byte2 padding, const char* text, const unsigned char font_size, const unsigned char alignment, const unsigned char layer, const int2 parent_position, const int2 parent_size, const color label_font_outline_color, const color label_font_fill_color) {
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    const int2 pixel_size = (int2) { font_size * sizeof(text) + padding.x * 2, font_size + padding.y * 2 };
+    // const int2 pixel_size = (int2) { font_size * sizeof(text) + padding.x * 2, font_size + padding.y * 2 };
     SpawnZext zextSpawnData = {
         .canvas = {
             .e = canvas,

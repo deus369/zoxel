@@ -176,7 +176,24 @@ SDL_Window* create_sdl_window_basic(unsigned char is_using_vulkan) {
 #ifdef zoxel_on_android
     flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE;
 #endif
-    return SDL_CreateWindow(sdl_window_name, SDL_WINDOWPOS_UNDEFINED_DISPLAY(0), SDL_WINDOWPOS_UNDEFINED_DISPLAY(0), screen_dimensions.x, screen_dimensions.y, flags);
+    //SDL_Rect screen_bounds;
+    //SDL_GetDisplayBounds(screen_index, &screen_bounds);
+    zox_log(" + screen %i out of %i\n", (screen_index + 1), screens_count)
+    //zox_log(" + screen_bounds: %fx%f\n", screen_bounds.x, screen_bounds.y)
+    SDL_Window *window = SDL_CreateWindow(sdl_window_name, 0, 0, screen_dimensions.x, screen_dimensions.y, flags);
+    if (screen_index == 1) {
+        SDL_Rect displayBounds;
+        SDL_GetDisplayBounds(1, &displayBounds);
+        int xPos, yPos;
+        SDL_GetWindowPosition(window, &xPos, &yPos);
+        int borderWidth, borderHeight;
+        SDL_GetWindowBordersSize(window, &borderWidth, NULL, &borderHeight, NULL);
+        xPos += borderWidth;
+        yPos += borderHeight;
+        SDL_SetWindowPosition(window, displayBounds.x + xPos, displayBounds.y + yPos);
+    }
+    // return SDL_CreateWindow(sdl_window_name, SDL_WINDOWPOS_CENTERED_DISPLAY(screen_index), SDL_WINDOWPOS_CENTERED_DISPLAY(screen_index), screen_dimensions.x, screen_dimensions.y, flags);
+    return window;
 }
 
 SDL_Window* create_sdl_window(unsigned char fullscreen) {

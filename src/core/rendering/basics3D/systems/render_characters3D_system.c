@@ -1,16 +1,18 @@
 // #define zox_debug_render3D_colored
 // #define max_character_mesh_indicies 1000000
+//#define zox_disable_render_characters
+
 void RenderCharacters3DSystem(ecs_iter_t *it) {
     if (!material_colored3D) return;
     zox_iter_world()
     const GLuint material_link = zox_get_value(material_colored3D, MaterialGPULink)
     const MaterialColored3D *material_attributes = zox_get(material_colored3D, MaterialColored3D)
-    zox_field_in(Position3D, position3Ds, 2)
-    zox_field_in(Rotation3D, rotation3Ds, 3)
-    zox_field_in(Scale1D, scale1Ds, 4)
-    zox_field_in(MeshIndicies, meshIndiciess, 5)
-    zox_field_in(MeshGPULink, meshGPULinks, 6)
-    zox_field_in(ColorsGPULink, colorsGPULinks, 7)
+    zox_field_in(Position3D, position3Ds, 1)
+    zox_field_in(Rotation3D, rotation3Ds, 2)
+    zox_field_in(Scale1D, scale1Ds, 3)
+    zox_field_in(MeshIndicies, meshIndiciess, 4)
+    zox_field_in(MeshGPULink, meshGPULinks, 5)
+    zox_field_in(ColorsGPULink, colorsGPULinks, 6)
     unsigned char has_set_material = 0;
     int rendered_count = 0;
 #ifdef zox_debug_render3D_colored
@@ -27,9 +29,9 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         if (meshIndicies->length == 0) continue;
 #endif
         zox_field_i_in(MeshGPULink, meshGPULinks, meshGPULink)
-        if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) continue;
+        //if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) continue;
         zox_field_i_in(ColorsGPULink, colorsGPULinks, colorsGPULink)
-        if (colorsGPULink->value == 0) continue;
+        //if (colorsGPULink->value == 0) continue;
         zox_field_i_in(Position3D, position3Ds, position3D)
         zox_field_i_in(Rotation3D, rotation3Ds, rotation3D)
         zox_field_i_in(Scale1D, scale1Ds, scale1D)
@@ -71,7 +73,7 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         rendered_count++;
     }
 #ifdef zox_debug_render3D_colored
-    zoxel_log("  > rendered meshes [%i] unused meshes [%i] tris [%i]\n", meshes, zero_meshes, tris_rendered);
+    zoxel_log("  > rendered meshes [%i] unused meshes [%i] itcount [%i] tris [%i]\n", meshes, zero_meshes, it->count, tris_rendered);
 #endif
     if (has_set_material) {
         opengl_disable_buffer(material_attributes->vertex_color);
