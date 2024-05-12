@@ -4,7 +4,6 @@ ecs_entity_t spawn_prefab_ui_list(ecs_world_t *world) {
     zox_prefab_child(prefab_window)
     zox_prefab_name("prefab_ui_list")
     zox_prefab_set(e, ListUIMax, { 0 })
-    prefab_ui_list = e;
     return e;
 }
 

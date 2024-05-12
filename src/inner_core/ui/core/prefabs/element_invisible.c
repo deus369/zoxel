@@ -5,7 +5,6 @@ ecs_entity_t spawn_prefab_element_invisible(ecs_world_t *world) {
     zox_prefab_name("prefab_element_invisible")
     add_transform2Ds(world, e);
     add_ui_components(world, e);
-    prefab_element_invisible = e;
     return e;
 }
 

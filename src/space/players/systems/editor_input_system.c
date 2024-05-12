@@ -19,6 +19,8 @@ void EditorInputSystem(ecs_iter_t *it) {
                 else if (keyboard->c.pressed_this_frame) toggle_ui_with_tag(spawn_game_debug_label, GameDebugLabel)
                 else if (keyboard->v.pressed_this_frame) toggle_ui_with_tag(spawn_quad_count_label, QuadsCountLabel)
                 else if (keyboard->b.pressed_this_frame) toggle_ui_with_tag(spawn_frame_debugger, FrameDebuggerWindow)
+                else if (keyboard->n.pressed_this_frame) toggle_ui_with_tag(spawn_inventory_menu, InventoryMenu)
+                else if (keyboard->m.pressed_this_frame) toggle_ui_with_tag(spawn_stats_menu, StatsMenu)
 #ifdef zox_test_hierarchy
                 else if (keyboard->f.pressed_this_frame) {
                     toggle_ui(world, canvas, &inspector, &spawn_inspector);

@@ -3,7 +3,6 @@ ecs_entity_t spawn_prefab_element_basic(ecs_world_t *world) {
     zox_prefab_name("prefab_element_basic")
     zox_prefab_set(e, Color, {{ 255, 255, 255, 255 }})
     add_components_ui_basic(world, e);
-    prefab_element_basic = e;
     return e;
 }
 

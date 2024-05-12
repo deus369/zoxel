@@ -1,15 +1,4 @@
 // refactor this, module updates can add debug lines to it per frame
-/*extern int get_terrain_chunks_count(ecs_world_t *world);
-extern int get_characters_count(ecs_world_t *world);
-extern int get_count_particle3Ds(ecs_world_t *world);
-extern int get_count_particle3D_emitters(ecs_world_t *world);
-extern int get_label_local_character_level(ecs_world_t *world, const ecs_entity_t character, char buffer[], int buffer_size, int buffer_index);
-extern int get_label_local_character_health(ecs_world_t *world, const ecs_entity_t character,char buffer[], int buffer_size, int buffer_index);
-extern int debug_can_jump(ecs_world_t *world, const ecs_entity_t character,char buffer[], int buffer_size, int buffer_index);
-extern ecs_entity_t local_character3D;
-extern int get_label_player_character2D(ecs_world_t *world, const ecs_entity_t player, char buffer[], int buffer_size, int buffer_index);
-extern int get_label_player_character3D(ecs_world_t *world, const ecs_entity_t player, char buffer[], int buffer_size, int buffer_index);*/
-
 // #define zox_debug_ui_memorys_allocated
 #define zox_debug_ui_device_mode
 #define zox_debug_ui_save_cloud
@@ -32,11 +21,6 @@ int debug_newline_zext(char buffer[], int buffer_size, int buffer_index) {
     buffer_index += snprintf(buffer + buffer_index, buffer_size, "Day 1.\nToday is a very sunny day.\nHi jerry.");
     return buffer_index;
 }
-
-/*#ifdef zox_debug_ui_save_cloud
-extern unsigned char test_read_byte;
-extern unsigned char test_read_byte2;
-#endif*/
 
 void GameDebugLabelSystem(ecs_iter_t *it) {
     zox_iter_world()
@@ -133,15 +117,3 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         }
     }
 } zox_declare_system(GameDebugLabelSystem)
-
-/*if (deviceMode->value == zox_device_mode_none) {
-buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " d [none]");
-} else if (deviceMode->value == zox_device_mode_keyboardmouse) {
-buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " d [keyboard]");
-} else if (deviceMode->value == zox_device_mode_gamepad) {
-buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " d [gamepad]");
-} else if (deviceMode->value == zox_device_mode_touchscreen) {
-buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " d [touchscreen]");
-// buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " touch_devices [%i]", touch_devices_count);
-// buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), " fingers [%i]", touch_fingers_count);
-}*/

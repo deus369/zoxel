@@ -6,7 +6,6 @@ ecs_entity_t spawn_prefab_elementbar2D_front(ecs_world_t *world) {
     zox_prefab_set(e, Color, { front_bar_color })
     zox_prefab_set(e, PixelSize, { int2_one })
     zox_prefab_set(e, TextureSize, { int2_one })
-    prefab_elementbar2D_front = e;
     return e;
 }
 

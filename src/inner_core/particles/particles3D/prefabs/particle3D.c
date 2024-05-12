@@ -22,8 +22,9 @@ ecs_entity_t spawn_particle3D(ecs_world_t *world, float3 position3D, float3 acce
     zox_set(e, Position3D, { position3D })
     zox_set(e, Acceleration3D, { acceleration3D })
     // zox_prefab_set(e, Velocity3D, { velocity3D })
-    float3 color = (float3) { (rand() % 100) * 0.01f, (rand() % 100) * 0.01f, (rand() % 100) * 0.01f };
-    float3_multiply_float_p(&color, 0.3f);
-    zox_set(e, Color, { color_from_float3(color, 0.5f) })
+    float4 color = (float4) { (rand() % 100) * 0.01f, (rand() % 100) * 0.01f, (rand() % 100) * 0.01f, 0 };
+    float4_multiply_float_p(&color, 0.3f);
+    color.w = (rand() % 100) * 0.01f * 0.8f + 0.1f;
+    zox_set(e, Color, { color_from_float4(color) })
     return e;
 }

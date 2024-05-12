@@ -9,7 +9,6 @@ ecs_entity_t spawn_prefab_elementbar2D(ecs_world_t *world) {
     zox_prefab_set(e, ElementBar, { 1 })
     zox_prefab_set(e, ElementBarSize, { float2_zero })
     zox_prefab_set(e, Children, { 0, NULL })
-    prefab_elementbar2D = e;
     return e;
 }
 

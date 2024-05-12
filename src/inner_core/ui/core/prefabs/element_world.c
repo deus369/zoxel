@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_element3D(ecs_world_t *world) {
     zox_prefab()
-    zox_prefab_name("prefab_element_world")
+    zox_prefab_name("prefab_element3D")
     zox_add_tag(e, Element3D)
     zox_add_tag(e, FillTexture)
     zox_add_tag(e, ElementBillboard)
@@ -10,7 +10,6 @@ ecs_entity_t spawn_prefab_element3D(ecs_world_t *world) {
     zox_prefab_set(e, Color, {{ 0, 255, 0, 255 }}) 
     add_ui_components_world(world, e, (float2) { 0.2f, 0.05f });
     if (!headless) zox_add_tag(e, SingleMaterial)
-    prefab_element_world = e;
     return e;
 }
 
@@ -18,7 +17,7 @@ ecs_entity_t spawn_prefab_element3D(ecs_world_t *world) {
 ecs_entity_t spawn_element3D(ecs_world_t *world, const ecs_entity_t ui_holder, const ecs_entity_t canvas) {
     const ecs_entity_t camera = zox_get_value(ui_holder, CameraLink)
     const int2 pixel_size = (int2) { 32, 8 };
-    zox_instance(prefab_element_world)
+    zox_instance(prefab_element3D)
     zox_name("element3D")
     zox_set(e, UIHolderLink, { ui_holder })
     zox_set(e, CameraLink, { camera })

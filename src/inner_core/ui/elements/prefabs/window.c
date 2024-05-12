@@ -15,7 +15,6 @@ ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     zox_prefab_set(e, HeaderHeight, { 0 })
     zox_prefab_set(e, WindowLayer, { 0 })
     zox_prefab_set(e, SetWindowLayer, { 0 })
-    prefab_window = e;
     return e;
 }
 

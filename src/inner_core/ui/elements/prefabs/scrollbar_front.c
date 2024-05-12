@@ -7,7 +7,6 @@ ecs_entity_t spawn_prefab_scrollbar_front(ecs_world_t *world) {
     add_draggable_components(world, e);
     zox_prefab_set(e, DraggableLimits, { int4_zero })
     zox_set(e, Color, { scrollbar_front_color })
-    prefab_scrollbar_front = e;
     return e;
 }
 

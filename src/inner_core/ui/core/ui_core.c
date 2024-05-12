@@ -35,6 +35,7 @@ zox_component_byte(SetWindowLayer)
 zox_component_byte(WindowLayer)
 zox_component_byte(ElementLayer)
 #include "data/element_spawn_data.c"
+#include "util/canvas_util.c"
 #include "util/ui_prefab_util.c"
 #include "util/ui_transform_util.c"
 #include "util/anchor_util.c"

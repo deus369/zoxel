@@ -9,7 +9,6 @@ ecs_entity_t spawn_prefab_canvas_overlay(ecs_world_t *world) {
     zox_prefab_set(e, AnimationLength, { 1.6f})
     zox_prefab_set(e, AnimationDelay, { 0.4f})
     add_ui_plus_components(world, e);
-    prefab_canvas_overlay = e;
     return e;
 }
 

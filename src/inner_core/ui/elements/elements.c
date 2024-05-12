@@ -8,6 +8,7 @@ zox_declare_tag(Header)           //! A ui window header.
 zox_declare_tag(CloseButton)      //! A ui window close button
 zox_declare_tag(Scrollbar)
 zox_declare_tag(ScrollbarButton)
+zox_declare_tag(IconFrame)
 zox_component_byte(ListUIMax)
 #include "data/spawn_button.c"
 #include "data/spawn_header.c"
@@ -26,6 +27,7 @@ zox_define_tag(Header)
 zox_define_tag(CloseButton)
 zox_define_tag(Scrollbar)
 zox_define_tag(ScrollbarButton)
+zox_define_tag(IconFrame)
 zox_define_component(ListUIMax)
 zox_system(ElementDragSystem, EcsPostLoad, [in] DraggableState, [in] DraggingDelta, [in] DraggedLink)
 zox_system(ScrollbarSystem, EcsPostUpdate, [none] ScrollbarButton, [in] DraggableState, [in] PixelPosition, [in] PixelSize, [in] ParentLink)

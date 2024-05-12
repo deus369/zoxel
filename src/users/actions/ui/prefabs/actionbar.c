@@ -9,7 +9,7 @@ ecs_entity_t spawn_actionbar(ecs_world_t *world, const ecs_entity_t canvas, cons
     const float2 actionbar_anchor = (float2) { 0.5f, 0 };
     const int2 actionbar_size = (int2) { padding + (icon_size + padding) * actions_count + margins * 2, icon_size + padding * 2 };
     const int2 actionbar_position = (int2) { 0, 24 };
-    const ecs_entity_t actionbar_ui = spawn_element(world, canvas, parent, actionbar_position, actionbar_size, actionbar_anchor, 1, actionbar_color, int2_half(canvas_size), canvas_size);
+    const ecs_entity_t actionbar_ui = spawn_element(world, prefab_element, canvas, parent, actionbar_position, actionbar_size, actionbar_anchor, 1, actionbar_color, int2_half(canvas_size), canvas_size);
     zox_prefab_set(actionbar_ui, Children, { 0, NULL })
     Children *children = zox_get_mut(actionbar_ui, Children)
     resize_memory_component(Children, children, ecs_entity_t, actions_count)
@@ -19,7 +19,7 @@ ecs_entity_t spawn_actionbar(ecs_world_t *world, const ecs_entity_t canvas, cons
         const int position_x = (int) ((i - (actions_count / 2) + 0.5f) * (icon_size + padding));
         const int2 action_icon_position = (int2) { position_x, 0 };
         const int2 action_icon_size = (int2) { icon_size, icon_size };
-        children->value[i] = spawn_element(world, canvas, actionbar_ui, action_icon_position, action_icon_size, float2_half, 2, action_color, actionbar_position, actionbar_size);
+        children->value[i] = spawn_element(world, prefab_element, canvas, actionbar_ui, action_icon_position, action_icon_size, float2_half, 2, action_color, actionbar_position, actionbar_size);
         // zox_log("   > actionbar_icon [%lu]\n", children->value[i])
     }
     zox_modified(actionbar_ui, Children)

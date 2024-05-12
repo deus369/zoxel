@@ -70,6 +70,13 @@ float3 float4_xyz(const float4 input) {
     return (float3) { input.x, input.y, input.z };
 }
 
+void float4_multiply_float_p(float4* input, const float mul) {
+    input->x *= mul;
+    input->y *= mul;
+    input->z *= mul;
+    input->w *= mul;
+}
+
 // This output is wrong - [0, 0.7, 0, 0.7] (rotate left)
 /**
  * t = 2 * cross(q.xyz, v)
@@ -92,11 +99,4 @@ void float4_rotate_float3_p(const float4 rotation, float3 *value) {
     float3 crossB = float3_cross(rotationXYZ, t);
     float3 scaledT = float3_multiply_float(t, rotation.w);
     float3_add_float3_p(value, float3_add(scaledT, crossB));
-}
-
-void float4_multiply_float_p(float4* input, const float mul) {
-    input->x *= mul;
-    input->y *= mul;
-    input->z *= mul;
-    input->w *= mul;
 }
