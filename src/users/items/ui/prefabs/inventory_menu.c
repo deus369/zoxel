@@ -15,7 +15,6 @@ ecs_entity_t spawn_prefab_inventory_menu(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_inventory_menu2(ecs_world_t *world, SpawnInventoryMenu *data) {
-    const color frame_fill_color = (color) { 99, 144, 144, 155 };
     const unsigned char icon_layer = data->element.layer + 2;
     const unsigned char is_header = data->header.prefab != 0;
     unsigned char header_height = 0;
@@ -38,25 +37,46 @@ ecs_entity_t spawn_inventory_menu2(ecs_world_t *world, SpawnInventoryMenu *data)
             .parent = {
                 .e = e,
                 .position = canvas_position,
-                .size = data->element.size },
+                .size = data->element.size
+            },
             .element = {
                 .layer = data->element.layer + 1,
                 .anchor = header_anchor,
                 .position = header_position,
-                .size = header_size },
+                .size = header_size
+             },
             .zext = data->header_zext,
-            .header = data->header };
+            .header = data->header
+        };
         children->value[0] = spawn_header2(world, &spawnHeader);
         zox_set(e, HeaderHeight, { header_size.y })
     }
     int array_index = is_header;
+    const int2 icon_size2 = (int2) { data->inventory_menu.icon_size, data->inventory_menu.icon_size };
     for (int i = 0; i < data->inventory_menu.grid_size.x; i++) {
         for (int j = 0; j < data->inventory_menu.grid_size.y; j++) {
             const int position_x = (int) ((i - (data->inventory_menu.grid_size.x / 2) + 0.5f) * (data->inventory_menu.icon_size + data->inventory_menu.grid_padding));
             const int position_y = (int) ((j - (data->inventory_menu.grid_size.y / 2) + 0.5f) * (data->inventory_menu.icon_size + data->inventory_menu.grid_padding) - header_height / 2);
             const int2 position = (int2) { position_x, position_y };
             // spawn_element_frame - return ecs_entity_t2
-            children->value[array_index] = spawn_element(world, prefab_item_icon_frame, data->canvas.e, e, position, (int2) { data->inventory_menu.icon_size, data->inventory_menu.icon_size }, float2_half, icon_layer, frame_fill_color, canvas_position, data->element.size);
+            SpawnIconFrame spawnIconFrame = {
+                .prefab = prefab_item_icon_frame,
+                .canvas = data->canvas,
+                .icon_frame = data->icon_frame,
+                .icon = data->icon,
+                .parent = {
+                    .e = e,
+                    .position = canvas_position,
+                    .size = data->element.size
+                },
+                .element = {
+                    .position = position,
+                    .size = icon_size2,
+                    .layer = icon_layer,
+                    .anchor = float2_half
+                }
+            };
+            children->value[array_index] = spawn_icon_frame(world, &spawnIconFrame);
             array_index++;
         }
     }
@@ -65,6 +85,10 @@ ecs_entity_t spawn_inventory_menu2(ecs_world_t *world, SpawnInventoryMenu *data)
 }
 
 ecs_entity_t spawn_inventory_menu(ecs_world_t *world, const ecs_entity_t canvas) {
+    const color frame_fill_color = (color) { 33, 33, 33, 133 };
+    const color frame_outline_color = (color) { 33, 33, 33, 133 };
+    const color icon_fill_color = (color) { 0, 155, 155, 155 };
+    const color icon_outline_color = (color) { 0, 255, 185, 225 };
     const unsigned char header_height = 42;
     const unsigned char header_margins = 16;
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
@@ -79,29 +103,43 @@ ecs_entity_t spawn_inventory_menu(ecs_world_t *world, const ecs_entity_t canvas)
         .prefab = prefab_inventory_menu,
         .canvas = {
             .e = canvas,
-            .size = canvas_size },
+            .size = canvas_size
+        },
         .parent = {
             .e = canvas,
             .position = int2_half(canvas_size),
-            .size = canvas },
+            .size = canvas_size,
+        },
         .element = {
             .position = int2_zero,
             .size = size,
-            .anchor = anchor, },
+            .anchor = anchor
+        },
         .header = {
             .prefab = prefab_header,
             .is_close_button = 1,
-            .margins = header_margins },
+            .margins = header_margins
+        },
         .header_zext = {
             .prefab = prefab_zext,
             .text = "Inventory",
             .font_size = 28,
             .font_fill_color = header_font_fill_color,
-            .font_outline_color = header_font_outline_color },
+            .font_outline_color = header_font_outline_color
+        },
         .inventory_menu = {
             .grid_size = (byte2) { 4, 4 },
             .grid_padding = grid_padding,
-            .icon_size = icon_size, },
+            .icon_size = icon_size
+        },
+        .icon_frame = {
+            .fill_color = frame_fill_color,
+            .outline_color = frame_outline_color
+        },
+        .icon = {
+            .fill_color = icon_fill_color,
+            .outline_color = icon_outline_color
+        }
     };
     return spawn_inventory_menu2(world, &spawnInventoryMenu);
 }

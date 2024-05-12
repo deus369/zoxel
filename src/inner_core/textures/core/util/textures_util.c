@@ -1,5 +1,6 @@
 const color empty_color = { 0, 0, 0, 0 };
 
+// move this to prefab
 void add_frame_texture_type(ecs_world_t *world, ecs_entity_t e, color primary, unsigned char corner, unsigned char thickness) {
     zox_add_tag(e, FrameTexture)
     zox_prefab_set(e, FrameCorner, { corner })
@@ -7,54 +8,73 @@ void add_frame_texture_type(ecs_world_t *world, ecs_entity_t e, color primary, u
     zox_prefab_set(e, Color, { primary })
 }
 
-unsigned char check_texture(TextureData* textureData, const TextureSize *textureSize, int2 pixel_position, color find_color, int distance) {
-    if (!int2_in_bounds(pixel_position, textureSize->value)) return 0;
-    if (color_equal(find_color, textureData->value[int2_array_index(pixel_position, textureSize->value)])) return 1;
+unsigned char check_texture(const color *data, const int2 size, const int2 pixel_position, const color find_color, int distance) {
+    if (!int2_in_bounds(pixel_position, size)) return 0;
+    if (color_equal(find_color, data[int2_array_index(pixel_position, size)])) return 1;
     if (distance >= 0) {
         distance--;
-        if (check_texture(textureData, textureSize, int2_down(pixel_position), find_color, distance)) return 1;
-        if (check_texture(textureData, textureSize, int2_up(pixel_position), find_color, distance)) return 1;
-        if (check_texture(textureData, textureSize, int2_left(pixel_position), find_color, distance)) return 1;
-        if (check_texture(textureData, textureSize, int2_right(pixel_position), find_color, distance)) return 1;
+        if (check_texture(data, size, int2_down(pixel_position), find_color, distance)) return 1;
+        if (check_texture(data, size, int2_up(pixel_position), find_color, distance)) return 1;
+        if (check_texture(data, size, int2_left(pixel_position), find_color, distance)) return 1;
+        if (check_texture(data, size, int2_right(pixel_position), find_color, distance)) return 1;
     }
     return 0;
 }
 
-void generate_frame_texture(TextureData* textureData, const TextureSize *textureSize, const color fill_color, const color outline_color, const unsigned char frame_thickness, const unsigned char corner_size, const unsigned char is_noise) {
+void generate_texture_icon(color *data, const int length, const int2 size, const color fill_color, const color outline_color, const unsigned char frame_thickness, const unsigned char radius, const unsigned char is_noise) {
+    int index = 0;
+    int2 mid_position = int2_half(size);
+    int2 pixel_position = { 0, 0 };
+    for (pixel_position.y = 0; pixel_position.y < size.y; pixel_position.y++) {
+        for (pixel_position.x = 0; pixel_position.x < size.x; pixel_position.x++) {
+            const int distance_to_mid = int2_distance(pixel_position, mid_position);
+            if (distance_to_mid < radius) {
+                data[index] = fill_color;
+            } else if (distance_to_mid == radius) {
+                data[index] = outline_color;
+            } else {
+                data[index] = empty_color;
+            }
+            index++;
+        }
+    }
+}
+
+void generate_texture_frame(color *data, const int length, const int2 size, const color fill_color, const color outline_color, const unsigned char frame_thickness, const unsigned char corner_size, const unsigned char is_noise) {
     int index = 0;
     int2 pixel_position = { 0, 0 };
-    for (pixel_position.y = 0; pixel_position.y < textureSize->value.y; pixel_position.y++) {
-        for (pixel_position.x = 0; pixel_position.x < textureSize->value.x; pixel_position.x++) {
+    for (pixel_position.y = 0; pixel_position.y < size.y; pixel_position.y++) {
+        for (pixel_position.x = 0; pixel_position.x < size.x; pixel_position.x++) {
             int distance_to_corner_a = pixel_position.x + pixel_position.y;
-            int distance_to_corner_b = (textureSize->value.x - 1 - pixel_position.x) + pixel_position.y;
-            int distance_to_corner_c = (textureSize->value.x - 1 - pixel_position.x) + (textureSize->value.y - 1 - pixel_position.y);
-            int distance_to_corner_d = pixel_position.x + (textureSize->value.y - 1 - pixel_position.y);
+            int distance_to_corner_b = (size.x - 1 - pixel_position.x) + pixel_position.y;
+            int distance_to_corner_c = (size.x - 1 - pixel_position.x) + (size.y - 1 - pixel_position.y);
+            int distance_to_corner_d = pixel_position.x + (size.y - 1 - pixel_position.y);
             if (distance_to_corner_a < corner_size || distance_to_corner_b < corner_size || distance_to_corner_c < corner_size || distance_to_corner_d < corner_size) {
-                textureData->value[index] = empty_color;
+                data[index] = empty_color;
             } else {
-                textureData->value[index] = fill_color;
+                data[index] = fill_color;
             }
             index++;
         }
     }
     // outline of frame
     index = 0;
-    for (pixel_position.y = 0; pixel_position.y < textureSize->value.y; pixel_position.y++) {
-        for (pixel_position.x = 0; pixel_position.x < textureSize->value.x; pixel_position.x++) {
-            if (!color_equal(textureData->value[index], fill_color)) {
+    for (pixel_position.y = 0; pixel_position.y < size.y; pixel_position.y++) {
+        for (pixel_position.x = 0; pixel_position.x < size.x; pixel_position.x++) {
+            if (!color_equal(data[index], fill_color)) {
                 index++;
                 continue;
             }
-            if (pixel_position.x < frame_thickness || pixel_position.y < frame_thickness || pixel_position.x > textureSize->value.x - 1 - frame_thickness || pixel_position.y > textureSize->value.y - 1 - frame_thickness) {
-                textureData->value[index] = outline_color;
+            if (pixel_position.x < frame_thickness || pixel_position.y < frame_thickness || pixel_position.x > size.x - 1 - frame_thickness || pixel_position.y > size.y - 1 - frame_thickness) {
+                data[index] = outline_color;
             }
             // only floodfill check corners of the texture to save processing time
             else if ((pixel_position.x < corner_size && pixel_position.y < corner_size) ||
-                (pixel_position.x > textureSize->value.x - corner_size && pixel_position.y < corner_size) ||
-                (pixel_position.x > textureSize->value.x - corner_size && pixel_position.y > textureSize->value.y - corner_size) ||
-                (pixel_position.x < corner_size && pixel_position.y > textureSize->value.y - corner_size)) {
-                if (check_texture(textureData, textureSize, pixel_position, empty_color, frame_thickness)) {
-                    textureData->value[index] = outline_color;
+                (pixel_position.x > size.x - corner_size && pixel_position.y < corner_size) ||
+                (pixel_position.x > size.x - corner_size && pixel_position.y > size.y - corner_size) ||
+                (pixel_position.x < corner_size && pixel_position.y > size.y - corner_size)) {
+                if (check_texture(data, size, pixel_position, empty_color, frame_thickness)) {
+                    data[index] = outline_color;
                 }
             }
             index++;
@@ -65,16 +85,16 @@ void generate_frame_texture(TextureData* textureData, const TextureSize *texture
         index = 0;
         const int fill_noise_addition = 55;
         const int outline_noise_addition = 25;
-        for (pixel_position.y = 0; pixel_position.y < textureSize->value.y; pixel_position.y++) {
-            for (pixel_position.x = 0; pixel_position.x < textureSize->value.x; pixel_position.x++) {
-                if (color_equal(textureData->value[index], fill_color)) {
-                    textureData->value[index].r += rand() % fill_noise_addition;
-                    textureData->value[index].g += rand() % fill_noise_addition;
-                    textureData->value[index].b += rand() % fill_noise_addition;
-                } else if (color_equal(textureData->value[index], outline_color)) {
-                    textureData->value[index].r += rand() % outline_noise_addition;
-                    textureData->value[index].g += rand() % outline_noise_addition;
-                    textureData->value[index].b += rand() % outline_noise_addition;
+        for (pixel_position.y = 0; pixel_position.y < size.y; pixel_position.y++) {
+            for (pixel_position.x = 0; pixel_position.x < size.x; pixel_position.x++) {
+                if (color_equal(data[index], fill_color)) {
+                    data[index].r += rand() % fill_noise_addition;
+                    data[index].g += rand() % fill_noise_addition;
+                    data[index].b += rand() % fill_noise_addition;
+                } else if (color_equal(data[index], outline_color)) {
+                    data[index].r += rand() % outline_noise_addition;
+                    data[index].g += rand() % outline_noise_addition;
+                    data[index].b += rand() % outline_noise_addition;
                 }
                 index++;
             }
@@ -88,6 +108,7 @@ void generate_texture_fill(TextureData* textureData, const int2 size, const colo
         for (position.y = 0; position.y < size.y; position.y++)
             textureData->value[int2_array_index(position, size)] = fill_color;
 }
+
 void generate_texture_graybox(TextureData* textureData, const TextureSize *textureSize, int2 position, int2 size) {
     for (int j = position.x; j < position.x + size.x; j++) {
         for (int k = position.y; k < position.y + size.y; k++) {

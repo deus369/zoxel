@@ -1,12 +1,11 @@
 #ifndef zoxel_textures_core
 #define zoxel_textures_core
 
-// zoxel_settings
 const int2 voxel_texture_size = (int2) { 64, 64 };
 #include "settings/settings.c"
-// zoxel_component_includes
 zox_declare_tag(Texture)
 zox_declare_tag(NoiseTexture)
+zox_declare_tag(IconTexture)
 zox_declare_tag(FrameTexture)
 zox_declare_tag(DirtTexture)
 zox_declare_tag(GrassTexture)
@@ -28,15 +27,12 @@ zox_component(OutlineColor, color)
 zox_entities_component(Textures)                    // this destroys linked entities (parent)
 zox_memory_component(TextureLinks, ecs_entity_t)    // this links only
 zox_memory_component(TilemapUVs, float2)
-// zoxel_util_includes
 #include "util/textures_sdl_util.c"
 #include "util/textures_util.c"
 #include "util/texture_prefab_util.c"
-// zoxel_prefab_includes
 #include "prefabs/noise_texture.c"
 #include "prefabs/dirt_texture.c"
 #include "prefabs/tilemap.c"
-// zoxel_system_includes
 #include "systems/animate_noise_system.c"
 #include "systems/texture_update_system.c"
 #include "systems/noise_texture_system.c"
@@ -52,9 +48,9 @@ void spawn_prefabs_textures_core(ecs_world_t *world) {
 }
 
 zox_begin_module(TexturesCore)
-// zoxel_component_defines
 zox_define_tag(Texture)
 zox_define_tag(NoiseTexture)
+zox_define_tag(IconTexture)
 zox_define_tag(FrameTexture)
 zox_define_tag(DirtTexture)
 zox_define_tag(GrassTexture)
@@ -76,9 +72,7 @@ zox_define_memory_component(TextureData)
 zox_define_memory_component(TilemapUVs)
 zox_define_memory_component(TextureLinks)
 zox_define_entities_component(Textures)
-// zoxel_filter_defines
 zox_filter(generate_textures2, [none] FrameTexture, [out] GenerateTexture)
-// zoxel_system_defines
 zox_system(AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture)
 zox_texture_generation_system(NoiseTexture, NoiseTextureSystem)
 zox_texture_generation_system2(FillTexture, FillTextureSystem, [in] Color)

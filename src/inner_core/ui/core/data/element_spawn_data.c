@@ -5,4 +5,5 @@ typedef struct {
     float2 anchor;
     unsigned char layer;
     unsigned char render_disabled;
+    color fill_color;
 } ElementSpawnData;

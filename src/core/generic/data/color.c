@@ -6,6 +6,9 @@ typedef struct {
     unsigned char a;
 } color;
 
+#define color_white (color) { 255, 255, 255, 255 }
+#define color_black (color) { 0, 0, 0, 255 }
+
 unsigned char color_equal(const color a, const color b) {
     return a.r == b.r && a.g == b.g && a.b == b.b && a.a == b.a;
 }

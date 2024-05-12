@@ -15,4 +15,6 @@ typedef struct {
     SpawnHeaderData header;
     SpawnButtonData close_button;
     InventoryMenuData inventory_menu;
+    IconFrameData icon_frame;
+    IconData icon;
 } SpawnInventoryMenu;

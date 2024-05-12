@@ -1,23 +1,25 @@
 ecs_entity_t prefab_label;
 ecs_entity_t prefab_button;
-ecs_entity_t prefab_header;
 ecs_entity_t prefab_close_button;
-ecs_entity_t prefab_label_background;
+ecs_entity_t prefab_icon;
 ecs_entity_t prefab_icon_frame;
+ecs_entity_t prefab_label_background;
 ecs_entity_t prefab_scrollbar_front;
 ecs_entity_t prefab_scrollbar;
 ecs_entity_t prefab_ui_list;
+ecs_entity_t prefab_header;
 ecs_entity_t prefab_window;
 ecs_entity_t prefab_elementbar3D;
 ecs_entity_t prefab_elementbar3D_front;
 ecs_entity_t prefab_elementbar2D;
 ecs_entity_t prefab_elementbar2D_front;
-ecs_entity_t prefab_icon_frame;
 
 #include "label.c"
 #include "label_background.c"
 #include "button.c"
 #include "close_button.c"
+#include "icon.c"
+#include "icon_frame.c"
 #include "header.c"
 #include "window.c"
 #include "scrollbar_front.c"
@@ -27,7 +29,6 @@ ecs_entity_t prefab_icon_frame;
 #include "elementbar2D.c"
 #include "elementbar3D_front.c"
 #include "elementbar3D.c"
-#include "icon_frame.c"
 
 void spawn_prefabs_elements(ecs_world_t *world) {
     prefab_label = spawn_prefab_label(world);
@@ -43,5 +44,6 @@ void spawn_prefabs_elements(ecs_world_t *world) {
     prefab_elementbar2D_front = spawn_prefab_elementbar2D_front(world);
     prefab_elementbar3D = spawn_prefab_elementbar3D(world);
     prefab_elementbar3D_front = spawn_prefab_elementbar3D_front(world);
+    prefab_icon = spawn_prefab_icon(world, prefab_element);
     prefab_icon_frame  = spawn_prefab_icon_frame(world, prefab_element);
 }
