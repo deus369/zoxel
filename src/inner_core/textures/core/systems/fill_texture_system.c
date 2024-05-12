@@ -14,7 +14,7 @@ void FillTextureSystem(ecs_iter_t *it) {
         zox_field_i_in(Color, colors, color2)
         zox_field_i_out(TextureData, textureDatas, textureData)
         resize_memory_component(TextureData, textureData, color, textureSize->value.x * textureSize->value.y)
-        generate_texture_fill(textureData, textureSize->value, color2->value);
+        generate_texture_fill(textureData->value, textureSize->value, color2->value);
         generateTexture->value = 0;
         textureDirty->value = 1; // actually this only gets uploaded if has GPUTextureLink!
     }

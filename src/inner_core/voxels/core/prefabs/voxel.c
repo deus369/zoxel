@@ -17,18 +17,15 @@ ecs_entity_t spawn_voxel(ecs_world_t *world, unsigned char index) {
     Textures *textures = zox_get_mut(e, Textures)
     resize_memory_component(Textures, textures, ecs_entity_t, 1)
     for (int i = 0; i < 1; i++) {
-        ecs_entity_t texture_entity = spawn_texture_dirt(world, seed + i);
-        if (index == 0) {
-            zox_add_tag(texture_entity, DirtTexture)
-        } else if (index == 1) {
-            zox_add_tag(texture_entity, GrassTexture)
-        } else if (index == 2) {
-            zox_add_tag(texture_entity, SandTexture)
-        } else if (index == 3) {
-            zox_add_tag(texture_entity, StoneTexture)
-        } else if (index == 4) {
-            zox_add_tag(texture_entity, ObsidianTexture)
-        }
+        const unsigned char color_margin = 32;
+        const color voxel_color = (color) { color_margin + rand() % (255 - color_margin * 2), color_margin + rand() % (255 - color_margin * 2), color_margin + rand() % (255 - color_margin * 2), 255 };
+        // todo: base grass off dirt, as well as sand, using HSV color contrasts
+        const ecs_entity_t texture_entity = spawn_texture_dirt(world, seed + i, voxel_color);
+        if (index == 0) zox_add_tag(texture_entity, DirtTexture)
+        else if (index == 1) zox_add_tag(texture_entity, GrassTexture)
+        else if (index == 2) zox_add_tag(texture_entity, SandTexture)
+        else if (index == 3) zox_add_tag(texture_entity, StoneTexture)
+        else if (index == 4) zox_add_tag(texture_entity, ObsidianTexture)
         textures->value[i] = texture_entity;
     }
     zox_modified(e, Textures)

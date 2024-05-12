@@ -6,6 +6,7 @@ ecs_entity_t spawn_prefab_realm(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_realm")
     zox_add_tag(e, Realm);
+    zox_prefab_set(e, Colors, { 0, NULL })
     zox_prefab_set(e, VoxelLinks, { 0, NULL })
     prefab_realm = e;
     return e;
@@ -14,9 +15,12 @@ ecs_entity_t spawn_prefab_realm(ecs_world_t *world) {
 ecs_entity_t spawn_realm(ecs_world_t *world) {
     zox_instance(prefab_realm)
     zox_name("realm")
-    VoxelLinks *voxelLinks = zox_get_mut(e, VoxelLinks)
+    // VoxelLinks *voxelLinks = zox_get_mut(e, VoxelLinks)
+    zox_get_mutt(e, VoxelLinks, voxelLinks)
     resize_memory_component(VoxelLinks, voxelLinks, ecs_entity_t, realm_voxels)
-    for (unsigned char i = 0; i < voxelLinks->length; i++) voxelLinks->value[i] = spawn_voxel(world, i);
+    for (unsigned char i = 0; i < voxelLinks->length; i++) {
+        voxelLinks->value[i] = spawn_voxel(world, i);
+    }
     zox_modified(e, VoxelLinks)
     local_realm = e;
     return e;

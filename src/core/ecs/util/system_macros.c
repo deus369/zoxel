@@ -88,14 +88,21 @@ Chose one pipeline tag for each type of system.
 
 // ecs_assert(ecs_id(id_) != 0, ECS_INVALID_PARAMETER, NULL);
 
+#define zox_pip_textures EcsOnUpdate // EcsPostUpdate
+
 #define zox_texture_generation_system(texture_tag, system) {\
     zox_filter(generateTextureQuery, [none] texture_tag, [out] GenerateTexture)\
-    zox_system_ctx(system, EcsPostUpdate, generateTextureQuery, [none] texture_tag, [out] TextureDirty, [out] TextureData, [in] TextureSize, [out] GenerateTexture)\
+    zox_system_ctx(system, zox_pip_textures, generateTextureQuery, [none] texture_tag, [out] TextureDirty, [out] TextureData, [in] TextureSize, [out] GenerateTexture)\
+}
+
+#define zox_texture_system(system, tag, ...) {\
+    zox_filter(textures, [out] GenerateTexture, [none] tag)\
+    zox_system_ctx(system, zox_pip_textures, textures, [in] TextureSize, [out] GenerateTexture, [out] TextureDirty, [out] TextureData, __VA_ARGS__, [none] tag)\
 }
 
 #define zox_texture_generation_system2(texture_tag, system, ...) {\
     zox_filter(generateTextureQuery, [none] texture_tag, [out] GenerateTexture)\
-    zox_system_ctx(system, EcsPostUpdate, generateTextureQuery, [none] texture_tag, [out] TextureDirty, [out] TextureData, [in] TextureSize, [out] GenerateTexture, __VA_ARGS__)\
+    zox_system_ctx(system, zox_pip_textures, generateTextureQuery, [none] texture_tag, [out] TextureDirty, [out] TextureData, [in] TextureSize, [out] GenerateTexture, __VA_ARGS__)\
 }
 
 #define zox_define_reset_system(system_name, component_name) zox_system(system_name, EcsPreStore, [out] component_name)

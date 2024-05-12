@@ -7,6 +7,7 @@ ecs_entity_t spawn_prefab_texture_noise(ecs_world_t *world, const int2 texture_s
     add_seed(world, e, 666);
     add_texture(world, e, texture_size, 1);
     add_noise_texture(world, e);
+    zox_prefab_set(e, Color, {{ 255, 0, 0, 255 }})
     prefab_texture_noise = e;
     return e;
 }
@@ -19,9 +20,10 @@ ecs_entity_t spawn_prefab_texture(ecs_world_t *world, const int2 texture_size) {
     return e;
 }
 
-ecs_entity_t spawn_texture_dirt(ecs_world_t *world, int seed) {
+ecs_entity_t spawn_texture_dirt(ecs_world_t *world, const int seed, const color fill_color) {
     zox_instance(prefab_texture_noise)
     zox_name("texture_dirt")
     zox_set(e, Seed, { seed })
+    zox_set(e, Color, { fill_color })
     return e;
 }

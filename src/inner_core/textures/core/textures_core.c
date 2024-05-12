@@ -1,7 +1,7 @@
 #ifndef zoxel_textures_core
 #define zoxel_textures_core
 
-const int2 voxel_texture_size = (int2) { 64, 64 };
+const int2 voxel_texture_size = (int2) { 32, 32 };
 #include "settings/settings.c"
 zox_declare_tag(Texture)
 zox_declare_tag(NoiseTexture)
@@ -74,7 +74,7 @@ zox_define_memory_component(TextureLinks)
 zox_define_entities_component(Textures)
 zox_filter(generate_textures2, [none] FrameTexture, [out] GenerateTexture)
 zox_system(AnimateNoiseSystem, EcsOnUpdate, [out] AnimateTexture, [out] GenerateTexture)
-zox_texture_generation_system(NoiseTexture, NoiseTextureSystem)
+zox_texture_system(NoiseTextureSystem, NoiseTexture, [in] Color)
 zox_texture_generation_system2(FillTexture, FillTextureSystem, [in] Color)
 zox_system_ctx(FrameTextureSystem, EcsPostUpdate, generate_textures2, [none] FrameTexture, [out] GenerateTexture, [in] TextureSize, [in] Color, [in] OutlineThickness, [in] FrameCorner, [out] TextureData, [out] TextureDirty)
 zox_system(TilemapGenerationSystem, EcsPostUpdate, [none] Tilemap, [in] TilemapSize, [in] TextureLinks, [out] GenerateTexture, [out] TextureSize, [out] TextureData, [out] TextureDirty, [out] TilemapUVs)
