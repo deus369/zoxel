@@ -12,8 +12,9 @@ void ZextUpdateSystem(ecs_iter_t *it) {
     zox_field_in(RenderDisabled, renderDisableds, 8)
     zox_field_in(FontOutlineColor, fontOutlineColors, 9)
     zox_field_in(FontFillColor, fontFillColors, 10)
-    zox_field_out(ZextDirty, zextDirtys, 11)
-    zox_field_out(Children, childrens, 12)
+    zox_field_in(FontThickness, fontThicknesss, 11)
+    zox_field_out(ZextDirty, zextDirtys, 12)
+    zox_field_out(Children, childrens, 13)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_out(ZextDirty, zextDirtys, zextDirty)
         if (!zextDirty->value) continue;
@@ -30,16 +31,37 @@ void ZextUpdateSystem(ecs_iter_t *it) {
         zox_field_i_in(RenderDisabled, renderDisableds, renderDisabled)
         zox_field_i_in(FontOutlineColor, fontOutlineColors, fontOutlineColor)
         zox_field_i_in(FontFillColor, fontFillColors, fontFillColor)
+        zox_field_i_in(FontThickness, fontThicknesss, fontThickness)
         const ecs_entity_t canvas = get_root_canvas(world, e);
         const int2 canvas_size = zox_get_value(canvas, PixelSize)
         const unsigned char zext_length = calculate_total_zigels(zextData->value, zextData->length);
-        ZigelSpawnData spawn_data = {
-            .canvas = { .e = canvas, .size = canvas_size },
-            .parent = { .e = e, .position = canvasPosition->value, .size = pixelSize->value },
-            .zext = { .length = zext_length, .text_padding = zextPadding->value, .text_alignment = meshAlignment->value },
-            .element = { .layer = layer2D->value + 1, .size = (int2) { zextSize->value, zextSize->value }, .anchor = float2_half, .render_disabled = renderDisabled->value },
-            .outline_color = fontOutlineColor->value,
-            .fill_color = fontFillColor->value,
+        SpawnZigel spawn_data = {
+            .canvas = {
+                .e = canvas,
+                .size = canvas_size
+            },
+            .parent = {
+                .e = e,
+                .position = canvasPosition->value,
+                .size = pixelSize->value
+            },
+            .element = {
+                .layer = layer2D->value + 1,
+                .size = int2_single(zextSize->value), // (int2) { zextSize->value, zextSize->value },
+                .anchor = float2_half,
+                .render_disabled = renderDisabled->value
+            },
+            .zext = {
+                // .font_size = zextSize->value,
+                .font_thickness = fontThickness->value,
+                .length = zext_length,
+                .text_padding = zextPadding->value,
+                .text_alignment = meshAlignment->value,
+            },
+            .zigel = {
+                .outline_color = fontOutlineColor->value,
+                .fill_color = fontFillColor->value
+            }
         };
         spawn_zext_zigels(world, &spawn_data, children, zextData);
         zextDirty->value = 0;

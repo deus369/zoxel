@@ -16,23 +16,29 @@ ecs_entity_t spawn_label_background(ecs_world_t *world, const ecs_entity_t prefa
     SpawnZext zextSpawnData = {
         .canvas = {
             .e = canvas,
-            .size = canvas_size },
+            .size = canvas_size
+        },
         .parent = {
             .e = parent,
             .position = parent_position,
-            .size = parent_size },
+            .size = parent_size
+        },
         .element = {
             .layer = layer,
             .anchor = anchor,
-            .position = pixel_position },
+            .position = pixel_position
+        },
         .zext = {
             .prefab = prefab,
             .text = text,
             .font_size = font_size,
+            .font_thickness = 1,
             .alignment = alignment,
             .padding = padding,
             .font_fill_color = label_font_fill_color,
-            .font_outline_color = label_font_outline_color } };
+            .font_outline_color = label_font_outline_color
+        }
+    };
     const ecs_entity_t e = spawn_zext(world, &zextSpawnData);
     zox_name("label_background")
     return e;

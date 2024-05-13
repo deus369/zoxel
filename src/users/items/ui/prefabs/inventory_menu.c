@@ -121,6 +121,7 @@ ecs_entity_t spawn_inventory_menu(ecs_world_t *world, const ecs_entity_t canvas)
             .prefab = prefab_zext,
             .text = "Inventory",
             .font_size = 28,
+            .font_thickness = 4,
             .font_fill_color = header_font_fill_color,
             .font_outline_color = header_font_outline_color
         },

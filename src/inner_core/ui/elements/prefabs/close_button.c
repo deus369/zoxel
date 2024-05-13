@@ -26,6 +26,7 @@ ecs_entity_t spawn_close_button(ecs_world_t *world, const ecs_entity_t parent, c
             .prefab = prefab_zext,
             .text = "X",
             .font_size = size,
+            .font_thickness = 4,
             .padding = padding,
             .font_fill_color = default_font_fill_color,
             .font_outline_color = default_font_outline_color },

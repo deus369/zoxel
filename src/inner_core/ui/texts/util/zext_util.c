@@ -45,7 +45,7 @@ unsigned char is_zext_updating(ecs_world_t *world, const Children *children) {
 }
 
 //! Dynamically updates zext by spawning/destroying zigels and updating remaining
-void spawn_zext_zigels(ecs_world_t *world, ZigelSpawnData *data, Children *children, const ZextData *zextData) {
+void spawn_zext_zigels(ecs_world_t *world, SpawnZigel *data, Children *children, const ZextData *zextData) {
     const unsigned char old_children_length = children->length;
     const unsigned char new_children_length = calculate_total_zigels(zextData->value, zextData->length);
     const unsigned char has_old_children = old_children_length > 0;
@@ -89,8 +89,8 @@ void spawn_zext_zigels(ecs_world_t *world, ZigelSpawnData *data, Children *child
         for (unsigned char i = old_children_length; i < new_children_length; i++) {
             const unsigned char zigel_index = calculate_zigel_index(zextData->value, zextData->length, i);
             const unsigned char data_index = calculate_zigel_data_index(zextData->value, zextData->length, i);
-            data->zigel_index = zigel_index;
-            data->data_index = data_index;
+            data->zigel.zigel_index = zigel_index;
+            data->zigel.data_index = data_index;
             const ecs_entity_t zigel = spawn_zext_zigel(world, zextData, data);
             new_children[i] = zigel;
             zox_set(zigel, RenderDisabled, { data->element.render_disabled })

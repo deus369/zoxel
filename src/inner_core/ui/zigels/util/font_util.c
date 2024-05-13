@@ -1,6 +1,11 @@
 // #define zox_debug_font_textures
 const unsigned char is_splotches = 1;
-const unsigned char splotch_size = 2;
+// const unsigned char splotch_size = 2;
+#ifdef zox_debug_font_textures
+    const color nothing_font_color = { 125, 100, 100, 255 };
+#else
+    const color nothing_font_color = { 0, 0, 0, 0 };
+#endif
 
 void flood_fill_texture(TextureData* textureData, const int2 size, const color air_color, const color boundary_color, const color fill_color, const int x, const int y) {
     int index = int2_array_index((int2) { x, y }, size);
@@ -116,7 +121,8 @@ void draw_texture_line(TextureData* textureData, const int2 size, const int2 poi
     }
 }
 
-void generate_splotches_lines(TextureData* textureData, const int2 size, const FontData *fontData, const color line_color, unsigned char splotch_size) {
+void generate_splotches_lines(TextureData* textureData, const int2 size, const FontData *fontData, const color line_color, const unsigned char splotch_size) {
+    if (splotch_size == 0) return;
     for (int i = 0; i < fontData->length; i += 2) {
         int2 pointA = byte2_to_int2(fontData->value[i]);
         int2 pointB = byte2_to_int2(fontData->value[i + 1]);
@@ -140,13 +146,14 @@ void generate_splotches_lines(TextureData* textureData, const int2 size, const F
             if (int2_equal(splash_point, splash_point_check)) continue;
             splash_point = splash_point_check;
             // add noise later to this
-            int pointSize2 = 1 + rand() % splotch_size; // math.floor(random.NextFloat(pointSize.x, pointSize.y));
+            int pointSize2 = splotch_size - 1; // rand() % splotch_size; // math.floor(random.NextFloat(pointSize.x, pointSize.y));
+            // get surrounding pixels
             for (int k = -pointSize2; k <= pointSize2; k++) {
                 for (int l = -pointSize2; l <= pointSize2; l++) {
-                    int2 drawPoint = (int2) { splash_point.x + k, splash_point.y + l};
-                    if (drawPoint.x >= 0 && drawPoint.x < size.x
-                        && drawPoint.y >= 0 && drawPoint.y < size.y) {
-                        textureData->value[int2_array_index(drawPoint, size)] = line_color;
+                    const int2 drawPoint = (int2) { splash_point.x + k, splash_point.y + l};
+                    if (drawPoint.x >= 0 && drawPoint.x < size.x && drawPoint.y >= 0 && drawPoint.y < size.y) {
+                        const int array_index = int2_array_index(drawPoint, size);
+                        if (color_equal(textureData->value[array_index], nothing_font_color)) textureData->value[array_index] = line_color;
                     }
                 }
             }
@@ -156,15 +163,10 @@ void generate_splotches_lines(TextureData* textureData, const int2 size, const F
 }
 
 void clear_texture(TextureData* textureData, const int2 size) {
-#ifdef zox_debug_font_textures
-    const color nothing = { 125, 100, 100, 255 };
-#else
-    const color nothing = { 0, 0, 0, 0 };
-#endif
     int index = 0;
     for (int k = 0; k < size.y; k++) {
         for (int j = 0; j < size.x; j++) {
-            textureData->value[index] = nothing;
+            textureData->value[index] = nothing_font_color;
             index++;
         }
     }
@@ -187,18 +189,15 @@ void generate_font_lines(TextureData* textureData, const int2 size, const FontDa
     }
 }
 
-void generate_font_texture(TextureData* textureData, const int2 size, const FontData *font_data, const color line_color,  const color fill_color, const unsigned char is_shapes) {
-    const color nothing = { 0, 0, 0, 0 };
+void generate_font_texture(TextureData* textureData, const int2 size, const FontData *font_data, const color line_color,  const color fill_color, const unsigned char is_shapes, const unsigned char font_thickness) {
+    // const color nothing = { 0, 0, 0, 0 };
     clear_texture(textureData, size);
     if (!font_data->length) return;
     if (is_shapes) {
         generate_font_lines(textureData, size, font_data, line_color);
-        scanline_fill_texture(textureData, size, nothing, line_color, fill_color);
-        // draw splotches after
-        if (is_splotches) generate_splotches_lines(textureData, size, font_data, line_color, splotch_size);
-    } else {
-        generate_splotches_lines(textureData, size, font_data, line_color, splotch_size + 3);
+        scanline_fill_texture(textureData, size, nothing_font_color, line_color, fill_color);
     }
+    generate_splotches_lines(textureData, size, font_data, line_color, font_thickness);
 }
 
 /*

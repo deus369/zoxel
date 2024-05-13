@@ -36,16 +36,19 @@ void main() {\
     lowp vec3 sky_top_color2 = sky_top_color;\
     lowp float gradient = clamp((mesh_pos.y + 0.0) * 4.0, 0.0, 1.0);\
     if (mesh_pos.y > 0.0) {\
-        if (abs(mesh_pos.x) > abs(mesh_pos.z)) {\
-            sky_top_color2.x = 1.0 - (abs(mesh_pos.x));\
-        } else {\
-            sky_top_color2.x = 1.0 - (abs(mesh_pos.z));\
-        }\
-        sky_top_color2.x -= 0.5 - mesh_pos.y;\
+        sky_top_color2.x += mesh_pos.y * (1.0 - abs(max(mesh_pos.x, mesh_pos.y))) * 1.5;\
     }\
     color = vec3(mix(sky_bottom_color, sky_top_color2, gradient)) * brightness;\
 }";
 
+/*
+if (abs(mesh_pos.x) > abs(mesh_pos.z)) {\
+    sky_top_color2.x = 1.0 - (abs(mesh_pos.x));\
+} else {\
+    sky_top_color2.x = 1.0 - (abs(mesh_pos.z));\
+}\
+sky_top_color2.x -= 0.5 - mesh_pos.y;\
+*/
 // lowp vec3 fog_color = vec3(0.7, 0.55, 0.58);
 //  color = sky_color;
 // lowp vec3 sky_color = vec3(0.2, 0.6, 0.9);

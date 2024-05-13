@@ -25,7 +25,7 @@ void Element2DMeshSystem(ecs_iter_t *it) {
         zox_field_i_out(MeshVertices2D, meshVertices2Ds, meshVertices2D)
         const int2 canvas_size = zox_get_value(canvasLink->value, PixelSize)
         const float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
-        const  float2 scale2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
+        const float2 scale2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
         set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, scale2D);
         // spawn gpu bufers
         if (!headless) {

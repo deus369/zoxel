@@ -72,6 +72,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
             .prefab = prefab_zext,
             .text = "X",
             .font_size = scaled_font_size,
+            .font_thickness = 1,
             .padding = button_padding,
             .font_fill_color = default_font_fill_color,
             .font_outline_color = default_font_outline_color },

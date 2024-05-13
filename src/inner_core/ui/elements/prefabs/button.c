@@ -32,7 +32,8 @@ ecs_entity_t spawn_button(ecs_world_t *world, SpawnButton *data) {
             .anchor = float2_half,
             .size = zext_size,
             .render_disabled = data->element.render_disabled, },
-        .zext = data->zext };
+        .zext = data->zext
+    };
     const ecs_entity_t zext = spawn_zext(world, &spawnZext);
     Children *children = zox_get_mut(e, Children)
     add_to_Children(children, zext);
@@ -57,22 +58,28 @@ ecs_entity_t spawn_button_on_canvas(ecs_world_t *world, const ecs_entity_t canva
     SpawnZext spawnZext = {
         .canvas = {
             .e = canvas,
-            .size = canvas_size },
+            .size = canvas_size
+        },
         .parent = {
             .e = e,
             .position = pixel_position_global,
-            .size = pixel_size },
+            .size = pixel_size
+        },
         .element = {
             .layer = layer + 1,
             .anchor = float2_half,
-            .size = zext_size },
+            .size = zext_size
+        },
         .zext = {
             .prefab = prefab_zext,
             .text = text,
             .font_size = font_size,
+            .font_thickness = 1,
             .padding = padding,
             .font_fill_color = default_font_fill_color,
-            .font_outline_color = default_font_outline_color } };
+            .font_outline_color = default_font_outline_color
+        }
+    };
     const ecs_entity_t zext = spawn_zext(world, &spawnZext);
     Children *children = zox_get_mut(e, Children)
     add_to_Children(children, zext);
@@ -108,6 +115,7 @@ ecs_entity_t spawn_button_old(ecs_world_t *world, const ecs_entity_t parent, con
             .prefab = prefab_zext,
             .text = text,
             .font_size = font_size,
+            .font_thickness = 1,
             .padding = padding,
             .font_fill_color = default_font_fill_color,
             .font_outline_color = default_font_outline_color } };

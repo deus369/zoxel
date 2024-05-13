@@ -13,6 +13,7 @@ ecs_entity_t spawn_prefab_zext(ecs_world_t *world) {
     zox_prefab_set(e, Children, { 0, NULL })
     zox_prefab_set(e, FontOutlineColor, { { 255, 0, 0, 255 }})
     zox_prefab_set(e, FontFillColor, { { 0, 255, 0, 255 }})
+    zox_prefab_set(e, FontThickness, { 1 })
     prefab_zext = e;
     return e;
 }
@@ -28,6 +29,7 @@ ecs_entity_t spawn_zext(ecs_world_t *world, const SpawnZext *data) {
     zox_set(e, MeshAlignment, { data->zext.alignment })
     zox_set(e, FontFillColor, { data->zext.font_fill_color })
     zox_set(e, FontOutlineColor, { data->zext.font_outline_color })
+    zox_set(e, FontThickness, { data->zext.font_thickness })
     const unsigned char zext_data_length = data->zext.text != NULL ? strlen(data->zext.text) : 0;
     ZextData *zextData = zox_get_mut(e, ZextData)
     Children *children = zox_get_mut(e, Children)
@@ -36,19 +38,33 @@ ecs_entity_t spawn_zext(ecs_world_t *world, const SpawnZext *data) {
     const unsigned char zigels_count = calculate_total_zigels(zextData->value, zextData->length);
     resize_memory_component(Children, children, ecs_entity_t, (int) zigels_count)
     const int2 pixel_size = calculate_zext_size(zextData->value, zextData->length, data->zext.font_size , data->zext.padding);
-    ZigelSpawnData spawn_data = {
+    SpawnZigel spawn_data = {
         .canvas = data->canvas,
-        .parent = { .e = e, .position = element_canvas_position, .size = data->element.size },
-        .zext = { .length = zigels_count, .text_padding = data->zext.padding, .text_alignment = data->zext.alignment },
-        .element = { .layer = data->element.layer + 1, .size = (int2) { data->zext.font_size, data->zext.font_size } },
-        .outline_color = data->zext.font_outline_color,
-        .fill_color = data->zext.font_fill_color,
+        .parent = {
+            .e = e,
+            .position = element_canvas_position,
+            .size = data->element.size
+        },
+        .zext = {
+            .length = zigels_count,
+            .text_padding = data->zext.padding,
+            .text_alignment = data->zext.alignment,
+            .font_thickness = data->zext.font_thickness
+        },
+        .element = {
+            .layer = data->element.layer + 1,
+            .size = int2_single(data->zext.font_size)
+        },
+        .zigel = {
+            .outline_color = data->zext.font_outline_color,
+            .fill_color = data->zext.font_fill_color,
+        }
     };
     for (int i = 0; i < zigels_count; i++) {
         const unsigned char data_index = calculate_zigel_data_index(zextData->value, zextData->length, i);
         const unsigned char zigel_index = calculate_zigel_index(zextData->value, zextData->length, i);
-        spawn_data.data_index = data_index;
-        spawn_data.zigel_index = zigel_index;
+        spawn_data.zigel.data_index = data_index;
+        spawn_data.zigel.zigel_index = zigel_index;
         children->value[i] = spawn_zext_zigel(world, zextData, &spawn_data);
         zox_set(children->value[i], RenderDisabled, { data->element.render_disabled })
     }

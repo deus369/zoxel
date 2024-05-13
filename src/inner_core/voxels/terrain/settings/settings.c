@@ -20,14 +20,14 @@ unsigned char terrain_vertical = 2;
 const int2 chunk_texture_size = { terrain_texture_resolution, terrain_texture_resolution };
 const unsigned char terrain_min_height = 8;
 const int max_chunks_build_per_frame = 32;
-const double terrain_frequency2 = 0.004216; // 0.026216
 const int terrain_octaves = 12;
 const float flat_height_level = -0.56f; // 0.2f;
 unsigned char terrain_mode = 0;
 double terrain_amplifier = 64.0;
 double terrain_boost = 0.0;
 int lowest_voxel_height = -24;
-double terrain_frequency = 0.038216; // 0.026216
+const double real_terrain_frequency = 0.008216; // 0.004216; // 0.026216
+double terrain_frequency = 0.038216;
 uint32_t terrain_seed = 32666;
 
 unsigned char get_terrain_lod_from_camera_distance(unsigned char distance_to_camera) {
@@ -85,7 +85,7 @@ void set_terrain_render_distance() {
     terrain_spawn_distance = 16;
     terrain_vertical = 3;
 #endif
-    terrain_frequency = max_octree_depth * terrain_frequency2; // 0.002216 // 0.008216
+    terrain_frequency = max_octree_depth * real_terrain_frequency; // 0.002216 // 0.008216
     terrain_boost = 0; // -8 * terrain_vertical; //  + max_octree_depth * 4;
     terrain_amplifier = 16 + terrain_vertical * 16;
     lowest_voxel_height = - (terrain_vertical) * 16 + 1;

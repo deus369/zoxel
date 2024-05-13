@@ -119,8 +119,8 @@ void set_zigel_position(ecs_world_t *world, const ZextData *zextData, const ecs_
 }
 
 // spawns a text character in a place
-ecs_entity_t spawn_zext_zigel(ecs_world_t *world, const ZextData *zextData, ZigelSpawnData *data) {
-    data->element.position = calculate_zigel_position(zextData->value, zextData->length, data->data_index, data->element.size.x, data->zext.text_alignment, data->zext.text_padding);
+ecs_entity_t spawn_zext_zigel(ecs_world_t *world, const ZextData *zextData, SpawnZigel *data) {
+    data->element.position = calculate_zigel_position(zextData->value, zextData->length, data->zigel.data_index, data->element.size.x, data->zext.text_alignment, data->zext.text_padding);
     data->element.anchor = float2_half;
     return spawn_zigel(world, data);
 }

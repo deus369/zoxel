@@ -48,6 +48,7 @@ ecs_entity_t spawn_header(ecs_world_t *world, const ecs_entity_t parent, const e
             .prefab = prefab_zext,
             .text = text,
             .font_size = font_size,
+            .font_thickness = 4,
             .padding = padding,
             .font_fill_color = header_font_fill_color,
             .font_outline_color = header_font_outline_color } };

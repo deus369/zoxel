@@ -43,15 +43,17 @@ void ElementBarSystem(ecs_iter_t *it) {
             const ecs_entity_t bar_text = children->value[1];
             char text[16];
             snprintf(text, 16, "health [%i]", (int) (percentage * 100));
-            set_entity_with_text(world, bar_text, text);
-            const PixelSize *pixelSize = zox_get(e, PixelSize)
+            if (!set_entity_with_text(world, bar_text, text)) continue; // if same text, no need resize
+            const int2 pixel_size = zox_get_value(e, PixelSize)
             int2 front_pixel_size = zox_get_value(front_bar, PixelSize)
             PixelPosition *front_pixel_position = zox_get_mut(front_bar, PixelPosition)
-            front_pixel_size.x = (int) (pixelSize->value.x * percentage);
-            front_pixel_position->value.x = - pixelSize->value.x / 2 + front_pixel_size.x / 2;
+            // calculate margin cause im too lazy to put it here as component yet
+            int offset_x = (pixel_size.x - (pixel_size.x * scale.x)) / 2;
+            float percecentage_2 = ((int) (percentage * 100)) / 100.0f; // only update per 100 units
+            front_pixel_size.x = (int) floor(scale.x * pixel_size.x * percecentage_2);
+            front_pixel_position->value.x = offset_x;
             zox_modified(front_bar, PixelPosition)
-            on_element_pixels_resized(world, front_bar, front_pixel_size, 0);
-            // zox_log("set front-bar2D to size: %ix%i\n", front_pixel_size.x, front_pixel_position->value.x)
+            on_element_pixels_resized(world, front_bar, front_pixel_size, zox_mesh_alignment_left);
         }
     }
 } zox_declare_system(ElementBarSystem)
