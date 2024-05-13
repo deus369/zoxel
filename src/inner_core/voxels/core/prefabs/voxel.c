@@ -9,16 +9,15 @@ ecs_entity_t spawn_prefab_voxel(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_voxel(ecs_world_t *world, unsigned char index) {
+ecs_entity_t spawn_voxel(ecs_world_t *world, const unsigned char index, const color voxel_color) {
     zox_instance(prefab_voxel)
     zox_name("voxel")
     // spawn one texture here
     int seed = (rand() % 666666) - 333333 + index;
     Textures *textures = zox_get_mut(e, Textures)
     resize_memory_component(Textures, textures, ecs_entity_t, 1)
+    color soil_color;
     for (int i = 0; i < 1; i++) {
-        const unsigned char color_margin = 32;
-        const color voxel_color = (color) { color_margin + rand() % (255 - color_margin * 2), color_margin + rand() % (255 - color_margin * 2), color_margin + rand() % (255 - color_margin * 2), 255 };
         // todo: base grass off dirt, as well as sand, using HSV color contrasts
         const ecs_entity_t texture_entity = spawn_texture_dirt(world, seed + i, voxel_color);
         if (index == 0) zox_add_tag(texture_entity, DirtTexture)

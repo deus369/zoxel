@@ -1,5 +1,5 @@
-// when health goes to 0, kill UserLink->value
-//  set Dead to 1
+// When health goes to 0, kill UserLink->value
+// Set Dead to 1
 void DeathSystem(ecs_iter_t *it) {
     // if (!ecs_query_changed(NULL, it)) return; // only update when stat value changes
     zox_iter_world()
@@ -23,5 +23,6 @@ void DeathSystem(ecs_iter_t *it) {
         animationStart->value = zox_current_time;
         zox_modified(userLink->value, AnimationStart)
         zox_log_name(" + [%s] has died", userLink->value)
+        // drop item here
     }
 } zox_declare_system(DeathSystem)

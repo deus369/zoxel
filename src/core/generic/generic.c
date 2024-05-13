@@ -54,6 +54,7 @@ zox_function_component(TimedEvent, void, ecs_world_t*, const ecs_entity_t)
 #include "util/convert_to_ascii.c"
 #include "util/name_util.c"
 #include "util/name_generation.c"
+#include "util/hsv_util.c"
 // zoxel_prefab_includes
 #include "prefabs/generic_event.c"
 // zoxel_system_includes
@@ -79,6 +80,13 @@ void delay_event(ecs_world_t *world, void (*value)(ecs_world_t*, const ecs_entit
 
 zox_begin_module(Generic)
 initialize_component_ids();
+// test
+color test_color = (color) { 130, 148, 191, 255 };
+zox_log(" > color [%ix%ix%i]\n", test_color.r, test_color.g, test_color.b)
+float3 test_hsv = color_to_hsv(test_color);
+zox_log(" > color hsv [%fx%fx%f]\n", test_hsv.x, test_hsv.y, test_hsv.z)
+color test_color2 = hsv_to_color(test_hsv);
+zox_log(" > color converted back [%ix%ix%i]\n", test_color2.r, test_color2.g, test_color2.b)
 // zoxel_component_defines
 zox_define_tag(Selectable)
 zox_define_tag(Clickable)

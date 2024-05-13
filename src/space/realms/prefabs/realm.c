@@ -18,8 +18,34 @@ ecs_entity_t spawn_realm(ecs_world_t *world) {
     // VoxelLinks *voxelLinks = zox_get_mut(e, VoxelLinks)
     zox_get_mutt(e, VoxelLinks, voxelLinks)
     resize_memory_component(VoxelLinks, voxelLinks, ecs_entity_t, realm_voxels)
+    // dirt color - hsv - hue saturation value
+    const float max_value = 70;
+    const float min_value = 30;
+    const float max_saturation = 50;
+    const float min_saturation = 24;
+    float3 soil_hsv = (float3) { 360.0f * (rand() % 100) * 0.01f, min_saturation + (max_saturation - min_saturation) * (rand() % 100) * 0.01f, min_value + (max_value - min_value) * (rand() % 100) * 0.01f };
+    float3 grass_hsv = (float3) { 360.0f - soil_hsv.x, soil_hsv.y, soil_hsv.z };
+    if (hsv_to_color(grass_hsv).r > hsv_to_color(soil_hsv).r)
+    {
+        float soil_hue = soil_hsv.x;
+        soil_hsv.x = grass_hsv.x;
+        grass_hsv.x = soil_hue;
+        zox_log(" > grass red was greater, swapping hues\n")
+    }
+    const color soil_color = hsv_to_color(soil_hsv);
+    const color grass_color = hsv_to_color(grass_hsv);
+    zox_log(" + soil hsv: %fx%fx%f\n", soil_hsv.x, soil_hsv.y, soil_hsv.z)
+    zox_log(" + soil color: %ix%ix%i\n", soil_color.r, soil_color.g, soil_color.b)
+    zox_log(" + grass_hsv: %fx%fx%f\n", grass_hsv.x, grass_hsv.y, grass_hsv.z)
+    zox_log(" + grass_color: %ix%ix%i\n", grass_color.r, grass_color.g, grass_color.b)
     for (unsigned char i = 0; i < voxelLinks->length; i++) {
-        voxelLinks->value[i] = spawn_voxel(world, i);
+        if (i == 0) voxelLinks->value[i] = spawn_voxel(world, i, soil_color);
+        else if (i == 1) voxelLinks->value[i] = spawn_voxel(world, i, grass_color);
+        else {
+            const unsigned char color_margin = 32;
+            const color voxel_color = (color) { color_margin + rand() % (255 - color_margin * 2), color_margin + rand() % (255 - color_margin * 2), color_margin + rand() % (255 - color_margin * 2), 255 };
+            voxelLinks->value[i] = spawn_voxel(world, i, voxel_color);
+        }
     }
     zox_modified(e, VoxelLinks)
     local_realm = e;
