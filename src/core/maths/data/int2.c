@@ -12,6 +12,10 @@ int2 int2_half(const int2 value) {
     return (int2) { value.x / 2, value.y / 2 };
 }
 
+int2 int2_single(const int value) {
+    return (int2) { value, value };
+}
+
 unsigned char int2_equals(const int2 a, const int2 b) {
     return a.x == b.x && a.y == b.y;
 }

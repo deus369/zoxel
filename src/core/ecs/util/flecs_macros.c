@@ -50,6 +50,10 @@ if (e) {\
 
 #define zox_gett_value(e, T) ecs_get(world, e, T)->value
 
+#define zox_get_value_(e, T) ecs_get(world, e, T)->value
+
+#define zox_get_length_(e, T) ecs_get(world, e, T)->length
+
 #define zox_gett(e, T) ecs_get(world, e, T)
 
 #define zox_get(e, T) ecs_get(world, e, T);

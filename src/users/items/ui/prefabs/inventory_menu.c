@@ -52,13 +52,9 @@ ecs_entity_t spawn_inventory_menu2(ecs_world_t *world, SpawnInventoryMenu *data)
         zox_set(e, HeaderHeight, { header_size.y })
     }
     int array_index = is_header;
-    const int2 icon_size2 = (int2) { data->inventory_menu.icon_size, data->inventory_menu.icon_size };
     for (int i = 0; i < data->inventory_menu.grid_size.x; i++) {
         for (int j = 0; j < data->inventory_menu.grid_size.y; j++) {
-            const int position_x = (int) ((i - (data->inventory_menu.grid_size.x / 2) + 0.5f) * (data->inventory_menu.icon_size + data->inventory_menu.grid_padding));
-            const int position_y = (int) ((j - (data->inventory_menu.grid_size.y / 2) + 0.5f) * (data->inventory_menu.icon_size + data->inventory_menu.grid_padding) - header_height / 2);
-            const int2 position = (int2) { position_x, position_y };
-            // spawn_element_frame - return ecs_entity_t2
+            const int2 position = { (int) ((i - (data->inventory_menu.grid_size.x / 2) + 0.5f) * (data->inventory_menu.icon_size + data->inventory_menu.grid_padding)), (int) ((j - (data->inventory_menu.grid_size.y / 2) + 0.5f) * (data->inventory_menu.icon_size + data->inventory_menu.grid_padding) - header_height / 2) };
             SpawnIconFrame spawnIconFrame = {
                 .prefab = prefab_item_icon_frame,
                 .canvas = data->canvas,
@@ -71,11 +67,12 @@ ecs_entity_t spawn_inventory_menu2(ecs_world_t *world, SpawnInventoryMenu *data)
                 },
                 .element = {
                     .position = position,
-                    .size = icon_size2,
+                    .size = int2_single(data->inventory_menu.icon_size),
                     .layer = icon_layer,
                     .anchor = float2_half
                 }
             };
+            // spawn_element_frame - return ecs_entity_t2
             children->value[array_index] = spawn_icon_frame(world, &spawnIconFrame);
             array_index++;
         }

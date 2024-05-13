@@ -14,6 +14,18 @@ char* convert_zext_to_text(const unsigned char *zext, unsigned char length) {
     return text;
 }
 
+unsigned char get_text_length(const char* text) {
+    unsigned char text_length = strlen(text);
+    return text_length;
+}
+
+#define text_to_zext(text) get_text_length(text), convert_string_to_zext(text)
+
+#define zox_log_name(log, e) {\
+    char *text = convert_zext_to_text(zox_get_value_(e, ZoxName), zox_get_length_(e, ZoxName));\
+    zox_log(log"\n", text)\
+    free(text);\
+}
 
 /*void prefab_set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char label[]) {
 #ifdef zox_entity_names

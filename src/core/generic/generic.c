@@ -53,6 +53,7 @@ zox_function_component(TimedEvent, void, ecs_world_t*, const ecs_entity_t)
 #include "util/convert_ascii.c"
 #include "util/convert_to_ascii.c"
 #include "util/name_util.c"
+#include "util/name_generation.c"
 // zoxel_prefab_includes
 #include "prefabs/generic_event.c"
 // zoxel_system_includes

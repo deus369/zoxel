@@ -9,28 +9,37 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     zox_prefab_child(prefab_vox)
     zox_prefab_name("prefab_character3D")
     zox_add_tag(e, Character3D)
-    zox_add_tag(e, LinkChunk)
-    add_seed(world, e, 999);
-    add_physics3D(world, e);
+    // rendering
     if (!headless) add_gpu_colors(world, e);
-    zox_prefab_set(e, Dead, { 0 })
-    zox_prefab_set(e, DiedTime, { 0 })
-    zox_prefab_set(e, AnimationState, { zox_animation_idle })
-    zox_prefab_set(e, AnimationStart, { 0 })
+    // transform
     zox_prefab_set(e, Euler, { float3_zero })
     zox_prefab_set(e, Bounds3D, { float3_one })
     zox_prefab_set(e, Position3DBounds, { float6_zero })
+    add_physics3D(world, e);
+    // voxels
+    zox_add_tag(e, LinkChunk)
     zox_prefab_set(e, VoxLink, { 0 })
     zox_prefab_set(e, ChunkLink, { 0 })
     zox_prefab_set(e, ChunkPosition, { int3_chaos })
     zox_prefab_set(e, VoxelPosition, { int3_zero})
-    zox_prefab_set(e, ElementLinks, { 0, NULL})
+    // animation
+    zox_prefab_set(e, AnimationState, { zox_animation_idle })
+    zox_prefab_set(e, AnimationStart, { 0 })
+    // generation
+    add_seed(world, e, 999);
+    // name
+    zox_prefab_set(e, ZoxName, { 0, NULL })
+    // stats / death
+    zox_prefab_set(e, Dead, { 0 })
+    zox_prefab_set(e, DiedTime, { 0 })
+    zox_prefab_set(e, StatLinks, { 0, NULL })       // stats
+    zox_prefab_set(e, DotLinks, { 0, NULL })        //  - dots
+    // more
     zox_prefab_set(e, Children, { 0, NULL})         // for bones, particles, etc (transforms)
-    zox_prefab_set(e, StatLinks, { 0, NULL })
-    zox_prefab_set(e, ItemLinks, { 0, NULL })
-    zox_prefab_set(e, SkillLinks, { 0, NULL })
-    zox_prefab_set(e, ActionLinks, { 0, NULL })
-    zox_prefab_set(e, DotLinks, { 0, NULL })
+    zox_prefab_set(e, ElementLinks, { 0, NULL})     // uis
+    zox_prefab_set(e, ItemLinks, { 0, NULL })       // items
+    zox_prefab_set(e, SkillLinks, { 0, NULL })      // skills
+    zox_prefab_set(e, ActionLinks, { 0, NULL })     // actions
     prefab_character3D = e;
     return e;
 }
@@ -59,6 +68,10 @@ ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, co
     zox_set(e, RenderLod, { lod })
     spawn_gpu_mesh(world, e);
     spawn_gpu_colors(world, e);
+    // name
+    char *name = generate_name();
+    zox_set(e, ZoxName, { text_to_zext(name) })
+    free(name);
     // stats
     float health = (0.02f + 0.98f * ((rand() % 100) * 0.01f)) * 5.0f;
     float max_health = 10.0f;

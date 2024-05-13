@@ -28,7 +28,7 @@ void spawn_prefabs_engine(ecs_world_t *world) {
 #ifndef zox_game
     #define zox_game zoxel
 #endif
-#define capitalize_first(s) (toupper((s)[0]) + (s) + 1)
+// #define capitalize_first(s) (toupper((s)[0]) + (s) + 1)
 #define str_macro(x) #x
 #define inc_nexus_game(x) str_macro(../../nexus/x/x.c)
 #include inc_nexus_game(zox_game)
