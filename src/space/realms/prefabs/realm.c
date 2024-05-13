@@ -32,8 +32,15 @@ ecs_entity_t spawn_realm(ecs_world_t *world) {
         grass_hsv.x = soil_hue;
         zox_log(" > grass red was greater, swapping hues\n")
     }
+    float3 sand_hsv = (float3) { soil_hsv.x, soil_hsv.y + 16, soil_hsv.z + 16 };
+    float3 sky_hsv = (float3) { ((int) grass_hsv.x + 180) % 360, soil_hsv.y + 32,  soil_hsv.z + 32 };
     const color soil_color = hsv_to_color(soil_hsv);
     const color grass_color = hsv_to_color(grass_hsv);
+    const color sand_color = hsv_to_color(sand_hsv);
+    const color sky_color = hsv_to_color(sky_hsv);
+    game_sky_color = color_to_float3(sky_color);
+    game_sky_bottom_color = game_sky_color;
+    fog_color = game_sky_bottom_color;
     zox_log(" + soil hsv: %fx%fx%f\n", soil_hsv.x, soil_hsv.y, soil_hsv.z)
     zox_log(" + soil color: %ix%ix%i\n", soil_color.r, soil_color.g, soil_color.b)
     zox_log(" + grass_hsv: %fx%fx%f\n", grass_hsv.x, grass_hsv.y, grass_hsv.z)
