@@ -50,6 +50,9 @@ void spawn_prefabs_cameras(ecs_world_t *world) {
     spawn_camera_base_prefab(world);
     spawn_prefab_free_camera(world);
     spawn_prefab_camera2D_follower(world);
+#ifdef zox_test_camera_frustum
+    test_frustum_check();
+#endif
 }
 
 zox_begin_module(Cameras)

@@ -8,7 +8,6 @@ typedef struct {
     float3 extents;
 } bounds;
 
-
 float3 calculate_point_on_plane(const float3 normal, const float distance) {
     // Here, we just choose an arbitrary point on the plane
     // You can choose any point that makes sense for your application

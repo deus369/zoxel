@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_character3D_npc(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_character3D_npc(ecs_world_t *world, ecs_entity_t_array_d* entities, const vox_file *vox, const float3 position, const float4 rotation, const unsigned char character_lod) {
-    const ecs_entity_2 e = spawn_character3D(world, prefab_character3D_npc, vox, position, rotation, character_lod, 0);
+    const ecs_entity_2 e = spawn_character3D(world, prefab_character3D_npc, vox, position, rotation, character_lod, 0, 0);
     add_to_ecs_entity_t_array_d(entities, e.x);
     return e.x;
 }

@@ -1,6 +1,7 @@
 typedef struct {
     GLint vertex_position;
     GLint vertex_color;
+    GLuint transform_matrix;
     GLuint position;
     GLuint rotation;
     GLuint scale;
@@ -14,6 +15,7 @@ MaterialColored3D create_MaterialColored3D(const GLuint material) {
     return (MaterialColored3D) {
         glGetAttribLocation(material, "vertex_position"),
         glGetAttribLocation(material, "vertex_color"),
+        glGetUniformLocation(material, "transform_matrix"),
         glGetUniformLocation(material, "position"),
         glGetUniformLocation(material, "rotation"),
         glGetUniformLocation(material, "scale"),

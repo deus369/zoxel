@@ -18,4 +18,5 @@ ecs_entity_t main_cameras[max_cameras];
 ecs_entity_t ui_cameras[max_cameras];
 // debugs
 // #define zox_debug_camera_frustum
+// #define zox_test_camera_frustum
 // todo: debug frustum planes, draw plane with line for normal and distance, rotated quad with normal line?

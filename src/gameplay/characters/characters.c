@@ -14,7 +14,6 @@ zox_begin_module(Characters)
 zox_define_component_entity(CharacterLink)
 zox_import_module(Characters2D)
 zox_import_module(Characters3D)
-// spawn_prefabs_characters(world);
 zoxel_end_module(Characters)
 
 #endif

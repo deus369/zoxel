@@ -7,7 +7,8 @@ unsigned char game_rule_attach_to_character = 1;
 #else
 unsigned char game_rule_attach_to_character = 0;
 #endif
-const unsigned char player_vox_index = 0;
+const unsigned char player_vox_index = 1;
+#define player_vox_scale  (1 / 64.0f) // 42 // * 0.5f
 // ui
 const int2 crosshair_texture_size = (int2) { 128, 128 };
 const int2 crosshair_pixel_size = (int2) { 64, 64 };

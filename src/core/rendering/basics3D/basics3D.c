@@ -47,7 +47,7 @@ zox_define_component(MaterialColored3D)
 #ifdef zoxel_transforms3D
 zox_system_1(InstanceRender3DSystem, 0, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink)
 // characters
-zox_render3D_system(RenderCharacters3DSystem, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [none] MeshColorRGBs, [none] !UvsGPULink)
+zox_render3D_system(RenderCharacters3DSystem, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [in] TransformMatrix, [none] MeshColorRGBs, [none] !UvsGPULink)
 // healthbars
 zox_render3D_system(Element3DRenderSystem, [none] rendering.core.SingleMaterial, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] TextureGPULink)
 // skybox

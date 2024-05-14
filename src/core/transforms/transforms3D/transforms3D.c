@@ -3,6 +3,7 @@
 
 #define zox_transforms_stage EcsPreStore // EcsPostUpdate | EcsPreStore
 zox_declare_tag(EulerOverride)
+zox_declare_tag(BadTransformMatrix)
 zox_component_float3(Position3D)
 zox_component_float3(LastPosition3D)
 zox_component_float4(Rotation3D)     // A quaternion rotation
@@ -24,6 +25,7 @@ zox_component(TransformMatrix, float4x4)
 
 zox_begin_module(Transforms3D)
 zox_define_tag(EulerOverride)
+zox_define_tag(BadTransformMatrix)
 zox_define_component_float3(Position3D)
 zox_define_component_float3(LastPosition3D)
 zox_define_component_float4(Rotation3D)

@@ -3,7 +3,6 @@
 
 // zox_settings
 #define vox_model_scale (1 / 64.0f)
-#define player_vox_model_scale  (1 / 42.0f)
 // zox_component_declares
 zox_declare_tag(Vox)
 // zox_data_includes
