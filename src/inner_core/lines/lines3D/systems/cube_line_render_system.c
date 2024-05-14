@@ -9,7 +9,7 @@ void set_line3D_thickness(float thickness) {
         glLineWidth(thickness);
 }
 
-void render_line3D(float3 position_a, float3 position_b) {
+void render_cube_line3D(float3 position_a, float3 position_b) {
     // glLineWidth(cubeLinesThickness->value);
     glVertexAttribPointer(line3D_position_location, 3, GL_FLOAT, GL_FALSE, 0,
         (float[]) { position_a.x, position_a.y, position_a.z, position_b.x, position_b.y, position_b.z });
@@ -42,23 +42,23 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
 #ifdef zoxel_debug_transforms
         // up axis
         set_line3D_color(colorRGB->value);
-        // render_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + cube_lines_length, position3D->value.z });
+        // render_cube_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + cube_lines_length, position3D->value.z });
         float3 up_vector = (float3) { 0, cube_lines_length, 0 };
         float4_rotate_float3_p(rotation3D->value, &up_vector);
         float3_add_float3_p(&up_vector, position3D->value);
-        render_line3D(position3D->value, up_vector);
+        render_cube_line3D(position3D->value, up_vector);
         // forward axis
         set_line3D_color((color_rgb) { colorRGB->value.b, colorRGB->value.g, colorRGB->value.r });
         float3 forward_vector = (float3) { 0, 0, cube_lines_length };
         float4_rotate_float3_p(rotation3D->value, &forward_vector);
         float3_add_float3_p(&forward_vector, position3D->value);
-        render_line3D(position3D->value, forward_vector);
+        render_cube_line3D(position3D->value, forward_vector);
         // right axis
         set_line3D_color((color_rgb) { colorRGB->value.g, colorRGB->value.r, colorRGB->value.b });
         float3 right_vector = (float3) { cube_lines_length, 0, 0 };
         float4_rotate_float3_p(rotation3D->value, &right_vector);
         float3_add_float3_p(&right_vector, position3D->value);
-        render_line3D(position3D->value, right_vector);
+        render_cube_line3D(position3D->value, right_vector);
 #else
         color_rgb cube_color = colorRGB->value;
         cube_color.r += 30 * renderLod->value;
@@ -91,27 +91,27 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
         float3_add_float3_p(&bottom_right2, position3D->value);
         float3_add_float3_p(&bottom_left2, position3D->value);
         // top
-        render_line3D(top_left, top_right);
-        render_line3D(top_left2, top_right2);
-        render_line3D(top_left, top_left2);
-        render_line3D(top_right, top_right2);
+        render_cube_line3D(top_left, top_right);
+        render_cube_line3D(top_left2, top_right2);
+        render_cube_line3D(top_left, top_left2);
+        render_cube_line3D(top_right, top_right2);
         // bottom
-        render_line3D(bottom_left, bottom_right);
-        render_line3D(bottom_left2, bottom_right2);
-        render_line3D(bottom_left, bottom_left2);
-        render_line3D(bottom_right, bottom_right2);
+        render_cube_line3D(bottom_left, bottom_right);
+        render_cube_line3D(bottom_left2, bottom_right2);
+        render_cube_line3D(bottom_left, bottom_left2);
+        render_cube_line3D(bottom_right, bottom_right2);
         // vertical
-        render_line3D(bottom_right, top_right);
-        render_line3D(bottom_left, top_left);
-        render_line3D(bottom_right2, top_right2);
-        render_line3D(bottom_left2, top_left2);
+        render_cube_line3D(bottom_right, top_right);
+        render_cube_line3D(bottom_left, top_left);
+        render_cube_line3D(bottom_right2, top_right2);
+        render_cube_line3D(bottom_left2, top_left2);
 #endif
 
         // up | down for collision
         /*set_line3D_color(colorRGB->value);
-        render_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y - bounds3D->value.y, position3D->value.z });
+        render_cube_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y - bounds3D->value.y, position3D->value.z });
         set_line3D_color((color_rgb) { colorRGB->value.g, colorRGB->value.r, colorRGB->value.b });
-        render_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + bounds3D->value.y, position3D->value.z });*/
+        render_cube_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + bounds3D->value.y, position3D->value.z });*/
         // zoxel_log(" + cls [%i] - [%lu] position3D [%fx%fx%f]\n", i, it->entities[i], position3D->value.x, position3D->value.y, position3D->value.z);
     }
     glDisableVertexAttribArray(line3D_position_location);

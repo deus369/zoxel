@@ -1,6 +1,12 @@
-float float_abs(float input) {
+float float_abs(const float input) {
     if (input < 0) return -input;
     else return input;
+}
+
+float float_sign(const float input) {
+    if (input < 0) return -1;
+    else if (input > 0) return 1;
+    else return 0;
 }
 
 float float_lerp(float a, float b, float t) {

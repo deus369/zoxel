@@ -11,6 +11,7 @@ ecs_entity_t spawn_camera_base_prefab(ecs_world_t *world) {
     zox_prefab_set(e, LocalRotation3D, { quaternion_identity })
     zox_prefab_set(e, Euler, { (float3) { 0, 180 * degreesToRadians, 0 } })
     zox_prefab_set(e, ProjectionMatrix, { float4x4_identity() })
+    zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
     zox_prefab_set(e, ViewMatrix, { float4x4_identity() })
     zox_prefab_set(e, ScreenPosition, { int2_zero })
     zox_prefab_set(e, ScreenDimensions, { int2_zero })
@@ -20,6 +21,7 @@ ecs_entity_t spawn_camera_base_prefab(ecs_world_t *world) {
     zox_prefab_set(e, FreeRoam, { 0 }) // newer
     zox_prefab_set(e, CameraMode, { 0 })
     zox_prefab_set(e, ScreenToCanvas, { float4_zero })
+    zox_prefab_set(e, CameraPlanes, { 0, NULL })
     prefab_base_camera = e;
     return e;
 }

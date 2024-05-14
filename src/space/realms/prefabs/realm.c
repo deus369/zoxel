@@ -48,6 +48,7 @@ ecs_entity_t spawn_realm(ecs_world_t *world) {
     for (unsigned char i = 0; i < voxelLinks->length; i++) {
         if (i == 0) voxelLinks->value[i] = spawn_voxel(world, i, soil_color);
         else if (i == 1) voxelLinks->value[i] = spawn_voxel(world, i, grass_color);
+        else if (i == 2) voxelLinks->value[i] = spawn_voxel(world, i, sand_color);
         else {
             const unsigned char color_margin = 32;
             const color voxel_color = (color) { color_margin + rand() % (255 - color_margin * 2), color_margin + rand() % (255 - color_margin * 2), color_margin + rand() % (255 - color_margin * 2), 255 };

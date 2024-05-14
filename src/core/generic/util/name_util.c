@@ -1,5 +1,6 @@
 unsigned char* convert_string_to_zext(const char* text) {
-    unsigned char text_length = strlen(text);
+    if (!text) return NULL;
+    const unsigned char text_length = strlen(text);
     unsigned char *zext = malloc(text_length);
     for (unsigned char i = 0; i < text_length; i++) zext[i] = convert_ascii(text[i]);
     return zext;

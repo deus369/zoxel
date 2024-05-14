@@ -28,6 +28,10 @@ float3 float3_multiply_float(const float3 input, const float mul) {
     return (float3) { input.x * mul, input.y * mul, input.z * mul };
 }
 
+float3 float3_multiply_float3(const float3 a, const float3 b) {
+    return (float3) { a.x * b.x, a.y * b.y, a.z * b.z };
+}
+
 float3 float3_add(const float3 inputA, const float3 inputB) {
     return (float3) { inputA.x + inputB.x, inputA.y + inputB.y, inputA.z + inputB.z };
 }
@@ -68,6 +72,10 @@ float3 float3_divide_float(const float3 input, const float div) {
     return (float3) { input.x / div, input.y / div, input.z / div };
 }
 
+float float3_magnitude(const float3 value) {
+    return sqrt(value.x * value.x + value.y * value.y + value.z * value.z);
+}
+
 float3 float3_normalize(const float3 input) {
     float length = sqrt(input.x * input.x + input.y * input.y + input.z * input.z);
     if (float_abs(length) <= 0.00001f) return input;
@@ -89,6 +97,23 @@ float float3_dot(const float3 a, const float3 b) {
 
 float float3_length(const float3 v) {
     return sqrt(float3_dot(v, v));
+}
+
+float3 float3_sign(const float3 value) {
+    return (float3) { float_sign(value.x), float_sign(value.y), float_sign(value.z) };
+}
+
+float float3_sign2(const float3 value) {
+    float abs_x = float_abs(value.x);
+    float abs_y = float_abs(value.y);
+    float abs_z = float_abs(value.z);
+    if (abs_x >= abs_y && abs_x >= abs_z) {
+        return (value.x < 0) ? -1.0f : ((value.x > 0) ? 1.0f : 0.0f);
+    } else if (abs_y >= abs_x && abs_y >= abs_z) {
+        return (value.y < 0) ? -1.0f : ((value.y > 0) ? 1.0f : 0.0f);
+    } else {
+        return (value.z < 0) ? -1.0f : ((value.z > 0) ? 1.0f : 0.0f);
+    }
 }
 
 float3 float3_from_byte3(const byte3 input) {

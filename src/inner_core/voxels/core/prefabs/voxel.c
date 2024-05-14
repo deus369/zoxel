@@ -16,7 +16,6 @@ ecs_entity_t spawn_voxel(ecs_world_t *world, const unsigned char index, const co
     int seed = (rand() % 666666) - 333333 + index;
     Textures *textures = zox_get_mut(e, Textures)
     resize_memory_component(Textures, textures, ecs_entity_t, 1)
-    color soil_color;
     for (int i = 0; i < 1; i++) {
         // todo: base grass off dirt, as well as sand, using HSV color contrasts
         const ecs_entity_t texture_entity = spawn_texture_dirt(world, seed + i, voxel_color);

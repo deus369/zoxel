@@ -175,37 +175,6 @@ void print_quadrant(float4 q) {
     }
 }
 
-float4x4 quaternion_to_matrix(float4 quat) {
-    float4x4 m = float4x4_identity();
-    float x = quat.x;
-    float y = quat.y;
-    float z = quat.z;
-    float w = quat.w;
-    float x2 = x + x;
-    float y2 = y + y;
-    float z2 = z + z;
-    float xx = x * x2;
-    float xy = x * y2;
-    float xz = x * z2;
-    float yy = y * y2;
-    float yz = y * z2;
-    float zz = z * z2;
-    float wx = w * x2;
-    float wy = w * y2;
-    float wz = w * z2;
-    m.x.x = 1.0 - (yy + zz);
-    m.x.y = xy - wz;
-    m.x.z = xz + wy;
-    m.y.x = xy + wz;
-    m.y.y = 1.0 - (xx + zz);
-    m.y.z = yz - wx;
-    m.z.x = xz - wy;
-    m.z.y = yz + wx;
-    m.z.z = 1.0 - (xx + yy);
-    m.w.w = 1.0;
-    return m;
-}
-
 void float4_print_euler(float4 input) {
     float3 euler = float3_divide_float(quaternion_to_euler(input), degreesToRadians);
     zoxel_log("-> Euler [x:%f y:%f z:%f]\n", euler.x, euler.y, euler.z);
