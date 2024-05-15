@@ -22,6 +22,7 @@ zox_component(TransformMatrix, float4x4)
 #include "systems/euler_limit_x_system.c"
 #include "systems/euler_limit_z_system.c"
 #include "systems/transform_matrix_system.c"
+#include "systems/transform_matrix_scale_system.c"
 
 zox_begin_module(Transforms3D)
 zox_define_tag(EulerOverride)
@@ -42,7 +43,8 @@ zox_system(EulerLimitZSystem, EcsOnUpdate, [in] EulerLimitZ, [out] Euler)
 zox_system(EulerOverrideSystem, EcsOnUpdate, [none] EulerOverride, [in] Euler, [out] Rotation3D)
 zox_system(ParentRotationSystem, zox_transforms_stage, [in] ParentLink, [in] LocalRotation3D, [out] Rotation3D)
 zox_system(ParentPositionSystem, zox_transforms_stage, [in] ParentLink, [in] LocalPosition3D, [out] Position3D)
-zox_system(TransformMatrixSystem, zox_transforms_stage, [in] Position3D, [in] Rotation3D, [out] TransformMatrix)
+zox_system(TransformMatrixSystem, zox_transforms_stage, [in] Position3D, [in] Rotation3D, [out] TransformMatrix, [none] !Scale1D)
+zox_system(TransformMatrixScaleSystem, zox_transforms_stage, [in] Position3D, [in] Rotation3D, [in] Scale1D, [out] TransformMatrix)
 zoxel_end_module(Transforms3D)
 
 #endif

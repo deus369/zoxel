@@ -16,7 +16,7 @@ ecs_entity_t spawn_terrain(ecs_world_t *world, ecs_entity_t tilemap, float3 posi
     zox_instance(prefab_terrain)
     zox_name("terrain")
     zox_set(e, Position3D, { position })
-    zox_set(e, Scale1D, { scale })
+    // zox_set(e, Scale1D, { scale })
     zox_set(e, TilemapLink, { tilemap })
     // did tilemap have a voxlink previously
     zox_prefab_set(tilemap, VoxLink, { e })    // link tilemap to terrain

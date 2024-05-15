@@ -18,7 +18,7 @@ ecs_entity_t spawn_terrain_chunk(ecs_world_t *world, ecs_entity_t prefab, int3 c
     // zox_name("terrain_chunk")
     zox_set(e, ChunkPosition, { chunk_position })
     zox_set(e, Position3D, { position })
-    zox_set(e, Scale1D, { scale })
+    // zox_set(e, Scale1D, { scale })
     if (!headless) {
         spawn_gpu_mesh(world, e);
         spawn_gpu_uvs(world, e);

@@ -38,7 +38,7 @@ void calculate_frustum_planes(const float4x4 mat, plane *planes) {
     planes[5].normal.y = mat.w.y - mat.z.y;
     planes[5].normal.z = mat.w.z - mat.z.z;
     planes[5].distance = mat.w.w - mat.z.w;
-    normalize_planes(planes);
+    // normalize_planes(planes);
 }
 
 // checks if bounds point is outside of plane

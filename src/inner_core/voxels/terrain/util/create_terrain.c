@@ -127,7 +127,7 @@ ecs_entity_t create_terrain(ecs_world_t *world, int3 center_position) {
                 int index = get_chunk_index_3(chunk_position, terrain_spawn_distance, terrain_vertical);
                 if (index < 0 || index >= chunks_total_length) continue;
                 float3 real_chunk_position = float3_multiply_float(float3_from_int3(chunk_position), real_chunk_scale);
-                ecs_entity_t chunk = spawn_terrain_chunk_octree(world, prefab_terrain_chunk_octree, terrain_world, center_position, chunk_position, real_chunk_position, 0.5f);
+                ecs_entity_t chunk = spawn_terrain_chunk_octree(world, prefab_terrain_chunk_octree, terrain_world, center_position, chunk_position, real_chunk_position);
                 chunk_positions[index] = chunk_position;
                 chunks[index] = chunk;
             }

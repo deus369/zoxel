@@ -17,6 +17,6 @@ unsigned char camera_follow_mode = zox_camera_follow_mode_attach;
 ecs_entity_t main_cameras[max_cameras];
 ecs_entity_t ui_cameras[max_cameras];
 // debugs
+// todo: debug frustum planes, draw plane with line for normal and distance, rotated quad with normal line?
 // #define zox_debug_camera_frustum
 // #define zox_test_camera_frustum
-// todo: debug frustum planes, draw plane with line for normal and distance, rotated quad with normal line?

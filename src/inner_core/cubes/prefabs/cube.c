@@ -3,7 +3,7 @@ ecs_entity_t prefab_cube;
 ecs_entity_t spawn_prefab_cube(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_cube")
-    add_transform3Ds(world, e);
+    add_transform3Ds(world, e, 1);
     zox_add(e, Brightness)
     zox_prefab_set(e, MeshDirty, { 1 })
     if (!headless) {

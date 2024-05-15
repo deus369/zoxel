@@ -2,7 +2,7 @@ void add_ui_components_world(ecs_world_t *world, ecs_entity_t e, float2 mesh_sca
     add_seed(world, e, 666);
     add_texture(world, e, int2_zero, 0);
     add_ui_components(world, e);
-    add_transform3Ds(world, e);
+    add_transform3Ds(world, e, 0);
     zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
     zox_prefab_set(e, Brightness, { 1 })
     zox_prefab_set(e, MeshDirty, { 0 })

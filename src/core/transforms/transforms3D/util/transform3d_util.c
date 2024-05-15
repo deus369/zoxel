@@ -1,7 +1,7 @@
-void add_transform3Ds(ecs_world_t *world, const ecs_entity_t e) {
+void add_transform3Ds(ecs_world_t *world, const ecs_entity_t e, const unsigned char is_scale) {
     zox_prefab_set(e, Position3D, { float3_zero })
     zox_prefab_set(e, Rotation3D, { float4_identity })
-    zox_prefab_set(e, Scale1D, { 1 })
+    if (is_scale) zox_prefab_set(e, Scale1D, { 1 })
 }
 
 void set_position_from_parents(ecs_world_t *world, const ecs_entity_t parent, float3 *position3D, const float3 local_position3D) {

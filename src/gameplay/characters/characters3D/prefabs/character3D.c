@@ -12,6 +12,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     // rendering
     if (!headless) add_gpu_colors(world, e);
     // transform
+    zox_prefab_set(e, Scale1D, { 1.0f })
     zox_prefab_set(e, Euler, { float3_zero })
     zox_prefab_set(e, Bounds3D, { float3_one })
     zox_prefab_set(e, Position3DBounds, { float6_zero })

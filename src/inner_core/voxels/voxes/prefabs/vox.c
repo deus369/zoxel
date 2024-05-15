@@ -6,7 +6,7 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world) {
     zox_prefab_child(prefab_chunk)
     zox_prefab_name("prefab_vox")
     zox_add_tag(e, Vox)
-    zox_prefab_set(e, Scale1D, { 1.0f })
+    // zox_prefab_set(e, Scale1D, { 1.0f })
     zox_prefab_set(e, VoxScale, { vox_model_scale })
     // because we set the data on spawn, no need to generate here
     zox_prefab_set(e, GenerateChunk, { 0 })
