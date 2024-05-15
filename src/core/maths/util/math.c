@@ -5,6 +5,10 @@ double double_abs(const double input) {
     else return input;
 }
 
+float4 float4_reverse(const float4 value) {
+    return (float4) { -value.x, -value.y, -value.z, value.w };
+}
+
 float4x4 float4x4_position(const float3 position) {
     float4x4 matrix = float4x4_identity();
     matrix.w.x = position.x;
@@ -13,114 +17,64 @@ float4x4 float4x4_position(const float3 position) {
     return matrix;
 }
 
-float4x4 float4x4_transform(const float3 position, const float4 rotation) {
-    float4x4 m;
-    // Compute rotation matrix
-    float x2 = rotation.x + rotation.x;
-    float y2 = rotation.y + rotation.y;
-    float z2 = rotation.z + rotation.z;
-    float xx = rotation.x * x2;
-    float xy = rotation.x * y2;
-    float xz = rotation.x * z2;
-    float yy = rotation.y * y2;
-    float yz = rotation.y * z2;
-    float zz = rotation.z * z2;
-    float wx = rotation.w * x2;
-    float wy = rotation.w * y2;
-    float wz = rotation.w * z2;
-    m.x.x = 1.0 - (yy + zz);
-    m.x.y = xy - wz;
-    m.x.z = xz + wy;
-    m.x.w = 0.0;
-    m.y.x = xy + wz;
-    m.y.y = 1.0 - (xx + zz);
-    m.y.z = yz - wx;
-    m.y.w = 0.0;
-    m.z.x = xz - wy;
-    m.z.y = yz + wx;
-    m.z.z = 1.0 - (xx + yy);
-    m.z.w = 0.0;
-    m.w.x = position.x;
-    m.w.y = position.y;
-    m.w.z = position.z;
-    m.w.w = 1.0;
+float4x4 float4x4_scale(const float scale) {
+    float4x4 m = float4x4_identity();
+    m.x.x = scale;
+    m.y.y = scale;
+    m.z.z = scale;
     return m;
 }
-
-float4x4 float4x4_transform_scale(const float3 position, const float4 rotation, const float scale) {
-    float4x4 m;
-    // Compute rotation matrix
-    float x2 = rotation.x + rotation.x;
-    float y2 = rotation.y + rotation.y;
-    float z2 = rotation.z + rotation.z;
-    float xx = rotation.x * x2;
-    float xy = rotation.x * y2;
-    float xz = rotation.x * z2;
-    float yy = rotation.y * y2;
-    float yz = rotation.y * z2;
-    float zz = rotation.z * z2;
-    float wx = rotation.w * x2;
-    float wy = rotation.w * y2;
-    float wz = rotation.w * z2;
-    // scale.x
-    m.x.x = (1.0 - (yy + zz)) * scale;
-    m.x.y = (xy - wz) * scale;
-    m.x.z = (xz + wy) * scale;
-    m.x.w = 0.0;
-    // scale.y
-    m.y.x = (xy + wz) * scale;
-    m.y.y = (1.0 - (xx + zz)) * scale;
-    m.y.z = (yz - wx) * scale;
-    m.y.w = 0.0;
-    // scale.z
-    m.z.x = (xz - wy) * scale;
-    m.z.y = (yz + wx) * scale;
-    m.z.z = (1.0 - (xx + yy)) * scale;
-    m.z.w = 0.0;
-    m.w.x = position.x;
-    m.w.y = position.y;
-    m.w.z = position.z;
-    m.w.w = 1.0;
-    return m;
-}
-
 
 float4x4 float4x4_rotation(const float4 rotation) {
     float4x4 m = float4x4_identity();
-    float x = rotation.x;
-    float y = rotation.y;
-    float z = rotation.z;
-    float w = rotation.w;
-    float x2 = x + x;
-    float y2 = y + y;
-    float z2 = z + z;
-    float xx = x * x2;
-    float xy = x * y2;
-    float xz = x * z2;
-    float yy = y * y2;
-    float yz = y * z2;
-    float zz = z * z2;
-    float wx = w * x2;
-    float wy = w * y2;
-    float wz = w * z2;
-    m.x.x = 1.0 - (yy + zz);
-    m.x.y = xy - wz;
-    m.x.z = xz + wy;
-    m.y.x = xy + wz;
-    m.y.y = 1.0 - (xx + zz);
-    m.y.z = yz - wx;
-    m.z.x = xz - wy;
-    m.z.y = yz + wx;
-    m.z.z = 1.0 - (xx + yy);
-    m.w.w = 1.0;
+    float x2 = rotation.x * rotation.x;
+    float y2 = rotation.y * rotation.y;
+    float z2 = rotation.z * rotation.z;
+    float xx = 2.0 * rotation.x * rotation.x;
+    float xy = 2.0 * rotation.x * rotation.y;
+    float xz = 2.0 * rotation.x * rotation.z;
+    float yy = 2.0 * rotation.y * rotation.y;
+    float yz = 2.0 * rotation.y * rotation.z;
+    float zz = 2.0 * rotation.z * rotation.z;
+    float wx = 2.0 * rotation.w * rotation.x;
+    float wy = 2.0 * rotation.w * rotation.y;
+    float wz = 2.0 * rotation.w * rotation.z;
+    m.x.x = (1.0 - yy - zz);
+    m.x.y = (xy + wz);
+    m.x.z = (xz - wy);
+    m.y.x = (xy - wz);
+    m.y.y = (1.0 - xx - zz);
+    m.y.z = (yz + wx);
+    m.z.x = (xz + wy);
+    m.z.y = (yz - wx);
+    m.z.z = (1.0 - xx - yy);
     return m;
+}
+
+float4x4 float4x4_transform(const float3 position, const float4 rotation) {
+    const float4x4 position_matrix = float4x4_position(position);
+    const float4x4 rotation_matrix = float4x4_rotation(rotation);
+    return float4x4_multiply(rotation_matrix, position_matrix);
+}
+
+float4x4 float4x4_transform_scale(const float3 position, const float4 rotation, const float scale) {
+    const float4x4 position_m = float4x4_position(position);
+    const float4x4 rotation_m = float4x4_rotation(rotation);
+    const float4x4 scale_m = float4x4_scale(scale);
+    return float4x4_multiply(scale_m, float4x4_multiply(rotation_m, position_m));
+}
+
+// this rotates the scene around the camera's location
+float4x4 float4x4_transform_camera(const float3 position, const float4 rotation) {
+    const float4x4 rotation_matrix = float4x4_rotation(float4_reverse(rotation));
+    const float4x4 position_matrix = float4x4_position(position);
+    return float4x4_multiply(position_matrix, rotation_matrix);
 }
 
 float3 float4x4_get_position(const float4x4 matrix) {
     return (float3) { matrix.w.x, matrix.w.y, matrix.w.z };
 }
 
-// this just reversed position tho?
 float4x4 float4x4_inverse_position(const float4x4 matrix) {
     return (float4x4) { matrix.x, matrix.y, matrix.z, (float4) { - matrix.w.x, -matrix.w.y, -matrix.w.z, matrix.w.w } };
 }
@@ -157,7 +111,6 @@ float4x4 float4x4_inverse(const float4x4 matrix) {
     inv.w.y = (matrix.x.x * matrix.z.y * matrix.w.z - matrix.x.y * matrix.z.x * matrix.w.z + matrix.x.z * matrix.z.x * matrix.w.y - matrix.x.z * matrix.z.y * matrix.w.x) / determinant;
     inv.w.z = (-matrix.x.x * matrix.y.y * matrix.w.z + matrix.x.y * matrix.y.x * matrix.w.z - matrix.x.z * matrix.y.x * matrix.w.y + matrix.x.z * matrix.y.y * matrix.w.x) / determinant;
     inv.w.w = (matrix.x.x * matrix.y.y * matrix.z.z - matrix.x.y * matrix.y.x * matrix.z.z + matrix.x.z * matrix.y.x * matrix.z.y - matrix.x.z * matrix.y.y * matrix.z.x) / determinant;
-
     return inv;
 }
 

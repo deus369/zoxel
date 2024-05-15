@@ -13,7 +13,10 @@ void WanderSystem(ecs_iter_t *it) {
     zox_field_out(Acceleration3D, acceleration3Ds, 4)
     zox_field_in(Omega3D, omega3Ds, 5)
     zox_field_out(Alpha3D, alpha3Ds, 6)
+    zox_field_out(Dead, deads, 7)
     for (int i = 0; i < it->count; i++) {
+        zox_field_i_in(Dead, deads, dead)
+        if (dead->value) continue;
         zox_field_i_in(Rotation3D, rotation3Ds, rotation3D)
         zox_field_i_in(Velocity3D, velocity3Ds, velocity3D)
         zox_field_i_out(Acceleration3D, acceleration3Ds, acceleration3D)

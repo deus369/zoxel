@@ -45,21 +45,22 @@ void CameraDebugSystem(ecs_iter_t *it) {
         if (it->entities[i] != main_cameras[0]) continue;
         zox_field_i_in(CameraPlanes, cameraPlaness, cameraPlanes)
         zox_field_i_in(TransformMatrix, transformMatrixs, transformMatrix)
-        for (int j = 0; j < 6; j++) {
+        /*for (int j = 0; j < 6; j++) {
             const plane planer = cameraPlanes->value[j];
             render_line3D(float3_zero, float3_multiply_float(planer.normal, planer.distance), (color_rgb) { 255, 255, j * 32 });
-        }
+        }*/
         // when this works, disable renders based on frustum checks
         unsigned char is_seen = is_in_frustum(cameraPlanes->value, test_bounds);
         color_rgb cube_color = miss_color;
         if (is_seen) cube_color = hit_color;
         spawn_cube_lines(world, test_bounds.center, test_bounds.extents, 1, spawn_life_time, cube_color);
-        // spawn_line3D_colored(world, float3_add(test_bounds.center, (float3) { 0, -line_length, 0 }), float3_add(test_bounds.center, (float3) { 0, line_length, 0 }), 0.5f, 0.03, cube_color);
-        // spawn_line3D_colored(world, float3_add(test_bounds.center, (float3) { -line_length, 0, 0 }), float3_add(test_bounds.center, (float3) { line_length, 0, 0 }), 0.5f, 0.03, cube_color);
-        // spawn_line3D_colored(world, float3_add(test_bounds.center, (float3) { 0, 0, -line_length }), float3_add(test_bounds.center, (float3) { 0, 0, line_length }), 0.5f, 0.03, cube_color);
-        // debug_transform(world, transformMatrix->value);
-        // visualize_frustum(transformMatrix->value, cameraPlanes->value);
-        if (is_seen) zox_log(" > looking at bounds\n")
-        else zox_log(" - looking away from bounds\n")
     }
 } zox_declare_system(CameraDebugSystem)
+
+// spawn_line3D_colored(world, float3_add(test_bounds.center, (float3) { 0, -line_length, 0 }), float3_add(test_bounds.center, (float3) { 0, line_length, 0 }), 0.5f, 0.03, cube_color);
+// spawn_line3D_colored(world, float3_add(test_bounds.center, (float3) { -line_length, 0, 0 }), float3_add(test_bounds.center, (float3) { line_length, 0, 0 }), 0.5f, 0.03, cube_color);
+// spawn_line3D_colored(world, float3_add(test_bounds.center, (float3) { 0, 0, -line_length }), float3_add(test_bounds.center, (float3) { 0, 0, line_length }), 0.5f, 0.03, cube_color);
+// debug_transform(world, transformMatrix->value);
+// visualize_frustum(transformMatrix->value, cameraPlanes->value);
+// if (is_seen) zox_log(" > looking at bounds\n")
+//else zox_log(" - looking away from bounds\n")

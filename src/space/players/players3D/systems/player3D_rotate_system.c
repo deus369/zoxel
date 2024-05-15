@@ -85,8 +85,6 @@ void Player3DRotateSystem(ecs_iter_t *it) {
             zox_modified(character, Alpha3D)
         }
 #else
-        // player_euler.y += euler.y;
-        // player_euler.y = player_euler.y % 360;
         Euler *player_euler = zox_get_mut(character, Euler)
         Rotation3D *rotation3D = zox_get_mut(character, Rotation3D)
         player_euler->value.y += euler.y;

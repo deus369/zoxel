@@ -2,6 +2,7 @@
 #define zox_cameras
 
 #include "settings/settings.c"
+#include "data/bounds.c"
 #include "data/plane.c"
 zox_declare_tag(Camera)
 zox_declare_tag(Camera2D)
@@ -27,6 +28,7 @@ zox_memory_component(CameraPlanes, plane)
 #include "fun/camera_util.c"
 #include "util/camera_util.c"
 #include "util/planes_util.c"
+#include "util/planes_tests.c"
 #include "prefabs/base_camera.c"
 #include "prefabs/camera2D.c"
 #include "prefabs/ui_camera.c"

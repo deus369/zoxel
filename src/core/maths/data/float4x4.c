@@ -5,22 +5,16 @@ typedef struct {
     float4 w;
 } float4x4;
 
+const float4x4 float4x4_zero_ = { { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } };
+
+const float4x4 float4x4_identity_ = { { 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 0, 1, 0 }, { 0, 0, 0, 1 } };
+
 float4x4 float4x4_zero() {
-    float4x4 identity;
-    float* identity2 = (float*) &identity;
-    for (int i = 0; i < 16; i++) {
-        identity2[i] = 0;
-    }
-    return identity;
+    return float4x4_zero_;
 }
 
 float4x4 float4x4_identity() {
-    float4x4 identity = float4x4_zero();
-    identity.x.x = 1;
-    identity.y.y = 1;
-    identity.z.z = 1;
-    identity.w.w = 1;
-    return identity;
+    return float4x4_identity_;
 }
 
 float4x4 float4x4_multiply(const float4x4 a, const float4x4 b) {

@@ -9,7 +9,6 @@ void TransformMatrixScaleSystem(ecs_iter_t *it) {
         zox_field_i_in(Rotation3D, rotation3Ds, rotation3D)
         zox_field_i_in(Scale1D, scale1Ds, scale1D)
         zox_field_i_out(TransformMatrix, transformMatrixs, transformMatrix)
-        // todo: why do I need to inverse rotation xyz ??
-        transformMatrix->value = float4x4_transform_scale(position3D->value, float4_inverse(rotation3D->value), scale1D->value);
+        transformMatrix->value = float4x4_transform_scale(position3D->value, rotation3D->value, scale1D->value);
     }
 } zox_declare_system(TransformMatrixScaleSystem)
