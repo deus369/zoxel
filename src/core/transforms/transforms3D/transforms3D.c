@@ -1,5 +1,5 @@
-#ifndef zoxel_transforms3D
-#define zoxel_transforms3D
+#ifndef zox_transforms3D
+#define zox_transforms3D
 
 #define zox_transforms_stage EcsPreStore // EcsPostUpdate | EcsPreStore
 zox_declare_tag(EulerOverride)

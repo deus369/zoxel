@@ -8,7 +8,7 @@ extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 point
 #endif
 
 void Player3DMoveSystem(ecs_iter_t *it) {
-    double delta_time = zox_delta_time;
+    const double delta_time = zox_delta_time;
     float2 max_delta_velocity = max_velocity;
     max_delta_velocity.x *= delta_time;
     max_delta_velocity.y *= delta_time;
@@ -72,7 +72,8 @@ void Player3DMoveSystem(ecs_iter_t *it) {
             }
         }
         if (left_stick.x == 0 && left_stick.y == 0) continue;
-        // zoxel_log(" > left_stick %fx%f\n", left_stick.x, left_stick.y);
+        if (zox_players_reverse_x) left_stick.x *= -1;
+        if (zox_players_reverse_y) left_stick.y *= -1;
         float3 movement = { left_stick.x, 0, left_stick.y };
         // const Omega3D *omega3D = zox_get(world, character, Omega3D);
         const Rotation3D *rotation3D = zox_get(character, Rotation3D)

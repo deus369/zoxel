@@ -2,10 +2,8 @@ ecs_entity_t prefab_chunk;
 
 ecs_entity_t spawn_prefab_chunk(ecs_world_t *world) {
     zox_prefab()
-    #ifdef zoxel_transforms3D
-        add_transform3Ds(world, e);
-        zox_prefab_set(e, Scale1D, { 0.05f })
-    #endif
+    add_transform3Ds(world, e);
+    zox_prefab_set(e, Scale1D, { 0.05f })
     zox_prefab_set(e, MeshDirty, { 0 })
     zox_prefab_set(e, Brightness, { 1.4f })
     add_seed(world, e, 666);

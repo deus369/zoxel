@@ -14,7 +14,8 @@ void TransformMatrixSystem(ecs_iter_t *it) {
             transformMatrix->value = float4x4_multiply(position_matrix, rotation_matrix);
         } else {
             // todo: why i have to reverse  rotation?? for npcs, fix this shit!
-            transformMatrix->value = float4x4_transform(position3D->value, float4_inverse(rotation3D->value));
+            if (rotation3D->value.x == 0 && rotation3D->value.y == 0 && rotation3D->value.z == 0 && rotation3D->value.w == 1) transformMatrix->value = float4x4_position(position3D->value);
+            else transformMatrix->value = float4x4_transform(position3D->value, float4_inverse(rotation3D->value));
             // transformMatrix->value = float4x4_transform(position3D->value, rotation3D->value);
         }
     }

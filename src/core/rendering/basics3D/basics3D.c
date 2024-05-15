@@ -1,5 +1,5 @@
-#ifndef zoxel_rendering_basics3D
-#define zoxel_rendering_basics3D
+#ifndef zox_rendering_basics3D
+#define zox_rendering_basics3D
 
 #include "shaders/colored3D.c"
 #include "shaders/instanced3D.c"
@@ -44,15 +44,13 @@ add_load_shader_function((funfun) { &rendering_load_basic_shaders3D });
 add_restore_shader_function((funfun) { &rendering_restore_basic_shaders3D });
 zox_define_component(MaterialTextured3D)
 zox_define_component(MaterialColored3D)
-#ifdef zoxel_transforms3D
 zox_system_1(InstanceRender3DSystem, 0, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink)
 // characters
 zox_render3D_system(RenderCharacters3DSystem, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [in] TransformMatrix, [none] MeshColorRGBs, [none] !UvsGPULink)
 // healthbars
-zox_render3D_system(Element3DRenderSystem, [none] rendering.core.SingleMaterial, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] TextureGPULink)
+zox_render3D_system(Element3DRenderSystem, [in] TransformMatrix, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] TextureGPULink, [none] rendering.core.SingleMaterial)
 // skybox
 zox_render3D_system(Render3DSystem, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] !MeshColorRGBs)
-#endif
 zox_system_1(MeshUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs)
 zox_system_1(MeshUpdateTextured3DSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshUVs, [in] MeshColorRGBs, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink)
 zox_system_1(MeshUpdateCharacters3DSystem, main_thread_pipeline, [none] MeshColorRGBs, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshColorRGBs, [out] MeshGPULink, [out] ColorsGPULink, [none] !MeshUVs)

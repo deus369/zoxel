@@ -1,10 +1,10 @@
 ecs_entity_t prefab_terrain_chunk_octree;
 
-unsigned char get_chunk_division(int3 camera_position, int3 chunk_position) {
+unsigned char get_chunk_division(const int3 camera_position, const int3 chunk_position) {
     return int_max(int_abs(chunk_position.x - camera_position.x), int_abs(chunk_position.z - camera_position.z));
 }
 
-void add_components_mesh_textured(ecs_world_t *world, ecs_entity_t e) {
+void add_components_mesh_textured(ecs_world_t *world, const ecs_entity_t e) {
     if (!headless) {
         zox_add(e, MeshIndicies)
         zox_add(e, MeshVertices)
@@ -18,19 +18,17 @@ void add_components_mesh_textured(ecs_world_t *world, ecs_entity_t e) {
     }
 }
 
-ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size) {
+ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, const int3 size) {
     zox_prefab()
     // zox_prefab_name("prefab_terrain_chunk_octree")
     add_seed(world, e, 666);
-#ifdef zoxel_transforms3D
     add_transform3Ds(world, e);
-    zox_set(e, Scale1D, { 0.5f })
-#endif
-#ifdef zoxel_rendering
+    zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
+    zox_prefab_set(e, VoxScale, { 0.5f })
+    zox_prefab_set(e, Scale1D, { 1 })
     zox_prefab_set(e, MeshDirty, { 0 })
     zox_prefab_set(e, Brightness, { 1.0f })
     add_components_mesh_textured(world, e);
-#endif
     // voxels_core
     add_chunk_octree(world, e, size);
     zox_add_tag(e, TerrainChunk)
@@ -41,7 +39,7 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, int3 size) {
     return e;
 }
 
-ecs_entity_t spawn_terrain_chunk_octree(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t terrain, int3 camera_position, int3 chunk_position, float3 position, float scale) {
+ecs_entity_t spawn_terrain_chunk_octree(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t terrain, const int3 camera_position, const int3 chunk_position, const float3 position, const float scale) {
     zox_instance(prefab)
     // zox_name("terrain_chunk_octree")
     zox_set(e, ChunkPosition, { chunk_position })

@@ -13,6 +13,73 @@ float4x4 float4x4_position(const float3 position) {
     return matrix;
 }
 
+
+
+float4x4 float4x4_transform(const float3 position, const float4 rotation) {
+    float4x4 m;
+    // Compute rotation matrix
+    float x2 = rotation.x + rotation.x;
+    float y2 = rotation.y + rotation.y;
+    float z2 = rotation.z + rotation.z;
+    float xx = rotation.x * x2;
+    float xy = rotation.x * y2;
+    float xz = rotation.x * z2;
+    float yy = rotation.y * y2;
+    float yz = rotation.y * z2;
+    float zz = rotation.z * z2;
+    float wx = rotation.w * x2;
+    float wy = rotation.w * y2;
+    float wz = rotation.w * z2;
+    m.x.x = 1.0 - (yy + zz);
+    m.x.y = xy - wz;
+    m.x.z = xz + wy;
+    m.x.w = 0.0;
+    m.y.x = xy + wz;
+    m.y.y = 1.0 - (xx + zz);
+    m.y.z = yz - wx;
+    m.y.w = 0.0;
+    m.z.x = xz - wy;
+    m.z.y = yz + wx;
+    m.z.z = 1.0 - (xx + yy);
+    m.z.w = 0.0;
+    m.w.x = position.x;
+    m.w.y = position.y;
+    m.w.z = position.z;
+    m.w.w = 1.0;
+    return m;
+}
+
+float4x4 float4x4_rotation(const float4 rotation) {
+    float4x4 m = float4x4_identity();
+    float x = rotation.x;
+    float y = rotation.y;
+    float z = rotation.z;
+    float w = rotation.w;
+    float x2 = x + x;
+    float y2 = y + y;
+    float z2 = z + z;
+    float xx = x * x2;
+    float xy = x * y2;
+    float xz = x * z2;
+    float yy = y * y2;
+    float yz = y * z2;
+    float zz = z * z2;
+    float wx = w * x2;
+    float wy = w * y2;
+    float wz = w * z2;
+    m.x.x = 1.0 - (yy + zz);
+    m.x.y = xy - wz;
+    m.x.z = xz + wy;
+    m.y.x = xy + wz;
+    m.y.y = 1.0 - (xx + zz);
+    m.y.z = yz - wx;
+    m.z.x = xz - wy;
+    m.z.y = yz + wx;
+    m.z.z = 1.0 - (xx + yy);
+    m.w.w = 1.0;
+    return m;
+}
+
 float3 float4x4_get_position(const float4x4 matrix) {
     return (float3) { matrix.w.x, matrix.w.y, matrix.w.z };
 }
@@ -56,37 +123,6 @@ float4x4 float4x4_inverse(const float4x4 matrix) {
     inv.w.w = (matrix.x.x * matrix.y.y * matrix.z.z - matrix.x.y * matrix.y.x * matrix.z.z + matrix.x.z * matrix.y.x * matrix.z.y - matrix.x.z * matrix.y.y * matrix.z.x) / determinant;
 
     return inv;
-}
-
-float4x4 float4x4_rotation(const float4 rotation) {
-    float4x4 m = float4x4_identity();
-    float x = rotation.x;
-    float y = rotation.y;
-    float z = rotation.z;
-    float w = rotation.w;
-    float x2 = x + x;
-    float y2 = y + y;
-    float z2 = z + z;
-    float xx = x * x2;
-    float xy = x * y2;
-    float xz = x * z2;
-    float yy = y * y2;
-    float yz = y * z2;
-    float zz = z * z2;
-    float wx = w * x2;
-    float wy = w * y2;
-    float wz = w * z2;
-    m.x.x = 1.0 - (yy + zz);
-    m.x.y = xy - wz;
-    m.x.z = xz + wy;
-    m.y.x = xy + wz;
-    m.y.y = 1.0 - (xx + zz);
-    m.y.z = yz - wx;
-    m.z.x = xz - wy;
-    m.z.y = yz + wx;
-    m.z.z = 1.0 - (xx + yy);
-    m.w.w = 1.0;
-    return m;
 }
 
 //! View Matrix multipled by projection and used to distort pixel magic.
@@ -139,40 +175,4 @@ float3 float4x4_multiply_float3(const float4x4 mat, const float3 point) {
     result.y = mat.x.y * point.x + mat.y.y * point.y + mat.z.y * point.z + mat.w.y;
     result.z = mat.x.z * point.x + mat.y.z * point.y + mat.z.z * point.z + mat.w.z;
     return result;
-}
-
-
-
-float4x4 float4x4_transform(const float3 position, const float4 rotation) {
-    float4x4 m;
-    // Compute rotation matrix
-    float x2 = rotation.x + rotation.x;
-    float y2 = rotation.y + rotation.y;
-    float z2 = rotation.z + rotation.z;
-    float xx = rotation.x * x2;
-    float xy = rotation.x * y2;
-    float xz = rotation.x * z2;
-    float yy = rotation.y * y2;
-    float yz = rotation.y * z2;
-    float zz = rotation.z * z2;
-    float wx = rotation.w * x2;
-    float wy = rotation.w * y2;
-    float wz = rotation.w * z2;
-    m.x.x = 1.0 - (yy + zz);
-    m.x.y = xy - wz;
-    m.x.z = xz + wy;
-    m.x.w = 0.0;
-    m.y.x = xy + wz;
-    m.y.y = 1.0 - (xx + zz);
-    m.y.z = yz - wx;
-    m.y.w = 0.0;
-    m.z.x = xz - wy;
-    m.z.y = yz + wx;
-    m.z.z = 1.0 - (xx + yy);
-    m.z.w = 0.0;
-    m.w.x = position.x;
-    m.w.y = position.y;
-    m.w.z = position.z;
-    m.w.w = 1.0;
-    return m;
 }

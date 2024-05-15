@@ -6,10 +6,7 @@ ecs_entity_t spawn_prefab_skybox(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_skybox")
     zox_add_tag(e, Skybox)
-#ifdef zoxel_transforms3D
     add_transform3Ds(world, e);
-#endif
-#ifdef zoxel_rendering
     zox_add(e, ColorRGB)
     zox_add(e, SecondaryColorRGB)
     zox_add(e, Brightness)
@@ -23,7 +20,6 @@ ecs_entity_t spawn_prefab_skybox(ecs_world_t *world) {
         zox_prefab_set(e, ShaderLink, { 0 })
         add_gpu_material(world, e);
     }
-#endif
     zox_set(e, Position3D, { float3_zero })
     zox_set(e, Brightness, { 1 })
     prefab_skybox = e;

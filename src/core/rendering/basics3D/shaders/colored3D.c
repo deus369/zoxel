@@ -4,9 +4,6 @@ layout(location=0) in highp vec3 vertex_position;\
 layout(location=1) in highp vec3 vertex_color;\
 uniform highp mat4 camera_matrix;\
 uniform highp mat4 transform_matrix;\
-uniform highp vec3 position;\
-uniform highp vec4 rotation;\
-uniform highp float scale;\
 out highp vec3 vertex_color_frag;\
 out highp float fog_level;\
 \
@@ -17,6 +14,9 @@ void main() {\
 }";
 
 /*
+uniform highp vec3 position;\
+uniform highp vec4 rotation;\
+uniform highp float scale;\
 vec3 float4_rotate_float3(vec4 rotation, vec3 value) {\
     vec3 rotationXYZ = rotation.xyz;\
     vec3 t = cross(rotationXYZ, value) * 2.0f;\

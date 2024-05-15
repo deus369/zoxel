@@ -13,8 +13,9 @@ void remove_physics_debug(ecs_world_t *world, ecs_entity_t e) {
 }
 
 void add_physics3D(ecs_world_t *world, ecs_entity_t e) {
-    zox_prefab_set(e, InitializePhysics3D, { 0 })
     zox_add_tag(e, Frictioned)
+    zox_prefab_set(e, LastPosition3D, { float3_zero })
+    zox_prefab_set(e, InitializePhysics3D, { 0 })
     zox_prefab_set(e, Velocity3D, { { 0, 0, 0 } })
     zox_prefab_set(e, Acceleration3D, { { 0, 0, 0 } })
     zox_prefab_set(e, Omega3D, { quaternion_identity })

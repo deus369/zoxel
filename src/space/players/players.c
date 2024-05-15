@@ -1,5 +1,5 @@
-#ifndef zoxel_players
-#define zoxel_players
+#ifndef _zox_players
+#define _zox_players
 
 // alot of systems here are actually controller ones, player + device + camera / character, or game states like pause system?
 #include "settings/settings.c"

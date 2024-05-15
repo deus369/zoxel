@@ -1,13 +1,9 @@
-#ifndef zoxel_players2D
-#define zoxel_players2D
+#ifndef _zox_players2D
+#define _zox_players2D
 
-// zoxel_component_declares
 zox_declare_tag(Player2D)
 zox_declare_tag(PlayerCharacter2D)
-// zoxel_prefab_includes
 #include "prefabs/player_character2D.c"
-// zoxel_util_includes
-// zoxel_system_includes
 #include "systems/player2D_move_system.c"
 
 int get_label_player_character2D(ecs_world_t *world, const ecs_entity_t player, char buffer[], int buffer_size, int buffer_index) {
@@ -23,10 +19,8 @@ void spawn_prefabs_players2D(ecs_world_t *world) {
 }
 
 zox_begin_module(Players2D)
-// zoxel_component_defines
 zox_define_tag(Player2D)
 zox_define_tag(PlayerCharacter2D)
-// zoxel_system_defines
 zox_system(Player2DMoveSystem, zox_pip_player_movement, [none] players.Player, [in] DeviceLinks, [in] CharacterLink)
 zoxel_end_module(Players2D)
 

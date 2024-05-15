@@ -37,20 +37,6 @@ void Player3DRotateSystem(ecs_iter_t *it) {
             if (deviceMode->value == zox_device_mode_keyboardmouse && zox_has(device_entity, Mouse)) {
                 const Mouse *mouse = zox_get(device_entity, Mouse)
                 float2 mouse_delta = int2_to_float2(mouse->delta);
-/*#ifndef disable_player_rotate_alpha_force
-                // if (mouse_delta != 0) zoxel_log(" > mouse_delta: %f\n", mouse_delta);
-                // this is all pretty shit ay haha... fuck mouses
-                if (mouse_delta < -max_mouse_delta2) mouse_delta.x = -max_mouse_delta;
-                else if (mouse_delta > max_mouse_delta2) mouse_delta.x = max_mouse_delta;
-                if (float_abs(mouse_delta) >= max_mouse_delta3) mouse_delta.x *= 1.2f;
-                else if (float_abs(mouse_delta) >= max_mouse_delta4) mouse_delta.x *= 1.4f;
-                else if (float_abs(mouse_delta) <= min_mouse_delta3) mouse_delta.x = 0;
-                if (mouse_delta.x != 0) {
-                    if (mouse_delta.x > 0 && mouse_delta < min_mouse_delta2) mouse_delta.x = min_mouse_delta2;
-                    else if (mouse_delta < 0 && mouse_delta > -min_mouse_delta2) mouse_delta.x = -min_mouse_delta2;
-                }
-#endif*/
-                // if (mouse_delta != 0) zoxel_log("     > mouse_delta: %f\n", mouse_delta);
                 euler.x = - mouse_delta.y * mouse_rotate_multiplier;
                 euler.y = - mouse_delta.x * mouse_rotate_multiplier;
             } else if (deviceMode->value == zox_device_mode_gamepad && zox_has(device_entity, Gamepad)) {
@@ -88,6 +74,8 @@ void Player3DRotateSystem(ecs_iter_t *it) {
             }
         }
         if (euler.x == 0 && euler.y == 0) continue;
+        if (zox_players_reverse_rotate_x) euler.y *= -1;
+        if (zox_players_reverse_rotate_y) euler.x *= -1;
 #ifndef disable_player_rotate_alpha_force
         const Omega3D *omega3D = zox_get(character, Omega3D)
         if ((euler.y > 0 && quaternion_to_euler_y(omega3D->value) < max_rotate_speed) || (euler.y < 0 && quaternion_to_euler_y(omega3D->value) > -max_rotate_speed)) {
@@ -122,3 +110,19 @@ void Player3DRotateSystem(ecs_iter_t *it) {
 #endif
     }
 } zox_declare_system(Player3DRotateSystem)
+
+// todo: make rotation by alpha force a function
+/*#ifndef disable_player_rotate_alpha_force
+                // if (mouse_delta != 0) zoxel_log(" > mouse_delta: %f\n", mouse_delta);
+                // this is all pretty shit ay haha... fuck mouses
+                if (mouse_delta < -max_mouse_delta2) mouse_delta.x = -max_mouse_delta;
+                else if (mouse_delta > max_mouse_delta2) mouse_delta.x = max_mouse_delta;
+                if (float_abs(mouse_delta) >= max_mouse_delta3) mouse_delta.x *= 1.2f;
+                else if (float_abs(mouse_delta) >= max_mouse_delta4) mouse_delta.x *= 1.4f;
+                else if (float_abs(mouse_delta) <= min_mouse_delta3) mouse_delta.x = 0;
+                if (mouse_delta.x != 0) {
+                    if (mouse_delta.x > 0 && mouse_delta < min_mouse_delta2) mouse_delta.x = min_mouse_delta2;
+                    else if (mouse_delta < 0 && mouse_delta > -min_mouse_delta2) mouse_delta.x = -min_mouse_delta2;
+                }
+#endif*/
+                // if (mouse_delta != 0) zoxel_log("     > mouse_delta: %f\n", mouse_delta);
