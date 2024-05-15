@@ -85,7 +85,7 @@ zox_system(ViewMatrixSystem, zox_camera_stage, [in] TransformMatrix, [in] Projec
 zox_system(ProjectionMatrixSystem, zox_camera_stage, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
 zox_system(CameraFrustumSystem, zox_camera_stage, [in] ViewMatrix, [out] CameraPlanes, [none] Camera)
 #ifdef zox_debug_camera_frustum
-zox_system_1(CameraDebugSystem, main_thread_pipeline, [in] CameraPlanes, [in] TransformMatrix, [none] Camera)
+zox_system_1(CameraDebugSystem, main_thread_pipeline, [in] CameraPlanes, [none] Camera)
 #endif
 zoxel_end_module(Cameras)
 
