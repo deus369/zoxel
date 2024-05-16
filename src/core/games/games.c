@@ -1,5 +1,5 @@
-#ifndef zoxel_games
-#define zoxel_games
+#ifndef zox_games
+#define zox_games
 
 unsigned char zox_game_type;
 zox_declare_tag(Game)
@@ -10,7 +10,6 @@ zox_component_entity(GameLink)
 #include "data/zox_game_event.c"
 #include "prefabs/game.c"
 #include "util/game_events.c"
-// #include "systems/play_game_system.c"
 
 void initialize_games(ecs_world_t *world) {
     initialize_events_games();
@@ -28,7 +27,6 @@ zox_begin_module(Games)
 zox_define_tag(Game)
 zox_define_component_byte(GameState)
 zox_define_component_entity(GameLink)
-// zox_system(PlayGameSystem, EcsPostUpdate, [in] GenericEvent)
 zoxel_end_module(Games)
 
 #endif

@@ -1,12 +1,10 @@
 // flecs useage, create an ecs world
 ecs_world_t *world;
-// settings
 unsigned char is_multithreading = 1;
 unsigned char target_frame_rate = 0;
 unsigned char profiler = 0;
 zoxel_dynamic_array(ecs_entity_t)
 create_is_in_array_d(ecs_entity_t)
-// util helper functions
 #include "macros/names.c"
 #include "util/module_macros.c"
 #include "util/component_macros.c"

@@ -1,5 +1,5 @@
-#ifndef zoxel_characters
-#define zoxel_characters
+#ifndef zox_characters
+#define zox_characters
 
 zox_component_entity(CharacterLink)
 #include "characters2D/characters2D.c"

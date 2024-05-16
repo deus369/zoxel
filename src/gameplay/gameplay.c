@@ -1,5 +1,5 @@
-#ifndef zoxel_gameplay
-#define zoxel_gameplay
+#ifndef zox_gameplay
+#define zox_gameplay
 
 #include "crafting/crafting.c"
 #include "farming/farming.c"

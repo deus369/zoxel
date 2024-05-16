@@ -1,5 +1,5 @@
-#ifndef zoxel_weather
-#define zoxel_weather
+#ifndef zox_weather
+#define zox_weather
 
 float3 menu_sky_color = (float3) { 0.3f, 0.1f, 0.1f };
 float3 menu_sky_bottom_color = (float3) { 0.2f, 0.06f, 0.06f };
@@ -24,10 +24,8 @@ void spawn_prefabs_weather(ecs_world_t *world) {
 zox_begin_module(Weathers)
 add_load_shader_function((funfun) { &spawn_shader_skybox });
 // add_restore_shader_function((funfun) { &restore_shader_skybox });
-// zox_define_components
 zox_define_tag(Weather)
 zox_define_tag(Skybox)
-// zox_define_systems
 zox_gpu_restore_system(SkyboxRestoreSystem, [in] MaterialGPULink, [in] ColorRGB, [in] SecondaryColorRGB, [none] Skybox)
 zoxel_end_module(Weathers)
 

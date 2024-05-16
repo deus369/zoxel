@@ -1,5 +1,5 @@
-#ifndef zoxel_textures_core
-#define zoxel_textures_core
+#ifndef zox_textures_core
+#define zox_textures_core
 
 const int2 voxel_texture_size = (int2) { 32, 32 };
 #include "settings/settings.c"

@@ -1,5 +1,5 @@
-#ifndef zoxel_physics2D
-#define zoxel_physics2D
+#ifndef zox_physics2D
+#define zox_physics2D
 
 zox_component(Velocity2D, float2)     //! Velocity movement of a 2D Entity.
 zox_component(Acceleration2D, float2) //! Accelaration movement of a 2D Entity.

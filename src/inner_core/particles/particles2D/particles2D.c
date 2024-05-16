@@ -1,5 +1,5 @@
-#ifndef zoxel_particles2D
-#define zoxel_particles2D
+#ifndef zox_particles2D
+#define zox_particles2D
 
 zox_declare_tag(Particle2D)
 #include "prefabs/particle2D.c"

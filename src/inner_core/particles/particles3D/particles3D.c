@@ -1,15 +1,11 @@
-#ifndef zoxel_particles3D
-#define zoxel_particles3D
+#ifndef zox_particles3D
+#define zox_particles3D
 
-// components
 zox_declare_tag(Particle3D)
 zox_declare_tag(Particle3DEmitter)
-// shaders
 #include "shaders/particle_shader.c"
-// prefabs
 #include "prefabs/particle3D.c"
 #include "prefabs/particle3D_emitter.c"
-// systems
 #include "systems/particle3D_emit_system.c"
 #include "systems/particle3D_spawn_system.c"
 #include "systems/particle3D_render_system.c"
@@ -33,10 +29,8 @@ void spawn_prefabs_particles3D(ecs_world_t *world) {
 }
 
 zox_begin_module(Particles3D)
-// components
 zox_define_tag(Particle3D)
 zox_define_tag(Particle3DEmitter)
-// systems
 zox_system_1(Particle3DEmitSystem, main_thread_pipeline, [none] Particle3DEmitter, [in] Position3D, [in] ParticleEmitRate)
 if (!headless) zox_render3D_system(Particle3DRenderSystem, [none] Particle3D, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Color)
 zoxel_end_module(Particles3D)

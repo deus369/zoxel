@@ -1,5 +1,5 @@
-#ifndef zoxel_files
-#define zoxel_files
+#ifndef zox_files
+#define zox_files
 
 #include <stdio.h>
 #include <dirent.h>

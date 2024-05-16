@@ -1,14 +1,7 @@
-#ifndef zoxel_inputs
-#define zoxel_inputs
+#ifndef zox_inputs
+#define zox_inputs
 
-// zoxel_settings
-#define zox_pipelines_devices_reset EcsOnLoad
-#define zox_pipelines_devices_enables EcsPostUpdate // one before zox_pipelines_pre_render
-#define zox_pip_raycasting EcsOnUpdate
-const float joystick_min_cutoff = 0.01f;
-const float joystick_min_cutoff2 = 0.04f;
-const float joystick_cutoff_buffer = 0.14f;
-// zoxel_component_declares
+#include "data/settings.c"
 #include "data/device_modes.c"
 #include "data/gamepad_flags.c"
 #include "data/button_flags.c"
@@ -34,7 +27,6 @@ zox_memory_component(DeviceButtonLinks, ecs_entity_t)
 zox_memory_component(DeviceLinks, ecs_entity_t)
 #include "components/keyboard.c"
 #include "components/mouse.c"
-// zoxel_prefab_includes
 #include "prefabs/zevice_button.c"
 #include "prefabs/zevice_stick.c"
 #include "prefabs/zevice_pointer.c"
@@ -42,10 +34,8 @@ zox_memory_component(DeviceLinks, ecs_entity_t)
 #include "prefabs/keyboard.c"
 #include "prefabs/gamepad.c"
 #include "prefabs/touchscreen.c"
-// zoxel_util_includes
 #include "util/input_util.c"
 #include "util/deadzone_util.c"
-// zoxel_system_declares
 #include "systems/zevice_button_reset_system.c"
 #include "systems/zevice_pointer_reset_system.c"
 #include "systems/zevice_pointer_delta_reset_system.c"
@@ -69,7 +59,6 @@ void spawn_prefabs_inputs(ecs_world_t *world) {
 }
 
 zox_begin_module(Inputs)
-// zoxel_component_defines
 zox_define_tag(Device)
 zox_define_tag(Zevice)
 zox_define_tag(Gamepad)
@@ -89,10 +78,10 @@ zox_define_component_int2(ZevicePointerPosition)
 zox_define_component_int2(ZevicePointerDelta)
 zox_define_component_float2(ZeviceStick)
 zox_define_memory_component(DeviceLinks)
-// zoxel_system_defines
 zox_system(ZeviceButtonResetSystem, zox_pipelines_devices_reset, [out] ZeviceButton)
 zox_system(ZevicePointerResetSystem, zox_pipelines_devices_reset, [out] ZevicePointer)
-zox_system(ZevicePointerDeltaResetSystem, zox_pipelines_devices_reset, [out] ZevicePointerDelta)  // has to be before other systems
+// remember: ZevicePointerDeltaResetSystem has to be before other systems
+zox_system(ZevicePointerDeltaResetSystem, zox_pipelines_devices_reset, [out] ZevicePointerDelta)
 zox_system(DeviceModeSystem, zox_pip_raycasting, [in] DeviceLinks, [in] DeviceMode, [out] DeviceModeDirty)
 zox_system(DraggerEndSystem, EcsPostLoad, [out] DraggableState, [out] DraggerLink, [out] DraggingDelta)
 zox_system(MouseRaycasterSystem, zox_pip_raycasting, [in] DeviceLinks, [in] DeviceMode, [out] Raycaster)

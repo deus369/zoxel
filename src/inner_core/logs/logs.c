@@ -1,5 +1,5 @@
-#ifndef zoxel_logs
-#define zoxel_logs
+#ifndef zox_logs
+#define zox_logs
 
 zox_declare_tag(Log)
 

@@ -1,3 +1,4 @@
+// #define zox_log_realm_colors
 const unsigned char realm_voxels = 5;
 ecs_entity_t prefab_realm;
 ecs_entity_t local_realm;
@@ -41,10 +42,12 @@ ecs_entity_t spawn_realm(ecs_world_t *world) {
     game_sky_color = color_to_float3(sky_color);
     game_sky_bottom_color = game_sky_color;
     fog_color = game_sky_bottom_color;
+#ifdef zox_log_realm_colors
     zox_log(" + soil hsv: %fx%fx%f\n", soil_hsv.x, soil_hsv.y, soil_hsv.z)
     zox_log(" + soil color: %ix%ix%i\n", soil_color.r, soil_color.g, soil_color.b)
     zox_log(" + grass_hsv: %fx%fx%f\n", grass_hsv.x, grass_hsv.y, grass_hsv.z)
     zox_log(" + grass_color: %ix%ix%i\n", grass_color.r, grass_color.g, grass_color.b)
+#endif
     for (unsigned char i = 0; i < voxelLinks->length; i++) {
         if (i == 0) voxelLinks->value[i] = spawn_voxel(world, i, soil_color);
         else if (i == 1) voxelLinks->value[i] = spawn_voxel(world, i, grass_color);

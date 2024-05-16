@@ -1,4 +1,3 @@
-#ifdef zoxel_inputs
 void set_element_dragged(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element, const unsigned char drag_mode) {
     DraggableState *dragableState = zox_get_mut(element, DraggableState)
     if (!dragableState->value) {
@@ -110,5 +109,3 @@ void ElementClickSystem(ecs_iter_t *it) {
     // raycasterResult->value = 0;
     // continue;
 //}
-
-#endif

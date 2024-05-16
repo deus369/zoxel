@@ -1,5 +1,5 @@
-#ifndef zoxel_cubes
-#define zoxel_cubes
+#ifndef zox_cubes
+#define zox_cubes
 
 const int custom_mesh_spawn_count = 64;
 const float2 spawnBounds = { 2.2f, 1.2f };

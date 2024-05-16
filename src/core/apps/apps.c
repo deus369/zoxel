@@ -1,5 +1,5 @@
-#ifndef zoxel_apps
-#define zoxel_apps
+#ifndef zox_apps
+#define zox_apps
 
 // zoxel apps: handles os windows, using (sdl, glut) libraries
 #include "settings/settings.c"

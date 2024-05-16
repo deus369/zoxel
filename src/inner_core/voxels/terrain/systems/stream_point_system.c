@@ -1,4 +1,5 @@
 void StreamPointSystem(ecs_iter_t *it) {
+    if (zox_cameras_disable_streaming) return;
     zox_iter_world()
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_in(TerrainLink, terrainLinks, 2)

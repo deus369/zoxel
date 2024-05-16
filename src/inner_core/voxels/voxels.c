@@ -1,5 +1,5 @@
-#ifndef zoxel_voxels
-#define zoxel_voxels
+#ifndef zox_voxels
+#define zox_voxels
 
 zox_declare_tag(Chunk)
 zox_declare_tag(NoiseChunk)

@@ -103,11 +103,12 @@ void run_test_frustum(char *label, const float3 camera_position, const float3 ca
     float4 camera_rotation = quaternion_from_euler(float3_multiply_float(camera_euler, degreesToRadians));
 
     plane planes[6];
-    float4x4 camera_matrix;
-    fill_fake_view_matrix(&camera_matrix, camera_position, camera_rotation);
+    float4x4 transform_matrix;
+    fill_fake_view_matrix(&transform_matrix, camera_position, camera_rotation);
     float4x4 projection_matrix;
     calculate_perspective_projection_matrix(&projection_matrix, 16 / 9.0f, 0.3f, 60, 1000);
-    calculate_frustum_planes2(camera_matrix, projection_matrix, planes);
+    float4x4 camera_matrix = float4x4_multiply(transform_matrix, projection_matrix);
+    calculate_frustum_planes(camera_matrix, planes);
     zox_log("   - camera_position [%f %f %f]\n", camera_position.x, camera_position.y, camera_position.z)
     zox_log("   - camera_euler [%f %f %f]\n", camera_euler.x, camera_euler.y, camera_euler.z)
     log_float4x4("camera_matrix", camera_matrix);

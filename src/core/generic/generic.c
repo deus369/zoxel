@@ -1,7 +1,6 @@
-#ifndef zoxel_generic
-#define zoxel_generic
+#ifndef zox_generic
+#define zox_generic
 
-// zoxel_component_includes
 #include "data/color.c"
 #include "data/color_rgb.c"
 #include "data/octree_helper.c"
@@ -48,16 +47,13 @@ zox_entities_component(EntityLinks)
 zox_component_double(EventTime)
 zox_component_entity(EventInput)
 zox_function_component(TimedEvent, void, ecs_world_t*, const ecs_entity_t)
-// zoxel_util_includes
 #include "util/generic_util.c"
 #include "util/convert_ascii.c"
 #include "util/convert_to_ascii.c"
 #include "util/name_util.c"
 #include "util/name_generation.c"
 #include "util/hsv_util.c"
-// zoxel_prefab_includes
 #include "prefabs/generic_event.c"
-// zoxel_system_includes
 #include "systems/destroy_in_frame_system.c"
 #include "systems/generic_event_debug_system.c"
 #include "systems/death_clean_system.c"
@@ -78,16 +74,17 @@ void delay_event(ecs_world_t *world, void (*value)(ecs_world_t*, const ecs_entit
     zox_set(event, EventTime, { delay })
 }
 
+void test_colors_hsv() {
+    color test_color = (color) { 130, 148, 191, 255 };
+    zox_log(" > color [%ix%ix%i]\n", test_color.r, test_color.g, test_color.b)
+    float3 test_hsv = color_to_hsv(test_color);
+    zox_log(" > color hsv [%fx%fx%f]\n", test_hsv.x, test_hsv.y, test_hsv.z)
+    color test_color2 = hsv_to_color(test_hsv);
+    zox_log(" > color converted back [%ix%ix%i]\n", test_color2.r, test_color2.g, test_color2.b)
+}
+
 zox_begin_module(Generic)
 initialize_component_ids();
-// test
-color test_color = (color) { 130, 148, 191, 255 };
-zox_log(" > color [%ix%ix%i]\n", test_color.r, test_color.g, test_color.b)
-float3 test_hsv = color_to_hsv(test_color);
-zox_log(" > color hsv [%fx%fx%f]\n", test_hsv.x, test_hsv.y, test_hsv.z)
-color test_color2 = hsv_to_color(test_hsv);
-zox_log(" > color converted back [%ix%ix%i]\n", test_color2.r, test_color2.g, test_color2.b)
-// zoxel_component_defines
 zox_define_tag(Selectable)
 zox_define_tag(Clickable)
 zox_define_tag(Dragable)
@@ -127,7 +124,6 @@ zox_define_component_entity(ClickingEntity)
 zox_define_component_double(EventTime)
 zox_define_component_entity(EventInput)
 zox_define_component(TimedEvent)
-// zoxel_system_defines
 zox_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
 zox_system_1(TimedEventSystem, main_thread_pipeline, [in] TimedEvent, [in] EventInput, [out] EventTime) // assume spawning in generic events
 zoxel_end_module(Generic)

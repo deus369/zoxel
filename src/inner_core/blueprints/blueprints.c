@@ -1,5 +1,5 @@
-#ifndef zoxel_blueprints
-#define zoxel_blueprints
+#ifndef zox_blueprints
+#define zox_blueprints
 
 zox_declare_tag(Blueprint)
 zox_declare_tag(Bluenode)

@@ -1,8 +1,8 @@
-#ifndef zoxel_lines3D
-#define zoxel_lines3D
+#ifndef zox_lines3D
+#define zox_lines3D
 
 zox_declare_tag(Line3D)
-zox_component(LineData3D, float6)     //! The two points in a line3D
+zox_component(LineData3D, float6)     // The two points in a line3D
 zox_declare_tag(CubeLines)
 zox_component_byte(DebugCubeLines)
 zox_component(CubeLinesThickness, float)

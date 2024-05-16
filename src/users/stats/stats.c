@@ -1,5 +1,5 @@
-#ifndef zoxel_stats
-#define zoxel_stats
+#ifndef zox_stats
+#define zox_stats
 
 zox_declare_tag(StateStat)
 zox_declare_tag(RegenStat)

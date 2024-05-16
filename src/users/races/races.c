@@ -1,5 +1,5 @@
-#ifndef zoxel_races
-#define zoxel_races
+#ifndef zox_races
+#define zox_races
 
 zox_begin_module(Races)
 zoxel_end_module(Races)

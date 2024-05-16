@@ -1,9 +1,7 @@
-#ifndef zoxel_particles
-#define zoxel_particles
+#ifndef zox_particles
+#define zox_particles
 
-// shared components
 zox_component(ParticleEmitRate, int)
-// sub modules
 #include "particles2D/particles2D.c"
 #include "particles3D/particles3D.c"
 

@@ -1,4 +1,5 @@
 void CameraFrustumSystem(ecs_iter_t *it) {
+    if (zox_cameras_disable_streaming) return;
     zox_field_in(ViewMatrix, viewMatrixs, 1)
     zox_field_out(CameraPlanes, cameraPlaness, 2)
     for (int i = 0; i < it->count; i++) {

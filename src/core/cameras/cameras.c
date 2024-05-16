@@ -83,7 +83,7 @@ zox_system(Camera2DFollowSystem, EcsPostUpdate, [in] FreeRoam, [in] CameraTarget
 zox_system(Camera3DFollowSystem, EcsPostUpdate, [in] CameraFollowLink, [in] LocalPosition3D, [out] Position3D)
 zox_system(ViewMatrixSystem, zox_camera_stage, [in] TransformMatrix, [in] ProjectionMatrix, [out] ViewMatrix)
 zox_system(ProjectionMatrixSystem, zox_camera_stage, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
-zox_system(CameraFrustumSystem, zox_camera_stage, [in] ViewMatrix, [out] CameraPlanes, [none] Camera)
+zox_system(CameraFrustumSystem, zox_camera_stage, [in] ViewMatrix, [out] CameraPlanes, [none] Camera, [none] Camera3D)
 #ifdef zox_debug_camera_frustum
 zox_system_1(CameraDebugSystem, main_thread_pipeline, [in] CameraPlanes, [none] Camera)
 #endif

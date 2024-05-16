@@ -16,7 +16,13 @@ unsigned char camera_fov = 90;
 unsigned char camera_follow_mode = zox_camera_follow_mode_attach;
 ecs_entity_t main_cameras[max_cameras];
 ecs_entity_t ui_cameras[max_cameras];
+unsigned char zox_cameras_disable_streaming = 0;
 // debugs
 // todo: debug frustum planes, draw plane with line for normal and distance, rotated quad with normal line?
 // #define zox_debug_camera_frustum
 // #define zox_test_camera_frustum
+
+void toggle_cameras_updates() {
+    zox_cameras_disable_streaming = !zox_cameras_disable_streaming;
+    zox_log(" > cameras_streaming are [%s]\n", zox_cameras_disable_streaming ? "disabled" : "enabled")
+}

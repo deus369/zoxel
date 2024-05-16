@@ -37,6 +37,8 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
                 }*/
 
                 else if (keyboard->p.pressed_this_frame) toggle_free_roam_camera(world, e);
+
+                else if (keyboard->j.pressed_this_frame) toggle_cameras_updates();
             }
         }
     }

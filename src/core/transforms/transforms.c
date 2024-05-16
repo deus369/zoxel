@@ -1,7 +1,7 @@
 #ifndef zox_transforms
 #define zox_transforms
 
-zox_component_float(Scale1D)    // rename this to UniformScale, more english like
+zox_component_float(Scale1D)
 #include "hierarchy/hierarchy.c"
 #include "transforms2D/transforms2D.c"
 #include "transforms3D/transforms3D.c"

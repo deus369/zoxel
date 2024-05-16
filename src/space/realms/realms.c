@@ -1,5 +1,5 @@
-#ifndef zoxel_realms
-#define zoxel_realms
+#ifndef zox_realms
+#define zox_realms
 
 zox_declare_tag(Realm)
 zox_component_entity(RealmLink)

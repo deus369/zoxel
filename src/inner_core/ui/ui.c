@@ -1,5 +1,5 @@
-#ifndef zoxel_ui
-#define zoxel_ui
+#ifndef zox_ui
+#define zox_ui
 
 #ifndef zoxel_on_android
 #define default_ui_scale 1.0f

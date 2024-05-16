@@ -26,11 +26,9 @@ void spawn_prefabs_players3D(ecs_world_t *world) {
 zox_begin_module(Players3D)
 zox_define_tag(Player3D)
 zox_define_tag(PlayerCharacter3D)
-#ifdef zoxel_physics3D
 zox_system(Player3DMoveSystem, zox_pip_player_movement, [in] DeviceLinks, [in] DeviceMode, [in] CharacterLink, [none] players.Player)
 zox_system(Player3DRotateSystem, zox_pip_player_movement, [in] DeviceLinks, [in] DeviceMode, [in] CharacterLink, [in] CameraLink, [none] players.Player)
 zox_system(Player3DJumpSystem, zox_pip_player_movement, [in] DeviceLinks, [in] DeviceMode, [in] CharacterLink, [none] players.Player)
-#endif
 zoxel_end_module(Players3D)
 
 #endif

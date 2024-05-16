@@ -12,15 +12,49 @@ void normalize_planes(plane *planes) {
 }
 
 void transform_planes(const float4x4 mat, plane *planes) {
-    // const float4x4 inverse_mat = float4x4_inverse(mat);
-    // float4x4_transpose
-    const float4x4 inverse_mat = float4x4_inverse_precise(mat);
-    for (int i = 0; i < 6; ++i) {
-        planes[i].normal = float4x4_multiply_float3(inverse_mat, planes[i].normal);
-    }
+    const float4x4 inverse_mat = float4x4_inverse(mat);
+    for (int i = 0; i < 6; i++) planes[i].normal = float4x4_multiply_float3(inverse_mat, planes[i].normal);
 }
 
-void calculate_frustum_planes2(const float4x4 view, const float4x4 proj, plane *planes) {
+// this is wrong! - unitys CalculateFrustumPlanes - https://docs.unity3d.com/ScriptReference/GeometryUtility.CalculateFrustumPlanes.html
+void calculate_frustum_planes(const float4x4 mat, plane *planes) {
+    // left plane > w + x
+    planes[0].normal.x = mat.w.x + mat.x.x;
+    planes[0].normal.y = mat.w.y + mat.x.y;
+    planes[0].normal.z = mat.w.z + mat.x.z;
+    planes[0].distance = mat.w.w + mat.x.w;
+    // right plane > w - x
+    planes[1].normal.x = mat.w.x - mat.x.x;
+    planes[1].normal.y = mat.w.y - mat.x.y;
+    planes[1].normal.z = mat.w.z - mat.x.z;
+    planes[1].distance = mat.w.w - mat.x.w;
+    // bottom plane > w + y
+    planes[2].normal.x = mat.w.x + mat.y.x;
+    planes[2].normal.y = mat.w.y + mat.y.y;
+    planes[2].normal.z = mat.w.z + mat.y.z;
+    planes[2].distance = mat.w.w + mat.y.w;
+    // top plane > w - y
+    planes[3].normal.x = mat.w.x - mat.y.x;
+    planes[3].normal.y = mat.w.y - mat.y.y;
+    planes[3].normal.z = mat.w.z - mat.y.z;
+    planes[3].distance = mat.w.w - mat.y.w;
+    // near plane > w + z
+    planes[4].normal.x = mat.w.x + mat.z.x;
+    planes[4].normal.y = mat.w.y + mat.z.y;
+    planes[4].normal.z = mat.w.z + mat.z.z;
+    planes[4].distance = mat.w.w + mat.z.w;
+    // far plane > w - z
+    planes[5].normal.x = mat.w.x - mat.z.x;
+    planes[5].normal.y = mat.w.y - mat.z.y;
+    planes[5].normal.z = mat.w.z - mat.z.z;
+    planes[5].distance = mat.w.w - mat.z.w;
+    // zox_log(" + distance near: %f to far: %f\n", planes[4].distance, planes[5].distance)
+    normalize_planes(planes);
+    transform_planes(mat, planes);
+    normalize_planes(planes);
+}
+
+/*void calculate_frustum_planes2(const float4x4 view, const float4x4 proj, plane *planes) {
     // Left plane: column0 + column3
     planes[0].normal.x = proj.x.w + view.x.x;
     planes[0].normal.y = proj.y.w + view.x.y;
@@ -56,44 +90,7 @@ void calculate_frustum_planes2(const float4x4 view, const float4x4 proj, plane *
     planes[5].normal.y = proj.y.w - view.z.y;
     planes[5].normal.z = proj.z.w - view.z.z;
     planes[5].distance = proj.w.w - view.z.w;
-}
-
-// this is wrong! - unitys CalculateFrustumPlanes - https://docs.unity3d.com/ScriptReference/GeometryUtility.CalculateFrustumPlanes.html
-void calculate_frustum_planes(const float4x4 mat, plane *planes) {
-    // left plane > w + x
-    planes[0].normal.x = mat.w.x + mat.x.x;
-    planes[0].normal.y = mat.w.y + mat.x.y;
-    planes[0].normal.z = mat.w.z + mat.x.z;
-    planes[0].distance = mat.w.w + mat.x.w;
-    // right plane > w - x
-    planes[1].normal.x = mat.w.x - mat.x.x;
-    planes[1].normal.y = mat.w.y - mat.x.y;
-    planes[1].normal.z = mat.w.z - mat.x.z;
-    planes[1].distance = mat.w.w - mat.x.w;
-    // bottom plane > w + y
-    planes[2].normal.x = mat.w.x + mat.y.x;
-    planes[2].normal.y = mat.w.y + mat.y.y;
-    planes[2].normal.z = mat.w.z + mat.y.z;
-    planes[2].distance = mat.w.w + mat.y.w;
-    // top plane > w - y
-    planes[3].normal.x = mat.w.x - mat.y.x;
-    planes[3].normal.y = mat.w.y - mat.y.y;
-    planes[3].normal.z = mat.w.z - mat.y.z;
-    planes[3].distance = mat.w.w - mat.y.w;
-    // near plane > w + z
-    planes[4].normal.x = mat.w.x + mat.z.x;
-    planes[4].normal.y = mat.w.y + mat.z.y;
-    planes[4].normal.z = mat.w.z + mat.z.z;
-    planes[4].distance = mat.w.w + mat.z.w;
-    // far plane > w - z
-    planes[5].normal.x = mat.w.x - mat.z.x;
-    planes[5].normal.y = mat.w.y - mat.z.y;
-    planes[5].normal.z = mat.w.z - mat.z.z;
-    planes[5].distance = mat.w.w - mat.z.w;
-    normalize_planes(planes);
-    transform_planes(mat, planes);
-    normalize_planes(planes);
-}
+}*/
 
 // checks if bounds point is outside of plane - test TestPlanesAABB
 unsigned char is_in_frustum(const plane *planes, const bounds b) {

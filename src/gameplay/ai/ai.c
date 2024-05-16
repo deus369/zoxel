@@ -1,5 +1,5 @@
-#ifndef zoxel_ai
-#define zoxel_ai
+#ifndef zox_ai
+#define zox_ai
 
 zox_declare_tag(Wanderer)
 #include "prefabs/character3D_npc.c"

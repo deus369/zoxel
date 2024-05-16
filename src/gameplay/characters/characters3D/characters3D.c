@@ -1,5 +1,5 @@
-#ifndef zoxel_characters3D
-#define zoxel_characters3D
+#ifndef zox_characters3D
+#define zox_characters3D
 
 zox_declare_tag(Character3D)
 zox_component_entity(Character3DLink)

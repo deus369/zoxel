@@ -1,4 +1,3 @@
-#ifdef zoxel_inputs
 extern void canvas_select_first_button(ecs_world_t *world, const ecs_entity_t raycaster, const ecs_entity_t canvas);
 
 void ElementNavigationSystem(ecs_iter_t *it) {
@@ -85,4 +84,3 @@ void ElementNavigationSystem(ecs_iter_t *it) {
         }
     }
 } zox_declare_system(ElementNavigationSystem)
-#endif

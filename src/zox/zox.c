@@ -9,7 +9,7 @@
 #define FLECS_SYSTEM
 #define FLECS_PIPELINE
 #ifndef zox_disable_audio
-    #define SDL_MIXER
+#define SDL_MIXER
 #endif
 #include <signal.h> // used for detecting cancel
 #include <string.h> // who uses this?

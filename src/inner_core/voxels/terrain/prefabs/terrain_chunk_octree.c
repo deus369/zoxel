@@ -27,6 +27,7 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, const int3 si
     zox_prefab_set(e, VoxScale, { 0.5f })
     zox_prefab_set(e, MeshDirty, { 0 })
     zox_prefab_set(e, Brightness, { 1.0f })
+    zox_prefab_set(e, RenderDisabled, { 1 })
     add_components_mesh_textured(world, e);
     // voxels_core
     add_chunk_octree(world, e, size);

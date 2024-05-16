@@ -1,5 +1,5 @@
-#ifndef zoxel_lines2D
-#define zoxel_lines2D
+#ifndef zox_lines2D
+#define zox_lines2D
 
 zox_declare_tag(Line2D)
 zox_declare_tag(ElementLine2D)  // lines in ui
@@ -40,7 +40,6 @@ zox_define_component(LineData2D)
 zox_define_component(LinePosition2D)
 zox_define_component(LineLocalPosition2D)
 zox_define_component(LineAnchor)
-// zox_filter(line2Ds_query, [none] Line2D, [in] LinePosition2D, [none] CanvasLink, [none] LineData2D)
 zox_system(FrameDebugSystem, EcsOnUpdate, [none] FrameDebugLine, [in] ChildIndex, [out] LineLocalPosition2D)
 zox_system(Line2DElementSystem, zox_pipelines_pre_render, [in] LinePosition2D, [in] CanvasLink, [out] LineData2D, [none] Line2D)
 if (!headless) zox_render3D_system(Line2DRenderSystem, [in] LineData2D, [in] LineThickness, [in] Color, [in] Layer2D, [none] Line2D, [none] !ElementLine2D)
