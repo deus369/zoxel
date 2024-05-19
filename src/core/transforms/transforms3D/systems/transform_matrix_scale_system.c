@@ -1,5 +1,4 @@
 void TransformMatrixScaleSystem(ecs_iter_t *it) {
-    zox_iter_world()
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_in(Rotation3D, rotation3Ds, 2)
     zox_field_in(Scale1D, scale1Ds, 3)

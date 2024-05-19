@@ -7,6 +7,9 @@ void ViewMatrixSystem(ecs_iter_t *it) {
         zox_field_i_in(TransformMatrix, transformMatrixs, transformMatrix)
         zox_field_i_in(ProjectionMatrix, projectionMatrixs, projectionMatrix)
         zox_field_i_out(ViewMatrix, viewMatrixs, viewMatrix)
-        viewMatrix->value = float4x4_multiply(transformMatrix->value, projectionMatrix->value);
+        const float4x4 view_matrix = float4x4_inverse_precise(transformMatrix->value);
+        // const float4x4 view_matrix = float4x4_inverse(transformMatrix->value);
+        // calculate view-projection-matrix
+        viewMatrix->value = float4x4_multiply(view_matrix, projectionMatrix->value);
     }
 } zox_declare_system(ViewMatrixSystem)

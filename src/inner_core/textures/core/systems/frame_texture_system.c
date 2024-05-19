@@ -1,9 +1,6 @@
 // #define zox_time_frame_texture_system
 void FrameTextureSystem(ecs_iter_t *it) {
     zox_change_check()
-#ifdef zox_time_frame_texture_system
-    begin_timing()
-#endif
     zox_field_out(GenerateTexture, generateTextures, 2)
     zox_field_in(TextureSize, textureSizes, 3)
     zox_field_in(Color, colors, 4)
@@ -15,7 +12,7 @@ void FrameTextureSystem(ecs_iter_t *it) {
         zox_field_i_out(GenerateTexture, generateTextures, generateTexture)
         if (!generateTexture->value) continue;
         zox_field_i_out(TextureDirty, textureDirtys, textureDirty)
-        if (textureDirty->value) continue;
+        // if (textureDirty->value) continue;
         zox_field_e()
         zox_field_i_in(TextureSize, textureSizes, textureSize)
         zox_field_i_in(Color, colors, color2)
@@ -32,11 +29,5 @@ void FrameTextureSystem(ecs_iter_t *it) {
         else generate_texture_frame(textureData->value, textureData->length, textureSize->value, fill_color, outline_color, outlineThickness->value, frameEdge->value, add_noise);
         generateTexture->value = 0;
         textureDirty->value = 1;
-#ifdef zox_time_frame_texture_system
-        did_do_timing()
-#endif
     }
-#ifdef zox_time_frame_texture_system
-    end_timing("    - frame_texture_system")
-#endif
 } zox_declare_system(FrameTextureSystem)

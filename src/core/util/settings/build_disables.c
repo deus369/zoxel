@@ -1,6 +1,7 @@
 // disables
 
 // boot disables
+// #define zox_disable_frustum_checks
 // #define zox_disable_skybox
 // #define zox_disable_main_menu
 

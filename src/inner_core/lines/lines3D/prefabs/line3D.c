@@ -30,9 +30,12 @@ ecs_entity_t spawn_line3D_colored(ecs_world_t *world, const float3 pointA, const
     return e;
 }
 
+void render_line3D_thickness(ecs_world_t *world, const float3 a, const float3 b, const color_rgb line_color, const float thickness) {
+    spawn_line3D_colored(world, a, b, thickness, 0.01, line_color);
+}
 
-void render_line3D(const float3 a, const float3 b, const color_rgb line_color) {
-    spawn_line3D_colored(world, a, b, 1, 0.01, line_color);
+void render_line3D(ecs_world_t *world, const float3 a, const float3 b, const color_rgb line_color) {
+    spawn_line3D_colored(world, a, b, 4, 0.01, line_color);
 }
 
 

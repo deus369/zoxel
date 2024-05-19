@@ -1,24 +1,25 @@
 typedef struct {
-    float4 x;
-    float4 y;
-    float4 z;
-    float4 w;
+    float4 x, y, z, w;
 } float4x4;
 
-const float4x4 float4x4_zero_ = { { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } };
+// remember: matrix in column-major order, each float4 is a column
+
+#define float4x4_zero { float4_zero, float4_zero, float4_zero, float4_zero }
 
 const float4x4 float4x4_identity_ = { { 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 0, 1, 0 }, { 0, 0, 0, 1 } };
 
+/*
+const float4x4 float4x4_zero_ = { float4_zero, float4_zero, float4_zero, float4_zero };
 float4x4 float4x4_zero() {
     return float4x4_zero_;
-}
+}*/
 
 float4x4 float4x4_identity() {
     return float4x4_identity_;
 }
 
 float4x4 float4x4_multiply(const float4x4 a, const float4x4 b) {
-    float4x4 c = float4x4_zero();
+    float4x4 c = float4x4_zero;
     float* a2 = (float*) &a;
     float* b2 = (float*) &b;
     float* c2 = (float*) &c;
@@ -29,6 +30,10 @@ float4x4 float4x4_multiply(const float4x4 a, const float4x4 b) {
             + a2[j4 + 2] * b2[i + 8] + a2[j4 + 3] * b2[i + 12];
     }
     return c;
+}
+
+float3 float4x4_forward(const float4x4 matrix) {
+    return (float3) { matrix.z.x, matrix.z.y, matrix.z.z };
 }
 
 void log_float4x4(char *label, const float4x4 matrix) {

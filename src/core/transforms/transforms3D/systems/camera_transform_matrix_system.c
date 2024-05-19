@@ -1,5 +1,5 @@
 // remember: camera operations are opposite as it rotates scene around it, we cannot use its transform for non camera things, its just  used for getting  view matrix!
-void CameraTransformMatrixSystem(ecs_iter_t *it) {
+/*void CameraTransformMatrixSystem(ecs_iter_t *it) {
     zox_iter_world()
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_in(Rotation3D, rotation3Ds, 2)
@@ -10,4 +10,4 @@ void CameraTransformMatrixSystem(ecs_iter_t *it) {
         zox_field_i_out(TransformMatrix, transformMatrixs, transformMatrix)
         transformMatrix->value = float4x4_transform_camera(position3D->value, rotation3D->value);
     }
-} zox_declare_system(CameraTransformMatrixSystem)
+} zox_declare_system(CameraTransformMatrixSystem)*/

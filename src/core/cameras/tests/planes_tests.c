@@ -5,7 +5,7 @@ void print_planes(plane *planes) {
 }
 
 void fill_fake_view_matrix(float4x4 *matrix, const float3 position, const float4 rotation) {
-    const float4x4 transform_matrix = float4x4_transform_camera(position, rotation);
+    const float4x4 transform_matrix = float4x4_inverse_precise(float4x4_transform(position, rotation));
    // float4x4 projection_matrix;
     //calculate_perspective_projection_matrix(&projection_matrix, 16 / 9.0f, 0.3f, 60, 1000);
     /*const float4x4 position_matrix = float4x4_position(float3_reverse(position));
@@ -98,7 +98,7 @@ void fake_plane_data(plane *planes) {
 }
 
 void run_test_frustum(char *label, const float3 camera_position, const float3 camera_euler) {
-    zox_log(" > test [%s]\n", label)
+    /*zox_log(" > test [%s]\n", label)
     // camera
     float4 camera_rotation = quaternion_from_euler(float3_multiply_float(camera_euler, degreesToRadians));
 
@@ -107,11 +107,11 @@ void run_test_frustum(char *label, const float3 camera_position, const float3 ca
     fill_fake_view_matrix(&transform_matrix, camera_position, camera_rotation);
     float4x4 projection_matrix;
     calculate_perspective_projection_matrix(&projection_matrix, 16 / 9.0f, 0.3f, 60, 1000);
-    float4x4 camera_matrix = float4x4_multiply(transform_matrix, projection_matrix);
-    calculate_frustum_planes(camera_matrix, planes);
+    float4x4 vp_matrix = float4x4_multiply(transform_matrix, projection_matrix);
+    calculate_frustum_planes(vp_matrix, planes);
     zox_log("   - camera_position [%f %f %f]\n", camera_position.x, camera_position.y, camera_position.z)
     zox_log("   - camera_euler [%f %f %f]\n", camera_euler.x, camera_euler.y, camera_euler.z)
-    log_float4x4("camera_matrix", camera_matrix);
+    log_float4x4("vp_matrix", vp_matrix);
     print_planes(planes);
 
     // bounds
@@ -137,7 +137,7 @@ void run_test_frustum(char *label, const float3 camera_position, const float3 ca
     zox_log("   - result: %s - bounds [%f %f %f]\n", result_c ? "Inside Frustum" : "Outside Frustum", bounds_c.center.x, bounds_c.center.y, bounds_c.center.z)
     zox_log("   - result: %s - bounds [%f %f %f]\n", result_d ? "Inside Frustum" : "Outside Frustum", bounds_d.center.x, bounds_d.center.y, bounds_d.center.z)
     zox_log("   - result: %s - bounds [%f %f %f]\n", result_e ? "Inside Frustum" : "Outside Frustum", bounds_e.center.x, bounds_e.center.y, bounds_e.center.z)
-    zox_log("   - result: %s - bounds [%f %f %f]\n", result_f ? "Inside Frustum" : "Outside Frustum", bounds_f.center.x, bounds_f.center.y, bounds_f.center.z)
+    zox_log("   - result: %s - bounds [%f %f %f]\n", result_f ? "Inside Frustum" : "Outside Frustum", bounds_f.center.x, bounds_f.center.y, bounds_f.center.z)*/
 }
 
 // test function for is_in_frustum
@@ -203,6 +203,17 @@ void test_float4x4_inverse() {
     */
 }
 
+void test_corners() {
+    /*plane planes[6];
+    fake_plane_data(planes);
+    float3 *corners = find_plane_corners(planes);
+    printf("Plane corners:\n");
+    for (int i = 0; i < 8; ++i) {
+        printf("(%f, %f, %f)\n", corners[i].x, corners[i].y, corners[i].z);
+    }
+    free(corners);*/
+}
+
 // assume initially facing negative direction
 void test_frustum_check() {
     test_is_in_frustum("Aa");
@@ -226,3 +237,87 @@ at 0,0,16 planes:
     Plane 5: Normal = (0.00, 0.00, 1.00), Distance = -16.3;:
     Plane 6: Normal = (0.00, 0.00, -1.00), Distance = 1016.133;:
 */
+void test_calculate_plane_from_points() {
+    // Define test points
+    float3 point_a = (float3) { -1, -1, 0 };
+    float3 point_b = (float3) { 1, -1, 0 };
+    float3 point_c = (float3) { 1, 1, 0 };
+    float3 point_d = (float3) { -1, 1, 0 };
+
+    // Expected normal and distance for a plane in the xy-plane
+    float3 expected_normal = (float3) { 0, 0, 1 };
+    float expected_distance = 0;
+
+    // Calculate the plane from the test points
+    plane result_plane = calculate_plane_from_points(point_a, point_b, point_c); // , point_d);
+
+    // Check if the calculated normal matches the expected normal
+    if (!float3_equals(result_plane.normal, expected_normal)) {
+        printf("Error: Calculated normal (%f, %f, %f) does not match expected normal (%f, %f, %f)\n",
+               result_plane.normal.x, result_plane.normal.y, result_plane.normal.z,
+               expected_normal.x, expected_normal.y, expected_normal.z);
+    }
+
+    // Check if the calculated distance matches the expected distance
+    if (result_plane.distance != expected_distance) {
+        printf("Error: Calculated distance %f does not match expected distance %f\n",
+               result_plane.distance, expected_distance);
+    }
+}
+
+void test_calculate_planes_from_frustum() {
+    // Define test frustum points
+    float3 frustum_points[8] = {
+        (float3) { -1, -1, 0 },
+        (float3) { 1, -1, 0 },
+        (float3) { 1, 1, 0 },
+        (float3) { -1, 1, 0 },
+        (float3) { -1, -1, 1 },
+        (float3) { 1, -1, 1 },
+        (float3) { 1, 1, 1 },
+        (float3) { -1, 1, 1 }
+    };
+
+    // Expected normals and distances for each plane
+    float3 expected_normals[6] = {
+        (float3) { -1, 0, 0 },   // Left
+        (float3) { 1, 0, 0 },   // Right
+        (float3) { 0, -1, 0 },   // Down
+        (float3) { 0, 1, 0 },  // Up
+        (float3) { 0, 0, 1 },  // Near
+        (float3) { 0, 0, 1 }    // Far
+    };
+    float expected_distances[6] = { 1, 1, 1, 1, 0, 1 };  // Distances are all 0 except for the far plane
+
+    // Calculate planes from the test frustum points
+    plane planes[6];
+    calculate_planes_from_frustum(frustum_points, planes);
+
+    // Check if the calculated normals and distances match the expected values
+    for (int i = 0; i < 6; ++i) {
+        // printf("Plane %d: Normal: (%f, %f, %f), Distance: %f\n", i, planes[i].normal.x, planes[i].normal.y, planes[i].normal.z, planes[i].distance);
+        if (!float3_equals(planes[i].normal, expected_normals[i])) {
+            printf("Error: Calculated normal for plane %d [%fx%fx%f] does not match the expected normal [%fx%fx%f].\n", i, planes[i].normal.x, planes[i].normal.y, planes[i].normal.z, expected_normals[i].x, expected_normals[i].y, expected_normals[i].z);
+        }
+        if (planes[i].distance != expected_distances[i]) {
+            printf("Error: Calculated distance for plane %d [%f] does not match the expected distance %f.\n", i, planes[i].distance, expected_distances[i]);
+        }
+    }
+}
+
+
+void test_planes_again() {
+    // Example usage
+    /*float4x4 view_projection_matrix = {
+        .x = {1, 0, 0, 0},
+        .y = {0, 1, 0, 0},
+        .z = {0, 0, 1, 0},
+        .w = {0, 0, 0, 1}
+    };
+    plane planes[6];
+    calculate_frustum_planes(view_projection_matrix, planes);
+    for (int i = 0; i < 6; i++) {
+        printf("Plane %d: normal = (%f, %f, %f), distance = %f\n",
+               i, planes[i].normal.x, planes[i].normal.y, planes[i].normal.z, planes[i].distance);
+    }*/
+}

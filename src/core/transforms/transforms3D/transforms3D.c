@@ -44,9 +44,9 @@ zox_system(EulerLimitZSystem, EcsOnUpdate, [in] EulerLimitZ, [out] Euler)
 zox_system(EulerOverrideSystem, EcsOnUpdate, [none] EulerOverride, [in] Euler, [out] Rotation3D)
 zox_system(ParentRotationSystem, zox_transforms_stage, [in] ParentLink, [in] LocalRotation3D, [out] Rotation3D)
 zox_system(ParentPositionSystem, zox_transforms_stage, [in] ParentLink, [in] LocalPosition3D, [out] Position3D)
-zox_system(TransformMatrixSystem, zox_transforms_stage, [in] Position3D, [in] Rotation3D, [out] TransformMatrix, [none] !Scale1D, [none] !CameraTransform)
-zox_system(TransformMatrixScaleSystem, zox_transforms_stage, [in] Position3D, [in] Rotation3D, [in] Scale1D, [out] TransformMatrix, [none] !CameraTransform)
-zox_system(CameraTransformMatrixSystem, zox_transforms_stage, [in] Position3D, [in] Rotation3D, [out] TransformMatrix, [none] CameraTransform)
+zox_system(TransformMatrixSystem, zox_transforms_stage, [in] Position3D, [in] Rotation3D, [out] TransformMatrix, [none] !Scale1D) // , [none] !CameraTransform)
+zox_system(TransformMatrixScaleSystem, zox_transforms_stage, [in] Position3D, [in] Rotation3D, [in] Scale1D, [out] TransformMatrix) // , [none] !CameraTransform)
+// zox_system(CameraTransformMatrixSystem, zox_transforms_stage, [in] Position3D, [in] Rotation3D, [out] TransformMatrix, [none] CameraTransform)
 zoxel_end_module(Transforms3D)
 
 #endif

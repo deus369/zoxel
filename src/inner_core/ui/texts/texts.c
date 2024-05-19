@@ -1,5 +1,5 @@
-#ifndef zoxel_texts
-#define zoxel_texts
+#ifndef zox_zexts
+#define zox_zexts
 
 #define zox_pipelines_zext_backgrounds EcsPostUpdate
 #define zox_pipelines_zext_textures EcsOnUpdate

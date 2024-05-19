@@ -24,7 +24,8 @@ void spawn_players(ecs_world_t *world, const ecs_entity_t game) {
 
 ecs_entity_t spawn_player_camera(ecs_world_t *world, const unsigned char index, const float3 camera_position, const float4 camera_rotation, const int2 viewport_position, const int2 viewport_size, const float4 screen_to_canvas) {
     main_menu_rotation_speed = quaternion_from_euler( (float3) { 0, -main_camera_rotation_speed * degreesToRadians, 0 });
-    const ecs_entity_t e = spawn_base_camera(world, camera_position, camera_rotation, camera_fov, viewport_position, viewport_size, screen_to_canvas);
+    float fov = get_camera_mode_fov(camera_mode);
+    const ecs_entity_t e = spawn_base_camera(world, camera_position, camera_rotation, fov, viewport_position, viewport_size, screen_to_canvas);
     zox_add_tag(e, Camera3D)
     const ecs_entity_t e2 = spawn_camera_ui(world, viewport_position, viewport_size);
     zox_prefab_set(e, EternalRotation, { main_menu_rotation_speed })

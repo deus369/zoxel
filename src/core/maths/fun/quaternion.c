@@ -99,6 +99,10 @@ float3 quaternion_to_euler(float4 q) {
     return euler;
 }
 
+float3 quaternion_to_euler_360(float4 q) {
+    return float3_multiply_float(quaternion_to_euler(q), (180.0f / M_PI));
+}
+
 unsigned char quaternion_to_quadrant(float4 q) {
     float degree = quaternion_to_euler(q).y * (180.0f / M_PI);
     // float degree = quaternion_to_euler_y(q) * (180.0f / M_PI);

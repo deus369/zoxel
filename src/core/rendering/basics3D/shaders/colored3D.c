@@ -25,7 +25,8 @@ vec3 float4_rotate_float3(vec4 rotation, vec3 value) {\
     return value + scaledT + crossB;\
 }\
 */
-// camera_matrix * vec4(position + float4_rotate_float3(rotation, vertex_position * scale), 1);\
+
+// camera_matrix * vec4(position + float4_rotate_float3(rotation, vertex_position * scale), 1);
 
 const GLchar* shader3D_colored_frag_buffer = "\
 #version 300 es\n\

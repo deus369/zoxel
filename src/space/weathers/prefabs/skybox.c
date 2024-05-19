@@ -1,4 +1,3 @@
-const float skybox_scale = 1024.0f;
 ecs_entity_t prefab_skybox;
 ecs_entity_t skybox;
 
@@ -27,6 +26,9 @@ ecs_entity_t spawn_prefab_skybox(ecs_world_t *world) {
 }
 
 void set_sky_color(ecs_world_t *world, float3 top_color, float3 bottom_color) {
+#ifdef zox_disable_skybox
+    return;
+#endif
     if (headless) return;
     GLuint material = zox_get_value(skybox, MaterialGPULink)
     opengl_set_material(material);

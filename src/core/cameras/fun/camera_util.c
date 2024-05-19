@@ -62,12 +62,12 @@ void set_camera_transform(ecs_world_t *world, const ecs_entity_t camera, const e
 }
 
 unsigned char get_camera_mode_fov(const unsigned char camera_mode) {
-    unsigned char camera_fov = 0;
-    if (camera_mode == zox_camera_mode_first_person || camera_mode == zox_camera_mode_free || camera_mode == zox_camera_mode_third_person) camera_fov = 90;
-    else if (camera_mode == zox_camera_mode_ortho) camera_fov = 45;
-    else if (camera_mode == zox_camera_mode_topdown) camera_fov = 60;
+    unsigned char fov = 0;
+    if (camera_mode == zox_camera_mode_first_person || camera_mode == zox_camera_mode_free || camera_mode == zox_camera_mode_third_person) fov = 60; // 90;
+    else if (camera_mode == zox_camera_mode_ortho) fov = 45;
+    else if (camera_mode == zox_camera_mode_topdown) fov = 60;
     // zox_log("   > camera_mode [%i] camera_fov [%i]\n", camera_mode, camera_fov)
-    return camera_fov;
+    return fov;
 }
 
 void set_camera_mode(ecs_world_t *world, unsigned char new_camera_mode) {

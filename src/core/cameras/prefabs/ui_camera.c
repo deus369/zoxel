@@ -11,5 +11,6 @@ ecs_entity_t spawn_camera_ui(ecs_world_t *world, const int2 position, const int2
     zox_set(e, FieldOfView, { ui_camera_fov })
     zox_set(e, ScreenPosition, { position })
     zox_set(e, ScreenDimensions, { dimensions })
+    zox_set(e, CameraNearDistance, { 0.01f })
     return e;
 }

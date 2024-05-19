@@ -1,11 +1,13 @@
 // refactor this, module updates can add debug lines to it per frame
 // #define zox_debug_ui_memorys_allocated
-#define zox_debug_ui_device_mode
+// #define zox_debug_ui_device_mode
+#define zox_debug_zox_statistics
 #define zox_debug_ui_save_cloud
 // #define zox_debug_ui_player_level
-#define zox_debug_player_character2D
-#define zox_debug_player_character3D
+// #define zox_debug_player_character2D
+// #define zox_debug_player_character3D
 #define zox_debug_player_camera
+#define zox_debug_camera_planes
 // #define zox_test_newline
 // #define zox_debug_ui_player_health
 // #define zox_debug_ui_raycaster_target
@@ -48,6 +50,9 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         // test this \n
         // snprintf(buffer, sizeof(buffer), "debug ui\nline 2");
         // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[debug]");
+#ifdef zox_debug_zox_statistics
+        buffer_index += snprintf(buffer + buffer_index, buffer_size, "chunks visible [%i / %i]\n", zox_statistics_chunks_visible, zox_statistics_chunks_total);
+#endif
 #ifdef zox_test_newline
         buffer_index = debug_newline_zext(buffer, buffer_size, buffer_index);
 #endif
@@ -62,6 +67,9 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 #endif
 #ifdef zox_debug_player_camera
         buffer_index = get_label_camera(world, player, buffer, buffer_size, buffer_index);
+#endif
+#ifdef zox_debug_camera_planes
+        buffer_index = get_label_camera_planes(world, player, buffer, buffer_size, buffer_index);
 #endif
 #ifdef zox_debug_ui_player_level
         buffer_index = get_label_local_character_level(world, character, buffer, buffer_size, buffer_index);

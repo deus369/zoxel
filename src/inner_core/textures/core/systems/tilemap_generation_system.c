@@ -1,13 +1,13 @@
 // uses terrain's texture links to generate a tilemap
 void TilemapGenerationSystem(ecs_iter_t *it) {
     zox_iter_world()
-    const TilemapSize *tilemapSizes = ecs_field(it, TilemapSize, 2);
-    const TextureLinks *textureLinkss = ecs_field(it, TextureLinks, 3);
-    GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 4);
-    TextureSize *textureSizes = ecs_field(it, TextureSize, 5);
-    TextureData *textureDatas = ecs_field(it, TextureData, 6);
-    TextureDirty *textureDirtys = ecs_field(it, TextureDirty, 7);
-    TilemapUVs *tilemapUVss = ecs_field(it, TilemapUVs, 8);
+    zox_field_in(TilemapSize, tilemapSizes, 2)
+    zox_field_in(TextureLinks, textureLinkss, 3)
+    zox_field_out(GenerateTexture, generateTextures, 4)
+    zox_field_out(TextureSize, textureSizes, 5)
+    zox_field_out(TextureData, textureDatas, 6)
+    zox_field_out(TextureDirty, textureDirtys, 7)
+    zox_field_out(TilemapUVs, tilemapUVss, 8)
     for (int i = 0; i < it->count; i++) {
         GenerateTexture *generateTexture = &generateTextures[i];
         if (generateTexture->value != 2) continue;
@@ -26,7 +26,6 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         float tile_size = 1.0f / ((float) tilemapSize->value.x);
         // generate textureSize based on TilemapSize
         ecs_entity_t first_texture = textureLinks->value[0];
-        // zox_log("   > first_texture [%i]\n", first_texture)
         const TextureSize *first_texture_size = ecs_get(world, first_texture, TextureSize);
         textureSize->value.x = tilemapSize->value.x * first_texture_size->value.x;
         textureSize->value.y = tilemapSize->value.y * first_texture_size->value.y;
@@ -40,8 +39,8 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
                 // call function here to place texture in tilemap
                 // perhaps just list all the float2s per texture inside a float2 array called TilemapUVs
                 ecs_entity_t texture_entity = textureLinks->value[texture_entity_index];
-                const TextureData *voxel_texture_data = ecs_get(world, texture_entity, TextureData);
-                const TextureSize *voxel_texture_size = ecs_get(world, texture_entity, TextureSize);
+                const TextureData *voxel_texture_data = zox_get(texture_entity, TextureData)
+                const TextureSize *voxel_texture_size = zox_get(texture_entity, TextureSize)
                 int2 pixel_position = int2_zero;
                 for (pixel_position.x = 0; pixel_position.x < voxel_texture_size->value.x; pixel_position.x++) {
                     for (pixel_position.y = 0; pixel_position.y < voxel_texture_size->value.y; pixel_position.y++) {

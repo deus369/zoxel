@@ -2,9 +2,7 @@
 #define zox_apps
 
 // zoxel apps: handles os windows, using (sdl, glut) libraries
-#include "settings/settings.c"
-unsigned char screen_index = 1;
-unsigned char screens_count = 1; // assume
+#include "data/settings.c"
 zox_declare_tag(App)
 zox_component_byte(WindowFullscreen)
 zox_component_int2(WindowSize)

@@ -74,7 +74,7 @@ void camera_render_update(ecs_iter_t *it, const unsigned char is_camera2D) {
             }
         }
     }
-    // if (!is_camera2D) glClear(GL_DEPTH_BUFFER_BIT);
+    if (!is_camera2D) glClear(GL_DEPTH_BUFFER_BIT);
 #ifdef zoxel_time_render_loop
     end_timing_absolute("    - render_loop")
 #endif

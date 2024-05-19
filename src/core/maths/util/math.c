@@ -22,7 +22,7 @@ float calculate_determinant(const float4x4 matrix) {
 
 // Function to compute the inverse of a float4x4 matrix
 float4x4 float4x4_inverse(const float4x4 matrix) {
-    float4x4 inv;
+    float4x4 inv = float4x4_identity();
 
     // Calculate the determinant of the matrix
     float det = calculate_determinant(matrix);
@@ -86,9 +86,9 @@ float4x4 float4x4_scale3D(const float3 scale) {
 
 float4x4 float4x4_rotation(const float4 rotation) {
     float4x4 m = float4x4_identity();
-    float x2 = rotation.x * rotation.x;
-    float y2 = rotation.y * rotation.y;
-    float z2 = rotation.z * rotation.z;
+    //float x2 = rotation.x * rotation.x;
+    //float y2 = rotation.y * rotation.y;
+    // float z2 = rotation.z * rotation.z;
     float xx = 2.0 * rotation.x * rotation.x;
     float xy = 2.0 * rotation.x * rotation.y;
     float xz = 2.0 * rotation.x * rotation.z;
@@ -172,10 +172,10 @@ float4x4 float4x4_inverse_precise(const float4x4 matrix) {
     return inversed;
 }
 
-float4x4 float4x4_transform_camera(const float3 position, const float4 rotation) {
+/*float4x4 float4x4_transform_camera(const float3 position, const float4 rotation) {
     const float4x4 transform = float4x4_transform(position, rotation);
     return float4x4_inverse_precise(transform);
-}
+}*/
 
 float3 float4x4_get_position(const float4x4 matrix) {
     return (float3) { matrix.w.x, matrix.w.y, matrix.w.z };
@@ -234,5 +234,22 @@ float3 float4x4_multiply_float3(const float4x4 mat, const float3 point) {
     result.x = mat.x.x * point.x + mat.y.x * point.y + mat.z.x * point.z + mat.w.x;
     result.y = mat.x.y * point.x + mat.y.y * point.y + mat.z.y * point.z + mat.w.y;
     result.z = mat.x.z * point.x + mat.y.z * point.y + mat.z.z * point.z + mat.w.z;
+    return result;
+}
+
+float4 float4x4_multiply_float4(const float4x4 mat, const float4 point) {
+    float4 result;
+    result.x = mat.x.x * point.x + mat.y.x * point.y + mat.z.x * point.z + mat.w.x * point.w;
+    result.y = mat.x.y * point.x + mat.y.y * point.y + mat.z.y * point.z + mat.w.y * point.w;
+    result.z = mat.x.z * point.x + mat.y.z * point.y + mat.z.z * point.z + mat.w.z * point.w;
+    result.w = mat.x.w * point.x + mat.y.w * point.y + mat.z.w * point.z + mat.w.w * point.w;
+    return result;
+}
+
+float3 float4x4_multiply_float3_without_translation(const float4x4 mat, const float3 point) {
+    float3 result;
+    result.x = mat.x.x * point.x + mat.y.x * point.y + mat.z.x * point.z;
+    result.y = mat.x.y * point.x + mat.y.y * point.y + mat.z.y * point.z;
+    result.z = mat.x.z * point.x + mat.y.z * point.y + mat.z.z * point.z;
     return result;
 }

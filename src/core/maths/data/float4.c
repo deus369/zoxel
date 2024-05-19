@@ -1,8 +1,5 @@
 typedef struct {
-    float x;
-    float y;
-    float z;
-    float w;
+    float x, y, z, w;
 } float4;
 
 #define float4_zero (float4) { 0, 0, 0, 0 }
@@ -12,12 +9,29 @@ void print_float4(const float4 input) {
     zoxel_log("    Float4 [%f %f %f %f]\n", input.x, input.y, input.z, input.w);
 }
 
+float4 float4_from_float3(const float3 v, const float v2) {
+    return (float4) { v.x, v.y, v.z, v2 };
+}
+
 float4 float4_multiply_float(const float4 input, const float mul) {
     return (float4) { input.x * mul, input.y * mul, input.z * mul, input.w * mul };
 }
 
-float4 float4_multiply_divide(const float4 input, const float div) {
+float4 float4_divide_float(const float4 input, const float div) {
     return (float4) { input.x / div, input.y / div, input.z / div, input.w / div };
+}
+
+float4 float4_subtract(const float4 a, const float4 b) {
+    return (float4) { a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w };
+}
+
+float4 float4_add(const float4 a, const float4 b) {
+    return (float4) { a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w };
+}
+
+float4 float4_divide_float_safe(const float4 input, const float div) {
+    if (div == 0) return input;
+    return float4_divide_float(input, div);
 }
 
 float float4_dot(const float4 a, const float4 b) {
@@ -30,7 +44,7 @@ float float4_length(const float4 v) {
 
 float4 float4_normalize(const float4 q) {
     float length = sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
-    return float4_multiply_divide(q, length);
+    return float4_divide_float(q, length);
 }
 
 void quaternion_rotate_quaternion_p(float4 *output, const float4 q2) {
@@ -59,7 +73,7 @@ float4 float4_inverse(const float4 input) {
 
 float4 quaternion_inverse(const float4 q) {
     float sqr = sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
-    return float4_multiply_divide(q, sqr);
+    return float4_divide_float(q, sqr);
 }
 
 float4 float3_to_float4(const float3 input) {

@@ -9,6 +9,7 @@ void engine_update() {
     begin_timing_absolute()
 #endif
     update_core(world);
+    update_inner_core(world);
 #ifdef zoxel_time_main_loop
     end_timing_cutoff(" - engine update lagged", zoxel_time_main_loop_cutoff)
 #endif

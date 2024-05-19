@@ -8,7 +8,7 @@ void initialize_debug(ecs_world_t *world) { }
 void spawn_prefabs_debug(ecs_world_t *world) { }
 
 zox_begin_module(Debug)
-zox_system(GameDebugLabelSystem, EcsOnUpdate, [out] ZextDirty, [out] ZextData, [none] game.u.i.GameDebugLabel)
+zox_system(GameDebugLabelSystem, EcsPreStore, [out] ZextDirty, [out] ZextData, [none] game.u.i.GameDebugLabel)
 zoxel_end_module(Debug)
 
 #endif

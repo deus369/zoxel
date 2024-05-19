@@ -1,4 +1,3 @@
 typedef struct {
-    float3 center;
-    float3 extents;
+    float3 center, extents;
 } bounds;

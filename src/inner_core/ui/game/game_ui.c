@@ -1,5 +1,5 @@
-#ifndef zoxel_game_ui
-#define zoxel_game_ui
+#ifndef zox_game_ui
+#define zox_game_ui
 
 #include "settings/settings.c"
 zox_declare_tag(MenuMain)
@@ -29,10 +29,8 @@ zox_define_tag(MenuInGame)
 zox_define_tag(FPSDisplay)
 zox_define_tag(QuadsCountLabel)
 zox_define_tag(GameDebugLabel)
-
-zox_debug_component(GameDebugLabel)
-zox_debug_single_module(GameUI)
-
+// zox_debug_component(GameDebugLabel)
+// zox_debug_single_module(GameUI)
 zox_define_tag(FrameDebuggerWindow)
 zox_define_tag(JoystickUI)
 zox_define_component_int(QuadsCount)

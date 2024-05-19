@@ -12,8 +12,10 @@ unsigned char halfscreen = 0;
 unsigned char is_split_screen = 0;
 unsigned char override_opengl_es = 0;
 // platform speecific
+unsigned char screens_count = 1; // assume
 #if defined(zoxel_on_android) || defined(zoxel_on_web)
     unsigned char fullscreen = 1;
 #else
-    unsigned char fullscreen = 1;
+    unsigned char fullscreen = 0;
 #endif
+unsigned char screen_index = 0;

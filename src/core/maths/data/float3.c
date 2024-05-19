@@ -1,8 +1,6 @@
 //! A basic x2 building block.
 typedef struct {
-    float x;
-    float y;
-    float z;
+    float x, y, z;
 } float3;
 
 #define float3_zero (float3) { 0, 0, 0 }
@@ -14,8 +12,17 @@ typedef struct {
 #define float3_down (float3) { 0, -1, 0 }
 #define float3_up (float3) { 0, 1, 0 }
 
+unsigned char float3_equals(const float3 a, const float3 b) {
+    return a.x == b.x && a.y == b.y && a.z == b.z;
+}
 void float3_print(const float3 input) {
     zoxel_log("    Float3 [%f %f %f]\n", input.x, input.y, input.z);
+}
+
+void float3_flip(float3* value) {
+    value->x *= -1;
+    value->y *= -1;
+    value->z *= -1;
 }
 
 void float3_make_zero(float3* value) {
@@ -28,16 +35,28 @@ float3 float3_multiply_float(const float3 input, const float mul) {
     return (float3) { input.x * mul, input.y * mul, input.z * mul };
 }
 
-float3 float3_multiply_float3(const float3 a, const float3 b) {
-    return (float3) { a.x * b.x, a.y * b.y, a.z * b.z };
-}
-
 float3 float3_add(const float3 inputA, const float3 inputB) {
     return (float3) { inputA.x + inputB.x, inputA.y + inputB.y, inputA.z + inputB.z };
 }
 
+float3 float3_sub(const float3 inputA, const float3 inputB) {
+    return (float3) { inputA.x - inputB.x, inputA.y - inputB.y, inputA.z - inputB.z };
+}
+
+float3 float3_mul(const float3 a, const float3 b) {
+    return (float3) { a.x * b.x, a.y * b.y, a.z * b.z };
+}
+
+// depreciated!
+float3 float3_multiply_float3(const float3 a, const float3 b) {
+    return (float3) { a.x * b.x, a.y * b.y, a.z * b.z };
+}
 float3 float3_subtract_float3(const float3 inputA, const float3 inputB) {
     return (float3) { inputA.x - inputB.x, inputA.y - inputB.y, inputA.z - inputB.z };
+}
+
+float3 float3_mid(const float3 a, const float3 b) {
+    return (float3) { a.x + (b.x - a.x) * 0.5f, a.y + (b.y - a.y) * 0.5f, a.z + (b.z - a.z) * 0.5f };
 }
 
 float float3_distance(const float3 a, const float3 b) {

@@ -1,19 +1,20 @@
-// lod settings for terrain
+// debugs
+// #define zox_debug_chunk_bounds
+#ifdef zoxel_on_web // do i need this still?
+    #define zox_disable_terrain_streaming
+#endif
+
 #define zox_pipeline_chunk_generation EcsPostLoad // EcsOnLoad EcsOnUpdate
 unsigned char high_resolution_terain_lod = 1; // 2 | 1
 unsigned char initial_terrain_lod = 1; // 3 | 2
 const unsigned char terrain_lod_dividor = 2; // 2 | 3
 unsigned char terrain_spawn_distance;
 unsigned char terrain_vertical = 2;
-// do i need this still?
-#ifdef zoxel_on_web
-    #define zox_disable_terrain_streaming
-#endif
 
 #define terrain_mode_tiny 1
 #define terrain_mode_medium 2
 #define terrain_mode_large 3
-#define terrain_texture_resolution 32
+#define terrain_texture_resolution 16 // 32
 #define octree_min_height -1.995f // 0.005f
 #define noise_positiver2 32000
 #define terrain_minus_amplifier 0.0
@@ -48,7 +49,7 @@ unsigned char get_terrain_lod_from_camera_distance(unsigned char distance_to_cam
 
 void set_terrain_render_distance() {
     if (cpu_tier == 3) {
-        terrain_spawn_distance = 16;
+        terrain_spawn_distance = 14; // 16;
         terrain_vertical = 2;
         fog_density *= 0.5f;    // .3 for now to cover up transitions
         // set_max_octree_length(5);

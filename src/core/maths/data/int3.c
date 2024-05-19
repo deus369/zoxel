@@ -1,7 +1,5 @@
 typedef struct {
-    int x;
-    int y;
-    int z;
+    int x, y, z;
 } int3;
 
 const int3 int3_zero = (int3) { 0, 0, 0 };
