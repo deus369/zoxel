@@ -17,7 +17,7 @@ void spawn_prefabs_characters3D_terrain(ecs_world_t *world) {
 
 zox_begin_module(Characters3DTerrain)
 zox_define_component(GenerateChunkEntities)
-zox_system_1(Characters3DSpawnSystem, main_thread_pipeline, [none] terrain.TerrainChunk, [in] ChunkOctree, [in] ChunkPosition, [in] RenderLod, [out] EntityLinks, [out] GenerateChunkEntities)
+zox_system_1(Characters3DSpawnSystem, main_thread_pipeline, [none] terrain.TerrainChunk, [in] ChunkOctree, [in] ChunkPosition, [in] RenderLod, [in] RenderDisabled, [out] EntityLinks, [out] GenerateChunkEntities)
 zox_system(ChunkEntitiesTriggerSystem, zox_pipeline_chunk_generation, [none] terrain.TerrainChunk, [in] ChunkDirty, [out] GenerateChunkEntities)
 zox_system(ChunkCharactersUpdateSystem, zox_pipeline_chunk_generation, [in] RenderLod, [in] EntityLinks, [in] GenerateChunkEntities, [none] terrain.TerrainChunk)
 zoxel_end_module(Characters3DTerrain)

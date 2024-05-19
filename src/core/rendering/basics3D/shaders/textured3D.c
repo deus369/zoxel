@@ -11,27 +11,26 @@ out highp float fog_level;\
 \
 void main() {\
     gl_Position = camera_matrix * transform_matrix * vec4(vertex_position, 1);\
-    fog_level = gl_Position.z;\
     uv = vertex_uv;\
     vertex_color_frag = vertex_color;\
+    fog_level = gl_Position.z * gl_Position.z;\
 }";
 
 const GLchar* shader3D_textured_frag_buffer = "\
 #version 300 es\n\
-uniform sampler2D tex;\
-uniform lowp vec4 fog_data;\
-uniform lowp float brightness;\
 in lowp vec3 vertex_color_frag;\
 in lowp vec2 uv;\
 in highp float fog_level;\
-out lowp vec3 color; \
+uniform sampler2D tex;\
+uniform lowp vec4 fog_data;\
+uniform lowp float brightness;\
+out lowp vec3 frag_color; \
 \
 void main() {\
-    color = texture(tex, uv).xyz * vertex_color_frag * brightness;\
-    lowp float fog_blend = 1.0 - exp2(-fog_data.w * fog_data.w * fog_level * fog_level);\
-    color = mix(color, vec3(fog_data.x, fog_data.y, fog_data.z), fog_blend);\
+    frag_color = texture(tex, uv).xyz * vertex_color_frag * brightness;\
+    lowp float fog_blend = min(1.0, 1.1 - exp2(-fog_data.w * fog_level));\
+    frag_color = mix(frag_color, vec3(fog_data.x, fog_data.y, fog_data.z), fog_blend);\
 }";
-
 
 /*const GLchar* debug_shader3D_textured_frag_buffer = "\
 #version 300 es\n\

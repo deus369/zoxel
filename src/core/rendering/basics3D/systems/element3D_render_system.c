@@ -13,7 +13,10 @@ void Element3DRenderSystem(ecs_iter_t *it) {
     zox_field_in(ColorsGPULink, colorsGPULinks, 4)
     zox_field_in(MeshIndicies, meshIndiciess, 5)
     zox_field_in(TextureGPULink, textureGPULinks, 6)
+    zox_field_in(RenderDisabled, renderDisableds, 7)
     for (int i = 0; i < it->count; i++) {
+        zox_field_i_in(RenderDisabled, renderDisableds, renderDisabled)
+        if (renderDisabled->value) continue;
         zox_field_e()
         if (!can_render_ui(world, e)) continue;
         zox_field_i_in(MeshIndicies, meshIndiciess, meshIndicies)

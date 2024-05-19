@@ -6,8 +6,8 @@
 
 #define zox_pipeline_chunk_generation EcsPostLoad // EcsOnLoad EcsOnUpdate
 unsigned char high_resolution_terain_lod = 1; // 2 | 1
-unsigned char initial_terrain_lod = 1; // 3 | 2
-const unsigned char terrain_lod_dividor = 2; // 2 | 3
+unsigned char initial_terrain_lod = 4; // 3 | 2
+const unsigned char terrain_lod_dividor = 3; // 2 | 3
 unsigned char terrain_spawn_distance;
 unsigned char terrain_vertical = 2;
 
@@ -49,14 +49,14 @@ unsigned char get_terrain_lod_from_camera_distance(unsigned char distance_to_cam
 
 void set_terrain_render_distance() {
     if (cpu_tier == 3) {
-        terrain_spawn_distance = 14; // 16;
+        terrain_spawn_distance = 16;
         terrain_vertical = 2;
-        fog_density *= 0.5f;    // .3 for now to cover up transitions
+        fog_density *= 0.32f;    // .3 for now to cover up transitions
         // set_max_octree_length(5);
     } else if (cpu_tier == 2) {
         terrain_spawn_distance = 10;
         terrain_vertical = 1;
-        fog_density *= 0.6f;
+        fog_density *= 0.66f;
     } else if (cpu_tier == 1) {
         terrain_spawn_distance = 8;
         terrain_vertical = 1;

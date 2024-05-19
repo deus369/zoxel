@@ -11,6 +11,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     zox_add_tag(e, Character3D)
     // rendering
     if (!headless) add_gpu_colors(world, e);
+    zox_prefab_set(e, RenderDisabled, { 0 })
     // transform
     zox_prefab_set(e, Scale1D, { 1.0f })
     zox_prefab_set(e, Euler, { float3_zero })
@@ -46,9 +47,10 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, const vox_file *vox, const float3 position, const float4 rotation, const unsigned char lod, const ecs_entity_t player, const float vox_scale) {
+ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, const vox_file *vox, const float3 position, const float4 rotation, const unsigned char lod, const ecs_entity_t player, const float vox_scale, unsigned char render_disabled) {
     zox_instance(prefab)
     zox_name("character3D")
+    zox_set(e, RenderDisabled, { render_disabled })
     zox_set(e, Position3D, { position })
     if (!player) {
         const int bounds_radius = 16;
@@ -92,7 +94,7 @@ ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, co
     zox_modified(e, StatLinks)
     // character ui
 #ifndef zox_disable_statbars
-    const ecs_entity_t statbar = spawn_elementbar3D(world, prefab_statbar3D, e, health / max_health);
+    const ecs_entity_t statbar = spawn_elementbar3D(world, prefab_statbar3D, e, health / max_health, render_disabled);
     zox_prefab_set(statbar, StatLink, { health_stat })
     ElementLinks *elementLinks = zox_get_mut(e, ElementLinks)
     resize_memory_component(ElementLinks, elementLinks, ecs_entity_t, 1)
@@ -107,6 +109,5 @@ ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, co
         }
     }
 #endif
-    const ecs_entity_2 e_group = (ecs_entity_2) { e, health_stat };
-    return e_group;
+    return (ecs_entity_2) { e, health_stat };
 }

@@ -1,19 +1,22 @@
 // notes: to test, set terrain to 1x1x1 chunks, disable physics, enable this systems logging
 // get function from AI module for now
-extern ecs_entity_t spawn_character3D_npc(ecs_world_t *world, ecs_entity_t_array_d* entities, const vox_file *vox, const float3 position, const float4 rotation, const unsigned char character_lod);
+extern ecs_entity_t spawn_character3D_npc(ecs_world_t *world, ecs_entity_t_array_d* entities, const vox_file *vox, const float3 position, const float4 rotation, const unsigned char character_lod, const unsigned char render_disabled);
+
 void Characters3DSpawnSystem(ecs_iter_t *it) {
     zox_iter_world()
     zox_field_in(ChunkOctree, chunkOctrees, 2)
     zox_field_in(ChunkPosition, chunkPositions, 3)
     zox_field_in(RenderLod, renderLods, 4)
-    zox_field_out(EntityLinks, entityLinkss, 5)
-    zox_field_out(GenerateChunkEntities, generateChunkEntitiess, 6)
+    zox_field_in(RenderDisabled, renderDisableds, 5)
+    zox_field_out(EntityLinks, entityLinkss, 6)
+    zox_field_out(GenerateChunkEntities, generateChunkEntitiess, 7)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_out(GenerateChunkEntities, generateChunkEntitiess, generateChunkEntities)
         if (generateChunkEntities->value != zox_chunk_entities_state_triggered) continue;
         zox_field_i_in(ChunkOctree, chunkOctrees, chunkOctree)
         if (chunkOctree->nodes == NULL) continue;   // if basically all air or solid, no need to spawn
         zox_field_i_in(RenderLod, renderLods, renderLod)
+        zox_field_i_in(RenderDisabled, renderDisableds, renderDisabled)
         zox_field_i_out(EntityLinks, entityLinkss, entityLinks)
         if (entityLinks->length != 0) {
             // if already spawned, skip spawning, only update LODs
@@ -57,7 +60,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
             position.y += 0.26f; // 0.75f;
             position.y += 0.06f; // extra
-            spawn_character3D_npc(world, entities, &vox, position, rotation, character_lod);
+            spawn_character3D_npc(world, entities, &vox, position, rotation, character_lod, renderDisabled->value);
         }
         clear_memory_component(EntityLinks, entityLinks);
         entityLinks->length = entities->size;

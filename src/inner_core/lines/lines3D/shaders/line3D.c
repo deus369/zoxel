@@ -6,7 +6,7 @@ out highp float fog_level;\
 \
 void main() {\
     gl_Position = camera_matrix * vec4(position, 1);\
-    fog_level = gl_Position.z;\
+    fog_level = gl_Position.z * gl_Position.z;\
 }";
 
 const GLchar* line3D_source_frag = "\
@@ -14,14 +14,15 @@ const GLchar* line3D_source_frag = "\
 in highp float fog_level;\
 uniform lowp vec3 color;\
 uniform lowp vec4 fog_data;\
-out lowp vec3 color2;\
+out lowp vec4 frag_color;\
 \
 void main() {\
-    color2 = color;\
-    lowp float fog_blend = 1.0 - exp2(-fog_data.w * fog_data.w * fog_level * fog_level);\
-    color2 = mix(color2, vec3(fog_data.x, fog_data.y, fog_data.z), fog_blend);\
+    frag_color = vec4(color, 0.2);\
+    lowp float fog_blend = min(1.0, 1.1 - exp2(-fog_data.w * fog_level));\
+    frag_color = mix(frag_color, vec4(fog_data.x, fog_data.y, fog_data.z, 0), fog_blend);\
 }";
 
+// uses custom fadeout with fog!
 GLuint2 line3D_shader;
 GLuint line3D_material;
 GLuint line3D_position_location;

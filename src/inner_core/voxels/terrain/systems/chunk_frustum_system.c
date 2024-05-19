@@ -4,11 +4,13 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_in(ChunkSize, chunkSizes, 2)
     zox_field_in(VoxScale, voxScales, 3)
-    zox_field_out(RenderDisabled, renderDisableds, 4)
+    zox_field_in(EntityLinks, entityLinkss, 4)
+    zox_field_out(RenderDisabled, renderDisableds, 5)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(Position3D, position3Ds, position3D)
         zox_field_i_in(ChunkSize, chunkSizes, chunkSize)
         zox_field_i_in(VoxScale, voxScales, voxScale)
+        zox_field_i_in(EntityLinks, entityLinkss, entityLinks)
         zox_field_i_out(RenderDisabled, renderDisableds, renderDisabled)
         const bounds chunk_bounds = calculate_chunk_bounds(position3D->value, chunkSize->value, voxScale->value);
         unsigned char is_viewed = 1;
@@ -28,8 +30,29 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
             }
             if (is_viewed) break;
         }
-        renderDisabled->value = !is_viewed;
-        if (is_viewed) zox_statistics_chunks_visible++;
+        if (renderDisabled->value != !is_viewed) {
+            renderDisabled->value = !is_viewed;
+            for (int j = 0; j < entityLinks->length; j++) {
+                const ecs_entity_t e2 = entityLinks->value[j];
+                zox_set(e2, RenderDisabled, { renderDisabled->value })
+                if (!zox_has(e2, ElementLinks)) continue;
+                const ElementLinks *entity_elements = zox_get(e2, ElementLinks)
+                for (int k = 0; k < entity_elements->length; k++) {
+                    const ecs_entity_t e3 = entity_elements->value[k];
+                    zox_set(e2, RenderDisabled, { renderDisabled->value })
+                    if (!zox_has(e3, Children)) continue;
+                    const Children *element_children = zox_get(e3, Children)
+                    for (int l = 0; l < element_children->length; l++) {
+                        const ecs_entity_t e4 = element_children->value[l];
+                        zox_set(e4, RenderDisabled, { renderDisabled->value })
+                    }
+                }
+            }
+        }
+        if (is_viewed) {
+            zox_statistics_chunks_visible++;
+            zox_statistics_characters_visible += entityLinks->length;
+        }
+        zox_statistics_characters_total += entityLinks->length;
     }
-    // zox_log(" > rendering  [%i] out of [%i]\n", zox_statistics_chunks_visible, zox_statistics_chunks_total)
 } zox_declare_system(ChunkFrustumSystem)

@@ -13,7 +13,7 @@ unsigned char is_render_fog = 1;
 float3 fog_color = (float3) { 0.5f, 0.55f, 0.58f };
 float fog_density = 0.0326f;
 float get_fog_density() {
-    if (is_render_fog) return fog_density;
+    if (is_render_fog) return fog_density * fog_density;
     else return 0.0f;
 }
 #include "data/mesh_alignment_types.c"

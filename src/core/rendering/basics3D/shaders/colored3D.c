@@ -9,8 +9,8 @@ out highp float fog_level;\
 \
 void main() {\
     gl_Position = camera_matrix * transform_matrix * vec4(vertex_position, 1);\
-    fog_level = gl_Position.z;\
     vertex_color_frag = vertex_color;\
+    fog_level = gl_Position.z * gl_Position.z;\
 }";
 
 /*
@@ -30,16 +30,16 @@ vec3 float4_rotate_float3(vec4 rotation, vec3 value) {\
 
 const GLchar* shader3D_colored_frag_buffer = "\
 #version 300 es\n\
-uniform highp vec4 fog_data;\
-uniform lowp float brightness;\
 in highp vec3 vertex_color_frag;\
 in highp float fog_level;\
-out highp vec3 color;\
+uniform highp vec4 fog_data;\
+uniform lowp float brightness;\
+out highp vec3 frag_color;\
 \
 void main() {\
-    color = vertex_color_frag * brightness;\
-    lowp float fog_blend = 1.0 - exp2(-fog_data.w * fog_data.w * fog_level * fog_level);\
-    color = mix(color, vec3(fog_data.x, fog_data.y, fog_data.z), fog_blend);\
+    frag_color = vertex_color_frag * brightness;\
+    lowp float fog_blend = min(1.0, 1.1 - exp2(-fog_data.w * fog_level));\
+    frag_color = mix(frag_color, vec3(fog_data.x, fog_data.y, fog_data.z), fog_blend);\
 }";
 
 

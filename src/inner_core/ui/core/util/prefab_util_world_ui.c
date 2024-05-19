@@ -1,4 +1,4 @@
-void add_ui_components_world(ecs_world_t *world, ecs_entity_t e, float2 mesh_scale) {
+void add_ui_components_world(ecs_world_t *world, const ecs_entity_t e, const float2 mesh_scale) {
     add_seed(world, e, 666);
     add_texture(world, e, int2_zero, 0);
     add_ui_components(world, e);
@@ -6,6 +6,7 @@ void add_ui_components_world(ecs_world_t *world, ecs_entity_t e, float2 mesh_sca
     zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
     zox_prefab_set(e, Brightness, { 1 })
     zox_prefab_set(e, MeshDirty, { 0 })
+    zox_prefab_set(e, RenderDisabled, { 1 })
     if (!headless) {
         add_gpu_texture(world, e);
         add_gpu_mesh(world, e);
