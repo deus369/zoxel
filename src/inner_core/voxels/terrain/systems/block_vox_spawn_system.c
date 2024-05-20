@@ -8,8 +8,10 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(VoxLink, voxLinks, voxLink)
         if (!voxLink->value) continue;
-        zox_field_i_in(Position3D, position3Ds, position3D)
+        zox_field_i_in(ChunkOctree, chunkOctrees, chunkOctree)
         zox_field_i_out(Children, childrens, children)
         // spawn the things as children to terrain Chunks!
+        // first initt our vox types array here so i can use that in node checks
+        // next find blocks of vox type in nodes, and call a spawn_voxel_in_world function!
     }
 } zox_declare_system(BlockVoxSpawnSystem)
