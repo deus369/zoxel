@@ -4,7 +4,8 @@ typedef struct {
     unsigned char b;
 } color_rgb;
 
-const color_rgb color_rgb_white = (color_rgb) { 255, 255, 255 };
+#define color_rgb_white (color_rgb) { 255, 255, 255 }
+// const color_rgb color_rgb_white = (color_rgb) { 255, 255, 255 };
 
 unsigned char color_rgb_equal(const color_rgb a, const color_rgb b) {
     return a.r == b.r && a.g == b.g && a.b == b.b;

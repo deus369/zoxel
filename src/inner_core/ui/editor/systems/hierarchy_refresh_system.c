@@ -1,7 +1,11 @@
+// make everything a child of realm
+extern ecs_entity_t local_realm;
+
 void HierarchyRefreshSystem(ecs_iter_t *it) {
     const unsigned char is_header = 1;
     const unsigned char is_scrollbar = 1;
     const unsigned char list_start = is_header + is_scrollbar;
+    const ecs_entity_t realm = local_realm;
     zox_iter_world()
     zox_field_in(Position2D, position2Ds, 2)
     zox_field_in(CanvasPosition, canvasPositions, 3)
@@ -59,9 +63,9 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         add_entity_to_labels(world, prefab_voxel, labels, entities, 0);
         add_entity_to_labels(world, prefab_texture, labels, entities, 0);
         // add game entities
-        add_entity_to_labels(world, local_realm, labels, entities, 0);
-        add_to_labels_voxel_links(world, local_realm, labels, entities, 0);
-        add_to_labels_stat_links(world, local_realm, labels, entities, 0);
+        add_entity_to_labels(world, realm, labels, entities, 0);
+        add_to_labels_voxel_links(world, realm, labels, entities, 0);
+        add_to_labels_stat_links(world, realm, labels, entities, 0);
         add_entity_to_labels(world, local_music, labels, entities, 0);
         for (int k = 0; k < main_cameras_count; k++) {
             add_entity_to_labels(world, main_cameras[k], labels, entities, 0);

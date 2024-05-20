@@ -2,8 +2,8 @@ extern void render_line3D(ecs_world_t *world, const float3 a, const float3 b, co
 extern void render_line3D_thickness(ecs_world_t *world, const float3 a, const float3 b, const color_rgb line_color, const float thickness);
 
 void draw_planes(ecs_world_t *world, const plane *planes, const int plane_count) {
-    const float plane_size = 16;
-    color_rgb plane_color;
+    // const float plane_size = 16;
+    color_rgb plane_color = color_rgb_white;
     for (int i = 0; i < plane_count; i++) {
         if (i == 0) plane_color = (color_rgb) { 255, 0, 0 };
         else if (i == 1) plane_color = (color_rgb) { 0, 255, 0 };
@@ -33,7 +33,7 @@ void draw_planes(ecs_world_t *world, const plane *planes, const int plane_count)
 }
 
 void draw_frustum(ecs_world_t *world, float3 *frustum) {
-    const color_rgb plane_color = (color_rgb) { 255, 125, 55 };
+    // const color_rgb plane_color = (color_rgb) { 255, 125, 55 };
     const color_rgb near_plane_color = (color_rgb) { 55, 125, 55 };
     const color_rgb far_plane_color = (color_rgb) { 55, 155, 85 };
     const color_rgb side_color = (color_rgb) { 55, 155, 55 };

@@ -1,8 +1,7 @@
-#ifndef zox_voxels_terrain
-#define zox_voxels_terrain
+#ifndef zox_terrain
+#define zox_terrain
 
-#include "settings/settings.c"
-ctx2 terrain_lod_filter;
+#include "data/settings.c"
 zox_declare_tag(TerrainWorld)
 zox_declare_tag(TerrainChunk)
 zox_declare_tag(ChunkTerrain)
@@ -17,6 +16,8 @@ zox_component_byte(StreamDirty)
 #include "prefabs/terrain_chunk_octree.c"
 #include "util/static_octree_build.c"
 #include "util/chunk_util.c"
+#include "util/octree_build_util.c"
+ctx2 terrain_lod_filter;
 #include "systems/terrain_chunk_system.c"
 #include "systems/chunk_uvs_build_system.c"
 #include "systems/stream_point_system.c"
@@ -27,6 +28,7 @@ zox_component_byte(StreamDirty)
 #include "systems/chunk_frustum_system.c"
 #include "util/create_terrain.c"
 #include "systems/chunk_bounds_debug_system.c"
+#include "systems/block_vox_spawn_system.c"
 
 int get_terrain_chunks_count(ecs_world_t *world) {
     return zox_count_entities(world, ecs_id(TerrainChunk));
@@ -59,7 +61,7 @@ zox_system_ctx(OctreeTerrainChunkSystem, zox_pipeline_chunk_generation, generate
 zox_system(StreamPointSystem, EcsPostUpdate, [in] Position3D, [in] TerrainLink, [out] StreamPoint, [none] Streamer)
 zox_system_ctx(TerrainLodSystem, EcsPostUpdate, &terrain_lod_filter, [in] ChunkLinks, [out] StreamDirty, [none] TerrainWorld)
 zox_system_ctx(ChunkFrustumSystem, EcsPostUpdate, camera_planes, [in] Position3D, [in] ChunkSize, [in] VoxScale, [in] EntityLinks, [out] RenderDisabled, [none] TerrainChunk)
-if (!headless) zox_system_ctx(ChunkOctreeBuildSystem, zox_pipeline_build_voxel_mesh, chunks_generating, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] VoxLink, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty, [in] VoxScale, [none] voxels.core.ChunkTextured)
+if (!headless) zox_system_ctx(ChunkOctreeBuildSystem, zox_pipeline_build_voxel_mesh, chunks_generating, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] VoxLink, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty, [in] VoxScale, [none] chunks.ChunkTextured)
 zox_render3D_system(TerrainChunksRenderSystem, [in] TransformMatrix, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] VoxLink, [in] RenderDisabled)
 #ifdef zox_debug_chunk_bounds
 zox_system_1(ChunkBoundsDebugSystem, main_thread_pipeline, [in] Position3D, [in] ChunkSize, [in] VoxScale, [in] RenderDisabled, [none] TerrainChunk)

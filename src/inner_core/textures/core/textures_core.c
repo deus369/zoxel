@@ -1,8 +1,7 @@
 #ifndef zox_textures_core
 #define zox_textures_core
 
-const int2 voxel_texture_size = (int2) { 32, 32 };
-#include "settings/settings.c"
+#include "data/settings.c"
 zox_declare_tag(Texture)
 zox_declare_tag(NoiseTexture)
 zox_declare_tag(IconTexture)
@@ -18,21 +17,20 @@ zox_declare_tag(TextureAddNoise)
 zox_component_byte(GenerateTexture)
 zox_component_byte(OutlineThickness)
 zox_component_byte(FrameCorner)
+zox_component_double(AnimateTexture)
 zox_component_int2(TextureSize)
 zox_component_int2(TilemapSize)
+zox_component_color(OutlineColor)
 zox_component_parented(TilemapLink)
-zox_memory_component(TextureData, color)
-zox_component_double(AnimateTexture)
-zox_component(OutlineColor, color)
 zox_entities_component(Textures)                    // this destroys linked entities (parent)
-zox_memory_component(TextureLinks, ecs_entity_t)    // this links only
+zox_memory_component(TextureData, color)
 zox_memory_component(TilemapUVs, float2)
+zox_memory_component(TextureLinks, ecs_entity_t)    // this links only
 #include "util/textures_sdl_util.c"
 #include "util/textures_util.c"
 #include "util/texture_prefab_util.c"
-#include "prefabs/noise_texture.c"
-#include "prefabs/dirt_texture.c"
-#include "prefabs/tilemap.c"
+#include "util/label_util.c"
+#include "prefabs/prefabs.c"
 #include "systems/animate_noise_system.c"
 #include "systems/texture_update_system.c"
 #include "systems/noise_texture_system.c"
@@ -40,12 +38,6 @@ zox_memory_component(TilemapUVs, float2)
 #include "systems/frame_texture_system.c"
 #include "systems/tilemap_generation_system.c"
 #include "tests/test_texture.c"
-
-void spawn_prefabs_textures_core(ecs_world_t *world) {
-    spawn_prefab_texture_noise(world, voxel_texture_size);
-    spawn_prefab_texture(world, voxel_texture_size);
-    spawn_prefab_tilemap(world);
-}
 
 zox_begin_module(TexturesCore)
 zox_define_tag(Texture)
@@ -66,7 +58,7 @@ zox_define_component_byte(FrameCorner)
 zox_define_component_int2(TextureSize)
 zox_define_component_int2(TilemapSize)
 zox_define_component_double(AnimateTexture)
-zox_define_component(OutlineColor)
+zox_define_component_color(OutlineColor)
 zox_define_component_entity(TilemapLink)
 zox_define_memory_component(TextureData)
 zox_define_memory_component(TilemapUVs)

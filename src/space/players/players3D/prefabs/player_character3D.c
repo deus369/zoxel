@@ -5,6 +5,7 @@ ecs_entity_t spawn_prefab_player_character3D(ecs_world_t *world) {
     zox_prefab_name("prefab_character3D_player")
     zox_add_tag(e, PlayerCharacter)
     zox_add_tag(e, PlayerCharacter3D)
+    zox_add_tag(e, DisableReverseLinkChunk) // silent in chunks, chunksdont know me
     zox_set(e, CameraLink, { 0 })
     zox_prefab_set(e, DisableMovement, { 0 })
     prefab_character3D_player = e;

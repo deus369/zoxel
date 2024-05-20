@@ -1,6 +1,6 @@
-void on_terrain_settings_changed(ecs_world_t *world) {
-    if (!local_realm) return;
-    const VoxelLinks *voxelLinks = zox_get(local_realm, VoxelLinks)
+void on_terrain_settings_changed(ecs_world_t *world, const ecs_entity_t realm) {
+    if (!zox_has(realm, VoxelLinks)) return;
+    const VoxelLinks *voxelLinks = zox_get(realm, VoxelLinks)
     for (int k = 0; k < voxelLinks->length; k++) {
         ecs_entity_t voxel = voxelLinks->value[k];
         const Textures *textureLinks = zox_get(voxel, Textures)

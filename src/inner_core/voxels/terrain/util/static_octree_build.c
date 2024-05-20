@@ -1,6 +1,6 @@
-#define zoxel_octree_check(direction_name)\
+/*#define zoxel_octree_check(direction_name)\
     if (!is_adjacent_all_solid(direction##_##direction_name, root_node, parent_node, neighbors,\
-        octree_position, node_index, node_position, depth, max_depth, neighbor_lods, 0))
+        octree_position, node_index, node_position, depth, max_depth, neighbor_lods, 0, NULL))
 
 #define zoxel_octree_add_face_counts(direction_name) {\
     zoxel_octree_check(direction_name) {\
@@ -12,9 +12,9 @@
     zoxel_octree_check(direction_name) {\
         zoxel_add_voxel_face_uvs(direction_name, is_positive)\
     }\
-}
+}*/
 
-void count_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[],
+/*void count_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[],
     unsigned char *neighbor_lods, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, int2 *mesh_count,
     unsigned char depth, unsigned char max_depth, int3 octree_position, unsigned char node_index, byte3 node_position) {
     if (depth >= max_depth || chunk_octree->nodes == NULL) {
@@ -39,9 +39,9 @@ void count_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_
             }
         }
     }
-}
+}*/
 
-void build_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[],
+/*void build_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[],
     unsigned char *neighbor_lods, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
     int2 *start, unsigned char depth, unsigned char max_depth, int3 octree_position, unsigned char node_index, byte3 node_position) {
     if (depth >= max_depth || chunk_octree->nodes == NULL) {
@@ -69,4 +69,4 @@ void build_octree_chunk(const ChunkOctree *root_node, const ChunkOctree *parent_
             }
         }
     }
-}
+}*/

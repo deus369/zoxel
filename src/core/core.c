@@ -21,6 +21,7 @@ unsigned char cpu_tier;
 #include "rendering/rendering.c"
 #include "sounds/sounds.c"
 #include "games/games.c"
+#include "realms/realms.c"
 #include "util/core_util.c"
 
 unsigned char initialize_core(ecs_world_t *world) {
@@ -79,6 +80,7 @@ zox_import_module(Cameras)
 zox_import_module(Rendering)
 zox_import_module(Sounds)
 zox_import_module(Games)
+zox_import_module(Realms)
 zoxel_end_module(Core)
 
 #endif

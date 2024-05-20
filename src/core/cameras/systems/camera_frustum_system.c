@@ -2,13 +2,13 @@ void CameraFrustumSystem(ecs_iter_t *it) {
     if (zox_cameras_disable_streaming) return;
     zox_field_in(ViewMatrix, viewMatrixs, 1)
     zox_field_in(TransformMatrix, transformMatrixs, 2)
-    zox_field_in(ProjectionMatrix, projectionMatrixs, 3)
+    // zox_field_in(ProjectionMatrix, projectionMatrixs, 3)
     zox_field_out(CameraPlanes, cameraPlaness, 4)
     zox_field_out(Position3DBounds, position3DBoundss, 5)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(ViewMatrix, viewMatrixs, viewMatrix)
         zox_field_i_in(TransformMatrix, transformMatrixs, transformMatrix)
-        zox_field_i_in(ProjectionMatrix, projectionMatrixs, projectionMatrix)
+        // zox_field_i_in(ProjectionMatrix, projectionMatrixs, projectionMatrix)
         zox_field_i_out(CameraPlanes, cameraPlaness, cameraPlanes)
         zox_field_i_out(Position3DBounds, position3DBoundss, position3DBounds)
         if (!cameraPlanes->value) {

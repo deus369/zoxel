@@ -15,8 +15,6 @@ extern ecs_entity_t prefab_zigel;
 extern ecs_entity_t prefab_realm;
 extern ecs_entity_t prefab_voxel;
 extern ecs_entity_t prefab_texture;
-// make everything a child of realm
-extern ecs_entity_t local_realm;
 // realm -> world
 extern ecs_entity_t local_terrain;
 

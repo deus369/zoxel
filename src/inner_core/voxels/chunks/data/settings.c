@@ -1,3 +1,5 @@
+#define zox_pipeline_build_voxel_mesh EcsOnLoad // EcsPostUpdate
+#define zox_pip_voxels EcsOnUpdate
 const float overall_voxel_scale = 32.0f; // 64.0f; // 4.0f // 2.0f;
 const float3 center_mesh_offset = { 0, 0, 0 };
 const int dissapearChance = 92;

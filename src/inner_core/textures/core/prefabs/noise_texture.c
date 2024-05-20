@@ -1,5 +1,3 @@
-ecs_entity_t noise_texture_prefab;
-
 void add_noise_texture(ecs_world_t *world, ecs_entity_t e) {
     zox_add_tag(e, NoiseTexture)
 }
@@ -9,13 +7,12 @@ void add_animated_noise_texture(ecs_world_t *world, ecs_entity_t e) {
     zox_prefab_set(e, AnimateTexture, { 0 })
 }
 
-/*void spawn_prefab_noise_texture(ecs_world_t *world) {
-    const int2 textureSize = { 16, 16 };
+ecs_entity_t spawn_prefab_texture_noise(ecs_world_t *world, const int2 texture_size) {
     zox_prefab()
-    printf("Spawned texture_prefab [%lu].\n", (long int) (e));
+    zox_prefab_name("prefab_texture")
     add_seed(world, e, 666);
-    add_texture(world, e, textureSize);
-    add_dirty(world, e);
-    add_animated_noise_texture(world, e);
-    noise_texture_prefab = e;
-}*/
+    add_texture(world, e, texture_size, 1);
+    add_noise_texture(world, e);
+    zox_prefab_set(e, Color, {{ 255, 0, 0, 255 }})
+    return e;
+}

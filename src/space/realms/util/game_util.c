@@ -1,8 +1,10 @@
 void realms_start_game3D_delayed(ecs_world_t *world, const ecs_entity_t game) {
+    const ecs_entity_t realm = zox_get_value(game, RealmLink)
     set_sky_color(world, game_sky_color, game_sky_bottom_color);
-    local_terrain = create_terrain(world, int3_zero);
-    zox_set(local_terrain, RealmLink, { local_realm }) // this should be done on spawn
-    zox_set(local_realm, TerrainLink, { local_terrain }) // link terrain to realm too
+    const ecs_entity_t terrain = create_terrain(world, realm, int3_zero);
+    zox_set(terrain, RealmLink, { realm })
+    zox_set(realm, TerrainLink, { terrain }) // link terrain to realm too
+    local_terrain = terrain;
 }
 
 void realms_start_game2D_delayed(ecs_world_t *world, const ecs_entity_t game) {

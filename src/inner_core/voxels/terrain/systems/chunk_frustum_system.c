@@ -17,7 +17,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
         ecs_iter_t it2 = ecs_query_iter(world, it->ctx);
         while(ecs_query_next(&it2)) {
             const Position3DBounds *position3DBoundss = ecs_field(&it2, Position3DBounds, 1);
-            const CameraPlanes *cameraPlaness = ecs_field(&it2, CameraPlanes, 2);
+            // const CameraPlanes *cameraPlaness = ecs_field(&it2, CameraPlanes, 2);
             for (int j = 0; j < it2.count; j++) {
                 const Position3DBounds *position3DBounds = &position3DBoundss[j];
                 is_viewed = is_bounds_in_position_bounds(position3DBounds->value, chunk_bounds);
@@ -39,7 +39,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
                 const ElementLinks *entity_elements = zox_get(e2, ElementLinks)
                 for (int k = 0; k < entity_elements->length; k++) {
                     const ecs_entity_t e3 = entity_elements->value[k];
-                    zox_set(e2, RenderDisabled, { renderDisabled->value })
+                    zox_set(e3, RenderDisabled, { renderDisabled->value })
                     if (!zox_has(e3, Children)) continue;
                     const Children *element_children = zox_get(e3, Children)
                     for (int l = 0; l < element_children->length; l++) {

@@ -135,22 +135,47 @@ void optimize_solid_nodes(ChunkOctree *node) {
     }
 }
 
+unsigned char get_adjacent_voxel(unsigned char direction, const ChunkOctree *root_node, const ChunkOctree *neighbors[], int3 position, unsigned char depth, const unsigned char edge_voxel) {
+    unsigned char chunk_index = 0;
+    const ChunkOctree *adjacent_node = find_root_adjacent_ChunkOctree(root_node, position, depth, direction, neighbors, &chunk_index);
+    if (adjacent_node && adjacent_node->value) return adjacent_node->value;
+    else if (!adjacent_node) return edge_voxel; // edge of map
+    else return 0;
+}
+
+// single voxel check!
+unsigned char is_adjacent_solid(unsigned char direction, const ChunkOctree *root_node, const ChunkOctree *neighbors[], int3 position, unsigned char depth, const unsigned char edge_voxel, const unsigned char *voxel_solidity) {
+    unsigned char voxel_adjacent = get_adjacent_voxel(direction, root_node, neighbors, position, depth, edge_voxel);
+    if (voxel_adjacent == 0) return 0;
+    voxel_adjacent--; // remove air from index
+    return voxel_solidity[voxel_adjacent];
+    /*unsigned char chunk_index = 0;
+    const ChunkOctree *adjacent_node = find_root_adjacent_ChunkOctree(root_node, position, depth, direction, neighbors, &chunk_index);
+    // if (adjacent_node == NULL) zoxel_log("  > adjacent node is null: %ix%ix%i - depth %i\n", position.x, position.y, position.z, depth);
+    if (adjacent_node == NULL) return edge_voxel;
+    //if (adjacent_node->value) zoxel_log("  > adjacent node is solid: %ix%ix%i - depth %i - direction %i\n", position.x, position.y, position.z, depth, direction);
+    //if (!adjacent_node->value) zoxel_log("  > adjacent node is air: %ix%ix%i - depth %i - direction %i\n", position.x, position.y, position.z, depth, direction);
+    if (adjacent_node->value) return 1;
+    else return 0;*/
+}
+
 // Check all voxels on a side, instead of just one, a big voxel with 4 small voxels on its side should be face culled.
 // max_depth is per chunk... refactor that
 // Fix issues between chunks of different levels of division
 // function to check all adjacent voxels are solid on the face
-unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *neighbors[], int3 octree_position, unsigned char node_index, byte3 node_position, unsigned char depth, const unsigned char max_depth, const unsigned char *neighbor_lods, unsigned char edge_voxel) {
+unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *neighbors[], int3 octree_position, unsigned char node_index, byte3 node_position, unsigned char depth, const unsigned char max_depth, const unsigned char *neighbor_lods, unsigned char edge_voxel, const unsigned char *voxel_solidity) {
+    /*unsigned char is_adjacent_solid(direction, root_node, neighbors[], node_position, depth, edge_voxel, voxel_solidity);*/
     unsigned char chunk_index = 0;
     const ChunkOctree *adjacent_node = find_adjacent_ChunkOctree(root_node, parent_node, octree_position, node_index, node_position, depth, direction, neighbors, &chunk_index);
     if (adjacent_node == NULL) { // || depth == max_depth) {
         return edge_voxel;
-    } else if (adjacent_node->value == 0) {
+    } else if (adjacent_node->value == 0 || (voxel_solidity != NULL && !voxel_solidity[adjacent_node->value - 1])) {
         return 0;
     } else if (adjacent_node->nodes != NULL && ((chunk_index == 0 && depth < max_depth) || (chunk_index != 0 && depth < neighbor_lods[chunk_index - 1]))) {
         depth++;
         int3_multiply_int_p(&octree_position, 2);
         for (unsigned char i = 0; i < octree_length; i++) {
-            byte3 local_position = octree_positions_b[i];
+            const byte3 local_position = octree_positions_b[i];
             if (direction == direction_left) {
                 if (local_position.x != 0) continue;
             } else if (direction == direction_right) {
@@ -167,22 +192,10 @@ unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *
                 continue;
             }
             // check underneath nodes
-            if (is_adjacent_all_solid(direction, root_node, &adjacent_node->nodes[i], neighbors, int3_add(octree_position, octree_positions[i]), i, local_position, depth, max_depth, neighbor_lods, edge_voxel) == 0) return 0;
+            if (is_adjacent_all_solid(direction, root_node, &adjacent_node->nodes[i], neighbors, int3_add(octree_position, octree_positions[i]), i, local_position, depth, max_depth, neighbor_lods, edge_voxel, voxel_solidity) == 0) return 0;
         }
     }
     return 1;
-}
-
-// single voxel check!
-unsigned char is_adjacent_solid(unsigned char direction, const ChunkOctree *root_node, const ChunkOctree *neighbors[], int3 position, unsigned char depth, const unsigned char edge_voxel) {
-    unsigned char chunk_index = 0;
-    const ChunkOctree *adjacent_node = find_root_adjacent_ChunkOctree(root_node, position, depth, direction, neighbors, &chunk_index);
-    // if (adjacent_node == NULL) zoxel_log("  > adjacent node is null: %ix%ix%i - depth %i\n", position.x, position.y, position.z, depth);
-    if (adjacent_node == NULL) return edge_voxel;
-    //if (adjacent_node->value) zoxel_log("  > adjacent node is solid: %ix%ix%i - depth %i - direction %i\n", position.x, position.y, position.z, depth, direction);
-    //if (!adjacent_node->value) zoxel_log("  > adjacent node is air: %ix%ix%i - depth %i - direction %i\n", position.x, position.y, position.z, depth, direction);
-    if (adjacent_node->value) return 1;
-    else return 0;
 }
 
 void random_fill_octree(ChunkOctree* node, unsigned char voxel, unsigned char depth) {

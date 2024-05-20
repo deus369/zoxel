@@ -27,7 +27,7 @@ void spawn_prefabs_voxes(ecs_world_t *world) {
 zox_begin_module(Voxes)
 zox_define_tag(Vox)
 zox_filter(chunks_generating, [in] GenerateChunk)
-if (!headless) zox_system_ctx(ChunkOctreeColorsBuildSystem, zox_pipeline_build_voxel_mesh, chunks_generating, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] ColorRGBs, [in] ChunkSize, [in] VoxScale, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] voxels.core.ColorChunk)
+if (!headless) zox_system_ctx(ChunkOctreeColorsBuildSystem, zox_pipeline_build_voxel_mesh, chunks_generating, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] ColorRGBs, [in] ChunkSize, [in] VoxScale, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] chunks.ColorChunk)
 zox_system(Bounds3DGrowSystem, EcsPostUpdate, [in] MeshDirty, [in] ChunkSize, [in] VoxScale, [out] Bounds3D)
 zoxel_end_module(Voxes)
 

@@ -1,9 +1,6 @@
-ecs_entity_t prefab_chunk;
-
 ecs_entity_t spawn_prefab_chunk(ecs_world_t *world) {
     zox_prefab()
     add_transform3Ds(world, e, 0);
-    // zox_prefab_set(e, Scale1D, { 0.05f })
     zox_prefab_set(e, MeshDirty, { 0 })
     zox_prefab_set(e, Brightness, { 1.4f })
     add_seed(world, e, 666);
@@ -16,14 +13,12 @@ ecs_entity_t spawn_prefab_chunk(ecs_world_t *world) {
         zox_add(e, ColorsGPULink)
         add_gpu_mesh(world, e);
     }   
-    prefab_chunk = e;
     return e;
 }
 
-ecs_entity_t spawn_chunk(ecs_world_t *world, ecs_entity_t prefab_chunk, float3 position, float scale) {
-    zox_instance(prefab_chunk)
+ecs_entity_t spawn_chunk(ecs_world_t *world, const ecs_entity_t prefab, const float3 position) {
+    zox_instance(prefab)
     zox_set(e, Position3D, { position })
-    // zox_set(e, Scale1D, { scale })
     spawn_gpu_mesh(world, e);
     return e;
 }

@@ -15,7 +15,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         free(icon_path);
     }
     // Realm,  players, skybox
-    const ecs_entity_t realm = spawn_realm(world);
+    const ecs_entity_t realm = spawn_realm(world, prefab_realm);
     create_game_stats(world, realm);
     const ecs_entity_t game = spawn_game(world);
     zox_set(game, RealmLink, { realm })
@@ -24,7 +24,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     spawn_players_cameras_canvases(world, game);
     // debug/testing
 #ifdef zox_test_voxel_mesh
-    test_animating_chunks(world, camera_begin_position);
+    test_animating_chunks(world, camera_begin_position, prefab_chunk_animating);
 #endif
 #ifdef zox_test_voxes
     test_voxes(world, camera_begin_position);

@@ -1,7 +1,3 @@
-#define grass_spawn_chance 80
-#define octree_random_spawn_chance 90
-const int sand_height = -7;
-
 void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 position, float scale) {
     double octree_noise = perlin_terrain(position.x + noise_positiver2, position.z + noise_positiver2, terrain_frequency, terrain_seed, terrain_octaves);
     if (octree_noise < octree_min_height) octree_noise = octree_min_height;
@@ -30,6 +26,16 @@ void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 pos
     }
 }
 
+void set_terrain_block(ecs_world_t *world, ChunkOctree *chunkOctree, const byte3 voxel_position, const int chunk_position_y, const unsigned char chunk_voxel_length, const byte2 set_voxel, const int global_place_y) {
+    const int local_place_y = global_place_y - chunk_position_y;
+    const unsigned char place_in_bounds = local_place_y >= 0 && local_place_y < chunk_voxel_length;
+    if (place_in_bounds) {
+        byte3 node_position = voxel_position;
+        node_position.y = local_place_y;
+        set_octree_voxel(chunkOctree, &node_position, &set_voxel, 0); // testing
+    }
+}
+
 // generates our terrain voxels
 void OctreeTerrainChunkSystem(ecs_iter_t *it) {
     zox_change_check()
@@ -51,10 +57,13 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
         zox_field_i_in(ChunkPosition, chunkPositions, chunkPosition)
         zox_field_i_out(ChunkOctree, chunkOctrees, chunkOctree)
         const float3 chunk_position_float3 = float3_from_int3(chunkPosition->value);
+        const int chunk_position_y = (int) (chunk_position_float3.y * chunk_voxel_length);
         fill_new_octree(chunkOctree, 0, target_depth);
-        const byte2 set_dirt = (byte2) { 1, target_depth };
-        const byte2 set_grass = (byte2) { 2, target_depth };
-        const byte2 set_sand = (byte2) { 3, target_depth };
+        const byte2 set_dirt = (byte2) { zox_block_dirt, target_depth };
+        const byte2 set_grass = (byte2) { zox_block_grass, target_depth };
+        const byte2 set_sand = (byte2) { zox_block_sand, target_depth };
+        const byte2 set_stone = (byte2) { zox_block_stone, target_depth };
+        const byte2 set_grass_vox = (byte2) { zox_block_grass_vox, target_depth };
         byte3 voxel_position;
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
             for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
@@ -67,18 +76,24 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
                     terrain_frequency, terrain_seed, terrain_octaves));
                 if (global_height < lowest_voxel_height) global_height = lowest_voxel_height;
 #endif
-                const int global_position_y = (int) (chunk_position_float3.y * chunk_voxel_length);
-                int local_height = (int) (global_height - global_position_y);
+                // now for grass_vox on top
+                // remember: to add structures like that, a noise roof over ttop of certain areas would be cool
+                if (rand() % 10000 <= 12) {
+                    set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_stone, global_height);
+                } else if (rand() % 10000 <= 155) {
+                    set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_grass_vox, global_height);
+                }
+                int local_height = int_min(chunk_voxel_length, global_height - chunk_position_y); // gets either grass point or chunk_voxel_length
                 if (local_height > 0) {
                     const unsigned char chunk_below_max = local_height > chunk_voxel_length;
                     if (chunk_below_max) local_height = chunk_voxel_length;
+                    // this moves through y positions of chunk
                     for (voxel_position.y = 0; voxel_position.y < local_height; voxel_position.y++) {
                         byte3 node_position = voxel_position;
+                        // if top voxel
                         if (!chunk_below_max && voxel_position.y == local_height - 1) {
-                            // if top voxel
-                            const int current_position_y = global_position_y + voxel_position.y;
+                            const int current_position_y = chunk_position_y + voxel_position.y;
                             if (current_position_y < sand_height) {
-                                // zoxel_log(" > sand voxel created\n");
                                 set_octree_voxel(chunkOctree, &node_position, &set_sand, 0);
                             } else {
                                 if (rand() % 100 <= grass_spawn_chance) set_octree_voxel(chunkOctree, &node_position, &set_grass, 0);

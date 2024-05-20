@@ -1,11 +1,11 @@
-// #define zox_debug_chunk_link_system
-// #define zox_debug_chunk_link_system_test
-
 void set_entity_chunk(ecs_world_t *world, const ecs_entity_t e, ChunkLink *chunkLink, const ecs_entity_t new_chunk) {
     ecs_entity_t old_chunk = chunkLink->value;
     if (old_chunk != new_chunk && new_chunk) {
+        // set characters link to chunk
         if (!zox_alive(new_chunk)) chunkLink->value = 0;
         else chunkLink->value = new_chunk;
+        // if player, dont link chunk to character
+        if (zox_has(e, DisableReverseLinkChunk)) return;
         // remove entity from old chunk
         if (old_chunk && zox_alive(old_chunk)) {
             EntityLinks *entityLinks = zox_get_mut(old_chunk, EntityLinks)
@@ -35,24 +35,3 @@ void set_entity_terrain_chunk_position(ecs_world_t *world, const ecs_entity_t e,
     const ecs_entity_t found_chunk = int3_hash_map_get(chunkLinks->value, chunk_position);
     set_entity_chunk(world, e, chunkLink, found_chunk);
 }
-
-void ChunkLinkSystem(ecs_iter_t *it) {
-    zox_iter_world()
-    zox_field_in(VoxLink, voxLinks, 2)
-    zox_field_out(Position3D, position3Ds, 3)
-    zox_field_out(ChunkPosition, chunkPositions, 4)
-    zox_field_out(ChunkLink, chunkLinks, 5)
-    for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(VoxLink, voxLinks, voxLink)
-        if (!voxLink->value) continue;
-        if (!zox_alive(voxLink->value)) continue; // these shouldn't be here
-        zox_field_e()
-        zox_field_i_in(Position3D, position3Ds, position3D)
-        zox_field_i_out(ChunkPosition, chunkPositions, chunkPosition)
-        zox_field_i_out(ChunkLink, chunkLinks, chunkLink)
-        const float3 real_position = position3D->value;
-        const int3 new_chunk_position = get_chunk_position(real_position, default_chunk_size);
-        if (!chunkLink->value) set_entity_terrain_chunk_position(world, e, voxLink, chunkLink, chunkPosition, new_chunk_position);
-        else if (!int3_equals(new_chunk_position, chunkPosition->value)) set_entity_terrain_chunk_position(world, e, voxLink, chunkLink, chunkPosition, new_chunk_position);
-    }
-} zox_declare_system(ChunkLinkSystem)

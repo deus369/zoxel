@@ -1,24 +1,21 @@
-#ifndef zox_realms
-#define zox_realms
+#ifndef zox_realms2
+#define zox_realms2
 
-zox_declare_tag(Realm)
-zox_component_entity(RealmLink)
+// todo: Move module to core and add things to realm from modules!
 #include "prefabs/realm.c"
 #include "systems/terrain_texture_set_system.c"
 #include "util/game_util.c"
 
-void initialize_realms(ecs_world_t *world) {
+void initialize_realms2(ecs_world_t *world) {
     add_to_event_game_state((zox_game_event) { &realms_game_state });
 }
 
-void spawn_prefabs_realms(ecs_world_t *world) {
-    spawn_prefab_realm(world);
+void spawn_prefabs_realms2(ecs_world_t *world) {
+    add_to_realm(world, prefab_realm);
 }
 
-zox_begin_module(Realms)
-zox_define_tag(Realm)
-zox_define_component_entity(RealmLink)
-zox_system(TerrainTextureSetSystem, EcsPreUpdate, [none] textures.core.Tilemap, [out] GenerateTexture, [out] TilemapSize, [out] TextureLinks)
-zoxel_end_module(Realms)
+zox_begin_module(Realms2)
+zox_system(TerrainTextureSetSystem, EcsPreUpdate, [in] RealmLink, [out] GenerateTexture, [out] TilemapSize, [out] TextureLinks, [none] textures.core.Tilemap)
+zoxel_end_module(Realms2)
 
 #endif

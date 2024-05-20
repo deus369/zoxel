@@ -30,6 +30,9 @@ int lowest_voxel_height = -24;
 const double real_terrain_frequency = 0.008216; // 0.004216; // 0.026216
 double terrain_frequency = 0.038216;
 uint32_t terrain_seed = 32666;
+#define grass_spawn_chance 80
+#define octree_random_spawn_chance 90
+const int sand_height = -20; // -7;
 
 unsigned char get_terrain_lod_from_camera_distance(unsigned char distance_to_camera) {
     unsigned char lod;

@@ -10,7 +10,7 @@ zox_component(BasicCollider, float)
 
 zox_begin_module(Collisions3D)
 zox_define_component(BasicCollider)
-zox_system(BasicCollision3DSystem, zox_pip_physics, [in] voxels.VoxLink, [out] voxels.ChunkPosition, [out] Position3D, [out] Velocity3D, [out] voxels.VoxelPosition, [out] voxels.ChunkLink, [out] LastPosition3D, [in] Bounds3D, [out] Grounded)
+zox_system(BasicCollision3DSystem, zox_pip_physics, [in] VoxLink, [out] chunks.ChunkPosition, [out] Position3D, [out] Velocity3D, [out] blocks.VoxelPosition, [out] chunks.ChunkLink, [out] LastPosition3D, [in] Bounds3D, [out] Grounded)
 zoxel_end_module(Collisions3D)
 
 #endif

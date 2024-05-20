@@ -1,22 +1,14 @@
 // #define zox_log_realm_colors
-const unsigned char realm_voxels = 5;
-ecs_entity_t prefab_realm;
-ecs_entity_t local_realm;
+const unsigned char realm_voxels = 6;
 
-ecs_entity_t spawn_prefab_realm(ecs_world_t *world) {
-    zox_prefab()
-    zox_prefab_name("prefab_realm")
-    zox_add_tag(e, Realm);
-    zox_prefab_set(e, Colors, { 0, NULL })
+void add_to_realm(ecs_world_t *world, const ecs_entity_t e) {
     zox_prefab_set(e, VoxelLinks, { 0, NULL })
-    prefab_realm = e;
-    return e;
 }
 
-ecs_entity_t spawn_realm(ecs_world_t *world) {
-    zox_instance(prefab_realm)
+ecs_entity_t spawn_realm(ecs_world_t *world, const ecs_entity_t prefab) {
+    zox_instance(prefab)
+    local_realm = e;
     zox_name("realm")
-    // VoxelLinks *voxelLinks = zox_get_mut(e, VoxelLinks)
     zox_get_mutt(e, VoxelLinks, voxelLinks)
     resize_memory_component(VoxelLinks, voxelLinks, ecs_entity_t, realm_voxels)
     // dirt color - hsv - hue saturation value
@@ -34,10 +26,12 @@ ecs_entity_t spawn_realm(ecs_world_t *world) {
         zox_log(" > grass red was greater, swapping hues\n")
     }
     float3 sand_hsv = (float3) { soil_hsv.x, soil_hsv.y + 16, soil_hsv.z + 16 };
+    float3 stone_hsv = (float3) { 360.0f * (rand() % 100) * 0.01f, 10 + 10.0f * (rand() % 100) * 0.01f, 10 + 20.0f * (rand() % 100) * 0.01f };
     float3 sky_hsv = (float3) { ((int) grass_hsv.x + 180) % 360, soil_hsv.y + 32,  soil_hsv.z + 32 };
     const color soil_color = hsv_to_color(soil_hsv);
     const color grass_color = hsv_to_color(grass_hsv);
     const color sand_color = hsv_to_color(sand_hsv);
+    const color stone_color = hsv_to_color(stone_hsv);
     const color sky_color = hsv_to_color(sky_hsv);
     game_sky_color = color_to_float3(sky_color);
     game_sky_bottom_color = game_sky_color;
@@ -49,38 +43,34 @@ ecs_entity_t spawn_realm(ecs_world_t *world) {
     zox_log(" + grass_color: %ix%ix%i\n", grass_color.r, grass_color.g, grass_color.b)
 #endif
     for (unsigned char i = 0; i < voxelLinks->length; i++) {
-        if (i == 0) voxelLinks->value[i] = spawn_voxel(world, i, soil_color);
-        else if (i == 1) voxelLinks->value[i] = spawn_voxel(world, i, grass_color);
-        else if (i == 2) voxelLinks->value[i] = spawn_voxel(world, i, sand_color);
-        else {
-            const unsigned char color_margin = 32;
-            const color voxel_color = (color) { color_margin + rand() % (255 - color_margin * 2), color_margin + rand() % (255 - color_margin * 2), color_margin + rand() % (255 - color_margin * 2), 255 };
-            voxelLinks->value[i] = spawn_voxel(world, i, voxel_color);
+        SpawnVoxel spawnVoxel = {
+            .prefab = prefab_voxel,
+            .index = i,
+            .seed = generate_voxel_seed(i)
+        };
+        if (i == zox_block_dirt - 1) {
+            spawnVoxel.color = soil_color;
+            spawnVoxel.texture_tag = zox_id(DirtTexture);
+        } else if (i == zox_block_grass - 1) {
+            spawnVoxel.color = grass_color;
+            spawnVoxel.texture_tag = zox_id(GrassTexture);
+        } else if (i == zox_block_sand - 1) {
+            spawnVoxel.color = sand_color;
+            spawnVoxel.texture_tag = zox_id(SandTexture);
+        } else if (i == zox_block_stone - 1) {
+            spawnVoxel.color = stone_color;
+            spawnVoxel.texture_tag = zox_id(StoneTexture);
+        } else if (i == zox_block_obsidian - 1) {
+            spawnVoxel.color = generate_random_voxel_color();
+            spawnVoxel.texture_tag = zox_id(ObsidianTexture);
+        } else if (i == zox_block_grass_vox - 1) {
+            // test vox block
+            spawnVoxel.color = generate_random_voxel_color();
+            spawnVoxel.tag = zox_id(BlockVox);
+            spawnVoxel.model = zox_block_vox;
         }
+        voxelLinks->value[i] = spawn_voxel(world, &spawnVoxel);
     }
     zox_modified(e, VoxelLinks)
-    local_realm = e;
     return e;
-}
-
-void add_to_labels_textures(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level) {
-    if (!(e && zox_has(e, Textures))) return;
-    tree_level++;
-    const Textures *component = zox_get(e, Textures)
-    for (int i = 0; i < component->length; i++) {
-        ecs_entity_t texture = component->value[i];
-        add_entity_to_labels(world, texture, labels, entities, tree_level);
-        // add_entity_children_to_labels(world, component->value[i], labels, entities, tree_level);
-    }
-}
-
-void add_to_labels_voxel_links(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level) {
-    if (!(e && zox_has(e, VoxelLinks))) return;
-    tree_level++;
-    const VoxelLinks *component = zox_get(e, VoxelLinks)
-    for (int i = 0; i < component->length; i++) {
-        ecs_entity_t voxel = component->value[i];
-        add_entity_to_labels(world, voxel, labels, entities, tree_level);
-        add_to_labels_textures(world, voxel, labels, entities, tree_level);
-    }
 }

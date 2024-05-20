@@ -10,7 +10,7 @@
 
 void spawn_prefabs_space(ecs_world_t *world) {
     spawn_prefabs_weather(world);
-    spawn_prefabs_realms(world);
+    spawn_prefabs_realms2(world);
 #if defined(zoxel_include_players)
     if (!headless) {
         spawn_prefabs_players(world);
@@ -22,14 +22,14 @@ void spawn_prefabs_space(ecs_world_t *world) {
 void dispose_space(ecs_world_t *world) { }
 
 void initialize_space(ecs_world_t *world) {
-    initialize_realms(world);
+    initialize_realms2(world);
     initialize_players(world);
     initialize_debug(world);
 }
 
 zox_begin_module(Space)
 zox_import_module(Weathers)
-zox_import_module(Realms)
+zox_import_module(Realms2)
 #if defined(zoxel_include_players)
 if (!headless) zox_import_module(Players)
 #endif

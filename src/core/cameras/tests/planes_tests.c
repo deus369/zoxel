@@ -242,7 +242,7 @@ void test_calculate_plane_from_points() {
     float3 point_a = (float3) { -1, -1, 0 };
     float3 point_b = (float3) { 1, -1, 0 };
     float3 point_c = (float3) { 1, 1, 0 };
-    float3 point_d = (float3) { -1, 1, 0 };
+    // float3 point_d = (float3) { -1, 1, 0 };
 
     // Expected normal and distance for a plane in the xy-plane
     float3 expected_normal = (float3) { 0, 0, 1 };
