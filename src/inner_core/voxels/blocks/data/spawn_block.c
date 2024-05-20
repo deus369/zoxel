@@ -6,4 +6,4 @@ typedef struct {
     color color;
     ecs_entity_t tag;
     ecs_entity_t texture_tag;
-} SpawnVoxel;
+} SpawnBlock;

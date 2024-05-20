@@ -4,7 +4,7 @@
 // todo: implement BlockCollider in physics
 #include "data/model_types.c"
 #include "data/block_types.c"
-#include "data/spawn_voxel.c"
+#include "data/spawn_block.c"
 zox_declare_tag(Voxel)
 zox_declare_tag(BlockVox)
 zox_component_byte(BlockModel)

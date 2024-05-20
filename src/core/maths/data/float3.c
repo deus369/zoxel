@@ -4,6 +4,7 @@ typedef struct {
 } float3;
 
 #define float3_zero (float3) { 0, 0, 0 }
+#define float3_half (float3) { 0.5f, 0.5f, 0.5f }
 #define float3_one (float3) { 1, 1, 1 }
 #define float3_backward (float3) { 0, 0, -1 }
 #define float3_forward (float3) { 0, 0, 1 }

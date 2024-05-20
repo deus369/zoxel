@@ -8,10 +8,6 @@ int integer_min(int a, int b) {
     else return a;
 }
 
-float3 float3_from_int3(int3 input) {
-    return (float3) { input.x, input.y, input.z };
-}
-
 int int_floor(float input) {
     return (int) floor(input);
 }

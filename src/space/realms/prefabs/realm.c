@@ -43,33 +43,33 @@ ecs_entity_t spawn_realm(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_log(" + grass_color: %ix%ix%i\n", grass_color.r, grass_color.g, grass_color.b)
 #endif
     for (unsigned char i = 0; i < voxelLinks->length; i++) {
-        SpawnVoxel spawnVoxel = {
+        SpawnBlock spawn_data = {
             .prefab = prefab_voxel,
             .index = i,
             .seed = generate_voxel_seed(i)
         };
         if (i == zox_block_dirt - 1) {
-            spawnVoxel.color = soil_color;
-            spawnVoxel.texture_tag = zox_id(DirtTexture);
+            spawn_data.color = soil_color;
+            spawn_data.texture_tag = zox_id(DirtTexture);
         } else if (i == zox_block_grass - 1) {
-            spawnVoxel.color = grass_color;
-            spawnVoxel.texture_tag = zox_id(GrassTexture);
+            spawn_data.color = grass_color;
+            spawn_data.texture_tag = zox_id(GrassTexture);
         } else if (i == zox_block_sand - 1) {
-            spawnVoxel.color = sand_color;
-            spawnVoxel.texture_tag = zox_id(SandTexture);
+            spawn_data.color = sand_color;
+            spawn_data.texture_tag = zox_id(SandTexture);
         } else if (i == zox_block_stone - 1) {
-            spawnVoxel.color = stone_color;
-            spawnVoxel.texture_tag = zox_id(StoneTexture);
+            spawn_data.color = stone_color;
+            spawn_data.texture_tag = zox_id(StoneTexture);
         } else if (i == zox_block_obsidian - 1) {
-            spawnVoxel.color = generate_random_voxel_color();
-            spawnVoxel.texture_tag = zox_id(ObsidianTexture);
+            spawn_data.color = generate_random_voxel_color();
+            spawn_data.texture_tag = zox_id(ObsidianTexture);
         } else if (i == zox_block_grass_vox - 1) {
             // test vox block
-            spawnVoxel.color = generate_random_voxel_color();
-            spawnVoxel.tag = zox_id(BlockVox);
-            spawnVoxel.model = zox_block_vox;
+            spawn_data.color = generate_random_voxel_color();
+            spawn_data.tag = zox_id(BlockVox);
+            spawn_data.model = zox_block_vox;
         }
-        voxelLinks->value[i] = spawn_voxel(world, &spawnVoxel);
+        voxelLinks->value[i] = spawn_voxel(world, &spawn_data);
     }
     zox_modified(e, VoxelLinks)
     return e;

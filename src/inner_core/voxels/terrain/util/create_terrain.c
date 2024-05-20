@@ -24,7 +24,7 @@ int get_chunk_index_3(int3 position, int rows, int vertical) {
 ecs_entity_t create_terrain_bulk(ecs_world_t *world, int3 center_position) {
     ecs_entity_t tilemap = spawn_tilemap(world, prefab_tilemap);
     int chunks_total_length = calculate_terrain_chunks_count(terrain_spawn_distance, terrain_vertical);
-    ecs_entity_t terrain_world = spawn_terrain(world, tilemap, float3_zero, 1);
+    ecs_entity_t terrain_world = spawn_terrain(world, prefab_terrain, tilemap, float3_zero, 1);
     ecs_entity_t chunks[chunks_total_length];
     int3 chunk_positions[chunks_total_length];
     for (int i = -terrain_spawn_distance; i <= terrain_spawn_distance; i++) {
@@ -118,7 +118,7 @@ ecs_entity_t create_terrain(ecs_world_t *world, const ecs_entity_t realm, const 
     const ecs_entity_t tilemap = spawn_tilemap(world, prefab_tilemap);
     zox_set(tilemap, RealmLink, { realm })
     int chunks_total_length = calculate_terrain_chunks_count(terrain_spawn_distance, terrain_vertical);
-    ecs_entity_t terrain_world = spawn_terrain(world, tilemap, float3_zero, 1);
+    ecs_entity_t terrain_world = spawn_terrain(world, prefab_terrain, tilemap, float3_zero, 1);
     ecs_entity_t chunks[chunks_total_length];
     int3 chunk_positions[chunks_total_length];
     int3 chunk_position = int3_zero;

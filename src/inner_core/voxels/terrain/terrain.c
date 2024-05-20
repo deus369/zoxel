@@ -11,12 +11,12 @@ zox_component_entity(TerrainLink)
 zox_component_byte(StreamDirty)
 #include "data/terrain_statistics.c"
 #include "data/mesh_uvs_build_data.c"
-#include "prefabs/terrain.c"
-#include "prefabs/terrain_chunk.c"
-#include "prefabs/terrain_chunk_octree.c"
 #include "util/static_octree_build.c"
 #include "util/chunk_util.c"
+#include "util/prefab_util.c"
 #include "util/octree_build_util.c"
+#include "util/debug_util.c"
+#include "prefabs/prefabs.c"
 ctx2 terrain_lod_filter;
 #include "systems/terrain_chunk_system.c"
 #include "systems/chunk_uvs_build_system.c"
@@ -29,17 +29,6 @@ ctx2 terrain_lod_filter;
 #include "util/create_terrain.c"
 #include "systems/chunk_bounds_debug_system.c"
 #include "systems/block_vox_spawn_system.c"
-
-int get_terrain_chunks_count(ecs_world_t *world) {
-    return zox_count_entities(world, ecs_id(TerrainChunk));
-}
-
-void spawn_prefabs_terrain(ecs_world_t *world) {
-    const int3 terrain_chunk_size = { default_chunk_length, 8 * default_chunk_length, default_chunk_length };
-    spawn_prefab_terrain(world);
-    spawn_prefab_terrain_chunk(world, terrain_chunk_size);
-    spawn_prefab_terrain_chunk_octree(world, terrain_chunk_size);
-}
 
 zox_begin_module(Terrain)
 set_terrain_render_distance();
@@ -64,8 +53,9 @@ zox_system_ctx(ChunkFrustumSystem, EcsPostUpdate, camera_planes, [in] Position3D
 if (!headless) zox_system_ctx(ChunkOctreeBuildSystem, zox_pipeline_build_voxel_mesh, chunks_generating, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] VoxLink, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty, [in] VoxScale, [none] chunks.ChunkTextured)
 zox_render3D_system(TerrainChunksRenderSystem, [in] TransformMatrix, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] VoxLink, [in] RenderDisabled)
 #ifdef zox_debug_chunk_bounds
-zox_system_1(ChunkBoundsDebugSystem, main_thread_pipeline, [in] Position3D, [in] ChunkSize, [in] VoxScale, [in] RenderDisabled, [none] TerrainChunk)
+zox_system_1(ChunkBoundsDebugSystem, zox_pip_mainthread, [in] Position3D, [in] ChunkSize, [in] VoxScale, [in] RenderDisabled, [none] TerrainChunk)
 #endif
+zox_system_1(BlockVoxSpawnSystem, zox_pip_mainthread, [in] ChunkDirty, [in] ChunkOctree, [in] ChunkPosition, [in] ChunkSize, [in] VoxLink, [in] RenderLod, [out] BlockSpawns, [none] TerrainChunk)
 zoxel_end_module(Terrain)
 
 #endif

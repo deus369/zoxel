@@ -5,20 +5,17 @@ int get_characters_count(ecs_world_t *world) {
     return zox_count_entities(world, ecs_id(Character3D));
 }
 
-ecs_entity_t spawn_prefab_character3D(ecs_world_t *world) {
-    zox_prefab_child(prefab_vox)
+ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t prefab) {
+    zox_prefab_child(prefab)
     zox_prefab_name("prefab_character3D")
     zox_add_tag(e, Character3D)
     // rendering
-    if (!headless) add_gpu_colors(world, e);
-    zox_prefab_set(e, RenderDisabled, { 0 })
+    // if (!headless) add_gpu_colors(world, e);
+    // zox_prefab_set(e, RenderDisabled, { 0 })
     // transform
-    zox_prefab_set(e, Scale1D, { 1.0f })
-    zox_prefab_set(e, Euler, { float3_zero })
+    add_physics3D(world, e);
     zox_prefab_set(e, Bounds3D, { float3_one })
     zox_prefab_set(e, Position3DBounds, { float6_zero })
-    zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
-    add_physics3D(world, e);
     // voxels
     zox_add_tag(e, LinkChunk)
     zox_prefab_set(e, VoxLink, { 0 })

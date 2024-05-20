@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_voxel(ecs_world_t *world) {
     zox_prefab()
-    zox_prefab_name("prefab_voxel")
+    zox_prefab_name("prefab_block")
     zox_add_tag(e, Voxel)
     zox_prefab_set(e, BlockModel, { zox_block_solid })
     zox_prefab_set(e, BlockCollider, { zox_block_solid })
@@ -8,7 +8,7 @@ ecs_entity_t spawn_prefab_voxel(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_voxel(ecs_world_t *world, const SpawnVoxel *data) {
+ecs_entity_t spawn_voxel(ecs_world_t *world, const SpawnBlock *data) {
     zox_instance(data->prefab)
     zox_name("voxel")
     if (data->model != zox_block_air) zox_set(e, BlockModel, { data->model })

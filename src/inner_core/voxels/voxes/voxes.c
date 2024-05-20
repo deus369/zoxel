@@ -1,28 +1,19 @@
 #ifndef zox_voxes
 #define zox_voxes
 
-#define vox_model_scale (1 / 64.0f)
-zox_declare_tag(Vox)
 #include "data/default_palette.c"
 #include "data/vox_file.c"
+#include "data/spawn_block_vox.c"
+#include "data/settings.c"
+zox_declare_tag(Vox)
 #include "util/vox_read_util.c"
 #include "util/vox_files.c"
-#include "prefabs/vox.c"
+#include "util/vox_util.c"
+#include "util/io_util.c"
+#include "prefabs/prefabs.c"
 #include "systems/chunk_colors_build_system.c"
 #include "systems/chunk_octree_colors_build_system.c"
 #include "systems/bounds3D_grow_system.c"
-
-void dispose_voxes(ecs_world_t *world) {
-    dispose_files_voxes(world);
-}
-
-void initialize_voxes(ecs_world_t *world) {
-    load_files_voxes();
-}
-
-void spawn_prefabs_voxes(ecs_world_t *world) {
-    spawn_prefab_vox(world);
-}
 
 zox_begin_module(Voxes)
 zox_define_tag(Vox)

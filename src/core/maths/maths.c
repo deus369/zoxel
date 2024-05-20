@@ -33,6 +33,7 @@
 // functions
 #include "util/math.c"
 #include "util/integer_util.c"
+#include "util/int3_util.c"
 #include "util/noise.c"
 #include "util/noise_2.c"
 #include "util/unique_seed.c"

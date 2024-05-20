@@ -9,7 +9,7 @@ zox_component_entity(Character3DLink)
 #include "terrain/characters3D_terrain.c"
 
 void spawn_prefabs_characters3D(ecs_world_t *world) {
-    spawn_prefab_character3D(world);
+    spawn_prefab_character3D(world, prefab_vox);
     spawn_prefabs_characters3D_terrain(world);
 }
 

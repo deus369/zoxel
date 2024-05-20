@@ -53,9 +53,6 @@ void zox_build_voxel_face(const mesh_uvs_build_data *mesh_data, const unsigned c
 }
 
 void build_if_adjacent_voxel(const ChunkOctree *root_node, const ChunkOctree *parent_node, const float3 vertex_position_offset, const int* voxel_face_indicies, const float3 *voxel_face_vertices, const float2 *voxel_uvs, const unsigned char voxel_direction, const ChunkOctree *neighbors[], const unsigned char *neighbor_lods, const unsigned char distance_to_camera, const unsigned char node_index, const byte3 node_position, const unsigned char depth, const unsigned char lod, const unsigned char voxel, const float octree_scale, const float vert_scale, int3 octree_position, const mesh_uvs_build_data *mesh_data, const unsigned char *voxel_solidity) {
-
-    if (voxel == 5) zox_log("Solid tho? %s\n", voxel_solidity[voxel - 1] ? "solid" : "nonnsolid")
-
     if (is_adjacent_all_solid(voxel_direction, root_node, parent_node, neighbors, octree_position, node_index, node_position, depth, lod, neighbor_lods, edge_voxel, voxel_solidity)) return;
     unsigned char is_regular_build = 1;
     if (zox_build_all_faces && distance_to_camera <= high_resolution_terain_lod) {

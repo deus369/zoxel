@@ -1,23 +1,3 @@
-ecs_entity_t prefab_terrain_chunk_octree;
-
-unsigned char get_chunk_division(const int3 camera_position, const int3 chunk_position) {
-    return int_max(int_abs(chunk_position.x - camera_position.x), int_abs(chunk_position.z - camera_position.z));
-}
-
-void add_components_mesh_textured(ecs_world_t *world, const ecs_entity_t e) {
-    if (!headless) {
-        zox_add(e, MeshIndicies)
-        zox_add(e, MeshVertices)
-        zox_add(e, MeshUVs)
-        zox_add(e, MeshColorRGBs)
-        add_gpu_mesh(world, e);
-        // add_gpu_material(world, e);
-        add_gpu_uvs(world, e);
-        add_gpu_texture(world, e);
-        add_gpu_colors(world, e);
-    }
-}
-
 ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, const int3 size) {
     zox_prefab()
     // zox_prefab_name("prefab_terrain_chunk_octree")
@@ -33,10 +13,11 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, const int3 si
     add_chunk_octree(world, e, size);
     zox_add_tag(e, TerrainChunk)
     zox_add_tag(e, ChunkTextured)
+    zox_prefab_set(e, BlockSpawns, { NULL })    // links to voxels in world
     zox_prefab_set(e, EntityLinks, { 0, NULL })    // character and minivox links
     zox_prefab_set(e, GenerateChunk, { 1 }) // fails on samsungdwd
+    // todo: calculate this based on max LOD resolution (2 to power of resolution)
     zox_prefab_set(e, ChunkSize, {{ 32, 32, 32 }})  // max resolution, should calculate this!
-    prefab_terrain_chunk_octree = e;
     return e;
 }
 
