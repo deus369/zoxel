@@ -78,9 +78,9 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
 #endif
                 // now for grass_vox on top
                 // remember: to add structures like that, a noise roof over ttop of certain areas would be cool
-                if (rand() % 10000 <= 12) {
+                if (rand() % 10000 <= stone_top_spawn_chance) {
                     set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_stone, global_height);
-                } else if (rand() % 10000 <= 155) {
+                } else if (rand() % 10000 <= grass_vox_spawn_chance) {
                     set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_grass_vox, global_height);
                 }
                 int local_height = int_min(chunk_voxel_length, global_height - chunk_position_y); // gets either grass point or chunk_voxel_length

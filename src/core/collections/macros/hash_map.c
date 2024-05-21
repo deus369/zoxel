@@ -1,5 +1,7 @@
 #define zox_hash_map(name, type, type_zero, key_type, convert_to_hash)\
+\
 typedef struct name##_##pair name##_##pair;\
+\
 struct name##_##pair {\
     int key;\
     type value;\
@@ -18,6 +20,7 @@ int name##_##hash(int key, int size) {\
 name* create##_##name(int size) {\
     name* map = malloc(sizeof(name));\
     map->size = size;\
+    /*calloc zeroes out data*/\
     map->data = calloc(size, sizeof(name##_##pair*));\
     return map;\
 }\
@@ -87,7 +90,20 @@ void name##_##dispose(name* map) {\
     }\
     free(map->data);\
     free(map);\
-}
+}\
+\
+int count##_##name(name* map) {\
+    int count = 0;\
+    for (int i = 0; i < map->size; i++) {\
+        name##_##pair* pair = map->data[i];\
+        while (pair != NULL) {\
+            name##_##pair* next_pair = pair->next;\
+            count++;\
+            pair = next_pair;\
+        }\
+    }\
+    return count;\
+}\
 
 
 /*int get_int3_hash(int3 input) {

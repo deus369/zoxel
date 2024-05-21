@@ -4,7 +4,8 @@
     #define zox_disable_terrain_streaming
 #endif
 
-#define zox_pipeline_chunk_generation EcsPostLoad // EcsOnLoad EcsOnUpdate
+#define zox_pip_pre_chunk_gen EcsPreStore // EcsOnLoad EcsOnUpdate
+#define zox_pip_chunk_gen EcsOnLoad // EcsOnLoad EcsPostLoad EcsOnUpdate EcsPostUpdate
 unsigned char high_resolution_terain_lod = 1; // 2 | 1
 unsigned char initial_terrain_lod = 4; // 3 | 2
 const unsigned char terrain_lod_dividor = 3; // 2 | 3
@@ -31,8 +32,13 @@ const double real_terrain_frequency = 0.008216; // 0.004216; // 0.026216
 double terrain_frequency = 0.038216;
 uint32_t terrain_seed = 32666;
 #define grass_spawn_chance 80
-#define octree_random_spawn_chance 90
+#define grass_vox_spawn_chance 144
+#define octree_random_spawn_chance 22
+#define stone_top_spawn_chance 155
 const int sand_height = -20; // -7;
+const unsigned char max_vox_blocks = 32;
+const unsigned char block_vox_render_distance = 3;
+const int test_block_vox_index = 4; // flower
 
 unsigned char get_terrain_lod_from_camera_distance(unsigned char distance_to_camera) {
     unsigned char lod;

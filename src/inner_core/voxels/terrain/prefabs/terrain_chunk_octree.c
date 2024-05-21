@@ -8,16 +8,17 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, const int3 si
     zox_prefab_set(e, MeshDirty, { 0 })
     zox_prefab_set(e, Brightness, { 1.0f })
     zox_prefab_set(e, RenderDisabled, { 1 })
+    zox_prefab_set(e, ChunkLodDirty, { 0 })
     add_components_mesh_textured(world, e);
     // voxels_core
     add_chunk_octree(world, e, size);
+    zox_prefab_set(e, GenerateChunk, { 1 }) // fails on samsung phone?
+    zox_prefab_set(e, ChunkSize, {{ 32, 32, 32 }})  // max resolution, should calculate this!
     zox_add_tag(e, TerrainChunk)
     zox_add_tag(e, ChunkTextured)
     zox_prefab_set(e, BlockSpawns, { NULL })    // links to voxels in world
     zox_prefab_set(e, EntityLinks, { 0, NULL })    // character and minivox links
-    zox_prefab_set(e, GenerateChunk, { 1 }) // fails on samsungdwd
     // todo: calculate this based on max LOD resolution (2 to power of resolution)
-    zox_prefab_set(e, ChunkSize, {{ 32, 32, 32 }})  // max resolution, should calculate this!
     return e;
 }
 

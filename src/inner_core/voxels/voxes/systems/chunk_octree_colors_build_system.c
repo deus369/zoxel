@@ -21,6 +21,7 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i_out(ChunkDirty, chunkDirtys, chunkDirty)
         if (chunkDirty->value != 1) continue;
+        // zox_log("chunk dirty %lu\n", it->entities[i])
         zox_field_i_in(RenderLod, renderLods, renderLod)
         zox_field_i_in(VoxScale, voxScales, voxScale)
         zox_field_i_out(MeshDirty, meshDirtys, meshDirty)
@@ -57,8 +58,7 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         neighbor_lods[3] = colors_get_max_depth_from_division(chunk_up_max_distance);
         neighbor_lods[4] = colors_get_max_depth_from_division(chunk_back_max_distance);
         neighbor_lods[5] = colors_get_max_depth_from_division(chunk_front_max_distance);
-        float3 total_mesh_offset = calculate_vox_bounds(chunkSize->value, voxScale->value);
-        float3_multiply_float_p(&total_mesh_offset, -1); // * 4.0f);
+        const float3 total_mesh_offset = float3_multiply_float(calculate_vox_bounds(chunkSize->value, voxScale->value), -1);
         const unsigned char chunk_depth = colors_get_max_depth_from_division(renderLod->value);
         /*if (zox_lowres_characters_mode) test_build_chunk_octree_mesh_colors(chunkOctree, colorRGBs2, meshIndicies2, meshVertices2, meshColorRGBs2, chunk_depth, neighbors, neighbor_lods, total_mesh_offset);
         else */

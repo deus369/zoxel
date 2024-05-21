@@ -27,8 +27,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
 #ifdef zox_disable_npcs
         continue;
 #endif
-        unsigned char camera_distance = renderLod->value;
-        unsigned char character_lod = get_character_division_from_camera(camera_distance);
+        const unsigned char vox_lod = get_character_division_from_camera(renderLod->value);
         // zoxel_log("characters spawning in chunk %lu\n", it->entities[i]);
         // find if chunk has any air position - free place to spawn - spawn characters in this chunk
         const ChunkPosition *chunkPosition = &chunkPositions[i];
@@ -52,15 +51,15 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
                 if (local_position.y == 0) break;   // since byte cannot go under 0
             }
             if (!did_find_ground) continue;
-            int vox_file_index = rand() % vox_files_count;
-            vox_file vox = vox_files[vox_file_index];
+            int vox_index = rand() % npc_vox_index_count;
+            vox_file vox = vox_files[npc_vox_indexes[vox_index]];
             int3 global_voxel_position = int3_add(chunk_voxel_position, byte3_to_int3(local_position));
             float3 position = (float3) { global_voxel_position.x, global_voxel_position.y, global_voxel_position.z };
             float3_multiply_float_p(&position, terrain_voxel_scale);
             float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
             position.y += 0.26f; // 0.75f;
             position.y += 0.06f; // extra
-            spawn_character3D_npc(world, entities, &vox, position, rotation, character_lod, renderDisabled->value);
+            spawn_character3D_npc(world, entities, &vox, position, rotation, vox_lod, renderDisabled->value);
         }
         clear_memory_component(EntityLinks, entityLinks);
         entityLinks->length = entities->size;

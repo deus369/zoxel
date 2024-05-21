@@ -1,5 +1,7 @@
 // Here? select which zoxel modules I shall use?
 
+#define zox_print_files
+
 // #define zox_beta
 // to fix windows build
 #if defined(_WIN32) || defined(__ANDROID__)
@@ -7,7 +9,6 @@
 #endif
 // #define zox_print_opengl
 // #define zox_print_sdl                       // debugs sdl app
-// #define zox_print_files
 #define zox_print_shader_support
 
 // testing editor

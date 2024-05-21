@@ -5,12 +5,14 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
     zox_field_in(ChunkSize, chunkSizes, 2)
     zox_field_in(VoxScale, voxScales, 3)
     zox_field_in(EntityLinks, entityLinkss, 4)
-    zox_field_out(RenderDisabled, renderDisableds, 5)
+    zox_field_in(BlockSpawns, blockSpawnss, 5)
+    zox_field_out(RenderDisabled, renderDisableds, 6)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(Position3D, position3Ds, position3D)
         zox_field_i_in(ChunkSize, chunkSizes, chunkSize)
         zox_field_i_in(VoxScale, voxScales, voxScale)
         zox_field_i_in(EntityLinks, entityLinkss, entityLinks)
+        zox_field_i_in(BlockSpawns, blockSpawnss, blockSpawns)
         zox_field_i_out(RenderDisabled, renderDisableds, renderDisabled)
         const bounds chunk_bounds = calculate_chunk_bounds(position3D->value, chunkSize->value, voxScale->value);
         unsigned char is_viewed = 1;
@@ -45,6 +47,16 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
                     for (int l = 0; l < element_children->length; l++) {
                         const ecs_entity_t e4 = element_children->value[l];
                         zox_set(e4, RenderDisabled, { renderDisabled->value })
+                    }
+                }
+            }
+            if (blockSpawns->value) {
+                for (int j = 0; j < blockSpawns->value->size; j++) {
+                    const byte3_hash_map_pair* pair = blockSpawns->value->data[j];
+                    while (pair != NULL) {
+                        const ecs_entity_t e2 = pair->value;
+                        if (e2 && zox_valid(e2)) zox_set(e2, RenderDisabled, { renderDisabled->value })
+                        pair = pair->next;
                     }
                 }
             }

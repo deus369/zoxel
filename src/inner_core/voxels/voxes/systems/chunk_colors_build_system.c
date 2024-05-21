@@ -133,8 +133,7 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         zox_field_i_out(MeshVertices, meshVertices, meshVertices2)
         zox_field_i_out(MeshColorRGBs, meshColorRGBs, meshColorRGBs2)
         // maybe use bounds here directly
-        float3 total_mesh_offset = calculate_vox_bounds(chunkSize->value, voxScale->value);
-        float3_multiply_float_p(&total_mesh_offset, -1);
+        const float3 total_mesh_offset = float3_multiply_float(calculate_vox_bounds(chunkSize->value, voxScale->value), -1);
         build_chunk_mesh_colors(chunkData, chunkSize, colors2, meshIndicies2, meshVertices2, meshColorRGBs2, total_mesh_offset, voxScale->value);
         chunkDirty->value = 0;
         meshDirty->value = 1;

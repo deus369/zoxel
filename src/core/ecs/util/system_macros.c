@@ -1,7 +1,8 @@
 //! A bunch of flecs system macros
 // todo: make all use of these pipeline tags, zox_ ones because it
 //  > makes it easier to organize
-#define main_thread_pipeline EcsPreStore // EcsOnStore
+// breaks visuals if i put on store
+#define main_thread_pipeline EcsPreStore // EcsPreStore | EcsOnStore
 #define zox_pip_mainthread EcsPreStore // EcsOnStore
 #define zox_pipelines_pre_render EcsPreStore
 
