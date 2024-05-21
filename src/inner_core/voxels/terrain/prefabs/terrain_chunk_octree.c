@@ -8,7 +8,7 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, const int3 si
     zox_prefab_set(e, MeshDirty, { 0 })
     zox_prefab_set(e, Brightness, { 1.0f })
     zox_prefab_set(e, RenderDisabled, { 1 })
-    zox_prefab_set(e, ChunkLodDirty, { 0 })
+    zox_prefab_set(e, ChunkLodDirty, { 1 })
     add_components_mesh_textured(world, e);
     // voxels_core
     add_chunk_octree(world, e, size);
@@ -27,7 +27,7 @@ ecs_entity_t spawn_terrain_chunk_octree(ecs_world_t *world, const ecs_entity_t p
     // zox_name("terrain_chunk_octree")
     zox_set(e, ChunkPosition, { chunk_position })
     zox_set(e, Position3D, { position })
-    zox_set(e, RenderLod, { get_chunk_division(camera_position, chunk_position) })
+    zox_set(e, RenderLod, { get_camera_chunk_distance(camera_position, chunk_position) })
     zox_set(e, VoxLink, { terrain })
     if (!headless) {
         spawn_gpu_mesh(world, e);

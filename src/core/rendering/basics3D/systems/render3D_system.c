@@ -16,10 +16,11 @@ void Render3DSystem(ecs_iter_t *it) {
         zox_field_i_in(Brightness, brightnesses, brightness)
         zox_field_i_in(MeshGPULink, meshGPULinks, meshGPULink)
         zox_field_i_in(MaterialGPULink, materialGPULinks, materialGPULink)
+        Material3D attributes = spawn_material3D_properties(materialGPULink->value);
         opengl_set_material(materialGPULink->value);
         opengl_bind_mesh(meshGPULink->value);
-        set_basic_vert_layout(materialGPULink->value);
-        if (opengl_set_material3D_properties(materialGPULink->value, position3D->value, rotation3D->value, scale1D->value, brightness->value) == -1) return;
+        set_basic_vert_layout(&attributes);
+        if (opengl_set_material3D_properties(&attributes, position3D->value, rotation3D->value, scale1D->value, brightness->value) == -1) return;
         // opengl_set_camera_view_matrix(materialGPULink->value, render_camera_matrix);
         glUniformMatrix4fv(glGetUniformLocation(materialGPULink->value, "camera_matrix"), 1, GL_FALSE, (float*) &render_camera_matrix);
         opengl_render(meshIndicies->length);

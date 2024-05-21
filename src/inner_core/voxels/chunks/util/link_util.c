@@ -1,3 +1,5 @@
+extern unsigned char get_character_division_from_camera(unsigned char distance_to_camera);
+
 void set_entity_chunk(ecs_world_t *world, const ecs_entity_t e, ChunkLink *chunkLink, const ecs_entity_t new_chunk) {
     ecs_entity_t old_chunk = chunkLink->value;
     if (old_chunk != new_chunk && new_chunk) {
@@ -6,6 +8,15 @@ void set_entity_chunk(ecs_world_t *world, const ecs_entity_t e, ChunkLink *chunk
         else chunkLink->value = new_chunk;
         // if player, dont link chunk to character
         if (zox_has(e, DisableReverseLinkChunk)) return;
+        // Set RenderLod and RenderDisabled based on chunk!
+        if (new_chunk) {
+            const unsigned char chunk_render_disabled = zox_get_value(new_chunk, RenderDisabled)
+            const unsigned char chunk_lod = get_character_division_from_camera(zox_gett_value(new_chunk, RenderLod));
+            const unsigned char render_disabled = zox_get_value(e, RenderDisabled)
+            const unsigned char render_lod = zox_get_value(e, RenderDisabled)
+            if (render_disabled != chunk_render_disabled) zox_set(e, RenderDisabled, { chunk_render_disabled })
+            if (render_lod != chunk_lod) zox_set(e, RenderLod, { chunk_lod })
+        }
         // remove entity from old chunk
         if (old_chunk && zox_alive(old_chunk)) {
             EntityLinks *entityLinks = zox_get_mut(old_chunk, EntityLinks)

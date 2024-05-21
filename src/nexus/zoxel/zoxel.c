@@ -43,8 +43,8 @@ void ZoxGameImport(ecs_world_t *world) {
     zox_game_type = zox_game_mode_3D;
     //menu_sky_color = (float3) { 29 / 255.0f, 53 / 255.0f, 47 / 255.0f };
     // menu_sky_bottom_color = (float3) { 30 / 255.0f, 25 / 255.0f, 21 / 255.0f };
-    menu_sky_color = (float3) { 5 / 255.0f, 5 / 255.0f, 5  / 255.0f };
-    menu_sky_bottom_color = (float3) { 5 / 255.0f, 5 / 255.0f, 5 / 255.0f };
+    menu_sky_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32  / 255.0f };
+    menu_sky_bottom_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32 / 255.0f };
 }
 
 #endif

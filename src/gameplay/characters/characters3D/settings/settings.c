@@ -19,7 +19,7 @@ unsigned char get_character_division_from_camera(unsigned char distance_to_camer
 }
 
 unsigned char get_character_division(int3 chunk_position, int3 camera_position) {
-    unsigned char distance_to_camera = get_chunk_division(camera_position, chunk_position);
+    unsigned char distance_to_camera = get_camera_chunk_distance(camera_position, chunk_position);
     return get_character_division_from_camera(distance_to_camera);
 }
 
@@ -39,15 +39,15 @@ void set_character_settings() {
         spawn_characters3D_count = 8;
     }
     // test single
-    #ifdef zoxel_test_single_character3Ds
-        spawn_characters3D_count = 1;
-        spawn_many_radius = 0.0f;
-        spawn_many_offset.x = 8.5f;
-        spawn_many_offset.z = 8.5f;
-        spawn_many_y = 1.0f;
-    #endif
-    #ifdef zoxel_debug_settings
-        zoxel_log(" > character settings set\n");
-        zoxel_log("     + character spawn count is [%i]\n", spawn_characters3D_count);
-    #endif
+#ifdef zoxel_test_single_character3Ds
+    spawn_characters3D_count = 1;
+    spawn_many_radius = 0.0f;
+    spawn_many_offset.x = 8.5f;
+    spawn_many_offset.z = 8.5f;
+    spawn_many_y = 1.0f;
+#endif
+#ifdef zoxel_debug_settings
+    zoxel_log(" > character settings set\n");
+    zoxel_log("     + character spawn count is [%i]\n", spawn_characters3D_count);
+#endif
 }

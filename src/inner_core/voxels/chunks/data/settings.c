@@ -1,5 +1,9 @@
-#define zox_pipeline_build_voxel_mesh EcsOnLoad // EcsPostUpdate
-#define zox_pip_voxels EcsOnUpdate
+// #define zox_pip_voxels EcsOnUpdate | EcsPreStore | EcsOnLoad
+#define zox_pip_voxels_chunk_dirty EcsOnLoad // sets chunk dirty 1 -  generates voxel data
+#define zox_pip_voxels EcsOnUpdate // uses event states
+#define zox_pip_voxels_chunk_clean EcsPostUpdate // generates mesh data, resets chunk_dirty
+// base on zox_pip_mainthread EcsPreStore
+// #define zox_pip_voxels_build EcsPreUpdate // generates meshes | EcsPostUpdate
 const float overall_voxel_scale = 32.0f; // 64.0f; // 4.0f // 2.0f;
 const float3 center_mesh_offset = { 0, 0, 0 };
 const int dissapearChance = 92;

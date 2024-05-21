@@ -16,8 +16,8 @@ zox_begin_module(VoxelsAnimations)
 zox_define_component_double(AnimateChunk)
 zox_filter(noise_chunks, [none] chunks.NoiseChunk, [out] GenerateChunk)
 zox_system(AnimateChunkSystem, EcsOnUpdate, [out] AnimateChunk, [out] GenerateChunk)
-zox_system_ctx(NoiseChunkSystem, EcsOnUpdate, noise_chunks, [none] chunks.NoiseChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [out] GenerateChunk)
-zox_system_ctx(NoiseChunkOctreeSystem, EcsOnUpdate, noise_chunks, [none] chunks.NoiseChunk, [out] ChunkDirty, [out] ChunkOctree, [in] RenderLod, [out] GenerateChunk)
+zox_system_ctx(NoiseChunkSystem, zox_pip_voxels_chunk_dirty, noise_chunks, [none] chunks.NoiseChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [out] GenerateChunk)
+zox_system_ctx(NoiseChunkOctreeSystem, zox_pip_voxels_chunk_dirty, noise_chunks, [none] chunks.NoiseChunk, [out] ChunkDirty, [out] ChunkOctree, [in] RenderLod, [out] GenerateChunk)
 zoxel_end_module(VoxelsAnimations)
 
 #endif

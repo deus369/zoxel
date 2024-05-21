@@ -2,7 +2,7 @@
 #define check_chunk_lod(dir)\
     (chunkNeighbors->value[direction##_##dir] != 0 &&\
     zox_gett_value(chunkNeighbors->value[direction##_##dir], RenderLod) != \
-    get_chunk_division(stream_point, int3##_##dir(chunk_position)))
+    get_camera_chunk_distance(stream_point, int3##_##dir(chunk_position)))
 
 int3 find_closest_point(const int3* points, const int points_length, const int3 target) {
     if (points_length == 0) return int3_zero;
@@ -48,19 +48,20 @@ void TerrainLodSystem(ecs_iter_t *it) {
             stream_points[j] = stream_point;
         }
         unsigned char *chunk_lods = malloc(total_chunks);
-        const ChunkPosition *chunkPositions = ecs_field(&chunks_iterator, ChunkPosition, 2);
-        const ChunkNeighbors *chunkNeighbors2 = ecs_field(&chunks_iterator, ChunkNeighbors, 3);
-        RenderLod *renderLods = ecs_field(&chunks_iterator, RenderLod, 4);
-        ChunkDirty *chunkDirtys = ecs_field(&chunks_iterator, ChunkDirty, 5);
+        const ChunkPosition *chunkPositions = ecs_field(&chunks_iterator, ChunkPosition, 1);
+        const ChunkNeighbors *chunkNeighbors2 = ecs_field(&chunks_iterator, ChunkNeighbors, 2);
+        RenderLod *renderLods = ecs_field(&chunks_iterator, RenderLod, 3);
+        ChunkDirty *chunkDirtys = ecs_field(&chunks_iterator, ChunkDirty, 4);
+        ChunkLodDirty *chunkLodDirtys = ecs_field(&chunks_iterator, ChunkLodDirty, 5);
         for (int j = 0; j < total_chunks; j++) {
             const int3 chunk_position = (&chunkPositions[j])->value;
             const ChunkNeighbors *chunkNeighbors = &chunkNeighbors2[j];
             RenderLod *renderLod = &renderLods[j];
             const int3 stream_point = find_closest_point(stream_points, stream_points_length, chunk_position);
             // zox_log("   + closest %ix%ix%i\n", stream_point.x, stream_point.y, stream_point.z)
-            unsigned char new_chunk_division = get_chunk_division(stream_point, chunk_position);
-            if (renderLod->value != new_chunk_division || check_chunk_lod(left) || check_chunk_lod(right) || check_chunk_lod(back) || check_chunk_lod(front)) {
-                chunk_lods[j] = new_chunk_division;
+            unsigned char new_chunk_lod = get_camera_chunk_distance(stream_point, chunk_position);
+            if (renderLod->value != new_chunk_lod || check_chunk_lod(left) || check_chunk_lod(right) || check_chunk_lod(back) || check_chunk_lod(front)) {
+                chunk_lods[j] = new_chunk_lod;
             } else {
                 chunk_lods[j] = 255;
             }
@@ -68,10 +69,19 @@ void TerrainLodSystem(ecs_iter_t *it) {
         for (int j = 0; j < total_chunks; j++) {
             const unsigned char chunk_lod = chunk_lods[j];
             if (chunk_lod == 255) continue;
+            ChunkLodDirty *chunkLodDirty = &chunkLodDirtys[j];
+            chunkLodDirty->value = 1;
             RenderLod *renderLod = &renderLods[j];
-            ChunkDirty *chunkDirty = &chunkDirtys[j];
+            const unsigned char old_lod = get_terrain_lod_from_camera_distance(renderLod->value);
             renderLod->value = chunk_lod;
-            chunkDirty->value = 1;
+            // check if needs redrawing
+            // needs to check if neighbors updated too....!
+            const unsigned char new_lod = get_terrain_lod_from_camera_distance(chunk_lod);
+            //if (old_lod != new_lod) {
+                ChunkDirty *chunkDirty = &chunkDirtys[j];
+                chunkDirty->value = 1;
+            //}
+
         }
         free(chunk_lods);
         free(stream_points);

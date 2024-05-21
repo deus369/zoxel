@@ -40,24 +40,12 @@ void build_chunk_mesh(const ChunkData *chunk, const ChunkSize *chunkSize,
             for (local_position.z = 0; local_position.z < chunk_size.z; local_position.z++) {
                 array_index = byte3_array_index(local_position, chunk_size);
                 if (chunk->value[array_index] != 0) {
-                    #ifndef disable_voxel_left
                     zoxel_check_faces(left)
-                    #endif
-                    #ifndef disable_voxel_right
                     zoxel_check_faces(right)
-                    #endif
-                    #ifndef disable_voxel_down
                     zoxel_check_faces(down)
-                    #endif
-                    #ifndef disable_voxel_up
                     zoxel_check_faces(up)
-                    #endif
-                    #ifndef disable_voxel_back
                     zoxel_check_faces(back)
-                    #endif
-                    #ifndef disable_voxel_front
                     zoxel_check_faces(front)
-                    #endif
                 }
             }
         }
@@ -72,25 +60,12 @@ void build_chunk_mesh(const ChunkData *chunk, const ChunkSize *chunkSize,
                 if (chunk->value[array_index] != 0) {
                     float3 vertex_position_offset = float3_from_byte3(local_position);
                     float3_multiply_float_p(&vertex_position_offset, voxel_scale);
-                    // float3 vertex_position_offset = float3_multiply_float(float3_from_int3(local_position), voxel_scale);
-#ifndef disable_voxel_left
                     zoxel_add_faces(left, 0)
-#endif
-#ifndef disable_voxel_right
                     zoxel_add_faces(right, 1)
-#endif
-#ifndef disable_voxel_down
                     zoxel_add_faces(down, 1)
-#endif
-#ifndef disable_voxel_up
                     zoxel_add_faces(up, 0)
-#endif
-#ifndef disable_voxel_back
                     zoxel_add_faces(back, 0)
-#endif
-#ifndef disable_voxel_front
                     zoxel_add_faces(front, 1)
-#endif
                 }
             }
         }

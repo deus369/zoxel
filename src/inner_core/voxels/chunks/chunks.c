@@ -32,6 +32,8 @@ zox_hashmap_component(BlockSpawns, byte3)
 #include "prefabs/prefabs.c"
 #include "systems/chunk_build_system.c"
 #include "systems/chunk_link_system.c"
+#include "systems/chunk_lod_dirty_system.c"
+#include "systems/chunk_entities_lod_system.c"
 
 zox_begin_module(Chunks)
 zox_define_tag(Chunk)
@@ -53,6 +55,7 @@ zoxel_octree_component_define(ChunkOctree)
 zox_define_hashmap_component(ChunkLinks)
 zox_define_hashmap_component(BlockSpawns)
 zox_system(ChunkLinkSystem, zox_pip_voxels, [in] VoxLink, [in] Position3D, [out] ChunkPosition, [out] ChunkLink, [none] LinkChunk)
+zox_system(ChunkEntitiesLodSystem, zox_pip_voxels_chunk_clean, [in] RenderLod, [in] EntityLinks, [in] BlockSpawns, [out] ChunkLodDirty) // , [none] terrain.TerrainChunk)
 zoxel_end_module(Chunks)
 
 #endif

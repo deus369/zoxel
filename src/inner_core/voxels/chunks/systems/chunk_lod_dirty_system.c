@@ -1,4 +1,4 @@
-void ChunkLodDirtySystem(ecs_iter_t *it) {
+/*void ChunkLodDirtySystem(ecs_iter_t *it) {
     zox_field_in(ChunkDirty, chunkDirtys, 1)
     zox_field_out(ChunkLodDirty, chunkLodDirtys, 2)
     for (int i = 0; i < it->count; i++) {
@@ -8,3 +8,4 @@ void ChunkLodDirtySystem(ecs_iter_t *it) {
         chunkLodDirty->value = 1;
     }
 } zox_declare_system(ChunkLodDirtySystem)
+*/

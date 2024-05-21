@@ -39,7 +39,7 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
     return;
 #endif
     zox_iter_world()
-    zox_field_in(ChunkDirty, chunkDirtys, 1)
+    zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
     zox_field_in(ChunkOctree, chunkOctrees, 2)
     zox_field_in(ChunkPosition, chunkPositions, 3)
     zox_field_in(ChunkSize, chunkSizes, 4)
@@ -48,8 +48,8 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
     zox_field_in(RenderDisabled, renderDisableds, 7)
     zox_field_out(BlockSpawns, blockSpawnss, 8)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(ChunkDirty, chunkDirtys, chunkDirty)
-        if (chunkDirty->value != 1) continue;
+        zox_field_i_in(ChunkLodDirty, chunkLodDirtys, chunkLodDirty)
+        if (!chunkLodDirty->value) continue;
         zox_field_i_in(VoxLink, voxLinks, voxLink)
         if (!voxLink->value) continue;
         zox_field_i_in(ChunkOctree, chunkOctrees, chunkOctree)
