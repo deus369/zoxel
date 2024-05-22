@@ -18,6 +18,10 @@ int3 int3_add(const int3 a, const int3 b) {
     return (int3) { a.x + b.x, a.y + b.y, a.z + b.z };
 }
 
+int3 int3_div(const int3 a, const int3 b) {
+    return (int3) { a.x / b.x, a.y / b.y, a.z / b.z };
+}
+
 void int3_add_int3(int3 *a, const int3 b) {
     a->x += b.x;
     a->y += b.y;
@@ -102,4 +106,8 @@ int3 int3_reverse_front(const int3 input, const int3 size) {
 
 float int3_distance(const int3 a, const int3 b) {
     return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z));
+}
+
+unsigned char int3_in_bounds(const int3 input, const int3 size) {
+    return (input.x >= 0 && input.x < size.x && input.y >= 0 && input.y < size.y && input.z >= 0 && input.z < size.z);
 }

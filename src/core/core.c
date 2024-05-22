@@ -3,6 +3,7 @@
 
 const char *game_name = "zox";
 unsigned char cpu_tier;
+unsigned char updating_physics; // quick hack
 #include "platforms/util/platform_defines.c"
 #include "util/logs.c"
 #include "collections/collections.c"

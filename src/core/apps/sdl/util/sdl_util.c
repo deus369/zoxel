@@ -266,6 +266,7 @@ void recreate_main_window(ecs_world_t *world) {
     create_main_window(world);
 }
 
+// move this to an app system function?
 void update_sdl(ecs_world_t *world, ecs_entity_t e) {
     SDL_Event event = { 0 };
     while (SDL_PollEvent(&event)) {
@@ -296,6 +297,10 @@ void update_sdl(ecs_world_t *world, ecs_entity_t e) {
             } else if (event.window.event == SDL_WINDOWEVENT_RESTORED) {
                 zox_logg(" > window was restored\n")
                 opengl_restore_resources(world);
+            } else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
+                updating_time = 0;
+            } else if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
+                updating_time = 1;
             }
         }
     }

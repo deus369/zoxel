@@ -1,7 +1,3 @@
-const int fill_octree_random_rate = 50;
-const int fill_octree_random_rate2 = 40;
-const int fill_octree_random_rate3 = 30;
-
 void fill_new_octree(ChunkOctree* node, const unsigned char voxel, unsigned char depth) {
     node->value = voxel;
     if (depth > 0) {

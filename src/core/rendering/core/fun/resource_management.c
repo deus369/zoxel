@@ -31,26 +31,17 @@ void opengl_dispose_resources(ecs_world_t *world) {
     if (is_using_vulkan) return;
     zoxel_log(" > disposing all opengl resources\n");
     rendering = 0;
+    minimized = 1; // move this to a system and function for app! when implement multi apps
+    updating_time = 0; // timesteps a bit low atm so pause while minimizing
     run_gpu_dispose_systems(world);
-    /*ecs_run(world, ecs_id(MeshGPUDisposeSystem), 0, NULL);
-    ecs_run(world, ecs_id(MeshColorsGPUDisposeSystem), 0, NULL);
-    ecs_run(world, ecs_id(MeshUvsGPUDisposeSystem), 0, NULL);
-    ecs_run(world, ecs_id(ShaderDisposeSystem), 0, NULL);
-    ecs_run(world, ecs_id(MaterialDisposeSystem), 0, NULL);
-    ecs_run(world, ecs_id(TextureGPUDisposeSystem), 0, NULL);*/
 }
 
 void opengl_restore_resources(ecs_world_t *world) {
     if (is_using_vulkan) return;
     zoxel_log(" > restoring all opengl resources\n");
     run_gpu_restore_systems(world);
-    /*ecs_run(world, ecs_id(MeshGPURestoreSystem), 0, NULL);
-    ecs_run(world, ecs_id(UvsGPULinkRestoreSystem), 0, NULL);
-    ecs_run(world, ecs_id(ColorsGPULinkRestoreSystem), 0, NULL);
-    ecs_run(world, ecs_id(MeshDirtyRestoreSystem), 0, NULL);
-    ecs_run(world, ecs_id(ShaderRestoreSystem), 0, NULL);
-    ecs_run(world, ecs_id(MaterialRestoreSystem), 0, NULL);
-    ecs_run(world, ecs_id(TextureRestoreSystem), 0, NULL);*/
     rendering = 1;
+    minimized = 0;
+    updating_time = 1;
     skip_time_to_current();
 }

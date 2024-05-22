@@ -6,7 +6,7 @@ void fix_camera_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
     }
     const Position3D *camera_position3D = zox_get(camera, Position3D)
     int3 terrain_position = int3_zero;
-    if (camera_position3D) terrain_position = get_chunk_position(camera_position3D->value, default_chunk_size);
+    if (camera_position3D) terrain_position = real_position_to_chunk_position(camera_position3D->value, default_chunk_size);
     zox_set(camera, StreamPoint, { terrain_position })
     if (local_terrain) zox_set(camera, VoxLink, { local_terrain })
     if (local_terrain) zox_set(camera, TerrainLink, { local_terrain })

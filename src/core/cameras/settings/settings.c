@@ -8,7 +8,7 @@
 #define zox_camera_follow_mode_attach 0
 #define zox_camera_follow_mode_follow_xz 1
 #define max_cameras 16
-const float camera_near_distance = 0.1f; // 0.01f;
+const float camera_near_distance = 0.01f; // 0.01f;
 const float camera_far_distance = 800;
 int main_cameras_count = 1;
 const float camera_limit_x = 1.25f;

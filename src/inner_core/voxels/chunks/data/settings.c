@@ -13,6 +13,9 @@ int3 default_chunk_size; // = (int3) { default_chunk_length, default_chunk_lengt
 byte3 default_chunk_size_byte3;
 const float real_chunk_scale = 16.0f; // overall_voxel_scale / ((float) octree_node_size);
 float terrain_voxel_scale = 1.0f;
+const int fill_octree_random_rate = 50;
+const int fill_octree_random_rate2 = 40;
+const int fill_octree_random_rate3 = 30;
 
 const float octree_scales3[] = {
     2.0f * real_chunk_scale,
@@ -34,8 +37,9 @@ void set_max_octree_length(unsigned char new_max_octree_depth) {
     max_octree_depth = new_max_octree_depth;
     default_chunk_length = powers_of_two[max_octree_depth];
     default_chunk_size = (int3) { default_chunk_length, default_chunk_length, default_chunk_length };
-    unsigned char default_chunk_length_b = powers_of_two_byte[max_octree_depth];
-    default_chunk_size_byte3 = (byte3) { default_chunk_length_b, default_chunk_length_b, default_chunk_length_b };
+    default_chunk_size_byte3 = int3_to_byte3(default_chunk_size);
+    // unsigned char default_chunk_length_b = powers_of_two_byte[max_octree_depth];
+    // default_chunk_size_byte3 = (byte3) { default_chunk_length_b, default_chunk_length_b, default_chunk_length_b };
     set_terrain_voxel_scale(max_octree_depth);
     // zoxel_log(" > set max octree depth [%i] - chunk length [%i] - voxel scale [%f]\n", max_octree_depth, default_chunk_length, terrain_voxel_scale);
 }

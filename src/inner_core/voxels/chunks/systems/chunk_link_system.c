@@ -14,7 +14,7 @@ void ChunkLinkSystem(ecs_iter_t *it) {
         zox_field_i_out(ChunkPosition, chunkPositions, chunkPosition)
         zox_field_i_out(ChunkLink, chunkLinks, chunkLink)
         const float3 real_position = position3D->value;
-        const int3 new_chunk_position = get_chunk_position(real_position, default_chunk_size);
+        const int3 new_chunk_position = real_position_to_chunk_position(real_position, default_chunk_size);
         if (!chunkLink->value) set_entity_terrain_chunk_position(world, e, voxLink, chunkLink, chunkPosition, new_chunk_position);
         else if (!int3_equals(new_chunk_position, chunkPosition->value)) set_entity_terrain_chunk_position(world, e, voxLink, chunkLink, chunkPosition, new_chunk_position);
     }

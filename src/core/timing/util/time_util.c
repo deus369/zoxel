@@ -5,6 +5,8 @@ double zox_current_time_check = 0.0;
 const int record_frames_count = 120;
 double zox_delta_times[120];
 const double max_zox_delta_time = 1.0 / 2.0;
+unsigned char last_updated_time = 0;
+unsigned char updating_time = 1;
 
 double current_time_in_seconds() {
     struct timespec current_time;
@@ -20,21 +22,26 @@ void initialize_time() {
 
 void skip_time_to_current() {
     zox_current_time = current_time_in_seconds() - time_begin;
+    zox_delta_time = 0;
     zox_log(" > restoring time to [%d]\n", zox_current_time)
 }
 
 void iterate_time() {
     double last_time = zox_current_time;
     zox_current_time = current_time_in_seconds() - time_begin;
+    if (!updating_time) {
+        zox_delta_time = 0;
+        return;
+    }
     zox_delta_time = zox_current_time - last_time;
     zox_current_time_check += zox_delta_time;
     for (int i = 0; i < record_frames_count - 1; i++) zox_delta_times[i] = zox_delta_times[i + 1];
     zox_delta_times[record_frames_count - 1] = zox_delta_time;
-    #ifdef zox_check_current_time
-        if (zox_current_time != zox_current_time_check) {
-            zoxel_log("current time and check not equal: %f - %f\n", zox_current_time, zox_current_time_check);
-        }
-    #endif
+#ifdef zox_check_current_time
+    if (zox_current_time != zox_current_time_check) {
+        zoxel_log("current time and check not equal: %f - %f\n", zox_current_time, zox_current_time_check);
+    }
+#endif
     // zoxel_log("current time [%d]\n", zox_current_time);
     // zoxel_log("delta time [%f]\n", zox_delta_time * 1000.0);
     if (zox_delta_time > max_zox_delta_time) zox_delta_time = max_zox_delta_time;
@@ -44,9 +51,9 @@ void iterate_time() {
         frames_per_second_time -= 1.0;
         frames_per_second = frames_count;
         frames_count = 0;
-        #ifdef zoxel_log_frames_per_second
-            zoxel_log("frames_per_second [%i]\n", frames_per_second);
-        #endif
+#ifdef zoxel_log_frames_per_second
+        zoxel_log("frames_per_second [%i]\n", frames_per_second);
+#endif
     }
 }
 

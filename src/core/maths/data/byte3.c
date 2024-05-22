@@ -90,3 +90,7 @@ const byte3 octree_positions_b[] = {
     { 1, 1, 0},
     { 1, 1, 1}
 };
+
+unsigned char byte3_in_bounds(const byte3 input, const byte3 size) {
+    return (input.x >= 0 && input.x < size.x && input.y >= 0 && input.y < size.y && input.z >= 0 && input.z < size.z);
+}

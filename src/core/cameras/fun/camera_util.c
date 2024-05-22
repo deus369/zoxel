@@ -26,6 +26,8 @@ void set_main_cameras(int new_count) {
     main_cameras_count = new_count;
 }
 
+const float3 first_person_camera_position = (float3) { 0, 0.76f, 0.54f }; // 64
+
 void set_camera_transform(ecs_world_t *world, const ecs_entity_t camera, const ecs_entity_t character, const unsigned char camera_mode) {
     if (!camera || !character) return;
     float3 target_position = float3_zero;
@@ -43,7 +45,7 @@ void set_camera_transform(ecs_world_t *world, const ecs_entity_t camera, const e
         camera_position = (float3) { -height * (0.66f), height, -height * (0.66f) };
     } else if (camera_mode == zox_camera_mode_first_person) {
         camera_euler = (float3) { 0, 180, 0 };
-        camera_position = (float3) { 0, 0.76f, 0.64f };
+        camera_position = first_person_camera_position;
     } else if (camera_mode == zox_camera_mode_third_person) {
         camera_euler = (float3) { -25, 180, 0 };
         // camera_position = (float3) { 0, 2.2f, -3.6f };

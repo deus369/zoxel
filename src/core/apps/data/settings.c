@@ -19,3 +19,4 @@ unsigned char screens_count = 1; // assume
     unsigned char fullscreen = 0;
 #endif
 unsigned char screen_index = 0;
+unsigned char minimized = 0;

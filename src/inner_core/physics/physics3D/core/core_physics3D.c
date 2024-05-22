@@ -1,20 +1,16 @@
-#ifndef zoxel_core_physics3D
-#define zoxel_core_physics3D
+#ifndef zox_core_physics3D
+#define zox_core_physics3D
 
-#define physics3D_gravity -9.8f // 3.97f
-#define physics3D_jump 24.0f
-const float friction3D = 4.0f; // 6.0f;  // 0.002
-const float dissipation_threshold = 0.001f;
-const float rotation_friction = 0.56f; // 0.7f;
+#include "data/settings.c"
 zox_declare_tag(Jumper)
-zox_component(Velocity3D, float3)
-zox_component(Acceleration3D, float3)
-zox_component(Omega3D, float4)
-zox_component(Alpha3D, float4)
-zox_component(Gravity3D, float3)
 zox_component_byte(InitializePhysics3D)
 zox_component_byte(Grounded)
 zox_component_double(Jump)
+zox_component_float3(Velocity3D)
+zox_component_float3(Acceleration3D)
+zox_component_float3(Gravity3D)
+zox_component_float4(Omega3D)
+zox_component_float4(Alpha3D)
 #include "util/physics3D_util.c"
 #include "systems/velocity3D_system.c"
 #include "systems/acceleration3D_system.c"
@@ -30,14 +26,14 @@ zox_component_double(Jump)
 
 zox_begin_module(CorePhysics3D)
 zox_define_tag(Jumper)
-zox_define_component(Velocity3D)
-zox_define_component(Acceleration3D)
-zox_define_component(Omega3D)
-zox_define_component(Alpha3D)
-zox_define_component(Gravity3D)
-zox_define_component(InitializePhysics3D)
-zox_define_component(Grounded)
-zox_define_component(Jump)
+zox_define_component_byte(InitializePhysics3D)
+zox_define_component_byte(Grounded)
+zox_define_component_byte(Jump)
+zox_define_component_float3(Velocity3D)
+zox_define_component_float3(Acceleration3D)
+zox_define_component_float3(Gravity3D)
+zox_define_component_float4(Omega3D)
+zox_define_component_float4(Alpha3D)
 zox_system(Velocity3DSystem, zox_pip_physics, [out] Position3D, [in] Velocity3D)
 zox_system(Omega3DSystem, zox_pip_physics, [in] Omega3D, [out] Rotation3D)
 zox_system(Physics3DDisableSystem, zox_pip_physics, [out] InitializePhysics3D, [out] Position3D, [out] Velocity3D)
