@@ -13,6 +13,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         char* icon_path = concat_file_path(resources_path, "textures"character_slash"game_icon.png");
         load_app_icon(main_window, icon_path);
         free(icon_path);
+        set_sdl_cursor("resources/textures/cursor_02.png", int2_zero);
     }
     // Realm,  players, skybox
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);

@@ -10,6 +10,7 @@
 #include "util/gamepad_extract_util.c"
 #include "util/input_util.c"
 #include "util/mouse_util.c"
+#include "util/cursor.c"
 // systems
 #include "systems/gamepad_extract_system.c"
 #include "systems/touchscreen_extract_system.c"

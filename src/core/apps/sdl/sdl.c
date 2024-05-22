@@ -16,7 +16,9 @@ ECS_DTOR(Context, ptr, { if (ptr->value != 0) SDL_GL_DeleteContext(ptr->value); 
 #include "util/vulkan_util.c"
 #include "util/sdl_util.c"
 
-void dispose_apps_sdl(ecs_world_t *world) { }
+void dispose_apps_sdl(ecs_world_t *world) {
+    dispose_sdl_cursor();
+}
 
 void spawn_prefabs_apps_sdl(ecs_world_t *world) {
     spawn_prefab_app_sdl(world);
