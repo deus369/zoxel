@@ -1,10 +1,10 @@
 const unsigned char physics_disable_frames = 8;
 
 void Physics3DDisableSystem(ecs_iter_t *it) {
-    #ifdef zoxel_disable_velocity
-        return;
-    #endif
-    double delta_time = zox_delta_time;
+#ifdef zoxel_disable_velocity
+    return;
+#endif
+    init_delta_time()
     zox_field_out(InitializePhysics3D, initializePhysics3Ds, 1)
     zox_field_out(Position3D, position3Ds, 2)
     zox_field_out(Velocity3D, velocity3Ds, 3)

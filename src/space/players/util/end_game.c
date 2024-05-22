@@ -6,7 +6,7 @@ void player_end_game3D_delayed(ecs_world_t *world, const ecs_entity_t player) {
     zox_set(player, CharacterLink, { 0 })
     float3 camera_position = float3_zero;
     float4 camera_rotation = quaternion_identity;
-    set_camera_start_transform(&camera_position, &camera_rotation);
+    set_camera_transform_to_main_menu(&camera_position, &camera_rotation);
     zox_set(camera, Position3D, { camera_position })
     zox_set(camera, Rotation3D, { camera_rotation })
     zox_set(camera, Euler, { float3_zero })

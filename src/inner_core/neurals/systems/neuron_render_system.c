@@ -1,8 +1,7 @@
 //! Adds force to the velocity per frame.
 void NeuronRenderSystem(ecs_iter_t *it) {
-    double delta_time = zox_delta_time;
+    init_delta_time()
     float aspect_ratio = screen_dimensions.x / (float) screen_dimensions.y;
-    // double delta_time = (double) it->delta_time;
     float animate_time = delta_time * 0.5f;
     // const float y_position = 1.0f;
     // const float y_position_mult = -2.0f / (float) (vertical_layers - 1); // -0.2f;

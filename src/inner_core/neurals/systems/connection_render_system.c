@@ -1,8 +1,7 @@
 //! Adds force to the velocity per frame.
 void ConnectionRenderSystem(ecs_iter_t *it) {
-    double delta_time = zox_delta_time;
     zox_iter_world()
-    // double delta_time = (double) it->delta_time;
+    init_delta_time()
     float animate_time = delta_time * 0.5f;
     // const float y_position = -0.8f;
     const float square_size = 0.02f;
@@ -12,8 +11,8 @@ void ConnectionRenderSystem(ecs_iter_t *it) {
     const SignalStrength *signalStrengths = ecs_field(it, SignalStrength, 5);
     for (int i = 0; i < it->count; i++) {
         const ConnectionData *connectionData = &connectionDatas[i];
-        ecs_entity_t neuron_a = connectionData->value.x;
-        ecs_entity_t neuron_b = connectionData->value.y;
+        const ecs_entity_t neuron_a = connectionData->value.x;
+        const ecs_entity_t neuron_b = connectionData->value.y;
         if (neuron_a != 0 && neuron_b != 0) {
             const Weight *weight = &weights[i];
             float2 neuron_a_position = ecs_get(world, neuron_a, Position2D)->value;

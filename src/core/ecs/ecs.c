@@ -1,8 +1,5 @@
 // flecs useage, create an ecs world
-ecs_world_t *world;
-unsigned char is_multithreading = 1;
-unsigned char target_frame_rate = 0;
-unsigned char profiler = 0;
+#include "data/settings.c"
 zoxel_dynamic_array(ecs_entity_t)
 create_is_in_array_d(ecs_entity_t)
 #include "macros/names.c"
@@ -29,14 +26,14 @@ ecs_world_t* open_ecs(int argc, char* argv[], unsigned char profiler, int core_c
 #ifdef zox_print_sdl
     zox_log(" > found [%i] processor cores\n", core_count)
 #endif
-    if (core_count > 1 && is_multithreading) ecs_set_threads(world, core_count); // enable multi threading
+    if (core_count > 1 && is_multithreading) ecs_set_threads(world, core_count);
     else ecs_set_threads(world, 0);
-    if (target_frame_rate != 0) ecs_set_target_fps(world, target_frame_rate);
+    if (target_fps) ecs_set_target_fps(world, target_fps);
     return world;
 }
 
 void run_ecs(ecs_world_t *world)  {
-    // ecs_log_set_level(1);    // use this to debug system pipelines
+    if (debug_pipelines) ecs_log_set_level(1);    // debug system pipelines
     ecs_progress(world, 0);
 }
 

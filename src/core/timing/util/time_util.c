@@ -8,6 +8,8 @@ const double max_zox_delta_time = 1.0 / 2.0;
 unsigned char last_updated_time = 0;
 unsigned char updating_time = 1;
 
+#define init_delta_time() const double delta_time = zox_delta_time;
+
 double current_time_in_seconds() {
     struct timespec current_time;
     clock_gettime(CLOCK_REALTIME, &current_time);

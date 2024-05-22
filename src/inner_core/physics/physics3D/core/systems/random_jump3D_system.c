@@ -1,6 +1,5 @@
 void RandomJump3DSystem(ecs_iter_t *it) {
     const int random_jump_chance = 9988;
-    const double jump_timing = 0.21;
     zox_field_in(Grounded, groundeds, 1)
     zox_field_out(Jump, jumps, 2)
     for (int i = 0; i < it->count; i++) {

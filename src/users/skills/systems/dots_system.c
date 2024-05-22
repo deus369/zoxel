@@ -1,7 +1,7 @@
 // DotsSystem
 void DotsSystem(ecs_iter_t *it) {
     const float damage_rate = 2.0f;
-    const float delta_time = zox_delta_time;
+    init_delta_time()
     zox_iter_world()
     zox_field_in(UserLink, userLinks, 1)
     for (int i = 0; i < it->count; i++) {

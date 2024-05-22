@@ -1,7 +1,7 @@
 #define bounce_multiplier 1.0f
-// #define bounce_lost_force 0.32f // 0.0f
-#define bounce_lost_force 0.12f // 0.12f
 const float bounce_threshold = 0.001f;
+#define bounce_lost_force 0.16f // 0.32 | 0.12
+#define bounce_dampening 0.48f
 
 // collision
 const float collision_precision = 1.0f; // 0.99f; // 0.999f;    // 9

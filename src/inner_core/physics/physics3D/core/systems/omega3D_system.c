@@ -1,6 +1,6 @@
 // #define zoxel_debug_omega3D_system
 void Omega3DSystem(ecs_iter_t *it) {
-    double delta_time = zox_delta_time;
+    init_delta_time()
     zox_field_out(Omega3D, omega3Ds, 1)
     zox_field_out(Rotation3D, rotation3Ds, 2)
     for (int i = 0; i < it->count; i++) {

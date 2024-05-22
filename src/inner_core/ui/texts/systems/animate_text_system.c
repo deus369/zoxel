@@ -1,5 +1,5 @@
 void AnimateTextSystem(ecs_iter_t *it) {
-    const double delta_time = zox_delta_time;
+    init_delta_time()
     zox_field_out(AnimateZext, animateZexts, 1)
     zox_field_out(ZextDirty, zextDirtys, 2)
     zox_field_out(ZextData, zextDatas, 3)

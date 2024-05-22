@@ -1,11 +1,10 @@
 #ifndef zox_cameras
 #define zox_cameras
 
-// todo: render planes themselves
-
-#include "settings/settings.c"
+#include "data/camera_spawn_data.c"
 #include "data/bounds.c"
 #include "data/plane.c"
+#include "data/settings.c"
 zox_declare_tag(Camera)
 zox_declare_tag(Camera2D)
 zox_declare_tag(Camera3D)
@@ -24,8 +23,7 @@ zox_component_entity(CameraLink)
 zox_component_entity(CameraTarget)
 zox_component_entity(CameraFollowLink)
 zox_component(ProjectionMatrix, float4x4)
-// this is actually a ViewProjectionMatrix
-zox_component(ViewMatrix, float4x4)
+zox_component(ViewMatrix, float4x4) // todo: rename to ViewProjectionMatrix
 // todo: use this for ViewMatrix (current use) and use ViewMatrix just as Inverted TransformMatrix
 zox_component(ViewProjectionMatrix, float4x4)
 zox_component_float4(ScreenToCanvas)

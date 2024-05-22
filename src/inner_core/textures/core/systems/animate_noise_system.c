@@ -1,7 +1,6 @@
 void AnimateNoiseSystem(ecs_iter_t *it) {
     return;
-    double delta_time = zox_delta_time;
-    // double delta_time = it->delta_time;
+    init_delta_time()
     AnimateTexture *animateTextures = ecs_field(it, AnimateTexture, 1);
     GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 2);
     unsigned char changed = 0;

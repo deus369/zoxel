@@ -1,5 +1,5 @@
 void Player2DMoveSystem(ecs_iter_t *it) {
-    double delta_time = zox_delta_time;
+    init_delta_time()
     float2 max_delta_velocity = max_velocity;
     max_delta_velocity.x *= delta_time;
     max_delta_velocity.y *= delta_time;
@@ -58,8 +58,8 @@ void Player2DMoveSystem(ecs_iter_t *it) {
         Acceleration2D *acceleration2D = zox_get_mut(characterLink->value, Acceleration2D)
         const float2 delta_movement = movement;
         const float2 check_velocity = velocity2D->value;
-        if (float_abs(check_velocity.x) < max_delta_velocity.x) acceleration2D->value.x += delta_movement.x * movement_power_x;
-        if (float_abs(check_velocity.y) < max_delta_velocity.y) acceleration2D->value.y += delta_movement.y * movement_power_z;
+        if (float_abs(check_velocity.x) < max_delta_velocity.x) acceleration2D->value.x += delta_movement.x * player_movement_power.x;
+        if (float_abs(check_velocity.y) < max_delta_velocity.y) acceleration2D->value.y += delta_movement.y * player_movement_power.y;
         zox_modified(characterLink->value, Acceleration2D)
         // zox_log(" + player movement 2D [%fx%f] acc [%fx%f]\n", movement.x, movement.y, acceleration2D->value.x, acceleration2D->value.y)
     }

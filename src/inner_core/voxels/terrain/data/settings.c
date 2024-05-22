@@ -5,8 +5,8 @@
 #endif
 //  // EcsOnLoad EcsPostLoad EcsOnUpdate EcsPostUpdate
 unsigned char high_resolution_terain_lod = 1; // 2 | 1
-unsigned char initial_terrain_lod = 4; // 3 | 2
-const unsigned char terrain_lod_dividor = 3; // 2 | 3
+unsigned char initial_terrain_lod = 3; // 3 | 2
+const unsigned char terrain_lod_dividor = 2; // 2 | 3
 unsigned char terrain_spawn_distance;
 unsigned char terrain_vertical = 2;
 

@@ -5,7 +5,7 @@ void WanderSystem(ecs_iter_t *it) {
     const double max_rotate_speed = 0.2; //  0.23;
     const float rotate_power = 0.8f;
     const float pivot_power = 0.4f;
-    double delta_time = zox_delta_time;
+    init_delta_time()
     // zox_iter_world()
     // similar to player, make move forward, make rotate randomly
     zox_field_in(Rotation3D, rotation3Ds, 2)

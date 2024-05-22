@@ -1,6 +1,5 @@
 // #define zox_log_jumping
 void Player3DJumpSystem(ecs_iter_t *it) {
-    const double jump_timing = 0.21;
     zox_iter_world()
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     zox_field_in(DeviceMode, deviceModes, 2)
@@ -38,14 +37,14 @@ void Player3DJumpSystem(ecs_iter_t *it) {
                 }
             }
         }
-        if (is_jump_triggered == 0) continue;
+        if (!is_jump_triggered) continue;
         const Jump *jump = zox_get(character, Jump)
         if (!jump->value) {
             zox_set(character, Jump, { jump_timing })
-            zox_set(character, Grounded, { 0 })
+            // zox_set(character, Grounded, { 0 })
 #ifdef zox_log_jumping
             zox_log(" > in air [%lu] again (%f)\n", character, zox_current_time)
 #endif
-        }
+        } // else zox_log("jump still active: %f\n", jump->value)
     }
 } zox_declare_system(Player3DJumpSystem)

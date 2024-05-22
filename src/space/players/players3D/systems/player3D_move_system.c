@@ -1,17 +1,32 @@
-const double jump_power = 12.0;
-const float2 max_velocity = { 60 * 60, 160 * 60 };
-const double run_speed = 1.6;
-const float backwards_multiplier = 0.7f;
+/*
+ * ==========================================
+ *          PLAYER MOVEMENT SYSTEM
+ * ==========================================
+ *
+ * This is the magic behind the player's smooth and responsive movement!
+ * Ever wondered how your character darts and dashes through the game world with such finesse?
+ * Look no further! This system ensures your player obeys the laws of physics while still
+ * feeling like a nimble acrobat.
+ *
+ * Features:
+ * - Supports walking, running, and everything in between!
+ * - Ensures speed limits are respected (no speedsters allowed beyond the max speed!).
+ * - Seamlessly integrates with your game world's orientation, so movement always feels natural.
+ *
+ * Enjoy the thrill of movement, and remember: with great speed comes great responsibility!
+ *
+ * ==========================================
+ * Code responsibly, have fun, and may your bugs be few and far between!
+ * ==========================================
+ */
+
 #ifdef zox_debug_player_movement_direction
 float debug_thickness = 2.0f;
 extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
 #endif
 
 void Player3DMoveSystem(ecs_iter_t *it) {
-    const double delta_time = zox_delta_time;
-    float2 max_delta_velocity = max_velocity;
-    max_delta_velocity.x *= delta_time;
-    max_delta_velocity.y *= delta_time;
+    init_delta_time()
     zox_iter_world()
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     zox_field_in(DeviceMode, deviceModes, 2)
@@ -74,7 +89,15 @@ void Player3DMoveSystem(ecs_iter_t *it) {
         if (left_stick.x == 0 && left_stick.y == 0) continue;
         if (zox_players_reverse_x) left_stick.x *= -1;
         if (zox_players_reverse_y) left_stick.y *= -1;
-        float3 movement = { left_stick.x, 0, left_stick.y };
+        float3 movement = { left_stick.x * player_movement_power.x, 0, left_stick.y * player_movement_power.y };
+        if (is_running) {
+            movement.x *= run_accceleration;
+            movement.y *= run_accceleration;
+        }
+        // float delta_time_adjustment = 1.0f / (60 * delta_time);
+        // float3_multiply_float_p(&movement, delta_time_adjustment);
+        float4 movement_rotation = float4_identity;
+        // grab the rotation based on camera control type! zox_camera_mode
         // const Omega3D *omega3D = zox_get(world, character, Omega3D);
         const Rotation3D *rotation3D = zox_get(character, Rotation3D)
         const Velocity3D *velocity3D = zox_get(character, Velocity3D)
@@ -86,8 +109,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                     const Rotation3D *camera_rotation = zox_get(cameraLink->value, Rotation3D)
                     const float4 camera_rotation2 = quaternion_from_euler((float3) { 0, -quaternion_to_euler_y(camera_rotation->value), 0 });
                     if (movement.z == -movement.x) movement.x *= 0.999f; // this hack fixes the rotation
-                    movement = float4_rotate_float3(camera_rotation2, movement);
-                    movement.y = 0;
+                    movement_rotation = camera_rotation2;
                     // movement = float3_normalize(movement);
                     float4 face_direction = quaternion_from_between_vectors(float3_forward, movement);
                     // test rotation
@@ -107,15 +129,44 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                 }
             }
         } else {
-            movement = float4_rotate_float3(rotation3D->value, movement);
+            movement_rotation = rotation3D->value;
         }
+        // here we use two vectors for movement directions so we can limit them
+        // we also use a potential velocity based on a calculated new velocity
+        // (although we dont know delta_time next frame)
+        float2 max_speed = max_velocity;
         if (is_running) {
-            movement.x *= run_speed;
-            movement.z *= run_speed;
+            max_speed.x *= run_speed;
+            max_speed.y *= run_speed;
         }
-        const float3 rotated_velocity = float4_rotate_float3(float4_inverse(rotation3D->value), velocity3D->value);
-        if (float_abs(rotated_velocity.x) < max_delta_velocity.x) acceleration3D->value.x += movement.x * movement_power_x;
-        if (float_abs(rotated_velocity.z) < max_delta_velocity.y) acceleration3D->value.z += movement.z * movement_power_z;
+
+        float3 movement_real_z = float4_rotate_float3(movement_rotation, (float3) { 0, 0, movement.z });
+        movement_real_z.y = 0;
+
+        float3 movement_real_x = float4_rotate_float3(movement_rotation, (float3) { movement.x, 0, 0 });
+        movement_real_x.y = 0;
+
+        float4 inverse_rotation = float4_inverse(rotation3D->value);
+        float3 velocity_local = float4_rotate_float3(inverse_rotation, velocity3D->value);
+        float3 acceleration_local = float4_rotate_float3(inverse_rotation, acceleration3D->value);
+
+        float3 potential_velocity_forward = { 0, 0, velocity_local.z + (acceleration_local.z + movement.y) * delta_time };
+        float3 potential_velocity_left = { velocity_local.x + (acceleration_local.x + movement.x) * delta_time, 0, 0 };
+
+        if (float_abs(potential_velocity_forward.z) < max_speed.y) {
+            float3_add_float3_p(&acceleration3D->value, movement_real_z);
+        }
+        if (float_abs(potential_velocity_left.x) < max_speed.x) {
+            float3_add_float3_p(&acceleration3D->value, movement_real_x);
+        }
+
+#ifdef zox_debug_player_speed_limits
+        if (float_abs(potential_velocity_left.x) < max_speed.x) zox_log(" > under maximum velocity x: %f\n", potential_velocity_left.x)
+        else zox_log(" > past maximum velocity x: %f\n", potential_velocity_left.x)
+        if (float_abs(potential_velocity_forward.z) < max_speed.y) zox_log(" > under maximum velocity z: %f\n", potential_velocity_forward.z)
+        else zox_log(" > past maximum velocity z: %f\n", potential_velocity_forward.z)
+#endif
+
         zox_modified(character, Acceleration3D)
     }
 } zox_declare_system(Player3DMoveSystem)

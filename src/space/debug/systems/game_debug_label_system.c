@@ -6,6 +6,7 @@
 // #define zox_debug_ui_player_level
 // #define zox_debug_player_character2D
 // #define zox_debug_player_character3D
+#define zox_debug_player_grounded
 #define zox_debug_player_camera
 #define zox_debug_camera_planes
 // #define zox_test_newline
@@ -59,6 +60,9 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 #endif
 #ifdef zox_debug_can_jump
         buffer_index = debug_can_jump(world, character, buffer, buffer_size, buffer_index);
+#endif
+#ifdef zox_debug_player_grounded
+        buffer_index = get_label_player_grounded(world, player, buffer, buffer_size, buffer_index);
 #endif
 #ifdef zox_debug_player_character2D
         buffer_index = get_label_player_character2D(world, player, buffer, buffer_size, buffer_index);

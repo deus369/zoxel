@@ -1,8 +1,8 @@
 void Velocity3DSystem(ecs_iter_t *it) { //! Veloco Rapters!
-    #ifdef zoxel_disable_velocity
-        return;
-    #endif
-    double delta_time = zox_delta_time;
+#ifdef zoxel_disable_velocity
+    return;
+#endif
+    init_delta_time()
     zox_field_out(Position3D, positions, 1)
     zox_field_in(Velocity3D, velocity3Ds, 2)
     for (int i = 0; i < it->count; i++) {

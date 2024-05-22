@@ -1,5 +1,5 @@
 void Jump3DSystem(ecs_iter_t *it) {
-    double delta_time = zox_delta_time;
+    init_delta_time()
     zox_field_in(Dead, deads, 1)
     zox_field_out(Jump, jumps, 2)
     zox_field_out(Acceleration3D, acceleration3Ds, 3)
@@ -9,7 +9,9 @@ void Jump3DSystem(ecs_iter_t *it) {
         zox_field_i_out(Jump, jumps, jump)
         if (!jump->value) continue;
         zox_field_i_out(Acceleration3D, acceleration3Ds, acceleration3D)
-        acceleration3D->value.y += physics3D_jump;
+        const float3 velocity3D = zox_get_value(it->entities[i], Velocity3D)
+        float potential_velocity = velocity3D.y + (acceleration3D->value.y + physics3D_jump) * delta_time;
+        if (potential_velocity < max_jump_velocity) acceleration3D->value.y += physics3D_jump;
         jump->value -= delta_time;
         if (jump->value < 0) jump->value = 0;
     } 

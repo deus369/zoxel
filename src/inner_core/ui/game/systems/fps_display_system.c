@@ -1,7 +1,7 @@
 void FpsDisplaySystem(ecs_iter_t *it) {
     const double frame_rate_update_speed = 1.0;
     const unsigned char number_0_start = 60;
-    const double delta_time = zox_delta_time;
+    init_delta_time()
     unsigned char system_updated = 0;
     zox_field_out(ZextData, zextDatas, 2)
     zox_field_out(ZextDirty, zextDirtys, 3)

@@ -1,5 +1,5 @@
 void Acceleration3DSystem(ecs_iter_t *it) {
-    double delta_time = zox_delta_time;
+    init_delta_time()
     zox_field_out(Acceleration3D, acceleration3Ds, 1)
     zox_field_out(Velocity3D, velocity3Ds, 2)
     for (int i = 0; i < it->count; i++) {

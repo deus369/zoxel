@@ -1,7 +1,7 @@
 extern void canvas_select_first_button(ecs_world_t *world, const ecs_entity_t raycaster, const ecs_entity_t canvas);
 
 void ElementNavigationSystem(ecs_iter_t *it) {
-    double delta_time = zox_delta_time;
+    init_delta_time()
     zox_iter_world()
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     zox_field_in(DeviceMode, deviceModes, 2)

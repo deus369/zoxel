@@ -4,6 +4,8 @@
 // remember: no line detection for boxes, if velocity exceeds clipping it will fall through map!
 #include "data/settings.c"
 zox_component_float(BasicCollider)
+#include "util/detect_util.c"
+#include "util/response_util.c"
 #include "systems/voxel_collision_system.c"
 
 zox_begin_module(Collisions3D)

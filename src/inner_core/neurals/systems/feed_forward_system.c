@@ -16,8 +16,7 @@ void neuron_signal_begin(ecs_world_t *world, ecs_entity_t e) {
 
 //! Adds force to the velocity per frame.
 void FeedForwardSystem(ecs_iter_t *it) {
-    double delta_time = zox_delta_time;
-    // double delta_time = (double) it->delta_time;
+    init_delta_time()
     const float brain_speed = 4.0f;
     const float add_multiplier = 0.1f;
     zox_iter_world()

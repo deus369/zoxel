@@ -1,7 +1,6 @@
 void AnimateChunkSystem(ecs_iter_t *it) {
     return;
     double current_time = zox_current_time;
-    // double delta_time = zox_delta_time;
     AnimateChunk *animateChunks = ecs_field(it, AnimateChunk, 1);
     GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 2);
     unsigned char changed = 0;

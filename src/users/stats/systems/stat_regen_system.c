@@ -1,6 +1,6 @@
 void StatRegenSystem(ecs_iter_t *it) {
     const float regen_rate = 0.25f;
-    const float delta_time = zox_delta_time;
+    init_delta_time()
     unsigned char system_updated = 0;
     zox_iter_world()
     zox_field_in(UserLink, userLinks, 1)

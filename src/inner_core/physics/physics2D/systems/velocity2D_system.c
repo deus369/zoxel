@@ -1,5 +1,5 @@
 void Velocity2DSystem(ecs_iter_t *it) { // Veloco Rapters!
-    double delta_time = zox_delta_time;
+    init_delta_time()
     zox_field_out(Position2D, position2Ds, 1)
     zox_field_in(Velocity2D, velocity2Ds, 2)
     for (int i = 0; i < it->count; i++) {
