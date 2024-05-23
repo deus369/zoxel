@@ -19,29 +19,14 @@
 #include "systems/mesh_update_textured3D_system.c"
 #include "systems/mesh_update_characters3D_system.c"
 
-// for now until I move it all to ecs
-void rendering_dispose_basic_shaders3D() {
-    // dispose_shader3D_colored();
-    dispose_shader3D_instance_material();
-}
-
-void rendering_load_basic_shaders3D(ecs_world_t *world) {
-    if (load_shader3D_basic() != 0) zoxel_log("    ! error loading [shader3D_basic]\n");
-    // if (load_shader3D_colored() != 0) zoxel_log("    ! error loading [load_shader3D_colored]\n");
+void spawn_shaders_basics3D(ecs_world_t *world) {
+    if (load_shader3D_basic()) zoxel_log("    ! error loading [shader3D_basic]\n");
     spawn_material_colored3D(world);
     spawn_material_textured3D(world);
 }
 
-void rendering_restore_basic_shaders3D(ecs_world_t *world) {
-    // rendering_load_basic_shaders3D(world);
-    // restore_shader_textured3D(world);
-    // if (load_shader3D_basic() != 0) zoxel_log("    ! error loading [shader3D_basic]\n");
-    // if (load_shader3D_colored() != 0) zoxel_log("    ! error loading [load_shader3D_colored]\n");
-}
-
 zox_begin_module(RenderingBasics3D)
-add_load_shader_function((funfun) { &rendering_load_basic_shaders3D });
-add_restore_shader_function((funfun) { &rendering_restore_basic_shaders3D });
+add_load_shader_function(&spawn_shaders_basics3D);
 zox_define_component(MaterialTextured3D)
 zox_define_component(MaterialColored3D)
 zox_system_1(InstanceRender3DSystem, 0, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [none] !MaterialGPULink, [none] !MeshGPULink)

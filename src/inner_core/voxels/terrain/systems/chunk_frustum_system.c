@@ -1,5 +1,4 @@
 void ChunkFrustumSystem(ecs_iter_t *it) {
-    zox_statistics_chunks_total += it->count;
     zox_iter_world()
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_in(ChunkSize, chunkSizes, 2)
@@ -61,10 +60,14 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
                 }
             }
         }
+        int block_spawns_count = blockSpawns->value ? count_byte3_hash_map(blockSpawns->value) : 0;
         if (is_viewed) {
             zox_statistics_chunks_visible++;
             zox_statistics_characters_visible += entityLinks->length;
+            if (blockSpawns->value) zox_statistics_block_voxes_visible += block_spawns_count;
         }
         zox_statistics_characters_total += entityLinks->length;
+        zox_statistics_block_voxes_total += block_spawns_count;
     }
+    zox_statistics_chunks_total += it->count;
 } zox_declare_system(ChunkFrustumSystem)

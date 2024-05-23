@@ -107,17 +107,6 @@ Chose one pipeline tag for each type of system.
     zox_system_ctx(system, zox_pip_textures, generateTextureQuery, [none] texture_tag, [out] TextureDirty, [out] TextureData, [in] TextureSize, [out] GenerateTexture, __VA_ARGS__)\
 }
 
-#define zox_define_reset_system(system_name, component_name) zox_system(system_name, EcsPreStore, [out] component_name)
-
-#define zox_reset_system(system_name, component_name)\
-void system_name(ecs_iter_t *it) {\
-    component_name *components = ecs_field(it, component_name, 1);\
-    for (int i = 0; i < it->count; i++) {\
-        component_name *component = &components[i];\
-        if (component->value == 1) component->value = 0;\
-    }\
-} zox_declare_system(system_name)
-
 // because these don't work in multithreading
 // zox_system_1
 // if (!ecs_query_changed(NULL, it)) return;

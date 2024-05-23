@@ -112,6 +112,7 @@ if (!headless) {
 zox_system(CanvasResizeSystem, EcsOnUpdate, [in] CameraLink, [in] Children, [in] cameras.ScreenToCanvas, [out] PixelSize, [none] Canvas)
 zox_system(CanvasStackSystem, EcsOnUpdate, [in] Children, [out] WindowToTop, [out] WindowsLayers, [out] WindowsCount, [none] Canvas)
 zox_system(WindowLayerSystem, EcsOnUpdate, [in] SetWindowLayer, [in] CanvasLink, [in] Children, [out] WindowLayer, [out] Layer2D, [none] Window)
+spawn_prefabs_ui_core(world);
 zoxel_end_module(UICore)
 
 #endif

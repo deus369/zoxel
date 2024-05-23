@@ -1,11 +1,12 @@
-#ifndef def_zox_game_zoxel2D
-#define def_zox_game_zoxel2D
+#ifndef zox_mod_game
+#define zox_mod_game
 
 unsigned char boot_zixel(ecs_world_t *world) {
     game_name = "Zixel";
     zox_log("Booting [%s]\n", game_name)
-    if (initialize_zox(world) == EXIT_FAILURE) return EXIT_FAILURE;
-    if (!headless) load_app_icon(main_window, resources_folder_name"textures/game_icon.png");
+    const ecs_entity_t window = spawn_main_window(world);
+    load_shaders(world);
+    if (!headless) load_app_icon(zox_gett_value(window, SDLWindow), resources_folder_name"textures/game_icon.png");
     // Realm,  players, skybox
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);
     create_game_stats(world, realm);

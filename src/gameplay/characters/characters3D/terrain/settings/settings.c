@@ -1,9 +1,6 @@
 unsigned char characters_per_chunk_count = 1;
 int npc_vox_index_count = 4;
 int npc_vox_indexes[] = { 1, 2, 3, 7 }; // penguin | slime | bob | chicken
-#define zox_chunk_entities_state_initial 0
-#define zox_chunk_entities_state_triggered 1
-#define zox_chunk_entities_state_spawned 2
 
 void set_character_terrain_settings() {
     if (cpu_tier == 3) characters_per_chunk_count = 4;

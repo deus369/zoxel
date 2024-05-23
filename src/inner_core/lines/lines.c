@@ -6,16 +6,6 @@ zox_component(LineThickness, float)
 #include "lines2D/lines2D.c"
 #include "lines3D/lines3D.c"
 
-void initialize_lines(ecs_world_t *world) {
-    initialize_lines2D(world);
-    initialize_lines3D(world);
-}
-
-void spawn_prefabs_lines(ecs_world_t *world) {
-    spawn_prefabs_lines2D(world);
-    spawn_prefabs_lines3D(world);
-}
-
 zox_begin_module(Lines)
 zox_define_tag(Line)
 zox_define_component(LineThickness)

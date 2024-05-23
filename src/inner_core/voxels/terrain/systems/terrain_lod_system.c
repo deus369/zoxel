@@ -4,23 +4,10 @@
     zox_gett_value(chunkNeighbors->value[direction##_##dir], RenderLod) != \
     get_camera_chunk_distance(stream_point, int3##_##dir(chunk_position)))
 
-int3 find_closest_point(const int3* points, const int points_length, const int3 target) {
-    if (points_length == 0) return int3_zero;
-    int3 closest_point = points[0];
-    float closest_distance = int3_distance(points[0], target); // 1000000;
-    for (unsigned char i = 1; i < points_length; i++) {
-        const float distance = int3_distance(points[i], target);
-        if (distance < closest_distance) {
-            closest_distance = distance;
-            closest_point = points[i];
-        }
-    }
-    return closest_point;
-}
-
 // For each terrain, it uses it's Chunks and StreamerLinks (todo)
 // If it is dirty, it will go through and update Chunk RenderLod's'
 void TerrainLodSystem(ecs_iter_t *it) {
+    unsigned char did_do = 0;
     zox_iter_world()
     ctx2 *filters = (ctx2 *) it->ctx;
     ecs_query_t *chunks_query = filters->x;
@@ -42,7 +29,6 @@ void TerrainLodSystem(ecs_iter_t *it) {
         streamDirty->value = 0;
         int3 *stream_points = malloc(stream_points_length * sizeof(int3)); // gonna be a problem
         const StreamPoint *streamPoints = ecs_field(&streamers_iter, StreamPoint, 1);
-        // const TerrainLink *terrainLinks = ecs_field(&streamers_iter, TerrainLink, 2);
         for (int j = 0; j < total_streamers; j++) {
             const int3 stream_point = (&streamPoints[j])->value;
             stream_points[j] = stream_point;
@@ -59,33 +45,34 @@ void TerrainLodSystem(ecs_iter_t *it) {
             RenderLod *renderLod = &renderLods[j];
             const int3 stream_point = find_closest_point(stream_points, stream_points_length, chunk_position);
             // zox_log("   + closest %ix%ix%i\n", stream_point.x, stream_point.y, stream_point.z)
-            unsigned char new_chunk_lod = get_camera_chunk_distance(stream_point, chunk_position);
-            if (renderLod->value != new_chunk_lod || check_chunk_lod(left) || check_chunk_lod(right) || check_chunk_lod(back) || check_chunk_lod(front)) {
-                chunk_lods[j] = new_chunk_lod;
+            unsigned char camera_distance = get_camera_chunk_distance(stream_point, chunk_position);
+            if (renderLod->value != camera_distance || check_chunk_lod(left) || check_chunk_lod(right) || check_chunk_lod(back) || check_chunk_lod(front)) {
+                chunk_lods[j] = camera_distance;
             } else {
                 chunk_lods[j] = 255;
             }
         }
         for (int j = 0; j < total_chunks; j++) {
-            const unsigned char chunk_lod = chunk_lods[j];
-            if (chunk_lod == 255) continue;
+            const unsigned char camera_distance = chunk_lods[j];
+            if (camera_distance == 255) continue;
             ChunkLodDirty *chunkLodDirty = &chunkLodDirtys[j];
-            chunkLodDirty->value = 1;
+            ChunkDirty *chunkDirty = &chunkDirtys[j];
             RenderLod *renderLod = &renderLods[j];
-            const unsigned char old_lod = get_terrain_lod_from_camera_distance(renderLod->value);
-            renderLod->value = chunk_lod;
-            // check if needs redrawing
-            // needs to check if neighbors updated too....!
-            const unsigned char new_lod = get_terrain_lod_from_camera_distance(chunk_lod);
+            // const unsigned char old_lod = get_terrain_lod_from_camera_distance(renderLod->value);
+            // const unsigned char new_lod = get_terrain_lod_from_camera_distance(camera_distance);
+            renderLod->value = camera_distance;
+            // check if needs redrawing - needs to check if neighbors updated too....!
             //if (old_lod != new_lod) {
-                ChunkDirty *chunkDirty = &chunkDirtys[j];
-                chunkDirty->value = 1;
+            // todo: if this OR neighbor chunks have changed actual Lod! do a check for this
+            chunkDirty->value = 1;
+            chunkLodDirty->value = 1;
             //}
-
         }
         free(chunk_lods);
         free(stream_points);
+        did_do = 1;
     }
+    // if (did_do) zox_log(" + terrain chunks lod updated\n")
 } zox_declare_system(TerrainLodSystem)
 
 // later check if links to terrain that's updating'

@@ -23,6 +23,7 @@ zox_define_component_byte(BlockCollider)
 zox_define_component_int3(VoxelPosition)
 zox_define_component_float(VoxScale)
 zox_define_entities_component(VoxelLinks)
+spawn_prefabs_blocks(world);
 zoxel_end_module(Blocks)
 
 #endif

@@ -11,5 +11,6 @@ ECS_DTOR(ShaderGPULink, ptr, {
 })
 
 GLuint2 get_shader_value(ecs_world_t *world, const ecs_entity_t shader) {
+    if (!zox_valid(shader)) return (GLuint2) { 0, 0 };
     return zox_get_value(shader, ShaderGPULink)
 }

@@ -71,6 +71,7 @@ zox_texture_generation_system2(FillTexture, FillTextureSystem, [in] Color)
 zox_system_ctx(FrameTextureSystem, EcsPostUpdate, generate_textures2, [none] FrameTexture, [out] GenerateTexture, [in] TextureSize, [in] Color, [in] OutlineThickness, [in] FrameCorner, [out] TextureData, [out] TextureDirty)
 zox_system(TilemapGenerationSystem, EcsPostUpdate, [none] Tilemap, [in] TilemapSize, [in] TextureLinks, [out] GenerateTexture, [out] TextureSize, [out] TextureData, [out] TextureDirty, [out] TilemapUVs)
 if (!headless) zox_system_1(TextureUpdateSystem, main_thread_pipeline, [out] TextureDirty, [in] TextureData, [in] TextureSize, [in] TextureGPULink)
+spawn_prefabs_textures_core(world);
 zoxel_end_module(TexturesCore)
 
 #endif

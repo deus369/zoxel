@@ -1,33 +1,30 @@
 // notes: to test, set terrain to 1x1x1 chunks, disable physics, enable this systems logging
 // get function from AI module for now
+// todo: reorganize, perhaps move t this module up to gameplay - or a world module, that handles terrain better procedural generation stuff
 extern ecs_entity_t spawn_character3D_npc(ecs_world_t *world, ecs_entity_t_array_d* entities, const vox_file *vox, const float3 position, const float4 rotation, const unsigned char character_lod, const unsigned char render_disabled);
 
 void Characters3DSpawnSystem(ecs_iter_t *it) {
     zox_iter_world()
+    zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
     zox_field_in(ChunkOctree, chunkOctrees, 2)
     zox_field_in(ChunkPosition, chunkPositions, 3)
     zox_field_in(RenderLod, renderLods, 4)
     zox_field_in(RenderDisabled, renderDisableds, 5)
     zox_field_out(EntityLinks, entityLinkss, 6)
-    zox_field_out(GenerateChunkEntities, generateChunkEntitiess, 7)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_out(GenerateChunkEntities, generateChunkEntitiess, generateChunkEntities)
-        if (generateChunkEntities->value != zox_chunk_entities_state_triggered) continue;
+        zox_field_i_in(ChunkLodDirty, chunkLodDirtys, chunkLodDirty)
+        if (chunkLodDirty->value != 3) continue;
         zox_field_i_in(ChunkOctree, chunkOctrees, chunkOctree)
         if (chunkOctree->nodes == NULL) continue;   // if basically all air or solid, no need to spawn
         zox_field_i_in(RenderLod, renderLods, renderLod)
         zox_field_i_in(RenderDisabled, renderDisableds, renderDisabled)
         zox_field_i_out(EntityLinks, entityLinkss, entityLinks)
-        if (entityLinks->length != 0) {
-            // if already spawned, skip spawning, only update LODs
-            generateChunkEntities->value = zox_chunk_entities_state_spawned;
-            continue;
-        }
-        generateChunkEntities->value = zox_chunk_entities_state_spawned;
+        // if already spawned, skip spawning, only update LODs
+        if (entityLinks->length) continue;
 #ifdef zox_disable_npcs
         continue;
 #endif
-        const unsigned char vox_lod = get_character_division_from_camera(renderLod->value);
+        const unsigned char vox_lod = get_voxes_lod_from_camera_distance(renderLod->value);
         // zoxel_log("characters spawning in chunk %lu\n", it->entities[i]);
         // find if chunk has any air position - free place to spawn - spawn characters in this chunk
         const ChunkPosition *chunkPosition = &chunkPositions[i];

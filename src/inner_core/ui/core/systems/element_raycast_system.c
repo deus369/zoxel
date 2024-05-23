@@ -20,7 +20,7 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         int window_layer = -1;
         ecs_entity_t window_selected = 0;
 #ifdef zox_debug_log_element_raycasting
-        zox_log(" > ui raycasting [%ix%i] screen size [%ix%i]\n", position.x, position.y, screen_dimensions.x, screen_dimensions.y)
+        zox_log(" > ui raycasting [%ix%i] screen size [%ix%i]\n", position.x, position.y, viewport_dimensions.x, viewport_dimensions.y)
 #endif
         int k = 0;
         ecs_iter_t it2 = ecs_query_iter(world, it->ctx);

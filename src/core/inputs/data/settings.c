@@ -4,3 +4,4 @@
 const float joystick_min_cutoff = 0.01f;
 const float joystick_min_cutoff2 = 0.04f;
 const float joystick_cutoff_buffer = 0.14f;
+unsigned char auto_switch_device = 1;

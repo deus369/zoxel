@@ -70,30 +70,12 @@ sky_top_color2.x -= 0.5 - mesh_pos.y;\
 // lowp vec3 sky_color_bottom = vec3(0.9, 0.95, 0.98);
 // color.x = color.y = 0.0; color.z = mesh_y;
 // color = vec4(0, 0.6, 0.4, 1) * brightness;
-ecs_entity_t shader_skybox;
 
-void spawn_shader_skybox(ecs_world_t *world) {
+ecs_entity_t spawn_shader_skybox(ecs_world_t *world) {
     const unsigned char shader_index = get_new_shader_source_index();
     shader_verts[shader_index] = skybox_shader_source_vert;
     shader_frags[shader_index] = skybox_shader_source_frag;
     const ecs_entity_t e = spawn_shader(world, shader_index);
     zox_name("shader_skybox")
-    shader_skybox = e;
+    return e;
 }
-
-/*void restore_skybox_material(ecs_world_t *world) {
-    GLuint2 shader_skybox_value = get_shader_value(world, shader_skybox);
-    GLuint sky_material = spawn_gpu_material_program(shader_skybox_value);
-    float3 top_color = color_rgb_to_float3(zox_gett_value(skybox, ColorRGB));
-    float3 bottom_color = color_rgb_to_float3(zox_gett_value(skybox, SecondaryColorRGB));
-    opengl_set_material(sky_material);
-    opengl_set_float3(5, top_color);
-    opengl_set_float3(6, bottom_color);
-    opengl_set_material(0);
-    zox_set(skybox, MaterialGPULink, { sky_material })
-}*/
-
-/*void restore_shader_skybox(ecs_world_t *world) {
-    restore_shader(world, shader_skybox, skybox_shader_source_vert, skybox_shader_source_frag);
-    restore_skybox_material(world);
-}*/

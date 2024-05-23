@@ -9,11 +9,6 @@
 #include "maps/maps.c"
 #include "ai/ai.c"
 
-void spawn_prefabs_gameplay(ecs_world_t *world) {
-    spawn_prefabs_characters(world);
-    spawn_prefabs_ai(world);
-}
-
 zox_begin_module(Gameplay)
 zox_import_module(Crafting)
 zox_import_module(Farming)

@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_inspector(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_inspector(ecs_world_t *world, const ecs_entity_t canvas) {
-    const ecs_entity_t player = zox_players[0];
+    const ecs_entity_t player = 0; // zox_players[0];
     const unsigned char layer = 12;
     const int font_size = 18;
     const float2 anchor = (float2) { 1, 0.5f };

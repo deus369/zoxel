@@ -1,5 +1,3 @@
-extern ecs_entity_t zox_players[];
-
 ecs_entity_t spawn_prefab_ui_list(ecs_world_t *world) {
     zox_prefab_child(prefab_window)
     zox_prefab_name("prefab_ui_list")
@@ -18,6 +16,7 @@ int get_max_characters(const char *header_label, const text_group labels[], int 
     return max_characters;
 }
 
+// todo: use struct inputs
 ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas, const char *header_label, const int elements_count, const int max_elements, const text_group labels[], const ClickEvent events[], int2 pixel_position, const float2 anchor, const unsigned char is_close_button, unsigned char font_size, const unsigned char layer, const unsigned char is_scrollbar, const ecs_entity_t player) {
     const ecs_entity_t parent = canvas;
     const unsigned char is_header = 1;

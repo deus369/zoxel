@@ -40,10 +40,10 @@ void test_ui_pixel_positions(ecs_world_t *world) {
     // test horizontal by spawning one per bar
     int width_division = 2; // 16;
     int height_division = 32; // 16;
-    int bar_width = screen_dimensions.x / width_division; // 64;
-    int bar_height = screen_dimensions.y / height_division; // 64;
-    int width_tests = 1 + screen_dimensions.x / bar_width;
-    int height_tests = 1 + screen_dimensions.y / bar_height;
+    int bar_width = viewport_dimensions.x / width_division; // 64;
+    int bar_height = viewport_dimensions.y / height_division; // 64;
+    int width_tests = 1 + viewport_dimensions.x / bar_width;
+    int height_tests = 1 + viewport_dimensions.y / bar_height;
     for (int i = 0; i < height_tests; i++)
     {
         for (int j = 0; j < width_tests; j++)

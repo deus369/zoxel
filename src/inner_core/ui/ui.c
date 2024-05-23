@@ -14,19 +14,6 @@
 #include "editor/editor.c"
 #include "fun/spawn_test_window.c"
 
-void initialize_ui(ecs_world_t *world) {
-    initialize_zigels(world);
-}
-
-void spawn_prefabs_ui(ecs_world_t *world) {
-    spawn_prefabs_ui_core(world);
-    spawn_prefabs_zigels(world);
-    spawn_prefabs_texts(world);
-    spawn_prefabs_elements(world);
-    spawn_prefabs_game_ui(world);
-    spawn_prefabs_editor(world);
-}
-
 zox_begin_module(UI)
 zox_import_module(UICore)
 zox_import_module(Zigels)

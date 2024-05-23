@@ -1,8 +1,6 @@
 // #define zox_debug_log_device_mode_system
-extern unsigned char players_playing;
-
 void DeviceModeSystem(ecs_iter_t *it) {
-    if (players_playing == 2) return;
+    if (!auto_switch_device) return;
     zox_field_in(DeviceLinks, deviceLinks, 1)
     zox_field_in(DeviceMode, deviceModes, 2)
     zox_field_out(DeviceModeDirty, deviceModeDirtys, 3)

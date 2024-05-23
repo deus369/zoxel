@@ -27,7 +27,6 @@ GLuint line2D_depth_location;
 GLuint line2D_camera_matrix_location;
 
 int initialize_shader_line2D() {
-    if (!is_opengl_running()) return 0;
     line2D_shader = spawn_gpu_shader_inline(line2D_source_vert, line2D_source_frag);
     line2D_material = spawn_gpu_material_program((const GLuint2) { line2D_shader.x, line2D_shader.y });
     line2D_position_location = glGetAttribLocation(line2D_material, "position");

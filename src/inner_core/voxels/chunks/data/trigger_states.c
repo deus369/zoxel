@@ -1,0 +1,3 @@
+#define zox_chunk_entities_state_initial 0
+#define zox_chunk_entities_state_triggered 1
+#define zox_chunk_entities_state_spawned 2

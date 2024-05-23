@@ -1,0 +1,32 @@
+// when terrain lod updates, it will update character lods
+void ChunkBlocksLodSystem(ecs_iter_t *it) {
+    unsigned char did_do = 0;
+    zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
+    zox_field_in(RenderLod, renderLods, 2)
+    zox_field_in(BlockSpawns, blockSpawnss, 3)
+    for (int i = 0; i < it->count; i++) {
+        zox_field_i_in(ChunkLodDirty, chunkLodDirtys, chunkLodDirty)
+        if (chunkLodDirty->value != 2) continue;
+        did_do = 1;
+        zox_field_i_in(BlockSpawns, blockSpawnss, blockSpawns)
+        if (!blockSpawns->value) continue;
+        zox_field_i_in(RenderLod, renderLods, renderLod)
+        const unsigned char vox_lod = get_voxes_lod_from_camera_distance(renderLod->value);
+        for (int j = 0; j < blockSpawns->value->size; j++) {
+            const byte3_hash_map_pair* pair = blockSpawns->value->data[j];
+            while (pair != NULL) {
+                const ecs_entity_t e2 = pair->value;
+                if (e2 && zox_valid(e2)) {
+                    const unsigned char current_lod = zox_get_value(e2, RenderLod)
+                    if (current_lod != vox_lod) {
+                        zox_set(e2, RenderLod, { vox_lod })
+                        zox_set(e2, ChunkDirty, { 1 })
+                    }
+                }
+                pair = pair->next;
+            }
+        }
+        did_do = 1;
+    }
+    // if (did_do) zox_log("   + block spawns updated\n")
+} zox_declare_system(ChunkBlocksLodSystem)

@@ -1,5 +1,5 @@
-#ifndef zoxel_outer_core
-#define zoxel_outer_core
+#ifndef zox_outer_core
+#define zox_outer_core
 
 
 void initialize_outer_core(ecs_world_t *world) { }

@@ -35,6 +35,7 @@ zox_define_tag(ScrollbarButton)
 zox_define_component(ListUIMax)
 zox_system(ElementDragSystem, EcsPostLoad, [in] DraggableState, [in] DraggingDelta, [in] DraggedLink)
 zox_system(ScrollbarSystem, EcsPostUpdate, [none] ScrollbarButton, [in] DraggableState, [in] PixelPosition, [in] PixelSize, [in] ParentLink)
+spawn_prefabs_elements(world);
 zoxel_end_module(Elements)
 
 #endif

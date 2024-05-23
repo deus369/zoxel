@@ -1,5 +1,5 @@
-#ifndef zoxel_inner_core
-#define zoxel_inner_core
+#ifndef zox_inner_core
+#define zox_inner_core
 
 #include "textures/textures.c"
 #include "musics/musics.c"
@@ -15,28 +15,12 @@
 #include "cubes/cubes.c"
 #include "particles/particles.c"
 
-void dispose_inner_core(ecs_world_t *world) {
-    dispose_textures(world);
-    dispose_voxes(world);
-}
-
 void initialize_inner_core(ecs_world_t *world) {
-    initialize_textures(world);
-    initialize_ui(world);
-    initialize_lines(world);
-    initialize_voxes(world);
-    initialize_particles(world);
 }
 
 void spawn_prefabs_inner_core(ecs_world_t *world) {
-    spawn_prefabs_textures(world);
-    spawn_prefabs_ui(world);
-    spawn_prefabs_lines(world);
     spawn_prefabs_neurals(world);
-    spawn_prefabs_musics(world);
-    spawn_prefabs_voxels(world);
     spawn_prefabs_cubes(world);
-    spawn_prefabs_particles(world);
 }
 
 void update_inner_core(ecs_world_t *world) {
@@ -57,6 +41,9 @@ zox_import_module(Voxels)
 zox_import_module(Physics)
 zox_import_module(Cubes)
 zox_import_module(Particles)
+initialize_inner_core(world);
+spawn_prefabs_inner_core(world);
+update_inner_core(world);
 zoxel_end_module(InnerCore)
 
 #endif

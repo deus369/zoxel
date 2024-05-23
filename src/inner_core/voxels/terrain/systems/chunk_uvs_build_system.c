@@ -15,25 +15,12 @@ void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,
             for (local_position.z = 0; local_position.z < chunk_size.z; local_position.z++) {
                 int array_index = byte3_array_index(local_position, chunk_size);
                 if (chunk->value[array_index] != 0) {
-                    // add faces - based on neighbor voxels.
-                    #ifndef disable_voxel_left
                     zoxel_check_faces_with_uvs(left)
-                    #endif
-                    #ifndef disable_voxel_right
                     zoxel_check_faces_with_uvs(right)
-                    #endif
-                    #ifndef disable_voxel_down
                     zoxel_check_faces_no_chunk(down)
-                    #endif
-                    #ifndef disable_voxel_up
                     zoxel_check_faces_no_chunk(up)
-                    #endif
-                    #ifndef disable_voxel_back
                     zoxel_check_faces_with_uvs(back)
-                    #endif
-                    #ifndef disable_voxel_front
                     zoxel_check_faces_with_uvs(front)
-                    #endif
                 }
             }
         }
@@ -46,29 +33,15 @@ void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,
         for (local_position.y = 0; local_position.y < chunk_size.y; local_position.y++) {
             for (local_position.z = 0; local_position.z < chunk_size.z; local_position.z++) {
                 int array_index = byte3_array_index(local_position, chunk_size);
-                if (chunk->value[array_index] == 0) {
-                    continue;
-                }
+                if (chunk->value[array_index] == 0) continue;
                 float3 vertex_position_offset = float3_from_byte3(local_position);
                 float3_multiply_float_p(&vertex_position_offset, voxel_scale);
-                #ifndef disable_voxel_left
                 zoxel_add_faces_with_uvs(left, 0)
-                #endif
-                #ifndef disable_voxel_right
                 zoxel_add_faces_with_uvs(right, 1)
-                #endif
-                #ifndef disable_voxel_down
                 zoxel_add_faces_no_chunk(down, 1)
-                #endif
-                #ifndef disable_voxel_up
                 zoxel_add_faces_no_chunk(up, 0)
-                #endif
-                #ifndef disable_voxel_back
                 zoxel_add_faces_with_uvs(back, 0)
-                #endif
-                #ifndef disable_voxel_front
                 zoxel_add_faces_with_uvs(front, 1)
-                #endif
             }
         }
     }
@@ -105,12 +78,11 @@ void ChunkUVsBuildSystem(ecs_iter_t *it) {
         chunkDirty->value = 0;
         meshDirty->value = 1;
         build_chunk_mesh_uvs(chunk, chunkSize, meshIndicies2, meshVertices2, meshUVs2, chunk_left, chunk_right, chunk_back, chunk_front);
-        // printf("Building ChunkData UVs Mesh [%lu]\n", (long int) it->entities[i]);
-        #ifdef zoxel_time_chunk_uvs_builds_system
-            did_do_timing()
-        #endif
+#ifdef zoxel_time_chunk_uvs_builds_system
+        did_do_timing()
+#endif
     }
-    #ifdef zoxel_time_chunk_uvs_builds_system
-        end_timing("ChunkUVsBuildSystem")
-    #endif
+#ifdef zoxel_time_chunk_uvs_builds_system
+    end_timing("ChunkUVsBuildSystem")
+#endif
 } zox_declare_system(ChunkUVsBuildSystem)

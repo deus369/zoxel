@@ -53,7 +53,8 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[debug]");
 #ifdef zox_debug_zox_statistics
         buffer_index += snprintf(buffer + buffer_index, buffer_size, "chunks visible [%i / %i]\n", zox_statistics_chunks_visible, zox_statistics_chunks_total);
-        buffer_index += snprintf(buffer + buffer_index, buffer_size, "characters visible [%i / %i]\n", zox_statistics_characters_visible, zox_statistics_characters_total);
+        buffer_index += snprintf(buffer + buffer_index, buffer_size, "characters visible [%i / %i] - r[%i]\n", zox_statistics_characters_visible, zox_statistics_characters_total, zox_statistics_characters_rendered);
+        buffer_index += snprintf(buffer + buffer_index, buffer_size, "block voxes visible [%i / %i]\n", zox_statistics_block_voxes_visible, zox_statistics_block_voxes_total);
 #endif
 #ifdef zox_test_newline
         buffer_index = debug_newline_zext(buffer, buffer_size, buffer_index);

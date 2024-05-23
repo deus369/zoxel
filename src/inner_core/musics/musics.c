@@ -1,5 +1,5 @@
-#ifndef zoxel_musics
-#define zoxel_musics
+#ifndef zox_mod_musics
+#define zox_mod_musics
 
 const int music_note_skip = 84;
 zox_declare_tag(Music)
@@ -28,6 +28,7 @@ zox_define_component_double(MusicSpeed)
 zox_define_memory_component(MusicData)
 zox_system(MusicGenerateSystem, EcsPostUpdate, [none] Music, [out] GenerateMusic, [out] MusicData, [out] InstrumentType)
 zox_system_1(MusicPlaySystem, main_thread_pipeline, [none] Music, [in] MusicData, [in] MusicSpeed, [in] InstrumentType, [out] MusicNote, [out] MusicTime)
+    spawn_prefabs_musics(world);
 zoxel_end_module(Musics)
 
 #endif

@@ -1,27 +1,9 @@
 // int characters_count = 0;
-const int init_character3D_lod = 1;
-const int character3D_lod_dividor = 1;
-const unsigned char max_character_division = 0;
+
 int spawn_characters3D_count = 8;
 float spawn_many_radius = 0.5f;
 float3 spawn_many_offset = float3_zero;
 float spawn_many_y = 0.6f;
-
-unsigned char get_character_division_from_camera(unsigned char distance_to_camera) {
-    unsigned char division = 255;
-    if (distance_to_camera <= init_character3D_lod) division = 0;
-    else if (distance_to_camera <= init_character3D_lod + character3D_lod_dividor * 1) division = 1;
-    else if (distance_to_camera <= init_character3D_lod + character3D_lod_dividor * 2) division = 2;
-    else if (distance_to_camera <= init_character3D_lod + character3D_lod_dividor * 3) division = 3;
-    else if (distance_to_camera <= init_character3D_lod + character3D_lod_dividor * 4) division = 4;
-    if (max_character_division != 0 && division < max_character_division) division = max_character_division;
-    return division;
-}
-
-unsigned char get_character_division(int3 chunk_position, int3 camera_position) {
-    unsigned char distance_to_camera = get_camera_chunk_distance(camera_position, chunk_position);
-    return get_character_division_from_camera(distance_to_camera);
-}
 
 void set_character_settings() {
     if (cpu_tier == 3) {

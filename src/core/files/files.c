@@ -5,12 +5,8 @@
 #include <dirent.h>
 #include <errno.h>
 // used for file io functions
-// zoxel_settings
-// zoxel_component_includes
 // zox_declare_tag(Files)
-// zoxel_prefab_includes
 // #include "prefabs/terminal.c"
-// zoxel_util_includes
 #include "util/path_util.c"
 #include "util/directory_util.c"
 #include "steam/test_steam_io.c"
@@ -24,9 +20,7 @@ void spawn_prefabs_files(ecs_world_t *world) {
 }
 
 zox_begin_module(Files)
-// zoxel_component_defines
-// zox_define_tag(Terminal)
-// zoxel_system_defines
+spawn_prefabs_files(world);
 zoxel_end_module(Files)
 
 #endif

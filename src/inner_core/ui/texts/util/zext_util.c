@@ -159,3 +159,8 @@ void set_new_zox_name(ecs_world_t *world, const ecs_entity_t e, const char* text
     zox_modified(e, ZextData)
     return 1;*/
 }
+
+
+int get_zexts_count(ecs_world_t *world) {
+    return zox_count_entities(world, ecs_id(Zext));
+}

@@ -1,8 +1,8 @@
 // disables
 
 // #define zox_disable_npcs
+// #define zox_disable_block_voxes
 
-// #define zox_disable_block_vox_spawns
 // boot disables
 // #define zox_disable_frustum_checks
 // #define zox_disable_skybox

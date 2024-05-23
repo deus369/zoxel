@@ -141,17 +141,15 @@ ifeq ($(SYSTEM),Windows)
 target_dev = build/windows-dev/zoxel.exe
 endif
 cflags_debug = -Wall -g
-make_dev = $(CC) $(CFLAGS) $(cflags_debug) -o $(target_dev) $(OBJS) $(LDLIBS)
+make_dev = echo " > building zoxel-dev-linux [$(target_dev)]" && \
+	$(patient_cmd) && \
+	$(CC) $(CFLAGS) $(cflags_debug) -o $(target_dev) $(OBJS) $(LDLIBS)
 
 # development
 dev:
-	@ echo " > building zoxel-dev-linux"
-	@ $(patient_cmd)
 	@ $(make_dev)
 
 $(target_dev): $(SRCS)
-	@ echo " > building zoxel-dev-linux"
-	@ $(patient_cmd)
 	@ $(make_dev)
 
 run-dev:
@@ -189,11 +187,6 @@ run-profiler:
 	@ sleep 3 && open https://www.flecs.dev/explorer &
 	@ ./$(target) --profiler
 
-# run development + flecs profiler
-run-dev-profiler:
-	@ sleep 3 && open https://www.flecs.dev/explorer &
-	@ ./$(target_dev) --profiler
-
 run-dev-profiler-tiny:
 	@ sleep 3 && open https://www.flecs.dev/explorer &
 	@ ./$(target_dev) --profiler --tiny
@@ -201,6 +194,17 @@ run-dev-profiler-tiny:
 run-dev-debug-tiny:
 	@ valgrind -s ./$(target_dev) --tiny
 
+
+# build with profiler
+dev-profiler:
+	@ echo " > building zoxel-dev-linux with profiler"
+	@ $(patient_cmd)
+	$(make_dev) -Dzox_using_profiler
+
+# run development + flecs profiler
+run-dev-profiler:
+	@ sleep 3 && open https://www.flecs.dev/explorer &
+	@ ./$(target_dev) --profiler
 
 # ===== ===== ===== #
 # ===== flecs ===== #
@@ -218,10 +222,12 @@ endif
 make_flecs = $(CC) $(flecs_flags) $(CFLAGS) $(CFLAGS_RELEASE) $(flecs_source) -o $(flecs_obj) $(flecs_libs)
 make_flecs_lib = ar rcs $(flecs_target) $(flecs_obj)
 make_flecs_big= set -e; \
+	echo " > building flecs" && \
+	$(patient_cmd) && \
 	$(make_flecs) && \
 	$(make_flecs_lib) && \
-	rm $flecs_obj && \
-	cp $flecs_target $flecs_lib
+	rm $(flecs_obj) && \
+	cp $(flecs_target) $(flecs_lib)
 
 # bash bash/flecs/check_flecs_source.sh && bash bash/flecs/download_flecs_source.sh && \
 

@@ -5,15 +5,6 @@ zox_component(ParticleEmitRate, int)
 #include "particles2D/particles2D.c"
 #include "particles3D/particles3D.c"
 
-void initialize_particles(ecs_world_t *world) {
-    initialize_particles3D(world);
-}
-
-void spawn_prefabs_particles(ecs_world_t *world) {
-    spawn_prefabs_particles2D(world);
-    spawn_prefabs_particles3D(world);
-}
-
 zox_begin_module(Particles)
 zox_define_component(ParticleEmitRate)
 zox_import_module(Particles2D)

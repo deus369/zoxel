@@ -18,6 +18,7 @@ zox_filter(noise_chunks, [none] chunks.NoiseChunk, [out] GenerateChunk)
 zox_system(AnimateChunkSystem, EcsOnUpdate, [out] AnimateChunk, [out] GenerateChunk)
 zox_system_ctx(NoiseChunkSystem, zox_pip_voxels_chunk_dirty, noise_chunks, [none] chunks.NoiseChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [out] GenerateChunk)
 zox_system_ctx(NoiseChunkOctreeSystem, zox_pip_voxels_chunk_dirty, noise_chunks, [none] chunks.NoiseChunk, [out] ChunkDirty, [out] ChunkOctree, [in] RenderLod, [out] GenerateChunk)
+spawn_prefabs_voxel_animations(world);
 zoxel_end_module(VoxelsAnimations)
 
 #endif

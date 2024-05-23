@@ -1,35 +1,11 @@
-// shared boot things
-extern unsigned char is_split_screen;
-extern ecs_entity_t fps_display;
-#define main_camera_rotation_speed 60 * 0.22f
-ecs_entity_t zoxel_main_menu;
-float4 main_menu_rotation_speed;
-
-void spawn_players(ecs_world_t *world, const ecs_entity_t game) {
-    if (headless) return;   // no players in headless mode
-    spawn_connected_devices(world);
-    if (is_split_screen) players_playing = 2;
-    else players_playing = 1;
-    for (int i = 0; i < players_playing; i++) {
-        const ecs_entity_t e = spawn_player(world);
-        add_player(world, game, e);
-        zox_set(e, CameraLink, { main_cameras[i] })
-        zox_players[i] = e;
-        if (players_playing == 2) {
-            if (i == 0) zox_set(e, DeviceModeDirty, { zox_device_mode_keyboardmouse })
-            else if (i == 1) zox_set(e, DeviceModeDirty, { zox_device_mode_gamepad })
-        }
-    }
-}
-
-ecs_entity_t spawn_player_camera(ecs_world_t *world, const unsigned char index, const float3 camera_position, const float4 camera_rotation, const int2 viewport_position, const int2 viewport_size, const float4 screen_to_canvas) {
+ecs_entity_t spawn_player_camera(ecs_world_t *world, const ecs_entity_t player, const unsigned char index, const float3 camera_position, const float4 camera_rotation, const int2 viewport_position, const int2 viewport_size, const float4 screen_to_canvas) {
     main_menu_rotation_speed = quaternion_from_euler( (float3) { 0, -main_camera_rotation_speed * degreesToRadians, 0 });
     float fov = get_camera_mode_fov(camera_mode);
     const ecs_entity_t e = spawn_base_camera(world, camera_position, camera_rotation, fov, viewport_position, viewport_size, screen_to_canvas);
     zox_add_tag(e, Camera3D)
     const ecs_entity_t e2 = spawn_camera_ui(world, viewport_position, viewport_size);
     zox_prefab_set(e, EternalRotation, { main_menu_rotation_speed })
-    zox_set(zox_players[index], CameraLink, { e })
+    zox_set(player, CameraLink, { e })
     main_cameras[index] = e;
     ui_cameras[index] = e2;
     return e;
@@ -60,6 +36,7 @@ void zox_spawn_main_menu(ecs_world_t *world, const ecs_entity_t player, const ch
 }
 
 void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game) {
+#ifdef zox_mod_players
     zox_prefab_set(prefab_canvas, PlayerLink, { 0 })
     spawn_players(world, game);
     set_camera_mode_pre_defined(world);
@@ -68,20 +45,22 @@ void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game)
     float3 camera_position = float3_zero;
     float4 camera_rotation = quaternion_identity;
     for (int i = 0; i < players_playing; i++) {
+        const ecs_entity_t player = zox_players[i];
         set_camera_transform_to_main_menu(&camera_position, &camera_rotation);
         const float4 screen_to_canvas = (float4) { 1 / (float) players_playing, 1, i / (float) players_playing, 0 };
-        const int2 viewport_size = screen_to_canvas_size(screen_dimensions, screen_to_canvas);
-        const int2 viewport_position = screen_to_canvas_position(screen_dimensions, screen_to_canvas);
-        spawn_player_camera(world, i, camera_position, camera_rotation, viewport_position, viewport_size, screen_to_canvas);
+        const int2 viewport_size = screen_to_canvas_size(viewport_dimensions, screen_to_canvas);
+        const int2 viewport_position = screen_to_canvas_position(viewport_dimensions, screen_to_canvas);
+        spawn_player_camera(world, player, i, camera_position, camera_rotation, viewport_position, viewport_size, screen_to_canvas);
         const ecs_entity_t ui_camera = ui_cameras[i];
         const ecs_entity_t canvas = spawn_default_ui(world, ui_camera, viewport_size, screen_to_canvas);
-        zox_spawn_main_menu(world, zox_players[i], game_name, canvas);
+        zox_spawn_main_menu(world, player, game_name, canvas);
         zox_canvases[i] = canvas;
-        zox_set(zox_players[i], CanvasLink, { canvas })
-        zox_prefab_set(canvas, PlayerLink, { zox_players[i] })
+        zox_set(player, CanvasLink, { canvas })
+        zox_prefab_set(canvas, PlayerLink, { player })
         if (i == 0) main_canvas = canvas;
 #ifdef zoxel_start_with_debug_ui
         toggle_ui(world, canvas, &game_debug_label, &spawn_game_debug_label);
 #endif
     }
+#endif
 }

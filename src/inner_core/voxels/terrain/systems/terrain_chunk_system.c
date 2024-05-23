@@ -42,14 +42,13 @@ void TerrainChunkSystem(ecs_iter_t *it) {
         int array_length = chunkSize->value.x * chunkSize->value.y * chunkSize->value.z;
         resize_memory_component(ChunkData, chunkData, unsigned char, array_length)
         generate_chunk_terrain(chunkData, chunkSize->value, chunkPosition->value);
-        // printf("Terrain ChunkData Generated: [%lu] \n", (long int) it->entities[i]);
-        #ifdef zoxel_time_terrain_chunk_system
-            did_do_timing()
-        #endif
+#ifdef zoxel_time_terrain_chunk_system
+        did_do_timing()
+#endif
         generateChunk->value = 0;
         chunkDirty->value = 1;
     }
-    #ifdef zoxel_time_terrain_chunk_system
-        end_timing("TerrainChunkSystem")
-    #endif
+#ifdef zoxel_time_terrain_chunk_system
+    end_timing("TerrainChunkSystem")
+#endif
 } zox_declare_system(TerrainChunkSystem)

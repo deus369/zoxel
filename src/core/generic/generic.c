@@ -59,7 +59,7 @@ zox_function_component(TimedEvent, void, ecs_world_t*, const ecs_entity_t)
 #include "systems/death_clean_system.c"
 #include "systems/timed_event_system.c"
 
-void dispose_generic(ecs_world_t *world) {
+void dispose_generic(ecs_world_t *world, void *ctx) {
     dispose_component_ids();
 }
 
@@ -84,6 +84,7 @@ void test_colors_hsv() {
 }
 
 zox_begin_module(Generic)
+zox_module_dispose(dispose_generic)
 initialize_component_ids();
 zox_define_tag(Selectable)
 zox_define_tag(Clickable)
@@ -125,7 +126,8 @@ zox_define_component_double(EventTime)
 zox_define_component_entity(EventInput)
 zox_define_component(TimedEvent)
 zox_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
-zox_system_1(TimedEventSystem, main_thread_pipeline, [in] TimedEvent, [in] EventInput, [out] EventTime) // assume spawning in generic events
+zox_system_1(TimedEventSystem, main_thread_pipeline, [in] TimedEvent, [in] EventInput, [out] EventTime)
+spawn_prefabs_generic(world);
 zoxel_end_module(Generic)
 
 #endif

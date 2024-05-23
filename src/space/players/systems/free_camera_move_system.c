@@ -1,6 +1,3 @@
-const double movement_multiplier = 0.08 * 100;
-const double shift_movement_multiplier = 3.0;
-
 void FreeCameraMoveSystem(ecs_iter_t *it) {
     double movement_power = zox_delta_time;
     movement_power *= movement_multiplier;

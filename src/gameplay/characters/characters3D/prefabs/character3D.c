@@ -9,9 +9,6 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_character3D")
     zox_add_tag(e, Character3D)
-    // rendering
-    // if (!headless) add_gpu_colors(world, e);
-    // zox_prefab_set(e, RenderDisabled, { 0 })
     // transform
     add_physics3D(world, e);
     zox_prefab_set(e, Bounds3D, { float3_one })
@@ -44,20 +41,32 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
     return e;
 }
 
-ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, const vox_file *vox, const float3 position, const float4 rotation, const unsigned char lod, const ecs_entity_t player, const float vox_scale, unsigned char render_disabled) {
+ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, const vox_file *vox, const float3 position, const float4 rotation, const unsigned char lod, const ecs_entity_t player, const float vox_scale, const unsigned char render_disabled) {
     zox_instance(prefab)
     zox_name("character3D")
     zox_set(e, RenderDisabled, { render_disabled })
     zox_set(e, Position3D, { position })
+    const float min_x_global = -(terrain_spawn_distance) * (real_chunk_scale) + 0.1f;
+    const float max_x_global = (terrain_spawn_distance + 1) * (real_chunk_scale) - 0.1f;
+    const float min_z_global = min_x_global;
+    const float max_z_global = max_x_global;
+    const float min_y_global = - real_chunk_scale * terrain_vertical;
+    const float max_y_global = - min_y_global + real_chunk_scale;
     if (!player) {
         const int bounds_radius = 16;
-        zox_set(e, Position3DBounds, {{ position.x - bounds_radius, position.x + bounds_radius, position.y - bounds_radius, position.y + bounds_radius, position.z - bounds_radius, position.z + bounds_radius }})
+        const int bounds_radius_y = 12;
+        const float min_x_local = position.x - bounds_radius;
+        const float max_x_local = position.x + bounds_radius;
+        const float min_z_local = position.z - bounds_radius;
+        const float max_z_local = position.z + bounds_radius;
+        const float min_y_local = position.y - bounds_radius_y;
+        const float max_y_local = position.y + bounds_radius_y;
+        zox_set(e, Position3DBounds, {{
+            float_max(min_x_local, min_x_global), float_min(max_x_local, max_x_global),
+            float_max(min_y_local, min_y_global), float_min(max_y_local, max_y_global),
+            float_max(min_z_local, min_z_global), float_min(max_z_local, max_z_global) }})
     } else {
-        const float bottom_bounds = - real_chunk_scale * terrain_vertical;
-        const float top_bounds = - bottom_bounds + real_chunk_scale;
-        const float negative_bounds = -(terrain_spawn_distance) * (real_chunk_scale) + 0.1f;
-        const float position_bounds = (terrain_spawn_distance + 1) * (real_chunk_scale) - 0.1f;
-        zox_set(e, Position3DBounds, {{ negative_bounds, position_bounds, bottom_bounds, top_bounds, negative_bounds, position_bounds }})
+        zox_set(e, Position3DBounds, {{ min_x_global, max_x_global, min_y_global, max_y_global, min_z_global, max_z_global }})
         // zox_set(e, VoxScale, { player_vox_model_scale })
     }
     if (vox_scale) zox_set(e, VoxScale, { vox_scale })

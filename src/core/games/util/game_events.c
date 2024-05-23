@@ -26,3 +26,11 @@ void trigger_event_game(ecs_world_t* world, const ecs_entity_t game, const unsig
     }
     set_game_state(world, game, new_game_state);
 }
+
+void pause_resume(ecs_world_t *world, const ecs_entity_t player) {
+    const ecs_entity_t game = zox_get_value(player, GameLink)
+    const GameState *gameState = zox_get(game, GameState)
+    if (!(gameState->value == zox_game_playing || gameState->value == zox_game_paused)) return;
+    unsigned char is_paused = gameState->value == zox_game_paused;
+    if (is_paused) trigger_event_game(world, game, zox_game_playing);
+}

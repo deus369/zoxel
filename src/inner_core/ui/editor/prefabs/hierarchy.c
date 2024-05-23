@@ -13,7 +13,7 @@ ecs_entity_t spawn_prefab_hierarchy(ecs_world_t *world) {
 
 // why does raycasting mess up after this spawns
 ecs_entity_t spawn_editor_hierarchy(ecs_world_t *world, const ecs_entity_t canvas) {
-    const ecs_entity_t player = zox_players[0];
+    const ecs_entity_t player = 0; // zox_players[0];
     const char *header_label = "hierarchy";
     const unsigned char ui_layer = 8;
     const unsigned char is_close_button = 1;

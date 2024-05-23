@@ -1,16 +1,17 @@
 // spawning block vox entities during generation step!
 // ChunkDirty process or nah?
-extern unsigned char get_character_division_from_camera(unsigned char distance_to_camera);
-
+extern unsigned char get_voxes_lod_from_camera_distance(unsigned char distance_to_camera);
+int spawned_block_voxes = 0;
 // todo: destroy block voxes if removed from chunk, check hashes / current block voxes
 // todo: also check if hashes exist but voxel type has changed!
 
 // first check if exists, if it does check if voxel type differs, for removing/adding
 // goes through nodes, if not in hashmap, it  will spawn anew
 void spawn_block_vox_in_tree(const ChunkOctree *octree, BlockSpawns *block_spawns, SpawnBlockVox *spawn_data, const float3 chunk_position_real, int3 octree_position, unsigned char depth) {
-    if (count_byte3_hash_map(block_spawns->value) == max_vox_blocks) return; // max
     // todo: pass in array of index to is_models
-    if (depth == max_octree_depth && octree->value == zox_block_grass_vox) {
+    if (depth == max_octree_depth) {
+        if (octree->value != zox_block_grass_vox) return; // only spawn for grass_vox atm
+        else if (count_byte3_hash_map(block_spawns->value) == max_vox_blocks) return; // max
         spawn_data->position_local = int3_to_byte3(octree_position);
         if (!byte3_hash_map_has(block_spawns->value, spawn_data->position_local)) {
             const float voxel_scale = octree_scales2[depth] * 0.5f * 16.0f; // todo: use voxel scale passed in
@@ -23,9 +24,9 @@ void spawn_block_vox_in_tree(const ChunkOctree *octree, BlockSpawns *block_spawn
             const ecs_entity_t e2 = spawn_block_vox(world, spawn_data);
             byte3_hash_map_add(block_spawns->value, spawn_data->position_local, e2);
             // zox_log(" + spawned vox model: depth %i - scale %f - %ix%ix%i - r [%fx%fx%f] - [%i]\n", depth, voxel_scale, octree_position.x, octree_position.y, octree_position.z, position_real.x, position_real.y, position_real.z, count_byte3_hash_map(block_spawns->value))
+            spawned_block_voxes++;
         }
-    }
-    if (octree->nodes) {
+    } else if (octree->nodes) {
         int3_multiply_int_p(&octree_position, 2);
         for (int i = 0; i < octree_length; i++) {
             int3 child_octree_position = int3_add(octree_position, octree_positions[i]);
@@ -35,9 +36,10 @@ void spawn_block_vox_in_tree(const ChunkOctree *octree, BlockSpawns *block_spawn
 }
 
 void BlockVoxSpawnSystem(ecs_iter_t *it) {
-#ifdef zox_disable_block_vox_spawns
+#ifdef zox_disable_block_voxes
     return;
 #endif
+    begin_timing()
     zox_iter_world()
     zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
     zox_field_in(ChunkOctree, chunkOctrees, 2)
@@ -49,7 +51,7 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
     zox_field_out(BlockSpawns, blockSpawnss, 8)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(ChunkLodDirty, chunkLodDirtys, chunkLodDirty)
-        if (!chunkLodDirty->value) continue;
+        if (chunkLodDirty->value != 3) continue;
         zox_field_i_in(VoxLink, voxLinks, voxLink)
         if (!voxLink->value) continue;
         zox_field_i_in(ChunkOctree, chunkOctrees, chunkOctree)
@@ -58,10 +60,11 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
         zox_field_i_in(RenderLod, renderLods, renderLod)
         zox_field_i_in(RenderDisabled, renderDisableds, renderDisabled)
         zox_field_i_out(BlockSpawns, blockSpawnss, blockSpawns)
-        const unsigned char can_have_block_voxes = renderLod->value <= block_vox_render_distance;
+        const unsigned char camera_distance = renderLod->value;
+        const unsigned char can_have_block_voxes = camera_distance <= block_vox_render_distance;
         if (can_have_block_voxes) {
             if (blockSpawns->value == NULL) blockSpawns->value = create_byte3_hash_map(max_vox_blocks);
-            const unsigned char vox_lod = get_character_division_from_camera(renderLod->value);
+            const unsigned char vox_lod = get_voxes_lod_from_camera_distance(camera_distance);
             float3 chunk_position_real = float3_add(float3_half, float3_multiply_float(int3_to_float3(chunkPosition->value), 16.0f)); // calculate
             SpawnBlockVox spawn_data = {
                 .prefab = prefab_block_vox,
@@ -84,7 +87,11 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
                 blockSpawns->value = NULL;
             }
         }
+        did_do_timing()
     }
+    //end_timing("BlockVoxSpawnSystem")
+    //if (did_do) zox_log("   + spawned_block_voxes [%i] delta_time [%f]\n", spawned_block_voxes, zox_delta_time * 1000)
+    // if (did_do == 1) zox_log("   + block spawns spawned / destroyed\n")
 } zox_declare_system(BlockVoxSpawnSystem)
 
 // spawn the things as children to terrain Chunks!

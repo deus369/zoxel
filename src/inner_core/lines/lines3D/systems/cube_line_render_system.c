@@ -28,6 +28,8 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
     const Rotation3D *rotation3Ds = ecs_field(it, Rotation3D, 6);
     const Bounds3D *bounds3Ds = ecs_field(it, Bounds3D, 7);
     const RenderLod *renderLods = ecs_field(it, RenderLod, 8);
+    zox_field_in(MeshIndicies, meshIndiciess, 9)
+    zox_field_in(RenderDisabled, renderDisableds, 10)
     for (int i = 0; i < it->count; i++) {
         const DebugCubeLines *debugCubeLines = &debugCubeLiness[i];
         if (debugCubeLines->value == 0) continue;
@@ -38,29 +40,34 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
         const Position3D *position3D = &position3Ds[i];
         const Rotation3D *rotation3D = &rotation3Ds[i];
         const Bounds3D *bounds3D = &bounds3Ds[i];
+        zox_field_i_in(MeshIndicies, meshIndiciess, meshIndicies)
+        zox_field_i_in(RenderDisabled, renderDisableds, renderDisabled)
         set_line3D_thickness(cubeLinesThickness->value);
+        color_rgb lines_color = colorRGB->value;
+        if (meshIndicies->length == 0) lines_color = (color_rgb) { 255, 0, 0 };
+        if (renderDisabled->value) lines_color = (color_rgb) { 255, 55, 55 };
 #ifdef zoxel_debug_transforms
         // up axis
-        set_line3D_color(colorRGB->value);
         // render_cube_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + cube_lines_length, position3D->value.z });
+        set_line3D_color(lines_color);
         float3 up_vector = (float3) { 0, cube_lines_length, 0 };
         float4_rotate_float3_p(rotation3D->value, &up_vector);
         float3_add_float3_p(&up_vector, position3D->value);
         render_cube_line3D(position3D->value, up_vector);
         // forward axis
-        set_line3D_color((color_rgb) { colorRGB->value.b, colorRGB->value.g, colorRGB->value.r });
+        set_line3D_color(lines_color);
         float3 forward_vector = (float3) { 0, 0, cube_lines_length };
         float4_rotate_float3_p(rotation3D->value, &forward_vector);
         float3_add_float3_p(&forward_vector, position3D->value);
         render_cube_line3D(position3D->value, forward_vector);
         // right axis
-        set_line3D_color((color_rgb) { colorRGB->value.g, colorRGB->value.r, colorRGB->value.b });
+        set_line3D_color(lines_color);
         float3 right_vector = (float3) { cube_lines_length, 0, 0 };
         float4_rotate_float3_p(rotation3D->value, &right_vector);
         float3_add_float3_p(&right_vector, position3D->value);
         render_cube_line3D(position3D->value, right_vector);
 #else
-        color_rgb cube_color = colorRGB->value;
+        color_rgb cube_color = lines_color;
         cube_color.r += 30 * renderLod->value;
         cube_color.g -= 20 * renderLod->value;
         cube_color.b -= 20 * renderLod->value;

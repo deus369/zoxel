@@ -1,5 +1,30 @@
 ecs_entity_t game_ui_touch = 0;
 
+void dispose_in_game_ui_touch(ecs_world_t *world) {
+    zox_delete_and_set(game_ui_touch)
+}
+
+void dispose_in_game_ui(ecs_world_t *world, ecs_entity_t player) {
+    dispose_in_game_ui_touch(world);
+    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+    find_child_with_tag(canvas, MenuInGame, game_ui)
+    zox_delete(game_ui)
+}
+
+void toggle_pause_ui(ecs_world_t *world, const ecs_entity_t player) {
+    const ecs_entity_t game = zox_get_value(player, GameLink)
+    const GameState *gameState = zox_get(game, GameState)
+    if (!(gameState->value == zox_game_playing || gameState->value == zox_game_paused)) return;
+    unsigned char is_paused = gameState->value == zox_game_paused;
+    if (!is_paused) trigger_event_game(world, game, zox_game_paused);
+    else trigger_event_game(world, game, zox_game_playing);
+}
+
+// from touch_ui
+void button_event_pause_game(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
+    toggle_pause_ui(world, player);
+}
+
 void spawn_in_game_ui_touch(ecs_world_t *world, const ecs_entity_t canvas) {
     if (game_ui_touch) return;
     const unsigned char pause_button_size = 80;
@@ -27,15 +52,4 @@ void spawn_in_game_ui(ecs_world_t *world, const ecs_entity_t player, const ecs_e
     add_to_Children(game_ui_children, spawn_actionbar(world, canvas, game_ui));
     add_to_Children(game_ui_children, spawn_healthbar_on_canvas(world, canvas, game_ui, player, character_group));
     zox_modified(game_ui, Children)
-}
-
-void dispose_in_game_ui_touch(ecs_world_t *world) {
-    zox_delete_and_set(game_ui_touch)
-}
-
-void dispose_in_game_ui(ecs_world_t *world, ecs_entity_t player) {
-    dispose_in_game_ui_touch(world);
-    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
-    find_child_with_tag(canvas, MenuInGame, game_ui)
-    zox_delete(game_ui)
 }

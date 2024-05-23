@@ -29,14 +29,16 @@ zox_define_tag(MenuInGame)
 zox_define_tag(FPSDisplay)
 zox_define_tag(QuadsCountLabel)
 zox_define_tag(GameDebugLabel)
-// zox_debug_component(GameDebugLabel)
-// zox_debug_single_module(GameUI)
 zox_define_tag(FrameDebuggerWindow)
 zox_define_tag(JoystickUI)
 zox_define_component_int(QuadsCount)
 zox_define_component_double(FPSDisplayTicker)
 zox_system(FpsDisplaySystem, EcsOnUpdate, [none] FPSDisplay, [out] ZextData, [out] ZextDirty, [out] FPSDisplayTicker)
 zox_system(QuadsLabelSystem, EcsOnUpdate, [none] QuadsCountLabel, [out] QuadsCount, [out] ZextDirty, [out] ZextData)
+spawn_prefabs_game_ui(world);
 zoxel_end_module(GameUI)
+
+// zox_debug_component(GameDebugLabel)
+// zox_debug_single_module(GameUI)
 
 #endif

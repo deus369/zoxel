@@ -13,7 +13,7 @@ void PlayerTestSystem(ecs_iter_t *it) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                  if (keyboard->j.pressed_this_frame) {
                     toggle_cameras_updates();
-                    spawn_sound_from_file(world, 0);
+                    spawn_sound_from_file(world, prefab_sound, 0);
                 } else if (keyboard->n.pressed_this_frame) {
                     zox_visualize_sounds = !zox_visualize_sounds;
                 } else if (keyboard->k.pressed_this_frame) {
@@ -21,7 +21,7 @@ void PlayerTestSystem(ecs_iter_t *it) {
                     const int2 size = (int2) { 32 * 8, 32 * 8 };
                     const ecs_entity_t source_texture = files_textures[0];
                     spawn_texture_element(world, canvas, source_texture, position, size);
-                    spawn_sound_from_file(world, 0);
+                    spawn_sound_from_file(world, prefab_sound, 0);
                 }
 #ifndef zox_on_startup_spawn_main_menu
                 if (keyboard->g.pressed_this_frame) {

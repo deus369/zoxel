@@ -22,6 +22,7 @@ void dispose_sdl_cursor() {
 
 void set_sdl_cursor(const char* path, const int2 hotspot) {
     SDL_Cursor* cursor = create_sdl_cursor(path, hotspot);
+    if (!cursor) return;
     // Set the cursor
     SDL_SetCursor(cursor);
     dispose_sdl_cursor();

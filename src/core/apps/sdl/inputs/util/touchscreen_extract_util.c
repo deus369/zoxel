@@ -25,7 +25,7 @@ void finger_released(ecs_world_t *world, ecs_entity_t e) {
     }
 }
 
-void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices) {
+void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices, const int2 touchscreen_size) {
     touch_devices_count = SDL_GetNumTouchDevices();
     // if (!touch_devices_count) return;
     // get touchscreen finger one
@@ -47,8 +47,8 @@ void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices) {
             }
             new_id = finger->id + 1;
             if (id->value && id->value != new_id) continue; // if not right finger, don't set position
-            int2 finger_position = (int2) { (int) (finger->x * screen_dimensions.x), (int) (finger->y * screen_dimensions.y) };
-            int2_flip_y(&finger_position, screen_dimensions);
+            int2 finger_position = (int2) { (int) (finger->x * touchscreen_size.x), (int) (finger->y * touchscreen_size.y) };
+            int2_flip_y(&finger_position, touchscreen_size);
             ZevicePointerPosition *zevicePointerPosition = zox_get_mut(zevice_pointer_entity, ZevicePointerPosition);
             // zox_log("   finger [%i]: %fx%f > %f\n", finger->id, finger->x, finger->y, finger->pressure)
             if (!id->value) { // first touch

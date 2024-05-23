@@ -14,7 +14,7 @@ zox_component(CubeLinesThickness, float)
 #include "systems/cube_line_render_system.c"
 #include "util/terrain_grid.c"
 
-void initialize_lines3D(ecs_world_t *world) {
+void spawn_shaders_lines3D(ecs_world_t *world) {
     if (!is_using_vulkan) initialize_shader_line3D();
 }
 
@@ -25,13 +25,15 @@ void spawn_prefabs_lines3D(ecs_world_t *world) {
 }
 
 zox_begin_module(Lines3D)
+add_load_shader_function(&spawn_shaders_lines3D);
 zox_define_tag(Line3D)
 zox_define_tag(CubeLines)
 zox_define_component(DebugCubeLines)
 zox_define_component(LineData3D)
 zox_define_component(CubeLinesThickness)
 if (!headless) zox_render3D_system(Line3DRenderSystem, [in] LineData3D, [in] LineThickness, [in] ColorRGB, [none] Line3D)
-if (!headless) zox_render3D_system(CubeLineRenderSystem, [none] CubeLines, [in] DebugCubeLines, [in] CubeLinesThickness, [in] ColorRGB, [in] Position3D, [in] Rotation3D, [in] Bounds3D, [in] RenderLod)
+if (!headless) zox_render3D_system(CubeLineRenderSystem, [none] CubeLines, [in] DebugCubeLines, [in] CubeLinesThickness, [in] ColorRGB, [in] Position3D, [in] Rotation3D, [in] Bounds3D, [in] RenderLod, [in] MeshIndicies, [in] RenderDisabled)
+spawn_prefabs_lines3D(world);
 zoxel_end_module(Lines3D)
 
 #endif

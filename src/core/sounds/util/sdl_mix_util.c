@@ -11,6 +11,11 @@ unsigned char load_audio_sdl() {
 #ifdef zoxel_debug_audio
     zox_logg(" > sdl audio has initialized\n")
 #endif
+#ifdef zox_debug_sdl_audio
+    int channel_available = Mix_GroupAvailable(-1); // -1 indicates all channels
+    if (channel_available == -1) zoxel_log("  ! sdl audio error: no channels available\n");
+    else zoxel_log("  > sdl channel available [%i]\n", channel_available);
+#endif
     return EXIT_SUCCESS;
 #endif
 }

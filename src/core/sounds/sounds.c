@@ -42,25 +42,24 @@ zox_memory_component(SoundData, float)   //! A sound has an array of bytes
 #include "systems/click_sound_system.c"
 
 void initialize_sounds(ecs_world_t *world) {
+#ifndef SDL_MIXER
+    zox_log(" ! sdl sounds are disabled\n")
+#endif
     load_files_sounds();
 }
 
-void dispose_sounds(ecs_world_t *world) {
+void dispose_sounds(ecs_world_t *world, void *ctx) {
     dispose_sound_files();
+    close_audio_sdl();
 }
 
 void spawn_prefabs_sounds(ecs_world_t *world) {
-    load_audio_sdl();
-#ifdef zox_debug_sdl_audio
-    int channel_available = Mix_GroupAvailable(-1); // -1 indicates all channels
-    if (channel_available == -1) zoxel_log("  ! sdl audio error: no channels available\n");
-    else zoxel_log("  > sdl channel available [%i]\n", channel_available);
-#endif
     spawn_prefab_sound(world);
     spawn_prefab_generated_sound(world);
 }
 
 zox_begin_module(Sounds)
+zox_module_dispose(dispose_sounds)
 zox_define_tag(Sound)
 zox_define_tag(ClickMakeSound)
 zox_define_component_byte(InstrumentType)
@@ -81,6 +80,9 @@ zox_system(PlaySoundSystem, zox_pipelines_pre_render, [none] Sound, [out] Trigge
 #endif
 zox_system_1(SoundDebugSystem, main_thread_pipeline, [none] Sound, [in] SoundData, [in] SoundDirty)
 zox_system_1(ClickSoundSystem, main_thread_pipeline, [in] ClickState, [none] ClickMakeSound)
+load_audio_sdl();
+initialize_sounds(world);
+spawn_prefabs_sounds(world);
 zoxel_end_module(Sounds)
 
 #endif

@@ -89,6 +89,7 @@ zox_system(DeviceModeDirtySystem, zox_pipelines_devices_enables, [out] DeviceMod
 zox_system(ZeviceButtonEnableSystem, zox_pipelines_devices_enables, [in] ZeviceButton, [out] ZeviceDisabled)
 zox_system(ZeviceStickEnableSystem, zox_pipelines_devices_enables, [in] ZeviceStick, [out] ZeviceDisabled)
 zox_system(ZevicePointerEnableSystem, zox_pipelines_devices_enables, [in] ZevicePointer, [out] ZeviceDisabled)
+spawn_prefabs_inputs(world);
 zoxel_end_module(Inputs)
 
 #endif

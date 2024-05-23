@@ -1,5 +1,9 @@
 #define zoxel_using_sdl
 
+#ifndef zox_disable_audio
+#define SDL_MIXER
+#endif
+
 #ifdef zoxel_on_windows
     #include <glew.h>
 #endif

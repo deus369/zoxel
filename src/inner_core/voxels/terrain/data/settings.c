@@ -5,11 +5,10 @@
 #endif
 //  // EcsOnLoad EcsPostLoad EcsOnUpdate EcsPostUpdate
 unsigned char high_resolution_terain_lod = 1; // 2 | 1
-unsigned char initial_terrain_lod = 3; // 3 | 2
-const unsigned char terrain_lod_dividor = 2; // 2 | 3
+unsigned char initial_terrain_lod = 2; // 3 | 2
+const unsigned char terrain_lod_dividor = 3; // 2 | 3
 unsigned char terrain_spawn_distance;
 unsigned char terrain_vertical = 2;
-
 #define terrain_mode_tiny 1
 #define terrain_mode_medium 2
 #define terrain_mode_large 3
@@ -32,11 +31,15 @@ uint32_t terrain_seed = 32666;
 #define grass_spawn_chance 80
 #define octree_random_spawn_chance 22
 #define stone_top_spawn_chance 33
-#define grass_vox_spawn_chance 22
+#define grass_vox_spawn_chance 122
 const int sand_height = -16; // -7;
 const unsigned char max_vox_blocks = 32;
-const unsigned char block_vox_render_distance = 2; // 3 | 4 looks best
+const unsigned char block_vox_render_distance = 3; // 3 | 4 looks best
 const int test_block_vox_index = 4; // flower
+// voxes lods
+const int init_lod_voxes = 1;
+const int lod_div_voxes = 1;
+const unsigned char max_lod_voxes = 0;
 
 unsigned char get_terrain_lod_from_camera_distance(unsigned char distance_to_camera) {
     unsigned char lod;
@@ -56,7 +59,7 @@ unsigned char get_terrain_lod_from_camera_distance(unsigned char distance_to_cam
 
 void set_terrain_render_distance() {
     if (cpu_tier == 3) {
-        terrain_spawn_distance = 16;
+        terrain_spawn_distance = 14;
         terrain_vertical = 2;
         fog_density *= 0.32f;    // .3 for now to cover up transitions
         // set_max_octree_length(5);

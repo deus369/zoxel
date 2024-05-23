@@ -54,16 +54,16 @@ void zox_log_vulkan_no_args(const char *text) {
     }\
 }
 
-unsigned char create_main_window_vulkan(ecs_world_t *world, SDL_Window* window) {
+ecs_entity_t spawn_main_window_vulkan(ecs_world_t *world, SDL_Window* window) {
     zox_log_vulkan(" > creating vulkan surface\n")
     if (window == NULL) {
         zox_log_vulkan(" > window is null, cannot create vulkan surface\n")
-        return EXIT_FAILURE;
+        return 0;
     }
     unsigned int extensionCount;
     if (!SDL_Vulkan_GetInstanceExtensions(NULL, &extensionCount, NULL)) {
         zox_log_vulkan(" ! vulkan is not supporoted (SDL_Vulkan_GetInstanceExtensions failed)\n")
-        return EXIT_FAILURE;
+        return 0;
     }
     if (!SDL_Vulkan_GetInstanceExtensions(window, &extensionCount, NULL)) {
         const char* error = SDL_GetError();
@@ -72,7 +72,7 @@ unsigned char create_main_window_vulkan(ecs_world_t *world, SDL_Window* window) 
         } else {
             zox_log_vulkan(" ! SDL_Vulkan_GetInstanceExtensions failed: no sdl error\n");
         }
-        return EXIT_FAILURE;
+        return 0;
     }
     const char** extensions = malloc(extensionCount * sizeof(const char*));
     if (!SDL_Vulkan_GetInstanceExtensions(window, &extensionCount, extensions)) {
@@ -110,9 +110,13 @@ unsigned char create_main_window_vulkan(ecs_world_t *world, SDL_Window* window) 
     // link to our ecs
     *vk_instance = instance;
     *vk_surface = surface;
-    spawn_app_vulkan(world, window, vk_surface);
+    const ecs_entity_t e = spawn_app_vulkan(world, window, vk_surface);
     zox_log_vulkan(" + success creating vulkan\n")
-    return create_vulkan_pipeline(world, vk_instance, vk_surface);
+
+    // what dis do??
+    create_vulkan_pipeline(world, vk_instance, vk_surface);
+
+    return e;
 }
 
 // zox_component(VulkanInstance, VkInstance*)

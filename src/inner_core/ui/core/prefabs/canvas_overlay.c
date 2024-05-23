@@ -12,12 +12,13 @@ ecs_entity_t spawn_prefab_canvas_overlay(ecs_world_t *world) {
     return e;
 }
 
+// todo: stretch to parent size!
 ecs_entity_t spawn_canvas_overlay(ecs_world_t *world, const ecs_entity_t canvas, const int2 canvas_size) {
     const ecs_entity_t parent = canvas;
     const unsigned char layer = max_layers2D - 1;
     const int2 pixel_position = int2_zero;
     const float2 anchor = float2_half;
-    const int2 pixel_size = canvas_size;
+    const int2 pixel_size = (int2) { 4096, 4096 }; //  canvas_size;
     const int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
     const float2 position2D = get_element_position(pixel_position_global, canvas_size);
     zox_instance(prefab_canvas_overlay)

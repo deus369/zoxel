@@ -1,5 +1,5 @@
-#ifndef def_zox_game_zoxel
-#define def_zox_game_zoxel
+#if !defined(zox_mod_game) && defined(zox_mod_players)
+#define zox_mod_game
 
 // todo: refactor cameras, do they even need ScreenPosition? we should just have CanvasLinks, and each camera is linked to a bunch? idk
 unsigned char boot_zoxel_game(ecs_world_t *world) {
@@ -8,12 +8,15 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
 #else
     game_name = "Zoxel b";
 #endif
-    if (initialize_zox(world) == EXIT_FAILURE) return EXIT_FAILURE;
+    const ecs_entity_t window = spawn_main_window(world);
+    load_shaders(world);
     if (!headless) {
         char* icon_path = concat_file_path(resources_path, "textures"character_slash"game_icon.png");
-        load_app_icon(main_window, icon_path);
+        load_app_icon(zox_gett_value(window, SDLWindow), icon_path);
         free(icon_path);
         set_sdl_cursor("resources/textures/cursor_02.png", int2_zero);
+    } else {
+        initialize_rendering(world);
     }
     // Realm,  players, skybox
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);

@@ -20,7 +20,7 @@ ecs_entity_t spawn_virtual_joystick(ecs_world_t *world, const ecs_entity_t canva
     const int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
     const float2 position2D = get_element_position(pixel_position_global, canvas_size);
     int2 pixel_size = virtual_joystick_size;
-    fix_for_screen_size(&pixel_size, screen_dimensions);
+    fix_for_screen_size(&pixel_size, viewport_dimensions);
     zox_instance(prefab_virtual_joystick)
     zox_name("virtual_joystick")
     ecs_entity_t parent = canvas;

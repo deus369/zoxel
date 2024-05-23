@@ -42,15 +42,13 @@ GLuint particle3D_fog_data_location;
 GLuint particle3D_location_thickness;
 
 int initialize_shader_particle3D() {
-    if (is_opengl_running()) {
-        particle3D_shader = spawn_gpu_shader_inline(source_vert_particle3D, source_frag_particle3D);
-        particle3D_material = spawn_gpu_material_program((const GLuint2) { particle3D_shader.x, particle3D_shader.y });
-        particle3D_position_location = glGetAttribLocation(particle3D_material, "position");
-        particle3D_color_location = glGetUniformLocation(particle3D_material, "color");
-        particle3D_camera_matrix_location = glGetUniformLocation(particle3D_material, "camera_matrix");
-        particle3D_fog_data_location = glGetUniformLocation(particle3D_material, "fog_data");
-        particle3D_location_thickness = glGetUniformLocation(particle3D_material, "thickness");
-    }
+    particle3D_shader = spawn_gpu_shader_inline(source_vert_particle3D, source_frag_particle3D);
+    particle3D_material = spawn_gpu_material_program((const GLuint2) { particle3D_shader.x, particle3D_shader.y });
+    particle3D_position_location = glGetAttribLocation(particle3D_material, "position");
+    particle3D_color_location = glGetUniformLocation(particle3D_material, "color");
+    particle3D_camera_matrix_location = glGetUniformLocation(particle3D_material, "camera_matrix");
+    particle3D_fog_data_location = glGetUniformLocation(particle3D_material, "fog_data");
+    particle3D_location_thickness = glGetUniformLocation(particle3D_material, "thickness");
     return 0;
 }
 

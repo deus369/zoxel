@@ -20,7 +20,7 @@ zox_component(LineAnchor, float4)
 #include "util/canvas_lines.c"
 #include "util/grid2D.c"
 
-void initialize_lines2D(ecs_world_t *world) {
+void spawn_shaders_lines2D(ecs_world_t *world) {
     if (!is_using_vulkan) initialize_shader_line2D();
 }
 
@@ -33,6 +33,7 @@ void spawn_prefabs_lines2D(ecs_world_t *world) {
 }
 
 zox_begin_module(Lines2D)
+add_load_shader_function(&spawn_shaders_lines2D);
 zox_define_tag(Line2D)
 zox_define_tag(FrameDebugLine)
 zox_define_tag(ElementLine2D)
@@ -44,6 +45,7 @@ zox_system(FrameDebugSystem, EcsOnUpdate, [none] FrameDebugLine, [in] ChildIndex
 zox_system(Line2DElementSystem, zox_pipelines_pre_render, [in] LinePosition2D, [in] CanvasLink, [out] LineData2D, [none] Line2D)
 if (!headless) zox_render3D_system(Line2DRenderSystem, [in] LineData2D, [in] LineThickness, [in] Color, [in] Layer2D, [none] Line2D, [none] !ElementLine2D)
 if (!headless) zox_render2D_system(ElementLine2DRenderSystem, [in] LineData2D, [in] LineThickness, [in] Color, [in] Layer2D, [none] Line2D, [none] ElementLine2D)
+spawn_prefabs_lines2D(world);
 zoxel_end_module(Lines2D)
 
 #endif

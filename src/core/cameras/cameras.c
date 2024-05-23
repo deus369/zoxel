@@ -95,6 +95,7 @@ zox_system_1(CameraDrawFrustumSystem, main_thread_pipeline, [in] TransformMatrix
 #ifdef zox_debug_camera_frustum
 zox_system_1(CameraDebugSystem, main_thread_pipeline, [in] CameraPlanes, [none] Camera)
 #endif
+spawn_prefabs_cameras(world);
 zoxel_end_module(Cameras)
 
 #endif

@@ -1,4 +1,4 @@
-#ifndef zox_realms2
+#if !defined(zox_realms2) && defined(zox_textures)
 #define zox_realms2
 
 // todo: Move module to core and add things to realm from modules!
@@ -16,6 +16,8 @@ void spawn_prefabs_realms2(ecs_world_t *world) {
 
 zox_begin_module(Realms2)
 zox_system(TerrainTextureSetSystem, EcsPreUpdate, [in] RealmLink, [out] GenerateTexture, [out] TilemapSize, [out] TextureLinks, [none] textures.core.Tilemap)
+initialize_realms2(world);
+    spawn_prefabs_realms2(world);
 zoxel_end_module(Realms2)
 
 #endif

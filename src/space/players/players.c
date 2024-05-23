@@ -1,5 +1,5 @@
-#ifndef _zox_players
-#define _zox_players
+#if !defined(zox_mod_players) && defined(zox_mod_characters)
+#define zox_mod_players
 
 // alot of systems here are actually controller ones, player + device + camera / character, or game states like pause system?
 #include "settings/settings.c"
@@ -14,13 +14,13 @@ zox_memory_component(PlayerLinks, ecs_entity_t)
 #include "players3D/players3D.c"
 #include "players2D/players2D.c"
 #include "util/player_ui.c"
+#include "util/terrain_util.c"
 #include "util/pause_util.c"
+#include "util/editor_util.c"
+#include "util/touch_util.c"
 #include "util/start_game.c"
 #include "util/end_game.c"
-#include "util/editor_util.c"
 #include "util/player_util.c"
-#include "util/touch_util.c"
-#include "util/terrain_util.c"
 #include "systems/free_camera_move_system.c"
 #include "systems/free_camera_rotate_system.c"
 #include "systems/free_camera_toggle_system.c"
@@ -46,6 +46,7 @@ void spawn_prefabs_players(ecs_world_t *world) {
 }
 
 zox_begin_module(Players)
+if (headless) return;
 zox_define_tag(Player)
 zox_define_tag(PlayerCharacter)
 zox_define_component_byte(PlayerState)
@@ -65,6 +66,9 @@ zox_system_1(PlayerTestSystem, main_thread_pipeline, [in] DeviceLinks, [in] Canv
 zox_system_1(PlayerPauseSystem, main_thread_pipeline, [in] DeviceLinks, [none] Player)
 zox_system_1(VirtualJoystickSystem, main_thread_pipeline, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterResult, [in] GameLink, [none] Player)
 zox_system_1(EditorInputSystem, main_thread_pipeline, [in] DeviceLinks, [in] CanvasLink, [none] Player)
+initialize_players(world);
+spawn_prefabs_players(world);
+zox_prefab_set(prefab_game, PlayerLinks, { 0, NULL })
 zoxel_end_module(Players)
 
 #endif

@@ -39,14 +39,21 @@ void dispose_sound_files() {
 #endif
 }
 
-ecs_entity_t spawn_sound_from_file(ecs_world_t *world, int index) {
-    zox_instance(prefab_sound)
+ecs_entity_t spawn_sound_from_file(ecs_world_t *world, const ecs_entity_t prefab, const int index) {
+    zox_instance(prefab)
     zox_name("sound_file")
 #ifdef SDL_MIXER
-    Mix_Chunk *mixChunk = clone_mix_chunk(sound_files[index]);
-    zox_set(e, SDLSound, { mixChunk })
-    zox_set(e, SoundLength, { get_mix_chunk_sound_length(mixChunk) })
+    if (index < sound_files_count && sound_files[index]) {
+        zox_log(" > playing sound file [%i]\n", index)
+        Mix_Chunk *mixChunk = clone_mix_chunk(sound_files[index]);
+        zox_set(e, SDLSound, { mixChunk })
+        zox_set(e, SoundLength, { get_mix_chunk_sound_length(mixChunk) })
+    } else {
+        zox_log(" ! sound index not found [%i]\n", index)
+    }
     //Mix_LoadWAV(sound_file_names[0]) }); //  sounds[0] });
+#else
+    zox_log(" ! sound cannot play as no SDL_MIXER [%i]\n", index)
 #endif
     return e;
 }

@@ -1,8 +1,8 @@
 #ifndef zox_voxels_chunks
 #define zox_voxels_chunks
 
-// core to any voxel model is chunks
 #include "data/settings.c"
+#include "data/trigger_states.c"
 zox_declare_tag(Chunk)
 zox_declare_tag(NoiseChunk)
 zox_component_int3(ChunkPosition)
@@ -11,10 +11,11 @@ zox_declare_tag(ChunkTextured)
 zox_declare_tag(LinkChunk)
 zox_declare_tag(DisableReverseLinkChunk)
 zox_component_int3(ChunkSize)
-zox_component_byte(GenerateChunk)
 zox_component_byte(ChunkDirty)
 zox_component_byte(ChunkLodDirty)
 zox_component_entity(VoxLink)
+zox_component_byte(GenerateChunk)
+// zox_component_byte(GenerateChunkEntities)
 zox_memory_component(ChunkData, unsigned char)
 zox_memory_component(ChunkNeighbors, ecs_entity_t)
 zoxel_octree_component(ChunkOctree, unsigned char, 0)
@@ -30,10 +31,13 @@ zox_hashmap_component(BlockSpawns, byte3)
 #include "util/link_util.c"
 #include "util/label_util.c"
 #include "prefabs/prefabs.c"
+// zox_reset_system(ChunkLodDirty)
+zox_increment_system(ChunkLodDirty, 3)
 #include "systems/chunk_build_system.c"
 #include "systems/chunk_link_system.c"
-#include "systems/chunk_lod_dirty_system.c"
 #include "systems/chunk_entities_lod_system.c"
+#include "systems/chunk_blocks_lod_system.c"
+#include "systems/chunk_entities_trigger_system.c"
 
 zox_begin_module(Chunks)
 zox_define_tag(Chunk)
@@ -48,6 +52,7 @@ zox_define_component_byte(ChunkDirty)
 zox_define_component_byte(ChunkLodDirty)
 zox_define_component_int3(ChunkSize)
 zox_define_component_byte(GenerateChunk)
+// zox_define_component(GenerateChunkEntities)
 zox_define_memory_component(ChunkData)
 zox_define_memory_component(ChunkNeighbors)
 zox_define_links_component(ChunkLink)
@@ -55,7 +60,13 @@ zoxel_octree_component_define(ChunkOctree)
 zox_define_hashmap_component(ChunkLinks)
 zox_define_hashmap_component(BlockSpawns)
 zox_system(ChunkLinkSystem, zox_pip_voxels, [in] VoxLink, [in] Position3D, [out] ChunkPosition, [out] ChunkLink, [none] LinkChunk)
-zox_system(ChunkEntitiesLodSystem, zox_pip_voxels_chunk_clean, [in] RenderLod, [in] EntityLinks, [in] BlockSpawns, [out] ChunkLodDirty) // , [none] terrain.TerrainChunk)
+zox_system(ChunkEntitiesLodSystem, zox_pip_voxels, [in] ChunkLodDirty, [in] RenderLod, [in] EntityLinks)
+zox_system(ChunkBlocksLodSystem, zox_pip_voxels, [in] ChunkLodDirty, [in] RenderLod, [in] BlockSpawns)
+// zox_system(ChunkEntitiesTriggerSystem, zox_pip_voxels, [in] ChunkLodDirty, [out] GenerateChunkEntities)
+// zox_define_reset_system_pip(ChunkLodDirty, EcsPostUpdate)
+// zox_define_increment_system(GenerateChunkEntities, EcsOnLoad)
+zox_define_increment_system(ChunkLodDirty, EcsOnLoad)
+spawn_prefabs_chunks(world);
 zoxel_end_module(Chunks)
 
 #endif

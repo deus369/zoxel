@@ -3,7 +3,9 @@
 const char *sdl_window_name = "Zoxel";
 int2 default_window_position = { 0, 0 };
 const int2 default_window_size = { 1280, 720 };
-int2 screen_dimensions = { 1920, 1080 }; // gets set initially
+// Set Initially
+int2 screen_dimensions = { 1920, 1080 };
+int2 viewport_dimensions;
 unsigned char running = 1;
 unsigned char rendering = 1;
 unsigned char headless = 0;

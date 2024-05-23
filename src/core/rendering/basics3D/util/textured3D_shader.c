@@ -12,9 +12,9 @@ ecs_entity_t spawn_shader_textured3D(ecs_world_t *world) {
 
 ecs_entity_t spawn_material_textured3D(ecs_world_t *world) {
     const ecs_entity_t shader = spawn_shader_textured3D(world);
-    const ecs_entity_t e = spawn_material(world, shader);
+    GLuint material;
+    const ecs_entity_t e = spawn_material(world, shader, &material);
     zox_set(e, ShaderLink, { shader })
-    const GLuint material = zox_get_value(e, MaterialGPULink)
     const MaterialTextured3D attributes = create_MaterialTextured3D(material);
     zox_set_data(e, MaterialTextured3D, attributes)
     material_textured3D = e;

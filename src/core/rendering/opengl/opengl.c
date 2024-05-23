@@ -34,10 +34,6 @@ unsigned char initialize_opengl(ecs_world_t *world) {
     print_opengl();
     check_compute();
     check_geometry();
-    if (opengl_load_shaders(world) == EXIT_FAILURE) {
-        zoxel_log(" - failed to load all shaders\n");
-        return EXIT_FAILURE;
-    }
     return EXIT_SUCCESS;
 }
 

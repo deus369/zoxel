@@ -11,14 +11,15 @@ zox_component_entity(Character2DLink)
 
 void spawn_prefabs_characters2D(ecs_world_t *world) {
     spawn_prefab_character2D(world, character2DTextureSize);
-#ifdef zoxel_test_character2Ds
-    spawn_many_characters2D();
-#endif
 }
 
 zox_begin_module(Characters2D)
 zox_define_tag(Character2D)
 zox_define_component_entity(Character2DLink)
+spawn_prefabs_characters2D(world);
+#ifdef zoxel_test_character2Ds
+    spawn_many_characters2D();
+#endif
 zoxel_end_module(Characters2D)
 
 #endif
