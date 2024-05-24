@@ -10,8 +10,8 @@ void FreeCameraMoveSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(CameraLink, cameraLinks, cameraLink)
         if (cameraLink->value == 0) continue;
-        const FreeRoam *freeRoam = zox_get(cameraLink->value, FreeRoam)
-        if (freeRoam->value == 0) continue;
+        const CanRoam *canRoam = zox_get(cameraLink->value, CanRoam)
+        if (canRoam->value != 2) continue;
         zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
         float3 movement = { 0, 0, 0 };
         for (int j = 0; j < deviceLinks->length; j++) {

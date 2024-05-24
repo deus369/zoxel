@@ -1,3 +1,4 @@
+// handles changes in device mode
 void DeviceModeResponseSystem(ecs_iter_t *it) {
     zox_iter_world()
     zox_field_in(DeviceMode, deviceModes, 1)

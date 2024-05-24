@@ -6,12 +6,12 @@ void set_camera_free(ecs_world_t *world, const ecs_entity_t camera, const unsign
     zox_set(camera, Euler, { euler })
     if (camera_follow_mode == zox_camera_follow_mode_attach) zox_set(camera, ParentLink, { 0 })
     else if (camera_follow_mode == zox_camera_follow_mode_follow_xz) zox_set(camera, CameraFollowLink, { 0 })
-    if (is_free) zox_set(camera, CanFreeRoam, { 1 })
+    if (is_free) zox_set(camera, CanRoam, { 1 })
 }
 
 void set_camera_locked(ecs_world_t *world, const ecs_entity_t camera, const ecs_entity_t target) {
     zox_add_tag(camera, FirstPersonCamera)
-    zox_set(camera, CanFreeRoam, { 0 })
+    zox_set(camera, CanRoam, { 0 })
     if (camera_follow_mode == zox_camera_follow_mode_attach) zox_set(camera, ParentLink, { target })
     else if (camera_follow_mode == zox_camera_follow_mode_follow_xz) zox_set(camera, CameraFollowLink, { target })
     zox_set(camera, EternalRotation, { quaternion_identity })
@@ -55,7 +55,7 @@ void toggle_free_roam_camera(ecs_world_t *world, const ecs_entity_t e) {
         const ecs_entity_t camera = zox_get_value(e, CameraLink)
         const ecs_entity_t character = zox_get_value(e, CharacterLink)
         // const ecs_entity_t character_camera = zox_get_value(character, CameraLink)
-        const unsigned char is_camera_free = zox_get_value(camera, CanFreeRoam)
+        const unsigned char is_camera_free = zox_get_value(camera, CanRoam)
         if (is_camera_free) attach_to_character(world, e, camera, character);
         else detatch_from_character(world, e, camera, character, 1);
     }

@@ -10,8 +10,8 @@ void FreeCameraToggleSystem(ecs_iter_t *it) {
         if (gameState->value != zox_game_playing) continue;
         zox_field_i_in(CameraLink, cameraLinks, cameraLink)
         if (cameraLink->value == 0) continue;
-        const CanFreeRoam *canFreeRoam = zox_get(cameraLink->value, CanFreeRoam)
-        if (canFreeRoam->value == 0) continue;
+        const CanRoam *canRoam = zox_get(cameraLink->value, CanRoam)
+        if (!canRoam->value) continue;
         zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
         unsigned char is_triggered = 0;
         ecs_entity_t mouse_entity = 0;
@@ -26,9 +26,9 @@ void FreeCameraToggleSystem(ecs_iter_t *it) {
         if (is_triggered && mouse_entity != 0) {
             const MouseLock *mouseLock = zox_get(mouse_entity, MouseLock)
             unsigned char new_value = !mouseLock->value;
-            // zoxel_log(" > free camera toggled [%s]\n", new_value ? "on" : "off");
             zox_set(mouse_entity, MouseLock, { new_value })
-            zox_set(cameraLink->value, FreeRoam, { new_value })
+            zox_set(cameraLink->value, CanRoam, { new_value ? 2 : 1 })
+            // zoxel_log(" > free camera toggled [%s]\n", new_value ? "on" : "off");
         }
     }
 } zox_declare_system(FreeCameraToggleSystem)

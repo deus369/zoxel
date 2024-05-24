@@ -68,7 +68,7 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
             float3 chunk_position_real = float3_add(float3_half, float3_multiply_float(int3_to_float3(chunkPosition->value), 16.0f)); // calculate
             SpawnBlockVox spawn_data = {
                 .prefab = prefab_block_vox,
-                .vox = &vox_files[test_block_vox_index],
+                .vox = vox_files[test_block_vox_index],
                 .render_lod = vox_lod,
                 .render_disabled = renderDisabled->value // until i get frustum to cull these
             };

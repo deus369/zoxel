@@ -1,5 +1,5 @@
-#ifndef zoxel_maths
-#define zoxel_maths
+#ifndef zox_mod_maths
+#define zox_mod_maths
 
 #ifndef M_PI
 #define M_PI 3.141592653589793

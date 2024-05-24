@@ -18,8 +18,7 @@ ecs_entity_t spawn_camera_base_prefab(ecs_world_t *world) {
     zox_prefab_set(e, ScreenDimensions, { int2_zero })
     zox_prefab_set(e, FieldOfView, { 0 })
     zox_prefab_set(e, CameraNearDistance, { camera_near_distance })
-    zox_prefab_set(e, CanFreeRoam, { 0 })
-    zox_prefab_set(e, FreeRoam, { 0 }) // newer
+    zox_prefab_set(e, CanRoam, { 0 }) // newer
     zox_prefab_set(e, CameraMode, { 0 })
     zox_prefab_set(e, ScreenToCanvas, { float4_zero })
     // culling

@@ -9,6 +9,3 @@ const int2 crosshair_texture_size = (int2) { 128, 128 };
 const int2 crosshair_pixel_size = (int2) { 64, 64 };
 const color crosshair_color = (color) { 255, 255, 255, 88 };
 
-const double movement_multiplier = 0.08 * 25;
-const double shift_movement_multiplier = 12.0;
-

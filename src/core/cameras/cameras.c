@@ -1,5 +1,5 @@
-#ifndef zox_cameras
-#define zox_cameras
+#if !defined(zox_mod_cameras) && defined(zox_mod_transforms)
+#define zox_mod_cameras
 
 #include "data/camera_spawn_data.c"
 #include "data/bounds.c"
@@ -11,8 +11,7 @@ zox_declare_tag(Camera3D)
 zox_declare_tag(FirstPersonCamera)
 zox_declare_tag(CameraFollower2D)
 zox_declare_tag(CameraUI)
-zox_component_byte(FreeRoam)
-zox_component_byte(CanFreeRoam)
+zox_component_byte(CanRoam)
 zox_component_byte(CameraMode)
 zox_component_byte(CameraViewing)
 zox_component_float(FieldOfView)
@@ -67,8 +66,7 @@ zox_define_tag(Camera3D)
 zox_define_tag(FirstPersonCamera)
 zox_define_tag(CameraFollower2D)
 zox_define_tag(CameraUI)
-zox_define_component_byte(FreeRoam)
-zox_define_component_byte(CanFreeRoam)
+zox_define_component_byte(CanRoam)
 zox_define_component_byte(CameraMode)
 zox_define_component_byte(CameraViewing)
 zox_define_component_float(FieldOfView)
@@ -83,7 +81,7 @@ zox_define_component(ViewMatrix)
 zox_define_component(ViewProjectionMatrix)
 zox_define_component_float4(ScreenToCanvas)
 zox_define_memory_component(CameraPlanes)
-zox_system(Camera2DFollowSystem, EcsPostUpdate, [in] FreeRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D, [none] CameraFollower2D)
+zox_system(Camera2DFollowSystem, EcsPostUpdate, [in] CanRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D, [none] CameraFollower2D)
 zox_system(Camera3DFollowSystem, EcsPostUpdate, [in] CameraFollowLink, [in] LocalPosition3D, [out] Position3D)
 zox_system(ViewMatrixSystem, zox_camera_stage, [in] TransformMatrix, [in] ProjectionMatrix, [out] ViewMatrix)
 zox_system(ProjectionMatrixSystem, zox_camera_stage, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)

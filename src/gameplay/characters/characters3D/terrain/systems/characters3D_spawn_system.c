@@ -1,7 +1,7 @@
 // notes: to test, set terrain to 1x1x1 chunks, disable physics, enable this systems logging
 // get function from AI module for now
 // todo: reorganize, perhaps move t this module up to gameplay - or a world module, that handles terrain better procedural generation stuff
-extern ecs_entity_t spawn_character3D_npc(ecs_world_t *world, ecs_entity_t_array_d* entities, const vox_file *vox, const float3 position, const float4 rotation, const unsigned char character_lod, const unsigned char render_disabled);
+extern ecs_entity_t spawn_character3D_npc(ecs_world_t *world, ecs_entity_t_array_d* entities, const ecs_entity_t vox, const float3 position, const float4 rotation, const unsigned char character_lod, const unsigned char render_disabled);
 
 void Characters3DSpawnSystem(ecs_iter_t *it) {
     zox_iter_world()
@@ -49,14 +49,14 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             }
             if (!did_find_ground) continue;
             int vox_index = rand() % npc_vox_index_count;
-            vox_file vox = vox_files[npc_vox_indexes[vox_index]];
+            ecs_entity_t vox = vox_files[npc_vox_indexes[vox_index]];
             int3 global_voxel_position = int3_add(chunk_voxel_position, byte3_to_int3(local_position));
             float3 position = (float3) { global_voxel_position.x, global_voxel_position.y, global_voxel_position.z };
             float3_multiply_float_p(&position, terrain_voxel_scale);
             float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
             position.y += 0.26f; // 0.75f;
             position.y += 0.06f; // extra
-            spawn_character3D_npc(world, entities, &vox, position, rotation, vox_lod, renderDisabled->value);
+            spawn_character3D_npc(world, entities, vox, position, rotation, vox_lod, renderDisabled->value);
         }
         clear_memory_component(EntityLinks, entityLinks);
         entityLinks->length = entities->size;

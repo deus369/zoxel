@@ -1,48 +1,4 @@
-const int particleSpawnCount = 266;
-const float debug_rotation_speed = 12;
-const float debug_rotation_addition = 5;
-extern ecs_entity_t local_character3D; // change to devicece links and use e!
 
-void PlayerMoreShortcutsSystem(ecs_iter_t *it) {
-    zox_iter_world()
-    zox_field_in(Keyboard, keyboards, 1)
-    for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(Keyboard, keyboards, keyboard)
-        // toggle player connected application
-        if ((keyboard->left_alt.is_pressed || keyboard->right_alt.is_pressed) && keyboard->enter.pressed_this_frame) sdl_toggle_fullscreen(world, main_app);
-#ifdef zoxel_tests_rotate_by_keys
-        else if (keyboard->r.is_pressed) {
-            float3 euler = (float3) { 0, 90 * degreesToRadians, 0 * degreesToRadians };
-            //float4 quaternion = (float4) { 0, debug_rotation_speed, 0, 1 };
-            //quaternion_normalize(&quaternion);
-            zox_set(local_character3D, Alpha3D, { quaternion_from_euler(euler) });
-        } else if (keyboard->t.is_pressed) {
-            float3 euler = (float3) { 0, -90 * degreesToRadians, 0 * degreesToRadians };
-            //float4 quaternion = (float4) { 0, -debug_rotation_speed, 0, 1 };
-            //quaternion_normalize(&quaternion);
-            zox_set(local_character3D, Alpha3D, { quaternion_from_euler(euler) });
-        } else if (keyboard->y.pressed_this_frame) {
-            float3 euler = (float3) { 0 * degreesToRadians, (-90 + debug_rotation_addition) * degreesToRadians, 0 * degreesToRadians };
-            zox_set(local_character3D, Rotation3D, { quaternion_from_euler(euler) });
-        } else if (keyboard->u.pressed_this_frame) {
-            float3 euler = (float3) { 0 * degreesToRadians, (0 + debug_rotation_addition) * degreesToRadians, 0 * degreesToRadians };
-            zox_set(local_character3D, Rotation3D, { quaternion_from_euler(euler) });
-        } else if (keyboard->i.pressed_this_frame) {
-            float3 euler = (float3) { 0 * degreesToRadians, (90 + debug_rotation_addition) * degreesToRadians, 0 * degreesToRadians };
-            zox_set(local_character3D, Rotation3D, { quaternion_from_euler(euler) });
-        } else if (keyboard->o.pressed_this_frame) {
-            float3 euler = (float3) { 0 * degreesToRadians, (180 + debug_rotation_addition) * degreesToRadians, 0 * degreesToRadians };
-            zox_set(local_character3D, Rotation3D, { quaternion_from_euler(euler) });
-        } else if (keyboard->f.pressed_this_frame) {
-            zoxel_log(" > reset omega3D\n");
-            zox_set(local_character3D, Omega3D, { quaternion_identity });
-        } else if (keyboard->g.pressed_this_frame) {
-            zoxel_log(" > reset alpha3D\n");
-            zox_set(local_character3D, Alpha3D, { quaternion_identity });
-        }
-#endif
-    }
-} zox_declare_system(PlayerMoreShortcutsSystem)
 
 
 /* else if (keyboard->space.is_pressed || keyboard->f.is_pressed) {
@@ -115,3 +71,19 @@ void PlayerMoreShortcutsSystem(ecs_iter_t *it) {
     DebugParticlesSpawned(world);
     // print_keyboard(world);
 }*/
+
+
+#ifdef zox_test_quaternion_camera
+                /*Rotation3D *rotation3D = &rotation3Ds[j];
+                float dx = - mouse->delta.x * camera_quaternion_speed;
+                float dy = mouse->delta.y * camera_quaternion_speed;
+                float angle = sqrt(dx * dx + dy * dy);
+                float axis[3] = { dy / angle, dx / angle, 0 };
+                float4 rotate_delta = (float4) {
+                    sin(angle / 2.0f) * axis[0],
+                    sin(angle / 2.0f) * axis[1],
+                    sin(angle / 2.0f) * axis[2],
+                    cos(angle / 2.0f)
+                };
+                rotation3D->value = quaternion_rotate(rotation3D->value, rotate_delta);*/
+#else

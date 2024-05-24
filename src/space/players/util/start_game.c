@@ -24,8 +24,8 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
             spawn_position.z += rand() % 16;
         }
         const float4 spawn_rotation = quaternion_identity;
-        const vox_file vox = vox_files[player_vox_index]; // get mr penguin vox
-        character_group = spawn_player_character3D_in_world(world, &vox, spawn_position, spawn_rotation, 0, player);
+        const ecs_entity_t vox = vox_files[player_vox_index]; // get mr penguin vox
+        character_group = spawn_player_character3D_in_world(world, vox, spawn_position, spawn_rotation, 0, player);
         const ecs_entity_t character = character_group.x;
         zox_set(player, CharacterLink, { character })
         zox_set(character, CameraLink, { camera })

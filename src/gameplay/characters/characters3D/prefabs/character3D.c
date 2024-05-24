@@ -41,7 +41,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
     return e;
 }
 
-ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, const vox_file *vox, const float3 position, const float4 rotation, const unsigned char lod, const ecs_entity_t player, const float vox_scale, const unsigned char render_disabled) {
+ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t vox, const float3 position, const float4 rotation, const unsigned char lod, const ecs_entity_t player, const float vox_scale, const unsigned char render_disabled) {
     zox_instance(prefab)
     zox_name("character3D")
     zox_set(e, RenderDisabled, { render_disabled })
@@ -74,7 +74,7 @@ ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, co
     zox_set(e, Rotation3D, { rotation })
     // voxels
     zox_set(e, VoxLink, { local_terrain })
-    set_vox_from_vox_file(world, e, vox);
+    clone_vox_data(world, e, vox);
     /// rendering
     zox_set(e, RenderLod, { lod })
     spawn_gpu_mesh(world, e);

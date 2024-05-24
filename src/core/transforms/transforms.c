@@ -1,5 +1,5 @@
-#ifndef zox_transforms
-#define zox_transforms
+#if !defined(zox_mod_transforms) && defined(zox_mod_maths)
+#define zox_mod_transforms
 
 zox_component_float(Scale1D)
 #include "hierarchy/hierarchy.c"

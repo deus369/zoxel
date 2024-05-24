@@ -1,6 +1,6 @@
 typedef struct {
     ecs_entity_t prefab;
-    vox_file *vox;
+    ecs_entity_t vox;
     unsigned char render_lod;
     unsigned char render_disabled;
     byte3 position_local;

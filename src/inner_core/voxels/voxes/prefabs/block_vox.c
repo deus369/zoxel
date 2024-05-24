@@ -16,7 +16,7 @@ ecs_entity_t spawn_block_vox(ecs_world_t *world, const SpawnBlockVox *data) {
     zox_set(e, Position3D, { data->position_real })
     zox_set(e, RenderLod, { data->render_lod })
     zox_set(e, RenderDisabled, { data->render_disabled })
-    set_vox_from_vox_file(world, e, data->vox);
+    clone_vox_data(world, e, data->vox);
     spawn_gpu_mesh(world, e);
     spawn_gpu_colors(world, e);
     return e;

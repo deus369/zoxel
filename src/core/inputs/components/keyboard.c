@@ -51,18 +51,27 @@ typedef struct {
     PhysicalButton up;
     PhysicalButton left;
     PhysicalButton right;
+    PhysicalButton f1;
+    PhysicalButton f2;
+    PhysicalButton f3;
+    PhysicalButton f4;
+    PhysicalButton f5;
+    PhysicalButton f6;
+    PhysicalButton f7;
+    PhysicalButton f8;
+    PhysicalButton f9;
+    PhysicalButton f10;
+    PhysicalButton f11;
+    PhysicalButton f12;
 } Keyboard;
 zox_custom_component(Keyboard)
 
 unsigned char keyboard_is_any_input(const Keyboard *keyboard) {
-    return (keyboard->enter.is_pressed ||
-        keyboard->backspace.is_pressed ||
-        keyboard->w.is_pressed ||
-        keyboard->a.is_pressed ||
-        keyboard->s.is_pressed ||
-        keyboard->d.is_pressed ||
-        keyboard->space.is_pressed);
+    return (keyboard->enter.is_pressed || keyboard->backspace.is_pressed || keyboard->space.is_pressed ||
+        keyboard->w.is_pressed || keyboard->a.is_pressed || keyboard->s.is_pressed || keyboard->d.is_pressed);
 }
+
+#define reset_keyboard_key(key) reset_key(&keyboard->key);
 
 void device_reset_keyboard(ecs_world_t *world, ecs_entity_t keyboard_entity) {
     if (!keyboard_entity || !ecs_is_alive(world, keyboard_entity)) return;
@@ -104,6 +113,17 @@ void device_reset_keyboard(ecs_world_t *world, ecs_entity_t keyboard_entity) {
     reset_key(&keyboard->up);
     reset_key(&keyboard->left);
     reset_key(&keyboard->right);
+    reset_keyboard_key(f1)
+    reset_keyboard_key(f2)
+    reset_keyboard_key(f3)
+    reset_keyboard_key(f4)
+    reset_keyboard_key(f5)
+    reset_keyboard_key(f7)
+    reset_keyboard_key(f8)
+    reset_keyboard_key(f9)
+    reset_keyboard_key(f10)
+    reset_keyboard_key(f11)
+    reset_keyboard_key(f12)
     zox_modified(keyboard_entity, Keyboard)
 }
 

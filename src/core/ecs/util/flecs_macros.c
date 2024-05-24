@@ -7,10 +7,9 @@
 
 #define zox_remove(e, T) ecs_remove(world, e, T);
 
-#define zox_add_new(e, T, ...) {\
-    ecs_set_id(world, e, ecs_id(T), sizeof(T), &(T)__VA_ARGS__);\
-    ecs_override_id(world, e, ecs_id(T));\
-}
+#define zox_prefab_add(e, T)\
+ecs_add(world, e, T);\
+ecs_override_id(world, e, ecs_id(T));
 
 #define zox_set_data(e, T, data) ecs_set_id(world, e, ecs_id(T), sizeof(T), &data);
 
