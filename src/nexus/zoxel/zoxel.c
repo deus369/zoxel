@@ -14,7 +14,9 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         char* icon_path = concat_file_path(resources_path, "textures"character_slash"game_icon.png");
         load_app_icon(zox_gett_value(window, SDLWindow), icon_path);
         free(icon_path);
-        set_sdl_cursor("resources/textures/cursor_02.png", int2_zero);
+        char* cursor_path = concat_file_path(resources_path, "textures"character_slash"cursor_02.png");
+        set_sdl_cursor(cursor_path, int2_zero);
+        free(cursor_path);
     } else {
         initialize_rendering(world);
     }
