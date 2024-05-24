@@ -9,16 +9,22 @@
 #include "data/settings.c"
 #include "util/boot_util.c"
 #include "util/engine.c"
-#include "util/zox_util.c"
 
 // engine imports, besides sub modules, it's core is flecs
 zox_begin_module(Zox)
 zox_import_module(Core)
-zox_import_module(InnerCore)
-// zox_import_module(OuterCore)
-zox_import_module(Users)
-zox_import_module(Gameplay)
-zox_import_module(Space)
+#ifdef zox_mod_inner_core
+    zox_import_module(InnerCore)
+#endif
+#ifdef zox_mod_users
+    zox_import_module(Users)
+#endif
+#ifdef zox_mod_gameplay
+    zox_import_module(Gameplay)
+#endif
+#ifdef zox_mod_space
+    zox_import_module(Space)
+#endif
 zoxel_end_module(Zox)
 
 #endif

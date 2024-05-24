@@ -10,6 +10,7 @@ zox_declare_tag(ElementBillboard)
 zox_declare_tag(BoundToCanvas)
 zox_declare_tag(CanvasOverlay)
 zox_declare_tag(Window)
+zox_declare_tag(ElementRender)
 zox_component_byte(InitializeEntityMesh)
 zox_component_byte(NavigatorState)
 zox_component_byte(ElementFontSize)
@@ -60,6 +61,8 @@ zox_component_byte(ElementLayer)
 #include "systems/canvas_resize_system.c"
 #include "systems/canvas_stack_system.c"
 #include "systems/window_layer_system.c"
+#include "systems/element_render_system.c"
+#include "systems/element3D_render_system.c"
 
 zox_begin_module(UICore)
 zox_define_tag(Element)
@@ -70,6 +73,7 @@ zox_define_tag(ElementBillboard)
 zox_define_tag(BoundToCanvas)
 zox_define_tag(CanvasOverlay)
 zox_define_tag(Window)
+zox_define_tag(ElementRender)
 zox_define_component_byte(InitializeEntityMesh)
 zox_define_component_byte(NavigatorState)
 zox_define_component_byte(ElementFontSize)
@@ -112,6 +116,10 @@ if (!headless) {
 zox_system(CanvasResizeSystem, EcsOnUpdate, [in] CameraLink, [in] Children, [in] cameras.ScreenToCanvas, [out] PixelSize, [none] Canvas)
 zox_system(CanvasStackSystem, EcsOnUpdate, [in] Children, [out] WindowToTop, [out] WindowsLayers, [out] WindowsCount, [none] Canvas)
 zox_system(WindowLayerSystem, EcsOnUpdate, [in] SetWindowLayer, [in] CanvasLink, [in] Children, [out] WindowLayer, [out] Layer2D, [none] Window)
+// all ui
+zox_render2D_system(ElementRenderSystem, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D,  [in] RenderDisabled, [in] Brightness, [in] Alpha, [in] MeshGPULink, [in] UvsGPULink, [in] TextureGPULink, [in] MeshDirty, [none] ElementRender)
+// healthbars
+zox_render3D_system(Element3DRenderSystem, [in] TransformMatrix, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] TextureGPULink, [in] RenderDisabled, [none] rendering.core.SingleMaterial)
 spawn_prefabs_ui_core(world);
 zoxel_end_module(UICore)
 

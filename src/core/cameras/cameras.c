@@ -16,16 +16,15 @@ zox_component_byte(CameraMode)
 zox_component_byte(CameraViewing)
 zox_component_float(FieldOfView)
 zox_component_float(CameraNearDistance)
-zox_component_int2(ScreenDimensions)
-zox_component_int2(ScreenPosition)
 zox_component_entity(CameraLink)
 zox_component_entity(CameraTarget)
 zox_component_entity(CameraFollowLink)
-zox_component(ProjectionMatrix, float4x4)
-zox_component(ViewMatrix, float4x4) // todo: rename to ViewProjectionMatrix
-// todo: use this for ViewMatrix (current use) and use ViewMatrix just as Inverted TransformMatrix
-zox_component(ViewProjectionMatrix, float4x4)
+zox_component_int2(ScreenDimensions)
+zox_component_int2(ScreenPosition)
 zox_component_float4(ScreenToCanvas)
+zox_component(ProjectionMatrix, float4x4)
+zox_component(ViewMatrix, float4x4) // todo: use ViewProjectionMatrix instead
+zox_component(ViewProjectionMatrix, float4x4)
 zox_memory_component(CameraPlanes, plane)
 #include "fun/camera_util.c"
 #include "util/bounds_util.c"
@@ -50,13 +49,6 @@ void spawn_prefabs_cameras(ecs_world_t *world) {
     spawn_camera_base_prefab(world);
     spawn_prefab_free_camera(world);
     spawn_prefab_camera2D_follower(world);
-#ifdef zox_test_camera_frustum
-    test_frustum_check();
-    /*test_corners();
-    test_calculate_plane_from_points();
-    test_calculate_planes_from_frustum();*/
-#endif
-    // test_planes_again();
 }
 
 zox_begin_module(Cameras)
@@ -95,5 +87,8 @@ zox_system_1(CameraDebugSystem, main_thread_pipeline, [in] CameraPlanes, [none] 
 #endif
 spawn_prefabs_cameras(world);
 zoxel_end_module(Cameras)
+
+// todo: use this for ViewMatrix (current use) and use ViewMatrix just as Inverted TransformMatrix
+// todo: refactor cameras do they even need ScreenPosition? we should just have CanvasLinks, and each camera is linked to a bunch? idk
 
 #endif

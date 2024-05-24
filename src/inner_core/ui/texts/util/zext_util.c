@@ -151,13 +151,8 @@ unsigned char set_entity_with_text(ecs_world_t *world, const ecs_entity_t e, con
 }
 
 void set_new_zox_name(ecs_world_t *world, const ecs_entity_t e, const char* text) {
-    zox_set(e, ZoxName, { strlen(text), convert_string_to_zext(text) })
-    /*if (!zox_has(e, ZextData)) zox_set(e, ZextData, { 0, NULL })
-    ZextData *zextData = zox_get_mut(e, ZextData)
-    if (is_zext(zextData, text)) return 0;
-    set_zext(zextData, text);
-    zox_modified(e, ZextData)
-    return 1;*/
+    zox_set_zext_component(e, ZoxName, text)
+    // zox_set(e, ZoxName, { strlen(text), convert_string_to_zext(text) })
 }
 
 

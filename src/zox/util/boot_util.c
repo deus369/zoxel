@@ -4,7 +4,9 @@ ecs_entity_t spawn_player_camera(ecs_world_t *world, const ecs_entity_t player, 
     const ecs_entity_t e = spawn_base_camera(world, camera_position, camera_rotation, fov, viewport_position, viewport_size, screen_to_canvas);
     zox_add_tag(e, Camera3D)
     const ecs_entity_t e2 = spawn_camera_ui(world, viewport_position, viewport_size);
-    zox_prefab_set(e, EternalRotation, { main_menu_rotation_speed })
+#ifdef zox_mod_animations
+    zox_set(e, EternalRotation, { main_menu_rotation_speed })
+#endif
     zox_set(player, CameraLink, { e })
     main_cameras[index] = e;
     ui_cameras[index] = e2;
@@ -12,6 +14,7 @@ ecs_entity_t spawn_player_camera(ecs_world_t *world, const ecs_entity_t player, 
 }
 
 // todo: spawn unique canvas per viewport, viewports per player
+#ifdef zox_mod_ui
 ecs_entity_t spawn_default_ui(ecs_world_t *world, const ecs_entity_t camera, const int2 dimensions, const float4 screen_to_canvas) {
     const ecs_entity_t canvas = spawn_canvas(world, camera, dimensions, screen_to_canvas);
     spawn_canvas_overlay(world, canvas, dimensions);
@@ -19,9 +22,6 @@ ecs_entity_t spawn_default_ui(ecs_world_t *world, const ecs_entity_t camera, con
 }
 
 void zox_spawn_main_menu(ecs_world_t *world, const ecs_entity_t player, const char *game_name, ecs_entity_t canvas) {
-#ifdef zox_disable_main_menu
-    return;
-#endif
     const float2 main_menu_anchor = float2_half;
     const int2 main_menu_position = int2_zero;
     zoxel_main_menu = spawn_main_menu(world, player, canvas, game_name, main_menu_position, main_menu_anchor);
@@ -35,8 +35,10 @@ void zox_spawn_main_menu(ecs_world_t *world, const ecs_entity_t player, const ch
     spawn_canvas_edge_lines(world, canvas);
 }
 
+#endif
+
 void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game) {
-#ifdef zox_mod_players
+#if defined(zox_mod_players) && defined(zox_mod_ui)
     zox_prefab_set(prefab_canvas, PlayerLink, { 0 })
     spawn_players(world, game);
     set_camera_mode_pre_defined(world);

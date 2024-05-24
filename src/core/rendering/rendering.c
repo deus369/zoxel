@@ -6,7 +6,6 @@
 #include "data/settings.c"
 // zoxel_declare_components
 zox_declare_tag(Mesh)
-zox_declare_tag(ElementRender)
 zox_component_byte(MeshDirty)
 zox_component_entity(MeshLink)
 zox_component_byte(TextureDirty)
@@ -36,7 +35,6 @@ void dispose_rendering(ecs_world_t *world, void *ctx) {
 zox_begin_module(Rendering)
 zox_module_dispose(dispose_rendering)
 zox_define_tag(Mesh)
-zox_define_tag(ElementRender)
 zox_define_component_byte(MeshDirty)
 zox_define_component_byte(MeshAlignment)
 zox_define_component_entity(MeshLink)

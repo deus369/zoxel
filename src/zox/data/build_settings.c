@@ -1,6 +1,6 @@
 // Here? select which zoxel modules I shall use?
 
-#define zox_print_files
+// #define zox_print_files
 
 // #define zox_beta
 // to fix windows build

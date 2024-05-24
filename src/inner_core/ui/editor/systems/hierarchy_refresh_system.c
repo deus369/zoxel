@@ -65,7 +65,9 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         // add game entities
         add_entity_to_labels(world, realm, labels, entities, 0);
         add_to_labels_voxel_links(world, realm, labels, entities, 0);
+#ifdef zox_mod_stats
         add_to_labels_stat_links(world, realm, labels, entities, 0);
+#endif
         add_entity_to_labels(world, local_music, labels, entities, 0);
         for (int k = 0; k < main_cameras_count; k++) {
             add_entity_to_labels(world, main_cameras[k], labels, entities, 0);

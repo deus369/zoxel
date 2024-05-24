@@ -1,5 +1,5 @@
-#ifndef zox_animations
-#define zox_animations
+#ifndef zox_mod_animations
+#define zox_mod_animations
 
 // currently we are animating components by hand
 // later we must customly choose what curves to apply to what components

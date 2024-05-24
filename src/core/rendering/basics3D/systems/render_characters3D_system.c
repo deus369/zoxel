@@ -1,7 +1,8 @@
 // #define zox_debug_render3D_colored
 // #define max_character_mesh_indicies 1000000
 //#define zox_disable_render_characters
-extern int zox_statistics_characters_rendered;
+int zox_statistics_characters_rendered;
+// extern int zox_statistics_characters_rendered;
 
 void RenderCharacters3DSystem(ecs_iter_t *it) {
     if (!material_colored3D) zox_log(" ! RenderCharacters3DSystem - has no material\n")

@@ -1,5 +1,5 @@
-#ifndef zox_gameplay
-#define zox_gameplay
+#ifndef zox_mod_gameplay
+#define zox_mod_gameplay
 
 #include "crafting/crafting.c"
 #include "farming/farming.c"

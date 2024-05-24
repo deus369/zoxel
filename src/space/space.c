@@ -1,5 +1,5 @@
-#ifndef zox_space
-#define zox_space
+#ifndef zox_mod_space
+#define zox_mod_space
 
 #include "weathers/weathers.c"
 #include "realms/realms.c"

@@ -269,11 +269,8 @@ check-flecs:
 cc_windows=x86_64-w64-mingw32-gcc # -Wall -g
 target_windows = build/windows/zoxel.exe
 windows_pre_libs = -Llib
-windows_libs = -lm -lpthread
+windows_libs = -lm -lpthread -lopengl32 -lglew32 -LSDL2main -lSDL2
 windows_libs += -Wl,-subsystem,windows -mwindows -lws2_32 # windows only
-windows_libs += -lopengl32 -lglew32
-# more sdl2
-windows_libs += -LSDL2main -lSDL2
 ifeq ($(use_lib_sdl_image), true)
 	windows_libs += -lSDL2_image
 endif
@@ -287,20 +284,27 @@ windows_includes += -Ibuild/sdl/include -Ibuild/sdl_image/include -Ibuild/sdl_mi
 windows_includes += -Lbuild/sdl/lib/x64 -Lbuild/sdl_image/lib/x64 -Lbuild/sdl_mixer/lib/x64
 windows_includes += -Ibuild/glew/include -Lbuild/glew/lib/Release/x64 # glew
 # command
-make_windows = $(cc_windows) $(CFLAGS) $(CFLAGS_RELEASE) $(OBJS) include/flecs/flecs.c -o $(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs) --static # this fixes thread dll issue
+make_windows = \
+	echo " > building zoxel-windows" && \
+	$(patient_cmd) && \
+	$(cc_windows) $(CFLAGS) $(CFLAGS_RELEASE) $(OBJS) include/flecs/flecs.c -o $(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs) --static # this fixes thread dll issue
+
+# if [ ! -d build/windows ]; then mkdir build/windows; fi
+
+prepare-windows: # for linux cross platform build
+	@ echo " > preparing windows"
+	@ $(patient_cmd)
+	@ make install-flecs && make build/libflecs.a
+	@ bash bash/windows/install_sdk.sh
+	@ bash bash/windows/prepare.sh
 
 # todo: copy resources and bin dll's into the folder build/windows
 ifneq ($(SYSTEM),Windows)
 
 $(target_windows): $(SRCS)
-	@ echo " > building zoxel-windows"
-	@ $(patient_cmd)
 	@ $(make_windows)
 
 windows:
-	@ echo " > building zoxel-windows"
-	@ $(patient_cmd)
-	@ if [ ! -d build/windows ]; then mkdir build/windows; fi
 	@ $(make_windows)
 
 endif
@@ -315,13 +319,6 @@ run-windows-debug:
 
 # @ WINEPREFIX=~/.wine64 WINEDEBUG=+all wine $(target_windows)
 # @ WINEPREFIX=~/.wine64 WINEDEBUG=+opengl wine $(target_windows)
-
-prepare-windows: # for linux cross platform build
-	@ echo " > preparing windows"
-	@ $(patient_cmd)
-	@ make install-flecs && make build/libflecs.a
-	@ bash bash/windows/install_sdk.sh
-	@ bash bash/windows/prepare.sh
 
 # ======= ===== ======= #
 # ===== windows32 ===== #

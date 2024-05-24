@@ -41,6 +41,7 @@ zox_define_component(ConnectionData)
 zox_system(FeedForwardSystem, EcsOnUpdate, [none] Connection, [in] ConnectionData, [in] Weight, [out] Signal, [out] SignalStrength)
 zox_system(ConnectionRenderSystem, EcsOnUpdate, [none] Connection, [in] ConnectionData, [in] Weight, [in] Signal, [in] SignalStrength)
 zox_system(NeuronRenderSystem, EcsOnUpdate, [none] Neuron, [in] Weight, [in] Position2D)
+    spawn_prefabs_neurals(world);
 zoxel_end_module(Neurals)
 
 #endif

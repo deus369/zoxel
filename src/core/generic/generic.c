@@ -1,13 +1,13 @@
 #ifndef zox_generic
 #define zox_generic
 
+#include "components/components.c"
 #include "data/color.c"
 #include "data/color_rgb.c"
 #include "data/octree_helper.c"
 #include "data/text_group.c"
 #include "data/ecs_entity_2.c"
 #include "macros/octree_component.c"
-#include "components/components.c"
 zox_declare_tag(Selectable)
 zox_declare_tag(Clickable)
 zox_declare_tag(Dragable)
@@ -40,13 +40,14 @@ zox_component_double(DiedTime)
 zox_component_entity(EntityTarget)
 zox_component_entity(ComponentTarget)
 zox_component_entity(ClickingEntity)
-zox_component_zext(ZoxName)
 zox_memory_component(ColorRGBs, color_rgb)
 zox_memory_component(Colors, color)
 zox_entities_component(EntityLinks)
 zox_component_double(EventTime)
 zox_component_entity(EventInput)
 zox_function_component(TimedEvent, void, ecs_world_t*, const ecs_entity_t)
+zox_component_zext(ZoxName)
+#include "macros/names.c"
 #include "util/generic_util.c"
 #include "util/convert_ascii.c"
 #include "util/convert_to_ascii.c"

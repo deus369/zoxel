@@ -1,5 +1,5 @@
-#ifndef zoxel_users
-#define zoxel_users
+#ifndef zox_mod_users
+#define zox_mod_users
 
 zox_component_entity(UserLink)
 zox_component_entity(SpawnerLink)

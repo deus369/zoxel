@@ -27,6 +27,7 @@ void spawn_prefabs_cubes(ecs_world_t *world) {
 }
 
 zox_begin_module(Cubes)
+spawn_prefabs_cubes(world);
 zoxel_end_module(Cubes)
 
 #endif

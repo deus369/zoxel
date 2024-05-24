@@ -20,7 +20,9 @@ void update_zox_frame() {
     begin_timing_absolute()
 #endif
     update_core(world);
+#ifdef zox_mod_inner_core
     update_inner_core(world);
+#endif
 #ifdef zoxel_time_main_loop
     end_timing_cutoff(" - engine update lagged", zoxel_time_main_loop_cutoff)
 #endif

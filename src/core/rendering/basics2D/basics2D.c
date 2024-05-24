@@ -10,7 +10,6 @@
 #include "util/instanced2D_material.c"
 #include "util/render_util.c"
 #include "util/shader_textured2D.c"
-#include "systems/element_render_system.c" // move to ui core
 #include "systems/mesh2D_update_system.c"
 #include "systems/mesh2D_uvs_update_system.c"
 #include "systems/render2D_instance_system.c"
@@ -22,15 +21,6 @@ void rendering_dispose_basic_shaders2D() {
     dispose_shader2D_textured();
 }
 
-/*void rendering_load_basic_shaders2D(ecs_world_t *world) {
-    spawn_material_textured2D(world);
-    if (load_instance2D_material()) zoxel_log("    ! error loading [instance2D_material]\n");
-}
-
-void rendering_restore_basic_shaders2D(ecs_world_t *world) {
-    if (load_instance2D_material()) zoxel_log("    ! error loading [instance2D_material]\n");
-}*/
-
 void spawn_shaders_basics2D(ecs_world_t *world) {
     spawn_material_textured2D(world);
     load_instance2D_material();
@@ -39,7 +29,6 @@ void spawn_shaders_basics2D(ecs_world_t *world) {
 zox_begin_module(RenderingBasics2D)
 add_load_shader_function(&spawn_shaders_basics2D);
 zox_define_component(MaterialTextured2D)
-zox_render2D_system(ElementRenderSystem, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D,  [in] RenderDisabled, [in] Brightness, [in] Alpha, [in] MeshGPULink, [in] UvsGPULink, [in] TextureGPULink, [in] MeshDirty, [none] ElementRender)
 zox_render3D_system(RenderMaterial2DSystem, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MaterialGPULink, [in] TextureGPULink, [none] !MeshGPULink)
 zox_system_1(Mesh2DUvsUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshUVs, [in] MeshGPULink, [in] UvsGPULink, [none] !MeshColorRGBs)
 zox_system_1(Mesh2DUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs)

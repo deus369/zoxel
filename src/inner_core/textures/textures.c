@@ -1,5 +1,5 @@
-#ifndef zox_textures
-#define zox_textures
+#ifndef zox_mod_textures
+#define zox_mod_textures
 
 #include "core/textures_core.c"
 #include "../../core/apps/sdl/textures/textures.c"

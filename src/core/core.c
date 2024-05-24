@@ -1,5 +1,12 @@
-#ifndef zox_core
-#define zox_core
+/*
+ *  Zox Core
+ *
+ *      > Maths, Generics, App, Rendering, Files, Etc
+ *
+ *  The Lowest of the Lows
+*/
+#ifndef zox_mod_core
+#define zox_mod_core
 
 const char *game_name = "zox";
 unsigned char cpu_tier;
@@ -33,8 +40,8 @@ zox_import_module(Timing)
 zox_import_module(Transforms)
 zox_import_module(Files)
 zox_import_module(Terminals)
-#ifndef zox_disable_module_networking
-zox_import_module(Networking)
+#ifndef zox_disable_module_networking // disabled on web atm
+    zox_import_module(Networking)
 #endif
 zox_import_module(Inputs)
 initialize_pathing();

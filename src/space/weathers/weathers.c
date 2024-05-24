@@ -1,5 +1,5 @@
-#ifndef zox_weather
-#define zox_weather
+#ifndef zox_mod_weathers
+#define zox_mod_weathers
 
 ecs_entity_t prefab_skybox;
 ecs_entity_t shader_skybox; // shaders global
