@@ -5,28 +5,19 @@ ecs_entity_t spawn_prefab_neuron(ecs_world_t *world) {
     zox_prefab_name("prefab_neuron")
     zox_add_tag(e, Neuron)
     zox_add(e, ParentLink)
-    zox_prefab_set(e, Weight, { 0 })
+    // zox_prefab_set(e, Weight, { 0 })
     // this is only used for rendering / debugging
     zox_prefab_set(e, Position2D, { float2_zero })
+    zox_prefab_set(e, NeuronSignal, { 0 })
     prefab_neuron = e;
     return e;
 }
 
-ecs_entity_t spawn_neuron(ecs_world_t *world, ecs_entity_t brain, float2 position, float weight) {
+ecs_entity_t spawn_neuron(ecs_world_t *world, const ecs_entity_t brain, const float2 position) {
     zox_instance(prefab_neuron)
     zox_name("neuron")
     zox_prefab_set(e, ParentLink, { brain })
-    zox_prefab_set(e, Weight, { weight })
-    // convert this to render position
-    const float y_position_mult = -2.0f / (float) (vertical_layers - 1); // -0.2f;
-    const float x_position_mult = 1.0f / (float) (neurons_length - 1); // -0.2f;
-    float2 render_position = position;
-    render_position.x = render_position.x * x_position_mult;
-    render_position.x *= 2.0f;
-    render_position.x -= 1.0f;
-    render_position.y = 1.0f + y_position_mult * render_position.y;
-    zox_prefab_set(e, Position2D, { render_position })
-    if (position.x == 0) { zox_add_tag(e, InputNeuron) }
-    else if (position.x == 7) { zox_add_tag(e, OutputNeuron) }
+    // zox_prefab_set(e, Weight, { weight })
+    zox_prefab_set(e, Position2D, { position })
     return e;
 }

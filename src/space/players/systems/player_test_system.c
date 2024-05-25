@@ -16,11 +16,19 @@ void PlayerTestSystem(ecs_iter_t *it) {
                     spawn_sound_from_file(world, prefab_sound, 0);
                 } else if (keyboard->n.pressed_this_frame) {
                     zox_visualize_sounds = !zox_visualize_sounds;
-                } else if (keyboard->k.pressed_this_frame) {
+                } else if (keyboard->h.pressed_this_frame) {
                     const int2 position = (int2) { 8, 8 };
                     const int2 size = (int2) { 32 * 8, 32 * 8 };
                     const ecs_entity_t source_texture = files_textures[0];
                     spawn_texture_element(world, canvas, source_texture, position, size);
+                    spawn_sound_from_file(world, prefab_sound, 0);
+                }
+                else if (keyboard->_1.pressed_this_frame) {
+                    if (local_brain) feed_brain_random_input(world, local_brain);
+                    spawn_sound_from_file(world, prefab_sound, 0);
+                }
+                else if (keyboard->_2.pressed_this_frame) {
+                    save_brain_as_texture(world, local_brain);
                     spawn_sound_from_file(world, prefab_sound, 0);
                 }
 #ifndef zox_on_startup_spawn_main_menu

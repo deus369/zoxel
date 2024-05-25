@@ -23,7 +23,7 @@ void load_texture_from_png(const char *filepath, TextureData *textureData, Textu
     SDL_FreeSurface(loadedSurface);
 }
 
-void save_texture_as_png(const TextureData *textureData, const TextureSize *textureSize, const char *filepath) {
+void save_texture_as_png(const color *data, const int2 size, const char *filepath) {
     int rmask, gmask, bmask, amask;
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
     int shift = 0; // (req_format == STBI_rgb) ? 8 : 0;
@@ -38,8 +38,8 @@ void save_texture_as_png(const TextureData *textureData, const TextureSize *text
     amask = 0; // (req_format == STBI_rgb) ? 0 : 0xff000000;
 #endif
     int depth = 32;
-    int pitch = textureSize->value.x * 4;
-    SDL_Surface* surface = SDL_CreateRGBSurfaceFrom((void*) textureData->value, textureSize->value.x, textureSize->value.y, depth, pitch, rmask, gmask, bmask, amask);
+    int pitch = size.x * 4;
+    SDL_Surface* surface = SDL_CreateRGBSurfaceFrom((void*) data, size.x, size.y, depth, pitch, rmask, gmask, bmask, amask);
     if(IMG_SavePNG(surface, filepath) != 0) {
         // Error saving bitmap
         zox_log(" ! failed with [IMG_SavePNG]: %s\n", SDL_GetError())

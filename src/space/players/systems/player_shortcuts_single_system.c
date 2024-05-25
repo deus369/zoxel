@@ -11,8 +11,9 @@ void PlayerShortcutsMainThreadSystem(ecs_iter_t *it) {
             const ecs_entity_t device_entity = deviceLinks->value[j];
             if (zox_has(device_entity, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
-                if (keyboard->l.pressed_this_frame) {
+                if (keyboard->k.pressed_this_frame) {
                     const ecs_entity_t character = zox_get_value(it->entities[i], CharacterLink)
+                    if (!character) continue;
                     if (zox_has(character, Aura)) {
                         zox_remove_tag(character, Aura)
                         zox_log(" > removed Aura from character\n")

@@ -27,6 +27,7 @@ unsigned char cpu_tier;
 #include "cameras/cameras.c"
 #include "rendering/rendering.c"
 #include "sounds/sounds.c"
+#include "nodes/nodes.c"
 #include "games/games.c"
 #include "realms/realms.c"
 #include "util/core_util.c"
@@ -49,6 +50,7 @@ if (!headless) zox_import_module(Apps) // sdl
 zox_import_module(Cameras)
 zox_import_module(Rendering)
 zox_import_module(Sounds)
+zox_import_module(Nodes)
 zox_import_module(Games)
 zox_import_module(Realms)
 zoxel_end_module(Core)

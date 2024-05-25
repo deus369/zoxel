@@ -124,6 +124,16 @@ void device_reset_keyboard(ecs_world_t *world, ecs_entity_t keyboard_entity) {
     reset_keyboard_key(f10)
     reset_keyboard_key(f11)
     reset_keyboard_key(f12)
+    reset_keyboard_key(_1)
+    reset_keyboard_key(_2)
+    reset_keyboard_key(_3)
+    reset_keyboard_key(_4)
+    reset_keyboard_key(_5)
+    reset_keyboard_key(_6)
+    reset_keyboard_key(_7)
+    reset_keyboard_key(_8)
+    reset_keyboard_key(_9)
+    reset_keyboard_key(_0)
     zox_modified(keyboard_entity, Keyboard)
 }
 

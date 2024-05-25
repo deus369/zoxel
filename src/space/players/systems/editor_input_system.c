@@ -26,8 +26,8 @@ void EditorInputSystem(ecs_iter_t *it) {
                     toggle_ui(world, canvas, &inspector, &spawn_inspector);
                     toggle_ui(world, canvas, &hierarchy, &spawn_editor_hierarchy);
                 }
-                else if (keyboard->h.pressed_this_frame) toggle_ui(world, canvas, &hierarchy, &spawn_editor_hierarchy);
-                else if (keyboard->g.pressed_this_frame) toggle_ui(world, canvas, &inspector, &spawn_inspector);
+                // else if (keyboard->h.pressed_this_frame) toggle_ui(world, canvas, &hierarchy, &spawn_editor_hierarchy);
+                // else if (keyboard->g.pressed_this_frame) toggle_ui(world, canvas, &inspector, &spawn_inspector);
 #endif
             }
         }
