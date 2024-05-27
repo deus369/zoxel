@@ -42,17 +42,13 @@ void add_voxel_face_colors_d(int_array_d *indicies, float3_array_d* vertices, co
     vertices->size += voxel_face_vertices_length;
     for (int a = 0; a < voxel_face_vertices_length; a++) {
         color_rgb vertex_color = voxel_color;
-        if (direction == direction_down) {
-            color_rgb_multiply_float(&vertex_color, 0.33f);
-        } else if (direction == direction_front) {
-            color_rgb_multiply_float(&vertex_color, 0.44f);
-        } else if (direction == direction_left) {
-            color_rgb_multiply_float(&vertex_color, 0.55f);
-        } else if (direction == direction_back) {
-            color_rgb_multiply_float(&vertex_color, 0.66f);
-        } else if (direction == direction_right) {
-            color_rgb_multiply_float(&vertex_color, 0.76f);
-        }
+#ifndef zox_disable_fake_voxel_lighting
+        if (direction == direction_down) color_rgb_multiply_float(&vertex_color, 0.33f);
+        else if (direction == direction_front) color_rgb_multiply_float(&vertex_color, 0.44f);
+        else if (direction == direction_left) color_rgb_multiply_float(&vertex_color, 0.55f);
+        else if (direction == direction_back) color_rgb_multiply_float(&vertex_color, 0.66f);
+        else if (direction == direction_right) color_rgb_multiply_float(&vertex_color, 0.76f);
+#endif
         add_to_color_rgb_array_d(color_rgbs, vertex_color);
     }
 }

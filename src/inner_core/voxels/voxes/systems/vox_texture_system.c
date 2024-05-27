@@ -1,48 +1,93 @@
 // using an axis and VoxLink, generates a texture by grabbing the first voxel on a given side
 // todo: fix flower positioning
 void generate_vox_texture(color *data, const int2 size, const ChunkOctree *chunk, const color_rgb *colors, unsigned char side) {
-    // for now just get top axis
+    const color air_vox_color = (color) { 15, 15, 15, 255 };
     int index = 0;
+    int x = 0;
     if (side == block_side_left || side == block_side_right) {
-        // zox_log(" generate_vox_texture x side %i\n", side)
-        int x = 0;
         if (side == block_side_right) x = size.y - 1;
         for (int i = 0; i < size.x; i++) {
             for (int j = 0; j < size.y; j++) {
                 byte3 node_position = (byte3) { x, i, j };
-                const unsigned voxel = get_octree_voxel(chunk, &node_position, max_octree_depth);
-                if (voxel == 0) data[index] = (color) { 0, 0, 0, 0 };
+                unsigned char voxel = get_octree_voxel(chunk, &node_position, max_octree_depth);
+                unsigned char is_darken = 0;
+                if (voxel == 0) {
+                    is_darken = 1;
+                    if (side == block_side_left) {
+                        for (int k = 0; k < size.y; k++) {
+                            node_position = (byte3) { k, i, j };
+                            voxel = get_octree_voxel(chunk, &node_position, max_octree_depth);
+                            if (voxel) break;
+                        }
+                    } else {
+                        for (int k = size.y - 1; k >= 0; k--) {
+                            node_position = (byte3) { k, i, j };
+                            voxel = get_octree_voxel(chunk, &node_position, max_octree_depth);
+                            if (voxel) break;
+                        }
+                    }
+                }
+                if (voxel == 0) data[index] = air_vox_color;
                 else data[index] = color_rgb_to_color(colors[voxel - 1]);
-                //if (side == block_side_right) data[index] = (color) { 255, 0, 0, 255 };
-                //else data[index] = (color) { 0, 255, 0, 255 };
+                if (is_darken) color_multiply_float(&data[index], 0.8f);
                 index++;
             }
         }
     } else if (side == block_side_down || side == block_side_up) {
-        // zox_log(" generate_vox_texture y side %i\n", side)
-        int x = 0;
         if (side == block_side_up) x = size.y - 1;
         for (int i = 0; i < size.x; i++) {
             for (int j = 0; j < size.y; j++) {
                 byte3 node_position = (byte3) { i, x, j };
-                // const unsigned voxel = 1; // get_first_voxel_from_z(chunk, max_octree_depth, 0);
-                const unsigned voxel = get_octree_voxel(chunk, &node_position, max_octree_depth);
-                if (voxel == 0) data[index] = (color) { 0, 0, 0, 0 };
+                unsigned char voxel = get_octree_voxel(chunk, &node_position, max_octree_depth);
+                unsigned char is_darken = 0;
+                if (voxel == 0) {
+                    is_darken = 1;
+                    if (side == block_side_down) {
+                        for (int k = 0; k < size.y; k++) {
+                            node_position = (byte3) { i, k, j };
+                            voxel = get_octree_voxel(chunk, &node_position, max_octree_depth);
+                            if (voxel) break;
+                        }
+                    } else {
+                        for (int k = size.y - 1; k >= 0; k--) {
+                            node_position = (byte3) { i, k, j };
+                            voxel = get_octree_voxel(chunk, &node_position, max_octree_depth);
+                            if (voxel) break;
+                        }
+                    }
+                }
+                if (voxel == 0) data[index] = air_vox_color;
                 else data[index] = color_rgb_to_color(colors[voxel - 1]);
+                if (is_darken) color_multiply_float(&data[index], 0.8f);
                 index++;
             }
         }
     } else if (side == block_side_back || side ==  block_side_front) {
-        // zox_log(" generate_vox_texture z side %i\n", side)
-        int x = 0;
         if (side == block_side_front) x = size.y - 1;
         for (int i = 0; i < size.x; i++) {
             for (int j = 0; j < size.y; j++) {
                 byte3 node_position = (byte3) { i, j, x };
-                const unsigned voxel = get_octree_voxel(chunk, &node_position, max_octree_depth);
-                if (voxel == 0) data[index] = (color) { 0, 0, 0, 0 };
+                unsigned char voxel = get_octree_voxel(chunk, &node_position, max_octree_depth);
+                unsigned char is_darken = 0;
+                if (voxel == 0) {
+                    is_darken = 1;
+                    if (side == block_side_back) {
+                        for (int k = 0; k < size.y; k++) {
+                            node_position = (byte3) { i, j, k };
+                            voxel = get_octree_voxel(chunk, &node_position, max_octree_depth);
+                            if (voxel) break;
+                        }
+                    } else {
+                        for (int k = size.y - 1; k >= 0; k--) {
+                            node_position = (byte3) { i, j, k };
+                            voxel = get_octree_voxel(chunk, &node_position, max_octree_depth);
+                            if (voxel) break;
+                        }
+                    }
+                }
+                if (voxel == 0) data[index] = air_vox_color;
                 else data[index] = color_rgb_to_color(colors[voxel - 1]);
-                // data[index] = (color) { 0, 0, 255, 255 };
+                if (is_darken) color_multiply_float(&data[index], 0.8f);
                 index++;
             }
         }
@@ -74,8 +119,5 @@ void VoxTextureSystem(ecs_iter_t *it) {
         generate_vox_texture(textureData->value, textureSize->value, chunk, colorRGBs->value, voxBakeSide->value);
         generateTexture->value = 0;
         textureDirty->value = 1;
-        /*zox_log(" +  VoxTextureSystem::\n")
-        zox_log("   +  c1: - %xx%xx%x\n", colorRGBs->value[0].r, colorRGBs->value[0].g, colorRGBs->value[0].b)
-        zox_log("   +  c2: - %xx%xx%x\n", colorRGBs->value[1].r, colorRGBs->value[1].g, colorRGBs->value[1].b)*/
     }
 } zox_declare_system(VoxTextureSystem)

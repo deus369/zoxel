@@ -1,4 +1,4 @@
-#define zox_print_files
+// #define zox_print_files
 
 void load_vox_file(const char* filename, vox_file *vox) {
 #ifdef zox_disable_io

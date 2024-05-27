@@ -56,10 +56,17 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
                 }
                 // add uvs here
                 float2 tile_uv = (float2) { tilemap_position.x / (float) textureSize->value.x, tilemap_position.y / (float) textureSize->value.y };
-                tilemapUVs->value[texture_entity_index * 4 + 0] = (float2) { tile_uv.x, tile_uv.y };
+
+                /*tilemapUVs->value[texture_entity_index * 4 + 0] = (float2) { tile_uv.x, tile_uv.y };
                 tilemapUVs->value[texture_entity_index * 4 + 1] = (float2) { tile_uv.x, tile_uv.y + tile_size };
                 tilemapUVs->value[texture_entity_index * 4 + 2] = (float2) { tile_uv.x + tile_size, tile_uv.y + tile_size };
-                tilemapUVs->value[texture_entity_index * 4 + 3] = (float2) { tile_uv.x + tile_size, tile_uv.y };
+                tilemapUVs->value[texture_entity_index * 4 + 3] = (float2) { tile_uv.x + tile_size, tile_uv.y };*/
+
+                tilemapUVs->value[texture_entity_index * 4 + 3] = (float2) { tile_uv.x, tile_uv.y + tile_size };
+                tilemapUVs->value[texture_entity_index * 4 + 2] = (float2) { tile_uv.x + tile_size, tile_uv.y + tile_size };
+                tilemapUVs->value[texture_entity_index * 4 + 1] = (float2) { tile_uv.x + tile_size, tile_uv.y };
+                tilemapUVs->value[texture_entity_index * 4 + 0] = (float2) { tile_uv.x, tile_uv.y };
+
                 texture_entity_index++;
                 if (texture_entity_index >= textureLinks->length) {
                     texture_position.x = tilemapSize->value.x;

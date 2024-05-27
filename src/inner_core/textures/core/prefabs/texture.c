@@ -7,7 +7,7 @@ ecs_entity_t spawn_prefab_texture(ecs_world_t *world, const int2 texture_size) {
 
 ecs_entity_t spawn_texture(ecs_world_t *world, const ecs_entity_t prefab, int2 size) {
     zox_instance(prefab)
-    zoxel_log(" > spawned texture data [%lu]\n", e);
+    // zoxel_log(" > spawned texture data [%lu]\n", e);
     zox_set(e, TextureSize, { size })
     return e;
 }

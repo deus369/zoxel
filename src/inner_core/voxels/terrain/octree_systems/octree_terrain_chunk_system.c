@@ -118,9 +118,6 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
 #endif
         generateChunk->value = 0;
         chunkDirty->value = 1;
-        /*if (zox_has(e, GenerateChunkEntities)) {
-            zox_set(e, GenerateChunkEntities, { zox_chunk_entities_state_triggered })
-        }*/
     }
 #ifdef zoxel_time_octree_terrain_chunk_system
     end_timing("    - octree_terrain_chunk_system")

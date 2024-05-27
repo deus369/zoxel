@@ -71,20 +71,21 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             spawn_data.model = zox_block_vox;
             spawn_data.vox = vox_files[test_block_vox_index];
             spawn_data.disable_collision = 1;
+            // todo: add vox offset here for flowers
         } else if (i == zox_block_dirt_vox - 1) {
             spawn_data.color = dirt_color;
             // 2nd test vox block
             // spawn_data.color = generate_random_voxel_color();
             const ecs_entity_t vox = spawn_vox_generated(world, prefab_vox_generated, spawn_data.color);
             zox_set(vox, RenderDisabled, { 1 }) // quick hack
-            // spawn_data.tag = zox_id(BlockVox);
-            // spawn_data.model = zox_block_vox;
-            // next spawn textures off vox ^ x6 axis
-            // our cool cube
-            // vox_files[test_block_vox_index2];
-            // spawn_data.vox = vox;
-            spawn_data.textures = 6;
-            spawn_data.vox_texture = vox;
+            // vox_files[test_block_vox_index2]; // our cool cube
+            // for generated vox blocks
+            spawn_data.vox = vox;
+            spawn_data.tag = zox_id(BlockVox);
+            spawn_data.model = zox_block_vox;
+            // for prebaked ones
+            // spawn_data.textures = 6;
+            // spawn_data.vox_texture = vox;
         }
         voxelLinks->value[i] = spawn_block(world, &spawn_data);
     }

@@ -1,5 +1,5 @@
 // GenerateVox == 1
-const unsigned char is_generate_vox_airs = 0;
+const unsigned char is_generate_vox_airs = 1;
 
 unsigned char byte3_on_edge(const byte3 pos, const byte3 size) {
     return pos.x == 0 || pos.y == 0 || pos.z == 0 || pos.x == size.x - 1 || pos.y == size.y - 1 || pos.z == size.z - 1;
@@ -30,9 +30,6 @@ void GenerateVoxSystem(ecs_iter_t *it) {
         colorRGBs->value[2] = color_rgb_2;
         color_rgb_multiply_float(&colorRGBs->value[1], 0.7f);
         color_rgb_multiply_float(&colorRGBs->value[2], 1.2f);
-        // colorRGBs->value[0] = (color_rgb) { 96, 51, 16 };
-        // colorRGBs->value[1] = (color_rgb) { 68, 45, 27 };
-        // colorRGBs->value[2] = (color_rgb) { 14, 7, 3 };
         const byte2 set_voxel_1 = (byte2) { 1, target_depth };
         const byte2 set_voxel_2 = (byte2) { 2, target_depth };
         const byte2 set_voxel_3 = (byte2) { 3, target_depth };
@@ -50,6 +47,9 @@ void GenerateVoxSystem(ecs_iter_t *it) {
                     else if (rando <= 450) set_voxel = set_voxel_2;
                     else set_voxel = set_voxel_1;
                     if (byte3_on_edge(voxel_position, size) && rando <= 150) set_voxel = set_voxel_air;
+                    // testing
+                    /*if (voxel_position.x >= chunk_voxel_length / 2) set_voxel = set_voxel_1;
+                    else set_voxel = set_voxel_2;*/
                     byte3 node_position = voxel_position;
                     set_octree_voxel(chunkOctree, &node_position, &set_voxel, 0);
                 }
@@ -60,9 +60,5 @@ void GenerateVoxSystem(ecs_iter_t *it) {
 #endif
         generateVox->value = 0;
         chunkDirty->value = 1;
-        /*zox_log(" +  GenerateVoxSystem::\n")
-        zox_log("   +  color_rgb_2: - %xx%xx%x\n", color_rgb_2.r, color_rgb_2.g, color_rgb_2.b)
-        zox_log("   +  c1: - %xx%xx%x\n", colorRGBs->value[0].r, colorRGBs->value[0].g, colorRGBs->value[0].b)
-        zox_log("   +  c2: - %xx%xx%x\n", colorRGBs->value[1].r, colorRGBs->value[1].g, colorRGBs->value[1].b)*/
     }
 } zox_declare_system(GenerateVoxSystem)
