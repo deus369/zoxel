@@ -91,23 +91,25 @@ void build_if_adjacent_voxel(const ChunkOctree *root_node, const ChunkOctree *pa
 // if child node is solid, dig down
 #define zox_terrain_building_dig_node(i)\
     if (chunk_octree->nodes[i].value) {\
-        zox_terrain_building_dig(root_node, tilemapUVs, chunk_octree, &chunk_octree->nodes[i], neighbors, neighbor_lods, mesh_data, distance_to_camera, lod, depth, int3_add(octree_position, octree_positions[i]), i, old_octree_scale, vert_scale, voxel_solidity);\
+        zox_terrain_building_dig(root_node, tilemapUVs, chunk_octree, &chunk_octree->nodes[i], neighbors, neighbor_lods, mesh_data, distance_to_camera, lod, depth, int3_add(octree_position, octree_positions[i]), i, old_octree_scale, vert_scale, voxel_solidity, voxel_uv_indexes);\
     }
 
-void zox_terrain_building_dig(const ChunkOctree *root_node, const TilemapUVs *tilemapUVs, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[], const unsigned char *neighbor_lods, const mesh_uvs_build_data *mesh_data, const unsigned char distance_to_camera, const unsigned char lod, unsigned char depth, int3 octree_position, const unsigned char node_index, const float old_octree_scale, const float vert_scale, const unsigned char *voxel_solidity) {
+void zox_terrain_building_dig(const ChunkOctree *root_node, const TilemapUVs *tilemapUVs, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[], const unsigned char *neighbor_lods, const mesh_uvs_build_data *mesh_data, const unsigned char distance_to_camera, const unsigned char lod, unsigned char depth, int3 octree_position, const unsigned char node_index, const float old_octree_scale, const float vert_scale, const unsigned char *voxel_solidity, const int *voxel_uv_indexes) {
     if (depth >= lod || chunk_octree->nodes == NULL) {
         if (chunk_octree->value != 0 && voxel_solidity[chunk_octree->value - 1]) { //  (chunk_octree->value)
             const unsigned char voxel = chunk_octree->value;
             const float octree_scale = octree_scales3[depth];
             const float3 vertex_position_offset = float3_from_int3(octree_position);
             const byte3 node_position = octree_positions_b[node_index];
-            const float2 *voxel_uvs = &tilemapUVs->value[(voxel - 1) * 4];
-            zox_build_if_adjacent_voxel(left, 0, voxel_uvs)
-            zox_build_if_adjacent_voxel(right, 1, voxel_uvs)
-            zox_build_if_adjacent_voxel(down, 1, voxel_uvs)
-            zox_build_if_adjacent_voxel(up, 0, voxel_uvs)
-            zox_build_if_adjacent_voxel(back, 0, voxel_uvs)
-            zox_build_if_adjacent_voxel(front, 1, voxel_uvs)
+            // const float2 *voxel_uvs = &tilemapUVs->value[(voxel - 1) * 4];
+            // &tilemapUVs->value[voxel_uv_indexes[(voxel - 1) * 6 + 0]]
+            const int voxel_uvs_index = (voxel - 1) * 6;
+            zox_build_if_adjacent_voxel(left, 0, &tilemapUVs->value[voxel_uv_indexes[voxel_uvs_index + 0]])
+            zox_build_if_adjacent_voxel(right, 1, &tilemapUVs->value[voxel_uv_indexes[voxel_uvs_index + 1]])
+            zox_build_if_adjacent_voxel(down, 1, &tilemapUVs->value[voxel_uv_indexes[voxel_uvs_index + 2]])
+            zox_build_if_adjacent_voxel(up, 0, &tilemapUVs->value[voxel_uv_indexes[voxel_uvs_index + 3]])
+            zox_build_if_adjacent_voxel(back, 0, &tilemapUVs->value[voxel_uv_indexes[voxel_uvs_index + 4]])
+            zox_build_if_adjacent_voxel(front, 1, &tilemapUVs->value[voxel_uv_indexes[voxel_uvs_index + 5]])
         }
     } else {
         depth++;
@@ -123,13 +125,13 @@ void zox_terrain_building_dig(const ChunkOctree *root_node, const TilemapUVs *ti
     }
 }
 
-void build_chunk_octree_mesh_uvs(const ChunkOctree *chunk_octree, const TilemapUVs *tilemapUVs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, MeshColorRGBs *meshColorRGBs, const unsigned char distance_to_camera, const unsigned char lod, const ChunkOctree *neighbors[], const unsigned char *neighbor_lods, const float vert_scale, const unsigned char *voxel_solidity) {
+void build_chunk_octree_mesh_uvs(const ChunkOctree *chunk_octree, const TilemapUVs *tilemapUVs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, MeshColorRGBs *meshColorRGBs, const unsigned char distance_to_camera, const unsigned char lod, const ChunkOctree *neighbors[], const unsigned char *neighbor_lods, const float vert_scale, const unsigned char *voxel_solidity, const int *voxel_uv_indexes) {
     int_array_d* indicies = create_int_array_d(initial_dynamic_array_size);
     float3_array_d* vertices = create_float3_array_d(initial_dynamic_array_size);
     float2_array_d* uvs = create_float2_array_d(initial_dynamic_array_size);
     color_rgb_array_d* color_rgbs = create_color_rgb_array_d(initial_dynamic_array_size);
     const mesh_uvs_build_data mesh_data = { indicies, vertices, uvs, color_rgbs };
-    zox_terrain_building_dig(chunk_octree, tilemapUVs, NULL, chunk_octree, neighbors, neighbor_lods, &mesh_data, distance_to_camera, lod, 0, int3_zero, 0, 1, vert_scale, voxel_solidity);
+    zox_terrain_building_dig(chunk_octree, tilemapUVs, NULL, chunk_octree, neighbors, neighbor_lods, &mesh_data, distance_to_camera, lod, 0, int3_zero, 0, 1, vert_scale, voxel_solidity, voxel_uv_indexes);
     clear_mesh_uvs(meshIndicies, meshVertices, meshColorRGBs, meshUVs);
     meshIndicies->length = indicies->size;
     meshVertices->length = vertices->size;

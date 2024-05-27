@@ -1,18 +1,17 @@
-#define directory_textures "textures"character_slash
+// #define zox_print_files
 
-int files_count_textures = 0;
-ecs_entity_t *files_textures;
-
-ecs_entity_t spawn_from_file_path_texture(ecs_world_t *world, const char *filepath) {
+ecs_entity_t spawn_from_file_path_texture(ecs_world_t *world, const char *filepath, const unsigned char index) {
     zox_instance(prefab_texture)
     zox_name("texture_filepath")
     TextureData *textureData = zox_get_mut(e, TextureData)
     TextureSize *textureSize = zox_get_mut(e, TextureSize)
     load_texture_from_png(filepath, textureData, textureSize);
-    // zox_log("   > loaded texture [%s] with size [%ix%i] length: %i\n", filepath, textureSize->value.x, textureSize->value.y, textureData->length)
-    // for (int i = 0; i < 16; i++) zox_log("color %ix%ix%i\n", textureData->value[i].r, textureData->value[i].g, textureData->value[i].b)
     zox_modified(e, TextureData)
     zox_modified(e, TextureSize)
+    // zox_log("   > loaded texture [%s] with size [%ix%i] length: %i\n", filepath, textureSize->value.x, textureSize->value.y, textureData->length)
+    // if (index == 2) for (int i = 0; i < 16; i++) zox_log("      - color %ix%ix%ix%i\n", textureData->value[i].r, textureData->value[i].g, textureData->value[i].b, textureData->value[i].b)
+    int calculated_length = textureSize->value.x * textureSize->value.y;
+    if (textureData->length != calculated_length) zox_log(" + loaded texture issues: %i != %i\n", textureData->length, calculated_length)
     return e;
 }
 
@@ -28,11 +27,10 @@ void load_files_textures(ecs_world_t *world) {
     files_textures = malloc(sizeof(ecs_entity_t) * files.count);
     for (int i = 0; i < files.count; i++) {
         char* filepath = concat_file_path(load_directory, files.files[i]);
+        files_textures[i] = spawn_from_file_path_texture(world, filepath, i);
 #ifdef zox_print_files
-        zox_log("       > texture file [%s]\n", filepath)
+        zox_log("       > [%i] texture [%s]\n", i, filepath)
 #endif
-        // load texture - filepath
-        files_textures[i] = spawn_from_file_path_texture(world, filepath);
         free(filepath);
     }
     free_files(files);
@@ -44,7 +42,7 @@ void dispose_files_textures(ecs_world_t *world) {
     free(files_textures);
 }
 
-ecs_entity_t spawn_from_file_texture(ecs_world_t *world, int index) {
+/*ecs_entity_t spawn_from_file_texture(ecs_world_t *world, int index) {
     if (index < 0 || index >= files_count_textures) return 0;
     zox_instance(prefab_texture)
     zox_name("texture_file")
@@ -55,4 +53,4 @@ ecs_entity_t spawn_from_file_texture(ecs_world_t *world, int index) {
     // *textureData = zox_get_mut(
     // load_texture_from_png();
     return e;
-}
+}*/

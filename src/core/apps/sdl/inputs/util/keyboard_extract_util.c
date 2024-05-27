@@ -68,6 +68,13 @@ void sdl_extract_keyboard(ecs_world_t *world, SDL_Event event) {
             sdl_key_case(SDLK_1, &keyboard->_1)
             sdl_key_case(SDLK_2, &keyboard->_2)
             sdl_key_case(SDLK_3, &keyboard->_3)
+            sdl_key_case(SDLK_4, &keyboard->_4)
+            sdl_key_case(SDLK_5, &keyboard->_5)
+            sdl_key_case(SDLK_6, &keyboard->_6)
+            sdl_key_case(SDLK_7, &keyboard->_7)
+            sdl_key_case(SDLK_8, &keyboard->_8)
+            sdl_key_case(SDLK_9, &keyboard->_9)
+            sdl_key_case(SDLK_0, &keyboard->_0)
             default:
                 return;
         }

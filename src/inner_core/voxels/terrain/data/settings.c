@@ -32,10 +32,12 @@ uint32_t terrain_seed = 32666;
 #define octree_random_spawn_chance 22
 #define stone_top_spawn_chance 33
 #define grass_vox_spawn_chance 122
+#define vox_dirt_spawn_chance 22
 const int sand_height = -16; // -7;
 const unsigned char max_vox_blocks = 32;
 const unsigned char block_vox_render_distance = 3; // 3 | 4 looks best
 const int test_block_vox_index = 4; // flower
+const int test_block_vox_index2 = 6; // little_cube
 // voxes lods
 const int init_lod_voxes = 1;
 const int lod_div_voxes = 1;

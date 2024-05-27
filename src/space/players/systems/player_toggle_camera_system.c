@@ -40,6 +40,10 @@ void PlayerToggleCameraSystem(ecs_iter_t *it) {
                 }
             }
         }
-        if (is_toggle_camera) toggle_camera_mode(world);
+        if (is_toggle_camera) {
+            toggle_camera_mode(world);
+            // hack to disable crosshair for different camera modes
+            zox_set(local_crosshair, RenderDisabled, { camera_mode != zox_camera_mode_first_person })
+        }
     }
 } zox_declare_system(PlayerToggleCameraSystem)

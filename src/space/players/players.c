@@ -55,11 +55,11 @@ zox_import_module(Players2D)
 zox_import_module(Players3D)
 zox_import_module(FreeRoam)
 zox_system_1(DeviceModeResponseSystem, zox_pipelines_pre_render, [in] DeviceMode, [in] DeviceModeDirty, [in] GameLink) // note: must update before DeviceModeDirtySystem
-zox_system_1(PlayerShortcutsMainThreadSystem, main_thread_pipeline, [in] DeviceLinks, [in] CanvasLink, [none] Player)
-zox_system_1(PlayerTestSystem, main_thread_pipeline, [in] DeviceLinks, [in] CanvasLink, [none] Player)
-zox_system_1(PlayerPauseSystem, main_thread_pipeline, [in] DeviceLinks, [none] Player)
-zox_system_1(VirtualJoystickSystem, main_thread_pipeline, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterResult, [in] GameLink, [none] Player)
-zox_system_1(EditorInputSystem, main_thread_pipeline, [in] DeviceLinks, [in] CanvasLink, [none] Player)
+zox_system_1(PlayerShortcutsMainThreadSystem, zox_pip_mainthread, [in] DeviceLinks, [in] CanvasLink, [none] Player)
+zox_system_1(PlayerTestSystem, zox_pip_mainthread, [in] DeviceLinks, [in] CanvasLink, [none] Player)
+zox_system_1(PlayerPauseSystem, zox_pip_mainthread, [in] DeviceLinks, [none] Player)
+zox_system_1(VirtualJoystickSystem, zox_pip_mainthread, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterResult, [in] GameLink, [none] Player)
+zox_system_1(EditorInputSystem, zox_pip_mainthread, [in] DeviceLinks, [in] CanvasLink, [none] Player)
 zox_system(PlayerToggleCameraSystem, EcsOnUpdate, [in] DeviceLinks, [in] CharacterLink, [in] GameLink, [none] Player)
 initialize_players(world);
 spawn_prefabs_players(world);

@@ -16,8 +16,9 @@ void load_texture_from_png(const char *filepath, TextureData *textureData, Textu
     textureSize->value.y = loadedSurface->h;
     // Here, I assume your TextureData structure is designed to store raw pixel data.
     // You might need to adjust this part depending on the exact structure of TextureData
-    int byte_length = textureSize->value.x * textureSize->value.y * sizeof(color);
-    resize_memory_component(TextureData, textureData, color, byte_length)
+    int colors_length = textureSize->value.x * textureSize->value.y;
+    int byte_length = colors_length * sizeof(color);
+    resize_memory_component(TextureData, textureData, color, colors_length)
     // textureData->value = malloc(loadedSurface->w * loadedSurface->h * 4); // Assuming 4 bytes per pixel (RGBA)
     memcpy(textureData->value, loadedSurface->pixels, byte_length); //  loadedSurface->w * loadedSurface->h * 4);
     SDL_FreeSurface(loadedSurface);

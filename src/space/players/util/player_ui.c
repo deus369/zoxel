@@ -50,6 +50,6 @@ void spawn_in_game_ui(ecs_world_t *world, const ecs_entity_t player, const ecs_e
     Children *game_ui_children = zox_get_mut(game_ui, Children)
     add_to_Children(game_ui_children, spawn_crosshair(world, canvas, game_ui));
     add_to_Children(game_ui_children, spawn_actionbar(world, canvas, game_ui));
-    add_to_Children(game_ui_children, spawn_healthbar_on_canvas(world, canvas, game_ui, player, character_group));
+    add_to_Children(game_ui_children, spawn_statbar2D(world, canvas, game_ui, player, character_group));
     zox_modified(game_ui, Children)
 }

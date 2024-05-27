@@ -11,6 +11,7 @@ zox_component_byte(BlockModel)
 zox_component_byte(BlockCollider) // zox_block_air | zox_block_solid
 zox_component_int3(VoxelPosition)
 zox_component_float(VoxScale)
+zox_component_entity(ModelLink)
 zox_entities_component(VoxelLinks)
 #include "util/generation_util.c"
 #include "prefabs/prefabs.c"
@@ -22,6 +23,7 @@ zox_define_component_byte(BlockModel)
 zox_define_component_byte(BlockCollider)
 zox_define_component_int3(VoxelPosition)
 zox_define_component_float(VoxScale)
+zox_define_component_entity(ModelLink)
 zox_define_entities_component(VoxelLinks)
 spawn_prefabs_blocks(world);
 zoxel_end_module(Blocks)

@@ -6,7 +6,6 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_set(e, Scale1D, { 1 })
     zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
     zox_prefab_set(e, VoxScale, { vox_model_scale })
-    // because we set the data on spawn, no need to generate here
     zox_prefab_set(e, GenerateChunk, { 0 })
     zox_prefab_set(e, ChunkDirty, { 1 })
     zox_prefab_set(e, MeshDirty, { 0 })

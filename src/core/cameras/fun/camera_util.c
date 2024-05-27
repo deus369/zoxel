@@ -101,7 +101,7 @@ void set_camera_mode(ecs_world_t *world, unsigned char new_camera_mode) {
 
 void toggle_camera_mode(ecs_world_t *world) {
     unsigned char new_camera_mode = camera_mode + 1;
-    if (new_camera_mode > zox_camera_mode_topdown) new_camera_mode = 0;
+    if (new_camera_mode> zox_camera_mode_topdown) new_camera_mode = 0;
     set_camera_mode(world, new_camera_mode);
 }
 

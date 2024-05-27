@@ -13,6 +13,7 @@ ecs_entity_t prefab_element3D_child;
 #include "element_world.c"
 #include "element_world_child.c"
 #include "canvas_overlay.c"
+#include "element_texture.c"
 
 void spawn_prefabs_ui_core(ecs_world_t *world) {
     prefab_canvas = spawn_prefab_canvas(world);

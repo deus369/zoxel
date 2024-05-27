@@ -33,15 +33,14 @@ void add_components_ui_basic(ecs_world_t *world, const ecs_entity_t e) {
     add_transform2Ds(world, e);
     add_ui_components(world, e);
     add_ui_mesh_components(world, e);
-    add_texture_non_generate(world, e, int2_zero);
+    prefab_add_texture(world, e, int2_zero);
 }
 
 void add_ui_plus_components(ecs_world_t *world, const ecs_entity_t e) {
-    add_seed(world, e, 666);
     add_transform2Ds(world, e);
     add_ui_components(world, e);
     add_ui_mesh_components(world, e);
-    add_texture(world, e, int2_zero, 0);
+    prefab_add_texture_generated(world, e, int2_zero, 0);
 }
 
 void add_ui_plus_components_invisible(ecs_world_t *world, const ecs_entity_t e) {

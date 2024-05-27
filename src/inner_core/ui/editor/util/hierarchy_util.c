@@ -13,7 +13,7 @@ extern ecs_entity_t prefab_button;
 extern ecs_entity_t prefab_zext;
 extern ecs_entity_t prefab_zigel;
 extern ecs_entity_t prefab_realm;
-extern ecs_entity_t prefab_voxel;
+extern ecs_entity_t prefab_block;
 extern ecs_entity_t prefab_texture;
 // realm -> world
 extern ecs_entity_t local_terrain;

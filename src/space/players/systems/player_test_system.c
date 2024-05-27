@@ -1,3 +1,42 @@
+void brain_test_controls(ecs_world_t *world, const Keyboard *keyboard, const ecs_entity_t canvas) {
+    if (!local_brain) return;
+    if (keyboard->_1.pressed_this_frame) {
+        feed_brain_random_input(world, local_brain);
+        spawn_sound_from_file(world, prefab_sound, 0);
+        zox_log(" + fed brain texture random\n")
+    }
+    else if (keyboard->_2.pressed_this_frame) {
+        if (brain_texture) zox_delete(brain_texture)
+        brain_texture = spawn_brain_as_texture(world, local_brain);
+        spawn_sound_from_file(world, prefab_sound, 0);
+        zox_log(" + spawned brain as texture\n")
+    }
+    else if (keyboard->_3.pressed_this_frame) {
+        if (!brain_texture) return;
+        if (brain_texture_ui) zox_delete(brain_texture_ui)
+        const int2 position = (int2) { 8, 8 };
+        const int2 size = (int2) { 32 * 4, 32 * 4 };
+        brain_texture_ui = spawn_element_texture(world, canvas, brain_texture, position, size);
+        spawn_sound_from_file(world, prefab_sound, 0);
+        zox_log(" + updated brain texture ui\n")
+    }
+    else if (keyboard->_4.pressed_this_frame) {
+        feed_brain_input(world, local_brain, 0.01f);
+        spawn_sound_from_file(world, prefab_sound, 0);
+        zox_log(" + fed brain empty\n")
+    }
+    else if (keyboard->_5.pressed_this_frame) {
+        zox_log(" + updated brain weights\n")
+        randomize_brain_weights(world, local_brain);
+        spawn_sound_from_file(world, prefab_sound, 0);
+    }
+    else if (keyboard->_6.pressed_this_frame) {
+        zox_log(" + saved brain texture\n")
+        save_brain_as_texture(world, local_brain);
+        spawn_sound_from_file(world, prefab_sound, 0);
+    }
+}
+
 // Shortcuts just for testing new stuff
 void PlayerTestSystem(ecs_iter_t *it) {
     zox_iter_world()
@@ -18,19 +57,12 @@ void PlayerTestSystem(ecs_iter_t *it) {
                     zox_visualize_sounds = !zox_visualize_sounds;
                 } else if (keyboard->h.pressed_this_frame) {
                     const int2 position = (int2) { 8, 8 };
-                    const int2 size = (int2) { 32 * 8, 32 * 8 };
-                    const ecs_entity_t source_texture = files_textures[0];
-                    spawn_texture_element(world, canvas, source_texture, position, size);
+                    const int2 size = (int2) { 32 * 4, 32 * 4 };
+                    const ecs_entity_t source_texture = files_textures[2];
+                    spawn_element_texture(world, canvas, source_texture, position, size);
                     spawn_sound_from_file(world, prefab_sound, 0);
                 }
-                else if (keyboard->_1.pressed_this_frame) {
-                    if (local_brain) feed_brain_random_input(world, local_brain);
-                    spawn_sound_from_file(world, prefab_sound, 0);
-                }
-                else if (keyboard->_2.pressed_this_frame) {
-                    save_brain_as_texture(world, local_brain);
-                    spawn_sound_from_file(world, prefab_sound, 0);
-                }
+                brain_test_controls(world, keyboard, canvas);
 #ifndef zox_on_startup_spawn_main_menu
                 if (keyboard->g.pressed_this_frame) {
                     const ecs_entity_t canvas = zox_get_value(it->entities[i], CanvasLink)

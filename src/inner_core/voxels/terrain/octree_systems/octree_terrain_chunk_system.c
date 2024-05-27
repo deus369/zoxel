@@ -64,6 +64,7 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
         const byte2 set_sand = (byte2) { zox_block_sand, target_depth };
         const byte2 set_stone = (byte2) { zox_block_stone, target_depth };
         const byte2 set_grass_vox = (byte2) { zox_block_grass_vox, target_depth };
+        const byte2 set_vox_dirt = (byte2) { zox_block_dirt_vox, target_depth };
         byte3 voxel_position;
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
             for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
@@ -82,6 +83,8 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
                     set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_stone, global_height);
                 } else if (rand() % 10000 <= grass_vox_spawn_chance) {
                     set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_grass_vox, global_height);
+                } else if (rand() % 10000 <= vox_dirt_spawn_chance) {
+                    set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_vox_dirt, global_height);
                 }
                 int local_height = int_min(chunk_voxel_length, global_height - chunk_position_y); // gets either grass point or chunk_voxel_length
                 if (local_height > 0) {

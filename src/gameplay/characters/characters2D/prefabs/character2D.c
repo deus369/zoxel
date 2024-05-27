@@ -6,9 +6,8 @@ void spawn_prefab_character2D(ecs_world_t *world, const int2 textureSize) {
     add_transform2Ds(world, e);
     zox_add_tag(e, Frictioned);
     add_physics2D(world, e, world_grid2D_size);
-    add_seed(world, e, 444);
     zox_add(e, Brightness)
-    add_texture(world, e, textureSize, 1);
+    prefab_add_texture_generated(world, e, textureSize, 1);
     add_animated_noise_texture(world, e);
     add_gpu_material(world, e);
     add_gpu_texture(world, e);

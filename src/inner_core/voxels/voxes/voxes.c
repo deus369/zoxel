@@ -6,6 +6,7 @@
 #include "data/spawn_block_vox.c"
 #include "data/settings.c"
 zox_declare_tag(Vox)
+zox_component_byte(GenerateVox)
 #include "util/vox_read_util.c"
 #include "util/vox_util.c"
 #include "prefabs/prefabs.c"
@@ -14,13 +15,16 @@ zox_declare_tag(Vox)
 #include "systems/chunk_colors_build_system.c"
 #include "systems/chunk_octree_colors_build_system.c"
 #include "systems/bounds3D_grow_system.c"
+#include "systems/generate_vox_system.c"
 
 zox_begin_module(Voxes)
 // zox_module_dispose(dispose_voxes)
 zox_define_tag(Vox)
+zox_define_component_byte(GenerateVox)
 zox_filter(chunks_generating, [in] GenerateChunk)
 if (!headless) zox_system_ctx(ChunkOctreeColorsBuildSystem, zox_pip_voxels_chunk_clean, chunks_generating, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] ColorRGBs, [in] ChunkSize, [in] VoxScale, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] chunks.ColorChunk)
 zox_system(Bounds3DGrowSystem, zox_pip_voxels_chunk_clean, [in] MeshDirty, [in] ChunkSize, [in] VoxScale, [out] Bounds3D) // remember: timing specific, fucks up if changes position
+zox_system(GenerateVoxSystem, zox_pip_voxels_chunk_dirty, [in] Color, [out] GenerateVox, [out] ChunkOctree, [out] ColorRGBs, [out] ChunkDirty)
 initialize_voxes(world);
 spawn_prefabs_voxes(world);
 zoxel_end_module(Voxes)

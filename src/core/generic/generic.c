@@ -54,6 +54,7 @@ zox_component_zext(ZoxName)
 #include "util/name_util.c"
 #include "util/name_generation.c"
 #include "util/hsv_util.c"
+#include "util/color_util.c"
 #include "prefabs/generic_event.c"
 #include "systems/destroy_in_frame_system.c"
 #include "systems/generic_event_debug_system.c"

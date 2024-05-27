@@ -60,7 +60,7 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         add_entity_to_labels(world, prefab_zext, labels, entities, 0);
         add_entity_to_labels(world, prefab_zigel, labels, entities, 0);
         add_entity_to_labels(world, prefab_realm, labels, entities, 0);
-        add_entity_to_labels(world, prefab_voxel, labels, entities, 0);
+        add_entity_to_labels(world, prefab_block, labels, entities, 0);
         add_entity_to_labels(world, prefab_texture, labels, entities, 0);
         // add game entities
         add_entity_to_labels(world, realm, labels, entities, 0);

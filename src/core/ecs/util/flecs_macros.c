@@ -78,10 +78,12 @@ if (e) {\
     }\
 }
 
+#define zox_new() const ecs_entity_t e = ecs_new(world, 0);
+
 // ecs_entity_t e = ecs_new_prefab(world, "");
 #define zox_prefab()\
-    const ecs_entity_t e = ecs_new(world, 0);\
-    zox_make_prefab(e)
+zox_new()\
+zox_make_prefab(e)
 
 // ecs_add_id(world, e, EcsPrefab);
 // zox_add_tag(e, EcsPrefab)

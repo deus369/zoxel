@@ -1,10 +1,4 @@
-/*void dispose_files_voxes(ecs_world_t *world) {
-#ifdef zox_disable_io
-    return;
-#endif
-    for (int i = 0; i < vox_files_count; i++) dispose_vox_file(&vox_files[i]);
-    free(vox_files);
-}*/
+#define zox_print_files
 
 void load_vox_file(const char* filename, vox_file *vox) {
 #ifdef zox_disable_io
@@ -27,7 +21,7 @@ void load_files_voxes(ecs_world_t *world, const ecs_entity_t prefab) {
     for (int i = 0; i < files.count; i++) {
         char* file_path = concat_file_path(full_monsters_directory, files.files[i]);
 #ifdef zox_print_files
-        zox_log("   > vox file [%s]\n", file_path)
+        zox_log("   > [%i] vox file [%s]\n", i, file_path)
 #endif
         vox_file data;
         load_vox_file(file_path, &data);
