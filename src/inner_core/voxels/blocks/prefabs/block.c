@@ -21,9 +21,19 @@ ecs_entity_t spawn_block(ecs_world_t *world, const SpawnBlock *data) {
     Textures *textures = zox_get_mut(e, Textures)
     resize_memory_component(Textures, textures, ecs_entity_t, textures_count)
     for (int i = 0; i < textures_count; i++) {
-        // todo: base grass off dirt, as well as sand, using HSV color contrasts
-        const ecs_entity_t e2 = spawn_texture_dirt(world, prefab_texture_noise, data->seed + i, data->color);
-        if (data->texture_tag) zox_add_tag_id(e2, data->texture_tag);
+        ecs_entity_t e2;
+        if (data->vox_texture) {
+            e2 = spawn_texture(world, prefab_texture, voxel_texture_size);
+            zox_add_tag(e2, VoxTexture)
+            zox_set(e2, VoxLink, { data->vox_texture })
+            zox_set(e2, GenerateTexture, { 1 })
+            zox_set(e2, VoxBakeSide, { i })
+            // zox_set(e2, Color, { data->color })
+        } else {
+            // todo: base grass off dirt, as well as sand, using HSV color contrasts
+            e2 = spawn_texture_dirt(world, prefab_texture_noise, data->seed + i, data->color);
+            if (data->texture_tag) zox_add_tag_id(e2, data->texture_tag);
+        }
         textures->value[i] = e2;
     }
     zox_modified(e, Textures)

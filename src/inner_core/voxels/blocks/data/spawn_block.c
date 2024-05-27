@@ -3,6 +3,7 @@ typedef struct {
     unsigned char index;
     unsigned char model;
     ecs_entity_t vox;
+    ecs_entity_t vox_texture;
     unsigned char textures;
     int seed;
     color color;

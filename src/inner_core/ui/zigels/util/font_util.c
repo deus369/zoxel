@@ -7,10 +7,9 @@ const unsigned char is_splotches = 1;
     const color nothing_font_color = { 0, 0, 0, 0 };
 #endif
 
-void flood_fill_texture(TextureData* textureData, const int2 size, const color air_color, const color boundary_color, const color fill_color, const int x, const int y) {
+void flood_fill_texture(color* data, const int2 size, const color air_color, const color boundary_color, const color fill_color, const int x, const int y) {
     int index = int2_array_index((int2) { x, y }, size);
-    // if (!color_equal(textureData->value[index], air_color)) zox_log(" ! trying to fill solid [%ix%ix%i]\n", textureData->value[index].r, textureData->value[index].g, textureData->value[index].b)
-    if (!color_equal(textureData->value[index], air_color)) return;
+    if (!color_equal(data[index], air_color)) return;
     int visited[size.x * size.y];
     memset(visited, 0, sizeof(visited));
     int stack[size.x * size.y * 2 * 4];
@@ -26,8 +25,8 @@ void flood_fill_texture(TextureData* textureData, const int2 size, const color a
         index = int2_array_index((int2) { x, y }, size);
         if (x >= 0 && x < size.x && y >= 0 && y < size.y && !visited[index]) {
             visited[index] = 1;
-            if (color_equal(textureData->value[index], boundary_color) ||color_equal(textureData->value[index], fill_color)) continue;
-            textureData->value[index] = fill_color;
+            if (color_equal(data[index], boundary_color) ||color_equal(data[index], fill_color)) continue;
+            data[index] = fill_color;
             // zox_log("filling [%ix%i]\n", x, y)
             // Push neighboring pixels onto the stack (left, right, up, down)
             stack[stack_top++] = x - 1; // left
@@ -43,15 +42,15 @@ void flood_fill_texture(TextureData* textureData, const int2 size, const color a
 }
 
 // raycast from all 4 sides!
-void scanline_fill_texture(TextureData* textureData, const int2 size, const color air_color, const color boundary_color, const color fill_color) {
+void scanline_fill_texture(color* data, const int2 size, const color air_color, const color boundary_color, const color fill_color) {
     for (int y = 0; y < size.y; y++) {
         unsigned char intersects = 0;
         for (int x = 0; x < size.x; x++) {
             const int index = int2_array_index((int2) { x, y }, size);
             if (intersects) {
-                flood_fill_texture(textureData, size, air_color, boundary_color, fill_color, x, y);
+                flood_fill_texture(data, size, air_color, boundary_color, fill_color, x, y);
                 break;
-            } else if (color_equal(textureData->value[index], boundary_color)) {
+            } else if (color_equal(data[index], boundary_color)) {
                 intersects++;
             }
         }
@@ -59,9 +58,9 @@ void scanline_fill_texture(TextureData* textureData, const int2 size, const colo
         for (int x = size.x - 1; x >= 0; x--) {
             const int index = int2_array_index((int2) { x, y }, size);
             if (intersects) {
-                flood_fill_texture(textureData, size, air_color, boundary_color, fill_color, x, y);
+                flood_fill_texture(data, size, air_color, boundary_color, fill_color, x, y);
                 break;
-            } else if (color_equal(textureData->value[index], boundary_color)) {
+            } else if (color_equal(data[index], boundary_color)) {
                 intersects++;
             }
         }
@@ -72,9 +71,9 @@ void scanline_fill_texture(TextureData* textureData, const int2 size, const colo
         for (int y = 0; y < size.y; y++) {
             const int index = int2_array_index((int2) { x, y }, size);
             if (intersects) {
-                flood_fill_texture(textureData, size, air_color, boundary_color, fill_color, x, y);
+                flood_fill_texture(data, size, air_color, boundary_color, fill_color, x, y);
                 break;
-            } else if (color_equal(textureData->value[index], boundary_color)) {
+            } else if (color_equal(data[index], boundary_color)) {
                 intersects++;
             }
         }
@@ -82,16 +81,16 @@ void scanline_fill_texture(TextureData* textureData, const int2 size, const colo
         for (int y = size.y - 1; y >= 0; y--) {
             const int index = int2_array_index((int2) { x, y }, size);
             if (intersects) {
-                flood_fill_texture(textureData, size, air_color, boundary_color, fill_color, x, y);
+                flood_fill_texture(data, size, air_color, boundary_color, fill_color, x, y);
                 break;
-            } else if (color_equal(textureData->value[index], boundary_color)) {
+            } else if (color_equal(data[index], boundary_color)) {
                 intersects++;
             }
         }
     }
 }
 
-void draw_texture_line(TextureData* textureData, const int2 size, const int2 point_a, const int2 point_b, const color line_color) {
+void draw_texture_line(color* data, const int2 size, const int2 point_a, const int2 point_b, const color line_color) {
     // Calculate the texture coordinates for point_a and point_b
     int x0 = (int) point_a.x;
     int y0 = (int) point_a.y;
@@ -111,7 +110,7 @@ void draw_texture_line(TextureData* textureData, const int2 size, const int2 poi
         // Calculate the index of the current pixel in the texture data array
         int index = (y0 * size.x + x0);
         // Set the RGBA values of the current pixel to white (255, 255, 255, 255)
-        textureData->value[index] = line_color;
+        data[index] = line_color;
         // Check if we've reached the end of the line segment
         if (x0 == x1 && y0 == y1) break;
         // Calculate the next pixel coordinates
@@ -121,7 +120,7 @@ void draw_texture_line(TextureData* textureData, const int2 size, const int2 poi
     }
 }
 
-void generate_splotches_lines(TextureData* textureData, const int2 size, const FontData *fontData, const color line_color, const unsigned char splotch_size) {
+void generate_splotches_lines(color* data, const int2 size, const FontData *fontData, const color line_color, const unsigned char splotch_size) {
     if (splotch_size == 0) return;
     for (int i = 0; i < fontData->length; i += 2) {
         int2 pointA = byte2_to_int2(fontData->value[i]);
@@ -153,7 +152,7 @@ void generate_splotches_lines(TextureData* textureData, const int2 size, const F
                     const int2 drawPoint = (int2) { splash_point.x + k, splash_point.y + l};
                     if (drawPoint.x >= 0 && drawPoint.x < size.x && drawPoint.y >= 0 && drawPoint.y < size.y) {
                         const int array_index = int2_array_index(drawPoint, size);
-                        if (color_equal(textureData->value[array_index], nothing_font_color)) textureData->value[array_index] = line_color;
+                        if (color_equal(data[array_index], nothing_font_color)) data[array_index] = line_color;
                     }
                 }
             }
@@ -162,17 +161,17 @@ void generate_splotches_lines(TextureData* textureData, const int2 size, const F
     }
 }
 
-void clear_texture(TextureData* textureData, const int2 size) {
+void clear_texture(color* data, const int2 size) {
     int index = 0;
     for (int k = 0; k < size.y; k++) {
         for (int j = 0; j < size.x; j++) {
-            textureData->value[index] = nothing_font_color;
+            data[index] = nothing_font_color;
             index++;
         }
     }
 }
 
-void generate_font_lines(TextureData* textureData, const int2 size, const FontData *fontData, const color line_color) {
+void generate_font_lines(color* data, const int2 size, const FontData *fontData, const color line_color) {
     // point A to B - use FontData byte2 data.
     for (int i = 0; i < fontData->length; i += 2) {
         int2 pointA = byte2_to_int2(fontData->value[i]);
@@ -185,19 +184,19 @@ void generate_font_lines(TextureData* textureData, const int2 size, const FontDa
         pointA.y = (int) ((pointA.y / 255.0f) * size.y);
         pointB.x = (int) ((pointB.x / 255.0f) * size.x);
         pointB.y = (int) ((pointB.y / 255.0f) * size.y);
-        draw_texture_line(textureData, size, pointA, pointB, line_color);
+        draw_texture_line(data, size, pointA, pointB, line_color);
     }
 }
 
-void generate_font_texture(TextureData* textureData, const int2 size, const FontData *font_data, const color line_color,  const color fill_color, const unsigned char is_shapes, const unsigned char font_thickness) {
+void generate_font_texture(color* data, const int2 size, const FontData *font_data, const color line_color,  const color fill_color, const unsigned char is_shapes, const unsigned char font_thickness) {
     // const color nothing = { 0, 0, 0, 0 };
-    clear_texture(textureData, size);
+    clear_texture(data, size);
     if (!font_data->length) return;
     if (is_shapes) {
-        generate_font_lines(textureData, size, font_data, line_color);
-        scanline_fill_texture(textureData, size, nothing_font_color, line_color, fill_color);
+        generate_font_lines(data, size, font_data, line_color);
+        scanline_fill_texture(data, size, nothing_font_color, line_color, fill_color);
     }
-    generate_splotches_lines(textureData, size, font_data, line_color, font_thickness);
+    generate_splotches_lines(data, size, font_data, line_color, font_thickness);
 }
 
 /*
@@ -221,8 +220,9 @@ redRange.x + rand() % (redRange.y - redRange.x),
 greenRange.x + rand() % (greenRange.y - greenRange.x),
 blueRange.x + rand() % (blueRange.y - blueRange.x),
 alphaRange2.x + rand() % (alphaRange2.y - alphaRange2.x)
-};*/
-/*if (!is_background) {
+};
+
+if (!is_background) {
     textureData->value[index] = nothing;
 } else if (j <= frame_thickness || k <= frame_thickness || j >= size.x - 1 - frame_thickness || k >= size.y - 1 - frame_thickness) {
     textureData->value[index] = base;

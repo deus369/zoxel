@@ -39,7 +39,7 @@ void FontTextureSystem(ecs_iter_t *it) {
         const FontData *fontData = zox_get(font, FontData)
         const int length = textureSize->value.x * textureSize->value.y;
         resize_memory_component(TextureData, textureData, color, length)
-        generate_font_texture(textureData, textureSize->value, fontData, secondaryColor->value, color_variable->value, is_use_shapes, fontThickness->value);
+        generate_font_texture(textureData->value, textureSize->value, fontData, secondaryColor->value, color_variable->value, is_use_shapes, fontThickness->value);
         generateTexture->value = 0;
         textureDirty->value = 1;
 #ifdef zoxel_debug_zigel_updates

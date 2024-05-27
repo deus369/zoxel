@@ -1,11 +1,4 @@
-ecs_entity_t testTextureEntity;
-
-//! Spawn a Player character.
-ecs_entity_t spawn_texture(ecs_world_t *world, const ecs_entity_t prefab) {
-    zox_instance(prefab)
-    zoxel_log(" > spawned texture data [%lu]\n", e);
-    return e;
-}
+/*ecs_entity_t testTextureEntity;
 
 void TestDestroyTexture(ecs_world_t *world) {
     if (testTextureEntity && zox_alive(testTextureEntity)) {
@@ -16,3 +9,4 @@ void TestDestroyTexture(ecs_world_t *world) {
         testTextureEntity = spawn_texture(world, prefab_texture_noise);
     }
 }
+*/

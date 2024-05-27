@@ -1,6 +1,7 @@
 #ifndef zox_mod_voxels
 #define zox_mod_voxels
 
+zox_component_entity(VoxLink)
 #include "blocks/blocks.c"
 #include "chunks/chunks.c"
 #include "structures/structures.c"
@@ -10,6 +11,7 @@
 #include "realm_voxels.c"
 
 zox_begin_module(Voxels)
+zox_define_component_entity(VoxLink)
 zox_import_module(Blocks)
 zox_import_module(Chunks)
 zox_import_module(Structures)

@@ -4,6 +4,7 @@
 // todo: implement BlockCollider in physics
 #include "data/model_types.c"
 #include "data/block_types.c"
+#include "data/block_sides.c"
 #include "data/spawn_block.c"
 zox_declare_tag(Voxel)
 zox_declare_tag(BlockVox)
@@ -13,6 +14,7 @@ zox_component_int3(VoxelPosition)
 zox_component_float(VoxScale)
 zox_component_entity(ModelLink)
 zox_entities_component(VoxelLinks)
+zox_component_byte(VoxBakeSide)
 #include "util/generation_util.c"
 #include "prefabs/prefabs.c"
 
@@ -25,6 +27,7 @@ zox_define_component_int3(VoxelPosition)
 zox_define_component_float(VoxScale)
 zox_define_component_entity(ModelLink)
 zox_define_entities_component(VoxelLinks)
+zox_define_component_byte(VoxBakeSide)
 spawn_prefabs_blocks(world);
 zoxel_end_module(Blocks)
 

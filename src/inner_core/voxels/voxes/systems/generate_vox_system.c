@@ -1,4 +1,6 @@
 // GenerateVox == 1
+const unsigned char is_generate_vox_airs = 0;
+
 unsigned char byte3_on_edge(const byte3 pos, const byte3 size) {
     return pos.x == 0 || pos.y == 0 || pos.z == 0 || pos.x == size.x - 1 || pos.y == size.y - 1 || pos.z == size.z - 1;
 }
@@ -15,14 +17,14 @@ void GenerateVoxSystem(ecs_iter_t *it) {
     zox_field_out(ChunkDirty, chunkDirtys, 5)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(GenerateVox, generateVoxs, generateVox)
-        if (generateVox->value != 1) continue;
+        if (!generateVox->value) continue;
         zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
         if (chunkDirty->value) continue;
         zox_field_i(Color, colors, color)
         zox_field_o(ChunkOctree, chunkOctrees, chunkOctree)
         zox_field_o(ColorRGBs, colorRGBss, colorRGBs)
         resize_memory_component(ColorRGBs, colorRGBs, color_rgb, 3)
-        color_rgb color_rgb_2 = color_to_color_rgb(color->value);
+        const color_rgb color_rgb_2 = color_to_color_rgb(color->value);
         colorRGBs->value[0] = color_rgb_2;
         colorRGBs->value[1] = color_rgb_2;
         colorRGBs->value[2] = color_rgb_2;
@@ -34,7 +36,7 @@ void GenerateVoxSystem(ecs_iter_t *it) {
         const byte2 set_voxel_1 = (byte2) { 1, target_depth };
         const byte2 set_voxel_2 = (byte2) { 2, target_depth };
         const byte2 set_voxel_3 = (byte2) { 3, target_depth };
-        const byte2 set_voxel_air = (byte2) { 0, target_depth };
+        const byte2 set_voxel_air = (byte2) { !is_generate_vox_airs, target_depth };
         fill_new_octree(chunkOctree, 0, target_depth);
         byte3 voxel_position;
         byte3 size = (byte3) { chunk_voxel_length, chunk_voxel_length, chunk_voxel_length };
@@ -58,5 +60,9 @@ void GenerateVoxSystem(ecs_iter_t *it) {
 #endif
         generateVox->value = 0;
         chunkDirty->value = 1;
+        /*zox_log(" +  GenerateVoxSystem::\n")
+        zox_log("   +  color_rgb_2: - %xx%xx%x\n", color_rgb_2.r, color_rgb_2.g, color_rgb_2.b)
+        zox_log("   +  c1: - %xx%xx%x\n", colorRGBs->value[0].r, colorRGBs->value[0].g, colorRGBs->value[0].b)
+        zox_log("   +  c2: - %xx%xx%x\n", colorRGBs->value[1].r, colorRGBs->value[1].g, colorRGBs->value[1].b)*/
     }
 } zox_declare_system(GenerateVoxSystem)

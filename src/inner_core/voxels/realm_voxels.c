@@ -16,6 +16,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     const float2 dirt_value = (float2) { 24, 42 };
     const float2 dirt_saturation = (float2) { 20, 33 };
     float3 dirt_hsv = generate_hsv_v_s(dirt_value, dirt_saturation);
+
     float3 grass_hsv = (float3) { 360.0f - dirt_hsv.x, dirt_hsv.y, dirt_hsv.z };
     if (hsv_to_color(grass_hsv).r > hsv_to_color(dirt_hsv).r)
     {
@@ -71,20 +72,21 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             spawn_data.vox = vox_files[test_block_vox_index];
             spawn_data.disable_collision = 1;
         } else if (i == zox_block_dirt_vox - 1) {
+            spawn_data.color = dirt_color;
             // 2nd test vox block
             // spawn_data.color = generate_random_voxel_color();
-            spawn_data.color = dirt_color;
-            spawn_data.tag = zox_id(BlockVox);
-            spawn_data.model = zox_block_vox;
-            spawn_data.vox = spawn_vox_generated(world, prefab_vox_generated, spawn_data.color);
-            // quick hack
-            zox_set(spawn_data.vox, RenderDisabled, { 1 })
+            const ecs_entity_t vox = spawn_vox_generated(world, prefab_vox_generated, spawn_data.color);
+            zox_set(vox, RenderDisabled, { 1 }) // quick hack
+            // spawn_data.tag = zox_id(BlockVox);
+            // spawn_data.model = zox_block_vox;
             // next spawn textures off vox ^ x6 axis
             // our cool cube
             // vox_files[test_block_vox_index2];
+            // spawn_data.vox = vox;
+            spawn_data.textures = 6;
+            spawn_data.vox_texture = vox;
         }
         voxelLinks->value[i] = spawn_block(world, &spawn_data);
-
     }
     zox_modified(realm, VoxelLinks)
 #ifdef zox_mod_weathers
