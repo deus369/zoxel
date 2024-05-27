@@ -9,7 +9,7 @@ void GenerateVoxSystem(ecs_iter_t *it) {
     // zox_change_check()
     const unsigned char target_depth = max_octree_depth;
     const unsigned char chunk_voxel_length = powers_of_two_byte[target_depth];
-    const float2 map_size_f = (float2) { chunk_voxel_length, chunk_voxel_length };
+    zox_iter_world()
     zox_field_in(Color, colors, 1)
     zox_field_out(GenerateVox, generateVoxs, 2)
     zox_field_out(ChunkOctree, chunkOctrees, 3)
@@ -20,11 +20,11 @@ void GenerateVoxSystem(ecs_iter_t *it) {
         if (!generateVox->value) continue;
         zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
         if (chunkDirty->value) continue;
-        zox_field_i(Color, colors, color)
+        zox_field_i(Color, colors, color2)
         zox_field_o(ChunkOctree, chunkOctrees, chunkOctree)
         zox_field_o(ColorRGBs, colorRGBss, colorRGBs)
         resize_memory_component(ColorRGBs, colorRGBs, color_rgb, 3)
-        const color_rgb color_rgb_2 = color_to_color_rgb(color->value);
+        const color_rgb color_rgb_2 = color_to_color_rgb(color2->value);
         colorRGBs->value[0] = color_rgb_2;
         colorRGBs->value[1] = color_rgb_2;
         colorRGBs->value[2] = color_rgb_2;
@@ -40,18 +40,47 @@ void GenerateVoxSystem(ecs_iter_t *it) {
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
             for (voxel_position.y = 0; voxel_position.y < chunk_voxel_length; voxel_position.y++) {
                 for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
-                    byte2 set_voxel;
                     int rando = rand() % 1000;
+                    byte2 set_voxel;
                     if (rando <= 150) set_voxel = set_voxel_1;
                     else if (rando <= 300) set_voxel = set_voxel_3;
                     else if (rando <= 450) set_voxel = set_voxel_2;
                     else set_voxel = set_voxel_1;
                     if (byte3_on_edge(voxel_position, size) && rando <= 150) set_voxel = set_voxel_air;
-                    // testing
-                    /*if (voxel_position.x >= chunk_voxel_length / 2) set_voxel = set_voxel_1;
-                    else set_voxel = set_voxel_2;*/
                     byte3 node_position = voxel_position;
                     set_octree_voxel(chunkOctree, &node_position, &set_voxel, 0);
+                }
+            }
+        }
+        const unsigned char is_blend_vox = zox_has(it->entities[i], BlendVox);
+        if (is_blend_vox) {
+            const int grass_random = 6;
+            const int grass_position = chunk_voxel_length - chunk_voxel_length / 3;
+            const color under_color = zox_get_value(it->entities[i], SecondaryColor)
+            color_rgb color_4 = color_to_color_rgb(under_color);
+            color_rgb color_5 = color_4;
+            color_rgb_multiply_float(&color_5, 0.7f);
+            color_rgb color_6 = color_4;
+            color_rgb_multiply_float(&color_6, 1.2f);
+            add_to_ColorRGBs(colorRGBs, color_4);
+            add_to_ColorRGBs(colorRGBs, color_5);
+            add_to_ColorRGBs(colorRGBs, color_6);
+            byte2 set_voxel_4 = (byte2) { 4, target_depth };
+            byte2 set_voxel_5 = (byte2) { 5, target_depth };
+            byte2 set_voxel_6 = (byte2) { 6, target_depth };
+            for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
+                for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
+                    int height = grass_position - rand() % grass_random;
+                    for (voxel_position.y = 0; voxel_position.y < height; voxel_position.y++) {
+                        int rando = rand() % 1000;
+                        byte2 set_voxel;
+                        if (rando <= 150) set_voxel = set_voxel_5;
+                        else if (rando <= 300) set_voxel = set_voxel_6;
+                        else set_voxel = set_voxel_4;
+                        if (byte3_on_edge(voxel_position, size) && rando <= 150) set_voxel = set_voxel_air;
+                        byte3 node_position = voxel_position;
+                        set_octree_voxel(chunkOctree, &node_position, &set_voxel, 0);
+                    }
                 }
             }
         }
@@ -62,3 +91,7 @@ void GenerateVoxSystem(ecs_iter_t *it) {
         chunkDirty->value = 1;
     }
 } zox_declare_system(GenerateVoxSystem)
+
+// testing
+/*if (voxel_position.x >= chunk_voxel_length / 2) set_voxel = set_voxel_1;
+else set_voxel = set_voxel_2;*/

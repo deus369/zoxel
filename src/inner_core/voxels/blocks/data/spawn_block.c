@@ -10,4 +10,5 @@ typedef struct {
     ecs_entity_t tag;
     ecs_entity_t texture_tag;
     unsigned char disable_collision; // enabled by default
+    unsigned char vox_offset;
 } SpawnBlock;

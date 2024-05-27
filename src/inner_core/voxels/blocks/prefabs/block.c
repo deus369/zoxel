@@ -17,6 +17,7 @@ ecs_entity_t spawn_block(ecs_world_t *world, const SpawnBlock *data) {
     if (data->tag) zox_add_tag_id(e, data->tag);
     if (data->vox) zox_set(e, ModelLink, { data->vox })
     if (data->disable_collision) zox_set(e, BlockCollider, { zox_block_air })
+    if (data->vox_offset) zox_set(e, BlockVoxOffset, { 1 })
     const unsigned char textures_count = data->textures;
     Textures *textures = zox_get_mut(e, Textures)
     resize_memory_component(Textures, textures, ecs_entity_t, textures_count)

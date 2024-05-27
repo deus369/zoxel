@@ -15,6 +15,7 @@ zox_component_float(VoxScale)
 zox_component_entity(ModelLink)
 zox_entities_component(VoxelLinks)
 zox_component_byte(VoxBakeSide)
+zox_component_byte(BlockVoxOffset)
 #include "util/generation_util.c"
 #include "prefabs/prefabs.c"
 
@@ -28,6 +29,7 @@ zox_define_component_float(VoxScale)
 zox_define_component_entity(ModelLink)
 zox_define_entities_component(VoxelLinks)
 zox_define_component_byte(VoxBakeSide)
+zox_define_component_byte(BlockVoxOffset)
 spawn_prefabs_blocks(world);
 zoxel_end_module(Blocks)
 

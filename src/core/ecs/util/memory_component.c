@@ -39,6 +39,19 @@ ECS_COPY(name, dst, src, {\
         name##_##memorys_allocated++;\
     }\
 })\
+\
+unsigned char add_to##_##name(name *component, const type data) {\
+    if (component->value) {\
+        component->length++;\
+        component->value = realloc(component->value, component->length * sizeof(type));\
+        component->value[component->length - 1] = data;\
+    } else {\
+        component->length = 1;\
+        component->value = malloc(sizeof(type));\
+        component->value[0] = data;\
+    }\
+    return 1;\
+}
 
 #define zox_define_memory_component2(name, ...)\
 zox_define_component(name)\

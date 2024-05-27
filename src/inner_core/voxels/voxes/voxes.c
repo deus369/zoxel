@@ -6,6 +6,7 @@
 #include "data/spawn_block_vox.c"
 #include "data/settings.c"
 zox_declare_tag(Vox)
+zox_declare_tag(BlendVox)
 zox_component_byte(GenerateVox)
 #include "util/vox_read_util.c"
 #include "util/vox_util.c"
@@ -19,8 +20,8 @@ zox_component_byte(GenerateVox)
 #include "systems/vox_texture_system.c"
 
 zox_begin_module(Voxes)
-// zox_module_dispose(dispose_voxes)
 zox_define_tag(Vox)
+zox_define_tag(BlendVox)
 zox_define_component_byte(GenerateVox)
 zox_filter(chunks_generating, [in] GenerateChunk)
 if (!headless) zox_system_ctx(ChunkOctreeColorsBuildSystem, zox_pip_voxels_chunk_clean, chunks_generating, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] ColorRGBs, [in] ChunkSize, [in] VoxScale, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] chunks.ColorChunk)

@@ -55,7 +55,7 @@ void DamageAuraSystem(ecs_iter_t *it) {
                     add_to_DotLinks(dotLinks, spawn_poison(world, e2, user));
                     // spawn particle system
                     if (!children->length) {
-                        ecs_entity_t particle3D_emitter = spawn_particle3D_emitter(world, e2, 4);
+                        const ecs_entity_t particle3D_emitter = spawn_particle3D_emitter(world, e2, 4);
                         add_to_Children(children, particle3D_emitter);
                     }
 #ifdef zox_debug_aoe_damage_system
