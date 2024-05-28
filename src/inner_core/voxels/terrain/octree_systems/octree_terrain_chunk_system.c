@@ -39,9 +39,6 @@ void set_terrain_block(ecs_world_t *world, ChunkOctree *chunkOctree, const byte3
 // generates our terrain voxels
 void OctreeTerrainChunkSystem(ecs_iter_t *it) {
     zox_change_check()
-#ifdef zoxel_time_octree_terrain_chunk_system
-    begin_timing()
-#endif
     const unsigned char target_depth = max_octree_depth;
     const unsigned char chunk_voxel_length = powers_of_two_byte[target_depth];
     const float2 map_size_f = (float2) { chunk_voxel_length, chunk_voxel_length };
@@ -63,8 +60,9 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
         const byte2 set_grass = (byte2) { zox_block_grass, target_depth };
         const byte2 set_sand = (byte2) { zox_block_sand, target_depth };
         const byte2 set_stone = (byte2) { zox_block_stone, target_depth };
-        const byte2 set_grass_vox = (byte2) { zox_block_grass_vox, target_depth };
+        const byte2 set_grass_vox = (byte2) { zox_block_vox_grass, target_depth };
         const byte2 set_vox_dirt = (byte2) { zox_block_dirt_vox, target_depth };
+        const byte2 set_dirt_rubble = (byte2) { zox_block_dirt_rubble, target_depth };
         byte3 voxel_position;
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
             for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
@@ -79,13 +77,29 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
 #endif
                 // now for grass_vox on top
                 // remember: to add structures like that, a noise roof over ttop of certain areas would be cool
-                if (rand() % 10000 <= stone_top_spawn_chance) {
-                    set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_stone, global_height);
-                } else if (rand() % 10000 <= grass_vox_spawn_chance) {
-                    set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_grass_vox, global_height);
-                } else if (rand() % 10000 <= vox_dirt_spawn_chance) {
-                    set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_vox_dirt, global_height);
+                const unsigned char is_mountain = global_height >= mountain_height;
+                const unsigned char is_sand = global_height <= sand_height;
+                const unsigned char is_grasslands = !is_sand && !is_mountain;
+                if (is_grasslands) {
+                    if (rand() % 10000 <= stone_top_spawn_chance) {
+                        set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_stone, global_height);
+                    } else if (rand() % 10000 <= grass_vox_spawn_chance) {
+                        set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_grass_vox, global_height);
+                    } else if (rand() % 10000 <= vox_dirt_spawn_chance) {
+                        set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_vox_dirt, global_height);
+                    } else if (rand() % 10000 <= vox_spawn_chance_dirt_rubble) {
+                        set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_dirt_rubble, global_height);
+                    }
+                } else if (is_mountain) {
+                    if (rand() % 10000 <= stone_top_spawn_chance * 4) {
+                        set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_stone, global_height);
+                    } else if (rand() % 10000 <= vox_dirt_spawn_chance * 4) {
+                        set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_vox_dirt, global_height);
+                    } else if (rand() % 10000 <= vox_spawn_chance_dirt_rubble * 4) {
+                        set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_dirt_rubble, global_height);
+                    }
                 }
+
                 int local_height = int_min(chunk_voxel_length, global_height - chunk_position_y); // gets either grass point or chunk_voxel_length
                 if (local_height > 0) {
                     const unsigned char chunk_below_max = local_height > chunk_voxel_length;
@@ -98,6 +112,9 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
                             const int current_position_y = chunk_position_y + voxel_position.y;
                             if (current_position_y < sand_height) {
                                 set_octree_voxel(chunkOctree, &node_position, &set_sand, 0);
+                            } else if (current_position_y >= mountain_height) {
+                                if (rand() % 100 <= 94) set_octree_voxel(chunkOctree, &node_position, &set_stone, 0);
+                                else set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);
                             } else {
                                 if (rand() % 100 <= grass_spawn_chance) set_octree_voxel(chunkOctree, &node_position, &set_grass, 0);
                                 else set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);
@@ -113,15 +130,9 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
         close_same_nodes(chunkOctree);
 #endif
         // close_solid_nodes(chunkOctree);
-#ifdef zoxel_time_octree_terrain_chunk_system
-        did_do_timing()
-#endif
         generateChunk->value = 0;
         chunkDirty->value = 1;
     }
-#ifdef zoxel_time_octree_terrain_chunk_system
-    end_timing("    - octree_terrain_chunk_system")
-#endif
 } zox_declare_system(OctreeTerrainChunkSystem)
 
 

@@ -29,26 +29,6 @@ void add_chunk_octree(ecs_world_t *world, const ecs_entity_t e, const int3 size)
     zox_modified(e, ChunkNeighbors)
 }
 
-void set_octree_voxel(ChunkOctree *node, byte3 *position, const byte2 *set_octree_data, unsigned char depth) {
-    node->value = set_octree_data->x;
-    if (depth == set_octree_data->y || node->nodes == NULL) return;
-    unsigned char dividor = powers_of_two_byte[set_octree_data->y - depth - 1];   // starts at default_chunk_length, ends at 1
-    byte3 node_position = (byte3) { position->x / dividor, position->y / dividor, position->z / dividor };
-    byte3_modulus_byte(position, dividor);
-    set_octree_voxel(&node->nodes[byte3_octree_array_index(node_position)], position, set_octree_data, depth + 1);
-}
-
-void set_octree_voxel_final(ChunkOctree *node, byte3 *position, const byte2 *set_octree_data, unsigned char depth) {
-    if (depth == set_octree_data->y || !node->nodes) {
-        node->value = set_octree_data->x;
-        return;
-    }
-    unsigned char dividor = powers_of_two_byte[set_octree_data->y - depth - 1];   // starts at default_chunk_length, ends at 1
-    byte3 node_position = (byte3) { position->x / dividor, position->y / dividor, position->z / dividor };
-    byte3_modulus_byte(position, dividor);
-    set_octree_voxel_final(&node->nodes[byte3_octree_array_index(node_position)], position, set_octree_data, depth + 1);
-}
-
 unsigned char get_octree_voxel(const ChunkOctree *node, byte3 *position, unsigned char depth) {
     if (!node->nodes || !depth) return node->value;
     unsigned char dividor = powers_of_two_byte[depth - 1]; // target - depth - 1];   // starts at default_chunk_length, ends at 1

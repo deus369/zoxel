@@ -26,16 +26,18 @@ unsigned char terrain_mode = 0;
 double terrain_amplifier = 64.0;
 double terrain_boost = 0.0;
 int lowest_voxel_height = -24;
-const double real_terrain_frequency = 0.008216; // 0.004216; // 0.026216
+const double real_terrain_frequency = 0.013216; //  0.008216; // 0.004216; // 0.026216
 double terrain_frequency = 0.038216;
 uint32_t terrain_seed = 32666;
+const unsigned char max_vox_blocks = 128;
 #define grass_spawn_chance 80
 #define octree_random_spawn_chance 22
 #define stone_top_spawn_chance 33
 #define grass_vox_spawn_chance 122
 #define vox_dirt_spawn_chance 22
-const int sand_height = -16; // -7;
-const unsigned char max_vox_blocks = 32;
+#define vox_spawn_chance_dirt_rubble 322
+const int sand_height = -10;
+const int mountain_height = 20;
 const unsigned char block_vox_render_distance = 3; // 3 | 4 looks best
 const int test_block_vox_index = 4; // flower
 const int test_block_vox_index2 = 6; // little_cube

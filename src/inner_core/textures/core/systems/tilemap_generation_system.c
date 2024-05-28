@@ -1,5 +1,7 @@
 // uses terrain's texture links to generate a tilemap
+// todo: support for multiple sizes, would have to place them in? or something
 void TilemapGenerationSystem(ecs_iter_t *it) {
+    const unsigned char uvs_per_tile = 4;
     zox_iter_world()
     zox_field_in(TilemapSize, tilemapSizes, 2)
     zox_field_in(TextureLinks, textureLinkss, 3)
@@ -9,72 +11,129 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
     zox_field_out(TextureDirty, textureDirtys, 7)
     zox_field_out(TilemapUVs, tilemapUVss, 8)
     for (int i = 0; i < it->count; i++) {
-        GenerateTexture *generateTexture = &generateTextures[i];
-        if (generateTexture->value != 2) continue;
-        TextureDirty *textureDirty = &textureDirtys[i];
+        zox_field_o(GenerateTexture, generateTextures, generateTexture)
+        if (!generateTexture->value) continue;
+        zox_field_o(TextureDirty, textureDirtys, textureDirty)
         if (textureDirty->value) continue;
-        const TextureLinks *textureLinks = &textureLinkss[i];
+        zox_field_i(TextureLinks, textureLinkss, textureLinks)
         if (textureLinks->length == 0) {
-            textureDirty->value = 1;
+            zox_log(" ! tilemap has no textures\n")
             continue;
         }
-        const TilemapSize *tilemapSize = &tilemapSizes[i];
-        TextureData *textureData = &textureDatas[i];
-        TextureSize *textureSize = &textureSizes[i];
-        TilemapUVs *tilemapUVs = &tilemapUVss[i];
-        float tile_size = 1.0f / ((float) tilemapSize->value.x);
+        zox_field_i(TilemapSize, tilemapSizes, tilemapSize)
+        if (tilemapSize->value.x == 0) {
+            zox_log(" ! tilemapSize->value.x is 0\n")
+            continue;
+        }
+        /*unsigned char is_generating = 0;
+        for (int j = 0; j < textureLinks->length; j++) {
+            const ecs_entity_t texture = textureLinks->value[j];
+            if (zox_gett_value(texture, GenerateTexture)) {
+                is_generating = 1;
+                break;
+            }
+        }
+        if (is_generating) {
+            zox_log(" > tilemap texture data still generating\n")
+            continue;
+        }*/
+        zox_field_o(TextureData, textureDatas, textureData)
+        zox_field_o(TextureSize, textureSizes, textureSize)
+        zox_field_o(TilemapUVs, tilemapUVss, tilemapUVs)
         // generate textureSize based on TilemapSize
-        ecs_entity_t first_texture = textureLinks->value[0];
-        const TextureSize *first_texture_size = zox_get(first_texture, TextureSize)
-        // todo: support for multiple sizes, would have to place them in? or something
-        textureSize->value.x = tilemapSize->value.x * first_texture_size->value.x;
-        textureSize->value.y = tilemapSize->value.y * first_texture_size->value.y;
+        const ecs_entity_t first_texture = textureLinks->value[0];
+        if (!zox_valid(first_texture)) {
+            zox_log(" ! first_texture is null in tilemap generation system\n")
+            continue;
+        }
+        const int2 unit_size = zox_get_value(first_texture, TextureSize)
+        const float tile_uv_size = 1.0f / ((float) tilemapSize->value.x); // for example, 1 / 8 if size is 8
+        textureSize->value.x = tilemapSize->value.x * unit_size.x;
+        textureSize->value.y = tilemapSize->value.y * unit_size.y;
         resize_memory_component(TextureData, textureData, color, textureSize->value.x * textureSize->value.y)
-        const unsigned char uvs_per_tile = 4;
-        resize_memory_component(TilemapUVs, tilemapUVs, float2, textureLinks->length * uvs_per_tile)
-        int texture_entity_index = 0;
         int2 texture_position = int2_zero;
+        int texture_index = 0;
+        for (int j = 0; j < textureData->length; j++) textureData->value[j] = color_white;
         for (texture_position.y = 0; texture_position.y < tilemapSize->value.y; texture_position.y++) {
             for (texture_position.x = 0; texture_position.x < tilemapSize->value.x; texture_position.x++) {
-                int2 tilemap_position = (int2) { texture_position.x * first_texture_size->value.x, texture_position.y * first_texture_size->value.y };
+                if (texture_index >= textureLinks->length) {
+                    break;
+                    break;
+                }
+                const ecs_entity_t texture_entity = textureLinks->value[texture_index];
+                if (!zox_valid(texture_entity) || !zox_has(texture_entity, TextureData)) {
+                    zox_log(" ! [tilemap generation system] texture null [%lu] - index [%i]\n", texture_entity, texture_index)
+                    texture_index++;
+                    continue;
+                }
+                const TextureData *voxel_texture_data = zox_get(texture_entity, TextureData)
+                if (!voxel_texture_data->value) {
+                    zox_log(" ! voxel_texture_data->value is null\n")
+                    continue;
+                }
+                const int2 texture_size = zox_get_value(texture_entity, TextureSize)
+                const int2 tilemap_position = (int2) { texture_position.x * unit_size.x, texture_position.y * unit_size.y };
                 // call function here to place texture in tilemap
                 // perhaps just list all the float2s per texture inside a float2 array called TilemapUVs
-                const ecs_entity_t texture_entity = textureLinks->value[texture_entity_index];
-                const TextureData *voxel_texture_data = zox_get(texture_entity, TextureData)
-                const TextureSize *voxel_texture_size = zox_get(texture_entity, TextureSize)
                 // tod: refactor - make this into a function
                 int2 pixel_position = int2_zero;
-                for (pixel_position.x = 0; pixel_position.x < voxel_texture_size->value.x; pixel_position.x++) {
-                    for (pixel_position.y = 0; pixel_position.y < voxel_texture_size->value.y; pixel_position.y++) {
+                for (pixel_position.x = 0; pixel_position.x < texture_size.x; pixel_position.x++) {
+                    for (pixel_position.y = 0; pixel_position.y < texture_size.y; pixel_position.y++) {
                         int2 tilemap_pixel_position = int2_add(pixel_position, tilemap_position);
                         int tilemap_index = int2_array_index(tilemap_pixel_position, textureSize->value);
-                        if (tilemap_index >= textureData->length) continue;
-                        int texture_index = int2_array_index(pixel_position, voxel_texture_size->value);
-                        if (texture_index >= voxel_texture_data->length) continue;
+                        if (tilemap_index >= textureData->length) {
+                            zox_log(" ! tilemap_index >= textureData->length\n")
+                            continue;
+                        }
+                        int texture_index = int2_array_index(pixel_position, texture_size);
+                        if (texture_index >= voxel_texture_data->length) {
+                            zox_log(" ! texture_index >= voxel_texture_data->length\n")
+                            continue;
+                        }
                         textureData->value[tilemap_index] = voxel_texture_data->value[texture_index];
                     }
                 }
-                // add uvs here
-                float2 tile_uv = (float2) { tilemap_position.x / (float) textureSize->value.x, tilemap_position.y / (float) textureSize->value.y };
-
-                /*tilemapUVs->value[texture_entity_index * 4 + 0] = (float2) { tile_uv.x, tile_uv.y };
-                tilemapUVs->value[texture_entity_index * 4 + 1] = (float2) { tile_uv.x, tile_uv.y + tile_size };
-                tilemapUVs->value[texture_entity_index * 4 + 2] = (float2) { tile_uv.x + tile_size, tile_uv.y + tile_size };
-                tilemapUVs->value[texture_entity_index * 4 + 3] = (float2) { tile_uv.x + tile_size, tile_uv.y };*/
-
-                tilemapUVs->value[texture_entity_index * 4 + 3] = (float2) { tile_uv.x, tile_uv.y + tile_size };
-                tilemapUVs->value[texture_entity_index * 4 + 2] = (float2) { tile_uv.x + tile_size, tile_uv.y + tile_size };
-                tilemapUVs->value[texture_entity_index * 4 + 1] = (float2) { tile_uv.x + tile_size, tile_uv.y };
-                tilemapUVs->value[texture_entity_index * 4 + 0] = (float2) { tile_uv.x, tile_uv.y };
-
-                texture_entity_index++;
-                if (texture_entity_index >= textureLinks->length) {
-                    texture_position.x = tilemapSize->value.x;
-                    texture_position.y = tilemapSize->value.y;
+                // zox_log(" + placed [%i] texture in tilemap s [%ix%i] p [%ix%i]\n", texture_index, texture_size.x, texture_size.y, tilemap_position.x, tilemap_position.y)
+                texture_index++;
+            }
+        }
+        texture_index = 0;
+        resize_memory_component(TilemapUVs, tilemapUVs, float2, textureLinks->length * uvs_per_tile)
+        for (texture_position.y = 0; texture_position.y < tilemapSize->value.y; texture_position.y++) {
+            for (texture_position.x = 0; texture_position.x < tilemapSize->value.x; texture_position.x++) {
+                if (texture_index >= textureLinks->length) {
+                    break;
+                    break;
+                }
+                const int2 tilemap_position = (int2) { texture_position.x * unit_size.x, texture_position.y * unit_size.y };
+                const float2 tile_uv = (float2) { tilemap_position.x / (float) textureSize->value.x, tilemap_position.y / (float) textureSize->value.y };
+                tilemapUVs->value[texture_index * 4 + 3] = (float2) { tile_uv.x, tile_uv.y + tile_uv_size };
+                tilemapUVs->value[texture_index * 4 + 2] = (float2) { tile_uv.x + tile_uv_size, tile_uv.y + tile_uv_size };
+                tilemapUVs->value[texture_index * 4 + 1] = (float2) { tile_uv.x + tile_uv_size, tile_uv.y };
+                tilemapUVs->value[texture_index * 4 + 0] = (float2) { tile_uv.x, tile_uv.y };
+                texture_index++;
+                if (texture_index >= textureLinks->length) {
+                    break;
+                    break;
                 }
             }
         }
-        textureDirty->value = 1;
         generateTexture->value = 0;
+        textureDirty->value = 1;
+        // zox_log(" > tilemap generated: size [%ix%i] unit size [%ix%i]\n", textureSize->value.x, textureSize->value.y, unit_size.x, unit_size.y)
     }
 } zox_declare_system(TilemapGenerationSystem)
+
+
+                /*tilemapUVs->value[texture_entity_index * 4 + 0] = (float2) { tile_uv.x, tile_uv.y };
+                tilemapUVs->value[texture_entity_index * 4 + 1] = (float2) { tile_uv.x, tile_uv.y + tile_uv_size };
+                tilemapUVs->value[texture_entity_index * 4 + 2] = (float2) { tile_uv.x + tile_uv_size, tile_uv.y + tile_uv_size };
+                tilemapUVs->value[texture_entity_index * 4 + 3] = (float2) { tile_uv.x + tile_uv_size, tile_uv.y };*/
+
+                // set voxel uvs here
+                /*float2 tile_uv = (float2) { tilemap_position.x / (float) textureSize->value.x, tilemap_position.y / (float) textureSize->value.y };
+                tilemapUVs->value[texture_index * 4 + 3] = (float2) { tile_uv.x, tile_uv.y + tile_uv_size };
+                tilemapUVs->value[texture_index * 4 + 2] = (float2) { tile_uv.x + tile_uv_size, tile_uv.y + tile_uv_size };
+                tilemapUVs->value[texture_index * 4 + 1] = (float2) { tile_uv.x + tile_uv_size, tile_uv.y };
+                tilemapUVs->value[texture_index * 4 + 0] = (float2) { tile_uv.x, tile_uv.y };
+                zox_log(" + placed [%i] texture in tilemap s [%ix%i] p [%ix%i]\n", texture_index, texture_size.x, texture_size.y, tilemap_position.x, tilemap_position.y)*/

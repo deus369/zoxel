@@ -46,7 +46,7 @@ ecs_entity_t spawn_sound_from_file(ecs_world_t *world, const ecs_entity_t prefab
     if (index < sound_files_count && sound_files[index]) {
         zox_log(" > playing sound file [%i]\n", index)
         Mix_Chunk *mixChunk = clone_mix_chunk(sound_files[index]);
-        zox_set(e, SDLSound, { mixChunk })
+        zox_set(e, SDLSound, { *mixChunk })
         zox_set(e, SoundLength, { get_mix_chunk_sound_length(mixChunk) })
     } else {
         zox_log(" ! sound index not found [%i]\n", index)

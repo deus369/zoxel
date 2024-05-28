@@ -8,6 +8,9 @@ typedef struct {
 
 #define color_white (color) { 255, 255, 255, 255 }
 #define color_black (color) { 0, 0, 0, 255 }
+#define color_red (color) { 255, 0, 0, 255 }
+#define color_green (color) { 0, 255, 0, 255 }
+#define color_blue (color) { 0, 0, 255, 255 }
 
 unsigned char color_equal(const color a, const color b) {
     return a.r == b.r && a.g == b.g && a.b == b.b && a.a == b.a;

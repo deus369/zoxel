@@ -8,13 +8,18 @@ void SoundUpdateSystem(ecs_iter_t *it) {
         zox_field_i_in(SoundData, soundDatas, soundData)
         if (!soundData->value) continue;
         zox_field_i_out(SDLSound, sdlSounds, sdlSound)
-        free_sdl_sound(sdlSound);
-        sdlSound->value = (Mix_Chunk *) malloc(sizeof(Mix_Chunk));
-        sdlSound->value->volume = global_master_volume;
+        // free_sdl_sound(sdlSound);
+        // sdlSound->value = (Mix_Chunk *) malloc(sizeof(Mix_Chunk));
+        // sdlSound->value->volume = global_master_volume;
         // sdlSound->value->allocated = 1;
-        sdlSound->value->alen = soundData->length * 4;
+        // sdlSound->value->alen = soundData->length * 4;
         // maybe just set thisi to sound value, no need copy memory data
-        sdlSound->value->abuf = (Uint8*) soundData->value;
+        // sdlSound->value->abuf = (Uint8*) soundData->value;
+        sdlSound->value = (Mix_Chunk) {
+          .volume = global_master_volume,
+          .alen = soundData->length * 4,
+          .abuf = (Uint8*) soundData->value
+        };
         //sdlSound->value->abuf = (Uint8*) malloc(soundData->length * 4 * sizeof(Uint8));
         //memcpy(sdlSound->value->abuf, soundData->value, sdlSound->value->alen);
         soundDirty->value = 0;

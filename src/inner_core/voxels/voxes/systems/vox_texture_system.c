@@ -1,5 +1,4 @@
 // using an axis and VoxLink, generates a texture by grabbing the first voxel on a given side
-// todo: fix flower positioning
 void generate_vox_texture(color *data, const int2 size, const ChunkOctree *chunk, const color_rgb *colors, unsigned char side) {
     const color air_vox_color = (color) { 15, 15, 15, 255 };
     int index = 0;
@@ -106,9 +105,7 @@ void VoxTextureSystem(ecs_iter_t *it) {
         zox_field_o(GenerateTexture, generateTextures, generateTexture)
         if (!generateTexture->value) continue;
         zox_field_i(VoxLink, voxLinks, voxLink)
-        if (!voxLink->value) continue;
-        const unsigned char generate_vox = zox_get_value(voxLink->value, GenerateVox)
-        if (generate_vox) continue;
+        if (!voxLink->value || zox_gett_value(voxLink->value, GenerateVox)) continue;
         const ColorRGBs *colorRGBs = zox_get(voxLink->value, ColorRGBs)
         const ChunkOctree *chunk = zox_get(voxLink->value, ChunkOctree)
         zox_field_i(TextureSize, textureSizes, textureSize)
@@ -118,6 +115,7 @@ void VoxTextureSystem(ecs_iter_t *it) {
         resize_memory_component(TextureData, textureData, color, textureSize->value.x * textureSize->value.y)
         generate_vox_texture(textureData->value, textureSize->value, chunk, colorRGBs->value, voxBakeSide->value);
         generateTexture->value = 0;
-        textureDirty->value = 1;
+        textureDirty->value = 1; // actually not using this for tilemap!
+        // for (int j = 0; j < textureData->length; j++) textureData->value[j] = color_red;
     }
 } zox_declare_system(VoxTextureSystem)

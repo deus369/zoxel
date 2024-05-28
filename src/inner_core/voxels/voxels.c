@@ -19,6 +19,7 @@ zox_import_module(VoxelsAnimations)
 zox_import_module(Voxes)
 zox_import_module(Terrain)
 zox_prefab_set(prefab_realm, VoxelLinks, { 0, NULL })
+zox_prefab_set(prefab_realm, VoxelsDirty, { 0 })
 zoxel_end_module(Voxels)
 
 #endif

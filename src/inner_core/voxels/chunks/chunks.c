@@ -14,7 +14,6 @@ zox_component_int3(ChunkSize)
 zox_component_byte(ChunkDirty)
 zox_component_byte(ChunkLodDirty)
 zox_component_byte(GenerateChunk)
-// zox_component_byte(GenerateChunkEntities)
 zox_memory_component(ChunkData, unsigned char)
 zox_memory_component(ChunkNeighbors, ecs_entity_t)
 zoxel_octree_component(ChunkOctree, unsigned char, 0)
@@ -24,13 +23,13 @@ zox_hashmap_component(BlockSpawns, byte3)
 #include "util/voxel_mesh_util.c"
 #include "util/chunk_util.c"
 #include "util/chunk_octree_util.c"
+#include "util/octree_set_util.c"
 #include "util/chunk_build_util.c"
 #include "util/voxel_util.c"
 #include "util/vox_colors_util.c"
 #include "util/link_util.c"
 #include "util/label_util.c"
 #include "prefabs/prefabs.c"
-// zox_reset_system(ChunkLodDirty)
 zox_increment_system(ChunkLodDirty, 3)
 #include "systems/chunk_build_system.c"
 #include "systems/chunk_link_system.c"
@@ -50,7 +49,6 @@ zox_define_component_byte(ChunkDirty)
 zox_define_component_byte(ChunkLodDirty)
 zox_define_component_int3(ChunkSize)
 zox_define_component_byte(GenerateChunk)
-// zox_define_component(GenerateChunkEntities)
 zox_define_memory_component(ChunkData)
 zox_define_memory_component(ChunkNeighbors)
 zox_define_links_component(ChunkLink)
@@ -60,9 +58,6 @@ zox_define_hashmap_component(BlockSpawns)
 zox_system(ChunkLinkSystem, zox_pip_voxels, [in] VoxLink, [in] Position3D, [out] ChunkPosition, [out] ChunkLink, [none] LinkChunk)
 zox_system(ChunkEntitiesLodSystem, zox_pip_voxels, [in] ChunkLodDirty, [in] RenderLod, [in] EntityLinks)
 zox_system(ChunkBlocksLodSystem, zox_pip_voxels, [in] ChunkLodDirty, [in] RenderLod, [in] BlockSpawns)
-// zox_system(ChunkEntitiesTriggerSystem, zox_pip_voxels, [in] ChunkLodDirty, [out] GenerateChunkEntities)
-// zox_define_reset_system_pip(ChunkLodDirty, EcsPostUpdate)
-// zox_define_increment_system(GenerateChunkEntities, EcsOnLoad)
 zox_define_increment_system(ChunkLodDirty, EcsOnLoad)
 spawn_prefabs_chunks(world);
 zoxel_end_module(Chunks)

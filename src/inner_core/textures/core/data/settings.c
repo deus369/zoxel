@@ -17,6 +17,8 @@
 // special modes
 #define zox_texture_mode_default 0
 #define zox_texture_mode_graybox 1
+// pipelines
+#define zox_pip_texture_generation EcsPostUpdate
 // settings
 unsigned char terrain_texture_outline_type = zox_outline_type_full;
 const double noise_animation_speed = 0.5;

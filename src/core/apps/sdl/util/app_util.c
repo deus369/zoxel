@@ -62,6 +62,7 @@ void update_sdl(ecs_world_t *world, ecs_entity_t e, const int2 viewport_size) {
                 zox_logg(" > window was restored\n")
                 opengl_restore_resources(world);
             } else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
+                updating_time = 0;
             } else if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
                 updating_time = 1;
             }

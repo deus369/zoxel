@@ -109,7 +109,9 @@ ecs_set_hooks(world, name, {\
                 component->value = temp;\
                 component->length = new_length;\
             } else {\
+                zox_log(" ! failure reallocing memory\n")\
                 clear_memory_component(name, component)\
+                component->length = 0;\
             }\
         } else {\
             initialize_memory_component(name, component, data_type, new_length);\
