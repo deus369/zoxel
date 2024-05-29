@@ -18,6 +18,10 @@ int3 int3_add(const int3 a, const int3 b) {
     return (int3) { a.x + b.x, a.y + b.y, a.z + b.z };
 }
 
+int3 int3_sub(const int3 a, const int3 b) {
+    return (int3) { a.x - b.x, a.y - b.y, a.z - b.z };
+}
+
 int3 int3_div(const int3 a, const int3 b) {
     return (int3) { a.x / b.x, a.y / b.y, a.z / b.z };
 }

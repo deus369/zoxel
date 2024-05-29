@@ -1,7 +1,7 @@
 typedef struct {
     unsigned char depth;
     unsigned char voxel;
-    unsigned char depth_only;
+    // unsigned char depth_only;
     unsigned char effect_nodes;
 } SetVoxelTargetData;
 
@@ -19,9 +19,8 @@ void set_voxel(const SetVoxelTargetData *datam, SetVoxelData data) {
         open_new_ChunkOctree(data.node);
         for (unsigned char i = 0; i < octree_length; i++) data.node->nodes[i].nodes = NULL;
         for (unsigned char i = 0; i < octree_length; i++) data.node->nodes[i].value = data.node->value;
-        // return;
     }
-    if (!datam->depth_only || (datam->depth_only && depth_reached)) data.node->value = datam->voxel;
+    if (depth_reached || datam->voxel != 0) data.node->value = datam->voxel;
     if (depth_reached || !data.node->nodes) return;
     const unsigned char dividor = powers_of_two_byte[datam->depth - data.depth - 1]; // difference LoD
     byte3 node_position = (byte3) { data.position.x / dividor, data.position.y / dividor, data.position.z / dividor };

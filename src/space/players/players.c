@@ -17,6 +17,7 @@
 #include "util/start_game.c"
 #include "util/end_game.c"
 #include "util/player_util.c"
+#include "util/voxel_ray_util.c"
 #include "systems/player_pause_system.c"
 #include "systems/device_mode_response_system.c"
 #include "systems/virtual_joystick_system.c"
