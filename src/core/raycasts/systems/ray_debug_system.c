@@ -1,6 +1,5 @@
 extern void render_line3D(ecs_world_t *world, const float3 a, const float3 b, const color_rgb line_color);
 
-
 void RayDebugSystem(ecs_iter_t *it) {
     const color_rgb debug_color = { 255, 55, 55 };
     const color_rgb debug_color2 = { 155, 155, 155 };

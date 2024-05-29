@@ -73,10 +73,11 @@ zox_system(ProjectionMatrixSystem, zox_camera_stage, [in] ScreenDimensions, [in]
 // single thread while debugging
 zox_system(CameraFrustumSystem, zox_camera_stage, [in] ViewMatrix, [in] TransformMatrix, [in] ProjectionMatrix, [out] CameraPlanes, [out] FrustumCorners, [out] Position3DBounds, [none] Camera, [none] Camera3D)
 #ifdef zox_draw_frustum
-zox_system_1(CameraDrawFrustumSystem, main_thread_pipeline, [in] TransformMatrix, [in] ProjectionMatrix, [in] ViewMatrix, [none] Camera3D)
+zox_system_1(CameraDrawFrustumSystem, zox_pip_mainthread, [in] TransformMatrix, [in] ProjectionMatrix, [in] ViewMatrix, [none] Camera3D)
+zox_system_1(FrustumDrawSystem, zox_pip_mainthread, [in] FrustumCorners, [none] Camera3D)
 #endif
 #ifdef zox_debug_camera_frustum
-zox_system_1(CameraDebugSystem, main_thread_pipeline, [in] CameraPlanes, [none] Camera)
+zox_system_1(CameraDebugSystem, zox_pip_mainthread, [in] CameraPlanes, [none] Camera)
 #endif
 spawn_prefabs_cameras(world);
 zoxel_end_module(Cameras)

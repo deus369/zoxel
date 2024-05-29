@@ -4,16 +4,16 @@ void print_planes(plane *planes) {
     }
 }
 
-void fill_fake_view_matrix(float4x4 *matrix, const float3 position, const float4 rotation) {
+/*void fill_fake_view_matrix(float4x4 *matrix, const float3 position, const float4 rotation) {
     const float4x4 transform_matrix = float4x4_inverse_precise(float4x4_transform(position, rotation));
    // float4x4 projection_matrix;
     //calculate_perspective_projection_matrix(&projection_matrix, 16 / 9.0f, 0.3f, 60, 1000);
-    /*const float4x4 position_matrix = float4x4_position(float3_reverse(position));
+    const float4x4 position_matrix = float4x4_position(float3_reverse(position));
     const float4x4 rotation_matrix = float4x4_rotation(float4_reverse(rotation));
-    const float4x4 transform_matrix = float4x4_multiply(position_matrix, rotation_matrix);*/
+    const float4x4 transform_matrix = float4x4_multiply(position_matrix, rotation_matrix);
     //*matrix = float4x4_multiply(transform_matrix, projection_matrix);
     *matrix = transform_matrix;
-}
+}*/
 
 void fake_plane_data_old(plane *planes) {
     // Assuming near plane distance

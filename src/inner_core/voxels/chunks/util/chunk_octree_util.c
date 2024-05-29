@@ -66,18 +66,21 @@ void close_same_nodes(ChunkOctree *node) {
     if (node->nodes == NULL) return;
     for (unsigned char i = 0; i < octree_length; i++) close_same_nodes(&node->nodes[i]);
     unsigned char all_same = 1;
-    unsigned char first_node_value = 255;
+    unsigned char all_same_voxel = 255;
     for (unsigned char i = 0; i < octree_length; i++) {
         if (node->nodes[i].nodes != NULL) return; // if a child node is open, then don't close this node
         const unsigned char node_value = node->nodes[i].value;
-        if (first_node_value == 255) first_node_value = node_value;
-        else if (first_node_value != node_value) {
+        if (all_same_voxel == 255) all_same_voxel = node_value;
+        else if (all_same_voxel != node_value) {
             all_same = 0;
             break;
         }
     }
     // if (all_same && first_node_value != 0) zoxel_log("  > closing same node [%i]\n", first_node_value);
-    if (all_same) close_ChunkOctree(node);
+    if (all_same) {
+        node->value = all_same_voxel;
+        close_ChunkOctree(node);
+    }
 }
 
 void optimize_solid_nodes(ChunkOctree *node) {

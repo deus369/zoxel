@@ -175,6 +175,9 @@ run-debug-vulkan:
 run-debug:
 	@ gdb ./$(target_dev)
 
+run-debug2:
+	@ gdb ./$(target)
+
 # run development + valgrind
 run-valgrind:
 	@ valgrind ./$(target_dev) --tiny

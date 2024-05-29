@@ -32,11 +32,11 @@ void draw_planes(ecs_world_t *world, const plane *planes, const int plane_count)
     }
 }
 
-void draw_frustum(ecs_world_t *world, float3 *frustum) {
+void draw_frustum(ecs_world_t *world, float3 *frustum, const color_rgb debug_color) {
     // const color_rgb plane_color = (color_rgb) { 255, 125, 55 };
-    const color_rgb near_plane_color = (color_rgb) { 55, 125, 55 };
-    const color_rgb far_plane_color = (color_rgb) { 55, 155, 85 };
-    const color_rgb side_color = (color_rgb) { 55, 155, 55 };
+    const color_rgb near_plane_color = debug_color; // (color_rgb) { 255, 22, 22 };
+    const color_rgb far_plane_color = debug_color; // (color_rgb) { 205, 22, 22 };
+    const color_rgb side_color = debug_color; // (color_rgb) { 233, 55, 55 };
     // draw near plane
     render_line3D(world, frustum[0], frustum[1], near_plane_color);
     render_line3D(world, frustum[1], frustum[2], near_plane_color);
@@ -54,8 +54,8 @@ void draw_frustum(ecs_world_t *world, float3 *frustum) {
     render_line3D(world, frustum[3], frustum[7], side_color);
 }
 
-void draw_frustum_planes(ecs_world_t *world, const float4x4 view_projection_matrix, const float4x4 transform_matrix) {
-    float3 *frustum = calculate_frustum_corners(view_projection_matrix);
+/*void draw_frustum_planes(ecs_world_t *world, const float4x4 view_projection_matrix, const float4x4 transform_matrix) {
+    // float3 *frustum = calculate_frustum_corners(view_projection_matrix);
 #if defined(zox_test_frustum)
     plane *planes = create_test_planes_position(debug_plane_position, debug_plane_distance);
 #elif defined(zox_test_frustum2)
@@ -64,13 +64,13 @@ void draw_frustum_planes(ecs_world_t *world, const float4x4 view_projection_matr
     plane *planes = malloc(6 * sizeof(plane));
     calculate_planes_from_frustum(frustum, planes);
 #endif
-    draw_frustum(world, frustum);
+    // draw_frustum(world, frustum);
     draw_planes(world, planes, 6);
     free(planes);
-    free(frustum);
-}
+    // free(frustum);
+}*/
 
-void draw_frustum_planes_old(ecs_world_t *world, const float4x4 projection_matrix, const float4x4 transform_matrix) {
+/*void draw_frustum_planes_old(ecs_world_t *world, const float4x4 projection_matrix, const float4x4 transform_matrix) {
     float3 *frustum = calculate_frustum_corners_old(projection_matrix, transform_matrix);
 #if defined(zox_test_frustum)
     plane *planes = create_test_planes_position(debug_plane_position, debug_plane_distance);
@@ -84,7 +84,7 @@ void draw_frustum_planes_old(ecs_world_t *world, const float4x4 projection_matri
     draw_planes(world, planes, 6);
     free(planes);
     free(frustum);
-}
+}*/
 
 int get_label_camera(ecs_world_t *world, const ecs_entity_t player, char buffer[], int buffer_size, int buffer_index) {
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
@@ -100,15 +100,24 @@ int get_label_camera(ecs_world_t *world, const ecs_entity_t player, char buffer[
 int get_label_camera_planes(ecs_world_t *world, const ecs_entity_t player, char buffer[], int buffer_size, int buffer_index) {
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
     if (!camera || !zox_has(camera, CameraPlanes)) return buffer_index;
-
-    const float6 bounds = zox_get_value(camera, Position3DBounds)
-    buffer_index += snprintf(buffer + buffer_index, buffer_size, " b x[%.0f:%.0f] y[%.0f:%.0f] z[%.0f:%.0f]\n", bounds.x, bounds.y, bounds.z, bounds.w, bounds.u, bounds.v);
-
-    /*const CameraPlanes *planes = zox_get(camera, CameraPlanes)
+    /*const float6 bounds = zox_get_value(camera, Position3DBounds)
+    buffer_index += snprintf(buffer + buffer_index, buffer_size, " b x[%.0f:%.0f] y[%.0f:%.0f] z[%.0f:%.0f]\n", bounds.x, bounds.y, bounds.z, bounds.w, bounds.u, bounds.v);*/
+    const CameraPlanes *planes = zox_get(camera, CameraPlanes)
     if (planes->length != 6) buffer_index += snprintf(buffer + buffer_index, buffer_size, "camera_planes invalid!\n");
     else {
         for (int i = 0; i < 6; i++) buffer_index += snprintf(buffer + buffer_index, buffer_size, "%i [%.1fx%.1fx%.1f] [%.1f]\n", (i + 1), planes->value[i].normal.x, planes->value[i].normal.y,  planes->value[i].normal.z, planes->value[i].distance);
-    }*/
+    }
+    return buffer_index;
+}
 
+
+int get_label_camera_frustum(ecs_world_t *world, const ecs_entity_t player, char buffer[], int buffer_size, int buffer_index) {
+    const ecs_entity_t camera = zox_get_value(player, CameraLink)
+    if (!camera || !zox_has(camera, FrustumCorners)) return buffer_index;
+    const FrustumCorners *corners = zox_get(camera, FrustumCorners)
+    if (corners->length != 8) buffer_index += snprintf(buffer + buffer_index, buffer_size, "frustum corners invalid!\n");
+    else {
+        for (int i = 0; i < 8; i++) buffer_index += snprintf(buffer + buffer_index, buffer_size, " %i [%.1fx%.1fx%.1f]\n", (i + 1), corners->value[i].x, corners->value[i].y,  corners->value[i].z);
+    }
     return buffer_index;
 }

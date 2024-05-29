@@ -2,7 +2,7 @@
 #define zox_mod_raycasts
 
 // todo later: fix rays for coop, viewport distortion effects rays
-#define zox_debug_rays
+// #define zox_debug_rays
 #include "data/ray.c"
 // 2D
 zox_component_byte(RaycasterResult)

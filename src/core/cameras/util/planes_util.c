@@ -97,11 +97,11 @@ void calculate_frustum_planes_alternative(const float4x4 view_projection_matrix,
     // float3_flip(&planes[4].normal);
 }
 
-void calculate_frustum_planes_old(const float4x4 transform_matrix, const float4x4 projection_matrix, plane *planes) {
+/*void calculate_frustum_planes_old(const float4x4 transform_matrix, const float4x4 projection_matrix, plane *planes) {
     float3 *frustum = calculate_frustum_corners_old(projection_matrix, transform_matrix);
     calculate_planes_from_frustum(frustum, planes);
     free(frustum);
-}
+}*/
 
 
 // Near plane

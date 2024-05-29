@@ -1,14 +1,15 @@
 // refactor this, module updates can add debug lines to it per frame
 // #define zox_debug_ui_memorys_allocated
 // #define zox_debug_ui_device_mode
-#define zox_debug_zox_statistics
+// #define zox_debug_zox_statistics
 #define zox_debug_ui_save_cloud
 // #define zox_debug_ui_player_level
 // #define zox_debug_player_character2D
 // #define zox_debug_player_character3D
-#define zox_debug_player_grounded
-#define zox_debug_player_camera
-#define zox_debug_camera_planes
+// #define zox_debug_player_grounded
+// #define zox_debug_player_camera
+// #define zox_debug_camera_planes
+#define zox_debug_camera_frustum
 // #define zox_test_newline
 // #define zox_debug_ui_player_health
 // #define zox_debug_ui_raycaster_target
@@ -77,6 +78,9 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 #ifdef zox_debug_camera_planes
         buffer_index = get_label_camera_planes(world, player, buffer, buffer_size, buffer_index);
 #endif
+#ifdef zox_debug_camera_frustum
+        buffer_index = get_label_camera_frustum(world, player, buffer, buffer_size, buffer_index);
+#endif
 #ifdef zox_debug_ui_player_level
         buffer_index = get_label_local_character_level(world, character, buffer, buffer_size, buffer_index);
 #endif
@@ -125,7 +129,8 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         }
 #endif
         if (!is_zext(zextData, buffer)) {
-            set_zext(zextData, buffer);
+            zox_log("buffer_index %i\n", buffer_index)
+            // set_zext(zextData, buffer);
             zextDirty->value = 1;
             // zoxel_log(" > %s\n", buffer);
         }

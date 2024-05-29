@@ -15,8 +15,26 @@ unsigned char is_in_frustum(const plane *planes, bounds b) {
 }
 
 float3* calculate_frustum_corners(const float4x4 view_projection_matrix) {
-    const  float4x4 inverse_view_projection_matrix = float4x4_inverse(view_projection_matrix);
+    const float4x4 inverse_view_projection_matrix = float4x4_inverse(view_projection_matrix);
+    // const float4x4 inverse_view_projection_matrix = float4x4_inverse_precise(view_projection_matrix);
+    const float4x4 mat = inverse_view_projection_matrix;
     float3 *frustum = malloc(sizeof(float3) * 8);
+
+    /*float left = mat.x.w + mat.x.x;
+    float right = mat.x.w - mat.x.x;
+    float bottom = mat.y.w + mat.y.y;
+    float top = mat.y.w - mat.y.y;
+    float near = mat.z.w + mat.z.z;
+    float far = mat.z.w - mat.z.z;
+    frustum[0] = (float3) { left, top, near };
+    frustum[1] = (float3) { right, top, near };
+    frustum[2] = (float3) { left, bottom, near };
+    frustum[3] = (float3) { right, bottom, near };
+    frustum[4] = (float3) { left, top, far };
+    frustum[5] = (float3) { right, top, far };
+    frustum[6] = (float3) { left, bottom, far };
+    frustum[7] = (float3) { right, bottom, far };*/
+
     frustum[0] = (float3) { -1, -1, -1 };
     frustum[1] = (float3) { 1, -1, -1 };
     frustum[2] = (float3) { 1, 1, -1 };
@@ -26,15 +44,24 @@ float3* calculate_frustum_corners(const float4x4 view_projection_matrix) {
     frustum[6] = (float3) { 1, 1, 1 };
     frustum[7] = (float3) { -1, 1, 1 };
     for (int i = 0; i < 8; i++) {
-        const float4 point_homogeneous = float4_from_float3(frustum[i], 1);
-        const float4 transformed_point = float4x4_multiply_float4(inverse_view_projection_matrix, point_homogeneous);
-        frustum[i] = float3_divide_float((float3) { transformed_point.x, transformed_point.y, transformed_point.z }, transformed_point.w);
+        const float4 corner = float4_from_float3(frustum[i], 1);
+
+        /*const float4 world_corner = {
+            mat.x.x * corner.x + mat.x.y * corner.y + mat.x.z * corner.z + mat.x.w * corner.w,
+            mat.y.x * corner.x + mat.y.y * corner.y + mat.y.z * corner.z + mat.y.w * corner.w,
+            mat.z.x * corner.x + mat.z.y * corner.y + mat.z.z * corner.z + mat.z.w * corner.w,
+            mat.w.x * corner.x + mat.w.y * corner.y + mat.w.z * corner.z + mat.w.w * corner.w
+        };*/
+
+        const float4 world_corner = float4x4_multiply_float4(mat, corner);
+
+        frustum[i] = float3_divide_float((float3) { world_corner.x, world_corner.y, world_corner.z }, world_corner.w);
     }
     return frustum;
 }
 
 // const float4x4 view_matrix, const float4x4 view_projection_matrix,
-float3* calculate_frustum_corners_old(const float4x4 projection_matrix, const float4x4 transform_matrix) {
+/*float3* calculate_frustum_corners_old(const float4x4 projection_matrix, const float4x4 transform_matrix) {
     // const float4x4 inverse_projection_matrix = float4x4_inverse_precise(projection_matrix);
     float3 *frustum = malloc(sizeof(float3) * 8);
     frustum[0] = (float3) { -1, -1, -1 };
@@ -55,7 +82,7 @@ float3* calculate_frustum_corners_old(const float4x4 projection_matrix, const fl
         // zox_log(" %i: %fx%fx%f\n", i, frustum[i].x, frustum[i].y, frustum[i].z)
     }
     return frustum;
-}
+}*/
 
 /*void get_corners(const bounds b, float3 corners[8]) {
     const float3 center = b.center;
