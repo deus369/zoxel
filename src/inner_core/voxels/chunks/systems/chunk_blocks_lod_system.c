@@ -1,13 +1,11 @@
 // when terrain lod updates, it will update character lods
 void ChunkBlocksLodSystem(ecs_iter_t *it) {
-    unsigned char did_do = 0;
     zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
     zox_field_in(RenderLod, renderLods, 2)
     zox_field_in(BlockSpawns, blockSpawnss, 3)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(ChunkLodDirty, chunkLodDirtys, chunkLodDirty)
         if (chunkLodDirty->value != 2) continue;
-        did_do = 1;
         zox_field_i_in(BlockSpawns, blockSpawnss, blockSpawns)
         if (!blockSpawns->value) continue;
         zox_field_i_in(RenderLod, renderLods, renderLod)
@@ -26,7 +24,5 @@ void ChunkBlocksLodSystem(ecs_iter_t *it) {
                 pair = pair->next;
             }
         }
-        did_do = 1;
     }
-    // if (did_do) zox_log("   + block spawns updated\n")
 } zox_declare_system(ChunkBlocksLodSystem)

@@ -22,6 +22,7 @@ void dispose_games(ecs_world_t *world, void *ctx) {
 
 void spawn_prefabs_games(ecs_world_t *world) {
     spawn_prefab_game(world);
+    zox_prefab_add(prefab_player, GameLink)
 }
 
 zox_begin_module(Games)

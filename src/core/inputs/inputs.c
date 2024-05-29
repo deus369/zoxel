@@ -42,7 +42,6 @@ zox_memory_component(DeviceLinks, ecs_entity_t)
 #include "systems/zevice_button_enable_system.c"
 #include "systems/zevice_stick_enable_system.c"
 #include "systems/zevice_pointer_enable_system.c"
-#include "systems/mouse_raycaster_system.c"
 #include "systems/dragger_end_system.c"
 #include "systems/device_mode_system.c"
 #include "systems/device_mode_dirty_system.c"
@@ -84,7 +83,6 @@ zox_system(ZevicePointerResetSystem, zox_pipelines_devices_reset, [out] ZevicePo
 zox_system(ZevicePointerDeltaResetSystem, zox_pipelines_devices_reset, [out] ZevicePointerDelta)
 zox_system(DeviceModeSystem, zox_pip_raycasting, [in] DeviceLinks, [in] DeviceMode, [out] DeviceModeDirty)
 zox_system(DraggerEndSystem, EcsPostLoad, [out] DraggableState, [out] DraggerLink, [out] DraggingDelta)
-zox_system(MouseRaycasterSystem, zox_pip_raycasting, [in] DeviceLinks, [in] DeviceMode, [out] Raycaster)
 zox_system(DeviceModeDirtySystem, zox_pipelines_devices_enables, [out] DeviceMode, [out] DeviceModeDirty)
 zox_system(ZeviceButtonEnableSystem, zox_pipelines_devices_enables, [in] ZeviceButton, [out] ZeviceDisabled)
 zox_system(ZeviceStickEnableSystem, zox_pipelines_devices_enables, [in] ZeviceStick, [out] ZeviceDisabled)

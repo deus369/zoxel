@@ -29,7 +29,7 @@ void spawn_players(ecs_world_t *world, const ecs_entity_t game) {
     }
     else players_playing = 1;
     for (int i = 0; i < players_playing; i++) {
-        const ecs_entity_t e = spawn_player(world);
+        const ecs_entity_t e = spawn_player(world, prefab_player);
         add_player(world, game, e);
         zox_set(e, CameraLink, { main_cameras[i] })
         zox_players[i] = e;

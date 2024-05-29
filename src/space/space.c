@@ -10,7 +10,7 @@ zox_begin_module(Space)
 zox_import_module(Weathers)
 zox_import_module(Realms2)
 #if defined(zox_mod_players)
-if (!headless) zox_import_module(Players)
+if (!headless) zox_import_module(Players2)
 #endif
 #if defined(zox_mod_debug)
 zox_import_module(Debug)

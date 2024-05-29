@@ -7,7 +7,6 @@
 // For each terrain, it uses it's Chunks and StreamerLinks (todo)
 // If it is dirty, it will go through and update Chunk RenderLod's'
 void TerrainLodSystem(ecs_iter_t *it) {
-    unsigned char did_do = 0;
     zox_iter_world()
     ctx2 *filters = (ctx2 *) it->ctx;
     ecs_query_t *chunks_query = filters->x;
@@ -70,9 +69,7 @@ void TerrainLodSystem(ecs_iter_t *it) {
         }
         free(chunk_lods);
         free(stream_points);
-        did_do = 1;
     }
-    // if (did_do) zox_log(" + terrain chunks lod updated\n")
 } zox_declare_system(TerrainLodSystem)
 
 // later check if links to terrain that's updating'

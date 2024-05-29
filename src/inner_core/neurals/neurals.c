@@ -40,7 +40,7 @@ zox_define_component_entity(BrainLink)
 zox_define_memory_component(BrainInputs)
 zox_define_memory_component(BrainOutputs)
 zox_define_memory_component(BrainLinks)
-zox_system(NeuronInputSystem, EcsOnUpdate, [none] InputNeuron) //  [out] Transfer,
+// zox_system(NeuronInputSystem, EcsOnUpdate, [none] InputNeuron) //  [out] Transfer,
 zox_system(LinkFeedForwardSystem, EcsPostUpdate, [in] ConnectionData, [out] Weight, [out] Signal, [out] Transfer, [none] Connection)
 zox_system(NeuronFeedForwardSystem, EcsOnUpdate, [out] Signal, [none] Neuron, [none] !OutputNeuron)
 

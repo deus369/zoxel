@@ -3,12 +3,12 @@ void ConnectionRenderSystem(ecs_iter_t *it) {
     if (zox_current_time < 0.1) return;
     init_delta_time()
     zox_iter_world()
-    const float signal_height = 0.02f * neural_render_scale;
+    // const float signal_height = 0.02f * neural_render_scale;
     const float connection_thickness = 2 * neural_render_scale2;
     const float connection_min_thickness = 0.1f;
     const float neuron_size = 0.1f;
     double animate_time = delta_time * 3;
-    const float line_thickness2 = 2;
+    // const float line_thickness2 = 2;
     color_rgb connected_line_color = (color_rgb) { 5, 155, 155 };
     // const float square_size = 0.02f;
     // const float neuron_min_size = 0.01f;

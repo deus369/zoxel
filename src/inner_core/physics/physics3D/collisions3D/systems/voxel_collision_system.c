@@ -1,9 +1,9 @@
 // Handles AABB to Voxel Chunk Collisions
 void VoxelCollisionSystem(ecs_iter_t *it) {
-    init_delta_time()
+    // init_delta_time()
     zox_iter_world()
     zox_field_in(VoxLink, voxLinks, 1)
-    zox_field_in(ChunkPosition, chunkPositions, 2)
+    // zox_field_in(ChunkPosition, chunkPositions, 2)
     zox_field_out(Position3D, position3Ds, 3)
     zox_field_out(Velocity3D, velocity3Ds, 4)
     zox_field_out(LastPosition3D, lastPosition3Ds, 5)
@@ -12,7 +12,7 @@ void VoxelCollisionSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(Bounds3D, bounds3Ds, bounds3D)
         zox_field_i_in(VoxLink, voxLinks, voxLink)
-        zox_field_i_in(ChunkPosition, chunkPositions, chunkPosition)
+        // zox_field_i_in(ChunkPosition, chunkPositions, chunkPosition)
         zox_field_i_out(Position3D, position3Ds, position3D)
         zox_field_i_out(Velocity3D, velocity3Ds, velocity3D)
         zox_field_i_out(LastPosition3D, lastPosition3Ds, lastPosition3D)
@@ -25,7 +25,7 @@ void VoxelCollisionSystem(ecs_iter_t *it) {
             zox_log("     !+ local voxel position [%ix%ix%i]\n", new_position.x, new_position.y, new_position.z);
             zox_log("     !+ real position [%fx%fx%f]\n", collision_point_real.x, collision_point_real.y, collision_point_real.z);
         } else {
-            zox_log(" > chunk_position [%ix%ix%i]\n", chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z);
+            // zox_log(" > chunk_position [%ix%ix%i]\n", chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z);
             zox_log("     + voxel position updated [%ix%ix%i]\n", new_position.x, new_position.y, new_position.z);
             zox_log("     + global voxel position [%ix%ix%i]\n", global_voxel_position.x, global_voxel_position.y, global_voxel_position.z);
             zox_log("     + real position was [%fx%fx%f]\n", collision_point_real.x, collision_point_real.y, collision_point_real.z);

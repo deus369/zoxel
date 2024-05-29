@@ -46,7 +46,6 @@ void resume_player_delayed(ecs_world_t *world, const ecs_entity_t player) {
 
 void resume_player(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
-    const ecs_entity_t character = zox_get_value(player, CharacterLink)
     find_child_with_tag(canvas, MenuPaused, menu_paused)
     zox_delete(menu_paused)
     disable_inputs_until_release(world, player, zox_device_mode_none);

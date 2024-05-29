@@ -28,8 +28,11 @@ unsigned char cpu_tier;
 #include "rendering/rendering.c"
 #include "sounds/sounds.c"
 #include "nodes/nodes.c"
+#include "players/players.c"
 #include "games/games.c"
 #include "realms/realms.c"
+#include "raycasts/raycasts.c"
+#include "colors/colors.c"
 #include "util/core_util.c"
 
 zox_begin_module(Core)
@@ -42,7 +45,7 @@ zox_import_module(Transforms)
 zox_import_module(Files)
 zox_import_module(Terminals)
 #ifndef zox_disable_module_networking // disabled on web atm
-    zox_import_module(Networking)
+zox_import_module(Networking)
 #endif
 zox_import_module(Inputs)
 initialize_pathing();
@@ -51,8 +54,11 @@ zox_import_module(Cameras)
 zox_import_module(Rendering)
 zox_import_module(Sounds)
 zox_import_module(Nodes)
+zox_import_module(Players)
 zox_import_module(Games)
 zox_import_module(Realms)
+zox_import_module(Raycasts)
+zox_import_module(Colorz)
 zoxel_end_module(Core)
 
 #endif

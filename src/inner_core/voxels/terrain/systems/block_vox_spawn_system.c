@@ -51,12 +51,11 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
 #endif
     ecs_entity_t *block_voxes = NULL;
     unsigned char *block_vox_offsets = NULL;
-    begin_timing()
     zox_iter_world()
     zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
     zox_field_in(ChunkOctree, chunkOctrees, 2)
     zox_field_in(ChunkPosition, chunkPositions, 3)
-    zox_field_in(ChunkSize, chunkSizes, 4)
+    // zox_field_in(ChunkSize, chunkSizes, 4)
     zox_field_in(VoxLink, voxLinks, 5)
     zox_field_in(RenderLod, renderLods, 6)
     zox_field_in(RenderDisabled, renderDisableds, 7)
@@ -68,7 +67,7 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
         if (!voxLink->value) continue;
         zox_field_i_in(ChunkOctree, chunkOctrees, chunkOctree)
         zox_field_i_in(ChunkPosition, chunkPositions, chunkPosition)
-        zox_field_i_in(ChunkSize, chunkSizes, chunkSize)
+        // zox_field_i_in(ChunkSize, chunkSizes, chunkSize)
         zox_field_i_in(RenderLod, renderLods, renderLod)
         zox_field_i_in(RenderDisabled, renderDisableds, renderDisabled)
         zox_field_i_out(BlockSpawns, blockSpawnss, blockSpawns)
@@ -118,13 +117,9 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
                 blockSpawns->value = NULL;
             }
         }
-        did_do_timing()
     }
     if (block_voxes) free(block_voxes);
     if (block_vox_offsets) free(block_vox_offsets);
-    //end_timing("BlockVoxSpawnSystem")
-    //if (did_do) zox_log("   + spawned_block_voxes [%i] delta_time [%f]\n", spawned_block_voxes, zox_delta_time * 1000)
-    // if (did_do == 1) zox_log("   + block spawns spawned / destroyed\n")
 } zox_declare_system(BlockVoxSpawnSystem)
 
 // spawn the things as children to terrain Chunks!

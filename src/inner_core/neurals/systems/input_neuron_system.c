@@ -1,6 +1,5 @@
-
 //! Adds force to the velocity per frame.
-void NeuronInputSystem(ecs_iter_t *it) {
+/*void NeuronInputSystem(ecs_iter_t *it) {
     init_delta_time()
     const float brain_speed = 0.5f; //  4.0f;
     const float add_multiplier = 0.1f;
@@ -16,4 +15,4 @@ void NeuronInputSystem(ecs_iter_t *it) {
         // transfer->value += delta_time * 0.2f;
         // neuron_enable_signals(world, e);
     }
-} zox_declare_system(NeuronInputSystem)
+} zox_declare_system(NeuronInputSystem)*/

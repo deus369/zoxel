@@ -1,9 +1,11 @@
 void LinkFeedForwardSystem(ecs_iter_t *it) {
     if (zox_current_time < neural_brain_delay) return;
+    /*
     float total_loss = 0.0f;
     float total_loss_gradient = 0.0f;
     float target_output = 0.7f; // Assuming your target output is 0.7
     float learning_rate = 0.01f; // Assuming your learning rate is 0.01
+    */
     init_delta_time()
     zox_iter_world()
     zox_field_in(ConnectionData, connectionDatas, 1)

@@ -21,7 +21,8 @@ void spawn_prefabs_players2D(ecs_world_t *world) {
 zox_begin_module(Players2D)
 zox_define_tag(Player2D)
 zox_define_tag(PlayerCharacter2D)
-zox_system(Player2DMoveSystem, zox_pip_player_movement, [none] players.Player, [in] DeviceLinks, [in] CharacterLink)
+zox_system(Player2DMoveSystem, zox_pip_player_movement, [in] DeviceLinks, [in] CharacterLink, [none] players.Player)
+spawn_prefabs_players2D(world);
 zoxel_end_module(Players2D)
 
 #endif

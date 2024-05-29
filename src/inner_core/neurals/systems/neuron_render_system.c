@@ -5,9 +5,9 @@ void NeuronRenderSystem(ecs_iter_t *it) {
     init_delta_time()
     double animate_time = delta_time * 3;
     const float neuron_size = 0.1f;
-    const color_rgb neuron_color_input = (color_rgb) { 255, 0, 0 };
-    const color_rgb neuron_color_hidden = (color_rgb) { 0, 0, 255 };
-    const color_rgb neuron_color_output = (color_rgb) { 0, 255, 0 };
+    // const color_rgb neuron_color_input = (color_rgb) { 255, 0, 0 };
+    // const color_rgb neuron_color_hidden = (color_rgb) { 0, 0, 255 };
+    // const color_rgb neuron_color_output = (color_rgb) { 0, 255, 0 };
     zox_iter_world()
     zox_field_in(Position2D, position2Ds, 1)
     for (int i = 0; i < it->count; i++) {

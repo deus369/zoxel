@@ -1,20 +1,22 @@
-ecs_entity_t prefab_player;
-
-ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
+/*ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_player")
     // core players data
     zox_add_tag(e, Player)
     zox_prefab_set(e, PlayerState, { camera_mode })
     zox_prefab_set(e, GameLink, { 0 })
+    // Player -> Character/Camera
+    zox_prefab_set(e, CharacterLink, { 0 })
+    zox_prefab_set(e, CameraLink, { 0 })
     // Player -> Devices
     zox_prefab_set(e, DeviceMode, { 0 })
     zox_prefab_set(e, DeviceModeDirty, { 0 })
     zox_prefab_set(e, DeviceLinks, { 0, NULL })
-    // this is all UI interaction
-    zox_prefab_set(e, Raycaster, { { 0, 0 } })
+    // Raycasting
+    zox_prefab_set(e, Raycaster, { int2_zero })
     zox_prefab_set(e, RaycasterTarget, { 0 })
     zox_prefab_set(e, RaycasterResult, { 0 })
+    // this is all UI interaction
     zox_prefab_set(e, ClickingEntity, { 0 })
     zox_prefab_set(e, NavigatorState, { 0 })
     zox_prefab_set(e, NavigatorTimer, { 0 })
@@ -22,15 +24,12 @@ ecs_entity_t spawn_prefab_player(ecs_world_t *world) {
     zox_prefab_set(e, CanvasLink, { 0 })
     zox_prefab_set(e, WindowRaycasted, { 0 })
     zox_prefab_set(e, WindowTarget, { 0 })
-    // Player -> Character/Camera
-    zox_prefab_set(e, CharacterLink, { 0 })
-    zox_prefab_set(e, CameraLink, { 0 })
     prefab_player = e;
     return e;
-}
+}*/
 
-ecs_entity_t spawn_player(ecs_world_t *world) {
-    zox_instance(prefab_player)
+ecs_entity_t spawn_player(ecs_world_t *world, const ecs_entity_t prefab) {
+    zox_instance(prefab)
     zox_name("player")
     zox_set(e, PlayerState, { camera_mode })
     // adds all devices created in inputs module
