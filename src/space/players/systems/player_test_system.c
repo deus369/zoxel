@@ -38,9 +38,10 @@ void brain_test_controls(ecs_world_t *world, const Keyboard *keyboard, const ecs
 }
 
 ecs_entity_t tilemap_ui = 0;
+
 void spawn_tilemap_ui(ecs_world_t *world, const Keyboard *keyboard, const ecs_entity_t canvas, const ecs_entity_t realm) {
     const int2 size = (int2) { 320, 320 };
-    if (keyboard->_1.pressed_this_frame) {
+    if (keyboard->_8.pressed_this_frame) {
         if (tilemap_ui) {
             zox_delete(tilemap_ui)
             tilemap_ui = 0;
@@ -52,6 +53,44 @@ void spawn_tilemap_ui(ecs_world_t *world, const Keyboard *keyboard, const ecs_en
         spawn_sound_from_file(world, prefab_sound, 0);
         zox_log(" + spawned tilemap ui\n")
     }
+}
+
+void set_player_voxel_ray(ecs_world_t *world, const ecs_entity_t realm, const ecs_entity_t player, const unsigned char travel_voxel, const unsigned char voxel) {
+    float ray_interval = 0.05f;
+    float ray_length = 16;
+    const ecs_entity_t terrain = zox_get_value(realm, TerrainLink)
+    const ChunkLinks *chunk_links = zox_get(terrain, ChunkLinks)
+    const ecs_entity_t camera = zox_get_value(player, CameraLink)
+    const float3 ray_origin = zox_get_value(camera, RaycastOrigin)
+    const float3 ray_normal = zox_get_value(camera, RaycastNormal)
+    int3 cache_position = int3_zero;
+    for (float i = 0; i < ray_length; i += ray_interval) {
+        float3 point = float3_add(ray_origin, float3_multiply_float(ray_normal, i));
+        int3 chunk_position = real_position_to_chunk_position(point, default_chunk_size);
+        // should do a check if chunk_position changed
+        const ecs_entity_t chunk = int3_hash_map_get(chunk_links->value, chunk_position);
+        if (!chunk) continue;
+        ChunkOctree *chunk_octree = zox_get_mut(chunk, ChunkOctree)
+        int3 voxel_position = real_position_to_voxel_position(point);
+        if (int3_equals(cache_position, voxel_position)) continue;
+        cache_position = voxel_position;
+        byte3 voxel_position_local = get_local_position_byte3(voxel_position, chunk_position, default_chunk_size_byte3);
+        /*byte3 temp = voxel_position_local;
+        unsigned char old_voxel = get_octree_voxel(chunk_octree, &temp, max_octree_depth);
+        if (travel_voxel != old_voxel) return;*/
+        const SetVoxelTargetData datam = { .depth = max_octree_depth, .voxel = voxel, .effect_nodes = 1, .depth_only = 1 };
+        SetVoxelData data = { .node = chunk_octree, .position = voxel_position_local };
+        set_voxel(&datam, data);
+        close_same_nodes(chunk_octree);
+        zox_modified(chunk, ChunkOctree)
+        zox_set(chunk, ChunkDirty, { 1 })
+        // set surrounding chunks dirt if on edge... this feels familiar lmao
+    }
+}
+
+void test_raycast(ecs_world_t *world, const Keyboard *keyboard, const ecs_entity_t realm, const ecs_entity_t player) {
+    if (keyboard->_1.pressed_this_frame) set_player_voxel_ray(world, realm, player, 0, 1);
+    if (keyboard->_2.pressed_this_frame) set_player_voxel_ray(world, realm, player, 0, 0);
 }
 
 // Shortcuts just for testing new stuff
@@ -81,6 +120,7 @@ void PlayerTestSystem(ecs_iter_t *it) {
                 }
                 // brain_test_controls(world, keyboard, canvas);
                 spawn_tilemap_ui(world, keyboard, canvas, local_realm);
+                test_raycast(world, keyboard, local_realm, it->entities[i]);
 #ifndef zox_on_startup_spawn_main_menu
                 if (keyboard->g.pressed_this_frame) {
                     const ecs_entity_t canvas = zox_get_value(it->entities[i], CanvasLink)

@@ -1,8 +1,6 @@
-ecs_entity_t prefab_base_camera;
-
-ecs_entity_t spawn_camera_base_prefab(ecs_world_t *world) {
+ecs_entity_t spawn_prefab_camera(ecs_world_t *world) {
     zox_prefab()
-    zox_prefab_name("prefab_base_camera")
+    zox_prefab_name("prefab_camera")
     zox_add_tag(e, Camera)
     // zox_add_tag(e, CameraTransform)
     zox_prefab_set(e, Position3D, { float3_zero })
@@ -24,12 +22,12 @@ ecs_entity_t spawn_camera_base_prefab(ecs_world_t *world) {
     // culling
     zox_prefab_set(e, Position3DBounds, { float6_zero })
     zox_prefab_set(e, CameraPlanes, { 0, NULL })
-    prefab_base_camera = e;
+    zox_prefab_set(e, FrustumCorners, { 0, NULL })
     return e;
 }
 
-ecs_entity_t spawn_base_camera(ecs_world_t *world, const float3 position, const float4 rotation, const float fov, const int2 screen_position, const int2 screen_dimensions, const float4 screen_to_canvas) {
-    zox_instance(prefab_base_camera)
+ecs_entity_t spawn_base_camera(ecs_world_t *world, const ecs_entity_t prefab, const float3 position, const float4 rotation, const float fov, const int2 screen_position, const int2 screen_dimensions, const float4 screen_to_canvas) {
+    zox_instance(prefab)
     zox_name("base_camera")
     zox_set(e, Position3D, { position })
     zox_set(e, Rotation3D, { rotation })
