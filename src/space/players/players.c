@@ -27,6 +27,7 @@
 #include "systems/player_shortcuts_single_system.c"
 #include "systems/player_toggle_camera_system.c"
 #include "systems/player_test_system.c"
+#include "systems/raycast_gizmo_system.c"
 
 void initialize_players(ecs_world_t *world) {
     add_to_event_game_state((zox_game_event) { &players_game_state });
@@ -46,6 +47,11 @@ zox_system_1(PlayerPauseSystem, zox_pip_mainthread, [in] DeviceLinks, [none] pla
 zox_system_1(VirtualJoystickSystem, zox_pip_mainthread, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterResult, [in] GameLink, [none] players.Player)
 zox_system_1(EditorInputSystem, zox_pip_mainthread, [in] DeviceLinks, [in] CanvasLink, [none] players.Player)
 zox_system(PlayerToggleCameraSystem, EcsOnUpdate, [in] DeviceLinks, [in] CharacterLink, [in] GameLink, [none] players.Player)
+
+zox_system_1(RaycastGizmoSystem, zox_pip_mainthread, [in] CameraLink, [in] VoxLink)
+zox_system(VoxelActionASystem, EcsOnUpdate, [in] CameraLink, [in] VoxLink, [out] TriggerActionA)
+zox_system(VoxelActionBSystem, EcsOnUpdate, [in] CameraLink, [in] VoxLink, [out] TriggerActionB)
+
 initialize_players(world);
 zox_prefab_set(prefab_game, PlayerLinks, { 0, NULL })
 zoxel_end_module(Players2)

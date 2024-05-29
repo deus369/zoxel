@@ -29,6 +29,7 @@ zox_hashmap_component(BlockSpawns, byte3)
 #include "util/vox_colors_util.c"
 #include "util/link_util.c"
 #include "util/label_util.c"
+#include "util/raycast.c"
 #include "prefabs/prefabs.c"
 zox_increment_system(ChunkLodDirty, 3)
 #include "systems/chunk_build_system.c"

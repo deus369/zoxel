@@ -11,7 +11,7 @@ void print_planes(plane *planes) {
     const float4x4 position_matrix = float4x4_position(float3_reverse(position));
     const float4x4 rotation_matrix = float4x4_rotation(float4_reverse(rotation));
     const float4x4 transform_matrix = float4x4_multiply(position_matrix, rotation_matrix);
-    //*matrix = float4x4_multiply(transform_matrix, projection_matrix);
+    matrix = float4x4_multiply(transform_matrix, projection_matrix);
     *matrix = transform_matrix;
 }*/
 

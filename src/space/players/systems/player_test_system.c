@@ -56,7 +56,6 @@ void spawn_tilemap_ui(ecs_world_t *world, const Keyboard *keyboard, const ecs_en
 }
 
 void test_raycast(ecs_world_t *world, const Keyboard *keyboard, const ecs_entity_t realm, const ecs_entity_t player) {
-    draw_ray_voxel_point(world, realm, player);
     if (keyboard->_1.pressed_this_frame) set_player_voxel_ray(world, realm, player, 0, 0, 2);
     else if (keyboard->_2.pressed_this_frame) set_player_voxel_ray(world, realm, player, 0, 1, 1);
     else if (keyboard->_3.pressed_this_frame) set_player_voxel_ray(world, realm, player, 0, 3, 1);
