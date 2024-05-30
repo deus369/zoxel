@@ -1,3 +1,27 @@
+// actually this helped me solve plane math
+void test_plane_points(const char *text, const plane p) {
+    zox_log(" + [%s] normal [%ix%ix%i] dist [%i]\n", text, (int) p.normal.x, (int) p.normal.y, (int) p.normal.z, (int) p.distance)
+    unsigned char outside_a = is_outside_plane(p, (float3) { 0, 0, 0 });
+    unsigned char outside_b = is_outside_plane(p, (float3) { 0, -1, 0 });
+    unsigned char outside_c = is_outside_plane(p, (float3) { 0, 1, 0 });
+    unsigned char outside_d = is_outside_plane(p, (float3) { -1, 0, 0 });
+    unsigned char outside_e = is_outside_plane(p, (float3) { 1, 0, 0 });
+    zox_log("   + [%s] b [0,-1,0] outside plane [%s]\n", text, outside_b ? "yes" : "no")
+    zox_log("   + [%s] a [0,0,0] outside plane [%s]\n", text, outside_a ? "yes" : "no")
+    zox_log("   + [%s] c [0,1,0] outside plane [%s]\n", text, outside_c ? "yes" : "no")
+    // zox_log("   + [%s] d [-1,0,0] outside plane [%s]\n", text, outside_d ? "yes" : "no")
+    // zox_log("   + [%s] e [1,0,0] outside plane [%s]\n", text, outside_e ? "yes" : "no")
+}
+
+void test_plane_checks() {
+    test_plane_points("plane_up", (plane) { .normal = float3_up, .distance = 0 });
+    test_plane_points("plane_down", (plane) { .normal = float3_down, .distance = 0 });
+    test_plane_points("plane_down_plus", (plane) { .normal = float3_down, .distance = 1 });
+    // test_plane_points("plane_left", (plane) { .normal = float3_left, .distance = 0 });
+    // test_plane_points("plane_right", (plane) { .normal = float3_right, .distance = 0 });
+}
+
+
 void print_planes(plane *planes) {
     for (unsigned char i = 0; i < 6; i++) {
         zox_log("   - [%i] plane normal [%fx%fx%f] dist [%f]\n", i, planes[i].normal.x, planes[i].normal.y, planes[i].normal.z, planes[i].distance)

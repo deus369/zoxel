@@ -82,7 +82,6 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
                 for (int j = 0; j < voxelLinks->length; j++) {
                     const ecs_entity_t block = voxelLinks->value[j];
                     if (zox_gett_value(block, BlockModel) == zox_block_vox) {
-                        // block_voxes[j] = vox_files[test_block_vox_index];
                         block_voxes[j] = zox_get_value(block, ModelLink)
                         if (zox_has(block, BlockVoxOffset)) block_vox_offsets[j] = zox_get_value(block, BlockVoxOffset)
                         else block_vox_offsets[j] = 0;

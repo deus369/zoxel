@@ -1,6 +1,9 @@
 #if !defined(zox_mod_cameras) && defined(zox_mod_transforms)
 #define zox_mod_cameras
 
+// todo: use this for ViewMatrix (current use) and use ViewMatrix just as Inverted TransformMatrix
+// todo: refactor cameras do they even need ScreenPosition? we should just have CanvasLinks, and each camera is linked to a bunch? idk
+
 #include "data/camera_spawn_data.c"
 #include "data/bounds.c"
 #include "data/plane.c"
@@ -43,28 +46,6 @@ zox_memory_component(CameraPlanes, plane)
 #include "systems/camera_debug_system.c"
 #include "systems/camera_draw_frustum_system.c"
 
-void test_plane_points(const char *text, const plane p) {
-    zox_log(" + [%s] normal [%ix%ix%i] dist [%i]\n", text, (int) p.normal.x, (int) p.normal.y, (int) p.normal.z, (int) p.distance)
-    unsigned char outside_a = is_outside_plane(p, (float3) { 0, 0, 0 });
-    unsigned char outside_b = is_outside_plane(p, (float3) { 0, -1, 0 });
-    unsigned char outside_c = is_outside_plane(p, (float3) { 0, 1, 0 });
-    unsigned char outside_d = is_outside_plane(p, (float3) { -1, 0, 0 });
-    unsigned char outside_e = is_outside_plane(p, (float3) { 1, 0, 0 });
-    zox_log("   + [%s] b [0,-1,0] outside plane [%s]\n", text, outside_b ? "yes" : "no")
-    zox_log("   + [%s] a [0,0,0] outside plane [%s]\n", text, outside_a ? "yes" : "no")
-    zox_log("   + [%s] c [0,1,0] outside plane [%s]\n", text, outside_c ? "yes" : "no")
-    // zox_log("   + [%s] d [-1,0,0] outside plane [%s]\n", text, outside_d ? "yes" : "no")
-    // zox_log("   + [%s] e [1,0,0] outside plane [%s]\n", text, outside_e ? "yes" : "no")
-}
-
-void test_plane_checks() {
-    test_plane_points("plane_up", (plane) { .normal = float3_up, .distance = 0 });
-    test_plane_points("plane_down", (plane) { .normal = float3_down, .distance = 0 });
-    test_plane_points("plane_down_plus", (plane) { .normal = float3_down, .distance = 1 });
-    // test_plane_points("plane_left", (plane) { .normal = float3_left, .distance = 0 });
-    // test_plane_points("plane_right", (plane) { .normal = float3_right, .distance = 0 });
-}
-
 zox_begin_module(Cameras)
 zox_define_tag(Camera)
 zox_define_tag(Camera2D)
@@ -102,10 +83,6 @@ zox_system_1(FrustumDrawSystem, zox_pip_mainthread, [in] FrustumCorners, [none] 
 zox_system_1(CameraDebugSystem, zox_pip_mainthread, [in] CameraPlanes, [none] Camera)
 #endif
 spawn_prefabs_cameras(world);
-test_plane_checks();
 zoxel_end_module(Cameras)
-
-// todo: use this for ViewMatrix (current use) and use ViewMatrix just as Inverted TransformMatrix
-// todo: refactor cameras do they even need ScreenPosition? we should just have CanvasLinks, and each camera is linked to a bunch? idk
 
 #endif
