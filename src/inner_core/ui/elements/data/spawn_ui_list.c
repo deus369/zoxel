@@ -1,8 +1,8 @@
 // for only the button
 typedef struct {
     ecs_entity_t prefab;
-    color color;
-} SpawnWindowData;
+    unsigned char is_scrollbar;
+} SpawnUIListData;
 
 typedef struct {
     CanvasSpawnData canvas;
@@ -12,4 +12,5 @@ typedef struct {
     SpawnZextData zext;
     SpawnHeaderData header;
     SpawnWindowData window;
-} SpawnWindow;
+    SpawnUIListData data;
+} SpawnUIList;

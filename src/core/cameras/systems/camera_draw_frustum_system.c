@@ -2,22 +2,14 @@ extern void render_line3D(ecs_world_t *world, const float3 a, const float3 b, co
 float4x4 debug_view_projection_matrix;
 float4x4 debug_transform_matrix;
 
-void CameraDrawFrustumSystem(ecs_iter_t *it) {
-    /*zox_iter_world()
-    if (zox_cameras_disable_streaming) {
-        draw_frustum_planes(world, debug_view_projection_matrix, debug_transform_matrix);
-        return;
-    }
-    zox_field_in(TransformMatrix, transformMatrixs, 1)
-    zox_field_in(ViewMatrix, viewMatrixs, 3)
+void CameraPlanesDrawSystem(ecs_iter_t *it) {
+    zox_iter_world()
+    zox_field_in(CameraPlanes, cameraPlaness, 1)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(ViewMatrix, viewMatrixs, viewMatrix)
-        zox_field_i_in(TransformMatrix, transformMatrixs, transformMatrix)
-        draw_frustum_planes(world, viewMatrix->value, transformMatrix->value);
-        debug_view_projection_matrix = viewMatrix->value;
-        debug_transform_matrix = transformMatrix->value;
-    }*/
-} zox_declare_system(CameraDrawFrustumSystem)
+        zox_field_i_in(CameraPlanes, cameraPlaness, cameraPlanes)
+        draw_planes(world, cameraPlanes->value, 6);
+    }
+} zox_declare_system(CameraPlanesDrawSystem)
 
 void FrustumDrawSystem(ecs_iter_t *it) {
     color_rgb debug_color = (color_rgb) { 0, 0, 0 };

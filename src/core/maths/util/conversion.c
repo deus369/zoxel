@@ -17,3 +17,11 @@ int2 float2_to_int2(float2 input) {
 int2 byte2_to_int2(byte2 input) {
     return (int2) { (int) input.x, (int) input.y };
 }
+
+float3 float3_from_byte3(const byte3 input) {
+    return (float3) { input.x, input.y, input.z };
+}
+
+int3 float3_to_int3(const float3 input) {
+    return (int3) { (int) input.x, (int) input.y, (int) input.z };
+}

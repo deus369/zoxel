@@ -4,6 +4,28 @@ void print_planes(plane *planes) {
     }
 }
 
+plane* create_test_planes_position(float3 position, float distance) {
+    plane* planes = malloc(6 * sizeof(plane));
+    planes[0] = (plane) { { 1, 0, 0 }, position.x + distance };
+    planes[1] = (plane) { { -1, 0, 0 }, -position.x + distance };
+    planes[2] = (plane) { { 0, 1, 0 }, position.y + distance };
+    planes[3] = (plane) { { 0, -1, 0 }, -position.y + distance };
+    planes[4] = (plane) { { 0, 0, 1 }, position.z + distance }; // near
+    planes[5] = (plane) { { 0, 0, -1 }, -position.z + distance }; // far
+    return planes;
+}
+
+plane* create_test_planes(float distance) {
+    plane* planes = malloc(6 * sizeof(plane));
+    planes[0] = (plane) {{ 1.0f, 0.0f, 0.0f }, distance};  // Right plane: x = 1
+    planes[1] = (plane) {{-1.0f, 0.0f, 0.0f }, distance};  // Left plane: x = -1
+    planes[2] = (plane) {{ 0.0f, 1.0f, 0.0f }, distance};  // Top plane: y = 1
+    planes[3] = (plane) {{ 0.0f, -1.0f, 0.0f }, distance}; // Bottom plane: y = -1
+    planes[4] = (plane) {{ 0.0f, 0.0f, 1.0f }, distance};  // Far plane: z = 1
+    planes[5] = (plane) {{ 0.0f, 0.0f, -1.0f }, distance}; // Near plane: z = -1
+    return planes;
+}
+
 /*void fill_fake_view_matrix(float4x4 *matrix, const float3 position, const float4 rotation) {
     const float4x4 transform_matrix = float4x4_inverse_precise(float4x4_transform(position, rotation));
    // float4x4 projection_matrix;

@@ -37,7 +37,7 @@ ecs_entity_t spawn_zext(ecs_world_t *world, const SpawnZext *data) {
     for (int i = 0; i < zextData->length; i++) zextData->value[i] = convert_ascii(data->zext.text[i]);
     const unsigned char zigels_count = calculate_total_zigels(zextData->value, zextData->length);
     resize_memory_component(Children, children, ecs_entity_t, (int) zigels_count)
-    const int2 pixel_size = calculate_zext_size(zextData->value, zextData->length, data->zext.font_size , data->zext.padding);
+    const int2 pixel_size = calculate_zext_size(zextData->value, zextData->length, data->zext.font_size, data->zext.padding, default_line_padding);
     SpawnZigel spawn_data = {
         .canvas = data->canvas,
         .parent = {
@@ -61,7 +61,7 @@ ecs_entity_t spawn_zext(ecs_world_t *world, const SpawnZext *data) {
         }
     };
     for (int i = 0; i < zigels_count; i++) {
-        const unsigned char data_index = calculate_zigel_data_index(zextData->value, zextData->length, i);
+        const int data_index = calculate_zigel_data_index(zextData->value, zextData->length, i);
         const unsigned char zigel_index = calculate_zigel_index(zextData->value, zextData->length, i);
         spawn_data.zigel.data_index = data_index;
         spawn_data.zigel.zigel_index = zigel_index;

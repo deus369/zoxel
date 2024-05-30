@@ -18,12 +18,18 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
         ecs_iter_t it2 = ecs_query_iter(world, it->ctx);
         while(ecs_query_next(&it2)) {
             const Position3DBounds *position3DBoundss = ecs_field(&it2, Position3DBounds, 1);
-            // const CameraPlanes *cameraPlaness = ecs_field(&it2, CameraPlanes, 2);
+#ifndef zox_disable_frustum_planes
+            const CameraPlanes *cameraPlaness = ecs_field(&it2, CameraPlanes, 2);
+#endif
             for (int j = 0; j < it2.count; j++) {
                 const Position3DBounds *position3DBounds = &position3DBoundss[j];
                 is_viewed = is_bounds_in_position_bounds(position3DBounds->value, chunk_bounds);
-                //const CameraPlanes *cameraPlanes = &cameraPlaness[j];
-                //is_viewed = is_in_frustum(cameraPlanes->value, chunk_bounds);
+#ifndef zox_disable_frustum_planes
+                if (is_viewed) {
+                    const CameraPlanes *cameraPlanes = &cameraPlaness[j];
+                    is_viewed = is_in_frustum(cameraPlanes->value, chunk_bounds);
+                }
+#endif
 #ifdef zox_disable_frustum_checks
                 is_viewed = 1;
 #endif

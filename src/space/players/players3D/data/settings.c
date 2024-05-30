@@ -22,3 +22,8 @@ const double run_speed = 2.1;
 const double run_accceleration = 2.6;
 const float backwards_multiplier = 0.7f;
 // #define zox_debug_player_speed_limits
+
+#define player_vox_scale  (1 / 64.0f)
+const unsigned char player_vox_index = 5; // tall vox cube (number 2)
+
+

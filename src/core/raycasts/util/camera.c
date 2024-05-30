@@ -2,10 +2,6 @@
 //      > we can use frustum actually, the near and far plane, since we have its corners
 //      > camera_point_to_ray
 
-float3 float3_lerp(const float3 a, const float3 b, const float t) {
-    return (float3) { a.x + t * (b.x - a.x), a.y + t * (b.y - a.y), a.z + t * (b.z - a.z) };
-}
-
 Ray camera_point_to_ray(const float3* frustum_corners, const float2 point) {
     // Interpolate point on the near plane
     float3 near_top = float3_lerp(frustum_corners[0], frustum_corners[1], point.x);

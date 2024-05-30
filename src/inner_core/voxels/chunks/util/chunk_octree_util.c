@@ -29,10 +29,11 @@ void add_chunk_octree(ecs_world_t *world, const ecs_entity_t e, const int3 size)
     zox_modified(e, ChunkNeighbors)
 }
 
-unsigned char get_octree_voxel(const ChunkOctree *node, byte3 *position, unsigned char depth) {
+unsigned char get_octree_voxel(const ChunkOctree *node, byte3 *position, const unsigned char depth) {
+    if (node == NULL) return 0;
     if (!node->nodes || !depth) return node->value;
-    unsigned char dividor = powers_of_two_byte[depth - 1]; // target - depth - 1];   // starts at default_chunk_length, ends at 1
-    byte3 node_position = (byte3) { position->x / dividor, position->y / dividor, position->z / dividor };
+    const unsigned char dividor = powers_of_two_byte[depth - 1];
+    const byte3 node_position = (byte3) { position->x / dividor, position->y / dividor, position->z / dividor };
     byte3_modulus_byte(position, dividor);
     return get_octree_voxel(&node->nodes[byte3_octree_array_index(node_position)], position, depth - 1);
 }

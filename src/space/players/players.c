@@ -2,7 +2,8 @@
 #define zox_mod_players2
 
 // alot of systems here are actually controller ones, player + device + camera / character, or game states like pause system?
-#include "settings/settings.c"
+zox_component_entity(PlayerPauseEvent)
+#include "data/settings.c"
 #include "states/player_state.c"
 #include "prefabs/player.c"
 #include "util/crosshair.c"
@@ -12,6 +13,7 @@
 #include "util/player_ui.c"
 #include "util/terrain_util.c"
 #include "util/pause_util.c"
+#include "util/resume_util.c"
 #include "util/editor_util.c"
 #include "util/touch_util.c"
 #include "util/start_game.c"
@@ -34,6 +36,7 @@ void initialize_players(ecs_world_t *world) {
 }
 
 zox_begin_module(Players2)
+zox_define_component_entity(PlayerPauseEvent)
 if (headless) return;
 zox_system(QolShortcutsSystem, EcsOnUpdate, [in] Keyboard)
 zox_system(PlayerShortcutsSystem, EcsOnUpdate, [in] DeviceLinks, [in] GameLink, [none] players.Player)
@@ -54,6 +57,7 @@ zox_system(VoxelActionBSystem, EcsOnUpdate, [in] CameraLink, [in] VoxLink, [out]
 
 initialize_players(world);
 zox_prefab_set(prefab_game, PlayerLinks, { 0, NULL })
+zox_prefab_set(prefab_player, PlayerPauseEvent, { 0 })
 zoxel_end_module(Players2)
 
 #endif

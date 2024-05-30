@@ -6,7 +6,7 @@ int get_label_local_character_level(ecs_world_t *world, const ecs_entity_t chara
         float level = zox_get_value(soul_stat, StatValue)
         float experience_value = zox_get_value(soul_stat, ExperienceValue)
         float experience_max = zox_get_value(soul_stat, ExperienceMax)
-        buffer_index += snprintf(buffer + buffer_index, buffer_size, " lvl %i [%i/%i]", (int) level, (int) experience_value, (int) experience_max);
+        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " lvl %i [%i/%i]", (int) level, (int) experience_value, (int) experience_max);
     }
     return buffer_index;
 }
@@ -29,7 +29,7 @@ int get_label_local_character_health(ecs_world_t *world, const ecs_entity_t char
         char *name_string = convert_zext_to_text(health_name->value, health_name->length);
         // snprintf(text, hierarchy_max_line_characters, "%s", health_name_string);
 
-        buffer_index += snprintf(buffer + buffer_index, buffer_size, " %s [%i/%i] ", name_string, (int) health_value, (int) health_value_max);
+        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " %s [%i/%i] ", name_string, (int) health_value, (int) health_value_max);
 
         free(name_string);
     }
@@ -50,8 +50,7 @@ int debug_can_jump(ecs_world_t *world, const ecs_entity_t character, char buffer
         const int is_jump = (int) 1000.0 * zox_get_value(character, Jump)
         // const unsigned char movement_disabled = zox_get_value(character, DisableMovement)
         // buffer_index += snprintf(buffer + buffer_index, buffer_size, " grounded [%i] movement_disabled [%i]", can_jump, movement_disabled);
-        buffer_index += snprintf(buffer + buffer_index, buffer_size, " grounded [%i] jump [%i ms]", can_jump, is_jump);
-        //buffer_index += snprintf(buffer + buffer_index, buffer_size, " grounded [%i]", can_jump);
+        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " grounded [%i] jump [%i ms]", can_jump, is_jump);
     }
     return buffer_index;
 }

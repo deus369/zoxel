@@ -1,6 +1,7 @@
 #ifndef zox_zexts
 #define zox_zexts
 
+const unsigned char default_line_padding = 8;
 zox_declare_tag(Zext)
 zox_declare_tag(ZextLabel)
 zox_component_byte(ZextDirty)
@@ -9,7 +10,7 @@ zox_component_int(ZextSize)
 zox_component_byte2(ZextPadding)
 zox_component_double(AnimateZext)
 zox_component_zext(ZextData)   // zigel indexes
-#include  "data/settings.c"
+#include "data/settings.c"
 #include "data/zext_spawn_data.c"
 #include "util/zigel_util.c"
 #include "util/resize_util.c"

@@ -3,29 +3,52 @@
 // we have 6, they overlap, but they should all be forming a shape, facing out? idk
 // Our check checks if the bounding box intersects with every plane, well checks the side it's on
 // if it's not on every side, it's in middle, i.e. inside the cage / frustum shape
-
 // we need to draw these planes. we can get their overlapping 8 points?
+// return float3_dot(p.normal, point) >= p.distance;
 
-void normalize_plane(plane *p) {
-    // this b breaks around origin?
-    /*if (p->distance < 0) {
-        p->normal.x *= -1;
-        p->normal.y *= -1;
-        p->normal.z *= -1;
-        p->distance *= -1;
-    }*/
-    const float length = float3_magnitude(p->normal);
-    if (length == 0) return;
-    float3_divide_float_p(&p->normal, length);
-    p->distance /= length;
+unsigned char is_outside_plane(const plane p, const float3 point) {
+    return float3_dot(p.normal, point) - p.distance >= 0;
 }
 
-void normalize_planes(plane *planes) {
+// checks if bounds is inside 6 planes
+unsigned char is_entire_bounds_in_frustum(const plane *planes, bounds b) {
     for (unsigned char i = 0; i < 6; i++) {
-        normalize_plane(&planes[i]);
+        const plane p = planes[i];
+        const float3 normal_sign = float3_sign(p.normal);
+        const float3 point = float3_add(b.center, float3_multiply_float3(b.extents, normal_sign));
+        if (is_outside_plane(p, point)) return 0;
     }
+    return 1;
 }
 
+// checks if any part of bounds is inside 6 planes
+unsigned char is_in_frustum(const plane *planes, bounds b) {
+    float3 point;
+    for (unsigned char i = 0; i < 6; i++) {
+        const plane p = planes[i];
+        unsigned char all_outside_plane = 1;
+        point = float3_add(b.center, (float3) { -b.extents.x, -b.extents.y, -b.extents.z });
+        if (!is_outside_plane(p, point)) all_outside_plane = 0;
+        point = float3_add(b.center, (float3) { -b.extents.x, -b.extents.y, +b.extents.z });
+        if (!is_outside_plane(p, point)) all_outside_plane = 0;
+        point = float3_add(b.center, (float3) { -b.extents.x, +b.extents.y, -b.extents.z });
+        if (!is_outside_plane(p, point)) all_outside_plane = 0;
+        point = float3_add(b.center, (float3) { -b.extents.x, +b.extents.y, +b.extents.z });
+        if (!is_outside_plane(p, point)) all_outside_plane = 0;
+        point = float3_add(b.center, (float3) { +b.extents.x, -b.extents.y, -b.extents.z });
+        if (!is_outside_plane(p, point)) all_outside_plane = 0;
+        point = float3_add(b.center, (float3) { +b.extents.x, -b.extents.y, +b.extents.z });
+        if (!is_outside_plane(p, point)) all_outside_plane = 0;
+        point = float3_add(b.center, (float3) { +b.extents.x, +b.extents.y, -b.extents.z });
+        if (!is_outside_plane(p, point)) all_outside_plane = 0;
+        point = float3_add(b.center, (float3) { +b.extents.x, +b.extents.y, +b.extents.z });
+        if (!is_outside_plane(p, point)) all_outside_plane = 0;
+        if (all_outside_plane) return 0;
+    }
+    return 1;
+}
+
+// clockwise or counter clockwise determines normal direction
 float3 generate_plane_normal(const float3 point_a, const float3 point_b, const float3 point_c) {
     const float3 vector_ab = float3_sub(point_a, point_b);
     const float3 vector_ac = float3_sub(point_a, point_c);
@@ -36,57 +59,62 @@ plane calculate_plane_from_points(const float3 point_a, const float3 point_b, co
     plane result_plane;
     result_plane.normal = generate_plane_normal(point_a, point_b, point_c);
     result_plane.distance = float3_dot(result_plane.normal, point_a);
-    // normalize_plane(&result_plane);
     return result_plane;
 }
 
-void calculate_planes_from_frustum(float3 *frustum, plane *planes) {
-    planes[0] = calculate_plane_from_points(frustum[0], frustum[3], frustum[4]); // 7 L
-    planes[1] = calculate_plane_from_points(frustum[1], frustum[2], frustum[5]); // 6 R
-    planes[2] = calculate_plane_from_points(frustum[0], frustum[5], frustum[1]); // 4 B
-    planes[3] = calculate_plane_from_points(frustum[3], frustum[7], frustum[6]); // 2 T
-    planes[4] = calculate_plane_from_points(frustum[3], frustum[2], frustum[1]); // 2 N
-    planes[5] = calculate_plane_from_points(frustum[7], frustum[6], frustum[5]); // 4 F
+void calculate_planes_from_frustum(const float3 *frustum, plane *planes) {
+    /*
+    frustum[0] = (float3) { -1, -1, -1 };
+    frustum[1] = (float3) { 1, -1, -1 };
+    frustum[2] = (float3) { 1, 1, -1 };
+    frustum[3] = (float3) { -1, 1, -1 };
+    frustum[4] = (float3) { -1, -1, 1 };
+    frustum[5] = (float3) { 1, -1, 1 };
+    frustum[6] = (float3) { 1, 1, 1 };
+    frustum[7] = (float3) { -1, 1, 1 };
+    */
+    // Left is (-1,-1,-1) -> (-1,+1,-1) -> (-1,-1,+1) => counter clockwise
+    planes[0] = calculate_plane_from_points(frustum[0], frustum[3], frustum[4]); // 0, 3, 4, 7 L
+    // Right is (+1,-1,+1) ->  (+1,+1,-1) -> (+1,-1,-1) => clockwise
+    planes[1] = calculate_plane_from_points(frustum[5], frustum[2], frustum[1]); // 1, 2, 5, 6 R
+    // Down is (-1,-1,-1) -> (+1,-1,-1) -> (-1,-1,+1) => counter clockwise
+    planes[2] = calculate_plane_from_points(frustum[4], frustum[1], frustum[0]); // 0, 1, 4, 5 B
+    // Up is (-1,+1,+1) -> (+1,+1,+1) -> (-1,+1,-1) => clockwise
+    planes[3] = calculate_plane_from_points(frustum[3], frustum[6], frustum[7]); // 2, 3, 6, 7 T
+    // Near is 1 (+1,-1,-1) -> 2 (+1,+1,-1) -> 3 (-1,+1,-1) => clockwise
+    planes[4] = calculate_plane_from_points(frustum[1], frustum[2], frustum[3]); // 0, 1, 2, 3 N
+    // Far is 1 (+1,-1,+1) -> 2 (+1,+1,+1) -> 3 (-1,+1,+1) => counter clockwise
+    planes[5] = calculate_plane_from_points(frustum[7], frustum[6], frustum[5]); // 4, 5, 6, 7 F
+
+    /*return;
+
+    float3 near_midpoint = float3_lerp(float3_lerp(frustum[3], frustum[2], 0.5f), float3_lerp(frustum[1], frustum[0], 0.5f), 0.5f);
+    float3 far_midpoint = float3_lerp(float3_lerp(frustum[7], frustum[6], 0.5f), float3_lerp(frustum[5], frustum[4], 0.5f), 0.5f);
+    zox_log(" + near distance %f > %f\n", planes[4].distance, float3_magnitude(near_midpoint));
+    planes[4].normal = float3_normalize(float3_sub(near_midpoint, far_midpoint));
+    planes[4].distance = float3_magnitude(near_midpoint);
+    planes[5].normal = float3_normalize(float3_sub(far_midpoint, near_midpoint));
+    planes[5].distance = float3_magnitude(far_midpoint);
+
+    // X axis
+    float3 midpoint_l = float3_lerp(float3_lerp(frustum[0], frustum[3], 0.5f), float3_lerp(frustum[4], frustum[7], 0.5f), 0.5f);
+    float3 midpoint_r = float3_lerp(float3_lerp(frustum[1], frustum[2], 0.5f), float3_lerp(frustum[5], frustum[6], 0.5f), 0.5f);
+    // planes[0].normal = float3_normalize(float3_sub(midpoint_l, midpoint_r));
+    planes[0].distance = float3_magnitude(midpoint_l);
+    // planes[1].normal = float3_normalize(float3_sub(midpoint_r, midpoint_l));
+    planes[1].distance = float3_magnitude(midpoint_r);
+
+    // Z axis
+    float3 midpoint_b = float3_lerp(float3_lerp(frustum[0], frustum[1], 0.5f), float3_lerp(frustum[4], frustum[5], 0.5f), 0.5f);
+    float3 midpoint_f = float3_lerp(float3_lerp(frustum[2], frustum[3], 0.5f), float3_lerp(frustum[6], frustum[7], 0.5f), 0.5f);
+    // planes[2].normal = float3_normalize(float3_sub(midpoint_b, midpoint_f));
+    planes[2].distance = float3_magnitude(midpoint_b);
+    // planes[3].normal = float3_normalize(float3_sub(midpoint_f, midpoint_b));
+    planes[3].distance = float3_magnitude(midpoint_f);*/
+
 }
 
-void calculate_frustum_planes(const float4x4 view_projection_matrix, plane *planes, float6 *bounds) {
-    float3 *frustum = calculate_frustum_corners(view_projection_matrix);
-    calculate_frustum_bounds(frustum, bounds);
-    calculate_planes_from_frustum(frustum, planes);
-    free(frustum);
-    normalize_planes(planes);
-}
-
-void fix_frustum_normals(const float4x4 transform_matrix, plane *planes) {
-    planes[4].normal = float4x4_forward(transform_matrix);
-    planes[5].normal = float3_multiply_float(planes[4].normal, -1);
-    planes[4].distance = camera_near_distance;
-    planes[5].distance = camera_far_distance;
-}
-
-plane* create_test_planes_position(float3 position, float distance) {
-    plane* planes = malloc(6 * sizeof(plane));
-    planes[0] = (plane) { { 1, 0, 0 }, position.x + distance };
-    planes[1] = (plane) { { -1, 0, 0 }, -position.x + distance };
-    planes[2] = (plane) { { 0, 1, 0 }, position.y + distance };
-    planes[3] = (plane) { { 0, -1, 0 }, -position.y + distance };
-    planes[4] = (plane) { { 0, 0, 1 }, position.z + distance }; // near
-    planes[5] = (plane) { { 0, 0, -1 }, -position.z + distance }; // far
-    return planes;
-}
-
-plane* create_test_planes(float distance) {
-    plane* planes = malloc(6 * sizeof(plane));
-    planes[0] = (plane) {{ 1.0f, 0.0f, 0.0f }, distance};  // Right plane: x = 1
-    planes[1] = (plane) {{-1.0f, 0.0f, 0.0f }, distance};  // Left plane: x = -1
-    planes[2] = (plane) {{ 0.0f, 1.0f, 0.0f }, distance};  // Top plane: y = 1
-    planes[3] = (plane) {{ 0.0f, -1.0f, 0.0f }, distance}; // Bottom plane: y = -1
-    planes[4] = (plane) {{ 0.0f, 0.0f, 1.0f }, distance};  // Far plane: z = 1
-    planes[5] = (plane) {{ 0.0f, 0.0f, -1.0f }, distance}; // Near plane: z = -1
-    return planes;
-}
-
-void calculate_frustum_planes_alternative(const float4x4 view_projection_matrix, plane *planes) {
+/*void calculate_frustum_planes_alternative(const float4x4 view_projection_matrix, plane *planes) {
     float4x4 mat = (view_projection_matrix);
     planes[0] = plane_from_float4(float4_subtract(mat.w, mat.x));   // r
     planes[1] = plane_from_float4(float4_add(mat.w, mat.x));        // l
@@ -94,15 +122,22 @@ void calculate_frustum_planes_alternative(const float4x4 view_projection_matrix,
     planes[3] = plane_from_float4(float4_add(mat.w, mat.y));        // b
     planes[4] = plane_from_float4(float4_subtract(mat.w, mat.z));   // far
     planes[5] = plane_from_float4(float4_add(mat.w, mat.z));        // near
-    // float3_flip(&planes[4].normal);
-}
-
-/*void calculate_frustum_planes_old(const float4x4 transform_matrix, const float4x4 projection_matrix, plane *planes) {
-    float3 *frustum = calculate_frustum_corners_old(projection_matrix, transform_matrix);
-    calculate_planes_from_frustum(frustum, planes);
-    free(frustum);
 }*/
 
+
+/*void normalize_plane(plane *p) {
+    // this b breaks around origin?
+    if (p->distance < 0) {
+        p->normal.x *= -1;
+        p->normal.y *= -1;
+        p->normal.z *= -1;
+        p->distance *= -1;
+    }
+    const float length = float3_magnitude(p->normal);
+    if (length == 0) return;
+    float3_divide_float_p(&p->normal, length);
+    p->distance /= length;
+}*/
 
 // Near plane
 /*planes[0] = calculate_plane_from_points(frustum[0], frustum[1], frustum[2]);
@@ -166,23 +201,6 @@ planes[5] = calculate_plane_from_points(frustum[2], frustum[1], frustum[6]);*/
     // zox_log(" + distance near: %f to far: %f\n", planes[4].distance, planes[5].distance)
     // normalize_planes(planes);
     // transform_planes(mat, transform, planes);
-}*/
-
-
-
-/*oid calculate_plane(const float3 *p1, const float3 *p2, const float3 *p3, plane *plane_out) {
-    float3 v1, v2, normal;
-    // Calculate two vectors in the plane
-    v1 = float3_subtract_float3(p2, p1);
-    v2 = float3_subtract_float3(p3, p1);
-    // Calculate the normal as the cross product of the two vectors
-    normal.x = v1.y * v2.z - v1.z * v2.y;
-    normal.y = v1.z * v2.x - v1.x * v2.z;
-    normal.z = v1.x * v2.y - v1.y * v2.x;
-    normal = float3_normalize(normal);
-    // Calculate the distance from the plane to the origin
-    plane_out->normal = normal;
-    plane_out->distance = -(normal.x * p1->x + normal.y * p1->y + normal.z * p1->z);
 }*/
 
 float3 intersect_planes(plane plane1, plane plane2, plane plane3) {

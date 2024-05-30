@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_game_debug_label(ecs_world_t *world) {
 ecs_entity_t spawn_game_debug_label(ecs_world_t *world, const ecs_entity_t canvas) {
     const ecs_entity_t parent = canvas;
     const int layer = 1;
-    const unsigned char font_size = 24;
+    const unsigned char font_size = 16;
     const byte2 padding = (byte2) { 12, 8 };
     // zox_mesh_alignment_centred zox_mesh_alignment_top_right zox_mesh_alignment_right
     const unsigned char alignment = zox_mesh_alignment_top_right;

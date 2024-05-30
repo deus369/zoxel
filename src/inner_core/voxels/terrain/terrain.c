@@ -1,5 +1,5 @@
-#ifndef zox_terrain
-#define zox_terrain
+#ifndef zox_mod_terrain
+#define zox_mod_terrain
 
 // todo: don't generate mesh until render is enabled!
 // todo: use ChunkOriginDistance instead of RenderLod for camera distance for TerrainChunks
@@ -67,7 +67,7 @@ zox_system_1(BlockVoxSpawnSystem, zox_pip_mainthread, [in] ChunkLodDirty, [in] C
 // builds meshes
 zox_render3D_system(TerrainChunksRenderSystem, [in] TransformMatrix, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] VoxLink, [in] RenderDisabled)
 #ifdef zox_debug_chunk_bounds
-zox_system_1(ChunkBoundsDebugSystem, zox_pip_mainthread, [in] Position3D, [in] ChunkSize, [in] VoxScale, [in] RenderDisabled, [none] TerrainChunk)
+zox_system_1(ChunkBoundsDrawSystem, zox_pip_mainthread, [in] Position3D, [in] ChunkSize, [in] VoxScale, [in] RenderDisabled, [none] TerrainChunk)
 #endif
 spawn_prefabs_terrain(world);
 zoxel_end_module(Terrain)
