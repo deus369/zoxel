@@ -22,7 +22,7 @@ const int2 chunk_texture_size = { terrain_texture_resolution, terrain_texture_re
 const unsigned char terrain_min_height = 8;
 const int max_chunks_build_per_frame = 32;
 const int terrain_octaves = 12;
-const float flat_height_level = -0.56f; // 0.2f;
+const float flat_height_level = 1; // -0.56f; // 0.2f;
 unsigned char terrain_mode = 0;
 double terrain_amplifier = 64.0;
 double terrain_boost = 0.0;
@@ -82,10 +82,6 @@ void set_terrain_render_distance() {
         terrain_vertical = 1;
     }
     // preset settings
-    if (terrain_mode == terrain_mode_tiny) {
-        terrain_spawn_distance = 2;
-        terrain_vertical = 1;
-    }
     if (terrain_mode == terrain_mode_medium) {
         terrain_spawn_distance = 6;
         terrain_vertical = 1;
@@ -93,6 +89,11 @@ void set_terrain_render_distance() {
     if (terrain_mode == terrain_mode_large) {
         terrain_spawn_distance = 12;
         terrain_vertical = 2;
+    }
+    if (terrain_mode == terrain_mode_tiny) {
+        terrain_spawn_distance = 1;
+        terrain_vertical = 0;
+        zox_log(" + terrain mode set to [tiny]\n")
     }
 #ifdef zox_terrain_preset_large
     terrain_spawn_distance = 8;

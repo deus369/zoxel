@@ -2,6 +2,13 @@
 #define zox_mod_players2
 
 // alot of systems here are actually controller ones, player + device + camera / character, or game states like pause system?
+// todo: fix block voxes not destroying
+// todo: add destruction animation
+// todo: hold to destroy
+// todo: link to inventory
+// todo: pickup items
+// todo: arm animations
+// todo: hold item animation / spawn item held
 zox_component_entity(PlayerPauseEvent)
 #include "data/settings.c"
 #include "states/player_state.c"
@@ -30,6 +37,7 @@ zox_component_entity(PlayerPauseEvent)
 #include "systems/player_toggle_camera_system.c"
 #include "systems/player_test_system.c"
 #include "systems/raycast_gizmo_system.c"
+#include "systems/voxel_action_system.c"
 
 void initialize_players(ecs_world_t *world) {
     add_to_event_game_state((zox_game_event) { &players_game_state });

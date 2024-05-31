@@ -20,108 +20,20 @@ int get_chunk_index_3(int3 position, int rows, int vertical) {
     return position.x * (rows + rows + 1) + position.y  * (rows + rows + 1) * (rows + rows + 1) + position.z;
 }
 
-#ifdef zox_bulk_spawn_terrain
-ecs_entity_t create_terrain_bulk(ecs_world_t *world, const int3 center_position) {
-    int chunks_total_length = calculate_terrain_chunks_count(terrain_spawn_distance, terrain_vertical);
-    ecs_entity_t terrain_world = spawn_terrain(world, prefab_terrain, tilemap, float3_zero, 1);
-    ecs_entity_t chunks[chunks_total_length];
-    int3 chunk_positions[chunks_total_length];
-    for (int i = -terrain_spawn_distance; i <= terrain_spawn_distance; i++) {
-        for (int k = -terrain_spawn_distance; k <= terrain_spawn_distance; k++) {
-            for (int j = -terrain_vertical; j <= terrain_vertical; j++) {
-                int3 chunk_position = (int3) { i, j, k };
-                chunk_positions[index] = chunk_position;
-            }
-        }
-    }
-    ChunkPosition *chunkPositions = malloc(sizeof(ChunkPosition) * chunks_total_length);
-    Position3D *position3Ds = malloc(sizeof(Position3D) * chunks_total_length);
-    RenderLod *renderLods = malloc(sizeof(RenderLod) * chunks_total_length);
-    VoxLink *voxLinks = malloc(sizeof(VoxLink) * chunks_total_length);
-    MeshGPULink *meshGPULinks = malloc(sizeof(MeshGPULink) * chunks_total_length);
-    UvsGPULink *uvsGPULinks = malloc(sizeof(UvsGPULink) * chunks_total_length);
-    ColorsGPULink *colorsGPULinks = malloc(sizeof(ColorsGPULink) * chunks_total_length);
-    for (int i = 0; i < chunks_total_length; i++) {
-        const int3 chunk_position = chunk_positions[i];
-        chunkPositions[i].value = chunk_position;
-        position3Ds[i].value = float3_multiply_float(float3_from_int3(chunk_position), real_chunk_scale);
-        renderLods[i].value = get_camera_chunk_distance(int3_zero, chunk_position);
-        voxLinks[i].value = terrain_world;
-        if (!headless) {
-            meshGPULinks[i].value = spawn_gpu_mesh_buffers();
-            uvsGPULinks[i].value = spawn_gpu_generic_buffer();
-            colorsGPULinks[i].value = spawn_gpu_generic_buffer();
-        }
-    }
-    // const ecs_entity_t *particles2DArray =
-    const ecs_entity_t *entities = ecs_bulk_init(world, &(ecs_bulk_desc_t) {
-        .count = chunks_total_length,
-        .ids = {
-            ecs_pair(EcsIsA, prefab_terrain_chunk_octree),
-            ecs_id(ChunkPosition),
-            ecs_id(Position3D),
-            ecs_id(RenderLod),
-            ecs_id(VoxLink),
-            ecs_id(MeshGPULink),
-            ecs_id(UvsGPULink),
-            ecs_id(ColorsGPULink)
-        },
-        // provide data for each id
-        .data = (void*[]) {
-            NULL,           // Prefab pair, what is it used for?
-            chunkPositions,
-            position3Ds,
-            renderLods,
-            voxLinks,
-            meshGPULinks,
-            uvsGPULinks,
-            colorsGPULinks
-        }
-    });
-    for (int i = 0; i < chunks_total_length; i++) chunks[i] = entities[i];
-    free(chunkPositions);
-    free(position3Ds);
-    free(renderLods);
-    free(voxLinks);
-    free(meshGPULinks);
-    free(uvsGPULinks);
-    free(colorsGPULinks);
-    // now for all of them, set their neighbors
-    for (int i = -terrain_spawn_distance; i <= terrain_spawn_distance; i++) {
-        for (int k = -terrain_spawn_distance; k <= terrain_spawn_distance; k++) {
-            for (int j = -terrain_vertical; j <= terrain_vertical; j++) {
-                set_chunk_neighbors_six_directions(world,
-                    chunks[get_chunk_index_2(i, j, k, terrain_spawn_distance, terrain_vertical)],
-                    i == -terrain_spawn_distance ? 0 : chunks[get_chunk_index_2(i - 1, j, k, terrain_spawn_distance, terrain_vertical)],
-                    i == terrain_spawn_distance ? 0 : chunks[get_chunk_index_2(i + 1, j, k, terrain_spawn_distance, terrain_vertical)],
-                    j == -terrain_vertical ? 0 : chunks[get_chunk_index_2(i, j - 1, k, terrain_spawn_distance, terrain_vertical)],
-                    j == terrain_vertical ? 0 : chunks[get_chunk_index_2(i, j + 1, k, terrain_spawn_distance, terrain_vertical)],
-                    k == -terrain_spawn_distance ? 0 : chunks[get_chunk_index_2(i, j, k - 1, terrain_spawn_distance, terrain_vertical)],
-                    k == terrain_spawn_distance ? 0 : chunks[get_chunk_index_2(i, j, k + 1, terrain_spawn_distance, terrain_vertical)]);
-            }
-        }
-    }
-    ChunkLinks *chunkLinks = zox_get_mut(terrain_world, ChunkLinks)
-    chunkLinks->value = create_int3_hash_map(chunks_total_length);
-    for (int i = 0; i < chunks_total_length; i++) int3_hash_map_add(chunkLinks->value, chunk_positions[i], chunks[i]);
-    zox_modified(terrain_world, ChunkLinks)
-    return terrain_world;
-}
-#endif
-
-ecs_entity_t create_terrain(ecs_world_t *world, const ecs_entity_t realm, const int3 center_position) {
+ecs_entity_t create_terrain(ecs_world_t *world, const ecs_entity_t realm, const int3 center_position, const int3 size) {
+    // zox_log(" + terrain size [%ix%ix%i]\n", size.x, size.y, size.z)
     spawn_terrain_grid(world, real_chunk_scale);
     const ecs_entity_t tilemap = zox_get_value(realm, TilemapLink)
     zox_set(tilemap, RealmLink, { realm })
-    int chunks_total_length = calculate_terrain_chunks_count(terrain_spawn_distance, terrain_vertical);
+    int chunks_total_length = calculate_terrain_chunks_count(size.x, size.y);
     ecs_entity_t terrain_world = spawn_terrain(world, prefab_terrain, tilemap, float3_zero, 1);
     ecs_entity_t chunks[chunks_total_length];
     int3 chunk_positions[chunks_total_length];
     int3 chunk_position = int3_zero;
-    for (chunk_position.x = -terrain_spawn_distance; chunk_position.x <= terrain_spawn_distance; chunk_position.x++) {
-        for (chunk_position.z = -terrain_spawn_distance; chunk_position.z <= terrain_spawn_distance; chunk_position.z++) {
-            for (chunk_position.y = -terrain_vertical; chunk_position.y <= terrain_vertical; chunk_position.y++) {
-                int index = get_chunk_index_3(chunk_position, terrain_spawn_distance, terrain_vertical);
+    for (chunk_position.x = -size.x; chunk_position.x <= size.x; chunk_position.x++) {
+        for (chunk_position.z = -size.z; chunk_position.z <= size.z; chunk_position.z++) {
+            for (chunk_position.y = -size.y; chunk_position.y <= size.y; chunk_position.y++) {
+                int index = get_chunk_index_3(chunk_position, size.x, size.y);
                 if (index < 0 || index >= chunks_total_length) continue;
                 float3 real_chunk_position = float3_multiply_float(float3_from_int3(chunk_position), real_chunk_scale);
                 ecs_entity_t chunk = spawn_terrain_chunk_octree(world, prefab_terrain_chunk_octree, terrain_world, center_position, chunk_position, real_chunk_position);
@@ -131,17 +43,17 @@ ecs_entity_t create_terrain(ecs_world_t *world, const ecs_entity_t realm, const 
         }
     }
     // now for all of them, set their neighbors
-    for (int i = -terrain_spawn_distance; i <= terrain_spawn_distance; i++) {
-        for (int k = -terrain_spawn_distance; k <= terrain_spawn_distance; k++) {
-            for (int j = -terrain_vertical; j <= terrain_vertical; j++) {
+    for (int i = -size.x; i <= size.x; i++) {
+        for (int k = -size.z; k <= size.z; k++) {
+            for (int j = -size.y; j <= size.y; j++) {
                 set_chunk_neighbors_six_directions(world,
-                    chunks[get_chunk_index_2(i, j, k, terrain_spawn_distance, terrain_vertical)],
-                    i == -terrain_spawn_distance ? 0 : chunks[get_chunk_index_2(i - 1, j, k, terrain_spawn_distance, terrain_vertical)],
-                    i == terrain_spawn_distance ? 0 : chunks[get_chunk_index_2(i + 1, j, k, terrain_spawn_distance, terrain_vertical)],
-                    j == -terrain_vertical ? 0 : chunks[get_chunk_index_2(i, j - 1, k, terrain_spawn_distance, terrain_vertical)],
-                    j == terrain_vertical ? 0 : chunks[get_chunk_index_2(i, j + 1, k, terrain_spawn_distance, terrain_vertical)],
-                    k == -terrain_spawn_distance ? 0 : chunks[get_chunk_index_2(i, j, k - 1, terrain_spawn_distance, terrain_vertical)],
-                    k == terrain_spawn_distance ? 0 : chunks[get_chunk_index_2(i, j, k + 1, terrain_spawn_distance, terrain_vertical)]);
+                    chunks[get_chunk_index_2(i, j, k, size.x, size.y)],
+                    i == -size.x ? 0 : chunks[get_chunk_index_2(i - 1, j, k, size.x, size.y)],
+                    i == size.x ? 0 : chunks[get_chunk_index_2(i + 1, j, k, size.x, size.y)],
+                    j == -size.y ? 0 : chunks[get_chunk_index_2(i, j - 1, k, size.x, size.y)],
+                    j == size.y ? 0 : chunks[get_chunk_index_2(i, j + 1, k, size.x, size.y)],
+                    k == -size.z ? 0 : chunks[get_chunk_index_2(i, j, k - 1, size.x, size.y)],
+                    k == size.z ? 0 : chunks[get_chunk_index_2(i, j, k + 1, size.x, size.y)]);
             }
         }
     }

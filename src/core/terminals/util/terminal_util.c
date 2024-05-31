@@ -12,10 +12,8 @@ extern unsigned char server_mode;
 #define terrain_mode_tiny 1
 #define terrain_mode_medium 2
 #define terrain_mode_large 3
-#ifdef zox_mod_voxels
 extern unsigned char terrain_mode;
 extern unsigned char zox_lowres_characters_mode;
-#endif
 
 void print_help_menu(const char* arg0) {
     zoxel_log("\n");
@@ -82,7 +80,6 @@ int process_arguments(int argc, char* argv[]) {
         else if (strcmp(argv[i], "--freeroam") == 0) {
             game_rule_attach_to_character = 0;
         }
-#ifdef zox_mod_voxels
         else if (strcmp(argv[i], "--tiny") == 0) {
             terrain_mode = terrain_mode_tiny;
         } else if (strcmp(argv[i], "--medium") == 0) {
@@ -93,7 +90,6 @@ int process_arguments(int argc, char* argv[]) {
         else if (strcmp(argv[i], "--lowrescharacters") == 0) {
             zox_lowres_characters_mode = 1;
         }
-#endif
     }
     return EXIT_SUCCESS;
 }

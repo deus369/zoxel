@@ -9,12 +9,12 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
     zox_field_in(BlockSpawns, blockSpawnss, 5)
     zox_field_out(RenderDisabled, renderDisableds, 6)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(Position3D, position3Ds, position3D)
-        zox_field_i_in(ChunkSize, chunkSizes, chunkSize)
-        zox_field_i_in(VoxScale, voxScales, voxScale)
-        zox_field_i_in(EntityLinks, entityLinkss, entityLinks)
-        zox_field_i_in(BlockSpawns, blockSpawnss, blockSpawns)
-        zox_field_i_out(RenderDisabled, renderDisableds, renderDisabled)
+        zox_field_i(Position3D, position3Ds, position3D)
+        zox_field_i(ChunkSize, chunkSizes, chunkSize)
+        zox_field_i(VoxScale, voxScales, voxScale)
+        zox_field_i(EntityLinks, entityLinkss, entityLinks)
+        zox_field_i(BlockSpawns, blockSpawnss, blockSpawns)
+        zox_field_o(RenderDisabled, renderDisableds, renderDisabled)
         const unsigned char block_spawns_initialized = blockSpawns->value && blockSpawns->value->data;
         bounds chunk_bounds = calculate_chunk_bounds(position3D->value, chunkSize->value, voxScale->value);
         float3_multiply_float_p(&chunk_bounds.extents, fudge_frustum_extents);
@@ -41,6 +41,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
             }
             if (is_viewed) break;
         }
+        ecs_iter_fini(&it2);
         if (renderDisabled->value != !is_viewed) {
             renderDisabled->value = !is_viewed;
             for (int j = 0; j < entityLinks->length; j++) {

@@ -69,6 +69,7 @@ void ElementRaycastSystem(ecs_iter_t *it) {
             }
             k++;
         }
+        ecs_iter_fini(&it2);
         // if only exists to block others (like Window's)
         if (!zox_has(ui_selected, SelectState)) ui_selected = 0;
         if (raycasterTarget->value != ui_selected) {

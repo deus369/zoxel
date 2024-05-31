@@ -34,6 +34,9 @@ void spawn_in_game_ui_touch(ecs_world_t *world, const ecs_entity_t canvas) {
 }
 
 void spawn_in_game_ui(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_2 character_group) {
+#ifdef zox_disable_player_ui
+    return;
+#endif
     const DeviceMode *deviceMode = zox_get(player, DeviceMode)
     unsigned char is_touch = deviceMode->value == zox_device_mode_touchscreen;
 #ifdef zoxel_mouse_emulate_touch

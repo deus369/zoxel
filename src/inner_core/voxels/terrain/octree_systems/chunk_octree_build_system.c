@@ -1,8 +1,8 @@
 void ChunkOctreeBuildSystem(ecs_iter_t *it) {
-    zox_change_check()
-#ifdef zoxel_time_octree_chunk_builds_system
-    begin_timing()
+#ifdef zox_disable_chunk_building
+    return;
 #endif
+    zox_change_check()
 #ifdef zox_octree_chunk_build_limits
     int chunks_built = 0;
 #endif
@@ -96,14 +96,8 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         chunks_built++;
         if (chunks_built >= max_chunks_build_per_frame) break;
 #endif
-#ifdef zoxel_time_octree_chunk_builds_system
-        did_do_timing()
-#endif
     }
     if (voxel_solidity) free(voxel_solidity);
     if (voxel_uv_indexes) free(voxel_uv_indexes);
     if (neighbor_lods) free(neighbor_lods);
-#ifdef zoxel_time_octree_chunk_builds_system
-    end_timing_cutoff("    - octree_chunk_build_system", zoxel_time_octree_chunk_builds_system_cutoff)
-#endif
 } zox_declare_system(ChunkOctreeBuildSystem)

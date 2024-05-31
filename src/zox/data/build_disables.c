@@ -1,15 +1,35 @@
 // disables
 
-//#define zox_is_flandlands
-//#define zox_disable_npcs
-//#define zox_disable_block_voxes
+#ifdef zox_test_settings_02
+    #define zox_is_flandlands
+
+#endif
+
+// #define zox_test_settings_01
+
+/*#ifdef zox_test_settings_01
+    // terrain
+    #define zox_is_flandlands
+    #define zox_disable_npcs
+    #define zox_disable_terrain_generation
+    #define zox_disable_chunks_rendering
+    // player
+    #define zox_disable_player_ui
+    #define zox_disable_player_character
+    #define zox_disable_raycasts3D
+    #define zox_disable_raycast_gizmos
+    // chunks
+    #define zox_disable_block_voxes
+    #define zox_disable_streaming
+    #define zox_disable_chunk_building
+    // physics
+    #define zox_disable_collisions
+#endif*/
 
 // boot disables
 // #define zox_disable_frustum_checks
 // #define zox_disable_skybox
 // #define zox_disable_main_menu
-
-#define zox_disable_mouse_constraint
 
 // #define zoxel_catch_opengl_errors
 
@@ -27,6 +47,7 @@
 // #define zox_disable_music
 // #define zox_disable_play_sounds
 
+#define zox_disable_mouse_constraint
 #define zox_disable_gamepad_stick_as_any_input // used for samsung phone, it's buggy af
 // #define zox_disable_gamepad_deadzones
 // #define zoxel_disable_gamepads

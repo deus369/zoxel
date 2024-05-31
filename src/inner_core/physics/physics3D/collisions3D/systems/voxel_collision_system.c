@@ -1,5 +1,8 @@
 // Handles AABB to Voxel Chunk Collisions
 void VoxelCollisionSystem(ecs_iter_t *it) {
+#ifdef zox_disable_collisions
+    return;
+#endif
     // init_delta_time()
     zox_iter_world()
     zox_field_in(VoxLink, voxLinks, 1)

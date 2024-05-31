@@ -2,10 +2,11 @@
 void ElementPositionSystem(ecs_iter_t *it) {
     zox_iter_world()
     ecs_query_t *change_query = it->ctx;
-    ecs_iter_t change_iter = ecs_query_iter(world, change_query);
-    while (ecs_query_next(&change_iter)) {
-        if (change_iter.table != it->table) ecs_query_skip(&change_iter);
+    ecs_iter_t it2 = ecs_query_iter(world, change_query);
+    while (ecs_query_next(&it2)) {
+        if (it2.table != it->table) ecs_query_skip(&it2);
     }
+    ecs_iter_fini(&it2);
     zox_field_in(PixelPosition, pixelPositions, 1)
     zox_field_in(PixelSize, pixelSizes, 2)
     zox_field_in(ParentLink, parentLinks, 3)

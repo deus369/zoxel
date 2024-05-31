@@ -8,7 +8,7 @@ ecs_entity_t spawn_prefab_icon(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_remove_tag(e, FrameTexture)
     zox_add_tag(e, IconTexture)  // general one
     add_selectable_components(world, e);
-    zox_prefab_set(e, OutlineColor, {{ 0, 255, 0, 255 }})
+    zox_prefab_set(e, OutlineColor, { color_green })
     zox_prefab_set(e, FrameCorner, { 16 })
     return e;
 }

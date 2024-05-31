@@ -1,5 +1,8 @@
 // generates our terrain voxels
 void ChunkFlatlandSystem(ecs_iter_t *it) {
+#ifdef zox_disable_terrain_generation
+    return;
+#endif
     const unsigned char target_depth = max_octree_depth;
     const unsigned char chunk_voxel_length = powers_of_two_byte[target_depth];
     zox_field_in(ChunkPosition, chunkPositions, 2)

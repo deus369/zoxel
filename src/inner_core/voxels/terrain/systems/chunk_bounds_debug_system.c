@@ -1,6 +1,4 @@
-
 extern void render_line3D(ecs_world_t *world, const float3 a, const float3 b, const color_rgb line_color);
-
 
 void ChunkBoundsDrawSystem(ecs_iter_t *it) {
     // const color_rgb up_color_disabled = (color_rgb) { 255, 0, 0 };

@@ -22,8 +22,8 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
     const ecs_entity_t realm = zox_get_value(game, RealmLink)
     const ecs_entity_t terrain = zox_get_value(realm, TerrainLink)
     const ChunkLinks *chunk_links = zox_get(terrain, ChunkLinks)
-    const int3 chunk_position = int3_zero;
-    const int3 chunk_voxel_position = int3_zero;
+    const int3 chunk_position = (int3) { 0, 0, 0 }; // int3_zero;
+    const int3 chunk_voxel_position = get_chunk_voxel_position(chunk_position, default_chunk_size);
     const ecs_entity_t chunk = int3_hash_map_get(chunk_links->value, chunk_position);
     const ChunkOctree *chunk_octree = zox_get(chunk, ChunkOctree)
     byte3 local_position = find_position_in_chunk(chunk_octree, max_octree_depth);
@@ -32,13 +32,6 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
         local_position = byte3_zero;
     }
     float3 position = local_to_real_position_character(local_position, chunk_voxel_position);
-
-    // float3 spawn_position = (float3) { 8, 8, 8 };
-    // if not first player
-    /*if (player != zox_players[0]) {
-        spawn_position.x += rand() % 16;
-        spawn_position.z += rand() % 16;
-    }*/
     const float4 spawn_rotation = quaternion_identity;
     const ecs_entity_t vox = vox_files[player_vox_index]; // get mr penguin vox
     ecs_entity_2 character_group = spawn_player_character3D_in_world(world, vox, position, spawn_rotation, 0, player);
@@ -54,13 +47,18 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
 void player_start_game3D_delayed(ecs_world_t *world, const ecs_entity_t player) {
     fix_camera_in_terrain(world, player);
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
-    const float3 spawn_position = (float3) { 8, 8, 8 };
+    const float3 spawn_position = (float3) { 8, 8.5f, 8 };
     zox_set(camera, Position3D, { spawn_position })
+    zox_set(camera, Rotation3D, { quaternion_identity })
+#ifdef zox_disable_player_character
+    attach_to_character(world, player, camera, 0);
+#else
     if (game_rule_attach_to_character) {
         delay_event(world, &spawn_vox_player_character_in_terrain, player, 0.1f);
     } else {
         attach_to_character(world, player, camera, 0);
     }
+#endif
 }
 
 void player_start_game2D_delayed(ecs_world_t *world, const ecs_entity_t player) {

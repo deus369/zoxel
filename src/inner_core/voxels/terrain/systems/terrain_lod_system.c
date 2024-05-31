@@ -5,8 +5,10 @@
     get_camera_chunk_distance(stream_point, int3##_##dir(chunk_position)))
 
 // For each terrain, it uses it's Chunks and StreamerLinks (todo)
-// If it is dirty, it will go through and update Chunk RenderLod's'
+// If it is dirty, it will go through and update Chunk RenderLod's
+// todo: shouldn't i iterate each table of t these queries?
 void TerrainLodSystem(ecs_iter_t *it) {
+    if (zox_cameras_disable_streaming) return;
     zox_iter_world()
     ctx2 *filters = (ctx2 *) it->ctx;
     ecs_query_t *chunks_query = filters->x;
@@ -70,6 +72,8 @@ void TerrainLodSystem(ecs_iter_t *it) {
         free(chunk_lods);
         free(stream_points);
     }
+    ecs_iter_fini(&chunks_iterator);
+    ecs_iter_fini(&streamers_iter);
 } zox_declare_system(TerrainLodSystem)
 
 // later check if links to terrain that's updating'

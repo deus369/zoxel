@@ -64,5 +64,6 @@ void DamageAuraSystem(ecs_iter_t *it) {
                 }
             }
         }
+        ecs_iter_fini(&it2);
     }
 } zox_declare_system(DamageAuraSystem)

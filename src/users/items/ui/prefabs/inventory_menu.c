@@ -87,8 +87,6 @@ ecs_entity_t spawn_inventory_menu(ecs_world_t *world, SpawnInventoryMenu *data) 
                 } else {
                     zox_log("   + spawned item ui [%i] [%lu]\n", item_index, item)
                 }
-            } else {
-                zox_log("   + spawned item blank [%i]\n", item_index)
             }
             const int2 position = { (int) ((i - (data->inventory_menu.grid_size.x / 2) + 0.5f) * (data->inventory_menu.icon_size + data->inventory_menu.grid_padding)), (int) ((j - (data->inventory_menu.grid_size.y / 2) + 0.5f) * (data->inventory_menu.icon_size + data->inventory_menu.grid_padding) - header_height / 2) };
             SpawnIconFrame spawnIconFrame = {

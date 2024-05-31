@@ -34,7 +34,6 @@ zox_component_byte(StreamDirty)
 ctx2 terrain_lod_filter;
 
 zox_begin_module(Terrain)
-set_terrain_render_distance();
 zox_define_tag(TerrainWorld)
 zox_define_tag(TerrainChunk)
 zox_define_tag(ChunkTerrain)
@@ -73,6 +72,7 @@ zox_render3D_system(TerrainChunksRenderSystem, [in] TransformMatrix, [in] MeshGP
 #ifdef zox_debug_chunk_bounds
 zox_system_1(ChunkBoundsDrawSystem, zox_pip_mainthread, [in] Position3D, [in] ChunkSize, [in] VoxScale, [in] RenderDisabled, [none] TerrainChunk)
 #endif
+set_terrain_render_distance();
 spawn_prefabs_terrain(world);
 zoxel_end_module(Terrain)
 

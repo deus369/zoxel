@@ -6,6 +6,9 @@ extern ecs_entity_t spawn_character3D_npc(ecs_world_t *world, ecs_entity_t_array
 // todo: predict spawn size from octree?
 // todo: handle bounds resize by shifting positions
 void Characters3DSpawnSystem(ecs_iter_t *it) {
+#ifdef zox_disable_npcs
+    return;
+#endif
     zox_iter_world()
     zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
     zox_field_in(ChunkOctree, chunkOctrees, 2)
@@ -23,9 +26,6 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         zox_field_i_out(EntityLinks, entityLinkss, entityLinks)
         // if already spawned, skip spawning, only update LODs
         if (entityLinks->length) continue;
-#ifdef zox_disable_npcs
-        continue;
-#endif
         const unsigned char vox_lod = get_voxes_lod_from_camera_distance(renderLod->value);
         // zoxel_log("characters spawning in chunk %lu\n", it->entities[i]);
         // find if chunk has any air position - free place to spawn - spawn characters in this chunk

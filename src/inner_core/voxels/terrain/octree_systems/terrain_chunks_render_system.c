@@ -8,6 +8,9 @@ if (check_opengl_error_unlogged()) {\
 }
 
 void TerrainChunksRenderSystem(ecs_iter_t *it) {
+#ifdef zox_disable_chunks_rendering
+    return;
+#endif
     // todo: optimize transform so it doesn't update every frame? StaticTransform tag
     unsigned char has_set_material = 0;
     ecs_entity_t vox_entity = 0;
