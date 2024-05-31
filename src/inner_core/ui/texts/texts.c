@@ -1,7 +1,6 @@
-#ifndef zox_zexts
-#define zox_zexts
+#ifndef zox_mod_zexts
+#define zox_mod_zexts
 
-const unsigned char default_line_padding = 8;
 zox_declare_tag(Zext)
 zox_declare_tag(ZextLabel)
 zox_component_byte(ZextDirty)
@@ -22,7 +21,7 @@ zox_component_zext(ZextData)   // zigel indexes
 #include "systems/zext_parent_background_system.c"
 
 void spawn_prefabs_texts(ecs_world_t *world) {
-    spawn_prefab_zext(world);
+    prefab_zext = spawn_prefab_zext(world);
 }
 
 zox_begin_module(Zexts)

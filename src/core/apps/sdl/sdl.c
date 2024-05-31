@@ -1,6 +1,8 @@
 #ifndef zox_sdl
 #define zox_sdl
 
+// #define zox_log_screens
+// #define zox_log_platform
 #include "util/import_sdl.c" // sdl is here
 const int sdl_fullscreen_byte = SDL_WINDOW_FULLSCREEN_DESKTOP; // SDL_WINDOW_FULLSCREEN
 SDL_Window* mouse_lock_window;
@@ -27,7 +29,9 @@ void spawn_prefabs_apps_sdl(ecs_world_t *world) {
 }
 
 unsigned char initialize_apps_sdl(ecs_world_t *world) {
+#ifdef zox_log_platform
     debug_platform();
+#endif
     initialize_sdl_video();
     screens_count = SDL_GetNumVideoDisplays();
     if (screens_count == 1) screen_index = 0;

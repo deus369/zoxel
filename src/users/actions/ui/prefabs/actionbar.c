@@ -10,7 +10,7 @@ ecs_entity_t spawn_actionbar(ecs_world_t *world, const ecs_entity_t canvas, cons
     const int2 actionbar_size = (int2) { padding + (icon_size + padding) * actions_count + margins * 2, icon_size + padding * 2 };
     const int2 actionbar_position = (int2) { 0, 24 };
     const ecs_entity_t actionbar_ui = spawn_element(world, prefab_element, canvas, parent, actionbar_position, actionbar_size, actionbar_anchor, 1, actionbar_color, int2_half(canvas_size), canvas_size);
-    zox_prefab_set(actionbar_ui, Children, { 0, NULL })
+    zox_prefab_add(actionbar_ui, Children)
     Children *children = zox_get_mut(actionbar_ui, Children)
     resize_memory_component(Children, children, ecs_entity_t, actions_count)
     // zox_log(" > actionbar_ui [%lu]\n", actionbar_ui)

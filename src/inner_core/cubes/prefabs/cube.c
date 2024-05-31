@@ -7,8 +7,8 @@ ecs_entity_t spawn_prefab_cube(ecs_world_t *world) {
     zox_add(e, Brightness)
     zox_prefab_set(e, MeshDirty, { 1 })
     if (!headless) {
-        zox_prefab_set(e, MeshIndicies, { 0, NULL })
-        zox_prefab_set(e, MeshVertices, { 0, NULL })
+        zox_prefab_add(e, MeshIndicies)
+        zox_prefab_add(e, MeshVertices)
         prefab_set_mesh_indicies(world, e, cube_indicies, 36);
         prefab_set_mesh_vertices(world, e, cube_vertices_singles, cube_vertices_singles_length);
         add_gpu_mesh(world, e);

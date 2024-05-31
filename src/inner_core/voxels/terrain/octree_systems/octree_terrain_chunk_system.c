@@ -66,37 +66,49 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
         byte3 voxel_position;
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
             for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
-#ifdef zoxel_is_flat_height
-                int global_height = int_floor(terrain_amplifier * flat_height_level);
-#else
                 int global_height = int_floor(terrain_boost + -terrain_minus_amplifier + terrain_amplifier * perlin_terrain(
                     noise_positiver2 + chunk_position_float3.x + (voxel_position.x / map_size_f.x),
                     noise_positiver2 + chunk_position_float3.z + (voxel_position.z / map_size_f.y),
                     terrain_frequency, terrain_seed, terrain_octaves));
                 if (global_height < lowest_voxel_height) global_height = lowest_voxel_height;
-#endif
                 // now for grass_vox on top
                 // remember: to add structures like that, a noise roof over ttop of certain areas would be cool
                 const unsigned char is_mountain = global_height >= mountain_height;
                 const unsigned char is_sand = global_height <= sand_height;
                 const unsigned char is_grasslands = !is_sand && !is_mountain;
+                int rando = rand() % 10000;
                 if (is_grasslands) {
-                    if (rand() % 10000 <= stone_top_spawn_chance) {
+                    if (rando <= stone_top_spawn_chance) {
                         set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_stone, global_height);
-                    } else if (rand() % 10000 <= grass_vox_spawn_chance) {
-                        set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_grass_vox, global_height);
-                    } else if (rand() % 10000 <= vox_dirt_spawn_chance) {
-                        set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_vox_dirt, global_height);
-                    } else if (rand() % 10000 <= vox_spawn_chance_dirt_rubble) {
-                        set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_dirt_rubble, global_height);
+                    } else {
+                        rando += stone_top_spawn_chance;
+                        if (rando <= grass_vox_spawn_chance) {
+                            set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_grass_vox, global_height);
+                        } else {
+                            rando += grass_vox_spawn_chance;
+                            if (rando <= vox_dirt_spawn_chance) {
+                                set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_vox_dirt, global_height);
+                            } else {
+                                rando += vox_dirt_spawn_chance;
+                                if (rando <= vox_spawn_chance_dirt_rubble) {
+                                    set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_dirt_rubble, global_height);
+                                }
+                            }
+                        }
                     }
                 } else if (is_mountain) {
-                    if (rand() % 10000 <= stone_top_spawn_chance * 4) {
+                    if (rando <= stone_top_spawn_chance * 4) {
                         set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_stone, global_height);
-                    } else if (rand() % 10000 <= vox_dirt_spawn_chance * 4) {
-                        set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_vox_dirt, global_height);
-                    } else if (rand() % 10000 <= vox_spawn_chance_dirt_rubble * 4) {
-                        set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_dirt_rubble, global_height);
+                    } else {
+                        rando += stone_top_spawn_chance;
+                        if (rando <= vox_dirt_spawn_chance * 4) {
+                            set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_vox_dirt, global_height);
+                        } else {
+                            rando += vox_dirt_spawn_chance;
+                            if (rando <= vox_spawn_chance_dirt_rubble * 4) {
+                                set_terrain_block(world, chunkOctree, voxel_position, chunk_position_y, chunk_voxel_length, set_dirt_rubble, global_height);
+                            }
+                        }
                     }
                 }
 

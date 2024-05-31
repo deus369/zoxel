@@ -169,7 +169,9 @@ SDL_Window* create_sdl_window_basic(const unsigned char is_using_vulkan, const i
 #endif
     //SDL_Rect screen_bounds;
     //SDL_GetDisplayBounds(screen_index, &screen_bounds);
+#ifdef zox_log_screens
     zox_log(" + screen %i out of %i\n", (screen_index + 1), screens_count)
+#endif
     //zox_log(" + screen_bounds: %fx%f\n", screen_bounds.x, screen_bounds.y)
     SDL_Window *window = SDL_CreateWindow(sdl_window_name, position.x, position.y, size.x, size.y, flags);
     if (screen_index == 1) {

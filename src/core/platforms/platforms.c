@@ -2,7 +2,7 @@
 #define zox_platforms
 
 // specific platform implementation code
-
+// #define zox_log_cores
 int cpu_core_count;
 #include "util/cpu_util.c"
 #include "util/platform_debug_util.c"

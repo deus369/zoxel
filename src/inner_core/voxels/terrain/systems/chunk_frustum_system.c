@@ -1,3 +1,5 @@
+const float fudge_frustum_extents = 2.0f;
+
 void ChunkFrustumSystem(ecs_iter_t *it) {
     zox_iter_world()
     zox_field_in(Position3D, position3Ds, 1)
@@ -13,7 +15,9 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
         zox_field_i_in(EntityLinks, entityLinkss, entityLinks)
         zox_field_i_in(BlockSpawns, blockSpawnss, blockSpawns)
         zox_field_i_out(RenderDisabled, renderDisableds, renderDisabled)
-        const bounds chunk_bounds = calculate_chunk_bounds(position3D->value, chunkSize->value, voxScale->value);
+        const unsigned char block_spawns_initialized = blockSpawns->value && blockSpawns->value->data;
+        bounds chunk_bounds = calculate_chunk_bounds(position3D->value, chunkSize->value, voxScale->value);
+        float3_multiply_float_p(&chunk_bounds.extents, fudge_frustum_extents);
         unsigned char is_viewed = 1;
         ecs_iter_t it2 = ecs_query_iter(world, it->ctx);
         while(ecs_query_next(&it2)) {
@@ -55,7 +59,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
                     }
                 }
             }
-            if (blockSpawns->value) {
+            if (block_spawns_initialized) {
                 for (int j = 0; j < blockSpawns->value->size; j++) {
                     const byte3_hash_map_pair* pair = blockSpawns->value->data[j];
                     while (pair != NULL) {
@@ -66,11 +70,11 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
                 }
             }
         }
-        int block_spawns_count = blockSpawns->value ? count_byte3_hash_map(blockSpawns->value) : 0;
+        int block_spawns_count = block_spawns_initialized ? count_byte3_hash_map(blockSpawns->value) : 0;
         if (is_viewed) {
             zox_statistics_chunks_visible++;
             zox_statistics_characters_visible += entityLinks->length;
-            if (blockSpawns->value) zox_statistics_block_voxes_visible += block_spawns_count;
+            if (block_spawns_initialized) zox_statistics_block_voxes_visible += block_spawns_count;
         }
         zox_statistics_characters_total += entityLinks->length;
         zox_statistics_block_voxes_total += block_spawns_count;

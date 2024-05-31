@@ -15,7 +15,6 @@ ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     zox_prefab_set(e, WindowLayer, { 0 })
     zox_prefab_set(e, SetWindowLayer, { 0 })
     zox_prefab_add(e, Children)
-    // zox_prefab_set(e, Children, { 0, NULL })
     return e;
 }
 

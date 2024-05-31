@@ -22,7 +22,7 @@ void prefab_set_mesh_uvs(ecs_world_t *world, ecs_entity_t e, const float2 uvs[],
     zox_modified(e, MeshUVs)
 }
 
-void prefab_set_mesh3D_vertices(ecs_world_t *world, ecs_entity_t e, const float2 vertices[], int length, float2 scale) {
+void prefab_set_mesh3D_vertices(ecs_world_t *world, const ecs_entity_t e, const float2 vertices[], const int length, const float2 scale) {
     if (headless) return;
     MeshVertices *meshVertices = zox_get_mut(e, MeshVertices)
     resize_memory_component(MeshVertices, meshVertices, float3, length)

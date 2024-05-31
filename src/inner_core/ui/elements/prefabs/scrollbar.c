@@ -7,7 +7,7 @@ ecs_entity_t spawn_prefab_scrollbar(ecs_world_t *world) {
     zox_add_tag(e, Scrollbar)
     zox_prefab_set(e, ElementMargins, { int2_zero })
     add_frame_texture_type(world, e, scrollbar_color, 7, 3);
-    zox_prefab_set(e, Children, { 0, NULL })
+    zox_prefab_add(e, Children)
     return e;
 }
 

@@ -1,3 +1,4 @@
+// todo: refactor this extern
 extern int2 get_line_element_mid_point(ecs_world_t *world, ecs_entity_t e);
 extern void set_line_element_real_position2D(ecs_world_t *world, ecs_entity_t e, float2 real_position2D, int2 canvas_size, int2 pixel_position);
 
@@ -53,19 +54,4 @@ void set_element_position(ecs_world_t *world, const ecs_entity_t e, const int2 p
             set_element_position(world, child, pixel_position_global, pixel_size, canvas_size);
         }
     }
-}
-
-// todo: implement localLayer2D's here for elements'
-unsigned char get_highest_layer(ecs_world_t *world, const ecs_entity_t e, const unsigned char layer) {
-    if (!e || !zox_has(e, Children)) return layer;
-    const unsigned child_layer = layer + 1;
-    unsigned highest_layer = layer;
-    const Children *children = zox_get(e, Children)
-    for (int j = 0; j < children->length; j++) {
-        const ecs_entity_t child = children->value[j];
-        const unsigned char new_layer = get_highest_layer(world, child, child_layer);
-        // if (new_layer > highest_layer) zox_log("    > [%lu] layers_per_window at %i / %i [%i]\n", e, j, children->length, new_layer)
-        if (new_layer > highest_layer) highest_layer = new_layer;
-    }
-    return highest_layer;
 }

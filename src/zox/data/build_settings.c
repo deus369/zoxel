@@ -143,7 +143,6 @@
 // -- zoxel game --
 // #define zoxel_voxes_color_randomize
 // #define zoxel_debug_vox_read
-// #define zoxel_is_flat_height
 // Fixed color shader gpu things and systems
 // #define zoxel_log_characters_count
 // #define zoxel_log_files

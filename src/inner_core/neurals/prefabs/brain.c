@@ -7,7 +7,6 @@ ecs_entity_t spawn_prefab_brain(ecs_world_t *world) {
     zox_prefab_add(e, BrainLinks)
     zox_prefab_set(e, BrainDirty, { 0 })
     zox_prefab_add(e, Children)
-    // zox_prefab_set(e, Children, { 0, NULL })
     return e;
 }
 

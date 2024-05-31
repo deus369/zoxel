@@ -45,7 +45,7 @@ void spawn_in_game_ui(ecs_world_t *world, const ecs_entity_t player, const ecs_e
     const ecs_entity_t game_ui = spawn_element_invisible_on_canvas(world, canvas, int2_zero, canvas_size, float2_half);
     zox_add_tag(game_ui, MenuInGame)
     zox_prefab_set(game_ui, AnchorSize, { float2_one })
-    zox_prefab_set(game_ui, Children, { 0, NULL })
+    zox_prefab_add(game_ui, Children)
     on_child_added(world, canvas, game_ui);
     Children *game_ui_children = zox_get_mut(game_ui, Children)
     add_to_Children(game_ui_children, spawn_crosshair(world, canvas, game_ui));

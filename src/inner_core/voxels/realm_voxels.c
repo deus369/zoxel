@@ -34,7 +34,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
         float soil_hue = dirt_hsv.x;
         dirt_hsv.x = grass_hsv.x;
         grass_hsv.x = soil_hue;
-        zox_log(" > grass red was greater, swapping hues\n")
+        // zox_log(" > grass red was greater, swapping hues\n")
     }
 
     const int sand_hue_shift = 40;

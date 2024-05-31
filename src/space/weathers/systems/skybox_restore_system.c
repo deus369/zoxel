@@ -4,9 +4,9 @@ void SkyboxRestoreSystem(ecs_iter_t *it) {
     zox_field_in(ColorRGB, colors, 2)
     zox_field_in(SecondaryColorRGB, secondaryColors, 3)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(MaterialGPULink, materialGPULinks, materialGPULink)
-        zox_field_i_in(ColorRGB, colors, color)
-        zox_field_i_in(SecondaryColorRGB, secondaryColors, secondaryColor)
+        zox_field_i(MaterialGPULink, materialGPULinks, materialGPULink)
+        zox_field_i(ColorRGB, colors, color)
+        zox_field_i(SecondaryColorRGB, secondaryColors, secondaryColor)
         const GLuint material = materialGPULink->value;
         if (!material) return;
         opengl_set_material(material);
@@ -20,3 +20,17 @@ void SkyboxRestoreSystem(ecs_iter_t *it) {
 #endif
     }
 } zox_declare_system(SkyboxRestoreSystem)
+
+
+void SkyboxSetTimeSystem(ecs_iter_t *it) {
+    zox_field_in(MaterialGPULink, materialGPULinks, 1)
+    for (int i = 0; i < it->count; i++) {
+        zox_field_i(MaterialGPULink, materialGPULinks, materialGPULink)
+        const GLuint material = materialGPULink->value;
+        if (!material) return;
+        opengl_set_material(material);
+        const GLuint attribute_time = glGetUniformLocation(material, "time");
+        opengl_set_float(attribute_time, (float) zox_current_time);
+        opengl_set_material(0);
+    }
+} zox_declare_system(SkyboxSetTimeSystem)

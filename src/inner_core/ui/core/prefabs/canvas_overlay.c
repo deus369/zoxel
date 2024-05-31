@@ -5,10 +5,10 @@ ecs_entity_t spawn_prefab_canvas_overlay(ecs_world_t *world) {
     zox_prefab_set(e, Color, {{ 33, 33, 33, 255 }})
     zox_prefab_set(e, AnimationState, { 0 })
     zox_prefab_set(e, AnimationStart, { 0 })
-    zox_prefab_set(e, AnimationSequence, { 0, NULL })
     zox_prefab_set(e, AnimationLength, { 1.6f})
     zox_prefab_set(e, AnimationDelay, { 0.4f})
     add_ui_plus_components(world, e);
+    zox_prefab_add(e, AnimationSequence)
     return e;
 }
 

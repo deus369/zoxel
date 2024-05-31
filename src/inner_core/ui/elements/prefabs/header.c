@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
     zox_prefab_set(e, Color, { header_color })
     zox_prefab_set(e, FrameCorner, { 7 })
     zox_prefab_set(e, OutlineThickness, { 3 })
-    zox_prefab_set(e, Children, { 0, NULL })
+    zox_prefab_add(e, Children)
     return e;
 }
 

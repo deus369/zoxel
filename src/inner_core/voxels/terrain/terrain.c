@@ -13,7 +13,6 @@ zox_component_entity(TerrainLink)
 zox_component_byte(StreamDirty)
 #include "data/terrain_statistics.c"
 #include "data/mesh_uvs_build_data.c"
-#include "util/static_octree_build.c"
 #include "util/chunk_util.c"
 #include "util/prefab_util.c"
 #include "util/octree_build_util.c"
@@ -30,6 +29,7 @@ zox_component_byte(StreamDirty)
 #include "util/create_terrain.c"
 #include "systems/chunk_bounds_debug_system.c"
 #include "systems/block_vox_spawn_system.c"
+#include "octree_systems/chunk_flatland_system.c"
 // used for system
 ctx2 terrain_lod_filter;
 
@@ -44,7 +44,11 @@ zox_define_component_entity(TerrainLink)
 zox_define_component_byte(StreamDirty)
 // generate chunks
 zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [out] GenerateChunk)
-zox_system_ctx(OctreeTerrainChunkSystem, zox_pip_voxels_chunk_dirty, generateTerrainChunkQuery, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree)
+#ifdef zox_is_flandlands
+    zox_system(ChunkFlatlandSystem, zox_pip_voxels_chunk_dirty, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree)
+#else
+    zox_system_ctx(OctreeTerrainChunkSystem, zox_pip_voxels_chunk_dirty, generateTerrainChunkQuery, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree)
+#endif
 zox_system_ctx(TerrainChunkSystem, zox_pip_voxels_chunk_dirty, generateTerrainChunkQuery, [none] TerrainChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] ChunkPosition, [out] GenerateChunk)
 // this updates our chunks Lods!!
 zox_filter(terrain_chunks, [in] ChunkPosition, [in] ChunkNeighbors, [out] RenderLod, [out] ChunkDirty, [out] ChunkLodDirty, [none] TerrainChunk)

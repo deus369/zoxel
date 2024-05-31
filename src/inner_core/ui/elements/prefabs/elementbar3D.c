@@ -1,12 +1,12 @@
-ecs_entity_t spawn_prefab_elementbar3D(ecs_world_t *world) {
-    zox_prefab_child(prefab_element3D)
+ecs_entity_t spawn_prefab_elementbar3D(ecs_world_t *world, const ecs_entity_t prefab) {
+    zox_prefab_child(prefab)
     zox_prefab_name("prefab_elementbar3D")
     zox_prefab_set(e, PixelSize, { int2_one })
     zox_prefab_set(e, TextureSize, { int2_one })
     zox_prefab_set(e, Color, { back_bar_color_3D_start })
     zox_prefab_set(e, ElementBar, { 1 })
     zox_prefab_set(e, ElementBarSize, { float2_zero })
-    zox_prefab_set(e, Children, { 0, NULL })
+    zox_prefab_add(e, Children)
     return e;
 }
 
@@ -22,8 +22,8 @@ ecs_entity_t spawn_elementbar3D(ecs_world_t *world, const ecs_entity_t prefab, c
     zox_set(e, ElementBar, { percentage })
     zox_set(e, ElementBarSize, { statbar_front_mesh_scale })
     zox_set(e, RenderDisabled, { render_disabled })
-    Children *children = ecs_get_mut(world, e, Children);
-    add_to_Children(children, spawn_elementbar3D_front(world, ui_holder, e, (float3) { 0, 0, depth_difference }, render_disabled));
+    Children *children = zox_get_mut(e, Children)
+    add_to_Children(children, spawn_elementbar3D_front(world, prefab_elementbar3D_front, ui_holder, e, (float3) { 0, 0, depth_difference }, render_disabled));
     zox_modified(e, Children)
     return e;
 }

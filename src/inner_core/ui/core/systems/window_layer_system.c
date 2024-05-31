@@ -1,30 +1,3 @@
-void set_element_layers_auto(ecs_world_t *world, const ecs_entity_t e, const unsigned char layer) {
-    if (!zox_valid(e)) return;
-    const unsigned char new_layer = layer + 1;
-    if (zox_has(e, Layer2D)) zox_set(e, Layer2D, { new_layer })
-    if (!zox_has(e, Children)) return;
-    const Children *children = zox_get(e, Children)
-    for (int j = 0; j < children->length; j++) {
-        const ecs_entity_t child = children->value[j];
-        set_element_layers_auto(world, child, new_layer);
-    }
-}
-
-void set_element_layers(ecs_world_t *world, const ecs_entity_t e, const unsigned char window_layer) {
-    if (!zox_valid(e)) return;
-    if (zox_has(e, ElementLayer) && zox_has(e, Layer2D)) {
-        const unsigned char element_layer = zox_get_value(e, ElementLayer)
-        const unsigned char new_layer = window_layer + element_layer;
-        zox_set(e, Layer2D, { new_layer })
-    }
-    if (!zox_has(e, Children)) return;
-    const Children *children = zox_get(e, Children)
-    for (int j = 0; j < children->length; j++) {
-        const ecs_entity_t child = children->value[j];
-        set_element_layers(world, child, window_layer);
-    }
-}
-
 void WindowLayerSystem(ecs_iter_t *it) {
     // zox_change_check()
     zox_iter_world()

@@ -24,10 +24,10 @@ void prefabs_add_ui_to_player(ecs_world_t *world, const ecs_entity_t e) {
     zox_prefab_set(e, ClickingEntity, { 0 })
     zox_prefab_set(e, NavigatorState, { 0 })
     zox_prefab_set(e, NavigatorTimer, { 0 })
-    zox_prefab_set(e, ElementLinks, { 0, NULL })
     zox_prefab_set(e, CanvasLink, { 0 })
     zox_prefab_set(e, WindowRaycasted, { 0 })
     zox_prefab_set(e, WindowTarget, { 0 })
+    zox_prefab_add(e, ElementLinks)
 }
 
 void spawn_prefabs_ui_core(ecs_world_t *world) {

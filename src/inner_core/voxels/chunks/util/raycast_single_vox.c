@@ -1,4 +1,5 @@
 const float ray_interval_mini = 0.001f;
+const float ray_length_mini = 1;
 
 void raycast_terrain_gizmo_block_vox(ecs_world_t *world, const ecs_entity_t chunk, const float3 ray_origin, const float3 ray_normal, const float3 old_hit_normal) {
     if (!chunk) return;
@@ -13,7 +14,7 @@ void raycast_terrain_gizmo_block_vox(ecs_world_t *world, const ecs_entity_t chun
     float3 hit_point = float3_zero;
     unsigned char ray_hit = 0;
     float3 hit_normal = float3_zero;
-    for (float i = 0; i < 1.0f; i += ray_interval_mini) {
+    for (float i = 0; i < ray_length_mini; i += ray_interval_mini) {
         float3 point = float3_add(ray_origin, float3_multiply_float(ray_normal, i));
         float3 local_point = float3_sub(point, block_position);
         float3_add_float3_p(&local_point, float3_multiply_float(real_size, 0.5f));
@@ -47,7 +48,7 @@ void raycast_block_vox(ecs_world_t *world, const ecs_entity_t chunk, const float
     const byte3 chunk_size = int3_to_byte3(zox_gett_value(chunk, ChunkSize));
     const float3 real_size = float3_multiply_float(byte3_to_float3(chunk_size), 1 / model_scale);
     byte3 cache_position = (byte3) { 255, 255, 255 };
-    for (float i = 0; i < 1.0f; i += ray_interval_mini) {
+    for (float i = 0; i < ray_length_mini; i += ray_interval_mini) {
         float3 point = float3_add(ray_origin, float3_multiply_float(ray_normal, i));
         float3 local_point = float3_sub(point, block_position);
         float3_add_float3_p(&local_point, float3_multiply_float(real_size, 0.5f));

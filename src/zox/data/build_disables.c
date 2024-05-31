@@ -1,7 +1,8 @@
 // disables
 
-// #define zox_disable_npcs
-// #define zox_disable_block_voxes
+//#define zox_is_flandlands
+//#define zox_disable_npcs
+//#define zox_disable_block_voxes
 
 // boot disables
 // #define zox_disable_frustum_checks

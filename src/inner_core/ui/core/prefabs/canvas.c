@@ -9,7 +9,6 @@ ecs_entity_t spawn_prefab_canvas(ecs_world_t *world) {
     zox_prefab_set(e, WindowsLayers, { 0 })
     zox_prefab_set(e, WindowsCount, { 0 })
     zox_prefab_add(e, Children)
-    // zox_prefab_set(e, Children, { 0, NULL })
     return e;
 }
 

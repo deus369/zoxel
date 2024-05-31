@@ -42,13 +42,14 @@ ecs_entity_t spawn_ttf_as_font_style(FT_Face face) {
 }
 
 ecs_entity_t spawn_ttf_path_as_font_style(const FT_Library *library, const char *load_path) {
-    zox_log(" > loading [%s]\n", load_path)
     FT_Face face;
     if (FT_New_Face(*library, load_path, 0, &face)) {
         fprintf(stderr, " ! error: failure in initialize_ttf [%s]\n", load_path);
         return 0;
     }
-    zox_log(" + success loading ttf [%s]\n", load_path)
+#ifdef zox_print_files
+    zox_log(" + loaded ttf [%s]\n", load_path)
+#endif
     const ecs_entity_t e = spawn_ttf_as_font_style(face);
     // print_glyph(get_glyph(face, '%'));
     FT_Done_Face(face);

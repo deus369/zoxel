@@ -2,20 +2,19 @@
 #define zox_hashmap_component(name, type)\
 zox_component(name, type##_##hash_map*)\
 void on_destroyed##_##name(ecs_iter_t *it) {\
-    ecs_world_t *world = it->world;\
-    name *components = ecs_field(it, name, 1);\
+    zox_iter_world()\
+    zox_field_out(name, components, 1)\
     for (int i = 0; i < it->count; i++) {\
-        name *component = &components[i];\
-        if (component->value) {\
-            for (int j = 0; j < component->value->size; j++) {\
-                type##_##hash_map_pair *pair = component->value->data[j];\
-                while (pair != NULL) {\
-                    if (pair->value) zox_delete(pair->value);\
-                    pair = pair->next;\
-                }\
+        zox_field_o(name, components, component)\
+        if (!component->value || !component->value->data) continue;\
+        for (int j = 0; j < component->value->size; j++) {\
+            type##_##hash_map_pair *pair = component->value->data[j];\
+            while (pair != NULL) {\
+                if (pair->value) zox_delete(pair->value);\
+                pair = pair->next;\
             }\
-            type##_##hash_map_dispose(component->value);\
         }\
+        type##_##hash_map_dispose(component->value);\
     }\
 }
 

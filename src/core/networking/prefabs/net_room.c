@@ -9,7 +9,7 @@ ecs_entity_t spawn_prefab_net_room(ecs_world_t *world) {
     zox_add(e, NetAddress)
     zox_add(e, NetPort)
     zox_prefab_set(e, SocketLink, { -1 })
-    zox_prefab_set(e, Children, { 0, NULL }) // net players will be children of a room
+    zox_prefab_add(e, Children) // net players will be children of a room
     prefab_net_room = e;
     return e;
 }

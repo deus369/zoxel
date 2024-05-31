@@ -18,13 +18,13 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
     // generation
     add_seed(world, e, 999);
     // name
-    zox_prefab_set(e, ZoxName, { 0, NULL })
+    zox_prefab_add(e, ZoxName)
     // stats / death
     zox_prefab_set(e, Dead, { 0 })
     zox_prefab_set(e, DiedTime, { 0 })
     // more
-    zox_prefab_set(e, Children, { 0, NULL})         // for bones, particles, etc (transforms)
-    zox_prefab_set(e, ElementLinks, { 0, NULL})     // uis
+    zox_prefab_add(e, Children)         // for bones, particles, etc (transforms)
+    zox_prefab_add(e, ElementLinks)     // uis
     return e;
 }
 

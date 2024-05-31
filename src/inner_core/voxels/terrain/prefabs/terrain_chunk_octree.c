@@ -17,8 +17,8 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, const int3 si
     zox_prefab_set(e, ChunkSize, {{ 32, 32, 32 }})  // max resolution, should calculate this!
     zox_add_tag(e, TerrainChunk)
     zox_add_tag(e, ChunkTextured)
-    zox_prefab_set(e, BlockSpawns, { NULL })    // links to voxels in world
-    zox_prefab_set(e, EntityLinks, { 0, NULL })    // character and minivox links
+    zox_prefab_add(e, BlockSpawns)    // links to voxels in world
+    zox_prefab_add(e, EntityLinks)    // character and minivox links
     // todo: calculate this based on max LOD resolution (2 to power of resolution)
     return e;
 }

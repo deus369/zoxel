@@ -17,9 +17,9 @@ void add_ui_mesh_components(ecs_world_t *world, const ecs_entity_t e) {
     zox_prefab_set(e, Alpha, { 1 })
     if (headless) return;
     zox_prefab_set(e, MeshDirty, { 0 })
-    zox_prefab_set(e, MeshIndicies, { 0, NULL })
-    zox_prefab_set(e, MeshVertices2D, { 0, NULL })
-    zox_prefab_set(e, MeshUVs, { 0, NULL })
+    zox_prefab_add(e, MeshIndicies)
+    zox_prefab_add(e, MeshVertices2D)
+    zox_prefab_add(e, MeshUVs)
     add_gpu_mesh(world, e);
     // add_gpu_instanced_material(world, e);
     add_gpu_texture(world, e);

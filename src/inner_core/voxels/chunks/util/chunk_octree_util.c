@@ -16,13 +16,13 @@ void initialize_new_chunk_octree(ecs_world_t *world, ecs_entity_t e, unsigned ch
 
 void add_chunk_octree(ecs_world_t *world, const ecs_entity_t e, const int3 size) {
     zox_add_tag(e, Chunk)
-    zox_prefab_set(e, ChunkOctree, { 0, NULL })
     zox_prefab_set(e, ChunkSize, { size })
     zox_prefab_set(e, ChunkDirty, { 0 })
     zox_prefab_set(e, ChunkPosition, { int3_zero })
     zox_prefab_set(e, RenderLod, { 0 })
     zox_prefab_set(e, VoxLink, { 0 })
-    zox_prefab_set(e, ChunkNeighbors, { 0, NULL })
+    zox_prefab_add(e, ChunkOctree)
+    zox_prefab_add(e, ChunkNeighbors)
     ChunkNeighbors *chunkNeighbors = zox_get_mut(e, ChunkNeighbors)
     resize_memory_component(ChunkNeighbors, chunkNeighbors, ecs_entity_t, 6)
     for (unsigned char i = 0; i < 6; i++) chunkNeighbors->value[i] = 0;

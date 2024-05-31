@@ -26,10 +26,6 @@ void initialize_flecs_profiler(ecs_world_t* world) {
 
 ecs_world_t* open_ecs(int argc, char* argv[], int core_count) {
     ecs_world_t* world = ecs_init_w_args(argc, argv);
-/*#ifdef zox_print_sdl
-    zox_log(" > found [%i] processor cores\n", core_count)
-#endif*/
-    zox_log(" > found [%i] processor cores\n", core_count)
     if (core_count > 1 && is_multithreading) ecs_set_threads(world, core_count);
     else {
         zox_log(" ! warning, single threads set\n")

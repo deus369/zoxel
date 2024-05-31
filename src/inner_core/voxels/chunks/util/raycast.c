@@ -1,5 +1,5 @@
 const float ray_interval = 0.04f;
-const float ray_length = 16;
+const float ray_length = 6;
 
 /*zox_log(" > point [%fx%fx%f]\n", point.x, point.y, point.z)
 zox_log(" > block_position [%fx%fx%f]\n", block_position.x, block_position.y, block_position.z)
@@ -42,8 +42,10 @@ void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t camera, const 
             const ecs_entity_t block = voxels->value[old_voxel - 1];
             if (zox_has(block, BlockVox)) {
                 const BlockSpawns *spawns = zox_get(chunk, BlockSpawns)
-                const ecs_entity_t block_spawn = byte3_hash_map_get(spawns->value, voxel_position_local);
-                raycast_terrain_gizmo_block_vox(world, block_spawn, cache_point, ray_normal, hit_normal);
+                if (spawns->value && spawns->value->data) {
+                    const ecs_entity_t block_spawn = byte3_hash_map_get(spawns->value, voxel_position_local);
+                    raycast_terrain_gizmo_block_vox(world, block_spawn, cache_point, ray_normal, hit_normal);
+                }
             } else {
                 ray_hit = 1;
                 hit_point = point;
@@ -90,8 +92,10 @@ void raycast_terrain(ecs_world_t *world, const ecs_entity_t camera, const ecs_en
                 const ecs_entity_t block = voxels->value[old_voxel - 1];
                 if (zox_has(block, BlockVox)) {
                     const BlockSpawns *spawns = zox_get(chunk, BlockSpawns)
-                    const ecs_entity_t block_spawn = byte3_hash_map_get(spawns->value, voxel_position_local);
-                    raycast_block_vox(world, block_spawn, cache_point, ray_normal, voxel, hit_type);
+                    if (spawns->value && spawns->value->data) {
+                        const ecs_entity_t block_spawn = byte3_hash_map_get(spawns->value, voxel_position_local);
+                        raycast_block_vox(world, block_spawn, cache_point, ray_normal, voxel, hit_type);
+                    }
                 } else {
                     if (hit_type == 2) {
                         cache_chunk = chunk;

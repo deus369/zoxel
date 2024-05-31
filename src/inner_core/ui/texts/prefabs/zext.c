@@ -1,10 +1,8 @@
-ecs_entity_t prefab_zext;
-
 ecs_entity_t spawn_prefab_zext(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_zext")
-    add_ui_plus_components_invisible(world, e);
     zox_add_tag(e, Zext)
+    add_ui_plus_components_invisible(world, e);
     zox_prefab_set(e, ZextSize, { 0 })
     zox_prefab_set(e, ZextPadding, { byte2_zero })
     zox_prefab_set(e, ZextDirty, { 0 })
@@ -14,7 +12,6 @@ ecs_entity_t spawn_prefab_zext(ecs_world_t *world) {
     zox_prefab_set(e, FontThickness, { 1 })
     zox_prefab_add(e, ZextData)
     zox_prefab_add(e, Children)
-    prefab_zext = e;
     return e;
 }
 

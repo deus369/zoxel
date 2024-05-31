@@ -8,7 +8,7 @@ ecs_entity_t spawn_prefab_sound(ecs_world_t *world) {
     zox_prefab_set(e, SoundDirty, { 0 })
     // zox_prefab_set(e, SoundFrequency, { 146.83f });
     zox_prefab_set(e, SoundLength, { 0 })
-    zox_prefab_set(e, SoundData, { 0, NULL })
+    zox_prefab_add(e, SoundData)
     zox_prefab_set(e, SoundVolume, { 0.5f })
     zox_prefab_set(e, DestroyInTime, { 0 })
 #ifdef SDL_MIXER

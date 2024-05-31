@@ -7,7 +7,7 @@ ecs_entity_t spawn_grid2D(ecs_world_t *world) {
     const float thickness = 4.0f;
     const color_rgb grid_color = (color_rgb) { 25, 15, 15 };
     const ecs_entity_t e = ecs_new(world, 0);
-    zox_prefab_set(e, Children, { 0, NULL })
+    zox_prefab_add(e, Children)
     Children *children = zox_get_mut(e, Children)
     zox_modified(e, Children)
     float2 position;

@@ -1,5 +1,5 @@
-#ifndef zox_ui_core
-#define zox_ui_core
+#ifndef zox_mod_ui_core
+#define zox_mod_ui_core
 
 #include "settings/settings.c"
 zox_declare_tag(Element)
@@ -46,6 +46,7 @@ zox_component_byte(ElementLayer)
 #include "util/toggle_util.c"
 #include "util/resize_util.c"
 #include "util/world_ui_util.c"
+#include "util/layers.c"
 #include "prefabs/prefabs.c"
 #include "systems/button_click_event_system.c"
 #include "systems/element_raycast_system.c"

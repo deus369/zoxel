@@ -7,12 +7,16 @@ int spawned_block_voxes = 0;
 
 // first check if exists, if it does check if voxel type differs, for removing/adding
 // goes through nodes, if not in hashmap, it  will spawn anew
-void spawn_block_vox_in_tree(const ChunkOctree *octree, BlockSpawns *block_spawns, SpawnBlockVox *spawn_data, const float3 chunk_position_real, int3 octree_position, unsigned char depth, const ecs_entity_t *block_voxes, const unsigned char *block_vox_offsets) {
+void spawn_block_vox_in_tree(const ChunkOctree *octree, BlockSpawns *block_spawns, SpawnBlockVox *spawn_data, const float3 chunk_position_real, int3 octree_position, unsigned char depth, const ecs_entity_t *block_voxes, const unsigned char block_voxes_count, const unsigned char *block_vox_offsets) {
     // todo: pass in array of index to is_models
     if (depth == max_octree_depth) {
         if (octree->value == 0) return; // air returns!
         // cheeck if vox model
         const unsigned char block_index = octree->value - 1;
+        if (block_index >= block_voxes_count) {
+            zox_log(" ! block_index out of bounds %i of %i\n", block_index, block_voxes_count)
+            return;
+        }
         if (!block_voxes[block_index]) return; // only for block vox models
         /*if (octree->value != zox_block_grass_vox) return; // only spawn for grass_vox atm */
         if (count_byte3_hash_map(block_spawns->value) == max_vox_blocks) return; // max
@@ -40,7 +44,7 @@ void spawn_block_vox_in_tree(const ChunkOctree *octree, BlockSpawns *block_spawn
         int3_multiply_int_p(&octree_position, 2);
         for (int i = 0; i < octree_length; i++) {
             int3 child_octree_position = int3_add(octree_position, octree_positions[i]);
-            spawn_block_vox_in_tree(&octree->nodes[i], block_spawns, spawn_data, chunk_position_real, child_octree_position, depth + 1, block_voxes, block_vox_offsets);
+            spawn_block_vox_in_tree(&octree->nodes[i], block_spawns, spawn_data, chunk_position_real, child_octree_position, depth + 1, block_voxes, block_voxes_count, block_vox_offsets);
         }
     }
 }
@@ -49,6 +53,7 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
 #ifdef zox_disable_block_voxes
     return;
 #endif
+    unsigned char block_voxes_count = 0;
     ecs_entity_t *block_voxes = NULL;
     unsigned char *block_vox_offsets = NULL;
     zox_iter_world()
@@ -71,39 +76,37 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
         zox_field_i_in(RenderLod, renderLods, renderLod)
         zox_field_i_in(RenderDisabled, renderDisableds, renderDisabled)
         zox_field_i_out(BlockSpawns, blockSpawnss, blockSpawns)
+        const unsigned char block_spawns_initialized = blockSpawns->value && blockSpawns->value->data;
         const unsigned char camera_distance = renderLod->value;
         const unsigned char can_have_block_voxes = camera_distance <= block_vox_render_distance;
         if (can_have_block_voxes) {
-            if (block_voxes == NULL) {
-                const ecs_entity_t realm = zox_get_value(voxLink->value, RealmLink)
-                const VoxelLinks *voxelLinks = zox_get(realm, VoxelLinks)
-                block_voxes = malloc(voxelLinks->length * sizeof(ecs_entity_t));
-                block_vox_offsets = malloc(voxelLinks->length);
-                for (int j = 0; j < voxelLinks->length; j++) {
-                    const ecs_entity_t block = voxelLinks->value[j];
-                    if (zox_gett_value(block, BlockModel) == zox_block_vox) {
-                        block_voxes[j] = zox_get_value(block, ModelLink)
-                        if (zox_has(block, BlockVoxOffset)) block_vox_offsets[j] = zox_get_value(block, BlockVoxOffset)
-                        else block_vox_offsets[j] = 0;
-                    } else {
-                        block_voxes[j] = 0;
-                        block_vox_offsets[j] = 0;
-                    }
+            if (!block_spawns_initialized) blockSpawns->value = create_byte3_hash_map(max_vox_blocks);
+            const ecs_entity_t realm = zox_get_value(voxLink->value, RealmLink)
+            const VoxelLinks *voxelLinks = zox_get(realm, VoxelLinks)
+            block_voxes_count = voxelLinks->length;
+            block_voxes = malloc(block_voxes_count * sizeof(ecs_entity_t));
+            block_vox_offsets = malloc(block_voxes_count);
+            for (int j = 0; j < block_voxes_count; j++) {
+                const ecs_entity_t block = voxelLinks->value[j];
+                if (zox_gett_value(block, BlockModel) == zox_block_vox) {
+                    block_voxes[j] = zox_get_value(block, ModelLink)
+                    if (zox_has(block, BlockVoxOffset)) block_vox_offsets[j] = zox_get_value(block, BlockVoxOffset)
+                    else block_vox_offsets[j] = 0;
+                } else {
+                    block_voxes[j] = 0;
+                    block_vox_offsets[j] = 0;
                 }
-
             }
-            if (blockSpawns->value == NULL) blockSpawns->value = create_byte3_hash_map(max_vox_blocks);
             const unsigned char vox_lod = get_voxes_lod_from_camera_distance(camera_distance);
             float3 chunk_position_real = float3_add(float3_half, float3_multiply_float(int3_to_float3(chunkPosition->value), 16.0f)); // calculate
             SpawnBlockVox spawn_data = {
                 .prefab = prefab_block_vox,
-                // .vox = vox_files[test_block_vox_index],
                 .render_lod = vox_lod,
                 .render_disabled = renderDisabled->value // until i get frustum to cull these
             };
-            spawn_block_vox_in_tree(chunkOctree, blockSpawns, &spawn_data, chunk_position_real, int3_zero, 0, block_voxes, block_vox_offsets);
+            spawn_block_vox_in_tree(chunkOctree, blockSpawns, &spawn_data, chunk_position_real, int3_zero, 0, block_voxes, block_voxes_count, block_vox_offsets);
         } else {
-            if (blockSpawns->value) {
+            if (block_spawns_initialized) {
                 for (int j = 0; j < blockSpawns->value->size; j++) {
                     const byte3_hash_map_pair* pair = blockSpawns->value->data[j];
                     while (pair != NULL) {

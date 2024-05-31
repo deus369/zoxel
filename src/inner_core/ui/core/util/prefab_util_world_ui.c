@@ -11,10 +11,10 @@ void add_ui_components_world(ecs_world_t *world, const ecs_entity_t e, const flo
         add_gpu_mesh(world, e);
         add_gpu_uvs(world, e);
         add_gpu_colors(world, e);
-        zox_prefab_set(e, MeshIndicies, { 0, NULL })
-        zox_prefab_set(e, MeshVertices, { 0, NULL })
-        zox_prefab_set(e, MeshUVs, { 0, NULL })
-        zox_prefab_set(e, MeshColorRGBs, { 0, NULL })
+        zox_prefab_add(e, MeshIndicies)
+        zox_prefab_add(e, MeshVertices)
+        zox_prefab_add(e, MeshUVs)
+        zox_prefab_add(e, MeshColorRGBs)
         prefab_set_mesh_indicies(world, e, square_indicies, 6);
         prefab_set_mesh3D_vertices(world, e, square_vertices, 4, mesh_scale);
         prefab_set_mesh_uvs(world, e, square_uvs, 4);

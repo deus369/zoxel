@@ -21,8 +21,8 @@ ecs_entity_t spawn_prefab_camera(ecs_world_t *world) {
     zox_prefab_set(e, ScreenToCanvas, { float4_zero })
     // culling
     zox_prefab_set(e, Position3DBounds, { float6_zero })
-    zox_prefab_set(e, CameraPlanes, { 0, NULL })
-    zox_prefab_set(e, FrustumCorners, { 0, NULL })
+    zox_prefab_add(e, CameraPlanes)
+    zox_prefab_add(e, FrustumCorners)
     return e;
 }
 
