@@ -21,11 +21,11 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
                 } else if (keyboard->u.pressed_this_frame) {
                     is_render_fog = !is_render_fog;  // toggles fog
                     zox_log("    > is_render_fog set [%i]\n", is_render_fog)
-                } else if (keyboard->i.pressed_this_frame) {
+                } else if (keyboard->n.pressed_this_frame) {
                     texture_mode = !texture_mode;
                     on_terrain_settings_changed(world, realm);
                     zox_log("    > texture_mode set [%i]\n", texture_mode)
-                } else if (keyboard->o.pressed_this_frame) {
+                } else if (keyboard->m.pressed_this_frame) {
                     terrain_texture_outline_type = !terrain_texture_outline_type;
                     on_terrain_settings_changed(world, realm); // set all voxels to regenerate textures, set tilemap dirty
                     zox_log("    > terrain_texture_outline_type set [%i]\n", terrain_texture_outline_type)

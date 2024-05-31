@@ -7,13 +7,11 @@ zox_log(" > local_point [%fx%fx%f]\n", local_point.x, local_point.y, local_point
 zox_log(" + voxel_position [%ix%ix%i]\n", voxel_position.x, voxel_position.y, voxel_position.z)*/
 
 void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t camera, const ecs_entity_t terrain) {
-    if (!terrain) return;
+    if (!terrain || !camera) return;
     const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
     const float3 ray_origin = zox_get_value(camera, RaycastOrigin)
     const float3 ray_normal = zox_get_value(camera, RaycastNormal)
     const ChunkLinks *chunk_links = zox_get(terrain, ChunkLinks)
-    if (!chunk_links) return;
-    if (!camera) return;
     int3 cache_position = int3_zero;
     float3 hit_point = float3_zero;
     unsigned char ray_hit = 0;

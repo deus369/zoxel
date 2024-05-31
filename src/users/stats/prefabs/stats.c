@@ -1,0 +1,35 @@
+// shortcuts to realm stats for now
+ecs_entity_t create_stat_state(ecs_world_t *world, const char *name) {
+    ecs_entity_t e = spawn_meta_stat(world, name);
+    zox_add_tag(e, StateStat)
+    //zox_set(e, StatValue, { 10 })
+    //zox_set(e, StatValueMax, { 10 })
+    zox_prefab_set(e, StatValue, { 10 })
+    zox_prefab_set(e, StatValueMax, { 10 })
+    return e;
+}
+
+ecs_entity_t create_stat_level(ecs_world_t *world, const char *name) {
+    ecs_entity_t e = spawn_meta_stat(world, name);
+    zox_add_tag(e, LevelStat)
+    zox_prefab_set(e, StatValue, { 1 })
+    zox_prefab_set(e, ExperienceValue, { 0 })
+    zox_prefab_set(e, ExperienceMax, { 10 })
+    return e;
+}
+
+ecs_entity_t create_stat_regen(ecs_world_t *world, const char *name) {
+    ecs_entity_t e = spawn_meta_stat(world, name);
+    zox_add_tag(e, RegenStat)
+    zox_prefab_set(e, StatValue, { 10 })
+    // zox_prefab_set(e, StatValueMax, { 10 })
+    return e;
+}
+
+ecs_entity_t create_stat_attribute(ecs_world_t *world, const char *name) {
+    ecs_entity_t e = spawn_meta_stat(world, name);
+    zox_add_tag(e, AttributeStat)
+    zox_prefab_set(e, StatValue, { 0 })
+    // zox_prefab_set(e, StatValueMax, { 10 })
+    return e;
+}

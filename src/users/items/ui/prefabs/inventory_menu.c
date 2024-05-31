@@ -2,9 +2,6 @@
 // todo: spawn a body ui (as regular element) for icons
 // todo: fetch highest layer from canvas? save it refreshing stack when spawning a new window
 // todo: prefab_inventory_menu - child prefab of game_icon_window?
-// todo: link to player's character!
-//const ecs_entity_t player = zox_get_value(canvas, PlayerLink)
-//const ecs_entity_t character = zox_get_value(player, CharacterLink)
 
 ecs_entity_t spawn_prefab_inventory_menu(ecs_world_t *world) {
     zox_prefab_child(prefab_window)
@@ -14,7 +11,14 @@ ecs_entity_t spawn_prefab_inventory_menu(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_inventory_menu2(ecs_world_t *world, SpawnInventoryMenu *data) {
+ecs_entity_t spawn_inventory_menu(ecs_world_t *world, SpawnInventoryMenu *data) {
+    const ecs_entity_t character = data->inventory_menu.character;
+    if (!zox_has(character, ItemLinks)) {
+        zox_log(" ! character [%lu] has no inventory, cannot spawn ui\n", character)
+        return 0;
+    }
+    const ItemLinks *inventory = zox_get(character, ItemLinks)
+    zox_log(" +  character [%lu] inventory has %i slots\n", character, inventory->length)
     const unsigned char icon_layer = data->element.layer + 2;
     const unsigned char is_header = data->header.prefab != 0;
     unsigned char header_height = 0;
@@ -25,12 +29,21 @@ ecs_entity_t spawn_inventory_menu2(ecs_world_t *world, SpawnInventoryMenu *data)
     zox_name("inventory_menu")
     initialize_element(world, e, data->parent.e, data->canvas.e, data->element.position, data->element.size, data->element.size, data->element.anchor, data->element.layer, real_position, canvas_position);
     set_window_bounds_to_canvas(world, e, data->canvas.size, data->element.size, data->element.anchor, header_height);
-    Children *children = zox_get_mut(e, Children)
-    resize_memory_component(Children, children, ecs_entity_t, data->inventory_menu.grid_size.x * data->inventory_menu.grid_size.y + is_header)
+    // limit to grid size?
+    const unsigned char grid_elements_count = inventory->length; // data->inventory_menu.grid_size.x * data->inventory_menu.grid_size.y
+    zox_get_mutt(e, Children, children)
+    initialize_memory_component(Children, children, ecs_entity_t, grid_elements_count + is_header)
+
+    // the problem is something using children without checks
+    /*for (int i = 0; i < children->length; i++) children->value[i] = 0;
+    zox_modified(e, Children)
+    return e;*/
+
     if (is_header) {
         const float2 header_anchor = (float2) { 0.5f, 1.0f };
         const int2 header_position = (int2) { 0, -header_height / 2 };
         const int2 header_size = (int2) { data->element.size.x, header_height };
+        zox_set(e, HeaderHeight, { header_size.y })
         // todo: pass more of t this in from top
         SpawnHeader spawnHeader = {
             .canvas = data->canvas,
@@ -49,11 +62,29 @@ ecs_entity_t spawn_inventory_menu2(ecs_world_t *world, SpawnInventoryMenu *data)
             .header = data->header
         };
         children->value[0] = spawn_header2(world, &spawnHeader);
-        zox_set(e, HeaderHeight, { header_size.y })
     }
+    int item_index = 0;
     int array_index = is_header;
-    for (int i = 0; i < data->inventory_menu.grid_size.x; i++) {
-        for (int j = 0; j < data->inventory_menu.grid_size.y; j++) {
+    for (int j = data->inventory_menu.grid_size.y - 1; j >= 0; j--) {
+        for (int i = 0; i < data->inventory_menu.grid_size.x; i++) {
+            if (array_index >= children->length) {
+                break;
+                break;
+            }
+            const ecs_entity_t item = inventory->value[item_index];
+            if (item) {
+                const ZoxName *zox_name = zox_get(item, ZoxName)
+                if (zox_name) {
+                    char *name_string = convert_zext_to_text(zox_name->value, zox_name->length);
+                    // zox_log("   + spawning item ui [%s]\n", zox_get_name(item))
+                    zox_log("   + spawning item ui [%i] [%s]\n", item_index, name_string)
+                    free(name_string);
+                } else {
+                    zox_log("   + spawned item ui [%i] [%lu]\n", item_index, item)
+                }
+            } else {
+                zox_log("   + spawned item blank [%i]\n", item_index)
+            }
             const int2 position = { (int) ((i - (data->inventory_menu.grid_size.x / 2) + 0.5f) * (data->inventory_menu.icon_size + data->inventory_menu.grid_padding)), (int) ((j - (data->inventory_menu.grid_size.y / 2) + 0.5f) * (data->inventory_menu.icon_size + data->inventory_menu.grid_padding) - header_height / 2) };
             SpawnIconFrame spawnIconFrame = {
                 .prefab = prefab_item_icon_frame,
@@ -72,16 +103,18 @@ ecs_entity_t spawn_inventory_menu2(ecs_world_t *world, SpawnInventoryMenu *data)
                     .anchor = float2_half
                 }
             };
-            // spawn_element_frame - return ecs_entity_t2
             children->value[array_index] = spawn_icon_frame(world, &spawnIconFrame);
             array_index++;
+            item_index++;
         }
     }
     zox_modified(e, Children)
     return e;
 }
 
-ecs_entity_t spawn_inventory_menu(ecs_world_t *world, const ecs_entity_t canvas) {
+ecs_entity_t spawn_inventory_menu_player(ecs_world_t *world, const ecs_entity_t player) {
+    const ecs_entity_t character = zox_get_value(player, CharacterLink)
+    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     const color frame_fill_color = (color) { 33, 33, 33, 133 };
     const color frame_outline_color = (color) { 33, 33, 33, 133 };
     const color icon_fill_color = (color) { 0, 155, 155, 155 };
@@ -128,7 +161,8 @@ ecs_entity_t spawn_inventory_menu(ecs_world_t *world, const ecs_entity_t canvas)
         .inventory_menu = {
             .grid_size = (byte2) { 4, 4 },
             .grid_padding = grid_padding,
-            .icon_size = icon_size
+            .icon_size = icon_size,
+            .character = character
         },
         .icon_frame = {
             .fill_color = frame_fill_color,
@@ -139,86 +173,5 @@ ecs_entity_t spawn_inventory_menu(ecs_world_t *world, const ecs_entity_t canvas)
             .outline_color = icon_outline_color
         }
     };
-    return spawn_inventory_menu2(world, &spawnInventoryMenu);
+    return spawn_inventory_menu(world, &spawnInventoryMenu);
 }
-
-/*ecs_entity_t spawn_inventory_menu3(ecs_world_t *world, const ecs_entity_t canvas) {
-    const color frame_fill_color = (color) { 99, 144, 144, 155 };
-    const color window_color = (color) { 66, 35, 25, 255 };
-    const unsigned char layer = 0;
-    const int icons_x = 4;
-    const int icons_y = 4;
-    const int padding = 6;
-    const int margins = 16;
-    const int icon_size = 64;
-    const float2 anchor = float2_half;
-    const int2 position = int2_zero;
-    const int2 icon_size_2 = (int2) { icon_size, icon_size };
-    unsigned char is_header = 1;
-    const int header_margins = 16;
-    unsigned char header_height = 0;
-    const int header_font_size = 28;
-    if (is_header) {
-        header_height = header_font_size + header_margins;
-    }
-    // rest
-    const int2 size = (int2) { padding + (icon_size + padding) * icons_x + margins * 2, padding + (icon_size + padding) * icons_y + margins * 2 + header_height };
-    const unsigned char icon_layer = layer + 2;
-    const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    const ecs_entity_t parent = canvas;
-    const int2 canvas_position = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, position, anchor);
-    const float2 position2D = get_element_position(canvas_position, canvas_size);
-    zox_instance(prefab_frame_debugger_ui)
-    zox_name("inventory_menu")
-    initialize_element(world, e, parent, canvas, position, size, size, anchor, layer, position2D, canvas_position);
-    set_window_bounds_to_canvas(world, e, canvas_size, size, anchor, header_height);
-    Children *children = zox_get_mut(e, Children)
-    resize_memory_component(Children, children, ecs_entity_t, icons_x * icons_y + is_header)
-    if (is_header) {
-        // default header data
-        const char *header_label = "Inventory";
-        unsigned char is_close_button = 1;
-        unsigned char header_layer = 1;
-        const float2 header_anchor = (float2) { 0.5f, 1.0f };
-        const int2 header_position = (int2) { 0, - header_font_size / 2 - header_margins / 2 };
-        const int2 header_size = (int2) { size.x, header_height };
-        SpawnHeader spawnHeader = {
-            .canvas = {
-                .e = canvas,
-                .size = canvas_size },
-            .parent = {
-                .e = e,
-                .position = canvas_position,
-                .size = size },
-            .element = {
-                .layer = header_layer,
-                .anchor = header_anchor,
-                .position = header_position,
-                .size = header_size },
-            .zext = {
-                .prefab = prefab_zext,
-                .text = header_label,
-                .font_size = header_font_size,
-                .font_fill_color = header_font_fill_color,
-                .font_outline_color = header_font_outline_color },
-            .header = {
-                .prefab = prefab_header,
-                .is_close_button = is_close_button,
-                .margins = header_margins } };
-        children->value[0] = spawn_header2(world, &spawnHeader);
-        zox_set(e, HeaderHeight, { header_size.y })
-    }
-    int array_index = is_header;
-    for (int i = 0; i < icons_x; i++) {
-        for (int j = 0; j < icons_y; j++) {
-            const int position_x = (int) ((i - (icons_x / 2) + 0.5f) * (icon_size + padding));
-            const int position_y = (int) ((j - (icons_y / 2) + 0.5f) * (icon_size + padding)) - header_height / 2;
-            const int2 position = (int2) { position_x, position_y };
-            // spawn_element_frame - return ecs_entity_t2
-            children->value[array_index] = spawn_element(world, prefab_item_icon_frame, canvas, e, position, icon_size_2, float2_half, icon_layer, frame_fill_color, canvas_position, size);
-            array_index++;
-        }
-    }
-    zox_modified(e, Children)
-    return e;
-}*/

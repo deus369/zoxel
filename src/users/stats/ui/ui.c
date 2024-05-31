@@ -22,6 +22,7 @@ zox_begin_module(StatsUI)
 zox_define_tag(Statbar)
 zox_define_tag(StatsMenu)
 zox_system(StatbarSystem, EcsPostUpdate, [in] StatLink, [out] ElementBar, [none] Statbar)
+spawn_prefabs_stats_ui(world);
 zoxel_end_module(StatsUI)
 
 #endif

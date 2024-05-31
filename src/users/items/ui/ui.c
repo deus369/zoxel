@@ -17,6 +17,7 @@ void spawn_prefabs_items_ui(ecs_world_t *world) {
 zox_begin_module(ItemsUI)
 zox_define_tag(InventoryMenu)
 zox_define_tag(ItemIconFrame)
+    spawn_prefabs_items_ui(world);
 zoxel_end_module(ItemsUI)
 
 #endif

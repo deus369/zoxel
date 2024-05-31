@@ -83,16 +83,16 @@ ecs_set_hooks(world, name, {\
 }
 */
 
+// assumes non zero
 #define initialize_memory_component(name, component, data_type, new_length) {\
-    if (component->length != new_length) {\
-        if (new_length == 0) {\
-            clear_memory_component(name, component)\
-        } else {\
-            component->length = new_length;\
-            component->value = malloc(component->length * sizeof(data_type));\
-            total_memorys_allocated++;\
-            name##_##memorys_allocated++;\
-        }\
+    component->value = malloc(new_length * sizeof(data_type));\
+    if (component->value) {\
+        component->length = new_length;\
+        total_memorys_allocated++;\
+        name##_##memorys_allocated++;\
+    } else {\
+        zox_log(" ! failed iniitalizing component\n")\
+        component->length = 0;\
     }\
 }
 

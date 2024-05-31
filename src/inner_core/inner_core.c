@@ -21,6 +21,7 @@
 #include "cubes/cubes.c"
 #include "particles/particles.c"
 #include "blueprints/blueprints.c"
+#include "characters/characters.c"
 
 void update_inner_core(ecs_world_t *world) {
     update_terrain_statistics(); // terrain
@@ -42,6 +43,7 @@ zox_import_module(Physics)
 zox_import_module(Cubes)
 zox_import_module(Particles)
 zox_import_module(Blueprints)
+zox_import_module(Characters)
 update_inner_core(world);
 zoxel_end_module(InnerCore)
 

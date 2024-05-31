@@ -78,9 +78,9 @@ void PlayerTestSystem(ecs_iter_t *it) {
                  if (keyboard->j.pressed_this_frame) {
                     toggle_cameras_updates();
                     spawn_sound_from_file(world, prefab_sound, 0);
-                } else if (keyboard->n.pressed_this_frame) {
+                } /*else if (keyboard->n.pressed_this_frame) {
                     zox_visualize_sounds = !zox_visualize_sounds;
-                } else if (keyboard->h.pressed_this_frame) {
+                } */ else if (keyboard->h.pressed_this_frame) {
                     const int2 position = (int2) { 8, 8 };
                     const int2 size = (int2) { 32 * 4, 32 * 4 };
                     const ecs_entity_t source_texture = files_textures[2];

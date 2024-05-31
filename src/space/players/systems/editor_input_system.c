@@ -3,8 +3,9 @@ void EditorInputSystem(ecs_iter_t *it) {
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     zox_field_in(CanvasLink, canvasLinks, 2)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
-        zox_field_i_in(CanvasLink, canvasLinks, canvasLink)
+        zox_field_e()
+        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
+        zox_field_i(CanvasLink, canvasLinks, canvasLink)
         const ecs_entity_t canvas = canvasLink->value;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device_entity = deviceLinks->value[j];
@@ -19,8 +20,12 @@ void EditorInputSystem(ecs_iter_t *it) {
                 else if (keyboard->c.pressed_this_frame) toggle_ui_with_tag(spawn_game_debug_label, GameDebugLabel)
                 else if (keyboard->v.pressed_this_frame) toggle_ui_with_tag(spawn_quad_count_label, QuadsCountLabel)
                 else if (keyboard->b.pressed_this_frame) toggle_ui_with_tag(spawn_frame_debugger, FrameDebuggerWindow)
-                else if (keyboard->n.pressed_this_frame) toggle_ui_with_tag(spawn_inventory_menu, InventoryMenu)
-                else if (keyboard->m.pressed_this_frame) toggle_ui_with_tag(spawn_stats_menu, StatsMenu)
+
+                // test game uis
+                else if (keyboard->i.pressed_this_frame) toggle_ui_with_tag_e(spawn_inventory_menu_player, InventoryMenu, e)
+                else if (keyboard->o.pressed_this_frame) toggle_ui_with_tag_e(spawn_stats_menu, StatsMenu, e)
+
+
 #ifdef zox_test_hierarchy
                 else if (keyboard->f.pressed_this_frame) {
                     toggle_ui(world, canvas, &inspector, &spawn_inspector);

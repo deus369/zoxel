@@ -33,6 +33,8 @@ void ecs_override_remove_id(ecs_world_t *world, ecs_entity_t entity, ecs_id_t id
 
 #define zox_delete(e) ecs_delete(world, e);
 
+#define zox_delete_safe(e) if (zox_valid(e)) zox_delete(e)
+
 #define zox_delete_and_set(e)\
 if (e) {\
     zox_delete(e)\

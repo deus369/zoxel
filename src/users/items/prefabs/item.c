@@ -1,4 +1,4 @@
-ecs_entity_t prefab_item;
+/*ecs_entity_t prefab_item;
 
 ecs_entity_t spawn_prefab_item(ecs_world_t *world) {
     zox_prefab()
@@ -13,3 +13,4 @@ ecs_entity_t spawn_item(ecs_world_t *world) {
     zox_name("item")
     return e;
 }
+*/

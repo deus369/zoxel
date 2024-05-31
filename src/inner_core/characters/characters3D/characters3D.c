@@ -1,16 +1,13 @@
-#ifndef zox_characters3D
-#define zox_characters3D
+#ifndef zox_mod_characters3D
+#define zox_mod_characters3D
 
 zox_declare_tag(Character3D)
 zox_component_entity(Character3DLink)
 #include "settings/settings.c"
-#include "prefabs/character3D.c"
-#include "fun/spawn_many.c"
+#include "prefabs/prefabs.c"
+#include "util/spawn_many.c"
+#include "util/debug.c"
 #include "terrain/characters3D_terrain.c"
-
-void spawn_prefabs_characters3D(ecs_world_t *world) {
-    spawn_prefab_character3D(world, prefab_vox);
-}
 
 zox_begin_module(Characters3D)
 set_character_settings();

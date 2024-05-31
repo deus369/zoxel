@@ -28,9 +28,7 @@ int get_label_local_character_health(ecs_world_t *world, const ecs_entity_t char
         const ZoxName *health_name = zox_get(health_stat, ZoxName)
         char *name_string = convert_zext_to_text(health_name->value, health_name->length);
         // snprintf(text, hierarchy_max_line_characters, "%s", health_name_string);
-
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " %s [%i/%i] ", name_string, (int) health_value, (int) health_value_max);
-
         free(name_string);
     }
     return buffer_index;

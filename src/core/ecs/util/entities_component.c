@@ -4,9 +4,11 @@ void on_destroyed##_##name(ecs_iter_t *it) {\
     zox_iter_world()\
     zox_field_in(name, components, 1)\
     for (int i = 0; i < it->count; i++) {\
-        zox_field_i_in(name, components, component)\
+        zox_field_i(name, components, component)\
         if (!component->value) continue;\
-        for (int j = 0; j < component->length; j++) zox_delete(component->value[j]);\
+        for (int j = 0; j < component->length; j++) {\
+            if (component->value[j]) zox_delete_safe(component->value[j]);\
+        }\
     }\
 }\
 \
@@ -56,21 +58,3 @@ ecs_observer_init(world, &(ecs_observer_desc_t) {\
 });
 
 #define zox_define_entities_component(name) zox_define_entities_component2(name, [in] name)
-
-
-/*
-unsigned char add_to##_##name(name *component, const ecs_entity_t data) {\
-    if (component->value) {\
-        for (int i = 0; i < component->length; i++)\
-            if (component->value[i] == data) return 0;\
-        component->length++;\
-        component->value = realloc(component->value, component->length * sizeof(ecs_entity_t));\
-        component->value[component->length - 1] = data;\
-    } else {\
-        component->length = 1;\
-        component->value = malloc(sizeof(ecs_entity_t));\
-        component->value[0] = data;\
-    }\
-    return 1;\
-}\
-*/

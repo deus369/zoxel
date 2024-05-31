@@ -29,7 +29,10 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     spawn_realm_voxels(world, realm);
 #endif
 #ifdef zox_mod_stats
-    create_game_stats(world, realm);
+    spawn_realm_stats(world, realm);
+#endif
+#ifdef zox_mod_items
+    spawn_realm_items(world, realm);
 #endif
 #ifdef zox_mod_weathers
     spawn_weather(world);

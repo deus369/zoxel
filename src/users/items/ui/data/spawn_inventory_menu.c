@@ -4,6 +4,7 @@ typedef struct {
     unsigned char icon_size;
     unsigned char grid_padding;
     unsigned char grid_margins;
+    ecs_entity_t character;
 } InventoryMenuData;
 
 typedef struct {

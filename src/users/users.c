@@ -17,15 +17,6 @@ zox_component_entity(SpawnerLink)
 #include "lores/lores.c"
 #include "achievements/achievements.c"
 
-void initialize_users(ecs_world_t *world) { }
-
-void spawn_prefabs_users(ecs_world_t *world) {
-    spawn_prefabs_stats(world);
-    spawn_prefabs_skills(world);
-    spawn_prefabs_items(world);
-    spawn_prefabs_actions(world);
-}
-
 zox_begin_module(Users)
 zox_define_component_entity(UserLink)
 zox_define_component_entity(SpawnerLink)
@@ -41,8 +32,6 @@ zox_import_module(Races)
 zox_import_module(Clans)
 zox_import_module(Lores)
 zox_import_module(Achievements)
-initialize_users(world);
-spawn_prefabs_users(world);
 zoxel_end_module(Users)
 
 #endif
