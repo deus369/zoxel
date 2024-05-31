@@ -1,10 +1,6 @@
 // GenerateVox == 1
 const unsigned char is_generate_vox_airs = 1;
 
-unsigned char byte3_on_edge(const byte3 pos, const byte3 size) {
-    return pos.x == 0 || pos.y == 0 || pos.z == 0 || pos.x == size.x - 1 || pos.y == size.y - 1 || pos.z == size.z - 1;
-}
-
 void GenerateVoxSystem(ecs_iter_t *it) {
     // zox_change_check()
     const unsigned char target_depth = max_octree_depth;

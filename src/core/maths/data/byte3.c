@@ -78,6 +78,8 @@ byte3 byte3_reverse_front(const byte3 input, const byte3 size) {
 
 const byte3 byte3_zero = (byte3) { 0, 0, 0 };
 
+const byte3 byte3_full = (byte3) { 255, 255, 255 };
+
 const byte3 octree_node_size4 = (byte3) { 2, 2, 2 };
 
 const byte3 octree_positions_b[] = {
@@ -93,4 +95,8 @@ const byte3 octree_positions_b[] = {
 
 unsigned char byte3_in_bounds(const byte3 input, const byte3 size) {
     return (input.x >= 0 && input.x < size.x && input.y >= 0 && input.y < size.y && input.z >= 0 && input.z < size.z);
+}
+
+unsigned char byte3_on_edge(const byte3 pos, const byte3 size) {
+    return pos.x == 0 || pos.y == 0 || pos.z == 0 || pos.x == size.x - 1 || pos.y == size.y - 1 || pos.z == size.z - 1;
 }
