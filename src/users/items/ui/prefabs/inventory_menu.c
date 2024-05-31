@@ -22,7 +22,7 @@ ecs_entity_t spawn_inventory_menu(ecs_world_t *world, SpawnInventoryMenu *data) 
         return 0;
     }
     const ItemLinks *inventory = zox_get(character, ItemLinks)
-    zox_log(" +  character [%lu] inventory has %i slots\n", character, inventory->length)
+    // zox_log(" +  character [%lu] inventory has %i slots\n", character, inventory->length)
     const unsigned char icon_layer = data->element.layer + 2;
     const unsigned char is_header = data->header.prefab != 0;
     unsigned char header_height = 0;
@@ -35,9 +35,15 @@ ecs_entity_t spawn_inventory_menu(ecs_world_t *world, SpawnInventoryMenu *data) 
     set_window_bounds_to_canvas(world, e, data->canvas.size, data->element.size, data->element.anchor, header_height);
     // limit to grid size?
     // todo: FIX THIS LIMIT
-    const unsigned char grid_elements_count = 1; // inventory->length; // data->inventory_menu.grid_size.x * data->inventory_menu.grid_size.y
+    const unsigned char grid_elements_count = inventory->length; // data->inventory_menu.grid_size.x * data->inventory_menu.grid_size.y
+    const unsigned char children_length = grid_elements_count + is_header;
     zox_get_mutt(e, Children, children)
-    initialize_memory_component(Children, children, ecs_entity_t, grid_elements_count + is_header)
+    initialize_memory_component(Children, children, ecs_entity_t, children_length)
+    // for (int i = 0; i < children_length; i++) children->value[i] = 0;
+    if (children->length != children_length) {
+        zox_log(" ! failed to iniitalize children\n")
+        return e;
+    }
     if (is_header) {
         const float2 header_anchor = (float2) { 0.5f, 1.0f };
         const int2 header_position = (int2) { 0, -header_height / 2 };

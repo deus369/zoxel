@@ -1,21 +1,6 @@
 // #define zox_debug_canvas_stack
 
-// todo: implement localLayer2D's here for elements'
-unsigned char get_highest_layer(ecs_world_t *world, const ecs_entity_t e, const unsigned char layer) {
-    if (!zox_has(e, Children)) return layer;
-    const unsigned child_layer = layer + 1;
-    unsigned highest_layer = layer;
-    const Children *children = zox_get(e, Children)
-    for (int j = 0; j < children->length; j++) {
-        const unsigned char new_layer = get_highest_layer(world, children->value[j], child_layer);
-        // if (new_layer > highest_layer) zox_log("    > [%lu] layers_per_window at %i / %i [%i]\n", e, j, children->length, new_layer)
-        if (new_layer > highest_layer) highest_layer = new_layer;
-    }
-    return highest_layer;
-}
-
 void CanvasStackSystem(ecs_iter_t *it) {
-    // unsigned char has_changed = 0;
     zox_iter_world()
     zox_field_in(Children, childrens, 1)
     zox_field_out(WindowToTop, windowToTops, 2)
@@ -37,13 +22,11 @@ void CanvasStackSystem(ecs_iter_t *it) {
         unsigned char layers_per_window = 1;
         for (int j = 0; j < children->length; j++) {
             const ecs_entity_t child = children->value[j];
-            if (!zox_valid(child) || !zox_has(child, Window)) continue;
-            unsigned char window_layers = get_highest_layer(world, child, 1);
+            if (!child|| !zox_has(child, Window)) continue;
+            const unsigned char window_layers = get_highest_layer(world, child, 1);
             if (window_layers > layers_per_window) layers_per_window = window_layers;
             windows_count++;
         }
-        // zox_log(" > windows_count [%i]\n", windows_count)
-        // zox_log(" > layers_per_window [%i]\n", layers_per_window)
         // gett previous window layer of moving to top window
         const unsigned char old_window_layer = zox_get_value(windowToTop->value, WindowLayer)
         if (windows_count == windowsCount->value && old_window_layer == windows_count) { // skip event, same window clicked as already on top

@@ -7,7 +7,8 @@ void on_destroyed##_##name(ecs_iter_t *it) {\
         zox_field_i(name, components, component)\
         if (!component->value) continue;\
         for (int j = 0; j < component->length; j++) {\
-            if (component->value[j]) zox_delete_safe(component->value[j]);\
+            /*zox_delete(component->value[j]);*/\
+            zox_delete_safe(component->value[j]);\
         }\
     }\
 }\
@@ -28,6 +29,7 @@ void remove_index_from##_##name(name *component, const int i) {\
 }\
 \
 unsigned char remove_from##_##name(name *component, const ecs_entity_t data) {\
+    if (!component || !component->value) return 0;\
     for (int i = 0; i < component->length; i++) {\
         if (component->value[i] == data) {\
             remove_index_from##_##name(component, i);\

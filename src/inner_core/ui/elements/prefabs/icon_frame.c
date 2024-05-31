@@ -5,6 +5,7 @@ ecs_entity_t spawn_prefab_icon_frame(ecs_world_t *world, const ecs_entity_t pref
     zox_prefab_name("prefab_icon_frame")
     zox_add_tag(e, IconFrame)
     zox_prefab_set(e, OutlineColor, {{ 255, 0, 0, 255 }})
+    // zox_prefab_add(e, Children)
     zox_prefab_set(e, Children, { 0, NULL })
     return e;
 }
@@ -15,11 +16,10 @@ ecs_entity_t spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
     const float2 real_position = get_element_position(position_in_canvas, data->canvas.size);
     anchor_element_position2D(&position, data->element.anchor, data->element.size);
     zox_instance(data->prefab)
-    zox_name("icon_frame")
+    // zox_name("icon_frame")
     initialize_element(world, e, data->parent.e, data->canvas.e, position, data->element.size, data->element.size, data->element.anchor, data->element.layer, real_position, position_in_canvas);
     zox_set(e, Color, { data->icon_frame.fill_color })
     zox_set(e, OutlineColor, { data->icon_frame.outline_color })
-    zox_get_mutt(e, Children, children)
     SpawnIcon spawnIcon = {
         .prefab = prefab_icon,
         .icon = data->icon,
@@ -35,6 +35,9 @@ ecs_entity_t spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
             .layer = data->element.layer + 1,
         }
     };
+    zox_get_mutt(e, Children, children)
+    // initialize_memory_component(Children, children, ecs_entity_t, 1);
+    // children->value[0] = spawn_icon(world, &spawnIcon);
     add_to_Children(children, spawn_icon(world, &spawnIcon));
     zox_modified(e, Children)
     return e;

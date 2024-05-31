@@ -45,7 +45,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
     zox_set(e, ElementFontSize, { font_size })
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     Children *children = zox_get_mut(e, Children)
-    resize_memory_component(Children, children, ecs_entity_t, children_length)
+    initialize_memory_component(Children, children, ecs_entity_t, children_length)
     if (is_header) {
         // scaled_font_size + header_margins
         const int2 header_size = (int2) { pixel_size.x, header_height };

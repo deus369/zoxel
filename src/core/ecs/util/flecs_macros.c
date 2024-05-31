@@ -99,5 +99,5 @@ zox_make_prefab(e)
 #define zox_clone(prefab) const ecs_entity_t e = ecs_clone(world, 0, prefab, 1);
 
 // checks if entity is valid
-#define zox_valid(e) ecs_is_valid(world, e)
-#define zox_alive(e) ecs_is_alive(world, e)
+#define zox_valid(e) (e && ecs_is_valid(world, e))
+#define zox_alive(e) (e && ecs_is_alive(world, e))

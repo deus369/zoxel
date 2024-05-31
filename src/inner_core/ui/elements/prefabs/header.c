@@ -1,12 +1,12 @@
 ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_header")
-    add_ui_plus_components(world, e);
-    add_selectable_components(world, e);
-    add_draggable_components(world, e);
     zox_add_tag(e, Header)
     zox_add_tag(e, FrameTexture)
     zox_add_tag(e, TextureAddNoise)
+    add_ui_plus_components(world, e);
+    add_selectable_components(world, e);
+    add_draggable_components(world, e);
     zox_prefab_set(e, Color, { header_color })
     zox_prefab_set(e, FrameCorner, { 7 })
     zox_prefab_set(e, OutlineThickness, { 3 })
@@ -31,7 +31,6 @@ ecs_entity_t spawn_header(ecs_world_t *world, const ecs_entity_t parent, const e
     zox_name("header")
     zox_set(e, DraggedLink, { parent })
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, global_position);
-    Children *children = zox_get_mut(e, Children)
     SpawnZext zextSpawnData = {
         .canvas = {
             .e = canvas,
@@ -52,7 +51,9 @@ ecs_entity_t spawn_header(ecs_world_t *world, const ecs_entity_t parent, const e
             .padding = padding,
             .font_fill_color = header_font_fill_color,
             .font_outline_color = header_font_outline_color } };
-    add_to_Children(children, spawn_zext(world, &zextSpawnData));
+    zox_get_mutt(e, Children, children)
+    const ecs_entity_t header_zext = spawn_zext(world, &zextSpawnData);
+    add_to_Children(children, header_zext);
     if (is_close_button) {
         int2 close_button_position = (int2) { - (font_size / 2) - header_margins / 2, 0 };
         add_to_Children(children, spawn_close_button(world, e, canvas, global_position, pixel_size, close_button_position, font_size, padding, button_layer, canvas_size));
@@ -78,7 +79,6 @@ ecs_entity_t spawn_header2(ecs_world_t *world, SpawnHeader *data) {
     zox_name("header")
     zox_set(e, DraggedLink, { data->parent.e })
     initialize_element(world, e, data->parent.e, data->canvas.e, data->element.position, data->element.size, data->element.size, data->element.anchor, data->element.layer, real_position, canvas_position);
-    Children *children = zox_get_mut(e, Children)
     SpawnZext zextSpawnData = {
         .canvas = data->canvas,
         .parent = {
@@ -90,7 +90,9 @@ ecs_entity_t spawn_header2(ecs_world_t *world, SpawnHeader *data) {
             .anchor = zext_anchor,
             .position = zext_position },
         .zext = data->zext };
-    add_to_Children(children, spawn_zext(world, &zextSpawnData));
+    zox_get_mutt(e, Children, children)
+    const ecs_entity_t header_zext = spawn_zext(world, &zextSpawnData);
+    add_to_Children(children, header_zext);
     if (data->header.is_close_button) {
         const int2 close_button_position = (int2) { - (data->zext.font_size / 2) - data->header.margins / 2, 0 };
         add_to_Children(children, spawn_close_button(world, e, data->canvas.e, canvas_position, data->element.size, close_button_position, data->zext.font_size, padding, button_layer, data->canvas.size));

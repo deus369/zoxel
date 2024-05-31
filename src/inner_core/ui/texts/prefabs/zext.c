@@ -9,11 +9,11 @@ ecs_entity_t spawn_prefab_zext(ecs_world_t *world) {
     zox_prefab_set(e, ZextPadding, { byte2_zero })
     zox_prefab_set(e, ZextDirty, { 0 })
     zox_prefab_set(e, ParentLink, { 0 })
-    zox_prefab_set(e, ZextData, { 0, NULL })
-    zox_prefab_set(e, Children, { 0, NULL })
     zox_prefab_set(e, FontOutlineColor, { { 255, 0, 0, 255 }})
     zox_prefab_set(e, FontFillColor, { { 0, 255, 0, 255 }})
     zox_prefab_set(e, FontThickness, { 1 })
+    zox_prefab_add(e, ZextData)
+    zox_prefab_add(e, Children)
     prefab_zext = e;
     return e;
 }

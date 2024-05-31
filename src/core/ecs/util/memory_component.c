@@ -1,5 +1,18 @@
 int total_memorys_allocated = 0;
 
+// assumes non zero
+#define initialize_memory_component(name, component, data_type, new_length) {\
+    component->value = malloc(new_length * sizeof(data_type));\
+    if (component->value) {\
+        component->length = new_length;\
+        total_memorys_allocated++;\
+        name##_##memorys_allocated++;\
+    } else {\
+        zox_log(" ! failed iniitalizing component\n")\
+        component->length = 0;\
+    }\
+}
+
 #define zox_memory_component(name, type)\
 int name##_##memorys_allocated = 0;\
 typedef struct {\
@@ -44,14 +57,18 @@ unsigned char add_to##_##name(name *component, const type data) {\
     if (component->value) {\
         component->length++;\
         component->value = realloc(component->value, component->length * sizeof(type));\
-        component->value[component->length - 1] = data;\
     } else {\
-        component->length = 1;\
-        component->value = malloc(sizeof(type));\
-        component->value[0] = data;\
+        initialize_memory_component(name, component, type, 1);\
     }\
+    component->value[component->length - 1] = data;\
     return 1;\
 }
+
+/*
+component->length = 1;\
+component->value = malloc(sizeof(type));\
+component->value[0] = data;
+*/
 
 #define zox_define_memory_component2(name, ...)\
 zox_define_component(name)\
@@ -82,19 +99,6 @@ ecs_set_hooks(world, name, {\
     }\
 }
 */
-
-// assumes non zero
-#define initialize_memory_component(name, component, data_type, new_length) {\
-    component->value = malloc(new_length * sizeof(data_type));\
-    if (component->value) {\
-        component->length = new_length;\
-        total_memorys_allocated++;\
-        name##_##memorys_allocated++;\
-    } else {\
-        zox_log(" ! failed iniitalizing component\n")\
-        component->length = 0;\
-    }\
-}
 
 // component->length = new_length;
 // component->value = realloc(component->value, new_length * sizeof(data_type));

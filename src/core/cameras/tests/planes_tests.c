@@ -4,8 +4,8 @@ void test_plane_points(const char *text, const plane p) {
     unsigned char outside_a = is_outside_plane(p, (float3) { 0, 0, 0 });
     unsigned char outside_b = is_outside_plane(p, (float3) { 0, -1, 0 });
     unsigned char outside_c = is_outside_plane(p, (float3) { 0, 1, 0 });
-    unsigned char outside_d = is_outside_plane(p, (float3) { -1, 0, 0 });
-    unsigned char outside_e = is_outside_plane(p, (float3) { 1, 0, 0 });
+    //unsigned char outside_d = is_outside_plane(p, (float3) { -1, 0, 0 });
+    //unsigned char outside_e = is_outside_plane(p, (float3) { 1, 0, 0 });
     zox_log("   + [%s] b [0,-1,0] outside plane [%s]\n", text, outside_b ? "yes" : "no")
     zox_log("   + [%s] a [0,0,0] outside plane [%s]\n", text, outside_a ? "yes" : "no")
     zox_log("   + [%s] c [0,1,0] outside plane [%s]\n", text, outside_c ? "yes" : "no")

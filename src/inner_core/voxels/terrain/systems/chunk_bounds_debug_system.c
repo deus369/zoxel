@@ -3,9 +3,9 @@ extern void render_line3D(ecs_world_t *world, const float3 a, const float3 b, co
 
 
 void ChunkBoundsDrawSystem(ecs_iter_t *it) {
-    const color_rgb up_color_disabled = (color_rgb) { 255, 0, 0 };
+    // const color_rgb up_color_disabled = (color_rgb) { 255, 0, 0 };
     const color_rgb up_color = (color_rgb) { 0, 0, 255 };
-    const color_rgb cube_color = (color_rgb) { 0, 0, 55 };
+    // const color_rgb cube_color = (color_rgb) { 0, 0, 55 };
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_in(ChunkSize, chunkSizes, 2)
     zox_field_in(VoxScale, voxScales, 3)

@@ -1,4 +1,5 @@
 void set_element_layers_auto(ecs_world_t *world, const ecs_entity_t e, const unsigned char layer) {
+    if (!zox_valid(e)) return;
     const unsigned char new_layer = layer + 1;
     if (zox_has(e, Layer2D)) zox_set(e, Layer2D, { new_layer })
     if (!zox_has(e, Children)) return;
@@ -10,6 +11,7 @@ void set_element_layers_auto(ecs_world_t *world, const ecs_entity_t e, const uns
 }
 
 void set_element_layers(ecs_world_t *world, const ecs_entity_t e, const unsigned char window_layer) {
+    if (!zox_valid(e)) return;
     if (zox_has(e, ElementLayer) && zox_has(e, Layer2D)) {
         const unsigned char element_layer = zox_get_value(e, ElementLayer)
         const unsigned char new_layer = window_layer + element_layer;
@@ -25,7 +27,6 @@ void set_element_layers(ecs_world_t *world, const ecs_entity_t e, const unsigned
 
 void WindowLayerSystem(ecs_iter_t *it) {
     // zox_change_check()
-    // zox_log(" window layer changed\n")
     zox_iter_world()
     zox_field_in(SetWindowLayer, setWindowLayers, 1)
     zox_field_in(CanvasLink, canvasLinks, 2)
@@ -37,16 +38,15 @@ void WindowLayerSystem(ecs_iter_t *it) {
         zox_field_i_out(WindowLayer, windowLayers, windowLayer)
         if (windowLayer->value == setWindowLayer->value) continue;
         zox_field_i_in(CanvasLink, canvasLinks, canvasLink)
+        if (!canvasLink->value) continue;
         zox_field_i_in(Children, childrens, children)
         zox_field_i_out(Layer2D, layer2Ds, layer2D)
         const unsigned char layers_per_window = zox_get_value(canvasLink->value, WindowsLayers)
         windowLayer->value = setWindowLayer->value;
         const unsigned char window_layer = windowLayer->value;
-        // zox_log(" > window [%lu] layer to [%i]\n", it->entities[i], window_layer)
         layer2D->value = window_layer * layers_per_window;
         for (int j = 0; j < children->length; j++) {
             const ecs_entity_t child = children->value[j];
-            if (!zox_valid(child)) continue;
             set_element_layers_auto(world, child, layer2D->value);
             set_element_layers(world, child, layer2D->value);
         }

@@ -8,13 +8,14 @@ ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     zox_prefab_set(e, FrameCorner, { 7 })
     zox_prefab_set(e, OutlineThickness, { 6 })
     zox_prefab_set(e, Color, { window_color })
-    zox_prefab_set(e, Children, { 0, NULL })
     zox_prefab_set(e, ElementFontSize, { 14 })
     zox_prefab_set(e, DraggableLimits, { int4_zero })
     zox_add_tag(e, BoundToCanvas)
     zox_prefab_set(e, HeaderHeight, { 0 })
     zox_prefab_set(e, WindowLayer, { 0 })
     zox_prefab_set(e, SetWindowLayer, { 0 })
+    zox_prefab_add(e, Children)
+    // zox_prefab_set(e, Children, { 0, NULL })
     return e;
 }
 

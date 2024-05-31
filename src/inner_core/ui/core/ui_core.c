@@ -103,7 +103,12 @@ zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition, [none] Par
 zox_system_ctx(ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [in] DeviceMode, [out] RaycasterTarget, [out] WindowRaycasted)
 zox_system(ElementClickSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterTarget, [in] WindowRaycasted, [out] RaycasterResult, [out] ClickingEntity, [out] WindowTarget)
 zox_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [out] NavigatorState, [out] NavigatorTimer, [out] RaycasterTarget)
-zox_system_ctx(ElementPositionSystem, EcsPreUpdate, pixel_positions_query, [none] Element, [in] PixelPosition, [in] ParentLink, [in] Anchor, [in] CanvasLink, [out] Position2D, [out] CanvasPosition)
+
+// EcsPreUpdate pixel_positions_query,
+zox_system_ctx(ElementPositionSystem, EcsOnLoad, pixel_positions_query, [in] PixelPosition, [in] PixelSize, [in] ParentLink, [in] Anchor, [in] CanvasLink, [out] Position2D, [out] CanvasPosition, [none] Element)
+zox_system(CanvasStackSystem, EcsOnLoad, [in] Children, [out] WindowToTop, [out] WindowsLayers, [out] WindowsCount, [none] Canvas)
+zox_system(WindowLayerSystem, EcsOnLoad, [in] SetWindowLayer, [in] CanvasLink, [in] Children, [out] WindowLayer, [out] Layer2D, [none] Window)
+
 zox_system(ElementSelectedSystem, EcsOnUpdate, [none] Element, [in] SelectState, [out] Brightness)
 zox_system(BillboardSystem, zox_transforms_stage, [in] Position3D, [out] Rotation3D, [none] ElementBillboard) // [in] CameraLink,
 zox_system(UITrailSystem, zox_transforms_stage, [in] UIHolderLink, [in] UITrail, [out] Position3D)
@@ -114,8 +119,6 @@ if (!headless) {
     zox_system_1(ButtonClickEventSystem, main_thread_pipeline, [in] ClickEvent, [out] ClickState, [out] Clicker, [none] Element)
 }
 zox_system(CanvasResizeSystem, EcsOnUpdate, [in] CameraLink, [in] Children, [in] cameras.ScreenToCanvas, [out] PixelSize, [none] Canvas)
-zox_system(CanvasStackSystem, EcsOnUpdate, [in] Children, [out] WindowToTop, [out] WindowsLayers, [out] WindowsCount, [none] Canvas)
-zox_system(WindowLayerSystem, EcsOnUpdate, [in] SetWindowLayer, [in] CanvasLink, [in] Children, [out] WindowLayer, [out] Layer2D, [none] Window)
 // all ui
 zox_render2D_system(ElementRenderSystem, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D,  [in] RenderDisabled, [in] Brightness, [in] Alpha, [in] MeshGPULink, [in] UvsGPULink, [in] TextureGPULink, [in] MeshDirty, [none] ElementRender)
 // healthbars
