@@ -1,4 +1,3 @@
-// todo: fix crash when closing inventory ui
 const int inventory_count = 10; // having blank items seems to b reak it
 
 void spawn_character_items(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player) {

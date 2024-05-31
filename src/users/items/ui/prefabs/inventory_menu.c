@@ -3,6 +3,10 @@
 // todo: fetch highest layer from canvas? save it refreshing stack when spawning a new window
 // todo: prefab_inventory_menu - child prefab of game_icon_window?
 
+// BUG FIX:
+// todo: fix crash when closing inventory ui with more items (blank ones)
+// todo: it seems to be just the ui breaking on destroy atm
+
 ecs_entity_t spawn_prefab_inventory_menu(ecs_world_t *world) {
     zox_prefab_child(prefab_window)
     zox_prefab_name("prefab_inventory_menu")
@@ -30,15 +34,10 @@ ecs_entity_t spawn_inventory_menu(ecs_world_t *world, SpawnInventoryMenu *data) 
     initialize_element(world, e, data->parent.e, data->canvas.e, data->element.position, data->element.size, data->element.size, data->element.anchor, data->element.layer, real_position, canvas_position);
     set_window_bounds_to_canvas(world, e, data->canvas.size, data->element.size, data->element.anchor, header_height);
     // limit to grid size?
-    const unsigned char grid_elements_count = inventory->length; // data->inventory_menu.grid_size.x * data->inventory_menu.grid_size.y
+    // todo: FIX THIS LIMIT
+    const unsigned char grid_elements_count = 1; // inventory->length; // data->inventory_menu.grid_size.x * data->inventory_menu.grid_size.y
     zox_get_mutt(e, Children, children)
     initialize_memory_component(Children, children, ecs_entity_t, grid_elements_count + is_header)
-
-    // the problem is something using children without checks
-    /*for (int i = 0; i < children->length; i++) children->value[i] = 0;
-    zox_modified(e, Children)
-    return e;*/
-
     if (is_header) {
         const float2 header_anchor = (float2) { 0.5f, 1.0f };
         const int2 header_position = (int2) { 0, -header_height / 2 };
