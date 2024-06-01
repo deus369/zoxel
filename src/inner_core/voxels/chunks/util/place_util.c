@@ -1,4 +1,5 @@
 byte3 find_position_in_chunk(const ChunkOctree *chunk_octree, const unsigned char target_depth) {
+    if (chunk_octree == NULL) return byte3_full;
     const unsigned char max_checks = 32;
     const unsigned char chunk_length = powers_of_two_byte[target_depth];
     unsigned char checks_count = 0;

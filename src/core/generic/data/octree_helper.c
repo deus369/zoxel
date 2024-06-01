@@ -136,3 +136,13 @@ const unsigned char node_index_with_right[] = {
     -1,
     -1
 };
+
+int next_power_of_two(int n) {
+    int count = 1;
+    int power = 1;
+    while (power < n) {
+        power *= 2;
+        count++;
+    }
+    return count;
+}

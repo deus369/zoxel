@@ -10,7 +10,8 @@ void initialize_realms2(ecs_world_t *world) {
 }
 
 zox_begin_module(Realms2)
-zox_system(TerrainTextureSetSystem, zox_pip_texture_generation, [in] RealmLink, [out] GenerateTexture, [out] TilemapSize, [out] TextureLinks, [none] textures.core.Tilemap)
+// zox_pip_texture_generation
+zox_system(TerrainTextureSetSystem, EcsOnUpdate, [in] RealmLink, [out] GenerateTexture, [out] TilemapSize, [out] TextureLinks, [none] textures.core.Tilemap)
 initialize_realms2(world);
 zoxel_end_module(Realms2)
 

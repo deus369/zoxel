@@ -166,9 +166,3 @@ if (rando < grass_spawn_chance) {
 } else {
     set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);
 }*/
-
-// testing
-/*fill_new_octree(chunkOctree, 1, target_depth); // 1
-generateChunk->value = 0;
-chunkDirty->value = 1;
-return;*/

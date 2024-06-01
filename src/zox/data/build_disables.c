@@ -1,5 +1,10 @@
 // disables
 
+// #define zox_vox_noise
+
+// #define zox_disable_terrain_lod_levels
+// #define zox_is_flandlands
+
 // #define zox_test_settings_01
 // #define zox_test_settings_02
 // #define zox_test_settings_03

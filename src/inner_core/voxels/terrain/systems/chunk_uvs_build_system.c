@@ -49,9 +49,6 @@ void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,
 
 void ChunkUVsBuildSystem(ecs_iter_t *it) {
     zox_change_check()
-#ifdef zoxel_time_chunk_uvs_builds_system
-    begin_timing()
-#endif
     zox_field_out(ChunkDirty, chunkDirtys, 1)
     const ChunkData *chunks = ecs_field(it, ChunkData, 2);
     const ChunkSize *chunkSizes = ecs_field(it, ChunkSize, 3);
@@ -75,14 +72,8 @@ void ChunkUVsBuildSystem(ecs_iter_t *it) {
         const ChunkData *chunk_right = chunkNeighbors2->value[1] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[1], ChunkData);
         const ChunkData *chunk_back = chunkNeighbors2->value[2] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[2], ChunkData);
         const ChunkData *chunk_front = chunkNeighbors2->value[3] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[3], ChunkData);
+        build_chunk_mesh_uvs(chunk, chunkSize, meshIndicies2, meshVertices2, meshUVs2, chunk_left, chunk_right, chunk_back, chunk_front);
         chunkDirty->value = 0;
         meshDirty->value = 1;
-        build_chunk_mesh_uvs(chunk, chunkSize, meshIndicies2, meshVertices2, meshUVs2, chunk_left, chunk_right, chunk_back, chunk_front);
-#ifdef zoxel_time_chunk_uvs_builds_system
-        did_do_timing()
-#endif
     }
-#ifdef zoxel_time_chunk_uvs_builds_system
-    end_timing("ChunkUVsBuildSystem")
-#endif
 } zox_declare_system(ChunkUVsBuildSystem)

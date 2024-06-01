@@ -1,9 +1,6 @@
 #ifndef zox_mod_terrain
 #define zox_mod_terrain
 
-// todo: don't generate mesh until render is enabled!
-// todo: use ChunkOriginDistance instead of RenderLod for camera distance for TerrainChunks
-#include "data/settings.c"
 zox_declare_tag(TerrainWorld)
 zox_declare_tag(TerrainChunk)
 zox_declare_tag(ChunkTerrain)
@@ -11,9 +8,13 @@ zox_declare_tag(Streamer)
 zox_component_int3(StreamPoint)
 zox_component_entity(TerrainLink)
 zox_component_byte(StreamDirty)
+#include "data/platform_settings.c"
+#include "data/generation_settings.c"
+#include "data/settings.c"
 #include "data/terrain_statistics.c"
 #include "data/chunk_textured_build_data.c"
 #include "data/mesh_uvs_build_data.c"
+#include "util/settings.c"
 #include "util/chunk_util.c"
 #include "util/prefab_util.c"
 #include "util/octree_build_util.c"
@@ -31,8 +32,7 @@ zox_component_byte(StreamDirty)
 #include "systems/chunk_bounds_debug_system.c"
 #include "systems/block_vox_spawn_system.c"
 #include "octree_systems/chunk_flatland_system.c"
-// used for system
-ctx2 terrain_lod_filter;
+ctx2 terrain_lod_filter; // used for lod system
 
 zox_begin_module(Terrain)
 zox_define_tag(TerrainWorld)
@@ -63,12 +63,11 @@ zox_system(StreamPointSystem, zox_pip_voxels, [in] Position3D, [in] TerrainLink,
 // this updates our chunks RenderDisabled's
 zox_filter(cameras_query, [in] generic.Position3DBounds, [in] cameras.CameraPlanes, [none] cameras.Camera3D)
 zox_system_ctx(ChunkFrustumSystem, zox_pip_voxels, cameras_query, [in] Position3D, [in] ChunkSize, [in] VoxScale, [in] EntityLinks, [in] BlockSpawns, [out] RenderDisabled, [none] TerrainChunk)
-// build chunks
-zox_filter(chunks_generating, [in] GenerateChunk)
-if (!headless) zox_system_ctx(ChunkOctreeBuildSystem, zox_pip_voxels_chunk_clean, chunks_generating, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] VoxLink, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty, [in] VoxScale, [none] chunks.ChunkTextured)
+// Builds our Textured Chunks (Terrain) !
+zox_filter(chunks_generating, [out] ChunkDirty)
+if (!headless) zox_system_ctx(ChunkOctreeBuildSystem, zox_pip_voxels_chunk_clean, chunks_generating, [in] VoxLink,  [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] VoxScale, [in] RenderDisabled, [out] ChunkDirty, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty, [none] chunks.ChunkTextured)
 // spawners
 // remember: needs zox_pip_voxels, zox_pip_mainthread is called when Dirty is cleaned
-// todo: delay this to main thread pipeline like character spawning, use same trigger? rest on load? make a resetsystem 2 for this - just  make reset defines use the pipeline
 zox_system_1(BlockVoxSpawnSystem, zox_pip_mainthread, [in] ChunkLodDirty, [in] ChunkOctree, [in] ChunkPosition, [in] ChunkSize, [in] VoxLink, [in] RenderLod, [in] RenderDisabled, [out] BlockSpawns, [none] TerrainChunk)
 // builds meshes
 zox_render3D_system(TerrainChunksRenderSystem, [in] TransformMatrix, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] VoxLink, [in] RenderDisabled)
@@ -80,3 +79,7 @@ spawn_prefabs_terrain(world);
 zoxel_end_module(Terrain)
 
 #endif
+
+// todo: don't generate mesh until render is enabled!
+// todo: use ChunkOriginDistance instead of RenderLod for camera distance for TerrainChunks
+// todo: delay BlockVoxSpawnSystem to main thread pipeline like character spawning, use same trigger? rest on load? make a resetsystem 2 for this - just  make reset defines use the pipeline

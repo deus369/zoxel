@@ -1,27 +1,29 @@
-#ifdef zox_using_sdl_images
+#ifdef zox_lib_sdl_images
 
 SDL_Surface* load_png_as_surface(const char *filepath) {
     return (SDL_Surface*) IMG_Load(filepath);
 }
 
 // Assuming TextureData and TextureSize are defined as they are in your save function
-void load_texture_from_png(const char *filepath, TextureData *textureData, TextureSize *textureSize) {
+color* load_texture_from_png(const char *filepath, int2 *size, int *length) {
     SDL_Surface* loadedSurface = IMG_Load(filepath);
     if (!loadedSurface) {
-        // Error loading PNG
         zox_log(" ! failed with [IMG_Load]: %s\n", SDL_GetError())
-        return;
+        return NULL;
     }
-    textureSize->value.x = loadedSurface->w;
-    textureSize->value.y = loadedSurface->h;
+    size->x = loadedSurface->w;
+    size->y = loadedSurface->h;
     // Here, I assume your TextureData structure is designed to store raw pixel data.
     // You might need to adjust this part depending on the exact structure of TextureData
-    int colors_length = textureSize->value.x * textureSize->value.y;
+    int colors_length = size->x * size->y;
+    *length = colors_length;
     int byte_length = colors_length * sizeof(color);
-    resize_memory_component(TextureData, textureData, color, colors_length)
+    color* data = (color*) malloc(byte_length);
+    // resize_memory_component(TextureData, data, color, colors_length)
     // textureData->value = malloc(loadedSurface->w * loadedSurface->h * 4); // Assuming 4 bytes per pixel (RGBA)
-    memcpy(textureData->value, loadedSurface->pixels, byte_length); //  loadedSurface->w * loadedSurface->h * 4);
+    memcpy(data, loadedSurface->pixels, byte_length); //  loadedSurface->w * loadedSurface->h * 4);
     SDL_FreeSurface(loadedSurface);
+    return data;
 }
 
 void save_texture_as_png(const color *data, const int2 size, const char *filepath) {
@@ -52,9 +54,9 @@ void save_texture_as_png(const color *data, const int2 size, const char *filepat
 
 SDL_Surface* load_png_as_surface(const char *filepath) { return NULL; }
 
-void load_texture_from_png(const char *filepath, TextureData *textureData, TextureSize *textureSize) { }
+color* load_texture_from_png(const char *filepath, int2 *size, int *length) { return NULL; }
 
-void save_texture_as_png(const TextureData *textureData, const TextureSize *textureSize, const char *outputTextureName) { }
+void save_texture_as_png(const color *data, const int2 size, const char *filepath) { }
 
 #endif
 

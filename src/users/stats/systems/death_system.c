@@ -11,7 +11,6 @@ void DeathSystem(ecs_iter_t *it) {
         zox_field_i_in(UserLink, userLinks, userLink)
         Dead *dead = zox_get_mut(userLink->value, Dead)
         if (dead->value) continue;
-        dead->value = 1; // died now
         zox_modified(userLink->value, Dead)
         DiedTime *diedTime = zox_get_mut(userLink->value, DiedTime)
         diedTime->value = zox_current_time;
@@ -24,5 +23,7 @@ void DeathSystem(ecs_iter_t *it) {
         zox_modified(userLink->value, AnimationStart)
         zox_log_name(" + [%s] has died", userLink->value)
         // drop item here
+        // died now
+        dead->value = 1;
     }
 } zox_declare_system(DeathSystem)

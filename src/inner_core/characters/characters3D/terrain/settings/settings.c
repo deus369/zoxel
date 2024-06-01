@@ -3,8 +3,8 @@ int npc_vox_index_count = 4;
 int npc_vox_indexes[] = { 1, 2, 3, 7 }; // penguin | slime | bob | chicken
 
 void set_character_terrain_settings() {
-    if (cpu_tier == 3) characters_per_chunk_count = 4;
-    else if (cpu_tier == 2) characters_per_chunk_count = 2;
+    if (cpu_tier == 3) characters_per_chunk_count = 1;
+    else if (cpu_tier == 2) characters_per_chunk_count = 1;
     else if (cpu_tier == 1) characters_per_chunk_count = 1;
     else characters_per_chunk_count = 1;
 #ifdef zoxel_test_single_character3Ds

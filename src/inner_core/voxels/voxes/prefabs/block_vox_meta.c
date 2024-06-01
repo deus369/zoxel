@@ -9,7 +9,7 @@ ecs_entity_t spawn_prefab_block_box_meta(ecs_world_t *world, const ecs_entity_t 
 
 ecs_entity_t spawn_block_vox_meta(ecs_world_t *world, const SpawnBlock *data) {
     zox_instance(data->prefab)
-    zox_name("block_vox_meta")
+    zox_name(data->name) // "block_vox_meta")
     zox_set(e, Color, { data->color })
     if (data->model) zox_set(e, BlockModel, { data->model })
     if (data->tag) zox_add_tag_id(e, data->tag)

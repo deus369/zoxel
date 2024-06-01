@@ -13,17 +13,11 @@ void add_voxel_face_colors(int_array_d *indicies, float3_array_d* vertices, colo
         float3_add_float3_p(&vertex_position, vertex_position_offset);
         add_to_float3_array_d(vertices, vertex_position);
         color_rgb vertex_color = voxel_color;
-        if (direction == direction_down) {
-            color_rgb_multiply_float(&vertex_color, 0.33f);
-        } else if (direction == direction_front) {
-            color_rgb_multiply_float(&vertex_color, 0.44f);
-        } else if (direction == direction_left) {
-            color_rgb_multiply_float(&vertex_color, 0.55f);
-        } else if (direction == direction_back) {
-            color_rgb_multiply_float(&vertex_color, 0.66f);
-        } else if (direction == direction_right) {
-            color_rgb_multiply_float(&vertex_color, 0.76f);
-        }
+        if (direction == direction_down) color_rgb_multiply_float(&vertex_color, 0.33f);
+        else if (direction == direction_front) color_rgb_multiply_float(&vertex_color, 0.44f);
+        else if (direction == direction_left) color_rgb_multiply_float(&vertex_color, 0.55f);
+        else if (direction == direction_back) color_rgb_multiply_float(&vertex_color, 0.66f);
+        else if (direction == direction_right) color_rgb_multiply_float(&vertex_color, 0.76f);
         add_to_color_rgb_array_d(color_rgbs, vertex_color);
     }
 }
@@ -57,7 +51,7 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
                 if (voxel != 0) {
                     voxel_color = colorRGBs->value[voxel - 1];
                     // randomize color
-#ifdef zoxel_voxes_color_randomize
+#ifdef zox_vox_noise
                     voxel_color.r -= voxel_color_rand + rand() % voxel_color_rand2;
                     voxel_color.g -= voxel_color_rand + rand() % voxel_color_rand2;
                     voxel_color.b -= voxel_color_rand + rand() % voxel_color_rand2;
@@ -66,30 +60,20 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
                     float3 vertex_position_offset = float3_from_byte3(local_position);
                     float3_multiply_float_p(&vertex_position_offset, voxel_scale);
                     float3_add_float3_p(&vertex_position_offset, total_mesh_offset);
+
                     zoxel_get_adjacent_face(left)
                     zoxel_get_adjacent_face(right)
                     zoxel_get_adjacent_face(down)
                     zoxel_get_adjacent_face(up)
                     zoxel_get_adjacent_face(back)
                     zoxel_get_adjacent_face(front)
-#ifndef disable_voxel_left
+
                     zoxel_add_faces_colors(left, 0)
-#endif
-#ifndef disable_voxel_right
                     zoxel_add_faces_colors(right, 1)
-#endif
-#ifndef disable_voxel_down
                     zoxel_add_faces_colors(down, 1)
-#endif
-#ifndef disable_voxel_up
                     zoxel_add_faces_colors(up, 0)
-#endif
-#ifndef disable_voxel_back
                     zoxel_add_faces_colors(back, 0)
-#endif
-#ifndef disable_voxel_front
                     zoxel_add_faces_colors(front, 1)
-#endif
                 }
             }
         }
@@ -108,40 +92,31 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
 
 void ChunkColorsBuildSystem(ecs_iter_t *it) {
     zox_change_check()
-#ifdef zoxel_time_chunk_colors_builds_system
-    begin_timing()
-#endif
-    zox_field_out(ChunkDirty, chunkDirtys, 1)
     zox_field_in(ChunkData, chunkDatas, 2)
     zox_field_in(ChunkSize, chunkSizes, 3)
     zox_field_in(ColorRGBs, colorRGBs, 4)
     zox_field_in(VoxScale, voxScales, 5)
+    zox_field_out(ChunkDirty, chunkDirtys, 1)
     zox_field_out(MeshIndicies, meshIndicies, 6)
     zox_field_out(MeshVertices, meshVertices, 7)
     zox_field_out(MeshColorRGBs, meshColorRGBs, 8)
     zox_field_out(MeshDirty, meshDirtys, 9)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_out(ChunkDirty, chunkDirtys, chunkDirty)
-        if (chunkDirty->value == 0) continue;
-        zox_field_i_out(MeshDirty, meshDirtys, meshDirty)
-        if (meshDirty->value != 0) continue;
-        zox_field_i_in(ChunkData, chunkDatas, chunkData)
-        zox_field_i_in(ChunkSize, chunkSizes, chunkSize)
-        zox_field_i_in(ColorRGBs, colorRGBs, colors2)
-        zox_field_i_in(VoxScale, voxScales, voxScale)
-        zox_field_i_out(MeshIndicies, meshIndicies, meshIndicies2)
-        zox_field_i_out(MeshVertices, meshVertices, meshVertices2)
-        zox_field_i_out(MeshColorRGBs, meshColorRGBs, meshColorRGBs2)
+        zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
+        if (!chunkDirty->value) continue;
+        zox_field_o(MeshDirty, meshDirtys, meshDirty)
+        if (meshDirty->value) continue;
+        zox_field_i(ChunkData, chunkDatas, chunkData)
+        zox_field_i(ChunkSize, chunkSizes, chunkSize)
+        zox_field_i(ColorRGBs, colorRGBs, colors2)
+        zox_field_i(VoxScale, voxScales, voxScale)
+        zox_field_o(MeshIndicies, meshIndicies, meshIndicies2)
+        zox_field_o(MeshVertices, meshVertices, meshVertices2)
+        zox_field_o(MeshColorRGBs, meshColorRGBs, meshColorRGBs2)
         // maybe use bounds here directly
         const float3 total_mesh_offset = float3_multiply_float(calculate_vox_bounds(chunkSize->value, voxScale->value), -1);
         build_chunk_mesh_colors(chunkData, chunkSize, colors2, meshIndicies2, meshVertices2, meshColorRGBs2, total_mesh_offset, voxScale->value);
         chunkDirty->value = 0;
         meshDirty->value = 1;
-#ifdef zoxel_time_chunk_colors_builds_system
-        did_do_timing()
-#endif
     }
-#ifdef zoxel_time_chunk_colors_builds_system
-    end_timing("    - chunk_colors_builds_system")
-#endif
 } zox_declare_system(ChunkColorsBuildSystem)

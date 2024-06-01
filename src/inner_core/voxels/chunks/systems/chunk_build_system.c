@@ -90,8 +90,8 @@ void ChunkBuildSystem(ecs_iter_t *it) {
         zox_field_i_in(ChunkSize, chunkSizes, chunkSize)
         zox_field_i_out(MeshIndicies, meshIndicies, meshIndicies2)
         zox_field_i_out(MeshVertices, meshVertices, meshVertices2)
+        build_chunk_mesh(chunkData, chunkSize, meshIndicies2, meshVertices2);
         chunkDirty->value = 0;
         meshDirty->value = 1;
-        build_chunk_mesh(chunkData, chunkSize, meshIndicies2, meshVertices2);
     }
 } zox_declare_system(ChunkBuildSystem)

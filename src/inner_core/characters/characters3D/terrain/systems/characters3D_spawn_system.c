@@ -36,14 +36,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             byte3 local_position = find_position_in_chunk(chunkOctree, max_octree_depth);
             if (byte3_equals(byte3_full, local_position)) continue;
             float3 position = local_to_real_position_character(local_position, chunk_voxel_position);
-            /*int3 global_voxel_position = int3_add(chunk_voxel_position, byte3_to_int3(local_position));
-            float3 position = int3_to_float3(global_voxel_position);
-            float3_multiply_float_p(&position, terrain_voxel_scale);
-            position.y += 0.26f; // 0.75f;
-            position.y += 0.06f; // extra*/
-
             float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
-
             int vox_index = rand() % npc_vox_index_count;
             ecs_entity_t vox = vox_files[npc_vox_indexes[vox_index]];
             spawn_character3D_npc(world, entities, vox, position, rotation, vox_lod, renderDisabled->value);
@@ -54,22 +47,3 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         on_memory_component_created(entityLinks, EntityLinks)
     }
 } zox_declare_system(Characters3DSpawnSystem)
-
- // (float3) { global_voxel_position.x, global_voxel_position.y, global_voxel_position.z };
-/*byte3 local_position = (byte3) { rand() % default_chunk_length, default_chunk_length - 1, rand() % default_chunk_length };    // rand() % 16
-byte3 local_position_temp = local_position;
-unsigned char voxel = get_octree_voxel(chunkOctree, &local_position_temp, max_octree_depth);
-if (voxel != 0) continue;
-unsigned char did_find_ground = 0;
-for (local_position.y = default_chunk_length - 2; local_position.y >= 0; local_position.y--) {
-    local_position_temp = local_position;
-    voxel = get_octree_voxel(chunkOctree, &local_position_temp, max_octree_depth);
-    if (voxel != 0) {
-        local_position.y++;
-        did_find_ground = 1;
-        // zoxel_log(" > found ground! [%i]\n", local_position.y);
-        break;
-    }
-    if (local_position.y == 0) break;   // since byte cannot go under 0
-}
-if (!did_find_ground) continue;*/

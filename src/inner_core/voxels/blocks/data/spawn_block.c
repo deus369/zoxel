@@ -1,5 +1,6 @@
 typedef struct {
     ecs_entity_t prefab;
+    char *name;
     unsigned char index;
     unsigned char model;
     unsigned char textures;

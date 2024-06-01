@@ -1,5 +1,6 @@
 // using an axis and VoxLink, generates a texture by grabbing the first voxel on a given side
 void generate_vox_texture(color *data, const int2 size, const ChunkOctree *chunk, const color_rgb *colors, unsigned char side) {
+    if  (chunk == NULL) return;
     const color air_vox_color = (color) { 15, 15, 15, 255 };
     int index = 0;
     int x = 0;

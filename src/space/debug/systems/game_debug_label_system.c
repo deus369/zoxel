@@ -28,6 +28,11 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 #endif
         int buffer_index = 0;
         char buffer[buffer_size];
+        // debug our computer:
+        // Ram, CPU%, GPU?, etc
+#ifdef zox_debug_system
+        buffer_index = debug_system(buffer, buffer_size, buffer_index);
+#endif
         // test this \n
         // snprintf(buffer, sizeof(buffer), "debug ui\nline 2");
         // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[debug]");

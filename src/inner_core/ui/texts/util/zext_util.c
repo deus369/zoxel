@@ -149,7 +149,6 @@ unsigned char set_entity_with_text(ecs_world_t *world, const ecs_entity_t e, con
 
 void set_new_zox_name(ecs_world_t *world, const ecs_entity_t e, const char* text) {
     zox_set_zext_component(e, ZoxName, text)
-    // zox_set(e, ZoxName, { strlen(text), convert_string_to_zext(text) })
 }
 
 

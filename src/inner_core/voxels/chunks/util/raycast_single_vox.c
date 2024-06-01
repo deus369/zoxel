@@ -10,7 +10,7 @@ void raycast_terrain_gizmo_block_vox(ecs_world_t *world, const ecs_entity_t chun
     // render_line3D(world, block_position, float3_add(block_position, float3_up), (color_rgb) { 0, 255, 0 });
     const int3 chunk_size = zox_get_value(chunk, ChunkSize)
     float3 real_size = float3_multiply_float(int3_to_float3(chunk_size), 1 / model_scale);
-    int3 cache_position = (int3) { -666, -666, -666 };
+    int3 cache_position = (int3) { 255255, 255255, 255255 };
     float3 hit_point = float3_zero;
     unsigned char ray_hit = 0;
     float3 hit_normal = float3_zero;

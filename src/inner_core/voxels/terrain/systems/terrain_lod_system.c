@@ -4,11 +4,7 @@
     zox_gett_value(chunkNeighbors->value[direction##_##dir], RenderLod) != \
     get_camera_chunk_distance(stream_point, int3##_##dir(chunk_position)))
 
-// If it is dirty, it will go through and update Chunk RenderLod's
-// todo: shouldn't i iterate each table of t these queries?
-
 // For each terrain, it uses it's Chunks and StreamerLinks
-// todo: Use ChunkLinks for terrain, and assign indexes to our queries for fastest access
 void TerrainLodSystem(ecs_iter_t *it) {
     if (zox_cameras_disable_streaming) return;
     zox_iter_world()
@@ -31,7 +27,6 @@ void TerrainLodSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_o(StreamDirty, streamDirtys, streamDirty)
         if (!streamDirty->value) continue;
-        streamDirty->value = 0;
         unsigned char camera_distances[total_chunks];
         memset(camera_distances, 255, total_chunks); // start all at 255
         zox_field_in_iter(&streamers_iter, StreamPoint, streamPoints, 1)
@@ -59,18 +54,21 @@ void TerrainLodSystem(ecs_iter_t *it) {
             chunkDirty->value = 1;
             chunkLodDirty->value = 1;
         }
+        streamDirty->value = 0;
     }
     ecs_iter_fini(&chunks_iterator);
     ecs_iter_fini(&streamers_iter);
 } zox_declare_system(TerrainLodSystem)
 
+
+// If it is dirty, it will go through and update Chunk RenderLod's
+// todo: shouldn't i iterate each table of t these queries?
+// todo: Use ChunkLinks for terrain, and assign indexes to our queries for fastest access
 // later check if links to terrain that's updating'
 // 1 is Children, use this later, but check if its slower than b bulking it  like atm
 // initially get all stream point positions:
 //unsigned char did_update_stream_points = 0; later if different system iterators (tables)
 // todo: keep a list of stream points in Terrain entity and use those
-
-
 // todo: find a way to check lod changes, including for neighbors
 // const unsigned char old_lod = get_terrain_lod_from_camera_distance(renderLod->value);
 // const unsigned char new_lod = get_terrain_lod_from_camera_distance(camera_distance);

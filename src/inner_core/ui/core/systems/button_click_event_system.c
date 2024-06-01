@@ -9,7 +9,7 @@ void ButtonClickEventSystem(ecs_iter_t *it) {
         zox_field_e()
         zox_field_i_in(ClickEvent, clickEvents, clickEvent)
         zox_field_i_out(Clicker, clickers, clicker)
-        clickState->value = 0;
         if (clickEvent->value) (*clickEvent->value)(world, clicker->value, e);
+        clickState->value = 0;
     }
 } zox_declare_system(ButtonClickEventSystem)

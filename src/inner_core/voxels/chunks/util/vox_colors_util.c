@@ -1,9 +1,3 @@
-const unsigned char color_edge_voxel = 0;
-const int max_color_chunks_build_per_frame = 16;
-unsigned char zox_lowres_characters_mode = 0;
-const unsigned char voxel_color_rand = 8;
-const unsigned char voxel_color_rand2 = 16;
-
 unsigned char colors_get_max_depth_from_division(const unsigned char chunk_division) {
     return max_octree_depth - chunk_division;
 }

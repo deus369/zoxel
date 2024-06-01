@@ -17,7 +17,7 @@ void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t camera, const 
     unsigned char ray_hit = 0;
     float3 hit_normal = float3_zero;
     float3 cache_point = float3_zero;
-    int3 cached_chunk_position;
+    int3 cached_chunk_position = (int3) { 255255, 255255, 255255 };
     ecs_entity_t chunk;
     const ChunkOctree *chunk_octree;
     for (float i = 0; i < ray_length; i += ray_interval) {
@@ -27,6 +27,7 @@ void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t camera, const 
             chunk = int3_hash_map_get(chunk_links->value, chunk_position);
             if (!chunk) return;
             chunk_octree = zox_get(chunk, ChunkOctree)
+            if (!chunk_octree) return;
             cached_chunk_position = chunk_position;
         }
         // should do a check if chunk_position changed
@@ -79,6 +80,7 @@ void raycast_terrain(ecs_world_t *world, const ecs_entity_t camera, const ecs_en
         if (!chunk) continue;
         if (!cache_chunk) cache_chunk = chunk;
         ChunkOctree *chunk_octree = zox_get_mut(chunk, ChunkOctree)
+        if (!chunk_octree) return;
         int3 voxel_position = real_position_to_voxel_position(point);
         if (int3_equals(cache_position, voxel_position)) continue;
         cache_position = voxel_position;

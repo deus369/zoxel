@@ -5,7 +5,8 @@ ecs_entity_t spawn_from_file_path_texture(ecs_world_t *world, const char *filepa
     zox_name("texture_filepath")
     TextureData *textureData = zox_get_mut(e, TextureData)
     TextureSize *textureSize = zox_get_mut(e, TextureSize)
-    load_texture_from_png(filepath, textureData, textureSize);
+    if (textureData->value) free(textureData->value);
+    textureData->value = load_texture_from_png(filepath, &textureSize->value, &textureData->length);
     zox_modified(e, TextureData)
     zox_modified(e, TextureSize)
     // zox_log("   > loaded texture [%s] with size [%ix%i] length: %i\n", filepath, textureSize->value.x, textureSize->value.y, textureData->length)

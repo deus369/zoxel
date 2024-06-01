@@ -7,26 +7,28 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
     return;
 #endif
     zox_change_check()
-#ifdef zox_octree_chunk_build_limits
-    int chunks_built = 0;
-#endif
     zox_iter_world()
-    zox_field_in(VoxLink, voxLinks, 5)
+    zox_field_in(VoxLink, voxLinks, 1)
     int voxels_length = 0;
     ecs_entity_t terrain;
     for (int i = 0; i < it->count; i++) {
         zox_field_i(VoxLink, voxLinks, voxLink)
         if (!voxLink->value) continue;
-        const ecs_entity_t realm = zox_get_value(voxLink->value, RealmLink)
-        const VoxelLinks *voxelLinks = zox_get(realm, VoxelLinks)
-        voxels_length = voxelLinks->length;
         terrain = voxLink->value;
         break;
     }
-    if (voxels_length == 0 || terrain == 0) return; // if failed to find terrain parents
+    if (!terrain) return; // if failed to find terrain parents
+    const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
+    if (!realm) return; // whats t that about ay
+    const VoxelLinks *voxelLinks = zox_get(realm, VoxelLinks)
+    voxels_length = voxelLinks->length;
+    if (voxels_length == 0) return; // if failed to find terrain parents
     const ecs_entity_t tilemap = zox_get_value(terrain, TilemapLink)
     const TilemapUVs *tilemapUVs = zox_get(tilemap, TilemapUVs)
-    if (tilemapUVs->value == NULL || tilemapUVs->length == 0) return; // if tilemap generating still
+    if (tilemapUVs->value == NULL || tilemapUVs->length == 0) {
+        // zox_log(" ! tilemap troubles in chunk building: %lu %i\n", tilemap, tilemapUVs->length)
+        return; // if tilemap generating still
+    }
     ChunkTexturedBuildData build_data;
     unsigned char solidity[voxels_length];
     int uvs[voxels_length * 6 * sizeof(int)];
@@ -34,8 +36,6 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
     build_data.uvs = uvs;
     // memset(block_voxes, 0, block_voxes_count * sizeof(ecs_entity_t));
     // memset(block_vox_offsets, 0, block_voxes_count);
-    const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
-    const VoxelLinks *voxelLinks = zox_get(realm, VoxelLinks)
     // calculate tileuv indexes - voxel and face to index  in tilemapUVs
     int uvs_index = 0;
     for (int j = 0; j < voxelLinks->length; j++) {
@@ -59,19 +59,23 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         }
     }
     // main loop to build
+    int chunks_built = 0;
     zox_field_in(ChunkOctree, chunkOctrees, 2)
     zox_field_in(RenderLod, renderLods, 3)
     zox_field_in(ChunkNeighbors, chunkNeighbors, 4)
-    zox_field_in(VoxScale, voxScales, 11)
-    zox_field_out(ChunkDirty, chunkDirtys, 1)
-    zox_field_out(MeshIndicies, meshIndiciess, 6)
-    zox_field_out(MeshVertices, meshVerticess, 7)
-    zox_field_out(MeshUVs, meshUVss, 8)
-    zox_field_out(MeshColorRGBs, meshColorRGBss, 9)
-    zox_field_out(MeshDirty, meshDirtys, 10)
+    zox_field_in(VoxScale, voxScales, 5)
+    zox_field_in(RenderDisabled, renderDisableds, 6)
+    zox_field_out(ChunkDirty, chunkDirtys, 7)
+    zox_field_out(MeshIndicies, meshIndiciess, 8)
+    zox_field_out(MeshVertices, meshVerticess, 9)
+    zox_field_out(MeshUVs, meshUVss, 10)
+    zox_field_out(MeshColorRGBs, meshColorRGBss, 11)
+    zox_field_out(MeshDirty, meshDirtys, 12)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
         if (!chunkDirty->value) continue;
+        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
+        if (renderDisabled->value) continue;
         zox_field_i(RenderLod, renderLods, renderLod)
         zox_field_i(VoxScale, voxScales, voxScale)
         const unsigned char lod = get_terrain_lod_from_camera_distance(renderLod->value);
@@ -100,9 +104,9 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         build_chunk_octree_mesh_uvs(chunkOctree, tilemapUVs, meshIndicies, meshVertices, meshUVs, meshColorRGBs, renderLod->value, lod, neighbors, neighbor_lods, voxScale->value, build_data.solidity, build_data.uvs);
         chunkDirty->value = 0;
         meshDirty->value = 1;
-#ifdef zox_octree_chunk_build_limits
-        chunks_built++;
-        if (chunks_built >= max_chunks_build_per_frame) break;
-#endif
+        if (max_chunks_build_per_frame != 0) {
+            chunks_built++;
+            if (chunks_built >= max_chunks_build_per_frame) break;
+        }
     }
 } zox_declare_system(ChunkOctreeBuildSystem)

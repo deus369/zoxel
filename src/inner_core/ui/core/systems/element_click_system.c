@@ -96,16 +96,3 @@ void ElementClickSystem(ecs_iter_t *it) {
         }
     }
 } zox_declare_system(ElementClickSystem)
-
-/*if (devices_get_pressed_this_frame(zevicePointer->value)) {
-    drag_mode = zox_drag_mode_finger;
-    clickingEntity->value = element;
-} else if (devices_get_released_this_frame(zevicePointer->value)) {
-    if (element == clickingEntity->value) did_activate = 1;
-}*/
-//  did_activate || click_type == 1;
-//if (!zox_alive(raycasterTarget->value)) { // failsafe
-    // clickingEntity->value = 0;
-    // raycasterResult->value = 0;
-    // continue;
-//}

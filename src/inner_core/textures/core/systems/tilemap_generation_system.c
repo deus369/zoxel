@@ -3,13 +3,13 @@
 void TilemapGenerationSystem(ecs_iter_t *it) {
     const unsigned char uvs_per_tile = 4;
     zox_iter_world()
-    zox_field_in(TilemapSize, tilemapSizes, 2)
-    zox_field_in(TextureLinks, textureLinkss, 3)
-    zox_field_out(GenerateTexture, generateTextures, 4)
-    zox_field_out(TextureSize, textureSizes, 5)
-    zox_field_out(TextureData, textureDatas, 6)
-    zox_field_out(TextureDirty, textureDirtys, 7)
-    zox_field_out(TilemapUVs, tilemapUVss, 8)
+    zox_field_in(TilemapSize, tilemapSizes, 1)
+    zox_field_in(TextureLinks, textureLinkss, 2)
+    zox_field_out(GenerateTexture, generateTextures, 3)
+    zox_field_out(TextureSize, textureSizes, 4)
+    zox_field_out(TextureData, textureDatas, 5)
+    zox_field_out(TextureDirty, textureDirtys, 6)
+    zox_field_out(TilemapUVs, tilemapUVss, 7)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(GenerateTexture, generateTextures, generateTexture)
         if (!generateTexture->value) continue;
@@ -25,18 +25,6 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
             zox_log(" ! tilemapSize->value.x is 0\n")
             continue;
         }
-        /*unsigned char is_generating = 0;
-        for (int j = 0; j < textureLinks->length; j++) {
-            const ecs_entity_t texture = textureLinks->value[j];
-            if (zox_gett_value(texture, GenerateTexture)) {
-                is_generating = 1;
-                break;
-            }
-        }
-        if (is_generating) {
-            zox_log(" > tilemap texture data still generating\n")
-            continue;
-        }*/
         zox_field_o(TextureData, textureDatas, textureData)
         zox_field_o(TextureSize, textureSizes, textureSize)
         zox_field_o(TilemapUVs, tilemapUVss, tilemapUVs)
@@ -69,6 +57,7 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
                 const TextureData *voxel_texture_data = zox_get(texture_entity, TextureData)
                 if (!voxel_texture_data->value) {
                     zox_log(" ! voxel_texture_data->value is null\n")
+                    texture_index++;
                     continue;
                 }
                 const int2 texture_size = zox_get_value(texture_entity, TextureSize)
@@ -125,6 +114,18 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
 } zox_declare_system(TilemapGenerationSystem)
 
 
+        /*unsigned char is_generating = 0;
+        for (int j = 0; j < textureLinks->length; j++) {
+            const ecs_entity_t texture = textureLinks->value[j];
+            if (zox_gett_value(texture, GenerateTexture)) {
+                is_generating = 1;
+                break;
+            }
+        }
+        if (is_generating) {
+            zox_log(" > tilemap texture data still generating\n")
+            continue;
+        }*/
                 /*tilemapUVs->value[texture_entity_index * 4 + 0] = (float2) { tile_uv.x, tile_uv.y };
                 tilemapUVs->value[texture_entity_index * 4 + 1] = (float2) { tile_uv.x, tile_uv.y + tile_uv_size };
                 tilemapUVs->value[texture_entity_index * 4 + 2] = (float2) { tile_uv.x + tile_uv_size, tile_uv.y + tile_uv_size };

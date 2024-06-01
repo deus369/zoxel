@@ -12,14 +12,14 @@ void AnimateTextSystem(ecs_iter_t *it) {
             if (animateZext->value <= -zext_animation_speed) animateZext->value = 0;
             zox_field_i_out(ZextDirty, zextDirtys, zextDirty)
             if (zextDirty->value == 0) {
-                zextDirty->value = 1;
-#ifdef zoxel_debug_zext_updates
-                zox_log("AnimateZext :: [%lu]\n", it->entities[i])
-#endif
                 zox_field_i_out(ZextData, zextDatas, zextData)
                 const int index = rand() % zextData->length;
                 zextData->value[index] = 1 + rand() % 52;
                 changed = 1;
+                zextDirty->value = 1;
+#ifdef zoxel_debug_zext_updates
+                zox_log("AnimateZext :: [%lu]\n", it->entities[i])
+#endif
             }
         }
     }

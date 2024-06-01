@@ -1,8 +1,6 @@
 #ifndef zox_voxels_chunks
 #define zox_voxels_chunks
 
-#include "data/settings.c"
-#include "data/trigger_states.c"
 zox_declare_tag(Chunk)
 zox_declare_tag(NoiseChunk)
 zox_component_int3(ChunkPosition)
@@ -16,10 +14,13 @@ zox_component_byte(ChunkLodDirty)
 zox_component_byte(GenerateChunk)
 zox_memory_component(ChunkData, unsigned char)
 zox_memory_component(ChunkNeighbors, ecs_entity_t)
-zoxel_octree_component(ChunkOctree, unsigned char, 0)
 zox_link_component(ChunkLink, ecs_entity_t, EntityLinks)
 zox_hashmap_component(ChunkLinks, int3)
 zox_hashmap_component(BlockSpawns, byte3)
+zoxel_octree_component(ChunkOctree, unsigned char, 0)
+#include "data/settings.c"
+#include "data/color_settings.c"
+#include "data/trigger_states.c"
 #include "util/voxel_mesh_util.c"
 #include "util/chunk_util.c"
 #include "util/chunk_octree_util.c"
@@ -32,6 +33,7 @@ zox_hashmap_component(BlockSpawns, byte3)
 #include "util/raycast_single_vox.c"
 #include "util/raycast.c"
 #include "util/place_util.c"
+#include "util/settings.c"
 #include "prefabs/prefabs.c"
 zox_increment_system(ChunkLodDirty, 3)
 #include "systems/chunk_build_system.c"

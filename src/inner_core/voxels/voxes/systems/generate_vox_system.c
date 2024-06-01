@@ -10,17 +10,16 @@ void GenerateVoxSystem(ecs_iter_t *it) {
     zox_field_out(GenerateVox, generateVoxs, 2)
     zox_field_out(ChunkOctree, chunkOctrees, 3)
     zox_field_out(ColorRGBs, colorRGBss, 4)
-    zox_field_out(ChunkDirty, chunkDirtys, 5)
+    // zox_field_out(ChunkDirty, chunkDirtys, 5) // for now we don't use this, some models have no dirty / just have data
     for (int i = 0; i < it->count; i++) {
         zox_field_o(GenerateVox, generateVoxs, generateVox)
         if (!generateVox->value) continue;
-        zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
-        if (chunkDirty->value) continue;
+        // zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
+        // if (chunkDirty->value) continue;
         zox_field_e()
         zox_field_i(Color, colors, color2)
         zox_field_o(ChunkOctree, chunkOctrees, chunkOctree)
         zox_field_o(ColorRGBs, colorRGBss, colorRGBs)
-        generateVox->value = 0;
         resize_memory_component(ColorRGBs, colorRGBs, color_rgb, 3)
         const color_rgb color_rgb_2 = color_to_color_rgb(color2->value);
         colorRGBs->value[0] = color_rgb_2;
@@ -105,7 +104,8 @@ void GenerateVoxSystem(ecs_iter_t *it) {
 #ifndef zox_disable_closing_octree_nodes
         close_same_nodes(chunkOctree);
 #endif
-        chunkDirty->value = 1;
+        generateVox->value = 0;
+        // chunkDirty->value = 1;
     }
 } zox_declare_system(GenerateVoxSystem)
 

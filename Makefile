@@ -6,14 +6,20 @@
 # platforms [linux, windows, web, android]
 # stores [steam, itch, google]
 # make game=zixel for zoxel2D
-# library use
-use_lib_sdl := true
-use_lib_sdl_image := true
-use_lib_sdl_mixer := true
-use_lib_vulkan := false		# make vulkan=1 for vulkan
-use_lib_ttf := true
 resources_dir = resources
-
+# library use
+# used for apps
+use_lib_sdl := true
+# used for texture file processing
+use_lib_sdl_image := true
+# used for audio
+use_lib_sdl_mixer := true
+# make vulkan=1 for vulkan
+use_lib_vulkan := false
+# enable for ttf font files
+use_lib_ttf := true
+# enable to debug amd gpu
+use_lib_amd := true
 # more
 patient_cmd = echo " > please be patient :), lord deus [>,<]/)"
 LDLIBS = -lm -lpthread -lflecs -Llib # default libraries
@@ -24,7 +30,7 @@ ifeq ($(use_lib_sdl), true)
     LDLIBS += -lSDL2
 endif
 ifeq ($(use_lib_sdl_image), true)
-    LDLIBS += -lSDL2_image -Dzox_using_sdl_images
+    LDLIBS += -lSDL2_image -Dzox_lib_sdl_images
 endif
 ifeq ($(use_lib_sdl_mixer), true)
     LDLIBS += -lSDL2_mixer
@@ -34,6 +40,9 @@ ifeq ($(use_lib_vulkan), true)
 endif
 ifeq ($(use_lib_ttf), true)
    LDLIBS += -lfreetype -Dzox_lib_ttf -I/usr/include/freetype2/ # todo: make static for windows / test on windows
+endif
+ifeq ($(use_lib_amd), true)
+   LDLIBS +=  -lrocm_smi64 -Dzox_lib_amd
 endif
 # determine the operating system #
 ifeq ($(OS),Windows_NT)
@@ -644,6 +653,11 @@ list-systems:
 	# @ bash bash/count/list_systems.sh
 	@ bash bash/zoxel/list_systems.sh
 
+count-module-lines:
+	@ echo " > counting module lines"
+	@ bash bash/count/count_module_lines.sh
+
+
 #show-systems:
 #	@ echo " > showing systems"
 #	@ bash bash/count/create_systems_chart.sh
@@ -674,11 +688,18 @@ endif
 	@echo "  + flecs		building flecs"
 	@echo "  + extra		all the extras"
 	@echo "  + git			git bash helpers"
-	@echo "  + android-		android builds"
+	@echo "  + android		android builds"
 	@echo "  + web			web builds"
 	@echo "  + steam		steam integration"
 	@echo "  + itch		itch-io automation"
+	@echo "  + analyse		tools for analyzing"
 	@echo "  "
+
+help-analyse:
+	@echo " count			counts lines in source"
+	@echo " list-systems		lists all the systems"
+	@echo " count-systems		creates a chart"
+	@echo " count-module-lines	counts lines per module"
 
 help-debug:
 	@echo "    run-profiler		runs $(target) --profiler"

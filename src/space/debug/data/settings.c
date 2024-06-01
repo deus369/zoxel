@@ -9,6 +9,7 @@
 
 // streaming
 #define zox_debug_zox_statistics
+#define zox_debug_system
 
 // camera
 // #define zox_debug_player_camera
