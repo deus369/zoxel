@@ -5,15 +5,24 @@ int debug_newline_zext(char buffer[], int buffer_size, int buffer_index) {
     return buffer_index;
 }
 
+double time_update_debug_label_system_rate = 2.0;
+double time_update_debug_label_system = 0;
+
 void GameDebugLabelSystem(ecs_iter_t *it) {
+    time_update_debug_label_system += zox_delta_time;
+    if (time_update_debug_label_system >= time_update_debug_label_system_rate) {
+       time_update_debug_label_system = 0;
+    } else {
+       return;
+    }
     const int buffer_size = max_debug_characters;
     zox_iter_world()
     zox_field_out(ZextDirty, zextDirtys, 1)
     zox_field_out(ZextData, zextDatas, 2)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_out(ZextDirty, zextDirtys, zextDirty)
+        zox_field_o(ZextDirty, zextDirtys, zextDirty)
         if (zextDirty->value) continue;
-        zox_field_i_out(ZextData, zextDatas, zextData)
+        zox_field_o(ZextData, zextDatas, zextData)
         zox_field_e()
         const ecs_entity_t canvas = get_root_canvas(world, e);
         // zox_log("canvas; %s - %i\n", zox_get_name(canvas), zox_has(canvas, PlayerLink))
