@@ -1,6 +1,9 @@
 const float fudge_frustum_extents = 2.0f;
 
 void ChunkFrustumSystem(ecs_iter_t *it) {
+#ifdef zox_disable_frustum_culling
+    return;
+#endif
     zox_iter_world()
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_in(ChunkSize, chunkSizes, 2)

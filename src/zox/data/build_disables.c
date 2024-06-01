@@ -1,13 +1,25 @@
 // disables
 
-#ifdef zox_test_settings_02
-    #define zox_is_flandlands
+// #define zox_test_settings_01
+// #define zox_test_settings_02
+// #define zox_test_settings_03
 
+#ifdef zox_test_settings_03
+    #define zox_is_flandlands
+    #define zox_disable_npcs
+    #define zox_disable_block_voxes
+    #define zox_disable_frustum_culling
+    #define zox_disable_player_ui
+    #define zox_disable_player_character
 #endif
 
-// #define zox_test_settings_01
+#ifdef zox_test_settings_02
+    #define zox_disable_npcs
+    #define zox_disable_player_ui
+    #define zox_disable_player_character
+#endif
 
-/*#ifdef zox_test_settings_01
+#ifdef zox_test_settings_01
     // terrain
     #define zox_is_flandlands
     #define zox_disable_npcs
@@ -24,7 +36,7 @@
     #define zox_disable_chunk_building
     // physics
     #define zox_disable_collisions
-#endif*/
+#endif
 
 // boot disables
 // #define zox_disable_frustum_checks

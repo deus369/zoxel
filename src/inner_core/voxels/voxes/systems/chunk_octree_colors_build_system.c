@@ -1,9 +1,6 @@
 // builds the character vox meshes
 void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
     zox_change_check()
-#ifdef zoxel_time_octree_chunk_builds_system
-    begin_timing()
-#endif
     int chunks_built = 0;
     zox_iter_world()
     zox_field_out(ChunkDirty, chunkDirtys, 1)
@@ -17,27 +14,26 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
     zox_field_out(MeshVertices, meshVertices, 9)
     zox_field_out(MeshColorRGBs, meshColorRGBs, 10)
     zox_field_out(MeshDirty, meshDirtys, 11)
-    unsigned char *neighbor_lods = NULL; // malloc(6);
     for (int i = 0; i < it->count; i++) {
         zox_field_i_out(ChunkDirty, chunkDirtys, chunkDirty)
         if (chunkDirty->value != 1) continue;
         // zox_log("chunk dirty %lu\n", it->entities[i])
-        zox_field_i_in(RenderLod, renderLods, renderLod)
-        zox_field_i_in(VoxScale, voxScales, voxScale)
-        zox_field_i_out(MeshDirty, meshDirtys, meshDirty)
-        zox_field_i_out(MeshIndicies, meshIndicies, meshIndicies2)
-        zox_field_i_out(MeshVertices, meshVertices, meshVertices2)
-        zox_field_i_out(MeshColorRGBs, meshColorRGBs, meshColorRGBs2)
+        zox_field_i(RenderLod, renderLods, renderLod)
+        zox_field_i(VoxScale, voxScales, voxScale)
+        zox_field_o(MeshDirty, meshDirtys, meshDirty)
+        zox_field_o(MeshIndicies, meshIndicies, meshIndicies2)
+        zox_field_o(MeshVertices, meshVertices, meshVertices2)
+        zox_field_o(MeshColorRGBs, meshColorRGBs, meshColorRGBs2)
         if (renderLod->value == 255) { // removes mesh
             chunkDirty->value = 0;
             meshDirty->value = 1;
             clear_mesh(meshIndicies2, meshVertices2, meshColorRGBs2);
             continue;
         }
-        zox_field_i_in(ChunkOctree, chunkOctrees, chunkOctree)
-        zox_field_i_in(ChunkNeighbors, chunkNeighbors, chunkNeighbors2)
-        zox_field_i_in(ColorRGBs, colorRGBs, colorRGBs2)
-        zox_field_i_in(ChunkSize, chunkSizes, chunkSize)
+        zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
+        zox_field_i(ChunkNeighbors, chunkNeighbors, chunkNeighbors2)
+        zox_field_i(ColorRGBs, colorRGBs, colorRGBs2)
+        zox_field_i(ChunkSize, chunkSizes, chunkSize)
         const ChunkOctree *chunk_left = chunkNeighbors2->value[0] == 0 ? NULL : zox_get(chunkNeighbors2->value[0], ChunkOctree)
         const ChunkOctree *chunk_right = chunkNeighbors2->value[1] == 0 ? NULL : zox_get(chunkNeighbors2->value[1], ChunkOctree)
         const ChunkOctree *chunk_down = chunkNeighbors2->value[2] == 0 ? NULL : zox_get(chunkNeighbors2->value[2], ChunkOctree)
@@ -51,7 +47,7 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         const unsigned char chunk_up_max_distance = chunkNeighbors2->value[3] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[3], RenderLod)
         const unsigned char chunk_back_max_distance = chunkNeighbors2->value[4] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[4], RenderLod)
         const unsigned char chunk_front_max_distance = chunkNeighbors2->value[5] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[5], RenderLod)
-        if (!neighbor_lods) neighbor_lods = malloc(6);
+        unsigned char neighbor_lods[6];
         neighbor_lods[0] = colors_get_max_depth_from_division(chunk_left_max_distance);
         neighbor_lods[1] = colors_get_max_depth_from_division(chunk_right_max_distance);
         neighbor_lods[2] = colors_get_max_depth_from_division(chunk_down_max_distance);
@@ -67,14 +63,7 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         meshDirty->value = 1;
         chunks_built++;
         if (chunks_built >= max_color_chunks_build_per_frame) break;
-#ifdef zoxel_time_octree_chunk_builds_system
-    did_do_timing()
-#endif
     }
-    if (neighbor_lods) free(neighbor_lods);
-#ifdef zoxel_time_octree_chunk_builds_system
-    end_timing_cutoff("    - octree_chunk_build_system", zoxel_time_octree_chunk_builds_system_cutoff)
-#endif
 } zox_declare_system(ChunkOctreeColorsBuildSystem)
 
 

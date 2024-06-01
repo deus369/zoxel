@@ -143,7 +143,7 @@ unsigned char is_adjacent_solid(unsigned char direction, const ChunkOctree *root
 // max_depth is per chunk... refactor that
 // Fix issues between chunks of different levels of division
 // function to check all adjacent voxels are solid on the face
-unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *neighbors[], int3 octree_position, unsigned char node_index, byte3 node_position, unsigned char depth, const unsigned char max_depth, const unsigned char *neighbor_lods, unsigned char edge_voxel, const unsigned char *voxel_solidity) {
+unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *neighbors[], int3 octree_position, unsigned char node_index, byte3 node_position, unsigned char depth, const unsigned char max_depth, const unsigned char neighbor_lods[], unsigned char edge_voxel, const unsigned char *voxel_solidity) {
     /*unsigned char is_adjacent_solid(direction, root_node, neighbors[], node_position, depth, edge_voxel, voxel_solidity);*/
     unsigned char chunk_index = 0;
     const ChunkOctree *adjacent_node = find_adjacent_ChunkOctree(root_node, parent_node, octree_position, node_index, node_position, depth, direction, neighbors, &chunk_index);

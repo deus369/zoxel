@@ -20,6 +20,9 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, const int3 si
     zox_prefab_add(e, BlockSpawns)    // links to voxels in world
     zox_prefab_add(e, EntityLinks)    // character and minivox links
     // todo: calculate this based on max LOD resolution (2 to power of resolution)
+#ifdef zox_disable_frustum_culling
+    zox_set(e, RenderDisabled, { 0 })
+#endif
     return e;
 }
 
