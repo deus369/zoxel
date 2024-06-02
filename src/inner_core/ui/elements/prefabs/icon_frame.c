@@ -9,7 +9,7 @@ ecs_entity_t spawn_prefab_icon_frame(ecs_world_t *world, const ecs_entity_t pref
     return e;
 }
 
-ecs_entity_t spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
+ecs_entity_2 spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
     int2 position = data->element.position; // anchor our position
     const int2 position_in_canvas = get_element_pixel_position_global(data->parent.position, data->parent.size, data->element.position, data->element.anchor);
     const float2 real_position = get_element_position(position_in_canvas, data->canvas.size);
@@ -35,7 +35,8 @@ ecs_entity_t spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
         }
     };
     zox_get_mutt(e, Children, children)
-    add_to_Children(children, spawn_icon(world, &spawnIcon));
+    const ecs_entity_t icon = spawn_icon(world, &spawnIcon);
+    add_to_Children(children, icon);
     zox_modified(e, Children)
-    return e;
+    return (ecs_entity_2) { e, icon };
 }

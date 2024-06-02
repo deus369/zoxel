@@ -106,7 +106,7 @@ ecs_entity_t spawn_inventory_menu(ecs_world_t *world, SpawnInventoryMenu *data) 
                     .anchor = float2_half
                 }
             };
-            children->value[array_index] = spawn_icon_frame_item(world, &spawnIconFrame, item);
+            children->value[array_index] = spawn_icon_frame_item(world, &spawnIconFrame, item).x;
             array_index++;
             item_index++;
         }
