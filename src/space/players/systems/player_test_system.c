@@ -60,6 +60,7 @@ void test_raycast(ecs_world_t *world, const Keyboard *keyboard, const ecs_entity
     else if (keyboard->_2.pressed_this_frame) set_player_voxel_ray(world, realm, player, 0, 1, 1);
     else if (keyboard->_3.pressed_this_frame) set_player_voxel_ray(world, realm, player, 0, 3, 1);
     else if (keyboard->_4.pressed_this_frame) set_player_voxel_ray(world, realm, player, 0, 4, 1);
+    else if (keyboard->_5.pressed_this_frame) set_player_voxel_ray(world, realm, player, 0, zox_block_dirt_rubble, 1);
 }
 
 // Shortcuts just for testing new stuff

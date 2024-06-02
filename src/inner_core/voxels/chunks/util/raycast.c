@@ -39,15 +39,20 @@ void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t camera, const 
         if (old_voxel) {
             // move into minivox
             hit_normal = float3_from_int3(int3_sub(cache_position, voxel_position));
-            const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
-            const ecs_entity_t block = voxels->value[old_voxel - 1];
-            if (zox_has(block, BlockVox)) {
-                const BlockSpawns *spawns = zox_get(chunk, BlockSpawns)
-                if (spawns->value && spawns->value->data) {
-                    const ecs_entity_t block_spawn = byte3_hash_map_get(spawns->value, voxel_position_local);
-                    raycast_terrain_gizmo_block_vox(world, block_spawn, cache_point, ray_normal, hit_normal);
+            unsigned char selected_mini = 0;
+            if (is_select_minis) {
+                const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
+                const ecs_entity_t block = voxels->value[old_voxel - 1];
+                if (zox_has(block, BlockVox)) {
+                    const BlockSpawns *spawns = zox_get(chunk, BlockSpawns)
+                    if (spawns->value && spawns->value->data) {
+                        const ecs_entity_t block_spawn = byte3_hash_map_get(spawns->value, voxel_position_local);
+                        raycast_terrain_gizmo_block_vox(world, block_spawn, cache_point, ray_normal, hit_normal);
+                        selected_mini = 1;
+                    }
                 }
-            } else {
+            }
+            if (!selected_mini){
                 ray_hit = 1;
                 hit_point = point;
             }
@@ -89,16 +94,21 @@ void raycast_terrain(ecs_world_t *world, const ecs_entity_t camera, const ecs_en
         unsigned char old_voxel = get_octree_voxel(chunk_octree, &temp, max_octree_depth);
         if (hit_type) {
             if (old_voxel) {
+                unsigned char selected_mini = 0;
                 // move into minivox
-                const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
-                const ecs_entity_t block = voxels->value[old_voxel - 1];
-                if (zox_has(block, BlockVox)) {
-                    const BlockSpawns *spawns = zox_get(chunk, BlockSpawns)
-                    if (spawns->value && spawns->value->data) {
-                        const ecs_entity_t block_spawn = byte3_hash_map_get(spawns->value, voxel_position_local);
-                        raycast_block_vox(world, block_spawn, cache_point, ray_normal, voxel, hit_type);
+                if (is_select_minis) {
+                    const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
+                    const ecs_entity_t block = voxels->value[old_voxel - 1];
+                    if (zox_has(block, BlockVox)) {
+                        const BlockSpawns *spawns = zox_get(chunk, BlockSpawns)
+                        if (spawns->value && spawns->value->data) {
+                            const ecs_entity_t block_spawn = byte3_hash_map_get(spawns->value, voxel_position_local);
+                            raycast_block_vox(world, block_spawn, cache_point, ray_normal, voxel, hit_type);
+                            selected_mini = 1;
+                        }
                     }
-                } else {
+                }
+                if (!selected_mini) {
                     if (hit_type == 2) {
                         cache_chunk = chunk;
                         cache_position_local = voxel_position_local;

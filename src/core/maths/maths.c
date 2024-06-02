@@ -1,17 +1,9 @@
 #ifndef zox_mod_maths
 #define zox_mod_maths
 
-#ifndef M_PI
-#define M_PI 3.141592653589793
-#endif
-#ifndef M_PI_2
-#define M_PI_2 1.570796327
-#endif
-#ifndef degreesToRadians
-#define degreesToRadians (M_PI * 2) / 360.0f
-#endif
 #include <math.h>       // for sqrt
 #include <float.h>
+#include "data/constants.c"
 #include "util/float_util.c"
 // data types
 #include "data/int2.c"
@@ -30,8 +22,9 @@
 #include "data/ecs_entity_2.c"
 #include "data/uint2.c"
 #include "data/uint3.c"
-#include "data/int3_hash_map.c"
-// functions
+#include "data/int_hashmap.c"
+#include "data/int3_hashmap.c"
+#include "data/byte3_hashmap.c"
 #include "util/math.c"
 #include "util/integer_util.c"
 #include "util/int3_util.c"
@@ -45,19 +38,12 @@
 
 zoxel_dynamic_array(int)
 create_is_in_array_d(int)
-// zoxel_dynamic_array(long int)
 zoxel_dynamic_array(float3)
 zoxel_dynamic_array(float2)
 
 zox_begin_module(Maths)
 unsigned long seed = get_unique_time_seed();
-#ifdef zoxel_seed_666
-seed = 666;
-#endif
 set_noise_seed(seed);
-// zoxel_log(" > seed set to [%lu]\n", seed);
-// set_noise_seed(12666);
-// test_quadrants();
 zoxel_end_module(Maths)
 
 #endif

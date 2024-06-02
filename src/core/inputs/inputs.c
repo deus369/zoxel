@@ -1,5 +1,5 @@
-#ifndef zox_inputs
-#define zox_inputs
+#ifndef zox_mod_inputs
+#define zox_mod_inputs
 
 #include "data/settings.c"
 #include "data/device_modes.c"
@@ -27,13 +27,7 @@ zox_memory_component(DeviceButtonLinks, ecs_entity_t)
 zox_memory_component(DeviceLinks, ecs_entity_t)
 #include "components/keyboard.c"
 #include "components/mouse.c"
-#include "prefabs/zevice_button.c"
-#include "prefabs/zevice_stick.c"
-#include "prefabs/zevice_pointer.c"
-#include "prefabs/mouse.c"
-#include "prefabs/keyboard.c"
-#include "prefabs/gamepad.c"
-#include "prefabs/touchscreen.c"
+#include "prefabs/prefabs.c"
 #include "util/input_util.c"
 #include "util/deadzone_util.c"
 #include "systems/zevice_button_reset_system.c"
@@ -42,20 +36,8 @@ zox_memory_component(DeviceLinks, ecs_entity_t)
 #include "systems/zevice_button_enable_system.c"
 #include "systems/zevice_stick_enable_system.c"
 #include "systems/zevice_pointer_enable_system.c"
-#include "systems/dragger_end_system.c"
 #include "systems/device_mode_system.c"
 #include "systems/device_mode_dirty_system.c"
-
-void spawn_prefabs_inputs(ecs_world_t *world) {
-    spawn_prefab_device_button(world);
-    spawn_prefab_device_stick(world);
-    spawn_prefab_zevice_pointer(world);
-    spawn_prefab_keyboard(world);
-    spawn_prefab_mouse(world);
-    spawn_prefab_gamepad(world);
-    spawn_prefab_touchscreen(world);
-    // test_device_button_flags();
-}
 
 zox_begin_module(Inputs)
 zox_define_tag(Device)
@@ -79,10 +61,8 @@ zox_define_component_float2(ZeviceStick)
 zox_define_memory_component(DeviceLinks)
 zox_system(ZeviceButtonResetSystem, zox_pipelines_devices_reset, [out] ZeviceButton)
 zox_system(ZevicePointerResetSystem, zox_pipelines_devices_reset, [out] ZevicePointer)
-// remember: ZevicePointerDeltaResetSystem has to be before other systems
-zox_system(ZevicePointerDeltaResetSystem, zox_pipelines_devices_reset, [out] ZevicePointerDelta)
+zox_system(ZevicePointerDeltaResetSystem, zox_pipelines_devices_reset, [out] ZevicePointerDelta) // remember: ZevicePointerDeltaResetSystem has to be before other systems
 zox_system(DeviceModeSystem, zox_pip_raycasting, [in] DeviceLinks, [in] DeviceMode, [out] DeviceModeDirty)
-zox_system(DraggerEndSystem, EcsPostLoad, [out] DraggableState, [out] DraggerLink, [out] DraggingDelta)
 zox_system(DeviceModeDirtySystem, zox_pipelines_devices_enables, [out] DeviceMode, [out] DeviceModeDirty)
 zox_system(ZeviceButtonEnableSystem, zox_pipelines_devices_enables, [in] ZeviceButton, [out] ZeviceDisabled)
 zox_system(ZeviceStickEnableSystem, zox_pipelines_devices_enables, [in] ZeviceStick, [out] ZeviceDisabled)

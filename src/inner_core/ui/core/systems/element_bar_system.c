@@ -11,8 +11,8 @@ void ElementBarSystem(ecs_iter_t *it) {
         if (!children->length) continue;
         const ecs_entity_t front_bar = children->value[0];
         if (!zox_valid(front_bar)) continue;
-        const InitializeEntityMesh *initializeEntityMesh = zox_get(front_bar, InitializeEntityMesh)
-        if (initializeEntityMesh->value) continue; // removing this breaks it?!?!
+        // const InitializeElement *initializeElement = zox_get(front_bar, InitializeElement)
+        // if (initializeElement->value) continue; // removing this breaks it?!?!
         zox_field_e()
         if (!can_render_ui(world, e)) continue; // disabled for now causes issues
         zox_field_i_in(ElementBar, elementBars, elementBar)
@@ -25,9 +25,9 @@ void ElementBarSystem(ecs_iter_t *it) {
             MeshDirty *meshDirty = zox_get_mut(front_bar, MeshDirty)
             if (meshDirty->value) continue;
             // for our elementbar3D
-            const MeshVertices *meshVertices = zox_get(front_bar, MeshVertices)
-            const float test_var = (left_offset + square_vertices[2].x * scale.x * percentage);   // test right vert
-            if (test_var == meshVertices->value[2].x) continue;
+            // const MeshVertices *meshVertices = zox_get(front_bar, MeshVertices)
+            // const float test_var = (left_offset + square_vertices[2].x * scale.x * percentage);   // test right vert
+            // if (test_var == meshVertices->value[2].x) continue;
             MeshVertices *meshVertices2 = zox_get_mut(front_bar, MeshVertices)
             for (unsigned char j = 0; j < 4; j++) meshVertices2->value[j] = (float3) { left_offset + square_vertices[j].x * scale.x * percentage, square_vertices[j].y * scale.y, 0 };
             meshDirty->value = 1;

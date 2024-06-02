@@ -14,6 +14,7 @@ typedef struct {\
 } name;\
 \
 int name##_##hash(int key, int size) {\
+    if (size == 0) return -1;\
     return key % size;\
 }\
 \
@@ -22,10 +23,14 @@ name* create##_##name(int size) {\
     map->size = size;\
     /*calloc zeroes out data*/\
     map->data = calloc(size, sizeof(name##_##pair*));\
+    /*const int byte_length = size * sizeof(name##_##pair*);*/\
+    /*map->data = malloc(byte_length);*/\
+    /*memset(map->data, 0, byte_length);*/\
     return map;\
 }\
 \
 void name##_##add(name* map, key_type key_raw, type value) {\
+    if (!map || !map->data) return;\
     int key = convert_to_hash(key_raw);\
     int index = name##_##hash(key, map->size);\
     name##_##pair* pair = malloc(sizeof(name##_##pair));\
@@ -36,6 +41,7 @@ void name##_##add(name* map, key_type key_raw, type value) {\
 }\
 \
 type name##_##get(name* map, key_type key_raw) {\
+    if (!map || !map->data) return type_zero;\
     int key = convert_to_hash(key_raw);\
     int index = name##_##hash(key, map->size);\
     name##_##pair* pair = map->data[index];\
@@ -49,6 +55,7 @@ type name##_##get(name* map, key_type key_raw) {\
 }\
 \
 unsigned char name##_##has(name* map, key_type key_raw) {\
+    if (!map || !map->data) return 1;\
     int key = convert_to_hash(key_raw);\
     int index = name##_##hash(key, map->size);\
     name##_##pair* pair = map->data[index];\
@@ -60,6 +67,7 @@ unsigned char name##_##has(name* map, key_type key_raw) {\
 }\
 \
 void name##_##remove(name* map, key_type key_raw) {\
+    if (!map || !map->data) return;\
     int key = convert_to_hash(key_raw);\
     int index = name##_##hash(key, map->size);\
     name##_##pair* pair = map->data[index];\
@@ -80,6 +88,11 @@ void name##_##remove(name* map, key_type key_raw) {\
 }\
 \
 void name##_##dispose(name* map) {\
+    if (!map) return;\
+    if (!map->data) {\
+        /*free(map);*/\
+        return;\
+    }\
     for (int i = 0; i < map->size; i++) {\
         name##_##pair* pair = map->data[i];\
         while (pair != NULL) {\
@@ -88,11 +101,13 @@ void name##_##dispose(name* map) {\
             pair = next_pair;\
         }\
     }\
-    free(map->data);\
-    free(map);\
+    /* randomly this became a memory leak??*/\
+    /*free(map->data);*/\
+    /*free(map);*/\
 }\
 \
 int count##_##name(name* map) {\
+    if (!map) return 0;\
     int count = 0;\
     for (int i = 0; i < map->size; i++) {\
         name##_##pair* pair = map->data[i];\

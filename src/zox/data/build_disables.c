@@ -1,6 +1,7 @@
 // disables
 
 // #define zox_vox_noise
+// #define zox_disable_block_voxes
 
 // #define zox_disable_terrain_lod_levels
 // #define zox_is_flandlands

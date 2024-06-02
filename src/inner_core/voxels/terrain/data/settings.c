@@ -14,7 +14,6 @@ int lowest_voxel_height = -24;
 const double real_terrain_frequency = 0.013216; //  0.008216; // 0.004216; // 0.026216
 double terrain_frequency = 0.038216;
 uint32_t terrain_seed = 32666;
-
 #define terrain_mode_tiny 1
 #define terrain_mode_medium 2
 #define terrain_mode_large 3
@@ -22,5 +21,4 @@ uint32_t terrain_seed = 32666;
 #define octree_min_height -1.995f // 0.005f
 #define noise_positiver2 32000
 #define terrain_minus_amplifier 0.0
-
 const int2 chunk_texture_size = { terrain_texture_resolution, terrain_texture_resolution };

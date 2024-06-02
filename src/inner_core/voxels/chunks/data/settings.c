@@ -4,6 +4,7 @@
 #define zox_pip_voxels EcsOnUpdate // uses event states
 #define zox_pip_voxels_chunk_clean EcsPostUpdate // generates mesh data, resets chunk_dirty
 
+const unsigned char is_select_minis = 0;
 const float overall_voxel_scale = 32.0f; // 64.0f; // 4.0f // 2.0f;
 const float3 center_mesh_offset = { 0, 0, 0 };
 const int dissapearChance = 92;

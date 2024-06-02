@@ -1,7 +1,6 @@
 #ifndef zox_mod_ui_core
 #define zox_mod_ui_core
 
-#include "settings/settings.c"
 zox_declare_tag(Element)
 zox_declare_tag(Element3D)
 zox_declare_tag(Canvas)
@@ -11,7 +10,7 @@ zox_declare_tag(BoundToCanvas)
 zox_declare_tag(CanvasOverlay)
 zox_declare_tag(Window)
 zox_declare_tag(ElementRender)
-zox_component_byte(InitializeEntityMesh)
+zox_component_byte(Layer2D)
 zox_component_byte(NavigatorState)
 zox_component_byte(ElementFontSize)
 zox_component_float(ElementBar)
@@ -35,6 +34,21 @@ zox_component_byte(WindowsCount)
 zox_component_byte(SetWindowLayer)
 zox_component_byte(WindowLayer)
 zox_component_byte(ElementLayer)
+zox_component_byte(InitializeElement)
+zox_declare_tag(ClickMakeSound)
+zox_declare_tag(Selectable)
+zox_declare_tag(Clickable)
+zox_declare_tag(Dragable)
+zox_component_byte(SelectState)
+zox_component_byte(ClickState)
+zox_component_byte(DraggableState)
+zox_component_int2(DraggingDelta)
+zox_component_int4(DraggableLimits)
+zox_component_entity(Clicker)
+zox_component_entity(ClickingEntity)
+zox_component_entity(DraggerLink)
+zox_component_entity(DraggedLink)
+#include "data/settings.c"
 #include "data/element_spawn_data.c"
 #include "util/canvas_util.c"
 #include "util/ui_prefab_util.c"
@@ -64,6 +78,8 @@ zox_component_byte(ElementLayer)
 #include "systems/window_layer_system.c"
 #include "systems/element_render_system.c"
 #include "systems/element3D_render_system.c"
+#include "systems/click_sound_system.c"
+#include "systems/dragger_end_system.c"
 
 zox_begin_module(UICore)
 zox_define_tag(Element)
@@ -75,7 +91,7 @@ zox_define_tag(BoundToCanvas)
 zox_define_tag(CanvasOverlay)
 zox_define_tag(Window)
 zox_define_tag(ElementRender)
-zox_define_component_byte(InitializeEntityMesh)
+zox_define_component_byte(Layer2D)
 zox_define_component_byte(NavigatorState)
 zox_define_component_byte(ElementFontSize)
 zox_define_component_float(ElementBar)
@@ -99,31 +115,46 @@ zox_define_component_byte(WindowsCount)
 zox_define_component_byte(SetWindowLayer)
 zox_define_component_byte(WindowLayer)
 zox_define_component_byte(ElementLayer)
-zox_filter(ui_query, [none] Element, [in] CanvasPosition, [in] PixelSize, [in] Layer2D, [in] RenderDisabled, [none] generic.Selectable)
+// ui
+zox_define_component_byte(InitializeElement)
+zox_define_tag(ClickMakeSound)
+zox_define_tag(Selectable)
+zox_define_tag(Clickable)
+zox_define_tag(Dragable)
+zox_define_component_byte(SelectState)
+zox_define_component_byte(ClickState)
+zox_define_component_entity(ClickingEntity)
+zox_define_component_entity(Clicker)
+zox_define_component_byte(DraggableState)
+zox_define_component_int2(DraggingDelta)
+zox_define_component_int4(DraggableLimits)
+zox_define_component_entity(DraggerLink)       // the what that drags
+zox_define_component_entity(DraggedLink)       // the who gets dragged
+zox_filter(ui_query, [none] Element, [in] CanvasPosition, [in] PixelSize, [in] Layer2D, [in] RenderDisabled, [none] Selectable)
 zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition, [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPosition)
 zox_system_ctx(ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [in] DeviceMode, [out] RaycasterTarget, [out] WindowRaycasted)
 zox_system(ElementClickSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterTarget, [in] WindowRaycasted, [out] RaycasterResult, [out] ClickingEntity, [out] WindowTarget)
 zox_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [out] NavigatorState, [out] NavigatorTimer, [out] RaycasterTarget)
-
 // EcsPreUpdate pixel_positions_query,
 zox_system_ctx(ElementPositionSystem, EcsOnLoad, pixel_positions_query, [in] PixelPosition, [in] PixelSize, [in] ParentLink, [in] Anchor, [in] CanvasLink, [out] Position2D, [out] CanvasPosition, [none] Element)
 zox_system(CanvasStackSystem, EcsOnLoad, [in] Children, [out] WindowToTop, [out] WindowsLayers, [out] WindowsCount, [none] Canvas)
 zox_system(WindowLayerSystem, EcsOnLoad, [in] SetWindowLayer, [in] CanvasLink, [in] Children, [out] WindowLayer, [out] Layer2D, [none] Window)
-
 zox_system(ElementSelectedSystem, EcsOnUpdate, [none] Element, [in] SelectState, [out] Brightness)
 zox_system(BillboardSystem, zox_transforms_stage, [in] Position3D, [out] Rotation3D, [none] ElementBillboard) // [in] CameraLink,
 zox_system(UITrailSystem, zox_transforms_stage, [in] UIHolderLink, [in] UITrail, [out] Position3D)
 zox_system(ElementBarSystem, EcsOnUpdate, [in] ElementBar, [in] ElementBarSize, [in] Children)
 if (!headless) {
-    zox_system_1(Element2DMeshSystem, main_thread_pipeline, [none] Element, [in] PixelSize, [in] MeshAlignment, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] MeshVertices2D, [out] MeshGPULink, [out] TextureGPULink, [out] UvsGPULink, [none] !Element3D)
-    zox_system_1(Element3DMeshSystem, main_thread_pipeline, [none] Element3D, [in] PixelSize, [in] CanvasLink, [out] InitializeEntityMesh, [out] MeshDirty, [out] GenerateTexture,  [out] MeshGPULink, [out] UvsGPULink, [out] ColorsGPULink, [out] TextureGPULink)
-    zox_system_1(ButtonClickEventSystem, main_thread_pipeline, [in] ClickEvent, [out] ClickState, [out] Clicker, [none] Element)
+    zox_system_1(ButtonClickEventSystem, zox_pip_mainthread, [in] ClickEvent, [out] ClickState, [out] Clicker, [none] Element)
+    zox_system_1(Element2DMeshSystem, EcsOnLoad, [none] Element, [in] PixelSize, [in] MeshAlignment, [in] CanvasLink, [out] InitializeElement, [out] MeshDirty, [out] MeshVertices2D, [out] MeshGPULink, [out] TextureGPULink, [out] UvsGPULink, [none] !Element3D)
+    zox_system_1(Element3DMeshSystem, EcsOnLoad, [none] Element3D, [in] PixelSize, [in] CanvasLink, [out] InitializeElement, [out] MeshDirty, [out] GenerateTexture,  [out] MeshGPULink, [out] UvsGPULink, [out] ColorsGPULink, [out] TextureGPULink)
 }
 zox_system(CanvasResizeSystem, EcsOnUpdate, [in] CameraLink, [in] Children, [in] cameras.ScreenToCanvas, [out] PixelSize, [none] Canvas)
 // all ui
 zox_render2D_system(ElementRenderSystem, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D,  [in] RenderDisabled, [in] Brightness, [in] Alpha, [in] MeshGPULink, [in] UvsGPULink, [in] TextureGPULink, [in] MeshDirty, [none] ElementRender)
 // healthbars
 zox_render3D_system(Element3DRenderSystem, [in] TransformMatrix, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] TextureGPULink, [in] RenderDisabled, [none] rendering.core.SingleMaterial)
+zox_system_1(ClickSoundSystem, zox_pip_mainthread, [in] ClickState, [none] ClickMakeSound)
+zox_system(DraggerEndSystem, EcsPostLoad, [out] DraggableState, [out] DraggerLink, [out] DraggingDelta)
 spawn_prefabs_ui_core(world);
 zoxel_end_module(UICore)
 

@@ -1,11 +1,6 @@
 #ifndef zox_mod_ui
 #define zox_mod_ui
 
-#ifndef zoxel_on_android
-#define default_ui_scale 1.0f
-#else
-#define default_ui_scale 2.0f
-#endif
 #include "core/ui_core.c"
 #include "zigels/zigels.c"
 #include "texts/texts.c"

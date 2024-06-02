@@ -1,3 +1,8 @@
+#ifndef zoxel_on_android
+#define default_ui_scale 1.0f
+#else
+#define default_ui_scale 2.0f
+#endif
 #define canvas_edge_size 8
 #define ui_dragging_brightness 1.56f
 #define ui_selected_brightness 1.24f

@@ -1,12 +1,11 @@
 const int max_debug_characters = 1024;
+double time_update_debug_label_system_rate = 2.0;
+double time_update_debug_label_system = 0;
 
 int debug_newline_zext(char buffer[], int buffer_size, int buffer_index) {
     buffer_index += snprintf(buffer + buffer_index, buffer_size, "Day 1.\nToday is a very sunny day.\nHi jerry.");
     return buffer_index;
 }
-
-double time_update_debug_label_system_rate = 2.0;
-double time_update_debug_label_system = 0;
 
 void GameDebugLabelSystem(ecs_iter_t *it) {
     time_update_debug_label_system += zox_delta_time;
