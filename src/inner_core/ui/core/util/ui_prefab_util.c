@@ -40,7 +40,7 @@ void add_ui_plus_components(ecs_world_t *world, const ecs_entity_t e) {
     add_transform2Ds(world, e);
     add_ui_components(world, e);
     add_ui_mesh_components(world, e);
-    prefab_add_texture_generated(world, e, int2_zero, 0);
+    prefab_add_texture_generated(world, e, int2_zero, zox_generate_texture_trigger);
 }
 
 void add_ui_plus_components_invisible(ecs_world_t *world, const ecs_entity_t e) {
@@ -58,13 +58,13 @@ void add_clickable_components(ecs_world_t *world, const ecs_entity_t e) {
 
 void add_selectable_components(ecs_world_t *world, const ecs_entity_t e) {
     zox_add_tag(e, Selectable)
-    zox_prefab_set(e, SelectState, { 0 })
+    zox_prefab_set(e, SelectState, { zox_select_state_none })
 }
 
 void add_draggable_components(ecs_world_t *world, const ecs_entity_t e) {
     zox_add_tag(e, Dragable)
     zox_prefab_set(e, DraggableState, { 0 })
-    zox_prefab_set(e, DraggingDelta, {{ 0, 0 }})
+    zox_prefab_set(e, DraggingDelta, { int2_zero })
     zox_prefab_set(e, DraggerLink, { 0 })
     zox_prefab_set(e, DraggedLink, { 0 })
 }

@@ -10,8 +10,8 @@ void TerrainTextureSetSystem(ecs_iter_t *it) {
         if (!zox_valid(realmLink->value) || !zox_has(realmLink->value, VoxelLinks)) continue;
         const unsigned char voxels_dirty = zox_get_value(realmLink->value, VoxelsDirty)
         if (voxels_dirty == 0) continue;
+        // wait for realm to generate, voxels and textures
         if  (voxels_dirty <= 8) {
-            // waits for t hings to generate
             zox_set(realmLink->value, VoxelsDirty, { voxels_dirty + 1 })
             continue;
         }
@@ -37,7 +37,7 @@ void TerrainTextureSetSystem(ecs_iter_t *it) {
                 textureLinks->value[l++] = voxel_texture_links->value[k];
             }
         }
-        generateTexture->value = 1;
+        generateTexture->value = zox_generate_texture_trigger;
         // zox_log(" > tilemap data set: textures [%i] length [%i]\n", textures_count, tilemap_length)
         // realm_generating_count = 0;
     }

@@ -10,8 +10,8 @@ void add_animated_noise_texture(ecs_world_t *world, ecs_entity_t e) {
 ecs_entity_t spawn_prefab_texture_noise(ecs_world_t *world, const int2 texture_size) {
     zox_prefab()
     zox_prefab_name("prefab_texture")
-    prefab_add_texture_generated(world, e, texture_size, 1);
+    prefab_add_texture_generated(world, e, texture_size, zox_generate_texture_trigger);
     add_noise_texture(world, e);
-    zox_prefab_set(e, Color, {{ 255, 0, 0, 255 }})
+    zox_prefab_set(e, Color, { color_red })
     return e;
 }

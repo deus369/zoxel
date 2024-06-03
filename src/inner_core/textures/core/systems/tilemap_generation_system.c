@@ -12,7 +12,7 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
     zox_field_out(TilemapUVs, tilemapUVss, 7)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(GenerateTexture, generateTextures, generateTexture)
-        if (!generateTexture->value) continue;
+        if (generateTexture->value != zox_generate_texture_generate) continue;
         zox_field_o(TextureDirty, textureDirtys, textureDirty)
         if (textureDirty->value) continue;
         zox_field_i(TextureLinks, textureLinkss, textureLinks)
@@ -107,7 +107,7 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
                 }
             }
         }
-        generateTexture->value = 0;
+        // generateTexture->value = 0;
         textureDirty->value = 1;
         // zox_log(" > tilemap generated: size [%ix%i] unit size [%ix%i]\n", textureSize->value.x, textureSize->value.y, unit_size.x, unit_size.y)
     }

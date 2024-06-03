@@ -1,21 +1,87 @@
 // todo: use spawn_icon_grid for all user menus
 // todo: spawn a body ui (as regular element) for icons
 // todo: fetch highest layer from canvas? save it refreshing stack when spawning a new window
-// todo: prefab_inventory_menu - child prefab of game_icon_window?
 
-// BUG FIX:
-// todo: fix crash when closing inventory ui with more items (blank ones)
-// todo: it seems to be just the ui breaking on destroy atm
-
-ecs_entity_t spawn_prefab_inventory_menu(ecs_world_t *world) {
-    zox_prefab_child(prefab_window)
+ecs_entity_t spawn_prefab_inventory_menu(ecs_world_t *world, const ecs_entity_t prefab) {
+    zox_prefab_child(prefab)
     zox_prefab_name("prefab_inventory_menu")
     zox_add_tag(e, InventoryMenu)
-    prefab_inventory_menu = e;
     return e;
 }
 
-ecs_entity_t spawn_inventory_menu(ecs_world_t *world, SpawnInventoryMenu *data) {
+ecs_entity_t spawn_menu_items_player(ecs_world_t *world, const ecs_entity_t player) {
+    const ecs_entity_t character = zox_get_value(player, CharacterLink)
+    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+    const int2 canvas_size = zox_get_value(canvas, PixelSize)
+    SpawnWindowUsers data = get_default_spawn_window_users_data(character, canvas, canvas_size);
+    data.window.prefab = prefab_inventory_menu;
+    data.window.user_links_id = zox_id(ItemLinks);
+    data.header_zext.text = "Inventory";
+    return spawn_window_users(world, &data);
+}
+
+
+    /*const color frame_fill_color = (color) { 33, 33, 33, 133 };
+    const color frame_outline_color = (color) { 33, 33, 33, 133 };
+    const color icon_fill_color = (color) { 0, 155, 155, 155 };
+    const color icon_outline_color = (color) { 0, 255, 185, 225 };
+    const unsigned char header_height = 42;
+    const unsigned char header_margins = 16;
+    const float2 anchor = float2_half;
+    const int2 position = position;
+    const byte2 grid_size = (byte2) { 4, 4 };
+    const int grid_padding = 6;
+    const int grid_margins = 16;
+    const int icon_size = 64;
+    const int2 size = (int2) { grid_padding + (icon_size + grid_padding) * grid_size.x + grid_margins * 2, grid_padding + (icon_size + grid_padding) * grid_size.y + grid_margins * 2 + header_height };
+    SpawnInventoryMenu spawnInventoryMenu = {
+        .prefab = prefab_inventory_menu,
+        .canvas = {
+            .e = canvas,
+            .size = canvas_size
+        },
+        .parent = {
+            .e = canvas,
+            .position = int2_half(canvas_size),
+            .size = canvas_size,
+        },
+        .element = {
+            .position = int2_zero,
+            .size = size,
+            .anchor = anchor
+        },
+        .header = {
+            .prefab = prefab_header,
+            .is_close_button = 1,
+            .margins = header_margins
+        },
+        .header_zext = {
+            .prefab = prefab_zext,
+            .text = "Inventory",
+            .font_size = 28,
+            .font_thickness = 4,
+            .font_fill_color = header_font_fill_color,
+            .font_outline_color = header_font_outline_color
+        },
+        .inventory_menu = {
+            .grid_size = (byte2) { 4, 4 },
+            .grid_padding = grid_padding,
+            .icon_size = icon_size,
+            .character = character
+        },
+        .icon_frame = {
+            .fill_color = frame_fill_color,
+            .outline_color = frame_outline_color
+        },
+        .icon = {
+            .prefab = prefab_icon,
+            .fill_color = icon_fill_color,
+            .outline_color = icon_outline_color
+        }
+    };
+    return spawn_inventory_menu(world, &spawnInventoryMenu);*/
+
+/*ecs_entity_t spawn_inventory_menu(ecs_world_t *world, SpawnInventoryMenu *data) {
     const ecs_entity_t character = data->inventory_menu.character;
     if (!zox_has(character, ItemLinks)) {
         zox_log(" ! character [%lu] has no inventory, cannot spawn ui\n", character)
@@ -113,68 +179,4 @@ ecs_entity_t spawn_inventory_menu(ecs_world_t *world, SpawnInventoryMenu *data) 
     }
     zox_modified(e, Children)
     return e;
-}
-
-ecs_entity_t spawn_inventory_menu_player(ecs_world_t *world, const ecs_entity_t player) {
-    const ecs_entity_t character = zox_get_value(player, CharacterLink)
-    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
-    const color frame_fill_color = (color) { 33, 33, 33, 133 };
-    const color frame_outline_color = (color) { 33, 33, 33, 133 };
-    const color icon_fill_color = (color) { 0, 155, 155, 155 };
-    const color icon_outline_color = (color) { 0, 255, 185, 225 };
-    const unsigned char header_height = 42;
-    const unsigned char header_margins = 16;
-    const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    const float2 anchor = float2_half;
-    const int2 position = position;
-    const byte2 grid_size = (byte2) { 4, 4 };
-    const int grid_padding = 6;
-    const int grid_margins = 16;
-    const int icon_size = 64;
-    const int2 size = (int2) { grid_padding + (icon_size + grid_padding) * grid_size.x + grid_margins * 2, grid_padding + (icon_size + grid_padding) * grid_size.y + grid_margins * 2 + header_height };
-    SpawnInventoryMenu spawnInventoryMenu = {
-        .prefab = prefab_inventory_menu,
-        .canvas = {
-            .e = canvas,
-            .size = canvas_size
-        },
-        .parent = {
-            .e = canvas,
-            .position = int2_half(canvas_size),
-            .size = canvas_size,
-        },
-        .element = {
-            .position = int2_zero,
-            .size = size,
-            .anchor = anchor
-        },
-        .header = {
-            .prefab = prefab_header,
-            .is_close_button = 1,
-            .margins = header_margins
-        },
-        .header_zext = {
-            .prefab = prefab_zext,
-            .text = "Inventory",
-            .font_size = 28,
-            .font_thickness = 4,
-            .font_fill_color = header_font_fill_color,
-            .font_outline_color = header_font_outline_color
-        },
-        .inventory_menu = {
-            .grid_size = (byte2) { 4, 4 },
-            .grid_padding = grid_padding,
-            .icon_size = icon_size,
-            .character = character
-        },
-        .icon_frame = {
-            .fill_color = frame_fill_color,
-            .outline_color = frame_outline_color
-        },
-        .icon = {
-            .fill_color = icon_fill_color,
-            .outline_color = icon_outline_color
-        }
-    };
-    return spawn_inventory_menu(world, &spawnInventoryMenu);
-}
+}*/

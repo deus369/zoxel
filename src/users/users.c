@@ -1,12 +1,12 @@
 #ifndef zox_mod_users
 #define zox_mod_users
 
-zox_declare_tag(UserIconFrame)
 zox_component_entity(UserLink)
 zox_component_entity(UserDataLink)
 zox_component_entity(SpawnerLink)
+zox_entities_component(UserLinks)
 #include "util/user_data.c"
-#include "systems/user_data_ui_system.c"
+#include "ui/ui.c"
 #include "stats/stats.c"
 #include "skills/skills.c"
 #include "items/items.c"
@@ -21,11 +21,11 @@ zox_component_entity(SpawnerLink)
 #include "achievements/achievements.c"
 
 zox_begin_module(Users)
-zox_define_tag(UserIconFrame)
 zox_define_component_entity(UserLink)
 zox_define_component_entity(UserDataLink)
 zox_define_component_entity(SpawnerLink)
-zox_system(UserIconFrameSystem, EcsOnUpdate, [in] SelectState, [in] UserDataLink) // , [none] UserIconFrame)
+zox_define_entities_component(UserLinks)
+zox_import_module(UsersUI)
 zox_import_module(Stats)
 zox_import_module(Skills)
 zox_import_module(Items)

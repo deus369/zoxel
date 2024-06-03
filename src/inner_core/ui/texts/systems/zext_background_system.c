@@ -17,7 +17,7 @@ void ZextBackgroundSystem(ecs_iter_t *it) {
         if (!zextDirty->value) continue;
         zox_field_o(MeshDirty, meshDirtys, meshDirty)
         zox_field_o(GenerateTexture, generateTextures, generateTexture)
-        if (generateTexture->value) return;
+        // if (generateTexture->value) return;
         zox_field_i(ZextData, zextDatas, zextData)
         zox_field_i(ZextSize, zextSizes, zextSize)
         zox_field_i(ZextPadding, zextPaddings, zextPadding)
@@ -33,7 +33,7 @@ void ZextBackgroundSystem(ecs_iter_t *it) {
         pixelSize->value = size;
         textureSize->value = size;
         set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, scale2D);
-        generateTexture->value = 1;
         meshDirty->value = 1;
+        generateTexture->value = zox_generate_texture_trigger;
     }
 } zox_declare_system(ZextBackgroundSystem)

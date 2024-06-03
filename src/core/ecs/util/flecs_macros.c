@@ -54,6 +54,8 @@ if (e) {\
 
 #define zox_has(e, T) ecs_has(world, e, T)
 
+#define zox_has_id(e, e2) ecs_has_id(world, e, e2)
+
 #define zox_gett_value(e, T) ecs_get(world, e, T)->value
 
 #define zox_get_value_(e, T) ecs_get(world, e, T)->value
@@ -101,3 +103,8 @@ zox_make_prefab(e)
 // checks if entity is valid
 #define zox_valid(e) (e && ecs_is_valid(world, e))
 #define zox_alive(e) (e && ecs_is_alive(world, e))
+
+// using IDs (entities for types)
+
+
+#define zox_get_id(e, e2) ecs_get_id(world, e, e2);

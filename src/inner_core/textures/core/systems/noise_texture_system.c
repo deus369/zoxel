@@ -8,7 +8,7 @@ void NoiseTextureSystem(ecs_iter_t *it) {
     zox_field_out(TextureData, textureDatas, 4)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_out(GenerateTexture, generateTextures, generateTexture)
-        if (generateTexture->value == 0) continue;
+        if (generateTexture->value != zox_generate_texture_generate) continue;
         zox_field_e()
         zox_field_i_in(TextureSize, textureSizes, textureSize)
         zox_field_i_in(Color, colors, fill_color)
@@ -30,7 +30,7 @@ void NoiseTextureSystem(ecs_iter_t *it) {
         }
         resize_memory_component(TextureData, textureData, color, textureSize->value.x * textureSize->value.y)
         generate_texture_noise(textureData->value, textureSize->value, texture_type, terrain_texture_outline_type, fill_color->value);
-        generateTexture->value = 0;
+        // generateTexture->value = 0;
         textureDirty->value = 1; // remember: this only gets uploaded if has GPUTextureLink!
     }
 } zox_declare_system(NoiseTextureSystem)

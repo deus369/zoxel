@@ -14,13 +14,12 @@ ecs_entity_2 spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
     const int2 position_in_canvas = get_element_pixel_position_global(data->parent.position, data->parent.size, data->element.position, data->element.anchor);
     const float2 real_position = get_element_position(position_in_canvas, data->canvas.size);
     anchor_element_position2D(&position, data->element.anchor, data->element.size);
-    zox_instance(data->prefab)
+    zox_instance(data->icon_frame.prefab)
     // zox_name("icon_frame")
     initialize_element(world, e, data->parent.e, data->canvas.e, position, data->element.size, data->element.size, data->element.anchor, data->element.layer, real_position, position_in_canvas);
     zox_set(e, Color, { data->icon_frame.fill_color })
     zox_set(e, OutlineColor, { data->icon_frame.outline_color })
     SpawnIcon spawnIcon = {
-        .prefab = prefab_icon,
         .icon = data->icon,
         .canvas = data->canvas,
         .parent = {

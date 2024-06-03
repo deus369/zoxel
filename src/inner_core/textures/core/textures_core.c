@@ -1,7 +1,6 @@
-#ifndef zox_textures_core
-#define zox_textures_core
+#ifndef zox_mod_textures_core
+#define zox_mod_textures_core
 
-#include "data/settings.c"
 zox_declare_tag(Texture)
 zox_declare_tag(NoiseTexture)
 zox_declare_tag(IconTexture)
@@ -23,10 +22,13 @@ zox_component_int2(TextureSize)
 zox_component_int2(TilemapSize)
 zox_component_color(OutlineColor)
 zox_component_entity(TilemapLink)
+zox_component_entity(TextureLink)
 zox_entities_component(Textures)                    // this destroys linked entities (parent)
 zox_memory_component(TextureData, color)
 zox_memory_component(TilemapUVs, float2)
 zox_memory_component(TextureLinks, ecs_entity_t)    // this links only
+#include "data/settings.c"
+#include "data/generate_texture_states.c"
 #include "util/textures_sdl_util.c"
 #include "util/textures_util.c"
 #include "util/texture_prefab_util.c"
@@ -39,6 +41,7 @@ zox_memory_component(TextureLinks, ecs_entity_t)    // this links only
 #include "systems/frame_texture_system.c"
 #include "systems/tilemap_generation_system.c"
 #include "tests/test_texture.c"
+zox_increment_system_with_reset(GenerateTexture, zox_generate_texture_generate)
 
 zox_begin_module(TexturesCore)
 zox_define_tag(Texture)
@@ -62,6 +65,7 @@ zox_define_component_int2(TilemapSize)
 zox_define_component_double(AnimateTexture)
 zox_define_component_color(OutlineColor)
 zox_define_component_entity(TilemapLink)
+zox_define_component_entity(TextureLink)
 zox_define_memory_component(TextureData)
 zox_define_memory_component(TilemapUVs)
 zox_define_memory_component(TextureLinks)
@@ -73,6 +77,7 @@ zox_texture_generation_system2(FillTexture, FillTextureSystem, [in] Color)
 zox_system_ctx(FrameTextureSystem, zox_pip_texture_generation, generate_textures2, [none] FrameTexture, [out] GenerateTexture, [in] TextureSize, [in] Color, [in] OutlineThickness, [in] FrameCorner, [out] TextureData, [out] TextureDirty)
 zox_system(TilemapGenerationSystem, zox_pip_texture_generation, [in] TilemapSize, [in] TextureLinks, [out] GenerateTexture, [out] TextureSize, [out] TextureData, [out] TextureDirty, [out] TilemapUVs, [none] Tilemap)
 if (!headless) zox_system_1(TextureUpdateSystem, zox_pip_mainthread, [in] TextureData, [in] TextureSize, [in] TextureGPULink, [out] TextureDirty)
+zox_define_increment_system(GenerateTexture, EcsOnLoad)
 spawn_prefabs_textures_core(world);
 zoxel_end_module(TexturesCore)
 

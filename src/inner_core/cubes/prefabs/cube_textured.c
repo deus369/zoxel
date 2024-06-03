@@ -7,7 +7,7 @@ ecs_entity_t spawn_prefab_cube_textured(ecs_world_t *world) {
     // ecs_entity_t e = spawn_prefab_cube(world);
     // ecs_entity_t e = ecs_clone(world, 0, prefab_cube, 1);
     zox_prefab_child(prefab_cube)
-    prefab_add_texture_generated(world, e, texture_size, 1);
+    prefab_add_texture_generated(world, e, texture_size, zox_generate_texture_trigger);
     add_noise_texture(world, e);
     add_gpu_texture(world, e);
     prefab_cube_textured = e;

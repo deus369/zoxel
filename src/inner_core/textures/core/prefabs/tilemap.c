@@ -4,7 +4,7 @@ ecs_entity_t spawn_prefab_tilemap(ecs_world_t *world) {
     zox_add_tag(e, Tilemap)
     zox_prefab_set(e, RealmLink, { 0 })
     zox_prefab_set(e, TilemapSize, { { 1, 1 } })
-    prefab_add_texture_generated(world, e, int2_zero, 0);
+    prefab_add_texture_generated(world, e, int2_zero, zox_generate_texture_none);
     if (!headless) {
         add_gpu_texture(world, e);
         add_gpu_material(world, e);

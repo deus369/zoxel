@@ -1,4 +1,4 @@
-// #define zox_print_files
+//#define zox_print_files
 
 ecs_entity_t spawn_from_file_path_texture(ecs_world_t *world, const char *filepath, const unsigned char index) {
     zox_instance(prefab_texture)
@@ -27,14 +27,15 @@ void load_files_textures(ecs_world_t *world) {
     files_count_textures = files.count;
     files_textures = malloc(sizeof(ecs_entity_t) * files.count);
     for (int i = 0; i < files.count; i++) {
-        char* filepath = concat_file_path(load_directory, files.files[i]);
+        // char* filepath = concat_file_path(load_directory, files.files[i]);
+        char* filepath = files.files[i];
         files_textures[i] = spawn_from_file_path_texture(world, filepath, i);
 #ifdef zox_print_files
         zox_log("       > [%i] texture [%s]\n", i, filepath)
 #endif
-        free(filepath);
+        // free(filepath);
     }
-    free_files(files);
+    free_files(&files);
     free(load_directory);
 }
 

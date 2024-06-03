@@ -35,7 +35,7 @@ zoxel_octree_component(ChunkOctree, unsigned char, 0)
 #include "util/place_util.c"
 #include "util/settings.c"
 #include "prefabs/prefabs.c"
-zox_increment_system(ChunkLodDirty, 3)
+zox_increment_system_with_reset(ChunkLodDirty, 3)
 #include "systems/chunk_build_system.c"
 #include "systems/chunk_link_system.c"
 #include "systems/chunk_entities_lod_system.c"

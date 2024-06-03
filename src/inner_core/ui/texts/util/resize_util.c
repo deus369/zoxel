@@ -10,7 +10,7 @@ void on_element_pixels_resized(ecs_world_t *world, const ecs_entity_t e, const i
     pixelSize->value = size;
     textureSize->value = size;
     set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(mesh_alignment), 4, scale2D);
-    generateTexture->value = 1;
+    generateTexture->value = zox_generate_texture_trigger;
     meshDirty->value = 1;
     zox_modified(e, PixelSize)
     zox_modified(e, TextureSize)

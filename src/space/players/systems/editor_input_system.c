@@ -22,8 +22,8 @@ void EditorInputSystem(ecs_iter_t *it) {
                 else if (keyboard->b.pressed_this_frame) toggle_ui_with_tag(spawn_frame_debugger, FrameDebuggerWindow)
 
                 // test game uis
-                else if (keyboard->i.pressed_this_frame) toggle_ui_with_tag_e(spawn_inventory_menu_player, InventoryMenu, e)
-                else if (keyboard->o.pressed_this_frame) toggle_ui_with_tag_e(spawn_stats_menu, StatsMenu, e)
+                else if (keyboard->i.pressed_this_frame) toggle_ui_with_tag_e(spawn_menu_items_player, InventoryMenu, e)
+                else if (keyboard->o.pressed_this_frame) toggle_ui_with_tag_e(spawn_menu_stats_player, StatsMenu, e)
 
 
 #ifdef zox_test_hierarchy

@@ -104,7 +104,7 @@ void VoxTextureSystem(ecs_iter_t *it) {
     zox_field_out(TextureDirty, textureDirtys, 6)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(GenerateTexture, generateTextures, generateTexture)
-        if (!generateTexture->value) continue;
+        if (generateTexture->value != zox_generate_texture_generate) continue;
         zox_field_i(VoxLink, voxLinks, voxLink)
         if (!voxLink->value || zox_gett_value(voxLink->value, GenerateVox)) continue;
         const ColorRGBs *colorRGBs = zox_get(voxLink->value, ColorRGBs)
@@ -115,7 +115,7 @@ void VoxTextureSystem(ecs_iter_t *it) {
         zox_field_o(TextureDirty, textureDirtys, textureDirty)
         resize_memory_component(TextureData, textureData, color, textureSize->value.x * textureSize->value.y)
         generate_vox_texture(textureData->value, textureSize->value, chunk, colorRGBs->value, voxBakeSide->value);
-        generateTexture->value = 0;
+        // generateTexture->value = 0;
         textureDirty->value = 1; // actually not using this for tilemap!
         // for (int j = 0; j < textureData->length; j++) textureData->value[j] = color_red;
     }

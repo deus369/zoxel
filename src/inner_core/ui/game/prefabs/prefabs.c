@@ -6,8 +6,8 @@ ecs_entity_t fps_display;
 ecs_entity_t prefab_game_debug_label;
 ecs_entity_t prefab_quad_count_label;
 ecs_entity_t prefab_virtual_joystick;
-// ecs_entity_t virtual_joystick;  // reference for now
 ecs_entity_t prefab_virtual_joystick_pointer;
+ecs_entity_t prefab_tooltip;
 
 #include "menu_main.c"
 #include "menu_options.c"
@@ -17,6 +17,7 @@ ecs_entity_t prefab_virtual_joystick_pointer;
 #include "game_debug_label.c"
 #include "virtual_joystick_pointer.c"
 #include "virtual_joystick.c"
+#include "tooltip.c"
 
 void spawn_prefabs_game_ui(ecs_world_t *world) {
     spawn_prefab_main_menu(world);
@@ -27,4 +28,5 @@ void spawn_prefabs_game_ui(ecs_world_t *world) {
     spawn_prefab_game_debug_label(world);
     spawn_prefab_virtual_joystick_pointer(world);
     spawn_prefab_virtual_joystick(world);
+    prefab_tooltip = spawn_prefab_tooltip(world, prefab_label_background);
 }

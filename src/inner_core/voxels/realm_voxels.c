@@ -12,7 +12,6 @@ float3 generate_hsv_v_s(const float2 hue_limits, const float2 value_limits, cons
 }
 
 void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
-    zox_prefab_set(realm, VoxelsDirty, { 1 })
     ecs_entity_t tilemap = spawn_tilemap(world, prefab_tilemap);
     zox_set(realm, TilemapLink, { tilemap })
     zox_set(tilemap, RealmLink, { realm })
@@ -132,6 +131,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
         }
     }
     zox_modified(realm, VoxelLinks)
+    zox_set(realm, VoxelsDirty, { 1 })
 //#ifdef zox_mod_weathers
     game_sky_color = color_to_float3(sky_color);
     game_sky_bottom_color = game_sky_color;

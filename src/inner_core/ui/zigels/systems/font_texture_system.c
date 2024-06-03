@@ -16,7 +16,7 @@ void FontTextureSystem(ecs_iter_t *it) {
     const unsigned char is_use_shapes = zox_has(zox_font_style, TTFFontStyle);
     for (int i = 0; i < it->count; i++) {
         zox_field_i_out(GenerateTexture, generateTextures, generateTexture)
-        if (generateTexture->value == 0) continue;
+        if (generateTexture->value != zox_generate_texture_generate) continue;
         zox_field_i_out(TextureDirty, textureDirtys, textureDirty)
         if (textureDirty->value != 0) continue;
         zox_field_i_in(ZigelIndex, zigelIndexs, zigelIndex)
@@ -32,7 +32,7 @@ void FontTextureSystem(ecs_iter_t *it) {
             const int length = textureSize->value.x * textureSize->value.y;
             resize_memory_component(TextureData, textureData, color, length)
             for (int j = 0; j < length; j++) textureData->value[j] = air_color;
-            generateTexture->value = 0;
+            // generateTexture->value = 0;
             textureDirty->value = 1;
             continue;
         }

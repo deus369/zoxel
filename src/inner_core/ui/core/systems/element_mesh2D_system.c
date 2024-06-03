@@ -34,6 +34,5 @@ void Element2DMeshSystem(ecs_iter_t *it) {
         }
         initializeElement->value = 0;
         meshDirty->value = 1;
-        if (zox_has(e, GenerateTexture)) zox_set(e, GenerateTexture, { 1 })
     }
 } zox_declare_system(Element2DMeshSystem)

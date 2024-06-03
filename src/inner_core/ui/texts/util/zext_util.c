@@ -18,7 +18,7 @@ unsigned char is_zext(ZextData *zextData, const char* text) {
 }
 
 void set_zext(ZextData *zextData, const char* text) {
-    int text_length = strlen(text);
+    const int text_length = strlen(text);
     // zox_log("   - set zext [%i]\n", text_length)
     if (zextData->length != text_length) resize_memory_component(ZextData, zextData, unsigned char, text_length)
     for (int i = 0; i < text_length; i++) zextData->value[i] = convert_ascii(text[i]);
@@ -72,7 +72,7 @@ void spawn_zext_zigels(ecs_world_t *world, SpawnZigel *data, Children *children,
             ZigelIndex *zigelIndex2 = zox_get_mut(e, ZigelIndex)
             GenerateTexture *generateTexture = zox_get_mut(e, GenerateTexture)
             zigelIndex2->value = zigel_index;
-            generateTexture->value = 1;
+            generateTexture->value = zox_generate_texture_trigger;
             zox_modified(e, ZigelIndex)
             zox_modified(e, GenerateTexture)
         }
@@ -121,20 +121,6 @@ void set_entity_label_with_zext(ecs_world_t *world, const ecs_entity_t e, unsign
     zox_modified(zext_entity, ZextDirty)
 }
 
-unsigned char set_entity_label_with_text(ecs_world_t *world, const ecs_entity_t e, const char* text) {
-    const Children *name_label_children = zox_get(e, Children)
-    const ecs_entity_t zext_entity = name_label_children->value[0];
-    ZextDirty *zextDirty = zox_get_mut(zext_entity, ZextDirty)
-    if (zextDirty->value) return 0;
-    ZextData *zextData = zox_get_mut(zext_entity, ZextData)
-    if (is_zext(zextData, text)) return 0;
-    set_zext(zextData, text);
-    zextDirty->value = 1;
-    zox_modified(zext_entity, ZextData)
-    zox_modified(zext_entity, ZextDirty)
-    return 1;
-}
-
 unsigned char set_entity_with_text(ecs_world_t *world, const ecs_entity_t e, const char* text) {
     ZextDirty *zextDirty = zox_get_mut(e, ZextDirty)
     if (zextDirty->value) return 0;
@@ -142,9 +128,15 @@ unsigned char set_entity_with_text(ecs_world_t *world, const ecs_entity_t e, con
     if (is_zext(zextData, text)) return 0;
     set_zext(zextData, text);
     zextDirty->value = 1;
-    zox_modified(e, ZextData)
     zox_modified(e, ZextDirty)
+    zox_modified(e, ZextData)
     return 1;
+}
+
+unsigned char set_entity_label_with_text(ecs_world_t *world, const ecs_entity_t e, const char* text) {
+    const Children *children = zox_get(e, Children)
+    if (children->length == 0) return 0;
+    return set_entity_with_text(world, children->value[0], text);
 }
 
 void set_new_zox_name(ecs_world_t *world, const ecs_entity_t e, const char* text) {

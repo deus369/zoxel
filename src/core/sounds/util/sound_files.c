@@ -19,16 +19,17 @@ void load_files_sounds() {
     sound_files = malloc(sizeof(Mix_Chunk) * files.count);
 #endif
     for (int i = 0; i < files.count; i++) {
-        char* file_path = concat_file_path(load_directory, files.files[i]);
+        // char* filepath = concat_file_path(load_directory, files.files[i]);
+        char* filepath = files.files[i];
 #ifdef zox_print_files
-        zox_log("   > sound file [%s]\n", file_path)
+        zox_log("   > sound file [%s]\n", filepath)
 #endif
 #ifdef SDL_MIXER
-        sound_files[i] = Mix_LoadWAV(file_path);
+        sound_files[i] = Mix_LoadWAV(filepath);
 #endif
-        free(file_path);
+        // free(filepath);
     }
-    free_files(files);
+    free_files(&files);
     free(load_directory);
 }
 

@@ -10,7 +10,7 @@ void FrameTextureSystem(ecs_iter_t *it) {
     zox_field_out(TextureDirty, textureDirtys, 8)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_out(GenerateTexture, generateTextures, generateTexture)
-        if (!generateTexture->value) continue;
+        if (generateTexture->value != zox_generate_texture_generate) continue;
         zox_field_i_out(TextureDirty, textureDirtys, textureDirty)
         // if (textureDirty->value) continue;
         zox_field_e()
@@ -27,7 +27,7 @@ void FrameTextureSystem(ecs_iter_t *it) {
         else outline_color = (color) { fill_color.g + 25 + rand() % 25, fill_color.b + 25 + rand() % 25, fill_color.r + 25 + rand() % 25, 255 };
         if (zox_has(e, IconTexture)) generate_texture_icon(textureData->value, textureData->length, textureSize->value, fill_color, outline_color, outlineThickness->value, frameEdge->value, add_noise);
         else generate_texture_frame(textureData->value, textureData->length, textureSize->value, fill_color, outline_color, outlineThickness->value, frameEdge->value, add_noise);
-        generateTexture->value = 0;
+        // generateTexture->value = 0;
         textureDirty->value = 1;
     }
 } zox_declare_system(FrameTextureSystem)

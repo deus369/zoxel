@@ -1,5 +1,5 @@
-#ifndef zox_game_ui
-#define zox_game_ui
+#ifndef zox_mod_game_ui
+#define zox_mod_game_ui
 
 #include "settings/settings.c"
 zox_declare_tag(MenuMain)
@@ -11,6 +11,7 @@ zox_declare_tag(QuadsCountLabel)
 zox_declare_tag(GameDebugLabel)
 zox_declare_tag(FrameDebuggerWindow)
 zox_declare_tag(JoystickUI)
+zox_declare_tag(Tooltip)
 zox_component_int(QuadsCount)
 zox_component_double(FPSDisplayTicker)
 #include "fun/button_event_play_game.c"
@@ -31,6 +32,7 @@ zox_define_tag(QuadsCountLabel)
 zox_define_tag(GameDebugLabel)
 zox_define_tag(FrameDebuggerWindow)
 zox_define_tag(JoystickUI)
+zox_define_tag(Tooltip)
 zox_define_component_int(QuadsCount)
 zox_define_component_double(FPSDisplayTicker)
 zox_system(FpsDisplaySystem, EcsOnUpdate, [none] FPSDisplay, [out] ZextData, [out] ZextDirty, [out] FPSDisplayTicker)

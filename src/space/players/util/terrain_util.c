@@ -7,5 +7,5 @@ void on_terrain_settings_changed(ecs_world_t *world, const ecs_entity_t realm) {
         for (int l = 0; l < textures->length; l++) zox_set(textures->value[l], GenerateTexture, { 1 })
     }
     const TilemapLink *tilemapLink = zox_get(realm, TilemapLink)
-    zox_set(tilemapLink->value, GenerateTexture, { 1 })
+    zox_set(tilemapLink->value, GenerateTexture, { zox_generate_texture_trigger })
 }

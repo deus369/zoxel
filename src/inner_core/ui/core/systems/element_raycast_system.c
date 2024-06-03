@@ -79,7 +79,6 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         if (windowRaycasted->value != window_selected) {
             // zox_log(" > selected window [%lu]\n", window_selected)
             windowRaycasted->value = window_selected;
-            // zox_set(element, SelectState, { window_selected })
         }
     }
 } zox_declare_system(ElementRaycastSystem)

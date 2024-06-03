@@ -7,7 +7,7 @@ void on_element_clicked(ecs_world_t *world, const ecs_entity_t player, const ecs
 
 void raycaster_select_element(ecs_world_t *world, const ecs_entity_t raycaster, const ecs_entity_t element) {
     const ecs_entity_t last_element = zox_get_value(raycaster, RaycasterTarget)
-    if (last_element) zox_set(last_element, SelectState, { 0 })
+    if (last_element) zox_set(last_element, SelectState, { zox_select_state_trigger_deselect })
     zox_set(raycaster, RaycasterTarget, { element })
-    if (element) zox_set(element, SelectState, { 1 })
+    if (element) zox_set(element, SelectState, { zox_select_state_trigger_selected })
 }

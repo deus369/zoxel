@@ -19,6 +19,6 @@ ecs_entity_t spawn_game_debug_label(ecs_world_t *world, const ecs_entity_t canva
     const int2 parent_pixel_size = zox_get_value(parent, PixelSize)
     const color debug_color_outline = (color) { 76, 66, 133, 255 };
     const color debug_color_fill = (color) { 132, 177, 212, 255 };
-    const ecs_entity_t e = spawn_label_background(world, prefab_game_debug_label, parent, canvas, pixel_position, anchor, padding, "", font_size, alignment, layer, int2_half(parent_pixel_size), parent_pixel_size, debug_color_outline, debug_color_fill);
+    const ecs_entity_t e = spawn_label_background(world, prefab_game_debug_label, parent, canvas, pixel_position, anchor, padding, "", font_size, alignment, layer, int2_half(parent_pixel_size), parent_pixel_size, debug_color_outline, debug_color_fill, 0);
     return e;
 }
