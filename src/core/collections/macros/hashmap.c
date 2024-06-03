@@ -1,4 +1,4 @@
-#define zox_hash_map(name, type, type_zero, key_type, convert_to_hash)\
+#define zox_hashmap(name, type, type_zero, key_type, convert_to_hash)\
 \
 typedef struct name##_##pair name##_##pair;\
 \

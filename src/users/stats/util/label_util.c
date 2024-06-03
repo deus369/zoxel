@@ -1,12 +1,31 @@
 int get_label_local_character_level(ecs_world_t *world, const ecs_entity_t character, char buffer[], int buffer_size, int buffer_index) {
-    if (character) {
-        const StatLinks *userStatLinks = zox_get(character, StatLinks)
-        ecs_entity_t soul_stat = userStatLinks->value[1];
-        if (!zox_has(soul_stat, StatValue)) return buffer_index;
-        float level = zox_get_value(soul_stat, StatValue)
-        float experience_value = zox_get_value(soul_stat, ExperienceValue)
-        float experience_max = zox_get_value(soul_stat, ExperienceMax)
-        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " lvl %i [%i/%i]", (int) level, (int) experience_value, (int) experience_max);
+    if (!character) return buffer_index;
+    const StatLinks *userStatLinks = zox_get(character, StatLinks)
+    ecs_entity_t soul_stat = userStatLinks->value[1];
+    if (!zox_has(soul_stat, StatValue)) return buffer_index;
+    float level = zox_get_value(soul_stat, StatValue)
+    float experience_value = zox_get_value(soul_stat, ExperienceValue)
+    float experience_max = zox_get_value(soul_stat, ExperienceMax)
+    buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "lvl %i [%i/%i]\n", (int) level, (int) experience_value, (int) experience_max);
+    return buffer_index;
+}
+
+int get_label_element_links(ecs_world_t *world, const ecs_entity_t e, char buffer[], int buffer_size, int buffer_index) {
+    if (!e || !zox_has(e, ElementLinks)) return buffer_index;
+    const ElementLinks *elementLinks = zox_get(e, ElementLinks)
+    buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "[%s]'s elements [%i]\n", zox_get_name(e), elementLinks->length);
+    for (int i = 0; i < elementLinks->length; i++) {
+        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "  [%i] %s\n", i, zox_get_name(elementLinks->value[i]));
+    }
+    return buffer_index;
+}
+
+int get_label_children(ecs_world_t *world, const ecs_entity_t e, char buffer[], int buffer_size, int buffer_index) {
+    if (!e || !zox_has(e, Children)) return buffer_index;
+    const Children *children = zox_get(e, Children)
+    buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "[%s]'s children [%i]\n", zox_get_name(e), children->length);
+    for (int i = 0; i < children->length; i++) {
+        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "  [%i] %s\n", i, zox_get_name(children->value[i]));
     }
     return buffer_index;
 }

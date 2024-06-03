@@ -52,7 +52,8 @@ void DamageAuraSystem(ecs_iter_t *it) {
                         zox_delete(particle3D_emitter)
                     }
                 } else if (!poisoned_entity && distance <= damage_radius) {
-                    add_to_DotLinks(dotLinks, spawn_poison(world, e2, user));
+                    const ecs_entity_t new_dot = spawn_poison(world, e2, user);
+                    add_to_DotLinks(dotLinks, new_dot);
                     // spawn particle system
                     if (!children->length) {
                         const ecs_entity_t particle3D_emitter = spawn_particle3D_emitter(world, e2, 4);

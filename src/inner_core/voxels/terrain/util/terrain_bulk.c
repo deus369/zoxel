@@ -81,8 +81,8 @@ ecs_entity_t create_terrain_bulk(ecs_world_t *world, const int3 center_position)
         }
     }
     ChunkLinks *chunkLinks = zox_get_mut(terrain_world, ChunkLinks)
-    chunkLinks->value = create_int3_hash_map(chunks_total_length);
-    for (int i = 0; i < chunks_total_length; i++) int3_hash_map_add(chunkLinks->value, chunk_positions[i], chunks[i]);
+    chunkLinks->value = create_int3_hashmap(chunks_total_length);
+    for (int i = 0; i < chunks_total_length; i++) int3_hashmap_add(chunkLinks->value, chunk_positions[i], chunks[i]);
     zox_modified(terrain_world, ChunkLinks)
     return terrain_world;
 }

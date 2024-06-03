@@ -1,16 +1,23 @@
 // refactor this, module updates can add debug lines to it per frame
 // #define zox_debug_ui_memorys_allocated
 // #define zox_debug_ui_device_mode
-#define zox_debug_ui_save_cloud
-// #define zox_debug_ui_player_level
 // #define zox_debug_player_character2D
+
+// system
+#define zox_debug_system
+
+// player
+#define zox_debug_ui_save_cloud
+
+// character
+#define zox_debug_ui_player_level
 // #define zox_debug_player_character3D
 // #define zox_debug_player_grounded
+// #define zox_debug_player_element_links
 
 // streaming
 #define zox_debug_zox_statistics
-#define zox_debug_system
-
+// #define zox_debug_zox_statistics2
 // camera
 // #define zox_debug_player_camera
 // #define zox_debug_camera_frustum

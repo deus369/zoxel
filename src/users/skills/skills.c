@@ -20,7 +20,7 @@ zox_define_tag(Aura)
 zox_define_tag(Poison)
 zox_filter(characters, [in] Dead, [in] Position3D, [out] Children, [out] DotLinks)
 zox_system_ctx_1(DamageAuraSystem, main_thread_pipeline, characters, [in] UserLink, [none] Aura)
-zox_system(DotsSystem, EcsOnUpdate, [in] UserLink, [none] Poison)
+zox_system(DotsSystem, EcsOnUpdate, [in] UserLink, [in] SpawnerLink, [none] Poison)
 spawn_prefabs_skills(world);
 zoxel_end_module(Skills)
 

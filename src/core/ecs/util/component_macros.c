@@ -81,7 +81,7 @@ unsigned char is_component_type##_##name(ecs_entity_t id) { return is_in_ecs_ent
 
 /*ecs_set_hooks(world, name, { .dtor = ecs_dtor(name) });*/
 /*ECS_DTOR(name, ptr, {\
-    if (ptr->value != NULL) type##_##hash_map_dispose(ptr->value);\
+    if (ptr->value != NULL) type##_##hashmap_dispose(ptr->value);\
 });*/
 
 /*if (zox_has(pair->value, EntityLinks)) {\

@@ -34,7 +34,6 @@ zox_define_component_float(ExperienceValue)
 zox_define_component_float(ExperienceMax)
 zox_define_entities_component(DotLinks)
 // debuff system here, skills will add debuffs
-zox_system(DeathCleanSystem, EcsOnUpdate, [in] Dead, [in] DiedTime)
 zox_system(DeathSystem, EcsOnUpdate, [in] StatValue, [in] UserLink, [none] HealthStat)
 zox_system(StatRegenSystem, EcsOnUpdate, [in] UserLink, [in] StatValueMax, [out] StatValue, [none] Stat)
 zox_import_module(StatsUI)

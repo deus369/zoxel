@@ -28,7 +28,7 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
             update_block_voxes(world, voxLink, chunkPosition, renderLod, renderDisabled, chunkOctree, blockSpawns);
         } else {
             if (blockSpawns->value) {
-                byte3_hash_map* hashmap = blockSpawns->value;
+                byte3_hashmap* hashmap = blockSpawns->value;
                 blockSpawns->value = NULL;
                 dispose_byte3_hashmap(world, hashmap);
             }

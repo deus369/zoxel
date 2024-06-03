@@ -24,7 +24,7 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
     const ChunkLinks *chunk_links = zox_get(terrain, ChunkLinks)
     const int3 chunk_position = (int3) { 0, 0, 0 }; // int3_zero;
     const int3 chunk_voxel_position = get_chunk_voxel_position(chunk_position, default_chunk_size);
-    const ecs_entity_t chunk = int3_hash_map_get(chunk_links->value, chunk_position);
+    const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
     const ChunkOctree *chunk_octree = zox_get(chunk, ChunkOctree)
     byte3 local_position = find_position_in_chunk(chunk_octree, max_octree_depth);
     if (byte3_equals(byte3_full, local_position)) {

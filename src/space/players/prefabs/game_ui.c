@@ -45,14 +45,14 @@ void spawn_in_game_ui(ecs_world_t *world, const ecs_entity_t player, const ecs_e
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     if (is_touch) spawn_in_game_ui_touch(world, canvas);
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    const ecs_entity_t game_ui = spawn_element_invisible_on_canvas(world, canvas, int2_zero, canvas_size, float2_half);
-    zox_add_tag(game_ui, MenuInGame)
-    zox_prefab_set(game_ui, AnchorSize, { float2_one })
-    zox_prefab_add(game_ui, Children)
-    on_child_added(world, canvas, game_ui);
-    Children *game_ui_children = zox_get_mut(game_ui, Children)
-    add_to_Children(game_ui_children, spawn_crosshair(world, canvas, game_ui));
-    add_to_Children(game_ui_children, spawn_actionbar(world, canvas, game_ui));
-    add_to_Children(game_ui_children, spawn_statbar2D(world, canvas, game_ui, player, character_group));
-    zox_modified(game_ui, Children)
+    const ecs_entity_t e = spawn_element_invisible_on_canvas(world, canvas, int2_zero, canvas_size, float2_half);
+    zox_name("game_ui")
+    zox_add_tag(e, MenuInGame)
+    zox_prefab_set(e, AnchorSize, { float2_one })
+    zox_prefab_add(e, Children)
+    Children *game_ui_children = zox_get_mut(e, Children)
+    add_to_Children(game_ui_children, spawn_crosshair(world, canvas, e));
+    add_to_Children(game_ui_children, spawn_actionbar(world, canvas, e));
+    add_to_Children(game_ui_children, spawn_statbar2D(world, canvas, e, player, character_group));
+    zox_modified(e, Children)
 }

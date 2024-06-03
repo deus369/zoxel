@@ -10,18 +10,18 @@ void WanderSystem(ecs_iter_t *it) {
     // similar to player, make move forward, make rotate randomly
     zox_field_in(Rotation3D, rotation3Ds, 2)
     zox_field_in(Velocity3D, velocity3Ds, 3)
-    zox_field_out(Acceleration3D, acceleration3Ds, 4)
     zox_field_in(Omega3D, omega3Ds, 5)
+    zox_field_in(DisableMovement, disableMovements, 7)
+    zox_field_out(Acceleration3D, acceleration3Ds, 4)
     zox_field_out(Alpha3D, alpha3Ds, 6)
-    zox_field_out(Dead, deads, 7)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(Dead, deads, dead)
-        if (dead->value) continue;
-        zox_field_i_in(Rotation3D, rotation3Ds, rotation3D)
-        zox_field_i_in(Velocity3D, velocity3Ds, velocity3D)
-        zox_field_i_out(Acceleration3D, acceleration3Ds, acceleration3D)
-        zox_field_i_in(Omega3D, omega3Ds, omega3D)
-        zox_field_i_out(Alpha3D, alpha3Ds, alpha3D)
+        zox_field_i(DisableMovement, disableMovements, disableMovement)
+        if (disableMovement->value) continue;
+        zox_field_i(Rotation3D, rotation3Ds, rotation3D)
+        zox_field_i(Velocity3D, velocity3Ds, velocity3D)
+        zox_field_i(Omega3D, omega3Ds, omega3D)
+        zox_field_o(Acceleration3D, acceleration3Ds, acceleration3D)
+        zox_field_o(Alpha3D, alpha3Ds, alpha3D)
         // float2 movement = { (rand() % 100) * 0.01f, (rand() % 100) * 0.01f };
         float2 movement = { (rand() % 100) * 0.01f * pivot_power - pivot_power * 0.5f, (rand() % 100) * 0.01f };
         float2 euler = { 0, (rand() % 100) * 0.01f * rotate_power - rotate_power * 0.5f };

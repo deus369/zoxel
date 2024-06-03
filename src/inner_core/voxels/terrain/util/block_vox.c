@@ -7,11 +7,11 @@ void spawn_block_vox_in_tree(const ChunkOctree *octree, BlockSpawns *block_spawn
     if (depth == max_octree_depth) {
         if (octree == NULL || octree->value == 0) {
             byte3 position_local = int3_to_byte3(octree_position);
-            if (byte3_hash_map_has(block_spawns->value, position_local)) {
+            if (byte3_hashmap_has(block_spawns->value, position_local)) {
                 // zox_log(" > destroying vox block [%ix%ix%i]\n", position_local.x, position_local.y, position_local.z)
-                const ecs_entity_t old_vox_block = byte3_hash_map_get(block_spawns->value, position_local);
+                const ecs_entity_t old_vox_block = byte3_hashmap_get(block_spawns->value, position_local);
                 if (old_vox_block) zox_delete(old_vox_block)
-                byte3_hash_map_remove(block_spawns->value, position_local);
+                byte3_hashmap_remove(block_spawns->value, position_local);
             }
             return; // air returns!
         }
@@ -23,9 +23,9 @@ void spawn_block_vox_in_tree(const ChunkOctree *octree, BlockSpawns *block_spawn
         }
         if (block_voxes[block_index]) { // only for block vox models
             /*if (octree->value != zox_block_grass_vox) return; // only spawn for grass_vox atm */
-            // if (count_byte3_hash_map(block_spawns->value) == max_vox_blocks) return; // max
+            // if (count_byte3_hashmap(block_spawns->value) == max_vox_blocks) return; // max
             spawn_data->position_local = int3_to_byte3(octree_position);
-            if (byte3_hash_map_has(block_spawns->value, spawn_data->position_local)) return;
+            if (byte3_hashmap_has(block_spawns->value, spawn_data->position_local)) return;
             spawn_data->vox = block_voxes[block_index];
             // ChunkScale (0.5f) * ChunkSize (16)
             const float voxel_scale = octree_scales2[depth] * 0.5f * 16.0f; // todo: use voxel scale passed in
@@ -40,16 +40,16 @@ void spawn_block_vox_in_tree(const ChunkOctree *octree, BlockSpawns *block_spawn
             spawn_data->position_real = position_real;
             // spawn our block voxes
             const ecs_entity_t e2 = spawn_block_vox(world, spawn_data);
-            byte3_hash_map_add(block_spawns->value, spawn_data->position_local, e2);
-            // zox_log(" + spawned vox model: depth %i - scale %f - %ix%ix%i - r [%fx%fx%f] - [%i]\n", depth, voxel_scale, octree_position.x, octree_position.y, octree_position.z, position_real.x, position_real.y, position_real.z, count_byte3_hash_map(block_spawns->value))
+            byte3_hashmap_add(block_spawns->value, spawn_data->position_local, e2);
+            // zox_log(" + spawned vox model: depth %i - scale %f - %ix%ix%i - r [%fx%fx%f] - [%i]\n", depth, voxel_scale, octree_position.x, octree_position.y, octree_position.z, position_real.x, position_real.y, position_real.z, count_byte3_hashmap(block_spawns->value))
             // spawned_block_voxes++;
         } else {
             byte3 position_local = int3_to_byte3(octree_position);
-            if (byte3_hash_map_has(block_spawns->value, position_local)) {
+            if (byte3_hashmap_has(block_spawns->value, position_local)) {
                 // zox_log(" > destroying vox block [%ix%ix%i]\n", position_local.x, position_local.y, position_local.z)
-                const ecs_entity_t old_vox_block = byte3_hash_map_get(block_spawns->value, position_local);
+                const ecs_entity_t old_vox_block = byte3_hashmap_get(block_spawns->value, position_local);
                 if (old_vox_block) zox_delete(old_vox_block)
-                byte3_hash_map_remove(block_spawns->value, position_local);
+                byte3_hashmap_remove(block_spawns->value, position_local);
             }
         }
     } else if (octree && octree->nodes) {
@@ -95,7 +95,7 @@ void update_block_voxes(ecs_world_t *world, const VoxLink *voxLink, const ChunkP
         .render_disabled = renderDisabled->value // until i get frustum to cull these
     };
     if (!blockSpawns->value) {
-        blockSpawns->value = create_byte3_hash_map(max_vox_blocks);
+        blockSpawns->value = create_byte3_hashmap(max_vox_blocks);
     }
     if (blockSpawns->value) {
         spawn_block_vox_in_tree(chunkOctree, blockSpawns, &spawn_data, chunk_position_real, int3_zero, 0, block_voxes, block_vox_offsets, block_voxes_count);

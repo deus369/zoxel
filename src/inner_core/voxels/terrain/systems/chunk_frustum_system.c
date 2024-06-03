@@ -65,7 +65,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
             }
             if (block_spawns_initialized) {
                 for (int j = 0; j < blockSpawns->value->size; j++) {
-                    const byte3_hash_map_pair* pair = blockSpawns->value->data[j];
+                    const byte3_hashmap_pair* pair = blockSpawns->value->data[j];
                     while (pair != NULL) {
                         const ecs_entity_t e2 = pair->value;
                         if (e2 && zox_valid(e2)) zox_set(e2, RenderDisabled, { renderDisabled->value })
@@ -74,7 +74,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
                 }
             }
         }
-        int block_spawns_count = block_spawns_initialized ? count_byte3_hash_map(blockSpawns->value) : 0;
+        int block_spawns_count = block_spawns_initialized ? count_byte3_hashmap(blockSpawns->value) : 0;
         if (is_viewed) {
             zox_statistics_chunks_visible++;
             zox_statistics_characters_visible += entityLinks->length;

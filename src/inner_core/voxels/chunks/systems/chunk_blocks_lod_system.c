@@ -11,7 +11,7 @@ void ChunkBlocksLodSystem(ecs_iter_t *it) {
         zox_field_i(RenderLod, renderLods, renderLod)
         const unsigned char vox_lod = get_voxes_lod_from_camera_distance(renderLod->value);
         for (int j = 0; j < blockSpawns->value->size; j++) {
-            const byte3_hash_map_pair* pair = blockSpawns->value->data[j];
+            const byte3_hashmap_pair* pair = blockSpawns->value->data[j];
             while (pair != NULL) {
                 const ecs_entity_t e2 = pair->value;
                 if (e2 && zox_valid(e2)) {

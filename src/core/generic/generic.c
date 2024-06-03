@@ -20,8 +20,6 @@ zox_component_double(EventTime)
 zox_component_entity(EventInput)
 zox_function_component(TimedEvent, void, ecs_world_t*, const ecs_entity_t)
 // for gameplay
-zox_component_byte(Dead)
-zox_component_double(DiedTime)
 zox_entities_component(EntityLinks) // rename to ChunkEntities - used for characters atm
 // used for physics
 zox_component_float3(Bounds3D)
@@ -40,7 +38,6 @@ zox_component_entity(ComponentTarget)
 #include "prefabs/generic_event.c"
 #include "systems/destroy_in_frame_system.c"
 #include "systems/generic_event_debug_system.c"
-#include "systems/death_clean_system.c"
 #include "systems/timed_event_system.c"
 
 void dispose_generic(ecs_world_t *world, void *ctx) {
@@ -58,13 +55,11 @@ zox_define_component_byte(EntityInitialize)
 zox_define_component_byte(EntityDirty)
 zox_define_tag(DestroyInFrame)
 zox_define_component_long_int(Seed)
-zox_define_component_byte(Dead)
 zox_define_component_byte(GenericEvent)
 zox_define_component_int(ID)
 zox_define_component_float3(Bounds3D)
 zox_define_component_float6(Position3DBounds)
 zox_define_entities_component(EntityLinks)
-zox_define_component_double(DiedTime)
 zox_define_component_zext(ZoxName)
 zox_define_component_entity(EntityTarget) // used for editor
 zox_define_component_entity(ComponentTarget)

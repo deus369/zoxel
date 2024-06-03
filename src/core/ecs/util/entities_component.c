@@ -1,6 +1,7 @@
 #define zox_entities_component(name)\
 zox_memory_component(name, ecs_entity_t)\
-void on_destroyed##_##name(ecs_iter_t *it) {\
+\
+void on_destroyed_##name(ecs_iter_t *it) {\
     zox_iter_world()\
     zox_field_in(name, components, 1)\
     for (int i = 0; i < it->count; i++) {\
@@ -13,7 +14,7 @@ void on_destroyed##_##name(ecs_iter_t *it) {\
     }\
 }\
 \
-void remove_index_from##_##name(name *component, const int i) {\
+void remove_index_from_##name(name *component, const int i) {\
     /* shift list down, as we are removing i*/\
     for (int j = i; j < component->length - 1; j++) {\
         component->value[j] = component->value[j + 1];\
@@ -28,26 +29,26 @@ void remove_index_from##_##name(name *component, const int i) {\
     }\
 }\
 \
-unsigned char remove_from##_##name(name *component, const ecs_entity_t data) {\
+unsigned char remove_from_##name(name *component, const ecs_entity_t data) {\
     if (!component || !component->value) return 0;\
     for (int i = 0; i < component->length; i++) {\
         if (component->value[i] == data) {\
-            remove_index_from##_##name(component, i);\
+            remove_index_from_##name(component, i);\
             return 1;\
         }\
     }\
     return 0;\
 }\
 \
-unsigned char is_in##_##name(name *component, const ecs_entity_t data) {\
+unsigned char is_in_##name(name *component, const ecs_entity_t data) {\
     if (!component->value) return 0;\
         for (int i = 0; i < component->length; i++)\
             if (component->value[i] == data) return 1;\
     return 0;\
 }\
 \
-unsigned char add_unique_to##_##name(name *component, const ecs_entity_t data) {\
-    if (!is_in##_##name(component, data)) return add_to##_##name(component, data);\
+unsigned char add_unique_to_##name(name *component, const ecs_entity_t data) {\
+    if (!is_in_##name(component, data)) return add_to_##name(component, data);\
     else return 0;\
 }
 
@@ -55,7 +56,7 @@ unsigned char add_unique_to##_##name(name *component, const ecs_entity_t data) {
 zox_define_memory_component(name)\
 ecs_observer_init(world, &(ecs_observer_desc_t) {\
     .filter.expr = #__VA_ARGS__,\
-    .callback = on_destroyed##_##name,\
+    .callback = on_destroyed_##name,\
     .events = { EcsOnRemove },\
 });
 

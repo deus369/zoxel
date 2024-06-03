@@ -6,6 +6,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
     add_physics3D(world, e);
     zox_prefab_set(e, Bounds3D, { float3_one })
     zox_prefab_set(e, Position3DBounds, { float6_zero })
+    zox_prefab_set(e, DisableMovement, { 0 })
     // voxels
     zox_add_tag(e, LinkChunk)
     zox_prefab_set(e, VoxLink, { 0 })
@@ -19,9 +20,6 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
     add_seed(world, e, 999);
     // name
     zox_prefab_add(e, ZoxName)
-    // stats / death
-    zox_prefab_set(e, Dead, { 0 })
-    zox_prefab_set(e, DiedTime, { 0 })
     // more
     zox_prefab_add(e, Children)         // for bones, particles, etc (transforms)
     zox_prefab_add(e, ElementLinks)     // uis

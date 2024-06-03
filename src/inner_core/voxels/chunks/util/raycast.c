@@ -24,7 +24,7 @@ void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t camera, const 
         float3 point = float3_add(ray_origin, float3_multiply_float(ray_normal, i));
         int3 chunk_position = real_position_to_chunk_position(point, default_chunk_size);
         if (!int3_equals(cached_chunk_position, chunk_position)) {
-            chunk = int3_hash_map_get(chunk_links->value, chunk_position);
+            chunk = int3_hashmap_get(chunk_links->value, chunk_position);
             if (!chunk) return;
             chunk_octree = zox_get(chunk, ChunkOctree)
             if (!chunk_octree) return;
@@ -46,7 +46,7 @@ void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t camera, const 
                 if (zox_has(block, BlockVox)) {
                     const BlockSpawns *spawns = zox_get(chunk, BlockSpawns)
                     if (spawns->value && spawns->value->data) {
-                        const ecs_entity_t block_spawn = byte3_hash_map_get(spawns->value, voxel_position_local);
+                        const ecs_entity_t block_spawn = byte3_hashmap_get(spawns->value, voxel_position_local);
                         raycast_terrain_gizmo_block_vox(world, block_spawn, cache_point, ray_normal, hit_normal);
                         selected_mini = 1;
                     }
@@ -81,7 +81,7 @@ void raycast_terrain(ecs_world_t *world, const ecs_entity_t camera, const ecs_en
         float3 point = float3_add(ray_origin, float3_multiply_float(ray_normal, i));
         int3 chunk_position = real_position_to_chunk_position(point, default_chunk_size);
         // should do a check if chunk_position changed
-        const ecs_entity_t chunk = int3_hash_map_get(chunk_links->value, chunk_position);
+        const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
         if (!chunk) continue;
         if (!cache_chunk) cache_chunk = chunk;
         ChunkOctree *chunk_octree = zox_get_mut(chunk, ChunkOctree)
@@ -102,7 +102,7 @@ void raycast_terrain(ecs_world_t *world, const ecs_entity_t camera, const ecs_en
                     if (zox_has(block, BlockVox)) {
                         const BlockSpawns *spawns = zox_get(chunk, BlockSpawns)
                         if (spawns->value && spawns->value->data) {
-                            const ecs_entity_t block_spawn = byte3_hash_map_get(spawns->value, voxel_position_local);
+                            const ecs_entity_t block_spawn = byte3_hashmap_get(spawns->value, voxel_position_local);
                             raycast_block_vox(world, block_spawn, cache_point, ray_normal, voxel, hit_type);
                             selected_mini = 1;
                         }

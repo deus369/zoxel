@@ -4,4 +4,4 @@ uint32_t get_int_hash(int input) {
     return hash;
 }
 
-zox_hash_map(int_hash_map, ecs_entity_t, 0, int, get_int_hash)
+zox_hashmap(int_hashmap, ecs_entity_t, 0, int, get_int_hash)

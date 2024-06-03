@@ -9,7 +9,7 @@ void toggle_collision_debug(ecs_world_t *world) {
     // for every chunk, use entity links, add or remove physics debug components
     // zox_log("   > chunkLinks [%i]\n", chunkLinks->value->size)
     for (int i = 0; i < chunkLinks->value->size; i++) {
-        int3_hash_map_pair* pair = chunkLinks->value->data[i];
+        int3_hashmap_pair* pair = chunkLinks->value->data[i];
         while (pair != NULL) {
             ecs_entity_t chunk = pair->value;
             const EntityLinks *entityLinks = zox_get(chunk, EntityLinks)

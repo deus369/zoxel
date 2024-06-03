@@ -28,6 +28,7 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         if (!canvas || !zox_has(canvas, PlayerLink)) continue;
         const ecs_entity_t player = zox_get_value(canvas, PlayerLink)
         if (!player) continue;
+        const ecs_entity_t character = zox_get_value(player, CharacterLink)
 #ifdef zox_debug_ui_device_mode
         const DeviceMode *deviceMode = zox_get(player, DeviceMode)
 #endif
@@ -46,6 +47,8 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[debug]");
 #ifdef zox_debug_zox_statistics
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "chunks visible [%i / %i]\n", zox_statistics_chunks_visible, zox_statistics_chunks_total);
+#endif
+#ifdef zox_debug_zox_statistics2
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "characters visible [%i / %i] - r[%i]\n", zox_statistics_characters_visible, zox_statistics_characters_total, zox_statistics_characters_rendered);
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "block voxes visible [%i / %i]\n", zox_statistics_block_voxes_visible, zox_statistics_block_voxes_total);
 #endif
@@ -58,12 +61,6 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 #ifdef zox_debug_player_grounded
         buffer_index = get_label_player_grounded(world, player, buffer, buffer_size, buffer_index);
 #endif
-#ifdef zox_debug_player_character2D
-        buffer_index = get_label_player_character2D(world, player, buffer, buffer_size, buffer_index);
-#endif
-#ifdef zox_debug_player_character3D
-        buffer_index = get_label_player_character3D(world, player, buffer, buffer_size, buffer_index);
-#endif
 #ifdef zox_debug_player_camera
         buffer_index = get_label_camera(world, player, buffer, buffer_size, buffer_index);
 #endif
@@ -73,12 +70,27 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 #ifdef zox_debug_camera_frustum
         buffer_index = get_label_camera_frustum(world, player, buffer, buffer_size, buffer_index);
 #endif
+        // Player / Character
 #ifdef zox_debug_ui_player_level
         buffer_index = get_label_local_character_level(world, character, buffer, buffer_size, buffer_index);
 #endif
 #ifdef zox_debug_ui_player_health
         buffer_index = get_label_local_character_health(world, character, buffer, buffer_size, buffer_index);
 #endif
+#ifdef zox_debug_player_element_links
+        buffer_index = get_label_element_links(world, player, buffer, buffer_size, buffer_index);
+        buffer_index = get_label_element_links(world, character, buffer, buffer_size, buffer_index);
+        buffer_index = get_label_children(world, canvas, buffer, buffer_size, buffer_index);
+#endif
+#ifdef zox_debug_player_character3D
+        buffer_index = get_label_player_character3D(world, player, buffer, buffer_size, buffer_index);
+#endif
+
+        // Player 2D!
+#ifdef zox_debug_player_character2D
+        buffer_index = get_label_player_character2D(world, player, buffer, buffer_size, buffer_index);
+#endif
+
 #ifdef zox_debug_ui_save_cloud
         if (test_read_byte != 255)
             buffer_index += snprintf(buffer + buffer_index, buffer_size, " cloud [%i] ", test_read_byte);

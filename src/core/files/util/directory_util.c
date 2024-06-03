@@ -41,7 +41,6 @@ void add_file(FileList *fileList, const char *filepath) {
 void traverse_directory(FileList *fileList, const char *directory) {
     DIR *dp;
     struct dirent *entry;
-    struct stat statbuf;
     dp = opendir(directory);
     if (dp == NULL) {
         perror("Unable to open directory");

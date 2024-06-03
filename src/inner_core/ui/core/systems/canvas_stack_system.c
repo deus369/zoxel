@@ -43,8 +43,8 @@ void CanvasStackSystem(ecs_iter_t *it) {
         // if (old_windows_count > windows_count) not_assigned_index = 1;  // temporary fixed deletion just be reassigning new stack indexes lol
         const int max_checks = 255;
         windowsCount->value = windows_count;
-        int_hash_map *windows = create_int_hash_map(windows_count);
-        int_hash_map_add(windows, windows_count, windowToTop->value);
+        int_hashmap *windows = create_int_hashmap(windows_count);
+        int_hashmap_add(windows, windows_count, windowToTop->value);
 #ifdef zox_debug_canvas_stack
         zox_log(" >  canvas stack system refreshing [%i] out of [%i]\n", windows_count, children->length)
         zox_log("   - [%i] event WindowLayer [%lu]\n", windows_count, windowToTop->value)
@@ -55,10 +55,10 @@ void CanvasStackSystem(ecs_iter_t *it) {
             if (windowToTop->value == child) continue;
             unsigned char child_window_layer = zox_get_value(child, WindowLayer)
             if (child_window_layer == 0) {
-                // if (int_hash_map_has(windows, not_assigned_index)) zox_log("   ! issue with index, possible removal\n")
+                // if (int_hashmap_has(windows, not_assigned_index)) zox_log("   ! issue with index, possible removal\n")
                 unsigned char new_layer = not_assigned_index;
                 int checks = 0;
-                while (int_hash_map_has(windows, new_layer)) {
+                while (int_hashmap_has(windows, new_layer)) {
                     if (new_layer == 1) new_layer = old_windows_count;
                     else new_layer--;
 #ifdef zox_debug_canvas_stack
@@ -67,7 +67,7 @@ void CanvasStackSystem(ecs_iter_t *it) {
                     checks++;
                     if (checks > max_checks) return; // failure!
                 }
-                int_hash_map_add(windows, new_layer, windowToTop->value);
+                int_hashmap_add(windows, new_layer, windowToTop->value);
                 zox_set(child, SetWindowLayer, { new_layer })
                 not_assigned_index++;
 #ifdef zox_debug_canvas_stack
@@ -77,7 +77,7 @@ void CanvasStackSystem(ecs_iter_t *it) {
                 unsigned char new_layer = child_window_layer - 1;
                 if (new_layer > windows_count - 1) new_layer = windows_count - 1;
                 int checks = 0;
-                while (int_hash_map_has(windows, new_layer)) {
+                while (int_hashmap_has(windows, new_layer)) {
                     if (new_layer == 1) new_layer = old_windows_count;
                     else new_layer--;
 #ifdef zox_debug_canvas_stack
@@ -86,16 +86,16 @@ void CanvasStackSystem(ecs_iter_t *it) {
                     checks++;
                     if (checks > max_checks) return; // failure!
                 }
-                int_hash_map_add(windows, new_layer, child);
+                int_hashmap_add(windows, new_layer, child);
                 zox_set(child, SetWindowLayer, { new_layer })
 #ifdef zox_debug_canvas_stack
                 zox_log("   - [%i] decreasing WindowLayer [%lu]\n", new_layer, child)
 #endif
             } else {
-                if (int_hash_map_has(windows, child_window_layer)) {
+                if (int_hashmap_has(windows, child_window_layer)) {
                     unsigned char new_layer = child_window_layer;
                     int checks = 0;
-                    while (int_hash_map_has(windows, new_layer)) {
+                    while (int_hashmap_has(windows, new_layer)) {
                         if (new_layer == 1) new_layer = old_windows_count;
                         else new_layer--;
     #ifdef zox_debug_canvas_stack
@@ -104,21 +104,21 @@ void CanvasStackSystem(ecs_iter_t *it) {
                         checks++;
                         if (checks > max_checks) return; // failure!
                     }
-                    int_hash_map_add(windows, new_layer, child);
+                    int_hashmap_add(windows, new_layer, child);
                     zox_set(child, SetWindowLayer, { new_layer })
     #ifdef zox_debug_canvas_stack
                     zox_log("   - [%i] anew WindowLayer [%lu]\n", new_layer, child)
     #endif
                 } else {
-                    int_hash_map_add(windows, child_window_layer, child);
+                    int_hashmap_add(windows, child_window_layer, child);
 #ifdef zox_debug_canvas_stack
                     zox_log("   - [%i] keeping WindowLayer [%lu]\n", child_window_layer, child)
 #endif
                 }
             }
         }
-        // ecs_entity_t window = int3_hash_map_get(windows, j);
-        int_hash_map_dispose(windows);
+        // ecs_entity_t window = int3_hashmap_get(windows, j);
+        int_hashmap_dispose(windows);
         windowToTop->value = 0;
         // has_changed = 1;
     }
