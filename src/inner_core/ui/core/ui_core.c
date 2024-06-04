@@ -1,6 +1,12 @@
 #ifndef zox_mod_ui_core
 #define zox_mod_ui_core
 
+typedef struct  {
+    unsigned char event;
+    ecs_entity_t tooltip;
+    ecs_entity_t data;
+} TooltipEventData;
+
 zox_declare_tag(Element)
 zox_declare_tag(Element3D)
 zox_declare_tag(Canvas)
@@ -25,6 +31,7 @@ zox_component_entity(CanvasLink)
 zox_component_entity(UIHolderLink)
 zox_component_byte(HeaderHeight)
 zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t, ecs_entity_t)
+zox_function_component(TooltipEvent, void, ecs_world_t*, const TooltipEventData*)
 zox_entities_component(ElementLinks)
 zox_component_entity(WindowRaycasted)
 zox_component_entity(WindowTarget)
@@ -107,6 +114,7 @@ zox_define_component(UITrail)
 zox_define_component_entity(CanvasLink)
 zox_define_component(UIHolderLink)
 zox_define_component(ClickEvent)
+zox_define_component(TooltipEvent)
 zox_define_entities_component(ElementLinks)
 zox_define_component_byte(HeaderHeight)
 zox_define_component_entity(WindowRaycasted)

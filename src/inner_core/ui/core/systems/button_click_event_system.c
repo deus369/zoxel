@@ -7,8 +7,8 @@ void ButtonClickEventSystem(ecs_iter_t *it) {
         zox_field_i_out(ClickState, clickStates, clickState)
         if (!clickState->value) continue;
         zox_field_e()
-        zox_field_i_in(ClickEvent, clickEvents, clickEvent)
-        zox_field_i_out(Clicker, clickers, clicker)
+        zox_field_i(ClickEvent, clickEvents, clickEvent)
+        zox_field_o(Clicker, clickers, clicker)
         if (clickEvent->value) (*clickEvent->value)(world, clicker->value, e);
         clickState->value = 0;
     }

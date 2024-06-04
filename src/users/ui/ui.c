@@ -12,7 +12,7 @@ zox_begin_module(UsersUI)
 zox_define_tag(UserIcon)
 zox_define_tag(UserIconFrame)
 zox_define_tag(UserIconWindow)
-zox_system(UserIconFrameSystem, EcsOnUpdate, [in] SelectState, [in] UserDataLink, [in] CanvasLink) // , [none] UserIconFrame)
+zox_system(UserIconFrameSystem, EcsOnUpdate, [in] SelectState, [in] UserDataLink, [in] CanvasLink, [in] TooltipEvent) // , [none] UserIconFrame)
 spawn_prefabs_users_ui(world);
 zoxel_end_module(Users)
 

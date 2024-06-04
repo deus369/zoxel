@@ -46,7 +46,7 @@ void initialize_players(ecs_world_t *world) {
 zox_begin_module(Players2)
 zox_define_component_entity(PlayerPauseEvent)
 if (headless) return;
-zox_system(QolShortcutsSystem, EcsOnUpdate, [in] Keyboard)
+zox_system(QolShortcutsSystem, EcsOnUpdate, [in] DeviceLinks, [none] players.Player)
 zox_system(PlayerShortcutsSystem, EcsOnUpdate, [in] DeviceLinks, [in] GameLink, [none] players.Player)
 zox_import_module(Players2D)
 zox_import_module(Players3D)

@@ -18,9 +18,6 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
                     double music_speed = 0.2 + (rand() % 100) * 0.008;
                     zox_set(local_music, MusicSpeed, { music_speed });
                     zox_set(local_music, GenerateMusic, { 1 });
-                } else if (keyboard->u.pressed_this_frame) {
-                    is_render_fog = !is_render_fog;  // toggles fog
-                    zox_log("    > is_render_fog set [%i]\n", is_render_fog)
                 } else if (keyboard->n.pressed_this_frame) {
                     texture_mode = !texture_mode;
                     on_terrain_settings_changed(world, realm);
@@ -29,8 +26,6 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
                     terrain_texture_outline_type = !terrain_texture_outline_type;
                     on_terrain_settings_changed(world, realm); // set all voxels to regenerate textures, set tilemap dirty
                     zox_log("    > terrain_texture_outline_type set [%i]\n", terrain_texture_outline_type)
-                } else if (keyboard->p.pressed_this_frame) {
-                    toggle_free_roam_camera(world, e);
                 }
             }
         }

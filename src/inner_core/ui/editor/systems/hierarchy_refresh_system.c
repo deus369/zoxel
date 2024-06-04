@@ -21,24 +21,23 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
     zox_field_out(Children, childrens, 13)
     for (int i = 0; i < it->count; i++) {
         const ecs_entity_t e = it->entities[i];
-        zox_field_i_out(HierarchyUIDirty, hierarchyUIDirtys, hierarchyUIDirty)
+        zox_field_o(HierarchyUIDirty, hierarchyUIDirtys, hierarchyUIDirty)
         if (!hierarchyUIDirty->value) continue;
-        zox_field_i_out(Children, childrens, children)
-        // if (!children->value) zox_log("    > hierarchy ui is null [%lu]\n", e)
+        zox_field_o(Children, childrens, children)
         if (!children->value || children->length < 2) continue; // children issues
         const ecs_entity_t scrollbar = children->value[1];
         if (!scrollbar) continue; // no scrollbar
         const ecs_entity_t header = children->value[0];
-        zox_field_i_in(Position2D, position2Ds, position2D)
-        zox_field_i_in(CanvasPosition, canvasPositions, canvasPosition)
-        zox_field_i_in(Layer2D, layer2Ds, layer2D)
-        zox_field_i_in(Anchor, anchors, anchor)
-        zox_field_i_in(ListUIMax, listUIMaxs, listUIMax)
-        zox_field_i_in(ElementFontSize, elementFontSizes, elementFontSize)
-        zox_field_i_in(CanvasLink, canvasLinks, canvasLink)
-        zox_field_i_out(PixelPosition, pixelPositions, pixelPosition)
-        zox_field_i_out(PixelSize, pixelSizes, pixelSize)
-        zox_field_i_out(TextureSize, textureSizes, textureSize)
+        zox_field_i(Position2D, position2Ds, position2D)
+        zox_field_i(CanvasPosition, canvasPositions, canvasPosition)
+        zox_field_i(Layer2D, layer2Ds, layer2D)
+        zox_field_i(Anchor, anchors, anchor)
+        zox_field_i(ListUIMax, listUIMaxs, listUIMax)
+        zox_field_i(ElementFontSize, elementFontSizes, elementFontSize)
+        zox_field_i(CanvasLink, canvasLinks, canvasLink)
+        zox_field_o(PixelPosition, pixelPositions, pixelPosition)
+        zox_field_o(PixelSize, pixelSizes, pixelSize)
+        zox_field_o(TextureSize, textureSizes, textureSize)
         const ecs_entity_t canvas = canvasLink->value;
         const int2 canvas_size = zox_get_value(canvas, PixelSize)
         const int elements_visible = listUIMax->value;

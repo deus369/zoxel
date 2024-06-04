@@ -3,6 +3,7 @@
 
 zox_declare_tag(Statbar)
 zox_declare_tag(StatsMenu)
+zox_declare_tag(IconFrameStat)
 #include "prefabs/prefabs.c"
 #include "systems/statbar_system.c"
 
@@ -13,8 +14,9 @@ int get_statbars_count(ecs_world_t *world) {
 zox_begin_module(StatsUI)
 zox_define_tag(Statbar)
 zox_define_tag(StatsMenu)
+zox_define_tag(IconFrameStat)
 zox_system(StatbarSystem, EcsPostUpdate, [in] StatLink, [out] ElementBar, [none] Statbar)
-spawn_prefabs_stats_ui(world);
+spawn_prefabs_ui_stats(world);
 zoxel_end_module(StatsUI)
 
 #endif

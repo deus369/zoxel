@@ -4,9 +4,9 @@ void InspectorElementSystem(ecs_iter_t *it) {
     zox_field_in(EntityTarget, entityTargets, 2)
     zox_field_in(ComponentTarget, componentTargets, 3)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(EntityTarget, entityTargets, entityTarget)
+        zox_field_i(EntityTarget, entityTargets, entityTarget)
         if (!entityTarget->value || !zox_alive(entityTarget->value)) continue;
-        zox_field_i_in(ComponentTarget, componentTargets, componentTarget)
+        zox_field_i(ComponentTarget, componentTargets, componentTarget)
         if (!componentTarget->value) continue;
         zox_field_e()
         char buffer[inspector_component_size_buffer];

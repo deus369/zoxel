@@ -3,6 +3,7 @@ ecs_entity_t spawn_prefab_icon_frame_user(ecs_world_t *world, const ecs_entity_t
     zox_prefab_name("prefab_icon_frame_user")
     zox_add_tag(e, UserIconFrame)
     zox_prefab_add(e, UserDataLink)
+    zox_prefab_add(e, TooltipEvent)
     return e;
 }
 

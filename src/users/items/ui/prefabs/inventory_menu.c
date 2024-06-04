@@ -17,6 +17,8 @@ ecs_entity_t spawn_menu_items_player(ecs_world_t *world, const ecs_entity_t play
     data.window.prefab = prefab_inventory_menu;
     data.window.user_links_id = zox_id(ItemLinks);
     data.header_zext.text = "Inventory";
+    // data.icon_frame.prefab = prefab_icon_frame_item;
+    data.icon.prefab = prefab_icon_item;
     return spawn_window_users(world, &data);
 }
 

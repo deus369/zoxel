@@ -24,6 +24,7 @@ void EditorInputSystem(ecs_iter_t *it) {
                 // test game uis
                 else if (keyboard->i.pressed_this_frame) toggle_ui_with_tag_e(spawn_menu_items_player, InventoryMenu, e)
                 else if (keyboard->o.pressed_this_frame) toggle_ui_with_tag_e(spawn_menu_stats_player, StatsMenu, e)
+                else if (keyboard->p.pressed_this_frame) toggle_ui_with_tag_e(spawn_menu_skills_player, MenuSkills, e)
 
 
 #ifdef zox_test_hierarchy
