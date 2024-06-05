@@ -1,7 +1,7 @@
 ecs_entity_t spawn_prefab_menu_stats(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_menu_stats")
-    zox_add_tag(e, StatsMenu)
+    zox_add_tag(e, MenuStats)
     return e;
 }
 
@@ -13,7 +13,6 @@ ecs_entity_t spawn_menu_stats_player(ecs_world_t *world, const ecs_entity_t play
     data.window.prefab = prefab_menu_stats;
     data.window.user_links_id = zox_id(StatLinks);
     data.header_zext.text = "Stats";
-    // data.icon_frame.prefab = prefab_icon_frame_stat;
     data.icon.prefab = prefab_icon_stat;
     return spawn_window_users(world, &data);
 }

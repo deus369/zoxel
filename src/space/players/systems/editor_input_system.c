@@ -22,8 +22,9 @@ void EditorInputSystem(ecs_iter_t *it) {
                 else if (keyboard->b.pressed_this_frame) toggle_ui_with_tag(spawn_frame_debugger, FrameDebuggerWindow)
 
                 // test game uis
-                else if (keyboard->i.pressed_this_frame) toggle_ui_with_tag_e(spawn_menu_items_player, InventoryMenu, e)
-                else if (keyboard->o.pressed_this_frame) toggle_ui_with_tag_e(spawn_menu_stats_player, StatsMenu, e)
+                else if (keyboard->u.pressed_this_frame) toggle_ui_with_tag_e(spawn_menu_quests_player, MenuQuests, e)
+                else if (keyboard->i.pressed_this_frame) toggle_ui_with_tag_e(spawn_menu_items_player, MenuItems, e)
+                else if (keyboard->o.pressed_this_frame) toggle_ui_with_tag_e(spawn_menu_stats_player, MenuStats, e)
                 else if (keyboard->p.pressed_this_frame) toggle_ui_with_tag_e(spawn_menu_skills_player, MenuSkills, e)
 
 

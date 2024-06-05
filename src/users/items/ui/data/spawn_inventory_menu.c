@@ -1,3 +1,4 @@
+/*
 // all t the spawn data used for spawn
 typedef struct {
     byte2 grid_size;
@@ -18,4 +19,4 @@ typedef struct {
     InventoryMenuData inventory_menu;
     IconFrameData icon_frame;
     IconData icon;
-} SpawnInventoryMenu;
+} SpawnInventoryMenu;*/

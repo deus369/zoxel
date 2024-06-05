@@ -1,7 +1,4 @@
 void SoundGenerateSystem(ecs_iter_t *it) {
-#ifdef zoxel_time_sound_generate_system
-    begin_timing()
-#endif
     zox_field_in(SoundLength, soundLengths, 5)
     zox_field_in(SoundFrequency, soundFrequencys, 6)
     zox_field_in(SoundVolume, soundVolumes, 7)
@@ -10,15 +7,15 @@ void SoundGenerateSystem(ecs_iter_t *it) {
     zox_field_out(SoundData, soundDatas, 3)
     zox_field_out(SoundDirty, soundDirtys, 4)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_out(GenerateSound, generateSounds, generateSound)
+        zox_field_o(GenerateSound, generateSounds, generateSound)
         if (!generateSound->value) continue;
-        zox_field_i_out(SoundDirty, soundDirtys, soundDirty)
+        zox_field_o(SoundDirty, soundDirtys, soundDirty)
         if (soundDirty->value) continue;
-        zox_field_i_out(SoundData, soundDatas, soundData)
-        zox_field_i_in(SoundLength, soundLengths, soundLength)
-        zox_field_i_in(SoundFrequency, soundFrequencys, soundFrequency)
-        zox_field_i_in(InstrumentType, instrumentTypes, instrumentType)
-        zox_field_i_in(SoundVolume, soundVolumes, soundVolume)
+        zox_field_o(SoundData, soundDatas, soundData)
+        zox_field_i(SoundLength, soundLengths, soundLength)
+        zox_field_i(SoundFrequency, soundFrequencys, soundFrequency)
+        zox_field_i(InstrumentType, instrumentTypes, instrumentType)
+        zox_field_i(SoundVolume, soundVolumes, soundVolume)
         float volume = soundVolume->value;
         double sound_time_length = soundLength->value; // soundData.sound_time_length;
         float frequency = soundFrequency->value;
@@ -53,11 +50,5 @@ void SoundGenerateSystem(ecs_iter_t *it) {
 #ifdef zoxel_log_sound_generation
         zox_log(" > sound generated: instrument [%i] frequency [%f] length [%f]\n", instrumentType->value, soundFrequency->value, soundLength->value)
 #endif
-#ifdef zoxel_time_sound_generate_system
-        did_do_timing()
-#endif
     }
-#ifdef zoxel_time_sound_generate_system
-    end_timing("SoundGenerateSystem")
-#endif
 } zox_declare_system(SoundGenerateSystem)

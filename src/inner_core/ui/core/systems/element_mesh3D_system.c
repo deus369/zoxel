@@ -14,8 +14,6 @@ void Element3DMeshSystem(ecs_iter_t *it) {
         if (!canvasLink->value) continue;
         zox_field_o(MeshDirty, meshDirtys, meshDirty)
         if (meshDirty->value) continue;
-        // zox_field_o(GenerateTexture, generateTextures, generateTexture)
-        // if (generateTexture->value) continue;
         if (!headless) {
             zox_field_o(MeshGPULink, meshGPULinks, meshGPULink)
             zox_field_o(UvsGPULink, uvsGPULinks, uvsGPULink)
@@ -28,6 +26,5 @@ void Element3DMeshSystem(ecs_iter_t *it) {
         }
         initializeElement->value = 0;
         meshDirty->value = 1;
-        // generateTexture->value = 1;
     }
 } zox_declare_system(Element3DMeshSystem)

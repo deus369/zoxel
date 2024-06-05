@@ -5,9 +5,9 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     zox_field_in(GameLink, gameLinks, 2)
     for (int i = 0; i < it->count; i++) {
-        zox_field_e()
-        zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
-        zox_field_i_in(GameLink, gameLinks, gameLink)
+        // zox_field_e()
+        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
+        zox_field_i(GameLink, gameLinks, gameLink)
         const ecs_entity_t realm = zox_get_value(gameLink->value, RealmLink)
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device_entity = deviceLinks->value[j];

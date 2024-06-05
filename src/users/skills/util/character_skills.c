@@ -11,11 +11,11 @@ void spawn_character_skills(ecs_world_t *world, const ecs_entity_t e, const ecs_
     }
     for (int i = 0; i < skills->length; i++) skills->value[i] = 0; // blanks are item slots
     // first block
-    if (meta_item_aura) {
-        const ecs_entity_t aura = spawn_user_skill(world, meta_item_aura, e);
+    if (meta_skill_aura) {
+        const ecs_entity_t aura = spawn_user_skill(world, meta_skill_aura, e);
         skills->value[0] = aura;
     } else {
-        zox_log(" ! meta_item_aura not found\n")
+        zox_log(" ! meta_skill_aura not found\n")
     }
     zox_modified(e, SkillLinks)
 }

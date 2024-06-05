@@ -14,6 +14,7 @@ void prefab_add_texture_generated(ecs_world_t *world, const ecs_entity_t e, cons
 
 
 void clone_texture_data(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t source) {
+    if (!source || !zox_has(source, TextureSize) || !zox_has(source, TextureData)) return;
     const int2 size = zox_get_value(source, TextureSize)
     zox_set(e, TextureSize, { size })
     const TextureData *source_data = zox_get(source, TextureData)

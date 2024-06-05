@@ -15,18 +15,18 @@ void Element3DRenderSystem(ecs_iter_t *it) {
     zox_field_in(TextureGPULink, textureGPULinks, 6)
     zox_field_in(RenderDisabled, renderDisableds, 7)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(RenderDisabled, renderDisableds, renderDisabled)
+        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         if (renderDisabled->value) continue;
         zox_field_e()
         if (!can_render_ui(world, e)) continue;
-        zox_field_i_in(MeshIndicies, meshIndiciess, meshIndicies)
+        zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
         if (!meshIndicies->length) continue;
-        zox_field_i_in(MeshGPULink, meshGPULinks, meshGPULink)
+        zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
         if (!meshGPULink->value.x || !meshGPULink->value.y) continue;
-        zox_field_i_in(TransformMatrix, transformMatrixs, transformMatrix)
-        zox_field_i_in(UvsGPULink, uvsGPULinks, uvsGPULink)
-        zox_field_i_in(ColorsGPULink, colorsGPULinks, colorsGPULink)
-        zox_field_i_in(TextureGPULink, textureGPULinks, textureGPULink)
+        zox_field_i(TransformMatrix, transformMatrixs, transformMatrix)
+        zox_field_i(UvsGPULink, uvsGPULinks, uvsGPULink)
+        zox_field_i(ColorsGPULink, colorsGPULinks, colorsGPULink)
+        zox_field_i(TextureGPULink, textureGPULinks, textureGPULink)
         if (!has_set_material) {
             has_set_material = 1;
             opengl_set_material(material_link);

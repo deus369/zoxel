@@ -29,6 +29,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
 extern ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player, const unsigned char render_disabled);
 extern void spawn_character_items(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player);
 extern void spawn_character_skills(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player);
+extern void spawn_character_quests(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player);
 
 ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t vox, const float3 position, const float4 rotation, const unsigned char lod, const ecs_entity_t player, const float vox_scale, const unsigned char render_disabled) {
     zox_instance(prefab)
@@ -75,6 +76,7 @@ ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, co
     free(name);
     spawn_character_items(world, e, player);
     spawn_character_skills(world, e, player);
+    spawn_character_quests(world, e, player);
     const ecs_entity_t health = spawn_character_stats(world, e, player, render_disabled);
     return (ecs_entity_2) { e, health };
 }

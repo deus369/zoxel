@@ -3,7 +3,7 @@ ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, con
     float health = (0.02f + 0.98f * ((rand() % 100) * 0.01f)) * 5.0f;
     float max_health = 10.0f;
     int stats_count = 1;
-    if (player) stats_count++;
+    if (player) stats_count += 4;
     StatLinks *statLinks = zox_get_mut(e, StatLinks)
     resize_memory_component(StatLinks, statLinks, ecs_entity_t, stats_count)
     // health
@@ -12,7 +12,12 @@ ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, con
     zox_set(health_stat, StatValueMax, { max_health })
     statLinks->value[0] = health_stat;
     // soul experience
-    if (player) statLinks->value[1] = spawn_user_stat(world, meta_stat_soul, e);
+    if (player) {
+        statLinks->value[1] = spawn_user_stat(world, meta_stat_mana, e);
+        statLinks->value[2] = spawn_user_stat(world, meta_stat_energy, e);
+        statLinks->value[3] = spawn_user_stat(world, meta_stat_regen_health, e);
+        statLinks->value[4] = spawn_user_stat(world, meta_stat_soul, e);
+    }
     zox_modified(e, StatLinks)
     // character ui
 #ifndef zox_disable_statbars

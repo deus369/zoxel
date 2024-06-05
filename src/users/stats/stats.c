@@ -1,10 +1,14 @@
 #ifndef zox_mod_stats
 #define zox_mod_stats
 
-zox_declare_tag(StateStat)
-zox_declare_tag(RegenStat)
+// todo: Give Health a level too, when it takes damage or heals, it gains xp
+// todo: Give HealthRegen a level, when regens more health, it gains xp
+// todo: Give Strength a level, when you do actions like lifting, it gains xp (carrying things?)
+
+zox_declare_tag(StatState)
+zox_declare_tag(StatRegen)
 zox_declare_tag(AttributeStat)
-zox_declare_tag(LevelStat)
+zox_declare_tag(StatLevel)
 zox_declare_tag(HealthStat)
 zox_component_float(StatValue)
 zox_component_float(StatValueMax)
@@ -22,10 +26,10 @@ zox_create_user_data_prefabs(Stat, stat, "stat")
 #include "util/character_stats.c"
 
 zox_begin_module(Stats)
-zox_define_tag(StateStat)
-zox_define_tag(RegenStat)
+zox_define_tag(StatState)
+zox_define_tag(StatRegen)
 zox_define_tag(AttributeStat)
-zox_define_tag(LevelStat)
+zox_define_tag(StatLevel)
 zox_define_tag(HealthStat)
 zox_define_user_data(Stat)
 zox_define_component_float(StatValue)

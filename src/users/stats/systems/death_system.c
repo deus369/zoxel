@@ -27,7 +27,7 @@ void DeathSystem(ecs_iter_t *it) {
         dead->value = 1;
         if (zox_has(userLink->value, DisableMovement)) zox_set(userLink->value, DisableMovement, { 1 })
         const ecs_entity_t last_damager = zox_get_value(userLink->value, LastDamager)
-        if (last_damager) {
+        if (last_damager && zox_alive(last_damager)) {
             zox_log_name(" + [%s] has gained xp", last_damager)
             // add experience to soul stat
             const StatLinks *stats = zox_get(last_damager, StatLinks)

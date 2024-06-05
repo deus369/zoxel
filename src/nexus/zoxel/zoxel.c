@@ -37,6 +37,9 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
 #ifdef zox_mod_skills
     spawn_realm_skills(world, realm);
 #endif
+#ifdef zox_mod_quests
+    spawn_realm_quests(world, realm);
+#endif
 #ifdef zox_mod_weathers
     spawn_weather(world);
 #endif

@@ -14,7 +14,6 @@ void Element2DMeshSystem(ecs_iter_t *it) {
         if (!initializeElement->value) continue;
         zox_field_i(CanvasLink, canvasLinks, canvasLink)
         if (!canvasLink->value) continue;
-        zox_field_e()
         zox_field_i(PixelSize, pixelSizes, pixelSize)
         zox_field_i(MeshAlignment, meshAlignments, meshAlignment)
         zox_field_o(MeshDirty, meshDirtys, meshDirty)

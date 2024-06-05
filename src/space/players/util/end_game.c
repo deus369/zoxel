@@ -32,10 +32,16 @@ void player_end_game(ecs_world_t *world, const ecs_entity_t player) {
     find_child_with_tag(canvas, MenuPaused, menu_paused)
     if (menu_paused) zox_delete(menu_paused) // for second player
 
-    find_child_with_tag(canvas, InventoryMenu, menu_items)
+    find_child_with_tag(canvas, MenuStatus, menu_status)
+    if (menu_status) zox_delete(menu_status)
+    find_child_with_tag(canvas, MenuItems, menu_items)
     if (menu_items) zox_delete(menu_items)
-    find_child_with_tag(canvas, StatsMenu, menu_stats)
+    find_child_with_tag(canvas, MenuStats, menu_stats)
     if (menu_stats) zox_delete(menu_stats)
+    find_child_with_tag(canvas, MenuSkills, menu_skills)
+    if (menu_skills) zox_delete(menu_skills)
+    find_child_with_tag(canvas, MenuQuests, menu_quests)
+    if (menu_quests) zox_delete(menu_quests)
 
     dispose_in_game_ui(world, player);
 
