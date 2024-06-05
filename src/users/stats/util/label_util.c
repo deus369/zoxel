@@ -33,7 +33,8 @@ int get_label_children(ecs_world_t *world, const ecs_entity_t e, char buffer[], 
 int get_label_local_character_health(ecs_world_t *world, const ecs_entity_t character, char buffer[], int buffer_size, int buffer_index) {
     if (character) {
         const StatLinks *statLinks = zox_get(character, StatLinks)
-        ecs_entity_t health_stat = statLinks->value[0];
+        // ecs_entity_t health_stat = statLinks->value[0];
+        find_array_component_with_tag(statLinks, HealthStat, health_stat)
 
         if (!zox_has(health_stat, StatValue)) return buffer_index;
 

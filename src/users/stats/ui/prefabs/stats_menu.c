@@ -1,3 +1,4 @@
+/*
 ecs_entity_t spawn_prefab_menu_stats(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_menu_stats")
@@ -16,3 +17,4 @@ ecs_entity_t spawn_menu_stats_player(ecs_world_t *world, const ecs_entity_t play
     data.icon.prefab = prefab_icon_stat;
     return spawn_window_users(world, &data);
 }
+*/

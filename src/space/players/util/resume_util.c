@@ -9,7 +9,9 @@ void resume_player_delayed(ecs_world_t *world, const ecs_entity_t player) {
     // return to regular ui
     const ecs_entity_t character = zox_get_value(player, CharacterLink)
     if (!zox_alive(character)) return;
-    const ecs_entity_t health_stat = zox_gett(character, StatLinks)->value[0];
+    const StatLinks *statLinks = zox_get(character, StatLinks)
+    find_array_component_with_tag(statLinks, HealthStat, health_stat)
+    // const ecs_entity_t health_stat = ->value[0];
     spawn_in_game_ui(world, player, (ecs_entity_2) { character, health_stat });
     if (can_roam == 0) { // not roaming, return character movement
         zox_set(character, DisableMovement, { 0 })

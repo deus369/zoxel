@@ -1,50 +1,51 @@
 #define zox_hashmap(name, type, type_zero, key_type, convert_to_hash)\
 \
-typedef struct name##_##pair name##_##pair;\
+typedef struct name##_pair name##_pair;\
 \
-struct name##_##pair {\
-    int key;\
+struct name##_pair {\
+    uint32_t key;\
     type value;\
-    struct name##_##pair* next;\
+    struct name##_pair* next;\
 };\
 \
 typedef struct {\
-    int size;\
-    name##_##pair **data;\
+    uint32_t size;\
+    name##_pair **data;\
 } name;\
 \
-int name##_##hash(int key, int size) {\
+uint32_t name##_hash(uint32_t key, uint32_t size) {\
     if (size == 0) return -1;\
     return key % size;\
 }\
 \
-name* create##_##name(int size) {\
+name* create_##name(uint32_t size) {\
     name* map = malloc(sizeof(name));\
     map->size = size;\
     /*calloc zeroes out data*/\
-    map->data = calloc(size, sizeof(name##_##pair*));\
+    map->data = calloc(size, sizeof(name##_pair*));\
     /*const int byte_length = size * sizeof(name##_##pair*);*/\
     /*map->data = malloc(byte_length);*/\
     /*memset(map->data, 0, byte_length);*/\
     return map;\
 }\
 \
-void name##_##add(name* map, key_type key_raw, type value) {\
+void name##_add(name* map, key_type key_raw, type value) {\
     if (!map || !map->data) return;\
-    int key = convert_to_hash(key_raw);\
-    int index = name##_##hash(key, map->size);\
-    name##_##pair* pair = malloc(sizeof(name##_##pair));\
+    uint32_t key = convert_to_hash(key_raw);\
+    /*zox_log("key [%i]\n", key)*/\
+    uint32_t index = name##_hash(key, map->size);\
+    name##_pair* pair = malloc(sizeof(name##_pair));\
     pair->key = key;\
     pair->value = value;\
     pair->next = map->data[index];\
     map->data[index] = pair;\
 }\
 \
-type name##_##get(name* map, key_type key_raw) {\
+type name##_get(name* map, key_type key_raw) {\
     if (!map || !map->data) return type_zero;\
-    int key = convert_to_hash(key_raw);\
-    int index = name##_##hash(key, map->size);\
-    name##_##pair* pair = map->data[index];\
+    uint32_t key = convert_to_hash(key_raw);\
+    uint32_t index = name##_hash(key, map->size);\
+    name##_pair* pair = map->data[index];\
     while (pair != NULL) {\
         if (pair->key == key) {\
             return pair->value;\
@@ -54,11 +55,11 @@ type name##_##get(name* map, key_type key_raw) {\
     return type_zero;\
 }\
 \
-unsigned char name##_##has(name* map, key_type key_raw) {\
+unsigned char name##_has(name* map, key_type key_raw) {\
     if (!map || !map->data) return 1;\
-    int key = convert_to_hash(key_raw);\
-    int index = name##_##hash(key, map->size);\
-    name##_##pair* pair = map->data[index];\
+    uint32_t key = convert_to_hash(key_raw);\
+    uint32_t index = name##_hash(key, map->size);\
+    name##_pair* pair = map->data[index];\
     while (pair != NULL) {\
         if (pair->key == key) return 1;\
         pair = pair->next;\
@@ -66,12 +67,12 @@ unsigned char name##_##has(name* map, key_type key_raw) {\
     return 0;\
 }\
 \
-void name##_##remove(name* map, key_type key_raw) {\
+void name##_remove(name* map, key_type key_raw) {\
     if (!map || !map->data) return;\
-    int key = convert_to_hash(key_raw);\
-    int index = name##_##hash(key, map->size);\
-    name##_##pair* pair = map->data[index];\
-    name##_##pair* prev_pair = NULL;\
+    uint32_t key = convert_to_hash(key_raw);\
+    uint32_t index = name##_hash(key, map->size);\
+    name##_pair* pair = map->data[index];\
+    name##_pair* prev_pair = NULL;\
     while (pair != NULL) {\
         if (pair->key == key) {\
             if (prev_pair == NULL) {\
@@ -87,14 +88,14 @@ void name##_##remove(name* map, key_type key_raw) {\
     }\
 }\
 \
-void name##_##dispose(name* map) {\
+void name##_dispose(name* map) {\
     if (!map) return;\
     if (!map->data) {\
         /*free(map);*/\
         return;\
     }\
     for (int i = 0; i < map->size; i++) {\
-        name##_##pair* pair = map->data[i];\
+        name##_pair* pair = map->data[i];\
         while (pair != NULL) {\
             name##_##pair* next_pair = pair->next;\
             free(pair);\
@@ -106,13 +107,13 @@ void name##_##dispose(name* map) {\
     /*free(map);*/\
 }\
 \
-int count##_##name(name* map) {\
+int count_##name(name* map) {\
     if (!map) return 0;\
     int count = 0;\
     for (int i = 0; i < map->size; i++) {\
-        name##_##pair* pair = map->data[i];\
+        name##_pair* pair = map->data[i];\
         while (pair != NULL) {\
-            name##_##pair* next_pair = pair->next;\
+            name##_pair* next_pair = pair->next;\
             count++;\
             pair = next_pair;\
         }\

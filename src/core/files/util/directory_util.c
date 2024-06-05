@@ -1,13 +1,46 @@
 typedef struct FileList {
     char **files;
+    char **filenames;
     int count;
 } FileList;
 
 void free_files(FileList *fileList) {
-    for (int i = 0; i < fileList->count; i++) free(fileList->files[i]);
+    for (int i = 0; i < fileList->count; i++) {
+        free(fileList->files[i]);
+        free(fileList->filenames[i]);
+    }
     free(fileList->files);
+    free(fileList->filenames);
     fileList->files = NULL;
+    fileList->filenames = NULL;
     fileList->count = 0;
+}
+
+
+// without extension
+char* get_filename(const char* filepath) {
+    // Find the last occurrence of the directory separator
+    const char *last_slash = strrchr(filepath, '/');
+    if (!last_slash) {
+        last_slash = strrchr(filepath, '\\');  // For Windows paths
+    }
+    const char *filename = (last_slash) ? last_slash + 1 : filepath;
+
+    // Find the last occurrence of the dot
+    const char *last_dot = strrchr(filename, '.');
+    size_t length = (last_dot) ? (size_t)(last_dot - filename) : strlen(filename);
+
+    // Allocate memory for the filename without extension
+    char *result = (char*)malloc(length + 1);
+    if (!result) {
+        return NULL;  // Memory allocation failed
+    }
+
+    // Copy the filename without extension
+    strncpy(result, filename, length);
+    result[length] = '\0';  // Null-terminate the result
+
+    return result;
 }
 
 void add_file(FileList *fileList, const char *filepath) {
@@ -18,20 +51,34 @@ void add_file(FileList *fileList, const char *filepath) {
             perror("Memory allocation failed");
             return;
         }
+        fileList->filenames = malloc(capacity * sizeof(char *));
+        if (fileList->filenames == NULL) {
+            perror("Memory allocation failed");
+            return;
+        }
     } else if (fileList->count >= capacity) {
         capacity *= 2;
         char **temp = realloc(fileList->files, capacity * sizeof(char *));
-        if (temp == NULL) {
+        char **temp2 = realloc(fileList->filenames, capacity * sizeof(char *));
+        if (temp == NULL || temp2 == NULL) {
+            if (temp) free(temp);
+            if (temp2) free(temp2);
             perror("Memory reallocation failed");
             free_files(fileList);
             return;
         }
         fileList->files = temp;
+        fileList->filenames = temp2;
     }
     fileList->files[fileList->count] = strdup(filepath);
     // zox_log(" + filepath: %s\n", filepath)
     if (fileList->files[fileList->count] == NULL) {
         perror("strdup failed");
+        return;
+    }
+    fileList->filenames[fileList->count] = get_filename(fileList->files[fileList->count]);
+    if (fileList->filenames[fileList->count] == NULL) {
+        perror("get_filename failed");
         return;
     }
     fileList->count++;
@@ -51,15 +98,11 @@ void traverse_directory(FileList *fileList, const char *directory) {
         char *name = entry->d_name;
         char path[1024];
         snprintf(path, sizeof(path), "%s/%s", directory, name);
-        // zox_log(" name: %s\n", name)
         if (entry->d_type == DT_DIR) {
-            /*zox_log(" directory: %s\n", directory)
-            zox_log("   = path: %s\n", path)*/
             traverse_directory(fileList, path);
         } else if (entry->d_type == DT_REG || entry->d_type == DT_LNK) { // Regular files and symbolic links
             add_file(fileList, path);
         }
-        // free(name);
     }
     closedir(dp);
 }
@@ -68,18 +111,15 @@ FileList get_files(const char *directory) {
     FileList fileList;
     fileList.count = 0;
     fileList.files = NULL;
-    // Create a modifiable copy of the directory string
     char *directory_non_slash = strdup(directory);
     if (directory_non_slash == NULL) {
         perror("Memory allocation failed");
         return fileList;
     }
-    // Ensure the last character is not a slash
     size_t len = strlen(directory_non_slash);
     if (len > 1 && directory_non_slash[len - 1] == '/') {
         directory_non_slash[len - 1] = '\0';
     }
-    // zox_log(" + directory %s\n", directory_non_slash)
     traverse_directory(&fileList, directory_non_slash);
     free(directory_non_slash);
     return fileList;

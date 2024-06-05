@@ -25,6 +25,7 @@
 #include "data/int_hashmap.c"
 #include "data/int3_hashmap.c"
 #include "data/byte3_hashmap.c"
+#include "data/string_hashmap.c"
 #include "util/math.c"
 #include "util/integer_util.c"
 #include "util/int3_util.c"

@@ -14,9 +14,5 @@ ecs_entity_t spawn_prefab_player_character3D(ecs_world_t *world) {
 
 ecs_entity_2 spawn_player_character3D_in_world(ecs_world_t *world, const ecs_entity_t vox, const float3 position, const float4 rotation, const unsigned char character_lod, const ecs_entity_t player) {
     const ecs_entity_2 e = spawn_character3D(world, prefab_character3D_player, vox, position, rotation, character_lod, player, player_vox_scale, 0);
-    /*const ecs_entity_t aura = spawn_aura(world, e.x);
-    SkillLinks *skillLinks = zox_get_mut(e.x, SkillLinks)
-    add_to_SkillLinks(skillLinks, aura);
-    zox_modified(e.x, SkillLinks)*/
     return e;
 }

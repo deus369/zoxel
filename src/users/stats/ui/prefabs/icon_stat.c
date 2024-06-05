@@ -21,6 +21,12 @@ void tooltip_event_icon_stat(ecs_world_t *world, const TooltipEventData *data) {
             const float value = zox_get_value(data->data, StatValue)
             const float value_max = zox_get_value(data->data, StatValueMax)
             sprintf(result, "[%s] [%i/%i]\n", name_string, (int) value, (int) value_max);
+        } else if (zox_has(data->data, StatRegen)) {
+            const float value = zox_get_value(data->data, StatValue)
+            sprintf(result, "[%s] [%i]\n", name_string, (int) value);
+        } else if (zox_has(data->data, StatAttribute)) {
+            const float value = zox_get_value(data->data, StatValue)
+            sprintf(result, "[%s] [%i]\n", name_string, (int) value);
         } else {
             sprintf(result, "[%s]\n", name_string);
         }
