@@ -14,6 +14,8 @@ zox_declare_tag(Camera3D)
 zox_declare_tag(FirstPersonCamera)
 zox_declare_tag(CameraFollower2D)
 zox_declare_tag(CameraUI)
+zox_declare_tag(RenderCamera)
+zox_declare_tag(RenderTexture)
 zox_component_byte(CanRoam)
 zox_component_byte(CameraMode)
 zox_component_byte(CameraViewing)
@@ -30,6 +32,7 @@ zox_component(ViewMatrix, float4x4) // todo: use ViewProjectionMatrix instead
 zox_component(ViewProjectionMatrix, float4x4)
 zox_memory_component(FrustumCorners, float3)
 zox_memory_component(CameraPlanes, plane)
+zox_component_entity(RenderTextureLink)
 #include "fun/camera_util.c"
 #include "util/bounds_util.c"
 #include "util/camera_util.c"
@@ -45,6 +48,7 @@ zox_memory_component(CameraPlanes, plane)
 #include "systems/camera_frustum_system.c"
 #include "systems/camera_debug_system.c"
 #include "systems/camera_draw_frustum_system.c"
+#include "systems/camera_planes_draw_system.c"
 
 zox_begin_module(Cameras)
 zox_define_tag(Camera)
@@ -53,6 +57,9 @@ zox_define_tag(Camera3D)
 zox_define_tag(FirstPersonCamera)
 zox_define_tag(CameraFollower2D)
 zox_define_tag(CameraUI)
+zox_define_tag(RenderCamera)
+zox_define_tag(RenderTexture)
+zox_define_component_entity(RenderTextureLink)
 zox_define_component_byte(CanRoam)
 zox_define_component_byte(CameraMode)
 zox_define_component_byte(CameraViewing)

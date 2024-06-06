@@ -11,4 +11,8 @@ void spawn_prefabs_terrain(ecs_world_t *world) {
     prefab_terrain = spawn_prefab_terrain(world);
     prefab_terrain_chunk = spawn_prefab_terrain_chunk(world, terrain_chunk_size);
     prefab_terrain_chunk_octree = spawn_prefab_terrain_chunk_octree(world, terrain_chunk_size);
+    zox_add_tag(prefab_camera, Streamer)
+    zox_prefab_set(prefab_camera, StreamPoint, { int3_zero })
+    zox_prefab_set(prefab_camera, TerrainLink, { 0 })
+    zox_prefab_set(prefab_camera, VoxLink, { 0 })
 }

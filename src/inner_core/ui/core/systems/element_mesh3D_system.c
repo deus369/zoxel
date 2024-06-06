@@ -20,7 +20,7 @@ void Element3DMeshSystem(ecs_iter_t *it) {
             zox_field_o(TextureGPULink, textureGPULinks, textureGPULink)
             zox_field_o(ColorsGPULink, colorsGPULinks, colorsGPULink)
             meshGPULink->value = spawn_gpu_mesh_buffers();
-            textureGPULink->value = spawn_gpu_texture_buffers();
+            textureGPULink->value = spawn_gpu_texture_buffer();
             uvsGPULink->value = spawn_gpu_generic_buffer();
             colorsGPULink->value = spawn_gpu_generic_buffer();
         }

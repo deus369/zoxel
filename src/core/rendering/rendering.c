@@ -1,5 +1,5 @@
-#ifndef zox_rendering
-#define zox_rendering
+#ifndef zox_mod_rendering
+#define zox_mod_rendering
 
 #include "data/renderer_types.c"
 #include "data/mesh_alignment_types.c"

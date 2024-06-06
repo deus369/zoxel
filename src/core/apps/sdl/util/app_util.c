@@ -24,7 +24,7 @@ ecs_entity_t spawn_main_window(ecs_world_t *world) {
     }
 }
 
-void finish_opengl_rendering(ecs_world_t *world) {
+void app_update_gpu(ecs_world_t *world) {
     const SDLWindow *window = zox_get(main_app, SDLWindow);
     if (window->value) SDL_GL_SwapWindow(window->value);
     else zox_logg("   ! did not swap opengl window\n")

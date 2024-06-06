@@ -23,21 +23,7 @@ void load_shaders(ecs_world_t *world) {
     for (int i = 0; i < load_shader_functions->size; i++) run_load_shader_function(world, i);
 }
 
-/* Restore
-funfun_array_d* restore_shader_functions;
-
-    restore_shader_functions = create_funfun_array_d(initial_dynamic_array_size);
-    dispose_funfun_array_d(restore_shader_functions);
-
-void run_restore_shader_function(ecs_world_t *world, int i) {
-    if (restore_shader_functions->data[i].value != NULL) (*restore_shader_functions->data[i].value)(world);
+unsigned char get_new_shader_source_index() {
+    shaders_count++;
+    return shaders_count - 1;
 }
-
-void add_restore_shader_function(funfun event) {
-    if (!headless) add_to_funfun_array_d(restore_shader_functions, event);
-}
-
-void restore_shaders_dynamic(ecs_world_t *world) {
-    for (int i = 0; i < restore_shader_functions->size; i++) run_restore_shader_function(world, i);
-}
-*/

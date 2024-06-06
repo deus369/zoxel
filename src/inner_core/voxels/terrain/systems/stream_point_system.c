@@ -7,8 +7,8 @@ void StreamPointSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(TerrainLink, terrainLinks, terrainLink)
         if (!terrainLink->value) continue;
-        zox_field_i_in(Position3D, position3Ds, position3D)
-        zox_field_i_out(StreamPoint, streamPoints, streamPoint)
+        zox_field_i(Position3D, position3Ds, position3D)
+        zox_field_o(StreamPoint, streamPoints, streamPoint)
         const int3 stream_point = real_position_to_chunk_position(position3D->value, default_chunk_size);
         if (int3_equals(stream_point, streamPoint->value)) continue; // no change
         streamPoint->value = stream_point;

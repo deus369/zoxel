@@ -37,6 +37,35 @@ lowp float rand(lowp vec2 co) {\
     return fract(sin(dot(co, vec2(12.9898,78.233))) * 43758.5453);\
 }\
 \
+lowp vec3 sky_gradient(lowp vec3 color) {\
+    if (mesh_pos.y > 0.1) {\
+        lowp float height_power = (mesh_pos.y - 0.1) * (1.0 - abs(max(mesh_pos.x, mesh_pos.z))) * 1.1;\
+        color.x += height_power;\
+        color.y += height_power;\
+        color.z += height_power;\
+        if (mesh_pos.x >= -0.1 && mesh_pos.x <= 0.1 && mesh_pos.z >= -0.1 && mesh_pos.z <= 0.1) {\
+            lowp float to_mid_power = (1.0 - 10.0 * max(abs(mesh_pos.x), abs(mesh_pos.z)));\
+            color.x += to_mid_power;\
+            color.y += to_mid_power;\
+            color.z += to_mid_power;\
+            lowp float noise2 = rand(time * mesh_pos.xy);\
+            color -= vec3(noise2) * 1.4;\
+        }\
+    }\
+    return color;\
+}\
+\
+void main() {\
+    lowp vec3 sky_top_color2 = sky_top_color;\
+    lowp float gradient = clamp((mesh_pos.y + 0.0) * 4.0, 0.0, 1.0);\
+    color = vec3(mix(sky_bottom_color, sky_top_color2, gradient)) * brightness;\
+    color = sky_gradient(color);\
+    color -= vec3(1) * 0.05;\
+    lowp float noise = rand(time * mesh_pos.xy);\
+    color += vec3(noise) * 0.1;\
+}";
+
+/*
 void main() {\
     lowp vec3 sky_top_color2 = sky_top_color;\
     lowp float gradient = clamp((mesh_pos.y + 0.0) * 4.0, 0.0, 1.0);\
@@ -59,6 +88,7 @@ void main() {\
     color += vec3(noise) * 0.18;\
 }";
 
+*/
 /*
     lowp float time = mod(gl_FragCoord.y, 100.0) * 0.01;\
 

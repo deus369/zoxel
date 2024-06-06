@@ -6,6 +6,7 @@ void spawn_realm_stats(ecs_world_t *world, ecs_entity_t realm) {
     meta_stat_soul = create_stat_level(world, "soul");
     zox_set(meta_stat_soul, TextureLink, { string_hashmap_get(files_textures_hashmap, new_string_data("soul")) })
     stats->value[1] = meta_stat_soul;
+    zox_add_tag(meta_stat_soul, StatSoul)
 
     // States
 

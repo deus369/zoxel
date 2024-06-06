@@ -33,12 +33,18 @@ void RenderMaterial2DSystem(ecs_iter_t *it) {
     zox_field_in(MaterialGPULink, materialGPULinks, 5)
     zox_field_in(TextureGPULink, textureGPULinks, 6)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(Position2D, position2Ds, position2D)
-        zox_field_i_in(Rotation2D, rotation2Ds, rotation2D)
-        zox_field_i_in(Scale1D, scale1Ds, scale1D)
-        zox_field_i_in(Brightness, brightnesss, brightness)
-        zox_field_i_in(MaterialGPULink, materialGPULinks, materialGPULink)
-        zox_field_i_in(TextureGPULink, textureGPULinks, textureGPULink)
+        zox_field_i(Position2D, position2Ds, position2D)
+        zox_field_i(Rotation2D, rotation2Ds, rotation2D)
+        zox_field_i(Scale1D, scale1Ds, scale1D)
+        zox_field_i(Brightness, brightnesss, brightness)
+        zox_field_i(MaterialGPULink, materialGPULinks, materialGPULink)
+        zox_field_i(TextureGPULink, textureGPULinks, textureGPULink)
         render_entity_material2D(render_camera_matrix, materialGPULink->value, textureGPULink->value, position2D->value, rotation2D->value, scale1D->value, brightness->value);
+#ifdef zoxel_catch_opengl_errors
+        if (check_opengl_error_unlogged() != 0) {
+            zox_log(" ! RenderMaterial2DSystem [%lu]\n", it->entities[i])
+            break;
+        }
+#endif
     }
 } zox_declare_system(RenderMaterial2DSystem)

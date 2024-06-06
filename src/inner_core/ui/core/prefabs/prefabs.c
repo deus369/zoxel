@@ -5,6 +5,7 @@ ecs_entity_t prefab_element_invisible;
 ecs_entity_t prefab_element_basic;
 ecs_entity_t prefab_element3D;
 ecs_entity_t prefab_element3D_child;
+ecs_entity_t prefab_render_texture;
 
 #include "canvas.c"
 #include "element.c"
@@ -14,6 +15,7 @@ ecs_entity_t prefab_element3D_child;
 #include "element_world_child.c"
 #include "canvas_overlay.c"
 #include "element_texture.c"
+#include "render_texture.c"
 
 void prefabs_add_ui_to_player(ecs_world_t *world, const ecs_entity_t e) {
     // Player -> Devices
@@ -39,4 +41,5 @@ void spawn_prefabs_ui_core(ecs_world_t *world) {
     prefab_element3D_child = spawn_prefab_element3D_child(world);
     prefab_canvas_overlay = spawn_prefab_canvas_overlay(world);
     prefabs_add_ui_to_player(world, prefab_player);
+    prefab_render_texture = spawn_prefab_render_texture(world);
 }

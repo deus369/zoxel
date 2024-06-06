@@ -14,7 +14,7 @@ void on_destroyed##_##name(ecs_iter_t *it) {\
     zox_iter_world()\
     zox_field_out(name, components, 1)\
     for (int i = 0; i < it->count; i++) {\
-        zox_field_i_out(name, components, component)\
+        zox_field_o(name, components, component)\
         zox_delete(component->value);\
         component->value = 0;\
     }\

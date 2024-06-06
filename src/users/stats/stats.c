@@ -9,7 +9,6 @@ zox_declare_tag(StatState)
 zox_declare_tag(StatRegen)
 zox_declare_tag(StatAttribute)
 zox_declare_tag(StatLevel)
-zox_declare_tag(HealthStat)
 zox_component_float(StatValue)
 zox_component_float(StatValueMax)
 zox_component_float(ExperienceValue)
@@ -17,6 +16,9 @@ zox_component_float(ExperienceMax)
 zox_entities_component(DotLinks)
 zox_declare_user_data(Stat)
 zox_create_user_data_prefabs(Stat, stat, "stat")
+// special stats
+zox_declare_tag(HealthStat)
+zox_declare_tag(StatSoul)
 #include "prefabs/prefabs.c"
 #include "util/realm_stats.c"
 #include "util/label_util.c"
@@ -30,16 +32,18 @@ zox_define_tag(StatState)
 zox_define_tag(StatRegen)
 zox_define_tag(StatAttribute)
 zox_define_tag(StatLevel)
-zox_define_tag(HealthStat)
 zox_define_user_data(Stat)
 zox_define_component_float(StatValue)
 zox_define_component_float(StatValueMax)
 zox_define_component_float(ExperienceValue)
 zox_define_component_float(ExperienceMax)
 zox_define_entities_component(DotLinks)
+// special stats
+zox_define_tag(HealthStat)
+zox_define_tag(StatSoul)
 // debuff system here, skills will add debuffs
 zox_system(DeathSystem, EcsOnUpdate, [in] StatValue, [in] UserLink, [none] HealthStat)
-zox_system(StatRegenSystem, EcsOnUpdate, [in] UserLink, [in] StatValueMax, [out] StatValue, [none] Stat)
+zox_system(StatRegenSystem, EcsOnUpdate, [in] UserLink, [in] StatValueMax, [out] StatValue, [none] StatState)
 zox_import_module(StatsUI)
 spawn_prefabs_stats(world);
 zoxel_end_module(Stats)

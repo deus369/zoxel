@@ -2,9 +2,7 @@
 #define zoxel_opengl
 
 #include "util/import_opengl.c"
-// zoxel_data
 #include "data/GLuint2.c"
-// zoxel_util
 #include "util/error_util.c"
 #include "util/primitive_square.c"
 #include "util/primitive_mesh_util.c"

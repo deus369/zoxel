@@ -10,14 +10,29 @@ ecs_entity_t spawn_player_camera(ecs_world_t *world, const ecs_entity_t player, 
     zox_set(player, CameraLink, { e })
     main_cameras[index] = e;
     ui_cameras[index] = e2;
+    // adds a frame buffer object and render buffer to the camera
+#ifndef zox_disable_post_processing
+#ifdef zox_disable_post_processing_additional_players
+    if (index == 0) {
+#endif
+        zox_add_tag(e, RenderCamera)
+        GLuint fbo = spawn_frame_buffer_object(world, e); // test fbo
+#ifndef zox_disable_depth_buffer
+        GLuint render_buffer = spawn_render_buffer(world, e, viewport_size); // test fbo
+        connect_render_buffer_to_fbo(fbo, render_buffer);
+#endif
+#ifdef zox_disable_post_processing_additional_players
+    }
+#endif
+#endif
     return e;
 }
 
 // todo: spawn unique canvas per viewport, viewports per player
 #ifdef zox_mod_ui
-ecs_entity_t spawn_default_ui(ecs_world_t *world, const ecs_entity_t camera, const int2 dimensions, const float4 screen_to_canvas) {
-    const ecs_entity_t canvas = spawn_canvas(world, prefab_canvas, camera, dimensions, screen_to_canvas);
-    spawn_canvas_overlay(world, canvas, dimensions);
+ecs_entity_t spawn_default_ui(ecs_world_t *world, const ecs_entity_t ui_camera, const int2 dimensions, const float4 screen_to_canvas) {
+    const ecs_entity_t canvas = spawn_canvas(world, prefab_canvas, ui_camera, dimensions, screen_to_canvas);
+    spawn_canvas_overlay(world, prefab_canvas_overlay, canvas, dimensions);
     spawn_tooltip(world, prefab_tooltip, canvas);
     return canvas;
 }
@@ -53,9 +68,21 @@ void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game)
         const float4 screen_to_canvas = (float4) { 1 / (float) players_playing, 1, i / (float) players_playing, 0 };
         const int2 viewport_size = screen_to_canvas_size(viewport_dimensions, screen_to_canvas);
         const int2 viewport_position = screen_to_canvas_position(viewport_dimensions, screen_to_canvas);
-        spawn_player_camera(world, player, i, camera_position, camera_rotation, viewport_position, viewport_size, screen_to_canvas);
+        const ecs_entity_t camera = spawn_player_camera(world, player, i, camera_position, camera_rotation, viewport_position, viewport_size, screen_to_canvas);
         const ecs_entity_t ui_camera = ui_cameras[i];
         const ecs_entity_t canvas = spawn_default_ui(world, ui_camera, viewport_size, screen_to_canvas);
+#ifndef zox_disable_post_processing
+#ifndef zox_disable_render_texture
+#ifdef zox_disable_post_processing_additional_players
+        if (i == 0) {
+#endif
+            // spawns a render texture ui and links to camera
+            spawn_render_texture(world, prefab_render_texture, canvas, viewport_size, camera);
+#ifdef zox_disable_post_processing_additional_players
+        }
+#endif
+#endif
+#endif
         zox_spawn_main_menu(world, player, game_name, canvas);
         zox_canvases[i] = canvas;
         zox_set(player, CanvasLink, { canvas })

@@ -34,6 +34,12 @@ void Particle3DRenderSystem(ecs_iter_t *it) {
 #ifdef zox_debug_particle3Ds
         spawn_line3D(world, position3D->value, float3_add(position3D->value, debug_particle_line_addition), 0.5f, 0.03);
 #endif
+#ifdef zoxel_catch_opengl_errors
+        if (check_opengl_error_unlogged() != 0) {
+            zox_log(" ! Particle3DRenderSystem [%lu]: [%i]\n", it->entities[i], 1)
+            break;
+        }
+#endif
     }
     glDisableVertexAttribArray(particle3D_position_location);
     opengl_disable_blend();

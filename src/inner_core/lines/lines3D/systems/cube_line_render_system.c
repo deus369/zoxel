@@ -120,6 +120,12 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
         set_line3D_color((color_rgb) { colorRGB->value.g, colorRGB->value.r, colorRGB->value.b });
         render_cube_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + bounds3D->value.y, position3D->value.z });*/
         // zoxel_log(" + cls [%i] - [%lu] position3D [%fx%fx%f]\n", i, it->entities[i], position3D->value.x, position3D->value.y, position3D->value.z);
+#ifdef zoxel_catch_opengl_errors
+        if (check_opengl_error_unlogged() != 0) {
+            zox_log(" ! CubeLineRenderSystem [%lu]\n", it->entities[i])
+            break;
+        }
+#endif
     }
     glDisableVertexAttribArray(line3D_position_location);
     glUseProgram(0);

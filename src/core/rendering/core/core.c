@@ -10,7 +10,6 @@ const GLchar* shader_frags[zox_max_shaders];
 zox_declare_tag(Shader)
 zox_declare_tag(Material)
 zox_declare_tag(SingleMaterial)
-#include "util/mesh_indicies.c"
 zox_component_byte(ShaderSourceIndex)
 zox_component_entity(ShaderLink) // links to a shader entity
 zox_memory_component(MeshIndicies, int)
@@ -25,10 +24,15 @@ zox_memory_component(MeshColorRGBs, color_rgb)
 #include "components/uvs_gpu_link.c"
 #include "components/colors_gpu_link.c"
 #include "components/shader_gpu_link.c"
-#include "fun/resource_management.c"
+#include "components/compute_shader.c"
+#include "components/frame_buffer.c"
+#include "components/render_buffer.c"
+#include "util/mesh_indicies.c"
+#include "util/resource_management.c"
 #include "util/mesh_util.c"
 #include "util/mesh_indicies2.c"
 #include "util/shader_loading.c"
+#include "util/render_passes.c"
 #include "prefabs/shader.c"
 #include "prefabs/material.c"
 #include "systems/mesh_dispose_system.c"
@@ -37,12 +41,7 @@ zox_memory_component(MeshColorRGBs, color_rgb)
 #include "systems/material_restore_system.c"
 #include "systems/shader_dispose_system.c"
 #include "systems/shader_restore_system.c"
-#include "fun/camera_render_system.c"
-
-unsigned char get_new_shader_source_index() {
-    shaders_count++;
-    return shaders_count - 1;
-}
+#include "systems/camera_render_system.c"
 
 void spawn_prefabs_rendering_core(ecs_world_t *world) {
     spawn_prefab_shader(world);
@@ -74,6 +73,9 @@ zox_define_component_w_dest(TextureGPULink)
 zox_define_component_w_dest(MeshGPULink)
 zox_define_component_w_dest(UvsGPULink)
 zox_define_component_w_dest(ColorsGPULink)
+zox_define_component_w_dest(ComputeShaderLink)
+zox_define_component_w_dest(FrameBufferLink)
+zox_define_component_w_dest(RenderBufferLink)
 zox_define_component_byte(ShaderSourceIndex)
 zox_define_component_entity(ShaderLink) // links to a shader entity
 zox_define_memory_component(MeshIndicies)

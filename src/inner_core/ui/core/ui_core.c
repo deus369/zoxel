@@ -1,12 +1,6 @@
 #ifndef zox_mod_ui_core
 #define zox_mod_ui_core
 
-typedef struct  {
-    unsigned char event;
-    ecs_entity_t tooltip;
-    ecs_entity_t data;
-} TooltipEventData;
-
 zox_declare_tag(Element)
 zox_declare_tag(Element3D)
 zox_declare_tag(Canvas)
@@ -31,7 +25,6 @@ zox_component_entity(CanvasLink)
 zox_component_entity(UIHolderLink)
 zox_component_byte(HeaderHeight)
 zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t, ecs_entity_t)
-zox_function_component(TooltipEvent, void, ecs_world_t*, const TooltipEventData*)
 zox_entities_component(ElementLinks)
 zox_component_entity(WindowRaycasted)
 zox_component_entity(WindowTarget)
@@ -55,6 +48,8 @@ zox_component_entity(Clicker)
 zox_component_entity(ClickingEntity)
 zox_component_entity(DraggerLink)
 zox_component_entity(DraggedLink)
+#include "data/tooltip_event_data.c"
+zox_function_component(TooltipEvent, void, ecs_world_t*, const TooltipEventData*)
 #include "data/settings.c"
 #include "data/element_spawn_data.c"
 #include "data/select_states.c"
@@ -88,6 +83,7 @@ zox_component_entity(DraggedLink)
 #include "systems/element3D_render_system.c"
 #include "systems/click_sound_system.c"
 #include "systems/dragger_end_system.c"
+#include "systems/render_texture_render_system.c"
 zox_increment_system_with_reset_extra(SelectState, zox_select_state_trigger_selected, zox_select_state_selected, zox_select_state_trigger_deselect, zox_select_state_deselected_this_frame)
 
 zox_begin_module(UICore)
@@ -125,7 +121,6 @@ zox_define_component_byte(WindowsCount)
 zox_define_component_byte(SetWindowLayer)
 zox_define_component_byte(WindowLayer)
 zox_define_component_byte(ElementLayer)
-// ui
 zox_define_component_byte(InitializeElement)
 zox_define_tag(ClickMakeSound)
 zox_define_tag(Selectable)
@@ -161,7 +156,8 @@ if (!headless) {
 }
 zox_system(CanvasResizeSystem, EcsOnUpdate, [in] CameraLink, [in] Children, [in] cameras.ScreenToCanvas, [out] PixelSize, [none] Canvas)
 // all ui
-zox_render2D_system(ElementRenderSystem, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D,  [in] RenderDisabled, [in] Brightness, [in] Alpha, [in] MeshGPULink, [in] UvsGPULink, [in] TextureGPULink, [in] MeshDirty, [none] ElementRender)
+zox_render2D_system(RenderTextureRenderSystem, [in] TransformMatrix, [in] Layer2D, [in] RenderDisabled, [in] MeshGPULink, [in] UvsGPULink, [in] TextureGPULink, [none] cameras.RenderTexture)
+zox_render2D_system(ElementRenderSystem, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D,  [in] RenderDisabled, [in] Brightness, [in] Alpha, [in] MeshGPULink, [in] UvsGPULink, [in] TextureGPULink, [in] MeshDirty, [none] ElementRender, [none] !cameras.RenderTexture)
 // healthbars
 zox_render3D_system(Element3DRenderSystem, [in] TransformMatrix, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] TextureGPULink, [in] RenderDisabled, [none] rendering.core.SingleMaterial)
 zox_system_1(ClickSoundSystem, zox_pip_mainthread, [in] ClickState, [none] ClickMakeSound)

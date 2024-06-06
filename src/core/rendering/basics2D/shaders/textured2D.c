@@ -1,3 +1,5 @@
+// todo: replacing position/angle/scale with a transform matrix
+
 const GLchar* shader2D_textured_vert_buffer = "\
 #version 300 es\n\
 uniform highp mat4 camera_matrix;\
@@ -26,6 +28,7 @@ out lowp vec4 color;\
 void main() {\
     color = texture(tex, uv) * brightness;\
     color.w *= alpha;\
+    if (alpha < -0.99) color.w = 1.0;\
 }";
 
 // testing uvs:

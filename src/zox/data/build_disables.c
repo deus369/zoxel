@@ -1,5 +1,14 @@
 // disables
 
+// #define zox_disable_canvas_overlay
+
+// #define zoxel_catch_opengl_errors
+
+#define zox_disable_post_processing_additional_players
+// #define zox_disable_post_processing
+// #define zox_disable_depth_buffer
+// #define zox_disable_render_texture
+
 // #define zox_vox_noise
 // #define zox_disable_block_voxes
 
@@ -49,7 +58,6 @@
 // #define zox_disable_skybox
 // #define zox_disable_main_menu
 
-// #define zoxel_catch_opengl_errors
 
 // #define zox_disable_io
 // #define zox_disable_audio

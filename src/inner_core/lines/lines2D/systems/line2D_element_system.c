@@ -20,8 +20,8 @@ void Line2DElementSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(CanvasLink, canvasLinks, canvasLink)
         if (!zox_valid(canvasLink->value)) continue;
-        zox_field_i_in(LinePosition2D, linePosition2Ds, linePosition2D)
-        zox_field_i_out(LineData2D, lineData2Ds, lineData2D)
+        zox_field_i(LinePosition2D, linePosition2Ds, linePosition2D)
+        zox_field_o(LineData2D, lineData2Ds, lineData2D)
         const int2 canvas_size = zox_get_value(canvasLink->value, PixelSize)
         const float2 canvas_size_f = int2_to_float2(canvas_size);
         const float aspect_ratio = canvas_size_f.x / canvas_size_f.y;

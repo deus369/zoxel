@@ -73,16 +73,38 @@ void opengl_disable_texture(unsigned char isBlend) {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void opengl_clear(float3 clear_color) {
-    glClearColor(clear_color.x, clear_color.y, clear_color.z, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);       // Clears the buffer ?
-    // glClear(GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);        // cull for 3D things
-    glEnable(GL_CULL_FACE);
+void opengl_set_defaults(unsigned char is_3D) {
+    if (is_3D) {
+        glEnable(GL_DEPTH_TEST);        // cull for 3D things
+        glDepthFunc(GL_LESS);
+        glEnable(GL_CULL_FACE);
+        glDisable(GL_BLEND);
+    } else {
+        glDisable(GL_DEPTH_TEST);        // cull for 3D things
+        glDisable(GL_CULL_FACE);
+        glEnable(GL_BLEND);
+    }
     // glCullFace(GL_BACK); // defaults to this
+    // glDisable(GL_BLEND); // Disable blending
 }
 
-GLuint spawn_gpu_texture_buffers() {
+void opengl_clear_viewport_all(const float3 clear_color) {
+    glClearColor(clear_color.x, clear_color.y, clear_color.z, 1.0f);
+    // glClearDepth(0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void opengl_clear_viewport_depth() {
+    glClear(GL_DEPTH_BUFFER_BIT);
+}
+
+void clear_depth_buffer(GLuint fbo) {
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+    glClear(GL_DEPTH_BUFFER_BIT);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0); // Bind the default framebuffer
+}
+
+GLuint spawn_gpu_texture_buffer() {
     const int texture_type = GL_NEAREST; // GL_NEAREST | GL_LINEAR
     GLuint textureID;
     glGenTextures(1, &textureID);

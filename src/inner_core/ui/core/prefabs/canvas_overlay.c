@@ -1,3 +1,5 @@
+const unsigned char pause_ui_overlay_layer = 1;
+
 ecs_entity_t spawn_prefab_canvas_overlay(ecs_world_t *world) {
     zox_prefab()
     zox_add_tag(e, CanvasOverlay)
@@ -13,7 +15,10 @@ ecs_entity_t spawn_prefab_canvas_overlay(ecs_world_t *world) {
 }
 
 // todo: stretch to parent size!
-ecs_entity_t spawn_canvas_overlay(ecs_world_t *world, const ecs_entity_t canvas, const int2 canvas_size) {
+ecs_entity_t spawn_canvas_overlay(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas, const int2 canvas_size) {
+#ifdef zox_disable_canvas_overlay
+    return 0;
+#endif
     const ecs_entity_t parent = canvas;
     const unsigned char layer = max_layers2D - 1;
     const int2 pixel_position = int2_zero;
@@ -21,7 +26,7 @@ ecs_entity_t spawn_canvas_overlay(ecs_world_t *world, const ecs_entity_t canvas,
     const int2 pixel_size = (int2) { 4096, 4096 }; //  canvas_size;
     const int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
     const float2 position2D = get_element_position(pixel_position_global, canvas_size);
-    zox_instance(prefab_canvas_overlay)
+    zox_instance(prefab)
     zox_name("canvas_overlay")
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     zox_set(e, Alpha, { 1.0f })
@@ -56,7 +61,7 @@ void trigger_canvas_half_fade(ecs_world_t *world, const ecs_entity_t canvas, con
     const float canvas_fade_delay = 0.02f;
     find_child_with_tag(canvas, CanvasOverlay, e)
     if (!e) return;
-    zox_set(e, Layer2D, { 0 })
+    zox_set(e, Layer2D, { pause_ui_overlay_layer })
     zox_set(e, RenderDisabled, { 0 })
     // i should add multiple animationions as children or something
     AnimationSequence *animationSequence = zox_get_mut(e, AnimationSequence)

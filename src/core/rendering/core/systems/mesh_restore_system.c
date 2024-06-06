@@ -37,7 +37,7 @@ void TextureRestoreSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i_out(TextureGPULink, textureGPULinks, textureGPULink)
         zox_field_i_out(TextureDirty, textureDirtys, textureDirty)
-        textureGPULink->value = spawn_gpu_texture_buffers();
+        textureGPULink->value = spawn_gpu_texture_buffer();
         textureDirty->value = 1;
     }
 } zox_declare_system(TextureRestoreSystem)

@@ -11,7 +11,7 @@ unsigned char terrain_mode = 0;
 double terrain_amplifier = 64.0;
 double terrain_boost = 0.0;
 int lowest_voxel_height = -24;
-const double real_terrain_frequency = 0.013216; //  0.008216; // 0.004216; // 0.026216
+const double real_terrain_frequency = 0.003216; //  0.013216; //  0.008216; // 0.004216; // 0.026216
 double terrain_frequency = 0.038216;
 uint32_t terrain_seed = 32666;
 #define terrain_mode_tiny 1
