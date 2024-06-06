@@ -39,7 +39,7 @@ zox_system(CameraRaySystem, zox_pip_raycasting, [in] FrustumCorners, [out] Rayca
 zox_system_1(RayDebugSystem, zox_pip_mainthread, [in] RaycastOrigin, [in] RaycastNormal)
 #endif
 prefab_add_raycasts_to_players(world, prefab_player);
-prefab_add_raycasts3D(world, prefab_camera);
+prefab_add_raycasts3D(world, prefab_camera_game);
 zoxel_end_module(Raycasts)
 
 #endif

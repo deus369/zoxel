@@ -13,6 +13,7 @@ float3 float3_from_int3(const int3 input) {
 
 int3 find_closest_point(const int3* points, const int points_length, const int3 target) {
     if (points_length == 0) return int3_zero;
+    if (points_length == 1) return points[0];
     int3 closest_point = points[0];
     float closest_distance = int3_distance(points[0], target); // 1000000;
     for (unsigned char i = 1; i < points_length; i++) {

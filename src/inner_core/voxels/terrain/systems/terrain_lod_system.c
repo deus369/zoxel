@@ -36,13 +36,20 @@ void TerrainLodSystem(ecs_iter_t *it) {
         zox_field_out_iter(&chunks_iterator, RenderLod, renderLods, 3)
         zox_field_out_iter(&chunks_iterator, ChunkDirty, chunkDirtys, 4)
         zox_field_out_iter(&chunks_iterator, ChunkLodDirty, chunkLodDirtys, 5)
+        // zox_log("stream is dirty %i\n", stream_points_length)
         for (int j = 0; j < total_chunks; j++) {
             const ChunkNeighbors *chunkNeighbors = &chunkNeighborss[j];
             RenderLod *renderLod = &renderLods[j];
             const int3 chunk_position = (&chunkPositions[j])->value;
             const int3 stream_point = find_closest_point(stream_points, stream_points_length, chunk_position);
             const unsigned char camera_distance = get_camera_chunk_distance(stream_point, chunk_position);
-            if (renderLod->value != camera_distance || check_chunk_lod(left) || check_chunk_lod(right) || check_chunk_lod(back) || check_chunk_lod(front)) camera_distances[j] = camera_distance;
+            if (renderLod->value != camera_distance || check_chunk_lod(left) || check_chunk_lod(right) || check_chunk_lod(back) || check_chunk_lod(front)) {
+                camera_distances[j] = camera_distance;
+                // zox_log(" ? chunk is dirty %ix%ix%i\n", chunk_position.x, chunk_position.y, chunk_position.z)
+            } /*else {
+                // zox_log(" ? chunk is clean [%i] to [%i] %ix%ix%i\n", renderLod->value, camera_distance, chunk_position.x, chunk_position.y, chunk_position.z)
+                // zox_log("  - streamers [%i] stream_point %ix%ix%i\n", total_streamers, stream_point.x, stream_point.y, stream_point.z)
+            }*/
         }
         for (int j = 0; j < total_chunks; j++) {
             const unsigned char camera_distance = camera_distances[j];

@@ -5,7 +5,7 @@ void StreamPointSystem(ecs_iter_t *it) {
     zox_field_in(TerrainLink, terrainLinks, 2)
     zox_field_out(StreamPoint, streamPoints, 3)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(TerrainLink, terrainLinks, terrainLink)
+        zox_field_i(TerrainLink, terrainLinks, terrainLink)
         if (!terrainLink->value) continue;
         zox_field_i(Position3D, position3Ds, position3D)
         zox_field_o(StreamPoint, streamPoints, streamPoint)
@@ -13,5 +13,7 @@ void StreamPointSystem(ecs_iter_t *it) {
         if (int3_equals(stream_point, streamPoint->value)) continue; // no change
         streamPoint->value = stream_point;
         zox_set(terrainLink->value, StreamDirty, { 1 })
+        // zox_log("dirty stream terrain\n")
+        // zox_log("dirty stream terrain %ix%ix%i\n", stream_point.x, stream_point.y, stream_point.z)
     }
 } zox_declare_system(StreamPointSystem)

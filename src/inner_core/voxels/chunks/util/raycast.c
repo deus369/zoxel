@@ -7,7 +7,7 @@ zox_log(" > local_point [%fx%fx%f]\n", local_point.x, local_point.y, local_point
 zox_log(" + voxel_position [%ix%ix%i]\n", voxel_position.x, voxel_position.y, voxel_position.z)*/
 
 void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t camera, const ecs_entity_t terrain) {
-    if (!terrain || !camera) return;
+    if (!terrain || !camera || !zox_has(camera, RaycastOrigin)) return;
     const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
     const float3 ray_origin = zox_get_value(camera, RaycastOrigin)
     const float3 ray_normal = zox_get_value(camera, RaycastNormal)

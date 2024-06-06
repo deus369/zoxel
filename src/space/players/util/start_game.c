@@ -1,8 +1,7 @@
 void fix_camera_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
-    const Position3D *camera_position3D = zox_get(camera, Position3D)
-    int3 terrain_position = int3_zero;
-    if (camera_position3D) terrain_position = real_position_to_chunk_position(camera_position3D->value, default_chunk_size);
+    const float3 camera_position3D = zox_get_value(camera, Position3D)
+    int3 terrain_position = real_position_to_chunk_position(camera_position3D, default_chunk_size);
     const ecs_entity_t game = zox_get_value(player, GameLink)
     const ecs_entity_t realm = zox_get_value(game, RealmLink)
     const ecs_entity_t terrain = zox_get_value(realm, TerrainLink)
