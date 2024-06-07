@@ -92,6 +92,10 @@ float3 float3_divide_float(const float3 input, const float div) {
     return (float3) { input.x / div, input.y / div, input.z / div };
 }
 
+float3 float3_abs(const float3 input) {
+    return (float3) { float_abs(input.x), float_abs(input.y), float_abs(input.z) };
+}
+
 float3 float3_normalize(const float3 input) {
     float length = sqrt(input.x * input.x + input.y * input.y + input.z * input.z);
     if (float_abs(length) <= 0.00001f) return input;

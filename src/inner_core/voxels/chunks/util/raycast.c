@@ -1,28 +1,65 @@
 const float ray_interval = 0.04f;
-const float ray_length = 6;
+const float ray_length = 16;
 
 /*zox_log(" > point [%fx%fx%f]\n", point.x, point.y, point.z)
 zox_log(" > block_position [%fx%fx%f]\n", block_position.x, block_position.y, block_position.z)
 zox_log(" > local_point [%fx%fx%f]\n", local_point.x, local_point.y, local_point.z)
 zox_log(" + voxel_position [%ix%ix%i]\n", voxel_position.x, voxel_position.y, voxel_position.z)*/
 
+// using DDA for raycasting
 void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t camera, const ecs_entity_t terrain) {
     if (!terrain || !camera || !zox_has(camera, RaycastOrigin)) return;
+    // chunks
     const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
-    const float3 ray_origin = zox_get_value(camera, RaycastOrigin)
-    const float3 ray_normal = zox_get_value(camera, RaycastNormal)
     const ChunkLinks *chunk_links = zox_get(terrain, ChunkLinks)
-    int3 cache_position = int3_zero;
-    float3 hit_point = float3_zero;
+    // int3 cache_position = int3_zero;
+    // float3 hit_point = float3_zero;
     unsigned char ray_hit = 0;
     float3 hit_normal = float3_zero;
-    float3 cache_point = float3_zero;
+    // float3 cache_point = float3_zero;
     int3 cached_chunk_position = (int3) { 255255, 255255, 255255 };
     ecs_entity_t chunk;
     const ChunkOctree *chunk_octree;
-    for (float i = 0; i < ray_length; i += ray_interval) {
-        float3 point = float3_add(ray_origin, float3_multiply_float(ray_normal, i));
-        int3 chunk_position = real_position_to_chunk_position(point, default_chunk_size);
+    // ray
+    const float3 ray_origin = zox_get_value(camera, RaycastOrigin)
+    const float3 ray_normal = zox_get_value(camera, RaycastNormal)
+    // const float ray_normal_length = float3_length(ray_normal);
+    const int3 step_direction = float3_to_int3(float3_sign(ray_normal));
+    // const float3 ray_unit_size = float3_abs(ray_normal);
+    const float3 ray_unit_size = (float3) { 1.0f / float_abs(ray_normal.x), 1.0f / float_abs(ray_normal.y), 1.0f / float_abs(ray_normal.z) };
+    // const float3 ray_unit_size = float3_abs((float3) { ray_normal_length / ray_normal.x, ray_normal_length / ray_normal.y, ray_normal_length / ray_normal.z });
+    const float3 ray_origin_scaled = float3_multiply_float(ray_origin, 2);
+    int3 voxel_position = real_position_to_voxel_position(ray_origin);
+
+    // tMax
+    float3 ray_add = float3_zero;
+    if (ray_normal.x < 0) ray_add.x = (ray_origin_scaled.x - voxel_position.x);
+    else ray_add.x = ((float) voxel_position.x + 1 - ray_origin_scaled.x);
+    if (ray_normal.y < 0) ray_add.y = (ray_origin_scaled.y - (float) voxel_position.y);
+    else ray_add.y = ((float) voxel_position.y + 1 - ray_origin_scaled.y);
+    if (ray_normal.z < 0) ray_add.z = (ray_origin_scaled.z - (float) voxel_position.z); // * ray_unit_size.z;
+    else ray_add.z = ((float) voxel_position.z + 1 - ray_origin_scaled.z);
+    ray_add.x *= ray_unit_size.x;
+    ray_add.y *= ray_unit_size.y;
+    ray_add.z *= ray_unit_size.z;
+    // draw first push
+    // render_line3D(world, ray_origin, float3_add(ray_origin, ray_add), (color_rgb) { 255, 0, 0 });
+    // zox_log(" > ray_origin: %fx%fx%f\n", ray_origin.x, ray_origin.y, ray_origin.z)
+    // zox_log(" > ray_add: %fx%fx%f\n", ray_add.x, ray_add.y, ray_add.z)
+    // zox_log(" > ray unit size: %fx%fx%f\n", ray_unit_size.x, ray_unit_size.y, ray_unit_size.z)
+    // zox_log(" > ray step: %ix%ix%i\n", step_direction.x, step_direction.y, step_direction.z)
+    // zox_log("   > voxel_position: %ix%ix%i\n", voxel_position.x, voxel_position.y, voxel_position.z)
+    // float3 voxel_position_origin = float3_multiply_float(int3_to_float3(voxel_position), 2.0f);
+    // render_line3D(world, voxel_position_origin, float3_add(voxel_position_origin, float3_up), (color_rgb) { 255, 0, 0 });
+    float ray_distance = 0;
+    int checks = 0;
+    while (ray_distance <= ray_length) {
+        checks++;
+        if (checks >= 6667) break;
+        // float3 point = float3_add(ray_origin, ray_add); // float3_multiply_float(ray_normal, i));
+
+        const int3 chunk_position = voxel_position_to_chunk_position(voxel_position, default_chunk_size);
+        // int3 chunk_position = real_position_to_chunk_position(point, default_chunk_size);
         if (!int3_equals(cached_chunk_position, chunk_position)) {
             chunk = int3_hashmap_get(chunk_links->value, chunk_position);
             if (!chunk) return;
@@ -31,17 +68,17 @@ void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t camera, const 
             cached_chunk_position = chunk_position;
         }
         // should do a check if chunk_position changed
-        int3 voxel_position = real_position_to_voxel_position(point);
-        if (int3_equals(cache_position, voxel_position)) continue;
+        // int3 voxel_position = real_position_to_voxel_position(point);
+        // if (!int3_equals(cache_position, voxel_position))  {
         byte3 voxel_position_local = get_local_position_byte3(voxel_position, chunk_position, default_chunk_size_byte3);
         byte3 temp = voxel_position_local;
         const unsigned char old_voxel = get_octree_voxel(chunk_octree, &temp, max_octree_depth);
         if (old_voxel) {
             // move into minivox
-            hit_normal = float3_from_int3(int3_sub(cache_position, voxel_position));
+            // hit_normal = float3_from_int3(int3_sub(cache_position, voxel_position));
             unsigned char selected_mini = 0;
             if (is_select_minis) {
-                const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
+                /*const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
                 const ecs_entity_t block = voxels->value[old_voxel - 1];
                 if (zox_has(block, BlockVox)) {
                     const BlockSpawns *spawns = zox_get(chunk, BlockSpawns)
@@ -50,19 +87,59 @@ void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t camera, const 
                         raycast_terrain_gizmo_block_vox(world, block_spawn, cache_point, ray_normal, hit_normal);
                         selected_mini = 1;
                     }
-                }
+                }*/
             }
-            if (!selected_mini){
+            if (!selected_mini) {
                 ray_hit = 1;
-                hit_point = point;
+                // hit_point = float3_add(ray_origin, ray_add); // point;
             }
             break;
         }
-        cache_position = voxel_position;
-        cache_point = point;
+
+        // Increment Ray Position - RayLength X is smallest
+        if (ray_add.x < ray_add.y && ray_add.x < ray_add.z) { // ray_add.x < ray_add.y &&
+            ray_distance = ray_add.x;
+            voxel_position.x += step_direction.x;
+            ray_add.x += ray_unit_size.x;
+            if (step_direction.x >= 0) hit_normal = float3_left;
+            else hit_normal = float3_right;
+        } else if (ray_add.y < ray_add.z) {
+            ray_distance = ray_add.y;
+            voxel_position.y += step_direction.y;
+            ray_add.y += ray_unit_size.y;
+            if (step_direction.y >= 0) hit_normal = float3_down;
+            else hit_normal = float3_up;
+        } else {
+            ray_distance = ray_add.z;
+            voxel_position.z += step_direction.z;
+            ray_add.z += ray_unit_size.z;
+            if (step_direction.z >= 0) hit_normal = float3_backward;
+            else hit_normal = float3_forward;
+        }
+        // zox_log("   > point [%fx%fx%f]\n", point.x, point.y, point.z)
+        // zox_log("   > ray_add [%fx%fx%f]\n", ray_add.x, ray_add.y, ray_add.z)
+        // zox_log("   - ray voxel [%ix%ix%i]\n", voxel_position.x, voxel_position.y, voxel_position.z)
+        // render_line3D(world, ray_origin, point, (color_rgb) { 255, 255, 155 });
+        // render_line3D(world, point, float3_add(point, float3_up), (color_rgb) { 255, 0, 0 });
+        // render_line3D(world, point, float3_add(point, float3_right), (color_rgb) { 255, 0, 0 });
+        // render_line3D(world, point, float3_add(point, float3_forward), (color_rgb) { 255, 0, 0 });
+        // float3 voxel_position_real = float3_multiply_float(int3_to_float3(voxel_position), 2.0f);
+        // render_line3D(world, voxel_position_real, float3_add(voxel_position_real, float3_up), (color_rgb) { 255, 0, 0 });
+        // cache_position = voxel_position;
+        // cache_point = point;
     }
     if (ray_hit) {
+        float3 voxel_position_real = float3_multiply_float(int3_to_float3(voxel_position), 0.5f);
+        voxel_position_real = float3_add(voxel_position_real, (float3) { 0.25f, 0.25f, 0.25f });
         // zox_log(" > ray hit at %fx%fx%f\n", hit_point.x, hit_point.y, hit_point.z)
+        // zox_log(" > ray hit [%ix%ix%i] [%fx%fx%f]\n", voxel_position.x, voxel_position.y, voxel_position.z, hit_normal.x, hit_normal.y, hit_normal.z)
+        /*
+        render_line3D(world, ray_origin, loat3_add(voxel_position_real, float3_multiply_float(hit_normal, 0.25f)), (color_rgb) { 255, 0, 0 });*/
+        render_line3D(world, voxel_position_real, float3_add(voxel_position_real, hit_normal), (color_rgb) { 255, 0, 0 });
+
+
+        // zox_log("ray_distance: %f\n", ray_distance)
+        float3 hit_point = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * 0.5f));
         render_line3D(world, hit_point, float3_add(hit_point, float3_multiply_float(hit_normal, 0.5f)), (color_rgb) { 0, 0, 155 });
     }
 }

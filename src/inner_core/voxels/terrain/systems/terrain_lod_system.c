@@ -2,7 +2,7 @@
 #define check_chunk_lod(dir)\
     (chunkNeighbors->value[direction##_##dir] != 0 &&\
     zox_gett_value(chunkNeighbors->value[direction##_##dir], RenderLod) != \
-    get_camera_chunk_distance(stream_point, int3##_##dir(chunk_position)))
+    get_camera_chunk_distance(stream_point, int3_move_##dir(chunk_position)))
 
 // For each terrain, it uses it's Chunks and StreamerLinks
 void TerrainLodSystem(ecs_iter_t *it) {

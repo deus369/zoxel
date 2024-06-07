@@ -6,6 +6,13 @@ const int3 int3_zero = (int3) { 0, 0, 0 };
 // #define int3_zero (int3) { 0, 0, 0 }
 const int3 int3_chaos = (int3) { -666, -666, -666 };
 
+#define int3_left (int3) { -1, 0, 0 }
+#define int3_right (int3) { 1, 0, 0 }
+#define int3_down (int3) { 0, -1, 0 }
+#define int3_up (int3) { 0, 1, 0 }
+#define int3_backward (int3) { 0, 0, -1 }
+#define int3_forward (int3) { 0, 0, 1 }
+
 unsigned char int3_equals(const int3 a, const int3 b) {
     return a.x == b.x && a.y == b.y && a.z == b.z;
 }
@@ -60,27 +67,27 @@ int int3_array_size(const int3 size) {
     return size.x * size.y * size.z;
 }
 
-int3 int3_left(const int3 input) {
+int3 int3_move_left(const int3 input) {
     return (int3) { input.x - 1, input.y, input.z };
 }
 
-int3 int3_right(const int3 input) {
+int3 int3_move_right(const int3 input) {
     return (int3) { input.x + 1, input.y, input.z };
 }
 
-int3 int3_down(const int3 input) {
+int3 int3_move_down(const int3 input) {
     return (int3) { input.x, input.y - 1, input.z };
 }
 
-int3 int3_up(const int3 input) {
+int3 int3_move_up(const int3 input) {
     return (int3) { input.x, input.y + 1, input.z };
 }
 
-int3 int3_back(const int3 input) {
+int3 int3_move_back(const int3 input) {
     return (int3) { input.x, input.y, input.z - 1 };
 }
 
-int3 int3_front(const int3 input) {
+int3 int3_move_front(const int3 input) {
     return (int3) { input.x, input.y, input.z + 1 };
 }
 
