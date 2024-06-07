@@ -13,12 +13,8 @@ void TextureUpdateSystem(ecs_iter_t *it) {
         if (!textureGPULink->value || !textureData->value || textureData->length != textureSize->value.x * textureSize->value.y) continue;
         glBindTexture(GL_TEXTURE_2D, textureGPULink->value);
         if (zox_has(it->entities[i], TextureRGB)) {
-            // textureData definitely not gonna work here!
+            // todo: textureData definitely not gonna work here! make a seperate TextureData for RGB data
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureSize->value.x, textureSize->value.y, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL); //  textureData->value);
-            /*glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);*/
         } else {
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize->value.x, textureSize->value.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData->value);
         }
@@ -26,7 +22,3 @@ void TextureUpdateSystem(ecs_iter_t *it) {
         textureDirty->value = 0;
     }
 } zox_declare_system(TextureUpdateSystem)
-
-// const int texture_type = GL_NEAREST; // GL_NEAREST | GL_LINEAR
-//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, texture_type);
-//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, texture_type);

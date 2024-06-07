@@ -27,7 +27,7 @@ ecs_entity_t spawn_canvas_overlay(ecs_world_t *world, const ecs_entity_t prefab,
     zox_instance(prefab)
     zox_name("canvas_overlay")
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
-    on_child_added(world, canvas, e);
+    // on_child_added(world, canvas, e);
     zox_set(e, Alpha, { 1 })
     trigger_canvas_fade_out(world, e);
     return e;

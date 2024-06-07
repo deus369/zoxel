@@ -3,9 +3,9 @@ zox_component(FrameBufferLink, GLuint)
 
 // Destructor for FrameBufferLink component
 ECS_DTOR(FrameBufferLink, ptr, {
-    zox_log(" - destroying frame buffer %i\n", ptr->value) // this should never really be called tho
+    // zox_log(" - destroying frame buffer %i\n", ptr->value) // this should never really be called tho
     if (ptr->value) glDeleteFramebuffers(1, &ptr->value);
-    ptr->value = 0;
+    // ptr->value = 0;
 })
 
 // Function to generate a frame buffer object on gpu

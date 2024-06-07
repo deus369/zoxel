@@ -1,4 +1,12 @@
 // todo: move to actions module
+ecs_entity_t spawn_prefab_actionbar(ecs_world_t *world, const ecs_entity_t prefab) {
+    zox_prefab_child(prefab)
+    zox_prefab_name("actionbar")
+    zox_add_tag(e, Actionbar)
+    zox_prefab_add(e, Children)
+    return e;
+}
+
 ecs_entity_t spawn_actionbar(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t parent) {
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const int actions_count = 8;

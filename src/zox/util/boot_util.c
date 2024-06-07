@@ -13,7 +13,7 @@ ecs_entity_t spawn_player_camera(ecs_world_t *world, const ecs_entity_t player, 
     // adds a frame buffer object and render buffer to the camera
 #ifndef zox_disable_post_processing
 #ifdef zox_disable_post_processing_additional_players
-    if (index == 0) {
+    if (index == zox_disable_player_index) {
 #endif
         zox_add_tag(e, RenderCamera)
         GLuint fbo = spawn_frame_buffer_object(world, e); // test fbo
@@ -74,7 +74,7 @@ void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game)
 #ifndef zox_disable_post_processing
 #ifndef zox_disable_render_texture
 #ifdef zox_disable_post_processing_additional_players
-        if (i == 0) {
+        if (i == zox_disable_player_index) {
 #endif
             // spawns a render texture ui and links to camera
             spawn_render_texture(world, prefab_render_texture, canvas, viewport_size, camera);

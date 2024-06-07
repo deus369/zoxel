@@ -42,11 +42,9 @@ void RenderTextureRenderSystem(ecs_iter_t *it) {
         float2 position2D = zox_get_value(it->entities[i], Position2D)
         const float4x4 position_matrix = float4x4_position((float3) { position2D.x, position2D.y, 0 });
         opengl_set_matrix(material_attributes->transform_matrix, position_matrix);
-
 #ifndef zox_disable_render_ui
         opengl_render(6);
 #endif
-
 #ifdef zoxel_catch_opengl_errors
         if (check_opengl_error_unlogged() != 0) {
             zox_log(" > failed to render render_texture [%lu]: [%i] - [%ix%i:%i]\n", it->entities[i], 6, meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value)

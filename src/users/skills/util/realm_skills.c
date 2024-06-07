@@ -9,5 +9,4 @@ void spawn_realm_skills(ecs_world_t *world, const ecs_entity_t realm) {
     zox_add_tag(meta_skill_aura, Aura);
     zox_set(meta_skill_aura, TextureLink, { files_textures[4] });
     skills->value[0] = meta_skill_aura;
-
 }

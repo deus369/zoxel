@@ -15,7 +15,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     ecs_entity_t tilemap = spawn_tilemap(world, prefab_tilemap);
     zox_set(realm, TilemapLink, { tilemap })
     zox_set(tilemap, RealmLink, { realm })
-    zox_log(" + spawned tilemap [%lu]\n", tilemap)
+    // zox_log(" + spawned tilemap [%lu]\n", tilemap)
     zox_get_mutt(realm, VoxelLinks, voxelLinks)
     resize_memory_component(VoxelLinks, voxelLinks, ecs_entity_t, zox_blocks_count)
     // dirt color - hsv - hue saturation value

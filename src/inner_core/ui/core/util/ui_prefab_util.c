@@ -1,32 +1,37 @@
 void add_ui_components(ecs_world_t *world, const ecs_entity_t e) {
     zox_add_tag(e, Element)
-    zox_add_tag(e, ElementRender)
     zox_prefab_set(e, InitializeElement, { 1 })
-    zox_prefab_set(e, RenderDisabled, { 0 })
     zox_prefab_set(e, PixelPosition, { int2_zero })
     zox_prefab_set(e, PixelSize, { int2_zero })
-    zox_prefab_set(e, CanvasPosition, { int2_zero })
     zox_prefab_set(e, Anchor, { float2_zero })
-    zox_prefab_set(e, CanvasLink, { 0 })
+    zox_prefab_set(e, CanvasPosition, { int2_zero })
     zox_prefab_set(e, Layer2D, { 0 })
+    zox_prefab_set(e, CanvasLink, { 0 })
+}
+
+
+void add_ui_mesh(ecs_world_t *world, const ecs_entity_t e) {
+    if (headless) return;
+    add_gpu_mesh(world, e);
+    add_gpu_texture(world, e);
+    add_gpu_uvs(world, e);
+    zox_prefab_set(e, MeshDirty, { 0 })
+    zox_prefab_add(e, MeshIndicies)
+    zox_prefab_add(e, MeshVertices2D)
+    zox_prefab_add(e, MeshUVs)
+    prefab_set_mesh_indicies(world, e, square_indicies, 6);
+    prefab_set_mesh2D_vertices(world, e, square_vertices, 4);
+    prefab_set_mesh_uvs(world, e, square_uvs, 4);
+    // this is more mesh stuff
+    zox_add_tag(e, ElementRender)
+    zox_prefab_set(e, RenderDisabled, { 0 })
     zox_prefab_set(e, MeshAlignment, { 0 })
 }
 
 void add_ui_mesh_components(ecs_world_t *world, const ecs_entity_t e) {
     zox_prefab_set(e, Brightness, { 1 })
     zox_prefab_set(e, Alpha, { 1 })
-    if (headless) return;
-    zox_prefab_set(e, MeshDirty, { 0 })
-    zox_prefab_add(e, MeshIndicies)
-    zox_prefab_add(e, MeshVertices2D)
-    zox_prefab_add(e, MeshUVs)
-    add_gpu_mesh(world, e);
-    // add_gpu_instanced_material(world, e);
-    add_gpu_texture(world, e);
-    add_gpu_uvs(world, e);
-    prefab_set_mesh_indicies(world, e, square_indicies, 6);
-    prefab_set_mesh2D_vertices(world, e, square_vertices, 4);
-    prefab_set_mesh_uvs(world, e, square_uvs, 4);
+    add_ui_mesh(world, e);
 }
 
 void add_components_ui_basic(ecs_world_t *world, const ecs_entity_t e) {

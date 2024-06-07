@@ -14,7 +14,7 @@ void initialize_amd() {
         result = rsmi_num_monitor_devices(&device_count);
         if (result == RSMI_STATUS_SUCCESS) {
             amd_initialized = 1;
-            zox_log(" + amd initialized [%i]\n", device_count)
+            // zox_log(" + amd initialized [%i]\n", device_count)
         }
     }
 }

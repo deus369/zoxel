@@ -27,7 +27,7 @@ void pause_player(ecs_world_t *world, const ecs_entity_t player) {
     } else if (can_roam == 2) {
         zox_set(camera, CanRoam, { 1 })
     }
-    zox_log("player paused [%s] [%s]\n", zox_get_name(player), zox_get_name(canvas))
+    // zox_log("player paused [%s] [%s]\n", zox_get_name(player), zox_get_name(canvas))
     trigger_canvas_half_fade(world, canvas, pause_fade_time, pause_fade_alpha, 1);
     const ecs_entity_t pause_event = delay_event(world, &pause_player_delayed, player, pause_fade_time);
     ecs_entity_t previous_event = zox_get_value(player, PlayerPauseEvent)

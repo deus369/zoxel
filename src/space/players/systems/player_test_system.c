@@ -51,7 +51,7 @@ void spawn_tilemap_ui(ecs_world_t *world, const Keyboard *keyboard, const ecs_en
         const int2 position = (int2) { 8, 8 };
         tilemap_ui = spawn_element_texture(world, canvas, tilemap, position, size);
         spawn_sound_from_file(world, prefab_sound, 0);
-        zox_log(" + spawned tilemap ui\n")
+        // zox_log(" + spawned tilemap ui\n")
     }
 }
 

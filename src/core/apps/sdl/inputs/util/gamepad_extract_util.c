@@ -15,9 +15,9 @@ unsigned char is_xbox_gamepad(SDL_Joystick *joystick) {
 void initialize_sdl_gamepads() {
     // SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
     joysticks_count = SDL_NumJoysticks();
-    //#ifdef zoxel_debug_input
+#ifdef zoxel_debug_input
     zox_log(" > gamepads connected [%d]\n", joysticks_count)
-    //#endif
+#endif
     for (int i = 0; i < joysticks_count; i++) {
         joystick = SDL_JoystickOpen(i);
         if (!joystick) {

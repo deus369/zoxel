@@ -43,7 +43,7 @@ void trigger_canvas_fade_transition(ecs_world_t *world, const ecs_entity_t canva
     const float alpha = 1.0f;
     const double fade_time = 0.7;
     const double delay_time = 1.4;
-    zox_log(" + [%lu] triggering fade sequence for canvas_overlay [%lu]\n", canvas, e)
+    // zox_log(" + [%lu] triggering fade sequence for canvas_overlay [%lu]\n", canvas, e)
     zox_set(e, Layer2D, { max_layers2D - 1 })
     zox_set(e, AnimationIndex, { 0 })
     zox_set(e, AnimationDelay, { 0 })
@@ -51,28 +51,27 @@ void trigger_canvas_fade_transition(ecs_world_t *world, const ecs_entity_t canva
     // i should add multiple animationions as children or something
     zox_get_muter(e, AnimationSequence, animationSequence)
     //if (animationSequence->length == 0) {
-        zox_get_muter(e, AnimationTimes, animationTimes)
-        zox_get_muter(e, AnimationTargets, animationTargets)
-        resize_memory_component(AnimationSequence, animationSequence, unsigned char, 3)
-        resize_memory_component(AnimationTimes, animationTimes, double, 3)
-        resize_memory_component(AnimationTargets, animationTargets, float, 3)
-        animationSequence->value[0] = zox_animate_alpha; // zox_animation_fadein;
-        animationTimes->value[0] = fade_time; // zox_animation_fadein;
-        animationTargets->value[0] = 1;
-        animationSequence->value[1] = zox_animation_waiting;
-        animationTimes->value[1] = delay_time; // zox_animation_fadein;
-        animationTargets->value[1] = 1;
-        animationSequence->value[2] = zox_animate_alpha; // zox_animation_fadeout;
-        animationTimes->value[2] = fade_time; // zox_animation_fadein;
-        animationTargets->value[2] = 0;
-    //}
+    zox_get_muter(e, AnimationTimes, animationTimes)
+    zox_get_muter(e, AnimationTargets, animationTargets)
+    resize_memory_component(AnimationSequence, animationSequence, unsigned char, 3)
+    resize_memory_component(AnimationTimes, animationTimes, double, 3)
+    resize_memory_component(AnimationTargets, animationTargets, float, 3)
+    animationSequence->value[0] = zox_animate_alpha; // zox_animation_fadein;
+    animationTimes->value[0] = fade_time; // zox_animation_fadein;
+    animationTargets->value[0] = 1;
+    animationSequence->value[1] = zox_animation_waiting;
+    animationTimes->value[1] = delay_time; // zox_animation_fadein;
+    animationTargets->value[1] = 1;
+    animationSequence->value[2] = zox_animate_alpha; // zox_animation_fadeout;
+    animationTimes->value[2] = fade_time; // zox_animation_fadein;
+    animationTargets->value[2] = 0;
 }
 
 void trigger_canvas_half_fade(ecs_world_t *world, const ecs_entity_t canvas, const float time_length, const float alpha, const unsigned char direction) {
     const float canvas_fade_delay = 0.02f;
     find_child_with_tag(canvas, CanvasOverlay, e)
     if (!e) return;
-    zox_log(" + [%lu] triggering half fade for canvas_overlay [%lu]\n", canvas, e)
+    // zox_log(" + [%lu] triggering half fade for canvas_overlay [%lu]\n", canvas, e)
     zox_set(e, Layer2D, { pause_ui_overlay_layer })
     zox_set(e, RenderDisabled, { 0 })
     // i should add multiple animationions as children or something

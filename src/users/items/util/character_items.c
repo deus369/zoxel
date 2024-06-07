@@ -17,7 +17,7 @@ void spawn_character_items(ecs_world_t *world, const ecs_entity_t e, const ecs_e
         // zox_set_name(item_block, "block"); // shold inherit name from meta
         // link up
         items->value[0] = item_block;
-        zox_log(" + spawned inventory item [%lu] character [%lu]\n", item_block, e)
+        // zox_log(" + spawned inventory item [%lu] character [%lu]\n", item_block, e)
     } else {
         zox_log(" ! meta_item_block not found\n")
     }

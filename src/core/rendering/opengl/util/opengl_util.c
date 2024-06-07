@@ -91,7 +91,7 @@ void opengl_set_defaults(unsigned char is_3D) {
 void opengl_clear_viewport_all(const float3 clear_color) {
     glClearColor(clear_color.x, clear_color.y, clear_color.z, 1.0f);
     // glClearDepth(0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
 void opengl_clear_viewport_depth() {

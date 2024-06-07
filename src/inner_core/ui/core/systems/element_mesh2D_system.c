@@ -31,6 +31,7 @@ void Element2DMeshSystem(ecs_iter_t *it) {
             textureGPULink->value = spawn_gpu_texture_buffer();
             uvsGPULink->value = spawn_gpu_generic_buffer();
             if (zox_has(it->entities[i], RenderTexture)) {
+                set_render_texture_gpu(textureGPULink->value, canvas_size);
                 const ecs_entity_t camera = zox_get_value(it->entities[i], CameraLink)
                 if (zox_has(camera, FrameBufferLink)) {
                     const GLuint fbo = zox_get_value(camera, FrameBufferLink)
@@ -38,7 +39,6 @@ void Element2DMeshSystem(ecs_iter_t *it) {
                 } else {
                     zox_log(" ! render_texture connected to invalid render camera [%s]\n", zox_get_name(camera))
                 }
-                set_render_texture_gpu(textureGPULink->value, canvas_size);
             }
         }
         initializeElement->value = 0;
