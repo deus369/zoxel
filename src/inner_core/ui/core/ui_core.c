@@ -64,6 +64,7 @@ zox_function_component(TooltipEvent, void, ecs_world_t*, const TooltipEventData*
 #include "util/resize_util.c"
 #include "util/world_ui_util.c"
 #include "util/layers.c"
+#include "util/canvas_fading.c"
 #include "prefabs/prefabs.c"
 #include "systems/button_click_event_system.c"
 #include "systems/element_raycast_system.c"

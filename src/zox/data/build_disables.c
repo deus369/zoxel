@@ -2,7 +2,7 @@
 
 // #define zox_disable_canvas_overlay
 
-// #define zoxel_catch_opengl_errors
+#define zoxel_catch_opengl_errors
 
 #define zox_disable_post_processing_additional_players
 // #define zox_disable_post_processing

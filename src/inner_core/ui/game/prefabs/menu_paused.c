@@ -6,12 +6,6 @@ ecs_entity_t spawn_prefab_pause_ui(ecs_world_t *world) {
     return e;
 }
 
-// extern void pause_resume(ecs_world_t *world, const ecs_entity_t player);
-
-void button_event_return_to_game(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
-    pause_resume(world, player);
-}
-
 ecs_entity_t spawn_menu_paused(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t canvas, const int2 position, const float2 anchor) {
     const int labels_count = 2;
     const unsigned char is_close_button = 0;

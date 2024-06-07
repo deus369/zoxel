@@ -8,6 +8,7 @@
 
 // player
 #define zox_debug_ui_save_cloud
+#define zox_debug_game_players
 
 // character
 #define zox_debug_ui_player_level

@@ -1,6 +1,6 @@
 // a copy of fadeout
 void FadeinSystem(ecs_iter_t *it) {
-    const double time = zox_current_time;
+    /*const double time = zox_current_time;
     zox_field_in(AnimationState, animationTypes, 1)
     zox_field_in(AnimationStart, animationStarts, 2)
     zox_field_in(AnimationLength, animationLengths, 3)
@@ -17,5 +17,5 @@ void FadeinSystem(ecs_iter_t *it) {
         if (animation_time < 0) animation_time = 0;
         else if (animation_time > 1) animation_time = 1;
         alpha->value = float_lerp(0, 1, animation_time);
-    }
+    }*/
 } zox_declare_system(FadeinSystem)

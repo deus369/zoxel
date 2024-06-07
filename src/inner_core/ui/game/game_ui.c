@@ -14,10 +14,9 @@ zox_declare_tag(JoystickUI)
 zox_declare_tag(Tooltip)
 zox_component_int(QuadsCount)
 zox_component_double(FPSDisplayTicker)
-#include "fun/button_event_play_game.c"
-#include "fun/button_event_pause_game.c"
-#include "fun/button_event_exit_app.c"
-#include "fun/button_event_return_to_game.c"
+#include "util/menu_main.c"
+#include "util/menu_options.c"
+#include "util/menu_paused.c"
 #include "prefabs/prefabs.c"
 #include "systems/fps_display_system.c"
 #include "systems/quads_display_system.c"

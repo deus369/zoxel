@@ -1,7 +1,7 @@
 int get_label_local_character_level(ecs_world_t *world, const ecs_entity_t character, char buffer[], int buffer_size, int buffer_index) {
     if (!character) return buffer_index;
-    const StatLinks *userStatLinks = zox_get(character, StatLinks)
-    ecs_entity_t soul_stat = userStatLinks->value[1];
+    const StatLinks *stats = zox_get(character, StatLinks)
+    find_array_component_with_tag(stats, StatSoul, soul_stat)
     if (!zox_has(soul_stat, StatValue)) return buffer_index;
     float level = zox_get_value(soul_stat, StatValue)
     float experience_value = zox_get_value(soul_stat, ExperienceValue)
@@ -33,7 +33,6 @@ int get_label_children(ecs_world_t *world, const ecs_entity_t e, char buffer[], 
 int get_label_local_character_health(ecs_world_t *world, const ecs_entity_t character, char buffer[], int buffer_size, int buffer_index) {
     if (character) {
         const StatLinks *statLinks = zox_get(character, StatLinks)
-        // ecs_entity_t health_stat = statLinks->value[0];
         find_array_component_with_tag(statLinks, HealthStat, health_stat)
 
         if (!zox_has(health_stat, StatValue)) return buffer_index;

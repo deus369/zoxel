@@ -7,16 +7,16 @@ void CanvasStackSystem(ecs_iter_t *it) {
     zox_field_out(WindowsLayers, windowsLayerss, 3)
     zox_field_out(WindowsCount, windowsCounts, 4)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_out(WindowToTop, windowToTops, windowToTop)
+        zox_field_o(WindowToTop, windowToTops, windowToTop)
         if (!windowToTop->value) continue;
         if (!zox_has(windowToTop->value, Window)) {
             windowToTop->value = 0;
             // zox_log(" > windowToTop->value set wrongly\n")
             continue;
         }
-        zox_field_i_in(Children, childrens, children)
-        zox_field_i_out(WindowsLayers, windowsLayerss, windowsLayers)
-        zox_field_i_out(WindowsCount, windowsCounts, windowsCount)
+        zox_field_i(Children, childrens, children)
+        zox_field_o(WindowsLayers, windowsLayerss, windowsLayers)
+        zox_field_o(WindowsCount, windowsCounts, windowsCount)
 
         unsigned char windows_count = 0; // maybe count windows first
         unsigned char layers_per_window = 1;

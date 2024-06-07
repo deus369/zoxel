@@ -32,8 +32,6 @@ void DeathSystem(ecs_iter_t *it) {
             // add experience to soul stat
             const StatLinks *stats = zox_get(last_damager, StatLinks)
             if (stats->length < 2) continue;
-            // const ecs_entity_t soul_stat = stats->value[1];
-            // const ecs_entity_t soul_stat =
             find_array_component_with_tag(stats, StatSoul, soul_stat)
             if (!soul_stat) continue;
             ExperienceValue *experience = zox_get_mut(soul_stat, ExperienceValue)

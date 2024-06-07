@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_render_texture(ecs_world_t *world) {
     zox_prefab()
-    add_ui_plus_components(world, e);
+    add_components_ui_basic(world, e);
     zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
     zox_add_tag(e, TextureRGB)
     zox_add_tag(e, RenderTexture)
