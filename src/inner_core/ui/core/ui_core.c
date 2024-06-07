@@ -10,6 +10,7 @@ zox_declare_tag(BoundToCanvas)
 zox_declare_tag(CanvasOverlay)
 zox_declare_tag(Window)
 zox_declare_tag(ElementRender)
+zox_declare_tag(MouseElement)
 zox_component_byte(Layer2D)
 zox_component_byte(NavigatorState)
 zox_component_byte(ElementFontSize)
@@ -85,6 +86,7 @@ zox_function_component(TooltipEvent, void, ecs_world_t*, const TooltipEventData*
 #include "systems/click_sound_system.c"
 #include "systems/dragger_end_system.c"
 #include "systems/render_texture_render_system.c"
+#include "systems/mouse_element_system.c"
 zox_increment_system_with_reset_extra(SelectState, zox_select_state_trigger_selected, zox_select_state_selected, zox_select_state_trigger_deselect, zox_select_state_deselected_this_frame)
 
 zox_begin_module(UICore)
@@ -97,6 +99,7 @@ zox_define_tag(BoundToCanvas)
 zox_define_tag(CanvasOverlay)
 zox_define_tag(Window)
 zox_define_tag(ElementRender)
+zox_define_tag(MouseElement)
 zox_define_component_byte(Layer2D)
 zox_define_component_byte(NavigatorState)
 zox_define_component_byte(ElementFontSize)
@@ -146,7 +149,8 @@ zox_system_ctx(ElementPositionSystem, EcsOnLoad, pixel_positions_query, [in] Pix
 zox_system(CanvasStackSystem, EcsOnLoad, [in] Children, [out] WindowToTop, [out] WindowsLayers, [out] WindowsCount, [none] Canvas)
 zox_system(WindowLayerSystem, EcsOnLoad, [in] SetWindowLayer, [in] CanvasLink, [in] Children, [out] WindowLayer, [out] Layer2D, [none] Window)
 zox_system(ElementSelectedSystem, EcsOnUpdate, [none] Element, [in] SelectState, [out] Brightness)
-zox_system(BillboardSystem, zox_transforms_stage, [in] Position3D, [out] Rotation3D, [none] ElementBillboard) // [in] CameraLink,
+zox_system(BillboardSystem, zox_transforms_stage, [in] Position3D, [out] Rotation3D, [none] ElementBillboard)
+zox_system(MouseElementSystem, EcsOnUpdate, [in] MouseLink, [in] RenderDisabled, [in] Anchor, [in] CanvasLink, [out] PixelPosition, [none] MouseElement)
 zox_system(UITrailSystem, zox_transforms_stage, [in] UIHolderLink, [in] UITrail, [out] Position3D)
 zox_system(ElementBarSystem, EcsOnUpdate, [in] ElementBar, [in] ElementBarSize, [in] Children)
 if (!headless) {

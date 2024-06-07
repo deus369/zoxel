@@ -23,17 +23,17 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
     int tris_rendered = 0;
 #endif
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(RenderDisabled, renderDisableds, renderDisabled)
+        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         if (renderDisabled->value) continue;
-        zox_field_i_in(MeshIndicies, meshIndiciess, meshIndicies)
+        zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
 #ifdef zox_debug_render3D_colored
         if (meshIndicies->length == 0) zero_meshes++;
 #endif
         // if (meshIndicies->length == 0) zox_log(" ! RenderCharacters3DSystem - meshIndicies 0\n")
         if (meshIndicies->length == 0) continue;
-        zox_field_i_in(MeshGPULink, meshGPULinks, meshGPULink)
-        zox_field_i_in(ColorsGPULink, colorsGPULinks, colorsGPULink)
-        zox_field_i_in(TransformMatrix, transformMatrixs, transformMatrix)
+        zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
+        zox_field_i(ColorsGPULink, colorsGPULinks, colorsGPULink)
+        zox_field_i(TransformMatrix, transformMatrixs, transformMatrix)
         if (!has_set_material) {
             has_set_material = 1;
             opengl_set_material(material_link);

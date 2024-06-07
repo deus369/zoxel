@@ -9,7 +9,7 @@ void DamageAuraSystem(ecs_iter_t *it) {
     zox_iter_world()
     zox_field_in(UserLink, userLinks, 1)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(UserLink, userLinks, userLink)
+        zox_field_i(UserLink, userLinks, userLink)
         if (!zox_alive(userLink->value)) continue;
         const ecs_entity_t user = userLink->value;
         const Position3D *position3D = zox_get(userLink->value, Position3D)
@@ -56,7 +56,8 @@ void DamageAuraSystem(ecs_iter_t *it) {
                     add_to_DotLinks(dotLinks, new_dot);
                     // spawn particle system
                     if (!children->length) {
-                        const ecs_entity_t particle3D_emitter = spawn_particle3D_emitter(world, e2, 4);
+                        const float3 bounds = zox_get_value(e2, Bounds3D)
+                        const ecs_entity_t particle3D_emitter = spawn_particle3D_emitter(world, e2, 4, float3_multiply_float(bounds, 2));
                         add_to_Children(children, particle3D_emitter);
                     }
 #ifdef zox_debug_aoe_damage_system

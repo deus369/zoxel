@@ -11,12 +11,12 @@ ecs_entity_t spawn_prefab_elementbar3D_front(ecs_world_t *world, const ecs_entit
 
 // used atm for statbar front bar
 ecs_entity_t spawn_elementbar3D_front(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t ui_holder, const ecs_entity_t parent, const float3 offset, const unsigned char render_disabled) {
-    const ecs_entity_t lookat_camera = main_cameras[0];
-    const ecs_entity_t canvas = main_canvas; //  zox_get_value(ui_holder, CanvasLink)
+    // const ecs_entity_t lookat_camera = main_cameras[0];
+   //  const ecs_entity_t canvas = main_canvas; //  zox_get_value(ui_holder, CanvasLink)
     zox_instance(prefab)
     zox_name("elementbar3D_front")
-    zox_set(e, CameraLink, { lookat_camera })
-    zox_set(e, CanvasLink, { canvas })
+    // zox_set(e, CameraLink, { lookat_camera })
+    // zox_set(e, CanvasLink, { canvas })
     zox_set(e, ParentLink, { parent })
     zox_set(e, LocalPosition3D, { offset })
     zox_set(e, RenderDisabled, { render_disabled })

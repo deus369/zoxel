@@ -5,7 +5,7 @@ void MouseConstrainSystem(ecs_iter_t *it) {
     const int2 locked_dimensions = viewport_dimensions;
     zox_field_in(MouseLock, mouseLocks, 1)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(MouseLock, mouseLocks, mouseLock)
+        zox_field_i(MouseLock, mouseLocks, mouseLock)
         SDL_SetRelativeMouseMode(mouseLock->value);
         if (mouseLock->value) SDL_WarpMouseInWindow(mouse_lock_window, locked_dimensions.x / 2, locked_dimensions.y / 2);
     }

@@ -7,16 +7,17 @@ void ElementBarSystem(ecs_iter_t *it) {
     zox_field_in(ElementBarSize, elementBarSizes, 2)
     zox_field_in(Children, childrens, 3)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(Children, childrens, children)
+        zox_field_i(Children, childrens, children)
         if (!children->length) continue;
         const ecs_entity_t front_bar = children->value[0];
         if (!zox_valid(front_bar)) continue;
-        // const InitializeElement *initializeElement = zox_get(front_bar, InitializeElement)
-        // if (initializeElement->value) continue; // removing this breaks it?!?!
+        const InitializeElement *initializeElement = zox_get(front_bar, InitializeElement)
+        if (initializeElement->value) continue; // removing this breaks it?!?!
         zox_field_e()
+        // unsigned char is_2D = zox_has(front_bar, MeshVertices2D);
         if (!can_render_ui(world, e)) continue; // disabled for now causes issues
-        zox_field_i_in(ElementBar, elementBars, elementBar)
-        zox_field_i_in(ElementBarSize, elementBarSizes, elementBarSize)
+        zox_field_i(ElementBar, elementBars, elementBar)
+        zox_field_i(ElementBarSize, elementBarSizes, elementBarSize)
         const float percentage = elementBar->value;
         const float2 scale = elementBarSize->value;
         const float left_offset = - scale.x * (1.0f - percentage) * 0.5f;
