@@ -3,6 +3,11 @@ int real_position_to_voxel_position_dim(const float real_position) {
     return (int) floor(real_position * multiplier);
 }
 
+int3 real_position_to_voxel_position2(const float3 real_position, const float voxel_scale) {
+    const float multiplier = 1.0f / voxel_scale; // default_chunk_length / real_chunk_scale;
+    return (int3) { (int) floor(real_position.x * multiplier), (int) floor(real_position.y * multiplier), (int) floor(real_position.z * multiplier) };
+}
+
 int3 real_position_to_voxel_position(float3 real_position) {
     const float multiplier = default_chunk_length / real_chunk_scale;
     return (int3) { (int) floor(real_position.x * multiplier), (int) floor(real_position.y * multiplier), (int) floor(real_position.z * multiplier) };

@@ -22,21 +22,22 @@ void spawn_block_vox_in_tree(const ChunkOctree *octree, BlockSpawns *block_spawn
             return;
         }
         if (block_voxes[block_index]) { // only for block vox models
+            const float voxel_scale = 0.5f; // terrain scale
             /*if (octree->value != zox_block_grass_vox) return; // only spawn for grass_vox atm */
             // if (count_byte3_hashmap(block_spawns->value) == max_vox_blocks) return; // max
             spawn_data->position_local = int3_to_byte3(octree_position);
             if (byte3_hashmap_has(block_spawns->value, spawn_data->position_local)) return;
             spawn_data->vox = block_voxes[block_index];
             // ChunkScale (0.5f) * ChunkSize (16)
-            const float voxel_scale = octree_scales2[depth] * 0.5f * 16.0f; // todo: use voxel scale passed in
+            // 0.5f *
+            // const float voxel_scale = (1.0f / 32.0f); //  octree_scales2[depth] * 0.5f * 16.0f; // todo: use voxel scale passed in
             float3 position_real = float3_from_int3(octree_position);
             float3_multiply_float_p(&position_real, voxel_scale);
             float3_add_float3_p(&position_real, chunk_position_real);
             // 0.5f * ChunkScale - which is 0.5f = 0.25f
-            float3_add_float3_p(&position_real, (float3) { -0.25f, -0.25f, -0.25f });
-            if (block_vox_offsets[block_index]) {
-                float3_add_float3_p(&position_real, (float3) { 0, -0.125f, 0 });
-            }
+            float3_add_float3_p(&position_real, (float3) { -voxel_scale * 0.5f, -voxel_scale * 0.5f, -voxel_scale * 0.5f });
+            // float3_add_float3_p(&position_real, (float3) { - 1.0f / 64.0f, - 1.0f / 64.0f, - 1.0f / 64.0f });
+            if (block_vox_offsets[block_index]) float3_add_float3_p(&position_real, (float3) { 0, -0.125f, 0 });
             spawn_data->position_real = position_real;
             // spawn our block voxes
             const ecs_entity_t e2 = spawn_block_vox(world, spawn_data);

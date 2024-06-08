@@ -107,7 +107,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             spawn_data.model = zox_block_vox;
             spawn_data.vox = vox_files[test_block_vox_index];
             spawn_data.disable_collision = 1;
-            spawn_data.vox_offset = 1;
+            // spawn_data.vox_offset = 1;
         } else if (i == zox_block_dirt_vox - 1) {
             spawn_data.name = "dirt_vox";
             // dirt vox

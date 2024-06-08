@@ -88,6 +88,12 @@ void float3_subtract_float3_p(float3* a, const float3 b) {
     a->z -= b.z;
 }
 
+void float3_multiply_float3_p(float3* a, const float3 b) {
+    a->x *= b.x;
+    a->y *= b.y;
+    a->z *= b.z;
+}
+
 float3 float3_divide_float(const float3 input, const float div) {
     return (float3) { input.x / div, input.y / div, input.z / div };
 }

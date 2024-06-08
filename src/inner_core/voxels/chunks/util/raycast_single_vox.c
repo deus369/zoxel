@@ -1,11 +1,11 @@
 const float ray_interval_mini = 0.001f;
 const float ray_length_mini = 1;
 
-void raycast_terrain_gizmo_block_vox(ecs_world_t *world, const ecs_entity_t chunk, const float3 ray_origin, const float3 ray_normal, const float3 old_hit_normal) {
-    if (!chunk) return;
+unsigned char raycast_terrain_gizmo_block_vox(ecs_world_t *world, const ecs_entity_t chunk, const float3 ray_origin, const float3 ray_normal, const float3 old_hit_normal) {
+    if (!chunk) return 0;
     float model_scale = 64.0f; // 32 resolution by terrain is 0.5 so we get 64.
     const ChunkOctree *chunk_octree = zox_get(chunk, ChunkOctree)
-    if (chunk_octree == NULL) return;
+    if (chunk_octree == NULL) return 0;
     const float3 block_position = zox_get_value(chunk, Position3D)
     // render_line3D(world, block_position, float3_add(block_position, float3_up), (color_rgb) { 0, 255, 0 });
     const int3 chunk_size = zox_get_value(chunk, ChunkSize)
@@ -37,6 +37,7 @@ void raycast_terrain_gizmo_block_vox(ecs_world_t *world, const ecs_entity_t chun
         // zox_log(" > ray hit at %fx%fx%f\n", hit_point.x, hit_point.y, hit_point.z)
         render_line3D(world, hit_point, float3_add(hit_point, float3_multiply_float(hit_normal, 1 / model_scale)), (color_rgb) { 0, 255, 0 });
     }
+    return ray_hit;
 }
 
 void raycast_block_vox(ecs_world_t *world, const ecs_entity_t chunk, const float3 ray_origin, const float3 ray_normal, const unsigned char voxel, const unsigned char hit_type) {

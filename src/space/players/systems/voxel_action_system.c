@@ -1,3 +1,4 @@
+// left click - destroy
 void VoxelActionASystem(ecs_iter_t *it) {
 #ifdef zox_disable_raycasts3D
     return;
@@ -11,11 +12,12 @@ void VoxelActionASystem(ecs_iter_t *it) {
         if (!triggerActionA->value) continue;
         zox_field_i(CameraLink, cameraLinks, cameraLink)
         zox_field_i(VoxLink, voxLinks, voxLink)
-        raycast_terrain(world, cameraLink->value, voxLink->value, 0, 0, 2);
+        raycast_action(world, 0, 2);
         triggerActionA->value = 0;
     }
 } zox_declare_system(VoxelActionASystem)
 
+// right click = place
 void VoxelActionBSystem(ecs_iter_t *it) {
 #ifdef zox_disable_raycasts3D
     return;
@@ -29,7 +31,7 @@ void VoxelActionBSystem(ecs_iter_t *it) {
         if (!triggerActionB->value) continue;
         zox_field_i(CameraLink, cameraLinks, cameraLink)
         zox_field_i(VoxLink, voxLinks, voxLink)
-        raycast_terrain(world, cameraLink->value, voxLink->value, 0, 1, 1);
+        raycast_action(world, 1, 1);
         triggerActionB->value = 0;
     }
 } zox_declare_system(VoxelActionBSystem)

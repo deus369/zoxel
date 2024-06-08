@@ -35,9 +35,9 @@ void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox)
     // maxed based on octree size
     const int max_length = pow(2, max_octree_depth_character);
     int3 vox_size = vox->chunks[0].size.xyz;
-    if (vox_size.x >= max_length) vox_size.x = max_length - 1;
-    if (vox_size.y >= max_length) vox_size.y = max_length - 1;
-    if (vox_size.z >= max_length) vox_size.z = max_length - 1;
+    if (vox_size.x > max_length) vox_size.x = max_length;
+    if (vox_size.y > max_length) vox_size.y = max_length;
+    if (vox_size.z > max_length) vox_size.z = max_length;
     ChunkOctree *chunkOctree = zox_get_mut(e, ChunkOctree)
     fill_new_octree(chunkOctree, 0, target_depth);
     byte2 set_octree_data = (byte2) { 1, max_octree_depth_character };
