@@ -17,7 +17,7 @@ void QolShortcutsSystem(ecs_iter_t *it) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                 if (keyboard->f11.pressed_this_frame) {
                     is_toggle_fullscreen = 1;
-                    zox_log(" > set fullscreen mode\n")
+                    zox_log(" > toggled fullscreen mode\n")
                 } else if (keyboard->f10.pressed_this_frame) {
                     is_render_fog = !is_render_fog;
                     zox_log(" > set fog [%i]\n", is_render_fog)

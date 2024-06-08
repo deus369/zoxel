@@ -16,24 +16,25 @@ void opengl_upload_shader2D_textured(GLuint2 mesh_buffer, GLuint uv_buffer, cons
 
 void Mesh2DUvsUpdateSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(NULL, it)) return;
-    zox_field_out(MeshDirty, meshDirtys, 1)
     zox_field_in(MeshIndicies, meshIndiciess, 2)
     zox_field_in(MeshVertices2D, meshVertices2Ds, 3)
     zox_field_in(MeshUVs, meshUVss, 4)
     zox_field_in(MeshGPULink, meshGPULinks, 5)
     zox_field_in(UvsGPULink, uvsGPULinks, 6)
+    zox_field_out(MeshDirty, meshDirtys, 1)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_out(MeshDirty, meshDirtys, meshDirty)
+        zox_field_o(MeshDirty, meshDirtys, meshDirty)
         if (!meshDirty->value) continue;
-        zox_field_i_in(MeshIndicies, meshIndiciess, meshIndicies)
+        zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
         if (!meshIndicies->length) continue;
-        zox_field_i_in(MeshGPULink, meshGPULinks, meshGPULink)
+        zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
         if (!meshGPULink->value.x || !meshGPULink->value.y) continue;
-        zox_field_i_in(UvsGPULink, uvsGPULinks, uvsGPULink)
+        zox_field_i(UvsGPULink, uvsGPULinks, uvsGPULink)
         if (!uvsGPULink->value) continue;
-        zox_field_i_in(MeshVertices2D, meshVertices2Ds, meshVertices2D)
-        zox_field_i_in(MeshUVs, meshUVss, meshUVs)
+        zox_field_i(MeshVertices2D, meshVertices2Ds, meshVertices2D)
+        zox_field_i(MeshUVs, meshUVss, meshUVs)
         opengl_upload_shader2D_textured(meshGPULink->value, uvsGPULink->value, meshIndicies->value, meshIndicies->length, meshVertices2D->value, meshUVs->value, meshVertices2D->length);
         meshDirty->value = 0;
+        // zox_log(" +  mesh2D updated to gpu [%s]\n", zox_get_name(it->entities[i]))
     }
 } zox_declare_system(Mesh2DUvsUpdateSystem)

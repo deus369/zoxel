@@ -42,3 +42,10 @@ void connect_render_texture_to_fbo(const GLuint fbo, const GLuint texture) {
 #endif
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
+
+void set_render_texture_gpu(GLuint texture_gpu_link, const int2 size) {
+    // make it a render texture update system
+    glBindTexture(GL_TEXTURE_2D, texture_gpu_link);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, size.x, size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}

@@ -117,20 +117,25 @@ extern void anchor_element_position2D(int2 *position, const float2 position_anch
 extern void anchor_element_size2D(int2 *size, const float2 anchor, const int2 parent_size);
 
 // called by CanvasResizeSystem
-void set_ui_transform(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t e, const unsigned char layer, const int2 canvas_size, const int2 parent_pixel_position_global, const int2 parent_pixel_size) {
-#ifdef debug_ui_scaling
-    zox_log("    - layer [%i] Repositioning entity [%lu]\n", layer, e)
-#endif
-    // zox_log("  - resizing child [%lu]\n", e)
+void set_ui_transform(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t e, const int2 canvas_size, const int2 parent_position, const int2 parent_size) {
     if (!zox_valid(e)) return;
     const float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
-    // const float aspect_ratio = canvasSizef.x / canvasSizef.y;
-    if (!headless && zox_has(e, MeshVertices2D)) {  //! Resize (if visible)
-        const int2 pixel_size = zox_get_value(e, PixelSize)
-        const MeshAlignment *meshAlignment = zox_get(e, MeshAlignment)
+    int2 pixel_size = int2_zero;
+    if (zox_has(e, AnchorSize)) {
+        const float2 anchor_size = zox_get_value(e, AnchorSize)
+        anchor_element_size2D(&pixel_size, anchor_size, parent_size);
+        zox_set(e, PixelSize, { pixel_size })
+    } else if (zox_has(e, PixelSize)) {
+        pixel_size = zox_get_value(e, PixelSize)
+    }
+    if (zox_has(e, RenderTexture)) {
+        set_render_texture_gpu(zox_gett_value(e, TextureGPULink), pixel_size);
+    }
+    if (!headless && zox_has(e, MeshVertices2D)) {
+        const unsigned char mesh_alignment = zox_get_value(e, MeshAlignment)
         MeshVertices2D *meshVertices2D = zox_get_mut(e, MeshVertices2D)
         const float2 scale2D = (float2) { pixel_size.x / canvasSizef.y, pixel_size.y / canvasSizef.y };
-        set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, scale2D);
+        set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(mesh_alignment), 4, scale2D);
         zox_modified(e, MeshVertices2D)
         zox_set(e, MeshDirty, { 1 })
 #ifdef debug_ui_scaling
@@ -139,7 +144,6 @@ void set_ui_transform(ecs_world_t *world, const ecs_entity_t parent, const ecs_e
     }
     resize_ui_line2D(world, e, canvas_size);
     if (zox_has(e, BoundToCanvas)) {
-        const int2 pixel_size = zox_get_value(e, PixelSize)
         const float2 anchor = zox_get_value(e, Anchor)
         const unsigned char header_height = zox_get_value(e, HeaderHeight)
         set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor, header_height);
@@ -148,27 +152,18 @@ void set_ui_transform(ecs_world_t *world, const ecs_entity_t parent, const ecs_e
     if (zox_has(e, PixelPosition)) {
         const float2 anchor = zox_get_value(e, Anchor)
         int2 pixel_position = zox_get_value(e, PixelPosition)
-        int2 pixel_size = zox_get_value(e, PixelSize)
         // todo: make this more widespread, used atm just for game_ui
-        if (zox_has(e, AnchorSize)) {
-            const float2 anchor_size = zox_get_value(e, AnchorSize)
-            anchor_element_size2D(&pixel_size, anchor_size, parent_pixel_size);
-        }
-        const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
-        const float2 position2D = get_element_position(pixel_position_global, canvas_size);
+        const int2 position_in_canvas = get_element_pixel_position_global(parent_position, parent_size, pixel_position, anchor);
+        const float2 position_real = get_element_position(position_in_canvas, canvas_size);
         anchor_element_position2D(&pixel_position, anchor, pixel_size);
-        if (zox_has(e, AnchorSize)) {
-            zox_set(e, PixelSize, { pixel_size })
-        }
-        zox_set(e, Position2D, { position2D })
-        zox_set(e, CanvasPosition, { pixel_position_global })
-        // zox_log("   - resizing child2 [%lu]\n", e)
+        zox_set(e, Position2D, { position_real })
+        zox_set(e, CanvasPosition, { position_in_canvas })
 #ifdef debug_ui_scaling
-        zox_log("        -> to [%ix%i]\n", pixel_position_global.x, pixel_position_global.y)
+        zox_log("        -> to [%ix%i]\n", position_in_canvas.x, position_in_canvas.y)
 #endif
         if (zox_has(e, Children)) {
             const Children *children = zox_get(e, Children)
-            for (int i = 0; i < children->length; i++) set_ui_transform(world, e, children->value[i], layer + 1, canvas_size, pixel_position_global, pixel_size);
+            for (int i = 0; i < children->length; i++) set_ui_transform(world, e, children->value[i], canvas_size, position_in_canvas, pixel_size);
         }
     }
 }
