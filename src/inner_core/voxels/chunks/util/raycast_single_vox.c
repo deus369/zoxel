@@ -1,4 +1,4 @@
-const float ray_interval_mini = 0.001f;
+/*const float ray_interval_mini = 0.001f;
 const float ray_length_mini = 1;
 
 unsigned char raycast_terrain_gizmo_block_vox(ecs_world_t *world, const ecs_entity_t chunk, const float3 ray_origin, const float3 ray_normal, const float3 old_hit_normal) {
@@ -73,3 +73,4 @@ void raycast_block_vox(ecs_world_t *world, const ecs_entity_t chunk, const float
         cache_position = voxel_position;
     }
 }
+*/

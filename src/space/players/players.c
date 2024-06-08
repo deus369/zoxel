@@ -58,9 +58,9 @@ zox_system_1(PlayerPauseSystem, zox_pip_mainthread, [in] DeviceLinks, [none] pla
 zox_system_1(VirtualJoystickSystem, zox_pip_mainthread, [in] DeviceLinks, [in] DeviceMode, [in] RaycasterResult, [in] GameLink, [none] players.Player)
 zox_system_1(EditorInputSystem, zox_pip_mainthread, [in] DeviceLinks, [in] CanvasLink, [none] players.Player)
 zox_system(PlayerToggleCameraSystem, EcsOnUpdate, [in] DeviceLinks, [in] CharacterLink, [in] GameLink, [none] players.Player)
-zox_system_1(RaycastGizmoSystem, zox_pip_mainthread, [in] CameraLink, [in] VoxLink)
-zox_system(VoxelActionASystem, EcsOnLoad, [in] CameraLink, [in] VoxLink, [out] TriggerActionA)
-zox_system(VoxelActionBSystem, EcsOnLoad, [in] CameraLink, [in] VoxLink, [out] TriggerActionB)
+zox_system_1(RaycastGizmoSystem, zox_pip_mainthread, [in] CameraLink, [in] VoxLink, [out] RaycastVoxelData)
+zox_system(VoxelActionASystem, EcsOnLoad, [in] RaycastVoxelData, [out] TriggerActionA)
+zox_system(VoxelActionBSystem, EcsOnLoad, [in] RaycastVoxelData, [out] TriggerActionB)
 initialize_players(world);
 zox_prefab_add(prefab_game, PlayerLinks)
 zox_prefab_set(prefab_player, PlayerPauseEvent, { 0 })

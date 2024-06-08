@@ -19,6 +19,7 @@ zox_hashmap_component(ChunkLinks, int3)
 zox_hashmap_component(BlockSpawns, byte3)
 zoxel_octree_component(ChunkOctree, unsigned char, 0)
 #include "data/settings.c"
+#include "data/raycast_voxel_data.c"
 #include "data/color_settings.c"
 #include "data/trigger_states.c"
 #include "util/voxel_mesh_util.c"
@@ -60,6 +61,7 @@ zox_define_links_component(ChunkLink)
 zoxel_octree_component_define(ChunkOctree)
 zox_define_hashmap_component(ChunkLinks)
 zox_define_hashmap_component(BlockSpawns)
+zox_define_component(RaycastVoxelData)
 zox_system(ChunkLinkSystem, zox_pip_voxels, [in] VoxLink, [in] Position3D, [out] ChunkPosition, [out] ChunkLink, [none] LinkChunk)
 zox_system(ChunkEntitiesLodSystem, zox_pip_voxels, [in] ChunkLodDirty, [in] RenderLod, [in] EntityLinks)
 zox_system(ChunkBlocksLodSystem, zox_pip_voxels, [in] ChunkLodDirty, [in] RenderLod, [in] BlockSpawns)

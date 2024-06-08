@@ -1,18 +1,8 @@
 const float ray_interval = 0.04f;
 const float terrain_ray_length = 8;
+// RaycastVoxelData raycast_voxel_data;
 
-// todo: attach this data as component to player
-typedef struct {
-    ecs_entity_t chunk;
-    byte3 position;
-    int3 normal;
-    ecs_entity_t chunk_last;
-    byte3 position_last;
-} RaycastVoxelData;
-
-RaycastVoxelData raycast_voxel_data;
-
-unsigned char raycast_general(ecs_world_t *world, const VoxelLinks *voxels, const ChunkLinks *chunk_links, int3 chunk_position, const float3 chunk_position_real, const int3 chunk_size, ecs_entity_t chunk, const float3 ray_origin, const float3 ray_normal, const float voxel_scale, const float ray_length) {
+unsigned char raycast_general(ecs_world_t *world, const VoxelLinks *voxels, const ChunkLinks *chunk_links, int3 chunk_position, const float3 chunk_position_real, const int3 chunk_size, ecs_entity_t chunk, const float3 ray_origin, const float3 ray_normal, const float voxel_scale, const float ray_length, RaycastVoxelData *data) {
     const ChunkOctree *chunk_octree;
     if (chunk) chunk_octree = zox_get(chunk, ChunkOctree)
     const byte3 chunk_size_b3 = int3_to_byte3(chunk_size);
@@ -77,7 +67,7 @@ unsigned char raycast_general(ecs_world_t *world, const VoxelLinks *voxels, cons
                     float3_subtract_float3_p(&block_position, (float3) { 0.5f * voxel_scale, 0.5f * voxel_scale, 0.5f * voxel_scale }); // offset to corner, half block back!
                     const int3 chunk_size = zox_get_value(block_spawn, ChunkSize)
                     float new_voxel_scale = voxel_scale * (1.0f / (float) chunk_size.x);
-                    if (raycast_general(world, NULL, NULL, int3_zero, block_position, chunk_size, block_spawn, ray_point, ray_normal, new_voxel_scale, chunk_size.x)) {
+                    if (raycast_general(world, NULL, NULL, int3_zero, block_position, chunk_size, block_spawn, ray_point, ray_normal, new_voxel_scale, chunk_size.x, data)) {
                         ray_hit = 2;
                         chunk = block_spawn; // set hit chunk
                         break;
@@ -129,23 +119,23 @@ unsigned char raycast_general(ecs_world_t *world, const VoxelLinks *voxels, cons
         float3_add_float3_p(&voxel_position_real, chunk_position_real);
         render_line3D(world, voxel_position_real, float3_add(voxel_position_real, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale)), voxel_line_color);
         // output chunk!
-        raycast_voxel_data.chunk = chunk;
-        raycast_voxel_data.position = voxel_position_local;
-        raycast_voxel_data.normal = hit_normal;
-        raycast_voxel_data.chunk_last = chunk_last;
-        raycast_voxel_data.position_last = voxel_position_local_last;
+        data->chunk = chunk;
+        data->position = voxel_position_local;
+        data->normal = hit_normal;
+        data->chunk_last = chunk_last;
+        data->position_last = voxel_position_local_last;
     } else {
-        raycast_voxel_data.chunk = 0;
-        raycast_voxel_data.position = byte3_zero;
-        raycast_voxel_data.normal = int3_zero;
-        raycast_voxel_data.chunk_last = 0;
-        raycast_voxel_data.position_last = byte3_zero;
+        data->chunk = 0;
+        data->position = byte3_zero;
+        data->normal = int3_zero;
+        data->chunk_last = 0;
+        data->position_last = byte3_zero;
     }
     return ray_hit;
 }
 
 // using DDA for raycasting
-void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t camera, const ecs_entity_t terrain) {
+void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t camera, const ecs_entity_t terrain, RaycastVoxelData *data) {
     if (!terrain || !camera || !zox_has(camera, RaycastOrigin)) return;
     const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
     const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
@@ -153,34 +143,34 @@ void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t camera, const 
     const float3 ray_origin = zox_get_value(camera, RaycastOrigin)
     const float3 ray_normal = zox_get_value(camera, RaycastNormal)
     int3 chunk_position = (int3) { 255255, 255255, 255255 };
-    raycast_general(world, voxels, chunk_links, chunk_position, float3_zero, default_chunk_size, 0, ray_origin, ray_normal, 0.5f, terrain_ray_length);
+    raycast_general(world, voxels, chunk_links, chunk_position, float3_zero, default_chunk_size, 0, ray_origin, ray_normal, 0.5f, terrain_ray_length, data);
 }
 
 
-void raycast_action(ecs_world_t *world, const unsigned char voxel, unsigned char hit_type) {
+void raycast_action(ecs_world_t *world, const RaycastVoxelData *data, const unsigned char voxel, unsigned char hit_type) {
     // int3 ray_hit_normal;
     byte3 place_position;
     ecs_entity_t place_chunk;
     if (hit_type == 2) {
         // zox_log("placing air!\n")
-        place_position = raycast_voxel_data.position;
-        place_chunk = raycast_voxel_data.chunk;
+        place_position = data->position;
+        place_chunk = data->chunk;
     } else {
         // zox_log("placing solid!\n")
-        place_position = raycast_voxel_data.position_last;
-        place_chunk = raycast_voxel_data.chunk_last;
+        place_position = data->position_last;
+        place_chunk = data->chunk_last;
     }
     // zox_log("   > [%ix%ix%i] [%lu]\n", place_position.x, place_position.y, place_position.z, place_chunk)
     if (place_chunk == 0) {
-        zox_log(" > no chunk raycasted\n")
+        // zox_log(" > no chunk raycasted\n")
         return;
     }
     const int3 chunk_size = zox_get_value(place_chunk, ChunkSize)
     const byte3 chunk_size_b3 = int3_to_byte3(chunk_size);
     zox_get_muter(place_chunk, ChunkOctree, chunk_octree)
     const SetVoxelTargetData datam = { .depth = max_octree_depth, .voxel = voxel, .effect_nodes = 1 };
-    SetVoxelData data = { .node = chunk_octree, .position = place_position };
-    set_voxel(&datam, data);
+    SetVoxelData data2 = { .node = chunk_octree, .position = place_position };
+    set_voxel(&datam, data2);
     close_same_nodes(chunk_octree);
     zox_set(place_chunk, ChunkDirty, { 1 })
     if (zox_has(place_chunk, ChunkNeighbors) && byte3_on_edge(place_position, chunk_size_b3)) {
