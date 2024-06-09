@@ -3,7 +3,7 @@ void tooltip_event_icon_item(ecs_world_t *world, const TooltipEventData *data) {
         set_entity_with_text(world, data->tooltip, "");
         // zox_set(data->tooltip, RenderDisabled, { 1 })
     } else {
-        char *result = malloc(64);
+        char result[64]; // char *result = malloc(64);
         const ZoxName *zox_name = zox_get(data->data, ZoxName)
         if (zox_name) {
             char *name_string = convert_zext_to_text(zox_name->value, zox_name->length);
@@ -13,7 +13,7 @@ void tooltip_event_icon_item(ecs_world_t *world, const TooltipEventData *data) {
             sprintf(result, "[%lu] x1\n", data->data);
         }
         set_entity_with_text(world, data->tooltip, result);
-        free(result);
+        // free(result);
     }
 }
 

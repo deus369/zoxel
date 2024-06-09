@@ -89,7 +89,8 @@ void optimize_solid_nodes(ChunkOctree *node) {
     if (node->nodes != NULL) {
         for (unsigned char i = 0; i < octree_length; i++) optimize_solid_nodes(&node->nodes[i]);
         unsigned char voxel_types = 0;
-        byte2 *voxel_counts = malloc(sizeof(byte2) * octree_length);
+        // byte2 *voxel_counts = malloc(sizeof(byte2) * octree_length);
+        byte2 voxel_counts[octree_length];
         for (unsigned char i = 0; i < octree_length; i++) {
             unsigned char node_value = node->nodes[i].value;
             if (node_value == 0) continue;
@@ -112,7 +113,7 @@ void optimize_solid_nodes(ChunkOctree *node) {
             if (voxel_counts[j].y > biggest_count.y) biggest_count = voxel_counts[j];
         }
         if (biggest_count.x != 0) node->value = biggest_count.x;
-        free(voxel_counts);
+        // free(voxel_counts);
     }
 }
 

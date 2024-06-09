@@ -100,3 +100,11 @@ unsigned char byte3_in_bounds(const byte3 input, const byte3 size) {
 unsigned char byte3_on_edge(const byte3 pos, const byte3 size) {
     return pos.x == 0 || pos.y == 0 || pos.z == 0 || pos.x == size.x - 1 || pos.y == size.y - 1 || pos.z == size.z - 1;
 }
+
+unsigned char byte3_on_edges(const byte3 pos, const byte3 size) {
+    unsigned char edges_count = 0;
+    if (pos.x == 0 || pos.x == size.x - 1) edges_count++;
+    if (pos.y == 0 || pos.y == size.y - 1) edges_count++;
+    if (pos.z == 0 || pos.z == size.z - 1) edges_count++;
+    return edges_count >= 2;
+}

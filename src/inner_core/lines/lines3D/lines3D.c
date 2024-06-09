@@ -1,5 +1,5 @@
-#ifndef zox_lines3D
-#define zox_lines3D
+#ifndef zox_mod_lines3D
+#define zox_mod_lines3D
 
 zox_declare_tag(Line3D)
 zox_component(LineData3D, float6)     // The two points in a line3D

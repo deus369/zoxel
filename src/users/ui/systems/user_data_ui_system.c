@@ -13,7 +13,6 @@ void UserIconFrameSystem(ecs_iter_t *it) {
         zox_field_i(TooltipEvent, tooltipEvents, tooltipEvent)
         if (!(selectState->value == zox_select_state_selected_this_frame || selectState->value == zox_select_state_deselected_this_frame)) continue;
         if (!userDataLink->value) {
-            // zox_log(" + %s blank item ui\n", select_type)
             continue;
         }
         if (!tooltipEvent->value) continue;
@@ -29,25 +28,5 @@ void UserIconFrameSystem(ecs_iter_t *it) {
             .data = userDataLink->value
         };
         (*tooltipEvent->value)(world, &data);
-        /*if (selectState->value == zox_select_state_deselected_this_frame) {
-            set_entity_with_text(world, tooltip, "");
-            zox_set(tooltip, RenderDisabled, { 1 })
-            continue;
-        }
-        // zox_log(" + selecting user element: %s\n", zox_get_name(userDataLink->value))
-        char *result = malloc(64);
-        const ZoxName *zox_name = zox_get(userDataLink->value, ZoxName)
-        if (zox_name) {
-            char *name_string = convert_zext_to_text(zox_name->value, zox_name->length);
-            // zox_log(" + %s item ui [%s]\n", select_type, name_string)
-            sprintf(result, "[%s] x1\n", name_string);
-            free(name_string);
-        } else {
-            // zox_log(" + %s item ui [%lu]\n", select_type, userDataLink->value)
-            sprintf(result, "[%lu] x1\n", userDataLink->value);
-        }
-        set_entity_with_text(world, tooltip, result);
-        free(result);
-        zox_set(tooltip, RenderDisabled, { 0 })*/
     }
 } zox_declare_system(UserIconFrameSystem)

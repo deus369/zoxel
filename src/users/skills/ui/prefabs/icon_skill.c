@@ -4,7 +4,7 @@ void tooltip_event_icon_skill(ecs_world_t *world, const TooltipEventData *data) 
     } else {
         // set_entity_with_text(world, data->tooltip, "selected skill");
         unsigned char used_name = 0;
-        char *result = malloc(64);
+        char result[64]; // char *result = malloc(64);
         if (data->data && zox_has(data->data, ZoxName)) {
             const ZoxName *zox_name = zox_get(data->data, ZoxName)
             if (zox_name && zox_name->length > 0) {
@@ -20,7 +20,7 @@ void tooltip_event_icon_skill(ecs_world_t *world, const TooltipEventData *data) 
             sprintf(result, "[%lu] s\n", data->data);
         }
         set_entity_with_text(world, data->tooltip, result);
-        free(result);
+        // free(result);
     }
 }
 

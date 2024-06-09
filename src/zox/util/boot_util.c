@@ -48,7 +48,7 @@ void zox_spawn_main_menu(ecs_world_t *world, const ecs_entity_t player, const ch
     quads_label = spawn_quad_count_label(world, canvas);
 #endif
     // disable until line2Ds reposition/scale based on canvas
-    spawn_canvas_edge_lines(world, canvas);
+    spawn_canvas_edge_lines(world, canvas, 4, color_black);
 }
 
 #endif

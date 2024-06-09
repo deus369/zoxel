@@ -1,5 +1,5 @@
-#ifndef zox_lines2D
-#define zox_lines2D
+#ifndef zox_mod_lines2D
+#define zox_mod_lines2D
 
 zox_declare_tag(Line2D)
 zox_declare_tag(ElementLine2D)  // lines in ui

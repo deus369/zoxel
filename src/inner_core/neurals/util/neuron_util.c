@@ -109,6 +109,7 @@ void save_brain_as_texture(ecs_world_t *world, const ecs_entity_t brain) {
         i2++;
     }
     save_texture_as_png(colors, brain_texture_size, "build/brain_test.png");
+    free(colors);
 }
 
 ecs_entity_t spawn_brain_as_texture(ecs_world_t *world, const ecs_entity_t brain) {

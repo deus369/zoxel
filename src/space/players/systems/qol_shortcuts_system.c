@@ -34,6 +34,10 @@ void QolShortcutsSystem(ecs_iter_t *it) {
                 else if (keyboard->_6.pressed_this_frame) set_player_action(world, e, 5);
                 else if (keyboard->_7.pressed_this_frame) set_player_action(world, e, 6);
                 else if (keyboard->_8.pressed_this_frame) set_player_action(world, e, 7);
+            } else if (zox_has(device_entity, Mouse)) {
+                const Mouse *mouse = zox_get(device_entity, Mouse)
+                if (mouse->wheel.y > 0) player_action_ui_move(world, e, 1);
+                else if (mouse->wheel.y < 0) player_action_ui_move(world, e, -1);
             }
         }
     }
