@@ -25,6 +25,15 @@ void QolShortcutsSystem(ecs_iter_t *it) {
                     toggle_free_roam_camera(world, e);
                     zox_log(" > set camera free roam [%i]\n", camera_mode)
                 }
+
+                else if (keyboard->_1.pressed_this_frame) set_player_action(world, e, 0);
+                else if (keyboard->_2.pressed_this_frame) set_player_action(world, e, 1);
+                else if (keyboard->_3.pressed_this_frame) set_player_action(world, e, 2);
+                else if (keyboard->_4.pressed_this_frame) set_player_action(world, e, 3);
+                else if (keyboard->_5.pressed_this_frame) set_player_action(world, e, 4);
+                else if (keyboard->_6.pressed_this_frame) set_player_action(world, e, 5);
+                else if (keyboard->_7.pressed_this_frame) set_player_action(world, e, 6);
+                else if (keyboard->_8.pressed_this_frame) set_player_action(world, e, 7);
             }
         }
     }

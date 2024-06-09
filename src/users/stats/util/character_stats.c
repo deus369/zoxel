@@ -35,7 +35,7 @@ ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, con
     zox_modified(e, ElementLinks)
     if (player) {
         const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
-        find_child_with_tag(canvas, MenuInGame, game_menu)
+        find_child_with_tag(canvas, MenuGame, game_menu)
         if (game_menu) {
             find_child_with_tag(game_menu, ElementBar, healthbar_2D)
             zox_set(healthbar_2D, StatLink, { health_stat })

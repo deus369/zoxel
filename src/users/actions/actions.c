@@ -1,5 +1,5 @@
-#ifndef zox_actions
-#define zox_actions
+#ifndef zox_mod_actions
+#define zox_mod_actions
 
 zox_declare_user_data(Action)
 #include "prefabs/action.c"
