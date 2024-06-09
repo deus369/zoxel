@@ -10,17 +10,7 @@ void BillboardSystem(ecs_iter_t *it) {
     zox_field_out(Rotation3D, rotation3Ds, 2)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(Position3D, position3Ds, position3D)
-        // get closest camera
-        ecs_entity_t camera = 0;
-        float closest_distance = 100000;
-        for (int j = 0; j < main_cameras_count; j++) {
-            const float3 camera_position = zox_get_value(main_cameras[j], Position3D)
-            const float distance = float3_distance(position3D->value, camera_position);
-            if (distance < closest_distance) {
-                closest_distance = distance;
-                camera = main_cameras[j];
-            }
-        }
+        const ecs_entity_t camera = find_closest_camera(world, position3D->value);
         if (!camera || !zox_has(camera, Rotation3D)) continue;
         zox_field_e()
         zox_field_o(Rotation3D, rotation3Ds, rotation3D)

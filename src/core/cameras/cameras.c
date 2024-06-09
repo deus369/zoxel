@@ -16,6 +16,7 @@ zox_declare_tag(CameraFollower2D)
 zox_declare_tag(CameraUI)
 zox_declare_tag(RenderCamera)
 zox_declare_tag(RenderTexture)
+zox_declare_tag(ElementBillboard)
 zox_component_byte(CanRoam)
 zox_component_byte(CameraMode)
 zox_component_byte(CameraViewing)
@@ -33,7 +34,8 @@ zox_component(ViewProjectionMatrix, float4x4)
 zox_memory_component(FrustumCorners, float3)
 zox_memory_component(CameraPlanes, plane)
 zox_component_entity(RenderTextureLink)
-#include "fun/camera_util.c"
+#include "util/camera_mode.c"
+#include "util/position.c"
 #include "util/bounds_util.c"
 #include "util/camera_util.c"
 #include "util/frustum_util.c"
@@ -49,6 +51,7 @@ zox_component_entity(RenderTextureLink)
 #include "systems/camera_debug_system.c"
 #include "systems/camera_draw_frustum_system.c"
 #include "systems/camera_planes_draw_system.c"
+#include "systems/billboard_system.c"
 
 zox_begin_module(Cameras)
 zox_define_tag(Camera)
@@ -59,6 +62,7 @@ zox_define_tag(CameraFollower2D)
 zox_define_tag(CameraUI)
 zox_define_tag(RenderCamera)
 zox_define_tag(RenderTexture)
+zox_define_tag(ElementBillboard)
 zox_define_component_entity(RenderTextureLink)
 zox_define_component_byte(CanRoam)
 zox_define_component_byte(CameraMode)
@@ -80,8 +84,8 @@ zox_system(Camera2DFollowSystem, EcsPostUpdate, [in] CanRoam, [in] CameraTarget,
 zox_system(Camera3DFollowSystem, EcsPostUpdate, [in] CameraFollowLink, [in] LocalPosition3D, [out] Position3D)
 zox_system(ViewMatrixSystem, zox_camera_stage, [in] TransformMatrix, [in] ProjectionMatrix, [out] ViewMatrix)
 zox_system(ProjectionMatrixSystem, zox_camera_stage, [in] ScreenDimensions, [in] FieldOfView, [in] CameraNearDistance, [out] ProjectionMatrix)
-// single thread while debugging
 zox_system(CameraFrustumSystem, zox_camera_stage, [in] ViewMatrix, [out] FrustumCorners, [out] Position3DBounds, [out] CameraPlanes, [none] Camera, [none] Camera3D)
+zox_system(BillboardSystem, zox_transforms_stage, [in] Position3D, [out] Rotation3D, [none] ElementBillboard)
 #ifdef zox_draw_frustum
 zox_system_1(CameraPlanesDrawSystem, zox_pip_mainthread, [in] CameraPlanes, [none] Camera3D)
 zox_system_1(FrustumDrawSystem, zox_pip_mainthread, [in] FrustumCorners, [none] Camera3D)
