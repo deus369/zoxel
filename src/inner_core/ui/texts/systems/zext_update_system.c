@@ -9,10 +9,10 @@ void ZextUpdateSystem(ecs_iter_t *it) {
     zox_field_in(CanvasPosition, canvasPositions, 5)
     zox_field_in(PixelSize, pixelSizes, 6)
     zox_field_in(MeshAlignment, meshAlignments, 7)
-    zox_field_in(RenderDisabled, renderDisableds, 8)
     zox_field_in(FontOutlineColor, fontOutlineColors, 9)
     zox_field_in(FontFillColor, fontFillColors, 10)
     zox_field_in(FontThickness, fontThicknesss, 11)
+    zox_field_out(RenderDisabled, renderDisableds, 8)
     zox_field_out(ZextDirty, zextDirtys, 12)
     zox_field_out(Children, childrens, 13)
     for (int i = 0; i < it->count; i++) {
@@ -28,13 +28,16 @@ void ZextUpdateSystem(ecs_iter_t *it) {
         zox_field_i(CanvasPosition, canvasPositions, canvasPosition)
         zox_field_i(PixelSize, pixelSizes, pixelSize)
         zox_field_i(MeshAlignment, meshAlignments, meshAlignment)
-        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         zox_field_i(FontOutlineColor, fontOutlineColors, fontOutlineColor)
         zox_field_i(FontFillColor, fontFillColors, fontFillColor)
         zox_field_i(FontThickness, fontThicknesss, fontThickness)
+        zox_field_o(RenderDisabled, renderDisableds, renderDisabled)
         const ecs_entity_t canvas = get_root_canvas(world, e);
         const int2 canvas_size = zox_get_value(canvas, PixelSize)
         const unsigned char zext_length = calculate_total_zigels(zextData->value, zextData->length);
+        if (zox_has(e, ZextRenderEnabler)) {
+            renderDisabled->value = zextData->length == 0;
+        }
         SpawnZigel spawn_data = {
             .canvas = {
                 .e = canvas,
@@ -52,7 +55,6 @@ void ZextUpdateSystem(ecs_iter_t *it) {
                 .render_disabled = renderDisabled->value
             },
             .zext = {
-                // .font_size = zextSize->value,
                 .font_thickness = fontThickness->value,
                 .length = zext_length,
                 .text_padding = zextPadding->value,
@@ -65,8 +67,5 @@ void ZextUpdateSystem(ecs_iter_t *it) {
         };
         spawn_zext_zigels(world, &spawn_data, children, zextData);
         zextDirty->value = 0;
-#ifdef zoxel_debug_zigel_updates
-        zox_log(" > zext is updating [%lu] [%i]\n", it->entities[i], zextData->length)
-#endif
     }
 } zox_declare_system(ZextUpdateSystem)

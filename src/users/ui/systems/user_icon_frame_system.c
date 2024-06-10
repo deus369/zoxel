@@ -21,7 +21,7 @@ void UserIconFrameSystem(ecs_iter_t *it) {
             zox_log(" ! tooltip not found\n")
             continue;
         }
-        zox_set(tooltip, RenderDisabled, { (selectState->value == zox_select_state_deselected_this_frame) })
+        // zox_set(tooltip, RenderDisabled, { (selectState->value == zox_select_state_deselected_this_frame) })
         TooltipEventData data = {
             .event = selectState->value,
             .tooltip = tooltip,

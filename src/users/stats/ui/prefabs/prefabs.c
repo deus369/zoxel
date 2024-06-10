@@ -10,6 +10,6 @@ zox_user_menu_functions(Stats, Stat, stats, stat)
 void spawn_prefabs_ui_stats(ecs_world_t *world) {
     prefab_statbar2D = spawn_prefab_statbar2D(world);
     prefab_statbar3D = spawn_prefab_statbar3D(world);
-    prefab_icon_stat = spawn_prefab_icon_stat(world, prefab_icon);
+    prefab_icon_stat = spawn_prefab_icon_stat(world, prefab_icon_user);
     prefab_menu_stats = spawn_prefab_menu_stats(world, prefab_window_users);
 }
