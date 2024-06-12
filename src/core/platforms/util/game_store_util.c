@@ -1,7 +1,7 @@
 // #define zox_log_achievements
 #ifdef zox_include_steam
 unsigned char is_steam_running = 0;
-#include "../../../bash/steam/steamwrapper.c"
+#include "../../../../bash/steam/steamwrapper.c"
 
 void intialize_game_store() {
     if (initialize_steam()) {

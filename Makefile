@@ -505,10 +505,8 @@ make_linux_with_steam = $(CC) $(CFLAGS) $(CFLAGS_RELEASE) -o $(target) $(OBJS) $
 make_windows_with_steam = $(cc_windows) $(OBJS) include/flecs/flecs.c $(steam_objs) -o $(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs) $(steam_libs) -lsteam_api64
 
 steam-wrapper-linux:
+	@ $(patient_cmd)
 	@ bash bash/steam/build_wrapper_linux.sh
-
-steam-wrapper-windows:
-	@ bash bash/steam/build_wrapper_windows.sh
 
 steam-linux:
 	@ echo " > building linux-steam wrapper"
@@ -517,6 +515,10 @@ steam-linux:
 	@ $(patient_cmd)
 	@ $(make_linux_with_steam)
 
+steam-wrapper-windows:
+	@ $(patient_cmd)
+	@ bash bash/steam/build_wrapper_windows.sh
+
 steam-windows:
 	@ echo " > building windows-steam wrapper"
 	@ bash bash/steam/build_wrapper_windows.sh
@@ -524,7 +526,7 @@ steam-windows:
 	@ $(patient_cmd)
 	@ $(make_windows_with_steam)
 
-steam-all:
+steam:
 	@ echo " > [1/6] building linux-steam wrapper"
 	@ bash bash/steam/build_wrapper_linux.sh
 	@ echo " > [2/6] building linux-steam"
@@ -540,7 +542,11 @@ steam-all:
 	@ bash bash/steam/upload_package.sh
 	# bash bash/steam/upload_package.sh --default
 
+steam-cmd:
+	@ bash bash/steam/install_steamcmd.sh
+
 steam-sdk:
+	@ bash bash/steam/installsteamcmd.sh
 	@ bash bash/steam/install_sdk.sh
 
 steam-package:
@@ -765,7 +771,7 @@ help-web:
 
 help-steam:
 	@echo "  > [steam]"
-	@echo "    steam-all			builds both wrappers, builds and uploads them to beta"
+	@echo "    steam			builds both wrappers, builds and uploads them to beta"
 	@echo "    steam-wrapper-linux		builds steam wrapper lib/libsteam_wrapper.so"
 	@echo "    steam-linux			builds zoxel-linux with steam added"
 	@echo "    steam-wrapper-windows	builds steam wrapper lib/libsteam_wrapper.dll"

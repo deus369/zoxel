@@ -47,7 +47,7 @@ unsigned char steam_remote_save(const char* save_name, unsigned char *buffer, in
 
 unsigned char* steam_remote_read(const char* save_name, int32* file_length) {
     *file_length = SteamRemoteStorage()->GetFileSize(save_name);
-    unsigned char* file_content = (unsigned char*) malloc(*file_length);
+    unsigned char *file_content = (unsigned char*) malloc(*file_length);
     if (!SteamRemoteStorage()->FileRead(save_name, file_content, *file_length)) {
         free(file_content);
         return NULL;

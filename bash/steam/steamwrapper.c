@@ -24,7 +24,7 @@ const char* get_friend_nickname(uint64_t steam_id);
 // achievement testing
 void steam_unlock_achievement(const char* achievement_name);
 
-// saving
+// i/o
 unsigned char* steam_remote_read(const char* save_name, int32_t* file_length);
 unsigned char steam_remote_save(const char* save_name, unsigned char *buffer, int32_t byte_length);
 

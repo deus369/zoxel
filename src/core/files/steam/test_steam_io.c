@@ -1,5 +1,6 @@
 unsigned char test_read_byte = 255;
 unsigned char test_read_byte2 = 255;
+extern unsigned char is_steam_running;
 
 void test_steam_cloud() {
 #ifdef zox_include_steam

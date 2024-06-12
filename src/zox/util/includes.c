@@ -5,7 +5,6 @@
 #include <stdio.h>  // just for sprintf and perror
 // sub modules
 #include "../../core/core.c"
-#include "game_store_util.c"
 #include "../../inner_core/inner_core.c"
 #include "../../outer_core/outer_core.c"
 #include "../../users/users.c"

@@ -1,9 +1,3 @@
-typedef struct FileList {
-    char **files;
-    char **filenames;
-    int count;
-} FileList;
-
 void free_files(FileList *fileList) {
     for (int i = 0; i < fileList->count; i++) {
         free(fileList->files[i]);
@@ -88,6 +82,7 @@ void add_file(FileList *fileList, const char *filepath) {
 void traverse_directory(FileList *fileList, const char *directory) {
     DIR *dp;
     struct dirent *entry;
+    struct stat statbuf;
     dp = opendir(directory);
     if (dp == NULL) {
         perror("Unable to open directory");
@@ -98,9 +93,13 @@ void traverse_directory(FileList *fileList, const char *directory) {
         char *name = entry->d_name;
         char path[1024];
         snprintf(path, sizeof(path), "%s/%s", directory, name);
-        if (entry->d_type == DT_DIR) {
+        if (stat(path, &statbuf) == -1) {
+            perror("Unable to stat file");
+            continue;
+        }
+        if (S_ISDIR(statbuf.st_mode)) {
             traverse_directory(fileList, path);
-        } else if (entry->d_type == DT_REG || entry->d_type == DT_LNK) { // Regular files and symbolic links
+        } else {
             add_file(fileList, path);
         }
     }

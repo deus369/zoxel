@@ -18,6 +18,7 @@ double get_ram_use() {
     // Close the file
     fclose(statm);
     // Get the page size in bytes
+#ifdef zoxel_on_linux
     long page_size = sysconf(_SC_PAGESIZE);
     if (page_size == -1) {
         perror("sysconf");
@@ -25,6 +26,7 @@ double get_ram_use() {
     }
     // Calculate RAM usage in bytes
     ram_use = resident * page_size;
+#endif
     return ram_use;
 }
 

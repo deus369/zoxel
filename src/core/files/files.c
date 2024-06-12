@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <dirent.h>
 #include <errno.h>
+#include <sys/stat.h>
+#include "data/file_list.c"
 // used for file io functions
 zox_declare_tag(Asset)
 #include "util/path_util.c"

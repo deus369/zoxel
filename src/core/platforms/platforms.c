@@ -7,6 +7,7 @@ int cpu_core_count;
 #include "util/cpu_util.c"
 #include "util/platform_debug_util.c"
 #include "util/webasm_util.c"
+#include "util/game_store_util.c"
 
 void fetch_pc_info(int cpu_core_count_) {
     cpu_core_count = cpu_core_count_;
