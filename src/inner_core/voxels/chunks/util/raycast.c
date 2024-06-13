@@ -8,7 +8,7 @@ unsigned char raycast_character(ecs_world_t *world, const ecs_entity_t caster, c
     *closest_t = FLT_MAX;
     for (int i = 0; i < entity_links->length; ++i) {
         const ecs_entity_t character = entity_links->value[i];
-        if (!character || caster == character) continue;
+        if (!character || caster == character || !zox_alive(character)) continue;
         const float3 position3D = zox_get_value(character, Position3D)
         const float3 bounds3D = zox_get_value(character, Bounds3D)
         const bounds character_bounds = { .center = position3D, .extents = bounds3D };

@@ -33,13 +33,13 @@ zox_memory_component(SoundData, float)   //! A sound has an array of bytes
 #include "instruments/envelop.c"
 #include "systems/sound_generate_system.c"
 #include "systems/sound_debug_system.c"
-#ifdef SDL_MIXER
+#ifdef zox_lib_sdl_mixer
 #include "systems/play_sound_system.c"
 #include "systems/sound_update_system.c"
 #endif
 
 void initialize_sounds(ecs_world_t *world) {
-#ifndef SDL_MIXER
+#ifndef zox_lib_sdl_mixer
     zox_log(" ! sdl sounds are disabled\n")
 #endif
     load_files_sounds();
@@ -61,11 +61,11 @@ zox_define_component_double(SoundLength)
 zox_define_component_float(SoundFrequency)
 zox_define_component_float(SoundVolume)
 zox_define_memory_component(SoundData)
-#ifdef SDL_MIXER
+#ifdef zox_lib_sdl_mixer
 zox_define_component(SDLSound)
 #endif
 zox_system(SoundGenerateSystem, EcsOnUpdate, [none] Sound, [out] GenerateSound, [out] SoundData, [out] SoundDirty, [in] SoundLength, [in] SoundFrequency, [in] SoundVolume, [in] InstrumentType)
-#ifdef SDL_MIXER
+#ifdef zox_lib_sdl_mixer
 zox_system(SoundUpdateSystem, EcsOnUpdate, [none] Sound, [in] SoundData, [out] SoundDirty, [out] SDLSound)
 zox_system(PlaySoundSystem, zox_pipelines_pre_render, [in] SoundLength, [out] TriggerSound, [out] SDLSound, [out] DestroyInTime, [none] Sound)
 #endif

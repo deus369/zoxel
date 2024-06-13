@@ -7,17 +7,19 @@ source bash/util/install_required.sh
 source bash/util/prepare_directories.sh
 
 # first download libraries
-# source bash/linux/download_libraries.sh
+source bash/linux/download_libraries.sh
 
 build_path="build/linux"
 build_dev_path="build/linux-dev"
 resources="resources"
+lib="lib"
 # if [ ! - d $build_path ] mkdir $build_path ;
 # Function to create directory if it doesn't exist
 prepare_linux_build_directory() {
     local directory="$1"
     local build_resources="$directory/resources"
-    local build_bin="$directory/bin"
+    local directory_lib="$directory/lib"
+    # local build_bin="$directory/bin"
     if [ ! -d "$directory" ]; then
         mkdir -p "$directory"
         echo " + created new build directory [$directory]"
@@ -34,12 +36,21 @@ prepare_linux_build_directory() {
     mkdir "$build_resources"
     cp -r $resources/* $build_resources/
     # now copy bin files in
-    if [ -d "$build_bin" ]; then
-        echo " + removing old bin [$build_bin]"
-        rm -rf "$build_bin"
+    #if [ -d "$build_bin" ]; then
+    #    echo " + removing old bin [$build_bin]"
+    #    rm -rf "$build_bin"
+    #else
+    #    echo " > old bin [$build_bin] did not exist"
+    #fi
+    if [ ! -d "$directory_lib" ]; then
+        mkdir -p "$directory_lib"
+        echo " + created new build directory lib [$directory_lib]"
     else
-        echo " > old bin [$build_bin] did not exist"
+        echo " > directory [$directory_lib] already exists"
     fi
+    cp -r $lib/*.a $directory_lib/
+    cp -r $lib/*.la $directory_lib/
+    cp -r $lib/*.so $directory_lib/
 }
 
 prepare_linux_build_directory "$build_path"

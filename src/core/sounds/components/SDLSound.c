@@ -1,4 +1,4 @@
-#ifdef SDL_MIXER
+#ifdef zox_lib_sdl_mixer
 // actually  its buffer is stored in SoundData so no need to Mix_FreeChunk
 // ptr->value->abuf is just SoundData converted to (Uint8*)
 zox_component(SDLSound, Mix_Chunk)

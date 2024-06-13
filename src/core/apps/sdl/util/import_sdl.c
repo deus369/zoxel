@@ -1,9 +1,5 @@
 #define zoxel_using_sdl
 
-#ifndef zox_disable_audio
-#define SDL_MIXER
-#endif
-
 #ifdef zoxel_on_windows
     #include <glew.h>
 #endif
@@ -11,18 +7,23 @@
 #ifdef zoxel_on_web
     #include <emscripten.h>
 #endif
-#ifdef USE_SDL_3
-    #include <SDL3/SDL.h>
-#elif defined(zox_sdl_import_file_only)
+#ifdef zox_lib_sdl_direct
     #include <SDL.h>
 #else
-    #include <SDL2/SDL.h>
+    #ifdef USE_SDL_3
+        #include <SDL3/SDL.h>
+    #elif defined(zox_sdl_import_file_only)
+        #include <SDL.h>
+    #else
+        #include <SDL2/SDL.h>
+    #endif
 #endif
-
-#if defined(zox_sdl_import_file_only)
-    #include <SDL_image.h>
-#else
-    #include <SDL2/SDL_image.h>
+#ifdef zox_lib_sdl_images
+    #if defined(zox_sdl_import_file_only)
+        #include <SDL_image.h>
+    #else
+        #include <SDL2/SDL_image.h>
+    #endif
 #endif
 
 #ifdef zox_include_vulkan

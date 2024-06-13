@@ -14,12 +14,13 @@ use_lib_sdl := true
 use_lib_sdl_image := true
 # used for audio
 use_lib_sdl_mixer := true
-# make vulkan=1 for vulkan
-use_lib_vulkan := false
 # enable for ttf font files
 use_lib_ttf := true
+# todo: use libsdl2-ttf-dev instead? sdl2 true type font
 # enable to debug amd gpu
 use_lib_amd := false
+# make vulkan=1 for vulkan
+use_lib_vulkan := false
 # more
 patient_cmd = echo " > please be patient :), lord deus [>,<]/)"
 LDLIBS = -lm -lpthread -lflecs -Llib # default libraries
@@ -27,19 +28,20 @@ ifdef game
     LDLIBS +=-Dzox_game=$(game)
 endif
 ifeq ($(use_lib_sdl), true)
-    LDLIBS += -lSDL2
+    LDLIBS += -lSDL2 -Ibuild/linux-sdl/include -Dzox_lib_sdl_direct
 endif
 ifeq ($(use_lib_sdl_image), true)
     LDLIBS += -lSDL2_image -Dzox_lib_sdl_images
 endif
 ifeq ($(use_lib_sdl_mixer), true)
-    LDLIBS += -lSDL2_mixer
+    LDLIBS += -lSDL2_mixer -Dzox_lib_sdl_mixer
 endif
 ifeq ($(use_lib_vulkan), true)
     LDLIBS += -lvulkan -Dzox_include_vulkan # vulkan on linux
 endif
 ifeq ($(use_lib_ttf), true)
-   LDLIBS += -lfreetype -Dzox_lib_ttf -I/usr/include/freetype2/ # todo: make static for windows / test on windows
+   LDLIBS += -lfreetype -Dzox_lib_ttf -Ibuild/freetype/freetype-2.11.1/include
+   # -I/usr/include/freetype2/ # todo: make static for windows / test on windows
 endif
 ifeq ($(use_lib_amd), true)
    LDLIBS +=  -lrocm_smi64 -Dzox_lib_amd
@@ -116,6 +118,9 @@ uninstall:
 run:
 	@ ./$(target)
 
+run-debug:
+	gdb ./$(target)
+
 run-coop:
 	@ ./$(target) -s
 
@@ -178,11 +183,8 @@ run-debug-vulkan:
 	@ $(patient_cmd)
 	@ valgrind ./$(target_dev) --vulkan
 
-run-debug:
+run-dev-debug:
 	@ gdb ./$(target_dev)
-
-run-debug2:
-	@ gdb ./$(target)
 
 # run development + valgrind
 run-valgrind:
@@ -323,8 +325,14 @@ endif
 run-windows:
 	@ WINEPREFIX=~/.wine64 wine $(target_windows)
 
+run-windows-debug2:
+	@ WINEPREFIX=~/.wine64 winedbg $(target_windows)
+
 run-windows-debug:
 	@ WINEPREFIX=~/.wine64 WINEDEBUG=+backtrace wine $(target_windows)
+
+run-windows-debug3:
+	@ WINEPREFIX=~/.wine64 WINEDEBUG=+all wine $(target_windows)
 
 # @ WINEPREFIX=~/.wine64 WINEDEBUG=+all wine $(target_windows)
 # @ WINEPREFIX=~/.wine64 WINEDEBUG=+opengl wine $(target_windows)
@@ -492,14 +500,24 @@ update: ## installs zoxel into /usr/games directory
 	@ bash make prepare && make && make install
 
 # ===== ===== ===== #
+# ===== freetype ===== #
+# ===== ===== ===== #
+
+freetype:
+	@ $(patient_cmd)
+	@ bash bash/freetype/install.sh
+
+# ===== ===== ===== #
 # ===== steam ===== #
 # ===== ===== ===== #
 
 # todo: use windows-steam directory
-steam_libs = -Iinclude/steam -lsteam_wrapper -Wl,-rpath,'lib:../lib' -Dzox_include_steam
 steam_objs = bash/steam/steamwrapper.c
-make_linux_with_steam = $(CC) $(CFLAGS) $(CFLAGS_RELEASE) -o $(target) $(OBJS) $(steam_objs) $(LDLIBS) $(steam_libs) -lsteam_api
-make_windows_with_steam = $(cc_windows) $(OBJS) include/flecs/flecs.c $(steam_objs) -o $(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs) $(steam_libs) -lsteam_api64
+steam_libs = -Iinclude/steam -Dzox_include_steam -lsteam_wrapper -Wl,-rpath='lib' # rpath used for wrapper
+steam_libs_linux = -lsteam_api # -Wl,-rpath,'lib'
+steam_libs_windows = -lsteam_api64
+make_linux_with_steam = $(CC) $(CFLAGS) $(CFLAGS_RELEASE) -o $(target) $(OBJS) $(steam_objs) $(LDLIBS) $(steam_libs) $(steam_libs_linux)
+make_windows_with_steam = $(cc_windows) $(OBJS) include/flecs/flecs.c $(steam_objs) -o $(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs) $(steam_libs) $(steam_libs_windows)
 
 steam-wrapper-linux:
 	@ $(patient_cmd)
@@ -511,6 +529,9 @@ steam-linux:
 	@ echo " > building linux-steam"
 	@ $(patient_cmd)
 	@ $(make_linux_with_steam)
+
+steam-run:
+	@ LD_LIBRARY_PATH=./lib ./$(target) # LD_LIBRARY_PATH used for steam_api
 
 steam-wrapper-windows:
 	@ $(patient_cmd)

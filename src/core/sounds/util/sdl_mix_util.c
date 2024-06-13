@@ -1,5 +1,5 @@
 unsigned char load_audio_sdl() {
-#ifndef SDL_MIXER
+#ifndef zox_lib_sdl_mixer
     return EXIT_FAILURE;
 #else
     if(Mix_OpenAudio(sound_sample_rate, AUDIO_F32SYS, channels_count, 2048) < 0) {
@@ -21,7 +21,7 @@ unsigned char load_audio_sdl() {
 }
 
 void close_audio_sdl() {
-#ifdef SDL_MIXER
+#ifdef zox_lib_sdl_mixer
     // dispose_static_sounds();
     Mix_Quit();
 #endif

@@ -1,4 +1,4 @@
-#ifdef SDL_MIXER
+#ifdef zox_lib_sdl_mixer
 
 // MIX_DEFAULT_FORMAT https://wiki.libsdl.org/SDL2/SDL_AudioFormat
 

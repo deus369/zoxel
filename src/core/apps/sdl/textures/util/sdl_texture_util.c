@@ -1,7 +1,11 @@
 #ifdef zox_lib_sdl_images
 
 SDL_Surface* load_png_as_surface(const char *filepath) {
+#ifndef zox_lib_sdl_images
+    return NULL;
+#else
     return (SDL_Surface*) IMG_Load(filepath);
+#endif
 }
 
 // Assuming TextureData and TextureSize are defined as they are in your save function

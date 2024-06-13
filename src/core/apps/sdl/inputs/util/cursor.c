@@ -2,6 +2,9 @@ SDL_Cursor* sdl_cursor;
 
 // Function to create a cursor from an SDL texture
 SDL_Cursor* create_sdl_cursor(const char* path, const int2 hotspot) {
+#ifndef zox_lib_sdl_images
+    return NULL;
+#else
     // Load the image as a surface
     SDL_Surface* surface = IMG_Load(path);
     if (!surface) {
@@ -14,6 +17,7 @@ SDL_Cursor* create_sdl_cursor(const char* path, const int2 hotspot) {
     // Free the surface since the cursor now has its own copy
     SDL_FreeSurface(surface);
     return cursor;
+#endif
 }
 
 void dispose_sdl_cursor() {

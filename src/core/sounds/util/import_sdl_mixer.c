@@ -1,4 +1,4 @@
-#ifdef SDL_MIXER
+#ifdef zox_lib_sdl_mixer
 
 #if defined(zox_sdl_import_file_only)
     #include <SDL_mixer.h>

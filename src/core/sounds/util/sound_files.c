@@ -1,7 +1,7 @@
 #define directory_sounds "sounds"character_slash
 
 int sound_files_count = 0;
-#ifdef SDL_MIXER
+#ifdef zox_lib_sdl_mixer
 Mix_Chunk **sound_files;
 #endif
 
@@ -14,7 +14,7 @@ void load_files_sounds() {
     zox_log("   > sounds found [%i]\n", files.count)
 #endif
     // vox_files_count = files.count;
-#ifdef SDL_MIXER
+#ifdef zox_lib_sdl_mixer
     sound_files_count = files.count;
     sound_files = malloc(sizeof(Mix_Chunk) * files.count);
 #endif
@@ -24,7 +24,7 @@ void load_files_sounds() {
 #ifdef zox_print_files
         zox_log("   > sound file [%s]\n", filepath)
 #endif
-#ifdef SDL_MIXER
+#ifdef zox_lib_sdl_mixer
         sound_files[i] = Mix_LoadWAV(filepath);
 #endif
         // free(filepath);
@@ -34,7 +34,7 @@ void load_files_sounds() {
 }
 
 void dispose_sound_files() {
-#ifdef SDL_MIXER
+#ifdef zox_lib_sdl_mixer
     for (int i = 0; i < sound_files_count; i++) free(sound_files[i]);
     free(sound_files);
 #endif
@@ -43,7 +43,7 @@ void dispose_sound_files() {
 ecs_entity_t spawn_sound_from_file(ecs_world_t *world, const ecs_entity_t prefab, const int index) {
     zox_instance(prefab)
     zox_name("sound_file")
-#ifdef SDL_MIXER
+#ifdef zox_lib_sdl_mixer
     if (index < sound_files_count && sound_files[index]) {
         zox_log(" > playing sound file [%i]\n", index)
         Mix_Chunk *mixChunk = clone_mix_chunk(sound_files[index]);

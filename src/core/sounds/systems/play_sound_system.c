@@ -2,8 +2,12 @@ void PlaySoundSystem(ecs_iter_t *it) {
 #ifdef zox_disable_play_sounds
     return;
 #endif
+#ifndef zox_lib_sdl_mixer
+    int channel_available = 0;
+#else
     int channel_available = Mix_GroupAvailable(-1); // -1 indicates all channels
     if (channel_available == -1) return;
+#endif
     // zox_iter_world()
     zox_field_in(SoundLength, soundLengths, 1)
     zox_field_out(TriggerSound, triggerSounds, 2)
@@ -17,7 +21,9 @@ void PlaySoundSystem(ecs_iter_t *it) {
         zox_field_o(DestroyInTime, destroyInTimes, destroyInTime)
         destroyInTime->value = soundLength->value + 1.0;
         if (soundLength->value) {
+#ifdef zox_lib_sdl_mixer
             Mix_PlayChannel(channel_available, &sdlSound->value, 0);// != -1)
+#endif
         }
         triggerSound->value = 0;
     }

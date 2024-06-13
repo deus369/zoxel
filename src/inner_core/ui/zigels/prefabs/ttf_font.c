@@ -7,6 +7,7 @@
 
 ecs_entity_t spawn_font_ttf(ecs_world_t *world, FT_Face face, const float4 face_bounds, const char charcode) {
     const FT_GlyphSlot glyph = get_glyph(face, charcode);
+    if (glyph == 0) return 0;
     int length;
     byte2 *points = glyph_to_points(glyph, face_bounds, &length);
     if (length == 0) return 0;

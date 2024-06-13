@@ -1,4 +1,4 @@
-#ifdef SDL_MIXER
+#ifdef zox_lib_sdl_mixer
 
 double get_mix_chunk_sound_length(Mix_Chunk* chunk) {
     int frequency, channels;
