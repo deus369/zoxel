@@ -19,7 +19,7 @@ use_lib_vulkan := false
 # enable for ttf font files
 use_lib_ttf := true
 # enable to debug amd gpu
-use_lib_amd := true
+use_lib_amd := false
 # more
 patient_cmd = echo " > please be patient :), lord deus [>,<]/)"
 LDLIBS = -lm -lpthread -lflecs -Llib # default libraries
@@ -99,9 +99,6 @@ else # linux
 	@ bash bash/linux/prepare.sh
 endif
 	@ make install-flecs && make build/libflecs.a
-
-#install-required:
-#	@ bash bash/util/install_required.sh
 
 ## installs zoxel into /usr/games directory
 install: 

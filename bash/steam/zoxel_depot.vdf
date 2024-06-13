@@ -1,7 +1,7 @@
 "DepotBuildConfig"
 {
 	"DepotID" "1412401"
-	"contentroot" "/home/deck/projects/zoxel/build/steam_export/"
+	"contentroot" "../../build/steam_export/"
 	"FileMapping"
 	{
 		"LocalPath" "*"

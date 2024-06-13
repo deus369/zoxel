@@ -16,9 +16,10 @@ fi
 read -p " > steam username " username
 read -s -p  " > steam password " password
 
-steamcmd +login $username $password +run_app_build_http $vdf_file +quit
+# login anonymous
+./build/steamcmd/steamcmd.sh +login $username $password +run_app_build_http $vdf_file +quit
 
-echo " > if wanting default branch, edit bash/steam/zoxel.vdf >setlive< value"
+echo " > if wanting default branch, edit [$vdf_file] >setlive< value"
 echo "  > next go to https://partner.steamgames.com/apps/builds/1412400 and set build manually"
 
 # xdg-open https://partner.steamgames.com/apps/depotuploads/1412400 &

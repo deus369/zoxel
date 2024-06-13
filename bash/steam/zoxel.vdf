@@ -2,12 +2,12 @@
 {
 	"appid" "1412400"
 	"desc" "Zoxel Build Uploader"
-	"buildoutput" "/home/deck/projects/zoxel/build/"
+	"buildoutput" "build/"
 	"preview" "0" // "local"	"default"
 	"contentroot" ""
 	"setlive" "release"
 	"depots"
 	{
-		"1412401"	"/home/deck/projects/zoxel/bash/steam/zoxel_depot.vdf"
+		"1412401"	"zoxel_depot.vdf"
 	}
 }
