@@ -41,7 +41,6 @@ ifeq ($(use_lib_vulkan), true)
 endif
 ifeq ($(use_lib_ttf), true)
    LDLIBS += -lfreetype -Dzox_lib_ttf -Ibuild/freetype/freetype-2.13.2/include
-   # -I/usr/include/freetype2/ # todo: make static for windows / test on windows
 endif
 ifeq ($(use_lib_amd), true)
    LDLIBS +=  -lrocm_smi64 -Dzox_lib_amd
@@ -283,10 +282,13 @@ windows_pre_libs = -Llib
 windows_libs = -lm -lpthread -lopengl32 -lglew32 -LSDL2main -lSDL2
 windows_libs += -Wl,-subsystem,windows -mwindows -lws2_32 # windows only
 ifeq ($(use_lib_sdl_image), true)
-	windows_libs += -lSDL2_image
+	windows_libs += -lSDL2_image -Dzox_lib_sdl_images
 endif
 ifeq ($(use_lib_sdl_mixer), true)
-    windows_libs += -lSDL2_mixer
+	windows_libs += -lSDL2_mixer -Dzox_lib_sdl_mixer
+endif
+ifeq ($(use_lib_ttf), true)
+	windows_libs += -lfreetype -Dzox_lib_ttf -Ibuild/freetype/freetype-2.13.2/include
 endif
 # windows pathing
 windows_includes = -Iinclude #  -I/usr/include/SDL2 -I/usr/include/GL

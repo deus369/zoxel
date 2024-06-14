@@ -5,6 +5,8 @@ source bash/util/prepare_directories.sh
 # first download libraries
 source bash/windows/download_libraries.sh
 
+source bash/freetype/install.sh
+
 build_path="build/windows"
 build_dev_path="build/windows-dev"
 resources="resources" # todo: change to just resources

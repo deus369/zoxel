@@ -1,4 +1,5 @@
 // flecs useage, create an ecs world
+#include <inttypes.h> // For PRIu64
 #include "util/flecs_defines.c"
 #include "data/settings.c"
 zoxel_dynamic_array(ecs_entity_t)

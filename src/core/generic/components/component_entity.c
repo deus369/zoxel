@@ -6,7 +6,7 @@ component_id_list(entity)
 zox_define_component(name)\
 add_to_ecs_entity_t_array_d(component_ids_entity, ecs_id(name));
 
-#define zox_component_string_entity(component) " e [%llu]", component->value
+#define zox_component_string_entity(component) " e [%" PRIu64 "]", component->value
 
 // add to tilemap link
 #define zox_component_parented(name) zox_component_entity(name)\

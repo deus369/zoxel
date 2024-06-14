@@ -17,7 +17,7 @@ void tooltip_event_icon_quest(ecs_world_t *world, const TooltipEventData *data) 
             }
         }
         if (!used_name) {
-            sprintf(result, "[%llu] q\n", data->data);
+            sprintf(result, "[%" PRIu64 "] q\n", data->data);
         }
         set_entity_with_text(world, data->tooltip, result);
     }
