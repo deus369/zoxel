@@ -40,7 +40,7 @@ ifeq ($(use_lib_vulkan), true)
     LDLIBS += -lvulkan -Dzox_include_vulkan # vulkan on linux
 endif
 ifeq ($(use_lib_ttf), true)
-   LDLIBS += -lfreetype -Dzox_lib_ttf -Ibuild/freetype/freetype-2.11.1/include
+   LDLIBS += -lfreetype -Dzox_lib_ttf -Ibuild/freetype/freetype-2.13.2/include
    # -I/usr/include/freetype2/ # todo: make static for windows / test on windows
 endif
 ifeq ($(use_lib_amd), true)
@@ -151,7 +151,7 @@ target_dev = build/linux-dev/zoxel
 ifeq ($(SYSTEM),Windows)
 target_dev = build/windows-dev/zoxel.exe
 endif
-cflags_debug = -Wall -g
+cflags_debug = -Wall -g # -Wextra -Wpedantic -Wshadow -Wl,--verbose -Og
 make_dev = echo " > building zoxel-dev-linux [$(target_dev)]" && \
 	$(patient_cmd) && \
 	$(CC) $(CFLAGS) $(cflags_debug) -o $(target_dev) $(OBJS) $(LDLIBS)

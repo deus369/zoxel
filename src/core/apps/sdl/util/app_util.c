@@ -1,5 +1,10 @@
 ecs_entity_t spawn_main_window(ecs_world_t *world) {
     SDL_Window* window = create_sdl_window(default_window_position, default_window_size, fullscreen);
+    if (window == NULL) {
+        zox_log("    ! opengl did not create window, exiting zoxel\n")
+        running = 0;
+        return 0;
+    }
     if (fullscreen) {
         viewport_dimensions = screen_dimensions;
     } else {

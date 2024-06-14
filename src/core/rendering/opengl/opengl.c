@@ -10,6 +10,7 @@
 #include "util/opengl_util.c"
 #include "util/geometry_util.c"
 #include "util/compute_util.c"
+#include "util/frame_buffer.c"
 // loads / disposes all shaders, move to higher level
 #include "util/opengl_main_util.c"
 
@@ -26,10 +27,11 @@ unsigned char initialize_opengl(ecs_world_t *world) {
     }
 #endif
 #ifdef zoxel_debug_opengl
-    zoxel_log(" > initializing opengl\n");
+    zox_log(" > initializing opengl\n")
 #endif
     if (!has_opengl_extensions()) return EXIT_FAILURE;
     print_opengl();
+    check_frame_buffer();
     check_compute();
     check_geometry();
     return EXIT_SUCCESS;

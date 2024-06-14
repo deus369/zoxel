@@ -38,10 +38,10 @@ void RenderTextureRenderSystem(ecs_iter_t *it) {
         glEnableVertexAttribArray(material_attributes->vertex_uv);
         glVertexAttribPointer(material_attributes->vertex_uv, 2, GL_FLOAT, GL_FALSE, 0, 0);
         opengl_bind_texture(textureGPULink->value);
-        // opengl_set_matrix(material_attributes->transform_matrix, transformMatrix->value);
-        float2 position2D = zox_get_value(it->entities[i], Position2D)
-        const float4x4 position_matrix = float4x4_position((float3) { position2D.x, position2D.y, 0 });
-        opengl_set_matrix(material_attributes->transform_matrix, position_matrix);
+        opengl_set_matrix(material_attributes->transform_matrix, transformMatrix->value);
+        // float2 position2D = zox_get_value(it->entities[i], Position2D)
+        // const float4x4 position_matrix = float4x4_position((float3) { position2D.x, position2D.y, 0 });
+        // opengl_set_matrix(material_attributes->transform_matrix, position_matrix);
 #ifndef zox_disable_render_ui
         opengl_render(6);
 #endif

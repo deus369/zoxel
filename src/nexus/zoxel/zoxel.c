@@ -1,15 +1,30 @@
 #if !defined(zox_mod_game) // && defined(zox_mod_players)
 #define zox_mod_game
 
+// #define zox_log_boot_game
+
 unsigned char boot_zoxel_game(ecs_world_t *world) {
 #ifndef zox_beta
     game_name = "Zoxel";
 #else
     game_name = "Zoxel b";
 #endif
+#ifdef zox_log_boot_game
+    zox_log("boot_zoxel_game\n")
+#endif
     const ecs_entity_t window = spawn_main_window(world);
-    load_shaders(world);
+    if (window == 0) {
+        return EXIT_FAILURE;
+    }
+#ifdef zox_log_boot_game
+    zox_log("boot_zoxel_game2\n")
+    #endif
     if (!headless) {
+        initialize_rendering(world);
+        load_shaders(world);
+#ifdef zox_log_boot_game
+        zox_log("boot_zoxel_game3\n")
+#endif
         char* icon_path = get_asset_path("textures", "game_icon.png")
         char* cursor_path = get_asset_path("textures", "cursors/cursor_02.png")
 #ifdef zox_mod_textures
@@ -18,9 +33,10 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         set_sdl_cursor(cursor_path, int2_zero);
         free(icon_path);
         free(cursor_path);
-    } else {
-        initialize_rendering(world);
     }
+#ifdef zox_log_boot_game
+    zox_log("boot_zoxel_game4\n")
+#endif
     // Realm,  players, skybox
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);
     const ecs_entity_t game = spawn_game(world);
@@ -40,16 +56,25 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
 #ifdef zox_mod_quests
     spawn_realm_quests(world, realm);
 #endif
+#ifdef zox_log_boot_game
+    zox_log("boot_zoxel_game5\n")
+#endif
 #ifdef zox_mod_weathers
     spawn_weather(world);
 #endif
 #ifdef zox_mod_musics
     if (!headless) spawn_music(world, instrument_piano); // _square
+    #endif
+#ifdef zox_log_boot_game
+    zox_log(" > boot_zoxel_game 6\n")
 #endif
 #ifdef zox_mod_players
     spawn_players_cameras_canvases(world, game);
 #endif
     test_steam_cloud();
+#ifdef zox_log_boot_game
+    zox_log(" > boot zoxel completedboot_zoxel_game7\n")
+#endif
     return EXIT_SUCCESS;
 }
 

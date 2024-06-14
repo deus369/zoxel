@@ -20,7 +20,9 @@ void run_load_shader_function(ecs_world_t *world, int i) {
 }
 
 void load_shaders(ecs_world_t *world) {
-    for (int i = 0; i < load_shader_functions->size; i++) run_load_shader_function(world, i);
+    for (int i = 0; i < load_shader_functions->size; i++) {
+        run_load_shader_function(world, i);
+    }
 }
 
 unsigned char get_new_shader_source_index() {

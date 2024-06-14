@@ -40,7 +40,6 @@ void trigger_canvas_fade_transition(ecs_world_t *world, const ecs_entity_t canva
         zox_log(" ! failed to find canvas_overlay on canvas\n")
         return;
     }
-    const float alpha = 1.0f;
     const double fade_time = 0.7;
     const double delay_time = 1.4;
     // zox_log(" + [%lu] triggering fade sequence for canvas_overlay [%lu]\n", canvas, e)

@@ -12,6 +12,7 @@ ecs_entity_t spawn_shader_render_texture(ecs_world_t *world) {
 
 ecs_entity_t spawn_material_render_texture(ecs_world_t *world) {
     const ecs_entity_t shader = spawn_shader_render_texture(world);
+    if (!shader) return 0;
     GLuint material;
     const ecs_entity_t e = spawn_material(world, shader, &material);
     zox_set(e, ShaderLink, { shader })

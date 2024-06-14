@@ -1,5 +1,5 @@
-ecs_entity_t shader_textured2D;
-ecs_entity_t material_textured2D;
+ecs_entity_t shader_textured2D = 0;
+ecs_entity_t material_textured2D = 0;
 
 ecs_entity_t spawn_shader_textured2D(ecs_world_t *world) {
     const unsigned char shader_index = get_new_shader_source_index();
@@ -12,6 +12,7 @@ ecs_entity_t spawn_shader_textured2D(ecs_world_t *world) {
 
 ecs_entity_t spawn_material_textured2D(ecs_world_t *world) {
     const ecs_entity_t shader = spawn_shader_textured2D(world);
+    if (!shader) return 0;
     GLuint material;
     const ecs_entity_t e = spawn_material(world, shader, &material);
     zox_set(e, ShaderLink, { shader })

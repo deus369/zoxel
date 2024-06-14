@@ -17,7 +17,7 @@ void tooltip_event_icon_skill(ecs_world_t *world, const TooltipEventData *data) 
             }
         }
         if (!used_name) {
-            sprintf(result, "[%lu] s\n", data->data);
+            sprintf(result, "[%llu] s\n", data->data);
         }
         set_entity_with_text(world, data->tooltip, result);
     }

@@ -28,7 +28,6 @@ unsigned char initialize_rendering(ecs_world_t *world) {
 
 void dispose_rendering(ecs_world_t *world, void *ctx) {
     if (headless) return;
-    // opengl_dispose_shaders();
     dispose_vulkan(world);
 }
 
@@ -47,7 +46,6 @@ if (headless) return;
 check_vulkan_suppport();
 if (is_using_vulkan) { zox_import_module(Vulkan) }
 else { zox_import_module(OpenGL) }
-// if (initialize_rendering(world) == EXIT_FAILURE) zox_log(" ! failed to initialize rendering\n")
 zox_import_module(RenderingCore)
 zox_import_module(RenderingBasics2D)
 zox_import_module(RenderingBasics3D)

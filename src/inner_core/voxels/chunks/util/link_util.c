@@ -24,7 +24,7 @@ void set_entity_chunk(ecs_world_t *world, const ecs_entity_t e, ChunkLink *chunk
             zox_modified(old_chunk, EntityLinks)
 #ifdef zox_debug_chunk_link_system
             const int3 chunk_position = zox_get_value(old_chunk, ChunkPosition)
-            zox_log(" > chunk [%lu] removed e [%lu] [%ix%ix%i]\n", old_chunk, e, chunk_position.x, chunk_position.y, chunk_position.z)
+            zox_log(" > chunk [%lu] removed e [%llu] [%ix%ix%i]\n", old_chunk, e, chunk_position.x, chunk_position.y, chunk_position.z)
 #endif
         }
         // add entity to new chunk
@@ -34,7 +34,7 @@ void set_entity_chunk(ecs_world_t *world, const ecs_entity_t e, ChunkLink *chunk
             if (add_to_EntityLinks(entityLinks, e)) zox_modified(new_chunk, EntityLinks)
 #ifdef zox_debug_chunk_link_system
             const int3 chunk_position = zox_get_value(new_chunk, ChunkPosition)
-            zox_log(" > chunk [%lu] added e [%lu] [%ix%ix%i] at length [%i]\n", new_chunk, e, chunk_position.x, chunk_position.y, chunk_position.z, entityLinks->length)
+            zox_log(" > chunk [%lu] added e [%llu] [%ix%ix%i] at length [%i]\n", new_chunk, e, chunk_position.x, chunk_position.y, chunk_position.z, entityLinks->length)
 #endif
         }
     }

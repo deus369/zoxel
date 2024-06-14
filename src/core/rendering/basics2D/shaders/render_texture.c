@@ -51,5 +51,5 @@ void main() {\
 }";
 
 // color = vec4(1, 0, 0, 1);
-// highp float depth = texture(tex, uv).r;\
+// highp float depth = texture(tex, uv).r;
 // color = vec4(vec3(depth), 1.0);

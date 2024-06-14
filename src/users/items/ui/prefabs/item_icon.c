@@ -10,7 +10,7 @@ void tooltip_event_icon_item(ecs_world_t *world, const TooltipEventData *data) {
             sprintf(result, "[%s] x1\n", name_string);
             free(name_string);
         } else {
-            sprintf(result, "[%lu] x1\n", data->data);
+            sprintf(result, "[%llu] x1\n", data->data);
         }
         set_entity_with_text(world, data->tooltip, result);
         // free(result);

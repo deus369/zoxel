@@ -12,6 +12,7 @@ ecs_entity_t spawn_shader_colored3D(ecs_world_t *world) {
 
 ecs_entity_t spawn_material_colored3D(ecs_world_t *world) {
     const ecs_entity_t shader = spawn_shader_colored3D(world);
+    if (!shader) return 0;
     GLuint material;
     const ecs_entity_t e = spawn_material(world, shader, &material);
     zox_set(e, ShaderLink, { shader })

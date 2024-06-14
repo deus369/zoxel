@@ -10,6 +10,7 @@ FREETYPE_URL="https://download.savannah.gnu.org/releases/freetype/${FREETYPE_DIR
 lib_file_1="libfreetype.so"
 lib_file_2="libfreetype.so.6"
 lib_file_3="libfreetype.so.6.18.1"
+lib_file_windows="libfreetype.dll"
 lib_directory="../../../lib"
 
 # Function to build FreeType
@@ -23,8 +24,17 @@ build_freetype() {
   cd ../
 }
 
+echo "OS is [$OSTYPE]"
+if [[ "$OSTYPE" == "msys" ]]; then
+    echo "Running on Windows"
+    is_windows=1
+else
+    echo "Likely Linux OS"
+    is_windows=0
+fi
+
 # Build for Linux
-if [ ! -f lib/$lib_file_1 ]; then
+if [[ is_windows -eq 0 && ! -f lib/$lib_file_1 ]]; then
   echo " + building freetype for linux"
   echo " ------------------------------ "
   if [ ! -d build/freetype ]; then
@@ -35,7 +45,7 @@ if [ ! -f lib/$lib_file_1 ]; then
   if [ ! -f ${FREETYPE_DIR}.tar.gz ]; then
     wget ${FREETYPE_URL}
   fi
-  tar -xzvf ${FREETYPE_DIR}.tar.gz
+  tar -xzvf ${FREETYPE_DIR}.tar.gz  > /dev/null 2>&1
   cd ${FREETYPE_DIR}
   build_freetype ${linux_build_dir} "Unix Makefiles"
   cp $linux_build_dir/$lib_file_1 $lib_directory/$lib_file_1
@@ -45,13 +55,13 @@ if [ ! -f lib/$lib_file_1 ]; then
 fi
 
 #windows
-if [ ! -f lib/freetype.dll ]; then
-  echo " + building lib/freetype.dll for windows"
+if [[ ! -f lib/freetype.dll ]]; then
+  echo " + downloading lib/freetype.dll for windows"
   windows_zip="build/freetype/freetype-windows-binaries.zip"
-  windows_dll="https://github.com/ubawurinna/freetype-windows-binaries/archive/refs/tags/v2.13.2.zip"
+  windows_dll="https://github.com/ubawurinna/freetype-windows-binaries/archive/refs/tags/v-${FREETYPE_VERSION}.zip"
   curl -sL "$windows_dll" -o $windows_zip
   # Check if download was successful
   # Extract the specific file from the zip
-  unzip -j -q $windows_zip "freetype-windows-binaries-2.13.2/release dll/win64/freetype.dll" -d "lib"
+  unzip -j -q $windows_zip "freetype-windows-binaries--${FREETYPE_VERSION}/release dll/win64/freetype.dll" -d "lib"
   echo "freetype.dll has been downloaded and placed into the 'lib' directory."
 fi

@@ -1,4 +1,5 @@
 // #define zox_log_realm_colors
+// #define zox_log_spawn_realm_voxels
 // statically create them atm
 // const unsigned char realm_voxels = 8;
 extern float3 game_sky_color;
@@ -12,12 +13,22 @@ float3 generate_hsv_v_s(const float2 hue_limits, const float2 value_limits, cons
 }
 
 void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
+    if (realm == 0) return;
+#ifdef zox_log_spawn_realm_voxels
+    zox_log("spawn voxels 0\n")
+#endif
     ecs_entity_t tilemap = spawn_tilemap(world, prefab_tilemap);
+#ifdef zox_log_spawn_realm_voxels
+    zox_log("spawn voxels 1\n")
+#endif
     zox_set(realm, TilemapLink, { tilemap })
     zox_set(tilemap, RealmLink, { realm })
     // zox_log(" + spawned tilemap [%lu]\n", tilemap)
     zox_get_mutt(realm, VoxelLinks, voxelLinks)
     resize_memory_component(VoxelLinks, voxelLinks, ecs_entity_t, zox_blocks_count)
+#ifdef zox_log_spawn_realm_voxels
+    zox_log("spawn voxels 2\n")
+#endif
     // dirt color - hsv - hue saturation value
     const float2 dirt_hue = (float2) { 0, 360 };
     const float2 dirt_value = (float2) { 28, 36 };
@@ -35,23 +46,22 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
         grass_hsv.x = soil_hue;
         // zox_log(" > grass red was greater, swapping hues\n")
     }
-
     const int sand_hue_shift = 40;
     float3 sand_hsv = (float3) { dirt_hsv.x - sand_hue_shift + (rand() % sand_hue_shift * 2), dirt_hsv.y + 8 + rand() % 8, dirt_hsv.z + 8 + rand() % 8 };
-
     const float2 stone_hue = (float2) { 0, 360 };
     const float2 stone_value = (float2) { 16, 24 };
     const float2 stone_saturation = (float2) { 6, 12 };
     const float3 stone_hsv = generate_hsv_v_s(stone_hue, stone_value, stone_saturation);
-
     float3 sky_hsv = (float3) { (float) (((int) grass_hsv.x + 180) % 360), dirt_hsv.y + 32, dirt_hsv.z + 32 };
-
     const color dirt_color = hsv_to_color(dirt_hsv);
     const color grass_color = hsv_to_color(grass_hsv);
     const color sand_color = hsv_to_color(sand_hsv);
     const color stone_color = hsv_to_color(stone_hsv);
     const color sky_color = hsv_to_color(sky_hsv);
     const color color_obsidian = hsv_to_color((float3) { rand() % 360, 33, 33 });
+#ifdef zox_log_spawn_realm_voxels
+    zox_log("spawn voxels 3\n")
+#endif
     const ecs_entity_t dirt_vox = spawn_vox_generated_invisible(world, prefab_vox_generated, dirt_color);
     const ecs_entity_t vox_grass = spawn_vox_generated_invisible(world, prefab_vox_generated, grass_color);
     zox_add_tag(vox_grass, BlendVox)
@@ -61,7 +71,13 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     const ecs_entity_t dirt_rubble = spawn_vox_generated_invisible(world, prefab_vox_generated, dirt_color);
     zox_add_tag(dirt_rubble, VoxRubble)
     const ecs_entity_t vox_obsidian = spawn_vox_generated_invisible(world, prefab_vox_generated, color_obsidian);
+#ifdef zox_log_spawn_realm_voxels
+    zox_log("spawn voxels 4\n")
+#endif
     for (unsigned char i = 0; i < voxelLinks->length; i++) {
+#ifdef zox_log_spawn_realm_voxels
+        zox_log(" > spawning voxel [%i]\n", i)
+#endif
         SpawnBlock spawn_data = {
             .index = i,
             .seed = generate_voxel_seed(i),
@@ -137,6 +153,9 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     // game colors
     game_sky_color = fog_color;
     game_sky_bottom_color = fog_color;
+#ifdef zox_log_spawn_realm_voxels
+    zox_log(" > spawned all realm voxels\n")
+#endif
 #ifdef zox_log_realm_colors
     zox_log(" + soil hsv: %fx%fx%f\n", dirt_hsv.x, dirt_hsv.y, dirt_hsv.z)
     zox_log(" + soil color: %ix%ix%i\n", dirt_color.r, dirt_color.g, dirt_color.b)
