@@ -6,7 +6,7 @@ source bash/util/package_util.sh
 
 install_first_library "gcc"
 
-install_first_library "libgl"
+# install_first_library "libgl"
 
 install_first_library "libglew-dev" "glew" "libglew"
 
@@ -14,7 +14,7 @@ install_first_library "libvulkan-dev" "vulkan-devel" "vulkan-headers"
 
 install_first_library "wget"
 
-install_first_library "libfreetype6-dev" "freetype2"
+# install_first_library "libfreetype6-dev" "freetype2"
 
 # debug requuired tools
 # install_first_library "valgrind"

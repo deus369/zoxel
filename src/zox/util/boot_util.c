@@ -56,7 +56,9 @@ void zox_spawn_main_menu(ecs_world_t *world, const ecs_entity_t player, const ch
 void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game) {
 #if defined(zox_mod_players) && defined(zox_mod_ui)
     zox_prefab_set(prefab_canvas, PlayerLink, { 0 })
-    spawn_players(world, game);
+#ifdef zox_mod_players2
+    players_playing = spawn_players(world, game);
+#endif
     set_camera_mode_pre_defined(world);
     set_main_cameras((int) players_playing);
     // const unsigned char camera_fov = get_camera_mode_fov(camera_mode);

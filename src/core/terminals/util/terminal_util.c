@@ -13,7 +13,6 @@ extern unsigned char server_mode;
 #define terrain_mode_medium 2
 #define terrain_mode_large 3
 extern unsigned char terrain_mode;
-extern unsigned char zox_lowres_characters_mode;
 
 void print_help_menu(const char* arg0) {
     zoxel_log("\n");
@@ -43,7 +42,6 @@ void print_help_menu(const char* arg0) {
     zoxel_log("        --tiny               set game terrain size to 2\n");
     zoxel_log("        --medium             set game terrain size to 6\n");
     zoxel_log("        --large              set game terrain size to 12\n");
-    zoxel_log("        --lowrescharacters   set characters to lowest resolution\n");
     zoxel_log("\n");
     zoxel_log("-=-=-=-=-=--=-=-=-=-=--=-=-=-=-=--=-=-=-=-=-\n");
     zoxel_log("\n");
@@ -86,9 +84,6 @@ int process_arguments(int argc, char* argv[]) {
             terrain_mode = terrain_mode_medium;
         } else if (strcmp(argv[i], "--large") == 0) {
             terrain_mode = terrain_mode_large;
-        }
-        else if (strcmp(argv[i], "--lowrescharacters") == 0) {
-            zox_lowres_characters_mode = 1;
         }
     }
     return EXIT_SUCCESS;

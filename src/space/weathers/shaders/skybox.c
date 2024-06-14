@@ -99,18 +99,6 @@ if (abs(mesh_pos.x) > abs(mesh_pos.z)) {\
 }\
 sky_top_color2.x -= 0.5 - mesh_pos.y;\
 */
-// lowp vec3 fog_color = vec3(0.7, 0.55, 0.58);
-//  color = sky_color;
-// lowp vec3 sky_color = vec3(0.2, 0.6, 0.9);
-// color.z -= color.x * 0.5;
-// sky_color = vec3(0.2, 0.6, 0.9);
-// mesh_y = (vertex_position.y + 0.02) * 4.0;
-// lowp vec3 fog_color = vec3(2.0f / 255.0, 16.0f / 255.0, 24.0f / 255.0 );
-// lowp vec3 fog_color = vec3(0.9, 0.95, 0.98);
-// float3 fog_color = (float3) { 2.0f / 255.0f, 16.0f / 255.0f, 24.0f / 255.0f };
-// lowp vec3 sky_color_bottom = vec3(0.9, 0.95, 0.98);
-// color.x = color.y = 0.0; color.z = mesh_y;
-// color = vec4(0, 0.6, 0.4, 1) * brightness;
 
 ecs_entity_t spawn_shader_skybox(ecs_world_t *world) {
     const unsigned char shader_index = get_new_shader_source_index();

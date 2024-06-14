@@ -67,7 +67,7 @@ function install_first_library {
         echo "  > library [${libraries[@]}] already exists"
         return 0
     fi
-    echo "  > Installing library from list"
+    echo "  > Installing librarys ["${libraries[@]}"] from list"
     for library in "${libraries[@]}"; do
         if install_library "$library"; then
             return 0

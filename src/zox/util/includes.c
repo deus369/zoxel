@@ -6,7 +6,6 @@
 // sub modules
 #include "../../core/core.c"
 #include "../../inner_core/inner_core.c"
-#include "../../outer_core/outer_core.c"
 #include "../../users/users.c"
 #include "../../gameplay/gameplay.c"
 #include "../../space/space.c"

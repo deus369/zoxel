@@ -28,10 +28,6 @@ glew_source="$glew_path/glew-2.2.0"
 glew_dest=$glew_path
 
 # Create the directory if it doesn't exist
-# rm -r "$sdl_path"
-# rm -r "$sdl_image_path"
-# rm -r "$sdl_mixer_path"
-# rm -r "$glew_path"
 if [ ! -d $sdl_path ]; then
     mkdir -p "$sdl_path"
 fi
@@ -45,42 +41,21 @@ if [ ! -d $glew_path ]; then
     mkdir -p "$glew_path"
 fi
 
-# Download SDL2 zip file
-wget -O "$sdl_image_zip" "$sdl_image_url"
-wget -O "$sdl_mixer_zip" "$sdl_mixer_url"
-wget -O "$glew_zip" "$glew_url"
-
-# Extract SDL2 zip file to the C drive
-unzip -q "$sdl_image_zip" -d "$sdl_image_path"
-unzip -q "$sdl_mixer_zip" -d "$sdl_mixer_path"
-unzip -q "$glew_zip" -d "$glew_path"
-
-# Clean up temporary files
-rm "$sdl_image_zip"
-rm "$sdl_mixer_zip"
-rm "$glew_zip"
-
-
-# remove folder build/glew/glew-2.2.0
-mv "$glew_source"/* "$glew_dest"
-rmdir "$glew_source"
-
-# remove folder build/glew/include/GL
-glew_source2="build/glew/include/GL"
-glew_dest2="build/glew/include"
-mv "$glew_source2"/* "$glew_dest2"
-rmdir "$glew_source2"
-
-
-# remove folder build/sdl/SDL2-2.0.14
-mv "$sdl_image_source"/* "$sdl_image_dest"
-rmdir "$sdl_image_source"
-
-# remove folder build/sdl/SDL2-2.0.14
-mv "$sdl_mixer_source"/* "$sdl_mixer_dest"
-rmdir "$sdl_mixer_source"
-
 if [ ! -f lib/libGLEW.a ]; then
+    # Download glew
+    wget -O "$glew_zip" "$glew_url"
+    unzip -q "$glew_zip" -d "$glew_path"
+    rm "$glew_zip"
+    # remove folder build/glew/glew-2.2.0
+    mv "$glew_source"/* "$glew_dest"
+    rmdir "$glew_source"
+
+    # remove folder build/glew/include/GL
+    glew_source2="build/glew/include/GL"
+    glew_dest2="build/glew/include"
+    mv "$glew_source2"/* "$glew_dest2"
+    rmdir "$glew_source2"
+
     if [ ! -f $glew_path/lib/libGLEW.a ]; then
         cd $glew_path
         make
@@ -107,6 +82,13 @@ if [ ! -f lib/libSDL2.la ]; then
 fi
 
 if [ ! -f "lib/libSDL2_image.la" ]; then
+    # download sdl2_image
+    wget -O "$sdl_image_zip" "$sdl_image_url"
+    unzip -q "$sdl_image_zip" -d "$sdl_image_path"
+    rm "$sdl_image_zip"
+    # remove folder build/sdl_image/SDL2-2.0.14
+    mv "$sdl_image_source"/* "$sdl_image_dest"
+    rmdir "$sdl_image_source"
     if [ ! -f $sdl_image_path/libSDL2_image.la ]; then
         cd $sdl_image_path
         ./configure
@@ -117,6 +99,13 @@ if [ ! -f "lib/libSDL2_image.la" ]; then
 fi
 
 if [ ! -f "lib/libSDL2_mixer.la" ]; then
+    # download sdl2_mixer
+    wget -O "$sdl_mixer_zip" "$sdl_mixer_url"
+    unzip -q "$sdl_mixer_zip" -d "$sdl_mixer_path"
+    rm "$sdl_mixer_zip"
+    # remove folder build/sdl/SDL2-2.0.14
+    mv "$sdl_mixer_source"/* "$sdl_mixer_dest"
+    rmdir "$sdl_mixer_source"
     if [ ! -f $sdl_mixer_path/build/libSDL2_mixer.la ]; then
         cd $sdl_mixer_path
         ./configure

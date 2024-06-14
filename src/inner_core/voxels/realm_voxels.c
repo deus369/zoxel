@@ -132,11 +132,11 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     }
     zox_modified(realm, VoxelLinks)
     zox_set(realm, VoxelsDirty, { 1 })
-//#ifdef zox_mod_weathers
-    game_sky_color = color_to_float3(sky_color);
-    game_sky_bottom_color = game_sky_color;
-    fog_color = game_sky_bottom_color;
-//#endif
+    // renderer
+    fog_color = color_to_float3(sky_color);
+    // game colors
+    game_sky_color = fog_color;
+    game_sky_bottom_color = fog_color;
 #ifdef zox_log_realm_colors
     zox_log(" + soil hsv: %fx%fx%f\n", dirt_hsv.x, dirt_hsv.y, dirt_hsv.z)
     zox_log(" + soil color: %ix%ix%i\n", dirt_color.r, dirt_color.g, dirt_color.b)

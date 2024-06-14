@@ -20,22 +20,26 @@ void players_game_state(ecs_world_t *world, const ecs_entity_t game, const unsig
     }
 }
 
-void spawn_players(ecs_world_t *world, const ecs_entity_t game) {
-    if (headless) return;   // no players in headless mode
+int spawn_players(ecs_world_t *world, const ecs_entity_t game) {
+    int players = 0;
+    if (headless) return players;   // no players in headless mode
     spawn_connected_devices(world);
     if (is_split_screen) {
-        players_playing = 2;
+        players = 2;
         auto_switch_device = 0;
     }
-    else players_playing = 1;
-    for (int i = 0; i < players_playing; i++) {
+    else {
+        players = 1;
+    }
+    for (int i = 0; i < players; i++) {
         const ecs_entity_t e = spawn_player(world, prefab_player);
         add_player(world, game, e);
         zox_set(e, CameraLink, { main_cameras[i] })
         zox_players[i] = e;
-        if (players_playing == 2) {
+        if (players == 2) {
             if (i == 0) zox_set(e, DeviceModeDirty, { zox_device_mode_keyboardmouse })
             else if (i == 1) zox_set(e, DeviceModeDirty, { zox_device_mode_gamepad })
         }
     }
+    return players;
 }

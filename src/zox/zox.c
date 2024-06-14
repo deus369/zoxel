@@ -1,5 +1,5 @@
-#ifndef zox_engine
-#define zox_engine
+#ifndef zox_mod_engine
+#define zox_mod_engine
 
 #include "data/build_settings.c"
 #include "data/build_disables.c"

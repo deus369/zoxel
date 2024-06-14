@@ -2,12 +2,14 @@
 #define zox_mod_players
 
 // todo: move based functionality into here
+#include "data/settings.c"
 zox_declare_tag(Player)
 zox_declare_tag(PlayerCharacter)
 zox_component_byte(PlayerState)
 zox_component_entity(PlayerLink)
 zox_memory_component(PlayerLinks, ecs_entity_t)
 #include "prefabs/prefabs.c"
+int spawn_players(ecs_world_t *world, const ecs_entity_t game);
 
 zox_begin_module(Players)
 zox_define_tag(Player)
