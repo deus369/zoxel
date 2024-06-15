@@ -1,10 +1,16 @@
 void realms_start_game3D_delayed(ecs_world_t *world, const ecs_entity_t game) {
     const ecs_entity_t realm = zox_get_value(game, RealmLink)
     set_sky_color(world, game_sky_color, game_sky_bottom_color);
-    const ecs_entity_t terrain = create_terrain(world, realm, int3_zero, (int3) { terrain_spawn_distance, terrain_vertical, terrain_spawn_distance });
+    const ecs_entity_t terrain = create_terrain(world, realm, int3_zero, (int3) { terrain_spawn_distance, terrain_vertical, terrain_spawn_distance }, prefab_terrain, prefab_chunk_height);
     zox_set(terrain, RealmLink, { realm })
     zox_set(realm, TerrainLink, { terrain }) // link terrain to realm too
     local_terrain = terrain;
+
+    // testing transform on new worlds!
+    float3 second_world_position = (float3) { 0, -10000, 0 };
+    float4 second_world_rotation = (float4) { 0, 0, 0, 1 };
+    float3 second_world_scale = (float3) { 0.5f, 0.5f, 0.5f };
+    // const ecs_entity_t second_world = create_terrain(world, realm, int3_zero, (int3) { terrain_spawn_distance, terrain_vertical, terrain_spawn_distance }, prefab_terrain, prefab_chunk_height, );
 }
 
 void realms_start_game2D_delayed(ecs_world_t *world, const ecs_entity_t game) {

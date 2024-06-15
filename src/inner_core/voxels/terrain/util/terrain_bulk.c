@@ -1,6 +1,6 @@
 
 #ifdef zox_bulk_spawn_terrain
-ecs_entity_t create_terrain_bulk(ecs_world_t *world, const int3 center_position) {
+ecs_entity_t create_terrain_bulk(ecs_world_t *world, const ecs_entity_t prefab, const int3 center_position) {
     int chunks_total_length = calculate_terrain_chunks_count(terrain_spawn_distance, terrain_vertical);
     ecs_entity_t terrain_world = spawn_terrain(world, prefab_terrain, tilemap, float3_zero, 1);
     ecs_entity_t chunks[chunks_total_length];
@@ -36,7 +36,7 @@ ecs_entity_t create_terrain_bulk(ecs_world_t *world, const int3 center_position)
     const ecs_entity_t *entities = ecs_bulk_init(world, &(ecs_bulk_desc_t) {
         .count = chunks_total_length,
         .ids = {
-            ecs_pair(EcsIsA, prefab_terrain_chunk_octree),
+            ecs_pair(EcsIsA, prefab),
             ecs_id(ChunkPosition),
             ecs_id(Position3D),
             ecs_id(RenderLod),

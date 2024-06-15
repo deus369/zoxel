@@ -1,5 +1,8 @@
 // disables
 
+#define zoxel_start_with_debug_ui
+// #define zox_is_flatlands
+
 // #define zox_disable_module_networking
 
 // #define zox_disable_canvas_overlay
@@ -16,14 +19,13 @@
 // #define zox_disable_block_voxes
 
 // #define zox_disable_terrain_lod_levels
-// #define zox_is_flandlands
 
 // #define zox_test_settings_01
 // #define zox_test_settings_02
 // #define zox_test_settings_03
 
 #ifdef zox_test_settings_03
-    #define zox_is_flandlands
+    #define zox_is_flatlands
     #define zox_disable_npcs
     #define zox_disable_block_voxes
     #define zox_disable_frustum_culling
@@ -39,7 +41,7 @@
 
 #ifdef zox_test_settings_01
     // terrain
-    #define zox_is_flandlands
+    #define zox_is_flatlands
     #define zox_disable_npcs
     #define zox_disable_terrain_generation
     #define zox_disable_chunks_rendering

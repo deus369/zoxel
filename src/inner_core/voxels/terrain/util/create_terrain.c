@@ -20,7 +20,7 @@ int get_chunk_index_3(int3 position, int rows, int vertical) {
     return position.x * (rows + rows + 1) + position.y  * (rows + rows + 1) * (rows + rows + 1) + position.z;
 }
 
-ecs_entity_t create_terrain(ecs_world_t *world, const ecs_entity_t realm, const int3 center_position, const int3 size) {
+ecs_entity_t create_terrain(ecs_world_t *world, const ecs_entity_t realm, const int3 center_position, const int3 size, const ecs_entity_t prefab_terrain, const ecs_entity_t prefab_chunk) {
     // zox_log(" + terrain size [%ix%ix%i]\n", size.x, size.y, size.z)
     spawn_terrain_grid(world, real_chunk_scale);
     const ecs_entity_t tilemap = zox_get_value(realm, TilemapLink)
@@ -36,7 +36,7 @@ ecs_entity_t create_terrain(ecs_world_t *world, const ecs_entity_t realm, const 
                 int index = get_chunk_index_3(chunk_position, size.x, size.y);
                 if (index < 0 || index >= chunks_total_length) continue;
                 float3 real_chunk_position = float3_multiply_float(float3_from_int3(chunk_position), real_chunk_scale);
-                ecs_entity_t chunk = spawn_terrain_chunk_octree(world, prefab_terrain_chunk_octree, terrain_world, center_position, chunk_position, real_chunk_position);
+                ecs_entity_t chunk = spawn_terrain_chunk_octree(world, prefab_chunk, terrain_world, center_position, chunk_position, real_chunk_position);
                 chunk_positions[index] = chunk_position;
                 chunks[index] = chunk;
             }

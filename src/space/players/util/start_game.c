@@ -24,15 +24,25 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
     const ecs_entity_t realm = zox_get_value(game, RealmLink)
     const ecs_entity_t terrain = zox_get_value(realm, TerrainLink)
     const ChunkLinks *chunk_links = zox_get(terrain, ChunkLinks)
-    const int3 chunk_position = (int3) { 0, 0, 0 }; // int3_zero;
-    const int3 chunk_voxel_position = get_chunk_voxel_position(chunk_position, default_chunk_size);
-    const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
-    const ChunkOctree *chunk_octree = zox_get(chunk, ChunkOctree)
-    byte3 local_position = find_position_in_chunk(chunk_octree, max_octree_depth);
-    if (byte3_equals(byte3_full, local_position)) {
-        zox_log(" ! failed finding spawn position for player\n")
-        local_position = byte3_zero;
+    int3 chunk_position = int3_zero;
+    byte3 local_position = byte3_zero;
+    const ChunkOctree *chunk_octree_above = NULL;
+    unsigned char found_position = 0;
+    for (int i = 4; i >= -4; i--) {
+        chunk_position.y = i;
+        const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
+        const ChunkOctree *chunk_octree = zox_get(chunk, ChunkOctree)
+        // local_position = find_position_in_chunk(chunk_octree, max_octree_depth);
+        local_position = find_position_in_chunk_with_above(chunk_octree, max_octree_depth, chunk_octree_above);
+        if (!byte3_equals(byte3_full, local_position)) {
+            found_position = 1;
+            break;
+        }
+        chunk_octree_above = chunk_octree;
     }
+    if (found_position) zox_log(" + found player position: chunk_position %ix%ix%i - local_position %ix%ix%i\n", chunk_position.x, chunk_position.y, chunk_position.z, local_position.x, local_position.y, local_position.z)
+    else zox_log(" ! failed finding spawn position for player\n")
+    const int3 chunk_voxel_position = get_chunk_voxel_position(chunk_position, default_chunk_size);
     float3 position = local_to_real_position_character(local_position, chunk_voxel_position);
     const float4 spawn_rotation = quaternion_identity;
     // const ecs_entity_t vox = files_voxes[player_vox_index]; // get mr penguin vox

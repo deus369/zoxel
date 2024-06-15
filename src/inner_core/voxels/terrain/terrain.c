@@ -1,6 +1,8 @@
 #ifndef zox_mod_terrain
 #define zox_mod_terrain
 
+zox_declare_tag(FlatTerrain)
+zox_declare_tag(FlatlandChunk)
 zox_declare_tag(TerrainWorld)
 zox_declare_tag(TerrainChunk)
 zox_declare_tag(ChunkTerrain)
@@ -37,6 +39,8 @@ zox_component_byte(StreamDirty)
 ctx2 terrain_lod_filter; // used for lod system
 
 zox_begin_module(Terrain)
+zox_define_tag(FlatTerrain)
+zox_define_tag(FlatlandChunk)
 zox_define_tag(TerrainWorld)
 zox_define_tag(TerrainChunk)
 zox_define_tag(ChunkTerrain)
@@ -46,11 +50,8 @@ zox_define_component_entity(TerrainLink)
 zox_define_component_byte(StreamDirty)
 // generate chunks
 zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [out] GenerateChunk)
-#ifdef zox_is_flandlands
-zox_system(ChunkFlatlandSystem, zox_pip_voxels_chunk_dirty, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree)
-#else
-zox_system_ctx(OctreeTerrainChunkSystem, zox_pip_voxels_chunk_dirty, generateTerrainChunkQuery, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree)
-#endif
+zox_system(ChunkFlatlandSystem, zox_pip_voxels_chunk_dirty, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree, [none] FlatlandChunk)
+zox_system_ctx(OctreeTerrainChunkSystem, zox_pip_voxels_chunk_dirty, generateTerrainChunkQuery, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree, [none] !FlatlandChunk)
 zox_system_ctx(TerrainChunkSystem, zox_pip_voxels_chunk_dirty, generateTerrainChunkQuery, [none] TerrainChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] ChunkPosition, [out] GenerateChunk)
 // this updates our chunks Lods!!
 zox_filter(terrain_chunks, [in] ChunkPosition, [in] ChunkNeighbors, [out] RenderLod, [out] ChunkDirty, [out] ChunkLodDirty, [none] TerrainChunk)

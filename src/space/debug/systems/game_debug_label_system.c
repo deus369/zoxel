@@ -1,7 +1,3 @@
-const int max_debug_characters = 1024;
-double time_update_debug_label_system_rate = 2.0;
-double time_update_debug_label_system = 0;
-
 int debug_newline_zext(char buffer[], int buffer_size, int buffer_index) {
     buffer_index += snprintf(buffer + buffer_index, buffer_size, "Day 1.\nToday is a very sunny day.\nHi jerry.");
     return buffer_index;
@@ -55,6 +51,9 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         // Ram, CPU%, GPU?, etc
 #ifdef zox_debug_system
         buffer_index = debug_system(buffer, buffer_size, buffer_index);
+#endif
+#ifdef zox_debug_joystick
+        buffer_index = debug_joystick(buffer, buffer_size, buffer_index);
 #endif
         // test this \n
         // snprintf(buffer, sizeof(buffer), "debug ui\nline 2");

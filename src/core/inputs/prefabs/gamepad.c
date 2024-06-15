@@ -26,7 +26,6 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, const unsigned char gamepad_type)
     for (unsigned char i = 0; i < 14; i++) {
         // use gamepad layout
         unsigned char joystick_index = 0;
-        //  || gamepad_type == zox_gamepad_layout_type_steamdeck
         if (gamepad_type == zox_gamepad_layout_type_xbox) {
             if (i == zox_device_button_lt) joystick_index = 11;
             else if (i == zox_device_button_rt) joystick_index = 12;
@@ -34,6 +33,23 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, const unsigned char gamepad_type)
             else if (i == zox_device_button_start) joystick_index = 7;
             else if (i == zox_device_button_left_stick_push) joystick_index = 9;
             else if (i == zox_device_button_right_stick_push) joystick_index = 10;
+            else joystick_index = i;
+        } else if (gamepad_type == zox_gamepad_layout_type_steamdeck) {
+            // buttons
+            if (i == zox_device_button_select) joystick_index = 6;
+            else if (i == zox_device_button_start) joystick_index = 7;
+            else if (i == zox_device_button_a) joystick_index = 0;
+            else if (i == zox_device_button_b) joystick_index = 1;
+            else if (i == zox_device_button_x) joystick_index = 2;
+            else if (i == zox_device_button_y) joystick_index = 3;
+            // bumpers
+            else if (i == zox_device_button_lb) joystick_index = 6;
+            else if (i == zox_device_button_rb) joystick_index = 7;
+            else if (i == zox_device_button_lt) joystick_index = 8;
+            else if (i == zox_device_button_rt) joystick_index = 9;
+            // joysticks
+            else if (i == zox_device_button_left_stick_push) joystick_index = 10;
+            else if (i == zox_device_button_right_stick_push) joystick_index = 11;
             else joystick_index = i;
         } else {
             if (i == zox_device_button_x) joystick_index = 3;
@@ -51,9 +67,15 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, const unsigned char gamepad_type)
         children->value[i] = spawn_device_button(world, i, joystick_index);
     }
     // spawns zevice_stick at 14, 15
-    for (unsigned char i = 0, j = 14; j < 16; i++, j++) {
-        unsigned char joystick_index = i * 2;
-        // if (i == 1 && gamepad_type == zox_gamepad_layout_type_steamdeck) joystick_index++;
+    for (unsigned char i = 0; i < 2; i++) {
+        unsigned char j = 14 + i;
+        unsigned char joystick_index;
+        if (gamepad_type == zox_gamepad_layout_type_steamdeck) {
+            if (i == 0) joystick_index = 0; // 0, 1
+            else joystick_index = 3; // 3, 4
+        } else {
+            joystick_index = i * 2;
+        }
         children->value[j] = spawn_zevice_stick(world, i, joystick_index);
     }
     zox_modified(e, Children)

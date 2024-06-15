@@ -9,7 +9,6 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, const int3 si
     zox_prefab_set(e, Brightness, { 1.0f })
     zox_prefab_set(e, RenderDisabled, { 1 })
     zox_prefab_set(e, ChunkLodDirty, { 1 })
-    // zox_prefab_set(e, GenerateChunkEntities, { 1 })
     add_components_mesh_textured(world, e);
     // voxels_core
     add_chunk_octree(world, e, size);
@@ -24,6 +23,9 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, const int3 si
     // todo: calculate this based on max LOD resolution (2 to power of resolution)
 #ifdef zox_disable_frustum_culling
     zox_set(e, RenderDisabled, { 0 })
+#endif
+#ifdef zox_is_flatlands
+    zox_add_tag(e, FlatlandChunk)
 #endif
     return e;
 }
