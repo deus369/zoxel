@@ -24,13 +24,13 @@ void load_files_textures(ecs_world_t *world) {
 #endif
     files_count_textures = files.count;
     files_textures = malloc(sizeof(ecs_entity_t) * files.count);
-    files_textures_hashmap = create_string_hashmap(files.count);
+    files_hashmap_textures = create_string_hashmap(files.count);
     for (int i = 0; i < files.count; i++) {
         char* filepath = files.files[i];
         char* filename = files.filenames[i];
         const ecs_entity_t e = spawn_from_file_path_texture(world, filepath, i);
         files_textures[i] = e;
-        string_hashmap_add(files_textures_hashmap, new_string_data_clone(filename), e);
+        string_hashmap_add(files_hashmap_textures, new_string_data_clone(filename), e);
 #ifdef zox_print_texture_files
         zox_log("       > [%i] texture [%s]\n", i, filepath)
 #endif
@@ -40,8 +40,8 @@ void load_files_textures(ecs_world_t *world) {
 }
 
 void dispose_files_textures(ecs_world_t *world) {
-    string_hashmap_dispose(files_textures_hashmap);
-    files_textures_hashmap = NULL;
+    string_hashmap_dispose(files_hashmap_textures);
+    files_hashmap_textures = NULL;
     free(files_textures);
     files_textures = NULL;
 }

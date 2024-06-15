@@ -20,7 +20,11 @@ zox_component_byte(GenerateVox)
 #include "systems/generate_vox_system.c"
 #include "systems/vox_texture_system.c"
 
+void dispose_voxes(ecs_world_t *world, void *ctx) {
+    dispose_files_voxes(world);
+}
 zox_begin_module(Voxes)
+zox_module_dispose(dispose_voxes)
 zox_define_tag(Vox)
 zox_define_tag(BlendVox)
 zox_define_tag(VoxRubble)

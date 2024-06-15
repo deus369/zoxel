@@ -4,7 +4,7 @@ typedef struct {
 } string_data;
 
 string_data new_string_data(char *value) {
-    return (string_data){ .value = value, .length = strlen(value) };
+    return (string_data) { .value = value, .length = strlen(value) };
 }
 
 string_data new_string_data_clone(char *value) {

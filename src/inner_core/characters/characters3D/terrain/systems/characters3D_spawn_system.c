@@ -38,8 +38,13 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             float3 position = local_to_real_position_character(local_position, chunk_voxel_position);
             float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
             int vox_index = rand() % npc_vox_index_count;
-            ecs_entity_t vox = vox_files[npc_vox_indexes[vox_index]];
-            spawn_character3D_npc(world, entities, vox, position, rotation, vox_lod, renderDisabled->value);
+            const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data(npc_voxes[vox_index]));
+            if (vox) {
+                spawn_character3D_npc(world, entities, vox, position, rotation, vox_lod, renderDisabled->value);
+            } else {
+                zox_log(" ! vox not found for [%s]\n", npc_voxes[vox_index])
+            }
+            // ecs_entity_t vox = files_voxes[npc_vox_indexes[vox_index]];
         }
         clear_memory_component(EntityLinks, entityLinks);
         entityLinks->length = entities->size;

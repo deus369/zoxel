@@ -4,7 +4,7 @@
 #define directory_textures "textures"character_slash
 int files_count_textures = 0;
 ecs_entity_t *files_textures;
-string_hashmap *files_textures_hashmap;
+string_hashmap *files_hashmap_textures;
 zox_declare_tag(SaveTexture)
 #include "systems/textures_save_system.c"
 #include "util/texture_files.c"

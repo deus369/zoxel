@@ -13,7 +13,6 @@ void load_files_sounds() {
 #ifdef zox_print_files
     zox_log("   > sounds found [%i]\n", files.count)
 #endif
-    // vox_files_count = files.count;
 #ifdef zox_lib_sdl_mixer
     sound_files_count = files.count;
     sound_files = malloc(sizeof(Mix_Chunk) * files.count);

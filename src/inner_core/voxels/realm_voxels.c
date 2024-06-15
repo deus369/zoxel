@@ -121,7 +121,12 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             spawn_data.color = generate_random_voxel_color();
             spawn_data.tag = zox_id(BlockVox);
             spawn_data.model = zox_block_vox;
-            spawn_data.vox = vox_files[test_block_vox_index];
+            const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data("flower"));
+            if (!vox) {
+                zox_log(" ! [flower] vox not found\n")
+                continue;
+            }
+            spawn_data.vox = vox; // files_voxes[test_block_vox_index];
             spawn_data.disable_collision = 1;
             // spawn_data.vox_offset = 1;
         } else if (i == zox_block_dirt_vox - 1) {
@@ -174,4 +179,4 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
 // 2nd test vox block
 // for generated vox blocks
 // spawn_data.color = generate_random_voxel_color();
-// vox_files[test_block_vox_index2]; // our cool cube
+// files_voxes[test_block_vox_index2]; // our cool cube

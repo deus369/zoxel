@@ -1,6 +1,7 @@
 unsigned char characters_per_chunk_count = 1;
 int npc_vox_index_count = 4;
-int npc_vox_indexes[] = { 1, 2, 3, 7 }; // penguin | slime | bob | chicken
+// int npc_vox_indexes[] = { 1, 2, 3, 7 }; // penguin | slime | bob | chicken
+char* npc_voxes[] = { "mrpenguin", "slime", "bob", "chicken" };
 
 void set_character_terrain_settings() {
     if (cpu_tier == 3) characters_per_chunk_count = 1;
