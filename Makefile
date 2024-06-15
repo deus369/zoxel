@@ -23,73 +23,73 @@ use_lib_amd := false
 use_lib_vulkan := false
 # more
 patient_cmd = echo " > please be patient :), lord deus [>,<]/)"
-LDLIBS = -lm -lpthread -lflecs -Llib # default libraries
+make_libs = -Llib -Iinclude -Wl,-rpath='lib' # default paths
+make_libs += -lm -lpthread -lflecs # default libraries
 ifdef game
-    LDLIBS +=-Dzox_game=$(game)
+    make_libs +=-Dzox_game=$(game)
 endif
 ifeq ($(use_lib_sdl), true)
-    LDLIBS += -lSDL2 -Ibuild/linux-sdl/include -Dzox_lib_sdl_direct
+    make_libs += -lSDL2 -Ibuild/linux-sdl/include -Dzox_lib_sdl_direct
 endif
 ifeq ($(use_lib_sdl_image), true)
-    LDLIBS += -lSDL2_image -Dzox_lib_sdl_images
+    make_libs += -lSDL2_image -Dzox_lib_sdl_images
 endif
 ifeq ($(use_lib_sdl_mixer), true)
-    LDLIBS += -lSDL2_mixer -Dzox_lib_sdl_mixer
+    make_libs += -lSDL2_mixer -Dzox_lib_sdl_mixer
 endif
 ifeq ($(use_lib_vulkan), true)
-    LDLIBS += -lvulkan -Dzox_include_vulkan # vulkan on linux
+    make_libs += -lvulkan -Dzox_include_vulkan # vulkan on linux
 endif
 ifeq ($(use_lib_ttf), true)
-   LDLIBS += -lfreetype -Dzox_lib_ttf -Ibuild/freetype/freetype-2.13.2/include
+   make_libs += -lfreetype -Dzox_lib_ttf -Ibuild/freetype/freetype-2.13.2/include
 endif
 ifeq ($(use_lib_amd), true)
-   LDLIBS +=  -lrocm_smi64 -Dzox_lib_amd
+   make_libs +=  -lrocm_smi64 -Dzox_lib_amd
 endif
 # determine the operating system #
 ifeq ($(OS),Windows_NT)
     SYSTEM := Windows
     SRCS := $(shell find src/ -type f \( -name "*.c" -o -name "*.h" \))
-    # LDLIBS += -Lbin
-    LDLIBS += -LSDL2main -Wl,-subsystem,windows -mwindows -lws2_32 # windows only
-    LDLIBS += -lopengl32 -lglew32
+    # make_libs += -Lbin
+    make_libs += -LSDL2main -Wl,-subsystem,windows -mwindows -lws2_32 # windows only
+    make_libs += -lopengl32 -lglew32
     # windows pathing
-    LDLIBS += -Ibuild/sdl/include -Ibuild/sdl_image/include -Ibuild/sdl_mixer/include
-    LDLIBS += -Lbuild/sdl/lib/x64 -Lbuild/sdl_image/lib/x64 -Lbuild/sdl_mixer/lib/x64
-    LDLIBS += -Ibuild/glew/include -Lbuild/glew/lib/Release/x64 # glew
+    make_libs += -Ibuild/sdl/include -Ibuild/sdl_image/include -Ibuild/sdl_mixer/include
+    make_libs += -Lbuild/sdl/lib/x64 -Lbuild/sdl_image/lib/x64 -Lbuild/sdl_mixer/lib/x64
+    make_libs += -Ibuild/glew/include -Lbuild/glew/lib/Release/x64 # glew
 else # linux
     SYSTEM := $(shell uname -s)
     SRCS := $(shell find src/ -type f \( -name "*.c" -o -name "*.h" \))
-    LDLIBS += -lGL
+    make_libs += -lGL
 endif
+CC = gcc # c99 | gnu99
+OBJS = src/main.c
 # collect our source files #
-CFLAGS = -std=gnu99 -D_DEFAULT_SOURCE -fPIC
+cflags = -std=gnu99 -D_DEFAULT_SOURCE -fPIC
 # supresses flecs warning
-CFLAGS += -Wno-stringop-overread -Wno-stringop-overflow
+cflags += -Wno-stringop-overread -Wno-stringop-overflow
+# make faster for release builds
+cflags_release = -Ofast -D NDEBUG -s
+ifneq ($(SYSTEM),Windows)
+cflags_release += -flto=auto # fuse linker plugin on linux only
+endif
+# target per build type
+target = build/linux/zoxel
+ifeq ($(SYSTEM),Windows)
+target = build/windows/zoxel.exe
+endif
 
 # ===== ===== ===== #
 # ===== linux ===== #
 # ===== ===== ===== #
-
-target = build/linux/zoxel
-CC = gcc # c99 | gnu99
-OBJS = src/main.c
-ifeq ($(SYSTEM),Windows)
-target = build/windows/zoxel.exe
-endif
-CFLAGS_RELEASE = -Ofast -D NDEBUG -s
-ifneq ($(SYSTEM),Windows)
-CFLAGS_RELEASE += -flto=auto # fuse linker plugin on linux only
-endif
-make_release = $(CC) $(CFLAGS) $(CFLAGS_RELEASE) -o $(target) $(OBJS) $(LDLIBS)
+make_release = echo " > building zoxel-linux" && \
+	$(patient_cmd) && \
+	$(CC) $(cflags) $(cflags_release) -o $(target) $(OBJS) $(make_libs)
 
 $(target): $(SRCS)
-	@ echo " > building zoxel-linux"
-	@ $(patient_cmd)
 	@ $(make_release)
 
 linux:
-	@ echo " > building zoxel-linux"
-	@ $(patient_cmd)
 	@ $(make_release)
 
 # required libraries
@@ -116,6 +116,12 @@ uninstall:
 # run release
 run:
 	@ ./$(target)
+
+run-debug-libs:
+	LD_DEBUG=libs ./$(target)
+
+run-debug-libs2:
+	ldd ./$(target)
 
 run-debug:
 	gdb ./$(target)
@@ -153,7 +159,7 @@ endif
 cflags_debug = -Wall -g # -Wextra -Wpedantic -Wshadow -Wl,--verbose -Og
 make_dev = echo " > building zoxel-dev-linux [$(target_dev)]" && \
 	$(patient_cmd) && \
-	$(CC) $(CFLAGS) $(cflags_debug) -o $(target_dev) $(OBJS) $(LDLIBS)
+	$(CC) $(cflags) $(cflags_debug) -o $(target_dev) $(OBJS) $(make_libs)
 
 # development
 dev:
@@ -229,7 +235,7 @@ flecs_libs = -lm -lpthread
 ifeq ($(SYSTEM), Windows) # win sockets
 flecs_libs += -lws2_32
 endif
-make_flecs = $(CC) $(flecs_flags) $(CFLAGS) $(CFLAGS_RELEASE) $(flecs_source) -o $(flecs_obj) $(flecs_libs)
+make_flecs = $(CC) $(flecs_flags) $(cflags) $(cflags_release) $(flecs_source) -o $(flecs_obj) $(flecs_libs)
 make_flecs_lib = ar rcs $(flecs_target) $(flecs_obj)
 make_flecs_big= set -e; \
 	echo " > building flecs" && \
@@ -278,7 +284,6 @@ check-flecs:
 
 cc_windows=x86_64-w64-mingw32-gcc # -Wall -g
 target_windows = build/windows/zoxel.exe
-windows_pre_libs = -Llib
 windows_libs = -lm -lpthread -lopengl32 -lglew32 -LSDL2main -lSDL2
 windows_libs += -Wl,-subsystem,windows -mwindows -lws2_32 # windows only
 ifeq ($(use_lib_sdl_image), true)
@@ -290,8 +295,9 @@ endif
 ifeq ($(use_lib_ttf), true)
 	windows_libs += -lfreetype -Dzox_lib_ttf -Ibuild/freetype/freetype-2.13.2/include
 endif
+# windows_libs += --static # this fixes thread dll issue
 # windows pathing
-windows_includes = -Iinclude #  -I/usr/include/SDL2 -I/usr/include/GL
+windows_includes = -Llib -Iinclude #  -I/usr/include/SDL2 -I/usr/include/GL
 # -Lbuild/sdl/sdl/build/.libs -Lbuild/sdl/sdl_mixer/build/.libs -Lbuild/sdl/sdl_image/.libs
 windows_includes += -Ibuild/sdl/include -Ibuild/sdl_image/include -Ibuild/sdl_mixer/include
 windows_includes += -Lbuild/sdl/lib/x64 -Lbuild/sdl_image/lib/x64 -Lbuild/sdl_mixer/lib/x64
@@ -300,7 +306,7 @@ windows_includes += -Ibuild/glew/include -Lbuild/glew/lib/Release/x64 # glew
 make_windows = \
 	echo " > building zoxel-windows" && \
 	$(patient_cmd) && \
-	$(cc_windows) $(CFLAGS) $(CFLAGS_RELEASE) $(OBJS) include/flecs/flecs.c -o $(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs) --static # this fixes thread dll issue
+	$(cc_windows) $(cflags) $(cflags_release) $(OBJS) include/flecs/flecs.c -o $(target_windows) $(windows_includes) $(windows_libs)
 
 # if [ ! -d build/windows ]; then mkdir build/windows; fi
 
@@ -364,7 +370,7 @@ make_web_checks= [ ! -d $(target_web_dir) ] && mkdir -p $(target_web_dir); \
 web_resources_dir = -Dresources_dir_name="\"resources\""
 cflags_web = --preload-file $(resources_dir) -s WASM=1 -s FULL_ES3=1 -s USE_WEBGL2=1 -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 -s ALLOW_MEMORY_GROWTH -s STACK_SIZE=365536 -s EXPORTED_FUNCTIONS=['_main','_ntohs']
 ldlibs_web = -lGL -lGLEW -lSDL -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["png"]' -s USE_SDL_MIXER=2
-make_web = $(make_web_checks) $(emsdk) construct_env && $(cc_web) $(CFLAGS) $(cflags_web) $(web_resources_dir) -o $(target_web) $(OBJS) include/flecs/flecs.c $(ldlibs_web) && bash bash/web/post_build.sh
+make_web = $(make_web_checks) $(emsdk) construct_env && $(cc_web) $(cflags) $(cflags_web) $(web_resources_dir) -o $(target_web) $(OBJS) include/flecs/flecs.c $(ldlibs_web) && bash bash/web/post_build.sh
 
 prepare-web:
 	@ bash bash/web/prepare.sh
@@ -515,11 +521,14 @@ freetype:
 
 # todo: use windows-steam directory
 steam_objs = bash/steam/steamwrapper.c
-steam_libs = -Iinclude/steam -Dzox_include_steam -lsteam_wrapper -Wl,-rpath='lib' # rpath used for wrapper
-steam_libs_linux = -lsteam_api # -Wl,-rpath,'lib'
+steam_libs = -Iinclude/steam -Dzox_include_steam -lsteam_wrapper # -Wl,-rpath='lib' # rpath used for wrapper
+# linux
+steam_libs_linux = -Llib -lsteam_api -Llib
+make_linux_with_steam = $(CC) $(cflags) $(cflags_release) -o $(target) $(OBJS) $(steam_objs) $(make_libs) $(steam_libs) $(steam_libs_linux)
+make_linux_dev_with_steam = $(CC) $(cflags) $(cflags_debug) -o $(target_dev) $(OBJS) $(steam_objs) $(make_libs) $(steam_libs) $(steam_libs_linux)
+# windows
 steam_libs_windows = -lsteam_api64
-make_linux_with_steam = $(CC) $(CFLAGS) $(CFLAGS_RELEASE) -o $(target) $(OBJS) $(steam_objs) $(LDLIBS) $(steam_libs) $(steam_libs_linux)
-make_windows_with_steam = $(cc_windows) $(OBJS) include/flecs/flecs.c $(steam_objs) -o $(target_windows) $(windows_pre_libs) $(windows_includes) $(windows_libs) $(steam_libs) $(steam_libs_windows)
+make_windows_with_steam = $(cc_windows) $(cflags) $(cflags_release) $(OBJS) include/flecs/flecs.c $(steam_objs) -o $(target_windows) $(windows_includes) $(windows_libs) $(steam_libs) $(steam_libs_windows)
 
 steam-wrapper-linux:
 	@ $(patient_cmd)
@@ -532,8 +541,15 @@ steam-linux:
 	@ $(patient_cmd)
 	@ $(make_linux_with_steam)
 
+steam-linux-dev:
+	@ echo " > building linux-steam wrapper"
+	@ bash bash/steam/build_wrapper_linux.sh
+	@ echo " > building linux-steam"
+	@ $(patient_cmd)
+	@ $(make_linux_dev_with_steam)
+
 steam-run:
-	@ LD_LIBRARY_PATH=./lib ./$(target) # LD_LIBRARY_PATH used for steam_api
+	@ LD_LIBRARY_PATH=lib ./$(target) # LD_LIBRARY_PATH used for steam_api
 
 steam-wrapper-windows:
 	@ $(patient_cmd)
@@ -566,7 +582,6 @@ steam-cmd:
 	@ bash bash/steam/install_steamcmd.sh
 
 steam-sdk:
-	@ bash bash/steam/installsteamcmd.sh
 	@ bash bash/steam/install_sdk.sh
 
 steam-package:
@@ -799,6 +814,7 @@ help-steam:
 	@echo "    steam-package		packages steam zip for upload"
 	@echo "    steam-upload		uploads steam to beta branch"
 	@echo "    steam-upload-live		uploads steam to main branch"
+	@echo "	   steam-cmd			installs steam cmd for uploads"
 	@echo "    steam-sdk			installs steamworks sdk from zip ~/Downloads/steamworks_sdk.zip"
 	@echo "    install-steam-deck-required	installs steamdeck required libs"
 
