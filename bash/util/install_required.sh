@@ -5,14 +5,22 @@ echo "> checking linux packages"
 source bash/util/package_util.sh
 
 install_first_library "gcc"
+install_first_library "wget"
 
 # install_first_library "libgl"
 
-install_first_library "libglew-dev" "glew" "libglew"
+# install_first_library "libvulkan-dev" "vulkan-devel" "vulkan-headers"
 
-install_first_library "libvulkan-dev" "vulkan-devel" "vulkan-headers"
+# wget requirements
+# install_first_library "libglew-dev" "glew" "libglew"
+install_first_library "libx11"
+install_first_library "libxext" # libxext-dev ?
+install_first_library "xorg-server-devel"
+install_first_library "libxcb"
 
-install_first_library "wget"
+# for steamdeck we must force reinstall
+# sudo pacman -S --overwrite glob xorg-server-devel
+install_first_library "cmake" # freetype needs cmake?
 
 # install_first_library "libfreetype6-dev" "freetype2"
 

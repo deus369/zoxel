@@ -9,7 +9,12 @@ source bash/util/package_util.sh
 # install_first_library "mingw-w32"
 
 echo "> installing [mingw-w64]"
-install_first_library "mingw-w64"
+# install_first_library "mingw-w64"
+install_first_library "mingw-w64-gcc"
+install_first_library "mingw-w64-headers"
+install_first_library "mingw-w64-winpthreads"
+install_first_library "mingw-w64-binutils"
+install_first_library "mingw-w64-crt"
 
 echo "> installing [wine]"
 install_first_library "wine"

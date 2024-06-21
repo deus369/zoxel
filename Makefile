@@ -502,6 +502,10 @@ git-pull: ## installs zoxel into /usr/games directory
 git-config:
 	@ bash bash/git/git_update_config.sh
 
+git-id:
+	@ bash bash/git/set_git_name.sh
+	@ bash bash/git/set_git_email.sh
+
 update: ## installs zoxel into /usr/games directory
 	@ echo " + updating zoxel"
 	@ bash bash/git/git_pull.sh
@@ -781,8 +785,10 @@ help-extra:
 
 help-git:
 	@echo "  > [git]"
+	@echo "	   git-id			set your git ids"
 	@echo "    git-pull			pulls latest git"
 	@echo "    git-push			pushes git updates (requires ssh access)"
+	@echo "    git-config			copies git config"
 	@echo "    ssh				creates a ssh key to add to git servers"
 
 help-android:
