@@ -92,8 +92,8 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 #endif
 
 #ifdef zox_debug_ui_save_cloud
-        // if (test_read_byte != 255)
-        buffer_index += snprintf(buffer + buffer_index, buffer_size, "cloud data [%i] ", test_read_byte);
+        if (test_read_byte != 255)
+                buffer_index += snprintf(buffer + buffer_index, buffer_size, "cloud data [%i]\n", test_read_byte);
 #endif
 #ifdef zox_debug_ui_memorys_allocated
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " memorys [%i]", total_memorys_allocated);

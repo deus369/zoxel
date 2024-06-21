@@ -71,6 +71,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
 #ifdef zox_mod_players
     spawn_players_cameras_canvases(world, game);
 #endif
+    intialize_game_store();
     test_steam_cloud();
 #ifdef zox_log_boot_game
     zox_log(" > boot zoxel completedboot_zoxel_game7\n")

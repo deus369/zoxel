@@ -27,6 +27,7 @@ void test_steam_cloud() {
     free(test_bytes_read);
     free(file_length);
     test_read_byte++;
+    if (test_read_byte == 255) test_read_byte = 0;
     // write to file
     unsigned char* test_bytes_write = malloc(default_file_length);
     test_bytes_write[0] = test_read_byte;
