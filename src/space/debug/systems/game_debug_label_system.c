@@ -1,3 +1,5 @@
+// todo: add raycast position here, and character position
+
 int debug_newline_zext(char buffer[], int buffer_size, int buffer_index) {
     buffer_index += snprintf(buffer + buffer_index, buffer_size, "Day 1.\nToday is a very sunny day.\nHi jerry.");
     return buffer_index;
@@ -38,7 +40,6 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         const ecs_entity_t player = zox_get_value(canvas, PlayerLink)
         if (!player) continue;
         const ecs_entity_t character = zox_get_value(player, CharacterLink)
-        const ecs_entity_t game = zox_get_value(player, GameLink)
 #ifdef zox_debug_ui_device_mode
         const DeviceMode *deviceMode = zox_get(player, DeviceMode)
 #endif
@@ -47,29 +48,9 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 #endif
         int buffer_index = 0;
         char buffer[buffer_size];
-        // debug our computer:
-        // Ram, CPU%, GPU?, etc
-#ifdef zox_debug_system
-        buffer_index = debug_system(buffer, buffer_size, buffer_index);
-#endif
-#ifdef zox_debug_joystick
-        buffer_index = debug_joystick(buffer, buffer_size, buffer_index);
-#endif
-        // test this \n
-        // snprintf(buffer, sizeof(buffer), "debug ui\nline 2");
-        // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[debug]");
-#ifdef zox_debug_zox_statistics
-        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "chunks visible [%i / %i]\n", zox_statistics_chunks_visible, zox_statistics_chunks_total);
-#endif
-#ifdef zox_debug_zox_statistics2
-        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "characters visible [%i / %i] - r[%i]\n", zox_statistics_characters_visible, zox_statistics_characters_total, zox_statistics_characters_rendered);
-        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "block voxes visible [%i / %i]\n", zox_statistics_block_voxes_visible, zox_statistics_block_voxes_total);
-#endif
-#ifdef zox_test_newline
-        buffer_index = debug_newline_zext(buffer, buffer_size, buffer_index);
-#endif
 
 #ifdef zox_debug_game_players
+        const ecs_entity_t game = zox_get_value(player, GameLink)
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "player [%s]\n", zox_get_name(player));
         buffer_index = get_label_player_links(world, buffer, buffer_size, buffer_index, game);
 #endif
@@ -111,8 +92,8 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 #endif
 
 #ifdef zox_debug_ui_save_cloud
-        if (test_read_byte != 255)
-            buffer_index += snprintf(buffer + buffer_index, buffer_size, " cloud [%i] ", test_read_byte);
+        // if (test_read_byte != 255)
+        buffer_index += snprintf(buffer + buffer_index, buffer_size, "cloud data [%i] ", test_read_byte);
 #endif
 #ifdef zox_debug_ui_memorys_allocated
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " memorys [%i]", total_memorys_allocated);
@@ -126,6 +107,30 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 #ifdef zox_debug_ui_statbars
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " statbars [%i]", get_statbars_count(it->world));
 #endif
+
+
+        // debug our computer:
+        // Ram, CPU%, GPU?, etc
+#ifdef zox_debug_system
+        buffer_index = debug_system(buffer, buffer_size, buffer_index);
+#endif
+#ifdef zox_debug_joystick
+        buffer_index = debug_joystick(buffer, buffer_size, buffer_index);
+#endif
+        // test this \n
+        // snprintf(buffer, sizeof(buffer), "debug ui\nline 2");
+        // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[debug]");
+#ifdef zox_debug_zox_statistics
+        if (zox_statistics_chunks_total) buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "chunks visible [%i / %i]\n", zox_statistics_chunks_visible, zox_statistics_chunks_total);
+#endif
+#ifdef zox_debug_zox_statistics2
+        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "characters visible [%i / %i] - r[%i]\n", zox_statistics_characters_visible, zox_statistics_characters_total, zox_statistics_characters_rendered);
+        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "block voxes visible [%i / %i]\n", zox_statistics_block_voxes_visible, zox_statistics_block_voxes_total);
+#endif
+#ifdef zox_test_newline
+        buffer_index = debug_newline_zext(buffer, buffer_size, buffer_index);
+#endif
+
 #ifdef zox_debug_ui_particle3Ds
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " particle3Ds [%i %i]", get_count_particle3D_emitters(it->world), get_count_particle3Ds(it->world));
 

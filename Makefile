@@ -200,6 +200,7 @@ run-coop-valgrind:
 
 # run release + flecs profiler
 run-profiler:
+	@ echo " + opening https://www.flecs.dev/explorer"
 	@ sleep 3 && open https://www.flecs.dev/explorer &
 	@ ./$(target) --profiler
 
@@ -219,6 +220,7 @@ dev-profiler:
 
 # run development + flecs profiler
 run-dev-profiler:
+	@ echo "opening https://www.flecs.dev/explorer"
 	@ sleep 3 && open https://www.flecs.dev/explorer &
 	@ ./$(target_dev) --profiler
 

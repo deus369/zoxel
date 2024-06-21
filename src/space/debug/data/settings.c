@@ -11,7 +11,7 @@ double time_update_debug_label_system = 0;
 // #define zox_debug_system
 
 // input
-#define zox_debug_joystick
+// #define zox_debug_joystick
 
 // player
 #define zox_debug_ui_save_cloud

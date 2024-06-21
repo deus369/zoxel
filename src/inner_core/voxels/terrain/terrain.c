@@ -22,20 +22,21 @@ zox_component_byte(StreamDirty)
 #include "util/octree_build_util.c"
 #include "util/block_vox.c"
 #include "util/debug_util.c"
+#include "util/terrain_util.c"
 #include "prefabs/prefabs.c"
+#include "util/create_terrain.c"
 #include "systems/terrain_chunk_system.c"
 #include "systems/chunk_uvs_build_system.c"
 #include "systems/stream_point_system.c"
 #include "systems/terrain_lod_system.c"
-#include "octree_systems/chunk_octree_build_system.c"
-#include "octree_systems/octree_terrain_chunk_system.c"
-#include "octree_systems/terrain_chunks_render_system.c"
+#include "systems/chunk_octree_build_system.c"
+#include "systems/terrain_chunks_render_system.c"
 #include "systems/chunk_frustum_system.c"
-#include "util/create_terrain.c"
 #include "systems/chunk_bounds_debug_system.c"
 #include "systems/block_vox_spawn_system.c"
 #include "systems/block_vox_update_system.c"
-#include "octree_systems/chunk_flatland_system.c"
+#include "systems/chunk_flatland_system.c"
+#include "systems/grassy_plains_system.c"
 ctx2 terrain_lod_filter; // used for lod system
 
 zox_begin_module(Terrain)
@@ -48,11 +49,6 @@ zox_define_tag(Streamer)
 zox_define_component_int3(StreamPoint)
 zox_define_component_entity(TerrainLink)
 zox_define_component_byte(StreamDirty)
-// generate chunks
-zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [out] GenerateChunk)
-zox_system(ChunkFlatlandSystem, zox_pip_voxels_chunk_dirty, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree, [none] FlatlandChunk)
-zox_system_ctx(OctreeTerrainChunkSystem, zox_pip_voxels_chunk_dirty, generateTerrainChunkQuery, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree, [none] !FlatlandChunk)
-zox_system_ctx(TerrainChunkSystem, zox_pip_voxels_chunk_dirty, generateTerrainChunkQuery, [none] TerrainChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] ChunkPosition, [out] GenerateChunk)
 // this updates our chunks Lods!!
 zox_filter(terrain_chunks, [in] ChunkPosition, [in] ChunkNeighbors, [out] RenderLod, [out] ChunkDirty, [out] ChunkLodDirty, [none] TerrainChunk)
 zox_filter(streamers, [in] StreamPoint)
@@ -73,6 +69,12 @@ zox_render3D_system(TerrainChunksRenderSystem, [in] TransformMatrix, [in] MeshGP
 #ifdef zox_debug_chunk_bounds
 zox_system_1(ChunkBoundsDrawSystem, zox_pip_mainthread, [in] Position3D, [in] ChunkSize, [in] VoxScale, [in] RenderDisabled, [none] TerrainChunk)
 #endif
+// generate terrain
+zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [out] GenerateChunk)
+zox_system(ChunkFlatlandSystem, zox_pip_voxels_chunk_dirty, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree, [none] FlatlandChunk)
+zox_system_ctx(GrassyPlainsSystem, zox_pip_voxels_chunk_dirty, generateTerrainChunkQuery, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree, [none] !FlatlandChunk)
+// normal chunks (obsolete)
+// zox_system_ctx(TerrainChunkSystem, zox_pip_voxels_chunk_dirty, generateTerrainChunkQuery, [none] TerrainChunk, [out] ChunkDirty, [out] ChunkData, [in] ChunkSize, [in] ChunkPosition, [out] GenerateChunk)
 set_terrain_render_distance();
 spawn_prefabs_terrain(world);
 zoxel_end_module(Terrain)

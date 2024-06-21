@@ -1,43 +1,5 @@
-void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 position, float scale) {
-    double octree_noise = perlin_terrain(position.x + noise_positiver2, position.z + noise_positiver2, terrain_frequency, terrain_seed, terrain_octaves);
-    if (octree_noise < octree_min_height) octree_noise = octree_min_height;
-    // octree_noise += octree_height_addition * octree_perlin_noise(position.x, position.y, position.z, octree_persistence, octree_frequency);
-    if (position.y <= octree_noise) chunk_octree->value = 1;
-    else chunk_octree->value = 0;
-    if (depth < max_octree_depth && chunk_octree->value) {
-        depth++;
-        scale = scale * 0.5f;
-        open_ChunkOctree(chunk_octree);
-        for (unsigned char i = 0; i < octree_length; i++) {
-            float3 node_position = float3_add(position, float3_multiply_float(float3_from_int3(octree_positions[i]), scale));
-            generate_terrain(&chunk_octree->nodes[i], depth, node_position, scale);
-        }
-        // check all children
-#ifndef zoxel_disable_close_nodes
-        unsigned char is_all_solid = 1;
-        for (unsigned char i = 0; i < octree_length; i++) {
-            if (chunk_octree->nodes[i].nodes != NULL || !chunk_octree->nodes[i].value) {
-                is_all_solid = 0;
-                break;
-            }
-        }
-        if (is_all_solid) close_ChunkOctree(chunk_octree);
-#endif
-    }
-}
-
-void set_terrain_block(ecs_world_t *world, ChunkOctree *chunkOctree, const byte3 voxel_position, const int chunk_position_y, const unsigned char chunk_voxel_length, const byte2 set_voxel, const int global_place_y) {
-    const int local_place_y = global_place_y - chunk_position_y;
-    const unsigned char place_in_bounds = local_place_y >= 0 && local_place_y < chunk_voxel_length;
-    if (place_in_bounds) {
-        byte3 node_position = voxel_position;
-        node_position.y = local_place_y;
-        set_octree_voxel(chunkOctree, &node_position, &set_voxel, 0); // testing
-    }
-}
-
 // generates our terrain voxels
-void OctreeTerrainChunkSystem(ecs_iter_t *it) {
+void GrassyPlainsSystem(ecs_iter_t *it) {
 #ifdef zox_disable_terrain_generation
     return;
 #endif
@@ -50,12 +12,60 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
     zox_field_out(ChunkDirty, chunkDirtys, 4)
     zox_field_out(ChunkOctree, chunkOctrees, 5)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_out(GenerateChunk, generateChunks, generateChunk)
+        zox_field_o(GenerateChunk, generateChunks, generateChunk)
         if (generateChunk->value != 1) continue;
-        zox_field_i_out(ChunkDirty, chunkDirtys, chunkDirty)
+        zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
         if (chunkDirty->value) continue;
-        zox_field_i_in(ChunkPosition, chunkPositions, chunkPosition)
-        zox_field_i_out(ChunkOctree, chunkOctrees, chunkOctree)
+        zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
+        zox_field_o(ChunkOctree, chunkOctrees, chunkOctree)
+        const float3 chunk_position_float3 = float3_from_int3(chunkPosition->value);
+        const int chunk_position_y = (int) (chunk_position_float3.y * chunk_voxel_length);
+        fill_new_octree(chunkOctree, 0, target_depth);
+        const SetVoxelTargetData datam_dirt = { .depth = target_depth, .voxel = zox_block_dirt, .effect_nodes = 1 };
+        const SetVoxelTargetData datam_grass = { .depth = target_depth, .voxel = zox_block_grass, .effect_nodes = 1 };
+        const SetVoxelTargetData datam_flower = { .depth = target_depth, .voxel = zox_block_vox_grass, .effect_nodes = 1 };
+        SetVoxelData data = { .node = chunkOctree };
+        byte3 voxel_position;
+        for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
+            for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
+                const double perlin_value = perlin_terrain(
+                    noise_positiver2 + chunk_position_float3.x + (voxel_position.x / map_size_f.x),
+                    noise_positiver2 + chunk_position_float3.z + (voxel_position.z / map_size_f.y),
+                    terrain_frequency, terrain_seed, terrain_octaves);
+                const int global_height = int_floor(terrain_boost + -terrain_minus_amplifier + terrain_amplifier * perlin_value);
+                const int local_height_raw = global_height - chunk_position_y;
+                const int local_height = int_min(chunk_voxel_length - 1, local_height_raw);
+                if (local_height >= 0) {
+                    for (voxel_position.y = 0; voxel_position.y <= local_height; voxel_position.y++) {
+                        data.position = voxel_position;
+                        if (voxel_position.y  == local_height_raw) set_voxel(&datam_grass, data);
+                        else set_voxel(&datam_dirt, data);
+                    }
+                }
+                if (local_height_raw + 1 >= 0 && local_height_raw + 1 < chunk_voxel_length) {
+                    const int rando = rand() % 10000;
+                    if (rando <= grass_vox_spawn_chance) {
+                        voxel_position.y = local_height_raw + 1;
+                        data.position = voxel_position;
+                        set_voxel(&datam_flower, data);
+                        // zox_log(" + flower spawned %f\n", perlin_value)
+                    }
+                }
+            }
+        }
+#ifndef zox_disable_closing_octree_nodes
+        close_same_nodes(chunkOctree);
+#endif
+        generateChunk->value = 0;
+        chunkDirty->value = 1;
+    }
+    /*for (int i = 0; i < it->count; i++) {
+        zox_field_o(GenerateChunk, generateChunks, generateChunk)
+        if (generateChunk->value != 1) continue;
+        zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
+        if (chunkDirty->value) continue;
+        zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
+        zox_field_o(ChunkOctree, chunkOctrees, chunkOctree)
         const float3 chunk_position_float3 = float3_from_int3(chunkPosition->value);
         const int chunk_position_y = (int) (chunk_position_float3.y * chunk_voxel_length);
         fill_new_octree(chunkOctree, 0, target_depth);
@@ -147,8 +157,8 @@ void OctreeTerrainChunkSystem(ecs_iter_t *it) {
         // close_solid_nodes(chunkOctree);
         generateChunk->value = 0;
         chunkDirty->value = 1;
-    }
-} zox_declare_system(OctreeTerrainChunkSystem)
+    }*/
+} zox_declare_system(GrassyPlainsSystem)
 
 
 // const byte2 set_stone = (byte2) { 4, target_depth };

@@ -17,7 +17,7 @@ float get_gamepad_axis(SDL_Joystick *joystick, const int index) {
     return axis_value; // invert as sdl inverts it first?
 }
 
-unsigned char check_axis(SDL_Joystick *joystick, int index) {
+void check_axis(SDL_Joystick *joystick, int index) {
     float2 axis = (float2) { get_gamepad_axis(joystick, index), get_gamepad_axis(joystick, index + 1) };
     if (float_abs(axis.x) >= 0.05f || float_abs(axis.y) >= 0.05f) last_axis_index = index;
 }

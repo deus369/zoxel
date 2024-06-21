@@ -1,5 +1,5 @@
-#ifndef zox_lines
-#define zox_lines
+#ifndef zox_mod_lines
+#define zox_mod_lines
 
 zox_declare_tag(Line)
 zox_component(LineThickness, float)

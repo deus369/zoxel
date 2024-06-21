@@ -18,7 +18,7 @@ void update_core(ecs_world_t *world) {
     }
     opengl_clear_viewport_all(viewport_clear_color); // theres only one frame buffer for each app
     run_ecs(world);
-    iterate_time();
+    iterate_time(world);
     app_update_gpu(world);
 #ifdef zoxel_log_frame_ms
     zox_log(" > frame time [%fms]\n", (float) (zox_delta_time * 1000.0f))

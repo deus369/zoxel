@@ -2,8 +2,9 @@ double time_begin, zox_current_time, zox_delta_time = 0.0;
 double frames_per_second_time = 0.0;
 int frames_count, frames_per_second = 0;
 double zox_current_time_check = 0.0;
-const int record_frames_count = 120;
-double zox_delta_times[120];
+#define record_frames_count 120
+// double zox_delta_times[record_frames_count];
+// double system_times[record_frames_count];
 const double max_zox_delta_time = 1.0 / 2.0;
 unsigned char last_updated_time = 0;
 unsigned char updating_time = 1;
@@ -28,7 +29,14 @@ void skip_time_to_current() {
     zox_log(" > restoring time to [%d]\n", zox_current_time)
 }
 
-void iterate_time() {
+void clear_system_times() {
+    // for (int i = 0; i < record_frames_count; i++) system_times[i] = 0;
+}
+
+extern void add_plot_data_time(ecs_world_t *world, const double value);
+
+void iterate_time(ecs_world_t *world) {
+    clear_system_times();
     double last_time = zox_current_time;
     zox_current_time = current_time_in_seconds() - time_begin;
     if (!updating_time) {
@@ -37,8 +45,9 @@ void iterate_time() {
     }
     zox_delta_time = zox_current_time - last_time;
     zox_current_time_check += zox_delta_time;
-    for (int i = 0; i < record_frames_count - 1; i++) zox_delta_times[i] = zox_delta_times[i + 1];
-    zox_delta_times[record_frames_count - 1] = zox_delta_time;
+    add_plot_data_time(world, zox_delta_time);
+    // for (int i = 0; i < record_frames_count - 1; i++) zox_delta_times[i] = zox_delta_times[i + 1];
+    // zox_delta_times[record_frames_count - 1] = zox_delta_time;
 #ifdef zox_check_current_time
     if (zox_current_time != zox_current_time_check) {
         zoxel_log("current time and check not equal: %f - %f\n", zox_current_time, zox_current_time_check);

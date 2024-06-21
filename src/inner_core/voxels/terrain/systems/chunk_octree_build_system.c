@@ -90,7 +90,6 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
             meshDirty->value = 1;
             continue;
         }
-        // zox_field_i(VoxLink, voxLinks, voxLink)
         zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
         zox_field_i(ChunkNeighbors, chunkNeighbors, chunkNeighbors2)
         const ChunkOctree *neighbors[6];

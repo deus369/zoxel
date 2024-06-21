@@ -13,6 +13,7 @@
 #include "animations/animations.c"
 #include "ui/ui.c"
 #include "lines/lines.c"
+#include "plots/plots.c"
 #include "genetics/genetics.c"
 #include "neurals/neurals.c"
 #include "tiles/tiles.c"
@@ -35,6 +36,7 @@ zox_import_module(Animations)
 zox_import_module(UI)
 #endif
 zox_import_module(Lines)
+zox_import_module(Plots)
 zox_import_module(Genetics)
 zox_import_module(Neurals)
 zox_import_module(Tiles)

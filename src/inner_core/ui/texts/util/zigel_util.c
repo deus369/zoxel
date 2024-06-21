@@ -107,6 +107,12 @@ int2 calculate_zigel_position(const unsigned char *data, const int length, const
     } else if (text_alignment == zox_mesh_alignment_bottom_right) {
         zigel_position.x -= size.x / 2;
         zigel_position.y += size.y / 2;
+    } else if (text_alignment == zox_mesh_alignment_top_left) {
+        zigel_position.x += size.x / 2;
+        zigel_position.y -= size.y / 2;
+    } else if (text_alignment == zox_mesh_alignment_bottom_left) {
+        zigel_position.x += size.x / 2;
+        zigel_position.y += size.y / 2;
     }
     // zox_log(" i[%i] %c - xy [%ix%i] - zig pos %ix%i\n", data_index, convert_to_ascii(zextData->value[data_index]), x, y, zigel_position.x, zigel_position.y)
     return zigel_position;
