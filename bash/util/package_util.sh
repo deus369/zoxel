@@ -1,5 +1,15 @@
 #!/bin/bash
 
+has_yay() {
+    if command -v yay >/dev/null 2>&1; then
+        echo "  > yay command exists"
+        return 0
+    else
+        echo "  > yay command does not exist"
+        return 1
+    fi
+}
+
 is_steam_deck() {
     if [[ $(uname -m) == "x86_64" && $(cat /sys/class/dmi/id/sys_vendor) == "Valve" ]]; then
         echo "  > steam deck detected"

@@ -50,9 +50,9 @@ prepare_linux_build_directory() {
     else
         echo " > directory [$directory_lib] already exists"
     fi
-    cp -r $lib/*.a $directory_lib/
-    cp -r $lib/*.la $directory_lib/
     cp -r $lib/*.so $directory_lib/
+    cp -r $lib/*.so.0 $directory_lib/
+    cp -r $lib/*.a $directory_lib/
 }
 
 prepare_linux_build_directory "$build_path"

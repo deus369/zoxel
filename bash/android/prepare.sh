@@ -1,8 +1,52 @@
 #!/bin/bash
 # installs all the requirements for an android build on linux x86
 # install adb, apksigner are part of android sdk tools
+#
+#   + open jdk
+#   + sdkmanager
+#   + android sdk
+#
+# Next, sdkmanager:
+#   + licenses
+#   + ndk
+#   + platforms android
+#   + platform tools
+#   + build tools
+#
+# Next, we install sdl repo, and copy android template, copy over:
+#   + settings
+#   + source
+#   + libraries
+#   + resources
+
 source bash/util/package_util.sh
 source bash/android/gradle_pathing.sh
+
+echo " !!! if these fail, install yay -S sdkmanager android-sdk dk-openjdk"
+bash bash/util/install_yay.sh
+
+if [ has_yay ]; then
+    echo "  > installing [sdkmanager]"
+    yay -S --noconfirm sdkmanager
+    echo "  > installing [android-sdk]"
+    yay -S --noconfirm android-sdk
+    echo "  > installing [jdk-openjdk]"
+    yay -S --noconfirm jdk-openjdk
+else
+    echo " ! yay does not exist"
+    echo "  > installing [sdkmanager]"
+    install_first_library "sdkmanager"
+    echo "  > installing [android-sdk]"
+    install_first_library "android-sdk"
+    echo "  > installing [jdk]"
+    install_first_library "default-jdk" "jdk-openjdk"
+    # if failing on steamdeck, use:
+    # sudo pacman -S --overwrite /etc/java-openjdk/sdp/sdp.conf.template jdk-openjdk
+fi
+
+# needed to manually install jdk-openjdk again on steam deck:
+# sudo rm /etc/java-openjdk/sdp/sdp.conf.template && sudo pacman -S jdk-openjdk
+
 clear_gradle_build
 start_gradle_build
 
@@ -12,21 +56,6 @@ fi
 if [ ! -d $ndk_path ]; then
     sudo mkdir $ndk_path && sudo chmod -R 777 $ndk_path
 fi
-
-# installs jdk, sdkmanager and sdk itself
-echo "  > installing [jdk]"
-install_first_library "default-jdk" "jdk-openjdk"
-# install_first_library "default-jdk" "jdk8-openjdk"
-# install_first_library "default-jdk" "jdk11-openjdk"
-echo "  > installing [sdkmanager]"
-install_first_library "sdkmanager"
-echo "  > installing [android-sdk]"
-install_first_library "android-sdk"
-echo " !!! if these fail, install yay -S sdkmanager android-sdk dk-openjdk"
-yay -S --noconfirm sdkmanager android-sdk dk-openjdk
-
-# needed to manually install jdk-openjdk again on steam deck:
-# sudo rm /etc/java-openjdk/sdp/sdp.conf.template && sudo pacman -S jdk-openjdk
 
 # license directory
 if [ ! -d /opt/android-sdk/licenses ]; then
@@ -48,7 +77,10 @@ sdkmanager --sdk_root=$android_sdk_path --install "build-tools;$build_tools_ver"
 
 # install the sdl setup for our gradle build
 echo " > installing [sdl source]"
-bash bash/android/install_sdl.sh
+# bash bash/android/install_sdl.sh
+bash bash/sdl/install_sdl.sh
+bash bash/sdl/install_sdl_image.sh
+bash bash/sdl/install_sdl_mixer.sh
 echo " > installing [android_project]"
 source bash/android/copy_android_project.sh
 source bash/android/copy_sdl.sh

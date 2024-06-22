@@ -18,8 +18,10 @@ unsigned char has_opengl_extensions() {
         has_extension = 0;
     }
 #endif
-    if (!has_extension) zox_logg(" > extension not found, exiting\n")
-    if (!has_extension) exit(0);
+    // if (!has_extension) {
+    //    zox_logg(" > extension not found, exiting\n")
+    //    exit(0);
+    // }
     return has_extension;
 }
 

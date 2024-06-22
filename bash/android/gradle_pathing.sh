@@ -58,7 +58,7 @@ start_gradle_build() {
     # javaHome=$JAVA_HOME # "/usr/lib/jvm/java-17-openjdk" # $(dirname $(dirname $(whereis java)))
     source bash/android/set_java_home.sh
     # SDL
-    sdl_parent_directory=$zoxel_directory/build/sdl
+    sdl_parent_directory=$zoxel_directory/build
     sdl_directory=$sdl_parent_directory/sdl
     export sdl_directory=$sdl_parent_directory/sdl
     sdl_android_project_directory=$sdl_directory/android-project

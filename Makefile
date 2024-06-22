@@ -29,13 +29,13 @@ ifdef game
     make_libs +=-Dzox_game=$(game)
 endif
 ifeq ($(use_lib_sdl), true)
-    make_libs += -lSDL2 -Ibuild/linux-sdl/include -Dzox_lib_sdl_direct
+    make_libs += -Dzox_lib_sdl_direct -Ibuild/sdl/include -lSDL2
 endif
 ifeq ($(use_lib_sdl_image), true)
-    make_libs += -lSDL2_image -Dzox_lib_sdl_images
+    make_libs += -Dzox_lib_sdl_images -Iinclude/sdl_image -lSDL2_image
 endif
 ifeq ($(use_lib_sdl_mixer), true)
-    make_libs += -lSDL2_mixer -Dzox_lib_sdl_mixer
+    make_libs += -Dzox_lib_sdl_mixer -Iinclude/sdl_mixer -lSDL2_mixer
 endif
 ifeq ($(use_lib_vulkan), true)
     make_libs += -lvulkan -Dzox_include_vulkan # vulkan on linux
@@ -56,7 +56,7 @@ ifeq ($(OS),Windows_NT)
     # windows pathing
     make_libs += -Ibuild/sdl/include -Ibuild/sdl_image/include -Ibuild/sdl_mixer/include
     make_libs += -Lbuild/sdl/lib/x64 -Lbuild/sdl_image/lib/x64 -Lbuild/sdl_mixer/lib/x64
-    make_libs += -Ibuild/glew/include -Lbuild/glew/lib/Release/x64 # glew
+    make_libs += -Iinclude/glew -Lbuild/glew/lib/Release/x64 # glew
 else # linux
     SYSTEM := $(shell uname -s)
     SRCS := $(shell find src/ -type f \( -name "*.c" -o -name "*.h" \))
@@ -117,11 +117,11 @@ uninstall:
 run:
 	@ ./$(target)
 
+debug-libs:
+	ldd ./$(target)
+
 run-debug-libs:
 	LD_DEBUG=libs ./$(target)
-
-run-debug-libs2:
-	ldd ./$(target)
 
 run-debug:
 	gdb ./$(target)
@@ -257,7 +257,8 @@ flecs:
 	@ $(make_flecs_big)
 
 install-sdl:
-	@ bash bash/sdl/install_sdl.sh
+	@ echo " + installing sdl on system"
+	@ bash bash/sdl/install_sdl_on_system.sh
 
 install-flecs:
 	@ bash bash/flecs/download_flecs_source.sh
@@ -303,7 +304,7 @@ windows_includes = -Llib -Iinclude #  -I/usr/include/SDL2 -I/usr/include/GL
 # -Lbuild/sdl/sdl/build/.libs -Lbuild/sdl/sdl_mixer/build/.libs -Lbuild/sdl/sdl_image/.libs
 windows_includes += -Ibuild/sdl/include -Ibuild/sdl_image/include -Ibuild/sdl_mixer/include
 windows_includes += -Lbuild/sdl/lib/x64 -Lbuild/sdl_image/lib/x64 -Lbuild/sdl_mixer/lib/x64
-windows_includes += -Ibuild/glew/include -Lbuild/glew/lib/Release/x64 # glew
+windows_includes += -Iinclude/glew -Lbuild/glew/lib/Release/x64 # glew
 # command
 make_windows = \
 	echo " > building zoxel-windows" && \

@@ -7,28 +7,28 @@ source bash/util/package_util.sh
 install_first_library "gcc"
 install_first_library "wget"
 
+bash bash/freetype/install_requirements.sh
+bash bash/sdl/install_requirements.sh
+
+# installs sdl for system
+# bash bash/sdl/install_sdl_on_system.sh
+#  [sdl2] is installed with pacman
+# [sdl2_image] is installed with pacman
+# [sdl2_mixer] is installed with pacman
+
+
 # install_first_library "libgl"
 
 # install_first_library "libvulkan-dev" "vulkan-devel" "vulkan-headers"
 
 # wget requirements
 # install_first_library "libglew-dev" "glew" "libglew"
-install_first_library "libx11"
-install_first_library "libxext" # libxext-dev ?
-install_first_library "xorg-server-devel"
-install_first_library "libxcb"
-
-# for steamdeck we must force reinstall
-# sudo pacman -S --overwrite glob xorg-server-devel
-install_first_library "cmake" # freetype needs cmake?
 
 # install_first_library "libfreetype6-dev" "freetype2"
 
 # debug requuired tools
 # install_first_library "valgrind"
 # install_first_library "gdb"
-
-bash bash/sdl/install_sdl.sh
 
 #if is_steam_deck; then
     # for some reason had to manually install gcc

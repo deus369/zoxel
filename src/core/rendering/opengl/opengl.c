@@ -29,7 +29,7 @@ unsigned char initialize_opengl(ecs_world_t *world) {
 #ifdef zoxel_debug_opengl
     zox_log(" > initializing opengl\n")
 #endif
-    if (!has_opengl_extensions()) return EXIT_FAILURE;
+    // if (!has_opengl_extensions()) return EXIT_FAILURE;
     print_opengl();
     check_frame_buffer();
     check_compute();
