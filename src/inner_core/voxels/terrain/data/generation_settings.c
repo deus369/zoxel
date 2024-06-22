@@ -5,7 +5,7 @@ const int mountain_height = 20;
 #define grass_spawn_chance 90
 #define octree_random_spawn_chance 22
 #define stone_top_spawn_chance 22
-#define grass_vox_spawn_chance 66
+#define grass_vox_spawn_chance 366 // flowers
 #define vox_dirt_spawn_chance 22
 #define vox_spawn_chance_dirt_rubble 66
 const int test_block_vox_index = 4; // flower

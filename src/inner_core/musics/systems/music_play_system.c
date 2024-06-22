@@ -21,11 +21,11 @@ void MusicPlaySystem(ecs_iter_t *it) {
             musicTime->value -= music_speed;
             musicNote->value++;
             if (musicNote->value >= musicData->length) musicNote->value = 0;
-            int music_note = musicData->value[musicNote->value];
+            const int music_note = musicData->value[musicNote->value];
             if (music_note == 0) continue;
             const float frequency = note_frequencies[music_note]; // based sound note off music note, get timings off music notes in array
-            float note_time = musicSpeed->value * music_speed;
-            spawn_sound_generated(world, instrumentType->value, frequency, note_time, 2.2f);
+            const float note_time = musicSpeed->value * music_speed;
+            spawn_sound_generated(world, instrumentType->value, frequency, note_time, default_music_volume);
 #ifdef zoxel_log_music_playing
             zox_log(" > music note played [%i : %i] frequency [%f] instrument [%i]\n", musicNote->value, music_note, frequency, instrumentType->value)
 #endif
