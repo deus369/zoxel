@@ -17,9 +17,9 @@ unsigned char is_frame_buffer_supported() {
 }
 
 void check_frame_buffer() {
-    if (!is_frame_buffer_supported()) {
+    /*if (!is_frame_buffer_supported()) {
         zox_log(" ! frame buffer is unsupported.\n")
     } else {
         zox_log(" + frame buffer is supported.\n")
-    }
+    }*/
 }

@@ -475,7 +475,7 @@ android-uninstall:
 #	bash bash/android/gradle_clean.sh
 
 android-update-settings:
-	@ bash bash/android/copy_settings.sh
+	@ bash bash/android/sdl/copy_settings.sh
 
 android-dev-debug:
 	@ bash bash/android/install_debug.sh

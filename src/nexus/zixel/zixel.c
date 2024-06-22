@@ -13,7 +13,7 @@ unsigned char boot_zixel(ecs_world_t *world) {
     const ecs_entity_t game = spawn_game(world);
     zox_set(game, RealmLink, { realm })
     spawn_weather(world);
-    if (!headless) spawn_music(world, instrument_piano);
+    if (!headless) spawn_music(world);
     spawn_players_cameras_canvases(world, game);
     return EXIT_SUCCESS;
 }

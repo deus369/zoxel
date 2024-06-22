@@ -19,9 +19,9 @@ void MusicGenerateSystem(ecs_iter_t *it) {
         int palete_type = 0;
         palete_type = rand() % music_palette_end;
         int first_note = lowest_note + rand() % (highest_note - lowest_note + 1 - note_verse_difference);
-        #ifdef zoxel_debug_music
-            zoxel_log("Music Generated!\n - Palette [%i] [%s]\n - Instrument: [%i]\n    - First Note [%i]\n", palete_type, music_palette_names[palete_type], instrumentType->value, first_note);
-        #endif
+#ifdef zoxel_debug_music
+        zoxel_log("Music Generated!\n - Palette [%i] [%s]\n - Instrument: [%i]\n    - First Note [%i]\n", palete_type, music_palette_names[palete_type], instrumentType->value, first_note);
+#endif
         for (int j = 0; j < verses; j++) {
             first_note += - note_verse_difference + rand() % (note_verse_difference * 2 + 1);
             if (first_note < lowest_note) {
@@ -57,9 +57,9 @@ void MusicGenerateSystem(ecs_iter_t *it) {
                     musicData->value[sound_index] = 0;
                     // printf("Skiping at %i\n", sound_index);
                 }
-                #ifdef zoxel_debug_music
-                    zoxel_log(" > [%i] is [%i]\n", sound_index, musicData->value[sound_index]);
-                #endif
+#ifdef zoxel_debug_music
+                zoxel_log(" > [%i] is [%i]\n", sound_index, musicData->value[sound_index]);
+#endif
                 sound_index++;
             }
         }

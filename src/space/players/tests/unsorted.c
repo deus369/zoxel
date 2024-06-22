@@ -30,7 +30,7 @@
 /*else if (keyboard->c.pressed_this_frame) {
     zoxel_log(" > spawned new sound\n");
     // spawn_sound(it->world);
-    spawn_generated_sound(world, note_frequencies[rand() % 42], 0.8 + 0.4 * (rand() % 101) / 100.0, instrument_violin);
+    spawn_sound_generated(world, note_frequencies[rand() % 42], 0.8 + 0.4 * (rand() % 101) / 100.0, instrument_violin);
 } else if (keyboard->v.pressed_this_frame) {
     zoxel_log(" > total tris [%i]\n", triangles_count);
 } else if (keyboard->b.pressed_this_frame) {

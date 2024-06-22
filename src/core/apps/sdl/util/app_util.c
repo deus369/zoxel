@@ -49,6 +49,7 @@ void update_sdl(ecs_world_t *world, ecs_entity_t e, const int2 viewport_size) {
                 if (!rendering) continue;
                 int2 new_screen_size = (int2) { event.window.data1, event.window.data2 };
                 on_viewport_resized(world, new_screen_size);
+                screen_dimensions = new_screen_size;
                 unsigned char is_fullscreen = zox_get_value(e, WindowFullscreen)
                 if (!is_fullscreen) {
                     zox_set(e, WindowSize, { new_screen_size })

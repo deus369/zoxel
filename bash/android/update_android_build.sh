@@ -25,7 +25,7 @@ else
 
     echo "Copying zoxel settings to build directory."
     # cd $android_bash_directory
-    source bash/android/copy_settings.sh
+    source bash/android/sdl/copy_settings.sh
 fi
 
 echo "Copying zoxel source files to build directory."

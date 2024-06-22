@@ -7,10 +7,10 @@ void SoundDebugSystem(ecs_iter_t *it) {
     zox_field_in(SoundData, soundDatas, 2)
     zox_field_in(SoundDirty, soundDirtys, 3)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(SoundDirty, soundDirtys, soundDirty)
+        zox_field_i(SoundDirty, soundDirtys, soundDirty)
         if (soundDirty->value != 1) continue;
-        zox_field_i_in(SoundData, soundDatas, soundData)
-        double decay_time = soundData->length / sample_rate_f; // 6.0 + rand() % 6;
+        zox_field_i(SoundData, soundDatas, soundData)
+        const double decay_time = soundData->length / sample_rate_f; // 6.0 + rand() % 6;
         if (!has_begun) {   // draw axis
             has_begun = 1;
             const float line_length = 1.0f;

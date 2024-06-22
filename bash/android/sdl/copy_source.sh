@@ -32,7 +32,9 @@ rm -R $new_source_directory2
 echo "  > copying [$old_source_directory1] to [$new_source_directory1]"
 cp -R $old_source_directory1 $new_source_directory1
 echo "  > copying [$old_source_directory2] to [$new_source_directory2]"
-cp -R $old_source_directory2 $new_source_directory2
+mkdir $new_source_directory2
+cp $old_source_directory2/* $new_source_directory2
+cp -R $old_source_directory2/flecs $new_source_directory2/flecs
 
 if [ ! -d $target_directory_assets ]; then
     echo "  > creating [$$target_directory_assets]"

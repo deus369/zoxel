@@ -16,17 +16,18 @@ void SoundGenerateSystem(ecs_iter_t *it) {
         zox_field_i(SoundFrequency, soundFrequencys, soundFrequency)
         zox_field_i(InstrumentType, instrumentTypes, instrumentType)
         zox_field_i(SoundVolume, soundVolumes, soundVolume)
-        float volume = soundVolume->value;
-        double sound_time_length = soundLength->value; // soundData.sound_time_length;
-        float frequency = soundFrequency->value;
-        float noise = sound_noise * (rand() % 101) / 100.0f;     // random.NextFloat(generateSound.noise.x, generateSound.noise.y);
-        unsigned char instrument_type = instrumentType->value; // rand() % 3; // 2;
-        float attack = sound_attack_multiplier * sound_time_length; //  0.02f * sound_time_length;
-        float dampen = sound_dampen_multiplier * sound_time_length;
-        int total_sound_samples = (int) (sound_sample_rate * sound_time_length);
+        const float volume = soundVolume->value;
+        const double sound_time_length = soundLength->value; // soundData.sound_time_length;
+        const float frequency = soundFrequency->value;
+        const float noise = sound_noise * (rand() % 101) / 100.0f;
+        // random.NextFloat(generateSound.noise.x, generateSound.noise.y);
+        const unsigned char instrument_type = instrumentType->value; // rand() % 3; // 2;
+        const float attack = sound_attack_multiplier * sound_time_length; //  0.02f * sound_time_length;
+        const float dampen = sound_dampen_multiplier * sound_time_length;
+        const int total_sound_samples = (int) (sound_sample_rate * sound_time_length);
         resize_memory_component(SoundData, soundData, float, total_sound_samples)
         for (int j = 0; j < total_sound_samples; j++) {
-            float time = (float) (j / sample_rate_f);
+            const float time = (float) (j / sample_rate_f);
             float value = 0.0f;
             if (instrument_type == instrument_piano) value = piano_sound(time, frequency);
             else if (instrument_type == instrument_piano_square) value = piano_square_sound(time, frequency);

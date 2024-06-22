@@ -1,15 +1,12 @@
 void spawn_many_characters3D(ecs_world_t *world) {
     /*if (files_voxes_count == 0) {
-        zoxel_log(" - mr penguin not loaded\n");
         return;
     }
     int vox_file_index = rand() % files_voxes_count;
     vox_file vox = files_voxes[vox_file_index];
     if (vox.chunks == NULL) {
-        zoxel_log(" - mr penguin corrupted\n");
         return;
     }
-    zoxel_log(" > spawning many characters [%i]\n", spawn_characters3D_count);
     float cameraY = spawn_many_y * overall_voxel_scale;
     float radius = spawn_many_radius * overall_voxel_scale;
     for (int i = 0; i < spawn_characters3D_count; i++) {

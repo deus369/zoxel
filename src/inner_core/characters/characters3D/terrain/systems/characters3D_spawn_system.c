@@ -27,7 +27,6 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         // if already spawned, skip spawning, only update LODs
         if (entityLinks->length) continue;
         const unsigned char vox_lod = get_voxes_lod_from_camera_distance(renderLod->value);
-        // zoxel_log("characters spawning in chunk %lu\n", it->entities[i]);
         // find if chunk has any air position - free place to spawn - spawn characters in this chunk
         const ChunkPosition *chunkPosition = &chunkPositions[i];
         int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, default_chunk_size);

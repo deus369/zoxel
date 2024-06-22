@@ -55,6 +55,26 @@ void spawn_tilemap_ui(ecs_world_t *world, const Keyboard *keyboard, const ecs_en
     }
 }
 
+void test_sounds(ecs_world_t *world, const Keyboard *keyboard) {
+    if (keyboard->_1.pressed_this_frame) {
+        spawn_sound_from_file(world, prefab_sound, 0);
+    } /*else if (keyboard->_2.pressed_this_frame) {
+        spawn_sound_generated(world, note_frequencies[42], 0.6, instrument_piano);
+    } else if (keyboard->_3.pressed_this_frame) {
+        spawn_sound_generated(world, note_frequencies[42], 0.3, instrument_piano_square);
+    } else if (keyboard->_4.pressed_this_frame) {
+        spawn_sound_generated(world, note_frequencies[42], 0.8, instrument_violin);
+    } else if (keyboard->_5.pressed_this_frame) {
+        spawn_sound_generated(world, note_frequencies[42], 0.8, instrument_organ);
+    } else if (keyboard->_6.pressed_this_frame) {
+        spawn_sound_generated(world, note_frequencies[42], 0.8, instrument_edm);
+    } else if (keyboard->_7.pressed_this_frame) {
+        spawn_sound_generated(world, note_frequencies[42], 0.6, instrument_guitar);
+    } else if (keyboard->_8.pressed_this_frame) {
+        spawn_sound_generated(world, note_frequencies[42], 0.8, instrument_flute);
+    }*/
+}
+
 void test_raycast(ecs_world_t *world, const Keyboard *keyboard, const ecs_entity_t realm, const ecs_entity_t player) {
     /*if (keyboard->_1.pressed_this_frame) set_player_voxel_ray(world, realm, player, 0, 0, 2);
     else if (keyboard->_2.pressed_this_frame) set_player_voxel_ray(world, realm, player, 0, 1, 1);
@@ -88,6 +108,7 @@ void PlayerTestSystem(ecs_iter_t *it) {
                     spawn_element_texture(world, canvas, source_texture, position, size);
                     spawn_sound_from_file(world, prefab_sound, 0);
                 }
+                test_sounds(world, keyboard);
                 // brain_test_controls(world, keyboard, canvas);
                 spawn_tilemap_ui(world, keyboard, canvas, local_realm);
                 test_raycast(world, keyboard, local_realm, it->entities[i]);

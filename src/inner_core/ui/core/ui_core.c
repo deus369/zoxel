@@ -87,6 +87,7 @@ zox_function_component(TooltipEvent, void, ecs_world_t*, const TooltipEventData*
 #include "systems/dragger_end_system.c"
 #include "systems/render_texture_render_system.c"
 #include "systems/mouse_element_system.c"
+zox_reset_system(ClickState)
 zox_increment_system_with_reset_extra(SelectState, zox_select_state_trigger_selected, zox_select_state_selected, zox_select_state_trigger_deselect, zox_select_state_deselected_this_frame)
 
 zox_begin_module(UICore)
@@ -153,7 +154,7 @@ zox_system(MouseElementSystem, zox_transforms_stage, [in] MouseLink, [in] Render
 zox_system(UITrailSystem, zox_transforms_stage, [in] UIHolderLink, [in] UITrail, [out] Position3D)
 zox_system(ElementBarSystem, EcsOnUpdate, [in] ElementBar, [in] ElementBarSize, [in] Children)
 if (!headless) {
-    zox_system_1(ButtonClickEventSystem, zox_pip_mainthread, [in] ClickEvent, [out] ClickState, [out] Clicker, [none] Element)
+    zox_system_1(ButtonClickEventSystem, zox_pip_mainthread, [in] ClickEvent, [in] ClickState, [out] Clicker, [none] Element)
     // EcsOnLoad
     zox_system_1(Element2DMeshSystem, zox_pip_mainthread, [none] Element, [in] PixelSize, [in] MeshAlignment, [in] CanvasLink, [out] InitializeElement, [out] MeshDirty, [out] MeshVertices2D, [out] MeshGPULink, [out] TextureGPULink, [out] UvsGPULink, [none] !Element3D)
     zox_system_1(Element3DMeshSystem, zox_pip_mainthread, [none] Element3D, [in] PixelSize, [in] CanvasLink, [out] InitializeElement, [out] MeshDirty, [out] GenerateTexture,  [out] MeshGPULink, [out] UvsGPULink, [out] ColorsGPULink, [out] TextureGPULink)
@@ -166,6 +167,7 @@ zox_render2D_system(ElementRenderSystem, [in] Position2D, [in] Rotation2D, [in] 
 zox_render3D_system(Element3DRenderSystem, [in] TransformMatrix, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] TextureGPULink, [in] RenderDisabled, [none] rendering.core.SingleMaterial)
 zox_system_1(ClickSoundSystem, zox_pip_mainthread, [in] ClickState, [none] ClickMakeSound)
 zox_system(DraggerEndSystem, EcsPostLoad, [out] DraggableState, [out] DraggerLink, [out] DraggingDelta)
+zox_define_reset_system_pip(ClickState, EcsOnLoad)
 zox_define_increment_system(SelectState, EcsOnLoad)
 spawn_prefabs_ui_core(world);
 zoxel_end_module(UICore)

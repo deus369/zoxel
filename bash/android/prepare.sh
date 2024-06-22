@@ -77,17 +77,17 @@ sdkmanager --sdk_root=$android_sdk_path --install "build-tools;$build_tools_ver"
 
 # install the sdl setup for our gradle build
 echo " > installing [sdl source]"
-# bash bash/android/install_sdl.sh
-bash bash/sdl/install_sdl.sh
-bash bash/sdl/install_sdl_image.sh
-bash bash/sdl/install_sdl_mixer.sh
+bash bash/android/sdl/install_sdl.sh
+# bash bash/sdl/install_sdl.sh
+# bash bash/sdl/install_sdl_image.sh
+# bash bash/sdl/install_sdl_mixer.sh
 echo " > installing [android_project]"
-source bash/android/copy_android_project.sh
-source bash/android/copy_sdl.sh
+source bash/android/sdl/copy_android_project.sh
+source bash/android/sdl/copy_sdl.sh
 echo " > installing [settings]"
-source bash/android/copy_settings.sh
+source bash/android/sdl/copy_settings.sh
 echo " > installing [source]"
-source bash/android/copy_source.sh
+source bash/android/sdl/copy_source.sh
 # installs ndk automatically
 echo " > refreshing [gradlew]"
 cd build/android-build && bash gradlew; cd ../..

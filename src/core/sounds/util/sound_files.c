@@ -16,17 +16,20 @@ void load_files_sounds() {
 #ifdef zox_lib_sdl_mixer
     sound_files_count = files.count;
     sound_files = malloc(sizeof(Mix_Chunk) * files.count);
+    zox_log(" + loaded sounds [%i]\n", sound_files_count)
 #endif
     for (int i = 0; i < files.count; i++) {
-        // char* filepath = concat_file_path(load_directory, files.files[i]);
         char* filepath = files.files[i];
 #ifdef zox_print_files
         zox_log("   > sound file [%s]\n", filepath)
 #endif
 #ifdef zox_lib_sdl_mixer
         sound_files[i] = Mix_LoadWAV(filepath);
+        if (!sound_files[i]) {
+            zox_log(" ! sound file failed to load [%s]\n", filepath)
+            printf("  - SDL_mixer Error: %s\n", Mix_GetError());
+        }
 #endif
-        // free(filepath);
     }
     free_files(&files);
     free(load_directory);
@@ -43,13 +46,17 @@ ecs_entity_t spawn_sound_from_file(ecs_world_t *world, const ecs_entity_t prefab
     zox_instance(prefab)
     zox_name("sound_file")
 #ifdef zox_lib_sdl_mixer
-    if (index < sound_files_count && sound_files[index]) {
-        zox_log(" > playing sound file [%i]\n", index)
-        Mix_Chunk *mixChunk = clone_mix_chunk(sound_files[index]);
-        zox_set(e, SDLSound, { *mixChunk })
-        zox_set(e, SoundLength, { get_mix_chunk_sound_length(mixChunk) })
+    if (index < sound_files_count) {
+        if (sound_files[index]) {
+            // zox_log(" > playing sound file [%i]\n", index)
+            Mix_Chunk *mixChunk = clone_mix_chunk(sound_files[index]);
+            zox_set(e, SDLSound, { *mixChunk })
+            zox_set(e, SoundLength, { get_mix_chunk_sound_length(mixChunk) })
+        } else {
+            zox_log(" ! sound is null at [%i]\n", index)
+        }
     } else {
-        zox_log(" ! sound index not found [%i]\n", index)
+        zox_log(" ! sound index not found [%i] - total [%i]\n", index, sound_files_count)
     }
     //Mix_LoadWAV(sound_file_names[0]) }); //  sounds[0] });
 #else

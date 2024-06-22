@@ -1,0 +1,12 @@
+#define instrument_none 0x00
+#define instrument_piano 0x01
+#define instrument_piano_square 0x02
+#define instrument_organ 0x03
+#define instrument_edm 0x04
+#define instrument_guitar 0x05
+#define instrument_flute 0x06
+#define instrument_violin 0x07
+#define instrument_saxophone 0x08
+#define instrument_trumpet 0x09
+#define instrument_unique 0x10
+#define instrument_end 0x11

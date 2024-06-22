@@ -11,11 +11,11 @@ void MusicPlaySystem(ecs_iter_t *it) {
     zox_field_out(MusicNote, musicNotes, 5)
     zox_field_out(MusicTime, musicTimes, 6)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(MusicData, musicDatas, musicData)
-        zox_field_i_in(MusicSpeed, musicSpeeds, musicSpeed)
-        zox_field_i_in(InstrumentType, instrumentTypes, instrumentType)
-        zox_field_i_out(MusicNote, musicNotes, musicNote)
-        zox_field_i_out(MusicTime, musicTimes, musicTime)
+        zox_field_i(MusicData, musicDatas, musicData)
+        zox_field_i(MusicSpeed, musicSpeeds, musicSpeed)
+        zox_field_i(InstrumentType, instrumentTypes, instrumentType)
+        zox_field_o(MusicNote, musicNotes, musicNote)
+        zox_field_o(MusicTime, musicTimes, musicTime)
         musicTime->value += delta_time / musicSpeed->value;
         if (musicData->length > 0 && musicTime->value >= music_speed) {
             musicTime->value -= music_speed;
@@ -23,11 +23,11 @@ void MusicPlaySystem(ecs_iter_t *it) {
             if (musicNote->value >= musicData->length) musicNote->value = 0;
             int music_note = musicData->value[musicNote->value];
             if (music_note == 0) continue;
-            float frequency = note_frequencies[music_note]; // based sound note off music note, get timings off music notes in array
+            const float frequency = note_frequencies[music_note]; // based sound note off music note, get timings off music notes in array
             float note_time = musicSpeed->value * music_speed;
-            spawn_generated_sound(world, frequency, note_time, instrumentType->value);
+            spawn_sound_generated(world, instrumentType->value, frequency, note_time, 2.2f);
 #ifdef zoxel_log_music_playing
-            zoxel_log(" > music note played [%i : %i] frequency [%f] instrument [%i]\n", musicNote->value, music_note, frequency, instrumentType->value);
+            zox_log(" > music note played [%i : %i] frequency [%f] instrument [%i]\n", musicNote->value, music_note, frequency, instrumentType->value)
 #endif
         }
     }

@@ -48,7 +48,6 @@ zox_define_component(TargetNetAddress)
 zox_define_component_int(NetPort)
 zox_define_component_int(TargetNetPort)
 zox_define_memory_component(PacketData)
-// zox_define_component(SocketLink)
 zox_define_component_w_dest(SocketLink)
 zox_system(PacketRecieveSystem, EcsOnUpdate, [none] PacketReciever, [in] SocketLink)
 zox_system(PacketSendSystem, EcsOnUpdate, [none] PacketSender, [in] SocketLink, [in] TargetNetAddress, [in] TargetNetPort)
@@ -56,9 +55,3 @@ spawn_prefabs_networking(world);
 zoxel_end_module(Networking)
 
 #endif
-
-/*#if !defined(zoxel_on_windows) && !defined(zoxel_on_web)
-    zox_define_destruction(SocketLink)  // for some reason it calls destruction when making prefabs, so we put these after
-#else
-    zox_logg("  > todo: get zox_define_destruction(SocketLink) to work on windows/web\n")
-#endif*/

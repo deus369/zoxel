@@ -9,8 +9,6 @@
 
 // #define zoxel_catch_opengl_errors
 
-// #define zox_disable_post_processing_additional_players
-// #define zox_disable_player_index 1
 // #define zox_disable_post_processing
 // #define zox_disable_depth_buffer
 // #define zox_disable_render_texture
@@ -70,13 +68,6 @@
 
 // #define zox_disable_io
 // #define zox_disable_audio
-
-// for web build disable these for now
-#ifdef __EMSCRIPTEN__
-    #define zox_disable_module_networking
-    // #define zox_disable_terrain_textures // this kinda breaks
-    #define zox_disable_render_element3D
-#endif
 
 // #define zox_disable_music
 // #define zox_disable_play_sounds

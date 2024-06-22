@@ -38,16 +38,20 @@ int clear_zoxel_log() {
 // #define zoxel_log(debug_line, ...) __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, debug_line, __VA_ARGS__);
 // #define zoxel_log(debug_line, ...) __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, debug_line);
 
+void zoxel_log_no_args(const char* msg) {
+    /*fputs(red, stderr);
+    fputs(msg, stderr);
+    fputs(reset, stderr);*/
+}
+
 void zoxel_log(const char* msg, ...) {
-#ifndef zox_disable_logs
-        va_list a;
-        va_start(a, msg);
-        char msg2[1024] = { 0 };
-        vsnprintf(msg2, debug_logs_countof(msg2), msg, a);
-        fputs(msg2, stderr);
-        // __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, msg2);
-        __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "%s", msg2);
-#endif
+    /*va_list a;
+    va_start(a, msg);
+    char msg2[1024] = { 0 };
+    vsnprintf(msg2, debug_logs_countof(msg2), msg, a);
+    fputs(msg2, stderr);
+    // __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, msg2);
+    __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "%s", msg2);*/
 }
 
 int zoxel_log_error(void *stream, const char *msg, ...) {
@@ -55,12 +59,18 @@ int zoxel_log_error(void *stream, const char *msg, ...) {
 }
 
 #define zox_logg(msg) {\
-    fputs(msg, stderr);\
+    /*fputs(msg, stderr);*/\
 }
 
 #define zox_log(msg, ...) {\
-    zoxel_log(msg, __VA_ARGS__);\
 }
+/*
+    if (ARG_COUNT(__VA_ARGS__) == 0) {\
+        zoxel_log_no_args(msg);\
+    } else {\
+        zoxel_log(msg, ##__VA_ARGS__);\
+    }\
+*/
 
 /*#define zox_log(msg, ...) {\
     va_list a;\

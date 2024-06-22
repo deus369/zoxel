@@ -4,9 +4,10 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := main
 
-SDL_PATH := ../SDL
-
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/include \
+		$(LOCAL_PATH)/include/sdl \
+		$(LOCAL_PATH)/include/sdl_image \
+		$(LOCAL_PATH)/include/sdl_mixer
 
 # Add your application source files here...
 LOCAL_SRC_FILES := include/flecs/flecs.c src/main.c

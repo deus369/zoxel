@@ -5,6 +5,7 @@ int global_master_volume = 64;
 const int global_master_volume_max = 128;
 const int global_master_volume_increment = 16;
 #include "util/import_sdl_mixer.c"
+#include "data/instrument_types.c"
 #include "settings/settings.c"
 zox_declare_tag(Sound)
 zox_component_byte(InstrumentType)
@@ -41,7 +42,9 @@ zox_memory_component(SoundData, float)   //! A sound has an array of bytes
 void initialize_sounds(ecs_world_t *world) {
 #ifndef zox_lib_sdl_mixer
     zox_log(" ! sdl sounds are disabled\n")
+    return;
 #endif
+    initialize_sdl_mixer();
     load_files_sounds();
 }
 
@@ -66,11 +69,10 @@ zox_define_component(SDLSound)
 #endif
 zox_system(SoundGenerateSystem, EcsOnUpdate, [none] Sound, [out] GenerateSound, [out] SoundData, [out] SoundDirty, [in] SoundLength, [in] SoundFrequency, [in] SoundVolume, [in] InstrumentType)
 #ifdef zox_lib_sdl_mixer
-zox_system(SoundUpdateSystem, EcsOnUpdate, [none] Sound, [in] SoundData, [out] SoundDirty, [out] SDLSound)
+zox_system(SoundUpdateSystem, EcsPostUpdate, [none] Sound, [in] SoundData, [out] SoundDirty, [out] SDLSound)
 zox_system(PlaySoundSystem, zox_pipelines_pre_render, [in] SoundLength, [out] TriggerSound, [out] SDLSound, [out] DestroyInTime, [none] Sound)
 #endif
 zox_system_1(SoundDebugSystem, zox_pip_mainthread, [none] Sound, [in] SoundData, [in] SoundDirty)
-load_audio_sdl();
 initialize_sounds(world);
 spawn_prefabs_sounds(world);
 zoxel_end_module(Sounds)

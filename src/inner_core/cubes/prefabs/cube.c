@@ -30,6 +30,5 @@ ecs_entity_t spawn_cube(ecs_world_t *world, ecs_entity_t prefab, float3 position
         spawn_gpu_mesh(world, e);
         spawn_gpu_material(world, e, shader3D);
     }
-    // zoxel_log("Spawned Character2D [%lu]\n", (long unsigned int) e);
     return e;
 }
