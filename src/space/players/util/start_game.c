@@ -43,7 +43,7 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
     if (found_position) zox_log(" + found player position: chunk_position %ix%ix%i - local_position %ix%ix%i\n", chunk_position.x, chunk_position.y, chunk_position.z, local_position.x, local_position.y, local_position.z)
     else zox_log(" ! failed finding spawn position for player\n")
     const int3 chunk_voxel_position = get_chunk_voxel_position(chunk_position, default_chunk_size);
-    float3 position = local_to_real_position_character(local_position, chunk_voxel_position);
+    float3 position = local_to_real_position_character(local_position, chunk_voxel_position, (float3) { 0.5f, 1.0f, 0.5f });
     const float4 spawn_rotation = quaternion_identity;
     // const ecs_entity_t vox = files_voxes[player_vox_index]; // get mr penguin vox
     ecs_entity_2 character_group = spawn_player_character3D_in_world(world, vox, position, spawn_rotation, 0, player);

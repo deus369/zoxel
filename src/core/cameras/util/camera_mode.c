@@ -49,8 +49,6 @@ void set_camera_transform(ecs_world_t *world, const ecs_entity_t camera, const e
     if (position3D != NULL) target_position = position3D->value;
     else target_position = (float3) { 8, 0, 8 };
     const CameraSpawnData data = get_camera_preset(camera_mode);
-    //zoxel_log(" > settings camera transform [%i] - pos [%fx%fx%f] - rot [%fx%fx%f]\n", camera_mode, camera_position.x,  camera_position.y,  camera_position.z, camera_euler.x, camera_euler.y, camera_euler.z);
-    // float3_multiply_float_p(&camera_position, 0.25f);
     float3 euler = data.euler;
     float3_multiply_float_p(&euler, degreesToRadians);
     float4 camera_rotation = quaternion_from_euler(euler);

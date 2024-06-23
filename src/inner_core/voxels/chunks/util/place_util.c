@@ -55,11 +55,11 @@ byte3 find_position_in_chunk_with_above(const ChunkOctree *chunk_octree, const u
     return find_position_in_chunk(chunk_octree, target_depth);
 }
 
-float3 local_to_real_position_character(const byte3 local_position, const int3 chunk_voxel_position) {
+float3 local_to_real_position_character(const byte3 local_position, const int3 chunk_voxel_position, const float3 bounds) {
     const int3 global_voxel_position = int3_add(chunk_voxel_position, byte3_to_int3(local_position));
     float3 position = int3_to_float3(global_voxel_position);
     float3_multiply_float_p(&position, terrain_voxel_scale);
-    position.y += 0.26f; // 0.75f;
-    position.y += 0.01f; // extra
+    position.y += bounds.y / 2.0f; // 0.26f; // 0.75f;
+    position.y += 0.05f; // extra
     return position;
 }

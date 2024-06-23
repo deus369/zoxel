@@ -34,7 +34,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         for (unsigned char j = 0; j < characters_per_chunk_count; j++) {
             byte3 local_position = find_position_in_chunk(chunkOctree, max_octree_depth);
             if (byte3_equals(byte3_full, local_position)) continue;
-            float3 position = local_to_real_position_character(local_position, chunk_voxel_position);
+            float3 position = local_to_real_position_character(local_position, chunk_voxel_position, (float3) { 0.5f, 0.5f, 0.5f });
             float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
             int vox_index = rand() % npc_vox_index_count;
             const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data(npc_voxes[vox_index]));

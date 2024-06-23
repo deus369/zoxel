@@ -4,6 +4,7 @@
 // todo: add note timings, and check them all when playing
 //      ^ add two sounds together
 // todo: multiple musics, and playlists (musicLinks)
+// todo: each music note - will check music start time - get current time, to know when to spawn sound - makes it more dynamic
 
 const int music_note_skip = 89;
 const float default_music_volume = 2.2f;
