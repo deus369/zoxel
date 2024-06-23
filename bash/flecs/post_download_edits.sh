@@ -9,8 +9,9 @@ replacement_line="    if (entity == 0) return;"
 # Check if the file exists
 if [ -f "$file_path" ]; then
     # Replace the line
-    sed -i "${line_number}s/.*/${replacement_line}/" "$file_path"
-    echo " + flecs file modified at [$line_number] with [$replacement_line]"
+    echo " - disabled this edit for now"
+    #sed -i "${line_number}s/.*/${replacement_line}/" "$file_path"
+    #echo " + flecs file modified at [$line_number] with [$replacement_line]"
 else
     echo " - flecs file '$file_path' not found."
 fi

@@ -1,17 +1,28 @@
 #!/bin/bash
 
+debugging=""
+disabler="--disable-jpg --disable-tif --disable-webp --disable-avif --disable-bmp --disable-gif --disable-lbm --disable-pcx --disable-pnm --disable-tga --disable-xcf --disable-xpm --disable-svg --disable-qoi --disable-jxl"
+
 echo " > installing [sdl_image] from source"
 # Default output parameter
 default_sdl_image_path="build/sdl_image" # linux-sdl_image
 # Check if an argument is provided, if not use the default
 sdl_image_path="${1:-$default_sdl_image_path}"
+lib_file_type="${2:-'so'}"
+if [ "$lib_file_type" = "dll" ]; then
+    lib_file_name="SDL2_image"
+else
+    lib_file_name="libSDL2_image"
+fi
+lib_file="$lib_file_name.$lib_file_type"
+echo " > sdl path is [$sdl_image_path] lib file [$lib_file]"
 
-sdl_image_url="https://github.com/libsdl-org/SDL_image/releases/download/release-2.8.2/SDL2_image-2.8.2.zip"
+version="2.8.2" # 2.0.5"
+sdl_image_url="https://github.com/libsdl-org/SDL_image/releases/download/release-$version/SDL2_image-$version.zip"
 sdl_image_zip="build/sdl_image.zip"
-sdl_image_source="$sdl_image_path/SDL2_image-2.8.2" # 2.0.5"
+sdl_image_source="$sdl_image_path/SDL2_image-$version"
 sdl_image_include="include/sdl_image"
 sdl_image_include_source="$sdl_image_path/include"
-lib_file="libSDL2_image.so"
 sdl_image_lib_file="lib/$lib_file"
 sdl_image_lib_file_source="$sdl_image_path/.libs/$lib_file"
 sdl_image_lib_file2="lib/libSDL2_image-2.0.so.0"
@@ -37,16 +48,38 @@ else
         echo " > lib file detected [$sdl_image_path/$lib_file]"
     else
         echo " + building [$lib_file]"
-        cd $sdl_image_path
-        # ./configure
-        echo " > cleaning source of sdl_image"
-        make clean > /dev/null 2>&1
-        echo " > configuring sdl_image"
-        ./autogen.sh > /dev/null 2>&1
-        ./configure --enable-shared --disable-static > /dev/null 2>&1
-        echo " > making sdl_image"
-        make > /dev/null 2>&1
-        cd ../..
+        if [ -f $sdl_image_lib_file_source ]; then
+            echo " > [$sdl_image_lib_file_source] already made"
+        else
+            cd $sdl_image_path
+            # ./configure
+            echo " > cleaning source of sdl_image"
+            make clean > /dev/null 2>&1
+            echo " > configuring sdl_image"
+            ./autogen.sh > /dev/null 2>&1
+            if [ "$lib_file_type" = "dll" ]; then
+                echo "   - configuring for mingw32"
+                CPPFLAGS="-I../../include/sdl" ./configure --host=x86_64-w64-mingw32 --enable-shared --disable-static $disabler --with-sdl2-prefix="../sdl" > /dev/null 2>&1
+                #  --with-sdl-prefix="../../lib"
+            else
+                CPPFLAGS="-I../../include/sdl" ./configure --enable-shared --disable-static $disabler --with-sdl-prefix="../../lib" > /dev/null 2>&1
+            fi
+            if [ $? -ne 0 ]; then
+                echo " ! sdl_image configure failed"
+                exit
+            else
+                echo " + configure successful"
+            fi
+            echo " > making sdl_image"
+            make > /dev/null 2>&1
+            if [ $? -ne 0 ]; then
+                echo " ! sdl_image make failed"
+                exit
+            else
+                echo " + make successful"
+            fi
+            cd ../..
+        fi
     fi
     if [ ! -f $sdl_image_lib_file_source ]; then
         echo " ! failed to make [$sdl_image_lib_file_source]"
@@ -55,9 +88,12 @@ else
         cp $sdl_image_lib_file_source $sdl_image_lib_file
     fi
 fi
-if [ ! -f $sdl_image_lib_file2 ]; then
-    echo " + copying to [$sdl_image_lib_file2]"
-    cp $sdl_image_lib_file_source2 $sdl_image_lib_file2
+
+if [ ! "$lib_file_type" == "dll" ]; then
+    if [ ! -f $sdl_image_lib_file2 ]; then
+        echo " + copying to [$sdl_image_lib_file2]"
+        cp $sdl_image_lib_file_source2 $sdl_image_lib_file2
+    fi
 fi
 
 if [ ! -d $sdl_image_include ]; then

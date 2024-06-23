@@ -228,9 +228,8 @@ run-dev-profiler:
 # ===== flecs ===== #
 # ===== ===== ===== #
 
-flecs_target = build/libflecs.a
+flecs_target = lib/libflecs.a # build/libflecs.a
 flecs_source = include/flecs/flecs.c
-flecs_lib = lib/libflecs.a
 flecs_flags = -c
 flecs_obj = build/flecs.o
 flecs_libs = -lm -lpthread
@@ -244,8 +243,9 @@ make_flecs_big= set -e; \
 	$(patient_cmd) && \
 	$(make_flecs) && \
 	$(make_flecs_lib) && \
-	rm $(flecs_obj) && \
-	cp $(flecs_target) $(flecs_lib)
+	rm $(flecs_obj)
+
+# && cp $(flecs_target) $(flecs_lib)
 
 # bash bash/flecs/check_flecs_source.sh && bash bash/flecs/download_flecs_source.sh && \
 
@@ -316,7 +316,7 @@ make_windows = \
 prepare-windows: # for linux cross platform build
 	@ echo " > preparing windows"
 	@ $(patient_cmd)
-	@ make install-flecs && make build/libflecs.a
+	@ make install-flecs
 	@ bash bash/windows/install_sdk.sh
 	@ bash bash/windows/prepare.sh
 

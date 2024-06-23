@@ -2,14 +2,20 @@
 
 echo "  > removing flecs build files"
 
-rm include/flecs.h
-echo "      > removed file [include/flecs.h]"
+if [ -f build/flecs.o ]; then
+    rm build/flecs.o
+    echo "      > removed file [build/flecs.o]"
+fi
 
-rm build/flecs.o
-echo "      > removed file [build/flecs.o]"
+if [ -f build/flecs/flecs.h ]; then
+    rm include/flecs/flecs.h
+    echo "      > removed file [include/flecs/flecs.h]"
+fi
 
-rm build/libflecs.a
-echo "      > removed file [build/libflecs.a]"
+if [ -f build/flecs.o ]; then
+    rm lib/libflecs.a
+    echo "      > removed file [lib/libflecs.a]"
+fi
 
-rm lib/libflecs.a
-echo "      > removed file [lib/libflecs.a]"
+# rm build/libflecs.a
+# echo "      > removed file [build/libflecs.a]"

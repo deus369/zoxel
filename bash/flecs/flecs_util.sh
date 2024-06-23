@@ -27,6 +27,6 @@ download_flecs_source() {
         # delete downloaded zip and extracted folder
         rm v$version.zip
     fi
-	cp $flecs_install_directory/flecs.h include
+	# cp $flecs_install_directory/flecs.h include
     echo "  > flecs [v$version] source is downloaded" >&2
 }

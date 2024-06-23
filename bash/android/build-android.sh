@@ -16,11 +16,6 @@ end_gradle_build
 # make -j$(nproc) -f MakefileDev -B; ./zoxel-dev
 # cc -std=c99 -fPIC -D_DEFAULT_SOURCE -Wall -g -o zoxel-dev includes/flecs.c src/main.c -lGL -lSDL2 -lm
 
-# ./androidbuild.sh org.zoxel.zoxel $zoxel_directory/includes/flecs.c $zoxel_directory/src/main.c
-#SRCS="$zoxel_directory/includes/flecs.h $zoxel_directory/includes/flecs.c"
-#SRCS="$SRCS $(find $zoxel_directory/src/ -type f -name *.c)"
-#SRCS="$SRCS $(find $zoxel_directory/src/ -type f -name *.h)"
-
 # sh $sdl_directory/build-scripts/androidbuild.sh org.zoxel.zoxel $SRCS
 #zoxel_directory="$HOME/zoxel"
 #sdl_directory="$HOME/SDL/SDL2"

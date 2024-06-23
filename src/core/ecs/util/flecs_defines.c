@@ -11,4 +11,4 @@
     #define FLECS_MONITOR
 #endif
 
-#include "../../../../include/flecs.h"
+#include "../../../../include/flecs/flecs.h"
