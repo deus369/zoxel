@@ -63,7 +63,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     spawn_weather(world);
 #endif
 #ifdef zox_mod_musics
-    if (!headless) spawn_music(world); // _square
+    if (!headless) spawn_music(world, prefab_music); // _square
     #endif
 #ifdef zox_log_boot_game
     zox_log(" > boot_zoxel_game 6\n")

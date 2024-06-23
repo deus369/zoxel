@@ -15,6 +15,7 @@ zox_component_byte(TriggerSound)         //! A state event for playing sounds
 zox_component_byte(SoundDirty)
 zox_component_float(SoundFrequency)     //! The frequency of the generated sound
 zox_component_float(SoundVolume)     //! The frequency of the generated sound
+zox_component_int(SoundFrequencyIndex)     //! The frequency of the generated sound
 zox_component_double(SoundLength)       //! The length of a sound
 zox_memory_component(SoundData, float)   //! A sound has an array of bytes
 #include "components/SDLSound.c"
@@ -63,6 +64,7 @@ zox_define_component_byte(GenerateSound)
 zox_define_component_double(SoundLength)
 zox_define_component_float(SoundFrequency)
 zox_define_component_float(SoundVolume)
+zox_define_component_int(SoundFrequencyIndex)
 zox_define_memory_component(SoundData)
 #ifdef zox_lib_sdl_mixer
 zox_define_component(SDLSound)

@@ -43,7 +43,10 @@ void SoundGenerateSystem(ecs_iter_t *it) {
             if (noise) value += noise * ((rand() / (float) RAND_MAX) * 2.0f - 1.0f);
             value *= envelope(time, sound_time_length, attack, dampen);
             value *= volume;
-            // value = float_clamp(value, -sound_bounds, sound_bounds);
+
+            const float sound_bounds = 1.0f;
+            value = float_clamp(value, -sound_bounds, sound_bounds);
+
             soundData->value[j] = value;
         }
         generateSound->value = 0;
