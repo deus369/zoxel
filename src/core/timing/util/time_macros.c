@@ -1,13 +1,15 @@
 // timing system macros
-#include <time.h>
 
 #define clocks_per_second2 CLOCKS_PER_SEC
 #define clocks_per_second CLOCKS_PER_SEC // 10000000.0 // 0
 double time_app_started = 0;
 
+#define clock_as_double (((double) clock()) / clocks_per_second)
+
 #define begin_timing()\
 unsigned char did_do = 0;\
-clock_t time_start = clock();
+double time_start = clock_as_double;
+// clock_t
 
 #define did_do_timing() if (did_do == 0) did_do = 1;
 
@@ -16,12 +18,11 @@ clock_t time_start = clock();
     did_do_timing()
 
 double get_time_seconds() {
-    if (time_app_started == 0) time_app_started = (double) (clock() / clocks_per_second);
-    return ((double) (clock() / clocks_per_second) - time_app_started);
+    if (time_app_started == 0) time_app_started = clock_as_double;
+    return clock_as_double - time_app_started;
 }
 
-#define get_timing_passed()\
-     (double) (clock() - time_start) / clocks_per_second2
+#define get_timing_passed() clock_as_double - time_start
 
 #ifdef zoxel_time_always
     #define end_timing(system_name)\
@@ -34,7 +35,7 @@ double get_time_seconds() {
 #else
     #define end_timing(system_name)\
     if (did_do) {\
-        double time_taken = (double) (clock() - time_start) / clocks_per_second;\
+        double time_taken = clock_as_double - time_start;\
         if (time_taken >= 1.0) {\
             zoxel_log("%s [%fs]\n", system_name, time_taken);\
         } else {\
@@ -44,7 +45,7 @@ double get_time_seconds() {
 #endif
 
 #define end_timing_absolute(system_name)\
-    double time_taken = (double) (clock() - time_start) / clocks_per_second2;\
+    double time_taken = clock_as_double - time_start;\
     if (time_taken >= 1.0) {\
         zoxel_log("%s [%fs]\n", system_name, time_taken);\
     } else {\
@@ -54,7 +55,7 @@ double get_time_seconds() {
 
 #define end_timing_cutoff(system_name, cuttoff)\
 if (did_do) {\
-    long double time_taken = ((long double) (clock() - time_start) / clocks_per_second);\
+    long double time_taken = clock_as_double - time_start;\
     if (time_taken >= 1.0) {\
         zoxel_log("%s [%Lgs] - [Seconds]\n", system_name, time_taken);\
     } else {\
@@ -65,15 +66,9 @@ if (did_do) {\
     }\
 }
 
-/*
-long double time_taken = ((long double) 0.1) * ((long double) (clock() - time_start) / CLOCKS_PER_SEC);\
-    
-    time_taken *= 1000.0;\
-*/
-
-#define time_cycle_begin() clock_t cycle_start = clock();
+#define time_cycle_begin() double cycle_start = clock_as_double;
 #define time_cycle_end(system_name)\
-double cycle_delta = (double) (clock() - cycle_start) / clocks_per_second;\
+double cycle_delta = clock_as_double - cycle_start;\
 if (cycle_delta >= 1.0) {\
     zoxel_log("%s [%fs]\n", system_name, cycle_delta);\
 } else {\

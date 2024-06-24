@@ -128,21 +128,32 @@ void zox_terrain_building_dig(const ChunkOctree *root_node, const TilemapUVs *ti
 }
 
 void build_chunk_octree_mesh_uvs(const ChunkOctree *chunk_octree, const TilemapUVs *tilemapUVs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, MeshColorRGBs *meshColorRGBs, const unsigned char distance_to_camera, const unsigned char lod, const ChunkOctree *neighbors[], const unsigned char neighbor_lods[], const float vert_scale, const unsigned char *voxel_solidity, const int *voxel_uv_indexes) {
-    int_array_d* indicies = create_int_array_d(initial_dynamic_array_size);
-    float3_array_d* vertices = create_float3_array_d(initial_dynamic_array_size);
-    float2_array_d* uvs = create_float2_array_d(initial_dynamic_array_size);
-    color_rgb_array_d* color_rgbs = create_color_rgb_array_d(initial_dynamic_array_size);
-    const mesh_uvs_build_data mesh_data = { indicies, vertices, uvs, color_rgbs };
+
+    const mesh_uvs_build_data mesh_data = {
+        .indicies = create_int_array_d(initial_dynamic_array_size),
+        .vertices = create_float3_array_d(initial_dynamic_array_size),
+        .uvs = create_float2_array_d(initial_dynamic_array_size),
+        .color_rgbs = create_color_rgb_array_d(initial_dynamic_array_size)
+    };
+
+    // build out mesh data
     zox_terrain_building_dig(chunk_octree, tilemapUVs, NULL, chunk_octree, neighbors, neighbor_lods, &mesh_data, distance_to_camera, lod, 0, int3_zero, 0, 1, vert_scale, voxel_solidity, voxel_uv_indexes);
-    clear_mesh_uvs(meshIndicies, meshVertices, meshColorRGBs, meshUVs);
-    meshIndicies->length = indicies->size;
-    meshVertices->length = vertices->size;
-    meshUVs->length = uvs->size;
-    meshColorRGBs->length = color_rgbs->size;
-    meshIndicies->value = finalize_int_array_d(indicies);
-    meshVertices->value = finalize_float3_array_d(vertices);
-    meshColorRGBs->value = finalize_color_rgb_array_d(color_rgbs);
-    meshUVs->value = finalize_float2_array_d(uvs);
+
+    // set new
+
+    // sizes
+    meshIndicies->length = mesh_data.indicies->size;
+    meshVertices->length = mesh_data.vertices->size;
+    meshUVs->length = mesh_data.uvs->size;
+    meshColorRGBs->length = mesh_data.color_rgbs->size;
+
+    // data
+    meshIndicies->value = finalize_int_array_d(mesh_data.indicies);
+    meshVertices->value = finalize_float3_array_d(mesh_data.vertices);
+    meshColorRGBs->value = finalize_color_rgb_array_d(mesh_data.color_rgbs);
+    meshUVs->value = finalize_float2_array_d(mesh_data.uvs);
+
+    // for data statistics
     on_memory_component_created(meshIndicies, MeshIndicies)
     on_memory_component_created(meshVertices, MeshVertices)
     on_memory_component_created(meshColorRGBs, MeshColorRGBs)

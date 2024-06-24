@@ -7,7 +7,7 @@ void MusicPlaySystem(ecs_iter_t *it) {
     zox_field_in(MusicPlaying, musicPlayings, 1)
     zox_field_in(NoteLinks, noteLinkss, 2)
     zox_field_in(MusicSpeed, musicSpeeds, 3)
-    zox_field_in(InstrumentType, instrumentTypes, 4)
+    // zox_field_in(InstrumentType, instrumentTypes, 4)
     zox_field_out(MusicNote, musicNotes, 5)
     zox_field_out(MusicTime, musicTimes, 6)
     for (int i = 0; i < it->count; i++) {
@@ -15,7 +15,7 @@ void MusicPlaySystem(ecs_iter_t *it) {
         if (!musicPlaying->value) continue;
         zox_field_i(NoteLinks, noteLinkss, noteLinks)
         zox_field_i(MusicSpeed, musicSpeeds, musicSpeed)
-        zox_field_i(InstrumentType, instrumentTypes, instrumentType)
+        // zox_field_i(InstrumentType, instrumentTypes, instrumentType)
         zox_field_o(MusicNote, musicNotes, musicNote)
         zox_field_o(MusicTime, musicTimes, musicTime)
         musicTime->value += delta_time;

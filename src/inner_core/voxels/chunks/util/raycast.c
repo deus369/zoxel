@@ -1,5 +1,6 @@
 const float ray_interval = 0.04f;
 const float terrain_ray_length = 8;
+const uint safety_checks_raycasting = 512;
 
 unsigned char raycast_character(ecs_world_t *world, const ecs_entity_t caster, const float3 ray_origin, const float3 ray_normal, const ecs_entity_t chunk, RaycastVoxelData *data, float *closest_t) {
     if (!chunk) return 0;
@@ -53,10 +54,10 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
     unsigned char ray_hit = 0;
     int3 hit_normal = int3_zero;
     float ray_distance = 0;
-    int checks = 0;
     float closest_t;
     unsigned char hit_character = 0;
-    while (ray_distance <= ray_length) {
+    uint checks = 0;
+    while (ray_distance <= ray_length && checks < safety_checks_raycasting) {
         if (chunk_links) {
             const int3 new_chunk_position = voxel_position_to_chunk_position(voxel_position, chunk_size);
             if (!int3_equals(chunk_position, new_chunk_position)) {
@@ -138,7 +139,6 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
         voxel_position_local_last = voxel_position_local;
         // safety
         checks++;
-        if (checks >= 255) break;
     }
     if (ray_hit == 2) {
         return ray_hit;

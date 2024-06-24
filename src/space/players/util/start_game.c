@@ -14,7 +14,7 @@ void fix_camera_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
 }
 
 void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
-    const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data("tall_cube"));
+    const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data(player_vox_model));
     if (!vox) {
         zox_log(" ! [tall_cube] not found on player\n")
         return;
@@ -45,7 +45,6 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
     const int3 chunk_voxel_position = get_chunk_voxel_position(chunk_position, default_chunk_size);
     float3 position = local_to_real_position_character(local_position, chunk_voxel_position, (float3) { 0.5f, 1.0f, 0.5f });
     const float4 spawn_rotation = quaternion_identity;
-    // const ecs_entity_t vox = files_voxes[player_vox_index]; // get mr penguin vox
     ecs_entity_2 character_group = spawn_player_character3D_in_world(world, vox, position, spawn_rotation, 0, player);
     const ecs_entity_t character = character_group.x;
     zox_set(player, CharacterLink, { character })

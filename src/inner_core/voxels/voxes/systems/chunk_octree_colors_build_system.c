@@ -1,5 +1,6 @@
 // builds the character vox meshes
 void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
+    begin_timing()
     zox_change_check()
     int chunks_built = 0;
     zox_iter_world()
@@ -61,47 +62,12 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         build_chunk_octree_mesh_colors(chunkOctree, colorRGBs2, meshIndicies2, meshVertices2, meshColorRGBs2, chunk_depth, neighbors, neighbor_lods, total_mesh_offset, voxScale->value);
         chunkDirty->value = 0;
         meshDirty->value = 1;
+        did_do_timing()
         if (max_color_chunks_build_per_frame != 0) {
             chunks_built++;
             if (chunks_built >= max_color_chunks_build_per_frame) break;
         }
     }
+    // end_timing("ChunkOctreeColorsBuildSystem")
 } zox_declare_system(ChunkOctreeColorsBuildSystem)
-
-
-/*void test_build_chunk_octree_mesh_colors(const ChunkOctree *chunk_octree, const ColorRGBs *colorRGBs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColorRGBs *meshColorRGBs, unsigned char chunk_depth, const ChunkOctree *neighbors[], unsigned char *neighbor_lods, const float3 total_mesh_offset, const float vox_scale) {
-    int_array_d* indicies = create_int_array_d(initial_dynamic_array_size);
-    float3_array_d* vertices = create_float3_array_d(initial_dynamic_array_size);
-    color_rgb_array_d* color_rgbs = create_color_rgb_array_d(initial_dynamic_array_size);
-    test_build_octree_chunk_colors_d(chunk_octree, NULL, chunk_octree, neighbors, neighbor_lods, colorRGBs, indicies, vertices, color_rgbs, chunk_depth, 0, int3_zero, 0, total_mesh_offset);
-    clear_mesh(meshIndicies, meshVertices, meshColorRGBs);
-    meshIndicies->length = indicies->size;
-    meshVertices->length = vertices->size;
-    meshColorRGBs->length = color_rgbs->size;
-    meshIndicies->value = finalize_int_array_d(indicies);
-    meshVertices->value = finalize_float3_array_d(vertices);
-    meshColorRGBs->value = finalize_color_rgb_array_d(color_rgbs);
-    on_memory_component_created(meshIndicies, MeshIndicies)
-    on_memory_component_created(meshVertices, MeshVertices)
-    on_memory_component_created(meshColorRGBs, MeshColorRGBs)
-}*/
-
-// test function builds one cube
-
-/*void test_build_octree_chunk_colors_d(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[], const unsigned char *neighbor_lods, const ColorRGBs *colorRGBs, int_array_d *indicies, float3_array_d* vertices, color_rgb_array_d* color_rgbs, const unsigned char max_depth, const unsigned char depth, const int3 octree_position, const unsigned char node_index, const float3 total_mesh_offset, const float vox_scale) {
-    const unsigned char voxel = chunk_octree->value;
-    const float voxel_scale = octree_scales3[depth] * vox_scale;
-    float3 vertex_position_offset = float3_from_int3(octree_position);
-    float3_multiply_float_p(&vertex_position_offset, voxel_scale);
-    float3_add_float3_p(&vertex_position_offset, total_mesh_offset);
-    byte3 node_position = octree_positions_b[node_index];
-    //if (voxel != 0) {
-    color_rgb voxel_color = colorRGBs->value[voxel - 1];
-    zoxel_octree_colors_build_face_d(left, 0)
-    zoxel_octree_colors_build_face_d(right, 1)
-    zoxel_octree_colors_build_face_d(down, 1)
-    zoxel_octree_colors_build_face_d(up, 0)
-    zoxel_octree_colors_build_face_d(back, 0)
-    zoxel_octree_colors_build_face_d(front, 1)
-}*/
 

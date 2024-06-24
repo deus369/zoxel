@@ -19,7 +19,5 @@ const double run_speed = 1.4;
 const double run_accceleration = 1.7;
 const float backwards_multiplier = 0.7f;
 // #define zox_debug_player_speed_limits
-#define player_vox_scale  (1 / 64.0f) * 2
-const unsigned char player_vox_index = 5; // tall vox cube (number 2)
-
-
+#define player_vox_scale  (1 / 64.0f) * 1.6f
+char* player_vox_model = "tall_cube";

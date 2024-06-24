@@ -1,4 +1,3 @@
-
 // todo: keep this in hashmap for processed Voxes - atm its gonna check 10k chunks * voxels length which is bad
 // todo: support for multiple terrains using hashmap
 
@@ -6,6 +5,7 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
 #ifdef zox_disable_chunk_building
     return;
 #endif
+    begin_timing()
     zox_change_check()
     zox_iter_world()
     zox_field_in(VoxLink, voxLinks, 1)
@@ -34,8 +34,6 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
     int uvs[voxels_length * 6 * sizeof(int)];
     build_data.solidity = solidity;
     build_data.uvs = uvs;
-    // memset(block_voxes, 0, block_voxes_count * sizeof(ecs_entity_t));
-    // memset(block_vox_offsets, 0, block_voxes_count);
     // calculate tileuv indexes - voxel and face to index  in tilemapUVs
     int uvs_index = 0;
     for (int j = 0; j < voxelLinks->length; j++) {
@@ -100,12 +98,18 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         set_neightbor_chunk_data(up)
         set_neightbor_chunk_data(back)
         set_neightbor_chunk_data(front)
+        // clear first
+        clear_mesh_uvs(meshIndicies, meshVertices, meshColorRGBs, meshUVs);
+        // build
         build_chunk_octree_mesh_uvs(chunkOctree, tilemapUVs, meshIndicies, meshVertices, meshUVs, meshColorRGBs, renderLod->value, lod, neighbors, neighbor_lods, voxScale->value, build_data.solidity, build_data.uvs);
+        // set states after
         chunkDirty->value = 0;
         meshDirty->value = 1;
+        did_do_timing()
         if (max_chunks_build_per_frame != 0) {
             chunks_built++;
             if (chunks_built >= max_chunks_build_per_frame) break;
         }
     }
+    // end_timing("ChunkOctreeBuildSystem")
 } zox_declare_system(ChunkOctreeBuildSystem)

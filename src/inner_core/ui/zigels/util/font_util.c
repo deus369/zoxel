@@ -7,6 +7,9 @@ const unsigned char is_splotches = 1;
     const color nothing_font_color = { 0, 0, 0, 0 };
 #endif
 
+const uint safety_checks_floodfill = 1024;
+const uint safety_checks_drawline = 1024;
+
 void flood_fill_texture(color* data, const int2 size, const color air_color, const color boundary_color, const color fill_color, const int x, const int y) {
     int index = int2_array_index((int2) { x, y }, size);
     if (!color_equal(data[index], air_color)) return;
@@ -17,7 +20,8 @@ void flood_fill_texture(color* data, const int2 size, const color air_color, con
     stack[stack_top++] = x; // x-coordinate
     stack[stack_top++] = y; // y-coordinate
     // Loop until the stack is empty
-    while (stack_top > 0) {
+    uint checks = 0;
+    while (stack_top > 0 && checks < safety_checks_floodfill) {
         // Pop the top pixel from the stack
         int y = stack[--stack_top];
         int x = stack[--stack_top];
@@ -38,6 +42,7 @@ void flood_fill_texture(color* data, const int2 size, const color air_color, con
             stack[stack_top++] = x;     // down
             stack[stack_top++] = y + 1;
         }
+        checks++;
     }
 }
 
@@ -106,7 +111,8 @@ void draw_texture_line(color* data, const int2 size, const int2 point_a, const i
     int err = dx - dy;
     int e2;
     // Loop through each pixel along the line segment
-    while (1) {
+    uint checks = 0;
+    while (1 && checks < safety_checks_drawline) {
         // Calculate the index of the current pixel in the texture data array
         int index = (y0 * size.x + x0);
         // Set the RGBA values of the current pixel to white (255, 255, 255, 255)
@@ -117,6 +123,7 @@ void draw_texture_line(color* data, const int2 size, const int2 point_a, const i
         e2 = 2 * err;
         if (e2 > -dy) { err -= dy; x0 += sx; } // Adjust the x-coordinate
         if (e2 < dx) { err += dx; y0 += sy; } // Adjust the y-coordinate
+        checks++;
     }
 }
 

@@ -1,6 +1,8 @@
-#ifndef zoxel_timing
-#define zoxel_timing
+#ifndef zox_mod_timing
+#define zox_mod_timing
 
+#include <time.h>
+#include "data/settings.c"
 zox_component_double(DestroyInTime)
 #include "util/time_macros.c"
 #include "util/time_util.c"

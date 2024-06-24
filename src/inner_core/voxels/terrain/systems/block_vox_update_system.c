@@ -1,4 +1,7 @@
 void BlockVoxUpdateSystem(ecs_iter_t *it) {
+#ifdef zox_disable_block_voxes
+    return;
+#endif
     zox_iter_world()
     zox_field_in(ChunkDirty, chunkDirtys, 1)
     zox_field_in(ChunkOctree, chunkOctrees, 2)

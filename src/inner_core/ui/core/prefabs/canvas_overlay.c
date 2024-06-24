@@ -2,7 +2,7 @@ ecs_entity_t spawn_prefab_canvas_overlay(ecs_world_t *world) {
     zox_prefab()
     zox_add_tag(e, CanvasOverlay)
     zox_add_tag(e, FillTexture)
-    zox_prefab_set(e, Color, {{ 33, 33, 33, 255 }})
+    zox_prefab_set(e, Color, {{ 0, 0, 0, 255 }})
     zox_prefab_set(e, AnimationState, { 0 })
     zox_prefab_set(e, AnimationStart, { 0 })
     zox_prefab_set(e, AnimationLength, { 1.6f})

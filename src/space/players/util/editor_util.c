@@ -10,7 +10,8 @@ void toggle_collision_debug(ecs_world_t *world) {
     // zox_log("   > chunkLinks [%i]\n", chunkLinks->value->size)
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hashmap_pair* pair = chunkLinks->value->data[i];
-        while (pair != NULL) {
+        uint checks = 0;
+        while (pair != NULL && checks < max_safety_checks_hashmap) {
             ecs_entity_t chunk = pair->value;
             const EntityLinks *entityLinks = zox_get(chunk, EntityLinks)
             // const int3 chunk_position = zox_get_value(chunk, ChunkPosition)
@@ -22,6 +23,7 @@ void toggle_collision_debug(ecs_world_t *world) {
                 // zox_log("           > character_entity [%lu]\n", character_entity)
             }
             pair = pair->next;
+            checks++;
         }
     }
 }

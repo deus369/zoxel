@@ -4,10 +4,10 @@ int npc_vox_index_count = 4;
 char* npc_voxes[] = { "mrpenguin", "slime", "bob", "chicken" };
 
 void set_character_terrain_settings() {
-    if (cpu_tier == 3) characters_per_chunk_count = 12;
-    else if (cpu_tier == 2) characters_per_chunk_count = 12;
-    else if (cpu_tier == 1) characters_per_chunk_count = 8;
-    else characters_per_chunk_count = 2;
+    if (cpu_tier == 3) characters_per_chunk_count = 1;
+    else if (cpu_tier == 2) characters_per_chunk_count = 1;
+    else if (cpu_tier == 1) characters_per_chunk_count = 1;
+    else characters_per_chunk_count = 1;
 #ifdef zoxel_test_single_character3Ds
     characters_per_chunk_count = 0;
 #endif

@@ -1,23 +1,12 @@
-double time_begin, zox_current_time, zox_delta_time = 0.0;
-double frames_per_second_time = 0.0;
-int frames_count, frames_per_second = 0;
-double zox_current_time_check = 0.0;
-#define record_frames_count 120
-// double zox_delta_times[record_frames_count];
-// double system_times[record_frames_count];
-const double max_zox_delta_time = 1.0 / 2.0;
-unsigned char last_updated_time = 0;
-unsigned char updating_time = 1;
-
-#define init_delta_time() const double delta_time = zox_delta_time;
-
 double current_time_in_seconds() {
     struct timespec current_time;
     clock_gettime(CLOCK_REALTIME, &current_time);
     return current_time.tv_sec + (double) current_time.tv_nsec / 1000000000.0;
-    // return (double) current_time.tv_nsec / 1000000000.0;
-    // return current_time.tv_sec;
 }
+
+
+#define init_delta_time() const double delta_time = zox_delta_time;
+
 
 void initialize_time() {
     time_begin = current_time_in_seconds();

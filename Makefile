@@ -216,7 +216,7 @@ run-dev-debug-tiny:
 dev-profiler:
 	@ echo " > building zoxel-dev-linux with profiler"
 	@ $(patient_cmd)
-	$(make_dev) -Dzox_using_profiler
+	@ $(make_dev) -Dzox_using_profiler
 
 # run development + flecs profiler
 run-dev-profiler:

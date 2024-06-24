@@ -1,3 +1,5 @@
+const uint max_safety_checks_hashmap = 1024;
+
 #define zox_hashmap(name, type, type_zero, key_type, convert_to_hash)\
 \
 typedef struct name##_pair name##_pair;\
@@ -46,11 +48,11 @@ type name##_get(name* map, key_type key_raw) {\
     uint32_t key = convert_to_hash(key_raw);\
     uint32_t index = name##_hash(key, map->size);\
     name##_pair* pair = map->data[index];\
-    while (pair != NULL) {\
-        if (pair->key == key) {\
-            return pair->value;\
-        }\
+    int checks = 0;\
+    while (pair != NULL && checks < max_safety_checks_hashmap) {\
+        if (pair->key == key) return pair->value;\
         pair = pair->next;\
+        checks++;\
     }\
     return type_zero;\
 }\
@@ -60,9 +62,11 @@ unsigned char name##_has(name* map, key_type key_raw) {\
     uint32_t key = convert_to_hash(key_raw);\
     uint32_t index = name##_hash(key, map->size);\
     name##_pair* pair = map->data[index];\
-    while (pair != NULL) {\
+    int checks = 0;\
+    while (pair != NULL && checks < max_safety_checks_hashmap) {\
         if (pair->key == key) return 1;\
         pair = pair->next;\
+        checks++;\
     }\
     return 0;\
 }\
@@ -73,7 +77,8 @@ void name##_remove(name* map, key_type key_raw) {\
     uint32_t index = name##_hash(key, map->size);\
     name##_pair* pair = map->data[index];\
     name##_pair* prev_pair = NULL;\
-    while (pair != NULL) {\
+    uint checks = 0;\
+    while (pair != NULL && checks < max_safety_checks_hashmap) {\
         if (pair->key == key) {\
             if (prev_pair == NULL) {\
                 map->data[index] = pair->next;\
@@ -85,6 +90,7 @@ void name##_remove(name* map, key_type key_raw) {\
         }\
         prev_pair = pair;\
         pair = pair->next;\
+        checks++;\
     }\
 }\
 \
@@ -96,10 +102,12 @@ void name##_dispose(name* map) {\
     }\
     for (int i = 0; i < map->size; i++) {\
         name##_pair* pair = map->data[i];\
-        while (pair != NULL) {\
+        uint checks = 0;\
+        while (pair != NULL && checks < max_safety_checks_hashmap) {\
             name##_##pair* next_pair = pair->next;\
             free(pair);\
             pair = next_pair;\
+            checks++;\
         }\
     }\
     /* randomly this became a memory leak??*/\
@@ -112,10 +120,12 @@ int count_##name(name* map) {\
     int count = 0;\
     for (int i = 0; i < map->size; i++) {\
         name##_pair* pair = map->data[i];\
-        while (pair != NULL) {\
+        uint checks = 0;\
+        while (pair != NULL && checks < max_safety_checks_hashmap) {\
             name##_pair* next_pair = pair->next;\
             count++;\
             pair = next_pair;\
+            checks++;\
         }\
     }\
     return count;\

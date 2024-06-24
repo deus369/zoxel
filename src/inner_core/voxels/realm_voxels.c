@@ -119,6 +119,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             spawn_data.name = "flower";
             // flowers
             spawn_data.color = generate_random_voxel_color();
+#ifndef zox_disable_block_voxes
             spawn_data.tag = zox_id(BlockVox);
             spawn_data.model = zox_block_vox;
             const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data("flower"));
@@ -128,6 +129,10 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             }
             spawn_data.vox = vox; // files_voxes[test_block_vox_index];
             spawn_data.disable_collision = 1;
+#else
+            spawn_data.bake_vox = 1;
+            spawn_data.vox = vox_obsidian;
+#endif
             // spawn_data.vox_offset = 1;
         } else if (i == zox_block_dirt_vox - 1) {
             spawn_data.name = "dirt_vox";

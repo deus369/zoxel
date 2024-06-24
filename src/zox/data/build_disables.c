@@ -1,5 +1,6 @@
 // disables
 
+#define zox_test_settings_00
 #define zoxel_start_with_debug_ui
 // #define zox_is_flatlands
 
@@ -22,9 +23,11 @@
 // #define zox_test_settings_02
 // #define zox_test_settings_03
 
-// #define zox_disable_npcs
-// #define zox_disable_block_voxes
-// #define zox_is_flatlands
+#ifdef zox_test_settings_00
+    // #define zox_disable_npcs
+    #define zox_disable_block_voxes
+    // #define zox_is_flatlands
+#endif
 
 #ifdef zox_test_settings_03
     #define zox_is_flatlands
