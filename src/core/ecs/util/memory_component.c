@@ -40,7 +40,8 @@ ECS_MOVE(name, dst, src, {\
     dst->value = src->value;\
     zero##_##name(src);\
 })\
-ECS_COPY(name, dst, src, {\
+\
+void clone_##name(name* dst, const name* src) {\
     if (!src->value) {\
         dispose##_##name(dst);\
     } else {\
@@ -51,6 +52,10 @@ ECS_COPY(name, dst, src, {\
         total_memorys_allocated++;\
         name##_##memorys_allocated++;\
     }\
+}\
+\
+ECS_COPY(name, dst, src, {\
+    clone_##name(dst, src);\
 })\
 \
 unsigned char add_to##_##name(name *component, const type data) {\
@@ -62,12 +67,23 @@ unsigned char add_to##_##name(name *component, const type data) {\
     }\
     component->value[component->length - 1] = data;\
     return 1;\
-}
+}\
 
 /*
 component->length = 1;\
 component->value = malloc(sizeof(type));\
 component->value[0] = data;
+
+if (!src->value) {\
+    dispose##_##name(dst);\
+} else {\
+    int memory_length = src->length * sizeof(type);\
+    if (dst->value) dispose##_##name(dst);\
+    dst->length = src->length;\
+    dst->value = memcpy(malloc(memory_length), src->value, memory_length);\
+    total_memorys_allocated++;\
+    name##_##memorys_allocated++;\
+}\
 */
 
 #define zox_define_memory_component2(name, ...)\

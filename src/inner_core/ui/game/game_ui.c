@@ -41,7 +41,4 @@ zox_system(QuadsLabelSystem, EcsOnUpdate, [none] QuadsCountLabel, [out] QuadsCou
 spawn_prefabs_game_ui(world);
 zoxel_end_module(GameUI)
 
-// zox_debug_component(GameDebugLabel)
-// zox_debug_single_module(GameUI)
-
 #endif

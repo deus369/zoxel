@@ -15,3 +15,8 @@ ecs_entity_t spawn_menu_paused(ecs_world_t *world, const ecs_entity_t player, co
     zox_name("menu_paused")
     return e;
 }
+
+ecs_entity_t spawn_menu_paused_player(ecs_world_t *world, const ecs_entity_t player) {
+    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+    return spawn_menu_paused(world, player, canvas, int2_zero, float2_half, pause_ui_overlay_layer + 3);
+}

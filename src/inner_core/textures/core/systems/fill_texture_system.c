@@ -6,16 +6,14 @@ void FillTextureSystem(ecs_iter_t *it) {
     zox_field_out(TextureData, textureDatas, 3)
     zox_field_out(GenerateTexture, generateTextures, 5)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_out(GenerateTexture, generateTextures, generateTexture)
+        zox_field_o(GenerateTexture, generateTextures, generateTexture)
         if (generateTexture->value != zox_generate_texture_generate) continue;
-        zox_field_i_out(TextureDirty, textureDirtys, textureDirty)
-        // if (textureDirty->value) continue;
-        zox_field_i_in(TextureSize, textureSizes, textureSize)
-        zox_field_i_in(Color, colors, fill_color)
-        zox_field_i_out(TextureData, textureDatas, textureData)
+        zox_field_o(TextureDirty, textureDirtys, textureDirty)
+        zox_field_i(TextureSize, textureSizes, textureSize)
+        zox_field_i(Color, colors, fill_color)
+        zox_field_o(TextureData, textureDatas, textureData)
         resize_memory_component(TextureData, textureData, color, textureSize->value.x * textureSize->value.y)
         generate_texture_fill(textureData->value, textureSize->value, fill_color->value);
-        // generateTexture->value = 0;
         textureDirty->value = 1; // actually this only gets uploaded if has GPUTextureLink!
     }
 } zox_declare_system(FillTextureSystem)

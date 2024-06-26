@@ -9,14 +9,17 @@ ecs_entity_t spawn_prefab_icon_frame_user(ecs_world_t *world, const ecs_entity_t
 
 ecs_entity_2 spawn_icon_frame_user(ecs_world_t *world, SpawnIconFrame *data, const ecs_entity_t user_data) {
     const ecs_entity_2 e = spawn_icon_frame(world, data);
-    zox_set(e.x, UserDataLink, { user_data })
-    zox_set(e.y, UserDataLink, { user_data })
+    const ecs_entity_t icon_frame = e.x;
+    const ecs_entity_t icon = e.y;
+    zox_set(icon_frame, UserDataLink, { user_data })
+    zox_set(icon, UserDataLink, { user_data })
     if (user_data && zox_has(user_data, TextureLink)) {
-        zox_set(e.y, GenerateTexture, { zox_generate_texture_none })
-        // zox_remove(e.y, GenerateTexture)
+        zox_set(icon, GenerateTexture, { zox_generate_texture_none })
+        // zox_remove(icon, GenerateTexture)
         const ecs_entity_t texture = zox_get_value(user_data, TextureLink)
-        clone_texture_data(world, e.y, texture);
-        zox_set(e.y, TextureDirty, { 1 })
+        clone_texture_data(world, icon, texture);
+        zox_set(icon, TextureDirty, { 1 })
+        zox_set(icon, Color,  { color_white })
     }
     return e;
 }

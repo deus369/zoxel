@@ -1,5 +1,4 @@
-#define zox_set_zext_component(e, name, text)\
-    zox_set(e, name, { strlen(text), convert_string_to_zext(text) })
+#define zox_set_zext_component(e, name, text) zox_set(e, name, { strlen(text), convert_string_to_zext(text) })
 
 // #define zox_debug_spawning
 // extern void set_new_zox_name(ecs_world_t *world, const ecs_entity_t e, const char* text);

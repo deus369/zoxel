@@ -21,8 +21,8 @@ ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     zox_add_tag(e, Window)
     zox_add_tag(e, WindowRaycastTarget)
     add_selectable(world, e);
-    add_frame_texture_type(world, e, window_color, 7, 6);
-    zox_prefab_set(e, Color, { window_color })
+    add_frame_texture_type(world, e, default_fill_color_window, default_outline_color_window, 7, 6);
+    // zox_prefab_set(e, Color, { window_color })
     zox_prefab_set(e, ElementFontSize, { 14 })
     zox_prefab_set(e, DraggableLimits, { int4_zero })
     zox_add_tag(e, BoundToCanvas)

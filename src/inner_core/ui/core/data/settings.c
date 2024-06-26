@@ -17,3 +17,22 @@ ecs_entity_t zox_canvases[max_cameras];
 // #define zox_debug_ui_trails
 // #define zoxel_debug_ui_selectable_states
 const unsigned char pause_ui_overlay_layer = 2;
+const color default_fill_color = (color) { 155, 155, 155, 144 };
+const color default_outline_color = (color) { 155, 88, 45, 200 };
+// windows
+const color default_fill_color_header = (color) { 122, 22, 22, 77 };
+const color default_outline_color_header = (color) { 44, 44, 44, 77 };
+const color default_fill_color_window = (color) { 22, 22, 22, 44 };
+const color default_outline_color_window = (color) { 44, 44, 44, 77 };
+// buttons
+const color default_fill_color_button = (color) { 122, 22, 22, 77 };
+const color default_outline_color_button = (color) { 155, 88, 45, 77 };
+//  icons
+const color default_fill_color_frame = (color) { 6, 55, 55, 122 };
+const color default_outline_color_frame = (color) { 0, 0, 0, 200 };
+const color default_fill_color_icon = (color) { 88, 144, 200, 200 };
+const color default_outline_color_icon = (color) { 0, 0, 0, 144 };
+const unsigned char default_icon_size = 16;
+// pause
+const float pause_fade_alpha = 0.76f;
+const float pause_fade_time = 0.48f;

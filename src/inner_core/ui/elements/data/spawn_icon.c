@@ -1,13 +1,12 @@
 // for only the button
 typedef struct {
     ecs_entity_t prefab;
-    color fill_color;
-    color outline_color;
+    FrameTextureData texture;
 } IconData;
 
 typedef struct {
     CanvasSpawnData canvas;
     ParentSpawnData parent;
+    FrameTextureData texture;
     ElementSpawnData element;
-    IconData icon;
 } SpawnIcon;

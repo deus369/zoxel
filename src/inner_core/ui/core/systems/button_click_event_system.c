@@ -1,3 +1,5 @@
+// todo: ClickEventData - input in a struct instead
+
 void ButtonClickEventSystem(ecs_iter_t *it) {
     zox_iter_world()
     zox_field_in(ClickEvent, clickEvents, 1)

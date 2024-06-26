@@ -9,7 +9,6 @@ void spawn_realm_stats(ecs_world_t *world, ecs_entity_t realm) {
     zox_add_tag(meta_stat_soul, StatSoul)
 
     // States
-
     meta_stat_health = create_stat_state(world, "health");
     zox_set(meta_stat_health, TextureLink, { string_hashmap_get(files_hashmap_textures, new_string_data("health")) })
     zox_add_tag(meta_stat_health, HealthStat)

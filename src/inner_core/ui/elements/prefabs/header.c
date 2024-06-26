@@ -5,7 +5,7 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
     zox_add_tag(e, WindowRaycastTarget)
     add_ui_plus_components(world, e);
     zox_add_tag(e, TextureAddNoise)
-    add_frame_texture_type(world, e, header_color, 7, 3);
+    add_frame_texture_type(world, e, default_fill_color_header, default_outline_color_header, 7, 3);
     add_selectable_components(world, e);
     add_draggable_components(world, e);
     zox_prefab_add(e, Children)

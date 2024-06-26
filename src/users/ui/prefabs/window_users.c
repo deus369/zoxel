@@ -71,7 +71,7 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
     // spawn body
     int2 body_size = int2_sub(data->element.size, (int2) { 0, header_size.y });
     int2 body_position = (int2) { 0, -header_size.y / 2 };
-    SpawnElement spawn_body_data = {
+    ElementSpawn spawn_body_data = {
         .canvas = data->canvas,
         .parent = {
             .e = e,
@@ -79,13 +79,16 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
             .size = data->element.size
         },
         .element = {
+            .prefab = prefab_body,
             .layer = body_layer,
             .anchor = float2_half,
             .position = body_position,
-            .size = body_size,
-            .fill_color = (color) { 66, 35, 25, 255 }
+            .size = body_size
         },
-        .prefab = prefab_body
+        .texture = {
+            .fill_color = default_fill_color_window,
+            .outline_color = default_outline_color_window
+        }
     };
     const ecs_entity_t body = spawn_body(world, &spawn_body_data);
     children->value[is_header] = body;
@@ -103,7 +106,6 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
             };
             SpawnIconFrame spawnIconFrame = {
                 .canvas = data->canvas,
-                .icon_frame = data->icon_frame,
                 .icon = data->icon,
                 .parent = {
                     .e = body,
@@ -111,11 +113,13 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
                     .size = spawn_body_data.element.size
                 },
                 .element = {
+                    .prefab = data->icon_frame.prefab,
                     .position = position,
                     .size = int2_single(data->window.icon_size),
                     .layer = icon_layer,
                     .anchor = float2_half
-                }
+                },
+                .texture = data->icon_frame.texture
             };
             const ecs_entity_t user_data_element = user_data->value[item_index];
             body_children->value[array_index] = spawn_icon_frame_user(world, &spawnIconFrame, user_data_element).x;
@@ -127,10 +131,6 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
 }
 
 SpawnWindowUsers get_default_spawn_window_users_data(const ecs_entity_t character, const ecs_entity_t canvas, const int2 canvas_size) {
-    const color frame_fill_color = (color) { 33, 33, 33, 133 };
-    const color frame_outline_color = (color) { 33, 33, 33, 133 };
-    const color icon_fill_color = (color) { 0, 155, 155, 155 };
-    const color icon_outline_color = (color) { 0, 255, 185, 225 };
     const unsigned char header_height = 42;
     const unsigned char header_margins = 16;
     const float2 anchor = float2_half;
@@ -169,13 +169,18 @@ SpawnWindowUsers get_default_spawn_window_users_data(const ecs_entity_t characte
             .font_outline_color = header_font_outline_color
         },
         .icon_frame = {
-            .fill_color = frame_fill_color,
-            .outline_color = frame_outline_color
+            .prefab = prefab_icon_frame,
+            .texture = {
+                .fill_color = default_fill_color_frame,
+                .outline_color = default_outline_color_frame
+            }
         },
         .icon = {
             .prefab = prefab_icon,
-            .fill_color = icon_fill_color,
-            .outline_color = icon_outline_color
+            .texture = {
+                .fill_color = default_fill_color_icon,
+                .outline_color = default_outline_color_icon
+            }
         },
         .window = {
             .prefab = prefab_window_users,

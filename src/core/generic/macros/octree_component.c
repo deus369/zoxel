@@ -39,11 +39,11 @@ void open_new##_##name(name* octree) {\
     node_memory += 1;\
 }\
 \
-void clone##_##name(name* dst, const name* src) {\
+void clone_##name(name* dst, const name* src) {\
     dst->value = src->value;\
     if (src->nodes) {\
         open_new##_##name(dst);\
-        for (unsigned char i = 0; i < octree_length; i++) clone##_##name(&dst->nodes[i], &src->nodes[i]);\
+        for (unsigned char i = 0; i < octree_length; i++) clone_##name(&dst->nodes[i], &src->nodes[i]);\
     } else {\
         dst->nodes = NULL;\
     }\
@@ -155,7 +155,7 @@ ECS_DTOR(name, ptr, {\
 ECS_COPY(name, dst, src, {\
     /*zoxel_log(" > copying chunk [%s]\n", dst->nodes == NULL ? "closed nodes" : "open nodes");*/\
     close##_##name(dst);\
-    clone##_##name(dst, src);\
+    clone_##name(dst, src);\
 })\
 ECS_MOVE(name, dst, src, {\
     /*zoxel_log(" > moving chunk [%s]\n", dst->nodes == NULL ? "closed nodes" : "open nodes");*/\

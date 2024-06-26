@@ -1,11 +1,12 @@
 const color empty_color = { 0, 0, 0, 0 };
 
 // move this to prefab
-void add_frame_texture_type(ecs_world_t *world, const ecs_entity_t e, const color primary, unsigned char corner, unsigned char thickness) {
+void add_frame_texture_type(ecs_world_t *world, const ecs_entity_t e, const color primary, const color secondary, unsigned char corner, unsigned char thickness) {
     zox_add_tag(e, FrameTexture)
     zox_prefab_set(e, FrameCorner, { corner })
     zox_prefab_set(e, OutlineThickness, { thickness })
     zox_prefab_set(e, Color, { primary })
+    zox_prefab_set(e, OutlineColor, { secondary })
 }
 
 unsigned char check_texture(const color *data, const int2 size, const int2 pixel_position, const color find_color, int distance) {

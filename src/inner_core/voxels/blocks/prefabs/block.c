@@ -6,13 +6,14 @@ ecs_entity_t spawn_prefab_block(ecs_world_t *world) {
     zox_prefab_set(e, BlockModel, { zox_block_solid })
     zox_prefab_set(e, BlockCollider, { zox_block_solid })
     zox_prefab_add(e, Textures)
+    zox_prefab_add(e, ZoxName)
     return e;
 }
 
 // removed references to block vox
 ecs_entity_t spawn_block(ecs_world_t *world, const SpawnBlock *data) {
     zox_instance(data->prefab)
-    zox_name("voxel")
+    zox_name("block")
     zox_set(e, Color, { data->color })
     if (data->model != zox_block_air) zox_set(e, BlockModel, { data->model })
     if (data->tag) zox_add_tag_id(e, data->tag);
@@ -29,6 +30,9 @@ ecs_entity_t spawn_block(ecs_world_t *world, const SpawnBlock *data) {
         }
         zox_modified(e, Textures)
     }
+    char *name = generate_name();
+    zox_log(" + generated block name [%s]\n", name)
+    zox_set(e, ZoxName, { text_to_zext(name) })
     return e;
 }
 

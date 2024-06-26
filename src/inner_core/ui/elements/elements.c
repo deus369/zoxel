@@ -12,6 +12,7 @@ zox_declare_tag(Body)
 zox_declare_tag(Scrollbar)
 zox_declare_tag(ScrollbarButton)
 zox_component_byte(ListUIMax)
+zox_component_byte(IconIndex)
 #include "data/spawn_button.c"
 #include "data/spawn_header.c"
 #include "data/spawn_window.c"
@@ -35,6 +36,7 @@ zox_define_tag(CloseButton)
 zox_define_tag(Scrollbar)
 zox_define_tag(ScrollbarButton)
 zox_define_component(ListUIMax)
+zox_define_component(IconIndex)
 zox_system(ElementDragSystem, EcsPostLoad, [in] DraggableState, [in] DraggingDelta, [in] DraggedLink)
 zox_system(ScrollbarSystem, EcsPostUpdate, [none] ScrollbarButton, [in] DraggableState, [in] PixelPosition, [in] PixelSize, [in] ParentLink)
 spawn_prefabs_elements(world);

@@ -5,12 +5,12 @@ void tooltip_event_icon_item(ecs_world_t *world, const TooltipEventData *data) {
     } else {
         char result[64]; // char *result = malloc(64);
         const ZoxName *zox_name = zox_get(data->data, ZoxName)
-        if (zox_name) {
+        if (zox_name && zox_name->value && zox_name->length) {
             char *name_string = convert_zext_to_text(zox_name->value, zox_name->length);
             sprintf(result, "[%s] x1\n", name_string);
             free(name_string);
         } else {
-            sprintf(result, "[%" PRIu64 "] x1\n", data->data);
+            sprintf(result, "[%" PRIu64 "]\n", data->data);
         }
         set_entity_with_text(world, data->tooltip, result);
         // free(result);

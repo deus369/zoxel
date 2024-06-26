@@ -25,14 +25,21 @@ ecs_entity_t spawn_prefab_##name(ecs_world_t *world) {\
 }\
 \
 /* generic meta spawn function*/\
-ecs_entity_t spawn_meta_##name(ecs_world_t *world, const char *name) {\
+ecs_entity_t spawn_meta_##name(ecs_world_t *world, const char *source_name) {\
     zox_prefab_child(prefab_##name)\
     zox_prefab_name("meta_"label)\
     /* shared variables for all meta data */\
     /*zox_set(e, ZoxName, { 0, NULL })*/\
-    ZoxName *zoxName = zox_get_mut(e, ZoxName)\
-    set_zox_name(zoxName, name);\
-    zox_modified(e, ZoxName)\
+    zox_get_muter(e, ZoxName, zoxName)\
+    set_zox_name(zoxName, source_name);\
+    return e;\
+}\
+\
+ecs_entity_t spawn_meta_##name##_zox_name(ecs_world_t *world, const ZoxName *source_name) {\
+    zox_prefab_child(prefab_##name)\
+    zox_prefab_name("meta_"label)\
+    zox_get_muter(e, ZoxName, zoxName)\
+    clone_ZoxName(zoxName, source_name);\
     return e;\
 }\
 \

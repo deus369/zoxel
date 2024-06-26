@@ -2,8 +2,6 @@
  *  This script pauses for a player and resumes
  *      + added fixes for free roam cameras
 */
-const float pause_fade_alpha = 0.86f;
-const float pause_fade_time = 0.48f;
 
 void pause_player_delayed(ecs_world_t *world, const ecs_entity_t player) {
     if (zox_gett_value(player, DeviceMode) == zox_device_mode_keyboardmouse) {
