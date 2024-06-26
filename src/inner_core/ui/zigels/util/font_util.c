@@ -1,4 +1,6 @@
 // #define zox_debug_font_textures
+const uint safety_checks_floodfill = 4000;
+const uint safety_checks_drawline = 1000;
 const unsigned char is_splotches = 1;
 // const unsigned char splotch_size = 2;
 #ifdef zox_debug_font_textures
@@ -6,9 +8,6 @@ const unsigned char is_splotches = 1;
 #else
     const color nothing_font_color = { 0, 0, 0, 0 };
 #endif
-
-const uint safety_checks_floodfill = 1024;
-const uint safety_checks_drawline = 1024;
 
 void flood_fill_texture(color* data, const int2 size, const color air_color, const color boundary_color, const color fill_color, const int x, const int y) {
     int index = int2_array_index((int2) { x, y }, size);

@@ -6,12 +6,12 @@ void ElementRaycastSystem(ecs_iter_t *it) {
     zox_field_out(WindowRaycasted, windowRaycasteds, 4)
     // zox_log(" > ElementRaycastSystem [%i] [%f]\n", it->count, zox_current_time)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(DeviceMode, deviceModes, deviceMode)
+        zox_field_i(DeviceMode, deviceModes, deviceMode)
         if (deviceMode->value != zox_device_mode_keyboardmouse && deviceMode->value != zox_device_mode_touchscreen) continue;
         zox_field_e()
-        zox_field_i_in(Raycaster, raycasters, raycaster)
-        zox_field_i_out(RaycasterTarget, raycasterTargets, raycasterTarget)
-        zox_field_i_out(WindowRaycasted, windowRaycasteds, windowRaycasted)
+        zox_field_i(Raycaster, raycasters, raycaster)
+        zox_field_o(RaycasterTarget, raycasterTargets, raycasterTarget)
+        zox_field_o(WindowRaycasted, windowRaycasteds, windowRaycasted)
         const ecs_entity_t player_canvas = zox_get_value(e, CanvasLink)
         const ecs_entity_t player_camera_ui = zox_get_value(player_canvas, CameraLink)
         const int2 position = raycaster->value;
@@ -53,14 +53,20 @@ void ElementRaycastSystem(ecs_iter_t *it) {
                 const int4 ui_bounds = { viewport_position.x - pixelSize.x / 2, viewport_position.x + pixelSize.x / 2, viewport_position.y - pixelSize.y / 2,  viewport_position.y + pixelSize.y / 2};
                 const unsigned char was_raycasted = position.x >= ui_bounds.x && position.x <= ui_bounds.y && position.y >= ui_bounds.z && position.y <= ui_bounds.w;
                 if (was_raycasted) {
-                    const unsigned window_raycasted = zox_has(e2, Window);
+                    const unsigned window_raycasted = zox_has(e2, WindowRaycastTarget);
                     if (layer2D->value > ui_layer) { // !window_raycasted &&
                         ui_layer = layer2D->value;
                         ui_selected = e2;
                     }
                     if (window_raycasted && layer2D->value > window_layer) {
-                        window_layer = layer2D->value;
-                        window_selected = e2;
+                        if (!zox_has(e2, Window)) {
+                            // if header/body use parent
+                            window_selected = zox_get_value(e2, ParentLink)
+                            window_layer = zox_get_value(ui_selected, Layer2D);
+                        } else {
+                            window_selected = e2;
+                            window_layer = layer2D->value;
+                        }
                     }
 #ifdef zox_debug_log_element_raycasting
                     zox_log("     + ui [%lu] position [%ix%i] size [%ix%i]\n", ui_selected, canvas_position.x, canvas_position.y, pixelSize.x, pixelSize.y)

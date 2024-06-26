@@ -13,7 +13,6 @@ void set_character_terrain_settings() {
 #endif
 #ifdef zoxel_debug_settings
     zox_log(" > character terrain settings set\n")
-    zox_log("     + character per chunk is [%i]\n", characters_per_chunk_count)
+    zox_log("  + character per chunk is [%i]\n", characters_per_chunk_count)
 #endif
-    zox_log("     + character per chunk is [%i]\n", characters_per_chunk_count)
 }

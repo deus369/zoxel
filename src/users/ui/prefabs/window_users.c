@@ -3,10 +3,6 @@
 // todo: fetch highest layer from canvas? save it refreshing stack when spawning a new window
 // todo: prefab_inventory_menu - child prefab of game_icon_window?
 
-// BUG FIX:
-// todo: fix crash when closing inventory ui with more items (blank ones)
-// todo: it seems to be just the ui breaking on destroy atm
-
 ecs_entity_t spawn_prefab_window_users(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_window_users")
@@ -20,30 +16,33 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
         return 0;
     }
     // zox_log(" +  character [%lu] inventory has %i slots\n", character, inventory->length)
-    const unsigned char icon_layer = data->element.layer + 2;
+    const unsigned char body_layer = data->element.layer + 1;
+    const unsigned char icon_layer = body_layer + 1;
     const unsigned char is_header = data->header.prefab != 0;
     unsigned char header_height = 0;
     if (is_header) header_height = data->header_zext.font_size + data->header.margins;
     const int2 canvas_position = get_element_pixel_position_global(data->parent.position, data->element.size, data->element.position, data->element.anchor);
     const float2 real_position = get_element_position(canvas_position, data->canvas.size);
     zox_instance(data->window.prefab)
-    zox_name(data->header_zext.text) //"window_users")
+    zox_name(data->header_zext.text)
     initialize_element(world, e, data->parent.e, data->canvas.e, data->element.position, data->element.size, data->element.size, data->element.anchor, data->element.layer, real_position, canvas_position);
     set_window_bounds_to_canvas(world, e, data->canvas.size, data->element.size, data->element.anchor, header_height);
     const UserLinks *user_data = zox_get_id(character, data->window.user_links_id)
     const int user_datas_count = user_data->length;
     const int grid_elements_count = user_datas_count; // data->window.grid_size.x * data->window.grid_size.y
-    const int children_length = grid_elements_count + is_header;
-    zox_get_mutt(e, Children, children)
+    const int children_length = 1 + is_header;
+    zox_get_muter(e, Children, children)
     initialize_memory_component(Children, children, ecs_entity_t, children_length)
     if (children->length != children_length) {
         zox_log(" ! failed to iniitalize children\n")
         return e;
     }
+    int2 header_size = int2_zero;
     if (is_header) {
+        const unsigned char header_layer = data->element.layer + 1; // 3;
         const float2 header_anchor = (float2) { 0.5f, 1.0f };
         const int2 header_position = (int2) { 0, -header_height / 2 };
-        const int2 header_size = (int2) { data->element.size.x, header_height };
+        header_size = (int2) { data->element.size.x, header_height };
         zox_set(e, HeaderHeight, { header_size.y })
         // todo: pass more of t this in from top
         SpawnHeader spawnHeader = {
@@ -54,7 +53,7 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
                 .size = data->element.size
             },
             .element = {
-                .layer = data->element.layer + 1,
+                .layer = header_layer,
                 .anchor = header_anchor,
                 .position = header_position,
                 .size = header_size
@@ -64,21 +63,52 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
         };
         children->value[0] = spawn_header2(world, &spawnHeader);
     }
+
+    // todo:
+    //  - fill in element data
+    //  - set window prefab as invisible (since im only showing header/panel combo)
+
+    // spawn body
+    int2 body_size = int2_sub(data->element.size, (int2) { 0, header_size.y });
+    int2 body_position = (int2) { 0, -header_size.y / 2 };
+    SpawnElement spawn_body_data = {
+        .canvas = data->canvas,
+        .parent = {
+            .e = e,
+            .position = canvas_position,
+            .size = data->element.size
+        },
+        .element = {
+            .layer = body_layer,
+            .anchor = float2_half,
+            .position = body_position,
+            .size = body_size,
+            .fill_color = (color) { 66, 35, 25, 255 }
+        },
+        .prefab = prefab_body
+    };
+    const ecs_entity_t body = spawn_body(world, &spawn_body_data);
+    children->value[is_header] = body;
+    zox_get_muter(body, Children, body_children)
+    initialize_memory_component(Children, body_children, ecs_entity_t, grid_elements_count)
     int item_index = 0;
-    int array_index = is_header;
+    int array_index = 0;
     for (int j = data->window.grid_size.y - 1; j >= 0; j--) {
-        if (array_index >= children->length) break;
+        if (array_index >= body_children->length) break;
         for (int i = 0; i < data->window.grid_size.x; i++) {
-            if (array_index >= children->length) break;
-            const int2 position = { (int) ((i - (data->window.grid_size.x / 2) + 0.5f) * (data->window.icon_size + data->window.grid_padding)), (int) ((j - (data->window.grid_size.y / 2) + 0.5f) * (data->window.icon_size + data->window.grid_padding) - header_height / 2) };
+            if (array_index >= body_children->length) break;
+            const int2 position = {
+                (int) ((i - (data->window.grid_size.x / 2) + 0.5f) * (data->window.icon_size + data->window.grid_padding)),
+                (int) ((j - (data->window.grid_size.y / 2) + 0.5f) * (data->window.icon_size + data->window.grid_padding))
+            };
             SpawnIconFrame spawnIconFrame = {
                 .canvas = data->canvas,
                 .icon_frame = data->icon_frame,
                 .icon = data->icon,
                 .parent = {
-                    .e = e,
-                    .position = canvas_position,
-                    .size = data->element.size
+                    .e = body,
+                    .position = spawn_body_data.element.position_in_canvas,
+                    .size = spawn_body_data.element.size
                 },
                 .element = {
                     .position = position,
@@ -88,12 +118,11 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
                 }
             };
             const ecs_entity_t user_data_element = user_data->value[item_index];
-            children->value[array_index] = spawn_icon_frame_user(world, &spawnIconFrame, user_data_element).x;
+            body_children->value[array_index] = spawn_icon_frame_user(world, &spawnIconFrame, user_data_element).x;
             array_index++;
             item_index++;
         }
     }
-    zox_modified(e, Children)
     return e;
 }
 

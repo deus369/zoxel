@@ -16,3 +16,4 @@ ecs_entity_t zox_canvases[max_cameras];
 // debugs
 // #define zox_debug_ui_trails
 // #define zoxel_debug_ui_selectable_states
+const unsigned char pause_ui_overlay_layer = 2;

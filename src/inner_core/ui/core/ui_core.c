@@ -9,6 +9,7 @@ zox_declare_tag(ElementBillboard)
 zox_declare_tag(BoundToCanvas)
 zox_declare_tag(CanvasOverlay)
 zox_declare_tag(Window)
+zox_declare_tag(WindowRaycastTarget)
 zox_declare_tag(ElementRender)
 zox_declare_tag(MouseElement)
 zox_component_byte(Layer2D)
@@ -53,8 +54,10 @@ zox_component_entity(DraggedLink)
 #include "data/tooltip_event_data.c"
 zox_function_component(TooltipEvent, void, ecs_world_t*, const TooltipEventData*)
 #include "data/settings.c"
-#include "data/element_spawn_data.c"
 #include "data/select_states.c"
+#include "data/canvas_spawn_data.c"
+#include "data/parent_spawn_data.c"
+#include "data/element_spawn_data.c"
 #include "util/canvas_util.c"
 #include "util/ui_prefab_util.c"
 #include "util/ui_transform_util.c"
@@ -98,6 +101,7 @@ zox_define_tag(ElementRaycaster)
 zox_define_tag(BoundToCanvas)
 zox_define_tag(CanvasOverlay)
 zox_define_tag(Window)
+zox_define_tag(WindowRaycastTarget)
 zox_define_tag(ElementRender)
 zox_define_tag(MouseElement)
 zox_define_component_byte(Layer2D)

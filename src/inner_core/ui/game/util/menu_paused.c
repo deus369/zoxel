@@ -10,6 +10,8 @@ void button_event_end_game(ecs_world_t *world, const ecs_entity_t player, const 
         const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
         find_child_with_tag(canvas, MenuPaused, menu_paused)
         if (menu_paused) zox_delete(menu_paused)
+        find_child_with_tag(canvas, Taskbar, taskbar)
+        if (taskbar) zox_delete(taskbar)
     }
     trigger_event_game(world, game, zox_game_start);
 }

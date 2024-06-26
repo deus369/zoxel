@@ -22,15 +22,15 @@ void ElementClickSystem(ecs_iter_t *it) {
     zox_field_out(ClickingEntity, clickingEntitys, 6)
     zox_field_out(WindowTarget, windowTargets, 7)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_out(RaycasterResult, raycasterResults, raycasterResult)
-        zox_field_i_out(ClickingEntity, clickingEntitys, clickingEntity)
-        zox_field_i_in(RaycasterTarget, raycasterTargets, raycasterTarget)
-        zox_field_i_in(WindowRaycasted, windowRaycasteds, windowRaycasted)
-        // if (!(raycasterTarget->value || windowRaycasted->value)) continue;
         zox_field_e()
-        zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
-        zox_field_i_in(DeviceMode, deviceModes, deviceMode)
-        zox_field_i_out(WindowTarget, windowTargets, windowTarget)
+        zox_field_i(RaycasterTarget, raycasterTargets, raycasterTarget)
+        zox_field_i(WindowRaycasted, windowRaycasteds, windowRaycasted)
+        // if (!(raycasterTarget->value || windowRaycasted->value)) continue;
+        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
+        zox_field_i(DeviceMode, deviceModes, deviceMode)
+        zox_field_o(RaycasterResult, raycasterResults, raycasterResult)
+        zox_field_o(ClickingEntity, clickingEntitys, clickingEntity)
+        zox_field_o(WindowTarget, windowTargets, windowTarget)
         unsigned click_type = 0;
         for (int j = 0; j < deviceLinks->length; j++) { // convert inputs to actions
             const ecs_entity_t device_entity = deviceLinks->value[j];

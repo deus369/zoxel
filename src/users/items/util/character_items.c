@@ -1,4 +1,4 @@
-const int inventory_count = 10; // having blank items seems to b reak it
+const int inventory_count = 16; // 10; // having blank items seems to b reak it
 
 void spawn_character_items(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player) {
     if (!player) return;

@@ -8,6 +8,8 @@ ecs_entity_t prefab_scrollbar_front;
 ecs_entity_t prefab_scrollbar;
 ecs_entity_t prefab_ui_list;
 ecs_entity_t prefab_header;
+ecs_entity_t prefab_body;
+ecs_entity_t prefab_window_invisible;
 ecs_entity_t prefab_window;
 ecs_entity_t prefab_elementbar3D;
 ecs_entity_t prefab_elementbar3D_front;
@@ -21,6 +23,7 @@ ecs_entity_t prefab_elementbar2D_front;
 #include "icon.c"
 #include "icon_frame.c"
 #include "header.c"
+#include "body.c"
 #include "window.c"
 #include "scrollbar_front.c"
 #include "scrollbar.c"
@@ -34,8 +37,10 @@ void spawn_prefabs_elements(ecs_world_t *world) {
     prefab_label = spawn_prefab_label(world);
     prefab_label_background = spawn_prefab_label_background(world);
     prefab_button = spawn_prefab_button(world);
-    prefab_window = spawn_prefab_window(world);
+    prefab_window_invisible = spawn_prefab_window_invisible(world);
+    prefab_window = spawn_prefab_window(world); // todo: add visible components onto invisible window
     prefab_header = spawn_prefab_header(world);
+    prefab_body = spawn_prefab_body(world, prefab_element);
     prefab_close_button = spawn_prefab_button_close(world, prefab_button);
     prefab_scrollbar = spawn_prefab_scrollbar(world);
     prefab_scrollbar_front = spawn_prefab_scrollbar_front(world);

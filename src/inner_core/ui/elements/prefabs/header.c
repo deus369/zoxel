@@ -2,14 +2,12 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_header")
     zox_add_tag(e, Header)
-    zox_add_tag(e, FrameTexture)
-    zox_add_tag(e, TextureAddNoise)
+    zox_add_tag(e, WindowRaycastTarget)
     add_ui_plus_components(world, e);
+    zox_add_tag(e, TextureAddNoise)
+    add_frame_texture_type(world, e, header_color, 7, 3);
     add_selectable_components(world, e);
     add_draggable_components(world, e);
-    zox_prefab_set(e, Color, { header_color })
-    zox_prefab_set(e, FrameCorner, { 7 })
-    zox_prefab_set(e, OutlineThickness, { 3 })
     zox_prefab_add(e, Children)
     return e;
 }

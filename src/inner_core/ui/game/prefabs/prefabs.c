@@ -8,6 +8,7 @@ ecs_entity_t prefab_quad_count_label;
 ecs_entity_t prefab_virtual_joystick;
 ecs_entity_t prefab_virtual_joystick_pointer;
 ecs_entity_t prefab_tooltip;
+ecs_entity_t prefab_taskbar;
 
 #include "menu_main.c"
 #include "menu_options.c"
@@ -18,6 +19,7 @@ ecs_entity_t prefab_tooltip;
 #include "virtual_joystick_pointer.c"
 #include "virtual_joystick.c"
 #include "tooltip.c"
+#include "taskbar.c"
 
 void spawn_prefabs_game_ui(ecs_world_t *world) {
     spawn_prefab_main_menu(world);
@@ -29,4 +31,5 @@ void spawn_prefabs_game_ui(ecs_world_t *world) {
     spawn_prefab_virtual_joystick_pointer(world);
     spawn_prefab_virtual_joystick(world);
     prefab_tooltip = spawn_prefab_tooltip(world, prefab_label_background);
+    prefab_taskbar = spawn_prefab_taskbar(world, prefab_element);
 }

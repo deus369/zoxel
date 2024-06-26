@@ -31,6 +31,8 @@ void player_end_game(ecs_world_t *world, const ecs_entity_t player) {
 
     find_child_with_tag(canvas, MenuPaused, menu_paused)
     if (menu_paused) zox_delete(menu_paused) // for second player
+    find_child_with_tag(canvas, Taskbar, taskbar)
+    if (taskbar) zox_delete(taskbar)
 
     find_child_with_tag(canvas, MenuStatus, menu_status)
     if (menu_status) zox_delete(menu_status)

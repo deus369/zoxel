@@ -10,6 +10,7 @@
 
 const char *game_name = "zox";
 unsigned char cpu_tier;
+typedef unsigned int uint;
 #include "platforms/util/platform_defines.c"
 #include "util/logs.c"
 #include "collections/collections.c"

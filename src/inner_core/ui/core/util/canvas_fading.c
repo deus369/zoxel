@@ -1,5 +1,3 @@
-const unsigned char pause_ui_overlay_layer = 2;
-
 void clear_animation_sequence(ecs_world_t *world, const ecs_entity_t e) {
     zox_get_muter(e, AnimationSequence, animationSequence)
     if (animationSequence->value) {
@@ -24,6 +22,10 @@ void trigger_canvas_fade_out(ecs_world_t *world, const ecs_entity_t e) {
 
 void trigger_canvas_fade_in(ecs_world_t *world, const ecs_entity_t canvas) {
     find_child_with_tag(canvas, CanvasOverlay, e)
+    if (!e) {
+        zox_log(" ! failed to find canvas_overlay on canvas\n")
+        return;
+    }
     clear_animation_sequence(world, e);
     zox_set(e, AnimationState, { zox_animate_alpha })
     zox_set(e, AnimationStart, { zox_current_time })
@@ -69,7 +71,10 @@ void trigger_canvas_fade_transition(ecs_world_t *world, const ecs_entity_t canva
 void trigger_canvas_half_fade(ecs_world_t *world, const ecs_entity_t canvas, const float time_length, const float alpha, const unsigned char direction) {
     const float canvas_fade_delay = 0.02f;
     find_child_with_tag(canvas, CanvasOverlay, e)
-    if (!e) return;
+    if (!e) {
+        zox_log(" ! failed to find canvas_overlay on canvas\n")
+        return;
+    }
     // zox_log(" + [%lu] triggering half fade for canvas_overlay [%lu]\n", canvas, e)
     zox_set(e, Layer2D, { pause_ui_overlay_layer })
     zox_set(e, RenderDisabled, { 0 })

@@ -145,7 +145,7 @@ void set_ui_transform(ecs_world_t *world, const ecs_entity_t parent, const ecs_e
     resize_ui_line2D(world, e, canvas_size);
     if (zox_has(e, BoundToCanvas)) {
         const float2 anchor = zox_get_value(e, Anchor)
-        const unsigned char header_height = zox_get_value(e, HeaderHeight)
+        const unsigned char header_height = 0; // zox_get_value(e, HeaderHeight)
         set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor, header_height);
     }
     limit_element(world, e); // check limited elements - bounded

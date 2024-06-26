@@ -17,13 +17,13 @@ void QolShortcutsSystem(ecs_iter_t *it) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                 if (keyboard->f11.pressed_this_frame) {
                     is_toggle_fullscreen = 1;
-                    zox_log(" > toggled fullscreen mode\n")
+                    // zox_log(" > toggled fullscreen mode\n")
                 } else if (keyboard->f10.pressed_this_frame) {
                     is_render_fog = !is_render_fog;
-                    zox_log(" > set fog [%i]\n", is_render_fog)
+                    // zox_log(" > set fog [%i]\n", is_render_fog)
                 } else if (keyboard->f9.pressed_this_frame) {
                     toggle_free_roam_camera(world, e);
-                    zox_log(" > set camera free roam [%i]\n", camera_mode)
+                    // zox_log(" > set camera free roam [%i]\n", camera_mode)
                 }
 
                 else if (keyboard->_1.pressed_this_frame) set_player_action(world, e, 0);
