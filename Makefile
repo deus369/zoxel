@@ -82,9 +82,14 @@ endif
 # ===== ===== ===== #
 # ===== linux ===== #
 # ===== ===== ===== #
+
+.PHONY: linux prepare install uninstall resources debug-libs install-sdl
+
 make_release = echo " > building zoxel-linux" && \
 	$(patient_cmd) && \
 	$(CC) $(cflags) $(cflags_release) -o $(target) $(OBJS) $(make_libs)
+
+.DEFAULT_GOAL := $(target)
 
 $(target): $(SRCS)
 	@ $(make_release)
@@ -109,16 +114,33 @@ else # linux
 	@ bash bash/install/install.sh
 endif
 
+install-sdl:
+	@ echo " + installing sdl on system"
+	@ bash bash/sdl/install_sdl_on_system.sh
+
 ## uninstalls zoxel into /usr/games directory
 uninstall: 
 	@ bash bash/install/uninstall.sh
+
+resources:
+	@ echo " + resources updating"
+	@ bash bash/util/update_build_resources.sh
+
+debug-libs:
+	ldd ./$(target)
+
+# ===== ===== ===== #
+# =====  run  ===== #
+# ===== ===== ===== #
+
+.PHONY: run run-debug-libs run-debug run-coop run-headless run-server run-tiny run-medium run-large run-vulkan
 
 # run release
 run:
 	@ ./$(target)
 
-debug-libs:
-	ldd ./$(target)
+run-vulkan:
+	@ ./$(target) --vulkan
 
 run-debug-libs:
 	LD_DEBUG=libs ./$(target)
@@ -143,9 +165,6 @@ run-medium:
 
 run-large:
 	@ ./$(target) --large
-
-run-vulkan:
-	@ ./$(target) --vulkan
 
 
 # ====== ======= ====== #
@@ -228,6 +247,8 @@ run-dev-profiler:
 # ===== flecs ===== #
 # ===== ===== ===== #
 
+.PHONY: flecs install-sdl install-flecs remove-flecs get-nightly-flecs get-flecs-version revert-nightly-flecs check-flecs
+
 flecs_target = lib/libflecs.a # build/libflecs.a
 flecs_source = include/flecs/flecs.c
 flecs_flags = -c
@@ -255,10 +276,6 @@ $(flecs_target):
 
 flecs:
 	@ $(make_flecs_big)
-
-install-sdl:
-	@ echo " + installing sdl on system"
-	@ bash bash/sdl/install_sdl_on_system.sh
 
 install-flecs:
 	@ bash bash/flecs/download_flecs_source.sh
@@ -413,6 +430,8 @@ git-push-zoxel-play:
 # ===== android ===== #
 # ====== ===== ====== #
 
+.PHONY: prepare-android prepare-android-emu android android-push android-sdl android-clean android-install android-run android-sign android-debug android-dev android-create-key android-uninstall android-update-settings android-dev-debug
+
 # firefox-esr | firefox
 make_android = bash bash/android/gradle_build_release.sh # gradle_build_run.sh
 target_android = build/zoxel.apk
@@ -486,6 +505,8 @@ android-dev-debug:
 # ===== git & ssh ===== #
 # ====== ======= ====== #
 
+.PHONY: ssh git-push git-commit git-push-only git-pull git-config git-id update
+
 ssh:
 	@ bash bash/ssh/create_ssh.sh
 
@@ -518,6 +539,8 @@ update: ## installs zoxel into /usr/games directory
 # ===== freetype ===== #
 # ===== ===== ===== #
 
+.PHONY: freetype
+
 freetype:
 	@ $(patient_cmd)
 	@ bash bash/freetype/install.sh
@@ -525,6 +548,8 @@ freetype:
 # ===== ===== ===== #
 # ===== steam ===== #
 # ===== ===== ===== #
+
+.PHONY: steam-wrapper-linux steam-linux steam-linux-dev steam-run steam-wrapper-windows steam-windows steam steam-cmd steam-sdk steam-package steam-upload steam-upload-live install-steam-deck-required clean-steam
 
 # todo: use windows-steam directory
 steam_objs = bash/steam/steamwrapper.c
@@ -612,6 +637,8 @@ clean-steam:
 # ===== itchio ===== #
 # ===== ====== ===== #
 
+.PHONY: itch-all itch-upload itch-sdk
+
 itch-all:
 	@ echo "	> build linux"
 	@ $(make_release)
@@ -631,6 +658,8 @@ itch-sdk:
 # ==== ===== ==== #
 # ===== all ===== #
 # ==== ===== ==== #
+
+.PHONY: all clean
 
 # builds for all platforms - this rebuilds everytime tho
 all: $(SRCS)
@@ -664,6 +693,8 @@ clean:
 # removes all build files
 # todo: remove build, lib, include from project
 
+.PHONY: codeberg github create-system zip-build install-play play
+
 codeberg:
 	@ open https://codeberg.org/deus/zoxel &
 
@@ -687,6 +718,8 @@ play:
 # -==== ====== ====- #
 # ===== counts ===== #
 # -==== ====== ====- #
+
+.PHONY: count count-systems list-systems count-module-lines
 
 count:
 	@ echo " > counting source files"
@@ -714,6 +747,8 @@ count-module-lines:
 # ===== lost souls ===== #
 # ====== ======== ====== #
 
+.PHONY: help help-flecs help-git help-debug help-steam help-itch help-web help-android help-extra help-analyse
+
 help:
 	@echo "  "
 	@echo "welcome to [zoxel] help menu"
@@ -731,6 +766,7 @@ endif
 	@echo "  + make run		runs release build"
 	@echo "  + make run-vulkan	runs release with vulkan"
 	@echo "  + make update		pulls latest with git and rebuilds"
+	@echo "  + make resources	updates build resources"
 	@echo "  "
 	@echo " > help-x commands"
 	@echo "  + flecs		building flecs"
@@ -832,3 +868,8 @@ help-itch:
 	@echo "    itch-all			builds all platforms uploads to itch"
 	@echo "    itch-upload			uploads builds to itch"
 	@echo "    itch-sdk			installs itch io butler"
+
+.DEFAULT:
+	@echo " ! Unknown target '$@'"
+	@echo " > running 'make help'"
+	@make help
