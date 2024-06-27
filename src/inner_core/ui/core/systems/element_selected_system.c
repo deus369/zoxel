@@ -11,9 +11,7 @@ void ElementSelectedSystem(ecs_iter_t *it) {
             is_dragging = zox_get_value(e, DraggableState)
         }
         unsigned char is_active = 0;
-        if (zox_has(e, ActiveState)) {
-            is_active = zox_get_value(e, ActiveState)
-        }
+        if (zox_has(e, ActiveState)) is_active = zox_get_value(e, ActiveState)
         if (is_active) brightness->value = ui_active_brightness;
         else if (is_dragging) brightness->value = ui_dragging_brightness;
         else if (selectState->value) brightness->value = ui_selected_brightness;

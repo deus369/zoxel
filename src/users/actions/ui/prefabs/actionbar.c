@@ -38,6 +38,8 @@ ecs_entity_t spawn_actionbar(ecs_world_t *world, const ecs_entity_t prefab, cons
             .outline_color = default_outline_color_window,
         }
     };
+
+    // todo: make this spawn window, with a tiny header of 8 pixels (so i can drag around actionbar)
     const ecs_entity_t e = spawn_element(world, &spawn_actionbar);
     zox_prefab_add(e, Children)
     zox_get_muter(e, Children, children)
@@ -111,6 +113,12 @@ ecs_entity_t spawn_actionbar(ecs_world_t *world, const ecs_entity_t prefab, cons
     return e;
 }
 
+
+ecs_entity_t spawn_actionbar_player(ecs_world_t *world, const ecs_entity_t player) {
+    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+    const int2 canvas_size = zox_get_value(canvas, PixelSize)
+    return spawn_actionbar(world, prefab_actionbar, canvas, canvas, int2_zero, float2_half, 2, 64);
+}
 
 // const ecs_entity_t actionbar_ui = spawn_element(world, prefab, canvas, parent, actionbar_position, actionbar_size, actionbar_anchor, 1, actionbar_color, int2_half(canvas_size), canvas_size);
 // children->value[i] = spawn_element(world, prefab_icon_frame_action, canvas, actionbar_ui, action_icon_position, action_icon_size, float2_half, 2, action_color, actionbar_position, actionbar_size);

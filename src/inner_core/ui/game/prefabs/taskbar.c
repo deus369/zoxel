@@ -8,6 +8,7 @@ ecs_entity_t spawn_prefab_taskbar(ecs_world_t *world, const ecs_entity_t prefab)
 }
 
 // this is created in our users module
+extern void set_taskbar_icon_active(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t frame, const int i);
 extern void on_toggle_taskbar_icon(ecs_world_t *world, const ecs_entity_t clicker, const ecs_entity_t clicked);
 
 ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas, const ecs_entity_t parent, const unsigned char layer) {
@@ -50,7 +51,6 @@ ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const 
     initialize_memory_component(Children, children, ecs_entity_t, actions_count)
     const int2 action_frame_size = (int2) { size, size };
     const int2 icon_size = (int2) { size - 6, size - 6 };
-    // const color action_color = (color) { 99, 11, 66, 255 };
     ElementSpawn spawn_frame_data = {
         .canvas = spawn_actionbar.canvas,
         .parent = {
@@ -89,8 +89,12 @@ ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const 
         const int position_x = (int) ((i - (actions_count / 2) + 0.5f) * (size + padding_x));
         spawn_frame_data.element.position = (int2) { position_x, 0 };
         const ecs_entity_t frame = spawn_element(world, &spawn_frame_data);
-        if (i == 0) zox_set(frame, ActiveState, { 1 }) // first one should be active
         children->value[i] = frame;
+
+        // Active State
+        if (i == 0) zox_set(frame, ActiveState, { 1 })
+        set_taskbar_icon_active(world, canvas, frame, i);
+
         if (i <= 9) {
             zox_get_muter(frame, Children, frame_children)
             initialize_memory_component(Children, frame_children, ecs_entity_t, 1)

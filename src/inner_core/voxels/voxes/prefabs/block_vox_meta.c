@@ -28,7 +28,8 @@ ecs_entity_t spawn_block_vox_meta(ecs_world_t *world, const SpawnBlock *data) {
         zox_modified(e, Textures)
     }
     char *name = generate_name();
-    zox_log(" + generated block [vox] name [%s]\n", name)
+    // zox_log(" + generated block [vox] name [%s]\n", name)
     zox_set(e, ZoxName, { text_to_zext(name) })
+    free(name);
     return e;
 }

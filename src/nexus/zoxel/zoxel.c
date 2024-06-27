@@ -26,7 +26,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         zox_log("boot_zoxel_game3\n")
 #endif
         char* icon_path = get_asset_path("textures", "game_icon.png")
-        char* cursor_path = get_asset_path("textures", "cursors/cursor_02.png")
+        char* cursor_path = get_asset_path("textures", "cursors/cursor_01.png")
 #ifdef zox_mod_textures
         load_app_icon(zox_gett_value(window, SDLWindow), icon_path);
 #endif

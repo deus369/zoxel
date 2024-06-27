@@ -9,6 +9,18 @@ for (int i = 0; i < children##_##tag->length; i++) {\
     }\
 }
 
+#define if_has_child_with_tag(e, tag)\
+ecs_entity_t child_##tag = 0;\
+const Children *children##_##tag = zox_get(e, Children)\
+for (int i = 0; i < children##_##tag->length; i++) {\
+    const ecs_entity_t child_e = children##_##tag->value[i];\
+    if (child_e && zox_has(child_e, tag)) {\
+        child_##tag = child_e;\
+        break;\
+    }\
+}\
+if (child_##tag)
+
 void on_child_added(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t child) {
     // zox_log(" + added [%lu] to canvas [%lu]\n", e, canvas)
     // todo: make this generic for when component is set, event
