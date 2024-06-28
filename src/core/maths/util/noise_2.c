@@ -1,7 +1,9 @@
 #define noise_values_length 512
 unsigned char values[noise_values_length];
+int global_seed;
 
 void set_noise_seed(int seed) {
+    global_seed = seed;
     srand(seed);
     for (int i = 0; i < noise_values_length; i++) {
         values[i] = (unsigned char) rand() % 256; // (byte) random.NextInt(0, 255);

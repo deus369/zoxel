@@ -23,7 +23,6 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
 #endif
     zox_set(realm, TilemapLink, { tilemap })
     zox_set(tilemap, RealmLink, { realm })
-    // zox_log(" + spawned tilemap [%lu]\n", tilemap)
     zox_get_mutt(realm, VoxelLinks, voxelLinks)
     resize_memory_component(VoxelLinks, voxelLinks, ecs_entity_t, zox_blocks_count)
 #ifdef zox_log_spawn_realm_voxels
@@ -156,7 +155,6 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             voxelLinks->value[i] = spawn_block(world, &spawn_data);
         }
     }
-    zox_modified(realm, VoxelLinks)
     zox_set(realm, VoxelsDirty, { 1 })
     // renderer
     fog_color = color_to_float3(sky_color);
@@ -175,6 +173,16 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     zox_log(" + stone_color: %xx%xx%x\n", stone_color.r, stone_color.g, stone_color.b)
     zox_log(" + stone_hsv: %fx%fx%f\n", stone_hsv.x, stone_hsv.y, stone_hsv.z)
 #endif
+}
+
+void respawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
+    zox_get_mutt(realm, VoxelLinks, voxelLinks)
+    zox_get_mutt(realm, TilemapLink, tilemapLink)
+    for (int i = 0; i < voxelLinks->length; i++) zox_delete(voxelLinks->value[i])
+    clear_memory_component(VoxelLinks, voxelLinks)
+    zox_delete(tilemapLink->value)
+    tilemapLink->value = 0;
+    spawn_realm_voxels(world, realm);
 }
 
 // spawn_data.texture_tag = zox_id(DirtTexture);

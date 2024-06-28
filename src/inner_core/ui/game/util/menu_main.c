@@ -1,14 +1,5 @@
 extern ecs_entity_t spawn_menu_options(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t canvas, const int2 position, const float2 anchor);
 
-void button_event_play_game(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
-    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
-    find_child_with_tag(canvas, MenuMain, menu)
-    if (!menu) return;
-    zox_delete(menu)
-    const ecs_entity_t game = zox_get_value(player, GameLink)
-    trigger_event_game(world, game, zox_game_playing);
-}
-
 void button_event_menu_options(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     find_child_with_tag(canvas, MenuMain, menu)

@@ -18,6 +18,7 @@ zox_component_double(FPSDisplayTicker)
 #include "util/menu_main.c"
 #include "util/menu_options.c"
 #include "util/menu_paused.c"
+#include "util/game_loading.c"
 #include "prefabs/prefabs.c"
 #include "systems/fps_display_system.c"
 #include "systems/quads_display_system.c"

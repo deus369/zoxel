@@ -44,7 +44,7 @@ zoxel_dynamic_array(float3)
 zoxel_dynamic_array(float2)
 
 zox_begin_module(Maths)
-unsigned long seed = get_unique_time_seed();
+int seed = (int) get_unique_time_seed();
 set_noise_seed(seed);
 zoxel_end_module(Maths)
 
