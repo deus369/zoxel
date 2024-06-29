@@ -105,8 +105,11 @@ void GenerateVoxSystem(ecs_iter_t *it) {
             }
         } else {
             voronoi3D(chunkOctree, size, 3, 4);
-            vox_outlines(chunkOctree, size, set_voxel_black);
+
             // noise_vox(chunkOctree, size, is_generate_vox_outlines, set_voxel_1, set_voxel_2, set_voxel_3, set_voxel_black, set_voxel_air);
+
+            // vox_outlines(chunkOctree, size, set_voxel_black);
+
             /*for (voxel_position.x = 0; voxel_position.x < size.x; voxel_position.x++) {
                 for (voxel_position.y = 0; voxel_position.y < size.y; voxel_position.y++) {
                     for (voxel_position.z = 0; voxel_position.z < size.z; voxel_position.z++) {
