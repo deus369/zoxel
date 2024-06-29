@@ -63,6 +63,25 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
         generateChunk->value = 0;
         chunkDirty->value = 1;
     }
+} zox_declare_system(GrassyPlainsSystem)
+
+
+// const byte2 set_stone = (byte2) { 4, target_depth };
+// const byte2 set_obsidian = (byte2) { 5, target_depth };
+// set_octree_voxel(chunkOctree, &node_position, &set_obsidian, 0);
+// set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);
+// if (rand() % 100 > 30)
+/*int rando = rand() % 100;
+if (rando < grass_spawn_chance) {
+    set_octree_voxel(chunkOctree, &node_position, &set_grass, 0);
+} else if (rando < grass_spawn_chance + 6) {
+    set_octree_voxel(chunkOctree, &node_position, &set_stone, 0);
+} else if (rando < grass_spawn_chance + 6 + 6) {
+    set_octree_voxel(chunkOctree, &node_position, &set_obsidian, 0);
+} else {
+    set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);
+}*/
+
     /*for (int i = 0; i < it->count; i++) {
         zox_field_o(GenerateChunk, generateChunks, generateChunk)
         if (generateChunk->value != 1) continue;
@@ -162,21 +181,3 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
         generateChunk->value = 0;
         chunkDirty->value = 1;
     }*/
-} zox_declare_system(GrassyPlainsSystem)
-
-
-// const byte2 set_stone = (byte2) { 4, target_depth };
-// const byte2 set_obsidian = (byte2) { 5, target_depth };
-// set_octree_voxel(chunkOctree, &node_position, &set_obsidian, 0);
-// set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);
-// if (rand() % 100 > 30)
-/*int rando = rand() % 100;
-if (rando < grass_spawn_chance) {
-    set_octree_voxel(chunkOctree, &node_position, &set_grass, 0);
-} else if (rando < grass_spawn_chance + 6) {
-    set_octree_voxel(chunkOctree, &node_position, &set_stone, 0);
-} else if (rando < grass_spawn_chance + 6 + 6) {
-    set_octree_voxel(chunkOctree, &node_position, &set_obsidian, 0);
-} else {
-    set_octree_voxel(chunkOctree, &node_position, &set_dirt, 0);
-}*/

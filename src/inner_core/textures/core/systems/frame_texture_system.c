@@ -24,9 +24,9 @@ void FrameTextureSystem(ecs_iter_t *it) {
         color outline_color;
         if (zox_has(e, OutlineColor)) outline_color = zox_get_value(e, OutlineColor)
         else outline_color = (color) { fill_color.g + 25 + rand() % 25, fill_color.b + 25 + rand() % 25, fill_color.r + 25 + rand() % 25, 255 };
-        if (zox_has(e, IconTexture)) voronoi2D(textureData->value, textureSize->value, color_gray, color_gray_dark, 0.7f);
-            // generate_texture_icon(textureData->value, textureData->length, textureSize->value, fill_color, outline_color, outlineThickness->value, frameEdge->value, add_noise);
+        if (zox_has(e, IconTexture)) generate_texture_icon(textureData->value, textureData->length, textureSize->value, fill_color, outline_color, outlineThickness->value, frameEdge->value, add_noise);
         else generate_texture_frame(textureData->value, textureData->length, textureSize->value, fill_color, outline_color, outlineThickness->value, frameEdge->value, add_noise);
         textureDirty->value = 1;
+        //  voronoi2D(textureData->value, textureSize->value, color_gray, color_gray_dark, 0.7f);
     }
 } zox_declare_system(FrameTextureSystem)

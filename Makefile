@@ -190,6 +190,9 @@ $(target_dev): $(SRCS)
 run-dev:
 	@ ./$(target_dev)
 
+install-required-dev:
+	@ bash bash/util/install_dev_required.sh
+
 run-dev-headless:
 	@ ./$(target_dev) --headless
 

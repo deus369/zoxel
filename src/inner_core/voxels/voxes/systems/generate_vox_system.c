@@ -128,8 +128,14 @@ void GenerateVoxSystem(ecs_iter_t *it) {
                 add_to_ColorRGBs(colorRGBs, new_color);
             }
             const byte2 voxel_range_2 = (byte2) { colors_count + 1, colors_count + unique_colors };
-            voronoi3D(chunkOctree, target_depth, size, voxel_range_2, black_voxel);
-            noise_vox2(chunkOctree, target_depth, size, voxel_range_2, black_voxel);
+            color_rgb dirt_dark_voxel = color_to_color_rgb(under_color);
+            color_rgb_multiply_float(&dirt_dark_voxel, 0.13f);
+            add_to_ColorRGBs(colorRGBs, dirt_dark_voxel);
+            unsigned char black_voxel_3 = colorRGBs->length;
+
+            voronoi3D(chunkOctree, target_depth, size, voxel_range_2, black_voxel_3);
+            noise_vox2(chunkOctree, target_depth, size, voxel_range_2, black_voxel_3);  // avoids black ones
+
             // create new chunk node here, blend two using mask?
             const unsigned char grass_position = chunk_voxel_length - chunk_voxel_length / 3;
             byte3 voxel_position;
@@ -147,6 +153,7 @@ void GenerateVoxSystem(ecs_iter_t *it) {
             // add outline between blended parts
             byte2 range_blend_1 = voxel_range;
             byte2 range_blend_2 = voxel_range_2;
+            range_blend_2.y++;
             // range_blend_2.x--;  // include black
             color_rgb new_color = color_to_color_rgb(color2->value);
             color_rgb_multiply_float(&new_color, 0.13f);
@@ -206,8 +213,12 @@ void GenerateVoxSystem(ecs_iter_t *it) {
                 }
             }
         } else {
-            voronoi3D(chunkOctree, target_depth, size, voxel_range, black_voxel);
-            noise_vox2(chunkOctree, target_depth, size, voxel_range, black_voxel);
+            color_rgb dirt_dark_voxel = color_to_color_rgb(color2->value);
+            color_rgb_multiply_float(&dirt_dark_voxel, 0.13f);
+            add_to_ColorRGBs(colorRGBs, dirt_dark_voxel);
+            unsigned char black_voxel_3 = colorRGBs->length;
+            voronoi3D(chunkOctree, target_depth, size, voxel_range, black_voxel_3);
+            noise_vox2(chunkOctree, target_depth, size, voxel_range, black_voxel_3);
         }
         if (is_generate_vox_outlines) vox_outlines(chunkOctree, target_depth, size, black_voxel);
 #ifndef zox_disable_closing_octree_nodes
