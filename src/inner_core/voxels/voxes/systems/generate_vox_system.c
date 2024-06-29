@@ -2,6 +2,21 @@
 const unsigned char is_generate_vox_airs = 1;
 const unsigned char is_generate_vox_outlines = 1;
 
+void vox_outlines(ChunkOctree *chunk, const byte3 size, const byte2 set_voxel_black) {
+    byte3 voxel_position;
+    for (voxel_position.x = 0; voxel_position.x < size.x; voxel_position.x++) {
+        for (voxel_position.y = 0; voxel_position.y < size.y; voxel_position.y++) {
+            for (voxel_position.z = 0; voxel_position.z < size.z; voxel_position.z++) {
+                unsigned char on_edges = byte3_on_edges(voxel_position, size);
+                if (on_edges) {
+                    byte3 temp_position = voxel_position;
+                    set_octree_voxel(chunk, &temp_position, &set_voxel_black, 0);
+                }
+            }
+        }
+    }
+}
+
 void noise_vox(ChunkOctree *chunk, const byte3 size, const unsigned char is_generate_vox_outlines, const byte2 set_voxel_1, const byte2 set_voxel_2, const byte2 set_voxel_3, const byte2 set_voxel_black, const byte2 set_voxel_air) {
     byte3 voxel_position;
     for (voxel_position.x = 0; voxel_position.x < size.x; voxel_position.x++) {
@@ -89,7 +104,9 @@ void GenerateVoxSystem(ecs_iter_t *it) {
                 set_octree_voxel(chunkOctree, &node_position, &set_voxel, 0);
             }
         } else {
-            noise_vox(chunkOctree, size, is_generate_vox_outlines, set_voxel_1, set_voxel_2, set_voxel_3, set_voxel_black, set_voxel_air);
+            voronoi3D(chunkOctree, size, 3, 4);
+            vox_outlines(chunkOctree, size, set_voxel_black);
+            // noise_vox(chunkOctree, size, is_generate_vox_outlines, set_voxel_1, set_voxel_2, set_voxel_3, set_voxel_black, set_voxel_air);
             /*for (voxel_position.x = 0; voxel_position.x < size.x; voxel_position.x++) {
                 for (voxel_position.y = 0; voxel_position.y < size.y; voxel_position.y++) {
                     for (voxel_position.z = 0; voxel_position.z < size.z; voxel_position.z++) {

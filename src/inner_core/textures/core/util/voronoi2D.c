@@ -49,7 +49,7 @@ void voronoi2D(color *pixels, const int2 size, const color base_color, color var
         int count = 0;
         while (count <= 128) {
             newPoint = (int2) { rand() % size.x, rand() % size.y };
-            unsigned char isTooClose = false;
+            unsigned char isTooClose = 0;
             for (int j = i - 1; j >= 0; j--) {
                 int2 otherPoint = points[j];
                 if (    newPoint.x + pointCloseness > otherPoint.x - pointCloseness &&
@@ -57,7 +57,7 @@ void voronoi2D(color *pixels, const int2 size, const color base_color, color var
                         newPoint.y + pointCloseness > otherPoint.y - pointCloseness &&
                         newPoint.y - pointCloseness < otherPoint.y + pointCloseness)
                 {
-                    isTooClose = true;
+                    isTooClose = 1;
                     break;
                 }
             }

@@ -30,6 +30,16 @@ void set_voxel(const SetVoxelTargetData *datam, SetVoxelData data) {
     set_voxel(datam, data);
 }
 
+
+unsigned char get_voxel(ChunkOctree *node, const byte3 position, const byte3 size) {
+    unsigned char voxel = 0;
+    if (byte3_in_bounds(position, size)) {
+        byte3 temp_position = position;
+        voxel = get_octree_voxel(node, &temp_position, max_octree_depth);
+    }
+    return voxel;
+}
+
 void set_octree_voxel(ChunkOctree *node, byte3 *position, const byte2 *set_octree_data, unsigned char depth) {
     const SetVoxelTargetData datam = { .depth = set_octree_data->y, .voxel = set_octree_data->x };
     SetVoxelData data = { .node = node, .position = *position, .depth = depth };
