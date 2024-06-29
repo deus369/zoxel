@@ -25,15 +25,15 @@ int get_closest_index3(const byte3 point, byte3 *points, int points_length, byte
     return smallestIndex;
 }
 
-void voronoi3D(ChunkOctree *node, const byte3 size, const unsigned char max_colors, unsigned char black_voxel) {
-    const int amplify_points = 16;
+void voronoi3D(ChunkOctree *node, const unsigned char target_depth, const byte3 size, const byte2 voxel_range, unsigned char black_voxel) {
+    const unsigned char unique_regions = 64;
     const int points_length = (int) (size.x * 1.6f);
     const int voxels_length = size.x * size.y * size.z;
     const float pointCloseness = size.x / 5;
     byte3 position = byte3_zero;
     byte3 points[points_length];
     unsigned char regions[points_length];
-    unsigned char voxels[voxels_length];
+    unsigned char region_voxels[voxels_length];
     for (int i = 0; i < points_length; i++) points[i] = byte3_zero;
     for (int i = 0; i < points_length; i++) {
         byte3 point = (byte3) { rand() % size.x, rand() % size.y, rand() % size.z };
@@ -58,14 +58,15 @@ void voronoi3D(ChunkOctree *node, const byte3 size, const unsigned char max_colo
             count++;
         }
         points[i] = point;
-        regions[i] = 1 + rand() % (max_colors * amplify_points);
+        regions[i] = rand() % unique_regions;
+        /*(uint) ((voxel_range.x + rand() % (voxel_range.y - voxel_range.x)) * amplify_points);*/
     }
     for (position.x = 0; position.x < size.x; position.x++) {
         for (position.y = 0; position.y < size.y; position.y++) {
             for (position.z = 0; position.z < size.z; position.z++) {
                 int region_index = get_closest_index3(position, points, points_length, size);
                 int index = byte3_array_index(position, size);
-                voxels[index] = regions[region_index];
+                region_voxels[index] = regions[region_index];
             }
         }
     }
@@ -74,50 +75,64 @@ void voronoi3D(ChunkOctree *node, const byte3 size, const unsigned char max_colo
         for (position.y = 0; position.y < size.y; position.y++) {
             for (position.z = 0; position.z < size.z; position.z++) {
                 const int index = byte3_array_index(position, size);
-                const unsigned char voxel = voxels[index];
-                unsigned char voxel_up = 0;
-                unsigned char voxel_right = 0;
-                unsigned char voxel_front = 0;
+                const unsigned char voxel = region_voxels[index];
+                unsigned char is_voxel_up = 0;
+                unsigned char is_voxel_right = 0;
+                unsigned char is_voxel_front = 0;
                 // right
                 if (position.x != size.x - 1 || position.y == size.y - 1 || position.z == size.z - 1) {
                     byte3 position_right = byte3_right(position);
                     if (position_right.x == size.x) position_right.x = 0;
                     int index_right = byte3_array_index(position_right, size);
-                    voxel_right = voxel != voxels[index_right];
+                    is_voxel_right = voxel != region_voxels[index_right];
                 }
                 // up
                 if (position.y != size.y - 1 || position.x == size.x - 1 || position.z == size.z - 1) {
                     byte3 position_up = byte3_up(position);
                     if (position_up.y == size.y) position_up.y = 0;
                     int index_up = byte3_array_index(position_up, size);
-                    voxel_up = voxel != voxels[index_up];
+                    is_voxel_up = voxel != region_voxels[index_up];
                 }
                 // back
                 if (position.z != size.z - 1 || position.x == size.x - 1 || position.y == size.y - 1) {
                     byte3 position_forward = byte3_front(position);
                     if (position_forward.z == size.z) position_forward.z = 0;
                     int index_forward = byte3_array_index(position_forward, size);
-                    voxel_front = voxel != voxels[index_forward];
+                    is_voxel_front = voxel != region_voxels[index_forward];
                 }
                 // darken
-                // is_darken[index] = (voxel_right && voxel_up) || (voxel_right && voxel_front) || (voxel_up && voxel_front);
-                is_darken[index] = voxel_up || voxel_right || voxel_front;
+                is_darken[index] = is_voxel_up || is_voxel_right || is_voxel_front;
             }
         }
     }
-    const byte2 set_voxel_black = (byte2) { black_voxel, max_octree_depth };
+    // now darken in another pass
+    for (position.x = 0; position.x < size.x; position.x++) {
+        for (position.y = 0; position.y < size.y; position.y++) {
+            for (position.z = 0; position.z < size.z; position.z++) {
+                int index = byte3_array_index(position, size);
+                if (is_darken[index]) region_voxels[index] = unique_regions;
+            }
+        }
+    }
+    const byte2 set_voxel_black = (byte2) { black_voxel, target_depth };
     for (position.x = 0; position.x < size.x; position.x++) {
         for (position.y = 0; position.y < size.y; position.y++) {
             for (position.z = 0; position.z < size.z; position.z++) {
                 const int index = byte3_array_index(position, size);
-                byte3 node_position = position;
+                const unsigned char region_voxel = region_voxels[index];
+                byte2 set_voxel = (byte2) { black_voxel, target_depth };
+                if (region_voxel != unique_regions) {
+                    set_voxel.x = voxel_range.x + (region_voxel % (voxel_range.y - voxel_range.x));
+                }
+                /*if (voxels[index])
                 if (black_voxel && is_darken[index]) {
                     set_octree_voxel(node, &node_position, &set_voxel_black, 0);
                 } else {
-                    byte2 set_voxel = (byte2) { voxels[index] % max_colors, max_octree_depth };
-                    if (set_voxel.x == 0) set_voxel.x = 1;
-                    set_octree_voxel(node, &node_position, &set_voxel, 0);
-                }
+                    uint voxel_type = voxels[index] % (voxel_range.y);
+                    if (voxel_type < voxel_range.x) voxel_type += voxel_range.x;
+                }*/
+                byte3 node_position = position;
+                set_octree_voxel(node, &node_position, &set_voxel, 0);
             }
         }
     }
