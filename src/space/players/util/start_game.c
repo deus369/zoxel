@@ -52,6 +52,17 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
     attach_to_character(world, player, camera, character);
     // zox_add_tag(character_group.x, Aura)
     spawn_in_game_ui(world, player, character_group);
+    if (has_save_game_file("zoxel", "player.dat")) {
+        // old game
+        // zox_log("loading game\n")
+        // load_player_e(world, player);
+        delay_event(world, &load_player_e, player, 0.01f);
+    } else {
+        // new game as no save file existed
+        // zox_log("new game\n")
+        // save_player_e(world, player);
+        delay_event(world, &save_player_e, player, 0.01f);
+    }
 }
 
 // spawn character and set camera to streaming terrain

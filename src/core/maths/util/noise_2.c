@@ -1,14 +1,6 @@
 #define noise_values_length 512
 unsigned char values[noise_values_length];
-int global_seed;
-
-void set_noise_seed(int seed) {
-    global_seed = seed;
-    srand(seed);
-    for (int i = 0; i < noise_values_length; i++) {
-        values[i] = (unsigned char) rand() % 256; // (byte) random.NextInt(0, 255);
-    }
-}
+uint32_t global_seed;
 
 int noise_fast_floor(float x) {
     return (x > 0) ? ((int)x) : (((int)x) - 1);
@@ -92,4 +84,16 @@ float generate_noise_2D(float2 point, float frequency) {
     float result = 40.0f * (n0 + n1 + n2);
     result = 0.5f * ( 1.0f + result ); // rescale result between 0 and 1
     return result;
+}
+
+
+void set_noise_seed(uint32_t seed) {
+    global_seed = seed;
+    srand(seed);
+    for (int i = 0; i < noise_values_length; i++) {
+        values[i] = (unsigned char) rand() % 256; // (byte) random.NextInt(0, 255);
+    }
+    // testing
+    float value = generate_noise_2D(float2_zero, 0.01f);
+    zox_log(" > seed [%i] value [%f]\n", value)
 }

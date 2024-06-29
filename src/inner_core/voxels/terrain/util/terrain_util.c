@@ -1,5 +1,6 @@
 void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 position, float scale) {
-    double octree_noise = perlin_terrain(position.x + noise_positiver2, position.z + noise_positiver2, terrain_frequency, terrain_seed, terrain_octaves);
+    const uint32_t seed = global_seed;
+    double octree_noise = perlin_terrain(position.x + noise_positiver2, position.z + noise_positiver2, terrain_frequency, seed, terrain_octaves);
     if (octree_noise < octree_min_height) octree_noise = octree_min_height;
     // octree_noise += octree_height_addition * octree_perlin_noise(position.x, position.y, position.z, octree_persistence, octree_frequency);
     if (position.y <= octree_noise) chunk_octree->value = 1;

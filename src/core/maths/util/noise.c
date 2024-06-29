@@ -128,23 +128,5 @@ double perlin_terrain(double x, double y, double f, uint32_t seed, int octaves) 
         terrain += perlin_noise(x * frequency, y * frequency, f, seed) * amplitude;
         amplitude /= 2.0;
     }
-    // terrain /= 4.0;
-    // terrain /= (double) octaves;
-    /*if (terrain > 1.0)
-    {
-        // printf("Terrain too high %d\n", terrain);
-        terrain = 1.0;
-    }*/
     return terrain;
 }
-
-        // uint32_t hash = rand();
-        /*uint32_t hash = x;
-        hash ^= hash << 13;
-        hash ^= hash >> 7;
-        hash ^= hash << 17;
-        hash ^= y;
-        hash ^= hash << 5;
-        hash ^= hash >> 2;
-        hash ^= hash << 3;
-        return hash;*/

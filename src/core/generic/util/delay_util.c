@@ -1,3 +1,5 @@
+// todo: use prefab_event_delay
+
 ecs_entity_t delay_event(ecs_world_t *world, void (*value)(ecs_world_t*, const ecs_entity_t), const ecs_entity_t e, const double delay) {
     const ecs_entity_t event = ecs_new(world, 0);
     zox_set(event, TimedEvent, { value })

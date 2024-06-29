@@ -3,6 +3,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
 #ifdef zox_disable_terrain_generation
     return;
 #endif
+    const uint32_t seed = global_seed;
     zox_change_check()
     const unsigned char target_depth = max_octree_depth;
     const unsigned char chunk_voxel_length = powers_of_two_byte[target_depth];
@@ -31,7 +32,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
                 const double perlin_value = perlin_terrain(
                     noise_positiver2 + chunk_position_float3.x + (voxel_position.x / map_size_f.x),
                     noise_positiver2 + chunk_position_float3.z + (voxel_position.z / map_size_f.y),
-                    terrain_frequency, terrain_seed, terrain_octaves);
+                    terrain_frequency, seed, terrain_octaves);
                 const int global_height = int_floor(terrain_boost + -terrain_minus_amplifier + terrain_amplifier * perlin_value);
                 const int local_height_raw = global_height - chunk_position_y;
                 const int local_height = int_min(chunk_voxel_length - 1, local_height_raw);

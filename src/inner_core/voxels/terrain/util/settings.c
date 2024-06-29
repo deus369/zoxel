@@ -15,7 +15,7 @@ unsigned char get_terrain_lod_from_camera_distance(unsigned char distance_to_cam
 
 void print_terrain_settings() {
     zox_log(" > terrain settings set\n")
-    zox_log("     + terrain seed is [%i]\n", (int) terrain_seed)
+    // zox_log("     + terrain seed is [%i]\n", (int) terrain_seed)
     zox_log("     + octree depth is [%i]\n", max_octree_depth)
     zox_log("     + render distance is [%i]\n", terrain_spawn_distance)
     zox_log("     + terrain vertical is [%i]\n", terrain_vertical)
@@ -70,7 +70,7 @@ void set_terrain_render_distance() {
     terrain_boost = 0; // -8 * terrain_vertical; //  + max_octree_depth * 4;
     terrain_amplifier = 16 + terrain_vertical * 16;
     lowest_voxel_height = - (terrain_vertical) * 16 + 1;
-    terrain_seed = get_unique_time_seed();
+    // terrain_seed = get_unique_time_seed();
 #ifdef zoxel_debug_settings
     print_terrain_settings();
 #endif
