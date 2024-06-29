@@ -2,6 +2,37 @@
 const unsigned char is_generate_vox_airs = 1;
 const unsigned char is_generate_vox_outlines = 1;
 
+void noise_vox(ChunkOctree *chunk, const byte3 size, const unsigned char is_generate_vox_outlines, const byte2 set_voxel_1, const byte2 set_voxel_2, const byte2 set_voxel_3, const byte2 set_voxel_black, const byte2 set_voxel_air) {
+    byte3 voxel_position;
+    for (voxel_position.x = 0; voxel_position.x < size.x; voxel_position.x++) {
+        for (voxel_position.y = 0; voxel_position.y < size.y; voxel_position.y++) {
+            for (voxel_position.z = 0; voxel_position.z < size.z; voxel_position.z++) {
+                byte2 set_voxel;
+                unsigned char did_set_outline = 0;
+                if (is_generate_vox_outlines) {
+                    unsigned char on_edges = byte3_on_edges(voxel_position, size);
+                    if (on_edges) {
+                        set_voxel = set_voxel_black;
+                        did_set_outline = 1;
+                    }
+                }
+                if (!did_set_outline) {
+                    const int rando = rand() % 1000;
+                    if (rando <= 150) {
+                        const unsigned char on_edge = byte3_on_edge(voxel_position, size);
+                        if (!on_edge) set_voxel = set_voxel_1;
+                        else set_voxel = set_voxel_air;
+                    } else if (rando <= 300) set_voxel = set_voxel_3;
+                    else if (rando <= 450) set_voxel = set_voxel_2;
+                    else set_voxel = set_voxel_1;
+                }
+                byte3 node_position = voxel_position;
+                set_octree_voxel(chunk, &node_position, &set_voxel, 0);
+            }
+        }
+    }
+}
+
 void GenerateVoxSystem(ecs_iter_t *it) {
     // zox_change_check()
     const unsigned char target_depth = max_octree_depth;
@@ -58,7 +89,8 @@ void GenerateVoxSystem(ecs_iter_t *it) {
                 set_octree_voxel(chunkOctree, &node_position, &set_voxel, 0);
             }
         } else {
-            for (voxel_position.x = 0; voxel_position.x < size.x; voxel_position.x++) {
+            noise_vox(chunkOctree, size, is_generate_vox_outlines, set_voxel_1, set_voxel_2, set_voxel_3, set_voxel_black, set_voxel_air);
+            /*for (voxel_position.x = 0; voxel_position.x < size.x; voxel_position.x++) {
                 for (voxel_position.y = 0; voxel_position.y < size.y; voxel_position.y++) {
                     for (voxel_position.z = 0; voxel_position.z < size.z; voxel_position.z++) {
                         byte2 set_voxel;
@@ -84,7 +116,7 @@ void GenerateVoxSystem(ecs_iter_t *it) {
                         set_octree_voxel(chunkOctree, &node_position, &set_voxel, 0);
                     }
                 }
-            }
+            }*/
             if (zox_has(e, BlendVox)) {
                 const int grass_random = 6;
                 const int grass_position = chunk_voxel_length - chunk_voxel_length / 3;

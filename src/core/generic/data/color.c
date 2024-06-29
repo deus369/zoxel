@@ -7,6 +7,8 @@ typedef struct {
 } color;
 
 #define color_white (color) { 255, 255, 255, 255 }
+#define color_gray (color) { 125, 125, 125, 255 }
+#define color_gray_dark (color) { 55, 55, 55, 255 }
 #define color_black (color) { 0, 0, 0, 255 }
 #define color_red (color) { 255, 0, 0, 255 }
 #define color_green (color) { 0, 255, 0, 255 }

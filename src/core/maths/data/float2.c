@@ -82,3 +82,8 @@ float2 normalize2D(const float2 input) {
     const float length = sqrt(input.x * input.x + input.y * input.y);
     return (float2) { input.x / length, input.y / length };
 }
+
+
+float float2_distance(const float2 a, const float2 b) {
+    return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+}

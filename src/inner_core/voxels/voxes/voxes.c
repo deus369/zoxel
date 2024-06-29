@@ -14,6 +14,7 @@ zox_component_byte(GenerateVox)
 #include "prefabs/prefabs.c"
 #include "util/vox_files.c"
 #include "util/io_util.c"
+#include "util/voronoi3D.c"
 #include "systems/chunk_colors_build_system.c"
 #include "systems/chunk_octree_colors_build_system.c"
 #include "systems/bounds3D_grow_system.c"

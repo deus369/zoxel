@@ -32,6 +32,7 @@ zox_memory_component(TextureLinks, ecs_entity_t)    // this links only
 #include "data/generate_texture_states.c"
 #include "util/textures_sdl_util.c"
 #include "util/textures_util.c"
+#include "util/voronoi2D.c"
 #include "util/texture_prefab_util.c"
 #include "util/label_util.c"
 #include "prefabs/prefabs.c"
