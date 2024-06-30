@@ -1,8 +1,9 @@
 ecs_entity_t meta_skill_aura;
 
 void spawn_realm_skills(ecs_world_t *world, const ecs_entity_t realm) {
-    SkillLinks *skills = zox_get_mut(realm, SkillLinks)
-    zox_modified(realm, SkillLinks)
+    zox_get_muter(realm, SkillLinks, skills)
+    // clear previous
+    for (int i = 0; i < skills->length; i++) if (skills->value[i]) zox_delete(skills->value[i])
     initialize_memory_component(SkillLinks, skills, ecs_entity_t, 1)
     // aura - damage one
     char *name = generate_name();

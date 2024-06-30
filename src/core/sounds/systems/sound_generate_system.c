@@ -1,11 +1,11 @@
 void SoundGenerateSystem(ecs_iter_t *it) {
-    zox_field_in(SoundLength, soundLengths, 5)
-    zox_field_in(SoundFrequency, soundFrequencys, 6)
-    zox_field_in(SoundVolume, soundVolumes, 7)
-    zox_field_in(InstrumentType, instrumentTypes, 8)
-    zox_field_out(GenerateSound, generateSounds, 2)
-    zox_field_out(SoundData, soundDatas, 3)
-    zox_field_out(SoundDirty, soundDirtys, 4)
+    zox_field_in(InstrumentType, instrumentTypes, 1)
+    zox_field_in(SoundLength, soundLengths, 2)
+    zox_field_in(SoundFrequency, soundFrequencys, 3)
+    zox_field_in(SoundVolume, soundVolumes, 4)
+    zox_field_out(GenerateSound, generateSounds, 5)
+    zox_field_out(SoundData, soundDatas, 6)
+    zox_field_out(SoundDirty, soundDirtys, 7)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(GenerateSound, generateSounds, generateSound)
         if (!generateSound->value) continue;

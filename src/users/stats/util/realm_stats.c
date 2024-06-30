@@ -1,6 +1,8 @@
 // spawn prefabs for each meta stats
 void spawn_realm_stats(ecs_world_t *world, ecs_entity_t realm) {
-    StatLinks *stats = zox_get_mut(realm, StatLinks)
+    zox_get_muter(realm, StatLinks, stats)
+    // clear previous
+    for (int i = 0; i < stats->length; i++) if (stats->value[i]) zox_delete(stats->value[i])
     resize_memory_component(StatLinks, stats, ecs_entity_t, 16)
 
     meta_stat_soul = create_stat_level(world, "soul");
@@ -55,5 +57,4 @@ void spawn_realm_stats(ecs_world_t *world, ecs_entity_t realm) {
     // Jobs
     // create regen stat
     // statLinks->value[1] = create_stat_level(world, "farming");
-    zox_modified(realm, StatLinks)
 }

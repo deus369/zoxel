@@ -8,8 +8,7 @@ void add_player(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t pla
 }
 
 // game state implementation for players module
-void players_game_state(ecs_world_t *world, const ecs_entity_t game, const unsigned char new_game_state) {
-    unsigned char previous_game_state = zox_get_value(game, GameState)
+void players_game_state(ecs_world_t *world, const ecs_entity_t game, const unsigned char previous_game_state, const unsigned char new_game_state) {
     const PlayerLinks *playerLinks = zox_get(game, PlayerLinks)
     for (int i = 0; i < playerLinks->length; i++) {
         const ecs_entity_t player = playerLinks->value[i];

@@ -50,7 +50,7 @@ unsigned char has_save_game_directory(const char *game) {
 int delete_directory_contents(const char *path) {
     DIR *dir = opendir(path);
     struct dirent *entry;
-    char filepath[256];
+    char filepath[300];
     int result = 0;
     if (!dir) {
         perror("Error opening directory");
@@ -58,9 +58,7 @@ int delete_directory_contents(const char *path) {
     }
 
     while ((entry = readdir(dir)) != NULL) {
-        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
-            continue;
-        }
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) continue;
 
         snprintf(filepath, sizeof(filepath), "%s/%s", path, entry->d_name);
 

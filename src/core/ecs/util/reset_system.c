@@ -20,6 +20,7 @@ void component_name##IncrementSystem(ecs_iter_t *it) {\
         if (!component->value) continue;\
         else if (component->value == target) component->value = 0;\
         else component->value++;\
+        /*zox_log(" + %lu is incrementing %s [%s - %i]\n", it->entities[i], #component_name, #target, component->value)*/\
     }\
 } zox_declare_system(component_name##IncrementSystem)
 
@@ -35,7 +36,7 @@ void component_name##IncrementSystem(ecs_iter_t *it) {\
     }\
 } zox_declare_system(component_name##IncrementSystem)
 
-#define zox_define_increment_system(component, pip) zox_system(component##IncrementSystem, pip, [out] component)
+#define zox_define_increment_system(component, pip, ...) zox_system(component##IncrementSystem, pip, [out] component, __VA_ARGS__)
 
 #define zox_set_system(system_name, component_name, t, v)\
 void system_name(ecs_iter_t *it) {\
@@ -56,3 +57,22 @@ void system_name(ecs_iter_t *it) {\
 #define zox_define_reset_system_pip2(system_name, component_name, pip) zox_system(system_name, pip, [out] component_name)
 
 
+// create systems that call function when state hits
+
+
+#define zox_define_system_state_event(system_name, pip, component, ...) zox_system(system_name##StateEventSystem, pip, [in] component, __VA_ARGS__)
+
+#define zox_define_system_state_event_1(system_name, pip, component, ...) zox_system_1(system_name##StateEventSystem, pip, [in] component, __VA_ARGS__)
+
+#define zox_declare_system_state_event(system_name, component, target, function)\
+void system_name##StateEventSystem(ecs_iter_t *it) {\
+    zox_iter_world()\
+    zox_field_in(component, components, 1)\
+    for (int i = 0; i < it->count; i++) {\
+        zox_field_i(component, components, comp)\
+        if (comp->value == target) {\
+            zox_field_e()\
+            function(world, e);\
+        }\
+    }\
+} zox_declare_system(system_name##StateEventSystem)

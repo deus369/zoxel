@@ -1,92 +1,3 @@
-// GenerateVox == 1
-const unsigned char is_generate_vox_airs = 1;
-const unsigned char is_generate_vox_outlines = 1;
-
-void vox_outlines(ChunkOctree *chunk, const unsigned char target_depth, byte3 size, const unsigned char black_voxel) {
-    byte3 voxel_position;
-    for (voxel_position.x = 0; voxel_position.x < size.x; voxel_position.x++) {
-        for (voxel_position.y = 0; voxel_position.y < size.y; voxel_position.y++) {
-            for (voxel_position.z = 0; voxel_position.z < size.z; voxel_position.z++) {
-                unsigned char on_edges = byte3_on_edges(voxel_position, size);
-                if (on_edges) {
-                    // skip if air
-                    byte3 temp_position_2 = voxel_position;
-                    if (get_octree_voxel(chunk, &temp_position_2, target_depth) == 0) continue;
-                    byte2 set_voxel = (byte2) { black_voxel, target_depth };
-                    byte3 temp_position = voxel_position;
-                    set_octree_voxel(chunk, &temp_position, &set_voxel, 0);
-                }
-            }
-        }
-    }
-}
-
-/*void noise_vox(ChunkOctree *chunk, const byte3 size, const unsigned char is_generate_vox_outlines, const byte2 set_voxel_1, const byte2 set_voxel_2, const byte2 set_voxel_3, const byte2 set_voxel_black, const byte2 set_voxel_air) {
-    byte3 voxel_position;
-    for (voxel_position.x = 0; voxel_position.x < size.x; voxel_position.x++) {
-        for (voxel_position.y = 0; voxel_position.y < size.y; voxel_position.y++) {
-            for (voxel_position.z = 0; voxel_position.z < size.z; voxel_position.z++) {
-                byte2 set_voxel;
-                unsigned char did_set_outline = 0;
-                if (is_generate_vox_outlines) {
-                    unsigned char on_edges = byte3_on_edges(voxel_position, size);
-                    if (on_edges) {
-                        set_voxel = set_voxel_black;
-                        did_set_outline = 1;
-                    }
-                }
-                if (!did_set_outline) {
-                    const int rando = rand() % 1000;
-                    if (rando <= 150) {
-                        const unsigned char on_edge = byte3_on_edge(voxel_position, size);
-                        if (!on_edge) set_voxel = set_voxel_1;
-                        else set_voxel = set_voxel_air;
-                    } else if (rando <= 300) set_voxel = set_voxel_3;
-                    else if (rando <= 450) set_voxel = set_voxel_2;
-                    else set_voxel = set_voxel_1;
-                }
-                byte3 node_position = voxel_position;
-                set_octree_voxel(chunk, &node_position, &set_voxel, 0);
-            }
-        }
-    }
-}*/
-
-void noise_vox2(ChunkOctree *chunk, const unsigned char target_depth, const byte3 size, const byte2 voxel_range, const unsigned char black_voxel) {
-    byte3 voxel_position;
-    for (voxel_position.x = 0; voxel_position.x < size.x; voxel_position.x++) {
-        for (voxel_position.y = 0; voxel_position.y < size.y; voxel_position.y++) {
-            for (voxel_position.z = 0; voxel_position.z < size.z; voxel_position.z++) {
-                byte3 temp_position = voxel_position;
-                if (get_octree_voxel(chunk, &temp_position, target_depth) == black_voxel) continue;
-                const int rando = rand() % 1000;
-                if (rando > 300) continue;
-                const unsigned char voxel = voxel_range.x + rand() % (voxel_range.y - voxel_range.x);
-                byte2 set_voxel = (byte2) { voxel, target_depth };
-                byte3 node_position = voxel_position;
-                set_octree_voxel(chunk, &node_position, &set_voxel, 0);
-            }
-        }
-    }
-}
-
-void vox_rubble(ChunkOctree *chunk, const unsigned char target_depth, const byte3 size, const byte2 voxel_range, const int rubble_count) {
-    byte3 voxel_position;
-    for (int j = 0; j < rubble_count; j++) {
-        voxel_position.x = rand() % size.x;
-        voxel_position.z = rand() % size.y;
-        for (int k = 0; k < size.y; k++) {
-            voxel_position.y = k;
-            byte3 node_position = voxel_position;
-            if (get_octree_voxel(chunk, &node_position, target_depth) == 0) break;
-        }
-        unsigned char voxel = voxel_range.x + rand() % (voxel_range.y - voxel_range.x);
-        byte2 set_voxel = (byte2) { voxel, target_depth };
-        byte3 node_position = voxel_position;
-        set_octree_voxel(chunk, &node_position, &set_voxel, 0);
-    }
-}
-
 void GenerateVoxSystem(ecs_iter_t *it) {
     const unsigned char unique_colors = 8;
     const int grass_random = 6;
@@ -98,7 +9,6 @@ void GenerateVoxSystem(ecs_iter_t *it) {
     zox_field_out(GenerateVox, generateVoxs, 2)
     zox_field_out(ChunkOctree, chunkOctrees, 3)
     zox_field_out(ColorRGBs, colorRGBss, 4)
-    // zox_field_out(ChunkDirty, chunkDirtys, 5) // for now we don't use this, some models have no dirty / just have data
     for (int i = 0; i < it->count; i++) {
         zox_field_o(GenerateVox, generateVoxs, generateVox)
         if (!generateVox->value) continue;
@@ -129,12 +39,12 @@ void GenerateVoxSystem(ecs_iter_t *it) {
             }
             const byte2 voxel_range_2 = (byte2) { colors_count + 1, colors_count + unique_colors };
             color_rgb dirt_dark_voxel = color_to_color_rgb(under_color);
-            color_rgb_multiply_float(&dirt_dark_voxel, 0.13f);
+            color_rgb_multiply_float(&dirt_dark_voxel, fracture_dark_multiplier);
             add_to_ColorRGBs(colorRGBs, dirt_dark_voxel);
             unsigned char black_voxel_3 = colorRGBs->length;
 
             voronoi3D(chunkOctree, target_depth, size, voxel_range_2, black_voxel_3);
-            noise_vox2(chunkOctree, target_depth, size, voxel_range_2, black_voxel_3);  // avoids black ones
+            noise_vox(chunkOctree, target_depth, size, voxel_range_2, black_voxel_3);  // avoids black ones
 
             // create new chunk node here, blend two using mask?
             const unsigned char grass_position = chunk_voxel_length - chunk_voxel_length / 3;
@@ -153,10 +63,9 @@ void GenerateVoxSystem(ecs_iter_t *it) {
             // add outline between blended parts
             byte2 range_blend_1 = voxel_range;
             byte2 range_blend_2 = voxel_range_2;
-            range_blend_2.y++;
-            // range_blend_2.x--;  // include black
+            range_blend_2.y++; // include black
             color_rgb new_color = color_to_color_rgb(color2->value);
-            color_rgb_multiply_float(&new_color, 0.13f);
+            color_rgb_multiply_float(&new_color, grass_blend_dark_multiplier);
             add_to_ColorRGBs(colorRGBs, new_color);
             unsigned char black_voxel_2 = colorRGBs->length;
             byte2 set_voxel_black_2 = (byte2) { black_voxel_2, target_depth };
@@ -214,11 +123,11 @@ void GenerateVoxSystem(ecs_iter_t *it) {
             }
         } else {
             color_rgb dirt_dark_voxel = color_to_color_rgb(color2->value);
-            color_rgb_multiply_float(&dirt_dark_voxel, 0.13f);
+            color_rgb_multiply_float(&dirt_dark_voxel, fracture_dark_multiplier);
             add_to_ColorRGBs(colorRGBs, dirt_dark_voxel);
             unsigned char black_voxel_3 = colorRGBs->length;
             voronoi3D(chunkOctree, target_depth, size, voxel_range, black_voxel_3);
-            noise_vox2(chunkOctree, target_depth, size, voxel_range, black_voxel_3);
+            noise_vox(chunkOctree, target_depth, size, voxel_range, black_voxel_3);
         }
         if (is_generate_vox_outlines) vox_outlines(chunkOctree, target_depth, size, black_voxel);
 #ifndef zox_disable_closing_octree_nodes
@@ -227,55 +136,3 @@ void GenerateVoxSystem(ecs_iter_t *it) {
         generateVox->value = 0;
     }
 } zox_declare_system(GenerateVoxSystem)
-
-/*byte2 set_voxel;
-int rando = rand() % 1000;
-if (rando <= 200) set_voxel = set_voxel_1;
-else if (rando <= 400) set_voxel = set_voxel_2;
-else set_voxel = set_voxel_3;
-byte3 temp_position = voxel_position;
-set_octree_voxel(chunkOctree, &temp_position, &set_voxel, 0);*/
-
-/*for (voxel_position.x = 0; voxel_position.x < size.x; voxel_position.x++) {
-    for (voxel_position.y = 0; voxel_position.y < size.y; voxel_position.y++) {
-        for (voxel_position.z = 0; voxel_position.z < size.z; voxel_position.z++) {
-            byte2 set_voxel;
-            unsigned char did_set_outline = 0;
-            if (is_generate_vox_outlines) {
-                unsigned char on_edges = byte3_on_edges(voxel_position, size);
-                if (on_edges) {
-                    set_voxel = set_voxel_black;
-                    did_set_outline = 1;
-                }
-            }
-            if (!did_set_outline) {
-                const int rando = rand() % 1000;
-                if (rando <= 150) {
-                    const unsigned char on_edge = byte3_on_edge(voxel_position, size);
-                    if (!on_edge) set_voxel = set_voxel_1;
-                    else set_voxel = set_voxel_air;
-                } else if (rando <= 300) set_voxel = set_voxel_3;
-                else if (rando <= 450) set_voxel = set_voxel_2;
-                else set_voxel = set_voxel_1;
-            }
-            byte3 node_position = voxel_position;
-            set_octree_voxel(chunkOctree, &node_position, &set_voxel, 0);
-        }
-    }
-}*/
-
-// testing
-/*if (voxel_position.x >= chunk_voxel_length / 2) set_voxel = set_voxel_1;
-else set_voxel = set_voxel_2;*/
-
-            /*color_rgb color_4 = color_to_color_rgb(under_color);
-            color_rgb color_5 = color_4;
-            color_rgb_multiply_float(&color_5, 0.7f);
-            color_rgb color_6 = color_4;
-            color_rgb_multiply_float(&color_6, 1.2f);
-            add_to_ColorRGBs(colorRGBs, color_4);
-            add_to_ColorRGBs(colorRGBs, color_5);
-            add_to_ColorRGBs(colorRGBs, color_6);
-            byte2 set_voxel_4 = (byte2) { colors_count + 1, target_depth };
-            byte2 set_voxel_5 = (byte2) { colors_count + 2, target_depth };
-            byte2 set_voxel_6 = (byte2) { colors_count + 3, target_depth };*/

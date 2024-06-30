@@ -10,7 +10,7 @@ zox_component_double(DestroyInTime)
 
 zox_begin_module(Timing)
 zox_define_component_double(DestroyInTime)
-zox_system(DestroyInTimeSystem, EcsPreStore, [out] DestroyInTime)
+zox_system(DestroyInTimeSystem, EcsPostUpdate, [out] DestroyInTime)
 initialize_time();
 zoxel_end_module(Timing)
 

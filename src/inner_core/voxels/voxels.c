@@ -8,7 +8,8 @@ zox_component_entity(VoxLink)
 #include "animations/voxels_animations.c"
 #include "voxes/voxes.c"
 #include "terrain/terrain.c"
-#include "realm_voxels.c"
+#include "util/realm_voxels.c"
+zox_declare_system_state_event(RealmVoxels, GenerateRealm, zox_generate_realm_voxels, spawn_realm_voxels)
 
 zox_begin_module(Voxels)
 zox_define_component_entity(VoxLink)
@@ -20,6 +21,7 @@ zox_import_module(Voxes)
 zox_import_module(Terrain)
 zox_prefab_add(prefab_realm, VoxelLinks)
 zox_prefab_set(prefab_realm, VoxelsDirty, { 0 })
+zox_define_system_state_event_1(RealmVoxels, EcsOnLoad, GenerateRealm) //, [none] realms.Realm)
 zoxel_end_module(Voxels)
 
 #endif

@@ -11,6 +11,7 @@ zox_declare_tag(VoxRubble)
 zox_component_byte(GenerateVox)
 #include "util/vox_read_util.c"
 #include "util/vox_util.c"
+#include "util/generate_util.c"
 #include "prefabs/prefabs.c"
 #include "util/vox_files.c"
 #include "util/io_util.c"

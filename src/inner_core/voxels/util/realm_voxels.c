@@ -14,6 +14,15 @@ float3 generate_hsv_v_s(const float2 hue_limits, const float2 value_limits, cons
 
 void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     if (realm == 0) return;
+
+    zox_get_mutt(realm, VoxelLinks, voxelLinks)
+
+    // clear previous
+    ecs_entity_t old_tilemap = zox_get_value(realm, TilemapLink)
+    if (old_tilemap) zox_delete(old_tilemap)
+    for (int i = 0; i < voxelLinks->length; i++) zox_delete(voxelLinks->value[i])
+    clear_memory_component(VoxelLinks, voxelLinks)
+
 #ifdef zox_log_spawn_realm_voxels
     zox_log("spawn voxels 0\n")
 #endif
@@ -23,7 +32,6 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
 #endif
     zox_set(realm, TilemapLink, { tilemap })
     zox_set(tilemap, RealmLink, { realm })
-    zox_get_mutt(realm, VoxelLinks, voxelLinks)
     resize_memory_component(VoxelLinks, voxelLinks, ecs_entity_t, zox_blocks_count)
 #ifdef zox_log_spawn_realm_voxels
     zox_log("spawn voxels 2\n")
@@ -175,7 +183,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
 #endif
 }
 
-void respawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
+/*void respawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     zox_get_mutt(realm, VoxelLinks, voxelLinks)
     zox_get_mutt(realm, TilemapLink, tilemapLink)
     for (int i = 0; i < voxelLinks->length; i++) zox_delete(voxelLinks->value[i])
@@ -183,7 +191,7 @@ void respawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     zox_delete(tilemapLink->value)
     tilemapLink->value = 0;
     spawn_realm_voxels(world, realm);
-}
+}*/
 
 // spawn_data.texture_tag = zox_id(DirtTexture);
 // spawn_data.texture_tag = zox_id(GrassTexture);

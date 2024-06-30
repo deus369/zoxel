@@ -1,7 +1,5 @@
-// todo: RealmDirty -> regenerate realm data with new seed
+// todo: GenerateRealm -> regenerate realm data with new seed
 // todo: game start delayed while realm is dirty
-extern void respawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm);
-extern void respawn_realm_items(ecs_world_t *world, const ecs_entity_t realm);
 
 void destroy_main_menu(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
@@ -12,7 +10,7 @@ void destroy_main_menu(ecs_world_t *world, const ecs_entity_t player) {
 
 void begin_play_game(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t game = zox_get_value(player, GameLink)
-    trigger_event_game(world, game, zox_game_playing);
+    set_game_state_target(world, game, zox_game_playing);
 }
 
 void button_event_new_game(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
@@ -28,8 +26,9 @@ void button_event_new_game(ecs_world_t *world, const ecs_entity_t player, const 
     create_new_save_directory("zoxel");
     save_realm("zoxel", "seed.dat", &realm_save);
 
-    respawn_realm_voxels(world, realm);
-    delay_event(world, &respawn_realm_items, realm, 0.1f);
+    zox_set(realm, GenerateRealm, { zox_generate_realm_start })
+    // respawn_realm_voxels(world, realm);
+    // delay_event(world, &respawn_realm_items, realm, 0.1f);
     // respawn_realm_items(world, realm);
 
     // begin_play_game(world, player);
@@ -45,8 +44,10 @@ void button_event_continue_game(ecs_world_t *world, const ecs_entity_t player, c
     load_realm("zoxel", "seed.dat", &realm_save);
     set_noise_seed(realm_save.seed);
 
-    respawn_realm_voxels(world, realm);
-    delay_event(world, &respawn_realm_items, realm, 0.1f);
+    zox_log(" > realm start [%lu] %s\n", realm, zox_get_name(realm))
+    zox_set(realm, GenerateRealm, { zox_generate_realm_start })
+    // respawn_realm_voxels(world, realm);
+    // delay_event(world, &respawn_realm_items, realm, 0.1f);
     // respawn_realm_items(world, realm);
 
     // begin_play_game(world, player);

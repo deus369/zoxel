@@ -2,7 +2,7 @@
 // do I need a velocity for stats? then regen will add to it? or just add directly..? :O hmm
 void StatRegenSystem(ecs_iter_t *it) {
     //unsigned char system_updated = 0;
-    const float regen_rate = 1; // 0.25f;
+    const float regen_rate = 0.125f;
     init_delta_time()
     zox_iter_world()
     zox_field_in(UserLink, userLinks, 1)

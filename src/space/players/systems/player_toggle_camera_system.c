@@ -4,18 +4,17 @@ void PlayerToggleCameraSystem(ecs_iter_t *it) {
     zox_field_in(CharacterLink, characterLinks, 2)
     zox_field_in(GameLink, gameLinks, 3)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(GameLink, gameLinks, gameLink)
+        zox_field_i(GameLink, gameLinks, gameLink)
         if (!gameLink->value) continue;
-        const GameState *gameState = zox_get(gameLink->value, GameState)
-        if (gameState->value != zox_game_playing) continue;
-        zox_field_i_in(CharacterLink, characterLinks, characterLink)
+        const unsigned char game_state = zox_get_value(gameLink->value, GameState)
+        if (game_state != zox_game_playing) continue;
+        zox_field_i(CharacterLink, characterLinks, characterLink)
+        // if no character link
         if (!characterLink->value) continue;
-        if (zox_has(characterLink->value, DisableMovement)) {
-            const DisableMovement *disableMovement = zox_get(characterLink->value, DisableMovement)
-            if (disableMovement->value) continue;
-        }
+        // if disabled
+        if (zox_has(characterLink->value, DisableMovement) && zox_gett(characterLink->value, DisableMovement)) continue;
         unsigned char is_toggle_camera = 0;
-        zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
+        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device_entity = deviceLinks->value[j];
             if (zox_has(device_entity, Mouse)) {

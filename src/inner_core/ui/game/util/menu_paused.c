@@ -13,7 +13,7 @@ void button_event_end_game(ecs_world_t *world, const ecs_entity_t player, const 
         find_child_with_tag(canvas, Taskbar, taskbar)
         if (taskbar) zox_delete(taskbar)
     }
-    trigger_event_game(world, game, zox_game_start);
+    set_game_state_target(world, game, zox_game_start);
 }
 
 // extern void pause_resume(ecs_world_t *world, const ecs_entity_t player);

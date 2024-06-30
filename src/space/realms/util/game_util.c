@@ -39,8 +39,7 @@ void realms_game_end(ecs_world_t *world, const ecs_entity_t game) {
     delay_event(world, &realms_game_end_delayed, game, 1.2f);
 }
 
-void realms_game_state(ecs_world_t *world, ecs_entity_t game, unsigned char new_game_state) {
-    unsigned char previous_game_state = zox_get_value(game, GameState)
-    if (previous_game_state == zox_game_start && new_game_state == zox_game_playing) realms_start_game(world, game);
+void realms_game_state(ecs_world_t *world, const ecs_entity_t game, const unsigned char old_game_state, const unsigned char new_game_state) {
+    if (old_game_state == zox_game_start && new_game_state == zox_game_playing) realms_start_game(world, game);
     else if (new_game_state == zox_game_start) realms_game_end(world, game);
 }

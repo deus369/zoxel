@@ -18,6 +18,7 @@ zox_declare_tag(Poison)
 #include "util/realm_skills.c"
 #include "util/character_skills.c"
 #include "ui/ui.c"
+zox_declare_system_state_event(RealmSkills, GenerateRealm, zox_generate_realm_skills, spawn_realm_skills)
 
 zox_begin_module(Skills)
 zox_define_user_data(Skill)
@@ -27,6 +28,7 @@ zox_filter(characters, [in] Dead, [in] Position3D, [out] Children, [out] DotLink
 zox_system_ctx_1(DamageAuraSystem, main_thread_pipeline, characters, [in] UserLink, [none] Aura)
 zox_system(DotsSystem, EcsOnUpdate, [in] UserLink, [in] SpawnerLink, [none] Poison)
 zox_import_module(UISkills)
+zox_define_system_state_event_1(RealmSkills, EcsOnLoad, GenerateRealm) // , [none] realms.Realm)
 spawn_prefabs_skills(world);
 zoxel_end_module(Skills)
 

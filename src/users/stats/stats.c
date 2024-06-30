@@ -26,6 +26,7 @@ zox_declare_tag(StatSoul)
 #include "systems/death_system.c"
 #include "ui/ui.c"
 #include "util/character_stats.c"
+zox_declare_system_state_event(RealmStats, GenerateRealm, zox_generate_realm_stats, spawn_realm_stats)
 
 zox_begin_module(Stats)
 zox_define_tag(StatState)
@@ -45,6 +46,7 @@ zox_define_tag(StatSoul)
 zox_system(DeathSystem, EcsOnUpdate, [in] StatValue, [in] UserLink, [none] HealthStat)
 zox_system(StatRegenSystem, EcsOnUpdate, [in] UserLink, [in] StatValueMax, [out] StatValue, [none] StatState)
 zox_import_module(StatsUI)
+zox_define_system_state_event_1(RealmStats, EcsOnLoad, GenerateRealm) // , [none] realms.Realm)
 spawn_prefabs_stats(world);
 zoxel_end_module(Stats)
 

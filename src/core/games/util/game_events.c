@@ -13,24 +13,28 @@ void add_to_event_game_state(zox_game_event funn) {
     add_to_zox_game_event_array_d(game_state_event, funn);
 }
 
-void set_game_state(ecs_world_t *world, ecs_entity_t game, unsigned char new_game_state) {
+/*void set_game_state(ecs_world_t *world, ecs_entity_t game, unsigned char new_game_state) {
     // zox_log(" > setting game state [%i]\n", new_game_state)
     zox_set(game, GameState, { new_game_state })
+}*/
+
+void trigger_event_game(ecs_world_t* world, const ecs_entity_t game, const unsigned char old_game_state, const unsigned char new_game_state) {
+    // const unsigned char old_game_stat = zox_get_value(game, GameState)
+    // if (new_game_state == old_game_stat) return;
+    for (int i = 0; i < game_state_event->size; i++) {
+        if (game_state_event->data[i].value) (*game_state_event->data[i].value)(world, game, old_game_state, new_game_state);
+    }
+    // set_game_state(world, game, new_game_state);
 }
 
-void trigger_event_game(ecs_world_t* world, const ecs_entity_t game, const unsigned char new_game_state) {
-    const unsigned char old_game_stat = zox_get_value(game, GameState)
-    if (new_game_state == old_game_stat) return;
-    for (int i = 0; i < game_state_event->size; i++) {
-        if (game_state_event->data[i].value) (*game_state_event->data[i].value)(world, game, new_game_state);
-    }
-    set_game_state(world, game, new_game_state);
+void set_game_state_target(ecs_world_t *world, const ecs_entity_t game, const unsigned char target_state) {
+    zox_set(game, GameStateTarget, { target_state })
 }
 
 void pause_resume(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t game = zox_get_value(player, GameLink)
-    const GameState *gameState = zox_get(game, GameState)
-    if (!(gameState->value == zox_game_playing || gameState->value == zox_game_paused)) return;
-    unsigned char is_paused = gameState->value == zox_game_paused;
-    if (is_paused) trigger_event_game(world, game, zox_game_playing);
+    const unsigned char game_state = zox_get_value(game, GameState)
+    if (!(game_state == zox_game_playing || game_state == zox_game_paused)) return;
+    unsigned char is_paused = game_state == zox_game_paused;
+    if (is_paused) set_game_state_target(world, game, zox_game_playing);
 }

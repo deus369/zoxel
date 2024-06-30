@@ -30,8 +30,8 @@ typedef unsigned int uint;
 #include "sounds/sounds.c"
 #include "nodes/nodes.c"
 #include "players/players.c"
-#include "games/games.c"
 #include "realms/realms.c"
+#include "games/games.c"
 #include "raycasts/raycasts.c"
 #include "colors/colors.c"
 #include "util/core_util.c"
@@ -56,8 +56,8 @@ zox_import_module(Rendering)
 zox_import_module(Sounds)
 zox_import_module(Nodes)
 zox_import_module(Players)
-zox_import_module(Games)
 zox_import_module(Realms)
+zox_import_module(Games)
 zox_import_module(Raycasts)
 zox_import_module(Colorz)
 zoxel_end_module(Core)

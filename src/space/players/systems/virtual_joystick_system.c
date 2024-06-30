@@ -7,16 +7,16 @@ void VirtualJoystickSystem(ecs_iter_t *it) {
     zox_field_in(RaycasterResult, raycasterResults, 3)
     zox_field_in(GameLink, gameLinks, 4)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(GameLink, gameLinks, gameLink)
+        zox_field_i(GameLink, gameLinks, gameLink)
         if (!gameLink->value) return;
-        zox_field_i_in(RaycasterResult, raycasterResults, raycasterResult)
+        zox_field_i(RaycasterResult, raycasterResults, raycasterResult)
         if (raycasterResult->value) continue;   // if raycasted ui, don't process
         zox_field_e()
         const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
-        zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
-        zox_field_i_in(DeviceMode, deviceModes, deviceMode)
-        const GameState *gameState = zox_get(gameLink->value, GameState)
-        const unsigned char is_playing = gameState->value == zox_game_playing;
+        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
+        zox_field_i(DeviceMode, deviceModes, deviceMode)
+        const unsigned char game_state = zox_get_value(gameLink->value, GameState)
+        const unsigned char is_playing = game_state == zox_game_playing;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device_entity = deviceLinks->value[j];
             if (deviceMode->value == zox_device_mode_touchscreen) {

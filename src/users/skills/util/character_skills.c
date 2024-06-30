@@ -1,8 +1,8 @@
-const int skills_count = 1; // having blank items seems to b reak it
+const int skills_count = 8; // having blank items seems to b reak it
 
 void spawn_character_skills(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player) {
     if (!player) return;
-    SkillLinks *skills = zox_get_mut(e, SkillLinks)
+    zox_get_muter(e, SkillLinks, skills)
     if (!skills) return;
     initialize_memory_component(SkillLinks, skills, ecs_entity_t, skills_count)
     if (!skills->value) {
@@ -17,5 +17,4 @@ void spawn_character_skills(ecs_world_t *world, const ecs_entity_t e, const ecs_
     } else {
         zox_log(" ! meta_skill_aura not found\n")
     }
-    zox_modified(e, SkillLinks)
 }

@@ -6,8 +6,8 @@ void FreeCameraToggleSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(GameLink, gameLinks, gameLink)
         if (!gameLink->value) continue;
-        const GameState *gameState = zox_get(gameLink->value, GameState)
-        if (gameState->value != zox_game_playing) continue;
+        const unsigned char game_state = zox_get_value(gameLink->value, GameState)
+        if (game_state != zox_game_playing) continue;
         zox_field_i_in(CameraLink, cameraLinks, cameraLink)
         if (cameraLink->value == 0) continue;
         const CanRoam *canRoam = zox_get(cameraLink->value, CanRoam)

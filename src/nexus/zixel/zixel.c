@@ -9,7 +9,6 @@ unsigned char boot_zixel(ecs_world_t *world) {
     if (!headless) load_app_icon(zox_gett_value(window, SDLWindow), resources_folder_name"textures/game_icon.png");
     // Realm,  players, skybox
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);
-    spawn_realm_stats(world, realm);
     const ecs_entity_t game = spawn_game(world);
     zox_set(game, RealmLink, { realm })
     spawn_weather(world);

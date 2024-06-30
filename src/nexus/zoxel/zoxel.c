@@ -41,21 +41,6 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);
     const ecs_entity_t game = spawn_game(world);
     zox_set(game, RealmLink, { realm })
-#ifdef zox_mod_voxels
-    spawn_realm_voxels(world, realm);
-#endif
-#ifdef zox_mod_stats
-    spawn_realm_stats(world, realm);
-#endif
-#ifdef zox_mod_items
-    spawn_realm_items(world, realm);
-#endif
-#ifdef zox_mod_skills
-    spawn_realm_skills(world, realm);
-#endif
-#ifdef zox_mod_quests
-    spawn_realm_quests(world, realm);
-#endif
 #ifdef zox_log_boot_game
     zox_log("boot_zoxel_game5\n")
 #endif

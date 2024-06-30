@@ -1,6 +1,5 @@
 ecs_entity_t prefab_menu_skills;
 ecs_entity_t prefab_icon_skill;
-// #include "menu_skills.c"
 zox_user_menu_functions(Skills, Skill, skills, skill)
 #include "icon_skill.c"
 

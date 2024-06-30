@@ -9,6 +9,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
     const float2 map_size_f = (float2) { chunk_voxel_length, chunk_voxel_length };
     const SetVoxelTargetData datam_dirt = { .depth = target_depth, .voxel = zox_block_dirt, .effect_nodes = 1 };
     const SetVoxelTargetData datam_grass = { .depth = target_depth, .voxel = zox_block_grass, .effect_nodes = 1 };
+    const SetVoxelTargetData datam_sand = { .depth = target_depth, .voxel = zox_block_sand, .effect_nodes = 1 };
     const SetVoxelTargetData datam_flower = { .depth = target_depth, .voxel = zox_block_vox_grass, .effect_nodes = 1 };
     const SetVoxelTargetData datam_rubble = { .depth = target_depth, .voxel = zox_block_dirt_rubble, .effect_nodes = 1 };
     const uint32_t seed = global_seed;
@@ -35,14 +36,16 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
                     noise_positiver2 + chunk_position_float3.x + (voxel_position.x / map_size_f.x),
                     noise_positiver2 + chunk_position_float3.z + (voxel_position.z / map_size_f.y),
                     terrain_frequency, seed, terrain_octaves);
-                const int global_height = int_floor(terrain_boost + -terrain_minus_amplifier + terrain_amplifier * perlin_value);
-                const int local_height_raw = global_height - chunk_position_y;
+                const int global_position_y = int_floor(terrain_boost + -terrain_minus_amplifier + terrain_amplifier * perlin_value);
+                const int local_height_raw = global_position_y - chunk_position_y;
                 const int local_height = int_min(chunk_voxel_length - 1, local_height_raw);
                 if (local_height >= 0) {
                     for (voxel_position.y = 0; voxel_position.y <= local_height; voxel_position.y++) {
                         data.position = voxel_position;
-                        if (voxel_position.y  == local_height_raw) set_voxel(&datam_grass, data);
-                        else set_voxel(&datam_dirt, data);
+                        if (voxel_position.y  == local_height_raw) {
+                            if (global_position_y < sand_height) set_voxel(&datam_sand, data);
+                            else set_voxel(&datam_grass, data);
+                        } else set_voxel(&datam_dirt, data);
                     }
                 }
                 if (local_height_raw + 1 >= 0 && local_height_raw + 1 < chunk_voxel_length) {

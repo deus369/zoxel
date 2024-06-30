@@ -69,10 +69,11 @@ zox_define_memory_component(SoundData)
 #ifdef zox_lib_sdl_mixer
 zox_define_component(SDLSound)
 #endif
-zox_system(SoundGenerateSystem, EcsOnUpdate, [none] Sound, [out] GenerateSound, [out] SoundData, [out] SoundDirty, [in] SoundLength, [in] SoundFrequency, [in] SoundVolume, [in] InstrumentType)
+zox_system(SoundGenerateSystem, EcsOnUpdate, [in] InstrumentType, [in] SoundLength, [in] SoundFrequency, [in] SoundVolume, [out] GenerateSound, [out] SoundData, [out] SoundDirty, [none] Sound)
 #ifdef zox_lib_sdl_mixer
 zox_system(SoundUpdateSystem, EcsPostUpdate, [none] Sound, [in] SoundData, [out] SoundDirty, [out] SDLSound)
-zox_system(PlaySoundSystem, zox_pipelines_pre_render, [in] SoundLength, [out] TriggerSound, [out] SDLSound, [out] DestroyInTime, [none] Sound)
+// zox_pipelines_pre_render
+zox_system(PlaySoundSystem, EcsPostUpdate, [in] SoundLength, [out] TriggerSound, [out] SDLSound, [out] DestroyInTime, [none] Sound)
 #endif
 zox_system_1(SoundDebugSystem, zox_pip_mainthread, [none] Sound, [in] SoundData, [in] SoundDirty)
 initialize_sounds(world);
