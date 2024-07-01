@@ -124,6 +124,7 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
                 },
                 .texture = data->icon_frame.texture
             };
+            spawnIconFrame.icon.index = array_index;
             const ecs_entity_t user_data_element = user_data->value[item_index];
             body_children->value[array_index] = spawn_icon_frame_user(world, &spawnIconFrame, user_data_element).x;
             if (i == 0 && icon_frames_have_active_states) zox_set(body_children->value[array_index], ActiveState, { 1 }) // first one should be active
@@ -143,8 +144,9 @@ SpawnWindowUsers get_default_spawn_window_users_data(const ecs_entity_t characte
     const byte2 grid_size = (byte2) { 4, 4 };
     const int grid_padding = 6;
     const int grid_margins = 16;
+    const int icon_frame_size = default_icon_frame_size;
     const int icon_size = default_icon_size;
-    const int2 size = (int2) { grid_padding + (icon_size + grid_padding) * grid_size.x + grid_margins * 2, grid_padding + (icon_size + grid_padding) * grid_size.y + grid_margins * 2 + header_height };
+    const int2 size = (int2) { grid_padding + (icon_frame_size + grid_padding) * grid_size.x + grid_margins * 2, grid_padding + (icon_frame_size + grid_padding) * grid_size.y + grid_margins * 2 + header_height };
     SpawnWindowUsers data = {
         .canvas = {
             .e = canvas,
@@ -185,13 +187,14 @@ SpawnWindowUsers get_default_spawn_window_users_data(const ecs_entity_t characte
             .texture = {
                 .fill_color = default_fill_color_icon,
                 .outline_color = default_outline_color_icon
-            }
+            },
+            .size = icon_size
         },
         .window = {
             .prefab = prefab_window_users,
             .grid_size = grid_size,
             .grid_padding = grid_padding,
-            .icon_size = icon_size,
+            .icon_size = icon_frame_size,
             .character = character
         },
     };

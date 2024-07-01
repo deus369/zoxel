@@ -1,7 +1,7 @@
 void tooltip_event_icon_quest(ecs_world_t *world, const TooltipEventData *data) {
-    if (data->event == zox_select_state_deselected_this_frame) {
+    /*if (data->event == zox_select_state_deselected_this_frame) {
         set_entity_with_text(world, data->tooltip, "");
-    } else {
+    } else*/ {
         // set_entity_with_text(world, data->tooltip, "selected skill");
         unsigned char used_name = 0;
         char result[64];

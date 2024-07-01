@@ -2,6 +2,8 @@
 typedef struct {
     ecs_entity_t prefab;
     FrameTextureData texture;
+    int size;
+    int index;
 } IconData;
 
 typedef struct {
@@ -9,4 +11,5 @@ typedef struct {
     ParentSpawnData parent;
     FrameTextureData texture;
     ElementSpawnData element;
+    int index;
 } SpawnIcon;

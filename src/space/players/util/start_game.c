@@ -83,7 +83,7 @@ void player_start_game3D_delayed(ecs_world_t *world, const ecs_entity_t player) 
 #else
     if (game_rule_attach_to_character) {
         delay_event(world, &spawn_vox_player_character_in_terrain, player, 0.1f);
-        delay_event(world, &post_player_start_game, player, 0.14f);
+        delay_event(world, &post_player_start_game, player, 0.34f);
     } else {
         attach_to_character(world, player, camera, 0);
     }

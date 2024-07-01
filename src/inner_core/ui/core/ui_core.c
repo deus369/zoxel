@@ -94,7 +94,7 @@ zox_function_component(TooltipEvent, void, ecs_world_t*, const TooltipEventData*
 #include "systems/mouse_element_system.c"
 // zox_reset_system(ClickState)
 zox_increment_system_with_reset_extra(ClickState, zox_click_state_trigger_clicked, zox_click_state_clicked_idle, zox_click_state_trigger_released, zox_click_state_idle)
-zox_increment_system_with_reset_extra(SelectState, zox_select_state_trigger_selected, zox_select_state_selected, zox_select_state_trigger_deselect, zox_select_state_deselected_this_frame)
+zox_increment_system_with_reset_extra(SelectState, zox_select_state_trigger_selected, zox_select_state_selected, zox_select_state_trigger_deselect, zox_select_state_deselected_idle)
 
 zox_begin_module(UICore)
 zox_define_tag(Element)

@@ -4,9 +4,11 @@ ecs_entity_t spawn_prefab_icon_mouse_follow(ecs_world_t *world, const ecs_entity
     zox_prefab_child(prefab)
     zox_add_tag(e, Icon)
     zox_add_tag(e, IconTexture)  // general one
-    zox_prefab_set(e, ParentLink, { 0 })
-    zox_set(e, FrameCorner, { default_icon_radius })
+    zox_prefab_set(e, IconType, { 0 })
+    // zox_prefab_set(e, ParentLink, { 0 })
     add_mouse_follow_components(world, e);
+    zox_set(e, FrameCorner, { default_icon_radius })
+    zox_set(e, RenderDisabled, { 1 })
     return e;
 }
 

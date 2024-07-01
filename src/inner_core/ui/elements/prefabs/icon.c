@@ -5,6 +5,7 @@ ecs_entity_t spawn_prefab_icon(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_name("prefab_icon")
     zox_add_tag(e, Icon)
     zox_add_tag(e, IconTexture)  // general one
+    zox_prefab_set(e, IconType, { 0 })
     zox_prefab_set(e, IconIndex, { 0 })
     zox_prefab_set(e, ParentLink, { 0 })
     add_selectable_components(world, e);
@@ -25,5 +26,6 @@ ecs_entity_t spawn_icon(ecs_world_t *world, SpawnIcon *data) {
     initialize_element(world, e, data->parent.e, data->canvas.e, position, data->element.size, data->element.size, data->element.anchor, data->element.layer, real_position, position_in_canvas);
     zox_set(e, Color, { data->texture.fill_color })
     zox_set(e, OutlineColor, { data->texture.outline_color })
+    zox_prefab_set(e, IconIndex, { data->index })
     return e;
 }

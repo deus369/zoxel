@@ -29,11 +29,12 @@ ecs_entity_2 spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
         },
         .element = {
             .prefab = data->icon.prefab,
-            .size = (int2) { data->element.size.x - 8, data->element.size.y - 8 },
+            .size = int2_single(data->icon.size),
             .anchor = float2_half,
             .layer = data->element.layer + 1,
         },
-        .texture = data->icon.texture
+        .texture = data->icon.texture,
+        .index = data->icon.index
     };
     zox_get_mutt(e, Children, children)
     const ecs_entity_t icon = spawn_icon(world, &spawnIcon);

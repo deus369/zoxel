@@ -20,7 +20,7 @@ void ZextUpdateSystem(ecs_iter_t *it) {
         if (zextDirty->value != zext_update_update) continue;
         zox_field_i(ZextData, zextDatas, zextData)
         zox_field_o(Children, childrens, children)
-        if (is_zext_updating(world, children)) continue;
+        // if (is_zext_updating(world, children)) continue;
         zox_field_e()
         zox_field_i(ZextSize, zextSizes, zextSize)
         zox_field_i(ZextPadding, zextPaddings, zextPadding)
@@ -35,9 +35,8 @@ void ZextUpdateSystem(ecs_iter_t *it) {
         const ecs_entity_t canvas = get_root_canvas(world, e);
         const int2 canvas_size = zox_get_value(canvas, PixelSize)
         const unsigned char zext_length = calculate_total_zigels(zextData->value, zextData->length);
-        if (zox_has(e, ZextRenderEnabler)) {
-            renderDisabled->value = zextData->length == 0;
-        }
+        if (zox_has(e, ZextRenderEnabler)) renderDisabled->value = zextData->length == 0;
+        // set parent to or refactor debug ui?
         SpawnZigel spawn_data = {
             .canvas = {
                 .e = canvas,

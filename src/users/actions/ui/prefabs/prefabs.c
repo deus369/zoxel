@@ -24,6 +24,7 @@ ecs_entity_t spawn_menu_actions_player(ecs_world_t *world, const ecs_entity_t pl
     data.icon_frame.prefab = prefab_icon_frame_action;
     data.element.anchor = (float2) { 0.5f, 0 };
     data.element.position = (int2) { 0, 24 };
+    data.icon_frame.texture.fill_color = default_fill_color_frame_action;
     return spawn_window_users(world, &data);
 }
 

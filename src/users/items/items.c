@@ -9,6 +9,13 @@ zox_create_user_data_prefabs(Item, item, "item")
 #include "util/character_items.c"
 zox_declare_system_state_event(RealmItems, GenerateRealm, zox_generate_realm_items, spawn_realm_items)
 
+void set_linked_item(ecs_world_t *world, const ecs_entity_t user, const int index, const ecs_entity_t e) {
+    if (!zox_has(user, ItemLinks)) return;
+    zox_get_muter(user, ItemLinks, datas)
+    if (index >= datas->length) return;
+    datas->value[index] = e;
+}
+
 zox_begin_module(Items)
 zox_define_user_data(Item)
 zox_import_module(ItemsUI)

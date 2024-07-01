@@ -4,3 +4,4 @@
 #define zox_select_state_selected 3
 #define zox_select_state_trigger_deselect 4
 #define zox_select_state_deselected_this_frame 5
+#define zox_select_state_deselected_idle 6

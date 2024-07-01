@@ -34,7 +34,7 @@ void print_entity_zext(ecs_world_t *world, const ecs_entity_t e) {
 
 unsigned char is_zext_updating(ecs_world_t *world, const Children *children) {
     for (int i = 0; i < children->length; i++) { // update the reused ones
-        ecs_entity_t zigel = children->value[i];
+        const ecs_entity_t zigel = children->value[i];
         const unsigned char generate_texture = zox_get_value(zigel, GenerateTexture)
         if (generate_texture) return 1;
     }
@@ -106,29 +106,28 @@ void spawn_zext_zigels(ecs_world_t *world, SpawnZigel *data, Children *children,
     if (has_old_children) free(old_children);
 }
 
-void set_entity_label_with_zext(ecs_world_t *world, const ecs_entity_t e, unsigned char *value, int length) {
-    const Children *name_label_children = zox_get(e, Children)
-    ecs_entity_t zext_entity = name_label_children->value[0];
-    ZextData *zextData = zox_get_mut(zext_entity, ZextData)
+void set_entity_label_with_zext(ecs_world_t *world, const ecs_entity_t parent, unsigned char *value, int length) {
+    const Children *name_label_children = zox_get(parent, Children)
+    ecs_entity_t e = name_label_children->value[0];
+    ZextData *zextData = zox_get_mut(e, ZextData)
     if (zextData->value) free(zextData->value);
     zextData->value = memcpy(malloc(length), value, length);
     zextData->length = length;
-    zox_modified(zext_entity, ZextData)
-    // zox_set(zext_entity, ZextDirty, { 1 })
-    ZextDirty *zextDirty = zox_get_mut(zext_entity, ZextDirty)
-    zextDirty->value = 1;
-    zox_modified(zext_entity, ZextDirty)
+    zox_modified(e, ZextData)
+    zox_set(e, ZextDirty, { zext_update_start })
+    /*ZextDirty *zextDirty = zox_get_mut(zext_entity, ZextDirty)
+    zextDirty->value = zext_update_start;
+    zox_modified(zext_entity, ZextDirty)*/
 }
 
 unsigned char set_entity_with_text(ecs_world_t *world, const ecs_entity_t e, const char* text) {
-    ZextDirty *zextDirty = zox_get_mut(e, ZextDirty)
-    if (zextDirty->value) return 0;
     ZextData *zextData = zox_get_mut(e, ZextData)
     if (is_zext(zextData, text)) return 0;
     set_zext(zextData, text);
-    zextDirty->value = 1;
-    zox_modified(e, ZextDirty)
     zox_modified(e, ZextData)
+    zox_set(e, ZextDirty, { zext_update_start })
+    // zox_get_muter(e, ZextDirty, zextDirty)
+    // zextDirty->value = zext_update_start;
     return 1;
 }
 

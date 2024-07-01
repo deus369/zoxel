@@ -10,9 +10,23 @@ void tooltip_event_icon_action(ecs_world_t *world, const TooltipEventData *data)
     }
 }
 
+
+unsigned char process_icon_type_action(ecs_world_t *world, const ecs_entity_t data) {
+    if (zox_has(data, Item)) {
+        return zox_icon_type_item;
+    } else if (zox_has(data, Skill)) {
+        return zox_icon_type_skill;
+    } else {
+        return 0;
+    }
+}
+
+// clicked event?
+
 ecs_entity_t spawn_prefab_icon_action(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_icon_action")
     zox_set(e, TooltipEvent, { &tooltip_event_icon_action })
+    zox_set(e, IconType, { zox_icon_type_action })
     return e;
 }

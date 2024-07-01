@@ -14,10 +14,10 @@ void ZextBackgroundSystem(ecs_iter_t *it) {
     zox_field_out(MeshDirty, meshDirtys, 12)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(ZextDirty, zextDirtys, zextDirty)
-        if (!zextDirty->value) continue;
-        zox_field_o(MeshDirty, meshDirtys, meshDirty)
+        if (zextDirty->value != zext_update_update) continue;
         zox_field_o(GenerateTexture, generateTextures, generateTexture)
         // if (generateTexture->value) return;
+        zox_field_o(MeshDirty, meshDirtys, meshDirty)
         zox_field_i(ZextData, zextDatas, zextData)
         zox_field_i(ZextSize, zextSizes, zextSize)
         zox_field_i(ZextPadding, zextPaddings, zextPadding)
