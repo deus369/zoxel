@@ -22,6 +22,7 @@ zox_component_byte(IconIndex)
 #include "fun/button_event_close_window.c"
 #include "util/resize_util.c"
 #include "util/navigation_util.c"
+#include "util/position_util.c"
 #include "systems/element_drag_system.c"
 #include "systems/scrollbar_system.c"
 

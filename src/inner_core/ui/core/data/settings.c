@@ -32,7 +32,8 @@ const color default_fill_color_frame = (color) { 6, 55, 55, 122 };
 const color default_outline_color_frame = (color) { 0, 0, 0, 200 };
 const color default_fill_color_icon = (color) { 88, 144, 200, 200 };
 const color default_outline_color_icon = (color) { 0, 0, 0, 144 };
-const unsigned char default_icon_size = 16;
+const int default_icon_size = 64;
+const unsigned char default_icon_radius = 16;
 // pause
 const float pause_fade_alpha = 0.76f;
 const float pause_fade_time = 0.48f;

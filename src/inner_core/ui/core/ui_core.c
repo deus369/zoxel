@@ -158,8 +158,7 @@ zox_system(CanvasStackSystem, EcsOnLoad, [in] Children, [out] WindowToTop, [out]
 zox_system(WindowLayerSystem, EcsOnLoad, [in] SetWindowLayer, [in] CanvasLink, [in] Children, [out] WindowLayer, [out] Layer2D, [none] Window)
 zox_system(ElementSelectedSystem, EcsOnUpdate, [none] Element, [in] SelectState, [out] Brightness)
 zox_system(ElementActiveSystem, EcsOnUpdate, [in] ActiveState, [out] Brightness, [none] Element, [none] !SelectState)
-
-zox_system(MouseElementSystem, zox_transforms_stage, [in] MouseLink, [in] RenderDisabled, [in] Anchor, [in] CanvasLink, [out] PixelPosition, [none] MouseElement)
+zox_system(MouseElementSystem, zox_transforms_stage, [in] MouseLink, [in] Anchor, [in] CanvasLink, [out] PixelPosition, [none] MouseElement)
 zox_system(UITrailSystem, zox_transforms_stage, [in] UIHolderLink, [in] UITrail, [out] Position3D)
 zox_system(ElementBarSystem, EcsOnUpdate, [in] ElementBar, [in] ElementBarSize, [in] Children)
 if (!headless) {

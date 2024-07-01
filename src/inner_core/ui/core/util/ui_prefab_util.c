@@ -81,3 +81,8 @@ void add_draggable_components(ecs_world_t *world, const ecs_entity_t e) {
     zox_prefab_set(e, DraggerLink, { 0 })
     zox_prefab_set(e, DraggedLink, { 0 })
 }
+
+void add_mouse_follow_components(ecs_world_t *world, const ecs_entity_t e) {
+    zox_add_tag(e, MouseElement)
+    zox_prefab_add(e, MouseLink)
+}

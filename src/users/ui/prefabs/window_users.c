@@ -143,7 +143,7 @@ SpawnWindowUsers get_default_spawn_window_users_data(const ecs_entity_t characte
     const byte2 grid_size = (byte2) { 4, 4 };
     const int grid_padding = 6;
     const int grid_margins = 16;
-    const int icon_size = 64;
+    const int icon_size = default_icon_size;
     const int2 size = (int2) { grid_padding + (icon_size + grid_padding) * grid_size.x + grid_margins * 2, grid_padding + (icon_size + grid_padding) * grid_size.y + grid_margins * 2 + header_height };
     SpawnWindowUsers data = {
         .canvas = {

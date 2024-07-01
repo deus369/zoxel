@@ -41,6 +41,7 @@ ecs_entity_t spawn_default_ui(ecs_world_t *world, const ecs_entity_t ui_camera, 
     const ecs_entity_t canvas = spawn_canvas(world, prefab_canvas, ui_camera, dimensions, screen_to_canvas);
     spawn_canvas_overlay(world, prefab_canvas_overlay, canvas, dimensions);
     spawn_tooltip(world, prefab_tooltip, canvas);
+    spawn_icon_mouse_follow_canvas(world, prefab_icon_mouse_follow, canvas, dimensions);
     return canvas;
 }
 

@@ -4,8 +4,7 @@ ecs_entity_t spawn_prefab_tooltip(ecs_world_t *world, const ecs_entity_t prefab)
     zox_add_tag(e, ZextRenderEnabler)
     zox_prefab_set(e, RenderDisabled, { 1 })
     if (!headless) prefab_set_mesh2D_vertices(world, e, square_vertices_top_right_aligned, 4);
-    zox_add_tag(e, MouseElement)
-    zox_prefab_add(e, MouseLink)
+    add_mouse_follow_components(world, e);
     return e;
 }
 
