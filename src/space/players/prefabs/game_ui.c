@@ -8,7 +8,7 @@ void dispose_in_game_ui(ecs_world_t *world, ecs_entity_t player) {
     dispose_in_game_ui_touch(world);
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     find_child_with_tag(canvas, MenuGame, game_ui)
-    zox_delete(game_ui)
+    if (game_ui) zox_delete(game_ui)
 }
 
 void toggle_pause_ui(ecs_world_t *world, const ecs_entity_t player) {
@@ -52,7 +52,7 @@ void spawn_in_game_ui(ecs_world_t *world, const ecs_entity_t player, const ecs_e
     zox_prefab_add(e, Children)
     Children *game_ui_children = zox_get_mut(e, Children)
     add_to_Children(game_ui_children, spawn_crosshair(world, canvas, e));
-    add_to_Children(game_ui_children, spawn_actionbar(world, prefab_actionbar, canvas, e, (int2) { 0, 24 }, (float2) { 0.5f, 0 }, 1, 48));
+    // add_to_Children(game_ui_children, spawn_actionbar(world, prefab_actionbar, canvas, e, (int2) { 0, 24 }, (float2) { 0.5f, 0 }, 1, 48));
     add_to_Children(game_ui_children, spawn_statbar2D(world, canvas, e, player, character_group));
     zox_modified(e, Children)
 }

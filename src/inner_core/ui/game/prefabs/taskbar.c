@@ -1,4 +1,10 @@
 // grid like ui
+ecs_entity_t spawn_prefab_icon_frame_taskbar(ecs_world_t *world, const ecs_entity_t prefab) {
+    zox_prefab_child(prefab)
+    zox_prefab_set(e, ActiveState, { 0 })   // purely for taskbar icon frame atm
+    return e;
+}
+
 ecs_entity_t spawn_prefab_taskbar(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("taskbar")
@@ -83,7 +89,7 @@ ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const 
             .size = actionbar_size
         },
         .element = {
-            .prefab = prefab_icon_frame,
+            .prefab = prefab_icon_frame_taskbar,
             .layer = layer + 1,
             .anchor = float2_half,
             .size = action_frame_size,
@@ -138,4 +144,5 @@ ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const 
         clone_texture_data(world, icon2, test_icon_texture);
         zox_set(icon2, TextureDirty, { 1 })
     }
+    return e;
 }

@@ -2,4 +2,3 @@
 #define zox_pipelines_zext_backgrounds EcsPostUpdate
 const double zext_animation_speed = 10.0;
 const unsigned char default_line_padding = 8;
-ecs_entity_t prefab_zext;

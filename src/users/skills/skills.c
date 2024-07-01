@@ -9,7 +9,6 @@
 // todo: need ally system
 // zox_declare_user_data(Skill)
 zox_declare_user_data(Skill)
-zox_create_user_data_prefabs(Skill, skill, "skill")
 zox_declare_tag(Aura)
 zox_declare_tag(Poison)
 #include "prefabs/prefabs.c"

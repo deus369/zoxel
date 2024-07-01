@@ -53,10 +53,11 @@ void spawn_zext_zigels(ecs_world_t *world, SpawnZigel *data, Children *children,
 #ifdef zoxel_debug_zext_updates
     if (children->length == zextData->length) zox_log("    - zext remained the same [%i]\n", zextData->length)
 #endif
-    // if (children->length == zextData->length) return;
     ecs_entity_t *old_children = children->value;
     ecs_entity_t *new_children = NULL;
     if (new_children_length > 0) new_children = malloc(new_children_length * sizeof(ecs_entity_t));
+    children->value = new_children;
+    children->length = new_children_length;
     // Set Data for Old Zigels
     for (int i = 0; i < reuse_count; i++) {
         const ecs_entity_t e = old_children[i];
@@ -103,8 +104,6 @@ void spawn_zext_zigels(ecs_world_t *world, SpawnZigel *data, Children *children,
     if (!has_old_children && new_children) total_memorys_allocated++;
     else if (has_old_children && !new_children) total_memorys_allocated--;
     if (has_old_children) free(old_children);
-    children->value = new_children;
-    children->length = new_children_length;
 }
 
 void set_entity_label_with_zext(ecs_world_t *world, const ecs_entity_t e, unsigned char *value, int length) {

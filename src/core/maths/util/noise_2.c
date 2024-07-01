@@ -95,5 +95,5 @@ void set_noise_seed(uint32_t seed) {
     }
     // testing
     float value = generate_noise_2D(float2_zero, 0.01f);
-    zox_log(" > seed [%i] value [%f]\n", value)
+    zox_log(" > realm seed [%i]\n", value)
 }

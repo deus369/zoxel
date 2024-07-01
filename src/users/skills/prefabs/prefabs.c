@@ -1,5 +1,6 @@
 ecs_entity_t prefab_aura;
 ecs_entity_t prefab_poison;
+zox_create_user_data_prefabs(Skill, skill, "skill")
 #include "aura.c"
 #include "poison.c"
 

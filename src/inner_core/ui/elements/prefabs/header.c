@@ -62,7 +62,7 @@ ecs_entity_t spawn_header(ecs_world_t *world, const ecs_entity_t parent, const e
 
 ecs_entity_t spawn_header2(ecs_world_t *world, SpawnHeader *data) {
     const int string_length = strlen(data->zext.text);
-    int2 zext_position = (int2) { ((data->zext.font_size * string_length) / 2) + data->header.margins / 2, 0 };
+    int2 zext_position = (int2) { ((data->zext.font_size * string_length) / 2) + data->header.margins, 0 };
     float2 zext_anchor = (float2) { 0, 0.5f };
     if (!data->header.is_close_button) {
         zext_anchor.x = 0.5f;
@@ -92,7 +92,7 @@ ecs_entity_t spawn_header2(ecs_world_t *world, SpawnHeader *data) {
     const ecs_entity_t header_zext = spawn_zext(world, &zextSpawnData);
     add_to_Children(children, header_zext);
     if (data->header.is_close_button) {
-        const int2 close_button_position = (int2) { - (data->zext.font_size / 2) - data->header.margins / 2, 0 };
+        const int2 close_button_position = (int2) { - (data->zext.font_size / 2) - data->header.margins, 0 };
         add_to_Children(children, spawn_close_button(world, e, data->canvas.e, canvas_position, data->element.size, close_button_position, data->zext.font_size, padding, button_layer, data->canvas.size));
     }
     zox_modified(e, Children)

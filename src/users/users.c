@@ -26,7 +26,7 @@ void set_taskbar_icon_active(ecs_world_t *world, const ecs_entity_t canvas, cons
     else if (i == taskbar_skills) {if_has_child_with_tag(canvas, MenuSkills) zox_set(frame, ActiveState, { 1 }) }
     else if (i == taskbar_quests) {if_has_child_with_tag(canvas, MenuQuests) zox_set(frame, ActiveState, { 1 }) }
     else if (i == taskbar_stats) {if_has_child_with_tag(canvas, MenuStats) zox_set(frame, ActiveState, { 1 }) }
-    else if (i == taskbar_actions) {if_has_child_with_tag(canvas, Actionbar) zox_set(frame, ActiveState, { 1 }) }
+    else if (i == taskbar_actions) {if_has_child_with_tag(canvas, MenuActions) zox_set(frame, ActiveState, { 1 }) }
 }
 
 void on_toggle_taskbar_icon(ecs_world_t *world, const ecs_entity_t clicker, const ecs_entity_t clicked) {
@@ -37,8 +37,8 @@ void on_toggle_taskbar_icon(ecs_world_t *world, const ecs_entity_t clicker, cons
     else if (index == taskbar_items) toggle_ui_with_tag_e(spawn_menu_items_player, MenuItems, clicker)
     else if (index == taskbar_skills) toggle_ui_with_tag_e(spawn_menu_skills_player, MenuSkills, clicker)
     else if (index == taskbar_quests) toggle_ui_with_tag_e(spawn_menu_quests_player, MenuQuests, clicker)
-    // testing
-    else if (index == taskbar_actions) toggle_ui_with_tag_e(spawn_actionbar_player, Actionbar, clicker)
+    // testing - spawn_actionbar_player
+    else if (index == taskbar_actions) toggle_ui_with_tag_e(spawn_menu_actions_player, MenuActions, clicker)
     else return; // nothing to open
     // toggle frames active state
     const ecs_entity_t frame = zox_get_value(clicked, ParentLink)

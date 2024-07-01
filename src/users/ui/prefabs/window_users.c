@@ -19,13 +19,15 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
     const unsigned char body_layer = data->element.layer + 1;
     const unsigned char icon_layer = body_layer + 1;
     const unsigned char is_header = data->header.prefab != 0;
+    int2 position = data->element.position;
     unsigned char header_height = 0;
     if (is_header) header_height = data->header_zext.font_size + data->header.margins;
-    const int2 canvas_position = get_element_pixel_position_global(data->parent.position, data->element.size, data->element.position, data->element.anchor);
+    const int2 canvas_position = get_element_pixel_position_global(data->parent.position, data->element.size, position, data->element.anchor);
     const float2 real_position = get_element_position(canvas_position, data->canvas.size);
+    anchor_element_position2D(&position, data->element.anchor, data->element.size);
     zox_instance(data->window.prefab)
     zox_name(data->header_zext.text)
-    initialize_element(world, e, data->parent.e, data->canvas.e, data->element.position, data->element.size, data->element.size, data->element.anchor, data->element.layer, real_position, canvas_position);
+    initialize_element(world, e, data->parent.e, data->canvas.e, position, data->element.size, data->element.size, data->element.anchor, data->element.layer, real_position, canvas_position);
     set_window_bounds_to_canvas(world, e, data->canvas.size, data->element.size, data->element.anchor, header_height);
     const UserLinks *user_data = zox_get_id(character, data->window.user_links_id)
     const int user_datas_count = user_data->length;
@@ -96,13 +98,14 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
     initialize_memory_component(Children, body_children, ecs_entity_t, grid_elements_count)
     int item_index = 0;
     int array_index = 0;
+    const unsigned char icon_frames_have_active_states = zox_has(data->icon_frame.prefab, ActiveState);
     for (int j = data->window.grid_size.y - 1; j >= 0; j--) {
         if (array_index >= body_children->length) break;
         for (int i = 0; i < data->window.grid_size.x; i++) {
             if (array_index >= body_children->length) break;
             const int2 position = {
-                (int) ((i - (data->window.grid_size.x / 2) + 0.5f) * (data->window.icon_size + data->window.grid_padding)),
-                (int) ((j - (data->window.grid_size.y / 2) + 0.5f) * (data->window.icon_size + data->window.grid_padding))
+                (int) ((i - (data->window.grid_size.x / 2.0f) + 0.5f) * (data->window.icon_size + data->window.grid_padding)),
+                (int) ((j - (data->window.grid_size.y / 2.0f) + 0.5f) * (data->window.icon_size + data->window.grid_padding))
             };
             SpawnIconFrame spawnIconFrame = {
                 .canvas = data->canvas,
@@ -123,6 +126,7 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
             };
             const ecs_entity_t user_data_element = user_data->value[item_index];
             body_children->value[array_index] = spawn_icon_frame_user(world, &spawnIconFrame, user_data_element).x;
+            if (i == 0 && icon_frames_have_active_states) zox_set(body_children->value[array_index], ActiveState, { 1 }) // first one should be active
             array_index++;
             item_index++;
         }
@@ -131,8 +135,9 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
 }
 
 SpawnWindowUsers get_default_spawn_window_users_data(const ecs_entity_t character, const ecs_entity_t canvas, const int2 canvas_size) {
-    const unsigned char header_height = 42;
-    const unsigned char header_margins = 16;
+    const unsigned char header_font_size = 26;
+    const unsigned char header_margins = 6;
+    const unsigned char header_height = header_font_size + header_margins * 2;
     const float2 anchor = float2_half;
     const int2 position = position;
     const byte2 grid_size = (byte2) { 4, 4 };
@@ -163,7 +168,7 @@ SpawnWindowUsers get_default_spawn_window_users_data(const ecs_entity_t characte
         .header_zext = {
             .text = "Users",
             .prefab = prefab_zext,
-            .font_size = 28,
+            .font_size = header_font_size,
             .font_thickness = 4,
             .font_fill_color = header_font_fill_color,
             .font_outline_color = header_font_outline_color

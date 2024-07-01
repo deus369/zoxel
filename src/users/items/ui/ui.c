@@ -3,7 +3,6 @@
 
 zox_declare_tag(MenuItems)
 zox_declare_tag(ItemIconFrame)
-#include "data/spawn_inventory_menu.c"
 #include "prefabs/prefabs.c"
 
 zox_begin_module(ItemsUI)

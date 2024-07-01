@@ -11,7 +11,7 @@ ecs_entity_t spawn_prefab_zext(ecs_world_t *world) {
     zox_prefab_set(e, FontFillColor, { { 0, 255, 0, 255 }})
     zox_prefab_set(e, FontThickness, { 1 })
     zox_prefab_add(e, ZextData)
-    zox_prefab_add(e, Children)
+    zox_prefab_set(e, Children, { 0, NULL })
     return e;
 }
 
@@ -27,13 +27,13 @@ ecs_entity_t spawn_zext(ecs_world_t *world, const SpawnZext *data) {
     zox_set(e, FontFillColor, { data->zext.font_fill_color })
     zox_set(e, FontOutlineColor, { data->zext.font_outline_color })
     zox_set(e, FontThickness, { data->zext.font_thickness })
-    const unsigned char zext_data_length = data->zext.text != NULL ? strlen(data->zext.text) : 0;
-    ZextData *zextData = zox_get_mut(e, ZextData)
-    Children *children = zox_get_mut(e, Children)
-    resize_memory_component(ZextData, zextData, unsigned char, (int) zext_data_length)
+    zox_get_muter(e, ZextData, zextData)
+    zox_get_muter(e, Children, children)
+    const int zext_data_length = data->zext.text != NULL ? strlen(data->zext.text) : 0;
+    initialize_memory_component(ZextData, zextData, unsigned char, zext_data_length)
     for (int i = 0; i < zextData->length; i++) zextData->value[i] = convert_ascii(data->zext.text[i]);
-    const unsigned char zigels_count = calculate_total_zigels(zextData->value, zextData->length);
-    resize_memory_component(Children, children, ecs_entity_t, (int) zigels_count)
+    const int zigels_count = calculate_total_zigels(zextData->value, zextData->length);
+    initialize_memory_component(Children, children, ecs_entity_t, zigels_count)
     const int2 pixel_size = calculate_zext_size(zextData->value, zextData->length, data->zext.font_size, data->zext.padding, default_line_padding);
     SpawnZigel spawn_data = {
         .canvas = data->canvas,
@@ -65,8 +65,6 @@ ecs_entity_t spawn_zext(ecs_world_t *world, const SpawnZext *data) {
         children->value[i] = spawn_zext_zigel(world, zextData, &spawn_data);
         zox_set(children->value[i], RenderDisabled, { data->element.render_disabled })
     }
-    zox_modified(e, ZextData)
-    zox_modified(e, Children)
     // this has to be done under as memory shifts a round with the points, when zox_set is called
     initialize_element(world, e, data->parent.e, data->canvas.e, data->element.position, pixel_size, pixel_size, data->element.anchor, data->element.layer, position2D, element_canvas_position);
     return e;

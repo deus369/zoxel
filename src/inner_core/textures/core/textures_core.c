@@ -43,7 +43,7 @@ zox_memory_component(TextureLinks, ecs_entity_t)    // this links only
 #include "systems/frame_texture_system.c"
 #include "systems/tilemap_generation_system.c"
 #include "tests/test_texture.c"
-zox_increment_system_with_reset(GenerateTexture, zox_generate_texture_generate)
+zox_increment_system_with_reset(GenerateTexture, zox_generate_texture_end)
 
 zox_begin_module(TexturesCore)
 zox_define_tag(Texture)

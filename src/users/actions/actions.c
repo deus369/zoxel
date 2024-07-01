@@ -3,6 +3,7 @@
 
 zox_declare_user_data(Action)
 #include "prefabs/action.c"
+#include "util/character_actions.c"
 #include "ui/ui.c"
 
 void spawn_prefabs_actions(ecs_world_t *world) {

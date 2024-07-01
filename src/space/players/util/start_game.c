@@ -1,3 +1,9 @@
+void post_player_start_game(ecs_world_t *world, const ecs_entity_t player) {
+    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+    find_child_with_tag(canvas, MenuActions, menu_actions)
+    if (!menu_actions) spawn_menu_actions_player(world, player);
+}
+
 void fix_camera_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
     const float3 camera_position3D = zox_get_value(camera, Position3D)
@@ -40,8 +46,8 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
         }
         chunk_octree_above = chunk_octree;
     }
-    if (found_position) zox_log(" + found player position: chunk_position %ix%ix%i - local_position %ix%ix%i\n", chunk_position.x, chunk_position.y, chunk_position.z, local_position.x, local_position.y, local_position.z)
-    else zox_log(" ! failed finding spawn position for player\n")
+    // if (found_position) zox_log(" + found player position: chunk_position %ix%ix%i - local_position %ix%ix%i\n", chunk_position.x, chunk_position.y, chunk_position.z, local_position.x, local_position.y, local_position.z)
+    if (!found_position) zox_log(" ! failed finding spawn position for player\n")
     const int3 chunk_voxel_position = get_chunk_voxel_position(chunk_position, default_chunk_size);
     float3 position = local_to_real_position_character(local_position, chunk_voxel_position, (float3) { 0.5f, 1.0f, 0.5f });
     const float4 spawn_rotation = quaternion_identity;
@@ -77,6 +83,7 @@ void player_start_game3D_delayed(ecs_world_t *world, const ecs_entity_t player) 
 #else
     if (game_rule_attach_to_character) {
         delay_event(world, &spawn_vox_player_character_in_terrain, player, 0.1f);
+        delay_event(world, &post_player_start_game, player, 0.11f);
     } else {
         attach_to_character(world, player, camera, 0);
     }

@@ -68,6 +68,9 @@ void add_selectable(ecs_world_t *world, const ecs_entity_t e) {
 void add_selectable_components(ecs_world_t *world, const ecs_entity_t e) {
     add_selectable(world, e);
     zox_prefab_set(e, SelectState, { zox_select_state_none })
+}
+
+void add_activatable_components(ecs_world_t *world, const ecs_entity_t e) {
     zox_prefab_set(e, ActiveState, { 0 })
 }
 

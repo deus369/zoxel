@@ -1,11 +1,15 @@
-#define zox_user_menu_functions(Name, Name2, name, name2)\
+#define zox_user_menu_functions_minimal(Name, Name2, name, name2)\
 \
 ecs_entity_t spawn_prefab_menu_##name(ecs_world_t *world, const ecs_entity_t prefab) {\
     zox_prefab_child(prefab)\
     zox_prefab_name("prefab_menu_"#name)\
     zox_add_tag(e, Menu##Name)\
     return e;\
-}\
+}
+
+#define zox_user_menu_functions(Name, Name2, name, name2)\
+\
+zox_user_menu_functions_minimal(Name, Name2, name, name2)\
 \
 ecs_entity_t spawn_menu_##name##_player(ecs_world_t *world, const ecs_entity_t player) {\
     const ecs_entity_t character = zox_get_value(player, CharacterLink)\
@@ -19,4 +23,4 @@ ecs_entity_t spawn_menu_##name##_player(ecs_world_t *world, const ecs_entity_t p
     return spawn_window_users(world, &data);\
 }
 
-// Ex: zox_user_menu_functions(Skills, skills, skill)
+// Ex: zox_user_menu_functions(Skills, Skill, skills, skill)

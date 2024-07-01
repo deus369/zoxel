@@ -4,10 +4,9 @@ ecs_entity_t spawn_prefab_icon_frame(ecs_world_t *world, const ecs_entity_t pref
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_icon_frame")
     zox_add_tag(e, IconFrame)
-    zox_prefab_set(e, ActiveState, { 0 })
-    zox_prefab_add(e, Children)
     zox_set(e, Color, { default_fill_color_frame })
     zox_set(e, OutlineColor, { default_outline_color_frame })
+    zox_prefab_add(e, Children)
     return e;
 }
 

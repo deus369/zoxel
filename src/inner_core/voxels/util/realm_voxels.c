@@ -143,11 +143,15 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             // spawn_data.vox_offset = 1;
         } else if (i == zox_block_dirt_vox - 1) {
             spawn_data.name = "dirt_vox";
-            // dirt vox
             spawn_data.color = dirt_color;
+#ifndef zox_disable_block_voxes
             spawn_data.tag = zox_id(BlockVox);
             spawn_data.model = zox_block_vox;
             spawn_data.vox = dirt_vox;
+#else
+            spawn_data.bake_vox = 1;
+            spawn_data.vox = vox_obsidian;
+#endif
         } else if (i == zox_block_dirt_rubble - 1) {
             spawn_data.name = "dirt_rubble";
             spawn_data.color = dirt_color;

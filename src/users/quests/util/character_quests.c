@@ -13,7 +13,7 @@ void spawn_character_quests(ecs_world_t *world, const ecs_entity_t e, const ecs_
     for (int i = 0; i < quests->length; i++) quests->value[i] = 0; // blanks are item slots
     // first block
     if (meta_quest_slay_slems) {
-        const ecs_entity_t quest_slay_slems = spawn_user_skill(world, meta_quest_slay_slems, e);
+        const ecs_entity_t quest_slay_slems = spawn_user_quest(world, meta_quest_slay_slems, e);
         quests->value[0] = quest_slay_slems;
     } else {
         zox_log(" ! meta_quest_slay_slems not found\n")

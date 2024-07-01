@@ -114,7 +114,7 @@ void voronoi3D(ChunkOctree *node, const unsigned char target_depth, const byte3 
             }
         }
     }
-    const byte2 set_voxel_black = (byte2) { black_voxel, target_depth };
+    // const byte2 set_voxel_black = (byte2) { black_voxel, target_depth };
     for (position.x = 0; position.x < size.x; position.x++) {
         for (position.y = 0; position.y < size.y; position.y++) {
             for (position.z = 0; position.z < size.z; position.z++) {

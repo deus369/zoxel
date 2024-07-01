@@ -1,6 +1,6 @@
 //! When ui text updates, spawn/destroy font entities
 void ZextUpdateSystem(ecs_iter_t *it) {
-    zox_change_check()
+    // zox_change_check()
     zox_iter_world()
     zox_field_in(ZextData, zextDatas, 1)
     zox_field_in(ZextSize, zextSizes, 2)
@@ -9,15 +9,15 @@ void ZextUpdateSystem(ecs_iter_t *it) {
     zox_field_in(CanvasPosition, canvasPositions, 5)
     zox_field_in(PixelSize, pixelSizes, 6)
     zox_field_in(MeshAlignment, meshAlignments, 7)
-    zox_field_in(FontOutlineColor, fontOutlineColors, 9)
-    zox_field_in(FontFillColor, fontFillColors, 10)
-    zox_field_in(FontThickness, fontThicknesss, 11)
-    zox_field_out(RenderDisabled, renderDisableds, 8)
-    zox_field_out(ZextDirty, zextDirtys, 12)
+    zox_field_in(FontOutlineColor, fontOutlineColors, 8)
+    zox_field_in(FontFillColor, fontFillColors, 9)
+    zox_field_in(FontThickness, fontThicknesss, 10)
+    zox_field_in(ZextDirty, zextDirtys, 11)
+    zox_field_out(RenderDisabled, renderDisableds, 12)
     zox_field_out(Children, childrens, 13)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(ZextDirty, zextDirtys, zextDirty)
-        if (!zextDirty->value) continue;
+        zox_field_i(ZextDirty, zextDirtys, zextDirty)
+        if (zextDirty->value != zext_update_update) continue;
         zox_field_i(ZextData, zextDatas, zextData)
         zox_field_o(Children, childrens, children)
         if (is_zext_updating(world, children)) continue;
@@ -66,6 +66,5 @@ void ZextUpdateSystem(ecs_iter_t *it) {
             }
         };
         spawn_zext_zigels(world, &spawn_data, children, zextData);
-        zextDirty->value = 0;
     }
 } zox_declare_system(ZextUpdateSystem)
