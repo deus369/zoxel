@@ -1,6 +1,13 @@
 void on_element_clicked(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t ui) {
     if (zox_has(ui, Clickable)) {
-        zox_set(ui, ClickState, { 1 })
+        zox_set(ui, ClickState, { zox_click_state_trigger_clicked })
+        zox_set(ui, Clicker, { player })
+    }
+}
+
+void on_element_released(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t ui) {
+    if (zox_has(ui, Clickable)) {
+        zox_set(ui, ClickState, { zox_click_state_trigger_released })
         zox_set(ui, Clicker, { player })
     }
 }

@@ -7,7 +7,7 @@ void ButtonClickEventSystem(ecs_iter_t *it) {
     zox_field_out(Clicker, clickers, 3)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(ClickState, clickStates, clickState)
-        if (!clickState->value) continue;
+        if (clickState->value != zox_click_state_released_this_frame) continue;
         zox_field_e()
         zox_field_i(ClickEvent, clickEvents, clickEvent)
         zox_field_o(Clicker, clickers, clicker)

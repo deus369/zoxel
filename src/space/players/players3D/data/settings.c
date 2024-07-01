@@ -15,8 +15,8 @@ const double max_rotate_speed = 0.2; //  0.23;
 // shit remove this atm, it doubles up for coop
 const float2 player_movement_power = { 14, 19 };
 const float2 max_velocity = { 1.14f, 1.4f }; // 60 * 60, 160 * 60 };
-const double run_speed = 1.4;
-const double run_accceleration = 1.7;
+const double run_speed = 1.8;
+const double run_accceleration = 2.2;
 const float backwards_multiplier = 0.7f;
 // #define zox_debug_player_speed_limits
 #define player_vox_scale  (1 / 64.0f) * 1.6f

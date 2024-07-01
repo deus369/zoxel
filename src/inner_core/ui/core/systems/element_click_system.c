@@ -72,7 +72,10 @@ void ElementClickSystem(ecs_iter_t *it) {
         raycasterResult->value = raycasterTarget->value || windowRaycasted->value;
         // released
         if (click_type == 0) continue;
-        else if (click_type == 1) clickingEntity->value = raycasterTarget->value; // clicked
+        else if (click_type == 1) {
+            clickingEntity->value = raycasterTarget->value; // clicked
+            on_element_clicked(world, e, clickingEntity->value);
+        }
         if (click_type == 1) { // clicked
             if (windowRaycasted->value != windowTarget->value) {
                 windowTarget->value = windowRaycasted->value;
@@ -90,8 +93,8 @@ void ElementClickSystem(ecs_iter_t *it) {
                 set_element_dragged(world, e, raycasterTarget->value, drag_mode);
             }
         } else if (click_type == 2) { // released
-            if (raycasterTarget->value == clickingEntity->value) on_element_clicked(world, e, raycasterTarget->value);
-            else on_element_clicked(world, e, 0);
+            if (raycasterTarget->value == clickingEntity->value) on_element_released(world, e, raycasterTarget->value);
+            // else on_element_clicked(world, e, 0);
             clickingEntity->value = 0;
         }
     }
