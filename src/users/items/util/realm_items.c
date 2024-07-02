@@ -18,7 +18,7 @@ ecs_entity_t spawn_block_item(ecs_world_t *world, const ecs_entity_t block) {
         }
         zox_add_tag(item, ItemBlock)
         zox_set(item, BlockLink, { block })
-        zox_log(" + spawning item for block [%s] textures [%i]\n", convert_zext_to_text(voxel_name->value, voxel_name->length), textures->length)
+        // zox_log(" + spawning item for block [%s] textures [%i]\n", convert_zext_to_text(voxel_name->value, voxel_name->length), textures->length)
         return item;
     } else {
         zox_log(" ! problem with block components name? [%i]\n", zox_has(block, ZoxName))

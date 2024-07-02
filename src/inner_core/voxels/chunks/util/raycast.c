@@ -90,16 +90,18 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
                 const BlockSpawns *spawns = zox_get(chunk, BlockSpawns)
                 if (spawns->value && spawns->value->data) {
                     const ecs_entity_t block_spawn = byte3_hashmap_get(spawns->value, voxel_position_local);
-                    float3 ray_point = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * voxel_scale));
-                    float3 block_position = zox_get_value(block_spawn, Position3D)
-                    // remember: assuming centred, so make cornered position!
-                    float3_subtract_float3_p(&block_position, (float3) { 0.5f * voxel_scale, 0.5f * voxel_scale, 0.5f * voxel_scale }); // offset to corner, half block back!
-                    const int3 chunk_size = zox_get_value(block_spawn, ChunkSize)
-                    float new_voxel_scale = voxel_scale * (1.0f / (float) chunk_size.x);
-                    if (raycast_general(world, 0, NULL, NULL, int3_zero, block_position, chunk_size, block_spawn, ray_point, ray_normal, new_voxel_scale, chunk_size.x, data)) {
-                        ray_hit = 2;
-                        chunk = block_spawn; // set hit chunk
-                        break;
+                    if (block_spawn) {
+                        float3 ray_point = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * voxel_scale));
+                        float3 block_position = zox_get_value(block_spawn, Position3D)
+                        // remember: assuming centred, so make cornered position!
+                        float3_subtract_float3_p(&block_position, (float3) { 0.5f * voxel_scale, 0.5f * voxel_scale, 0.5f * voxel_scale }); // offset to corner, half block back!
+                        const int3 chunk_size = zox_get_value(block_spawn, ChunkSize)
+                        float new_voxel_scale = voxel_scale * (1.0f / (float) chunk_size.x);
+                        if (raycast_general(world, 0, NULL, NULL, int3_zero, block_position, chunk_size, block_spawn, ray_point, ray_normal, new_voxel_scale, chunk_size.x, data)) {
+                            ray_hit = 2;
+                            chunk = block_spawn; // set hit chunk
+                            break;
+                        }
                     }
                 }
             } else { // if solid block
