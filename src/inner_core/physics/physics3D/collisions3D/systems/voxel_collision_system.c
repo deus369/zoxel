@@ -6,20 +6,33 @@ void VoxelCollisionSystem(ecs_iter_t *it) {
     // init_delta_time()
     zox_iter_world()
     zox_field_in(VoxLink, voxLinks, 1)
-    // zox_field_in(ChunkPosition, chunkPositions, 2)
+    ecs_entity_t realm = 0;
+    for (int i = 0; i < it->count; i++) {
+        zox_field_i(VoxLink, voxLinks, voxLink)
+        if (!voxLink->value) continue;
+        realm = zox_get_value(voxLink->value, RealmLink)
+        break;
+    }
+    if (!realm) return;
+    const VoxelLinks *voxelLinks = zox_get(realm, VoxelLinks)
+    unsigned char block_collisions[voxelLinks->length + 1];
+    block_collisions[0] = 0;
+    for (int i = 0; i < voxelLinks->length; i++) {
+        const ecs_entity_t block = voxelLinks->value[i];
+        block_collisions[i + 1] = zox_gett_value(block, BlockCollider) != zox_block_air;
+    }
     zox_field_out(Position3D, position3Ds, 3)
     zox_field_out(Velocity3D, velocity3Ds, 4)
     zox_field_out(LastPosition3D, lastPosition3Ds, 5)
     zox_field_in(Bounds3D, bounds3Ds, 6)
     zox_field_out(Grounded, groundeds, 7)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(Bounds3D, bounds3Ds, bounds3D)
-        zox_field_i_in(VoxLink, voxLinks, voxLink)
-        // zox_field_i_in(ChunkPosition, chunkPositions, chunkPosition)
-        zox_field_i_out(Position3D, position3Ds, position3D)
-        zox_field_i_out(Velocity3D, velocity3Ds, velocity3D)
-        zox_field_i_out(LastPosition3D, lastPosition3Ds, lastPosition3D)
-        zox_field_i_out(Grounded, groundeds, grounded)
+        zox_field_i(VoxLink, voxLinks, voxLink)
+        zox_field_i(Bounds3D, bounds3Ds, bounds3D)
+        zox_field_o(Position3D, position3Ds, position3D)
+        zox_field_o(Velocity3D, velocity3Ds, velocity3D)
+        zox_field_o(LastPosition3D, lastPosition3Ds, lastPosition3D)
+        zox_field_o(Grounded, groundeds, grounded)
 #ifdef zoxel_debug_basic_collision3D_system
         if (voxelPosition->value.x >= default_chunk_length || voxelPosition->value.y >= default_chunk_length || voxelPosition->value.z >= default_chunk_length) {
             zox_log(" !!! voxel position set out of bounds !!!\n");

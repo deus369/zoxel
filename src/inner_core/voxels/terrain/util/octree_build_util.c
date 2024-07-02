@@ -54,12 +54,13 @@ void zox_build_voxel_face(const mesh_uvs_build_data *mesh_data, const unsigned c
     }
 }
 
+// this function accounts for size of drawing voxels
 void build_if_adjacent_voxel(const ChunkOctree *root_node, const ChunkOctree *parent_node, const float3 vertex_position_offset, const int* voxel_face_indicies, const float3 *voxel_face_vertices, const float2 *voxel_uvs, const unsigned char voxel_direction, const ChunkOctree *neighbors[], const unsigned char neighbor_lods[], const unsigned char distance_to_camera, const unsigned char node_index, const byte3 node_position, const unsigned char depth, const unsigned char lod, const unsigned char voxel, const float octree_scale, const float vert_scale, int3 octree_position, const mesh_uvs_build_data *mesh_data, const unsigned char *voxel_solidity) {
     if (is_adjacent_all_solid(voxel_direction, root_node, parent_node, neighbors, octree_position, node_index, node_position, depth, lod, neighbor_lods, edge_voxel, voxel_solidity)) return;
     unsigned char is_regular_build = 1;
     if (zox_build_all_faces && distance_to_camera <= high_resolution_terain_lod) {
         /* so far just increasing face draw resolution for up faces */
-        if (voxel_direction == direction_up) {
+        // if (voxel_direction == direction_up) {
             int depth_difference = max_octree_depth - depth;
             if (depth_difference != 0) {
                 is_regular_build = 0;
@@ -68,17 +69,43 @@ void build_if_adjacent_voxel(const ChunkOctree *root_node, const ChunkOctree *pa
                 const int amplify_position = pow(2, depth_difference);
                 if (amplify_position != 1) int3_multiply_int_p(&scaled_octree_position, amplify_position);
                 int3 local_node_position = int3_zero;
-                local_node_position.y = (octree_scale - 1); // place at top of current scale building
-                for (local_node_position.x = 0; local_node_position.x < octree_scale; local_node_position.x++) {
-                    for (local_node_position.z = 0; local_node_position.z < octree_scale; local_node_position.z++) {
-                        int3 global_octree_position = scaled_octree_position;
-                        int3_add_int3(&global_octree_position, local_node_position);
-                        if (is_adjacent_solid(voxel_direction, root_node, neighbors, global_octree_position, max_octree_depth, edge_voxel, voxel_solidity)) continue;
-                        // remember: vertex offset is just node position / voxel position
-                        zox_build_voxel_face(mesh_data, voxel, voxel_face_indicies, voxel_face_vertices, voxel_uvs, voxel_direction, float3_from_int3(global_octree_position), vert_scale);
+
+                if (voxel_direction == direction_up) local_node_position.y = (octree_scale - 1); // place at top of current scale building
+                else if (voxel_direction == direction_right) local_node_position.x = (octree_scale - 1);
+                else if (voxel_direction == direction_front) local_node_position.z = (octree_scale - 1);
+
+                if (voxel_direction == direction_up || voxel_direction == direction_down) { // y
+                    for (local_node_position.x = 0; local_node_position.x < octree_scale; local_node_position.x++) {
+                        for (local_node_position.z = 0; local_node_position.z < octree_scale; local_node_position.z++) {
+                            int3 global_octree_position = scaled_octree_position;
+                            int3_add_int3(&global_octree_position, local_node_position);
+                            if (is_adjacent_solid(voxel_direction, root_node, neighbors, global_octree_position, max_octree_depth, edge_voxel, voxel_solidity)) continue;
+                            // remember: vertex offset is just node position / voxel position
+                            zox_build_voxel_face(mesh_data, voxel, voxel_face_indicies, voxel_face_vertices, voxel_uvs, voxel_direction, float3_from_int3(global_octree_position), vert_scale);
+                        }
+                    }
+                } else if (voxel_direction == direction_left || voxel_direction == direction_right) { // x
+                    for (local_node_position.y = 0; local_node_position.y < octree_scale; local_node_position.y++) {
+                        for (local_node_position.z = 0; local_node_position.z < octree_scale; local_node_position.z++) {
+                            int3 global_octree_position = scaled_octree_position;
+                            int3_add_int3(&global_octree_position, local_node_position);
+                            if (is_adjacent_solid(voxel_direction, root_node, neighbors, global_octree_position, max_octree_depth, edge_voxel, voxel_solidity)) continue;
+                            // remember: vertex offset is just node position / voxel position
+                            zox_build_voxel_face(mesh_data, voxel, voxel_face_indicies, voxel_face_vertices, voxel_uvs, voxel_direction, float3_from_int3(global_octree_position), vert_scale);
+                        }
+                    }
+                } else { // z
+                    for (local_node_position.x = 0; local_node_position.x < octree_scale; local_node_position.x++) {
+                        for (local_node_position.y = 0; local_node_position.y < octree_scale; local_node_position.y++) {
+                            int3 global_octree_position = scaled_octree_position;
+                            int3_add_int3(&global_octree_position, local_node_position);
+                            if (is_adjacent_solid(voxel_direction, root_node, neighbors, global_octree_position, max_octree_depth, edge_voxel, voxel_solidity)) continue;
+                            // remember: vertex offset is just node position / voxel position
+                            zox_build_voxel_face(mesh_data, voxel, voxel_face_indicies, voxel_face_vertices, voxel_uvs, voxel_direction, float3_from_int3(global_octree_position), vert_scale);
+                        }
                     }
                 }
-            }
+            // }
         }
     }
     if (is_regular_build) {

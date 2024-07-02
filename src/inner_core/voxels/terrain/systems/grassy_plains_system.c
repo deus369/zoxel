@@ -8,9 +8,10 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
     const unsigned char chunk_voxel_length = powers_of_two_byte[target_depth];
     const float2 map_size_f = (float2) { chunk_voxel_length, chunk_voxel_length };
     const SetVoxelTargetData datam_dirt = { .depth = target_depth, .voxel = zox_block_dirt, .effect_nodes = 1 };
-    const SetVoxelTargetData datam_grass = { .depth = target_depth, .voxel = zox_block_grass, .effect_nodes = 1 };
+    const SetVoxelTargetData datam_dirt_grass = { .depth = target_depth, .voxel = zox_block_grass, .effect_nodes = 1 };
     const SetVoxelTargetData datam_sand = { .depth = target_depth, .voxel = zox_block_sand, .effect_nodes = 1 };
-    const SetVoxelTargetData datam_flower = { .depth = target_depth, .voxel = zox_block_vox_grass, .effect_nodes = 1 };
+    const SetVoxelTargetData datam_grass = { .depth = target_depth, .voxel = zox_block_vox_grass, .effect_nodes = 1 };
+    const SetVoxelTargetData datam_flower = { .depth = target_depth, .voxel = zox_block_vox_flower, .effect_nodes = 1 };
     const SetVoxelTargetData datam_rubble = { .depth = target_depth, .voxel = zox_block_dirt_rubble, .effect_nodes = 1 };
     const uint32_t seed = global_seed;
     zox_change_check()
@@ -44,17 +45,18 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
                         data.position = voxel_position;
                         if (voxel_position.y  == local_height_raw) {
                             if (global_position_y < sand_height) set_voxel(&datam_sand, data);
-                            else set_voxel(&datam_grass, data);
+                            else set_voxel(&datam_dirt_grass, data);
                         } else set_voxel(&datam_dirt, data);
                     }
                 }
                 if (local_height_raw + 1 >= 0 && local_height_raw + 1 < chunk_voxel_length) {
                     const int rando = rand() % 10000;
-                    if (rando <= grass_vox_spawn_chance * 2) {
+                    if (rando <= block_spawn_chance_grass + block_spawn_chance_flower + block_spawn_chance_rubble) {
                         voxel_position.y = local_height_raw + 1;
                         data.position = voxel_position;
-                        if (rando <= grass_vox_spawn_chance) set_voxel(&datam_flower, data);
-                        else if (rando <= grass_vox_spawn_chance * 2) set_voxel(&datam_rubble, data);
+                        if (rando <= block_spawn_chance_grass) set_voxel(&datam_grass, data);
+                        else if (rando <= block_spawn_chance_grass + block_spawn_chance_flower) set_voxel(&datam_flower, data);
+                        else if (rando <= block_spawn_chance_grass + block_spawn_chance_flower + block_spawn_chance_rubble) set_voxel(&datam_rubble, data);
                         // zox_log(" + flower spawned %f\n", perlin_value)
                     }
                 }

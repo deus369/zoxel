@@ -38,6 +38,7 @@ zox_component_entity(PlayerPauseEvent)
 #include "systems/player_test_system.c"
 #include "systems/raycast_gizmo_system.c"
 #include "systems/voxel_action_system.c"
+#include "systems/player_place_voxel_system.c"
 
 void initialize_players(ecs_world_t *world) {
     add_to_event_game_state((zox_game_event) { &players_game_state });
@@ -60,7 +61,7 @@ zox_system_1(EditorInputSystem, zox_pip_mainthread, [in] DeviceLinks, [in] Canva
 zox_system(PlayerToggleCameraSystem, EcsOnUpdate, [in] DeviceLinks, [in] CharacterLink, [in] GameLink, [none] players.Player)
 zox_system_1(RaycastGizmoSystem, zox_pip_mainthread, [in] CameraLink, [in] VoxLink, [out] RaycastVoxelData)
 zox_system(VoxelActionASystem, EcsOnLoad, [in] RaycastVoxelData, [out] TriggerActionA)
-zox_system(VoxelActionBSystem, EcsOnLoad, [in] RaycastVoxelData, [out] TriggerActionB)
+zox_system(PlayerPlaceVoxelSystem, EcsOnLoad, [in] RaycastVoxelData, [in] ActionLinks, [out] TriggerActionB)
 initialize_players(world);
 zox_prefab_add(prefab_game, PlayerLinks)
 zox_prefab_set(prefab_player, PlayerPauseEvent, { 0 })

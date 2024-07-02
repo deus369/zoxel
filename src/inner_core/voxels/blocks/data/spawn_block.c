@@ -4,6 +4,7 @@ typedef struct {
     unsigned char index;
     unsigned char model;
     unsigned char textures;
+    char *texture_filename;
     unsigned char disable_collision; // enabled by default
     color color;
     ecs_entity_t tag;

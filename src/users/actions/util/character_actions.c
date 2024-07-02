@@ -17,9 +17,9 @@ void spawn_character_actions(ecs_world_t *world, const ecs_entity_t e, const ecs
         zox_log(" ! meta_skill_aura not found\n")
     }
     // block item!
-    if (meta_item_block) {
-        actions->value[1] = spawn_user_item(world, meta_item_block, e);
-    } else {
-        zox_log(" ! meta_item_block not found\n")
-    }
+    if (meta_item_block_dirt) actions->value[1] = spawn_user_item(world, meta_item_block_dirt, e);
+    if (meta_item_block_dark) actions->value[2] = spawn_user_item(world, meta_item_block_dark, e);
+    if (meta_item_block_sand) actions->value[3] = spawn_user_item(world, meta_item_block_sand, e);
+    if (meta_item_block_stone) actions->value[4] = spawn_user_item(world, meta_item_block_stone, e);
+    if (meta_item_block_obsidian) actions->value[5] = spawn_user_item(world, meta_item_block_obsidian, e);
 }

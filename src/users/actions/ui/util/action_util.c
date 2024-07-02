@@ -57,3 +57,24 @@ void player_action_ui_move(ecs_world_t *world, const ecs_entity_t player, const 
     else if (selected == children->length) selected = 0;
     zox_set(children->value[selected], ActiveState, { 1 })
 }
+
+
+unsigned char get_player_action_index(ecs_world_t *world, const ecs_entity_t player) {
+    if (!player) {
+        zox_log(" ! player invalid\n")
+        return 0;
+    }
+    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+    if (!canvas) return 0;
+    find_child_with_tag(canvas, MenuActions, actionbar)
+    if (!actionbar) return 0;
+    const Children *window_children = zox_get(actionbar, Children)
+    if (window_children->length < 2) return 0;
+    const Children *children = zox_get(window_children->value[1], Children)
+    for (int i = 0; i < children->length; i++) {
+        const ecs_entity_t child = children->value[i];
+        if (!zox_valid(child) || !zox_has(child, ActiveState)) continue;
+        if (zox_gett_value(child, ActiveState)) return i;
+    }
+    return 0;
+}

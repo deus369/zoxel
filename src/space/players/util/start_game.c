@@ -54,6 +54,7 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
     ecs_entity_2 character_group = spawn_player_character3D_in_world(world, vox, position, spawn_rotation, 0, player);
     const ecs_entity_t character = character_group.x;
     zox_set(player, CharacterLink, { character })
+    zox_set(character, PlayerLink, { player })
     zox_set(character, CameraLink, { camera })
     attach_to_character(world, player, camera, character);
     // zox_add_tag(character_group.x, Aura)
@@ -97,6 +98,7 @@ void player_start_game2D_delayed(ecs_world_t *world, const ecs_entity_t player) 
     zox_set(camera, Euler, { { 0, 0 * degreesToRadians, 0 } })
     const ecs_entity_t character = spawn_player_character2D(world, camera);
     zox_set(player, CharacterLink, { character })
+    zox_set(character, PlayerLink, { player })
     zox_set(camera, CharacterLink, { character })
     zox_set(camera, EternalRotation, { float4_identity })
     zox_add_tag(camera, CameraFollower2D)

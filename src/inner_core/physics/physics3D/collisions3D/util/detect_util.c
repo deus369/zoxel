@@ -23,7 +23,7 @@
  */
 
 // Function for 3-dimensional collision detection
-void collide_with_chunk_d3(const ChunkLinks *chunk_links, int3 voxel_position,
+void collide_with_chunk_d3(const ChunkLinks *chunk_links, const unsigned char *block_collisions, int3 voxel_position,
     const unsigned char axis_d1, float position_d1, float position_last_d1, const float offset_d1, unsigned char *collided_d1, float *distance_d1, const unsigned char is_negative1,
     const unsigned char axis_d2, float position_d2, float position_last_d2, const float offset_d2, unsigned char *collided_d2, float *distance_d2, const unsigned char is_negative2,
     const unsigned char axis_d3, float position_d3, float position_last_d3, const float offset_d3, unsigned char *collided_d3, float *distance_d3, const unsigned char is_negative3) {
@@ -62,7 +62,7 @@ void collide_with_chunk_d3(const ChunkLinks *chunk_links, int3 voxel_position,
     if (!byte3_in_bounds(voxel_position_local, default_chunk_size_byte3)) return;
 
     const unsigned char voxel = get_octree_voxel(chunk_octree, &voxel_position_local, max_octree_depth);
-    if (voxel) {
+    if (block_collisions[voxel]) {
         // Calculate deltas
         const int delta_vox_d1 = int_abs(position_vox_d1 - position_vox_last_d1);
         const int delta_vox_d2 = int_abs(position_vox_d2 - position_vox_last_d2);
@@ -83,14 +83,14 @@ void collide_with_chunk_d3(const ChunkLinks *chunk_links, int3 voxel_position,
 
 // Macros for handling 3-dimensional collisions
 #define handle_collision_axis_d3(d1, d2, d3, offset_d1, offset_d2, offset_d3, is_negative1, is_negative2, is_negative3) \
-    collide_with_chunk_d3(chunkLinks, real_position_to_voxel_position(position_last), \
+    collide_with_chunk_d3(chunkLinks, block_collisions, real_position_to_voxel_position(position_last), \
     zox_axis##_##d1, collision_point_real.d1, position_last.d1, offset_d1, &did_collide##_##d1, &collision_offset.d1, is_negative1, \
     zox_axis##_##d2, collision_point_real.d2, position_last.d2, offset_d2, &did_collide##_##d2, &collision_offset.d2, is_negative2, \
     zox_axis##_##d3, collision_point_real.d3, position_last.d3, offset_d3, &did_collide##_##d3, &collision_offset.d3, is_negative3);
 
 
 // expand previous function by second dimension
-void collide_with_chunk_d2(const ChunkLinks *chunk_links, int3 voxel_position, const unsigned char axis_d1, float position_d1, float position_last_d1, const float offset_d1, unsigned char *collided_d1, float *distance_d1, const unsigned char is_negative1, const unsigned char axis_d2, float position_d2, float position_last_d2, const float offset_d2, unsigned char *collided_d2, float *distance_d2, const unsigned char is_negative2) {
+void collide_with_chunk_d2(const ChunkLinks *chunk_links, const unsigned char *block_collisions, int3 voxel_position, const unsigned char axis_d1, float position_d1, float position_last_d1, const float offset_d1, unsigned char *collided_d1, float *distance_d1, const unsigned char is_negative1, const unsigned char axis_d2, float position_d2, float position_last_d2, const float offset_d2, unsigned char *collided_d2, float *distance_d2, const unsigned char is_negative2) {
 
     if (*collided_d1 || *collided_d2) return;
 
@@ -117,7 +117,7 @@ void collide_with_chunk_d2(const ChunkLinks *chunk_links, int3 voxel_position, c
     if (!byte3_in_bounds(voxel_position_local, default_chunk_size_byte3)) return;
 
     const unsigned char voxel = get_octree_voxel(chunk_octree, &voxel_position_local, max_octree_depth);
-    if (voxel) {
+    if (block_collisions[voxel]) {
         // float_abs
         const int delta_vox_d1 = int_abs(position_vox_d1 - position_vox_last_d1);
         const int delta_vox_d2 = int_abs(position_vox_d2 - position_vox_last_d2);
@@ -132,7 +132,7 @@ void collide_with_chunk_d2(const ChunkLinks *chunk_links, int3 voxel_position, c
     }
 }
 
-void collide_with_chunk(const ChunkLinks *chunk_links, int3 voxel_position, const unsigned char axis_d, float position_d, float position_last_d, const float offset_d, unsigned char *collided_d, float *distance_d, const unsigned char is_negative) {
+void collide_with_chunk(const ChunkLinks *chunk_links, const unsigned char *block_collisions, int3 voxel_position, const unsigned char axis_d, float position_d, float position_last_d, const float offset_d, unsigned char *collided_d, float *distance_d, const unsigned char is_negative) {
 
     if (*collided_d) return;
 
@@ -156,7 +156,7 @@ void collide_with_chunk(const ChunkLinks *chunk_links, int3 voxel_position, cons
     if (!byte3_in_bounds(voxel_position_local, default_chunk_size_byte3)) return;
 
     const unsigned char voxel = get_octree_voxel(chunk_octree, &voxel_position_local, max_octree_depth);
-    if (voxel) {
+    if (block_collisions[voxel]) {
         *collided_d = 1 + is_negative;
         *distance_d = offset_d;
     }
@@ -164,9 +164,9 @@ void collide_with_chunk(const ChunkLinks *chunk_links, int3 voxel_position, cons
 
 // macros
 
-#define handle_collision_axis_d2(d1, d2, offset_d1, offset_d2, is_negative1, is_negative2) collide_with_chunk_d2(chunkLinks,  real_position_to_voxel_position(position_last), zox_axis##_##d1, collision_point_real.d1, position_last.d1, offset_d1, &did_collide##_##d1, &collision_offset.d1, is_negative1, zox_axis##_##d2, collision_point_real.d2, position_last.d2, offset_d2, &did_collide##_##d2, &collision_offset.d2, is_negative2);
+#define handle_collision_axis_d2(d1, d2, offset_d1, offset_d2, is_negative1, is_negative2) collide_with_chunk_d2(chunkLinks, block_collisions, real_position_to_voxel_position(position_last), zox_axis##_##d1, collision_point_real.d1, position_last.d1, offset_d1, &did_collide##_##d1, &collision_offset.d1, is_negative1, zox_axis##_##d2, collision_point_real.d2, position_last.d2, offset_d2, &did_collide##_##d2, &collision_offset.d2, is_negative2);
 
-#define handle_collision_axis(d, offset, is_negative) collide_with_chunk(chunkLinks, real_position_to_voxel_position(position_last), zox_axis##_##d, collision_point_real.d,  position_last.d, offset.d, &did_collide##_##d, &collision_offset.d, is_negative);
+#define handle_collision_axis(d, offset, is_negative) collide_with_chunk(chunkLinks, block_collisions, real_position_to_voxel_position(position_last), zox_axis##_##d, collision_point_real.d,  position_last.d, offset.d, &did_collide##_##d, &collision_offset.d, is_negative);
 
 #define detect_voxel_collisions()\
 \

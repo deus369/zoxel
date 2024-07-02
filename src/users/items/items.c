@@ -1,6 +1,7 @@
 #ifndef zox_mod_items
 #define zox_mod_items
 
+zox_declare_tag(ItemBlock)
 zox_declare_user_data(Item)
 zox_create_user_data_prefabs(Item, item, "item")
 #include "prefabs/prefabs.c"
@@ -17,6 +18,7 @@ void set_linked_item(ecs_world_t *world, const ecs_entity_t user, const int inde
 }
 
 zox_begin_module(Items)
+zox_define_tag(ItemBlock)
 zox_define_user_data(Item)
 zox_import_module(ItemsUI)
 spawn_prefabs_items(world);

@@ -38,7 +38,7 @@ void UserIconClickSystem(ecs_iter_t *it) {
         const ecs_entity_t mouse_data = zox_get_value(icon_mouse_follow, UserDataLink)
         if (!mouse_data && !userDataLink->value) continue; // if both empty
         const unsigned char is_clicked_empty = !userDataLink->value;
-        const unsigned char is_mouse_empty = !mouse_data;
+        // const unsigned char is_mouse_empty = !mouse_data;
         // check matches mouse's icon type
         const unsigned char mouse_icon_type = zox_get_value(icon_mouse_follow, IconType)
         if (mouse_icon_type > zox_icon_type_action && icon_type > zox_icon_type_action && icon_type != mouse_icon_type) {
