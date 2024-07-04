@@ -8,7 +8,7 @@ color color_from_float3(const float3 input, const float alpha) {
     return (color) { (int) (input.x * 255.0f), (int) (input.y * 255.0f), (int) (input.z * 255.0f), (int) (alpha * 255.0f) };
 }
 
-color color_from_float4(const float4 input) {
+color float4_to_color(const float4 input) {
     return (color) { (int) (input.x * 255.0f), (int) (input.y * 255.0f), (int) (input.z * 255.0f), (int) (input.w * 255.0f) };
 }
 

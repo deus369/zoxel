@@ -15,11 +15,11 @@ void CameraFrustumSystem(ecs_iter_t *it) {
         }
         if (!frustumCorners->value) {
             frustumCorners->length = 8;
-            frustumCorners->value = malloc(frustumCorners->length * sizeof(float3));
+            frustumCorners->value = malloc(frustumCorners->length * sizeof(double3));
         }
-        frustumCorners->value = calculate_frustum_corners(viewMatrix->value);
-        calculate_frustum_bounds(frustumCorners->value, &position3DBounds->value);
-        calculate_planes_from_frustum(frustumCorners->value, cameraPlanes->value);
+        calculate_frustum_corners_d3(viewMatrix->value, frustumCorners->value);
+        calculate_frustum_bounds_d3(frustumCorners->value, &position3DBounds->value);
+        calculate_planes_from_frustum_d3(frustumCorners->value, cameraPlanes->value);
     }
 } zox_declare_system(CameraFrustumSystem)
 

@@ -1,4 +1,4 @@
-void calculate_frustum_bounds(const float3 *corners, float6 *bounds) {
+void calculate_frustum_bounds_d3(const double3 *corners, float6 *bounds) {
     bounds->x = bounds->z = bounds->u = FLT_MAX;
     bounds->y = bounds->w = bounds->v = -FLT_MAX;
     for (int i = 0; i < 8; i++) {

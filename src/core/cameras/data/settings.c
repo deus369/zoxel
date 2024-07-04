@@ -21,7 +21,11 @@ float4x4 debug_camera_transform = float4x4_zero;
 #define zox_camera_follow_mode_attach 0
 #define zox_camera_follow_mode_follow_xz 1
 #define max_cameras 16
-const float camera_near_distance = 0.01f; // 0.01f;
+// todo: I for raycasting, create a second frustum + second matrix
+//      WAIT the precision issue also effects frustum
+// todo 2: use double4x4 matrix for view matrix??....
+// we know from testing smaller far distance it stops the precision errors
+const float camera_near_distance = 0.1f;
 const float camera_far_distance = 800;
 int main_cameras_count = 1;
 const float camera_limit_x = 1.25f;

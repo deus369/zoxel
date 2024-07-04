@@ -31,7 +31,7 @@ zox_component_float4(ScreenToCanvas)
 zox_component(ProjectionMatrix, float4x4)
 zox_component(ViewMatrix, float4x4) // todo: use ViewProjectionMatrix instead
 zox_component(ViewProjectionMatrix, float4x4)
-zox_memory_component(FrustumCorners, float3)
+zox_memory_component(FrustumCorners, double3)
 zox_memory_component(CameraPlanes, plane)
 zox_component_entity(RenderTextureLink)
 #include "util/camera_mode.c"

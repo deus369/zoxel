@@ -27,7 +27,8 @@ double time_update_debug_label_system = 0;
 #define zox_debug_zox_statistics
 // #define zox_debug_zox_statistics2
 // camera
-// #define zox_debug_player_camera
+// #define zox_debug_player_camera_position
+// #define zox_debug_player_camera_euler
 // #define zox_debug_camera_frustum
 // #define zox_debug_camera_planes
 

@@ -15,10 +15,10 @@ void ProjectionMatrixSystem(ecs_iter_t *it) {
         const int screen_width = screenDimensions->value.x;
         const int screen_height = screenDimensions->value.y;
         if(screen_height <= 0) continue;
+        const float aspect_ratio = ((float) screen_width) / ((float) screen_height);
         zox_field_i_in(FieldOfView, fieldOfViews, fieldOfView)
         zox_field_i_in(CameraNearDistance, cameraNearDistances, cameraNearDistance)
         zox_field_i_out(ProjectionMatrix, projectionMatrixs, projectionMatrix)
-        const float aspect_ratio = ((float) screen_width) / ((float) screen_height);
 #ifndef zox_use_orthographic_projection
         calculate_perspective_projection_matrix(&projectionMatrix->value, aspect_ratio, cameraNearDistance->value, camera_far_distance, fieldOfView->value);
 #else

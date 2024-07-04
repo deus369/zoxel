@@ -36,6 +36,7 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
     // position
     byte3 voxel_position_local;
     byte3 voxel_position_local_last;
+    // zero for terrain raycasting
     float3 local_ray_origin = float3_sub(ray_origin, chunk_position_real);
     int3 voxel_position = real_position_to_voxel_position2(local_ray_origin, voxel_scale);
     const float3 ray_origin_scaled = float3_multiply_float(local_ray_origin, 1.0f / voxel_scale); // get float voxel position
@@ -84,7 +85,7 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
             unsigned char is_minivox = 0;
             if (voxels) {
                 const ecs_entity_t block = voxels->value[old_voxel - 1];
-                is_minivox = (zox_has(block, BlockVox));
+                is_minivox = zox_has(block, BlockVox);
             }
             if (is_minivox) {
                 const BlockSpawns *spawns = zox_get(chunk, BlockSpawns)
@@ -117,7 +118,7 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
             break;
         }
         // Traverse the grid with DDA
-        if (ray_add.x < ray_add.y && ray_add.x < ray_add.z) { // ray_add.x < ray_add.y &&
+        if (ray_add.x < ray_add.y && ray_add.x < ray_add.z) {
             ray_distance = ray_add.x;
             voxel_position.x += step_direction.x;
             ray_add.x += ray_unit_size.x;

@@ -20,6 +20,7 @@ typedef unsigned int uint;
 #include "data/float3x3.c"
 #include "data/float4x4.c"
 #include "data/double2.c"
+#include "data/double3.c"
 #include "data/ecs_entity_2.c"
 #include "data/uint2.c"
 #include "data/uint3.c"

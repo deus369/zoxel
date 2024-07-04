@@ -61,8 +61,11 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 #ifdef zox_debug_player_grounded
         buffer_index = get_label_player_grounded(world, player, buffer, buffer_size, buffer_index);
 #endif
-#ifdef zox_debug_player_camera
-        buffer_index = get_label_camera(world, player, buffer, buffer_size, buffer_index);
+#ifdef zox_debug_player_camera_position
+        buffer_index = get_label_camera_position(world, player, buffer, buffer_size, buffer_index);
+#endif
+#ifdef zox_debug_player_camera_euler
+        buffer_index = get_label_camera_euler(world, player, buffer, buffer_size, buffer_index);
 #endif
 #ifdef zox_debug_camera_planes
         buffer_index = get_label_camera_planes(world, player, buffer, buffer_size, buffer_index);

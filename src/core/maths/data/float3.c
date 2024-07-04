@@ -110,11 +110,7 @@ float3 float3_normalize(const float3 input) {
 
 //! Fixed from https://www.mathsisfun.com/algebra/vectors-cross-product.html
 float3 float3_cross(const float3 a, const float3 b) {
-    return (float3) { 
-        a.y * b.z - a.z * b.y,
-        a.z * b.x - a.x * b.z,
-        a.x * b.y - a.y * b.x
-    };
+    return (float3) { a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x };
 }
 
 float float3_dot(const float3 a, const float3 b) {

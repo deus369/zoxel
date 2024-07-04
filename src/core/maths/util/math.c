@@ -1,10 +1,5 @@
 // Find more math inspiration at https://gist.github.com/mattatz/86fff4b32d198d0928d0fa4ff32cf6fa
 
-double double_abs(const double input) {
-    if (input < 0) return -input;
-    else return input;
-}
-
 float4 float4_reverse(const float4 value) {
     return (float4) { -value.x, -value.y, -value.z, value.w };
 }

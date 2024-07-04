@@ -1,4 +1,6 @@
 #!/bin/bash
+# you need to call this from bash as no make available
+# bash bash/steamdeck/prepare.sh
 
 source bash/util/package_util.sh
 
@@ -14,11 +16,14 @@ if is_steam_deck; then
         echo " > fixing steamdeck keyring"
         sudo pacman-key --init
         sudo pacman-key --populate archlinux
+        # sudo pacman -Syuu --noconfirm
         echo " > installing steam deck requirements"
-        sudo pacman -S --noconfirm make glibc linux-api-headers sdl2
-        make install-required
-        make
-        make install
+        sudo pacman -Sy --noconfirm make
+        sudo pacman -Sy --noconfirm gcc
+        sudo pacman -Sy --noconfirm base-devel
+        # glibc linux-api-headers # sdl2
+        make prepare
+        make # && make install
     else
         echo " > steam deck was not updated"
     fi

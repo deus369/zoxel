@@ -194,6 +194,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     zox_set(realm, VoxelsDirty, { 1 })
     // renderer
     fog_color = color_to_float3(sky_color);
+    viewport_clear_color = fog_color;
     // game colors
     game_sky_color = fog_color;
     game_sky_bottom_color = fog_color;

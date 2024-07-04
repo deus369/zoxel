@@ -26,7 +26,6 @@ color* load_texture_from_png(const char *filepath, int2 *size, int *length) {
     // resize_memory_component(TextureData, data, color, colors_length)
     // textureData->value = malloc(loadedSurface->w * loadedSurface->h * 4); // Assuming 4 bytes per pixel (RGBA)
 
-
     // Flip the image vertically
     // remember: sdl considers top left origin, while opengl is bottom left
     int pitch = loadedSurface->pitch;

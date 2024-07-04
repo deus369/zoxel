@@ -19,7 +19,7 @@ ECS_DTOR(Context, ptr, { if (ptr->value != 0) SDL_GL_DeleteContext(ptr->value); 
 #include "util/app_util.c"
 
 void dispose_apps_sdl(ecs_world_t *world, void *ctx) {
-    dispose_sdl_cursor();
+    // dispose_sdl_cursor();
     close_sdl_input();
     close_sdl_video();
 }

@@ -133,7 +133,7 @@ ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const 
         // texture
         char *icon_texture_name = taskbar_textures[i];
 
-        const ecs_entity_t test_icon_texture = string_hashmap_get(files_hashmap_textures, new_string_data(icon_texture_name));
+        const ecs_entity_t texture_source = string_hashmap_get(files_hashmap_textures, new_string_data(icon_texture_name));
 
         const ecs_entity_t icon2 = spawn_element(world, &spawn_icon_data);
         frame_children->value[0] = icon2;
@@ -141,7 +141,7 @@ ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const 
         zox_set(icon2, IconIndex, { i })
 
         zox_set(icon2, GenerateTexture, { zox_generate_texture_none })
-        clone_texture_data(world, icon2, test_icon_texture);
+        clone_texture_data(world, icon2, texture_source);
         zox_set(icon2, TextureDirty, { 1 })
     }
     return e;

@@ -22,6 +22,6 @@ ecs_entity_t spawn_particle3D(ecs_world_t *world, const float3 position3D, const
     float4 color = (float4) { (rand() % 100) * 0.01f, (rand() % 100) * 0.01f, (rand() % 100) * 0.01f, 0 };
     float4_multiply_float_p(&color, 0.3f);
     color.w = (rand() % 100) * 0.01f * 0.8f + 0.1f;
-    zox_set(e, Color, { color_from_float4(color) })
+    zox_set(e, Color, { float4_to_color(color) })
     return e;
 }

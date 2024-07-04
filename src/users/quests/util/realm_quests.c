@@ -8,6 +8,7 @@ void spawn_realm_quests(ecs_world_t *world, const ecs_entity_t realm) {
     // slay them dirty slems
     meta_quest_slay_slems = spawn_meta_quest(world, "slay slems", prefab_quest);
     // set quest objectives
-    zox_set(meta_quest_slay_slems, TextureLink, { files_textures[12] });
+    // zox_set(meta_quest_slay_slems, TextureLink, { files_textures[12] });
+    zox_set(meta_quest_slay_slems, TextureLink, { string_hashmap_get(files_hashmap_textures, new_string_data("Discord")) })
     quests->value[0] = meta_quest_slay_slems;
 }

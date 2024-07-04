@@ -552,7 +552,7 @@ freetype:
 # ===== steam ===== #
 # ===== ===== ===== #
 
-.PHONY: steam-wrapper-linux steam-linux steam-linux-dev steam-run steam-wrapper-windows steam-windows steam steam-cmd steam-sdk steam-package steam-upload steam-upload-live install-steam-deck-required clean-steam
+.PHONY: steam-wrapper-linux steam-linux steam-linux-dev steam-run steam-wrapper-windows steam-windows steam steam-cmd steam-sdk steam-package steam-upload steam-upload-live prepare-steamdeck clean-steam
 
 # todo: use windows-steam directory
 steam_objs = bash/steam/steamwrapper.c
@@ -629,8 +629,8 @@ steam-upload-live:
 	@ bash bash/steam/upload_package.sh --default
 
 # install libs needed on steamdeck for builds there (steam os)
-install-steam-deck-required:
-	@ bash bash/steam/install_on_steam_deck.sh
+prepare-steamdeck:
+	@ bash bash/steamdeck/prepare.sh
 
 clean-steam:
 	@ echo " > cleaning steam builds"
@@ -864,7 +864,7 @@ help-steam:
 	@echo "    steam-upload-live		uploads steam to main branch"
 	@echo "	   steam-cmd			installs steam cmd for uploads"
 	@echo "    steam-sdk			installs steamworks sdk from zip ~/Downloads/steamworks_sdk.zip"
-	@echo "    install-steam-deck-required	installs steamdeck required libs"
+	@echo "    prepare-steamdeck		installs steamdeck required libs"
 
 help-itch:
 	@echo "  > [itchio]"

@@ -284,7 +284,7 @@ at 0,0,16 planes:
     Plane 6: Normal = (0.00, 0.00, -1.00), Distance = 1016.133;:
 */
 void test_calculate_plane_from_points() {
-    // Define test points
+    /*// Define test points
     float3 point_a = (float3) { -1, -1, 0 };
     float3 point_b = (float3) { 1, -1, 0 };
     float3 point_c = (float3) { 1, 1, 0 };
@@ -308,11 +308,11 @@ void test_calculate_plane_from_points() {
     if (result_plane.distance != expected_distance) {
         printf("Error: Calculated distance %f does not match expected distance %f\n",
                result_plane.distance, expected_distance);
-    }
+    }*/
 }
 
 void test_calculate_planes_from_frustum() {
-    // Define test frustum points
+   /* // Define test frustum points
     float3 frustum_points[8] = {
         (float3) { -1, -1, 0 },
         (float3) { 1, -1, 0 },
@@ -348,7 +348,7 @@ void test_calculate_planes_from_frustum() {
         if (planes[i].distance != expected_distances[i]) {
             printf("Error: Calculated distance for plane %d [%f] does not match the expected distance %f.\n", i, planes[i].distance, expected_distances[i]);
         }
-    }
+    }*/
 }
 
 

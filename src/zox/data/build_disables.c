@@ -24,6 +24,7 @@
 // #define zox_test_settings_03
 
 #ifdef zox_test_settings_00
+    // #define zox_disable_skybox
     #define zox_disable_block_voxes  // currently these lag
     // #define zox_disable_npcs
     // #define zox_is_flatlands
