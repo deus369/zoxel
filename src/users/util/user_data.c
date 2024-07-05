@@ -27,9 +27,8 @@ ecs_entity_t spawn_prefab_##name(ecs_world_t *world) {\
 /* generic meta spawn function*/\
 ecs_entity_t spawn_meta_##name(ecs_world_t *world, const char *source_name, const ecs_entity_t prefab) {\
     zox_prefab_child(prefab)\
-    zox_prefab_name("meta_"label)\
-    /* shared variables for all meta data */\
-    /*zox_set(e, ZoxName, { 0, NULL })*/\
+    /*zox_prefab_name("meta_"label)*/\
+    zox_prefab_name(source_name)\
     zox_get_muter(e, ZoxName, zoxName)\
     set_zox_name(zoxName, source_name);\
     return e;\
@@ -45,7 +44,7 @@ ecs_entity_t spawn_meta_##name##_zox_name(ecs_world_t *world, const ZoxName *sou
 \
 ecs_entity_t spawn_user_##name(ecs_world_t *world, ecs_entity_t prefab, ecs_entity_t user) {\
     zox_instance(prefab)\
-    /*zox_name("user_"label)*/\
+    zox_name(zox_get_name(prefab))\
     zox_set(e, UserLink, { user })\
     return e;\
 }

@@ -26,24 +26,28 @@ void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
             continue;
         }
         const ecs_entity_t action_entity = actionLinks->value[action_selected];
+        // no action assigned
         if (!action_entity) {
             triggerActionB->value = 0;
             continue;
         }
-        if (!zox_has(action_entity, ItemBlock)) {
+        if (zox_has(action_entity, ItemBlock)) {
+            const ecs_entity_t block = zox_get_value(action_entity, BlockLink)
+            if (block) {
+                const unsigned char block_index = zox_get_value(block, BlockIndex)
+                raycast_action(world, raycastVoxelData, block_index, 1);
+            }
+        } else if (zox_has(action_entity, Skill)) {
+            // zox_log(" > toggling skill [%s]\n", zox_get_name(action_entity))
+            if (zox_has(action_entity, Aura)) {
+                zox_set(action_entity, SkillActive, { !zox_gett_value(action_entity, SkillActive) })
+            } else {
+                zox_log(" > skill not actionable yet [%s]\n", zox_get_name(action_entity))
+            }
+
+        } else {
             zox_log(" > action entity is not a block item\n")
-            triggerActionB->value = 0;
-            continue;
         }
-        const ecs_entity_t block = zox_get_value(action_entity, BlockLink)
-        if (!block) {
-            zox_log(" ! block from item is not valid\n")
-            triggerActionB->value = 0;
-            continue;
-        }
-        const unsigned char block_index = zox_get_value(block, BlockIndex)
-        // get BlockLink
-        raycast_action(world, raycastVoxelData, block_index, 1);
         triggerActionB->value = 0;
     }
 } zox_declare_system(PlayerPlaceVoxelSystem)

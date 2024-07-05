@@ -1,6 +1,6 @@
 // DotsSystem
 void DotsSystem(ecs_iter_t *it) {
-    const float damage_rate = 2.0f; // add this property to dot entity
+    const float damage_rate = 1.0f; // add this property to dot entity
     init_delta_time()
     zox_iter_world()
     zox_field_in(UserLink, userLinks, 1)
