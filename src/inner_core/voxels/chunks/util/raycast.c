@@ -144,12 +144,12 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
         checks++;
     }
     if (ray_hit == 2) {
-        return ray_hit;
+        //return ray_hit;
     } else if (ray_hit == 3) {
         // zox_log("raycast hit character!\n")
         const color_rgb hit_point_line_color = (color_rgb) { 55, 45, 45 };
         render_line3D(world, data->hit, float3_add(data->hit, float3_multiply_float(float3_up, 0.3f)), hit_point_line_color);
-        return ray_hit;
+        //return ray_hit;
     } else if (ray_hit) {
         const color_rgb hit_point_line_color = (color_rgb) { 0, 255, 255 };
         const color_rgb voxel_line_color  = (color_rgb) { 0, 0, 0 };
@@ -174,6 +174,7 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
         data->chunk_last = 0;
         data->position_last = byte3_zero;
     }
+    data->distance = ray_distance;
     return ray_hit;
 }
 

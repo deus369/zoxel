@@ -5,15 +5,23 @@
 #define hash_multiple_3 37 // 139
 
 // remember: max number is 65,535
-uint16_t get_byte3_hash(byte3 input) {
+/*uint16_t get_byte3_hash(byte3 input) {
     uint16_t hash = hash_constant_byte; // hash_constant
     hash = hash * hash_multiple_1 + ((uint16_t) input.x);
     hash = hash * hash_multiple_2 + ((uint16_t) input.y);
     hash = hash * hash_multiple_3 + ((uint16_t) input.z);
     return hash;
+}*/
+
+uint32_t get_byte3_hash(byte3 input) {
+    uint32_t hash = hash_constant;
+    hash = hash * 163 + ((uint32_t) input.x);
+    hash = hash * 109 + ((uint32_t) input.y);
+    hash = hash * 139 + ((uint32_t) input.z);
+    return hash;
 }
 
-zox_hashmap(byte3_hashmap, ecs_entity_t, 0, byte3, uint16_t, get_byte3_hash)
+zox_hashmap(byte3_hashmap, ecs_entity_t, 0, byte3, uint32_t, get_byte3_hash)
 
 /*
  *

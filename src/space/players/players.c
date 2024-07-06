@@ -61,7 +61,7 @@ zox_system_1(EditorInputSystem, zox_pip_mainthread, [in] DeviceLinks, [in] Canva
 zox_system(PlayerToggleCameraSystem, EcsOnUpdate, [in] DeviceLinks, [in] CharacterLink, [in] GameLink, [none] players.Player)
 zox_system_1(RaycastGizmoSystem, zox_pip_mainthread, [in] CameraLink, [in] VoxLink, [out] RaycastVoxelData)
 zox_system(VoxelActionASystem, EcsOnLoad, [in] RaycastVoxelData, [out] TriggerActionA)
-zox_system(PlayerPlaceVoxelSystem, EcsOnLoad, [in] RaycastVoxelData, [in] ActionLinks, [out] TriggerActionB)
+zox_system_1(PlayerPlaceVoxelSystem, EcsOnLoad, [in] RaycastVoxelData, [in] ActionLinks, [out] TriggerActionB)
 initialize_players(world);
 zox_prefab_add(prefab_game, PlayerLinks)
 zox_prefab_set(prefab_player, PlayerPauseEvent, { 0 })

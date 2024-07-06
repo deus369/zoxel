@@ -6,5 +6,6 @@ typedef struct {
     byte3 position_last;
     float3 hit;
     int3 normal;
+    float distance;
 } RaycastVoxelData;
 zox_custom_component(RaycastVoxelData)

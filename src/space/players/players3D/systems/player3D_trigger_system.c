@@ -46,7 +46,7 @@ void Player3DTriggerSystem(ecs_iter_t *it) {
                 }
             }
         }
-        if (is_triggered_a) zox_set(character, TriggerActionA, { 1 })
-        if (is_triggered_b) zox_set(character, TriggerActionB, { 1 })
+        if (is_triggered_a) zox_set(character, TriggerActionB, { 1 })
+        // if (is_triggered_b) zox_set(character, TriggerActionA, { 1 })
     }
 } zox_declare_system(Player3DTriggerSystem)

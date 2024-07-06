@@ -8,12 +8,14 @@
 // todo: need ally system
 // zox_declare_user_data(Skill)
 zox_declare_user_data(Skill)
+zox_declare_tag(Melee)
 zox_declare_tag(Aura)
 zox_declare_tag(Poison)
 // zox_component_entity(SkillLink)
 zox_component_byte(SkillActive)
 zox_component_float(SkillDamage)
 zox_component_float(SkillRange)
+zox_component_float(SkillCost)
 #include "prefabs/prefabs.c"
 #include "systems/damage_aura_system.c"
 #include "systems/damage_aura_remove_system.c"
@@ -31,11 +33,13 @@ void set_linked_skill(ecs_world_t *world, const ecs_entity_t user, const int ind
 }
 
 zox_begin_module(Skills)
+zox_define_tag(Melee)
 zox_define_tag(Aura)
 zox_define_tag(Poison)
 zox_define_user_data(Skill)
 zox_define_component_float(SkillDamage)
 zox_define_component_float(SkillRange)
+zox_define_component_float(SkillCost)
 // zox_define_component_entity(SkillLink)
 zox_define_component_byte(SkillActive)
 zox_filter(characters, [in] Dead, [in] Position3D, [out] Children, [out] DotLinks)

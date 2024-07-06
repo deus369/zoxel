@@ -16,6 +16,10 @@ void DotsSystem(ecs_iter_t *it) {
         const StatLinks *statLinks = zox_get(userLink->value, StatLinks)
         // find health stat, maybe poison should target a stat type directly??
         find_array_component_with_tag(statLinks, HealthStat, health_stat)
+        if (!health_stat) {
+            zox_log(" ! user had no health\n")
+            continue;
+        }
         // const ecs_entity_t health_stat = statLinks->value[0];
         const float stat_value_max = zox_get_value(health_stat, StatValueMax)
         zox_get_muter(health_stat, StatValue, statValue)

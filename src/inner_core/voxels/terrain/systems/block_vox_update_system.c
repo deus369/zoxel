@@ -1,6 +1,5 @@
 // updates during ChunkDirty step, also checks render disabled
 void BlockVoxUpdateSystem(ecs_iter_t *it) {
-    //  return;
 #ifdef zox_disable_block_voxes
     return;
 #endif
