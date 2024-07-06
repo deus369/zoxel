@@ -38,9 +38,9 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const ecs_entity_t pref
     // zoxel_log(" > line_spacing [%f] - size [%i]\n", line_spacing, pixel_size.x);
     zox_instance(prefab)
     zox_name("frame_debugger_ui")
-    zox_set(e, HeaderHeight, { header_size.y })
+    // zox_set(e, HeaderHeight, { header_size.y })
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, canvas_position);
-    set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor, header_size.y);
+    set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor);
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, children_count)
     if (is_header) {

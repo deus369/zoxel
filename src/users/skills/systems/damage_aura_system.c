@@ -7,16 +7,24 @@
 // todo: seperate skill, use sphere cast (using sphere distance) to cache nearby characters - and lookup using chunk entities and not a seperate query
 
 void DamageAuraSystem(ecs_iter_t *it) {
-    const float damage_radius = 3.0f;
     zox_iter_world()
     zox_field_in(UserLink, userLinks, 1)
     zox_field_in(SkillActive, skillActives, 2)
+    zox_field_in(SkillDamage, skillDamages, 3)
+    zox_field_in(SkillRange, skillRanges, 4)
+    zox_field_in(Color, colors, 5)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(UserLink, userLinks, userLink)
         if (!zox_alive(userLink->value)) continue;
         zox_field_i(SkillActive, skillActives, skillActive)
         if (!skillActive->value) continue;
+        zox_field_i(SkillDamage, skillDamages, skillDamage)
+        if (skillDamage->value == 0) continue;
+        zox_field_i(SkillRange, skillRanges, skillRange)
+        if (skillRange->value == 0) continue;
+        zox_field_i(Color, colors, colorr)
         zox_field_e()
+        // zox_get_parent_prefab(prefab_aura, e)
         const ecs_entity_t user = userLink->value;
         const Position3D *position3D = zox_get(userLink->value, Position3D)
         // todo: Get Chunk' Characters instead, this could potentially go through tens of thousands..
@@ -42,24 +50,29 @@ void DamageAuraSystem(ecs_iter_t *it) {
                 // get poison, that  was initiated by this aura user
                 for (int k = 0; k < dotLinks->length; k++) {
                     const ecs_entity_t dot = dotLinks->value[k];
+                    if (!zox_has(dot, SkillLink)) continue;
+                    const ecs_entity_t skill_spawner = zox_get_value(dot, SkillLink)
+                    // zox_get_parent_prefab(prefab_aura, e)
                     // if added in this function, SpawnerLink doesn't get added into flecs table until after the function, so the dot will not have component access yet, assume we havn't added a dot yet from the current user
-                    if (zox_has(dot, SpawnerLink) && zox_gett_value(dot, SpawnerLink) == user) {
+                    if (skill_spawner == e) { // zox_has(dot, SpawnerLink) && zox_gett_value(dot, SpawnerLink) == user) {
                         poisoned_entity = dot;
                         break;
                     }
                 }
+                if (poisoned_entity) {
+                    continue;
+                }
                 // makes sure to check the debuff is linked to same character
                 // makes it so t two players can damage a character at once
-                if (!poisoned_entity && distance <= damage_radius) {
-                    const ecs_entity_t new_dot = spawn_poison(world, prefab_poison, e2, user, e);
+                if (distance <= skillRange->value) {
+                    const ecs_entity_t new_dot = spawn_poison(world, prefab_poison, e2, user, e, skillDamage->value);
                     // zox_log(" + added new dot [%s] [%lu] total dots [%i]\n", zox_get_name(new_dot), new_dot, dotLinks->length)
                     add_to_DotLinks(dotLinks, new_dot);
                     // spawn particle system
-                    if (!children->length) {
-                        const float3 bounds = zox_get_value(e2, Bounds3D)
-                        const ecs_entity_t particle3D_emitter = spawn_particle3D_emitter(world, e2, 4, float3_multiply_float(bounds, 2));
-                        add_to_Children(children, particle3D_emitter);
-                    }
+                    const float3 bounds = zox_get_value(e2, Bounds3D)
+                    const ecs_entity_t particle3D_emitter = spawn_particle3D_emitter(world, e2, 4, float3_multiply_float(bounds, 2), colorr->value);
+                    add_to_Children(children, particle3D_emitter);
+                    zox_set(particle3D_emitter, SkillLink, { e })
 #ifdef zox_debug_aoe_damage_system
                     spawn_line3D(world, position3D->value, position3D2->value, 0.5f, 0.1);
 #endif

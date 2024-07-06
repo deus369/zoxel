@@ -10,11 +10,11 @@ ecs_entity_t spawn_block_item(ecs_world_t *world, const ecs_entity_t block) {
         const ZoxName *voxel_name = zox_get(block, ZoxName)
         const Textures *textures = zox_get(block, Textures)
         // spawn item
-        const ecs_entity_t item = spawn_meta_item_zox_name(world, voxel_name, prefab_item);
+        const ecs_entity_t item = spawn_meta_item_zox_name(world, prefab_item, voxel_name);
         if (textures->length > 0) {
             zox_set(item, TextureLink, { textures->value[0] });
         } else {
-            zox_log(" ! block [%s] had no textures [%i]\n",  convert_zext_to_text(voxel_name->value, voxel_name->length), textures->length)
+            // zox_log(" ! block [%s] had no textures [%i]\n",  convert_zext_to_text(voxel_name->value, voxel_name->length), textures->length)
         }
         zox_add_tag(item, ItemBlock)
         zox_set(item, BlockLink, { block })

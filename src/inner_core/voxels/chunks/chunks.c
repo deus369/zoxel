@@ -22,6 +22,7 @@ zoxel_octree_component(ChunkOctree, unsigned char, 0)
 #include "data/raycast_voxel_data.c"
 #include "data/color_settings.c"
 #include "data/trigger_states.c"
+#include "data/chunk_lod_state.c"
 #include "util/voxel_mesh_util.c"
 #include "util/chunk_util.c"
 #include "util/chunk_octree_util.c"
@@ -36,7 +37,7 @@ zoxel_octree_component(ChunkOctree, unsigned char, 0)
 #include "util/place_util.c"
 #include "util/settings.c"
 #include "prefabs/prefabs.c"
-zox_increment_system_with_reset(ChunkLodDirty, 3)
+zox_increment_system_with_reset(ChunkLodDirty, chunk_lod_state_end)
 #include "systems/chunk_build_system.c"
 #include "systems/chunk_link_system.c"
 #include "systems/chunk_entities_lod_system.c"

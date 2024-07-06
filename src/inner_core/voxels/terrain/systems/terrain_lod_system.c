@@ -36,7 +36,6 @@ void TerrainLodSystem(ecs_iter_t *it) {
         zox_field_out_iter(&chunks_iterator, RenderLod, renderLods, 3)
         zox_field_out_iter(&chunks_iterator, ChunkDirty, chunkDirtys, 4)
         zox_field_out_iter(&chunks_iterator, ChunkLodDirty, chunkLodDirtys, 5)
-        // zox_log("stream is dirty %i\n", stream_points_length)
         for (int j = 0; j < total_chunks; j++) {
             const ChunkNeighbors *chunkNeighbors = &chunkNeighborss[j];
             RenderLod *renderLod = &renderLods[j];
@@ -59,7 +58,7 @@ void TerrainLodSystem(ecs_iter_t *it) {
             RenderLod *renderLod = &renderLods[j];
             renderLod->value = camera_distance;
             chunkDirty->value = 1;
-            chunkLodDirty->value = 1;
+            chunkLodDirty->value = chunk_lod_state_dirty;
         }
         streamDirty->value = 0;
     }

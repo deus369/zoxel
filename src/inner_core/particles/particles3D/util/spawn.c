@@ -1,4 +1,4 @@
-void emit_particle3Ds_slow(ecs_world_t *world, const float3 emit_position, const float3 bounds, const int spawn_count) {
+void emit_particle3Ds_slow(ecs_world_t *world, const float3 emit_position, const float3 bounds, const int spawn_count, const color colorr) {
     // const float3 spawn_bounds = { 0.4f, 0.8, 0.4f };
     const float3 acceleration3D_bounds = { 0.4f, 0.8, 0.4f };
     for (int i = 0; i < spawn_count; i++) {
@@ -15,7 +15,11 @@ void emit_particle3Ds_slow(ecs_world_t *world, const float3 emit_position, const
             ((rand() % 101) / 100.0f) * acceleration3D_bounds.y - (acceleration3D_bounds.y / 2.0f),
             ((rand() % 101) / 100.0f) * acceleration3D_bounds.z - (acceleration3D_bounds.z / 2.0f)
         });
-        spawn_particle3D(world, spawn_position, spawn_acceleration3D);
+        float4 particle_color = color_to_float4(colorr);
+        // (float4) { (rand() % 100) * 0.01f, (rand() % 100) * 0.01f, (rand() % 100) * 0.01f, 0 };
+        // float4_multiply_float_p(&particle_color, 0.3f);
+        particle_color.w += -0.2f + (rand() % 100) * 0.01f * 0.2f;
+        spawn_particle3D(world, spawn_position, spawn_acceleration3D, float4_to_color(particle_color));
     }
 }
 

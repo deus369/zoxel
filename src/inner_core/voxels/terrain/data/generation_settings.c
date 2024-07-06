@@ -13,7 +13,7 @@ const int mountain_height = 20;
 const int test_block_vox_index = 4; // flower
 const int test_block_vox_index2 = 6; // little_cube
 // voxes lods
-const unsigned char max_vox_blocks = 128; // max spawned vox_blocks
+const unsigned char max_vox_blocks = 16; // max spawned vox_blocks
 const unsigned char block_vox_render_distance = 2; // 3 | 4 looks best
 const int init_lod_voxes = 1;
 const int lod_div_voxes = 1;

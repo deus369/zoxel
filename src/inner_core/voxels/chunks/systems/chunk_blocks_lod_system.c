@@ -5,7 +5,7 @@ void ChunkBlocksLodSystem(ecs_iter_t *it) {
     zox_field_in(BlockSpawns, blockSpawnss, 3)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(ChunkLodDirty, chunkLodDirtys, chunkLodDirty)
-        if (chunkLodDirty->value != 2) continue;
+        if (chunkLodDirty->value != chunk_lod_state_vox_blocks_update) continue;
         zox_field_i(BlockSpawns, blockSpawnss, blockSpawns)
         if (!blockSpawns->value || !blockSpawns->value->data) continue;
         zox_field_i(RenderLod, renderLods, renderLod)

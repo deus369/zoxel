@@ -13,15 +13,12 @@ ecs_entity_t spawn_prefab_particle3D(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_particle3D(ecs_world_t *world, const float3 position3D, const float3 acceleration3D) {
+ecs_entity_t spawn_particle3D(ecs_world_t *world, const float3 position3D, const float3 acceleration3D, const color particle_color) {
     zox_instance(prefab_particle3D)
     // zox_name("particle3D")
     zox_set(e, Position3D, { position3D })
     zox_set(e, Acceleration3D, { acceleration3D })
     // zox_prefab_set(e, Velocity3D, { velocity3D })
-    float4 color = (float4) { (rand() % 100) * 0.01f, (rand() % 100) * 0.01f, (rand() % 100) * 0.01f, 0 };
-    float4_multiply_float_p(&color, 0.3f);
-    color.w = (rand() % 100) * 0.01f * 0.8f + 0.1f;
-    zox_set(e, Color, { float4_to_color(color) })
+    zox_set(e, Color, { particle_color })
     return e;
 }

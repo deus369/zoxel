@@ -1,4 +1,6 @@
+// updates during ChunkDirty step, also checks render disabled
 void BlockVoxUpdateSystem(ecs_iter_t *it) {
+    //  return;
 #ifdef zox_disable_block_voxes
     return;
 #endif
@@ -13,10 +15,10 @@ void BlockVoxUpdateSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i(ChunkDirty, chunkDirtys, chunkDirty)
         if (!chunkDirty->value) continue;
-        zox_field_i(VoxLink, voxLinks, voxLink)
-        if (!voxLink->value) continue;
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         if (renderDisabled->value) continue;
+        zox_field_i(VoxLink, voxLinks, voxLink)
+        if (!voxLink->value) continue;
         zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
         zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
         zox_field_i(RenderLod, renderLods, renderLod)
@@ -24,8 +26,11 @@ void BlockVoxUpdateSystem(ecs_iter_t *it) {
         const unsigned char camera_distance = renderLod->value;
         const unsigned char can_have_block_voxes = camera_distance <= block_vox_render_distance;
         if (can_have_block_voxes) {
-            // zox_log(" > updating %lu block voxes [%i]\n", it->entities[i], chunkDirty->value)
-            update_block_voxes(world, voxLink, chunkPosition, renderLod, renderDisabled, chunkOctree, blockSpawns);
+            // check ChunkLodDirty state first so we don't override it
+            zox_field_e()
+            const unsigned char chunk_lod_dirty = zox_get_value(e, ChunkLodDirty)
+            if (chunk_lod_dirty == 0 || chunk_lod_dirty >= chunk_lod_state_vox_blocks_spawn) zox_set(e, ChunkLodDirty, { chunk_lod_state_vox_blocks_spawn })
+            // update_block_voxes(world, voxLink, chunkPosition, renderLod, renderDisabled, chunkOctree, blockSpawns);
         }
     }
 } zox_declare_system(BlockVoxUpdateSystem)

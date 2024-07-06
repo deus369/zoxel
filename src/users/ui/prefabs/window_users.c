@@ -28,7 +28,7 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
     zox_instance(data->window.prefab)
     zox_name(data->header_zext.text)
     initialize_element(world, e, data->parent.e, data->canvas.e, position, data->element.size, data->element.size, data->element.anchor, data->element.layer, real_position, canvas_position);
-    set_window_bounds_to_canvas(world, e, data->canvas.size, data->element.size, data->element.anchor, header_height);
+    set_window_bounds_to_canvas(world, e, data->canvas.size, data->element.size, data->element.anchor);
     const UserLinks *user_data = zox_get_id(character, data->window.user_links_id)
     const int user_datas_count = user_data->length;
     const int grid_elements_count = user_datas_count; // data->window.grid_size.x * data->window.grid_size.y
@@ -45,7 +45,7 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
         const float2 header_anchor = (float2) { 0.5f, 1.0f };
         const int2 header_position = (int2) { 0, -header_height / 2 };
         header_size = (int2) { data->element.size.x, header_height };
-        zox_set(e, HeaderHeight, { header_size.y })
+        // zox_set(e, HeaderHeight, { header_size.y })
         // todo: pass more of t this in from top
         SpawnHeader spawnHeader = {
             .canvas = data->canvas,

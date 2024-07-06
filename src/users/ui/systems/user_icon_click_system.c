@@ -38,6 +38,7 @@ void UserIconClickSystem(ecs_iter_t *it) {
         const ecs_entity_t mouse_data = zox_get_value(icon_mouse_follow, UserDataLink)
         if (!mouse_data && !userDataLink->value) continue; // if both empty
         const unsigned char is_clicked_empty = !userDataLink->value;
+        const unsigned char is_placing_empty = !mouse_data;
         // const unsigned char is_mouse_empty = !mouse_data;
         // check matches mouse's icon type
         const unsigned char mouse_icon_type = zox_get_value(icon_mouse_follow, IconType)
@@ -75,6 +76,15 @@ void UserIconClickSystem(ecs_iter_t *it) {
         } else if (iconType->value == zox_icon_type_item) {
             // zox_log(" + character [%lu] setting [%s] [%i]\n", character, "item", iconIndex->value)
             set_linked_item(world, character, iconIndex->value, mouse_data);
+        }
+
+        // clear the tooltip when picked up icon
+        if (!is_clicked_empty) {
+            const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
+            find_child_with_tag(canvas, Tooltip, tooltip)
+            if (tooltip) {
+                set_entity_with_text(world, tooltip, "");
+            }
         }
     }
 } zox_declare_system(UserIconClickSystem)

@@ -15,7 +15,7 @@ zox_begin_module(Particles3D)
 add_load_shader_function(&spawn_shaders_particles3D);
 zox_define_tag(Particle3D)
 zox_define_tag(Particle3DEmitter)
-zox_system_1(Particle3DEmitSystem, zox_pip_mainthread, [in] Position3D, [in] ParticleEmitRate, [in] Bounds3D, [none] Particle3DEmitter)
+zox_system_1(Particle3DEmitSystem, zox_pip_mainthread, [in] Position3D, [in] ParticleEmitRate, [in] Bounds3D, [in] Color, [none] Particle3DEmitter)
 zox_render3D_system(Particle3DRenderSystem, [none] Particle3D, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Color)
 spawn_prefabs_particles3D(world);
 zoxel_end_module(Particles3D)

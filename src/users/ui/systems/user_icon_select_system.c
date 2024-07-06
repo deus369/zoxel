@@ -10,9 +10,9 @@ void UserIconSelectSystem(ecs_iter_t *it) {
         zox_field_i(SelectState, selectStates, selectState)
         if (!(selectState->value == zox_select_state_selected_this_frame || selectState->value == zox_select_state_deselected_this_frame)) continue;
         zox_field_i(UserDataLink, userDataLinks, userDataLink)
-        zox_field_i(CanvasLink, canvasLinks, canvasLink)
         zox_field_i(TooltipEvent, tooltipEvents, tooltipEvent)
         if (!userDataLink->value || !tooltipEvent->value) continue;
+        zox_field_i(CanvasLink, canvasLinks, canvasLink)
         find_child_with_tag(canvasLink->value, Tooltip, tooltip)
         if (!tooltip) {
             zox_log(" ! tooltip not found in canvas\n")
@@ -21,11 +21,8 @@ void UserIconSelectSystem(ecs_iter_t *it) {
         // deselect event here is fine
         if (selectState->value == zox_select_state_deselected_this_frame) {
             set_entity_with_text(world, tooltip, "");
-            // zox_set(tooltip, RenderDisabled, { 1 })
-            // zox_log(" > icon [%lu] deselected at %f\n", it->entities[i], zox_current_time)
             continue;
         }
-        // zox_set(tooltip, RenderDisabled, { (selectState->value == zox_select_state_deselected_this_frame) })
         TooltipEventData data = {
             .event = selectState->value,
             .tooltip = tooltip,

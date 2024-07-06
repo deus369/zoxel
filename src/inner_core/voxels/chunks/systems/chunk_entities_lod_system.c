@@ -5,11 +5,11 @@ void ChunkEntitiesLodSystem(ecs_iter_t *it) {
     zox_field_in(RenderLod, renderLods, 2)
     zox_field_in(EntityLinks, entityLinkss, 3)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(ChunkLodDirty, chunkLodDirtys, chunkLodDirty)
-        if (chunkLodDirty->value != 2) continue;
-        zox_field_i_in(RenderLod, renderLods, renderLod)
+        zox_field_i(ChunkLodDirty, chunkLodDirtys, chunkLodDirty)
+        if (chunkLodDirty->value != chunk_lod_state_characters_update) continue;
+        zox_field_i(RenderLod, renderLods, renderLod)
         const unsigned char new_lod = get_voxes_lod_from_camera_distance(renderLod->value);
-        zox_field_i_in(EntityLinks, entityLinkss, entityLinks)
+        zox_field_i(EntityLinks, entityLinkss, entityLinks)
         for (int j = 0; j < entityLinks->length; j++) {
             const ecs_entity_t e2 = entityLinks->value[j];
             if (!(e2 && zox_valid(e2) && zox_has(e2, RenderLod))) continue;

@@ -79,7 +79,9 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     const ecs_entity_t dirt_rubble = spawn_vox_generated_invisible(world, prefab_vox_generated, dirt_color);
     zox_add_tag(dirt_rubble, VoxRubble)
     const ecs_entity_t vox_obsidian = spawn_vox_generated_invisible(world, prefab_vox_generated, color_obsidian);
+#ifdef zox_disable_block_voxes
     const ecs_entity_t vox_disabled = spawn_vox_generated_invisible(world, prefab_vox_generated, (color) { 25, 5, 5, 255 });
+#endif
     for (unsigned char i = 0; i < voxelLinks->length; i++) {
         SpawnBlock spawn_data = {
             .index = (unsigned char) (i + 1),
@@ -165,6 +167,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             spawn_data.tag = zox_id(BlockVox);
             spawn_data.model = zox_block_vox;
             spawn_data.vox = dirt_rubble;
+            spawn_data.disable_collision = 1;
 #else
             spawn_data.bake_vox = 1;
             spawn_data.vox = vox_disabled;

@@ -1,4 +1,4 @@
-// spawning block vox entities during generation step!
+// spawning block vox entities during LOD generation step!
 void BlockVoxSpawnSystem(ecs_iter_t *it) {
 #ifdef zox_disable_block_voxes
     return;
@@ -13,7 +13,8 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
     zox_field_out(BlockSpawns, blockSpawnss, 7)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(ChunkLodDirty, chunkLodDirtys, chunkLodDirty)
-        if (chunkLodDirty->value != 3) continue;
+        // if (chunkLodDirty->value != chunk_lod_state_vox_blocks_spawn) continue;
+        if (!(chunkLodDirty->value >= chunk_lod_state_vox_blocks_spawn && chunkLodDirty->value <= chunk_lod_state_vox_blocks_spawn_8)) continue;
         zox_field_i(VoxLink, voxLinks, voxLink)
         if (!voxLink->value) continue;
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
@@ -25,7 +26,10 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
         const unsigned char camera_distance = renderLod->value;
         const unsigned char can_have_block_voxes = camera_distance <= block_vox_render_distance;
         if (can_have_block_voxes) {
-            update_block_voxes(world, voxLink, chunkPosition, renderLod, renderDisabled, chunkOctree, blockSpawns);
+            unsigned char node_index =chunkLodDirty->value - chunk_lod_state_vox_blocks_spawn;
+            // zox_log("node_index [%i]\n", node_index)
+            update_block_voxes_on_node(world, voxLink, chunkPosition, renderLod, renderDisabled, chunkOctree, blockSpawns, node_index);
+            // update_block_voxes(world, voxLink, chunkPosition, renderLod, renderDisabled, chunkOctree, blockSpawns);
         } else {
             if (blockSpawns->value) {
                 byte3_hashmap* hashmap = blockSpawns->value;

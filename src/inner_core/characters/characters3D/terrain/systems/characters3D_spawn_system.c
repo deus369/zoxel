@@ -18,7 +18,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
     zox_field_out(EntityLinks, entityLinkss, 6)
     for (int i = 0; i < it->count; i++) {
         zox_field_i_in(ChunkLodDirty, chunkLodDirtys, chunkLodDirty)
-        if (chunkLodDirty->value != 3) continue;
+        if (chunkLodDirty->value != chunk_lod_state_characters_spawn) continue;
         zox_field_i_in(ChunkOctree, chunkOctrees, chunkOctree)
         if (chunkOctree->nodes == NULL) continue;   // if basically all air or solid, no need to spawn
         zox_field_i_in(RenderLod, renderLods, renderLod)

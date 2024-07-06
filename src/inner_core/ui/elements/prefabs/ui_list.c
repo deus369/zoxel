@@ -52,9 +52,9 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
         const int2 header_position = (int2) { 0, header_height / 2 };
         const float2 header_anchor = (float2) { 0.5f, 1.0f };
         children->value[0] = spawn_header(world, e, canvas, header_position, header_size, header_anchor, header_label, scaled_font_size, header_margins, header_layer, pixel_position_global, pixel_size, is_close_button, canvas_size);
-        zox_set(e, HeaderHeight, { header_size.y })
+        // zox_set(e, HeaderHeight, { header_size.y })
     }
-    set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor, is_header ? header_height : 0);
+    set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor);
     if (is_scrollbar) children->value[is_header] = spawn_scrollbar(world, e, canvas, (int2) { -(scrollbar_width / 2) - scrollbar_margins, 0 }, header_layer, pixel_position_global, pixel_size, scrollbar_width, scrollbar_margins, canvas_size, elements_count, max_elements);
     SpawnButton spawnButton = {
         .canvas = {

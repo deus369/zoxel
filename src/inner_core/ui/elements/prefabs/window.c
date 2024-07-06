@@ -47,8 +47,8 @@ ecs_entity_t spawn_window(ecs_world_t *world, const char *header_label, int2 pix
     zox_instance(prefab_window)
     zox_name("window")
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
-    set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor, header_size.y);
-    zox_set(e, HeaderHeight, { header_size.y })
+    set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor);
+    // zox_set(e, HeaderHeight, { header_size.y })
     Children *children = zox_get_mut(e, Children)
     resize_memory_component(Children, children, ecs_entity_t, 1)
     children->value[0] = spawn_header(world, e, canvas, header_position, header_size, header_anchor, header_label, font_size, header_margins, header_layer, pixel_position_global, pixel_size, 1, canvas_size);

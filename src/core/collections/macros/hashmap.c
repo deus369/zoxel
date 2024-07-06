@@ -1,26 +1,26 @@
 const uint max_safety_checks_hashmap = 1024;
-
-#define zox_hashmap(name, type, type_zero, key_type, convert_to_hash)\
+// default hash is uint32_t
+#define zox_hashmap(name, type, type_zero, key_type, hash_type, convert_to_hash)\
 \
 typedef struct name##_pair name##_pair;\
 \
 struct name##_pair {\
-    uint32_t key;\
+    hash_type key;\
     type value;\
     struct name##_pair* next;\
 };\
 \
 typedef struct {\
-    uint32_t size;\
+    hash_type size;\
     name##_pair **data;\
 } name;\
 \
-uint32_t name##_hash(uint32_t key, uint32_t size) {\
+hash_type name##_hash(hash_type key, hash_type size) {\
     if (size == 0) return -1;\
     return key % size;\
 }\
 \
-name* create_##name(uint32_t size) {\
+name* create_##name(hash_type size) {\
     name* map = malloc(sizeof(name));\
     map->size = size;\
     /*calloc zeroes out data*/\
@@ -33,9 +33,9 @@ name* create_##name(uint32_t size) {\
 \
 void name##_add(name* map, key_type key_raw, type value) {\
     if (!map || !map->data) return;\
-    uint32_t key = convert_to_hash(key_raw);\
+    hash_type key = convert_to_hash(key_raw);\
     /*zox_log("key [%i]\n", key)*/\
-    uint32_t index = name##_hash(key, map->size);\
+    hash_type index = name##_hash(key, map->size);\
     name##_pair* pair = malloc(sizeof(name##_pair));\
     pair->key = key;\
     pair->value = value;\
@@ -45,8 +45,8 @@ void name##_add(name* map, key_type key_raw, type value) {\
 \
 type name##_get(name* map, key_type key_raw) {\
     if (!map || !map->data) return type_zero;\
-    uint32_t key = convert_to_hash(key_raw);\
-    uint32_t index = name##_hash(key, map->size);\
+    hash_type key = convert_to_hash(key_raw);\
+    hash_type index = name##_hash(key, map->size);\
     name##_pair* pair = map->data[index];\
     int checks = 0;\
     while (pair != NULL && checks < max_safety_checks_hashmap) {\
@@ -59,8 +59,8 @@ type name##_get(name* map, key_type key_raw) {\
 \
 unsigned char name##_has(name* map, key_type key_raw) {\
     if (!map || !map->data) return 1;\
-    uint32_t key = convert_to_hash(key_raw);\
-    uint32_t index = name##_hash(key, map->size);\
+    hash_type key = convert_to_hash(key_raw);\
+    hash_type index = name##_hash(key, map->size);\
     name##_pair* pair = map->data[index];\
     int checks = 0;\
     while (pair != NULL && checks < max_safety_checks_hashmap) {\
@@ -73,8 +73,8 @@ unsigned char name##_has(name* map, key_type key_raw) {\
 \
 void name##_remove(name* map, key_type key_raw) {\
     if (!map || !map->data) return;\
-    uint32_t key = convert_to_hash(key_raw);\
-    uint32_t index = name##_hash(key, map->size);\
+    hash_type key = convert_to_hash(key_raw);\
+    hash_type index = name##_hash(key, map->size);\
     name##_pair* pair = map->data[index];\
     name##_pair* prev_pair = NULL;\
     uint checks = 0;\
@@ -129,133 +129,4 @@ int count_##name(name* map) {\
         }\
     }\
     return count;\
-}\
-
-
-/*int get_int3_hash(int3 input) {
-    return input.x + 17 * input.y + 31 * input.z;
-    // return 0;
-}*/
-
-// uses prime numbers:
-// 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, etc
-// 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173
-// uint32_t get_int3_hash(int3 input) {
-//     /*uint32_t hash = 17;
-//     hash = hash * 23 + ((uint32_t) input.x);
-//     hash = hash * 23 + ((uint32_t) input.y);
-//     hash = hash * 23 + ((uint32_t) input.z);*/
-//     /*uint32_t hash = 61;
-//     hash = hash * 71 + ((uint32_t) input.x);
-//     hash = hash * 71 + ((uint32_t) input.y);
-//     hash = hash * 71 + ((uint32_t) input.z);*/
-//     uint32_t prime = 173;
-//     uint32_t hash = 163;
-//     // uint32_t hash = ;
-//     /*hash = hash * prime + ((uint32_t) input.x);
-//     hash = hash * prime + ((uint32_t) input.y);
-//     hash = hash * prime + ((uint32_t) input.z);*/
-//     hash = (hash ^ ((uint32_t) input.x)) * prime;
-//     hash = (hash ^ ((uint32_t) input.y)) * prime;
-//     hash = (hash ^ ((uint32_t) input.z)) * prime;
-//     /*hash = (hash ^ input.x) * prime;
-//     hash = (hash ^ input.y) * prime;
-//     hash = (hash ^ input.z) * prime;*/
-//     /*uint32_t x = (uint32_t)input.x;
-//     uint32_t y = (uint32_t)input.y;
-//     uint32_t z = (uint32_t)input.z;
-//     // A good prime number for hashing
-//     uint32_t prime = 4294967291;
-//     // Initialize hash value to a random number
-//     uint32_t hash = 2166136261;
-//     // Mix input values with hash using a good hash function
-//     hash = (hash ^ x) * prime;
-//     hash = (hash ^ y) * prime;
-//     hash = (hash ^ z) * prime;*/
-//     return hash;
-// }
-
-// uint32_t get_int3_hash(int3 input) {
-//     input.x = 1619 * input.x ^ 1013 * input.y ^ 1987 * input.z;
-//     input.y = 4237 * input.x ^ 2777 * input.y ^ 1667 * input.z;
-//     input.z = 5021 * input.x ^ 3617 * input.y ^ 2791 * input.z;
-//     input.x = (input.x << 16) ^ (input.x >> 16);
-//     input.y = (input.y << 16) ^ (input.y >> 16);
-//     input.z = (input.z << 16) ^ (input.z >> 16);
-//     return input.x ^ input.y ^ input.z;
-// }
-
-// #define HASH_PRIME1 31
-// #define HASH_PRIME2 73856093
-
-// uint32_t hash_int(int input) {
-//     uint32_t hash = (uint32_t)(input * HASH_PRIME1);
-//     hash = hash % HASH_PRIME2;
-//     return hash;
-// }
-    /*const int m = 1540483477;
-    uint32_t X0 = 0;
-    uint32_t X1 = (hash_int(input.x) ^ X0) * m;
-    uint32_t X2 = (hash_int(input.y) ^ X1) * m;
-    uint32_t X3 = (hash_int(input.z) ^ X2) * m;*/
-/*uint32_t murmur3_32(const void* key, size_t len, uint32_t seed) {
-    const uint8_t* data = (const uint8_t*)key;
-    const int nblocks = len / 4;
-
-    uint32_t h1 = seed;
-
-    const uint32_t c1 = 0xcc9e2d51;
-    const uint32_t c2 = 0x1b873593;
-
-    // body
-    const uint32_t* blocks = (const uint32_t*)(data + nblocks*4);
-
-    for (int i = -nblocks; i; i++) {
-        uint32_t k1 = blocks[i];
-
-        k1 *= c1;
-        k1 = (k1 << 15) | (k1 >> (32 - 15));
-        k1 *= c2;
-
-        h1 ^= k1;
-        h1 = (h1 << 13) | (h1 >> (32 - 13));
-        h1 = h1*5 + 0xe6546b64;
-    }
-
-    // tail
-    const uint8_t* tail = (const uint8_t*)(data + nblocks*4);
-
-    uint32_t k1 = 0;
-
-    switch (len & 3) {
-        case 3:
-            k1 ^= tail[2] << 16;
-        case 2:
-            k1 ^= tail[1] << 8;
-        case 1:
-            k1 ^= tail[0];
-            k1 *= c1;
-            k1 = (k1 << 15) | (k1 >> (32 - 15));
-            k1 *= c2;
-            h1 ^= k1;
-    }
-
-    // finalize
-    h1 ^= len;
-
-    h1 ^= h1 >> 16;
-    h1 *= 0x85ebca6b;
-    h1 ^= h1 >> 13;
-    h1 *= 0xc2b2ae35;
-    h1 ^= h1 >> 16;
-
-    return h1;
 }
-
-// Hash function for int3 objects using MurmurHash3
-int get_int3_hash(int3 pos) {
-    uint32_t hash = murmur3_32(&pos, sizeof(int3), 0);
-    return (int)hash;
-}*/
-
-// zoxel_log(" - index [%i]\n", index);

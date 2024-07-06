@@ -82,20 +82,11 @@ void on_element_parent_updated(ecs_world_t *world, const ecs_entity_t e, const i
     zox_set(e, CanvasPosition, { global_pixel_position })
 }
 
-void set_window_bounds_to_canvas(ecs_world_t *world, const ecs_entity_t e, const int2 canvas_size, const int2 window_size, const float2 anchor, const unsigned char header_height) {
+void set_window_bounds_to_canvas(ecs_world_t *world, const ecs_entity_t e, const int2 canvas_size, const int2 window_size, const float2 anchor) {
     // note: can't actually use components in frame we spawn them
     const float2 anchor_reverse = (float2) { 1 - anchor.x, 1 - anchor.y };
-    int4 drag_limits = (int4) {
-        - canvas_size.x * anchor.x + window_size.x / 2,
-        canvas_size.x * anchor_reverse.x - window_size.x / 2,
-        - canvas_size.y * anchor.y + window_size.y / 2,
-        canvas_size.y * anchor_reverse.y - window_size.y / 2 };
-    if (anchor.y != 0) drag_limits.w -= (int) header_height;
+    int4 drag_limits = (int4) { - canvas_size.x * anchor.x + window_size.x / 2, canvas_size.x * anchor_reverse.x - window_size.x / 2, - canvas_size.y * anchor.y + window_size.y / 2, canvas_size.y * anchor_reverse.y - window_size.y / 2 };
     zox_set(e, DraggableLimits, { drag_limits });
-    // zox_log(" > set anchor_shift [%ix%i]\n", anchor_shift.x, anchor_shift.y)
-    /*zox_log(" > set drag_limits [%ix%ix%ix%i]\n", drag_limits.x, drag_limits.y, drag_limits.z, drag_limits.w)
-    zox_log("   > anchor [%fx%f]\n", anchor.x, anchor.y)
-    zox_log("   > window_size [%ix%i]\n", window_size.x, window_size.y)*/
 }
 
 void limited_element(PixelPosition *pixel_position, const int4 drag_bounds) {
@@ -145,8 +136,7 @@ void set_ui_transform(ecs_world_t *world, const ecs_entity_t parent, const ecs_e
     resize_ui_line2D(world, e, canvas_size);
     if (zox_has(e, BoundToCanvas)) {
         const float2 anchor = zox_get_value(e, Anchor)
-        const unsigned char header_height = 0; // zox_get_value(e, HeaderHeight)
-        set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor, header_height);
+        set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor);
     }
     limit_element(world, e); // check limited elements - bounded
     if (zox_has(e, PixelPosition)) {

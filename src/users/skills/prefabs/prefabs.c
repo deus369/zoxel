@@ -10,8 +10,11 @@ ecs_entity_t prefab_poison;
 void spawn_prefabs_skills(ecs_world_t *world) {
     zox_prefab_add(prefab_realm, SkillLinks)
     zox_prefab_add(prefab_character3D, SkillLinks)
+    // skill prefab
     prefab_skill = spawn_prefab_skill(world);
     zox_prefab_set(prefab_skill, SkillActive, { 0 })
+    zox_prefab_set(prefab_skill, Color, { color_black })
+
     prefab_aura = spawn_prefab_aura(world, prefab_skill);
     prefab_poison = spawn_prefab_poison(world);
 }
