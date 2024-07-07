@@ -1,8 +1,5 @@
 // spawning block vox entities during LOD generation step!
 void BlockVoxSpawnSystem(ecs_iter_t *it) {
-#ifdef zox_disable_block_voxes
-    return;
-#endif
     zox_iter_world()
     zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
     zox_field_in(ChunkOctree, chunkOctrees, 2)

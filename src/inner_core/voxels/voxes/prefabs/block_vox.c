@@ -7,6 +7,16 @@ ecs_entity_t spawn_prefab_block_vox(ecs_world_t *world, const ecs_entity_t prefa
     zox_prefab_set(e, Position3D, { float3_zero })
     zox_prefab_set(e, Rotation3D, { float4_identity })
     zox_prefab_set(e, VoxScale, { vox_model_scale * 1 })
+    // for debug
+    zox_prefab_set(e, Bounds3D, { (float3) { 0.5f, 0.5f, 0.5f } })
+    zox_add_tag(e, CubeLines)
+    zox_prefab_set(e, CubeLinesThickness, { 4 })
+    zox_prefab_set(e, ColorRGB, {{ 0, 255, 255 }})
+#ifdef zoxel_debug_bounds
+    zox_prefab_set(e, DebugCubeLines, { 1 })
+#else
+    zox_prefab_set(e, DebugCubeLines, { 0 })
+#endif
     return e;
 }
 

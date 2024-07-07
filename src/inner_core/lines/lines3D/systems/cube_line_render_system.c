@@ -21,31 +21,33 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
     glEnableVertexAttribArray(line3D_position_location);
     opengl_set_float4(line3D_fog_data_location, (float4) { fog_color.x, fog_color.y, fog_color.z, get_fog_density() });
     glUniformMatrix4fv(line3D_camera_matrix_location, 1, GL_FALSE, (float*) &render_camera_matrix);
-    const DebugCubeLines *debugCubeLiness = ecs_field(it, DebugCubeLines, 2);
-    const CubeLinesThickness *cubeLinesThicknesss = ecs_field(it, CubeLinesThickness, 3);
-    const ColorRGB *colorRGBs = ecs_field(it, ColorRGB, 4);
-    const Position3D *position3Ds = ecs_field(it, Position3D, 5);
-    const Rotation3D *rotation3Ds = ecs_field(it, Rotation3D, 6);
-    const Bounds3D *bounds3Ds = ecs_field(it, Bounds3D, 7);
-    const RenderLod *renderLods = ecs_field(it, RenderLod, 8);
+    zox_field_in(DebugCubeLines, debugCubeLiness, 2)
+    zox_field_in(CubeLinesThickness, cubeLinesThicknesss, 3)
+    zox_field_in(ColorRGB, colorRGBs, 4)
+    zox_field_in(Position3D, position3Ds, 5)
+    zox_field_in(Rotation3D, rotation3Ds, 6)
+    zox_field_in(Bounds3D, bounds3Ds, 7)
+    zox_field_in(RenderLod, renderLods, 8)
     zox_field_in(MeshIndicies, meshIndiciess, 9)
     zox_field_in(RenderDisabled, renderDisableds, 10)
     for (int i = 0; i < it->count; i++) {
-        const DebugCubeLines *debugCubeLines = &debugCubeLiness[i];
+        zox_field_i(DebugCubeLines, debugCubeLiness, debugCubeLines)
         if (debugCubeLines->value == 0) continue;
-        const RenderLod *renderLod = &renderLods[i];
+        zox_field_i(RenderLod, renderLods, renderLod)
         if (renderLod->value == 255) continue;
-        const CubeLinesThickness *cubeLinesThickness = &cubeLinesThicknesss[i];
-        const ColorRGB *colorRGB = &colorRGBs[i];
-        const Position3D *position3D = &position3Ds[i];
-        const Rotation3D *rotation3D = &rotation3Ds[i];
-        const Bounds3D *bounds3D = &bounds3Ds[i];
-        zox_field_i_in(MeshIndicies, meshIndiciess, meshIndicies)
-        zox_field_i_in(RenderDisabled, renderDisableds, renderDisabled)
+        zox_field_i(CubeLinesThickness, cubeLinesThicknesss, cubeLinesThickness)
+        zox_field_i(ColorRGB, colorRGBs, colorRGB)
+        zox_field_i(Position3D, position3Ds, position3D)
+        zox_field_i(Rotation3D, rotation3Ds, rotation3D)
+        zox_field_i(Bounds3D, bounds3Ds, bounds3D)
+        zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
+        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         set_line3D_thickness(cubeLinesThickness->value);
         color_rgb lines_color = colorRGB->value;
         if (meshIndicies->length == 0) lines_color = (color_rgb) { 255, 0, 0 };
-        if (renderDisabled->value) lines_color = (color_rgb) { 255, 55, 55 };
+        else if (renderDisabled->value) lines_color = (color_rgb) { 0, 255, 0 };
+        else lines_color = (color_rgb) { 0, 0, 255 };
+        // lines_color = (color_rgb) { renderLod->value * 32, 0, 0 }; // debug render lod
 #ifdef zoxel_debug_transforms
         // up axis
         // render_cube_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + cube_lines_length, position3D->value.z });
@@ -67,10 +69,11 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
         float3_add_float3_p(&right_vector, position3D->value);
         render_cube_line3D(position3D->value, right_vector);
 #else
+        // this is normal case
         color_rgb cube_color = lines_color;
-        cube_color.r += 30 * renderLod->value;
+        /*cube_color.r += 30 * renderLod->value;
         cube_color.g -= 20 * renderLod->value;
-        cube_color.b -= 20 * renderLod->value;
+        cube_color.b -= 20 * renderLod->value;*/
         set_line3D_color(cube_color);
         // get corners of cube
         float3 top_right = (float3) { bounds3D->value.x, bounds3D->value.y, bounds3D->value.z };

@@ -1,8 +1,6 @@
 // updates during ChunkDirty step, also checks render disabled
+// When we destroy block vox, update, or when we place
 void BlockVoxUpdateSystem(ecs_iter_t *it) {
-#ifdef zox_disable_block_voxes
-    return;
-#endif
     zox_iter_world()
     zox_field_in(ChunkDirty, chunkDirtys, 1)
     zox_field_in(ChunkOctree, chunkOctrees, 2)
@@ -28,7 +26,9 @@ void BlockVoxUpdateSystem(ecs_iter_t *it) {
             // check ChunkLodDirty state first so we don't override it
             zox_field_e()
             const unsigned char chunk_lod_dirty = zox_get_value(e, ChunkLodDirty)
-            if (chunk_lod_dirty == 0 || chunk_lod_dirty >= chunk_lod_state_vox_blocks_spawn) zox_set(e, ChunkLodDirty, { chunk_lod_state_vox_blocks_spawn })
+            if (chunk_lod_dirty == 0 || chunk_lod_dirty >= chunk_lod_state_vox_blocks_spawn) {
+                zox_set(e, ChunkLodDirty, { chunk_lod_state_vox_blocks_spawn })
+            }
             // update_block_voxes(world, voxLink, chunkPosition, renderLod, renderDisabled, chunkOctree, blockSpawns);
         }
     }

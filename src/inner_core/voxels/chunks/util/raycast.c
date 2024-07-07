@@ -91,7 +91,7 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
                 const BlockSpawns *spawns = zox_get(chunk, BlockSpawns)
                 if (spawns->value && spawns->value->data) {
                     const ecs_entity_t block_spawn = byte3_hashmap_get(spawns->value, voxel_position_local);
-                    if (block_spawn) {
+                    if (block_spawn && zox_has(block_spawn,  Position3D)) {
                         float3 ray_point = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * voxel_scale));
                         float3 block_position = zox_get_value(block_spawn, Position3D)
                         // remember: assuming centred, so make cornered position!

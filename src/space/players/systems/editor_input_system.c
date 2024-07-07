@@ -12,14 +12,15 @@ void EditorInputSystem(ecs_iter_t *it) {
             if (zox_has( device_entity, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                 // gizmos
-                if (keyboard->z.pressed_this_frame) toggle_collision_debug(world);      // z : collision gizmos
-                // test
-                else if (keyboard->t.pressed_this_frame) trigger_canvas_fade_transition(world, canvas);
+                if (keyboard->z.pressed_this_frame) toggle_debug_character_bounds(world);      // z : collision gizmos
+                if (keyboard->x.pressed_this_frame) toggle_debug_block_voxes_bounds(world);
                 // toggle uis
-                else if (keyboard->x.pressed_this_frame) toggle_ui_with_tag(spawn_fps_display, FPSDisplay)
-                else if (keyboard->c.pressed_this_frame) toggle_ui_with_tag(spawn_game_debug_label, GameDebugLabel)
-                else if (keyboard->v.pressed_this_frame) toggle_ui_with_tag(spawn_quad_count_label, QuadsCountLabel)
+                else if (keyboard->c.pressed_this_frame) toggle_ui_with_tag(spawn_fps_display, FPSDisplay)
+                else if (keyboard->v.pressed_this_frame) toggle_ui_with_tag(spawn_game_debug_label, GameDebugLabel)
+                // else if (keyboard->v.pressed_this_frame) toggle_ui_with_tag(spawn_quad_count_label, QuadsCountLabel)
                 else if (keyboard->b.pressed_this_frame) toggle_ui_with_tag(spawn_frame_debugger, FrameDebuggerWindow)
+                // test
+                // else if (keyboard->t.pressed_this_frame) trigger_canvas_fade_transition(world, canvas);
 
                 // test game uis
                 else if (keyboard->u.pressed_this_frame) toggle_ui_with_tag_e(spawn_menu_quests_player, MenuQuests, e)
