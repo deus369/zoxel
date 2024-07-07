@@ -24,13 +24,9 @@ void add_physics3D(ecs_world_t *world, ecs_entity_t e) {
     zox_prefab_set(e, Bounds3D, { { 0.5f, 0.5f, 0.5f } })
     zox_prefab_set(e, Grounded, { 0 })
     zox_prefab_set(e, Jump, { 0 })
-    // spawn debug lines around
-    zox_add_tag(e, CubeLines)
-    zox_prefab_set(e, CubeLinesThickness, { 4 })
-    zox_prefab_set(e, ColorRGB, {{ 0, 255, 255 }})
 #ifdef zoxel_debug_bounds
-    zox_prefab_set(e, DebugCubeLines, { 1 })
+    prefab_add_cube_lines(world, e, color_rgb_white, 1);
 #else
-    zox_prefab_set(e, DebugCubeLines, { 0 })
+    prefab_add_cube_lines(world, e, color_rgb_white, 0);
 #endif
 }

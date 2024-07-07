@@ -133,11 +133,3 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
     glDisableVertexAttribArray(line3D_position_location);
     glUseProgram(0);
 } zox_declare_system(CubeLineRenderSystem)
-
-// up and forward line for now
-// float line_data[] = { position3D->value.x, position3D->value.y, position3D->value.z,
-//    position3D->value.x, position3D->value.y + 6.0f, position3D->value.z };
-// glVertexAttribPointer(line3D_position_location, 3, GL_FLOAT, GL_FALSE, 0, line_data);
-//float3 color_rgb_f3 = color_rgb_to_float3(colorRGB->value);
-//glUniform3f(line3D_color_location, color_rgb_f3.x, color_rgb_f3.y, color_rgb_f3.z);
-// glDrawArrays(GL_LINES, 0, 3);

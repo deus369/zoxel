@@ -27,8 +27,8 @@ void TerrainLodSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_o(StreamDirty, streamDirtys, streamDirty)
         if (!streamDirty->value) continue;
-        unsigned char camera_distances[total_chunks];
-        memset(camera_distances, 255, total_chunks); // start all at 255
+        // unsigned char camera_distances[total_chunks];
+        // memset(camera_distances, 255, total_chunks); // start all at 255
         zox_field_in_iter(&streamers_iter, StreamPoint, streamPoints, 1)
         int3 *stream_points = (int3 *) streamPoints;
         zox_field_in_iter(&chunks_iterator, ChunkPosition, chunkPositions, 1)
@@ -43,23 +43,25 @@ void TerrainLodSystem(ecs_iter_t *it) {
             const int3 stream_point = find_closest_point(stream_points, stream_points_length, chunk_position);
             const unsigned char camera_distance = get_camera_chunk_distance(stream_point, chunk_position);
             if (renderLod->value != camera_distance || check_chunk_lod(left) || check_chunk_lod(right) || check_chunk_lod(back) || check_chunk_lod(front)) {
-                camera_distances[j] = camera_distance;
-                // zox_log(" ? chunk is dirty %ix%ix%i\n", chunk_position.x, chunk_position.y, chunk_position.z)
-            } /*else {
-                // zox_log(" ? chunk is clean [%i] to [%i] %ix%ix%i\n", renderLod->value, camera_distance, chunk_position.x, chunk_position.y, chunk_position.z)
-                // zox_log("  - streamers [%i] stream_point %ix%ix%i\n", total_streamers, stream_point.x, stream_point.y, stream_point.z)
-            }*/
+                // camera_distances[j] = camera_distance;
+                RenderLod *renderLod = &renderLods[j];
+                ChunkDirty *chunkDirty = &chunkDirtys[j];
+                ChunkLodDirty *chunkLodDirty = &chunkLodDirtys[j];
+                renderLod->value = camera_distance;
+                chunkDirty->value = chunk_dirty_state_generated;
+                chunkLodDirty->value = chunk_lod_state_dirty;
+            }
         }
-        for (int j = 0; j < total_chunks; j++) {
+        /*for (int j = 0; j < total_chunks; j++) {
             const unsigned char camera_distance = camera_distances[j];
             if (camera_distance == 255) continue;
             ChunkLodDirty *chunkLodDirty = &chunkLodDirtys[j];
             ChunkDirty *chunkDirty = &chunkDirtys[j];
             RenderLod *renderLod = &renderLods[j];
             renderLod->value = camera_distance;
-            chunkDirty->value = 1;
+            chunkDirty->value = chunk_dirty_state_generated;
             chunkLodDirty->value = chunk_lod_state_dirty;
-        }
+        }*/
         streamDirty->value = 0;
     }
     ecs_iter_fini(&chunks_iterator);

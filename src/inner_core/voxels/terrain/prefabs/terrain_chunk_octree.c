@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, const int3 si
     zox_prefab_set(e, RenderDisabled, { 1 })
     // voxels_core
     add_chunk_octree(world, e, size);
-    zox_prefab_set(e, ChunkLodDirty, { chunk_lod_state_characters_spawn })
+    zox_prefab_set(e, ChunkLodDirty, { 0 }) // chunk_lod_state_spawning })
     add_components_mesh_textured(world, e);
     zox_prefab_set(e, GenerateChunk, { 1 }) // fails on samsung phone?
     zox_prefab_set(e, ChunkSize, {{ 32, 32, 32 }})  // max resolution, should calculate this!

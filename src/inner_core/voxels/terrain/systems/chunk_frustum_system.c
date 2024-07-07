@@ -1,5 +1,5 @@
 const float fudge_frustum_extents = 2.0f;
-
+// this sets RenderDisabled for chunks and their children
 void ChunkFrustumSystem(ecs_iter_t *it) {
 #ifdef zox_disable_frustum_culling
     return;

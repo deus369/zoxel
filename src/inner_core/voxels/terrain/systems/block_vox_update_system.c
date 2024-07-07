@@ -11,7 +11,7 @@ void BlockVoxUpdateSystem(ecs_iter_t *it) {
     zox_field_out(BlockSpawns, blockSpawnss, 7)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(ChunkDirty, chunkDirtys, chunkDirty)
-        if (!chunkDirty->value) continue;
+        if (chunkDirty->value == 0) continue; // != chunk_dirty_state_edited) continue;
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         if (renderDisabled->value) continue;
         zox_field_i(VoxLink, voxLinks, voxLink)
@@ -26,7 +26,7 @@ void BlockVoxUpdateSystem(ecs_iter_t *it) {
             // check ChunkLodDirty state first so we don't override it
             zox_field_e()
             const unsigned char chunk_lod_dirty = zox_get_value(e, ChunkLodDirty)
-            if (chunk_lod_dirty == 0 || chunk_lod_dirty >= chunk_lod_state_vox_blocks_spawn) {
+            if (chunk_lod_dirty == 0 || chunk_lod_dirty > chunk_lod_state_vox_blocks_spawn) {
                 zox_set(e, ChunkLodDirty, { chunk_lod_state_vox_blocks_spawn })
             }
             // update_block_voxes(world, voxLink, chunkPosition, renderLod, renderDisabled, chunkOctree, blockSpawns);

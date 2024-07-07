@@ -17,13 +17,13 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
     zox_field_in(RenderDisabled, renderDisableds, 5)
     zox_field_out(EntityLinks, entityLinkss, 6)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(ChunkLodDirty, chunkLodDirtys, chunkLodDirty)
+        zox_field_i(ChunkLodDirty, chunkLodDirtys, chunkLodDirty)
         if (chunkLodDirty->value != chunk_lod_state_characters_spawn) continue;
-        zox_field_i_in(ChunkOctree, chunkOctrees, chunkOctree)
+        zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
         if (chunkOctree->nodes == NULL) continue;   // if basically all air or solid, no need to spawn
-        zox_field_i_in(RenderLod, renderLods, renderLod)
-        zox_field_i_in(RenderDisabled, renderDisableds, renderDisabled)
-        zox_field_i_out(EntityLinks, entityLinkss, entityLinks)
+        zox_field_i(RenderLod, renderLods, renderLod)
+        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
+        zox_field_o(EntityLinks, entityLinkss, entityLinks)
         // if already spawned, skip spawning, only update LODs
         if (entityLinks->length) continue;
         const unsigned char vox_lod = get_voxes_lod_from_camera_distance(renderLod->value);

@@ -103,7 +103,7 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
     zox_field_out(MeshDirty, meshDirtys, 9)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
-        if (!chunkDirty->value) continue;
+        if (chunkDirty->value == 0) continue;
         zox_field_o(MeshDirty, meshDirtys, meshDirty)
         if (meshDirty->value) continue;
         zox_field_i(ChunkData, chunkDatas, chunkData)

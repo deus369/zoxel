@@ -66,9 +66,7 @@ void spawn_block_vox_in_tree(ecs_world_t *world, const ChunkOctree *octree, Bloc
 }
 
 // updates during ChunkLodDirty and ChunkDirty events
-void update_block_voxes(ecs_world_t *world, const VoxLink *voxLink, const ChunkPosition *chunkPosition, const RenderLod *renderLod, const RenderDisabled *renderDisabled, const ChunkOctree *chunkOctree, BlockSpawns *block_spawns) {
-    const unsigned char camera_distance = renderLod->value;
-    const unsigned char vox_lod = get_voxes_lod_from_camera_distance(camera_distance);
+void update_block_voxes(ecs_world_t *world, const VoxLink *voxLink, const ChunkPosition *chunkPosition, const unsigned char vox_lod, const RenderDisabled *renderDisabled, const ChunkOctree *chunkOctree, BlockSpawns *block_spawns) {
     const ecs_entity_t realm = zox_get_value(voxLink->value, RealmLink)
     const VoxelLinks *voxelLinks = zox_get(realm, VoxelLinks)
     const unsigned char block_voxes_count = voxelLinks->length;
@@ -101,9 +99,7 @@ void update_block_voxes(ecs_world_t *world, const VoxLink *voxLink, const ChunkP
 
 
 // temp way to split up function
-void update_block_voxes_on_node(ecs_world_t *world, const VoxLink *voxLink, const ChunkPosition *chunkPosition, const RenderLod *renderLod, const RenderDisabled *renderDisabled, const ChunkOctree *chunk, BlockSpawns *block_spawns, const unsigned char node_index) {
-    const unsigned char camera_distance = renderLod->value;
-    const unsigned char vox_lod = get_voxes_lod_from_camera_distance(camera_distance);
+void update_block_voxes_on_node(ecs_world_t *world, const VoxLink *voxLink, const ChunkPosition *chunkPosition, const unsigned char vox_lod, const RenderDisabled *renderDisabled, const ChunkOctree *chunk, BlockSpawns *block_spawns, const unsigned char node_index) {
     const ecs_entity_t realm = zox_get_value(voxLink->value, RealmLink)
     const VoxelLinks *voxelLinks = zox_get(realm, VoxelLinks)
     const unsigned char block_voxes_count = voxelLinks->length;

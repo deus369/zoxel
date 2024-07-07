@@ -58,7 +58,7 @@ void ChunkUVsBuildSystem(ecs_iter_t *it) {
     MeshUVs *meshUVs = ecs_field(it, MeshUVs, 7);
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 8);
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_out(ChunkDirty, chunkDirtys, chunkDirty)
+        zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
         if (chunkDirty->value == 0) continue;
         MeshDirty *meshDirty = &meshDirtys[i];
         if (meshDirty->value != 0) continue;

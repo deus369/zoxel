@@ -16,7 +16,7 @@ void ChunkEntitiesLodSystem(ecs_iter_t *it) {
             const unsigned char current_lod = zox_get_value(e2, RenderLod)
             if (current_lod == new_lod) continue;  // check if characters division
             zox_set(e2, RenderLod, { new_lod })
-            zox_set(e2, ChunkDirty, { 1 })
+            zox_set(e2, ChunkDirty, { chunk_dirty_state_generated })
         }
     }
 } zox_declare_system(ChunkEntitiesLodSystem)

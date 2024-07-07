@@ -17,7 +17,7 @@ void initialize_new_chunk_octree(ecs_world_t *world, ecs_entity_t e, unsigned ch
 void add_chunk_octree(ecs_world_t *world, const ecs_entity_t e, const int3 size) {
     zox_add_tag(e, Chunk)
     zox_prefab_set(e, ChunkSize, { size })
-    zox_prefab_set(e, ChunkDirty, { 0 })
+    zox_prefab_set(e, ChunkDirty, { chunk_dirty_state_none })
     zox_prefab_set(e, ChunkPosition, { int3_zero })
     zox_prefab_set(e, RenderLod, { 0 })
     zox_prefab_set(e, VoxLink, { 0 })

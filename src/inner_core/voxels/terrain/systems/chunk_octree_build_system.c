@@ -71,7 +71,7 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
     zox_field_out(MeshDirty, meshDirtys, 12)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
-        if (!chunkDirty->value) continue;
+        if (chunkDirty->value == 0) continue;
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         if (renderDisabled->value) continue;
         zox_field_i(RenderLod, renderLods, renderLod)

@@ -9,13 +9,10 @@ ecs_entity_t spawn_prefab_block_vox(ecs_world_t *world, const ecs_entity_t prefa
     zox_prefab_set(e, VoxScale, { vox_model_scale * 1 })
     // for debug
     zox_prefab_set(e, Bounds3D, { (float3) { 0.5f, 0.5f, 0.5f } })
-    zox_add_tag(e, CubeLines)
-    zox_prefab_set(e, CubeLinesThickness, { 4 })
-    zox_prefab_set(e, ColorRGB, {{ 0, 255, 255 }})
 #ifdef zoxel_debug_bounds
-    zox_prefab_set(e, DebugCubeLines, { 1 })
+    prefab_add_cube_lines(world, e, color_rgb_white, 1);
 #else
-    zox_prefab_set(e, DebugCubeLines, { 0 })
+    prefab_add_cube_lines(world, e, color_rgb_white, 0);
 #endif
     return e;
 }

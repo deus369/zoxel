@@ -23,7 +23,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
         zox_field_o(GenerateChunk, generateChunks, generateChunk)
         if (generateChunk->value != 1) continue;
         zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
-        if (chunkDirty->value) continue;
+        if (chunkDirty->value != 0) continue;
         zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
         zox_field_o(ChunkOctree, chunkOctrees, chunkOctree)
         const float3 chunk_position_float3 = float3_from_int3(chunkPosition->value);

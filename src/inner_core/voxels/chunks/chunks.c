@@ -22,6 +22,7 @@ zoxel_octree_component(ChunkOctree, unsigned char, 0)
 #include "data/raycast_voxel_data.c"
 #include "data/color_settings.c"
 #include "data/trigger_states.c"
+#include "data/chunk_dirty_state.c"
 #include "data/chunk_lod_state.c"
 #include "util/voxel_mesh_util.c"
 #include "util/chunk_util.c"

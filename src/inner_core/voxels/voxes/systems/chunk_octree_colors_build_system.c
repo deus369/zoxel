@@ -17,8 +17,8 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
     zox_field_out(MeshColorRGBs, meshColorRGBs, 11)
     zox_field_out(MeshDirty, meshDirtys, 12)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_out(ChunkDirty, chunkDirtys, chunkDirty)
-        if (!chunkDirty->value) continue;
+        zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
+        if (chunkDirty->value == 0) continue;
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         if (renderDisabled->value) continue;
         zox_field_i(RenderLod, renderLods, renderLod)
@@ -31,6 +31,7 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
             clear_mesh(meshIndicies2, meshVertices2, meshColorRGBs2);
             chunkDirty->value = 0;
             meshDirty->value = 1;
+            // zox_log("cleared of vox\n")
             continue;
         }
         zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)

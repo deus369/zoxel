@@ -23,9 +23,10 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
         const unsigned char camera_distance = renderLod->value;
         const unsigned char can_have_block_voxes = camera_distance <= block_vox_render_distance;
         if (can_have_block_voxes) {
-            unsigned char node_index =chunkLodDirty->value - chunk_lod_state_vox_blocks_spawn;
+            const unsigned char vox_lod = get_voxes_lod_from_camera_distance(camera_distance);
+            unsigned char node_index = chunkLodDirty->value - chunk_lod_state_vox_blocks_spawn;
             // zox_log("node_index [%i]\n", node_index)
-            update_block_voxes_on_node(world, voxLink, chunkPosition, renderLod, renderDisabled, chunkOctree, blockSpawns, node_index);
+            update_block_voxes_on_node(world, voxLink, chunkPosition, vox_lod, renderDisabled, chunkOctree, blockSpawns, node_index);
             // update_block_voxes(world, voxLink, chunkPosition, renderLod, renderDisabled, chunkOctree, blockSpawns);
         } else {
             if (blockSpawns->value) {

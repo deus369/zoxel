@@ -216,12 +216,12 @@ void raycast_action(ecs_world_t *world, const RaycastVoxelData *data, const unsi
     SetVoxelData data2 = { .node = chunk_octree, .position = place_position };
     set_voxel(&datam, data2);
     close_same_nodes(chunk_octree);
-    zox_set(place_chunk, ChunkDirty, { 1 })
+    zox_set(place_chunk, ChunkDirty, { chunk_dirty_state_edited })
     if (zox_has(place_chunk, ChunkNeighbors) && byte3_on_edge(place_position, chunk_size_b3)) {
         const ChunkNeighbors *chunk_neighbors = zox_get(place_chunk, ChunkNeighbors)
         for (int axis = 0; axis < 6; axis++) {
             if (byte3_on_edge_axis(place_position, chunk_size_b3, axis)) {
-                zox_set(chunk_neighbors->value[axis], ChunkDirty, { 1 })
+                zox_set(chunk_neighbors->value[axis], ChunkDirty, { chunk_dirty_state_edited })
             }
         }
     }

@@ -8,7 +8,7 @@ void ChunkFlatlandSystem(ecs_iter_t *it) {
     zox_field_out(ChunkOctree, chunkOctrees, 5)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(GenerateChunk, generateChunks, generateChunk)
-        if (generateChunk->value != 1) continue;
+        if (generateChunk->value == 0) continue;
         zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
         if (chunkDirty->value) continue;
         zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
