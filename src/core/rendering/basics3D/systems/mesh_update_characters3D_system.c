@@ -24,21 +24,21 @@ void opengl_upload_mesh_colors(GLuint2 mesh_buffer, GLuint color_buffer, const i
 }
 
 void MeshUpdateCharacters3DSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(NULL, it)) return;
-    zox_field_out(MeshIndicies, meshIndiciess, 3)
-    zox_field_out(MeshVertices, meshVerticess, 4)
-    zox_field_out(MeshColorRGBs, meshColorRGBss, 5)
-    zox_field_out(MeshDirty, meshDirtys, 2)
-    zox_field_out(MeshGPULink, meshGPULinks, 6)
-    zox_field_out(ColorsGPULink, colorsGPULinks, 7)
+    // if (!ecs_query_changed(NULL, it)) return;
+    zox_field_in(MeshIndicies, meshIndiciess, 1)
+    zox_field_in(MeshVertices, meshVerticess, 2)
+    zox_field_in(MeshColorRGBs, meshColorRGBss, 3)
+    zox_field_out(MeshDirty, meshDirtys, 4)
+    zox_field_out(MeshGPULink, meshGPULinks, 5)
+    zox_field_out(ColorsGPULink, colorsGPULinks, 6)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_out(MeshDirty, meshDirtys, meshDirty)
-        if (meshDirty->value == 0) continue;
-        zox_field_i_in(MeshIndicies, meshIndiciess, meshIndicies)
-        zox_field_i_in(MeshVertices, meshVerticess, meshVertices)
-        zox_field_i_in(MeshColorRGBs, meshColorRGBss, meshColorRGBs)
-        zox_field_i_out(MeshGPULink, meshGPULinks, meshGPULink)
-        zox_field_i_out(ColorsGPULink, colorsGPULinks, colorsGPULink)
+        zox_field_o(MeshDirty, meshDirtys, meshDirty)
+        if (!meshDirty->value) continue;
+        zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
+        zox_field_i(MeshVertices, meshVerticess, meshVertices)
+        zox_field_i(MeshColorRGBs, meshColorRGBss, meshColorRGBs)
+        zox_field_o(MeshGPULink, meshGPULinks, meshGPULink)
+        zox_field_o(ColorsGPULink, colorsGPULinks, colorsGPULink)
         meshDirty->value = 0;
 #ifndef zox_characters_as_cubes
         if (meshIndicies->length == 0) {

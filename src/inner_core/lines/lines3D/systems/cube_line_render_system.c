@@ -1,3 +1,8 @@
+// debug mode
+#define zox_cubeline_debug_none 0
+#define zox_cubeline_debug_mesh 1
+#define zox_cubeline_debug_render_lod 2
+const unsigned char cubeline_debug_mode = zox_cubeline_debug_mesh;
 const float cube_lines_length = 1.0f;
 
 void set_line3D_color(color_rgb color_rgb2) {
@@ -44,10 +49,16 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         set_line3D_thickness(cubeLinesThickness->value);
         color_rgb lines_color = colorRGB->value;
-        if (meshIndicies->length == 0) lines_color = (color_rgb) { 255, 0, 0 };
-        else if (renderDisabled->value) lines_color = (color_rgb) { 0, 255, 0 };
-        else lines_color = (color_rgb) { 0, 0, 255 };
-        // lines_color = (color_rgb) { renderLod->value * 32, 0, 0 }; // debug render lod
+        if (cubeline_debug_mode == zox_cubeline_debug_mesh) {
+            if (meshIndicies->length == 0) lines_color = (color_rgb) { 255, 0, 0 };
+            else lines_color = (color_rgb) { 0, 255, 0 };
+            if (renderDisabled->value) lines_color = (color_rgb) { 0, 0, 255 };
+        } else if (cubeline_debug_mode == zox_cubeline_debug_render_lod) {
+            if (renderLod->value == 255) lines_color = (color_rgb) { 255, 0, 0 };
+            else if (renderLod->value == 0) lines_color = (color_rgb) { 0, 255, 255 };
+            else if (renderLod->value <= 2) lines_color = (color_rgb) { 0, 255 - renderLod->value * 80, 0 };
+            else lines_color = (color_rgb) { 0, 0, 255 };
+        }
 #ifdef zoxel_debug_transforms
         // up axis
         // render_cube_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + cube_lines_length, position3D->value.z });
@@ -70,11 +81,7 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
         render_cube_line3D(position3D->value, right_vector);
 #else
         // this is normal case
-        color_rgb cube_color = lines_color;
-        /*cube_color.r += 30 * renderLod->value;
-        cube_color.g -= 20 * renderLod->value;
-        cube_color.b -= 20 * renderLod->value;*/
-        set_line3D_color(cube_color);
+        set_line3D_color(lines_color);
         // get corners of cube
         float3 top_right = (float3) { bounds3D->value.x, bounds3D->value.y, bounds3D->value.z };
         float3 top_left = (float3) { - bounds3D->value.x, bounds3D->value.y, bounds3D->value.z };

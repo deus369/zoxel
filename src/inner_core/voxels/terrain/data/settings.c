@@ -1,4 +1,4 @@
-const int max_chunks_build_per_frame = 32; // 16; // terrain chunks built per frame
+// const int max_chunks_build_per_frame = 32; // 16; // terrain chunks built per frame
 unsigned char high_resolution_terain_lod = 1; // 2 | 1
 unsigned char initial_terrain_lod = 2; // 3 | 2
 const unsigned char terrain_lod_dividor = 3; // 2 | 3

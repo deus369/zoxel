@@ -4,7 +4,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
     zox_add_tag(e, Character3D)
     // transform
     add_physics3D(world, e);
-    zox_prefab_set(e, Bounds3D, { float3_one })
+    zox_prefab_set(e, Bounds3D, { (float3) { 0.25f, 0.25f, 0.25f } })
     zox_prefab_set(e, Position3DBounds, { float6_zero })
     zox_prefab_set(e, DisableMovement, { 0 })
     // voxels

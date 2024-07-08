@@ -27,16 +27,15 @@ void MeshUpdateTextured3DSystem(ecs_iter_t *it) {
     zox_field_in(ColorsGPULink, colorsGPULinks, 8)
     zox_field_out(MeshDirty, meshDirtys, 1)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_out(MeshDirty, meshDirtys, meshDirty)
+        zox_field_o(MeshDirty, meshDirtys, meshDirty)
         if (!meshDirty->value) continue;
-        zox_field_i_in(MeshGPULink, meshGPULinks, meshGPULink)
-        // zox_field_i_in(MaterialGPULink, materialGPULinks, materialGPULink)
-        zox_field_i_in(UvsGPULink, uvsGPULinks, uvsGPULink)
-        zox_field_i_in(ColorsGPULink, colorsGPULinks, colorsGPULink)
-        zox_field_i_in(MeshIndicies, meshIndiciess, meshIndicies)
-        zox_field_i_in(MeshVertices, meshVerticess, meshVertices)
-        zox_field_i_in(MeshUVs, meshUVss, meshUVs)
-        zox_field_i_in(MeshColorRGBs, meshColorRGBss, meshColorRGBs)
+        zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
+        zox_field_i(UvsGPULink, uvsGPULinks, uvsGPULink)
+        zox_field_i(ColorsGPULink, colorsGPULinks, colorsGPULink)
+        zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
+        zox_field_i(MeshVertices, meshVerticess, meshVertices)
+        zox_field_i(MeshUVs, meshUVss, meshUVs)
+        zox_field_i(MeshColorRGBs, meshColorRGBss, meshColorRGBs)
         if (!meshGPULink->value.x || !meshGPULink->value.y) continue;
         render_shader3D_textured(meshGPULink->value, uvsGPULink->value, colorsGPULink->value, meshIndicies->value, meshIndicies->length, meshVertices->value, meshVertices->length, meshUVs->value, meshColorRGBs->value);
         meshDirty->value = 0;

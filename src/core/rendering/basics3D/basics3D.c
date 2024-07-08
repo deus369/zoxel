@@ -33,9 +33,9 @@ zox_system_1(InstanceRender3DSystem, 0, [in] Position3D, [in] Rotation3D, [in] S
 zox_render3D_system(RenderCharacters3DSystem, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [in] TransformMatrix, [in] RenderDisabled, [none] MeshColorRGBs, [none] !UvsGPULink)
 // skybox
 zox_render3D_system(Render3DSystem, [in] Position3D, [in] Rotation3D, [in] Scale1D, [in] Brightness, [in] MeshGPULink, [in] MaterialGPULink, [in] MeshIndicies, [none] !UvsGPULink, [none] !MeshColorRGBs)
-zox_system_1(MeshUpdateSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs)
-zox_system_1(MeshUpdateTextured3DSystem, main_thread_pipeline, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshUVs, [in] MeshColorRGBs, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink)
-zox_system_1(MeshUpdateCharacters3DSystem, main_thread_pipeline, [none] MeshColorRGBs, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshColorRGBs, [out] MeshGPULink, [out] ColorsGPULink, [none] !MeshUVs)
+zox_system_1(MeshUpdateSystem, EcsPreStore, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs)
+zox_system_1(MeshUpdateTextured3DSystem, EcsPreStore, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshUVs, [in] MeshColorRGBs, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink)
+zox_system_1(MeshUpdateCharacters3DSystem, EcsPreStore, [in] MeshIndicies, [in] MeshVertices, [in] MeshColorRGBs, [out] MeshDirty, [out] MeshGPULink, [out] ColorsGPULink, [none] MeshColorRGBs, [none] !MeshUVs)
 zoxel_end_module(RenderingBasics3D)
 
 #endif

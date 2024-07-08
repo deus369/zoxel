@@ -15,7 +15,7 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
         zox_field_i(VoxLink, voxLinks, voxLink)
         if (!voxLink->value) continue;
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
-        if (renderDisabled->value) continue;
+        // if (renderDisabled->value) continue;
         zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
         zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
         zox_field_i(RenderLod, renderLods, renderLod)

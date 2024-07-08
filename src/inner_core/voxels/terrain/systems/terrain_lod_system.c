@@ -9,26 +9,31 @@ void TerrainLodSystem(ecs_iter_t *it) {
     if (zox_cameras_disable_streaming) return;
     zox_iter_world()
     ctx2 *filters = (ctx2 *) it->ctx;
-    ecs_query_t *chunks_query = filters->x;
-    ecs_iter_t chunks_iterator = ecs_query_iter(world, chunks_query);
-    ecs_query_next(&chunks_iterator);
-    int total_chunks = chunks_iterator.count;
+
     ecs_query_t *streamers_query = filters->y;
     ecs_iter_t streamers_iter = ecs_query_iter(world, streamers_query);
     ecs_query_next(&streamers_iter);
     int total_streamers = streamers_iter.count;
-    if (total_streamers == 0 || total_chunks == 0) {
-        ecs_iter_fini(&chunks_iterator);
+    if (total_streamers == 0) {
         ecs_iter_fini(&streamers_iter);
         return;
     }
+
+    // dont i need to iterate multiple tables here?
+    ecs_query_t *chunks_query = filters->x;
+    ecs_iter_t chunks_iterator = ecs_query_iter(world, chunks_query);
+    ecs_query_next(&chunks_iterator);
+    int total_chunks = chunks_iterator.count;
+    if (total_chunks == 0) {
+        ecs_iter_fini(&chunks_iterator);
+        return;
+    }
+
     const int stream_points_length = total_streamers;
     zox_field_out(StreamDirty, streamDirtys, 1)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(StreamDirty, streamDirtys, streamDirty)
         if (!streamDirty->value) continue;
-        // unsigned char camera_distances[total_chunks];
-        // memset(camera_distances, 255, total_chunks); // start all at 255
         zox_field_in_iter(&streamers_iter, StreamPoint, streamPoints, 1)
         int3 *stream_points = (int3 *) streamPoints;
         zox_field_in_iter(&chunks_iterator, ChunkPosition, chunkPositions, 1)
@@ -36,6 +41,9 @@ void TerrainLodSystem(ecs_iter_t *it) {
         zox_field_out_iter(&chunks_iterator, RenderLod, renderLods, 3)
         zox_field_out_iter(&chunks_iterator, ChunkDirty, chunkDirtys, 4)
         zox_field_out_iter(&chunks_iterator, ChunkLodDirty, chunkLodDirtys, 5)
+        // remember: first pass uses RenderLod of neighbors for checks
+        unsigned char camera_distances[total_chunks];
+        memset(camera_distances, 255, total_chunks); // start all at 255
         for (int j = 0; j < total_chunks; j++) {
             const ChunkNeighbors *chunkNeighbors = &chunkNeighborss[j];
             RenderLod *renderLod = &renderLods[j];
@@ -43,25 +51,19 @@ void TerrainLodSystem(ecs_iter_t *it) {
             const int3 stream_point = find_closest_point(stream_points, stream_points_length, chunk_position);
             const unsigned char camera_distance = get_camera_chunk_distance(stream_point, chunk_position);
             if (renderLod->value != camera_distance || check_chunk_lod(left) || check_chunk_lod(right) || check_chunk_lod(back) || check_chunk_lod(front)) {
-                // camera_distances[j] = camera_distance;
-                RenderLod *renderLod = &renderLods[j];
-                ChunkDirty *chunkDirty = &chunkDirtys[j];
-                ChunkLodDirty *chunkLodDirty = &chunkLodDirtys[j];
-                renderLod->value = camera_distance;
-                chunkDirty->value = chunk_dirty_state_generated;
-                chunkLodDirty->value = chunk_lod_state_dirty;
+                camera_distances[j] = camera_distance;
             }
         }
-        /*for (int j = 0; j < total_chunks; j++) {
+        for (int j = 0; j < total_chunks; j++) {
             const unsigned char camera_distance = camera_distances[j];
             if (camera_distance == 255) continue;
+            RenderLod *renderLod = &renderLods[j];
             ChunkLodDirty *chunkLodDirty = &chunkLodDirtys[j];
             ChunkDirty *chunkDirty = &chunkDirtys[j];
-            RenderLod *renderLod = &renderLods[j];
             renderLod->value = camera_distance;
-            chunkDirty->value = chunk_dirty_state_generated;
             chunkLodDirty->value = chunk_lod_state_dirty;
-        }*/
+            chunkDirty->value = chunk_dirty_state_generated;
+        }
         streamDirty->value = 0;
     }
     ecs_iter_fini(&chunks_iterator);

@@ -5,8 +5,8 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
 #ifdef zox_disable_chunk_building
     return;
 #endif
-    begin_timing()
     zox_change_check()
+    begin_timing()
     zox_iter_world()
     zox_field_in(VoxLink, voxLinks, 1)
     int voxels_length = 0;
@@ -73,7 +73,7 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
         if (chunkDirty->value == 0) continue;
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
-        if (renderDisabled->value) continue;
+        // if (renderDisabled->value) continue;
         zox_field_i(RenderLod, renderLods, renderLod)
         zox_field_i(VoxScale, voxScales, voxScale)
         const unsigned char lod = get_terrain_lod_from_camera_distance(renderLod->value);
@@ -82,34 +82,24 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         zox_field_o(MeshColorRGBs, meshColorRGBss, meshColorRGBs)
         zox_field_o(MeshUVs, meshUVss, meshUVs)
         zox_field_o(MeshDirty, meshDirtys, meshDirty)
-        if (lod == 255) { // hides mesh
-            clear_mesh_uvs(meshIndicies, meshVertices, meshColorRGBs, meshUVs);
-            chunkDirty->value = 0;
-            meshDirty->value = 1;
-            continue;
-        }
-        zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
-        zox_field_i(ChunkNeighbors, chunkNeighbors, chunkNeighbors2)
-        const ChunkOctree *neighbors[6];
-        unsigned char neighbor_lods[6];
-        set_neightbor_chunk_data(left)
-        set_neightbor_chunk_data(right)
-        set_neightbor_chunk_data(down)
-        set_neightbor_chunk_data(up)
-        set_neightbor_chunk_data(back)
-        set_neightbor_chunk_data(front)
-        // clear first
         clear_mesh_uvs(meshIndicies, meshVertices, meshColorRGBs, meshUVs);
-        // build
-        build_chunk_octree_mesh_uvs(chunkOctree, tilemapUVs, meshIndicies, meshVertices, meshUVs, meshColorRGBs, renderLod->value, lod, neighbors, neighbor_lods, voxScale->value, build_data.solidity, build_data.uvs);
-        // set states after
+        if (lod != 255) { // for visible
+            zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
+            zox_field_i(ChunkNeighbors, chunkNeighbors, chunkNeighbors2)
+            const ChunkOctree *neighbors[6];
+            unsigned char neighbor_lods[6];
+            set_neightbor_chunk_data(left)
+            set_neightbor_chunk_data(right)
+            set_neightbor_chunk_data(down)
+            set_neightbor_chunk_data(up)
+            set_neightbor_chunk_data(back)
+            set_neightbor_chunk_data(front)
+            build_chunk_octree_mesh_uvs(chunkOctree, tilemapUVs, meshIndicies, meshVertices, meshUVs, meshColorRGBs, renderLod->value, lod, neighbors, neighbor_lods, voxScale->value, build_data.solidity, build_data.uvs);
+        }
         chunkDirty->value = 0;
         meshDirty->value = 1;
         did_do_timing()
-        if (max_chunks_build_per_frame != 0) {
-            chunks_built++;
-            if (chunks_built >= max_chunks_build_per_frame) break;
-        }
+        if (get_timing_passed() >= max_chunk_process_time) break;
     }
     // end_timing("ChunkOctreeBuildSystem")
 } zox_declare_system(ChunkOctreeBuildSystem)

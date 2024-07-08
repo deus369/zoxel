@@ -1,5 +1,6 @@
 // disables
 
+// #define zox_disable_npcs
 // #define zox_test_settings_00
 #define zoxel_start_with_debug_ui
 // #define zox_is_flatlands

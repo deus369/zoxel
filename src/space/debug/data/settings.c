@@ -19,6 +19,7 @@ double time_update_debug_label_system = 0;
 
 // character
 #define zox_debug_ui_player_level
+#define zox_debug_player_chunk_position
 // #define zox_debug_player_character3D
 // #define zox_debug_player_grounded
 // #define zox_debug_player_element_links
@@ -26,6 +27,7 @@ double time_update_debug_label_system = 0;
 // streaming
 #define zox_debug_zox_statistics
 // #define zox_debug_zox_statistics2
+// #define zox_debug_statistics_characters
 // camera
 // #define zox_debug_player_camera_position
 // #define zox_debug_player_camera_euler
