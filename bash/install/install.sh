@@ -14,9 +14,11 @@ shortcut_directory=$HOME/.local/share/applications
 # echo "Filename [$file_name]"
 binary_path=build/linux/zoxel
 resources_directory=resources
+directory_lib=lib
 # game_icon_file_name=$resources_directory/textures/game_icon.png
 zoxel_install_directory=$install_directory/zoxel
 install_resource_directory=$zoxel_install_directory/resources
+install_directory_lib=$zoxel_install_directory/$directory_lib
 file_name=zoxel
 updater_shell_name=bash/install/updater.sh
 updater_file_name=zoxel_updater.desktop
@@ -42,11 +44,19 @@ if [[ -d $zoxel_install_directory ]]; then
         echo "  > removing old resources [$install_resource_directory]"
         rm -R $install_resource_directory
     fi
-    echo "  + copying [$resources_directory], resources & icon to [$install_resource_directory]"
+    echo "  + copying resources [$resources_directory] to [$install_resource_directory]"
     cp -R $resources_directory $install_resource_directory
+
+    echo "  + copying lib [$directory_lib] to [$install_directory_lib]"
+    cp -R $directory_lib $install_directory_lib
+
     # echo "  + copying [$game_icon_file_name], resources & icon to [$zoxel_install_directory/zoxel_icon.png]"
     # cp $game_icon_file_name $zoxel_install_directory/zoxel_icon.png
     echo "  + copying shortcut [$shortcut_file_name] to [$shortcut_directory]"
+    if [ -f $shortcut_directory/$shortcut_file_name ]; then
+        echo "  - removing old shortcut [$shortcut_directory/$shortcut_file_name]"
+        rm $shortcut_directory/$shortcut_file_name
+    fi
     cp bash/install/$shortcut_file_name $shortcut_directory/$shortcut_file_name
     echo "  + copying [$updater_shell_name] to [$zoxel_install_directory/updater.sh]"
     cp $updater_shell_name $zoxel_install_directory/updater.sh

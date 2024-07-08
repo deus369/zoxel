@@ -3,5 +3,5 @@ Name=Zoxel
 Comment=A Voxel RPG
 Categories=Games;
 Type=Application
-Exec=/usr/local/games/zoxel/zoxel
 Icon=/usr/local/games/zoxel/resources/textures/game_icon.png
+Exec=sh -c 'cd /usr/local/games/zoxel && ./zoxel'
