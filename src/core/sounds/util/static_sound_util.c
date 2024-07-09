@@ -26,11 +26,11 @@ unsigned char load_static_sounds() {
     return success;
 }
 
-void dispose_static_sounds() {
+/*void dispose_static_sounds() {
 #ifdef zox_disable_io
     return;
 #endif
     for (int i = 0; i < static_sounds_length; i++) Mix_FreeChunk(sounds[i]);
-}
+}*/
 
 #endif

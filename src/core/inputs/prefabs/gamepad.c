@@ -21,7 +21,7 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, const unsigned char gamepad_type)
     zox_name("gamepad")
     zox_set(e, DeviceLayout, { gamepad_type })
     Children *children = zox_get_mut(e, Children)
-    resize_memory_component(Children, children, ecs_entity_t, 16)
+    resize_memory_component(Children, children, ecs_entity_t, 20)
     // spawns zevice_button at 0 to 13
     for (unsigned char i = 0; i < 14; i++) {
         // use gamepad layout
@@ -43,8 +43,8 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, const unsigned char gamepad_type)
             else if (i == zox_device_button_x) joystick_index = 2;
             else if (i == zox_device_button_y) joystick_index = 3;
             // bumpers
-            else if (i == zox_device_button_lb) joystick_index = 6;
-            else if (i == zox_device_button_rb) joystick_index = 7;
+            else if (i == zox_device_button_lb) joystick_index = 4;
+            else if (i == zox_device_button_rb) joystick_index = 5;
             else if (i == zox_device_button_lt) joystick_index = 8;
             else if (i == zox_device_button_rt) joystick_index = 9;
             // joysticks
@@ -78,6 +78,12 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, const unsigned char gamepad_type)
         }
         children->value[j] = spawn_zevice_stick(world, i, joystick_index);
     }
+    children->value[16] = spawn_device_button(world, 16, zox_device_button_dpad_down);
+    children->value[17] = spawn_device_button(world, 17, zox_device_button_dpad_up);
+    children->value[18] = spawn_device_button(world, 18, zox_device_button_dpad_left);
+    children->value[19] = spawn_device_button(world, 19, zox_device_button_dpad_right);
+    // todo: spawn LT and RT as axis for steamdeck
+
     zox_modified(e, Children)
     gamepad_entity = e;
     return e;
@@ -94,7 +100,7 @@ unsigned char gamepad_is_any_input(ecs_world_t *world, const ecs_entity_t gamepa
 #ifndef zox_disable_gamepad_stick_as_any_input
         if (zox_has(e, ZeviceStick)) {
             const ZeviceStick *zeviceStick = zox_get(e, ZeviceStick)
-            return zevice_stick_has_input(zeviceStick, joystick_min_cutoff2);
+            return zevice_stick_has_input(zeviceStick, joystick_min_cutoff);
         } else
 #endif
         if (zox_has(e, ZeviceButton)) {

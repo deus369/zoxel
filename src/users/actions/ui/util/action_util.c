@@ -25,6 +25,7 @@ void set_player_action(ecs_world_t *world, const ecs_entity_t player, const unsi
         }
     }
     zox_set(children->value[index], ActiveState, { 1 })
+    spawn_sound_from_file_name(world, prefab_sound, "swap_action");
 }
 
 void player_action_ui_move(ecs_world_t *world, const ecs_entity_t player, const int direction) {
@@ -56,6 +57,7 @@ void player_action_ui_move(ecs_world_t *world, const ecs_entity_t player, const 
     if (selected == -1) selected = children->length - 1;
     else if (selected == children->length) selected = 0;
     zox_set(children->value[selected], ActiveState, { 1 })
+    spawn_sound_from_file_name(world, prefab_sound, "swap_action");
 }
 
 

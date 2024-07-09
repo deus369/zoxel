@@ -12,3 +12,11 @@
 #define zox_device_button_right_stick_push 11
 #define zox_device_button_left_stick 12
 #define zox_device_button_right_stick 13
+#define zox_device_button_dpad_down 14
+#define zox_device_button_dpad_up 15
+#define zox_device_button_dpad_left 16
+#define zox_device_button_dpad_right 17
+
+unsigned char is_dpad_button(const unsigned char index) {
+    return index >= zox_device_button_dpad_down && index <= zox_device_button_dpad_right;
+}

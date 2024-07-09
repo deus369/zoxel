@@ -23,8 +23,7 @@ void disable_inputs_until_release(ecs_world_t *world, const ecs_entity_t player,
                     unsigned char has_input = 0;
                     if (zox_has(zevice_entity, ZeviceStick)) {
                         const ZeviceStick *zeviceStick = zox_get(zevice_entity, ZeviceStick)
-                        has_input = zevice_stick_has_input(zeviceStick, joystick_min_cutoff2);
-                        // zoxel_log("                 > zeviceStick [%fx%f]\n", zeviceStick->value.x, zeviceStick->value.y);
+                        has_input = zevice_stick_has_input(zeviceStick, joystick_min_cutoff);
                     } else if (zox_has(zevice_entity, ZeviceButton)) {
                         const ZeviceButton *zeviceButton = zox_get(zevice_entity, ZeviceButton)
                         has_input = zeviceButton->value !=  0;

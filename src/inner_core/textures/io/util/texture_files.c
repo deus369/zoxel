@@ -39,7 +39,7 @@ void load_files_textures(ecs_world_t *world) {
     free(load_directory);
 }
 
-void dispose_files_textures(ecs_world_t *world) {
+void dispose_files_textures() {
     string_hashmap_dispose(files_hashmap_textures);
     files_hashmap_textures = NULL;
     free(files_textures);

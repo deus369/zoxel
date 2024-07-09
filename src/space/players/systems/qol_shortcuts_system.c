@@ -11,6 +11,8 @@ void QolShortcutsSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_e()
         zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
+        unsigned char is_shift_action_left = 0;
+        unsigned char is_shift_action_right = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device_entity = deviceLinks->value[j];
             if (zox_has(device_entity, Keyboard)) {
@@ -41,8 +43,8 @@ void QolShortcutsSystem(ecs_iter_t *it) {
 
             } else if (zox_has(device_entity, Mouse)) {
                 const Mouse *mouse = zox_get(device_entity, Mouse)
-                if (mouse->wheel.y > 0) player_action_ui_move(world, e, 1);
-                else if (mouse->wheel.y < 0) player_action_ui_move(world, e, -1);
+                if (mouse->wheel.y > 0) is_shift_action_right = 1;
+                else if (mouse->wheel.y < 0) is_shift_action_left = 1;
             } else if (zox_has(device_entity, Gamepad)) {
                 const Children *zevices = zox_get(device_entity, Children)
                 for (int k = 0; k < zevices->length; k++) {
@@ -50,18 +52,26 @@ void QolShortcutsSystem(ecs_iter_t *it) {
                     if (zox_has(zevice_entity, ZeviceButton)) {
                         const ZeviceDisabled *zeviceDisabled = zox_get(zevice_entity, ZeviceDisabled)
                         if (zeviceDisabled->value) continue;
-                        const DeviceButtonType *deviceButtonType = zox_get(zevice_entity, DeviceButtonType)
-                        if (deviceButtonType->value == zox_device_button_lb) {
-                            const ZeviceButton *zeviceButton = zox_get(zevice_entity, ZeviceButton)
-                            if (devices_get_pressed_this_frame(zeviceButton->value)) player_action_ui_move(world, e, -1);
-                        } else if (deviceButtonType->value == zox_device_button_rb) {
-                            const ZeviceButton *zeviceButton = zox_get(zevice_entity, ZeviceButton)
-                            if (devices_get_pressed_this_frame(zeviceButton->value)) player_action_ui_move(world, e, 1);
+                        const unsigned char device_button_type = zox_get_value(zevice_entity, DeviceButtonType)
+                        const unsigned char zevice_button = zox_get_value(zevice_entity, ZeviceButton)
+                        if (device_button_type == zox_device_button_lb) {
+                            if (devices_get_pressed_this_frame(zevice_button)) is_shift_action_left = 1;
+                        } else if (device_button_type == zox_device_button_rb) {
+                            if (devices_get_pressed_this_frame(zevice_button)) is_shift_action_right = 1;
+                        }
+                        const unsigned char real_button_index = zox_get_value(zevice_entity, RealButtonIndex)
+                        if (real_button_index == zox_device_button_dpad_left) {
+                            if (devices_get_pressed_this_frame(zevice_button)) is_shift_action_left = 1;
+                        } else if (real_button_index == zox_device_button_dpad_right) {
+                            if (devices_get_pressed_this_frame(zevice_button)) is_shift_action_right = 1;
                         }
                     }
                 }
             }
         }
+
+        if (is_shift_action_left) player_action_ui_move(world, e, -1);
+        else if (is_shift_action_right) player_action_ui_move(world, e, 1);
     }
     if (is_toggle_fullscreen) sdl_toggle_fullscreen(world, main_app);
 } zox_declare_system(QolShortcutsSystem)

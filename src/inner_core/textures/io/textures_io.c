@@ -10,7 +10,7 @@ zox_declare_tag(SaveTexture)
 #include "util/texture_files.c"
 
 void dispose_textures_io(ecs_world_t *world, void *ctx) {
-    dispose_files_textures(world);
+    dispose_files_textures();
 }
 
 zox_begin_module(TexturesIO)

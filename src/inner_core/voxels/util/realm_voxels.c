@@ -18,7 +18,8 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     zox_get_mutt(realm, VoxelLinks, voxelLinks)
 
     // clear previous
-    ecs_entity_t old_tilemap = zox_get_value(realm, TilemapLink)
+    ecs_entity_t old_tilemap = 0;
+    if (zox_has(realm, TilemapLink)) old_tilemap = zox_get_value(realm, TilemapLink)
     if (old_tilemap) zox_delete(old_tilemap)
     for (int i = 0; i < voxelLinks->length; i++) zox_delete(voxelLinks->value[i])
     clear_memory_component(VoxelLinks, voxelLinks)

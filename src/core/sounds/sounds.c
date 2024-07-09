@@ -50,7 +50,7 @@ void initialize_sounds(ecs_world_t *world) {
 }
 
 void dispose_sounds(ecs_world_t *world, void *ctx) {
-    dispose_sound_files();
+    dispose_files_sounds();
     close_audio_sdl();
 }
 

@@ -11,7 +11,7 @@ float get_gamepad_axis(SDL_Joystick *joystick, const int index) {
     int raw_value = SDL_JoystickGetAxis(joystick, index);
     raw_value = apply_joystick_deadzone(index, raw_value);
     float axis_value = raw_value / 32768.0f;
-    if (axis_value >= -joystick_min_cutoff && axis_value <= joystick_min_cutoff) axis_value = 0.0f;
+    if (float_abs(axis_value) <= joystick_min_cutoff) axis_value = 0.0f;
     if (axis_value < -1.0f || axis_value > 1.0f) axis_value = 0;
     axis_value = -axis_value;
     return axis_value; // invert as sdl inverts it first?
@@ -80,39 +80,69 @@ void initialize_sdl_gamepads() {
     }
 }
 
-void set_gamepad_dpad(SDL_Joystick *joystick, int index) {
+unsigned char process_byte(const unsigned char old_byte, const unsigned char raw_value) {
+    unsigned char was_pressed = devices_get_is_pressed(old_byte);
+    unsigned char pressed_this_frame = !was_pressed && raw_value;
+    unsigned char released_this_frame = was_pressed && !raw_value;
+#ifdef zox_log_gamepad_button_pressed
+    if (pressed_this_frame) zox_log("  [%i] is pressed this frame\n", index)
+    if (released_this_frame) zox_log("  [%i] is released this frame\n", index)
+#endif
+    unsigned char new_value = 0;
+    if (pressed_this_frame) devices_set_pressed_this_frame(&new_value, 1);
+    if (released_this_frame) devices_set_released_this_frame(&new_value, 1);
+    if (raw_value) devices_set_is_pressed(&new_value, raw_value);
+#ifdef zox_log_gamepad_button_pressed
+    if (new_value != old_value) zox_log("   - [%i] has updated [%i > %i]\n", index, old_value, new_value)
+#endif
+    return new_value;
+}
+
+unsigned char get_gamepad_dpad(const unsigned char old_value, SDL_Joystick *joystick, int index) {
+    unsigned char is_pressed_down = 0;
+    unsigned char is_pressed_up = 0;
+    unsigned char is_pressed_left = 0;
+    unsigned char is_pressed_right = 0;
     Uint8 hatState = SDL_JoystickGetHat(joystick, 0);
     // Check the state of the D-pad
     switch (hatState) {
         case SDL_HAT_UP:
-            // Handle up input
+            is_pressed_up = 1;
             break;
         case SDL_HAT_DOWN:
-            // Handle down input
+            is_pressed_down = 1;
             break;
         case SDL_HAT_LEFT:
-            // Handle left input
+            is_pressed_left = 1;
             break;
         case SDL_HAT_RIGHT:
-            // Handle right input
+            is_pressed_right = 1;
             break;
         case SDL_HAT_LEFTUP:
-            // Handle diagonal input
+            is_pressed_left = 1;
+            is_pressed_up = 1;
             break;
         case SDL_HAT_RIGHTUP:
-            // Handle diagonal input
+            is_pressed_right = 1;
+            is_pressed_up = 1;
             break;
         case SDL_HAT_LEFTDOWN:
-            // Handle diagonal input
+            is_pressed_left = 1;
+            is_pressed_down = 1;
             break;
         case SDL_HAT_RIGHTDOWN:
-            // Handle diagonal input
+            is_pressed_right = 1;
+            is_pressed_down = 1;
             break;
         case SDL_HAT_CENTERED:
             // Handle no input
             break;
-        // Handle other diagonal and invalid input states here
     }
+    if (index == zox_device_button_dpad_down) return process_byte(old_value, is_pressed_down);
+    else if (index == zox_device_button_dpad_up) return process_byte(old_value, is_pressed_up);
+    else if (index == zox_device_button_dpad_left) return process_byte(old_value, is_pressed_left);
+    else if (index == zox_device_button_dpad_right) return process_byte(old_value, is_pressed_right);
+    return old_value;
 }
 
 unsigned char set_gamepad_axis2(ZeviceStick *zeviceStick, SDL_Joystick *joystick, int index) {
@@ -127,8 +157,9 @@ unsigned char set_gamepad_axis2(ZeviceStick *zeviceStick, SDL_Joystick *joystick
 }
 
 unsigned char set_gamepad_button(const unsigned char old_value, SDL_Joystick *joystick, int index) {
-    unsigned char was_pressed = devices_get_is_pressed(old_value);
     unsigned char raw_value = SDL_JoystickGetButton(joystick, index);
+    return process_byte(old_value, raw_value);
+    /*unsigned char was_pressed = devices_get_is_pressed(old_value);
     unsigned char pressed_this_frame = !was_pressed && raw_value;
     unsigned char released_this_frame = was_pressed && !raw_value;
 #ifdef zox_log_gamepad_button_pressed
@@ -143,7 +174,7 @@ unsigned char set_gamepad_button(const unsigned char old_value, SDL_Joystick *jo
     if (new_value != old_value) zox_log("   - [%i] has updated [%i > %i]\n", index, old_value, new_value)
 #endif
     if (pressed_this_frame) last_clicked_index = index;
-    return new_value; // button->value != old_value;
+    return new_value; // button->value != old_value;*/
 }
 
 void sdl_gamepad_handle_disconnect(SDL_Joystick *joystick) {
@@ -156,6 +187,7 @@ void sdl_gamepad_handle_disconnect(SDL_Joystick *joystick) {
     }
 }
 
+// Main Function for Gamepad
 void sdl_extract_gamepad(SDL_Joystick *joystick, ecs_world_t *world, const Children *children) {
     if (!joystick) return;
     joystick_axes = SDL_JoystickNumAxes(joystick);
@@ -166,14 +198,11 @@ void sdl_extract_gamepad(SDL_Joystick *joystick, ecs_world_t *world, const Child
             ZeviceStick *zeviceStick = zox_get_mut(e, ZeviceStick);
             if (set_gamepad_axis2(zeviceStick, joystick, realButtonIndex->value)) zox_modified(e, ZeviceStick);
         } else if (zox_has(e, ZeviceButton)) {
-            // ZeviceButton *zevice_button = zox_get_mut(e, ZeviceButton)
             const ZeviceButton *zevice_button = zox_get(e, ZeviceButton)
-            unsigned char new_value = set_gamepad_button(zevice_button->value, joystick, realButtonIndex->value);
-            if (new_value != zevice_button->value) {
-                zox_set(e, ZeviceButton, { new_value })
-                // zevice_button->value = new_value;
-                // zox_modified(e, ZeviceButton)
-            }
+            unsigned char new_value;
+            if (is_dpad_button(realButtonIndex->value)) new_value = get_gamepad_dpad(zevice_button->value, joystick, realButtonIndex->value);
+            else new_value = set_gamepad_button(zevice_button->value, joystick, realButtonIndex->value);
+            if (new_value != zevice_button->value) zox_set(e, ZeviceButton, { new_value })
         }
     }
 }

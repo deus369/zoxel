@@ -56,9 +56,9 @@ void spawn_tilemap_ui(ecs_world_t *world, const Keyboard *keyboard, const ecs_en
 }
 
 void test_sounds(ecs_world_t *world, const Keyboard *keyboard) {
-    if (keyboard->_1.pressed_this_frame) {
-        spawn_sound_from_file(world, prefab_sound, 0);
-    } /*else if (keyboard->_2.pressed_this_frame) {
+    /*if (keyboard->_1.pressed_this_frame || keyboard->_2.pressed_this_frame || keyboard->_3.pressed_this_frame || keyboard->_4.pressed_this_frame || keyboard->_5.pressed_this_frame || keyboard->_6.pressed_this_frame || keyboard->_7.pressed_this_frame || keyboard->_8.pressed_this_frame) spawn_sound_from_file(world, prefab_sound, 0);
+    */
+    /*else if (keyboard->_2.pressed_this_frame) {
         spawn_sound_generated(world, note_frequencies[42], 0.6, instrument_piano);
     } else if (keyboard->_3.pressed_this_frame) {
         spawn_sound_generated(world, note_frequencies[42], 0.3, instrument_piano_square);
