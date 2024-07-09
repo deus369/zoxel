@@ -99,7 +99,7 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         chunkDirty->value = 0;
         meshDirty->value = 1;
         did_do_timing()
-        if (get_timing_passed() >= max_chunk_process_time) break;
+        if (max_chunk_process_time != 0 && get_timing_passed() >= max_chunk_process_time) break;
     }
     // end_timing("ChunkOctreeBuildSystem")
 } zox_declare_system(ChunkOctreeBuildSystem)

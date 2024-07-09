@@ -24,18 +24,18 @@ ecs_entity_t spawn_prefab_taskbar(ecs_world_t *world, const ecs_entity_t prefab)
 const int taskbar_count = 13;
 char* taskbar_textures[] = {
     "game_icon",
-    "taskbar_status",
+    "taskbar_disabled", // "taskbar_status",
     "taskbar_stats",
     "taskbar_actions",
     "taskbar_items",
     "taskbar_skills",
     "taskbar_quests",
-    "taskbar_body",
-    "taskbar_equipment",
-    "taskbar_crafting",
-    "taskbar_map",
-    "taskbar_lore",
-    "taskbar_achievements",
+    "taskbar_disabled", // "taskbar_body",
+    "taskbar_disabled", // "taskbar_equipment",
+    "taskbar_disabled", // "taskbar_crafting",
+    "taskbar_disabled", // "taskbar_map",
+    "taskbar_disabled", // "taskbar_lore",
+    "taskbar_disabled", // "taskbar_achievements",
 };
 
 // this is created in our users module

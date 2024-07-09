@@ -1,6 +1,10 @@
-const float ray_interval = 0.04f;
-const float terrain_ray_length = 8;
+// #define zox_debug_hit_point
+// #define zox_debug_hit_normal
 const uint safety_checks_raycasting = 512;
+// const float ray_interval = 0.04f;
+const float terrain_ray_length = 8;
+const float raycast_thickness = 10;
+const color_rgb raycast_quad_color  = (color_rgb) { 194, 194, 194 };
 
 unsigned char raycast_character(ecs_world_t *world, const ecs_entity_t caster, const float3 ray_origin, const float3 ray_normal, const ecs_entity_t chunk, RaycastVoxelData *data, float *closest_t) {
     if (!chunk) return 0;
@@ -151,16 +155,69 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
         render_line3D(world, data->hit, float3_add(data->hit, float3_multiply_float(float3_up, 0.3f)), hit_point_line_color);
         //return ray_hit;
     } else if (ray_hit) {
-        const color_rgb hit_point_line_color = (color_rgb) { 0, 255, 255 };
-        const color_rgb voxel_line_color  = (color_rgb) { 0, 0, 0 };
         // hit point
+#if zox_debug_hit_point
+        const color_rgb hit_point_line_color = (color_rgb) { 0, 255, 255 };
         float3 hit_point = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * voxel_scale));
         render_line3D(world, hit_point, float3_add(hit_point, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale * 0.5f)), hit_point_line_color);
+#endif
         // voxel normal
         float3 voxel_position_real = float3_multiply_float(int3_to_float3(voxel_position), voxel_scale);
         float3_add_float3_p(&voxel_position_real, (float3) { voxel_scale / 2.0f, voxel_scale / 2.0f, voxel_scale / 2.0f }); // add half voxel
         float3_add_float3_p(&voxel_position_real, chunk_position_real);
+#ifdef zox_debug_hit_normal
+        const color_rgb voxel_line_color  = (color_rgb) { 0, 0, 0 };
         render_line3D(world, voxel_position_real, float3_add(voxel_position_real, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale)), voxel_line_color);
+#endif
+        float3 center_quad = float3_add(voxel_position_real, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale * 0.501f));
+        float3 other_axis = float3_zero;
+        if (hit_normal.y != 0) {
+            other_axis.x = 1;
+            other_axis.z = 1;
+        } else if (hit_normal.x != 0) {
+            other_axis.y = 1;
+            other_axis.z = 1;
+        } else if (hit_normal.z != 0) {
+            other_axis.x = 1;
+            other_axis.y = 1;
+        }
+        other_axis = float3_multiply_float(other_axis, voxel_scale * 0.5f - voxel_scale * (0.125f / raycast_thickness));
+        if (hit_normal.z != 0) {
+            render_line3D_thickness(world,
+                float3_add(center_quad, (float3) { -other_axis.x, -other_axis.y, -other_axis.z }),
+                float3_add(center_quad, (float3) { -other_axis.x, other_axis.y, other_axis.z }),
+                raycast_quad_color, raycast_thickness);
+            render_line3D_thickness(world,
+                float3_add(center_quad, (float3) { -other_axis.x, other_axis.y, other_axis.z }),
+                float3_add(center_quad, (float3) { other_axis.x, other_axis.y, other_axis.z }),
+                raycast_quad_color, raycast_thickness);
+            render_line3D_thickness(world,
+                float3_add(center_quad, (float3) { other_axis.x, -other_axis.y, -other_axis.z }),
+                float3_add(center_quad, (float3) { -other_axis.x, -other_axis.y, -other_axis.z }),
+                raycast_quad_color, raycast_thickness);
+            render_line3D_thickness(world,
+                float3_add(center_quad, (float3) { other_axis.x, other_axis.y, other_axis.z }),
+                float3_add(center_quad, (float3) { other_axis.x, -other_axis.y, -other_axis.z }),
+                raycast_quad_color, raycast_thickness);
+        } else {
+            // handles x and y
+            render_line3D_thickness(world,
+                float3_add(center_quad, (float3) { -other_axis.x, -other_axis.y, -other_axis.z }),
+                float3_add(center_quad, (float3) { -other_axis.x, -other_axis.y, other_axis.z }),
+                raycast_quad_color, raycast_thickness);
+            render_line3D_thickness(world,
+                float3_add(center_quad, (float3) { -other_axis.x, -other_axis.y, other_axis.z }),
+                float3_add(center_quad, (float3) { other_axis.x, other_axis.y, other_axis.z }),
+                raycast_quad_color, raycast_thickness);
+            render_line3D_thickness(world,
+                float3_add(center_quad, (float3) { other_axis.x, other_axis.y, -other_axis.z }),
+                float3_add(center_quad, (float3) { -other_axis.x, -other_axis.y, -other_axis.z }),
+                raycast_quad_color, raycast_thickness);
+            render_line3D_thickness(world,
+                float3_add(center_quad, (float3) { other_axis.x, other_axis.y, other_axis.z }),
+                float3_add(center_quad, (float3) { other_axis.x, other_axis.y, -other_axis.z }),
+                raycast_quad_color, raycast_thickness);
+        }
         // output chunk!
         data->chunk = chunk;
         data->position = voxel_position_local;
