@@ -56,7 +56,7 @@ void CameraDebugSystem(ecs_iter_t *it) {
     zox_field_in(CameraPlanes, cameraPlaness, 1)
     for (int i = 0; i < it->count; i++) {
         if (it->entities[i] != main_cameras[0]) continue;
-        zox_field_i_in(CameraPlanes, cameraPlaness, cameraPlanes)
+        zox_field_i(CameraPlanes, cameraPlaness, cameraPlanes)
         // when this works, disable renders based on frustum checks
         // unsigned char is_seen = is_in_frustum(cameraPlanes->value, test_bounds);
         //color_rgb cube_color = miss_color;

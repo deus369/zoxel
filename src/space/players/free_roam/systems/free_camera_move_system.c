@@ -8,11 +8,11 @@ void FreeCameraMoveSystem(ecs_iter_t *it) {
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     zox_field_in(CameraLink, cameraLinks, 2)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(CameraLink, cameraLinks, cameraLink)
+        zox_field_i(CameraLink, cameraLinks, cameraLink)
         if (cameraLink->value == 0) continue;
         const CanRoam *canRoam = zox_get(cameraLink->value, CanRoam)
         if (canRoam->value != 2) continue;
-        zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
+        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         float3 movement = { 0, 0, 0 };
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device_entity = deviceLinks->value[j];

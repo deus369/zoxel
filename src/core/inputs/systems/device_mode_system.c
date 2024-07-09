@@ -5,8 +5,8 @@ void DeviceModeSystem(ecs_iter_t *it) {
     zox_field_in(DeviceMode, deviceModes, 2)
     zox_field_out(DeviceModeDirty, deviceModeDirtys, 3)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(DeviceLinks, deviceLinks, deviceLinks2)
-        zox_field_i_in(DeviceMode, deviceModes, deviceMode)
+        zox_field_i(DeviceLinks, deviceLinks, deviceLinks2)
+        zox_field_i(DeviceMode, deviceModes, deviceMode)
         // first check if currently using selected inputs:
         unsigned char using_current_inputs = 0;
         for (int j = 0; j < deviceLinks2->length; j++) {
@@ -42,7 +42,7 @@ void DeviceModeSystem(ecs_iter_t *it) {
             }
         }
         if (using_current_inputs) continue;
-        zox_field_i_out(DeviceModeDirty, deviceModeDirtys, deviceModeDirty)
+        zox_field_o(DeviceModeDirty, deviceModeDirtys, deviceModeDirty)
 #ifdef zox_debug_log_device_mode_system
         unsigned char old_device_mode = deviceMode->value;
 #endif

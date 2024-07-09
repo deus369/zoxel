@@ -5,15 +5,15 @@ void Player3DJumpSystem(ecs_iter_t *it) {
     zox_field_in(DeviceMode, deviceModes, 2)
     zox_field_in(CharacterLink, characterLinks, 3)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(CharacterLink, characterLinks, characterLink)
+        zox_field_i(CharacterLink, characterLinks, characterLink)
         ecs_entity_t character = characterLink->value;
         if (!character || !zox_has(character, Character3D)) continue;
         const DisableMovement *disableMovement = zox_get(character, DisableMovement)
         if (disableMovement->value) continue;
         const Grounded *grounded = zox_get(character, Grounded)
         if (!grounded->value) continue;
-        zox_field_i_in(DeviceMode, deviceModes, deviceMode)
-        zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
+        zox_field_i(DeviceMode, deviceModes, deviceMode)
+        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         unsigned char is_jump_triggered = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device_entity = deviceLinks->value[j];

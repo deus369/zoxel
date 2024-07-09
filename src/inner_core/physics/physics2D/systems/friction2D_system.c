@@ -3,8 +3,8 @@ void Friction2DSystem(ecs_iter_t *it) {
     zox_field_in(Velocity2D, velocity2Ds, 2)
     zox_field_out(Acceleration2D, acceleration2Ds, 3)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(Velocity2D, velocity2Ds, velocity2D)
-        zox_field_i_out(Acceleration2D, acceleration2Ds, acceleration2D)
+        zox_field_i(Velocity2D, velocity2Ds, velocity2D)
+        zox_field_o(Acceleration2D, acceleration2Ds, acceleration2D)
         acceleration2D->value.x -= velocity2D->value.x * frictionValue;
         acceleration2D->value.y -= velocity2D->value.y * frictionValue;
     }

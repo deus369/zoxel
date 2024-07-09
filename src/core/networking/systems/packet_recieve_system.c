@@ -22,7 +22,7 @@ void PacketRecieveSystem(ecs_iter_t *it) {
     // zox_iter_world()
     zox_field_in(SocketLink, socketLinks, 2)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(SocketLink, socketLinks, socketLink)
+        zox_field_i(SocketLink, socketLinks, socketLink)
         if (socketLink->value == 0) continue;
         ssize_t recv_size;
         struct sockaddr_in recv_addr;

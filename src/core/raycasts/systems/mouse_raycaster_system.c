@@ -4,9 +4,9 @@ void MouseRaycasterSystem(ecs_iter_t *it) {
     zox_field_in(DeviceMode, deviceModes, 2)
     zox_field_out(Raycaster, raycasters, 3)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(DeviceLinks, deviceLinks, deviceLinks2)
-        zox_field_i_in(DeviceMode, deviceModes, deviceMode)
-        zox_field_i_out(Raycaster, raycasters, raycaster)
+        zox_field_i(DeviceLinks, deviceLinks, deviceLinks2)
+        zox_field_i(DeviceMode, deviceModes, deviceMode)
+        zox_field_o(Raycaster, raycasters, raycaster)
         raycaster->value = int2_zero;
         for (int j = 0; j < deviceLinks2->length; j++) {
             const ecs_entity_t device_entity = deviceLinks2->value[j];

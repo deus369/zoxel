@@ -3,9 +3,9 @@
     zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
     zox_field_out(GenerateChunkEntities, generateChunkEntitiess, 2)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(ChunkLodDirty, chunkLodDirtys, chunkLodDirty)
+        zox_field_i(ChunkLodDirty, chunkLodDirtys, chunkLodDirty)
         if (!chunkLodDirty->value) continue;
-        zox_field_i_out(GenerateChunkEntities, generateChunkEntitiess, generateChunkEntities)
+        zox_field_o(GenerateChunkEntities, generateChunkEntitiess, generateChunkEntities)
         generateChunkEntities->value = 1;
         did_do = 1;
     }

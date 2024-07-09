@@ -6,12 +6,12 @@ void Mesh2DInstancedUpdateSystem(ecs_iter_t *it) {
     zox_field_in(MeshGPULink, meshGPULinks, 4)
     zox_field_in(MaterialInstancedGPULink, materialGPULinks, 5)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_out(MeshDirty, meshDirtys, meshDirty)
+        zox_field_o(MeshDirty, meshDirtys, meshDirty)
         if (meshDirty->value != 1) continue;
-        zox_field_i_in(MeshGPULink, meshGPULinks, meshGPULink)
-        zox_field_i_in(MaterialInstancedGPULink, materialGPULinks, materialGPULink)
-        zox_field_i_in(MeshIndicies, meshIndiciess, meshIndicies)
-        zox_field_i_in(MeshVertices2D, meshVerticess, meshVertices)
+        zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
+        zox_field_i(MaterialInstancedGPULink, materialGPULinks, materialGPULink)
+        zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
+        zox_field_i(MeshVertices2D, meshVerticess, meshVertices)
         set_gpu_mesh2D(meshGPULink->value, materialGPULink->value, meshIndicies->value, meshIndicies->length, meshVertices->value, meshVertices->length);
         meshDirty->value = 0;
     }

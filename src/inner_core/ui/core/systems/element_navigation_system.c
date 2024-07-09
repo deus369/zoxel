@@ -10,10 +10,10 @@ void ElementNavigationSystem(ecs_iter_t *it) {
     zox_field_out(RaycasterTarget, raycasterTargets, 5)
     for (int i = 0; i < it->count; i++) {
         zox_field_e()
-        zox_field_i_in(DeviceMode, deviceModes, deviceMode)
-        zox_field_i_out(RaycasterTarget, raycasterTargets, raycasterTarget)
-        zox_field_i_out(NavigatorState, navigatorStates, navigatorState)
-        zox_field_i_out(NavigatorTimer, navigatorTimers, navigatorTimer)
+        zox_field_i(DeviceMode, deviceModes, deviceMode)
+        zox_field_o(RaycasterTarget, raycasterTargets, raycasterTarget)
+        zox_field_o(NavigatorState, navigatorStates, navigatorState)
+        zox_field_o(NavigatorTimer, navigatorTimers, navigatorTimer)
         if (deviceMode->value != zox_device_mode_gamepad) {
             if (!navigatorState->value) {
                 navigatorState->value = 1;
@@ -26,7 +26,7 @@ void ElementNavigationSystem(ecs_iter_t *it) {
             canvas_select_first_button(world, e, canvas);
         }
         if (!raycasterTarget->value || !zox_alive(raycasterTarget->value)) continue;
-        zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
+        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         float2 left_stick = float2_zero;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device_entity = deviceLinks->value[j];

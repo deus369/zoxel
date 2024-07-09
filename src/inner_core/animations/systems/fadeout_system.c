@@ -7,12 +7,12 @@ void FadeoutSystem(ecs_iter_t *it) {
     zox_field_in(AnimationDelay, animationDelays, 4)
     zox_field_out(Alpha, alphas, 5)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(AnimationState, animationTypes, animationType)
+        zox_field_i(AnimationState, animationTypes, animationType)
         if (animationType->value != zox_animation_fadeout) continue;
-        zox_field_i_in(AnimationStart, animationStarts, animationStart)
-        zox_field_i_in(AnimationLength, animationLengths, animationLength)
-        zox_field_i_in(AnimationDelay, animationDelays, animationDelay)
-        zox_field_i_out(Alpha, alphas, alpha)
+        zox_field_i(AnimationStart, animationStarts, animationStart)
+        zox_field_i(AnimationLength, animationLengths, animationLength)
+        zox_field_i(AnimationDelay, animationDelays, animationDelay)
+        zox_field_o(Alpha, alphas, alpha)
         double animation_time = (time - (animationStart->value + animationDelay->value)) / animationLength->value;
         if (animation_time < 0) animation_time = 0;
         else if (animation_time > 1) animation_time = 1;

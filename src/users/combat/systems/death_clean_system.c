@@ -8,9 +8,9 @@ void DeathCleanSystem(ecs_iter_t *it) {
     zox_field_in(Dead, deads, 1)
     zox_field_in(DiedTime, diedTimes, 2)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(Dead, deads, dead)
+        zox_field_i(Dead, deads, dead)
         if (!dead->value) continue;
-        zox_field_i_in(DiedTime, diedTimes, diedTime)
+        zox_field_i(DiedTime, diedTimes, diedTime)
         if (time - diedTime->value >= cleanup_time) zox_delete(it->entities[i])
     }
 } zox_declare_system(DeathCleanSystem)

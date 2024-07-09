@@ -6,11 +6,11 @@ void QuadsLabelSystem(ecs_iter_t *it) {
     zox_field_out(ZextDirty, zextDirtys, 3)
     zox_field_out(ZextData, zextDatas, 4)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_out(ZextDirty, zextDirtys, zextDirty)
+        zox_field_o(ZextDirty, zextDirtys, zextDirty)
         if (zextDirty->value) continue;
-        zox_field_i_out(QuadsCount, quadsCounts, quadsCount)
+        zox_field_o(QuadsCount, quadsCounts, quadsCount)
         if (quadsCount->value == triangles_count) continue;
-        zox_field_i_out(ZextData, zextDatas, zextData)
+        zox_field_o(ZextData, zextDatas, zextData)
         quadsCount->value = triangles_count;
         //if (!system_updated) {
             //system_updated = 1;

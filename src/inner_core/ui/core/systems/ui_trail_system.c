@@ -9,11 +9,11 @@ void UITrailSystem(ecs_iter_t *it) {
     zox_field_in(UITrail, uiTrails, 2)
     zox_field_out(Position3D, position3Ds, 3)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(UIHolderLink, uiHolderLinks, uiHolderLink)
+        zox_field_i(UIHolderLink, uiHolderLinks, uiHolderLink)
         if (!uiHolderLink->value) continue;
         zox_field_e()
-        zox_field_i_in(UITrail, uiTrails, uiTrail)
-        zox_field_i_out(Position3D, position3Ds, position3D)
+        zox_field_i(UITrail, uiTrails, uiTrail)
+        zox_field_o(Position3D, position3Ds, position3D)
         position3D->value = uiTrail->value;
         const Position3D *target_position = zox_get(uiHolderLink->value, Position3D)
         float3_add_float3_p(&position3D->value, target_position->value);

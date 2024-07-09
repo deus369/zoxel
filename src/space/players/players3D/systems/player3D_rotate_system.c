@@ -6,10 +6,10 @@ void Player3DRotateSystem(ecs_iter_t *it) {
     zox_field_in(CharacterLink, characterLinks, 3)
     zox_field_in(CameraLink, cameraLinks, 4)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(CharacterLink, characterLinks, characterLink)
+        zox_field_i(CharacterLink, characterLinks, characterLink)
         const ecs_entity_t character = characterLink->value;
         if (!character || !zox_has(character, Character3D)) continue;
-        zox_field_i_in(CameraLink, cameraLinks, cameraLink)
+        zox_field_i(CameraLink, cameraLinks, cameraLink)
         if (cameraLink->value) {
             const CameraMode *cameraMode = zox_get(cameraLink->value, CameraMode)
             if (cameraMode->value != zox_camera_mode_first_person && cameraMode->value != zox_camera_mode_third_person) continue;
@@ -18,8 +18,8 @@ void Player3DRotateSystem(ecs_iter_t *it) {
         const DisableMovement *disableMovement = zox_get(character, DisableMovement)
         if (disableMovement->value) continue;
         float2 euler = { 0, 0 };
-        zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
-        zox_field_i_in(DeviceMode, deviceModes, deviceMode)
+        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
+        zox_field_i(DeviceMode, deviceModes, deviceMode)
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device_entity = deviceLinks->value[j];
             if (deviceMode->value == zox_device_mode_keyboardmouse && zox_has(device_entity, Mouse)) {

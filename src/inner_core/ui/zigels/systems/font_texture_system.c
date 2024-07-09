@@ -15,17 +15,17 @@ void FontTextureSystem(ecs_iter_t *it) {
     const Children *font_style_children = zox_get(zox_font_style, Children)
     const unsigned char is_use_shapes = zox_has(zox_font_style, TTFFontStyle);
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_out(GenerateTexture, generateTextures, generateTexture)
+        zox_field_o(GenerateTexture, generateTextures, generateTexture)
         if (generateTexture->value != zox_generate_texture_generate) continue;
-        zox_field_i_out(TextureDirty, textureDirtys, textureDirty)
+        zox_field_o(TextureDirty, textureDirtys, textureDirty)
         if (textureDirty->value != 0) continue;
-        zox_field_i_in(ZigelIndex, zigelIndexs, zigelIndex)
+        zox_field_i(ZigelIndex, zigelIndexs, zigelIndex)
         if (zigelIndex->value >= font_styles_length) continue;
-        zox_field_i_in(TextureSize, textureSizes, textureSize)
-        zox_field_i_in(Color, colors, color_variable)
-        zox_field_i_in(SecondaryColor, secondaryColors, secondaryColor)
-        zox_field_i_in(FontThickness, fontThicknesss, fontThickness)
-        zox_field_i_out(TextureData, textureDatas, textureData)
+        zox_field_i(TextureSize, textureSizes, textureSize)
+        zox_field_i(Color, colors, color_variable)
+        zox_field_i(SecondaryColor, secondaryColors, secondaryColor)
+        zox_field_i(FontThickness, fontThicknesss, fontThickness)
+        zox_field_o(TextureData, textureDatas, textureData)
         // get font based on zigel index
         const ecs_entity_t font = font_style_children->value[zigelIndex->value];
         if (!font) { // spacece

@@ -7,11 +7,11 @@ void ScrollbarSystem(ecs_iter_t *it) {
     zox_field_in(PixelSize, pixelSizes, 4)
     zox_field_in(ParentLink, parentLinks, 5)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(DraggableState, draggableStates, draggableState)
+        zox_field_i(DraggableState, draggableStates, draggableState)
         if (!draggableState->value) continue;
-        zox_field_i_in(PixelPosition, pixelPositions, pixelPosition)
-        zox_field_i_in(PixelSize, pixelSizes, pixelSize)
-        zox_field_i_in(ParentLink, parentLinks, parentLink)
+        zox_field_i(PixelPosition, pixelPositions, pixelPosition)
+        zox_field_i(PixelSize, pixelSizes, pixelSize)
+        zox_field_i(ParentLink, parentLinks, parentLink)
         const ecs_entity_t scrollbar = parentLink->value;
         const PixelSize *scrollbar_size = zox_get(scrollbar, PixelSize)
         if (scrollbar_size->value.y == pixelSize->value.y) continue;

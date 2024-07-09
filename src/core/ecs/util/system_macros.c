@@ -130,9 +130,9 @@ Chose one pipeline tag for each type of system.
 #define zox_field_out_iter(iter, component_name, field_name, index) component_name *field_name = ecs_field(iter, component_name, index);
 
 // depreciated
-#define zox_field_i_in(component_name, field_name, variable_name) const component_name *variable_name = &field_name[i];
+// #define zox_field_i(component_name, field_name, variable_name) const component_name *variable_name = &field_name[i];
 
-#define zox_field_i_out(component_name, field_name, variable_name) component_name *variable_name = &field_name[i];
+// #define zox_field_o(component_name, field_name, variable_name) component_name *variable_name = &field_name[i];
 
 // new macros
 #define zox_field_i(component_name, field_name, variable_name) const component_name *variable_name = &field_name[i];

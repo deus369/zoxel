@@ -11,9 +11,9 @@ void Dissipation3DSystem(ecs_iter_t *it) {
     zox_field_in(Omega3D, omega3Ds, 2)
     zox_field_out(Alpha3D, alpha3Ds, 3)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(Omega3D, omega3Ds, omega3D)
+        zox_field_i(Omega3D, omega3Ds, omega3D)
         if (omega3D->value.x == 0 && omega3D->value.y == 0 && omega3D->value.z == 0 && omega3D->value.w == 1) continue;
-        zox_field_i_out(Alpha3D, alpha3Ds, alpha3D)
+        zox_field_o(Alpha3D, alpha3Ds, alpha3D)
         quaternion_rotate_quaternion_p(&alpha3D->value, calculate_dissipation(omega3D->value));
     }
 } zox_declare_system(Dissipation3DSystem)

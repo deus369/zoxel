@@ -32,15 +32,15 @@ void Player3DMoveSystem(ecs_iter_t *it) {
     zox_field_in(DeviceMode, deviceModes, 2)
     zox_field_in(CharacterLink, characterLinks, 3)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(CharacterLink, characterLinks, characterLink)
+        zox_field_i(CharacterLink, characterLinks, characterLink)
         const ecs_entity_t character = characterLink->value;
         if (!character || !zox_has(character, Character3D)) continue;
         const DisableMovement *disableMovement = zox_get(character, DisableMovement)
         if (disableMovement->value) continue;
         float2 left_stick = float2_zero;
         unsigned char is_running = 0;
-        zox_field_i_in(DeviceLinks, deviceLinkss, deviceLinks)
-        zox_field_i_in(DeviceMode, deviceModes, deviceMode)
+        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
+        zox_field_i(DeviceMode, deviceModes, deviceMode)
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device_entity = deviceLinks->value[j];
             if (deviceMode->value == zox_device_mode_keyboardmouse && zox_has(device_entity, Keyboard)) {

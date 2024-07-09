@@ -4,11 +4,11 @@ void DraggerEndSystem(ecs_iter_t *it) {
     zox_field_out(DraggerLink, draggerLinks, 2)
     zox_field_out(DraggingDelta, draggingDeltas, 3)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_out(DraggerLink, draggerLinks, draggerLink)
+        zox_field_o(DraggerLink, draggerLinks, draggerLink)
         if (draggerLink->value == 0) continue;
-        zox_field_i_out(DraggableState, dragableStates, dragableState)
+        zox_field_o(DraggableState, dragableStates, dragableState)
         if (dragableState->value == 0) continue;
-        zox_field_i_out(DraggingDelta, draggingDeltas, draggingDelta)
+        zox_field_o(DraggingDelta, draggingDeltas, draggingDelta)
         const ecs_entity_t player_entity = draggerLink->value;
         const DeviceLinks *deviceLinks = zox_get(player_entity, DeviceLinks)
         unsigned char did_drag_end = 0;

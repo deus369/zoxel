@@ -24,8 +24,8 @@ void Particle3DRenderSystem(ecs_iter_t *it) {
     // const Rotation3D *rotation3Ds = ecs_field(it, Rotation3D, 3);
     // const Scale1D *scale1Ds = ecs_field(it, Scale1D, 4);
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(Position3D, position3Ds, position3D)
-        zox_field_i_in(Color, colors, color)
+        zox_field_i(Position3D, position3Ds, position3D)
+        zox_field_i(Color, colors, color)
         const float data[] = { position3D->value.x, position3D->value.y, position3D->value.z };
         glVertexAttribPointer(particle3D_position_location, 3, GL_FLOAT, GL_FALSE, 0, data);
         float4 color_f = color_to_float4(color->value);

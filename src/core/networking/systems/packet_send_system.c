@@ -12,9 +12,9 @@ void PacketSendSystem(ecs_iter_t *it) {
     zox_field_in(TargetNetAddress, targetNetAddresss, 3)
     zox_field_in(TargetNetPort, targetNetPorts, 4)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i_in(SocketLink, socketLinks, socketLink)
-        zox_field_i_in(TargetNetAddress, targetNetAddresss, targetNetAddress)
-        zox_field_i_in(TargetNetPort, targetNetPorts, targetNetPort)
+        zox_field_i(SocketLink, socketLinks, socketLink)
+        zox_field_i(TargetNetAddress, targetNetAddresss, targetNetAddress)
+        zox_field_i(TargetNetPort, targetNetPorts, targetNetPort)
         struct sockaddr_in send_addr = byte4_to_ip(targetNetAddress->value, targetNetPort->value);
         unsigned char packet_size = 1;
         unsigned char send_buffer[] = { zoxel_packet_type_connect };
