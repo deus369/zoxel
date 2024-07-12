@@ -16,7 +16,7 @@ unsigned char initialize_material(GLuint material, GLuint vert_shader, GLuint fr
         glGetProgramiv(material, GL_INFO_LOG_LENGTH, &info_log_length);
         GLchar* info_log = malloc(info_log_length);
         glGetProgramInfoLog(material, info_log_length, NULL, info_log);
-        zoxel_log(" ! failed to initialize material [%i] - [%s]\n", (int) material, info_log);
+        zoxel_log(" ! failed to initialize material [%i] - shader [%ix%i] - [%s]\n", (int) material, vert_shader, frag_shader, info_log);
         free(info_log);
         glDetachShader(material, vert_shader);
         glDetachShader(material, frag_shader);
@@ -116,8 +116,3 @@ GLuint load_gpu_shader(GLuint2* shader, const char* vertFilepath, const char* fr
     }
     return spawn_gpu_material_program((const GLuint2) { shader->x, shader->y });
 }
-
-/*void delete_shader(GLuint2 value) {
-    if (value.x != 0) glDeleteShader(1, &value.x);
-    if (value.y != 0) glDeleteShader(1, &value.y);
-}*/

@@ -1,6 +1,7 @@
 #ifndef zox_mod_gameplay
 #define zox_mod_gameplay
 
+#include "pickups/pickups.c"
 #include "crafting/crafting.c"
 #include "farming/farming.c"
 #include "turrets/turrets.c"
@@ -9,6 +10,7 @@
 #include "ai/ai.c"
 
 zox_begin_module(Gameplay)
+zox_import_module(Pickups)
 zox_import_module(Crafting)
 zox_import_module(Farming)
 zox_import_module(Turrets)

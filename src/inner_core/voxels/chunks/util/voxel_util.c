@@ -28,7 +28,7 @@ int3 voxel_position_to_chunk_position(const int3 voxel_position, const int3 chun
     // return (int3) { voxel_position.x / chunk_size.x, voxel_position.y / chunk_size.y, voxel_position.z / chunk_size.z };
 }
 
-void chunk_position_fix2(float3 real_position, int3 *chunk_position) {
+void chunk_position_fix2(const float3 real_position, int3 *chunk_position) {
     if (real_position.x < 0) chunk_position->x -= 1;
     if (real_position.y < 0) chunk_position->y -= 1;
     if (real_position.z < 0) chunk_position->z -= 1;
@@ -73,4 +73,17 @@ int3 voxel_chunk_position_xz(int3 chunk_position, int3 chunk_size) {
 int3 get_chunk_voxel_position(int3 chunk_position, int3 chunk_size) {
     int3 voxel_position = int3_multiply_int3(chunk_position, chunk_size);
     return voxel_position;
+}
+
+
+float3 voxel_to_real_position(const byte3 local_position, const int3 chunk_position, const byte3 chunk_size, const float voxel_scale) {
+    const int3 chunk_position_voxel = int3_multiply_int3(chunk_position, byte3_to_int3(chunk_size));
+    const int3 global_voxel_position = int3_add(chunk_position_voxel, byte3_to_int3(local_position));
+    float3 position = int3_to_float3(global_voxel_position);
+    float3_multiply_float_p(&position, voxel_scale);
+    // middle of voxel position
+    position.x += voxel_scale / 2;
+    position.y += voxel_scale / 2;
+    position.z += voxel_scale / 2;
+    return position;
 }

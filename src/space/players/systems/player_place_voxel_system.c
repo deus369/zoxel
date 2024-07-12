@@ -65,6 +65,8 @@ void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
                             }
                         } else {
                             raycast_action(world, raycastVoxelData, 0, 2);
+                            // zox_log(" > spawned pickup at [%fx%fx%f]\n", raycastVoxelData->position_real.x, raycastVoxelData->position_real.y, raycastVoxelData->position_real.z)
+                            spawn_pickup(world, prefab_pickup, raycastVoxelData->position_real);
                         }
                         spawn_sound_generated(world, instrument_violin, note_frequencies[34], 0.6, 2.4f);
                     }

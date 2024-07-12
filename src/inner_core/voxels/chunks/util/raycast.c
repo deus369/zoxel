@@ -5,6 +5,10 @@ const uint safety_checks_raycasting = 512;
 const float terrain_ray_length = 8;
 const float raycast_thickness = 10;
 const color_rgb raycast_quad_color  = (color_rgb) { 194, 194, 194 };
+#define ray_hit_type_none 0
+#define ray_hit_type_terrain 1
+#define ray_hit_type_block_vox 2
+#define ray_hit_type_character 3
 
 unsigned char raycast_character(ecs_world_t *world, const ecs_entity_t caster, const float3 ray_origin, const float3 ray_normal, const ecs_entity_t chunk, RaycastVoxelData *data, float *closest_t) {
     if (!chunk) return 0;
@@ -118,7 +122,7 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
         // if didnt hit voxel, check from character hit
         if (hit_character && closest_t < ray_distance) {
             ray_distance = closest_t;
-            ray_hit = 3; // Differentiate between voxel and character hit
+            ray_hit = ray_hit_type_character; // Differentiate between voxel and character hit
             break;
         }
         // Traverse the grid with DDA
@@ -147,19 +151,21 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
         // safety
         checks++;
     }
-    if (ray_hit == 2) {
-        //return ray_hit;
-    } else if (ray_hit == 3) {
+    data->distance = ray_distance;
+    if (ray_hit == ray_hit_type_block_vox) {
+        // we performed gizmo on recursive function call
+    } else if (ray_hit == ray_hit_type_character) {
+        data->hit = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * voxel_scale));
         // zox_log("raycast hit character!\n")
         const color_rgb hit_point_line_color = (color_rgb) { 55, 45, 45 };
         render_line3D(world, data->hit, float3_add(data->hit, float3_multiply_float(float3_up, 0.3f)), hit_point_line_color);
         //return ray_hit;
-    } else if (ray_hit) {
+    } else if (ray_hit == ray_hit_type_terrain) {
+        data->hit = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * voxel_scale));
         // hit point
 #if zox_debug_hit_point
         const color_rgb hit_point_line_color = (color_rgb) { 0, 255, 255 };
-        float3 hit_point = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * voxel_scale));
-        render_line3D(world, hit_point, float3_add(hit_point, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale * 0.5f)), hit_point_line_color);
+        render_line3D(world, data->hit, float3_add(data->hit, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale * 0.5f)), hit_point_line_color);
 #endif
         // voxel normal
         float3 voxel_position_real = float3_multiply_float(int3_to_float3(voxel_position), voxel_scale);
@@ -224,14 +230,18 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
         data->normal = hit_normal;
         data->chunk_last = chunk_last;
         data->position_last = voxel_position_local_last;
-    } else {
+        data->position_real = voxel_to_real_position(voxel_position_local, chunk_position, chunk_size_b3, voxel_scale);
+        // zox_log(" > h [%fx%fx%f]\n", data->hit.x, data->hit.y, data->hit.z)
+        // zox_log(" > r [%fx%fx%f]\n", data->position_real.x, data->position_real.y, data->position_real.z)
+    } else if (ray_hit == ray_hit_type_none) {
         data->chunk = 0;
         data->position = byte3_zero;
         data->normal = int3_zero;
         data->chunk_last = 0;
         data->position_last = byte3_zero;
+        data->hit = float3_zero;
+        data->position_real = float3_zero;
     }
-    data->distance = ray_distance;
     return ray_hit;
 }
 

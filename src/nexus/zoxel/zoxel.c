@@ -58,6 +58,12 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
 #ifdef zox_log_boot_game
     zox_log(" > boot zoxel completedboot_zoxel_game7\n")
 #endif
+    // spawn_cube(world, prefab_cube, float3_zero);
+    /*for (float i = -spawn_cube_bounds.x; i <= spawn_cube_bounds.x; i++) {
+        for (float j = -spawn_cube_bounds.x; j <= spawn_cube_bounds.y; j++) {
+            spawn_cube(world, prefab_cube, (float3) { i, 0, j });
+        }
+    }*/
     return EXIT_SUCCESS;
 }
 

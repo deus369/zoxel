@@ -4,8 +4,9 @@ typedef struct {
     byte3 position;
     ecs_entity_t chunk_last;
     byte3 position_last;
-    float3 hit;
     int3 normal;
     float distance;
+    float3 hit;
+    float3 position_real;
 } RaycastVoxelData;
 zox_custom_component(RaycastVoxelData)

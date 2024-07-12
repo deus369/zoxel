@@ -3,14 +3,14 @@ extern GLuint spawn_gpu_material_program(const GLuint2 shader);
 zox_component(MaterialGPULink, GLuint)
 zox_component(MaterialInstancedGPULink, GLuint)
 
-void add_gpu_material(ecs_world_t *world, ecs_entity_t e) {
+void add_gpu_material(ecs_world_t *world, const ecs_entity_t e) {
     if (!headless) {
         zox_prefab_set(e, MaterialGPULink, { 0 })
         zox_prefab_set(e, ShaderLink, { 0 })
     }
 }
 
-GLuint spawn_gpu_material(ecs_world_t *world, ecs_entity_t e, const GLuint2 shader) {
+GLuint spawn_gpu_material(ecs_world_t *world, const ecs_entity_t e, const GLuint2 shader) {
     GLuint gpu_material = 0;
     if (!headless) {
         gpu_material = spawn_gpu_material_program(shader);
