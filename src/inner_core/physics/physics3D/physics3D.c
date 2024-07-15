@@ -1,5 +1,5 @@
-#ifndef zox_physics3D
-#define zox_physics3D
+#ifndef zox_mod_physics3D
+#define zox_mod_physics3D
 
 #include "core/core_physics3D.c"
 #include "collisions3D/collisions3D.c"

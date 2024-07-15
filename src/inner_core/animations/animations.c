@@ -1,6 +1,7 @@
 #ifndef zox_mod_animations
 #define zox_mod_animations
 
+// todo: lerp position from A to B entities
 // currently we are animating components by hand
 // later we must customly choose what curves to apply to what components
 #include "data/animation_states.c"
@@ -49,7 +50,7 @@ zox_define_memory_component(AnimationTimes)
 zox_define_memory_component(AnimationTargets)
 // seperating animations
 zox_define_memory_component(AnimationLinks)
-zox_system(EternalRotationSystem, EcsOnUpdate, [out] Rotation3D, [in] EternalRotation)
+zox_system(EternalRotationSystem, EcsOnUpdate, [in] EternalRotation, [out] Rotation3D)
 zox_system(ShrinkSystem, EcsOnUpdate, [in] AnimationState, [in] AnimationStart, [out] Scale1D)
 zox_system(IdleSystem, EcsOnUpdate, [in] AnimationState, [in] AnimationStart, [out] Scale1D)
 zox_system(FadeoutSystem, EcsOnUpdate, [in] AnimationState, [in] AnimationStart, [in] AnimationLength, [in] AnimationDelay, [out] Alpha)

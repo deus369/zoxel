@@ -13,6 +13,9 @@ ecs_entity_t spawn_prefab_player_character3D(ecs_world_t *world) {
     zox_prefab_set(e, TriggerActionA, { 0 })
     zox_prefab_set(e, TriggerActionB, { 0 })
     zox_prefab_set(e, RaycastVoxelData, { })
+    // Pickups
+    zox_add_tag(e, PickUpperer)
+    prefab_add_sphere_collider(world, e, 0.16f);
     return e;
 }
 

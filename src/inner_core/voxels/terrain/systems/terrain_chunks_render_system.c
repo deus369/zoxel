@@ -70,7 +70,7 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         opengl_disable_buffer(material_attributes->vertex_uv);
         opengl_disable_buffer(material_attributes->vertex_position);
         opengl_unset_mesh();
-        opengl_disable_texture(false);
+        opengl_disable_texture(0);
         opengl_disable_opengl_program();
     }
 } zox_declare_system(TerrainChunksRenderSystem)

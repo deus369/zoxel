@@ -32,16 +32,42 @@ const float3 cube_vertices[] = {
     (float3) { default_cube_size,  default_cube_size, -default_cube_size }     //7
 };
 
+const int cube_vertices_singles_length = 8 * 3;
+const float cube_vertices_singles[] = {
+     -default_cube_size, -default_cube_size,  default_cube_size,   //0
+    default_cube_size, -default_cube_size,  default_cube_size,    //1
+    -default_cube_size,  default_cube_size,  default_cube_size,   //2
+    default_cube_size,  default_cube_size,  default_cube_size,    //3
+    -default_cube_size, -default_cube_size, -default_cube_size,   //4
+    default_cube_size, -default_cube_size, -default_cube_size,    //5
+    -default_cube_size,  default_cube_size, -default_cube_size,   //6
+    default_cube_size,  default_cube_size, -default_cube_size     //7
+};
+
+
+const int cube_uvs_length = 8;
 const float2 cube_uvs[] = {
     (float2) { 0, 0 },   //0
     (float2) { 0, 1 },   //1
-    (float2) { 1, 1 },   //2
-    (float2) { 1, 0 },   //3
+    (float2) { 1, 0 },   //2
+    (float2) { 1, 1 },   //3
     (float2) { 0, 0 },   //4
     (float2) { 0, 1 },   //5
-    (float2) { 1, 1 },   //6
-    (float2) { 1, 0 }    //7
+    (float2) { 1, 0 },   //6
+    (float2) { 1, 1 }    //7
 };
+
+/*const int cube_uvs_singles_length = 16;
+const float cube_uvs_singles[] = {
+    0, 0,   //0
+    0, 1,   //1
+    1, 1,   //2
+    1, 0,   //3
+    0, 0,   //4
+    0, 1,   //5
+    1, 1,   //6
+    1, 0    //7
+};*/
 
 const color_rgb cube_colors[] = {
     (color_rgb) { 255, 255, 255 },   //0
@@ -54,6 +80,7 @@ const color_rgb cube_colors[] = {
     (color_rgb) { 255, 255, 255 }    //7
 };
 
+const int cube_indicies_length = 36;
 const int cube_indicies[] = {
     // Left
     0, 2, 6,
@@ -107,37 +134,25 @@ const float3 cubeVertices2[] = {
     { 0, 1.0f, 0 },         //6
     { 1.0f, 1.0f, 0}        //7
 };
-
-const int cube_vertices_singles_length = 8 * 3;
-const float cube_vertices_singles[] = {
-     -default_cube_size, -default_cube_size,  default_cube_size,   //0
-    default_cube_size, -default_cube_size,  default_cube_size,    //1
-    -default_cube_size,  default_cube_size,  default_cube_size,   //2
-    default_cube_size,  default_cube_size,  default_cube_size,    //3
-    -default_cube_size, -default_cube_size, -default_cube_size,   //4
-    default_cube_size, -default_cube_size, -default_cube_size,    //5
-    -default_cube_size,  default_cube_size, -default_cube_size,   //6
-    default_cube_size,  default_cube_size, -default_cube_size     //7
-};
-    /*
-    // Left
-    0, 2, 6,
-    0, 4, 6,
-    // Right
-    1, 3, 7,
-    1, 5, 7,
-    // Bottom
-    0, 4, 5,
-    0, 1, 5,
-    // Top
-    2, 6, 7,
-    2, 3, 7,
-    // Back
-    4, 6, 7,
-    4, 5, 7,
-    // Front
-    0, 2, 3,
-    0, 1, 3*/
+/*
+// Left
+0, 2, 6,
+0, 4, 6,
+// Right
+1, 3, 7,
+1, 5, 7,
+// Bottom
+0, 4, 5,
+0, 1, 5,
+// Top
+2, 6, 7,
+2, 3, 7,
+// Back
+4, 6, 7,
+4, 5, 7,
+// Front
+0, 2, 3,
+0, 1, 3*/
 
 /*const float cube_vertices[] = {
     -default_cube_size, -default_cube_size,  default_cube_size,   //0

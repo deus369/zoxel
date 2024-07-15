@@ -22,7 +22,7 @@ void add_ui_mesh(ecs_world_t *world, const ecs_entity_t e) {
     zox_prefab_add(e, MeshUVs)
     prefab_set_mesh_indicies(world, e, square_indicies, 6);
     prefab_set_mesh2D_vertices(world, e, square_vertices, 4);
-    prefab_set_mesh_uvs(world, e, square_uvs, 4);
+    prefab_set_mesh_uvs_float2(world, e, square_uvs, 4);
     // this is more mesh stuff
     zox_add_tag(e, ElementRender)
     zox_prefab_set(e, RenderDisabled, { 0 })

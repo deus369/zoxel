@@ -1,4 +1,3 @@
-
 // responding
 // draw line for collided voxels
 extern void render_line3D(ecs_world_t *world, const float3 a, const float3 b, const color_rgb line_color);

@@ -68,3 +68,10 @@ ecs_entity_t spawn_texture_filename(ecs_world_t *world, char *filename) {
     zox_set(e, TextureDirty, { 1 })
     return e;
 }
+
+void clone_texture_to_entity(ecs_world_t *world, const ecs_entity_t e, char *filename) {
+    const ecs_entity_t texture_source = string_hashmap_get(files_hashmap_textures, new_string_data(filename));
+    zox_set(e, GenerateTexture, { zox_generate_texture_none })
+    clone_texture_data(world, e, texture_source);
+    zox_set(e, TextureDirty, { 1 })
+}

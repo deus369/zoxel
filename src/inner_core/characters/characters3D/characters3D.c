@@ -5,6 +5,8 @@ zox_declare_tag(Character3D)
 zox_component_entity(Character3DLink)
 #include "settings/settings.c"
 #include "prefabs/prefabs.c"
+#include "util/camera_io.c"
+#include "util/character_io.c"
 #include "util/player_save.c"
 #include "util/spawn_many.c"
 #include "util/debug.c"

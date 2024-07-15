@@ -56,7 +56,7 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
     zox_set(player, CharacterLink, { character })
     zox_set(character, PlayerLink, { player })
     zox_set(character, CameraLink, { camera })
-    attach_to_character(world, player, camera, character);
+    attach_camera_to_character(world, player, camera, character);
     // zox_add_tag(character_group.x, Aura)
     spawn_in_game_ui(world, player, character_group);
     if (has_save_game_file("zoxel", "player.dat")) {
@@ -80,13 +80,13 @@ void player_start_game3D_delayed(ecs_world_t *world, const ecs_entity_t player) 
     zox_set(camera, Position3D, { spawn_position })
     zox_set(camera, Rotation3D, { quaternion_identity })
 #ifdef zox_disable_player_character
-    attach_to_character(world, player, camera, 0);
+    attach_camera_to_character(world, player, camera, 0);
 #else
     if (game_rule_attach_to_character) {
         delay_event(world, &spawn_vox_player_character_in_terrain, player, 0.1f);
         delay_event(world, &post_player_start_game, player, 0.34f);
     } else {
-        attach_to_character(world, player, camera, 0);
+        attach_camera_to_character(world, player, camera, 0);
     }
 #endif
 }

@@ -2,6 +2,7 @@
 
 // #define zox_disable_skybox
 // #define zox_disable_npcs
+// #define zox_disable_statbars
 // #define zox_test_settings_00
 #define zoxel_start_with_debug_ui
 // #define zox_is_flatlands

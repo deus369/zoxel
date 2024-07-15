@@ -32,7 +32,7 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, const int3 si
 
 ecs_entity_t spawn_terrain_chunk_octree(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t terrain, const int3 camera_position, const int3 chunk_position, const float3 position) {
     zox_instance(prefab)
-    // zox_name("terrain_chunk_octree")
+    zox_name("terrain_chunk")
     zox_set(e, ChunkPosition, { chunk_position })
     zox_set(e, Position3D, { position })
     zox_set(e, RenderLod, { get_camera_chunk_distance(camera_position, chunk_position) })

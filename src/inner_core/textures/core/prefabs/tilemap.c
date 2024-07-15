@@ -19,11 +19,12 @@ ecs_entity_t spawn_tilemap(ecs_world_t *world, ecs_entity_t prefab) {
     zox_instance(prefab)
     zox_name("tilemap")
     if (!headless && shader_textured3D) {
-        zox_set(e, ShaderLink, { shader_textured3D })
+        spawn_gpu_texture(world, e);
         const GLuint2 shader = zox_get_value(shader_textured3D, ShaderGPULink)
         const GLuint material = spawn_gpu_material(world, e, shader);
-        spawn_gpu_texture(world, e);
         const MaterialTextured3D attributes = create_MaterialTextured3D(material);
+        zox_set(e, ShaderLink, { shader_textured3D })
+        // zox_set(e, MaterialGPULink, { material })
         zox_set_data(e, MaterialTextured3D, attributes)
     }
     return e;

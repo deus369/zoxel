@@ -2,7 +2,7 @@ void player_end_game3D_delayed(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     const ecs_entity_t character = zox_get_value(player, CharacterLink)
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
-    if (character) detatch_from_character(world, player, camera, character, 0);
+    if (character) detatch_camera_from_character(world, player, camera, character, 0);
     zox_set(player, CharacterLink, { 0 })
     float3 camera_position = float3_zero;
     float4 camera_rotation = quaternion_identity;

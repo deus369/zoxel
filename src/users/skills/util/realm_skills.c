@@ -11,7 +11,7 @@ void spawn_realm_skills(ecs_world_t *world, const ecs_entity_t realm) {
     // char *name = generate_name();
     // todo: perhaps life aura can effect character themself!
 
-    meta_skill_punch = spawn_meta_skill_melee(world, prefab_skill_melee, "punch", -1, 2, 1);
+    meta_skill_punch = spawn_meta_skill_melee(world, prefab_skill_melee, "punch", -1, 3.5f, 1);
     zox_set(meta_skill_punch, TextureLink, { string_hashmap_get(files_hashmap_textures, new_string_data("punch")) })
     skills->value[0] = meta_skill_punch;
 
