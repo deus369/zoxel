@@ -90,6 +90,7 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
             old_voxel = get_octree_voxel(chunk_octree, &temp, max_octree_depth);
         }
         if (old_voxel) {
+            data->voxel = old_voxel;
             unsigned char is_minivox = 0;
             if (voxels) {
                 const ecs_entity_t block = voxels->value[old_voxel - 1];

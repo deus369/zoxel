@@ -115,4 +115,4 @@ zox_make_prefab(e)
 
 
 // Retrieve the prefab (parent) from the entity
-#define zox_get_parent_prefab(prefab, e) ecs_entity_t prefab = ecs_get_target(world, e, EcsIsA, 0);
+#define zox_get_prefab(e, name) const ecs_entity_t name = ecs_get_target(world, e, EcsIsA, 0);

@@ -194,6 +194,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
         if (is_name_malloc) free(spawn_data.name);
         /*if (i == zox_block_dirt - 1) zox_log(" + dirt [%s] block [%i]\n", zox_get_name(voxelLinks->value[i]), i)
         if (i == zox_block_dark - 1) zox_log(" + dark [%s] block [%i]\n", zox_get_name(voxelLinks->value[i]), i)*/
+        // zox_log(" + voxel [%s]\n", zox_get_name(voxelLinks->value[i]))
     }
     zox_set(realm, VoxelsDirty, { 1 })
     // renderer

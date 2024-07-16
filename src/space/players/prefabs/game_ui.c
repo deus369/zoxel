@@ -4,7 +4,7 @@ void dispose_in_game_ui_touch(ecs_world_t *world) {
     zox_delete_and_set(game_ui_touch)
 }
 
-void dispose_in_game_ui(ecs_world_t *world, ecs_entity_t player) {
+void dispose_in_game_ui(ecs_world_t *world, const ecs_entity_t player) {
     dispose_in_game_ui_touch(world);
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     find_child_with_tag(canvas, MenuGame, game_ui)

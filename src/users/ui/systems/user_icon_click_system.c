@@ -82,9 +82,7 @@ void UserIconClickSystem(ecs_iter_t *it) {
         if (!is_clicked_empty) {
             const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
             find_child_with_tag(canvas, Tooltip, tooltip)
-            if (tooltip) {
-                set_entity_with_text(world, tooltip, "");
-            }
+            if (tooltip) set_entity_with_text(world, tooltip, "");
         }
     }
 } zox_declare_system(UserIconClickSystem)

@@ -6,20 +6,25 @@ ecs_entity_t meta_item_block_stone;
 
 ecs_entity_t spawn_block_item(ecs_world_t *world, const ecs_entity_t block) {
     if (zox_valid(block) && zox_has(block, ZoxName) && zox_has(block, Textures)) {
-        // get block data
+        // get block dataww
         const ZoxName *voxel_name = zox_get(block, ZoxName)
         const Textures *textures = zox_get(block, Textures)
         // spawn item
-        const ecs_entity_t item = spawn_meta_item_zox_name(world, prefab_item, voxel_name);
+        const ecs_entity_t e = spawn_meta_item_zox_name(world, prefab_item, voxel_name);
         if (textures->length > 0) {
-            zox_set(item, TextureLink, { textures->value[0] });
+            zox_set(e, TextureLink, { textures->value[0] })
         } else {
+            // zox_set(item, TextureLink, { 0 })
             // zox_log(" ! block [%s] had no textures [%i]\n",  convert_zext_to_text(voxel_name->value, voxel_name->length), textures->length)
         }
-        zox_add_tag(item, ItemBlock)
-        zox_set(item, BlockLink, { block })
+        zox_add_tag(e, ItemBlock)
+        zox_set(e, BlockLink, { block })
+        zox_set(block, ItemLink, { e })
+        // zox_set_name(item, zox_get_name(block));
+        zox_name(zox_get_name(block));
+        // zox_log(" + block item [%s] [%s]\n", zox_get_name(block), zox_get_name(e))
         // zox_log(" + spawning item for block [%s] textures [%i]\n", convert_zext_to_text(voxel_name->value, voxel_name->length), textures->length)
-        return item;
+        return e;
     } else {
         zox_log(" ! problem with block components name? [%i]\n", zox_has(block, ZoxName))
         return 0;

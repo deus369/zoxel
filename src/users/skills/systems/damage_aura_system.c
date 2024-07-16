@@ -24,7 +24,7 @@ void DamageAuraSystem(ecs_iter_t *it) {
         if (skillRange->value == 0) continue;
         zox_field_i(Color, colors, colorr)
         zox_field_e()
-        // zox_get_parent_prefab(prefab_aura, e)
+        // zox_get_prefab(prefab_aura, e)
         const ecs_entity_t user = userLink->value;
         const Position3D *position3D = zox_get(userLink->value, Position3D)
         // todo: Get Chunk' Characters instead, this could potentially go through tens of thousands..
@@ -52,7 +52,7 @@ void DamageAuraSystem(ecs_iter_t *it) {
                     const ecs_entity_t dot = dotLinks->value[k];
                     if (!zox_has(dot, SkillLink)) continue;
                     const ecs_entity_t skill_spawner = zox_get_value(dot, SkillLink)
-                    // zox_get_parent_prefab(prefab_aura, e)
+                    // zox_get_prefab(prefab_aura, e)
                     // if added in this function, SpawnerLink doesn't get added into flecs table until after the function, so the dot will not have component access yet, assume we havn't added a dot yet from the current user
                     if (skill_spawner == e) { // zox_has(dot, SpawnerLink) && zox_gett_value(dot, SpawnerLink) == user) {
                         poisoned_entity = dot;

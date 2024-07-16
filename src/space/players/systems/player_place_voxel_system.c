@@ -63,12 +63,24 @@ void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
                                 else if (statValue->value > stat_value_max) statValue->value = stat_value_max;
                                 zox_set(hit_character, LastDamager, { e })
                             }
-                        } else {
+                            spawn_sound_generated(world, instrument_violin, note_frequencies[28], 0.6, 2.4f);
+                        } else if (raycastVoxelData->voxel != 0) {
                             raycast_action(world, raycastVoxelData, 0, 2);
                             // zox_log(" > spawned pickup at [%fx%fx%f]\n", raycastVoxelData->position_real.x, raycastVoxelData->position_real.y, raycastVoxelData->position_real.z)
-                            spawn_pickup(world, prefab_pickup, raycastVoxelData->position_real);
+                            const ecs_entity_t pickup = spawn_pickup(world, prefab_pickup, raycastVoxelData->position_real);
+                            const ecs_entity_t terrain = zox_get_value(raycastVoxelData->chunk, VoxLink)
+                            const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
+                            const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
+                            const unsigned char voxel_index = raycastVoxelData->voxel - 1;
+                            const ecs_entity_t voxel = voxels->value[voxel_index];
+                            // now get item and set to pickup
+                            const ecs_entity_t item = zox_get_value(voxel, ItemLink)
+                            zox_set(pickup, ItemLink, { item })
+                            spawn_sound_generated(world, instrument_violin, note_frequencies[34], 0.6, 2.4f);
+                        } else {
+                            // cannot hit air
+                            spawn_sound_generated(world, instrument_violin, note_frequencies[44], 0.3, 2.4f);
                         }
-                        spawn_sound_generated(world, instrument_violin, note_frequencies[34], 0.6, 2.4f);
                     }
                 } else {
                     // ray too far

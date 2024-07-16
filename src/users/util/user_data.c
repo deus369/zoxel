@@ -18,8 +18,9 @@ ecs_entity_t spawn_prefab_##name(ecs_world_t *world) {\
     zox_prefab()\
     zox_prefab_name(label)\
     zox_add_tag(e, Name)\
-    zox_prefab_set(e, UserLink, { 0 })\
     zox_prefab_add(e, ZoxName)\
+    zox_prefab_set(e, UserLink, { 0 })\
+    zox_prefab_set(e, TextureLink, { 0 })\
     prefab_##name = e;\
     return e;\
 }\
@@ -28,7 +29,7 @@ ecs_entity_t spawn_prefab_##name(ecs_world_t *world) {\
 ecs_entity_t spawn_meta_##name(ecs_world_t *world, const ecs_entity_t prefab, const char *source_name) {\
     zox_prefab_child(prefab)\
     /*zox_prefab_name("meta_"label)*/\
-    zox_prefab_name(source_name)\
+    zox_name(source_name)\
     zox_get_muter(e, ZoxName, zoxName)\
     set_zox_name(zoxName, source_name);\
     return e;\
@@ -36,7 +37,7 @@ ecs_entity_t spawn_meta_##name(ecs_world_t *world, const ecs_entity_t prefab, co
 \
 ecs_entity_t spawn_meta_##name##_zox_name(ecs_world_t *world, const ecs_entity_t prefab, const ZoxName *source_name) {\
     zox_prefab_child(prefab)\
-    zox_prefab_name("meta_"label)\
+    zox_name("meta_"label)\
     zox_get_muter(e, ZoxName, zoxName)\
     clone_ZoxName(zoxName, source_name);\
     return e;\
