@@ -34,7 +34,8 @@ ecs_entity_2 spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
             .layer = data->element.layer + 1,
         },
         .texture = data->icon.texture,
-        .index = data->icon.index
+        .index = data->icon.index,
+        .texture_size = data->icon.texture_size
     };
     zox_get_mutt(e, Children, children)
     const ecs_entity_t icon = spawn_icon(world, &spawnIcon);

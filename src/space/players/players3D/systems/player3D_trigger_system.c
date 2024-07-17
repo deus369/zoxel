@@ -12,7 +12,7 @@ void Player3DTriggerSystem(ecs_iter_t *it) {
         const DisableMovement *disableMovement = zox_get(character, DisableMovement)
         if (disableMovement->value) continue;
         unsigned char is_triggered_a = 0;
-        unsigned char is_triggered_b = 0;
+        // unsigned char is_triggered_b = 0;
         zox_field_i(DeviceMode, deviceModes, deviceMode)
         zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         for (int j = 0; j < deviceLinks->length; j++) {
@@ -20,7 +20,7 @@ void Player3DTriggerSystem(ecs_iter_t *it) {
             if (deviceMode->value == zox_device_mode_keyboardmouse && zox_has(device_entity, Mouse)) {
                 const Mouse *mouse = zox_get(device_entity, Mouse)
                 if (mouse->left.pressed_this_frame) is_triggered_a = 1;
-                if (mouse->right.pressed_this_frame) is_triggered_b = 1;
+                // if (mouse->right.pressed_this_frame) is_triggered_b = 1;
             } else if (deviceMode->value == zox_device_mode_gamepad && zox_has(device_entity, Gamepad)) {
                 const Children *zevices = zox_get(device_entity, Children)
                 for (int k = 0; k < zevices->length; k++) {
@@ -40,7 +40,7 @@ void Player3DTriggerSystem(ecs_iter_t *it) {
                             if (zeviceDisabled->value) continue;
                             const ZeviceButton *zeviceButton = zox_get(zevice_entity, ZeviceButton)
                             if (devices_get_pressed_this_frame(zeviceButton->value)) {
-                                 is_triggered_b = 1;
+                                 // is_triggered_b = 1;
                                  // zox_log(" y pressed\n")
                             }
                         }

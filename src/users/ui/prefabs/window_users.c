@@ -188,7 +188,8 @@ SpawnWindowUsers get_default_spawn_window_users_data(const ecs_entity_t characte
                 .fill_color = default_fill_color_icon,
                 .outline_color = default_outline_color_icon
             },
-            .size = icon_size
+            .size = icon_size,
+            .texture_size = int2_single(default_icon_texture_size)
         },
         .window = {
             .prefab = prefab_window_users,

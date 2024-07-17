@@ -2,7 +2,7 @@ ecs_entity_t spawn_prefab_element(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_element")
     add_ui_plus_components(world, e);
-    add_frame_texture_type(world, e, default_fill_color, default_outline_color, 7, 3);
+    add_frame_texture_type(world, e, default_fill_color, default_outline_color, default_button_corner, default_button_frame_thickness);
     return e;
 }
 

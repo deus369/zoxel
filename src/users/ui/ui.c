@@ -8,6 +8,7 @@ zox_declare_tag(MenuStatus)     // a general ui with a summary of all user data,
 #include "data/icon_types.c"
 #include "data/spawn_window_users.c"
 #include "prefabs/prefabs.c"
+#include "util/texture_swap.c"
 #include "systems/user_icon_select_system.c"
 #include "systems/user_icon_click_system.c"
 #include "util/menu_macro.c"

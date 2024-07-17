@@ -4,7 +4,7 @@ ecs_entity_t spawn_prefab_body(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_add_tag(e, Body)
     zox_add_tag(e, WindowRaycastTarget)
     zox_prefab_add(e, Children)
-    add_frame_texture_type(world, e, default_fill_color_window, default_outline_color_window, 7, 6);
+    add_frame_texture_type(world, e, default_fill_color_window, default_outline_color_window, default_button_corner, default_button_frame_thickness);
     add_selectable(world, e);
     return e;
 }

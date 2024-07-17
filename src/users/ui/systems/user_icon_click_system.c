@@ -1,26 +1,10 @@
-void swap_textures(ecs_world_t *world, const ecs_entity_t e1, const ecs_entity_t e2) {
-    zox_get_muter(e1, TextureData, texture_a)
-    zox_get_muter(e1, TextureSize, texture_size_a)
-    zox_get_muter(e2, TextureData, texture_b)
-    zox_get_muter(e2, TextureSize, texture_size_b)
-    const TextureData temp_data = (TextureData) { texture_a->length, texture_a->value };
-    const int2 temp_size = texture_size_a->value;
-    texture_a->value = texture_b->value;
-    texture_a->length = texture_b->length;
-    texture_size_a->value = texture_size_b->value;
-    texture_b->value = temp_data.value;
-    texture_b->length = temp_data.length;
-    texture_size_b->value = temp_size;
-    zox_set(e1, TextureDirty, { 1 })
-    zox_set(e2, TextureDirty, { 1 })
-}
-
 extern unsigned char process_icon_type_action(ecs_world_t *world, const ecs_entity_t e);
 extern void set_linked_action(ecs_world_t *world, const ecs_entity_t user, const int index, const ecs_entity_t e);
 extern void set_linked_item(ecs_world_t *world, const ecs_entity_t user, const int index, const ecs_entity_t e);
 extern void set_linked_skill(ecs_world_t *world, const ecs_entity_t user, const int index, const ecs_entity_t e);
 
 void UserIconClickSystem(ecs_iter_t *it) {
+    if (!icon_mouse_follow) return; // global icon_mouse_follow for now
     zox_iter_world()
     zox_field_in(ClickState, clickStates, 1)
     zox_field_in(IconType, iconTypes, 2)
@@ -63,10 +47,17 @@ void UserIconClickSystem(ecs_iter_t *it) {
         zox_set(icon_mouse_follow, UserDataLink, { userDataLink->value })
         zox_set(icon_mouse_follow, RenderDisabled, { is_clicked_empty })
         userDataLink->value = mouse_data;
+        // zox_log("swapping textures\n")
         swap_textures(world, e, icon_mouse_follow);
+
+        // remember: this is a temporary fix for: bug where e doesn't clear on picked up items
+        if (is_placing_empty) set_icon_from_user_data(world, e, 0);
+
         // new data placed in mouse_data
         // use iconType->value and iconIndex->value to set data on character
         // how to get character from icon? UserLink!
+
+        // === Base on Frame clicked ===
         if (iconType->value == zox_icon_type_action) {
             // zox_log(" + character [%lu] setting [%s] [%i]\n", character, "action", iconIndex->value)
             set_linked_action(world, character, iconIndex->value, mouse_data);

@@ -4,6 +4,7 @@ typedef struct {
     FrameTextureData texture;
     int size;
     int index;
+    int2 texture_size;
 } IconData;
 
 typedef struct {
@@ -12,4 +13,5 @@ typedef struct {
     FrameTextureData texture;
     ElementSpawnData element;
     int index;
+    int2 texture_size;
 } SpawnIcon;
