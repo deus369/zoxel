@@ -2,16 +2,17 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_vox")
     zox_add_tag(e, Vox)
+    add_components_mesh_colored(world, e);
+    // transform
     zox_prefab_set(e, Euler, { float3_zero })
     zox_prefab_set(e, Scale1D, { 1 })
-    zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
-    zox_prefab_set(e, VoxScale, { vox_model_scale })
-    zox_prefab_set(e, GenerateChunk, { 0 })
-    zox_prefab_set(e, ChunkDirty, { 1 })
     zox_prefab_set(e, MeshDirty, { 0 })
     zox_prefab_set(e, RenderDisabled, { 0 })
-    prefab_add_chunk_colors(world, e);
-    add_gpu_colors(world, e);
+    // zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
+    // vox
+    zox_prefab_set(e, VoxScale, { vox_model_scale })
+    zox_prefab_set(e, ChunkDirty, { 1 })
+    zox_prefab_set(e, GenerateChunk, { 0 })
     return e;
 }
 

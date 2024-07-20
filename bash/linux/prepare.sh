@@ -9,7 +9,7 @@ source bash/util/prepare_directories.sh
 # first download libraries
 source bash/linux/download_libraries.sh
 
-source bash/freetype/install.sh
+# source bash/freetype/install.sh
 
 build_path="build/linux"
 build_dev_path="build/linux-dev"

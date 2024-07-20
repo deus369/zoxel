@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_chunk(ecs_world_t *world) {
+/*ecs_entity_t spawn_prefab_chunk(ecs_world_t *world) {
     zox_prefab()
     add_transform3Ds(world, e, 0);
     zox_prefab_set(e, MeshDirty, { 0 })
@@ -21,4 +21,4 @@ ecs_entity_t spawn_chunk(ecs_world_t *world, const ecs_entity_t prefab, const fl
     zox_set(e, Position3D, { position })
     spawn_gpu_mesh(world, e);
     return e;
-}
+}*/

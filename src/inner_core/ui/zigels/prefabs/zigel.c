@@ -1,5 +1,3 @@
-ecs_entity_t prefab_zigel;
-
 ecs_entity_t spawn_zigel_prefab(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_zigel")
@@ -7,10 +5,9 @@ ecs_entity_t spawn_zigel_prefab(ecs_world_t *world) {
     zox_add_tag(e, Zigel)
     zox_add_tag(e, FontTexture)
     zox_prefab_set(e, ZigelIndex, { 0 })
-    zox_prefab_set(e, Color, {{ 0, 0, 0, 255 }})
-    zox_prefab_set(e, SecondaryColor, { { 0, 0, 0, 255 }})
+    zox_prefab_set(e, Color, { color_white })
+    zox_prefab_set(e, SecondaryColor, { color_white })
     zox_prefab_set(e, FontThickness, { 1 })
-    prefab_zigel = e;
     return e;
 }
 

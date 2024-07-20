@@ -1,32 +1,23 @@
-ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, const int3 size) {
-    zox_prefab()
-    // zox_prefab_name("prefab_terrain_chunk_octree")
-    add_seed(world, e, 666);
-    add_transform3Ds(world, e, 0);
-    zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
-    zox_prefab_set(e, VoxScale, { 0.5f })
-    zox_prefab_set(e, MeshDirty, { 0 })
-    zox_prefab_set(e, Brightness, { 1.0f })
-    zox_prefab_set(e, RenderDisabled, { 1 })
-    // voxels_core
-    add_chunk_octree(world, e, size);
-    zox_prefab_set(e, ChunkLodDirty, { 0 }) // chunk_lod_state_spawning })
+ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, const ecs_entity_t prefab, const int3 size) {
+    zox_prefab_child(prefab)
     add_components_mesh_textured(world, e);
-    zox_prefab_set(e, GenerateChunk, { 1 }) // fails on samsung phone?
-    zox_prefab_set(e, ChunkSize, {{ 32, 32, 32 }})  // max resolution, should calculate this!
+    // Terrain / Generation
     zox_add_tag(e, TerrainChunk)
     zox_add_tag(e, ChunkTextured)
-    // zox_prefab_add(e, BlockSpawns)    // links to voxels in world
-    // these have to be set to NULL as not set in initialization
+    add_seed(world, e, 666);
+    zox_prefab_set(e, GenerateChunk, { 1 }) // fails on samsung phone?
+    // links to sub chunk things - remember: these have to be set to NULL as not set in initialization
     zox_prefab_set(e, EntityLinks, { 0, NULL }) // character and minivox links
     zox_prefab_set(e, BlockSpawns, { NULL })    // links to voxels in world
-    // todo: calculate this based on max LOD resolution (2 to power of resolution)
-#ifdef zox_disable_frustum_culling
-    zox_set(e, RenderDisabled, { 0 })
-#endif
 #ifdef zox_is_flatlands
     zox_add_tag(e, FlatlandChunk)
 #endif
+#ifdef zox_disable_frustum_culling
+    zox_set(e, RenderDisabled, { 0 })
+#else
+    zox_set(e, RenderDisabled, { 1 })
+#endif
+    zox_add_tag(e, ChunkDebugger)
     return e;
 }
 

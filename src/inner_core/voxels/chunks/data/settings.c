@@ -3,7 +3,9 @@
 #define zox_pip_voxels_chunk_dirty EcsOnLoad // sets chunk dirty 1 -  generates voxel data
 #define zox_pip_voxels EcsOnUpdate // uses event states
 #define zox_pip_voxels_chunk_clean EcsPostUpdate // generates mesh data, resets chunk_dirty
+// #define zox_debug_chunks // use to debug chunk edges
 
+const float default_vox_scale = 0.5f;
 const double max_chunk_process_time = 0.003;
 const unsigned char is_select_minis = 0;
 const float overall_voxel_scale = 32.0f; // 64.0f; // 4.0f // 2.0f;

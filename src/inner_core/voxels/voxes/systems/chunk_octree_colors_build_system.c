@@ -1,7 +1,7 @@
 // builds the character vox meshes
 void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
     // zox_change_check()
-    int chunks_built = 0;
+    // int chunks_built = 0;
     begin_timing()
     zox_iter_world()
     zox_field_out(ChunkDirty, chunkDirtys, 1)

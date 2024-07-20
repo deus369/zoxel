@@ -5,7 +5,7 @@ build_path="build/windows"
 build_dev_path="build/windows-dev"
 
 bash bash/util/prepare_directories.sh
-bash bash/freetype/install.sh
+# bash bash/freetype/install.sh
 bash bash/windows/install_winpthread.sh
 # source bash/windows/download_libraries.sh
 if yay -Q mingw-w64-glew > /dev/null 2>&1; then

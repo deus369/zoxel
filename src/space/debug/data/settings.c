@@ -25,7 +25,7 @@ double time_update_debug_label_system = 0;
 // #define zox_debug_player_element_links
 
 // streaming
-#define zox_debug_zox_statistics
+// #define zox_debug_zox_statistics
 // #define zox_debug_zox_statistics2
 // #define zox_debug_statistics_characters
 // camera

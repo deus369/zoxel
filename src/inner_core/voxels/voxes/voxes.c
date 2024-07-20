@@ -31,7 +31,7 @@ zox_define_tag(Vox)
 zox_define_tag(BlendVox)
 zox_define_tag(VoxRubble)
 zox_define_component_byte(GenerateVox)
-zox_filter(chunks_generating, [in] GenerateChunk)
+// zox_filter(chunks_generating, [in] GenerateChunk)
 // Builds our Colored Chunks (Voxes)
 // _ctx chunks_generating, zox_pip_voxels_chunk_clean
 if (!headless) zox_system(ChunkOctreeColorsBuildSystem, zox_pip_voxels, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] ColorRGBs, [in] ChunkSize, [in] VoxScale, [in] RenderDisabled, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] chunks.ColorChunk)

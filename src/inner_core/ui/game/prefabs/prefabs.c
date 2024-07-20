@@ -28,7 +28,7 @@ void spawn_prefabs_game_ui(ecs_world_t *world) {
     spawn_prefab_pause_ui(world);
     spawn_prefab_options_ui(world);
     spawn_prefab_quad_count_label(world);
-    spawn_prefab_game_debug_label(world);
+    spawn_prefab_game_debug_label(world, prefab_label_background);
     spawn_prefab_virtual_joystick_pointer(world);
     spawn_prefab_virtual_joystick(world);
     prefab_tooltip = spawn_prefab_tooltip(world, prefab_label_background);

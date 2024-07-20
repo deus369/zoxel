@@ -1,7 +1,8 @@
 // #define zoxel_debug_zext_updates
 
 void set_zox_name(ZoxName *zoxName, const char* text) {
-    int text_length = strlen(text);
+    // int text_length = strlen(text);
+    const int text_length = text != NULL ? strlen(text) : 0;
     if (zoxName->length != text_length) resize_memory_component(ZoxName, zoxName, unsigned char, text_length)
     for (int i = 0; i < text_length; i++) zoxName->value[i] = convert_ascii(text[i]);
 }
@@ -10,15 +11,21 @@ char* get_zext_text(const ZextData *zextData) {
     return convert_zext_to_text(zextData->value, zextData->length);
 }
 
-unsigned char is_zext(ZextData *zextData, const char* text) {
-    int text_length = strlen(text);
-    if (zextData->length != text_length) return 0;
-    for (int i = 0; i < text_length; i++) if (convert_ascii(text[i]) != zextData->value[i]) return 0;
+unsigned char is_zext(ZextData *zext, const char* text) {
+    if (zext == NULL || zext->value == NULL) return 0; // error
+    // int text_length = strlen(text);
+    const int text_length = text != NULL ? strlen(text) : 0;
+    if (zext->length != text_length) return 0;
+    if (text_length == 0 && zext->length == 0) return 1;
+    for (int i = 0; i < text_length; i++) {
+        if (convert_ascii(text[i]) != zext->value[i]) return 0;
+    }
     return 1;
 }
 
 void set_zext(ZextData *zextData, const char* text) {
-    const int text_length = strlen(text);
+    // const int text_length = strlen(text);
+    const int text_length = text != NULL ? strlen(text) : 0;
     // zox_log("   - set zext [%i]\n", text_length)
     if (zextData->length != text_length) resize_memory_component(ZextData, zextData, unsigned char, text_length)
     for (int i = 0; i < text_length; i++) zextData->value[i] = convert_ascii(text[i]);

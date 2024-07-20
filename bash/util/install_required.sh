@@ -7,7 +7,7 @@ source bash/util/package_util.sh
 install_first_library "gcc"
 install_first_library "wget"
 
-bash bash/freetype/install_requirements.sh
+# bash bash/freetype/install_requirements.sh
 bash bash/sdl/install_requirements.sh
 
 # installs sdl for system

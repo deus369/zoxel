@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo " ====== ====== ====== ====== ====== ======"
 debugging=""
 disabler="--disable-jpg --disable-tif --disable-webp --disable-avif --disable-bmp --disable-gif --disable-lbm --disable-pcx --disable-pnm --disable-tga --disable-xcf --disable-xpm --disable-svg --disable-qoi --disable-jxl"
 
@@ -60,7 +61,6 @@ else
             if [ "$lib_file_type" = "dll" ]; then
                 echo "   - configuring for mingw32"
                 CPPFLAGS="-I../../include/sdl" ./configure --host=x86_64-w64-mingw32 --enable-shared --disable-static $disabler --with-sdl2-prefix="../sdl" > /dev/null 2>&1
-                #  --with-sdl-prefix="../../lib"
             else
                 CPPFLAGS="-I../../include/sdl" ./configure --enable-shared --disable-static $disabler --with-sdl-prefix="../../lib" > /dev/null 2>&1
             fi
@@ -103,3 +103,4 @@ if [ ! -d $sdl_image_include ]; then
 else
     echo " > sdl_image include detected [$sdl_image_include]"
 fi
+echo " ====== ====== ====== ====== ====== ======"

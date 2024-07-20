@@ -1,12 +1,12 @@
-ecs_entity_t spawn_prefab_button(ecs_world_t *world) {
-    zox_prefab()
+ecs_entity_t spawn_prefab_button(ecs_world_t *world, const ecs_entity_t prefab) {
+    zox_prefab_child(prefab)
     zox_prefab_name("prefab_button")
-    add_ui_plus_components(world, e);
-    add_selectable_components(world, e);
-    add_clickable_components(world, e);
     zox_add_tag(e, Button)
     zox_add_tag(e, ClickMakeSound)
+    // add_ui_plus_components(world, e);
     add_frame_texture_type(world, e, default_fill_color, default_outline_color, default_button_corner, default_button_frame_thickness);
+    add_selectable_components(world, e);
+    add_clickable_components(world, e);
     zox_prefab_add(e, Children)
     return e;
 }
@@ -74,7 +74,7 @@ ecs_entity_t spawn_button_on_canvas(ecs_world_t *world, const ecs_entity_t canva
             .prefab = prefab_zext,
             .text = text,
             .font_size = font_size,
-            .font_thickness = 1,
+            .font_thickness = 2,
             .padding = padding,
             .font_fill_color = default_font_fill_color,
             .font_outline_color = default_font_outline_color

@@ -2,6 +2,7 @@ void FontTextureSystem(ecs_iter_t *it) {
     const color air_color = (color) { 0, 0, 0, 0 };
     zox_change_check()
     // todo: link each zigel to fontstyle's font
+    ecs_entity_t zox_font_style = get_font_style_using();
     if (!zox_font_style || !zox_has(zox_font_style, Children)) return;
     zox_iter_world()
     zox_field_in(ZigelIndex, zigelIndexs, 1)

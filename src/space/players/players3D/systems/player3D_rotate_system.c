@@ -84,14 +84,21 @@ void Player3DRotateSystem(ecs_iter_t *it) {
         else if (camera_euler.x < -180) camera_euler.x += 360;*/
         const ecs_entity_t player_camera = zox_get_value(character, CameraLink)
         if (player_camera) {
-            Euler *player_camera_euler = zox_get_mut(player_camera, Euler)
-            LocalRotation3D *player_camera_rotation3D = zox_get_mut(player_camera, LocalRotation3D)
+            // this sets camera x
+            zox_get_muter(player_camera, Euler, player_camera_euler)
+            // add mouse/device input
             player_camera_euler->value.x -= euler.x;
-            if (player_camera_euler->value.x >= 180) player_camera_euler->value.x -= 360;
-            else if (player_camera_euler->value.x < -180) player_camera_euler->value.x += 360;
+            // makes sure to keep euler between values -180 and 180
+            if (player_camera_euler->value.x >= 180 * degreesToRadians) player_camera_euler->value.x -= 360 * degreesToRadians;
+            else if (player_camera_euler->value.x < -180 * degreesToRadians) player_camera_euler->value.x += 360 * degreesToRadians;
+            // limit camera for player head
+            float2 limit_camera_x = (float2) { 89, 89 };
+            if (player_camera_euler->value.x > limit_camera_x.x * degreesToRadians) player_camera_euler->value.x = limit_camera_x.x * degreesToRadians;
+            else if (player_camera_euler->value.x < -limit_camera_x.y * degreesToRadians) player_camera_euler->value.x = -limit_camera_x.y * degreesToRadians;
+            // zox_log(" > player_camera_euler->value.x [%f]\n", player_camera_euler->value.x)
+            // synch up rotation immediately
+            zox_get_muter(player_camera, LocalRotation3D, player_camera_rotation3D)
             player_camera_rotation3D->value = quaternion_from_euler(player_camera_euler->value);
-            zox_modified(player_camera, Euler)
-            zox_modified(player_camera, LocalRotation3D)
         }
 #endif
     }

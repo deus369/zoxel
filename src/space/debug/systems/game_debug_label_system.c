@@ -49,6 +49,9 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         int buffer_index = 0;
         char buffer[buffer_size];
 
+        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "[ %s]\n", game_name);
+
+        // memset(buffer, 0, buffer_size); // Initialize buffer to zero
 #ifdef zox_debug_game_players
         const ecs_entity_t game = zox_get_value(player, GameLink)
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "player [%s]\n", zox_get_name(player));
@@ -99,7 +102,7 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 
 #ifdef zox_debug_ui_save_cloud
         if (test_read_byte != 255)
-                buffer_index += snprintf(buffer + buffer_index, buffer_size, "cloud data [%i]\n", test_read_byte);
+                buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "cloud data [%i]\n", test_read_byte);
 #endif
 #ifdef zox_debug_ui_memorys_allocated
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " memorys [%i]", total_memorys_allocated);
@@ -113,8 +116,6 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 #ifdef zox_debug_ui_statbars
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " statbars [%i]", get_statbars_count(it->world));
 #endif
-
-
         // debug our computer:
         // Ram, CPU%, GPU?, etc
 #ifdef zox_debug_system
@@ -164,6 +165,7 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
             buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "[t]");
         }
 #endif
+        if (buffer_index == 0) buffer[0] = '\0';
         if (!is_zext(zextData, buffer)) {
             set_zext(zextData, buffer);
             zextDirty->value = 1;

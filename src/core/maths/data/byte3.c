@@ -16,6 +16,10 @@ unsigned char byte3_octree_array_index(const byte3 input) {
     return input.z + 2 * (input.y + 2 * input.x);
 }
 
+byte3 byte3_add(const byte3 a, const byte3 b) {
+    return (byte3) { a.x + b.x, a.y + b.y, a.z + b.z };
+}
+
 void byte3_add_byte3_p(byte3 *value, const byte3 add) {
     value->x += add.x;
     value->y += add.y;
@@ -101,10 +105,20 @@ unsigned char byte3_on_edge(const byte3 pos, const byte3 size) {
     return pos.x == 0 || pos.y == 0 || pos.z == 0 || pos.x == size.x - 1 || pos.y == size.y - 1 || pos.z == size.z - 1;
 }
 
+unsigned char byte3_on_edge_xz(const byte3 pos, const byte3 size) {
+    return pos.x == 0 || pos.z == 0 || pos.x == size.x - 1 || pos.z == size.z - 1;
+}
+
 unsigned char byte3_on_edges(const byte3 pos, const byte3 size) {
     unsigned char edges_count = 0;
     if (pos.x == 0 || pos.x == size.x - 1) edges_count++;
     if (pos.y == 0 || pos.y == size.y - 1) edges_count++;
     if (pos.z == 0 || pos.z == size.z - 1) edges_count++;
     return edges_count >= 2;
+}
+
+void byte3_multiply_byte(byte3* input, const unsigned char mul) {
+    input->x *= mul;
+    input->y *= mul;
+    input->z *= mul;
 }

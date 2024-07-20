@@ -1,6 +1,7 @@
 #!/bin/bash
 # sudo apt-get install libbrotli-dev
 
+echo " ====== ====== ====== ====== ====== ======"
 # Define versions and directories
 freetype_dir="build/freetype"
 if [ ! -d $freetype_dir ]; then
@@ -83,3 +84,5 @@ if [[ ! -f lib/freetype.dll ]]; then
   unzip -j -q $windows_zip "freetype-windows-binaries-${FREETYPE_VERSION}/release dll/win64/freetype.lib" -d "lib"
   echo "freetype.dll and freetype.lib has been downloaded and placed into the 'lib' directory."
 fi
+
+echo " ====== ====== ====== ====== ====== ======"

@@ -15,7 +15,7 @@ use_lib_sdl_image := true
 # used for audio
 use_lib_sdl_mixer := true
 # enable for ttf font files
-use_lib_ttf := true
+use_lib_ttf := false
 # todo: use libsdl2-ttf-dev instead? sdl2 true type font
 # enable to debug amd gpu
 use_lib_amd := false
@@ -29,7 +29,7 @@ ifdef game
     make_libs +=-Dzox_game=$(game)
 endif
 ifeq ($(use_lib_sdl), true)
-    make_libs += -Dzox_lib_sdl_direct -Ibuild/sdl/include -lSDL2
+    make_libs += -Dzox_lib_sdl_direct -Iinclude/sdl -lSDL2
 endif
 ifeq ($(use_lib_sdl_image), true)
     make_libs += -Dzox_lib_sdl_images -Iinclude/sdl_image -lSDL2_image
@@ -41,7 +41,7 @@ ifeq ($(use_lib_vulkan), true)
     make_libs += -lvulkan -Dzox_include_vulkan # vulkan on linux
 endif
 ifeq ($(use_lib_ttf), true)
-   make_libs += -lfreetype -Dzox_lib_ttf -Ibuild/freetype/freetype-2.13.2/include
+   make_libs += -lfreetype -Dzox_lib_ttf -Ibuild/freetype/freetype-2.13.2/include -I/usr/include/freetype2
 endif
 ifeq ($(use_lib_amd), true)
    make_libs +=  -lrocm_smi64 -Dzox_lib_amd
@@ -316,7 +316,7 @@ ifeq ($(use_lib_sdl_mixer), true)
 	windows_libs += -lSDL2_mixer -Dzox_lib_sdl_mixer
 endif
 ifeq ($(use_lib_ttf), true)
-	windows_libs += -lfreetype -Dzox_lib_ttf -Ibuild/freetype/freetype-2.13.2/include
+	windows_libs += -lfreetype -Dzox_lib_ttf -Ibuild/freetype/freetype-2.13.2/include -I/usr/include/freetype2
 endif
 # windows_libs += --static # this fixes thread dll issue
 # windows pathing

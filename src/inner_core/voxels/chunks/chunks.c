@@ -3,15 +3,16 @@
 
 zox_declare_tag(Chunk)
 zox_declare_tag(NoiseChunk)
-zox_component_int3(ChunkPosition)
+zox_declare_tag(ChunkDebugger)
 zox_declare_tag(ColorChunk)
 zox_declare_tag(ChunkTextured)
 zox_declare_tag(LinkChunk)
 zox_declare_tag(DisableReverseLinkChunk)
-zox_component_int3(ChunkSize)
 zox_component_byte(ChunkDirty)
 zox_component_byte(ChunkLodDirty)
 zox_component_byte(GenerateChunk)
+zox_component_int3(ChunkPosition)
+zox_component_int3(ChunkSize)
 zox_memory_component(ChunkData, unsigned char)
 zox_memory_component(ChunkNeighbors, ecs_entity_t)
 zox_link_component(ChunkLink, ecs_entity_t, EntityLinks)
@@ -24,6 +25,7 @@ zoxel_octree_component(ChunkOctree, unsigned char, 0)
 #include "data/trigger_states.c"
 #include "data/chunk_dirty_state.c"
 #include "data/chunk_lod_state.c"
+#include "util/prefab_util.c"
 #include "util/voxel_mesh_util.c"
 #include "util/chunk_util.c"
 #include "util/chunk_octree_util.c"
@@ -44,6 +46,7 @@ zox_increment_system_with_reset(ChunkLodDirty, chunk_lod_state_end)
 #include "systems/chunk_entities_lod_system.c"
 #include "systems/chunk_blocks_lod_system.c"
 #include "systems/chunk_entities_trigger_system.c"
+#include "systems/chunk_debug_system.c"
 
 zox_begin_module(Chunks)
 zox_define_tag(Chunk)
@@ -52,6 +55,7 @@ zox_define_tag(ColorChunk)
 zox_define_tag(ChunkTextured)
 zox_define_tag(LinkChunk)
 zox_define_tag(DisableReverseLinkChunk)
+zox_define_tag(ChunkDebugger)
 zox_define_component_int3(ChunkPosition)
 zox_define_component_byte(ChunkDirty)
 zox_define_component_byte(ChunkLodDirty)
@@ -67,6 +71,9 @@ zox_define_component(RaycastVoxelData)
 zox_system(ChunkLinkSystem, zox_pip_voxels, [in] VoxLink, [in] Position3D, [out] ChunkPosition, [out] ChunkLink, [none] LinkChunk)
 zox_system(ChunkEntitiesLodSystem, zox_pip_voxels, [in] ChunkLodDirty, [in] RenderLod, [in] EntityLinks)
 zox_system(ChunkBlocksLodSystem, zox_pip_voxels, [in] ChunkLodDirty, [in] RenderLod, [in] BlockSpawns)
+#ifdef zox_debug_chunks
+zox_system_1(ChunkDebugSystem, zox_pip_mainthread, [in] Position3D, [in] ChunkOctree, [in] RenderLod, [none] ChunkDebugger)
+#endif
 zox_define_increment_system(ChunkLodDirty, EcsOnLoad)
 spawn_prefabs_chunks(world);
 zoxel_end_module(Chunks)

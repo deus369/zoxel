@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo " ====== ====== ====== ====== ====== ======"
 disabler="--disable-music-mod --disable-music-midi --disable-music-ogg --disable-music-flac --disable-music-mp3 --disable-music-opus --disable-music-mod-modplug"
 
 echo " > installing [sdl_mixer] from source"
@@ -58,9 +59,9 @@ if [ ! -f $sdl_mixer_lib_file ]; then
             if [ "$lib_file_type" = "dll" ]; then
                 echo "   - configuring for mingw32"
                 CPPFLAGS="-I../../include/sdl" ./configure --host=x86_64-w64-mingw32 --enable-shared --disable-static $disabler --with-sdl2-prefix="../sdl" > /dev/null 2>&1
-                #  "../../lib/sdl-dll"
             else
-                ./configure --enable-shared --disable-static $disabler --with-sdl-prefix="../../lib" > /dev/null 2>&1
+                # ./configure --enable-shared --disable-static $disabler --with-sdl-prefix="../../lib" # > /dev/null 2>&1
+                CPPFLAGS="-I../../include/sdl" ./configure --enable-shared --disable-static $disabler --with-sdl-prefix="../../lib" > /dev/null 2>&1
             fi
             if [ $? -ne 0 ]; then
                 echo " ! sdl_mixer configure failed"
@@ -69,7 +70,7 @@ if [ ! -f $sdl_mixer_lib_file ]; then
                 echo " + configure successful"
             fi
             echo " > making sdl_mixer"
-            make # > /dev/null 2>&1
+            make > /dev/null 2>&1
             if [ $? -ne 0 ]; then
                 echo " ! sdl_mixer make failed"
                 exit
@@ -102,3 +103,4 @@ if [ ! -d $sdl_mixer_include ]; then
 else
     echo " > sdl_mixer include detected [$sdl_mixer_include]"
 fi
+echo " ====== ====== ====== ====== ====== ======"

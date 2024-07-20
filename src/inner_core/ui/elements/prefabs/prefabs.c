@@ -37,11 +37,11 @@ ecs_entity_t prefab_icon_mouse_follow;
 
 void spawn_prefabs_elements(ecs_world_t *world) {
     prefab_label = spawn_prefab_label(world);
-    prefab_label_background = spawn_prefab_label_background(world);
-    prefab_button = spawn_prefab_button(world);
+    prefab_label_background = spawn_prefab_label_background(world, prefab_zext);
+    prefab_button = spawn_prefab_button(world, prefab_element);
     prefab_window_invisible = spawn_prefab_window_invisible(world);
     prefab_window = spawn_prefab_window(world); // todo: add visible components onto invisible window
-    prefab_header = spawn_prefab_header(world);
+    prefab_header = spawn_prefab_header(world, prefab_element);
     prefab_body = spawn_prefab_body(world, prefab_element);
     prefab_close_button = spawn_prefab_button_close(world, prefab_button);
     prefab_scrollbar = spawn_prefab_scrollbar(world);

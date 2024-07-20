@@ -4,18 +4,13 @@
 #include "data/settings.c"
 zox_declare_tag(Player3D)
 zox_declare_tag(PlayerCharacter3D)
-#include "prefabs/player_character3D.c"
-#include "util/player_character3D.c"
+#include "prefabs/prefabs.c"
 #include "util/attach3D.c"
 #include "util/labels.c"
 #include "systems/player3D_move_system.c"
 #include "systems/player3D_rotate_system.c"
 #include "systems/player3D_jump_system.c"
 #include "systems/player3D_trigger_system.c"
-
-void spawn_prefabs_players3D(ecs_world_t *world) {
-    spawn_prefab_player_character3D(world);
-}
 
 zox_begin_module(Players3D)
 zox_define_tag(Player3D)

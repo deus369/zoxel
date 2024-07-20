@@ -194,13 +194,15 @@ void generate_font_lines(color* data, const int2 size, const FontData *fontData,
     }
 }
 
-void generate_font_texture(color* data, const int2 size, const FontData *font_data, const color line_color,  const color fill_color, const unsigned char is_shapes, const unsigned char font_thickness) {
+void generate_font_texture(color* data, const int2 size, const FontData *font_data, const color line_color,  const color fill_color, const unsigned char is_shapes,  unsigned char font_thickness) {
     // const color nothing = { 0, 0, 0, 0 };
     clear_texture(data, size);
     if (!font_data->length) return;
     if (is_shapes) {
         generate_font_lines(data, size, font_data, line_color);
         scanline_fill_texture(data, size, nothing_font_color, line_color, fill_color);
+    } else {
+        font_thickness++;
     }
     generate_splotches_lines(data, size, font_data, line_color, font_thickness);
 }

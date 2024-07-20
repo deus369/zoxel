@@ -1,5 +1,5 @@
 void TexturedRenderSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    // zox_iter_world()
     zox_field_in(TransformMatrix, transformMatrixs, 1)
     zox_field_in(MeshGPULink, meshGPULinks, 2)
     zox_field_in(UvsGPULink, uvsGPULinks, 3)

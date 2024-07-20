@@ -18,7 +18,6 @@ zox_component_byte(StreamDirty)
 #include "data/mesh_uvs_build_data.c"
 #include "util/settings.c"
 #include "util/chunk_util.c"
-#include "util/prefab_util.c"
 #include "util/octree_build_util.c"
 #include "util/block_vox.c"
 #include "util/debug_util.c"

@@ -9,8 +9,11 @@ void fix_camera_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
     const float3 camera_position3D = zox_get_value(camera, Position3D)
     int3 terrain_position = real_position_to_chunk_position(camera_position3D, default_chunk_size);
     const ecs_entity_t game = zox_get_value(player, GameLink)
+    if (!game || !zox_has(game, RealmLink)) return;
     const ecs_entity_t realm = zox_get_value(game, RealmLink)
+    if (!realm || !zox_has(realm, TerrainLink)) return;
     const ecs_entity_t terrain = zox_get_value(realm, TerrainLink)
+    if (!terrain) return;
     zox_set(camera, StreamPoint, { terrain_position })
     zox_set(camera, VoxLink, { terrain })
     zox_set(camera, TerrainLink, { terrain })

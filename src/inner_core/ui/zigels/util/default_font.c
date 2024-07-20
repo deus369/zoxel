@@ -1,4 +1,3 @@
-
 const unsigned char font_left_side = 32; // 2 * 16;
 const unsigned char font_right_side = 208; // 13 * 16;
 const unsigned char font_bottom_side = 32; // 2 * 16;

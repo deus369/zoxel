@@ -9,7 +9,7 @@ zox_component_double(AnimateChunk)
 ecs_entity_t prefab_chunk_animating;
 
 void spawn_prefabs_voxel_animations(ecs_world_t *world) {
-    prefab_chunk_animating = spawn_prefab_animating_chunk(world, prefab_chunk_noise);
+    prefab_chunk_animating = spawn_prefab_animating_chunk(world, prefab_chunk_octree);
 }
 
 zox_begin_module(VoxelsAnimations)

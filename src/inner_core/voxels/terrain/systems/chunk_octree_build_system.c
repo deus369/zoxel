@@ -57,12 +57,12 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
         }
     }
     // main loop to build
-    int chunks_built = 0;
+    // int chunks_built = 0;
     zox_field_in(ChunkOctree, chunkOctrees, 2)
     zox_field_in(RenderLod, renderLods, 3)
     zox_field_in(ChunkNeighbors, chunkNeighbors, 4)
     zox_field_in(VoxScale, voxScales, 5)
-    zox_field_in(RenderDisabled, renderDisableds, 6)
+    // zox_field_in(RenderDisabled, renderDisableds, 6)
     zox_field_out(ChunkDirty, chunkDirtys, 7)
     zox_field_out(MeshIndicies, meshIndiciess, 8)
     zox_field_out(MeshVertices, meshVerticess, 9)
@@ -72,7 +72,7 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
         if (chunkDirty->value == 0) continue;
-        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
+        // zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         // if (renderDisabled->value) continue;
         zox_field_i(RenderLod, renderLods, renderLod)
         zox_field_i(VoxScale, voxScales, voxScale)

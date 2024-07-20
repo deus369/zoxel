@@ -29,7 +29,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const unsigned char header_layer = layer + 1;
     const unsigned char button_layer = layer + 1;
-    const int header_margins = scaled_font_size / 3; // 12;
+    const int header_margins = scaled_font_size / 2;
     const int header_height = (scaled_font_size + header_margins - 1);
     const int2 list_margins = (int2) { (int) (scaled_font_size * 0.8f), (int) (scaled_font_size * 0.8f) };
     const byte2 button_padding = (byte2) { (int) (scaled_font_size * 0.46f), (int) (scaled_font_size * 0.3f) };

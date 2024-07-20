@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo " ====== ====== ====== ====== ====== ======"
 echo " > installing [sdl] from source"
 # Default output parameter
 default_sdl_path="build/sdl" # linux-sdl_image
@@ -60,7 +61,7 @@ else
             ./autogen.sh > /dev/null 2>&1
             if [ "$lib_file_type" = "dll" ]; then
                 echo "   - configuring for mingw32"
-                ./configure --host=x86_64-w64-mingw32 --enable-shared --disable-static > /dev/null 2>&1
+                ./configure --host=x86_64-w64-mingw32 --enable-shared --disable-static # > /dev/null 2>&1
             else
                 ./configure --enable-shared --disable-static > /dev/null 2>&1
             fi
@@ -104,3 +105,5 @@ if [ ! -d $sdl_include ]; then
 else
     echo " > sdl include detected [$sdl_include]"
 fi
+
+echo " ====== ====== ====== ====== ====== ======"
