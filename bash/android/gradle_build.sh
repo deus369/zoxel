@@ -5,6 +5,7 @@ source bash/android/gradle_pathing.sh
 start_gradle_build
 cd build/android-build
 bash gradlew assembleRelease --parallel
+# bash gradlew assembleRelease --debug
 if [ $? -ne 0 ]; then
     echo "  > gradlew assembleRelease command failed"
     # You can add additional error handling here if needed
