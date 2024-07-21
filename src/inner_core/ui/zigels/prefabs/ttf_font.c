@@ -12,19 +12,19 @@ ecs_entity_t spawn_font_ttf(ecs_world_t *world, const ecs_entity_t prefab_font, 
     byte2 *points = glyph_to_points(glyph, face_bounds, &length);
     if (length == 0) return 0;
     // zox_log(" > spawning font of points length: %i\n", length)
-    const ecs_entity_t e = spawn_font(world, prefab_font, points, length);
-    free(points);
+    const ecs_entity_t e = spawn_font_direct(world, prefab_font, points, length);
+    // free(points);
     return e;
 }
 
 ecs_entity_t spawn_ttf_as_font_style(ecs_world_t *world, const ecs_entity_t prefab,  FT_Face face) {
     const ecs_entity_t prefab_font = zox_get_value(prefab, FontLink)
-    const float4 face_bounds = get_face_bounds(face);
+    const float4 face_bounds = get_face_bounds(face);   // bounds used to calculate points
     // enter, options, exit
     zox_instance(prefab)
     zox_name("font_style_ttf")
     zox_add_tag(e, TTFFontStyle)
-    Children *children = zox_get_mut(e, Children)
+    zox_get_muter(e, Children, children)
     resize_memory_component(Children, children, ecs_entity_t, font_styles_length)
     for (int i = 0; i < font_styles_length; i++) children->value[i] = 0;
     for (int i = 0; i < face->num_glyphs; i++) {
@@ -35,8 +35,8 @@ ecs_entity_t spawn_ttf_as_font_style(ecs_world_t *world, const ecs_entity_t pref
         const char charcode = (char) i;
         children->value[j] = spawn_font_ttf(world, prefab_font, face, face_bounds, charcode);
     }
+    // todo: remove this eventually and justt  use a default font index for unknown font entities
     for (int i = 0; i < font_styles_length; i++) if (!children->value[i] && i != 55) children->value[i] = spawn_font(world, prefab_font, font_question_mark, font_question_mark_length);
-    zox_modified(e, Children)
     return e;
 }
 

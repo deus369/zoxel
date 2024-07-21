@@ -14,7 +14,7 @@ ecs_entity_t spawn_font_style(ecs_world_t *world, const ecs_entity_t prefab) {
     const ecs_entity_t prefab_font = zox_get_value(prefab, FontLink)
     zox_instance(prefab)
     zox_name("font_style")
-    Children *children = zox_get_mut(e, Children)
+    zox_get_muter(e, Children, children)
     resize_memory_component(Children, children, ecs_entity_t, font_styles_length)
     for (int i = 0; i < font_styles_length; i++) children->value[i] = 0;
     // lower case
@@ -96,6 +96,5 @@ ecs_entity_t spawn_font_style(ecs_world_t *world, const ecs_entity_t prefab) {
     children->value[76] = spawn_font(world, prefab_font, font_percentage, font_percentage_length);
     // The Unset ones
     for (int i = 0; i < font_styles_length; i++) if (!children->value[i]) children->value[i] = spawn_font(world, prefab_font, font_question_mark, font_question_mark_length);
-    zox_modified(e, Children)
     return e;
 }

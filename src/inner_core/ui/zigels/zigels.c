@@ -13,6 +13,7 @@ zox_component_color(FontOutlineColor)
 zox_component_entity(FontLink)
 zox_memory_component(FontData, byte2) // line points used for generating a font texture
 #include "data/settings.c"
+#include "data/save_data_font_style.c"
 #include "data/parent_spawn_data.c"
 #include "data/canvas_spawn_data.c"
 #include "data/zext_spawn_data.c"

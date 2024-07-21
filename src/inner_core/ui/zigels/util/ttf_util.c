@@ -61,35 +61,6 @@ byte2 glyph_point_to_byte2(FT_Vector point_, const int2 glyph_size, const float4
     return int2_to_byte2(point_i2);
 }
 
-void print_glyph(const FT_GlyphSlot glyph) {
-    const int2 glyph_size = get_glyph_size(glyph);
-    const float2 glyph_margins = get_glyph_margins(glyph);
-    const float4 glyph_bounds = get_glyph_bounds(glyph);
-    zox_log(" + glyph size [%ix%i]\n", glyph_size.x, glyph_size.y)
-    zox_log(" + glyph margins [%fx%f]\n", glyph_margins.x, glyph_margins.y)
-    zox_log(" + glyph bounds [%fx%f] [%fx%f]\n", glyph_bounds.x, glyph_bounds.y, glyph_bounds.z, glyph_bounds.w)
-    zox_log(" + glyph points [%i]:\n", glyph->outline.n_points);
-    for (int j = 0; j < glyph->outline.n_points; j++) {
-        FT_Vector point = glyph->outline.points[j];
-        byte2 converted_point = glyph_point_to_byte2(point, glyph_size, glyph_bounds);
-        zox_log("    - [%i]: [%ld, %ld]\n", j, point.x, point.y)
-        zox_log("       - [%i]: [%i, %i]\n", j, converted_point.x, converted_point.y)
-    }
-    /*int start_point_index = 0;
-    for (int c = 0; c < glyph->outline.n_contours; c++) {
-        int contour_end = glyph->outline.contours[c];
-        zox_log("   - shape index [%i] to [%i]\n", start_point_index, contour_end)
-        for (int i = start_point_index; i <= contour_end; i++) {
-            FT_Vector point_a = glyph->outline.points[i];
-            FT_Vector point_b;
-            if (i == contour_end) point_b = glyph->outline.points[start_point_index];
-            else point_b = glyph->outline.points[i + 1];
-            zox_log("       - line [%ix%i] to [%ix%i]\n", point_a.x, point_a.y, point_b.x, point_b.y)
-        }
-        start_point_index = contour_end + 1;
-    }*/
-}
-
 FT_UInt get_glyph_index(FT_Face face, const char charcode) {
     return FT_Get_Char_Index(face, (FT_ULong) charcode);
 }
@@ -135,6 +106,22 @@ byte2* glyph_to_points(const FT_GlyphSlot glyph, const float4 face_bounds, int *
     return points;
 }
 
+void print_glyph(const FT_GlyphSlot glyph) {
+    const int2 glyph_size = get_glyph_size(glyph);
+    const float2 glyph_margins = get_glyph_margins(glyph);
+    const float4 glyph_bounds = get_glyph_bounds(glyph);
+    zox_log(" + glyph size [%ix%i]\n", glyph_size.x, glyph_size.y)
+    zox_log(" + glyph margins [%fx%f]\n", glyph_margins.x, glyph_margins.y)
+    zox_log(" + glyph bounds [%fx%f] [%fx%f]\n", glyph_bounds.x, glyph_bounds.y, glyph_bounds.z, glyph_bounds.w)
+    zox_log(" + glyph points [%i]:\n", glyph->outline.n_points);
+    for (int j = 0; j < glyph->outline.n_points; j++) {
+        FT_Vector point = glyph->outline.points[j];
+        byte2 converted_point = glyph_point_to_byte2(point, glyph_size, glyph_bounds);
+        zox_log("    - [%i]: [%ld, %ld]\n", j, point.x, point.y)
+        zox_log("       - [%i]: [%i, %i]\n", j, converted_point.x, converted_point.y)
+    }
+}
+
 #endif
 
 /*if (i >= 97 && i <= 122) j = i - 97 + 1; // lowercase
@@ -149,3 +136,17 @@ else if (i >= 58 && i <= 64) j = convert_ascii(i); // special characters*/
 // print_glyph(get_glyph(face, '.'));
 // print_glyph(get_glyph(face, '^'));
 // print_glyph(get_glyph(face, 'D'));
+
+/*int start_point_index = 0;
+for (int c = 0; c < glyph->outline.n_contours; c++) {
+    int contour_end = glyph->outline.contours[c];
+    zox_log("   - shape index [%i] to [%i]\n", start_point_index, contour_end)
+    for (int i = start_point_index; i <= contour_end; i++) {
+        FT_Vector point_a = glyph->outline.points[i];
+        FT_Vector point_b;
+        if (i == contour_end) point_b = glyph->outline.points[start_point_index];
+        else point_b = glyph->outline.points[i + 1];
+        zox_log("       - line [%ix%i] to [%ix%i]\n", point_a.x, point_a.y, point_b.x, point_b.y)
+    }
+    start_point_index = contour_end + 1;
+}*/
