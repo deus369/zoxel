@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
 #endif
     ecs_world_t *world = initialize_ecs(argc, argv);
     if (world == NULL) {
-        zox_logg(" ! engine failed to start\n")
+        zox_log(" ! engine failed to start\n")
         return 0;
     }
     zox_import_module(Zox)
@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
     zox_log(" ! game not loaded\n")
 #endif
     if (boot_event(world) == EXIT_SUCCESS) update_zox();
-    else zox_logg(" ! booting zoxel failed\n")
+    else zox_log(" ! booting zoxel failed\n")
     dispose_zox(world);
     return 0;
 }

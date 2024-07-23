@@ -44,7 +44,7 @@ int check_compute_shader_support() {
         return EXIT_FAILURE;
     }
 #ifdef zoxel_debug_opengl
-    zox_logg("    > opengl compute stats\n")
+    zox_log("    > opengl compute stats\n")
 #endif
     // Get the maximum number of compute work groups
     /*GLint max_compute_group_count[3];

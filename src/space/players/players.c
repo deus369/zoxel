@@ -12,14 +12,13 @@
 zox_component_entity(PlayerPauseEvent)
 #include "data/settings.c"
 #include "states/player_state.c"
-#include "prefabs/crosshair.c"
-#include "prefabs/game_ui.c"
-#include "prefabs/player.c"
+#include "util/pause_util.c"
+#include "prefabs/prefabs.c"
+#include "util/game_ui.c"
 #include "players3D/players3D.c"
 #include "players2D/players2D.c"
 #include "free_roam/free_roam.c"
 #include "util/terrain_util.c"
-#include "util/pause_util.c"
 #include "util/resume_util.c"
 #include "util/editor_util.c"
 #include "util/touch_util.c"
@@ -63,8 +62,7 @@ zox_system_1(RaycastGizmoSystem, zox_pip_mainthread, [in] CameraLink, [in] VoxLi
 zox_system(VoxelActionASystem, EcsOnLoad, [in] RaycastVoxelData, [out] TriggerActionA)
 zox_system_1(PlayerPlaceVoxelSystem, EcsOnLoad, [in] RaycastVoxelData, [out] ActionLinks, [out] TriggerActionB)
 initialize_players(world);
-zox_prefab_add(prefab_game, PlayerLinks)
-zox_prefab_set(prefab_player, PlayerPauseEvent, { 0 })
+spawn_prefabs_players2(world);
 zoxel_end_module(Players2)
 
 #endif

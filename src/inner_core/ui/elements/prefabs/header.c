@@ -39,11 +39,11 @@ ecs_entity_t spawn_header(ecs_world_t *world, const ecs_entity_t parent, const e
             .position = global_position,
             .size = pixel_size },
         .element = {
+            .prefab = prefab_zext,
             .layer = zext_layer,
             .anchor = zext_anchor,
             .position = zext_position },
         .zext = {
-            .prefab = prefab_zext,
             .text = text,
             .font_size = font_size,
             .font_thickness = 4,
@@ -74,7 +74,7 @@ ecs_entity_t spawn_header2(ecs_world_t *world, SpawnHeader *data) {
     const float2 real_position = get_element_position(canvas_position, data->canvas.size);
     const unsigned char zext_layer = data->element.layer + 1;
     const unsigned char button_layer = data->element.layer + 2;
-    zox_instance(data->header.prefab)
+    zox_instance(data->element.prefab)
     zox_name("header")
     zox_set(e, DraggedLink, { data->parent.e })
     initialize_element(world, e, data->parent.e, data->canvas.e, data->element.position, data->element.size, data->element.size, data->element.anchor, data->element.layer, real_position, canvas_position);
@@ -83,12 +83,16 @@ ecs_entity_t spawn_header2(ecs_world_t *world, SpawnHeader *data) {
         .parent = {
             .e = e,
             .position = canvas_position,
-            .size = data->element.size },
+            .size = data->element.size
+        },
         .element = {
+            .prefab = data->header.prefab_zext,
             .layer = zext_layer,
             .anchor = zext_anchor,
-            .position = zext_position },
-        .zext = data->zext };
+            .position = zext_position
+        },
+        .zext = data->zext
+    };
     zox_get_mutt(e, Children, children)
     const ecs_entity_t header_zext = spawn_zext(world, &zextSpawnData);
     add_to_Children(children, header_zext);

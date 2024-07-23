@@ -68,7 +68,7 @@ void print_entity(ecs_world_t *world, ecs_entity_t e) {
     free(type_str);
     for (i = 0; i < count; i ++) {
         ecs_id_t id = type_ids[i];
-        zox_logg("       > ")
+        zox_log("       > ")
         if (ECS_HAS_ID_FLAG(id, PAIR)) {
             ecs_entity_t rel = ecs_pair_first(world, id);
             ecs_entity_t tgt = ecs_pair_second(world, id);
@@ -100,14 +100,14 @@ void print_entity(ecs_world_t *world, ecs_entity_t e) {
             } else {
                 const ZoxName *zoxName = ((const ZoxName*) ecs_get_id(world, e, id));
                 //const EntityDirty *byte_component = ((const EntityDirty*) ecs_get_id(world, target, id));
-                //if (byte_component) zox_logg(" [uknown]")
+                //if (byte_component) zox_log(" [uknown]")
                 if (zoxName) zox_log(" %i: [%s]", zoxName->length, convert_zext_to_text(zoxName->value, zoxName->length))
-                // else zox_logg(" [tag]")
+                // else zox_log(" [tag]")
             }
             /*const long int *value = ((const long int*) ecs_get_id(world, target, id));
             if (value) zox_log(" [%lu]", value)*/
         }
-        zox_logg("\n")
+        zox_log("\n")
     }
 }
 

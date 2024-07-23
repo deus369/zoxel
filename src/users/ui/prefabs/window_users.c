@@ -18,14 +18,14 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
     // zox_log(" +  character [%lu] inventory has %i slots\n", character, inventory->length)
     const unsigned char body_layer = data->element.layer + 1;
     const unsigned char icon_layer = body_layer + 1;
-    const unsigned char is_header = data->header.prefab != 0;
+    const unsigned char is_header = data->window.prefab_header != 0;
     int2 position = data->element.position;
     unsigned char header_height = 0;
     if (is_header) header_height = data->header_zext.font_size + data->header.margins;
     const int2 canvas_position = get_element_pixel_position_global(data->parent.position, data->element.size, position, data->element.anchor);
     const float2 real_position = get_element_position(canvas_position, data->canvas.size);
     anchor_element_position2D(&position, data->element.anchor, data->element.size);
-    zox_instance(data->window.prefab)
+    zox_instance(data->element.prefab)
     zox_name(data->header_zext.text)
     initialize_element(world, e, data->parent.e, data->canvas.e, position, data->element.size, data->element.size, data->element.anchor, data->element.layer, real_position, canvas_position);
     set_window_bounds_to_canvas(world, e, data->canvas.size, data->element.size, data->element.anchor);
@@ -55,6 +55,7 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
                 .size = data->element.size
             },
             .element = {
+                .prefab = data->window.prefab_header,
                 .layer = header_layer,
                 .anchor = header_anchor,
                 .position = header_position,
@@ -158,18 +159,18 @@ SpawnWindowUsers get_default_spawn_window_users_data(const ecs_entity_t characte
             .size = canvas_size,
         },
         .element = {
+            .prefab = prefab_window_users,
             .position = int2_zero,
             .size = size,
             .anchor = anchor
         },
         .header = {
-            .prefab = prefab_header,
+            .prefab_zext = prefab_zext,
             .is_close_button = 1,
             .margins = header_margins
         },
         .header_zext = {
             .text = "Users",
-            .prefab = prefab_zext,
             .font_size = header_font_size,
             .font_thickness = 4,
             .font_fill_color = header_font_fill_color,
@@ -192,11 +193,12 @@ SpawnWindowUsers get_default_spawn_window_users_data(const ecs_entity_t characte
             .texture_size = int2_single(default_icon_texture_size)
         },
         .window = {
-            .prefab = prefab_window_users,
             .grid_size = grid_size,
             .grid_padding = grid_padding,
             .icon_size = icon_frame_size,
-            .character = character
+            .character = character,
+            .prefab_header = prefab_header,
+            // .prefab_header_zext = prefab_zext,
         },
     };
     return data;

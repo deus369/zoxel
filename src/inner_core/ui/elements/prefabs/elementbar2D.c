@@ -48,13 +48,13 @@ ecs_entity_t spawn_elementbar2D(ecs_world_t *world, const ecs_entity_t prefab, c
             .size = pixel_size
         },
         .element = {
+            .prefab = prefab_zext,
             .layer = zext_layer,
             .anchor = float2_half,
             .render_disabled = render_disabled,
             .size = zext_size
         },
         .zext = {
-            .prefab = prefab_zext,
             .font_size = font_size,
             .font_thickness = 3,
             .font_fill_color = label_font_fill_color,

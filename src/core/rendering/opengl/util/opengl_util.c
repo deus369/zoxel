@@ -14,12 +14,12 @@ unsigned char has_opengl_extensions() {
     else fprintf(stderr, "Error retrieving extensions\n");*/
 #if !defined(zoxel_on_web) && !defined(zoxel_on_android)
     if (!has_gl_extension(extensions, "GL_ARB_shader_objects")) {
-        zox_logg(" ! has_opengl_extensions: no ext [GL_ARB_shader_objects]\n")
+        zox_log(" ! has_opengl_extensions: no ext [GL_ARB_shader_objects]\n")
         has_extension = 0;
     }
 #endif
     // if (!has_extension) {
-    //    zox_logg(" > extension not found, exiting\n")
+    //    zox_log(" > extension not found, exiting\n")
     //    exit(0);
     // }
     return has_extension;
@@ -43,7 +43,7 @@ void print_opengl_functions() {
 
 void print_opengl() {
 #ifdef zox_print_opengl
-    zox_logg(" > opengl\n")
+    zox_log(" > opengl\n")
     zox_log("     + version   [%s]\n", glGetString(GL_VERSION))
     zox_log("     + glsl      [%s]\n", glGetString(GL_SHADING_LANGUAGE_VERSION))
     zox_log("     + vendor    [%s]\n", glGetString(GL_VENDOR))

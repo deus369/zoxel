@@ -59,25 +59,30 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
     SpawnButton spawnButton = {
         .canvas = {
             .e = canvas,
-            .size = canvas_size },
+            .size = canvas_size
+        },
         .parent = {
             .e = e,
             .position = pixel_position_global,
-            .size = pixel_size },
+            .size = pixel_size
+        },
         .element = {
+            .prefab = prefab_button,
             .layer = button_layer,
-            .anchor = float2_half, },
+            .anchor = float2_half
+        },
         .zext = {
-            .prefab = prefab_zext,
             .text = "X",
             .font_size = scaled_font_size,
             .font_thickness = 1,
             .padding = button_padding,
             .font_fill_color = default_font_fill_color,
-            .font_outline_color = default_font_outline_color },
+            .font_outline_color = default_font_outline_color
+        },
         .button = {
-            .prefab = prefab_button,
-            .color = button_color }};
+            .color = button_color,
+            .prefab_zext = prefab_zext
+        }};
     for (int i = 0; i < elements_count; i++) {
         int2 label_position = (int2) { 0, (int) (pixel_size.y / 2) - (i + 0.5f) * (scaled_font_size + button_padding.y * 2) - list_margins.y - i * button_inner_margins };
         if (is_scrollbar) label_position.x -= (scrollbar_width + scrollbar_margins * 2) / 2;

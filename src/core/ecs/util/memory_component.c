@@ -184,7 +184,7 @@ ecs_set_hooks(world, name, {\
     }\
 }
 
-// if (ptr->value) { zox_logg("      memorys decreased (dtor)\n") } 
+// if (ptr->value) { zox_log("      memorys decreased (dtor)\n") }
 
 /*void on_destroyed##_##name(ecs_iter_t *it) {\
     name *components = ecs_field(it, name, 1);\

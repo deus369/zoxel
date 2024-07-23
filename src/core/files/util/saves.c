@@ -1,3 +1,4 @@
+#define max_path_characters 256
 
 void get_save_directory(const char *game, char *path, size_t size) {
 #ifdef zoxel_on_windows
@@ -7,6 +8,24 @@ void get_save_directory(const char *game, char *path, size_t size) {
     } else {
         zox_log(" ! home_directory null [get_save_directory]")
     }
+#elif defined(zoxel_on_android)
+    // Android-specific code
+    JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
+    jobject activity = (jobject) SDL_AndroidGetActivity();
+
+    jclass context_class = (*env)->GetObjectClass(env, activity);
+    jmethodID get_files_dir = (*env)->GetMethodID(env, context_class, "getExternalFilesDir", "(Ljava/lang/String;)Ljava/io/File;");
+
+    jobject file = (*env)->CallObjectMethod(env, activity, get_files_dir, NULL);
+    jclass file_class = (*env)->GetObjectClass(env, file);
+    jmethodID get_path = (*env)->GetMethodID(env, file_class, "getPath", "()Ljava/lang/String;");
+
+    jstring path_string = (jstring)(*env)->CallObjectMethod(env, file, get_path);
+    const char *path_cstr = (*env)->GetStringUTFChars(env, path_string, NULL);
+
+    snprintf(path, size, "%s/%s", path_cstr, game);
+
+    (*env)->ReleaseStringUTFChars(env, path_string, path_cstr);
 #else
     const char *home_directory = getenv("HOME");
     if (home_directory) {
@@ -18,7 +37,7 @@ void get_save_directory(const char *game, char *path, size_t size) {
 }
 
 void get_save_filepath(const char *game, const char *filename, char *path, size_t size) {
-    char dir[256];
+    char dir[max_path_characters];
     get_save_directory(game, dir, sizeof(dir));
     snprintf(path, size, "%s/%s", dir, filename);
 }
@@ -39,7 +58,7 @@ unsigned char has_path_directory(const char *path) {
 }
 
 unsigned char has_save_game_directory(const char *game) {
-    char path[256];
+    char path[max_path_characters];
     get_save_directory(game, path, sizeof(path));
     // zox_log(" > save path is [%s]\n", path)
     return has_path_directory(path);
@@ -104,7 +123,7 @@ int delete_directory_contents(const char *path) {
 }
 
 void delete_save_directory(const char *game) {
-    char path[256];
+    char path[max_path_characters];
     get_save_directory(game, path, sizeof(path));
     if (has_path_directory(path)) {
         zox_log(" + deleting directory [%s]\n", path)
@@ -127,22 +146,23 @@ void delete_save_directory(const char *game) {
 }
 
 unsigned char create_new_save_directory(const char *game) {
-    char path[256];
+    char path[max_path_characters];
     get_save_directory(game, path, sizeof(path));
+    zox_log(" > save directory is [%s]\n", path)
     if (!has_path_directory(path)) {
         zox_log(" + creating new directory [%s]\n")
 #ifdef zoxel_on_windows
         if (_mkdir(path) == 0) {
             return 1;
         } else {
-            perror("Error creating directory");
+            zox_log(" ! error creating directory")
             return 0;
         }
 #else
         if (mkdir(path, 0700) == 0) {
             return 1;
         } else {
-            perror("Error creating directory");
+            zox_log(" ! error creating directory")
             return 0;
         }
 #endif
@@ -159,7 +179,7 @@ unsigned char create_new_save_directory(const char *game) {
 */
 
 unsigned char has_save_game_file(const char *game, const char *filename) {
-    char path[256];
+    char path[max_path_characters];
     get_save_filepath(game, filename, path, sizeof(path));
     // zox_log(" > has save? %s\n", path)
     FILE *file = fopen(path, "rb");

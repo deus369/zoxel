@@ -20,7 +20,7 @@ void traverse_chunk(TraverseChunk *data) {
     if (data->depth != data->target_depth) {
         if (!data->chunk->nodes) return; // if node is closed
         const unsigned char depth = data->depth + 1;
-        const unsigned char dividor = powers_of_two_byte[depth - 1];
+        // const unsigned char dividor = powers_of_two_byte[depth - 1];
         const ChunkOctree *chunk = data->chunk;
         byte3 position_parent = data->position;
         byte3_multiply_byte(&position_parent, 2);
@@ -52,8 +52,8 @@ void traverse_chunk(TraverseChunk *data) {
 }
 
 void ChunkDebugSystem(ecs_iter_t *it) {
-    const color_rgb debug_color = { 255, 0, 0 };
-    const float ray_length = 4;
+    // const color_rgb debug_color = { 255, 0, 0 };
+    // const float ray_length = 4;
     zox_iter_world()
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_in(ChunkOctree, chunkOctrees, 2)

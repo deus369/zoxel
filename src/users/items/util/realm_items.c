@@ -51,6 +51,10 @@ void spawn_realm_items(ecs_world_t *world, const ecs_entity_t realm) {
     meta_item_block_dark = items->value[zox_block_dark - 1];
     meta_item_block_sand = items->value[zox_block_sand - 1];
     meta_item_block_stone = items->value[zox_block_stone - 1];
+
+#ifdef zox_log_realm_generate
+    zox_log(" + generated realm [items]\n")
+#endif
 }
 
 

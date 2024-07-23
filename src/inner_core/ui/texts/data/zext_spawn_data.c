@@ -1,6 +1,6 @@
 // when spawning Zext
 typedef struct {
-    ecs_entity_t prefab;
+    // ecs_entity_t prefab;
     const char* text;
     unsigned char font_size;              // zigel_size
     unsigned char font_thickness;              // zigel_size

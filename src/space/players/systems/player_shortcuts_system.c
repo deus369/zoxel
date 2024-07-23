@@ -14,7 +14,7 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
             if (zox_has(device_entity, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                 if (keyboard->m.pressed_this_frame) {
-                    zox_logg(" > generated new music\n")
+                    zox_log(" > generated new music\n")
                     double music_speed = 0.2 + (rand() % 100) * 0.008;
                     zox_set(local_music, MusicSpeed, { music_speed });
                     zox_set(local_music, GenerateMusic, { 1 });

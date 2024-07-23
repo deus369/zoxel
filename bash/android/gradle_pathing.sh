@@ -71,16 +71,16 @@ start_gradle_build() {
     activity_name="SDLActivity"
     log_tag="Zoxel"
     # print paths
-    echo "      + zoxel_directory is $zoxel_directory"
-    echo "      + android_directory [$android_directory]"
-    echo "      + android_bash_directory [$android_bash_directory]"
-    echo "      + sdl_android_project_directory [$sdl_android_project_directory]"
-    echo "      + sdl_directory [$sdl_directory]"
-    echo "      + sdl_image_directory [$sdl_image_directory]"
-    echo "      + sdl_mixer_directory [$sdl_mixer_directory]"
-    echo "      + android sdk path to [$ANDROID_SDK_ROOT]"
-    echo "      + ndk path to [$ANDROID_NDK_HOME]"
-    echo "      + java path is [$JAVA_HOME]"
+    # echo "      + zoxel_directory is $zoxel_directory"
+    # echo "      + android_directory [$android_directory]"
+    # echo "      + android_bash_directory [$android_bash_directory]"
+    # echo "      + sdl_android_project_directory [$sdl_android_project_directory]"
+    # echo "      + sdl_directory [$sdl_directory]"
+    # echo "      + sdl_image_directory [$sdl_image_directory]"
+    # echo "      + sdl_mixer_directory [$sdl_mixer_directory]"
+    # echo "      + android sdk path to [$ANDROID_SDK_ROOT]"
+    # echo "      + ndk path to [$ANDROID_NDK_HOME]"
+    # echo "      + java path is [$JAVA_HOME]"
     return 0
 }
 

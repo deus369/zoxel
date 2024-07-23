@@ -1,5 +1,5 @@
 #ifdef zox_lib_sdl_mixer
-
+/*
 // MIX_DEFAULT_FORMAT https://wiki.libsdl.org/SDL2/SDL_AudioFormat
 
 const char *sound_file_names[] = {
@@ -24,7 +24,7 @@ unsigned char load_static_sounds() {
         }
     }
     return success;
-}
+}*/
 
 /*void dispose_static_sounds() {
 #ifdef zox_disable_io

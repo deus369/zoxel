@@ -3,13 +3,10 @@ ecs_entity_t spawn_prefab_options_ui(ecs_world_t *world) {
     zox_prefab_child(prefab_window)
     zox_prefab_name("prefab_menu_options")
     zox_add_tag(e, MenuOptions);
-    prefab_menu_options = e;
     return e;
 }
 
 ecs_entity_t spawn_menu_options(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t canvas, const int2 position, const float2 anchor) {
-    // const float2 main_menu_anchor = float2_half;
-    // const int2 main_menu_position = int2_zero;
     const unsigned char is_close_button = 0;
     const int labels_count = 3;
     const text_group labels[] = { { "volume +" }, { "volume -" }, { "return" } };

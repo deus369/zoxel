@@ -40,8 +40,8 @@ int get_label_local_character_health(ecs_world_t *world, const ecs_entity_t char
         float health_value = zox_get_value(health_stat, StatValue)
         float health_value_max = zox_get_value(health_stat, StatValueMax)
 
-        //if (!zox_has(meta_stat_health, ZoxName)) zox_logg(" ! meta_stat_health has no ZoxName\n")
-        //if (!zox_has(health_stat, ZoxName)) zox_logg(" ! health_stat has no ZoxName\n")
+        //if (!zox_has(meta_stat_health, ZoxName)) zox_log(" ! meta_stat_health has no ZoxName\n")
+        //if (!zox_has(health_stat, ZoxName)) zox_log(" ! health_stat has no ZoxName\n")
         if (!zox_has(health_stat, ZoxName)) return buffer_index;
 
         const ZoxName *health_name = zox_get(health_stat, ZoxName)

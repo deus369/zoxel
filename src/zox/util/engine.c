@@ -11,7 +11,7 @@ void handle_segfault(int sig) {
 }
 
 void handle_terminal_close(int sig) {
-    zox_logg(" > terminal close detected [control + c]\n")
+    zox_log(" > terminal close detected [control + c]\n")
     engine_end();
 }
 

@@ -6,7 +6,7 @@ unsigned char does_support_geometry_shaders() {
 
 void check_geometry() {
 #ifdef zox_print_shader_support
-    if (does_support_geometry_shaders()) zox_logg(" + geometry shader supported\n")
-    else zox_logg(" ! geometry shader unsupported\n")
+    if (does_support_geometry_shaders()) zox_log(" + geometry shader supported\n")
+    else zox_log(" ! geometry shader unsupported\n")
 #endif
 }

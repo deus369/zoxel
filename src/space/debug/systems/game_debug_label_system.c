@@ -86,6 +86,8 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 #ifdef zox_debug_player_element_links
         buffer_index = get_label_element_links(world, player, buffer, buffer_size, buffer_index);
         buffer_index = get_label_element_links(world, character, buffer, buffer_size, buffer_index);
+#endif
+#ifdef zox_debug_player_canvas
         buffer_index = get_label_children(world, canvas, buffer, buffer_size, buffer_index);
 #endif
 #ifdef zox_debug_player_chunk_position

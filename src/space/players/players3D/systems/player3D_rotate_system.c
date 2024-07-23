@@ -18,6 +18,7 @@ void Player3DRotateSystem(ecs_iter_t *it) {
         const DisableMovement *disableMovement = zox_get(character, DisableMovement)
         if (disableMovement->value) continue;
         float2 euler = { 0, 0 };
+        float2 right_stick = float2_zero;
         zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         zox_field_i(DeviceMode, deviceModes, deviceMode)
         for (int j = 0; j < deviceLinks->length; j++) {
@@ -28,7 +29,6 @@ void Player3DRotateSystem(ecs_iter_t *it) {
                 euler.x = - mouse_delta.y * mouse_rotate_multiplier;
                 euler.y = - mouse_delta.x * mouse_rotate_multiplier;
             } else if (deviceMode->value == zox_device_mode_gamepad && zox_has(device_entity, Gamepad)) {
-                float2 right_stick = float2_zero;
                 const Children *zevices = zox_get(device_entity, Children)
                 for (int k = 0; k < zevices->length; k++) {
                     const ecs_entity_t zevice_entity = zevices->value[k];
@@ -45,20 +45,36 @@ void Player3DRotateSystem(ecs_iter_t *it) {
                         }
                     }
                 }
-                if (float_abs(right_stick.x) >= joystick_cutoff_buffer) {
-                    if (right_stick.x < -joystick_cutoff_buffer) {
-                        euler.y = right_stick.x * gamepad_rotate_multiplier_x;
-                    } else if (right_stick.x > joystick_cutoff_buffer) {
-                        euler.y = right_stick.x * gamepad_rotate_multiplier_x;
+            } else if (deviceMode->value == zox_device_mode_touchscreen && zox_has(device_entity, Touchscreen)) {
+                zox_geter(device_entity, Children, zevices)
+                for (int k = 0; k < zevices->length; k++) {
+                    const ecs_entity_t zevice = zevices->value[k];
+                    if (zox_has(zevice, Finger)) continue;
+                    const ZeviceDisabled *zeviceDisabled = zox_get(zevice, ZeviceDisabled)
+                    if (zeviceDisabled->value) continue;
+                    if (zox_has(zevice, ZeviceStick)) {
+                        const unsigned char joystick_type = zox_get_value(zevice, DeviceButtonType)
+                        if (joystick_type == zox_device_stick_right) {
+                            const ZeviceStick *zeviceStick = zox_get(zevice, ZeviceStick)
+                            right_stick.x -= zeviceStick->value.x;
+                            right_stick.y -= zeviceStick->value.y;
+                        }
                     }
                 }
-                if (float_abs(right_stick.y) >= joystick_cutoff_buffer) {
-                    if (right_stick.y < -joystick_cutoff_buffer) {
-                        euler.x = right_stick.y * gamepad_rotate_multiplier_y;
-                    } else if (right_stick.y > joystick_cutoff_buffer) {
-                        euler.x = right_stick.y * gamepad_rotate_multiplier_y;
-                    }
-                }
+            }
+        }
+        if (float_abs(right_stick.x) >= joystick_cutoff_buffer) {
+            if (right_stick.x < -joystick_cutoff_buffer) {
+                euler.y = right_stick.x * gamepad_rotate_multiplier_x;
+            } else if (right_stick.x > joystick_cutoff_buffer) {
+                euler.y = right_stick.x * gamepad_rotate_multiplier_x;
+            }
+        }
+        if (float_abs(right_stick.y) >= joystick_cutoff_buffer) {
+            if (right_stick.y < -joystick_cutoff_buffer) {
+                euler.x = right_stick.y * gamepad_rotate_multiplier_y;
+            } else if (right_stick.y > joystick_cutoff_buffer) {
+                euler.x = right_stick.y * gamepad_rotate_multiplier_y;
             }
         }
         if (euler.x == 0 && euler.y == 0) continue;

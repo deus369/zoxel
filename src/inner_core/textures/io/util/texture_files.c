@@ -3,22 +3,28 @@
 ecs_entity_t spawn_texture_filepath(ecs_world_t *world, const char *filepath) {
     zox_instance(prefab_texture)
     zox_name("texture_filepath")
-    TextureData *textureData = zox_get_mut(e, TextureData)
-    TextureSize *textureSize = zox_get_mut(e, TextureSize)
+    zox_get_muter(e, TextureData, textureData)
+    zox_get_muter(e, TextureSize, textureSize)
     if (textureData->value) free(textureData->value);
-    textureData->value = load_texture_from_png(filepath, &textureSize->value, &textureData->length);
-    zox_modified(e, TextureData)
-    zox_modified(e, TextureSize)
-    int calculated_length = textureSize->value.x * textureSize->value.y;
-    if (textureData->length != calculated_length) zox_log(" + loaded texture issues: %i != %i\n", textureData->length, calculated_length)
+    textureData->value = load_texture_from_png(filepath, &textureSize->value);
+    textureData->length = (textureSize->value.x * textureSize->value.y);
+    if (!textureData->value) {
+        zox_log(" ! load error [texture null] at [%s]\n", filepath)
+        zox_delete(e)
+        return 0;
+    }
+#ifdef zox_disable_io_textures
+    zox_log(" ! texture io disabled at [%s]\n", filepath)
+    zox_delete(e)
+    return 0;
+#endif
     return e;
 }
 
 void load_files_textures(ecs_world_t *world) {
-    // get a list of files in monsters_directory
     char* load_directory = concat_file_path(resources_path, directory_textures);
-    // list_files(load_directory);
     FileList files = get_files(load_directory);
+    free(load_directory);
 #ifdef zox_print_texture_files
     zox_log("   > textures found [%i]\n", files.count)
 #endif
@@ -29,14 +35,13 @@ void load_files_textures(ecs_world_t *world) {
         char* filepath = files.files[i];
         char* filename = files.filenames[i];
         const ecs_entity_t e = spawn_texture_filepath(world, filepath);
+        if (e) string_hashmap_add(files_hashmap_textures, new_string_data_clone(filename), e);
         files_textures[i] = e;
-        string_hashmap_add(files_hashmap_textures, new_string_data_clone(filename), e);
 #ifdef zox_print_texture_files
         zox_log("       > [%i] texture [%s]\n", i, filepath)
 #endif
     }
     free_files(&files);
-    free(load_directory);
 }
 
 void dispose_files_textures() {

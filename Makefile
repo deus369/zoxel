@@ -97,6 +97,9 @@ $(target): $(SRCS)
 linux:
 	@ $(make_release)
 
+debug-make:
+	@ echo '$(make_release)'
+
 # required libraries
 prepare:
 ifeq ($(OS),Windows_NT) # on windows
@@ -183,6 +186,9 @@ make_dev = echo " > building zoxel-dev-linux [$(target_dev)]" && \
 # development
 dev:
 	@ $(make_dev)
+
+debug-make-dev:
+	@ echo '$(make_dev)'
 
 $(target_dev): $(SRCS)
 	@ $(make_dev)
@@ -433,7 +439,7 @@ git-push-zoxel-play:
 # ===== android ===== #
 # ====== ===== ====== #
 
-.PHONY: prepare-android prepare-android-emu android android-push android-sdl android-clean android-install android-run android-sign android-debug android-dev android-create-key android-uninstall android-update-settings android-dev-debug
+.PHONY: prepare-android prepare-android-emu android android-push android-sdl android-clean android-install android-run android-sign android-debug android-dev android-create-key android-uninstall android-update-settings android-dev-debug android-install-run android-sign-install-run
 
 # firefox-esr | firefox
 make_android = bash bash/android/gradle_build_release.sh # gradle_build_run.sh
@@ -502,6 +508,17 @@ android-update-settings:
 android-dev-debug:
 	@ bash bash/android/install_debug.sh
 	@ bash bash/android/debug_android.sh
+
+# combos for easiness
+
+android-install-run:
+	@ bash bash/android/gradle_install.sh
+	@ bash bash/android/gradle_run.sh
+
+android-sign-install-run:
+	@ bash bash/android/gradle_sign.sh
+	@ bash bash/android/gradle_install.sh
+	@ bash bash/android/gradle_run.sh
 
 
 # ====== ======= ====== #

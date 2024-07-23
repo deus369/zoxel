@@ -5,7 +5,7 @@ extern void resize_cameras(const int2 screen_size); // cameras, make camera just
 
 void print_sdl() {
 #ifdef zox_print_sdl
-    zox_logg(" > sdl stats\n")
+    zox_log(" > sdl stats\n")
     zox_log("     + platform:     %s\n", SDL_GetPlatform())
     zox_log("     + cpu count:    %d\n", SDL_GetCPUCount())
     zox_log("     + ram:          %d MB\n", SDL_GetSystemRAM())
@@ -55,12 +55,12 @@ void set_sdl_attributes() {
     if (override_opengl_es) {
         if (opengl_es_supported()) {
 #ifdef zoxel_debug_opengl
-            zox_logg(" + GL_ES detected\n")
+            zox_log(" + GL_ES detected\n")
 #endif
             SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
         } else {
 #ifdef zoxel_debug_opengl
-            zox_logg(" - GL_ES unavilable\n")
+            zox_log(" - GL_ES unavilable\n")
 #endif
             SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         }
@@ -75,7 +75,7 @@ int2 get_sdl_screen_size() {
     screen_size.y = displayMode.h;
     if (!(screen_size.x > 0 && screen_size.x < 22000 && screen_size.y > 0 && screen_size.y < 22000)) {
         zox_log(" - screen size is wrong [%ix%i]\n", screen_size.x, screen_size.y)
-        zox_logg(" > setting to 480x480\n")
+        zox_log(" > setting to 480x480\n")
         return (int2) { 480, 480 };
     }
     return screen_size;
@@ -196,7 +196,7 @@ SDL_Window* create_sdl_window(const int2 position, const int2 size, const unsign
 #endif
     SDL_Window* window = create_sdl_window_basic(is_using_vulkan, position, size);
     if (window == NULL && is_using_vulkan) {
-        zox_logg(" ! vulkan is not supported on this device, defaulting to [SDL_WINDOW_OPENGL]\n")
+        zox_log(" ! vulkan is not supported on this device, defaulting to [SDL_WINDOW_OPENGL]\n")
         is_using_vulkan = 0;
         window = create_sdl_window_basic(is_using_vulkan, position, size);
     }

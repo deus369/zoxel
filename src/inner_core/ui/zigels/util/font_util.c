@@ -1,5 +1,5 @@
 // #define zox_debug_font_textures
-const uint safety_checks_floodfill = 4000;
+const uint safety_checks_floodfill = 16000;
 const uint safety_checks_drawline = 1000;
 const unsigned char is_splotches = 1;
 // const unsigned char splotch_size = 2;

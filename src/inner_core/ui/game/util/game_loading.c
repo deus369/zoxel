@@ -23,9 +23,11 @@ void button_event_new_game(ecs_world_t *world, const ecs_entity_t player, const 
     set_noise_seed(realm_save.seed);
 
     // todo: i should delete old one here
+#ifndef zox_disable_save_games
     delete_save_directory("zoxel");
     create_new_save_directory("zoxel");
     save_realm("zoxel", "seed.dat", &realm_save);
+#endif
 
     zox_set(realm, GenerateRealm, { zox_generate_realm_start })
     // respawn_realm_voxels(world, realm);

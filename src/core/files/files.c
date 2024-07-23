@@ -20,7 +20,7 @@ zox_declare_tag(Asset)
 zox_begin_module(Files)
 zox_define_tag(Asset)
 #ifdef __WINE__
-    zox_logg("  > inside wine\n")
+    zox_log("  > inside wine\n")
     exit(0)
 #endif
 zoxel_end_module(Files)

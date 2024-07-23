@@ -18,7 +18,7 @@ ecs_entity_t spawn_prefab_zext(ecs_world_t *world) {
 ecs_entity_t spawn_zext(ecs_world_t *world, const SpawnZext *data) {
     const int2 element_canvas_position = get_element_pixel_position_global(data->parent.position, data->parent.size, data->element.position, data->element.anchor);
     const float2 position2D = get_element_position(element_canvas_position, data->canvas.size);
-    zox_instance(data->zext.prefab)
+    zox_instance(data->element.prefab)
     zox_name("zext")
     zox_set(e, RenderDisabled, { data->element.render_disabled })
     zox_set(e, ZextSize, { data->zext.font_size })

@@ -30,6 +30,10 @@ void int2_sub_int2(int2 *value, const int2 add) {
     value->y -= add.y;
 }
 
+int2 int2_sub_int2_(const int2 a, const int2 b) {
+    return (int2) { a.x - b.x, a.y - b.y };
+}
+
 void int2_limit(int2 *value, const int2 limits) {
     if (value->x > limits.x) value->x = limits.x;
     else if (value->x < -limits.x) value->x = -limits.x;

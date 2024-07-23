@@ -23,8 +23,11 @@ int get_chunk_index_3(int3 position, int rows, int vertical) {
 ecs_entity_t create_terrain(ecs_world_t *world, const ecs_entity_t realm, const int3 center_position, const int3 size, const ecs_entity_t prefab_terrain, const ecs_entity_t prefab_chunk) {
     // zox_log(" + terrain size [%ix%ix%i]\n", size.x, size.y, size.z)
     spawn_terrain_grid(world, real_chunk_scale);
+    if (!zox_has(realm, TilemapLink)) zox_log("AWEIJOAWEW\n")
     const ecs_entity_t tilemap = zox_get_value(realm, TilemapLink)
-    zox_set(tilemap, RealmLink, { realm })
+    if (tilemap) {
+        zox_set(tilemap, RealmLink, { realm })
+    }
     int chunks_total_length = calculate_terrain_chunks_count(size.x, size.y);
     ecs_entity_t terrain_world = spawn_terrain(world, prefab_terrain, tilemap, float3_zero, 1);
     ecs_entity_t chunks[chunks_total_length];

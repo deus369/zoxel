@@ -7,7 +7,6 @@ ecs_entity_t spawn_prefab_virtual_joystick_pointer(ecs_world_t *world) {
     zox_prefab_set(e, OutlineThickness, { 4 })
     zox_prefab_set(e, Color, { virtual_joystick_pointer_color })
     add_ui_plus_components(world, e);
-    prefab_virtual_joystick_pointer = e;
     return e;
 }
 

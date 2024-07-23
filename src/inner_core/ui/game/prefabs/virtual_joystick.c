@@ -9,11 +9,11 @@ ecs_entity_t spawn_prefab_virtual_joystick(ecs_world_t *world) {
     zox_prefab_set(e, Color, { virtual_joystick_color })
     zox_prefab_add(e, Children)
     add_ui_plus_components(world, e);
-    prefab_virtual_joystick = e;
+    zox_prefab_add(e, ZeviceLink)
     return e;
 }
 
-ecs_entity_t spawn_virtual_joystick(ecs_world_t *world, const ecs_entity_t canvas, const int2 pixel_position) {
+ecs_entity_t spawn_virtual_joystick(ecs_world_t *world, const ecs_entity_t canvas, const int2 pixel_position, const ecs_entity_t finger, const ecs_entity_t virtual_joystick) {
     const float2 anchor = float2_zero;
     const unsigned char layer = 4;
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
@@ -25,10 +25,15 @@ ecs_entity_t spawn_virtual_joystick(ecs_world_t *world, const ecs_entity_t canva
     zox_name("virtual_joystick")
     ecs_entity_t parent = canvas;
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
-    Children *children = zox_get_mut(e, Children)
+    zox_get_muter(e, Children, children)
     resize_memory_component(Children, children, ecs_entity_t, 1)
     children->value[0] = spawn_virtual_joystick_pointer(world, canvas, e, (layer + 1), int2_zero, float2_half, pixel_position_global, pixel_size, canvas_size);
-    zox_modified(e, Children)
-    // virtual_joystick = e;
+    // links
+    zox_set(e, ZeviceLink, { virtual_joystick })
+    zox_set(virtual_joystick, ElementLink, { e })
+    if (finger && zox_gett_value(finger, DeviceButtonType) == zox_device_stick_right) {
+        zox_set(e, Color, { virtual_joystick_color2 })
+        zox_set(children->value[0], Color, { virtual_joystick_pointer_color2 })
+    }
     return e;
 }

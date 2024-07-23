@@ -29,7 +29,7 @@ ecs_entity_t spawn_block(ecs_world_t *world, const SpawnBlock *data) {
             ecs_entity_t e2;
             if (data->texture_filename) {
                 e2 = spawn_texture_filename(world, data->texture_filename);
-                zox_log("   + dark block [%i] texture [%i] %lu\n", data->index, i, e2)
+                // zox_log("   + dark block [%i] texture [%i] %lu\n", data->index, i, e2)
             } else {
                 // todo: base grass off dirt, as well as sand, using HSV color contrasts
                 e2 = spawn_texture_dirt(world, prefab_texture_noise, data->seed + i, data->color);

@@ -32,7 +32,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     zox_log("spawn voxels 1\n")
 #endif
     zox_set(realm, TilemapLink, { tilemap })
-    zox_set(tilemap, RealmLink, { realm })
+    if (tilemap) zox_set(tilemap, RealmLink, { realm })
     resize_memory_component(VoxelLinks, voxelLinks, ecs_entity_t, zox_blocks_count)
 #ifdef zox_log_spawn_realm_voxels
     zox_log("spawn voxels 2\n")
@@ -214,6 +214,9 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     zox_log(" + sand_color: %xx%xx%x\n", sand_color.r, sand_color.g, sand_color.b)
     zox_log(" + stone_color: %xx%xx%x\n", stone_color.r, stone_color.g, stone_color.b)
     zox_log(" + stone_hsv: %fx%fx%f\n", stone_hsv.x, stone_hsv.y, stone_hsv.z)
+#endif
+#ifdef zox_log_realm_generate
+    zox_log(" + generated realm [voxels]\n")
 #endif
 }
 

@@ -22,4 +22,8 @@ void spawn_realm_skills(ecs_world_t *world, const ecs_entity_t realm) {
     meta_skill_aura_life = spawn_meta_skill_aura(world, prefab_skill_aura, "life aura", 1, 3, (color) { 255, 255, 255, 88 });
     zox_set(meta_skill_aura_life, TextureLink, { string_hashmap_get(files_hashmap_textures, new_string_data("aura_life")) })
     skills->value[2] = meta_skill_aura_life;
+
+#ifdef zox_log_realm_generate
+    zox_log(" + generated realm [skills]\n")
+#endif
 }

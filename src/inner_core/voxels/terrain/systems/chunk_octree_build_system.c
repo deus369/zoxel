@@ -24,6 +24,7 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
     voxels_length = voxelLinks->length;
     if (voxels_length == 0) return; // if failed to find terrain parents
     const ecs_entity_t tilemap = zox_get_value(terrain, TilemapLink)
+    if (!tilemap) return;
     const TilemapUVs *tilemapUVs = zox_get(tilemap, TilemapUVs)
     if (tilemapUVs->value == NULL || tilemapUVs->length == 0) {
         // zox_log(" ! tilemap troubles in chunk building: %lu %i\n", tilemap, tilemapUVs->length)

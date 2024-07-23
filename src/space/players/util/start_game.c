@@ -1,4 +1,7 @@
 void post_player_start_game(ecs_world_t *world, const ecs_entity_t player) {
+#ifdef zox_disable_player_ui
+    return;
+#endif
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     find_child_with_tag(canvas, MenuActions, menu_actions)
     if (!menu_actions) spawn_menu_actions_player(world, player);
@@ -26,12 +29,15 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
     const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data(player_vox_model));
     if (!vox) {
         zox_log(" ! [tall_cube] not found on player\n")
-        return;
     }
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
+    if (!camera) return;
     const ecs_entity_t game = zox_get_value(player, GameLink)
+    if (!game) return;
     const ecs_entity_t realm = zox_get_value(game, RealmLink)
+    if (!realm) return;
     const ecs_entity_t terrain = zox_get_value(realm, TerrainLink)
+    if (!terrain) return;
     const ChunkLinks *chunk_links = zox_get(terrain, ChunkLinks)
     int3 chunk_position = int3_zero;
     byte3 local_position = byte3_zero;
@@ -40,7 +46,11 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
     for (int i = 4; i >= -4; i--) {
         chunk_position.y = i;
         const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
-        const ChunkOctree *chunk_octree = zox_get(chunk, ChunkOctree)
+        if (!chunk) {
+            zox_log(" > no chunk here [%ix%ix%i]\n", chunk_position.x, chunk_position.y, chunk_position.z)
+            continue;
+        }
+        zox_geter(chunk, ChunkOctree, chunk_octree)
         // local_position = find_position_in_chunk(chunk_octree, max_octree_depth);
         local_position = find_position_in_chunk_with_above(chunk_octree, max_octree_depth, chunk_octree_above);
         if (!byte3_equals(byte3_full, local_position)) {
@@ -62,17 +72,13 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
     attach_camera_to_character(world, player, camera, character);
     // zox_add_tag(character_group.x, Aura)
     spawn_in_game_ui(world, player, character_group);
+#ifndef zox_disable_save_games
     if (has_save_game_file("zoxel", "player.dat")) {
-        // old game
-        // zox_log("loading game\n")
-        // load_player_e(world, player);
         delay_event(world, &load_player_e, player, 0.01f);
     } else {
-        // new game as no save file existed
-        // zox_log("new game\n")
-        // save_player_e(world, player);
         delay_event(world, &save_player_e, player, 0.01f);
     }
+#endif
 }
 
 // spawn character and set camera to streaming terrain
@@ -87,11 +93,11 @@ void player_start_game3D_delayed(ecs_world_t *world, const ecs_entity_t player) 
 #else
     if (game_rule_attach_to_character) {
         delay_event(world, &spawn_vox_player_character_in_terrain, player, 0.1f);
-        delay_event(world, &post_player_start_game, player, 0.34f);
     } else {
         attach_camera_to_character(world, player, camera, 0);
     }
 #endif
+    delay_event(world, &post_player_start_game, player, 0.34f);
 }
 
 void player_start_game2D_delayed(ecs_world_t *world, const ecs_entity_t player) {

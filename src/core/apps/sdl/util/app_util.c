@@ -32,7 +32,7 @@ ecs_entity_t spawn_main_window(ecs_world_t *world) {
 void app_update_gpu(ecs_world_t *world) {
     const SDLWindow *window = zox_get(main_app, SDLWindow);
     if (window->value) SDL_GL_SwapWindow(window->value);
-    else zox_logg("   ! did not swap opengl window\n")
+    else zox_log("   ! did not swap opengl window\n")
 }
 
 // move this to an app system function?
@@ -42,7 +42,7 @@ void update_sdl(ecs_world_t *world, ecs_entity_t e, const int2 viewport_size) {
         input_extract_from_sdl(world, event, viewport_size);
         int eventType = event.type;
         if (eventType == SDL_QUIT) {
-            zox_logg(" > window was quit\n")
+            zox_log(" > window was quit\n")
             engine_end();
         } else if (eventType == SDL_WINDOWEVENT) {
             if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) { // handles application resizing
@@ -62,10 +62,10 @@ void update_sdl(ecs_world_t *world, ecs_entity_t e, const int2 viewport_size) {
                     zox_set(e, WindowPosition, { new_window_position })
                 }
             } else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) {
-                zox_logg(" > window was minimized\n")
+                zox_log(" > window was minimized\n")
                 opengl_dispose_resources(world);
             } else if (event.window.event == SDL_WINDOWEVENT_RESTORED) {
-                zox_logg(" > window was restored\n")
+                zox_log(" > window was restored\n")
                 opengl_restore_resources(world);
             } else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
                 updating_time = 0;

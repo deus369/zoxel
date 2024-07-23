@@ -23,14 +23,14 @@ ecs_entity_t prefab_taskbar;
 #include "taskbar.c"
 
 void spawn_prefabs_game_ui(ecs_world_t *world) {
-    spawn_prefab_main_menu(world);
+    prefab_main_menu = spawn_prefab_main_menu(world);
+    prefab_menu_paused = spawn_prefab_pause_ui(world);
+    prefab_menu_options = spawn_prefab_options_ui(world);
     spawn_prefab_fps_display(world);
-    spawn_prefab_pause_ui(world);
-    spawn_prefab_options_ui(world);
     spawn_prefab_quad_count_label(world);
     spawn_prefab_game_debug_label(world, prefab_label_background);
-    spawn_prefab_virtual_joystick_pointer(world);
-    spawn_prefab_virtual_joystick(world);
+    prefab_virtual_joystick_pointer = spawn_prefab_virtual_joystick_pointer(world);
+    prefab_virtual_joystick = spawn_prefab_virtual_joystick(world);
     prefab_tooltip = spawn_prefab_tooltip(world, prefab_label_background);
     prefab_icon_frame_taskbar = spawn_prefab_icon_frame_taskbar(world, prefab_icon_frame);
     prefab_taskbar = spawn_prefab_taskbar(world, prefab_element);

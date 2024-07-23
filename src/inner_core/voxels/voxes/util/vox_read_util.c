@@ -271,7 +271,7 @@ int read_vox(const char* filename, vox_file *vox) {
         }
     } else {
 #ifdef zoxel_debug_vox_read
-        zox_logg(" + using default palette\n")
+        zox_log(" + using default palette\n")
 #endif
         vox->palette.values = malloc(sizeof(unsigned int) * 256);
         memcpy(vox->palette.values, default_palette, sizeof(unsigned int) * 256);

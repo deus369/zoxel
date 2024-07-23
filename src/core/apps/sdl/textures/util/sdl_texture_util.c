@@ -9,35 +9,29 @@ SDL_Surface* load_png_as_surface(const char *filepath) {
 }
 
 // Assuming TextureData and TextureSize are defined as they are in your save function
-color* load_texture_from_png(const char *filepath, int2 *size, int *length) {
-    SDL_Surface* loadedSurface = IMG_Load(filepath);
-    if (!loadedSurface) {
+color* load_texture_from_png(const char *filepath, int2 *size) {
+    SDL_Surface* surface = IMG_Load(filepath);
+    if (!surface) {
         zox_log(" ! failed with [IMG_Load]: %s\n", SDL_GetError())
         return NULL;
     }
-    size->x = loadedSurface->w;
-    size->y = loadedSurface->h;
-    // Here, I assume your TextureData structure is designed to store raw pixel data.
-    // You might need to adjust this part depending on the exact structure of TextureData
-    int colors_length = size->x * size->y;
-    *length = colors_length;
-    int byte_length = colors_length * sizeof(color);
-    color* data = (color*) malloc(byte_length);
-    // resize_memory_component(TextureData, data, color, colors_length)
-    // textureData->value = malloc(loadedSurface->w * loadedSurface->h * 4); // Assuming 4 bytes per pixel (RGBA)
-
+    const int pitch = surface->pitch;
+    size->x = surface->w;
+    size->y = surface->h;
+    const int colors_length = size->x * size->y;
+    const int byte_length = colors_length * sizeof(color);
     // Flip the image vertically
     // remember: sdl considers top left origin, while opengl is bottom left
-    int pitch = loadedSurface->pitch;
-    unsigned char* pixels = (unsigned char*)loadedSurface->pixels;
-    for (int y = 0; y < size->y; ++y) {
-        memcpy(data + (size->y - 1 - y) * size->x, pixels + y * pitch, size->x * sizeof(color));
-    }
-
-    // memcpy(data, loadedSurface->pixels, byte_length); //  loadedSurface->w * loadedSurface->h * 4);
-    SDL_FreeSurface(loadedSurface);
+    unsigned char* pixels = (unsigned char*) surface->pixels;
+    color* data = (color*) malloc(byte_length);
+    for (int y = 0; y < size->y; ++y) memcpy(data + (size->y - 1 - y) * size->x, pixels + y * pitch, size->x * sizeof(color));
+    SDL_FreeSurface(surface);
     return data;
 }
+
+// resize_memory_component(TextureData, data, color, colors_length)
+// textureData->value = malloc(loadedSurface->w * loadedSurface->h * 4); // Assuming 4 bytes per pixel (RGBA)
+// memcpy(data, surface->pixels, byte_length); //  surface->w * surface->h * 4);
 
 void save_texture_as_png(const color *data, const int2 size, const char *filepath) {
     int rmask, gmask, bmask, amask;
@@ -67,7 +61,10 @@ void save_texture_as_png(const color *data, const int2 size, const char *filepat
 
 SDL_Surface* load_png_as_surface(const char *filepath) { return NULL; }
 
-color* load_texture_from_png(const char *filepath, int2 *size, int *length) { return NULL; }
+color* load_texture_from_png(const char *filepath, int2 *size) {
+    zox_log(" ! sdl_image is disabled\n")
+    return NULL;
+}
 
 void save_texture_as_png(const color *data, const int2 size, const char *filepath) { }
 

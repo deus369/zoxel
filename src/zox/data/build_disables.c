@@ -1,10 +1,38 @@
 // disables
 
+// #define zoxel_mouse_emulate_touch
+#define zoxel_start_with_debug_ui
+// still testing this
+#define zox_disable_touch_buttons
+
+// if android, this shouldn't need to be here?
+#ifdef __ANDROID__
+    #ifndef zox_lib_sdl_images
+        #define zox_lib_sdl_images
+    #endif
+    #ifndef zox_lib_sdl_mixer
+        #define zox_lib_sdl_mixer
+    #endif
+#endif
+
+// #define zox_disable_tilemaps
+// #define zox_log_realm_generate
+
+//#define zox_disable_npcs
+//#define zox_disable_block_voxes
+/*#define zox_is_flatlands
+#define zox_terrain_tiny*/
+
+// #define zox_disable_player_ui
+
+// #define zox_disable_save_games
+// #define zox_disable_player_character
+/*#define zox_disable_io_textures
+#define zox_disable_io_voxes*/
+
 // #define zox_disable_skybox
-// #define zox_disable_npcs
 // #define zox_disable_statbars
 // #define zox_test_settings_00
-#define zoxel_start_with_debug_ui
 // #define zox_is_flatlands
 
 // #define zox_disable_module_networking

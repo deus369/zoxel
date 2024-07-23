@@ -1,9 +1,7 @@
 #define directory_sounds "sounds"character_slash
 
 int sound_files_count = 0;
-#ifdef zox_lib_sdl_mixer
 ecs_entity_t *files_sounds;
-#endif
 string_hashmap *files_hashmap_sounds;
 
 void load_files_sounds() {
@@ -12,12 +10,10 @@ void load_files_sounds() {
 #ifdef zox_print_files
     zox_log("   > sounds found [%i]\n", files.count)
 #endif
-#ifdef zox_lib_sdl_mixer
     sound_files_count = files.count;
     files_sounds = malloc(sizeof(ecs_entity_t) * files.count);
     files_hashmap_sounds = create_string_hashmap(files.count);
     zox_log(" + loaded sounds [%i]\n", sound_files_count)
-#endif
     for (int i = 0; i < files.count; i++) {
         char* filepath = files.files[i];
         char* filename = files.filenames[i];
@@ -36,6 +32,8 @@ void load_files_sounds() {
         const ecs_entity_t e = spawn_sound_filepath(world, prefab_sound_filepath, sound_data, sound_length);
         files_sounds[i] = e;
         string_hashmap_add(files_hashmap_sounds, new_string_data_clone(filename), e);
+#else
+        files_sounds[i] = 0;
 #endif
     }
     free_files(&files);
@@ -75,7 +73,7 @@ ecs_entity_t spawn_sound_from_file(ecs_world_t *world, const ecs_entity_t prefab
     // wait this won't clear, so we need SDLData t too'
     //Mix_LoadWAV(sound_file_names[0]) }); //  sounds[0] });
 #else
-    zox_log(" ! sound cannot play as no SDL_MIXER [%i]\n", index)
+    zox_log(" ! sound cannot play as no SDL_MIXER\n")
 #endif
     return e;
 }

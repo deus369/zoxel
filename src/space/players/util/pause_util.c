@@ -15,10 +15,12 @@ void pause_player_delayed(ecs_world_t *world, const ecs_entity_t player) {
     // unlock_achievement("achievement_paused_game");
 }
 
+extern void dispose_menu_game(ecs_world_t *world, const ecs_entity_t player);
+
 void pause_player(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
-    dispose_in_game_ui(world, player); // check this, ingame ui should now be linked to player, got from canvas
+    dispose_menu_game(world, player); // check this, ingame ui should now be linked to player, got from canvas
     disable_inputs_until_release(world, player, zox_device_mode_none);
     const unsigned char can_roam = zox_get_value(camera, CanRoam)
     const ecs_entity_t character = zox_get_value(player, CharacterLink)
@@ -36,4 +38,18 @@ void pause_player(ecs_world_t *world, const ecs_entity_t player) {
         // zox_log("deleted old event\n")
     }
     zox_set(player, PlayerPauseEvent, { pause_event })
+}
+
+void toggle_pause_ui(ecs_world_t *world, const ecs_entity_t player) {
+    const ecs_entity_t game = zox_get_value(player, GameLink)
+    const unsigned char game_state = zox_get_value(game, GameState)
+    if (!(game_state == zox_game_playing || game_state == zox_game_paused)) return;
+    unsigned char is_paused = game_state == zox_game_paused;
+    if (!is_paused) set_game_state_target(world, game, zox_game_paused);
+    else set_game_state_target(world, game, zox_game_playing);
+}
+
+// from touch_ui
+void button_event_pause_game(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
+    toggle_pause_ui(world, player);
 }

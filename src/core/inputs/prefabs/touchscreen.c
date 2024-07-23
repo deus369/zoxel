@@ -1,7 +1,6 @@
 ecs_entity_t prefab_touchscreen;
 ecs_entity_t touchscreen_entity;
-const unsigned char fingers_count = 1;
-const unsigned char virtual_joysticks_count = 1;
+const unsigned char fingers_count = 2;
 
 ecs_entity_t spawn_prefab_touchscreen(ecs_world_t *world) {
     zox_prefab()
@@ -17,12 +16,19 @@ ecs_entity_t spawn_prefab_touchscreen(ecs_world_t *world) {
 ecs_entity_t spawn_touchscreen(ecs_world_t *world) {
     zox_instance(prefab_touchscreen)
     zox_name("touchscreen")
-    const unsigned char touchscreen_zevice_count = fingers_count + virtual_joysticks_count;
-    Children *children = zox_get_mut(e, Children)
-    resize_memory_component(Children, children, ecs_entity_t, touchscreen_zevice_count)
-    for (unsigned char i = 0; i < fingers_count; i++) children->value[i] = spawn_zevice_pointer(world, i, i);
-    for (unsigned char i = fingers_count; i < fingers_count + virtual_joysticks_count; i++) children->value[i] = spawn_zevice_stick(world, i, i);
-    zox_modified(e, Children)
+    // const unsigned char touchscreen_zevice_count = fingers_count + virtual_joysticks_count;
+    zox_get_muter(e, Children, children)
+    // resize_memory_component(Children, children, ecs_entity_t, touchscreen_zevice_count)
+    for (unsigned char i = 0; i < fingers_count; i++) {
+        const ecs_entity_t finger = spawn_zevice_pointer(world, i, i);
+        const ecs_entity_t virtual_joystick = spawn_zevice_stick(world, i, i);
+        zox_add_tag(finger, Finger)
+        zox_set(finger, VirtualZeviceLink, { virtual_joystick })
+        add_to_Children(children, finger);
+        add_to_Children(children, virtual_joystick);
+        if (i == 0) zox_set(virtual_joystick, DeviceButtonType, { zox_device_stick_left })
+        else zox_set(virtual_joystick, DeviceButtonType, { zox_device_stick_right })
+    }
     touchscreen_entity = e;
     return e;
 }

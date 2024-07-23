@@ -15,7 +15,7 @@ void DeviceModeResponseSystem(ecs_iter_t *it) {
             const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
             // handle previous mode
             if (deviceMode->value == zox_device_mode_touchscreen) {
-                if (game_state == zox_game_playing) dispose_in_game_ui_touch(world);
+                if (game_state == zox_game_playing) dispose_game_menu_touch(world, canvas);
             }
             // handle new mode
             if (deviceModeDirty->value == zox_device_mode_gamepad) {

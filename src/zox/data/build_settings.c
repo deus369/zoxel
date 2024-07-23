@@ -34,7 +34,6 @@
 // #define zox_use_orthographic_projection // used for different projection matrix
 // #define zox_spawn_terrain_on_startup
 
-// #define zoxel_mouse_emulate_touch
 // #define zoxel_test_networking
 
 // #define zox_characters_as_cubes

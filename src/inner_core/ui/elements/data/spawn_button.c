@@ -1,7 +1,8 @@
 // for only the button
 typedef struct {
-    ecs_entity_t prefab;
     color color;
+    ecs_entity_t prefab_zext;
+    // ecs_entity_t prefab_zigel;
 } SpawnButtonData;
 
 typedef struct {

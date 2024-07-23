@@ -78,9 +78,9 @@ void DeviceModeSystem(ecs_iter_t *it) {
 #ifdef zox_debug_log_device_mode_system
         if (deviceModeDirty->value && old_device_mode != deviceModeDirty->value) {
             zox_log(" + device mode switched to [%i] from [%i]\n", deviceModeDirty->value, deviceMode->value)
-            if (deviceModeDirty->value == zox_device_mode_keyboardmouse) zox_logg(" => input mode changed to keyboardmouse ==\n")
-            else if (deviceModeDirty->value == zox_device_mode_touchscreen) zox_logg(" => input mode changed to ouchscreen ==\n")
-            else if (deviceModeDirty->value == zox_device_mode_gamepad) zox_logg(" => input mode changed to gamepad ==\n")
+            if (deviceModeDirty->value == zox_device_mode_keyboardmouse) zox_log(" => input mode changed to keyboardmouse ==\n")
+            else if (deviceModeDirty->value == zox_device_mode_touchscreen) zox_log(" => input mode changed to ouchscreen ==\n")
+            else if (deviceModeDirty->value == zox_device_mode_gamepad) zox_log(" => input mode changed to gamepad ==\n")
         }
 #endif
     }

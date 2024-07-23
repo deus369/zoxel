@@ -32,8 +32,8 @@ void spawn_prefabs_networking(ecs_world_t *world) {
 #ifdef zox_testing_networking
     if (server_mode) spawn_net_room(world, SERVER_PORT);
     else spawn_net_player(world, PORT, IP_TO, SERVER_PORT);
-    if (server_mode) zox_logg(" > network server mode activated\n")
-    else zox_logg(" > network client mode activated\n")
+    if (server_mode) zox_log(" > network server mode activated\n")
+    else zox_log(" > network client mode activated\n")
 #endif
 }
 

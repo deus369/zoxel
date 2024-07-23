@@ -17,7 +17,7 @@ unsigned char load_vulkan_library() {
             zox_log(" ! failed to load vulkan library [%s]\n", SDL_GetError())
             return EXIT_FAILURE;
         } else {
-            zox_logg(" + vulkan library loaded\n")
+            zox_log(" + vulkan library loaded\n")
         }
     }
     return EXIT_SUCCESS;
@@ -42,7 +42,7 @@ void zox_log_vulkan_args(const char *text, ...) {
 
 void zox_log_vulkan_no_args(const char *text) {
 #ifdef zox_debug_vulkan_core
-    zox_logg(text)
+    zox_log(text)
 #endif
 }
 

@@ -7,6 +7,9 @@ SavePlayer player_save;
 load_and_save_data(SavePlayer, player)
 
 void load_character_e(ecs_world_t *world, const ecs_entity_t character) {
+#ifdef zox_disable_save_games
+    return;
+#endif
     load_player("zoxel", "player.dat", &player_save);
     zox_set(character, Position3D, { float3_add(player_save.position, (float3) { 0, 0.01f, 0 }) })
     zox_set(character, Euler, { player_save.euler })
@@ -16,6 +19,9 @@ void load_character_e(ecs_world_t *world, const ecs_entity_t character) {
 }
 
 void save_character_e(ecs_world_t *world, const ecs_entity_t character) {
+#ifdef zox_disable_save_games
+    return;
+#endif
     player_save.position = zox_get_value(character, Position3D)
     player_save.euler = zox_get_value(character, Euler)
     // player_save.rotation = zox_get_value(character, Rotation3D)

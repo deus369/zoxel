@@ -15,6 +15,9 @@ ecs_entity_t spawn_prefab_tilemap(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_tilemap(ecs_world_t *world, ecs_entity_t prefab) {
+#ifdef zox_disable_tilemaps
+    return 0;
+#endif
     if (prefab == 0) return 0;
     zox_instance(prefab)
     zox_name("tilemap")

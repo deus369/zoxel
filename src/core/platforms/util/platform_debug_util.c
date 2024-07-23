@@ -8,19 +8,19 @@ unsigned char is_steam_deck() {
 
 void debug_platform() {
 #if defined(zoxel_on_android)
-    zox_logg(" > platform [android]\n")
+    zox_log(" > platform [android]\n")
 #elif defined(zoxel_on_windows)
-    zox_logg(" > platform [windows]\n")
+    zox_log(" > platform [windows]\n")
 #elif defined(zoxel_on_web)
-    zox_logg(" > platform [web]\n")
+    zox_log(" > platform [web]\n")
 #elif defined(zoxel_on_linux)
-    zox_logg(" > platform [linux]\n")
+    zox_log(" > platform [linux]\n")
 #endif
 #if defined(zoxel_on_steamdeck)
-    zox_logg(" > platform [steamdeck]\n")
+    zox_log(" > platform [steamdeck]\n")
 #endif
     if (is_steam_deck()) {
-        zox_logg(" > platform [steamdeck] (check 2)\n")
+        zox_log(" > platform [steamdeck] (check 2)\n")
     }
 }
 

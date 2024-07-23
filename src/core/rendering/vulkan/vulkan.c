@@ -19,8 +19,8 @@ unsigned char initialize_vulkan(ecs_world_t *world) {
 }
 
 void check_vulkan_suppport() {
-    if (is_vulkan_supported()) zox_logg(" > vulkan is supported\n")
-    else zox_logg(" ! vulkan not supported\n")
+    if (is_vulkan_supported()) zox_log(" > vulkan is supported\n")
+    else zox_log(" ! vulkan not supported\n")
 }
 
 zox_begin_module(Vulkan)

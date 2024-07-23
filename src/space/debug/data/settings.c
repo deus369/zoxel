@@ -23,6 +23,7 @@ double time_update_debug_label_system = 0;
 // #define zox_debug_player_character3D
 // #define zox_debug_player_grounded
 // #define zox_debug_player_element_links
+// #define zox_debug_player_canvas
 
 // streaming
 // #define zox_debug_zox_statistics

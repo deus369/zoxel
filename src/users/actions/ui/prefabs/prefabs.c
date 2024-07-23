@@ -11,7 +11,7 @@ ecs_entity_t spawn_menu_actions_player(ecs_world_t *world, const ecs_entity_t pl
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     SpawnWindowUsers data = get_default_spawn_window_users_data(character, canvas, canvas_size);
     data.header_zext.text = "";
-    data.window.prefab = prefab_menu_actions;
+    data.element.prefab = prefab_menu_actions;
     data.icon.prefab = prefab_icon_action;
     data.window.user_links_id = zox_id(ActionLinks);
     data.header_zext.font_size = 8;

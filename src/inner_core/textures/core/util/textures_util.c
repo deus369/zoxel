@@ -9,6 +9,13 @@ void add_frame_texture_type(ecs_world_t *world, const ecs_entity_t e, const colo
     zox_prefab_set(e, OutlineColor, { secondary })
 }
 
+void set_frame_texture_type(ecs_world_t *world, const ecs_entity_t e, const color primary, const color secondary, unsigned char corner, unsigned char thickness) {
+    zox_set(e, FrameCorner, { corner })
+    zox_set(e, OutlineThickness, { thickness })
+    zox_set(e, Color, { primary })
+    zox_set(e, OutlineColor, { secondary })
+}
+
 unsigned char check_texture(const color *data, const int2 size, const int2 pixel_position, const color find_color, int distance) {
     if (!int2_in_bounds(pixel_position, size)) return 0;
     if (color_equal(find_color, data[int2_array_index(pixel_position, size)])) return 1;

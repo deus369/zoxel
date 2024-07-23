@@ -57,4 +57,7 @@ void spawn_realm_stats(ecs_world_t *world, ecs_entity_t realm) {
     // Jobs
     // create regen stat
     // statLinks->value[1] = create_stat_level(world, "farming");
+#ifdef zox_log_realm_generate
+    zox_log(" + generated realm [stats]\n")
+#endif
 }

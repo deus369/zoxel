@@ -33,9 +33,9 @@ void test_steam_cloud() {
     test_bytes_write[0] = test_read_byte;
     test_bytes_write[1] = test_read_byte2;
     if (!steam_remote_save(save_file_name, test_bytes_write, default_file_length)) {
-        zox_logg(" > error saving to cloud saves\n")
+        zox_log(" > error saving to cloud saves\n")
     } /*else {
-        zox_logg(" > success saving to cloud saves\n")
+        zox_log(" > success saving to cloud saves\n")
     }*/
     free(test_bytes_write);
 #endif

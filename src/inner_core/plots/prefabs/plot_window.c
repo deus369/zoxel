@@ -58,12 +58,12 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const ecs_entity_t pref
                 .size = pixel_size
             },
             .element = {
+                .prefab = prefab_zext,
                 .position = (int2) { 0, -(header_size.y) },
                 .layer = header_layer,
                 .anchor = (float2) { 0, 1.0f },
             },
             .zext = {
-                .prefab = prefab_zext,
                 .text = "min 5.4\nmax 24.3",
                 .font_size = 12,
                 .font_thickness = 1,

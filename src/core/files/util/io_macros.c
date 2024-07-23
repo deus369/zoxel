@@ -1,5 +1,3 @@
-
-
 #define load_and_save_data(Name, name)\
 \
 void save_##name(const char *game, const char *filename, Name *data) {\

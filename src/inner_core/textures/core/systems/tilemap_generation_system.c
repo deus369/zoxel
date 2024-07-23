@@ -76,7 +76,7 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
                         }
                         int texture_index = int2_array_index(pixel_position, texture_size);
                         if (texture_index >= voxel_texture_data->length) {
-                            zox_log(" ! texture_index >= voxel_texture_data->length\n")
+                            // zox_log(" ! texture_index >= voxel_texture_data->length\n")
                             continue;
                         }
                         textureData->value[tilemap_index] = voxel_texture_data->value[texture_index];

@@ -1,6 +1,7 @@
 // all t the spawn data used for spawn
 typedef struct {
-    ecs_entity_t prefab;
+    ecs_entity_t prefab_header;
+    ecs_entity_t prefab_header_text;
     byte2 grid_size;
     unsigned char icon_size;
     unsigned char grid_padding;

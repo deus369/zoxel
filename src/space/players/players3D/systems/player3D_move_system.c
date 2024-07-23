@@ -72,16 +72,19 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                     }
                 }
             } else if (deviceMode->value == zox_device_mode_touchscreen && zox_has(device_entity, Touchscreen)) {
-                const Children *zevices = zox_get(device_entity, Children)
+                zox_geter(device_entity, Children, zevices)
                 for (int k = 0; k < zevices->length; k++) {
-                    if (k < fingers_count) continue;
-                    const ecs_entity_t zevice_entity = zevices->value[k];
-                    const ZeviceDisabled *zeviceDisabled = zox_get(zevice_entity, ZeviceDisabled)
+                    const ecs_entity_t zevice = zevices->value[k];
+                    if (zox_has(zevice, Finger)) continue;
+                    const ZeviceDisabled *zeviceDisabled = zox_get(zevice, ZeviceDisabled)
                     if (zeviceDisabled->value) continue;
-                    if (zox_has(zevice_entity, ZeviceStick)) {
-                        const ZeviceStick *zeviceStick = zox_get(zevice_entity, ZeviceStick)
-                        left_stick.x -= zeviceStick->value.x;
-                        left_stick.y += zeviceStick->value.y;
+                    if (zox_has(zevice, ZeviceStick)) {
+                        const unsigned char joystick_type = zox_get_value(zevice, DeviceButtonType)
+                        if (joystick_type == zox_device_stick_left) {
+                            const ZeviceStick *zeviceStick = zox_get(zevice, ZeviceStick)
+                            left_stick.x -= zeviceStick->value.x;
+                            left_stick.y += zeviceStick->value.y;
+                        }
                     }
                 }
             }

@@ -1,8 +1,8 @@
 #define find_child_with_tag(parent, tag, child_name)\
-const Children *children##_##tag = zox_get(parent, Children)\
+const Children *children_##tag = zox_get(parent, Children)\
 ecs_entity_t child_name = 0;\
-for (int i = 0; i < children##_##tag->length; i++) {\
-    const ecs_entity_t child_e = children##_##tag->value[i];\
+for (int i = 0; i < children_##tag->length; i++) {\
+    const ecs_entity_t child_e = children_##tag->value[i];\
     if (child_e && zox_has(child_e, tag)) {\
         child_name = child_e;\
         break;\
@@ -11,9 +11,9 @@ for (int i = 0; i < children##_##tag->length; i++) {\
 
 #define if_has_child_with_tag(e, tag)\
 ecs_entity_t child_##tag = 0;\
-const Children *children##_##tag = zox_get(e, Children)\
-for (int i = 0; i < children##_##tag->length; i++) {\
-    const ecs_entity_t child_e = children##_##tag->value[i];\
+const Children *children_##tag = zox_get(e, Children)\
+for (int i = 0; i < children_##tag->length; i++) {\
+    const ecs_entity_t child_e = children_##tag->value[i];\
     if (child_e && zox_has(child_e, tag)) {\
         child_##tag = child_e;\
         break;\

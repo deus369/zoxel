@@ -19,4 +19,4 @@ fi
 
 # Set JAVA_HOME to the matching directory
 export JAVA_HOME="$matching_dir"
-echo "JAVA_HOME is set to: $JAVA_HOME"
+echo " > JAVA_HOME is set to: $JAVA_HOME"

@@ -23,13 +23,13 @@ ecs_entity_t spawn_label_background(ecs_world_t *world, const ecs_entity_t prefa
             .size = parent_size
         },
         .element = {
+            .prefab = prefab,
             .layer = layer,
             .anchor = anchor,
             .position = pixel_position,
             .render_disabled = render_disabled,
         },
         .zext = {
-            .prefab = prefab,
             .text = text,
             .font_size = font_size,
             .font_thickness = 1,

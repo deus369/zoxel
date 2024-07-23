@@ -47,7 +47,7 @@ void player_end_game(ecs_world_t *world, const ecs_entity_t player) {
     find_child_with_tag(canvas, MenuActions, menu_actions)
     if (menu_actions) zox_delete(menu_actions)
 
-    dispose_in_game_ui(world, player);
+    dispose_menu_game(world, player);
     trigger_canvas_fade_transition(world, canvas);
 
     if (zox_game_type == zox_game_mode_3D) {

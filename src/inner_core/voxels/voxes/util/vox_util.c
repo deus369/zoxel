@@ -61,6 +61,9 @@ void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox)
 }
 
 void clone_vox_data(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t source) {
+    if (!source) {
+        return;
+    }
     const int3 chunk_size = zox_get_value(source, ChunkSize)
     zox_set(e, ChunkSize, { chunk_size })
     const ChunkOctree *chunk_octree_source = zox_get(source, ChunkOctree)
