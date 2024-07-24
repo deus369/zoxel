@@ -3,7 +3,7 @@
 // #define zoxel_mouse_emulate_touch
 #define zoxel_start_with_debug_ui
 // still testing this
-#define zox_disable_touch_buttons
+// #define zox_disable_touch_buttons
 
 // if android, this shouldn't need to be here?
 #ifdef __ANDROID__

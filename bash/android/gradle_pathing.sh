@@ -3,12 +3,12 @@
 # global variables
 is_sdl_image=true
 is_sdl_mixer=true
-echo "  > gradle pathing check"
+# echo "  > gradle pathing check"
 pathing_locker_id=0
 pathing_locker="/tmp/zox_gradle_building.lock"
 
 clear_gradle_build() {
-    echo "  > clearing gradle pathing lock"
+    # echo "  > clearing gradle pathing lock"
     if [ -f "$pathing_locker" ]; then
         rm "$pathing_locker"
     fi
@@ -17,7 +17,7 @@ clear_gradle_build() {
 # Function to start the Gradle build
 start_gradle_build() {
     if [ -z "$sdl_directory" ]; then
-        echo " > clearing gradle as failed to clear last run"
+        # echo " > clearing gradle as failed to clear last run"
         clear_gradle_build
     fi
     # Check if the lock file exists
@@ -35,7 +35,7 @@ start_gradle_build() {
     platform_ver=34 # 30
     platform_tools_ver=34.0.5
     build_tools_ver=34.0.0-rc4 # 30.0.3
-    echo "  > gradle setting paths"
+    # echo "  > gradle setting paths"
     zoxel_directory=$PWD
     android_sdk_path="$zoxel_directory/build/android_sdk"
     apksigner=$android_sdk_path/build-tools/$build_tools_ver/apksigner

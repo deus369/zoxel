@@ -97,8 +97,8 @@ zox_gpu_dispose_system(ShaderDisposeSystem, [in] ShaderGPULink)
 zox_gpu_restore_system(ShaderRestoreSystem, [in] ShaderSourceIndex, [out] ShaderGPULink)
 zox_gpu_dispose_system(MaterialDisposeSystem, [in] MaterialGPULink)
 zox_gpu_restore_system(MaterialRestoreSystem, [in] ShaderLink, [out] MaterialGPULink)
-zox_system_1(CameraRender3DSystem, zox_pipelines_rendering, [in] cameras.ViewMatrix, [in] cameras.FieldOfView, [in] cameras.ScreenPosition, [in] cameras.ScreenDimensions, [none] !cameras.CameraUI)
-zox_system_1(CameraRenderUISystem, zox_pipelines_rendering, [in] cameras.ViewMatrix, [in] cameras.FieldOfView, [in] cameras.ScreenPosition, [in] cameras.ScreenDimensions, [none] cameras.CameraUI)
+zox_system_1(CameraRender3DSystem, zox_pipelines_rendering, [in] cameras.ViewMatrix, [in] cameras.FieldOfView, [in] cameras.ScreenPosition, [in] ScreenDimensions, [none] !cameras.CameraUI)
+zox_system_1(CameraRenderUISystem, zox_pipelines_rendering, [in] cameras.ViewMatrix, [in] cameras.FieldOfView, [in] cameras.ScreenPosition, [in] ScreenDimensions, [none] cameras.CameraUI)
 spawn_prefabs_rendering_core(world);
 zoxel_end_module(RenderingCore)
 

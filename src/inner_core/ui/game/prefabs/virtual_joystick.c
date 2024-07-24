@@ -13,7 +13,7 @@ ecs_entity_t spawn_prefab_virtual_joystick(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_virtual_joystick(ecs_world_t *world, const ecs_entity_t canvas, const int2 pixel_position, const ecs_entity_t finger, const ecs_entity_t virtual_joystick) {
+ecs_entity_t spawn_virtual_joystick(ecs_world_t *world, const ecs_entity_t canvas, const int2 pixel_position, const ecs_entity_t finger, const ecs_entity_t virtual_joystick, const unsigned char button_type) {
     const float2 anchor = float2_zero;
     const unsigned char layer = 4;
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
@@ -31,7 +31,10 @@ ecs_entity_t spawn_virtual_joystick(ecs_world_t *world, const ecs_entity_t canva
     // links
     zox_set(e, ZeviceLink, { virtual_joystick })
     zox_set(virtual_joystick, ElementLink, { e })
-    if (finger && zox_gett_value(finger, DeviceButtonType) == zox_device_stick_right) {
+    // zox_gett_value(finger, DeviceButtonType)
+    zox_set(finger, DeviceButtonType, { button_type })
+    zox_set(virtual_joystick, DeviceButtonType, { button_type })
+    if (button_type == zox_device_stick_right) {
         zox_set(e, Color, { virtual_joystick_color2 })
         zox_set(children->value[0], Color, { virtual_joystick_pointer_color2 })
     }

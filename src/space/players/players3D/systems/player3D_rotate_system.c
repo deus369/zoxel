@@ -31,15 +31,15 @@ void Player3DRotateSystem(ecs_iter_t *it) {
             } else if (deviceMode->value == zox_device_mode_gamepad && zox_has(device_entity, Gamepad)) {
                 const Children *zevices = zox_get(device_entity, Children)
                 for (int k = 0; k < zevices->length; k++) {
-                    const ecs_entity_t zevice_entity = zevices->value[k];
-                    const DeviceButtonType *deviceButtonType = zox_get(zevice_entity, DeviceButtonType)
-                    if (zox_has(zevice_entity, ZeviceStick)) {
+                    const ecs_entity_t zevice = zevices->value[k];
+                    const DeviceButtonType *deviceButtonType = zox_get(zevice, DeviceButtonType)
+                    if (zox_has(zevice, ZeviceStick)) {
                         if (deviceButtonType->value == zox_device_stick_right) {
-                            const ZeviceDisabled *zeviceDisabled = zox_get(zevice_entity, ZeviceDisabled)
+                            const ZeviceDisabled *zeviceDisabled = zox_get(zevice, ZeviceDisabled)
                             if (!zeviceDisabled->value) {
-                                const ZeviceStick *zeviceStick = zox_get(zevice_entity, ZeviceStick)
-                                right_stick = zeviceStick->value;
-                                right_stick.y *= -1;
+                                const ZeviceStick *zeviceStick = zox_get(zevice, ZeviceStick)
+                                right_stick.x += zeviceStick->value.x;
+                                right_stick.y -= zeviceStick->value.y;
                             }
                             break;
                         }
@@ -56,8 +56,8 @@ void Player3DRotateSystem(ecs_iter_t *it) {
                         const unsigned char joystick_type = zox_get_value(zevice, DeviceButtonType)
                         if (joystick_type == zox_device_stick_right) {
                             const ZeviceStick *zeviceStick = zox_get(zevice, ZeviceStick)
-                            right_stick.x -= zeviceStick->value.x;
-                            right_stick.y -= zeviceStick->value.y;
+                            right_stick.x -= zeviceStick->value.x * touchscreen_rotate_multiplier;
+                            right_stick.y -= zeviceStick->value.y * touchscreen_rotate_multiplier;
                         }
                     }
                 }
@@ -95,9 +95,6 @@ void Player3DRotateSystem(ecs_iter_t *it) {
         rotation3D->value = quaternion_from_euler(player_euler->value);
         zox_modified(character, Rotation3D)
         zox_modified(character, Euler)
-        /*camera_euler.x -= euler.x;
-        if (camera_euler.x >= 180) camera_euler.x -= 360;
-        else if (camera_euler.x < -180) camera_euler.x += 360;*/
         const ecs_entity_t player_camera = zox_get_value(character, CameraLink)
         if (player_camera) {
             // this sets camera x
@@ -122,16 +119,16 @@ void Player3DRotateSystem(ecs_iter_t *it) {
 
 // todo: make rotation by alpha force a function
 /*#ifndef disable_player_rotate_alpha_force
-                // if (mouse_delta != 0) zoxel_log(" > mouse_delta: %f\n", mouse_delta);
-                // this is all pretty shit ay haha... fuck mouses
-                if (mouse_delta < -max_mouse_delta2) mouse_delta.x = -max_mouse_delta;
-                else if (mouse_delta > max_mouse_delta2) mouse_delta.x = max_mouse_delta;
-                if (float_abs(mouse_delta) >= max_mouse_delta3) mouse_delta.x *= 1.2f;
-                else if (float_abs(mouse_delta) >= max_mouse_delta4) mouse_delta.x *= 1.4f;
-                else if (float_abs(mouse_delta) <= min_mouse_delta3) mouse_delta.x = 0;
-                if (mouse_delta.x != 0) {
-                    if (mouse_delta.x > 0 && mouse_delta < min_mouse_delta2) mouse_delta.x = min_mouse_delta2;
-                    else if (mouse_delta < 0 && mouse_delta > -min_mouse_delta2) mouse_delta.x = -min_mouse_delta2;
-                }
+    // if (mouse_delta != 0) zoxel_log(" > mouse_delta: %f\n", mouse_delta);
+    // this is all pretty shit ay haha... fuck mouses
+    if (mouse_delta < -max_mouse_delta2) mouse_delta.x = -max_mouse_delta;
+    else if (mouse_delta > max_mouse_delta2) mouse_delta.x = max_mouse_delta;
+    if (float_abs(mouse_delta) >= max_mouse_delta3) mouse_delta.x *= 1.2f;
+    else if (float_abs(mouse_delta) >= max_mouse_delta4) mouse_delta.x *= 1.4f;
+    else if (float_abs(mouse_delta) <= min_mouse_delta3) mouse_delta.x = 0;
+    if (mouse_delta.x != 0) {
+        if (mouse_delta.x > 0 && mouse_delta < min_mouse_delta2) mouse_delta.x = min_mouse_delta2;
+        else if (mouse_delta < 0 && mouse_delta > -min_mouse_delta2) mouse_delta.x = -min_mouse_delta2;
+    }
 #endif*/
-                // if (mouse_delta != 0) zoxel_log("     > mouse_delta: %f\n", mouse_delta);
+// if (mouse_delta != 0) zoxel_log("     > mouse_delta: %f\n", mouse_delta);

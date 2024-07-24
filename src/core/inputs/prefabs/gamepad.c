@@ -1,10 +1,3 @@
-#define zox_gamepad_layout_type_normal 0
-#define zox_gamepad_layout_type_xbox 1
-#define zox_gamepad_layout_type_steamdeck 2
-
-ecs_entity_t prefab_gamepad;
-ecs_entity_t gamepad_entity;
-
 ecs_entity_t spawn_prefab_gamepad(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_gamepad")
@@ -12,7 +5,6 @@ ecs_entity_t spawn_prefab_gamepad(ecs_world_t *world) {
     zox_add_tag(e, Gamepad)
     zox_prefab_set(e, DeviceLayout, { 0 })
     zox_prefab_add(e, Children)
-    prefab_gamepad = e;
     return e;
 }
 
@@ -76,7 +68,7 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, const unsigned char gamepad_type)
         } else {
             joystick_index = i * 2;
         }
-        children->value[j] = spawn_zevice_stick(world, i, joystick_index);
+        children->value[j] = spawn_zevice_stick(world, e, i, joystick_index);
     }
     children->value[16] = spawn_device_button(world, 16, zox_device_button_dpad_down);
     children->value[17] = spawn_device_button(world, 17, zox_device_button_dpad_up);

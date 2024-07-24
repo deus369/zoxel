@@ -7,7 +7,7 @@ ecs_entity_t spawn_prefab_menu_game_touch(ecs_world_t *world, const ecs_entity_t
     return e;
 }
 
-ecs_entity_t spawn_button_game(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t parent, const int2 canvas_size, const int2 position, const unsigned char size, const ClickEvent event) {
+ecs_entity_t spawn_button_game(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t parent, const int2 canvas_size, const int2 position, const float2 anchor, const unsigned char size, const ClickEvent event) {
     SpawnButton data = {
         .canvas = {
             .e = canvas,
@@ -21,10 +21,10 @@ ecs_entity_t spawn_button_game(ecs_world_t *world, const ecs_entity_t canvas, co
             .prefab = prefab_button,
             .position = position,
             .layer = 6,
-            // .anchor = anchor
+            .anchor = anchor
         },
         .zext = {
-            .text = "-",
+            .text = " ",
             .font_size = size,
             .font_thickness = 4,
             .font_fill_color = default_font_fill_color,
@@ -35,7 +35,6 @@ ecs_entity_t spawn_button_game(ecs_world_t *world, const ecs_entity_t canvas, co
             .prefab_zext = prefab_zext
         }};
     const ecs_entity_t e = spawn_button(world, &data);
-    return e;
     zox_set(e, ClickEvent, { event.value })
     return e;
 }
@@ -44,11 +43,30 @@ ecs_entity_t spawn_menu_game_touch(ecs_world_t *world, const ecs_entity_t prefab
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const ecs_entity_t e = spawn_element_invisible_on_canvas(world, prefab, canvas, int2_zero, canvas_size, float2_half);
     zox_name("menu_game_touch")
-    const unsigned char size = 96;
-    const int2 position = (int2) { 64, 64 };
+    const unsigned char button_size = 140;
+    const unsigned char button_padding = 20;
+    const unsigned char bottom_padding = 60;
     zox_get_muter(e, Children, children)
 #ifndef zox_disable_touch_buttons
-    add_to_Children(children, spawn_button_game(world, canvas, e, canvas_size, position, size,(ClickEvent) { &button_event_pause_game }));
+    // left side - pause - switch weapon
+    const int2 position_pause = (int2) {
+        button_size,
+        bottom_padding + (button_size + button_padding) * 1 };
+    add_to_Children(children, spawn_button_game(world, canvas, e, canvas_size, position_pause, float2_zero, button_size, (ClickEvent) { &button_event_pause_game }));
+    const int2 position_action_switch = (int2) {
+        button_size,
+        bottom_padding + (button_size + button_padding) * 2 };
+    add_to_Children(children, spawn_button_game(world, canvas, e, canvas_size, position_action_switch, float2_zero, button_size, (ClickEvent) { &button_event_switch_action }));
+    // right side - jump and attack
+    const float2 anchor_right = (float2) { 1, 0 };
+    const int2 position_jump = (int2) {
+        - button_size - (button_size + button_padding) * 0,
+        bottom_padding + (button_size + button_padding) * 1 };
+    add_to_Children(children, spawn_button_game(world, canvas, e, canvas_size, position_jump, anchor_right, button_size, (ClickEvent) { &button_event_jump }));
+    const int2 position_attack = (int2) {
+        - button_size - (button_size + button_padding) * 0,
+        bottom_padding + (button_size + button_padding) * 2 };
+    add_to_Children(children, spawn_button_game(world, canvas, e, canvas_size, position_attack, anchor_right, button_size, (ClickEvent) { &button_event_attack }));
 #endif
     return e;
 }

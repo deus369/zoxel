@@ -1,6 +1,6 @@
-char *label_new = "new game";
-char *label_continue = "continue";
-char *label_options = "options";
+char *label_continue = "old blood";
+char *label_new = "fresh meat";
+char *label_options = "beep-boops";
 char *label_exit = "escape";
 
 ecs_entity_t spawn_prefab_main_menu(ecs_world_t *world) {

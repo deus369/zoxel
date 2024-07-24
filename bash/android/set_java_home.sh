@@ -4,7 +4,7 @@
 java_dir="/usr/lib/jvm/"
 
 jdk_ver=$(java --version 2>&1 | grep openjdk | awk '{split($2, a, "."); print a[1]}')
-echo " > JDK Version found [$jdk_ver]"
+echo " > JDK Version [$jdk_ver]"
 # JAVA_HOME=$java_dir/java-$jdk_ver-openjdk # 7 / 11 / 20
 # export JAVA_HOME=$JAVA_HOME
 
@@ -19,4 +19,4 @@ fi
 
 # Set JAVA_HOME to the matching directory
 export JAVA_HOME="$matching_dir"
-echo " > JAVA_HOME is set to: $JAVA_HOME"
+echo " > JAVA_HOME is [$JAVA_HOME]"

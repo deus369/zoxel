@@ -10,6 +10,7 @@
 #include "macros/octree_component.c"
 zox_component_byte(GenericEvent)
 zox_component_byte(EntityInitialize)
+zox_component_int2(ScreenDimensions)
 // identitys
 zox_component_int(ID)
 zox_component_long_int(Seed)
@@ -53,6 +54,7 @@ zox_module_dispose(dispose_generic)
 initialize_component_ids();
 zox_define_component_byte(EntityInitialize)
 zox_define_component_byte(EntityDirty)
+zox_define_component_int2(ScreenDimensions)
 zox_define_tag(DestroyInFrame)
 zox_define_component_long_int(Seed)
 zox_define_component_byte(GenericEvent)

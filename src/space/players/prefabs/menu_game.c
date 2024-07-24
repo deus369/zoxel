@@ -23,6 +23,5 @@ void dispose_menu_game(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     find_child_with_tag(canvas, MenuGame, game_ui)
     if (game_ui) zox_delete(game_ui)
-    else zox_log(" ! no MenuGame found\n")
     dispose_game_menu_touch(world, canvas);
 }

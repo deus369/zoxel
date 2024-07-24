@@ -18,9 +18,9 @@ void initialize_apps_input(ecs_world_t *world) {
 }
 
 zox_begin_module(AppsInputs)
-zox_system_1(TouchscreenExtractSystem, zox_extract_pipeline, [in] inputs.Touchscreen, [in] Children)
 zox_system_1(GamepadExtractSystem, zox_extract_pipeline, [in] Children, [none] inputs.Gamepad)
 zox_system_1(MouseConstrainSystem, zox_pip_mainthread, [in] MouseLock)
+zox_system_1(TouchscreenExtractSystem, zox_extract_pipeline, [in] Children, [out] ScreenDimensions, [none] inputs.Touchscreen)
 initialize_apps_input(world);
 zoxel_end_module(AppsInputs)
 

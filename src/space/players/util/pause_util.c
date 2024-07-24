@@ -53,3 +53,17 @@ void toggle_pause_ui(ecs_world_t *world, const ecs_entity_t player) {
 void button_event_pause_game(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
     toggle_pause_ui(world, player);
 }
+
+void button_event_jump(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
+    const ecs_entity_t character = zox_get_value(player, CharacterLink)
+    if (character && can_jump(world, character)) zox_set(character, Jump, { jump_timing })
+}
+
+void button_event_attack(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
+    const ecs_entity_t character = zox_get_value(player, CharacterLink)
+    if (character) zox_set(character, TriggerActionB, { 1 })
+}
+
+void button_event_switch_action(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
+    player_action_ui_move(world, player, 1);
+}
