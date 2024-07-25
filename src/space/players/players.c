@@ -55,7 +55,7 @@ zox_system_1(DeviceModeResponseSystem, zox_pipelines_pre_render, [in] DeviceMode
 zox_system_1(PlayerShortcutsMainThreadSystem, zox_pip_mainthread, [in] DeviceLinks, [in] CanvasLink, [none] players.Player)
 zox_system_1(PlayerTestSystem, zox_pip_mainthread, [in] DeviceLinks, [in] CanvasLink, [none] players.Player)
 zox_system_1(PlayerPauseSystem, zox_pip_mainthread, [in] DeviceLinks, [none] players.Player)
-zox_system_1(VirtualJoystickSystem, zox_pip_mainthread, [in] DeviceLink, [in] RaycasterResult,  [none] inputs.Zevice)
+zox_system_1(VirtualJoystickSystem, zox_pip_mainthread, [in] DeviceLink, [in] RaycasterResult, [in] ZevicePointer, [in] VirtualZeviceLink,  [none] inputs.Zevice)
 zox_system_1(EditorInputSystem, zox_pip_mainthread, [in] DeviceLinks, [in] CanvasLink, [none] players.Player)
 zox_system(PlayerToggleCameraSystem, EcsOnUpdate, [in] DeviceLinks, [in] CharacterLink, [in] GameLink, [none] players.Player)
 zox_system_1(RaycastGizmoSystem, zox_pip_mainthread, [in] CameraLink, [in] VoxLink, [out] RaycastVoxelData)

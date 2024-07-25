@@ -43,7 +43,6 @@ void ElementNavigationSystem(ecs_iter_t *it) {
                     break;
                 }
             }
-
         }
         // here cut
         if (float_abs(left_stick.y) < restore_joystick_cutoff) {

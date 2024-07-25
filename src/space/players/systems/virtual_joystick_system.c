@@ -4,9 +4,12 @@ void VirtualJoystickSystem(ecs_iter_t *it) {
     zox_iter_world()
     zox_field_in(DeviceLink, deviceLinks, 1)
     zox_field_in(RaycasterResult, raycasterResults, 2)
+    zox_field_in(ZevicePointer, zevicePointers, 3)
+    zox_field_in(VirtualZeviceLink, virtualZeviceLinks, 4)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(RaycasterResult, raycasterResults, raycasterResult)
-        if (raycasterResult->value) continue;   // if raycasted ui, don't process
+        zox_field_i(ZevicePointer, zevicePointers, zevicePointer)
+        zox_field_i(VirtualZeviceLink, virtualZeviceLinks, virtualZeviceLink)
+        // if (raycasterResult->value) continue;   // if raycasted ui, don't process
         // todo: use a DeviceMode for logic flow
         zox_field_i(DeviceLink, deviceLinks, deviceLink)
         const ecs_entity_t player = zox_get_value(deviceLink->value, PlayerLink)
@@ -17,8 +20,12 @@ void VirtualJoystickSystem(ecs_iter_t *it) {
         const unsigned char is_game_state_playing = game_state == zox_game_playing;
         const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
         zox_field_e()
+        zox_field_i(RaycasterResult, raycasterResults, raycasterResult)
         if (zox_has(e, Finger)) {
-            const ecs_entity_t virtual_joystick = zox_get_value(e, VirtualZeviceLink)
+            // if going to spawn a new one, continue
+            const unsigned char click_value = zevicePointer->value;
+            if (devices_get_pressed_this_frame(click_value) && raycasterResult->value) continue;
+            const ecs_entity_t virtual_joystick =virtualZeviceLink->value;
             handle_touch_drag(world, canvas, e, virtual_joystick, is_game_state_playing);
         }
     }

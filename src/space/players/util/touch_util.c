@@ -15,9 +15,10 @@ void handle_touch_drag(ecs_world_t *world, const ecs_entity_t canvas, const ecs_
             virtual_joysticks_spawn_count++;
         }
     } else {
-        // ui wasn't spawned
+        // ui wasn't spawned, return
         if (!zox_has(virtual_joystick, ElementLink)) return;
         const ecs_entity_t joystick_element = zox_get_value(virtual_joystick, ElementLink)
+        if (!joystick_element) return;
         if (devices_get_released_this_frame(zevicePointer->value)) {
             zox_get_muter(virtual_joystick, ZeviceStick, zeviceStick)
             zeviceStick->value = float2_zero;
