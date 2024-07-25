@@ -1,19 +1,24 @@
 void ElementRaycastSystem(ecs_iter_t *it) {
     zox_iter_world()
     zox_field_in(Raycaster, raycasters, 1)
-    zox_field_in(DeviceMode, deviceModes, 2)
+    zox_field_in(DeviceLink, deviceLinks, 2)
     zox_field_out(RaycasterTarget, raycasterTargets, 3)
     zox_field_out(WindowRaycasted, windowRaycasteds, 4)
     // zox_log(" > ElementRaycastSystem [%i] [%f]\n", it->count, zox_current_time)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(DeviceMode, deviceModes, deviceMode)
-        if (deviceMode->value != zox_device_mode_keyboardmouse && deviceMode->value != zox_device_mode_touchscreen) continue;
+        // todo: use a DeviceMode for logic flow
+        zox_field_i(DeviceLink, deviceLinks, deviceLink)
+        const ecs_entity_t player = zox_get_value(deviceLink->value, PlayerLink)
+        const unsigned char device_mode = zox_get_value(player, DeviceMode)
+        // zox_field_i(DeviceMode, deviceModes, deviceMode)
+        if (device_mode != zox_device_mode_keyboardmouse && device_mode != zox_device_mode_touchscreen) continue;
+        const ecs_entity_t player_canvas = zox_get_value(player, CanvasLink)
+        const ecs_entity_t player_camera_ui = zox_get_value(player_canvas, CameraLink)
+
         zox_field_e()
         zox_field_i(Raycaster, raycasters, raycaster)
         zox_field_o(RaycasterTarget, raycasterTargets, raycasterTarget)
         zox_field_o(WindowRaycasted, windowRaycasteds, windowRaycasted)
-        const ecs_entity_t player_canvas = zox_get_value(e, CanvasLink)
-        const ecs_entity_t player_camera_ui = zox_get_value(player_canvas, CameraLink)
         const int2 position = raycaster->value;
         int ui_layer = -1;
         ecs_entity_t ui_selected = 0;

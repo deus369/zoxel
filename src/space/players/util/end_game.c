@@ -26,7 +26,7 @@ void player_end_game2D_delayed(ecs_world_t *world, const ecs_entity_t player) {
 }
 
 void player_end_game(ecs_world_t *world, const ecs_entity_t player) {
-    disable_inputs_until_release(world, player, zox_device_mode_none);
+    disable_inputs_until_release(world, player, zox_device_mode_none, 1);
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
 
     find_child_with_tag(canvas, MenuPaused, menu_paused)

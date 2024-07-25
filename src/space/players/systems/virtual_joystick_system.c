@@ -2,18 +2,29 @@
 // #define zoxel_disable_mouse_lock
 void VirtualJoystickSystem(ecs_iter_t *it) {
     zox_iter_world()
-    zox_field_in(DeviceLinks, deviceLinkss, 1)
-    zox_field_in(DeviceMode, deviceModes, 2)
-    zox_field_in(RaycasterResult, raycasterResults, 3)
-    zox_field_in(GameLink, gameLinks, 4)
+    zox_field_in(DeviceLink, deviceLinks, 1)
+    zox_field_in(RaycasterResult, raycasterResults, 2)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(GameLink, gameLinks, gameLink)
-        if (!gameLink->value) return;
         zox_field_i(RaycasterResult, raycasterResults, raycasterResult)
         if (raycasterResult->value) continue;   // if raycasted ui, don't process
+        // todo: use a DeviceMode for logic flow
+        zox_field_i(DeviceLink, deviceLinks, deviceLink)
+        const ecs_entity_t player = zox_get_value(deviceLink->value, PlayerLink)
+        const unsigned char device_mode = zox_get_value(player, DeviceMode)
+        const ecs_entity_t game = zox_get_value(player, GameLink)
+        if (!game) return;
+        const unsigned char game_state = zox_get_value(game, GameState)
+        const unsigned char is_game_state_playing = game_state == zox_game_playing;
+        const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
         zox_field_e()
-        const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
-        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
+        if (zox_has(e, Finger)) {
+            const ecs_entity_t virtual_joystick = zox_get_value(e, VirtualZeviceLink)
+            handle_touch_drag(world, canvas, e, virtual_joystick, is_game_state_playing);
+        }
+    }
+} zox_declare_system(VirtualJoystickSystem)
+        /*
+         * zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         zox_field_i(DeviceMode, deviceModes, deviceMode)
         const unsigned char game_state = zox_get_value(gameLink->value, GameState)
         const unsigned char is_game_state_playing = game_state == zox_game_playing;
@@ -63,5 +74,4 @@ void VirtualJoystickSystem(ecs_iter_t *it) {
             }
 #endif
         }
-    }
-} zox_declare_system(VirtualJoystickSystem)
+    }*/

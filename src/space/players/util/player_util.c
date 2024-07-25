@@ -39,6 +39,10 @@ int spawn_players(ecs_world_t *world, const ecs_entity_t game) {
             if (i == 0) zox_set(e, DeviceModeDirty, { zox_device_mode_keyboardmouse })
             else if (i == 1) zox_set(e, DeviceModeDirty, { zox_device_mode_gamepad })
         }
+        if (i == 0) {
+            if (mouse_entity) zox_set(mouse_entity, PlayerLink, { e })
+            if (touchscreen_entity) zox_set(touchscreen_entity, PlayerLink, { e })
+        }
     }
     return players;
 }

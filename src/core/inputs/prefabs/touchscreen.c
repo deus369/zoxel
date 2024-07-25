@@ -1,11 +1,9 @@
-ecs_entity_t spawn_prefab_touchscreen(ecs_world_t *world) {
-    zox_prefab()
-    zox_prefab_name("prefab_touchscreen")
-    zox_add_tag(e, Device)
+ecs_entity_t spawn_prefab_touchscreen(ecs_world_t *world, const ecs_entity_t prefab) {
+    zox_prefab_child(prefab)
+    zox_prefab_name("touchscreen")
     zox_add_tag(e, Touchscreen)
     zox_prefab_add(e, ScreenDimensions)
     zox_prefab_set(e, DeviceLayout, { 0 })
-    zox_prefab_add(e, Children)
     return e;
 }
 

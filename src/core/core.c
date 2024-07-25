@@ -22,6 +22,7 @@ typedef unsigned int uint;
 #include "transforms/transforms.c"
 #include "networking/networking.c"
 #include "terminals/terminals.c"
+#include "players/players.c"
 #include "inputs/inputs.c"
 #include "apps/apps.c"          // test removing sdl for engine stability
 #include "files/files.c"        // uses sdl path function atm
@@ -29,7 +30,6 @@ typedef unsigned int uint;
 #include "rendering/rendering.c"
 #include "sounds/sounds.c"
 #include "nodes/nodes.c"
-#include "players/players.c"
 #include "realms/realms.c"
 #include "games/games.c"
 #include "raycasts/raycasts.c"
@@ -48,6 +48,7 @@ zox_import_module(Terminals)
 #ifndef zox_disable_module_networking // disabled on web atm
 zox_import_module(Networking)
 #endif
+zox_import_module(Players)
 zox_import_module(Inputs)
 initialize_pathing();
 if (!headless) zox_import_module(Apps) // sdl
@@ -55,7 +56,6 @@ zox_import_module(Cameras)
 zox_import_module(Rendering)
 zox_import_module(Sounds)
 zox_import_module(Nodes)
-zox_import_module(Players)
 zox_import_module(Realms)
 zox_import_module(Games)
 zox_import_module(Raycasts)

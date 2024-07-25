@@ -15,6 +15,7 @@ zox_component_float3(RaycastNormal)
 #include "util/camera.c"
 #include "util/prefab.c"
 #include "systems/mouse_raycaster_system.c"
+#include "systems/zevice_raycaster_system.c"
 #include "systems/camera_ray_system.c"
 #include "systems/ray_debug_system.c"
 
@@ -25,6 +26,7 @@ zox_define_component_entity(RaycasterTarget)
 zox_define_component_float3(RaycastOrigin)
 zox_define_component_float3(RaycastNormal)
 zox_system(MouseRaycasterSystem, zox_pip_raycasting, [in] DeviceLinks, [in] DeviceMode, [out] Raycaster)
+zox_system(ZeviceRaycasterSystem, zox_pip_raycasting, [in] ZevicePointerPosition, [in] ZevicePointer, [out] Raycaster)
 #ifndef zox_debug_camera_rays
 zox_system(CameraRaySystem, zox_pip_raycasting, [in] FrustumCorners, [out] RaycastOrigin, [out] RaycastNormal)
 #else

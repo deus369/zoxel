@@ -1,10 +1,8 @@
-ecs_entity_t spawn_prefab_mouse(ecs_world_t *world) {
-    zox_prefab()
+ecs_entity_t spawn_prefab_mouse(ecs_world_t *world, const ecs_entity_t prefab) {
+    zox_prefab_child(prefab)
     zox_prefab_name("prefab_mouse")
-    zox_add_tag(e, Device)
     zox_add_tag(e, Mouse)
     zox_prefab_set(e, MouseLock, { 0 })
-    zox_prefab_add(e, Children)
     return e;
 }
 
