@@ -1,5 +1,15 @@
 // #define zox_debug_log_extract_mous
-void sdl_extract_mouse(ecs_world_t *world, SDL_Event event, int2 viewport_size) {
+
+void sdl_reset_mouse_wheel() {
+    static_mouse_wheel = int2_zero;
+}
+
+void sdl_extract_mouse_wheel(SDL_Event event) {
+    if (event.type == SDL_MOUSEWHEEL) static_mouse_wheel = (int2) { event.wheel.x, event.wheel.y };
+}
+
+// tod: maybe store scroll events here...
+/*void sdl_extract_mouse(ecs_world_t *world, SDL_Event event, int2 viewport_size) {
     if (!mouse_entity || !ecs_is_alive(world, mouse_entity)) return;
     if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP || event.type == SDL_MOUSEWHEEL || event.type == SDL_MOUSEMOTION) {
         Mouse *mouse = zox_get_mut(mouse_entity, Mouse)
@@ -33,4 +43,4 @@ void sdl_extract_mouse(ecs_world_t *world, SDL_Event event, int2 viewport_size) 
         }
         zox_modified(mouse_entity, Mouse)
     }
-}
+}*/

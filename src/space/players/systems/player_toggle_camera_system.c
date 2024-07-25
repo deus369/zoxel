@@ -18,13 +18,13 @@ void PlayerToggleCameraSystem(ecs_iter_t *it) {
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device_entity = deviceLinks->value[j];
             if (zox_has(device_entity, Mouse)) {
-                const Mouse *mouse = zox_get(device_entity, Mouse)
-                if (mouse->middle.pressed_this_frame) is_toggle_camera = 1;
+                /*const Mouse *mouse = zox_get(device_entity, Mouse)
+                if (mouse->middle.pressed_this_frame) is_toggle_camera = 1;*/
             } else if (zox_has(device_entity, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
                 if (keyboard->y.pressed_this_frame) is_toggle_camera = 1;
             } else if (zox_has(device_entity, Gamepad)) {
-                const Children *zevices = zox_get(device_entity, Children)
+                zox_geter(device_entity, Children, zevices)
                 for (int k = 0; k < zevices->length; k++) {
                     ecs_entity_t zevice_entity = zevices->value[k];
                     if (zox_has(zevice_entity, ZeviceButton)) {

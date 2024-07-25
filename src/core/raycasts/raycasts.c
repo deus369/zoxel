@@ -13,20 +13,10 @@ zox_component_int2(Raycaster)               //! Contains the raycast mouse posit
 zox_component_float3(RaycastOrigin)
 zox_component_float3(RaycastNormal)
 #include "util/camera.c"
+#include "util/prefab.c"
 #include "systems/mouse_raycaster_system.c"
 #include "systems/camera_ray_system.c"
 #include "systems/ray_debug_system.c"
-
-void prefab_add_raycasts_to_players(ecs_world_t *world, const ecs_entity_t e) {
-    zox_prefab_set(e, RaycasterTarget, { 0 })
-    zox_prefab_set(e, RaycasterResult, { 0 })
-    zox_prefab_set(e, Raycaster, { int2_zero })
-}
-
-void prefab_add_raycasts3D(ecs_world_t *world, const ecs_entity_t e) {
-    zox_prefab_set(e, RaycastOrigin, { float3_zero })
-    zox_prefab_set(e, RaycastNormal, { float3_forward })
-}
 
 zox_begin_module(Raycasts)
 zox_define_component_int2(Raycaster)
@@ -43,8 +33,7 @@ zox_system_1(CameraRaySystem, zox_pip_mainthread, [in] FrustumCorners, [out] Ray
 #ifdef zox_debug_rays
 zox_system_1(RayDebugSystem, zox_pip_mainthread, [in] RaycastOrigin, [in] RaycastNormal)
 #endif
-prefab_add_raycasts_to_players(world, prefab_player);
-prefab_add_raycasts3D(world, prefab_camera_game);
+prefab_set_game_prefabs(world);
 zoxel_end_module(Raycasts)
 
 #endif

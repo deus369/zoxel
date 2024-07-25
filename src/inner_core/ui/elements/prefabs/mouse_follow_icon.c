@@ -41,7 +41,10 @@ ecs_entity_t spawn_icon_mouse_follow_canvas(ecs_world_t *world, const ecs_entity
         }
     };
     const ecs_entity_t e = spawn_icon(world, &spawnIcon);
-    zox_set(e, MouseLink, { mouse_entity })
+
+    zox_geter(mouse_entity, Children, zevices)
+    zox_set(e, ZeviceLink, { zevices->value[0] })
+
     icon_mouse_follow = e;
     return e;
 }

@@ -14,21 +14,27 @@ void FreeCameraToggleSystem(ecs_iter_t *it) {
         if (!canRoam->value) continue;
         zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         unsigned char is_triggered = 0;
-        ecs_entity_t mouse_entity = 0;
+        ecs_entity_t mouse = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
-            const ecs_entity_t device_entity = deviceLinks->value[j];
-            if (zox_has(device_entity, Mouse)) {
-                const Mouse *mouse = zox_get(device_entity, Mouse)
-                if (mouse->right.pressed_this_frame) is_triggered = 1;
-                mouse_entity = device_entity;
+            const ecs_entity_t device = deviceLinks->value[j];
+            if (zox_has(device, Mouse)) {
+                zox_geter(device, Children, zevices)
+                for (int k = 0; k < zevices->length; k++) {
+                    const ecs_entity_t zevice = zevices->value[k];
+                    if (zox_has(zevice, ZevicePointerRight)) {
+                        const unsigned char click = zox_get_value(zevice, ZevicePointerRight)
+                        if (devices_get_pressed_this_frame(click)) is_triggered = 1;
+                        mouse = device;
+                    }
+                }
             }
         }
-        if (is_triggered && mouse_entity != 0) {
-            const MouseLock *mouseLock = zox_get(mouse_entity, MouseLock)
-            unsigned char new_value = !mouseLock->value;
-            zox_set(mouse_entity, MouseLock, { new_value })
+        if (is_triggered && mouse != 0) {
+            const unsigned char mouse_locked = zox_get_value(mouse, MouseLock)
+            unsigned char new_value = !mouse_locked;
+            zox_set(mouse, MouseLock, { new_value })
             zox_set(cameraLink->value, CanRoam, { new_value ? 2 : 1 })
-            // zoxel_log(" > free camera toggled [%s]\n", new_value ? "on" : "off");
+            zox_log(" > camera state [%s]\n", new_value ? "roaming" : "locked")
         }
     }
 } zox_declare_system(FreeCameraToggleSystem)

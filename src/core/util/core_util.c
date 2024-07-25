@@ -10,7 +10,7 @@ ecs_world_t* initialize_ecs(int argc, char* argv[]) {
 void update_core(ecs_world_t *world) {
     if (!headless) {
         device_reset_keyboard(world, keyboard_entity);
-        device_reset_mouse(world, mouse_entity);
+        // device_reset_mouse(world, mouse_entity);
         update_sdl(world, main_app, viewport_dimensions);
 #ifdef zoxel_on_web
         update_web_canvas(world);   // handles resize event

@@ -19,6 +19,7 @@ ecs_entity_t spawn_block_item(ecs_world_t *world, const ecs_entity_t block) {
         }
         zox_add_tag(e, ItemBlock)
         zox_set(e, BlockLink, { block })
+        // actually for grass we want to set itemLink differently
         zox_set(block, ItemLink, { e })
         // zox_set_name(item, zox_get_name(block));
         zox_name(zox_get_name(block));
@@ -44,7 +45,12 @@ void spawn_realm_items(ecs_world_t *world, const ecs_entity_t realm) {
     resize_memory_component(ItemLinks, items, ecs_entity_t, voxels->length)
 
     for (int i = 0; i < voxels->length; i++) {
-        items->value[i] = spawn_block_item(world, voxels->value[i]);
+        const ecs_entity_t block = voxels->value[i];
+        items->value[i] = spawn_block_item(world, block);
+        if (i == zox_block_grass - 1) {
+            const ecs_entity_t item_block_dirt = items->value[zox_block_dirt - 1];
+            zox_set(block, ItemLink, { item_block_dirt })
+        }
     }
     meta_item_block_dirt = items->value[zox_block_dirt - 1];
     meta_item_block_obsidian = items->value[zox_block_obsidian - 1];

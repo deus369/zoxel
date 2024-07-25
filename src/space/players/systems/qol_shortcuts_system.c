@@ -42,9 +42,18 @@ void QolShortcutsSystem(ecs_iter_t *it) {
             // Actio Switching!!
 
             } else if (zox_has(device_entity, Mouse)) {
-                const Mouse *mouse = zox_get(device_entity, Mouse)
+                /*const Mouse *mouse = zox_get(device_entity, Mouse)
                 if (mouse->wheel.y > 0) is_shift_action_right = 1;
-                else if (mouse->wheel.y < 0) is_shift_action_left = 1;
+                else if (mouse->wheel.y < 0) is_shift_action_left = 1;*/
+                zox_geter(device_entity, Children, zevices)
+                for (int k = 0; k < zevices->length; k++) {
+                    ecs_entity_t zevice_entity = zevices->value[k];
+                    if (zox_has(zevice_entity, ZeviceWheel)) {
+                        const int2 wheel = zox_get_value(zevice_entity, ZeviceWheel)
+                        if (wheel.y > 0) is_shift_action_right = 1;
+                        else if (wheel.y < 0) is_shift_action_left = 1;
+                    }
+                }
             } else if (zox_has(device_entity, Gamepad)) {
                 const Children *zevices = zox_get(device_entity, Children)
                 for (int k = 0; k < zevices->length; k++) {

@@ -81,10 +81,6 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, const unsigned char gamepad_type)
     return e;
 }
 
-unsigned char zevice_stick_has_input(const ZeviceStick *zeviceStick, const float cutoff) {
-    return float_abs(zeviceStick->value.x) > cutoff || float_abs(zeviceStick->value.y) > cutoff;
-}
-
 unsigned char gamepad_is_any_input(ecs_world_t *world, const ecs_entity_t gamepad) {
     const Children *children = zox_get(gamepad, Children)
     for (int i = 0; i < children->length; i++) {

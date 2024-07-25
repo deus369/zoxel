@@ -13,9 +13,7 @@ ecs_entity_t spawn_touchscreen(ecs_world_t *world, const ecs_entity_t prefab, co
     zox_instance(prefab)
     zox_name("touchscreen")
     zox_set(e, ScreenDimensions, { screen_dimensions })
-    // const unsigned char touchscreen_zevice_count = fingers_count + virtual_joysticks_count;
     zox_get_muter(e, Children, children)
-    // resize_memory_component(Children, children, ecs_entity_t, touchscreen_zevice_count)
     for (unsigned char i = 0; i < fingers_count; i++) {
         const ecs_entity_t finger = spawn_zevice_pointer(world, e, i, i);
         const ecs_entity_t virtual_joystick = spawn_zevice_stick(world, e, i, i);
@@ -28,10 +26,6 @@ ecs_entity_t spawn_touchscreen(ecs_world_t *world, const ecs_entity_t prefab, co
     }
     touchscreen_entity = e;
     return e;
-}
-
-unsigned char zevice_pointer_has_input(const ZevicePointer *zevicePointer) {
-    return devices_get_is_pressed(zevicePointer->value) || devices_get_pressed_this_frame(zevicePointer->value);
 }
 
 unsigned char touchscreen_is_any_input(ecs_world_t *world, const ecs_entity_t touchscreen) {

@@ -10,31 +10,30 @@ void DeviceModeSystem(ecs_iter_t *it) {
         // first check if currently using selected inputs:
         unsigned char using_current_inputs = 0;
         for (int j = 0; j < deviceLinks2->length; j++) {
-            const ecs_entity_t device_entity = deviceLinks2->value[j];
+            const ecs_entity_t device = deviceLinks2->value[j];
             if (deviceMode->value == zox_device_mode_keyboardmouse) {
-                if (zox_has(device_entity, Keyboard)) {
-                    const Keyboard *keyboard = zox_get(device_entity, Keyboard)
+                if (zox_has(device, Keyboard)) {
+                    const Keyboard *keyboard = zox_get(device, Keyboard)
                     if (keyboard_is_any_input(keyboard)) {
                         using_current_inputs = 1;
                         break;
                     }
-                } else if (zox_has(device_entity, Mouse)) {
-                    const Mouse *mouse = zox_get(device_entity, Mouse)
-                    if (mouse_is_any_input(mouse)) {
+                } else if (zox_has(device, Mouse)) {
+                    if (mouse_is_any_input(world, device)) {
                         using_current_inputs = 1;
                         break;
                     }
                 }
             } else if (deviceMode->value == zox_device_mode_gamepad) {
-                if (zox_has(device_entity, Gamepad)) {
-                    if (gamepad_is_any_input(world, device_entity)) {
+                if (zox_has(device, Gamepad)) {
+                    if (gamepad_is_any_input(world, device)) {
                         using_current_inputs = 1;
                         break;
                     }
                 }
             } else if (deviceMode->value == zox_device_mode_touchscreen) {
-                if (zox_has(device_entity, Touchscreen)) {
-                    if (touchscreen_is_any_input(world, device_entity)) {
+                if (zox_has(device, Touchscreen)) {
+                    if (touchscreen_is_any_input(world, device)) {
                         using_current_inputs = 1;
                         break;
                     }
@@ -47,15 +46,14 @@ void DeviceModeSystem(ecs_iter_t *it) {
         unsigned char old_device_mode = deviceMode->value;
 #endif
         for (int j = 0; j < deviceLinks2->length; j++) {
-            const ecs_entity_t device_entity = deviceLinks2->value[j];
+            const ecs_entity_t device = deviceLinks2->value[j];
             if (deviceMode->value != zox_device_mode_keyboardmouse) {
-                if (zox_has(device_entity, Keyboard)) {
-                    const Keyboard *keyboard = zox_get(device_entity, Keyboard)
+                if (zox_has(device, Keyboard)) {
+                    const Keyboard *keyboard = zox_get(device, Keyboard)
                     if (keyboard_is_any_input(keyboard)) deviceModeDirty->value = zox_device_mode_keyboardmouse;
                     continue;
-                } else if (zox_has(device_entity, Mouse)) {
-                    const Mouse *mouse = zox_get(device_entity, Mouse)
-                    if (mouse_is_any_input(mouse)) {
+                } else if (zox_has(device, Mouse)) {
+                    if (mouse_is_any_input(world, device)) {
                         deviceModeDirty->value = zox_device_mode_keyboardmouse;
                         // zoxel_log(" > input mode changed to keyboardmouse [m]\n");
                     }
@@ -63,14 +61,14 @@ void DeviceModeSystem(ecs_iter_t *it) {
                 }
             }
             if (deviceMode->value != zox_device_mode_gamepad) {
-                if (zox_has(device_entity, Gamepad)) {
-                    if (gamepad_is_any_input(world, device_entity)) deviceModeDirty->value = zox_device_mode_gamepad;
+                if (zox_has(device, Gamepad)) {
+                    if (gamepad_is_any_input(world, device)) deviceModeDirty->value = zox_device_mode_gamepad;
                     continue;
                 }
             }
             if (deviceMode->value != zox_device_mode_touchscreen) {
-                if (zox_has(device_entity, Touchscreen)) {
-                    if (touchscreen_is_any_input(world, device_entity)) deviceModeDirty->value = zox_device_mode_touchscreen;
+                if (zox_has(device, Touchscreen)) {
+                    if (touchscreen_is_any_input(world, device)) deviceModeDirty->value = zox_device_mode_touchscreen;
                     continue;
                 }
             }

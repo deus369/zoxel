@@ -1,4 +1,5 @@
 // todo: add raycast position here, and character position
+// #define zox_log_mouse
 
 int debug_newline_zext(char buffer[], int buffer_size, int buffer_index) {
     buffer_index += snprintf(buffer + buffer_index, buffer_size, "Day 1.\nToday is a very sunny day.\nHi jerry.");
@@ -155,6 +156,13 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 #endif
 #ifdef zox_debug_ui_raycaster_target
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " raycaster target [%lu]", raycaster_target);
+#endif
+#ifdef zox_log_mouse
+        zox_geter(mouse_entity, Children, zevices)
+        const int2 mouse_position = zox_get_value(zevices->value[0], ZevicePointerPosition)
+        const int2 mouse_delta = zox_get_value(zevices->value[0], ZevicePointerDelta)
+        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " mouse_position [%ix%i]", mouse_position.x, mouse_position.y);
+        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " mouse_delta [%ix%i]", mouse_delta.x, mouse_delta.y);
 #endif
 #ifdef zox_debug_ui_device_mode
         if (deviceMode->value == zox_device_mode_none) {

@@ -33,38 +33,40 @@ void ElementClickSystem(ecs_iter_t *it) {
         zox_field_o(WindowTarget, windowTargets, windowTarget)
         unsigned click_type = 0;
         for (int j = 0; j < deviceLinks->length; j++) { // convert inputs to actions
-            const ecs_entity_t device_entity = deviceLinks->value[j];
-            if (deviceMode->value == zox_device_mode_keyboardmouse && zox_has(device_entity, Mouse)) {
-                const Mouse *mouse = zox_get(device_entity, Mouse)
-                if (mouse->left.pressed_this_frame) click_type = 1;
-                else if (mouse->left.released_this_frame) click_type = 2;
-            } else if (deviceMode->value == zox_device_mode_gamepad && zox_has(device_entity, Gamepad)) {
-                const Children *zevices = zox_get(device_entity, Children)
+            const ecs_entity_t device = deviceLinks->value[j];
+            if (deviceMode->value == zox_device_mode_keyboardmouse && zox_has(device, Mouse)) {
+                zox_geter(device, Children, zevices)
                 for (int k = 0; k < zevices->length; k++) {
-                    const ecs_entity_t zevice_entity = zevices->value[k];
-                    if (zox_has(zevice_entity, ZeviceButton)) {
-                        const DeviceButtonType *deviceButtonType = zox_get(zevice_entity, DeviceButtonType)
-                        if (deviceButtonType->value == zox_device_button_a) {
-                            const ZeviceDisabled *zeviceDisabled = zox_get(zevice_entity, ZeviceDisabled)
-                            if (!zeviceDisabled->value) {
-                                const ZeviceButton *zeviceButton = zox_get(zevice_entity, ZeviceButton)
-                                if (devices_get_pressed_this_frame(zeviceButton->value)) click_type = 1;
-                                else if (devices_get_released_this_frame(zeviceButton->value)) click_type = 2;
-                            }
-                            break;
-                        }
-                    }
+                    const ecs_entity_t zevice = zevices->value[k];
+                    if (!zox_has(zevice, ZevicePointer)) continue;
+                    const unsigned char click_value = zox_get_value(zevice, ZevicePointer)
+                    if (devices_get_pressed_this_frame(click_value)) click_type = 1;
+                    else if (devices_get_released_this_frame(click_value)) click_type = 2;
                 }
-            } else if (deviceMode->value == zox_device_mode_touchscreen && zox_has(device_entity, Touchscreen)) {
-                const Children *zevices = zox_get(device_entity, Children)
+            } else if (deviceMode->value == zox_device_mode_gamepad && zox_has(device, Gamepad)) {
+                const Children *zevices = zox_get(device, Children)
                 for (int k = 0; k < zevices->length; k++) {
-                    const ecs_entity_t zevice_entity = zevices->value[k];
-                    if (zox_has(zevice_entity, ZevicePointer)) {
-                        const ZevicePointer *zevicePointer = zox_get(zevice_entity, ZevicePointer)
-                        if (devices_get_pressed_this_frame(zevicePointer->value)) click_type = 1;
-                        else if (devices_get_released_this_frame(zevicePointer->value)) click_type = 2;
+                    const ecs_entity_t zevice = zevices->value[k];
+                    if (!zox_has(zevice, ZeviceButton)) continue;
+                    const DeviceButtonType *deviceButtonType = zox_get(zevice, DeviceButtonType)
+                    if (deviceButtonType->value == zox_device_button_a) {
+                        const ZeviceDisabled *zeviceDisabled = zox_get(zevice, ZeviceDisabled)
+                        if (!zeviceDisabled->value) {
+                            const unsigned char click_value = zox_get_value(zevice, ZeviceButton)
+                            if (devices_get_pressed_this_frame(click_value)) click_type = 1;
+                            else if (devices_get_released_this_frame(click_value)) click_type = 2;
+                        }
                         break;
                     }
+                }
+            } else if (deviceMode->value == zox_device_mode_touchscreen && zox_has(device, Touchscreen)) {
+                const Children *zevices = zox_get(device, Children)
+                for (int k = 0; k < zevices->length; k++) {
+                    const ecs_entity_t zevice = zevices->value[k];
+                    if (!zox_has(zevice, ZevicePointer)) continue;
+                    const unsigned char click_value = zox_get_value(zevice, ZevicePointer)
+                    if (devices_get_pressed_this_frame(click_value)) click_type = 1;
+                    else if (devices_get_released_this_frame(click_value)) click_type = 2;
                 }
             }
         }

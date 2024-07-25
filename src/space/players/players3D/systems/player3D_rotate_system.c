@@ -22,14 +22,18 @@ void Player3DRotateSystem(ecs_iter_t *it) {
         zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         zox_field_i(DeviceMode, deviceModes, deviceMode)
         for (int j = 0; j < deviceLinks->length; j++) {
-            const ecs_entity_t device_entity = deviceLinks->value[j];
-            if (deviceMode->value == zox_device_mode_keyboardmouse && zox_has(device_entity, Mouse)) {
-                const Mouse *mouse = zox_get(device_entity, Mouse)
-                float2 mouse_delta = int2_to_float2(mouse->delta);
-                euler.x = - mouse_delta.y * mouse_rotate_multiplier;
-                euler.y = - mouse_delta.x * mouse_rotate_multiplier;
-            } else if (deviceMode->value == zox_device_mode_gamepad && zox_has(device_entity, Gamepad)) {
-                const Children *zevices = zox_get(device_entity, Children)
+            const ecs_entity_t device = deviceLinks->value[j];
+            if (deviceMode->value == zox_device_mode_keyboardmouse && zox_has(device, Mouse)) {
+                zox_geter(device, Children, zevices)
+                for (int k = 0; k < zevices->length; k++) {
+                    const ecs_entity_t zevice = zevices->value[k];
+                    if (!zox_has(zevice, ZevicePointerDelta)) continue;
+                    const float2 delta = int2_to_float2(zox_gett_value(zevice, ZevicePointerDelta));
+                    euler.x = - delta.y * mouse_rotate_multiplier;
+                    euler.y = - delta.x * mouse_rotate_multiplier;
+                }
+            } else if (deviceMode->value == zox_device_mode_gamepad && zox_has(device, Gamepad)) {
+                const Children *zevices = zox_get(device, Children)
                 for (int k = 0; k < zevices->length; k++) {
                     const ecs_entity_t zevice = zevices->value[k];
                     const DeviceButtonType *deviceButtonType = zox_get(zevice, DeviceButtonType)
@@ -45,8 +49,8 @@ void Player3DRotateSystem(ecs_iter_t *it) {
                         }
                     }
                 }
-            } else if (deviceMode->value == zox_device_mode_touchscreen && zox_has(device_entity, Touchscreen)) {
-                zox_geter(device_entity, Children, zevices)
+            } else if (deviceMode->value == zox_device_mode_touchscreen && zox_has(device, Touchscreen)) {
+                zox_geter(device, Children, zevices)
                 for (int k = 0; k < zevices->length; k++) {
                     const ecs_entity_t zevice = zevices->value[k];
                     if (zox_has(zevice, Finger)) continue;

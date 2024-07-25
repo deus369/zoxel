@@ -1,4 +1,4 @@
-typedef struct {
+/*typedef struct {
     PhysicalButton left;
     PhysicalButton middle;
     PhysicalButton right;
@@ -15,9 +15,9 @@ zox_custom_component(Mouse)
     .position = (int2) { 0, 0 },\
     .delta = (int2) { 0, 0 },\
     .wheel = (int2) { 0, 0 }\
-}
+}*/
 
-unsigned char mouse_is_any_input(const Mouse *mouse) {
+/*unsigned char mouse_is_any_input(const Mouse *mouse) {
     return (mouse->left.is_pressed ||
         mouse->middle.is_pressed ||
         mouse->right.is_pressed ||
@@ -36,4 +36,4 @@ void device_reset_mouse(ecs_world_t *world, const ecs_entity_t mouse_entity) {
     mouse->delta = int2_zero;
     mouse->wheel = int2_zero;
     zox_modified(mouse_entity, Mouse)
-}
+}*/

@@ -24,9 +24,13 @@ void spawn_connected_devices(ecs_world_t *world) {
 #endif
 }
 
+void input_reset_sdl() {
+    sdl_reset_mouse_wheel();
+}
+
 void input_extract_from_sdl(ecs_world_t *world, const SDL_Event event, const int2 viewport_size) {
     sdl_extract_keyboard(world, event);
-    sdl_extract_mouse(world, event, viewport_size);
+    sdl_extract_mouse_wheel(event);
     if (event.type == SDL_JOYDEVICEADDED) {
         if (joystick == NULL) {
             joystick = SDL_JoystickOpen(event.jdevice.which);

@@ -20,6 +20,9 @@ ecs_entity_t spawn_tooltip(ecs_world_t *world, const ecs_entity_t prefab, const 
     const color debug_color_outline = (color) { 76, 66, 133, 255 };
     const color debug_color_fill = (color) { 122, 122, 122, 255 };
     const ecs_entity_t e = spawn_label_background(world, prefab, parent, canvas, pixel_position, anchor, padding, "", font_size, alignment, layer, int2_half(parent_pixel_size), parent_pixel_size, debug_color_outline, debug_color_fill, 1);
-    zox_set(e, MouseLink, { mouse_entity })
+
+    zox_geter(mouse_entity, Children, zevices)
+    zox_set(e, ZeviceLink, { zevices->value[0] })
+
     return e;
 }

@@ -37,6 +37,7 @@ void app_update_gpu(ecs_world_t *world) {
 
 // move this to an app system function?
 void update_sdl(ecs_world_t *world, ecs_entity_t e, const int2 viewport_size) {
+    input_reset_sdl();
     SDL_Event event = { 0 };
     while (SDL_PollEvent(&event)) {
         input_extract_from_sdl(world, event, viewport_size);

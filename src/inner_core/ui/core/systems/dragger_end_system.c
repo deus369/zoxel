@@ -15,9 +15,15 @@ void DraggerEndSystem(ecs_iter_t *it) {
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device_entity = deviceLinks->value[j];
             if (dragableState->value == zox_drag_mode_mouse && zox_has(device_entity, Mouse)) {
-                const Mouse *mouse = zox_get(device_entity, Mouse)
-                if (mouse->left.released_this_frame) did_drag_end = 1;
-                else if (mouse->left.is_pressed) draggingDelta->value = mouse->delta;
+                zox_geter(device_entity, Children, zevices)
+                for (int k = 0; k < zevices->length; k++) {
+                    const ecs_entity_t zevice = zevices->value[k];
+                    if ( !zox_has(zevice, ZevicePointer)) continue;
+                    const unsigned char click = zox_get_value(zevice, ZevicePointer)
+                    const int2 delta = zox_get_value(zevice, ZevicePointerDelta)
+                    if (devices_get_released_this_frame(click)) did_drag_end = 1;
+                    else if (devices_get_is_pressed(click)) draggingDelta->value = delta;
+                }
             } else if (dragableState->value == zox_drag_mode_finger && zox_has(device_entity, Touchscreen)) {
                 const Children *zevices = zox_get(device_entity, Children)
                 for (int k = 0; k < zevices->length; k++) {
