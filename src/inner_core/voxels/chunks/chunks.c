@@ -71,9 +71,7 @@ zox_define_component(RaycastVoxelData)
 zox_system(ChunkLinkSystem, zox_pip_voxels, [in] VoxLink, [in] Position3D, [out] ChunkPosition, [out] ChunkLink, [none] LinkChunk)
 zox_system(ChunkEntitiesLodSystem, zox_pip_voxels, [in] ChunkLodDirty, [in] RenderLod, [in] EntityLinks)
 zox_system(ChunkBlocksLodSystem, zox_pip_voxels, [in] ChunkLodDirty, [in] RenderLod, [in] BlockSpawns)
-#ifdef zox_debug_chunks
 zox_system_1(ChunkDebugSystem, zox_pip_mainthread, [in] Position3D, [in] ChunkOctree, [in] RenderLod, [none] ChunkDebugger)
-#endif
 zox_define_increment_system(ChunkLodDirty, EcsOnLoad)
 spawn_prefabs_chunks(world);
 zoxel_end_module(Chunks)

@@ -22,11 +22,11 @@ void prefabs_add_ui_to_player(ecs_world_t *world, const ecs_entity_t e) {
     zox_prefab_set(e, DeviceMode, { 0 })
     zox_prefab_set(e, DeviceModeDirty, { 0 })
     zox_prefab_add(e, DeviceLinks)
+    zox_prefab_add(e, ElementLinks)
+    zox_prefab_set(e, CanvasLink, { 0 })
     // this is all UI interaction
     zox_prefab_set(e, NavigatorState, { 0 })
     zox_prefab_set(e, NavigatorTimer, { 0 })
-    zox_prefab_set(e, CanvasLink, { 0 })
-    zox_prefab_add(e, ElementLinks)
 }
 
 void prefabs_add_ui_to_raycaster(ecs_world_t *world, const ecs_entity_t e) {
@@ -45,7 +45,8 @@ void spawn_prefabs_ui_core(ecs_world_t *world) {
     prefab_element3D_child = spawn_prefab_element3D_child(world);
     prefab_canvas_overlay = spawn_prefab_canvas_overlay(world);
     prefabs_add_ui_to_player(world, prefab_player);
-    // prefabs_add_ui_to_raycaster(world, prefab_player);
-    prefabs_add_ui_to_raycaster(world, prefab_zevice_pointer);
     prefab_render_texture = spawn_prefab_render_texture(world);
+    prefabs_add_ui_to_raycaster(world, prefab_device);
+    prefabs_add_ui_to_raycaster(world, prefab_zevice_pointer);
+    prefabs_add_ui_to_raycaster(world, prefab_player);
 }

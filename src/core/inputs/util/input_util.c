@@ -1,18 +1,11 @@
 // #define zox_debug_zevice_states
-/*#ifdef zox_mod_ui
 extern void raycaster_select_element(ecs_world_t *world, const ecs_entity_t raycaster_entity, const ecs_entity_t element);
-#endif*/
 
 // this disables any buttons (zevices) of a device, until they are released, then they get auto re enabled
 void disable_inputs_until_release(ecs_world_t *world, const ecs_entity_t player, const unsigned char new_device_mode, const unsigned char old_mode) {
     if (old_mode == 0) return; // no need disable on start
     if (!player) return;
-    if (new_device_mode != zox_device_mode_gamepad) {
-/*#ifdef zox_mod_ui
-        raycaster_select_element(world, player, 0);
-#endif*/
-    }
-    zox_log(" === disable_inputs_until_release ===\n")
+    if (new_device_mode != zox_device_mode_gamepad) raycaster_select_element(world, player, 0);
     const DeviceLinks *deviceLinks = zox_get(player, DeviceLinks)
     for (int j = 0; j < deviceLinks->length; j++) {
         ecs_entity_t device_entity = deviceLinks->value[j];

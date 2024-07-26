@@ -13,12 +13,13 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
             const ecs_entity_t device_entity = deviceLinks->value[j];
             if (zox_has(device_entity, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device_entity, Keyboard)
-                if (keyboard->m.pressed_this_frame) {
+                /*if (keyboard->m.pressed_this_frame) {
                     zox_log(" > generated new music\n")
                     double music_speed = 0.2 + (rand() % 100) * 0.008;
                     zox_set(local_music, MusicSpeed, { music_speed });
                     zox_set(local_music, GenerateMusic, { 1 });
-                } else if (keyboard->n.pressed_this_frame) {
+                } else */
+                if (keyboard->n.pressed_this_frame) {
                     texture_mode = !texture_mode;
                     on_terrain_settings_changed(world, realm);
                     zox_log("    > texture_mode set [%i]\n", texture_mode)

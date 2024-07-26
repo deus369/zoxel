@@ -1,5 +1,5 @@
 // #define zox_log_gamepad_button_pressed // debug button presses
-SDL_Joystick *joystick;
+// SDL_Joystick *joystick;
 int joysticks_count;
 // debug purposes
 int joystick_axes;
@@ -22,17 +22,17 @@ void check_axis(SDL_Joystick *joystick, int index) {
     if (float_abs(axis.x) >= 0.05f || float_abs(axis.y) >= 0.05f) last_axis_index = index;
 }
 
-const char* get_joystick_name() {
+const char* get_joystick_name(SDL_Joystick *joystick) {
     if (joystick == NULL) return "";
     return SDL_JoystickName(joystick);
 }
 
-int debug_joystick(char buffer[], int buffer_size, int buffer_index) {
+int debug_joystick(SDL_Joystick *joystick, char buffer[], int buffer_size, int buffer_index) {
     if (!joystick) return buffer_index;
     for (int i = 0; i < joystick_axes; i += 2) {
         check_axis(joystick, i);
     }
-    buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "joystick [%s]\n", get_joystick_name());
+    buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "joystick [%s]\n", get_joystick_name(joystick));
     buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "max axis [%i]\n", joystick_axes);
     buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " index clicked [%i]\n", last_clicked_index);
     buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " index axis [%i]\n", last_axis_index);
@@ -62,20 +62,45 @@ unsigned char is_xbox_gamepad(SDL_Joystick *joystick) {
     return strstr(joystickName, "Xbox") != NULL || strstr(joystickName, "X360") != NULL || strstr(joystickName, "X-Box") != NULL;
 }
 
+unsigned char get_gamepad_type(SDL_Joystick *joystick) {
+    unsigned char gamepad_type = 0;
+    if (is_xbox_gamepad(joystick)) gamepad_type = zox_gamepad_layout_type_xbox;
+    if (is_steamdeck_gamepad(joystick)) gamepad_type = zox_gamepad_layout_type_steamdeck;
+    return gamepad_type;
+}
+
+ecs_entity_t spawn_gamepad_from_sdl(ecs_world_t *world, SDL_Joystick *joystick) {
+    const unsigned char gamepad_type = get_gamepad_type(joystick);
+    const ecs_entity_t e = spawn_gamepad(world, gamepad_type);
+    zox_set(e, SDLGamepad, { joystick })
+    const char* joystick_name = SDL_JoystickName(joystick);
+    zox_log("   + gamepad [%s]\n", joystick_name)
+    return e;
+}
+
+void handle_new_sdl_gamepad(ecs_world_t *world, const SDL_Event event) {
+    SDL_Joystick *joystick = SDL_JoystickOpen(event.jdevice.which);
+    if (!joystick) {
+        fprintf(stderr, "   ! joystick error: %s\n", SDL_GetError());
+        return;
+    }
+    int joystick_id = SDL_JoystickInstanceID(joystick);
+    zox_log(" + new gamepad [%d] has connected\n", joystick_id)
+    spawn_gamepad_from_sdl(world, joystick);
+}
+
 void initialize_sdl_gamepads() {
     // SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
     joysticks_count = SDL_NumJoysticks();
-#ifdef zoxel_debug_input
+// #ifdef zoxel_debug_input
     zox_log(" > gamepads connected [%d]\n", joysticks_count)
-#endif
+// #endif
     for (int i = 0; i < joysticks_count; i++) {
-        joystick = SDL_JoystickOpen(i);
+        SDL_Joystick *joystick = SDL_JoystickOpen(i);
         if (!joystick) {
             fprintf(stderr, "   ! joystick error: %s\n", SDL_GetError());
         } else {
-            const char* joystick_name = SDL_JoystickName(joystick);
-            zox_log("   > [%s]\n", joystick_name)
-            break; 
+            spawn_gamepad_from_sdl(world, joystick);
         }
     }
 }
@@ -177,14 +202,16 @@ unsigned char set_gamepad_button(const unsigned char old_value, SDL_Joystick *jo
     return new_value; // button->value != old_value;*/
 }
 
-void sdl_gamepad_handle_disconnect(SDL_Joystick *joystick) {
-    if (joystick == NULL) return;
+unsigned char sdl_gamepad_handle_disconnect(SDL_Joystick *joystick) {
+    if (joystick == NULL) return 0;
     if (!SDL_JoystickGetAttached(joystick)) {
         int joystick_id = SDL_JoystickInstanceID(joystick);
         fprintf(stderr, "   > gamepad [%d] has disconnected\n", joystick_id);
         SDL_JoystickClose(joystick);
         joystick = NULL;
+        return 0;
     }
+    return 1;
 }
 
 // Main Function for Gamepad

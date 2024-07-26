@@ -7,6 +7,9 @@
 
 // if android, this shouldn't need to be here?
 #ifdef __ANDROID__
+    #ifndef zox_lib_sdl
+        #define zox_lib_sdl
+    #endif
     #ifndef zox_lib_sdl_images
         #define zox_lib_sdl_images
     #endif

@@ -84,19 +84,21 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         // if only exists to block others (like Window's)
         if (!zox_has(ui_selected, SelectState)) ui_selected = 0;
         if (raycasterTarget->value != ui_selected) {
-            // zox_log(" > player [%lu] raycasted ui [%lu]\n", e, ui_selected)
-            // raycaster_select_element(world, e, ui_selected);
-            if (raycasterTarget->value) zox_set(raycasterTarget->value, SelectState, { zox_select_state_trigger_deselect })
-            if (raycasterTarget->value && ui_selected) {
-                raycasterTarget->value = 0; // wait one frame for new selection
-            } else {
-                if (ui_selected) zox_set(ui_selected, SelectState, { zox_select_state_trigger_selected })
-                raycasterTarget->value = ui_selected;
-            }
+            raycaster_select_element(world, e, ui_selected);
         }
         if (windowRaycasted->value != window_selected) {
-            // zox_log(" > selected window [%lu]\n", window_selected)
-            windowRaycasted->value = window_selected;
+            raycaster_select_window(world, e, window_selected);
         }
     }
 } zox_declare_system(ElementRaycastSystem)
+
+// zox_log(" > player [%lu] raycasted ui [%lu]\n", e, ui_selected)
+/*if (raycasterTarget->value) zox_set(raycasterTarget->value, SelectState, { zox_select_state_trigger_deselect })
+if (raycasterTarget->value && ui_selected) {
+    raycasterTarget->value = 0; // wait one frame for new selection
+} else {
+    if (ui_selected) zox_set(ui_selected, SelectState, { zox_select_state_trigger_selected })
+    raycasterTarget->value = ui_selected;
+}*/
+// zox_log(" > selected window [%lu]\n", window_selected)
+// windowRaycasted->value = window_selected;

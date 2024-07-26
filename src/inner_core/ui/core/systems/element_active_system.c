@@ -1,3 +1,4 @@
+// animation system
 void ElementActiveSystem(ecs_iter_t *it) {
     zox_field_in(ActiveState, activeStates, 1)
     zox_field_out(Brightness, brightnesss, 2)

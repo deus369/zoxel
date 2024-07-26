@@ -73,12 +73,14 @@ zox_function_component(TooltipEvent, void, ecs_world_t*, const TooltipEventData*
 #include "util/layers.c"
 #include "util/canvas_fading.c"
 #include "prefabs/prefabs.c"
-#include "systems/button_click_event_system.c"
+#include "inputs/button_click_event_system.c"
+#include "inputs/dragger_end_system.c"
+#include "inputs/element_click_system.c"
+#include "inputs/element_navigation_system.c"
+#include "inputs/mouse_element_system.c"
 #include "systems/element_raycast_system.c"
 #include "systems/element_active_system.c"
 #include "systems/element_selected_system.c"
-#include "systems/element_click_system.c"
-#include "systems/element_navigation_system.c"
 #include "systems/element_position_system.c"
 #include "systems/element_mesh2D_system.c"
 #include "systems/element_mesh3D_system.c"
@@ -90,9 +92,7 @@ zox_function_component(TooltipEvent, void, ecs_world_t*, const TooltipEventData*
 #include "systems/element_render_system.c"
 #include "systems/element3D_render_system.c"
 #include "systems/click_sound_system.c"
-#include "systems/dragger_end_system.c"
 #include "systems/render_texture_render_system.c"
-#include "systems/mouse_element_system.c"
 // zox_reset_system(ClickState)
 zox_increment_system_with_reset_extra(ClickState, zox_click_state_trigger_clicked, zox_click_state_clicked_idle, zox_click_state_trigger_released, zox_click_state_idle)
 zox_increment_system_with_reset_extra(SelectState, zox_select_state_trigger_selected, zox_select_state_selected, zox_select_state_trigger_deselect, zox_select_state_deselected_idle)
@@ -152,7 +152,11 @@ zox_define_component_entity(DraggedLink)       // the who gets dragged
 zox_filter(ui_query, [none] Element, [in] CanvasPosition, [in] PixelSize, [in] Layer2D, [in] RenderDisabled, [none] Selectable)
 zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition, [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPosition)
 zox_system_ctx(ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [in] DeviceLink, [out] RaycasterTarget, [out] WindowRaycasted)
-zox_system(ElementClickSystem, EcsPostUpdate, [in] DeviceLink, [in] RaycasterTarget, [in] WindowRaycasted, [out] RaycasterResult, [out] ClickingEntity, [out] WindowTarget)
+
+// inputs
+zox_system(ElementClickSystem, EcsPostUpdate, [in] DeviceLink, [in] RaycasterTarget, [in] WindowRaycasted, [out] RaycasterResult, [out] ClickingEntity, [out] WindowTarget, [none] inputs.Zevice)
+zox_system(DeviceClickSystem, EcsPostUpdate, [in] PlayerLink, [in] RaycasterTarget, [in] WindowRaycasted, [in] Children, [out] RaycasterResult, [out] ClickingEntity, [out] WindowTarget, [none] inputs.Device)
+
 zox_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [out] NavigatorState, [out] NavigatorTimer, [out] RaycasterTarget)
 // EcsPreUpdate pixel_positions_query,
 zox_system_ctx(ElementPositionSystem, EcsOnLoad, pixel_positions_query, [in] PixelPosition, [in] PixelSize, [in] ParentLink, [in] Anchor, [in] CanvasLink, [out] Position2D, [out] CanvasPosition, [none] Element)

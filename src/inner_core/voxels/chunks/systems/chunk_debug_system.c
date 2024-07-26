@@ -1,4 +1,5 @@
 // show lines on quads along chunk edge
+unsigned char is_render_chunk_edges = 0;
 
 extern void render_line3D(ecs_world_t *world, const float3 a, const float3 b, const color_rgb line_color);
 
@@ -52,8 +53,7 @@ void traverse_chunk(TraverseChunk *data) {
 }
 
 void ChunkDebugSystem(ecs_iter_t *it) {
-    // const color_rgb debug_color = { 255, 0, 0 };
-    // const float ray_length = 4;
+    if (!is_render_chunk_edges) return;
     zox_iter_world()
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_in(ChunkOctree, chunkOctrees, 2)

@@ -1,6 +1,7 @@
 #ifndef zox_apps_inputs
 #define zox_apps_inputs
 
+#include "components/sdl_gamepad.c"
 #include "util/sdl_key_util.c"
 #include "util/keyboard_extract_util.c"
 #include "util/mouse_extract_util.c"
@@ -15,10 +16,12 @@
 
 void initialize_apps_input(ecs_world_t *world) {
     initialize_sdl_input();
+    zox_prefab_add(prefab_gamepad, SDLGamepad)
 }
 
 zox_begin_module(AppsInputs)
-zox_system_1(GamepadExtractSystem, zox_extract_pipeline, [in] Children, [none] inputs.Gamepad)
+zox_define_component_w_dest(SDLGamepad)
+zox_system_1(GamepadExtractSystem, zox_extract_pipeline, [in] Children, [in] SDLGamepad, [none] inputs.Gamepad)
 zox_system_1(TouchscreenExtractSystem, zox_extract_pipeline, [in] Children, [out] ScreenDimensions, [none] inputs.Touchscreen)
 zox_system_1(MouseExtractSystem, zox_extract_pipeline, [in] Children, [none] inputs.Mouse)
 zox_system_1(MouseConstrainSystem, zox_extract_pipeline, [in] MouseLock, [in] Children, [none] inputs.Mouse)

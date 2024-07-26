@@ -49,8 +49,7 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 #endif
         int buffer_index = 0;
         char buffer[buffer_size];
-
-        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "[ %s]\n", game_name);
+        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "%s [v0.0.1]\n", game_name);
 
         // memset(buffer, 0, buffer_size); // Initialize buffer to zero
 #ifdef zox_debug_game_players
@@ -127,6 +126,18 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 #ifdef zox_debug_joystick
         buffer_index = debug_joystick(buffer, buffer_size, buffer_index);
 #endif
+#ifdef zox_debug_ui_device_mode
+        /*if (deviceMode->value == zox_device_mode_none) {
+            buffer_index += snprintf(buffer + buffer_index,buffer_size - buffer_index, "[ ]");
+        } else */
+        if (deviceMode->value == zox_device_mode_keyboardmouse) {
+            buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "[keyboardmouse]\n");
+        } else if (deviceMode->value == zox_device_mode_gamepad) {
+            buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "[gamepad]\n");
+        } else if (deviceMode->value == zox_device_mode_touchscreen) {
+            buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "[touchscreen]\n");
+        }
+#endif
         // test this \n
         // snprintf(buffer, sizeof(buffer), "debug ui\nline 2");
         // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[debug]");
@@ -148,11 +159,11 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 
 #endif
 #ifdef zox_debug_ui_zexts
-        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " zexts [%i]", get_zexts_count(it->world));
-        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " zigels [%i]", get_zigels_count(it->world));
+        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "zexts [%i]", get_zexts_count(it->world));
+        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "zigels [%i]", get_zigels_count(it->world));
 #endif
 #ifdef zox_debug_ui_node_memory
-        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " node memory [%i]", node_memory);
+        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "node memory [%i]", node_memory);
 #endif
 #ifdef zox_debug_ui_raycaster_target
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " raycaster target [%lu]", raycaster_target);
@@ -163,17 +174,6 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         const int2 mouse_delta = zox_get_value(zevices->value[0], ZevicePointerDelta)
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " mouse_position [%ix%i]", mouse_position.x, mouse_position.y);
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " mouse_delta [%ix%i]", mouse_delta.x, mouse_delta.y);
-#endif
-#ifdef zox_debug_ui_device_mode
-        if (deviceMode->value == zox_device_mode_none) {
-            buffer_index += snprintf(buffer + buffer_index,buffer_size - buffer_index, "[ ]");
-        } else if (deviceMode->value == zox_device_mode_keyboardmouse) {
-            buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "[k]");
-        } else if (deviceMode->value == zox_device_mode_gamepad) {
-            buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "[g]");
-        } else if (deviceMode->value == zox_device_mode_touchscreen) {
-            buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "[t]");
-        }
 #endif
         if (buffer_index == 0) buffer[0] = '\0';
         if (!is_zext(zextData, buffer)) {

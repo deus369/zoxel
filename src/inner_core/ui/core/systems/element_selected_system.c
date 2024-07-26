@@ -1,3 +1,4 @@
+// animation system
 void ElementSelectedSystem(ecs_iter_t *it) {
     zox_field_in(SelectState, selectStates, 2)
     zox_field_out(Brightness, brightnesss, 3)

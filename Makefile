@@ -29,7 +29,7 @@ ifdef game
     make_libs +=-Dzox_game=$(game)
 endif
 ifeq ($(use_lib_sdl), true)
-    make_libs += -Dzox_lib_sdl_direct -Iinclude/sdl -lSDL2
+    make_libs += -Dzox_lib_sdl -Dzox_lib_sdl_direct -Iinclude/sdl -lSDL2
 endif
 ifeq ($(use_lib_sdl_image), true)
     make_libs += -Dzox_lib_sdl_images -Iinclude/sdl_image -lSDL2_image

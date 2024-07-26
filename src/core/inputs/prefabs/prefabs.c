@@ -33,9 +33,8 @@ void spawn_prefabs_inputs(ecs_world_t *world) {
     prefab_zevice_stick = spawn_prefab_device_stick(world);
     prefab_zevice_pointer = spawn_prefab_zevice_pointer(world);
     prefab_device = spawn_prefab_device(world);
-    prefab_keyboard = spawn_prefab_keyboard(world);
+    prefab_keyboard = spawn_prefab_keyboard(world, prefab_device);
     prefab_mouse = spawn_prefab_mouse(world, prefab_device);
-    prefab_gamepad = spawn_prefab_gamepad(world);
+    prefab_gamepad = spawn_prefab_gamepad(world, prefab_device);
     prefab_touchscreen = spawn_prefab_touchscreen(world, prefab_device);
-    // test_device_button_flags();
 }
