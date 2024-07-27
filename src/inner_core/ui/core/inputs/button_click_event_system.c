@@ -1,5 +1,3 @@
-// todo: ClickEventData - input in a struct instead
-
 void ButtonClickEventSystem(ecs_iter_t *it) {
     zox_iter_world()
     zox_field_in(ClickEvent, clickEvents, 1)
@@ -11,6 +9,9 @@ void ButtonClickEventSystem(ecs_iter_t *it) {
         zox_field_e()
         zox_field_i(ClickEvent, clickEvents, clickEvent)
         zox_field_o(Clicker, clickers, clicker)
-        if (clickEvent->value) (*clickEvent->value)(world, clicker->value, e);
+        if (clickEvent->value) {
+            const ClickEventData event_data = (ClickEventData) { .clicker = clicker->value, .clicked = e };
+            (*clickEvent->value)(world, &event_data);
+        }
     }
 } zox_declare_system(ButtonClickEventSystem)

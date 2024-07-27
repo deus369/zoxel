@@ -1,21 +1,21 @@
 extern ecs_entity_t spawn_menu_options(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t canvas, const int2 position, const float2 anchor);
 
-void button_event_menu_options(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
-    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+void button_event_menu_options(ecs_world_t *world, const ClickEventData *event) {
+    const ecs_entity_t canvas = zox_get_value(event->clicker, CanvasLink)
     find_child_with_tag(canvas, MenuMain, menu)
     if (!menu) return;
     zox_delete(menu)
-    spawn_menu_options(world, player, canvas, int2_zero, float2_half);
+    spawn_menu_options(world, event->clicker, canvas, int2_zero, float2_half);
 }
 
 void engine_end_delayed(ecs_world_t* world, const ecs_entity_t null) {
     engine_end();
 }
 
-void button_event_exit_app(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
+void button_event_exit_app(ecs_world_t *world, const ClickEventData *event) {
     // zox_log(" player exiting [%s]\n", zox_get_name(player))
     // close on all players
-    const ecs_entity_t game = zox_get_value(player, GameLink)
+    const ecs_entity_t game = zox_get_value(event->clicker, GameLink)
     const PlayerLinks *players = zox_get(game, PlayerLinks)
     for (int i = 0; i < players->length; i++) {
         const ecs_entity_t e = players->value[i];

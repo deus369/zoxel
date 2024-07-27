@@ -117,13 +117,9 @@ void editor_select_entity(ecs_world_t *world, const ecs_entity_t e) {
     set_inspector_element(world, inspector, e);
 }
 
-void button_event_clicked_hierarchy(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
-    if (!zox_has(element, Children)) return;
-    // const Children *children = zox_get(trigger_entity, Children)
-    // ecs_entity_t zext_entity = children->value[0];
-    // print_entity_zext(world, zext_entity);
-    const ecs_entity_t target = zox_get_value(element, EntityTarget)
-    // zox_log("   > target [%lu]\n", target)
+void button_event_clicked_hierarchy(ecs_world_t *world, const ClickEventData *event) {
+    if (!zox_has(event->clicked, Children)) return;
+    const ecs_entity_t target = zox_get_value(event->clicked, EntityTarget)
     editor_select_entity(world, target);
 }
 

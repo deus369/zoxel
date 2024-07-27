@@ -91,14 +91,3 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         }
     }
 } zox_declare_system(ElementRaycastSystem)
-
-// zox_log(" > player [%lu] raycasted ui [%lu]\n", e, ui_selected)
-/*if (raycasterTarget->value) zox_set(raycasterTarget->value, SelectState, { zox_select_state_trigger_deselect })
-if (raycasterTarget->value && ui_selected) {
-    raycasterTarget->value = 0; // wait one frame for new selection
-} else {
-    if (ui_selected) zox_set(ui_selected, SelectState, { zox_select_state_trigger_selected })
-    raycasterTarget->value = ui_selected;
-}*/
-// zox_log(" > selected window [%lu]\n", window_selected)
-// windowRaycasted->value = window_selected;

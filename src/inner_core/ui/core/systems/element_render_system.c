@@ -1,5 +1,4 @@
-extern ecs_entity_t get_root_canvas_camera(ecs_world_t *world, const ecs_entity_t e);
-
+// extern ecs_entity_t get_root_canvas_camera(ecs_world_t *world, const ecs_entity_t e);
 void ElementRenderSystem(ecs_iter_t *it) {
     if (!material_textured2D) return;
     const GLuint material_link = zox_get_value(material_textured2D, MaterialGPULink)

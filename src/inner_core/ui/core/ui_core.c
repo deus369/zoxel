@@ -1,6 +1,7 @@
 #ifndef zox_mod_ui_core
 #define zox_mod_ui_core
 
+#include "data/click_event_data.c"
 zox_declare_tag(Element)
 zox_declare_tag(Element3D)
 zox_declare_tag(Canvas)
@@ -26,7 +27,7 @@ zox_component_float3(UITrail)
 zox_component_entity(CanvasLink)
 zox_component_entity(UIHolderLink)
 zox_component_byte(HeaderHeight)
-zox_function_component(ClickEvent, void, ecs_world_t*, ecs_entity_t, ecs_entity_t)
+zox_function_component(ClickEvent, void, ecs_world_t*, const ClickEventData*)
 zox_entities_component(ElementLinks)
 zox_component_entity(WindowRaycasted)
 zox_component_entity(WindowTarget)
@@ -60,10 +61,11 @@ zox_function_component(TooltipEvent, void, ecs_world_t*, const TooltipEventData*
 #include "data/canvas_spawn_data.c"
 #include "data/parent_spawn_data.c"
 #include "data/element_spawn_data.c"
-#include "util/canvas_util.c"
 #include "util/ui_prefab_util.c"
 #include "util/ui_transform_util.c"
 #include "util/anchor_util.c"
+#include "util/canvas_util.c"
+#include "util/drag.c"
 #include "util/prefab_util_world_ui.c"
 #include "util/element_render_util.c"
 #include "util/click_util.c"
@@ -75,9 +77,10 @@ zox_function_component(TooltipEvent, void, ecs_world_t*, const TooltipEventData*
 #include "prefabs/prefabs.c"
 #include "inputs/button_click_event_system.c"
 #include "inputs/dragger_end_system.c"
-#include "inputs/element_click_system.c"
 #include "inputs/element_navigation_system.c"
 #include "inputs/mouse_element_system.c"
+#include "inputs/device_click_system.c"
+#include "inputs/zevice_click_system.c"
 #include "systems/element_raycast_system.c"
 #include "systems/element_active_system.c"
 #include "systems/element_selected_system.c"
@@ -154,7 +157,7 @@ zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition, [none] Par
 zox_system_ctx(ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [in] DeviceLink, [out] RaycasterTarget, [out] WindowRaycasted)
 
 // inputs
-zox_system(ElementClickSystem, EcsPostUpdate, [in] DeviceLink, [in] RaycasterTarget, [in] WindowRaycasted, [out] RaycasterResult, [out] ClickingEntity, [out] WindowTarget, [none] inputs.Zevice)
+zox_system(ZeviceClickSystem, EcsPostUpdate, [in] DeviceLink, [in] RaycasterTarget, [in] WindowRaycasted, [out] RaycasterResult, [out] ClickingEntity, [out] WindowTarget, [none] inputs.Zevice)
 zox_system(DeviceClickSystem, EcsPostUpdate, [in] PlayerLink, [in] RaycasterTarget, [in] WindowRaycasted, [in] Children, [out] RaycasterResult, [out] ClickingEntity, [out] WindowTarget, [none] inputs.Device)
 
 zox_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [out] NavigatorState, [out] NavigatorTimer, [out] RaycasterTarget)

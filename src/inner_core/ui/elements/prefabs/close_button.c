@@ -1,4 +1,4 @@
-extern void button_event_close_window(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element);
+extern void button_event_close_window(ecs_world_t *world, const ClickEventData *event);
 
 ecs_entity_t spawn_prefab_button_close(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)

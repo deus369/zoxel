@@ -13,9 +13,9 @@ void begin_play_game(ecs_world_t *world, const ecs_entity_t player) {
     set_game_state_target(world, game, zox_game_playing);
 }
 
-void button_event_new_game(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
-    destroy_main_menu(world, player);
-    const ecs_entity_t game = zox_get_value(player, GameLink)
+void button_event_new_game(ecs_world_t *world, const ClickEventData *event) {
+    destroy_main_menu(world, event->clicker);
+    const ecs_entity_t game = zox_get_value(event->clicker, GameLink)
     const ecs_entity_t realm = zox_get_value(game, RealmLink)
     int seed = (int) get_unique_time_seed();
     realm_save.seed = seed;
@@ -27,25 +27,16 @@ void button_event_new_game(ecs_world_t *world, const ecs_entity_t player, const 
     save_realm("zoxel", "seed.dat", &realm_save);
 #endif
     zox_set(realm, GenerateRealm, { zox_generate_realm_start })
-    // respawn_realm_voxels(world, realm);
-    // delay_event(world, &respawn_realm_items, realm, 0.1f);
-    // respawn_realm_items(world, realm);
-    begin_play_game(world, player);
-    // delay_event(world, &begin_play_game, player, 0.15f);
+    begin_play_game(world, event->clicker);
 }
 
-void button_event_continue_game(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element) {
-    destroy_main_menu(world, player);
-    const ecs_entity_t game = zox_get_value(player, GameLink)
+void button_event_continue_game(ecs_world_t *world, const ClickEventData *event) {
+    destroy_main_menu(world, event->clicker);
+    const ecs_entity_t game = zox_get_value(event->clicker, GameLink)
     const ecs_entity_t realm = zox_get_value(game, RealmLink)
     // todo: spawn realm data like voxels/stats/skills when starting new game
     load_realm("zoxel", "seed.dat", &realm_save);
     set_noise_seed(realm_save.seed);
-    // zox_log(" > realm start [%lu] %s\n", realm, zox_get_name(realm))
     zox_set(realm, GenerateRealm, { zox_generate_realm_start })
-    // respawn_realm_voxels(world, realm);
-    // delay_event(world, &respawn_realm_items, realm, 0.1f);
-    // respawn_realm_items(world, realm);
-    begin_play_game(world, player);
-    // delay_event(world, &begin_play_game, player, 0.15f);
+    begin_play_game(world, event->clicker);
 }

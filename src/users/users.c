@@ -30,19 +30,19 @@ void set_taskbar_icon_active(ecs_world_t *world, const ecs_entity_t canvas, cons
     else if (i == taskbar_actions) {if_has_child_with_tag(canvas, MenuActions) zox_set(frame, ActiveState, { 1 }) }
 }
 
-void on_toggle_taskbar_icon(ecs_world_t *world, const ecs_entity_t clicker, const ecs_entity_t clicked) {
-    const ecs_entity_t canvas = zox_get_value(clicker, CanvasLink)
-    const unsigned char index = zox_get_value(clicked, IconIndex)
-    if (index == taskbar_menu) toggle_ui_with_tag_e(spawn_menu_paused_player, MenuPaused, clicker)
-    else if (index == taskbar_stats) toggle_ui_with_tag_e(spawn_menu_stats_player, MenuStats, clicker)
-    else if (index == taskbar_items) toggle_ui_with_tag_e(spawn_menu_items_player, MenuItems, clicker)
-    else if (index == taskbar_skills) toggle_ui_with_tag_e(spawn_menu_skills_player, MenuSkills, clicker)
-    else if (index == taskbar_quests) toggle_ui_with_tag_e(spawn_menu_quests_player, MenuQuests, clicker)
+void on_toggle_taskbar_icon(ecs_world_t *world, const ClickEventData *event) {
+    const ecs_entity_t canvas = zox_get_value(event->clicker, CanvasLink)
+    const unsigned char index = zox_get_value(event->clicked, IconIndex)
+    if (index == taskbar_menu) toggle_ui_with_tag_e(spawn_menu_paused_player, MenuPaused, event->clicker)
+    else if (index == taskbar_stats) toggle_ui_with_tag_e(spawn_menu_stats_player, MenuStats, event->clicker)
+    else if (index == taskbar_items) toggle_ui_with_tag_e(spawn_menu_items_player, MenuItems, event->clicker)
+    else if (index == taskbar_skills) toggle_ui_with_tag_e(spawn_menu_skills_player, MenuSkills, event->clicker)
+    else if (index == taskbar_quests) toggle_ui_with_tag_e(spawn_menu_quests_player, MenuQuests, event->clicker)
     // testing - spawn_actionbar_player
-    else if (index == taskbar_actions) toggle_ui_with_tag_e(spawn_menu_actions_player, MenuActions, clicker)
+    else if (index == taskbar_actions) toggle_ui_with_tag_e(spawn_menu_actions_player, MenuActions, event->clicker)
     else return; // nothing to open
     // toggle frames active state
-    const ecs_entity_t frame = zox_get_value(clicked, ParentLink)
+    const ecs_entity_t frame = zox_get_value(event->clicked, ParentLink)
     if (!frame || !zox_has(frame, ActiveState)) {
         zox_log(" ! invalid frame\n")
         return;
