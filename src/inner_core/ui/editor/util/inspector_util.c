@@ -100,7 +100,7 @@ void set_inspector_element(ecs_world_t *world, const ecs_entity_t window_entity,
     Children *children = zox_get_mut(window_entity, Children)
     const ecs_entity_t scrollbar = children->value[1];
     const int elements_visible = zox_get_value(window_entity, ListUIMax)
-    const int font_size = default_ui_scale * zox_get_value(window_entity, ElementFontSize)
+    const int font_size = zox_ui_scale * zox_get_value(window_entity, ElementFontSize)
     const unsigned char button_layer = 1 + zox_get_value(window_entity, Layer2D)
     const int2 window_pixel_position_global = zox_get_value(window_entity, CanvasPosition)
     const int2 window_size = zox_get_value(window_entity, PixelSize)

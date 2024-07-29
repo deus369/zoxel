@@ -1,8 +1,4 @@
-#ifndef zoxel_on_android
-#define default_ui_scale 1.0f
-#else
-#define default_ui_scale 2.0f
-#endif
+float zox_ui_scale = 0.78f; // todo: effect actionbar, taskbar and user uis
 #define canvas_edge_size 8
 #define ui_active_brightness 1.8f
 #define ui_dragging_brightness 1.56f
@@ -22,7 +18,7 @@ const color default_outline_color = (color) { 155, 88, 45, 200 };
 // windows
 const color default_fill_color_header = (color) { 122, 22, 22, 77 };
 const color default_outline_color_header = (color) { 44, 44, 44, 77 };
-const color default_fill_color_window = (color) { 22, 22, 22, 44 };
+const color default_fill_color_window = (color) { 22, 22, 22, 99 };
 const color default_outline_color_window = (color) { 44, 44, 44, 77 };
 // buttons
 const color default_fill_color_button = (color) { 122, 22, 22, 77 };

@@ -106,26 +106,34 @@ void on_sdl_window_restored(ecs_world_t *world, ecs_entity_t e) {
         return;
     }
     SDL_Window* window = zox_get_value(e, SDLWindow)
-    const int2 window_size = zox_get_value(e, WindowSize)
+    const int2 window_size = zox_get_value(e, WindowSizeRestore)
     const int2 window_position = zox_get_value(e, WindowPosition)
     SDL_SetWindowSize(window, window_size.x, window_size.y);
     SDL_SetWindowPosition(window, window_position.x, window_position.y);
     // zox_log(" > setting to windowed [%ix%i]\n", window_size.x, window_size.y)
 }
 
-void sdl_toggle_fullscreen(ecs_world_t *world, ecs_entity_t e) { // SDL_Window* window) {
-    unsigned char is_fullscreen = zox_get_value(e, WindowFullscreen)
-    SDL_Window* window = zox_get_value(e, SDLWindow)
-    // unsigned char is_fullscreen = SDL_GetWindowFlags(window) & sdl_fullscreen_byte;
-    is_fullscreen = !is_fullscreen;
-    zox_set(e, WindowFullscreen, { is_fullscreen })
-    if (is_fullscreen) {
-        screen_dimensions = get_screen_size();
-        on_viewport_resized(world, screen_dimensions);
-        SDL_SetWindowSize(window, screen_dimensions.x, screen_dimensions.y);
+void on_window_resized(ecs_world_t *world, const ecs_entity_t e, const int2 size) {
+    if (int2_equals(size, screen_dimensions)) {
+        // zox_log(" > screen dimensions already at [%ix%i]\n", screen_dimensions.x, screen_dimensions.y)
+        return;
     }
-    sdl_set_fullscreen(window, is_fullscreen);
-    if (!is_fullscreen) on_sdl_window_restored(world, e);
+    screen_dimensions = size;
+    on_viewport_resized(world, screen_dimensions);
+    zox_set(e, WindowSize, { screen_dimensions })
+    if (!zox_gett_value(e, WindowFullscreen)) zox_set(e, WindowSizeRestore, { screen_dimensions })
+    zox_log(" > screen dimensions set to [%ix%i]\n", screen_dimensions.x, screen_dimensions.y)
+}
+
+void sdl_toggle_fullscreen(ecs_world_t *world, const ecs_entity_t e) { // SDL_Window* window) {
+    const unsigned char is_fullscreen = !zox_get_value(e, WindowFullscreen)
+    zox_set(e, WindowFullscreen, { is_fullscreen })
+    sdl_set_fullscreen(zox_gett_value(e, SDLWindow), is_fullscreen);
+    if (!is_fullscreen) {
+        on_sdl_window_restored(world, e);
+    } else {
+        on_window_resized(world, e, get_screen_size());
+    }
 }
 
 void print_supported_renderers() {
@@ -149,6 +157,7 @@ int initialize_sdl_video() {
         return EXIT_FAILURE;
     } else {
         screen_dimensions = get_screen_size();
+        zox_log(" > screen dimensions init to [%ix%i]\n", screen_dimensions.x, screen_dimensions.y)
         print_sdl();
 #ifdef zox_include_vulkan
         if (!load_vulkan_library()) return EXIT_FAILURE;

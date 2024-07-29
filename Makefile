@@ -23,6 +23,7 @@ use_lib_amd := false
 use_lib_vulkan := false
 # more
 patient_cmd = echo " > please be patient :), lord deus [>,<]/)"
+finish_cmd = echo " > we are done :), lord deus -[>,O]-"
 make_libs = -Llib -Iinclude -Wl,-rpath='lib' # default paths
 make_libs += -lm -lpthread -lflecs # default libraries
 ifdef game
@@ -87,7 +88,8 @@ endif
 
 make_release = echo " > building zoxel-linux" && \
 	$(patient_cmd) && \
-	$(CC) $(cflags) $(cflags_release) -o $(target) $(OBJS) $(make_libs)
+	$(CC) $(cflags) $(cflags_release) -o $(target) $(OBJS) $(make_libs) && \
+	$(finish_cmd)
 
 .DEFAULT_GOAL := $(target)
 

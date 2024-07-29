@@ -17,7 +17,7 @@ void ScrollbarSystem(ecs_iter_t *it) {
         if (scrollbar_size->value.y == pixelSize->value.y) continue;
         ecs_entity_t list_ui = zox_get_value(scrollbar, ParentLink)
         const ElementFontSize *elementFontSize = zox_get(list_ui, ElementFontSize)
-        int font_size = elementFontSize->value * default_ui_scale;
+        int font_size = elementFontSize->value * zox_ui_scale;
         int scrollbar_offset = scrollbar_size->value.y - pixelSize->value.y;
         int anchored_position_y = -pixelPosition->value.y + scrollbar_offset / 2;
         float scroll_percentage = anchored_position_y / (float) scrollbar_offset;

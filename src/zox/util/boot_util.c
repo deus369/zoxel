@@ -53,7 +53,8 @@ ecs_entity_t spawn_default_ui(ecs_world_t *world, const ecs_entity_t ui_camera, 
     zox_set(fake_mouse, MeshAlignment, { zox_mesh_alignment_top_left })
     zox_set(mouse_entity, TextureLink, { fake_mouse })
 
-    spawn_icon_mouse_follow_canvas(world, prefab_icon_mouse_follow, canvas, dimensions, max_layers2D - 3, float2_half, default_icon_size);
+    const int icon_size = default_icon_size * zox_ui_scale;
+    spawn_icon_mouse_follow_canvas(world, prefab_icon_mouse_follow, canvas, dimensions, max_layers2D - 3, float2_half, icon_size);
     return canvas;
 }
 

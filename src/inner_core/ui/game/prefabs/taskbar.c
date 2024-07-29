@@ -43,11 +43,11 @@ extern void set_taskbar_icon_active(ecs_world_t *world, const ecs_entity_t canva
 extern void on_toggle_taskbar_icon(ecs_world_t *world, const ClickEventData *event);
 
 ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas, const ecs_entity_t parent, const unsigned char layer) {
-    int2 position = (int2) { 0, -24 };
+    int2 position = (int2) { 0, -24 * zox_ui_scale };
     float2 anchor = (float2) {0.5f, 1 };
-    int size = 48;
-    const int padding_x = 4;
-    const int padding_y = 4;
+    const int size = 48 * zox_ui_scale;
+    const int padding_x = 4 * zox_ui_scale;
+    const int padding_y = 4 * zox_ui_scale;
     const int margins = size / 4;
     // const color fill_color = (color) { 22, 77, 77, 122 };
     // const color outline_color = (color) { 11, 255, 11, 122 };

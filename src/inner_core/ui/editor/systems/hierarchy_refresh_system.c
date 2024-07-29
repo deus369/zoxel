@@ -41,7 +41,7 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         const ecs_entity_t canvas = canvasLink->value;
         const int2 canvas_size = zox_get_value(canvas, PixelSize)
         const int elements_visible = listUIMax->value;
-        const int font_size = elementFontSize->value * default_ui_scale;
+        const int font_size = elementFontSize->value * zox_ui_scale;
         const unsigned char button_layer = layer2D->value + 1;
         const int scrollbar_margins = zox_gett_value(scrollbar, ElementMargins).x;
         const int scrollbar_width = zox_gett_value(scrollbar, PixelSize).x;

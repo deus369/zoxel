@@ -4,22 +4,33 @@ resources="resources"
 build_path="build/windows"
 build_dev_path="build/windows-dev"
 
+# windows needs choco, git, mingw, make and wget
+source bash/util/detect_os.sh
 bash bash/util/prepare_directories.sh
 # bash bash/freetype/install.sh
 bash bash/windows/install_winpthread.sh
 # source bash/windows/download_libraries.sh
-if yay -Q mingw-w64-glew > /dev/null 2>&1; then
-    echo " > mingw-w64-glew is installed"
+os=$(detect_os)
+echo " + OS is $os"
+if "$os" -eq "LINUX" ; then
+    echo " + linux cross compilation preparation"
+    if yay -Q mingw-w64-glew > /dev/null 2>&1; then
+        echo " > mingw-w64-glew is installed"
+    else
+        echo " + mingw-w64-glew is not installed"
+        yay -S --noconfirm mingw-w64-glew
+    fi
+    # bash bash/glew/install.sh build/glew "dll"
+    # yay -S --noconfirm mingw-w64-SDL2_image
+    # yay -S --noconfirm mingw-w64-SDL2_mixer
+    bash bash/sdl/install_sdl.sh build/sdl "dll"
+    bash bash/sdl/install_sdl_image.sh build/sdl_image "dll"
+    bash bash/sdl/install_sdl_mixer.sh build/sdl_mixer "dll"
 else
-    echo " + mingw-w64-glew is not installed"
-    yay -S --noconfirm mingw-w64-glew
+    echo " > windows, no yay, installing from binaries online"
+    bash bash/glew/install_windows_direct.sh
+    bash bash/sdl/install_windows_direct.sh
 fi
-# bash bash/glew/install.sh build/glew "dll"
-bash bash/sdl/install_sdl.sh build/sdl "dll"
-# yay -S --noconfirm mingw-w64-SDL2_image
-# yay -S --noconfirm mingw-w64-SDL2_mixer
-bash bash/sdl/install_sdl_image.sh build/sdl_image "dll"
-bash bash/sdl/install_sdl_mixer.sh build/sdl_mixer "dll"
 
 # if [ ! - d $build_path ] mkdir $build_path ;
 # Function to create directory if it doesn't exist

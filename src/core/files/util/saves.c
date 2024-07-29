@@ -1,13 +1,22 @@
 #define max_path_characters 256
 
 void get_save_directory(const char *game, char *path, size_t size) {
+#ifdef zox_disable_save_games
+    return;
+#else
 #ifdef zoxel_on_windows
-    char home_directory[MAX_PATH];
+    const char *home_directory = getenv("USERPROFILE");
+    if (home_directory) {
+        snprintf(path, size, "%s\\AppData\\Local\\%s", home_directory, game);
+    } else {
+        zox_log(" ! home_directory null [get_save_directory]")
+    }
+    /*char home_directory[MAX_PATH];
     if (SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_APPDATA, NULL, 0, home_directory))) {
         snprintf(path, size, "%s\\%s", home_directory, game);
     } else {
         zox_log(" ! home_directory null [get_save_directory]")
-    }
+    }*/
 #elif defined(zoxel_on_android)
     // Android-specific code
     JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
@@ -33,6 +42,7 @@ void get_save_directory(const char *game, char *path, size_t size) {
     } else {
         zox_log(" ! home_directory null [get_save_directory]")
     }
+#endif
 #endif
 }
 
@@ -146,13 +156,16 @@ void delete_save_directory(const char *game) {
 }
 
 unsigned char create_new_save_directory(const char *game) {
+#ifdef zox_disable_save_games
+    return 1;
+#else
     char path[max_path_characters];
     get_save_directory(game, path, sizeof(path));
     zox_log(" > save directory is [%s]\n", path)
     if (!has_path_directory(path)) {
         zox_log(" + creating new directory [%s]\n")
 #ifdef zoxel_on_windows
-        if (_mkdir(path) == 0) {
+        if (mkdir(path) == 0) {
             return 1;
         } else {
             zox_log(" ! error creating directory")
@@ -170,6 +183,7 @@ unsigned char create_new_save_directory(const char *game) {
         zox_log(" > save directory existed [%s]\n")
         return 1;
     }
+#endif
 }
 
 

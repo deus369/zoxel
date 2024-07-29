@@ -115,7 +115,7 @@ void PlayerTestSystem(ecs_iter_t *it) {
 #ifndef zox_on_startup_spawn_main_menu
                 if (keyboard->g.pressed_this_frame) {
                     const ecs_entity_t canvas = zox_get_value(it->entities[i], CanvasLink)
-                    const int edge_buffer = 8 * default_ui_scale;
+                    const int edge_buffer = 8 * zox_ui_scale;
                     const float2 window_anchor = { 0.0f, 1.0f };
                     const int2 window_position = { 0 + edge_buffer, 0 - edge_buffer };
                     spawn_main_menu(world, main_player, canvas, game_name, window_position, window_anchor, 0);

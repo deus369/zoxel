@@ -137,16 +137,16 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
 }
 
 SpawnWindowUsers get_default_spawn_window_users_data(const ecs_entity_t character, const ecs_entity_t canvas, const int2 canvas_size) {
-    const unsigned char header_font_size = 26;
-    const unsigned char header_margins = 6;
+    const unsigned char header_font_size = 26 * zox_ui_scale;
+    const unsigned char header_margins = 6 * zox_ui_scale;
     const unsigned char header_height = header_font_size + header_margins * 2;
     const float2 anchor = float2_half;
     const int2 position = position;
     const byte2 grid_size = (byte2) { 4, 4 };
-    const int grid_padding = 6;
-    const int grid_margins = 16;
-    const int icon_frame_size = default_icon_frame_size;
-    const int icon_size = default_icon_size;
+    const int grid_padding = 6 * zox_ui_scale;
+    const int grid_margins = 16 * zox_ui_scale;
+    const int icon_frame_size = default_icon_frame_size * zox_ui_scale;
+    const int icon_size = default_icon_size * zox_ui_scale;
     const int2 size = (int2) { grid_padding + (icon_frame_size + grid_padding) * grid_size.x + grid_margins * 2, grid_padding + (icon_frame_size + grid_padding) * grid_size.y + grid_margins * 2 + header_height };
     SpawnWindowUsers data = {
         .canvas = {
