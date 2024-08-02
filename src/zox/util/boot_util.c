@@ -41,7 +41,6 @@ ecs_entity_t spawn_default_ui(ecs_world_t *world, const ecs_entity_t ui_camera, 
     const ecs_entity_t canvas = spawn_canvas(world, prefab_canvas, ui_camera, dimensions, screen_to_canvas);
     spawn_canvas_overlay(world, prefab_canvas_overlay, canvas, dimensions);
     spawn_tooltip(world, prefab_tooltip, canvas);
-
     // custom cursor
     SDL_ShowCursor(SDL_DISABLE);
     const ecs_entity_t texture_source = string_hashmap_get(files_hashmap_textures, new_string_data("cursor_01"));
@@ -52,7 +51,6 @@ ecs_entity_t spawn_default_ui(ecs_world_t *world, const ecs_entity_t ui_camera, 
     zox_set(fake_mouse, TextureDirty, { 1 })
     zox_set(fake_mouse, MeshAlignment, { zox_mesh_alignment_top_left })
     zox_set(mouse_entity, TextureLink, { fake_mouse })
-
     const int icon_size = default_icon_size * zox_ui_scale;
     spawn_icon_mouse_follow_canvas(world, prefab_icon_mouse_follow, canvas, dimensions, max_layers2D - 3, float2_half, icon_size);
     return canvas;

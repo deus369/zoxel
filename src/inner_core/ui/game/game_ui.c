@@ -2,6 +2,7 @@
 #define zox_mod_game_ui
 
 #include "settings/settings.c"
+#include "data/taskbar.c"
 zox_declare_tag(MenuMain)
 zox_declare_tag(MenuOptions)
 zox_declare_tag(MenuPaused)

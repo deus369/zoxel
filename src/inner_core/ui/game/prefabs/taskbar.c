@@ -13,30 +13,6 @@ ecs_entity_t spawn_prefab_taskbar(ecs_world_t *world, const ecs_entity_t prefab)
     return e;
 }
 
-#define taskbar_menu 0
-#define taskbar_status 1
-#define taskbar_stats 2
-#define taskbar_actions 3
-#define taskbar_items 4
-#define taskbar_skills 5
-#define taskbar_quests 6
-// todo: add skilltree
-const int taskbar_count = 13;
-char* taskbar_textures[] = {
-    "game_icon",
-    "taskbar_disabled", // "taskbar_status",
-    "taskbar_stats",
-    "taskbar_actions",
-    "taskbar_items",
-    "taskbar_skills",
-    "taskbar_quests",
-    "taskbar_disabled", // "taskbar_body",
-    "taskbar_disabled", // "taskbar_equipment",
-    "taskbar_disabled", // "taskbar_crafting",
-    "taskbar_disabled", // "taskbar_map",
-    "taskbar_disabled", // "taskbar_lore",
-    "taskbar_disabled", // "taskbar_achievements",
-};
 
 // this is created in our users module
 extern void set_taskbar_icon_active(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t frame, const int i);
@@ -49,8 +25,6 @@ ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const 
     const int padding_x = 4 * zox_ui_scale;
     const int padding_y = 4 * zox_ui_scale;
     const int margins = size / 4;
-    // const color fill_color = (color) { 22, 77, 77, 122 };
-    // const color outline_color = (color) { 11, 255, 11, 122 };
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const int2 actionbar_size = (int2) { padding_x + (size + padding_x) * taskbar_count + margins * 2, size + padding_y * 2 };
     ElementSpawn spawn_actionbar = {
@@ -120,28 +94,20 @@ ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const 
         spawn_frame_data.element.position = (int2) { position_x, 0 };
         const ecs_entity_t frame = spawn_element(world, &spawn_frame_data);
         children->value[i] = frame;
-
         // Active State
         if (i == 0) zox_set(frame, ActiveState, { 1 })
         set_taskbar_icon_active(world, canvas, frame, i);
-
         zox_get_muter(frame, Children, frame_children)
         initialize_memory_component(Children, frame_children, ecs_entity_t, 1)
         spawn_icon_data.parent.e = frame;
         spawn_icon_data.parent.position = spawn_frame_data.element.position;
-
         const ecs_entity_t icon2 = spawn_element(world, &spawn_icon_data);
         frame_children->value[0] = icon2;
         zox_set(icon2, ClickEvent, { &on_toggle_taskbar_icon })
         zox_set(icon2, IconIndex, { i })
-
         // texture
         char *icon_texture_name = taskbar_textures[i];
         clone_texture_to_entity(world, icon2, icon_texture_name);
-        /*const ecs_entity_t texture_source = string_hashmap_get(files_hashmap_textures, new_string_data(icon_texture_name));
-        zox_set(icon2, GenerateTexture, { zox_generate_texture_none })
-        clone_texture_data(world, icon2, texture_source);
-        zox_set(icon2, TextureDirty, { 1 })*/
     }
     return e;
 }
