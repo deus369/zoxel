@@ -1,5 +1,6 @@
 # bugs
 
+- [ ] on windows, when loading save game, falls through map
 - [ ] sometimes meshes dissapear in chunk loding..
 - [ ] on android, lines are being weird
 - [ ] on android, sometimes voxel gizmo flickers (low frames?)

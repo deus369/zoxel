@@ -12,6 +12,20 @@ float3 generate_hsv_v_s(const float2 hue_limits, const float2 value_limits, cons
         value_limits.x + (value_limits.y - value_limits.x) * (rand() % 100) * 0.01f };
 }
 
+ecs_entity_t spawn_realm_voxel_texture(ecs_world_t *world, const unsigned char index, char *name, char *texture_filename) {
+    SpawnBlock spawn_data = {
+        .index = index,
+        .seed = generate_voxel_seed(index),
+        .prefab_texture = prefab_vox_texture
+    };
+    spawn_data.name = name; // "dark";
+    spawn_data.color = color_black;
+    spawn_data.textures = 1;
+    spawn_data.texture_filename = texture_filename; // "dark_block";
+    spawn_data.prefab = prefab_block;
+    return spawn_block(world, &spawn_data);
+}
+
 void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     if (realm == 0) return;
 
@@ -83,6 +97,9 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
 #ifdef zox_disable_block_voxes
     const ecs_entity_t vox_disabled = spawn_vox_generated_invisible(world, prefab_vox_generated, (color) { 25, 5, 5, 255 });
 #endif
+    // todo: make all spawn code like this instead of a for loop
+    voxelLinks->value[zox_block_dark - 1] = spawn_realm_voxel_texture(world, zox_block_dark, "dark", "block_dark");
+    voxelLinks->value[zox_block_dungeon_core - 1] = spawn_realm_voxel_texture(world, zox_block_dungeon_core, "dungeon_core", "block_dungeon_core");
     for (unsigned char i = 0; i < voxelLinks->length; i++) {
         SpawnBlock spawn_data = {
             .index = (unsigned char) (i + 1),
@@ -174,10 +191,11 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             spawn_data.vox = vox_disabled;
 #endif
         } else if (i == zox_block_dark - 1) {
-            spawn_data.name = "dark";
-            spawn_data.color = color_black;
-            spawn_data.textures = 1;
-            spawn_data.texture_filename = "dark_block";
+            continue;
+        } else if (i == zox_block_dungeon_core - 1) {
+            continue;
+        } else {
+            // continue;
         }
         unsigned char is_name_malloc = 0;
         if (!spawn_data.name) {
@@ -219,22 +237,3 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     zox_log(" + generated realm [voxels]\n")
 #endif
 }
-
-/*void respawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
-    zox_get_mutt(realm, VoxelLinks, voxelLinks)
-    zox_get_mutt(realm, TilemapLink, tilemapLink)
-    for (int i = 0; i < voxelLinks->length; i++) zox_delete(voxelLinks->value[i])
-    clear_memory_component(VoxelLinks, voxelLinks)
-    zox_delete(tilemapLink->value)
-    tilemapLink->value = 0;
-    spawn_realm_voxels(world, realm);
-}*/
-
-// spawn_data.texture_tag = zox_id(DirtTexture);
-// spawn_data.texture_tag = zox_id(GrassTexture);
-// spawn_data.texture_tag = zox_id(SandTexture);
-// spawn_data.texture_tag = zox_id(StoneTexture);
-// 2nd test vox block
-// for generated vox blocks
-// spawn_data.color = generate_random_voxel_color();
-// files_voxes[test_block_vox_index2]; // our cool cube

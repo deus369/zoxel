@@ -3,6 +3,7 @@ ecs_entity_t meta_item_block_dark;
 ecs_entity_t meta_item_block_obsidian;
 ecs_entity_t meta_item_block_sand;
 ecs_entity_t meta_item_block_stone;
+ecs_entity_t meta_item_block_dungeon_core;
 
 ecs_entity_t spawn_block_item(ecs_world_t *world, const ecs_entity_t block) {
     if (zox_valid(block) && zox_has(block, ZoxName) && zox_has(block, Textures)) {
@@ -55,6 +56,7 @@ void spawn_realm_items(ecs_world_t *world, const ecs_entity_t realm) {
     meta_item_block_dirt = items->value[zox_block_dirt - 1];
     meta_item_block_obsidian = items->value[zox_block_obsidian - 1];
     meta_item_block_dark = items->value[zox_block_dark - 1];
+    meta_item_block_dungeon_core = items->value[zox_block_dungeon_core - 1];
     meta_item_block_sand = items->value[zox_block_sand - 1];
     meta_item_block_stone = items->value[zox_block_stone - 1];
 
