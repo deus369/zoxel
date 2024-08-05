@@ -36,10 +36,10 @@ ecs_entity_t create_terrain(ecs_world_t *world, const ecs_entity_t realm, const 
     for (chunk_position.x = -size.x; chunk_position.x <= size.x; chunk_position.x++) {
         for (chunk_position.z = -size.z; chunk_position.z <= size.z; chunk_position.z++) {
             for (chunk_position.y = -size.y; chunk_position.y <= size.y; chunk_position.y++) {
-                int index = get_chunk_index_3(chunk_position, size.x, size.y);
+                const int index = get_chunk_index_3(chunk_position, size.x, size.y);
                 if (index < 0 || index >= chunks_total_length) continue;
-                float3 real_chunk_position = float3_multiply_float(float3_from_int3(chunk_position), real_chunk_scale);
-                ecs_entity_t chunk = spawn_terrain_chunk_octree(world, prefab_chunk, terrain_world, center_position, chunk_position, real_chunk_position);
+                const float3 real_chunk_position = float3_multiply_float(float3_from_int3(chunk_position), real_chunk_scale);
+                const ecs_entity_t chunk = spawn_terrain_chunk_octree(world, prefab_chunk, terrain_world, center_position, chunk_position, real_chunk_position);
                 chunk_positions[index] = chunk_position;
                 chunks[index] = chunk;
             }

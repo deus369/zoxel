@@ -9,7 +9,6 @@ void TerrainLodSystem(ecs_iter_t *it) {
     if (zox_cameras_disable_streaming) return;
     zox_iter_world()
     ctx2 *filters = (ctx2 *) it->ctx;
-
     ecs_query_t *streamers_query = filters->y;
     ecs_iter_t streamers_iter = ecs_query_iter(world, streamers_query);
     ecs_query_next(&streamers_iter);
@@ -18,7 +17,6 @@ void TerrainLodSystem(ecs_iter_t *it) {
         ecs_iter_fini(&streamers_iter);
         return;
     }
-
     // dont i need to iterate multiple tables here?
     ecs_query_t *chunks_query = filters->x;
     ecs_iter_t chunks_iterator = ecs_query_iter(world, chunks_query);
@@ -28,7 +26,6 @@ void TerrainLodSystem(ecs_iter_t *it) {
         ecs_iter_fini(&chunks_iterator);
         return;
     }
-
     const int stream_points_length = total_streamers;
     zox_field_out(StreamDirty, streamDirtys, 1)
     for (int i = 0; i < it->count; i++) {

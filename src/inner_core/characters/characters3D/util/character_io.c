@@ -6,6 +6,15 @@ typedef struct {
 SavePlayer player_save;
 load_and_save_data(SavePlayer, player)
 
+void load_character_p(float3 *position, float4 *rotation) {
+#ifdef zox_disable_save_games
+    return;
+#endif
+    load_player("zoxel", "player.dat", &player_save);
+    *position = player_save.position;
+    *rotation = quaternion_from_euler(player_save.euler);
+}
+
 void load_character_e(ecs_world_t *world, const ecs_entity_t character) {
 #ifdef zox_disable_save_games
     return;

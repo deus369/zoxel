@@ -22,6 +22,8 @@ zox_component_entity(PlayerPauseEvent)
 #include "util/resume_util.c"
 #include "util/editor_util.c"
 #include "util/touch_util.c"
+#include "util/start_game2D.c"
+#include "util/start_game3D.c"
 #include "util/start_game.c"
 #include "util/end_game.c"
 #include "util/player_util.c"
