@@ -19,7 +19,7 @@ ecs_entity_t spawn_music(ecs_world_t *world, const ecs_entity_t prefab) {
 #ifdef zoxel_slow_music
     music_speed *= 6.0;
 #endif
-    zox_log(" > music_speed [%f]\n", music_speed)
+    // zox_log(" > music_speed [%f]\n", music_speed)
 #ifdef zoxel_debug_music
     zox_log(" > music speed set to [%lf]\n", music_speed)
 #endif

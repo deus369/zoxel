@@ -89,11 +89,12 @@ float generate_noise_2D(float2 point, float frequency) {
 
 void set_noise_seed(uint32_t seed) {
     global_seed = seed;
+    zox_log(" + realm seed [%" PRIu32 "]\n", global_seed)
     srand(seed);
     for (int i = 0; i < noise_values_length; i++) {
         values[i] = (unsigned char) rand() % 256; // (byte) random.NextInt(0, 255);
     }
     // testing
-    float value = generate_noise_2D(float2_zero, 0.01f);
-    zox_log(" > realm seed [%i]\n", value)
+    // float value = generate_noise_2D(float2_zero, 0.01f);
+    // zox_log(" > realm seed [%i]\n", value)
 }

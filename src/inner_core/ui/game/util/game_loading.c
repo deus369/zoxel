@@ -17,8 +17,7 @@ void button_event_new_game(ecs_world_t *world, const ClickEventData *event) {
     destroy_main_menu(world, event->clicker);
     const ecs_entity_t game = zox_get_value(event->clicker, GameLink)
     const ecs_entity_t realm = zox_get_value(game, RealmLink)
-    int seed = (int) get_unique_time_seed();
-    realm_save.seed = seed;
+    realm_save.seed = get_unique_time_seed();
     set_noise_seed(realm_save.seed);
     // todo: i should delete old one here
 #ifndef zox_disable_save_games

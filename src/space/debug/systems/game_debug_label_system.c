@@ -19,6 +19,29 @@ int get_label_##name(ecs_world_t *world, char buffer[], int buffer_size, int buf
 
 get_label_generic_function(PlayerLinks, player_links)
 
+int debug_label_device(ecs_world_t *world, const ecs_entity_t device, char buffer[], int buffer_size, int buffer_index) {
+        if (!device || !zox_has(device, Children)) return buffer_index;
+        zox_geter(device, Children, zevices)
+        for (int j = 0; j < zevices->length; j++) {
+                const ecs_entity_t zevice = zevices->value[j];
+                if (!zox_has(zevice, ZevicePointer)) continue;
+                buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " - z [%i]", j);
+                if (zox_has(zevice, ZevicePointer)) {
+                        const unsigned char click_value = zox_get_value(zevice, ZevicePointer)
+                        unsigned char click_type = 0;
+                        if (devices_get_pressed_this_frame(click_value)) click_type = 1;
+                        else if (devices_get_released_this_frame(click_value)) click_type = 2;
+                        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " clk [%i]", click_type);
+                }
+                if (zox_has(zevice, ZevicePointerPosition)) {
+                        const int2 position = zox_get_value(zevice, ZevicePointerPosition)
+                        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " pos [%ix%i]", position.x, position.y);
+                }
+                buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "\n");
+        }
+        return buffer_index;
+}
+
 void GameDebugLabelSystem(ecs_iter_t *it) {
     time_update_debug_label_system += zox_delta_time;
     if (time_update_debug_label_system >= time_update_debug_label_system_rate) {
@@ -132,28 +155,12 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         } else */
         if (deviceMode->value == zox_device_mode_keyboardmouse) {
             buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "[keyboardmouse]\n");
+            buffer_index = debug_label_device(world, mouse_entity, buffer, buffer_size, buffer_index);
         } else if (deviceMode->value == zox_device_mode_gamepad) {
             buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "[gamepad]\n");
         } else if (deviceMode->value == zox_device_mode_touchscreen) {
-                buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "[touchscreen]\n");
-                zox_geter(touchscreen_entity, Children, zevices)
-                for (int j = 0; j < zevices->length; j++) {
-                        const ecs_entity_t zevice = zevices->value[j];
-                        if (!zox_has(zevice, ZevicePointer)) continue;
-                        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " - z [%i]", j);
-                        if (zox_has(zevice, ZevicePointer)) {
-                                const unsigned char click_value = zox_get_value(zevice, ZevicePointer)
-                                unsigned char click_type = 0;
-                                if (devices_get_pressed_this_frame(click_value)) click_type = 1;
-                                else if (devices_get_released_this_frame(click_value)) click_type = 2;
-                                buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " clk [%i]", click_type);
-                        }
-                        if (zox_has(zevice, ZevicePointerPosition)) {
-                                const int2 position = zox_get_value(zevice, ZevicePointerPosition)
-                                buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " pos [%ix%i]", position.x, position.y);
-                        }
-                        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "\n");
-                }
+            buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "[touchscreen]\n");
+            buffer_index = debug_label_device(world, touchscreen_entity, buffer, buffer_size, buffer_index);
         }
 #endif
         // test this \n

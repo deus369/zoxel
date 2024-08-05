@@ -78,7 +78,6 @@ unsigned char initialize_ttf(ecs_world_t *world, const ecs_entity_t prefab) {
 #else
 
 unsigned char initialize_ttf(ecs_world_t *world, const ecs_entity_t prefab) {
-    zox_log(" - ttf use it not enabled\n")
     return 0;
 }
 

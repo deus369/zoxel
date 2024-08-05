@@ -7,6 +7,7 @@ typedef struct {
 #define int2_one (int2) { 1, 1 }
 #define int2_two (int2) { 2, 2 }
 #define int2_four (int2) { 4, 4 }
+#define int2_hidden (int2) { -666, -666 }   // used for canvas position
 
 int2 int2_half(const int2 value) {
     return (int2) { value.x / 2, value.y / 2 };

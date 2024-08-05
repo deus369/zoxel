@@ -2,8 +2,6 @@
 // #define zox_debug_log_element_raycasting
 int touch_devices_count = 0;
 int touch_fingers_count = 0;
-#define int2_hidden (int2) { -666, -666 }
-// todo: debug label for fingers
 
 unsigned char touchscreen_has_id(ecs_world_t *world, const Children *zevices, const int id) {
     for (int i = 0; i < zevices->length; i++) {

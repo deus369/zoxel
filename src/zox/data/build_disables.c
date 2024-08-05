@@ -1,7 +1,7 @@
 // disables
 
 // #define zoxel_mouse_emulate_touch
-#define zoxel_start_with_debug_ui
+// #define zoxel_start_with_debug_ui
 // still testing this
 // #define zox_disable_touch_buttons
 

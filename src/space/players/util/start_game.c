@@ -47,7 +47,7 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
         chunk_position.y = i;
         const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
         if (!chunk) {
-            zox_log(" > no chunk here [%ix%ix%i]\n", chunk_position.x, chunk_position.y, chunk_position.z)
+            // zox_log(" > no chunk here [%ix%ix%i]\n", chunk_position.x, chunk_position.y, chunk_position.z)
             continue;
         }
         zox_geter(chunk, ChunkOctree, chunk_octree)

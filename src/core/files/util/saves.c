@@ -161,9 +161,8 @@ unsigned char create_new_save_directory(const char *game) {
 #else
     char path[max_path_characters];
     get_save_directory(game, path, sizeof(path));
-    zox_log(" > save directory is [%s]\n", path)
     if (!has_path_directory(path)) {
-        zox_log(" + creating new directory [%s]\n")
+        zox_log(" + creating new save directory [%s]\n", path)
 #ifdef zoxel_on_windows
         if (mkdir(path) == 0) {
             return 1;
@@ -180,7 +179,7 @@ unsigned char create_new_save_directory(const char *game) {
         }
 #endif
     } else {
-        zox_log(" > save directory existed [%s]\n")
+        zox_log(" > save directory existed [%s]\n", path)
         return 1;
     }
 #endif

@@ -28,8 +28,9 @@ void QolShortcutsSystem(ecs_iter_t *it) {
                     toggle_free_roam_camera(world, e);
                     // zox_log(" > set camera free roam [%i]\n", camera_mode)
                 }
-                else if (keyboard->e.pressed_this_frame) save_player_e(world, e);
-                else if (keyboard->r.pressed_this_frame) load_player_e(world, e);
+
+                // else if (keyboard->e.pressed_this_frame) save_player_e(world, e);
+                // else if (keyboard->r.pressed_this_frame) load_player_e(world, e);
 
                 else if (keyboard->_1.pressed_this_frame) set_player_action(world, e, 0);
                 else if (keyboard->_2.pressed_this_frame) set_player_action(world, e, 1);
