@@ -6,16 +6,17 @@ void PlayerPauseSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         for (int j = 0; j < deviceLinks->length; j++) {
-            const ecs_entity_t device_entity = deviceLinks->value[j];
-            if (zox_has(device_entity, Keyboard)) {
-                const Keyboard *keyboard = zox_get(device_entity, Keyboard)
+            const ecs_entity_t device = deviceLinks->value[j];
+            if (!device) continue;
+            if (zox_has(device, Keyboard)) {
+                const Keyboard *keyboard = zox_get(device, Keyboard)
                 if (keyboard->escape.pressed_this_frame ||
                     (!keyboard->left_alt.is_pressed && !keyboard->right_alt.is_pressed && keyboard->enter.pressed_this_frame)) {
                     did_toggle_pause = 1;
                     break;
                 }
-            } else if (zox_has(device_entity, Gamepad)) {
-                const Children *zevices = zox_get(device_entity, Children)
+            } else if (zox_has(device, Gamepad)) {
+                const Children *zevices = zox_get(device, Children)
                 for (int k = 0; k < zevices->length; k++) {
                     ecs_entity_t zevice_entity = zevices->value[k];
                     if (zox_has(zevice_entity, ZeviceButton)) {

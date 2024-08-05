@@ -11,6 +11,7 @@ void DeviceModeSystem(ecs_iter_t *it) {
         unsigned char using_current_inputs = 0;
         for (int j = 0; j < deviceLinks2->length; j++) {
             const ecs_entity_t device = deviceLinks2->value[j];
+            if (!device) continue;
             if (deviceMode->value == zox_device_mode_keyboardmouse) {
                 if (zox_has(device, Keyboard)) {
                     const Keyboard *keyboard = zox_get(device, Keyboard)

@@ -37,6 +37,7 @@ void ElementNavigationSystem(ecs_iter_t *it) {
         float2 left_stick = float2_zero;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
+            if (!device) continue;
             if (zox_has(device, Keyboard)) {
                 zox_geter(device, Keyboard, keyboard)
                 if (keyboard->down.pressed_this_frame) {

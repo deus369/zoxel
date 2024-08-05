@@ -25,7 +25,7 @@ zox_define_component_byte(RaycasterResult)
 zox_define_component_entity(RaycasterTarget)
 zox_define_component_float3(RaycastOrigin)
 zox_define_component_float3(RaycastNormal)
-zox_system(MouseRaycasterSystem, zox_pip_raycasting, [in] DeviceLinks, [in] DeviceMode, [out] Raycaster)
+// zox_system(MouseRaycasterSystem, zox_pip_raycasting, [in] DeviceLinks, [in] DeviceMode, [out] Raycaster)
 zox_system(ZeviceRaycasterSystem, zox_pip_raycasting, [in] ZevicePointerPosition, [in] ZevicePointer, [out] Raycaster)
 #ifndef zox_debug_camera_rays
 zox_system(CameraRaySystem, zox_pip_raycasting, [in] FrustumCorners, [out] RaycastOrigin, [out] RaycastNormal)

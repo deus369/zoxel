@@ -9,7 +9,6 @@ void add_ui_components(ecs_world_t *world, const ecs_entity_t e) {
     zox_prefab_set(e, CanvasLink, { 0 })
 }
 
-
 void add_ui_mesh(ecs_world_t *world, const ecs_entity_t e) {
     if (headless) return;
     add_gpu_mesh(world, e);
@@ -84,5 +83,5 @@ void add_draggable_components(ecs_world_t *world, const ecs_entity_t e) {
 
 void add_mouse_follow_components(ecs_world_t *world, const ecs_entity_t e) {
     zox_add_tag(e, MouseElement)
-    zox_prefab_add(e, ZeviceLink)
+    zox_prefab_set(e, ZeviceLink, { 0 })
 }

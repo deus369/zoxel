@@ -38,6 +38,9 @@ void prefabs_add_ui_to_raycaster(ecs_world_t *world, const ecs_entity_t e) {
 
 void spawn_prefabs_ui_core(ecs_world_t *world) {
     prefab_canvas = spawn_prefab_canvas(world);
+#if defined(zox_mod_players)
+    zox_prefab_set(prefab_canvas, PlayerLink, { 0 })
+#endif
     prefab_element = spawn_prefab_element(world);
     prefab_element_basic = spawn_prefab_element_basic(world);
     prefab_element_invisible = spawn_prefab_element_invisible(world);

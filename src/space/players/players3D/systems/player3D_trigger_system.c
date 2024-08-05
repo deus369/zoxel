@@ -16,9 +16,10 @@ void Player3DTriggerSystem(ecs_iter_t *it) {
         zox_field_i(DeviceMode, deviceModes, deviceMode)
         zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         for (int j = 0; j < deviceLinks->length; j++) {
-            const ecs_entity_t device_entity = deviceLinks->value[j];
-            if (deviceMode->value == zox_device_mode_keyboardmouse && zox_has(device_entity, Mouse)) {
-                zox_geter(device_entity, Children, zevices)
+            const ecs_entity_t device = deviceLinks->value[j];
+            if (!device) continue;
+            if (deviceMode->value == zox_device_mode_keyboardmouse && zox_has(device, Mouse)) {
+                zox_geter(device, Children, zevices)
                 for (int k = 0; k < zevices->length; k++) {
                     const ecs_entity_t zevice = zevices->value[k];
                     if (zox_has(zevice, ZevicePointer)) {
@@ -30,8 +31,8 @@ void Player3DTriggerSystem(ecs_iter_t *it) {
                         if (devices_get_pressed_this_frame(click)) is_triggered_b = 1;
                     }*/
                 }
-            } else if (deviceMode->value == zox_device_mode_gamepad && zox_has(device_entity, Gamepad)) {
-                const Children *zevices = zox_get(device_entity, Children)
+            } else if (deviceMode->value == zox_device_mode_gamepad && zox_has(device, Gamepad)) {
+                const Children *zevices = zox_get(device, Children)
                 for (int k = 0; k < zevices->length; k++) {
                     ecs_entity_t zevice = zevices->value[k];
                     if (zox_has(zevice, ZeviceButton)) {

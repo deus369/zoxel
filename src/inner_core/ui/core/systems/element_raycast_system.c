@@ -1,3 +1,5 @@
+// todo: use a DeviceMode for logic flow ?
+
 void ElementRaycastSystem(ecs_iter_t *it) {
     zox_iter_world()
     zox_field_in(Raycaster, raycasters, 1)
@@ -6,9 +8,10 @@ void ElementRaycastSystem(ecs_iter_t *it) {
     zox_field_out(WindowRaycasted, windowRaycasteds, 4)
     // zox_log(" > ElementRaycastSystem [%i] [%f]\n", it->count, zox_current_time)
     for (int i = 0; i < it->count; i++) {
-        // todo: use a DeviceMode for logic flow
         zox_field_i(DeviceLink, deviceLinks, deviceLink)
+        if (!deviceLink->value) continue;
         const ecs_entity_t player = zox_get_value(deviceLink->value, PlayerLink)
+        if (!player) continue;
         const unsigned char device_mode = zox_get_value(player, DeviceMode)
         // zox_field_i(DeviceMode, deviceModes, deviceMode)
         if (device_mode != zox_device_mode_keyboardmouse && device_mode != zox_device_mode_touchscreen) continue;

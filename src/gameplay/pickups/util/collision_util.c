@@ -44,9 +44,11 @@ void on_overlap_pickup(ecs_world_t *world, const ecs_entity_t e, const ecs_entit
                 const ecs_entity_t user_item = spawn_user_item_quantity(world, meta_item_block, user, 1);
                 actions->value[action_index] = user_item;
                 // zox_log(" + adding item [%s] to actions slot [%i]\n", zox_get_name(item), action_index)
-                // todo: use generic ElementLinks here to get actionbar
                 // now to effect ui!
+
+                // todo: use generic ElementLinks here to get actionbar
                 const ecs_entity_t player = zox_get_value(user, PlayerLink)
+                if (!player) return;
                 const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
                 find_child_with_tag(canvas, MenuActions, menu_actions)
                 if (menu_actions) {

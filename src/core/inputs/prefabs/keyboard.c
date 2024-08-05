@@ -9,6 +9,5 @@ ecs_entity_t spawn_keyboard(ecs_world_t *world) {
     zox_instance(prefab_keyboard)
     zox_name("keyboard")
     zox_set(e, Keyboard, { })  // zeros it out?
-    keyboard_entity = e;
     return e;
 }

@@ -2,7 +2,7 @@ void resume_player_delayed(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
     const unsigned char can_roam = zox_get_value(camera, CanRoam)
     if (can_roam == 0 || can_roam == 2) {
-        zox_set(mouse_entity, MouseLock, { 1 })
+        if (mouse_entity) zox_set(mouse_entity, MouseLock, { 1 })
     }
     // return to regular ui
     const ecs_entity_t character = zox_get_value(player, CharacterLink)

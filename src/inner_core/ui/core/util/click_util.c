@@ -23,6 +23,7 @@ void set_raycast_target_children(ecs_world_t *world, const ecs_entity_t e, const
         zox_geter(e, Children, children)
         for (int i = 0; i < children->length; i++) {
             const ecs_entity_t child = children->value[i];
+            if (!child) continue;
             set_raycast_target_children(world, child, target);
         }
     }
@@ -30,6 +31,7 @@ void set_raycast_target_children(ecs_world_t *world, const ecs_entity_t e, const
         zox_geter(e, DeviceLinks, children)
         for (int i = 0; i < children->length; i++) {
             const ecs_entity_t child = children->value[i];
+            if (!child) continue;
             set_raycast_target_children(world, child, target);
         }
     }
@@ -43,6 +45,7 @@ void raycaster_select_window_children(ecs_world_t *world, const ecs_entity_t e, 
         zox_geter(e, Children, children)
         for (int i = 0; i < children->length; i++) {
             const ecs_entity_t child = children->value[i];
+            if (!child) continue;
             raycaster_select_window_children(world, child, window);
         }
     }
@@ -50,6 +53,7 @@ void raycaster_select_window_children(ecs_world_t *world, const ecs_entity_t e, 
         zox_geter(e, DeviceLinks, children)
         for (int i = 0; i < children->length; i++) {
             const ecs_entity_t child = children->value[i];
+            if (!child) continue;
             raycaster_select_window_children(world, child, window);
         }
     }

@@ -22,7 +22,6 @@ ecs_entity_t spawn_touchscreen(ecs_world_t *world, const ecs_entity_t prefab, co
         if (i == 0) zox_set(virtual_joystick, DeviceButtonType, { zox_device_stick_left })
         else zox_set(virtual_joystick, DeviceButtonType, { zox_device_stick_right })
     }
-    touchscreen_entity = e;
     return e;
 }
 

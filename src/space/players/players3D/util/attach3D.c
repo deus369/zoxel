@@ -23,7 +23,7 @@ void detatch_camera_from_character(ecs_world_t *world, const ecs_entity_t player
     // player
     // zox_set(player, CharacterLink, { 0 })
     // should get mouse from player devices
-    zox_set(mouse_entity, MouseLock, { 0 })
+    if (mouse_entity) zox_set(mouse_entity, MouseLock, { 0 })
     // character
     if (character) {
         // zox_set(character, CameraLink, { 0 })
@@ -41,7 +41,7 @@ void attach_camera_to_character(ecs_world_t *world, const ecs_entity_t player, c
         return;
     }
     // player
-    zox_set(mouse_entity, MouseLock, { 1 }) // lock mouse since attached
+    if (mouse_entity) zox_set(mouse_entity, MouseLock, { 1 }) // lock mouse since attached
     // character
     zox_set(character, DisableMovement, { 0 })
     // camera

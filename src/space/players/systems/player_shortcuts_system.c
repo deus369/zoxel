@@ -10,9 +10,10 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
         zox_field_i(GameLink, gameLinks, gameLink)
         const ecs_entity_t realm = zox_get_value(gameLink->value, RealmLink)
         for (int j = 0; j < deviceLinks->length; j++) {
-            const ecs_entity_t device_entity = deviceLinks->value[j];
-            if (zox_has(device_entity, Keyboard)) {
-                const Keyboard *keyboard = zox_get(device_entity, Keyboard)
+            const ecs_entity_t device = deviceLinks->value[j];
+            if (!device) continue;
+            if (zox_has(device, Keyboard)) {
+                const Keyboard *keyboard = zox_get(device, Keyboard)
                 /*if (keyboard->m.pressed_this_frame) {
                     zox_log(" > generated new music\n")
                     double music_speed = 0.2 + (rand() % 100) * 0.008;

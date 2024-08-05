@@ -13,19 +13,23 @@ void DraggerEndSystem(ecs_iter_t *it) {
         const DeviceLinks *deviceLinks = zox_get(player_entity, DeviceLinks)
         unsigned char did_drag_end = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
-            const ecs_entity_t device_entity = deviceLinks->value[j];
-            if (dragableState->value == zox_drag_mode_mouse && zox_has(device_entity, Mouse)) {
-                zox_geter(device_entity, Children, zevices)
-                for (int k = 0; k < zevices->length; k++) {
-                    const ecs_entity_t zevice = zevices->value[k];
-                    if ( !zox_has(zevice, ZevicePointer)) continue;
-                    const unsigned char click = zox_get_value(zevice, ZevicePointer)
-                    const int2 delta = zox_get_value(zevice, ZevicePointerDelta)
-                    if (devices_get_released_this_frame(click)) did_drag_end = 1;
-                    else if (devices_get_is_pressed(click)) draggingDelta->value = delta;
-                }
-            } else if (dragableState->value == zox_drag_mode_finger && zox_has(device_entity, Touchscreen)) {
-                const Children *zevices = zox_get(device_entity, Children)
+            const ecs_entity_t device = deviceLinks->value[j];
+            if (!device) continue;
+            zox_geter(device, Children, zevices)
+            for (int k = 0; k < zevices->length; k++) {
+                const ecs_entity_t zevice = zevices->value[k];
+                if (!zevice) continue;
+                if (!zox_has(zevice, ZevicePointer)) continue;
+                const unsigned char click = zox_get_value(zevice, ZevicePointer)
+                const int2 delta = zox_get_value(zevice, ZevicePointerDelta)
+                if (devices_get_released_this_frame(click)) did_drag_end = 1;
+                else if (devices_get_is_pressed(click)) draggingDelta->value = delta;
+            }
+
+            /*if (dragableState->value == zox_drag_mode_mouse && zox_has(device, Mouse)) {
+
+            } else if (dragableState->value == zox_drag_mode_finger && zox_has(device, Touchscreen)) {
+                const Children *zevices = zox_get(device, Children)
                 for (int k = 0; k < zevices->length; k++) {
                     ecs_entity_t zevice_entity = zevices->value[k];
                     if (zox_has(zevice_entity, ZevicePointer)) {
@@ -35,7 +39,7 @@ void DraggerEndSystem(ecs_iter_t *it) {
                         break;
                     }
                 }
-            }
+            }*/
         }
         if (did_drag_end) {
             dragableState->value = 0;

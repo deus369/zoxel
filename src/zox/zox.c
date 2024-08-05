@@ -7,6 +7,8 @@
 #include "util/events.c"
 #include "util/includes.c"
 #include "data/settings.c"
+#include "util/ui.c"
+#include "util/camera.c"
 #include "util/boot_util.c"
 #include "util/engine.c"
 

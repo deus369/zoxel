@@ -74,7 +74,7 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         }
         // add_entity_children_to_labels(world, zox_players[0], labels, entities, 0);
         add_entity_children_to_labels(world, keyboard_entity, labels, entities, 0);
-        add_entity_children_to_labels(world, mouse_entity, labels, entities, 0);
+        if (mouse_entity) add_entity_children_to_labels(world, mouse_entity, labels, entities, 0);
         add_entity_children_to_labels(world, gamepad_entity, labels, entities, 0);
         add_entity_children_to_labels(world, touchscreen_entity, labels, entities, 0);
         // add_entity_children_to_labels(world, local_character3D, labels, entities, 0);

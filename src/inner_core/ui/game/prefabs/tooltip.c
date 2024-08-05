@@ -5,6 +5,7 @@ ecs_entity_t spawn_prefab_tooltip(ecs_world_t *world, const ecs_entity_t prefab)
     zox_prefab_set(e, RenderDisabled, { 1 })
     if (!headless) prefab_set_mesh2D_vertices(world, e, square_vertices_top_right_aligned, 4);
     add_mouse_follow_components(world, e);
+    zox_prefab_set(e, ZeviceLink, { 0 })
     return e;
 }
 
@@ -20,9 +21,9 @@ ecs_entity_t spawn_tooltip(ecs_world_t *world, const ecs_entity_t prefab, const 
     const color debug_color_outline = (color) { 76, 66, 133, 255 };
     const color debug_color_fill = (color) { 122, 122, 122, 255 };
     const ecs_entity_t e = spawn_label_background(world, prefab, parent, canvas, pixel_position, anchor, padding, "", font_size, alignment, layer, int2_half(parent_pixel_size), parent_pixel_size, debug_color_outline, debug_color_fill, 1);
-
-    zox_geter(mouse_entity, Children, zevices)
-    zox_set(e, ZeviceLink, { zevices->value[0] })
-
+    if (mouse_entity) {
+        zox_geter(mouse_entity, Children, zevices)
+        zox_set(e, ZeviceLink, { zevices->value[0] })
+    }
     return e;
 }

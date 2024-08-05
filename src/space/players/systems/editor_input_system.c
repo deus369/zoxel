@@ -8,9 +8,10 @@ void EditorInputSystem(ecs_iter_t *it) {
         zox_field_i(CanvasLink, canvasLinks, canvasLink)
         const ecs_entity_t canvas = canvasLink->value;
         for (int j = 0; j < deviceLinks->length; j++) {
-            const ecs_entity_t device_entity = deviceLinks->value[j];
-            if (zox_has( device_entity, Keyboard)) {
-                const Keyboard *keyboard = zox_get(device_entity, Keyboard)
+            const ecs_entity_t device = deviceLinks->value[j];
+            if (!device) continue;
+            if (zox_has( device, Keyboard)) {
+                const Keyboard *keyboard = zox_get(device, Keyboard)
                 // gizmos
                 if (keyboard->z.pressed_this_frame) toggle_debug_character_bounds(world);      // z : collision gizmos
                 if (keyboard->x.pressed_this_frame) toggle_debug_block_voxes_bounds(world);

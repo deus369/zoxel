@@ -5,13 +5,14 @@ void DeviceClickSystem(ecs_iter_t *it) {
     zox_field_in(PlayerLink, playerLinks, 1)
     zox_field_in(Children, childrens, 4)
     zox_field_in(RaycasterTarget, raycasterTargets, 2)
-    zox_field_out(RaycasterResult, raycasterResults, 5)
+    // zox_field_out(RaycasterResult, raycasterResults, 5)
     zox_field_in(WindowRaycasted, windowRaycasteds, 3)
     zox_field_out(WindowTarget, windowTargets, 7)
     zox_field_out(ClickingEntity, clickingEntitys, 6)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(PlayerLink, playerLinks, playerLink)
         const ecs_entity_t player = playerLink->value;
+        if (!player) continue;
         if (!player || !zox_has(player, CanvasLink)) continue;
         const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
         if (!canvas) continue;
@@ -34,10 +35,10 @@ void DeviceClickSystem(ecs_iter_t *it) {
         }
         if (click_type == 0) continue;
         const unsigned char device_mode = zox_get_value(player, DeviceMode)
-        zox_field_e()
+        // zox_field_e()
         zox_field_i(RaycasterTarget, raycasterTargets, raycasterTarget)
         zox_field_i(WindowRaycasted, windowRaycasteds, windowRaycasted)
-        zox_field_o(RaycasterResult, raycasterResults, raycasterResult)
+        // zox_field_o(RaycasterResult, raycasterResults, raycasterResult)
         zox_field_o(ClickingEntity, clickingEntitys, clickingEntity)
         zox_field_o(WindowTarget, windowTargets, windowTarget)
         // used for virtual joysticks to see if a t arget was raycasted, todo: move to raycast system

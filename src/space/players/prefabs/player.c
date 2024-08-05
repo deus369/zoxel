@@ -4,11 +4,15 @@ ecs_entity_t spawn_player(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_set(e, PlayerState, { camera_mode })
     // adds all devices created in inputs module
     zox_get_muter(e, DeviceLinks, deviceLinks)
-    resize_memory_component(DeviceLinks, deviceLinks, ecs_entity_t, 4)
-    deviceLinks->value[0] = keyboard_entity;
-    deviceLinks->value[1] = mouse_entity;
-    deviceLinks->value[2] = touchscreen_entity;
-    deviceLinks->value[3] = gamepad_entity;
-    for (int i = 0; i < 4; i++) zox_set(deviceLinks->value[i], PlayerLink, { e })
+    // todo: connect to devices based on assignment on start screen
+    if (keyboard_entity) add_to_DeviceLinks(deviceLinks, keyboard_entity);
+    if (mouse_entity) add_to_DeviceLinks(deviceLinks, mouse_entity);
+    if (touchscreen_entity) add_to_DeviceLinks(deviceLinks, touchscreen_entity);
+    if (gamepad_entity) add_to_DeviceLinks(deviceLinks, gamepad_entity);
+    for (int i = 0; i < deviceLinks->length; i++) {
+        const ecs_entity_t device = deviceLinks->value[i];
+        if (!device) continue;
+        zox_set(device, PlayerLink, { e })
+    }
     return e;
 }

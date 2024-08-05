@@ -2,25 +2,8 @@
 // #define zox_debug_log_element_raycasting
 int touch_devices_count = 0;
 int touch_fingers_count = 0;
+#define int2_hidden (int2) { -666, -666 }
 // todo: debug label for fingers
-
-void set_id(ecs_world_t *world, const ecs_entity_t e, const int new_id) {
-    if (!zox_has(e, ID)) {
-        zox_log(" ! invalid zevice, no ID\n")
-        return;
-    }
-    zox_get_muter(e, ID, id)
-    id->value = new_id;
-}
-
-void finger_released(ecs_world_t *world, const ecs_entity_t e) {
-    zox_get_muter(e, ZevicePointer, zevicePointer)
-    if (devices_get_is_pressed(zevicePointer->value)) {
-        devices_set_is_pressed(&zevicePointer->value, 0);
-        devices_set_released_this_frame(&zevicePointer->value, 1);
-        set_id(world, e, 0);
-    }
-}
 
 unsigned char touchscreen_has_id(ecs_world_t *world, const Children *zevices, const int id) {
     for (int i = 0; i < zevices->length; i++) {
@@ -58,6 +41,29 @@ SDL_Finger* find_finger(int finger_id) {
     return NULL;
 }
 
+void set_id(ecs_world_t *world, const ecs_entity_t e, const int new_id) {
+    if (!zox_has(e, ID)) {
+        zox_log(" ! invalid zevice, no ID\n")
+        return;
+    }
+    zox_get_muter(e, ID, id)
+    id->value = new_id;
+}
+
+void finger_released(ecs_world_t *world, const ecs_entity_t e) {
+    zox_get_muter(e, ZevicePointer, zevicePointer)
+    if (devices_get_is_pressed(zevicePointer->value)) {
+        devices_set_is_pressed(&zevicePointer->value, 0);
+        devices_set_released_this_frame(&zevicePointer->value, 1);
+        set_id(world, e, 0);
+        // zox_get_muter(e, ZevicePointerPosition, zevicePointerPosition)
+        // zox_get_muter(e, ZevicePointerDelta, zevicePointerDelta)
+        // zevicePointerPosition->value = int2_hidden;
+        // zevicePointerDelta->value = int2_zero;
+        // todo: this is still used for buttons due to click releasing, need to reset this on frame after
+    }
+}
+
 void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices, const int2 touchscreen_size) {
     touch_fingers_count = 0;
     touch_devices_count = SDL_GetNumTouchDevices();
@@ -72,8 +78,10 @@ void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices, const 
                 zox_get_muter(zevice, ZevicePointerDelta, zevicePointerDelta)
                 int2 finger_position = (int2) { (int) (finger->x * touchscreen_size.x), (int) (finger->y * touchscreen_size.y) };
                 int2_flip_y(&finger_position, touchscreen_size);
-                const int2 delta_finger = int2_sub_int2_(finger_position, zevicePointerPosition->value);
-                zevicePointerDelta->value = delta_finger;
+                if (!int2_equals(zevicePointerPosition->value, int2_hidden)) {
+                    const int2 delta_finger = int2_sub_int2_(finger_position, zevicePointerPosition->value);
+                    zevicePointerDelta->value = delta_finger;
+                }
                 zevicePointerPosition->value = finger_position;
 #ifdef zox_log_fingers
                 zox_log(" > finger touching [%lu] fingerid [%i]\n", zevice, zevice_id)
@@ -88,7 +96,7 @@ void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices, const 
             // get unused finger! find a finger that isn't used yet
             SDL_Finger *finger = find_finger_unused(world, zevices);
             if (finger) {
-                int finger_id = finger->id + 1; // finger_event.fingerId + 1;
+                const int finger_id = finger->id + 1;
                 set_id(world, zevice, finger_id);
                 zox_get_muter(zevice, ZevicePointer, zevicePointer)
                 zox_get_muter(zevice, ZevicePointerPosition, zevicePointerPosition)
@@ -104,50 +112,3 @@ void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices, const 
         }
     }
 }
-
-    /*touch_fingers_count = 0;
-    touch_devices_count = SDL_GetNumTouchDevices();
-    if (touch_devices_count == 0) return;
-    SDL_TouchID touchscreen_id = SDL_GetTouchDevice(0);
-    const int fingers_count = SDL_GetNumTouchFingers(touchscreen_id);
-    touch_fingers_count += fingers_count;
-
-        // zox_log("   > fingers_count [%i]\n", fingers_count)
-        unsigned char found_finger = 0;
-        for (int j = 0; j < fingers_count; j++) {
-            SDL_Finger *finger = SDL_GetTouchFinger(touchscreen_id, j);
-            if (!finger) {
-                zox_log("   finger [%i] is null\n", j)
-                continue;
-            }*/
-
-        /*unsigned char found_finger = 0;
-        for (int j = 0; j < touch_devices_count; j++) {
-            SDL_TouchID touchscreen_id = SDL_GetTouchDevice(j);
-            int fingers_count = SDL_GetNumTouchFingers(touchscreen_id);
-            touch_fingers_count += fingers_count;
-            for (int k = 0; k < fingers_count; k++) {
-                SDL_Finger *finger = SDL_GetTouchFinger(touchscreen_id, k);
-                int new_id = finger->id + 1; // finger_event.fingerId + 1;
-                // if id is not this finger and already exists, continue
-                if (zevice_id && zevice_id != new_id) continue;
-                // otherwise we found it! used to release finger when no sdl data found
-                // quick hack atm for first fingers
-                if (new_id == first_finger_found) continue;
-                first_finger_found = new_id;
-                found_finger = 1;
-                // zox_log("   finger [%i]: %fx%f > %f\n", finger->id, finger->x, finger->y, finger->pressure)
-                zox_get_muter(zevice, ZevicePointerPosition, zevicePointerPosition)
-                if (!zevice_id) { // first touch
-                } else if (zevice_id == new_id) {   // second or more touch
-                }
-                zevicePointerPosition->value = finger_position;
-#ifdef zox_debug_log_extract_touchscreen
-                zox_log(" > finger at [%ix%i]\n", finger_position.x, finger_position.y)
-#endif
-                j = touch_devices_count; // skip to next zevice
-                break; // since we applied finger to this zevice, go to next zevice
-            }
-        }
-        if (zevice_id && !found_finger) {
-        }*/

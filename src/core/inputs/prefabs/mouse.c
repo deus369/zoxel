@@ -14,7 +14,6 @@ ecs_entity_t spawn_mouse(ecs_world_t *world) {
     zox_prefab_set(pointer, ZevicePointerRight, { 0 })
     zox_prefab_set(pointer, ZeviceWheel, { int2_zero })
     add_to_Children(children, pointer);
-    mouse_entity = e;
     return e;
 }
 

@@ -15,6 +15,7 @@ void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
         zox_field_i(RaycastVoxelData, raycastVoxelDatas, raycastVoxelData)
         zox_field_o(ActionLinks, actionLinkss, actionLinks)
         const ecs_entity_t player = zox_get_value(e, PlayerLink)
+        if (!player) continue;
         const unsigned char action_selected = get_player_action_index(world, player);
         if (action_selected == 255) {
             triggerActionB->value = 0;

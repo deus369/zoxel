@@ -93,9 +93,10 @@ void PlayerTestSystem(ecs_iter_t *it) {
         zox_field_i(CanvasLink, canvasLinks, canvasLink)
         const ecs_entity_t canvas = canvasLink->value;
         for (int j = 0; j < deviceLinks->length; j++) {
-            const ecs_entity_t device_entity = deviceLinks->value[j];
-            if (zox_has(device_entity, Keyboard)) {
-                const Keyboard *keyboard = zox_get(device_entity, Keyboard)
+            const ecs_entity_t device = deviceLinks->value[j];
+            if (!device) continue;
+            if (zox_has(device, Keyboard)) {
+                const Keyboard *keyboard = zox_get(device, Keyboard)
                  if (keyboard->j.pressed_this_frame) {
                     toggle_cameras_updates();
                     spawn_sound_from_file(world, prefab_sound, 0);

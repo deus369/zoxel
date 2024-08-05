@@ -8,7 +8,16 @@ void ZeviceClickSystem(ecs_iter_t *it) {
     zox_field_out(WindowTarget, windowTargets, 6)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(DeviceLink, deviceLinks, deviceLink)
-        const ecs_entity_t player = zox_get_value(deviceLink->value, PlayerLink)
+        const ecs_entity_t device = deviceLink->value;
+        if (!device) {
+            zox_log(" ! device null from zevice [%lu]\n", it->entities[i])
+            continue;
+        }
+        const ecs_entity_t player = zox_get_value(device, PlayerLink)
+        if (!player) {
+            zox_log(" ! device has null player [%lu]\n", device)
+            continue;
+        }
         const unsigned char device_mode = zox_get_value(player, DeviceMode)
         const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
         zox_field_e()

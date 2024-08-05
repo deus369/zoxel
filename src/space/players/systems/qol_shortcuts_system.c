@@ -14,9 +14,10 @@ void QolShortcutsSystem(ecs_iter_t *it) {
         unsigned char is_shift_action_left = 0;
         unsigned char is_shift_action_right = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
-            const ecs_entity_t device_entity = deviceLinks->value[j];
-            if (zox_has(device_entity, Keyboard)) {
-                const Keyboard *keyboard = zox_get(device_entity, Keyboard)
+            const ecs_entity_t device = deviceLinks->value[j];
+            if (!device) continue;
+            if (zox_has(device, Keyboard)) {
+                const Keyboard *keyboard = zox_get(device, Keyboard)
                 if (keyboard->f11.pressed_this_frame) {
                     is_toggle_fullscreen = 1;
                     // zox_log(" > toggled fullscreen mode\n")
@@ -41,11 +42,11 @@ void QolShortcutsSystem(ecs_iter_t *it) {
 
             // Actio Switching!!
 
-            } else if (zox_has(device_entity, Mouse)) {
-                /*const Mouse *mouse = zox_get(device_entity, Mouse)
+            } else if (zox_has(device, Mouse)) {
+                /*const Mouse *mouse = zox_get(device, Mouse)
                 if (mouse->wheel.y > 0) is_shift_action_right = 1;
                 else if (mouse->wheel.y < 0) is_shift_action_left = 1;*/
-                zox_geter(device_entity, Children, zevices)
+                zox_geter(device, Children, zevices)
                 for (int k = 0; k < zevices->length; k++) {
                     ecs_entity_t zevice_entity = zevices->value[k];
                     if (zox_has(zevice_entity, ZeviceWheel)) {
@@ -54,8 +55,8 @@ void QolShortcutsSystem(ecs_iter_t *it) {
                         else if (wheel.y < 0) is_shift_action_left = 1;
                     }
                 }
-            } else if (zox_has(device_entity, Gamepad)) {
-                const Children *zevices = zox_get(device_entity, Children)
+            } else if (zox_has(device, Gamepad)) {
+                const Children *zevices = zox_get(device, Children)
                 for (int k = 0; k < zevices->length; k++) {
                     ecs_entity_t zevice_entity = zevices->value[k];
                     if (zox_has(zevice_entity, ZeviceButton)) {

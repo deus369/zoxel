@@ -77,13 +77,3 @@ void UserIconClickSystem(ecs_iter_t *it) {
         }
     }
 } zox_declare_system(UserIconClickSystem)
-
-// add_mouse_follow_components(world, e);
-// zox_add_tag(e, MouseElement)
-// zox_set(e, MouseLink, { mouse_entity })
-/*zox_get_muter(zox_gett_value(e, ParentLink), Children, frame_children)
-frame_children->value[0] = icon_mouse_follow;
-zox_set(e, ParentLink, { canvasLink->value })
-// add to canvas?
-zox_get_muter(zox_gett_value(e, ParentLink), Children, canvas_children)
-add_to_Children(canvas_children, e);*/

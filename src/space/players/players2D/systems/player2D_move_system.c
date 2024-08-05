@@ -18,9 +18,10 @@ void Player2DMoveSystem(ecs_iter_t *it) {
         zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         // get the player input vector
         for (int j = 0; j < deviceLinks->length; j++) {
-            ecs_entity_t device_entity = deviceLinks->value[j];
-            if (zox_has(device_entity, Keyboard)) {
-                const Keyboard *keyboard = zox_get(device_entity, Keyboard)
+            ecs_entity_t device = deviceLinks->value[j];
+            if (!device) continue;
+            if (zox_has(device, Keyboard)) {
+                const Keyboard *keyboard = zox_get(device, Keyboard)
                 if (keyboard->a.is_pressed) movement.x = -1;
                 if (keyboard->d.is_pressed) movement.x = 1;
                 if (keyboard->w.is_pressed) movement.y = 1;
@@ -29,10 +30,10 @@ void Player2DMoveSystem(ecs_iter_t *it) {
                     movement.x *= run_speed;
                     movement.y *= run_speed;
                 }
-            } else if (zox_has(device_entity, Gamepad)) {
+            } else if (zox_has(device, Gamepad)) {
                 float2 left_stick = float2_zero;
                 unsigned char is_run = 0;
-                const Children *zevices = zox_get(device_entity, Children)
+                const Children *zevices = zox_get(device, Children)
                 for (int k = 0; k < zevices->length; k++) {
                     ecs_entity_t zevice_entity = zevices->value[k];
                     if (zox_has(zevice_entity, ZeviceStick)) {
