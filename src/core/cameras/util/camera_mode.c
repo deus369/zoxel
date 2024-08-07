@@ -38,6 +38,8 @@ CameraSpawnData get_camera_preset(const unsigned char camera_mode) {
         data = camera_preset_first_person;
     } else if (camera_mode == zox_camera_mode_third_person) {
         data = camera_preset_third_person;
+    } else if (camera_mode == zox_camera_mode_2D) {
+        data = camera_preset_2D;
     }
     return data;
 }
@@ -117,8 +119,14 @@ void set_camera_mode_topdown(ecs_world_t *world) {
     set_camera_mode(world, zox_camera_mode_topdown);
 }
 
+void set_camera_mode_2D(ecs_world_t *world) {
+    set_camera_mode(world, zox_camera_mode_2D);
+}
+
 void set_camera_mode_pre_defined(ecs_world_t *world) {
-#if defined(zox_set_camera_firstperson)
+#if defined(zox_set_camera_2D)
+    set_camera_mode_2D(world);
+#elif defined(zox_set_camera_firstperson)
     set_camera_mode_first_person(world);
 #elif defined(zox_set_camera_thirdperson)
     set_camera_mode_third_person(world);

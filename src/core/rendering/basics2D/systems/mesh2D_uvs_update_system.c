@@ -24,7 +24,7 @@ void Mesh2DUvsUpdateSystem(ecs_iter_t *it) {
     zox_field_out(MeshDirty, meshDirtys, 1)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(MeshDirty, meshDirtys, meshDirty)
-        if (!meshDirty->value) continue;
+        if (meshDirty->value != mesh_state_updated) continue;
         zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
         if (!meshIndicies->length) continue;
         zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
@@ -34,7 +34,7 @@ void Mesh2DUvsUpdateSystem(ecs_iter_t *it) {
         zox_field_i(MeshVertices2D, meshVertices2Ds, meshVertices2D)
         zox_field_i(MeshUVs, meshUVss, meshUVs)
         opengl_upload_shader2D_textured(meshGPULink->value, uvsGPULink->value, meshIndicies->value, meshIndicies->length, meshVertices2D->value, meshUVs->value, meshVertices2D->length);
-        meshDirty->value = 0;
+        meshDirty->value = mesh_state_none;
         // zox_log(" +  mesh2D updated to gpu [%s]\n", zox_get_name(it->entities[i]))
     }
 } zox_declare_system(Mesh2DUvsUpdateSystem)

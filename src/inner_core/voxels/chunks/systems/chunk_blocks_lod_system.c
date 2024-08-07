@@ -1,5 +1,8 @@
 // when terrain lod updates, it will update [Block Vox] lods
 void ChunkBlocksLodSystem(ecs_iter_t *it) {
+#ifdef zox_disable_block_voxes
+    return;
+#endif
     zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
     zox_field_in(RenderLod, renderLods, 2)
     zox_field_in(BlockSpawns, blockSpawnss, 3)
@@ -11,10 +14,6 @@ void ChunkBlocksLodSystem(ecs_iter_t *it) {
         zox_field_i(RenderLod, renderLods, renderLod)
         const unsigned char camera_distance = renderLod->value;
         const unsigned char vox_lod = get_voxes_lod_from_camera_distance(camera_distance);
-        /*if (vox_lod == 255) {
-            const int3 chunk_position = zox_get_value(it->entities[i], ChunkPosition)
-            zox_log(" ! vox_lod invalid at cam [%i] [%ix%ix%i]\n", camera_distance, chunk_position.x, chunk_position.y, chunk_position.z)
-        }*/
         for (int j = 0; j < blockSpawns->value->size; j++) {
             const byte3_hashmap_pair* pair = blockSpawns->value->data[j];
             uint checks = 0;
@@ -25,10 +24,6 @@ void ChunkBlocksLodSystem(ecs_iter_t *it) {
                     if (current_lod != vox_lod) {
                         zox_set(e2, RenderLod, { vox_lod })
                         zox_set(e2, ChunkDirty, { chunk_dirty_state_lod_updated })
-                        //if (vox_lod == 255) {
-                            // const float3 position = zox_get_value(e2, Position3D)
-                            // zox_log("   - ! vox_lod invalid at [%fx%fx%f]\n", position.x, position.y, position.z)
-                        //}
                     }
                 }
                 pair = pair->next;

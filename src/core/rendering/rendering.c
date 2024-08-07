@@ -1,10 +1,11 @@
 #ifndef zox_mod_rendering
 #define zox_mod_rendering
 
+unsigned char rendering_initialized = 0;
 #include "data/renderer_types.c"
 #include "data/mesh_alignment_types.c"
 #include "data/settings.c"
-// zoxel_declare_components
+#include "data/mesh_states.c"
 zox_declare_tag(Mesh)
 zox_component_byte(MeshDirty)
 zox_component_entity(MeshLink)
@@ -21,6 +22,7 @@ zox_component_float(Alpha)
 #include "basics3D/basics3D.c"
 
 unsigned char initialize_rendering(ecs_world_t *world) {
+    rendering_initialized = 1;
     if (headless) return EXIT_SUCCESS;
     else if (is_using_vulkan) return initialize_vulkan(world); // SDL_WINDOW_VULKAN
     else return initialize_opengl(world);

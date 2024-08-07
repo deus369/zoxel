@@ -4,6 +4,7 @@
 #include "data/build_settings.c"
 #include "data/build_disables.c"
 #include "util/defines.c"
+#include zox_nexus_defines
 #include "util/events.c"
 #include "util/includes.c"
 #include "data/settings.c"

@@ -61,8 +61,8 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
             const unsigned char chunk_depth = colors_get_max_depth_from_division(renderLod->value);
             build_chunk_octree_mesh_colors(chunkOctree, colorRGBs, meshIndicies, meshVertices, meshColorRGBs, chunk_depth, neighbors, neighbor_lods, total_mesh_offset, voxScale->value);
         }
-        chunkDirty->value = 0;
-        meshDirty->value = 1;
+        chunkDirty->value = chunk_dirty_state_none;
+        meshDirty->value = mesh_state_updated;
         did_do_timing()
         if (max_chunk_process_time != 0 && get_timing_passed() >= max_chunk_process_time) break;
     }

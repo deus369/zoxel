@@ -1,8 +1,8 @@
 # bugs
 
 # load bugs
-- [ ] when loding chunks lag spikes
-- [ ] chunks should load before player character
+- [x] when loding chunks lag spikes
+- [x] chunks should load before player character
 
 # physics bugs
 - [ ] during low frame rates, falls through map
@@ -16,3 +16,6 @@
 - [ ] sometimes meshes dissapear in chunk loding..
 - [ ] on android, lines are being weird
 - [ ] on android, sometimes voxel gizmo flickers (low frames?)
+
+# unsorted bugs
+- [ ] when running 2D game and closing, errors out on close game (have to start game first)

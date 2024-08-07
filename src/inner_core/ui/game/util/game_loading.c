@@ -21,9 +21,9 @@ void button_event_new_game(ecs_world_t *world, const ClickEventData *event) {
     set_noise_seed(realm_save.seed);
     // todo: i should delete old one here
 #ifndef zox_disable_save_games
-    delete_save_directory("zoxel");
-    create_new_save_directory("zoxel");
-    save_realm("zoxel", "seed.dat", &realm_save);
+    delete_save_directory(game_name);
+    create_new_save_directory(game_name);
+    save_realm(game_name, "seed.dat", &realm_save);
 #endif
     zox_set(realm, GenerateRealm, { zox_generate_realm_start })
     begin_play_game(world, event->clicker);
@@ -34,7 +34,7 @@ void button_event_continue_game(ecs_world_t *world, const ClickEventData *event)
     const ecs_entity_t game = zox_get_value(event->clicker, GameLink)
     const ecs_entity_t realm = zox_get_value(game, RealmLink)
     // todo: spawn realm data like voxels/stats/skills when starting new game
-    load_realm("zoxel", "seed.dat", &realm_save);
+    load_realm(game_name, "seed.dat", &realm_save);
     set_noise_seed(realm_save.seed);
     zox_set(realm, GenerateRealm, { zox_generate_realm_start })
     begin_play_game(world, event->clicker);

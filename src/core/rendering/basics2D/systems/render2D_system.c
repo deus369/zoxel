@@ -1,9 +1,14 @@
 void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint texture, float2 position, float angle, float scale, float brightness) {
-    if (!material) return;
+    if (!material) {
+        zox_log(" ! invalid material 2D\n")
+        return;
+    }
+    // zox_log("rendering 2D at %fx%f scale %f\n", position.x, position.y, scale)
     const MaterialTextured2D attributes = create_MaterialTextured2D(material);
     glUseProgram(material);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_BLEND);
+    opengl_enable_blend();
+    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    // glEnable(GL_BLEND);
     glBindTexture(GL_TEXTURE_2D, texture);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedMesh.x);    // for indices
     glBindBuffer(GL_ARRAY_BUFFER, squareTexturedMesh.y);            // for vertex buffer data
@@ -16,9 +21,11 @@ void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint
     glUniform1f(attributes.angle, angle);
     glUniform1f(attributes.scale, scale);
     glUniform1f(attributes.brightness, brightness);
+    glUniform1f(attributes.alpha, 1);
     opengl_render(6);
     glBindTexture(GL_TEXTURE_2D, 0);
-    glDisable(GL_BLEND);
+    // glDisable(GL_BLEND);
+    opengl_disable_blend();
     glUseProgram(0);
 #ifdef zoxel_catch_opengl_errors
     check_opengl_error("render_entity_material2D");
@@ -26,6 +33,7 @@ void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint
 }
 
 void RenderMaterial2DSystem(ecs_iter_t *it) {
+    // zox_log("rendering 2D: %i\n", it->count)
     zox_field_in(Position2D, position2Ds, 1)
     zox_field_in(Rotation2D, rotation2Ds, 2)
     zox_field_in(Scale1D, scale1Ds, 3)

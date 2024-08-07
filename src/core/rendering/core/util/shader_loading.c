@@ -20,6 +20,11 @@ void run_load_shader_function(ecs_world_t *world, int i) {
 }
 
 void load_shaders(ecs_world_t *world) {
+    if (!rendering_initialized) {
+        zox_log(" ! rendering is not initialized.\n")
+        exit(1);
+        return;
+    }
     for (int i = 0; i < load_shader_functions->size; i++) {
         run_load_shader_function(world, i);
     }

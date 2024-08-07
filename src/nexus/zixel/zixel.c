@@ -2,9 +2,10 @@
 #define zox_mod_game
 
 unsigned char boot_zixel(ecs_world_t *world) {
-    game_name = "Zixel";
-    zox_log("Booting [%s]\n", game_name)
+    game_name = "zixel";
+    zox_log(" + booting [%s]\n", game_name)
     const ecs_entity_t window = spawn_main_window(world);
+    initialize_rendering(world);
     load_shaders(world);
     if (!headless) load_app_icon(zox_gett_value(window, SDLWindow), resources_folder_name"textures/game_icon.png");
     // Realm,  players, skybox
@@ -14,6 +15,7 @@ unsigned char boot_zixel(ecs_world_t *world) {
     spawn_weather(world);
     if (!headless) spawn_music(world, prefab_music);
     spawn_players_cameras_canvases(world, game);
+    // spawn_character2D(world, prefab_character2D, float2_zero);
     return EXIT_SUCCESS;
 }
 

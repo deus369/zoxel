@@ -7,12 +7,12 @@ void Mesh2DUpdateSystem(ecs_iter_t *it) {
     zox_field_out(MeshDirty, meshDirtys, 1)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(MeshDirty, meshDirtys, meshDirty)
-        if (meshDirty->value != 1) continue;
+        if (meshDirty->value != mesh_state_updated) continue;
         zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
         zox_field_i(MaterialGPULink, materialGPULinks, materialGPULink)
         zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
         zox_field_i(MeshVertices2D, meshVertices2Ds, meshVertices2D)
         set_gpu_mesh2D(meshGPULink->value, materialGPULink->value, meshIndicies->value, meshIndicies->length, meshVertices2D->value, meshVertices2D->length);
-        meshDirty->value = 0;
+        meshDirty->value = mesh_state_none;
     }
 } zox_declare_system(Mesh2DUpdateSystem)

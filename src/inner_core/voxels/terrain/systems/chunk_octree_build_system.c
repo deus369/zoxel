@@ -72,7 +72,7 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
     zox_field_out(MeshDirty, meshDirtys, 12)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
-        if (chunkDirty->value == 0) continue;
+        if (chunkDirty->value == chunk_dirty_state_none) continue;
         // zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         // if (renderDisabled->value) continue;
         zox_field_i(RenderLod, renderLods, renderLod)
@@ -97,8 +97,8 @@ void ChunkOctreeBuildSystem(ecs_iter_t *it) {
             set_neightbor_chunk_data(front)
             build_chunk_octree_mesh_uvs(chunkOctree, tilemapUVs, meshIndicies, meshVertices, meshUVs, meshColorRGBs, renderLod->value, lod, neighbors, neighbor_lods, voxScale->value, build_data.solidity, build_data.uvs);
         }
-        chunkDirty->value = 0;
-        meshDirty->value = 1;
+        chunkDirty->value = chunk_dirty_state_none;
+        meshDirty->value = mesh_state_updated;
         did_do_timing()
         if (max_chunk_process_time != 0 && get_timing_passed() >= max_chunk_process_time) break;
     }

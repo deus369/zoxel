@@ -44,7 +44,7 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
     if (!terrain) return;
     unsigned char is_new_game = 1;
 #ifndef zox_disable_save_games
-    is_new_game = !has_save_game_file("zoxel", "player.dat");
+    is_new_game = !has_save_game_file(game_name, "player.dat");
 #endif
     float3 spawn_position;
     float4 spawn_rotation;
@@ -102,7 +102,7 @@ void player_start_game3D_delayed(ecs_world_t *world, const ecs_entity_t player) 
     float3 spawn_position = (float3) { 8, 8.5f, 8 };
     float4 spawn_rotation = quaternion_identity;
 #ifndef zox_disable_save_games
-    const unsigned char is_new_game = !has_save_game_file("zoxel", "player.dat");
+    const unsigned char is_new_game = !has_save_game_file(game_name, "player.dat");
     if (!is_new_game) {
         load_character_p(&spawn_position, &spawn_rotation);
     }

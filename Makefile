@@ -134,6 +134,10 @@ resources:
 debug-libs:
 	ldd ./$(target)
 
+zixel:
+	@ echo "making [zixel]"
+	@ make game=zixel
+
 # ===== ===== ===== #
 # =====  run  ===== #
 # ===== ===== ===== #

@@ -59,9 +59,9 @@ void ChunkUVsBuildSystem(ecs_iter_t *it) {
     MeshDirty *meshDirtys = ecs_field(it, MeshDirty, 8);
     for (int i = 0; i < it->count; i++) {
         zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
-        if (chunkDirty->value == 0) continue;
+        if (chunkDirty->value == chunk_dirty_state_none) continue;
         MeshDirty *meshDirty = &meshDirtys[i];
-        if (meshDirty->value != 0) continue;
+        // if (meshDirty->value != 0) continue;
         const ChunkData *chunk = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
         const ChunkNeighbors *chunkNeighbors2 = &chunkNeighbors[i];
@@ -73,7 +73,7 @@ void ChunkUVsBuildSystem(ecs_iter_t *it) {
         const ChunkData *chunk_back = chunkNeighbors2->value[2] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[2], ChunkData);
         const ChunkData *chunk_front = chunkNeighbors2->value[3] == 0 ? NULL : ecs_get(it->world, chunkNeighbors2->value[3], ChunkData);
         build_chunk_mesh_uvs(chunk, chunkSize, meshIndicies2, meshVertices2, meshUVs2, chunk_left, chunk_right, chunk_back, chunk_front);
-        chunkDirty->value = 0;
-        meshDirty->value = 1;
+        chunkDirty->value = chunk_dirty_state_none;
+        meshDirty->value = mesh_state_updated;
     }
 } zox_declare_system(ChunkUVsBuildSystem)

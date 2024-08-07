@@ -1,5 +1,11 @@
 // disables
 
+// lags on weaker cpus
+#define zox_disable_music
+// lag spikes during chunks
+// #define zox_disable_npcs
+#define zox_disable_block_voxes
+
 // #define zoxel_mouse_emulate_touch
 // #define zoxel_start_with_debug_ui
 // still testing this
@@ -21,8 +27,6 @@
 // #define zox_disable_tilemaps
 // #define zox_log_realm_generate
 
-//#define zox_disable_npcs
-//#define zox_disable_block_voxes
 /*#define zox_is_flatlands
 #define zox_terrain_tiny*/
 
@@ -107,7 +111,6 @@
 // #define zox_disable_io
 // #define zox_disable_audio
 
-// #define zox_disable_music
 // #define zox_disable_play_sounds
 
 #define zox_disable_mouse_constraint

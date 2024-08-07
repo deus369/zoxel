@@ -51,6 +51,7 @@ void TerrainLodSystem(ecs_iter_t *it) {
                 camera_distances[j] = camera_distance;
             }
         }
+        // for all chunks that updated LODs, also update meshes
         for (int j = 0; j < total_chunks; j++) {
             const unsigned char camera_distance = camera_distances[j];
             if (camera_distance == 255) continue;
@@ -58,8 +59,8 @@ void TerrainLodSystem(ecs_iter_t *it) {
             ChunkLodDirty *chunkLodDirty = &chunkLodDirtys[j];
             ChunkDirty *chunkDirty = &chunkDirtys[j];
             renderLod->value = camera_distance;
+            chunkDirty->value = chunk_dirty_state_lod_updated;
             chunkLodDirty->value = chunk_lod_state_dirty;
-            chunkDirty->value = chunk_dirty_state_generated;
         }
         streamDirty->value = 0;
     }

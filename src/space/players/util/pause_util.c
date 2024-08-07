@@ -8,7 +8,7 @@ void pause_player_delayed(ecs_world_t *world, const ecs_entity_t player) {
         if (mouse_entity) zox_set(mouse_entity, MouseLock, { 0 })
     }
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
-    spawn_taskbar(world, prefab_taskbar, canvas, canvas, pause_ui_overlay_layer + 1);
+    if (game_ui_has_taskbar) spawn_taskbar(world, prefab_taskbar, canvas, canvas, pause_ui_overlay_layer + 1);
     spawn_menu_paused_player(world, player);
     // spawn_menu_paused(world, player, canvas, int2_zero, float2_half, pause_ui_overlay_layer + 3);
     // zox_log("player paused [%s] [%s]\n", zox_get_name(player), zox_get_name(canvas))

@@ -15,7 +15,7 @@ int get_label_player_character2D(ecs_world_t *world, const ecs_entity_t player, 
 }
 
 void spawn_prefabs_players2D(ecs_world_t *world) {
-    spawn_prefab_player_character2D(world);
+    spawn_prefab_player_character2D(world, prefab_character2D);
 }
 
 zox_begin_module(Players2D)

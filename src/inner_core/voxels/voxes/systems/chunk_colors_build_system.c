@@ -103,9 +103,9 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
     zox_field_out(MeshDirty, meshDirtys, 9)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
-        if (chunkDirty->value == 0) continue;
+        if (chunkDirty->value == chunk_dirty_state_none) continue;
         zox_field_o(MeshDirty, meshDirtys, meshDirty)
-        if (meshDirty->value) continue;
+        // if (meshDirty->value) continue;
         zox_field_i(ChunkData, chunkDatas, chunkData)
         zox_field_i(ChunkSize, chunkSizes, chunkSize)
         zox_field_i(ColorRGBs, colorRGBs, colors2)
@@ -116,7 +116,7 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         // maybe use bounds here directly
         const float3 total_mesh_offset = float3_multiply_float(calculate_vox_bounds(chunkSize->value, voxScale->value), -1);
         build_chunk_mesh_colors(chunkData, chunkSize, colors2, meshIndicies2, meshVertices2, meshColorRGBs2, total_mesh_offset, voxScale->value);
-        chunkDirty->value = 0;
+        chunkDirty->value = chunk_dirty_state_none;
         meshDirty->value = 1;
     }
 } zox_declare_system(ChunkColorsBuildSystem)

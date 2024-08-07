@@ -68,6 +68,9 @@ unsigned char has_path_directory(const char *path) {
 }
 
 unsigned char has_save_game_directory(const char *game) {
+#ifdef zox_disable_save_games
+    return 0;
+#endif
     char path[max_path_characters];
     get_save_directory(game, path, sizeof(path));
     // zox_log(" > save path is [%s]\n", path)

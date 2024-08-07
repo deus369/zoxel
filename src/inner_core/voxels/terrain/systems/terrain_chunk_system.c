@@ -36,7 +36,7 @@ void TerrainChunkSystem(ecs_iter_t *it) {
         GenerateChunk *generateChunk = &generateChunks[i];
         if (generateChunk->value == 0) continue;
         ChunkDirty *chunkDirty = &chunkDirtys[i];
-        if (chunkDirty->value != 0) continue;
+        // if (chunkDirty->value != 0) continue;
         ChunkData *chunkData = &chunks[i];
         const ChunkSize *chunkSize = &chunkSizes[i];
         const ChunkPosition *chunkPosition = &chunkPositions[i];
@@ -47,7 +47,7 @@ void TerrainChunkSystem(ecs_iter_t *it) {
         did_do_timing()
 #endif
         generateChunk->value = 0;
-        chunkDirty->value = 1;
+        chunkDirty->value = chunk_dirty_state_generated;
     }
 #ifdef zoxel_time_terrain_chunk_system
     end_timing("TerrainChunkSystem")

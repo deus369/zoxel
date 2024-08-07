@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
     zox_log(" ! game not loaded\n")
 #endif
     if (boot_event(world) == EXIT_SUCCESS) update_zox();
-    else zox_log(" ! booting zoxel failed\n")
+    else zox_log(" ! booting failed\n")
     dispose_zox(world);
     return 0;
 }

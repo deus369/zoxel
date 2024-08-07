@@ -39,14 +39,14 @@ void NoiseChunkSystem(ecs_iter_t *it) {
         GenerateChunk *generateChunk = &generateChunks[i];
         if (generateChunk->value == 0) continue;
         ChunkDirty *chunkDirty = &chunkDirtys[i];
-        if (chunkDirty->value != 0) continue;
+        // if (chunkDirty->value != 0) continue;
         const ChunkSize *chunkSize = &chunkSizes[i];
         ChunkData *chunkData = &chunks[i];
         int voxels_array_size = chunkSize->value.x * chunkSize->value.y * chunkSize->value.z;
         resize_memory_component(ChunkData, chunkData, unsigned char, voxels_array_size);
         generate_chunk_noise(chunkData, chunkSize);
         generateChunk->value = 0;
-        chunkDirty->value = 1;
+        chunkDirty->value = chunk_dirty_state_generated;
     }
 }
 zox_declare_system(NoiseChunkSystem)

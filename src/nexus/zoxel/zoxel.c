@@ -5,9 +5,9 @@
 
 unsigned char boot_zoxel_game(ecs_world_t *world) {
 #ifndef zox_beta
-    game_name = "Zoxel";
+    game_name = "zoxel";
 #else
-    game_name = "Zoxel b";
+    game_name = "zoxel_beta";
 #endif
 #ifdef zox_log_boot_game
     zox_log("boot_zoxel_game\n")
@@ -66,6 +66,7 @@ void ZoxGameImport(ecs_world_t *world) {
     zox_module(ZoxGame)
     boot_event = boot_zoxel_game;
     zox_game_type = zox_game_mode_3D;
+    game_ui_has_taskbar = 1;
 #ifdef zox_mod_weathers
     menu_sky_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32  / 255.0f };
     menu_sky_bottom_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32 / 255.0f };

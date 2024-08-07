@@ -38,6 +38,6 @@ void ChunkFlatlandSystem(ecs_iter_t *it) {
         close_same_nodes(chunkOctree);
 #endif
         generateChunk->value = 0;
-        chunkDirty->value = 1;
+        chunkDirty->value = chunk_dirty_state_generated;
     }
 } zox_declare_system(ChunkFlatlandSystem)
