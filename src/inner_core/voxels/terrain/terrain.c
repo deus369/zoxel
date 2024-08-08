@@ -62,7 +62,7 @@ zox_system_ctx(ChunkFrustumSystem, zox_pip_voxels, cameras_query, [in] Position3
 zox_filter(chunks_generating, [out] ChunkDirty)
 if (!headless) zox_system_ctx(ChunkOctreeBuildSystem, zox_pip_voxels_chunk_clean, chunks_generating, [in] VoxLink,  [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] VoxScale, [in] RenderDisabled, [out] ChunkDirty, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty, [none] chunks.ChunkTextured)
 // remember: needs zox_pip_voxels, zox_pip_mainthread is called when Dirty is cleaned
-zox_system_1(BlockVoxSpawnSystem, zox_pip_voxels, [in] ChunkLodDirty, [in] ChunkOctree, [in] ChunkPosition, [in] VoxLink, [in] RenderLod, [in] RenderDisabled, [out] BlockSpawns, [none] TerrainChunk)
+zox_system_1(BlockVoxSpawnSystem, zox_pip_voxels, [in] ChunkLodDirty, [out] ChunkOctree, [in] ChunkPosition, [in] VoxLink, [in] RenderLod, [in] RenderDisabled, [out] BlockSpawns, [out] BlocksSpawned, [none] TerrainChunk)
 zox_system_1(BlockVoxUpdateSystem, zox_pip_voxels, [in] ChunkDirty, [in] ChunkOctree, [in] ChunkPosition, [in] VoxLink, [in] RenderLod, [in] RenderDisabled, [out] BlockSpawns, [none] TerrainChunk) //  todo: make ChunkDirty operate over a frame so other systems can hijack event
 zox_render3D_system(TerrainChunksRenderSystem, [in] TransformMatrix, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] VoxLink, [in] RenderDisabled) // builds meshes
 #ifdef zox_debug_chunk_bounds

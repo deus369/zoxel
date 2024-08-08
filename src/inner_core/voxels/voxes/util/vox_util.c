@@ -60,21 +60,18 @@ void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox)
     set_colors_from_vox_file(world, e, vox); // colors
 }
 
-void clone_vox_data(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t source) {
-    if (!source) {
-        return;
-    }
+// todo: make this a update function so it does one node at a time! load per entity per depth level to slow it down
+void clone_vox_data(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t source, unsigned char max_depth) {
+    if (!source) return;
     const int3 chunk_size = zox_get_value(source, ChunkSize)
     zox_set(e, ChunkSize, { chunk_size })
-    const ChunkOctree *chunk_octree_source = zox_get(source, ChunkOctree)
-    ChunkOctree *chunk_octree_dest = zox_get_mut(e, ChunkOctree)
-    clone_ChunkOctree(chunk_octree_dest, chunk_octree_source);
-    zox_modified(e, ChunkOctree)
-    const ColorRGBs *colors_source = zox_get(source, ColorRGBs)
-    ColorRGBs *colors_dest = zox_get_mut(e, ColorRGBs)
-    //clone_ColorRGBs(colors_dest, colors_source)
+    zox_geter(source, ChunkOctree, chunk_octree_source)
+    zox_get_muter(e, ChunkOctree, chunk_octree_dest)
+    zox_geter(source, ColorRGBs, colors_source)
+    zox_get_muter(e, ColorRGBs, colors_dest)
+    // clone_ChunkOctree(chunk_octree_dest, chunk_octree_source);
+    clone_depth_ChunkOctree(chunk_octree_dest, chunk_octree_source, max_depth, 0);
     colors_dest->length = colors_source->length;
     const int memory_length = sizeof(color_rgb) * colors_dest->length;
     colors_dest->value = memcpy(malloc(memory_length), colors_source->value, memory_length);
-    zox_modified(e, ColorRGBs)
 }

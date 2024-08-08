@@ -16,6 +16,36 @@ ecs_observer_init(world, &(ecs_observer_desc_t) {\
 
 // __attribute__((aligned(9)))
 
+// structs used for voxels at max depth
+
+// todo: if nodes is at end, instead of making nodes 8 length, make single! idk yet... this refactors hard
+
+//  > each node needs children links, if a parent
+//  > each node needs a value
+//  > each node can have extra values for voxel entity links
+//      > when setting set_voxel we can open node of different type here
+//          > make a open node function that allocates final nodes to a single VoxelEntityLink structure
+//          > when spawning block vox, set link inside it
+//      > when closing a node with entity, also destroy that entity, closing would need to pass in voxel information then for struct types per voxel type
+//      >
+
+// links to node and child nodes, using entity component to find depth
+// if less then max depth, this is null or 8 length
+// if max depth, this is assigned to a value node
+/* typedef struct {
+    void *node;
+} Node;
+
+typedef struct {
+    unsigned char value;
+} VoxelNode; */
+
+// used to link static chunk voxel to a entity in world
+typedef struct {
+    ecs_entity_t value;
+} VoxelEntityLink;
+
+
 #define zoxel_octree_component(name, type, default_value)\
 typedef struct name name;\
 struct name {\
@@ -23,17 +53,17 @@ struct name {\
     name *nodes;\
 }; ECS_COMPONENT_DECLARE(name);\
 \
-void close##_##name(name* octree) {\
-    if (octree->nodes) {\
-        for (unsigned char i = 0; i < octree_length; i++) close##_##name(&octree->nodes[i]);\
-        free(octree->nodes);\
-        octree->nodes = NULL;\
-        node_memory -= 1;\
-        /*zox_log(" > freeing node [%i]\n", (sizeof(name) * octree_length))*/\
-    }\
+void close_##name(name* octree) {\
+    if (!octree->nodes) return;\
+    /* > todo: check if entity link here, using depth check */\
+    for (unsigned char i = 0; i < octree_length; i++) close_##name(&octree->nodes[i]);\
+    free(octree->nodes);\
+    octree->nodes = NULL;\
+    node_memory -= 1;\
+    /*zox_log(" > freeing node [%i]\n", (sizeof(name) * octree_length))*/\
 }\
 \
-void open_new##_##name(name* octree) {\
+void open_new_##name(name* octree) {\
     /*zoxel_log(" > opening node [%i + 1 = %i :: %i]\n", sizeof(name*), sizeof(name), (sizeof(name) * octree_length));*/\
     octree->nodes = malloc(sizeof(name) * octree_length);\
     node_memory += 1;\
@@ -42,8 +72,19 @@ void open_new##_##name(name* octree) {\
 void clone_##name(name* dst, const name* src) {\
     dst->value = src->value;\
     if (src->nodes) {\
-        open_new##_##name(dst);\
+        open_new_##name(dst);\
         for (unsigned char i = 0; i < octree_length; i++) clone_##name(&dst->nodes[i], &src->nodes[i]);\
+    } else {\
+        dst->nodes = NULL;\
+    }\
+}\
+\
+void clone_depth_##name(name* dst, const name* src, const unsigned char max_depth, unsigned char depth) {\
+    dst->value = src->value;\
+    depth++;\
+    if (src->nodes && depth <= max_depth) {\
+        open_new_##name(dst);\
+        for (unsigned char i = 0; i < octree_length; i++) clone_depth_##name(&dst->nodes[i], &src->nodes[i], max_depth, depth);\
     } else {\
         dst->nodes = NULL;\
     }\
@@ -51,7 +92,7 @@ void clone_##name(name* dst, const name* src) {\
 \
 void open##_##name(name* octree) {\
     if (octree->nodes == NULL) {\
-        open_new##_##name(octree);\
+        open_new_##name(octree);\
         for (unsigned char i = 0; i < octree_length; i++) octree->nodes[i].nodes = NULL;\
     }\
 }\
@@ -139,7 +180,7 @@ void on_destroyed##_##name(ecs_iter_t *it) {\
     name *components = ecs_field(it, name, 1);\
     for (int i = 0; i < it->count; i++) {\
         name *component = &components[i];\
-        close##_##name(component);\
+        close_##name(component);\
     }\
 }\
 \
@@ -150,11 +191,11 @@ ECS_CTOR(name, ptr, {\
 })\
 ECS_DTOR(name, ptr, {\
     /*zoxel_log(" > destroying chunk [%s]\n", ptr->nodes == NULL ? "closed nodes" : "open nodes");*/\
-    close##_##name(ptr);\
+    close_##name(ptr);\
 })\
 ECS_COPY(name, dst, src, {\
     /*zoxel_log(" > copying chunk [%s]\n", dst->nodes == NULL ? "closed nodes" : "open nodes");*/\
-    close##_##name(dst);\
+    close_##name(dst);\
     clone_##name(dst, src);\
 })\
 ECS_MOVE(name, dst, src, {\

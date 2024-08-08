@@ -1,6 +1,8 @@
+extern unsigned char get_block_voxes_lod_from_camera_distance(unsigned char distance_to_camera);
+
 // when terrain lod updates, it will update [Block Vox] lods
 void ChunkBlocksLodSystem(ecs_iter_t *it) {
-#ifdef zox_disable_block_voxes
+#if defined(zox_disable_block_voxes) || defined(zox_disable_block_voxes2)
     return;
 #endif
     zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
@@ -13,7 +15,7 @@ void ChunkBlocksLodSystem(ecs_iter_t *it) {
         if (!blockSpawns->value || !blockSpawns->value->data) continue;
         zox_field_i(RenderLod, renderLods, renderLod)
         const unsigned char camera_distance = renderLod->value;
-        const unsigned char vox_lod = get_voxes_lod_from_camera_distance(camera_distance);
+        const unsigned char vox_lod = get_block_voxes_lod_from_camera_distance(camera_distance);
         for (int j = 0; j < blockSpawns->value->size; j++) {
             const byte3_hashmap_pair* pair = blockSpawns->value->data[j];
             uint checks = 0;

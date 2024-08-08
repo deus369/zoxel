@@ -9,6 +9,7 @@ ecs_entity_t spawn_prefab_terrain_chunk_octree(ecs_world_t *world, const ecs_ent
     // links to sub chunk things - remember: these have to be set to NULL as not set in initialization
     zox_prefab_set(e, EntityLinks, { 0, NULL }) // character and minivox links
     zox_prefab_set(e, BlockSpawns, { NULL })    // links to voxels in world
+    zox_prefab_set(e, BlocksSpawned, { 0 })
 #ifdef zox_is_flatlands
     zox_add_tag(e, FlatlandChunk)
 #endif

@@ -12,12 +12,25 @@ unsigned char get_camera_chunk_distance(const int3 camera_position, const int3 c
 }
 
 unsigned char get_voxes_lod_from_camera_distance(const unsigned char distance_to_camera) {
-    unsigned char division;
-    if (distance_to_camera <= init_lod_voxes) division = 0;
-    else if (distance_to_camera <= init_lod_voxes + lod_div_voxes * 1) division = 1;
-    else if (distance_to_camera <= init_lod_voxes + lod_div_voxes * 2) division = 2;
-    else if (distance_to_camera <= init_lod_voxes + lod_div_voxes * 3) division = 3;
-    else if (distance_to_camera <= init_lod_voxes + lod_div_voxes * 4) division = 4;
-    else division = 255;
-    return division;
+    unsigned char lod;
+    if (distance_to_camera <= init_lod_voxes) lod = 0;
+    else if (distance_to_camera <= init_lod_voxes + lod_div_voxes * 1) lod = 1;
+    else if (distance_to_camera <= init_lod_voxes + lod_div_voxes * 2) lod = 2;
+    else if (distance_to_camera <= init_lod_voxes + lod_div_voxes * 3) lod = 3;
+    else if (distance_to_camera <= init_lod_voxes + lod_div_voxes * 4) lod = 4;
+    else lod = 255;
+    if (lod < min_character_vox_lod) lod = min_character_vox_lod;
+    return lod;
+}
+
+unsigned char get_block_voxes_lod_from_camera_distance(const unsigned char distance_to_camera) {
+    unsigned char lod;
+    if (distance_to_camera <= init_lod_voxes) lod = 0;
+    else if (distance_to_camera <= init_lod_voxes + lod_div_voxes * 1) lod = 1;
+    else if (distance_to_camera <= init_lod_voxes + lod_div_voxes * 2) lod = 2;
+    else if (distance_to_camera <= init_lod_voxes + lod_div_voxes * 3) lod = 3;
+    else if (distance_to_camera <= init_lod_voxes + lod_div_voxes * 4) lod = 4;
+    else lod = 255;
+    if (lod < min_block_vox_lod) lod = min_block_vox_lod;
+    return lod;
 }
