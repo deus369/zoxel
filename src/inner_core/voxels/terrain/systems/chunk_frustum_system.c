@@ -9,16 +9,16 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
     zox_field_in(ChunkSize, chunkSizes, 2)
     zox_field_in(VoxScale, voxScales, 3)
     zox_field_in(EntityLinks, entityLinkss, 4)
-    zox_field_in(BlockSpawns, blockSpawnss, 5)
-    zox_field_out(RenderDisabled, renderDisableds, 6)
+    // zox_field_in(BlockSpawns, blockSpawnss, 5)
+    zox_field_out(RenderDisabled, renderDisableds, 5)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(Position3D, position3Ds, position3D)
         zox_field_i(ChunkSize, chunkSizes, chunkSize)
         zox_field_i(VoxScale, voxScales, voxScale)
         zox_field_i(EntityLinks, entityLinkss, entityLinks)
-        zox_field_i(BlockSpawns, blockSpawnss, blockSpawns)
+        // zox_field_i(BlockSpawns, blockSpawnss, blockSpawns)
         zox_field_o(RenderDisabled, renderDisableds, renderDisabled)
-        const unsigned char block_spawns_initialized = blockSpawns->value && blockSpawns->value->data;
+        // const unsigned char block_spawns_initialized = blockSpawns->value && blockSpawns->value->data;
         bounds chunk_bounds = calculate_chunk_bounds(position3D->value, chunkSize->value, voxScale->value);
         float3_multiply_float_p(&chunk_bounds.extents, fudge_frustum_extents);
         unsigned char is_viewed = 1;
@@ -63,7 +63,8 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
                     }
                 }
             }
-            if (block_spawns_initialized) {
+// -=- Block Spawns -=-
+            /* if (block_spawns_initialized) {
                 for (int j = 0; j < blockSpawns->value->size; j++) {
                     const byte3_hashmap_pair* pair = blockSpawns->value->data[j];
                     uint checks = 0;
@@ -74,16 +75,17 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
                         checks++;
                     }
                 }
-            }
+            }*/
+// -=- -=- -=- -=- -=- -=-
         }
-        int block_spawns_count = block_spawns_initialized ? count_byte3_hashmap(blockSpawns->value) : 0;
+        // int block_spawns_count = block_spawns_initialized ? count_byte3_hashmap(blockSpawns->value) : 0;
         if (is_viewed) {
             zox_statistics_chunks_visible++;
             zox_statistics_characters_visible += entityLinks->length;
-            if (block_spawns_initialized) zox_statistics_block_voxes_visible += block_spawns_count;
+            // if (block_spawns_initialized) zox_statistics_block_voxes_visible += block_spawns_count;
         }
         zox_statistics_characters_total += entityLinks->length;
-        zox_statistics_block_voxes_total += block_spawns_count;
+        // zox_statistics_block_voxes_total += block_spawns_count;
     }
     zox_statistics_chunks_total += it->count;
 } zox_declare_system(ChunkFrustumSystem)

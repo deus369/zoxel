@@ -35,7 +35,7 @@ void ChunkFlatlandSystem(ecs_iter_t *it) {
             }
         }
 #ifndef zox_disable_closing_octree_nodes
-        close_same_nodes(chunkOctree);
+        close_same_nodes(chunkOctree, max_octree_depth, 0);
 #endif
         generateChunk->value = 0;
         chunkDirty->value = chunk_dirty_state_generated;

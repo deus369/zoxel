@@ -54,7 +54,7 @@ void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox)
         }
     }
     optimize_solid_nodes(chunkOctree);
-    close_same_nodes(chunkOctree);
+    close_same_nodes(chunkOctree, max_octree_depth, 0);
     zox_modified(e, ChunkOctree)
     zox_set(e, ChunkSize, { vox_size }) // size
     set_colors_from_vox_file(world, e, vox); // colors

@@ -15,23 +15,25 @@ typedef struct {
     const unsigned char *block_vox_offsets;
     const unsigned char block_voxes_count;
     const float3 chunk_position_real;
-    BlockSpawns *block_spawns;
+#ifndef zox_disable_block_spawns_hash
+    // BlockSpawns *block_spawns;
+#endif
     SpawnBlockVox *spawn_data;
 } UpdateBlockEntities;
 
 // assumes this is max depth voxel
 void remove_old_voxel_by_link(ecs_world_t *world, ChunkOctree *chunk) {
     if (!chunk->nodes) return;
-    const ecs_entity_t previous_e = ((VoxelEntityLink*)chunk->nodes)->value;
-    if (zox_valid(previous_e)) {
+    const ecs_entity_t e3 = ((VoxelEntityLink*)chunk->nodes)->value;
+    if (zox_valid(e3)) {
         // zox_log(" - deleting previous block vox [%lu]\n", previous_e)
-        zox_delete(previous_e)
+        zox_delete(e3)
         free(chunk->nodes);
         chunk->nodes = NULL;
     }
 }
 
-void remove_old_block_vox_from_tree(ecs_world_t *world, BlockSpawns *block_spawns, const int3 octree_position) {
+/* void remove_old_block_vox_from_tree(ecs_world_t *world, BlockSpawns *block_spawns, const int3 octree_position) {
 #ifdef zox_disable_block_spawns_hash
     return;
 #endif
@@ -42,7 +44,7 @@ void remove_old_block_vox_from_tree(ecs_world_t *world, BlockSpawns *block_spawn
         if (old_vox_block) zox_delete(old_vox_block)
             byte3_hashmap_remove(block_spawns->value, position_local);
     }
-}
+} */
 
 void delete_block_entities(ecs_world_t *world, ChunkOctree *chunk, const unsigned char max_depth, unsigned char depth) {
     if (depth == max_depth) {
@@ -93,11 +95,18 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
         // if exists, and is same type, return!
         ChunkOctree *chunk = delve_data->chunk;
         if (chunk->nodes) {
-            const ecs_entity_t previous_e = ((VoxelEntityLink*)chunk->nodes)->value;
-            if (zox_valid(previous_e)) {
-                const unsigned char old_block_index = zox_get_value(previous_e, BlockIndex)
+            const ecs_entity_t e3 = ((VoxelEntityLink*)chunk->nodes)->value;
+            if (zox_valid(e3)) {
+                const unsigned char old_block_index = zox_get_value(e3, BlockIndex)
                 if (old_block_index == block_index) {
                     // zox_log(" > trying to spawn same block vox [%i]\n", old_block_index)
+                    // Updates RenderLod of previous Vox Blocks
+                    const unsigned char vox_lod = data->spawn_data->render_lod;
+                    const unsigned char vox_lod_old = zox_get_value(e3, RenderLod)
+                    if (vox_lod_old != vox_lod) {
+                        zox_set(e3, RenderLod, { vox_lod })
+                        zox_set(e3, ChunkDirty, { chunk_dirty_state_lod_updated })
+                    }
                     return;
                 }
             }
@@ -151,7 +160,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
     }
 }
 // updates during ChunkLodDirty and ChunkDirty events
-void update_block_voxes(ecs_world_t *world, const VoxLink *voxLink, const ChunkPosition *chunkPosition, const unsigned char vox_lod, const RenderDisabled *renderDisabled, ChunkOctree *chunk, BlockSpawns *block_spawns) {
+void update_block_voxes(ecs_world_t *world, const VoxLink *voxLink, const ChunkPosition *chunkPosition, const unsigned char vox_lod, const RenderDisabled *renderDisabled, ChunkOctree *chunk) {
     const ecs_entity_t realm = zox_get_value(voxLink->value, RealmLink)
     const VoxelLinks *voxelLinks = zox_get(realm, VoxelLinks)
     const unsigned char block_voxes_count = voxelLinks->length;
@@ -186,7 +195,7 @@ void update_block_voxes(ecs_world_t *world, const VoxLink *voxLink, const ChunkP
         .block_vox_offsets = block_vox_offsets,
         .block_voxes_count = block_voxes_count,
         .chunk_position_real = chunk_position_real,
-        .block_spawns = block_spawns,
+        // .block_spawns = block_spawns,
         .spawn_data = &spawn_data,
     };
     NodeDelveData delve_data = {

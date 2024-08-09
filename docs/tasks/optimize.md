@@ -1,11 +1,21 @@
 # optimize
 
 - [ ] Block Spawns huge refactor
-    - [ ] remove BlockSpawns component as we are no longer using it
-    - [ ] when updating voxels at end nodes, check for VoxelNodeLink's entity and delete entity on close
-    - [ ] toggle key for raycast selection on minivox voxels (mini mode selection or not)
-        - so we can test by deleting grass
-    - [ ] don't close nodes with open end nodes (voxel links)
+    - [x] remove BlockSpawns component as we are no longer using it
+    - [x] when updating voxels at end nodes, check for VoxelNodeLink's entity and delete entity on close
+    - [ ] finish rest of refactor things
+
+- [ ] catch crashes
+
+- [ ] toggle transparent terrain mesh so i can catch minivoxes?
+
+- [ ] don't close same nodes that are vox blocks (only solid and air) - do a check with voxel types
+    - don't close nodes with open end nodes (voxel links)
+
+- [ ] re do frustum for Block Spawns using delve function
+
+- [ ] toggle key for raycast selection on minivox voxels (mini mode selection or not)
+    - so we can test by deleting grass
 
 - [ ] update vox models to their linked ones in a system over time - instead of in one function (load models)
     - [ ] load only their needed LODs and not the entire model

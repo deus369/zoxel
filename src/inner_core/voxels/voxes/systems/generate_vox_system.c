@@ -131,7 +131,7 @@ void GenerateVoxSystem(ecs_iter_t *it) {
         }
         if (is_generate_vox_outlines) vox_outlines(chunkOctree, target_depth, size, black_voxel);
 #ifndef zox_disable_closing_octree_nodes
-        close_same_nodes(chunkOctree);
+        close_same_nodes(chunkOctree, max_octree_depth, 0);
 #endif
         generateVox->value = 0;
     }

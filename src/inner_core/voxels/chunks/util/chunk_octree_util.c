@@ -40,34 +40,53 @@ unsigned char get_octree_voxel(const ChunkOctree *node, byte3 *position, const u
     return get_octree_voxel(&node->nodes[byte3_octree_array_index(node_position)], position, depth - 1);
 }
 
+// returns node, also sets voxel
+const ChunkOctree* get_octree_voxel_with_node(unsigned char *value, const ChunkOctree *node, byte3 *position, const unsigned char depth) {
+    if (node == NULL) return NULL;
+    *value = node->value;
+    // if child nodes closed or depth final, return current node
+    if (node->nodes == NULL || depth == 0) return node;
+    const unsigned char dividor = powers_of_two_byte[depth - 1];
+    const byte3 node_position = (byte3) { position->x / dividor, position->y / dividor, position->z / dividor };
+    byte3_modulus_byte(position, dividor);
+    return get_octree_voxel_with_node(value, &node->nodes[byte3_octree_array_index(node_position)], position, depth - 1);
+}
+
 //! Closes all solid nodes, as well as air nodes, after terrain system generates it.
 void close_solid_nodes(ChunkOctree *node) {
     if (!node->nodes) return;
     // for all children nodes - only check higher nodes if closed children
     for (unsigned char i = 0; i < octree_length; i++) close_solid_nodes(&node->nodes[i]);
     unsigned char all_solid = 1;
+    unsigned char all_air = 1;
     for (unsigned char i = 0; i < octree_length; i++) {
-        if (node->nodes[i].nodes != NULL || !node->nodes[i].value) {
+        // if child node is open still, don't close
+        if (node->nodes[i].nodes) {
             all_solid = 0;
+            all_air = 0;
+            break;
+        }
+        // checks if all solid or all air
+        if (!node->nodes[i].value) {
+            all_solid = 0;
+        } else if (node->nodes[i].value) {
+            all_air = 0;
+        }
+        if (!all_solid && !all_air) {
             break;
         }
     }
-    if (all_solid) close_ChunkOctree(node);
-    else {
-        unsigned char all_air = 1;
-        for (unsigned char i = 0; i < octree_length; i++) {
-            if (node->nodes[i].nodes != NULL || node->nodes[i].value) {
-                all_air = 0;
-                break;
-            }
-        }
-        if (all_air) close_ChunkOctree(node);
+    if (all_solid || all_air) {
+        close_ChunkOctree(node);
     }
 }
 
-void close_same_nodes(ChunkOctree *node) {
+// todo: make sure we only close blocks that can be grouped together here (we shouldn't group grass etc)
+void close_same_nodes(ChunkOctree *node, const unsigned char max_depth, unsigned char depth) {
     if (node->nodes == NULL) return;
-    for (unsigned char i = 0; i < octree_length; i++) close_same_nodes(&node->nodes[i]);
+    if (depth == max_depth) return; // make sure this doesn't try to close spawned nodes
+    depth++;
+    for (unsigned char i = 0; i < octree_length; i++) close_same_nodes(&node->nodes[i], max_depth, depth);
     unsigned char all_same = 1;
     unsigned char all_same_voxel = 255;
     for (unsigned char i = 0; i < octree_length; i++) {

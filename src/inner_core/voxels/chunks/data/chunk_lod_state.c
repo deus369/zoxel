@@ -3,13 +3,13 @@
 
 // lod updates of prior spawns
 #define chunk_lod_state_pause 2
-#define chunk_lod_state_vox_blocks_update 3
+// #define chunk_lod_state_vox_blocks_update 3
 #define chunk_lod_state_characters_update 4
 
 // spawning
 #define chunk_lod_state_spawning 5
 #define chunk_lod_state_characters_spawn 6
-#define chunk_lod_state_vox_blocks_spawn 7
+#define chunk_lod_state_vox_blocks_spawn 7 // updates lod during spawn step now
 /*#define chunk_lod_state_vox_blocks_spawn_2 8
 #define chunk_lod_state_vox_blocks_spawn_3 9
 #define chunk_lod_state_vox_blocks_spawn_4 10

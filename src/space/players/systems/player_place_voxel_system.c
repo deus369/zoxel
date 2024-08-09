@@ -107,6 +107,7 @@ void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
                         } else if (raycastVoxelData->voxel != 0) {
                             raycast_action(world, raycastVoxelData, 0, 2);
                             // zox_log(" > spawned pickup at [%fx%fx%f]\n", raycastVoxelData->position_real.x, raycastVoxelData->position_real.y, raycastVoxelData->position_real.z)
+
                             if (zox_has(raycastVoxelData->chunk, TerrainChunk)) {
                                 const ecs_entity_t pickup = spawn_pickup(world, prefab_pickup, raycastVoxelData->position_real);
                                 const ecs_entity_t terrain = zox_get_value(raycastVoxelData->chunk, VoxLink)
@@ -116,8 +117,10 @@ void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
                                     const unsigned char voxel_index = raycastVoxelData->voxel - 1;
                                     const ecs_entity_t voxel = voxels->value[voxel_index];
                                     // now get item and set to pickup
-                                    const ecs_entity_t item = zox_get_value(voxel, ItemLink)
-                                    zox_set(pickup, ItemLink, { item })
+                                    if (zox_has(voxel, ItemLink)) {
+                                        const ecs_entity_t item = zox_get_value(voxel, ItemLink)
+                                        if (item) zox_set(pickup, ItemLink, { item })
+                                    }
                                     spawn_sound_generated(world, instrument_violin, note_frequencies[34], 0.6, 2.4f);
                                 } else {
                                     zox_log(" ! terrain is invalid\n")

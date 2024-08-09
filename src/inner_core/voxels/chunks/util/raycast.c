@@ -87,17 +87,18 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
         unsigned char old_voxel = 0;
         if (byte3_in_bounds(voxel_position_local, chunk_size_b3)) {
             byte3 temp = voxel_position_local;
-            old_voxel = get_octree_voxel(chunk_octree, &temp, max_octree_depth);
+            // old_voxel = get_octree_voxel(chunk_octree, &temp, max_octree_depth);
+            data->node = get_octree_voxel_with_node(&old_voxel, chunk_octree, &temp, max_octree_depth);
         }
         if (old_voxel) {
             data->voxel = old_voxel;
             unsigned char is_minivox = 0;
             if (voxels) {
-                const ecs_entity_t block = voxels->value[old_voxel - 1];
-                is_minivox = zox_has(block, BlockVox);
+                // const ecs_entity_t block = voxels->value[old_voxel - 1];
+                // is_minivox = zox_has(block, BlockVox);
             }
             if (is_minivox) {
-                const BlockSpawns *spawns = zox_get(chunk, BlockSpawns)
+                /*const BlockSpawns *spawns = zox_get(chunk, BlockSpawns)
                 if (spawns->value && spawns->value->data) {
                     const ecs_entity_t block_spawn = byte3_hashmap_get(spawns->value, voxel_position_local);
                     if (block_spawn && zox_has(block_spawn,  Position3D)) {
@@ -113,7 +114,7 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
                             break;
                         }
                     }
-                }
+                }*/
             } else { // if solid block
                 ray_hit = 1;
                 // if (!chunk_links) zox_log(" > [%f] raycasted minivox [%ix%ix%i]\n", ray_distance, voxel_position.x, voxel_position.y, voxel_position.z)
@@ -256,41 +257,4 @@ void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t caster, const 
     const float3 ray_normal = zox_get_value(camera, RaycastNormal)
     int3 chunk_position = (int3) { 255255, 255255, 255255 };
     raycast_general(world, caster, voxels, chunk_links, chunk_position, float3_zero, default_chunk_size, 0, ray_origin, ray_normal, 0.5f, terrain_ray_length, data);
-}
-
-
-void raycast_action(ecs_world_t *world, const RaycastVoxelData *data, const unsigned char voxel, unsigned char hit_type) {
-    // int3 ray_hit_normal;
-    byte3 place_position;
-    ecs_entity_t place_chunk;
-    if (hit_type == 2) {
-        // zox_log("placing air!\n")
-        place_position = data->position;
-        place_chunk = data->chunk;
-    } else {
-        // zox_log("placing solid!\n")
-        place_position = data->position_last;
-        place_chunk = data->chunk_last;
-    }
-    // zox_log("   > [%ix%ix%i] [%lu]\n", place_position.x, place_position.y, place_position.z, place_chunk)
-    if (place_chunk == 0) {
-        // zox_log(" > no chunk raycasted\n")
-        return;
-    }
-    const int3 chunk_size = zox_get_value(place_chunk, ChunkSize)
-    const byte3 chunk_size_b3 = int3_to_byte3(chunk_size);
-    zox_get_muter(place_chunk, ChunkOctree, chunk_octree)
-    const SetVoxelTargetData datam = { .depth = max_octree_depth, .voxel = voxel, .effect_nodes = 1 };
-    SetVoxelData data2 = { .node = chunk_octree, .position = place_position };
-    set_voxel(&datam, data2);
-    close_same_nodes(chunk_octree);
-    zox_set(place_chunk, ChunkDirty, { chunk_dirty_state_edited })
-    if (zox_has(place_chunk, ChunkNeighbors) && byte3_on_edge(place_position, chunk_size_b3)) {
-        const ChunkNeighbors *chunk_neighbors = zox_get(place_chunk, ChunkNeighbors)
-        for (int axis = 0; axis < 6; axis++) {
-            if (byte3_on_edge_axis(place_position, chunk_size_b3, axis)) {
-                zox_set(chunk_neighbors->value[axis], ChunkDirty, { chunk_dirty_state_edited })
-            }
-        }
-    }
 }

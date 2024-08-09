@@ -1,7 +1,7 @@
-extern unsigned char get_block_voxes_lod_from_camera_distance(unsigned char distance_to_camera);
+// extern unsigned char get_block_voxes_lod_from_camera_distance(unsigned char distance_to_camera);
 
 // when terrain lod updates, it will update [Block Vox] lods
-void ChunkBlocksLodSystem(ecs_iter_t *it) {
+/* void ChunkBlocksLodSystem(ecs_iter_t *it) {
 #if defined(zox_disable_block_voxes) || defined(zox_disable_block_voxes2)
     return;
 #endif
@@ -33,4 +33,4 @@ void ChunkBlocksLodSystem(ecs_iter_t *it) {
             }
         }
     }
-} zox_declare_system(ChunkBlocksLodSystem)
+} zox_declare_system(ChunkBlocksLodSystem)*/
