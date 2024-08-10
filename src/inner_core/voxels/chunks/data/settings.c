@@ -6,8 +6,8 @@
 // #define zox_debug_chunks // use to debug chunk edges
 
 // 0 for max, 255 hidden?
-const unsigned char min_block_vox_lod = 2;
-const unsigned char min_character_vox_lod = 2;
+const unsigned char min_block_vox_lod = 0;
+const unsigned char min_character_vox_lod = 0;
 
 const float default_vox_scale = 0.5f;
 const double max_chunk_process_time = 0.001;

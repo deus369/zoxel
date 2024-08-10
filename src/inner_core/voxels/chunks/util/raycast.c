@@ -37,8 +37,8 @@ unsigned char raycast_character(ecs_world_t *world, const ecs_entity_t caster, c
 
 unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelLinks *voxels, const ChunkLinks *chunk_links, int3 chunk_position, const float3 chunk_position_real, const int3 chunk_size, ecs_entity_t chunk, const float3 ray_origin, const float3 ray_normal, const float voxel_scale, const float ray_length, RaycastVoxelData *data) {
     // setup voxel data
-    const ChunkOctree *chunk_octree;
-    if (chunk) chunk_octree = zox_get(chunk, ChunkOctree)
+    ChunkOctree *chunk_octree;
+    if (chunk) chunk_octree = zox_get_mut(chunk, ChunkOctree)
     const byte3 chunk_size_b3 = int3_to_byte3(chunk_size);
     ecs_entity_t chunk_last = chunk;
     // position
@@ -72,7 +72,7 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
             if (!int3_equals(chunk_position, new_chunk_position)) {
                 chunk = int3_hashmap_get(chunk_links->value, new_chunk_position);
                 if (!chunk) return 0;
-                chunk_octree = zox_get(chunk, ChunkOctree)
+                chunk_octree = zox_get_mut(chunk, ChunkOctree)
                 if (!chunk_octree) return 0;
                 chunk_position = new_chunk_position;
                 hit_character = raycast_character(world, caster, ray_origin, ray_normal, chunk, data, &closest_t);

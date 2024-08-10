@@ -80,6 +80,7 @@ int process_arguments(int argc, char* argv[]) {
         }
         else if (strcmp(argv[i], "--tiny") == 0) {
             terrain_mode = terrain_mode_tiny;
+            zox_log(" + tiny mode enabled\n")
         } else if (strcmp(argv[i], "--medium") == 0) {
             terrain_mode = terrain_mode_medium;
         } else if (strcmp(argv[i], "--large") == 0) {

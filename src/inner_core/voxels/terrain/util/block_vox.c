@@ -159,6 +159,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
         }
     }
 }
+
 // updates during ChunkLodDirty and ChunkDirty events
 void update_block_voxes(ecs_world_t *world, const VoxLink *voxLink, const ChunkPosition *chunkPosition, const unsigned char vox_lod, const RenderDisabled *renderDisabled, ChunkOctree *chunk) {
     const ecs_entity_t realm = zox_get_value(voxLink->value, RealmLink)

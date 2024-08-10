@@ -112,7 +112,7 @@ endif
 	@ make install-flecs && make build/libflecs.a
 
 ## installs zoxel into /usr/games directory
-install: 
+install:
 ifeq ($(OS),Windows_NT) # on windows
 	@ bash bash/windows/install.sh
 else # linux
@@ -124,7 +124,7 @@ install-sdl:
 	@ bash bash/sdl/install_sdl_on_system.sh
 
 ## uninstalls zoxel into /usr/games directory
-uninstall: 
+uninstall:
 	@ bash bash/install/uninstall.sh
 
 resources:
@@ -184,7 +184,7 @@ target_dev = build/linux-dev/zoxel
 ifeq ($(SYSTEM),Windows)
 target_dev = build/windows-dev/zoxel.exe
 endif
-cflags_debug = -Wall -g # -Wextra -Wpedantic -Wshadow -Wl,--verbose -Og
+cflags_debug = -Wall -g # -O0 -fsanitize=address # -Wextra -Wpedantic -Wshadow -Wl,--verbose -Og
 make_dev = echo " > building zoxel-dev-linux [$(target_dev)]" && \
 	$(patient_cmd) && \
 	$(CC) $(cflags) $(cflags_debug) -o $(target_dev) $(OBJS) $(make_libs)
@@ -225,6 +225,9 @@ run-debug-vulkan:
 run-dev-debug:
 	@ gdb ./$(target_dev)
 
+run-dev-debug-tiny:
+	@ gdb --args ./$(target_dev) --tiny
+
 # run development + valgrind
 run-valgrind:
 	@ valgrind ./$(target_dev) --tiny
@@ -241,10 +244,6 @@ run-profiler:
 run-dev-profiler-tiny:
 	@ sleep 3 && open https://www.flecs.dev/explorer &
 	@ ./$(target_dev) --profiler --tiny
-
-run-dev-debug-tiny:
-	@ valgrind -s ./$(target_dev) --tiny
-
 
 # build with profiler
 dev-profiler:

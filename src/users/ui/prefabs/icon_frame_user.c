@@ -21,6 +21,9 @@ void set_icon_from_user_data(ecs_world_t *world, const ecs_entity_t e, const ecs
     }
     const ecs_entity_t texture = zox_get_value(data, TextureLink)
     if (!texture) {
+        clear_texture_data(world, e);
+        zox_set(e, GenerateTexture, { zox_generate_texture_trigger })
+        zox_set(e, TextureSize, { int2_single(default_icon_texture_size) })
         zox_log(" ! texture is invalid from [%s]\n", zox_get_name(data))
         return;
     }

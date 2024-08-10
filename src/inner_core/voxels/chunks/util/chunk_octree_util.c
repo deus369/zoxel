@@ -41,7 +41,7 @@ unsigned char get_octree_voxel(const ChunkOctree *node, byte3 *position, const u
 }
 
 // returns node, also sets voxel
-const ChunkOctree* get_octree_voxel_with_node(unsigned char *value, const ChunkOctree *node, byte3 *position, const unsigned char depth) {
+ChunkOctree* get_octree_voxel_with_node(unsigned char *value, ChunkOctree *node, byte3 *position, const unsigned char depth) {
     if (node == NULL) return NULL;
     *value = node->value;
     // if child nodes closed or depth final, return current node

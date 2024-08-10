@@ -13,6 +13,9 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
     zox_prefab_set(e, ChunkLink, { 0 })
     zox_prefab_set(e, ChunkPosition, { int3_chaos })
     zox_prefab_set(e, VoxelPosition, { int3_zero})
+    // Vox
+    zox_prefab_set(e, CloneVox, { 0})
+    zox_prefab_set(e, CloneVoxLink, { 0 })
     // animation
     zox_prefab_set(e, AnimationState, { zox_animation_idle })
     zox_prefab_set(e, AnimationStart, { 0 })
@@ -66,7 +69,9 @@ ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, co
     zox_set(e, Rotation3D, { rotation })
     // voxels
     zox_set(e, VoxLink, { local_terrain })
-    clone_vox_data(world, e, vox, 1 + max_octree_depth - min_character_vox_lod);
+    // clone_vox_data(world, e, vox, 1 + max_octree_depth - min_character_vox_lod);
+    zox_set(e, CloneVox, { 1 })
+    zox_set(e, CloneVoxLink, { vox })
     /// rendering
     zox_set(e, RenderLod, { lod })
     spawn_gpu_mesh(world, e);

@@ -57,7 +57,7 @@ zox_system_ctx(TerrainLodSystem, zox_pip_voxels_chunk_dirty, &terrain_lod_filter
 zox_system(StreamPointSystem, zox_pip_voxels, [in] Position3D, [in] TerrainLink, [out] StreamPoint, [none] Streamer)
 // this updates our chunks RenderDisabled's
 zox_filter(cameras_query, [in] generic.Position3DBounds, [in] cameras.CameraPlanes, [none] cameras.Camera3D)
-zox_system_ctx(ChunkFrustumSystem, zox_pip_voxels, cameras_query, [in] Position3D, [in] ChunkSize, [in] VoxScale, [in] EntityLinks, [out] RenderDisabled, [none] TerrainChunk)
+zox_system_ctx(ChunkFrustumSystem, zox_pip_voxels, cameras_query, [in] Position3D, [in] ChunkSize, [in] VoxScale, [in] EntityLinks, [in] ChunkOctree, [out] RenderDisabled, [none] TerrainChunk)
 // Builds our Textured Chunks (Terrain) !
 zox_filter(chunks_generating, [out] ChunkDirty)
 if (!headless) zox_system_ctx(ChunkOctreeBuildSystem, zox_pip_voxels_chunk_clean, chunks_generating, [in] VoxLink,  [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] VoxScale, [in] RenderDisabled, [out] ChunkDirty, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty, [none] chunks.ChunkTextured)

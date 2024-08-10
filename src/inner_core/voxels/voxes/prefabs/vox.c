@@ -11,7 +11,7 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world, const ecs_entity_t prefab) {
     // zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
     // vox
     zox_prefab_set(e, VoxScale, { vox_model_scale })
-    zox_prefab_set(e, ChunkDirty, { chunk_dirty_state_generated })
+    // zox_prefab_set(e, ChunkDirty, { chunk_dirty_state_generated })
     zox_prefab_set(e, GenerateChunk, { 0 })
     return e;
 }

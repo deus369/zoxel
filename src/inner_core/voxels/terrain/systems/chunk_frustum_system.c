@@ -1,4 +1,18 @@
 const float fudge_frustum_extents = 2.0f;
+
+// block spawn delve function
+void set_chunk_block_spawns_render_disabled(ecs_world_t *world, const ChunkOctree *node, const unsigned char max_depth, unsigned char depth, const unsigned char state) {
+    if (!node->nodes) return;
+    if (depth == max_depth) {
+        // get block_vox from nodes
+        const ecs_entity_t block_vox = ((VoxelEntityLink*) node->nodes)->value;
+        if (zox_valid(block_vox)) zox_set(block_vox, RenderDisabled, { state })
+    } else {
+        depth++;
+        for (int i = 0; i < 8; i++) set_chunk_block_spawns_render_disabled(world, &node->nodes[i], max_depth, depth, state);
+    }
+}
+
 // this sets RenderDisabled for chunks and their children
 void ChunkFrustumSystem(ecs_iter_t *it) {
 #ifdef zox_disable_frustum_culling
@@ -9,14 +23,14 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
     zox_field_in(ChunkSize, chunkSizes, 2)
     zox_field_in(VoxScale, voxScales, 3)
     zox_field_in(EntityLinks, entityLinkss, 4)
-    // zox_field_in(BlockSpawns, blockSpawnss, 5)
-    zox_field_out(RenderDisabled, renderDisableds, 5)
+    zox_field_in(ChunkOctree, chunkOctrees, 5)
+    zox_field_out(RenderDisabled, renderDisableds, 6)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(Position3D, position3Ds, position3D)
         zox_field_i(ChunkSize, chunkSizes, chunkSize)
         zox_field_i(VoxScale, voxScales, voxScale)
         zox_field_i(EntityLinks, entityLinkss, entityLinks)
-        // zox_field_i(BlockSpawns, blockSpawnss, blockSpawns)
+        zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
         zox_field_o(RenderDisabled, renderDisableds, renderDisabled)
         // const unsigned char block_spawns_initialized = blockSpawns->value && blockSpawns->value->data;
         bounds chunk_bounds = calculate_chunk_bounds(position3D->value, chunkSize->value, voxScale->value);
@@ -64,6 +78,9 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
                 }
             }
 // -=- Block Spawns -=-
+            if (zox_gett_value(it->entities[i], BlocksSpawned)) {
+                set_chunk_block_spawns_render_disabled(world, chunkOctree, max_octree_depth, 0, renderDisabled->value);
+            }
             /* if (block_spawns_initialized) {
                 for (int j = 0; j < blockSpawns->value->size; j++) {
                     const byte3_hashmap_pair* pair = blockSpawns->value->data[j];
