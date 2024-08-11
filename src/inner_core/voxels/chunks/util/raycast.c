@@ -94,8 +94,8 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
             data->voxel = old_voxel;
             unsigned char is_minivox = 0;
             if (voxels) {
-                // const ecs_entity_t block = voxels->value[old_voxel - 1];
-                // is_minivox = zox_has(block, BlockVox);
+                const ecs_entity_t block = voxels->value[old_voxel - 1];
+                is_minivox = 0; // zox_has(block, BlockVox);
             }
             if (is_minivox) {
                 /*const BlockSpawns *spawns = zox_get(chunk, BlockSpawns)

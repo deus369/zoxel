@@ -90,6 +90,23 @@ void clone_depth_##name(name* dst, const name* src, const unsigned char max_dept
     }\
 }\
 \
+void clone_at_depth_##name(name* dst, const name* src, const unsigned char target_depth, unsigned char depth) {\
+    if (target_depth > 0 && depth == target_depth - 1) {\
+        if (src->nodes) open_new_##name(dst);\
+    }\
+    if (depth == target_depth) {\
+        dst->value = src->value;\
+        dst->nodes = NULL;\
+    } else {\
+        if (src->nodes && dst->nodes) {\
+            depth++;\
+            for (unsigned char i = 0; i < octree_length; i++) {\
+                clone_at_depth_##name(&dst->nodes[i], &src->nodes[i], target_depth, depth);\
+            }\
+        }\
+    }\
+}\
+\
 void open##_##name(name* octree) {\
     if (octree->nodes == NULL) {\
         open_new_##name(octree);\

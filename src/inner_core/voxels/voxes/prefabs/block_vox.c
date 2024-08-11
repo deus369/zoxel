@@ -3,6 +3,7 @@ ecs_entity_t spawn_prefab_block_vox(ecs_world_t *world, const ecs_entity_t prefa
     zox_prefab_name("prefab_block_vox")
     zox_prefab_set(e, CloneVox, { 0})
     zox_prefab_set(e, CloneVoxLink, { 0 })
+    zox_prefab_set(e, ChunkLod, { 255 })
     // zox_prefab_set(e, ChunkDirty, { chunk_dirty_state_generated })
     zox_add_tag(e, BlockVox)
     zox_prefab_set(e, BlockIndex, { 0 })

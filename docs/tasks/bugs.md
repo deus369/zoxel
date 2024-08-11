@@ -1,5 +1,10 @@
 # bugs
 
+- [ ] sometimes lags and does not spawn actionbar, make this not time dependent
+    - [ ] voxel items failed ' ! voxel_texture_data->value is null'
+- [ ] collision failed because of 30 fps
+- [ ] catch crashes created by latest code
+
 # load bugs
 - [x] when loding chunks lag spikes
 - [x] chunks should load before player character

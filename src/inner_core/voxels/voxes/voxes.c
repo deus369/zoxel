@@ -10,6 +10,7 @@ zox_declare_tag(BlendVox)
 zox_declare_tag(VoxRubble)
 zox_component_byte(GenerateVox)
 zox_component_byte(CloneVox)
+zox_component_byte(ChunkLod)
 zox_component_entity(CloneVoxLink)
 #include "util/vox_read_util.c"
 #include "util/vox_util.c"
@@ -34,6 +35,7 @@ zox_define_tag(Vox)
 zox_define_tag(BlendVox)
 zox_define_tag(VoxRubble)
 zox_define_component_byte(GenerateVox)
+zox_define_component_byte(ChunkLod)
 zox_define_component_byte(CloneVox)
 zox_define_component_entity(CloneVoxLink)
 // zox_filter(chunks_generating, [in] GenerateChunk)
@@ -44,7 +46,7 @@ if (!headless) zox_system(ChunkOctreeColorsBuildSystem, zox_pip_voxels, [out] Ch
 zox_system(Bounds3DGrowSystem, zox_pip_voxels, [in] MeshDirty, [in] ChunkSize, [in] VoxScale, [out] Bounds3D) // remember: timing specific, fucks up if changes position
 zox_system(GenerateVoxSystem, zox_pip_voxels, [in] Color, [out] GenerateVox, [out] ChunkOctree, [out] ColorRGBs, [out] ChunkDirty)
 zox_system(VoxTextureSystem, zox_pip_voxels_chunk_dirty, [in] TextureSize, [in] VoxLink, [in] VoxBakeSide, [out] GenerateTexture, [out] TextureData, [out] TextureDirty, [none] textures.core.VoxTexture)
-zox_system(CloneVoxSystem, zox_pip_voxels, [in] CloneVoxLink, [out] CloneVox, [out] ChunkOctree, [out] ChunkSize, [out] ColorRGBs, [out] ChunkDirty)
+zox_system(CloneVoxSystem, zox_pip_voxels, [in] CloneVoxLink, [out] CloneVox, [out] ChunkOctree, [out] ChunkSize, [out] ColorRGBs, [out] ChunkDirty, [out] ChunkLod)
 initialize_voxes(world);
 spawn_prefabs_voxes(world);
 zoxel_end_module(Voxes)

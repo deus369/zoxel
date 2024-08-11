@@ -1,17 +1,15 @@
 # optimize
 
-- [ ] sometimes lags and does not spawn actionbar, make this not time dependent
-    - [ ] voxel items failed ' ! voxel_texture_data->value is null'
-- [ ] collision failed because of 30 fps
-
-- [ ] catch crashes created by latest code
-
 - [ ] update vox models to their linked ones in a system over time - instead of in one function (load models)
     - [ ] load only their needed LODs and not the entire model
+    - [ ] handle vox block lod changes by loading / unloading at depths
 
+- [ ] generate terrain chunks at different LOD levels - including unloading to keep optimized
+    - only render what rendering we need
 
 - [ ] extend terrain LOD size and vox blocks by one chunk so we can see lesser resolution vox blocks
-- [ ] handle vox block lod changes by loading / unloading at depths
+
+
 - [ ] don't close same nodes that are vox blocks (only solid and air) - do a check with voxel types
     - [ ] add VoxelNodeGroup byte setting onto voxel meta data
         - pass in array of these settings to the close functions

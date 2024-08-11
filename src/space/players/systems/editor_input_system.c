@@ -16,6 +16,18 @@ void EditorInputSystem(ecs_iter_t *it) {
                 if (keyboard->z.pressed_this_frame) toggle_debug_character_bounds(world);      // z : collision gizmos
                 if (keyboard->x.pressed_this_frame) toggle_debug_block_voxes_bounds(world);
                 if (keyboard->c.pressed_this_frame) is_render_chunk_edges = !is_render_chunk_edges;
+                // particle test
+                else if (keyboard->v.pressed_this_frame) {
+                    zox_log(" + adding particles to character\n")
+                    const ecs_entity_t character = zox_get_value(e, CharacterLink)
+                    // spawn particle system
+                    zox_get_muter(character, Children, children)
+                    const float3 bounds = zox_get_value(character, Bounds3D)
+                    const ecs_entity_t particle3D_emitter = spawn_particle3D_emitter(world, character, 4, float3_multiply_float(bounds, 2), (color) { 255, 0, 0, 255 });
+                    add_to_Children(children, particle3D_emitter);
+                    // not linked to skill
+                    // zox_set(particle3D_emitter, SkillLink, { character })
+                }
                 // toggle uis
                 else if (keyboard->m.pressed_this_frame) toggle_ui_with_tag(spawn_fps_display, FPSDisplay)
                 else if (keyboard->v.pressed_this_frame) toggle_ui_with_tag(spawn_game_debug_label, GameDebugLabel)

@@ -16,6 +16,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
     // Vox
     zox_prefab_set(e, CloneVox, { 0})
     zox_prefab_set(e, CloneVoxLink, { 0 })
+    zox_prefab_set(e, ChunkLod, { 255 })
     // animation
     zox_prefab_set(e, AnimationState, { zox_animation_idle })
     zox_prefab_set(e, AnimationStart, { 0 })
