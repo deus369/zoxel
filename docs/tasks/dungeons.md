@@ -3,9 +3,6 @@
 - dungeon goal - get sword - new blingy everyday nicer looking
 - go to more dungeons, level up
 - shit sword of fish spew
-
-
-
 - world dungeons and instanced ones (seperate world)
 - now we just need to spawn our world dungeon
 
