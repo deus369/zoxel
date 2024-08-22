@@ -15,7 +15,7 @@ void ZeviceClickSystem(ecs_iter_t *it) {
         }
         const ecs_entity_t player = zox_get_value(device, PlayerLink)
         if (!player) {
-            zox_log(" ! device has null player [%lu]\n", device)
+            // zox_log(" ! device has null player [%lu]\n", device)
             continue;
         }
         const unsigned char device_mode = zox_get_value(player, DeviceMode)

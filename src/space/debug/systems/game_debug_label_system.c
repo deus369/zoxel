@@ -172,6 +172,9 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
 #ifdef zox_debug_statistics_characters
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "characters visible [%i / %i] - r[%i]\n", zox_statistics_characters_visible, zox_statistics_characters_total, zox_statistics_characters_rendered);
 #endif
+#ifdef zox_debug_statistics_particles3D
+        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "particles3D  [%i]\n", zox_statistics_particles3D);
+#endif
 #ifdef zox_debug_zox_statistics2
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "block voxes visible [%i / %i]\n", zox_statistics_block_voxes_visible, zox_statistics_block_voxes_total);
 #endif

@@ -6,6 +6,7 @@ void close_sdl_input() {
 }
 
 void initialize_sdl_input() {
+    SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "0");
     if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) fprintf(stderr, "  ! failed SDL joystick subsystem: %s\n", SDL_GetError());
 }
 

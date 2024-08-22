@@ -55,7 +55,7 @@ void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game)
 #endif
         zox_canvases[i] = canvas;
         zox_set(player, CanvasLink, { canvas })
-        zox_prefab_set(canvas, PlayerLink, { player })
+        zox_set(canvas, PlayerLink, { player })
         if (i == 0) main_canvas = canvas;
 #ifdef zoxel_start_with_debug_ui
         toggle_ui_with_tag(spawn_game_debug_label, GameDebugLabel)

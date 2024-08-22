@@ -6,10 +6,10 @@ void DeviceModeResponseSystem(ecs_iter_t *it) {
     zox_field_in(GameLink, gameLinks, 3)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(GameLink, gameLinks, gameLink)
-        if (!gameLink->value) continue;
+        unsigned char game_state = 0;
+        if (gameLink->value) game_state = zox_get_value(gameLink->value, GameState)
         zox_field_i(DeviceMode, deviceModes, deviceMode)
         zox_field_i(DeviceModeDirty, deviceModeDirtys, deviceModeDirty)
-        const unsigned char game_state = zox_get_value(gameLink->value, GameState)
         if (deviceModeDirty->value != 0 && deviceModeDirty->value != deviceMode->value) {
             zox_field_e()
             const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
@@ -25,6 +25,8 @@ void DeviceModeResponseSystem(ecs_iter_t *it) {
             } else if (deviceModeDirty->value == zox_device_mode_touchscreen) {
                 if (game_state == zox_game_playing) spawn_in_game_ui_touch(world, canvas);
             }
+            // todo: this isnt being called, fix it!
+            spawn_device_gizmo(world, canvas, deviceModeDirty->value);
         }
     }
 } zox_declare_system(DeviceModeResponseSystem)

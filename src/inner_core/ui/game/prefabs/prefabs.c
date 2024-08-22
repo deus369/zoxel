@@ -10,6 +10,7 @@ ecs_entity_t prefab_virtual_joystick_pointer;
 ecs_entity_t prefab_tooltip;
 ecs_entity_t prefab_icon_frame_taskbar;
 ecs_entity_t prefab_taskbar;
+ecs_entity_t prefab_device_gizmo;
 
 #include "menu_main.c"
 #include "menu_options.c"
@@ -20,7 +21,9 @@ ecs_entity_t prefab_taskbar;
 #include "virtual_joystick_pointer.c"
 #include "virtual_joystick.c"
 #include "tooltip.c"
+#include "icon_frame_taskbar.c"
 #include "taskbar.c"
+#include "device_gizmo.c"
 
 void spawn_prefabs_game_ui(ecs_world_t *world) {
     prefab_main_menu = spawn_prefab_main_menu(world);
@@ -34,4 +37,5 @@ void spawn_prefabs_game_ui(ecs_world_t *world) {
     prefab_tooltip = spawn_prefab_tooltip(world, prefab_label_background);
     prefab_icon_frame_taskbar = spawn_prefab_icon_frame_taskbar(world, prefab_icon_frame);
     prefab_taskbar = spawn_prefab_taskbar(world, prefab_element);
+    prefab_device_gizmo = spawn_prefab_device_gizmo(world, prefab_icon);
 }

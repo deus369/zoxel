@@ -1,7 +1,7 @@
 void DeviceModeDirtySystem(ecs_iter_t *it) {
     zox_iter_world()
-    zox_field_out(DeviceModeDirty, deviceModeDirtys, 2)
     zox_field_out(DeviceMode, deviceModes, 1)
+    zox_field_out(DeviceModeDirty, deviceModeDirtys, 2)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(DeviceModeDirty, deviceModeDirtys, deviceModeDirty)
         if (!deviceModeDirty->value) continue;

@@ -1,3 +1,5 @@
+// todo: alter frequency over time during sound
+
 void SoundGenerateSystem(ecs_iter_t *it) {
     zox_field_in(InstrumentType, instrumentTypes, 1)
     zox_field_in(SoundLength, soundLengths, 2)

@@ -9,10 +9,10 @@ ecs_entity_t spawn_player(ecs_world_t *world, const ecs_entity_t prefab) {
     if (mouse_entity) add_to_DeviceLinks(deviceLinks, mouse_entity);
     if (touchscreen_entity) add_to_DeviceLinks(deviceLinks, touchscreen_entity);
     if (gamepad_entity) add_to_DeviceLinks(deviceLinks, gamepad_entity);
-    for (int i = 0; i < deviceLinks->length; i++) {
+    /* for (int i = 0; i < deviceLinks->length; i++) {
         const ecs_entity_t device = deviceLinks->value[i];
         if (!device) continue;
         zox_set(device, PlayerLink, { e })
-    }
+    } */
     return e;
 }

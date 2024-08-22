@@ -84,7 +84,7 @@ zox_system_ctx(FrameTextureSystem, zox_pip_texture_generation, generate_textures
 zox_system(TilemapGenerationSystem, zox_pip_texture_generation, [in] TilemapSize, [in] TextureLinks, [out] GenerateTexture, [out] TextureSize, [out] TextureData, [out] TextureDirty, [out] TilemapUVs, [none] Tilemap)
 if (!headless) zox_system_1(TextureUpdateSystem, zox_pip_mainthread, [in] TextureData, [in] TextureSize, [in] TextureGPULink, [out] TextureDirty)
 zox_define_increment_system(GenerateTexture, EcsOnLoad, [none] Texture)
-zox_system(MouseTextureSystem, EcsOnUpdate, [in] MouseLock, [in] TextureLink)
+zox_system(MouseTextureSystem, EcsOnUpdate, [in] MouseLock, [in] TextureLink, [in] PlayerLink)
 spawn_prefabs_textures_core(world);
 zoxel_end_module(TexturesCore)
 

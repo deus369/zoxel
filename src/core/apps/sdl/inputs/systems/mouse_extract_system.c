@@ -23,13 +23,22 @@ void MouseExtractSystem(ecs_iter_t *it) {
         // using button_pressed_left
         for (int j = 0; j < children->length; j++) {
             const ecs_entity_t zevice = children->value[j];
+            if (!zevice) continue;
             if (zox_has(zevice, ZevicePointerPosition)) {
-                zox_get_muter(zevice, ZevicePointerPosition, position)
-                zox_get_muter(zevice, ZevicePointerDelta, delta)
-                delta->value = int2_sub(mouse_position, position->value);
-                // delta->value = int2_sub(position->value, mouse_position);
-                position->value = mouse_position;
+                if (global_any_fingers_down) {
+                    zox_geter(zevice, ZevicePointerPosition, position)
+                    int2 position2 = position->value;
+                    int2_flip_y(&position2, viewport_dimensions);
+                    SDL_WarpMouseInWindow(mouse_lock_window, position2.x, position2.y);
+                } else {
+                    zox_get_muter(zevice, ZevicePointerPosition, position)
+                    zox_get_muter(zevice, ZevicePointerDelta, delta)
+                    delta->value = int2_sub(mouse_position, position->value);
+                    // delta->value = int2_sub(position->value, mouse_position);
+                    position->value = mouse_position;
+                }
             }
+            if (global_any_fingers_down) continue;  // does this break it?
             if (zox_has(zevice, ZevicePointer)) {
                 zox_get_muter(zevice, ZevicePointer, clicker)
                 // convert press state, with previous state, to a proper value that holds press and release data

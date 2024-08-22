@@ -1,3 +1,8 @@
+ecs_entity_t big_old_particle_zone = 0;
+const int test_particle_zone_spawn_rate = 100;
+const float3 big_old_particle_zone_bounds = (float3) { 32, 32, 32 };
+// max should be around 10k
+
 void EditorInputSystem(ecs_iter_t *it) {
     zox_iter_world()
     zox_field_in(DeviceLinks, deviceLinkss, 1)
@@ -17,7 +22,7 @@ void EditorInputSystem(ecs_iter_t *it) {
                 if (keyboard->x.pressed_this_frame) toggle_debug_block_voxes_bounds(world);
                 if (keyboard->c.pressed_this_frame) is_render_chunk_edges = !is_render_chunk_edges;
                 // particle test
-                else if (keyboard->v.pressed_this_frame) {
+                /*else if (keyboard->v.pressed_this_frame) {
                     zox_log(" + adding particles to character\n")
                     const ecs_entity_t character = zox_get_value(e, CharacterLink)
                     // spawn particle system
@@ -27,7 +32,15 @@ void EditorInputSystem(ecs_iter_t *it) {
                     add_to_Children(children, particle3D_emitter);
                     // not linked to skill
                     // zox_set(particle3D_emitter, SkillLink, { character })
+                }*/
+
+                else if (keyboard->k.pressed_this_frame) {
+                    if (big_old_particle_zone) return;
+                    zox_log(" + spawning a big old particle zone\n")
+                    const ecs_entity_t particle3D_emitter = spawn_particle3D_emitter(world, 0, test_particle_zone_spawn_rate, float3_multiply_float(big_old_particle_zone_bounds, 2), (color) { 158, 118, 44, 200 });
+                    big_old_particle_zone = particle3D_emitter;
                 }
+
                 // toggle uis
                 else if (keyboard->m.pressed_this_frame) toggle_ui_with_tag(spawn_fps_display, FPSDisplay)
                 else if (keyboard->v.pressed_this_frame) toggle_ui_with_tag(spawn_game_debug_label, GameDebugLabel)

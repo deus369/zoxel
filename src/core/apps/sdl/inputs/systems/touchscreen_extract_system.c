@@ -1,4 +1,5 @@
 void TouchscreenExtractSystem(ecs_iter_t *it) {
+    global_any_fingers_down = 0;
     const int2 touchscreen_size = viewport_dimensions;
     zox_iter_world()
     zox_field_in(Children, childrens, 1)

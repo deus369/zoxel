@@ -54,6 +54,7 @@ void finger_released(ecs_world_t *world, const ecs_entity_t e) {
         devices_set_is_pressed(&zevicePointer->value, 0);
         devices_set_released_this_frame(&zevicePointer->value, 1);
         set_id(world, e, 0);
+        global_any_fingers_down = 1; // one more frame
         // zox_get_muter(e, ZevicePointerPosition, zevicePointerPosition)
         // zox_get_muter(e, ZevicePointerDelta, zevicePointerDelta)
         // zevicePointerPosition->value = int2_hidden;
@@ -81,6 +82,7 @@ void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices, const 
                     zevicePointerDelta->value = delta_finger;
                 }
                 zevicePointerPosition->value = finger_position;
+                global_any_fingers_down = 1;
 #ifdef zox_log_fingers
                 zox_log(" > finger touching [%lu] fingerid [%i]\n", zevice, zevice_id)
 #endif
@@ -95,6 +97,7 @@ void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices, const 
             SDL_Finger *finger = find_finger_unused(world, zevices);
             if (finger) {
                 const int finger_id = finger->id + 1;
+                // zox_log(" + touch down: %i\n", finger_id)
                 set_id(world, zevice, finger_id);
                 zox_get_muter(zevice, ZevicePointer, zevicePointer)
                 zox_get_muter(zevice, ZevicePointerPosition, zevicePointerPosition)
@@ -103,6 +106,7 @@ void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices, const 
                 int2 finger_position = (int2) { (int) (finger->x * touchscreen_size.x), (int) (finger->y * touchscreen_size.y) };
                 int2_flip_y(&finger_position, touchscreen_size);
                 zevicePointerPosition->value = finger_position;
+                global_any_fingers_down = 1;
 #ifdef zox_log_fingers
                 zox_log(" + finger touched [%lu] fingerid [%i]\n", zevice, finger_id)
 #endif

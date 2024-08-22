@@ -25,6 +25,6 @@ ecs_entity_t spawn_icon(ecs_world_t *world, SpawnIcon *data) {
     initialize_element(world, e, data->parent.e, data->canvas.e, position, data->element.size, data->texture_size, data->element.anchor, data->element.layer, real_position, position_in_canvas);
     zox_set(e, Color, { data->texture.fill_color })
     zox_set(e, OutlineColor, { data->texture.outline_color })
-    zox_prefab_set(e, IconIndex, { data->index })
+    zox_set(e, IconIndex, { data->index })
     return e;
 }

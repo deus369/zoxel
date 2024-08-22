@@ -37,7 +37,7 @@ ecs_entity_t spawn_prefab_cube_textured(ecs_world_t *world, const ecs_entity_t p
 
 ecs_entity_t spawn_cube_textured(ecs_world_t *world, const ecs_entity_t prefab, const float3 position) {
     const ecs_entity_t e = spawn_cube(world, prefab, position);
-    zox_name("cube_textured")
+    // zox_name("cube_textured")
     clone_texture_to_entity(world, e, "dark_block");
     if (!headless && shader_textured3D) {
         spawn_gpu_mesh(world, e);

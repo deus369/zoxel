@@ -1,6 +1,7 @@
 #ifndef zox_apps_inputs
 #define zox_apps_inputs
 
+unsigned char global_any_fingers_down = 0;
 #include "components/sdl_gamepad.c"
 #include "util/sdl_key_util.c"
 #include "util/keyboard_extract_util.c"

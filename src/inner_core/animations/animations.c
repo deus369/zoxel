@@ -13,6 +13,7 @@ zox_component_float4(EternalRotation)
 zox_memory_component(AnimationLinks, ecs_entity_t)
 zox_component_float(AnimateSourceFloat)
 zox_component_float(AnimateTargetFloat)
+zox_component_float(FadeOutEvent)
 // sequencing
 zox_component_byte(AnimationIndex)
 zox_memory_component(AnimationSequence, unsigned char) // a sequence of animation states
@@ -48,15 +49,17 @@ zox_define_component_byte(AnimationIndex)
 zox_define_memory_component(AnimationSequence)
 zox_define_memory_component(AnimationTimes)
 zox_define_memory_component(AnimationTargets)
+// defined events
+zox_define_component_float(FadeOutEvent)
 // seperating animations
 zox_define_memory_component(AnimationLinks)
 zox_system(EternalRotationSystem, EcsOnUpdate, [in] EternalRotation, [out] Rotation3D)
 zox_system(ShrinkSystem, EcsOnUpdate, [in] AnimationState, [in] AnimationStart, [out] Scale1D)
 zox_system(IdleSystem, EcsOnUpdate, [in] AnimationState, [in] AnimationStart, [out] Scale1D)
-zox_system(FadeoutSystem, EcsOnUpdate, [in] AnimationState, [in] AnimationStart, [in] AnimationLength, [in] AnimationDelay, [out] Alpha)
 zox_system(FadeinSystem, EcsOnUpdate, [in] AnimationState, [in] AnimationStart, [in] AnimationLength, [in] AnimationDelay, [out] Alpha)
 zox_system(AnimationSequenceSystem, EcsPostUpdate, [in] AnimationSequence, [in] AnimationTimes, [in] AnimationTargets, [in] AnimationDelay,  [out] AnimationIndex, [out] AnimationLength, [out] AnimationStart, [out] AnimationState)
 zox_system(AnimateAlphaSystem, EcsOnUpdate, [in] AnimationState, [in] AnimationStart, [in] AnimationLength, [in] AnimationDelay, [in] AnimateSourceFloat, [in] AnimateTargetFloat, [out] Alpha)
+zox_system(FadeoutSystem, EcsOnUpdate, [in] FadeOutEvent, [in] AnimationStart, [out] Alpha)
 zoxel_end_module(Animations)
 
 #endif
