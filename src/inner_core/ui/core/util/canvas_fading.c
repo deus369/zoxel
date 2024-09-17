@@ -36,14 +36,14 @@ void trigger_canvas_fade_in(ecs_world_t *world, const ecs_entity_t canvas) {
     zox_set(e, RenderDisabled, { 0 })
 }
 
-void trigger_canvas_fade_transition(ecs_world_t *world, const ecs_entity_t canvas) {
+void trigger_canvas_fade_transition(ecs_world_t *world, const ecs_entity_t canvas, const double fade_time, const double delay_time) {
     find_child_with_tag(canvas, CanvasOverlay, e)
     if (!e) {
         zox_log(" ! failed to find canvas_overlay on canvas\n")
         return;
     }
-    const double fade_time = 0.7;
-    const double delay_time = 1.4;
+    // const double fade_time = 0.7;
+    // const double delay_time = 1.4;
     // zox_log(" + [%lu] triggering fade sequence for canvas_overlay [%lu]\n", canvas, e)
     zox_set(e, Layer2D, { max_layers2D - 1 })
     zox_set(e, AnimationIndex, { 0 })

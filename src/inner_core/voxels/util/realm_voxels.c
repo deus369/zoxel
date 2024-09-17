@@ -98,8 +98,20 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     const ecs_entity_t vox_disabled = spawn_vox_generated_invisible(world, prefab_vox_generated, (color) { 25, 5, 5, 255 });
 #endif
     // todo: make all spawn code like this instead of a for loop
+    // dark block is  tasty
     voxelLinks->value[zox_block_dark - 1] = spawn_realm_voxel_texture(world, zox_block_dark, "dark", "block_dark");
-    voxelLinks->value[zox_block_dungeon_core - 1] = spawn_realm_voxel_texture(world, zox_block_dungeon_core, "dungeon_core", "block_dungeon_core");
+
+    // dungeon block, spawns world block prefab first
+    zox_neww(dungeon_block_world)
+    zox_make_prefab(dungeon_block_world)
+    zox_add_tag(dungeon_block_world, BlockDungeon)
+    // spawn block meta
+    ecs_entity_t dungeon_block = spawn_realm_voxel_texture(world, zox_block_dungeon_core, "dungeon_core", "block_dungeon_core");
+    // add prefab for world spawning
+    zox_prefab_set(dungeon_block, BlockPrefabLink, { dungeon_block_world })
+    voxelLinks->value[zox_block_dungeon_core - 1] = dungeon_block;
+
+    // the rest
     for (unsigned char i = 0; i < voxelLinks->length; i++) {
         SpawnBlock spawn_data = {
             .index = (unsigned char) (i + 1),

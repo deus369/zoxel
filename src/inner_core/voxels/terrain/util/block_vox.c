@@ -11,6 +11,7 @@ typedef struct {
 } NodeDelveData;
 
 typedef struct {
+    const ecs_entity_t *blocks;
     const ecs_entity_t *block_voxes;
     const unsigned char *block_vox_offsets;
     const unsigned char block_voxes_count;
@@ -70,14 +71,17 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
 #endif
             return; // air returns!
         }
-        // cheeck if vox model
+        // cheeck if out of bounds
         const unsigned char block_index = delve_data->chunk->value - 1;
         if (block_index >= data->block_voxes_count) {
             zox_log(" ! block_index out of bounds %i of %i\n", block_index, data->block_voxes_count)
             return;
         }
+        const ecs_entity_t block_meta = data->blocks[block_index];
+        const unsigned char is_world_block = zox_has(block_meta, BlockPrefabLink);
+        // cheeck if vox model
         //  if meta data is block vox type, spawn, otherwise, remove
-        if (!data->block_voxes[block_index]) {
+        if (!is_world_block && !data->block_voxes[block_index]) {
 #ifndef zox_disable_block_spawns_hash
             remove_old_block_vox_from_tree(world, data->block_spawns, delve_data->octree_position);
 #else
@@ -96,7 +100,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
         ChunkOctree *chunk = delve_data->chunk;
         if (chunk->nodes) {
             const ecs_entity_t e3 = ((VoxelEntityLink*)chunk->nodes)->value;
-            if (zox_valid(e3)) {
+            if (zox_valid(e3) && zox_has(e3, BlockIndex)) {
                 const unsigned char old_block_index = zox_get_value(e3, BlockIndex)
                 if (old_block_index == block_index) {
                     // zox_log(" > trying to spawn same block vox [%i]\n", old_block_index)
@@ -112,6 +116,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
             }
         }
 #endif
+        // if not same time, spawn new here
         data->spawn_data->block_index = block_index;
         data->spawn_data->vox = data->block_voxes[block_index];
         float3 position_real = float3_from_int3(delve_data->octree_position);
@@ -121,7 +126,14 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
         if (data->block_vox_offsets[block_index]) float3_add_float3_p(&position_real, (float3) { 0, -0.125f, 0 });
         data->spawn_data->position_real = position_real;
         // todo: instead of hash, replace OctreeNode with OctreeNodeEntity - link directly in the node
-        const ecs_entity_t e2 = spawn_block_vox(world, data->spawn_data);
+        ecs_entity_t e2;
+        if (is_world_block) {
+            const ecs_entity_t block_prefab = zox_get_value(block_meta, BlockPrefabLink)
+            e2 = zox_instancee(block_prefab)
+            zox_log("block world entity spawning: %lu from %lu\n", e2, block_prefab)
+        } else {
+            e2 = spawn_block_vox(world, data->spawn_data);
+        }
 #ifndef zox_disable_block_spawns_hash
         byte3_hashmap_add(data->block_spawns->value, data->spawn_data->position_local, e2);
 #else
@@ -165,12 +177,14 @@ void update_block_voxes(ecs_world_t *world, const VoxLink *voxLink, const ChunkP
     const ecs_entity_t realm = zox_get_value(voxLink->value, RealmLink)
     const VoxelLinks *voxelLinks = zox_get(realm, VoxelLinks)
     const unsigned char block_voxes_count = voxelLinks->length;
+    ecs_entity_t blocks[block_voxes_count];
     ecs_entity_t block_voxes[block_voxes_count];
     unsigned char block_vox_offsets[block_voxes_count];
     memset(block_voxes, 0, block_voxes_count * sizeof(ecs_entity_t));
     memset(block_vox_offsets, 0, block_voxes_count);
     for (int j = 0; j < block_voxes_count; j++) {
         const ecs_entity_t block = voxelLinks->value[j];
+        blocks[j] = block;
         if (zox_gett_value(block, BlockModel) == zox_block_vox) {
             block_voxes[j] = zox_get_value(block, ModelLink)
             if (zox_has(block, BlockVoxOffset)) block_vox_offsets[j] = zox_get_value(block, BlockVoxOffset)
@@ -192,6 +206,7 @@ void update_block_voxes(ecs_world_t *world, const VoxLink *voxLink, const ChunkP
     }
 #endif
     UpdateBlockEntities data = {
+        .blocks = blocks,
         .block_voxes = block_voxes,
         .block_vox_offsets = block_vox_offsets,
         .block_voxes_count = block_voxes_count,

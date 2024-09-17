@@ -1,5 +1,6 @@
 const int skills_count = 8; // having blank items seems to b reak it
 
+// todo: take in npc spawn meta data, like location, biome, etc
 void spawn_character_skills(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player) {
     if (!player) return;
     zox_get_muter(e, SkillLinks, skills)

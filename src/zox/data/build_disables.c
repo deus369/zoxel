@@ -4,7 +4,7 @@
 // #define zox_disable_block_voxes2
 
 // lags on weaker cpus
-#define zox_disable_music
+// #define zox_disable_music
 // lag spikes during chunks
 // #define zox_disable_npcs
 

@@ -1,4 +1,5 @@
-float delay_terrain_time = 0.34f;
+float delay_terrain_time = 0.54f;
+float delay_terrain_time2 = 0.64f;
 
 void post_player_start_game(ecs_world_t *world, const ecs_entity_t player) {
 #ifdef zox_disable_player_ui
@@ -115,10 +116,10 @@ void player_start_game3D_delayed(ecs_world_t *world, const ecs_entity_t player) 
     attach_camera_to_character(world, player, camera, 0);
 #else
     if (game_rule_attach_to_character) {
-        delay_event(world, &spawn_vox_player_character_in_terrain, player, 0.1f);
+        delay_event(world, &spawn_vox_player_character_in_terrain, player, delay_terrain_time);
     } else {
         attach_camera_to_character(world, player, camera, 0);
     }
 #endif
-    delay_event(world, &post_player_start_game, player, delay_terrain_time);
+    delay_event(world, &post_player_start_game, player, delay_terrain_time2);
 }

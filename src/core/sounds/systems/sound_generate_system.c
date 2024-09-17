@@ -1,6 +1,7 @@
 // todo: alter frequency over time during sound
 
 void SoundGenerateSystem(ecs_iter_t *it) {
+    const float sound_bounds = 1.0f;
     zox_field_in(InstrumentType, instrumentTypes, 1)
     zox_field_in(SoundLength, soundLengths, 2)
     zox_field_in(SoundFrequency, soundFrequencys, 3)
@@ -28,9 +29,9 @@ void SoundGenerateSystem(ecs_iter_t *it) {
         const float dampen = sound_dampen_multiplier * sound_time_length;
         const int total_sound_samples = (int) (sound_sample_rate * sound_time_length);
         resize_memory_component(SoundData, soundData, float, total_sound_samples)
+        float value = 0.0f;
         for (int j = 0; j < total_sound_samples; j++) {
             const float time = (float) (j / sample_rate_f);
-            float value = 0.0f;
             if (instrument_type == instrument_piano) value = piano_sound(time, frequency);
             else if (instrument_type == instrument_piano_square) value = piano_square_sound(time, frequency);
             else if (instrument_type == instrument_unique) value = unique_sound(time, frequency);
@@ -45,10 +46,7 @@ void SoundGenerateSystem(ecs_iter_t *it) {
             if (noise) value += noise * ((rand() / (float) RAND_MAX) * 2.0f - 1.0f);
             value *= envelope(time, sound_time_length, attack, dampen);
             value *= volume;
-
-            const float sound_bounds = 1.0f;
             value = float_clamp(value, -sound_bounds, sound_bounds);
-
             soundData->value[j] = value;
         }
         generateSound->value = 0;

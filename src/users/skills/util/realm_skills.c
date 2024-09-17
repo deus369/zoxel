@@ -15,7 +15,6 @@ void spawn_realm_skills(ecs_world_t *world, const ecs_entity_t realm) {
     zox_set(meta_skill_punch, TextureLink, { string_hashmap_get(files_hashmap_textures, new_string_data("punch")) })
     skills->value[0] = meta_skill_punch;
 
-
     meta_skill_aura_death = spawn_meta_skill_aura(world, prefab_skill_aura, "death aura", -1, 3, (color) { 5, 5, 5, 122 });
     zox_set(meta_skill_aura_death, TextureLink, { string_hashmap_get(files_hashmap_textures, new_string_data("aura_death")) })
     skills->value[1] = meta_skill_aura_death;

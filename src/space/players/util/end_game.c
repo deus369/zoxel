@@ -48,7 +48,7 @@ void player_end_game(ecs_world_t *world, const ecs_entity_t player) {
     if (menu_actions) zox_delete(menu_actions)
 
     dispose_menu_game(world, player);
-    trigger_canvas_fade_transition(world, canvas);
+    trigger_canvas_fade_transition(world, canvas, 0.5, 1.0);
 
     if (zox_game_type == zox_game_mode_3D) {
         delay_event(world, &player_end_game3D_delayed, player, 1.2f);

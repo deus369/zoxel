@@ -31,7 +31,7 @@ void raycast_action(ecs_world_t *world, const RaycastVoxelData *data, const unsi
     // todo: only do this on node updated! and it's parent nodes
     if (data->node->nodes) {
         if (voxel == 0) {
-            // cleared minivox
+            // cleared minivox / voxel entity
             const ecs_entity_t e3 = ((VoxelEntityLink*)data->node->nodes)->value;
             if (zox_valid(e3)) {
                 zox_delete(e3)
@@ -45,6 +45,11 @@ void raycast_action(ecs_world_t *world, const RaycastVoxelData *data, const unsi
 
 
     zox_set(place_chunk, ChunkDirty, { chunk_dirty_state_edited })
+
+    // if block meta is minivox or vox entity:
+    // todo: just check for spawned entity, spawn either minivox or block entity here
+    zox_set(place_chunk, ChunkLodDirty, { chunk_lod_state_vox_blocks_spawn })
+
     if (zox_has(place_chunk, ChunkNeighbors) && byte3_on_edge(place_position, chunk_size_b3)) {
         const ChunkNeighbors *chunk_neighbors = zox_get(place_chunk, ChunkNeighbors)
         for (int axis = 0; axis < 6; axis++) {

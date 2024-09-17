@@ -28,7 +28,7 @@ void main() {\
 }";
 
 
-// frag_color = vec4(0.6, 0.0, 0.0, 0.6);\
+// frag_color = vec4(0.6, 0.0, 0.0, 0.6);
 // old - uniform lowp vec4 color;
 
 //     color_output = vec4(1.0, 1.0, 1.0, 1.0);

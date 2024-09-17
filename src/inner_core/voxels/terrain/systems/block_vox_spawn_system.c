@@ -29,6 +29,7 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
             const unsigned char vox_lod = get_block_voxes_lod_from_camera_distance(camera_distance);
             update_block_voxes(world, voxLink, chunkPosition, vox_lod, renderDisabled, chunkOctree); // , blockSpawns);
             blocksSpawned->value = 1;
+            // zox_log("Updating Block Entities\n")
         } else if (!can_have_block_voxes && blocksSpawned->value) {
             delete_block_entities(world, chunkOctree, max_octree_depth, 0);
             blocksSpawned->value = 0;

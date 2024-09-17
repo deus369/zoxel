@@ -36,6 +36,7 @@ zox_component_byte(StreamDirty)
 #include "systems/block_vox_update_system.c"
 #include "systems/chunk_flatland_system.c"
 #include "systems/grassy_plains_system.c"
+#include "systems/dungeon_block_system.c"
 ctx2 terrain_lod_filter; // used for lod system
 
 zox_begin_module(Terrain)
@@ -77,6 +78,7 @@ zox_system_1(ChunkBoundsDrawSystem, zox_pip_mainthread, [in] Position3D, [in] Ch
 zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [out] GenerateChunk)
 zox_system(ChunkFlatlandSystem, zox_pip_voxels_chunk_dirty, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree, [none] FlatlandChunk)
 zox_system_ctx(GrassyPlainsSystem, zox_pip_voxels_chunk_dirty, generateTerrainChunkQuery, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree, [none] !FlatlandChunk)
+zox_system(DungeonBlockSystem, zox_pip_voxels, [none] blocks.BlockDungeon)
 set_terrain_render_distance();
 spawn_prefabs_terrain(world);
 zoxel_end_module(Terrain)

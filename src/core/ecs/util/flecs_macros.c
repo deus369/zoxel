@@ -90,6 +90,8 @@ zox_modified(e, type)
 
 #define zox_new() const ecs_entity_t e = ecs_new(world, 0);
 
+#define zox_neww(name) const ecs_entity_t name = ecs_new(world, 0);
+
 // ecs_entity_t e = ecs_new_prefab(world, "");
 #define zox_prefab()\
 zox_new()\
@@ -99,6 +101,8 @@ zox_make_prefab(e)
 // zox_add_tag(e, EcsPrefab)
 
 #define zox_instance(prefab) const ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
+
+#define zox_instancee(prefab) ecs_new_w_pair(world, EcsIsA, prefab);
 
 #define zox_prefab_child(prefab)\
     zox_instance(prefab)\

@@ -10,9 +10,8 @@ ecs_entity_t spawn_prefab_device_gizmo(ecs_world_t *world, const ecs_entity_t pr
 
 // when switch, spawn, destroy after x seconds, add a cooldown on switching devices
 ecs_entity_t spawn_device_gizmo(ecs_world_t *world, const ecs_entity_t canvas, const unsigned char device_type) {
-    // zox_instance(spawn_prefab_device_gizmo)
-    unsigned char size = 64;
-    unsigned char position_offset = 16;
+    const unsigned char size = 64;
+    const unsigned char position_offset = 16;
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     SpawnIcon spawnIcon = {
         .canvas = {
@@ -31,8 +30,7 @@ ecs_entity_t spawn_device_gizmo(ecs_world_t *world, const ecs_entity_t canvas, c
             .anchor = float2_zero,
             .layer = 1,
         },
-        // .texture = data->icon.texture,
-        .texture_size = size
+        .texture_size = int2_single(size),
     };
     const ecs_entity_t e = spawn_icon(world, &spawnIcon);
     if (device_type == zox_device_mode_gamepad) {
