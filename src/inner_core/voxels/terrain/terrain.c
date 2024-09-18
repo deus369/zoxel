@@ -78,7 +78,7 @@ zox_system_1(ChunkBoundsDrawSystem, zox_pip_mainthread, [in] Position3D, [in] Ch
 zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [out] GenerateChunk)
 zox_system(ChunkFlatlandSystem, zox_pip_voxels_chunk_dirty, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree, [none] FlatlandChunk)
 zox_system_ctx(GrassyPlainsSystem, zox_pip_voxels_chunk_dirty, generateTerrainChunkQuery, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree, [none] !FlatlandChunk)
-zox_system(DungeonBlockSystem, zox_pip_voxels, [none] blocks.BlockDungeon)
+zox_system(DungeonBlockSystem, zox_pip_voxels, [in] TimerState, [none] blocks.BlockDungeon)
 set_terrain_render_distance();
 spawn_prefabs_terrain(world);
 zoxel_end_module(Terrain)
