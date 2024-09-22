@@ -1,6 +1,3 @@
-
-
-
 void raycast_action(ecs_world_t *world, const RaycastVoxelData *data, const unsigned char voxel, unsigned char hit_type) {
     // int3 ray_hit_normal;
     byte3 place_position;
@@ -42,14 +39,10 @@ void raycast_action(ecs_world_t *world, const RaycastVoxelData *data, const unsi
     } else {
         close_same_nodes(chunk_octree, max_octree_depth, 0);
     }
-
-
     zox_set(place_chunk, ChunkDirty, { chunk_dirty_state_edited })
-
     // if block meta is minivox or vox entity:
     // todo: just check for spawned entity, spawn either minivox or block entity here
     zox_set(place_chunk, ChunkLodDirty, { chunk_lod_state_vox_blocks_spawn })
-
     if (zox_has(place_chunk, ChunkNeighbors) && byte3_on_edge(place_position, chunk_size_b3)) {
         const ChunkNeighbors *chunk_neighbors = zox_get(place_chunk, ChunkNeighbors)
         for (int axis = 0; axis < 6; axis++) {

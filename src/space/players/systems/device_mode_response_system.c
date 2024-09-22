@@ -16,12 +16,15 @@ void DeviceModeResponseSystem(ecs_iter_t *it) {
             // handle previous mode
             if (deviceMode->value == zox_device_mode_touchscreen) {
                 if (game_state == zox_game_playing) dispose_game_menu_touch(world, canvas);
+            } else if (deviceMode->value == zox_device_mode_keyboardmouse) {
+                SDL_ShowCursor(SDL_ENABLE);
             }
             // handle new mode
             if (deviceModeDirty->value == zox_device_mode_gamepad) {
                 raycaster_select_first_button(world, e, canvas);
             } else if (deviceModeDirty->value == zox_device_mode_keyboardmouse) {
                 raycaster_select_element(world, e, 0);
+                SDL_ShowCursor(SDL_DISABLE);
             } else if (deviceModeDirty->value == zox_device_mode_touchscreen) {
                 if (game_state == zox_game_playing) spawn_in_game_ui_touch(world, canvas);
             }
