@@ -11,6 +11,7 @@ typedef struct {
 } NodeDelveData;
 
 typedef struct {
+    const ecs_entity_t chunk;
     const ecs_entity_t *blocks;
     const ecs_entity_t *block_voxes;
     const unsigned char *block_vox_offsets;
@@ -130,7 +131,9 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
         if (is_world_block) {
             const ecs_entity_t block_prefab = zox_get_value(block_meta, BlockPrefabLink)
             e2 = zox_instancee(block_prefab)
-            zox_log("block world entity spawning: %lu from %lu\n", e2, block_prefab)
+            zox_set(e2, ChunkLink, { data->chunk })
+            zox_set(e2, VoxelPosition, { delve_data->octree_position })
+            zox_log("block world entity spawning: %lu prefab: %lu from: %lu\n", e2, block_prefab, data->chunk)
         } else {
             e2 = spawn_block_vox(world, data->spawn_data);
         }
@@ -173,7 +176,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
 }
 
 // updates during ChunkLodDirty and ChunkDirty events
-void update_block_voxes(ecs_world_t *world, const VoxLink *voxLink, const ChunkPosition *chunkPosition, const unsigned char vox_lod, const RenderDisabled *renderDisabled, ChunkOctree *chunk) {
+void update_block_voxes(ecs_world_t *world, const ecs_entity_t e, const VoxLink *voxLink, const ChunkPosition *chunkPosition, const unsigned char vox_lod, const RenderDisabled *renderDisabled, ChunkOctree *chunk) {
     const ecs_entity_t realm = zox_get_value(voxLink->value, RealmLink)
     const VoxelLinks *voxelLinks = zox_get(realm, VoxelLinks)
     const unsigned char block_voxes_count = voxelLinks->length;
@@ -206,6 +209,7 @@ void update_block_voxes(ecs_world_t *world, const VoxLink *voxLink, const ChunkP
     }
 #endif
     UpdateBlockEntities data = {
+        .chunk = e,
         .blocks = blocks,
         .block_voxes = block_voxes,
         .block_vox_offsets = block_vox_offsets,

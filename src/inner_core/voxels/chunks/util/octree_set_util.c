@@ -30,16 +30,6 @@ void set_voxel(const SetVoxelTargetData *datam, SetVoxelData data) {
     set_voxel(datam, data);
 }
 
-
-unsigned char get_voxel(ChunkOctree *node, const byte3 position, const byte3 size) {
-    unsigned char voxel = 0;
-    if (byte3_in_bounds(position, size)) {
-        byte3 temp_position = position;
-        voxel = get_octree_voxel(node, &temp_position, max_octree_depth);
-    }
-    return voxel;
-}
-
 void set_octree_voxel(ChunkOctree *node, byte3 *position, const byte2 *set_octree_data, unsigned char depth) {
     const SetVoxelTargetData datam = { .depth = set_octree_data->y, .voxel = set_octree_data->x };
     SetVoxelData data = { .node = node, .position = *position, .depth = depth };
@@ -64,4 +54,29 @@ void set_octree_voxel_final(ChunkOctree *node, byte3 *position, const byte2 *set
     byte3 node_position = (byte3) { position->x / dividor, position->y / dividor, position->z / dividor };
     byte3_modulus_byte(position, dividor);
     set_octree_voxel_final(&node->nodes[byte3_octree_array_index(node_position)], position, set_octree_data, depth + 1);
+}
+
+
+unsigned char get_voxel(ChunkOctree *node, const byte3 position, const byte3 size) {
+    unsigned char voxel = 0;
+    if (byte3_in_bounds(position, size)) {
+        byte3 temp_position = position;
+        voxel = get_octree_voxel(node, &temp_position, max_octree_depth);
+    }
+    return voxel;
+}
+
+
+ChunkOctree* get_node_dig(ChunkOctree *node, byte3 *position, const unsigned char depth) {
+    if (node == NULL) return NULL;
+    if (node->nodes == NULL || depth == 0) return node;
+    const unsigned char dividor = powers_of_two_byte[depth - 1];
+    const byte3 node_position = (byte3) { position->x / dividor, position->y / dividor, position->z / dividor };
+    byte3_modulus_byte(position, dividor);
+    return get_node_dig(&node->nodes[byte3_octree_array_index(node_position)], position, depth - 1);
+}
+
+ChunkOctree* get_node(ChunkOctree *node, const byte3 position) {
+    byte3 temp_position = position;
+    return get_node_dig(node, &temp_position, max_octree_depth);
 }

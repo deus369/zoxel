@@ -27,9 +27,9 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
         if (can_have_block_voxes) { //  && !blocksSpawned->value
             // lod updated here too during delve step
             const unsigned char vox_lod = get_block_voxes_lod_from_camera_distance(camera_distance);
-            update_block_voxes(world, voxLink, chunkPosition, vox_lod, renderDisabled, chunkOctree); // , blockSpawns);
+            zox_field_e()
+            update_block_voxes(world, e, voxLink, chunkPosition, vox_lod, renderDisabled, chunkOctree);
             blocksSpawned->value = 1;
-            // zox_log("Updating Block Entities\n")
         } else if (!can_have_block_voxes && blocksSpawned->value) {
             delete_block_entities(world, chunkOctree, max_octree_depth, 0);
             blocksSpawned->value = 0;
