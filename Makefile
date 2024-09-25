@@ -185,6 +185,7 @@ ifeq ($(SYSTEM),Windows)
 target_dev = build/windows-dev/zoxel.exe
 endif
 cflags_debug = -Wall -g # -O0 -fsanitize=address # -Wextra -Wpedantic -Wshadow -Wl,--verbose -Og
+# cflags_debug += -fno-inline -fno-omit-frame-pointer
 make_dev = echo " > building zoxel-dev-linux [$(target_dev)]" && \
 	$(patient_cmd) && \
 	$(CC) $(cflags) $(cflags_debug) -o $(target_dev) $(OBJS) $(make_libs)
@@ -231,6 +232,9 @@ run-dev-debug-tiny:
 # run development + valgrind
 run-valgrind:
 	@ valgrind ./$(target_dev) --tiny
+
+run-drmemory:
+	@ drmemory.exe -brief -light -- $(target_dev) --tiny
 
 run-coop-valgrind:
 	@ valgrind ./$(target_dev) --tiny -s

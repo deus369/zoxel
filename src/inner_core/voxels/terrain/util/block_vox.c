@@ -23,6 +23,14 @@ typedef struct {
     SpawnBlockVox *spawn_data;
 } UpdateBlockEntities;
 
+// used within cleanup code
+void delete_vox_entity_from_nodes(ecs_world_t *world, ChunkOctree *chunk) {
+    const ecs_entity_t e3 = ((VoxelEntityLink*)chunk->nodes)->value;
+    if (zox_valid(e3)) {
+        zox_delete(e3)
+    }
+}
+
 // assumes this is max depth voxel
 void remove_old_voxel_by_link(ecs_world_t *world, ChunkOctree *chunk) {
     if (!chunk->nodes) return;

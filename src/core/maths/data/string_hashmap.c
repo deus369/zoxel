@@ -28,4 +28,5 @@ uint32_t get_string_hash(string_data input) {
     return hash;
 }
 
+// string_hashmap
 zox_hashmap(string_hashmap, ecs_entity_t, 0, string_data, uint32_t, get_string_hash)

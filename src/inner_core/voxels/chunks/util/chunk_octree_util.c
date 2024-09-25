@@ -77,7 +77,7 @@ void close_solid_nodes(ChunkOctree *node) {
         }
     }
     if (all_solid || all_air) {
-        close_ChunkOctree(node);
+        close_ChunkOctree(node, max_octree_depth);
     }
 }
 
@@ -101,7 +101,7 @@ void close_same_nodes(ChunkOctree *node, const unsigned char max_depth, unsigned
     // if (all_same && first_node_value != 0) zoxel_log("  > closing same node [%i]\n", first_node_value);
     if (all_same) {
         node->value = all_same_voxel;
-        close_ChunkOctree(node);
+        close_ChunkOctree(node, max_octree_depth);
     }
 }
 

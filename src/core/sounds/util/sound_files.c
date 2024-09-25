@@ -37,7 +37,6 @@ void load_files_sounds() {
 #endif
     }
     free_files(&files);
-    free(load_directory);
 }
 
 void dispose_files_sounds() {

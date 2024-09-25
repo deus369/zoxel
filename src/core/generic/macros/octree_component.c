@@ -45,6 +45,8 @@ typedef struct {
     ecs_entity_t value;
 } VoxelEntityLink;
 
+extern unsigned char max_octree_depth;
+// unsigned char max_octree_depth = 5;
 
 #define zoxel_octree_component(name, type, default_value)\
 typedef struct name name;\
@@ -53,10 +55,20 @@ struct name {\
     name *nodes;\
 }; ECS_COMPONENT_DECLARE(name);\
 \
-void close_##name(name* octree) {\
+extern void delete_vox_entity_from_nodes(ecs_world_t *world, name *chunk);\
+\
+void close_##name(name* octree, unsigned char depth) {\
     if (!octree->nodes) return;\
     /* > todo: check if entity link here, using depth check */\
-    for (unsigned char i = 0; i < octree_length; i++) close_##name(&octree->nodes[i]);\
+    if (depth == 0) {\
+        /* todo: free block vox here. */\
+        delete_vox_entity_from_nodes(world, octree);\
+    } else {\
+        depth--;\
+        for (unsigned char i = 0; i < octree_length; i++) {\
+            close_##name(&octree->nodes[i], depth);\
+        }\
+    }\
     free(octree->nodes);\
     octree->nodes = NULL;\
     node_memory -= 1;\
@@ -197,7 +209,7 @@ void on_destroyed##_##name(ecs_iter_t *it) {\
     name *components = ecs_field(it, name, 1);\
     for (int i = 0; i < it->count; i++) {\
         name *component = &components[i];\
-        close_##name(component);\
+        close_##name(component, max_octree_depth);\
     }\
 }\
 \
@@ -208,11 +220,12 @@ ECS_CTOR(name, ptr, {\
 })\
 ECS_DTOR(name, ptr, {\
     /*zoxel_log(" > destroying chunk [%s]\n", ptr->nodes == NULL ? "closed nodes" : "open nodes");*/\
-    close_##name(ptr);\
+    close_##name(ptr, max_octree_depth);\
 })\
 ECS_COPY(name, dst, src, {\
     /*zoxel_log(" > copying chunk [%s]\n", dst->nodes == NULL ? "closed nodes" : "open nodes");*/\
-    close_##name(dst);\
+    /* shouldn't i just set pointersh ere?? */\
+    close_##name(dst, max_octree_depth);\
     clone_##name(dst, src);\
 })\
 ECS_MOVE(name, dst, src, {\

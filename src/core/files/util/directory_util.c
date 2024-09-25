@@ -1,12 +1,25 @@
 void free_files(FileList *fileList) {
-    for (int i = 0; i < fileList->count; i++) {
-        free(fileList->files[i]);
-        free(fileList->filenames[i]);
+    if (!fileList) {
+        return;
     }
-    free(fileList->files);
-    free(fileList->filenames);
-    fileList->files = NULL;
-    fileList->filenames = NULL;
+    if (fileList->files) {
+        for (int i = 0; i < fileList->count; i++) {
+            if (fileList->files[i]) {
+                free(fileList->files[i]);
+            }
+        }
+        free(fileList->files);
+        fileList->files = NULL;
+    }
+    if (fileList->filenames) {
+        for (int i = 0; i < fileList->count; i++) {
+            if (fileList->filenames[i]) {
+                free(fileList->filenames[i]);
+            }
+        }
+        free(fileList->filenames);
+        fileList->filenames = NULL;
+    }
     fileList->count = 0;
 }
 
@@ -38,33 +51,40 @@ char* get_filename(const char* filepath) {
 }
 
 void add_file(FileList *fileList, const char *filepath) {
-    static int capacity = 10;
+    // static int capacity = 10;
     if (fileList->count == 0) {
-        fileList->files = malloc(capacity * sizeof(char *));
+        fileList->capacity = 1;
+        fileList->files = malloc(fileList->capacity * sizeof(char *));
         if (fileList->files == NULL) {
             perror("Memory allocation failed");
             return;
         }
-        fileList->filenames = malloc(capacity * sizeof(char *));
+        fileList->filenames = malloc(fileList->capacity * sizeof(char *));
         if (fileList->filenames == NULL) {
             perror("Memory allocation failed");
             return;
         }
-    } else if (fileList->count >= capacity) {
-        capacity *= 2;
-        char **temp = realloc(fileList->files, capacity * sizeof(char *));
-        char **temp2 = realloc(fileList->filenames, capacity * sizeof(char *));
+    } else if (fileList->count >= fileList->capacity) {
+        fileList->capacity *= 2;
+        char **temp = realloc(fileList->files, fileList->capacity * sizeof(char *));
+        char **temp2 = realloc(fileList->filenames, fileList->capacity * sizeof(char *));
         if (temp == NULL || temp2 == NULL) {
             if (temp) free(temp);
             if (temp2) free(temp2);
-            perror("Memory reallocation failed");
+            zox_log(" ! memory reallocation failed\n")
+            // perror("Memory reallocation failed");
             free_files(fileList);
             return;
         }
         fileList->files = temp;
         fileList->filenames = temp2;
     }
-    fileList->files[fileList->count] = strdup(filepath);
+    const int len = strlen(filepath) + 1;
+    char* filepath2 = malloc(len * sizeof(char)); //) strdup(filepath);
+    strncpy(filepath2, filepath, len - 1);
+    filepath2[len - 1] = '\0';
+    fileList->files[fileList->count] = filepath2;
+
     // zox_log(" + filepath: %s\n", filepath)
     if (fileList->files[fileList->count] == NULL) {
         perror("strdup failed");
@@ -77,7 +97,6 @@ void add_file(FileList *fileList, const char *filepath) {
     }
     fileList->count++;
 }
-
 
 void traverse_directory(FileList *fileList, const char *directory) {
     DIR *dp;
@@ -106,69 +125,23 @@ void traverse_directory(FileList *fileList, const char *directory) {
     closedir(dp);
 }
 
-FileList get_files(const char *directory) {
+FileList get_files(char *directory) {
     FileList fileList;
     fileList.count = 0;
     fileList.files = NULL;
-    char *directory_non_slash = strdup(directory);
-    if (directory_non_slash == NULL) {
-        perror("Memory allocation failed");
-        return fileList;
+    fileList.filenames = NULL;
+    size_t len = strlen(directory);
+    if (len > 1 && directory[len - 1] != '/') {
+        traverse_directory(&fileList, directory);
+    } else {
+        char directory_non_slash[len - 1];
+        strncpy(directory_non_slash, directory, len - 2);  // Ensuring no buffer overflow
+        directory_non_slash[len - 2] = '\0';  // Null-terminate just in case
+        traverse_directory(&fileList, directory_non_slash);
     }
-    size_t len = strlen(directory_non_slash);
-    if (len > 1 && directory_non_slash[len - 1] == '/') {
-        directory_non_slash[len - 1] = '\0';
-    }
-    traverse_directory(&fileList, directory_non_slash);
-    free(directory_non_slash);
+    free(directory);
     return fileList;
 }
-
-/*FileList get_files(const char *directory) {
-    DIR *dp;
-    struct dirent *entry;
-    FileList fileList;
-    fileList.count = 0;
-    fileList.files = NULL;
-    int capacity = 10; // Initial capacity for file array
-    dp = opendir(directory);
-    if (dp == NULL) {
-        perror("Unable to open directory");
-        return fileList;
-    }
-    fileList.files = malloc(capacity * sizeof(char *));
-    if (fileList.files == NULL) {
-        perror("Memory allocation failed");
-        closedir(dp);
-        return fileList;
-    }
-    while ((entry = readdir(dp)) != NULL) {
-        if (!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, "..")) {
-            continue;
-        }
-        // Resize array if necessary
-        if (fileList.count >= capacity) {
-            capacity *= 2;
-            char **temp = realloc(fileList.files, capacity * sizeof(char *));
-            if (temp == NULL) {
-                perror("Memory reallocation failed");
-                for (int i = 0; i < fileList.count; i++) free(fileList.files[i]);
-                free(fileList.files);
-                fileList.files = NULL;
-                fileList.count = 0;
-                closedir(dp);
-                return fileList;
-            }
-            fileList.files = temp;
-        }
-
-        // Store the file name
-        fileList.files[fileList.count] = strdup(entry->d_name);
-        fileList.count++;
-    }
-    closedir(dp);
-    return fileList;
-}*/
 
 void list_files(const char *directory) {
     struct dirent *entry;

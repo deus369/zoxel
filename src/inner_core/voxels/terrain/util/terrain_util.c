@@ -22,7 +22,7 @@ void generate_terrain(ChunkOctree* chunk_octree, unsigned char depth, float3 pos
                 break;
             }
         }
-        if (is_all_solid) close_ChunkOctree(chunk_octree);
+        if (is_all_solid) close_ChunkOctree(chunk_octree, max_octree_depth);
 #endif
     }
 }

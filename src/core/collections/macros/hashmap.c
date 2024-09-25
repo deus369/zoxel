@@ -44,7 +44,7 @@ void name##_add(name* map, key_type key_raw, type value) {\
 }\
 \
 type name##_get(name* map, key_type key_raw) {\
-    if (!map || !map->data) return type_zero;\
+    if (!map || !map->data || map->size == 0) return type_zero;\
     hash_type key = convert_to_hash(key_raw);\
     hash_type index = name##_hash(key, map->size);\
     name##_pair* pair = map->data[index];\
@@ -58,7 +58,7 @@ type name##_get(name* map, key_type key_raw) {\
 }\
 \
 unsigned char name##_has(name* map, key_type key_raw) {\
-    if (!map || !map->data) return 1;\
+    if (!map || !map->data || map->size == 0) return 1;\
     hash_type key = convert_to_hash(key_raw);\
     hash_type index = name##_hash(key, map->size);\
     name##_pair* pair = map->data[index];\
@@ -72,7 +72,7 @@ unsigned char name##_has(name* map, key_type key_raw) {\
 }\
 \
 void name##_remove(name* map, key_type key_raw) {\
-    if (!map || !map->data) return;\
+    if (!map || !map->data || map->size == 0) return;\
     hash_type key = convert_to_hash(key_raw);\
     hash_type index = name##_hash(key, map->size);\
     name##_pair* pair = map->data[index];\
@@ -95,7 +95,7 @@ void name##_remove(name* map, key_type key_raw) {\
 }\
 \
 void name##_dispose(name* map) {\
-    if (!map) return;\
+    if (!map || map->size == 0) return;\
     if (!map->data) {\
         /*free(map);*/\
         return;\
@@ -116,7 +116,7 @@ void name##_dispose(name* map) {\
 }\
 \
 int count_##name(name* map) {\
-    if (!map) return 0;\
+    if (!map || map->size == 0) return 0;\
     int count = 0;\
     for (int i = 0; i < map->size; i++) {\
         name##_pair* pair = map->data[i];\
