@@ -9,6 +9,7 @@ extern unsigned char headless;
 extern unsigned char is_multithreading;
 extern unsigned char profiler;
 extern unsigned char server_mode;
+extern unsigned char target_fps;
 #define terrain_mode_tiny 1
 #define terrain_mode_medium 2
 #define terrain_mode_large 3
@@ -52,6 +53,9 @@ int process_arguments(int argc, char* argv[]) {
         if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
             print_help_menu(argv[0]);
             return EXIT_FAILURE;
+        } else if (strcmp(argv[i], "--fps") == 0) {
+            target_fps = (unsigned char) (atoi(argv[i + 1]));
+            i++;
         } else if (strcmp(argv[i], "--singlethread") == 0) {
             is_multithreading = 0;
         } else if (strcmp(argv[i], "-w") == 0 || strcmp(argv[i], "--windowed") == 0) {

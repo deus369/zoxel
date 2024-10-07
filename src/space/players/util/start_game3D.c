@@ -10,25 +10,13 @@ void post_player_start_game(ecs_world_t *world, const ecs_entity_t player) {
     if (!menu_actions) spawn_menu_actions_player(world, player);
 }
 
-void fix_camera_in_terrain(ecs_world_t *world, const ecs_entity_t player) { // , const float3 position) {
-    const ecs_entity_t camera = zox_get_value(player, CameraLink)
-    const float3 position = zox_get_value(camera, Position3D)
-    int3 terrain_position = real_position_to_chunk_position(position, default_chunk_size);
-    const ecs_entity_t game = zox_get_value(player, GameLink)
-    if (!game || !zox_has(game, RealmLink)) return;
-    const ecs_entity_t realm = zox_get_value(game, RealmLink)
-    if (!realm || !zox_has(realm, TerrainLink)) return;
-    const ecs_entity_t terrain = zox_get_value(realm, TerrainLink)
-    if (!terrain) return;
-    zox_set(camera, StreamPoint, { terrain_position })
-    zox_set(camera, VoxLink, { terrain })
-    zox_set(camera, TerrainLink, { terrain })
-
-    zox_set(terrain, StreamDirty, { 1 })
-    // weirdly when i have second camera, this line will cause destruction of frame buffer:
-    // zox_add_tag(camera, Character3D)
-    // zox_log(" > camera set stream point [%lu]\n", camera)
-}
+/*ecs_entity_t delay_event(ecs_world_t *world, void (*value)(ecs_world_t*, const ecs_entity_t), const ecs_entity_t e, const double delay) {
+    const ecs_entity_t event = ecs_new(world, 0);
+    zox_set(event, TimedEvent, { value })
+    zox_set(event, EventInput, { e })
+    zox_set(event, EventTime, { delay })
+    return event;
+}*/
 
 void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data(player_vox_model));
@@ -87,6 +75,7 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
     zox_set(character, CameraLink, { camera })
     attach_camera_to_character(world, player, camera, character);
     // zox_add_tag(character_group.x, Aura)
+    // do this in post? spawn all at once! after loaded character
     spawn_in_game_ui(world, player, character_group);
 #ifndef zox_disable_save_games
     if (!is_new_game) {
@@ -95,7 +84,47 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
         delay_event(world, &save_player_e, player, 0.01f);
     }
 #endif
+    delay_event(world, &post_player_start_game, player, 0.1);
 }
+
+
+void on_spawned_terrain(ecs_world_t *world, const ecs_entity_t player) {
+    zox_log("on_spawned_terrain\n")
+    const ecs_entity_t camera = zox_get_value(player, CameraLink)
+    #ifdef zox_disable_player_character
+    attach_camera_to_character(world, player, camera, 0);
+    #else
+    if (game_rule_attach_to_character) {
+        spawn_vox_player_character_in_terrain(world, player);
+        // delay_event(world, &spawn_vox_player_character_in_terrain, player, delay_terrain_time);
+    } else {
+        attach_camera_to_character(world, player, camera, 0);
+    }
+    #endif
+}
+
+void fix_camera_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
+    // }, void (*stream_end_event)(ecs_world_t*, const ecs_entity_t)) {
+    const ecs_entity_t camera = zox_get_value(player, CameraLink)
+    const float3 position = zox_get_value(camera, Position3D)
+    int3 terrain_position = real_position_to_chunk_position(position, default_chunk_size);
+    const ecs_entity_t game = zox_get_value(player, GameLink)
+    if (!game || !zox_has(game, RealmLink)) return;
+    const ecs_entity_t realm = zox_get_value(game, RealmLink)
+    if (!realm || !zox_has(realm, TerrainLink)) return;
+    const ecs_entity_t terrain = zox_get_value(realm, TerrainLink)
+    if (!terrain) return;
+    zox_set(camera, StreamPoint, { terrain_position })
+    zox_set(camera, VoxLink, { terrain })
+    zox_set(camera, TerrainLink, { terrain })
+    zox_set(terrain, StreamDirty, { 1 })
+    zox_set(terrain, StreamEndEvent, { on_spawned_terrain })
+    zox_set(terrain, EventInput, { player }) // todo: make player parent and get children players
+    // weirdly when i have second camera, this line will cause destruction of frame buffer:
+    // zox_add_tag(camera, Character3D)
+    // zox_log(" > camera set stream point [%lu]\n", camera)
+}
+
 
 // spawn character and set camera to streaming terrain
 void player_start_game3D_delayed(ecs_world_t *world, const ecs_entity_t player) {
@@ -111,15 +140,5 @@ void player_start_game3D_delayed(ecs_world_t *world, const ecs_entity_t player) 
     zox_set(camera, Position3D, { spawn_position })
     zox_set(camera, Rotation3D, { spawn_rotation })
     delay_event(world, &fix_camera_in_terrain, player, 0.01f);
-    // fix_camera_in_terrain(world, player, spawn_position);
-#ifdef zox_disable_player_character
-    attach_camera_to_character(world, player, camera, 0);
-#else
-    if (game_rule_attach_to_character) {
-        delay_event(world, &spawn_vox_player_character_in_terrain, player, delay_terrain_time);
-    } else {
-        attach_camera_to_character(world, player, camera, 0);
-    }
-#endif
-    delay_event(world, &post_player_start_game, player, delay_terrain_time2);
+    // fix_camera_in_terrain(world, player, on_spawned_terrain);
 }

@@ -108,19 +108,26 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
         // if exists, and is same type, return!
         ChunkOctree *chunk = delve_data->chunk;
         if (chunk->nodes) {
-            const ecs_entity_t e3 = ((VoxelEntityLink*)chunk->nodes)->value;
-            if (zox_valid(e3) && zox_has(e3, BlockIndex)) {
-                const unsigned char old_block_index = zox_get_value(e3, BlockIndex)
-                if (old_block_index == block_index) {
-                    // zox_log(" > trying to spawn same block vox [%i]\n", old_block_index)
-                    // Updates RenderLod of previous Vox Blocks
-                    const unsigned char vox_lod = data->spawn_data->render_lod;
-                    const unsigned char vox_lod_old = zox_get_value(e3, RenderLod)
-                    if (vox_lod_old != vox_lod) {
-                        zox_set(e3, RenderLod, { vox_lod })
-                        zox_set(e3, ChunkDirty, { chunk_dirty_state_lod_updated })
-                    }
+            const ecs_entity_t e3 = ((VoxelEntityLink*) chunk->nodes)->value;
+            if (zox_valid(e3)) {
+                if (is_world_block) {
+                    // this means e3 has spawned
+                    // we should check its the same one
+                    // we can add lod to mechanical entities too
                     return;
+                } else if (zox_has(e3, BlockIndex)) {
+                    const unsigned char old_block_index = zox_get_value(e3, BlockIndex)
+                    if (old_block_index == block_index) {
+                        // zox_log(" > trying to spawn same block vox [%i]\n", old_block_index)
+                        // Updates RenderLod of previous Vox Blocks
+                        const unsigned char vox_lod = data->spawn_data->render_lod;
+                        const unsigned char vox_lod_old = zox_get_value(e3, RenderLod)
+                        if (vox_lod_old != vox_lod) {
+                            zox_set(e3, RenderLod, { vox_lod })
+                            zox_set(e3, ChunkDirty, { chunk_dirty_state_lod_updated })
+                        }
+                        return;
+                    }
                 }
             }
         }
@@ -155,7 +162,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
             zox_delete(e2)
             return;
         }
-        *(VoxelEntityLink*)chunk->nodes = (VoxelEntityLink){ .value = e2 };
+        *(VoxelEntityLink*) chunk->nodes = (VoxelEntityLink){ .value = e2 };
 #endif
         // zox_log(" + spawned vox model: depth %i - scale %f - %ix%ix%i - r [%fx%fx%f] - [%i]\n", depth, voxel_scale, octree_position.x, octree_position.y, octree_position.z, position_real.x, position_real.y, position_real.z, count_byte3_hashmap(block_spawns->value))
     } else {

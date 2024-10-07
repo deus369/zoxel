@@ -10,6 +10,7 @@ zox_declare_tag(Streamer)
 zox_component_int3(StreamPoint)
 zox_component_entity(TerrainLink)
 zox_component_byte(StreamDirty)
+zox_function_component(StreamEndEvent, void, ecs_world_t*, const ecs_entity_t)
 #include "data/platform_settings.c"
 #include "data/generation_settings.c"
 #include "data/settings.c"
@@ -37,6 +38,7 @@ zox_component_byte(StreamDirty)
 #include "systems/chunk_flatland_system.c"
 #include "systems/grassy_plains_system.c"
 #include "systems/dungeon_block_system.c"
+#include "systems/stream_end_event_system.c"
 ctx2 terrain_lod_filter; // used for lod system
 
 zox_begin_module(Terrain)
@@ -49,6 +51,7 @@ zox_define_tag(Streamer)
 zox_define_component_int3(StreamPoint)
 zox_define_component_entity(TerrainLink)
 zox_define_component_byte(StreamDirty)
+zox_define_component(StreamEndEvent)
 // this updates our chunks Lods!!
 zox_filter(terrain_chunks, [in] ChunkPosition, [in] ChunkNeighbors, [out] RenderLod, [out] ChunkDirty, [out] ChunkLodDirty, [none] TerrainChunk)
 zox_filter(streamers, [in] StreamPoint)
@@ -79,6 +82,9 @@ zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [out] GenerateChunk)
 zox_system(ChunkFlatlandSystem, zox_pip_voxels_chunk_dirty, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree, [none] FlatlandChunk)
 zox_system_ctx(GrassyPlainsSystem, zox_pip_voxels_chunk_dirty, generateTerrainChunkQuery, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree, [none] !FlatlandChunk)
 zox_system(DungeonBlockSystem, zox_pip_voxels, [in] TimerState, [in] ChunkLink, [none] blocks.BlockDungeon)
+
+zox_system_1(StreamEndEventSystem, zox_pip_voxels, [out] StreamEndEvent, [in] EventInput, [in] StreamDirty, [in] ChunkLinks)
+
 set_terrain_render_distance();
 spawn_prefabs_terrain(world);
 zoxel_end_module(Terrain)

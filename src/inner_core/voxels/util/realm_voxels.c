@@ -105,7 +105,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     zox_neww(dungeon_block_world)
     zox_make_prefab(dungeon_block_world)
     zox_add_tag(dungeon_block_world, BlockDungeon)
-    zox_prefab_set(dungeon_block_world, TimerRate, { 0.5 }) // 5
+    zox_prefab_set(dungeon_block_world, TimerRate, { 5 })
     zox_prefab_set(dungeon_block_world, TimerState, { 0 })
     zox_prefab_set(dungeon_block_world, TimerTime, { 0 })
     zox_prefab_set(dungeon_block_world, ChunkLink, { 0 })

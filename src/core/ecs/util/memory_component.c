@@ -58,12 +58,16 @@ ECS_COPY(name, dst, src, {\
     clone_##name(dst, src);\
 })\
 \
-unsigned char add_to##_##name(name *component, const type data) {\
+unsigned char add_to_##name(name *component, const type data) {\
     if (component->value) {\
         component->length++;\
         component->value = realloc(component->value, component->length * sizeof(type));\
     } else {\
         initialize_memory_component(name, component, type, 1);\
+    }\
+    if (!component->value) {\
+        component->length = 0;\
+        return 0;\
     }\
     component->value[component->length - 1] = data;\
     return 1;\

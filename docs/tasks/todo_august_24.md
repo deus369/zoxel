@@ -1,4 +1,21 @@
 now
+FPS independence:
+- [ ] Fix Collision
+    - it uses last position and adds delta...? that sounds okay tho??
+- [ ] Fix Friction
+- [ ] Fix Jumps
+
+- [ ] Fade Out only when terrain loading confirmed
+- [x] fix dr memory errors - EntityLinks - made single thread
+- [ ] Fix that random crash ?? hard to catch
+- [ ] Rename ChunkOctree to Chunk
+- [ ] Remove Chunk old code
+- [ ] Rename EntityLinks to ChunkLinks - more purposeful
+- [x] Fix block world linking more than once
+
+- [ ] overrideable settings - so i can override defaults
+
+next
 - [ ] finish spawning map event - then spawn player character after
     - [ ] log how long loading takes in console
     - [ ] Fix actionbar not spawning directly after character (player) has spawned, instead of timing, make a event call

@@ -1,4 +1,4 @@
-void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *nodes, const byte3 position, const unsigned char voxel) {
+void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *nodes, const byte3 position, const unsigned char voxel, ChunkOctree *parent_node) {
     // zox_log("   > [%ix%ix%i] [%lu]\n", place_position.x, place_position.y, place_position.z, place_chunk)
     // if (place_chunk == 0) {
     if (!zox_valid(chunk)) {
@@ -24,6 +24,9 @@ void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *nod
                 zox_delete(e3)
                 free(nodes);
                 nodes = NULL;
+                // if (parent_node)
+                parent_node->nodes = nodes;
+                // parent_node->nodes[child_index] = nodes;
             }
         }
     } else {
@@ -56,5 +59,5 @@ void raycast_action(ecs_world_t *world, const RaycastVoxelData *data, const unsi
         position = data->position_last;
         chunk = data->chunk_last;
     }
-    voxel_action(world, chunk, data->node->nodes, position, voxel);
+    voxel_action(world, chunk, data->node->nodes, position, voxel, data->node);
 }

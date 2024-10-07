@@ -6,10 +6,14 @@ void set_chunk_block_spawns_render_disabled(ecs_world_t *world, const ChunkOctre
     if (depth == max_depth) {
         // get block_vox from nodes
         const ecs_entity_t block_vox = ((VoxelEntityLink*) node->nodes)->value;
-        if (zox_valid(block_vox)) zox_set(block_vox, RenderDisabled, { state })
+        if (zox_valid(block_vox)) {
+            zox_set(block_vox, RenderDisabled, { state })
+        }
     } else {
         depth++;
-        for (int i = 0; i < 8; i++) set_chunk_block_spawns_render_disabled(world, &node->nodes[i], max_depth, depth, state);
+        for (int i = 0; i < 8; i++) {
+            set_chunk_block_spawns_render_disabled(world, &node->nodes[i], max_depth, depth, state);
+        }
     }
 }
 
