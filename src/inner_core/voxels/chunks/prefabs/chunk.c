@@ -1,24 +1,18 @@
-/*ecs_entity_t spawn_prefab_chunk(ecs_world_t *world) {
+ecs_entity_t spawn_prefab_chunk(ecs_world_t *world) {
     zox_prefab()
+    // Voxels
+    // todo: calculate this based on max LOD resolution (2 to power of resolution)
+    const unsigned char max_length = 32; // todo: Calculate this from max resolution!
+    const int3 size = (int3) { max_length, max_length, max_length };
+    add_chunk_octree(world, e, size);
+    zox_prefab_set(e, VoxScale, { default_vox_scale })
+    // Transforms
     add_transform3Ds(world, e, 0);
+    zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
+    // Rendering
+    zox_prefab_set(e, Brightness, { 1.0f })
+    zox_prefab_set(e, RenderDisabled, { 0 })
     zox_prefab_set(e, MeshDirty, { 0 })
-    zox_prefab_set(e, Brightness, { 1.4f })
-    add_seed(world, e, 666);
-    add_chunk_octree(world, e, default_chunk_size);
-    add_generate_chunk(world, e);
-    if (!headless) {
-        zox_add(e, MeshIndicies)
-        zox_add(e, MeshVertices)
-        zox_add(e, MeshColorRGBs)
-        zox_add(e, ColorsGPULink)
-        add_gpu_mesh(world, e);
-    }   
+    prefab_add_mesh_basic(world, e);
     return e;
 }
-
-ecs_entity_t spawn_chunk(ecs_world_t *world, const ecs_entity_t prefab, const float3 position) {
-    zox_instance(prefab)
-    zox_set(e, Position3D, { position })
-    spawn_gpu_mesh(world, e);
-    return e;
-}*/

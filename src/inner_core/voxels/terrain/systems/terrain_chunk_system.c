@@ -1,3 +1,4 @@
+/*
 // #define zoxel_time_terrain_chunk_system
 #define noise_positiver 3200
 
@@ -53,3 +54,4 @@ void TerrainChunkSystem(ecs_iter_t *it) {
     end_timing("TerrainChunkSystem")
 #endif
 } zox_declare_system(TerrainChunkSystem)
+*/

@@ -1,24 +1,3 @@
-// face data for voxels
-const int voxel_face_indicies_length = 6;
-const int voxel_face_vertices_length = 4;
-const int voxel_face_indicies_normal[] = { 0, 1, 2,    2, 3, 0 };
-// reversed if positive
-const int voxel_face_indicies_reversed[] = { 2, 1, 0,    0, 3, 2 };
-
-const int voxel_face_indicies_p[] = {
-    2, 1, 0, 0, 3, 2,   // reversed
-    0, 1, 2, 2, 3, 0    // normal
-};
-
-const int* get_voxel_indices(unsigned char is_positive) {
-    if (is_positive) {
-        return &voxel_face_indicies_p[0];
-    } else {
-        return &voxel_face_indicies_p[6];
-    }
-}
-
-const float2 voxel_face_uvs[] = { { 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 0 } };
 
 // left
 const float3 voxel_face_vertices_left[] = {
@@ -62,6 +41,32 @@ const float3 voxel_face_vertices_front[] = {
     { 1, 1, 1 },
     { 1, 0, 1 }
 };
+const int voxel_face_indicies_length = 6;
+const int voxel_face_vertices_length = 4;
+
+const int voxel_face_indicies_p[] = {
+    2, 1, 0, 0, 3, 2,   // reversed
+    0, 1, 2, 2, 3, 0    // normal
+};
+
+#define get_voxel_indicies_1 &voxel_face_indicies_p[0]
+#define get_voxel_indicies_0 &voxel_face_indicies_p[6]
+
+/*const int* get_voxel_indices(unsigned char is_positive) {
+    if (is_positive) {
+        return &voxel_face_indicies_p[0];
+    } else {
+        return &voxel_face_indicies_p[6];
+    }
+}*/
+
+/*
+// face data for voxels
+const int voxel_face_indicies_normal[] = { 0, 1, 2,    2, 3, 0 };
+// reversed if positive
+const int voxel_face_indicies_reversed[] = { 2, 1, 0,    0, 3, 2 };
+
+const float2 voxel_face_uvs[] = { { 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 0 } };
 
 //! Add vertices and uvs to the chunk one.
 void add_voxel_face_uvs(MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
@@ -181,6 +186,7 @@ zoxel_get_voxel_direction(front, z, 1)      // creates get_voxel_front
         }\
     }\
 }
+*/
 
 /*
 #define voxel_face_uvs_create(index, offset_x, offset_y, size_x, size_y)\

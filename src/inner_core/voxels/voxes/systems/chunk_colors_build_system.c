@@ -1,3 +1,4 @@
+/*
 void add_voxel_face_colors(int_array_d *indicies, float3_array_d* vertices, color_rgb_array_d* color_rgbs,
     color_rgb voxel_color, float3 vertex_position_offset, float voxel_scale,
     const int voxel_face_indicies[], int voxel_face_indicies_length,
@@ -28,7 +29,7 @@ void add_voxel_face_colors(int_array_d *indicies, float3_array_d* vertices, colo
 #define zoxel_add_faces_colors(direction_facing, is_positive)\
 if (voxel##_##direction_facing == 0) {\
     add_voxel_face_colors(indicies, vertices, color_rgbs, voxel_color, vertex_position_offset, voxel_scale,\
-        get_voxel_indices(is_positive), voxel_face_indicies_length, voxel_face_vertices##_##direction_facing,\
+        get_voxel_indicies_##is_positive, voxel_face_indicies_length, voxel_face_vertices##_##direction_facing,\
         voxel_face_vertices_length, direction##_##direction_facing);\
 }
 
@@ -120,3 +121,4 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         meshDirty->value = 1;
     }
 } zox_declare_system(ChunkColorsBuildSystem)
+*/

@@ -115,7 +115,7 @@ void build_if_adjacent_voxel(const ChunkOctree *root_node, const ChunkOctree *pa
 
 // if building, build
 #define zox_build_if_adjacent_voxel(direction_name, is_positive, voxel_uvs)\
-    build_if_adjacent_voxel(root_node, parent_node, vertex_position_offset, get_voxel_indices(is_positive), voxel_face_vertices##_##direction_name, voxel_uvs, direction##_##direction_name, neighbors, neighbor_lods, distance_to_camera, node_index, node_position, depth, lod, voxel, octree_scale, vert_scale, octree_position, mesh_data, voxel_solidity);
+    build_if_adjacent_voxel(root_node, parent_node, vertex_position_offset, get_voxel_indicies_##is_positive, voxel_face_vertices##_##direction_name, voxel_uvs, direction##_##direction_name, neighbors, neighbor_lods, distance_to_camera, node_index, node_position, depth, lod, voxel, octree_scale, vert_scale, octree_position, mesh_data, voxel_solidity);
 
 // if child node is solid, dig down
 #define zox_terrain_building_dig_node(i)\

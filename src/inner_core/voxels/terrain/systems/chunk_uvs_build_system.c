@@ -1,4 +1,4 @@
-void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,
+/*void build_chunk_mesh_uvs(const ChunkData *chunk, const ChunkSize *chunkSize,
     MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs,
     const ChunkData *chunk_left, const ChunkData *chunk_right,
     const ChunkData *chunk_back, const ChunkData *chunk_front) {
@@ -77,3 +77,4 @@ void ChunkUVsBuildSystem(ecs_iter_t *it) {
         meshDirty->value = mesh_state_updated;
     }
 } zox_declare_system(ChunkUVsBuildSystem)
+*/

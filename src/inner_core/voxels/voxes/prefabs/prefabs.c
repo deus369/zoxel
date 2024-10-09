@@ -13,7 +13,7 @@ ecs_entity_t prefab_vox_texture;
 
 void spawn_prefabs_voxes(ecs_world_t *world) {
     prefab_block_vox_meta = spawn_prefab_block_box_meta(world, prefab_block);
-    prefab_vox = spawn_prefab_vox(world, prefab_chunk_octree);
+    prefab_vox = spawn_prefab_vox(world, prefab_chunk);
     prefab_block_vox = spawn_prefab_block_vox(world, prefab_vox);
     prefab_vox_file = spawn_prefab_vox_file(world);
     prefab_vox_generated = spawn_prefab_vox_generated(world, prefab_vox);

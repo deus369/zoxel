@@ -65,13 +65,9 @@ zox_system_ctx(ChunkFrustumSystem, zox_pip_voxels, cameras_query, [in] Position3
 // Builds our Textured Chunks (Terrain) !
 zox_filter(chunks_generating, [out] ChunkDirty)
 if (!headless) zox_system_ctx(ChunkOctreeBuildSystem, zox_pip_voxels_chunk_clean, chunks_generating, [in] VoxLink,  [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] VoxScale, [in] RenderDisabled, [out] ChunkDirty, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty, [none] chunks.ChunkTextured)
-
 // remember: needs zox_pip_voxels, zox_pip_mainthread is called when Dirty is cleaned
-
 zox_system_1(BlockVoxSpawnSystem, zox_pip_voxels, [in] ChunkLodDirty, [out] ChunkOctree, [in] ChunkPosition, [in] VoxLink, [in] RenderLod, [in] RenderDisabled, [out] BlocksSpawned, [none] TerrainChunk)
-
 zox_system_1(BlockVoxUpdateSystem, zox_pip_voxels, [in] ChunkDirty, [in] BlocksSpawned, [out] ChunkLodDirty, [none] TerrainChunk)
-
 //  todo: make ChunkDirty operate over a frame so other systems can hijack event
 zox_render3D_system(TerrainChunksRenderSystem, [in] TransformMatrix, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] VoxLink, [in] RenderDisabled) // builds meshes
 #ifdef zox_debug_chunk_bounds
@@ -82,9 +78,7 @@ zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [out] GenerateChunk)
 zox_system(ChunkFlatlandSystem, zox_pip_voxels_chunk_dirty, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree, [none] FlatlandChunk)
 zox_system_ctx(GrassyPlainsSystem, zox_pip_voxels_chunk_dirty, generateTerrainChunkQuery, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkDirty, [out] ChunkOctree, [none] !FlatlandChunk)
 zox_system(DungeonBlockSystem, zox_pip_voxels, [in] TimerState, [in] ChunkLink, [none] blocks.BlockDungeon)
-
 zox_system_1(StreamEndEventSystem, zox_pip_voxels, [out] StreamEndEvent, [in] EventInput, [in] StreamDirty, [in] ChunkLinks)
-
 set_terrain_render_distance();
 spawn_prefabs_terrain(world);
 zoxel_end_module(Terrain)

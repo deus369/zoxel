@@ -51,7 +51,7 @@ void add_voxel_face_colors_d(int_array_d *indicies, float3_array_d* vertices, co
 if (!is_adjacent_all_solid(direction##_##direction_name, root_node, parent_node, neighbors,\
     octree_position, node_index, node_position, depth, max_depth, neighbor_lods, color_edge_voxel, NULL)) {\
     add_voxel_face_colors_d(indicies, vertices, color_rgbs, vertex_position_offset, voxel_color,\
-        voxel_scale, get_voxel_indices(is_positive), voxel_face_vertices##_##direction_name,\
+        voxel_scale, get_voxel_indicies_##is_positive, voxel_face_vertices##_##direction_name,\
         direction##_##direction_name);\
 }
 

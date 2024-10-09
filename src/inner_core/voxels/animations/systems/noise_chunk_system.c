@@ -1,4 +1,4 @@
-void generate_chunk_noise(ChunkData* chunkData, const ChunkSize *chunkSize) {
+/*void generate_chunk_noise(ChunkData* chunkData, const ChunkSize *chunkSize) {
     int voxels_count = 0;
     int array_index = 0;
     for (int j = 0; j < chunkSize->value.x; j++) {
@@ -26,9 +26,9 @@ void generate_chunk_noise(ChunkData* chunkData, const ChunkSize *chunkSize) {
             }
         }
     }
-}
+}*/
 
-void NoiseChunkSystem(ecs_iter_t *it) {
+/*void NoiseChunkSystem(ecs_iter_t *it) {
     return;
     zox_change_check()
     ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
@@ -49,7 +49,7 @@ void NoiseChunkSystem(ecs_iter_t *it) {
         chunkDirty->value = chunk_dirty_state_generated;
     }
 }
-zox_declare_system(NoiseChunkSystem)
+zox_declare_system(NoiseChunkSystem)*/
 
 void NoiseChunkOctreeSystem(ecs_iter_t *it) {
     zox_change_check()

@@ -115,7 +115,7 @@ int read_vox(const char* filename, vox_file *vox) {
     vox->chunks = malloc(vox->pack.model_nums * sizeof(vox_file_chunk_child));
     for (int i = 0; i < vox->pack.model_nums; i++) {
 #ifdef zoxel_debug_vox_read
-        zox_log("  - Reading ChunkData [%i]\n", i)
+        zox_log("  - Reading Chunk [%i]\n", i)
 #endif
         vox_file_chunk_child chunk;
         if (fread(&chunk.size.name, sizeof(chunk.size.name), 1, file) != 1) {

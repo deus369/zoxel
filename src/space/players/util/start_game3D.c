@@ -10,14 +10,6 @@ void post_player_start_game(ecs_world_t *world, const ecs_entity_t player) {
     if (!menu_actions) spawn_menu_actions_player(world, player);
 }
 
-/*ecs_entity_t delay_event(ecs_world_t *world, void (*value)(ecs_world_t*, const ecs_entity_t), const ecs_entity_t e, const double delay) {
-    const ecs_entity_t event = ecs_new(world, 0);
-    zox_set(event, TimedEvent, { value })
-    zox_set(event, EventInput, { e })
-    zox_set(event, EventTime, { delay })
-    return event;
-}*/
-
 void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data(player_vox_model));
     if (!vox) {
@@ -86,7 +78,6 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
 #endif
     delay_event(world, &post_player_start_game, player, 0.1);
 }
-
 
 void on_spawned_terrain(ecs_world_t *world, const ecs_entity_t player) {
     zox_log("on_spawned_terrain\n")

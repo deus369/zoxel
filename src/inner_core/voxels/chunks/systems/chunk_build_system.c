@@ -4,6 +4,7 @@
 // #define disable_voxel_up
 // #define disable_voxel_back
 // #define disable_voxel_front
+/*
 void add_voxel_face(MeshIndicies *meshIndicies2, MeshVertices *meshVertices2,
     float3 vertex_position_offset, float3 center_mesh_offset, float voxel_scale,
     int2 *start, int2 start2,
@@ -95,3 +96,4 @@ void ChunkBuildSystem(ecs_iter_t *it) {
         meshDirty->value = mesh_state_updated;
     }
 } zox_declare_system(ChunkBuildSystem)
+*/
