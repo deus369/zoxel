@@ -17,6 +17,12 @@ void PlaySoundSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_o(TriggerSound, triggerSounds, triggerSound)
         if (triggerSound->value != 1) continue;
+        // generating
+        zox_field_e()
+        if (zox_has(e, GenerateSound)) {
+            const unsigned char generating = zox_get_value(e, GenerateSound)
+            if (generating) continue;
+        }
         zox_field_i(SoundLength, soundLengths, soundLength)
         zox_field_o(SDLSound, sdlSounds, sdlSound)
         zox_field_o(DestroyInTime, destroyInTimes, destroyInTime)
@@ -24,7 +30,8 @@ void PlaySoundSystem(ecs_iter_t *it) {
         if (soundLength->value) {
 #ifdef zox_lib_sdl_mixer
             if (Mix_PlayChannel(channel_available, &sdlSound->value, 0) == -1) {
-                zox_log(" ! error playing sound\n")
+                zox_log(" ! failed to play sound: %s\n", Mix_GetError())
+                // zox_log(" ! error playing sound\n")
             }
 #endif
         }

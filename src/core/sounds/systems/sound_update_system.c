@@ -10,7 +10,7 @@ void SoundUpdateSystem(ecs_iter_t *it) {
         zox_field_o(SDLSound, sdlSounds, sdlSound)
         sdlSound->value = (Mix_Chunk) {
           .volume = global_master_volume,
-          .alen = soundData->length * 4,
+          .alen = soundData->length * sizeof(float),
           .abuf = (Uint8*) soundData->value
         };
         soundDirty->value = 0;

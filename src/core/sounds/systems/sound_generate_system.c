@@ -1,5 +1,4 @@
 // todo: alter frequency over time during sound
-
 void SoundGenerateSystem(ecs_iter_t *it) {
     const float sound_bounds = 1.0f;
     zox_field_in(InstrumentType, instrumentTypes, 1)
@@ -28,9 +27,15 @@ void SoundGenerateSystem(ecs_iter_t *it) {
         const float attack = sound_attack_multiplier * sound_time_length; //  0.02f * sound_time_length;
         const float dampen = sound_dampen_multiplier * sound_time_length;
         const int total_sound_samples = (int) (sound_sample_rate * sound_time_length);
-        resize_memory_component(SoundData, soundData, float, total_sound_samples)
+        if (generateSound->value == 1) {
+            resize_memory_component(SoundData, soundData, float, total_sound_samples)
+        }
+        const int split = (int) (ceil(total_sound_samples / sound_generation_splitter)) + 1;
+        const int start_j = (int) ((generateSound->value - 1) * split);
+        int end_j = start_j + split;
+        if (end_j > total_sound_samples) end_j = total_sound_samples;
         float value = 0.0f;
-        for (int j = 0; j < total_sound_samples; j++) {
+        for (int j = start_j; j < end_j; j++) {
             const float time = (float) (j / sample_rate_f);
             if (instrument_type == instrument_piano) value = piano_sound(time, frequency);
             else if (instrument_type == instrument_piano_square) value = piano_square_sound(time, frequency);
@@ -49,10 +54,13 @@ void SoundGenerateSystem(ecs_iter_t *it) {
             value = float_clamp(value, -sound_bounds, sound_bounds);
             soundData->value[j] = value;
         }
-        generateSound->value = 0;
-        soundDirty->value = 1;
+        generateSound->value++;
+        if (generateSound->value > sound_generation_splitter) {
+            generateSound->value = 0;
+            soundDirty->value = 1;
 #ifdef zoxel_log_sound_generation
-        zox_log(" > sound generated: instrument [%i] frequency [%f] length [%f]\n", instrumentType->value, soundFrequency->value, soundLength->value)
+            zox_log(" > sound generated: instrument [%i] frequency [%f] length [%f]\n", instrumentType->value, soundFrequency->value, soundLength->value)
 #endif
+        }
     }
 } zox_declare_system(SoundGenerateSystem)

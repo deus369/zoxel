@@ -1,9 +1,6 @@
 #ifndef zox_mod_sounds
 #define zox_mod_sounds
 
-int global_master_volume = 64;
-const int global_master_volume_max = 128;
-const int global_master_volume_increment = 16;
 #include "util/import_sdl_mixer.c"
 #include "data/instrument_types.c"
 #include "settings/settings.c"
