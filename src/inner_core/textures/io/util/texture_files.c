@@ -22,7 +22,9 @@ ecs_entity_t spawn_texture_filepath(ecs_world_t *world, const char *filepath) {
 }
 
 void load_files_textures(ecs_world_t *world) {
+    // zox_log("directory_textures: %s\n", directory_textures)
     char* load_directory = concat_file_path(resources_path, directory_textures);
+    // zox_log("load_directory: %s\n", load_directory)
     FileList files = get_files(load_directory);
 #ifdef zox_print_texture_files
     zox_log("   > textures found [%i]\n", files.count)

@@ -13,6 +13,9 @@ ecs_entity_t spawn_default_ui(ecs_world_t *world, const ecs_entity_t ui_camera, 
     }
     // SDL_ShowCursor(SDL_DISABLE);
     const ecs_entity_t texture_source = string_hashmap_get(files_hashmap_textures, new_string_data("cursor_01"));
+    if (texture_source == 0) {
+        zox_log(" ! could not find [cursor_01] mouse texture!\n")
+    }
     const ecs_entity_t fake_mouse = spawn_icon_mouse_follow_canvas(world, prefab_icon_mouse_follow, canvas, dimensions, max_layers2D - 2, float2_zero, 32, zevice_follow);
     zox_set(fake_mouse, RenderDisabled, { 0 })
     zox_set(fake_mouse, GenerateTexture, { zox_generate_texture_none })

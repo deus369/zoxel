@@ -104,9 +104,11 @@ void traverse_directory(FileList *fileList, const char *directory) {
     struct stat statbuf;
     dp = opendir(directory);
     if (dp == NULL) {
-        perror("Unable to open directory");
+        zox_log(" ! directory error [%s]\n", directory)
+        perror("        - ");
         return;
     }
+    // zox_log(" > traversing directory [%s]\n", directory)
     while ((entry = readdir(dp)) != NULL) {
         if (!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, "..")) continue;
         char *name = entry->d_name;
@@ -131,6 +133,9 @@ FileList get_files(char *directory) {
     fileList.files = NULL;
     fileList.filenames = NULL;
     size_t len = strlen(directory);
+#ifndef zox_windows
+    traverse_directory(&fileList, directory);
+#else
     if (len > 1 && directory[len - 1] != '/') {
         traverse_directory(&fileList, directory);
     } else {
@@ -139,6 +144,7 @@ FileList get_files(char *directory) {
         directory_non_slash[len - 2] = '\0';  // Null-terminate just in case
         traverse_directory(&fileList, directory_non_slash);
     }
+#endif
     free(directory);
     return fileList;
 }
