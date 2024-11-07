@@ -1,7 +1,7 @@
 ecs_entity_t spawn_prefab_icon_frame_user(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_icon_frame_user")
-    zox_add_tag(e, UserIconFrame)
+    // zox_add_tag(e, UserIconFrame)
     zox_prefab_add(e, UserDataLink)
     zox_prefab_add(e, TooltipEvent)
     return e;
@@ -34,6 +34,7 @@ void set_icon_from_user_data(ecs_world_t *world, const ecs_entity_t e, const ecs
 
 ecs_entity_2 spawn_icon_frame_user(ecs_world_t *world, SpawnIconFrame *data, const ecs_entity_t user_data) {
     const ecs_entity_2 e = spawn_icon_frame(world, data);
+    // if prefab has label tag, spawn icon label (Quantity)
     const ecs_entity_t icon = e.y;
     set_icon_from_user_data(world, icon, user_data);
     return e;

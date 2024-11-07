@@ -6,7 +6,7 @@ ecs_entity_t spawn_prefab_element3D(ecs_world_t *world) {
     zox_add_tag(e, ElementBillboard)
     zox_prefab_set(e, CameraLink, { 0 })
     zox_prefab_set(e, UIHolderLink, { 0 })
-    zox_prefab_set(e, UITrail, {{ 0, 0.33f, 0 }})
+    zox_prefab_set(e, UITrail, {{ 0, 0.43f, 0 }})
     zox_prefab_set(e, Color, {{ 0, 255, 0, 255 }}) 
     add_ui_components_world(world, e, (float2) { 0.2f, 0.05f });
     if (!headless) zox_add_tag(e, SingleMaterial)

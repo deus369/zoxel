@@ -6,6 +6,14 @@ unsigned char* convert_string_to_zext(const char* text) {
     return zext;
 }
 
+unsigned char* convert_text_to_zext(const char* text) {
+    if (!text) return NULL;
+    const unsigned char text_length = strlen(text);
+    unsigned char *zext = malloc(text_length);
+    for (unsigned char i = 0; i < text_length; i++) zext[i] = convert_ascii(text[i]);
+    return zext;
+}
+
 char* convert_zext_to_text(const unsigned char *zext, unsigned char length) {
     if (!zext || length == 0) return "";
     unsigned char text_length = length + 1;

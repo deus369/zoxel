@@ -6,6 +6,7 @@
 ecs_entity_t spawn_prefab_window_users(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_window_users")
+    zox_prefab_set(e, IconFramePrefabLink, { prefab_icon_frame })
     return e;
 }
 
@@ -136,7 +137,7 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
     return e;
 }
 
-SpawnWindowUsers get_default_spawn_window_users_data(const ecs_entity_t character, const ecs_entity_t canvas, const int2 canvas_size) {
+SpawnWindowUsers get_default_spawn_window_users_data(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t character, const ecs_entity_t canvas, const int2 canvas_size) {
     const unsigned char header_font_size = 26 * zox_ui_scale;
     const unsigned char header_margins = 6 * zox_ui_scale;
     const unsigned char header_height = header_font_size + header_margins * 2;
@@ -148,6 +149,10 @@ SpawnWindowUsers get_default_spawn_window_users_data(const ecs_entity_t characte
     const int icon_frame_size = default_icon_frame_size * zox_ui_scale;
     const int icon_size = default_icon_size * zox_ui_scale;
     const int2 size = (int2) { grid_padding + (icon_frame_size + grid_padding) * grid_size.x + grid_margins * 2, grid_padding + (icon_frame_size + grid_padding) * grid_size.y + grid_margins * 2 + header_height };
+    ecs_entity_t prefab_icon_frame_ = prefab_icon_frame;
+    if (zox_has(prefab, IconFramePrefabLink)) {
+        prefab_icon_frame_ = zox_get_value(prefab, IconFramePrefabLink)
+    }
     SpawnWindowUsers data = {
         .canvas = {
             .e = canvas,
@@ -177,7 +182,7 @@ SpawnWindowUsers get_default_spawn_window_users_data(const ecs_entity_t characte
             .font_outline_color = header_font_outline_color
         },
         .icon_frame = {
-            .prefab = prefab_icon_frame,
+            .prefab = prefab_icon_frame_,
             .texture = {
                 .fill_color = default_fill_color_frame,
                 .outline_color = default_outline_color_frame
@@ -204,10 +209,10 @@ SpawnWindowUsers get_default_spawn_window_users_data(const ecs_entity_t characte
     return data;
 }
 
-ecs_entity_t spawn_window_users_player(ecs_world_t *world, const ecs_entity_t player) {
+/*ecs_entity_t spawn_window_users_player(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t character = zox_get_value(player, CharacterLink)
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     SpawnWindowUsers data = get_default_spawn_window_users_data(character, canvas, canvas_size);
     return spawn_window_users(world, &data);
-}
+}*/

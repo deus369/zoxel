@@ -2,7 +2,7 @@
 
 // #define zox_print_files
 
-#define zox_test_skeletons
+// #define zox_test_skeletons
 
 // #define zox_beta
 // to fix windows build

@@ -49,7 +49,9 @@ ecs_entity_t spawn_header(ecs_world_t *world, const ecs_entity_t parent, const e
             .font_thickness = 4,
             .padding = padding,
             .font_fill_color = header_font_fill_color,
-            .font_outline_color = header_font_outline_color } };
+            .font_outline_color = header_font_outline_color
+        }
+    };
     zox_get_mutt(e, Children, children)
     const ecs_entity_t header_zext = spawn_zext(world, &zextSpawnData);
     add_to_Children(children, header_zext);

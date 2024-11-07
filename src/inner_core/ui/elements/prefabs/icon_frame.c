@@ -37,9 +37,38 @@ ecs_entity_2 spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
         .index = data->icon.index,
         .texture_size = data->icon.texture_size
     };
-    zox_get_mutt(e, Children, children)
+    zox_get_muter(e, Children, children)
     const ecs_entity_t icon = spawn_icon(world, &spawnIcon);
     add_to_Children(children, icon);
-    zox_modified(e, Children)
+    if (zox_has(data->element.prefab, IconLabel)) {
+        const int font_size = 12;
+        SpawnZext spawnZext = {
+            .canvas = data->canvas,
+            .parent = {
+                .e = e,
+                .position = position_in_canvas,
+                .size = spawnIcon.element.size
+            },
+            .element = {
+                .prefab = prefab_zext,
+                .position = (int2) { -font_size - 4, font_size - 4 },
+                .layer = data->element.layer + 2,
+                .anchor = (float2) { 1, 0 },
+                .size = spawnIcon.element.size,
+                .render_disabled = data->element.render_disabled,
+            },
+            .zext = {
+                // .text = convert_text_to_zext("x6"),
+                .text = "x6",
+                .font_size = font_size,
+                .font_thickness = 2,
+                // .padding = padding,
+                .font_fill_color = default_font_fill_color,
+                .font_outline_color = default_font_outline_color
+            }
+        };
+        const ecs_entity_t zext = spawn_zext(world, &spawnZext);
+        add_to_Children(children, zext);
+    }
     return (ecs_entity_2) { e, icon };
 }
