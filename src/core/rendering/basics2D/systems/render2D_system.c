@@ -24,7 +24,6 @@ void render_entity_material2D(const float4x4 viewMatrix, GLuint material, GLuint
     glUniform1f(attributes.alpha, 1);
     opengl_render(6);
     glBindTexture(GL_TEXTURE_2D, 0);
-    // glDisable(GL_BLEND);
     opengl_disable_blend();
     glUseProgram(0);
 #ifdef zoxel_catch_opengl_errors

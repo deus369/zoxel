@@ -36,6 +36,10 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         zox_field_i(TransformMatrix, transformMatrixs, transformMatrix)
         if (!has_set_material) {
             has_set_material = 1;
+#ifdef zox_transparent_voxes
+            opengl_enable_blend();
+            glDisable(GL_CULL_FACE);
+#endif
             opengl_set_material(material_link);
             opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
             opengl_set_float4(material_attributes->fog_data, (float4) { fog_color.x, fog_color.y, fog_color.z, get_fog_density() });
@@ -73,5 +77,9 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         opengl_disable_buffer(material_attributes->vertex_position);
         opengl_unset_mesh();
         opengl_disable_opengl_program();
+#ifdef zox_transparent_voxes
+        opengl_disable_blend();
+        glEnable(GL_CULL_FACE);
+#endif
     }
 } zox_declare_system(RenderCharacters3DSystem)

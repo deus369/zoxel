@@ -31,8 +31,8 @@ zox_define_tag(CubeLines)
 zox_define_component(DebugCubeLines)
 zox_define_component(LineData3D)
 zox_define_component(CubeLinesThickness)
-if (!headless) zox_render3D_system(Line3DRenderSystem, [in] LineData3D, [in] LineThickness, [in] ColorRGB, [none] Line3D)
-if (!headless) zox_render3D_system(CubeLineRenderSystem, [none] CubeLines, [in] DebugCubeLines, [in] CubeLinesThickness, [in] ColorRGB, [in] Position3D, [in] Rotation3D, [in] Bounds3D, [in] RenderLod, [in] MeshIndicies, [in] RenderDisabled)
+zox_render3D_plus_system(Line3DRenderSystem, [in] LineData3D, [in] LineThickness, [in] ColorRGB, [none] Line3D)
+zox_render3D_plus_system(CubeLineRenderSystem, [none] CubeLines, [in] DebugCubeLines, [in] CubeLinesThickness, [in] ColorRGB, [in] Position3D, [in] Rotation3D, [in] Bounds3D, [in] RenderLod, [in] MeshIndicies, [in] RenderDisabled)
 spawn_prefabs_lines3D(world);
 zoxel_end_module(Lines3D)
 

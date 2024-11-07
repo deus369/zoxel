@@ -6,7 +6,7 @@ unsigned char terrain_spawn_distance;
 unsigned char terrain_vertical = 2;
 const unsigned char terrain_min_height = 8;
 const int terrain_octaves = 12;
-const float flat_height_level = 1; // -0.56f; // 0.2f;
+const float flat_height_level = -0.56f; // 0.2f;
 unsigned char terrain_mode = 0;
 double terrain_amplifier = 64.0;
 double terrain_boost = 0.0;

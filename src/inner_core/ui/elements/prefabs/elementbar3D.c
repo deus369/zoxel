@@ -7,6 +7,7 @@ ecs_entity_t spawn_prefab_elementbar3D(ecs_world_t *world, const ecs_entity_t pr
     zox_prefab_set(e, ElementBar, { 1 })
     zox_prefab_set(e, ElementBarSize, { float2_zero })
     zox_prefab_add(e, Children)
+    zox_set(e, UITrail, {{ 0, 0.43f, 0 }})
     return e;
 }
 

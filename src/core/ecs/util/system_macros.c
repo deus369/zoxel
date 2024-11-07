@@ -74,6 +74,13 @@ Chose one pipeline tag for each type of system.
     }\
 }
 
+#define zox_render3D_plus_system(name, ...) {\
+if (!headless) {\
+    zox_system_1(name, 0, __VA_ARGS__)\
+    add_to_render3D_plus_loop(ecs_id(name));\
+}\
+}
+
 #define zox_gpu_dispose_system(name, ...) {\
     if (!headless) {\
         zox_system_1(name, 0, __VA_ARGS__)\

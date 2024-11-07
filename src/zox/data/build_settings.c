@@ -2,6 +2,8 @@
 
 // #define zox_print_files
 
+#define zox_test_skeletons
+
 // #define zox_beta
 // to fix windows build
 #define zox_sdl_import_file_only

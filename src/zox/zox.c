@@ -3,6 +3,7 @@
 
 #include "data/build_settings.c"
 #include "data/build_disables.c"
+#include "data/define_groups.c"
 #include "util/defines.c"
 #include zox_nexus_defines
 #include "util/events.c"

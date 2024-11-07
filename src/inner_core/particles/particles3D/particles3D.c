@@ -26,7 +26,7 @@ zox_define_tag(Particle3D)
 zox_define_tag(Particle3DEmitter)
 zox_system_1(Particle3DEmitSystem, zox_pip_mainthread, [in] Position3D, [in] ParticleEmitRate, [in] Bounds3D, [in] Color, [none] Particle3DEmitter)
 // if making rotation ones, just create new systems, add [none] Rotation3D - for this one
-zox_render3D_system(Particle3DRenderSystem, [in] Position3D, [in] Color, [none] Particle3D)
+zox_render3D_plus_system(Particle3DRenderSystem, [in] Position3D, [in] Color, [none] Particle3D)
 spawn_prefabs_particles3D(world);
 zoxel_end_module(Particles3D)
 

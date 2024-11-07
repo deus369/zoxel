@@ -64,8 +64,8 @@ void Particle3DRenderSystem(ecs_iter_t *it) {
     }
     glDisableVertexAttribArray(particle3D_position_location);
 #endif
-    opengl_disable_blend();
     glUseProgram(0);
+    opengl_disable_blend();
 } zox_declare_system(Particle3DRenderSystem)
 
 // const Rotation3D *rotation3D = &rotation3Ds[i];

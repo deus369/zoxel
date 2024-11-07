@@ -1,8 +1,8 @@
 void Line3DRenderSystem(ecs_iter_t *it) {
+    opengl_enable_blend();
     glUseProgram(line3D_material);
     glEnableVertexAttribArray(line3D_position_location);
     opengl_set_float4(line3D_fog_data_location, (float4) { fog_color.x, fog_color.y, fog_color.z, get_fog_density() });
-    opengl_enable_blend();
     glUniformMatrix4fv(line3D_camera_matrix_location, 1, GL_FALSE, (GLfloat*) &render_camera_matrix);
     zox_field_in(LineData3D, lineData3Ds, 1)
     zox_field_in(LineThickness, lineThicknesss, 2)
@@ -24,6 +24,6 @@ void Line3DRenderSystem(ecs_iter_t *it) {
 #endif
     }
     glDisableVertexAttribArray(line3D_position_location);
-    opengl_disable_blend();
     glUseProgram(0);
+    opengl_disable_blend();
 } zox_declare_system(Line3DRenderSystem)

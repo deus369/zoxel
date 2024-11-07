@@ -1,15 +1,22 @@
-now
-- [ ] Quantity Labels for Items
-- [ ] Minivox Textures
+tools
+- [ ] Nested Prefab Support (spawning)
+- [ ] Simple Editable Text files for Character Presets (designer predefined)
+- [ ] design files for uis
+- [ ] import song files, notes, make a main menu song
+
+io
 - [ ] Save/Load character User Data (items, stats, etc)
 - [ ] Save/Load Chunks that are edited
 - [ ] Save/Load NPCs
+
+now
+- [ ] Quantity Labels for Items
+- [ ] Minivox UI Textures
 - [ ] Batch Rendering for Grass Models
 - [ ] Animated Grass Vertices in shader
 - [ ] Textured World Items
 - [ ] Basic Dungeon Layout Data
 - [ ] Tooltips on Taskbar Icons
-- [ ] Simple Editable Text files for Character Presets (designer predefined)
 - [ ] Create Dungeon Block Texture for Bricks
 - [ ] UI Close event - use for taskbar toggling
 - [ ] Status Window

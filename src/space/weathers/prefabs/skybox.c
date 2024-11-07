@@ -33,6 +33,7 @@ void set_sky_color_2(ecs_world_t *world, const GLuint material, const float3 top
 }
 
 void set_sky_color(ecs_world_t *world, const float3 top_color, const float3 bottom_color) {
+    if (headless || !skybox) return;
     GLuint material = zox_get_value(skybox, MaterialGPULink)
     set_sky_color_2(world, material, top_color, bottom_color);
 }
