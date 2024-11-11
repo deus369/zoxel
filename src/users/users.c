@@ -22,6 +22,22 @@ zox_entities_component(UserLinks)
 #include "lores/lores.c"
 #include "achievements/achievements.c"
 
+
+
+void on_set_quantity(ecs_world_t *world, const ecs_entity_t player, const unsigned action_selected, const unsigned char quantity) {
+    if (!player) return;
+    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+    find_child_with_tag(canvas, MenuActions, menu_actions)
+    if (menu_actions) {
+        const Children *menu_actions_children = zox_get(menu_actions, Children)
+        const ecs_entity_t menu_actions_body = menu_actions_children->value[1];
+        const Children *menu_actions_body_children = zox_get(menu_actions_body, Children)
+        const ecs_entity_t frame_action = menu_actions_body_children->value[action_selected];
+        set_icon_label_from_user_data_quantity(world, frame_action, quantity);
+    }
+}
+
+
 void set_taskbar_icon_active(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t frame, const int i) {
     if (i == taskbar_items) { if_has_child_with_tag(canvas, MenuItems) zox_set(frame, ActiveState, { 1 }) }
     else if (i == taskbar_skills) {if_has_child_with_tag(canvas, MenuSkills) zox_set(frame, ActiveState, { 1 }) }

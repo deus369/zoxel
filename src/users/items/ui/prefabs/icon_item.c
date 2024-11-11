@@ -1,5 +1,5 @@
 void tooltip_event_icon_item(ecs_world_t *world, const TooltipEventData *data) {
-    char result[64]; // char *result = malloc(64);
+    char result[64];
     const ZoxName *zox_name = zox_get(data->data, ZoxName)
     const unsigned char quantity = zox_has(data->data, Quantity) ? zox_gett_value(data->data, Quantity) : 0;
     if (zox_name && zox_name->value && zox_name->length) {

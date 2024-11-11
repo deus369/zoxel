@@ -1,4 +1,5 @@
 // right click = place
+
 void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
 #ifdef zox_disable_raycasts3D
     return;
@@ -52,6 +53,7 @@ void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
                     quantity--;
                     if (quantity > 0) {
                         zox_set(action_entity, Quantity, { quantity })
+                        on_set_quantity(world, player, action_selected, quantity);
                     } else {
                         // set action to nullptr
                         // destroy entity
@@ -70,7 +72,7 @@ void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
                             const ecs_entity_t icon_action = frame_action_children->value[0];
                             if (icon_action) {
                                 // now reset icon
-                                set_icon_from_user_data(world, icon_action, 0);
+                                set_icon_from_user_data(world, frame_action, icon_action, 0); set_icon_label_from_user_data(world, frame_action, 0);
                             }
                             // zox_log(" > menu_actions found [%lu] user_item [%lu]\n", icon_action, meta_item_block) // base data off meta_item_block as item is still new
                         }

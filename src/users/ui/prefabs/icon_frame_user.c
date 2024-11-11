@@ -7,7 +7,68 @@ ecs_entity_t spawn_prefab_icon_frame_user(ecs_world_t *world, const ecs_entity_t
     return e;
 }
 
-void set_icon_from_user_data(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t data) {
+void set_icon_label_from_user_data_quantity(ecs_world_t *world, const ecs_entity_t frame, const unsigned char quantity) {
+    if (!zox_has(frame, IconLabel)) return;
+    if (!zox_has(frame, Children)) {
+        zox_log(" ! frame has no children :( %lu\n", frame)
+    } else {
+        const Children *children = zox_get(frame, Children)
+        if (children->length < 2) return;
+        const ecs_entity_t zext = children->value[1];
+        if (quantity > 1) {
+            char text[6];
+            sprintf(text, "x%"PRIu64"", quantity);
+            set_entity_with_text(world, zext, text);
+        } else {
+            set_entity_with_text(world, zext, "");
+        }
+    }
+}
+
+void set_icon_label_from_user_data(ecs_world_t *world, const ecs_entity_t frame, const ecs_entity_t data) {
+    if (!zox_has(frame, IconLabel)) return;
+    if (!zox_has(frame, Children)) {
+        zox_log(" ! frame has no children :( %lu\n", frame)
+    } else {
+        const Children *children = zox_get(frame, Children)
+        if (children->length < 2) return;
+        const ecs_entity_t zext = children->value[1];
+        if (zox_has(data, Quantity)) {
+            const unsigned char quantity = zox_get_value(data, Quantity)
+            // zox_log("x%i\n", quantity)
+            if (quantity > 1) {
+                char text[6];
+                sprintf(text, "x%"PRIu64"", quantity);
+                set_entity_with_text(world, zext, text);
+                // zox_log("x%i\n", quantity)
+            } else {
+                set_entity_with_text(world, zext, "");
+            }
+        } else {
+            set_entity_with_text(world, zext, "");
+        }
+    }
+}
+
+void set_icon_label_from_user_data_direct(ecs_world_t *world, const ecs_entity_t zext, const ecs_entity_t data) {
+    if (!zext) return;
+    if (zox_has(data, Quantity)) {
+        const unsigned char quantity = zox_get_value(data, Quantity)
+        // zox_log("x%i\n", quantity)
+        if (quantity > 1) {
+            char text[6];
+            sprintf(text, "x%"PRIu64"", quantity);
+            set_entity_with_text(world, zext, text);
+            // zox_log("x%i\n", quantity)
+        } else {
+            set_entity_with_text(world, zext, "");
+        }
+    } else {
+        set_entity_with_text(world, zext, "");
+    }
+}
+
+void set_icon_from_user_data(ecs_world_t *world, const ecs_entity_t frame, const ecs_entity_t e, const ecs_entity_t data) {
     zox_set(e, UserDataLink, { data })
     if (!data) {
         clear_texture_data(world, e);
@@ -32,10 +93,10 @@ void set_icon_from_user_data(ecs_world_t *world, const ecs_entity_t e, const ecs
     zox_set(e, TextureDirty, { 1 })
 }
 
-ecs_entity_2 spawn_icon_frame_user(ecs_world_t *world, SpawnIconFrame *data, const ecs_entity_t user_data) {
-    const ecs_entity_2 e = spawn_icon_frame(world, data);
+ecs_entity_2 spawn_icon_frame_user(ecs_world_t *world, SpawnIconFrame *data, const ecs_entity_t userdata) {
+    const ecs_entity_3 e = spawn_icon_frame(world, data);
     // if prefab has label tag, spawn icon label (Quantity)
-    const ecs_entity_t icon = e.y;
-    set_icon_from_user_data(world, icon, user_data);
-    return e;
+    set_icon_from_user_data(world, e.x, e.y, userdata);
+    set_icon_label_from_user_data_direct(world, e.z, userdata);
+    return (ecs_entity_2) { e.x, e.y };
 }

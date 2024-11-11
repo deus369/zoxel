@@ -128,13 +128,18 @@ void set_entity_label_with_zext(ecs_world_t *world, const ecs_entity_t parent, u
 }
 
 unsigned char set_entity_with_text(ecs_world_t *world, const ecs_entity_t e, const char* text) {
-    ZextData *zextData = zox_get_mut(e, ZextData)
+    zox_get_muter(e, ZextData, zextData)
     if (is_zext(zextData, text)) return 0;
     set_zext(zextData, text);
     zox_modified(e, ZextData)
     zox_set(e, ZextDirty, { zext_update_start })
-    // zox_get_muter(e, ZextDirty, zextDirty)
-    // zextDirty->value = zext_update_start;
+    return 1;
+}
+
+unsigned char set_entity_with_text_raw(ecs_world_t *world, const ecs_entity_t e, const char* text) {
+    zox_get_muter(e, ZextData, zextData)
+    set_zext(zextData, text);
+    zox_set(e, ZextDirty, { zext_update_start })
     return 1;
 }
 

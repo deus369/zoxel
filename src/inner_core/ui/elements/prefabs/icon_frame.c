@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_icon_frame(ecs_world_t *world, const ecs_entity_t pref
     return e;
 }
 
-ecs_entity_2 spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
+ecs_entity_3 spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
     int2 position = data->element.position; // anchor our position
     const int2 position_in_canvas = get_element_pixel_position_global(data->parent.position, data->parent.size, data->element.position, data->element.anchor);
     const float2 real_position = get_element_position(position_in_canvas, data->canvas.size);
@@ -40,6 +40,7 @@ ecs_entity_2 spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
     zox_get_muter(e, Children, children)
     const ecs_entity_t icon = spawn_icon(world, &spawnIcon);
     add_to_Children(children, icon);
+    ecs_entity_t zext = 0;
     if (zox_has(data->element.prefab, IconLabel)) {
         const int font_size = 12;
         SpawnZext spawnZext = {
@@ -58,8 +59,7 @@ ecs_entity_2 spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
                 .render_disabled = data->element.render_disabled,
             },
             .zext = {
-                // .text = convert_text_to_zext("x6"),
-                .text = "x6",
+                .text = "",
                 .font_size = font_size,
                 .font_thickness = 2,
                 // .padding = padding,
@@ -67,8 +67,8 @@ ecs_entity_2 spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
                 .font_outline_color = default_font_outline_color
             }
         };
-        const ecs_entity_t zext = spawn_zext(world, &spawnZext);
+        zext = spawn_zext(world, &spawnZext);
         add_to_Children(children, zext);
     }
-    return (ecs_entity_2) { e, icon };
+    return (ecs_entity_3) { e, icon, zext };
 }
