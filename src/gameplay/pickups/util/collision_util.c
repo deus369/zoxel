@@ -20,9 +20,12 @@ void on_overlap_pickup(ecs_world_t *world, const ecs_entity_t e, const ecs_entit
             unsigned char did_stack = 0;
             if (stack_index != 255) {
                 const ecs_entity_t stack_item = actions->value[stack_index];
-                const unsigned char quantity = zox_get_value(stack_item, Quantity)
+                unsigned char quantity = zox_get_value(stack_item, Quantity)
                 if (quantity != max_stack_quantity) {
-                    zox_set(stack_item, Quantity, { quantity + 1 })
+                    quantity++;
+                    zox_set(stack_item, Quantity, { quantity })
+                    const ecs_entity_t player = zox_get_value(user, PlayerLink)
+                    on_set_quantity(world, player, stack_index, quantity);
                     did_stack = 1;
                 }
             }
@@ -59,7 +62,8 @@ void on_overlap_pickup(ecs_world_t *world, const ecs_entity_t e, const ecs_entit
                     const Children *frame_action_children = zox_get(frame_action, Children)
                     const ecs_entity_t icon_action = frame_action_children->value[0];
                     // remember: uses meta item for texture source here
-                    set_icon_from_user_data(world, icon_action, meta_item_block);
+                    set_icon_from_user_data(world, frame_action, icon_action, meta_item_block);
+                    set_icon_label_from_user_data(world, frame_action, meta_item_block);
                     zox_set(icon_action, UserDataLink, { user_item })
                     // zox_log(" > menu_actions found [%lu] user_item [%lu]\n", icon_action, meta_item_block) // base data off meta_item_block as item is still new
                 }

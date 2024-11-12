@@ -22,8 +22,6 @@ zox_entities_component(UserLinks)
 #include "lores/lores.c"
 #include "achievements/achievements.c"
 
-
-
 void on_set_quantity(ecs_world_t *world, const ecs_entity_t player, const unsigned action_selected, const unsigned char quantity) {
     if (!player) return;
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
