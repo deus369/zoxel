@@ -734,7 +734,7 @@ create-system:
 	@ bash bash/zoxel/create_system.sh
 
 package:
-	@ bash bash/util/zip_build.sh
+	@ bash bash/util/zip_build.sh $(target)
 
 install-play:
 	@ bash bash/install/install_play_button.sh
