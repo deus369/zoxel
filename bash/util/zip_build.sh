@@ -27,6 +27,7 @@ if [ -d $build_directory ]; then
     echo " + zipping [$build_directory]"
     zip -j "$zip_path" $build_directory/*
     zip -r "$zip_path" resources
+    zip -r "$zip_path" lib
 else
     echo " ! [$build_directory] not found"
 fi
