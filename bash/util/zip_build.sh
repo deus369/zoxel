@@ -33,8 +33,8 @@ fi
 
 if [ -d ../zoxel-web ]; then
     echo " + found zoxel-web directory"
-    echo " + copied [$zip_path] into [../zoxel-web/builds/$zip_name]"
-    cp -f $zip_path ../zoxel-web/builds/$zip_name
+    echo " + copied [$zip_path] into [../zoxel-web/$zip_name]"
+    cp -f $zip_path ../zoxel-web/$zip_name
 else
     echo " ! failed finding ../zoxel-web"
 fi
