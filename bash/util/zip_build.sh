@@ -49,8 +49,8 @@ fi
 #    echo " ! [$build_directory/lib] not found"
 #fi
 
-if [ -z ../../zoxel-web ]; then
+if [ -z ../zoxel-web ]; then
     echo " + found zoxel-web directory"
     echo " + copied zip into it"
-    cp -f $zip_name ../../zoxel-web/$zip_name
+    cp -f $zip_name ../zoxel-web/$zip_name
 fi

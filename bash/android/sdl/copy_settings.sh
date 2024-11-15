@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Copies:
 #   - [f] local.properties
 #   - [f] app/build.gradle
@@ -8,16 +7,13 @@
 #   - [f] app/jni/Application.mk
 #   - [f] app/jni/CMakeLists.txt
 #   - [f] app/jni/src/Android.mk
-
 source bash/android/gradle_pathing.sh
 start_gradle_build
 source bash/util/verbose_echo.sh
 # verbose_level=0
 
 echo "=> copying android settings"
-
 # copy settings files over
-
 # copy local.properties
 local_properties_name="local.properties"
 local_properties_source=$android_bash_directory/$local_properties_name

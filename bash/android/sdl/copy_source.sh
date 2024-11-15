@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Also copy files:
 #   - app/jni/CMakeLists.txt
 #   - app/jni/CMakeLists.txt
@@ -9,7 +8,6 @@
 #   - resources into app/src/main/resources/ & rename to android-resources sub folder
 # copy resources into app/src/main/resources/
 # ? & rename to android-resources sub folder
-
 source bash/android/gradle_pathing.sh
 start_gradle_build
 source bash/util/verbose_echo.sh

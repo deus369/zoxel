@@ -19,7 +19,6 @@ destination_directory2=$destination_directory/SDL2_image
 destination_directory3=$destination_directory/SDL2_mixer
 
 # first remove source files from new directory
-
 echo "=> copying android sdl"
 if [ -d $destination_directory1 ]; then
     echo_2 " > removing dir [$destination_directory1]"
