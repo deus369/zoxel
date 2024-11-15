@@ -80,7 +80,7 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
 }
 
 void on_spawned_terrain(ecs_world_t *world, const ecs_entity_t player) {
-    zox_log("on_spawned_terrain\n")
+    // zox_log("on_spawned_terrain\n")
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
     #ifdef zox_disable_player_character
     attach_camera_to_character(world, player, camera, 0);

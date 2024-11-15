@@ -5,6 +5,7 @@
 // currently we are animating components by hand
 // later we must customly choose what curves to apply to what components
 #include "data/animation_states.c"
+zox_declare_tag(OscillatePosition3D)
 zox_component_byte(AnimationState)
 zox_component_double(AnimationStart) // double is time?
 zox_component_double(AnimationLength)
@@ -26,6 +27,7 @@ zox_memory_component(AnimationTargets, float) // a sequence of animation target 
 #include "systems/fadein_system.c"
 #include "systems/animation_sequence_system.c"
 #include "systems/animate_alpha_system.c"
+#include "systems/oscillate_system.c"
 
 void prefab_add_animation(ecs_world_t *world, const ecs_entity_t e) {
     zox_prefab_set(e, AnimationIndex, { 0 })
@@ -35,6 +37,7 @@ void prefab_add_animation(ecs_world_t *world, const ecs_entity_t e) {
 }
 
 zox_begin_module(Animations)
+zox_define_tag(OscillatePosition3D)
 // old
 zox_define_component_byte(AnimationState)
 zox_define_component_double(AnimationDelay)
@@ -60,6 +63,7 @@ zox_system(FadeinSystem, EcsOnUpdate, [in] AnimationState, [in] AnimationStart, 
 zox_system(AnimationSequenceSystem, EcsPostUpdate, [in] AnimationSequence, [in] AnimationTimes, [in] AnimationTargets, [in] AnimationDelay,  [out] AnimationIndex, [out] AnimationLength, [out] AnimationStart, [out] AnimationState)
 zox_system(AnimateAlphaSystem, EcsOnUpdate, [in] AnimationState, [in] AnimationStart, [in] AnimationLength, [in] AnimationDelay, [in] AnimateSourceFloat, [in] AnimateTargetFloat, [out] Alpha)
 zox_system(FadeoutSystem, EcsOnUpdate, [in] FadeOutEvent, [in] AnimationStart, [out] Alpha)
+zox_system(OscillateSystem, EcsOnUpdate, [out] LocalPosition3D, [none] OscillatePosition3D)
 zoxel_end_module(Animations)
 
 #endif

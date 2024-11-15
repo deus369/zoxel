@@ -187,6 +187,11 @@ void opengl_set_matrix(GLuint shader_index, const float4x4 value) {
     glUniformMatrix4fv(shader_index, 1, GL_FALSE, (float*) &value);
 }
 
+void opengl_set_matrix_array(GLuint shader_index, const float4x4* values, int count) {
+    glUniformMatrix4fv(shader_index, count, GL_FALSE, (float*) values);
+}
+
+
 void opengl_set_float4(GLuint shader_index, const float4 value) {
     glUniform4f(shader_index, value.x, value.y, value.z, value.w);
 }

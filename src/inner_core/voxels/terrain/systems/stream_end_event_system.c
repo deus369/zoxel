@@ -38,7 +38,7 @@ void StreamEndEventSystem(ecs_iter_t *it) {
         zox_field_i(EventInput, eventInputs, eventInput)
         (*event->value)(world, eventInput->value);
         event->value = NULL;
-        zox_log("Streaming Ended!\n")
+        // zox_log("Streaming Ended!\n")
 
     }
 } zox_declare_system(StreamEndEventSystem)

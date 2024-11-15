@@ -8,6 +8,7 @@
 #ifndef zox_mod_inner_core
 #define zox_mod_inner_core
 
+#include "bones/bones.c"
 #include "textures/textures.c"
 #include "musics/musics.c"
 #include "animations/animations.c"
@@ -30,6 +31,7 @@ void update_inner_core(ecs_world_t *world) {
 }
 
 zox_begin_module(InnerCore)
+zox_import_module(Bones)
 zox_import_module(Textures)
 zox_import_module(Musics)
 zox_import_module(Animations)

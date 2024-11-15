@@ -733,7 +733,7 @@ github:
 create-system:
 	@ bash bash/zoxel/create_system.sh
 
-zip-build:
+package:
 	@ bash bash/util/zip_build.sh
 
 install-play:
@@ -837,6 +837,7 @@ help-extra:
 	@echo "    install			installs zoxel"
 	@echo "    uninstall			inuninstalls zoxel"
 	@echo "    clean			removes all build files"
+	@echo "    package			packages into a zip file"
 	@echo "  > [util]"
 	@echo "    count			counts total lines in all source"
 	@echo "    list-systems		lists all found zoxel systems in a module"
