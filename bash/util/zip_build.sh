@@ -29,6 +29,15 @@ if [ -d $build_directory ]; then
 else
     echo " ! [$build_directory] not found"
 fi
+
+if [ -d ../zoxel-web ]; then
+    echo " + found zoxel-web directory"
+    echo " + copied zip into it"
+    cp -f $zip_name ../zoxel-web/$zip_name
+else
+    echo " ! failed finding ../zoxel-web"
+fi
+
 #if [ -f $target_executable ]; then
 #    echo " + [$target_executable] zipping"
 #    # cd $build_directory && zip -r "$zip_name" $target_filename
@@ -48,9 +57,3 @@ fi
 #else
 #    echo " ! [$build_directory/lib] not found"
 #fi
-
-if [ -z ../zoxel-web ]; then
-    echo " + found zoxel-web directory"
-    echo " + copied zip into it"
-    cp -f $zip_name ../zoxel-web/$zip_name
-fi
