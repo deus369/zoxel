@@ -1,10 +1,10 @@
 void SkeletonRender3DSystem(ecs_iter_t *it) {
-    if (!material_colored3D) return;
+    if (!material_bone) return;
     zox_iter_world()
     unsigned char has_set_material = 0;
     int rendered_count = 0;
-    const GLuint material_link = zox_get_value(material_colored3D, MaterialGPULink)
-    const MaterialColored3D *material_attributes = zox_get(material_colored3D, MaterialColored3D)
+    const GLuint material_link = zox_get_value(material_bone, MaterialGPULink)
+    const MaterialBone *material_attributes = zox_get(material_bone, MaterialBone)
     zox_field_in(MeshIndicies, meshIndiciess, 1)
     zox_field_in(MeshGPULink, meshGPULinks, 2)
     zox_field_in(ColorsGPULink, colorsGPULinks, 3)

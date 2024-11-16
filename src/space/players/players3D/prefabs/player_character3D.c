@@ -18,27 +18,7 @@ ecs_entity_t spawn_prefab_player_character3D(ecs_world_t *world) {
 
 ecs_entity_2 spawn_player_character3D_in_world(ecs_world_t *world, const ecs_entity_t vox, const float3 position, const float4 rotation, const unsigned char character_lod, const ecs_entity_t player) {
     const ecs_entity_2 e = spawn_character3D(world, prefab_character3D_player, vox, position, rotation, character_lod, player, player_vox_scale, 0);
-
-    zox_add_tag(e.x, Skeleton)
-    zox_prefab_add(e.x, BoneLinks)
-    zox_get_muter(e.x, BoneLinks, boneLinks)
-
-    zox_get_muter(e.x, Children, children)
-    const ecs_entity_t bone = spawn_bone(world, prefab_bone, position);
-    zox_set(bone, ParentLink, { e.x })
-    add_to_Children(children, bone);
-    add_to_BoneLinks(boneLinks, bone);
-
-    // head bone
-    zox_get_muter(bone, Children, bone_children)
-    const ecs_entity_t bone_child = spawn_bone(world, prefab_bone, position);
-    zox_set(bone_child, ParentLink, { bone })
-    zox_set(bone_child, LocalPosition3D, {{ 0, test_bone_position, -0.03f }})
-    // add osccilation to this bone
-    zox_add_tag(bone_child, OscillatePosition3D)
-    add_to_Children(bone_children, bone_child);
-    add_to_BoneLinks(boneLinks, bone_child);
-
+    make_test_skeleton(world, e.x);
     return e;
 }
 

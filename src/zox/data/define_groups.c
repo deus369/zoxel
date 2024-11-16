@@ -1,15 +1,12 @@
-
-
-
 #ifdef zox_test_skeletons
+    #define zox_transparent_voxes
+    #define zox_debug_bones
     #define zox_is_flatlands
-    #define zox_disable_npcs
-    // #define zox_transparent_voxes
+    // #define zox_disable_npcs
     // #define zox_disable_skybox
     // #define zox_disable_player_ui
     // #define zox_disable_player_character
-    #define zox_spawn_single_npc
-    #define zox_enable_bones
+    // #define zox_spawn_single_npc
 #endif
 
 #ifdef zox_test_settings_00

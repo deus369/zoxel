@@ -21,4 +21,9 @@ void spawn_character_actions(ecs_world_t *world, const ecs_entity_t e, const ecs
     if (meta_item_block_obsidian) actions->value[5] = spawn_user_item(world, meta_item_block_obsidian, e);*/
     if (meta_item_block_dark) actions->value[1] = spawn_user_item(world, meta_item_block_dark, e);
     if (meta_item_block_dungeon_core) actions->value[2] = spawn_user_item(world, meta_item_block_dungeon_core, e);
+    if (meta_item_block_dark) {
+        actions->value[5] = spawn_user_item(world, meta_item_block_dark, e);
+        zox_set(actions->value[5], Quantity, { 12 })
+
+    }
 }

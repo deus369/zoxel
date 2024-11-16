@@ -2,6 +2,7 @@
 #define zox_rendering_basics3D
 
 zox_declare_tag(TexturedMesh3D)
+zox_declare_tag(ColorRenderer)
 #include "shaders/colored3D.c"
 #include "shaders/instanced3D.c"
 #include "shaders/textured3D.c"
@@ -28,6 +29,7 @@ void spawn_shaders_basics3D(ecs_world_t *world) {
 
 zox_begin_module(RenderingBasics3D)
 zox_define_tag(TexturedMesh3D)
+zox_define_tag(ColorRenderer)
 add_load_shader_function(&spawn_shaders_basics3D);
 zox_define_component(MaterialTextured3D)
 zox_define_component(MaterialColored3D)
@@ -38,7 +40,7 @@ zox_system_1(InstanceRender3DSystem, 0, [in] Position3D, [in] Rotation3D, [in] S
 // unique textured meshes
 zox_render3D_plus_system(TexturedRenderSystem, [in] TransformMatrix, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] RenderDisabled, [in] MaterialGPULink, [in] TextureGPULink, [in] MaterialTextured3D, [none] TexturedMesh3D)
 // characters
-zox_render3D_plus_system(RenderCharacters3DSystem, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [in] TransformMatrix, [in] RenderDisabled, [none] MeshColorRGBs, [none] !UvsGPULink)
+zox_render3D_plus_system(RenderCharacters3DSystem, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [in] TransformMatrix, [in] RenderDisabled, [none] MeshColorRGBs, [none] !UvsGPULink, [none] ColorRenderer)
 // upload gpu
 zox_system_1(MeshUpdateSystem, zox_pip_mainthread, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs)
 zox_system_1(Mesh3DTexturedUploadSystem, zox_pip_mainthread, [in] MeshIndicies, [in] MeshVertices, [in] MeshUVs, [in] MeshColorRGBs, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [out] MeshDirty)
