@@ -8,7 +8,7 @@ void DungeonBlockSystem(ecs_iter_t *it) {
         if (timerState->value == 0) continue;
         zox_field_i(ChunkLink, chunkLinks, chunkLink)
         ChunkOctree *node = zox_get_mut(chunkLink->value, ChunkOctree) // get node function
-        const int3 size = zox_get_value(chunkLink->value, ChunkSize)
+        // const int3 size = zox_get_value(chunkLink->value, ChunkSize)
         const int3 voxel_position = zox_get_value(it->entities[i], VoxelPosition)
         // get closest grass block
         //byte3 position = (byte3) { rand() % size.x, rand() % size.y, rand() % size.z };

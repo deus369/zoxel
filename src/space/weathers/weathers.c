@@ -29,8 +29,10 @@ zox_begin_module(Weathers)
 add_load_shader_function(&spawn_shaders_weather);
 zox_define_tag(Weather)
 zox_define_tag(Skybox)
-zox_gpu_restore_system(SkyboxRestoreSystem, [in] MaterialGPULink, [in] ColorRGB, [in] SecondaryColorRGB, [none] Skybox)
-zox_system_1(SkyboxSetTimeSystem, EcsOnUpdate, [in] MaterialGPULink, [none] Skybox)
+if (!headless) {
+    zox_gpu_restore_system(SkyboxRestoreSystem, [in] MaterialGPULink, [in] ColorRGB, [in] SecondaryColorRGB, [none] Skybox)
+    zox_system_1(SkyboxSetTimeSystem, EcsOnUpdate, [in] MaterialGPULink, [none] Skybox)
+}
 spawn_prefabs_weather(world);
 zoxel_end_module(Weathers)
 

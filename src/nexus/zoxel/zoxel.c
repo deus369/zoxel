@@ -12,14 +12,14 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
 #ifdef zox_log_boot_game
     zox_log("boot_zoxel_game\n")
 #endif
-    const ecs_entity_t window = spawn_main_window(world);
-    if (window == 0) {
-        return EXIT_FAILURE;
-    }
 #ifdef zox_log_boot_game
     zox_log("boot_zoxel_game2\n")
-    #endif
+#endif
     if (!headless) {
+        const ecs_entity_t window = spawn_main_window(world);
+        if (window == 0) {
+            return EXIT_FAILURE;
+        }
         initialize_rendering(world);
         load_shaders(world);
 #ifdef zox_log_boot_game

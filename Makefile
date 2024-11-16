@@ -255,6 +255,10 @@ dev-profiler:
 	@ $(patient_cmd)
 	@ $(make_dev) -Dzox_using_profiler
 
+run-headless-debug:
+	@ drmemory.exe -brief -light $(PWD)/$(target_dev) --headless
+
+
 # run development + flecs profiler
 run-dev-profiler:
 	@ echo "opening https://www.flecs.dev/explorer"

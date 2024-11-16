@@ -1,6 +1,6 @@
 void StreamEndEventSystem(ecs_iter_t *it) {
     zox_iter_world()
-    const double delta = zox_delta_time;
+    // const double delta = zox_delta_time;
     zox_field_out(StreamEndEvent, events, 1)
     zox_field_in(EventInput, eventInputs, 2)
     zox_field_in(StreamDirty, streamDirtys, 3)

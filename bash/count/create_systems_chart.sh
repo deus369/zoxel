@@ -1,6 +1,5 @@
 #!/bin/bash
 # uses terminal tools: gnuplot & ristretto
-
 is_debug=0
 graph_width=1920*1
 graph_height=1080*1

@@ -132,7 +132,7 @@ FileList get_files(char *directory) {
     fileList.count = 0;
     fileList.files = NULL;
     fileList.filenames = NULL;
-    size_t len = strlen(directory);
+    // size_t len = strlen(directory);
 #ifndef zox_windows
     traverse_directory(&fileList, directory);
 #else

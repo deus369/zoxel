@@ -17,7 +17,8 @@ void set_icon_label_from_user_data_quantity(ecs_world_t *world, const ecs_entity
         const ecs_entity_t zext = children->value[1];
         if (quantity > 1) {
             char text[6];
-            sprintf(text, "x%"PRIu64"", quantity);
+            // sprintf(text, "x%"PRIu64"", quantity);
+            sprintf(text, "x%i", quantity);
             set_entity_with_text(world, zext, text);
         } else {
             set_entity_with_text(world, zext, "");
@@ -38,7 +39,8 @@ void set_icon_label_from_user_data(ecs_world_t *world, const ecs_entity_t frame,
             // zox_log("x%i\n", quantity)
             if (quantity > 1) {
                 char text[6];
-                sprintf(text, "x%"PRIu64"", quantity);
+                // sprintf(text, "x%"PRIu64"", quantity);
+                sprintf(text, "x%i", quantity);
                 set_entity_with_text(world, zext, text);
                 // zox_log("x%i\n", quantity)
             } else {
@@ -57,7 +59,8 @@ void set_icon_label_from_user_data_direct(ecs_world_t *world, const ecs_entity_t
         // zox_log("x%i\n", quantity)
         if (quantity > 1) {
             char text[6];
-            sprintf(text, "x%"PRIu64"", quantity);
+            // sprintf(text, "x%"PRIu64"", quantity);
+            sprintf(text, "x%i", quantity);
             set_entity_with_text_raw(world, zext, text);
             // zox_log("x%i\n", quantity)
         } else {
