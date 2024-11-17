@@ -1,8 +1,6 @@
 // when terrain lod updates, it will update character lods
 void ChunkEntitiesLodSystem(ecs_iter_t *it) {
-#ifdef zox_disable_npcs
-    return;
-#endif
+    if (disable_npcs) return;
     zox_iter_world()
     zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
     zox_field_in(RenderLod, renderLods, 2)

@@ -234,7 +234,7 @@ run-valgrind:
 	@ valgrind ./$(target_dev) --tiny
 
 run-drmemory:
-	@ drmemory.exe -brief -light -- $(target_dev) --tiny
+	@ drmemory.exe -brief -light -- $(target_dev) --tiny --nonpc
 
 run-coop-valgrind:
 	@ valgrind ./$(target_dev) --tiny -s

@@ -1,6 +1,7 @@
 #ifndef zox_mod_characters
 #define zox_mod_characters
 
+unsigned char disable_npcs = 0;
 zox_declare_tag(Character)
 zox_component_byte(TriggerActionA) // where should these go? Inputs / Triggers - Bindings
 zox_component_byte(TriggerActionB)

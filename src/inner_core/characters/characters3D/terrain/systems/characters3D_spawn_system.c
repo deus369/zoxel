@@ -6,9 +6,7 @@ extern ecs_entity_t spawn_character3D_npc(ecs_world_t *world, ecs_entity_t_array
 // todo: predict spawn size from octree?
 // todo: handle bounds resize by shifting positions
 void Characters3DSpawnSystem(ecs_iter_t *it) {
-#ifdef zox_disable_npcs
-    return;
-#endif
+    if (disable_npcs) return;
     zox_iter_world()
     zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
     zox_field_in(ChunkOctree, chunkOctrees, 2)

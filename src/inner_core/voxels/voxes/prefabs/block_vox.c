@@ -1,6 +1,7 @@
 ecs_entity_t spawn_prefab_block_vox(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_block_vox")
+    zox_add_tag(e, ColorRenderer)
     zox_prefab_set(e, CloneVox, { 0})
     zox_prefab_set(e, CloneVoxLink, { 0 })
     zox_prefab_set(e, ChunkLod, { 255 })

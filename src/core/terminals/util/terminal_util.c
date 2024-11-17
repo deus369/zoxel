@@ -14,6 +14,7 @@ extern unsigned char target_fps;
 #define terrain_mode_medium 2
 #define terrain_mode_large 3
 extern unsigned char terrain_mode;
+extern unsigned char disable_npcs;
 
 void print_help_menu(const char* arg0) {
     zoxel_log("\n");
@@ -89,6 +90,9 @@ int process_arguments(int argc, char* argv[]) {
             terrain_mode = terrain_mode_medium;
         } else if (strcmp(argv[i], "--large") == 0) {
             terrain_mode = terrain_mode_large;
+        }
+        else if (strcmp(argv[i], "--nonpc") == 0) {
+            disable_npcs = 1;
         }
     }
     return EXIT_SUCCESS;
