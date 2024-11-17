@@ -11,6 +11,7 @@ void SkeletonRender3DSystem(ecs_iter_t *it) {
     zox_field_in(TransformMatrix, transformMatrixs, 4)
     zox_field_in(RenderDisabled, renderDisableds, 5)
     zox_field_in(BoneLinks, boneLinkss, 6)
+    zox_field_in(BoneIndexes, boneIndexess, 7)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         if (renderDisabled->value) continue;
@@ -20,6 +21,7 @@ void SkeletonRender3DSystem(ecs_iter_t *it) {
         zox_field_i(ColorsGPULink, colorsGPULinks, colorsGPULink)
         zox_field_i(TransformMatrix, transformMatrixs, transformMatrix)
         zox_field_i(BoneLinks, boneLinkss, boneLinks)
+        zox_field_i(BoneIndexes, boneIndexess, boneIndexes)
         if (!has_set_material) {
             has_set_material = 1;
 #ifdef zox_transparent_voxes
@@ -35,13 +37,17 @@ void SkeletonRender3DSystem(ecs_iter_t *it) {
         const float4x4 inverse = float4x4_inverse(transformMatrix->value);
         zox_set(it->entities[i], Scale1D, { 1 })
         float4x4 bones[boneLinks->length];
+        float3 bone_positions[boneLinks->length];
         for (int j = 0; j < boneLinks->length; j++) {
             float4x4 bone_matrix = zox_get_value(boneLinks->value[j], TransformMatrix)
             bone_matrix = float4x4_multiply(bone_matrix, inverse);
-            //bone_matrix = float4x4_multiply(transformMatrix->value, bone_matrix);
             bones[j] = bone_matrix;
+            bone_positions[j] = zox_get_value(boneLinks->value[j], BonePosition)
         }
         opengl_set_matrix_array(material_attributes->bone_matrix, bones, boneLinks->length);
+        opengl_set_float3_array(material_attributes->bone_positions, bone_positions, boneLinks->length);
+        // opengl_enable_bone_buffer(material_attributes->bone_index, boneIndexGPULink->value);
+
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_enable_vertex_buffer(material_attributes->vertex_position, meshGPULink->value.y);
         opengl_enable_color_buffer(material_attributes->vertex_color, colorsGPULink->value);

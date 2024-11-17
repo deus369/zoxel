@@ -10,12 +10,15 @@ ecs_entity_t spawn_prefab_bone(ecs_world_t *world) {
     zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
     zox_prefab_set(e, LocalPosition3D, { float3_zero })
     zox_prefab_set(e, LocalRotation3D, { quaternion_identity })
+    zox_prefab_add(e, BonePosition)
     return e;
 }
 
-ecs_entity_t spawn_bone(ecs_world_t *world, const ecs_entity_t prefab, const float3 position) {
+ecs_entity_t spawn_bone(ecs_world_t *world, const ecs_entity_t prefab, const float3 position, const float3 local_position) {
     zox_instance(prefab)
     zox_set(e, Position3D, { position })
+    zox_set(e, LocalPosition3D, { local_position })
+    zox_set(e, BonePosition, { local_position }) // actually position within skeleton, local to root bone
     zox_add(e, Children)
 #ifdef zox_debug_bones
     add_debug_cube(world, e, initial_bone_size);

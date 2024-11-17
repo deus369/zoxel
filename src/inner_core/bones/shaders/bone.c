@@ -7,6 +7,7 @@ typedef struct {
     GLuint transform_matrix;
     GLuint camera_matrix;
     GLuint bone_matrix;
+    GLuint bone_positions;
     GLuint brightness;
     GLuint fog_data;
 } MaterialBone;
@@ -19,6 +20,7 @@ MaterialBone create_MaterialBone(const GLuint material) {
         glGetUniformLocation(material, "transform_matrix"),
         glGetUniformLocation(material, "camera_matrix"),
         glGetUniformLocation(material, "bone_matrix"),
+        glGetUniformLocation(material, "bone_positions"),
         glGetUniformLocation(material, "brightness"),
         glGetUniformLocation(material, "fog_data")
     };
