@@ -94,7 +94,7 @@ void check_socket_error() {
 #ifdef zoxel_on_windows
     // Handle errors on Windows
     int err = WSAGetLastError();
-    if (err != WSAEWOULDBLOCK && err != EAGAIN) {
+    if (err != WSAEWOULDBLOCK) {
         perror("    check_socket_error: recvfrom");
     }
 #else
@@ -118,8 +118,8 @@ unsigned char peek_at_packet(int socket, struct sockaddr_in *recv_addr) {
         return 0;
     } else {
 #ifdef zox_testing_networking
-        zoxel_log(" > client packet recieved [%i]\n", recv_buffer[0]);
-        zoxel_log("     - sender ip [%s]\n", ip4_to_string(recv_addr));
+        zox_log(" > client packet recieved [%i]\n", recv_buffer[0])
+        // zoxel_log("     - sender ip [%s]\n", ip4_to_string(*recv_addr));
 #endif
         return recv_buffer[0];
     }
