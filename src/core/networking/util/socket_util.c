@@ -110,8 +110,6 @@ unsigned char peek_at_packet(int socket, struct sockaddr_in *recv_addr) {
     unsigned char recv_buffer[1];
     int recv_size = recvfrom(socket, (char *) recv_buffer, 1, MSG_PEEK, (struct sockaddr*) recv_addr, &recv_addr_len);
     if (recv_size < 0) {
-        // these errors handle no data recieved
-        // if (!(errno == EAGAIN || errno == EWOULDBLOCK)) perror("    PacketRecieveSystem: recvfrom ");    // an error occurred, print the error and exit
         check_socket_error();
         return 0;
     } else if (recv_size == 0) {

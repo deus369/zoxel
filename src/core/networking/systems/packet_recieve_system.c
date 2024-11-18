@@ -10,17 +10,15 @@ void PacketRecieveSystem(ecs_iter_t *it) {
         while (1) {
             unsigned char is_consume_packet = 1;
             unsigned char packet_size = 1;
-            unsigned char packet_type = peek_at_packet(socketLink->value, &recv_addr);
+            const unsigned char packet_type = peek_at_packet(socketLink->value, &recv_addr);
             if (packet_type == 0) break;  // No more packets to process
-            zox_log(" > received packet [%i] from [%s]\n", packet_type, ip4_to_string(recv_addr)) // , recv_size);
+            // zox_log(" > received packet [%i] from [%s]\n", packet_type, ip4_to_string(recv_addr)) // , recv_size);
             if (packet_type == zoxel_packet_type_connect) {
                 // reply to client to confirm message was sent
-                // if (zox_has(it->entities[i], NetRoom))
                 unsigned char return_packet_size = 1;
                 unsigned char send_buffer[1] = { zoxel_packet_type_connect_confirm };   // return packet
                 int send_size = sendto(socketLink->value, (const char *) send_buffer, return_packet_size, 0, (struct sockaddr*) &recv_addr, sizeof(recv_addr));
                 if (send_size < 0) {
-                    // perror("    PacketRecieveSystem : zoxel_packet_type_connect : sendto ");
                     check_socket_error();
                 } else {
                     zoxel_log("    - sent return packet type [%i].\n", send_buffer[0]);

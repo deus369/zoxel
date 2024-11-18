@@ -34,7 +34,6 @@ void PacketSendSystem(ecs_iter_t *it) {
                 int send_size = sendto(socketLink->value, (const char *) send_buffer_2, packet_size_2, 0, (struct sockaddr*) &send_addr, sizeof(send_addr));
                 if (send_size < 0) {
                     check_socket_error();
-                    // perror("    [PacketSendSystem] error sendto: ");
                 } else {
                    // zoxel_log("Sent packet type [%i] - [%s].\n", send_buffer_2[0], send_text);
                 }
@@ -42,7 +41,6 @@ void PacketSendSystem(ecs_iter_t *it) {
                 int send_size = sendto(socketLink->value, (const char *) send_buffer, packet_size, 0, (struct sockaddr*) &send_addr, sizeof(send_addr));
                 if (send_size < 0) {
                     check_socket_error();
-                    // perror("    [PacketSendSystem]:sendto2");
                 } else {
                     // zoxel_log("Sent packet type [%i].\n", send_buffer[0]);
                 }
