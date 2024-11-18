@@ -4,6 +4,7 @@
 typedef struct {
     GLint vertex_position;
     GLint vertex_color;
+    GLint bone_index;
     GLuint transform_matrix;
     GLuint camera_matrix;
     GLuint bone_matrix;
@@ -17,6 +18,7 @@ MaterialBone create_MaterialBone(const GLuint material) {
     return (MaterialBone) {
         glGetAttribLocation(material, "vertex_position"),
         glGetAttribLocation(material, "vertex_color"),
+        glGetAttribLocation(material, "bone_index"),
         glGetUniformLocation(material, "transform_matrix"),
         glGetUniformLocation(material, "camera_matrix"),
         glGetUniformLocation(material, "bone_matrix"),

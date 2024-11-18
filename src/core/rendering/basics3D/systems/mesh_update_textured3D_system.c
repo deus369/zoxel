@@ -13,7 +13,7 @@ void update_shader3D_textured(const GLuint2 mesh_buffer, const GLuint uv_buffer,
 }
 
 void Mesh3DTexturedUploadSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(NULL, it)) return;
+    // if (!ecs_query_changed(NULL, it)) return;
 #ifdef zoxel_time_mesh_uvs_update_system
     int update_count = 0;
     begin_timing()
@@ -25,10 +25,10 @@ void Mesh3DTexturedUploadSystem(ecs_iter_t *it) {
     zox_field_in(MeshGPULink, meshGPULinks, 5)
     zox_field_in(UvsGPULink, uvsGPULinks, 6)
     zox_field_in(ColorsGPULink, colorsGPULinks, 7)
-    zox_field_out(MeshDirty, meshDirtys, 8)
+    zox_field_in(MeshDirty, meshDirtys, 8)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(MeshDirty, meshDirtys, meshDirty)
-        if (meshDirty->value != mesh_state_updated) continue;
+        zox_field_i(MeshDirty, meshDirtys, meshDirty)
+        if (meshDirty->value != mesh_state_upload) continue;
         zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
         zox_field_i(UvsGPULink, uvsGPULinks, uvsGPULink)
         zox_field_i(ColorsGPULink, colorsGPULinks, colorsGPULink)
@@ -38,7 +38,6 @@ void Mesh3DTexturedUploadSystem(ecs_iter_t *it) {
         zox_field_i(MeshColorRGBs, meshColorRGBss, meshColorRGBs)
         if (!meshGPULink->value.x || !meshGPULink->value.y) continue;
         update_shader3D_textured(meshGPULink->value, uvsGPULink->value, colorsGPULink->value, meshIndicies->value, meshIndicies->length, meshVertices->value, meshVertices->length, meshUVs->value, meshColorRGBs->value);
-        meshDirty->value = mesh_state_none;
         // zox_log(" + uploaded textured mesh [%s]\n", zox_get_name(it->entities[i]))
 #ifdef zoxel_time_mesh_uvs_update_system
         did_do_timing()

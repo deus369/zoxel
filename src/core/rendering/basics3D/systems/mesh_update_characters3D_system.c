@@ -17,18 +17,17 @@ void MeshUpdateCharacters3DSystem(ecs_iter_t *it) {
     zox_field_in(MeshIndicies, meshIndiciess, 1)
     zox_field_in(MeshVertices, meshVerticess, 2)
     zox_field_in(MeshColorRGBs, meshColorRGBss, 3)
-    zox_field_out(MeshDirty, meshDirtys, 4)
+    zox_field_in(MeshDirty, meshDirtys, 4)
     zox_field_out(MeshGPULink, meshGPULinks, 5)
     zox_field_out(ColorsGPULink, colorsGPULinks, 6)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(MeshDirty, meshDirtys, meshDirty)
-        if (meshDirty->value != mesh_state_updated) continue;
+        zox_field_i(MeshDirty, meshDirtys, meshDirty)
+        if (meshDirty->value != mesh_state_upload) continue;
         zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
         zox_field_i(MeshVertices, meshVerticess, meshVertices)
         zox_field_i(MeshColorRGBs, meshColorRGBss, meshColorRGBs)
         zox_field_o(MeshGPULink, meshGPULinks, meshGPULink)
         zox_field_o(ColorsGPULink, colorsGPULinks, colorsGPULink)
-        meshDirty->value = mesh_state_none;
 #ifndef zox_characters_as_cubes
         if (meshIndicies->length == 0) {
             // clear mesh and colors buffer if zero again

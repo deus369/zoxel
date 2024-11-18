@@ -128,7 +128,7 @@ void set_ui_transform(ecs_world_t *world, const ecs_entity_t parent, const ecs_e
         const float2 scale2D = (float2) { pixel_size.x / canvasSizef.y, pixel_size.y / canvasSizef.y };
         set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(mesh_alignment), 4, scale2D);
         zox_modified(e, MeshVertices2D)
-        zox_set(e, MeshDirty, { 1 })
+        zox_set(e, MeshDirty, { mesh_state_trigger })
 #ifdef debug_ui_scaling
         zox_log("        -> Scaling: [%fx%f]\n", scale2D.x, scale2D.y)
 #endif

@@ -1,9 +1,11 @@
 void make_test_skeleton(ecs_world_t *world, const ecs_entity_t e) {
     zox_get_muter(e, Children, children)
     zox_add_tag(e, SkeletonRenderer)
+    // add_gpu_bone_index(world, e);
+    spawn_gpu_bone_index(world, e);
+    zox_prefab_add(e, BoneIndexes)
     zox_add_tag(e, Skeleton)
     zox_prefab_add(e, BoneLinks)
-    zox_prefab_add(e, BoneIndexes)
     zox_get_muter(e, BoneLinks, boneLinks)
     // add bone one
     const ecs_entity_t bone = spawn_bone(world, prefab_bone, float3_zero, float3_zero);

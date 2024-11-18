@@ -33,7 +33,7 @@ void ZextBackgroundSystem(ecs_iter_t *it) {
         pixelSize->value = size;
         textureSize->value = size;
         set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, scale2D);
-        meshDirty->value = 1;
+        meshDirty->value = mesh_state_trigger;
         generateTexture->value = zox_generate_texture_trigger;
     }
 } zox_declare_system(ZextBackgroundSystem)

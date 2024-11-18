@@ -42,9 +42,9 @@ zox_render3D_plus_system(TexturedRenderSystem, [in] TransformMatrix, [in] MeshGP
 // characters
 zox_render3D_plus_system(RenderCharacters3DSystem, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [in] TransformMatrix, [in] RenderDisabled, [none] MeshColorRGBs, [none] !UvsGPULink, [none] ColorRenderer)
 // upload gpu
-zox_system_1(MeshUpdateSystem, zox_pip_mainthread, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs)
-zox_system_1(Mesh3DTexturedUploadSystem, zox_pip_mainthread, [in] MeshIndicies, [in] MeshVertices, [in] MeshUVs, [in] MeshColorRGBs, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [out] MeshDirty)
-zox_system_1(MeshUpdateCharacters3DSystem, zox_pip_mainthread, [in] MeshIndicies, [in] MeshVertices, [in] MeshColorRGBs, [out] MeshDirty, [out] MeshGPULink, [out] ColorsGPULink, [none] MeshColorRGBs, [none] !MeshUVs)
+zox_system_1(MeshUpdateSystem, zox_pip_mainthread, [in] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs)
+zox_system_1(Mesh3DTexturedUploadSystem, zox_pip_mainthread, [in] MeshIndicies, [in] MeshVertices, [in] MeshUVs, [in] MeshColorRGBs, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshDirty)
+zox_system_1(MeshUpdateCharacters3DSystem, zox_pip_mainthread, [in] MeshIndicies, [in] MeshVertices, [in] MeshColorRGBs, [in] MeshDirty, [out] MeshGPULink, [out] ColorsGPULink, [none] MeshColorRGBs, [none] !MeshUVs)
 zoxel_end_module(RenderingBasics3D)
 
 #endif

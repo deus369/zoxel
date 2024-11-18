@@ -1,5 +1,5 @@
 void TextureUpdateSystem(ecs_iter_t *it) {
-    if (!ecs_query_changed(NULL, it)) return;
+    // if (!ecs_query_changed(NULL, it)) return;
     zox_field_in(TextureData, textureDatas, 1)
     zox_field_in(TextureSize, textureSizes, 2)
     zox_field_in(TextureGPULink, textureGPULinks, 3)

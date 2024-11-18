@@ -93,7 +93,7 @@ void ChunkBuildSystem(ecs_iter_t *it) {
         zox_field_o(MeshVertices, meshVertices, meshVertices2)
         build_chunk_mesh(chunkData, chunkSize, meshIndicies2, meshVertices2);
         chunkDirty->value = chunk_dirty_state_none;
-        meshDirty->value = mesh_state_updated;
+        meshDirty->value = mesh_state_trigger;
     }
 } zox_declare_system(ChunkBuildSystem)
 */

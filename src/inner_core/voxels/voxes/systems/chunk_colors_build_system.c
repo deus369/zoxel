@@ -118,7 +118,7 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         const float3 total_mesh_offset = float3_multiply_float(calculate_vox_bounds(chunkSize->value, voxScale->value), -1);
         build_chunk_mesh_colors(chunkData, chunkSize, colors2, meshIndicies2, meshVertices2, meshColorRGBs2, total_mesh_offset, voxScale->value);
         chunkDirty->value = chunk_dirty_state_none;
-        meshDirty->value = 1;
+        meshDirty->value = mesh_state_trigger;
     }
 } zox_declare_system(ChunkColorsBuildSystem)
 */

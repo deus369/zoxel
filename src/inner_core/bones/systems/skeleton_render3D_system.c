@@ -1,3 +1,10 @@
+void opengl_enable_bone_buffer(GLuint shader_index, GLuint buffer) {
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glEnableVertexAttribArray(shader_index);
+    glVertexAttribPointer(shader_index, 1, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 void SkeletonRender3DSystem(ecs_iter_t *it) {
     if (!material_bone) return;
     zox_iter_world()
@@ -8,10 +15,10 @@ void SkeletonRender3DSystem(ecs_iter_t *it) {
     zox_field_in(MeshIndicies, meshIndiciess, 1)
     zox_field_in(MeshGPULink, meshGPULinks, 2)
     zox_field_in(ColorsGPULink, colorsGPULinks, 3)
-    zox_field_in(TransformMatrix, transformMatrixs, 4)
-    zox_field_in(RenderDisabled, renderDisableds, 5)
-    zox_field_in(BoneLinks, boneLinkss, 6)
-    zox_field_in(BoneIndexes, boneIndexess, 7)
+    zox_field_in(BoneIndexGPULink, boneIndexGPULinks, 4)
+    zox_field_in(TransformMatrix, transformMatrixs, 5)
+    zox_field_in(RenderDisabled, renderDisableds, 6)
+    zox_field_in(BoneLinks, boneLinkss, 7)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         if (renderDisabled->value) continue;
@@ -19,9 +26,9 @@ void SkeletonRender3DSystem(ecs_iter_t *it) {
         if (meshIndicies->length == 0) continue;
         zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
         zox_field_i(ColorsGPULink, colorsGPULinks, colorsGPULink)
+        zox_field_i(BoneIndexGPULink, boneIndexGPULinks, boneIndexGPULink)
         zox_field_i(TransformMatrix, transformMatrixs, transformMatrix)
         zox_field_i(BoneLinks, boneLinkss, boneLinks)
-        zox_field_i(BoneIndexes, boneIndexess, boneIndexes)
         if (!has_set_material) {
             has_set_material = 1;
 #ifdef zox_transparent_voxes
@@ -46,7 +53,7 @@ void SkeletonRender3DSystem(ecs_iter_t *it) {
         }
         opengl_set_matrix_array(material_attributes->bone_matrix, bones, boneLinks->length);
         opengl_set_float3_array(material_attributes->bone_positions, bone_positions, boneLinks->length);
-        // opengl_enable_bone_buffer(material_attributes->bone_index, boneIndexGPULink->value);
+        opengl_enable_bone_buffer(material_attributes->bone_index, boneIndexGPULink->value);
 
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_enable_vertex_buffer(material_attributes->vertex_position, meshGPULink->value.y);

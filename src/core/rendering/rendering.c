@@ -20,6 +20,7 @@ zox_component_float(Alpha)
 #include "core/core.c"
 #include "basics2D/basics2D.c"
 #include "basics3D/basics3D.c"
+zox_increment_system_with_reset(MeshDirty, mesh_state_end)
 
 unsigned char initialize_rendering(ecs_world_t *world) {
     rendering_initialized = 1;
@@ -51,6 +52,7 @@ else { zox_import_module(OpenGL) }
 zox_import_module(RenderingCore)
 zox_import_module(RenderingBasics2D)
 zox_import_module(RenderingBasics3D)
+zox_define_increment_system(MeshDirty, EcsOnLoad)
 zoxel_end_module(Rendering)
 
 #endif
