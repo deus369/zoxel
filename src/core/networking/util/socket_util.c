@@ -119,7 +119,7 @@ unsigned char peek_at_packet(int socket, struct sockaddr_in *recv_addr) {
     } else {
 #ifdef zox_testing_networking
         zoxel_log(" > client packet recieved [%i]\n", recv_buffer[0]);
-        zoxel_log("     - sender ip [%s]\n", ip4_to_string(*recv_addr));
+        zoxel_log("     - sender ip [%s]\n", ip4_to_string(recv_addr));
 #endif
         return recv_buffer[0];
     }
