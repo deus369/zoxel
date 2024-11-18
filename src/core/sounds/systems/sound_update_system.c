@@ -1,4 +1,5 @@
 void SoundUpdateSystem(ecs_iter_t *it) {
+    if (!audio_enabled) return;
     zox_field_in(SoundData, soundDatas, 2)
     zox_field_out(SoundDirty, soundDirtys, 3)
     zox_field_out(SDLSound, sdlSounds, 4)

@@ -1,6 +1,7 @@
 #ifndef zox_mod_sounds
 #define zox_mod_sounds
 
+unsigned char audio_enabled = 0;
 #include "util/import_sdl_mixer.c"
 #include "data/instrument_types.c"
 #include "settings/settings.c"
@@ -42,8 +43,12 @@ void initialize_sounds(ecs_world_t *world) {
     zox_log(" ! sdl sounds are disabled\n")
     return;
 #endif
-    initialize_sdl_mixer();
-    load_files_sounds();
+    if (initialize_sdl_mixer() == EXIT_SUCCESS) {
+        load_files_sounds();
+        audio_enabled = 1;
+    } else {
+        zox_log(" ! audio files not loaded")
+    }
 }
 
 void dispose_sounds(ecs_world_t *world, void *ctx) {

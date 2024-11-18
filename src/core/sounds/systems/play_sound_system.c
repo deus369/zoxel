@@ -1,14 +1,14 @@
 void PlaySoundSystem(ecs_iter_t *it) {
+    if (!audio_enabled) return;
 #ifdef zox_disable_play_sounds
     return;
 #endif
-    const int channel_available = -1;
-/*#ifndef zox_lib_sdl_mixer
-    int channel_available = 0;
+#ifndef zox_lib_sdl_mixer
+    int channel_available = -1;
 #else
-    int channel_available = Mix_GroupAvailable(-1); // -1 indicates all channels
-    if (channel_available == -1) return;
-#endif*/
+    int channel_available = Mix_GroupAvailable(-1);
+#endif
+    if (channel_available < 0) return;
     // zox_iter_world()
     zox_field_in(SoundLength, soundLengths, 1)
     zox_field_out(TriggerSound, triggerSounds, 2)

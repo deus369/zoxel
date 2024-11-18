@@ -2,20 +2,14 @@ unsigned char initialize_sdl_mixer() {
 #ifndef zox_lib_sdl_mixer
     return EXIT_FAILURE;
 #else
-    if(Mix_OpenAudio(channel_sample_rate, AUDIO_F32SYS, channels_count, 2048) < 0) {
+    if (Mix_OpenAudio(channel_sample_rate, AUDIO_F32SYS, channels_count, 2048) < 0) {
     #ifdef zoxel_debug_audio
         zox_log(" - sdl audio could not initialize [%s]\n", Mix_GetError())
     #endif
         return EXIT_FAILURE;
     }
-    #ifdef zoxel_debug_audio
-    zox_log(" > sdl audio has initialized\n")
-    #endif
-    // #ifdef zox_debug_sdl_audio
-    int channel_available = Mix_GroupAvailable(-1); // -1 indicates all channels
-    if (channel_available == -1) zox_log(" ! sdl audio error: no channels available\n")
-    else zox_log(" + sdl channel available [%i]\n", channel_available);
-    // #endif
+    // int channel_available = Mix_GroupAvailable(-1); // -1 indicates all channels
+    // if (channel_available >= 0) zox_log(" + sdl channel available [%i]\n", channel_available);
     return EXIT_SUCCESS;
 #endif
 }
