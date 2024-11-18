@@ -1,6 +1,7 @@
 unsigned char sockets_enabled = 0;
 #ifndef zoxel_on_windows
     #define peek_packet_size 1
+    #define socket_error_code -1
     const unsigned long non_blocking = O_NONBLOCK;
     const unsigned long f_getfl = F_GETFL;
     const unsigned long f_setfl = F_SETFL;
@@ -19,6 +20,7 @@ unsigned char sockets_enabled = 0;
     }
 #else
     #define peek_packet_size 1024
+    #define socket_error_code SOCKET_ERROR
     #include <winsock2.h>
     #include <ws2tcpip.h>
     const unsigned long non_blocking = 1; // O_NONBLOCK

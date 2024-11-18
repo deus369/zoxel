@@ -18,7 +18,7 @@ void PacketRecieveSystem(ecs_iter_t *it) {
                 unsigned char return_packet_size = 1;
                 unsigned char send_buffer[1] = { zoxel_packet_type_connect_confirm };   // return packet
                 int send_size = sendto(socketLink->value, (const char *) send_buffer, return_packet_size, 0, (struct sockaddr*) &recv_addr, sizeof(recv_addr));
-                if (send_size == SOCKET_ERROR) {
+                if (send_size == socket_error_code) {
                     check_socket_error("recieve_system");
                 } else {
                     zoxel_log("    - sent return packet type [%i].\n", send_buffer[0]);
@@ -28,9 +28,9 @@ void PacketRecieveSystem(ecs_iter_t *it) {
             } else if (packet_type == zoxel_packet_type_msg_confirm) {
                 zoxel_log("    - message has reached the server.\n");
             } else if (packet_type == zoxel_packet_type_msg) {
-                unsigned char recv_buffer_2[2];
-                int text_size2 = recvfrom(socketLink->value, (char *) recv_buffer_2, 2, MSG_PEEK, (struct sockaddr*) &recv_addr, &recv_addr_len);
-                if (text_size2 == SOCKET_ERROR) {
+                unsigned char recv_buffer_2[1 + peek_packet_size];
+                int text_size2 = recvfrom(socketLink->value, (char *) recv_buffer_2, 1 + peek_packet_size, MSG_PEEK, (struct sockaddr*) &recv_addr, &recv_addr_len);
+                if (text_size2 == socket_error_code) {
                     check_socket_error("recieve_system2");
                 } else {
                     unsigned char text_length = recv_buffer_2[1];
@@ -39,7 +39,7 @@ void PacketRecieveSystem(ecs_iter_t *it) {
                     unsigned char recv_buffer_3[packet_size];
                     is_consume_packet = 0;
                     recv_size = recvfrom(socketLink->value, (char *) recv_buffer_3, packet_size, 0, (struct sockaddr*) &recv_addr, &recv_addr_len);
-                    if (recv_size == SOCKET_ERROR) {
+                    if (recv_size == socket_error_code) {
                         check_socket_error("recieve_system3");
                         // perror("    PacketRecieveSystem : zoxel_packet_type_msg 2 : recvfrom");
                     } else {
