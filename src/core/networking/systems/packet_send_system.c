@@ -32,14 +32,14 @@ void PacketSendSystem(ecs_iter_t *it) {
             if (rand() % 100 >= 70) {
                 // send text instead
                 int send_size = sendto(socketLink->value, (const char *) send_buffer_2, packet_size_2, 0, (struct sockaddr*) &send_addr, sizeof(send_addr));
-                if (send_size == SOCKET_ERROR) {
+                if (send_size == socket_error_code) {
                     check_socket_error("send_system");
                 } else {
                    // zoxel_log("Sent packet type [%i] - [%s].\n", send_buffer_2[0], send_text);
                 }
             } else {
                 int send_size = sendto(socketLink->value, (const char *) send_buffer, packet_size, 0, (struct sockaddr*) &send_addr, sizeof(send_addr));
-                if (send_size == SOCKET_ERROR) {
+                if (send_size == socket_error_code) {
                     check_socket_error("send_system2");
                 } else {
                     // zoxel_log("Sent packet type [%i].\n", send_buffer[0]);
