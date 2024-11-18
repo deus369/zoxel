@@ -24,22 +24,25 @@ void PacketSendSystem(ecs_iter_t *it) {
         send_buffer_2[1] = strlen(send_text);
         unsigned char packet_size_2 = 2 + send_buffer_2[1];
         unsigned char packets_send_count = 1 + rand() % test_send_packet_length;
+#ifdef zox_testing_networking
         zox_log(" > sending [%i] packets to [%i.%i.%i.%i:%i]\n", packets_send_count, targetNetAddress->value.x, targetNetAddress->value.y, targetNetAddress->value.z, targetNetAddress->value.w, targetNetPort->value)
+#endif
         // test sending multiple times
         for (int j = 0; j < packets_send_count; j++) {
             if (rand() % 100 >= 70) {
                 // send text instead
-                ssize_t send_size = sendto(socketLink->value, (const char *) send_buffer_2, packet_size_2, 0,
-                    (struct sockaddr*) &send_addr, sizeof(send_addr));
+                int send_size = sendto(socketLink->value, (const char *) send_buffer_2, packet_size_2, 0, (struct sockaddr*) &send_addr, sizeof(send_addr));
                 if (send_size < 0) {
-                    perror("    [PacketSendSystem]:sendto ");
+                    check_socket_error();
+                    // perror("    [PacketSendSystem] error sendto: ");
                 } else {
                    // zoxel_log("Sent packet type [%i] - [%s].\n", send_buffer_2[0], send_text);
                 }
             } else {
-                ssize_t send_size = sendto(socketLink->value, (const char *) send_buffer, packet_size, 0, (struct sockaddr*) &send_addr, sizeof(send_addr));
+                int send_size = sendto(socketLink->value, (const char *) send_buffer, packet_size, 0, (struct sockaddr*) &send_addr, sizeof(send_addr));
                 if (send_size < 0) {
-                    perror("    [PacketSendSystem]:sendto2 ");
+                    check_socket_error();
+                    // perror("    [PacketSendSystem]:sendto2");
                 } else {
                     // zoxel_log("Sent packet type [%i].\n", send_buffer[0]);
                 }

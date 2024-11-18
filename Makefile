@@ -166,6 +166,9 @@ run-headless:
 run-server:
 	@ ./$(target) --headless --server
 
+run-client:
+	@ ./$(target) --headless --client
+
 run-tiny:
 	@ ./$(target) --tiny
 
@@ -255,7 +258,7 @@ dev-profiler:
 	@ $(patient_cmd)
 	@ $(make_dev) -Dzox_using_profiler
 
-run-headless-debug:
+run-drmemory-headless:
 	@ drmemory.exe -brief -light $(PWD)/$(target_dev) --headless
 
 

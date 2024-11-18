@@ -1,7 +1,7 @@
 #ifndef zox_mod_networking
 #define zox_mod_networking
 
-// #define zox_testing_networking
+#define zox_testing_networking
 #include "settings/includes.c"
 #include "settings/settings.c"
 #include "settings/packet_types.c"
@@ -27,8 +27,16 @@ zox_memory_component(PacketData, unsigned char)
 #include "systems/packet_recieve_system.c"
 
 void spawn_prefabs_networking(ecs_world_t *world) {
+#ifdef zoxel_on_windows
+    initialize_windows_sockets();
+#else
+    sockets_enabled = 1;
+#endif
     spawn_prefab_net_room(world);
     spawn_prefab_net_player(world);
+}
+
+void initialize_networking() {
 #ifdef zox_testing_networking
     if (server_mode) spawn_net_room(world, SERVER_PORT);
     else spawn_net_player(world, PORT, IP_TO, SERVER_PORT);

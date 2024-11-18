@@ -17,7 +17,7 @@ int run_packet_test() {
     // send a message to the destination
     char send_buffer[BUFFER_SIZE];
     strcpy(send_buffer, "Hello, World!");
-    ssize_t send_size = sendto(sock, send_buffer, strlen(send_buffer), 0,
+    int send_size = sendto(sock, send_buffer, strlen(send_buffer), 0,
         (struct sockaddr*) &send_addr, sizeof(send_addr));
     if (send_size < 0) {
         perror("sendto");

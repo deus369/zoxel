@@ -14,7 +14,7 @@ ecs_entity_t spawn_prefab_net_room(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_net_room(ecs_world_t *world, int port) {
+ecs_entity_t spawn_net_room(ecs_world_t *world, const int port) {
     zox_instance(prefab_net_room)
     zox_name("net_room")
     zox_set(e, NetPort, { port })

@@ -75,6 +75,10 @@ int process_arguments(int argc, char* argv[]) {
             headless = 1;
         } else if (strcmp(argv[i], "-x") == 0 || strcmp(argv[i], "--server") == 0) {
             server_mode = 1;
+        } else if (strcmp(argv[i], "--client") == 0) {
+            server_mode = 0;
+        } else if (strcmp(argv[i], "-x") == 0 || strcmp(argv[i], "--server") == 0) {
+            server_mode = 1;
         } else if (strcmp(argv[i], "-e") == 0 || strcmp(argv[i], "--opengles") == 0) {
             override_opengl_es = 1;
         } else if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--vulkan") == 0) {

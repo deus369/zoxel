@@ -1,20 +1,21 @@
 ecs_entity_t spawn_prefab_block_vox(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_block_vox")
-    zox_add_tag(e, ColorRenderer)
     zox_prefab_set(e, CloneVox, { 0})
     zox_prefab_set(e, CloneVoxLink, { 0 })
     zox_prefab_set(e, ChunkLod, { 255 })
-    // zox_prefab_set(e, ChunkDirty, { chunk_dirty_state_generated })
     zox_add_tag(e, BlockVox)
     zox_prefab_set(e, BlockIndex, { 0 })
-    zox_prefab_set(e, RenderLod, { 255 }) // 1
+    zox_prefab_set(e, RenderLod, { 255 })
     // BlockLink to original voxel meta data
     zox_prefab_set(e, Position3D, { float3_zero })
     zox_prefab_set(e, Rotation3D, { float4_identity })
     zox_prefab_set(e, VoxScale, { vox_model_scale * 1 })
     // for debug
     zox_prefab_set(e, Bounds3D, { (float3) { 0.5f, 0.5f, 0.5f } })
+    if (!headless) {
+        zox_add_tag(e, ColorRenderer)
+    }
 #ifdef zoxel_debug_bounds
     prefab_add_cube_lines(world, e, color_rgb_white, 1);
 #else

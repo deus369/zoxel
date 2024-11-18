@@ -9,3 +9,14 @@ Make music good - import lmms files - use better piano notes for now until gener
 Add auto tests in as parameters
 Make a builder app?
 Make editor app, it should reload modules of C code onto the game engine part
+Make a damn start screen... what kind idk
+Make a logo splash - penguin
+Can we build parts of project at once instead of entire thing? .o files?
+
+- networking -
+run zoxel service on linode
+clients will connect automatically
+show an icon on main menu if connected
+make a terminal in game that i can input messages to
+send ping packets to server
+server to show in realtime how many players connected

@@ -3,10 +3,12 @@ ecs_entity_t prefab_character3D_npc;
 ecs_entity_t spawn_prefab_character3D_npc(ecs_world_t *world) {
     zox_prefab_child(prefab_character3D)
     zox_prefab_name("prefab_character3D_npc")
+    if (!headless) {
+        zox_add_tag(e, ColorRenderer)
+    }
     zox_add_tag(e, Wanderer)
     zox_add_tag(e, Jumper)
     zox_prefab_set(e, RenderDisabled, { 1 })
-    zox_add_tag(e, ColorRenderer)
     prefab_character3D_npc = e;
     return e;
 }
