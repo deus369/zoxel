@@ -22,8 +22,6 @@ void ElementRenderSystem(ecs_iter_t *it) {
         if (layer2D->value != renderer_layer) continue;
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         if (renderDisabled->value) continue;
-        zox_field_i(MeshDirty, meshDirtys, meshDirty)
-        if (meshDirty->value) continue;
         zox_field_e()
         if (get_root_canvas_camera(world, e) != renderer_camera) continue;
         zox_field_i(Position2D, position2Ds, position2D)
@@ -52,6 +50,9 @@ void ElementRenderSystem(ecs_iter_t *it) {
         opengl_set_float3(material_attributes->position, (float3) { position2D->value.x, position2D->value.y, position_z });
         opengl_set_float(material_attributes->angle, rotation2D->value);
         opengl_set_float(material_attributes->scale, scale1D->value);
+        // here set float2
+        // float2 final_scale = (float2) { scale2D->value.x * canvasSize->value.x, scale2D->value.y * canvasSize->value.y };
+        // opengl_set_flaot2(material_attributes->scale, final_scale);
         opengl_set_float(material_attributes->brightness, brightness->value);
         opengl_set_float(material_attributes->alpha, alpha->value);
 #ifndef zox_disable_render_ui

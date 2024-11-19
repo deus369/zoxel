@@ -25,6 +25,6 @@ void Element3DMeshSystem(ecs_iter_t *it) {
             colorsGPULink->value = spawn_gpu_generic_buffer();
         }
         initializeElement->value = 0;
-        meshDirty->value = mesh_state_trigger;
+        meshDirty->value = mesh_state_trigger2;
     }
 } zox_declare_system(Element3DMeshSystem)

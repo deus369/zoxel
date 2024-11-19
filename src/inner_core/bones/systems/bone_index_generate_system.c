@@ -14,8 +14,6 @@ void BoneIndexGenerateSystem(ecs_iter_t *it) {
             const float3 position = meshVertices->value[j];
             if (position.y >= 0.12f) boneIndexes->value[j] = 1;
             else boneIndexes->value[j] = 0;
-            // if (position.y >= 0.12f) zox_log("setting bone 1")
         }
-        zox_log(" + generated bone indexes!\n")
     }
 } zox_declare_system(BoneIndexGenerateSystem)

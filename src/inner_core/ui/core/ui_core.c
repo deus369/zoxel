@@ -172,8 +172,8 @@ zox_system(UITrailSystem, zox_transforms_stage, [in] UIHolderLink, [in] UITrail,
 zox_system(ElementBarSystem, EcsOnUpdate, [in] ElementBar, [in] ElementBarSize, [in] Children)
 if (!headless) {
     zox_system_1(ButtonClickEventSystem, zox_pip_mainthread, [in] ClickEvent, [in] ClickState, [out] Clicker, [none] Element)
-    // EcsOnLoad
-    zox_system_1(Element2DMeshSystem, zox_pip_mainthread, [none] Element, [in] PixelSize, [in] MeshAlignment, [in] CanvasLink, [out] InitializeElement, [out] MeshDirty, [out] MeshVertices2D, [out] MeshGPULink, [out] TextureGPULink, [out] UvsGPULink, [none] !Element3D)
+    // EcsOnLoad - zox_pip_mainthread
+    zox_system_1(Element2DMeshSystem, EcsOnLoad, [none] Element, [in] PixelSize, [in] MeshAlignment, [in] CanvasLink, [out] InitializeElement, [out] MeshDirty, [out] MeshVertices2D, [out] MeshGPULink, [out] TextureGPULink, [out] UvsGPULink, [none] !Element3D)
     zox_system_1(Element3DMeshSystem, zox_pip_mainthread, [none] Element3D, [in] PixelSize, [in] CanvasLink, [out] InitializeElement, [out] MeshDirty, [out] GenerateTexture,  [out] MeshGPULink, [out] UvsGPULink, [out] ColorsGPULink, [out] TextureGPULink)
 }
 zox_system(CanvasResizeSystem, EcsOnUpdate, [in] CameraLink, [in] Children, [in] cameras.ScreenToCanvas, [out] PixelSize, [none] Canvas)

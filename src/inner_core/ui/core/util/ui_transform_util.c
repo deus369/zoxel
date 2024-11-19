@@ -128,7 +128,7 @@ void set_ui_transform(ecs_world_t *world, const ecs_entity_t parent, const ecs_e
         const unsigned char mesh_alignment = zox_get_value(e, MeshAlignment)
         const float2 size2D = (float2) { pixel_size.x / canvasSizef.y, pixel_size.y / canvasSizef.y };
         set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(mesh_alignment), 4, size2D);
-        zox_set(e, MeshDirty, { mesh_state_trigger })
+        zox_set(e, MeshDirty, { mesh_state_trigger2 })
     }
     resize_ui_line2D(world, e, canvas_size);
     if (zox_has(e, BoundToCanvas)) {

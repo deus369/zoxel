@@ -20,3 +20,9 @@ show an icon on main menu if connected
 make a terminal in game that i can input messages to
 send ping packets to server
 server to show in realtime how many players connected
+
+- ui -
+the way to initialize the meshes is weird
+cause we resize inside the canvas
+perhaps we can just scale, have a canvas size and a scale still
+so no need to recreate verts many times, just use static verts (theoritically can just use static entity ones instead of unique meshGPULink, use MeshGPULightLink to the initially uploaded ones)

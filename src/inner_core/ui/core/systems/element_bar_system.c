@@ -31,7 +31,7 @@ void ElementBarSystem(ecs_iter_t *it) {
             // if (test_var == meshVertices->value[2].x) continue;
             MeshVertices *meshVertices2 = zox_get_mut(front_bar, MeshVertices)
             for (unsigned char j = 0; j < 4; j++) meshVertices2->value[j] = (float3) { left_offset + square_vertices[j].x * scale.x * percentage, square_vertices[j].y * scale.y, 0 };
-            meshDirty->value = mesh_state_trigger;
+            meshDirty->value = mesh_state_trigger2;
             zox_modified(front_bar, MeshDirty)
             zox_modified(front_bar, MeshVertices)
         } else if (zox_has(front_bar, MeshVertices2D)) {
