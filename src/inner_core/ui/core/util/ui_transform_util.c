@@ -122,16 +122,13 @@ void set_ui_transform(ecs_world_t *world, const ecs_entity_t parent, const ecs_e
     if (zox_has(e, RenderTexture)) {
         set_render_texture_gpu(zox_gett_value(e, TextureGPULink), pixel_size);
     }
+    // set scale of mesh again
     if (!headless && zox_has(e, MeshVertices2D)) {
+        zox_get_muter(e, MeshVertices2D, meshVertices2D)
         const unsigned char mesh_alignment = zox_get_value(e, MeshAlignment)
-        MeshVertices2D *meshVertices2D = zox_get_mut(e, MeshVertices2D)
-        const float2 scale2D = (float2) { pixel_size.x / canvasSizef.y, pixel_size.y / canvasSizef.y };
-        set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(mesh_alignment), 4, scale2D);
-        zox_modified(e, MeshVertices2D)
+        const float2 size2D = (float2) { pixel_size.x / canvasSizef.y, pixel_size.y / canvasSizef.y };
+        set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(mesh_alignment), 4, size2D);
         zox_set(e, MeshDirty, { mesh_state_trigger })
-#ifdef debug_ui_scaling
-        zox_log("        -> Scaling: [%fx%f]\n", scale2D.x, scale2D.y)
-#endif
     }
     resize_ui_line2D(world, e, canvas_size);
     if (zox_has(e, BoundToCanvas)) {

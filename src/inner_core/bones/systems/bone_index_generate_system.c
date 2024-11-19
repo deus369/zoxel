@@ -1,3 +1,5 @@
+// todo: Shapes on bones used for setting verts, spheres of influence
+
 void BoneIndexGenerateSystem(ecs_iter_t *it) {
     zox_field_in(MeshDirty, meshDirtys, 1)
     zox_field_in(MeshVertices, meshVerticess, 2)

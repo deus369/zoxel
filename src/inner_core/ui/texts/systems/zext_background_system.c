@@ -17,7 +17,6 @@ void ZextBackgroundSystem(ecs_iter_t *it) {
         if (zextDirty->value != zext_update_update) continue;
         zox_field_o(GenerateTexture, generateTextures, generateTexture)
         // if (generateTexture->value) return;
-        zox_field_o(MeshDirty, meshDirtys, meshDirty)
         zox_field_i(ZextData, zextDatas, zextData)
         zox_field_i(ZextSize, zextSizes, zextSize)
         zox_field_i(ZextPadding, zextPaddings, zextPadding)
@@ -26,13 +25,14 @@ void ZextBackgroundSystem(ecs_iter_t *it) {
         zox_field_o(PixelSize, pixelSizes, pixelSize)
         zox_field_o(TextureSize, textureSizes, textureSize)
         zox_field_o(MeshVertices2D, meshVertices2Ds, meshVertices2D)
+        zox_field_o(MeshDirty, meshDirtys, meshDirty)
         const int2 canvas_size = zox_get_value(canvasLink->value, PixelSize)
         const int2 size = calculate_zext_size(zextData->value, zextData->length, zextSize->value, zextPadding->value, default_line_padding);
         const float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
-        const float2 scale2D = (float2) { size.x / canvasSizef.y, size.y / canvasSizef.y };
+        const float2 size2D = (float2) { size.x / canvasSizef.y, size.y / canvasSizef.y };
         pixelSize->value = size;
         textureSize->value = size;
-        set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, scale2D);
+        set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, size2D);
         meshDirty->value = mesh_state_trigger;
         generateTexture->value = zox_generate_texture_trigger;
     }

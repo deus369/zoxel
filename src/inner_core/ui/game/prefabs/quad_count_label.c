@@ -3,7 +3,7 @@ ecs_entity_t spawn_prefab_quad_count_label(ecs_world_t *world) {
     zox_prefab_child(prefab_label_background)
     zox_add_tag(e, QuadsCountLabel)
     zox_prefab_set(e, QuadsCount, { -1 })
-    if (!headless) prefab_set_mesh2D_vertices(world, e, square_vertices_right_aligned, 4);
+    prefab_set_mesh2D_vertices(world, e, square_vertices_right_aligned, 4);
     prefab_quad_count_label = e;
     return e;
 }

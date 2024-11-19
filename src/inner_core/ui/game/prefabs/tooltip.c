@@ -3,7 +3,8 @@ ecs_entity_t spawn_prefab_tooltip(ecs_world_t *world, const ecs_entity_t prefab)
     zox_add_tag(e, Tooltip)
     zox_add_tag(e, ZextRenderEnabler)
     zox_prefab_set(e, RenderDisabled, { 1 })
-    if (!headless) prefab_set_mesh2D_vertices(world, e, square_vertices_top_right_aligned, 4);
+    zox_prefab_set(e, MeshAlignment, { zox_mesh_alignment_top_right })
+    // prefab_set_mesh2D_vertices(world, e, square_vertices_top_right_aligned, 4);
     add_mouse_follow_components(world, e);
     zox_prefab_set(e, ZeviceLink, { 0 })
     return e;

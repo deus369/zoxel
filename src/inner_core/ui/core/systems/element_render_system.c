@@ -22,9 +22,9 @@ void ElementRenderSystem(ecs_iter_t *it) {
         if (layer2D->value != renderer_layer) continue;
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         if (renderDisabled->value) continue;
+        zox_field_i(MeshDirty, meshDirtys, meshDirty)
+        if (meshDirty->value) continue;
         zox_field_e()
-        // zox_field_i(MeshDirty, meshDirtys, meshDirty)
-        // if (meshDirty->value) continue;
         if (get_root_canvas_camera(world, e) != renderer_camera) continue;
         zox_field_i(Position2D, position2Ds, position2D)
         zox_field_i(Rotation2D, rotation2Ds, rotation2D)

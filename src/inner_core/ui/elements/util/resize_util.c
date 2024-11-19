@@ -2,17 +2,13 @@
 void on_resized_element(ecs_world_t *world, const ecs_entity_t e, const int2 pixel_size, const float2 canvas_size) {
     if (!headless && zox_has(e, MeshVertices2D)) {
         const MeshAlignment *meshAlignment = zox_get(e, MeshAlignment)
-        MeshVertices2D *meshVertices2D = zox_get_mut(e, MeshVertices2D)
-        const float2 scale2D = (float2) { pixel_size.x / canvas_size.y, pixel_size.y / canvas_size.y };
-        set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, scale2D);
-        zox_modified(e, MeshVertices2D)
+        zox_get_muter(e, MeshVertices2D, meshVertices2D)
+        const float2 size2D = (float2) { pixel_size.x / canvas_size.y, pixel_size.y / canvas_size.y };
+        set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, size2D);
         zox_set(e, MeshDirty, { mesh_state_trigger })
         // for procedural textures, regenerate upon resize
         // fix for icons
         if (zox_has(e, GenerateTexture)) zox_set(e, GenerateTexture, { zox_generate_texture_trigger })
-#ifdef debug_ui_scaling
-        zox_log("        -> Scaling: [%fx%f]\n", scale2D.x, scale2D.y)
-#endif
         if (zox_has(e, Window)) {
             const Children *children = zox_get(e, Children);
             const ecs_entity_t header = children->value[0];
