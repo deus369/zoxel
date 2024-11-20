@@ -10,11 +10,19 @@ ecs_entity_t spawn_realm_block_vox_grass(ecs_world_t *world, const unsigned char
         .tag = zox_id(BlockVox),
         .model = zox_block_vox,
         .disable_collision = 1,
+        .prefab_texture = prefab_vox_texture
     };
+#ifdef zox_disable_block_voxes
+    spawn_data.bake_vox = 1;
+    spawn_data.vox = spawn_vox_generated_invisible(world, prefab_vox_generated, (color) { 25, 5, 5, 255 });
+    spawn_data.model = 0;
+    spawn_data.tag = 0;
+#else
     spawn_data.vox = string_hashmap_get(files_hashmap_voxes, new_string_data("grass"));
     if (!spawn_data.vox) {
         zox_log(" ! [grass] vox not found\n")
         return 0;
     }
+#endif
     return spawn_block_vox_meta(world, &spawn_data);
 }

@@ -1,5 +1,7 @@
 # now todo #
 
+- [x] fix crash on chunk transitions - its from npcs - possibly due to mesh dirty state
+
 - [ ] instancing on grass
     - [ ] create vox mesh for realm grass
     - [ ] use a block_vox with instance mesh, linking to the initial one
